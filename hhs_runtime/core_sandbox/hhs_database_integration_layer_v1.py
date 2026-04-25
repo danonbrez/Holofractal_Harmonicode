@@ -1,9 +1,24 @@
-from pathlib import Path
-import runpy
+"""
+Core Sandbox Database Integration V1
+===================================
 
-_ROOT = Path(__file__).resolve().parents[2] / 'hhs_database_integration_layer_v1.py'
-if _ROOT.exists():
-    _ns = runpy.run_path(str(_ROOT))
-    globals().update({k: v for k, v in _ns.items() if not k.startswith('__')})
-else:
-    raise ImportError('missing root compatibility source for hhs_database_integration_layer_v1')
+Simple deterministic JSON persistence layer.
+"""
+
+import json
+from pathlib import Path
+from typing import Any, Dict
+
+
+class HHSDatabase:
+    def __init__(self, path: str):
+        self.path = Path(path)
+
+    def save(self, data: Dict[str, Any]) -> None:
+        self.path.parent.mkdir(parents=True, exist_ok=True)
+        self.path.write_text(json.dumps(data, indent=2))
+
+    def load(self) -> Dict[str, Any]:
+        if not self.path.exists():
+            return {}
+        return json.loads(self.path.read_text())
