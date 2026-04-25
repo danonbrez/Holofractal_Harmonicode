@@ -4,8 +4,9 @@ HHS Cross-Modal Shell Gate v1
 
 Web/security shell rule:
 
-    No state change is allowed unless every active modality passing through the
-    kernel agrees on the exact same canonical next-state commitment.
+    No state change is allowed unless at least two distinct active modalities
+    passing through the kernel agree on the exact same canonical next-state
+    commitment.
 
 Pipeline:
 
@@ -13,11 +14,12 @@ Pipeline:
     -> modality projection
     -> kernel-normalized proposed_next_state
     -> Hash72 next_state commitment
+    -> distinct-modality floor check
     -> cross-modal equality check
     -> state commit OR quarantine
 
-The shell never mutates state directly. It only calls HHSStateLayerV1 after all
-modalities agree on the same next-state hash.
+The shell never mutates state directly. It only calls HHSStateLayerV1 after the
+modality floor and canonical next-state consensus both pass.
 """
 
 from __future__ import annotations
@@ -28,15 +30,14 @@ from pathlib import Path
 from typing import Any, Dict, List, Sequence
 import json
 
-from hhs_runtime.core_sandbox.hhs_general_runtime_layer_v1 import (
-    AuditedRunner,
-    canonicalize_for_hash72,
-    security_hash72_v44,
-)
+from hhs_runtime.core_sandbox.hhs_general_runtime_layer_v1 import canonicalize_for_hash72, security_hash72_v44
 from hhs_runtime.core_sandbox.hhs_state_layer_v1 import HHSStateLayerV1, StatePatch
-from hhs_runtime.core_sandbox.hhs_security_armor_v1 import armor_guard, ArmorStatus
+from hhs_runtime.core_sandbox.hhs_security_armor_v1 import ArmorStatus, armor_guard
 from hhs_runtime.hhs_loshu_phase_embedding_v1 import LO_SHU_3X3, hash72_digest
 from hhs_runtime.hhs_memory_ledger_replay_v1 import MemoryLedger, replay_ledger
+
+
+MIN_DISTINCT_MODALITIES = 2
 
 
 class ModalityKind(str, Enum):
@@ -76,6 +77,9 @@ class ModalityProjection:
 class CrossModalConsensusReceipt:
     projections: List[ModalityProjection]
     agreed_next_state_hash72: str | None
+    distinct_modality_count: int
+    min_distinct_modalities: int
+    modality_floor_ok: bool
     delta_e_zero: bool
     psi_zero: bool
     theta15_true: bool
@@ -90,6 +94,9 @@ class CrossModalConsensusReceipt:
         return {
             "projections": [p.to_dict() for p in self.projections],
             "agreed_next_state_hash72": self.agreed_next_state_hash72,
+            "distinct_modality_count": self.distinct_modality_count,
+            "min_distinct_modalities": self.min_distinct_modalities,
+            "modality_floor_ok": self.modality_floor_ok,
             "delta_e_zero": self.delta_e_zero,
             "psi_zero": self.psi_zero,
             "theta15_true": self.theta15_true,
@@ -158,15 +165,10 @@ def project_modality_to_next_state(
     normalized_patch = canonicalize_for_hash72(proposed_patch)
     normalized_next_state = apply_patch_to_snapshot(current_state, normalized_patch)
     next_state_hash = security_hash72_v44(
-        {
-            "modality": modality.value,
-            "source_id": source_id,
-            "next_state": normalized_next_state,
-        },
+        {"modality": modality.value, "source_id": source_id, "next_state": normalized_next_state},
         domain="HHS_SHELL_MODALITY_NEXT_STATE",
     )
-    # Agreement must be over state alone, not modality label. So also compute a
-    # modality-independent state commitment and use it as the consensus target.
+    # Consensus is over state alone, not modality label/source id.
     state_only_hash = security_hash72_v44(normalized_next_state, domain="HHS_SHELL_NEXT_STATE_CANON")
     projection_hash = security_hash72_v44(
         {
@@ -192,20 +194,42 @@ def cross_modal_consensus(projections: Sequence[ModalityProjection]) -> CrossMod
     hashes = [p.next_state_hash72 for p in projections]
     unique_hashes = set(hashes)
     agreed = hashes[0] if hashes and len(unique_hashes) == 1 else None
+    distinct_modalities = {p.modality.value for p in projections}
+    distinct_modality_count = len(distinct_modalities)
+    modality_floor_ok = distinct_modality_count >= MIN_DISTINCT_MODALITIES
+
     delta_e_zero = len(projections) > 0 and all(p.proposed_patch for p in projections)
-    psi_zero = agreed is not None
+    psi_zero = agreed is not None and modality_floor_ok
     theta = theta15_true()
-    omega_true = agreed is not None and all(p.normalized_next_state for p in projections)
-    armor = armor_guard({"projection_hashes": [p.projection_hash72 for p in projections], "agreed_next_state_hash72": agreed})
+    omega_true = agreed is not None and modality_floor_ok and all(p.normalized_next_state for p in projections)
+    armor = armor_guard(
+        {
+            "projection_hashes": [p.projection_hash72 for p in projections],
+            "agreed_next_state_hash72": agreed,
+            "distinct_modalities": sorted(distinct_modalities),
+            "min_distinct_modalities": MIN_DISTINCT_MODALITIES,
+        }
+    )
     armor_ok = armor.status == ArmorStatus.VALID
     ok = delta_e_zero and psi_zero and theta and omega_true and armor_ok
-    status = ShellGateStatus.COMMITTED if ok else ShellGateStatus.QUARANTINED
-    reason = "all modalities agree on canonical next state" if ok else "cross-modal next-state disagreement or invariant failure"
+
+    if ok:
+        status = ShellGateStatus.COMMITTED
+        reason = "distinct modalities agree on canonical next state"
+    elif not modality_floor_ok:
+        status = ShellGateStatus.QUARANTINED
+        reason = "distinct modality floor not satisfied"
+    else:
+        status = ShellGateStatus.QUARANTINED
+        reason = "cross-modal next-state disagreement or invariant failure"
+
     quarantine = None if ok else security_hash72_v44(
         {
             "reason": reason,
             "projection_hashes": [p.projection_hash72 for p in projections],
             "next_state_hashes": hashes,
+            "distinct_modalities": sorted(distinct_modalities),
+            "min_distinct_modalities": MIN_DISTINCT_MODALITIES,
         },
         domain="HHS_SHELL_CROSS_MODAL_QUARANTINE",
     )
@@ -213,6 +237,9 @@ def cross_modal_consensus(projections: Sequence[ModalityProjection]) -> CrossMod
         {
             "projection_hashes": [p.projection_hash72 for p in projections],
             "agreed_next_state_hash72": agreed,
+            "distinct_modality_count": distinct_modality_count,
+            "min_distinct_modalities": MIN_DISTINCT_MODALITIES,
+            "modality_floor_ok": modality_floor_ok,
             "delta_e_zero": delta_e_zero,
             "psi_zero": psi_zero,
             "theta15_true": theta,
@@ -224,7 +251,20 @@ def cross_modal_consensus(projections: Sequence[ModalityProjection]) -> CrossMod
         domain="HHS_SHELL_CROSS_MODAL_CONSENSUS",
     )
     return CrossModalConsensusReceipt(
-        list(projections), agreed, delta_e_zero, psi_zero, theta, omega_true, armor_ok, status, receipt, quarantine, reason
+        list(projections),
+        agreed,
+        distinct_modality_count,
+        MIN_DISTINCT_MODALITIES,
+        modality_floor_ok,
+        delta_e_zero,
+        psi_zero,
+        theta,
+        omega_true,
+        armor_ok,
+        status,
+        receipt,
+        quarantine,
+        reason,
     )
 
 
@@ -248,6 +288,7 @@ class CrossModalShellGateV1:
                     current_state=current_state,
                 )
             )
+
         consensus = cross_modal_consensus(projections)
         state_result = None
         if consensus.status == ShellGateStatus.COMMITTED and projections:
@@ -265,6 +306,9 @@ class CrossModalShellGateV1:
                 consensus = CrossModalConsensusReceipt(
                     consensus.projections,
                     consensus.agreed_next_state_hash72,
+                    consensus.distinct_modality_count,
+                    consensus.min_distinct_modalities,
+                    consensus.modality_floor_ok,
                     consensus.delta_e_zero,
                     False,
                     consensus.theta15_true,
@@ -275,6 +319,7 @@ class CrossModalShellGateV1:
                     consensus.quarantine_hash72 or security_hash72_v44(state_result, domain="HHS_SHELL_STATE_COMMIT_QUARANTINE"),
                     "state layer rejected agreed transition",
                 )
+
         ledger = MemoryLedger(self.ledger_path)
         commit = ledger.append_payloads("cross_modal_shell_commit_v1", [consensus.to_dict(), state_result or {}])
         replay = replay_ledger(self.ledger_path)
@@ -286,11 +331,13 @@ class CrossModalShellGateV1:
 def demo() -> Dict[str, Any]:
     gate = CrossModalShellGateV1()
     patch = {"op": "SET", "path": "web.intent", "value": {"next": "state"}}
-    return gate.propose_and_commit([
-        {"modality": "TEXT", "source_id": "text_parser", "patch": patch},
-        {"modality": "API", "source_id": "api_schema", "patch": patch},
-        {"modality": "FILE", "source_id": "file_tokenizer", "patch": patch},
-    ]).to_dict()
+    return gate.propose_and_commit(
+        [
+            {"modality": "TEXT", "source_id": "text_parser", "patch": patch},
+            {"modality": "API", "source_id": "api_schema", "patch": patch},
+            {"modality": "FILE", "source_id": "file_tokenizer", "patch": patch},
+        ]
+    ).to_dict()
 
 
 if __name__ == "__main__":
