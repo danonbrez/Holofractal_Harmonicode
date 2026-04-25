@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "hhs://schemas/manifold-ledger.v1.json",
+  "title": "HHS Manifold Ledger Block",
+  "type": "object",
+  "required": [
+    "height",
+    "prev_hash72",
+    "payload",
+    "proof_of_physicality",
+    "seal_hash72"
+  ],
+  "properties": {
+    "height": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "prev_hash72": {
+      "type": "string",
+      "pattern": "^H72N-[0-9A-Za-z+*/()^√=≠-]+$"
+    },
+    "payload": {
+      "type": "object"
+    },
+    "proof_of_physicality": {
+      "type": "object",
+      "required": [
+        "center_P",
+        "p",
+        "q",
+        "adjacency_defect",
+        "tensor_sum",
+        "theta15_true",
+        "curvature_witness_hash72"
+      ],
+      "properties": {
+        "center_P": {
+          "type": "integer"
+        },
+        "p": {
+          "type": "integer"
+        },
+        "q": {
+          "type": "integer"
+        },
+        "adjacency_defect": {
+          "type": "integer",
+          "const": 1
+        },
+        "tensor_sum": {
+          "type": "integer",
+          "const": 15
+        },
+        "theta15_true": {
+          "type": "boolean",
+          "const": true
+        },
+        "curvature_witness_hash72": {
+          "type": "string",
+          "pattern": "^H72N-[0-9A-Za-z+*/()^√=≠-]+$"
+        }
+      }
+    },
+    "seal_hash72": {
+      "type": "string",
+      "pattern": "^H72N-[0-9A-Za-z+*/()^√=≠-]+$"
+    }
+  }
+}
