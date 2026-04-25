@@ -1,9 +1,34 @@
-from pathlib import Path
-import runpy
+"""
+Core Sandbox Physics Model V1
+=============================
 
-_ROOT = Path(__file__).resolve().parents[2] / 'hhs_physics_model_v1.py'
-if _ROOT.exists():
-    _ns = runpy.run_path(str(_ROOT))
-    globals().update({k: v for k, v in _ns.items() if not k.startswith('__')})
-else:
-    raise ImportError('missing root compatibility source for hhs_physics_model_v1')
+Minimal deterministic physical adapter:
+observation → symbolic constraints → state patch.
+"""
+
+from dataclasses import dataclass
+from typing import Any, Dict
+
+
+@dataclass
+class PhysicalObservation:
+    sensor_id: str
+    value: float
+    timestamp: float
+
+
+def map_observation_to_symbolic(obs: PhysicalObservation) -> Dict[str, Any]:
+    return {
+        "sensor": obs.sensor_id,
+        "value": obs.value,
+        "constraint": "a^2 = normalized_value",
+        "normalized": abs(obs.value)
+    }
+
+
+def build_state_patch(symbolic: Dict[str, Any]) -> Dict[str, Any]:
+    return {
+        "op": "SET",
+        "path": f"sensors.{symbolic['sensor']}",
+        "value": symbolic
+    }
