@@ -1,6 +1,6 @@
 """
 hhs_runtime_api_server_v1.py
-(Updated with anomaly detection, batched streaming, and corrective suggestions)
+(Updated with anomaly detection, batched streaming, corrective suggestions, and approval-gated correction execution)
 """
 
 from __future__ import annotations
@@ -14,6 +14,7 @@ from typing import Any, Dict, List
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+from pydantic import BaseModel
 
 from hhs_backend_final_certification_v1 import HHSBackendFinalCertificationV1
 from hhs_runtime.hhs_drive_alignment_corpus_ingestor_v2 import ingest_drive_corpus_artifacts
@@ -21,7 +22,8 @@ from hhs_runtime.hhs_operator_selection_engine_v1 import OperatorSelectionGoal
 from hhs_runtime.hhs_phase_coherent_operator_loop_v1 import run_phase_coherent_operator_loop
 from hhs_runtime.hhs_realtime_multimodal_phase_integration_v1 import lock_live_multimodal_phase
 from hhs_runtime.hhs_runtime_anomaly_detector_v1 import detect_runtime_anomalies
-from hhs_runtime.hhs_phase_stabilization_feedback_loop_v1 import propose_corrective_operators
+from hhs_runtime.hhs_phase_stabilization_feedback_loop_v1 import propose_corrective_operators, execute_approved_corrections
+from hhs_runtime.hhs_loshu_phase_embedding_v1 import hash72_digest
 
 APP_NAME = "HHS Runtime API Server v1"
 ARTIFACT_ROOT = Path("demo_reports/runtime_api")
@@ -32,6 +34,11 @@ app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_credentials=True, 
 
 STREAM_INTERVAL = 0.75
 BATCH_SIZE = 3
+LAST_CORRECTION_EXECUTION: Dict[str, Any] | None = None
+
+
+class CorrectionApprovalRequest(BaseModel):
+    approved_suggestion_hashes: List[str]
 
 
 def _observations(observed_at_ns: int | None = None) -> List[Dict[str, Any]]:
@@ -74,12 +81,24 @@ def build_runtime_snapshot() -> Dict[str, Any]:
     snapshot = {"phase": phase, "operatorLoop": loop, "server": {"name": APP_NAME, "generated_at_ns": time.time_ns()}}
     snapshot["anomalies"] = detect_runtime_anomalies(snapshot)
     snapshot["corrections"] = propose_corrective_operators(snapshot)
+    snapshot["lastCorrectionExecution"] = LAST_CORRECTION_EXECUTION
     return snapshot
+
+
+def _relock_for_correction(_suggestion: Any) -> Dict[str, Any]:
+    return build_phase_lock()
+
+
+def _verify_correction(suggestion: Any, relock: Dict[str, Any]) -> Dict[str, Any]:
+    loop = build_operator_loop(relock)
+    ok = relock.get("status") == "LOCKED" and loop.get("status") == "EXECUTED" and loop.get("loop_replay_receipt", {}).get("invalid", 0) == 0
+    verification_hash = hash72_digest(("api_correction_verification_v1", suggestion.to_dict(), relock.get("receipt_hash72"), loop.get("receipt_hash72"), ok), width=24)
+    return {"ok": ok, "verification_hash72": verification_hash, "operator_loop_status": loop.get("status"), "operator_loop_receipt_hash72": loop.get("receipt_hash72")}
 
 
 @app.get("/api/status")
 async def api_status() -> Dict[str, Any]:
-    return {"status": "OK", "server": APP_NAME, "read_only": True, "time_ns": time.time_ns()}
+    return {"status": "OK", "server": APP_NAME, "read_only": False, "correction_execution_requires_approval": True, "time_ns": time.time_ns()}
 
 
 @app.get("/api/latest-phase-lock")
@@ -98,6 +117,15 @@ async def api_certification() -> Dict[str, Any]:
         return HHSBackendFinalCertificationV1().run_all()
     except Exception as exc:
         return JSONResponse(status_code=500, content={"status": "CERTIFICATION_ERROR", "error": f"{type(exc).__name__}: {exc}"})
+
+
+@app.post("/api/corrections/execute")
+async def api_execute_corrections(req: CorrectionApprovalRequest) -> Dict[str, Any]:
+    global LAST_CORRECTION_EXECUTION
+    snapshot = build_runtime_snapshot()
+    result = execute_approved_corrections(snapshot, req.approved_suggestion_hashes, relock_fn=_relock_for_correction, verify_fn=_verify_correction)
+    LAST_CORRECTION_EXECUTION = result
+    return result
 
 
 @app.websocket("/ws/runtime")
