@@ -1,6 +1,6 @@
 """
 hhs_runtime_api_server_v1.py
-(Updated with projection-engine streaming for torus visualization)
+(Updated with root execution staging and consensus-gated commit pipeline)
 """
 
 from __future__ import annotations
@@ -25,6 +25,7 @@ from hhs_runtime.hhs_runtime_anomaly_detector_v1 import detect_runtime_anomalies
 from hhs_runtime.hhs_phase_stabilization_feedback_loop_v1 import propose_corrective_operators, execute_approved_corrections
 from hhs_runtime.hhs_loshu_phase_embedding_v1 import hash72_digest
 from hhs_runtime.harmonicode_phase_projection_engine_v1 import interpret_transform_project
+from hhs_runtime.harmonicode_root_execution_engine_v1 import stage_root_execution
 
 APP_NAME = "HHS Runtime API Server v1"
 ARTIFACT_ROOT = Path("demo_reports/runtime_api")
@@ -36,10 +37,21 @@ app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_credentials=True, 
 STREAM_INTERVAL = 0.75
 BATCH_SIZE = 3
 LAST_CORRECTION_EXECUTION: Dict[str, Any] | None = None
+LAST_ROOT_CANDIDATE: Dict[str, Any] | None = None
+LAST_ROOT_COMMIT: Dict[str, Any] | None = None
 
 
 class CorrectionApprovalRequest(BaseModel):
     approved_suggestion_hashes: List[str]
+
+
+class RootStageRequest(BaseModel):
+    phases: List[int]
+    target_layer: str = "normalized"
+
+
+class RootCommitRequest(BaseModel):
+    execution_candidate_hash72: str
 
 
 def _observations(observed_at_ns: int | None = None) -> List[Dict[str, Any]]:
@@ -102,6 +114,8 @@ def build_runtime_snapshot() -> Dict[str, Any]:
     snapshot["anomalies"] = detect_runtime_anomalies(snapshot)
     snapshot["corrections"] = propose_corrective_operators(snapshot)
     snapshot["lastCorrectionExecution"] = LAST_CORRECTION_EXECUTION
+    snapshot["lastRootCandidate"] = LAST_ROOT_CANDIDATE
+    snapshot["lastRootCommit"] = LAST_ROOT_COMMIT
     return snapshot
 
 
@@ -116,9 +130,31 @@ def _verify_correction(suggestion: Any, relock: Dict[str, Any]) -> Dict[str, Any
     return {"ok": ok, "verification_hash72": verification_hash, "operator_loop_status": loop.get("status"), "operator_loop_receipt_hash72": loop.get("receipt_hash72")}
 
 
+def _root_candidate_to_correction_payload(root_candidate: Dict[str, Any]) -> Dict[str, Any]:
+    candidate = root_candidate.get("candidate", {})
+    candidate_hash = candidate.get("execution_candidate_hash72")
+    return {
+        "anomalies": {"status": "CLEAR", "critical": 0, "warn": 0, "alerts": []},
+        "phase": build_phase_lock(),
+        "operatorLoop": build_operator_loop(),
+        "corrections": {
+            "suggestions": [{
+                "kind": "REQUIRE_EXTERNAL_PHASE_ANCHOR",
+                "priority": 100,
+                "target_modalities": ["HARMONICODE", "HASH72", "XYZW", "AUDIO"],
+                "target_phase_indices": [int(candidate.get("phase_index", 0) or 0)],
+                "reason": "Commit staged Root Meta-Branch equation through root execution pipeline.",
+                "proposed_patch": {"op": "COMMIT_ROOT_EQUATION", "candidate_hash72": candidate_hash, "equation": candidate.get("equation", {}).get("equation")},
+                "suggestion_hash72": str(candidate_hash),
+            }],
+            "summary_hash72": hash72_digest(("root_commit_correction_summary_v1", candidate_hash), width=24),
+        },
+    }
+
+
 @app.get("/api/status")
 async def api_status() -> Dict[str, Any]:
-    return {"status": "OK", "server": APP_NAME, "read_only": False, "correction_execution_requires_approval": True, "time_ns": time.time_ns()}
+    return {"status": "OK", "server": APP_NAME, "read_only": False, "correction_execution_requires_approval": True, "root_commit_requires_consensus": True, "time_ns": time.time_ns()}
 
 
 @app.get("/api/latest-phase-lock")
@@ -151,6 +187,29 @@ async def api_execute_corrections(req: CorrectionApprovalRequest) -> Dict[str, A
     result = execute_approved_corrections(snapshot, req.approved_suggestion_hashes, relock_fn=_relock_for_correction, verify_fn=_verify_correction)
     LAST_CORRECTION_EXECUTION = result
     return result
+
+
+@app.post("/api/root/stage")
+async def api_stage_root(req: RootStageRequest) -> Dict[str, Any]:
+    global LAST_ROOT_CANDIDATE
+    LAST_ROOT_CANDIDATE = stage_root_execution(req.phases, target_layer=req.target_layer)
+    return LAST_ROOT_CANDIDATE
+
+
+@app.post("/api/root/commit")
+async def api_commit_root(req: RootCommitRequest) -> Dict[str, Any]:
+    global LAST_ROOT_COMMIT
+    if not LAST_ROOT_CANDIDATE:
+        return JSONResponse(status_code=409, content={"status": "NO_ROOT_CANDIDATE", "reason": "Stage a root candidate before commit."})
+    candidate = LAST_ROOT_CANDIDATE.get("candidate", {})
+    if req.execution_candidate_hash72 != candidate.get("execution_candidate_hash72"):
+        return JSONResponse(status_code=409, content={"status": "ROOT_HASH_MISMATCH", "expected": candidate.get("execution_candidate_hash72"), "received": req.execution_candidate_hash72})
+    if candidate.get("status") != "STAGED":
+        return JSONResponse(status_code=409, content={"status": "ROOT_NOT_STAGED", "candidate_status": candidate.get("status")})
+    snapshot = _root_candidate_to_correction_payload(LAST_ROOT_CANDIDATE)
+    result = execute_approved_corrections(snapshot, [req.execution_candidate_hash72], relock_fn=_relock_for_correction, verify_fn=_verify_correction)
+    LAST_ROOT_COMMIT = {"candidate": LAST_ROOT_CANDIDATE, "commit": result, "commit_hash72": hash72_digest(("root_commit_result_v1", LAST_ROOT_CANDIDATE, result), width=24)}
+    return LAST_ROOT_COMMIT
 
 
 @app.websocket("/ws/runtime")
