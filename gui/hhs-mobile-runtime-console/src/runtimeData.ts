@@ -43,6 +43,12 @@ export type OperatorLoopView = {
 export type RuntimeSnapshot = {
   phase: PhaseLockView;
   operatorLoop: OperatorLoopView;
+  stream?: {
+    connected: boolean;
+    source: 'websocket' | 'rest' | 'mock';
+    last_event_type?: string;
+    last_update_ms?: number;
+  };
 };
 
 export const mockSnapshot: RuntimeSnapshot = {
@@ -75,7 +81,8 @@ export const mockSnapshot: RuntimeSnapshot = {
       { agent: 'SYNTHESIS_AGENT', phase_ok: true, phase_distance_from_anchor: 0, local_score: 52, risk_score: 0, operators: ['Alignment Axiom', 'Recursive Harmonic Prose', 'Writing Process'], proposal_hash72: 'H72-SYNTHESIS-PROPOSAL' },
       { agent: 'AUDIT_AGENT', phase_ok: true, phase_distance_from_anchor: 0, local_score: 47, risk_score: 0, operators: ['Meaning Preservation Operator'], proposal_hash72: 'H72-AUDIT-PROPOSAL' }
     ]
-  }
+  },
+  stream: { connected: false, source: 'mock', last_event_type: 'mock_snapshot', last_update_ms: Date.now() }
 };
 
 function normalizePhaseResponse(raw: any): PhaseLockView {
@@ -119,6 +126,17 @@ function normalizeLoopResponse(raw: any): OperatorLoopView {
   };
 }
 
+export function normalizeRuntimeSnapshot(raw: any, source: RuntimeSnapshot['stream']['source'] = 'websocket', eventType = 'runtime_snapshot'): RuntimeSnapshot {
+  if (raw?.phase && raw?.operatorLoop) {
+    return { ...raw, stream: { connected: source === 'websocket', source, last_event_type: eventType, last_update_ms: Date.now() } };
+  }
+  return {
+    phase: normalizePhaseResponse(raw?.phase ?? raw?.phase_lock ?? raw?.latest_phase_lock ?? raw),
+    operatorLoop: normalizeLoopResponse(raw?.operatorLoop ?? raw?.operator_loop ?? raw?.latest_operator_loop ?? raw),
+    stream: { connected: source === 'websocket', source, last_event_type: eventType, last_update_ms: Date.now() }
+  };
+}
+
 export async function loadRuntimeSnapshot(): Promise<RuntimeSnapshot> {
   try {
     const [phaseRes, loopRes] = await Promise.all([
@@ -126,11 +144,44 @@ export async function loadRuntimeSnapshot(): Promise<RuntimeSnapshot> {
       fetch('/api/latest-operator-loop')
     ]);
     if (!phaseRes.ok || !loopRes.ok) throw new Error('API unavailable');
-    return {
-      phase: normalizePhaseResponse(await phaseRes.json()),
-      operatorLoop: normalizeLoopResponse(await loopRes.json())
-    };
+    return normalizeRuntimeSnapshot({ phase: await phaseRes.json(), operatorLoop: await loopRes.json() }, 'rest', 'rest_snapshot');
   } catch {
     return mockSnapshot;
   }
+}
+
+export function connectRuntimeStream(onSnapshot: (snapshot: RuntimeSnapshot) => void, onStatus?: (connected: boolean) => void): () => void {
+  const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+  const url = `${protocol}//${window.location.host}/ws/runtime`;
+  let closed = false;
+  let socket: WebSocket | null = null;
+
+  try {
+    socket = new WebSocket(url);
+    socket.onopen = () => onStatus?.(true);
+    socket.onmessage = (event) => {
+      try {
+        const message = JSON.parse(event.data);
+        const eventType = message?.type ?? 'runtime_snapshot';
+        const payload = message?.payload ?? message;
+        onSnapshot(normalizeRuntimeSnapshot(payload, 'websocket', eventType));
+      } catch {
+        // Ignore malformed stream frames; REST fallback remains authoritative.
+      }
+    };
+    socket.onerror = () => onStatus?.(false);
+    socket.onclose = () => {
+      onStatus?.(false);
+      if (!closed) {
+        // The GUI remains on last REST/mock snapshot; no automatic mutation occurs.
+      }
+    };
+  } catch {
+    onStatus?.(false);
+  }
+
+  return () => {
+    closed = true;
+    if (socket && socket.readyState <= WebSocket.OPEN) socket.close();
+  };
 }
