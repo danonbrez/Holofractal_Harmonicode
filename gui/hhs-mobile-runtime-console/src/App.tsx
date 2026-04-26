@@ -1,40 +1,24 @@
-import React from 'react';
-import { Canvas } from '@react-three/fiber';
-import * as THREE from 'three';
+import React, { useEffect, useState } from 'react';
+import PhaseRing3D from './components/PhaseRing3D';
+import OperatorPanel from './components/OperatorPanel';
+import { loadRuntimeSnapshot, RuntimeSnapshot } from './runtimeData';
 
-const mockPhase = {
-  anchor: 36,
-  witnesses: [36,36,36,36]
-};
+export default function App() {
+  const [data, setData] = useState<RuntimeSnapshot | null>(null);
 
-function PhaseRing() {
-  const points = new Array(72).fill(0);
+  useEffect(() => {
+    loadRuntimeSnapshot().then(setData);
+  }, []);
+
+  if (!data) return <div style={{ color: '#0f0', padding: 20 }}>Loading...</div>;
+
   return (
-    <>
-      {points.map((_,i)=>{
-        const angle = (i/72)*Math.PI*2;
-        const x = Math.cos(angle)*2;
-        const y = Math.sin(angle)*2;
-        const isAnchor = i===mockPhase.anchor;
-        return (
-          <mesh key={i} position={[x,y,0]}>
-            <sphereGeometry args={[0.05,16,16]} />
-            <meshStandardMaterial color={isAnchor?'green':'gray'} />
-          </mesh>
-        );
-      })}
-    </>
-  );
-}
-
-export default function App(){
-  return (
-    <div style={{width:'100vw',height:'100vh',background:'#000',color:'#0f0'}}>
-      <div style={{padding:10}}>HHS Runtime Console</div>
-      <Canvas camera={{position:[0,0,5]}}>
-        <ambientLight />
-        <PhaseRing />
-      </Canvas>
+    <div style={{ width: '100vw', height: '100vh', background: '#000', color: '#0f0', display: 'flex', flexDirection: 'column' }}>
+      <div style={{ padding: 10 }}>
+        HHS Runtime Console · {data.phase.status}
+      </div>
+      <PhaseRing3D phase={data.phase} />
+      <OperatorPanel loop={data.operatorLoop} />
     </div>
   );
 }
