@@ -1,5 +1,23 @@
 export type WitnessStatus = 'ADMISSIBLE' | 'EXPIRED' | 'RECURSION_BLOCKED' | 'UNKNOWN';
 export type RuntimeStatus = 'LOCKED' | 'INCOMPLETE' | 'QUARANTINED' | 'PHASE_STALLED' | 'EXECUTED';
+export type AlertSeverity = 'INFO' | 'WARN' | 'CRITICAL';
+
+export type RuntimeAlert = {
+  code: string;
+  severity: AlertSeverity | string;
+  message: string;
+  subject_hash72?: string | null;
+  alert_hash72: string;
+};
+
+export type RuntimeAnomalies = {
+  status: 'CLEAR' | 'WARN' | 'CRITICAL' | string;
+  critical: number;
+  warn: number;
+  info: number;
+  alerts: RuntimeAlert[];
+  summary_hash72: string;
+};
 
 export type PhaseWitnessView = {
   modality: string;
@@ -43,24 +61,22 @@ export type OperatorLoopView = {
 export type RuntimeSnapshot = {
   phase: PhaseLockView;
   operatorLoop: OperatorLoopView;
+  anomalies?: RuntimeAnomalies;
   stream?: {
     connected: boolean;
     source: 'websocket' | 'rest' | 'mock';
     last_event_type?: string;
     last_update_ms?: number;
+    batch_size?: number;
+    batch_index?: number;
   };
 };
 
+const clearAnomalies: RuntimeAnomalies = { status: 'CLEAR', critical: 0, warn: 0, info: 0, alerts: [], summary_hash72: 'H72-CLEAR' };
+
 export const mockSnapshot: RuntimeSnapshot = {
   phase: {
-    status: 'LOCKED',
-    anchor_phase_index: 36,
-    anchor_phase_hash72: 'H72-LIVE-PHASE-ANCHOR-DEMO',
-    mandatory_present: true,
-    temporal_ok: true,
-    phase_locked: true,
-    missing_mandatory: [],
-    receipt_hash72: 'H72-LIVE-RECEIPT-DEMO',
+    status: 'LOCKED', anchor_phase_index: 36, anchor_phase_hash72: 'H72-LIVE-PHASE-ANCHOR-DEMO', mandatory_present: true, temporal_ok: true, phase_locked: true, missing_mandatory: [], receipt_hash72: 'H72-LIVE-RECEIPT-DEMO',
     witnesses: [
       { modality: 'AUDIO', source_id: 'audio_frame_0', phase_index: 36, phase_hash72: 'H72-LIVE-PHASE-ANCHOR-DEMO', temporal_status: 'ADMISSIBLE', witness_hash72: 'H72-AUDIO-WITNESS' },
       { modality: 'HARMONICODE', source_id: 'kernel_phase', phase_index: 36, phase_hash72: 'H72-LIVE-PHASE-ANCHOR-DEMO', temporal_status: 'ADMISSIBLE', witness_hash72: 'H72-HARMONICODE-WITNESS' },
@@ -70,10 +86,7 @@ export const mockSnapshot: RuntimeSnapshot = {
     ]
   },
   operatorLoop: {
-    status: 'EXECUTED',
-    external_phase_anchor_used: true,
-    selected_chain_hash72: 'H72-SELECTED-CHAIN-DEMO',
-    receipt_hash72: 'H72-OPERATOR-LOOP-RECEIPT-DEMO',
+    status: 'EXECUTED', external_phase_anchor_used: true, selected_chain_hash72: 'H72-SELECTED-CHAIN-DEMO', receipt_hash72: 'H72-OPERATOR-LOOP-RECEIPT-DEMO',
     proposals: [
       { agent: 'LOGIC_AGENT', phase_ok: true, phase_distance_from_anchor: 0, local_score: 44, risk_score: 0, operators: ['HHS Alignment Axiom', 'Meaning Preservation Operator'], proposal_hash72: 'H72-LOGIC-PROPOSAL' },
       { agent: 'STYLE_AGENT', phase_ok: true, phase_distance_from_anchor: 1, local_score: 31, risk_score: 0, operators: ['Recursive Harmonic Prose'], proposal_hash72: 'H72-STYLE-PROPOSAL' },
@@ -82,72 +95,38 @@ export const mockSnapshot: RuntimeSnapshot = {
       { agent: 'AUDIT_AGENT', phase_ok: true, phase_distance_from_anchor: 0, local_score: 47, risk_score: 0, operators: ['Meaning Preservation Operator'], proposal_hash72: 'H72-AUDIT-PROPOSAL' }
     ]
   },
+  anomalies: clearAnomalies,
   stream: { connected: false, source: 'mock', last_event_type: 'mock_snapshot', last_update_ms: Date.now() }
 };
 
 function normalizePhaseResponse(raw: any): PhaseLockView {
-  const witnesses = Array.isArray(raw?.witnesses) ? raw.witnesses.map((w: any) => ({
-    modality: w?.observation?.modality ?? w?.modality ?? 'UNKNOWN',
-    source_id: w?.observation?.source_id ?? w?.source_id ?? 'unknown',
-    phase_index: Number(w?.phase_index ?? 0),
-    phase_hash72: String(w?.phase_hash72 ?? ''),
-    temporal_status: String(w?.temporal_status ?? 'UNKNOWN'),
-    witness_hash72: String(w?.witness_hash72 ?? '')
-  })) : mockSnapshot.phase.witnesses;
-  return {
-    status: raw?.status ?? 'UNKNOWN',
-    anchor_phase_index: Number(raw?.anchor_phase_index ?? 0),
-    anchor_phase_hash72: String(raw?.anchor_phase_hash72 ?? ''),
-    mandatory_present: Boolean(raw?.mandatory_present),
-    temporal_ok: Boolean(raw?.temporal_ok),
-    phase_locked: Boolean(raw?.phase_locked),
-    missing_mandatory: Array.isArray(raw?.missing_mandatory) ? raw.missing_mandatory : [],
-    receipt_hash72: String(raw?.receipt_hash72 ?? ''),
-    witnesses
-  };
+  const witnesses = Array.isArray(raw?.witnesses) ? raw.witnesses.map((w: any) => ({ modality: w?.observation?.modality ?? w?.modality ?? 'UNKNOWN', source_id: w?.observation?.source_id ?? w?.source_id ?? 'unknown', phase_index: Number(w?.phase_index ?? 0), phase_hash72: String(w?.phase_hash72 ?? ''), temporal_status: String(w?.temporal_status ?? 'UNKNOWN'), witness_hash72: String(w?.witness_hash72 ?? '') })) : mockSnapshot.phase.witnesses;
+  return { status: raw?.status ?? 'UNKNOWN', anchor_phase_index: Number(raw?.anchor_phase_index ?? 0), anchor_phase_hash72: String(raw?.anchor_phase_hash72 ?? ''), mandatory_present: Boolean(raw?.mandatory_present), temporal_ok: Boolean(raw?.temporal_ok), phase_locked: Boolean(raw?.phase_locked), missing_mandatory: Array.isArray(raw?.missing_mandatory) ? raw.missing_mandatory : [], receipt_hash72: String(raw?.receipt_hash72 ?? ''), witnesses };
 }
 
 function normalizeLoopResponse(raw: any): OperatorLoopView {
-  const proposals = Array.isArray(raw?.phase_agent_proposals) ? raw.phase_agent_proposals.map((p: any) => ({
-    agent: p?.proposal?.agent?.kind ?? p?.proposal?.agent?.name ?? 'AGENT',
-    phase_ok: Boolean(p?.phase_ok),
-    phase_distance_from_anchor: p?.phase_distance_from_anchor ?? null,
-    local_score: Number(p?.proposal?.local_score ?? 0),
-    risk_score: Number(p?.proposal?.risk_score ?? 0),
-    operators: Array.isArray(p?.proposal?.selected_operators) ? p.proposal.selected_operators.map((op: any) => op?.title ?? op?.operator_signature ?? 'operator') : [],
-    proposal_hash72: String(p?.proposal?.proposal_hash72 ?? p?.receipt_hash72 ?? '')
-  })) : mockSnapshot.operatorLoop.proposals;
-  return {
-    status: raw?.status ?? 'UNKNOWN',
-    external_phase_anchor_used: Boolean(raw?.external_phase_anchor_used),
-    selected_chain_hash72: raw?.selected_candidate?.chain_hash72 ?? raw?.selected_chain_hash72 ?? null,
-    receipt_hash72: String(raw?.receipt_hash72 ?? ''),
-    proposals
-  };
+  const proposals = Array.isArray(raw?.phase_agent_proposals) ? raw.phase_agent_proposals.map((p: any) => ({ agent: p?.proposal?.agent?.kind ?? p?.proposal?.agent?.name ?? 'AGENT', phase_ok: Boolean(p?.phase_ok), phase_distance_from_anchor: p?.phase_distance_from_anchor ?? null, local_score: Number(p?.proposal?.local_score ?? 0), risk_score: Number(p?.proposal?.risk_score ?? 0), operators: Array.isArray(p?.proposal?.selected_operators) ? p.proposal.selected_operators.map((op: any) => op?.title ?? op?.operator_signature ?? 'operator') : [], proposal_hash72: String(p?.proposal?.proposal_hash72 ?? p?.receipt_hash72 ?? '') })) : mockSnapshot.operatorLoop.proposals;
+  return { status: raw?.status ?? 'UNKNOWN', external_phase_anchor_used: Boolean(raw?.external_phase_anchor_used), selected_chain_hash72: raw?.selected_candidate?.chain_hash72 ?? raw?.selected_chain_hash72 ?? null, receipt_hash72: String(raw?.receipt_hash72 ?? ''), proposals };
 }
 
-export function normalizeRuntimeSnapshot(raw: any, source: RuntimeSnapshot['stream']['source'] = 'websocket', eventType = 'runtime_snapshot'): RuntimeSnapshot {
-  if (raw?.phase && raw?.operatorLoop) {
-    return { ...raw, stream: { connected: source === 'websocket', source, last_event_type: eventType, last_update_ms: Date.now() } };
-  }
-  return {
-    phase: normalizePhaseResponse(raw?.phase ?? raw?.phase_lock ?? raw?.latest_phase_lock ?? raw),
-    operatorLoop: normalizeLoopResponse(raw?.operatorLoop ?? raw?.operator_loop ?? raw?.latest_operator_loop ?? raw),
-    stream: { connected: source === 'websocket', source, last_event_type: eventType, last_update_ms: Date.now() }
-  };
+function normalizeAnomalies(raw: any): RuntimeAnomalies {
+  if (!raw) return clearAnomalies;
+  return { status: raw.status ?? 'CLEAR', critical: Number(raw.critical ?? 0), warn: Number(raw.warn ?? 0), info: Number(raw.info ?? 0), alerts: Array.isArray(raw.alerts) ? raw.alerts : [], summary_hash72: String(raw.summary_hash72 ?? '') };
+}
+
+export function normalizeRuntimeSnapshot(raw: any, source: RuntimeSnapshot['stream']['source'] = 'websocket', eventType = 'runtime_snapshot', batchMeta: Partial<RuntimeSnapshot['stream']> = {}): RuntimeSnapshot {
+  const snapshot = raw?.phase && raw?.operatorLoop
+    ? { phase: normalizePhaseResponse(raw.phase), operatorLoop: normalizeLoopResponse(raw.operatorLoop), anomalies: normalizeAnomalies(raw.anomalies) }
+    : { phase: normalizePhaseResponse(raw?.phase ?? raw?.phase_lock ?? raw?.latest_phase_lock ?? raw), operatorLoop: normalizeLoopResponse(raw?.operatorLoop ?? raw?.operator_loop ?? raw?.latest_operator_loop ?? raw), anomalies: normalizeAnomalies(raw?.anomalies) };
+  return { ...snapshot, stream: { connected: source === 'websocket', source, last_event_type: eventType, last_update_ms: Date.now(), ...batchMeta } };
 }
 
 export async function loadRuntimeSnapshot(): Promise<RuntimeSnapshot> {
   try {
-    const [phaseRes, loopRes] = await Promise.all([
-      fetch('/api/latest-phase-lock'),
-      fetch('/api/latest-operator-loop')
-    ]);
+    const [phaseRes, loopRes] = await Promise.all([fetch('/api/latest-phase-lock'), fetch('/api/latest-operator-loop')]);
     if (!phaseRes.ok || !loopRes.ok) throw new Error('API unavailable');
     return normalizeRuntimeSnapshot({ phase: await phaseRes.json(), operatorLoop: await loopRes.json() }, 'rest', 'rest_snapshot');
-  } catch {
-    return mockSnapshot;
-  }
+  } catch { return mockSnapshot; }
 }
 
 export function connectRuntimeStream(onSnapshot: (snapshot: RuntimeSnapshot) => void, onStatus?: (connected: boolean) => void): () => void {
@@ -155,7 +134,6 @@ export function connectRuntimeStream(onSnapshot: (snapshot: RuntimeSnapshot) => 
   const url = `${protocol}//${window.location.host}/ws/runtime`;
   let closed = false;
   let socket: WebSocket | null = null;
-
   try {
     socket = new WebSocket(url);
     socket.onopen = () => onStatus?.(true);
@@ -163,25 +141,16 @@ export function connectRuntimeStream(onSnapshot: (snapshot: RuntimeSnapshot) => 
       try {
         const message = JSON.parse(event.data);
         const eventType = message?.type ?? 'runtime_snapshot';
-        const payload = message?.payload ?? message;
-        onSnapshot(normalizeRuntimeSnapshot(payload, 'websocket', eventType));
-      } catch {
-        // Ignore malformed stream frames; REST fallback remains authoritative.
-      }
+        if (eventType === 'runtime_batch' && Array.isArray(message.payload)) {
+          const latest = message.payload[message.payload.length - 1];
+          onSnapshot(normalizeRuntimeSnapshot(latest, 'websocket', eventType, { batch_size: message.payload.length, batch_index: message.payload.length - 1 }));
+          return;
+        }
+        onSnapshot(normalizeRuntimeSnapshot(message?.payload ?? message, 'websocket', eventType));
+      } catch { /* ignore malformed stream frames */ }
     };
     socket.onerror = () => onStatus?.(false);
-    socket.onclose = () => {
-      onStatus?.(false);
-      if (!closed) {
-        // The GUI remains on last REST/mock snapshot; no automatic mutation occurs.
-      }
-    };
-  } catch {
-    onStatus?.(false);
-  }
-
-  return () => {
-    closed = true;
-    if (socket && socket.readyState <= WebSocket.OPEN) socket.close();
-  };
+    socket.onclose = () => { onStatus?.(false); };
+  } catch { onStatus?.(false); }
+  return () => { closed = true; if (socket && socket.readyState <= WebSocket.OPEN) socket.close(); };
 }
