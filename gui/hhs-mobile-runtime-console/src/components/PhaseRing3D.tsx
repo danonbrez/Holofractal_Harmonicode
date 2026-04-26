@@ -1,0 +1,52 @@
+import React, { useMemo, useState } from 'react';
+import { Canvas } from '@react-three/fiber';
+import * as THREE from 'three';
+import { PhaseLockView, PhaseWitnessView } from '../runtimeData';
+
+function Node({ index, anchor, witnesses, onSelect }: any) {
+  const angle = (index / 72) * Math.PI * 2;
+  const x = Math.cos(angle) * 2;
+  const y = Math.sin(angle) * 2;
+  const isAnchor = index === anchor;
+  const matching = witnesses.filter((w: PhaseWitnessView) => w.phase_index === index);
+  const color = isAnchor ? 'green' : matching.length ? 'yellow' : 'gray';
+  return (
+    <mesh position={[x, y, 0]} onClick={() => onSelect(index, matching)}>
+      <sphereGeometry args={[0.06, 16, 16]} />
+      <meshStandardMaterial color={color} />
+    </mesh>
+  );
+}
+
+export default function PhaseRing3D({ phase }: { phase: PhaseLockView }) {
+  const [selected, setSelected] = useState<{ index: number; witnesses: PhaseWitnessView[] } | null>(null);
+
+  const nodes = useMemo(() => new Array(72).fill(0), []);
+
+  return (
+    <div style={{ height: '40vh' }}>
+      <Canvas camera={{ position: [0, 0, 5] }}>
+        <ambientLight />
+        {nodes.map((_, i) => (
+          <Node
+            key={i}
+            index={i}
+            anchor={phase.anchor_phase_index}
+            witnesses={phase.witnesses}
+            onSelect={(idx: number, w: PhaseWitnessView[]) => setSelected({ index: idx, witnesses: w })}
+          />
+        ))}
+      </Canvas>
+      {selected && (
+        <div style={{ position: 'absolute', bottom: 10, left: 10, right: 10, background: '#111', padding: 10 }}>
+          <div>Phase: {selected.index}</div>
+          {selected.witnesses.map((w) => (
+            <div key={w.witness_hash72}>
+              {w.modality} · {w.temporal_status}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
