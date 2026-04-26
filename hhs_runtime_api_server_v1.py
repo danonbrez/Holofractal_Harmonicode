@@ -1,6 +1,6 @@
 """
 hhs_runtime_api_server_v1.py
-(Updated with anomaly detection and batched streaming)
+(Updated with anomaly detection, batched streaming, and corrective suggestions)
 """
 
 from __future__ import annotations
@@ -21,19 +21,14 @@ from hhs_runtime.hhs_operator_selection_engine_v1 import OperatorSelectionGoal
 from hhs_runtime.hhs_phase_coherent_operator_loop_v1 import run_phase_coherent_operator_loop
 from hhs_runtime.hhs_realtime_multimodal_phase_integration_v1 import lock_live_multimodal_phase
 from hhs_runtime.hhs_runtime_anomaly_detector_v1 import detect_runtime_anomalies
+from hhs_runtime.hhs_phase_stabilization_feedback_loop_v1 import propose_corrective_operators
 
 APP_NAME = "HHS Runtime API Server v1"
 ARTIFACT_ROOT = Path("demo_reports/runtime_api")
 ARTIFACT_ROOT.mkdir(parents=True, exist_ok=True)
 
 app = FastAPI(title=APP_NAME)
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_credentials=True, allow_methods=["*"], allow_headers=["*"])
 
 STREAM_INTERVAL = 0.75
 BATCH_SIZE = 3
@@ -51,15 +46,7 @@ def _observations(observed_at_ns: int | None = None) -> List[Dict[str, Any]]:
 
 
 def _sample_corpus() -> Dict[str, Any]:
-    return {
-        "id": "runtime_api_corpus",
-        "title": "Runtime API Corpus",
-        "mime_type": "text/plain",
-        "text": """
-# HHS Alignment Axiom
-Statement: Preserve Δe=0, Ψ=0, Θ15=true, Ω=true while translating claims.
-""",
-    }
+    return {"id": "runtime_api_corpus", "title": "Runtime API Corpus", "mime_type": "text/plain", "text": "# HHS Alignment Axiom\nStatement: Preserve Δe=0, Ψ=0, Θ15=true, Ω=true while translating claims.\n"}
 
 
 def build_phase_lock() -> Dict[str, Any]:
@@ -86,7 +73,31 @@ def build_runtime_snapshot() -> Dict[str, Any]:
     loop = build_operator_loop(phase)
     snapshot = {"phase": phase, "operatorLoop": loop, "server": {"name": APP_NAME, "generated_at_ns": time.time_ns()}}
     snapshot["anomalies"] = detect_runtime_anomalies(snapshot)
+    snapshot["corrections"] = propose_corrective_operators(snapshot)
     return snapshot
+
+
+@app.get("/api/status")
+async def api_status() -> Dict[str, Any]:
+    return {"status": "OK", "server": APP_NAME, "read_only": True, "time_ns": time.time_ns()}
+
+
+@app.get("/api/latest-phase-lock")
+async def api_latest_phase_lock() -> Dict[str, Any]:
+    return build_phase_lock()
+
+
+@app.get("/api/latest-operator-loop")
+async def api_latest_operator_loop() -> Dict[str, Any]:
+    return build_operator_loop()
+
+
+@app.get("/api/certification")
+async def api_certification() -> Dict[str, Any]:
+    try:
+        return HHSBackendFinalCertificationV1().run_all()
+    except Exception as exc:
+        return JSONResponse(status_code=500, content={"status": "CERTIFICATION_ERROR", "error": f"{type(exc).__name__}: {exc}"})
 
 
 @app.websocket("/ws/runtime")
@@ -97,11 +108,18 @@ async def ws_runtime(websocket: WebSocket) -> None:
         while True:
             snapshot = build_runtime_snapshot()
             buffer.append(snapshot)
-
             if len(buffer) >= BATCH_SIZE:
                 await websocket.send_json({"type": "runtime_batch", "payload": buffer})
                 buffer.clear()
-
             await asyncio.sleep(STREAM_INTERVAL)
     except WebSocketDisconnect:
         return
+
+
+def main() -> None:
+    import uvicorn
+    uvicorn.run("hhs_runtime_api_server_v1:app", host="0.0.0.0", port=8000, reload=False)
+
+
+if __name__ == "__main__":
+    main()
