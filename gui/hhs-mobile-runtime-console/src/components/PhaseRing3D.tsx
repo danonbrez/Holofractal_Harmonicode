@@ -11,25 +11,14 @@ const TORUS_r = 0.55;
 const MAX_BRANCHES = 8;
 const PRUNE_THRESHOLD = 18;
 
-type Branch = {
-  id: string;
-  phases: number[];
-  kind: 'drift' | 'correction';
-  driftScore: number;
-  degreesOfFreedomScore: number;
-  emergenceScore: number;
-};
-
-type BranchMemory = Branch & {
-  age: number;
-  survivalScore: number;
-  wins: number;
-  pruned?: boolean;
-};
+type Branch = { id: string; phases: number[]; kind: 'drift' | 'correction'; driftScore: number; degreesOfFreedomScore: number; emergenceScore: number; };
+type BranchMemory = Branch & { age: number; survivalScore: number; wins: number; pruned?: boolean; };
+type RootMetaBranch = BranchMemory & { mutualOverlapScore: number; compressionScore: number; rootScore: number; equationSeed: string; };
 
 function mod72(n: number): number { return ((Math.round(n) % RING) + RING) % RING; }
 function circularDistance(a: number, b: number): number { const d = Math.abs(mod72(a) - mod72(b)); return Math.min(d, RING - d); }
 function branchSignature(branch: Branch): string { return `${branch.kind}:${branch.phases.join('-')}`; }
+function uniq<T>(xs: T[]): T[] { return Array.from(new Set(xs)); }
 
 function phaseToPoint(phaseIndex: number): [number, number, number] {
   const p = mod72(phaseIndex);
@@ -38,10 +27,10 @@ function phaseToPoint(phaseIndex: number): [number, number, number] {
   return [(TORUS_R + TORUS_r * Math.cos(minor)) * Math.cos(major), (TORUS_R + TORUS_r * Math.cos(minor)) * Math.sin(major), TORUS_r * Math.sin(minor)];
 }
 
-function PhaseLine({ phases, color, opacity = 1 }: { phases: number[]; color: string; opacity?: number }) {
+function PhaseLine({ phases, color, opacity = 1, linewidth = 1 }: { phases: number[]; color: string; opacity?: number; linewidth?: number }) {
   const geometry = useMemo(() => new THREE.BufferGeometry().setFromPoints(phases.map((p) => new THREE.Vector3(...phaseToPoint(p)))), [phases.join(',')]);
   if (phases.length < 2) return null;
-  return <line geometry={geometry}><lineBasicMaterial color={color} transparent opacity={opacity} /></line>;
+  return <line geometry={geometry}><lineBasicMaterial color={color} transparent opacity={opacity} linewidth={linewidth} /></line>;
 }
 
 function TorusBody({ phaseIndex, anomalyStatus }: { phaseIndex: number; anomalyStatus?: string }) {
@@ -115,17 +104,30 @@ function competeAndPrune(prev: BranchMemory[], incoming: Branch[]): BranchMemory
     const novelty = new Set(branch.phases).size * 2;
     const correctionBonus = branch.kind === 'correction' ? 18 : 0;
     const survival = branch.emergenceScore + novelty + correctionBonus;
-    if (existing) {
-      map.set(sig, { ...branch, age: 0, wins: existing.wins + (survival > existing.survivalScore ? 1 : 0), survivalScore: Math.max(existing.survivalScore * 0.72 + survival * 0.45, survival) });
-    } else {
-      map.set(sig, { ...branch, age: 0, wins: 0, survivalScore: survival });
-    }
+    if (existing) map.set(sig, { ...branch, age: 0, wins: existing.wins + (survival > existing.survivalScore ? 1 : 0), survivalScore: Math.max(existing.survivalScore * 0.72 + survival * 0.45, survival) });
+    else map.set(sig, { ...branch, age: 0, wins: 0, survivalScore: survival });
   }
-  return [...map.values()]
-    .map((b) => ({ ...b, pruned: b.survivalScore < PRUNE_THRESHOLD }))
-    .filter((b) => !b.pruned)
-    .sort((a, b) => b.survivalScore - a.survivalScore)
-    .slice(0, MAX_BRANCHES);
+  return [...map.values()].map((b) => ({ ...b, pruned: b.survivalScore < PRUNE_THRESHOLD })).filter((b) => !b.pruned).sort((a, b) => b.survivalScore - a.survivalScore).slice(0, MAX_BRANCHES);
+}
+
+function rootMetaBranch(frontier: BranchMemory[]): RootMetaBranch | undefined {
+  if (!frontier.length) return undefined;
+  const allCells = uniq(frontier.flatMap((b) => b.phases.map(mod72)));
+  return frontier.map((b) => {
+    const bCells = uniq(b.phases.map(mod72));
+    const overlap = frontier.length <= 1 ? 100 : frontier.reduce((acc, other) => {
+      const otherCells = uniq(other.phases.map(mod72));
+      const shared = bCells.filter((x) => otherCells.includes(x)).length;
+      const union = uniq([...bCells, ...otherCells]).length || 1;
+      return acc + (shared / union) * 100;
+    }, 0) / frontier.length;
+    const compressionRatio = allCells.length ? (bCells.length / allCells.length) : 1;
+    const compressionScore = Math.max(0, 100 - compressionRatio * 100);
+    const invariantSafety = b.kind === 'correction' ? 100 : Math.max(0, 100 - circularDistance(b.phases[b.phases.length - 1], b.phases[0]) * 8);
+    const rootScore = Math.round(overlap * 0.34 + compressionScore * 0.22 + b.degreesOfFreedomScore * 0.2 + invariantSafety * 0.24);
+    const equationSeed = `RootSeed(${b.phases.join('→')}) :: overlap=${overlap.toFixed(1)} compression=${compressionScore.toFixed(1)} dof=${b.degreesOfFreedomScore.toFixed(1)} Ω=${invariantSafety.toFixed(1)}`;
+    return { ...b, mutualOverlapScore: overlap, compressionScore, rootScore, equationSeed };
+  }).sort((a, b) => b.rootScore - a.rootScore)[0];
 }
 
 export default function PhaseRing3D({ phase, anomalies, projection, loop, corrections }: { phase: PhaseLockView; anomalies?: RuntimeAnomalies; projection?: ProjectionView; loop?: OperatorLoopView; corrections?: any }) {
@@ -133,22 +135,14 @@ export default function PhaseRing3D({ phase, anomalies, projection, loop, correc
   const phaseIndex = projection?.phase_index ?? phase.anchor_phase_index ?? 0;
   const [history, setHistory] = useState<number[]>([phaseIndex]);
   const [branchFrontier, setBranchFrontier] = useState<BranchMemory[]>([]);
-
   const affected = new Set((anomalies?.alerts ?? []).flatMap((a: any) => a.affected_phase_indices ?? []));
   const incomingBranches = useMemo(() => [...buildPredictionBranches(phaseIndex, anomalies), ...buildCorrectionBranches(phaseIndex, anomalies, corrections)], [phaseIndex, anomalies?.summary_hash72, corrections?.summary_hash72]);
 
-  useEffect(() => {
-    setHistory((prev) => {
-      const next = prev[prev.length - 1] === phaseIndex ? prev : [...prev, phaseIndex];
-      return next.slice(-64);
-    });
-  }, [phaseIndex]);
-
-  useEffect(() => {
-    setBranchFrontier((prev) => competeAndPrune(prev, incomingBranches));
-  }, [incomingBranches.map((b) => b.id + b.emergenceScore).join('|')]);
+  useEffect(() => { setHistory((prev) => { const next = prev[prev.length - 1] === phaseIndex ? prev : [...prev, phaseIndex]; return next.slice(-64); }); }, [phaseIndex]);
+  useEffect(() => { setBranchFrontier((prev) => competeAndPrune(prev, incomingBranches)); }, [incomingBranches.map((b) => b.id + b.emergenceScore).join('|')]);
 
   const bestBranch = branchFrontier[0];
+  const rootBranch = rootMetaBranch(branchFrontier);
   const bestCorrection = branchFrontier.find((b) => b.kind === 'correction');
 
   return (
@@ -158,25 +152,27 @@ export default function PhaseRing3D({ phase, anomalies, projection, loop, correc
         <pointLight position={[3, 3, 4]} intensity={1.2} />
         <TorusBody phaseIndex={phaseIndex} anomalyStatus={anomalies?.status} />
         <PhaseLine phases={history} color="#00ffff" opacity={0.9} />
-        {branchFrontier.map((b, i) => {
+        {branchFrontier.map((b) => {
+          const isRoot = b.id === rootBranch?.id;
           const isBest = b.id === bestBranch?.id;
-          const color = b.kind === 'correction' ? '#00ff88' : '#ffaa00';
-          const opacity = isBest ? 0.95 : Math.max(0.15, Math.min(0.62, b.survivalScore / 160));
-          return <PhaseLine key={b.id} phases={b.phases} color={color} opacity={opacity} />;
+          const color = isRoot ? '#ffffff' : b.kind === 'correction' ? '#00ff88' : '#ffaa00';
+          const opacity = isRoot ? 1 : isBest ? 0.85 : Math.max(0.15, Math.min(0.58, b.survivalScore / 170));
+          return <PhaseLine key={b.id} phases={b.phases} color={color} opacity={opacity} linewidth={isRoot ? 3 : 1} />;
         })}
         <PhaseMarker index={phaseIndex} color="#00ff88" scale={1.4} pulse />
         {phase.witnesses.map((w) => <PhaseMarker key={w.witness_hash72} index={w.phase_index} color={affected.has(w.phase_index) ? '#ff0040' : '#ffff00'} scale={0.85} pulse={affected.has(w.phase_index)} onClick={() => setSelected({ index: w.phase_index, witnesses: phase.witnesses.filter((x) => x.phase_index === w.phase_index) })} />)}
         {(loop?.proposals ?? []).map((p, i) => <PhaseMarker key={`${p.proposal_hash72}-${i}`} index={mod72(phaseIndex + Number(p.phase_distance_from_anchor ?? 0))} color={p.phase_ok ? '#55aaff' : '#ff0040'} scale={0.65} pulse={!p.phase_ok} />)}
-        {branchFrontier.flatMap((b) => b.phases.slice(1).map((p, i) => <PhaseMarker key={`${b.id}-${i}`} index={p} color={b.kind === 'correction' ? '#00ff88' : '#ffaa00'} scale={b.id === bestBranch?.id ? 0.46 : 0.28} pulse={b.id === bestBranch?.id && i === b.phases.length - 2} />))}
+        {branchFrontier.flatMap((b) => b.phases.slice(1).map((p, i) => <PhaseMarker key={`${b.id}-${i}`} index={p} color={b.id === rootBranch?.id ? '#ffffff' : b.kind === 'correction' ? '#00ff88' : '#ffaa00'} scale={b.id === rootBranch?.id ? 0.56 : b.id === bestBranch?.id ? 0.46 : 0.28} pulse={b.id === rootBranch?.id && i === b.phases.length - 2} />))}
       </Canvas>
       <div style={{ position: 'absolute', top: 8, left: 10, right: 10, display: 'flex', justifyContent: 'space-between', fontSize: 11, pointerEvents: 'none' }}>
         <span>phase {phaseIndex}/72 · {projection?.target_layer ?? 'runtime'}</span>
-        <span>frontier {branchFrontier.length}/{MAX_BRANCHES} · winner {bestBranch?.survivalScore.toFixed(1) ?? 0}</span>
+        <span>frontier {branchFrontier.length}/{MAX_BRANCHES} · root {rootBranch?.rootScore ?? 0}</span>
       </div>
-      {bestBranch && (
-        <div style={{ position: 'absolute', bottom: selected ? 86 : 10, left: 10, right: 10, background: bestBranch.kind === 'correction' ? '#06120b' : '#201400', color: bestBranch.kind === 'correction' ? '#8cffb0' : '#ffd27a', padding: 8, fontSize: 11, border: `1px solid ${bestBranch.kind === 'correction' ? '#0f6' : '#fa0'}` }}>
-          DOMINANT BRANCH · {bestBranch.kind.toUpperCase()} · survival={bestBranch.survivalScore.toFixed(1)} · emergence={bestBranch.emergenceScore} · drift={Math.round(bestBranch.driftScore)} · dof={Math.round(bestBranch.degreesOfFreedomScore)} · wins={bestBranch.wins}
-          {bestCorrection && bestCorrection.id !== bestBranch.id ? <div>BEST CORRECTION · survival={bestCorrection.survivalScore.toFixed(1)} · emergence={bestCorrection.emergenceScore}</div> : null}
+      {rootBranch && (
+        <div style={{ position: 'absolute', bottom: selected ? 108 : 10, left: 10, right: 10, background: '#101010', color: '#fff', padding: 8, fontSize: 11, border: '1px solid #fff' }}>
+          ROOT META-BRANCH · {rootBranch.kind.toUpperCase()} · root={rootBranch.rootScore} · overlap={rootBranch.mutualOverlapScore.toFixed(1)} · compression={rootBranch.compressionScore.toFixed(1)} · dof={Math.round(rootBranch.degreesOfFreedomScore)}
+          <div style={{ opacity: 0.8 }}>{rootBranch.equationSeed}</div>
+          {bestCorrection && bestCorrection.id !== rootBranch.id ? <div style={{ color: '#8cffb0' }}>BEST CORRECTION · survival={bestCorrection.survivalScore.toFixed(1)} · emergence={bestCorrection.emergenceScore}</div> : null}
         </div>
       )}
       {selected && (
