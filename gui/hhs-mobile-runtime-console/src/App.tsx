@@ -5,6 +5,7 @@ import StatusHeader from './components/StatusHeader';
 import LedgerPanel from './components/LedgerPanel';
 import ExecutionPanel from './components/ExecutionPanel';
 import CertificationPanel from './components/CertificationPanel';
+import AlertPanel, { AlertBanner } from './components/AlertPanel';
 import { loadRuntimeSnapshot, RuntimeSnapshot, connectRuntimeStream } from './runtimeData';
 
 export default function App() {
@@ -32,8 +33,10 @@ export default function App() {
   return (
     <div style={{ width: '100vw', height: '100vh', background: '#000', color: '#0f0', display: 'flex', flexDirection: 'column' }}>
       <StatusHeader data={data} />
-      <PhaseRing3D phase={data.phase} />
+      <AlertBanner anomalies={data.anomalies} />
+      <PhaseRing3D phase={data.phase} anomalies={data.anomalies} />
       <OperatorPanel loop={data.operatorLoop} />
+      <AlertPanel anomalies={data.anomalies} />
       <ExecutionPanel />
       <LedgerPanel />
       <CertificationPanel />
