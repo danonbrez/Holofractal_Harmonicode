@@ -1,6 +1,6 @@
 """
 hhs_runtime_api_server_v1.py
-(Updated with anomaly detection, batched streaming, corrective suggestions, and approval-gated correction execution)
+(Updated with projection-engine streaming for torus visualization)
 """
 
 from __future__ import annotations
@@ -24,6 +24,7 @@ from hhs_runtime.hhs_realtime_multimodal_phase_integration_v1 import lock_live_m
 from hhs_runtime.hhs_runtime_anomaly_detector_v1 import detect_runtime_anomalies
 from hhs_runtime.hhs_phase_stabilization_feedback_loop_v1 import propose_corrective_operators, execute_approved_corrections
 from hhs_runtime.hhs_loshu_phase_embedding_v1 import hash72_digest
+from hhs_runtime.harmonicode_phase_projection_engine_v1 import interpret_transform_project
 
 APP_NAME = "HHS Runtime API Server v1"
 ARTIFACT_ROOT = Path("demo_reports/runtime_api")
@@ -56,6 +57,24 @@ def _sample_corpus() -> Dict[str, Any]:
     return {"id": "runtime_api_corpus", "title": "Runtime API Corpus", "mime_type": "text/plain", "text": "# HHS Alignment Axiom\nStatement: Preserve Δe=0, Ψ=0, Θ15=true, Ω=true while translating claims.\n"}
 
 
+def _projection_source() -> str:
+    return """
+PLASTIC_EIGENSTATE_CLOSURE_GATE := {
+  ρ^3 = ρ + 1,
+  b = ρ^2,
+  b^2 = ρ^4,
+  a^2 = 1,
+  c^2 = b^2 + a^2,
+  u^72 = Ω
+}
+PLASTIC_EIGENSTATE_CLOSURE_GATE
+"""
+
+
+def build_phase_projection() -> Dict[str, Any]:
+    return interpret_transform_project(_projection_source(), "normalized")
+
+
 def build_phase_lock() -> Dict[str, Any]:
     state_patch = {"op": "SET", "path": "runtime.intent", "value": {"next": "api_phase_locked_state"}}
     return lock_live_multimodal_phase(_observations(), state_patch=state_patch, ledger_path=ARTIFACT_ROOT / "latest_phase_lock_ledger.json").to_dict()
@@ -78,7 +97,8 @@ def build_operator_loop(phase_lock: Dict[str, Any] | None = None) -> Dict[str, A
 def build_runtime_snapshot() -> Dict[str, Any]:
     phase = build_phase_lock()
     loop = build_operator_loop(phase)
-    snapshot = {"phase": phase, "operatorLoop": loop, "server": {"name": APP_NAME, "generated_at_ns": time.time_ns()}}
+    projection = build_phase_projection()
+    snapshot = {"phase": phase, "operatorLoop": loop, "projection": projection, "server": {"name": APP_NAME, "generated_at_ns": time.time_ns()}}
     snapshot["anomalies"] = detect_runtime_anomalies(snapshot)
     snapshot["corrections"] = propose_corrective_operators(snapshot)
     snapshot["lastCorrectionExecution"] = LAST_CORRECTION_EXECUTION
@@ -109,6 +129,11 @@ async def api_latest_phase_lock() -> Dict[str, Any]:
 @app.get("/api/latest-operator-loop")
 async def api_latest_operator_loop() -> Dict[str, Any]:
     return build_operator_loop()
+
+
+@app.get("/api/latest-projection")
+async def api_latest_projection() -> Dict[str, Any]:
+    return build_phase_projection()
 
 
 @app.get("/api/certification")
