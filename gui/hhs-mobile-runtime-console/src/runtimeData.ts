@@ -2,99 +2,40 @@ export type WitnessStatus = 'ADMISSIBLE' | 'EXPIRED' | 'RECURSION_BLOCKED' | 'UN
 export type RuntimeStatus = 'LOCKED' | 'INCOMPLETE' | 'QUARANTINED' | 'PHASE_STALLED' | 'EXECUTED';
 export type AlertSeverity = 'INFO' | 'WARN' | 'CRITICAL';
 
-export type RuntimeAlert = {
-  code: string;
-  severity: AlertSeverity | string;
-  message: string;
-  subject_hash72?: string | null;
-  alert_hash72: string;
-};
-
-export type RuntimeAnomalies = {
-  status: 'CLEAR' | 'WARN' | 'CRITICAL' | string;
-  critical: number;
-  warn: number;
-  info: number;
-  alerts: RuntimeAlert[];
-  summary_hash72: string;
-};
-
-export type PhaseWitnessView = {
-  modality: string;
-  source_id: string;
-  phase_index: number;
-  phase_hash72: string;
-  temporal_status: WitnessStatus | string;
-  witness_hash72: string;
-};
-
-export type PhaseLockView = {
-  status: RuntimeStatus | string;
-  anchor_phase_index: number;
-  anchor_phase_hash72: string;
-  mandatory_present: boolean;
-  temporal_ok: boolean;
-  phase_locked: boolean;
-  missing_mandatory: string[];
-  receipt_hash72: string;
-  witnesses: PhaseWitnessView[];
-};
-
-export type OperatorProposalView = {
-  agent: string;
-  phase_ok: boolean;
-  phase_distance_from_anchor: number | null;
-  local_score: number;
-  risk_score: number;
-  operators: string[];
-  proposal_hash72: string;
-};
-
-export type OperatorLoopView = {
-  status: RuntimeStatus | string;
-  external_phase_anchor_used: boolean;
-  selected_chain_hash72: string | null;
-  receipt_hash72: string;
-  proposals: OperatorProposalView[];
-};
+export type RuntimeAlert = { code: string; severity: AlertSeverity | string; message: string; subject_hash72?: string | null; alert_hash72: string; affected_phase_indices?: number[]; affected_modalities?: string[]; };
+export type RuntimeAnomalies = { status: 'CLEAR' | 'WARN' | 'CRITICAL' | string; critical: number; warn: number; info: number; alerts: RuntimeAlert[]; summary_hash72: string; drift_prediction?: any; };
+export type PhaseWitnessView = { modality: string; source_id: string; phase_index: number; phase_hash72: string; temporal_status: WitnessStatus | string; witness_hash72: string; };
+export type PhaseLockView = { status: RuntimeStatus | string; anchor_phase_index: number; anchor_phase_hash72: string; mandatory_present: boolean; temporal_ok: boolean; phase_locked: boolean; missing_mandatory: string[]; receipt_hash72: string; witnesses: PhaseWitnessView[]; };
+export type OperatorProposalView = { agent: string; phase_ok: boolean; phase_distance_from_anchor: number | null; local_score: number; risk_score: number; operators: string[]; proposal_hash72: string; };
+export type OperatorLoopView = { status: RuntimeStatus | string; external_phase_anchor_used: boolean; selected_chain_hash72: string | null; receipt_hash72: string; proposals: OperatorProposalView[]; };
+export type ProjectionView = { phase_index: number; u72_ok: boolean; loshu_ok: boolean; anchor_hash72: string; status: string; target_layer: string; receipt_hash72: string; raw?: any; };
 
 export type RuntimeSnapshot = {
   phase: PhaseLockView;
   operatorLoop: OperatorLoopView;
+  projection?: ProjectionView;
   anomalies?: RuntimeAnomalies;
-  stream?: {
-    connected: boolean;
-    source: 'websocket' | 'rest' | 'mock';
-    last_event_type?: string;
-    last_update_ms?: number;
-    batch_size?: number;
-    batch_index?: number;
-  };
+  stream?: { connected: boolean; source: 'websocket' | 'rest' | 'mock'; last_event_type?: string; last_update_ms?: number; batch_size?: number; batch_index?: number; };
 };
 
 const clearAnomalies: RuntimeAnomalies = { status: 'CLEAR', critical: 0, warn: 0, info: 0, alerts: [], summary_hash72: 'H72-CLEAR' };
+const mockProjection: ProjectionView = { phase_index: 36, u72_ok: true, loshu_ok: true, anchor_hash72: 'H72-PROJECTION-ANCHOR-DEMO', status: 'PROJECTED', target_layer: 'normalized', receipt_hash72: 'H72-PROJECTION-RECEIPT-DEMO' };
 
 export const mockSnapshot: RuntimeSnapshot = {
-  phase: {
-    status: 'LOCKED', anchor_phase_index: 36, anchor_phase_hash72: 'H72-LIVE-PHASE-ANCHOR-DEMO', mandatory_present: true, temporal_ok: true, phase_locked: true, missing_mandatory: [], receipt_hash72: 'H72-LIVE-RECEIPT-DEMO',
-    witnesses: [
-      { modality: 'AUDIO', source_id: 'audio_frame_0', phase_index: 36, phase_hash72: 'H72-LIVE-PHASE-ANCHOR-DEMO', temporal_status: 'ADMISSIBLE', witness_hash72: 'H72-AUDIO-WITNESS' },
-      { modality: 'HARMONICODE', source_id: 'kernel_phase', phase_index: 36, phase_hash72: 'H72-LIVE-PHASE-ANCHOR-DEMO', temporal_status: 'ADMISSIBLE', witness_hash72: 'H72-HARMONICODE-WITNESS' },
-      { modality: 'XYZW', source_id: 'xyzw_algebra', phase_index: 36, phase_hash72: 'H72-LIVE-PHASE-ANCHOR-DEMO', temporal_status: 'ADMISSIBLE', witness_hash72: 'H72-XYZW-WITNESS' },
-      { modality: 'HASH72', source_id: 'hash72_commit', phase_index: 36, phase_hash72: 'H72-LIVE-PHASE-ANCHOR-DEMO', temporal_status: 'ADMISSIBLE', witness_hash72: 'H72-HASH72-WITNESS' },
-      { modality: 'TEXT', source_id: 'text_support', phase_index: 37, phase_hash72: 'H72-SUPPORT-PHASE', temporal_status: 'ADMISSIBLE', witness_hash72: 'H72-TEXT-WITNESS' }
-    ]
-  },
-  operatorLoop: {
-    status: 'EXECUTED', external_phase_anchor_used: true, selected_chain_hash72: 'H72-SELECTED-CHAIN-DEMO', receipt_hash72: 'H72-OPERATOR-LOOP-RECEIPT-DEMO',
-    proposals: [
-      { agent: 'LOGIC_AGENT', phase_ok: true, phase_distance_from_anchor: 0, local_score: 44, risk_score: 0, operators: ['HHS Alignment Axiom', 'Meaning Preservation Operator'], proposal_hash72: 'H72-LOGIC-PROPOSAL' },
-      { agent: 'STYLE_AGENT', phase_ok: true, phase_distance_from_anchor: 1, local_score: 31, risk_score: 0, operators: ['Recursive Harmonic Prose'], proposal_hash72: 'H72-STYLE-PROPOSAL' },
-      { agent: 'PROCESS_AGENT', phase_ok: true, phase_distance_from_anchor: 1, local_score: 28, risk_score: 0, operators: ['Draft Audit Compress Re-expand'], proposal_hash72: 'H72-PROCESS-PROPOSAL' },
-      { agent: 'SYNTHESIS_AGENT', phase_ok: true, phase_distance_from_anchor: 0, local_score: 52, risk_score: 0, operators: ['Alignment Axiom', 'Recursive Harmonic Prose', 'Writing Process'], proposal_hash72: 'H72-SYNTHESIS-PROPOSAL' },
-      { agent: 'AUDIT_AGENT', phase_ok: true, phase_distance_from_anchor: 0, local_score: 47, risk_score: 0, operators: ['Meaning Preservation Operator'], proposal_hash72: 'H72-AUDIT-PROPOSAL' }
-    ]
-  },
+  phase: { status: 'LOCKED', anchor_phase_index: 36, anchor_phase_hash72: 'H72-LIVE-PHASE-ANCHOR-DEMO', mandatory_present: true, temporal_ok: true, phase_locked: true, missing_mandatory: [], receipt_hash72: 'H72-LIVE-RECEIPT-DEMO', witnesses: [
+    { modality: 'AUDIO', source_id: 'audio_frame_0', phase_index: 36, phase_hash72: 'H72-LIVE-PHASE-ANCHOR-DEMO', temporal_status: 'ADMISSIBLE', witness_hash72: 'H72-AUDIO-WITNESS' },
+    { modality: 'HARMONICODE', source_id: 'kernel_phase', phase_index: 36, phase_hash72: 'H72-LIVE-PHASE-ANCHOR-DEMO', temporal_status: 'ADMISSIBLE', witness_hash72: 'H72-HARMONICODE-WITNESS' },
+    { modality: 'XYZW', source_id: 'xyzw_algebra', phase_index: 36, phase_hash72: 'H72-LIVE-PHASE-ANCHOR-DEMO', temporal_status: 'ADMISSIBLE', witness_hash72: 'H72-XYZW-WITNESS' },
+    { modality: 'HASH72', source_id: 'hash72_commit', phase_index: 36, phase_hash72: 'H72-LIVE-PHASE-ANCHOR-DEMO', temporal_status: 'ADMISSIBLE', witness_hash72: 'H72-HASH72-WITNESS' },
+    { modality: 'TEXT', source_id: 'text_support', phase_index: 37, phase_hash72: 'H72-SUPPORT-PHASE', temporal_status: 'ADMISSIBLE', witness_hash72: 'H72-TEXT-WITNESS' }
+  ]},
+  operatorLoop: { status: 'EXECUTED', external_phase_anchor_used: true, selected_chain_hash72: 'H72-SELECTED-CHAIN-DEMO', receipt_hash72: 'H72-OPERATOR-LOOP-RECEIPT-DEMO', proposals: [
+    { agent: 'LOGIC_AGENT', phase_ok: true, phase_distance_from_anchor: 0, local_score: 44, risk_score: 0, operators: ['HHS Alignment Axiom'], proposal_hash72: 'H72-LOGIC-PROPOSAL' },
+    { agent: 'PROCESS_AGENT', phase_ok: true, phase_distance_from_anchor: 1, local_score: 28, risk_score: 0, operators: ['Draft Audit Compress Re-expand'], proposal_hash72: 'H72-PROCESS-PROPOSAL' },
+    { agent: 'SYNTHESIS_AGENT', phase_ok: true, phase_distance_from_anchor: 0, local_score: 52, risk_score: 0, operators: ['Alignment Axiom'], proposal_hash72: 'H72-SYNTHESIS-PROPOSAL' },
+    { agent: 'AUDIT_AGENT', phase_ok: true, phase_distance_from_anchor: 0, local_score: 47, risk_score: 0, operators: ['Meaning Preservation'], proposal_hash72: 'H72-AUDIT-PROPOSAL' }
+  ]},
+  projection: mockProjection,
   anomalies: clearAnomalies,
   stream: { connected: false, source: 'mock', last_event_type: 'mock_snapshot', last_update_ms: Date.now() }
 };
@@ -109,48 +50,39 @@ function normalizeLoopResponse(raw: any): OperatorLoopView {
   return { status: raw?.status ?? 'UNKNOWN', external_phase_anchor_used: Boolean(raw?.external_phase_anchor_used), selected_chain_hash72: raw?.selected_candidate?.chain_hash72 ?? raw?.selected_chain_hash72 ?? null, receipt_hash72: String(raw?.receipt_hash72 ?? ''), proposals };
 }
 
-function normalizeAnomalies(raw: any): RuntimeAnomalies {
-  if (!raw) return clearAnomalies;
-  return { status: raw.status ?? 'CLEAR', critical: Number(raw.critical ?? 0), warn: Number(raw.warn ?? 0), info: Number(raw.info ?? 0), alerts: Array.isArray(raw.alerts) ? raw.alerts : [], summary_hash72: String(raw.summary_hash72 ?? '') };
+function normalizeAnomalies(raw: any): RuntimeAnomalies { if (!raw) return clearAnomalies; return { status: raw.status ?? 'CLEAR', critical: Number(raw.critical ?? 0), warn: Number(raw.warn ?? 0), info: Number(raw.info ?? 0), alerts: Array.isArray(raw.alerts) ? raw.alerts : [], summary_hash72: String(raw.summary_hash72 ?? ''), drift_prediction: raw.drift_prediction }; }
+
+function normalizeProjection(raw: any): ProjectionView {
+  const receipt = raw?.projection?.receipt ?? raw?.receipt ?? {};
+  const witness = raw?.projection?.phase_witness ?? raw?.phase_witness ?? receipt?.phase_witness ?? {};
+  const steps = raw?.projection?.projection_steps ?? raw?.projection_steps ?? [];
+  const targetLayer = steps?.[0]?.target_layer ?? 'normalized';
+  return { phase_index: Number(witness?.phase_index ?? mockProjection.phase_index), u72_ok: Boolean(witness?.u72_ok ?? true), loshu_ok: Boolean(witness?.loshu_ok ?? true), anchor_hash72: String(witness?.anchor_hash72 ?? mockProjection.anchor_hash72), status: String(receipt?.status ?? raw?.status ?? 'PROJECTED'), target_layer: String(targetLayer), receipt_hash72: String(receipt?.receipt_hash72 ?? raw?.receipt_hash72 ?? mockProjection.receipt_hash72), raw };
 }
 
 export function normalizeRuntimeSnapshot(raw: any, source: RuntimeSnapshot['stream']['source'] = 'websocket', eventType = 'runtime_snapshot', batchMeta: Partial<RuntimeSnapshot['stream']> = {}): RuntimeSnapshot {
-  const snapshot = raw?.phase && raw?.operatorLoop
-    ? { phase: normalizePhaseResponse(raw.phase), operatorLoop: normalizeLoopResponse(raw.operatorLoop), anomalies: normalizeAnomalies(raw.anomalies) }
-    : { phase: normalizePhaseResponse(raw?.phase ?? raw?.phase_lock ?? raw?.latest_phase_lock ?? raw), operatorLoop: normalizeLoopResponse(raw?.operatorLoop ?? raw?.operator_loop ?? raw?.latest_operator_loop ?? raw), anomalies: normalizeAnomalies(raw?.anomalies) };
+  const snapshot = raw?.phase && raw?.operatorLoop ? { phase: normalizePhaseResponse(raw.phase), operatorLoop: normalizeLoopResponse(raw.operatorLoop), projection: normalizeProjection(raw.projection), anomalies: normalizeAnomalies(raw.anomalies) } : { phase: normalizePhaseResponse(raw?.phase ?? raw?.phase_lock ?? raw?.latest_phase_lock ?? raw), operatorLoop: normalizeLoopResponse(raw?.operatorLoop ?? raw?.operator_loop ?? raw?.latest_operator_loop ?? raw), projection: normalizeProjection(raw?.projection), anomalies: normalizeAnomalies(raw?.anomalies) };
   return { ...snapshot, stream: { connected: source === 'websocket', source, last_event_type: eventType, last_update_ms: Date.now(), ...batchMeta } };
 }
 
 export async function loadRuntimeSnapshot(): Promise<RuntimeSnapshot> {
   try {
-    const [phaseRes, loopRes] = await Promise.all([fetch('/api/latest-phase-lock'), fetch('/api/latest-operator-loop')]);
+    const [phaseRes, loopRes, projectionRes] = await Promise.all([fetch('/api/latest-phase-lock'), fetch('/api/latest-operator-loop'), fetch('/api/latest-projection')]);
     if (!phaseRes.ok || !loopRes.ok) throw new Error('API unavailable');
-    return normalizeRuntimeSnapshot({ phase: await phaseRes.json(), operatorLoop: await loopRes.json() }, 'rest', 'rest_snapshot');
+    return normalizeRuntimeSnapshot({ phase: await phaseRes.json(), operatorLoop: await loopRes.json(), projection: projectionRes.ok ? await projectionRes.json() : undefined }, 'rest', 'rest_snapshot');
   } catch { return mockSnapshot; }
 }
 
 export function connectRuntimeStream(onSnapshot: (snapshot: RuntimeSnapshot) => void, onStatus?: (connected: boolean) => void): () => void {
   const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
   const url = `${protocol}//${window.location.host}/ws/runtime`;
-  let closed = false;
   let socket: WebSocket | null = null;
   try {
     socket = new WebSocket(url);
     socket.onopen = () => onStatus?.(true);
-    socket.onmessage = (event) => {
-      try {
-        const message = JSON.parse(event.data);
-        const eventType = message?.type ?? 'runtime_snapshot';
-        if (eventType === 'runtime_batch' && Array.isArray(message.payload)) {
-          const latest = message.payload[message.payload.length - 1];
-          onSnapshot(normalizeRuntimeSnapshot(latest, 'websocket', eventType, { batch_size: message.payload.length, batch_index: message.payload.length - 1 }));
-          return;
-        }
-        onSnapshot(normalizeRuntimeSnapshot(message?.payload ?? message, 'websocket', eventType));
-      } catch { /* ignore malformed stream frames */ }
-    };
+    socket.onmessage = (event) => { try { const message = JSON.parse(event.data); const eventType = message?.type ?? 'runtime_snapshot'; if (eventType === 'runtime_batch' && Array.isArray(message.payload)) { const latest = message.payload[message.payload.length - 1]; onSnapshot(normalizeRuntimeSnapshot(latest, 'websocket', eventType, { batch_size: message.payload.length, batch_index: message.payload.length - 1 })); return; } onSnapshot(normalizeRuntimeSnapshot(message?.payload ?? message, 'websocket', eventType)); } catch {} };
     socket.onerror = () => onStatus?.(false);
-    socket.onclose = () => { onStatus?.(false); };
+    socket.onclose = () => onStatus?.(false);
   } catch { onStatus?.(false); }
-  return () => { closed = true; if (socket && socket.readyState <= WebSocket.OPEN) socket.close(); };
+  return () => { if (socket && socket.readyState <= WebSocket.OPEN) socket.close(); };
 }
