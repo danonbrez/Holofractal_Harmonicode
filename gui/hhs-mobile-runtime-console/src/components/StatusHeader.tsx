@@ -9,6 +9,19 @@ function Flag({ label, ok }: { label: string; ok: boolean }) {
   );
 }
 
+function StreamIndicator({ data }: { data: RuntimeSnapshot }) {
+  const source = data.stream?.source ?? 'mock';
+  const connected = Boolean(data.stream?.connected);
+  const color = connected ? '#4f4' : source === 'rest' ? '#ff4' : '#f66';
+  const label = connected ? 'LIVE' : source.toUpperCase();
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 11, color }}>
+      <span style={{ width: 9, height: 9, borderRadius: 99, background: color, boxShadow: `0 0 10px ${color}` }} />
+      {label}
+    </div>
+  );
+}
+
 export default function StatusHeader({ data }: { data: RuntimeSnapshot }) {
   const locked = data.phase.status === 'LOCKED';
   const loopOk = data.operatorLoop.status === 'EXECUTED';
@@ -19,7 +32,10 @@ export default function StatusHeader({ data }: { data: RuntimeSnapshot }) {
           <div style={{ fontWeight: 700 }}>HHS Runtime Console</div>
           <div style={{ fontSize: 11, opacity: 0.8 }}>receipt: {data.phase.receipt_hash72 || 'pending'}</div>
         </div>
-        <div style={{ fontSize: 12, color: locked && loopOk ? '#9f9' : '#ff9' }}>{locked && loopOk ? 'LOCKED' : data.phase.status}</div>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 4 }}>
+          <div style={{ fontSize: 12, color: locked && loopOk ? '#9f9' : '#ff9' }}>{locked && loopOk ? 'LOCKED' : data.phase.status}</div>
+          <StreamIndicator data={data} />
+        </div>
       </div>
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginTop: 8 }}>
         <Flag label="Δe=0" ok={locked} />
