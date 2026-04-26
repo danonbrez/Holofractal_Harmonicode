@@ -5,13 +5,26 @@ import StatusHeader from './components/StatusHeader';
 import LedgerPanel from './components/LedgerPanel';
 import ExecutionPanel from './components/ExecutionPanel';
 import CertificationPanel from './components/CertificationPanel';
-import { loadRuntimeSnapshot, RuntimeSnapshot } from './runtimeData';
+import { loadRuntimeSnapshot, RuntimeSnapshot, connectRuntimeStream } from './runtimeData';
 
 export default function App() {
   const [data, setData] = useState<RuntimeSnapshot | null>(null);
 
   useEffect(() => {
-    loadRuntimeSnapshot().then(setData);
+    let mounted = true;
+
+    loadRuntimeSnapshot().then(snapshot => {
+      if (mounted) setData(snapshot);
+    });
+
+    const disconnect = connectRuntimeStream((snapshot) => {
+      setData(snapshot);
+    });
+
+    return () => {
+      mounted = false;
+      disconnect();
+    };
   }, []);
 
   if (!data) return <div style={{ color: '#0f0', padding: 20 }}>Loading...</div>;
