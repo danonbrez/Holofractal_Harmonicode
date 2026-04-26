@@ -5,12 +5,11 @@ HHS Phase Stabilization Feedback Loop v1
 Bounded correction layer for runtime anomalies.
 
 Pipeline:
-    detect -> suggest -> probe -> approve -> consensus -> re-lock -> verify
+    detect -> suggest -> probe -> approve -> adaptive consensus -> re-lock -> verify -> learn
 
-Important: suggestions are proposal records only until their suggestion_hash72
-appears in an explicit approval set AND passes multi-agent consensus. Execution
-is still bounded: no direct kernel mutation, no bypass of phase lock, and no
-success without replayable receipts.
+Learning is bounded: successful correction receipts can tune future agent
+weights only inside fixed caps. No learned weight can bypass approval, risk,
+phase lock, replay, or verification gates.
 """
 
 from __future__ import annotations
@@ -38,6 +37,10 @@ class CorrectionExecutionStatus(str, Enum):
     REJECTED_NO_CONSENSUS = "REJECTED_NO_CONSENSUS"
     RELOCK_FAILED = "RELOCK_FAILED"
     REPLAY_BLOCKED = "REPLAY_BLOCKED"
+
+
+BASE_AGENT_WEIGHTS = {"LOGIC_AGENT": 5, "AUDIT_AGENT": 6, "PROCESS_AGENT": 3, "SYNTHESIS_AGENT": 4, "STYLE_AGENT": 1}
+AGENT_WEIGHT_CAPS = {"LOGIC_AGENT": (4, 7), "AUDIT_AGENT": (6, 8), "PROCESS_AGENT": (2, 5), "SYNTHESIS_AGENT": (3, 6), "STYLE_AGENT": (1, 2)}
 
 
 @dataclass(frozen=True)
@@ -69,6 +72,17 @@ class StabilizationProbeReceipt:
 
 
 @dataclass(frozen=True)
+class AdaptiveWeightReceipt:
+    agent_weights: Dict[str, int]
+    source_feedback_hashes: List[str]
+    capped: bool
+    receipt_hash72: str
+
+    def to_dict(self) -> Dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass(frozen=True)
 class CorrectionConsensusReceipt:
     suggestion_hash72: str
     weighted_vote: int
@@ -76,6 +90,8 @@ class CorrectionConsensusReceipt:
     risk_score: int
     passed: bool
     supporting_agents: List[str]
+    agent_weights: Dict[str, int]
+    adaptive_weight_receipt_hash72: str | None
     receipt_hash72: str
 
     def to_dict(self) -> Dict[str, Any]:
@@ -109,26 +125,46 @@ def _hydrate_suggestion(raw: Dict[str, Any]) -> CorrectiveOperatorSuggestion:
     return CorrectiveOperatorSuggestion(CorrectionKind(raw["kind"]), int(raw["priority"]), [str(x) for x in raw.get("target_modalities", [])], [int(x) for x in raw.get("target_phase_indices", [])], str(raw.get("reason", "")), dict(raw.get("proposed_patch", {})), str(raw["suggestion_hash72"]))
 
 
-def correction_consensus(snapshot: Dict[str, Any], suggestion: CorrectiveOperatorSuggestion) -> CorrectionConsensusReceipt:
-    """Deterministic multi-agent consensus gate for correction execution.
+def _clamp_weight(agent: str, value: int) -> int:
+    lo, hi = AGENT_WEIGHT_CAPS[agent]
+    return max(lo, min(hi, value))
 
-    Agent weights mirror runtime roles:
-    - AUDIT_AGENT has veto pressure through risk scoring.
-    - LOGIC_AGENT supports invariant-preserving corrections.
-    - PROCESS_AGENT supports temporal/window corrections.
-    - SYNTHESIS_AGENT supports phase realignment.
-    - STYLE_AGENT has low weight and supports HOLD only.
-    """
+
+def adaptive_weights_from_feedback(feedback_records: Sequence[Dict[str, Any]] | None = None) -> AdaptiveWeightReceipt:
+    weights = dict(BASE_AGENT_WEIGHTS)
+    feedback_hashes: List[str] = []
+    capped = False
+    for record in feedback_records or []:
+        feedback_hash = str(record.get("summary_hash72") or record.get("execution_hash72") or hash72_digest(("unknown_feedback", record), width=18))
+        feedback_hashes.append(feedback_hash)
+        for execution in record.get("executions", []) or []:
+            status = execution.get("status")
+            consensus_hash = execution.get("consensus_receipt_hash72")
+            if status == "APPLIED":
+                # Conservative reinforcement: execution success strengthens process/synthesis slightly.
+                weights["PROCESS_AGENT"] += 1
+                weights["SYNTHESIS_AGENT"] += 1
+            elif status in {"RELOCK_FAILED", "REJECTED_NO_CONSENSUS"}:
+                # Failed corrections increase audit pressure and reduce risky synthesis influence.
+                weights["AUDIT_AGENT"] += 1
+                weights["SYNTHESIS_AGENT"] -= 1
+            elif status == "REPLAY_BLOCKED":
+                weights["AUDIT_AGENT"] += 1
+                weights["LOGIC_AGENT"] += 1
+    clamped = {}
+    for agent, value in weights.items():
+        c = _clamp_weight(agent, value)
+        capped = capped or c != value
+        clamped[agent] = c
+    receipt = hash72_digest(("adaptive_weight_receipt_v1", clamped, feedback_hashes, capped), width=24)
+    return AdaptiveWeightReceipt(clamped, feedback_hashes, capped, receipt)
+
+
+def correction_consensus(snapshot: Dict[str, Any], suggestion: CorrectiveOperatorSuggestion, adaptive_weights: AdaptiveWeightReceipt | None = None) -> CorrectionConsensusReceipt:
     anomalies = snapshot.get("anomalies", {})
     critical = int(anomalies.get("critical", 0) or 0)
     replay_invalid = any(a.get("code") == "REPLAY_INVALID" for a in anomalies.get("alerts", []) or [])
-    agents = {
-        "LOGIC_AGENT": 5,
-        "AUDIT_AGENT": 6,
-        "PROCESS_AGENT": 3,
-        "SYNTHESIS_AGENT": 4,
-        "STYLE_AGENT": 1,
-    }
+    agents = dict(adaptive_weights.agent_weights if adaptive_weights else BASE_AGENT_WEIGHTS)
     weighted_total = sum(agents.values())
     supporting: List[str] = []
 
@@ -149,15 +185,16 @@ def correction_consensus(snapshot: Dict[str, Any], suggestion: CorrectiveOperato
     if critical > 0 and suggestion.kind == CorrectionKind.HOLD_STATE:
         risk += 80
     if suggestion.kind == CorrectionKind.REPLAY_LEDGER_REVERIFY:
-        risk += 100  # blocks normal correction path; requires manual replay authority
+        risk += 100
 
     vote = sum(agents[a] for a in set(supporting))
     passed = vote * 3 >= weighted_total * 2 and risk == 0
-    receipt = hash72_digest(("correction_consensus_receipt_v1", suggestion.to_dict(), vote, weighted_total, risk, passed, sorted(set(supporting))), width=24)
-    return CorrectionConsensusReceipt(suggestion.suggestion_hash72, vote, weighted_total, risk, passed, sorted(set(supporting)), receipt)
+    adaptive_hash = adaptive_weights.receipt_hash72 if adaptive_weights else None
+    receipt = hash72_digest(("correction_consensus_receipt_v1", suggestion.to_dict(), vote, weighted_total, risk, passed, sorted(set(supporting)), agents, adaptive_hash), width=24)
+    return CorrectionConsensusReceipt(suggestion.suggestion_hash72, vote, weighted_total, risk, passed, sorted(set(supporting)), agents, adaptive_hash, receipt)
 
 
-def propose_corrective_operators(snapshot: Dict[str, Any]) -> Dict[str, Any]:
+def propose_corrective_operators(snapshot: Dict[str, Any], feedback_records: Sequence[Dict[str, Any]] | None = None) -> Dict[str, Any]:
     anomalies = snapshot.get("anomalies", {})
     alerts = anomalies.get("alerts", []) or []
     suggestions: List[CorrectiveOperatorSuggestion] = []
@@ -178,8 +215,9 @@ def propose_corrective_operators(snapshot: Dict[str, Any]) -> Dict[str, Any]:
     if not suggestions and anomalies.get("status") == "CLEAR":
         suggestions.append(_suggestion(CorrectionKind.HOLD_STATE, 1, [], [], "No correction needed; hold locked state.", {"op": "HOLD"}))
     probe = stabilization_probe(snapshot, suggestions)
-    consensus = [correction_consensus(snapshot, s).to_dict() for s in suggestions]
-    return {"suggestions": [s.to_dict() for s in suggestions], "consensus": consensus, "probe": probe.to_dict(), "summary_hash72": hash72_digest(("corrective_operator_suggestions_summary_v1", [s.suggestion_hash72 for s in suggestions], [c["receipt_hash72"] for c in consensus], probe.receipt_hash72), width=24)}
+    adaptive = adaptive_weights_from_feedback(feedback_records)
+    consensus = [correction_consensus(snapshot, s, adaptive).to_dict() for s in suggestions]
+    return {"suggestions": [s.to_dict() for s in suggestions], "adaptiveWeights": adaptive.to_dict(), "consensus": consensus, "probe": probe.to_dict(), "summary_hash72": hash72_digest(("corrective_operator_suggestions_summary_v1", [s.suggestion_hash72 for s in suggestions], [c["receipt_hash72"] for c in consensus], adaptive.receipt_hash72, probe.receipt_hash72), width=24)}
 
 
 def stabilization_probe(snapshot: Dict[str, Any], suggestions: List[CorrectiveOperatorSuggestion]) -> StabilizationProbeReceipt:
@@ -193,21 +231,22 @@ def stabilization_probe(snapshot: Dict[str, Any], suggestions: List[CorrectiveOp
     return StabilizationProbeReceipt(input_hash, [s.suggestion_hash72 for s in suggestions], expected, strategy, receipt)
 
 
-def execute_approved_corrections(snapshot: Dict[str, Any], approved_suggestion_hashes: Sequence[str], *, relock_fn: Callable[[CorrectiveOperatorSuggestion], Dict[str, Any]] | None = None, verify_fn: Callable[[CorrectiveOperatorSuggestion, Dict[str, Any]], Dict[str, Any]] | None = None) -> Dict[str, Any]:
-    corrections = snapshot.get("corrections") or propose_corrective_operators(snapshot)
+def execute_approved_corrections(snapshot: Dict[str, Any], approved_suggestion_hashes: Sequence[str], *, relock_fn: Callable[[CorrectiveOperatorSuggestion], Dict[str, Any]] | None = None, verify_fn: Callable[[CorrectiveOperatorSuggestion, Dict[str, Any]], Dict[str, Any]] | None = None, feedback_records: Sequence[Dict[str, Any]] | None = None) -> Dict[str, Any]:
+    corrections = snapshot.get("corrections") or propose_corrective_operators(snapshot, feedback_records)
     suggestions = [_hydrate_suggestion(s) for s in corrections.get("suggestions", [])]
     approved = set(str(x) for x in approved_suggestion_hashes)
+    adaptive = adaptive_weights_from_feedback(feedback_records)
     receipts: List[CorrectionExecutionReceipt] = []
     consensus_receipts: List[CorrectionConsensusReceipt] = []
 
     for suggestion in suggestions:
         is_approved = suggestion.suggestion_hash72 in approved
-        consensus = correction_consensus(snapshot, suggestion)
+        consensus = correction_consensus(snapshot, suggestion, adaptive)
         consensus_receipts.append(consensus)
         if not is_approved:
             status, relock_hash, verify_hash, reason = CorrectionExecutionStatus.REJECTED_UNAPPROVED, None, None, "Suggestion hash not present in explicit approval set."
         elif not consensus.passed:
-            status, relock_hash, verify_hash, reason = CorrectionExecutionStatus.REJECTED_NO_CONSENSUS, None, None, "Human approval present, but multi-agent correction consensus failed."
+            status, relock_hash, verify_hash, reason = CorrectionExecutionStatus.REJECTED_NO_CONSENSUS, None, None, "Human approval present, but adaptive multi-agent correction consensus failed."
         elif suggestion.kind == CorrectionKind.HOLD_STATE:
             status = CorrectionExecutionStatus.HELD
             relock_hash = snapshot.get("phase", {}).get("receipt_hash72")
@@ -226,9 +265,9 @@ def execute_approved_corrections(snapshot: Dict[str, Any], approved_suggestion_h
                 ok = bool(verification.get("ok"))
                 status = CorrectionExecutionStatus.APPLIED if ok else CorrectionExecutionStatus.RELOCK_FAILED
                 verify_hash = verification.get("verification_hash72") or hash72_digest(("correction_verification_v1", suggestion.to_dict(), relock, verification), width=24)
-                reason = "Correction approved, consensus-passed, re-locked, and verified." if ok else str(verification.get("reason", "Verification failed."))
+                reason = "Correction approved, adaptive consensus-passed, re-locked, and verified." if ok else str(verification.get("reason", "Verification failed."))
         execution_hash = hash72_digest(("correction_execution_receipt_v1", suggestion.suggestion_hash72, is_approved, consensus.receipt_hash72, consensus.passed, status.value, relock_hash, verify_hash, reason), width=24)
         receipts.append(CorrectionExecutionReceipt(suggestion.suggestion_hash72, is_approved, consensus.passed, consensus.receipt_hash72, status, relock_hash, verify_hash, reason, execution_hash))
 
-    summary_hash = hash72_digest(("approved_correction_execution_summary_v1", [r.execution_hash72 for r in receipts], [c.receipt_hash72 for c in consensus_receipts], sorted(approved)), width=24)
-    return {"approved_suggestion_hashes": sorted(approved), "consensus": [c.to_dict() for c in consensus_receipts], "executions": [r.to_dict() for r in receipts], "summary_hash72": summary_hash}
+    summary_hash = hash72_digest(("approved_correction_execution_summary_v1", [r.execution_hash72 for r in receipts], [c.receipt_hash72 for c in consensus_receipts], adaptive.receipt_hash72, sorted(approved)), width=24)
+    return {"approved_suggestion_hashes": sorted(approved), "adaptiveWeights": adaptive.to_dict(), "consensus": [c.to_dict() for c in consensus_receipts], "executions": [r.to_dict() for r in receipts], "summary_hash72": summary_hash}
