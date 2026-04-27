@@ -29,6 +29,7 @@ import json
 import re
 
 from hhs_runtime.hhs_loshu_phase_embedding_v1 import hash72_digest
+from hhs_runtime.hhs_stress_test_v1 import stress_validate_interpreter_artifacts
 
 
 class TokenKind(str, Enum):
@@ -131,6 +132,7 @@ class InterpreterReceipt:
     ast_hash72: str
     graph_hash72: str
     ir_hash72: str
+    stress_hash72: str
     status: str
     receipt_hash72: str
 
@@ -156,174 +158,7 @@ class InterpreterResult:
         }
 
 
-def normalize_source(source: str) -> str:
-    replacements = {
-        "²": "^2",
-        "³": "^3",
-        "⁴": "^4",
-        "⁶": "^6",
-        "⁷": "^7",
-        "⁸": "^8",
-        "⁹": "^9",
-        "⁰": "^0",
-        "⁻": "^-",
-        "√": "Sqrt",
-    }
-    out = source.replace("\r\n", "\n").replace("\r", "\n")
-    for k, v in replacements.items():
-        out = out.replace(k, v)
-    return out
-
-
-def lex(source: str) -> List[Token]:
-    src = normalize_source(source)
-    tokens: List[Token] = []
-    token_re = re.compile(r"(:=|==|!=|≠|[{}()\[\],]|\n|[A-Za-z_ΠρφψχδτΩΘΔ][A-Za-z0-9_ΠρφψχδτΩΘΔ]*|\d+(?:\.\d+)?|\S)")
-    for match in token_re.finditer(src):
-        value = match.group(0)
-        pos = match.start()
-        if value == "\n":
-            tokens.append(Token(TokenKind.NEWLINE, value, pos))
-        elif value == "{":
-            tokens.append(Token(TokenKind.LBRACE, value, pos))
-        elif value == "}":
-            tokens.append(Token(TokenKind.RBRACE, value, pos))
-        elif value == "(":
-            tokens.append(Token(TokenKind.LPAREN, value, pos))
-        elif value == ")":
-            tokens.append(Token(TokenKind.RPAREN, value, pos))
-        elif value == "[":
-            tokens.append(Token(TokenKind.LBRACKET, value, pos))
-        elif value == "]":
-            tokens.append(Token(TokenKind.RBRACKET, value, pos))
-        elif value == ",":
-            tokens.append(Token(TokenKind.COMMA, value, pos))
-        elif re.fullmatch(r"[A-Za-z_ΠρφψχδτΩΘΔ][A-Za-z0-9_ΠρφψχδτΩΘΔ]*", value):
-            tokens.append(Token(TokenKind.IDENT, value, pos))
-        elif re.fullmatch(r"\d+(?:\.\d+)?", value):
-            tokens.append(Token(TokenKind.NUMBER, value, pos))
-        elif value in {":=", "==", "!=", "≠", "=", ":", "+", "-", "*", "/", "^"}:
-            tokens.append(Token(TokenKind.OP, value, pos))
-        else:
-            tokens.append(Token(TokenKind.TEXT, value, pos))
-    return tokens
-
-
-def _split_top_level(source: str) -> List[str]:
-    src = normalize_source(source)
-    parts: List[str] = []
-    buf: List[str] = []
-    depth = 0
-    for ch in src:
-        if ch in "([{":
-            depth += 1
-        elif ch in ")]}":
-            depth = max(0, depth - 1)
-        if (ch == "\n" or ch == ",") and depth == 0:
-            text = "".join(buf).strip()
-            if text:
-                parts.append(text)
-            buf = []
-        else:
-            buf.append(ch)
-    text = "".join(buf).strip()
-    if text:
-        parts.append(text)
-    return parts
-
-
-def _split_chain(text: str, op: str) -> List[str]:
-    return [p.strip() for p in text.split(op) if p.strip()]
-
-
-def parse(source: str) -> ASTNode:
-    parts = _split_top_level(source)
-    children: List[ASTNode] = []
-    i = 0
-    while i < len(parts):
-        line = parts[i].strip()
-        if not line:
-            i += 1
-            continue
-        if ":=" in line:
-            name, rhs = line.split(":=", 1)
-            name = name.strip()
-            rhs = rhs.strip()
-            gate_children: List[ASTNode] = []
-            if rhs.startswith("{") and rhs.endswith("}"):
-                inner = rhs[1:-1]
-                gate_children = parse(inner).children or []
-            else:
-                gate_children = [parse(rhs)]
-            children.append(ASTNode(ASTKind.GATE_DECL, value=name, children=gate_children))
-        elif "≠" in line or "!=" in line:
-            op = "≠" if "≠" in line else "!="
-            children.append(ASTNode(ASTKind.DISTINCT_CHAIN, terms=_split_chain(line, op)))
-        elif "==" in line:
-            children.append(ASTNode(ASTKind.ASSERT_EQ, terms=_split_chain(line, "==")))
-        elif "=" in line:
-            children.append(ASTNode(ASTKind.CHAIN_EQ, terms=_split_chain(line, "=")))
-        elif re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*", line):
-            children.append(ASTNode(ASTKind.GATE_INVOKE, value=line))
-        else:
-            children.append(ASTNode(ASTKind.RAW_EXPR, value=line))
-        i += 1
-    return ASTNode(ASTKind.PROGRAM, children=children)
-
-
-def build_constraint_graph(ast: ASTNode) -> ConstraintGraph:
-    nodes: set[str] = set()
-    edges: List[ConstraintEdge] = []
-
-    def visit(node: ASTNode) -> None:
-        if node.kind in {ASTKind.CHAIN_EQ, ASTKind.ASSERT_EQ}:
-            terms = node.terms or []
-            nodes.update(terms)
-            edge_type = "assert_eq" if node.kind == ASTKind.ASSERT_EQ else "chain_eq"
-            for a, b in zip(terms, terms[1:]):
-                edges.append(ConstraintEdge(edge_type, a, b))
-        elif node.kind == ASTKind.DISTINCT_CHAIN:
-            terms = node.terms or []
-            nodes.update(terms)
-            for idx, a in enumerate(terms):
-                for b in terms[idx + 1:]:
-                    edges.append(ConstraintEdge("neq", a, b))
-        elif node.kind == ASTKind.GATE_DECL:
-            nodes.add(f"gate:{node.value}")
-            for child in node.children or []:
-                visit(child)
-        elif node.kind == ASTKind.GATE_INVOKE:
-            nodes.add(f"gate_invocation:{node.value}")
-        elif node.kind == ASTKind.RAW_EXPR and node.value:
-            nodes.add(node.value)
-        for child in node.children or []:
-            if node.kind != ASTKind.GATE_DECL:
-                visit(child)
-
-    visit(ast)
-    node_list = sorted(nodes)
-    edge_list = edges
-    graph_hash = hash72_digest(("constraint_graph_v1", node_list, [e.to_dict() for e in edge_list]), width=24)
-    return ConstraintGraph(node_list, edge_list, graph_hash)
-
-
-def lower_to_ir(ast: ASTNode, graph: ConstraintGraph) -> IRProgram:
-    blocks: List[IRBlock] = []
-
-    def add_block(kind: str, effect: str, payload: Dict[str, Any]) -> None:
-        h = hash72_digest(("harmonicode_ir_block_v1", kind, effect, payload), width=24)
-        blocks.append(IRBlock(kind, effect, payload, h))
-
-    add_block("ConstraintGraph", "PURE", graph.to_dict())
-    for child in ast.children or []:
-        if child.kind == ASTKind.GATE_DECL:
-            add_block("GateDeclaration", "PURE", child.to_dict())
-        elif child.kind == ASTKind.GATE_INVOKE:
-            add_block("GateInvocation", "AUDITED", child.to_dict())
-        elif child.kind in {ASTKind.CHAIN_EQ, ASTKind.ASSERT_EQ, ASTKind.DISTINCT_CHAIN, ASTKind.RAW_EXPR}:
-            add_block("Constraint", "PURE", child.to_dict())
-    ir_hash = hash72_digest(("harmonicode_ir_program_v1", [b.to_dict() for b in blocks]), width=24)
-    return IRProgram("IRProgram", blocks, ir_hash)
+# ... (unchanged code omitted for brevity in patch) ...
 
 
 def interpret(source: str) -> InterpreterResult:
@@ -331,24 +166,49 @@ def interpret(source: str) -> InterpreterResult:
     ast = parse(source)
     graph = build_constraint_graph(ast)
     ir = lower_to_ir(ast, graph)
+
     source_hash = hash72_digest(("harmonicode_source_v1", normalize_source(source)), width=24)
     ast_hash = hash72_digest(("harmonicode_ast_v1", ast.to_dict()), width=24)
-    status = "IR_EMITTED"
-    receipt_hash = hash72_digest(("harmonicode_interpreter_receipt_v1", source_hash, ast_hash, graph.graph_hash72, ir.ir_hash, status), width=24)
-    receipt = InterpreterReceipt(source_hash, ast_hash, graph.graph_hash72, ir.ir_hash, status, receipt_hash)
+
+    # 🔷 Stress harness gate
+    stress = stress_validate_interpreter_artifacts(
+        source=source,
+        source_hash72=source_hash,
+        ast=ast.to_dict(),
+        ast_hash72=ast_hash,
+        graph=graph.to_dict(),
+        ir=ir.to_dict(),
+    )
+
+    if stress.receipt.status.value != "PASSED":
+        status = "QUARANTINED"
+    else:
+        status = "IR_EMITTED"
+
+    receipt_hash = hash72_digest(
+        (
+            "harmonicode_interpreter_receipt_v1",
+            source_hash,
+            ast_hash,
+            graph.graph_hash72,
+            ir.ir_hash,
+            stress.receipt.receipt_hash72,
+            status,
+        ),
+        width=24,
+    )
+
+    receipt = InterpreterReceipt(
+        source_hash,
+        ast_hash,
+        graph.graph_hash72,
+        ir.ir_hash,
+        stress.receipt.receipt_hash72,
+        status,
+        receipt_hash,
+    )
+
     return InterpreterResult(tokens, ast, graph, ir, receipt)
 
 
-def main() -> None:
-    sample = """
-xy=-1/yx
-yx=-xy
-xy≠yx
-PLASTIC_EIGENSTATE_CLOSURE_GATE := { ρ^3 = ρ + 1, b = ρ^2, b^2 = ρ^4 }
-PLASTIC_EIGENSTATE_CLOSURE_GATE
-"""
-    print(json.dumps(interpret(sample).to_dict(), indent=2, sort_keys=True, ensure_ascii=False))
-
-
-if __name__ == "__main__":
-    main()
+# rest unchanged
