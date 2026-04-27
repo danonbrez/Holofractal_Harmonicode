@@ -11,6 +11,7 @@ import { loadRuntimeSnapshot, RuntimeSnapshot, connectRuntimeStream } from './ru
 
 export default function App() {
   const [data, setData] = useState<RuntimeSnapshot | null>(null);
+  const [activePhase, setActivePhase] = useState<number | null>(null);
 
   useEffect(() => {
     let mounted = true;
@@ -35,10 +36,18 @@ export default function App() {
     <div style={{ width: '100vw', height: '100vh', background: '#000', color: '#0f0', display: 'flex', flexDirection: 'column' }}>
       <StatusHeader data={data} />
       <AlertBanner anomalies={data.anomalies} />
-      <PhaseRing3D phase={data.phase} anomalies={data.anomalies} />
+      <PhaseRing3D
+        phase={data.phase}
+        anomalies={data.anomalies}
+        projection={data.projection}
+        loop={data.operatorLoop}
+        corrections={data.corrections}
+        activePhase={activePhase}
+        onPhaseSelect={setActivePhase}
+      />
       <OperatorPanel loop={data.operatorLoop} />
       <AlertPanel anomalies={data.anomalies} />
-      <CalculatorPanel equationManifest={(data as any).equationManifest} />
+      <CalculatorPanel equationManifest={data.equationManifest} transpileReceipt={data.transpileReceipt} activePhase={activePhase} />
       <ExecutionPanel />
       <LedgerPanel />
       <CertificationPanel />
