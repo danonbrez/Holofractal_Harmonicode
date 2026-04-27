@@ -11,12 +11,14 @@ export type OperatorLoopView = { status: RuntimeStatus | string; external_phase_
 export type ProjectionView = { phase_index: number; u72_ok: boolean; loshu_ok: boolean; anchor_hash72: string; status: string; target_layer: string; receipt_hash72: string; raw?: any; };
 export type TemporalShellStepView = { index: number; phase_index: number; carrier: 'x' | 'y' | 'xy' | string; phase_filter: number; shell_width: number; shell_hash72: string; status: string; expansion?: any; };
 export type TemporalShellView = { seed_hash72: string; cycles: number; total_steps: number; steps: TemporalShellStepView[]; carrier_balance: Record<string, number>; aggregate_hash72: string; status: string; receipt_hash72: string; };
+export type EquationManifestView = { status: string; phases: number[]; equation_text: string; equation_hash72: string; projection_receipt_hash72: string; manifest_hash72: string; compiler_packet?: any; raw?: any; };
 
 export type RuntimeSnapshot = {
   phase: PhaseLockView;
   operatorLoop: OperatorLoopView;
   projection?: ProjectionView;
   temporalShells?: TemporalShellView;
+  equationManifest?: EquationManifestView;
   anomalies?: RuntimeAnomalies;
   corrections?: any;
   lastRootCandidate?: any;
@@ -27,6 +29,7 @@ export type RuntimeSnapshot = {
 const clearAnomalies: RuntimeAnomalies = { status: 'CLEAR', critical: 0, warn: 0, info: 0, alerts: [], summary_hash72: 'H72-CLEAR' };
 const mockProjection: ProjectionView = { phase_index: 36, u72_ok: true, loshu_ok: true, anchor_hash72: 'H72-PROJECTION-ANCHOR-DEMO', status: 'PROJECTED', target_layer: 'normalized', receipt_hash72: 'H72-PROJECTION-RECEIPT-DEMO' };
 const mockTemporalShells: TemporalShellView = { seed_hash72: 'H72-SHELL-SEED-DEMO', cycles: 1, total_steps: 72, steps: Array.from({ length: 18 }).map((_, i) => ({ index: i, phase_index: (36 + i * 5) % 72, carrier: ['x', 'y', 'xy'][i % 3], phase_filter: i, shell_width: 1 + (i % 9), shell_hash72: `H72-SHELL-${i}`, status: 'LOCKED', expansion: {} })), carrier_balance: { x: 24, y: 24, xy: 24 }, aggregate_hash72: 'H72-SHELL-AGG-DEMO', status: 'LOCKED', receipt_hash72: 'H72-SHELL-RECEIPT-DEMO' };
+const mockEquationManifest: EquationManifestView = { status: 'READY', phases: [4, 12, 20, 36], equation_text: 'xy=-1/yx\nyx=-xy\nxy≠yx', equation_hash72: 'H72-EQUATION-DEMO', projection_receipt_hash72: 'H72-PROJECTION-DEMO', manifest_hash72: 'H72-MANIFEST-DEMO' };
 
 export const mockSnapshot: RuntimeSnapshot = {
   phase: { status: 'LOCKED', anchor_phase_index: 36, anchor_phase_hash72: 'H72-LIVE-PHASE-ANCHOR-DEMO', mandatory_present: true, temporal_ok: true, phase_locked: true, missing_mandatory: [], receipt_hash72: 'H72-LIVE-RECEIPT-DEMO', witnesses: [
@@ -44,6 +47,7 @@ export const mockSnapshot: RuntimeSnapshot = {
   ]},
   projection: mockProjection,
   temporalShells: mockTemporalShells,
+  equationManifest: mockEquationManifest,
   anomalies: clearAnomalies,
   corrections: {},
   stream: { connected: false, source: 'mock', last_event_type: 'mock_snapshot', last_update_ms: Date.now() }
@@ -61,7 +65,8 @@ function normalizeLoopResponse(raw: any): OperatorLoopView {
 
 function normalizeAnomalies(raw: any): RuntimeAnomalies { if (!raw) return clearAnomalies; return { status: raw.status ?? 'CLEAR', critical: Number(raw.critical ?? 0), warn: Number(raw.warn ?? 0), info: Number(raw.info ?? 0), alerts: Array.isArray(raw.alerts) ? raw.alerts : [], summary_hash72: String(raw.summary_hash72 ?? ''), drift_prediction: raw.drift_prediction }; }
 
-function normalizeProjection(raw: any): ProjectionView {
+function normalizeProjection(raw: any): ProjectionView | undefined {
+  if (!raw) return undefined;
   const receipt = raw?.projection?.receipt ?? raw?.receipt ?? {};
   const witness = raw?.projection?.phase_witness ?? raw?.phase_witness ?? receipt?.phase_witness ?? {};
   const steps = raw?.projection?.projection_steps ?? raw?.projection_steps ?? [];
@@ -74,16 +79,23 @@ function normalizeTemporalShells(raw: any): TemporalShellView | undefined {
   return { seed_hash72: String(raw.seed_hash72 ?? ''), cycles: Number(raw.cycles ?? 0), total_steps: Number(raw.total_steps ?? 0), steps: Array.isArray(raw.steps) ? raw.steps.map((s: any) => ({ index: Number(s.index ?? 0), phase_index: Number(s.phase_index ?? 0), carrier: String(s.carrier ?? 'x'), phase_filter: Number(s.phase_filter ?? 0), shell_width: Number(s.shell_width ?? 1), shell_hash72: String(s.shell_hash72 ?? ''), status: String(s.status ?? 'UNKNOWN'), expansion: s.expansion })) : [], carrier_balance: raw.carrier_balance ?? {}, aggregate_hash72: String(raw.aggregate_hash72 ?? ''), status: String(raw.status ?? 'UNKNOWN'), receipt_hash72: String(raw.receipt_hash72 ?? '') };
 }
 
+function normalizeEquationManifest(raw: any): EquationManifestView | undefined {
+  if (!raw) return undefined;
+  const manifest = raw.manifest ?? raw;
+  const packet = manifest.compiler_packet ?? manifest.review_packet ?? {};
+  return { status: String(manifest.status ?? 'UNKNOWN'), phases: Array.isArray(manifest.phases) ? manifest.phases.map(Number) : Array.isArray(packet.phases) ? packet.phases.map(Number) : [], equation_text: String(manifest.equation_text ?? packet.equation_text ?? packet.root_equation ?? ''), equation_hash72: String(manifest.equation_hash72 ?? packet.equation_hash72 ?? ''), projection_receipt_hash72: String(manifest.projection_receipt_hash72 ?? packet.projection_receipt_hash72 ?? ''), manifest_hash72: String(manifest.manifest_hash72 ?? raw.aggregate_hash72 ?? ''), compiler_packet: packet, raw };
+}
+
 export function normalizeRuntimeSnapshot(raw: any, source: RuntimeSnapshot['stream']['source'] = 'websocket', eventType = 'runtime_snapshot', batchMeta: Partial<RuntimeSnapshot['stream']> = {}): RuntimeSnapshot {
-  const snapshot = raw?.phase && raw?.operatorLoop ? { phase: normalizePhaseResponse(raw.phase), operatorLoop: normalizeLoopResponse(raw.operatorLoop), projection: normalizeProjection(raw.projection), temporalShells: normalizeTemporalShells(raw.temporalShells), anomalies: normalizeAnomalies(raw.anomalies), corrections: raw.corrections, lastRootCandidate: raw.lastRootCandidate, lastRootCommit: raw.lastRootCommit } : { phase: normalizePhaseResponse(raw?.phase ?? raw?.phase_lock ?? raw?.latest_phase_lock ?? raw), operatorLoop: normalizeLoopResponse(raw?.operatorLoop ?? raw?.operator_loop ?? raw?.latest_operator_loop ?? raw), projection: normalizeProjection(raw?.projection), temporalShells: normalizeTemporalShells(raw?.temporalShells), anomalies: normalizeAnomalies(raw?.anomalies), corrections: raw?.corrections, lastRootCandidate: raw?.lastRootCandidate, lastRootCommit: raw?.lastRootCommit };
+  const snapshot = raw?.phase && raw?.operatorLoop ? { phase: normalizePhaseResponse(raw.phase), operatorLoop: normalizeLoopResponse(raw.operatorLoop), projection: normalizeProjection(raw.projection), temporalShells: normalizeTemporalShells(raw.temporalShells), equationManifest: normalizeEquationManifest(raw.equationManifest), anomalies: normalizeAnomalies(raw.anomalies), corrections: raw.corrections, lastRootCandidate: raw.lastRootCandidate, lastRootCommit: raw.lastRootCommit } : { phase: normalizePhaseResponse(raw?.phase ?? raw?.phase_lock ?? raw?.latest_phase_lock ?? raw), operatorLoop: normalizeLoopResponse(raw?.operatorLoop ?? raw?.operator_loop ?? raw?.latest_operator_loop ?? raw), projection: normalizeProjection(raw?.projection), temporalShells: normalizeTemporalShells(raw?.temporalShells), equationManifest: normalizeEquationManifest(raw?.equationManifest), anomalies: normalizeAnomalies(raw?.anomalies), corrections: raw?.corrections, lastRootCandidate: raw?.lastRootCandidate, lastRootCommit: raw?.lastRootCommit };
   return { ...snapshot, stream: { connected: source === 'websocket', source, last_event_type: eventType, last_update_ms: Date.now(), ...batchMeta } };
 }
 
 export async function loadRuntimeSnapshot(): Promise<RuntimeSnapshot> {
   try {
-    const [phaseRes, loopRes, projectionRes, shellRes] = await Promise.all([fetch('/api/latest-phase-lock'), fetch('/api/latest-operator-loop'), fetch('/api/latest-projection'), fetch('/api/latest-temporal-shells')]);
+    const [phaseRes, loopRes, projectionRes, shellRes, manifestRes] = await Promise.all([fetch('/api/latest-phase-lock'), fetch('/api/latest-operator-loop'), fetch('/api/latest-projection'), fetch('/api/latest-temporal-shells'), fetch('/api/latest-equation-manifest')]);
     if (!phaseRes.ok || !loopRes.ok) throw new Error('API unavailable');
-    return normalizeRuntimeSnapshot({ phase: await phaseRes.json(), operatorLoop: await loopRes.json(), projection: projectionRes.ok ? await projectionRes.json() : undefined, temporalShells: shellRes.ok ? await shellRes.json() : undefined }, 'rest', 'rest_snapshot');
+    return normalizeRuntimeSnapshot({ phase: await phaseRes.json(), operatorLoop: await loopRes.json(), projection: projectionRes.ok ? await projectionRes.json() : undefined, temporalShells: shellRes.ok ? await shellRes.json() : undefined, equationManifest: manifestRes.ok ? await manifestRes.json() : undefined }, 'rest', 'rest_snapshot');
   } catch { return mockSnapshot; }
 }
 
