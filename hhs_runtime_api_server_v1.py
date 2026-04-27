@@ -1,6 +1,6 @@
 """
 hhs_runtime_api_server_v1.py
-(Updated with runtime projection, temporal shell streaming, and branch-equation manifest API)
+(Updated with runtime projection, temporal shell streaming, branch-equation manifest API, and transpiler API)
 """
 
 from __future__ import annotations
@@ -28,6 +28,7 @@ from hhs_runtime.harmonicode_phase_projection_engine_v1 import interpret_transfo
 from hhs_runtime.harmonicode_root_execution_engine_v1 import stage_root_execution
 from hhs_runtime.hhs_entangled_reciprocal_seesaw_temporal_shell_v1 import generate_temporal_shells
 from hhs_runtime.hhs_branch_to_equation_manifest_v1 import select_and_bind_equation_manifest
+from hhs_runtime.hhs_ir_transpiler_v1 import transpile_manifest
 from hhs_runtime.harmonicode_interpreter_v1 import interpret
 from hhs_runtime.harmonicode_constraint_solver_v1 import solve_interpreter_result
 
@@ -44,6 +45,7 @@ LAST_CORRECTION_EXECUTION: Dict[str, Any] | None = None
 LAST_ROOT_CANDIDATE: Dict[str, Any] | None = None
 LAST_ROOT_COMMIT: Dict[str, Any] | None = None
 LAST_EQUATION_MANIFEST: Dict[str, Any] | None = None
+LAST_TRANSPILE_RECEIPT: Dict[str, Any] | None = None
 
 
 class CorrectionApprovalRequest(BaseModel):
@@ -61,6 +63,11 @@ class RootCommitRequest(BaseModel):
 
 class CalculatorEvaluateRequest(BaseModel):
     expression: str
+
+
+class TranspileManifestRequest(BaseModel):
+    manifest: Dict[str, Any] | None = None
+    targets: List[str] = ["python"]
 
 
 def _observations(observed_at_ns: int | None = None) -> List[Dict[str, Any]]:
@@ -110,6 +117,13 @@ def build_equation_manifest() -> Dict[str, Any]:
     return LAST_EQUATION_MANIFEST
 
 
+def build_transpile_receipt(manifest: Dict[str, Any] | None = None, targets: List[str] | None = None) -> Dict[str, Any]:
+    global LAST_TRANSPILE_RECEIPT
+    source_manifest = manifest or LAST_EQUATION_MANIFEST or build_equation_manifest()
+    LAST_TRANSPILE_RECEIPT = transpile_manifest(source_manifest, targets or ["python"]).to_dict()
+    return LAST_TRANSPILE_RECEIPT
+
+
 def build_phase_lock() -> Dict[str, Any]:
     state_patch = {"op": "SET", "path": "runtime.intent", "value": {"next": "api_phase_locked_state"}}
     return lock_live_multimodal_phase(_observations(), state_patch=state_patch, ledger_path=ARTIFACT_ROOT / "latest_phase_lock_ledger.json").to_dict()
@@ -135,7 +149,8 @@ def build_runtime_snapshot() -> Dict[str, Any]:
     projection = build_phase_projection()
     temporal_shells = build_temporal_shells(projection)
     equation_manifest = build_equation_manifest()
-    snapshot = {"phase": phase, "operatorLoop": loop, "projection": projection, "temporalShells": temporal_shells, "equationManifest": equation_manifest, "server": {"name": APP_NAME, "generated_at_ns": time.time_ns()}}
+    transpile_receipt = build_transpile_receipt(equation_manifest, ["python"])
+    snapshot = {"phase": phase, "operatorLoop": loop, "projection": projection, "temporalShells": temporal_shells, "equationManifest": equation_manifest, "transpileReceipt": transpile_receipt, "server": {"name": APP_NAME, "generated_at_ns": time.time_ns()}}
     snapshot["anomalies"] = detect_runtime_anomalies(snapshot)
     snapshot["corrections"] = propose_corrective_operators(snapshot)
     snapshot["lastCorrectionExecution"] = LAST_CORRECTION_EXECUTION
@@ -163,7 +178,7 @@ def _root_candidate_to_correction_payload(root_candidate: Dict[str, Any]) -> Dic
 
 @app.get("/api/status")
 async def api_status() -> Dict[str, Any]:
-    return {"status": "OK", "server": APP_NAME, "read_only": False, "correction_execution_requires_approval": True, "root_commit_requires_consensus": True, "temporal_shells_enabled": True, "equation_manifest_enabled": True, "time_ns": time.time_ns()}
+    return {"status": "OK", "server": APP_NAME, "read_only": False, "correction_execution_requires_approval": True, "root_commit_requires_consensus": True, "temporal_shells_enabled": True, "equation_manifest_enabled": True, "transpiler_enabled": True, "time_ns": time.time_ns()}
 
 
 @app.get("/api/latest-phase-lock")
@@ -189,6 +204,16 @@ async def api_latest_temporal_shells() -> Dict[str, Any]:
 @app.get("/api/latest-equation-manifest")
 async def api_latest_equation_manifest() -> Dict[str, Any]:
     return build_equation_manifest()
+
+
+@app.get("/api/latest-transpile-receipt")
+async def api_latest_transpile_receipt() -> Dict[str, Any]:
+    return build_transpile_receipt(build_equation_manifest(), ["python"])
+
+
+@app.post("/api/transpile/manifest")
+async def api_transpile_manifest(req: TranspileManifestRequest) -> Dict[str, Any]:
+    return build_transpile_receipt(req.manifest, req.targets)
 
 
 @app.post("/api/calculator/evaluate")
