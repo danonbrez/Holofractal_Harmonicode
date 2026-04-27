@@ -6,6 +6,7 @@ import LedgerPanel from './components/LedgerPanel';
 import ExecutionPanel from './components/ExecutionPanel';
 import CertificationPanel from './components/CertificationPanel';
 import AlertPanel, { AlertBanner } from './components/AlertPanel';
+import CalculatorPanel from './components/CalculatorPanel';
 import { loadRuntimeSnapshot, RuntimeSnapshot, connectRuntimeStream } from './runtimeData';
 
 export default function App() {
@@ -37,6 +38,7 @@ export default function App() {
       <PhaseRing3D phase={data.phase} anomalies={data.anomalies} />
       <OperatorPanel loop={data.operatorLoop} />
       <AlertPanel anomalies={data.anomalies} />
+      <CalculatorPanel equationManifest={(data as any).equationManifest} />
       <ExecutionPanel />
       <LedgerPanel />
       <CertificationPanel />
