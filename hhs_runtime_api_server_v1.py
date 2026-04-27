@@ -1,6 +1,6 @@
 """
 hhs_runtime_api_server_v1.py
-(Updated with root execution staging and consensus-gated commit pipeline)
+(Updated with root execution and ERS temporal shell streaming)
 """
 
 from __future__ import annotations
@@ -26,6 +26,7 @@ from hhs_runtime.hhs_phase_stabilization_feedback_loop_v1 import propose_correct
 from hhs_runtime.hhs_loshu_phase_embedding_v1 import hash72_digest
 from hhs_runtime.harmonicode_phase_projection_engine_v1 import interpret_transform_project
 from hhs_runtime.harmonicode_root_execution_engine_v1 import stage_root_execution
+from hhs_runtime.hhs_entangled_reciprocal_seesaw_temporal_shell_v1 import generate_temporal_shells
 
 APP_NAME = "HHS Runtime API Server v1"
 ARTIFACT_ROOT = Path("demo_reports/runtime_api")
@@ -87,6 +88,15 @@ def build_phase_projection() -> Dict[str, Any]:
     return interpret_transform_project(_projection_source(), "normalized")
 
 
+def build_temporal_shells(projection: Dict[str, Any]) -> Dict[str, Any]:
+    witness = projection.get("projection", {}).get("phase_witness", {})
+    seed = witness.get("anchor_hash72") or projection.get("full_receipt_hash72") or "HHS_TEMPORAL_SHELL_SEED"
+    run = generate_temporal_shells(str(seed), cycles=1).to_dict()
+    # Keep WebSocket payload bounded while preserving aggregate proof.
+    run["steps"] = run["steps"][:72]
+    return run
+
+
 def build_phase_lock() -> Dict[str, Any]:
     state_patch = {"op": "SET", "path": "runtime.intent", "value": {"next": "api_phase_locked_state"}}
     return lock_live_multimodal_phase(_observations(), state_patch=state_patch, ledger_path=ARTIFACT_ROOT / "latest_phase_lock_ledger.json").to_dict()
@@ -110,7 +120,8 @@ def build_runtime_snapshot() -> Dict[str, Any]:
     phase = build_phase_lock()
     loop = build_operator_loop(phase)
     projection = build_phase_projection()
-    snapshot = {"phase": phase, "operatorLoop": loop, "projection": projection, "server": {"name": APP_NAME, "generated_at_ns": time.time_ns()}}
+    temporal_shells = build_temporal_shells(projection)
+    snapshot = {"phase": phase, "operatorLoop": loop, "projection": projection, "temporalShells": temporal_shells, "server": {"name": APP_NAME, "generated_at_ns": time.time_ns()}}
     snapshot["anomalies"] = detect_runtime_anomalies(snapshot)
     snapshot["corrections"] = propose_corrective_operators(snapshot)
     snapshot["lastCorrectionExecution"] = LAST_CORRECTION_EXECUTION
@@ -154,7 +165,7 @@ def _root_candidate_to_correction_payload(root_candidate: Dict[str, Any]) -> Dic
 
 @app.get("/api/status")
 async def api_status() -> Dict[str, Any]:
-    return {"status": "OK", "server": APP_NAME, "read_only": False, "correction_execution_requires_approval": True, "root_commit_requires_consensus": True, "time_ns": time.time_ns()}
+    return {"status": "OK", "server": APP_NAME, "read_only": False, "correction_execution_requires_approval": True, "root_commit_requires_consensus": True, "temporal_shells_enabled": True, "time_ns": time.time_ns()}
 
 
 @app.get("/api/latest-phase-lock")
@@ -170,6 +181,11 @@ async def api_latest_operator_loop() -> Dict[str, Any]:
 @app.get("/api/latest-projection")
 async def api_latest_projection() -> Dict[str, Any]:
     return build_phase_projection()
+
+
+@app.get("/api/latest-temporal-shells")
+async def api_latest_temporal_shells() -> Dict[str, Any]:
+    return build_temporal_shells(build_phase_projection())
 
 
 @app.get("/api/certification")
