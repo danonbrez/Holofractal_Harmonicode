@@ -1,6 +1,6 @@
 """
 hhs_runtime_api_server_v1.py
-(Updated with runtime projection, temporal shell streaming, branch-equation manifest API, transpiler API, and interpreter autocorrection suggestions)
+(Updated with runtime projection, temporal shell streaming, branch-equation manifest API, transpiler API, interpreter autocorrection suggestions, and correction simulation overlay)
 """
 
 from __future__ import annotations
@@ -30,6 +30,7 @@ from hhs_runtime.hhs_entangled_reciprocal_seesaw_temporal_shell_v1 import genera
 from hhs_runtime.hhs_branch_to_equation_manifest_v1 import select_and_bind_equation_manifest
 from hhs_runtime.hhs_ir_transpiler_v1 import transpile_manifest
 from hhs_runtime.hhs_interpreter_autocorrection_suggestions_v1 import build_autocorrection_suggestions, suggestions_to_training_feedback
+from hhs_runtime.hhs_correction_simulation_overlay_v1 import build_correction_simulation_overlay, overlay_to_training_feedback
 from hhs_runtime.harmonicode_interpreter_v1 import interpret
 from hhs_runtime.harmonicode_constraint_solver_v1 import solve_interpreter_result
 
@@ -179,7 +180,7 @@ def _root_candidate_to_correction_payload(root_candidate: Dict[str, Any]) -> Dic
 
 @app.get("/api/status")
 async def api_status() -> Dict[str, Any]:
-    return {"status": "OK", "server": APP_NAME, "read_only": False, "correction_execution_requires_approval": True, "root_commit_requires_consensus": True, "temporal_shells_enabled": True, "equation_manifest_enabled": True, "transpiler_enabled": True, "autocorrection_suggestions_enabled": True, "time_ns": time.time_ns()}
+    return {"status": "OK", "server": APP_NAME, "read_only": False, "correction_execution_requires_approval": True, "root_commit_requires_consensus": True, "temporal_shells_enabled": True, "equation_manifest_enabled": True, "transpiler_enabled": True, "autocorrection_suggestions_enabled": True, "correction_simulation_enabled": True, "time_ns": time.time_ns()}
 
 
 @app.get("/api/latest-phase-lock")
@@ -223,9 +224,11 @@ async def api_calculator_evaluate(req: CalculatorEvaluateRequest) -> Dict[str, A
     solved = solve_interpreter_result(interpreted)
     stress_result = {"findings": [], "receipt": {"source_hash72": interpreted.receipt.source_hash72, "receipt_hash72": interpreted.receipt.stress_hash72}}
     autocorrections = build_autocorrection_suggestions(stress_result, source_hash72=interpreted.receipt.source_hash72)
-    feedback = suggestions_to_training_feedback(autocorrections)
-    result_hash = hash72_digest(("calculator_evaluate_v1", interpreted.receipt.receipt_hash72, solved.receipt.receipt_hash72, autocorrections.summary_hash72, feedback), width=24)
-    return {"interpreter": interpreted.to_dict(), "solver": solved.to_dict(), "autocorrections": autocorrections.to_dict(), "autocorrection_feedback": feedback, "result_hash72": result_hash}
+    correction_feedback = suggestions_to_training_feedback(autocorrections)
+    simulation_overlay = build_correction_simulation_overlay(autocorrections.to_dict(), source_hash72=interpreted.receipt.source_hash72)
+    simulation_feedback = overlay_to_training_feedback(simulation_overlay)
+    result_hash = hash72_digest(("calculator_evaluate_v1", interpreted.receipt.receipt_hash72, solved.receipt.receipt_hash72, autocorrections.summary_hash72, simulation_overlay.overlay_hash72, correction_feedback, simulation_feedback), width=24)
+    return {"interpreter": interpreted.to_dict(), "solver": solved.to_dict(), "autocorrections": autocorrections.to_dict(), "autocorrection_feedback": correction_feedback, "correctionSimulation": simulation_overlay.to_dict(), "correction_simulation_feedback": simulation_feedback, "result_hash72": result_hash}
 
 
 @app.get("/api/certification")
