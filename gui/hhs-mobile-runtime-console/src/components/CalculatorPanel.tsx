@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import { useCalculatorDoc } from '../useCalculatorDoc';
 
 function readEquation(manifest: any): string {
   return manifest?.manifest?.equation_text
@@ -37,7 +38,7 @@ const mainKeys: KeyDef[][] = [
     { label: '∫dx', insert: 'Integral(' },
     { label: '▲', insert: '\n' },
     { label: '▼', insert: ' ' },
-    { label: 'x⁻¹', insert: '^(-1)', shift: 'x!' },
+    { label: 'x⁻¹', insert: '^(-1)' },
     { label: 'Logₓy', insert: 'Log(' },
   ],
   [
@@ -189,16 +190,7 @@ const hhsKeys: KeyDef[][] = [
 ];
 
 function buttonStyle(key: KeyDef): React.CSSProperties {
-  const base: React.CSSProperties = {
-    border: '1px solid rgba(255,255,255,0.18)',
-    borderRadius: 10,
-    color: '#f4f4f4',
-    fontFamily: 'monospace',
-    fontSize: 18,
-    minHeight: 48,
-    whiteSpace: 'pre-line',
-    boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.18), 0 2px 0 rgba(0,0,0,0.7)',
-  };
+  const base: React.CSSProperties = { border: '1px solid rgba(255,255,255,0.18)', borderRadius: 10, color: '#f4f4f4', fontFamily: 'monospace', fontSize: 18, minHeight: 48, whiteSpace: 'pre-line', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.18), 0 2px 0 rgba(0,0,0,0.7)' };
   if (key.accent === 'shift') return { ...base, background: '#ffc21c', color: '#161000' };
   if (key.accent === 'alpha') return { ...base, background: '#7662b7' };
   if (key.accent === 'orange') return { ...base, background: '#ff893a', color: '#140600' };
@@ -207,41 +199,31 @@ function buttonStyle(key: KeyDef): React.CSSProperties {
   return { ...base, background: '#535157' };
 }
 
+function tokenStyle(kind: string, active: boolean, diagnostic: boolean): React.CSSProperties {
+  return {
+    display: 'inline-block',
+    padding: '0 2px',
+    borderRadius: 3,
+    background: diagnostic ? 'rgba(255,0,64,0.25)' : active ? 'rgba(0,210,255,0.34)' : kind === 'ORDERED_PRODUCT' ? 'rgba(108,86,255,0.18)' : kind === 'INVARIANT' ? 'rgba(255,210,0,0.18)' : 'transparent',
+    textDecoration: diagnostic ? 'underline wavy #f04' : 'none',
+  };
+}
+
 export default function CalculatorPanel({ equationManifest, transpileReceipt, activePhase }: { equationManifest?: any; transpileReceipt?: any; activePhase?: number | null }) {
   const generatedEquation = useMemo(() => readEquation(equationManifest), [equationManifest]);
-  const [expression, setExpression] = useState(generatedEquation || 'xy=-1/yx\nyx=-xy\nxy≠yx');
+  const calcDoc = useCalculatorDoc(generatedEquation || 'xy=-1/yx\nyx=-xy\nxy≠yx');
   const [result, setResult] = useState<any>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [page, setPage] = useState<'main' | 'more' | 'hhs'>('main');
-  const [cursor, setCursor] = useState(expression.length);
 
   useEffect(() => {
-    if (generatedEquation && !result) {
-      setExpression(generatedEquation);
-      setCursor(generatedEquation.length);
-    }
+    if (generatedEquation && !result) calcDoc.reset(generatedEquation);
   }, [generatedEquation]);
 
   function insertText(raw?: string) {
-    if (!raw) return;
     if (raw === 'EVAL') return void evaluate();
-    if (raw === 'CLEAR') {
-      setExpression('');
-      setCursor(0);
-      return;
-    }
-    if (raw === 'BACK') {
-      const next = expression.slice(0, Math.max(0, cursor - 1)) + expression.slice(cursor);
-      setExpression(next);
-      setCursor(Math.max(0, cursor - 1));
-      return;
-    }
-    if (raw === 'LEFT') return setCursor(Math.max(0, cursor - 1));
-    if (raw === 'RIGHT') return setCursor(Math.min(expression.length, cursor + 1));
-    const next = expression.slice(0, cursor) + raw + expression.slice(cursor);
-    setExpression(next);
-    setCursor(cursor + raw.length);
+    calcDoc.insert(raw);
   }
 
   async function evaluate() {
@@ -251,7 +233,7 @@ export default function CalculatorPanel({ equationManifest, transpileReceipt, ac
       const res = await fetch('/api/calculator/evaluate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ expression }),
+        body: JSON.stringify({ expression: calcDoc.text }),
       });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       setResult(await res.json());
@@ -274,14 +256,22 @@ export default function CalculatorPanel({ equationManifest, transpileReceipt, ac
   return (
     <section style={{ borderTop: '1px solid #063', borderBottom: '1px solid #063', padding: 10, background: '#08090b', maxHeight: '62vh', overflow: 'auto' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', color: '#f4f4f4', fontFamily: 'monospace', fontWeight: 700, letterSpacing: 1 }}>
-        <span>NORM&nbsp; MATH&nbsp; FRAC</span>
-        <span>{activePhase == null ? 'PHASE --' : `PHASE ${activePhase}`}</span>
+        <span>NORM&nbsp; HHS&nbsp; FRAC</span>
+        <span>{activePhase == null ? 'PHASE --' : `PHASE ${activePhase}`} · TOKENS {calcDoc.doc.nodes.length}</span>
       </div>
 
       <div style={{ marginTop: 8, background: '#d6ebea', color: '#111', borderRadius: 12, minHeight: 118, padding: 10, fontFamily: 'monospace', fontSize: 16, whiteSpace: 'pre-wrap', overflow: 'auto' }}>
-        <div>{expression.slice(0, cursor)}<span style={{ color: '#e00' }}>|</span>{expression.slice(cursor)}</div>
-        <div style={{ marginTop: 8, color: '#333' }}>
-          {solverStatus !== 'UNRUN' ? `{{${contradictionCount}}} = ${solverStatus}` : ' '}
+        <div>
+          {calcDoc.doc.nodes.map((node, index) => (
+            <React.Fragment key={node.id}>
+              {index === calcDoc.doc.cursor ? <span style={{ color: '#e00' }}>|</span> : null}
+              <span style={tokenStyle(node.kind, activePhase != null && node.phaseIndex === activePhase, calcDoc.diagnosticNodeIds.has(node.id))} title={`${node.kind} · phase ${node.phaseIndex}`}>{node.text}</span>
+            </React.Fragment>
+          ))}
+          {calcDoc.doc.cursor === calcDoc.doc.nodes.length ? <span style={{ color: '#e00' }}>|</span> : null}
+        </div>
+        <div style={{ marginTop: 8, color: calcDoc.diagnostics.some((d) => d.level === 'ERROR') ? '#b00020' : '#333' }}>
+          {solverStatus !== 'UNRUN' ? `{{${contradictionCount}}} = ${solverStatus}` : calcDoc.diagnostics.length ? calcDoc.diagnostics.map((d) => `${d.level}:${d.message}`).join(' · ') : 'READY'}
         </div>
       </div>
 
@@ -297,9 +287,7 @@ export default function CalculatorPanel({ equationManifest, transpileReceipt, ac
       <div style={{ marginTop: 8, display: 'flex', flexDirection: 'column', gap: 8 }}>
         {keys.map((row, r) => (
           <div key={r} style={{ display: 'grid', gridTemplateColumns: `repeat(${row.length}, 1fr)`, gap: 8 }}>
-            {row.map((key) => (
-              <button key={`${r}-${key.label}`} onClick={() => insertText(key.insert)} style={buttonStyle(key)}>{key.label}</button>
-            ))}
+            {row.map((key) => <button key={`${r}-${key.label}`} onClick={() => insertText(key.insert)} style={buttonStyle(key)}>{key.label}</button>)}
           </div>
         ))}
       </div>
@@ -314,39 +302,20 @@ export default function CalculatorPanel({ equationManifest, transpileReceipt, ac
         <div style={{ background: solverStatus === 'QUARANTINED' ? '#1c0508' : '#03110b', border: `1px solid ${solverStatus === 'QUARANTINED' ? '#f04' : '#064'}`, borderRadius: 6, padding: 8 }}>
           <div style={{ color: solverStatus === 'QUARANTINED' ? '#ff8a8a' : '#8cffb0' }}>Solver</div>
           <div>status {solverStatus}</div>
-          <div>contradictions {contradictionCount}</div>
+          <div>diagnostics {calcDoc.diagnostics.length}</div>
           <div>manifest {manifestStatus} · phases {Array.isArray(phaseList) ? phaseList.length : 0}</div>
         </div>
       </div>
 
-      {autocorrectionSuggestions.length ? (
-        <div style={{ marginTop: 8, background: '#120f04', border: '1px solid #cc9b00', borderRadius: 6, padding: 8, fontSize: 11 }}>
-          <div style={{ color: '#ffd35a', fontWeight: 700 }}>Auto-Correction Suggestions</div>
-          {autocorrectionSuggestions.slice(0, 4).map((s: any) => (
-            <div key={s.suggestion_hash72} style={{ marginTop: 4 }}>
-              <b>{s.priority}</b> · {s.kind} · {s.message}
-            </div>
-          ))}
-        </div>
-      ) : null}
+      {calcDoc.diagnostics.length ? <div style={{ marginTop: 8, background: '#140b05', border: '1px solid #d76b00', borderRadius: 6, padding: 8, fontSize: 11 }}><div style={{ color: '#ffba6b', fontWeight: 700 }}>Live Expression Diagnostics</div>{calcDoc.diagnostics.map((d, i) => <div key={i}>{d.level} · {d.message}</div>)}</div> : null}
 
-      {branchFrontier?.branches?.length ? (
-        <div style={{ marginTop: 8, background: '#050b14', border: '1px solid #08c', borderRadius: 6, padding: 8, fontSize: 11 }}>
-          <div style={{ color: '#72d6ff', fontWeight: 700 }}>Branch Frontier</div>
-          {branchFrontier.branches.slice(0, 6).map((b: any) => (
-            <div key={b.branch_hash72} style={{ marginTop: 4, color: b.branch_hash72 === branchFrontier.selected_branch_hash72 ? '#ffff66' : '#dff' }}>
-              {b.correction_kind} · score {b.total_score} · path [{b.projected_phases?.join(' → ')}]
-            </div>
-          ))}
-        </div>
-      ) : null}
+      {autocorrectionSuggestions.length ? <div style={{ marginTop: 8, background: '#120f04', border: '1px solid #cc9b00', borderRadius: 6, padding: 8, fontSize: 11 }}><div style={{ color: '#ffd35a', fontWeight: 700 }}>Auto-Correction Suggestions</div>{autocorrectionSuggestions.slice(0, 4).map((s: any) => <div key={s.suggestion_hash72} style={{ marginTop: 4 }}><b>{s.priority}</b> · {s.kind} · {s.message}</div>)}</div> : null}
 
-      {pythonArtifact?.source ? (
-        <div style={{ marginTop: 8, background: '#020806', border: '1px solid #075', borderRadius: 6, padding: 8, fontSize: 11 }}>
-          <div style={{ color: '#8cffb0', fontWeight: 700 }}>Transpiler · {pythonArtifact.target} · {receipt(pythonArtifact.source_hash72)}</div>
-          <pre style={{ whiteSpace: 'pre-wrap', maxHeight: 150, overflow: 'auto', color: '#cfffff' }}>{pythonArtifact.source}</pre>
-        </div>
-      ) : null}
+      {branchFrontier?.branches?.length ? <div style={{ marginTop: 8, background: '#050b14', border: '1px solid #08c', borderRadius: 6, padding: 8, fontSize: 11 }}><div style={{ color: '#72d6ff', fontWeight: 700 }}>Branch Frontier</div>{branchFrontier.branches.slice(0, 6).map((b: any) => <div key={b.branch_hash72} style={{ marginTop: 4, color: b.branch_hash72 === branchFrontier.selected_branch_hash72 ? '#ffff66' : '#dff' }}>{b.correction_kind} · score {b.total_score} · path [{b.projected_phases?.join(' → ')}]</div>)}</div> : null}
+
+      <div style={{ marginTop: 8, background: '#020806', border: '1px solid #064', borderRadius: 6, padding: 8, fontSize: 11 }}><div style={{ color: '#8cffb0', fontWeight: 700 }}>Expression Phase Map</div><pre style={{ whiteSpace: 'pre-wrap', maxHeight: 110, overflow: 'auto', color: '#cfffff' }}>{JSON.stringify({ text: calcDoc.text, diagnostics: calcDoc.diagnostics }, null, 2)}</pre></div>
+
+      {pythonArtifact?.source ? <div style={{ marginTop: 8, background: '#020806', border: '1px solid #075', borderRadius: 6, padding: 8, fontSize: 11 }}><div style={{ color: '#8cffb0', fontWeight: 700 }}>Transpiler · {pythonArtifact.target} · {receipt(pythonArtifact.source_hash72)}</div><pre style={{ whiteSpace: 'pre-wrap', maxHeight: 150, overflow: 'auto', color: '#cfffff' }}>{pythonArtifact.source}</pre></div> : null}
 
       {error && <div style={{ marginTop: 8, color: '#ff8a8a', fontSize: 12 }}>ERROR · {error}</div>}
     </section>
