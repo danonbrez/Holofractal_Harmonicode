@@ -1,6 +1,6 @@
 """
 hhs_runtime_api_server_v1.py
-(Updated with root execution and ERS temporal shell streaming)
+(Updated with runtime projection, temporal shell streaming, and branch-equation manifest API)
 """
 
 from __future__ import annotations
@@ -27,6 +27,9 @@ from hhs_runtime.hhs_loshu_phase_embedding_v1 import hash72_digest
 from hhs_runtime.harmonicode_phase_projection_engine_v1 import interpret_transform_project
 from hhs_runtime.harmonicode_root_execution_engine_v1 import stage_root_execution
 from hhs_runtime.hhs_entangled_reciprocal_seesaw_temporal_shell_v1 import generate_temporal_shells
+from hhs_runtime.hhs_branch_to_equation_manifest_v1 import select_and_bind_equation_manifest
+from hhs_runtime.harmonicode_interpreter_v1 import interpret
+from hhs_runtime.harmonicode_constraint_solver_v1 import solve_interpreter_result
 
 APP_NAME = "HHS Runtime API Server v1"
 ARTIFACT_ROOT = Path("demo_reports/runtime_api")
@@ -40,6 +43,7 @@ BATCH_SIZE = 3
 LAST_CORRECTION_EXECUTION: Dict[str, Any] | None = None
 LAST_ROOT_CANDIDATE: Dict[str, Any] | None = None
 LAST_ROOT_COMMIT: Dict[str, Any] | None = None
+LAST_EQUATION_MANIFEST: Dict[str, Any] | None = None
 
 
 class CorrectionApprovalRequest(BaseModel):
@@ -53,6 +57,10 @@ class RootStageRequest(BaseModel):
 
 class RootCommitRequest(BaseModel):
     execution_candidate_hash72: str
+
+
+class CalculatorEvaluateRequest(BaseModel):
+    expression: str
 
 
 def _observations(observed_at_ns: int | None = None) -> List[Dict[str, Any]]:
@@ -92,9 +100,14 @@ def build_temporal_shells(projection: Dict[str, Any]) -> Dict[str, Any]:
     witness = projection.get("projection", {}).get("phase_witness", {})
     seed = witness.get("anchor_hash72") or projection.get("full_receipt_hash72") or "HHS_TEMPORAL_SHELL_SEED"
     run = generate_temporal_shells(str(seed), cycles=1).to_dict()
-    # Keep WebSocket payload bounded while preserving aggregate proof.
     run["steps"] = run["steps"][:72]
     return run
+
+
+def build_equation_manifest() -> Dict[str, Any]:
+    global LAST_EQUATION_MANIFEST
+    LAST_EQUATION_MANIFEST = select_and_bind_equation_manifest("HHS_GUI_CALCULATOR", cycles=1, windows=9, target_layer="normalized")
+    return LAST_EQUATION_MANIFEST
 
 
 def build_phase_lock() -> Dict[str, Any]:
@@ -121,7 +134,8 @@ def build_runtime_snapshot() -> Dict[str, Any]:
     loop = build_operator_loop(phase)
     projection = build_phase_projection()
     temporal_shells = build_temporal_shells(projection)
-    snapshot = {"phase": phase, "operatorLoop": loop, "projection": projection, "temporalShells": temporal_shells, "server": {"name": APP_NAME, "generated_at_ns": time.time_ns()}}
+    equation_manifest = build_equation_manifest()
+    snapshot = {"phase": phase, "operatorLoop": loop, "projection": projection, "temporalShells": temporal_shells, "equationManifest": equation_manifest, "server": {"name": APP_NAME, "generated_at_ns": time.time_ns()}}
     snapshot["anomalies"] = detect_runtime_anomalies(snapshot)
     snapshot["corrections"] = propose_corrective_operators(snapshot)
     snapshot["lastCorrectionExecution"] = LAST_CORRECTION_EXECUTION
@@ -144,28 +158,12 @@ def _verify_correction(suggestion: Any, relock: Dict[str, Any]) -> Dict[str, Any
 def _root_candidate_to_correction_payload(root_candidate: Dict[str, Any]) -> Dict[str, Any]:
     candidate = root_candidate.get("candidate", {})
     candidate_hash = candidate.get("execution_candidate_hash72")
-    return {
-        "anomalies": {"status": "CLEAR", "critical": 0, "warn": 0, "alerts": []},
-        "phase": build_phase_lock(),
-        "operatorLoop": build_operator_loop(),
-        "corrections": {
-            "suggestions": [{
-                "kind": "REQUIRE_EXTERNAL_PHASE_ANCHOR",
-                "priority": 100,
-                "target_modalities": ["HARMONICODE", "HASH72", "XYZW", "AUDIO"],
-                "target_phase_indices": [int(candidate.get("phase_index", 0) or 0)],
-                "reason": "Commit staged Root Meta-Branch equation through root execution pipeline.",
-                "proposed_patch": {"op": "COMMIT_ROOT_EQUATION", "candidate_hash72": candidate_hash, "equation": candidate.get("equation", {}).get("equation")},
-                "suggestion_hash72": str(candidate_hash),
-            }],
-            "summary_hash72": hash72_digest(("root_commit_correction_summary_v1", candidate_hash), width=24),
-        },
-    }
+    return {"anomalies": {"status": "CLEAR", "critical": 0, "warn": 0, "alerts": []}, "phase": build_phase_lock(), "operatorLoop": build_operator_loop(), "corrections": {"suggestions": [{"kind": "REQUIRE_EXTERNAL_PHASE_ANCHOR", "priority": 100, "target_modalities": ["HARMONICODE", "HASH72", "XYZW", "AUDIO"], "target_phase_indices": [int(candidate.get("phase_index", 0) or 0)], "reason": "Stage root equation through runtime correction pipeline.", "proposed_patch": {"op": "STAGE_ROOT_EQUATION", "candidate_hash72": candidate_hash, "equation": candidate.get("equation", {}).get("equation")}, "suggestion_hash72": str(candidate_hash)}], "summary_hash72": hash72_digest(("root_stage_correction_summary_v1", candidate_hash), width=24)}}
 
 
 @app.get("/api/status")
 async def api_status() -> Dict[str, Any]:
-    return {"status": "OK", "server": APP_NAME, "read_only": False, "correction_execution_requires_approval": True, "root_commit_requires_consensus": True, "temporal_shells_enabled": True, "time_ns": time.time_ns()}
+    return {"status": "OK", "server": APP_NAME, "read_only": False, "correction_execution_requires_approval": True, "root_commit_requires_consensus": True, "temporal_shells_enabled": True, "equation_manifest_enabled": True, "time_ns": time.time_ns()}
 
 
 @app.get("/api/latest-phase-lock")
@@ -186,6 +184,19 @@ async def api_latest_projection() -> Dict[str, Any]:
 @app.get("/api/latest-temporal-shells")
 async def api_latest_temporal_shells() -> Dict[str, Any]:
     return build_temporal_shells(build_phase_projection())
+
+
+@app.get("/api/latest-equation-manifest")
+async def api_latest_equation_manifest() -> Dict[str, Any]:
+    return build_equation_manifest()
+
+
+@app.post("/api/calculator/evaluate")
+async def api_calculator_evaluate(req: CalculatorEvaluateRequest) -> Dict[str, Any]:
+    interpreted = interpret(req.expression)
+    solved = solve_interpreter_result(interpreted)
+    result_hash = hash72_digest(("calculator_evaluate_v1", interpreted.receipt.receipt_hash72, solved.receipt.receipt_hash72), width=24)
+    return {"interpreter": interpreted.to_dict(), "solver": solved.to_dict(), "result_hash72": result_hash}
 
 
 @app.get("/api/certification")
