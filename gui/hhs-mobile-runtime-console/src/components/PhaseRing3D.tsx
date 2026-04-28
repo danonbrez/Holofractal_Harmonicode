@@ -14,6 +14,7 @@ const PRUNE_THRESHOLD = 18;
 type Branch = { id: string; phases: number[]; kind: 'drift' | 'correction'; driftScore: number; degreesOfFreedomScore: number; emergenceScore: number; };
 type BranchMemory = Branch & { age: number; survivalScore: number; wins: number; pruned?: boolean; };
 type RootMetaBranch = BranchMemory & { mutualOverlapScore: number; compressionScore: number; rootScore: number; equationSeed: string; };
+type CalculatorPhaseItem = { id: string; text: string; kind: string; phaseIndex: number };
 
 function mod72(n: number): number { return ((Math.round(n) % RING) + RING) % RING; }
 function circularDistance(a: number, b: number): number { const d = Math.abs(mod72(a) - mod72(b)); return Math.min(d, RING - d); }
@@ -50,6 +51,14 @@ function PhaseMarker({ index, color, scale = 1, pulse = false, onClick }: { inde
   const pos = phaseToPoint(index);
   useFrame(({ clock }) => { if (!ref.current) return; const s = pulse ? scale * (1 + Math.sin(clock.getElapsedTime() * 7) * 0.35) : scale; ref.current.scale.set(s, s, s); });
   return <mesh ref={ref} position={pos} onClick={onClick}><sphereGeometry args={[0.075, 16, 16]} /><meshStandardMaterial color={color} emissive={color} emissiveIntensity={0.9} /></mesh>;
+}
+
+function itemColor(kind: string): string {
+  if (kind === 'ORDERED_PRODUCT') return '#8a5cff';
+  if (kind === 'INVARIANT') return '#ffd200';
+  if (kind === 'FUNCTION') return '#00e0ff';
+  if (kind === 'OPERATOR') return '#ff8a3d';
+  return '#aaf7ff';
 }
 
 function buildPredictionBranches(anchor: number, anomalies?: RuntimeAnomalies): Branch[] {
@@ -130,9 +139,9 @@ function rootMetaBranch(frontier: BranchMemory[]): RootMetaBranch | undefined {
   }).sort((a, b) => b.rootScore - a.rootScore)[0];
 }
 
-export default function PhaseRing3D({ phase, anomalies, projection, loop, corrections }: { phase: PhaseLockView; anomalies?: RuntimeAnomalies; projection?: ProjectionView; loop?: OperatorLoopView; corrections?: any }) {
+export default function PhaseRing3D({ phase, anomalies, projection, loop, corrections, activePhase, onPhaseSelect, calculatorPhases = [] }: { phase: PhaseLockView; anomalies?: RuntimeAnomalies; projection?: ProjectionView; loop?: OperatorLoopView; corrections?: any; activePhase?: number | null; onPhaseSelect?: (phase: number) => void; calculatorPhases?: CalculatorPhaseItem[] }) {
   const [selected, setSelected] = useState<{ index: number; witnesses: PhaseWitnessView[] } | null>(null);
-  const phaseIndex = projection?.phase_index ?? phase.anchor_phase_index ?? 0;
+  const phaseIndex = activePhase ?? projection?.phase_index ?? phase.anchor_phase_index ?? 0;
   const [history, setHistory] = useState<number[]>([phaseIndex]);
   const [branchFrontier, setBranchFrontier] = useState<BranchMemory[]>([]);
   const affected = new Set((anomalies?.alerts ?? []).flatMap((a: any) => a.affected_phase_indices ?? []));
@@ -144,6 +153,7 @@ export default function PhaseRing3D({ phase, anomalies, projection, loop, correc
   const bestBranch = branchFrontier[0];
   const rootBranch = rootMetaBranch(branchFrontier);
   const bestCorrection = branchFrontier.find((b) => b.kind === 'correction');
+  const itemPhases = uniq(calculatorPhases.map((item) => mod72(item.phaseIndex)));
 
   return (
     <div style={{ height: '44vh', position: 'relative' }}>
@@ -152,6 +162,7 @@ export default function PhaseRing3D({ phase, anomalies, projection, loop, correc
         <pointLight position={[3, 3, 4]} intensity={1.2} />
         <TorusBody phaseIndex={phaseIndex} anomalyStatus={anomalies?.status} />
         <PhaseLine phases={history} color="#00ffff" opacity={0.9} />
+        {itemPhases.length > 1 ? <PhaseLine phases={itemPhases} color="#aaf7ff" opacity={0.35} /> : null}
         {branchFrontier.map((b) => {
           const isRoot = b.id === rootBranch?.id;
           const isBest = b.id === bestBranch?.id;
@@ -160,12 +171,13 @@ export default function PhaseRing3D({ phase, anomalies, projection, loop, correc
           return <PhaseLine key={b.id} phases={b.phases} color={color} opacity={opacity} linewidth={isRoot ? 3 : 1} />;
         })}
         <PhaseMarker index={phaseIndex} color="#00ff88" scale={1.4} pulse />
-        {phase.witnesses.map((w) => <PhaseMarker key={w.witness_hash72} index={w.phase_index} color={affected.has(w.phase_index) ? '#ff0040' : '#ffff00'} scale={0.85} pulse={affected.has(w.phase_index)} onClick={() => setSelected({ index: w.phase_index, witnesses: phase.witnesses.filter((x) => x.phase_index === w.phase_index) })} />)}
+        {calculatorPhases.map((item, i) => <PhaseMarker key={`calc-${item.id}-${i}`} index={item.phaseIndex} color={itemColor(item.kind)} scale={activePhase === item.phaseIndex ? 0.76 : 0.44} pulse={activePhase === item.phaseIndex} onClick={() => onPhaseSelect?.(item.phaseIndex)} />)}
+        {phase.witnesses.map((w) => <PhaseMarker key={w.witness_hash72} index={w.phase_index} color={affected.has(w.phase_index) ? '#ff0040' : '#ffff00'} scale={0.85} pulse={affected.has(w.phase_index)} onClick={() => { onPhaseSelect?.(w.phase_index); setSelected({ index: w.phase_index, witnesses: phase.witnesses.filter((x) => x.phase_index === w.phase_index) }); }} />)}
         {(loop?.proposals ?? []).map((p, i) => <PhaseMarker key={`${p.proposal_hash72}-${i}`} index={mod72(phaseIndex + Number(p.phase_distance_from_anchor ?? 0))} color={p.phase_ok ? '#55aaff' : '#ff0040'} scale={0.65} pulse={!p.phase_ok} />)}
-        {branchFrontier.flatMap((b) => b.phases.slice(1).map((p, i) => <PhaseMarker key={`${b.id}-${i}`} index={p} color={b.id === rootBranch?.id ? '#ffffff' : b.kind === 'correction' ? '#00ff88' : '#ffaa00'} scale={b.id === rootBranch?.id ? 0.56 : b.id === bestBranch?.id ? 0.46 : 0.28} pulse={b.id === rootBranch?.id && i === b.phases.length - 2} />))}
+        {branchFrontier.flatMap((b) => b.phases.slice(1).map((p, i) => <PhaseMarker key={`${b.id}-${i}`} index={p} color={b.id === rootBranch?.id ? '#ffffff' : b.kind === 'correction' ? '#00ff88' : '#ffaa00'} scale={b.id === rootBranch?.id ? 0.56 : b.id === bestBranch?.id ? 0.46 : 0.28} pulse={b.id === rootBranch?.id && i === b.phases.length - 2} onClick={() => onPhaseSelect?.(p)} />))}
       </Canvas>
       <div style={{ position: 'absolute', top: 8, left: 10, right: 10, display: 'flex', justifyContent: 'space-between', fontSize: 11, pointerEvents: 'none' }}>
-        <span>phase {phaseIndex}/72 · {projection?.target_layer ?? 'runtime'}</span>
+        <span>phase {phaseIndex}/72 · {projection?.target_layer ?? 'runtime'} · items {calculatorPhases.length}</span>
         <span>frontier {branchFrontier.length}/{MAX_BRANCHES} · root {rootBranch?.rootScore ?? 0}</span>
       </div>
       {rootBranch && (
