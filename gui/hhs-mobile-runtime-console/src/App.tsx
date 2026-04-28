@@ -6,7 +6,7 @@ import LedgerPanel from './components/LedgerPanel';
 import ExecutionPanel from './components/ExecutionPanel';
 import CertificationPanel from './components/CertificationPanel';
 import AlertPanel, { AlertBanner } from './components/AlertPanel';
-import CalculatorPanel from './components/CalculatorPanel';
+import CalculatorPanelV2 from './components/CalculatorPanelV2';
 import { loadRuntimeSnapshot, RuntimeSnapshot, connectRuntimeStream } from './runtimeData';
 
 export type CalculatorPhaseToken = { id: string; text: string; kind: string; phaseIndex: number };
@@ -51,7 +51,7 @@ export default function App() {
       />
       <OperatorPanel loop={data.operatorLoop} />
       <AlertPanel anomalies={data.anomalies} />
-      <CalculatorPanel
+      <CalculatorPanelV2
         equationManifest={data.equationManifest}
         transpileReceipt={data.transpileReceipt}
         activePhase={activePhase}
