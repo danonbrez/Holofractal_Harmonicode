@@ -32,6 +32,8 @@ from hhs_runtime.harmonicode_constraint_solver_v1 import solve_interpreter_resul
 from hhs_runtime.hhs_convergence_packet_v1 import build_convergence_packet
 from hhs_runtime.hhs_agent_patch_planner_v1 import plan_transformation_patch
 from hhs_runtime.hhs_audio_phase_transport_encoder_v1 import encode_expression_to_wav_stems
+from hhs_runtime.hhs_symbolic_linguistic_substitution_solver_v1 import solve_symbolic_linguistic_substitutions
+from hhs_runtime.hhs_wordnet_relation_enforcer_v1 import default_wordnet_paths, load_wordnet_relations
 
 APP_NAME = "HHS Runtime API Server v1"
 ARTIFACT_ROOT = Path("demo_reports/runtime_api")
@@ -47,6 +49,7 @@ LAST_ROOT_CANDIDATE: Dict[str, Any] | None = None
 LAST_ROOT_COMMIT: Dict[str, Any] | None = None
 LAST_EQUATION_MANIFEST: Dict[str, Any] | None = None
 LAST_TRANSPILE_RECEIPT: Dict[str, Any] | None = None
+WORDNET_RELATION_DB: Dict[str, Any] | None = None
 
 
 class CorrectionApprovalRequest(BaseModel):
@@ -80,6 +83,16 @@ class ConvergencePacketRequest(BaseModel):
 class AudioEncodeRequest(BaseModel):
     expression: str
     items: List[Dict[str, Any]]
+
+
+def _wordnet_db() -> Dict[str, Any]:
+    global WORDNET_RELATION_DB
+    if WORDNET_RELATION_DB is None:
+        try:
+            WORDNET_RELATION_DB = load_wordnet_relations(default_wordnet_paths())
+        except Exception:
+            WORDNET_RELATION_DB = {}
+    return WORDNET_RELATION_DB
 
 
 def _observations(observed_at_ns: int | None = None) -> List[Dict[str, Any]]:
@@ -190,7 +203,7 @@ def _root_candidate_to_correction_payload(root_candidate: Dict[str, Any]) -> Dic
 
 @app.get("/api/status")
 async def api_status() -> Dict[str, Any]:
-    return {"status": "OK", "server": APP_NAME, "read_only": False, "correction_execution_requires_approval": True, "root_commit_requires_consensus": True, "temporal_shells_enabled": True, "equation_manifest_enabled": True, "transpiler_enabled": True, "agent_packet_enabled": True, "audio_encode_enabled": True, "time_ns": time.time_ns()}
+    return {"status": "OK", "server": APP_NAME, "read_only": False, "correction_execution_requires_approval": True, "root_commit_requires_consensus": True, "temporal_shells_enabled": True, "equation_manifest_enabled": True, "transpiler_enabled": True, "agent_packet_enabled": True, "audio_encode_enabled": True, "symbolic_substitution_enabled": True, "time_ns": time.time_ns()}
 
 
 @app.get("/api/latest-phase-lock")
@@ -232,6 +245,7 @@ async def api_transpile_manifest(req: TranspileManifestRequest) -> Dict[str, Any
 async def api_calculator_evaluate(req: CalculatorEvaluateRequest) -> Dict[str, Any]:
     interpreted = interpret(req.expression)
     solved = solve_interpreter_result(interpreted)
+    symbolic_substitution = solve_symbolic_linguistic_substitutions(req.expression, _wordnet_db())
     stress_result = {"findings": [], "receipt": {"source_hash72": interpreted.receipt.source_hash72, "receipt_hash72": interpreted.receipt.stress_hash72}}
     autocorrections = build_autocorrection_suggestions(stress_result, source_hash72=interpreted.receipt.source_hash72)
     correction_feedback = suggestions_to_training_feedback(autocorrections)
@@ -239,8 +253,8 @@ async def api_calculator_evaluate(req: CalculatorEvaluateRequest) -> Dict[str, A
     simulation_feedback = overlay_to_training_feedback(simulation_overlay)
     branch_frontier = compete_correction_branches(simulation_overlay.to_dict())
     branch_feedback = branch_frontier_to_training_feedback(branch_frontier)
-    result_hash = hash72_digest(("calculator_evaluate_v1", interpreted.receipt.receipt_hash72, solved.receipt.receipt_hash72, autocorrections.summary_hash72, simulation_overlay.overlay_hash72, branch_frontier.frontier_hash72, correction_feedback, simulation_feedback, branch_feedback), width=24)
-    return {"interpreter": interpreted.to_dict(), "solver": solved.to_dict(), "autocorrections": autocorrections.to_dict(), "autocorrection_feedback": correction_feedback, "correctionSimulation": simulation_overlay.to_dict(), "correction_simulation_feedback": simulation_feedback, "correctionBranchFrontier": branch_frontier.to_dict(), "correction_branch_feedback": branch_feedback, "result_hash72": result_hash}
+    result_hash = hash72_digest(("calculator_evaluate_v1", interpreted.receipt.receipt_hash72, solved.receipt.receipt_hash72, symbolic_substitution.receipt_hash72, autocorrections.summary_hash72, simulation_overlay.overlay_hash72, branch_frontier.frontier_hash72, correction_feedback, simulation_feedback, branch_feedback), width=24)
+    return {"interpreter": interpreted.to_dict(), "solver": solved.to_dict(), "symbolic_substitution": symbolic_substitution.to_dict(), "autocorrections": autocorrections.to_dict(), "autocorrection_feedback": correction_feedback, "correctionSimulation": simulation_overlay.to_dict(), "correction_simulation_feedback": simulation_feedback, "correctionBranchFrontier": branch_frontier.to_dict(), "correction_branch_feedback": branch_feedback, "result_hash72": result_hash}
 
 
 @app.post("/api/agent/convergence-packet")
