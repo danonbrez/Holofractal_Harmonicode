@@ -20,8 +20,8 @@ Run:
     python hhs_v1_bundle_runner.py
 
 Outputs:
-    /mnt/data/hhs_v1_bundle_certification_report.json
-    /mnt/data/hhs_v1_demo_run.hhsrun
+    data/runtime/hhs_v1_bundle_certification_report.json
+    data/runtime/hhs_v1_demo_run.hhsrun
 """
 
 from __future__ import annotations
@@ -31,6 +31,7 @@ from typing import Any, Dict
 import json
 import traceback
 
+from hhs_runtime.hhs_repo_paths_v1 import runtime_artifact_path
 from hhs_runtime_smoke_tests_v1 import HHSSmokeTestSuiteV1
 from hhs_regression_suite_v1 import HHSRegressionSuiteV1
 from hhs_program_format_and_cli_v1 import (
@@ -47,10 +48,10 @@ except Exception:
     HHSRuntimeDatabaseBridgeV1 = None
 
 
-REPORT_PATH = Path("/mnt/data/hhs_v1_bundle_certification_report.json")
-DEMO_PROGRAM_PATH = Path("/mnt/data/hhs_v1_demo_program.hhsprog")
-DEMO_RUN_PATH = Path("/mnt/data/hhs_v1_demo_run.hhsrun")
-DB_PATH = Path("/mnt/data/hhs_v1_bundle_certification.sqlite3")
+REPORT_PATH = runtime_artifact_path("hhs_v1_bundle_certification_report.json")
+DEMO_PROGRAM_PATH = runtime_artifact_path("hhs_v1_demo_program.hhsprog")
+DEMO_RUN_PATH = runtime_artifact_path("hhs_v1_demo_run.hhsrun")
+DB_PATH = runtime_artifact_path("hhs_v1_bundle_certification.sqlite3")
 
 
 def safe_run(name: str, fn):
