@@ -22,44 +22,63 @@ function circularDistance(a: number, b: number): number { const d = Math.abs(mod
 function branchSignature(branch: Branch): string { return `${branch.kind}:${branch.phases.join('-')}`; }
 function uniq<T>(xs: T[]): T[] { return Array.from(new Set(xs)); }
 
-function phaseToPoint(phaseIndex: number): [number, number, number] {
+function phaseToPoint(phaseIndex: number, lift = 0): [number, number, number] {
   const p = mod72(phaseIndex);
   const major = ((p % MAJOR_SEGMENTS) / MAJOR_SEGMENTS) * Math.PI * 2;
   const minor = (Math.floor(p / MAJOR_SEGMENTS) / MINOR_SEGMENTS) * Math.PI * 2;
-  return [(TORUS_R + TORUS_r * Math.cos(minor)) * Math.cos(major), (TORUS_R + TORUS_r * Math.cos(minor)) * Math.sin(major), TORUS_r * Math.sin(minor)];
+  const r = TORUS_R + lift;
+  return [(r + TORUS_r * Math.cos(minor)) * Math.cos(major), (r + TORUS_r * Math.cos(minor)) * Math.sin(major), TORUS_r * Math.sin(minor) + lift * 0.22];
 }
 
-function PhaseLine({ phases, color, opacity = 1, linewidth = 1 }: { phases: number[]; color: string; opacity?: number; linewidth?: number }) {
-  const geometry = useMemo(() => new THREE.BufferGeometry().setFromPoints(phases.map((p) => new THREE.Vector3(...phaseToPoint(p)))), [phases.join(',')]);
+function PhaseLine({ phases, color, opacity = 1, lift = 0 }: { phases: number[]; color: string; opacity?: number; lift?: number }) {
+  const geometry = useMemo(() => new THREE.BufferGeometry().setFromPoints(phases.map((p) => new THREE.Vector3(...phaseToPoint(p, lift)))), [phases.join(','), lift]);
   if (phases.length < 2) return null;
-  return <line geometry={geometry}><lineBasicMaterial color={color} transparent opacity={opacity} linewidth={linewidth} /></line>;
+  return <line geometry={geometry}><lineBasicMaterial color={color} transparent opacity={opacity} /></line>;
 }
 
-function TorusBody({ phaseIndex, anomalyStatus }: { phaseIndex: number; anomalyStatus?: string }) {
+function FlowLine({ phases, color, opacity = 1, lift = 0 }: { phases: number[]; color: string; opacity?: number; lift?: number }) {
   const ref = useRef<any>();
+  const geometry = useMemo(() => new THREE.BufferGeometry().setFromPoints(phases.map((p) => new THREE.Vector3(...phaseToPoint(p, lift)))), [phases.join(','), lift]);
   useFrame(({ clock }) => {
     if (!ref.current) return;
-    const p = mod72(phaseIndex);
-    ref.current.rotation.y = ((p % MAJOR_SEGMENTS) / MAJOR_SEGMENTS) * Math.PI * 2;
-    ref.current.rotation.x = (Math.floor(p / MAJOR_SEGMENTS) / MINOR_SEGMENTS) * Math.PI * 2 + Math.sin(clock.getElapsedTime() * 0.5) * 0.03;
+    ref.current.material.opacity = Math.max(0.12, opacity * (0.72 + Math.sin(clock.getElapsedTime() * 2.2 + lift * 6) * 0.22));
   });
-  const color = anomalyStatus === 'CRITICAL' ? '#ff0040' : anomalyStatus === 'WARN' ? '#ffaa00' : '#00f0ff';
-  return <mesh ref={ref}><torusGeometry args={[TORUS_R, TORUS_r, 32, 144]} /><meshStandardMaterial color={color} emissive={color} emissiveIntensity={0.25} wireframe /></mesh>;
+  if (phases.length < 2) return null;
+  return <line ref={ref} geometry={geometry}><lineBasicMaterial color={color} transparent opacity={opacity} /></line>;
 }
 
-function PhaseMarker({ index, color, scale = 1, pulse = false, onClick }: { index: number; color: string; scale?: number; pulse?: boolean; onClick?: () => void }) {
+function PhaseMarker({ index, color, scale = 1, pulse = false, lift = 0, onClick }: { index: number; color: string; scale?: number; pulse?: boolean; lift?: number; onClick?: () => void }) {
   const ref = useRef<any>();
-  const pos = phaseToPoint(index);
-  useFrame(({ clock }) => { if (!ref.current) return; const s = pulse ? scale * (1 + Math.sin(clock.getElapsedTime() * 7) * 0.35) : scale; ref.current.scale.set(s, s, s); });
-  return <mesh ref={ref} position={pos} onClick={onClick}><sphereGeometry args={[0.075, 16, 16]} /><meshStandardMaterial color={color} emissive={color} emissiveIntensity={0.9} /></mesh>;
+  const pos = phaseToPoint(index, lift);
+  useFrame(({ clock }) => {
+    if (!ref.current) return;
+    const s = pulse ? scale * (1 + Math.sin(clock.getElapsedTime() * 6.5 + index * 0.1) * 0.28) : scale;
+    ref.current.scale.set(s, s, s);
+    ref.current.rotation.y += 0.01;
+  });
+  return <mesh ref={ref} position={pos} onClick={onClick}><sphereGeometry args={[0.075, 18, 18]} /><meshStandardMaterial color={color} emissive={color} emissiveIntensity={1.25} toneMapped={false} /></mesh>;
+}
+
+function PhaseFieldHalo({ phaseIndex, status }: { phaseIndex: number; status?: string }) {
+  const group = useRef<any>();
+  const color = status === 'CRITICAL' ? '#ff315e' : status === 'WARN' ? '#ffbf42' : '#45f7ff';
+  useFrame(({ clock }) => {
+    if (!group.current) return;
+    group.current.rotation.z = clock.getElapsedTime() * 0.045 + phaseIndex * 0.002;
+    group.current.rotation.x = Math.sin(clock.getElapsedTime() * 0.22) * 0.08;
+  });
+  const rings = [0, 8, 16, 24, 32, 40, 48, 56, 64, 72];
+  return <group ref={group}>
+    {rings.map((offset, i) => <PhaseLine key={i} phases={[0, 9, 18, 27, 36, 45, 54, 63, 0].map((p) => p + offset)} color={color} opacity={0.035 + i * 0.006} lift={-0.09 + i * 0.018} />)}
+  </group>;
 }
 
 function itemColor(kind: string): string {
-  if (kind === 'ORDERED_PRODUCT') return '#8a5cff';
-  if (kind === 'INVARIANT') return '#ffd200';
-  if (kind === 'FUNCTION') return '#00e0ff';
-  if (kind === 'OPERATOR') return '#ff8a3d';
-  return '#aaf7ff';
+  if (kind === 'ORDERED_PRODUCT') return '#9c78ff';
+  if (kind === 'INVARIANT') return '#ffd84d';
+  if (kind === 'FUNCTION') return '#38e8ff';
+  if (kind === 'OPERATOR') return '#ff9b52';
+  return '#b9fbff';
 }
 
 function buildPredictionBranches(anchor: number, anomalies?: RuntimeAnomalies): Branch[] {
@@ -158,41 +177,41 @@ export default function PhaseRing3D({ phase, anomalies, projection, loop, correc
   const influences = topDisplayInfluences(calculatorPhases, activePhase, 6);
 
   return (
-    <div style={{ height: '44vh', position: 'relative' }}>
-      <Canvas camera={{ position: [0, -0.2, 5.4] }}>
-        <ambientLight intensity={0.8} />
-        <pointLight position={[3, 3, 4]} intensity={1.2} />
-        <TorusBody phaseIndex={phaseIndex} anomalyStatus={anomalies?.status} />
-        <PhaseLine phases={history} color="#00ffff" opacity={0.9} />
-        {itemPhases.length > 1 ? <PhaseLine phases={itemPhases} color="#aaf7ff" opacity={0.35} /> : null}
-        {influences.map((inf, i) => <PhaseLine key={`inf-${inf.id}-${i}`} phases={inf.projectedPhases} color="#00ffaa" opacity={0.45} linewidth={1} />)}
-        {branchFrontier.map((b) => {
+    <div style={{ height: '44vh', position: 'relative', borderRadius: 16, overflow: 'hidden', background: 'radial-gradient(circle at center, rgba(34,255,255,.09), rgba(0,0,0,.0) 55%)' }}>
+      <Canvas camera={{ position: [0, -0.15, 5.05] }}>
+        <ambientLight intensity={0.35} />
+        <pointLight position={[3, 3, 4]} intensity={1.6} />
+        <PhaseFieldHalo phaseIndex={phaseIndex} status={anomalies?.status} />
+        <FlowLine phases={history} color="#33f6ff" opacity={0.9} lift={0.08} />
+        {itemPhases.length > 1 ? <FlowLine phases={itemPhases} color="#b8f7ff" opacity={0.38} lift={0.16} /> : null}
+        {influences.map((inf, i) => <FlowLine key={`inf-${inf.id}-${i}`} phases={inf.projectedPhases} color="#40ffbf" opacity={0.46} lift={0.1 + i * 0.018} />)}
+        {branchFrontier.map((b, i) => {
           const isRoot = b.id === rootBranch?.id;
           const isBest = b.id === bestBranch?.id;
-          const color = isRoot ? '#ffffff' : b.kind === 'correction' ? '#00ff88' : '#ffaa00';
-          const opacity = isRoot ? 1 : isBest ? 0.85 : Math.max(0.15, Math.min(0.58, b.survivalScore / 170));
-          return <PhaseLine key={b.id} phases={b.phases} color={color} opacity={opacity} linewidth={isRoot ? 3 : 1} />;
+          const color = isRoot ? '#ffffff' : b.kind === 'correction' ? '#39ff9b' : '#ffb347';
+          const opacity = isRoot ? 0.98 : isBest ? 0.76 : Math.max(0.14, Math.min(0.5, b.survivalScore / 180));
+          return <FlowLine key={b.id} phases={b.phases} color={color} opacity={opacity} lift={isRoot ? 0.26 : 0.08 + i * 0.012} />;
         })}
-        <PhaseMarker index={phaseIndex} color="#00ff88" scale={1.4} pulse />
-        {influences[0] ? <PhaseMarker index={influences[0].phaseIndex} color="#00ffaa" scale={0.9} pulse onClick={() => onPhaseSelect?.(influences[0].phaseIndex)} /> : null}
-        {calculatorPhases.map((item, i) => <PhaseMarker key={`calc-${item.id}-${i}`} index={item.phaseIndex} color={itemColor(item.kind)} scale={activePhase === item.phaseIndex ? 0.76 : 0.44} pulse={activePhase === item.phaseIndex} onClick={() => onPhaseSelect?.(item.phaseIndex)} />)}
-        {phase.witnesses.map((w) => <PhaseMarker key={w.witness_hash72} index={w.phase_index} color={affected.has(w.phase_index) ? '#ff0040' : '#ffff00'} scale={0.85} pulse={affected.has(w.phase_index)} onClick={() => { onPhaseSelect?.(w.phase_index); setSelected({ index: w.phase_index, witnesses: phase.witnesses.filter((x) => x.phase_index === w.phase_index) }); }} />)}
-        {(loop?.proposals ?? []).map((p, i) => <PhaseMarker key={`${p.proposal_hash72}-${i}`} index={mod72(phaseIndex + Number(p.phase_distance_from_anchor ?? 0))} color={p.phase_ok ? '#55aaff' : '#ff0040'} scale={0.65} pulse={!p.phase_ok} />)}
-        {branchFrontier.flatMap((b) => b.phases.slice(1).map((p, i) => <PhaseMarker key={`${b.id}-${i}`} index={p} color={b.id === rootBranch?.id ? '#ffffff' : b.kind === 'correction' ? '#00ff88' : '#ffaa00'} scale={b.id === rootBranch?.id ? 0.56 : b.id === bestBranch?.id ? 0.46 : 0.28} pulse={b.id === rootBranch?.id && i === b.phases.length - 2} onClick={() => onPhaseSelect?.(p)} />))}
+        <PhaseMarker index={phaseIndex} color="#33ffbb" scale={1.55} lift={0.24} pulse />
+        {influences[0] ? <PhaseMarker index={influences[0].phaseIndex} color="#40ffbf" scale={0.98} lift={0.18} pulse onClick={() => onPhaseSelect?.(influences[0].phaseIndex)} /> : null}
+        {calculatorPhases.map((item, i) => <PhaseMarker key={`calc-${item.id}-${i}`} index={item.phaseIndex} color={itemColor(item.kind)} scale={activePhase === item.phaseIndex ? 0.78 : 0.44} lift={0.12} pulse={activePhase === item.phaseIndex} onClick={() => onPhaseSelect?.(item.phaseIndex)} />)}
+        {phase.witnesses.map((w) => <PhaseMarker key={w.witness_hash72} index={w.phase_index} color={affected.has(w.phase_index) ? '#ff315e' : '#ffe96a'} scale={0.86} lift={0.04} pulse={affected.has(w.phase_index)} onClick={() => { onPhaseSelect?.(w.phase_index); setSelected({ index: w.phase_index, witnesses: phase.witnesses.filter((x) => x.phase_index === w.phase_index) }); }} />)}
+        {(loop?.proposals ?? []).map((p, i) => <PhaseMarker key={`${p.proposal_hash72}-${i}`} index={mod72(phaseIndex + Number(p.phase_distance_from_anchor ?? 0))} color={p.phase_ok ? '#69a7ff' : '#ff315e'} scale={0.62} lift={0.02 + i * 0.01} pulse={!p.phase_ok} />)}
+        {branchFrontier.flatMap((b) => b.phases.slice(1).map((p, i) => <PhaseMarker key={`${b.id}-${i}`} index={p} color={b.id === rootBranch?.id ? '#ffffff' : b.kind === 'correction' ? '#39ff9b' : '#ffb347'} scale={b.id === rootBranch?.id ? 0.54 : b.id === bestBranch?.id ? 0.43 : 0.26} lift={b.id === rootBranch?.id ? 0.26 : 0.06} pulse={b.id === rootBranch?.id && i === b.phases.length - 2} onClick={() => onPhaseSelect?.(p)} />))}
       </Canvas>
-      <div style={{ position: 'absolute', top: 8, left: 10, right: 10, display: 'flex', justifyContent: 'space-between', fontSize: 11, pointerEvents: 'none' }}>
+      <div style={{ position: 'absolute', top: 8, left: 10, right: 10, display: 'flex', justifyContent: 'space-between', fontSize: 11, pointerEvents: 'none', color: '#dffcff' }}>
         <span>phase {phaseIndex}/72 · {projection?.target_layer ?? 'runtime'} · items {calculatorPhases.length}</span>
         <span>frontier {branchFrontier.length}/{MAX_BRANCHES} · root {rootBranch?.rootScore ?? 0} · influence {influences[0]?.influenceScore ?? 0}</span>
       </div>
       {rootBranch && (
-        <div style={{ position: 'absolute', bottom: selected ? 108 : 10, left: 10, right: 10, background: '#101010', color: '#fff', padding: 8, fontSize: 11, border: '1px solid #fff' }}>
+        <div style={{ position: 'absolute', bottom: selected ? 108 : 10, left: 10, right: 10, background: 'rgba(3,9,13,.82)', color: '#fff', padding: 10, fontSize: 11, border: '1px solid rgba(255,255,255,.2)', borderRadius: 12, backdropFilter: 'blur(10px)' }}>
           ROOT META-BRANCH · {rootBranch.kind.toUpperCase()} · root={rootBranch.rootScore} · overlap={rootBranch.mutualOverlapScore.toFixed(1)} · compression={rootBranch.compressionScore.toFixed(1)} · dof={Math.round(rootBranch.degreesOfFreedomScore)}
-          <div style={{ opacity: 0.8 }}>{rootBranch.equationSeed}</div>
+          <div style={{ opacity: 0.78 }}>{rootBranch.equationSeed}</div>
           {bestCorrection && bestCorrection.id !== rootBranch.id ? <div style={{ color: '#8cffb0' }}>BEST CORRECTION · survival={bestCorrection.survivalScore.toFixed(1)} · emergence={bestCorrection.emergenceScore}</div> : null}
         </div>
       )}
       {selected && (
-        <div style={{ position: 'absolute', bottom: 10, left: 10, right: 10, background: '#111', padding: 10, fontSize: 12 }}>
+        <div style={{ position: 'absolute', bottom: 10, left: 10, right: 10, background: 'rgba(3,9,13,.86)', padding: 10, fontSize: 12, borderRadius: 12 }}>
           <div>Phase: {selected.index}</div>
           {selected.witnesses.map((w) => <div key={w.witness_hash72}>{w.modality} · {w.temporal_status}</div>)}
         </div>
