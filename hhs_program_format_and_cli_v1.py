@@ -13,30 +13,6 @@ run      Execute a .hhsprog file through AuditedRunner.
 verify   Verify receipt-chain continuity from a saved .hhsrun file.
 inspect  Print summary of a .hhsprog or .hhsrun file.
 demo     Create a demo .hhsprog file.
-
-File formats
-------------
-.hhsprog:
-{
-  "format": "HHS_PROGRAM_V1",
-  "program_name": "example",
-  "operations": [
-    {"op": "ADD", "args": [2, 3]},
-    {"op": "SORT", "args": [[3, 1, 2]]},
-    {"op": "BINARY_SEARCH", "args": [[1, 2, 3], 2]}
-  ],
-  "persist": true
-}
-
-.hhsrun:
-{
-  "format": "HHS_RUN_RESULT_V1",
-  "program_name": "...",
-  "results": [...],
-  "receipts": [...],
-  "chain": {...},
-  "storage_report": {...}
-}
 """
 
 from __future__ import annotations
@@ -45,6 +21,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional
 import argparse
 import json
+import os
 import sys
 
 from hhs_general_runtime_layer_v1 import (
@@ -63,6 +40,8 @@ except Exception:
 
 PROGRAM_FORMAT = "HHS_PROGRAM_V1"
 RUN_RESULT_FORMAT = "HHS_RUN_RESULT_V1"
+DATA_ROOT = Path(os.environ.get("HHS_DATA_ROOT", "data")).resolve()
+DATA_ROOT.mkdir(parents=True, exist_ok=True)
 
 
 class HHSProgramFormatError(RuntimeError):
@@ -75,7 +54,9 @@ def load_json(path: str | Path) -> Dict[str, Any]:
 
 
 def write_json(path: str | Path, payload: Dict[str, Any]) -> None:
-    Path(path).write_text(json.dumps(payload, indent=2, ensure_ascii=False), encoding="utf-8")
+    p = Path(path)
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text(json.dumps(payload, indent=2, ensure_ascii=False), encoding="utf-8")
 
 
 def validate_program(program: Dict[str, Any]) -> None:
@@ -245,7 +226,7 @@ def main(argv: Optional[List[str]] = None) -> int:
     p_inspect.add_argument("file")
 
     p_demo = sub.add_parser("demo", help="Write a demo .hhsprog file")
-    p_demo.add_argument("-o", "--output", default="/mnt/data/demo_program.hhsprog")
+    p_demo.add_argument("-o", "--output", default=str(DATA_ROOT / "demo_program.hhsprog"))
 
     args = parser.parse_args(argv)
 
@@ -260,7 +241,9 @@ def main(argv: Optional[List[str]] = None) -> int:
             )
             text = json.dumps(result, indent=2, ensure_ascii=False)
             if args.output:
-                Path(args.output).write_text(text, encoding="utf-8")
+                out_path = Path(args.output)
+                out_path.parent.mkdir(parents=True, exist_ok=True)
+                out_path.write_text(text, encoding="utf-8")
             else:
                 print(text)
             return 0 if result.get("all_ok") else 1
