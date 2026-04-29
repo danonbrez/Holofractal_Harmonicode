@@ -13,7 +13,7 @@ Run:
     python hhs_realtime_phase_certification_v1.py
 
 Output:
-    /mnt/data/hhs_realtime_phase_certification_v1_report.json
+    data/runtime/hhs_realtime_phase_certification_v1_report.json
 """
 
 from __future__ import annotations
@@ -24,6 +24,7 @@ from typing import Any, Callable, Dict, List
 import json
 import traceback
 
+from hhs_runtime.hhs_repo_paths_v1 import runtime_artifact_path
 from hhs_runtime.core_sandbox.hhs_state_layer_v1 import HHSStateLayerV1
 from hhs_runtime.hhs_cross_modal_shell_gate_v1 import CrossModalShellGateV1, ShellGateStatus
 from hhs_runtime.hhs_realtime_multimodal_phase_integration_v1 import (
@@ -32,7 +33,7 @@ from hhs_runtime.hhs_realtime_multimodal_phase_integration_v1 import (
 )
 
 
-REPORT_PATH = Path("/mnt/data/hhs_realtime_phase_certification_v1_report.json")
+REPORT_PATH = runtime_artifact_path("hhs_realtime_phase_certification_v1_report.json")
 
 
 @dataclass
@@ -76,7 +77,7 @@ class RealtimePhaseCertificationV1:
         receipt = lock_live_multimodal_phase(
             self.base_observations(),
             state_patch=patch,
-            ledger_path="/mnt/data/hhs_realtime_phase_lock_cert_ok.json",
+            ledger_path=str(runtime_artifact_path("hhs_realtime_phase_lock_cert_ok.json")),
         ).to_dict()
         assert receipt["status"] == LiveWitnessStatus.LOCKED.value, receipt
         assert receipt["mandatory_present"] is True, receipt
@@ -92,7 +93,7 @@ class RealtimePhaseCertificationV1:
         receipt = lock_live_multimodal_phase(
             observations,
             state_patch=patch,
-            ledger_path="/mnt/data/hhs_realtime_phase_lock_cert_missing.json",
+            ledger_path=str(runtime_artifact_path("hhs_realtime_phase_lock_cert_missing.json")),
         ).to_dict()
         assert receipt["status"] == LiveWitnessStatus.INCOMPLETE.value, receipt
         assert receipt["mandatory_present"] is False, receipt
@@ -106,11 +107,11 @@ class RealtimePhaseCertificationV1:
         phase_receipt = lock_live_multimodal_phase(
             self.base_observations(),
             state_patch=patch,
-            ledger_path="/mnt/data/hhs_realtime_phase_shell_phase.json",
+            ledger_path=str(runtime_artifact_path("hhs_realtime_phase_shell_phase.json")),
         ).to_dict()
         assert phase_receipt["status"] == LiveWitnessStatus.LOCKED.value, phase_receipt
         state_layer = HHSStateLayerV1(initial_state={"runtime": {}})
-        gate = CrossModalShellGateV1(state_layer=state_layer, ledger_path="/mnt/data/hhs_realtime_phase_shell_commit.json")
+        gate = CrossModalShellGateV1(state_layer=state_layer, ledger_path=str(runtime_artifact_path("hhs_realtime_phase_shell_commit.json")))
         shell = gate.propose_and_commit(phase_receipt["shell_modality_patches"]).to_dict()
         assert shell["status"] == ShellGateStatus.COMMITTED.value, shell
         assert shell["state_result"] and shell["state_result"].get("ok") is True, shell
