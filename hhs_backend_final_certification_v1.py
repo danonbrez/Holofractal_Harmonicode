@@ -17,7 +17,8 @@ Run:
     python hhs_backend_final_certification_v1.py
 
 Output:
-    /mnt/data/hhs_backend_final_certification_v1_report.json
+    data/hhs_backend_final_certification_v1_report.json
+    or $HHS_DATA_ROOT/hhs_backend_final_certification_v1_report.json
 """
 
 from __future__ import annotations
@@ -26,6 +27,7 @@ from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any, Callable, Dict, List
 import json
+import os
 import traceback
 
 from hhs_realtime_phase_certification_v1 import RealtimePhaseCertificationV1
@@ -35,7 +37,14 @@ from hhs_runtime.hhs_phase_coherent_operator_loop_v1 import PhaseLoopStatus, run
 from hhs_runtime.hhs_realtime_multimodal_phase_integration_v1 import LiveWitnessStatus, lock_live_multimodal_phase
 
 
-REPORT_PATH = Path("/mnt/data/hhs_backend_final_certification_v1_report.json")
+DATA_ROOT = Path(os.environ.get("HHS_DATA_ROOT", "data")).resolve()
+DATA_ROOT.mkdir(parents=True, exist_ok=True)
+REPORT_PATH = DATA_ROOT / "hhs_backend_final_certification_v1_report.json"
+LIVE_PHASE_PATH = DATA_ROOT / "hhs_backend_final_live_phase.json"
+CORPUS_LEDGER_PATH = DATA_ROOT / "hhs_backend_final_corpus_ledger.json"
+FEEDBACK_LEDGER_PATH = DATA_ROOT / "hhs_backend_final_feedback_ledger.json"
+LOOP_LEDGER_PATH = DATA_ROOT / "hhs_backend_final_phase_loop_ledger.json"
+EXECUTION_LEDGER_PATH = DATA_ROOT / "hhs_backend_final_execution_ledger.json"
 
 
 @dataclass
@@ -105,19 +114,19 @@ The operator must preserve meaning while transforming medium and style.
         live_phase = lock_live_multimodal_phase(
             self.observations(),
             state_patch=state_patch,
-            ledger_path="/mnt/data/hhs_backend_final_live_phase.json",
+            ledger_path=str(LIVE_PHASE_PATH),
         ).to_dict()
         assert live_phase["status"] == LiveWitnessStatus.LOCKED.value, live_phase
         assert live_phase["replay_receipt"].get("invalid") == 0, live_phase
 
         ingest = ingest_drive_corpus_artifacts(
             [self.sample_corpus()],
-            ledger_path="/mnt/data/hhs_backend_final_corpus_ledger.json",
+            ledger_path=str(CORPUS_LEDGER_PATH),
         ).to_dict()
         assert ingest["accepted_blocks"] >= 3, ingest
         assert ingest["replay_receipt"].get("invalid") == 0, ingest
 
-        corpus_ledger = json.loads(Path("/mnt/data/hhs_backend_final_corpus_ledger.json").read_text(encoding="utf-8"))
+        corpus_ledger = json.loads(CORPUS_LEDGER_PATH.read_text(encoding="utf-8"))
         blocks = [block["payload"] for block in corpus_ledger["blocks"]]
         goal = OperatorSelectionGoal(
             intent="explain a technical alignment claim with harmonic recursive style and process audit",
@@ -133,9 +142,9 @@ The operator must preserve meaning while transforming medium and style.
             blocks,
             goal,
             live_phase_lock_receipt=live_phase,
-            feedback_ledger_path="/mnt/data/hhs_backend_final_feedback_ledger.json",
-            loop_ledger_path="/mnt/data/hhs_backend_final_phase_loop_ledger.json",
-            execution_ledger_path="/mnt/data/hhs_backend_final_execution_ledger.json",
+            feedback_ledger_path=str(FEEDBACK_LEDGER_PATH),
+            loop_ledger_path=str(LOOP_LEDGER_PATH),
+            execution_ledger_path=str(EXECUTION_LEDGER_PATH),
         ).to_dict()
         assert loop["external_phase_anchor_used"] is True, loop
         assert loop["status"] == PhaseLoopStatus.EXECUTED.value, loop
