@@ -3,19 +3,11 @@ hhs_runtime_certification_v2.py
 
 Runtime Shell / Agent Lock Extension certification for HHS.
 
-This harness extends the already locked V1 bundle path into the newer runtime
-layers without changing kernel invariants:
-
-- cross-modal shell gate
-- degrees-of-freedom guard
-- QGU temporal phase guard
-- self-modifying agent gate
-
 Run:
     python hhs_runtime_certification_v2.py
 
 Outputs:
-    /mnt/data/hhs_runtime_certification_v2_report.json
+    data/runtime/hhs_runtime_certification_v2_report.json (repo-relative)
 """
 
 from __future__ import annotations
@@ -25,6 +17,8 @@ from pathlib import Path
 from typing import Any, Callable, Dict, List
 import json
 import traceback
+
+from hhs_runtime.hhs_repo_paths_v1 import runtime_artifact_path
 
 from hhs_regression_suite_v1 import HHSRegressionSuiteV1
 from hhs_runtime_smoke_tests_v1 import HHSSmokeTestSuiteV1
@@ -45,7 +39,7 @@ from hhs_runtime.hhs_self_modifying_agents_v1 import (
 )
 
 
-REPORT_PATH = Path("/mnt/data/hhs_runtime_certification_v2_report.json")
+REPORT_PATH = runtime_artifact_path("hhs_runtime_certification_v2_report.json")
 
 
 @dataclass
