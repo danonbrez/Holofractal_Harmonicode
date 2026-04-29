@@ -31,5 +31,14 @@ def sign_payload(subject: str, payload: Dict[str, Any]) -> Hash72Signature:
     return Hash72Signature(subject=subject, signature_hash72=signature_hash72, payload_hash72=payload_hash72)
 
 
+def verify_signature(subject: str, payload: Dict[str, Any], signature: Dict[str, Any]) -> bool:
+    expected = sign_payload(subject, payload)
+    return (
+        signature.get("subject") == expected.subject
+        and signature.get("payload_hash72") == expected.payload_hash72
+        and signature.get("signature_hash72") == expected.signature_hash72
+    )
+
+
 if __name__ == "__main__":
     print(sign_payload("test", {"ok": True}).to_dict())
