@@ -33,6 +33,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional
 import argparse
 import json
+import os
 import time
 
 from hhs_general_runtime_layer_v1 import DEFAULT_KERNEL_PATH
@@ -47,6 +48,8 @@ from hhs_receipt_replay_verifier_v1 import HHSReceiptReplayVerifierV1
 
 
 PHYSICS_EVOLUTION_VERSION = "HHS_PHYSICS_EVOLUTION_V1"
+DATA_ROOT = Path(os.environ.get("HHS_DATA_ROOT", "data")).resolve()
+DATA_ROOT.mkdir(parents=True, exist_ok=True)
 
 
 @dataclass(frozen=True)
@@ -294,6 +297,7 @@ class HHSPhysicsEvolutionV1:
 
     def save(self, path: str | Path) -> Dict[str, Any]:
         path = Path(path)
+        path.parent.mkdir(parents=True, exist_ok=True)
         payload = {
             "format": "HHS_PHYSICS_EVOLUTION_RUN_V1",
             "evolution_version": PHYSICS_EVOLUTION_VERSION,
@@ -327,7 +331,7 @@ def demo() -> Dict[str, Any]:
     rule_a = evo.add_rule("pressure_to_flow", "pressure", "flow", "1/72")
     rule_b = evo.add_rule("gradient_to_charge", "gradient", "charge", "1/72")
     run = evo.run(steps=3, dt=1)
-    save = evo.save("/mnt/data/hhs_physics_evolution_v1_demo.json")
+    save = evo.save(DATA_ROOT / "hhs_physics_evolution_v1_demo.json")
 
     return {"rule_a": rule_a, "rule_b": rule_b, "run": run, "save": save}
 
@@ -335,11 +339,13 @@ def demo() -> Dict[str, Any]:
 def main(argv: Optional[List[str]] = None) -> int:
     parser = argparse.ArgumentParser(description="HHS physics evolution operator")
     parser.add_argument("--demo", action="store_true")
-    parser.add_argument("--out", default="/mnt/data/hhs_physics_evolution_v1_demo_stdout.json")
+    parser.add_argument("--out", default=str(DATA_ROOT / "hhs_physics_evolution_v1_demo_stdout.json"))
     args = parser.parse_args(argv)
 
     report = demo()
-    Path(args.out).write_text(json.dumps(report, indent=2, ensure_ascii=False), encoding="utf-8")
+    out_path = Path(args.out)
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    out_path.write_text(json.dumps(report, indent=2, ensure_ascii=False), encoding="utf-8")
     print(json.dumps(report, indent=2, ensure_ascii=False))
     return 0 if report.get("run", {}).get("ok", False) else 1
 
