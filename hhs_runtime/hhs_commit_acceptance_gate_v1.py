@@ -22,6 +22,7 @@ import subprocess
 from hhs_runtime.hhs_unified_hash72_ledger_v1 import absorb_json_artifacts, verify_unified_ledger
 from hhs_runtime.hhs_language_runtime_validator_cli_v1 import validate_repo_language_runtime
 from hhs_runtime.hhs_repo_paths_v1 import repo_root
+from hhs_runtime.hhs_git_hash72_binding_v1 import bind_git_state_to_unified_ledger
 
 
 FORBIDDEN_STRINGS = ["/mnt/data"]
@@ -87,11 +88,15 @@ def run_commit_acceptance_gate() -> Dict[str, Any]:
     if not unified["ok"]:
         raise CommitAcceptanceError(json.dumps({"unified_ledger_invalid": unified}, indent=2))
 
+    # 6. bind git state to ledger (only after success)
+    git_binding = bind_git_state_to_unified_ledger(root)
+
     return {
         "status": "ACCEPTED",
         "scripts": results,
         "runtime": runtime_status,
         "ledger": unified,
+        "git_binding": git_binding.to_dict(),
     }
 
 
