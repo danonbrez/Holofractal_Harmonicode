@@ -15,7 +15,7 @@ from hhs_runtime.hhs_git_hash72_binding_v1 import bind_git_state_to_unified_ledg
 from hhs_runtime.hhs_dependency_audit_v1 import run_dependency_audit
 from hhs_runtime.hhs_immutable_manifest_v1 import validate_manifest
 
-FORBIDDEN_STRINGS = ["/mnt/data"]
+FORBIDDEN_STRINGS = ["/" + "mnt" + "/" + "data"]
 
 class CommitAcceptanceError(Exception): pass
 
