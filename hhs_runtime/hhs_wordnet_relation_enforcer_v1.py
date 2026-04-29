@@ -5,6 +5,12 @@ HHS WordNet Relation Enforcer v1
 Loads WordNet-style CSV exports and validates token/POS/relation structure
 without replacing the existing lexicon, tokenizer, semantic DB, or training loop.
 
+Canonical CSV location:
+    data/wordnet/*.csv
+
+Fallback CSV location during migration:
+    hhs_runtime/*.csv
+
 Supported uploaded CSV shapes:
 - WordnetNouns.csv: Word, Count, POS, Definition
 - WordnetVerbs.csv: Word, Count, Sense, Definition, Example 1, Example 2
@@ -35,6 +41,17 @@ POS_ALIASES = {
     "satellite": "adjective",
     "r": "adverb",
 }
+
+WORDNET_CSV_FILENAMES = [
+    "WordnetNouns.csv",
+    "WordnetVerbs.csv",
+    "WordnetAdjectives.csv",
+    "WordnetAdverbs.csv",
+    "WordnetSynonyms.csv",
+    "WordnetAntonyms.csv",
+    "WordnetHypernyms.csv",
+    "WordnetHyponyms.csv",
+]
 
 
 @dataclass(frozen=True)
@@ -150,7 +167,11 @@ def _merge_entry(db: Dict[str, WordRelationEntry], word: str, *, pos: Sequence[s
     )
 
 
-def load_wordnet_relations(paths: Sequence[str | Path]) -> Dict[str, WordRelationEntry]:
+def load_wordnet_relations(paths: Sequence[str | Path], *, require_all: bool = True) -> Dict[str, WordRelationEntry]:
+    missing = [str(Path(p)) for p in paths if not Path(p).exists()]
+    if require_all and missing:
+        raise FileNotFoundError("Missing WordNet CSV files: " + "; ".join(missing))
+
     db: Dict[str, WordRelationEntry] = {}
     for raw_path in paths:
         path = Path(raw_path)
@@ -176,6 +197,8 @@ def load_wordnet_relations(paths: Sequence[str | Path]) -> Dict[str, WordRelatio
                     _merge_entry(db, row.get("lemma", ""), pos=[_pos(row.get("part_of_speech", ""))], hypernyms=_split(row.get("hypernyms", "")))
                 elif "hyponyms" in name:
                     _merge_entry(db, row.get("lemma", ""), pos=[_pos(row.get("part_of_speech", ""))], hyponyms=_split(row.get("hyponyms", "")))
+    if require_all and not db:
+        raise ValueError("WordNet relation database loaded zero entries")
     return db
 
 
@@ -226,24 +249,46 @@ def validate_word_relations(text: str, relation_db: Dict[str, WordRelationEntry]
     return WordRelationValidationReceipt(text, tokens, findings, unknown, known, feedback, receipt)
 
 
-def default_wordnet_paths(base_dir: str | Path = "/mnt/data") -> List[Path]:
-    root = Path(base_dir)
-    return [
-        root / "WordnetNouns.csv",
-        root / "WordnetVerbs.csv",
-        root / "WordnetAdjectives.csv",
-        root / "WordnetAdverbs.csv",
-        root / "WordnetSynonyms.csv",
-        root / "WordnetAntonyms.csv",
-        root / "WordnetHypernyms.csv",
-        root / "WordnetHyponyms.csv",
-    ]
+def repo_root() -> Path:
+    return Path(__file__).resolve().parents[1]
+
+
+def wordnet_csv_directory() -> Path:
+    root = repo_root()
+    canonical = root / "data" / "wordnet"
+    if all((canonical / name).exists() for name in WORDNET_CSV_FILENAMES):
+        return canonical
+    fallback = root / "hhs_runtime"
+    if all((fallback / name).exists() for name in WORDNET_CSV_FILENAMES):
+        return fallback
+    return canonical
+
+
+def default_wordnet_paths(base_dir: str | Path | None = None) -> List[Path]:
+    root = Path(base_dir) if base_dir is not None else wordnet_csv_directory()
+    return [root / name for name in WORDNET_CSV_FILENAMES]
+
+
+def validate_wordnet_files(paths: Sequence[str | Path] | None = None) -> Dict[str, Any]:
+    resolved = [Path(p) for p in (paths or default_wordnet_paths())]
+    existing = [str(p) for p in resolved if p.exists()]
+    missing = [str(p) for p in resolved if not p.exists()]
+    return {
+        "status": "READY" if not missing else "MISSING_FILES",
+        "directory": str(resolved[0].parent) if resolved else "",
+        "existing": existing,
+        "missing": missing,
+        "required": WORDNET_CSV_FILENAMES,
+    }
 
 
 def main() -> None:
+    file_status = validate_wordnet_files()
+    if file_status["status"] != "READY":
+        raise FileNotFoundError(json.dumps(file_status, indent=2, sort_keys=True))
     db = load_wordnet_relations(default_wordnet_paths())
     receipt = validate_word_relations("The symbolic system preserves valid meaning", db)
-    print(json.dumps(receipt.to_dict(), indent=2, sort_keys=True, ensure_ascii=False))
+    print(json.dumps({"file_status": file_status, "entries_loaded": len(db), "validation": receipt.to_dict()}, indent=2, sort_keys=True, ensure_ascii=False))
 
 
 if __name__ == "__main__":
