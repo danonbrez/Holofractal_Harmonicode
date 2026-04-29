@@ -21,6 +21,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional
 import argparse
 import json
+import os
 import sys
 import time
 
@@ -29,6 +30,8 @@ from hhs_general_runtime_layer_v1 import DEFAULT_KERNEL_PATH
 
 
 INPUT_BRIDGE_VERSION = "HHS_INPUT_BRIDGE_V1"
+DATA_ROOT = Path(os.environ.get("HHS_DATA_ROOT", "data")).resolve()
+DATA_ROOT.mkdir(parents=True, exist_ok=True)
 
 
 @dataclass(frozen=True)
@@ -112,6 +115,7 @@ class HHSInputBridgeV1:
 
     def save(self, path: str | Path) -> Dict[str, Any]:
         path = Path(path)
+        path.parent.mkdir(parents=True, exist_ok=True)
         payload = {
             "format": "HHS_INPUT_BRIDGE_RUN_V1",
             "bridge": INPUT_BRIDGE_VERSION,
@@ -135,7 +139,7 @@ def demo() -> Dict[str, Any]:
     drag = bridge.drag("AUDIT_LOG", 10, 20, 40, 80)
     key = bridge.key("ENTER", "CTRL")
     frame = bridge.render_frame("FRAME_0", 0)
-    saved = bridge.save("/mnt/data/hhs_input_bridge_demo.hhsinput")
+    saved = bridge.save(DATA_ROOT / "hhs_input_bridge_demo.hhsinput")
     return {"click": click, "drag": drag, "key": key, "frame": frame, "saved": saved}
 
 
