@@ -14,6 +14,7 @@ from __future__ import annotations
 import copy
 import importlib.util
 import json
+import os
 import sys
 from pathlib import Path
 from typing import Any, Dict, Optional
@@ -46,13 +47,15 @@ KERNEL_DOMAIN_METADATA_V1 = {
     },
 }
 
+DATA_ROOT = Path(os.environ.get("HHS_DATA_ROOT", "data")).resolve()
+
 AUTHORITATIVE_RUNTIME_CANDIDATES = [
     Path(__file__).with_name("HARMONICODE_KERNEL_v44_2_lockcore_patched_selfsolving_locked.py"),
-    Path("/mnt/data/HARMONICODE_KERNEL_v44_2_lockcore_patched_selfsolving_locked.py"),
+    DATA_ROOT / "HARMONICODE_KERNEL_v44_2_lockcore_patched_selfsolving_locked.py",
     Path(__file__).with_name("HARMONICODE_KERNEL_v44_2_lockcore_patched_selfsolving.py"),
-    Path("/mnt/data/HARMONICODE_KERNEL_v44_2_lockcore_patched_selfsolving.py"),
+    DATA_ROOT / "HARMONICODE_KERNEL_v44_2_lockcore_patched_selfsolving.py",
     Path(__file__).with_name("harmonicode_clean_runtime_v43_4_secure.py"),
-    Path("/mnt/data/harmonicode_clean_runtime_v43_4_secure.py"),
+    DATA_ROOT / "harmonicode_clean_runtime_v43_4_secure.py",
 ]
 
 
@@ -109,8 +112,6 @@ def _patch_branch_seed_tree_recursion(runtime_module) -> None:
     runtime_module._ensure_branch_seed_tree = safe_ensure_branch_seed_tree
 
 
-
-
 DUAL_ENTANGLED_BOOT_SYMBOLS = "xyzw"
 
 
@@ -134,12 +135,6 @@ def _load_authoritative_runtime(runtime_path: Optional[str] = None, apply_overla
     resolved = _resolve_runtime_path(runtime_path)
     module = _load_module_from_path("harmonicode_unified_runtime", resolved)
     _patch_branch_seed_tree_recursion(module)
-    required_symbols = [
-        "HarmonicodeLocalAgent",
-        "KernelAdapter",
-        "Torus72",
-        "route_ir_v43",
-    ]
     missing = []
     for sym in ["HarmonicodeLocalAgent", "KernelAdapter", "Torus72"]:
         if not hasattr(module, sym):
@@ -212,12 +207,6 @@ class HarmonicodeLocalAgent:
         m = self.kernel_domain_metadata()["crossing_mutation_map_v1"]
         return {"forbidden_crossings": list(m.keys()), "projected_faces": list(m.values()), "mutation_map": m}
 
-
-
-# ---------------------------------------------------------------------------
-# Self-solving legal translation state bridge helpers
-# ---------------------------------------------------------------------------
-
     def expand_nested_equalities(self, expression: str) -> Dict[str, Any]:
         kernel = getattr(self, "kernel", None)
         if kernel is not None and hasattr(kernel, "expand_nested_equalities_v44"):
@@ -269,7 +258,6 @@ class HarmonicodeLocalAgent:
             return helper(expression)
         return self.expand_nested_equalities(expression)
 
-
     def audio_traversal_module(self) -> Dict[str, Any]:
         kernel = getattr(self, "kernel", None)
         if kernel is not None and hasattr(kernel, "build_audio_traversal_map_v1"):
@@ -295,8 +283,7 @@ class HarmonicodeLocalAgent:
         kernel = getattr(self, "kernel", None)
         if kernel is not None and hasattr(kernel, "read_dual_stereo_wav_v1"):
             return kernel.read_dual_stereo_wav_v1(path)
-        return {"ok": False, "reason": "DUAL_STEREO_WAV_READER_MISSING", "path": path}
-
+        return {"ok": False, "reason": "DUAL_STEREEO_WAV_READER_MISSING", "path": path}
 
     def export_state(self) -> Dict[str, Any]:
         export = {
