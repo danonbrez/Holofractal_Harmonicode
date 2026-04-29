@@ -65,10 +65,7 @@ function keyStyle(key: KeyDef): React.CSSProperties {
 
 function itemStyle(kind: string, active: boolean, diagnostic: boolean): React.CSSProperties {
   return {
-    display: 'inline-block',
-    padding: '0 2px',
-    borderRadius: 3,
-    cursor: 'pointer',
+    display: 'inline-block', padding: '0 2px', borderRadius: 3, cursor: 'pointer',
     background: diagnostic ? 'rgba(255,0,64,0.25)' : active ? 'rgba(0,210,255,0.34)' : kind === 'ORDERED_PRODUCT' ? 'rgba(108,86,255,0.18)' : kind === 'INVARIANT' ? 'rgba(255,210,0,0.18)' : 'transparent',
     textDecoration: diagnostic ? 'underline wavy #f04' : 'none',
   };
@@ -82,31 +79,20 @@ export default function CalculatorPanelV2({ equationManifest, transpileReceipt, 
   const [error, setError] = useState<string | null>(null);
   const [page, setPage] = useState<'main' | 'more' | 'hhs'>('main');
 
-  useEffect(() => {
-    if (generatedEquation && !result) calcDoc.reset(generatedEquation);
-  }, [generatedEquation]);
+  useEffect(() => { if (generatedEquation && !result) calcDoc.reset(generatedEquation); }, [generatedEquation]);
+  useEffect(() => { onPhaseMapChange?.(calcDoc.doc.nodes.map((node) => ({ id: node.id, text: node.text, kind: node.kind, phaseIndex: node.phaseIndex ?? 0 }))); }, [calcDoc.doc.nodes, onPhaseMapChange]);
 
-  useEffect(() => {
-    onPhaseMapChange?.(calcDoc.doc.nodes.map((node) => ({ id: node.id, text: node.text, kind: node.kind, phaseIndex: node.phaseIndex ?? 0 })));
-  }, [calcDoc.doc.nodes, onPhaseMapChange]);
-
-  function insertText(raw?: string) {
-    if (raw === 'EVAL') return void evaluate();
-    calcDoc.insert(raw);
-  }
+  function insertText(raw?: string) { if (raw === 'EVAL') return void evaluate(); calcDoc.insert(raw); }
+  function applyCandidate(text: string) { calcDoc.reset(text); setTimeout(() => evaluate(), 0); }
 
   async function evaluate() {
-    setBusy(true);
-    setError(null);
+    setBusy(true); setError(null);
     try {
       const res = await fetch('/api/calculator/evaluate', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ expression: calcDoc.text }) });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       setResult(await res.json());
-    } catch (err: any) {
-      setError(err?.message ?? 'evaluation failed');
-    } finally {
-      setBusy(false);
-    }
+    } catch (err: any) { setError(err?.message ?? 'evaluation failed'); }
+    finally { setBusy(false); }
   }
 
   const keys = page === 'more' ? moreKeys : page === 'hhs' ? hhsKeys : mainKeys;
@@ -115,47 +101,26 @@ export default function CalculatorPanelV2({ equationManifest, transpileReceipt, 
   const pythonArtifact = transpileReceipt?.artifacts?.find?.((a: any) => a.target === 'python') ?? transpileReceipt?.artifacts?.[0];
   const autocorrectionSuggestions = result?.autocorrections?.suggestions ?? [];
   const branchFrontier = result?.correctionBranchFrontier;
+  const symbolicCandidates = result?.symbolic_substitution?.candidates ?? [];
 
   return (
     <section style={{ borderTop: '1px solid #063', borderBottom: '1px solid #063', padding: 10, background: '#08090b', maxHeight: '62vh', overflow: 'auto' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', color: '#f4f4f4', fontFamily: 'monospace', fontWeight: 700, letterSpacing: 1 }}>
-        <span>NORM&nbsp; HHS&nbsp; FRAC</span>
-        <span>{activePhase == null ? 'PHASE --' : `PHASE ${activePhase}`} · ITEMS {calcDoc.doc.nodes.length}</span>
+        <span>NORM&nbsp; HHS&nbsp; FRAC</span><span>{activePhase == null ? 'PHASE --' : `PHASE ${activePhase}`} · ITEMS {calcDoc.doc.nodes.length}</span>
       </div>
-
       <div style={{ marginTop: 8, background: '#d6ebea', color: '#111', borderRadius: 12, minHeight: 118, padding: 10, fontFamily: 'monospace', fontSize: 16, whiteSpace: 'pre-wrap', overflow: 'auto' }}>
-        <div>
-          {calcDoc.doc.nodes.map((node, index) => (
-            <React.Fragment key={node.id}>
-              {index === calcDoc.doc.cursor ? <span style={{ color: '#e00' }}>|</span> : null}
-              <span onClick={() => onActivePhase?.(node.phaseIndex ?? 0)} style={itemStyle(node.kind, activePhase != null && node.phaseIndex === activePhase, calcDoc.diagnosticNodeIds.has(node.id))} title={`${node.kind} · phase ${node.phaseIndex}`}>{node.text}</span>
-            </React.Fragment>
-          ))}
-          {calcDoc.doc.cursor === calcDoc.doc.nodes.length ? <span style={{ color: '#e00' }}>|</span> : null}
-        </div>
-        <div style={{ marginTop: 8, color: calcDoc.diagnostics.some((d) => d.level === 'ERROR') ? '#b00020' : '#333' }}>
-          {solverStatus !== 'UNRUN' ? `{{${contradictionCount}}} = ${solverStatus}` : calcDoc.diagnostics.length ? calcDoc.diagnostics.map((d) => `${d.level}:${d.message}`).join(' · ') : 'READY'}
-        </div>
+        <div>{calcDoc.doc.nodes.map((node, index) => (<React.Fragment key={node.id}>{index === calcDoc.doc.cursor ? <span style={{ color: '#e00' }}>|</span> : null}<span onClick={() => onActivePhase?.(node.phaseIndex ?? 0)} style={itemStyle(node.kind, activePhase != null && node.phaseIndex === activePhase, calcDoc.diagnosticNodeIds.has(node.id))} title={`${node.kind} · phase ${node.phaseIndex}`}>{node.text}</span></React.Fragment>))}{calcDoc.doc.cursor === calcDoc.doc.nodes.length ? <span style={{ color: '#e00' }}>|</span> : null}</div>
+        <div style={{ marginTop: 8, color: calcDoc.diagnostics.some((d) => d.level === 'ERROR') ? '#b00020' : '#333' }}>{solverStatus !== 'UNRUN' ? `{{${contradictionCount}}} = ${solverStatus}` : calcDoc.diagnostics.length ? calcDoc.diagnostics.map((d) => `${d.level}:${d.message}`).join(' · ') : 'READY'}</div>
       </div>
-
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: 8, marginTop: 10 }}>
-        <button onClick={() => setPage('main')} style={keyStyle({ label: 'main', accent: page === 'main' ? 'alpha' : undefined })}>☰</button>
-        <button onClick={() => setPage('hhs')} style={keyStyle({ label: 'Σ' })}>Σ</button>
-        <button onClick={() => setPage('more')} style={keyStyle({ label: 'gear' })}>⚙</button>
-        <button onClick={() => insertText('±')} style={keyStyle({ label: '±' })}>±</button>
-        <button onClick={() => setPage('more')} style={keyStyle({ label: 'MORE', accent: page === 'more' ? 'alpha' : undefined })}>MORE</button>
-        <button onClick={evaluate} disabled={busy} style={keyStyle({ label: 'SCAN' })}>{busy ? '...' : 'SCAN'}</button>
+        <button onClick={() => setPage('main')} style={keyStyle({ label: 'main', accent: page === 'main' ? 'alpha' : undefined })}>☰</button><button onClick={() => setPage('hhs')} style={keyStyle({ label: 'Σ' })}>Σ</button><button onClick={() => setPage('more')} style={keyStyle({ label: 'gear' })}>⚙</button><button onClick={() => insertText('±')} style={keyStyle({ label: '±' })}>±</button><button onClick={() => setPage('more')} style={keyStyle({ label: 'MORE', accent: page === 'more' ? 'alpha' : undefined })}>MORE</button><button onClick={evaluate} disabled={busy} style={keyStyle({ label: 'SCAN' })}>{busy ? '...' : 'SCAN'}</button>
       </div>
-
-      <div style={{ marginTop: 8, display: 'flex', flexDirection: 'column', gap: 8 }}>
-        {keys.map((row, r) => <div key={r} style={{ display: 'grid', gridTemplateColumns: `repeat(${row.length}, 1fr)`, gap: 8 }}>{row.map((key) => <button key={`${r}-${key.label}`} onClick={() => insertText(key.insert)} style={keyStyle(key)}>{key.label}</button>)}</div>)}
-      </div>
-
+      <div style={{ marginTop: 8, display: 'flex', flexDirection: 'column', gap: 8 }}>{keys.map((row, r) => <div key={r} style={{ display: 'grid', gridTemplateColumns: `repeat(${row.length}, 1fr)`, gap: 8 }}>{row.map((key) => <button key={`${r}-${key.label}`} onClick={() => insertText(key.insert)} style={keyStyle(key)}>{key.label}</button>)}</div>)}</div>
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, marginTop: 10, fontSize: 11 }}>
         <div style={{ background: '#03110b', border: '1px solid #064', borderRadius: 6, padding: 8 }}><div style={{ color: '#8cffb0' }}>Interpreter</div><div>source {short(result?.interpreter?.receipt?.source_hash72)}</div><div>stress {short(result?.interpreter?.receipt?.stress_hash72)}</div><div>ir {short(result?.interpreter?.receipt?.ir_hash72)}</div></div>
         <div style={{ background: solverStatus === 'QUARANTINED' ? '#1c0508' : '#03110b', border: `1px solid ${solverStatus === 'QUARANTINED' ? '#f04' : '#064'}`, borderRadius: 6, padding: 8 }}><div style={{ color: solverStatus === 'QUARANTINED' ? '#ff8a8a' : '#8cffb0' }}>Solver</div><div>status {solverStatus}</div><div>diagnostics {calcDoc.diagnostics.length}</div><div>items {calcDoc.doc.nodes.length}</div></div>
       </div>
-
+      {symbolicCandidates.length ? <div style={{ marginTop: 8, background: '#021008', border: '1px solid #0a7', borderRadius: 6, padding: 8, fontSize: 11 }}><div style={{ color: '#8cffb0', fontWeight: 700 }}>Symbolic Substitution Paths</div>{symbolicCandidates.slice(0, 6).map((c: any) => <div key={c.candidate_hash72} style={{ marginTop: 6, borderTop: '1px solid rgba(255,255,255,0.12)', paddingTop: 6 }}><div style={{ color: '#cfffff' }}>{c.candidate_text}</div><div style={{ color: '#9ad' }}>score {c.score} · phases [{c.projected_phases?.join(' → ')}] · {c.reason}</div><button onClick={() => applyCandidate(c.candidate_text)} style={{ marginTop: 4, background: '#00aa77', color: '#001', border: 0, borderRadius: 4, padding: '3px 8px', fontWeight: 700 }}>APPLY</button></div>)}</div> : null}
       {calcDoc.diagnostics.length ? <div style={{ marginTop: 8, background: '#140b05', border: '1px solid #d76b00', borderRadius: 6, padding: 8, fontSize: 11 }}><div style={{ color: '#ffba6b', fontWeight: 700 }}>Live Expression Diagnostics</div>{calcDoc.diagnostics.map((d, i) => <div key={i}>{d.level} · {d.message}</div>)}</div> : null}
       {autocorrectionSuggestions.length ? <div style={{ marginTop: 8, background: '#120f04', border: '1px solid #cc9b00', borderRadius: 6, padding: 8, fontSize: 11 }}><div style={{ color: '#ffd35a', fontWeight: 700 }}>Suggestions</div>{autocorrectionSuggestions.slice(0, 4).map((s: any) => <div key={s.suggestion_hash72} style={{ marginTop: 4 }}><b>{s.priority}</b> · {s.kind} · {s.message}</div>)}</div> : null}
       {branchFrontier?.branches?.length ? <div style={{ marginTop: 8, background: '#050b14', border: '1px solid #08c', borderRadius: 6, padding: 8, fontSize: 11 }}><div style={{ color: '#72d6ff', fontWeight: 700 }}>Branch Frontier</div>{branchFrontier.branches.slice(0, 6).map((b: any) => <div key={b.branch_hash72} style={{ marginTop: 4, color: b.branch_hash72 === branchFrontier.selected_branch_hash72 ? '#ffff66' : '#dff' }}>{b.correction_kind} · score {b.total_score} · path [{b.projected_phases?.join(' → ')}]</div>)}</div> : null}
