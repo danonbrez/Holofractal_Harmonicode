@@ -1,0 +1,27 @@
+name: HHS Acceptance Gate
+
+on:
+  push:
+    branches: [ "main", "work" ]
+  pull_request:
+    branches: [ "main", "work" ]
+
+jobs:
+  acceptance:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies (if any)
+        run: |
+          python -m pip install --upgrade pip
+
+      - name: Run HHS commit acceptance gate
+        run: |
+          python hhs_runtime/hhs_commit_acceptance_gate_v1.py
