@@ -9,12 +9,38 @@ import { RuntimeSnapshot } from '../runtimeData';
 import { CalculatorPhaseToken } from '../App';
 
 type Depth = 'answer' | 'structure' | 'proof';
+type IntentKind = 'math' | 'symbolic' | 'instruction' | 'relation' | 'closure';
+type StepStatus = 'idle' | 'running' | 'done' | 'error';
 
 type AssistantMessage = {
   role: 'user' | 'assistant';
   text: string;
   hint?: string;
 };
+
+type AssistantAction = {
+  label: string;
+  kind: 'depth' | 'input' | 'tool';
+  value: string;
+};
+
+function classifyIntent(input: string): IntentKind {
+  const s = input.trim();
+  if (/PLASTIC|CLOSURE|GATE|Ω|omega/i.test(s)) return 'closure';
+  if (/==|≠|:=|xy|yx|zw|wz|u\^?72|rho|ρ/.test(s)) return 'symbolic';
+  if (/\b(combine|explain|show|build|map|prove|verify|simulate|transpile)\b/i.test(s)) return 'instruction';
+  if (/[A-Za-z]+\s*[=<>≠]/.test(s)) return 'relation';
+  if (/[+\-*/^()]/.test(s)) return 'math';
+  return 'instruction';
+}
+
+function intentPreview(intent: IntentKind): string {
+  if (intent === 'math') return 'Calculator expression detected.';
+  if (intent === 'symbolic') return 'Symbolic structure detected.';
+  if (intent === 'closure') return 'Closure gate detected.';
+  if (intent === 'relation') return 'Relation detected.';
+  return 'Instruction detected. I’ll translate it into a tool action.';
+}
 
 function summarizeEvaluation(expression: string, payload: any): AssistantMessage {
   const status = payload?.interpreter?.receipt?.status ?? 'IR_EMITTED';
@@ -25,14 +51,31 @@ function summarizeEvaluation(expression: string, payload: any): AssistantMessage
   return {
     role: 'assistant',
     text: status === 'QUARANTINED'
-      ? 'I found a structural issue. I kept the run contained and prepared corrections.'
-      : `I read this as a structured expression and built the execution path.`,
+      ? 'I found a structural issue, kept it contained, and prepared correction paths.'
+      : 'I built the runnable structure and verified the first pass.',
     hint: `${solved} · ${nodes} nodes · ${edges} links · ${String(resultHash).slice(0, 18)}…`
   };
 }
 
+function actionsFor(intent: IntentKind, payload: any): AssistantAction[] {
+  const actions: AssistantAction[] = [];
+  actions.push({ label: 'Show structure', kind: 'depth', value: 'structure' });
+  actions.push({ label: 'Show proof', kind: 'depth', value: 'proof' });
+  if (intent === 'math') actions.push({ label: 'Try symbolic form', kind: 'input', value: 'xy≠yx' });
+  if (intent === 'symbolic' || intent === 'closure') actions.push({ label: 'Test closure', kind: 'input', value: 'PLASTIC_EIGENSTATE_CLOSURE_GATE' });
+  if (payload?.correctionBranchFrontier?.branches?.length || payload?.autocorrections?.suggestions?.length) {
+    actions.push({ label: 'Review corrections', kind: 'depth', value: 'structure' });
+  }
+  actions.push({ label: 'Open receipt', kind: 'depth', value: 'proof' });
+  return actions.slice(0, 5);
+}
+
 function Suggestion({ children, onClick }: { children: React.ReactNode; onClick: () => void }) {
   return <button className="hhs-suggestion" onClick={onClick}>{children}</button>;
+}
+
+function StepList({ steps }: { steps: { label: string; status: StepStatus }[] }) {
+  return <div className="hhs-step-list">{steps.map((s) => <div key={s.label} className={`hhs-step ${s.status}`}><span />{s.label}</div>)}</div>;
 }
 
 export default function AssistantWorkspace({
@@ -51,20 +94,31 @@ export default function AssistantWorkspace({
   const [depth, setDepth] = useState<Depth>('answer');
   const [busy, setBusy] = useState(false);
   const [lastEvaluation, setLastEvaluation] = useState<any>(null);
+  const [actions, setActions] = useState<AssistantAction[]>([]);
+  const [steps, setSteps] = useState<{ label: string; status: StepStatus }[]>([
+    { label: 'Preview intent', status: 'idle' },
+    { label: 'Run local tools', status: 'idle' },
+    { label: 'Build structure', status: 'idle' },
+    { label: 'Attach receipt', status: 'idle' }
+  ]);
   const [messages, setMessages] = useState<AssistantMessage[]>([
-    { role: 'assistant', text: 'Give me an equation, symbolic relation, or plain English instruction. I’ll turn it into a runnable structure.', hint: 'Live preview while typing. Enter commits and verifies.' }
+    { role: 'assistant', text: 'Tell me what to calculate, build, prove, or explore. I’ll use the local tools and keep the proof available.', hint: 'Live preview while typing. Enter commits and verifies.' }
   ]);
 
-  const preview = useMemo(() => {
-    const trimmed = input.trim();
-    if (!trimmed) return 'Start typing to preview structure.';
-    if (/==|≠|:=|xy|yx|u\^?72|rho|ρ/.test(trimmed)) return 'Symbolic structure detected.';
-    if (/[+\-*/^()]/.test(trimmed)) return 'Calculator expression detected.';
-    return 'Instruction detected. I’ll translate it into a tool action.';
-  }, [input]);
+  const intent = useMemo(() => classifyIntent(input), [input]);
+  const preview = useMemo(() => input.trim() ? intentPreview(intent) : 'Start typing to preview structure.', [input, intent]);
+
+  function setStep(label: string, status: StepStatus) {
+    setSteps(prev => prev.map(s => s.label === label ? { ...s, status } : s));
+  }
 
   async function evaluateExpression(expression: string) {
+    const detected = classifyIntent(expression);
     setBusy(true);
+    setActions([]);
+    setSteps(prev => prev.map(s => ({ ...s, status: 'idle' })));
+    setStep('Preview intent', 'done');
+    setStep('Run local tools', 'running');
     try {
       const res = await fetch('/api/calculator/evaluate', {
         method: 'POST',
@@ -72,15 +126,25 @@ export default function AssistantWorkspace({
         body: JSON.stringify({ expression })
       });
       const payload = await res.json();
+      setStep('Run local tools', 'done');
+      setStep('Build structure', 'done');
+      setStep('Attach receipt', 'done');
       setLastEvaluation(payload);
       setMessages(prev => [...prev, { role: 'user', text: expression }, summarizeEvaluation(expression, payload)]);
+      setActions(actionsFor(detected, payload));
       setCommitted(expression);
-      setDepth('answer');
+      setDepth(detected === 'symbolic' || detected === 'closure' ? 'structure' : 'answer');
     } catch (err: any) {
+      setStep('Run local tools', 'error');
       setMessages(prev => [...prev, { role: 'user', text: expression }, { role: 'assistant', text: 'The local tool call failed. I kept the state unchanged.', hint: String(err?.message ?? err) }]);
     } finally {
       setBusy(false);
     }
+  }
+
+  function runAction(action: AssistantAction) {
+    if (action.kind === 'depth') setDepth(action.value as Depth);
+    if (action.kind === 'input') setInput(action.value);
   }
 
   function onSubmit(e: FormEvent) {
@@ -94,7 +158,7 @@ export default function AssistantWorkspace({
   return (
     <div className="hhs-assistant-shell">
       <section className="hhs-hero-input">
-        <div className="hhs-eyebrow">HARMONICODE Assistant</div>
+        <div className="hhs-eyebrow">Local Agent Workspace</div>
         <h1>Ask it. Run it. Open the proof when you need it.</h1>
         <form onSubmit={onSubmit} className="hhs-command-form">
           <textarea
@@ -109,6 +173,7 @@ export default function AssistantWorkspace({
           <span>{preview}</span>
           <span>{busy ? 'working' : 'ready'}</span>
         </div>
+        <StepList steps={steps} />
         <div className="hhs-suggestions">
           <Suggestion onClick={() => setInput('x + y')}>x + y</Suggestion>
           <Suggestion onClick={() => setInput('xy≠yx')}>xy≠yx</Suggestion>
@@ -118,6 +183,7 @@ export default function AssistantWorkspace({
 
       <section className="hhs-chat-card">
         {messages.slice(-5).map((m, i) => <div key={i} className={`hhs-message ${m.role}`}><div>{m.text}</div>{m.hint ? <small>{m.hint}</small> : null}</div>)}
+        {actions.length ? <div className="hhs-action-row">{actions.map((a) => <Suggestion key={`${a.label}-${a.value}`} onClick={() => runAction(a)}>{a.label}</Suggestion>)}</div> : null}
       </section>
 
       <section className="hhs-result-card">
