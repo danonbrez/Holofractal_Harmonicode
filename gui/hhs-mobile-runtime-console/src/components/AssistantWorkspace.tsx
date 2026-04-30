@@ -15,12 +15,8 @@ type StepStatus = 'idle' | 'running' | 'done' | 'deferred';
 type AssistantMessage = { role: 'user' | 'assistant'; text: string; hint?: string; };
 type AssistantAction = { label: string; kind: 'depth' | 'input' | 'tool'; value: string; };
 
-type ContinuationResult = {
-  convergence?: any;
-  patchPlan?: any;
-  continuation_hash72?: string;
-  completed: boolean;
-};
+type SolverPass = { index: number; kind: string; hash72?: string; payload: any; };
+type ContinuationResult = { passes: SolverPass[]; continuation_hash72?: string; completed: boolean; bounded: boolean; };
 
 function classifyIntent(input: string): IntentKind {
   const s = input.trim();
@@ -52,10 +48,11 @@ function summarizeEvaluation(payload: any, continuation?: ContinuationResult): A
   const resultHash = continuation?.continuation_hash72 ?? payload?.result_hash72 ?? payload?.interpreter?.receipt?.receipt_hash72 ?? 'pending';
   const solved = payload?.solver?.status ?? payload?.solver?.receipt?.status ?? 'checked';
   const unresolved = isUnresolved(payload);
+  const passCount = continuation?.passes?.length ?? 0;
   return {
     role: 'assistant',
     text: unresolved
-      ? (continuation?.completed ? 'This began as an unresolved constraint state, so I continued it through downstream solving and preserved the refinement path.' : 'This produced an unresolved constraint state. I preserved it for downstream solving instead of collapsing it early.')
+      ? (passCount ? `This began as an unresolved constraint state, so I routed it through ${passCount} kernel/tool passes and preserved the refinement path.` : 'This produced an unresolved constraint state. I preserved it for downstream solving instead of collapsing it early.')
       : 'I built the runnable structure and completed the first solving pass.',
     hint: `${solved} · ${nodes} nodes · ${edges} links · ${String(resultHash).slice(0, 18)}…`
   };
@@ -67,7 +64,7 @@ function actionsFor(intent: IntentKind, payload: any, continuation?: Continuatio
   actions.push({ label: 'Show proof', kind: 'depth', value: 'proof' });
   if (intent === 'math') actions.push({ label: 'Try symbolic form', kind: 'input', value: 'xy≠yx' });
   if (intent === 'symbolic' || intent === 'closure') actions.push({ label: continuation?.completed ? 'Refinement path' : 'Continue solving', kind: 'depth', value: 'structure' });
-  if (payload?.correctionBranchFrontier?.branches?.length || payload?.autocorrections?.suggestions?.length || continuation?.patchPlan) actions.push({ label: 'Review refinements', kind: 'depth', value: 'structure' });
+  if (payload?.correctionBranchFrontier?.branches?.length || payload?.autocorrections?.suggestions?.length || continuation?.passes?.length) actions.push({ label: 'Review refinements', kind: 'depth', value: 'structure' });
   actions.push({ label: 'Open receipt', kind: 'depth', value: 'proof' });
   return actions.slice(0, 5);
 }
@@ -88,7 +85,8 @@ export default function AssistantWorkspace({ data, activePhase, onActivePhase, o
     { label: 'Preview intent', status: 'idle' },
     { label: 'Run local tools', status: 'idle' },
     { label: 'Build structure', status: 'idle' },
-    { label: 'Downstream solve', status: 'idle' },
+    { label: 'Kernel continuation', status: 'idle' },
+    { label: 'Branch refinement', status: 'idle' },
     { label: 'Attach receipt', status: 'idle' }
   ]);
   const [messages, setMessages] = useState<AssistantMessage[]>([
@@ -99,57 +97,59 @@ export default function AssistantWorkspace({ data, activePhase, onActivePhase, o
   const preview = useMemo(() => input.trim() ? intentPreview(intent) : 'Start typing to preview structure.', [input, intent]);
 
   function setStep(label: string, status: StepStatus) { setSteps(prev => prev.map(s => s.label === label ? { ...s, status } : s)); }
-
-  async function postJSON(path: string, body: any) {
-    const res = await fetch(path, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
-    if (!res.ok) throw new Error(`${path} returned ${res.status}`);
-    return await res.json();
-  }
+  async function postJSON(path: string, body: any) { const res = await fetch(path, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }); if (!res.ok) throw new Error(`${path} returned ${res.status}`); return await res.json(); }
 
   function itemsFromEvaluation(payload: any): any[] {
     const graphNodes = payload?.interpreter?.graph?.nodes ?? [];
     const graphEdges = payload?.interpreter?.graph?.edges ?? [];
+    const solverItems = payload?.solver?.solutions ?? payload?.solver?.branches ?? [];
     return [
       ...graphNodes.map((node: string, index: number) => ({ id: `node-${index}`, text: node, kind: 'GRAPH_NODE', phaseIndex: index % 72 })),
-      ...graphEdges.map((edge: any, index: number) => ({ id: `edge-${index}`, text: `${edge.source ?? ''}→${edge.target ?? ''}`, kind: edge.type ?? 'GRAPH_EDGE', phaseIndex: (index + 9) % 72 }))
+      ...graphEdges.map((edge: any, index: number) => ({ id: `edge-${index}`, text: `${edge.source ?? ''}→${edge.target ?? ''}`, kind: edge.type ?? 'GRAPH_EDGE', phaseIndex: (index + 9) % 72 })),
+      ...solverItems.map((item: any, index: number) => ({ id: `solver-${index}`, text: JSON.stringify(item).slice(0, 140), kind: 'SOLVER_BRANCH', phaseIndex: (index + 18) % 72 }))
     ];
   }
 
   async function continueDownstream(expression: string, payload: any): Promise<ContinuationResult> {
-    setStep('Downstream solve', 'running');
+    const passes: SolverPass[] = [];
     const items = itemsFromEvaluation(payload);
-    const influences = (payload?.correctionBranchFrontier?.branches ?? payload?.autocorrections?.suggestions ?? []).slice(0, 8);
+    const influences = (payload?.correctionBranchFrontier?.branches ?? payload?.autocorrections?.suggestions ?? []).slice(0, 12);
+
+    setStep('Kernel continuation', 'running');
     const convergence = await postJSON('/api/agent/convergence-packet', { expression, items, influences });
+    passes.push({ index: passes.length + 1, kind: 'convergence-packet', hash72: convergence?.packet_hash72 ?? convergence?.convergence_hash72, payload: convergence });
+
     const patchPlan = await postJSON('/api/agent/plan-patch', { expression, items, influences });
-    setStep('Downstream solve', 'done');
-    return { convergence, patchPlan, continuation_hash72: patchPlan?.patch?.patch_hash72 ?? convergence?.packet_hash72 ?? convergence?.convergence_hash72, completed: true };
+    passes.push({ index: passes.length + 1, kind: 'patch-plan', hash72: patchPlan?.patch?.patch_hash72 ?? patchPlan?.patch_hash72, payload: patchPlan });
+    setStep('Kernel continuation', 'done');
+
+    setStep('Branch refinement', 'running');
+    const manifest = await fetch('/api/latest-equation-manifest').then(r => r.json());
+    passes.push({ index: passes.length + 1, kind: 'equation-manifest', hash72: manifest?.manifest_hash72 ?? manifest?.summary_hash72, payload: manifest });
+
+    const transpile = await postJSON('/api/transpile/manifest', { manifest, targets: ['python'] });
+    passes.push({ index: passes.length + 1, kind: 'transpile-receipt', hash72: transpile?.receipt_hash72 ?? transpile?.transpile_hash72, payload: transpile });
+    setStep('Branch refinement', 'done');
+
+    const continuation_hash72 = passes.map(p => p.hash72).filter(Boolean).join('::') || payload?.result_hash72;
+    return { passes, continuation_hash72, completed: true, bounded: true };
   }
 
   async function evaluateExpression(expression: string) {
     const detected = classifyIntent(expression);
-    setBusy(true);
-    setActions([]);
-    setLastContinuation(null);
-    setSteps(prev => prev.map(s => ({ ...s, status: 'idle' })));
-    setStep('Preview intent', 'done');
-    setStep('Run local tools', 'running');
+    setBusy(true); setActions([]); setLastContinuation(null); setSteps(prev => prev.map(s => ({ ...s, status: 'idle' })));
+    setStep('Preview intent', 'done'); setStep('Run local tools', 'running');
     try {
       const payload = await postJSON('/api/calculator/evaluate', { expression });
-      setStep('Run local tools', 'done');
-      setStep('Build structure', 'done');
+      setStep('Run local tools', 'done'); setStep('Build structure', 'done');
       let continuation: ContinuationResult | undefined;
       if (autoContinue && isUnresolved(payload)) continuation = await continueDownstream(expression, payload);
-      else setStep('Downstream solve', isUnresolved(payload) ? 'deferred' : 'done');
-      setStep('Attach receipt', 'done');
-      setLastEvaluation(payload);
-      setLastContinuation(continuation ?? null);
+      else { setStep('Kernel continuation', isUnresolved(payload) ? 'deferred' : 'done'); setStep('Branch refinement', isUnresolved(payload) ? 'deferred' : 'done'); }
+      setStep('Attach receipt', 'done'); setLastEvaluation(payload); setLastContinuation(continuation ?? null);
       setMessages(prev => [...prev, { role: 'user', text: expression }, summarizeEvaluation(payload, continuation)]);
-      setActions(actionsFor(detected, payload, continuation));
-      setCommitted(expression);
-      setDepth(detected === 'symbolic' || detected === 'closure' || continuation?.completed ? 'structure' : 'answer');
+      setActions(actionsFor(detected, payload, continuation)); setCommitted(expression); setDepth(detected === 'symbolic' || detected === 'closure' || continuation?.completed ? 'structure' : 'answer');
     } catch (err: any) {
-      setStep('Run local tools', 'deferred');
-      setStep('Downstream solve', 'deferred');
+      setStep('Run local tools', 'deferred'); setStep('Kernel continuation', 'deferred'); setStep('Branch refinement', 'deferred');
       setMessages(prev => [...prev, { role: 'user', text: expression }, { role: 'assistant', text: 'The local tool route did not complete. I preserved the input unchanged so the next solver path can continue from the same state.', hint: String(err?.message ?? err) }]);
     } finally { setBusy(false); }
   }
@@ -162,27 +162,12 @@ export default function AssistantWorkspace({ data, activePhase, onActivePhase, o
   return (
     <div className="hhs-assistant-shell">
       <section className="hhs-hero-input">
-        <div className="hhs-eyebrow">Local Agent Workspace</div>
-        <h1>Ask it. Run it. Open the proof when you need it.</h1>
-        <form onSubmit={onSubmit} className="hhs-command-form">
-          <textarea value={input} onChange={(e) => setInput(e.target.value)} placeholder="Try: x + y, xy≠yx, or explain this relation" rows={3} />
-          <button type="submit" disabled={busy}>{busy ? 'Running…' : 'Run'}</button>
-        </form>
-        <div className="hhs-preview-row"><span>{preview}</span><span>{busy ? 'working' : 'ready'}</span></div>
-        <StepList steps={steps} />
-        <div className="hhs-suggestions">
-          <Suggestion onClick={() => setInput('x + y')}>x + y</Suggestion>
-          <Suggestion onClick={() => setInput('xy≠yx')}>xy≠yx</Suggestion>
-          <Suggestion onClick={() => setInput('PLASTIC_EIGENSTATE_CLOSURE_GATE')}>closure gate</Suggestion>
-          <Suggestion onClick={() => setAutoContinue(!autoContinue)}>{autoContinue ? 'Auto-solve on' : 'Auto-solve off'}</Suggestion>
-        </div>
+        <div className="hhs-eyebrow">Local Agent Workspace</div><h1>Ask it. Run it. Open the proof when you need it.</h1>
+        <form onSubmit={onSubmit} className="hhs-command-form"><textarea value={input} onChange={(e) => setInput(e.target.value)} placeholder="Try: x + y, xy≠yx, or explain this relation" rows={3} /><button type="submit" disabled={busy}>{busy ? 'Running…' : 'Run'}</button></form>
+        <div className="hhs-preview-row"><span>{preview}</span><span>{busy ? 'working' : 'ready'}</span></div><StepList steps={steps} />
+        <div className="hhs-suggestions"><Suggestion onClick={() => setInput('x + y')}>x + y</Suggestion><Suggestion onClick={() => setInput('xy≠yx')}>xy≠yx</Suggestion><Suggestion onClick={() => setInput('PLASTIC_EIGENSTATE_CLOSURE_GATE')}>closure gate</Suggestion><Suggestion onClick={() => setAutoContinue(!autoContinue)}>{autoContinue ? 'Auto-solve on' : 'Auto-solve off'}</Suggestion></div>
       </section>
-
-      <section className="hhs-chat-card">
-        {messages.slice(-5).map((m, i) => <div key={i} className={`hhs-message ${m.role}`}><div>{m.text}</div>{m.hint ? <small>{m.hint}</small> : null}</div>)}
-        {actions.length ? <div className="hhs-action-row">{actions.map((a) => <Suggestion key={`${a.label}-${a.value}`} onClick={() => runAction(a)}>{a.label}</Suggestion>)}</div> : null}
-      </section>
-
+      <section className="hhs-chat-card">{messages.slice(-5).map((m, i) => <div key={i} className={`hhs-message ${m.role}`}><div>{m.text}</div>{m.hint ? <small>{m.hint}</small> : null}</div>)}{actions.length ? <div className="hhs-action-row">{actions.map((a) => <Suggestion key={`${a.label}-${a.value}`} onClick={() => runAction(a)}>{a.label}</Suggestion>)}</div> : null}</section>
       <section className="hhs-result-card">
         <div className="hhs-section-head"><div><div className="hhs-eyebrow">Result</div><h2>{committed}</h2></div><div className="hhs-receipt-pill">{receipt ? String(receipt).slice(0, 18) + '…' : 'no receipt yet'}</div></div>
         <div className="hhs-depth-switch"><button className={depth === 'answer' ? 'active' : ''} onClick={() => setDepth('answer')}>Answer</button><button className={depth === 'structure' ? 'active' : ''} onClick={() => setDepth('structure')}>Structure</button><button className={depth === 'proof' ? 'active' : ''} onClick={() => setDepth('proof')}>Proof</button></div>
