@@ -69,6 +69,12 @@ class CalculatorEvaluateRequest(BaseModel):
     expression: str
 
 
+class AgentRunLoopRequest(BaseModel):
+    expression: str
+    auto_continue: bool = True
+    max_passes: int = 1
+
+
 class TranspileManifestRequest(BaseModel):
     manifest: Dict[str, Any] | None = None
     targets: List[str] = ["python"]
@@ -201,9 +207,71 @@ def _root_candidate_to_correction_payload(root_candidate: Dict[str, Any]) -> Dic
     return {"anomalies": {"status": "CLEAR", "critical": 0, "warn": 0, "alerts": []}, "phase": build_phase_lock(), "operatorLoop": build_operator_loop(), "corrections": {"suggestions": [{"kind": "REQUIRE_EXTERNAL_PHASE_ANCHOR", "priority": 100, "target_modalities": ["HARMONICODE", "HASH72", "XYZW", "AUDIO"], "target_phase_indices": [int(candidate.get("phase_index", 0) or 0)], "reason": "Stage root equation through runtime correction pipeline.", "proposed_patch": {"op": "STAGE_ROOT_EQUATION", "candidate_hash72": candidate_hash, "equation": candidate.get("equation", {}).get("equation")}, "suggestion_hash72": str(candidate_hash)}], "summary_hash72": hash72_digest(("root_stage_correction_summary_v1", candidate_hash), width=24)}}
 
 
+def _calculator_evaluation_payload(expression: str) -> Dict[str, Any]:
+    interpreted = interpret(expression)
+    solved = solve_interpreter_result(interpreted)
+    symbolic_substitution = solve_symbolic_linguistic_substitutions(expression, _wordnet_db())
+    stress_result = {"findings": [], "receipt": {"source_hash72": interpreted.receipt.source_hash72, "receipt_hash72": interpreted.receipt.stress_hash72}}
+    autocorrections = build_autocorrection_suggestions(stress_result, source_hash72=interpreted.receipt.source_hash72)
+    correction_feedback = suggestions_to_training_feedback(autocorrections)
+    simulation_overlay = build_correction_simulation_overlay(autocorrections.to_dict(), source_hash72=interpreted.receipt.source_hash72)
+    simulation_feedback = overlay_to_training_feedback(simulation_overlay)
+    branch_frontier = compete_correction_branches(simulation_overlay.to_dict())
+    branch_feedback = branch_frontier_to_training_feedback(branch_frontier)
+    result_hash = hash72_digest(("calculator_evaluate_v1", interpreted.receipt.receipt_hash72, solved.receipt.receipt_hash72, symbolic_substitution.receipt_hash72, autocorrections.summary_hash72, simulation_overlay.overlay_hash72, branch_frontier.frontier_hash72, correction_feedback, simulation_feedback, branch_feedback), width=24)
+    return {"interpreter": interpreted.to_dict(), "solver": solved.to_dict(), "symbolic_substitution": symbolic_substitution.to_dict(), "autocorrections": autocorrections.to_dict(), "autocorrection_feedback": correction_feedback, "correctionSimulation": simulation_overlay.to_dict(), "correction_simulation_feedback": simulation_feedback, "correctionBranchFrontier": branch_frontier.to_dict(), "correction_branch_feedback": branch_feedback, "result_hash72": result_hash}
+
+
+def _evaluation_items(payload: Dict[str, Any]) -> List[Dict[str, Any]]:
+    graph_nodes = payload.get("interpreter", {}).get("graph", {}).get("nodes", [])
+    graph_edges = payload.get("interpreter", {}).get("graph", {}).get("edges", [])
+    solver_items = payload.get("solver", {}).get("solutions") or payload.get("solver", {}).get("branches") or []
+    items = []
+    for index, node in enumerate(graph_nodes):
+        items.append({"id": f"node-{index}", "text": str(node), "kind": "GRAPH_NODE", "phaseIndex": index % 72})
+    for index, edge in enumerate(graph_edges):
+        items.append({"id": f"edge-{index}", "text": f"{edge.get('source', '')}→{edge.get('target', '')}", "kind": edge.get("type", "GRAPH_EDGE"), "phaseIndex": (index + 9) % 72})
+    for index, item in enumerate(solver_items):
+        items.append({"id": f"solver-{index}", "text": json.dumps(item, sort_keys=True)[:140], "kind": "SOLVER_BRANCH", "phaseIndex": (index + 18) % 72})
+    return items
+
+
+def _evaluation_influences(payload: Dict[str, Any]) -> List[Dict[str, Any]]:
+    branches = payload.get("correctionBranchFrontier", {}).get("branches", [])
+    suggestions = payload.get("autocorrections", {}).get("suggestions", [])
+    return list(branches or suggestions)[:12]
+
+
+def _is_unresolved(payload: Dict[str, Any]) -> bool:
+    status = payload.get("interpreter", {}).get("receipt", {}).get("status", "IR_EMITTED")
+    solved = payload.get("solver", {}).get("status") or payload.get("solver", {}).get("receipt", {}).get("status", "checked")
+    return status == "QUARANTINED" or "UNRESOLVED" in str(solved).upper() or bool(payload.get("autocorrections", {}).get("suggestions")) or bool(payload.get("correctionBranchFrontier", {}).get("branches"))
+
+
+def run_kernel_wired_agent_loop(expression: str, *, auto_continue: bool = True, max_passes: int = 1) -> Dict[str, Any]:
+    evaluation = _calculator_evaluation_payload(expression)
+    passes: List[Dict[str, Any]] = [{"index": 1, "kind": "calculator-evaluate", "hash72": evaluation.get("result_hash72"), "payload": evaluation}]
+    unresolved = _is_unresolved(evaluation)
+    if auto_continue and unresolved:
+        for _ in range(max(1, min(max_passes, 3))):
+            items = _evaluation_items(evaluation)
+            influences = _evaluation_influences(evaluation)
+            packet = build_convergence_packet(expression, items, influences).to_dict()
+            passes.append({"index": len(passes) + 1, "kind": "convergence-packet", "hash72": packet.get("packet_hash72") or packet.get("convergence_hash72"), "payload": packet})
+            patch = plan_transformation_patch(packet)
+            passes.append({"index": len(passes) + 1, "kind": "patch-plan", "hash72": patch.get("patch_hash72") or patch.get("plan_hash72"), "payload": patch})
+            manifest = build_equation_manifest()
+            passes.append({"index": len(passes) + 1, "kind": "equation-manifest", "hash72": manifest.get("manifest_hash72") or manifest.get("summary_hash72"), "payload": manifest})
+            transpile = build_transpile_receipt(manifest, ["python"])
+            passes.append({"index": len(passes) + 1, "kind": "transpile-receipt", "hash72": transpile.get("receipt_hash72") or transpile.get("transpile_hash72"), "payload": transpile})
+            break
+    run_hash = hash72_digest(("agent_run_loop_v1", expression, [p.get("kind") for p in passes], [p.get("hash72") for p in passes]), width=24)
+    return {"status": "KERNEL_WIRED_RUN_COMPLETE", "expression": expression, "unresolved": unresolved, "auto_continue": auto_continue, "passes": passes, "run_hash72": run_hash, "receipt_hash72": run_hash}
+
+
 @app.get("/api/status")
 async def api_status() -> Dict[str, Any]:
-    return {"status": "OK", "server": APP_NAME, "read_only": False, "correction_execution_requires_approval": True, "root_commit_requires_consensus": True, "temporal_shells_enabled": True, "equation_manifest_enabled": True, "transpiler_enabled": True, "agent_packet_enabled": True, "audio_encode_enabled": True, "symbolic_substitution_enabled": True, "time_ns": time.time_ns()}
+    return {"status": "OK", "server": APP_NAME, "read_only": False, "correction_execution_requires_approval": True, "root_commit_requires_consensus": True, "temporal_shells_enabled": True, "equation_manifest_enabled": True, "transpiler_enabled": True, "agent_packet_enabled": True, "audio_encode_enabled": True, "symbolic_substitution_enabled": True, "agent_run_loop_enabled": True, "time_ns": time.time_ns()}
 
 
 @app.get("/api/latest-phase-lock")
@@ -243,18 +311,12 @@ async def api_transpile_manifest(req: TranspileManifestRequest) -> Dict[str, Any
 
 @app.post("/api/calculator/evaluate")
 async def api_calculator_evaluate(req: CalculatorEvaluateRequest) -> Dict[str, Any]:
-    interpreted = interpret(req.expression)
-    solved = solve_interpreter_result(interpreted)
-    symbolic_substitution = solve_symbolic_linguistic_substitutions(req.expression, _wordnet_db())
-    stress_result = {"findings": [], "receipt": {"source_hash72": interpreted.receipt.source_hash72, "receipt_hash72": interpreted.receipt.stress_hash72}}
-    autocorrections = build_autocorrection_suggestions(stress_result, source_hash72=interpreted.receipt.source_hash72)
-    correction_feedback = suggestions_to_training_feedback(autocorrections)
-    simulation_overlay = build_correction_simulation_overlay(autocorrections.to_dict(), source_hash72=interpreted.receipt.source_hash72)
-    simulation_feedback = overlay_to_training_feedback(simulation_overlay)
-    branch_frontier = compete_correction_branches(simulation_overlay.to_dict())
-    branch_feedback = branch_frontier_to_training_feedback(branch_frontier)
-    result_hash = hash72_digest(("calculator_evaluate_v1", interpreted.receipt.receipt_hash72, solved.receipt.receipt_hash72, symbolic_substitution.receipt_hash72, autocorrections.summary_hash72, simulation_overlay.overlay_hash72, branch_frontier.frontier_hash72, correction_feedback, simulation_feedback, branch_feedback), width=24)
-    return {"interpreter": interpreted.to_dict(), "solver": solved.to_dict(), "symbolic_substitution": symbolic_substitution.to_dict(), "autocorrections": autocorrections.to_dict(), "autocorrection_feedback": correction_feedback, "correctionSimulation": simulation_overlay.to_dict(), "correction_simulation_feedback": simulation_feedback, "correctionBranchFrontier": branch_frontier.to_dict(), "correction_branch_feedback": branch_feedback, "result_hash72": result_hash}
+    return _calculator_evaluation_payload(req.expression)
+
+
+@app.post("/api/agent/run-loop")
+async def api_agent_run_loop(req: AgentRunLoopRequest) -> Dict[str, Any]:
+    return run_kernel_wired_agent_loop(req.expression, auto_continue=req.auto_continue, max_passes=req.max_passes)
 
 
 @app.post("/api/agent/convergence-packet")
