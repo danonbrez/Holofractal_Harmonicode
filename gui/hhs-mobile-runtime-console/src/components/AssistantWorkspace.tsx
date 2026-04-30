@@ -10,7 +10,7 @@ import { CalculatorPhaseToken } from '../App';
 
 type Depth = 'answer' | 'structure' | 'proof';
 type IntentKind = 'math' | 'symbolic' | 'instruction' | 'relation' | 'closure';
-type StepStatus = 'idle' | 'running' | 'done' | 'error';
+type StepStatus = 'idle' | 'running' | 'done' | 'deferred';
 
 type AssistantMessage = {
   role: 'user' | 'assistant';
@@ -48,11 +48,12 @@ function summarizeEvaluation(expression: string, payload: any): AssistantMessage
   const edges = payload?.interpreter?.graph?.edges?.length ?? 0;
   const resultHash = payload?.result_hash72 ?? payload?.interpreter?.receipt?.receipt_hash72 ?? 'pending';
   const solved = payload?.solver?.status ?? payload?.solver?.receipt?.status ?? 'checked';
+  const unresolved = status === 'QUARANTINED' || String(solved).toUpperCase().includes('UNRESOLVED');
   return {
     role: 'assistant',
-    text: status === 'QUARANTINED'
-      ? 'I found a structural issue, kept it contained, and prepared correction paths.'
-      : 'I built the runnable structure and verified the first pass.',
+    text: unresolved
+      ? 'This produced an unresolved constraint state. I preserved it for downstream solving instead of collapsing it early.'
+      : 'I built the runnable structure and completed the first solving pass.',
     hint: `${solved} · ${nodes} nodes · ${edges} links · ${String(resultHash).slice(0, 18)}…`
   };
 }
@@ -62,9 +63,9 @@ function actionsFor(intent: IntentKind, payload: any): AssistantAction[] {
   actions.push({ label: 'Show structure', kind: 'depth', value: 'structure' });
   actions.push({ label: 'Show proof', kind: 'depth', value: 'proof' });
   if (intent === 'math') actions.push({ label: 'Try symbolic form', kind: 'input', value: 'xy≠yx' });
-  if (intent === 'symbolic' || intent === 'closure') actions.push({ label: 'Test closure', kind: 'input', value: 'PLASTIC_EIGENSTATE_CLOSURE_GATE' });
+  if (intent === 'symbolic' || intent === 'closure') actions.push({ label: 'Continue solving', kind: 'input', value: 'PLASTIC_EIGENSTATE_CLOSURE_GATE' });
   if (payload?.correctionBranchFrontier?.branches?.length || payload?.autocorrections?.suggestions?.length) {
-    actions.push({ label: 'Review corrections', kind: 'depth', value: 'structure' });
+    actions.push({ label: 'Review refinements', kind: 'depth', value: 'structure' });
   }
   actions.push({ label: 'Open receipt', kind: 'depth', value: 'proof' });
   return actions.slice(0, 5);
@@ -102,7 +103,7 @@ export default function AssistantWorkspace({
     { label: 'Attach receipt', status: 'idle' }
   ]);
   const [messages, setMessages] = useState<AssistantMessage[]>([
-    { role: 'assistant', text: 'Tell me what to calculate, build, prove, or explore. I’ll use the local tools and keep the proof available.', hint: 'Live preview while typing. Enter commits and verifies.' }
+    { role: 'assistant', text: 'Tell me what to calculate, build, prove, or explore. I’ll use the local tools, preserve unresolved states, and keep the proof available.', hint: 'Live preview while typing. Enter commits and verifies.' }
   ]);
 
   const intent = useMemo(() => classifyIntent(input), [input]);
@@ -135,8 +136,8 @@ export default function AssistantWorkspace({
       setCommitted(expression);
       setDepth(detected === 'symbolic' || detected === 'closure' ? 'structure' : 'answer');
     } catch (err: any) {
-      setStep('Run local tools', 'error');
-      setMessages(prev => [...prev, { role: 'user', text: expression }, { role: 'assistant', text: 'The local tool call failed. I kept the state unchanged.', hint: String(err?.message ?? err) }]);
+      setStep('Run local tools', 'deferred');
+      setMessages(prev => [...prev, { role: 'user', text: expression }, { role: 'assistant', text: 'The local tool route did not complete. I preserved the input unchanged so the next solver path can continue from the same state.', hint: String(err?.message ?? err) }]);
     } finally {
       setBusy(false);
     }
