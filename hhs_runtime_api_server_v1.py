@@ -59,7 +59,6 @@ class AgentRunLoopRequest(BaseModel):
     auto_continue: bool = True
     max_passes: int = 3
 
-# --- RESTORED PIPELINE ---
 
 def _calculator_evaluation_payload(expression: str) -> Dict[str, Any]:
     interpreted = interpret(expression)
@@ -78,6 +77,121 @@ def _calculator_evaluation_payload(expression: str) -> Dict[str, Any]:
         "result_hash72": hash72_digest(("calculator_evaluate_v1", interpreted.receipt.receipt_hash72), width=24),
     }
 
+
+def _convergence_items_from_evaluation(evaluation: Dict[str, Any]) -> List[Dict[str, Any]]:
+    interpreter = evaluation.get("interpreter", {})
+    solver = evaluation.get("solver", {})
+    substitution = evaluation.get("symbolic_substitution", {})
+    items: List[Dict[str, Any]] = [
+        {
+            "id": "interpreter",
+            "kind": "INTERPRETER_RECEIPT",
+            "text": str(interpreter.get("receipt", {}).get("receipt_hash72", interpreter.get("receipt_hash72", ""))),
+            "phaseIndex": 0,
+            "payload": interpreter,
+        },
+        {
+            "id": "solver",
+            "kind": "CONSTRAINT_SOLVER_RECEIPT",
+            "text": str(solver.get("receipt_hash72", solver.get("status", ""))),
+            "phaseIndex": 0,
+            "payload": solver,
+        },
+        {
+            "id": "symbolic_substitution",
+            "kind": "SYMBOLIC_SUBSTITUTION_RECEIPT",
+            "text": str(substitution.get("receipt_hash72", substitution.get("status", ""))),
+            "phaseIndex": 0,
+            "payload": substitution,
+        },
+    ]
+    return items
+
+
+def _convergence_influences_from_evaluation(evaluation: Dict[str, Any]) -> List[Dict[str, Any]]:
+    influences: List[Dict[str, Any]] = []
+    for key, kind in [
+        ("autocorrections", "AUTOCORRECTION"),
+        ("correctionSimulation", "SIMULATION_OVERLAY"),
+        ("correctionBranchFrontier", "BRANCH_FRONTIER"),
+    ]:
+        payload = evaluation.get(key, {})
+        influences.append(
+            {
+                "id": key,
+                "kind": kind,
+                "text": str(payload.get("receipt_hash72", payload.get("frontier_hash72", payload.get("overlay_hash72", key)))),
+                "phaseIndex": 0,
+                "payload": payload,
+            }
+        )
+    return influences
+
+
+def _agent_run_loop_payload(expression: str, *, auto_continue: bool = True, max_passes: int = 3) -> Dict[str, Any]:
+    pass_count = max(1, min(int(max_passes or 1), 12)) if auto_continue else 1
+    current_expression = expression
+    passes: List[Dict[str, Any]] = []
+
+    for pass_index in range(pass_count):
+        evaluation = _calculator_evaluation_payload(current_expression)
+        items = _convergence_items_from_evaluation(evaluation)
+        influences = _convergence_influences_from_evaluation(evaluation)
+        convergence = build_convergence_packet(current_expression, items, influences)
+        patch_plan = plan_transformation_patch(convergence.to_dict())
+        feedback_records = [
+            suggestions_to_training_feedback(evaluation.get("autocorrections", {})),
+            overlay_to_training_feedback(evaluation.get("correctionSimulation", {})),
+            branch_frontier_to_training_feedback(evaluation.get("correctionBranchFrontier", {})),
+        ]
+        equation_manifest = select_and_bind_equation_manifest(
+            current_expression,
+            cycles=pass_index + 1,
+            feedback_records=feedback_records,
+            windows=72,
+            target_layer="normalized",
+        )
+        transpile_receipt = transpile_manifest(equation_manifest, targets=["python", "c", "asm"])
+        pass_receipt_hash72 = hash72_digest(
+            (
+                "agent_run_loop_pass_v1",
+                pass_index,
+                current_expression,
+                evaluation.get("result_hash72"),
+                convergence.packet_hash72,
+                patch_plan.get("patch_hash72"),
+                equation_manifest.get("aggregate_hash72"),
+                transpile_receipt.receipt_hash72,
+            ),
+            width=24,
+        )
+        passes.append(
+            {
+                "pass_index": pass_index,
+                "expression": current_expression,
+                "evaluation": evaluation,
+                "convergence_packet": convergence.to_dict(),
+                "patch_plan": patch_plan,
+                "equation_manifest": equation_manifest,
+                "transpile_receipt": transpile_receipt.to_dict(),
+                "receipt_hash72": pass_receipt_hash72,
+            }
+        )
+        if not auto_continue:
+            break
+        manifest_status = equation_manifest.get("manifest", {}).get("status")
+        if manifest_status == "READY":
+            break
+
+    receipt_hash72 = hash72_digest(("agent_run_loop_v1", expression, [p["receipt_hash72"] for p in passes]), width=24)
+    return {
+        "status": "LOCKED",
+        "expression": expression,
+        "passes": passes,
+        "receipt_hash72": receipt_hash72,
+        "authority": "canonical_hhs_runtime_pipeline",
+    }
+
 @app.get("/api/status")
 async def api_status() -> Dict[str, Any]:
     return {"status": "OK", "server": APP_NAME, "time_ns": time.time_ns()}
@@ -88,13 +202,7 @@ async def api_calculator_evaluate(req: CalculatorEvaluateRequest) -> Dict[str, A
 
 @app.post("/api/agent/run-loop")
 async def api_agent_run_loop(req: AgentRunLoopRequest) -> Dict[str, Any]:
-    evaluation = _calculator_evaluation_payload(req.expression)
-    return {
-        "status": "REVERTED",
-        "expression": req.expression,
-        "evaluation": evaluation,
-        "receipt_hash72": evaluation.get("result_hash72"),
-    }
+    return _agent_run_loop_payload(req.expression, auto_continue=req.auto_continue, max_passes=req.max_passes)
 
 @app.get("/api/certification")
 async def api_certification() -> Dict[str, Any]:
