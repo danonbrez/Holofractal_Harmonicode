@@ -1,7 +1,9 @@
-// ATTRACTOR DYNAMICS EXTENSION
+// VISUAL REFINEMENT LAYER
+// depth, trails, glow, camera physics
 
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
+import { OrbitControls } from '@react-three/drei';
 import * as THREE from 'three';
 
 function projectState(state: any): [number, number, number] {
@@ -10,6 +12,29 @@ function projectState(state: any): [number, number, number] {
   return [v, s, v - s];
 }
 
+// 🔥 TRAIL WITH DECAY
+function Trail({ history }: any) {
+  const points = useMemo(() => history.map((s: any) => new THREE.Vector3(...projectState(s))), [history]);
+
+  return (
+    <group>
+      {points.map((p: any, i: number) => (
+        <mesh key={i} position={p}>
+          <sphereGeometry args={[0.05, 8, 8]} />
+          <meshStandardMaterial
+            color="#33f6ff"
+            transparent
+            opacity={i / points.length}
+            emissive="#33f6ff"
+            emissiveIntensity={0.5}
+          />
+        </mesh>
+      ))}
+    </group>
+  );
+}
+
+// 🔥 GLOW NODE
 function MotionNode({ state, status, attractors }: any) {
   const ref = useRef<any>();
   const velocity = useRef(new THREE.Vector3());
@@ -33,6 +58,8 @@ function MotionNode({ state, status, attractors }: any) {
     velocity.current.multiplyScalar(0.85);
     velocity.current.add(baseForce).add(attractorForce);
     current.add(velocity.current);
+
+    ref.current.rotation.y += 0.02;
   });
 
   const color =
@@ -43,19 +70,32 @@ function MotionNode({ state, status, attractors }: any) {
 
   return (
     <mesh ref={ref}>
-      <sphereGeometry args={[0.12, 16, 16]} />
-      <meshStandardMaterial color={color} emissive={color} emissiveIntensity={1.2} />
+      <sphereGeometry args={[0.14, 20, 20]} />
+      <meshStandardMaterial
+        color={color}
+        emissive={color}
+        emissiveIntensity={1.5}
+        roughness={0.2}
+        metalness={0.6}
+      />
     </mesh>
   );
 }
 
+// 🔥 ATTRACTOR GLOW FIELD
 function AttractorField({ attractors }: any) {
   return (
     <group>
       {attractors.map((a: any, i: number) => (
         <mesh key={i} position={projectState(a)}>
-          <sphereGeometry args={[0.25, 16, 16]} />
-          <meshStandardMaterial color="#00ffaa" transparent opacity={0.15} emissive="#00ffaa" />
+          <sphereGeometry args={[0.35, 16, 16]} />
+          <meshStandardMaterial
+            color="#00ffaa"
+            transparent
+            opacity={0.1}
+            emissive="#00ffaa"
+            emissiveIntensity={0.8}
+          />
         </mesh>
       ))}
     </group>
@@ -68,25 +108,29 @@ export default function PhaseRing3D({ projection, loop, phase }: any) {
 
   useEffect(() => {
     if (!projection) return;
-    setHistory((prev) => [...prev.slice(-20), projection]);
+    setHistory((prev) => [...prev.slice(-30), projection]);
   }, [projection]);
 
-  const attractors = useMemo(() => history.slice(-5), [history]);
+  const attractors = useMemo(() => history.slice(-6), [history]);
 
   return (
     <div style={{ height: '44vh' }}>
-      <Canvas camera={{ position: [0, 0, 6] }}>
+      <Canvas camera={{ position: [0, 0, 6], fov: 60 }}>
 
-        <ambientLight intensity={0.5} />
-        <pointLight position={[3, 3, 3]} />
+        <ambientLight intensity={0.4} />
+        <pointLight position={[3, 3, 4]} intensity={1.8} />
 
         <AttractorField attractors={attractors} />
+
+        <Trail history={history} />
 
         <MotionNode
           state={projection}
           status={phase?.status}
           attractors={attractors}
         />
+
+        <OrbitControls enableZoom enableRotate enableDamping dampingFactor={0.05} />
 
       </Canvas>
     </div>
