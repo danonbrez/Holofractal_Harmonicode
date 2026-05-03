@@ -3,19 +3,10 @@ from decimal import Decimal
 from hhs_runtime.hhs_sv_phase_trace_v1 import sv_trace_with_correction
 from hhs_runtime.hhs_recursive_global_constraint_bundle_v1 import build_recursive_global_constraint_report
 from hhs_runtime.hhs_invariant_receipt_bridge_v1 import pre_commit_with_invariants
-
-
-def apply_correction(state, corrections):
-    v = Decimal(state.get("v", 1))
-
-    for c in corrections.values():
-        if c["suggestion"] == "increase":
-            v += Decimal("0.01")
-        elif c["suggestion"] == "decrease":
-            v -= Decimal("0.01")
-
-    state["v"] = v
-    return state
+from hhs_runtime.hhs_adaptive_correction_memory_v1 import (
+    apply_adaptive_correction,
+    record_iteration,
+)
 
 
 def attempt_branch_rejoin(state, receipt_builder, max_iterations=10):
@@ -30,10 +21,12 @@ def attempt_branch_rejoin(state, receipt_builder, max_iterations=10):
 
             # full system closure reached
             if report["pass"]:
+                record_iteration(trace, success=True)
                 return pre_commit_with_invariants(current, receipt_builder)
 
-        # otherwise adjust toward closure
-        current = apply_correction(current, trace.get("corrections", {}))
+        # otherwise adjust toward closure using adaptive memory
+        current = apply_adaptive_correction(current, trace.get("corrections", {}))
+        record_iteration(trace, success=False)
 
     # failed to rejoin → remain in branch
     receipt = receipt_builder(current)
