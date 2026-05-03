@@ -1,64 +1,38 @@
-// TRAJECTORY SYSTEM EXTENSION
-// motion memory + branch arcs + rejoin interpolation
+// ATTRACTOR DYNAMICS EXTENSION
 
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 
-// 🔥 projection
 function projectState(state: any): [number, number, number] {
   const v = Number(state?.state?.v ?? state?.v ?? 0);
   const s = Number(state?.state?.s ?? state?.s ?? 0);
   return [v, s, v - s];
 }
 
-// 🔥 TRAJECTORY LINE
-function Trajectory({ history }: { history: any[] }) {
-  const points = useMemo(() => {
-    return history.map((s) => new THREE.Vector3(...projectState(s)));
-  }, [history]);
-
-  const geometry = useMemo(() => {
-    return new THREE.BufferGeometry().setFromPoints(points);
-  }, [points]);
-
-  if (points.length < 2) return null;
-
-  return (
-    <line geometry={geometry}>
-      <lineBasicMaterial color="#33f6ff" transparent opacity={0.8} />
-    </line>
-  );
-}
-
-// 🔥 BRANCH ARC (curved path)
-function BranchArc({ from, to }: { from: any; to: any }) {
-  const start = new THREE.Vector3(...projectState(from));
-  const end = new THREE.Vector3(...projectState(to));
-
-  const mid = start.clone().lerp(end, 0.5);
-  mid.y += 0.5; // lift arc
-
-  const curve = new THREE.QuadraticBezierCurve3(start, mid, end);
-  const points = curve.getPoints(20);
-
-  const geometry = new THREE.BufferGeometry().setFromPoints(points);
-
-  return (
-    <line geometry={geometry}>
-      <lineBasicMaterial color="#ff8844" transparent opacity={0.5} />
-    </line>
-  );
-}
-
-// 🔥 MOTION NODE
-function MotionNode({ state, status }: any) {
+function MotionNode({ state, status, attractors }: any) {
   const ref = useRef<any>();
-  const target = projectState(state);
+  const velocity = useRef(new THREE.Vector3());
 
   useFrame(() => {
     if (!ref.current) return;
-    ref.current.position.lerp(new THREE.Vector3(...target), 0.1);
+
+    const current = ref.current.position;
+    const target = new THREE.Vector3(...projectState(state));
+
+    const baseForce = target.clone().sub(current).multiplyScalar(0.08);
+
+    const attractorForce = attractors.reduce((acc: any, a: any) => {
+      const aPos = new THREE.Vector3(...projectState(a));
+      const dir = aPos.clone().sub(current);
+      const dist = dir.length() + 0.001;
+      const strength = 1 / (dist * dist);
+      return acc.add(dir.normalize().multiplyScalar(strength * 0.05));
+    }, new THREE.Vector3());
+
+    velocity.current.multiplyScalar(0.85);
+    velocity.current.add(baseForce).add(attractorForce);
+    current.add(velocity.current);
   });
 
   const color =
@@ -75,15 +49,29 @@ function MotionNode({ state, status }: any) {
   );
 }
 
+function AttractorField({ attractors }: any) {
+  return (
+    <group>
+      {attractors.map((a: any, i: number) => (
+        <mesh key={i} position={projectState(a)}>
+          <sphereGeometry args={[0.25, 16, 16]} />
+          <meshStandardMaterial color="#00ffaa" transparent opacity={0.15} emissive="#00ffaa" />
+        </mesh>
+      ))}
+    </group>
+  );
+}
+
 export default function PhaseRing3D({ projection, loop, phase }: any) {
 
   const [history, setHistory] = useState<any[]>([]);
 
-  // 🔁 accumulate trajectory
   useEffect(() => {
     if (!projection) return;
-    setHistory((prev) => [...prev.slice(-50), projection]);
+    setHistory((prev) => [...prev.slice(-20), projection]);
   }, [projection]);
+
+  const attractors = useMemo(() => history.slice(-5), [history]);
 
   return (
     <div style={{ height: '44vh' }}>
@@ -92,20 +80,13 @@ export default function PhaseRing3D({ projection, loop, phase }: any) {
         <ambientLight intensity={0.5} />
         <pointLight position={[3, 3, 3]} />
 
-        {/* CORE NODE */}
-        <MotionNode state={projection} status={phase?.status} />
+        <AttractorField attractors={attractors} />
 
-        {/* TRAJECTORY */}
-        <Trajectory history={history} />
-
-        {/* BRANCH ARCS */}
-        {(loop?.proposals ?? []).map((p: any, i: number) => (
-          <BranchArc
-            key={i}
-            from={projection}
-            to={{ v: p.phase_distance_from_anchor, s: i }}
-          />
-        ))}
+        <MotionNode
+          state={projection}
+          status={phase?.status}
+          attractors={attractors}
+        />
 
       </Canvas>
     </div>
