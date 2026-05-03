@@ -1,3 +1,6 @@
+// PHASE MAPPING EXTENSION
+// motion = computation layer
+
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
@@ -5,217 +8,76 @@ import { PhaseLockView, PhaseWitnessView, RuntimeAnomalies, OperatorLoopView, Pr
 import { topDisplayInfluences } from '../displayPhaseAnalysis';
 
 const RING = 72;
-const MAJOR_SEGMENTS = 9;
-const MINOR_SEGMENTS = 8;
-const TORUS_R = 2.15;
-const TORUS_r = 0.55;
-const MAX_BRANCHES = 8;
-const PRUNE_THRESHOLD = 18;
-
-type Branch = { id: string; phases: number[]; kind: 'drift' | 'correction'; driftScore: number; degreesOfFreedomScore: number; emergenceScore: number; };
-type BranchMemory = Branch & { age: number; survivalScore: number; wins: number; pruned?: boolean; };
-type RootMetaBranch = BranchMemory & { mutualOverlapScore: number; compressionScore: number; rootScore: number; equationSeed: string; };
-type CalculatorPhaseItem = { id: string; text: string; kind: string; phaseIndex: number };
 
 function mod72(n: number): number { return ((Math.round(n) % RING) + RING) % RING; }
-function circularDistance(a: number, b: number): number { const d = Math.abs(mod72(a) - mod72(b)); return Math.min(d, RING - d); }
-function branchSignature(branch: Branch): string { return `${branch.kind}:${branch.phases.join('-')}`; }
-function uniq<T>(xs: T[]): T[] { return Array.from(new Set(xs)); }
 
-function phaseToPoint(phaseIndex: number, lift = 0): [number, number, number] {
-  const p = mod72(phaseIndex);
-  const major = ((p % MAJOR_SEGMENTS) / MAJOR_SEGMENTS) * Math.PI * 2;
-  const minor = (Math.floor(p / MAJOR_SEGMENTS) / MINOR_SEGMENTS) * Math.PI * 2;
-  const r = TORUS_R + lift;
-  return [(r + TORUS_r * Math.cos(minor)) * Math.cos(major), (r + TORUS_r * Math.cos(minor)) * Math.sin(major), TORUS_r * Math.sin(minor) + lift * 0.22];
+// 🔥 NEW: STATE → SPATIAL PROJECTION
+function projectState(state: any): [number, number, number] {
+  const v = Number(state?.state?.v ?? state?.v ?? 0);
+  const s = Number(state?.state?.s ?? state?.s ?? 0);
+
+  return [
+    v,
+    s,
+    v - s
+  ];
 }
 
-function PhaseLine({ phases, color, opacity = 1, lift = 0 }: { phases: number[]; color: string; opacity?: number; lift?: number }) {
-  const geometry = useMemo(() => new THREE.BufferGeometry().setFromPoints(phases.map((p) => new THREE.Vector3(...phaseToPoint(p, lift)))), [phases.join(','), lift]);
-  if (phases.length < 2) return null;
-  return <line geometry={geometry}><lineBasicMaterial color={color} transparent opacity={opacity} /></line>;
-}
-
-function FlowLine({ phases, color, opacity = 1, lift = 0 }: { phases: number[]; color: string; opacity?: number; lift?: number }) {
+// 🔥 NEW: SMOOTH MOTION NODE
+function MotionNode({ state, status }: { state: any; status?: string }) {
   const ref = useRef<any>();
-  const geometry = useMemo(() => new THREE.BufferGeometry().setFromPoints(phases.map((p) => new THREE.Vector3(...phaseToPoint(p, lift)))), [phases.join(','), lift]);
-  useFrame(({ clock }) => {
+  const target = projectState(state);
+
+  useFrame(() => {
     if (!ref.current) return;
-    ref.current.material.opacity = Math.max(0.12, opacity * (0.72 + Math.sin(clock.getElapsedTime() * 2.2 + lift * 6) * 0.22));
+
+    ref.current.position.lerp(
+      new THREE.Vector3(...target),
+      0.1
+    );
   });
-  if (phases.length < 2) return null;
-  return <line ref={ref} geometry={geometry}><lineBasicMaterial color={color} transparent opacity={opacity} /></line>;
-}
 
-function PhaseMarker({ index, color, scale = 1, pulse = false, lift = 0, onClick }: { index: number; color: string; scale?: number; pulse?: boolean; lift?: number; onClick?: () => void }) {
-  const ref = useRef<any>();
-  const pos = phaseToPoint(index, lift);
-  useFrame(({ clock }) => {
-    if (!ref.current) return;
-    const s = pulse ? scale * (1 + Math.sin(clock.getElapsedTime() * 6.5 + index * 0.1) * 0.28) : scale;
-    ref.current.scale.set(s, s, s);
-    ref.current.rotation.y += 0.01;
-  });
-  return <mesh ref={ref} position={pos} onClick={onClick}><sphereGeometry args={[0.075, 18, 18]} /><meshStandardMaterial color={color} emissive={color} emissiveIntensity={1.25} toneMapped={false} /></mesh>;
-}
-
-function PhaseFieldHalo({ phaseIndex, status }: { phaseIndex: number; status?: string }) {
-  const group = useRef<any>();
-  const color = status === 'CRITICAL' ? '#ff315e' : status === 'WARN' ? '#ffbf42' : '#45f7ff';
-  useFrame(({ clock }) => {
-    if (!group.current) return;
-    group.current.rotation.z = clock.getElapsedTime() * 0.045 + phaseIndex * 0.002;
-    group.current.rotation.x = Math.sin(clock.getElapsedTime() * 0.22) * 0.08;
-  });
-  const rings = [0, 8, 16, 24, 32, 40, 48, 56, 64, 72];
-  return <group ref={group}>
-    {rings.map((offset, i) => <PhaseLine key={i} phases={[0, 9, 18, 27, 36, 45, 54, 63, 0].map((p) => p + offset)} color={color} opacity={0.035 + i * 0.006} lift={-0.09 + i * 0.018} />)}
-  </group>;
-}
-
-function itemColor(kind: string): string {
-  if (kind === 'ORDERED_PRODUCT') return '#9c78ff';
-  if (kind === 'INVARIANT') return '#ffd84d';
-  if (kind === 'FUNCTION') return '#38e8ff';
-  if (kind === 'OPERATOR') return '#ff9b52';
-  return '#b9fbff';
-}
-
-function buildPredictionBranches(anchor: number, anomalies?: RuntimeAnomalies): Branch[] {
-  const drift = anomalies?.drift_prediction;
-  const risk = Number(drift?.risk ?? 0);
-  if (risk < 20) return [];
-  const maxDist = Math.max(1, Number(drift?.max_phase_distance ?? Math.ceil(risk / 25)));
-  const affected = (drift?.affected_phase_indices ?? anomalies?.alerts?.flatMap((a: any) => a.affected_phase_indices ?? []) ?? []) as number[];
-  const primaryDirection = affected.length ? (mod72(affected[0]) >= mod72(anchor) ? 1 : -1) : 1;
-  const steps = risk >= 75 ? 8 : risk >= 45 ? 6 : 4;
-  const candidates = [primaryDirection, -primaryDirection, primaryDirection * 2, -primaryDirection * 2, primaryDirection * 3, -primaryDirection * 3];
-  return candidates.map((dir, i) => {
-    const stride = Math.max(1, Math.min(9, maxDist + i));
-    const phases = [anchor, ...new Array(steps).fill(0).map((_, k) => mod72(anchor + dir * stride * (k + 1)))];
-    const endDist = circularDistance(anchor, phases[phases.length - 1]);
-    const dof = new Set(phases.map((p) => `${p % 9}:${Math.floor(p / 9)}`)).size;
-    const driftScore = Math.max(0, 100 - endDist * 10 - risk * 0.4);
-    const degreesOfFreedomScore = Math.min(100, dof * 12);
-    const emergenceScore = Math.round(driftScore * 0.45 + degreesOfFreedomScore * 0.55);
-    return { id: `drift-${i}`, phases, kind: 'drift', driftScore, degreesOfFreedomScore, emergenceScore };
-  });
-}
-
-function buildCorrectionBranches(anchor: number, anomalies?: RuntimeAnomalies, corrections?: any): Branch[] {
-  const affected = anomalies?.alerts?.flatMap((a: any) => a.affected_phase_indices ?? []) ?? [];
-  const suggestions = corrections?.suggestions ?? [];
-  if (!affected.length || !suggestions.length) return [];
-  return suggestions.slice(0, 6).map((s: any, i: number) => {
-    const start = mod72(Number(affected[i % affected.length]));
-    const pivotA = mod72(Math.round((start * 2 + anchor) / 3) + i);
-    const pivotB = mod72(Math.round((start + anchor * 2) / 3) - i);
-    const phases = [start, pivotA, pivotB, anchor];
-    const terminalDrift = circularDistance(anchor, phases[phases.length - 1]);
-    const dof = new Set(phases.map((p) => `${p % 9}:${Math.floor(p / 9)}`)).size + (s.target_modalities?.length ?? 0);
-    const priority = Number(s.priority ?? 0);
-    const driftScore = Math.max(0, 100 - terminalDrift * 12 + priority * 0.2);
-    const degreesOfFreedomScore = Math.min(100, dof * 14);
-    const emergenceScore = Math.round(driftScore * 0.55 + degreesOfFreedomScore * 0.45);
-    return { id: s.suggestion_hash72 ?? `correction-${i}`, phases, kind: 'correction', driftScore, degreesOfFreedomScore, emergenceScore };
-  });
-}
-
-function competeAndPrune(prev: BranchMemory[], incoming: Branch[]): BranchMemory[] {
-  const map = new Map<string, BranchMemory>();
-  for (const old of prev) {
-    const decayed = Math.max(0, old.survivalScore * 0.88 - old.age * 0.4);
-    map.set(branchSignature(old), { ...old, age: old.age + 1, survivalScore: decayed });
-  }
-  for (const branch of incoming) {
-    const sig = branchSignature(branch);
-    const existing = map.get(sig);
-    const novelty = new Set(branch.phases).size * 2;
-    const correctionBonus = branch.kind === 'correction' ? 18 : 0;
-    const survival = branch.emergenceScore + novelty + correctionBonus;
-    if (existing) map.set(sig, { ...branch, age: 0, wins: existing.wins + (survival > existing.survivalScore ? 1 : 0), survivalScore: Math.max(existing.survivalScore * 0.72 + survival * 0.45, survival) });
-    else map.set(sig, { ...branch, age: 0, wins: 0, survivalScore: survival });
-  }
-  return [...map.values()].map((b) => ({ ...b, pruned: b.survivalScore < PRUNE_THRESHOLD })).filter((b) => !b.pruned).sort((a, b) => b.survivalScore - a.survivalScore).slice(0, MAX_BRANCHES);
-}
-
-function rootMetaBranch(frontier: BranchMemory[]): RootMetaBranch | undefined {
-  if (!frontier.length) return undefined;
-  const allCells = uniq(frontier.flatMap((b) => b.phases.map(mod72)));
-  return frontier.map((b) => {
-    const bCells = uniq(b.phases.map(mod72));
-    const overlap = frontier.length <= 1 ? 100 : frontier.reduce((acc, other) => {
-      const otherCells = uniq(other.phases.map(mod72));
-      const shared = bCells.filter((x) => otherCells.includes(x)).length;
-      const union = uniq([...bCells, ...otherCells]).length || 1;
-      return acc + (shared / union) * 100;
-    }, 0) / frontier.length;
-    const compressionRatio = allCells.length ? (bCells.length / allCells.length) : 1;
-    const compressionScore = Math.max(0, 100 - compressionRatio * 100);
-    const invariantSafety = b.kind === 'correction' ? 100 : Math.max(0, 100 - circularDistance(b.phases[b.phases.length - 1], b.phases[0]) * 8);
-    const rootScore = Math.round(overlap * 0.34 + compressionScore * 0.22 + b.degreesOfFreedomScore * 0.2 + invariantSafety * 0.24);
-    const equationSeed = `RootSeed(${b.phases.join('→')}) :: overlap=${overlap.toFixed(1)} compression=${compressionScore.toFixed(1)} dof=${b.degreesOfFreedomScore.toFixed(1)} Ω=${invariantSafety.toFixed(1)}`;
-    return { ...b, mutualOverlapScore: overlap, compressionScore, rootScore, equationSeed };
-  }).sort((a, b) => b.rootScore - a.rootScore)[0];
-}
-
-export default function PhaseRing3D({ phase, anomalies, projection, loop, corrections, activePhase, onPhaseSelect, calculatorPhases = [] }: { phase: PhaseLockView; anomalies?: RuntimeAnomalies; projection?: ProjectionView; loop?: OperatorLoopView; corrections?: any; activePhase?: number | null; onPhaseSelect?: (phase: number) => void; calculatorPhases?: CalculatorPhaseItem[] }) {
-  const [selected, setSelected] = useState<{ index: number; witnesses: PhaseWitnessView[] } | null>(null);
-  const phaseIndex = activePhase ?? projection?.phase_index ?? phase.anchor_phase_index ?? 0;
-  const [history, setHistory] = useState<number[]>([phaseIndex]);
-  const [branchFrontier, setBranchFrontier] = useState<BranchMemory[]>([]);
-  const affected = new Set((anomalies?.alerts ?? []).flatMap((a: any) => a.affected_phase_indices ?? []));
-  const incomingBranches = useMemo(() => [...buildPredictionBranches(phaseIndex, anomalies), ...buildCorrectionBranches(phaseIndex, anomalies, corrections)], [phaseIndex, anomalies?.summary_hash72, corrections?.summary_hash72]);
-
-  useEffect(() => { setHistory((prev) => { const next = prev[prev.length - 1] === phaseIndex ? prev : [...prev, phaseIndex]; return next.slice(-64); }); }, [phaseIndex]);
-  useEffect(() => { setBranchFrontier((prev) => competeAndPrune(prev, incomingBranches)); }, [incomingBranches.map((b) => b.id + b.emergenceScore).join('|')]);
-
-  const bestBranch = branchFrontier[0];
-  const rootBranch = rootMetaBranch(branchFrontier);
-  const bestCorrection = branchFrontier.find((b) => b.kind === 'correction');
-  const itemPhases = uniq(calculatorPhases.map((item) => mod72(item.phaseIndex)));
-  const influences = topDisplayInfluences(calculatorPhases, activePhase, 6);
+  const color =
+    status === 'closed' ? '#00ff88' :
+    status === 'branched' ? '#ff4444' :
+    status === 'rejoining' ? '#4488ff' :
+    '#ffffff';
 
   return (
-    <div style={{ height: '44vh', position: 'relative', borderRadius: 16, overflow: 'hidden', background: 'radial-gradient(circle at center, rgba(34,255,255,.09), rgba(0,0,0,.0) 55%)' }}>
-      <Canvas camera={{ position: [0, -0.15, 5.05] }}>
-        <ambientLight intensity={0.35} />
-        <pointLight position={[3, 3, 4]} intensity={1.6} />
-        <PhaseFieldHalo phaseIndex={phaseIndex} status={anomalies?.status} />
-        <FlowLine phases={history} color="#33f6ff" opacity={0.9} lift={0.08} />
-        {itemPhases.length > 1 ? <FlowLine phases={itemPhases} color="#b8f7ff" opacity={0.38} lift={0.16} /> : null}
-        {influences.map((inf, i) => <FlowLine key={`inf-${inf.id}-${i}`} phases={inf.projectedPhases} color="#40ffbf" opacity={0.46} lift={0.1 + i * 0.018} />)}
-        {branchFrontier.map((b, i) => {
-          const isRoot = b.id === rootBranch?.id;
-          const isBest = b.id === bestBranch?.id;
-          const color = isRoot ? '#ffffff' : b.kind === 'correction' ? '#39ff9b' : '#ffb347';
-          const opacity = isRoot ? 0.98 : isBest ? 0.76 : Math.max(0.14, Math.min(0.5, b.survivalScore / 180));
-          return <FlowLine key={b.id} phases={b.phases} color={color} opacity={opacity} lift={isRoot ? 0.26 : 0.08 + i * 0.012} />;
-        })}
-        <PhaseMarker index={phaseIndex} color="#33ffbb" scale={1.55} lift={0.24} pulse />
-        {influences[0] ? <PhaseMarker index={influences[0].phaseIndex} color="#40ffbf" scale={0.98} lift={0.18} pulse onClick={() => onPhaseSelect?.(influences[0].phaseIndex)} /> : null}
-        {calculatorPhases.map((item, i) => <PhaseMarker key={`calc-${item.id}-${i}`} index={item.phaseIndex} color={itemColor(item.kind)} scale={activePhase === item.phaseIndex ? 0.78 : 0.44} lift={0.12} pulse={activePhase === item.phaseIndex} onClick={() => onPhaseSelect?.(item.phaseIndex)} />)}
-        {phase.witnesses.map((w) => <PhaseMarker key={w.witness_hash72} index={w.phase_index} color={affected.has(w.phase_index) ? '#ff315e' : '#ffe96a'} scale={0.86} lift={0.04} pulse={affected.has(w.phase_index)} onClick={() => { onPhaseSelect?.(w.phase_index); setSelected({ index: w.phase_index, witnesses: phase.witnesses.filter((x) => x.phase_index === w.phase_index) }); }} />)}
-        {(loop?.proposals ?? []).map((p, i) => <PhaseMarker key={`${p.proposal_hash72}-${i}`} index={mod72(phaseIndex + Number(p.phase_distance_from_anchor ?? 0))} color={p.phase_ok ? '#69a7ff' : '#ff315e'} scale={0.62} lift={0.02 + i * 0.01} pulse={!p.phase_ok} />)}
-        {branchFrontier.flatMap((b) => b.phases.slice(1).map((p, i) => <PhaseMarker key={`${b.id}-${i}`} index={p} color={b.id === rootBranch?.id ? '#ffffff' : b.kind === 'correction' ? '#39ff9b' : '#ffb347'} scale={b.id === rootBranch?.id ? 0.54 : b.id === bestBranch?.id ? 0.43 : 0.26} lift={b.id === rootBranch?.id ? 0.26 : 0.06} pulse={b.id === rootBranch?.id && i === b.phases.length - 2} onClick={() => onPhaseSelect?.(p)} />))}
+    <mesh ref={ref}>
+      <sphereGeometry args={[0.12, 16, 16]} />
+      <meshStandardMaterial color={color} emissive={color} emissiveIntensity={1.2} />
+    </mesh>
+  );
+}
+
+export default function PhaseRing3D({ phase, anomalies, projection, loop, corrections, activePhase, onPhaseSelect, calculatorPhases = [] }: any) {
+
+  const phaseIndex = activePhase ?? projection?.phase_index ?? phase.anchor_phase_index ?? 0;
+
+  return (
+    <div style={{ height: '44vh', position: 'relative' }}>
+      <Canvas camera={{ position: [0, 0, 6] }}>
+
+        <ambientLight intensity={0.5} />
+        <pointLight position={[3, 3, 3]} />
+
+        {/* 🔥 CORE NODE (live state) */}
+        <MotionNode
+          state={projection}
+          status={phase?.status}
+        />
+
+        {/* 🔥 BRANCH VISUALIZATION */}
+        {(loop?.proposals ?? []).map((p: any, i: number) => (
+          <MotionNode
+            key={i}
+            state={{ v: p.phase_distance_from_anchor, s: i }}
+            status={p.phase_ok ? 'rejoining' : 'branched'}
+          />
+        ))}
+
       </Canvas>
-      <div style={{ position: 'absolute', top: 8, left: 10, right: 10, display: 'flex', justifyContent: 'space-between', fontSize: 11, pointerEvents: 'none', color: '#dffcff' }}>
-        <span>phase {phaseIndex}/72 · {projection?.target_layer ?? 'runtime'} · items {calculatorPhases.length}</span>
-        <span>frontier {branchFrontier.length}/{MAX_BRANCHES} · root {rootBranch?.rootScore ?? 0} · influence {influences[0]?.influenceScore ?? 0}</span>
-      </div>
-      {rootBranch && (
-        <div style={{ position: 'absolute', bottom: selected ? 108 : 10, left: 10, right: 10, background: 'rgba(3,9,13,.82)', color: '#fff', padding: 10, fontSize: 11, border: '1px solid rgba(255,255,255,.2)', borderRadius: 12, backdropFilter: 'blur(10px)' }}>
-          ROOT META-BRANCH · {rootBranch.kind.toUpperCase()} · root={rootBranch.rootScore} · overlap={rootBranch.mutualOverlapScore.toFixed(1)} · compression={rootBranch.compressionScore.toFixed(1)} · dof={Math.round(rootBranch.degreesOfFreedomScore)}
-          <div style={{ opacity: 0.78 }}>{rootBranch.equationSeed}</div>
-          {bestCorrection && bestCorrection.id !== rootBranch.id ? <div style={{ color: '#8cffb0' }}>BEST CORRECTION · survival={bestCorrection.survivalScore.toFixed(1)} · emergence={bestCorrection.emergenceScore}</div> : null}
-        </div>
-      )}
-      {selected && (
-        <div style={{ position: 'absolute', bottom: 10, left: 10, right: 10, background: 'rgba(3,9,13,.86)', padding: 10, fontSize: 12, borderRadius: 12 }}>
-          <div>Phase: {selected.index}</div>
-          {selected.witnesses.map((w) => <div key={w.witness_hash72}>{w.modality} · {w.temporal_status}</div>)}
-        </div>
-      )}
     </div>
   );
 }
