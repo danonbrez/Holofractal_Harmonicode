@@ -1,40 +1,64 @@
-// PHASE MAPPING EXTENSION
-// motion = computation layer
+// TRAJECTORY SYSTEM EXTENSION
+// motion memory + branch arcs + rejoin interpolation
 
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
-import { PhaseLockView, PhaseWitnessView, RuntimeAnomalies, OperatorLoopView, ProjectionView } from '../runtimeData';
-import { topDisplayInfluences } from '../displayPhaseAnalysis';
 
-const RING = 72;
-
-function mod72(n: number): number { return ((Math.round(n) % RING) + RING) % RING; }
-
-// 🔥 NEW: STATE → SPATIAL PROJECTION
+// 🔥 projection
 function projectState(state: any): [number, number, number] {
   const v = Number(state?.state?.v ?? state?.v ?? 0);
   const s = Number(state?.state?.s ?? state?.s ?? 0);
-
-  return [
-    v,
-    s,
-    v - s
-  ];
+  return [v, s, v - s];
 }
 
-// 🔥 NEW: SMOOTH MOTION NODE
-function MotionNode({ state, status }: { state: any; status?: string }) {
+// 🔥 TRAJECTORY LINE
+function Trajectory({ history }: { history: any[] }) {
+  const points = useMemo(() => {
+    return history.map((s) => new THREE.Vector3(...projectState(s)));
+  }, [history]);
+
+  const geometry = useMemo(() => {
+    return new THREE.BufferGeometry().setFromPoints(points);
+  }, [points]);
+
+  if (points.length < 2) return null;
+
+  return (
+    <line geometry={geometry}>
+      <lineBasicMaterial color="#33f6ff" transparent opacity={0.8} />
+    </line>
+  );
+}
+
+// 🔥 BRANCH ARC (curved path)
+function BranchArc({ from, to }: { from: any; to: any }) {
+  const start = new THREE.Vector3(...projectState(from));
+  const end = new THREE.Vector3(...projectState(to));
+
+  const mid = start.clone().lerp(end, 0.5);
+  mid.y += 0.5; // lift arc
+
+  const curve = new THREE.QuadraticBezierCurve3(start, mid, end);
+  const points = curve.getPoints(20);
+
+  const geometry = new THREE.BufferGeometry().setFromPoints(points);
+
+  return (
+    <line geometry={geometry}>
+      <lineBasicMaterial color="#ff8844" transparent opacity={0.5} />
+    </line>
+  );
+}
+
+// 🔥 MOTION NODE
+function MotionNode({ state, status }: any) {
   const ref = useRef<any>();
   const target = projectState(state);
 
   useFrame(() => {
     if (!ref.current) return;
-
-    ref.current.position.lerp(
-      new THREE.Vector3(...target),
-      0.1
-    );
+    ref.current.position.lerp(new THREE.Vector3(...target), 0.1);
   });
 
   const color =
@@ -51,29 +75,35 @@ function MotionNode({ state, status }: { state: any; status?: string }) {
   );
 }
 
-export default function PhaseRing3D({ phase, anomalies, projection, loop, corrections, activePhase, onPhaseSelect, calculatorPhases = [] }: any) {
+export default function PhaseRing3D({ projection, loop, phase }: any) {
 
-  const phaseIndex = activePhase ?? projection?.phase_index ?? phase.anchor_phase_index ?? 0;
+  const [history, setHistory] = useState<any[]>([]);
+
+  // 🔁 accumulate trajectory
+  useEffect(() => {
+    if (!projection) return;
+    setHistory((prev) => [...prev.slice(-50), projection]);
+  }, [projection]);
 
   return (
-    <div style={{ height: '44vh', position: 'relative' }}>
+    <div style={{ height: '44vh' }}>
       <Canvas camera={{ position: [0, 0, 6] }}>
 
         <ambientLight intensity={0.5} />
         <pointLight position={[3, 3, 3]} />
 
-        {/* 🔥 CORE NODE (live state) */}
-        <MotionNode
-          state={projection}
-          status={phase?.status}
-        />
+        {/* CORE NODE */}
+        <MotionNode state={projection} status={phase?.status} />
 
-        {/* 🔥 BRANCH VISUALIZATION */}
+        {/* TRAJECTORY */}
+        <Trajectory history={history} />
+
+        {/* BRANCH ARCS */}
         {(loop?.proposals ?? []).map((p: any, i: number) => (
-          <MotionNode
+          <BranchArc
             key={i}
-            state={{ v: p.phase_distance_from_anchor, s: i }}
-            status={p.phase_ok ? 'rejoining' : 'branched'}
+            from={projection}
+            to={{ v: p.phase_distance_from_anchor, s: i }}
           />
         ))}
 
