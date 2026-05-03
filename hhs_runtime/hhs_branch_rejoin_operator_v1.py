@@ -53,7 +53,7 @@ def attempt_branch_rejoin(state, receipt_builder, max_iterations=10):
         trace = sv_trace_with_correction(Decimal(current.get("v", 1)))
 
         if trace["pass"]:
-            report = build_recursive_global_constraint_bundle_report = build_recursive_global_constraint_report()
+            report = build_recursive_global_constraint_report()
 
             if report["pass"]:
                 record_iteration(trace, success=True)
