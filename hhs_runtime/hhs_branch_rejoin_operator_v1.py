@@ -8,10 +8,14 @@ from hhs_runtime.hhs_adaptive_correction_memory_v1 import (
 )
 
 
-def apply_phase_vector_correction(state, corrections):
+def apply_tensor_phase_correction(state, corrections):
     v = Decimal(state.get("v", 1))
+    x = Decimal(state.get("x", 1))
+    y = Decimal(state.get("y", -1))
+    z = Decimal(state.get("z", 1))
+    w = Decimal(state.get("w", -1))
 
-    # golden ratio coupling (s = m*v)
+    # golden ratio coupling
     m = Decimal("1.6180339887498948482")
     s = m * v
 
@@ -20,13 +24,25 @@ def apply_phase_vector_correction(state, corrections):
 
         if direction == "increase":
             v += Decimal("0.01")
-            s = m * v
+            x += Decimal("0.005")
+            z += Decimal("0.005")
         elif direction == "decrease":
             v -= Decimal("0.01")
-            s = m * v
+            y -= Decimal("0.005")
+            w -= Decimal("0.005")
 
-    state["v"] = v
-    state["s"] = s
+        # maintain coupling
+        s = m * v
+
+    state.update({
+        "v": v,
+        "s": s,
+        "x": x,
+        "y": y,
+        "z": z,
+        "w": w,
+    })
+
     return state
 
 
@@ -37,13 +53,13 @@ def attempt_branch_rejoin(state, receipt_builder, max_iterations=10):
         trace = sv_trace_with_correction(Decimal(current.get("v", 1)))
 
         if trace["pass"]:
-            report = build_recursive_global_constraint_report()
+            report = build_recursive_global_constraint_bundle_report = build_recursive_global_constraint_report()
 
             if report["pass"]:
                 record_iteration(trace, success=True)
                 return pre_commit_with_invariants(current, receipt_builder)
 
-        current = apply_phase_vector_correction(current, trace.get("corrections", {}))
+        current = apply_tensor_phase_correction(current, trace.get("corrections", {}))
         record_iteration(trace, success=False)
 
     receipt = receipt_builder(current)
