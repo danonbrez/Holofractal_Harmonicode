@@ -8,33 +8,33 @@ import { useHHSStream } from './hooks/useHHSStream';
 
 export type CalculatorPhaseToken = { id: string; text: string; kind: string; phaseIndex: number };
 
+function isRuntimeSnapshot(value: any): value is RuntimeSnapshot {
+  return Boolean(value?.phase && value?.operatorLoop);
+}
+
 export default function App() {
-  const [data, setData] = useState<RuntimeSnapshot | null>(null);
+  const [snapshot, setSnapshot] = useState<RuntimeSnapshot | null>(null);
   const [activePhase, setActivePhase] = useState<number | null>(null);
   const [calculatorPhases, setCalculatorPhases] = useState<CalculatorPhaseToken[]>([]);
   const [input, setInput] = useState('');
 
   const stream = useHHSStream();
+  const activeState = stream ?? snapshot;
+  const data = isRuntimeSnapshot(activeState) ? activeState : snapshot;
 
   useEffect(() => {
     let mounted = true;
-    loadRuntimeSnapshot().then(snapshot => { if (mounted) setData(snapshot); });
+    loadRuntimeSnapshot().then(runtimeSnapshot => { if (mounted) setSnapshot(runtimeSnapshot); });
     return () => { mounted = false; };
   }, []);
 
   useEffect(() => {
-    if (!stream) return;
+    if (!activeState) return;
 
-    // feed scene
     if ((window as any).updateScene) {
-      (window as any).updateScene(stream);
+      (window as any).updateScene(activeState);
     }
-
-    // attempt to bind stream to runtime snapshot if compatible
-    if (stream?.phase || stream?.operatorLoop) {
-      setData(stream);
-    }
-  }, [stream]);
+  }, [activeState]);
 
   const run = (cmd: string) => {
     switch (cmd) {
@@ -86,7 +86,7 @@ export default function App() {
 
       {/* LIVE PANEL */}
       <div style={{ position: 'absolute', top: 10, right: 10, width: 260, height: '40%', overflow: 'auto', border: '1px solid #00ffcc', padding: 6, zIndex: 10 }}>
-        {stream && <pre>{JSON.stringify(stream, null, 2)}</pre>}
+        {activeState && <pre>{JSON.stringify(activeState, null, 2)}</pre>}
       </div>
 
       <div className="hhs-topbar">
