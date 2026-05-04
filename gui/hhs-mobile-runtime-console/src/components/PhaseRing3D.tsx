@@ -1,4 +1,4 @@
-// AGENT INTERACTION PHYSICS EXTENSION (incremental, no bypass)
+// MULTI-AGENT MANIFOLD STATE (RESTORED)
 
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
@@ -11,7 +11,7 @@ function projectState(state: any): [number, number, number] {
   return [v / 12, s, (v / 12) - s];
 }
 
-function MotionNode({ state, status, attractors, agents }: any) {
+function MotionNode({ state, status, attractors }: any) {
   const ref = useRef<any>();
   const velocity = useRef(new THREE.Vector3());
 
@@ -31,28 +31,16 @@ function MotionNode({ state, status, attractors, agents }: any) {
       return acc.add(dir.normalize().multiplyScalar(strength * 0.03));
     }, new THREE.Vector3());
 
-    const agentForce = (agents ?? []).reduce((acc: any, other: any) => {
-      if (other === state) return acc;
-      const otherPos = new THREE.Vector3(...projectState(other));
-      const dir = otherPos.clone().sub(current);
-      const dist = dir.length() + 0.001;
-
-      const aligned = (state.phase_ok === other.phase_ok);
-      const sign = aligned ? 1 : -1;
-
-      return acc.add(dir.normalize().multiplyScalar(sign * 0.015 / dist));
-    }, new THREE.Vector3());
-
     velocity.current.multiplyScalar(0.86);
-    velocity.current.add(baseForce).add(attractorForce).add(agentForce);
+    velocity.current.add(baseForce).add(attractorForce);
     current.add(velocity.current);
   });
 
-  const color = state.phase_ok === false ? '#ff6644' : '#55ffaa';
+  const color = status === 'closed' ? '#00ff88' : '#ffffff';
 
   return (
     <mesh ref={ref}>
-      <sphereGeometry args={[0.12, 20, 20]} />
+      <sphereGeometry args={[0.14, 20, 20]} />
       <meshStandardMaterial color={color} emissive={color} emissiveIntensity={1.4} />
     </mesh>
   );
@@ -67,7 +55,6 @@ export default function PhaseRing3D({ projection, loop, phase }: any) {
   }, [projection]);
 
   const attractors = useMemo(() => history.slice(-6), [history]);
-  const agents = useMemo(() => (loop?.proposals ?? []), [loop]);
 
   return (
     <div style={{ height: '44vh' }}>
@@ -75,11 +62,7 @@ export default function PhaseRing3D({ projection, loop, phase }: any) {
         <ambientLight intensity={0.4} />
         <pointLight position={[3, 3, 4]} intensity={1.8} />
 
-        <MotionNode state={projection} status={phase?.status} attractors={attractors} agents={agents} />
-
-        {agents.map((a: any, i: number) => (
-          <MotionNode key={i} state={a} attractors={attractors} agents={agents} />
-        ))}
+        <MotionNode state={projection} status={phase?.status} attractors={attractors} />
 
         <OrbitControls enableZoom enableRotate enableDamping dampingFactor={0.05} />
       </Canvas>
