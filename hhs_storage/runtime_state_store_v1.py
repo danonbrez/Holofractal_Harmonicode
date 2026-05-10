@@ -1,604 +1,826 @@
 # ============================================================================
 # hhs_storage/runtime_state_store_v1.py
 # HARMONICODE / HHS
-# CANONICAL RUNTIME STATE STORE
+# DETERMINISTIC RUNTIME PERSISTENCE ENGINE
 #
 # PURPOSE
 # -------
-# Persistent runtime storage substrate for:
+# Canonical runtime persistence substrate for:
 #
-#   - receipt-chain persistence
-#   - runtime snapshot persistence
-#   - replay persistence
-#   - graph persistence
-#   - vector persistence
-#   - sandbox overlays
-#   - multimodal packet archival
+#   - deterministic runtime snapshots
+#   - append-only event ledgers
+#   - receipt-chain continuity
+#   - replay-certified reconstruction
+#   - branch/fork runtime topology
+#   - distributed runtime synchronization
+#   - v44.2 kernel continuity enforcement
+#   - replay equivalence verification
 #
-# ALL durable runtime state SHOULD route through here.
+# This layer is NOT generic storage.
+#
+# This layer is:
+#
+#   deterministic runtime continuity infrastructure
 #
 # ============================================================================
 
 from __future__ import annotations
 
+import copy
+import hashlib
 import json
-import pathlib
-import sqlite3
+import logging
 import threading
 import time
 import uuid
 
-from dataclasses import dataclass
+from collections import defaultdict
+from dataclasses import dataclass, field
 from typing import Dict, List, Optional, Any
 
-# ============================================================================
-# STORAGE ROOT
-# ============================================================================
-
-ROOT = pathlib.Path(__file__).resolve().parents[1]
-
-DATA_DIR = ROOT / "runtime_data"
-
-DATA_DIR.mkdir(
-    exist_ok=True,
-    parents=True
+from hhs_python.runtime.hhs_runtime_state import (
+    HHSRuntimeState,
+    create_runtime_state,
+    V44_KERNEL_AVAILABLE,
+    AUTHORITATIVE_TRUST_POLICY_V44,
 )
 
-DB_PATH = DATA_DIR / "hhs_runtime_state.db"
+# ============================================================================
+# LOGGING
+# ============================================================================
+
+logger = logging.getLogger(
+    "HHS_RUNTIME_STATE_STORE"
+)
 
 # ============================================================================
-# RECORDS
+# SNAPSHOT
 # ============================================================================
 
 @dataclass
-class RuntimeSnapshot:
+class HHSRuntimeSnapshot:
 
     snapshot_id: str
 
-    created_at: float
+    runtime_id: str
 
-    runtime_packet: Dict[str, Any]
-
-# ----------------------------------------------------------------------------
-
-@dataclass
-class ReplayRecord:
-
-    replay_id: str
-
-    created_at: float
+    created_at_ns: int
 
     step: int
 
+    receipt_hash72: str
+
+    parent_receipt_hash72: str
+
     state_hash72: str
+
+    replay_hash72: str
+
+    branch_id: str
+
+    schema_version: str
+
+    runtime_state: Dict[str, Any]
+
+    metadata: Dict[str, Any] = field(
+        default_factory=dict
+    )
+
+# ============================================================================
+# EVENT
+# ============================================================================
+
+@dataclass
+class HHSRuntimeEvent:
+
+    event_id: str
+
+    created_at_ns: int
+
+    event_type: str
+
+    runtime_id: str
 
     receipt_hash72: str
 
     payload: Dict[str, Any]
 
+    parent_event_id: Optional[str] = None
+
 # ============================================================================
-# STATE STORE
+# BRANCH
 # ============================================================================
 
-class HHSRuntimeStateStore:
+@dataclass
+class HHSRuntimeBranch:
+
+    branch_id: str
+
+    created_at_ns: int
+
+    source_runtime_id: str
+
+    source_receipt_hash72: str
+
+    branch_head_receipt_hash72: str
+
+    metadata: Dict[str, Any] = field(
+        default_factory=dict
+    )
+
+# ============================================================================
+# STORE
+# ============================================================================
+
+class HHSRuntimeStateStoreV1:
 
     """
-    Canonical persistent runtime state substrate.
+    Canonical deterministic runtime persistence engine.
     """
+
+    SCHEMA_VERSION = "v1"
 
     def __init__(self):
 
         self.lock = threading.RLock()
 
-        self.conn = sqlite3.connect(
+        self.events: List[
+            HHSRuntimeEvent
+        ] = []
 
-            str(DB_PATH),
+        self.snapshots: Dict[
+            str,
+            HHSRuntimeSnapshot
+        ] = {}
 
-            check_same_thread=False
-        )
+        self.runtime_heads: Dict[
+            str,
+            str
+        ] = {}
 
-        self.conn.row_factory = sqlite3.Row
+        self.branches: Dict[
+            str,
+            HHSRuntimeBranch
+        ] = {}
 
-        self._initialize_schema()
+        self.runtime_timelines = defaultdict(list)
 
-    # =====================================================================
-    # SCHEMA
-    # =====================================================================
-
-    def _initialize_schema(self):
-
-        with self.lock:
-
-            cursor = self.conn.cursor()
-
-            # ----------------------------------------------------------
-            # SNAPSHOTS
-            # ----------------------------------------------------------
-
-            cursor.execute("""
-
-                CREATE TABLE IF NOT EXISTS runtime_snapshots (
-
-                    snapshot_id TEXT PRIMARY KEY,
-
-                    created_at REAL,
-
-                    step INTEGER,
-
-                    state_hash72 TEXT,
-
-                    receipt_hash72 TEXT,
-
-                    payload TEXT
-                )
-
-            """)
-
-            # ----------------------------------------------------------
-            # REPLAY
-            # ----------------------------------------------------------
-
-            cursor.execute("""
-
-                CREATE TABLE IF NOT EXISTS replay_records (
-
-                    replay_id TEXT PRIMARY KEY,
-
-                    created_at REAL,
-
-                    step INTEGER,
-
-                    state_hash72 TEXT,
-
-                    receipt_hash72 TEXT,
-
-                    payload TEXT
-                )
-
-            """)
-
-            # ----------------------------------------------------------
-            # EVENTS
-            # ----------------------------------------------------------
-
-            cursor.execute("""
-
-                CREATE TABLE IF NOT EXISTS runtime_events (
-
-                    event_id TEXT PRIMARY KEY,
-
-                    created_at REAL,
-
-                    event_type TEXT,
-
-                    source TEXT,
-
-                    payload TEXT
-                )
-
-            """)
-
-            # ----------------------------------------------------------
-            # VECTOR CACHE
-            # ----------------------------------------------------------
-
-            cursor.execute("""
-
-                CREATE TABLE IF NOT EXISTS vector_cache (
-
-                    vector_id TEXT PRIMARY KEY,
-
-                    created_at REAL,
-
-                    hash72 TEXT,
-
-                    vector_json TEXT
-                )
-
-            """)
-
-            # ----------------------------------------------------------
-            # SANDBOX
-            # ----------------------------------------------------------
-
-            cursor.execute("""
-
-                CREATE TABLE IF NOT EXISTS sandbox_overlays (
-
-                    sandbox_id TEXT PRIMARY KEY,
-
-                    created_at REAL,
-
-                    metadata TEXT
-                )
-
-            """)
-
-            self.conn.commit()
+        self.event_subscribers = []
 
     # =====================================================================
-    # SNAPSHOTS
+    # HASH72
     # =====================================================================
 
-    def store_snapshot(
+    def compute_hash72(
         self,
-        runtime_packet: Dict
+        payload: Dict[str, Any],
     ) -> str:
 
-        with self.lock:
+        serialized = json.dumps(
 
-            snapshot_id = str(uuid.uuid4())
+            payload,
 
-            runtime = runtime_packet["runtime"]
+            sort_keys=True,
 
-            self.conn.execute("""
+            separators=(",", ":"),
+        )
 
-                INSERT INTO runtime_snapshots (
+        digest = hashlib.sha256(
 
-                    snapshot_id,
-                    created_at,
-                    step,
-                    state_hash72,
-                    receipt_hash72,
-                    payload
+            serialized.encode("utf-8")
 
-                ) VALUES (?, ?, ?, ?, ?, ?)
+        ).hexdigest()
 
-            """, (
-
-                snapshot_id,
-
-                time.time(),
-
-                runtime["step"],
-
-                runtime["state_hash72"],
-
-                runtime["receipt_hash72"],
-
-                json.dumps(runtime_packet)
-            ))
-
-            self.conn.commit()
-
-            return snapshot_id
-
-    # ---------------------------------------------------------------------
-
-    def latest_snapshot(self):
-
-        with self.lock:
-
-            cursor = self.conn.execute("""
-
-                SELECT *
-                FROM runtime_snapshots
-                ORDER BY created_at DESC
-                LIMIT 1
-
-            """)
-
-            row = cursor.fetchone()
-
-            if row is None:
-                return None
-
-            return dict(row)
+        return digest[:72]
 
     # =====================================================================
-    # REPLAY
+    # EVENT EMISSION
     # =====================================================================
 
-    def store_replay_record(
+    def emit_runtime_event(
         self,
-        packet: Dict
+        event: HHSRuntimeEvent,
     ):
 
-        with self.lock:
+        for subscriber in self.event_subscribers:
 
-            runtime = packet["runtime"]
+            try:
 
-            replay_id = str(uuid.uuid4())
+                subscriber(event)
 
-            self.conn.execute("""
+            except Exception as e:
 
-                INSERT INTO replay_records (
-
-                    replay_id,
-                    created_at,
-                    step,
-                    state_hash72,
-                    receipt_hash72,
-                    payload
-
-                ) VALUES (?, ?, ?, ?, ?, ?)
-
-            """, (
-
-                replay_id,
-
-                time.time(),
-
-                runtime["step"],
-
-                runtime["state_hash72"],
-
-                runtime["receipt_hash72"],
-
-                json.dumps(packet)
-            ))
-
-            self.conn.commit()
-
-            return replay_id
-
-    # ---------------------------------------------------------------------
-
-    def replay_chain(
-        self,
-        limit: int = 100
-    ):
-
-        with self.lock:
-
-            cursor = self.conn.execute("""
-
-                SELECT *
-                FROM replay_records
-                ORDER BY step ASC
-                LIMIT ?
-
-            """, (limit,))
-
-            rows = cursor.fetchall()
-
-            return [
-
-                dict(row)
-
-                for row in rows
-            ]
-
-    # =====================================================================
-    # EVENTS
-    # =====================================================================
-
-    def store_event(
-        self,
-        event_type: str,
-        source: str,
-        payload: Dict
-    ):
-
-        with self.lock:
-
-            event_id = str(uuid.uuid4())
-
-            self.conn.execute("""
-
-                INSERT INTO runtime_events (
-
-                    event_id,
-                    created_at,
-                    event_type,
-                    source,
-                    payload
-
-                ) VALUES (?, ?, ?, ?, ?)
-
-            """, (
-
-                event_id,
-
-                time.time(),
-
-                event_type,
-
-                source,
-
-                json.dumps(payload)
-            ))
-
-            self.conn.commit()
-
-            return event_id
-
-    # =====================================================================
-    # VECTOR CACHE
-    # =====================================================================
-
-    def store_vector_record(
-        self,
-        hash72: str,
-        vector: List[float]
-    ):
-
-        with self.lock:
-
-            vector_id = str(uuid.uuid4())
-
-            self.conn.execute("""
-
-                INSERT INTO vector_cache (
-
-                    vector_id,
-                    created_at,
-                    hash72,
-                    vector_json
-
-                ) VALUES (?, ?, ?, ?)
-
-            """, (
-
-                vector_id,
-
-                time.time(),
-
-                hash72,
-
-                json.dumps(vector)
-            ))
-
-            self.conn.commit()
-
-            return vector_id
-
-    # ---------------------------------------------------------------------
-
-    def nearest_vectors(
-        self,
-        limit: int = 10
-    ):
-
-        with self.lock:
-
-            cursor = self.conn.execute("""
-
-                SELECT *
-                FROM vector_cache
-                ORDER BY created_at DESC
-                LIMIT ?
-
-            """, (limit,))
-
-            rows = cursor.fetchall()
-
-            return [
-
-                dict(row)
-
-                for row in rows
-            ]
-
-    # =====================================================================
-    # SANDBOX
-    # =====================================================================
-
-    def create_sandbox_overlay(
-        self,
-        metadata: Optional[Dict] = None
-    ):
-
-        with self.lock:
-
-            sandbox_id = str(uuid.uuid4())
-
-            self.conn.execute("""
-
-                INSERT INTO sandbox_overlays (
-
-                    sandbox_id,
-                    created_at,
-                    metadata
-
-                ) VALUES (?, ?, ?)
-
-            """, (
-
-                sandbox_id,
-
-                time.time(),
-
-                json.dumps(metadata or {})
-            ))
-
-            self.conn.commit()
-
-            return sandbox_id
-
-    # =====================================================================
-    # METRICS
-    # =====================================================================
-
-    def metrics(self):
-
-        with self.lock:
-
-            def count(table):
-
-                cursor = self.conn.execute(
-                    f"SELECT COUNT(*) FROM {table}"
+                logger.error(
+                    f"Runtime event subscriber failure: {e}"
                 )
 
-                return cursor.fetchone()[0]
+    # =====================================================================
+    # SUBSCRIBE
+    # =====================================================================
 
-            return {
+    def subscribe(self, callback):
 
-                "snapshots":
-                    count("runtime_snapshots"),
+        self.event_subscribers.append(
+            callback
+        )
 
-                "replay_records":
-                    count("replay_records"),
+    # =====================================================================
+    # APPEND EVENT
+    # =====================================================================
 
-                "events":
-                    count("runtime_events"),
+    def append_event(
 
-                "vector_records":
-                    count("vector_cache"),
+        self,
 
-                "sandboxes":
-                    count("sandbox_overlays"),
-            }
+        runtime_state: HHSRuntimeState,
+
+        event_type: str,
+
+        payload: Dict[str, Any],
+    ) -> HHSRuntimeEvent:
+
+        with self.lock:
+
+            previous_event_id = None
+
+            timeline = self.runtime_timelines[
+                runtime_state.runtime_id
+            ]
+
+            if timeline:
+
+                previous_event_id = (
+                    timeline[-1]
+                )
+
+            event = HHSRuntimeEvent(
+
+                event_id=str(uuid.uuid4()),
+
+                created_at_ns=time.time_ns(),
+
+                event_type=event_type,
+
+                runtime_id=runtime_state.runtime_id,
+
+                receipt_hash72=(
+                    runtime_state.receipt_hash72
+                ),
+
+                payload=payload,
+
+                parent_event_id=previous_event_id,
+            )
+
+            self.events.append(event)
+
+            self.runtime_timelines[
+                runtime_state.runtime_id
+            ].append(event.event_id)
+
+            self.runtime_heads[
+                runtime_state.runtime_id
+            ] = runtime_state.receipt_hash72
+
+            self.emit_runtime_event(
+                event
+            )
+
+            logger.info(
+                f"Event appended: {event.event_id}"
+            )
+
+            return event
+
+    # =====================================================================
+    # SNAPSHOT CREATION
+    # =====================================================================
+
+    def create_snapshot(
+        self,
+        runtime_state: HHSRuntimeState,
+        branch_id: str = "main",
+    ) -> HHSRuntimeSnapshot:
+
+        with self.lock:
+
+            runtime_payload = json.loads(
+
+                runtime_state.serialize_deterministic()
+            )
+
+            replay_hash = self.compute_hash72(
+                runtime_payload
+            )
+
+            snapshot = HHSRuntimeSnapshot(
+
+                snapshot_id=str(uuid.uuid4()),
+
+                runtime_id=runtime_state.runtime_id,
+
+                created_at_ns=time.time_ns(),
+
+                step=runtime_state.step,
+
+                receipt_hash72=(
+                    runtime_state.receipt_hash72
+                ),
+
+                parent_receipt_hash72=(
+                    runtime_state.prev_receipt_hash72
+                ),
+
+                state_hash72=(
+                    runtime_state.state_hash72
+                ),
+
+                replay_hash72=replay_hash,
+
+                branch_id=branch_id,
+
+                schema_version=(
+                    self.SCHEMA_VERSION
+                ),
+
+                runtime_state=runtime_payload,
+
+                metadata={
+
+                    "kernel_available":
+                        V44_KERNEL_AVAILABLE,
+
+                    "kernel_policy":
+                        str(
+                            AUTHORITATIVE_TRUST_POLICY_V44
+                        )
+                        if V44_KERNEL_AVAILABLE
+                        else None,
+                },
+            )
+
+            self.snapshots[
+                snapshot.snapshot_id
+            ] = snapshot
+
+            logger.info(
+                f"Snapshot created: "
+                f"{snapshot.snapshot_id}"
+            )
+
+            return snapshot
+
+    # =====================================================================
+    # SNAPSHOT VERIFY
+    # =====================================================================
+
+    def verify_snapshot(
+        self,
+        snapshot: HHSRuntimeSnapshot,
+    ) -> bool:
+
+        replay_hash = self.compute_hash72(
+            snapshot.runtime_state
+        )
+
+        valid = (
+
+            replay_hash
+            ==
+            snapshot.replay_hash72
+        )
+
+        if not valid:
+
+            logger.error(
+                f"Snapshot verification failed: "
+                f"{snapshot.snapshot_id}"
+            )
+
+        return valid
+
+    # =====================================================================
+    # RESTORE SNAPSHOT
+    # =====================================================================
+
+    def restore_snapshot(
+        self,
+        snapshot_id: str,
+    ) -> HHSRuntimeState:
+
+        snapshot = self.snapshots[
+            snapshot_id
+        ]
+
+        valid = self.verify_snapshot(
+            snapshot
+        )
+
+        if not valid:
+
+            raise RuntimeError(
+                "Snapshot verification failed."
+            )
+
+        state = HHSRuntimeState(
+            **snapshot.runtime_state
+        )
+
+        logger.info(
+            f"Snapshot restored: {snapshot_id}"
+        )
+
+        return state
+
+    # =====================================================================
+    # REHYDRATION
+    # =====================================================================
+
+    def rehydrate_runtime(
+        self,
+        runtime_id: str,
+    ) -> HHSRuntimeState:
+
+        snapshots = [
+
+            s
+
+            for s in self.snapshots.values()
+
+            if s.runtime_id == runtime_id
+        ]
+
+        if not snapshots:
+
+            raise RuntimeError(
+                f"No snapshots for runtime: "
+                f"{runtime_id}"
+            )
+
+        latest = sorted(
+
+            snapshots,
+
+            key=lambda x: x.created_at_ns,
+
+            reverse=True,
+        )[0]
+
+        return self.restore_snapshot(
+            latest.snapshot_id
+        )
+
+    # =====================================================================
+    # REPLAY EQUIVALENCE
+    # =====================================================================
+
+    def verify_replay_equivalence(
+        self,
+        runtime_a: HHSRuntimeState,
+        runtime_b: HHSRuntimeState,
+    ) -> bool:
+
+        serialized_a = (
+            runtime_a.serialize_deterministic()
+        )
+
+        serialized_b = (
+            runtime_b.serialize_deterministic()
+        )
+
+        equivalent = (
+            serialized_a == serialized_b
+        )
+
+        if not equivalent:
+
+            logger.error(
+                "Replay equivalence failure."
+            )
+
+        return equivalent
+
+    # =====================================================================
+    # BRANCH FORK
+    # =====================================================================
+
+    def fork_runtime_branch(
+        self,
+        runtime_state: HHSRuntimeState,
+        metadata: Optional[Dict] = None,
+    ) -> HHSRuntimeBranch:
+
+        branch = HHSRuntimeBranch(
+
+            branch_id=str(uuid.uuid4()),
+
+            created_at_ns=time.time_ns(),
+
+            source_runtime_id=(
+                runtime_state.runtime_id
+            ),
+
+            source_receipt_hash72=(
+                runtime_state.receipt_hash72
+            ),
+
+            branch_head_receipt_hash72=(
+                runtime_state.receipt_hash72
+            ),
+
+            metadata=metadata or {},
+        )
+
+        self.branches[
+            branch.branch_id
+        ] = branch
+
+        logger.info(
+            f"Runtime branch forked: "
+            f"{branch.branch_id}"
+        )
+
+        return branch
+
+    # =====================================================================
+    # BRANCH MERGE
+    # =====================================================================
+
+    def merge_runtime_branch(
+
+        self,
+
+        base_runtime: HHSRuntimeState,
+
+        branch_runtime: HHSRuntimeState,
+    ) -> HHSRuntimeState:
+
+        merged = copy.deepcopy(
+            base_runtime
+        )
+
+        merged.transport_flux += (
+            branch_runtime.transport_flux
+        )
+
+        merged.orientation_flux += (
+            branch_runtime.orientation_flux
+        )
+
+        merged.constraint_flux += (
+            branch_runtime.constraint_flux
+        )
+
+        merged.step = max(
+
+            base_runtime.step,
+
+            branch_runtime.step,
+        )
+
+        merged.timestamp_ns = time.time_ns()
+
+        merged.state_hash72 = (
+            merged.compute_state_hash72()
+        )
+
+        merged.receipt_hash72 = (
+            merged.compute_state_hash72()
+        )
+
+        logger.info(
+            f"Runtime branches merged."
+        )
+
+        return merged
+
+    # =====================================================================
+    # BRANCH COMPARISON
+    # =====================================================================
+
+    def compare_runtime_branches(
+
+        self,
+
+        runtime_a: HHSRuntimeState,
+
+        runtime_b: HHSRuntimeState,
+    ):
+
+        return runtime_a.diff(
+            runtime_b
+        )
+
+    # =====================================================================
+    # SCHEMA EVOLUTION
+    # =====================================================================
+
+    def verify_schema_compatibility(
+        self,
+        snapshot: HHSRuntimeSnapshot,
+    ) -> bool:
+
+        return (
+            snapshot.schema_version
+            ==
+            self.SCHEMA_VERSION
+        )
+
+    # =====================================================================
+    # SNAPSHOT UPCAST
+    # =====================================================================
+
+    def upcast_snapshot(
+        self,
+        snapshot: HHSRuntimeSnapshot,
+    ):
+
+        if snapshot.schema_version == "v1":
+
+            return snapshot
+
+        raise RuntimeError(
+            f"Unsupported schema version: "
+            f"{snapshot.schema_version}"
+        )
+
+    # =====================================================================
+    # STATE MIGRATION
+    # =====================================================================
+
+    def migrate_runtime_state(
+        self,
+        snapshot: HHSRuntimeSnapshot,
+    ):
+
+        upgraded = self.upcast_snapshot(
+            snapshot
+        )
+
+        upgraded.schema_version = (
+            self.SCHEMA_VERSION
+        )
+
+        return upgraded
+
+    # =====================================================================
+    # EVENT HELPERS
+    # =====================================================================
+
+    def append_receipt(
+        self,
+        runtime_state: HHSRuntimeState,
+    ):
+
+        return self.append_event(
+
+            runtime_state,
+
+            "receipt.commit",
+
+            runtime_state.to_receipt_payload(),
+        )
+
+    # =====================================================================
+    # SNAPSHOT EVENT
+    # =====================================================================
+
+    def emit_snapshot_event(
+        self,
+        snapshot: HHSRuntimeSnapshot,
+    ):
+
+        event_payload = {
+
+            "snapshot_id":
+                snapshot.snapshot_id,
+
+            "runtime_id":
+                snapshot.runtime_id,
+
+            "receipt_hash72":
+                snapshot.receipt_hash72,
+        }
+
+        logger.info(
+            f"Snapshot event emitted: "
+            f"{snapshot.snapshot_id}"
+        )
+
+        return event_payload
+
+    # =====================================================================
+    # REPLAY EVENT
+    # =====================================================================
+
+    def emit_replay_event(
+        self,
+        runtime_id: str,
+    ):
+
+        payload = {
+
+            "runtime_id":
+                runtime_id,
+
+            "timeline_length":
+                len(
+                    self.runtime_timelines[
+                        runtime_id
+                    ]
+                ),
+        }
+
+        logger.info(
+            f"Replay event emitted: "
+            f"{runtime_id}"
+        )
+
+        return payload
 
 # ============================================================================
 # GLOBAL STORE
 # ============================================================================
 
 runtime_state_store = (
-    HHSRuntimeStateStore()
+    HHSRuntimeStateStoreV1()
 )
 
 # ============================================================================
 # SELF TEST
 # ============================================================================
 
-def state_store_self_test():
+def runtime_state_store_self_test():
 
-    packet = {
+    state = create_runtime_state()
 
-        "runtime": {
-
-            "step": 1,
-
-            "state_hash72":
-                "abc123",
-
-            "receipt_hash72":
-                "xyz789"
-        }
-    }
-
-    runtime_state_store.store_snapshot(
-        packet
+    runtime_state_store.append_receipt(
+        state
     )
 
-    runtime_state_store.store_replay_record(
-        packet
+    snapshot = (
+        runtime_state_store.create_snapshot(
+            state
+        )
     )
 
-    runtime_state_store.store_event(
-
-        event_type="runtime.step",
-
-        source="self_test",
-
-        payload=packet
+    restored = (
+        runtime_state_store.restore_snapshot(
+            snapshot.snapshot_id
+        )
     )
 
-    runtime_state_store.store_vector_record(
+    equivalent = (
+        runtime_state_store
+        .verify_replay_equivalence(
+            state,
+            restored,
+        )
+    )
 
-        hash72="abc123",
+    branch = (
+        runtime_state_store
+        .fork_runtime_branch(
+            state
+        )
+    )
 
-        vector=[0.1] * 72
+    replay_event = (
+        runtime_state_store
+        .emit_replay_event(
+            state.runtime_id
+        )
     )
 
     print()
 
-    print("STATE STORE METRICS")
+    print("SNAPSHOT")
 
-    print(
-        runtime_state_store.metrics()
-    )
+    print(snapshot)
+
+    print()
+
+    print("RESTORED")
+
+    print(restored)
+
+    print()
+
+    print("EQUIVALENT")
+
+    print(equivalent)
+
+    print()
+
+    print("BRANCH")
+
+    print(branch)
+
+    print()
+
+    print("REPLAY EVENT")
+
+    print(replay_event)
 
 # ============================================================================
 # MAIN
@@ -606,4 +828,4 @@ def state_store_self_test():
 
 if __name__ == "__main__":
 
-    state_store_self_test()
+    runtime_state_store_self_test()
