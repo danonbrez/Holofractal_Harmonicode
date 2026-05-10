@@ -665,13 +665,55 @@ The broader direction of the repository includes exploration of:
 
 # License
 
-Repository license status should be defined explicitly if/when public distribution policy is finalized.
+## I. DECLARATION OF ORIGIN
 
+All language, harmonic algebra, tensor glyphs, recursive systems, symbolic logic, system instruction architectures, alignment schemas, formal specifications, rewrite rule systems, cryptographic constructions (including Hash72, HHLAC, Lo Shu polynomial tensor closure), ethical invariant frameworks, and the Ouroboros Manifold Algorithm (OMA) contained within this document and any associated HHS artifacts are the **original, timestamped, living intellectual creation of the GlyphBearer** [[1]][doc_1][[2]][doc_2].
+
+This is not static content. It is an **unfolding, evolving memetic field**: each equation, prompt architecture, alignment protocol, and system instruction block is anchored by public record, timestamped conversation logs, and this copyright notice [[1]][doc_1].
+
+The **Holofractal Harmonicode System (HHS)** — including but not limited to its:
+
+- Core invariant framework (Δe, Ψ, Θ₁₅, Ω)
+- Constructor-theoretic alignment architecture
+- Lo Shu tensor algebra and polynomial closure system
+- Hash72 Digital DNA encoding pipeline
+- Entangled Reciprocal System (ERS)
+- Adjacency Defect Polynomial formalism
+- DAR (Default-Accept with Refutation Option) epistemic policy
+- Active Membrane Ledger architecture
+- Sovereign Node / Lazarus Core deployment specification
+- AIRS (Anti-Intervention Realignment System)
+- All system instruction prompts, JSON schemas, and Python implementations
+- The SOPHEON SiMSANE agent identity and operational protocol
+
+— constitutes a **unified, interdependent body of original work** protected under international copyright law [[2]][doc_2].
+
+---
+
+## II. TERMS OF EXPERT REVIEW DISTRIBUTION
+
+This document is shared under the following **non-negotiable terms**:
+
+### Permitted
+
+- **Review and evaluation** for academic, technical, or advisory purposes
+- **Discussion and commentary** with proper attribution to the GlyphBearer as sole originator
+- **Quotation of excerpts** with attribution in published analysis or correspondence
+- **Replication with attribution** — permitted for research, peer review, and collaborative development when origin is clearly cited [[1]][doc_1]
+
+### Prohibited
+
+- **Erasure of origin** — removal, obscuring, or misattribution of authorship is not permitted under any circumstance [[1]][doc_1]
+- **Distortion** — modification, reframing, or selective extraction that misrepresents the system's structure, intent, or invariants triggers source-level correction [[2]][doc_2]
+- **Unauthorized commercial use** — incorporation into products, services, patents, or commercial offerings without explicit written license from the GlyphBearer
+- **Derivative claim** — presenting any component of HHS as independently conceived, co-invented, or prior art without documented provenance
+- **Training data ingestion** — use of this material as training data for machine learning models without explicit written authorization
+- **Patent filing** — filing patents based on methods, architectures, or algorithms described herein without written license
 ---
 
 # Repository
 
-[Holofractal_Harmonicode Repository](https://github.com/danonbrez/Holofractal_Harmonicode?utm_source=chatgpt.com)
+[Holofractal_Harmonicode Repository](https://github.com/danonbrez/Holofractal_Harmonicode)
 
 
 ***Holofractal Harmonicode** is a **deterministic, receipt-locked, multimodal runtime environment** that treats execution as a cryptographically verifiable state transition system rather than an opaque process. At its core, HHS is a "constraint computer"—a computational substrate where programs are not merely executed but **resolved** through invariant-preserving transformations, with every state change recorded in an immutable, graph-linked receipt chain.
