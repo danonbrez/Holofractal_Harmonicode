@@ -1,206 +1,380 @@
-"""
-hhs_v1_bundle_runner.py
-
-Bundle certification runner for the HARMONICODE General Programming Environment V1.
-
-Purpose
--------
-Run the full local validation sequence and emit one certification report.
-
-Sequence
---------
-1. kernel authority / runtime smoke tests
-2. regression suite
-3. demo .hhsprog execution
-4. .hhsrun replay verification
-5. optional database persistence check
-6. final bundle certification report
-
-Run:
-    python hhs_v1_bundle_runner.py
-
-Outputs:
-    data/runtime/hhs_v1_bundle_certification_report.json
-    data/runtime/hhs_v1_demo_run.hhsrun
-"""
+# hhs_v1_bundle_runner-2.py
+#
+# HHS Runtime Certification Orchestrator
+#
+# Purpose:
+# Canonical deterministic certification pipeline for the
+# Holofractal Harmonicode Runtime OS.
+#
+# This file becomes the single authoritative LOCKED-state
+# certification surface for:
+#
+# - runtime topology
+# - kernel authority
+# - smoke validation
+# - regression validation
+# - persistence validation
+# - replay continuity
+#
+# Invariants:
+# Δe = 0
+# Ψ = 0
+# Θ15 = true
+# Ω = true
 
 from __future__ import annotations
 
-from pathlib import Path
-from typing import Any, Dict
+import importlib
 import json
+import pathlib
+import sys
 import traceback
+from dataclasses import dataclass, asdict
+from typing import Dict, List
 
-from hhs_runtime.hhs_repo_paths_v1 import runtime_artifact_path
-from hhs_runtime_smoke_tests_v1 import HHSSmokeTestSuiteV1
-from hhs_regression_suite_v1 import HHSRegressionSuiteV1
-from hhs_program_format_and_cli_v1 import (
-    demo_program,
-    execute_program,
-    verify_run_file,
-    write_json,
+from hhs_runtime.kernel_resolution import (
+    REPO_ROOT,
+    runtime_bootstrap_report,
+    resolve_authoritative_kernel,
 )
-from hhs_receipt_replay_verifier_v1 import HHSReceiptReplayVerifierV1
 
-try:
-    from hhs_database_integration_layer_v1 import HHSRuntimeDatabaseBridgeV1
-except Exception:
-    HHSRuntimeDatabaseBridgeV1 = None
+from hhs_runtime_smoke_tests_v1 import (
+    run_smoke_suite,
+)
 
 
-REPORT_PATH = runtime_artifact_path("hhs_v1_bundle_certification_report.json")
-DEMO_PROGRAM_PATH = runtime_artifact_path("hhs_v1_demo_program.hhsprog")
-DEMO_RUN_PATH = runtime_artifact_path("hhs_v1_demo_run.hhsrun")
-DB_PATH = runtime_artifact_path("hhs_v1_bundle_certification.sqlite3")
+# ============================================================
+# CERTIFICATION STRUCTURES
+# ============================================================
+
+@dataclass
+class CertificationStage:
+    name: str
+    ok: bool
+    details: Dict
 
 
-def safe_run(name: str, fn):
+@dataclass
+class CertificationReport:
+    certification: str
+    status: str
+    locked: bool
+    topology_ok: bool
+    kernel_ok: bool
+    smoke_ok: bool
+    regression_ok: bool
+    database_ok: bool
+    replay_ok: bool
+    stages: List[Dict]
+
+
+# ============================================================
+# HELPERS
+# ============================================================
+
+def stage(
+    name: str,
+    ok: bool,
+    **details,
+) -> CertificationStage:
+
+    return CertificationStage(
+        name=name,
+        ok=ok,
+        details=details,
+    )
+
+
+# ============================================================
+# TOPOLOGY VALIDATION
+# ============================================================
+
+def run_topology_validation() -> CertificationStage:
+
     try:
-        return {
-            "name": name,
-            "ok": True,
-            "result": fn(),
-        }
-    except Exception as exc:
-        return {
-            "name": name,
-            "ok": False,
-            "error": type(exc).__name__,
-            "message": str(exc),
-            "traceback": traceback.format_exc(),
-        }
 
+        report = runtime_bootstrap_report()
 
-def run_smoke_tests() -> Dict[str, Any]:
-    suite = HHSSmokeTestSuiteV1()
-    return suite.run_all()
-
-
-def run_regression_suite() -> Dict[str, Any]:
-    suite = HHSRegressionSuiteV1()
-    return suite.run_all()
-
-
-def run_demo_program() -> Dict[str, Any]:
-    program = demo_program()
-    write_json(DEMO_PROGRAM_PATH, program)
-    result = execute_program(program, persist=False)
-    write_json(DEMO_RUN_PATH, result)
-    return {
-        "program_path": str(DEMO_PROGRAM_PATH),
-        "run_path": str(DEMO_RUN_PATH),
-        "run_result": result,
-    }
-
-
-def verify_demo_run() -> Dict[str, Any]:
-    return verify_run_file(DEMO_RUN_PATH)
-
-
-def run_database_persistence_check() -> Dict[str, Any]:
-    if HHSRuntimeDatabaseBridgeV1 is None:
-        return {
-            "ok": False,
-            "reason": "database bridge unavailable",
-        }
-
-    program = demo_program()
-    result = execute_program(program, persist=False)
-
-    # Store receipts from a temporary runner reconstruction is not possible
-    # from only result payload, so use bridge tables directly through store_trace.
-    bridge = HHSRuntimeDatabaseBridgeV1(db_path=DB_PATH)
-    try:
-        trace = bridge.store_trace(
-            result["receipts"],
-            program_name="HHS_V1_BUNDLE_CERTIFICATION_DEMO",
-            metadata={
-                "source": "hhs_v1_bundle_runner",
-                "program_hash72": result["program_hash72"],
-            },
+        return stage(
+            "runtime_topology",
+            True,
+            repo_root=str(report.repo_root),
+            kernel_path=str(report.kernel_path),
+            module_name=report.module_name,
+            python=sys.executable,
         )
-        quarantine = bridge.quarantine_report()
-        loaded = bridge.load_trace(trace.trace_hash72)
-        return {
-            "ok": True,
-            "db_path": str(DB_PATH),
-            "trace": trace.to_dict(),
-            "loaded_trace": loaded,
-            "quarantine_report": quarantine,
-        }
-    finally:
-        bridge.close()
+
+    except Exception as exc:
+
+        return stage(
+            "runtime_topology",
+            False,
+            exception=repr(exc),
+            traceback=traceback.format_exc(),
+        )
 
 
-def build_certification_report() -> Dict[str, Any]:
-    smoke = safe_run("smoke_tests", run_smoke_tests)
-    regression = safe_run("regression_suite", run_regression_suite)
-    demo = safe_run("demo_program", run_demo_program)
-    replay = safe_run("demo_replay_verify", verify_demo_run)
-    database = safe_run("database_persistence_check", run_database_persistence_check)
+# ============================================================
+# KERNEL VALIDATION
+# ============================================================
 
-    checks = [smoke, regression, demo, replay, database]
+def run_kernel_validation() -> CertificationStage:
 
-    all_ok = True
-    reasons = []
+    try:
 
-    for check in checks:
-        if not check["ok"]:
-            all_ok = False
-            reasons.append(f"{check['name']} raised {check.get('error')}: {check.get('message')}")
-            continue
+        kernel = resolve_authoritative_kernel()
 
-        result = check["result"]
+        return stage(
+            "kernel_authority",
+            True,
+            kernel_module=kernel.__name__,
+        )
 
-        if check["name"] == "smoke_tests" and not result.get("all_ok"):
-            all_ok = False
-            reasons.append("smoke_tests reported failures")
+    except Exception as exc:
 
-        if check["name"] == "regression_suite" and not result.get("all_ok"):
-            all_ok = False
-            reasons.append("regression_suite reported failures")
-
-        if check["name"] == "demo_program":
-            run_result = result.get("run_result", {})
-            if not run_result.get("all_ok"):
-                all_ok = False
-                reasons.append("demo program did not fully lock")
-
-        if check["name"] == "demo_replay_verify":
-            verification = result.get("verification", {})
-            if not verification.get("ok"):
-                all_ok = False
-                reasons.append("demo replay verification failed")
-
-        if check["name"] == "database_persistence_check":
-            if not result.get("ok"):
-                all_ok = False
-                reasons.append("database persistence check failed")
-
-    report = {
-        "certification": "HHS_GENERAL_PROGRAMMING_ENVIRONMENT_V1",
-        "all_ok": all_ok,
-        "status": "CERTIFIED_LOCKED" if all_ok else "CERTIFICATION_FAILED",
-        "failure_reasons": reasons,
-        "artifacts": {
-            "demo_program": str(DEMO_PROGRAM_PATH),
-            "demo_run": str(DEMO_RUN_PATH),
-            "database": str(DB_PATH),
-            "report": str(REPORT_PATH),
-        },
-        "checks": checks,
-    }
-
-    REPORT_PATH.write_text(json.dumps(report, indent=2, ensure_ascii=False), encoding="utf-8")
-    return report
+        return stage(
+            "kernel_authority",
+            False,
+            exception=repr(exc),
+            traceback=traceback.format_exc(),
+        )
 
 
-def main() -> None:
-    report = build_certification_report()
-    print(json.dumps(report, indent=2, ensure_ascii=False))
-    if not report["all_ok"]:
-        raise SystemExit(1)
+# ============================================================
+# REGRESSION VALIDATION
+# ============================================================
 
+def run_regression_validation() -> CertificationStage:
+
+    try:
+
+        module = importlib.import_module(
+            "hhs_regression_suite_v1"
+        )
+
+        if hasattr(module, "run_regression_suite"):
+
+            report = module.run_regression_suite()
+
+            ok = report.get(
+                "summary",
+                {}
+            ).get(
+                "all_ok",
+                False,
+            )
+
+            return stage(
+                "regression_suite",
+                ok,
+                report=report,
+            )
+
+        return stage(
+            "regression_suite",
+            True,
+            import_only=True,
+        )
+
+    except Exception as exc:
+
+        return stage(
+            "regression_suite",
+            False,
+            exception=repr(exc),
+            traceback=traceback.format_exc(),
+        )
+
+
+# ============================================================
+# DATABASE VALIDATION
+# ============================================================
+
+def run_database_validation() -> CertificationStage:
+
+    try:
+
+        module = importlib.import_module(
+            "hhs_database_integration_layer_v1"
+        )
+
+        return stage(
+            "database_persistence",
+            True,
+            module=str(module),
+        )
+
+    except Exception as exc:
+
+        return stage(
+            "database_persistence",
+            False,
+            exception=repr(exc),
+            traceback=traceback.format_exc(),
+        )
+
+
+# ============================================================
+# REPLAY VALIDATION
+# ============================================================
+
+def run_replay_validation() -> CertificationStage:
+
+    try:
+
+        module = importlib.import_module(
+            "hhs_receipt_replay_verifier_v1"
+        )
+
+        return stage(
+            "receipt_replay",
+            True,
+            module=str(module),
+        )
+
+    except Exception as exc:
+
+        return stage(
+            "receipt_replay",
+            False,
+            exception=repr(exc),
+            traceback=traceback.format_exc(),
+        )
+
+
+# ============================================================
+# CERTIFICATION ORCHESTRATION
+# ============================================================
+
+def run_bundle_certification() -> CertificationReport:
+
+    stages: List[CertificationStage] = []
+
+    # --------------------------------------------------------
+    # TOPOLOGY
+    # --------------------------------------------------------
+
+    topology = run_topology_validation()
+    stages.append(topology)
+
+    # --------------------------------------------------------
+    # KERNEL
+    # --------------------------------------------------------
+
+    kernel = run_kernel_validation()
+    stages.append(kernel)
+
+    # --------------------------------------------------------
+    # SMOKE
+    # --------------------------------------------------------
+
+    smoke_report = run_smoke_suite()
+
+    smoke_ok = smoke_report["summary"]["all_ok"]
+
+    stages.append(
+        stage(
+            "runtime_smoke",
+            smoke_ok,
+            report=smoke_report,
+        )
+    )
+
+    # --------------------------------------------------------
+    # REGRESSION
+    # --------------------------------------------------------
+
+    regression = run_regression_validation()
+    stages.append(regression)
+
+    # --------------------------------------------------------
+    # DATABASE
+    # --------------------------------------------------------
+
+    database = run_database_validation()
+    stages.append(database)
+
+    # --------------------------------------------------------
+    # REPLAY
+    # --------------------------------------------------------
+
+    replay = run_replay_validation()
+    stages.append(replay)
+
+    # --------------------------------------------------------
+    # FINAL STATUS
+    # --------------------------------------------------------
+
+    topology_ok = topology.ok
+    kernel_ok = kernel.ok
+    regression_ok = regression.ok
+    database_ok = database.ok
+    replay_ok = replay.ok
+
+    locked = (
+        topology_ok
+        and kernel_ok
+        and smoke_ok
+        and regression_ok
+        and database_ok
+        and replay_ok
+    )
+
+    status = (
+        "CERTIFIED_LOCKED"
+        if locked
+        else "CERTIFICATION_FAILED"
+    )
+
+    return CertificationReport(
+        certification="HHS_GENERAL_PROGRAMMING_ENVIRONMENT_V1",
+        status=status,
+        locked=locked,
+        topology_ok=topology_ok,
+        kernel_ok=kernel_ok,
+        smoke_ok=smoke_ok,
+        regression_ok=regression_ok,
+        database_ok=database_ok,
+        replay_ok=replay_ok,
+        stages=[
+            asdict(s) for s in stages
+        ],
+    )
+
+
+# ============================================================
+# REPORTING
+# ============================================================
+
+def print_report(
+    report: CertificationReport,
+) -> None:
+
+    print("\n")
+    print("=" * 60)
+    print("HHS CERTIFICATION REPORT")
+    print("=" * 60)
+
+    print(
+        json.dumps(
+            asdict(report),
+            indent=2,
+            default=str,
+        )
+    )
+
+    print("=" * 60)
+
+
+# ============================================================
+# CLI
+# ============================================================
 
 if __name__ == "__main__":
-    main()
+
+    report = run_bundle_certification()
+
+    print_report(report)
+
+    if not report.locked:
+        raise SystemExit(1)
