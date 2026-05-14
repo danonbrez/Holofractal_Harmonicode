@@ -12,21 +12,39 @@ import {
  * ===================================================
  * Runtime OS Configuration
  * ===================================================
+ *
+ * IMPORTANT:
+ * ---------------------------------------------------
+ * Use relative websocket paths.
+ *
+ * Vite proxy forwards:
+ *
+ * /ws/*
+ *     →
+ * localhost:8000
+ *
+ * This keeps transport authority portable:
+ *
+ * - local dev
+ * - reverse proxies
+ * - nginx
+ * - docker ingress
+ * - cloud edge routing
  */
 
 const runtimeOS = new RuntimeOS({
 
     runtimeEndpoint:
-        "ws://localhost:8000/ws/runtime",
+        "/ws/runtime",
 
     replayEndpoint:
-        "ws://localhost:8000/ws/replay",
+        "/ws/replay",
 
     graphEndpoint:
-        "ws://localhost:8000/ws/graph",
+        "/ws/graph",
 
     transportEndpoint:
-        "ws://localhost:8000/ws/transport",
+        "/ws/transport",
 
     diagnosticsEnabled: true,
 
