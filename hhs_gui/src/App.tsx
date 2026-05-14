@@ -8,6 +8,12 @@ import {
     RuntimeOS
 } from "../runtime_os/core/RuntimeOS"
 
+/**
+ * ===================================================
+ * Runtime OS Configuration
+ * ===================================================
+ */
+
 const runtimeOS = new RuntimeOS({
 
     runtimeEndpoint:
@@ -27,9 +33,16 @@ const runtimeOS = new RuntimeOS({
     mobileMode: true
 })
 
+/**
+ * ===================================================
+ * Application Root
+ * ===================================================
+ */
+
 export default function App() {
 
     return (
+
         <RuntimeShell
             runtimeOS={runtimeOS}
         />
