@@ -1,33 +1,96 @@
-import React from "react"
+import React, {
+    Suspense
+} from "react"
 
 import {
     RuntimeOS
 } from "./RuntimeOS"
 
+// =========================================================
+// Lazy Runtime Applications
+// =========================================================
+
 /**
- * =========================================================
- * Existing Runtime Applications
- * =========================================================
- *
  * IMPORTANT:
  * ---------------------------------------------------------
- * These imports intentionally target the richer upstream
- * runtime application surfaces discovered during repo scan.
+ * Runtime applications are optional authorities.
  *
- * Fallback surfaces remain below for incomplete modules.
+ * Upstream commit cadence is currently uneven across:
+ *
+ * - runtime_os/
+ * - runtime_apps/
+ * - backend runtime
+ *
+ * Therefore runtime applications MUST NOT be hard imports.
+ *
+ * Hard imports cause:
+ *
+ * Vite module resolution failure
+ * → frontend boot abort
+ *
+ * Runtime apps are now mounted lazily with fallback
+ * surfaces to preserve Runtime OS continuity.
  */
 
-import HHSCalculatorSurface from
-    "../../runtime_apps/calculator/HHSCalculatorSurface"
+// ---------------------------------------------------------
+// Calculator
+// ---------------------------------------------------------
 
-import HHSCalculatorGraphProjection from
-    "../../runtime_apps/calculator/HHSCalculatorGraphProjection"
+const HHSCalculatorSurface =
+    React.lazy(() =>
 
-import HHSBreadboardSurface from
-    "../../runtime_apps/breadboard/HHSBreadboardSurface"
+        import(
+            "../../runtime_apps/calculator/HHSCalculatorSurface"
+        ).catch(() => ({
 
-import HHSTransportOverlay from
-    "../../runtime_apps/breadboard/HHSTransportOverlay"
+            default:
+                CalculatorFallbackSurface
+        }))
+    )
+
+// ---------------------------------------------------------
+
+const HHSCalculatorGraphProjection =
+    React.lazy(() =>
+
+        import(
+            "../../runtime_apps/calculator/HHSCalculatorGraphProjection"
+        ).catch(() => ({
+
+            default:
+                GraphProjectionFallbackSurface
+        }))
+    )
+
+// ---------------------------------------------------------
+// Breadboard
+// ---------------------------------------------------------
+
+const HHSBreadboardSurface =
+    React.lazy(() =>
+
+        import(
+            "../../runtime_apps/breadboard/HHSBreadboardSurface"
+        ).catch(() => ({
+
+            default:
+                BreadboardFallbackSurface
+        }))
+    )
+
+// ---------------------------------------------------------
+
+const HHSTransportOverlay =
+    React.lazy(() =>
+
+        import(
+            "../../runtime_apps/breadboard/HHSTransportOverlay"
+        ).catch(() => ({
+
+            default:
+                OverlayFallbackSurface
+        }))
+    )
 
 // =========================================================
 // Props
@@ -53,11 +116,9 @@ export const RuntimeWindowContent: React.FC<
     applicationId
 }) => {
 
-    /**
-     * -----------------------------------------------------
-     * Runtime Console
-     * -----------------------------------------------------
-     */
+    // =====================================================
+    // Runtime Console
+    // =====================================================
 
     if (
         applicationId
@@ -72,11 +133,9 @@ export const RuntimeWindowContent: React.FC<
         )
     }
 
-    /**
-     * -----------------------------------------------------
-     * Calculator
-     * -----------------------------------------------------
-     */
+    // =====================================================
+    // Calculator
+    // =====================================================
 
     if (
         applicationId
@@ -85,47 +144,55 @@ export const RuntimeWindowContent: React.FC<
 
         return (
 
-            <div
-                className="
-                    w-full
-                    h-full
-                    grid
-                    grid-cols-2
-                    overflow-hidden
-                "
+            <Suspense
+                fallback={
+                    <LoadingSurface
+                        label="calculator"
+                    />
+                }
             >
 
                 <div
                     className="
-                        border-r
-                        border-neutral-800
+                        w-full
+                        h-full
+                        grid
+                        grid-cols-2
                         overflow-hidden
                     "
                 >
 
-                    <HHSCalculatorSurface />
+                    <div
+                        className="
+                            border-r
+                            border-neutral-800
+                            overflow-hidden
+                        "
+                    >
+
+                        <HHSCalculatorSurface />
+
+                    </div>
+
+                    <div
+                        className="
+                            overflow-hidden
+                        "
+                    >
+
+                        <HHSCalculatorGraphProjection />
+
+                    </div>
 
                 </div>
 
-                <div
-                    className="
-                        overflow-hidden
-                    "
-                >
-
-                    <HHSCalculatorGraphProjection />
-
-                </div>
-
-            </div>
+            </Suspense>
         )
     }
 
-    /**
-     * -----------------------------------------------------
-     * Breadboard
-     * -----------------------------------------------------
-     */
+    // =====================================================
+    // Breadboard
+    // =====================================================
 
     if (
         applicationId
@@ -134,28 +201,36 @@ export const RuntimeWindowContent: React.FC<
 
         return (
 
-            <div
-                className="
-                    relative
-                    w-full
-                    h-full
-                    overflow-hidden
-                "
+            <Suspense
+                fallback={
+                    <LoadingSurface
+                        label="breadboard"
+                    />
+                }
             >
 
-                <HHSBreadboardSurface />
+                <div
+                    className="
+                        relative
+                        w-full
+                        h-full
+                        overflow-hidden
+                    "
+                >
 
-                <HHSTransportOverlay />
+                    <HHSBreadboardSurface />
 
-            </div>
+                    <HHSTransportOverlay />
+
+                </div>
+
+            </Suspense>
         )
     }
 
-    /**
-     * -----------------------------------------------------
-     * Graph Debugger
-     * -----------------------------------------------------
-     */
+    // =====================================================
+    // Graph Debugger
+    // =====================================================
 
     if (
         applicationId
@@ -170,11 +245,9 @@ export const RuntimeWindowContent: React.FC<
         )
     }
 
-    /**
-     * -----------------------------------------------------
-     * Tensor Inspector
-     * -----------------------------------------------------
-     */
+    // =====================================================
+    // Tensor Inspector
+    // =====================================================
 
     if (
         applicationId
@@ -189,11 +262,9 @@ export const RuntimeWindowContent: React.FC<
         )
     }
 
-    /**
-     * -----------------------------------------------------
-     * Replay Viewer
-     * -----------------------------------------------------
-     */
+    // =====================================================
+    // Replay Viewer
+    // =====================================================
 
     if (
         applicationId
@@ -208,11 +279,9 @@ export const RuntimeWindowContent: React.FC<
         )
     }
 
-    /**
-     * -----------------------------------------------------
-     * Unknown
-     * -----------------------------------------------------
-     */
+    // =====================================================
+    // Unknown
+    // =====================================================
 
     return (
 
@@ -225,7 +294,7 @@ export const RuntimeWindowContent: React.FC<
 }
 
 // =========================================================
-// Runtime Console Surface
+// Runtime Console
 // =========================================================
 
 interface RuntimeConsoleSurfaceProps {
@@ -235,7 +304,9 @@ interface RuntimeConsoleSurfaceProps {
 
 const RuntimeConsoleSurface: React.FC<
     RuntimeConsoleSurfaceProps
-> = ({ runtimeOS }) => {
+> = ({
+    runtimeOS
+}) => {
 
     const metrics =
         runtimeOS.getMetrics()
@@ -267,64 +338,11 @@ const RuntimeConsoleSurface: React.FC<
                 HHS Runtime Console
             </div>
 
-            <div>
-                runtime_status:
-                {" "}
-                {
-                    runtimeOS.state
-                        .connected
-                            ? "online"
-                            : "offline"
-                }
-            </div>
-
-            <div>
-                replay_ready:
-                {" "}
-                {
-                    runtimeOS.state
-                        .replayReady
-                            ? "true"
-                            : "false"
-                }
-            </div>
-
-            <div>
-                graph_ready:
-                {" "}
-                {
-                    runtimeOS.state
-                        .graphReady
-                            ? "true"
-                            : "false"
-                }
-            </div>
-
-            <div>
-                transport_ready:
-                {" "}
-                {
-                    runtimeOS.state
-                        .transportReady
-                            ? "true"
-                            : "false"
-                }
-            </div>
-
-            <div
-                className="
-                    mt-4
-                    opacity-70
-                "
-            >
-                metrics:
-            </div>
-
             <pre
                 className="
                     whitespace-pre-wrap
                     break-all
-                    opacity-60
+                    opacity-70
                 "
             >
                 {
@@ -341,7 +359,7 @@ const RuntimeConsoleSurface: React.FC<
 }
 
 // =========================================================
-// Graph Debugger Surface
+// Graph Debugger
 // =========================================================
 
 interface GraphDebuggerSurfaceProps {
@@ -351,11 +369,9 @@ interface GraphDebuggerSurfaceProps {
 
 const GraphDebuggerSurface: React.FC<
     GraphDebuggerSurfaceProps
-> = ({ runtimeOS }) => {
-
-    const graphEvent =
-        runtimeOS.sockets.state
-            .lastGraphEvent
+> = ({
+    runtimeOS
+}) => {
 
     return (
 
@@ -369,9 +385,6 @@ const GraphDebuggerSurface: React.FC<
                 font-mono
                 text-xs
                 p-4
-                flex
-                flex-col
-                gap-4
             "
         >
 
@@ -379,21 +392,10 @@ const GraphDebuggerSurface: React.FC<
                 className="
                     text-cyan-400
                     font-semibold
+                    mb-4
                 "
             >
                 Runtime Graph Debugger
-            </div>
-
-            <div>
-                graph_connected:
-                {" "}
-                {
-                    runtimeOS.sockets
-                        .state
-                        .graphConnected
-                            ? "true"
-                            : "false"
-                }
             </div>
 
             <pre
@@ -405,8 +407,13 @@ const GraphDebuggerSurface: React.FC<
             >
                 {
                     JSON.stringify(
-                        graphEvent,
+
+                        runtimeOS
+                            .store
+                            .getGraphNodes(),
+
                         null,
+
                         2
                     )
                 }
@@ -427,7 +434,7 @@ interface TensorInspectorSurfaceProps {
 
 const TensorInspectorSurface: React.FC<
     TensorInspectorSurfaceProps
-> = ({ runtimeOS }) => {
+> = () => {
 
     return (
 
@@ -435,20 +442,19 @@ const TensorInspectorSurface: React.FC<
             className="
                 w-full
                 h-full
-                overflow-auto
                 bg-neutral-950
                 text-white
-                font-mono
-                text-xs
-                p-4
+                p-6
+                overflow-auto
             "
         >
 
             <div
                 className="
                     text-purple-400
+                    text-lg
                     font-semibold
-                    mb-4
+                    mb-6
                 "
             >
                 Tensor Inspector
@@ -457,30 +463,29 @@ const TensorInspectorSurface: React.FC<
             <div
                 className="
                     grid
-                    grid-cols-2
+                    grid-cols-3
                     gap-4
                 "
             >
 
                 {
                     Array.from({
-
                         length: 9
-
                     }).map((_, i) => (
 
                         <div
                             key={i}
                             className="
                                 aspect-square
+                                rounded-xl
                                 border
                                 border-neutral-800
-                                rounded-lg
                                 bg-neutral-900
                                 flex
                                 items-center
                                 justify-center
-                                text-lg
+                                text-xl
+                                font-mono
                             "
                         >
                             {i + 1}
@@ -505,11 +510,14 @@ interface ReplayViewerSurfaceProps {
 
 const ReplayViewerSurface: React.FC<
     ReplayViewerSurfaceProps
-> = ({ runtimeOS }) => {
+> = ({
+    runtimeOS
+}) => {
 
     const replay =
-        runtimeOS.sockets.state
-            .replayHistory
+        runtimeOS
+            .store
+            .getTimeline()
 
     return (
 
@@ -533,64 +541,239 @@ const ReplayViewerSurface: React.FC<
                 className="
                     text-green-300
                     font-semibold
+                    mb-2
                 "
             >
                 Replay Timeline
             </div>
 
             {
-                replay.map(
-                    (
-                        event,
-                        index
-                    ) => (
+                replay
+                    .slice()
+                    .reverse()
+                    .map(
 
-                        <div
-                            key={index}
-                            className="
-                                border-b
-                                border-neutral-800
-                                pb-2
-                            "
-                        >
-
-                            <div>
-                                seq:
-                                {" "}
-                                {
-                                    event
-                                        .sequence_id
-                                }
-                            </div>
-
-                            <div>
-                                tick:
-                                {" "}
-                                {
-                                    String(
-                                        event
-                                            .payload
-                                            .replay_tick
-                                    )
-                                }
-                            </div>
+                        (
+                            frame,
+                            index
+                        ) => (
 
                             <div
+                                key={index}
                                 className="
-                                    opacity-60
+                                    border-b
+                                    border-neutral-900
+                                    pb-2
                                 "
                             >
-                                {
-                                    JSON.stringify(
-                                        event.payload
-                                    )
-                                }
-                            </div>
 
-                        </div>
+                                <div>
+                                    {
+                                        frame
+                                            .event_type
+                                    }
+                                </div>
+
+                                <div
+                                    className="
+                                        opacity-50
+                                    "
+                                >
+                                    seq:
+                                    {" "}
+                                    {
+                                        frame
+                                            .sequence_id
+                                    }
+                                </div>
+
+                            </div>
+                        )
                     )
-                )
             }
+
+        </div>
+    )
+}
+
+// =========================================================
+// Loading Surface
+// =========================================================
+
+interface LoadingSurfaceProps {
+
+    label: string
+}
+
+const LoadingSurface: React.FC<
+    LoadingSurfaceProps
+> = ({
+    label
+}) => {
+
+    return (
+
+        <div
+            className="
+                w-full
+                h-full
+                flex
+                items-center
+                justify-center
+                bg-neutral-950
+                text-cyan-400
+                font-mono
+                text-sm
+            "
+        >
+
+            loading_runtime_app:
+            {" "}
+            {label}
+
+        </div>
+    )
+}
+
+// =========================================================
+// Calculator Fallback
+// =========================================================
+
+const CalculatorFallbackSurface: React.FC =
+() => {
+
+    return (
+
+        <FallbackSurface
+            title="Calculator Surface Missing"
+            description="
+                upstream runtime calculator module
+                not yet available
+            "
+        />
+    )
+}
+
+// =========================================================
+// Graph Projection Fallback
+// =========================================================
+
+const GraphProjectionFallbackSurface:
+React.FC = () => {
+
+    return (
+
+        <FallbackSurface
+            title="
+                Graph Projection Missing
+            "
+            description="
+                upstream graph projection
+                module not yet available
+            "
+        />
+    )
+}
+
+// =========================================================
+// Breadboard Fallback
+// =========================================================
+
+const BreadboardFallbackSurface:
+React.FC = () => {
+
+    return (
+
+        <FallbackSurface
+            title="
+                Breadboard Missing
+            "
+            description="
+                upstream breadboard
+                module not yet available
+            "
+        />
+    )
+}
+
+// =========================================================
+// Overlay Fallback
+// =========================================================
+
+const OverlayFallbackSurface:
+React.FC = () => {
+
+    return null
+}
+
+// =========================================================
+// Shared Fallback
+// =========================================================
+
+interface FallbackSurfaceProps {
+
+    title: string
+
+    description: string
+}
+
+const FallbackSurface: React.FC<
+    FallbackSurfaceProps
+> = ({
+    title,
+    description
+}) => {
+
+    return (
+
+        <div
+            className="
+                w-full
+                h-full
+                bg-neutral-950
+                flex
+                items-center
+                justify-center
+                p-8
+            "
+        >
+
+            <div
+                className="
+                    max-w-md
+                    rounded-2xl
+                    border
+                    border-neutral-800
+                    bg-neutral-900
+                    p-6
+                    text-center
+                    flex
+                    flex-col
+                    gap-4
+                "
+            >
+
+                <div
+                    className="
+                        text-lg
+                        text-yellow-400
+                        font-semibold
+                    "
+                >
+                    {title}
+                </div>
+
+                <div
+                    className="
+                        text-sm
+                        text-neutral-400
+                        leading-relaxed
+                    "
+                >
+                    {description}
+                </div>
+
+            </div>
 
         </div>
     )
