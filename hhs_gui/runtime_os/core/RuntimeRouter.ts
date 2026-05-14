@@ -1,18 +1,18 @@
 /**
  * HHS Runtime Router
  * ---------------------------------------------------
- * Canonical Runtime OS routing and orchestration layer.
+ * Canonical graph-native routing layer.
  *
  * Responsibilities:
  *
- * - Runtime application routing
- * - Process manifold routing
- * - Workspace navigation
- * - Replay-linked route continuity
- * - Graph-native route topology
- * - Runtime transport routing
- * - Application mounting orchestration
- * - Deep-link replay reconstruction
+ * - Workspace routing
+ * - Runtime navigation
+ * - Route persistence
+ * - Replay-linked navigation
+ * - Application region routing
+ * - Deep-link synchronization
+ * - Runtime topology navigation
+ * - Viewport navigation continuity
  *
  * Invariants:
  * Δe = 0
@@ -25,229 +25,144 @@ export interface RuntimeRoute {
 
     id: string
 
-    route: string
+    path: string
 
     applicationId: string
 
     workspaceId?: string
 
-    graphRegion?: string
+    parameters?: Record<
+        string,
+        unknown
+    >
 
-    replayState?: object
-
-    transportState?: object
-
-    metadata?: object
-}
-
-export interface RuntimeNavigationEvent {
-
-    previousRoute?: string
-
-    nextRoute: string
-
-    timestamp: number
-
-    replayLinked: boolean
+    createdAt: number
 }
 
 export interface RuntimeRouterState {
 
     initialized: boolean
 
-    currentRoute?: string
+    currentRoute?: RuntimeRoute
 
-    previousRoute?: string
-
-    navigationCount: number
+    navigationReady: boolean
 
     replaySynchronized: boolean
 }
 
 export class RuntimeRouter {
 
-    private readonly routes:
-        Map<string, RuntimeRoute>
-
-    private readonly navigationHistory:
-        RuntimeNavigationEvent[]
-
     public readonly state:
         RuntimeRouterState
 
+    private routeHistory:
+        RuntimeRoute[]
+
     constructor() {
 
-        this.routes = new Map()
-
-        this.navigationHistory = []
+        this.routeHistory = []
 
         this.state = {
 
             initialized: false,
 
-            navigationCount: 0,
+            navigationReady: false,
 
             replaySynchronized: false
         }
-
-        this.initializeDefaultRoutes()
     }
 
     /**
      * ---------------------------------------------------
-     * Route Bootstrap
+     * Router Initialization
      * ---------------------------------------------------
      */
 
-    private initializeDefaultRoutes(): void {
+    public async initialize(): Promise<void> {
 
-        const defaultRoutes: RuntimeRoute[] = [
+        console.log(
+            "[RuntimeRouter] initialize"
+        )
 
-            {
+        await this.initializeNavigation()
 
-                id: crypto.randomUUID(),
+        await this.initializeReplaySynchronization()
 
-                route: "/",
-
-                applicationId:
-                    "runtime_console",
-
-                graphRegion:
-                    "root_workspace"
-            },
-
-            {
-
-                id: crypto.randomUUID(),
-
-                route: "/calculator",
-
-                applicationId:
-                    "calculator",
-
-                graphRegion:
-                    "symbolic_region"
-            },
-
-            {
-
-                id: crypto.randomUUID(),
-
-                route: "/graph",
-
-                applicationId:
-                    "graph_debugger",
-
-                graphRegion:
-                    "graph_region"
-            },
-
-            {
-
-                id: crypto.randomUUID(),
-
-                route: "/tensor",
-
-                applicationId:
-                    "tensor_inspector",
-
-                graphRegion:
-                    "tensor_region"
-            },
-
-            {
-
-                id: crypto.randomUUID(),
-
-                route: "/replay",
-
-                applicationId:
-                    "receipt_replay_viewer",
-
-                graphRegion:
-                    "replay_region"
-            },
-
-            {
-
-                id: crypto.randomUUID(),
-
-                route: "/physics",
-
-                applicationId:
-                    "physics_sandbox",
-
-                graphRegion:
-                    "simulation_region"
-            },
-
-            {
-
-                id: crypto.randomUUID(),
-
-                route: "/breadboard",
-
-                applicationId:
-                    "runtime_breadboard",
-
-                graphRegion:
-                    "transport_region"
-            },
-
-            {
-
-                id: crypto.randomUUID(),
-
-                route: "/ide",
-
-                applicationId:
-                    "visual_ide",
-
-                graphRegion:
-                    "compiler_region"
-            }
-        ]
-
-        for (const route of defaultRoutes) {
-
-            this.registerRoute(route)
-        }
+        await this.restorePreviousRoute()
 
         this.state.initialized = true
+
+        console.log(
+            "[RuntimeRouter] ready"
+        )
+    }
+
+    /**
+     * ---------------------------------------------------
+     * Navigation Bootstrap
+     * ---------------------------------------------------
+     */
+
+    private async initializeNavigation():
+        Promise<void> {
+
+        console.log(
+            "[RuntimeRouter] navigation init"
+        )
+
+        this.state.navigationReady = true
+    }
+
+    /**
+     * ---------------------------------------------------
+     * Replay Synchronization
+     * ---------------------------------------------------
+     */
+
+    private async initializeReplaySynchronization():
+        Promise<void> {
+
+        console.log(
+            "[RuntimeRouter] replay sync"
+        )
 
         this.state.replaySynchronized = true
     }
 
     /**
      * ---------------------------------------------------
-     * Route Registration
+     * Route Restoration
      * ---------------------------------------------------
      */
 
-    public registerRoute(
-        route: RuntimeRoute
-    ): void {
-
-        this.routes.set(
-            route.route,
-            route
-        )
+    private async restorePreviousRoute():
+        Promise<void> {
 
         console.log(
-            "[RuntimeRouter] route registered",
-            route.route
+            "[RuntimeRouter] restore route"
         )
-    }
 
-    public unregisterRoute(
-        routePath: string
-    ): void {
+        const defaultRoute:
+            RuntimeRoute = {
 
-        this.routes.delete(routePath)
+            id:
+                crypto.randomUUID(),
 
-        console.log(
-            "[RuntimeRouter] route removed",
-            routePath
+            path:
+                "/runtime/console",
+
+            applicationId:
+                "runtime_console",
+
+            createdAt:
+                Date.now()
+        }
+
+        this.state.currentRoute =
+            defaultRoute
+
+        this.routeHistory.push(
+            defaultRoute
         )
     }
 
@@ -258,52 +173,39 @@ export class RuntimeRouter {
      */
 
     public navigate(
-        routePath: string
-    ): RuntimeRoute | undefined {
+        path: string,
+        applicationId: string,
+        parameters?: Record<
+            string,
+            unknown
+        >
+    ): RuntimeRoute {
 
-        const route =
-            this.routes.get(routePath)
+        const route: RuntimeRoute = {
 
-        if (!route) {
+            id:
+                crypto.randomUUID(),
 
-            console.warn(
-                "[RuntimeRouter] route not found",
-                routePath
-            )
+            path,
 
-            return undefined
+            applicationId,
+
+            parameters,
+
+            createdAt:
+                Date.now()
         }
-
-        const navigationEvent:
-            RuntimeNavigationEvent = {
-
-            previousRoute:
-                this.state.currentRoute,
-
-            nextRoute:
-                routePath,
-
-            timestamp:
-                Date.now(),
-
-            replayLinked: true
-        }
-
-        this.navigationHistory.push(
-            navigationEvent
-        )
-
-        this.state.previousRoute =
-            this.state.currentRoute
 
         this.state.currentRoute =
-            routePath
+            route
 
-        this.state.navigationCount += 1
+        this.routeHistory.push(
+            route
+        )
 
         console.log(
             "[RuntimeRouter] navigate",
-            routePath
+            route
         )
 
         return route
@@ -311,129 +213,46 @@ export class RuntimeRouter {
 
     /**
      * ---------------------------------------------------
-     * Back Navigation
+     * Route History
      * ---------------------------------------------------
      */
 
-    public back():
-        RuntimeRoute | undefined {
+    public getHistory():
+        RuntimeRoute[] {
 
-        if (
-            this.navigationHistory.length < 2
-        ) {
+        return [
+            ...this.routeHistory
+        ]
+    }
 
-            return undefined
-        }
+    public clearHistory(): void {
 
-        /**
-         * Remove current event
-         */
+        this.routeHistory = []
 
-        this.navigationHistory.pop()
-
-        /**
-         * Previous event
-         */
-
-        const previousEvent =
-            this.navigationHistory[
-                this.navigationHistory.length - 1
-            ]
-
-        if (!previousEvent) {
-
-            return undefined
-        }
-
-        return this.navigate(
-            previousEvent.nextRoute
+        console.log(
+            "[RuntimeRouter] history cleared"
         )
     }
 
     /**
      * ---------------------------------------------------
-     * Route Resolution
+     * Route Queries
      * ---------------------------------------------------
      */
-
-    public resolveRoute(
-        routePath: string
-    ): RuntimeRoute | undefined {
-
-        return this.routes.get(routePath)
-    }
 
     public getCurrentRoute():
         RuntimeRoute | undefined {
 
-        if (!this.state.currentRoute) {
-
-            return undefined
-        }
-
-        return this.routes.get(
-            this.state.currentRoute
-        )
+        return this.state.currentRoute
     }
 
-    public getRoutes():
-        RuntimeRoute[] {
+    public isRouteActive(
+        path: string
+    ): boolean {
 
-        return Array.from(
-            this.routes.values()
-        )
-    }
-
-    /**
-     * ---------------------------------------------------
-     * Deep-Link Replay Routing
-     * ---------------------------------------------------
-     */
-
-    public replayNavigate(
-        replayId: string
-    ): void {
-
-        console.log(
-            "[RuntimeRouter] replay navigate",
-            replayId
-        )
-
-        /**
-         * Future:
-         * replay reconstruction routing
-         * branch restoration
-         * graph continuity recovery
-         */
-    }
-
-    /**
-     * ---------------------------------------------------
-     * Graph Region Routing
-     * ---------------------------------------------------
-     */
-
-    public navigateGraphRegion(
-        graphRegion: string
-    ): RuntimeRoute | undefined {
-
-        const routes =
-            this.getRoutes()
-
-        const route = routes.find(
-
-            (candidate) =>
-                candidate.graphRegion ===
-                graphRegion
-        )
-
-        if (!route) {
-
-            return undefined
-        }
-
-        return this.navigate(
-            route.route
+        return (
+            this.state.currentRoute?.path
+                === path
         )
     }
 
@@ -447,13 +266,11 @@ export class RuntimeRouter {
 
         return {
 
-            state: this.state,
+            state:
+                this.state,
 
-            routes:
-                this.getRoutes(),
-
-            navigationHistory:
-                this.navigationHistory
+            history:
+                this.routeHistory
         }
     }
 
@@ -467,20 +284,20 @@ export class RuntimeRouter {
 
         return {
 
-            registeredRoutes:
-                this.routes.size,
+            initialized:
+                this.state.initialized,
 
-            currentRoute:
-                this.state.currentRoute,
-
-            previousRoute:
-                this.state.previousRoute,
-
-            navigationCount:
-                this.state.navigationCount,
+            navigationReady:
+                this.state.navigationReady,
 
             replaySynchronized:
-                this.state.replaySynchronized
+                this.state.replaySynchronized,
+
+            routes:
+                this.routeHistory.length,
+
+            currentRoute:
+                this.state.currentRoute?.path
         }
     }
 }
