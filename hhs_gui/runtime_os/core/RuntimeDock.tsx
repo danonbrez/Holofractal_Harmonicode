@@ -1,161 +1,145 @@
-import React, {
-    useMemo,
-    useState
-} from "react"
+import React from "react"
 
 import {
-    RuntimeApplicationRegistry,
-    RuntimeApplication
-} from "./RuntimeApplicationRegistry"
+    RuntimeOS
+} from "./RuntimeOS"
 
-import {
-    RuntimeWindowManager
-} from "./RuntimeWindowManager"
+export interface RuntimeDockApplication {
 
-/**
- * HHS Runtime Dock
- * ---------------------------------------------------
- * Canonical Runtime OS application dock.
- *
- * Responsibilities:
- *
- * - Runtime application launching
- * - Application mounting
- * - Window orchestration
- * - Graph-native application access
- * - Replay-linked launch continuity
- * - Runtime process shortcuts
- * - Workspace application navigation
- *
- * Invariants:
- * Δe = 0
- * Ψ = 0
- * Θ15 = true
- * Ω = true
- */
+    id: string
+
+    title: string
+
+    icon: string
+}
 
 export interface RuntimeDockProps {
 
-    registry: RuntimeApplicationRegistry
-
-    windowManager: RuntimeWindowManager
+    runtimeOS: RuntimeOS
 }
 
 export const RuntimeDock: React.FC<
     RuntimeDockProps
-> = ({
-    registry,
-    windowManager
-}) => {
-
-    const [hoveredApp, setHoveredApp] =
-        useState<string | null>(null)
+> = ({ runtimeOS }) => {
 
     /**
      * ---------------------------------------------------
-     * Visible Applications
+     * Runtime Applications
      * ---------------------------------------------------
      */
 
-    const applications =
-        useMemo(() => {
+    const applications:
+        RuntimeDockApplication[] = [
 
-            return registry
-                .getApplications()
-                .filter(
+        {
+            id: "runtime_console",
 
-                    (application) =>
-                        application.visible
-                )
+            title: "Runtime Console",
 
-        }, [registry])
+            icon: "⌘"
+        },
+
+        {
+            id: "calculator",
+
+            title: "Calculator",
+
+            icon: "∑"
+        },
+
+        {
+            id: "breadboard",
+
+            title: "Breadboard",
+
+            icon: "◈"
+        },
+
+        {
+            id: "graph_debugger",
+
+            title: "Graph Debugger",
+
+            icon: "◎"
+        },
+
+        {
+            id: "tensor_inspector",
+
+            title: "Tensor Inspector",
+
+            icon: "⬢"
+        },
+
+        {
+            id: "replay_viewer",
+
+            title: "Replay Viewer",
+
+            icon: "⟳"
+        }
+    ]
 
     /**
      * ---------------------------------------------------
-     * Application Launch
+     * Launch Application
      * ---------------------------------------------------
      */
 
     const launchApplication = (
-        application: RuntimeApplication
+        app:
+            RuntimeDockApplication
     ) => {
 
-        registry.mountApplication(
-            application.id
-        )
+        runtimeOS.workspace.addWindow({
 
-        windowManager.createWindow({
+            id:
+                crypto.randomUUID(),
 
             title:
-                application.name,
+                app.title,
 
             applicationId:
-                application.id,
+                app.id,
 
-            width: 960,
+            position: {
 
-            height: 640
+                x:
+                    220 +
+                    Math.random() * 240,
+
+                y:
+                    120 +
+                    Math.random() * 180
+            },
+
+            size: {
+
+                width: 840,
+
+                height: 560
+            },
+
+            minimized: false,
+
+            maximized: false,
+
+            focused: true,
+
+            zIndex:
+                runtimeOS.workspace
+                    .layout.windows.length + 1
         })
 
         console.log(
-            "[RuntimeDock] launch",
-            application.id
+            "[RuntimeDock] launched",
+            app.id
         )
     }
 
     /**
      * ---------------------------------------------------
-     * Icon Mapping
-     * ---------------------------------------------------
-     */
-
-    const getIcon = (
-        icon?: string
-    ): string => {
-
-        switch (icon) {
-
-            case "terminal":
-
-                return "⌘"
-
-            case "calculator":
-
-                return "∑"
-
-            case "orbit":
-
-                return "◉"
-
-            case "network":
-
-                return "◎"
-
-            case "history":
-
-                return "↺"
-
-            case "atom":
-
-                return "⚛"
-
-            case "cpu":
-
-                return "▣"
-
-            case "code":
-
-                return "{ }"
-
-            default:
-
-                return "◆"
-        }
-    }
-
-    /**
-     * ---------------------------------------------------
-     * Runtime Dock
+     * Render
      * ---------------------------------------------------
      */
 
@@ -164,170 +148,127 @@ export const RuntimeDock: React.FC<
         <div
             className="
                 absolute
-                bottom-4
+                bottom-6
                 left-1/2
-                -translate-x-1/2
-                z-50
-                pointer-events-auto
+                z-[1200]
             "
+            style={{
+
+                transform:
+                    "translateX(-50%)"
+            }}
         >
 
             <div
                 className="
-                    flex
-                    items-end
-                    gap-3
-                    px-5
-                    py-3
                     rounded-2xl
                     border
                     border-neutral-800
-                    bg-black/70
+                    bg-neutral-900/80
                     backdrop-blur-xl
                     shadow-2xl
+                    px-4
+                    py-3
+                    flex
+                    items-end
+                    gap-3
                 "
             >
 
                 {
-                    applications.map(
+                    applications.map((app) => (
 
-                        (application) => {
+                        <button
+                            key={app.id}
+                            onClick={() =>
+                                launchApplication(
+                                    app
+                                )
+                            }
+                            className="
+                                group
+                                flex
+                                flex-col
+                                items-center
+                                gap-2
+                                transition
+                                hover:scale-110
+                            "
+                        >
 
-                            const hovered =
-                                hoveredApp ===
-                                application.id
+                            {/* ---------------- */}
+                            {/* Icon */}
+                            {/* ---------------- */}
 
-                            return (
+                            <div
+                                className="
+                                    w-14
+                                    h-14
+                                    rounded-2xl
+                                    border
+                                    border-cyan-500/20
+                                    bg-neutral-800
+                                    flex
+                                    items-center
+                                    justify-center
+                                    text-xl
+                                    shadow-xl
+                                    transition
+                                    group-hover:bg-cyan-500/20
+                                "
+                            >
+                                {app.icon}
+                            </div>
 
-                                <div
-                                    key={
-                                        application.id
-                                    }
-                                    className="
-                                        relative
-                                        flex
-                                        flex-col
-                                        items-center
-                                    "
-                                    onMouseEnter={() => {
+                            {/* ---------------- */}
+                            {/* Label */}
+                            {/* ---------------- */}
 
-                                        setHoveredApp(
-                                            application.id
-                                        )
-                                    }}
-                                    onMouseLeave={() => {
+                            <div
+                                className="
+                                    text-[10px]
+                                    font-mono
+                                    opacity-60
+                                    whitespace-nowrap
+                                "
+                            >
+                                {app.title}
+                            </div>
 
-                                        setHoveredApp(
-                                            null
-                                        )
-                                    }}
-                                >
+                        </button>
+                    ))
+                }
 
-                                    {/* ---------------- */}
-                                    {/* Tooltip */}
-                                    {/* ---------------- */}
+            </div>
 
-                                    {
-                                        hovered && (
+            {/* -------------------------------- */}
+            {/* Dock Metrics */}
+            {/* -------------------------------- */}
 
-                                            <div
-                                                className="
-                                                    absolute
-                                                    bottom-20
-                                                    whitespace-nowrap
-                                                    px-3
-                                                    py-1
-                                                    rounded-lg
-                                                    bg-neutral-900
-                                                    border
-                                                    border-neutral-700
-                                                    text-xs
-                                                    font-mono
-                                                    text-neutral-200
-                                                "
-                                            >
-                                                {
-                                                    application.name
-                                                }
-                                            </div>
-                                        )
-                                    }
+            <div
+                className="
+                    mt-3
+                    text-center
+                    text-[10px]
+                    font-mono
+                    opacity-40
+                "
+            >
 
-                                    {/* ---------------- */}
-                                    {/* App Icon */}
-                                    {/* ---------------- */}
+                windows:
+                {" "}
+                {
+                    runtimeOS.workspace
+                        .layout.windows.length
+                }
 
-                                    <button
+                {" • "}
 
-                                        onClick={() => {
-
-                                            launchApplication(
-                                                application
-                                            )
-                                        }}
-
-                                        className={`
-                                            w-14
-                                            h-14
-                                            rounded-2xl
-                                            border
-                                            transition-all
-                                            duration-200
-                                            flex
-                                            items-center
-                                            justify-center
-                                            text-lg
-                                            font-bold
-                                            backdrop-blur-md
-
-                                            ${
-                                                hovered
-                                                    ? `
-                                                        scale-110
-                                                        bg-cyan-500/20
-                                                        border-cyan-400
-                                                        text-cyan-300
-                                                      `
-                                                    : `
-                                                        bg-neutral-900/80
-                                                        border-neutral-700
-                                                        text-neutral-200
-                                                      `
-                                            }
-                                        `}
-                                    >
-
-                                        {
-                                            getIcon(
-                                                application.icon
-                                            )
-                                        }
-
-                                    </button>
-
-                                    {/* ---------------- */}
-                                    {/* Mounted Indicator */}
-                                    {/* ---------------- */}
-
-                                    {
-                                        application.mounted && (
-
-                                            <div
-                                                className="
-                                                    mt-2
-                                                    w-2
-                                                    h-2
-                                                    rounded-full
-                                                    bg-cyan-400
-                                                "
-                                            />
-                                        )
-                                    }
-
-                                </div>
-                            )
-                        }
-                    )
+                apps:
+                {" "}
+                {
+                    runtimeOS.state
+                        .applicationsMounted
                 }
 
             </div>
