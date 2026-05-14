@@ -1,582 +1,835 @@
-# hhs_python/runtime/hhs_runtime_state.py
-#
-# HHS / HARMONICODE
-# Canonical Runtime State Authority
-#
-# Runtime Principle:
-#
-#   runtime state
-#   =
-#   canonical deterministic runtime continuity
-#
-# NOT:
-#
-#   temporary execution snapshots
-#
-
 from __future__ import annotations
 
-from dataclasses import dataclass, field, asdict
-from typing import Dict, List, Optional, Any
-import hashlib
-import json
-import time
+from dataclasses import asdict
+from dataclasses import dataclass
+from dataclasses import field
+
+from typing import Any
+from typing import Dict
+from typing import List
+from typing import Optional
+
 import copy
+import time
 
+from hhs_runtime.runtime_event_schema import (
 
-HASH72_LEN = 72
-HASH216_LEN = 216
+    RuntimeEvent,
 
+    RuntimeEventPayload,
 
-# ============================================================
-# HASH HELPERS
-# ============================================================
+    ReplayEvent,
 
-def _hash72(data: str) -> str:
-    h = hashlib.sha512(data.encode()).hexdigest()
-    return h[:HASH72_LEN]
+    ReplayEventPayload,
 
+    GraphEvent,
 
-def _hash216(data: str) -> str:
-    h1 = hashlib.sha512(data.encode()).hexdigest()
-    h2 = hashlib.sha256(data.encode()).hexdigest()
-    return (h1 + h2)[:HASH216_LEN]
+    GraphEventPayload,
 
+    GraphNode,
 
-# ============================================================
-# TENSOR81
-# ============================================================
+    GraphEdge,
 
-@dataclass
-class HHSTensor81Cell:
+    TransportEvent,
 
-    value: int = 0
+    TransportEventPayload,
 
-    phase: int = 0
-    occupied: bool = False
+    ReceiptEvent,
 
-    metadata: Dict[str, Any] = field(
-        default_factory=dict
-    )
+    ReceiptEventPayload
+)
 
+# =========================================================
+# Runtime Constants
+# =========================================================
 
-@dataclass
-class HHSTensor81State:
+RUNTIME_STATUS_BOOTING = "booting"
+RUNTIME_STATUS_ONLINE = "online"
+RUNTIME_STATUS_HALTED = "halted"
 
-    cells: List[HHSTensor81Cell] = field(
-        default_factory=lambda: [
-            HHSTensor81Cell()
-            for _ in range(81)
-        ]
-    )
+# =========================================================
+# Runtime Receipt
+# =========================================================
 
-    topology_hash216: str = ""
-
-    def compute_hash216(self) -> str:
-
-        payload = {
-            "cells": [
-                {
-                    "value": c.value,
-                    "phase": c.phase,
-                    "occupied": c.occupied,
-                }
-                for c in self.cells
-            ]
-        }
-
-        self.topology_hash216 = _hash216(
-            json.dumps(payload, sort_keys=True)
-        )
-
-        return self.topology_hash216
-
-
-# ============================================================
-# RECEIPT
-# ============================================================
-
-@dataclass
+@dataclass(slots=True)
 class HHSRuntimeReceipt:
 
-    receipt_hash72: str = ""
-    receipt_hash216: str = ""
+    receipt_hash72: str
 
-    state_hash72: str = ""
-    state_hash216: str = ""
+    source_hash72: str
+
+    operation: str
+
+    timestamp_ns: int
+
+    closure_class: str = "stable"
+
+    converged: bool = True
+
+    halted: bool = False
 
     witness_flags: int = 0
 
+    # -----------------------------------------------------
+
+    def to_event(
+        self,
+        *,
+        sequence_id: int = 0
+    ) -> ReceiptEvent:
+
+        return ReceiptEvent.build(
+
+            ReceiptEventPayload(
+
+                receipt_hash72=
+                    self.receipt_hash72,
+
+                source_hash72=
+                    self.source_hash72,
+
+                operation=
+                    self.operation,
+
+                closure_class=
+                    self.closure_class,
+
+                witness_flags=
+                    self.witness_flags,
+
+                converged=
+                    self.converged,
+
+                halted=
+                    self.halted
+            ),
+
+            sequence_id=
+                sequence_id
+        )
+
+# =========================================================
+# Runtime Graph
+# =========================================================
+
+@dataclass(slots=True)
+class HHSRuntimeGraph:
+
+    nodes: List[GraphNode] = field(
+
+        default_factory=list
+    )
+
+    edges: List[GraphEdge] = field(
+
+        default_factory=list
+    )
+
+    graph_tick: int = 0
+
+    projection: str = (
+        "runtime_topology"
+    )
+
+    # -----------------------------------------------------
+
+    def to_event(
+        self,
+        *,
+        sequence_id: int = 0
+    ) -> GraphEvent:
+
+        return GraphEvent.build(
+
+            GraphEventPayload(
+
+                graph_tick=
+                    self.graph_tick,
+
+                projection=
+                    self.projection,
+
+                nodes=
+                    self.nodes,
+
+                edges=
+                    self.edges
+            ),
+
+            sequence_id=
+                sequence_id
+        )
+
+# =========================================================
+# Runtime Transport
+# =========================================================
+
+@dataclass(slots=True)
+class HHSRuntimeTransport:
+
+    transport_tick: int = 0
+
     transport_flux: float = 0.0
-    orientation_flux: float = 0.0
-    constraint_flux: float = 0.0
 
-    converged: bool = False
-    halted: bool = False
+    throughput: float = 0.0
 
-    timestamp_ns: int = field(
+    continuity: str = "stable"
+
+    orientation_phase: float = 0.0
+
+    closure_pressure: float = 0.0
+
+    # -----------------------------------------------------
+
+    def to_event(
+        self,
+        *,
+        sequence_id: int = 0
+    ) -> TransportEvent:
+
+        return TransportEvent.build(
+
+            TransportEventPayload(
+
+                transport_tick=
+                    self.transport_tick,
+
+                transport_flux=
+                    self.transport_flux,
+
+                continuity=
+                    self.continuity,
+
+                throughput=
+                    self.throughput,
+
+                orientation_phase=
+                    self.orientation_phase,
+
+                closure_pressure=
+                    self.closure_pressure
+            ),
+
+            sequence_id=
+                sequence_id
+        )
+
+# =========================================================
+# Runtime Replay
+# =========================================================
+
+@dataclass(slots=True)
+class HHSRuntimeReplay:
+
+    replay_tick: int = 0
+
+    replay_status: str = "stable"
+
+    timeline_position: int = 0
+
+    branch_id: str = "main"
+
+    replay_mode: str = "live"
+
+    replay_hash72: Optional[str] = None
+
+    # -----------------------------------------------------
+
+    def to_event(
+        self,
+        *,
+        sequence_id: int = 0
+    ) -> ReplayEvent:
+
+        return ReplayEvent.build(
+
+            ReplayEventPayload(
+
+                replay_tick=
+                    self.replay_tick,
+
+                replay_status=
+                    self.replay_status,
+
+                timeline_position=
+                    self.timeline_position,
+
+                branch_id=
+                    self.branch_id,
+
+                replay_mode=
+                    self.replay_mode,
+
+                replay_hash72=
+                    self.replay_hash72
+            ),
+
+            sequence_id=
+                sequence_id
+        )
+
+# =========================================================
+# Runtime State
+# =========================================================
+
+@dataclass(slots=True)
+class HHSRuntimeState:
+
+    runtime_id: str = (
+        "hhs_runtime"
+    )
+
+    created_ns: int = field(
+
         default_factory=time.time_ns
     )
 
-    metadata: Dict[str, Any] = field(
-        default_factory=dict
+    updated_ns: int = field(
+
+        default_factory=time.time_ns
     )
 
-    def compute_hashes(self):
-
-        payload = json.dumps(
-            asdict(self),
-            sort_keys=True,
-            default=str,
-        )
-
-        self.receipt_hash72 = _hash72(payload)
-        self.receipt_hash216 = _hash216(payload)
-
-
-# ============================================================
-# TRANSPORT
-# ============================================================
-
-@dataclass
-class HHSTransportState:
-
-    transport_hash216: str = ""
-
-    transport_flux: float = 0.0
-    orientation_flux: float = 0.0
-    constraint_flux: float = 0.0
-
-    synchronized: bool = False
-    replayable: bool = False
-    reconstructible: bool = False
-
-    metadata: Dict[str, Any] = field(
-        default_factory=dict
+    runtime_status: str = (
+        RUNTIME_STATUS_BOOTING
     )
-
-    def compute_hash216(self):
-
-        self.transport_hash216 = _hash216(
-            json.dumps(
-                asdict(self),
-                sort_keys=True,
-                default=str,
-            )
-        )
-
-        return self.transport_hash216
-
-
-# ============================================================
-# GRAPH STATE
-# ============================================================
-
-@dataclass
-class HHSGraphState:
-
-    graph_hash216: str = ""
-
-    node_count: int = 0
-    edge_count: int = 0
-
-    topology_sequence: int = 0
-
-    metadata: Dict[str, Any] = field(
-        default_factory=dict
-    )
-
-    def compute_hash216(self):
-
-        self.graph_hash216 = _hash216(
-            json.dumps(
-                asdict(self),
-                sort_keys=True,
-                default=str,
-            )
-        )
-
-        return self.graph_hash216
-
-
-# ============================================================
-# EVENT STATE
-# ============================================================
-
-@dataclass
-class HHSEventState:
-
-    event_sequence: int = 0
-
-    last_event_hash216: str = ""
-
-    websocket_synchronized: bool = False
-
-    metadata: Dict[str, Any] = field(
-        default_factory=dict
-    )
-
-    def compute_hash216(self):
-
-        return _hash216(
-            json.dumps(
-                asdict(self),
-                sort_keys=True,
-                default=str,
-            )
-        )
-
-
-# ============================================================
-# RUNTIME OBJECT
-# ============================================================
-
-@dataclass
-class HHSRuntimeObject:
-
-    object_id: str
-
-    object_type: str
-
-    state_hash216: str = ""
-
-    replayable: bool = False
-    reconstructible: bool = False
-
-    metadata: Dict[str, Any] = field(
-        default_factory=dict
-    )
-
-    def compute_hash216(self):
-
-        self.state_hash216 = _hash216(
-            json.dumps(
-                asdict(self),
-                sort_keys=True,
-                default=str,
-            )
-        )
-
-        return self.state_hash216
-
-
-# ============================================================
-# CANONICAL RUNTIME STATE
-# ============================================================
-
-@dataclass
-class HHSRuntimeState:
-    """
-    Canonical deterministic runtime state authority.
-
-    ALL runtime layers serialize through this object.
-    """
-
-    runtime_id: str
-
-    state_hash72: str = ""
-    state_hash216: str = ""
-
-    receipt_hash72: str = ""
-    receipt_hash216: str = ""
-
-    transport_hash216: str = ""
-    projection_hash216: str = ""
-    graph_hash216: str = ""
-
-    tensor81_state: HHSTensor81State = field(
-        default_factory=HHSTensor81State
-    )
-
-    transport_state: HHSTransportState = field(
-        default_factory=HHSTransportState
-    )
-
-    graph_state: HHSGraphState = field(
-        default_factory=HHSGraphState
-    )
-
-    event_state: HHSEventState = field(
-        default_factory=HHSEventState
-    )
-
-    receipt: HHSRuntimeReceipt = field(
-        default_factory=HHSRuntimeReceipt
-    )
-
-    runtime_objects: Dict[
-        str,
-        HHSRuntimeObject
-    ] = field(default_factory=dict)
-
-    witness_flags: int = 0
-
-    transport_flux: float = 0.0
-    orientation_flux: float = 0.0
-    constraint_flux: float = 0.0
-
-    branch_id: str = "root"
-    parent_branch_id: Optional[str] = None
-
-    converged: bool = False
-    halted: bool = False
-
-    replayable: bool = False
-    reconstructible: bool = False
 
     step: int = 0
-    epoch: int = 0
 
-    timestamp_ns: int = field(
-        default_factory=time.time_ns
-    )
+    phase: str = "bootstrap"
 
-    receipt_lineage: List[str] = field(
+    closure_state: str = "stable"
+
+    transport_flux: float = 0.0
+
+    orientation_flux: float = 0.0
+
+    constraint_flux: float = 0.0
+
+    entropy_delta: float = 0.0
+
+    receipts: List[
+        HHSRuntimeReceipt
+    ] = field(
+
         default_factory=list
     )
 
-    replay_lineage: List[str] = field(
-        default_factory=list
+    graph: HHSRuntimeGraph = field(
+
+        default_factory=
+            HHSRuntimeGraph
     )
 
-    event_sequence: int = 0
-    graph_sequence: int = 0
+    transport: HHSRuntimeTransport = field(
 
-    metadata: Dict[str, Any] = field(
+        default_factory=
+            HHSRuntimeTransport
+    )
+
+    replay: HHSRuntimeReplay = field(
+
+        default_factory=
+            HHSRuntimeReplay
+    )
+
+    runtime_metadata: Dict[
+        str,
+        Any
+    ] = field(
+
         default_factory=dict
     )
 
-    # ========================================================
-    # HASHING
-    # ========================================================
+    # =====================================================
+    # Runtime Lifecycle
+    # =====================================================
 
-    def compute_hashes(self):
+    def set_online(
+        self
+    ) -> None:
 
-        self.tensor81_state.compute_hash216()
-
-        self.transport_hash216 = (
-            self.transport_state.compute_hash216()
+        self.runtime_status = (
+            RUNTIME_STATUS_ONLINE
         )
 
-        self.graph_hash216 = (
-            self.graph_state.compute_hash216()
+        self.updated_ns = (
+            time.time_ns()
         )
 
-        self.receipt.compute_hashes()
+    # -----------------------------------------------------
 
-        payload = {
-            "runtime_id": self.runtime_id,
+    def halt(
+        self
+    ) -> None:
 
-            "tensor81": (
-                self.tensor81_state.topology_hash216
+        self.runtime_status = (
+            RUNTIME_STATUS_HALTED
+        )
+
+        self.updated_ns = (
+            time.time_ns()
+        )
+
+    # -----------------------------------------------------
+
+    def advance_step(
+        self,
+        *,
+        phase: Optional[str] = None
+    ) -> None:
+
+        self.step += 1
+
+        if phase is not None:
+
+            self.phase = phase
+
+        self.updated_ns = (
+            time.time_ns()
+        )
+
+    # =====================================================
+    # Receipt Layer
+    # =====================================================
+
+    def append_receipt(
+        self,
+        receipt:
+            HHSRuntimeReceipt
+    ) -> None:
+
+        self.receipts.append(
+            receipt
+        )
+
+        self.updated_ns = (
+            time.time_ns()
+        )
+
+    # -----------------------------------------------------
+
+    def latest_receipt(
+        self
+    ) -> Optional[
+        HHSRuntimeReceipt
+    ]:
+
+        if not self.receipts:
+
+            return None
+
+        return self.receipts[-1]
+
+    # -----------------------------------------------------
+
+    def verify_receipt_chain(
+        self
+    ) -> bool:
+
+        if not self.receipts:
+
+            return True
+
+        for receipt in self.receipts:
+
+            if not receipt.receipt_hash72:
+
+                return False
+
+            if not receipt.source_hash72:
+
+                return False
+
+        return True
+
+    # =====================================================
+    # Runtime Events
+    # =====================================================
+
+    def to_runtime_event(
+        self,
+        *,
+        sequence_id: int = 0
+    ) -> RuntimeEvent:
+
+        latest = self.latest_receipt()
+
+        return RuntimeEvent.build(
+
+            RuntimeEventPayload(
+
+                operation=
+                    "runtime_state_update",
+
+                runtime_status=
+                    self.runtime_status,
+
+                step=
+                    self.step,
+
+                phase=
+                    self.phase,
+
+                uptime=
+                    time.time(),
+
+                receipt_hash72=(
+                    latest.receipt_hash72
+                    if latest
+                    else None
+                ),
+
+                source_hash72=(
+                    latest.source_hash72
+                    if latest
+                    else None
+                ),
+
+                closure_state=
+                    self.closure_state,
+
+                transport_flux=
+                    self.transport_flux,
+
+                orientation_flux=
+                    self.orientation_flux,
+
+                constraint_flux=
+                    self.constraint_flux,
+
+                entropy_delta=
+                    self.entropy_delta
             ),
 
-            "transport": self.transport_hash216,
+            sequence_id=
+                sequence_id
+        )
 
-            "graph": self.graph_hash216,
+    # -----------------------------------------------------
 
-            "receipt": (
-                self.receipt.receipt_hash216
-            ),
+    def to_graph_event(
+        self,
+        *,
+        sequence_id: int = 0
+    ) -> GraphEvent:
 
-            "objects": sorted(
-                [
-                    obj.compute_hash216()
-                    for obj in (
-                        self.runtime_objects.values()
-                    )
-                ]
-            ),
+        return self.graph.to_event(
 
-            "branch_id": self.branch_id,
-            "parent_branch_id": self.parent_branch_id,
+            sequence_id=
+                sequence_id
+        )
 
-            "step": self.step,
-            "epoch": self.epoch,
+    # -----------------------------------------------------
 
-            "event_sequence": self.event_sequence,
-            "graph_sequence": self.graph_sequence,
+    def to_transport_event(
+        self,
+        *,
+        sequence_id: int = 0
+    ) -> TransportEvent:
 
-            "converged": self.converged,
-            "halted": self.halted,
+        return self.transport.to_event(
 
-            "replayable": self.replayable,
-            "reconstructible": self.reconstructible,
+            sequence_id=
+                sequence_id
+        )
+
+    # -----------------------------------------------------
+
+    def to_replay_event(
+        self,
+        *,
+        sequence_id: int = 0
+    ) -> ReplayEvent:
+
+        return self.replay.to_event(
+
+            sequence_id=
+                sequence_id
+        )
+
+    # =====================================================
+    # Serialization
+    # =====================================================
+
+    def to_dict(
+        self
+    ) -> Dict[str, Any]:
+
+        return {
+
+            "runtime_id":
+                self.runtime_id,
+
+            "created_ns":
+                self.created_ns,
+
+            "updated_ns":
+                self.updated_ns,
+
+            "runtime_status":
+                self.runtime_status,
+
+            "step":
+                self.step,
+
+            "phase":
+                self.phase,
+
+            "closure_state":
+                self.closure_state,
+
+            "transport_flux":
+                self.transport_flux,
+
+            "orientation_flux":
+                self.orientation_flux,
+
+            "constraint_flux":
+                self.constraint_flux,
+
+            "entropy_delta":
+                self.entropy_delta,
+
+            "receipts": [
+
+                asdict(receipt)
+
+                for receipt
+                in self.receipts
+            ],
+
+            "graph":
+                asdict(
+                    self.graph
+                ),
+
+            "transport":
+                asdict(
+                    self.transport
+                ),
+
+            "replay":
+                asdict(
+                    self.replay
+                ),
+
+            "runtime_metadata":
+                self.runtime_metadata
         }
 
-        serialized = json.dumps(
-            payload,
-            sort_keys=True,
-            default=str,
-        )
-
-        self.state_hash72 = _hash72(
-            serialized
-        )
-
-        self.state_hash216 = _hash216(
-            serialized
-        )
-
-        self.receipt_hash72 = (
-            self.receipt.receipt_hash72
-        )
-
-        self.receipt_hash216 = (
-            self.receipt.receipt_hash216
-        )
-
-    # ========================================================
-    # SERIALIZATION
-    # ========================================================
-
-    def serialize(self) -> Dict[str, Any]:
-
-        self.compute_hashes()
-
-        return asdict(self)
+    # -----------------------------------------------------
 
     @classmethod
-    def deserialize(
+    def from_dict(
         cls,
         payload: Dict[str, Any]
     ) -> "HHSRuntimeState":
 
-        return cls(**copy.deepcopy(payload))
+        state = cls(
 
-    # ========================================================
-    # RECEIPT
-    # ========================================================
+            runtime_id=
+                payload.get(
+                    "runtime_id",
+                    "hhs_runtime"
+                ),
 
-    def receipt_summary(self) -> Dict[str, Any]:
+            created_ns=
+                payload.get(
+                    "created_ns",
+                    time.time_ns()
+                ),
 
-        self.compute_hashes()
+            updated_ns=
+                payload.get(
+                    "updated_ns",
+                    time.time_ns()
+                ),
 
-        return {
-            "runtime_id": self.runtime_id,
+            runtime_status=
+                payload.get(
+                    "runtime_status",
+                    RUNTIME_STATUS_BOOTING
+                ),
 
-            "state_hash72": self.state_hash72,
-            "state_hash216": self.state_hash216,
+            step=
+                payload.get(
+                    "step",
+                    0
+                ),
 
-            "receipt_hash72": self.receipt_hash72,
-            "receipt_hash216": self.receipt_hash216,
+            phase=
+                payload.get(
+                    "phase",
+                    "bootstrap"
+                ),
 
-            "branch_id": self.branch_id,
+            closure_state=
+                payload.get(
+                    "closure_state",
+                    "stable"
+                ),
 
-            "step": self.step,
-            "epoch": self.epoch,
+            transport_flux=
+                payload.get(
+                    "transport_flux",
+                    0.0
+                ),
 
-            "converged": self.converged,
-            "halted": self.halted,
+            orientation_flux=
+                payload.get(
+                    "orientation_flux",
+                    0.0
+                ),
 
-            "replayable": self.replayable,
-            "reconstructible": self.reconstructible,
+            constraint_flux=
+                payload.get(
+                    "constraint_flux",
+                    0.0
+                ),
 
-            "timestamp_ns": self.timestamp_ns,
-        }
-
-    # ========================================================
-    # LINEAGE
-    # ========================================================
-
-    def commit_receipt(self):
-
-        self.compute_hashes()
-
-        self.receipt_lineage.append(
-            self.receipt_hash216
+            entropy_delta=
+                payload.get(
+                    "entropy_delta",
+                    0.0
+                )
         )
 
-    def commit_replay(self):
+        for receipt_payload in payload.get(
+            "receipts",
+            []
+        ):
 
-        self.compute_hashes()
+            state.receipts.append(
 
-        self.replay_lineage.append(
-            self.state_hash216
+                HHSRuntimeReceipt(
+                    **receipt_payload
+                )
+            )
+
+        return state
+
+    # =====================================================
+    # Runtime Snapshot
+    # =====================================================
+
+    def snapshot(
+        self
+    ) -> Dict[str, Any]:
+
+        return copy.deepcopy(
+            self.to_dict()
         )
 
-    # ========================================================
-    # OBJECT MANAGEMENT
-    # ========================================================
-
-    def add_runtime_object(
-        self,
-        obj: HHSRuntimeObject
-    ):
-
-        obj.compute_hash216()
-
-        self.runtime_objects[
-            obj.object_id
-        ] = obj
-
-    def remove_runtime_object(
-        self,
-        object_id: str
-    ):
-
-        if object_id in self.runtime_objects:
-            del self.runtime_objects[
-                object_id
-            ]
-
-    # ========================================================
-    # SNAPSHOT / REPLAY
-    # ========================================================
-
-    def snapshot(self) -> Dict[str, Any]:
-
-        return self.serialize()
+    # -----------------------------------------------------
 
     def restore(
         self,
-        snapshot_payload: Dict[str, Any]
-    ):
+        snapshot:
+            Dict[str, Any]
+    ) -> None:
 
-        restored = HHSRuntimeState.deserialize(
-            snapshot_payload
+        restored = (
+            HHSRuntimeState
+                .from_dict(
+                    snapshot
+                )
         )
 
         self.__dict__.update(
             restored.__dict__
         )
 
-    # ========================================================
-    # EVENTS
-    # ========================================================
+    # =====================================================
+    # Branching
+    # =====================================================
 
-    def emit_event(
+    def fork(
+        self
+    ) -> "HHSRuntimeState":
+
+        return copy.deepcopy(
+            self
+        )
+
+    # -----------------------------------------------------
+
+    def merge(
         self,
-        event_type: str,
-        payload: Dict[str, Any]
-    ) -> Dict[str, Any]:
+        other:
+            "HHSRuntimeState"
+    ) -> None:
 
-        self.event_sequence += 1
+        self.step = max(
 
-        event_payload = {
-            "runtime_id": self.runtime_id,
+            self.step,
 
-            "event_sequence": self.event_sequence,
+            other.step
+        )
 
-            "event_type": event_type,
+        self.updated_ns = (
+            max(
 
-            "state_hash216": self.state_hash216,
+                self.updated_ns,
 
-            "receipt_hash216": self.receipt_hash216,
-
-            "payload": payload,
-
-            "timestamp_ns": time.time_ns(),
-        }
-
-        self.event_state.last_event_hash216 = (
-            _hash216(
-                json.dumps(
-                    event_payload,
-                    sort_keys=True,
-                    default=str,
-                )
+                other.updated_ns
             )
         )
 
-        return event_payload
+        self.transport_flux = max(
+
+            self.transport_flux,
+
+            other.transport_flux
+        )
+
+        self.orientation_flux = max(
+
+            self.orientation_flux,
+
+            other.orientation_flux
+        )
+
+        self.constraint_flux = max(
+
+            self.constraint_flux,
+
+            other.constraint_flux
+        )
+
+        existing = {
+
+            receipt.receipt_hash72
+
+            for receipt
+            in self.receipts
+        }
+
+        for receipt in other.receipts:
+
+            if (
+                receipt.receipt_hash72
+                not in existing
+            ):
+
+                self.receipts.append(
+                    receipt
+                )
+
+# =========================================================
+# Runtime Factory
+# =========================================================
+
+def create_runtime_state(
+    *,
+    runtime_id: str = "hhs_runtime"
+) -> HHSRuntimeState:
+
+    state = HHSRuntimeState(
+
+        runtime_id=
+            runtime_id
+    )
+
+    state.set_online()
+
+    return state
