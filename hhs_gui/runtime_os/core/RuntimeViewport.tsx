@@ -1,358 +1,33 @@
-import React, {
-    useEffect,
-    useMemo,
-    useRef,
-    useState
-} from "react"
+import React from "react"
 
 import {
-    Canvas,
-    useFrame
-} from "@react-three/fiber"
-
-import {
-    OrbitControls,
-    Grid
-} from "@react-three/drei"
-
-import * as THREE from "three"
-
-import { RuntimeWorkspace } from "./RuntimeWorkspace"
-
-/**
- * HHS Runtime Viewport
- * ---------------------------------------------------
- * GPU-native Runtime OS viewport root.
- *
- * Responsibilities:
- *
- * - Runtime manifold projection
- * - Graph-native visualization
- * - Runtime world rendering
- * - ECS projection
- * - Tensor visualization
- * - Replay overlays
- * - Transport flow rendering
- * - Runtime interaction surface
- *
- * Invariants:
- * Δe = 0
- * Ψ = 0
- * Θ15 = true
- * Ω = true
- */
+    RuntimeOS
+} from "./RuntimeOS"
 
 export interface RuntimeViewportProps {
 
-    workspace: RuntimeWorkspace
+    runtimeOS: RuntimeOS
 }
-
-export interface RuntimeViewportState {
-
-    initialized: boolean
-
-    rendering: boolean
-
-    graphVisible: boolean
-
-    tensorVisible: boolean
-
-    replayVisible: boolean
-
-    diagnosticsVisible: boolean
-}
-
-interface RuntimeGraphNode {
-
-    id: string
-
-    position: [number, number, number]
-
-    scale: number
-
-    color: string
-}
-
-/**
- * ---------------------------------------------------
- * Runtime Graph Field
- * ---------------------------------------------------
- */
-
-const RuntimeGraphField: React.FC = () => {
-
-    const groupRef =
-        useRef<THREE.Group>(null)
-
-    const nodes =
-        useMemo<RuntimeGraphNode[]>(() => {
-
-            const graphNodes: RuntimeGraphNode[] = []
-
-            for (let i = 0; i < 81; i++) {
-
-                const x =
-                    (i % 9) * 2 - 8
-
-                const z =
-                    Math.floor(i / 9) * 2 - 8
-
-                graphNodes.push({
-
-                    id: `node-${i}`,
-
-                    position: [x, 0, z],
-
-                    scale:
-                        0.35 + Math.random() * 0.2,
-
-                    color:
-                        i % 3 === 0
-                            ? "#4ade80"
-                            : i % 3 === 1
-                                ? "#38bdf8"
-                                : "#c084fc"
-                })
-            }
-
-            return graphNodes
-
-        }, [])
-
-    useFrame((state) => {
-
-        if (!groupRef.current) {
-
-            return
-        }
-
-        groupRef.current.rotation.y += 0.0008
-
-        groupRef.current.position.y =
-            Math.sin(
-                state.clock.elapsedTime * 0.25
-            ) * 0.2
-    })
-
-    return (
-
-        <group ref={groupRef}>
-
-            {
-                nodes.map((node) => (
-
-                    <mesh
-                        key={node.id}
-                        position={node.position}
-                    >
-
-                        <sphereGeometry
-                            args={[node.scale, 16, 16]}
-                        />
-
-                        <meshStandardMaterial
-                            color={node.color}
-                            emissive={node.color}
-                            emissiveIntensity={0.5}
-                        />
-
-                    </mesh>
-                ))
-            }
-
-        </group>
-    )
-}
-
-/**
- * ---------------------------------------------------
- * Runtime Tensor Ring
- * ---------------------------------------------------
- */
-
-const RuntimeTensorRing: React.FC = () => {
-
-    const meshRef =
-        useRef<THREE.Mesh>(null)
-
-    useFrame((state) => {
-
-        if (!meshRef.current) {
-
-            return
-        }
-
-        meshRef.current.rotation.x += 0.002
-
-        meshRef.current.rotation.y += 0.003
-
-        meshRef.current.rotation.z += 0.001
-
-        meshRef.current.scale.setScalar(
-
-            1 +
-            Math.sin(
-                state.clock.elapsedTime
-            ) * 0.05
-        )
-    })
-
-    return (
-
-        <mesh
-            ref={meshRef}
-            position={[0, 4, 0]}
-        >
-
-            <torusGeometry
-                args={[6, 0.08, 32, 256]}
-            />
-
-            <meshStandardMaterial
-                color="#60a5fa"
-                emissive="#60a5fa"
-                emissiveIntensity={1.2}
-            />
-
-        </mesh>
-    )
-}
-
-/**
- * ---------------------------------------------------
- * Runtime Transport Lines
- * ---------------------------------------------------
- */
-
-const RuntimeTransportLines: React.FC = () => {
-
-    const lineGroup =
-        useRef<THREE.Group>(null)
-
-    useFrame((state) => {
-
-        if (!lineGroup.current) {
-
-            return
-        }
-
-        lineGroup.current.rotation.y -= 0.001
-
-        lineGroup.current.position.y =
-            Math.cos(
-                state.clock.elapsedTime * 0.5
-            ) * 0.15
-    })
-
-    const lines = []
-
-    for (let i = 0; i < 24; i++) {
-
-        const angle =
-            (Math.PI * 2 * i) / 24
-
-        const x =
-            Math.cos(angle) * 9
-
-        const z =
-            Math.sin(angle) * 9
-
-        lines.push(
-
-            <line key={i}>
-
-                <bufferGeometry>
-
-                    <bufferAttribute
-                        attach="attributes-position"
-                        args={[
-                            new Float32Array([
-
-                                0, 0, 0,
-
-                                x, 0, z
-                            ]),
-                            3
-                        ]}
-                    />
-
-                </bufferGeometry>
-
-                <lineBasicMaterial
-                    color="#22d3ee"
-                    transparent
-                    opacity={0.35}
-                />
-
-            </line>
-        )
-    }
-
-    return (
-
-        <group ref={lineGroup}>
-
-            {lines}
-
-        </group>
-    )
-}
-
-/**
- * ---------------------------------------------------
- * Runtime Viewport Component
- * ---------------------------------------------------
- */
 
 export const RuntimeViewport: React.FC<
     RuntimeViewportProps
-> = ({ workspace }) => {
+> = ({ runtimeOS }) => {
 
-    const [state, setState] =
-        useState<RuntimeViewportState>({
-
-            initialized: false,
-
-            rendering: false,
-
-            graphVisible: true,
-
-            tensorVisible: true,
-
-            replayVisible: true,
-
-            diagnosticsVisible: false
-        })
-
-    useEffect(() => {
-
-        console.log(
-            "[RuntimeViewport] initialize"
-        )
-
-        setState((previous) => ({
-
-            ...previous,
-
-            initialized: true,
-
-            rendering: true
-        }))
-
-    }, [])
+    const viewport =
+        runtimeOS.workspace.layout.viewport
 
     /**
      * ---------------------------------------------------
-     * Runtime Overlay Metrics
+     * Projection Mode
      * ---------------------------------------------------
      */
 
-    const metrics =
-        workspace.getMetrics()
+    const projectionMode =
+        viewport.projectionMode
 
     /**
      * ---------------------------------------------------
-     * Runtime Viewport
+     * Viewport Render
      * ---------------------------------------------------
      */
 
@@ -360,209 +35,234 @@ export const RuntimeViewport: React.FC<
 
         <div
             className="
-                w-full
-                h-full
-                relative
-                bg-black
+                absolute
+                inset-0
+                overflow-hidden
+                bg-neutral-950
             "
         >
 
             {/* -------------------------------- */}
-            {/* GPU Runtime Canvas */}
-            {/* -------------------------------- */}
-
-            <Canvas
-
-                camera={{
-
-                    position: [0, 12, 18],
-
-                    fov: 60
-                }}
-
-                gl={{
-
-                    antialias: true,
-
-                    alpha: false
-                }}
-            >
-
-                {/* -------------------------------- */}
-                {/* Scene Lighting */}
-                {/* -------------------------------- */}
-
-                <ambientLight intensity={0.6} />
-
-                <directionalLight
-
-                    position={[12, 20, 8]}
-
-                    intensity={1.5}
-                />
-
-                <pointLight
-
-                    position={[-10, 8, -10]}
-
-                    intensity={1.2}
-
-                    color={"#38bdf8"}
-                />
-
-                {/* -------------------------------- */}
-                {/* Runtime Grid */}
-                {/* -------------------------------- */}
-
-                <Grid
-
-                    args={[200, 200]}
-
-                    cellSize={1}
-
-                    sectionSize={9}
-
-                    fadeDistance={120}
-
-                    fadeStrength={1}
-                />
-
-                {/* -------------------------------- */}
-                {/* Runtime Projection Systems */}
-                {/* -------------------------------- */}
-
-                {
-                    state.graphVisible && (
-
-                        <RuntimeGraphField />
-                    )
-                }
-
-                {
-                    state.tensorVisible && (
-
-                        <RuntimeTensorRing />
-                    )
-                }
-
-                {
-                    state.replayVisible && (
-
-                        <RuntimeTransportLines />
-                    )
-                }
-
-                {/* -------------------------------- */}
-                {/* Camera Controls */}
-                {/* -------------------------------- */}
-
-                <OrbitControls
-
-                    enableDamping
-
-                    dampingFactor={0.08}
-
-                    rotateSpeed={0.7}
-
-                    zoomSpeed={0.8}
-
-                    panSpeed={0.6}
-                />
-
-            </Canvas>
-
-            {/* -------------------------------- */}
-            {/* Runtime Overlay HUD */}
+            {/* Runtime Grid */}
             {/* -------------------------------- */}
 
             <div
                 className="
                     absolute
-                    top-4
-                    left-4
+                    inset-0
+                    opacity-[0.05]
+                "
+                style={{
+
+                    backgroundImage:
+                        `
+                        linear-gradient(
+                            rgba(255,255,255,0.08) 1px,
+                            transparent 1px
+                        ),
+                        linear-gradient(
+                            90deg,
+                            rgba(255,255,255,0.08) 1px,
+                            transparent 1px
+                        )
+                        `,
+
+                    backgroundSize:
+                        `
+                        ${32 * viewport.zoom}px
+                        ${32 * viewport.zoom}px
+                        `
+                }}
+            />
+
+            {/* -------------------------------- */}
+            {/* Coordinate Axes */}
+            {/* -------------------------------- */}
+
+            <div
+                className="
+                    absolute
+                    left-1/2
+                    top-0
+                    bottom-0
+                    w-px
+                    bg-cyan-500/10
+                "
+                style={{
+
+                    transform:
+                        `
+                        translateX(
+                            ${viewport.cameraX}px
+                        )
+                        `
+                }}
+            />
+
+            <div
+                className="
+                    absolute
+                    top-1/2
+                    left-0
+                    right-0
+                    h-px
+                    bg-cyan-500/10
+                "
+                style={{
+
+                    transform:
+                        `
+                        translateY(
+                            ${viewport.cameraY}px
+                        )
+                        `
+                }}
+            />
+
+            {/* -------------------------------- */}
+            {/* Projection Surface */}
+            {/* -------------------------------- */}
+
+            <div
+                className="
+                    absolute
+                    inset-0
                     flex
-                    flex-col
-                    gap-2
-                    text-xs
-                    font-mono
-                    pointer-events-none
+                    items-center
+                    justify-center
                 "
             >
 
                 <div
                     className="
-                        px-3
-                        py-2
-                        rounded-lg
-                        bg-black/70
-                        border
-                        border-neutral-800
-                        backdrop-blur-sm
+                        flex
+                        flex-col
+                        items-center
+                        gap-4
                     "
                 >
-                    Runtime Viewport Active
-                </div>
 
-                <div
-                    className="
-                        px-3
-                        py-2
-                        rounded-lg
-                        bg-black/70
-                        border
-                        border-neutral-800
-                        backdrop-blur-sm
-                    "
-                >
-                    windows:
-                    {" "}
-                    {
-                        metrics.windows as number
-                    }
-                </div>
+                    <div
+                        className="
+                            text-4xl
+                            font-bold
+                            tracking-wide
+                        "
+                    >
+                        Runtime Viewport
+                    </div>
 
-                <div
-                    className="
-                        px-3
-                        py-2
-                        rounded-lg
-                        bg-black/70
-                        border
-                        border-neutral-800
-                        backdrop-blur-sm
-                    "
-                >
-                    overlays:
-                    {" "}
-                    {
-                        metrics.overlays as number
-                    }
+                    <div
+                        className="
+                            text-sm
+                            opacity-60
+                            font-mono
+                        "
+                    >
+                        projection:
+                        {" "}
+                        {projectionMode}
+                    </div>
+
+                    <div
+                        className="
+                            text-xs
+                            opacity-40
+                            font-mono
+                        "
+                    >
+                        camera:
+                        {" "}
+                        (
+                        {viewport.cameraX},
+                        {" "}
+                        {viewport.cameraY}
+                        )
+                    </div>
+
+                    <div
+                        className="
+                            text-xs
+                            opacity-40
+                            font-mono
+                        "
+                    >
+                        zoom:
+                        {" "}
+                        {viewport.zoom}
+                    </div>
+
                 </div>
 
             </div>
 
             {/* -------------------------------- */}
-            {/* Runtime Projection Label */}
+            {/* Viewport HUD */}
             {/* -------------------------------- */}
 
             <div
                 className="
                     absolute
-                    bottom-4
-                    right-4
-                    px-4
-                    py-2
+                    top-6
+                    right-6
                     rounded-xl
-                    bg-black/70
                     border
                     border-neutral-800
-                    backdrop-blur-sm
+                    bg-neutral-900/80
+                    backdrop-blur-md
+                    px-4
+                    py-3
                     text-xs
                     font-mono
-                    text-neutral-300
+                    flex
+                    flex-col
+                    gap-2
+                    shadow-2xl
                 "
             >
-                HHS Runtime Projection Manifold
+
+                <div>
+                    viewport:
+                    {" "}
+                    online
+                </div>
+
+                <div>
+                    projection:
+                    {" "}
+                    {projectionMode}
+                </div>
+
+                <div>
+                    graph:
+                    {" "}
+                    {
+                        runtimeOS.state.graphReady
+                            ? "online"
+                            : "offline"
+                    }
+                </div>
+
+                <div>
+                    replay:
+                    {" "}
+                    {
+                        runtimeOS.state.replayReady
+                            ? "online"
+                            : "offline"
+                    }
+                </div>
+
+                <div>
+                    transport:
+                    {" "}
+                    {
+                        runtimeOS.state.transportReady
+                            ? "online"
+                            : "offline"
+                    }
+                </div>
+
             </div>
 
         </div>
