@@ -1,55 +1,160 @@
-"""
-HHS Runtime WebSocket Transport Layer
----------------------------------------------------
+from __future__ import annotations
 
-Canonical runtime websocket authority.
-
-Responsibilities:
-
-- Runtime transport
-- Replay synchronization
-- Graph synchronization
-- Transport synchronization
-- Runtime state streaming
-- Deterministic replay continuity
-- Runtime telemetry
-- VM81 event transport
-"""
+import asyncio
+import json
+import time
+from collections import defaultdict
+from typing import Any
+from typing import Dict
+from typing import List
+from typing import Set
 
 from fastapi import WebSocket
 from fastapi import WebSocketDisconnect
 
-import asyncio
-import time
-
 # =========================================================
-# Runtime Stream
+# Runtime Event Types
 # =========================================================
 
-async def runtime_stream(
-    websocket: WebSocket
-):
+EVENT_RUNTIME = "runtime"
+EVENT_REPLAY = "replay"
+EVENT_GRAPH = "graph"
+EVENT_TRANSPORT = "transport"
+EVENT_RECEIPT = "receipt"
+EVENT_CERTIFICATION = "certification"
 
-    await websocket.accept()
+# =========================================================
+# Runtime Connection Registry
+# =========================================================
 
-    print(
-        "[ws/runtime] connected"
-    )
+class RuntimeConnectionRegistry:
 
-    try:
+    def __init__(self) -> None:
 
-        while True:
+        self.channels: Dict[
+            str,
+            Set[WebSocket]
+        ] = defaultdict(set)
 
-            payload = {
+    # -----------------------------------------------------
 
-                "type":
-                    "runtime",
+    async def connect(
+        self,
+        channel: str,
+        websocket: WebSocket
+    ) -> None:
 
-                "timestamp":
-                    time.time(),
+        await websocket.accept()
 
-                "status":
+        self.channels[channel].add(
+            websocket
+        )
+
+        print(
+            f"[ws/{channel}] connected "
+            f"({len(self.channels[channel])})"
+        )
+
+    # -----------------------------------------------------
+
+    def disconnect(
+        self,
+        channel: str,
+        websocket: WebSocket
+    ) -> None:
+
+        self.channels[channel].discard(
+            websocket
+        )
+
+        print(
+            f"[ws/{channel}] disconnected "
+            f"({len(self.channels[channel])})"
+        )
+
+    # -----------------------------------------------------
+
+    async def broadcast(
+        self,
+        channel: str,
+        payload: Dict[str, Any]
+    ) -> None:
+
+        dead: List[WebSocket] = []
+
+        encoded = json.dumps(payload)
+
+        for websocket in self.channels[channel]:
+
+            try:
+
+                await websocket.send_text(
+                    encoded
+                )
+
+            except Exception:
+
+                dead.append(websocket)
+
+        for websocket in dead:
+
+            self.disconnect(
+                channel,
+                websocket
+            )
+
+# =========================================================
+# Global Registry
+# =========================================================
+
+runtime_connections = (
+    RuntimeConnectionRegistry()
+)
+
+# =========================================================
+# Event Factory
+# =========================================================
+
+def build_runtime_event(
+    event_type: str,
+    payload: Dict[str, Any]
+) -> Dict[str, Any]:
+
+    return {
+
+        "event_type":
+            event_type,
+
+        "timestamp_ns":
+            time.time_ns(),
+
+        "payload":
+            payload
+    }
+
+# =========================================================
+# Runtime Heartbeat Loops
+# =========================================================
+
+async def runtime_heartbeat_loop() -> None:
+
+    step = 0
+
+    while True:
+
+        step += 1
+
+        event = build_runtime_event(
+
+            EVENT_RUNTIME,
+
+            {
+
+                "runtime_status":
                     "online",
+
+                "step":
+                    step,
 
                 "phase":
                     "runtime_loop",
@@ -57,86 +162,71 @@ async def runtime_stream(
                 "uptime":
                     time.time()
             }
-
-            await websocket.send_json(
-                payload
-            )
-
-            await asyncio.sleep(1)
-
-    except WebSocketDisconnect:
-
-        print(
-            "[ws/runtime] disconnected"
         )
 
-# =========================================================
-# Replay Stream
-# =========================================================
+        await runtime_connections.broadcast(
 
-async def replay_stream(
-    websocket: WebSocket
-):
+            EVENT_RUNTIME,
 
-    await websocket.accept()
+            event
+        )
 
-    print(
-        "[ws/replay] connected"
-    )
+        await asyncio.sleep(1)
 
-    try:
+# ---------------------------------------------------------
 
-        while True:
+async def replay_heartbeat_loop() -> None:
 
-            payload = {
+    replay_tick = 0
 
-                "type":
-                    "replay",
+    while True:
 
-                "timestamp":
-                    time.time(),
+        replay_tick += 1
 
-                "state":
-                    "synchronized"
+        event = build_runtime_event(
+
+            EVENT_REPLAY,
+
+            {
+
+                "replay_tick":
+                    replay_tick,
+
+                "replay_status":
+                    "stable",
+
+                "timeline_position":
+                    replay_tick
             }
-
-            await websocket.send_json(
-                payload
-            )
-
-            await asyncio.sleep(1)
-
-    except WebSocketDisconnect:
-
-        print(
-            "[ws/replay] disconnected"
         )
 
-# =========================================================
-# Graph Stream
-# =========================================================
+        await runtime_connections.broadcast(
 
-async def graph_stream(
-    websocket: WebSocket
-):
+            EVENT_REPLAY,
 
-    await websocket.accept()
+            event
+        )
 
-    print(
-        "[ws/graph] connected"
-    )
+        await asyncio.sleep(1)
 
-    try:
+# ---------------------------------------------------------
 
-        while True:
+async def graph_heartbeat_loop() -> None:
 
-            payload = {
+    graph_tick = 0
 
-                "type":
-                    "graph",
+    while True:
 
-                "timestamp":
-                    time.time(),
+        graph_tick += 1
+
+        event = build_runtime_event(
+
+            EVENT_GRAPH,
+
+            {
+
+                "graph_tick":
+                    graph_tick,
 
                 "nodes":
                     12,
@@ -147,60 +237,281 @@ async def graph_stream(
                 "projection":
                     "runtime_topology"
             }
-
-            await websocket.send_json(
-                payload
-            )
-
-            await asyncio.sleep(1)
-
-    except WebSocketDisconnect:
-
-        print(
-            "[ws/graph] disconnected"
         )
 
+        await runtime_connections.broadcast(
+
+            EVENT_GRAPH,
+
+            event
+        )
+
+        await asyncio.sleep(1)
+
+# ---------------------------------------------------------
+
+async def transport_heartbeat_loop() -> None:
+
+    transport_tick = 0
+
+    while True:
+
+        transport_tick += 1
+
+        event = build_runtime_event(
+
+            EVENT_TRANSPORT,
+
+            {
+
+                "transport_tick":
+                    transport_tick,
+
+                "transport_flux":
+                    1.0,
+
+                "continuity":
+                    "stable"
+            }
+        )
+
+        await runtime_connections.broadcast(
+
+            EVENT_TRANSPORT,
+
+            event
+        )
+
+        await asyncio.sleep(1)
+
 # =========================================================
-# Transport Stream
+# Runtime Startup
 # =========================================================
 
-async def transport_stream(
-    websocket: WebSocket
-):
+runtime_tasks_started = False
 
-    await websocket.accept()
+async def ensure_runtime_tasks() -> None:
+
+    global runtime_tasks_started
+
+    if runtime_tasks_started:
+
+        return
+
+    runtime_tasks_started = True
+
+    asyncio.create_task(
+        runtime_heartbeat_loop()
+    )
+
+    asyncio.create_task(
+        replay_heartbeat_loop()
+    )
+
+    asyncio.create_task(
+        graph_heartbeat_loop()
+    )
+
+    asyncio.create_task(
+        transport_heartbeat_loop()
+    )
 
     print(
-        "[ws/transport] connected"
+        "[runtime_ws] heartbeat tasks started"
+    )
+
+# =========================================================
+# WebSocket Authorities
+# =========================================================
+
+async def runtime_stream(
+    websocket: WebSocket
+) -> None:
+
+    await ensure_runtime_tasks()
+
+    await runtime_connections.connect(
+
+        EVENT_RUNTIME,
+
+        websocket
     )
 
     try:
 
         while True:
 
-            payload = {
-
-                "type":
-                    "transport",
-
-                "timestamp":
-                    time.time(),
-
-                "throughput":
-                    1.0,
-
-                "continuity":
-                    "stable"
-            }
-
-            await websocket.send_json(
-                payload
-            )
-
-            await asyncio.sleep(1)
+            await websocket.receive_text()
 
     except WebSocketDisconnect:
 
-        print(
-            "[ws/transport] disconnected"
+        runtime_connections.disconnect(
+
+            EVENT_RUNTIME,
+
+            websocket
         )
+
+# ---------------------------------------------------------
+
+async def replay_stream(
+    websocket: WebSocket
+) -> None:
+
+    await ensure_runtime_tasks()
+
+    await runtime_connections.connect(
+
+        EVENT_REPLAY,
+
+        websocket
+    )
+
+    try:
+
+        while True:
+
+            await websocket.receive_text()
+
+    except WebSocketDisconnect:
+
+        runtime_connections.disconnect(
+
+            EVENT_REPLAY,
+
+            websocket
+        )
+
+# ---------------------------------------------------------
+
+async def graph_stream(
+    websocket: WebSocket
+) -> None:
+
+    await ensure_runtime_tasks()
+
+    await runtime_connections.connect(
+
+        EVENT_GRAPH,
+
+        websocket
+    )
+
+    try:
+
+        while True:
+
+            await websocket.receive_text()
+
+    except WebSocketDisconnect:
+
+        runtime_connections.disconnect(
+
+            EVENT_GRAPH,
+
+            websocket
+        )
+
+# ---------------------------------------------------------
+
+async def transport_stream(
+    websocket: WebSocket
+) -> None:
+
+    await ensure_runtime_tasks()
+
+    await runtime_connections.connect(
+
+        EVENT_TRANSPORT,
+
+        websocket
+    )
+
+    try:
+
+        while True:
+
+            await websocket.receive_text()
+
+    except WebSocketDisconnect:
+
+        runtime_connections.disconnect(
+
+            EVENT_TRANSPORT,
+
+            websocket
+        )
+
+# =========================================================
+# External Runtime Emitters
+# =========================================================
+
+async def emit_runtime_event(
+    payload: Dict[str, Any]
+) -> None:
+
+    await runtime_connections.broadcast(
+
+        EVENT_RUNTIME,
+
+        build_runtime_event(
+
+            EVENT_RUNTIME,
+
+            payload
+        )
+    )
+
+# ---------------------------------------------------------
+
+async def emit_replay_event(
+    payload: Dict[str, Any]
+) -> None:
+
+    await runtime_connections.broadcast(
+
+        EVENT_REPLAY,
+
+        build_runtime_event(
+
+            EVENT_REPLAY,
+
+            payload
+        )
+    )
+
+# ---------------------------------------------------------
+
+async def emit_graph_event(
+    payload: Dict[str, Any]
+) -> None:
+
+    await runtime_connections.broadcast(
+
+        EVENT_GRAPH,
+
+        build_runtime_event(
+
+            EVENT_GRAPH,
+
+            payload
+        )
+    )
+
+# ---------------------------------------------------------
+
+async def emit_transport_event(
+    payload: Dict[str, Any]
+) -> None:
+
+    await runtime_connections.broadcast(
+
+        EVENT_TRANSPORT,
+
+        build_runtime_event(
+
+            EVENT_TRANSPORT,
+
+            payload
+        )
+    )
