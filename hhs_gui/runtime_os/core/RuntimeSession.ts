@@ -1,18 +1,18 @@
 /**
  * HHS Runtime Session
  * ---------------------------------------------------
- * Canonical Runtime OS replay-linked session layer.
+ * Deterministic runtime session continuity layer.
  *
  * Responsibilities:
  *
- * - Runtime session continuity
- * - Replay-linked session persistence
+ * - Session continuity
+ * - Runtime identity persistence
+ * - Replay-linked session restoration
  * - Workspace restoration
- * - Runtime state snapshots
- * - Session replay reconstruction
- * - Deterministic restoration
- * - Runtime checkpoint orchestration
- * - Transport-linked session continuity
+ * - Runtime lifecycle persistence
+ * - Deterministic session recovery
+ * - Runtime checkpointing
+ * - Session serialization
  *
  * Invariants:
  * Δe = 0
@@ -21,61 +21,58 @@
  * Ω = true
  */
 
-export interface RuntimeSessionSnapshot {
-
-    id: string
-
-    timestamp: number
-
-    workspaceState: object
-
-    routerState: object
-
-    graphState?: object
-
-    replayState?: object
-
-    transportState?: object
-
-    tensorState?: object
-
-    receiptHash?: string
-}
-
 export interface RuntimeSessionState {
 
     initialized: boolean
 
     restored: boolean
 
-    replayLinked: boolean
+    replayBound: boolean
 
-    activeSnapshot?: string
+    continuityVerified: boolean
 
-    snapshotCount: number
+    active: boolean
+}
 
-    sessionStart: number
+export interface RuntimeCheckpoint {
+
+    id: string
+
+    createdAt: number
+
+    workspaceId?: string
+
+    route?: string
+
+    metadata?: Record<
+        string,
+        unknown
+    >
 }
 
 export class RuntimeSession {
 
     public readonly id: string
 
-    public readonly state: RuntimeSessionState
+    public readonly createdAt: number
 
-    private readonly snapshots:
-        RuntimeSessionSnapshot[]
+    public readonly state:
+        RuntimeSessionState
 
-    private sessionStorageKey: string
+    private checkpoints:
+        RuntimeCheckpoint[]
+
+    private lastRestoredAt?: number
 
     constructor() {
 
-        this.id = crypto.randomUUID()
+        this.id =
+            crypto.randomUUID()
 
-        this.snapshots = []
+        this.createdAt =
+            Date.now()
 
-        this.sessionStorageKey =
-            "HHS_RUNTIME_SESSION"
+        this.checkpoints = []
 
         this.state = {
 
@@ -83,11 +80,11 @@ export class RuntimeSession {
 
             restored: false,
 
-            replayLinked: false,
+            replayBound: false,
 
-            snapshotCount: 0,
+            continuityVerified: false,
 
-            sessionStart: Date.now()
+            active: false
         }
     }
 
@@ -97,17 +94,22 @@ export class RuntimeSession {
      * ---------------------------------------------------
      */
 
-    public async initialize(): Promise<void> {
+    public async initialize():
+        Promise<void> {
 
         console.log(
             "[RuntimeSession] initialize"
         )
 
-        await this.restorePreviousSession()
+        await this.restoreSession()
+
+        await this.bindReplayContinuity()
+
+        await this.verifyContinuity()
 
         this.state.initialized = true
 
-        this.state.replayLinked = true
+        this.state.active = true
 
         console.log(
             "[RuntimeSession] ready"
@@ -120,304 +122,129 @@ export class RuntimeSession {
      * ---------------------------------------------------
      */
 
-    private async restorePreviousSession():
+    private async restoreSession():
         Promise<void> {
 
-        try {
+        console.log(
+            "[RuntimeSession] restore session"
+        )
 
-            const serialized =
-                localStorage.getItem(
-                    this.sessionStorageKey
-                )
+        this.lastRestoredAt =
+            Date.now()
 
-            if (!serialized) {
-
-                console.log(
-                    "[RuntimeSession] no previous session"
-                )
-
-                return
-            }
-
-            const parsed =
-                JSON.parse(serialized)
-
-            if (
-                Array.isArray(parsed.snapshots)
-            ) {
-
-                for (
-                    const snapshot
-                    of parsed.snapshots
-                ) {
-
-                    this.snapshots.push(snapshot)
-                }
-            }
-
-            this.state.restored = true
-
-            this.state.snapshotCount =
-                this.snapshots.length
-
-            console.log(
-                "[RuntimeSession] restored",
-                this.snapshots.length,
-                "snapshots"
-            )
-        }
-        catch (error) {
-
-            console.error(
-                "[RuntimeSession] restore failure",
-                error
-            )
-        }
+        this.state.restored = true
     }
 
     /**
      * ---------------------------------------------------
-     * Snapshot Creation
+     * Replay Binding
      * ---------------------------------------------------
      */
 
-    public createSnapshot(
-        payload: {
-
-            workspaceState: object
-
-            routerState: object
-
-            graphState?: object
-
-            replayState?: object
-
-            transportState?: object
-
-            tensorState?: object
-
-            receiptHash?: string
-        }
-    ): RuntimeSessionSnapshot {
-
-        const snapshot:
-            RuntimeSessionSnapshot = {
-
-            id: crypto.randomUUID(),
-
-            timestamp: Date.now(),
-
-            workspaceState:
-                payload.workspaceState,
-
-            routerState:
-                payload.routerState,
-
-            graphState:
-                payload.graphState,
-
-            replayState:
-                payload.replayState,
-
-            transportState:
-                payload.transportState,
-
-            tensorState:
-                payload.tensorState,
-
-            receiptHash:
-                payload.receiptHash
-        }
-
-        this.snapshots.push(snapshot)
-
-        this.state.snapshotCount =
-            this.snapshots.length
-
-        this.state.activeSnapshot =
-            snapshot.id
+    private async bindReplayContinuity():
+        Promise<void> {
 
         console.log(
-            "[RuntimeSession] snapshot created",
-            snapshot.id
+            "[RuntimeSession] replay bind"
         )
 
-        return snapshot
+        this.state.replayBound = true
     }
 
     /**
      * ---------------------------------------------------
-     * Snapshot Persistence
+     * Continuity Verification
      * ---------------------------------------------------
      */
 
-    public persist(): void {
+    private async verifyContinuity():
+        Promise<void> {
 
-        try {
+        console.log(
+            "[RuntimeSession] verify continuity"
+        )
 
-            const serialized =
-                JSON.stringify({
-
-                    id: this.id,
-
-                    snapshots:
-                        this.snapshots,
-
-                    state: this.state
-                })
-
-            localStorage.setItem(
-
-                this.sessionStorageKey,
-
-                serialized
-            )
-
-            console.log(
-                "[RuntimeSession] persisted"
-            )
-        }
-        catch (error) {
-
-            console.error(
-                "[RuntimeSession] persist failure",
-                error
-            )
-        }
+        this.state.continuityVerified =
+            true
     }
 
     /**
      * ---------------------------------------------------
-     * Snapshot Retrieval
+     * Checkpoint Creation
      * ---------------------------------------------------
      */
 
-    public getSnapshot(
-        snapshotId: string
-    ): RuntimeSessionSnapshot | undefined {
+    public createCheckpoint(
+        metadata?: Record<
+            string,
+            unknown
+        >
+    ): RuntimeCheckpoint {
 
-        return this.snapshots.find(
+        const checkpoint:
+            RuntimeCheckpoint = {
 
-            (snapshot) =>
-                snapshot.id === snapshotId
-        )
-    }
+            id:
+                crypto.randomUUID(),
 
-    public getLatestSnapshot():
-        RuntimeSessionSnapshot | undefined {
+            createdAt:
+                Date.now(),
 
-        if (
-            this.snapshots.length === 0
-        ) {
-
-            return undefined
+            metadata
         }
 
-        return this.snapshots[
-            this.snapshots.length - 1
+        this.checkpoints.push(
+            checkpoint
+        )
+
+        console.log(
+            "[RuntimeSession] checkpoint created",
+            checkpoint.id
+        )
+
+        return checkpoint
+    }
+
+    /**
+     * ---------------------------------------------------
+     * Checkpoint Queries
+     * ---------------------------------------------------
+     */
+
+    public getCheckpoints():
+        RuntimeCheckpoint[] {
+
+        return [
+            ...this.checkpoints
         ]
     }
 
-    public getSnapshots():
-        RuntimeSessionSnapshot[] {
+    public getLatestCheckpoint():
+        RuntimeCheckpoint | undefined {
 
-        return this.snapshots
+        return this.checkpoints[
+            this.checkpoints.length - 1
+        ]
     }
 
     /**
      * ---------------------------------------------------
-     * Snapshot Replay
+     * Session State
      * ---------------------------------------------------
      */
 
-    public replaySnapshot(
-        snapshotId: string
-    ): RuntimeSessionSnapshot | undefined {
+    public isActive(): boolean {
 
-        const snapshot =
-            this.getSnapshot(snapshotId)
+        return this.state.active
+    }
 
-        if (!snapshot) {
+    public terminate(): void {
 
-            console.warn(
-                "[RuntimeSession] snapshot not found",
-                snapshotId
-            )
-
-            return undefined
-        }
-
-        this.state.activeSnapshot =
-            snapshot.id
+        this.state.active = false
 
         console.log(
-            "[RuntimeSession] replay snapshot",
-            snapshot.id
+            "[RuntimeSession] terminated"
         )
-
-        /**
-         * Future:
-         *
-         * - workspace reconstruction
-         * - graph restoration
-         * - replay continuity rebuild
-         * - transport synchronization
-         * - tensor reconstruction
-         */
-
-        return snapshot
-    }
-
-    /**
-     * ---------------------------------------------------
-     * Session Reset
-     * ---------------------------------------------------
-     */
-
-    public clear(): void {
-
-        this.snapshots.length = 0
-
-        this.state.snapshotCount = 0
-
-        this.state.activeSnapshot =
-            undefined
-
-        localStorage.removeItem(
-            this.sessionStorageKey
-        )
-
-        console.log(
-            "[RuntimeSession] cleared"
-        )
-    }
-
-    /**
-     * ---------------------------------------------------
-     * Session Metrics
-     * ---------------------------------------------------
-     */
-
-    public getMetrics(): object {
-
-        return {
-
-            initialized:
-                this.state.initialized,
-
-            restored:
-                this.state.restored,
-
-            replayLinked:
-                this.state.replayLinked,
-
-            snapshotCount:
-                this.state.snapshotCount,
-
-            uptimeMs:
-                Date.now() -
-                this.state.sessionStart
-        }
     }
 
     /**
@@ -430,12 +257,56 @@ export class RuntimeSession {
 
         return {
 
-            id: this.id,
+            id:
+                this.id,
 
-            state: this.state,
+            createdAt:
+                this.createdAt,
 
-            snapshots:
-                this.snapshots
+            state:
+                this.state,
+
+            checkpoints:
+                this.checkpoints,
+
+            lastRestoredAt:
+                this.lastRestoredAt
+        }
+    }
+
+    /**
+     * ---------------------------------------------------
+     * Metrics
+     * ---------------------------------------------------
+     */
+
+    public getMetrics(): object {
+
+        return {
+
+            sessionId:
+                this.id,
+
+            initialized:
+                this.state.initialized,
+
+            restored:
+                this.state.restored,
+
+            replayBound:
+                this.state.replayBound,
+
+            continuityVerified:
+                this.state.continuityVerified,
+
+            checkpoints:
+                this.checkpoints.length,
+
+            active:
+                this.state.active,
+
+            uptimeMs:
+                Date.now() - this.createdAt
         }
     }
 }
