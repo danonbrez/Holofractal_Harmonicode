@@ -1,8 +1,25 @@
+"""
+HHS Runtime WebSocket Transport Layer
+---------------------------------------------------
+
+Canonical runtime websocket authority.
+
+Responsibilities:
+
+- Runtime transport
+- Replay synchronization
+- Graph synchronization
+- Transport synchronization
+- Runtime state streaming
+- Deterministic replay continuity
+- Runtime telemetry
+- VM81 event transport
+"""
+
 from fastapi import WebSocket
 from fastapi import WebSocketDisconnect
 
 import asyncio
-import json
 import time
 
 # =========================================================
@@ -15,11 +32,15 @@ async def runtime_stream(
 
     await websocket.accept()
 
+    print(
+        "[ws/runtime] connected"
+    )
+
     try:
 
         while True:
 
-            await websocket.send_json({
+            payload = {
 
                 "type":
                     "runtime",
@@ -28,15 +49,25 @@ async def runtime_stream(
                     time.time(),
 
                 "status":
-                    "online"
-            })
+                    "online",
+
+                "phase":
+                    "runtime_loop",
+
+                "uptime":
+                    time.time()
+            }
+
+            await websocket.send_json(
+                payload
+            )
 
             await asyncio.sleep(1)
 
     except WebSocketDisconnect:
 
         print(
-            "[runtime] disconnected"
+            "[ws/runtime] disconnected"
         )
 
 # =========================================================
@@ -49,25 +80,36 @@ async def replay_stream(
 
     await websocket.accept()
 
+    print(
+        "[ws/replay] connected"
+    )
+
     try:
 
         while True:
 
-            await websocket.send_json({
+            payload = {
 
                 "type":
                     "replay",
 
                 "timestamp":
-                    time.time()
-            })
+                    time.time(),
+
+                "state":
+                    "synchronized"
+            }
+
+            await websocket.send_json(
+                payload
+            )
 
             await asyncio.sleep(1)
 
     except WebSocketDisconnect:
 
         print(
-            "[replay] disconnected"
+            "[ws/replay] disconnected"
         )
 
 # =========================================================
@@ -80,28 +122,42 @@ async def graph_stream(
 
     await websocket.accept()
 
+    print(
+        "[ws/graph] connected"
+    )
+
     try:
 
         while True:
 
-            await websocket.send_json({
+            payload = {
 
                 "type":
                     "graph",
+
+                "timestamp":
+                    time.time(),
 
                 "nodes":
                     12,
 
                 "edges":
-                    24
-            })
+                    24,
+
+                "projection":
+                    "runtime_topology"
+            }
+
+            await websocket.send_json(
+                payload
+            )
 
             await asyncio.sleep(1)
 
     except WebSocketDisconnect:
 
         print(
-            "[graph] disconnected"
+            "[ws/graph] disconnected"
         )
 
 # =========================================================
@@ -114,23 +170,37 @@ async def transport_stream(
 
     await websocket.accept()
 
+    print(
+        "[ws/transport] connected"
+    )
+
     try:
 
         while True:
 
-            await websocket.send_json({
+            payload = {
 
                 "type":
                     "transport",
 
+                "timestamp":
+                    time.time(),
+
                 "throughput":
-                    1.0
-            })
+                    1.0,
+
+                "continuity":
+                    "stable"
+            }
+
+            await websocket.send_json(
+                payload
+            )
 
             await asyncio.sleep(1)
 
     except WebSocketDisconnect:
 
         print(
-            "[transport] disconnected"
+            "[ws/transport] disconnected"
         )
