@@ -1,25 +1,31 @@
 /**
- * HHS Runtime Socket Manager
- * ---------------------------------------------------
- * Canonical websocket orchestration layer.
+ * =========================================================
+ * RuntimeSocketManager
+ * =========================================================
+ *
+ * Canonical Runtime OS websocket transport authority.
  *
  * Responsibilities:
  *
- * - Runtime websocket orchestration
- * - Replay stream synchronization
- * - Graph stream synchronization
- * - Transport stream synchronization
- * - Runtime event routing
- * - Deterministic stream continuity
- * - Runtime reconnect logic
- * - Stream lifecycle management
- *
- * Invariants:
- * Δe = 0
- * Ψ = 0
- * Θ15 = true
- * Ω = true
+ * - Runtime stream ingestion
+ * - Replay stream ingestion
+ * - Graph stream ingestion
+ * - Transport stream ingestion
+ * - Connection lifecycle
+ * - Event parsing
+ * - Event history
+ * - Runtime dispatch
+ * - Frontend synchronization
  */
+
+export type RuntimeEventType =
+
+    | "runtime"
+    | "replay"
+    | "graph"
+    | "transport"
+    | "receipt"
+    | "certification"
 
 export interface RuntimeSocketConfig {
 
@@ -34,8 +40,6 @@ export interface RuntimeSocketConfig {
 
 export interface RuntimeSocketState {
 
-    initialized: boolean
-
     runtimeConnected: boolean
 
     replayConnected: boolean
@@ -43,12 +47,51 @@ export interface RuntimeSocketState {
     graphConnected: boolean
 
     transportConnected: boolean
+
+    lastRuntimeEvent?: RuntimeSocketEvent
+
+    lastReplayEvent?: RuntimeSocketEvent
+
+    lastGraphEvent?: RuntimeSocketEvent
+
+    lastTransportEvent?: RuntimeSocketEvent
+
+    runtimeHistory: RuntimeSocketEvent[]
+
+    replayHistory: RuntimeSocketEvent[]
+
+    graphHistory: RuntimeSocketEvent[]
+
+    transportHistory: RuntimeSocketEvent[]
+
+    totalEvents: number
 }
 
-export type RuntimeSocketHandler =
-    (
-        payload: unknown
-    ) => void
+export interface RuntimeSocketEvent {
+
+    event_type: RuntimeEventType
+
+    timestamp_ns: number
+
+    sequence_id?: number
+
+    authority?: string
+
+    payload: Record<
+        string,
+        unknown
+    >
+}
+
+export type RuntimeSocketListener = (
+
+    event: RuntimeSocketEvent
+
+) => void
+
+// =========================================================
+// RuntimeSocketManager
+// =========================================================
 
 export class RuntimeSocketManager {
 
@@ -58,25 +101,30 @@ export class RuntimeSocketManager {
     public readonly state:
         RuntimeSocketState
 
-    private runtimeSocket?: WebSocket
+    private runtimeSocket?:
+        WebSocket
 
-    private replaySocket?: WebSocket
+    private replaySocket?:
+        WebSocket
 
-    private graphSocket?: WebSocket
+    private graphSocket?:
+        WebSocket
 
-    private transportSocket?: WebSocket
+    private transportSocket?:
+        WebSocket
 
-    private runtimeHandlers:
-        Set<RuntimeSocketHandler>
+    private listeners:
+        Map<
+            RuntimeEventType,
+            Set<RuntimeSocketListener>
+        >
 
-    private replayHandlers:
-        Set<RuntimeSocketHandler>
+    private readonly maxHistory =
+        2048
 
-    private graphHandlers:
-        Set<RuntimeSocketHandler>
-
-    private transportHandlers:
-        Set<RuntimeSocketHandler>
+    // =====================================================
+    // Constructor
+    // =====================================================
 
     constructor(
         config: RuntimeSocketConfig
@@ -84,21 +132,10 @@ export class RuntimeSocketManager {
 
         this.config = config
 
-        this.runtimeHandlers =
-            new Set()
-
-        this.replayHandlers =
-            new Set()
-
-        this.graphHandlers =
-            new Set()
-
-        this.transportHandlers =
-            new Set()
+        this.listeners =
+            new Map()
 
         this.state = {
-
-            initialized: false,
 
             runtimeConnected: false,
 
@@ -106,357 +143,507 @@ export class RuntimeSocketManager {
 
             graphConnected: false,
 
-            transportConnected: false
+            transportConnected: false,
+
+            runtimeHistory: [],
+
+            replayHistory: [],
+
+            graphHistory: [],
+
+            transportHistory: [],
+
+            totalEvents: 0
         }
     }
 
-    /**
-     * ---------------------------------------------------
-     * Initialization
-     * ---------------------------------------------------
-     */
+    // =====================================================
+    // Initialize
+    // =====================================================
 
     public async initialize():
         Promise<void> {
 
-        console.log(
-            "[RuntimeSocketManager] initialize"
-        )
+        this.connectRuntime()
 
-        await this.connectRuntime()
+        this.connectReplay()
 
-        await this.connectReplay()
+        this.connectGraph()
 
-        await this.connectGraph()
-
-        await this.connectTransport()
-
-        this.state.initialized = true
-
-        console.log(
-            "[RuntimeSocketManager] ready"
-        )
+        this.connectTransport()
     }
 
-    /**
-     * ---------------------------------------------------
-     * Runtime Stream
-     * ---------------------------------------------------
-     */
+    // =====================================================
+    // Runtime
+    // =====================================================
 
-    private async connectRuntime():
-        Promise<void> {
+    private connectRuntime():
+        void {
 
         this.runtimeSocket =
             new WebSocket(
-                this.config.runtimeEndpoint
+
+                this.toSocketURL(
+                    this.config
+                        .runtimeEndpoint
+                )
             )
 
         this.runtimeSocket.onopen =
             () => {
 
-                console.log(
-                    "[RuntimeSocketManager] runtime connected"
-                )
+            this.state
+                .runtimeConnected = true
 
-                this.state
-                    .runtimeConnected = true
-            }
-
-        this.runtimeSocket.onmessage =
-            (event) => {
-
-                this.emitRuntime(
-                    event.data
-                )
-            }
+            console.log(
+                "[runtime/ws] connected"
+            )
+        }
 
         this.runtimeSocket.onclose =
             () => {
 
-                this.state
-                    .runtimeConnected = false
-            }
+            this.state
+                .runtimeConnected = false
+
+            console.log(
+                "[runtime/ws] disconnected"
+            )
+        }
+
+        this.runtimeSocket.onerror =
+            (error) => {
+
+            console.error(
+                "[runtime/ws] error",
+                error
+            )
+        }
+
+        this.runtimeSocket.onmessage =
+            (message) => {
+
+            this.handleEvent(
+
+                "runtime",
+
+                message.data
+            )
+        }
     }
 
-    /**
-     * ---------------------------------------------------
-     * Replay Stream
-     * ---------------------------------------------------
-     */
+    // =====================================================
+    // Replay
+    // =====================================================
 
-    private async connectReplay():
-        Promise<void> {
+    private connectReplay():
+        void {
 
         this.replaySocket =
             new WebSocket(
-                this.config.replayEndpoint
+
+                this.toSocketURL(
+                    this.config
+                        .replayEndpoint
+                )
             )
 
         this.replaySocket.onopen =
             () => {
 
-                console.log(
-                    "[RuntimeSocketManager] replay connected"
-                )
+            this.state
+                .replayConnected = true
 
-                this.state
-                    .replayConnected = true
-            }
-
-        this.replaySocket.onmessage =
-            (event) => {
-
-                this.emitReplay(
-                    event.data
-                )
-            }
+            console.log(
+                "[replay/ws] connected"
+            )
+        }
 
         this.replaySocket.onclose =
             () => {
 
-                this.state
-                    .replayConnected = false
-            }
+            this.state
+                .replayConnected = false
+
+            console.log(
+                "[replay/ws] disconnected"
+            )
+        }
+
+        this.replaySocket.onerror =
+            (error) => {
+
+            console.error(
+                "[replay/ws] error",
+                error
+            )
+        }
+
+        this.replaySocket.onmessage =
+            (message) => {
+
+            this.handleEvent(
+
+                "replay",
+
+                message.data
+            )
+        }
     }
 
-    /**
-     * ---------------------------------------------------
-     * Graph Stream
-     * ---------------------------------------------------
-     */
+    // =====================================================
+    // Graph
+    // =====================================================
 
-    private async connectGraph():
-        Promise<void> {
+    private connectGraph():
+        void {
 
         this.graphSocket =
             new WebSocket(
-                this.config.graphEndpoint
+
+                this.toSocketURL(
+                    this.config
+                        .graphEndpoint
+                )
             )
 
         this.graphSocket.onopen =
             () => {
 
-                console.log(
-                    "[RuntimeSocketManager] graph connected"
-                )
+            this.state
+                .graphConnected = true
 
-                this.state
-                    .graphConnected = true
-            }
-
-        this.graphSocket.onmessage =
-            (event) => {
-
-                this.emitGraph(
-                    event.data
-                )
-            }
+            console.log(
+                "[graph/ws] connected"
+            )
+        }
 
         this.graphSocket.onclose =
             () => {
 
-                this.state
-                    .graphConnected = false
-            }
+            this.state
+                .graphConnected = false
+
+            console.log(
+                "[graph/ws] disconnected"
+            )
+        }
+
+        this.graphSocket.onerror =
+            (error) => {
+
+            console.error(
+                "[graph/ws] error",
+                error
+            )
+        }
+
+        this.graphSocket.onmessage =
+            (message) => {
+
+            this.handleEvent(
+
+                "graph",
+
+                message.data
+            )
+        }
     }
 
-    /**
-     * ---------------------------------------------------
-     * Transport Stream
-     * ---------------------------------------------------
-     */
+    // =====================================================
+    // Transport
+    // =====================================================
 
-    private async connectTransport():
-        Promise<void> {
+    private connectTransport():
+        void {
 
         this.transportSocket =
             new WebSocket(
-                this.config.transportEndpoint
+
+                this.toSocketURL(
+                    this.config
+                        .transportEndpoint
+                )
             )
 
         this.transportSocket.onopen =
             () => {
 
-                console.log(
-                    "[RuntimeSocketManager] transport connected"
-                )
+            this.state
+                .transportConnected = true
 
-                this.state
-                    .transportConnected = true
-            }
-
-        this.transportSocket.onmessage =
-            (event) => {
-
-                this.emitTransport(
-                    event.data
-                )
-            }
+            console.log(
+                "[transport/ws] connected"
+            )
+        }
 
         this.transportSocket.onclose =
             () => {
 
-                this.state
-                    .transportConnected = false
+            this.state
+                .transportConnected = false
+
+            console.log(
+                "[transport/ws] disconnected"
+            )
+        }
+
+        this.transportSocket.onerror =
+            (error) => {
+
+            console.error(
+                "[transport/ws] error",
+                error
+            )
+        }
+
+        this.transportSocket.onmessage =
+            (message) => {
+
+            this.handleEvent(
+
+                "transport",
+
+                message.data
+            )
+        }
+    }
+
+    // =====================================================
+    // Event Handling
+    // =====================================================
+
+    private handleEvent(
+
+        channel:
+            RuntimeEventType,
+
+        raw:
+            string
+
+    ): void {
+
+        try {
+
+            const parsed =
+                JSON.parse(raw)
+                as RuntimeSocketEvent
+
+            this.dispatchEvent(
+                parsed
+            )
+
+            this.appendHistory(
+                channel,
+                parsed
+            )
+
+            this.state.totalEvents += 1
+
+            switch (channel) {
+
+                case "runtime":
+
+                    this.state
+                        .lastRuntimeEvent =
+                            parsed
+
+                    break
+
+                case "replay":
+
+                    this.state
+                        .lastReplayEvent =
+                            parsed
+
+                    break
+
+                case "graph":
+
+                    this.state
+                        .lastGraphEvent =
+                            parsed
+
+                    break
+
+                case "transport":
+
+                    this.state
+                        .lastTransportEvent =
+                            parsed
+
+                    break
             }
-    }
 
-    /**
-     * ---------------------------------------------------
-     * Runtime Events
-     * ---------------------------------------------------
-     */
+        } catch (error) {
 
-    public onRuntime(
-        handler: RuntimeSocketHandler
-    ): void {
+            console.error(
 
-        this.runtimeHandlers.add(
-            handler
-        )
-    }
+                "[RuntimeSocketManager] parse failure",
 
-    public offRuntime(
-        handler: RuntimeSocketHandler
-    ): void {
-
-        this.runtimeHandlers.delete(
-            handler
-        )
-    }
-
-    private emitRuntime(
-        payload: unknown
-    ): void {
-
-        for (
-            const handler
-            of this.runtimeHandlers
-        ) {
-
-            handler(payload)
+                error
+            )
         }
     }
 
-    /**
-     * ---------------------------------------------------
-     * Replay Events
-     * ---------------------------------------------------
-     */
+    // =====================================================
+    // History
+    // =====================================================
 
-    public onReplay(
-        handler: RuntimeSocketHandler
+    private appendHistory(
+
+        channel:
+            RuntimeEventType,
+
+        event:
+            RuntimeSocketEvent
+
     ): void {
 
-        this.replayHandlers.add(
-            handler
-        )
-    }
+        let target:
+            RuntimeSocketEvent[]
 
-    public offReplay(
-        handler: RuntimeSocketHandler
-    ): void {
+        switch (channel) {
 
-        this.replayHandlers.delete(
-            handler
-        )
-    }
+            case "runtime":
 
-    private emitReplay(
-        payload: unknown
-    ): void {
+                target =
+                    this.state
+                        .runtimeHistory
 
-        for (
-            const handler
-            of this.replayHandlers
+                break
+
+            case "replay":
+
+                target =
+                    this.state
+                        .replayHistory
+
+                break
+
+            case "graph":
+
+                target =
+                    this.state
+                        .graphHistory
+
+                break
+
+            case "transport":
+
+                target =
+                    this.state
+                        .transportHistory
+
+                break
+
+            default:
+
+                return
+        }
+
+        target.push(event)
+
+        if (
+            target.length
+            > this.maxHistory
         ) {
 
-            handler(payload)
+            target.splice(
+
+                0,
+
+                target.length
+                - this.maxHistory
+            )
         }
     }
 
-    /**
-     * ---------------------------------------------------
-     * Graph Events
-     * ---------------------------------------------------
-     */
+    // =====================================================
+    // Dispatch
+    // =====================================================
 
-    public onGraph(
-        handler: RuntimeSocketHandler
+    private dispatchEvent(
+        event: RuntimeSocketEvent
     ): void {
 
-        this.graphHandlers.add(
-            handler
-        )
-    }
+        const listeners =
+            this.listeners.get(
+                event.event_type
+            )
 
-    public offGraph(
-        handler: RuntimeSocketHandler
-    ): void {
+        if (!listeners) {
 
-        this.graphHandlers.delete(
-            handler
-        )
-    }
-
-    private emitGraph(
-        payload: unknown
-    ): void {
+            return
+        }
 
         for (
-            const handler
-            of this.graphHandlers
+            const listener
+            of listeners
         ) {
 
-            handler(payload)
+            try {
+
+                listener(event)
+
+            } catch (error) {
+
+                console.error(
+
+                    "[RuntimeSocketManager] listener failure",
+
+                    error
+                )
+            }
         }
     }
 
-    /**
-     * ---------------------------------------------------
-     * Transport Events
-     * ---------------------------------------------------
-     */
+    // =====================================================
+    // Subscribe
+    // =====================================================
 
-    public onTransport(
-        handler: RuntimeSocketHandler
-    ): void {
+    public subscribe(
 
-        this.transportHandlers.add(
-            handler
-        )
-    }
+        eventType:
+            RuntimeEventType,
 
-    public offTransport(
-        handler: RuntimeSocketHandler
-    ): void {
+        listener:
+            RuntimeSocketListener
 
-        this.transportHandlers.delete(
-            handler
-        )
-    }
+    ): () => void {
 
-    private emitTransport(
-        payload: unknown
-    ): void {
-
-        for (
-            const handler
-            of this.transportHandlers
+        if (
+            !this.listeners.has(
+                eventType
+            )
         ) {
 
-            handler(payload)
+            this.listeners.set(
+
+                eventType,
+
+                new Set()
+            )
+        }
+
+        this.listeners
+            .get(eventType)
+            ?.add(listener)
+
+        return () => {
+
+            this.listeners
+                .get(eventType)
+                ?.delete(listener)
         }
     }
 
-    /**
-     * ---------------------------------------------------
-     * Shutdown
-     * ---------------------------------------------------
-     */
+    // =====================================================
+    // Shutdown
+    // =====================================================
 
-    public shutdown(): void {
+    public shutdown():
+        void {
 
         this.runtimeSocket?.close()
 
@@ -477,48 +664,98 @@ export class RuntimeSocketManager {
 
         this.state.transportConnected =
             false
-
-        console.log(
-            "[RuntimeSocketManager] shutdown"
-        )
     }
 
-    /**
-     * ---------------------------------------------------
-     * Metrics
-     * ---------------------------------------------------
-     */
+    // =====================================================
+    // Metrics
+    // =====================================================
 
-    public getMetrics(): object {
+    public getMetrics():
+        object {
 
         return {
 
-            initialized:
-                this.state.initialized,
-
             runtimeConnected:
-                this.state.runtimeConnected,
+                this.state
+                    .runtimeConnected,
 
             replayConnected:
-                this.state.replayConnected,
+                this.state
+                    .replayConnected,
 
             graphConnected:
-                this.state.graphConnected,
+                this.state
+                    .graphConnected,
 
             transportConnected:
-                this.state.transportConnected,
+                this.state
+                    .transportConnected,
 
-            runtimeHandlers:
-                this.runtimeHandlers.size,
+            runtimeEvents:
+                this.state
+                    .runtimeHistory
+                    .length,
 
-            replayHandlers:
-                this.replayHandlers.size,
+            replayEvents:
+                this.state
+                    .replayHistory
+                    .length,
 
-            graphHandlers:
-                this.graphHandlers.size,
+            graphEvents:
+                this.state
+                    .graphHistory
+                    .length,
 
-            transportHandlers:
-                this.transportHandlers.size
+            transportEvents:
+                this.state
+                    .transportHistory
+                    .length,
+
+            totalEvents:
+                this.state
+                    .totalEvents
         }
+    }
+
+    // =====================================================
+    // Helpers
+    // =====================================================
+
+    private toSocketURL(
+        endpoint: string
+    ): string {
+
+        const protocol =
+
+            window.location.protocol
+                === "https:"
+                    ? "wss:"
+                    : "ws:"
+
+        if (
+            endpoint.startsWith(
+                "ws://"
+            )
+            ||
+            endpoint.startsWith(
+                "wss://"
+            )
+        ) {
+
+            return endpoint
+        }
+
+        return (
+
+            `${protocol}//`
+
+            +
+
+            `${window.location.host}`
+
+            +
+
+            endpoint
+        )
     }
 }
