@@ -1,47 +1,80 @@
 /**
- * HHS Runtime OS
- * ---------------------------------------------------
- * Canonical Runtime OS orchestration root.
+ * =========================================================
+ * RuntimeOS
+ * =========================================================
+ *
+ * Canonical frontend Runtime OS authority.
  *
  * Responsibilities:
  *
  * - Runtime bootstrap
- * - ECS initialization
- * - Graph synchronization
- * - Replay synchronization
- * - Runtime transport bootstrap
- * - Multimodal projection initialization
- * - Runtime application registration
- * - Diagnostics orchestration
- * - Websocket stream orchestration
- * - Session continuity
- *
- * Invariants:
- * Δe = 0
- * Ψ = 0
- * Θ15 = true
- * Ω = true
+ * - Workspace orchestration
+ * - RuntimeSocketManager lifecycle
+ * - RuntimeStateStore synchronization
+ * - Application registry
+ * - Runtime metrics
+ * - Projection state
+ * - Window topology
  */
-
-import {
-    RuntimeWorkspace
-} from "./RuntimeWorkspace"
-
-import {
-    RuntimeRouter
-} from "./RuntimeRouter"
-
-import {
-    RuntimeSession
-} from "./RuntimeSession"
-
-import {
-    RuntimeApplicationRegistry
-} from "./RuntimeApplicationRegistry"
 
 import {
     RuntimeSocketManager
 } from "./RuntimeSocketManager"
+
+import type {
+    RuntimeSocketEvent
+} from "./RuntimeSocketManager"
+
+import {
+    RuntimeStateStore
+} from "../state/RuntimeStateStore"
+
+// =========================================================
+// Workspace Types
+// =========================================================
+
+export interface RuntimeWindow {
+
+    id: string
+
+    title: string
+
+    applicationId: string
+
+    x: number
+
+    y: number
+
+    width: number
+
+    height: number
+
+    minimized: boolean
+
+    maximized: boolean
+
+    focused: boolean
+}
+
+// ---------------------------------------------------------
+
+export interface RuntimeWorkspaceLayout {
+
+    windows: RuntimeWindow[]
+}
+
+// ---------------------------------------------------------
+
+export interface RuntimeWorkspace {
+
+    id: string
+
+    layout: RuntimeWorkspaceLayout
+}
+
+// =========================================================
+// RuntimeOS Config
+// =========================================================
 
 export interface RuntimeOSConfig {
 
@@ -58,9 +91,15 @@ export interface RuntimeOSConfig {
     mobileMode?: boolean
 }
 
+// =========================================================
+// RuntimeOS State
+// =========================================================
+
 export interface RuntimeOSState {
 
     initialized: boolean
+
+    booted: boolean
 
     connected: boolean
 
@@ -70,54 +109,47 @@ export interface RuntimeOSState {
 
     transportReady: boolean
 
+    diagnosticsEnabled: boolean
+
+    mobileMode: boolean
+
     applicationsMounted: number
 
-    activeWorkspace?: string
+    totalEvents: number
+
+    uptimeStartedAt: number
 }
+
+// =========================================================
+// RuntimeOS
+// =========================================================
 
 export class RuntimeOS {
 
     public readonly config:
         RuntimeOSConfig
 
-    public readonly workspace:
-        RuntimeWorkspace
-
-    public readonly router:
-        RuntimeRouter
-
-    public readonly session:
-        RuntimeSession
-
-    public readonly applications:
-        RuntimeApplicationRegistry
-
     public readonly sockets:
         RuntimeSocketManager
+
+    public readonly store:
+        RuntimeStateStore
+
+    public readonly workspace:
+        RuntimeWorkspace
 
     public readonly state:
         RuntimeOSState
 
-    private initializedAt:
-        number
+    // =====================================================
+    // Constructor
+    // =====================================================
 
     constructor(
         config: RuntimeOSConfig
     ) {
 
         this.config = config
-
-        this.workspace =
-            new RuntimeWorkspace()
-
-        this.router =
-            new RuntimeRouter()
-
-        this.session =
-            new RuntimeSession()
-
-        this.applications =
-            new RuntimeApplicationRegistry()
 
         this.sockets =
             new RuntimeSocketManager({
@@ -135,12 +167,101 @@ export class RuntimeOS {
                     config.transportEndpoint
             })
 
-        this.initializedAt =
-            Date.now()
+        this.store =
+            new RuntimeStateStore()
+
+        this.workspace = {
+
+            id:
+                "runtime_workspace",
+
+            layout: {
+
+                windows: [
+
+                    {
+                        id:
+                            "runtime_console_window",
+
+                        title:
+                            "Runtime Console",
+
+                        applicationId:
+                            "runtime_console",
+
+                        x: 40,
+
+                        y: 60,
+
+                        width: 520,
+
+                        height: 420,
+
+                        minimized: false,
+
+                        maximized: false,
+
+                        focused: true
+                    },
+
+                    {
+                        id:
+                            "calculator_window",
+
+                        title:
+                            "Calculator",
+
+                        applicationId:
+                            "calculator",
+
+                        x: 620,
+
+                        y: 80,
+
+                        width: 700,
+
+                        height: 520,
+
+                        minimized: false,
+
+                        maximized: false,
+
+                        focused: false
+                    },
+
+                    {
+                        id:
+                            "breadboard_window",
+
+                        title:
+                            "Breadboard",
+
+                        applicationId:
+                            "breadboard",
+
+                        x: 240,
+
+                        y: 160,
+
+                        width: 820,
+
+                        height: 520,
+
+                        minimized: false,
+
+                        maximized: false,
+
+                        focused: false
+                    }
+                ]
+            }
+        }
 
         this.state = {
 
             initialized: false,
+
+            booted: false,
 
             connected: false,
 
@@ -150,328 +271,402 @@ export class RuntimeOS {
 
             transportReady: false,
 
-            applicationsMounted: 0
+            diagnosticsEnabled:
+
+                config
+                    .diagnosticsEnabled
+                    ?? false,
+
+            mobileMode:
+
+                config
+                    .mobileMode
+                    ?? false,
+
+            applicationsMounted:
+
+                this.workspace
+                    .layout
+                    .windows
+                    .length,
+
+            totalEvents: 0,
+
+            uptimeStartedAt:
+                performance.now()
         }
     }
 
-    /**
-     * ---------------------------------------------------
-     * Runtime Bootstrap
-     * ---------------------------------------------------
-     */
+    // =====================================================
+    // Initialize
+    // =====================================================
 
     public async initialize():
         Promise<void> {
 
-        console.log(
-            "[RuntimeOS] bootstrap begin"
-        )
-
-        await this.initializeWorkspace()
-
-        await this.initializeRouter()
-
-        await this.initializeSession()
-
-        await this.initializeSockets()
-
-        await this.initializeApplications()
-
-        await this.initializeDiagnostics()
-
-        this.bindSocketState()
-
-        this.state.initialized =
-            true
-
-        console.log(
-            "[RuntimeOS] bootstrap complete"
-        )
-    }
-
-    /**
-     * ---------------------------------------------------
-     * Workspace Initialization
-     * ---------------------------------------------------
-     */
-
-    private async initializeWorkspace():
-        Promise<void> {
-
-        console.log(
-            "[RuntimeOS] workspace init"
-        )
-
-        await this.workspace.initialize()
-
-        this.state.activeWorkspace =
-            this.workspace.id
-    }
-
-    /**
-     * ---------------------------------------------------
-     * Router Initialization
-     * ---------------------------------------------------
-     */
-
-    private async initializeRouter():
-        Promise<void> {
-
-        console.log(
-            "[RuntimeOS] router init"
-        )
-
-        await this.router.initialize()
-    }
-
-    /**
-     * ---------------------------------------------------
-     * Session Initialization
-     * ---------------------------------------------------
-     */
-
-    private async initializeSession():
-        Promise<void> {
-
-        console.log(
-            "[RuntimeOS] session init"
-        )
-
-        await this.session.initialize()
-    }
-
-    /**
-     * ---------------------------------------------------
-     * Socket Initialization
-     * ---------------------------------------------------
-     */
-
-    private async initializeSockets():
-        Promise<void> {
-
-        console.log(
-            "[RuntimeOS] socket init"
-        )
-
-        await this.sockets.initialize()
-    }
-
-    /**
-     * ---------------------------------------------------
-     * Application Registration
-     * ---------------------------------------------------
-     */
-
-    private async initializeApplications():
-        Promise<void> {
-
-        console.log(
-            "[RuntimeOS] applications init"
-        )
-
-        await this.applications.initialize()
-
-        const defaultApplications = [
-
-            {
-                id: "runtime_console",
-
-                title: "Runtime Console",
-
-                runtimeType: "console"
-            },
-
-            {
-                id: "calculator",
-
-                title: "Calculator",
-
-                runtimeType: "symbolic"
-            },
-
-            {
-                id: "breadboard",
-
-                title: "Breadboard",
-
-                runtimeType: "transport"
-            },
-
-            {
-                id: "graph_debugger",
-
-                title: "Graph Debugger",
-
-                runtimeType: "graph"
-            },
-
-            {
-                id: "tensor_inspector",
-
-                title: "Tensor Inspector",
-
-                runtimeType: "tensor"
-            },
-
-            {
-                id: "replay_viewer",
-
-                title: "Replay Viewer",
-
-                runtimeType: "replay"
-            }
-        ]
-
-        for (
-            const application
-            of defaultApplications
-        ) {
-
-            this.applications.register({
-
-                ...application,
-
-                mounted: true,
-
-                initialized: true,
-
-                createdAt:
-                    Date.now()
-            })
-        }
-
-        this.state.applicationsMounted =
-            this.applications
-                .getAll()
-                .length
-    }
-
-    /**
-     * ---------------------------------------------------
-     * Diagnostics
-     * ---------------------------------------------------
-     */
-
-    private async initializeDiagnostics():
-        Promise<void> {
-
         if (
-            !this.config
-                .diagnosticsEnabled
+            this.state.initialized
         ) {
 
             return
         }
 
+        this.state.initialized =
+            true
+
+        this.bindSocketEvents()
+
+        await this.sockets.initialize()
+
+        this.state.booted =
+            true
+
         console.log(
-            "[RuntimeOS] diagnostics init"
+            "[RuntimeOS] initialized"
         )
     }
 
-    /**
-     * ---------------------------------------------------
-     * Socket State Binding
-     * ---------------------------------------------------
-     */
+    // =====================================================
+    // Socket Binding
+    // =====================================================
 
-    private bindSocketState():
+    private bindSocketEvents():
         void {
 
+        this.sockets.subscribe(
+
+            "runtime",
+
+            (
+                event
+            ) => {
+
+                this.handleRuntimeEvent(
+                    event
+                )
+            }
+        )
+
+        this.sockets.subscribe(
+
+            "replay",
+
+            (
+                event
+            ) => {
+
+                this.handleReplayEvent(
+                    event
+                )
+            }
+        )
+
+        this.sockets.subscribe(
+
+            "graph",
+
+            (
+                event
+            ) => {
+
+                this.handleGraphEvent(
+                    event
+                )
+            }
+        )
+
+        this.sockets.subscribe(
+
+            "transport",
+
+            (
+                event
+            ) => {
+
+                this.handleTransportEvent(
+                    event
+                )
+            }
+        )
+
+        this.sockets.subscribe(
+
+            "receipt",
+
+            (
+                event
+            ) => {
+
+                this.handleReceiptEvent(
+                    event
+                )
+            }
+        )
+    }
+
+    // =====================================================
+    // Event Handlers
+    // =====================================================
+
+    private handleRuntimeEvent(
+        event: RuntimeSocketEvent
+    ): void {
+
+        this.store.ingestEvent(
+            event
+        )
+
         this.state.connected =
-            this.sockets.state
-                .runtimeConnected
+            true
+
+        this.state.totalEvents += 1
+    }
+
+    // -----------------------------------------------------
+
+    private handleReplayEvent(
+        event: RuntimeSocketEvent
+    ): void {
+
+        this.store.ingestEvent(
+            event
+        )
 
         this.state.replayReady =
-            this.sockets.state
-                .replayConnected
+            true
+
+        this.state.totalEvents += 1
+    }
+
+    // -----------------------------------------------------
+
+    private handleGraphEvent(
+        event: RuntimeSocketEvent
+    ): void {
+
+        this.store.ingestEvent(
+            event
+        )
 
         this.state.graphReady =
-            this.sockets.state
-                .graphConnected
+            true
+
+        this.state.totalEvents += 1
+    }
+
+    // -----------------------------------------------------
+
+    private handleTransportEvent(
+        event: RuntimeSocketEvent
+    ): void {
+
+        this.store.ingestEvent(
+            event
+        )
 
         this.state.transportReady =
-            this.sockets.state
-                .transportConnected
+            true
+
+        this.state.totalEvents += 1
     }
 
-    /**
-     * ---------------------------------------------------
-     * Runtime Shutdown
-     * ---------------------------------------------------
-     */
+    // -----------------------------------------------------
 
-    public async shutdown():
-        Promise<void> {
+    private handleReceiptEvent(
+        event: RuntimeSocketEvent
+    ): void {
 
-        console.log(
-            "[RuntimeOS] shutdown begin"
+        this.store.ingestEvent(
+            event
         )
 
-        this.sockets.shutdown()
-
-        this.session.terminate()
-
-        this.state.connected =
-            false
-
-        this.state.initialized =
-            false
-
-        console.log(
-            "[RuntimeOS] shutdown complete"
-        )
+        this.state.totalEvents += 1
     }
 
-    /**
-     * ---------------------------------------------------
-     * Metrics
-     * ---------------------------------------------------
-     */
+    // =====================================================
+    // Windows
+    // =====================================================
+
+    public focusWindow(
+        windowId: string
+    ): void {
+
+        for (
+            const window
+            of this.workspace
+                .layout
+                .windows
+        ) {
+
+            window.focused =
+                (
+                    window.id
+                    === windowId
+                )
+        }
+    }
+
+    // -----------------------------------------------------
+
+    public minimizeWindow(
+        windowId: string
+    ): void {
+
+        const target =
+            this.workspace
+                .layout
+                .windows
+                .find(
+
+                    (
+                        window
+                    ) => (
+
+                        window.id
+                        === windowId
+                    )
+                )
+
+        if (!target) {
+
+            return
+        }
+
+        target.minimized =
+            !target.minimized
+    }
+
+    // -----------------------------------------------------
+
+    public maximizeWindow(
+        windowId: string
+    ): void {
+
+        const target =
+            this.workspace
+                .layout
+                .windows
+                .find(
+
+                    (
+                        window
+                    ) => (
+
+                        window.id
+                        === windowId
+                    )
+                )
+
+        if (!target) {
+
+            return
+        }
+
+        target.maximized =
+            !target.maximized
+    }
+
+    // =====================================================
+    // Metrics
+    // =====================================================
 
     public getMetrics():
-        object {
+        Record<
+            string,
+            unknown
+        > {
 
         return {
 
-            uptimeMs:
-                Date.now()
-                - this.initializedAt,
+            initialized:
+                this.state
+                    .initialized,
+
+            booted:
+                this.state
+                    .booted,
+
+            connected:
+                this.state
+                    .connected,
+
+            replayReady:
+                this.state
+                    .replayReady,
+
+            graphReady:
+                this.state
+                    .graphReady,
+
+            transportReady:
+                this.state
+                    .transportReady,
+
+            diagnosticsEnabled:
+                this.state
+                    .diagnosticsEnabled,
+
+            mobileMode:
+                this.state
+                    .mobileMode,
 
             applicationsMounted:
                 this.state
                     .applicationsMounted,
 
-            replayReady:
-                this.state.replayReady,
+            totalEvents:
+                this.state
+                    .totalEvents,
 
-            graphReady:
-                this.state.graphReady,
+            uptimeMs:
 
-            transportReady:
-                this.state.transportReady,
+                performance.now()
 
-            connected:
-                this.state.connected,
+                -
 
-            workspace:
-                this.workspace
-                    .getMetrics(),
-
-            router:
-                this.router
-                    .getMetrics(),
-
-            session:
-                this.session
-                    .getMetrics(),
-
-            applications:
-                this.applications
-                    .getMetrics(),
+                this.state
+                    .uptimeStartedAt,
 
             sockets:
                 this.sockets
-                    .getMetrics()
+                    .getMetrics(),
+
+            runtimeStore:
+                this.store
+                    .getMetrics(),
+
+            workspaceWindows:
+
+                this.workspace
+                    .layout
+                    .windows
+                    .length
         }
+    }
+
+    // =====================================================
+    // Shutdown
+    // =====================================================
+
+    public shutdown():
+        void {
+
+        this.sockets.shutdown()
+
+        this.state.connected =
+            false
+
+        this.state.replayReady =
+            false
+
+        this.state.graphReady =
+            false
+
+        this.state.transportReady =
+            false
+
+        console.log(
+            "[RuntimeOS] shutdown"
+        )
     }
 }
