@@ -1,238 +1,501 @@
 /**
- * HHS Runtime Application Registry
- * ---------------------------------------------------
- * Canonical Runtime OS application registry.
+ * =========================================================
+ * RuntimeApplicationRegistry
+ * =========================================================
+ *
+ * Canonical Runtime OS application authority layer.
  *
  * Responsibilities:
  *
  * - Runtime application registration
- * - Application lifecycle orchestration
- * - Runtime application lookup
- * - Workspace application mounting
- * - Replay-linked application continuity
- * - Runtime application metadata
- * - Graph-native application topology
+ * - Lazy application loading
+ * - Capability metadata
+ * - Window presets
+ * - Runtime authority tagging
+ * - Mount policies
+ * - Optional application continuity
  *
- * Invariants:
- * Δe = 0
- * Ψ = 0
- * Θ15 = true
- * Ω = true
+ * IMPORTANT:
+ * ---------------------------------------------------------
+ * Runtime applications MUST be treated as optional
+ * authorities during active upstream development.
+ *
+ * Missing applications MUST NOT crash the Runtime OS.
  */
 
-export interface RuntimeApplication {
+import React from "react"
+
+// =========================================================
+// Types
+// =========================================================
+
+export type RuntimeApplicationAuthority =
+
+    | "runtime"
+    | "instrument"
+    | "graph"
+    | "transport"
+    | "workspace"
+    | "experimental"
+
+// ---------------------------------------------------------
+
+export interface RuntimeApplicationWindowPreset {
+
+    width: number
+
+    height: number
+
+    minWidth?: number
+
+    minHeight?: number
+
+    resizable?: boolean
+}
+
+// ---------------------------------------------------------
+
+export interface RuntimeApplicationDefinition {
 
     id: string
 
     title: string
 
-    runtimeType: string
-
     icon?: string
 
-    mounted: boolean
+    authority:
+        RuntimeApplicationAuthority
 
-    initialized: boolean
+    description?: string
 
-    createdAt: number
+    lazyLoader:
+        () => Promise<{
 
-    metadata?: Record<
-        string,
-        unknown
-    >
+            default:
+                React.ComponentType<any>
+        }>
+
+    fallback?:
+        React.ComponentType<any>
+
+    windowPreset:
+        RuntimeApplicationWindowPreset
+
+    singleton?: boolean
+
+    mobileSupported?: boolean
+
+    experimental?: boolean
 }
 
-export interface RuntimeApplicationRegistryState {
-
-    initialized: boolean
-
-    applicationsMounted: number
-}
+// =========================================================
+// Registry
+// =========================================================
 
 export class RuntimeApplicationRegistry {
 
-    public readonly state:
-        RuntimeApplicationRegistryState
-
-    private applications:
-        Map<
+    private readonly applications =
+        new Map<
             string,
-            RuntimeApplication
-        >
+            RuntimeApplicationDefinition
+        >()
 
-    constructor() {
-
-        this.applications =
-            new Map()
-
-        this.state = {
-
-            initialized: false,
-
-            applicationsMounted: 0
-        }
-    }
-
-    /**
-     * ---------------------------------------------------
-     * Registry Initialization
-     * ---------------------------------------------------
-     */
-
-    public async initialize():
-        Promise<void> {
-
-        console.log(
-            "[RuntimeApplicationRegistry] initialize"
-        )
-
-        this.state.initialized = true
-
-        console.log(
-            "[RuntimeApplicationRegistry] ready"
-        )
-    }
-
-    /**
-     * ---------------------------------------------------
-     * Application Registration
-     * ---------------------------------------------------
-     */
+    // =====================================================
+    // Register
+    // =====================================================
 
     public register(
-        application:
-            RuntimeApplication
+        definition:
+            RuntimeApplicationDefinition
     ): void {
-
-        if (
-            this.applications.has(
-                application.id
-            )
-        ) {
-
-            console.warn(
-                `[RuntimeApplicationRegistry] duplicate application: ${application.id}`
-            )
-
-            return
-        }
 
         this.applications.set(
-            application.id,
-            application
+
+            definition.id,
+
+            definition
         )
 
-        this.state
-            .applicationsMounted += 1
-
         console.log(
-            "[RuntimeApplicationRegistry] mounted",
-            application.id
+
+            "[RuntimeApplicationRegistry] register",
+
+            definition.id
         )
     }
 
-    /**
-     * ---------------------------------------------------
-     * Application Removal
-     * ---------------------------------------------------
-     */
-
-    public unregister(
-        applicationId: string
-    ): void {
-
-        if (
-            !this.applications.has(
-                applicationId
-            )
-        ) {
-
-            return
-        }
-
-        this.applications.delete(
-            applicationId
-        )
-
-        this.state
-            .applicationsMounted -= 1
-
-        console.log(
-            "[RuntimeApplicationRegistry] unmounted",
-            applicationId
-        )
-    }
-
-    /**
-     * ---------------------------------------------------
-     * Queries
-     * ---------------------------------------------------
-     */
+    // =====================================================
+    // Lookup
+    // =====================================================
 
     public get(
-        applicationId: string
+        id: string
     ):
-        RuntimeApplication | undefined {
+        RuntimeApplicationDefinition
+        | undefined {
 
         return this.applications.get(
-            applicationId
+            id
         )
     }
 
-    public getAll():
-        RuntimeApplication[] {
-
-        return Array.from(
-            this.applications.values()
-        )
-    }
+    // -----------------------------------------------------
 
     public has(
-        applicationId: string
+        id: string
     ): boolean {
 
         return this.applications.has(
-            applicationId
+            id
         )
     }
 
-    /**
-     * ---------------------------------------------------
-     * Serialization
-     * ---------------------------------------------------
-     */
+    // -----------------------------------------------------
 
-    public serialize(): object {
+    public all():
+        RuntimeApplicationDefinition[] {
 
-        return {
+        return [
 
-            state:
-                this.state,
-
-            applications:
-                this.getAll()
-        }
+            ...this.applications
+                .values()
+        ]
     }
 
-    /**
-     * ---------------------------------------------------
-     * Metrics
-     * ---------------------------------------------------
-     */
+    // -----------------------------------------------------
 
-    public getMetrics(): object {
+    public byAuthority(
+
+        authority:
+            RuntimeApplicationAuthority
+
+    ):
+        RuntimeApplicationDefinition[] {
+
+        return this.all().filter(
+
+            (
+                application
+            ) => (
+
+                application.authority
+                === authority
+            )
+        )
+    }
+
+    // =====================================================
+    // Lazy Resolution
+    // =====================================================
+
+    public resolveLazyComponent(
+        id: string
+    ) {
+
+        const definition =
+            this.get(id)
+
+        if (!definition) {
+
+            return React.lazy(
+                async () => ({
+
+                    default:
+                        UnknownApplicationFallback
+                })
+            )
+        }
+
+        return React.lazy(
+            async () => {
+
+                try {
+
+                    return await definition
+                        .lazyLoader()
+
+                } catch (error) {
+
+                    console.error(
+
+                        "[RuntimeApplicationRegistry] lazy load failure",
+
+                        id,
+
+                        error
+                    )
+
+                    return {
+
+                        default:
+
+                            definition.fallback
+
+                            ??
+
+                            UnknownApplicationFallback
+                    }
+                }
+            }
+        )
+    }
+
+    // =====================================================
+    // Metrics
+    // =====================================================
+
+    public metrics() {
 
         return {
 
-            initialized:
-                this.state.initialized,
-
-            applicationsMounted:
-                this.state
-                    .applicationsMounted,
-
             registeredApplications:
-                this.applications.size
+
+                this.applications.size,
+
+            applicationIds:
+
+                [...this.applications.keys()]
         }
     }
 }
+
+// =========================================================
+// Global Registry
+// =========================================================
+
+export const runtimeApplicationRegistry =
+    new RuntimeApplicationRegistry()
+
+// =========================================================
+// Fallback
+// =========================================================
+
+const UnknownApplicationFallback:
+React.FC = () => {
+
+    return (
+
+        <div
+            className="
+                w-full
+                h-full
+                flex
+                items-center
+                justify-center
+                bg-neutral-950
+                text-neutral-500
+                font-mono
+                text-sm
+            "
+        >
+
+            runtime_application_missing
+
+        </div>
+    )
+}
+
+// =========================================================
+// Registration
+// =========================================================
+
+runtimeApplicationRegistry.register({
+
+    id:
+        "runtime_console",
+
+    title:
+        "Runtime Console",
+
+    authority:
+        "runtime",
+
+    description:
+        "Core runtime instrumentation surface",
+
+    lazyLoader:
+        async () =>
+
+            import(
+                "./RuntimeWindowContent"
+            ),
+
+    windowPreset: {
+
+        width: 520,
+
+        height: 420,
+
+        minWidth: 320,
+
+        minHeight: 220,
+
+        resizable: true
+    },
+
+    singleton: true
+})
+
+// ---------------------------------------------------------
+
+runtimeApplicationRegistry.register({
+
+    id:
+        "calculator",
+
+    title:
+        "Calculator",
+
+    authority:
+        "runtime",
+
+    description:
+        "HHS calculator runtime surface",
+
+    lazyLoader:
+        async () =>
+
+            import(
+                "../../runtime_apps/calculator/HHSCalculatorSurface"
+            ),
+
+    fallback:
+        UnknownApplicationFallback,
+
+    windowPreset: {
+
+        width: 700,
+
+        height: 520,
+
+        minWidth: 420,
+
+        minHeight: 320,
+
+        resizable: true
+    },
+
+    mobileSupported: true
+})
+
+// ---------------------------------------------------------
+
+runtimeApplicationRegistry.register({
+
+    id:
+        "breadboard",
+
+    title:
+        "Breadboard",
+
+    authority:
+        "graph",
+
+    description:
+        "Runtime transport topology surface",
+
+    lazyLoader:
+        async () =>
+
+            import(
+                "../../runtime_apps/breadboard/HHSBreadboardSurface"
+            ),
+
+    fallback:
+        UnknownApplicationFallback,
+
+    windowPreset: {
+
+        width: 820,
+
+        height: 520,
+
+        minWidth: 520,
+
+        minHeight: 360,
+
+        resizable: true
+    },
+
+    experimental: true
+})
+
+// ---------------------------------------------------------
+
+runtimeApplicationRegistry.register({
+
+    id:
+        "receipt_inspector",
+
+    title:
+        "Receipt Inspector",
+
+    authority:
+        "instrument",
+
+    description:
+        "Runtime receipt lineage inspector",
+
+    lazyLoader:
+        async () =>
+
+            import(
+                "../../runtime_apps/instruments/ReceiptInspector"
+            ),
+
+    fallback:
+        UnknownApplicationFallback,
+
+    windowPreset: {
+
+        width: 980,
+
+        height: 640,
+
+        minWidth: 720,
+
+        minHeight: 420,
+
+        resizable: true
+    }
+})
+
+// ---------------------------------------------------------
+
+runtimeApplicationRegistry.register({
+
+    id:
+        "replay_timeline",
+
+    title:
+        "Replay Timeline",
+
+    authority:
+        "instrument",
+
+    description:
+        "Runtime replay inspection surface",
+
+    lazyLoader:
+        async () =>
+
+            import(
+                "../../runtime_apps/instruments/ReplayTimeline"
+            ),
+
+    fallback:
+        UnknownApplicationFallback,
+
+    windowPreset: {
+
+        width: 980,
+
+        height: 640,
+
+        minWidth: 720,
+
+        minHeight: 420,
+
+        resizable: true
+    }
+})
