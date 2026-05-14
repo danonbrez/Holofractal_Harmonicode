@@ -12,451 +12,768 @@ import {
 } from "./RuntimeDesktop"
 
 import {
-    RuntimeDock
-} from "./RuntimeDock"
+    RuntimeTopbar
+} from "./RuntimeTopbar"
+
+import {
+    RuntimeSidebar
+} from "./RuntimeSidebar"
+
+import ReceiptInspector from
+    "../../runtime_apps/instruments/ReceiptInspector"
+
+import ReplayTimeline from
+    "../../runtime_apps/instruments/ReplayTimeline"
+
+// =========================================================
+// Props
+// =========================================================
 
 export interface RuntimeShellProps {
 
     runtimeOS: RuntimeOS
 }
 
-export interface RuntimeShellState {
-
-    bootComplete: boolean
-
-    diagnosticsVisible: boolean
-}
+// =========================================================
+// RuntimeShell
+// =========================================================
 
 export const RuntimeShell: React.FC<
     RuntimeShellProps
-> = ({ runtimeOS }) => {
+> = ({
+    runtimeOS
+}) => {
 
-    const [state, setState] =
-        useState<RuntimeShellState>({
+    const [booted, setBooted] =
+        useState(false)
 
-            bootComplete: false,
+    const [showSidebar, setShowSidebar] =
+        useState(true)
 
-            diagnosticsVisible: false
-        })
+    const [showReceipts, setShowReceipts] =
+        useState(false)
 
-    /**
-     * ---------------------------------------------------
-     * Runtime Bootstrap
-     * ---------------------------------------------------
-     */
+    const [showReplay, setShowReplay] =
+        useState(false)
+
+    const [metrics, setMetrics] =
+        useState(
+
+            runtimeOS.getMetrics()
+        )
+
+    // =====================================================
+    // Runtime Bootstrap
+    // =====================================================
 
     useEffect(() => {
 
         let mounted = true
 
-        const bootstrap =
-            async () => {
-
-            try {
-
-                await runtimeOS
-                    .initialize()
+        runtimeOS.initialize()
+            .then(() => {
 
                 if (!mounted) {
 
                     return
                 }
 
-                setState({
+                setBooted(true)
+            })
 
-                    bootComplete: true,
+        const interval =
+            window.setInterval(() => {
 
-                    diagnosticsVisible:
-                        false
-                })
-            }
-            catch (error) {
+                if (!mounted) {
 
-                console.error(
-                    "[RuntimeShell] bootstrap failure",
-                    error
+                    return
+                }
+
+                setMetrics(
+
+                    runtimeOS
+                        .getMetrics()
                 )
-            }
-        }
 
-        bootstrap()
+            }, 250)
 
         return () => {
 
             mounted = false
+
+            window.clearInterval(
+                interval
+            )
 
             runtimeOS.shutdown()
         }
 
     }, [runtimeOS])
 
-    /**
-     * ---------------------------------------------------
-     * Loading State
-     * ---------------------------------------------------
-     */
+    // =====================================================
+    // Boot Surface
+    // =====================================================
 
-    if (!state.bootComplete) {
+    if (!booted) {
 
         return (
 
+            <BootSurface />
+        )
+    }
+
+    // =====================================================
+    // Render
+    // =====================================================
+
+    return (
+
+        <div
+            className="
+                fixed
+                inset-0
+                overflow-hidden
+                bg-neutral-950
+                text-white
+            "
+        >
+
+            {/* ================================================= */}
+            {/* Runtime Desktop */}
+            {/* ================================================= */}
+
+            <RuntimeDesktop
+                runtimeOS={runtimeOS}
+            />
+
+            {/* ================================================= */}
+            {/* Topbar */}
+            {/* ================================================= */}
+
+            <RuntimeTopbar
+                runtimeOS={runtimeOS}
+            />
+
+            {/* ================================================= */}
+            {/* Sidebar */}
+            {/* ================================================= */}
+
+            {
+                showSidebar && (
+
+                    <RuntimeSidebar
+                        runtimeOS={runtimeOS}
+                    />
+                )
+            }
+
+            {/* ================================================= */}
+            {/* Runtime HUD */}
+            {/* ================================================= */}
+
             <div
                 className="
-                    w-screen
-                    h-screen
-                    bg-black
-                    text-cyan-400
+                    absolute
+                    top-12
+                    right-4
+                    z-[3000]
                     flex
-                    items-center
-                    justify-center
-                    font-mono
-                    overflow-hidden
-                    relative
+                    flex-col
+                    gap-3
+                    w-[340px]
                 "
             >
 
-                {/* -------------------------------- */}
-                {/* Grid */}
-                {/* -------------------------------- */}
+                {/* --------------------------------------------- */}
+                {/* Runtime Status */}
+                {/* --------------------------------------------- */}
 
                 <div
                     className="
-                        absolute
-                        inset-0
-                        opacity-[0.04]
-                    "
-                    style={{
-
-                        backgroundImage:
-                            `
-                            linear-gradient(
-                                rgba(255,255,255,0.08) 1px,
-                                transparent 1px
-                            ),
-                            linear-gradient(
-                                90deg,
-                                rgba(255,255,255,0.08) 1px,
-                                transparent 1px
-                            )
-                            `,
-
-                        backgroundSize:
-                            "32px 32px"
-                    }}
-                />
-
-                {/* -------------------------------- */}
-                {/* Boot Surface */}
-                {/* -------------------------------- */}
-
-                <div
-                    className="
-                        relative
-                        z-10
-                        flex
-                        flex-col
-                        items-center
-                        gap-6
+                        rounded-2xl
+                        border
+                        border-neutral-800
+                        bg-neutral-900/80
+                        backdrop-blur-xl
+                        p-4
+                        shadow-2xl
                     "
                 >
 
                     <div
                         className="
-                            text-3xl
-                            font-bold
-                            tracking-[0.25em]
-                        "
-                    >
-                        HHS Runtime OS
-                    </div>
-
-                    <div
-                        className="
-                            text-sm
-                            opacity-60
-                            tracking-wide
-                        "
-                    >
-                        deterministic manifold
-                        bootstrap
-                    </div>
-
-                    <div
-                        className="
-                            w-72
-                            h-[2px]
-                            overflow-hidden
-                            rounded-full
-                            bg-neutral-800
+                            flex
+                            items-center
+                            justify-between
+                            mb-4
                         "
                     >
 
                         <div
                             className="
-                                h-full
-                                w-1/2
-                                bg-cyan-400
-                                animate-pulse
+                                text-sm
+                                font-semibold
+                                tracking-wide
                             "
+                        >
+                            Runtime Status
+                        </div>
+
+                        <RuntimeIndicator
+                            online={
+                                Boolean(
+                                    metrics.connected
+                                )
+                            }
                         />
 
                     </div>
 
                     <div
                         className="
+                            grid
+                            grid-cols-2
+                            gap-3
                             text-xs
-                            opacity-40
                             font-mono
-                            flex
-                            flex-col
-                            items-center
-                            gap-1
                         "
                     >
 
-                        <div>
-                            workspace bootstrap
-                        </div>
+                        <MetricField
+                            label="runtime"
+                            value={
+                                metrics.connected
+                                    ? "online"
+                                    : "offline"
+                            }
+                        />
 
-                        <div>
-                            replay synchronization
-                        </div>
+                        <MetricField
+                            label="replay"
+                            value={
+                                metrics.replayReady
+                                    ? "online"
+                                    : "offline"
+                            }
+                        />
 
-                        <div>
-                            transport initialization
-                        </div>
+                        <MetricField
+                            label="graph"
+                            value={
+                                metrics.graphReady
+                                    ? "online"
+                                    : "offline"
+                            }
+                        />
 
-                        <div>
-                            graph continuity restore
-                        </div>
+                        <MetricField
+                            label="transport"
+                            value={
+                                metrics.transportReady
+                                    ? "online"
+                                    : "offline"
+                            }
+                        />
+
+                        <MetricField
+                            label="events"
+                            value={
+                                String(
+                                    metrics.totalEvents
+                                )
+                            }
+                        />
+
+                        <MetricField
+                            label="windows"
+                            value={
+                                String(
+                                    metrics.workspaceWindows
+                                )
+                            }
+                        />
+
+                    </div>
+
+                </div>
+
+                {/* --------------------------------------------- */}
+                {/* Runtime Instruments */}
+                {/* --------------------------------------------- */}
+
+                <div
+                    className="
+                        rounded-2xl
+                        border
+                        border-neutral-800
+                        bg-neutral-900/80
+                        backdrop-blur-xl
+                        p-4
+                        shadow-2xl
+                    "
+                >
+
+                    <div
+                        className="
+                            text-sm
+                            font-semibold
+                            tracking-wide
+                            mb-4
+                        "
+                    >
+                        Runtime Instruments
+                    </div>
+
+                    <div
+                        className="
+                            flex
+                            flex-col
+                            gap-2
+                        "
+                    >
+
+                        <button
+                            onClick={() => {
+
+                                setShowReceipts(
+                                    !showReceipts
+                                )
+                            }}
+                            className="
+                                runtime-button
+                                w-full
+                                px-3
+                                py-2
+                                text-sm
+                                text-left
+                            "
+                        >
+
+                            {
+                                showReceipts
+                                    ? "Hide"
+                                    : "Show"
+                            }
+
+                            {" "}
+
+                            Receipt Inspector
+
+                        </button>
+
+                        <button
+                            onClick={() => {
+
+                                setShowReplay(
+                                    !showReplay
+                                )
+                            }}
+                            className="
+                                runtime-button
+                                w-full
+                                px-3
+                                py-2
+                                text-sm
+                                text-left
+                            "
+                        >
+
+                            {
+                                showReplay
+                                    ? "Hide"
+                                    : "Show"
+                            }
+
+                            {" "}
+
+                            Replay Timeline
+
+                        </button>
+
+                        <button
+                            onClick={() => {
+
+                                setShowSidebar(
+                                    !showSidebar
+                                )
+                            }}
+                            className="
+                                runtime-button
+                                w-full
+                                px-3
+                                py-2
+                                text-sm
+                                text-left
+                            "
+                        >
+
+                            {
+                                showSidebar
+                                    ? "Hide"
+                                    : "Show"
+                            }
+
+                            {" "}
+
+                            Runtime Sidebar
+
+                        </button>
 
                     </div>
 
                 </div>
 
             </div>
-        )
-    }
 
-    /**
-     * ---------------------------------------------------
-     * Runtime Shell
-     * ---------------------------------------------------
-     */
+            {/* ================================================= */}
+            {/* Receipt Inspector Overlay */}
+            {/* ================================================= */}
+
+            {
+                showReceipts && (
+
+                    <OverlayWindow
+                        title="Receipt Inspector"
+                        onClose={() => {
+
+                            setShowReceipts(
+                                false
+                            )
+                        }}
+                    >
+
+                        <ReceiptInspector
+                            runtimeStore={
+                                runtimeOS.store
+                            }
+                        />
+
+                    </OverlayWindow>
+                )
+            }
+
+            {/* ================================================= */}
+            {/* Replay Timeline Overlay */}
+            {/* ================================================= */}
+
+            {
+                showReplay && (
+
+                    <OverlayWindow
+                        title="Replay Timeline"
+                        onClose={() => {
+
+                            setShowReplay(
+                                false
+                            )
+                        }}
+                    >
+
+                        <ReplayTimeline
+                            runtimeStore={
+                                runtimeOS.store
+                            }
+                        />
+
+                    </OverlayWindow>
+                )
+            }
+
+        </div>
+    )
+}
+
+// =========================================================
+// Boot Surface
+// =========================================================
+
+const BootSurface: React.FC =
+() => {
 
     return (
 
         <div
             className="
-                w-screen
-                h-screen
-                overflow-hidden
-                bg-neutral-950
-                text-neutral-100
-                relative
+                fixed
+                inset-0
+                bg-black
+                text-cyan-400
+                flex
+                items-center
+                justify-center
+                font-mono
             "
         >
 
-            {/* -------------------------------- */}
-            {/* Desktop */}
-            {/* -------------------------------- */}
-
-            <RuntimeDesktop
-                runtimeOS={runtimeOS}
-            />
-
-            {/* -------------------------------- */}
-            {/* Runtime Dock */}
-            {/* -------------------------------- */}
-
-            <RuntimeDock
-                runtimeOS={runtimeOS}
-            />
-
-            {/* -------------------------------- */}
-            {/* Top Runtime Bar */}
-            {/* -------------------------------- */}
-
             <div
                 className="
-                    absolute
-                    top-0
-                    left-0
-                    right-0
-                    h-10
-                    z-[1500]
-                    border-b
-                    border-neutral-800
-                    bg-neutral-950/80
-                    backdrop-blur-xl
                     flex
+                    flex-col
                     items-center
-                    justify-between
-                    px-4
-                    text-xs
-                    font-mono
+                    gap-6
                 "
             >
 
-                {/* ---------------- */}
-                {/* Left */}
-                {/* ---------------- */}
-
                 <div
                     className="
-                        flex
-                        items-center
-                        gap-4
+                        text-3xl
+                        font-semibold
+                        tracking-[0.3em]
                     "
                 >
-
-                    <div
-                        className="
-                            font-semibold
-                            tracking-wide
-                            text-cyan-400
-                        "
-                    >
-                        HHS
-                    </div>
-
-                    <div
-                        className="
-                            opacity-50
-                        "
-                    >
-                        Runtime OS
-                    </div>
-
-                    <div
-                        className="
-                            opacity-30
-                        "
-                    >
-                        Δe=0
-                    </div>
-
-                    <div
-                        className="
-                            opacity-30
-                        "
-                    >
-                        Ψ=0
-                    </div>
-
-                    <div
-                        className="
-                            opacity-30
-                        "
-                    >
-                        Θ15=true
-                    </div>
-
-                    <div
-                        className="
-                            opacity-30
-                        "
-                    >
-                        Ω=true
-                    </div>
-
+                    HHS
                 </div>
 
-                {/* ---------------- */}
-                {/* Right */}
-                {/* ---------------- */}
+                <div
+                    className="
+                        text-sm
+                        opacity-70
+                    "
+                >
+                    Runtime OS Boot Sequence
+                </div>
 
                 <div
                     className="
-                        flex
-                        items-center
-                        gap-4
+                        w-64
+                        h-[2px]
+                        bg-neutral-900
+                        overflow-hidden
+                        relative
                     "
                 >
 
-                    <div>
-                        windows:
-                        {" "}
-                        {
-                            runtimeOS.workspace
-                                .layout.windows
-                                .length
-                        }
-                    </div>
-
-                    <div>
-                        apps:
-                        {" "}
-                        {
-                            runtimeOS.state
-                                .applicationsMounted
-                        }
-                    </div>
-
                     <div
                         className="
-                            text-cyan-400
+                            absolute
+                            inset-y-0
+                            left-0
+                            w-1/2
+                            bg-cyan-400
+                            animate-pulse
                         "
-                    >
-                        {
-                            runtimeOS.state
-                                .connected
-                                    ? "online"
-                                    : "offline"
-                        }
-                    </div>
+                    />
 
                 </div>
 
             </div>
 
-            {/* -------------------------------- */}
-            {/* Runtime Diagnostics */}
-            {/* -------------------------------- */}
+        </div>
+    )
+}
 
-            {
-                state.diagnosticsVisible && (
+// =========================================================
+// Overlay Window
+// =========================================================
+
+interface OverlayWindowProps {
+
+    title: string
+
+    children: React.ReactNode
+
+    onClose: () => void
+}
+
+const OverlayWindow: React.FC<
+    OverlayWindowProps
+> = ({
+    title,
+    children,
+    onClose
+}) => {
+
+    return (
+
+        <div
+            className="
+                absolute
+                inset-0
+                z-[5000]
+                bg-black/50
+                backdrop-blur-sm
+                flex
+                items-center
+                justify-center
+                p-8
+            "
+        >
+
+            <div
+                className="
+                    w-full
+                    h-full
+                    rounded-2xl
+                    overflow-hidden
+                    border
+                    border-neutral-800
+                    bg-neutral-950
+                    shadow-2xl
+                    flex
+                    flex-col
+                "
+            >
+
+                {/* --------------------------------------------- */}
+                {/* Header */}
+                {/* --------------------------------------------- */}
+
+                <div
+                    className="
+                        h-12
+                        shrink-0
+                        border-b
+                        border-neutral-800
+                        bg-neutral-900
+                        px-4
+                        flex
+                        items-center
+                        justify-between
+                    "
+                >
 
                     <div
                         className="
-                            absolute
-                            top-16
-                            right-6
-                            z-[1600]
-                            w-[420px]
-                            max-h-[70vh]
-                            overflow-auto
-                            rounded-2xl
-                            border
-                            border-neutral-800
-                            bg-neutral-900/90
-                            backdrop-blur-xl
-                            shadow-2xl
-                            p-5
-                            text-xs
-                            font-mono
+                            text-sm
+                            font-semibold
+                            tracking-wide
                         "
                     >
-
-                        <pre
-                            className="
-                                whitespace-pre-wrap
-                                break-all
-                            "
-                        >
-                            {
-                                JSON.stringify(
-                                    runtimeOS
-                                        .getMetrics(),
-                                    null,
-                                    2
-                                )
-                            }
-                        </pre>
-
+                        {title}
                     </div>
-                )
-            }
+
+                    <button
+                        onClick={onClose}
+                        className="
+                            runtime-button
+                            px-3
+                            py-1
+                            text-xs
+                        "
+                    >
+                        close
+                    </button>
+
+                </div>
+
+                {/* --------------------------------------------- */}
+                {/* Content */}
+                {/* --------------------------------------------- */}
+
+                <div
+                    className="
+                        flex-1
+                        overflow-hidden
+                    "
+                >
+                    {children}
+                </div>
+
+            </div>
+
+        </div>
+    )
+}
+
+// =========================================================
+// Metric Field
+// =========================================================
+
+interface MetricFieldProps {
+
+    label: string
+
+    value: string
+}
+
+const MetricField: React.FC<
+    MetricFieldProps
+> = ({
+    label,
+    value
+}) => {
+
+    return (
+
+        <div
+            className="
+                flex
+                flex-col
+                gap-1
+            "
+        >
+
+            <div
+                className="
+                    opacity-50
+                    uppercase
+                    tracking-wide
+                    text-[10px]
+                "
+            >
+                {label}
+            </div>
+
+            <div>
+                {value}
+            </div>
+
+        </div>
+    )
+}
+
+// =========================================================
+// Runtime Indicator
+// =========================================================
+
+interface RuntimeIndicatorProps {
+
+    online: boolean
+}
+
+const RuntimeIndicator: React.FC<
+    RuntimeIndicatorProps
+> = ({
+    online
+}) => {
+
+    return (
+
+        <div
+            className="
+                flex
+                items-center
+                gap-2
+            "
+        >
+
+            <div
+                className={`
+                    w-2
+                    h-2
+                    rounded-full
+                    ${
+                        online
+                            ? "bg-green-400"
+                            : "bg-red-400"
+                    }
+                `}
+            />
+
+            <div
+                className="
+                    text-xs
+                    uppercase
+                    tracking-wide
+                    opacity-60
+                "
+            >
+                {
+                    online
+                        ? "online"
+                        : "offline"
+                }
+            </div>
 
         </div>
     )
