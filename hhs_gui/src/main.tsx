@@ -1,14 +1,37 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
+import React from "react"
 
-import App from "./App";
+import ReactDOM from "react-dom/client"
 
-import "./styles/global.css";
+import App from "./App"
+
+import "./styles/global.css"
+
+/**
+ * ===================================================
+ * HHS Runtime OS Bootstrap
+ * ===================================================
+ */
+
+const rootElement =
+    document.getElementById("root")
+
+if (!rootElement) {
+
+    throw new Error(
+        `
+        HHS Runtime OS bootstrap failed:
+        missing root element
+        `
+    )
+}
 
 ReactDOM.createRoot(
-  document.getElementById("root") as HTMLElement
+    rootElement
 ).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
+
+    <React.StrictMode>
+
+        <App />
+
+    </React.StrictMode>
+)
