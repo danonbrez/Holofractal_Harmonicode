@@ -1,6 +1,19 @@
-import React, { useEffect, useState } from "react"
+import React, {
+    useEffect,
+    useState
+} from "react"
 
-import { RuntimeOS } from "./RuntimeOS"
+import {
+    RuntimeOS
+} from "./RuntimeOS"
+
+import {
+    RuntimeDesktop
+} from "./RuntimeDesktop"
+
+import {
+    RuntimeDock
+} from "./RuntimeDock"
 
 export interface RuntimeShellProps {
 
@@ -10,10 +23,6 @@ export interface RuntimeShellProps {
 export interface RuntimeShellState {
 
     bootComplete: boolean
-
-    activeWorkspace?: string
-
-    sidebarVisible: boolean
 
     diagnosticsVisible: boolean
 }
@@ -26,8 +35,6 @@ export const RuntimeShell: React.FC<
         useState<RuntimeShellState>({
 
             bootComplete: false,
-
-            sidebarVisible: true,
 
             diagnosticsVisible: false
         })
@@ -42,11 +49,13 @@ export const RuntimeShell: React.FC<
 
         let mounted = true
 
-        const bootstrap = async () => {
+        const bootstrap =
+            async () => {
 
             try {
 
-                await runtimeOS.initialize()
+                await runtimeOS
+                    .initialize()
 
                 if (!mounted) {
 
@@ -57,12 +66,8 @@ export const RuntimeShell: React.FC<
 
                     bootComplete: true,
 
-                    activeWorkspace:
-                        runtimeOS.state.activeWorkspace,
-
-                    sidebarVisible: true,
-
-                    diagnosticsVisible: false
+                    diagnosticsVisible:
+                        false
                 })
             }
             catch (error) {
@@ -100,36 +105,135 @@ export const RuntimeShell: React.FC<
                     w-screen
                     h-screen
                     bg-black
-                    text-green-400
+                    text-cyan-400
                     flex
                     items-center
                     justify-center
                     font-mono
-                    text-sm
+                    overflow-hidden
+                    relative
                 "
             >
+
+                {/* -------------------------------- */}
+                {/* Grid */}
+                {/* -------------------------------- */}
+
                 <div
                     className="
+                        absolute
+                        inset-0
+                        opacity-[0.04]
+                    "
+                    style={{
+
+                        backgroundImage:
+                            `
+                            linear-gradient(
+                                rgba(255,255,255,0.08) 1px,
+                                transparent 1px
+                            ),
+                            linear-gradient(
+                                90deg,
+                                rgba(255,255,255,0.08) 1px,
+                                transparent 1px
+                            )
+                            `,
+
+                        backgroundSize:
+                            "32px 32px"
+                    }}
+                />
+
+                {/* -------------------------------- */}
+                {/* Boot Surface */}
+                {/* -------------------------------- */}
+
+                <div
+                    className="
+                        relative
+                        z-10
                         flex
                         flex-col
-                        gap-4
                         items-center
+                        gap-6
                     "
                 >
-                    <div>
-                        HHS Runtime OS Bootstrapping...
+
+                    <div
+                        className="
+                            text-3xl
+                            font-bold
+                            tracking-[0.25em]
+                        "
+                    >
+                        HHS Runtime OS
                     </div>
 
                     <div
                         className="
-                            animate-pulse
-                            text-xs
-                            opacity-70
+                            text-sm
+                            opacity-60
+                            tracking-wide
                         "
                     >
-                        Initializing runtime manifold
+                        deterministic manifold
+                        bootstrap
                     </div>
+
+                    <div
+                        className="
+                            w-72
+                            h-[2px]
+                            overflow-hidden
+                            rounded-full
+                            bg-neutral-800
+                        "
+                    >
+
+                        <div
+                            className="
+                                h-full
+                                w-1/2
+                                bg-cyan-400
+                                animate-pulse
+                            "
+                        />
+
+                    </div>
+
+                    <div
+                        className="
+                            text-xs
+                            opacity-40
+                            font-mono
+                            flex
+                            flex-col
+                            items-center
+                            gap-1
+                        "
+                    >
+
+                        <div>
+                            workspace bootstrap
+                        </div>
+
+                        <div>
+                            replay synchronization
+                        </div>
+
+                        <div>
+                            transport initialization
+                        </div>
+
+                        <div>
+                            graph continuity restore
+                        </div>
+
+                    </div>
+
                 </div>
+
             </div>
         )
     }
@@ -149,33 +253,60 @@ export const RuntimeShell: React.FC<
                 overflow-hidden
                 bg-neutral-950
                 text-neutral-100
-                flex
-                flex-col
+                relative
             "
         >
 
             {/* -------------------------------- */}
-            {/* Top Bar */}
+            {/* Desktop */}
+            {/* -------------------------------- */}
+
+            <RuntimeDesktop
+                runtimeOS={runtimeOS}
+            />
+
+            {/* -------------------------------- */}
+            {/* Runtime Dock */}
+            {/* -------------------------------- */}
+
+            <RuntimeDock
+                runtimeOS={runtimeOS}
+            />
+
+            {/* -------------------------------- */}
+            {/* Top Runtime Bar */}
             {/* -------------------------------- */}
 
             <div
                 className="
-                    h-12
+                    absolute
+                    top-0
+                    left-0
+                    right-0
+                    h-10
+                    z-[1500]
                     border-b
                     border-neutral-800
+                    bg-neutral-950/80
+                    backdrop-blur-xl
                     flex
                     items-center
                     justify-between
                     px-4
-                    bg-neutral-900
+                    text-xs
+                    font-mono
                 "
             >
+
+                {/* ---------------- */}
+                {/* Left */}
+                {/* ---------------- */}
 
                 <div
                     className="
                         flex
                         items-center
-                        gap-3
+                        gap-4
                     "
                 >
 
@@ -183,56 +314,95 @@ export const RuntimeShell: React.FC<
                         className="
                             font-semibold
                             tracking-wide
+                            text-cyan-400
                         "
                     >
-                        HHS Runtime OS
+                        HHS
                     </div>
 
                     <div
                         className="
-                            text-xs
-                            opacity-60
-                            font-mono
+                            opacity-50
                         "
                     >
-                        Δe=0 Ψ=0 Θ15 Ω
+                        Runtime OS
+                    </div>
+
+                    <div
+                        className="
+                            opacity-30
+                        "
+                    >
+                        Δe=0
+                    </div>
+
+                    <div
+                        className="
+                            opacity-30
+                        "
+                    >
+                        Ψ=0
+                    </div>
+
+                    <div
+                        className="
+                            opacity-30
+                        "
+                    >
+                        Θ15=true
+                    </div>
+
+                    <div
+                        className="
+                            opacity-30
+                        "
+                    >
+                        Ω=true
                     </div>
 
                 </div>
+
+                {/* ---------------- */}
+                {/* Right */}
+                {/* ---------------- */}
 
                 <div
                     className="
                         flex
                         items-center
-                        gap-3
-                        text-xs
-                        font-mono
+                        gap-4
                     "
                 >
+
+                    <div>
+                        windows:
+                        {" "}
+                        {
+                            runtimeOS.workspace
+                                .layout.windows
+                                .length
+                        }
+                    </div>
 
                     <div>
                         apps:
                         {" "}
-                        {runtimeOS.state.applicationsMounted}
-                    </div>
-
-                    <div>
-                        replay:
-                        {" "}
                         {
-                            runtimeOS.state.replayReady
-                                ? "online"
-                                : "offline"
+                            runtimeOS.state
+                                .applicationsMounted
                         }
                     </div>
 
-                    <div>
-                        graph:
-                        {" "}
+                    <div
+                        className="
+                            text-cyan-400
+                        "
+                    >
                         {
-                            runtimeOS.state.graphReady
-                                ? "online"
-                                : "offline"
+                            runtimeOS.state
+                                .connected
+                                    ? "online"
+                                    : "offline"
                         }
                     </div>
 
@@ -241,249 +411,52 @@ export const RuntimeShell: React.FC<
             </div>
 
             {/* -------------------------------- */}
-            {/* Main Runtime Layout */}
+            {/* Runtime Diagnostics */}
             {/* -------------------------------- */}
 
-            <div
-                className="
-                    flex
-                    flex-1
-                    overflow-hidden
-                "
-            >
-
-                {/* -------------------------------- */}
-                {/* Sidebar */}
-                {/* -------------------------------- */}
-
-                {
-                    state.sidebarVisible && (
-
-                        <div
-                            className="
-                                w-72
-                                border-r
-                                border-neutral-800
-                                bg-neutral-900
-                                flex
-                                flex-col
-                            "
-                        >
-
-                            <div
-                                className="
-                                    p-4
-                                    border-b
-                                    border-neutral-800
-                                    text-sm
-                                    font-semibold
-                                "
-                            >
-                                Runtime Navigation
-                            </div>
-
-                            <div
-                                className="
-                                    flex-1
-                                    overflow-auto
-                                    p-3
-                                    flex
-                                    flex-col
-                                    gap-2
-                                "
-                            >
-
-                                {
-                                    [
-                                        "Runtime Console",
-
-                                        "Calculator",
-
-                                        "Tensor Inspector",
-
-                                        "Replay Viewer",
-
-                                        "Graph Debugger",
-
-                                        "Physics Sandbox",
-
-                                        "Breadboard",
-
-                                        "Visual IDE"
-                                    ].map((item) => (
-
-                                        <button
-                                            key={item}
-                                            className="
-                                                w-full
-                                                text-left
-                                                px-3
-                                                py-2
-                                                rounded-lg
-                                                bg-neutral-800
-                                                hover:bg-neutral-700
-                                                transition
-                                                text-sm
-                                            "
-                                        >
-                                            {item}
-                                        </button>
-                                    ))
-                                }
-
-                            </div>
-
-                        </div>
-                    )
-                }
-
-                {/* -------------------------------- */}
-                {/* Runtime Viewport */}
-                {/* -------------------------------- */}
-
-                <div
-                    className="
-                        flex-1
-                        relative
-                        overflow-hidden
-                        bg-neutral-950
-                    "
-                >
-
-                    {/* -------------------------------- */}
-                    {/* Runtime Grid */}
-                    {/* -------------------------------- */}
+            {
+                state.diagnosticsVisible && (
 
                     <div
                         className="
                             absolute
-                            inset-0
-                            opacity-[0.08]
-                        "
-                        style={{
-
-                            backgroundImage:
-                                `
-                                linear-gradient(
-                                    rgba(255,255,255,0.08) 1px,
-                                    transparent 1px
-                                ),
-                                linear-gradient(
-                                    90deg,
-                                    rgba(255,255,255,0.08) 1px,
-                                    transparent 1px
-                                )
-                                `,
-
-                            backgroundSize:
-                                "32px 32px"
-                        }}
-                    />
-
-                    {/* -------------------------------- */}
-                    {/* Runtime Workspace */}
-                    {/* -------------------------------- */}
-
-                    <div
-                        className="
-                            absolute
-                            inset-0
-                            flex
-                            items-center
-                            justify-center
+                            top-16
+                            right-6
+                            z-[1600]
+                            w-[420px]
+                            max-h-[70vh]
+                            overflow-auto
+                            rounded-2xl
+                            border
+                            border-neutral-800
+                            bg-neutral-900/90
+                            backdrop-blur-xl
+                            shadow-2xl
+                            p-5
+                            text-xs
+                            font-mono
                         "
                     >
 
-                        <div
+                        <pre
                             className="
-                                text-center
-                                flex
-                                flex-col
-                                gap-4
+                                whitespace-pre-wrap
+                                break-all
                             "
                         >
-
-                            <div
-                                className="
-                                    text-3xl
-                                    font-bold
-                                "
-                            >
-                                Runtime Workspace
-                            </div>
-
-                            <div
-                                className="
-                                    text-sm
-                                    opacity-60
-                                    font-mono
-                                "
-                            >
-                                Workspace:
-                                {" "}
-                                {state.activeWorkspace}
-                            </div>
-
-                            <div
-                                className="
-                                    text-xs
-                                    opacity-40
-                                    max-w-xl
-                                    leading-relaxed
-                                "
-                            >
-                                Deterministic graph-native
-                                operating environment
-                                with replay-linked runtime
-                                continuity and multimodal
-                                projection topology.
-                            </div>
-
-                        </div>
+                            {
+                                JSON.stringify(
+                                    runtimeOS
+                                        .getMetrics(),
+                                    null,
+                                    2
+                                )
+                            }
+                        </pre>
 
                     </div>
-
-                </div>
-
-            </div>
-
-            {/* -------------------------------- */}
-            {/* Runtime Footer */}
-            {/* -------------------------------- */}
-
-            <div
-                className="
-                    h-8
-                    border-t
-                    border-neutral-800
-                    bg-neutral-900
-                    flex
-                    items-center
-                    justify-between
-                    px-4
-                    text-xs
-                    font-mono
-                    opacity-70
-                "
-            >
-
-                <div>
-                    Runtime OS Active
-                </div>
-
-                <div>
-                    uptime:
-                    {" "}
-                    {
-                        Math.floor(
-                            runtimeOS.getMetrics()
-                                .uptimeMs as number
-                        )
-                    }
-                    ms
-                </div>
-
-            </div>
+                )
+            }
 
         </div>
     )
