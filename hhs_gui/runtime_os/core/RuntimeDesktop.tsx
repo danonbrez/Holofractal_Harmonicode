@@ -8,9 +8,24 @@ import {
     RuntimeViewport
 } from "./RuntimeViewport"
 
+/**
+ * IMPORTANT:
+ * ---------------------------------------------------
+ * Explicit .tsx import required.
+ *
+ * Upstream contains:
+ *
+ * - RuntimeWindowManager.ts
+ * - RuntimeWindowManager.tsx
+ *
+ * Vite resolves .ts first by default.
+ *
+ * This import MUST target the React component.
+ */
+
 import {
     RuntimeWindowManager
-} from "./RuntimeWindowManager"
+} from "./RuntimeWindowManager.tsx"
 
 export interface RuntimeDesktopProps {
 
@@ -32,7 +47,7 @@ export const RuntimeDesktop: React.FC<
 
     /**
      * ---------------------------------------------------
-     * Desktop Render
+     * Render
      * ---------------------------------------------------
      */
 
@@ -56,7 +71,7 @@ export const RuntimeDesktop: React.FC<
             />
 
             {/* -------------------------------- */}
-            {/* Window Topology */}
+            {/* Runtime Window Topology */}
             {/* -------------------------------- */}
 
             <RuntimeWindowManager
@@ -64,7 +79,7 @@ export const RuntimeDesktop: React.FC<
             />
 
             {/* -------------------------------- */}
-            {/* Desktop Overlay */}
+            {/* Overlay */}
             {/* -------------------------------- */}
 
             <div
@@ -74,10 +89,6 @@ export const RuntimeDesktop: React.FC<
                     pointer-events-none
                 "
             >
-
-                {/* ---------------- */}
-                {/* Gradient Overlay */}
-                {/* ---------------- */}
 
                 <div
                     className="
@@ -89,10 +100,6 @@ export const RuntimeDesktop: React.FC<
                         to-transparent
                     "
                 />
-
-                {/* ---------------- */}
-                {/* Radial Field */}
-                {/* ---------------- */}
 
                 <div
                     className="
@@ -109,9 +116,9 @@ export const RuntimeDesktop: React.FC<
                                     34,
                                     211,
                                     238,
-                                    0.06
+                                    0.05
                                 ) 0%,
-                                transparent 70%
+                                transparent 72%
                             )
                             `
                     }}
@@ -120,13 +127,13 @@ export const RuntimeDesktop: React.FC<
             </div>
 
             {/* -------------------------------- */}
-            {/* Runtime Desktop HUD */}
+            {/* Desktop HUD */}
             {/* -------------------------------- */}
 
             <div
                 className="
                     absolute
-                    top-6
+                    top-14
                     left-6
                     z-[1000]
                     rounded-xl
@@ -207,9 +214,7 @@ export const RuntimeDesktop: React.FC<
                     {" "}
                     {
                         Math.floor(
-                            metrics
-                                .uptimeMs
-                                    as number
+                            metrics.uptimeMs as number
                         )
                     }
                     ms
