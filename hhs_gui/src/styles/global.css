@@ -1,120 +1,520 @@
+@import url(
+    "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+);
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* =======================================================
+   Root
+======================================================= */
+
 html,
 body,
 #root {
-  margin: 0;
-  padding: 0;
 
-  width: 100%;
-  height: 100%;
+    margin: 0;
+    padding: 0;
 
-  overflow: hidden;
+    width: 100%;
+    height: 100%;
 
-  background:
-    radial-gradient(
-      circle at center,
-      #0d1117 0%,
-      #05070b 100%
-    );
+    overflow: hidden;
 
-  color: white;
+    background: #05070b;
 
-  font-family:
-    Inter,
-    system-ui,
-    sans-serif;
+    color: white;
+
+    font-family:
+        "Inter",
+        system-ui,
+        sans-serif;
+
+    text-rendering:
+        optimizeLegibility;
+
+    -webkit-font-smoothing:
+        antialiased;
+
+    -moz-osx-font-smoothing:
+        grayscale;
 }
+
+/* =======================================================
+   Global Reset
+======================================================= */
 
 * {
-  box-sizing: border-box;
+
+    box-sizing: border-box;
 }
 
-.runtime-shell {
-  width: 100vw;
-  height: 100vh;
+button,
+input,
+textarea {
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  padding: 24px;
+    font: inherit;
 }
 
-.runtime-core {
-  width: 100%;
-  height: 100%;
+button {
 
-  border-radius: 24px;
+    border: none;
 
-  border:
-    1px solid rgba(255,255,255,0.08);
+    outline: none;
 
-  background:
-    rgba(255,255,255,0.03);
+    cursor: pointer;
 
-  backdrop-filter: blur(20px);
-
-  display: flex;
-  flex-direction: column;
-
-  overflow: hidden;
+    background: transparent;
 }
 
-.runtime-header {
-  padding: 24px;
+input,
+textarea {
 
-  border-bottom:
-    1px solid rgba(255,255,255,0.08);
+    border: none;
+
+    outline: none;
+
+    background: transparent;
+
+    color: inherit;
 }
 
-.runtime-title {
-  font-size: 28px;
-  font-weight: 700;
+/* =======================================================
+   Scrollbars
+======================================================= */
 
-  letter-spacing: 0.08em;
+::-webkit-scrollbar {
+
+    width: 10px;
+
+    height: 10px;
 }
 
-.runtime-subtitle {
-  margin-top: 8px;
+::-webkit-scrollbar-track {
 
-  opacity: 0.65;
-
-  font-size: 14px;
+    background:
+        rgba(255,255,255,0.02);
 }
 
-.runtime-body {
-  flex: 1;
+::-webkit-scrollbar-thumb {
 
-  padding: 24px;
+    border-radius: 999px;
+
+    background:
+        rgba(255,255,255,0.12);
 }
+
+::-webkit-scrollbar-thumb:hover {
+
+    background:
+        rgba(255,255,255,0.18);
+}
+
+/* =======================================================
+   Selection
+======================================================= */
+
+::selection {
+
+    background:
+        rgba(34,211,238,0.25);
+
+    color: white;
+}
+
+/* =======================================================
+   Runtime Background
+======================================================= */
+
+.runtime-background {
+
+    position: absolute;
+
+    inset: 0;
+
+    overflow: hidden;
+
+    background:
+        radial-gradient(
+            circle at top,
+            rgba(34,211,238,0.06),
+            transparent 40%
+        ),
+        radial-gradient(
+            circle at bottom,
+            rgba(168,85,247,0.05),
+            transparent 40%
+        ),
+        linear-gradient(
+            to bottom,
+            #05070b,
+            #090d14
+        );
+}
+
+/* =======================================================
+   Runtime Grid
+======================================================= */
 
 .runtime-grid {
-  width: 100%;
-  height: 100%;
 
-  display: grid;
+    position: absolute;
 
-  grid-template-columns:
-    repeat(2, 1fr);
+    inset: 0;
 
-  gap: 20px;
+    opacity: 0.05;
+
+    background-image:
+        linear-gradient(
+            rgba(255,255,255,0.08) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            90deg,
+            rgba(255,255,255,0.08) 1px,
+            transparent 1px
+        );
+
+    background-size:
+        32px 32px;
 }
 
-.runtime-panel {
-  border-radius: 18px;
+/* =======================================================
+   Runtime Glow
+======================================================= */
 
-  border:
-    1px solid rgba(255,255,255,0.08);
+.runtime-glow {
 
-  background:
-    rgba(255,255,255,0.02);
+    position: absolute;
 
-  padding: 20px;
+    inset: 0;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    pointer-events: none;
 
-  font-size: 18px;
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(34,211,238,0.08),
+            transparent 70%
+        );
+}
 
-  backdrop-filter: blur(12px);
+/* =======================================================
+   Window
+======================================================= */
+
+.runtime-window {
+
+    border-radius: 18px;
+
+    overflow: hidden;
+
+    border:
+        1px solid rgba(255,255,255,0.08);
+
+    background:
+        rgba(10,14,22,0.88);
+
+    backdrop-filter:
+        blur(18px);
+
+    box-shadow:
+        0 0 0 1px rgba(255,255,255,0.02),
+        0 20px 80px rgba(0,0,0,0.55);
+
+    transition:
+        transform 180ms ease,
+        box-shadow 180ms ease,
+        border-color 180ms ease;
+}
+
+.runtime-window:hover {
+
+    border-color:
+        rgba(34,211,238,0.18);
+
+    box-shadow:
+        0 0 0 1px rgba(34,211,238,0.08),
+        0 30px 120px rgba(0,0,0,0.65);
+}
+
+/* =======================================================
+   Window Header
+======================================================= */
+
+.runtime-window-header {
+
+    height: 40px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding:
+        0 12px;
+
+    border-bottom:
+        1px solid rgba(255,255,255,0.06);
+
+    background:
+        rgba(0,0,0,0.25);
+
+    backdrop-filter:
+        blur(12px);
+}
+
+/* =======================================================
+   Runtime HUD
+======================================================= */
+
+.runtime-hud {
+
+    border-radius: 16px;
+
+    border:
+        1px solid rgba(255,255,255,0.08);
+
+    background:
+        rgba(15,18,24,0.72);
+
+    backdrop-filter:
+        blur(20px);
+
+    box-shadow:
+        0 10px 40px rgba(0,0,0,0.35);
+}
+
+/* =======================================================
+   Runtime Dock
+======================================================= */
+
+.runtime-dock {
+
+    border-radius: 24px;
+
+    border:
+        1px solid rgba(255,255,255,0.08);
+
+    background:
+        rgba(15,18,24,0.72);
+
+    backdrop-filter:
+        blur(24px);
+
+    box-shadow:
+        0 12px 60px rgba(0,0,0,0.45);
+}
+
+/* =======================================================
+   Runtime Button
+======================================================= */
+
+.runtime-button {
+
+    border-radius: 12px;
+
+    border:
+        1px solid rgba(255,255,255,0.08);
+
+    background:
+        rgba(255,255,255,0.04);
+
+    transition:
+        background 160ms ease,
+        border-color 160ms ease,
+        transform 160ms ease;
+}
+
+.runtime-button:hover {
+
+    background:
+        rgba(34,211,238,0.12);
+
+    border-color:
+        rgba(34,211,238,0.28);
+
+    transform:
+        translateY(-1px);
+}
+
+/* =======================================================
+   Runtime Input
+======================================================= */
+
+.runtime-input {
+
+    border-radius: 14px;
+
+    border:
+        1px solid rgba(255,255,255,0.08);
+
+    background:
+        rgba(255,255,255,0.03);
+
+    backdrop-filter:
+        blur(12px);
+
+    transition:
+        border-color 160ms ease,
+        background 160ms ease;
+}
+
+.runtime-input:focus {
+
+    border-color:
+        rgba(34,211,238,0.32);
+
+    background:
+        rgba(255,255,255,0.05);
+}
+
+/* =======================================================
+   Runtime Pulse
+======================================================= */
+
+@keyframes runtimePulse {
+
+    0% {
+
+        opacity: 0.35;
+    }
+
+    50% {
+
+        opacity: 1;
+    }
+
+    100% {
+
+        opacity: 0.35;
+    }
+}
+
+.runtime-pulse {
+
+    animation:
+        runtimePulse 2s infinite;
+}
+
+/* =======================================================
+   Runtime Float
+======================================================= */
+
+@keyframes runtimeFloat {
+
+    0% {
+
+        transform:
+            translateY(0px);
+    }
+
+    50% {
+
+        transform:
+            translateY(-4px);
+    }
+
+    100% {
+
+        transform:
+            translateY(0px);
+    }
+}
+
+.runtime-float {
+
+    animation:
+        runtimeFloat 4s ease-in-out infinite;
+}
+
+/* =======================================================
+   Runtime Fade
+======================================================= */
+
+@keyframes runtimeFadeIn {
+
+    from {
+
+        opacity: 0;
+
+        transform:
+            translateY(8px);
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform:
+            translateY(0px);
+    }
+}
+
+.runtime-fade-in {
+
+    animation:
+        runtimeFadeIn
+        280ms
+        ease-out;
+}
+
+/* =======================================================
+   Runtime Text Gradient
+======================================================= */
+
+.runtime-text-gradient {
+
+    background:
+        linear-gradient(
+            to right,
+            #22d3ee,
+            #a855f7
+        );
+
+    -webkit-background-clip:
+        text;
+
+    -webkit-text-fill-color:
+        transparent;
+}
+
+/* =======================================================
+   Runtime Noise Overlay
+======================================================= */
+
+.runtime-noise {
+
+    position: absolute;
+
+    inset: 0;
+
+    pointer-events: none;
+
+    opacity: 0.025;
+
+    background-image:
+        url(
+            "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E"
+        );
+}
+
+/* =======================================================
+   Mobile
+======================================================= */
+
+@media (max-width: 768px) {
+
+    .runtime-window {
+
+        border-radius: 14px;
+    }
+
+    .runtime-dock {
+
+        transform:
+            scale(0.92);
+    }
 }
