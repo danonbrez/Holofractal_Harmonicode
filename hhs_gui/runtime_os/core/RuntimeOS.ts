@@ -23,9 +23,25 @@
  * Ω = true
  */
 
-import { RuntimeWorkspace } from "./RuntimeWorkspace"
-import { RuntimeRouter } from "./RuntimeRouter"
-import { RuntimeSession } from "./RuntimeSession"
+import {
+    RuntimeWorkspace
+} from "./RuntimeWorkspace"
+
+import {
+    RuntimeRouter
+} from "./RuntimeRouter"
+
+import {
+    RuntimeSession
+} from "./RuntimeSession"
+
+import {
+    RuntimeApplicationRegistry
+} from "./RuntimeApplicationRegistry"
+
+import {
+    RuntimeSocketManager
+} from "./RuntimeSocketManager"
 
 export interface RuntimeOSConfig {
 
@@ -61,41 +77,66 @@ export interface RuntimeOSState {
 
 export class RuntimeOS {
 
-    public readonly config: RuntimeOSConfig
+    public readonly config:
+        RuntimeOSConfig
 
-    public readonly workspace: RuntimeWorkspace
+    public readonly workspace:
+        RuntimeWorkspace
 
-    public readonly router: RuntimeRouter
+    public readonly router:
+        RuntimeRouter
 
-    public readonly session: RuntimeSession
+    public readonly session:
+        RuntimeSession
 
-    public readonly state: RuntimeOSState
+    public readonly applications:
+        RuntimeApplicationRegistry
 
-    private runtimeSocket?: WebSocket
+    public readonly sockets:
+        RuntimeSocketManager
 
-    private replaySocket?: WebSocket
+    public readonly state:
+        RuntimeOSState
 
-    private graphSocket?: WebSocket
+    private initializedAt:
+        number
 
-    private transportSocket?: WebSocket
-
-    private applicationRegistry: Map<string, unknown>
-
-    private initializedAt: number
-
-    constructor(config: RuntimeOSConfig) {
+    constructor(
+        config: RuntimeOSConfig
+    ) {
 
         this.config = config
 
-        this.workspace = new RuntimeWorkspace()
+        this.workspace =
+            new RuntimeWorkspace()
 
-        this.router = new RuntimeRouter()
+        this.router =
+            new RuntimeRouter()
 
-        this.session = new RuntimeSession()
+        this.session =
+            new RuntimeSession()
 
-        this.applicationRegistry = new Map()
+        this.applications =
+            new RuntimeApplicationRegistry()
 
-        this.initializedAt = Date.now()
+        this.sockets =
+            new RuntimeSocketManager({
+
+                runtimeEndpoint:
+                    config.runtimeEndpoint,
+
+                replayEndpoint:
+                    config.replayEndpoint,
+
+                graphEndpoint:
+                    config.graphEndpoint,
+
+                transportEndpoint:
+                    config.transportEndpoint
+            })
+
+        this.initializedAt =
+            Date.now()
 
         this.state = {
 
@@ -115,33 +156,37 @@ export class RuntimeOS {
 
     /**
      * ---------------------------------------------------
-     * Runtime OS Bootstrap
+     * Runtime Bootstrap
      * ---------------------------------------------------
      */
 
-    public async initialize(): Promise<void> {
+    public async initialize():
+        Promise<void> {
 
-        console.log("[RuntimeOS] bootstrap begin")
+        console.log(
+            "[RuntimeOS] bootstrap begin"
+        )
 
         await this.initializeWorkspace()
 
+        await this.initializeRouter()
+
         await this.initializeSession()
 
-        await this.initializeRuntimeStreams()
-
-        await this.initializeReplay()
-
-        await this.initializeGraph()
-
-        await this.initializeTransport()
+        await this.initializeSockets()
 
         await this.initializeApplications()
 
         await this.initializeDiagnostics()
 
-        this.state.initialized = true
+        this.bindSocketState()
 
-        console.log("[RuntimeOS] bootstrap complete")
+        this.state.initialized =
+            true
+
+        console.log(
+            "[RuntimeOS] bootstrap complete"
+        )
     }
 
     /**
@@ -150,13 +195,33 @@ export class RuntimeOS {
      * ---------------------------------------------------
      */
 
-    private async initializeWorkspace(): Promise<void> {
+    private async initializeWorkspace():
+        Promise<void> {
 
-        console.log("[RuntimeOS] workspace init")
+        console.log(
+            "[RuntimeOS] workspace init"
+        )
 
         await this.workspace.initialize()
 
-        this.state.activeWorkspace = this.workspace.id
+        this.state.activeWorkspace =
+            this.workspace.id
+    }
+
+    /**
+     * ---------------------------------------------------
+     * Router Initialization
+     * ---------------------------------------------------
+     */
+
+    private async initializeRouter():
+        Promise<void> {
+
+        console.log(
+            "[RuntimeOS] router init"
+        )
+
+        await this.router.initialize()
     }
 
     /**
@@ -165,124 +230,30 @@ export class RuntimeOS {
      * ---------------------------------------------------
      */
 
-    private async initializeSession(): Promise<void> {
+    private async initializeSession():
+        Promise<void> {
 
-        console.log("[RuntimeOS] session init")
+        console.log(
+            "[RuntimeOS] session init"
+        )
 
         await this.session.initialize()
     }
 
     /**
      * ---------------------------------------------------
-     * Runtime Stream Bootstrap
+     * Socket Initialization
      * ---------------------------------------------------
      */
 
-    private async initializeRuntimeStreams(): Promise<void> {
+    private async initializeSockets():
+        Promise<void> {
 
-        console.log("[RuntimeOS] runtime streams init")
-
-        this.runtimeSocket = new WebSocket(
-            this.config.runtimeEndpoint
+        console.log(
+            "[RuntimeOS] socket init"
         )
 
-        this.runtimeSocket.onopen = () => {
-
-            console.log("[RuntimeOS] runtime connected")
-
-            this.state.connected = true
-        }
-
-        this.runtimeSocket.onmessage = (event) => {
-
-            this.handleRuntimeMessage(event.data)
-        }
-
-        this.runtimeSocket.onerror = (error) => {
-
-            console.error("[RuntimeOS] runtime error", error)
-        }
-    }
-
-    /**
-     * ---------------------------------------------------
-     * Replay Synchronization
-     * ---------------------------------------------------
-     */
-
-    private async initializeReplay(): Promise<void> {
-
-        console.log("[RuntimeOS] replay init")
-
-        this.replaySocket = new WebSocket(
-            this.config.replayEndpoint
-        )
-
-        this.replaySocket.onopen = () => {
-
-            console.log("[RuntimeOS] replay connected")
-
-            this.state.replayReady = true
-        }
-
-        this.replaySocket.onmessage = (event) => {
-
-            this.handleReplayMessage(event.data)
-        }
-    }
-
-    /**
-     * ---------------------------------------------------
-     * Graph Synchronization
-     * ---------------------------------------------------
-     */
-
-    private async initializeGraph(): Promise<void> {
-
-        console.log("[RuntimeOS] graph init")
-
-        this.graphSocket = new WebSocket(
-            this.config.graphEndpoint
-        )
-
-        this.graphSocket.onopen = () => {
-
-            console.log("[RuntimeOS] graph connected")
-
-            this.state.graphReady = true
-        }
-
-        this.graphSocket.onmessage = (event) => {
-
-            this.handleGraphMessage(event.data)
-        }
-    }
-
-    /**
-     * ---------------------------------------------------
-     * Transport Synchronization
-     * ---------------------------------------------------
-     */
-
-    private async initializeTransport(): Promise<void> {
-
-        console.log("[RuntimeOS] transport init")
-
-        this.transportSocket = new WebSocket(
-            this.config.transportEndpoint
-        )
-
-        this.transportSocket.onopen = () => {
-
-            console.log("[RuntimeOS] transport connected")
-
-            this.state.transportReady = true
-        }
-
-        this.transportSocket.onmessage = (event) => {
-
-            this.handleTransportMessage(event.data)
-        }
+        await this.sockets.initialize()
     }
 
     /**
@@ -291,124 +262,136 @@ export class RuntimeOS {
      * ---------------------------------------------------
      */
 
-    private async initializeApplications(): Promise<void> {
+    private async initializeApplications():
+        Promise<void> {
 
-        console.log("[RuntimeOS] applications init")
+        console.log(
+            "[RuntimeOS] applications init"
+        )
+
+        await this.applications.initialize()
 
         const defaultApplications = [
 
-            "calculator",
+            {
+                id: "runtime_console",
 
-            "tensor_inspector",
+                title: "Runtime Console",
 
-            "receipt_replay_viewer",
+                runtimeType: "console"
+            },
 
-            "runtime_console",
+            {
+                id: "calculator",
 
-            "graph_debugger"
+                title: "Calculator",
+
+                runtimeType: "symbolic"
+            },
+
+            {
+                id: "breadboard",
+
+                title: "Breadboard",
+
+                runtimeType: "transport"
+            },
+
+            {
+                id: "graph_debugger",
+
+                title: "Graph Debugger",
+
+                runtimeType: "graph"
+            },
+
+            {
+                id: "tensor_inspector",
+
+                title: "Tensor Inspector",
+
+                runtimeType: "tensor"
+            },
+
+            {
+                id: "replay_viewer",
+
+                title: "Replay Viewer",
+
+                runtimeType: "replay"
+            }
         ]
 
-        for (const app of defaultApplications) {
+        for (
+            const application
+            of defaultApplications
+        ) {
 
-            this.registerApplication(app, {})
+            this.applications.register({
+
+                ...application,
+
+                mounted: true,
+
+                initialized: true,
+
+                createdAt:
+                    Date.now()
+            })
         }
+
+        this.state.applicationsMounted =
+            this.applications
+                .getAll()
+                .length
     }
 
     /**
      * ---------------------------------------------------
-     * Diagnostics Initialization
+     * Diagnostics
      * ---------------------------------------------------
      */
 
-    private async initializeDiagnostics(): Promise<void> {
+    private async initializeDiagnostics():
+        Promise<void> {
 
-        if (!this.config.diagnosticsEnabled) {
+        if (
+            !this.config
+                .diagnosticsEnabled
+        ) {
 
             return
         }
-
-        console.log("[RuntimeOS] diagnostics init")
-    }
-
-    /**
-     * ---------------------------------------------------
-     * Runtime Message Routing
-     * ---------------------------------------------------
-     */
-
-    private handleRuntimeMessage(
-        payload: unknown
-    ): void {
-
-        console.log("[RuntimeOS] runtime message", payload)
-    }
-
-    private handleReplayMessage(
-        payload: unknown
-    ): void {
-
-        console.log("[RuntimeOS] replay message", payload)
-    }
-
-    private handleGraphMessage(
-        payload: unknown
-    ): void {
-
-        console.log("[RuntimeOS] graph message", payload)
-    }
-
-    private handleTransportMessage(
-        payload: unknown
-    ): void {
-
-        console.log("[RuntimeOS] transport message", payload)
-    }
-
-    /**
-     * ---------------------------------------------------
-     * Application Mounting
-     * ---------------------------------------------------
-     */
-
-    public registerApplication(
-        id: string,
-        app: unknown
-    ): void {
-
-        if (this.applicationRegistry.has(id)) {
-
-            console.warn(
-                `[RuntimeOS] application already registered: ${id}`
-            )
-
-            return
-        }
-
-        this.applicationRegistry.set(id, app)
-
-        this.state.applicationsMounted += 1
 
         console.log(
-            `[RuntimeOS] application mounted: ${id}`
+            "[RuntimeOS] diagnostics init"
         )
     }
 
-    public unregisterApplication(
-        id: string
-    ): void {
+    /**
+     * ---------------------------------------------------
+     * Socket State Binding
+     * ---------------------------------------------------
+     */
 
-        if (!this.applicationRegistry.has(id)) {
+    private bindSocketState():
+        void {
 
-            return
-        }
+        this.state.connected =
+            this.sockets.state
+                .runtimeConnected
 
-        this.applicationRegistry.delete(id)
+        this.state.replayReady =
+            this.sockets.state
+                .replayConnected
 
-        this.state.applicationsMounted -= 1
+        this.state.graphReady =
+            this.sockets.state
+                .graphConnected
 
-        console.log(
-            `[RuntimeOS] application unmounted: ${id}`
-        )
+        this.state.transportReady =
+            this.sockets.state
+                .transportConnected
     }
 
     /**
@@ -417,40 +400,46 @@ export class RuntimeOS {
      * ---------------------------------------------------
      */
 
-    public async shutdown(): Promise<void> {
+    public async shutdown():
+        Promise<void> {
 
-        console.log("[RuntimeOS] shutdown begin")
+        console.log(
+            "[RuntimeOS] shutdown begin"
+        )
 
-        this.runtimeSocket?.close()
+        this.sockets.shutdown()
 
-        this.replaySocket?.close()
+        this.session.terminate()
 
-        this.graphSocket?.close()
+        this.state.connected =
+            false
 
-        this.transportSocket?.close()
+        this.state.initialized =
+            false
 
-        this.state.connected = false
-
-        this.state.initialized = false
-
-        console.log("[RuntimeOS] shutdown complete")
+        console.log(
+            "[RuntimeOS] shutdown complete"
+        )
     }
 
     /**
      * ---------------------------------------------------
-     * Runtime Metrics
+     * Metrics
      * ---------------------------------------------------
      */
 
-    public getMetrics(): object {
+    public getMetrics():
+        object {
 
         return {
 
             uptimeMs:
-                Date.now() - this.initializedAt,
+                Date.now()
+                - this.initializedAt,
 
             applicationsMounted:
-                this.state.applicationsMounted,
+                this.state
+                    .applicationsMounted,
 
             replayReady:
                 this.state.replayReady,
@@ -462,7 +451,27 @@ export class RuntimeOS {
                 this.state.transportReady,
 
             connected:
-                this.state.connected
+                this.state.connected,
+
+            workspace:
+                this.workspace
+                    .getMetrics(),
+
+            router:
+                this.router
+                    .getMetrics(),
+
+            session:
+                this.session
+                    .getMetrics(),
+
+            applications:
+                this.applications
+                    .getMetrics(),
+
+            sockets:
+                this.sockets
+                    .getMetrics()
         }
     }
 }
