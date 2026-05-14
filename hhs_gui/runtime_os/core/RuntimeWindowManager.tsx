@@ -8,6 +8,10 @@ import {
     RuntimeWindowState
 } from "./RuntimeWorkspace"
 
+import {
+    RuntimeWindowContent
+} from "./RuntimeWindowContent"
+
 export interface RuntimeWindowManagerProps {
 
     runtimeOS: RuntimeOS
@@ -22,7 +26,7 @@ export const RuntimeWindowManager: React.FC<
 
     /**
      * ---------------------------------------------------
-     * Window Focus
+     * Focus Window
      * ---------------------------------------------------
      */
 
@@ -36,7 +40,96 @@ export const RuntimeWindowManager: React.FC<
 
     /**
      * ---------------------------------------------------
-     * Window Render
+     * Close Window
+     * ---------------------------------------------------
+     */
+
+    const handleClose = (
+        windowId: string
+    ) => {
+
+        runtimeOS.workspace
+            .removeWindow(windowId)
+    }
+
+    /**
+     * ---------------------------------------------------
+     * Minimize Window
+     * ---------------------------------------------------
+     */
+
+    const handleMinimize = (
+        windowId: string
+    ) => {
+
+        const target =
+            runtimeOS.workspace
+                .layout.windows
+                .find(
+                    (window) =>
+                        window.id ===
+                        windowId
+                )
+
+        if (!target) {
+
+            return
+        }
+
+        target.minimized =
+            !target.minimized
+    }
+
+    /**
+     * ---------------------------------------------------
+     * Maximize Window
+     * ---------------------------------------------------
+     */
+
+    const handleMaximize = (
+        windowId: string
+    ) => {
+
+        const target =
+            runtimeOS.workspace
+                .layout.windows
+                .find(
+                    (window) =>
+                        window.id ===
+                        windowId
+                )
+
+        if (!target) {
+
+            return
+        }
+
+        target.maximized =
+            !target.maximized
+
+        if (target.maximized) {
+
+            target.position = {
+
+                x: 24,
+
+                y: 24
+            }
+
+            target.size = {
+
+                width:
+                    window.innerWidth - 96,
+
+                height:
+                    window.innerHeight - 160
+            }
+        }
+    }
+
+    /**
+     * ---------------------------------------------------
+     * Render
      * ---------------------------------------------------
      */
 
@@ -55,9 +148,33 @@ export const RuntimeWindowManager: React.FC<
 
                     <RuntimeWindow
                         key={window.id}
+
+                        runtimeOS={runtimeOS}
+
                         window={window}
+
                         onFocus={() =>
-                            handleFocus(window.id)
+                            handleFocus(
+                                window.id
+                            )
+                        }
+
+                        onClose={() =>
+                            handleClose(
+                                window.id
+                            )
+                        }
+
+                        onMinimize={() =>
+                            handleMinimize(
+                                window.id
+                            )
+                        }
+
+                        onMaximize={() =>
+                            handleMaximize(
+                                window.id
+                            )
                         }
                     />
                 ))
@@ -75,16 +192,28 @@ export const RuntimeWindowManager: React.FC<
 
 export interface RuntimeWindowProps {
 
+    runtimeOS: RuntimeOS
+
     window: RuntimeWindowState
 
     onFocus: () => void
+
+    onClose: () => void
+
+    onMinimize: () => void
+
+    onMaximize: () => void
 }
 
 export const RuntimeWindow: React.FC<
     RuntimeWindowProps
 > = ({
+    runtimeOS,
     window,
-    onFocus
+    onFocus,
+    onClose,
+    onMinimize,
+    onMaximize
 }) => {
 
     if (window.minimized) {
@@ -155,7 +284,7 @@ export const RuntimeWindow: React.FC<
                 >
 
                     {/* ---------------- */}
-                    {/* Window Controls */}
+                    {/* Controls */}
                     {/* ---------------- */}
 
                     <div
@@ -166,30 +295,39 @@ export const RuntimeWindow: React.FC<
                         "
                     >
 
-                        <div
+                        <button
+                            onClick={onClose}
                             className="
                                 w-3
                                 h-3
                                 rounded-full
                                 bg-red-500
+                                hover:scale-110
+                                transition
                             "
                         />
 
-                        <div
+                        <button
+                            onClick={onMinimize}
                             className="
                                 w-3
                                 h-3
                                 rounded-full
                                 bg-yellow-500
+                                hover:scale-110
+                                transition
                             "
                         />
 
-                        <div
+                        <button
+                            onClick={onMaximize}
                             className="
                                 w-3
                                 h-3
                                 rounded-full
                                 bg-green-500
+                                hover:scale-110
+                                transition
                             "
                         />
 
@@ -212,7 +350,7 @@ export const RuntimeWindow: React.FC<
                 </div>
 
                 {/* ---------------- */}
-                {/* Runtime Metadata */}
+                {/* Metadata */}
                 {/* ---------------- */}
 
                 <div
@@ -255,96 +393,17 @@ export const RuntimeWindow: React.FC<
                 "
             >
 
-                {/* ---------------- */}
-                {/* Window Grid */}
-                {/* ---------------- */}
-
-                <div
-                    className="
-                        absolute
-                        inset-0
-                        opacity-[0.04]
-                    "
-                    style={{
-
-                        backgroundImage:
-                            `
-                            linear-gradient(
-                                rgba(255,255,255,0.08) 1px,
-                                transparent 1px
-                            ),
-                            linear-gradient(
-                                90deg,
-                                rgba(255,255,255,0.08) 1px,
-                                transparent 1px
-                            )
-                            `,
-
-                        backgroundSize:
-                            "24px 24px"
-                    }}
+                <RuntimeWindowContent
+                    runtimeOS={runtimeOS}
+                    applicationId={
+                        window.applicationId
+                    }
                 />
-
-                {/* ---------------- */}
-                {/* Placeholder */}
-                {/* ---------------- */}
-
-                <div
-                    className="
-                        absolute
-                        inset-0
-                        flex
-                        flex-col
-                        items-center
-                        justify-center
-                        gap-3
-                    "
-                >
-
-                    <div
-                        className="
-                            text-xl
-                            font-semibold
-                        "
-                    >
-                        {window.title}
-                    </div>
-
-                    <div
-                        className="
-                            text-xs
-                            opacity-50
-                            font-mono
-                        "
-                    >
-                        application:
-                        {" "}
-                        {window.applicationId}
-                    </div>
-
-                    <div
-                        className="
-                            text-[10px]
-                            opacity-40
-                            max-w-sm
-                            text-center
-                            leading-relaxed
-                        "
-                    >
-                        Graph-native runtime
-                        projection surface bound
-                        to deterministic replay
-                        topology and websocket
-                        synchronized execution
-                        continuity.
-                    </div>
-
-                </div>
 
             </div>
 
             {/* -------------------------------- */}
-            {/* Window Footer */}
+            {/* Footer */}
             {/* -------------------------------- */}
 
             <div
