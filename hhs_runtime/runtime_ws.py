@@ -3,45 +3,94 @@ from __future__ import annotations
 import asyncio
 import json
 import time
+
 from collections import defaultdict
+
 from typing import Any
+from typing import DefaultDict
 from typing import Dict
 from typing import List
+from typing import Optional
 from typing import Set
 
 from fastapi import WebSocket
 from fastapi import WebSocketDisconnect
 
+from hhs_runtime.runtime_event_bus import (
+
+    runtime_event_bus
+)
+
+from hhs_runtime.runtime_event_schema import (
+
+    EVENT_RUNTIME,
+
+    EVENT_REPLAY,
+
+    EVENT_GRAPH,
+
+    EVENT_TRANSPORT,
+
+    EVENT_RECEIPT,
+
+    EVENT_CERTIFICATION,
+
+    HHSEvent
+)
+
 # =========================================================
-# Runtime Event Types
+# Constants
 # =========================================================
 
-EVENT_RUNTIME = "runtime"
-EVENT_REPLAY = "replay"
-EVENT_GRAPH = "graph"
-EVENT_TRANSPORT = "transport"
-EVENT_RECEIPT = "receipt"
-EVENT_CERTIFICATION = "certification"
+HEARTBEAT_INTERVAL = 5.0
+
+MAX_EVENT_BUFFER = 2048
 
 # =========================================================
-# Runtime Connection Registry
+# Runtime WebSocket Hub
 # =========================================================
 
-class RuntimeConnectionRegistry:
+class RuntimeWebSocketHub:
 
     def __init__(self) -> None:
 
-        self.channels: Dict[
+        self.channels: DefaultDict[
             str,
             Set[WebSocket]
         ] = defaultdict(set)
 
-    # -----------------------------------------------------
+        self.event_history: DefaultDict[
+            str,
+            List[Dict[str, Any]]
+        ] = defaultdict(list)
+
+        self.connected_total = 0
+
+        self.disconnected_total = 0
+
+        self.events_broadcast = 0
+
+        self.started_ns = (
+            time.time_ns()
+        )
+
+        self.heartbeat_tasks: Dict[
+            WebSocket,
+            asyncio.Task
+        ] = {}
+
+    # =====================================================
+    # Connect
+    # =====================================================
 
     async def connect(
+
         self,
+
         channel: str,
+
         websocket: WebSocket
+
     ) -> None:
 
         await websocket.accept()
@@ -50,287 +99,281 @@ class RuntimeConnectionRegistry:
             websocket
         )
 
-        print(
-            f"[ws/{channel}] connected "
-            f"({len(self.channels[channel])})"
-        )
+        self.connected_total += 1
 
-    # -----------------------------------------------------
+        # -------------------------------------------------
+        # Heartbeat
+        # -------------------------------------------------
 
-    def disconnect(
-        self,
-        channel: str,
-        websocket: WebSocket
-    ) -> None:
-
-        self.channels[channel].discard(
+        self.heartbeat_tasks[
             websocket
+        ] = asyncio.create_task(
+
+            self._heartbeat_loop(
+                channel,
+                websocket
+            )
         )
 
         print(
-            f"[ws/{channel}] disconnected "
+
+            "[runtime_ws] connect",
+
+            channel,
+
             f"({len(self.channels[channel])})"
         )
 
-    # -----------------------------------------------------
+        # -------------------------------------------------
+        # Replay Buffer
+        # -------------------------------------------------
 
-    async def broadcast(
-        self,
-        channel: str,
-        payload: Dict[str, Any]
-    ) -> None:
+        history = self.event_history.get(
+            channel,
+            []
+        )
 
-        dead: List[WebSocket] = []
-
-        encoded = json.dumps(payload)
-
-        for websocket in self.channels[channel]:
+        for event in history[-64:]:
 
             try:
 
                 await websocket.send_text(
-                    encoded
+
+                    json.dumps(event)
                 )
 
             except Exception:
 
-                dead.append(websocket)
+                pass
 
-        for websocket in dead:
+    # =====================================================
+    # Disconnect
+    # =====================================================
 
-            self.disconnect(
-                channel,
+    async def disconnect(
+
+        self,
+
+        channel: str,
+
+        websocket: WebSocket
+
+    ) -> None:
+
+        if (
+            websocket
+            in self.channels[channel]
+        ):
+
+            self.channels[channel].remove(
                 websocket
             )
 
+        self.disconnected_total += 1
+
+        task = self.heartbeat_tasks.pop(
+            websocket,
+            None
+        )
+
+        if task:
+
+            task.cancel()
+
+        print(
+
+            "[runtime_ws] disconnect",
+
+            channel,
+
+            f"({len(self.channels[channel])})"
+        )
+
+    # =====================================================
+    # Broadcast
+    # =====================================================
+
+    async def broadcast(
+
+        self,
+
+        channel: str,
+
+        payload: Dict[str, Any]
+
+    ) -> None:
+
+        self.events_broadcast += 1
+
+        # -------------------------------------------------
+        # Event Buffer
+        # -------------------------------------------------
+
+        self.event_history[channel].append(
+            payload
+        )
+
+        if (
+
+            len(
+                self.event_history[channel]
+            )
+
+            > MAX_EVENT_BUFFER
+        ):
+
+            self.event_history[channel] = (
+
+                self.event_history[channel][
+
+                    -MAX_EVENT_BUFFER:
+                ]
+            )
+
+        # -------------------------------------------------
+        # Broadcast
+        # -------------------------------------------------
+
+        dead: List[WebSocket] = []
+
+        for websocket in list(
+
+            self.channels[channel]
+        ):
+
+            try:
+
+                await websocket.send_text(
+
+                    json.dumps(payload)
+                )
+
+            except Exception:
+
+                dead.append(
+                    websocket
+                )
+
+        # -------------------------------------------------
+        # Cleanup
+        # -------------------------------------------------
+
+        for websocket in dead:
+
+            await self.disconnect(
+
+                channel,
+
+                websocket
+            )
+
+    # =====================================================
+    # Heartbeat
+    # =====================================================
+
+    async def _heartbeat_loop(
+
+        self,
+
+        channel: str,
+
+        websocket: WebSocket
+
+    ) -> None:
+
+        try:
+
+            while True:
+
+                await asyncio.sleep(
+                    HEARTBEAT_INTERVAL
+                )
+
+                await websocket.send_text(
+
+                    json.dumps({
+
+                        "event_type":
+                            "heartbeat",
+
+                        "timestamp_ns":
+                            time.time_ns(),
+
+                        "channel":
+                            channel
+                    })
+                )
+
+        except asyncio.CancelledError:
+
+            return
+
+        except Exception:
+
+            return
+
+    # =====================================================
+    # Metrics
+    # =====================================================
+
+    def metrics(self):
+
+        return {
+
+            "connected_total":
+                self.connected_total,
+
+            "disconnected_total":
+                self.disconnected_total,
+
+            "events_broadcast":
+                self.events_broadcast,
+
+            "uptime_seconds":
+
+                (
+                    time.time_ns()
+                    - self.started_ns
+                ) / 1e9,
+
+            "channels": {
+
+                channel:
+
+                    len(sockets)
+
+                for channel, sockets
+                in self.channels.items()
+            },
+
+            "event_buffers": {
+
+                channel:
+
+                    len(history)
+
+                for channel, history
+                in self.event_history.items()
+            }
+        }
+
 # =========================================================
-# Global Registry
+# Global Hub
 # =========================================================
 
-runtime_connections = (
-    RuntimeConnectionRegistry()
+runtime_ws_hub = (
+    RuntimeWebSocketHub()
 )
 
 # =========================================================
-# Event Factory
-# =========================================================
-
-def build_runtime_event(
-    event_type: str,
-    payload: Dict[str, Any]
-) -> Dict[str, Any]:
-
-    return {
-
-        "event_type":
-            event_type,
-
-        "timestamp_ns":
-            time.time_ns(),
-
-        "payload":
-            payload
-    }
-
-# =========================================================
-# Runtime Heartbeat Loops
-# =========================================================
-
-async def runtime_heartbeat_loop() -> None:
-
-    step = 0
-
-    while True:
-
-        step += 1
-
-        event = build_runtime_event(
-
-            EVENT_RUNTIME,
-
-            {
-
-                "runtime_status":
-                    "online",
-
-                "step":
-                    step,
-
-                "phase":
-                    "runtime_loop",
-
-                "uptime":
-                    time.time()
-            }
-        )
-
-        await runtime_connections.broadcast(
-
-            EVENT_RUNTIME,
-
-            event
-        )
-
-        await asyncio.sleep(1)
-
-# ---------------------------------------------------------
-
-async def replay_heartbeat_loop() -> None:
-
-    replay_tick = 0
-
-    while True:
-
-        replay_tick += 1
-
-        event = build_runtime_event(
-
-            EVENT_REPLAY,
-
-            {
-
-                "replay_tick":
-                    replay_tick,
-
-                "replay_status":
-                    "stable",
-
-                "timeline_position":
-                    replay_tick
-            }
-        )
-
-        await runtime_connections.broadcast(
-
-            EVENT_REPLAY,
-
-            event
-        )
-
-        await asyncio.sleep(1)
-
-# ---------------------------------------------------------
-
-async def graph_heartbeat_loop() -> None:
-
-    graph_tick = 0
-
-    while True:
-
-        graph_tick += 1
-
-        event = build_runtime_event(
-
-            EVENT_GRAPH,
-
-            {
-
-                "graph_tick":
-                    graph_tick,
-
-                "nodes":
-                    12,
-
-                "edges":
-                    24,
-
-                "projection":
-                    "runtime_topology"
-            }
-        )
-
-        await runtime_connections.broadcast(
-
-            EVENT_GRAPH,
-
-            event
-        )
-
-        await asyncio.sleep(1)
-
-# ---------------------------------------------------------
-
-async def transport_heartbeat_loop() -> None:
-
-    transport_tick = 0
-
-    while True:
-
-        transport_tick += 1
-
-        event = build_runtime_event(
-
-            EVENT_TRANSPORT,
-
-            {
-
-                "transport_tick":
-                    transport_tick,
-
-                "transport_flux":
-                    1.0,
-
-                "continuity":
-                    "stable"
-            }
-        )
-
-        await runtime_connections.broadcast(
-
-            EVENT_TRANSPORT,
-
-            event
-        )
-
-        await asyncio.sleep(1)
-
-# =========================================================
-# Runtime Startup
-# =========================================================
-
-runtime_tasks_started = False
-
-async def ensure_runtime_tasks() -> None:
-
-    global runtime_tasks_started
-
-    if runtime_tasks_started:
-
-        return
-
-    runtime_tasks_started = True
-
-    asyncio.create_task(
-        runtime_heartbeat_loop()
-    )
-
-    asyncio.create_task(
-        replay_heartbeat_loop()
-    )
-
-    asyncio.create_task(
-        graph_heartbeat_loop()
-    )
-
-    asyncio.create_task(
-        transport_heartbeat_loop()
-    )
-
-    print(
-        "[runtime_ws] heartbeat tasks started"
-    )
-
-# =========================================================
-# WebSocket Authorities
+# Runtime Streams
 # =========================================================
 
 async def runtime_stream(
     websocket: WebSocket
 ) -> None:
 
-    await ensure_runtime_tasks()
-
-    await runtime_connections.connect(
+    await runtime_ws_hub.connect(
 
         EVENT_RUNTIME,
 
@@ -345,7 +388,7 @@ async def runtime_stream(
 
     except WebSocketDisconnect:
 
-        runtime_connections.disconnect(
+        await runtime_ws_hub.disconnect(
 
             EVENT_RUNTIME,
 
@@ -358,9 +401,7 @@ async def replay_stream(
     websocket: WebSocket
 ) -> None:
 
-    await ensure_runtime_tasks()
-
-    await runtime_connections.connect(
+    await runtime_ws_hub.connect(
 
         EVENT_REPLAY,
 
@@ -375,7 +416,7 @@ async def replay_stream(
 
     except WebSocketDisconnect:
 
-        runtime_connections.disconnect(
+        await runtime_ws_hub.disconnect(
 
             EVENT_REPLAY,
 
@@ -388,9 +429,7 @@ async def graph_stream(
     websocket: WebSocket
 ) -> None:
 
-    await ensure_runtime_tasks()
-
-    await runtime_connections.connect(
+    await runtime_ws_hub.connect(
 
         EVENT_GRAPH,
 
@@ -405,7 +444,7 @@ async def graph_stream(
 
     except WebSocketDisconnect:
 
-        runtime_connections.disconnect(
+        await runtime_ws_hub.disconnect(
 
             EVENT_GRAPH,
 
@@ -418,9 +457,7 @@ async def transport_stream(
     websocket: WebSocket
 ) -> None:
 
-    await ensure_runtime_tasks()
-
-    await runtime_connections.connect(
+    await runtime_ws_hub.connect(
 
         EVENT_TRANSPORT,
 
@@ -435,7 +472,7 @@ async def transport_stream(
 
     except WebSocketDisconnect:
 
-        runtime_connections.disconnect(
+        await runtime_ws_hub.disconnect(
 
             EVENT_TRANSPORT,
 
@@ -443,23 +480,18 @@ async def transport_stream(
         )
 
 # =========================================================
-# External Runtime Emitters
+# Emit Helpers
 # =========================================================
 
 async def emit_runtime_event(
     payload: Dict[str, Any]
 ) -> None:
 
-    await runtime_connections.broadcast(
+    await runtime_ws_hub.broadcast(
 
         EVENT_RUNTIME,
 
-        build_runtime_event(
-
-            EVENT_RUNTIME,
-
-            payload
-        )
+        payload
     )
 
 # ---------------------------------------------------------
@@ -468,16 +500,11 @@ async def emit_replay_event(
     payload: Dict[str, Any]
 ) -> None:
 
-    await runtime_connections.broadcast(
+    await runtime_ws_hub.broadcast(
 
         EVENT_REPLAY,
 
-        build_runtime_event(
-
-            EVENT_REPLAY,
-
-            payload
-        )
+        payload
     )
 
 # ---------------------------------------------------------
@@ -486,16 +513,11 @@ async def emit_graph_event(
     payload: Dict[str, Any]
 ) -> None:
 
-    await runtime_connections.broadcast(
+    await runtime_ws_hub.broadcast(
 
         EVENT_GRAPH,
 
-        build_runtime_event(
-
-            EVENT_GRAPH,
-
-            payload
-        )
+        payload
     )
 
 # ---------------------------------------------------------
@@ -504,14 +526,143 @@ async def emit_transport_event(
     payload: Dict[str, Any]
 ) -> None:
 
-    await runtime_connections.broadcast(
+    await runtime_ws_hub.broadcast(
 
         EVENT_TRANSPORT,
 
-        build_runtime_event(
-
-            EVENT_TRANSPORT,
-
-            payload
-        )
+        payload
     )
+
+# ---------------------------------------------------------
+
+async def emit_receipt_event(
+    payload: Dict[str, Any]
+) -> None:
+
+    await runtime_ws_hub.broadcast(
+
+        EVENT_RECEIPT,
+
+        payload
+    )
+
+# ---------------------------------------------------------
+
+async def emit_certification_event(
+    payload: Dict[str, Any]
+) -> None:
+
+    await runtime_ws_hub.broadcast(
+
+        EVENT_CERTIFICATION,
+
+        payload
+    )
+
+# =========================================================
+# Event Bus Bridge
+# =========================================================
+
+async def bridge_runtime_event(
+    event: HHSEvent
+) -> None:
+
+    await emit_runtime_event(
+        event.to_dict()
+    )
+
+# ---------------------------------------------------------
+
+async def bridge_replay_event(
+    event: HHSEvent
+) -> None:
+
+    await emit_replay_event(
+        event.to_dict()
+    )
+
+# ---------------------------------------------------------
+
+async def bridge_graph_event(
+    event: HHSEvent
+) -> None:
+
+    await emit_graph_event(
+        event.to_dict()
+    )
+
+# ---------------------------------------------------------
+
+async def bridge_transport_event(
+    event: HHSEvent
+) -> None:
+
+    await emit_transport_event(
+        event.to_dict()
+    )
+
+# ---------------------------------------------------------
+
+async def bridge_receipt_event(
+    event: HHSEvent
+) -> None:
+
+    await emit_receipt_event(
+        event.to_dict()
+    )
+
+# ---------------------------------------------------------
+
+async def bridge_certification_event(
+    event: HHSEvent
+) -> None:
+
+    await emit_certification_event(
+        event.to_dict()
+    )
+
+# =========================================================
+# Attach Runtime Event Bus
+# =========================================================
+
+runtime_event_bus.subscribe(
+
+    EVENT_RUNTIME,
+
+    bridge_runtime_event
+)
+
+runtime_event_bus.subscribe(
+
+    EVENT_REPLAY,
+
+    bridge_replay_event
+)
+
+runtime_event_bus.subscribe(
+
+    EVENT_GRAPH,
+
+    bridge_graph_event
+)
+
+runtime_event_bus.subscribe(
+
+    EVENT_TRANSPORT,
+
+    bridge_transport_event
+)
+
+runtime_event_bus.subscribe(
+
+    EVENT_RECEIPT,
+
+    bridge_receipt_event
+)
+
+runtime_event_bus.subscribe(
+
+    EVENT_CERTIFICATION,
+
+    bridge_certification_event
+)
