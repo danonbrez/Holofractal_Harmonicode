@@ -1,279 +1,520 @@
-import React from "react"
+import React, {
+    useEffect,
+    useRef,
+    useState
+} from "react"
 
 import {
     RuntimeOS
 } from "./RuntimeOS"
 
 import {
-    RuntimeWindowState
-} from "./RuntimeWorkspace"
-
-import {
     RuntimeWindowContent
 } from "./RuntimeWindowContent"
+
+// =========================================================
+// Props
+// =========================================================
 
 export interface RuntimeWindowManagerProps {
 
     runtimeOS: RuntimeOS
-}
 
-export const RuntimeWindowManager: React.FC<
-    RuntimeWindowManagerProps
-> = ({ runtimeOS }) => {
+    runtimeWindow: {
 
-    const windows =
-        runtimeOS.workspace.layout.windows
+        id: string
 
-    /**
-     * ---------------------------------------------------
-     * Focus Window
-     * ---------------------------------------------------
-     */
+        title: string
 
-    const handleFocus = (
-        windowId: string
-    ) => {
+        applicationId: string
 
-        runtimeOS.workspace
-            .focusWindow(windowId)
+        x: number
+
+        y: number
+
+        width: number
+
+        height: number
+
+        minimized: boolean
+
+        maximized: boolean
+
+        focused: boolean
     }
 
-    /**
-     * ---------------------------------------------------
-     * Close Window
-     * ---------------------------------------------------
-     */
+    desktopWidth: number
 
-    const handleClose = (
-        windowId: string
-    ) => {
+    desktopHeight: number
 
-        runtimeOS.workspace
-            .removeWindow(windowId)
-    }
-
-    /**
-     * ---------------------------------------------------
-     * Minimize Window
-     * ---------------------------------------------------
-     */
-
-    const handleMinimize = (
-        windowId: string
-    ) => {
-
-        const target =
-            runtimeOS.workspace
-                .layout.windows
-                .find(
-                    (window) =>
-                        window.id ===
-                        windowId
-                )
-
-        if (!target) {
-
-            return
-        }
-
-        target.minimized =
-            !target.minimized
-    }
-
-    /**
-     * ---------------------------------------------------
-     * Maximize Window
-     * ---------------------------------------------------
-     */
-
-    const handleMaximize = (
-        windowId: string
-    ) => {
-
-        const target =
-            runtimeOS.workspace
-                .layout.windows
-                .find(
-                    (window) =>
-                        window.id ===
-                        windowId
-                )
-
-        if (!target) {
-
-            return
-        }
-
-        target.maximized =
-            !target.maximized
-
-        if (target.maximized) {
-
-            target.position = {
-
-                x: 24,
-
-                y: 24
-            }
-
-            target.size = {
-
-                width:
-                    window.innerWidth - 96,
-
-                height:
-                    window.innerHeight - 160
-            }
-        }
-    }
-
-    /**
-     * ---------------------------------------------------
-     * Render
-     * ---------------------------------------------------
-     */
-
-    return (
-
-        <div
-            className="
-                absolute
-                inset-0
-                overflow-hidden
-            "
-        >
-
-            {
-                windows.map((window) => (
-
-                    <RuntimeWindow
-                        key={window.id}
-
-                        runtimeOS={runtimeOS}
-
-                        window={window}
-
-                        onFocus={() =>
-                            handleFocus(
-                                window.id
-                            )
-                        }
-
-                        onClose={() =>
-                            handleClose(
-                                window.id
-                            )
-                        }
-
-                        onMinimize={() =>
-                            handleMinimize(
-                                window.id
-                            )
-                        }
-
-                        onMaximize={() =>
-                            handleMaximize(
-                                window.id
-                            )
-                        }
-                    />
-                ))
-            }
-
-        </div>
-    )
-}
-
-/**
- * ===================================================
- * Runtime Window
- * ===================================================
- */
-
-export interface RuntimeWindowProps {
-
-    runtimeOS: RuntimeOS
-
-    window: RuntimeWindowState
+    zIndex: number
 
     onFocus: () => void
-
-    onClose: () => void
-
-    onMinimize: () => void
-
-    onMaximize: () => void
 }
 
-export const RuntimeWindow: React.FC<
-    RuntimeWindowProps
+// =========================================================
+// RuntimeWindowManager
+// =========================================================
+
+export const RuntimeWindowManager:
+React.FC<
+    RuntimeWindowManagerProps
 > = ({
+
     runtimeOS,
-    window,
-    onFocus,
-    onClose,
-    onMinimize,
-    onMaximize
+
+    runtimeWindow,
+
+    desktopWidth,
+
+    desktopHeight,
+
+    zIndex,
+
+    onFocus
 }) => {
 
-    if (window.minimized) {
+    const windowRef =
+        useRef<HTMLDivElement>(
+            null
+        )
 
-        return null
+    const dragState =
+        useRef({
+
+            dragging: false,
+
+            offsetX: 0,
+
+            offsetY: 0
+        })
+
+    const resizeState =
+        useRef({
+
+            resizing: false,
+
+            startWidth: 0,
+
+            startHeight: 0,
+
+            startMouseX: 0,
+
+            startMouseY: 0
+        })
+
+    const [, forceRender] =
+        useState(0)
+
+    // =====================================================
+    // Sync Render
+    // =====================================================
+
+    const sync = () => {
+
+        forceRender(
+            (previous) => (
+
+                previous + 1
+            )
+        )
     }
+
+    // =====================================================
+    // Drag Start
+    // =====================================================
+
+    const beginDrag = (
+        event:
+            React.MouseEvent
+    ) => {
+
+        onFocus()
+
+        dragState.current.dragging =
+            True()
+
+        dragState.current.offsetX = (
+
+            event.clientX
+            - runtimeWindow.x
+        )
+
+        dragState.current.offsetY = (
+
+            event.clientY
+            - runtimeWindow.y
+        )
+
+        window.addEventListener(
+            "mousemove",
+            onDrag
+        )
+
+        window.addEventListener(
+            "mouseup",
+            endDrag
+        )
+    }
+
+    // =====================================================
+    // Drag Move
+    // =====================================================
+
+    const onDrag = (
+        event: MouseEvent
+    ) => {
+
+        if (
+            !dragState.current
+                .dragging
+        ) {
+
+            return
+        }
+
+        const nextX = (
+
+            event.clientX
+
+            -
+
+            dragState.current
+                .offsetX
+        )
+
+        const nextY = (
+
+            event.clientY
+
+            -
+
+            dragState.current
+                .offsetY
+        )
+
+        runtimeWindow.x = Math.max(
+
+            0,
+
+            Math.min(
+
+                nextX,
+
+                desktopWidth
+                - runtimeWindow.width
+            )
+        )
+
+        runtimeWindow.y = Math.max(
+
+            0,
+
+            Math.min(
+
+                nextY,
+
+                desktopHeight
+                - runtimeWindow.height
+            )
+        )
+
+        sync()
+    }
+
+    // =====================================================
+    // Drag End
+    // =====================================================
+
+    const endDrag = () => {
+
+        dragState.current.dragging =
+            false
+
+        window.removeEventListener(
+            "mousemove",
+            onDrag
+        )
+
+        window.removeEventListener(
+            "mouseup",
+            endDrag
+        )
+    }
+
+    // =====================================================
+    // Resize Begin
+    // =====================================================
+
+    const beginResize = (
+        event:
+            React.MouseEvent
+    ) => {
+
+        event.stopPropagation()
+
+        resizeState.current.resizing =
+            true
+
+        resizeState.current.startWidth =
+            runtimeWindow.width
+
+        resizeState.current.startHeight =
+            runtimeWindow.height
+
+        resizeState.current.startMouseX =
+            event.clientX
+
+        resizeState.current.startMouseY =
+            event.clientY
+
+        window.addEventListener(
+            "mousemove",
+            onResize
+        )
+
+        window.addEventListener(
+            "mouseup",
+            endResize
+        )
+    }
+
+    // =====================================================
+    // Resize Move
+    // =====================================================
+
+    const onResize = (
+        event: MouseEvent
+    ) => {
+
+        if (
+            !resizeState.current
+                .resizing
+        ) {
+
+            return
+        }
+
+        const deltaX = (
+
+            event.clientX
+
+            -
+
+            resizeState.current
+                .startMouseX
+        )
+
+        const deltaY = (
+
+            event.clientY
+
+            -
+
+            resizeState.current
+                .startMouseY
+        )
+
+        runtimeWindow.width = Math.max(
+
+            320,
+
+            resizeState.current
+                .startWidth
+
+            +
+
+            deltaX
+        )
+
+        runtimeWindow.height = Math.max(
+
+            220,
+
+            resizeState.current
+                .startHeight
+
+            +
+
+            deltaY
+        )
+
+        sync()
+    }
+
+    // =====================================================
+    // Resize End
+    // =====================================================
+
+    const endResize = () => {
+
+        resizeState.current.resizing =
+            false
+
+        window.removeEventListener(
+            "mousemove",
+            onResize
+        )
+
+        window.removeEventListener(
+            "mouseup",
+            endResize
+        )
+    }
+
+    // =====================================================
+    // Cleanup
+    // =====================================================
+
+    useEffect(() => {
+
+        return () => {
+
+            endDrag()
+
+            endResize()
+        }
+
+    }, [])
+
+    // =====================================================
+    // Maximize
+    // =====================================================
+
+    const maximize = () => {
+
+        runtimeOS.maximizeWindow(
+            runtimeWindow.id
+        )
+
+        if (
+            runtimeWindow.maximized
+        ) {
+
+            runtimeWindow.x = 24
+
+            runtimeWindow.y = 64
+
+            runtimeWindow.width = 920
+
+            runtimeWindow.height = 620
+
+        } else {
+
+            runtimeWindow.x = 0
+
+            runtimeWindow.y = 44
+
+            runtimeWindow.width =
+                desktopWidth
+
+            runtimeWindow.height =
+                desktopHeight - 44
+        }
+
+        sync()
+    }
+
+    // =====================================================
+    // Minimize
+    // =====================================================
+
+    const minimize = () => {
+
+        runtimeOS.minimizeWindow(
+            runtimeWindow.id
+        )
+
+        sync()
+    }
+
+    // =====================================================
+    // Render
+    // =====================================================
 
     return (
 
         <div
-            className="
+            ref={windowRef}
+            onMouseDown={onFocus}
+            className={`
                 absolute
-                rounded-xl
                 overflow-hidden
+                rounded-2xl
                 border
-                border-neutral-800
-                bg-neutral-900/90
-                backdrop-blur-md
+                backdrop-blur-xl
                 shadow-2xl
-                flex
-                flex-col
-                select-none
-            "
+                transition-[box-shadow,border-color]
+                duration-150
+                ${
+                    runtimeWindow.focused
+
+                        ? `
+                            border-cyan-500/40
+                            shadow-cyan-500/10
+                          `
+
+                        : `
+                            border-neutral-800
+                          `
+                }
+            `}
             style={{
 
                 left:
-                    window.position.x,
+                    runtimeWindow.x,
 
                 top:
-                    window.position.y,
+                    runtimeWindow.y,
 
                 width:
-                    window.size.width,
+                    runtimeWindow.width,
 
                 height:
-                    window.size.height,
+                    runtimeWindow.height,
 
-                zIndex:
-                    window.zIndex
+                zIndex
             }}
-            onMouseDown={onFocus}
         >
 
-            {/* -------------------------------- */}
-            {/* Window Header */}
-            {/* -------------------------------- */}
+            {/* ============================================= */}
+            {/* Background */}
+            {/* ============================================= */}
 
             <div
                 className="
-                    h-10
+                    absolute
+                    inset-0
+                    bg-neutral-950/95
+                "
+            />
+
+            {/* ============================================= */}
+            {/* Header */}
+            {/* ============================================= */}
+
+            <div
+                onMouseDown={beginDrag}
+                className="
+                    relative
+                    h-11
+                    shrink-0
                     border-b
                     border-neutral-800
-                    bg-neutral-950
+                    bg-neutral-900/90
                     flex
                     items-center
                     justify-between
-                    px-3
-                    shrink-0
+                    px-4
+                    cursor-move
+                    select-none
+                    z-10
                 "
             >
+
+                {/* ----------------------------------------- */}
+                {/* Title */}
+                {/* ----------------------------------------- */}
 
                 <div
                     className="
@@ -283,166 +524,155 @@ export const RuntimeWindow: React.FC<
                     "
                 >
 
-                    {/* ---------------- */}
-                    {/* Controls */}
-                    {/* ---------------- */}
-
                     <div
-                        className="
-                            flex
-                            items-center
-                            gap-2
-                        "
-                    >
+                        className={`
+                            w-2
+                            h-2
+                            rounded-full
+                            ${
+                                runtimeWindow.focused
 
-                        <button
-                            onClick={onClose}
-                            className="
-                                w-3
-                                h-3
-                                rounded-full
-                                bg-red-500
-                                hover:scale-110
-                                transition
-                            "
-                        />
+                                    ? "bg-cyan-400"
 
-                        <button
-                            onClick={onMinimize}
-                            className="
-                                w-3
-                                h-3
-                                rounded-full
-                                bg-yellow-500
-                                hover:scale-110
-                                transition
-                            "
-                        />
-
-                        <button
-                            onClick={onMaximize}
-                            className="
-                                w-3
-                                h-3
-                                rounded-full
-                                bg-green-500
-                                hover:scale-110
-                                transition
-                            "
-                        />
-
-                    </div>
-
-                    {/* ---------------- */}
-                    {/* Title */}
-                    {/* ---------------- */}
+                                    : "bg-neutral-600"
+                            }
+                        `}
+                    />
 
                     <div
                         className="
                             text-sm
                             font-semibold
+                            text-white
                             tracking-wide
                         "
                     >
-                        {window.title}
+                        {
+                            runtimeWindow.title
+                        }
                     </div>
 
                 </div>
 
-                {/* ---------------- */}
-                {/* Metadata */}
-                {/* ---------------- */}
+                {/* ----------------------------------------- */}
+                {/* Controls */}
+                {/* ----------------------------------------- */}
 
                 <div
                     className="
-                        text-[10px]
-                        font-mono
-                        opacity-50
                         flex
                         items-center
-                        gap-3
+                        gap-2
                     "
                 >
 
-                    <div>
-                        app:
-                        {" "}
-                        {window.applicationId}
-                    </div>
+                    <button
+                        onClick={minimize}
+                        className="
+                            w-7
+                            h-7
+                            rounded-lg
+                            border
+                            border-neutral-700
+                            bg-neutral-900
+                            text-neutral-400
+                            hover:text-white
+                            hover:border-neutral-500
+                            transition
+                            text-xs
+                        "
+                    >
+                        —
+                    </button>
 
-                    <div>
-                        z:
-                        {" "}
-                        {window.zIndex}
-                    </div>
+                    <button
+                        onClick={maximize}
+                        className="
+                            w-7
+                            h-7
+                            rounded-lg
+                            border
+                            border-neutral-700
+                            bg-neutral-900
+                            text-neutral-400
+                            hover:text-white
+                            hover:border-neutral-500
+                            transition
+                            text-xs
+                        "
+                    >
+                        □
+                    </button>
 
                 </div>
 
             </div>
 
-            {/* -------------------------------- */}
-            {/* Window Body */}
-            {/* -------------------------------- */}
+            {/* ============================================= */}
+            {/* Content */}
+            {/* ============================================= */}
 
             <div
                 className="
-                    flex-1
-                    relative
+                    absolute
+                    inset-x-0
+                    top-11
+                    bottom-0
                     overflow-hidden
-                    bg-neutral-900
                 "
             >
 
                 <RuntimeWindowContent
                     runtimeOS={runtimeOS}
                     applicationId={
-                        window.applicationId
+                        runtimeWindow
+                            .applicationId
                     }
                 />
 
             </div>
 
-            {/* -------------------------------- */}
-            {/* Footer */}
-            {/* -------------------------------- */}
+            {/* ============================================= */}
+            {/* Resize Handle */}
+            {/* ============================================= */}
 
             <div
+                onMouseDown={beginResize}
                 className="
-                    h-6
-                    border-t
-                    border-neutral-800
-                    bg-neutral-950
-                    flex
-                    items-center
-                    justify-between
-                    px-3
-                    text-[10px]
-                    font-mono
-                    opacity-50
-                    shrink-0
+                    absolute
+                    bottom-0
+                    right-0
+                    w-5
+                    h-5
+                    cursor-se-resize
+                    z-20
                 "
             >
 
-                <div>
-                    focused:
-                    {" "}
-                    {
-                        window.focused
-                            ? "true"
-                            : "false"
-                    }
-                </div>
-
-                <div>
-                    size:
-                    {" "}
-                    {window.size.width}
-                    ×
-                    {window.size.height}
-                </div>
+                <div
+                    className="
+                        absolute
+                        bottom-1
+                        right-1
+                        w-3
+                        h-3
+                        border-r
+                        border-b
+                        border-cyan-500/40
+                    "
+                />
 
             </div>
 
         </div>
     )
+}
+
+// =========================================================
+// Helpers
+// =========================================================
+
+function True(): boolean {
+
+    return true
 }
