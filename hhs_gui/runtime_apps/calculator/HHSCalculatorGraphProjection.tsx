@@ -1,413 +1,215 @@
 import React, {
     useEffect,
     useMemo,
-    useRef,
     useState
 } from "react"
 
-import * as THREE from "three"
+// =========================================================
+// Types
+// =========================================================
 
-import {
-    Canvas,
-    useFrame
-} from "@react-three/fiber"
-
-import {
-    Html,
-    Line,
-    OrbitControls
-} from "@react-three/drei"
-
-import {
-    RuntimeKernelBridge,
-    RuntimeKernelReceipt
-} from "../../runtime_os/core/RuntimeKernelBridge"
-
-/**
- * HHS Calculator Graph Projection
- * ---------------------------------------------------
- * Canonical runtime-originated graph projection surface.
- *
- * CRITICAL:
- *
- * This component does NOT:
- *
- * - generate local execution topology
- * - simulate runtime execution
- * - generate fake graph nodes
- * - generate replay chains
- * - fabricate receipt continuity
- *
- * ALL GRAPH STRUCTURE MUST ORIGINATE FROM:
- *
- * RuntimeKernelBridge
- * → Canonical Runtime
- * → Kernel
- * → Receipt Chain
- * → Replay Graph
- *
- * GUI ONLY PROJECTS RUNTIME STATE.
- *
- * Invariants:
- * Δe = 0
- * Ψ = 0
- * Θ15 = true
- * Ω = true
- */
-
-export interface HHSCalculatorGraphProjectionProps {
-
-    kernelBridge: RuntimeKernelBridge
-}
-
-export interface RuntimeProjectionNode {
+interface RuntimeGraphNode {
 
     id: string
 
-    receiptHash: string
+    parent?: string
 
-    position: [number, number, number]
+    runtime_id?: string
 
-    operation: string
+    branch_id?: string
 
-    timestamp: number
+    receipt_hash72?: string
 
-    status: string
+    event_type?: string
+
+    timestamp_ns?: number
 }
 
-export interface RuntimeProjectionEdge {
+// =========================================================
+// Projection Node
+// =========================================================
 
-    id: string
+interface ProjectionNodeProps {
 
-    source: [number, number, number]
+    node: RuntimeGraphNode
 
-    target: [number, number, number]
+    active?: boolean
 }
 
-const ReceiptNode: React.FC<{
-
-    node: RuntimeProjectionNode
-
-    selected: boolean
-
-}> = ({
-    node,
-    selected
-}) => {
-
-    const meshRef =
-        useRef<THREE.Mesh>(null)
-
-    useFrame((state) => {
-
-        if (!meshRef.current) {
-
-            return
-        }
-
-        meshRef.current.rotation.y += 0.01
-
-        const pulse =
-
-            1 +
-
-            Math.sin(
-                state.clock.elapsedTime * 2
-            ) * 0.05
-
-        meshRef.current.scale.set(
-
-            pulse,
-            pulse,
-            pulse
-        )
-    })
-
-    return (
-
-        <group position={node.position}>
-
-            <mesh ref={meshRef}>
-
-                <icosahedronGeometry
-                    args={[0.45, 1]}
-                />
-
-                <meshStandardMaterial
-
-                    color={
-                        selected
-                            ? "#22d3ee"
-                            : "#4ade80"
-                    }
-
-                    emissive={
-                        selected
-                            ? "#22d3ee"
-                            : "#4ade80"
-                    }
-
-                    emissiveIntensity={0.9}
-                />
-
-            </mesh>
-
-            <Html
-                distanceFactor={10}
-            >
-
-                <div
-                    className="
-                        min-w-[160px]
-                        rounded-xl
-                        border
-                        border-neutral-700
-                        bg-black/80
-                        backdrop-blur-xl
-                        p-3
-                        text-[10px]
-                        font-mono
-                        text-neutral-200
-                    "
-                >
-
-                    <div
-                        className="
-                            text-cyan-300
-                            font-semibold
-                            mb-2
-                        "
-                    >
-                        receipt node
-                    </div>
-
-                    <div
-                        className="
-                            opacity-70
-                            break-all
-                        "
-                    >
-                        {
-                            node.receiptHash
-                        }
-                    </div>
-
-                    <div
-                        className="
-                            mt-2
-                        "
-                    >
-                        op:
-                        {" "}
-                        {
-                            node.operation
-                        }
-                    </div>
-
-                    <div>
-                        status:
-                        {" "}
-                        {
-                            node.status
-                        }
-                    </div>
-
-                </div>
-
-            </Html>
-
-        </group>
-    )
-}
+// =========================================================
+// RuntimeGraphProjection
+// =========================================================
 
 export const HHSCalculatorGraphProjection:
-React.FC<
-    HHSCalculatorGraphProjectionProps
-> = ({
-    kernelBridge
-}) => {
+React.FC = () => {
 
-    const [nodes, setNodes] =
-        useState<
-            RuntimeProjectionNode[]
-        >([])
+    // =====================================================
+    // State
+    // =====================================================
 
-    const [selectedNodeId, setSelectedNodeId] =
-        useState<string | null>(null)
+    const [
 
-    /**
-     * ---------------------------------------------------
-     * Runtime Receipt Subscription
-     * ---------------------------------------------------
-     */
+        graphNodes,
+
+        setGraphNodes
+
+    ] = useState<
+        RuntimeGraphNode[]
+    >([])
+
+    const [
+
+        loading,
+
+        setLoading
+
+    ] = useState(true)
+
+    const [
+
+        error,
+
+        setError
+
+    ] = useState<
+        string | null
+    >(null)
+
+    // =====================================================
+    // Runtime Endpoint
+    // =====================================================
+
+    const endpoint =
+        useMemo(() => {
+
+            return (
+
+                `${window.location.origin}`
+
+                +
+
+                `/api/runtime/graph`
+            )
+
+        }, [])
+
+    // =====================================================
+    // Poll Graph
+    // =====================================================
 
     useEffect(() => {
 
-        const receiptHandler = (
-            receipt:
-                RuntimeKernelReceipt
-        ) => {
+        let mounted = true
 
-            /**
-             * ------------------------------------------------
-             * IMPORTANT:
-             *
-             * Position assignment is projection-only.
-             * The GUI is NOT generating runtime topology.
-             *
-             * Runtime truth remains:
-             *
-             * receiptHash
-             * operation
-             * continuity
-             * replay linkage
-             *
-             * GUI only spatializes visualization.
-             * ------------------------------------------------
-             */
+        let interval:
+            number | undefined
 
-            setNodes((previous) => {
+        const pollGraph =
+            async () => {
 
-                const angle =
+                try {
 
-                    previous.length * 0.55
+                    const response =
+                        await fetch(
+                            endpoint
+                        )
 
-                const radius =
-                    4 +
-                    previous.length * 0.25
+                    if (
+                        !response.ok
+                    ) {
 
-                const nextNode:
-                    RuntimeProjectionNode = {
+                        throw new Error(
 
-                    id:
-                        crypto.randomUUID(),
+                            `Graph request failed (${response.status})`
+                        )
+                    }
 
-                    receiptHash:
+                    const json =
+                        await response.json()
 
-                        receipt.receiptHash ??
+                    if (!mounted) {
 
-                        "runtime_receipt",
+                        return
+                    }
 
-                    operation:
+                    // -------------------------------------------------
+                    // Placeholder Graph Projection
+                    // -------------------------------------------------
 
-                        receipt.operation ??
+                    // Replace with:
+                    //   RuntimeStateStore projection
+                    //   live websocket graph stream
+                    //   replay lineage
+                    //   runtime topology engine
 
-                        "runtime.operation",
+                    const nodes =
+                        Array.isArray(
+                            json.nodes
+                        )
 
-                    timestamp:
+                            ? json.nodes
 
-                        receipt.timestamp ??
+                            : []
 
-                        Date.now(),
+                    setGraphNodes(nodes)
 
-                    status:
+                    setLoading(false)
 
-                        receipt.status ??
+                    setError(null)
 
-                        "committed",
+                } catch (error) {
 
-                    position: [
+                    console.error(
 
-                        Math.cos(angle) * radius,
+                        "[HHSCalculatorGraphProjection] graph projection failure",
 
-                        Math.sin(angle * 2) * 1.5,
+                        error
+                    )
 
-                        Math.sin(angle) * radius
-                    ]
+                    if (!mounted) {
+
+                        return
+                    }
+
+                    setLoading(false)
+
+                    setError(
+
+                        error instanceof Error
+
+                            ? error.message
+
+                            : "Graph projection failure"
+                    )
                 }
+            }
 
-                return [
+        pollGraph()
 
-                    nextNode,
+        interval = window.setInterval(
 
-                    ...previous
-                ]
-            })
+            pollGraph,
 
-        }
-
-        kernelBridge.on(
-            "receipt",
-            receiptHandler
+            2000
         )
 
         return () => {
 
-            kernelBridge.off(
-                "receipt",
-                receiptHandler
-            )
+            mounted = false
+
+            if (interval) {
+
+                window.clearInterval(
+                    interval
+                )
+            }
         }
 
-    }, [kernelBridge])
+    }, [endpoint])
 
-    /**
-     * ---------------------------------------------------
-     * Projection Edges
-     * ---------------------------------------------------
-     */
-
-    const edges =
-        useMemo<
-            RuntimeProjectionEdge[]
-        >(() => {
-
-            const runtimeEdges:
-                RuntimeProjectionEdge[] = []
-
-            for (
-                let i = 0;
-                i < nodes.length - 1;
-                i++
-            ) {
-
-                runtimeEdges.push({
-
-                    id:
-                        `edge-${i}`,
-
-                    source:
-                        nodes[i].position,
-
-                    target:
-                        nodes[i + 1].position
-                })
-            }
-
-            return runtimeEdges
-
-        }, [nodes])
-
-    /**
-     * ---------------------------------------------------
-     * Selected Node
-     * ---------------------------------------------------
-     */
-
-    const selectedNode =
-        useMemo(() => {
-
-            if (!selectedNodeId) {
-
-                return undefined
-            }
-
-            return nodes.find(
-
-                (node) =>
-                    node.id === selectedNodeId
-            )
-
-        }, [
-            nodes,
-            selectedNodeId
-        ])
-
-    /**
-     * ---------------------------------------------------
-     * Projection Surface
-     * ---------------------------------------------------
-     */
+    // =====================================================
+    // Render
+    // =====================================================
 
     return (
 
@@ -415,328 +217,431 @@ React.FC<
             className="
                 w-full
                 h-full
-                relative
                 bg-black
+                text-white
+                overflow-hidden
+                flex
+                flex-col
             "
         >
 
-            {/* -------------------------------- */}
-            {/* Projection Canvas */}
-            {/* -------------------------------- */}
-
-            <Canvas
-
-                camera={{
-
-                    position: [0, 6, 16],
-
-                    fov: 60
-                }}
-            >
-
-                <ambientLight intensity={0.7} />
-
-                <pointLight
-
-                    position={[10, 10, 10]}
-
-                    intensity={1.6}
-                />
-
-                <pointLight
-
-                    position={[-10, -4, -10]}
-
-                    intensity={0.7}
-
-                    color="#22d3ee"
-                />
-
-                {/* ---------------------------- */}
-                {/* Receipt Edges */}
-                {/* ---------------------------- */}
-
-                {
-                    edges.map((edge) => (
-
-                        <Line
-
-                            key={edge.id}
-
-                            points={[
-
-                                edge.source,
-
-                                edge.target
-                            ]}
-
-                            color="#22d3ee"
-
-                            transparent
-
-                            opacity={0.4}
-
-                            lineWidth={1.2}
-                        />
-                    ))
-                }
-
-                {/* ---------------------------- */}
-                {/* Receipt Nodes */}
-                {/* ---------------------------- */}
-
-                {
-                    nodes.map((node) => (
-
-                        <group
-                            key={node.id}
-
-                            onClick={() => {
-
-                                setSelectedNodeId(
-                                    node.id
-                                )
-                            }}
-                        >
-
-                            <ReceiptNode
-
-                                node={node}
-
-                                selected={
-                                    selectedNodeId ===
-                                    node.id
-                                }
-                            />
-
-                        </group>
-                    ))
-                }
-
-                {/* ---------------------------- */}
-                {/* Controls */}
-                {/* ---------------------------- */}
-
-                <OrbitControls
-
-                    enableDamping
-
-                    dampingFactor={0.08}
-
-                    rotateSpeed={0.6}
-
-                    zoomSpeed={0.7}
-                />
-
-            </Canvas>
-
-            {/* -------------------------------- */}
-            {/* Overlay */}
-            {/* -------------------------------- */}
+            {/* =================================================
+                Header
+            ================================================== */}
 
             <div
                 className="
-                    absolute
-                    top-4
-                    left-4
+                    border-b
+                    border-neutral-800
+                    px-4
+                    py-3
+                    bg-black/70
+                    backdrop-blur-md
                     flex
-                    flex-col
-                    gap-2
-                    text-[10px]
-                    font-mono
+                    items-center
+                    justify-between
                 "
             >
 
                 <div
                     className="
-                        px-3
-                        py-2
-                        rounded-xl
-                        border
-                        border-neutral-800
-                        bg-black/70
-                        backdrop-blur-xl
+                        flex
+                        flex-col
                     "
                 >
-                    runtime-originated topology only
+
+                    <div
+                        className="
+                            text-cyan-300
+                            text-sm
+                            font-semibold
+                        "
+                    >
+                        Runtime Graph Projection
+                    </div>
+
+                    <div
+                        className="
+                            text-neutral-500
+                            text-[10px]
+                            font-mono
+                        "
+                    >
+                        replay_transport_projection
+                    </div>
+
                 </div>
 
                 <div
                     className="
-                        px-3
-                        py-2
-                        rounded-xl
-                        border
-                        border-neutral-800
-                        bg-black/70
-                        backdrop-blur-xl
+                        text-[10px]
+                        font-mono
+                        text-cyan-700
                     "
                 >
-                    projected receipts:
-                    {" "}
+
                     {
-                        nodes.length
+                        loading
+
+                            ? "loading"
+
+                            : "online"
+                    }
+
+                </div>
+
+            </div>
+
+            {/* =================================================
+                Error
+            ================================================== */}
+
+            {
+                error && (
+
+                    <div
+                        className="
+                            m-4
+                            rounded-xl
+                            border
+                            border-red-900
+                            bg-red-950/40
+                            p-4
+                            text-red-300
+                            text-sm
+                            font-mono
+                        "
+                    >
+
+                        {error}
+
+                    </div>
+                )
+            }
+
+            {/* =================================================
+                Projection Workspace
+            ================================================== */}
+
+            <div
+                className="
+                    flex-1
+                    relative
+                    overflow-hidden
+                "
+            >
+
+                {/* =============================================
+                    Grid
+                ============================================== */}
+
+                <div
+                    className="
+                        absolute
+                        inset-0
+                        opacity-10
+                    "
+                    style={{
+                        backgroundImage: `
+                            linear-gradient(
+                                to right,
+                                rgba(34,211,238,0.1) 1px,
+                                transparent 1px
+                            ),
+                            linear-gradient(
+                                to bottom,
+                                rgba(34,211,238,0.1) 1px,
+                                transparent 1px
+                            )
+                        `,
+                        backgroundSize:
+                            "28px 28px"
+                    }}
+                />
+
+                {/* =============================================
+                    Projection
+                ============================================== */}
+
+                <div
+                    className="
+                        absolute
+                        inset-0
+                        p-6
+                        overflow-auto
+                    "
+                >
+
+                    {
+                        graphNodes.length
+                        === 0
+
+                            ? (
+
+                                <div
+                                    className="
+                                        w-full
+                                        h-full
+                                        flex
+                                        items-center
+                                        justify-center
+                                        text-neutral-600
+                                        font-mono
+                                        text-sm
+                                    "
+                                >
+
+                                    awaiting_runtime_projection
+
+                                </div>
+                            )
+
+                            : (
+
+                                <div
+                                    className="
+                                        flex
+                                        flex-wrap
+                                        gap-4
+                                    "
+                                >
+
+                                    {
+                                        graphNodes.map(
+
+                                            (
+                                                node,
+                                                index
+                                            ) => (
+
+                                                <ProjectionNode
+                                                    key={
+                                                        node.id
+                                                        ??
+                                                        index
+                                                    }
+                                                    node={
+                                                        node
+                                                    }
+                                                    active={
+                                                        index
+                                                        ===
+                                                        graphNodes.length - 1
+                                                    }
+                                                />
+                                            )
+                                        )
+                                    }
+
+                                </div>
+                            )
+                    }
+
+                </div>
+
+            </div>
+
+        </div>
+    )
+}
+
+// =========================================================
+// Projection Node
+// =========================================================
+
+const ProjectionNode: React.FC<
+    ProjectionNodeProps
+> = ({
+    node,
+    active
+}) => {
+
+    return (
+
+        <div
+            className={`
+                w-56
+                rounded-2xl
+                border
+                backdrop-blur-md
+                p-4
+                flex
+                flex-col
+                gap-2
+                transition-all
+                ${
+                    active
+
+                        ? `
+                            border-cyan-500/50
+                            bg-cyan-500/10
+                            shadow-[0_0_40px_rgba(34,211,238,0.15)]
+                        `
+
+                        : `
+                            border-neutral-800
+                            bg-neutral-950/80
+                        `
+                }
+            `}
+        >
+
+            {/* =============================================
+                Header
+            ============================================== */}
+
+            <div
+                className="
+                    flex
+                    items-center
+                    justify-between
+                "
+            >
+
+                <div
+                    className="
+                        text-cyan-300
+                        text-xs
+                        font-semibold
+                    "
+                >
+                    {
+                        node.event_type
+                        ??
+                        "runtime"
                     }
                 </div>
 
                 <div
                     className="
-                        px-3
-                        py-2
-                        rounded-xl
-                        border
-                        border-neutral-800
-                        bg-black/70
-                        backdrop-blur-xl
+                        text-[10px]
+                        font-mono
+                        text-neutral-500
                     "
                 >
-                    replay sync:
-                    {" "}
+                    active
+                </div>
+
+            </div>
+
+            {/* =============================================
+                Event Hash
+            ============================================== */}
+
+            <div
+                className="
+                    flex
+                    flex-col
+                    gap-1
+                "
+            >
+
+                <div
+                    className="
+                        text-[10px]
+                        uppercase
+                        tracking-wide
+                        text-neutral-600
+                    "
+                >
+                    event_hash72
+                </div>
+
+                <div
+                    className="
+                        text-[10px]
+                        font-mono
+                        break-all
+                        text-cyan-400
+                    "
+                >
                     {
-                        kernelBridge.state
-                            .replaySynchronized
-
-                            ? "ACTIVE"
-
-                            : "DESYNC"
+                        node.id
+                        ??
+                        "pending"
                     }
                 </div>
 
             </div>
 
-            {/* -------------------------------- */}
-            {/* Selected Node Inspector */}
-            {/* -------------------------------- */}
+            {/* =============================================
+                Parent
+            ============================================== */}
 
             {
-                selectedNode && (
+                node.parent && (
 
                     <div
                         className="
-                            absolute
-                            bottom-4
-                            right-4
-                            w-[360px]
-                            rounded-2xl
-                            border
-                            border-neutral-800
-                            bg-black/80
-                            backdrop-blur-xl
-                            overflow-hidden
+                            flex
+                            flex-col
+                            gap-1
                         "
                     >
 
                         <div
                             className="
-                                px-4
-                                py-3
-                                border-b
-                                border-neutral-800
-                                text-sm
-                                font-semibold
-                                text-cyan-300
+                                text-[10px]
+                                uppercase
+                                tracking-wide
+                                text-neutral-600
                             "
                         >
-                            Runtime Receipt Inspector
+                            parent
                         </div>
 
                         <div
                             className="
-                                p-4
-                                flex
-                                flex-col
-                                gap-3
                                 text-[10px]
                                 font-mono
+                                break-all
+                                text-neutral-400
                             "
                         >
+                            {node.parent}
+                        </div>
 
-                            <div>
+                    </div>
+                )
+            }
 
-                                <div
-                                    className="
-                                        opacity-50
-                                        mb-1
-                                    "
-                                >
-                                    receiptHash
-                                </div>
+            {/* =============================================
+                Receipt
+            ============================================== */}
 
-                                <div
-                                    className="
-                                        break-all
-                                    "
-                                >
-                                    {
-                                        selectedNode
-                                            .receiptHash
-                                    }
-                                </div>
+            {
+                node.receipt_hash72 && (
 
-                            </div>
+                    <div
+                        className="
+                            flex
+                            flex-col
+                            gap-1
+                        "
+                    >
 
-                            <div>
+                        <div
+                            className="
+                                text-[10px]
+                                uppercase
+                                tracking-wide
+                                text-neutral-600
+                            "
+                        >
+                            receipt_hash72
+                        </div>
 
-                                <div
-                                    className="
-                                        opacity-50
-                                        mb-1
-                                    "
-                                >
-                                    operation
-                                </div>
-
-                                <div>
-                                    {
-                                        selectedNode
-                                            .operation
-                                    }
-                                </div>
-
-                            </div>
-
-                            <div>
-
-                                <div
-                                    className="
-                                        opacity-50
-                                        mb-1
-                                    "
-                                >
-                                    status
-                                </div>
-
-                                <div>
-                                    {
-                                        selectedNode
-                                            .status
-                                    }
-                                </div>
-
-                            </div>
-
-                            <div>
-
-                                <div
-                                    className="
-                                        opacity-50
-                                        mb-1
-                                    "
-                                >
-                                    timestamp
-                                </div>
-
-                                <div>
-                                    {
-                                        new Date(
-                                            selectedNode
-                                                .timestamp
-                                        ).toISOString()
-                                    }
-                                </div>
-
-                            </div>
-
+                        <div
+                            className="
+                                text-[10px]
+                                font-mono
+                                break-all
+                                text-emerald-400
+                            "
+                        >
+                            {
+                                node.receipt_hash72
+                            }
                         </div>
 
                     </div>
@@ -746,3 +651,9 @@ React.FC<
         </div>
     )
 }
+
+// =========================================================
+// Default Export
+// =========================================================
+
+export default HHSCalculatorGraphProjection
