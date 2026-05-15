@@ -1,659 +1,472 @@
-import React, {
-    useEffect,
-    useMemo,
-    useState
-} from "react"
+# ============================================================================
+# hhs_backend/runtime/runtime_graph_projection.py
+# ============================================================================
+#
+# Canonical Runtime Graph Projection Engine
+#
+# Responsibilities:
+#
+#   - runtime event graph projection
+#   - replay lineage projection
+#   - event ancestry traversal
+#   - receipt linkage
+#   - graph serialization
+#   - topology normalization
+#
+# IMPORTANT
+# ----------------------------------------------------------------------------
+#
+# Graphs are PROJECTIONS of runtime state.
+#
+# Graphs are NOT runtime authority.
+#
+# Runtime authority belongs to:
+#
+#   - runtime_event_schema.py
+#   - replay lineage
+#   - receipt continuity
+#
+# ============================================================================
+
+from __future__ import annotations
 
-// =========================================================
-// Types
-// =========================================================
+from dataclasses import dataclass
+from dataclasses import field
 
-interface RuntimeGraphNode {
+from typing import Any
+from typing import Dict
+from typing import List
+from typing import Optional
+from typing import Set
 
-    id: string
+from hhs_backend.runtime.runtime_event_schema import (
+    HHSRuntimeEventEnvelope,
+)
 
-    parent?: string
+# ============================================================================
+# Runtime Graph Node
+# ============================================================================
 
-    runtime_id?: string
+@dataclass
+class RuntimeGraphNode:
 
-    branch_id?: string
+    id: str
 
-    receipt_hash72?: string
+    parent: Optional[str] = None
 
-    event_type?: string
+    runtime_id: Optional[str] = None
 
-    timestamp_ns?: number
-}
+    branch_id: Optional[str] = None
 
-// =========================================================
-// Projection Node
-// =========================================================
+    receipt_hash72: Optional[str] = None
 
-interface ProjectionNodeProps {
+    event_type: Optional[str] = None
 
-    node: RuntimeGraphNode
+    timestamp_ns: Optional[int] = None
 
-    active?: boolean
-}
+    payload: Dict[str, Any] = field(
+        default_factory=dict
+    )
 
-// =========================================================
-// RuntimeGraphProjection
-// =========================================================
+# ============================================================================
+# Runtime Graph Edge
+# ============================================================================
 
-export const HHSCalculatorGraphProjection:
-React.FC = () => {
+@dataclass
+class RuntimeGraphEdge:
 
-    // =====================================================
-    // State
-    // =====================================================
+    source: str
 
-    const [
+    target: str
 
-        graphNodes,
+    edge_type: str = "lineage"
 
-        setGraphNodes
+# ============================================================================
+# RuntimeGraphProjectionEngine
+# ============================================================================
 
-    ] = useState<
-        RuntimeGraphNode[]
-    >([])
+class RuntimeGraphProjectionEngine:
 
-    const [
+    """
+    Canonical runtime graph projection engine.
+    """
 
-        loading,
+    # =====================================================================
+    # Constructor
+    # =====================================================================
 
-        setLoading
+    def __init__(self):
 
-    ] = useState(true)
+        self.nodes: Dict[
+            str,
+            RuntimeGraphNode
+        ] = {}
 
-    const [
+        self.edges: List[
+            RuntimeGraphEdge
+        ] = []
 
-        error,
+        self.children_index: Dict[
+            str,
+            List[str]
+        ] = {}
 
-        setError
+        self.runtime_index: Dict[
+            str,
+            List[str]
+        ] = {}
 
-    ] = useState<
-        string | null
-    >(null)
+        self.branch_index: Dict[
+            str,
+            List[str]
+        ] = {}
 
-    // =====================================================
-    // Runtime Endpoint
-    // =====================================================
+    # =====================================================================
+    # Ingest Event
+    # =====================================================================
 
-    const endpoint =
-        useMemo(() => {
+    def ingest_event(
 
-            return (
+        self,
 
-                `${window.location.origin}`
+        event:
+            HHSRuntimeEventEnvelope
 
-                +
+    ):
 
-                `/api/runtime/graph`
-            )
+        node = RuntimeGraphNode(
 
-        }, [])
+            id=event.event_hash72,
 
-    // =====================================================
-    // Poll Graph
-    // =====================================================
+            parent=event.parent_event_hash72,
 
-    useEffect(() => {
+            runtime_id=event.runtime_id,
 
-        let mounted = true
+            branch_id=event.branch_id,
 
-        let interval:
-            number | undefined
+            receipt_hash72=event.receipt_hash72,
 
-        const pollGraph =
-            async () => {
+            event_type=event.event_type,
 
-                try {
+            timestamp_ns=event.created_at_ns,
 
-                    const response =
-                        await fetch(
-                            endpoint
-                        )
-
-                    if (
-                        !response.ok
-                    ) {
-
-                        throw new Error(
-
-                            `Graph request failed (${response.status})`
-                        )
-                    }
-
-                    const json =
-                        await response.json()
-
-                    if (!mounted) {
-
-                        return
-                    }
-
-                    // -------------------------------------------------
-                    // Placeholder Graph Projection
-                    // -------------------------------------------------
-
-                    // Replace with:
-                    //   RuntimeStateStore projection
-                    //   live websocket graph stream
-                    //   replay lineage
-                    //   runtime topology engine
-
-                    const nodes =
-                        Array.isArray(
-                            json.nodes
-                        )
-
-                            ? json.nodes
-
-                            : []
-
-                    setGraphNodes(nodes)
-
-                    setLoading(false)
-
-                    setError(null)
-
-                } catch (error) {
-
-                    console.error(
-
-                        "[HHSCalculatorGraphProjection] graph projection failure",
-
-                        error
-                    )
-
-                    if (!mounted) {
-
-                        return
-                    }
-
-                    setLoading(false)
-
-                    setError(
-
-                        error instanceof Error
-
-                            ? error.message
-
-                            : "Graph projection failure"
-                    )
-                }
-            }
-
-        pollGraph()
-
-        interval = window.setInterval(
-
-            pollGraph,
-
-            2000
+            payload=event.payload
         )
 
-        return () => {
+        # -------------------------------------------------------------
+        # Node
+        # -------------------------------------------------------------
 
-            mounted = false
+        self.nodes[
+            node.id
+        ] = node
 
-            if (interval) {
+        # -------------------------------------------------------------
+        # Edge
+        # -------------------------------------------------------------
 
-                window.clearInterval(
-                    interval
+        if node.parent:
+
+            self.edges.append(
+
+                RuntimeGraphEdge(
+
+                    source=node.parent,
+
+                    target=node.id,
+
+                    edge_type="lineage"
                 )
+            )
+
+            if (
+                node.parent
+                not in self.children_index
+            ):
+
+                self.children_index[
+                    node.parent
+                ] = []
+
+            self.children_index[
+                node.parent
+            ].append(node.id)
+
+        # -------------------------------------------------------------
+        # Runtime Index
+        # -------------------------------------------------------------
+
+        if node.runtime_id:
+
+            if (
+                node.runtime_id
+                not in self.runtime_index
+            ):
+
+                self.runtime_index[
+                    node.runtime_id
+                ] = []
+
+            self.runtime_index[
+                node.runtime_id
+            ].append(node.id)
+
+        # -------------------------------------------------------------
+        # Branch Index
+        # -------------------------------------------------------------
+
+        if node.branch_id:
+
+            if (
+                node.branch_id
+                not in self.branch_index
+            ):
+
+                self.branch_index[
+                    node.branch_id
+                ] = []
+
+            self.branch_index[
+                node.branch_id
+            ].append(node.id)
+
+    # =====================================================================
+    # Node
+    # =====================================================================
+
+    def get_node(
+        self,
+        node_id: str
+    ):
+
+        return self.nodes.get(
+            node_id
+        )
+
+    # =====================================================================
+    # Children
+    # =====================================================================
+
+    def get_children(
+        self,
+        node_id: str
+    ) -> List[RuntimeGraphNode]:
+
+        child_ids = (
+
+            self.children_index.get(
+                node_id,
+                []
+            )
+        )
+
+        return [
+
+            self.nodes[child_id]
+
+            for child_id in child_ids
+
+            if child_id in self.nodes
+        ]
+
+    # =====================================================================
+    # Lineage
+    # =====================================================================
+
+    def get_lineage(
+        self,
+        node_id: str
+    ) -> List[RuntimeGraphNode]:
+
+        lineage = []
+
+        current = self.nodes.get(
+            node_id
+        )
+
+        visited: Set[str] = set()
+
+        while current:
+
+            if current.id in visited:
+
+                break
+
+            visited.add(current.id)
+
+            lineage.append(current)
+
+            if not current.parent:
+
+                break
+
+            current = self.nodes.get(
+                current.parent
+            )
+
+        return lineage
+
+    # =====================================================================
+    # Runtime Nodes
+    # =====================================================================
+
+    def get_runtime_nodes(
+        self,
+        runtime_id: str
+    ) -> List[RuntimeGraphNode]:
+
+        ids = self.runtime_index.get(
+            runtime_id,
+            []
+        )
+
+        return [
+
+            self.nodes[node_id]
+
+            for node_id in ids
+
+            if node_id in self.nodes
+        ]
+
+    # =====================================================================
+    # Branch Nodes
+    # =====================================================================
+
+    def get_branch_nodes(
+        self,
+        branch_id: str
+    ) -> List[RuntimeGraphNode]:
+
+        ids = self.branch_index.get(
+            branch_id,
+            []
+        )
+
+        return [
+
+            self.nodes[node_id]
+
+            for node_id in ids
+
+            if node_id in self.nodes
+        ]
+
+    # =====================================================================
+    # Graph Projection
+    # =====================================================================
+
+    def project_graph(self):
+
+        return {
+
+            "nodes": [
+
+                self.serialize_node(node)
+
+                for node in self.nodes.values()
+            ],
+
+            "edges": [
+
+                self.serialize_edge(edge)
+
+                for edge in self.edges
+            ],
+
+            "metrics": {
+
+                "nodes":
+                    len(self.nodes),
+
+                "edges":
+                    len(self.edges),
+
+                "runtimes":
+                    len(self.runtime_index),
+
+                "branches":
+                    len(self.branch_index)
             }
         }
 
-    }, [endpoint])
-
-    // =====================================================
-    // Render
-    // =====================================================
-
-    return (
-
-        <div
-            className="
-                w-full
-                h-full
-                bg-black
-                text-white
-                overflow-hidden
-                flex
-                flex-col
-            "
-        >
-
-            {/* =================================================
-                Header
-            ================================================== */}
-
-            <div
-                className="
-                    border-b
-                    border-neutral-800
-                    px-4
-                    py-3
-                    bg-black/70
-                    backdrop-blur-md
-                    flex
-                    items-center
-                    justify-between
-                "
-            >
-
-                <div
-                    className="
-                        flex
-                        flex-col
-                    "
-                >
-
-                    <div
-                        className="
-                            text-cyan-300
-                            text-sm
-                            font-semibold
-                        "
-                    >
-                        Runtime Graph Projection
-                    </div>
-
-                    <div
-                        className="
-                            text-neutral-500
-                            text-[10px]
-                            font-mono
-                        "
-                    >
-                        replay_transport_projection
-                    </div>
-
-                </div>
-
-                <div
-                    className="
-                        text-[10px]
-                        font-mono
-                        text-cyan-700
-                    "
-                >
-
-                    {
-                        loading
-
-                            ? "loading"
-
-                            : "online"
-                    }
-
-                </div>
-
-            </div>
-
-            {/* =================================================
-                Error
-            ================================================== */}
-
-            {
-                error && (
-
-                    <div
-                        className="
-                            m-4
-                            rounded-xl
-                            border
-                            border-red-900
-                            bg-red-950/40
-                            p-4
-                            text-red-300
-                            text-sm
-                            font-mono
-                        "
-                    >
-
-                        {error}
-
-                    </div>
-                )
-            }
-
-            {/* =================================================
-                Projection Workspace
-            ================================================== */}
-
-            <div
-                className="
-                    flex-1
-                    relative
-                    overflow-hidden
-                "
-            >
-
-                {/* =============================================
-                    Grid
-                ============================================== */}
-
-                <div
-                    className="
-                        absolute
-                        inset-0
-                        opacity-10
-                    "
-                    style={{
-                        backgroundImage: `
-                            linear-gradient(
-                                to right,
-                                rgba(34,211,238,0.1) 1px,
-                                transparent 1px
-                            ),
-                            linear-gradient(
-                                to bottom,
-                                rgba(34,211,238,0.1) 1px,
-                                transparent 1px
-                            )
-                        `,
-                        backgroundSize:
-                            "28px 28px"
-                    }}
-                />
-
-                {/* =============================================
-                    Projection
-                ============================================== */}
-
-                <div
-                    className="
-                        absolute
-                        inset-0
-                        p-6
-                        overflow-auto
-                    "
-                >
-
-                    {
-                        graphNodes.length
-                        === 0
-
-                            ? (
-
-                                <div
-                                    className="
-                                        w-full
-                                        h-full
-                                        flex
-                                        items-center
-                                        justify-center
-                                        text-neutral-600
-                                        font-mono
-                                        text-sm
-                                    "
-                                >
-
-                                    awaiting_runtime_projection
-
-                                </div>
-                            )
-
-                            : (
-
-                                <div
-                                    className="
-                                        flex
-                                        flex-wrap
-                                        gap-4
-                                    "
-                                >
-
-                                    {
-                                        graphNodes.map(
-
-                                            (
-                                                node,
-                                                index
-                                            ) => (
-
-                                                <ProjectionNode
-                                                    key={
-                                                        node.id
-                                                        ??
-                                                        index
-                                                    }
-                                                    node={
-                                                        node
-                                                    }
-                                                    active={
-                                                        index
-                                                        ===
-                                                        graphNodes.length - 1
-                                                    }
-                                                />
-                                            )
-                                        )
-                                    }
-
-                                </div>
-                            )
-                    }
-
-                </div>
-
-            </div>
-
-        </div>
-    )
-}
-
-// =========================================================
-// Projection Node
-// =========================================================
-
-const ProjectionNode: React.FC<
-    ProjectionNodeProps
-> = ({
-    node,
-    active
-}) => {
-
-    return (
-
-        <div
-            className={`
-                w-56
-                rounded-2xl
-                border
-                backdrop-blur-md
-                p-4
-                flex
-                flex-col
-                gap-2
-                transition-all
-                ${
-                    active
-
-                        ? `
-                            border-cyan-500/50
-                            bg-cyan-500/10
-                            shadow-[0_0_40px_rgba(34,211,238,0.15)]
-                        `
-
-                        : `
-                            border-neutral-800
-                            bg-neutral-950/80
-                        `
-                }
-            `}
-        >
-
-            {/* =============================================
-                Header
-            ============================================== */}
-
-            <div
-                className="
-                    flex
-                    items-center
-                    justify-between
-                "
-            >
-
-                <div
-                    className="
-                        text-cyan-300
-                        text-xs
-                        font-semibold
-                    "
-                >
-                    {
-                        node.event_type
-                        ??
-                        "runtime"
-                    }
-                </div>
-
-                <div
-                    className="
-                        text-[10px]
-                        font-mono
-                        text-neutral-500
-                    "
-                >
-                    active
-                </div>
-
-            </div>
-
-            {/* =============================================
-                Event Hash
-            ============================================== */}
-
-            <div
-                className="
-                    flex
-                    flex-col
-                    gap-1
-                "
-            >
-
-                <div
-                    className="
-                        text-[10px]
-                        uppercase
-                        tracking-wide
-                        text-neutral-600
-                    "
-                >
-                    event_hash72
-                </div>
-
-                <div
-                    className="
-                        text-[10px]
-                        font-mono
-                        break-all
-                        text-cyan-400
-                    "
-                >
-                    {
-                        node.id
-                        ??
-                        "pending"
-                    }
-                </div>
-
-            </div>
-
-            {/* =============================================
-                Parent
-            ============================================== */}
-
-            {
-                node.parent && (
-
-                    <div
-                        className="
-                            flex
-                            flex-col
-                            gap-1
-                        "
-                    >
-
-                        <div
-                            className="
-                                text-[10px]
-                                uppercase
-                                tracking-wide
-                                text-neutral-600
-                            "
-                        >
-                            parent
-                        </div>
-
-                        <div
-                            className="
-                                text-[10px]
-                                font-mono
-                                break-all
-                                text-neutral-400
-                            "
-                        >
-                            {node.parent}
-                        </div>
-
-                    </div>
-                )
-            }
-
-            {/* =============================================
-                Receipt
-            ============================================== */}
-
-            {
-                node.receipt_hash72 && (
-
-                    <div
-                        className="
-                            flex
-                            flex-col
-                            gap-1
-                        "
-                    >
-
-                        <div
-                            className="
-                                text-[10px]
-                                uppercase
-                                tracking-wide
-                                text-neutral-600
-                            "
-                        >
-                            receipt_hash72
-                        </div>
-
-                        <div
-                            className="
-                                text-[10px]
-                                font-mono
-                                break-all
-                                text-emerald-400
-                            "
-                        >
-                            {
-                                node.receipt_hash72
-                            }
-                        </div>
-
-                    </div>
-                )
-            }
-
-        </div>
-    )
-}
-
-// =========================================================
-// Default Export
-// =========================================================
-
-export default HHSCalculatorGraphProjection
+    # =====================================================================
+    # Serialize Node
+    # =====================================================================
+
+    def serialize_node(
+        self,
+        node: RuntimeGraphNode
+    ):
+
+        return {
+
+            "id":
+                node.id,
+
+            "parent":
+                node.parent,
+
+            "runtime_id":
+                node.runtime_id,
+
+            "branch_id":
+                node.branch_id,
+
+            "receipt_hash72":
+                node.receipt_hash72,
+
+            "event_type":
+                node.event_type,
+
+            "timestamp_ns":
+                node.timestamp_ns,
+
+            "payload":
+                node.payload
+        }
+
+    # =====================================================================
+    # Serialize Edge
+    # =====================================================================
+
+    def serialize_edge(
+        self,
+        edge: RuntimeGraphEdge
+    ):
+
+        return {
+
+            "source":
+                edge.source,
+
+            "target":
+                edge.target,
+
+            "edge_type":
+                edge.edge_type
+        }
+
+    # =====================================================================
+    # Reset
+    # =====================================================================
+
+    def reset(self):
+
+        self.nodes.clear()
+
+        self.edges.clear()
+
+        self.children_index.clear()
+
+        self.runtime_index.clear()
+
+        self.branch_index.clear()
+
+# ============================================================================
+# Global Projection Engine
+# ============================================================================
+
+runtime_graph_projection_engine = (
+    RuntimeGraphProjectionEngine()
+)
