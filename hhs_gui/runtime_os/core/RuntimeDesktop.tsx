@@ -1,7 +1,6 @@
 import React, {
     useEffect,
     useMemo,
-    useRef,
     useState
 } from "react"
 
@@ -10,20 +9,12 @@ import {
 } from "./RuntimeOS"
 
 import {
-    RuntimeWindowManager
-} from "./RuntimeWindowManager.tsx"
+    RuntimeWindow
+} from "./RuntimeWindowManager"
 
 import {
-    RuntimeViewport
-} from "./RuntimeViewport"
-
-import {
-    RuntimeCommandBar
-} from "./RuntimeCommandBar"
-
-import {
-    runtimeWorkspacePersistence
-} from "../state/RuntimeWorkspacePersistence"
+    RuntimeWindowContent
+} from "./RuntimeWindowContent"
 
 // =========================================================
 // Props
@@ -32,17 +23,6 @@ import {
 export interface RuntimeDesktopProps {
 
     runtimeOS: RuntimeOS
-}
-
-// =========================================================
-// Desktop State
-// =========================================================
-
-interface DesktopViewport {
-
-    width: number
-
-    height: number
 }
 
 // =========================================================
@@ -55,241 +35,89 @@ export const RuntimeDesktop: React.FC<
     runtimeOS
 }) => {
 
-    const rootRef =
-        useRef<HTMLDivElement>(
-            null
-        )
+    // =====================================================
+    // State
+    // =====================================================
 
-    const [viewport, setViewport] =
-        useState<DesktopViewport>({
+    const [
 
-            width:
-                window.innerWidth,
+        windows,
 
-            height:
-                window.innerHeight
-        })
+        setWindows
 
-    const [zCounter, setZCounter] =
-        useState(100)
+    ] = useState<
+        RuntimeWindow[]
+    >([])
 
-    const [desktopReady, setDesktopReady] =
-        useState(false)
+    const [
+
+        metrics,
+
+        setMetrics
+
+    ] = useState(
+        runtimeOS.getMetrics()
+    )
 
     // =====================================================
-    // Viewport Tracking
+    // Refresh
     // =====================================================
 
     useEffect(() => {
 
-        const onResize = () => {
+        let mounted = true
 
-            setViewport({
+        const refresh = () => {
 
-                width:
-                    window.innerWidth,
+            if (!mounted) {
 
-                height:
-                    window.innerHeight
-            })
-        }
+                return
+            }
 
-        window.addEventListener(
-            "resize",
-            onResize
-        )
+            setWindows(
 
-        return () => {
+                runtimeOS
+                    .windowManager
+                    .getWindows()
+            )
 
-            window.removeEventListener(
-                "resize",
-                onResize
+            setMetrics(
+                runtimeOS
+                    .getMetrics()
             )
         }
 
-    }, [])
-
-    // =====================================================
-    // Workspace Restore
-    // =====================================================
-
-    useEffect(() => {
-
-        const persisted =
-            runtimeWorkspacePersistence
-                .load()
-
-        if (persisted) {
-
-            for (
-                const persistedWindow
-                of persisted.windows
-            ) {
-
-                const target =
-                    runtimeOS.workspace
-                        .layout
-                        .windows
-                        .find(
-
-                            (
-                                window
-                            ) => (
-
-                                window.id
-                                === persistedWindow.id
-                            )
-                        )
-
-                if (!target) {
-
-                    continue
-                }
-
-                target.x =
-                    persistedWindow.x
-
-                target.y =
-                    persistedWindow.y
-
-                target.width =
-                    persistedWindow.width
-
-                target.height =
-                    persistedWindow.height
-
-                target.minimized =
-                    persistedWindow.minimized
-
-                target.maximized =
-                    persistedWindow.maximized
-
-                target.focused =
-                    persistedWindow.focused
-            }
-        }
-
-        setDesktopReady(true)
-
-    }, [runtimeOS])
-
-    // =====================================================
-    // Workspace Save
-    // =====================================================
-
-    useEffect(() => {
-
-        if (!desktopReady) {
-
-            return
-        }
+        refresh()
 
         const interval =
-            window.setInterval(() => {
+            window.setInterval(
 
-                runtimeWorkspacePersistence
-                    .save({
+                refresh,
 
-                        version: 1,
-
-                        updatedAt:
-                            Date.now(),
-
-                        windows:
-
-                            runtimeOS.workspace
-                                .layout
-                                .windows
-                                .map(
-
-                                    (
-                                        window
-                                    ) => ({
-
-                                        id:
-                                            window.id,
-
-                                        x:
-                                            window.x,
-
-                                        y:
-                                            window.y,
-
-                                        width:
-                                            window.width,
-
-                                        height:
-                                            window.height,
-
-                                        minimized:
-                                            window.minimized,
-
-                                        maximized:
-                                            window.maximized,
-
-                                        focused:
-                                            window.focused
-                                    })
-                                ),
-
-                        overlays: {
-
-                            replayTimeline:
-                                false,
-
-                            receiptInspector:
-                                false,
-
-                            sidebarVisible:
-                                true
-                        },
-
-                        viewport: {
-
-                            cameraX: 0,
-
-                            cameraY: 0,
-
-                            cameraZ: 12,
-
-                            targetX: 0,
-
-                            targetY: 0,
-
-                            targetZ: 0,
-
-                            zoom: 1
-                        }
-                    })
-
-            }, 2000)
+                250
+            )
 
         return () => {
+
+            mounted = False
 
             window.clearInterval(
                 interval
             )
         }
 
-    }, [
-
-        desktopReady,
-
-        runtimeOS
-    ])
+    }, [runtimeOS])
 
     // =====================================================
-    // Window Ordering
+    // Sorted Windows
     // =====================================================
 
-    const orderedWindows =
+    const sortedWindows =
         useMemo(() => {
 
             return [
 
-                ...runtimeOS.workspace
-                    .layout
-                    .windows
+                ...windows
 
             ].sort(
 
@@ -298,49 +126,223 @@ export const RuntimeDesktop: React.FC<
                     b
                 ) => {
 
-                    if (
+                    const af =
                         a.focused
-                    ) {
+                            ? 1
+                            : 0
 
-                        return 1
-                    }
-
-                    if (
+                    const bf =
                         b.focused
-                    ) {
+                            ? 1
+                            : 0
 
-                        return -1
-                    }
-
-                    return 0
+                    return bf - af
                 }
             )
 
-        }, [
-
-            runtimeOS.workspace
-                .layout
-                .windows
-        ])
+        }, [windows])
 
     // =====================================================
-    // Focus Window
+    // Render
     // =====================================================
 
-    const focusWindow = (
-        windowId: string
-    ) => {
+    return (
 
-        runtimeOS.focusWindow(
-            windowId
-        )
+        <div
+            className="
+                fixed
+                inset-0
+                overflow-hidden
+                bg-black
+                text-white
+            "
+        >
 
-        setZCounter(
-            (previous) => (
+            {/* =================================================
+                Background
+            ================================================== */}
 
-                previous + 1
-            )
-        )
+            <div
+                className="
+                    absolute
+                    inset-0
+                    opacity-20
+                "
+                style={{
+                    backgroundImage: `
+                        radial-gradient(
+                            circle at center,
+                            rgba(34,211,238,0.10),
+                            transparent 70%
+                        )
+                    `
+                }}
+            />
+
+            {/* =================================================
+                Grid
+            ================================================== */}
+
+            <div
+                className="
+                    absolute
+                    inset-0
+                    opacity-[0.05]
+                "
+                style={{
+                    backgroundImage: `
+                        linear-gradient(
+                            to right,
+                            white 1px,
+                            transparent 1px
+                        ),
+                        linear-gradient(
+                            to bottom,
+                            white 1px,
+                            transparent 1px
+                        )
+                    `,
+                    backgroundSize:
+                        "32px 32px"
+                }}
+            />
+
+            {/* =================================================
+                Runtime Status
+            ================================================== */}
+
+            <div
+                className="
+                    absolute
+                    top-4
+                    right-4
+                    z-[9999]
+                    rounded-xl
+                    border
+                    border-cyan-950
+                    bg-black/70
+                    backdrop-blur-md
+                    px-4
+                    py-3
+                    flex
+                    flex-col
+                    gap-1
+                    text-[10px]
+                    font-mono
+                "
+            >
+
+                <div
+                    className="
+                        text-cyan-300
+                    "
+                >
+                    RuntimeOS
+                </div>
+
+                <div
+                    className="
+                        text-neutral-500
+                    "
+                >
+                    sockets:
+                    {" "}
+                    {
+                        metrics.sockets.totalEvents
+                    }
+                </div>
+
+                <div
+                    className="
+                        text-neutral-500
+                    "
+                >
+                    windows:
+                    {" "}
+                    {
+                        metrics.windows.windows
+                    }
+                </div>
+
+                <div
+                    className="
+                        text-neutral-500
+                    "
+                >
+                    graph:
+                    {" "}
+                    {
+                        metrics.store.graphNodes
+                    }
+                </div>
+
+            </div>
+
+            {/* =================================================
+                Windows
+            ================================================== */}
+
+            {
+                sortedWindows.map(
+
+                    (
+                        runtimeWindow
+                    ) => (
+
+                        <RuntimeDesktopWindow
+                            key={
+                                runtimeWindow.id
+                            }
+                            runtimeOS={
+                                runtimeOS
+                            }
+                            runtimeWindow={
+                                runtimeWindow
+                            }
+                        />
+                    )
+                )
+            }
+
+        </div>
+    )
+}
+
+// =========================================================
+// Desktop Window
+// =========================================================
+
+interface RuntimeDesktopWindowProps {
+
+    runtimeOS: RuntimeOS
+
+    runtimeWindow: RuntimeWindow
+}
+
+// =========================================================
+// RuntimeDesktopWindow
+// =========================================================
+
+const RuntimeDesktopWindow:
+React.FC<
+    RuntimeDesktopWindowProps
+> = ({
+
+    runtimeOS,
+
+    runtimeWindow
+
+}) => {
+
+    // =====================================================
+    // Hidden
+    // =====================================================
+
+    if (
+        runtimeWindow.minimized
+    ) {
+
+        return null
     }
 
     // =====================================================
@@ -350,197 +352,191 @@ export const RuntimeDesktop: React.FC<
     return (
 
         <div
-            ref={rootRef}
-            className="
+            className={`
                 absolute
-                inset-0
                 overflow-hidden
-                bg-neutral-950
-            "
+                rounded-2xl
+                border
+                backdrop-blur-xl
+                transition-all
+                ${
+                    runtimeWindow.focused
+
+                        ? `
+                            border-cyan-500/40
+                            shadow-[0_0_50px_rgba(34,211,238,0.18)]
+                        `
+
+                        : `
+                            border-neutral-800
+                        `
+                }
+            `}
+            style={{
+
+                left:
+                    runtimeWindow.x,
+
+                top:
+                    runtimeWindow.y,
+
+                width:
+                    runtimeWindow.width,
+
+                height:
+                    runtimeWindow.height,
+
+                background:
+                    "rgba(0,0,0,0.82)"
+            }}
+            onMouseDown={() => {
+
+                runtimeOS
+                    .windowManager
+                    .focusWindow(
+                        runtimeWindow.id
+                    )
+            }}
         >
 
-            {/* ================================================= */}
-            {/* Viewport */}
-            {/* ================================================= */}
-
-            <RuntimeViewport
-                runtimeOS={runtimeOS}
-            />
-
-            {/* ================================================= */}
-            {/* Ambient Overlay */}
-            {/* ================================================= */}
+            {/* =============================================
+                Title Bar
+            ============================================== */}
 
             <div
                 className="
-                    absolute
-                    inset-0
-                    pointer-events-none
-                    bg-[radial-gradient(circle_at_center,rgba(0,255,255,0.04),transparent_70%)]
+                    h-12
+                    border-b
+                    border-neutral-800
+                    bg-black/70
+                    backdrop-blur-md
+                    px-4
+                    flex
+                    items-center
+                    justify-between
                 "
-            />
+            >
 
-            {/* ================================================= */}
-            {/* Desktop Grid */}
-            {/* ================================================= */}
+                <div
+                    className="
+                        flex
+                        flex-col
+                    "
+                >
+
+                    <div
+                        className="
+                            text-sm
+                            font-semibold
+                            text-cyan-300
+                        "
+                    >
+                        {
+                            runtimeWindow.title
+                        }
+                    </div>
+
+                    <div
+                        className="
+                            text-[10px]
+                            font-mono
+                            text-neutral-500
+                        "
+                    >
+                        {
+                            runtimeWindow.applicationId
+                        }
+                    </div>
+
+                </div>
+
+                {/* =========================================
+                    Controls
+                ========================================== */}
+
+                <div
+                    className="
+                        flex
+                        items-center
+                        gap-2
+                    "
+                >
+
+                    <button
+                        onClick={() => {
+
+                            runtimeOS
+                                .windowManager
+                                .minimizeWindow(
+                                    runtimeWindow.id
+                                )
+                        }}
+                        className="
+                            w-3
+                            h-3
+                            rounded-full
+                            bg-yellow-500
+                        "
+                    />
+
+                    <button
+                        onClick={() => {
+
+                            runtimeOS
+                                .windowManager
+                                .maximizeWindow(
+                                    runtimeWindow.id
+                                )
+                        }}
+                        className="
+                            w-3
+                            h-3
+                            rounded-full
+                            bg-green-500
+                        "
+                    />
+
+                    <button
+                        onClick={() => {
+
+                            runtimeOS
+                                .windowManager
+                                .closeWindow(
+                                    runtimeWindow.id
+                                )
+                        }}
+                        className="
+                            w-3
+                            h-3
+                            rounded-full
+                            bg-red-500
+                        "
+                    />
+
+                </div>
+
+            </div>
+
+            {/* =============================================
+                Content
+            ============================================== */}
 
             <div
                 className="
                     absolute
-                    inset-0
-                    pointer-events-none
-                    opacity-[0.04]
-                    bg-[linear-gradient(to_right,#ffffff_1px,transparent_1px),linear-gradient(to_bottom,#ffffff_1px,transparent_1px)]
-                    bg-[size:48px_48px]
-                "
-            />
-
-            {/* ================================================= */}
-            {/* Runtime Windows */}
-            {/* ================================================= */}
-
-            <div
-                className="
-                    absolute
-                    inset-0
+                    inset-x-0
+                    bottom-0
+                    top-12
                     overflow-hidden
                 "
             >
 
-                {
-                    orderedWindows.map(
-
-                        (
-                            runtimeWindow,
-                            index
-                        ) => {
-
-                            if (
-                                runtimeWindow
-                                    .minimized
-                            ) {
-
-                                return null
-                            }
-
-                            return (
-
-                                <RuntimeWindowManager
-                                    key={
-                                        runtimeWindow.id
-                                    }
-
-                                    runtimeOS={
-                                        runtimeOS
-                                    }
-
-                                    runtimeWindow={
-                                        runtimeWindow
-                                    }
-
-                                    desktopWidth={
-                                        viewport.width
-                                    }
-
-                                    desktopHeight={
-                                        viewport.height
-                                    }
-
-                                    zIndex={
-                                        zCounter
-                                        +
-                                        index
-                                    }
-
-                                    onFocus={() => {
-
-                                        focusWindow(
-
-                                            runtimeWindow.id
-                                        )
-                                    }}
-                                />
-                            )
-                        }
-                    )
-                }
-
-            </div>
-
-            {/* ================================================= */}
-            {/* Runtime Command Bar */}
-            {/* ================================================= */}
-
-            <RuntimeCommandBar
-                runtimeOS={runtimeOS}
-            />
-
-            {/* ================================================= */}
-            {/* Desktop Metrics */}
-            {/* ================================================= */}
-
-            <div
-                className="
-                    absolute
-                    bottom-4
-                    right-4
-                    z-[2500]
-                    rounded-2xl
-                    border
-                    border-neutral-800
-                    bg-neutral-900/80
-                    backdrop-blur-xl
-                    px-4
-                    py-3
-                    text-xs
-                    font-mono
-                    text-neutral-300
-                    flex
-                    flex-col
-                    gap-2
-                    min-w-[220px]
-                "
-            >
-
-                <DesktopMetric
-                    label="viewport"
-                    value={
-
-                        `${viewport.width}×${viewport.height}`
+                <RuntimeWindowContent
+                    runtimeOS={
+                        runtimeOS
                     }
-                />
-
-                <DesktopMetric
-                    label="windows"
-                    value={
-                        String(
-
-                            orderedWindows
-                                .length
-                        )
-                    }
-                />
-
-                <DesktopMetric
-                    label="runtime"
-                    value={
-
-                        runtimeOS.state.connected
-
-                            ? "online"
-
-                            : "offline"
-                    }
-                />
-
-                <DesktopMetric
-                    label="events"
-                    value={
-                        String(
-
-                            runtimeOS.state
-                                .totalEvents
-                        )
+                    applicationId={
+                        runtimeWindow.applicationId
                     }
                 />
 
@@ -551,46 +547,7 @@ export const RuntimeDesktop: React.FC<
 }
 
 // =========================================================
-// Desktop Metric
+// Default Export
 // =========================================================
 
-interface DesktopMetricProps {
-
-    label: string
-
-    value: string
-}
-
-const DesktopMetric: React.FC<
-    DesktopMetricProps
-> = ({
-    label,
-    value
-}) => {
-
-    return (
-
-        <div
-            className="
-                flex
-                items-center
-                justify-between
-                gap-6
-            "
-        >
-
-            <div
-                className="
-                    opacity-50
-                "
-            >
-                {label}
-            </div>
-
-            <div>
-                {value}
-            </div>
-
-        </div>
-    )
-}
+export default RuntimeDesktop
