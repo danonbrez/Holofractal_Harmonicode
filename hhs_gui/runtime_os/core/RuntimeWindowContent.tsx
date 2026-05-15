@@ -7,45 +7,56 @@ import {
 } from "./RuntimeOS"
 
 // =========================================================
-// Lazy Runtime Applications
+// Safe Runtime Import
 // =========================================================
 
-/**
- * IMPORTANT:
- * ---------------------------------------------------------
- * Runtime applications are optional authorities.
- *
- * Upstream commit cadence is currently uneven across:
- *
- * - runtime_os/
- * - runtime_apps/
- * - backend runtime
- *
- * Therefore runtime applications MUST NOT be hard imports.
- *
- * Hard imports cause:
- *
- * Vite module resolution failure
- * → frontend boot abort
- *
- * Runtime apps are now mounted lazily with fallback
- * surfaces to preserve Runtime OS continuity.
- */
+async function safeRuntimeImport(
 
-// ---------------------------------------------------------
-// Calculator
-// ---------------------------------------------------------
+    loader: () => Promise<any>,
+
+    fallback: React.ComponentType<any>
+
+): Promise<{
+
+    default: React.ComponentType<any>
+}> {
+
+    try {
+
+        return await loader()
+
+    } catch (error) {
+
+        console.error(
+
+            "[RuntimeWindowContent] optional runtime surface missing",
+
+            error
+        )
+
+        return {
+
+            default:
+                fallback
+        }
+    }
+}
+
+// =========================================================
+// Lazy Runtime Applications
+// =========================================================
 
 const HHSCalculatorSurface =
     React.lazy(() =>
 
-        import(
-            "../../runtime_apps/calculator/HHSCalculatorSurface"
-        ).catch(() => ({
+        safeRuntimeImport(
 
-            default:
-                CalculatorFallbackSurface
-        }))
+            () => import(
+                "../../runtime_apps/calculator/HHSCalculatorSurface"
+            ),
+
+            CalculatorFallbackSurface
+        )
     )
 
 // ---------------------------------------------------------
@@ -53,29 +64,29 @@ const HHSCalculatorSurface =
 const HHSCalculatorGraphProjection =
     React.lazy(() =>
 
-        import(
-            "../../runtime_apps/calculator/HHSCalculatorGraphProjection"
-        ).catch(() => ({
+        safeRuntimeImport(
 
-            default:
-                GraphProjectionFallbackSurface
-        }))
+            () => import(
+                "../../runtime_apps/calculator/HHSCalculatorGraphProjection"
+            ),
+
+            GraphProjectionFallbackSurface
+        )
     )
 
-// ---------------------------------------------------------
-// Breadboard
 // ---------------------------------------------------------
 
 const HHSBreadboardSurface =
     React.lazy(() =>
 
-        import(
-            "../../runtime_apps/breadboard/HHSBreadboardSurface"
-        ).catch(() => ({
+        safeRuntimeImport(
 
-            default:
-                BreadboardFallbackSurface
-        }))
+            () => import(
+                "../../runtime_apps/breadboard/HHSBreadboardSurface"
+            ),
+
+            BreadboardFallbackSurface
+        )
     )
 
 // ---------------------------------------------------------
@@ -83,13 +94,14 @@ const HHSBreadboardSurface =
 const HHSTransportOverlay =
     React.lazy(() =>
 
-        import(
-            "../../runtime_apps/breadboard/HHSTransportOverlay"
-        ).catch(() => ({
+        safeRuntimeImport(
 
-            default:
-                OverlayFallbackSurface
-        }))
+            () => import(
+                "../../runtime_apps/breadboard/HHSTransportOverlay"
+            ),
+
+            OverlayFallbackSurface
+        )
     )
 
 // =========================================================
@@ -114,6 +126,7 @@ export const RuntimeWindowContent: React.FC<
     runtimeOS,
 
     applicationId
+
 }) => {
 
     // =====================================================
