@@ -3,38 +3,62 @@
  * RuntimeStateStore
  * =========================================================
  *
- * Frontend projection-only runtime state authority.
- *
- * IMPORTANT:
- * ---------------------------------------------------------
- * This store is observational only.
- *
- * No execution authority exists here.
- *
- * Backend runtime remains canonical.
+ * Canonical Runtime OS frontend state authority.
  *
  * Responsibilities:
  *
- * - Runtime event ingestion
- * - Replay state projection
- * - Graph projection state
- * - Transport metrics
- * - Receipt lineage
- * - Runtime HUD synchronization
- * - Timeline buffering
- * - Window/application projection state
+ * - runtime timeline
+ * - receipt lineage
+ * - graph topology
+ * - transport state
+ * - replay continuity
+ * - websocket event ingestion
+ * - runtime observers
  */
 
 import type {
-
-    RuntimeSocketEvent,
-
-    RuntimeEventType
-
+    RuntimeSocketEvent
 } from "../core/RuntimeSocketManager"
 
 // =========================================================
-// Graph Types
+// Timeline
+// =========================================================
+
+export interface RuntimeTimelineFrame {
+
+    sequence_id: number
+
+    timestamp_ns: number
+
+    event_type: string
+
+    payload: Record<
+        string,
+        unknown
+    >
+}
+
+// =========================================================
+// Receipts
+// =========================================================
+
+export interface RuntimeReceipt {
+
+    receipt_hash72: string
+
+    source_hash72: string
+
+    operation: string
+
+    closure_class: string
+
+    converged: boolean
+
+    halted: boolean
+}
+
+// =========================================================
+// Graph
 // =========================================================
 
 export interface RuntimeGraphNode {
@@ -64,61 +88,16 @@ export interface RuntimeGraphEdge {
 }
 
 // =========================================================
-// Receipt Types
+// Runtime State
 // =========================================================
 
-export interface RuntimeReceipt {
+export interface RuntimeState {
 
-    receipt_hash72: string
+    timeline:
+        RuntimeTimelineFrame[]
 
-    source_hash72: string
-
-    operation: string
-
-    closure_class?: string
-
-    converged?: boolean
-
-    halted?: boolean
-}
-
-// =========================================================
-// Timeline Types
-// =========================================================
-
-export interface RuntimeTimelineFrame {
-
-    sequence_id: number
-
-    timestamp_ns: number
-
-    event_type: RuntimeEventType
-
-    payload: Record<
-        string,
-        unknown
-    >
-}
-
-// =========================================================
-// Runtime Store State
-// =========================================================
-
-export interface RuntimeProjectionState {
-
-    runtimeStatus: string
-
-    runtimePhase: string
-
-    runtimeStep: number
-
-    replayStatus: string
-
-    replayTick: number
-
-    transportFlux: number
-
-    throughput: number
+    receipts:
+        RuntimeReceipt[]
 
     graphNodes:
         RuntimeGraphNode[]
@@ -126,11 +105,11 @@ export interface RuntimeProjectionState {
     graphEdges:
         RuntimeGraphEdge[]
 
-    receipts:
-        RuntimeReceipt[]
-
-    timeline:
-        RuntimeTimelineFrame[]
+    transportState:
+        Record<
+            string,
+            unknown
+        >
 
     lastRuntimeEvent?:
         RuntimeSocketEvent
@@ -143,19 +122,24 @@ export interface RuntimeProjectionState {
 
     lastTransportEvent?:
         RuntimeSocketEvent
-
-    totalEvents: number
 }
 
 // =========================================================
-// Store Listener
+// Observer
 // =========================================================
 
-export type RuntimeStoreListener = (
+export type RuntimeStateObserver =
+    (
+        state: RuntimeState
+    ) => void
 
-    state: RuntimeProjectionState
+// =========================================================
+// Constants
+// =========================================================
 
-) => void
+const MAX_TIMELINE_FRAMES = 4096
+
+const MAX_RECEIPTS = 4096
 
 // =========================================================
 // RuntimeStateStore
@@ -163,19 +147,13 @@ export type RuntimeStoreListener = (
 
 export class RuntimeStateStore {
 
-    public readonly state:
-        RuntimeProjectionState
+    private readonly state:
+        RuntimeState
 
-    private listeners:
-        Set<
-            RuntimeStoreListener
-        >
-
-    private readonly maxTimeline =
-        4096
-
-    private readonly maxReceipts =
-        2048
+    private readonly observers =
+        new Set<
+            RuntimeStateObserver
+        >()
 
     // =====================================================
     // Constructor
@@ -183,57 +161,179 @@ export class RuntimeStateStore {
 
     constructor() {
 
-        this.listeners =
-            new Set()
-
         this.state = {
 
-            runtimeStatus:
-                "booting",
+            timeline: [],
 
-            runtimePhase:
-                "bootstrap",
-
-            runtimeStep:
-                0,
-
-            replayStatus:
-                "offline",
-
-            replayTick:
-                0,
-
-            transportFlux:
-                0,
-
-            throughput:
-                0,
+            receipts: [],
 
             graphNodes: [],
 
             graphEdges: [],
 
-            receipts: [],
-
-            timeline: [],
-
-            totalEvents: 0
+            transportState: {}
         }
     }
 
     // =====================================================
-    // Ingest
+    // Subscribe
+    // =====================================================
+
+    public subscribe(
+        observer:
+            RuntimeStateObserver
+    ): () => void {
+
+        this.observers.add(
+            observer
+        )
+
+        observer(
+            this.snapshot()
+        )
+
+        return () => {
+
+            this.observers.delete(
+                observer
+            )
+        }
+    }
+
+    // =====================================================
+    // Notify
+    // =====================================================
+
+    private notify():
+        void {
+
+        const snapshot =
+            this.snapshot()
+
+        for (
+            const observer
+            of this.observers
+        ) {
+
+            observer(snapshot)
+        }
+    }
+
+    // =====================================================
+    // Snapshot
+    // =====================================================
+
+    public snapshot():
+        RuntimeState {
+
+        return {
+
+            timeline: [
+
+                ...this.state.timeline
+            ],
+
+            receipts: [
+
+                ...this.state.receipts
+            ],
+
+            graphNodes: [
+
+                ...this.state.graphNodes
+            ],
+
+            graphEdges: [
+
+                ...this.state.graphEdges
+            ],
+
+            transportState: {
+
+                ...this.state
+                    .transportState
+            },
+
+            lastRuntimeEvent:
+
+                this.state
+                    .lastRuntimeEvent,
+
+            lastReplayEvent:
+
+                this.state
+                    .lastReplayEvent,
+
+            lastGraphEvent:
+
+                this.state
+                    .lastGraphEvent,
+
+            lastTransportEvent:
+
+                this.state
+                    .lastTransportEvent
+        }
+    }
+
+    // =====================================================
+    // Event Ingestion
     // =====================================================
 
     public ingestEvent(
-        event: RuntimeSocketEvent
+        event:
+            RuntimeSocketEvent
     ): void {
 
-        this.state.totalEvents += 1
+        // -------------------------------------------------
+        // Timeline
+        // -------------------------------------------------
 
-        this.appendTimeline(event)
+        this.state.timeline.push({
 
-        switch (event.event_type) {
+            sequence_id:
+
+                event.sequence_id
+                ?? 0,
+
+            timestamp_ns:
+
+                event.timestamp_ns
+                ?? Date.now(),
+
+            event_type:
+
+                event.event_type
+                ?? "runtime",
+
+            payload:
+
+                event.payload
+                ?? {}
+        })
+
+        // -------------------------------------------------
+        // Trim Timeline
+        // -------------------------------------------------
+
+        if (
+
+            this.state.timeline.length
+
+            > MAX_TIMELINE_FRAMES
+
+        ) {
+
+            this.state.timeline.shift()
+        }
+
+        // -------------------------------------------------
+        // Routing
+        // -------------------------------------------------
+
+        switch (
+            event.event_type
+        ) {
 
             case "runtime":
 
@@ -276,7 +376,7 @@ export class RuntimeStateStore {
                 break
         }
 
-        this.emit()
+        this.notify()
     }
 
     // =====================================================
@@ -284,97 +384,12 @@ export class RuntimeStateStore {
     // =====================================================
 
     private ingestRuntime(
-        event: RuntimeSocketEvent
+        event:
+            RuntimeSocketEvent
     ): void {
 
         this.state.lastRuntimeEvent =
             event
-
-        const payload =
-            event.payload
-
-        this.state.runtimeStatus =
-
-            String(
-
-                payload.runtime_status
-                ?? "online"
-            )
-
-        this.state.runtimePhase =
-
-            String(
-
-                payload.phase
-                ?? "runtime_loop"
-            )
-
-        this.state.runtimeStep =
-
-            Number(
-
-                payload.step
-                ?? 0
-            )
-
-        if (
-
-            payload.receipt_hash72
-            &&
-            payload.source_hash72
-
-        ) {
-
-            this.state.receipts.push({
-
-                receipt_hash72:
-
-                    String(
-                        payload.receipt_hash72
-                    ),
-
-                source_hash72:
-
-                    String(
-                        payload.source_hash72
-                    ),
-
-                operation:
-
-                    String(
-                        payload.operation
-                        ?? "runtime"
-                    ),
-
-                closure_class:
-
-                    String(
-                        payload.closure_state
-                        ?? "stable"
-                    )
-            })
-
-            if (
-
-                this.state.receipts
-                    .length
-
-                > this.maxReceipts
-            ) {
-
-                this.state.receipts
-                    .splice(
-
-                        0,
-
-                        this.state
-                            .receipts
-                            .length
-
-                        - this.maxReceipts
-                    )
-            }
-        }
     }
 
     // =====================================================
@@ -382,30 +397,12 @@ export class RuntimeStateStore {
     // =====================================================
 
     private ingestReplay(
-        event: RuntimeSocketEvent
+        event:
+            RuntimeSocketEvent
     ): void {
 
         this.state.lastReplayEvent =
             event
-
-        const payload =
-            event.payload
-
-        this.state.replayStatus =
-
-            String(
-
-                payload.replay_status
-                ?? "stable"
-            )
-
-        this.state.replayTick =
-
-            Number(
-
-                payload.replay_tick
-                ?? 0
-            )
     }
 
     // =====================================================
@@ -413,7 +410,8 @@ export class RuntimeStateStore {
     // =====================================================
 
     private ingestGraph(
-        event: RuntimeSocketEvent
+        event:
+            RuntimeSocketEvent
     ): void {
 
         this.state.lastGraphEvent =
@@ -421,52 +419,23 @@ export class RuntimeStateStore {
 
         const payload =
             event.payload
+            ?? {}
 
-        const rawNodes =
+        const nodes = (
             payload.nodes
+            ?? []
+        ) as RuntimeGraphNode[]
 
-        const rawEdges =
+        const edges = (
             payload.edges
+            ?? []
+        ) as RuntimeGraphEdge[]
 
-        if (
-            Array.isArray(
-                rawNodes
-            )
-        ) {
+        this.state.graphNodes =
+            nodes
 
-            this.state.graphNodes =
-
-                rawNodes.map(
-
-                    (
-                        node
-                    ) => (
-
-                        node
-                        as RuntimeGraphNode
-                    )
-                )
-        }
-
-        if (
-            Array.isArray(
-                rawEdges
-            )
-        ) {
-
-            this.state.graphEdges =
-
-                rawEdges.map(
-
-                    (
-                        edge
-                    ) => (
-
-                        edge
-                        as RuntimeGraphEdge
-                    )
-                )
-        }
+        this.state.graphEdges =
+            edges
     }
 
     // =====================================================
@@ -474,31 +443,17 @@ export class RuntimeStateStore {
     // =====================================================
 
     private ingestTransport(
-        event: RuntimeSocketEvent
+        event:
+            RuntimeSocketEvent
     ): void {
 
-        this.state
-            .lastTransportEvent =
-                event
+        this.state.lastTransportEvent =
+            event
 
-        const payload =
-            event.payload
+        this.state.transportState = {
 
-        this.state.transportFlux =
-
-            Number(
-
-                payload.transport_flux
-                ?? 0
-            )
-
-        this.state.throughput =
-
-            Number(
-
-                payload.throughput
-                ?? 0
-            )
+            ...event.payload
+        }
     }
 
     // =====================================================
@@ -506,77 +461,81 @@ export class RuntimeStateStore {
     // =====================================================
 
     private ingestReceipt(
-        event: RuntimeSocketEvent
+        event:
+            RuntimeSocketEvent
     ): void {
 
         const payload =
             event.payload
+            ?? {}
 
-        const receipt: RuntimeReceipt = {
+        const receipt:
+            RuntimeReceipt = {
 
             receipt_hash72:
 
                 String(
-                    payload.receipt_hash72
-                    ?? ""
+                    payload
+                        .receipt_hash72
+                        ?? ""
                 ),
 
             source_hash72:
 
                 String(
-                    payload.source_hash72
-                    ?? ""
+                    payload
+                        .source_hash72
+                        ?? ""
                 ),
 
             operation:
 
                 String(
-                    payload.operation
-                    ?? "unknown"
+                    payload
+                        .operation
+                        ?? "runtime"
                 ),
 
             closure_class:
 
                 String(
-                    payload.closure_class
-                    ?? "stable"
+                    payload
+                        .closure_class
+                        ?? "stable"
                 ),
 
             converged:
 
                 Boolean(
-                    payload.converged
+                    payload
+                        .converged
                 ),
 
             halted:
 
                 Boolean(
-                    payload.halted
+                    payload
+                        .halted
                 )
         }
 
-        this.state.receipts.push(
+        this.state.receipts.unshift(
             receipt
         )
 
+        // -------------------------------------------------
+        // Trim
+        // -------------------------------------------------
+
         if (
 
-            this.state.receipts
-                .length
+            this.state.receipts.length
 
-            > this.maxReceipts
+            > MAX_RECEIPTS
+
         ) {
 
-            this.state.receipts.splice(
-
-                0,
-
-                this.state
-                    .receipts
-                    .length
-
-                - this.maxReceipts
-            )
+            this.state.receipts.pop()
         }
     }
 
@@ -584,130 +543,37 @@ export class RuntimeStateStore {
     // Timeline
     // =====================================================
 
-    private appendTimeline(
-        event: RuntimeSocketEvent
-    ): void {
+    public getTimeline():
+        RuntimeTimelineFrame[] {
 
-        this.state.timeline.push({
+        return [
 
-            sequence_id:
-
-                Number(
-                    event.sequence_id
-                    ?? 0
-                ),
-
-            timestamp_ns:
-                event.timestamp_ns,
-
-            event_type:
-                event.event_type,
-
-            payload:
-                event.payload
-        })
-
-        if (
-
-            this.state.timeline
-                .length
-
-            > this.maxTimeline
-        ) {
-
-            this.state.timeline
-                .splice(
-
-                    0,
-
-                    this.state
-                        .timeline
-                        .length
-
-                    - this.maxTimeline
-                )
-        }
+            ...this.state.timeline
+        ]
     }
 
     // =====================================================
-    // Subscribe
-    // =====================================================
-
-    public subscribe(
-        listener:
-            RuntimeStoreListener
-    ): () => void {
-
-        this.listeners.add(
-            listener
-        )
-
-        return () => {
-
-            this.listeners.delete(
-                listener
-            )
-        }
-    }
-
-    // =====================================================
-    // Emit
-    // =====================================================
-
-    private emit():
-        void {
-
-        for (
-            const listener
-            of this.listeners
-        ) {
-
-            try {
-
-                listener(
-                    this.state
-                )
-
-            } catch (error) {
-
-                console.error(
-
-                    "[RuntimeStateStore] listener failure",
-
-                    error
-                )
-            }
-        }
-    }
-
-    // =====================================================
-    // Accessors
+    // Receipts
     // =====================================================
 
     public getReceipts():
         RuntimeReceipt[] {
 
         return [
+
             ...this.state.receipts
         ]
     }
 
-    // -----------------------------------------------------
-
-    public getTimeline():
-        RuntimeTimelineFrame[] {
-
-        return [
-            ...this.state.timeline
-        ]
-    }
-
-    // -----------------------------------------------------
+    // =====================================================
+    // Graph
+    // =====================================================
 
     public getGraphNodes():
         RuntimeGraphNode[] {
 
         return [
+
             ...this.state.graphNodes
         ]
     }
@@ -718,6 +584,7 @@ export class RuntimeStateStore {
         RuntimeGraphEdge[] {
 
         return [
+
             ...this.state.graphEdges
         ]
     }
@@ -726,108 +593,33 @@ export class RuntimeStateStore {
     // Metrics
     // =====================================================
 
-    public getMetrics():
-        object {
+    public getMetrics() {
 
         return {
 
-            runtimeStatus:
-                this.state
-                    .runtimeStatus,
+            timelineFrames:
 
-            runtimePhase:
-                this.state
-                    .runtimePhase,
-
-            runtimeStep:
-                this.state
-                    .runtimeStep,
-
-            replayStatus:
-                this.state
-                    .replayStatus,
-
-            replayTick:
-                this.state
-                    .replayTick,
-
-            transportFlux:
-                this.state
-                    .transportFlux,
-
-            throughput:
-                this.state
-                    .throughput,
+                this.state.timeline
+                    .length,
 
             receipts:
-                this.state
-                    .receipts
+
+                this.state.receipts
                     .length,
 
             graphNodes:
-                this.state
-                    .graphNodes
+
+                this.state.graphNodes
                     .length,
 
             graphEdges:
-                this.state
-                    .graphEdges
+
+                this.state.graphEdges
                     .length,
 
-            timelineFrames:
-                this.state
-                    .timeline
-                    .length,
+            observers:
 
-            totalEvents:
-                this.state
-                    .totalEvents
+                this.observers.size
         }
-    }
-
-    // =====================================================
-    // Reset
-    // =====================================================
-
-    public reset():
-        void {
-
-        this.state.runtimeStatus =
-            "booting"
-
-        this.state.runtimePhase =
-            "bootstrap"
-
-        this.state.runtimeStep =
-            0
-
-        this.state.replayStatus =
-            "offline"
-
-        this.state.replayTick =
-            0
-
-        this.state.transportFlux =
-            0
-
-        this.state.throughput =
-            0
-
-        this.state.graphNodes =
-            []
-
-        this.state.graphEdges =
-            []
-
-        this.state.receipts =
-            []
-
-        this.state.timeline =
-            []
-
-        this.state.totalEvents =
-            0
-
-        this.emit()
     }
 }
