@@ -89,6 +89,44 @@ export interface RuntimeApplicationDefinition {
 }
 
 // =========================================================
+// Safe Import Helper
+// =========================================================
+
+async function safeRuntimeImport(
+
+    loader: () => Promise<any>,
+
+    fallback:
+        React.ComponentType<any>
+
+): Promise<{
+
+    default:
+        React.ComponentType<any>
+}> {
+
+    try {
+
+        return await loader()
+
+    } catch (error) {
+
+        console.error(
+
+            "[RuntimeApplicationRegistry] optional module missing",
+
+            error
+        )
+
+        return {
+
+            default:
+                fallback
+        }
+    }
+}
+
+// =========================================================
 // Registry
 // =========================================================
 
@@ -316,8 +354,13 @@ runtimeApplicationRegistry.register({
     lazyLoader:
         async () =>
 
-            import(
-                "./RuntimeWindowContent"
+            safeRuntimeImport(
+
+                () => import(
+                    "./RuntimeWindowContent"
+                ),
+
+                UnknownApplicationFallback
             ),
 
     windowPreset: {
@@ -355,8 +398,13 @@ runtimeApplicationRegistry.register({
     lazyLoader:
         async () =>
 
-            import(
-                "../../runtime_apps/calculator/HHSCalculatorSurface"
+            safeRuntimeImport(
+
+                () => import(
+                    "../../runtime_apps/calculator/HHSCalculatorSurface"
+                ),
+
+                UnknownApplicationFallback
             ),
 
     fallback:
@@ -397,8 +445,13 @@ runtimeApplicationRegistry.register({
     lazyLoader:
         async () =>
 
-            import(
-                "../../runtime_apps/breadboard/HHSBreadboardSurface"
+            safeRuntimeImport(
+
+                () => import(
+                    "../../runtime_apps/breadboard/HHSBreadboardSurface"
+                ),
+
+                UnknownApplicationFallback
             ),
 
     fallback:
@@ -439,8 +492,13 @@ runtimeApplicationRegistry.register({
     lazyLoader:
         async () =>
 
-            import(
-                "../../runtime_apps/instruments/ReceiptInspector"
+            safeRuntimeImport(
+
+                () => import(
+                    "../../runtime_apps/instruments/ReceiptInspector"
+                ),
+
+                UnknownApplicationFallback
             ),
 
     fallback:
@@ -479,8 +537,13 @@ runtimeApplicationRegistry.register({
     lazyLoader:
         async () =>
 
-            import(
-                "../../runtime_apps/instruments/ReplayTimeline"
+            safeRuntimeImport(
+
+                () => import(
+                    "../../runtime_apps/instruments/ReplayTimeline"
+                ),
+
+                UnknownApplicationFallback
             ),
 
     fallback:
