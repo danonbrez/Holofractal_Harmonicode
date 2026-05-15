@@ -16,10 +16,15 @@ import time
 # =========================================================
 
 EVENT_RUNTIME = "runtime"
+
 EVENT_REPLAY = "replay"
+
 EVENT_GRAPH = "graph"
+
 EVENT_TRANSPORT = "transport"
+
 EVENT_RECEIPT = "receipt"
+
 EVENT_CERTIFICATION = "certification"
 
 # =========================================================
@@ -36,7 +41,9 @@ class HHSEvent:
         default_factory=time.time_ns
     )
 
-    runtime_id: str = "hhs_runtime"
+    runtime_id: str = (
+        "hhs_runtime"
+    )
 
     sequence_id: int = 0
 
@@ -74,9 +81,11 @@ class RuntimeEventPayload:
 
     uptime: float
 
-    receipt_hash72: Optional[str] = None
+    receipt_hash72:
+        Optional[str] = None
 
-    source_hash72: Optional[str] = None
+    source_hash72:
+        Optional[str] = None
 
     closure_state: str = "stable"
 
@@ -93,14 +102,7 @@ class RuntimeEventPayload:
 @dataclass(slots=True)
 class RuntimeEvent(HHSEvent):
 
-    event_type: str = (
-        EVENT_RUNTIME
-    )
-
-    payload: Dict[str, Any] = field(
-
-        default_factory=dict
-    )
+    EVENT_TYPE = EVENT_RUNTIME
 
     @classmethod
     def build(
@@ -117,6 +119,9 @@ class RuntimeEvent(HHSEvent):
     ) -> "RuntimeEvent":
 
         return cls(
+
+            event_type=
+                cls.EVENT_TYPE,
 
             sequence_id=
                 sequence_id,
@@ -144,21 +149,15 @@ class ReplayEventPayload:
 
     replay_mode: str = "live"
 
-    replay_hash72: Optional[str] = None
+    replay_hash72:
+        Optional[str] = None
 
 # ---------------------------------------------------------
 
 @dataclass(slots=True)
 class ReplayEvent(HHSEvent):
 
-    event_type: str = (
-        EVENT_REPLAY
-    )
-
-    payload: Dict[str, Any] = field(
-
-        default_factory=dict
-    )
+    EVENT_TYPE = EVENT_REPLAY
 
     @classmethod
     def build(
@@ -175,6 +174,9 @@ class ReplayEvent(HHSEvent):
     ) -> "ReplayEvent":
 
         return cls(
+
+            event_type=
+                cls.EVENT_TYPE,
 
             sequence_id=
                 sequence_id,
@@ -239,14 +241,7 @@ class GraphEventPayload:
 @dataclass(slots=True)
 class GraphEvent(HHSEvent):
 
-    event_type: str = (
-        EVENT_GRAPH
-    )
-
-    payload: Dict[str, Any] = field(
-
-        default_factory=dict
-    )
+    EVENT_TYPE = EVENT_GRAPH
 
     @classmethod
     def build(
@@ -264,10 +259,14 @@ class GraphEvent(HHSEvent):
 
         return cls(
 
+            event_type=
+                cls.EVENT_TYPE,
+
             sequence_id=
                 sequence_id,
 
             payload={
+
                 "graph_tick":
                     graph_payload.graph_tick,
 
@@ -278,16 +277,16 @@ class GraphEvent(HHSEvent):
 
                     asdict(node)
 
-                    for node in
-                    graph_payload.nodes
+                    for node
+                    in graph_payload.nodes
                 ],
 
                 "edges": [
 
                     asdict(edge)
 
-                    for edge in
-                    graph_payload.edges
+                    for edge
+                    in graph_payload.edges
                 ]
             }
         )
@@ -316,14 +315,7 @@ class TransportEventPayload:
 @dataclass(slots=True)
 class TransportEvent(HHSEvent):
 
-    event_type: str = (
-        EVENT_TRANSPORT
-    )
-
-    payload: Dict[str, Any] = field(
-
-        default_factory=dict
-    )
+    EVENT_TYPE = EVENT_TRANSPORT
 
     @classmethod
     def build(
@@ -340,6 +332,9 @@ class TransportEvent(HHSEvent):
     ) -> "TransportEvent":
 
         return cls(
+
+            event_type=
+                cls.EVENT_TYPE,
 
             sequence_id=
                 sequence_id,
@@ -376,14 +371,7 @@ class ReceiptEventPayload:
 @dataclass(slots=True)
 class ReceiptEvent(HHSEvent):
 
-    event_type: str = (
-        EVENT_RECEIPT
-    )
-
-    payload: Dict[str, Any] = field(
-
-        default_factory=dict
-    )
+    EVENT_TYPE = EVENT_RECEIPT
 
     @classmethod
     def build(
@@ -400,6 +388,9 @@ class ReceiptEvent(HHSEvent):
     ) -> "ReceiptEvent":
 
         return cls(
+
+            event_type=
+                cls.EVENT_TYPE,
 
             sequence_id=
                 sequence_id,
@@ -431,14 +422,7 @@ class CertificationEventPayload:
 @dataclass(slots=True)
 class CertificationEvent(HHSEvent):
 
-    event_type: str = (
-        EVENT_CERTIFICATION
-    )
-
-    payload: Dict[str, Any] = field(
-
-        default_factory=dict
-    )
+    EVENT_TYPE = EVENT_CERTIFICATION
 
     @classmethod
     def build(
@@ -456,6 +440,9 @@ class CertificationEvent(HHSEvent):
 
         return cls(
 
+            event_type=
+                cls.EVENT_TYPE,
+
             sequence_id=
                 sequence_id,
 
@@ -466,8 +453,31 @@ class CertificationEvent(HHSEvent):
         )
 
 # =========================================================
-# Event Decoder
+# Decoder
 # =========================================================
+
+EVENT_CLASS_REGISTRY = {
+
+    EVENT_RUNTIME:
+        RuntimeEvent,
+
+    EVENT_REPLAY:
+        ReplayEvent,
+
+    EVENT_GRAPH:
+        GraphEvent,
+
+    EVENT_TRANSPORT:
+        TransportEvent,
+
+    EVENT_RECEIPT:
+        ReceiptEvent,
+
+    EVENT_CERTIFICATION:
+        CertificationEvent
+}
+
+# ---------------------------------------------------------
 
 def decode_event(
     payload: Dict[str, Any]
@@ -477,39 +487,62 @@ def decode_event(
         "event_type"
     )
 
-    if event_type == EVENT_RUNTIME:
+    if not event_type:
 
-        return RuntimeEvent(**payload)
+        raise ValueError(
 
-    if event_type == EVENT_REPLAY:
-
-        return ReplayEvent(**payload)
-
-    if event_type == EVENT_GRAPH:
-
-        return GraphEvent(**payload)
-
-    if event_type == EVENT_TRANSPORT:
-
-        return TransportEvent(**payload)
-
-    if event_type == EVENT_RECEIPT:
-
-        return ReceiptEvent(**payload)
-
-    if (
-        event_type
-        == EVENT_CERTIFICATION
-    ):
-
-        return CertificationEvent(
-            **payload
+            "missing event_type"
         )
 
-    raise ValueError(
+    event_class = (
+        EVENT_CLASS_REGISTRY
+            .get(event_type)
+    )
 
-        f"Unknown event type: "
-        f"{event_type}"
+    if not event_class:
+
+        raise ValueError(
+
+            f"unknown event_type: "
+            f"{event_type}"
+        )
+
+    return event_class(
+
+        event_type=
+            payload.get(
+                "event_type"
+            ),
+
+        timestamp_ns=
+            payload.get(
+                "timestamp_ns",
+                time.time_ns()
+            ),
+
+        runtime_id=
+            payload.get(
+                "runtime_id",
+                "hhs_runtime"
+            ),
+
+        sequence_id=
+            payload.get(
+                "sequence_id",
+                0
+            ),
+
+        authority=
+            payload.get(
+                "authority",
+                "runtime_authoritative"
+            ),
+
+        payload=
+            payload.get(
+                "payload",
+                {}
+            )
     )
 
 # =========================================================
