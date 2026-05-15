@@ -1,232 +1,280 @@
 /**
- * HHS Runtime Window Manager
- * ---------------------------------------------------
- * Graph-native Runtime OS window orchestration layer.
+ * =========================================================
+ * RuntimeWindowManager
+ * =========================================================
  *
- * Responsibilities:
+ * Canonical Runtime OS window orchestration layer.
  *
- * - Runtime window lifecycle
- * - Workspace window topology
- * - Focus management
- * - Z-index ordering
- * - Window persistence
- * - Replay-linked window continuity
- * - Graph-native window orchestration
- * - Runtime viewport synchronization
+ * IMPORTANT
+ * ---------------------------------------------------------
+ * Window state is UI projection state ONLY.
  *
- * Invariants:
- * Δe = 0
- * Ψ = 0
- * Θ15 = true
- * Ω = true
+ * Window state is NOT:
+ *
+ *   - runtime authority
+ *   - replay authority
+ *   - graph authority
+ *   - transport authority
+ *
+ * This layer only manages:
+ *
+ *   - layout
+ *   - focus
+ *   - z-order
+ *   - window geometry
+ *   - mobile fallback
+ *   - fullscreen projection
  */
 
-import {
-    RuntimeWorkspace,
-    RuntimeWindowState
-} from "./RuntimeWorkspace"
+export interface RuntimeWindow {
 
-export interface RuntimeWindowCreateOptions {
+    id: string
 
     title: string
 
     applicationId: string
 
-    width?: number
+    width: number
 
-    height?: number
+    height: number
 
-    x?: number
+    x: number
 
-    y?: number
+    y: number
+
+    minimized?: boolean
+
+    maximized?: boolean
+
+    focused?: boolean
+
+    mobileFullscreen?: boolean
+
+    created_at_ns?: number
 }
 
-export interface RuntimeWindowMetrics {
+// =========================================================
+// Metrics
+// =========================================================
 
-    totalWindows: number
+export interface RuntimeWindowManagerMetrics {
+
+    windows: number
 
     focusedWindow?: string
 
-    minimizedWindows: number
-
-    maximizedWindows: number
+    zIndexCounter: number
 }
+
+// =========================================================
+// RuntimeWindowManager
+// =========================================================
 
 export class RuntimeWindowManager {
 
-    private readonly workspace: RuntimeWorkspace
+    // =====================================================
+    // Windows
+    // =====================================================
 
-    constructor(
-        workspace: RuntimeWorkspace
-    ) {
+    private readonly windows =
+        new Map<
+            string,
+            RuntimeWindow
+        >()
 
-        this.workspace = workspace
-    }
+    // =====================================================
+    // Z-Index
+    // =====================================================
 
-    /**
-     * ---------------------------------------------------
-     * Window Creation
-     * ---------------------------------------------------
-     */
+    private zIndexCounter =
+        1
 
-    public createWindow(
-        options: RuntimeWindowCreateOptions
-    ): RuntimeWindowState {
+    // =====================================================
+    // Focus
+    // =====================================================
 
-        const window: RuntimeWindowState = {
+    private focusedWindowId?:
+        string
 
-            id: crypto.randomUUID(),
+    // =====================================================
+    // Mobile Breakpoint
+    // =====================================================
 
-            title: options.title,
+    private readonly mobileBreakpoint =
+        768
 
-            applicationId: options.applicationId,
+    // =====================================================
+    // Open Window
+    // =====================================================
 
-            position: {
-
-                x: options.x ?? 120,
-
-                y: options.y ?? 80
-            },
-
-            size: {
-
-                width: options.width ?? 960,
-
-                height: options.height ?? 640
-            },
-
-            minimized: false,
-
-            maximized: false,
-
-            focused: true,
-
-            zIndex:
-                this.getHighestZIndex() + 1
-        }
-
-        this.workspace.addWindow(window)
-
-        console.log(
-            "[RuntimeWindowManager] create",
-            window.id
-        )
-
-        return window
-    }
-
-    /**
-     * ---------------------------------------------------
-     * Window Removal
-     * ---------------------------------------------------
-     */
-
-    public destroyWindow(
-        windowId: string
+    public openWindow(
+        window: RuntimeWindow
     ): void {
 
-        this.workspace.removeWindow(windowId)
+        const normalized =
+
+            this.normalizeWindow(
+                window
+            )
+
+        this.windows.set(
+
+            normalized.id,
+
+            normalized
+        )
+
+        this.focusWindow(
+            normalized.id
+        )
 
         console.log(
-            "[RuntimeWindowManager] destroy",
-            windowId
+
+            "[RuntimeWindowManager] open",
+
+            normalized.id
         )
     }
 
-    /**
-     * ---------------------------------------------------
-     * Focus Management
-     * ---------------------------------------------------
-     */
+    // =====================================================
+    // Close Window
+    // =====================================================
+
+    public closeWindow(
+        id: string
+    ): void {
+
+        this.windows.delete(id)
+
+        if (
+            this.focusedWindowId
+            === id
+        ) {
+
+            this.focusedWindowId =
+                undefined
+        }
+
+        console.log(
+
+            "[RuntimeWindowManager] close",
+
+            id
+        )
+    }
+
+    // =====================================================
+    // Focus
+    // =====================================================
 
     public focusWindow(
-        windowId: string
+        id: string
     ): void {
 
-        this.workspace.focusWindow(windowId)
+        if (
+            !this.windows.has(id)
+        ) {
+
+            return
+        }
+
+        this.focusedWindowId =
+            id
+
+        this.zIndexCounter += 1
+
+        for (
+            const [
+                windowId,
+                window
+            ]
+            of this.windows
+        ) {
+
+            window.focused =
+                (
+                    windowId === id
+                )
+        }
 
         console.log(
+
             "[RuntimeWindowManager] focus",
-            windowId
+
+            id
         )
     }
 
-    /**
-     * ---------------------------------------------------
-     * Window Movement
-     * ---------------------------------------------------
-     */
+    // =====================================================
+    // Move
+    // =====================================================
 
     public moveWindow(
-        windowId: string,
+
+        id: string,
+
         x: number,
+
         y: number
+
     ): void {
 
         const window =
-            this.getWindow(windowId)
+            this.windows.get(id)
 
         if (!window) {
 
             return
         }
 
-        window.position.x = x
+        window.x = x
 
-        window.position.y = y
-
-        console.log(
-            "[RuntimeWindowManager] move",
-            windowId,
-            x,
-            y
-        )
+        window.y = y
     }
 
-    /**
-     * ---------------------------------------------------
-     * Window Resize
-     * ---------------------------------------------------
-     */
+    // =====================================================
+    // Resize
+    // =====================================================
 
     public resizeWindow(
-        windowId: string,
+
+        id: string,
+
         width: number,
+
         height: number
+
     ): void {
 
         const window =
-            this.getWindow(windowId)
+            this.windows.get(id)
 
         if (!window) {
 
             return
         }
 
-        window.size.width = width
+        window.width = Math.max(
+            320,
+            width
+        )
 
-        window.size.height = height
-
-        console.log(
-            "[RuntimeWindowManager] resize",
-            windowId,
-            width,
+        window.height = Math.max(
+            200,
             height
         )
     }
 
-    /**
-     * ---------------------------------------------------
-     * Minimize Window
-     * ---------------------------------------------------
-     */
+    // =====================================================
+    // Minimize
+    // =====================================================
 
     public minimizeWindow(
-        windowId: string
+        id: string
     ): void {
 
         const window =
-            this.getWindow(windowId)
+            this.windows.get(id)
 
         if (!window) {
 
@@ -234,27 +282,18 @@ export class RuntimeWindowManager {
         }
 
         window.minimized = true
-
-        window.maximized = false
-
-        console.log(
-            "[RuntimeWindowManager] minimize",
-            windowId
-        )
     }
 
-    /**
-     * ---------------------------------------------------
-     * Restore Window
-     * ---------------------------------------------------
-     */
+    // =====================================================
+    // Restore
+    // =====================================================
 
     public restoreWindow(
-        windowId: string
+        id: string
     ): void {
 
         const window =
-            this.getWindow(windowId)
+            this.windows.get(id)
 
         if (!window) {
 
@@ -264,27 +303,18 @@ export class RuntimeWindowManager {
         window.minimized = false
 
         window.maximized = false
-
-        this.focusWindow(windowId)
-
-        console.log(
-            "[RuntimeWindowManager] restore",
-            windowId
-        )
     }
 
-    /**
-     * ---------------------------------------------------
-     * Maximize Window
-     * ---------------------------------------------------
-     */
+    // =====================================================
+    // Maximize
+    // =====================================================
 
     public maximizeWindow(
-        windowId: string
+        id: string
     ): void {
 
         const window =
-            this.getWindow(windowId)
+            this.windows.get(id)
 
         if (!window) {
 
@@ -292,215 +322,152 @@ export class RuntimeWindowManager {
         }
 
         window.maximized = true
-
-        window.minimized = false
-
-        this.focusWindow(windowId)
-
-        console.log(
-            "[RuntimeWindowManager] maximize",
-            windowId
-        )
     }
 
-    /**
-     * ---------------------------------------------------
-     * Window Queries
-     * ---------------------------------------------------
-     */
+    // =====================================================
+    // Normalize
+    // =====================================================
 
-    public getWindow(
-        windowId: string
-    ): RuntimeWindowState | undefined {
+    private normalizeWindow(
+        window: RuntimeWindow
+    ): RuntimeWindow {
 
-        return this.workspace.layout.windows.find(
+        const mobile =
 
-            (window) =>
-                window.id === windowId
-        )
-    }
+            typeof window !== "undefined"
+            &&
+            typeof globalThis !== "undefined"
+            &&
+            globalThis.innerWidth
+            <= this.mobileBreakpoint
 
-    public getFocusedWindow():
-        RuntimeWindowState | undefined {
+        if (mobile) {
 
-        return this.workspace.layout.windows.find(
+            return {
 
-            (window) =>
-                window.focused
-        )
-    }
+                ...window,
 
-    public getWindows():
-        RuntimeWindowState[] {
+                x: 0,
 
-        return this.workspace.layout.windows
-    }
+                y: 0,
 
-    /**
-     * ---------------------------------------------------
-     * Window Ordering
-     * ---------------------------------------------------
-     */
+                width:
+                    globalThis.innerWidth,
 
-    private getHighestZIndex(): number {
+                height:
+                    globalThis.innerHeight,
 
-        let highest = 0
+                mobileFullscreen: true,
 
-        for (
-            const window
-            of this.workspace.layout.windows
-        ) {
-
-            if (window.zIndex > highest) {
-
-                highest = window.zIndex
+                created_at_ns:
+                    Date.now() * 1_000_000
             }
         }
-
-        return highest
-    }
-
-    /**
-     * ---------------------------------------------------
-     * Window Tiling
-     * ---------------------------------------------------
-     */
-
-    public tileWindows(): void {
-
-        const windows =
-            this.workspace.layout.windows
-
-        if (windows.length === 0) {
-
-            return
-        }
-
-        const columns =
-            Math.ceil(
-                Math.sqrt(windows.length)
-            )
-
-        const rows =
-            Math.ceil(
-                windows.length / columns
-            )
-
-        const tileWidth =
-            window.innerWidth / columns
-
-        const tileHeight =
-            window.innerHeight / rows
-
-        windows.forEach(
-
-            (runtimeWindow, index) => {
-
-                const row =
-                    Math.floor(index / columns)
-
-                const column =
-                    index % columns
-
-                runtimeWindow.position.x =
-                    column * tileWidth
-
-                runtimeWindow.position.y =
-                    row * tileHeight
-
-                runtimeWindow.size.width =
-                    tileWidth
-
-                runtimeWindow.size.height =
-                    tileHeight
-            }
-        )
-
-        console.log(
-            "[RuntimeWindowManager] tile windows"
-        )
-    }
-
-    /**
-     * ---------------------------------------------------
-     * Cascade Windows
-     * ---------------------------------------------------
-     */
-
-    public cascadeWindows(): void {
-
-        let offset = 0
-
-        for (
-            const runtimeWindow
-            of this.workspace.layout.windows
-        ) {
-
-            runtimeWindow.position.x =
-                80 + offset
-
-            runtimeWindow.position.y =
-                80 + offset
-
-            offset += 32
-        }
-
-        console.log(
-            "[RuntimeWindowManager] cascade windows"
-        )
-    }
-
-    /**
-     * ---------------------------------------------------
-     * Metrics
-     * ---------------------------------------------------
-     */
-
-    public getMetrics():
-        RuntimeWindowMetrics {
-
-        const windows =
-            this.workspace.layout.windows
 
         return {
 
-            totalWindows:
-                windows.length,
+            ...window,
 
-            focusedWindow:
-                this.getFocusedWindow()?.id,
+            minimized:
+                window.minimized
+                ?? false,
 
-            minimizedWindows:
-                windows.filter(
+            maximized:
+                window.maximized
+                ?? false,
 
-                    (window) =>
-                        window.minimized
-                ).length,
+            focused:
+                window.focused
+                ?? false,
 
-            maximizedWindows:
-                windows.filter(
+            mobileFullscreen:
+                false,
 
-                    (window) =>
-                        window.maximized
-                ).length
+            created_at_ns:
+                Date.now() * 1_000_000
         }
     }
 
-    /**
-     * ---------------------------------------------------
-     * Serialization
-     * ---------------------------------------------------
-     */
+    // =====================================================
+    // Windows
+    // =====================================================
 
-    public serialize(): object {
+    public getWindows():
+        RuntimeWindow[] {
+
+        return [
+
+            ...this.windows.values()
+        ]
+    }
+
+    // =====================================================
+    // Get Window
+    // =====================================================
+
+    public getWindow(
+        id: string
+    ):
+        RuntimeWindow
+        | undefined {
+
+        return this.windows.get(
+            id
+        )
+    }
+
+    // =====================================================
+    // Focused Window
+    // =====================================================
+
+    public getFocusedWindow():
+        RuntimeWindow
+        | undefined {
+
+        if (
+            !this.focusedWindowId
+        ) {
+
+            return undefined
+        }
+
+        return this.windows.get(
+            this.focusedWindowId
+        )
+    }
+
+    // =====================================================
+    // Reset
+    // =====================================================
+
+    public reset():
+        void {
+
+        this.windows.clear()
+
+        this.focusedWindowId =
+            undefined
+
+        this.zIndexCounter = 1
+    }
+
+    // =====================================================
+    // Metrics
+    // =====================================================
+
+    public getMetrics():
+        RuntimeWindowManagerMetrics {
 
         return {
 
             windows:
-                this.workspace.layout.windows,
+                this.windows.size,
 
-            metrics:
-                this.getMetrics()
+            focusedWindow:
+                this.focusedWindowId,
+
+            zIndexCounter:
+                this.zIndexCounter
         }
     }
 }
