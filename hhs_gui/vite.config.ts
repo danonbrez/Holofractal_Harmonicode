@@ -2,83 +2,76 @@ import {
     defineConfig
 } from "vite"
 
-import react from
-    "@vitejs/plugin-react"
+import react from "@vitejs/plugin-react"
 
-import path from "path"
+// =========================================================
+// HHS Runtime Vite Config
+// =========================================================
+//
+// IMPORTANT
+// ---------------------------------------------------------
+// Runtime applications may be:
+//
+//   - optional
+//   - experimental
+//   - dynamically discovered
+//
+// DO NOT aggressively pre-bundle
+// runtime application surfaces.
+//
+// Runtime authority belongs to:
+//
+//   backend runtime
+//   websocket runtime transport
+//   runtime_event_schema.py
+//
+// =========================================================
 
 export default defineConfig({
 
     plugins: [
+
         react()
     ],
 
-    resolve: {
-
-        alias: {
-
-            "@":
-                path.resolve(
-                    __dirname,
-                    "./src"
-                ),
-
-            "@runtime":
-                path.resolve(
-                    __dirname,
-                    "./runtime_os"
-                ),
-
-            "@apps":
-                path.resolve(
-                    __dirname,
-                    "./runtime_apps"
-                ),
-
-            "@styles":
-                path.resolve(
-                    __dirname,
-                    "./src/styles"
-                )
-        }
-    },
+    // =====================================================
+    // Dev Server
+    // =====================================================
 
     server: {
 
-        host: true,
+        host: "0.0.0.0",
 
         port: 5173,
 
-        strictPort: true,
+        strictPort: false,
+
+        cors: true,
 
         proxy: {
 
-            /**
-             * ------------------------------------------------
-             * REST API
-             * ------------------------------------------------
-             */
+            // -------------------------------------------------
+            // Runtime API
+            // -------------------------------------------------
 
             "/api": {
 
                 target:
-                    "http://localhost:8000",
+                    "http://127.0.0.1:8000",
 
                 changeOrigin: true,
 
                 secure: false
             },
 
-            /**
-             * ------------------------------------------------
-             * Unified WebSocket Proxy
-             * ------------------------------------------------
-             */
+            // -------------------------------------------------
+            // Runtime WS
+            // -------------------------------------------------
 
             "/ws": {
 
                 target:
-                    "ws://localhost:8000",
+                    "ws://127.0.0.1:8000",
 
                 ws: true,
 
@@ -89,30 +82,111 @@ export default defineConfig({
         }
     },
 
+    // =====================================================
+    // Preview
+    // =====================================================
+
+    preview: {
+
+        host: "0.0.0.0",
+
+        port: 4173
+    },
+
+    // =====================================================
+    // OptimizeDeps
+    // =====================================================
+
+    optimizeDeps: {
+
+        // -------------------------------------------------
+        // IMPORTANT
+        // -------------------------------------------------
+        //
+        // Prevent Vite from attempting
+        // aggressive static optimization
+        // against optional runtime apps.
+        //
+        // Dynamic imports use:
+        //
+        //     /* @vite-ignore */
+        //
+        // but optimizeDeps can still
+        // attempt partial graph resolution.
+        //
+        // -------------------------------------------------
+
+        exclude: [
+
+            // Breadboard
+            "../../runtime_apps/breadboard/HHSRuntimeBreadboard",
+            "../../runtime_apps/breadboard/HHSRuntimeTransportOverlay",
+
+            // Calculator
+            "../../runtime_apps/calculator/HHSCalculatorSurface",
+            "../../runtime_apps/calculator/HHSCalculatorGraphProjection",
+
+            // Instruments
+            "../../runtime_apps/instruments/ReceiptInspector",
+            "../../runtime_apps/instruments/ReplayTimeline"
+        ]
+    },
+
+    // =====================================================
+    // Build
+    // =====================================================
+
     build: {
 
         target: "esnext",
 
         sourcemap: true,
 
-        outDir: "dist",
+        chunkSizeWarningLimit: 2000,
 
-        emptyOutDir: true
+        rollupOptions: {
+
+            output: {
+
+                manualChunks: {
+
+                    react: [
+
+                        "react",
+
+                        "react-dom"
+                    ]
+                }
+            }
+        }
     },
 
-    optimizeDeps: {
+    // =====================================================
+    // Resolve
+    // =====================================================
 
-        include: [
+    resolve: {
 
-            "react",
+        extensions: [
 
-            "react-dom",
+            ".tsx",
 
-            "@react-three/fiber",
+            ".ts",
 
-            "@react-three/drei",
+            ".jsx",
 
-            "three"
+            ".js",
+
+            ".json"
         ]
+    },
+
+    // =====================================================
+    // Define
+    // =====================================================
+
+    define: {
+
+        __HHS_RUNTIME__: true
     }
 })
