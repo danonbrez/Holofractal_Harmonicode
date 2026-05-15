@@ -60,7 +60,7 @@ export const RuntimeDesktop: React.FC<
     )
 
     // =====================================================
-    // Refresh
+    // Refresh Loop
     // =====================================================
 
     useEffect(() => {
@@ -82,6 +82,7 @@ export const RuntimeDesktop: React.FC<
             )
 
             setMetrics(
+
                 runtimeOS
                     .getMetrics()
             )
@@ -99,7 +100,7 @@ export const RuntimeDesktop: React.FC<
 
         return () => {
 
-            mounted = False
+            mounted = false
 
             window.clearInterval(
                 interval
@@ -245,10 +246,10 @@ export const RuntimeDesktop: React.FC<
                         text-neutral-500
                     "
                 >
-                    sockets:
+                    runtimeEvents:
                     {" "}
                     {
-                        metrics.sockets.totalEvents
+                        metrics.sockets.runtimeEvents
                     }
                 </div>
 
@@ -269,7 +270,7 @@ export const RuntimeDesktop: React.FC<
                         text-neutral-500
                     "
                 >
-                    graph:
+                    graphNodes:
                     {" "}
                     {
                         metrics.store.graphNodes
@@ -334,20 +335,12 @@ React.FC<
 
 }) => {
 
-    // =====================================================
-    // Hidden
-    // =====================================================
-
     if (
         runtimeWindow.minimized
     ) {
 
         return null
     }
-
-    // =====================================================
-    // Render
-    // =====================================================
 
     return (
 
@@ -449,10 +442,6 @@ React.FC<
                     </div>
 
                 </div>
-
-                {/* =========================================
-                    Controls
-                ========================================== */}
 
                 <div
                     className="
