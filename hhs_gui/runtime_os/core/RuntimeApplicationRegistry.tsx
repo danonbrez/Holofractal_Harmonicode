@@ -2,6 +2,25 @@
  * =========================================================
  * RuntimeApplicationRegistry
  * =========================================================
+ *
+ * Canonical Runtime OS application authority layer.
+ *
+ * Responsibilities:
+ *
+ * - Runtime application registration
+ * - Lazy application loading
+ * - Capability metadata
+ * - Window presets
+ * - Runtime authority tagging
+ * - Mount policies
+ * - Optional application continuity
+ *
+ * IMPORTANT:
+ * ---------------------------------------------------------
+ * Runtime applications MUST be treated as optional
+ * authorities during active upstream development.
+ *
+ * Missing applications MUST NOT crash the Runtime OS.
  */
 
 import React from "react"
@@ -70,7 +89,7 @@ export interface RuntimeApplicationDefinition {
 }
 
 // =========================================================
-// Safe Runtime Import
+// Safe Import Helper
 // =========================================================
 
 async function safeRuntimeImport(
@@ -338,7 +357,6 @@ runtimeApplicationRegistry.register({
             safeRuntimeImport(
 
                 () => import(
-                    /* @vite-ignore */
                     "./RuntimeWindowContent"
                 ),
 
@@ -383,7 +401,6 @@ runtimeApplicationRegistry.register({
             safeRuntimeImport(
 
                 () => import(
-                    /* @vite-ignore */
                     "../../runtime_apps/calculator/HHSCalculatorSurface"
                 ),
 
@@ -431,8 +448,7 @@ runtimeApplicationRegistry.register({
             safeRuntimeImport(
 
                 () => import(
-                    /* @vite-ignore */
-                    "../../runtime_apps/breadboard/HHSRuntimeBreadboard"
+                    "../../runtime_apps/breadboard/HHSBreadboardSurface"
                 ),
 
                 UnknownApplicationFallback
@@ -479,7 +495,6 @@ runtimeApplicationRegistry.register({
             safeRuntimeImport(
 
                 () => import(
-                    /* @vite-ignore */
                     "../../runtime_apps/instruments/ReceiptInspector"
                 ),
 
@@ -525,7 +540,6 @@ runtimeApplicationRegistry.register({
             safeRuntimeImport(
 
                 () => import(
-                    /* @vite-ignore */
                     "../../runtime_apps/instruments/ReplayTimeline"
                 ),
 
