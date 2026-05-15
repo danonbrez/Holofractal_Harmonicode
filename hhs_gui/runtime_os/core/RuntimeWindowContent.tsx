@@ -46,12 +46,32 @@ async function safeRuntimeImport(
 // Lazy Runtime Applications
 // =========================================================
 
+/**
+ * IMPORTANT:
+ * ---------------------------------------------------------
+ * Runtime applications are OPTIONAL authorities.
+ *
+ * Missing experimental runtime applications
+ * MUST NOT terminate Runtime OS boot.
+ *
+ * Vite pre-resolution is bypassed using:
+ *
+ *     /* @vite-ignore *\/
+ *
+ * inside dynamic imports.
+ */
+
+// ---------------------------------------------------------
+// Calculator
+// ---------------------------------------------------------
+
 const HHSCalculatorSurface =
     React.lazy(() =>
 
         safeRuntimeImport(
 
             () => import(
+                /* @vite-ignore */
                 "../../runtime_apps/calculator/HHSCalculatorSurface"
             ),
 
@@ -67,6 +87,7 @@ const HHSCalculatorGraphProjection =
         safeRuntimeImport(
 
             () => import(
+                /* @vite-ignore */
                 "../../runtime_apps/calculator/HHSCalculatorGraphProjection"
             ),
 
@@ -75,14 +96,17 @@ const HHSCalculatorGraphProjection =
     )
 
 // ---------------------------------------------------------
+// Breadboard
+// ---------------------------------------------------------
 
-const HHSBreadboardSurface =
+const HHSRuntimeBreadboard =
     React.lazy(() =>
 
         safeRuntimeImport(
 
             () => import(
-                "../../runtime_apps/breadboard/HHSBreadboardSurface"
+                /* @vite-ignore */
+                "../../runtime_apps/breadboard/HHSRuntimeBreadboard"
             ),
 
             BreadboardFallbackSurface
@@ -91,13 +115,14 @@ const HHSBreadboardSurface =
 
 // ---------------------------------------------------------
 
-const HHSTransportOverlay =
+const HHSRuntimeTransportOverlay =
     React.lazy(() =>
 
         safeRuntimeImport(
 
             () => import(
-                "../../runtime_apps/breadboard/HHSTransportOverlay"
+                /* @vite-ignore */
+                "../../runtime_apps/breadboard/HHSRuntimeTransportOverlay"
             ),
 
             OverlayFallbackSurface
@@ -231,9 +256,9 @@ export const RuntimeWindowContent: React.FC<
                     "
                 >
 
-                    <HHSBreadboardSurface />
+                    <HHSRuntimeBreadboard />
 
-                    <HHSTransportOverlay />
+                    <HHSRuntimeTransportOverlay />
 
                 </div>
 
