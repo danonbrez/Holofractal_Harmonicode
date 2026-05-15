@@ -3,77 +3,50 @@
  * RuntimeOS
  * =========================================================
  *
- * Canonical frontend Runtime OS authority.
+ * Canonical Runtime OS orchestration layer.
  *
- * Responsibilities:
+ * IMPORTANT
+ * ---------------------------------------------------------
+ * RuntimeOS is NOT runtime authority.
  *
- * - Runtime bootstrap
- * - Workspace orchestration
- * - RuntimeSocketManager lifecycle
- * - RuntimeStateStore synchronization
- * - Application registry
- * - Runtime metrics
- * - Projection state
- * - Window topology
+ * Runtime authority belongs to:
+ *
+ *   - backend runtime
+ *   - runtime_event_schema.py
+ *   - runtime_ws.py
+ *   - replay lineage
+ *   - receipt continuity
+ *
+ * RuntimeOS only:
+ *
+ *   - orchestrates
+ *   - subscribes
+ *   - routes
+ *   - visualizes
+ *   - caches
+ *
+ * NEVER derive runtime truth here.
  */
 
 import {
-    RuntimeSocketManager
-} from "./RuntimeSocketManager"
-
-import type {
+    RuntimeSocketManager,
     RuntimeSocketEvent
 } from "./RuntimeSocketManager"
 
 import {
     RuntimeStateStore
-} from "../state/RuntimeStateStore"
+} from "./RuntimeStateStore"
+
+import {
+    runtimeApplicationRegistry
+} from "./RuntimeApplicationRegistry"
+
+import {
+    RuntimeWindowManager
+} from "./RuntimeWindowManager"
 
 // =========================================================
-// Workspace Types
-// =========================================================
-
-export interface RuntimeWindow {
-
-    id: string
-
-    title: string
-
-    applicationId: string
-
-    x: number
-
-    y: number
-
-    width: number
-
-    height: number
-
-    minimized: boolean
-
-    maximized: boolean
-
-    focused: boolean
-}
-
-// ---------------------------------------------------------
-
-export interface RuntimeWorkspaceLayout {
-
-    windows: RuntimeWindow[]
-}
-
-// ---------------------------------------------------------
-
-export interface RuntimeWorkspace {
-
-    id: string
-
-    layout: RuntimeWorkspaceLayout
-}
-
-// =========================================================
-// RuntimeOS Config
+// Config
 // =========================================================
 
 export interface RuntimeOSConfig {
@@ -85,39 +58,6 @@ export interface RuntimeOSConfig {
     graphEndpoint: string
 
     transportEndpoint: string
-
-    diagnosticsEnabled?: boolean
-
-    mobileMode?: boolean
-}
-
-// =========================================================
-// RuntimeOS State
-// =========================================================
-
-export interface RuntimeOSState {
-
-    initialized: boolean
-
-    booted: boolean
-
-    connected: boolean
-
-    replayReady: boolean
-
-    graphReady: boolean
-
-    transportReady: boolean
-
-    diagnosticsEnabled: boolean
-
-    mobileMode: boolean
-
-    applicationsMounted: number
-
-    totalEvents: number
-
-    uptimeStartedAt: number
 }
 
 // =========================================================
@@ -126,20 +66,34 @@ export interface RuntimeOSState {
 
 export class RuntimeOS {
 
-    public readonly config:
-        RuntimeOSConfig
+    // =====================================================
+    // Core
+    // =====================================================
 
-    public readonly sockets:
+    public readonly socketManager:
         RuntimeSocketManager
 
     public readonly store:
         RuntimeStateStore
 
-    public readonly workspace:
-        RuntimeWorkspace
+    public readonly registry =
+        runtimeApplicationRegistry
 
-    public readonly state:
-        RuntimeOSState
+    public readonly windowManager:
+        RuntimeWindowManager
+
+    // =====================================================
+    // Runtime State
+    // =====================================================
+
+    private initialized =
+        false
+
+    private destroyed =
+        false
+
+    private readonly subscriptions:
+        (() => void)[] = []
 
     // =====================================================
     // Constructor
@@ -149,9 +103,7 @@ export class RuntimeOS {
         config: RuntimeOSConfig
     ) {
 
-        this.config = config
-
-        this.sockets =
+        this.socketManager =
             new RuntimeSocketManager({
 
                 runtimeEndpoint:
@@ -170,131 +122,8 @@ export class RuntimeOS {
         this.store =
             new RuntimeStateStore()
 
-        this.workspace = {
-
-            id:
-                "runtime_workspace",
-
-            layout: {
-
-                windows: [
-
-                    {
-                        id:
-                            "runtime_console_window",
-
-                        title:
-                            "Runtime Console",
-
-                        applicationId:
-                            "runtime_console",
-
-                        x: 40,
-
-                        y: 60,
-
-                        width: 520,
-
-                        height: 420,
-
-                        minimized: false,
-
-                        maximized: false,
-
-                        focused: true
-                    },
-
-                    {
-                        id:
-                            "calculator_window",
-
-                        title:
-                            "Calculator",
-
-                        applicationId:
-                            "calculator",
-
-                        x: 620,
-
-                        y: 80,
-
-                        width: 700,
-
-                        height: 520,
-
-                        minimized: false,
-
-                        maximized: false,
-
-                        focused: false
-                    },
-
-                    {
-                        id:
-                            "breadboard_window",
-
-                        title:
-                            "Breadboard",
-
-                        applicationId:
-                            "breadboard",
-
-                        x: 240,
-
-                        y: 160,
-
-                        width: 820,
-
-                        height: 520,
-
-                        minimized: false,
-
-                        maximized: false,
-
-                        focused: false
-                    }
-                ]
-            }
-        }
-
-        this.state = {
-
-            initialized: false,
-
-            booted: false,
-
-            connected: false,
-
-            replayReady: false,
-
-            graphReady: false,
-
-            transportReady: false,
-
-            diagnosticsEnabled:
-
-                config
-                    .diagnosticsEnabled
-                    ?? false,
-
-            mobileMode:
-
-                config
-                    .mobileMode
-                    ?? false,
-
-            applicationsMounted:
-
-                this.workspace
-                    .layout
-                    .windows
-                    .length,
-
-            totalEvents: 0,
-
-            uptimeStartedAt:
-                performance.now()
-        }
+        this.windowManager =
+            new RuntimeWindowManager()
     }
 
     // =====================================================
@@ -305,21 +134,121 @@ export class RuntimeOS {
         Promise<void> {
 
         if (
-            this.state.initialized
+            this.initialized
         ) {
 
             return
         }
 
-        this.state.initialized =
-            true
+        console.log(
+            "[RuntimeOS] initialize"
+        )
 
-        this.bindSocketEvents()
+        // -------------------------------------------------
+        // Socket Init
+        // -------------------------------------------------
 
-        await this.sockets.initialize()
+        await this.socketManager.initialize()
 
-        this.state.booted =
-            true
+        // -------------------------------------------------
+        // Runtime Events
+        // -------------------------------------------------
+
+        this.subscriptions.push(
+
+            this.socketManager.subscribe(
+
+                "runtime",
+
+                (
+                    event:
+                        RuntimeSocketEvent
+                ) => {
+
+                    this.store.ingestEvent(
+                        event
+                    )
+                }
+            )
+        )
+
+        // -------------------------------------------------
+        // Replay Events
+        // -------------------------------------------------
+
+        this.subscriptions.push(
+
+            this.socketManager.subscribe(
+
+                "replay",
+
+                (
+                    event:
+                        RuntimeSocketEvent
+                ) => {
+
+                    this.store.ingestEvent(
+                        event
+                    )
+                }
+            )
+        )
+
+        // -------------------------------------------------
+        // Graph Events
+        // -------------------------------------------------
+
+        this.subscriptions.push(
+
+            this.socketManager.subscribe(
+
+                "graph",
+
+                (
+                    event:
+                        RuntimeSocketEvent
+                ) => {
+
+                    this.store.ingestEvent(
+                        event
+                    )
+                }
+            )
+        )
+
+        // -------------------------------------------------
+        // Transport Events
+        // -------------------------------------------------
+
+        this.subscriptions.push(
+
+            this.socketManager.subscribe(
+
+                "transport",
+
+                (
+                    event:
+                        RuntimeSocketEvent
+                ) => {
+
+                    this.store.ingestEvent(
+                        event
+                    )
+                }
+            )
+        )
+
+        // -------------------------------------------------
+        // Default Windows
+        // -------------------------------------------------
+
+        this.bootstrapWindows()
+
+        // -------------------------------------------------
+        // State
+        // -------------------------------------------------
+
+        this.initialized = true
 
         console.log(
             "[RuntimeOS] initialized"
@@ -327,346 +256,235 @@ export class RuntimeOS {
     }
 
     // =====================================================
-    // Socket Binding
+    // Bootstrap Windows
     // =====================================================
 
-    private bindSocketEvents():
+    private bootstrapWindows():
         void {
 
-        this.sockets.subscribe(
+        // -------------------------------------------------
+        // Runtime Console
+        // -------------------------------------------------
 
-            "runtime",
+        this.windowManager.openWindow({
 
-            (
-                event
-            ) => {
+            id:
+                "runtime_console",
 
-                this.handleRuntimeEvent(
-                    event
-                )
-            }
-        )
+            title:
+                "Runtime Console",
 
-        this.sockets.subscribe(
+            applicationId:
+                "runtime_console",
 
-            "replay",
+            width: 520,
 
-            (
-                event
-            ) => {
+            height: 420,
 
-                this.handleReplayEvent(
-                    event
-                )
-            }
-        )
+            x: 80,
 
-        this.sockets.subscribe(
+            y: 80
+        })
 
-            "graph",
+        // -------------------------------------------------
+        // Calculator
+        // -------------------------------------------------
 
-            (
-                event
-            ) => {
+        this.windowManager.openWindow({
 
-                this.handleGraphEvent(
-                    event
-                )
-            }
-        )
+            id:
+                "calculator",
 
-        this.sockets.subscribe(
+            title:
+                "Calculator",
 
-            "transport",
+            applicationId:
+                "calculator",
 
-            (
-                event
-            ) => {
+            width: 900,
 
-                this.handleTransportEvent(
-                    event
-                )
-            }
-        )
+            height: 600,
 
-        this.sockets.subscribe(
+            x: 220,
 
-            "receipt",
+            y: 120
+        })
 
-            (
-                event
-            ) => {
+        // -------------------------------------------------
+        // Breadboard
+        // -------------------------------------------------
 
-                this.handleReceiptEvent(
-                    event
-                )
-            }
-        )
+        this.windowManager.openWindow({
+
+            id:
+                "breadboard",
+
+            title:
+                "Breadboard",
+
+            applicationId:
+                "breadboard",
+
+            width: 980,
+
+            height: 640,
+
+            x: 160,
+
+            y: 160
+        })
     }
 
     // =====================================================
-    // Event Handlers
+    // Open Application
     // =====================================================
 
-    private handleRuntimeEvent(
-        event: RuntimeSocketEvent
+    public openApplication(
+        applicationId: string
     ): void {
 
-        this.store.ingestEvent(
-            event
-        )
+        const definition =
 
-        this.state.connected =
-            true
+            this.registry.get(
+                applicationId
+            )
 
-        this.state.totalEvents += 1
-    }
+        if (!definition) {
 
-    // -----------------------------------------------------
+            console.error(
 
-    private handleReplayEvent(
-        event: RuntimeSocketEvent
-    ): void {
+                "[RuntimeOS] missing application",
 
-        this.store.ingestEvent(
-            event
-        )
-
-        this.state.replayReady =
-            true
-
-        this.state.totalEvents += 1
-    }
-
-    // -----------------------------------------------------
-
-    private handleGraphEvent(
-        event: RuntimeSocketEvent
-    ): void {
-
-        this.store.ingestEvent(
-            event
-        )
-
-        this.state.graphReady =
-            true
-
-        this.state.totalEvents += 1
-    }
-
-    // -----------------------------------------------------
-
-    private handleTransportEvent(
-        event: RuntimeSocketEvent
-    ): void {
-
-        this.store.ingestEvent(
-            event
-        )
-
-        this.state.transportReady =
-            true
-
-        this.state.totalEvents += 1
-    }
-
-    // -----------------------------------------------------
-
-    private handleReceiptEvent(
-        event: RuntimeSocketEvent
-    ): void {
-
-        this.store.ingestEvent(
-            event
-        )
-
-        this.state.totalEvents += 1
-    }
-
-    // =====================================================
-    // Windows
-    // =====================================================
-
-    public focusWindow(
-        windowId: string
-    ): void {
-
-        for (
-            const window
-            of this.workspace
-                .layout
-                .windows
-        ) {
-
-            window.focused =
-                (
-                    window.id
-                    === windowId
-                )
-        }
-    }
-
-    // -----------------------------------------------------
-
-    public minimizeWindow(
-        windowId: string
-    ): void {
-
-        const target =
-            this.workspace
-                .layout
-                .windows
-                .find(
-
-                    (
-                        window
-                    ) => (
-
-                        window.id
-                        === windowId
-                    )
-                )
-
-        if (!target) {
+                applicationId
+            )
 
             return
         }
 
-        target.minimized =
-            !target.minimized
-    }
+        const preset =
+            definition.windowPreset
 
-    // -----------------------------------------------------
+        this.windowManager.openWindow({
 
-    public maximizeWindow(
-        windowId: string
-    ): void {
+            id:
+                `${applicationId}_${Date.now()}`,
 
-        const target =
-            this.workspace
-                .layout
-                .windows
-                .find(
+            title:
+                definition.title,
 
-                    (
-                        window
-                    ) => (
+            applicationId,
 
-                        window.id
-                        === windowId
-                    )
-                )
+            width:
+                preset.width,
 
-        if (!target) {
+            height:
+                preset.height,
 
-            return
-        }
+            x: 140,
 
-        target.maximized =
-            !target.maximized
+            y: 140
+        })
     }
 
     // =====================================================
     // Metrics
     // =====================================================
 
-    public getMetrics():
-        Record<
-            string,
-            unknown
-        > {
+    public getMetrics() {
 
         return {
 
             initialized:
-                this.state
-                    .initialized,
+                this.initialized,
 
-            booted:
-                this.state
-                    .booted,
+            destroyed:
+                this.destroyed,
 
-            connected:
-                this.state
-                    .connected,
+            registry:
+                this.registry.metrics(),
 
-            replayReady:
-                this.state
-                    .replayReady,
-
-            graphReady:
-                this.state
-                    .graphReady,
-
-            transportReady:
-                this.state
-                    .transportReady,
-
-            diagnosticsEnabled:
-                this.state
-                    .diagnosticsEnabled,
-
-            mobileMode:
-                this.state
-                    .mobileMode,
-
-            applicationsMounted:
-                this.state
-                    .applicationsMounted,
-
-            totalEvents:
-                this.state
-                    .totalEvents,
-
-            uptimeMs:
-
-                performance.now()
-
-                -
-
-                this.state
-                    .uptimeStartedAt,
+            store:
+                this.store.getMetrics(),
 
             sockets:
-                this.sockets
-                    .getMetrics(),
+                this.socketManager.getMetrics(),
 
-            runtimeStore:
-                this.store
-                    .getMetrics(),
-
-            workspaceWindows:
-
-                this.workspace
-                    .layout
-                    .windows
-                    .length
+            windows:
+                this.windowManager
+                    .getMetrics()
         }
     }
 
     // =====================================================
-    // Shutdown
+    // Destroy
     // =====================================================
 
-    public shutdown():
+    public destroy():
         void {
 
-        this.sockets.shutdown()
+        if (
+            this.destroyed
+        ) {
 
-        this.state.connected =
-            false
-
-        this.state.replayReady =
-            false
-
-        this.state.graphReady =
-            false
-
-        this.state.transportReady =
-            false
+            return
+        }
 
         console.log(
-            "[RuntimeOS] shutdown"
+            "[RuntimeOS] destroy"
+        )
+
+        // -------------------------------------------------
+        // Subscriptions
+        // -------------------------------------------------
+
+        for (
+            const unsubscribe
+            of this.subscriptions
+        ) {
+
+            try {
+
+                unsubscribe()
+
+            } catch (error) {
+
+                console.error(
+
+                    "[RuntimeOS] unsubscribe failure",
+
+                    error
+                )
+            }
+        }
+
+        this.subscriptions.length = 0
+
+        // -------------------------------------------------
+        // Socket Shutdown
+        // -------------------------------------------------
+
+        this.socketManager.shutdown()
+
+        // -------------------------------------------------
+        // State Reset
+        // -------------------------------------------------
+
+        this.store.reset()
+
+        // -------------------------------------------------
+        // Window Reset
+        // -------------------------------------------------
+
+        this.windowManager.reset()
+
+        // -------------------------------------------------
+        // State
+        // -------------------------------------------------
+
+        this.destroyed = true
+
+        console.log(
+            "[RuntimeOS] destroyed"
         )
     }
 }
