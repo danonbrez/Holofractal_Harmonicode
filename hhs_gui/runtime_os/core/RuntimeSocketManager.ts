@@ -3,24 +3,28 @@
  * RuntimeSocketManager
  * =========================================================
  *
- * Canonical Runtime OS websocket transport authority.
+ * Canonical websocket projection layer.
  *
- * Responsibilities:
- *
- * - Runtime stream ingestion
- * - Replay stream ingestion
- * - Graph stream ingestion
- * - Transport stream ingestion
- * - Connection lifecycle
- * - Event parsing
- * - Event history
- * - Runtime dispatch
- * - Frontend synchronization
- *
- * IMPORTANT:
+ * IMPORTANT
  * ---------------------------------------------------------
- * Frontend transport is a projection layer.
- * Runtime authority belongs to the backend runtime.
+ * Frontend transport is NOT runtime authority.
+ *
+ * Runtime authority belongs to:
+ *
+ *   - backend runtime
+ *   - replay engine
+ *   - receipt lineage
+ *   - runtime event schema
+ *
+ * This layer only:
+ *
+ *   - ingests
+ *   - normalizes
+ *   - caches
+ *   - dispatches
+ *   - visualizes
+ *
+ * NEVER derive runtime truth here.
  */
 
 export type RuntimeEventType =
@@ -31,6 +35,10 @@ export type RuntimeEventType =
     | "transport"
     | "receipt"
     | "certification"
+
+// =========================================================
+// Config
+// =========================================================
 
 export interface RuntimeSocketConfig {
 
@@ -45,34 +53,9 @@ export interface RuntimeSocketConfig {
     reconnectDelayMs?: number
 }
 
-export interface RuntimeSocketState {
-
-    runtimeConnected: boolean
-
-    replayConnected: boolean
-
-    graphConnected: boolean
-
-    transportConnected: boolean
-
-    lastRuntimeEvent?: RuntimeSocketEvent
-
-    lastReplayEvent?: RuntimeSocketEvent
-
-    lastGraphEvent?: RuntimeSocketEvent
-
-    lastTransportEvent?: RuntimeSocketEvent
-
-    runtimeHistory: RuntimeSocketEvent[]
-
-    replayHistory: RuntimeSocketEvent[]
-
-    graphHistory: RuntimeSocketEvent[]
-
-    transportHistory: RuntimeSocketEvent[]
-
-    totalEvents: number
-}
+// =========================================================
+// Event
+// =========================================================
 
 export interface RuntimeSocketEvent {
 
@@ -99,6 +82,51 @@ export interface RuntimeSocketEvent {
         unknown
     >
 }
+
+// =========================================================
+// State
+// =========================================================
+
+export interface RuntimeSocketState {
+
+    runtimeConnected: boolean
+
+    replayConnected: boolean
+
+    graphConnected: boolean
+
+    transportConnected: boolean
+
+    runtimeHistory:
+        RuntimeSocketEvent[]
+
+    replayHistory:
+        RuntimeSocketEvent[]
+
+    graphHistory:
+        RuntimeSocketEvent[]
+
+    transportHistory:
+        RuntimeSocketEvent[]
+
+    lastRuntimeEvent?:
+        RuntimeSocketEvent
+
+    lastReplayEvent?:
+        RuntimeSocketEvent
+
+    lastGraphEvent?:
+        RuntimeSocketEvent
+
+    lastTransportEvent?:
+        RuntimeSocketEvent
+
+    totalEvents: number
+}
+
+// =========================================================
+// Listener
+// =========================================================
 
 export type RuntimeSocketListener = (
 
@@ -130,20 +158,20 @@ export class RuntimeSocketManager {
     private transportSocket?:
         WebSocket
 
-    private listeners:
-        Map<
+    private readonly listeners =
+        new Map<
             RuntimeEventType,
             Set<RuntimeSocketListener>
-        >
-
-    private readonly maxHistory =
-        2048
+        >()
 
     private readonly reconnectDelayMs:
         number
 
     private shutdownRequested =
         false
+
+    private readonly maxHistory =
+        2048
 
     // =====================================================
     // Constructor
@@ -155,13 +183,12 @@ export class RuntimeSocketManager {
 
         this.config = config
 
-        this.listeners =
-            new Map()
+        this.reconnectDelayMs = (
 
-        this.reconnectDelayMs =
             config.reconnectDelayMs
             ??
             3000
+        )
 
         this.state = {
 
@@ -192,7 +219,8 @@ export class RuntimeSocketManager {
     public async initialize():
         Promise<void> {
 
-        this.shutdownRequested = false
+        this.shutdownRequested =
+            false
 
         this.connectRuntime()
 
@@ -214,6 +242,7 @@ export class RuntimeSocketManager {
             new WebSocket(
 
                 this.toSocketURL(
+
                     this.config
                         .runtimeEndpoint
                 )
@@ -249,7 +278,9 @@ export class RuntimeSocketManager {
             (error) => {
 
             console.error(
+
                 "[runtime/ws] error",
+
                 error
             )
         }
@@ -277,6 +308,7 @@ export class RuntimeSocketManager {
             new WebSocket(
 
                 this.toSocketURL(
+
                     this.config
                         .replayEndpoint
                 )
@@ -312,7 +344,9 @@ export class RuntimeSocketManager {
             (error) => {
 
             console.error(
+
                 "[replay/ws] error",
+
                 error
             )
         }
@@ -340,6 +374,7 @@ export class RuntimeSocketManager {
             new WebSocket(
 
                 this.toSocketURL(
+
                     this.config
                         .graphEndpoint
                 )
@@ -375,7 +410,9 @@ export class RuntimeSocketManager {
             (error) => {
 
             console.error(
+
                 "[graph/ws] error",
+
                 error
             )
         }
@@ -403,6 +440,7 @@ export class RuntimeSocketManager {
             new WebSocket(
 
                 this.toSocketURL(
+
                     this.config
                         .transportEndpoint
                 )
@@ -438,7 +476,9 @@ export class RuntimeSocketManager {
             (error) => {
 
             console.error(
+
                 "[transport/ws] error",
+
                 error
             )
         }
@@ -456,7 +496,7 @@ export class RuntimeSocketManager {
     }
 
     // =====================================================
-    // Event Handling
+    // Handle Event
     // =====================================================
 
     private handleEvent(
@@ -472,17 +512,22 @@ export class RuntimeSocketManager {
         try {
 
             const parsed =
+
                 this.normalizeEvent(
+
                     channel,
+
                     JSON.parse(raw)
                 )
 
-            this.dispatchEvent(
+            this.appendHistory(
+
+                channel,
+
                 parsed
             )
 
-            this.appendHistory(
-                channel,
+            this.dispatchEvent(
                 parsed
             )
 
@@ -535,7 +580,7 @@ export class RuntimeSocketManager {
     }
 
     // =====================================================
-    // Event Normalization
+    // Normalize
     // =====================================================
 
     private normalizeEvent(
@@ -551,13 +596,20 @@ export class RuntimeSocketManager {
         const payload =
 
             typeof raw.payload === "object"
-            && raw.payload !== null
-                ? raw.payload as Record<string, unknown>
+            &&
+            raw.payload !== null
+
+                ? raw.payload as Record<
+                    string,
+                    unknown
+                >
+
                 : {}
 
         return {
 
             event_type:
+
                 (
                     raw.event_type
                     ??
@@ -567,107 +619,79 @@ export class RuntimeSocketManager {
                 ) as RuntimeEventType,
 
             timestamp_ns:
+
                 Number(
+
                     raw.timestamp_ns
                     ??
                     Date.now() * 1_000_000
                 ),
 
             sequence_id:
-                typeof raw.sequence_id === "number"
+
+                typeof raw.sequence_id
+                === "number"
+
                     ? raw.sequence_id
+
                     : undefined,
 
             authority:
-                typeof raw.authority === "string"
+
+                typeof raw.authority
+                === "string"
+
                     ? raw.authority
+
                     : undefined,
 
             runtime_id:
-                typeof raw.runtime_id === "string"
+
+                typeof raw.runtime_id
+                === "string"
+
                     ? raw.runtime_id
+
                     : undefined,
 
             branch_id:
-                typeof raw.branch_id === "string"
+
+                typeof raw.branch_id
+                === "string"
+
                     ? raw.branch_id
+
                     : undefined,
 
             event_hash72:
-                typeof raw.event_hash72 === "string"
+
+                typeof raw.event_hash72
+                === "string"
+
                     ? raw.event_hash72
+
                     : undefined,
 
             parent_event_hash72:
-                typeof raw.parent_event_hash72 === "string"
+
+                typeof raw.parent_event_hash72
+                === "string"
+
                     ? raw.parent_event_hash72
+
                     : undefined,
 
             receipt_hash72:
-                typeof raw.receipt_hash72 === "string"
+
+                typeof raw.receipt_hash72
+                === "string"
+
                     ? raw.receipt_hash72
+
                     : undefined,
 
             payload
         }
-    }
-
-    // =====================================================
-    // Reconnect
-    // =====================================================
-
-    private scheduleReconnect(
-        channel: RuntimeEventType
-    ): void {
-
-        if (
-            this.shutdownRequested
-        ) {
-
-            return
-        }
-
-        window.setTimeout(
-            () => {
-
-                if (
-                    this.shutdownRequested
-                ) {
-
-                    return
-                }
-
-                switch (channel) {
-
-                    case "runtime":
-
-                        this.connectRuntime()
-
-                        break
-
-                    case "replay":
-
-                        this.connectReplay()
-
-                        break
-
-                    case "graph":
-
-                        this.connectGraph()
-
-                        break
-
-                    case "transport":
-
-                        this.connectTransport()
-
-                        break
-                }
-
-            },
-
-            this.reconnectDelayMs
-        )
     }
 
     // =====================================================
@@ -730,7 +754,8 @@ export class RuntimeSocketManager {
 
         if (
             target.length
-            > this.maxHistory
+            >
+            this.maxHistory
         ) {
 
             target.splice(
@@ -738,7 +763,8 @@ export class RuntimeSocketManager {
                 0,
 
                 target.length
-                - this.maxHistory
+                -
+                this.maxHistory
             )
         }
     }
@@ -752,6 +778,7 @@ export class RuntimeSocketManager {
     ): void {
 
         const listeners =
+
             this.listeners.get(
                 event.event_type
             )
@@ -762,8 +789,11 @@ export class RuntimeSocketManager {
         }
 
         for (
+
             const listener
+
             of listeners
+
         ) {
 
             try {
@@ -797,9 +827,11 @@ export class RuntimeSocketManager {
     ): () => void {
 
         if (
+
             !this.listeners.has(
                 eventType
             )
+
         ) {
 
             this.listeners.set(
@@ -823,13 +855,73 @@ export class RuntimeSocketManager {
     }
 
     // =====================================================
+    // Reconnect
+    // =====================================================
+
+    private scheduleReconnect(
+        channel: RuntimeEventType
+    ): void {
+
+        if (
+            this.shutdownRequested
+        ) {
+
+            return
+        }
+
+        window.setTimeout(
+
+            () => {
+
+                if (
+                    this.shutdownRequested
+                ) {
+
+                    return
+                }
+
+                switch (channel) {
+
+                    case "runtime":
+
+                        this.connectRuntime()
+
+                        break
+
+                    case "replay":
+
+                        this.connectReplay()
+
+                        break
+
+                    case "graph":
+
+                        this.connectGraph()
+
+                        break
+
+                    case "transport":
+
+                        this.connectTransport()
+
+                        break
+                }
+
+            },
+
+            this.reconnectDelayMs
+        )
+    }
+
+    // =====================================================
     // Shutdown
     // =====================================================
 
     public shutdown():
         void {
 
-        this.shutdownRequested = true
+        this.shutdownRequested =
+            true
 
         this.runtimeSocket?.close()
 
@@ -904,7 +996,7 @@ export class RuntimeSocketManager {
     }
 
     // =====================================================
-    // Helpers
+    // Socket URL
     // =====================================================
 
     private toSocketURL(
@@ -915,17 +1007,23 @@ export class RuntimeSocketManager {
 
             window.location.protocol
                 === "https:"
+
                     ? "wss:"
+
                     : "ws:"
 
         if (
+
             endpoint.startsWith(
                 "ws://"
             )
+
             ||
+
             endpoint.startsWith(
                 "wss://"
             )
+
         ) {
 
             return endpoint
