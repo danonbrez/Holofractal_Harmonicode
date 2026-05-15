@@ -16,6 +16,11 @@
  * - Event history
  * - Runtime dispatch
  * - Frontend synchronization
+ *
+ * IMPORTANT:
+ * ---------------------------------------------------------
+ * Frontend transport is a projection layer.
+ * Runtime authority belongs to the backend runtime.
  */
 
 export type RuntimeEventType =
@@ -36,6 +41,8 @@ export interface RuntimeSocketConfig {
     graphEndpoint: string
 
     transportEndpoint: string
+
+    reconnectDelayMs?: number
 }
 
 export interface RuntimeSocketState {
@@ -76,6 +83,16 @@ export interface RuntimeSocketEvent {
     sequence_id?: number
 
     authority?: string
+
+    runtime_id?: string
+
+    branch_id?: string
+
+    event_hash72?: string
+
+    parent_event_hash72?: string
+
+    receipt_hash72?: string
 
     payload: Record<
         string,
@@ -122,6 +139,12 @@ export class RuntimeSocketManager {
     private readonly maxHistory =
         2048
 
+    private readonly reconnectDelayMs:
+        number
+
+    private shutdownRequested =
+        false
+
     // =====================================================
     // Constructor
     // =====================================================
@@ -134,6 +157,11 @@ export class RuntimeSocketManager {
 
         this.listeners =
             new Map()
+
+        this.reconnectDelayMs =
+            config.reconnectDelayMs
+            ??
+            3000
 
         this.state = {
 
@@ -163,6 +191,8 @@ export class RuntimeSocketManager {
 
     public async initialize():
         Promise<void> {
+
+        this.shutdownRequested = false
 
         this.connectRuntime()
 
@@ -208,6 +238,10 @@ export class RuntimeSocketManager {
 
             console.log(
                 "[runtime/ws] disconnected"
+            )
+
+            this.scheduleReconnect(
+                "runtime"
             )
         }
 
@@ -268,6 +302,10 @@ export class RuntimeSocketManager {
             console.log(
                 "[replay/ws] disconnected"
             )
+
+            this.scheduleReconnect(
+                "replay"
+            )
         }
 
         this.replaySocket.onerror =
@@ -326,6 +364,10 @@ export class RuntimeSocketManager {
 
             console.log(
                 "[graph/ws] disconnected"
+            )
+
+            this.scheduleReconnect(
+                "graph"
             )
         }
 
@@ -386,6 +428,10 @@ export class RuntimeSocketManager {
             console.log(
                 "[transport/ws] disconnected"
             )
+
+            this.scheduleReconnect(
+                "transport"
+            )
         }
 
         this.transportSocket.onerror =
@@ -426,8 +472,10 @@ export class RuntimeSocketManager {
         try {
 
             const parsed =
-                JSON.parse(raw)
-                as RuntimeSocketEvent
+                this.normalizeEvent(
+                    channel,
+                    JSON.parse(raw)
+                )
 
             this.dispatchEvent(
                 parsed
@@ -484,6 +532,142 @@ export class RuntimeSocketManager {
                 error
             )
         }
+    }
+
+    // =====================================================
+    // Event Normalization
+    // =====================================================
+
+    private normalizeEvent(
+
+        channel:
+            RuntimeEventType,
+
+        raw:
+            Record<string, unknown>
+
+    ): RuntimeSocketEvent {
+
+        const payload =
+
+            typeof raw.payload === "object"
+            && raw.payload !== null
+                ? raw.payload as Record<string, unknown>
+                : {}
+
+        return {
+
+            event_type:
+                (
+                    raw.event_type
+                    ??
+                    raw.event
+                    ??
+                    channel
+                ) as RuntimeEventType,
+
+            timestamp_ns:
+                Number(
+                    raw.timestamp_ns
+                    ??
+                    Date.now() * 1_000_000
+                ),
+
+            sequence_id:
+                typeof raw.sequence_id === "number"
+                    ? raw.sequence_id
+                    : undefined,
+
+            authority:
+                typeof raw.authority === "string"
+                    ? raw.authority
+                    : undefined,
+
+            runtime_id:
+                typeof raw.runtime_id === "string"
+                    ? raw.runtime_id
+                    : undefined,
+
+            branch_id:
+                typeof raw.branch_id === "string"
+                    ? raw.branch_id
+                    : undefined,
+
+            event_hash72:
+                typeof raw.event_hash72 === "string"
+                    ? raw.event_hash72
+                    : undefined,
+
+            parent_event_hash72:
+                typeof raw.parent_event_hash72 === "string"
+                    ? raw.parent_event_hash72
+                    : undefined,
+
+            receipt_hash72:
+                typeof raw.receipt_hash72 === "string"
+                    ? raw.receipt_hash72
+                    : undefined,
+
+            payload
+        }
+    }
+
+    // =====================================================
+    // Reconnect
+    // =====================================================
+
+    private scheduleReconnect(
+        channel: RuntimeEventType
+    ): void {
+
+        if (
+            this.shutdownRequested
+        ) {
+
+            return
+        }
+
+        window.setTimeout(
+            () => {
+
+                if (
+                    this.shutdownRequested
+                ) {
+
+                    return
+                }
+
+                switch (channel) {
+
+                    case "runtime":
+
+                        this.connectRuntime()
+
+                        break
+
+                    case "replay":
+
+                        this.connectReplay()
+
+                        break
+
+                    case "graph":
+
+                        this.connectGraph()
+
+                        break
+
+                    case "transport":
+
+                        this.connectTransport()
+
+                        break
+                }
+
+            },
+
+            this.reconnectDelayMs
+        )
     }
 
     // =====================================================
@@ -644,6 +828,8 @@ export class RuntimeSocketManager {
 
     public shutdown():
         void {
+
+        this.shutdownRequested = true
 
         this.runtimeSocket?.close()
 
