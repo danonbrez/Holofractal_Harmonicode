@@ -1,28 +1,3 @@
-/**
- * =========================================================
- * RuntimeApplicationRegistry
- * =========================================================
- *
- * Canonical Runtime OS application authority layer.
- *
- * Responsibilities:
- *
- * - Runtime application registration
- * - Lazy application loading
- * - Capability metadata
- * - Window presets
- * - Runtime authority tagging
- * - Mount policies
- * - Optional application continuity
- *
- * IMPORTANT:
- * ---------------------------------------------------------
- * Runtime applications MUST be treated as optional
- * authorities during active upstream development.
- *
- * Missing applications MUST NOT crash the Runtime OS.
- */
-
 import React from "react"
 
 // =========================================================
@@ -89,7 +64,7 @@ export interface RuntimeApplicationDefinition {
 }
 
 // =========================================================
-// Safe Import Helper
+// Safe Runtime Import
 // =========================================================
 
 async function safeRuntimeImport(
@@ -113,7 +88,7 @@ async function safeRuntimeImport(
 
         console.error(
 
-            "[RuntimeApplicationRegistry] optional module missing",
+            "[RuntimeApplicationRegistry] optional runtime module failure",
 
             error
         )
@@ -124,6 +99,35 @@ async function safeRuntimeImport(
                 fallback
         }
     }
+}
+
+// =========================================================
+// Fallback
+// =========================================================
+
+const UnknownApplicationFallback:
+React.FC = () => {
+
+    return (
+
+        <div
+            className="
+                w-full
+                h-full
+                flex
+                items-center
+                justify-center
+                bg-neutral-950
+                text-neutral-500
+                font-mono
+                text-sm
+            "
+        >
+
+            runtime_application_missing
+
+        </div>
+    )
 }
 
 // =========================================================
@@ -177,7 +181,9 @@ export class RuntimeApplicationRegistry {
         )
     }
 
-    // -----------------------------------------------------
+    // =====================================================
+    // Exists
+    // =====================================================
 
     public has(
         id: string
@@ -188,7 +194,9 @@ export class RuntimeApplicationRegistry {
         )
     }
 
-    // -----------------------------------------------------
+    // =====================================================
+    // All
+    // =====================================================
 
     public all():
         RuntimeApplicationDefinition[] {
@@ -200,15 +208,16 @@ export class RuntimeApplicationRegistry {
         ]
     }
 
-    // -----------------------------------------------------
+    // =====================================================
+    // Authority
+    // =====================================================
 
     public byAuthority(
 
         authority:
             RuntimeApplicationAuthority
 
-    ):
-        RuntimeApplicationDefinition[] {
+    ) {
 
         return this.all().filter(
 
@@ -223,7 +232,7 @@ export class RuntimeApplicationRegistry {
     }
 
     // =====================================================
-    // Lazy Resolution
+    // Resolve
     // =====================================================
 
     public resolveLazyComponent(
@@ -305,36 +314,7 @@ export const runtimeApplicationRegistry =
     new RuntimeApplicationRegistry()
 
 // =========================================================
-// Fallback
-// =========================================================
-
-const UnknownApplicationFallback:
-React.FC = () => {
-
-    return (
-
-        <div
-            className="
-                w-full
-                h-full
-                flex
-                items-center
-                justify-center
-                bg-neutral-950
-                text-neutral-500
-                font-mono
-                text-sm
-            "
-        >
-
-            runtime_application_missing
-
-        </div>
-    )
-}
-
-// =========================================================
-// Registration
+// Runtime Console
 // =========================================================
 
 runtimeApplicationRegistry.register({
@@ -357,6 +337,7 @@ runtimeApplicationRegistry.register({
             safeRuntimeImport(
 
                 () => import(
+                    /* @vite-ignore */
                     "./RuntimeWindowContent"
                 ),
 
@@ -379,7 +360,9 @@ runtimeApplicationRegistry.register({
     singleton: true
 })
 
-// ---------------------------------------------------------
+// =========================================================
+// Calculator
+// =========================================================
 
 runtimeApplicationRegistry.register({
 
@@ -393,7 +376,7 @@ runtimeApplicationRegistry.register({
         "runtime",
 
     description:
-        "HHS calculator runtime surface",
+        "HHS runtime calculator",
 
     lazyLoader:
         async () =>
@@ -401,6 +384,7 @@ runtimeApplicationRegistry.register({
             safeRuntimeImport(
 
                 () => import(
+                    /* @vite-ignore */
                     "../../runtime_apps/calculator/HHSCalculatorSurface"
                 ),
 
@@ -412,11 +396,11 @@ runtimeApplicationRegistry.register({
 
     windowPreset: {
 
-        width: 700,
+        width: 900,
 
-        height: 520,
+        height: 620,
 
-        minWidth: 420,
+        minWidth: 480,
 
         minHeight: 320,
 
@@ -426,21 +410,23 @@ runtimeApplicationRegistry.register({
     mobileSupported: true
 })
 
-// ---------------------------------------------------------
+// =========================================================
+// Graph Projection
+// =========================================================
 
 runtimeApplicationRegistry.register({
 
     id:
-        "breadboard",
+        "graph_projection",
 
     title:
-        "Breadboard",
+        "Graph Projection",
 
     authority:
         "graph",
 
     description:
-        "Runtime transport topology surface",
+        "Runtime replay graph projection",
 
     lazyLoader:
         async () =>
@@ -448,7 +434,8 @@ runtimeApplicationRegistry.register({
             safeRuntimeImport(
 
                 () => import(
-                    "../../runtime_apps/breadboard/HHSBreadboardSurface"
+                    /* @vite-ignore */
+                    "../../runtime_apps/calculator/HHSCalculatorGraphProjection"
                 ),
 
                 UnknownApplicationFallback
@@ -459,13 +446,61 @@ runtimeApplicationRegistry.register({
 
     windowPreset: {
 
-        width: 820,
+        width: 720,
 
-        height: 520,
+        height: 620,
 
-        minWidth: 520,
+        minWidth: 420,
 
-        minHeight: 360,
+        minHeight: 320,
+
+        resizable: true
+    }
+})
+
+// =========================================================
+// Breadboard
+// =========================================================
+
+runtimeApplicationRegistry.register({
+
+    id:
+        "breadboard",
+
+    title:
+        "Breadboard",
+
+    authority:
+        "transport",
+
+    description:
+        "Runtime transport topology surface",
+
+    lazyLoader:
+        async () =>
+
+            safeRuntimeImport(
+
+                () => import(
+                    /* @vite-ignore */
+                    "../../runtime_apps/breadboard/HHSRuntimeBreadboard"
+                ),
+
+                UnknownApplicationFallback
+            ),
+
+    fallback:
+        UnknownApplicationFallback,
+
+    windowPreset: {
+
+        width: 980,
+
+        height: 680,
+
+        minWidth: 620,
+
+        minHeight: 420,
 
         resizable: true
     },
@@ -473,7 +508,9 @@ runtimeApplicationRegistry.register({
     experimental: true
 })
 
-// ---------------------------------------------------------
+// =========================================================
+// Receipt Inspector
+// =========================================================
 
 runtimeApplicationRegistry.register({
 
@@ -487,7 +524,7 @@ runtimeApplicationRegistry.register({
         "instrument",
 
     description:
-        "Runtime receipt lineage inspector",
+        "Receipt lineage inspection surface",
 
     lazyLoader:
         async () =>
@@ -495,6 +532,7 @@ runtimeApplicationRegistry.register({
             safeRuntimeImport(
 
                 () => import(
+                    /* @vite-ignore */
                     "../../runtime_apps/instruments/ReceiptInspector"
                 ),
 
@@ -506,19 +544,21 @@ runtimeApplicationRegistry.register({
 
     windowPreset: {
 
-        width: 980,
+        width: 920,
 
-        height: 640,
+        height: 620,
 
-        minWidth: 720,
+        minWidth: 520,
 
-        minHeight: 420,
+        minHeight: 320,
 
         resizable: true
     }
 })
 
-// ---------------------------------------------------------
+// =========================================================
+// Replay Timeline
+// =========================================================
 
 runtimeApplicationRegistry.register({
 
@@ -532,7 +572,7 @@ runtimeApplicationRegistry.register({
         "instrument",
 
     description:
-        "Runtime replay inspection surface",
+        "Replay continuity timeline surface",
 
     lazyLoader:
         async () =>
@@ -540,6 +580,7 @@ runtimeApplicationRegistry.register({
             safeRuntimeImport(
 
                 () => import(
+                    /* @vite-ignore */
                     "../../runtime_apps/instruments/ReplayTimeline"
                 ),
 
@@ -551,13 +592,13 @@ runtimeApplicationRegistry.register({
 
     windowPreset: {
 
-        width: 980,
+        width: 920,
 
-        height: 640,
+        height: 620,
 
-        minWidth: 720,
+        minWidth: 520,
 
-        minHeight: 420,
+        minHeight: 320,
 
         resizable: true
     }
