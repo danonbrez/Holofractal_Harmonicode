@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en">
 
 <head>
@@ -10,38 +9,293 @@
         name="viewport"
         content="
             width=device-width,
-            initial-scale=1.0
+            initial-scale=1.0,
+            viewport-fit=cover
         "
     />
 
     <meta
         name="theme-color"
-        content="#05070b"
-    />
-
-    <meta
-        name="description"
-        content="
-            HHS Runtime OS —
-            deterministic manifold
-            execution environment
-        "
+        content="#000000"
     />
 
     <title>
         HHS Runtime OS
     </title>
 
+    <!-- =====================================================
+         Runtime Boot Styling
+    ====================================================== -->
+
+    <style>
+
+        html,
+        body,
+        #root {
+
+            margin: 0;
+            padding: 0;
+
+            width: 100%;
+            height: 100%;
+
+            overflow: hidden;
+
+            background: #000;
+        }
+
+        body {
+
+            font-family:
+                Inter,
+                system-ui,
+                sans-serif;
+
+            color: white;
+        }
+
+        * {
+
+            box-sizing: border-box;
+        }
+
+        /* =================================================
+           Runtime Boot Overlay
+        ================================================== */
+
+        #runtime_boot_overlay {
+
+            position: fixed;
+
+            inset: 0;
+
+            background:
+                radial-gradient(
+
+                    circle at center,
+
+                    rgba(34,211,238,0.10),
+
+                    transparent 70%
+                ),
+                #000;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            z-index: 999999;
+        }
+
+        #runtime_boot_panel {
+
+            width: min(90vw, 520px);
+
+            border-radius: 24px;
+
+            border:
+                1px solid rgba(34,211,238,0.18);
+
+            background:
+                rgba(0,0,0,0.72);
+
+            backdrop-filter:
+                blur(24px);
+
+            padding: 32px;
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 18px;
+
+            box-shadow:
+                0 0 60px rgba(34,211,238,0.12);
+        }
+
+        #runtime_boot_title {
+
+            color: rgb(103,232,249);
+
+            font-size: 20px;
+
+            font-weight: 700;
+
+            letter-spacing: 0.04em;
+        }
+
+        #runtime_boot_subtitle {
+
+            color: rgba(255,255,255,0.45);
+
+            font-size: 12px;
+
+            font-family: monospace;
+        }
+
+        #runtime_boot_loader {
+
+            width: 100%;
+
+            height: 10px;
+
+            overflow: hidden;
+
+            border-radius: 999px;
+
+            background:
+                rgba(255,255,255,0.08);
+
+            position: relative;
+        }
+
+        #runtime_boot_loader::after {
+
+            content: "";
+
+            position: absolute;
+
+            inset: 0;
+
+            width: 40%;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    rgba(34,211,238,0.85),
+                    transparent
+                );
+
+            animation:
+                runtime_boot_pulse 1.2s linear infinite;
+        }
+
+        @keyframes runtime_boot_pulse {
+
+            from {
+
+                transform:
+                    translateX(-120%);
+            }
+
+            to {
+
+                transform:
+                    translateX(260%);
+            }
+        }
+
+        #runtime_boot_status {
+
+            color:
+                rgba(255,255,255,0.65);
+
+            font-size: 11px;
+
+            font-family: monospace;
+
+            white-space: pre-wrap;
+        }
+
+    </style>
+
 </head>
 
 <body>
 
+    <!-- =====================================================
+         Root
+    ====================================================== -->
+
     <div id="root"></div>
+
+    <!-- =====================================================
+         Runtime Boot Overlay
+    ====================================================== -->
+
+    <div id="runtime_boot_overlay">
+
+        <div id="runtime_boot_panel">
+
+            <div id="runtime_boot_title">
+                HHS Runtime OS
+            </div>
+
+            <div id="runtime_boot_subtitle">
+                runtime_projection_bootstrap
+            </div>
+
+            <div id="runtime_boot_loader"></div>
+
+            <div id="runtime_boot_status">
+
+boot_sequence:
+  → initialize RuntimeOS
+  → connect websocket transport
+  → initialize runtime graph
+  → initialize replay topology
+  → mount runtime surfaces
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- =====================================================
+         Runtime Entrypoint
+    ====================================================== -->
 
     <script
         type="module"
-        src="/src/main.tsx"
+        src="/main.tsx"
     ></script>
+
+    <!-- =====================================================
+         Overlay Removal
+    ====================================================== -->
+
+    <script>
+
+        window.addEventListener(
+
+            "load",
+
+            () => {
+
+                const overlay =
+
+                    document.getElementById(
+                        "runtime_boot_overlay"
+                    )
+
+                if (!overlay) {
+
+                    return
+                }
+
+                setTimeout(() => {
+
+                    overlay.style.opacity = "0"
+
+                    overlay.style.transition =
+                        "opacity 400ms ease"
+
+                    setTimeout(() => {
+
+                        overlay.remove()
+
+                    }, 450)
+
+                }, 300)
+            }
+        )
+
+    </script>
 
 </body>
 
