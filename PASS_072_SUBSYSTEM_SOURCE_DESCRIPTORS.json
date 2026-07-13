@@ -1,0 +1,164 @@
+{
+  "authority": "HHS_PASS072_TOTAL_SYSTEM_CLOSURE_AUTHORITY_V1",
+  "descriptor_count": 9,
+  "descriptor_registry_root_hash72": "pcM2tm<ypnju3gaY6*eKk6Rd!*TMHnb8h8LfkgeOeowEel8?eYRgzoSpJ8Bpmzh>r*Tw8NPq",
+  "descriptors": [
+    {
+      "closure_dimensions": [
+        "IDENTITY",
+        "PROVENANCE",
+        "TEMPORAL"
+      ],
+      "dependencies": [],
+      "lo_shu_cell_index": 0,
+      "lo_shu_value": 4,
+      "role": "CANONICAL_PARENT_AND_RESTART_SOURCE",
+      "source_root_hash72": "O+0/3dn0KX?!0ENFJ(bowzP3(Hl08cCJ/yQMh(ABjkupVznBWY2<gGgbpt!C!8<he(e*yln*",
+      "source_schema": "HHS_RESTART_SAFE_PHASE_GEAR_FOLDING_V1",
+      "subsystem_id": "PASS071_RESTART_CAPSULE"
+    },
+    {
+      "closure_dimensions": [
+        "IDENTITY",
+        "SEMANTIC"
+      ],
+      "dependencies": [
+        "PASS071_RESTART_CAPSULE"
+      ],
+      "lo_shu_cell_index": 1,
+      "lo_shu_value": 9,
+      "role": "SOURCE_SEQUENCE_IDENTITY",
+      "source_root_hash72": "med9zg>NhxrZ4cme6h<rOASuM703Eqh0*e/qrY>GteJUk)iscS)e9C8cZ5A9cZU!H3kOJP51",
+      "source_schema": "HHS_SYMBOLIC_GENOME_V1",
+      "subsystem_id": "SYMBOLIC_GENOME"
+    },
+    {
+      "closure_dimensions": [
+        "ENERGY",
+        "PROVENANCE"
+      ],
+      "dependencies": [
+        "SYMBOLIC_GENOME"
+      ],
+      "lo_shu_cell_index": 2,
+      "lo_shu_value": 2,
+      "role": "EXACT_INFORMATION_ENERGY_POTENTIAL",
+      "source_root_hash72": "sbj4zeZ(2oqwQ4txbycnxsthK8T+Pc7q35c9<uw43jR3Go8HiURqhD3vzAH>R06A5AQkJBfw",
+      "source_schema": "HHS_INFORMATION_ENERGY_POTENTIAL_FIELD_V1",
+      "subsystem_id": "INFORMATION_ENERGY_FIELD"
+    },
+    {
+      "closure_dimensions": [
+        "AUTHORITY",
+        "IDENTITY"
+      ],
+      "dependencies": [
+        "SYMBOLIC_GENOME",
+        "INFORMATION_ENERGY_FIELD"
+      ],
+      "lo_shu_cell_index": 3,
+      "lo_shu_value": 3,
+      "role": "ORDERED_RECIPROCAL_RELATION_CONTRACTS",
+      "source_root_hash72": "<lhJJ*Bb>Ujx)LguO+keGB1j3jgwzPlu0KQ3>Tztso0qr?BPMz!NWb2SPxc*GMxDOW/*BG6G",
+      "source_schema": "HHS_RECIPROCAL_BINDING_REGISTRY_V1",
+      "subsystem_id": "RECIPROCAL_BINDING_REGISTRY"
+    },
+    {
+      "closure_dimensions": [
+        "EXECUTION",
+        "ENERGY"
+      ],
+      "dependencies": [
+        "RECIPROCAL_BINDING_REGISTRY"
+      ],
+      "lo_shu_cell_index": 4,
+      "lo_shu_value": 5,
+      "role": "THREE_LANE_FOLD_EXECUTION",
+      "source_root_hash72": "Nuuq2/sdfgSiPWo-CN1?xhRpDaYzY8OKHdMb3*G3f>p9lNUkd<4X/(HFQ!MS2>Peu2j*Jc3?",
+      "source_schema": "HHS_PHASE_GEAR_FOLD_REGISTRY_V1",
+      "subsystem_id": "PHASE_GEAR_FOLD_REGISTRY"
+    },
+    {
+      "closure_dimensions": [
+        "SEMANTIC",
+        "EXECUTION",
+        "RECONSTRUCTION"
+      ],
+      "dependencies": [
+        "SYMBOLIC_GENOME",
+        "PHASE_GEAR_FOLD_REGISTRY"
+      ],
+      "lo_shu_cell_index": 5,
+      "lo_shu_value": 7,
+      "role": "SOURCE_PRESERVING_FOLDED_GRAPH",
+      "source_root_hash72": "tjVb45fukLKQXqh3/gX+9ukSJfWWos*)GhUgEJ6kZyN-!u)uz-8rs5OE!Ve?K<)BXJ*xaKx1",
+      "source_schema": "HHS_FOLDED_PROGRAM_TOPOLOGY_V1",
+      "subsystem_id": "FOLDED_PROGRAM_TOPOLOGY"
+    },
+    {
+      "closure_dimensions": [
+        "ENERGY",
+        "EXECUTION",
+        "RECONSTRUCTION"
+      ],
+      "dependencies": [
+        "INFORMATION_ENERGY_FIELD",
+        "PASS071_RESTART_CAPSULE"
+      ],
+      "lo_shu_cell_index": 6,
+      "lo_shu_value": 8,
+      "role": "NINE_SUBGRID_THREE_LANE_LATTICE",
+      "source_root_hash72": "s9q6ZCI!lm2Lx1zIdgquSd9rMuRC!GUJaLmB+)zFR4Dqy0rlR?!1A7)8LCa2wk67<//ghu+(",
+      "source_schema": "HHS_81_CELL_TRINARY_QUDIT_LATTICE_V1",
+      "subsystem_id": "QUDIT81_KERNEL"
+    },
+    {
+      "closure_dimensions": [
+        "TEMPORAL",
+        "EXECUTION",
+        "RECONSTRUCTION"
+      ],
+      "dependencies": [
+        "QUDIT81_KERNEL",
+        "RECIPROCAL_BINDING_REGISTRY"
+      ],
+      "lo_shu_cell_index": 7,
+      "lo_shu_value": 1,
+      "role": "ROTATIONAL_CLOSED_LOOP_COMPUTATION",
+      "source_root_hash72": "IuFerCr0d+WXUT6DPkxgXD10bomvouTmqVRgo/*>cS+VZ3z3nGz8KDP!es*LlkA<KMICp2+I",
+      "source_schema": "HHS_HOLOFRACTAL_PHASE_GEAR_PATHFINDER_V1",
+      "subsystem_id": "HOLOFRACTAL_PHASE_GEAR_PATHFINDER"
+    },
+    {
+      "closure_dimensions": [
+        "PROVENANCE",
+        "AUTHORITY",
+        "TEMPORAL",
+        "RECONSTRUCTION"
+      ],
+      "dependencies": [
+        "FOLDED_PROGRAM_TOPOLOGY",
+        "HOLOFRACTAL_PHASE_GEAR_PATHFINDER"
+      ],
+      "lo_shu_cell_index": 8,
+      "lo_shu_value": 6,
+      "role": "INDEPENDENT_REVALIDATION_AND_CANONICAL_CONTINUATION",
+      "source_root_hash72": "Z</W)mhf/y)f2ckIulwW+x+cM/m5Z7qisR425/ItWPg/+aYtuqSkBxc0DE!zyB(DcpyRO9Z!",
+      "source_schema": "HHS_SEQUENCE_TO_EXECUTION_DERIVATION_V1",
+      "subsystem_id": "CONTINUITY_AND_REVALIDATION"
+    }
+  ],
+  "schema": "HHS_SUBSYSTEM_SOURCE_DESCRIPTOR_REGISTRY_V1",
+  "source_roots_hash72": [
+    "O+0/3dn0KX?!0ENFJ(bowzP3(Hl08cCJ/yQMh(ABjkupVznBWY2<gGgbpt!C!8<he(e*yln*",
+    "med9zg>NhxrZ4cme6h<rOASuM703Eqh0*e/qrY>GteJUk)iscS)e9C8cZ5A9cZU!H3kOJP51",
+    "sbj4zeZ(2oqwQ4txbycnxsthK8T+Pc7q35c9<uw43jR3Go8HiURqhD3vzAH>R06A5AQkJBfw",
+    "<lhJJ*Bb>Ujx)LguO+keGB1j3jgwzPlu0KQ3>Tztso0qr?BPMz!NWb2SPxc*GMxDOW/*BG6G",
+    "Nuuq2/sdfgSiPWo-CN1?xhRpDaYzY8OKHdMb3*G3f>p9lNUkd<4X/(HFQ!MS2>Peu2j*Jc3?",
+    "tjVb45fukLKQXqh3/gX+9ukSJfWWos*)GhUgEJ6kZyN-!u)uz-8rs5OE!Ve?K<)BXJ*xaKx1",
+    "s9q6ZCI!lm2Lx1zIdgquSd9rMuRC!GUJaLmB+)zFR4Dqy0rlR?!1A7)8LCa2wk67<//ghu+(",
+    "IuFerCr0d+WXUT6DPkxgXD10bomvouTmqVRgo/*>cS+VZ3z3nGz8KDP!es*LlkA<KMICp2+I",
+    "Z</W)mhf/y)f2ckIulwW+x+cM/m5Z7qisR425/ItWPg/+aYtuqSkBxc0DE!zyB(DcpyRO9Z!"
+  ],
+  "version": "PASS_072_TOTAL_SYSTEM_RECURSIVE_HOLOGRAPHIC_CLOSURE_V1"
+}

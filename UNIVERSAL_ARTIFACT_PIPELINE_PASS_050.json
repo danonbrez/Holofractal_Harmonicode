@@ -1,0 +1,840 @@
+{
+  "doctrine": "SOURCE_NE_PROJECTION_NE_ARTIFACT_NE_EXECUTION_AUTHORITY",
+  "ok": true,
+  "pipeline_runs": [
+    {
+      "adaptation": {
+        "adaptation_root_hash72": "h?Iwzs+L+9Uat3ULb2Oj1OfG)VDO18HZTE736hMNpiIWcy+Vnx(b1t)cK-aIIs>cdVu3SZvQ",
+        "adapter_contract": {
+          "adapter_contract_hash72": "Tk8GJ+rC5eaBdehCJHj)8PrbZd!6nOPtb-0qiyfg!q(6A?P>jWAxMnOHab0Q9E1G5yNNOEa)",
+          "adapter_id": "adapter:pdf.universal_modality",
+          "artifact_targets": [
+            "WORKSPACE_OBJECT",
+            "DERIVED_ARTIFACT",
+            "CROSS_MODAL_TRANSFORMATION_PLAN"
+          ],
+          "authority": "HHS_UNIVERSAL_MODALITY_PIPELINE_AUTHORITY_V1",
+          "authority_tier": "AUTHORIZED_NONMUTATING",
+          "chunking_policy": "ROOTED_CHUNK_MANIFEST_FOR_LARGE_SOURCES",
+          "failure_modes": [
+            "REJECT_MODALITY_WITHOUT_ADAPTER_CONTRACT",
+            "REJECT_PROJECTION_REPLACES_SOURCE",
+            "REJECT_LOSSY_PROJECTION_UNMARKED",
+            "REJECT_ADAPTER_PRIVATE_TRUTH_PIPELINE"
+          ],
+          "input_schema": "HHS_MODALITY_SOURCE_COMMITMENT_V1",
+          "loss_profile": "MIXED_LOSSLESS_AND_LOSSY",
+          "loss_profile_record": {
+            "loss_profile": "MIXED_LOSSLESS_AND_LOSSY",
+            "loss_profile_hash72": "Gpwxs)p(SX<8f5RrnSw<E07ZQxJvaR?TMNAJ4glXGfW6H-!UXA9D5OhtzM8xNj+iq4pt<)rt",
+            "lossy_outputs_must_be_marked": true,
+            "lossy_projection_possible": true,
+            "modality": "PDF",
+            "projection_replaces_source": false,
+            "schema": "HHS_MODALITY_LOSS_PROFILE_V1",
+            "source_preserved": true,
+            "version": "PASS_050_HHS_UNIVERSAL_MODALITY_ADAPTER_AND_ARTIFACT_PIPELINE_V1"
+          },
+          "metadata_policy": "BOUNDED_TEMPORARY_EXPANDED_METADATA_COMPACTS_TO_RESIDUE",
+          "output_projection_types": [
+            "TEXT_PROJECTION",
+            "PAGE_IMAGE_PROJECTION",
+            "STRUCTURE_PROJECTION"
+          ],
+          "private_truth_pipeline_allowed": false,
+          "projection_replaces_source": false,
+          "reconstruction_strategy": "SOURCE_ROOT_PLUS_PROJECTION_RECIPE_PLUS_ARTIFACT_LINEAGE",
+          "schema": "HHS_UNIVERSAL_MODALITY_ADAPTER_V1",
+          "source_modality": "PDF",
+          "source_preserved": true,
+          "supported_modalities": [
+            "PDF"
+          ],
+          "version": "PASS_050_HHS_UNIVERSAL_MODALITY_ADAPTER_AND_ARTIFACT_PIPELINE_V1",
+          "witness_strategy": "HASH72_U72_SOURCE_PROJECTION_ARTIFACT_WITNESS_CHAIN"
+        },
+        "adapter_validation": {
+          "adapter_id": "adapter:pdf.universal_modality",
+          "ok": true,
+          "reasons": [],
+          "schema": "HHS_UNIVERSAL_MODALITY_ADAPTER_VALIDATION_V1",
+          "source_modality": "PDF",
+          "status": "ADMIT_UNIVERSAL_MODALITY_ADAPTER",
+          "version": "PASS_050_HHS_UNIVERSAL_MODALITY_ADAPTER_AND_ARTIFACT_PIPELINE_V1"
+        },
+        "ok": true,
+        "schema": "HHS_UNIVERSAL_MODALITY_ADAPTATION_RESULT_V1",
+        "source_commitment": {
+          "authority": "HHS_UNIVERSAL_MODALITY_PIPELINE_AUTHORITY_V1",
+          "created_at_unix_ms": 1783809205981,
+          "modality": "PDF",
+          "payload_commitment_hash72": "?k(rTflSrakdf1tB>ZEL!Pe<OtsY>iw?bRpCrTZsRdbaxDI1-J565FWGY*bA*xP(t4V2?)(v",
+          "project_id": "project:pass050",
+          "projection_replaces_source": false,
+          "schema": "HHS_MODALITY_SOURCE_COMMITMENT_V1",
+          "source_commitment_id": "source:ed97ab64cf3d4c078f6cb985fea5e396",
+          "source_name": "paper.pdf",
+          "source_preserved": true,
+          "source_root_hash72": "V-b<oVrCYejcHdn716Bab0RzdkCGT0StG(t-ia>RMD9zYWq+iZ(0lMXU<*lrv<9dPYgf?1J5",
+          "source_size_bytes": 4,
+          "source_uri": "workspace://project:pass050/source/paper.pdf",
+          "version": "PASS_050_HHS_UNIVERSAL_MODALITY_ADAPTER_AND_ARTIFACT_PIPELINE_V1"
+        },
+        "source_never_replaced_by_projection": true,
+        "source_validation": {
+          "ok": true,
+          "reasons": [],
+          "schema": "HHS_MODALITY_SOURCE_COMMITMENT_VALIDATION_V1",
+          "source_commitment_id": "source:ed97ab64cf3d4c078f6cb985fea5e396",
+          "source_root_hash72": "V-b<oVrCYejcHdn716Bab0RzdkCGT0StG(t-ia>RMD9zYWq+iZ(0lMXU<*lrv<9dPYgf?1J5",
+          "status": "ADMIT_MODALITY_SOURCE_COMMITMENT",
+          "version": "PASS_050_HHS_UNIVERSAL_MODALITY_ADAPTER_AND_ARTIFACT_PIPELINE_V1"
+        },
+        "status": "ADMIT_UNIVERSAL_MODALITY_ADAPTATION",
+        "version": "PASS_050_HHS_UNIVERSAL_MODALITY_ADAPTER_AND_ARTIFACT_PIPELINE_V1"
+      },
+      "artifact": {
+        "artifact_execution_authority_inferred": false,
+        "artifact_id": "artifact:fa842a00f11443769d6863bbd073d210",
+        "artifact_payload_hash72": "FNefPrZXB7N9YSQKjExoBJTC6w027nBRlJr141cOyg0qMyk!Mj>Re((1SzL/JBoWnTbMs5Ws",
+        "artifact_root_hash72": "9Z!8->/B?jj!NlbYuHfzLiWnwhwJRp?jVmyf3lOpvIcGT9YueZe69v<+4B+FbTxbaouO+3pk",
+        "artifact_type": "PDF_TEXT_HHS_SOURCE_DRAFT",
+        "authority": "HHS_UNIVERSAL_MODALITY_PIPELINE_AUTHORITY_V1",
+        "conformance_status": "ADMIT_DERIVED_ARTIFACT",
+        "created_at_unix_ms": 1783809205991,
+        "execution_authorized": false,
+        "projection_root_hash72s": [
+          "DaA/yVnwBFfWVJIPTYFsg8WhfjdFeEoI-J4>r?Gc/<UhWQlMr+Jqp2YN78STGi7!fI4mnQd7"
+        ],
+        "reconstruction_recipe": {
+          "artifact_root_hash72": "",
+          "authority": "HHS_UNIVERSAL_MODALITY_PIPELINE_AUTHORITY_V1",
+          "expanded_metadata_retained": false,
+          "operations": [
+            {
+              "operation": "DERIVE_ARTIFACT",
+              "target_artifact_type": "PDF_TEXT_HHS_SOURCE_DRAFT",
+              "target_modality": "HARMONICODE_SOURCE"
+            }
+          ],
+          "projection_roots": [
+            "DaA/yVnwBFfWVJIPTYFsg8WhfjdFeEoI-J4>r?Gc/<UhWQlMr+Jqp2YN78STGi7!fI4mnQd7"
+          ],
+          "recipe_id": "modality-recipe:7b72337d1576452aaaa5ff91605497e6",
+          "recipe_root_hash72": "uh9f?YCLahn-T4WTB5b8Z!jCgI?IAUwexRQ2BjHkx7l6E-e?JCK<XOzHhwfm54PdMY3p82G?",
+          "reconstruction_strategy": "SOURCE_ROOT_PLUS_TYPED_PROJECTION_STEPS_PLUS_ARTIFACT_LINEAGE",
+          "schema": "HHS_MODALITY_RECONSTRUCTION_RECIPE_V1",
+          "source_root_hash72": "V-b<oVrCYejcHdn716Bab0RzdkCGT0StG(t-ia>RMD9zYWq+iZ(0lMXU<*lrv<9dPYgf?1J5",
+          "version": "PASS_050_HHS_UNIVERSAL_MODALITY_ADAPTER_AND_ARTIFACT_PIPELINE_V1"
+        },
+        "schema": "HHS_DERIVED_ARTIFACT_RECORD_V1",
+        "source_root_hash72s": [
+          "V-b<oVrCYejcHdn716Bab0RzdkCGT0StG(t-ia>RMD9zYWq+iZ(0lMXU<*lrv<9dPYgf?1J5"
+        ],
+        "target_modality": "HARMONICODE_SOURCE",
+        "transformation_plan_id": "xmodal-plan:c0dae26858ff47b3b65d2ac1ed6e40bf",
+        "transformation_plan_root_hash72": "<4aroXLQA(ICaVfRqxkcC)pnn9aTboMvzHjJNh+e!Ft!bdV8NO1l!d7lSdFZU?Y5L8XppSLd",
+        "version": "PASS_050_HHS_UNIVERSAL_MODALITY_ADAPTER_AND_ARTIFACT_PIPELINE_V1"
+      },
+      "artifact_validation": {
+        "artifact_id": "artifact:fa842a00f11443769d6863bbd073d210",
+        "ok": true,
+        "reasons": [],
+        "schema": "HHS_DERIVED_ARTIFACT_RECORD_VALIDATION_V1",
+        "status": "ADMIT_DERIVED_ARTIFACT",
+        "version": "PASS_050_HHS_UNIVERSAL_MODALITY_ADAPTER_AND_ARTIFACT_PIPELINE_V1"
+      },
+      "authority": "HHS_UNIVERSAL_MODALITY_PIPELINE_AUTHORITY_V1",
+      "lineage": {
+        "artifact_execution_authority_inferred": false,
+        "artifact_id": "artifact:fa842a00f11443769d6863bbd073d210",
+        "artifact_root_hash72": "9Z!8->/B?jj!NlbYuHfzLiWnwhwJRp?jVmyf3lOpvIcGT9YueZe69v<+4B+FbTxbaouO+3pk",
+        "authority": "HHS_UNIVERSAL_MODALITY_PIPELINE_AUTHORITY_V1",
+        "lineage_id": "lineage:3b97d15498d849bcb78c7c36b9bc9a3f",
+        "lineage_root_hash72": "C?lRG+<O21bPW2v<bJna?vc3Pf80CiiOWOj7CiXq5KzXsJ4mSAUk)acoUEm/naQ+IV!N5<lH",
+        "projection_ids": [
+          "projection:ffc799b76b144be98f876e98823dd1f8"
+        ],
+        "projection_not_confused_with_artifact": true,
+        "projection_root_hash72s": [
+          "DaA/yVnwBFfWVJIPTYFsg8WhfjdFeEoI-J4>r?Gc/<UhWQlMr+Jqp2YN78STGi7!fI4mnQd7"
+        ],
+        "reconstruction_recipe_id": "modality-recipe:7b72337d1576452aaaa5ff91605497e6",
+        "schema": "HHS_ARTIFACT_LINEAGE_RECORD_V1",
+        "source_commitment_id": "source:ed97ab64cf3d4c078f6cb985fea5e396",
+        "source_modality": "PDF",
+        "source_not_replaced_by_projection": true,
+        "source_root_hash72": "V-b<oVrCYejcHdn716Bab0RzdkCGT0StG(t-ia>RMD9zYWq+iZ(0lMXU<*lrv<9dPYgf?1J5",
+        "transformation_plan_id": "xmodal-plan:c0dae26858ff47b3b65d2ac1ed6e40bf",
+        "transformation_plan_root_hash72": "<4aroXLQA(ICaVfRqxkcC)pnn9aTboMvzHjJNh+e!Ft!bdV8NO1l!d7lSdFZU?Y5L8XppSLd",
+        "version": "PASS_050_HHS_UNIVERSAL_MODALITY_ADAPTER_AND_ARTIFACT_PIPELINE_V1"
+      },
+      "lineage_validation": {
+        "lineage_id": "lineage:3b97d15498d849bcb78c7c36b9bc9a3f",
+        "ok": true,
+        "reasons": [],
+        "schema": "HHS_ARTIFACT_LINEAGE_RECORD_VALIDATION_V1",
+        "status": "ADMIT_ARTIFACT_LINEAGE",
+        "version": "PASS_050_HHS_UNIVERSAL_MODALITY_ADAPTER_AND_ARTIFACT_PIPELINE_V1"
+      },
+      "ok": true,
+      "pipeline_run_id": "universal-pipeline:2bbcc2ef175f462885f6e44f715d097b",
+      "pipeline_run_root_hash72": "4Pjv1VqPSrWNH4lNGNv<g7U8Hu4iWdRe?a86o2xZRcTcZ<ayCAwQ1ya0KOQhXYep(lm/RNmN",
+      "plan_validation": {
+        "ok": true,
+        "plan_id": "xmodal-plan:c0dae26858ff47b3b65d2ac1ed6e40bf",
+        "reasons": [],
+        "schema": "HHS_CROSS_MODAL_TRANSFORMATION_PLAN_VALIDATION_V1",
+        "status": "ADMIT_CROSS_MODAL_TRANSFORMATION_PLAN",
+        "version": "PASS_050_HHS_UNIVERSAL_MODALITY_ADAPTER_AND_ARTIFACT_PIPELINE_V1"
+      },
+      "projection": {
+        "adapter_id": "adapter:pdf.universal_modality",
+        "authority": "HHS_UNIVERSAL_MODALITY_PIPELINE_AUTHORITY_V1",
+        "created_at_unix_ms": 1783809205986,
+        "loss_profile": "LOSSY_DERIVED_PROJECTION",
+        "lossy_projection": true,
+        "lossy_projection_marked": true,
+        "projection_id": "projection:ffc799b76b144be98f876e98823dd1f8",
+        "projection_payload_hash72": "dygDmNLdRcASTxJThf6uMNix05jeXjpJL6V<*0!hB-D0qhn/4LbAvahz2kCzhfd4!XEo7f/F",
+        "projection_replaces_source": false,
+        "projection_root_hash72": "DaA/yVnwBFfWVJIPTYFsg8WhfjdFeEoI-J4>r?Gc/<UhWQlMr+Jqp2YN78STGi7!fI4mnQd7",
+        "projection_type": "TEXT_PROJECTION",
+        "reconstruction_recipe": {
+          "artifact_root_hash72": "",
+          "authority": "HHS_UNIVERSAL_MODALITY_PIPELINE_AUTHORITY_V1",
+          "expanded_metadata_retained": false,
+          "operations": [
+            {
+              "adapter_id": "adapter:pdf.universal_modality",
+              "operation": "reconstruct_projection_from_source_and_adapter",
+              "projection_type": "TEXT_PROJECTION"
+            }
+          ],
+          "projection_roots": [],
+          "recipe_id": "modality-recipe:430c49c3b5a9494bb32740e8903578f9",
+          "recipe_root_hash72": "GPj5P8fr?Ewp>PAG8e(GBo1bZtxa<mnADi(ecpKu(lOAZbmH!LAoH2V4DY/CKPJ5lAGY)wa+",
+          "reconstruction_strategy": "SOURCE_ROOT_PLUS_TYPED_PROJECTION_STEPS_PLUS_ARTIFACT_LINEAGE",
+          "schema": "HHS_MODALITY_RECONSTRUCTION_RECIPE_V1",
+          "source_root_hash72": "V-b<oVrCYejcHdn716Bab0RzdkCGT0StG(t-ia>RMD9zYWq+iZ(0lMXU<*lrv<9dPYgf?1J5",
+          "version": "PASS_050_HHS_UNIVERSAL_MODALITY_ADAPTER_AND_ARTIFACT_PIPELINE_V1"
+        },
+        "schema": "HHS_MODALITY_PROJECTION_RECORD_V1",
+        "source_commitment_id": "source:ed97ab64cf3d4c078f6cb985fea5e396",
+        "source_modality": "PDF",
+        "source_root_hash72": "V-b<oVrCYejcHdn716Bab0RzdkCGT0StG(t-ia>RMD9zYWq+iZ(0lMXU<*lrv<9dPYgf?1J5",
+        "version": "PASS_050_HHS_UNIVERSAL_MODALITY_ADAPTER_AND_ARTIFACT_PIPELINE_V1"
+      },
+      "projection_validation": {
+        "ok": true,
+        "projection_id": "projection:ffc799b76b144be98f876e98823dd1f8",
+        "reasons": [],
+        "schema": "HHS_MODALITY_PROJECTION_RECORD_VALIDATION_V1",
+        "status": "ADMIT_MODALITY_PROJECTION",
+        "version": "PASS_050_HHS_UNIVERSAL_MODALITY_ADAPTER_AND_ARTIFACT_PIPELINE_V1"
+      },
+      "schema": "HHS_UNIVERSAL_ARTIFACT_PIPELINE_RUN_V1",
+      "source_projection_artifact_separation": "source != projection != artifact != execution_authority",
+      "status": "ADMIT_UNIVERSAL_ARTIFACT_PIPELINE",
+      "transformation_plan": {
+        "artifact_creation_authorized": true,
+        "authority": "HHS_UNIVERSAL_MODALITY_PIPELINE_AUTHORITY_V1",
+        "created_at_unix_ms": 1783809205990,
+        "execution_authorized": false,
+        "plan_id": "xmodal-plan:c0dae26858ff47b3b65d2ac1ed6e40bf",
+        "plan_root_hash72": "<4aroXLQA(ICaVfRqxkcC)pnn9aTboMvzHjJNh+e!Ft!bdV8NO1l!d7lSdFZU?Y5L8XppSLd",
+        "private_truth_pipeline_allowed": false,
+        "projection_root_hash72s": [
+          "DaA/yVnwBFfWVJIPTYFsg8WhfjdFeEoI-J4>r?Gc/<UhWQlMr+Jqp2YN78STGi7!fI4mnQd7"
+        ],
+        "reconstruction_recipe": {
+          "artifact_root_hash72": "",
+          "authority": "HHS_UNIVERSAL_MODALITY_PIPELINE_AUTHORITY_V1",
+          "expanded_metadata_retained": false,
+          "operations": [
+            {
+              "operation": "DERIVE_ARTIFACT",
+              "target_artifact_type": "PDF_TEXT_HHS_SOURCE_DRAFT",
+              "target_modality": "HARMONICODE_SOURCE"
+            }
+          ],
+          "projection_roots": [
+            "DaA/yVnwBFfWVJIPTYFsg8WhfjdFeEoI-J4>r?Gc/<UhWQlMr+Jqp2YN78STGi7!fI4mnQd7"
+          ],
+          "recipe_id": "modality-recipe:7b72337d1576452aaaa5ff91605497e6",
+          "recipe_root_hash72": "uh9f?YCLahn-T4WTB5b8Z!jCgI?IAUwexRQ2BjHkx7l6E-e?JCK<XOzHhwfm54PdMY3p82G?",
+          "reconstruction_strategy": "SOURCE_ROOT_PLUS_TYPED_PROJECTION_STEPS_PLUS_ARTIFACT_LINEAGE",
+          "schema": "HHS_MODALITY_RECONSTRUCTION_RECIPE_V1",
+          "source_root_hash72": "V-b<oVrCYejcHdn716Bab0RzdkCGT0StG(t-ia>RMD9zYWq+iZ(0lMXU<*lrv<9dPYgf?1J5",
+          "version": "PASS_050_HHS_UNIVERSAL_MODALITY_ADAPTER_AND_ARTIFACT_PIPELINE_V1"
+        },
+        "requires_witness": true,
+        "schema": "HHS_CROSS_MODAL_TRANSFORMATION_PLAN_V1",
+        "source_root_hash72s": [
+          "V-b<oVrCYejcHdn716Bab0RzdkCGT0StG(t-ia>RMD9zYWq+iZ(0lMXU<*lrv<9dPYgf?1J5"
+        ],
+        "target_artifact_type": "PDF_TEXT_HHS_SOURCE_DRAFT",
+        "target_modality": "HARMONICODE_SOURCE",
+        "transformation_kind": "DERIVE_ARTIFACT",
+        "version": "PASS_050_HHS_UNIVERSAL_MODALITY_ADAPTER_AND_ARTIFACT_PIPELINE_V1"
+      },
+      "version": "PASS_050_HHS_UNIVERSAL_MODALITY_ADAPTER_AND_ARTIFACT_PIPELINE_V1"
+    },
+    {
+      "adaptation": {
+        "adaptation_root_hash72": "71ibWTzNGQrjCct!7owvzx-HmqHwzmn2rJ9RNL??<qGIt*1e+m*Y80M0hQ4e2XTDox(D<kNX",
+        "adapter_contract": {
+          "adapter_contract_hash72": "WPZwWFTeMz7mtkG>WBr3c/i??PsK75epPX>Bm!veBM/LGlN+<mvY!<!+>z5fqRO/o8B98dPT",
+          "adapter_id": "adapter:image.universal_modality",
+          "artifact_targets": [
+            "WORKSPACE_OBJECT",
+            "DERIVED_ARTIFACT",
+            "CROSS_MODAL_TRANSFORMATION_PLAN"
+          ],
+          "authority": "HHS_UNIVERSAL_MODALITY_PIPELINE_AUTHORITY_V1",
+          "authority_tier": "AUTHORIZED_NONMUTATING",
+          "chunking_policy": "ROOTED_CHUNK_MANIFEST_FOR_LARGE_SOURCES",
+          "failure_modes": [
+            "REJECT_MODALITY_WITHOUT_ADAPTER_CONTRACT",
+            "REJECT_PROJECTION_REPLACES_SOURCE",
+            "REJECT_LOSSY_PROJECTION_UNMARKED",
+            "REJECT_ADAPTER_PRIVATE_TRUTH_PIPELINE"
+          ],
+          "input_schema": "HHS_MODALITY_SOURCE_COMMITMENT_V1",
+          "loss_profile": "MIXED_LOSSLESS_AND_LOSSY",
+          "loss_profile_record": {
+            "loss_profile": "MIXED_LOSSLESS_AND_LOSSY",
+            "loss_profile_hash72": "ycfqEry2>p7)b6zkyQCuDEOC-pKLmB0F(3I!lztrgQLvolwfc4yJW4?7YGdIhz>+Z?nHkE7F",
+            "lossy_outputs_must_be_marked": true,
+            "lossy_projection_possible": true,
+            "modality": "IMAGE",
+            "projection_replaces_source": false,
+            "schema": "HHS_MODALITY_LOSS_PROFILE_V1",
+            "source_preserved": true,
+            "version": "PASS_050_HHS_UNIVERSAL_MODALITY_ADAPTER_AND_ARTIFACT_PIPELINE_V1"
+          },
+          "metadata_policy": "BOUNDED_TEMPORARY_EXPANDED_METADATA_COMPACTS_TO_RESIDUE",
+          "output_projection_types": [
+            "RASTER_PROJECTION",
+            "VISUAL_FEATURE_PROJECTION",
+            "OCR_TEXT_PROJECTION"
+          ],
+          "private_truth_pipeline_allowed": false,
+          "projection_replaces_source": false,
+          "reconstruction_strategy": "SOURCE_ROOT_PLUS_PROJECTION_RECIPE_PLUS_ARTIFACT_LINEAGE",
+          "schema": "HHS_UNIVERSAL_MODALITY_ADAPTER_V1",
+          "source_modality": "IMAGE",
+          "source_preserved": true,
+          "supported_modalities": [
+            "IMAGE"
+          ],
+          "version": "PASS_050_HHS_UNIVERSAL_MODALITY_ADAPTER_AND_ARTIFACT_PIPELINE_V1",
+          "witness_strategy": "HASH72_U72_SOURCE_PROJECTION_ARTIFACT_WITNESS_CHAIN"
+        },
+        "adapter_validation": {
+          "adapter_id": "adapter:image.universal_modality",
+          "ok": true,
+          "reasons": [],
+          "schema": "HHS_UNIVERSAL_MODALITY_ADAPTER_VALIDATION_V1",
+          "source_modality": "IMAGE",
+          "status": "ADMIT_UNIVERSAL_MODALITY_ADAPTER",
+          "version": "PASS_050_HHS_UNIVERSAL_MODALITY_ADAPTER_AND_ARTIFACT_PIPELINE_V1"
+        },
+        "ok": true,
+        "schema": "HHS_UNIVERSAL_MODALITY_ADAPTATION_RESULT_V1",
+        "source_commitment": {
+          "authority": "HHS_UNIVERSAL_MODALITY_PIPELINE_AUTHORITY_V1",
+          "created_at_unix_ms": 1783809206010,
+          "modality": "IMAGE",
+          "payload_commitment_hash72": "<1w<!43u>epff!aEtW7//Po5qN91XrISjwRdLGG4np1y4HONK9/-rD7HYI-(dCB-Wt5W30<v",
+          "project_id": "project:pass050",
+          "projection_replaces_source": false,
+          "schema": "HHS_MODALITY_SOURCE_COMMITMENT_V1",
+          "source_commitment_id": "source:a19924fa5bba4965b664c4badc0bacfd",
+          "source_name": "glyph.png",
+          "source_preserved": true,
+          "source_root_hash72": "nwwFB?GwJ+*jZ<CM!MTRheZMj!UzW/K-Bh3kOixpZBx0Dp</MzoQDOgJGWEWNf)LDcT6IFT+",
+          "source_size_bytes": 3,
+          "source_uri": "workspace://project:pass050/source/glyph.png",
+          "version": "PASS_050_HHS_UNIVERSAL_MODALITY_ADAPTER_AND_ARTIFACT_PIPELINE_V1"
+        },
+        "source_never_replaced_by_projection": true,
+        "source_validation": {
+          "ok": true,
+          "reasons": [],
+          "schema": "HHS_MODALITY_SOURCE_COMMITMENT_VALIDATION_V1",
+          "source_commitment_id": "source:a19924fa5bba4965b664c4badc0bacfd",
+          "source_root_hash72": "nwwFB?GwJ+*jZ<CM!MTRheZMj!UzW/K-Bh3kOixpZBx0Dp</MzoQDOgJGWEWNf)LDcT6IFT+",
+          "status": "ADMIT_MODALITY_SOURCE_COMMITMENT",
+          "version": "PASS_050_HHS_UNIVERSAL_MODALITY_ADAPTER_AND_ARTIFACT_PIPELINE_V1"
+        },
+        "status": "ADMIT_UNIVERSAL_MODALITY_ADAPTATION",
+        "version": "PASS_050_HHS_UNIVERSAL_MODALITY_ADAPTER_AND_ARTIFACT_PIPELINE_V1"
+      },
+      "artifact": {
+        "artifact_execution_authority_inferred": false,
+        "artifact_id": "artifact:bd517bbfcf1e4139af27b54c0eb5048c",
+        "artifact_payload_hash72": "?7!Afd4aWZBN?e+!gM/LUS4WkkKU<a536sw(L/VtY65tLW(ltXhD03iCnv*yzpVjnxtkIGV6",
+        "artifact_root_hash72": "Xis)1-B17IX0>SFw>TPjJ3a!Va2B78otkV6SRe8<esrEckNb0Vx-Pukq8Nq9!rlg*2*W!ui9",
+        "artifact_type": "IMAGE_FEATURE_GRAPH",
+        "authority": "HHS_UNIVERSAL_MODALITY_PIPELINE_AUTHORITY_V1",
+        "conformance_status": "ADMIT_DERIVED_ARTIFACT",
+        "created_at_unix_ms": 1783809206020,
+        "execution_authorized": false,
+        "projection_root_hash72s": [
+          "Som8gxADXKbm0v-4O<kL!U+2A6qy64r)AeCeq!hl3b6eS4cakhYgO2tpz4JtriYCI+j2(d61"
+        ],
+        "reconstruction_recipe": {
+          "artifact_root_hash72": "",
+          "authority": "HHS_UNIVERSAL_MODALITY_PIPELINE_AUTHORITY_V1",
+          "expanded_metadata_retained": false,
+          "operations": [
+            {
+              "operation": "DERIVE_ARTIFACT",
+              "target_artifact_type": "IMAGE_FEATURE_GRAPH",
+              "target_modality": "GRAPH_OBJECT"
+            }
+          ],
+          "projection_roots": [
+            "Som8gxADXKbm0v-4O<kL!U+2A6qy64r)AeCeq!hl3b6eS4cakhYgO2tpz4JtriYCI+j2(d61"
+          ],
+          "recipe_id": "modality-recipe:ad9b78d69a884523bf483f2cd3f6e820",
+          "recipe_root_hash72": "D+Gm74uRCBU-*BLNGNmzm!HFYn/d81lcuXWL)7p4Vf)XgUwWcr/DxO/4L*Xqxv8---(03q1V",
+          "reconstruction_strategy": "SOURCE_ROOT_PLUS_TYPED_PROJECTION_STEPS_PLUS_ARTIFACT_LINEAGE",
+          "schema": "HHS_MODALITY_RECONSTRUCTION_RECIPE_V1",
+          "source_root_hash72": "nwwFB?GwJ+*jZ<CM!MTRheZMj!UzW/K-Bh3kOixpZBx0Dp</MzoQDOgJGWEWNf)LDcT6IFT+",
+          "version": "PASS_050_HHS_UNIVERSAL_MODALITY_ADAPTER_AND_ARTIFACT_PIPELINE_V1"
+        },
+        "schema": "HHS_DERIVED_ARTIFACT_RECORD_V1",
+        "source_root_hash72s": [
+          "nwwFB?GwJ+*jZ<CM!MTRheZMj!UzW/K-Bh3kOixpZBx0Dp</MzoQDOgJGWEWNf)LDcT6IFT+"
+        ],
+        "target_modality": "GRAPH_OBJECT",
+        "transformation_plan_id": "xmodal-plan:5ba076f00c2842ceb9f195bb9ff5b580",
+        "transformation_plan_root_hash72": "STQ?eJO5c>8S)P*B)UGqosbuQVEO*m?HWE*jkE(1Hv)z9/Og*f(ygQ)Wir98MuL+AEKzgr7A",
+        "version": "PASS_050_HHS_UNIVERSAL_MODALITY_ADAPTER_AND_ARTIFACT_PIPELINE_V1"
+      },
+      "artifact_validation": {
+        "artifact_id": "artifact:bd517bbfcf1e4139af27b54c0eb5048c",
+        "ok": true,
+        "reasons": [],
+        "schema": "HHS_DERIVED_ARTIFACT_RECORD_VALIDATION_V1",
+        "status": "ADMIT_DERIVED_ARTIFACT",
+        "version": "PASS_050_HHS_UNIVERSAL_MODALITY_ADAPTER_AND_ARTIFACT_PIPELINE_V1"
+      },
+      "authority": "HHS_UNIVERSAL_MODALITY_PIPELINE_AUTHORITY_V1",
+      "lineage": {
+        "artifact_execution_authority_inferred": false,
+        "artifact_id": "artifact:bd517bbfcf1e4139af27b54c0eb5048c",
+        "artifact_root_hash72": "Xis)1-B17IX0>SFw>TPjJ3a!Va2B78otkV6SRe8<esrEckNb0Vx-Pukq8Nq9!rlg*2*W!ui9",
+        "authority": "HHS_UNIVERSAL_MODALITY_PIPELINE_AUTHORITY_V1",
+        "lineage_id": "lineage:d718991c59a14f6489fca434a122804d",
+        "lineage_root_hash72": "-yPxmzhziiN>LI0d?7URV?KU?ZL7A74TfZb2E3LZZvuyOk(Vww8Rk2O72TRh(!w*/lUxgwJ*",
+        "projection_ids": [
+          "projection:1c9f7cd3d4b845d7898b756a340b4011"
+        ],
+        "projection_not_confused_with_artifact": true,
+        "projection_root_hash72s": [
+          "Som8gxADXKbm0v-4O<kL!U+2A6qy64r)AeCeq!hl3b6eS4cakhYgO2tpz4JtriYCI+j2(d61"
+        ],
+        "reconstruction_recipe_id": "modality-recipe:ad9b78d69a884523bf483f2cd3f6e820",
+        "schema": "HHS_ARTIFACT_LINEAGE_RECORD_V1",
+        "source_commitment_id": "source:a19924fa5bba4965b664c4badc0bacfd",
+        "source_modality": "IMAGE",
+        "source_not_replaced_by_projection": true,
+        "source_root_hash72": "nwwFB?GwJ+*jZ<CM!MTRheZMj!UzW/K-Bh3kOixpZBx0Dp</MzoQDOgJGWEWNf)LDcT6IFT+",
+        "transformation_plan_id": "xmodal-plan:5ba076f00c2842ceb9f195bb9ff5b580",
+        "transformation_plan_root_hash72": "STQ?eJO5c>8S)P*B)UGqosbuQVEO*m?HWE*jkE(1Hv)z9/Og*f(ygQ)Wir98MuL+AEKzgr7A",
+        "version": "PASS_050_HHS_UNIVERSAL_MODALITY_ADAPTER_AND_ARTIFACT_PIPELINE_V1"
+      },
+      "lineage_validation": {
+        "lineage_id": "lineage:d718991c59a14f6489fca434a122804d",
+        "ok": true,
+        "reasons": [],
+        "schema": "HHS_ARTIFACT_LINEAGE_RECORD_VALIDATION_V1",
+        "status": "ADMIT_ARTIFACT_LINEAGE",
+        "version": "PASS_050_HHS_UNIVERSAL_MODALITY_ADAPTER_AND_ARTIFACT_PIPELINE_V1"
+      },
+      "ok": true,
+      "pipeline_run_id": "universal-pipeline:8b8a45f483124d6aba5c9e9797dbe785",
+      "pipeline_run_root_hash72": "DCCzwZCpSkNIm(e0iz?juKYqyWyPwj7+PLx+(fObZ0Ehi8EuCahAU?4r8rgBmPhtINP2cOis",
+      "plan_validation": {
+        "ok": true,
+        "plan_id": "xmodal-plan:5ba076f00c2842ceb9f195bb9ff5b580",
+        "reasons": [],
+        "schema": "HHS_CROSS_MODAL_TRANSFORMATION_PLAN_VALIDATION_V1",
+        "status": "ADMIT_CROSS_MODAL_TRANSFORMATION_PLAN",
+        "version": "PASS_050_HHS_UNIVERSAL_MODALITY_ADAPTER_AND_ARTIFACT_PIPELINE_V1"
+      },
+      "projection": {
+        "adapter_id": "adapter:image.universal_modality",
+        "authority": "HHS_UNIVERSAL_MODALITY_PIPELINE_AUTHORITY_V1",
+        "created_at_unix_ms": 1783809206014,
+        "loss_profile": "LOSSY_DERIVED_PROJECTION",
+        "lossy_projection": true,
+        "lossy_projection_marked": true,
+        "projection_id": "projection:1c9f7cd3d4b845d7898b756a340b4011",
+        "projection_payload_hash72": "81BeN<q51JYOMGDQw!-*ql1i/c0YR4/xeEUC5KkPp2qaE9zfLi>Lk-Pdl9TV>Cix*WPC48r8",
+        "projection_replaces_source": false,
+        "projection_root_hash72": "Som8gxADXKbm0v-4O<kL!U+2A6qy64r)AeCeq!hl3b6eS4cakhYgO2tpz4JtriYCI+j2(d61",
+        "projection_type": "VISUAL_FEATURE_PROJECTION",
+        "reconstruction_recipe": {
+          "artifact_root_hash72": "",
+          "authority": "HHS_UNIVERSAL_MODALITY_PIPELINE_AUTHORITY_V1",
+          "expanded_metadata_retained": false,
+          "operations": [
+            {
+              "adapter_id": "adapter:image.universal_modality",
+              "operation": "reconstruct_projection_from_source_and_adapter",
+              "projection_type": "VISUAL_FEATURE_PROJECTION"
+            }
+          ],
+          "projection_roots": [],
+          "recipe_id": "modality-recipe:41697142acf740509925979138af83a4",
+          "recipe_root_hash72": "TH+<4j7HDxaR(jJuG1IlmKYk0*+pgjLsmLGB!2)4UJFVql>ZgIo!o74<A2y-W)*KJ!N!<FaL",
+          "reconstruction_strategy": "SOURCE_ROOT_PLUS_TYPED_PROJECTION_STEPS_PLUS_ARTIFACT_LINEAGE",
+          "schema": "HHS_MODALITY_RECONSTRUCTION_RECIPE_V1",
+          "source_root_hash72": "nwwFB?GwJ+*jZ<CM!MTRheZMj!UzW/K-Bh3kOixpZBx0Dp</MzoQDOgJGWEWNf)LDcT6IFT+",
+          "version": "PASS_050_HHS_UNIVERSAL_MODALITY_ADAPTER_AND_ARTIFACT_PIPELINE_V1"
+        },
+        "schema": "HHS_MODALITY_PROJECTION_RECORD_V1",
+        "source_commitment_id": "source:a19924fa5bba4965b664c4badc0bacfd",
+        "source_modality": "IMAGE",
+        "source_root_hash72": "nwwFB?GwJ+*jZ<CM!MTRheZMj!UzW/K-Bh3kOixpZBx0Dp</MzoQDOgJGWEWNf)LDcT6IFT+",
+        "version": "PASS_050_HHS_UNIVERSAL_MODALITY_ADAPTER_AND_ARTIFACT_PIPELINE_V1"
+      },
+      "projection_validation": {
+        "ok": true,
+        "projection_id": "projection:1c9f7cd3d4b845d7898b756a340b4011",
+        "reasons": [],
+        "schema": "HHS_MODALITY_PROJECTION_RECORD_VALIDATION_V1",
+        "status": "ADMIT_MODALITY_PROJECTION",
+        "version": "PASS_050_HHS_UNIVERSAL_MODALITY_ADAPTER_AND_ARTIFACT_PIPELINE_V1"
+      },
+      "schema": "HHS_UNIVERSAL_ARTIFACT_PIPELINE_RUN_V1",
+      "source_projection_artifact_separation": "source != projection != artifact != execution_authority",
+      "status": "ADMIT_UNIVERSAL_ARTIFACT_PIPELINE",
+      "transformation_plan": {
+        "artifact_creation_authorized": true,
+        "authority": "HHS_UNIVERSAL_MODALITY_PIPELINE_AUTHORITY_V1",
+        "created_at_unix_ms": 1783809206018,
+        "execution_authorized": false,
+        "plan_id": "xmodal-plan:5ba076f00c2842ceb9f195bb9ff5b580",
+        "plan_root_hash72": "STQ?eJO5c>8S)P*B)UGqosbuQVEO*m?HWE*jkE(1Hv)z9/Og*f(ygQ)Wir98MuL+AEKzgr7A",
+        "private_truth_pipeline_allowed": false,
+        "projection_root_hash72s": [
+          "Som8gxADXKbm0v-4O<kL!U+2A6qy64r)AeCeq!hl3b6eS4cakhYgO2tpz4JtriYCI+j2(d61"
+        ],
+        "reconstruction_recipe": {
+          "artifact_root_hash72": "",
+          "authority": "HHS_UNIVERSAL_MODALITY_PIPELINE_AUTHORITY_V1",
+          "expanded_metadata_retained": false,
+          "operations": [
+            {
+              "operation": "DERIVE_ARTIFACT",
+              "target_artifact_type": "IMAGE_FEATURE_GRAPH",
+              "target_modality": "GRAPH_OBJECT"
+            }
+          ],
+          "projection_roots": [
+            "Som8gxADXKbm0v-4O<kL!U+2A6qy64r)AeCeq!hl3b6eS4cakhYgO2tpz4JtriYCI+j2(d61"
+          ],
+          "recipe_id": "modality-recipe:ad9b78d69a884523bf483f2cd3f6e820",
+          "recipe_root_hash72": "D+Gm74uRCBU-*BLNGNmzm!HFYn/d81lcuXWL)7p4Vf)XgUwWcr/DxO/4L*Xqxv8---(03q1V",
+          "reconstruction_strategy": "SOURCE_ROOT_PLUS_TYPED_PROJECTION_STEPS_PLUS_ARTIFACT_LINEAGE",
+          "schema": "HHS_MODALITY_RECONSTRUCTION_RECIPE_V1",
+          "source_root_hash72": "nwwFB?GwJ+*jZ<CM!MTRheZMj!UzW/K-Bh3kOixpZBx0Dp</MzoQDOgJGWEWNf)LDcT6IFT+",
+          "version": "PASS_050_HHS_UNIVERSAL_MODALITY_ADAPTER_AND_ARTIFACT_PIPELINE_V1"
+        },
+        "requires_witness": true,
+        "schema": "HHS_CROSS_MODAL_TRANSFORMATION_PLAN_V1",
+        "source_root_hash72s": [
+          "nwwFB?GwJ+*jZ<CM!MTRheZMj!UzW/K-Bh3kOixpZBx0Dp</MzoQDOgJGWEWNf)LDcT6IFT+"
+        ],
+        "target_artifact_type": "IMAGE_FEATURE_GRAPH",
+        "target_modality": "GRAPH_OBJECT",
+        "transformation_kind": "DERIVE_ARTIFACT",
+        "version": "PASS_050_HHS_UNIVERSAL_MODALITY_ADAPTER_AND_ARTIFACT_PIPELINE_V1"
+      },
+      "version": "PASS_050_HHS_UNIVERSAL_MODALITY_ADAPTER_AND_ARTIFACT_PIPELINE_V1"
+    },
+    {
+      "adaptation": {
+        "adaptation_root_hash72": "dwZ5trMxM3<hGN</oAXl64FVdbRa64yd4vIV/HCUIn/)A)SXUd)waOWl?zhtUv0<0WQGE7UG",
+        "adapter_contract": {
+          "adapter_contract_hash72": "WsrAZyCVA6PR5DVH/dvUjXFBcO0+hFJ!(vC*v<qHjyZLc6D3DsO7bET!n54zpi9yMJiKdWjU",
+          "adapter_id": "adapter:runtime_receipt.universal_modality",
+          "artifact_targets": [
+            "WORKSPACE_OBJECT",
+            "DERIVED_ARTIFACT",
+            "CROSS_MODAL_TRANSFORMATION_PLAN"
+          ],
+          "authority": "HHS_UNIVERSAL_MODALITY_PIPELINE_AUTHORITY_V1",
+          "authority_tier": "AUTHORIZED_NONMUTATING",
+          "chunking_policy": "ROOTED_CHUNK_MANIFEST_FOR_LARGE_SOURCES",
+          "failure_modes": [
+            "REJECT_MODALITY_WITHOUT_ADAPTER_CONTRACT",
+            "REJECT_PROJECTION_REPLACES_SOURCE",
+            "REJECT_LOSSY_PROJECTION_UNMARKED",
+            "REJECT_ADAPTER_PRIVATE_TRUTH_PIPELINE"
+          ],
+          "input_schema": "HHS_MODALITY_SOURCE_COMMITMENT_V1",
+          "loss_profile": "LOSSLESS_SOURCE_COMMITMENT_WITH_DERIVED_PROJECTIONS",
+          "loss_profile_record": {
+            "loss_profile": "LOSSLESS_SOURCE_COMMITMENT_WITH_DERIVED_PROJECTIONS",
+            "loss_profile_hash72": "zCn6o1Nx1WxP+Nf10Ccc2jldZt+VYNgYLu12wWJc<AiybBF-Y(Q<7GAVhT9(/RKxkzymoMoT",
+            "lossy_outputs_must_be_marked": true,
+            "lossy_projection_possible": false,
+            "modality": "RUNTIME_RECEIPT",
+            "projection_replaces_source": false,
+            "schema": "HHS_MODALITY_LOSS_PROFILE_V1",
+            "source_preserved": true,
+            "version": "PASS_050_HHS_UNIVERSAL_MODALITY_ADAPTER_AND_ARTIFACT_PIPELINE_V1"
+          },
+          "metadata_policy": "BOUNDED_TEMPORARY_EXPANDED_METADATA_COMPACTS_TO_RESIDUE",
+          "output_projection_types": [
+            "RECEIPT_FIELD_PROJECTION"
+          ],
+          "private_truth_pipeline_allowed": false,
+          "projection_replaces_source": false,
+          "reconstruction_strategy": "SOURCE_ROOT_PLUS_PROJECTION_RECIPE_PLUS_ARTIFACT_LINEAGE",
+          "schema": "HHS_UNIVERSAL_MODALITY_ADAPTER_V1",
+          "source_modality": "RUNTIME_RECEIPT",
+          "source_preserved": true,
+          "supported_modalities": [
+            "RUNTIME_RECEIPT"
+          ],
+          "version": "PASS_050_HHS_UNIVERSAL_MODALITY_ADAPTER_AND_ARTIFACT_PIPELINE_V1",
+          "witness_strategy": "HASH72_U72_SOURCE_PROJECTION_ARTIFACT_WITNESS_CHAIN"
+        },
+        "adapter_validation": {
+          "adapter_id": "adapter:runtime_receipt.universal_modality",
+          "ok": true,
+          "reasons": [],
+          "schema": "HHS_UNIVERSAL_MODALITY_ADAPTER_VALIDATION_V1",
+          "source_modality": "RUNTIME_RECEIPT",
+          "status": "ADMIT_UNIVERSAL_MODALITY_ADAPTER",
+          "version": "PASS_050_HHS_UNIVERSAL_MODALITY_ADAPTER_AND_ARTIFACT_PIPELINE_V1"
+        },
+        "ok": true,
+        "schema": "HHS_UNIVERSAL_MODALITY_ADAPTATION_RESULT_V1",
+        "source_commitment": {
+          "authority": "HHS_UNIVERSAL_MODALITY_PIPELINE_AUTHORITY_V1",
+          "created_at_unix_ms": 1783809206038,
+          "modality": "RUNTIME_RECEIPT",
+          "payload_commitment_hash72": "4u2f-d4abwemb/ipc?hJapt5K+)!/iG*fTQ8k<BVQnSvcXBZAEK1Ut(P)iEjXP0SpW1Ha1nq",
+          "project_id": "project:pass050",
+          "projection_replaces_source": false,
+          "schema": "HHS_MODALITY_SOURCE_COMMITMENT_V1",
+          "source_commitment_id": "source:18165ed2055b4a1e99de852baed4a05e",
+          "source_name": "receipt.json",
+          "source_preserved": true,
+          "source_root_hash72": "FT3R8ody)o7o6<FZ5qz(wXT4JLMH+FcV8(xR(ztglA5ZK9XL5tfI(Q3M6FC777vFCJaa0k>X",
+          "source_size_bytes": 14,
+          "source_uri": "workspace://project:pass050/source/receipt.json",
+          "version": "PASS_050_HHS_UNIVERSAL_MODALITY_ADAPTER_AND_ARTIFACT_PIPELINE_V1"
+        },
+        "source_never_replaced_by_projection": true,
+        "source_validation": {
+          "ok": true,
+          "reasons": [],
+          "schema": "HHS_MODALITY_SOURCE_COMMITMENT_VALIDATION_V1",
+          "source_commitment_id": "source:18165ed2055b4a1e99de852baed4a05e",
+          "source_root_hash72": "FT3R8ody)o7o6<FZ5qz(wXT4JLMH+FcV8(xR(ztglA5ZK9XL5tfI(Q3M6FC777vFCJaa0k>X",
+          "status": "ADMIT_MODALITY_SOURCE_COMMITMENT",
+          "version": "PASS_050_HHS_UNIVERSAL_MODALITY_ADAPTER_AND_ARTIFACT_PIPELINE_V1"
+        },
+        "status": "ADMIT_UNIVERSAL_MODALITY_ADAPTATION",
+        "version": "PASS_050_HHS_UNIVERSAL_MODALITY_ADAPTER_AND_ARTIFACT_PIPELINE_V1"
+      },
+      "artifact": {
+        "artifact_execution_authority_inferred": false,
+        "artifact_id": "artifact:4014bcf140f84422883a55aa8eb49af5",
+        "artifact_payload_hash72": "dUF>KvV45q<13JmQ0ztOR8?ovEaE()tVaHa3eE+-DO07aNwKAMl<o?ouY08FM(!v<PazGI8Z",
+        "artifact_root_hash72": "yrRsWtA5CmY*xHQng-EA9aR(ltOSnkfF(b7SK(ca8+ML(Y3IWqoDfxmKCirPJGOq2wliYtpc",
+        "artifact_type": "RECEIPT_GRAPH",
+        "authority": "HHS_UNIVERSAL_MODALITY_PIPELINE_AUTHORITY_V1",
+        "conformance_status": "ADMIT_DERIVED_ARTIFACT",
+        "created_at_unix_ms": 1783809206049,
+        "execution_authorized": false,
+        "projection_root_hash72s": [
+          "-hSfQmVm+QJ6+N+8FxA+qlV0oktG7f+SA!B1U*yRSnMoS<fr)cHnVRJSVADQJQxCnt19hC4*"
+        ],
+        "reconstruction_recipe": {
+          "artifact_root_hash72": "",
+          "authority": "HHS_UNIVERSAL_MODALITY_PIPELINE_AUTHORITY_V1",
+          "expanded_metadata_retained": false,
+          "operations": [
+            {
+              "operation": "DERIVE_ARTIFACT",
+              "target_artifact_type": "RECEIPT_GRAPH",
+              "target_modality": "GRAPH_OBJECT"
+            }
+          ],
+          "projection_roots": [
+            "-hSfQmVm+QJ6+N+8FxA+qlV0oktG7f+SA!B1U*yRSnMoS<fr)cHnVRJSVADQJQxCnt19hC4*"
+          ],
+          "recipe_id": "modality-recipe:df135a2d90e841a8928b6bc1b5cb5a91",
+          "recipe_root_hash72": "!()k0<mKCl+uq3jUzy6*hUoSJLSJ9HvoMDf6yVze3uJtJU22z?!xXz/whfbiDu-kzQ*u9tGU",
+          "reconstruction_strategy": "SOURCE_ROOT_PLUS_TYPED_PROJECTION_STEPS_PLUS_ARTIFACT_LINEAGE",
+          "schema": "HHS_MODALITY_RECONSTRUCTION_RECIPE_V1",
+          "source_root_hash72": "FT3R8ody)o7o6<FZ5qz(wXT4JLMH+FcV8(xR(ztglA5ZK9XL5tfI(Q3M6FC777vFCJaa0k>X",
+          "version": "PASS_050_HHS_UNIVERSAL_MODALITY_ADAPTER_AND_ARTIFACT_PIPELINE_V1"
+        },
+        "schema": "HHS_DERIVED_ARTIFACT_RECORD_V1",
+        "source_root_hash72s": [
+          "FT3R8ody)o7o6<FZ5qz(wXT4JLMH+FcV8(xR(ztglA5ZK9XL5tfI(Q3M6FC777vFCJaa0k>X"
+        ],
+        "target_modality": "GRAPH_OBJECT",
+        "transformation_plan_id": "xmodal-plan:3985ad4593e84eb39ffeb4c35e7cb416",
+        "transformation_plan_root_hash72": "EBE+v<Q>15<cfWfErXaz>sEytCgkY1jCVcgM>SZfz2(W!sow8e?6(isbSCX0x<VgXS77++<c",
+        "version": "PASS_050_HHS_UNIVERSAL_MODALITY_ADAPTER_AND_ARTIFACT_PIPELINE_V1"
+      },
+      "artifact_validation": {
+        "artifact_id": "artifact:4014bcf140f84422883a55aa8eb49af5",
+        "ok": true,
+        "reasons": [],
+        "schema": "HHS_DERIVED_ARTIFACT_RECORD_VALIDATION_V1",
+        "status": "ADMIT_DERIVED_ARTIFACT",
+        "version": "PASS_050_HHS_UNIVERSAL_MODALITY_ADAPTER_AND_ARTIFACT_PIPELINE_V1"
+      },
+      "authority": "HHS_UNIVERSAL_MODALITY_PIPELINE_AUTHORITY_V1",
+      "lineage": {
+        "artifact_execution_authority_inferred": false,
+        "artifact_id": "artifact:4014bcf140f84422883a55aa8eb49af5",
+        "artifact_root_hash72": "yrRsWtA5CmY*xHQng-EA9aR(ltOSnkfF(b7SK(ca8+ML(Y3IWqoDfxmKCirPJGOq2wliYtpc",
+        "authority": "HHS_UNIVERSAL_MODALITY_PIPELINE_AUTHORITY_V1",
+        "lineage_id": "lineage:5dd4688f1bff48328a22c7172381047e",
+        "lineage_root_hash72": "oqvnQikDVqW3jSVBqR4eLZ5dqGlm0WiJGBWBBLPKbK/kSwNFGe4E1zvIMS-yC(->f?nF9xi(",
+        "projection_ids": [
+          "projection:f5bb46bc498d46ed95cb724ddca76544"
+        ],
+        "projection_not_confused_with_artifact": true,
+        "projection_root_hash72s": [
+          "-hSfQmVm+QJ6+N+8FxA+qlV0oktG7f+SA!B1U*yRSnMoS<fr)cHnVRJSVADQJQxCnt19hC4*"
+        ],
+        "reconstruction_recipe_id": "modality-recipe:df135a2d90e841a8928b6bc1b5cb5a91",
+        "schema": "HHS_ARTIFACT_LINEAGE_RECORD_V1",
+        "source_commitment_id": "source:18165ed2055b4a1e99de852baed4a05e",
+        "source_modality": "RUNTIME_RECEIPT",
+        "source_not_replaced_by_projection": true,
+        "source_root_hash72": "FT3R8ody)o7o6<FZ5qz(wXT4JLMH+FcV8(xR(ztglA5ZK9XL5tfI(Q3M6FC777vFCJaa0k>X",
+        "transformation_plan_id": "xmodal-plan:3985ad4593e84eb39ffeb4c35e7cb416",
+        "transformation_plan_root_hash72": "EBE+v<Q>15<cfWfErXaz>sEytCgkY1jCVcgM>SZfz2(W!sow8e?6(isbSCX0x<VgXS77++<c",
+        "version": "PASS_050_HHS_UNIVERSAL_MODALITY_ADAPTER_AND_ARTIFACT_PIPELINE_V1"
+      },
+      "lineage_validation": {
+        "lineage_id": "lineage:5dd4688f1bff48328a22c7172381047e",
+        "ok": true,
+        "reasons": [],
+        "schema": "HHS_ARTIFACT_LINEAGE_RECORD_VALIDATION_V1",
+        "status": "ADMIT_ARTIFACT_LINEAGE",
+        "version": "PASS_050_HHS_UNIVERSAL_MODALITY_ADAPTER_AND_ARTIFACT_PIPELINE_V1"
+      },
+      "ok": true,
+      "pipeline_run_id": "universal-pipeline:78616d7c2a4c4b20a5c30b02ba061296",
+      "pipeline_run_root_hash72": "SzZ8B)W)!)XGfV1-Eiz7K2hiZn/JrD?)y*ZPPUstQFZXPliafXKtVN!jaeYcl!8mZa/wyg+a",
+      "plan_validation": {
+        "ok": true,
+        "plan_id": "xmodal-plan:3985ad4593e84eb39ffeb4c35e7cb416",
+        "reasons": [],
+        "schema": "HHS_CROSS_MODAL_TRANSFORMATION_PLAN_VALIDATION_V1",
+        "status": "ADMIT_CROSS_MODAL_TRANSFORMATION_PLAN",
+        "version": "PASS_050_HHS_UNIVERSAL_MODALITY_ADAPTER_AND_ARTIFACT_PIPELINE_V1"
+      },
+      "projection": {
+        "adapter_id": "adapter:runtime_receipt.universal_modality",
+        "authority": "HHS_UNIVERSAL_MODALITY_PIPELINE_AUTHORITY_V1",
+        "created_at_unix_ms": 1783809206043,
+        "loss_profile": "LOSSLESS_DERIVED_PROJECTION",
+        "lossy_projection": false,
+        "lossy_projection_marked": true,
+        "projection_id": "projection:f5bb46bc498d46ed95cb724ddca76544",
+        "projection_payload_hash72": "a/mWUNj8m3(JNXY!lMMM5gs??NB!*5cPbFA<nt0PEIzWk!E+dM1BxVCiYhxHObT-9Oa27iyo",
+        "projection_replaces_source": false,
+        "projection_root_hash72": "-hSfQmVm+QJ6+N+8FxA+qlV0oktG7f+SA!B1U*yRSnMoS<fr)cHnVRJSVADQJQxCnt19hC4*",
+        "projection_type": "RECEIPT_FIELD_PROJECTION",
+        "reconstruction_recipe": {
+          "artifact_root_hash72": "",
+          "authority": "HHS_UNIVERSAL_MODALITY_PIPELINE_AUTHORITY_V1",
+          "expanded_metadata_retained": false,
+          "operations": [
+            {
+              "adapter_id": "adapter:runtime_receipt.universal_modality",
+              "operation": "reconstruct_projection_from_source_and_adapter",
+              "projection_type": "RECEIPT_FIELD_PROJECTION"
+            }
+          ],
+          "projection_roots": [],
+          "recipe_id": "modality-recipe:c3bac5eeee68498a8ed6bccb4b2051c8",
+          "recipe_root_hash72": "ewKJO8-pM?bRs8n6WmQd-SfEK/gPa+k2NKAXOqvqKLfqfjigM6mEGrJSRWp1Ly2B5FUqp)K>",
+          "reconstruction_strategy": "SOURCE_ROOT_PLUS_TYPED_PROJECTION_STEPS_PLUS_ARTIFACT_LINEAGE",
+          "schema": "HHS_MODALITY_RECONSTRUCTION_RECIPE_V1",
+          "source_root_hash72": "FT3R8ody)o7o6<FZ5qz(wXT4JLMH+FcV8(xR(ztglA5ZK9XL5tfI(Q3M6FC777vFCJaa0k>X",
+          "version": "PASS_050_HHS_UNIVERSAL_MODALITY_ADAPTER_AND_ARTIFACT_PIPELINE_V1"
+        },
+        "schema": "HHS_MODALITY_PROJECTION_RECORD_V1",
+        "source_commitment_id": "source:18165ed2055b4a1e99de852baed4a05e",
+        "source_modality": "RUNTIME_RECEIPT",
+        "source_root_hash72": "FT3R8ody)o7o6<FZ5qz(wXT4JLMH+FcV8(xR(ztglA5ZK9XL5tfI(Q3M6FC777vFCJaa0k>X",
+        "version": "PASS_050_HHS_UNIVERSAL_MODALITY_ADAPTER_AND_ARTIFACT_PIPELINE_V1"
+      },
+      "projection_validation": {
+        "ok": true,
+        "projection_id": "projection:f5bb46bc498d46ed95cb724ddca76544",
+        "reasons": [],
+        "schema": "HHS_MODALITY_PROJECTION_RECORD_VALIDATION_V1",
+        "status": "ADMIT_MODALITY_PROJECTION",
+        "version": "PASS_050_HHS_UNIVERSAL_MODALITY_ADAPTER_AND_ARTIFACT_PIPELINE_V1"
+      },
+      "schema": "HHS_UNIVERSAL_ARTIFACT_PIPELINE_RUN_V1",
+      "source_projection_artifact_separation": "source != projection != artifact != execution_authority",
+      "status": "ADMIT_UNIVERSAL_ARTIFACT_PIPELINE",
+      "transformation_plan": {
+        "artifact_creation_authorized": true,
+        "authority": "HHS_UNIVERSAL_MODALITY_PIPELINE_AUTHORITY_V1",
+        "created_at_unix_ms": 1783809206046,
+        "execution_authorized": false,
+        "plan_id": "xmodal-plan:3985ad4593e84eb39ffeb4c35e7cb416",
+        "plan_root_hash72": "EBE+v<Q>15<cfWfErXaz>sEytCgkY1jCVcgM>SZfz2(W!sow8e?6(isbSCX0x<VgXS77++<c",
+        "private_truth_pipeline_allowed": false,
+        "projection_root_hash72s": [
+          "-hSfQmVm+QJ6+N+8FxA+qlV0oktG7f+SA!B1U*yRSnMoS<fr)cHnVRJSVADQJQxCnt19hC4*"
+        ],
+        "reconstruction_recipe": {
+          "artifact_root_hash72": "",
+          "authority": "HHS_UNIVERSAL_MODALITY_PIPELINE_AUTHORITY_V1",
+          "expanded_metadata_retained": false,
+          "operations": [
+            {
+              "operation": "DERIVE_ARTIFACT",
+              "target_artifact_type": "RECEIPT_GRAPH",
+              "target_modality": "GRAPH_OBJECT"
+            }
+          ],
+          "projection_roots": [
+            "-hSfQmVm+QJ6+N+8FxA+qlV0oktG7f+SA!B1U*yRSnMoS<fr)cHnVRJSVADQJQxCnt19hC4*"
+          ],
+          "recipe_id": "modality-recipe:df135a2d90e841a8928b6bc1b5cb5a91",
+          "recipe_root_hash72": "!()k0<mKCl+uq3jUzy6*hUoSJLSJ9HvoMDf6yVze3uJtJU22z?!xXz/whfbiDu-kzQ*u9tGU",
+          "reconstruction_strategy": "SOURCE_ROOT_PLUS_TYPED_PROJECTION_STEPS_PLUS_ARTIFACT_LINEAGE",
+          "schema": "HHS_MODALITY_RECONSTRUCTION_RECIPE_V1",
+          "source_root_hash72": "FT3R8ody)o7o6<FZ5qz(wXT4JLMH+FcV8(xR(ztglA5ZK9XL5tfI(Q3M6FC777vFCJaa0k>X",
+          "version": "PASS_050_HHS_UNIVERSAL_MODALITY_ADAPTER_AND_ARTIFACT_PIPELINE_V1"
+        },
+        "requires_witness": true,
+        "schema": "HHS_CROSS_MODAL_TRANSFORMATION_PLAN_V1",
+        "source_root_hash72s": [
+          "FT3R8ody)o7o6<FZ5qz(wXT4JLMH+FcV8(xR(ztglA5ZK9XL5tfI(Q3M6FC777vFCJaa0k>X"
+        ],
+        "target_artifact_type": "RECEIPT_GRAPH",
+        "target_modality": "GRAPH_OBJECT",
+        "transformation_kind": "DERIVE_ARTIFACT",
+        "version": "PASS_050_HHS_UNIVERSAL_MODALITY_ADAPTER_AND_ARTIFACT_PIPELINE_V1"
+      },
+      "version": "PASS_050_HHS_UNIVERSAL_MODALITY_ADAPTER_AND_ARTIFACT_PIPELINE_V1"
+    }
+  ],
+  "schema": "HHS_UNIVERSAL_ARTIFACT_PIPELINE_SELF_TEST_V1",
+  "version": "PASS_050_HHS_UNIVERSAL_MODALITY_ADAPTER_AND_ARTIFACT_PIPELINE_V1"
+}

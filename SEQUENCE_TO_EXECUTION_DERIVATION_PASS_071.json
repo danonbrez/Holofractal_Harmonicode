@@ -1,0 +1,19 @@
+{
+  "all_three_lane_paths_valid": true,
+  "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+  "binding_registry_root_hash72": "<lhJJ*Bb>Ujx)LguO+keGB1j3jgwzPlu0KQ3>Tztso0qr?BPMz!NWb2SPxc*GMxDOW/*BG6G",
+  "canonical_continuation": true,
+  "derivation_root_hash72": "Z</W)mhf/y)f2ckIulwW+x+cM/m5Z7qisR425/ItWPg/+aYtuqSkBxc0DE!zyB(DcpyRO9Z!",
+  "fold_registry_root_hash72": "Nuuq2/sdfgSiPWo-CN1?xhRpDaYzY8OKHdMb3*G3f>p9lNUkd<4X/(HFQ!MS2>Peu2j*Jc3?",
+  "genome_root_hash72": "med9zg>NhxrZ4cme6h<rOASuM703Eqh0*e/qrY>GteJUk)iscS)e9C8cZ5A9cZU!H3kOJP51",
+  "independent_revalidation_performed": true,
+  "overlap_root_hash72": "76A9BfCvc9!Hj9x7M5(WWRqXp7Vppp>qVQ(>xAG+2cRQJxrx6FRkBuw0Ve!InZps8rkxYNJN",
+  "pass070_root_hash72": "4x7/dTn<Q5axZHyM/OryqrIl6ZJGuWKugBOKSjR054M)*SZbVZ0M!<bD3vd9Y1+FT!sQRr(T",
+  "potential_field_root_hash72": "sbj4zeZ(2oqwQ4txbycnxsthK8T+Pc7q35c9<uw43jR3Go8HiURqhD3vzAH>R06A5AQkJBfw",
+  "schema": "HHS_SEQUENCE_TO_EXECUTION_DERIVATION_V1",
+  "source_identity_preserved": true,
+  "status": "ADMIT_PASS071_CANONICAL_CONTINUATION",
+  "topology_root_hash72": "tjVb45fukLKQXqh3/gX+9ukSJfWWos*)GhUgEJ6kZyN-!u)uz-8rs5OE!Ve?K<)BXJ*xaKx1",
+  "unfolding_root_hash72": "9UsJy1p03UrbF<D1UsK>rxgbwJHcmFOkjf?1uFnpLP2iKbn/s*P3j0HFf!46d9tADatWGAck",
+  "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+}

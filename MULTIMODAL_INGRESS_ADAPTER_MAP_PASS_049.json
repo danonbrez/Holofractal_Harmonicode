@@ -1,0 +1,1031 @@
+{
+  "adapters": {
+    "HARMONICODE_SOURCE": {
+      "adapter_id": "adapter:hhs_source.workspace_ingress",
+      "lossy": false,
+      "object_type": "SYMBOLIC_SOURCE_DOCUMENT"
+    },
+    "IMAGE": {
+      "adapter_id": "adapter:image.workspace_ingress",
+      "lossy": true,
+      "object_type": "MULTIMODAL_OBJECT"
+    },
+    "JSON": {
+      "adapter_id": "adapter:json.workspace_ingress",
+      "lossy": false,
+      "object_type": "MULTIMODAL_OBJECT"
+    },
+    "PDF": {
+      "adapter_id": "adapter:pdf.workspace_ingress",
+      "lossy": true,
+      "object_type": "MULTIMODAL_OBJECT"
+    },
+    "TEXT": {
+      "adapter_id": "adapter:text.workspace_ingress",
+      "lossy": false,
+      "object_type": "SOURCE_DOCUMENT"
+    }
+  },
+  "schema": "MULTIMODAL_INGRESS_ADAPTER_MAP_PASS_049_V1",
+  "self_test": {
+    "invariant": "NO_PROJECTION_REPLACES_ITS_SOURCE",
+    "ok": true,
+    "results": [
+      {
+        "ingress_result_hash72": "!n<4/(UK36S<XAC(0KtPFFQ0DJ(QVuv1QIjiPfbBl?fq<NxRd>mXQ<dPcJlgYDd1WrwgnzXE",
+        "ok": true,
+        "packet": {
+          "adapter_id": "adapter:text.workspace_ingress",
+          "authority": "HHS_RUNTIME_WORKSPACE_AUTHORITY_V1",
+          "authority_required": true,
+          "created_at_unix_ms": 1783782405011,
+          "declared_modality": "TEXT",
+          "detected_modality": "TEXT",
+          "expanded_metadata_policy": "BOUNDED_TEMPORARY",
+          "ingress_id": "ingress:289da297f6194659b061bb1f69fafbdd",
+          "ingress_packet_hash72": "nxn)ic>JOjAJn7jf)ua1E(oujkT?Ph6m9b-jvvm1J?yexzHwBzkk2d68bAJ/FQg432k4f/SY",
+          "mime_type": "text/plain",
+          "project_id": "project:24a70c42e20549c783dbbf2f30f51b42",
+          "projection_policy": "PRESERVE_UNRESOLVED_SOURCE",
+          "schema": "HHS_MULTIMODAL_INGRESS_PACKET_V1",
+          "source_commitment_hash72": "b/l2mWeYlel+jx-z6z0AnJ1gInih>7ruEFBDqSHBz0km13A)rR-LUXRU<P<i0X2>OiHKSh)W",
+          "source_name": "note.txt",
+          "source_size_bytes": 20,
+          "version": "PASS_049_HHS_VISUAL_RUNTIME_OS_WORKSPACE_V1"
+        },
+        "projection_is_canonical_source": false,
+        "registration": {
+          "object_reference": {
+            "authority": "HHS_RUNTIME_WORKSPACE_AUTHORITY_V1",
+            "lifecycle_state": "INGRESSED",
+            "object_id": "object:540cbf2358914a1e90f2a2fefaee5574",
+            "object_type": "SOURCE_DOCUMENT",
+            "project_id": "project:24a70c42e20549c783dbbf2f30f51b42",
+            "reference_root_hash72": "siNF9TQS/Alssvx->/gdqK2ZI)YVCLACq28)3/9!f9BSHw7)N*VAriS+>TvHLtFyLaZO5xwI",
+            "root_hash72": "Vs7FBof9i8DCslp2rfsrsnjA9pyCk03dT1gzzqSvNNTSKtsv*G08WPJG8V+-*HiMg*5zgaVk",
+            "schema": "HHS_WORKSPACE_OBJECT_REFERENCE_V1",
+            "source_uri": "workspace://project:24a70c42e20549c783dbbf2f30f51b42/ingress/ingress:289da297f6194659b061bb1f69fafbdd",
+            "version": "PASS_049_HHS_VISUAL_RUNTIME_OS_WORKSPACE_V1"
+          },
+          "ok": true,
+          "project": {
+            "authority": "HHS_RUNTIME_WORKSPACE_AUTHORITY_V1",
+            "created_at_unix_ms": 1783782405002,
+            "manifest": {
+              "artifact_registry_root_hash72": "02eg>!a1h7<efEVxj7gfnDybcstCusCCo><qQ2FkEFGHIJKLMNOPQRSTUVWXYZ-+*/()<>!z",
+              "authority": "HHS_RUNTIME_WORKSPACE_AUTHORITY_V1",
+              "expanded_metadata_retained": false,
+              "manifest_root_hash72": "kir*7hAB3*d(nyJ382Zu6F4*YRxgrAx>OTaq8aR)>z7twoC(*!9>L/ff(AOwiEPPgk0GPgpR",
+              "object_registry_root_hash72": "t91>z9vH4U<JVPzeUPuOJR2PFVRlW86fVT<*q)HKKXqn8RVBbey4Lu(WN9ComyoPuE)Y31hH",
+              "project_id": "project:24a70c42e20549c783dbbf2f30f51b42",
+              "project_root_hash72": "ICYVPaCqqlXt36WvFI/n9adJlNRmTpL)qT1pa6AU>0h<xcaizdmkec?!?*sZL1NKfb4kSlRW",
+              "receipt_tip_hash72": "+*dR3X1+mpMT2V698LK>oQnf7WFgoc02+akwk<yPkc)GMaBEx<D)IrGS2p3+eTVS8-6DTyco",
+              "reconstruction_recipe_id": "recipe:project:24a70c42e20549c783dbbf2f30f51b42:manifest",
+              "schema": "HHS_WORKSPACE_PERSISTENCE_MANIFEST_V1",
+              "semantic_index_root_hash72": "02eg>!a1h7<efEZokmoq98vcCwgmV8AmyRGr0?tT5IkHIJKLMNOPQRSTUVWXYZ-+*/()<>!z",
+              "storage_mode": "ROOTS_PLUS_CANONICAL_OBJECTS",
+              "version": "PASS_049_HHS_VISUAL_RUNTIME_OS_WORKSPACE_V1",
+              "workspace_layout_root_hash72": "02eg>!a1h7<efE<5F8pjwao5IbRj*+lL>hBpZsJDv(jCKLG<EWuV*G+OUR4J2R!?Udk)<>!z"
+            },
+            "name": "Ingress Workspace",
+            "object_order": [
+              "object:540cbf2358914a1e90f2a2fefaee5574"
+            ],
+            "object_registry": {
+              "object:540cbf2358914a1e90f2a2fefaee5574": {
+                "authority": "HHS_RUNTIME_WORKSPACE_AUTHORITY_V1",
+                "canonical_payload_ref": "workspace-blob://Vs7FBof9i8DCslp2rfsrsnjA9pyCk03dT1gzzqSvNNTSKtsv*G08WPJG8V+-*HiMg*5zgaVk",
+                "created_at_unix_ms": 1783782405014,
+                "current_root_hash72": "Vs7FBof9i8DCslp2rfsrsnjA9pyCk03dT1gzzqSvNNTSKtsv*G08WPJG8V+-*HiMg*5zgaVk",
+                "derived_child_ids": [],
+                "derived_projection_policy": "DERIVED_OBJECTS_DO_NOT_REPLACE_SOURCE",
+                "ingress_packet_hash72": "nxn)ic>JOjAJn7jf)ua1E(oujkT?Ph6m9b-jvvm1J?yexzHwBzkk2d68bAJ/FQg432k4f/SY",
+                "lifecycle_state": "INGRESSED",
+                "modality": "TEXT",
+                "mutation_sequence": 0,
+                "name": "note.txt",
+                "object_id": "object:540cbf2358914a1e90f2a2fefaee5574",
+                "object_root_hash72": "<Gc!-1)u)6u9I2AdV5nMJT*e/Hj1iPrPEmYAue8a*2t6vA0g+l?yFgUHD6QkpH<BIgbCyrl1",
+                "object_type": "SOURCE_DOCUMENT",
+                "project_id": "project:24a70c42e20549c783dbbf2f30f51b42",
+                "receipt_tip_hash72": "Vs7FBof9i8DCslp2rfsrsnjA9pyCk03dT1gzzqSvNNTSKtsv*G08WPJG8V+-*HiMg*5zgaVk",
+                "reconstruction_recipe": {
+                  "authority": "HHS_RUNTIME_WORKSPACE_AUTHORITY_V1",
+                  "expanded_metadata_retained": false,
+                  "object_id": "object:540cbf2358914a1e90f2a2fefaee5574",
+                  "recipe_id": "recipe:e2afb8fe05154aee8a11854be4386153",
+                  "recipe_root_hash72": ">hsWY+ApMGZHHa?9j7qHjoH>JXl<JycSVy7!LZkTckHk*mmtkyhoeI3d4C0zpj3<V5AQe5Gm",
+                  "schema": "HHS_WORKSPACE_RECONSTRUCTION_RECIPE_V1",
+                  "source_root_hash72": "Vs7FBof9i8DCslp2rfsrsnjA9pyCk03dT1gzzqSvNNTSKtsv*G08WPJG8V+-*HiMg*5zgaVk",
+                  "steps": [
+                    {
+                      "operation": "reconstruct_from_canonical_payload_ref",
+                      "payload_policy": "ROOT_PLUS_CANONICAL_SOURCE_OBJECT"
+                    }
+                  ],
+                  "version": "PASS_049_HHS_VISUAL_RUNTIME_OS_WORKSPACE_V1"
+                },
+                "reconstruction_recipe_id": "recipe:e2afb8fe05154aee8a11854be4386153",
+                "schema": "HHS_RUNTIME_WORKSPACE_OBJECT_V1",
+                "schema_id": "HHS_MULTIMODAL_WORKSPACE_OBJECT_V1",
+                "source_parent_ids": [],
+                "source_preserved": true,
+                "source_provenance": {
+                  "adapter_id": "adapter:text.workspace_ingress",
+                  "ingress_id": "ingress:289da297f6194659b061bb1f69fafbdd",
+                  "lossy_projection": false,
+                  "source_commitment_hash72": "b/l2mWeYlel+jx-z6z0AnJ1gInih>7ruEFBDqSHBz0km13A)rR-LUXRU<P<i0X2>OiHKSh)W",
+                  "source_uri": "workspace://project:24a70c42e20549c783dbbf2f30f51b42/ingress/ingress:289da297f6194659b061bb1f69fafbdd"
+                },
+                "source_root_hash72": "Vs7FBof9i8DCslp2rfsrsnjA9pyCk03dT1gzzqSvNNTSKtsv*G08WPJG8V+-*HiMg*5zgaVk",
+                "updated_at_unix_ms": 1783782405014,
+                "version": "PASS_049_HHS_VISUAL_RUNTIME_OS_WORKSPACE_V1"
+              }
+            },
+            "object_registry_root_hash72": "t91>z9vH4U<JVPzeUPuOJR2PFVRlW86fVT<*q)HKKXqn8RVBbey4Lu(WN9ComyoPuE)Y31hH",
+            "project_id": "project:24a70c42e20549c783dbbf2f30f51b42",
+            "project_root_hash72": "ICYVPaCqqlXt36WvFI/n9adJlNRmTpL)qT1pa6AU>0h<xcaizdmkec?!?*sZL1NKfb4kSlRW",
+            "receipt_tip_hash72": "+*dR3X1+mpMT2V698LK>oQnf7WFgoc02+akwk<yPkc)GMaBEx<D)IrGS2p3+eTVS8-6DTyco",
+            "schema": "HHS_RUNTIME_WORKSPACE_PROJECT_V1",
+            "semantic_index_root_hash72": "02eg>!a1h7<efEZokmoq98vcCwgmV8AmyRGr0?tT5IkHIJKLMNOPQRSTUVWXYZ-+*/()<>!z",
+            "status": "WORKSPACE_LIVE",
+            "updated_at_unix_ms": 1783782405027,
+            "version": "PASS_049_HHS_VISUAL_RUNTIME_OS_WORKSPACE_V1",
+            "workspace_layout_root_hash72": "02eg>!a1h7<efE<5F8pjwao5IbRj*+lL>hBpZsJDv(jCKLG<EWuV*G+OUR4J2R!?Udk)<>!z"
+          },
+          "receipt_hash72": "+*dR3X1+mpMT2V698LK>oQnf7WFgoc02+akwk<yPkc)GMaBEx<D)IrGS2p3+eTVS8-6DTyco",
+          "schema": "HHS_WORKSPACE_PROJECT_OBJECT_REGISTRATION_V1",
+          "status": "WORKSPACE_OBJECT_REGISTERED",
+          "version": "PASS_049_HHS_VISUAL_RUNTIME_OS_WORKSPACE_V1"
+        },
+        "schema": "HHS_WORKSPACE_INGRESS_RESULT_V1",
+        "source_preserved": true,
+        "status": "WORKSPACE_INGRESS_COMPLETED",
+        "validation": {
+          "ingress_id": "ingress:289da297f6194659b061bb1f69fafbdd",
+          "ok": true,
+          "reasons": [],
+          "schema": "HHS_MULTIMODAL_INGRESS_PACKET_VALIDATION_V1",
+          "source_commitment_hash72": "b/l2mWeYlel+jx-z6z0AnJ1gInih>7ruEFBDqSHBz0km13A)rR-LUXRU<P<i0X2>OiHKSh)W",
+          "status": "ADMIT_MULTIMODAL_INGRESS",
+          "version": "PASS_049_HHS_VISUAL_RUNTIME_OS_WORKSPACE_V1"
+        },
+        "version": "PASS_049_HHS_VISUAL_RUNTIME_OS_WORKSPACE_V1",
+        "workspace_object": {
+          "authority": "HHS_RUNTIME_WORKSPACE_AUTHORITY_V1",
+          "canonical_payload_ref": "workspace-blob://Vs7FBof9i8DCslp2rfsrsnjA9pyCk03dT1gzzqSvNNTSKtsv*G08WPJG8V+-*HiMg*5zgaVk",
+          "created_at_unix_ms": 1783782405014,
+          "current_root_hash72": "Vs7FBof9i8DCslp2rfsrsnjA9pyCk03dT1gzzqSvNNTSKtsv*G08WPJG8V+-*HiMg*5zgaVk",
+          "derived_child_ids": [],
+          "derived_projection_policy": "DERIVED_OBJECTS_DO_NOT_REPLACE_SOURCE",
+          "ingress_packet_hash72": "nxn)ic>JOjAJn7jf)ua1E(oujkT?Ph6m9b-jvvm1J?yexzHwBzkk2d68bAJ/FQg432k4f/SY",
+          "lifecycle_state": "INGRESSED",
+          "modality": "TEXT",
+          "mutation_sequence": 0,
+          "name": "note.txt",
+          "object_id": "object:540cbf2358914a1e90f2a2fefaee5574",
+          "object_root_hash72": "<Gc!-1)u)6u9I2AdV5nMJT*e/Hj1iPrPEmYAue8a*2t6vA0g+l?yFgUHD6QkpH<BIgbCyrl1",
+          "object_type": "SOURCE_DOCUMENT",
+          "project_id": "project:24a70c42e20549c783dbbf2f30f51b42",
+          "receipt_tip_hash72": "Vs7FBof9i8DCslp2rfsrsnjA9pyCk03dT1gzzqSvNNTSKtsv*G08WPJG8V+-*HiMg*5zgaVk",
+          "reconstruction_recipe": {
+            "authority": "HHS_RUNTIME_WORKSPACE_AUTHORITY_V1",
+            "expanded_metadata_retained": false,
+            "object_id": "object:540cbf2358914a1e90f2a2fefaee5574",
+            "recipe_id": "recipe:e2afb8fe05154aee8a11854be4386153",
+            "recipe_root_hash72": ">hsWY+ApMGZHHa?9j7qHjoH>JXl<JycSVy7!LZkTckHk*mmtkyhoeI3d4C0zpj3<V5AQe5Gm",
+            "schema": "HHS_WORKSPACE_RECONSTRUCTION_RECIPE_V1",
+            "source_root_hash72": "Vs7FBof9i8DCslp2rfsrsnjA9pyCk03dT1gzzqSvNNTSKtsv*G08WPJG8V+-*HiMg*5zgaVk",
+            "steps": [
+              {
+                "operation": "reconstruct_from_canonical_payload_ref",
+                "payload_policy": "ROOT_PLUS_CANONICAL_SOURCE_OBJECT"
+              }
+            ],
+            "version": "PASS_049_HHS_VISUAL_RUNTIME_OS_WORKSPACE_V1"
+          },
+          "reconstruction_recipe_id": "recipe:e2afb8fe05154aee8a11854be4386153",
+          "schema": "HHS_RUNTIME_WORKSPACE_OBJECT_V1",
+          "schema_id": "HHS_MULTIMODAL_WORKSPACE_OBJECT_V1",
+          "source_parent_ids": [],
+          "source_preserved": true,
+          "source_provenance": {
+            "adapter_id": "adapter:text.workspace_ingress",
+            "ingress_id": "ingress:289da297f6194659b061bb1f69fafbdd",
+            "lossy_projection": false,
+            "source_commitment_hash72": "b/l2mWeYlel+jx-z6z0AnJ1gInih>7ruEFBDqSHBz0km13A)rR-LUXRU<P<i0X2>OiHKSh)W",
+            "source_uri": "workspace://project:24a70c42e20549c783dbbf2f30f51b42/ingress/ingress:289da297f6194659b061bb1f69fafbdd"
+          },
+          "source_root_hash72": "Vs7FBof9i8DCslp2rfsrsnjA9pyCk03dT1gzzqSvNNTSKtsv*G08WPJG8V+-*HiMg*5zgaVk",
+          "updated_at_unix_ms": 1783782405014,
+          "version": "PASS_049_HHS_VISUAL_RUNTIME_OS_WORKSPACE_V1"
+        }
+      },
+      {
+        "ingress_result_hash72": "i6FSJ4mFm5mj>FmyDhFlj6klS4g(clWf0sdC?/aF7pzUO)KLXXjDsMQ71k<0ZMXu*lHtHxqp",
+        "ok": true,
+        "packet": {
+          "adapter_id": "adapter:hhs_source.workspace_ingress",
+          "authority": "HHS_RUNTIME_WORKSPACE_AUTHORITY_V1",
+          "authority_required": true,
+          "created_at_unix_ms": 1783782405062,
+          "declared_modality": "HARMONICODE_SOURCE",
+          "detected_modality": "HARMONICODE_SOURCE",
+          "expanded_metadata_policy": "BOUNDED_TEMPORARY",
+          "ingress_id": "ingress:0e7cc848706148eeb5cb186194ac5261",
+          "ingress_packet_hash72": "ULrbGUcUlSB9*7W0HPLmHe0CQk5W-BGWlBnq8+z91cf?g6/OgqwJIwG9<SrgduLziA4dLFCA",
+          "mime_type": "application/octet-stream",
+          "project_id": "project:24a70c42e20549c783dbbf2f30f51b42",
+          "projection_policy": "PRESERVE_UNRESOLVED_SOURCE",
+          "schema": "HHS_MULTIMODAL_INGRESS_PACKET_V1",
+          "source_commitment_hash72": "0!9tX0B-ee(0i64chfvmplfrU04UEcrTiWdReMUGG2bwKdpWCZRLniWE8(VI1?(h6iHy-f(C",
+          "source_name": "main.hhs",
+          "source_size_bytes": 11,
+          "version": "PASS_049_HHS_VISUAL_RUNTIME_OS_WORKSPACE_V1"
+        },
+        "projection_is_canonical_source": false,
+        "registration": {
+          "object_reference": {
+            "authority": "HHS_RUNTIME_WORKSPACE_AUTHORITY_V1",
+            "lifecycle_state": "INGRESSED",
+            "object_id": "object:04d13f88b78d48df81196d4bcc537055",
+            "object_type": "SYMBOLIC_SOURCE_DOCUMENT",
+            "project_id": "project:24a70c42e20549c783dbbf2f30f51b42",
+            "reference_root_hash72": "gsXaUA7d)o5Z)r?/rHOdgej2aNDiG?aDcwYZtc9*5YIMAZ/3oqjc)!sVYeMU9Syg>MgJmSFs",
+            "root_hash72": "<8k1U3k/D0anZ?S6EgZZDz<mM<DCJOkZ0TjOuyDNyNLLNx9MjmYSKI+I4rEXFiGKU3BmTg+L",
+            "schema": "HHS_WORKSPACE_OBJECT_REFERENCE_V1",
+            "source_uri": "workspace://project:24a70c42e20549c783dbbf2f30f51b42/ingress/ingress:0e7cc848706148eeb5cb186194ac5261",
+            "version": "PASS_049_HHS_VISUAL_RUNTIME_OS_WORKSPACE_V1"
+          },
+          "ok": true,
+          "project": {
+            "authority": "HHS_RUNTIME_WORKSPACE_AUTHORITY_V1",
+            "created_at_unix_ms": 1783782405002,
+            "manifest": {
+              "artifact_registry_root_hash72": "02eg>!a1h7<efEVxj7gfnDybcstCusCCo><qQ2FkEFGHIJKLMNOPQRSTUVWXYZ-+*/()<>!z",
+              "authority": "HHS_RUNTIME_WORKSPACE_AUTHORITY_V1",
+              "expanded_metadata_retained": false,
+              "manifest_root_hash72": "qJh04MZ1QJcHz-NqG<rtW3Y14loWUS(D(ZQA3/OahTnEOB?dkZ*jtVcT!1Hs)M>xuF6zULyq",
+              "object_registry_root_hash72": "D5uYC-/2CI>4fz9)2N83tcH-sXcGVb/u?a??rJ*HHRI/?YGoc1eOobY1PpL(MZM1K*2hvn/!",
+              "project_id": "project:24a70c42e20549c783dbbf2f30f51b42",
+              "project_root_hash72": "U1IT3urAM5?1Rs1y2WAD2cjVFBl2I)cOhVkIooqJpvt9wxtc/>RYNrA(CwI<-xEzpA?EQvOZ",
+              "receipt_tip_hash72": "S/0(U9-w5IsL)Z?jqyzVHryD5dz-4<Xo(MHgtbnqYsmL9tvvwp?4>aph(9S(fQhaFmV<CgPX",
+              "reconstruction_recipe_id": "recipe:project:24a70c42e20549c783dbbf2f30f51b42:manifest",
+              "schema": "HHS_WORKSPACE_PERSISTENCE_MANIFEST_V1",
+              "semantic_index_root_hash72": "02eg>!a1h7<efEZokmoq98vcCwgmV8AmyRGr0?tT5IkHIJKLMNOPQRSTUVWXYZ-+*/()<>!z",
+              "storage_mode": "ROOTS_PLUS_CANONICAL_OBJECTS",
+              "version": "PASS_049_HHS_VISUAL_RUNTIME_OS_WORKSPACE_V1",
+              "workspace_layout_root_hash72": "02eg>!a1h7<efE<5F8pjwao5IbRj*+lL>hBpZsJDv(jCKLG<EWuV*G+OUR4J2R!?Udk)<>!z"
+            },
+            "name": "Ingress Workspace",
+            "object_order": [
+              "object:04d13f88b78d48df81196d4bcc537055"
+            ],
+            "object_registry": {
+              "object:04d13f88b78d48df81196d4bcc537055": {
+                "authority": "HHS_RUNTIME_WORKSPACE_AUTHORITY_V1",
+                "canonical_payload_ref": "workspace-blob://<8k1U3k/D0anZ?S6EgZZDz<mM<DCJOkZ0TjOuyDNyNLLNx9MjmYSKI+I4rEXFiGKU3BmTg+L",
+                "created_at_unix_ms": 1783782405065,
+                "current_root_hash72": "<8k1U3k/D0anZ?S6EgZZDz<mM<DCJOkZ0TjOuyDNyNLLNx9MjmYSKI+I4rEXFiGKU3BmTg+L",
+                "derived_child_ids": [],
+                "derived_projection_policy": "DERIVED_OBJECTS_DO_NOT_REPLACE_SOURCE",
+                "ingress_packet_hash72": "ULrbGUcUlSB9*7W0HPLmHe0CQk5W-BGWlBnq8+z91cf?g6/OgqwJIwG9<SrgduLziA4dLFCA",
+                "lifecycle_state": "INGRESSED",
+                "modality": "HARMONICODE_SOURCE",
+                "mutation_sequence": 0,
+                "name": "main.hhs",
+                "object_id": "object:04d13f88b78d48df81196d4bcc537055",
+                "object_root_hash72": "phJHLRDqAqRbUuEKIIlJbwxZ-6b3ApFEerTfyiErXEI7kRpnx9QU88Wc0aD+jh+1*(/SiOjT",
+                "object_type": "SYMBOLIC_SOURCE_DOCUMENT",
+                "project_id": "project:24a70c42e20549c783dbbf2f30f51b42",
+                "receipt_tip_hash72": "<8k1U3k/D0anZ?S6EgZZDz<mM<DCJOkZ0TjOuyDNyNLLNx9MjmYSKI+I4rEXFiGKU3BmTg+L",
+                "reconstruction_recipe": {
+                  "authority": "HHS_RUNTIME_WORKSPACE_AUTHORITY_V1",
+                  "expanded_metadata_retained": false,
+                  "object_id": "object:04d13f88b78d48df81196d4bcc537055",
+                  "recipe_id": "recipe:3eaccccf19e44c3991a76107ab9a4b9e",
+                  "recipe_root_hash72": "i1FRuMoCqPJX4fFDcFtc4bxbaj(uwK<r4!tIl->GqCjk+3ZlJE+nS!Fq3GwZl-D1)pJJi/nx",
+                  "schema": "HHS_WORKSPACE_RECONSTRUCTION_RECIPE_V1",
+                  "source_root_hash72": "<8k1U3k/D0anZ?S6EgZZDz<mM<DCJOkZ0TjOuyDNyNLLNx9MjmYSKI+I4rEXFiGKU3BmTg+L",
+                  "steps": [
+                    {
+                      "operation": "reconstruct_from_canonical_payload_ref",
+                      "payload_policy": "ROOT_PLUS_CANONICAL_SOURCE_OBJECT"
+                    }
+                  ],
+                  "version": "PASS_049_HHS_VISUAL_RUNTIME_OS_WORKSPACE_V1"
+                },
+                "reconstruction_recipe_id": "recipe:3eaccccf19e44c3991a76107ab9a4b9e",
+                "schema": "HHS_RUNTIME_WORKSPACE_OBJECT_V1",
+                "schema_id": "HHS_SYMBOLIC_SOURCE_DOCUMENT_V1",
+                "source_parent_ids": [],
+                "source_preserved": true,
+                "source_provenance": {
+                  "adapter_id": "adapter:hhs_source.workspace_ingress",
+                  "ingress_id": "ingress:0e7cc848706148eeb5cb186194ac5261",
+                  "lossy_projection": false,
+                  "source_commitment_hash72": "0!9tX0B-ee(0i64chfvmplfrU04UEcrTiWdReMUGG2bwKdpWCZRLniWE8(VI1?(h6iHy-f(C",
+                  "source_uri": "workspace://project:24a70c42e20549c783dbbf2f30f51b42/ingress/ingress:0e7cc848706148eeb5cb186194ac5261"
+                },
+                "source_root_hash72": "<8k1U3k/D0anZ?S6EgZZDz<mM<DCJOkZ0TjOuyDNyNLLNx9MjmYSKI+I4rEXFiGKU3BmTg+L",
+                "updated_at_unix_ms": 1783782405065,
+                "version": "PASS_049_HHS_VISUAL_RUNTIME_OS_WORKSPACE_V1"
+              }
+            },
+            "object_registry_root_hash72": "D5uYC-/2CI>4fz9)2N83tcH-sXcGVb/u?a??rJ*HHRI/?YGoc1eOobY1PpL(MZM1K*2hvn/!",
+            "project_id": "project:24a70c42e20549c783dbbf2f30f51b42",
+            "project_root_hash72": "U1IT3urAM5?1Rs1y2WAD2cjVFBl2I)cOhVkIooqJpvt9wxtc/>RYNrA(CwI<-xEzpA?EQvOZ",
+            "receipt_tip_hash72": "S/0(U9-w5IsL)Z?jqyzVHryD5dz-4<Xo(MHgtbnqYsmL9tvvwp?4>aph(9S(fQhaFmV<CgPX",
+            "schema": "HHS_RUNTIME_WORKSPACE_PROJECT_V1",
+            "semantic_index_root_hash72": "02eg>!a1h7<efEZokmoq98vcCwgmV8AmyRGr0?tT5IkHIJKLMNOPQRSTUVWXYZ-+*/()<>!z",
+            "status": "WORKSPACE_LIVE",
+            "updated_at_unix_ms": 1783782405077,
+            "version": "PASS_049_HHS_VISUAL_RUNTIME_OS_WORKSPACE_V1",
+            "workspace_layout_root_hash72": "02eg>!a1h7<efE<5F8pjwao5IbRj*+lL>hBpZsJDv(jCKLG<EWuV*G+OUR4J2R!?Udk)<>!z"
+          },
+          "receipt_hash72": "S/0(U9-w5IsL)Z?jqyzVHryD5dz-4<Xo(MHgtbnqYsmL9tvvwp?4>aph(9S(fQhaFmV<CgPX",
+          "schema": "HHS_WORKSPACE_PROJECT_OBJECT_REGISTRATION_V1",
+          "status": "WORKSPACE_OBJECT_REGISTERED",
+          "version": "PASS_049_HHS_VISUAL_RUNTIME_OS_WORKSPACE_V1"
+        },
+        "schema": "HHS_WORKSPACE_INGRESS_RESULT_V1",
+        "source_preserved": true,
+        "status": "WORKSPACE_INGRESS_COMPLETED",
+        "validation": {
+          "ingress_id": "ingress:0e7cc848706148eeb5cb186194ac5261",
+          "ok": true,
+          "reasons": [],
+          "schema": "HHS_MULTIMODAL_INGRESS_PACKET_VALIDATION_V1",
+          "source_commitment_hash72": "0!9tX0B-ee(0i64chfvmplfrU04UEcrTiWdReMUGG2bwKdpWCZRLniWE8(VI1?(h6iHy-f(C",
+          "status": "ADMIT_MULTIMODAL_INGRESS",
+          "version": "PASS_049_HHS_VISUAL_RUNTIME_OS_WORKSPACE_V1"
+        },
+        "version": "PASS_049_HHS_VISUAL_RUNTIME_OS_WORKSPACE_V1",
+        "workspace_object": {
+          "authority": "HHS_RUNTIME_WORKSPACE_AUTHORITY_V1",
+          "canonical_payload_ref": "workspace-blob://<8k1U3k/D0anZ?S6EgZZDz<mM<DCJOkZ0TjOuyDNyNLLNx9MjmYSKI+I4rEXFiGKU3BmTg+L",
+          "created_at_unix_ms": 1783782405065,
+          "current_root_hash72": "<8k1U3k/D0anZ?S6EgZZDz<mM<DCJOkZ0TjOuyDNyNLLNx9MjmYSKI+I4rEXFiGKU3BmTg+L",
+          "derived_child_ids": [],
+          "derived_projection_policy": "DERIVED_OBJECTS_DO_NOT_REPLACE_SOURCE",
+          "ingress_packet_hash72": "ULrbGUcUlSB9*7W0HPLmHe0CQk5W-BGWlBnq8+z91cf?g6/OgqwJIwG9<SrgduLziA4dLFCA",
+          "lifecycle_state": "INGRESSED",
+          "modality": "HARMONICODE_SOURCE",
+          "mutation_sequence": 0,
+          "name": "main.hhs",
+          "object_id": "object:04d13f88b78d48df81196d4bcc537055",
+          "object_root_hash72": "phJHLRDqAqRbUuEKIIlJbwxZ-6b3ApFEerTfyiErXEI7kRpnx9QU88Wc0aD+jh+1*(/SiOjT",
+          "object_type": "SYMBOLIC_SOURCE_DOCUMENT",
+          "project_id": "project:24a70c42e20549c783dbbf2f30f51b42",
+          "receipt_tip_hash72": "<8k1U3k/D0anZ?S6EgZZDz<mM<DCJOkZ0TjOuyDNyNLLNx9MjmYSKI+I4rEXFiGKU3BmTg+L",
+          "reconstruction_recipe": {
+            "authority": "HHS_RUNTIME_WORKSPACE_AUTHORITY_V1",
+            "expanded_metadata_retained": false,
+            "object_id": "object:04d13f88b78d48df81196d4bcc537055",
+            "recipe_id": "recipe:3eaccccf19e44c3991a76107ab9a4b9e",
+            "recipe_root_hash72": "i1FRuMoCqPJX4fFDcFtc4bxbaj(uwK<r4!tIl->GqCjk+3ZlJE+nS!Fq3GwZl-D1)pJJi/nx",
+            "schema": "HHS_WORKSPACE_RECONSTRUCTION_RECIPE_V1",
+            "source_root_hash72": "<8k1U3k/D0anZ?S6EgZZDz<mM<DCJOkZ0TjOuyDNyNLLNx9MjmYSKI+I4rEXFiGKU3BmTg+L",
+            "steps": [
+              {
+                "operation": "reconstruct_from_canonical_payload_ref",
+                "payload_policy": "ROOT_PLUS_CANONICAL_SOURCE_OBJECT"
+              }
+            ],
+            "version": "PASS_049_HHS_VISUAL_RUNTIME_OS_WORKSPACE_V1"
+          },
+          "reconstruction_recipe_id": "recipe:3eaccccf19e44c3991a76107ab9a4b9e",
+          "schema": "HHS_RUNTIME_WORKSPACE_OBJECT_V1",
+          "schema_id": "HHS_SYMBOLIC_SOURCE_DOCUMENT_V1",
+          "source_parent_ids": [],
+          "source_preserved": true,
+          "source_provenance": {
+            "adapter_id": "adapter:hhs_source.workspace_ingress",
+            "ingress_id": "ingress:0e7cc848706148eeb5cb186194ac5261",
+            "lossy_projection": false,
+            "source_commitment_hash72": "0!9tX0B-ee(0i64chfvmplfrU04UEcrTiWdReMUGG2bwKdpWCZRLniWE8(VI1?(h6iHy-f(C",
+            "source_uri": "workspace://project:24a70c42e20549c783dbbf2f30f51b42/ingress/ingress:0e7cc848706148eeb5cb186194ac5261"
+          },
+          "source_root_hash72": "<8k1U3k/D0anZ?S6EgZZDz<mM<DCJOkZ0TjOuyDNyNLLNx9MjmYSKI+I4rEXFiGKU3BmTg+L",
+          "updated_at_unix_ms": 1783782405065,
+          "version": "PASS_049_HHS_VISUAL_RUNTIME_OS_WORKSPACE_V1"
+        }
+      },
+      {
+        "ingress_result_hash72": "X/ewjkx)ZmELvqc6msZwlPeGm9LF-TT+*o5qpWT3j3IXeV7dhnJP/8hmnYmpUDQgFK6Aq3+v",
+        "ok": true,
+        "packet": {
+          "adapter_id": "adapter:json.workspace_ingress",
+          "authority": "HHS_RUNTIME_WORKSPACE_AUTHORITY_V1",
+          "authority_required": true,
+          "created_at_unix_ms": 1783782405110,
+          "declared_modality": "JSON",
+          "detected_modality": "JSON",
+          "expanded_metadata_policy": "BOUNDED_TEMPORARY",
+          "ingress_id": "ingress:b3b43bd844ea4151a26d211ff1bed179",
+          "ingress_packet_hash72": "q8fBS<Z1Bx0+9mPpa-t+h-IUi3V0*!K0/UqB-y<lgw+<aC9knwbVlYYQn/eFvHqXZuEiBno5",
+          "mime_type": "application/json",
+          "project_id": "project:24a70c42e20549c783dbbf2f30f51b42",
+          "projection_policy": "PRESERVE_UNRESOLVED_SOURCE",
+          "schema": "HHS_MULTIMODAL_INGRESS_PACKET_V1",
+          "source_commitment_hash72": "b/l2mWeYlel8?wj6bS!ucrA5wM5yL/RrEswwo+x*pbtb(!DCN(+u8CSMjnMV0X2>OiHA6(!*",
+          "source_name": "object.json",
+          "source_size_bytes": 20,
+          "version": "PASS_049_HHS_VISUAL_RUNTIME_OS_WORKSPACE_V1"
+        },
+        "projection_is_canonical_source": false,
+        "registration": {
+          "object_reference": {
+            "authority": "HHS_RUNTIME_WORKSPACE_AUTHORITY_V1",
+            "lifecycle_state": "INGRESSED",
+            "object_id": "object:67917ec82c4a4bb885c8c3a6e6a4f2e1",
+            "object_type": "MULTIMODAL_OBJECT",
+            "project_id": "project:24a70c42e20549c783dbbf2f30f51b42",
+            "reference_root_hash72": "pfe6yE)E)qKS)<Myy<xts*BIymeXXDpWW!>xHygEd(A/hSe5mC(mZ3G7CkC)51M923QXyRQ+",
+            "root_hash72": "ge2okFCV?Fk/jDpYqC9xn3IfnAmWcU?pK(eCV7LLJ6pA0kbRI)mTKw1-thaggM5X>SqW2I>x",
+            "schema": "HHS_WORKSPACE_OBJECT_REFERENCE_V1",
+            "source_uri": "workspace://project:24a70c42e20549c783dbbf2f30f51b42/ingress/ingress:b3b43bd844ea4151a26d211ff1bed179",
+            "version": "PASS_049_HHS_VISUAL_RUNTIME_OS_WORKSPACE_V1"
+          },
+          "ok": true,
+          "project": {
+            "authority": "HHS_RUNTIME_WORKSPACE_AUTHORITY_V1",
+            "created_at_unix_ms": 1783782405002,
+            "manifest": {
+              "artifact_registry_root_hash72": "02eg>!a1h7<efEVxj7gfnDybcstCusCCo><qQ2FkEFGHIJKLMNOPQRSTUVWXYZ-+*/()<>!z",
+              "authority": "HHS_RUNTIME_WORKSPACE_AUTHORITY_V1",
+              "expanded_metadata_retained": false,
+              "manifest_root_hash72": "hACbtrewQxGtEbLB6k*aokTEr05e3qCls8d0D6tuBw7ALv6FP!XxfYXydh0IdwmwqminRgxd",
+              "object_registry_root_hash72": "*3PtrQtucR!f4>eDMm6qQErIcMBa9jIzm7XeFWW!VkeWxyAofjGQE!!LqRSe9RINoi5k4<Un",
+              "project_id": "project:24a70c42e20549c783dbbf2f30f51b42",
+              "project_root_hash72": "SwXLbU+/3+x7?)3rjLyE+kHrgB/z-6RGBe/pCGjOMekTeShKZgPGM7+CbgHme8l2PrjV6<a+",
+              "receipt_tip_hash72": "pfml9yMdYMK-Tp)l4lz23KZa(Gscqt5pfO+YLTi>MBE8NB)0*YueTNfpx?r?FI!BjQax3ibj",
+              "reconstruction_recipe_id": "recipe:project:24a70c42e20549c783dbbf2f30f51b42:manifest",
+              "schema": "HHS_WORKSPACE_PERSISTENCE_MANIFEST_V1",
+              "semantic_index_root_hash72": "02eg>!a1h7<efEZokmoq98vcCwgmV8AmyRGr0?tT5IkHIJKLMNOPQRSTUVWXYZ-+*/()<>!z",
+              "storage_mode": "ROOTS_PLUS_CANONICAL_OBJECTS",
+              "version": "PASS_049_HHS_VISUAL_RUNTIME_OS_WORKSPACE_V1",
+              "workspace_layout_root_hash72": "02eg>!a1h7<efE<5F8pjwao5IbRj*+lL>hBpZsJDv(jCKLG<EWuV*G+OUR4J2R!?Udk)<>!z"
+            },
+            "name": "Ingress Workspace",
+            "object_order": [
+              "object:67917ec82c4a4bb885c8c3a6e6a4f2e1"
+            ],
+            "object_registry": {
+              "object:67917ec82c4a4bb885c8c3a6e6a4f2e1": {
+                "authority": "HHS_RUNTIME_WORKSPACE_AUTHORITY_V1",
+                "canonical_payload_ref": "workspace-blob://ge2okFCV?Fk/jDpYqC9xn3IfnAmWcU?pK(eCV7LLJ6pA0kbRI)mTKw1-thaggM5X>SqW2I>x",
+                "created_at_unix_ms": 1783782405114,
+                "current_root_hash72": "ge2okFCV?Fk/jDpYqC9xn3IfnAmWcU?pK(eCV7LLJ6pA0kbRI)mTKw1-thaggM5X>SqW2I>x",
+                "derived_child_ids": [],
+                "derived_projection_policy": "DERIVED_OBJECTS_DO_NOT_REPLACE_SOURCE",
+                "ingress_packet_hash72": "q8fBS<Z1Bx0+9mPpa-t+h-IUi3V0*!K0/UqB-y<lgw+<aC9knwbVlYYQn/eFvHqXZuEiBno5",
+                "lifecycle_state": "INGRESSED",
+                "modality": "JSON",
+                "mutation_sequence": 0,
+                "name": "object.json",
+                "object_id": "object:67917ec82c4a4bb885c8c3a6e6a4f2e1",
+                "object_root_hash72": "zm6dJ7PsDFoM3Nnuwh6RQhND/Ci7M?DP?CwB2d4QOI0dodWlIOTyyyjww?GRVgJXef2X<vR+",
+                "object_type": "MULTIMODAL_OBJECT",
+                "project_id": "project:24a70c42e20549c783dbbf2f30f51b42",
+                "receipt_tip_hash72": "ge2okFCV?Fk/jDpYqC9xn3IfnAmWcU?pK(eCV7LLJ6pA0kbRI)mTKw1-thaggM5X>SqW2I>x",
+                "reconstruction_recipe": {
+                  "authority": "HHS_RUNTIME_WORKSPACE_AUTHORITY_V1",
+                  "expanded_metadata_retained": false,
+                  "object_id": "object:67917ec82c4a4bb885c8c3a6e6a4f2e1",
+                  "recipe_id": "recipe:796fa3d633ff4f4c9c2c55065994d103",
+                  "recipe_root_hash72": "8hG)NbGHBG2h*(0I)m2ik7DWJ9<aB2NH2oGAoR91CiX*rS(2)y<ol+m+9UYW4F>FrReXUNkM",
+                  "schema": "HHS_WORKSPACE_RECONSTRUCTION_RECIPE_V1",
+                  "source_root_hash72": "ge2okFCV?Fk/jDpYqC9xn3IfnAmWcU?pK(eCV7LLJ6pA0kbRI)mTKw1-thaggM5X>SqW2I>x",
+                  "steps": [
+                    {
+                      "operation": "reconstruct_from_canonical_payload_ref",
+                      "payload_policy": "ROOT_PLUS_CANONICAL_SOURCE_OBJECT"
+                    }
+                  ],
+                  "version": "PASS_049_HHS_VISUAL_RUNTIME_OS_WORKSPACE_V1"
+                },
+                "reconstruction_recipe_id": "recipe:796fa3d633ff4f4c9c2c55065994d103",
+                "schema": "HHS_RUNTIME_WORKSPACE_OBJECT_V1",
+                "schema_id": "HHS_MULTIMODAL_WORKSPACE_OBJECT_V1",
+                "source_parent_ids": [],
+                "source_preserved": true,
+                "source_provenance": {
+                  "adapter_id": "adapter:json.workspace_ingress",
+                  "ingress_id": "ingress:b3b43bd844ea4151a26d211ff1bed179",
+                  "lossy_projection": false,
+                  "source_commitment_hash72": "b/l2mWeYlel8?wj6bS!ucrA5wM5yL/RrEswwo+x*pbtb(!DCN(+u8CSMjnMV0X2>OiHA6(!*",
+                  "source_uri": "workspace://project:24a70c42e20549c783dbbf2f30f51b42/ingress/ingress:b3b43bd844ea4151a26d211ff1bed179"
+                },
+                "source_root_hash72": "ge2okFCV?Fk/jDpYqC9xn3IfnAmWcU?pK(eCV7LLJ6pA0kbRI)mTKw1-thaggM5X>SqW2I>x",
+                "updated_at_unix_ms": 1783782405114,
+                "version": "PASS_049_HHS_VISUAL_RUNTIME_OS_WORKSPACE_V1"
+              }
+            },
+            "object_registry_root_hash72": "*3PtrQtucR!f4>eDMm6qQErIcMBa9jIzm7XeFWW!VkeWxyAofjGQE!!LqRSe9RINoi5k4<Un",
+            "project_id": "project:24a70c42e20549c783dbbf2f30f51b42",
+            "project_root_hash72": "SwXLbU+/3+x7?)3rjLyE+kHrgB/z-6RGBe/pCGjOMekTeShKZgPGM7+CbgHme8l2PrjV6<a+",
+            "receipt_tip_hash72": "pfml9yMdYMK-Tp)l4lz23KZa(Gscqt5pfO+YLTi>MBE8NB)0*YueTNfpx?r?FI!BjQax3ibj",
+            "schema": "HHS_RUNTIME_WORKSPACE_PROJECT_V1",
+            "semantic_index_root_hash72": "02eg>!a1h7<efEZokmoq98vcCwgmV8AmyRGr0?tT5IkHIJKLMNOPQRSTUVWXYZ-+*/()<>!z",
+            "status": "WORKSPACE_LIVE",
+            "updated_at_unix_ms": 1783782405126,
+            "version": "PASS_049_HHS_VISUAL_RUNTIME_OS_WORKSPACE_V1",
+            "workspace_layout_root_hash72": "02eg>!a1h7<efE<5F8pjwao5IbRj*+lL>hBpZsJDv(jCKLG<EWuV*G+OUR4J2R!?Udk)<>!z"
+          },
+          "receipt_hash72": "pfml9yMdYMK-Tp)l4lz23KZa(Gscqt5pfO+YLTi>MBE8NB)0*YueTNfpx?r?FI!BjQax3ibj",
+          "schema": "HHS_WORKSPACE_PROJECT_OBJECT_REGISTRATION_V1",
+          "status": "WORKSPACE_OBJECT_REGISTERED",
+          "version": "PASS_049_HHS_VISUAL_RUNTIME_OS_WORKSPACE_V1"
+        },
+        "schema": "HHS_WORKSPACE_INGRESS_RESULT_V1",
+        "source_preserved": true,
+        "status": "WORKSPACE_INGRESS_COMPLETED",
+        "validation": {
+          "ingress_id": "ingress:b3b43bd844ea4151a26d211ff1bed179",
+          "ok": true,
+          "reasons": [],
+          "schema": "HHS_MULTIMODAL_INGRESS_PACKET_VALIDATION_V1",
+          "source_commitment_hash72": "b/l2mWeYlel8?wj6bS!ucrA5wM5yL/RrEswwo+x*pbtb(!DCN(+u8CSMjnMV0X2>OiHA6(!*",
+          "status": "ADMIT_MULTIMODAL_INGRESS",
+          "version": "PASS_049_HHS_VISUAL_RUNTIME_OS_WORKSPACE_V1"
+        },
+        "version": "PASS_049_HHS_VISUAL_RUNTIME_OS_WORKSPACE_V1",
+        "workspace_object": {
+          "authority": "HHS_RUNTIME_WORKSPACE_AUTHORITY_V1",
+          "canonical_payload_ref": "workspace-blob://ge2okFCV?Fk/jDpYqC9xn3IfnAmWcU?pK(eCV7LLJ6pA0kbRI)mTKw1-thaggM5X>SqW2I>x",
+          "created_at_unix_ms": 1783782405114,
+          "current_root_hash72": "ge2okFCV?Fk/jDpYqC9xn3IfnAmWcU?pK(eCV7LLJ6pA0kbRI)mTKw1-thaggM5X>SqW2I>x",
+          "derived_child_ids": [],
+          "derived_projection_policy": "DERIVED_OBJECTS_DO_NOT_REPLACE_SOURCE",
+          "ingress_packet_hash72": "q8fBS<Z1Bx0+9mPpa-t+h-IUi3V0*!K0/UqB-y<lgw+<aC9knwbVlYYQn/eFvHqXZuEiBno5",
+          "lifecycle_state": "INGRESSED",
+          "modality": "JSON",
+          "mutation_sequence": 0,
+          "name": "object.json",
+          "object_id": "object:67917ec82c4a4bb885c8c3a6e6a4f2e1",
+          "object_root_hash72": "zm6dJ7PsDFoM3Nnuwh6RQhND/Ci7M?DP?CwB2d4QOI0dodWlIOTyyyjww?GRVgJXef2X<vR+",
+          "object_type": "MULTIMODAL_OBJECT",
+          "project_id": "project:24a70c42e20549c783dbbf2f30f51b42",
+          "receipt_tip_hash72": "ge2okFCV?Fk/jDpYqC9xn3IfnAmWcU?pK(eCV7LLJ6pA0kbRI)mTKw1-thaggM5X>SqW2I>x",
+          "reconstruction_recipe": {
+            "authority": "HHS_RUNTIME_WORKSPACE_AUTHORITY_V1",
+            "expanded_metadata_retained": false,
+            "object_id": "object:67917ec82c4a4bb885c8c3a6e6a4f2e1",
+            "recipe_id": "recipe:796fa3d633ff4f4c9c2c55065994d103",
+            "recipe_root_hash72": "8hG)NbGHBG2h*(0I)m2ik7DWJ9<aB2NH2oGAoR91CiX*rS(2)y<ol+m+9UYW4F>FrReXUNkM",
+            "schema": "HHS_WORKSPACE_RECONSTRUCTION_RECIPE_V1",
+            "source_root_hash72": "ge2okFCV?Fk/jDpYqC9xn3IfnAmWcU?pK(eCV7LLJ6pA0kbRI)mTKw1-thaggM5X>SqW2I>x",
+            "steps": [
+              {
+                "operation": "reconstruct_from_canonical_payload_ref",
+                "payload_policy": "ROOT_PLUS_CANONICAL_SOURCE_OBJECT"
+              }
+            ],
+            "version": "PASS_049_HHS_VISUAL_RUNTIME_OS_WORKSPACE_V1"
+          },
+          "reconstruction_recipe_id": "recipe:796fa3d633ff4f4c9c2c55065994d103",
+          "schema": "HHS_RUNTIME_WORKSPACE_OBJECT_V1",
+          "schema_id": "HHS_MULTIMODAL_WORKSPACE_OBJECT_V1",
+          "source_parent_ids": [],
+          "source_preserved": true,
+          "source_provenance": {
+            "adapter_id": "adapter:json.workspace_ingress",
+            "ingress_id": "ingress:b3b43bd844ea4151a26d211ff1bed179",
+            "lossy_projection": false,
+            "source_commitment_hash72": "b/l2mWeYlel8?wj6bS!ucrA5wM5yL/RrEswwo+x*pbtb(!DCN(+u8CSMjnMV0X2>OiHA6(!*",
+            "source_uri": "workspace://project:24a70c42e20549c783dbbf2f30f51b42/ingress/ingress:b3b43bd844ea4151a26d211ff1bed179"
+          },
+          "source_root_hash72": "ge2okFCV?Fk/jDpYqC9xn3IfnAmWcU?pK(eCV7LLJ6pA0kbRI)mTKw1-thaggM5X>SqW2I>x",
+          "updated_at_unix_ms": 1783782405114,
+          "version": "PASS_049_HHS_VISUAL_RUNTIME_OS_WORKSPACE_V1"
+        }
+      },
+      {
+        "ingress_result_hash72": "Fgr2pp6?mgh>I-6tu1jnAothsrF6xc(Xh>Sui*U!6ts8zft*8dW67K7y8cr(Z(UqHeMo*??j",
+        "ok": true,
+        "packet": {
+          "adapter_id": "adapter:pdf.workspace_ingress",
+          "authority": "HHS_RUNTIME_WORKSPACE_AUTHORITY_V1",
+          "authority_required": true,
+          "created_at_unix_ms": 1783782405163,
+          "declared_modality": "PDF",
+          "detected_modality": "PDF",
+          "expanded_metadata_policy": "BOUNDED_TEMPORARY",
+          "ingress_id": "ingress:0f0c88471b434b399e5d66b41bcf56c6",
+          "ingress_packet_hash72": "?Jinlk8!rFtZHUnCCdbhF/*-PqtlSW-83I5KyG2KD2qze5AI+M6jW6U/(0mtT7*TDyZBfwR/",
+          "mime_type": "application/pdf",
+          "project_id": "project:24a70c42e20549c783dbbf2f30f51b42",
+          "projection_policy": "PRESERVE_UNRESOLVED_SOURCE",
+          "schema": "HHS_MULTIMODAL_INGRESS_PACKET_V1",
+          "source_commitment_hash72": "+90FV2>5owJiXt<>9qdw7Bs2Tj!JLdyEuBIfwGZDJ!aXBhgWE-/AXIX?zYMV0X2>OiHGV0zK",
+          "source_name": "paper.pdf",
+          "source_size_bytes": 17,
+          "version": "PASS_049_HHS_VISUAL_RUNTIME_OS_WORKSPACE_V1"
+        },
+        "projection_is_canonical_source": false,
+        "registration": {
+          "object_reference": {
+            "authority": "HHS_RUNTIME_WORKSPACE_AUTHORITY_V1",
+            "lifecycle_state": "INGRESSED",
+            "object_id": "object:2a1e9cef2d9d483f8afcb0558ec6fc9a",
+            "object_type": "MULTIMODAL_OBJECT",
+            "project_id": "project:24a70c42e20549c783dbbf2f30f51b42",
+            "reference_root_hash72": "7!Ai9Ah8I6htRhEIqv5wsIw/ORSh9kz>+6vSV5wlHy/STUCjp31dOp?Z/)YciX0<9I7qbo03",
+            "root_hash72": "78oiDqe4lapnqg!0wb3EN*Hq8ql/b0)kI(hVjCwW+uTw)ihz>tSJv0Zsg9fgJbQbEhV(P7-L",
+            "schema": "HHS_WORKSPACE_OBJECT_REFERENCE_V1",
+            "source_uri": "workspace://project:24a70c42e20549c783dbbf2f30f51b42/ingress/ingress:0f0c88471b434b399e5d66b41bcf56c6",
+            "version": "PASS_049_HHS_VISUAL_RUNTIME_OS_WORKSPACE_V1"
+          },
+          "ok": true,
+          "project": {
+            "authority": "HHS_RUNTIME_WORKSPACE_AUTHORITY_V1",
+            "created_at_unix_ms": 1783782405002,
+            "manifest": {
+              "artifact_registry_root_hash72": "02eg>!a1h7<efEVxj7gfnDybcstCusCCo><qQ2FkEFGHIJKLMNOPQRSTUVWXYZ-+*/()<>!z",
+              "authority": "HHS_RUNTIME_WORKSPACE_AUTHORITY_V1",
+              "expanded_metadata_retained": false,
+              "manifest_root_hash72": "*nLu/gKrSRv-CGbG!)E*gfZtj7csBRyBr*VZzwuj9slYDSlcPJiIvciWUnqgC2VJl*>eMnCC",
+              "object_registry_root_hash72": "A2(pw3!9*sJ*2J0y3GU!9Do)7!NwbhRzAolzooIMMrKsypPvoNETI>yPXnkJ1<s!7vYPArpk",
+              "project_id": "project:24a70c42e20549c783dbbf2f30f51b42",
+              "project_root_hash72": "f/j1AaD(7tDeWTJfMGQXD7qrxR5FrfV5nrp6r1GxlvuXDJlBg6TjUNsa9c7WTfgy*Oac*TtX",
+              "receipt_tip_hash72": "R9></9kB)DPnvrFxgR!4cCMFQZhcNdL!E6lGLGtVZZ>e7THJ/ohw/gs!mdNPQJX1QkU15Zgw",
+              "reconstruction_recipe_id": "recipe:project:24a70c42e20549c783dbbf2f30f51b42:manifest",
+              "schema": "HHS_WORKSPACE_PERSISTENCE_MANIFEST_V1",
+              "semantic_index_root_hash72": "02eg>!a1h7<efEZokmoq98vcCwgmV8AmyRGr0?tT5IkHIJKLMNOPQRSTUVWXYZ-+*/()<>!z",
+              "storage_mode": "ROOTS_PLUS_CANONICAL_OBJECTS",
+              "version": "PASS_049_HHS_VISUAL_RUNTIME_OS_WORKSPACE_V1",
+              "workspace_layout_root_hash72": "02eg>!a1h7<efE<5F8pjwao5IbRj*+lL>hBpZsJDv(jCKLG<EWuV*G+OUR4J2R!?Udk)<>!z"
+            },
+            "name": "Ingress Workspace",
+            "object_order": [
+              "object:2a1e9cef2d9d483f8afcb0558ec6fc9a"
+            ],
+            "object_registry": {
+              "object:2a1e9cef2d9d483f8afcb0558ec6fc9a": {
+                "authority": "HHS_RUNTIME_WORKSPACE_AUTHORITY_V1",
+                "canonical_payload_ref": "workspace-blob://78oiDqe4lapnqg!0wb3EN*Hq8ql/b0)kI(hVjCwW+uTw)ihz>tSJv0Zsg9fgJbQbEhV(P7-L",
+                "created_at_unix_ms": 1783782405166,
+                "current_root_hash72": "78oiDqe4lapnqg!0wb3EN*Hq8ql/b0)kI(hVjCwW+uTw)ihz>tSJv0Zsg9fgJbQbEhV(P7-L",
+                "derived_child_ids": [],
+                "derived_projection_policy": "DERIVED_OBJECTS_DO_NOT_REPLACE_SOURCE",
+                "ingress_packet_hash72": "?Jinlk8!rFtZHUnCCdbhF/*-PqtlSW-83I5KyG2KD2qze5AI+M6jW6U/(0mtT7*TDyZBfwR/",
+                "lifecycle_state": "INGRESSED",
+                "modality": "PDF",
+                "mutation_sequence": 0,
+                "name": "paper.pdf",
+                "object_id": "object:2a1e9cef2d9d483f8afcb0558ec6fc9a",
+                "object_root_hash72": "kVsXr3zHdE/Bw(VUsU9v9T>m+OAhN*5+taTv93T1(zk2cYHahyU*dn7d?)mJWY!!sZofZPib",
+                "object_type": "MULTIMODAL_OBJECT",
+                "project_id": "project:24a70c42e20549c783dbbf2f30f51b42",
+                "receipt_tip_hash72": "78oiDqe4lapnqg!0wb3EN*Hq8ql/b0)kI(hVjCwW+uTw)ihz>tSJv0Zsg9fgJbQbEhV(P7-L",
+                "reconstruction_recipe": {
+                  "authority": "HHS_RUNTIME_WORKSPACE_AUTHORITY_V1",
+                  "expanded_metadata_retained": false,
+                  "object_id": "object:2a1e9cef2d9d483f8afcb0558ec6fc9a",
+                  "recipe_id": "recipe:f018af392fd64c589fb2d596b49332cb",
+                  "recipe_root_hash72": "jN0S3jI8liuvImQmggo/dQy()UvcGY+MbaFZX8soKu(mOfxCaP?qo7nTfEmDvuQqv)Sr3-5y",
+                  "schema": "HHS_WORKSPACE_RECONSTRUCTION_RECIPE_V1",
+                  "source_root_hash72": "78oiDqe4lapnqg!0wb3EN*Hq8ql/b0)kI(hVjCwW+uTw)ihz>tSJv0Zsg9fgJbQbEhV(P7-L",
+                  "steps": [
+                    {
+                      "operation": "reconstruct_from_canonical_payload_ref",
+                      "payload_policy": "ROOT_PLUS_CANONICAL_SOURCE_OBJECT"
+                    }
+                  ],
+                  "version": "PASS_049_HHS_VISUAL_RUNTIME_OS_WORKSPACE_V1"
+                },
+                "reconstruction_recipe_id": "recipe:f018af392fd64c589fb2d596b49332cb",
+                "schema": "HHS_RUNTIME_WORKSPACE_OBJECT_V1",
+                "schema_id": "HHS_MULTIMODAL_WORKSPACE_OBJECT_V1",
+                "source_parent_ids": [],
+                "source_preserved": true,
+                "source_provenance": {
+                  "adapter_id": "adapter:pdf.workspace_ingress",
+                  "ingress_id": "ingress:0f0c88471b434b399e5d66b41bcf56c6",
+                  "lossy_projection": true,
+                  "source_commitment_hash72": "+90FV2>5owJiXt<>9qdw7Bs2Tj!JLdyEuBIfwGZDJ!aXBhgWE-/AXIX?zYMV0X2>OiHGV0zK",
+                  "source_uri": "workspace://project:24a70c42e20549c783dbbf2f30f51b42/ingress/ingress:0f0c88471b434b399e5d66b41bcf56c6"
+                },
+                "source_root_hash72": "78oiDqe4lapnqg!0wb3EN*Hq8ql/b0)kI(hVjCwW+uTw)ihz>tSJv0Zsg9fgJbQbEhV(P7-L",
+                "updated_at_unix_ms": 1783782405166,
+                "version": "PASS_049_HHS_VISUAL_RUNTIME_OS_WORKSPACE_V1"
+              }
+            },
+            "object_registry_root_hash72": "A2(pw3!9*sJ*2J0y3GU!9Do)7!NwbhRzAolzooIMMrKsypPvoNETI>yPXnkJ1<s!7vYPArpk",
+            "project_id": "project:24a70c42e20549c783dbbf2f30f51b42",
+            "project_root_hash72": "f/j1AaD(7tDeWTJfMGQXD7qrxR5FrfV5nrp6r1GxlvuXDJlBg6TjUNsa9c7WTfgy*Oac*TtX",
+            "receipt_tip_hash72": "R9></9kB)DPnvrFxgR!4cCMFQZhcNdL!E6lGLGtVZZ>e7THJ/ohw/gs!mdNPQJX1QkU15Zgw",
+            "schema": "HHS_RUNTIME_WORKSPACE_PROJECT_V1",
+            "semantic_index_root_hash72": "02eg>!a1h7<efEZokmoq98vcCwgmV8AmyRGr0?tT5IkHIJKLMNOPQRSTUVWXYZ-+*/()<>!z",
+            "status": "WORKSPACE_LIVE",
+            "updated_at_unix_ms": 1783782405178,
+            "version": "PASS_049_HHS_VISUAL_RUNTIME_OS_WORKSPACE_V1",
+            "workspace_layout_root_hash72": "02eg>!a1h7<efE<5F8pjwao5IbRj*+lL>hBpZsJDv(jCKLG<EWuV*G+OUR4J2R!?Udk)<>!z"
+          },
+          "receipt_hash72": "R9></9kB)DPnvrFxgR!4cCMFQZhcNdL!E6lGLGtVZZ>e7THJ/ohw/gs!mdNPQJX1QkU15Zgw",
+          "schema": "HHS_WORKSPACE_PROJECT_OBJECT_REGISTRATION_V1",
+          "status": "WORKSPACE_OBJECT_REGISTERED",
+          "version": "PASS_049_HHS_VISUAL_RUNTIME_OS_WORKSPACE_V1"
+        },
+        "schema": "HHS_WORKSPACE_INGRESS_RESULT_V1",
+        "source_preserved": true,
+        "status": "WORKSPACE_INGRESS_COMPLETED",
+        "validation": {
+          "ingress_id": "ingress:0f0c88471b434b399e5d66b41bcf56c6",
+          "ok": true,
+          "reasons": [],
+          "schema": "HHS_MULTIMODAL_INGRESS_PACKET_VALIDATION_V1",
+          "source_commitment_hash72": "+90FV2>5owJiXt<>9qdw7Bs2Tj!JLdyEuBIfwGZDJ!aXBhgWE-/AXIX?zYMV0X2>OiHGV0zK",
+          "status": "ADMIT_MULTIMODAL_INGRESS",
+          "version": "PASS_049_HHS_VISUAL_RUNTIME_OS_WORKSPACE_V1"
+        },
+        "version": "PASS_049_HHS_VISUAL_RUNTIME_OS_WORKSPACE_V1",
+        "workspace_object": {
+          "authority": "HHS_RUNTIME_WORKSPACE_AUTHORITY_V1",
+          "canonical_payload_ref": "workspace-blob://78oiDqe4lapnqg!0wb3EN*Hq8ql/b0)kI(hVjCwW+uTw)ihz>tSJv0Zsg9fgJbQbEhV(P7-L",
+          "created_at_unix_ms": 1783782405166,
+          "current_root_hash72": "78oiDqe4lapnqg!0wb3EN*Hq8ql/b0)kI(hVjCwW+uTw)ihz>tSJv0Zsg9fgJbQbEhV(P7-L",
+          "derived_child_ids": [],
+          "derived_projection_policy": "DERIVED_OBJECTS_DO_NOT_REPLACE_SOURCE",
+          "ingress_packet_hash72": "?Jinlk8!rFtZHUnCCdbhF/*-PqtlSW-83I5KyG2KD2qze5AI+M6jW6U/(0mtT7*TDyZBfwR/",
+          "lifecycle_state": "INGRESSED",
+          "modality": "PDF",
+          "mutation_sequence": 0,
+          "name": "paper.pdf",
+          "object_id": "object:2a1e9cef2d9d483f8afcb0558ec6fc9a",
+          "object_root_hash72": "kVsXr3zHdE/Bw(VUsU9v9T>m+OAhN*5+taTv93T1(zk2cYHahyU*dn7d?)mJWY!!sZofZPib",
+          "object_type": "MULTIMODAL_OBJECT",
+          "project_id": "project:24a70c42e20549c783dbbf2f30f51b42",
+          "receipt_tip_hash72": "78oiDqe4lapnqg!0wb3EN*Hq8ql/b0)kI(hVjCwW+uTw)ihz>tSJv0Zsg9fgJbQbEhV(P7-L",
+          "reconstruction_recipe": {
+            "authority": "HHS_RUNTIME_WORKSPACE_AUTHORITY_V1",
+            "expanded_metadata_retained": false,
+            "object_id": "object:2a1e9cef2d9d483f8afcb0558ec6fc9a",
+            "recipe_id": "recipe:f018af392fd64c589fb2d596b49332cb",
+            "recipe_root_hash72": "jN0S3jI8liuvImQmggo/dQy()UvcGY+MbaFZX8soKu(mOfxCaP?qo7nTfEmDvuQqv)Sr3-5y",
+            "schema": "HHS_WORKSPACE_RECONSTRUCTION_RECIPE_V1",
+            "source_root_hash72": "78oiDqe4lapnqg!0wb3EN*Hq8ql/b0)kI(hVjCwW+uTw)ihz>tSJv0Zsg9fgJbQbEhV(P7-L",
+            "steps": [
+              {
+                "operation": "reconstruct_from_canonical_payload_ref",
+                "payload_policy": "ROOT_PLUS_CANONICAL_SOURCE_OBJECT"
+              }
+            ],
+            "version": "PASS_049_HHS_VISUAL_RUNTIME_OS_WORKSPACE_V1"
+          },
+          "reconstruction_recipe_id": "recipe:f018af392fd64c589fb2d596b49332cb",
+          "schema": "HHS_RUNTIME_WORKSPACE_OBJECT_V1",
+          "schema_id": "HHS_MULTIMODAL_WORKSPACE_OBJECT_V1",
+          "source_parent_ids": [],
+          "source_preserved": true,
+          "source_provenance": {
+            "adapter_id": "adapter:pdf.workspace_ingress",
+            "ingress_id": "ingress:0f0c88471b434b399e5d66b41bcf56c6",
+            "lossy_projection": true,
+            "source_commitment_hash72": "+90FV2>5owJiXt<>9qdw7Bs2Tj!JLdyEuBIfwGZDJ!aXBhgWE-/AXIX?zYMV0X2>OiHGV0zK",
+            "source_uri": "workspace://project:24a70c42e20549c783dbbf2f30f51b42/ingress/ingress:0f0c88471b434b399e5d66b41bcf56c6"
+          },
+          "source_root_hash72": "78oiDqe4lapnqg!0wb3EN*Hq8ql/b0)kI(hVjCwW+uTw)ihz>tSJv0Zsg9fgJbQbEhV(P7-L",
+          "updated_at_unix_ms": 1783782405166,
+          "version": "PASS_049_HHS_VISUAL_RUNTIME_OS_WORKSPACE_V1"
+        }
+      },
+      {
+        "ingress_result_hash72": "TM(hLK-WDGwk2z-VjjQqDNrMo(c)GJKD!FoCNK>>6W?YYTJ/V8v88(0lSlZ3AW2)h9g0ro17",
+        "ok": true,
+        "packet": {
+          "adapter_id": "adapter:image.workspace_ingress",
+          "authority": "HHS_RUNTIME_WORKSPACE_AUTHORITY_V1",
+          "authority_required": true,
+          "created_at_unix_ms": 1783782405209,
+          "declared_modality": "IMAGE",
+          "detected_modality": "IMAGE",
+          "expanded_metadata_policy": "BOUNDED_TEMPORARY",
+          "ingress_id": "ingress:0e38b25cb27b4f57bdcb7a968329ee02",
+          "ingress_packet_hash72": "g-1Jwic>S>MCF+2rRgFNCN646oU>h>0UDd!mx9WJe-69xePDlIQQV4EGlAfK0ZvtNI<c-7Gi",
+          "mime_type": "image/png",
+          "project_id": "project:24a70c42e20549c783dbbf2f30f51b42",
+          "projection_policy": "PRESERVE_UNRESOLVED_SOURCE",
+          "schema": "HHS_MULTIMODAL_INGRESS_PACKET_V1",
+          "source_commitment_hash72": "Cd5nTn!54b3D*f*fVs3FjkeBdL8g!(SlHrRrfOE)ki>EdXsM*ERU/EMTjnMV0X2>OiHz1W5y",
+          "source_name": "glyph.png",
+          "source_size_bytes": 16,
+          "version": "PASS_049_HHS_VISUAL_RUNTIME_OS_WORKSPACE_V1"
+        },
+        "projection_is_canonical_source": false,
+        "registration": {
+          "object_reference": {
+            "authority": "HHS_RUNTIME_WORKSPACE_AUTHORITY_V1",
+            "lifecycle_state": "INGRESSED",
+            "object_id": "object:4683b849629e411b9820ec00d4d789eb",
+            "object_type": "MULTIMODAL_OBJECT",
+            "project_id": "project:24a70c42e20549c783dbbf2f30f51b42",
+            "reference_root_hash72": "jEJR23c95d?B79LAk)CtPJulVmeXXDpWW>/uYuo*y*1632zqq<bFV?)1h9Yf!c>N*AiJOXgM",
+            "root_hash72": "<uR+TVl22XIKyFK2mkfnzr1Si>IKvU?pK(eCV7LLJ6pA0kaMA2*a(iiBN4+*XW25-tC*+F1L",
+            "schema": "HHS_WORKSPACE_OBJECT_REFERENCE_V1",
+            "source_uri": "workspace://project:24a70c42e20549c783dbbf2f30f51b42/ingress/ingress:0e38b25cb27b4f57bdcb7a968329ee02",
+            "version": "PASS_049_HHS_VISUAL_RUNTIME_OS_WORKSPACE_V1"
+          },
+          "ok": true,
+          "project": {
+            "authority": "HHS_RUNTIME_WORKSPACE_AUTHORITY_V1",
+            "created_at_unix_ms": 1783782405002,
+            "manifest": {
+              "artifact_registry_root_hash72": "02eg>!a1h7<efEVxj7gfnDybcstCusCCo><qQ2FkEFGHIJKLMNOPQRSTUVWXYZ-+*/()<>!z",
+              "authority": "HHS_RUNTIME_WORKSPACE_AUTHORITY_V1",
+              "expanded_metadata_retained": false,
+              "manifest_root_hash72": "T8wSfkGzI3>c8iE9VuEJW41xfnG9k+e(6QyBU*/BZDq<gZx60+0l/aZO4Lk<DdeabVqIeW6u",
+              "object_registry_root_hash72": "Glm!rv5UBbGtwmAroLCESgKARy/A37BM204W8kLPK56yirL7eRNcYpbgHi*?Uzl!9Spk/MJi",
+              "project_id": "project:24a70c42e20549c783dbbf2f30f51b42",
+              "project_root_hash72": "wtltt0MKS5PUziL8RSDZfLU(?(HkqTWH-*0<gh!vqmpWeMENaISx(VvPO)PM)ygKd(9WDME+",
+              "receipt_tip_hash72": "HwPfvrfW0M6YB?oLjnQLn/ispHeR+)2s9Kwb<I)s8X/!7ZQMyGx7jKRXHbxvaBOM<ozXT!0X",
+              "reconstruction_recipe_id": "recipe:project:24a70c42e20549c783dbbf2f30f51b42:manifest",
+              "schema": "HHS_WORKSPACE_PERSISTENCE_MANIFEST_V1",
+              "semantic_index_root_hash72": "02eg>!a1h7<efEZokmoq98vcCwgmV8AmyRGr0?tT5IkHIJKLMNOPQRSTUVWXYZ-+*/()<>!z",
+              "storage_mode": "ROOTS_PLUS_CANONICAL_OBJECTS",
+              "version": "PASS_049_HHS_VISUAL_RUNTIME_OS_WORKSPACE_V1",
+              "workspace_layout_root_hash72": "02eg>!a1h7<efE<5F8pjwao5IbRj*+lL>hBpZsJDv(jCKLG<EWuV*G+OUR4J2R!?Udk)<>!z"
+            },
+            "name": "Ingress Workspace",
+            "object_order": [
+              "object:4683b849629e411b9820ec00d4d789eb"
+            ],
+            "object_registry": {
+              "object:4683b849629e411b9820ec00d4d789eb": {
+                "authority": "HHS_RUNTIME_WORKSPACE_AUTHORITY_V1",
+                "canonical_payload_ref": "workspace-blob://<uR+TVl22XIKyFK2mkfnzr1Si>IKvU?pK(eCV7LLJ6pA0kaMA2*a(iiBN4+*XW25-tC*+F1L",
+                "created_at_unix_ms": 1783782405212,
+                "current_root_hash72": "<uR+TVl22XIKyFK2mkfnzr1Si>IKvU?pK(eCV7LLJ6pA0kaMA2*a(iiBN4+*XW25-tC*+F1L",
+                "derived_child_ids": [],
+                "derived_projection_policy": "DERIVED_OBJECTS_DO_NOT_REPLACE_SOURCE",
+                "ingress_packet_hash72": "g-1Jwic>S>MCF+2rRgFNCN646oU>h>0UDd!mx9WJe-69xePDlIQQV4EGlAfK0ZvtNI<c-7Gi",
+                "lifecycle_state": "INGRESSED",
+                "modality": "IMAGE",
+                "mutation_sequence": 0,
+                "name": "glyph.png",
+                "object_id": "object:4683b849629e411b9820ec00d4d789eb",
+                "object_root_hash72": "6ymR3oxz*xUOIlL1qwxrt?KkChWUIh1E**)*nhiLoIFOfn/2I)IRGy1vRFERa2Qi0jU/9s3K",
+                "object_type": "MULTIMODAL_OBJECT",
+                "project_id": "project:24a70c42e20549c783dbbf2f30f51b42",
+                "receipt_tip_hash72": "<uR+TVl22XIKyFK2mkfnzr1Si>IKvU?pK(eCV7LLJ6pA0kaMA2*a(iiBN4+*XW25-tC*+F1L",
+                "reconstruction_recipe": {
+                  "authority": "HHS_RUNTIME_WORKSPACE_AUTHORITY_V1",
+                  "expanded_metadata_retained": false,
+                  "object_id": "object:4683b849629e411b9820ec00d4d789eb",
+                  "recipe_id": "recipe:cee85b634755491d8cfbdc6d8be168cd",
+                  "recipe_root_hash72": "4Tx1n6hkPoqD<L6>8ay7Ukm?JLoE-*Xbs?s8t!vQnn1((6pT)y<ol+m+RU+B6YMcuQu4tce1",
+                  "schema": "HHS_WORKSPACE_RECONSTRUCTION_RECIPE_V1",
+                  "source_root_hash72": "<uR+TVl22XIKyFK2mkfnzr1Si>IKvU?pK(eCV7LLJ6pA0kaMA2*a(iiBN4+*XW25-tC*+F1L",
+                  "steps": [
+                    {
+                      "operation": "reconstruct_from_canonical_payload_ref",
+                      "payload_policy": "ROOT_PLUS_CANONICAL_SOURCE_OBJECT"
+                    }
+                  ],
+                  "version": "PASS_049_HHS_VISUAL_RUNTIME_OS_WORKSPACE_V1"
+                },
+                "reconstruction_recipe_id": "recipe:cee85b634755491d8cfbdc6d8be168cd",
+                "schema": "HHS_RUNTIME_WORKSPACE_OBJECT_V1",
+                "schema_id": "HHS_MULTIMODAL_WORKSPACE_OBJECT_V1",
+                "source_parent_ids": [],
+                "source_preserved": true,
+                "source_provenance": {
+                  "adapter_id": "adapter:image.workspace_ingress",
+                  "ingress_id": "ingress:0e38b25cb27b4f57bdcb7a968329ee02",
+                  "lossy_projection": true,
+                  "source_commitment_hash72": "Cd5nTn!54b3D*f*fVs3FjkeBdL8g!(SlHrRrfOE)ki>EdXsM*ERU/EMTjnMV0X2>OiHz1W5y",
+                  "source_uri": "workspace://project:24a70c42e20549c783dbbf2f30f51b42/ingress/ingress:0e38b25cb27b4f57bdcb7a968329ee02"
+                },
+                "source_root_hash72": "<uR+TVl22XIKyFK2mkfnzr1Si>IKvU?pK(eCV7LLJ6pA0kaMA2*a(iiBN4+*XW25-tC*+F1L",
+                "updated_at_unix_ms": 1783782405212,
+                "version": "PASS_049_HHS_VISUAL_RUNTIME_OS_WORKSPACE_V1"
+              }
+            },
+            "object_registry_root_hash72": "Glm!rv5UBbGtwmAroLCESgKARy/A37BM204W8kLPK56yirL7eRNcYpbgHi*?Uzl!9Spk/MJi",
+            "project_id": "project:24a70c42e20549c783dbbf2f30f51b42",
+            "project_root_hash72": "wtltt0MKS5PUziL8RSDZfLU(?(HkqTWH-*0<gh!vqmpWeMENaISx(VvPO)PM)ygKd(9WDME+",
+            "receipt_tip_hash72": "HwPfvrfW0M6YB?oLjnQLn/ispHeR+)2s9Kwb<I)s8X/!7ZQMyGx7jKRXHbxvaBOM<ozXT!0X",
+            "schema": "HHS_RUNTIME_WORKSPACE_PROJECT_V1",
+            "semantic_index_root_hash72": "02eg>!a1h7<efEZokmoq98vcCwgmV8AmyRGr0?tT5IkHIJKLMNOPQRSTUVWXYZ-+*/()<>!z",
+            "status": "WORKSPACE_LIVE",
+            "updated_at_unix_ms": 1783782405224,
+            "version": "PASS_049_HHS_VISUAL_RUNTIME_OS_WORKSPACE_V1",
+            "workspace_layout_root_hash72": "02eg>!a1h7<efE<5F8pjwao5IbRj*+lL>hBpZsJDv(jCKLG<EWuV*G+OUR4J2R!?Udk)<>!z"
+          },
+          "receipt_hash72": "HwPfvrfW0M6YB?oLjnQLn/ispHeR+)2s9Kwb<I)s8X/!7ZQMyGx7jKRXHbxvaBOM<ozXT!0X",
+          "schema": "HHS_WORKSPACE_PROJECT_OBJECT_REGISTRATION_V1",
+          "status": "WORKSPACE_OBJECT_REGISTERED",
+          "version": "PASS_049_HHS_VISUAL_RUNTIME_OS_WORKSPACE_V1"
+        },
+        "schema": "HHS_WORKSPACE_INGRESS_RESULT_V1",
+        "source_preserved": true,
+        "status": "WORKSPACE_INGRESS_COMPLETED",
+        "validation": {
+          "ingress_id": "ingress:0e38b25cb27b4f57bdcb7a968329ee02",
+          "ok": true,
+          "reasons": [],
+          "schema": "HHS_MULTIMODAL_INGRESS_PACKET_VALIDATION_V1",
+          "source_commitment_hash72": "Cd5nTn!54b3D*f*fVs3FjkeBdL8g!(SlHrRrfOE)ki>EdXsM*ERU/EMTjnMV0X2>OiHz1W5y",
+          "status": "ADMIT_MULTIMODAL_INGRESS",
+          "version": "PASS_049_HHS_VISUAL_RUNTIME_OS_WORKSPACE_V1"
+        },
+        "version": "PASS_049_HHS_VISUAL_RUNTIME_OS_WORKSPACE_V1",
+        "workspace_object": {
+          "authority": "HHS_RUNTIME_WORKSPACE_AUTHORITY_V1",
+          "canonical_payload_ref": "workspace-blob://<uR+TVl22XIKyFK2mkfnzr1Si>IKvU?pK(eCV7LLJ6pA0kaMA2*a(iiBN4+*XW25-tC*+F1L",
+          "created_at_unix_ms": 1783782405212,
+          "current_root_hash72": "<uR+TVl22XIKyFK2mkfnzr1Si>IKvU?pK(eCV7LLJ6pA0kaMA2*a(iiBN4+*XW25-tC*+F1L",
+          "derived_child_ids": [],
+          "derived_projection_policy": "DERIVED_OBJECTS_DO_NOT_REPLACE_SOURCE",
+          "ingress_packet_hash72": "g-1Jwic>S>MCF+2rRgFNCN646oU>h>0UDd!mx9WJe-69xePDlIQQV4EGlAfK0ZvtNI<c-7Gi",
+          "lifecycle_state": "INGRESSED",
+          "modality": "IMAGE",
+          "mutation_sequence": 0,
+          "name": "glyph.png",
+          "object_id": "object:4683b849629e411b9820ec00d4d789eb",
+          "object_root_hash72": "6ymR3oxz*xUOIlL1qwxrt?KkChWUIh1E**)*nhiLoIFOfn/2I)IRGy1vRFERa2Qi0jU/9s3K",
+          "object_type": "MULTIMODAL_OBJECT",
+          "project_id": "project:24a70c42e20549c783dbbf2f30f51b42",
+          "receipt_tip_hash72": "<uR+TVl22XIKyFK2mkfnzr1Si>IKvU?pK(eCV7LLJ6pA0kaMA2*a(iiBN4+*XW25-tC*+F1L",
+          "reconstruction_recipe": {
+            "authority": "HHS_RUNTIME_WORKSPACE_AUTHORITY_V1",
+            "expanded_metadata_retained": false,
+            "object_id": "object:4683b849629e411b9820ec00d4d789eb",
+            "recipe_id": "recipe:cee85b634755491d8cfbdc6d8be168cd",
+            "recipe_root_hash72": "4Tx1n6hkPoqD<L6>8ay7Ukm?JLoE-*Xbs?s8t!vQnn1((6pT)y<ol+m+RU+B6YMcuQu4tce1",
+            "schema": "HHS_WORKSPACE_RECONSTRUCTION_RECIPE_V1",
+            "source_root_hash72": "<uR+TVl22XIKyFK2mkfnzr1Si>IKvU?pK(eCV7LLJ6pA0kaMA2*a(iiBN4+*XW25-tC*+F1L",
+            "steps": [
+              {
+                "operation": "reconstruct_from_canonical_payload_ref",
+                "payload_policy": "ROOT_PLUS_CANONICAL_SOURCE_OBJECT"
+              }
+            ],
+            "version": "PASS_049_HHS_VISUAL_RUNTIME_OS_WORKSPACE_V1"
+          },
+          "reconstruction_recipe_id": "recipe:cee85b634755491d8cfbdc6d8be168cd",
+          "schema": "HHS_RUNTIME_WORKSPACE_OBJECT_V1",
+          "schema_id": "HHS_MULTIMODAL_WORKSPACE_OBJECT_V1",
+          "source_parent_ids": [],
+          "source_preserved": true,
+          "source_provenance": {
+            "adapter_id": "adapter:image.workspace_ingress",
+            "ingress_id": "ingress:0e38b25cb27b4f57bdcb7a968329ee02",
+            "lossy_projection": true,
+            "source_commitment_hash72": "Cd5nTn!54b3D*f*fVs3FjkeBdL8g!(SlHrRrfOE)ki>EdXsM*ERU/EMTjnMV0X2>OiHz1W5y",
+            "source_uri": "workspace://project:24a70c42e20549c783dbbf2f30f51b42/ingress/ingress:0e38b25cb27b4f57bdcb7a968329ee02"
+          },
+          "source_root_hash72": "<uR+TVl22XIKyFK2mkfnzr1Si>IKvU?pK(eCV7LLJ6pA0kaMA2*a(iiBN4+*XW25-tC*+F1L",
+          "updated_at_unix_ms": 1783782405212,
+          "version": "PASS_049_HHS_VISUAL_RUNTIME_OS_WORKSPACE_V1"
+        }
+      }
+    ],
+    "schema": "HHS_MULTIMODAL_WORKSPACE_INGRESS_SELF_TEST_V1",
+    "supported_initial_modalities": [
+      "HARMONICODE_SOURCE",
+      "IMAGE",
+      "JSON",
+      "PDF",
+      "TEXT"
+    ],
+    "unsupported_modality_rejection": {
+      "ok": false,
+      "packet": {
+        "adapter_id": "UNDECLARED_ADAPTER",
+        "authority": "HHS_RUNTIME_WORKSPACE_AUTHORITY_V1",
+        "authority_required": true,
+        "created_at_unix_ms": 1783782405256,
+        "declared_modality": "VIDEO",
+        "detected_modality": "VIDEO",
+        "expanded_metadata_policy": "BOUNDED_TEMPORARY",
+        "ingress_id": "ingress:e123408a0a784ebc9b8ccc69a5a3cda7",
+        "ingress_packet_hash72": "+c2zGGjJXEo0WndaMZq3(8W-y3EFHjZ62Ckbe35TqAY4AVpNCS3F(r7R)yHf(yNCLkcr>g4D",
+        "mime_type": "video/x-msvideo",
+        "project_id": "project:24a70c42e20549c783dbbf2f30f51b42",
+        "projection_policy": "PRESERVE_UNRESOLVED_SOURCE",
+        "schema": "HHS_MULTIMODAL_INGRESS_PACKET_V1",
+        "source_commitment_hash72": "sd5nTn!54b3D*RRhcE2JcI8rt9fp?-UnDTnnDJRWcr*A8VuGOMYF!FSP?YMV0X2>OiHMU/0K",
+        "source_name": "clip.avi",
+        "source_size_bytes": 5,
+        "version": "PASS_049_HHS_VISUAL_RUNTIME_OS_WORKSPACE_V1"
+      },
+      "schema": "HHS_WORKSPACE_INGRESS_RESULT_V1",
+      "status": "WORKSPACE_INGRESS_REJECTED",
+      "validation": {
+        "ingress_id": "ingress:e123408a0a784ebc9b8ccc69a5a3cda7",
+        "ok": false,
+        "reasons": [
+          "REJECT_MODALITY_ADAPTER_UNDECLARED"
+        ],
+        "schema": "HHS_MULTIMODAL_INGRESS_PACKET_VALIDATION_V1",
+        "source_commitment_hash72": "sd5nTn!54b3D*RRhcE2JcI8rt9fp?-UnDTnnDJRWcr*A8VuGOMYF!FSP?YMV0X2>OiHMU/0K",
+        "status": "REJECT_MULTIMODAL_INGRESS",
+        "version": "PASS_049_HHS_VISUAL_RUNTIME_OS_WORKSPACE_V1"
+      },
+      "version": "PASS_049_HHS_VISUAL_RUNTIME_OS_WORKSPACE_V1"
+    },
+    "version": "PASS_049_HHS_VISUAL_RUNTIME_OS_WORKSPACE_V1"
+  }
+}

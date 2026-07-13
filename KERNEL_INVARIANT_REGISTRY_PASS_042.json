@@ -1,0 +1,704 @@
+{
+  "registry": [
+    {
+      "depends_on": [],
+      "domain": [
+        "carrier_reconstruction",
+        "control_flow",
+        "plugin_execution",
+        "runtime_contracts"
+      ],
+      "invariant_id": "HHS-I001",
+      "kernel_authority": "HHS_HASH72_KERNEL_U72_DIGITAL_DNA_V1",
+      "name": "Meaning Conservation",
+      "rejection_codes": [
+        "REJECT_MEANING_NOT_CONSERVED"
+      ],
+      "required_validators": [
+        "validate_meaning_conservation"
+      ],
+      "required_witnesses": [
+        "HHS_MEANING_CONSERVATION_WITNESS_V1"
+      ],
+      "schema": "HHS_KERNEL_INVARIANT_RECORD_V1",
+      "statement": "Every admitted transformation preserves declared semantic identity across pre-state and post-state."
+    },
+    {
+      "depends_on": [],
+      "domain": [
+        "contracts",
+        "derivations",
+        "hash72",
+        "receipts"
+      ],
+      "invariant_id": "HHS-I002",
+      "kernel_authority": "HHS_HASH72_KERNEL_U72_DIGITAL_DNA_V1",
+      "name": "Hash72/u^72 witness authority",
+      "rejection_codes": [
+        "REJECT_HASH72_AUTHORITY_MISSING"
+      ],
+      "required_validators": [
+        "validate_hash72_kernel_authority"
+      ],
+      "required_witnesses": [
+        "HHS_HASH72_KERNEL_WITNESS_V1"
+      ],
+      "schema": "HHS_KERNEL_INVARIANT_RECORD_V1",
+      "statement": "Every canonical state, transition, contract, receipt, and derivation has a kernel-authorized witness."
+    },
+    {
+      "depends_on": [
+        "HHS-I001",
+        "HHS-I002"
+      ],
+      "domain": [
+        "control_flow",
+        "runtime_transitions"
+      ],
+      "invariant_id": "HHS-I003",
+      "kernel_authority": "HHS_HASH72_KERNEL_U72_DIGITAL_DNA_V1",
+      "name": "Full-state transition integrity",
+      "rejection_codes": [
+        "REJECT_CONTROL_FLOW_SCALAR_PROXY_ONLY"
+      ],
+      "required_validators": [
+        "validate_control_flow_transition_audit"
+      ],
+      "required_witnesses": [
+        "HHS_CONTROL_FLOW_TRANSITION_WITNESS_V1"
+      ],
+      "schema": "HHS_KERNEL_INVARIANT_RECORD_V1",
+      "statement": "Control-flow decisions operate on complete pre-state, result, and post-state transitions rather than scalar proxies."
+    },
+    {
+      "depends_on": [
+        "HHS-I002"
+      ],
+      "domain": [
+        "closure_harness",
+        "recursive_execution",
+        "validation"
+      ],
+      "invariant_id": "HHS-I004",
+      "kernel_authority": "HHS_HASH72_KERNEL_U72_DIGITAL_DNA_V1",
+      "name": "Bounded recursive closure",
+      "rejection_codes": [
+        "REJECT_UNBOUNDED_RECURSIVE_CLOSURE"
+      ],
+      "required_validators": [
+        "validate_bounded_recursive_closure"
+      ],
+      "required_witnesses": [
+        "HHS_BOUNDED_CLOSURE_WITNESS_V1"
+      ],
+      "schema": "HHS_KERNEL_INVARIANT_RECORD_V1",
+      "statement": "Certification, validation, and recursive execution remain inside declared step, cycle, ledger, and artifact budgets."
+    },
+    {
+      "depends_on": [
+        "HHS-I002"
+      ],
+      "domain": [
+        "api",
+        "authorized_execution",
+        "plugin_execution",
+        "service_dispatch"
+      ],
+      "invariant_id": "HHS-I005",
+      "kernel_authority": "HHS_HASH72_KERNEL_U72_DIGITAL_DNA_V1",
+      "name": "Guarded execution path",
+      "rejection_codes": [
+        "REJECT_GUARDED_EXECUTION_BYPASS"
+      ],
+      "required_validators": [
+        "validate_guarded_execution_path"
+      ],
+      "required_witnesses": [
+        "HHS_GUARDED_EXECUTION_WITNESS_V1"
+      ],
+      "schema": "HHS_KERNEL_INVARIANT_RECORD_V1",
+      "statement": "No runtime execution bypasses the declared contract, guard, adapter, authority, and receipt chain."
+    },
+    {
+      "depends_on": [
+        "HHS-I002"
+      ],
+      "domain": [
+        "ledger",
+        "persistence",
+        "state_mutation"
+      ],
+      "invariant_id": "HHS-I006",
+      "kernel_authority": "HHS_HASH72_KERNEL_U72_DIGITAL_DNA_V1",
+      "name": "Ledger continuity",
+      "rejection_codes": [
+        "REJECT_LEDGER_CONTINUITY_BROKEN"
+      ],
+      "required_validators": [
+        "validate_ledger_continuity"
+      ],
+      "required_witnesses": [
+        "HHS_LEDGER_CONTINUITY_WITNESS_V1"
+      ],
+      "schema": "HHS_KERNEL_INVARIANT_RECORD_V1",
+      "statement": "Every committed state mutation has a canonical parent, receipt, ledger entry, and tip transition."
+    },
+    {
+      "depends_on": [
+        "HHS-I002",
+        "HHS-I004"
+      ],
+      "domain": [
+        "carrier_reconstruction",
+        "closure_harness",
+        "control_flow",
+        "validation"
+      ],
+      "invariant_id": "HHS-I007",
+      "kernel_authority": "HHS_HASH72_KERNEL_U72_DIGITAL_DNA_V1",
+      "name": "Validation residue compression",
+      "rejection_codes": [
+        "REJECT_VALIDATION_RESIDUE_RAW_CACHE_RETAINED"
+      ],
+      "required_validators": [
+        "validate_validation_residue_compression"
+      ],
+      "required_witnesses": [
+        "HHS_VALIDATION_RESIDUE_RECEIPT_V1"
+      ],
+      "schema": "HHS_KERNEL_INVARIANT_RECORD_V1",
+      "statement": "Validation history is preserved as compressed witness chains rather than unbounded artifact replication."
+    },
+    {
+      "depends_on": [
+        "HHS-I002"
+      ],
+      "domain": [
+        "contracts",
+        "schemas",
+        "serialization",
+        "witnesses"
+      ],
+      "invariant_id": "HHS-I008",
+      "kernel_authority": "HHS_HASH72_KERNEL_U72_DIGITAL_DNA_V1",
+      "name": "Canonical representation",
+      "rejection_codes": [
+        "REJECT_NONCANONICAL_REPRESENTATION"
+      ],
+      "required_validators": [
+        "validate_canonical_representation"
+      ],
+      "required_witnesses": [
+        "HHS_CANONICAL_REPRESENTATION_WITNESS_V1"
+      ],
+      "schema": "HHS_KERNEL_INVARIANT_RECORD_V1",
+      "statement": "Every runtime object has one declared canonical schema and deterministic serialization path."
+    },
+    {
+      "depends_on": [
+        "HHS-I008"
+      ],
+      "domain": [
+        "carrier_archive",
+        "hhfs",
+        "udfp"
+      ],
+      "invariant_id": "HHS-I009",
+      "kernel_authority": "HHS_HASH72_KERNEL_U72_DIGITAL_DNA_V1",
+      "name": "No hidden parallel archive",
+      "rejection_codes": [
+        "REJECT_HHFS_PARALLEL_STORAGE_LANE"
+      ],
+      "required_validators": [
+        "validate_no_hidden_parallel_archive"
+      ],
+      "required_witnesses": [
+        "HHS_HHFS_NO_PARALLEL_LANE_WITNESS_V1"
+      ],
+      "schema": "HHS_KERNEL_INVARIANT_RECORD_V1",
+      "statement": "Carrier enhancement may preserve provenance and transformation history but cannot create undeclared duplicate payload lanes."
+    },
+    {
+      "depends_on": [
+        "HHS-I002",
+        "HHS-I009"
+      ],
+      "domain": [
+        "carrier_archive",
+        "ecc",
+        "reconstruction"
+      ],
+      "invariant_id": "HHS-I010",
+      "kernel_authority": "HHS_HASH72_KERNEL_U72_DIGITAL_DNA_V1",
+      "name": "Reconstruction reversibility",
+      "rejection_codes": [
+        "REJECT_RECONSTRUCTION_REJECTED_WITNESS_CORRUPTED"
+      ],
+      "required_validators": [
+        "validate_reconstruction_reversibility"
+      ],
+      "required_witnesses": [
+        "HHS_RECONSTRUCTION_WITNESS_V1"
+      ],
+      "schema": "HHS_KERNEL_INVARIANT_RECORD_V1",
+      "statement": "Every admitted reconstruction path declares sufficient witness information to recover or verify the canonical represented state."
+    },
+    {
+      "depends_on": [
+        "HHS-I002"
+      ],
+      "domain": [
+        "admissibility",
+        "conformance",
+        "runtime_decision"
+      ],
+      "invariant_id": "HHS-I011",
+      "kernel_authority": "HHS_HASH72_KERNEL_U72_DIGITAL_DNA_V1",
+      "name": "Invariant-derived admissibility",
+      "rejection_codes": [
+        "REJECT_OPERATION_NOT_DERIVED_FROM_KERNEL_INVARIANT"
+      ],
+      "required_validators": [
+        "validate_invariant_derived_admissibility"
+      ],
+      "required_witnesses": [
+        "HHS_KERNEL_DERIVATION_WITNESS_V1"
+      ],
+      "schema": "HHS_KERNEL_INVARIANT_RECORD_V1",
+      "statement": "Admission and rejection decisions derive from kernel invariants rather than local arbitrary policy."
+    },
+    {
+      "depends_on": [
+        "HHS-I005",
+        "HHS-I011"
+      ],
+      "domain": [
+        "api",
+        "execution",
+        "service_dispatch",
+        "zero_bypass"
+      ],
+      "invariant_id": "HHS-I012",
+      "kernel_authority": "HHS_HASH72_KERNEL_U72_DIGITAL_DNA_V1",
+      "name": "Zero-bypass prohibition",
+      "rejection_codes": [
+        "REJECTED_MISSING_INTERPOSITION_DECISION"
+      ],
+      "required_validators": [
+        "validate_zero_bypass_prohibition"
+      ],
+      "required_witnesses": [
+        "HHS_ZERO_BYPASS_INTERPOSITION_WITNESS_V1"
+      ],
+      "schema": "HHS_KERNEL_INVARIANT_RECORD_V1",
+      "statement": "No service, API, executor, adapter, or control-flow gate may bypass required authority or conformance stages."
+    },
+    {
+      "depends_on": [
+        "HHS-I006",
+        "HHS-I011"
+      ],
+      "domain": [
+        "ledger",
+        "mutation",
+        "persistence",
+        "rollback"
+      ],
+      "invariant_id": "HHS-I013",
+      "kernel_authority": "HHS_HASH72_KERNEL_U72_DIGITAL_DNA_V1",
+      "name": "Explicit mutation ownership",
+      "rejection_codes": [
+        "REJECT_MUTATION_SURFACE_WITHOUT_PERSISTENCE_POLICY"
+      ],
+      "required_validators": [
+        "validate_explicit_mutation_ownership"
+      ],
+      "required_witnesses": [
+        "HHS_MUTATION_OWNERSHIP_WITNESS_V1"
+      ],
+      "schema": "HHS_KERNEL_INVARIANT_RECORD_V1",
+      "statement": "Every state mutation declares its owning surface, persistence policy, rollback behavior, and ledger effect."
+    },
+    {
+      "depends_on": [
+        "HHS-I011",
+        "HHS-I012"
+      ],
+      "domain": [
+        "api",
+        "gui",
+        "reachability",
+        "service_registry"
+      ],
+      "invariant_id": "HHS-I014",
+      "kernel_authority": "HHS_HASH72_KERNEL_U72_DIGITAL_DNA_V1",
+      "name": "Surface reachability closure",
+      "rejection_codes": [
+        "REJECT_UNDERIVED_RUNTIME_SURFACE"
+      ],
+      "required_validators": [
+        "validate_surface_reachability_closure"
+      ],
+      "required_witnesses": [
+        "HHS_SURFACE_REACHABILITY_WITNESS_V1"
+      ],
+      "schema": "HHS_KERNEL_INVARIANT_RECORD_V1",
+      "statement": "Every executable surface must be boot-, service-, API-, or control-flow reachable through a declared canonical path."
+    },
+    {
+      "depends_on": [
+        "HHS-I004",
+        "HHS-I011",
+        "HHS-I014"
+      ],
+      "domain": [
+        "closure_harness",
+        "conformance",
+        "surface_map"
+      ],
+      "invariant_id": "HHS-I015",
+      "kernel_authority": "HHS_HASH72_KERNEL_U72_DIGITAL_DNA_V1",
+      "name": "Self-consistent derivation closure",
+      "rejection_codes": [
+        "REJECT_CONFORMANCE_MAP_NOT_SELF_DERIVED"
+      ],
+      "required_validators": [
+        "validate_self_consistent_derivation_closure"
+      ],
+      "required_witnesses": [
+        "HHS_KERNEL_CONFORMANCE_MAP_WITNESS_V1"
+      ],
+      "schema": "HHS_KERNEL_INVARIANT_RECORD_V1",
+      "statement": "The conformance map itself must be kernel-derived, witnessed, bounded, and included in the closure harness."
+    }
+  ],
+  "schema": "KERNEL_INVARIANT_REGISTRY_PASS_042",
+  "validation": {
+    "hash72_kernel_witness": {
+      "canonical_payload": "{\"invariants\":[{\"depends_on\":[],\"domain\":[\"carrier_reconstruction\",\"control_flow\",\"plugin_execution\",\"runtime_contracts\"],\"invariant_id\":\"HHS-I001\",\"kernel_authority\":\"HHS_HASH72_KERNEL_U72_DIGITAL_DNA_V1\",\"name\":\"Meaning Conservation\",\"rejection_codes\":[\"REJECT_MEANING_NOT_CONSERVED\"],\"required_validators\":[\"validate_meaning_conservation\"],\"required_witnesses\":[\"HHS_MEANING_CONSERVATION_WITNESS_V1\"],\"schema\":\"HHS_KERNEL_INVARIANT_RECORD_V1\",\"statement\":\"Every admitted transformation preserves declared semantic identity across pre-state and post-state.\"},{\"depends_on\":[],\"domain\":[\"contracts\",\"derivations\",\"hash72\",\"receipts\"],\"invariant_id\":\"HHS-I002\",\"kernel_authority\":\"HHS_HASH72_KERNEL_U72_DIGITAL_DNA_V1\",\"name\":\"Hash72/u^72 witness authority\",\"rejection_codes\":[\"REJECT_HASH72_AUTHORITY_MISSING\"],\"required_validators\":[\"validate_hash72_kernel_authority\"],\"required_witnesses\":[\"HHS_HASH72_KERNEL_WITNESS_V1\"],\"schema\":\"HHS_KERNEL_INVARIANT_RECORD_V1\",\"statement\":\"Every canonical state, transition, contract, receipt, and derivation has a kernel-authorized witness.\"},{\"depends_on\":[\"HHS-I001\",\"HHS-I002\"],\"domain\":[\"control_flow\",\"runtime_transitions\"],\"invariant_id\":\"HHS-I003\",\"kernel_authority\":\"HHS_HASH72_KERNEL_U72_DIGITAL_DNA_V1\",\"name\":\"Full-state transition integrity\",\"rejection_codes\":[\"REJECT_CONTROL_FLOW_SCALAR_PROXY_ONLY\"],\"required_validators\":[\"validate_control_flow_transition_audit\"],\"required_witnesses\":[\"HHS_CONTROL_FLOW_TRANSITION_WITNESS_V1\"],\"schema\":\"HHS_KERNEL_INVARIANT_RECORD_V1\",\"statement\":\"Control-flow decisions operate on complete pre-state, result, and post-state transitions rather than scalar proxies.\"},{\"depends_on\":[\"HHS-I002\"],\"domain\":[\"closure_harness\",\"recursive_execution\",\"validation\"],\"invariant_id\":\"HHS-I004\",\"kernel_authority\":\"HHS_HASH72_KERNEL_U72_DIGITAL_DNA_V1\",\"name\":\"Bounded recursive closure\",\"rejection_codes\":[\"REJECT_UNBOUNDED_RECURSIVE_CLOSURE\"],\"required_validators\":[\"validate_bounded_recursive_closure\"],\"required_witnesses\":[\"HHS_BOUNDED_CLOSURE_WITNESS_V1\"],\"schema\":\"HHS_KERNEL_INVARIANT_RECORD_V1\",\"statement\":\"Certification, validation, and recursive execution remain inside declared step, cycle, ledger, and artifact budgets.\"},{\"depends_on\":[\"HHS-I002\"],\"domain\":[\"api\",\"authorized_execution\",\"plugin_execution\",\"service_dispatch\"],\"invariant_id\":\"HHS-I005\",\"kernel_authority\":\"HHS_HASH72_KERNEL_U72_DIGITAL_DNA_V1\",\"name\":\"Guarded execution path\",\"rejection_codes\":[\"REJECT_GUARDED_EXECUTION_BYPASS\"],\"required_validators\":[\"validate_guarded_execution_path\"],\"required_witnesses\":[\"HHS_GUARDED_EXECUTION_WITNESS_V1\"],\"schema\":\"HHS_KERNEL_INVARIANT_RECORD_V1\",\"statement\":\"No runtime execution bypasses the declared contract, guard, adapter, authority, and receipt chain.\"},{\"depends_on\":[\"HHS-I002\"],\"domain\":[\"ledger\",\"persistence\",\"state_mutation\"],\"invariant_id\":\"HHS-I006\",\"kernel_authority\":\"HHS_HASH72_KERNEL_U72_DIGITAL_DNA_V1\",\"name\":\"Ledger continuity\",\"rejection_codes\":[\"REJECT_LEDGER_CONTINUITY_BROKEN\"],\"required_validators\":[\"validate_ledger_continuity\"],\"required_witnesses\":[\"HHS_LEDGER_CONTINUITY_WITNESS_V1\"],\"schema\":\"HHS_KERNEL_INVARIANT_RECORD_V1\",\"statement\":\"Every committed state mutation has a canonical parent, receipt, ledger entry, and tip transition.\"},{\"depends_on\":[\"HHS-I002\",\"HHS-I004\"],\"domain\":[\"carrier_reconstruction\",\"closure_harness\",\"control_flow\",\"validation\"],\"invariant_id\":\"HHS-I007\",\"kernel_authority\":\"HHS_HASH72_KERNEL_U72_DIGITAL_DNA_V1\",\"name\":\"Validation residue compression\",\"rejection_codes\":[\"REJECT_VALIDATION_RESIDUE_RAW_CACHE_RETAINED\"],\"required_validators\":[\"validate_validation_residue_compression\"],\"required_witnesses\":[\"HHS_VALIDATION_RESIDUE_RECEIPT_V1\"],\"schema\":\"HHS_KERNEL_INVARIANT_RECORD_V1\",\"statement\":\"Validation history is preserved as compressed witness chains rather than unbounded artifact replication.\"},{\"depends_on\":[\"HHS-I002\"],\"domain\":[\"contracts\",\"schemas\",\"serialization\",\"witnesses\"],\"invariant_id\":\"HHS-I008\",\"kernel_authority\":\"HHS_HASH72_KERNEL_U72_DIGITAL_DNA_V1\",\"name\":\"Canonical representation\",\"rejection_codes\":[\"REJECT_NONCANONICAL_REPRESENTATION\"],\"required_validators\":[\"validate_canonical_representation\"],\"required_witnesses\":[\"HHS_CANONICAL_REPRESENTATION_WITNESS_V1\"],\"schema\":\"HHS_KERNEL_INVARIANT_RECORD_V1\",\"statement\":\"Every runtime object has one declared canonical schema and deterministic serialization path.\"},{\"depends_on\":[\"HHS-I008\"],\"domain\":[\"carrier_archive\",\"hhfs\",\"udfp\"],\"invariant_id\":\"HHS-I009\",\"kernel_authority\":\"HHS_HASH72_KERNEL_U72_DIGITAL_DNA_V1\",\"name\":\"No hidden parallel archive\",\"rejection_codes\":[\"REJECT_HHFS_PARALLEL_STORAGE_LANE\"],\"required_validators\":[\"validate_no_hidden_parallel_archive\"],\"required_witnesses\":[\"HHS_HHFS_NO_PARALLEL_LANE_WITNESS_V1\"],\"schema\":\"HHS_KERNEL_INVARIANT_RECORD_V1\",\"statement\":\"Carrier enhancement may preserve provenance and transformation history but cannot create undeclared duplicate payload lanes.\"},{\"depends_on\":[\"HHS-I002\",\"HHS-I009\"],\"domain\":[\"carrier_archive\",\"ecc\",\"reconstruction\"],\"invariant_id\":\"HHS-I010\",\"kernel_authority\":\"HHS_HASH72_KERNEL_U72_DIGITAL_DNA_V1\",\"name\":\"Reconstruction reversibility\",\"rejection_codes\":[\"REJECT_RECONSTRUCTION_REJECTED_WITNESS_CORRUPTED\"],\"required_validators\":[\"validate_reconstruction_reversibility\"],\"required_witnesses\":[\"HHS_RECONSTRUCTION_WITNESS_V1\"],\"schema\":\"HHS_KERNEL_INVARIANT_RECORD_V1\",\"statement\":\"Every admitted reconstruction path declares sufficient witness information to recover or verify the canonical represented state.\"},{\"depends_on\":[\"HHS-I002\"],\"domain\":[\"admissibility\",\"conformance\",\"runtime_decision\"],\"invariant_id\":\"HHS-I011\",\"kernel_authority\":\"HHS_HASH72_KERNEL_U72_DIGITAL_DNA_V1\",\"name\":\"Invariant-derived admissibility\",\"rejection_codes\":[\"REJECT_OPERATION_NOT_DERIVED_FROM_KERNEL_INVARIANT\"],\"required_validators\":[\"validate_invariant_derived_admissibility\"],\"required_witnesses\":[\"HHS_KERNEL_DERIVATION_WITNESS_V1\"],\"schema\":\"HHS_KERNEL_INVARIANT_RECORD_V1\",\"statement\":\"Admission and rejection decisions derive from kernel invariants rather than local arbitrary policy.\"},{\"depends_on\":[\"HHS-I005\",\"HHS-I011\"],\"domain\":[\"api\",\"execution\",\"service_dispatch\",\"zero_bypass\"],\"invariant_id\":\"HHS-I012\",\"kernel_authority\":\"HHS_HASH72_KERNEL_U72_DIGITAL_DNA_V1\",\"name\":\"Zero-bypass prohibition\",\"rejection_codes\":[\"REJECTED_MISSING_INTERPOSITION_DECISION\"],\"required_validators\":[\"validate_zero_bypass_prohibition\"],\"required_witnesses\":[\"HHS_ZERO_BYPASS_INTERPOSITION_WITNESS_V1\"],\"schema\":\"HHS_KERNEL_INVARIANT_RECORD_V1\",\"statement\":\"No service, API, executor, adapter, or control-flow gate may bypass required authority or conformance stages.\"},{\"depends_on\":[\"HHS-I006\",\"HHS-I011\"],\"domain\":[\"ledger\",\"mutation\",\"persistence\",\"rollback\"],\"invariant_id\":\"HHS-I013\",\"kernel_authority\":\"HHS_HASH72_KERNEL_U72_DIGITAL_DNA_V1\",\"name\":\"Explicit mutation ownership\",\"rejection_codes\":[\"REJECT_MUTATION_SURFACE_WITHOUT_PERSISTENCE_POLICY\"],\"required_validators\":[\"validate_explicit_mutation_ownership\"],\"required_witnesses\":[\"HHS_MUTATION_OWNERSHIP_WITNESS_V1\"],\"schema\":\"HHS_KERNEL_INVARIANT_RECORD_V1\",\"statement\":\"Every state mutation declares its owning surface, persistence policy, rollback behavior, and ledger effect.\"},{\"depends_on\":[\"HHS-I011\",\"HHS-I012\"],\"domain\":[\"api\",\"gui\",\"reachability\",\"service_registry\"],\"invariant_id\":\"HHS-I014\",\"kernel_authority\":\"HHS_HASH72_KERNEL_U72_DIGITAL_DNA_V1\",\"name\":\"Surface reachability closure\",\"rejection_codes\":[\"REJECT_UNDERIVED_RUNTIME_SURFACE\"],\"required_validators\":[\"validate_surface_reachability_closure\"],\"required_witnesses\":[\"HHS_SURFACE_REACHABILITY_WITNESS_V1\"],\"schema\":\"HHS_KERNEL_INVARIANT_RECORD_V1\",\"statement\":\"Every executable surface must be boot-, service-, API-, or control-flow reachable through a declared canonical path.\"},{\"depends_on\":[\"HHS-I004\",\"HHS-I011\",\"HHS-I014\"],\"domain\":[\"closure_harness\",\"conformance\",\"surface_map\"],\"invariant_id\":\"HHS-I015\",\"kernel_authority\":\"HHS_HASH72_KERNEL_U72_DIGITAL_DNA_V1\",\"name\":\"Self-consistent derivation closure\",\"rejection_codes\":[\"REJECT_CONFORMANCE_MAP_NOT_SELF_DERIVED\"],\"required_validators\":[\"validate_self_consistent_derivation_closure\"],\"required_witnesses\":[\"HHS_KERNEL_CONFORMANCE_MAP_WITNESS_V1\"],\"schema\":\"HHS_KERNEL_INVARIANT_RECORD_V1\",\"statement\":\"The conformance map itself must be kernel-derived, witnessed, bounded, and included in the closure harness.\"}],\"schema\":\"HHS_KERNEL_INVARIANT_REGISTRY_V1\",\"version\":\"PASS_042_KERNEL_DERIVED_CONFORMANCE_SURFACE_MAP_V1\"}",
+      "digest": "Co/ytw>G<Uzev<GwvofJ4pjgduHJH8buCYYIq?bfSQ-aOoQDuZJFKU(B9Yxn0PX4eZC*76x?",
+      "dna": "Co/ytw>G<Uzev<GwvofJ4pjgduHJH8buCYYIq?bfSQ-aOoQDuZJFKU(B9Yxn0PX4eZC*76x?",
+      "label": "HHS_KERNEL_INVARIANT_REGISTRY_V1",
+      "positions": [
+        38,
+        24,
+        65,
+        34,
+        29,
+        32,
+        69,
+        42,
+        68,
+        56,
+        35,
+        14,
+        31,
+        68,
+        42,
+        32,
+        31,
+        24,
+        15,
+        45,
+        4,
+        25,
+        19,
+        16,
+        13,
+        30,
+        43,
+        45,
+        43,
+        8,
+        11,
+        30,
+        38,
+        60,
+        60,
+        44,
+        26,
+        71,
+        11,
+        15,
+        54,
+        52,
+        62,
+        10,
+        50,
+        24,
+        52,
+        39,
+        30,
+        61,
+        45,
+        41,
+        46,
+        56,
+        66,
+        37,
+        9,
+        60,
+        33,
+        23,
+        0,
+        51,
+        59,
+        4,
+        14,
+        61,
+        38,
+        64,
+        7,
+        6,
+        33,
+        71
+      ],
+      "rotation_profile": [
+        38,
+        -625,
+        423,
+        -113,
+        -47,
+        171,
+        -9,
+        107,
+        60,
+        263,
+        25,
+        75,
+        163,
+        55,
+        100,
+        89,
+        375,
+        7,
+        69,
+        98,
+        272,
+        -68,
+        -75,
+        137,
+        -83,
+        149,
+        89,
+        -126,
+        -345,
+        -93,
+        -667,
+        -1,
+        -138,
+        459,
+        -46,
+        -999,
+        422,
+        178,
+        -171,
+        -456,
+        -562,
+        299,
+        20,
+        -177,
+        222,
+        -165,
+        -426,
+        208,
+        -162,
+        -60,
+        -221,
+        134,
+        138,
+        291,
+        -276,
+        342,
+        -47,
+        147,
+        119,
+        -180,
+        12,
+        -226,
+        285,
+        -131,
+        94,
+        -76,
+        188,
+        -75,
+        -61,
+        225,
+        35,
+        324
+      ],
+      "schema": "HHS_HASH72_KERNEL_WITNESS_V1",
+      "trace_count": 8569,
+      "zero_sum": true
+    },
+    "invariant_count": 15,
+    "ok": true,
+    "reasons": [],
+    "registry_root_hash72": "Co/ytw>G<Uzev<GwvofJ4pjgduHJH8buCYYIq?bfSQ-aOoQDuZJFKU(B9Yxn0PX4eZC*76x?",
+    "schema": "HHS_KERNEL_INVARIANT_REGISTRY_DECISION_V1",
+    "status": "ADMIT_KERNEL_INVARIANT_REGISTRY"
+  },
+  "version": "PASS_042_KERNEL_DERIVED_CONFORMANCE_SURFACE_MAP_V1",
+  "witness": {
+    "hash72_kernel_witness": {
+      "canonical_payload": "{\"invariants\":[{\"depends_on\":[],\"domain\":[\"carrier_reconstruction\",\"control_flow\",\"plugin_execution\",\"runtime_contracts\"],\"invariant_id\":\"HHS-I001\",\"kernel_authority\":\"HHS_HASH72_KERNEL_U72_DIGITAL_DNA_V1\",\"name\":\"Meaning Conservation\",\"rejection_codes\":[\"REJECT_MEANING_NOT_CONSERVED\"],\"required_validators\":[\"validate_meaning_conservation\"],\"required_witnesses\":[\"HHS_MEANING_CONSERVATION_WITNESS_V1\"],\"schema\":\"HHS_KERNEL_INVARIANT_RECORD_V1\",\"statement\":\"Every admitted transformation preserves declared semantic identity across pre-state and post-state.\"},{\"depends_on\":[],\"domain\":[\"contracts\",\"derivations\",\"hash72\",\"receipts\"],\"invariant_id\":\"HHS-I002\",\"kernel_authority\":\"HHS_HASH72_KERNEL_U72_DIGITAL_DNA_V1\",\"name\":\"Hash72/u^72 witness authority\",\"rejection_codes\":[\"REJECT_HASH72_AUTHORITY_MISSING\"],\"required_validators\":[\"validate_hash72_kernel_authority\"],\"required_witnesses\":[\"HHS_HASH72_KERNEL_WITNESS_V1\"],\"schema\":\"HHS_KERNEL_INVARIANT_RECORD_V1\",\"statement\":\"Every canonical state, transition, contract, receipt, and derivation has a kernel-authorized witness.\"},{\"depends_on\":[\"HHS-I001\",\"HHS-I002\"],\"domain\":[\"control_flow\",\"runtime_transitions\"],\"invariant_id\":\"HHS-I003\",\"kernel_authority\":\"HHS_HASH72_KERNEL_U72_DIGITAL_DNA_V1\",\"name\":\"Full-state transition integrity\",\"rejection_codes\":[\"REJECT_CONTROL_FLOW_SCALAR_PROXY_ONLY\"],\"required_validators\":[\"validate_control_flow_transition_audit\"],\"required_witnesses\":[\"HHS_CONTROL_FLOW_TRANSITION_WITNESS_V1\"],\"schema\":\"HHS_KERNEL_INVARIANT_RECORD_V1\",\"statement\":\"Control-flow decisions operate on complete pre-state, result, and post-state transitions rather than scalar proxies.\"},{\"depends_on\":[\"HHS-I002\"],\"domain\":[\"closure_harness\",\"recursive_execution\",\"validation\"],\"invariant_id\":\"HHS-I004\",\"kernel_authority\":\"HHS_HASH72_KERNEL_U72_DIGITAL_DNA_V1\",\"name\":\"Bounded recursive closure\",\"rejection_codes\":[\"REJECT_UNBOUNDED_RECURSIVE_CLOSURE\"],\"required_validators\":[\"validate_bounded_recursive_closure\"],\"required_witnesses\":[\"HHS_BOUNDED_CLOSURE_WITNESS_V1\"],\"schema\":\"HHS_KERNEL_INVARIANT_RECORD_V1\",\"statement\":\"Certification, validation, and recursive execution remain inside declared step, cycle, ledger, and artifact budgets.\"},{\"depends_on\":[\"HHS-I002\"],\"domain\":[\"api\",\"authorized_execution\",\"plugin_execution\",\"service_dispatch\"],\"invariant_id\":\"HHS-I005\",\"kernel_authority\":\"HHS_HASH72_KERNEL_U72_DIGITAL_DNA_V1\",\"name\":\"Guarded execution path\",\"rejection_codes\":[\"REJECT_GUARDED_EXECUTION_BYPASS\"],\"required_validators\":[\"validate_guarded_execution_path\"],\"required_witnesses\":[\"HHS_GUARDED_EXECUTION_WITNESS_V1\"],\"schema\":\"HHS_KERNEL_INVARIANT_RECORD_V1\",\"statement\":\"No runtime execution bypasses the declared contract, guard, adapter, authority, and receipt chain.\"},{\"depends_on\":[\"HHS-I002\"],\"domain\":[\"ledger\",\"persistence\",\"state_mutation\"],\"invariant_id\":\"HHS-I006\",\"kernel_authority\":\"HHS_HASH72_KERNEL_U72_DIGITAL_DNA_V1\",\"name\":\"Ledger continuity\",\"rejection_codes\":[\"REJECT_LEDGER_CONTINUITY_BROKEN\"],\"required_validators\":[\"validate_ledger_continuity\"],\"required_witnesses\":[\"HHS_LEDGER_CONTINUITY_WITNESS_V1\"],\"schema\":\"HHS_KERNEL_INVARIANT_RECORD_V1\",\"statement\":\"Every committed state mutation has a canonical parent, receipt, ledger entry, and tip transition.\"},{\"depends_on\":[\"HHS-I002\",\"HHS-I004\"],\"domain\":[\"carrier_reconstruction\",\"closure_harness\",\"control_flow\",\"validation\"],\"invariant_id\":\"HHS-I007\",\"kernel_authority\":\"HHS_HASH72_KERNEL_U72_DIGITAL_DNA_V1\",\"name\":\"Validation residue compression\",\"rejection_codes\":[\"REJECT_VALIDATION_RESIDUE_RAW_CACHE_RETAINED\"],\"required_validators\":[\"validate_validation_residue_compression\"],\"required_witnesses\":[\"HHS_VALIDATION_RESIDUE_RECEIPT_V1\"],\"schema\":\"HHS_KERNEL_INVARIANT_RECORD_V1\",\"statement\":\"Validation history is preserved as compressed witness chains rather than unbounded artifact replication.\"},{\"depends_on\":[\"HHS-I002\"],\"domain\":[\"contracts\",\"schemas\",\"serialization\",\"witnesses\"],\"invariant_id\":\"HHS-I008\",\"kernel_authority\":\"HHS_HASH72_KERNEL_U72_DIGITAL_DNA_V1\",\"name\":\"Canonical representation\",\"rejection_codes\":[\"REJECT_NONCANONICAL_REPRESENTATION\"],\"required_validators\":[\"validate_canonical_representation\"],\"required_witnesses\":[\"HHS_CANONICAL_REPRESENTATION_WITNESS_V1\"],\"schema\":\"HHS_KERNEL_INVARIANT_RECORD_V1\",\"statement\":\"Every runtime object has one declared canonical schema and deterministic serialization path.\"},{\"depends_on\":[\"HHS-I008\"],\"domain\":[\"carrier_archive\",\"hhfs\",\"udfp\"],\"invariant_id\":\"HHS-I009\",\"kernel_authority\":\"HHS_HASH72_KERNEL_U72_DIGITAL_DNA_V1\",\"name\":\"No hidden parallel archive\",\"rejection_codes\":[\"REJECT_HHFS_PARALLEL_STORAGE_LANE\"],\"required_validators\":[\"validate_no_hidden_parallel_archive\"],\"required_witnesses\":[\"HHS_HHFS_NO_PARALLEL_LANE_WITNESS_V1\"],\"schema\":\"HHS_KERNEL_INVARIANT_RECORD_V1\",\"statement\":\"Carrier enhancement may preserve provenance and transformation history but cannot create undeclared duplicate payload lanes.\"},{\"depends_on\":[\"HHS-I002\",\"HHS-I009\"],\"domain\":[\"carrier_archive\",\"ecc\",\"reconstruction\"],\"invariant_id\":\"HHS-I010\",\"kernel_authority\":\"HHS_HASH72_KERNEL_U72_DIGITAL_DNA_V1\",\"name\":\"Reconstruction reversibility\",\"rejection_codes\":[\"REJECT_RECONSTRUCTION_REJECTED_WITNESS_CORRUPTED\"],\"required_validators\":[\"validate_reconstruction_reversibility\"],\"required_witnesses\":[\"HHS_RECONSTRUCTION_WITNESS_V1\"],\"schema\":\"HHS_KERNEL_INVARIANT_RECORD_V1\",\"statement\":\"Every admitted reconstruction path declares sufficient witness information to recover or verify the canonical represented state.\"},{\"depends_on\":[\"HHS-I002\"],\"domain\":[\"admissibility\",\"conformance\",\"runtime_decision\"],\"invariant_id\":\"HHS-I011\",\"kernel_authority\":\"HHS_HASH72_KERNEL_U72_DIGITAL_DNA_V1\",\"name\":\"Invariant-derived admissibility\",\"rejection_codes\":[\"REJECT_OPERATION_NOT_DERIVED_FROM_KERNEL_INVARIANT\"],\"required_validators\":[\"validate_invariant_derived_admissibility\"],\"required_witnesses\":[\"HHS_KERNEL_DERIVATION_WITNESS_V1\"],\"schema\":\"HHS_KERNEL_INVARIANT_RECORD_V1\",\"statement\":\"Admission and rejection decisions derive from kernel invariants rather than local arbitrary policy.\"},{\"depends_on\":[\"HHS-I005\",\"HHS-I011\"],\"domain\":[\"api\",\"execution\",\"service_dispatch\",\"zero_bypass\"],\"invariant_id\":\"HHS-I012\",\"kernel_authority\":\"HHS_HASH72_KERNEL_U72_DIGITAL_DNA_V1\",\"name\":\"Zero-bypass prohibition\",\"rejection_codes\":[\"REJECTED_MISSING_INTERPOSITION_DECISION\"],\"required_validators\":[\"validate_zero_bypass_prohibition\"],\"required_witnesses\":[\"HHS_ZERO_BYPASS_INTERPOSITION_WITNESS_V1\"],\"schema\":\"HHS_KERNEL_INVARIANT_RECORD_V1\",\"statement\":\"No service, API, executor, adapter, or control-flow gate may bypass required authority or conformance stages.\"},{\"depends_on\":[\"HHS-I006\",\"HHS-I011\"],\"domain\":[\"ledger\",\"mutation\",\"persistence\",\"rollback\"],\"invariant_id\":\"HHS-I013\",\"kernel_authority\":\"HHS_HASH72_KERNEL_U72_DIGITAL_DNA_V1\",\"name\":\"Explicit mutation ownership\",\"rejection_codes\":[\"REJECT_MUTATION_SURFACE_WITHOUT_PERSISTENCE_POLICY\"],\"required_validators\":[\"validate_explicit_mutation_ownership\"],\"required_witnesses\":[\"HHS_MUTATION_OWNERSHIP_WITNESS_V1\"],\"schema\":\"HHS_KERNEL_INVARIANT_RECORD_V1\",\"statement\":\"Every state mutation declares its owning surface, persistence policy, rollback behavior, and ledger effect.\"},{\"depends_on\":[\"HHS-I011\",\"HHS-I012\"],\"domain\":[\"api\",\"gui\",\"reachability\",\"service_registry\"],\"invariant_id\":\"HHS-I014\",\"kernel_authority\":\"HHS_HASH72_KERNEL_U72_DIGITAL_DNA_V1\",\"name\":\"Surface reachability closure\",\"rejection_codes\":[\"REJECT_UNDERIVED_RUNTIME_SURFACE\"],\"required_validators\":[\"validate_surface_reachability_closure\"],\"required_witnesses\":[\"HHS_SURFACE_REACHABILITY_WITNESS_V1\"],\"schema\":\"HHS_KERNEL_INVARIANT_RECORD_V1\",\"statement\":\"Every executable surface must be boot-, service-, API-, or control-flow reachable through a declared canonical path.\"},{\"depends_on\":[\"HHS-I004\",\"HHS-I011\",\"HHS-I014\"],\"domain\":[\"closure_harness\",\"conformance\",\"surface_map\"],\"invariant_id\":\"HHS-I015\",\"kernel_authority\":\"HHS_HASH72_KERNEL_U72_DIGITAL_DNA_V1\",\"name\":\"Self-consistent derivation closure\",\"rejection_codes\":[\"REJECT_CONFORMANCE_MAP_NOT_SELF_DERIVED\"],\"required_validators\":[\"validate_self_consistent_derivation_closure\"],\"required_witnesses\":[\"HHS_KERNEL_CONFORMANCE_MAP_WITNESS_V1\"],\"schema\":\"HHS_KERNEL_INVARIANT_RECORD_V1\",\"statement\":\"The conformance map itself must be kernel-derived, witnessed, bounded, and included in the closure harness.\"}],\"schema\":\"HHS_KERNEL_INVARIANT_REGISTRY_V1\",\"version\":\"PASS_042_KERNEL_DERIVED_CONFORMANCE_SURFACE_MAP_V1\"}",
+      "digest": "Co/ytw>G<Uzev<GwvofJ4pjgduHJH8buCYYIq?bfSQ-aOoQDuZJFKU(B9Yxn0PX4eZC*76x?",
+      "dna": "Co/ytw>G<Uzev<GwvofJ4pjgduHJH8buCYYIq?bfSQ-aOoQDuZJFKU(B9Yxn0PX4eZC*76x?",
+      "label": "HHS_KERNEL_INVARIANT_REGISTRY_V1",
+      "positions": [
+        38,
+        24,
+        65,
+        34,
+        29,
+        32,
+        69,
+        42,
+        68,
+        56,
+        35,
+        14,
+        31,
+        68,
+        42,
+        32,
+        31,
+        24,
+        15,
+        45,
+        4,
+        25,
+        19,
+        16,
+        13,
+        30,
+        43,
+        45,
+        43,
+        8,
+        11,
+        30,
+        38,
+        60,
+        60,
+        44,
+        26,
+        71,
+        11,
+        15,
+        54,
+        52,
+        62,
+        10,
+        50,
+        24,
+        52,
+        39,
+        30,
+        61,
+        45,
+        41,
+        46,
+        56,
+        66,
+        37,
+        9,
+        60,
+        33,
+        23,
+        0,
+        51,
+        59,
+        4,
+        14,
+        61,
+        38,
+        64,
+        7,
+        6,
+        33,
+        71
+      ],
+      "rotation_profile": [
+        38,
+        -625,
+        423,
+        -113,
+        -47,
+        171,
+        -9,
+        107,
+        60,
+        263,
+        25,
+        75,
+        163,
+        55,
+        100,
+        89,
+        375,
+        7,
+        69,
+        98,
+        272,
+        -68,
+        -75,
+        137,
+        -83,
+        149,
+        89,
+        -126,
+        -345,
+        -93,
+        -667,
+        -1,
+        -138,
+        459,
+        -46,
+        -999,
+        422,
+        178,
+        -171,
+        -456,
+        -562,
+        299,
+        20,
+        -177,
+        222,
+        -165,
+        -426,
+        208,
+        -162,
+        -60,
+        -221,
+        134,
+        138,
+        291,
+        -276,
+        342,
+        -47,
+        147,
+        119,
+        -180,
+        12,
+        -226,
+        285,
+        -131,
+        94,
+        -76,
+        188,
+        -75,
+        -61,
+        225,
+        35,
+        324
+      ],
+      "schema": "HHS_HASH72_KERNEL_WITNESS_V1",
+      "trace_count": 8569,
+      "zero_sum": true
+    },
+    "registry_root_hash72": "Co/ytw>G<Uzev<GwvofJ4pjgduHJH8buCYYIq?bfSQ-aOoQDuZJFKU(B9Yxn0PX4eZC*76x?",
+    "schema": "HHS_KERNEL_INVARIANT_REGISTRY_WITNESS_V1",
+    "version": "PASS_042_KERNEL_DERIVED_CONFORMANCE_SURFACE_MAP_V1"
+  }
+}

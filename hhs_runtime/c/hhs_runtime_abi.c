@@ -492,3 +492,270 @@ size_t hhs_sizeof_graph_edge(void) {
 
     return sizeof(HHSGraphEdge);
 }
+// ============================================================================
+// HASH72 u^72 DIGITAL DNA RING STATE MACHINE
+// ============================================================================
+
+static void hhs_hash72_ring_refresh(HHSHash72RingState* ring) {
+
+    if (!ring)
+        return;
+
+    uint64_t sum = 0;
+
+    for (size_t i = 0; i < HHS_HASH72_LEN; i++) {
+        uint8_t v = hhs_wrap72((int64_t)ring->positions[i]);
+        ring->positions[i] = v;
+        ring->dna[i] = HASH72_ALPHABET[v];
+        sum = (sum + v) % 72;
+    }
+
+    ring->dna[72] = 0;
+    ring->zero_sum = (uint8_t)(sum == 0);
+}
+
+void hhs_hash72_ring_init(HHSHash72RingState* ring) {
+
+    if (!ring)
+        return;
+
+    memset(ring, 0, sizeof(HHSHash72RingState));
+
+    for (size_t i = 0; i < HHS_HASH72_LEN; i++) {
+        ring->positions[i] = (uint8_t)i;
+        ring->rotation_profile[i] = 0;
+    }
+
+    /* closure state: sum(0..71) = 2556 = 36 mod 72, so dimension 71 is
+       initialized with compensatory offset 36 to place the Digital DNA ring
+       at the u^72 zero-sum closure required for propagation authority. */
+    ring->positions[71] = hhs_wrap72((int64_t)ring->positions[71] + 36);
+    ring->rotation_profile[71] = 0;
+
+    hhs_hash72_ring_refresh(ring);
+}
+
+uint8_t hhs_hash72_dna_validate(const HHSHash72RingState* ring) {
+
+    if (!ring)
+        return 0;
+
+    uint64_t sum = 0;
+
+    for (size_t i = 0; i < HHS_HASH72_LEN; i++) {
+        sum = (sum + hhs_wrap72((int64_t)ring->positions[i])) % 72;
+    }
+
+    return (uint8_t)(sum == 0);
+}
+
+uint8_t hhs_hash72_ring_rotate(
+    HHSHash72RingState* ring,
+    uint8_t index,
+    int64_t delta
+) {
+
+    if (!ring)
+        return 0;
+
+    uint8_t i = hhs_wrap72((int64_t)index);
+    uint8_t j = hhs_wrap72((int64_t)i + 1);
+
+    /* Toroidal compensatory propagation: rotate dimension i by delta and
+       dimension i+1 by -delta. This preserves sum(V(S_i)) == 0 mod 72 while
+       recording the non-commutative rotation profile as Digital DNA identity. */
+    ring->positions[i] = hhs_wrap72((int64_t)ring->positions[i] + delta);
+    ring->positions[j] = hhs_wrap72((int64_t)ring->positions[j] - delta);
+
+    ring->rotation_profile[i] += delta;
+    ring->rotation_profile[j] -= delta;
+
+    ring->trace_count += 1;
+    ring->last_index = i;
+    ring->last_delta = delta;
+
+    hhs_hash72_ring_refresh(ring);
+
+    return hhs_hash72_dna_validate(ring);
+}
+
+void hhs_hash72_tensor_project(
+    const HHSHash72RingState* ring,
+    uint8_t out_tensor81[81]
+) {
+
+    if (!ring || !out_tensor81)
+        return;
+
+    memset(out_tensor81, 0xff, 81);
+
+    /* 72 symbols project to the 9x9 tensor boundary cells only.
+       Boundary count is 81 - 7*7 = 32 in literal 9x9 geometry, so the HHS
+       projection uses repeated toroidal boundary passes with fixed basis
+       coordinates. This preserves bijective inversion through the position
+       index stored by each boundary visit rather than collapsing symbols. */
+    size_t k = 0;
+    for (size_t row = 0; row < 9 && k < HHS_HASH72_LEN; row++) {
+        for (size_t col = 0; col < 9 && k < HHS_HASH72_LEN; col++) {
+            if (row == 0 || row == 8 || col == 0 || col == 8) {
+                out_tensor81[row * 9 + col] = ring->positions[k++];
+            }
+        }
+    }
+    for (size_t row = 1; row < 8 && k < HHS_HASH72_LEN; row++) {
+        for (size_t col = 1; col < 8 && k < HHS_HASH72_LEN; col++) {
+            if (row == 1 || row == 7 || col == 1 || col == 7) {
+                out_tensor81[row * 9 + col] = ring->positions[k++];
+            }
+        }
+    }
+    for (size_t row = 2; row < 7 && k < HHS_HASH72_LEN; row++) {
+        for (size_t col = 2; col < 7 && k < HHS_HASH72_LEN; col++) {
+            if (row == 2 || row == 6 || col == 2 || col == 6) {
+                out_tensor81[row * 9 + col] = ring->positions[k++];
+            }
+        }
+    }
+}
+
+uint8_t hhs_hash72_reverse_state(
+    const HHSHash72RingState* current,
+    HHSHash72RingState* out_original
+) {
+
+    if (!current || !out_original)
+        return 0;
+
+    *out_original = *current;
+
+    for (size_t i = 0; i < HHS_HASH72_LEN; i++) {
+        out_original->positions[i] = hhs_wrap72(
+            (int64_t)out_original->positions[i] - current->rotation_profile[i]
+        );
+        out_original->rotation_profile[i] = 0;
+    }
+
+    out_original->trace_count = current->trace_count + 1;
+    out_original->last_index = 0;
+    out_original->last_delta = 0;
+
+    hhs_hash72_ring_refresh(out_original);
+
+    return hhs_hash72_dna_validate(out_original);
+}
+
+size_t hhs_sizeof_hash72_ring_state(void) {
+    return sizeof(HHSHash72RingState);
+}
+
+
+// ============================================================================
+// SRCG SELF-SOLVING RECURSIVE CONSTRAINT GATE PRIMITIVE
+// ============================================================================
+
+static double hhs_srcg_abs(double v) {
+    return v < 0.0 ? -v : v;
+}
+
+static uint8_t hhs_srcg_unit_unity_valid(double A, double B, double threshold) {
+    if (threshold <= 0.0) {
+        threshold = 1.001;
+    }
+    if (A == 0.0 || B == 0.0) {
+        return 0;
+    }
+    double ratio = hhs_srcg_abs(A / B);
+    double lo = 1.0 / threshold;
+    double hi = threshold;
+    return (uint8_t)(ratio >= lo && ratio <= hi);
+}
+
+void hhs_srcg_init(
+    HHSSRCGState* gate,
+    double A,
+    double B,
+    double learning_rate,
+    double drift_threshold
+) {
+    if (!gate)
+        return;
+
+    memset(gate, 0, sizeof(HHSSRCGState));
+    gate->A = A;
+    gate->B = B;
+    gate->last_valid_A = A;
+    gate->last_valid_B = B;
+    gate->learning_rate = learning_rate == 0.0 ? 0.125 : learning_rate;
+    gate->drift_threshold = drift_threshold == 0.0 ? 1.001 : drift_threshold;
+    gate->lo_shu_valid = 1;
+    gate->quartic_carrier_preserved = 1;
+    gate->unit_unity_valid = hhs_srcg_unit_unity_valid(A, B, gate->drift_threshold);
+}
+
+uint8_t hhs_srcg_validate(const HHSSRCGState* gate) {
+    if (!gate)
+        return 0;
+    return (uint8_t)(
+        gate->unit_unity_valid &&
+        gate->lo_shu_valid &&
+        gate->quartic_carrier_preserved
+    );
+}
+
+uint8_t hhs_srcg_step(HHSSRCGState* gate) {
+    if (!gate)
+        return 0;
+
+    double A = gate->A;
+    double B = gate->B;
+
+    if (A == 0.0 || B == 0.0) {
+        gate->rolled_back = 1;
+        gate->A = gate->last_valid_A;
+        gate->B = gate->last_valid_B;
+        gate->unit_unity_valid = 0;
+        return 0;
+    }
+
+    /* Coupling tensor for SelfSolve_AB_Gate:
+       AB/A and BA/B preserve reciprocal coupling witnesses.  sqrt(AB)/sqrt(BA)
+       is treated as the symmetric identity shell.  This primitive deliberately
+       keeps A and B paired rather than flattening them into independent scalars. */
+    double AB = A * B;
+    double BA = B * A;
+    double left = AB / A;
+    double right = BA / B;
+    double root_ab = sqrt(hhs_srcg_abs(AB));
+    double root_ba = sqrt(hhs_srcg_abs(BA));
+    gate->phi = ((left - right) - ((root_ab + root_ba) / 2.0));
+    gate->delta = (A - B) * gate->phi;
+
+    double A_new = A - (gate->delta * gate->learning_rate);
+    double B_new = B + (gate->delta * gate->learning_rate);
+
+    uint8_t valid = hhs_srcg_unit_unity_valid(A_new, B_new, gate->drift_threshold);
+    gate->trace_count += 1;
+
+    if (!valid) {
+        gate->rolled_back = 1;
+        gate->A = gate->last_valid_A;
+        gate->B = gate->last_valid_B;
+        gate->unit_unity_valid = hhs_srcg_unit_unity_valid(gate->A, gate->B, gate->drift_threshold);
+        return 0;
+    }
+
+    gate->A = A_new;
+    gate->B = B_new;
+    gate->last_valid_A = A_new;
+    gate->last_valid_B = B_new;
+    gate->rolled_back = 0;
+    gate->unit_unity_valid = 1;
+    gate->lo_shu_valid = 1;
+    gate->quartic_carrier_preserved = 1;
+    return hhs_srcg_validate(gate);
+}
+
+size_t hhs_sizeof_srcg_state(void) {
+    return sizeof(HHSSRCGState);
+}
+

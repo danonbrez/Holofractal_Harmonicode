@@ -1,0 +1,54 @@
+{
+  "authority": "CANONICAL_REPORT_INPUT_OBJECT",
+  "canonical_report_input_root_hash72": "HMI/sBxaUhT0kexk047jZ04+FM*yQY>)2D0U<!rIF*69VV)yJn3<iBk1DhZ0(I/1MQon9JbH",
+  "metrics": {
+    "conformance_edge_count": {
+      "availability": "AVAILABLE",
+      "schema": "HHS_TYPED_REPOSITORY_METRIC_V1",
+      "source": "committed_conformance_snapshot.conformance_edge_count",
+      "value": 1842
+    },
+    "derived_service_count": {
+      "availability": "AVAILABLE",
+      "schema": "HHS_TYPED_REPOSITORY_METRIC_V1",
+      "source": "registry_status_projection.derived_service_count",
+      "value": 109
+    },
+    "orphan_count": {
+      "availability": "AVAILABLE",
+      "schema": "HHS_TYPED_REPOSITORY_METRIC_V1",
+      "source": "committed_reachability_manifest.orphan_count",
+      "value": 0
+    },
+    "service_count": {
+      "availability": "AVAILABLE",
+      "schema": "HHS_TYPED_REPOSITORY_METRIC_V1",
+      "source": "committed_reachability_manifest.service_count",
+      "value": 109
+    },
+    "surface_count": {
+      "availability": "AVAILABLE",
+      "schema": "HHS_TYPED_REPOSITORY_METRIC_V1",
+      "source": "committed_conformance_snapshot.surface_count",
+      "value": 132
+    },
+    "underived_service_count": {
+      "availability": "AVAILABLE",
+      "schema": "HHS_TYPED_REPOSITORY_METRIC_V1",
+      "source": "registry_status_projection.underived_service_count",
+      "value": 0
+    },
+    "underived_surface_count": {
+      "availability": "AVAILABLE",
+      "schema": "HHS_TYPED_REPOSITORY_METRIC_V1",
+      "source": "committed_conformance_snapshot.underived_surface_count",
+      "value": 0
+    }
+  },
+  "ok": true,
+  "projection_policy": "AUTHORITATIVE_JSON_THEN_DETERMINISTIC_MARKDOWN",
+  "report_root_hash72": "XoOuh/qJXn1qDBm1dK9m)EDOAo?thhq-jjloiX3F6jU(oM7MDAzyXLX2)SK1p*uNL0!+L!CE",
+  "schema": "HHS_PASS_052_1_CANONICAL_REPOSITORY_REPORT_V1",
+  "unknown_metric_policy": "TYPED_UNAVAILABLE_NEVER_ZERO",
+  "version": "PASS_052_1_CANONICAL_REPORTING_REPAIR_V1"
+}

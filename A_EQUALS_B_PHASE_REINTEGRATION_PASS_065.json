@@ -1,0 +1,17 @@
+{
+  "A_state": "P^2",
+  "B_state": "P^2",
+  "authority": "HHS_LOCAL_BRANCH_RESOLUTION_AUTHORITY_V1",
+  "bottleneck_root_hash72": "HL01tILosnx(jjwVkSoU3+c+rrz83B<ncW1WhJGj8d)<37T+?Ed+ZH9lJASIBWN*k6Wf*gCo",
+  "canonical_reintegration_admissible": true,
+  "integration_relation": "A=B",
+  "local_scope_preserved": true,
+  "reasons": [],
+  "reintegration_root_hash72": "xG?NPI7DLbYXuxyorU)N/AQa68/2kXgYpnRPxH4NAZ3IZ1H+v/-njClyail55QSdbc8VT6Wh",
+  "schema": "HHS_A_EQUALS_B_PHASE_REINTEGRATION_WITNESS_V1",
+  "selected_branch_id": "branch:direct",
+  "status": "ADMIT_A_EQUALS_B_REINTEGRATION",
+  "translation_phase_aligned": true,
+  "unaffected_structure_preserved": true,
+  "version": "PASS_065_LOCAL_CLOSED_PARALLEL_BRANCH_TREE_V1"
+}

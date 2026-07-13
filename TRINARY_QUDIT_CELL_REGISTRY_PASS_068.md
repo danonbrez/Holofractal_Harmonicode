@@ -1,0 +1,6491 @@
+# TRINARY QUDIT CELL REGISTRY PASS 068
+
+```json
+{
+  "cell_count": 81,
+  "cells": [
+    {
+      "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+      "cell_closed": true,
+      "cell_id": "cell:00",
+      "cell_identity_count": 1,
+      "cell_root_hash72": "+MwIWY8EkT*Mr0MVPjc(ZUFU84EQ<+KBD*Vl47RDPVDMgnpun>cF7KvIpZgOSvkw2jE8n9Nr",
+      "column": 0,
+      "domain_id": "FORMAL_ALGEBRA",
+      "energy_credit": 40,
+      "global_index": 0,
+      "lane_count": 3,
+      "lo_shu_value": 8,
+      "phase_tensor": "x",
+      "row": 0,
+      "schema": "HHS_TRINARY_PHASE_QUDIT_CELL_V1",
+      "subgrid_id": "subgrid:0",
+      "transition": {
+        "all_three_lane_witnesses_present": true,
+        "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+        "cell_id": "cell:00",
+        "current_phase": "x",
+        "execution_order": [
+          "POSITIVE",
+          "PLASTIC",
+          "ZERO_SUM"
+        ],
+        "next_phase": "y",
+        "plastic_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cell_id": "cell:00",
+          "continuation_admitted": true,
+          "creates_information_energy": false,
+          "gradient_residue": {
+            "denominator": 1,
+            "numerator": 0
+          },
+          "gradient_state": "EQUILIBRIUM",
+          "lane_root_hash72": "gY6sftEGFmBQTNd?sxnt6(XEb!+juunMpnZi2xkZuUWf?6jyBNUYN-0u/o9QBUuz8vSS</H4",
+          "minimal_polynomial": "rho^3-rho-1",
+          "schema": "HHS_PLASTIC_GRADIENT_LANE_V1",
+          "trit": 0,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "positive_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "authority_rank_implied": false,
+          "cell_id": "cell:00",
+          "constructive_proposal": true,
+          "lane_root_hash72": "U4*1v1>F0SilNOkL4YYX+qw2z2We2b1l*CHndcGHM7clpZPaQPjfeDt!0h)lIJwFW2FDGf*!",
+          "phase_state": "x",
+          "schema": "HHS_ORIENTED_PHASE_LANE_V1",
+          "source_phase_root_hash72": "w!t7bqo/q0xlsmjDpIcX8RyV5AG5B/pMXmD<2diSRY?O-f9Z>)E+8N?U(TV?9w>hsjbelzFx",
+          "trit": 1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "schema": "HHS_THREE_LANE_PHASE_TRANSITION_V1",
+        "transition_admitted": true,
+        "transition_root_hash72": "*Tv4kRi4y<Khuk2iZm7<(3ZjZ0GYzS-k/l<dhx0b5T(9zlWb-Klv6NSXgPwLMC9e<KY3dw!w",
+        "trinary_is_functional_not_authority_rank": true,
+        "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+        "zero_sum_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cancellation_scope": [],
+          "cell_id": "cell:00",
+          "closure_state": "CLOSED",
+          "continuation_admitted": true,
+          "global_rejection_propagated": false,
+          "lane_root_hash72": "v1NlLCoqxPJOTUZQlrvjWn4<xifSRNCw4Q>mIcufAbMoh1-9Er!R!548U4ruBeUxMY/<o(q-",
+          "schema": "HHS_ZERO_SUM_EQUILIBRIUM_LANE_V1",
+          "source_phase_erased": false,
+          "trit": -1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+          "zero_sum_residue": {
+            "denominator": 1,
+            "numerator": 0
+          }
+        }
+      },
+      "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+    },
+    {
+      "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+      "cell_closed": true,
+      "cell_id": "cell:01",
+      "cell_identity_count": 1,
+      "cell_root_hash72": "04FTaUWWT2UHKzSCo+qIB8NI4EaO>FcHHM-y-2FbZo7Hz4RTs>kr48pkNU><*5seyo7r4Snx",
+      "column": 1,
+      "domain_id": "FORMAL_ALGEBRA",
+      "energy_credit": 5,
+      "global_index": 1,
+      "lane_count": 3,
+      "lo_shu_value": 1,
+      "phase_tensor": "y",
+      "row": 0,
+      "schema": "HHS_TRINARY_PHASE_QUDIT_CELL_V1",
+      "subgrid_id": "subgrid:0",
+      "transition": {
+        "all_three_lane_witnesses_present": true,
+        "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+        "cell_id": "cell:01",
+        "current_phase": "y",
+        "execution_order": [
+          "POSITIVE",
+          "PLASTIC",
+          "ZERO_SUM"
+        ],
+        "next_phase": "z",
+        "plastic_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cell_id": "cell:01",
+          "continuation_admitted": true,
+          "creates_information_energy": false,
+          "gradient_residue": {
+            "denominator": 1,
+            "numerator": 0
+          },
+          "gradient_state": "EQUILIBRIUM",
+          "lane_root_hash72": "gY6sftEGFmBQTNd?sxnt6(XEb!+juunMqmZi2xkZuUWf?6jyBNUYN-0u/o9QBUuz8vSS</H4",
+          "minimal_polynomial": "rho^3-rho-1",
+          "schema": "HHS_PLASTIC_GRADIENT_LANE_V1",
+          "trit": 0,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "positive_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "authority_rank_implied": false,
+          "cell_id": "cell:01",
+          "constructive_proposal": true,
+          "lane_root_hash72": "3MoCeM8L7GG*!YIsWkiFWMJ05Css4tX/Mf9?x6/M1D?<DaC3UAaWTxF6Qlvk+!Hrwh+JgSvh",
+          "phase_state": "y",
+          "schema": "HHS_ORIENTED_PHASE_LANE_V1",
+          "source_phase_root_hash72": "l</MsQT-GA(*F3qOl<9W1W>OzbghE>)4NyV4Qb2wZ9DCPLmMm(oj9gEI<>vZjm2>mFLQjjb<",
+          "trit": 1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "schema": "HHS_THREE_LANE_PHASE_TRANSITION_V1",
+        "transition_admitted": true,
+        "transition_root_hash72": "BgMkC8<ta1ndc+xZ-7e?Nsa2Sy63zB53ZL-Pm0Ie>I+oWPCDmj2PccNswvzy1vL3FLOs8lSX",
+        "trinary_is_functional_not_authority_rank": true,
+        "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+        "zero_sum_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cancellation_scope": [],
+          "cell_id": "cell:01",
+          "closure_state": "CLOSED",
+          "continuation_admitted": true,
+          "global_rejection_propagated": false,
+          "lane_root_hash72": "v1NlLCoqxPJOTUZQlrvjWn4<xifSRNCw4Q>mIcufAbMoh1-9Er!R!548U4ruCdUxMY/<o(q-",
+          "schema": "HHS_ZERO_SUM_EQUILIBRIUM_LANE_V1",
+          "source_phase_erased": false,
+          "trit": -1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+          "zero_sum_residue": {
+            "denominator": 1,
+            "numerator": 0
+          }
+        }
+      },
+      "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+    },
+    {
+      "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+      "cell_closed": true,
+      "cell_id": "cell:02",
+      "cell_identity_count": 1,
+      "cell_root_hash72": "B99wH4cXnU(T0NxP2ji(J8-8bSgBsm65fXwKASe9HMgEQRYUx?oJIZn<+4GQ(25LQ3aam68B",
+      "column": 2,
+      "domain_id": "FORMAL_ALGEBRA",
+      "energy_credit": 30,
+      "global_index": 2,
+      "lane_count": 3,
+      "lo_shu_value": 6,
+      "phase_tensor": "z",
+      "row": 0,
+      "schema": "HHS_TRINARY_PHASE_QUDIT_CELL_V1",
+      "subgrid_id": "subgrid:0",
+      "transition": {
+        "all_three_lane_witnesses_present": true,
+        "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+        "cell_id": "cell:02",
+        "current_phase": "z",
+        "execution_order": [
+          "POSITIVE",
+          "PLASTIC",
+          "ZERO_SUM"
+        ],
+        "next_phase": "w",
+        "plastic_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cell_id": "cell:02",
+          "continuation_admitted": true,
+          "creates_information_energy": false,
+          "gradient_residue": {
+            "denominator": 1,
+            "numerator": 0
+          },
+          "gradient_state": "EQUILIBRIUM",
+          "lane_root_hash72": "gY6sftEGFmBQTNd?sxnt6(XEb!+juunMrlZi2xkZuUWf?6jyBNUYN-0u/o9QBUuz8vSS</H4",
+          "minimal_polynomial": "rho^3-rho-1",
+          "schema": "HHS_PLASTIC_GRADIENT_LANE_V1",
+          "trit": 0,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "positive_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "authority_rank_implied": false,
+          "cell_id": "cell:02",
+          "constructive_proposal": true,
+          "lane_root_hash72": "rMpxz1cV6Rx*AW<aOySLlVYWidNT5<X5>4nrYX-iTXA3Tyk)RftNU703(h+qO+R42JIg56F9",
+          "phase_state": "z",
+          "schema": "HHS_ORIENTED_PHASE_LANE_V1",
+          "source_phase_root_hash72": ">dsc/R7FtK9K7ZHksVJ!qnR)PXcWtxL9o?GbOj2G*RXlJJuT71xQfd0tuSIPi3zKaO(vnnra",
+          "trit": 1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "schema": "HHS_THREE_LANE_PHASE_TRANSITION_V1",
+        "transition_admitted": true,
+        "transition_root_hash72": "H!OO9sqeAe+WnSq(MuZcI/SH)txD7qlg(!zB09a+e>O*cEWAM7q+LBj(BYmFxlYMdMQ6Qowg",
+        "trinary_is_functional_not_authority_rank": true,
+        "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+        "zero_sum_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cancellation_scope": [],
+          "cell_id": "cell:02",
+          "closure_state": "CLOSED",
+          "continuation_admitted": true,
+          "global_rejection_propagated": false,
+          "lane_root_hash72": "v1NlLCoqxPJOTUZQlrvjWn4<xifSRNCw4Q>mIcufAbMoh1-9Er!R!548U4ruDcUxMY/<o(q-",
+          "schema": "HHS_ZERO_SUM_EQUILIBRIUM_LANE_V1",
+          "source_phase_erased": false,
+          "trit": -1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+          "zero_sum_residue": {
+            "denominator": 1,
+            "numerator": 0
+          }
+        }
+      },
+      "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+    },
+    {
+      "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+      "cell_closed": true,
+      "cell_id": "cell:03",
+      "cell_identity_count": 1,
+      "cell_root_hash72": "3VuHIY(c4ku2Gn7!lH6Sx3eluOJ3EaaV/nGOr/GK+ejmX9bXB10n*3HJZ3DZl)n27bxbPShW",
+      "column": 3,
+      "domain_id": "FORMAL_ALGEBRA",
+      "energy_credit": 15,
+      "global_index": 3,
+      "lane_count": 3,
+      "lo_shu_value": 3,
+      "phase_tensor": "w",
+      "row": 0,
+      "schema": "HHS_TRINARY_PHASE_QUDIT_CELL_V1",
+      "subgrid_id": "subgrid:0",
+      "transition": {
+        "all_three_lane_witnesses_present": true,
+        "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+        "cell_id": "cell:03",
+        "current_phase": "w",
+        "execution_order": [
+          "POSITIVE",
+          "PLASTIC",
+          "ZERO_SUM"
+        ],
+        "next_phase": "xy",
+        "plastic_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cell_id": "cell:03",
+          "continuation_admitted": true,
+          "creates_information_energy": false,
+          "gradient_residue": {
+            "denominator": 1,
+            "numerator": 0
+          },
+          "gradient_state": "EQUILIBRIUM",
+          "lane_root_hash72": "gY6sftEGFmBQTNd?sxnt6(XEb!+juunMskZi2xkZuUWf?6jyBNUYN-0u/o9QBUuz8vSS</H4",
+          "minimal_polynomial": "rho^3-rho-1",
+          "schema": "HHS_PLASTIC_GRADIENT_LANE_V1",
+          "trit": 0,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "positive_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "authority_rank_implied": false,
+          "cell_id": "cell:03",
+          "constructive_proposal": true,
+          "lane_root_hash72": "7JFU<ZxOUUGJl4mydBSZG/QbjeroUpSVv?rwQ*<BanDD<zA<t(n4c!J!kvvSCqbZD)C!C0Rw",
+          "phase_state": "w",
+          "schema": "HHS_ORIENTED_PHASE_LANE_V1",
+          "source_phase_root_hash72": "R4H3IrjLV0BaN9(3nKZMLvUF3cBr!DQcg1ocJ)PQy!>+EZ6GuxdvUmQ(tRVrKUm?Vv0i6yiz",
+          "trit": 1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "schema": "HHS_THREE_LANE_PHASE_TRANSITION_V1",
+        "transition_admitted": true,
+        "transition_root_hash72": "ziCRRbMQr6sa2+7/0Ax?i4eDd1sBvbU+i4dUX<770/7R-pcW4G59jSqOKINuppw10/0k>Kh>",
+        "trinary_is_functional_not_authority_rank": true,
+        "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+        "zero_sum_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cancellation_scope": [],
+          "cell_id": "cell:03",
+          "closure_state": "CLOSED",
+          "continuation_admitted": true,
+          "global_rejection_propagated": false,
+          "lane_root_hash72": "v1NlLCoqxPJOTUZQlrvjWn4<xifSRNCw4Q>mIcufAbMoh1-9Er!R!548U4ruEbUxMY/<o(q-",
+          "schema": "HHS_ZERO_SUM_EQUILIBRIUM_LANE_V1",
+          "source_phase_erased": false,
+          "trit": -1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+          "zero_sum_residue": {
+            "denominator": 1,
+            "numerator": 0
+          }
+        }
+      },
+      "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+    },
+    {
+      "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+      "cell_closed": true,
+      "cell_id": "cell:04",
+      "cell_identity_count": 1,
+      "cell_root_hash72": "w/2KDzaR*se?SHOAIJG+L-coL)WnYu>bS--AOKvLgr3</Q4SQhmycXoBMDLeG5IknAwI0u7p",
+      "column": 4,
+      "domain_id": "FORMAL_ALGEBRA",
+      "energy_credit": 25,
+      "global_index": 4,
+      "lane_count": 3,
+      "lo_shu_value": 5,
+      "phase_tensor": "x",
+      "row": 0,
+      "schema": "HHS_TRINARY_PHASE_QUDIT_CELL_V1",
+      "subgrid_id": "subgrid:0",
+      "transition": {
+        "all_three_lane_witnesses_present": true,
+        "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+        "cell_id": "cell:04",
+        "current_phase": "xy",
+        "execution_order": [
+          "POSITIVE",
+          "PLASTIC",
+          "ZERO_SUM"
+        ],
+        "next_phase": "yx",
+        "plastic_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cell_id": "cell:04",
+          "continuation_admitted": true,
+          "creates_information_energy": false,
+          "gradient_residue": {
+            "denominator": 1,
+            "numerator": 0
+          },
+          "gradient_state": "EQUILIBRIUM",
+          "lane_root_hash72": "gY6sftEGFmBQTNd?sxnt6(XEb!+juunMtjZi2xkZuUWf?6jyBNUYN-0u/o9QBUuz8vSS</H4",
+          "minimal_polynomial": "rho^3-rho-1",
+          "schema": "HHS_PLASTIC_GRADIENT_LANE_V1",
+          "trit": 0,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "positive_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "authority_rank_implied": false,
+          "cell_id": "cell:04",
+          "constructive_proposal": true,
+          "lane_root_hash72": "oEN54ixSPX4Yl9e5eKlVTbf+65v8Vq5La/Ki/7QYEcbwvE0y3-QiRY0?WFHAF9yV+4FcFTpV",
+          "phase_state": "xy",
+          "schema": "HHS_ORIENTED_PHASE_LANE_V1",
+          "source_phase_root_hash72": "w!t7bqo/q0xlsmjDpIcX8RyV5AG5B/pMXmD<2diSRY?O-f9Z>)E+8N?U(TV?9w>hsjbelzFx",
+          "trit": 1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "schema": "HHS_THREE_LANE_PHASE_TRANSITION_V1",
+        "transition_admitted": true,
+        "transition_root_hash72": "lOEH32W!Ix1xvxwuB/EqaI)n4xDu!FWVbrsOl-6pcqGp+Qw-<oGNMKRqLG1353E5eRpwj*!t",
+        "trinary_is_functional_not_authority_rank": true,
+        "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+        "zero_sum_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cancellation_scope": [],
+          "cell_id": "cell:04",
+          "closure_state": "CLOSED",
+          "continuation_admitted": true,
+          "global_rejection_propagated": false,
+          "lane_root_hash72": "v1NlLCoqxPJOTUZQlrvjWn4<xifSRNCw4Q>mIcufAbMoh1-9Er!R!548U4ruFaUxMY/<o(q-",
+          "schema": "HHS_ZERO_SUM_EQUILIBRIUM_LANE_V1",
+          "source_phase_erased": false,
+          "trit": -1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+          "zero_sum_residue": {
+            "denominator": 1,
+            "numerator": 0
+          }
+        }
+      },
+      "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+    },
+    {
+      "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+      "cell_closed": true,
+      "cell_id": "cell:05",
+      "cell_identity_count": 1,
+      "cell_root_hash72": "A-q8mmfebOBhcDPsTrh6xeVVhjzEf1L*)WBy1v3HOs<nJoFdfMjxLXnZZUA8KAMzQj3kO360",
+      "column": 5,
+      "domain_id": "FORMAL_ALGEBRA",
+      "energy_credit": 35,
+      "global_index": 5,
+      "lane_count": 3,
+      "lo_shu_value": 7,
+      "phase_tensor": "y",
+      "row": 0,
+      "schema": "HHS_TRINARY_PHASE_QUDIT_CELL_V1",
+      "subgrid_id": "subgrid:0",
+      "transition": {
+        "all_three_lane_witnesses_present": true,
+        "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+        "cell_id": "cell:05",
+        "current_phase": "yx",
+        "execution_order": [
+          "POSITIVE",
+          "PLASTIC",
+          "ZERO_SUM"
+        ],
+        "next_phase": "zw",
+        "plastic_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cell_id": "cell:05",
+          "continuation_admitted": true,
+          "creates_information_energy": false,
+          "gradient_residue": {
+            "denominator": 1,
+            "numerator": 0
+          },
+          "gradient_state": "EQUILIBRIUM",
+          "lane_root_hash72": "gY6sftEGFmBQTNd?sxnt6(XEb!+juunMuiZi2xkZuUWf?6jyBNUYN-0u/o9QBUuz8vSS</H4",
+          "minimal_polynomial": "rho^3-rho-1",
+          "schema": "HHS_PLASTIC_GRADIENT_LANE_V1",
+          "trit": 0,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "positive_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "authority_rank_implied": false,
+          "cell_id": "cell:05",
+          "constructive_proposal": true,
+          "lane_root_hash72": "HXlBF18/V(*c*uot)sRfB6B44L)O?snxSNnUGoMbJBHj6Sll<(B9ot(b(lL0EtV>NOUyLt*o",
+          "phase_state": "yx",
+          "schema": "HHS_ORIENTED_PHASE_LANE_V1",
+          "source_phase_root_hash72": "l</MsQT-GA(*F3qOl<9W1W>OzbghE>)4NyV4Qb2wZ9DCPLmMm(oj9gEI<>vZjm2>mFLQjjb<",
+          "trit": 1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "schema": "HHS_THREE_LANE_PHASE_TRANSITION_V1",
+        "transition_admitted": true,
+        "transition_root_hash72": "/G4NLjHc(bmXWrhtMsNHiPj6H?LxhCiOnX<g3hbT?v/+St/)IosqZ*E!QWKeZHwmKeQskUiH",
+        "trinary_is_functional_not_authority_rank": true,
+        "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+        "zero_sum_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cancellation_scope": [],
+          "cell_id": "cell:05",
+          "closure_state": "CLOSED",
+          "continuation_admitted": true,
+          "global_rejection_propagated": false,
+          "lane_root_hash72": "v1NlLCoqxPJOTUZQlrvjWn4<xifSRNCw4Q>mIcufAbMoh1-9Er!R!548U4ruG9UxMY/<o(q-",
+          "schema": "HHS_ZERO_SUM_EQUILIBRIUM_LANE_V1",
+          "source_phase_erased": false,
+          "trit": -1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+          "zero_sum_residue": {
+            "denominator": 1,
+            "numerator": 0
+          }
+        }
+      },
+      "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+    },
+    {
+      "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+      "cell_closed": true,
+      "cell_id": "cell:06",
+      "cell_identity_count": 1,
+      "cell_root_hash72": "7S-rB)Yx!vrSuX7)0EZp2*BE)l>RA>jyJfj(4j24ltDvEQp3E4n-U6HTp0nuqnXstgEzvKUl",
+      "column": 6,
+      "domain_id": "FORMAL_ALGEBRA",
+      "energy_credit": 20,
+      "global_index": 6,
+      "lane_count": 3,
+      "lo_shu_value": 4,
+      "phase_tensor": "z",
+      "row": 0,
+      "schema": "HHS_TRINARY_PHASE_QUDIT_CELL_V1",
+      "subgrid_id": "subgrid:0",
+      "transition": {
+        "all_three_lane_witnesses_present": true,
+        "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+        "cell_id": "cell:06",
+        "current_phase": "zw",
+        "execution_order": [
+          "POSITIVE",
+          "PLASTIC",
+          "ZERO_SUM"
+        ],
+        "next_phase": "wz",
+        "plastic_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cell_id": "cell:06",
+          "continuation_admitted": true,
+          "creates_information_energy": false,
+          "gradient_residue": {
+            "denominator": 1,
+            "numerator": 0
+          },
+          "gradient_state": "EQUILIBRIUM",
+          "lane_root_hash72": "gY6sftEGFmBQTNd?sxnt6(XEb!+juunMvhZi2xkZuUWf?6jyBNUYN-0u/o9QBUuz8vSS</H4",
+          "minimal_polynomial": "rho^3-rho-1",
+          "schema": "HHS_PLASTIC_GRADIENT_LANE_V1",
+          "trit": 0,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "positive_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "authority_rank_implied": false,
+          "cell_id": "cell:06",
+          "constructive_proposal": true,
+          "lane_root_hash72": "zblCAmx>)/33*<mRNk)PHFKj-YG?qt-x(!c!?Mv8fj+Ud!J3Y+gsfuEG+zHwKhM8qkcfiigy",
+          "phase_state": "zw",
+          "schema": "HHS_ORIENTED_PHASE_LANE_V1",
+          "source_phase_root_hash72": ">dsc/R7FtK9K7ZHksVJ!qnR)PXcWtxL9o?GbOj2G*RXlJJuT71xQfd0tuSIPi3zKaO(vnnra",
+          "trit": 1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "schema": "HHS_THREE_LANE_PHASE_TRANSITION_V1",
+        "transition_admitted": true,
+        "transition_root_hash72": "YXrm-lorphpf>jjH8l18i/bFIH!FrixNU(?!PJeccfU/97EYkPZ4B7HGsL9j*eN74wHqr94M",
+        "trinary_is_functional_not_authority_rank": true,
+        "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+        "zero_sum_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cancellation_scope": [],
+          "cell_id": "cell:06",
+          "closure_state": "CLOSED",
+          "continuation_admitted": true,
+          "global_rejection_propagated": false,
+          "lane_root_hash72": "v1NlLCoqxPJOTUZQlrvjWn4<xifSRNCw4Q>mIcufAbMoh1-9Er!R!548U4ruH8UxMY/<o(q-",
+          "schema": "HHS_ZERO_SUM_EQUILIBRIUM_LANE_V1",
+          "source_phase_erased": false,
+          "trit": -1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+          "zero_sum_residue": {
+            "denominator": 1,
+            "numerator": 0
+          }
+        }
+      },
+      "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+    },
+    {
+      "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+      "cell_closed": true,
+      "cell_id": "cell:07",
+      "cell_identity_count": 1,
+      "cell_root_hash72": "jGuJCBxiaYN4WF1!OMAfabmtZ*ZRn+ex?SDAGZx4oRPD)r>c?H5P?obS97GXa<ZyToJE0yZr",
+      "column": 7,
+      "domain_id": "FORMAL_ALGEBRA",
+      "energy_credit": 45,
+      "global_index": 7,
+      "lane_count": 3,
+      "lo_shu_value": 9,
+      "phase_tensor": "w",
+      "row": 0,
+      "schema": "HHS_TRINARY_PHASE_QUDIT_CELL_V1",
+      "subgrid_id": "subgrid:0",
+      "transition": {
+        "all_three_lane_witnesses_present": true,
+        "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+        "cell_id": "cell:07",
+        "current_phase": "wz",
+        "execution_order": [
+          "POSITIVE",
+          "PLASTIC",
+          "ZERO_SUM"
+        ],
+        "next_phase": "x",
+        "plastic_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cell_id": "cell:07",
+          "continuation_admitted": true,
+          "creates_information_energy": false,
+          "gradient_residue": {
+            "denominator": 1,
+            "numerator": 0
+          },
+          "gradient_state": "EQUILIBRIUM",
+          "lane_root_hash72": "gY6sftEGFmBQTNd?sxnt6(XEb!+juunMwgZi2xkZuUWf?6jyBNUYN-0u/o9QBUuz8vSS</H4",
+          "minimal_polynomial": "rho^3-rho-1",
+          "schema": "HHS_PLASTIC_GRADIENT_LANE_V1",
+          "trit": 0,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "positive_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "authority_rank_implied": false,
+          "cell_id": "cell:07",
+          "constructive_proposal": true,
+          "lane_root_hash72": "W+iSXTliYH6cJRE71T!PV-SbfZHN)8jsKw721NueyKrXNbKjZD)mGWvfWZV0269DbVy90PaK",
+          "phase_state": "wz",
+          "schema": "HHS_ORIENTED_PHASE_LANE_V1",
+          "source_phase_root_hash72": "R4H3IrjLV0BaN9(3nKZMLvUF3cBr!DQcg1ocJ)PQy!>+EZ6GuxdvUmQ(tRVrKUm?Vv0i6yiz",
+          "trit": 1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "schema": "HHS_THREE_LANE_PHASE_TRANSITION_V1",
+        "transition_admitted": true,
+        "transition_root_hash72": "iwdw*7hmKRr5ZDT?7c0kCr!F9!NB>+i!yk4ISeiCY6?R6XbyO5mWG>kbGrQe1jqiMt6v3Rdt",
+        "trinary_is_functional_not_authority_rank": true,
+        "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+        "zero_sum_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cancellation_scope": [],
+          "cell_id": "cell:07",
+          "closure_state": "CLOSED",
+          "continuation_admitted": true,
+          "global_rejection_propagated": false,
+          "lane_root_hash72": "v1NlLCoqxPJOTUZQlrvjWn4<xifSRNCw4Q>mIcufAbMoh1-9Er!R!548U4ruI7UxMY/<o(q-",
+          "schema": "HHS_ZERO_SUM_EQUILIBRIUM_LANE_V1",
+          "source_phase_erased": false,
+          "trit": -1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+          "zero_sum_residue": {
+            "denominator": 1,
+            "numerator": 0
+          }
+        }
+      },
+      "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+    },
+    {
+      "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+      "cell_closed": true,
+      "cell_id": "cell:08",
+      "cell_identity_count": 1,
+      "cell_root_hash72": "LFBSWY8EkT*Uj0*FPjkWZUNg1HEQ<+KBD*/d4fRvPVLiKfpun>kx7KDI9>X+w>kEjT4Tn9Nz",
+      "column": 8,
+      "domain_id": "FORMAL_ALGEBRA",
+      "energy_credit": 10,
+      "global_index": 8,
+      "lane_count": 3,
+      "lo_shu_value": 2,
+      "phase_tensor": "x",
+      "row": 0,
+      "schema": "HHS_TRINARY_PHASE_QUDIT_CELL_V1",
+      "subgrid_id": "subgrid:0",
+      "transition": {
+        "all_three_lane_witnesses_present": true,
+        "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+        "cell_id": "cell:08",
+        "current_phase": "x",
+        "execution_order": [
+          "POSITIVE",
+          "PLASTIC",
+          "ZERO_SUM"
+        ],
+        "next_phase": "y",
+        "plastic_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cell_id": "cell:08",
+          "continuation_admitted": true,
+          "creates_information_energy": false,
+          "gradient_residue": {
+            "denominator": 1,
+            "numerator": 0
+          },
+          "gradient_state": "EQUILIBRIUM",
+          "lane_root_hash72": "gY6sftEGFmBQTNd?sxnt6(XEb!+juunMxfZi2xkZuUWf?6jyBNUYN-0u/o9QBUuz8vSS</H4",
+          "minimal_polynomial": "rho^3-rho-1",
+          "schema": "HHS_PLASTIC_GRADIENT_LANE_V1",
+          "trit": 0,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "positive_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "authority_rank_implied": false,
+          "cell_id": "cell:08",
+          "constructive_proposal": true,
+          "lane_root_hash72": "U4*1v1>F0SilNOkL4YYX+qw2z2We2b1l*CHndcGHM7clpZPaQPjfeDt!0h)lIRoFW2FDGf*!",
+          "phase_state": "x",
+          "schema": "HHS_ORIENTED_PHASE_LANE_V1",
+          "source_phase_root_hash72": "w!t7bqo/q0xlsmjDpIcX8RyV5AG5B/pMXmD<2diSRY?O-f9Z>)E+8N?U(TV?9w>hsjbelzFx",
+          "trit": 1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "schema": "HHS_THREE_LANE_PHASE_TRANSITION_V1",
+        "transition_admitted": true,
+        "transition_root_hash72": "*Tv4kRq<y<Kpes2iZm7<(3ZjZ0G<j--k/l45hx0b5Ta/zlWb-Klv6NSXgPwLMC9mdlY3dw!w",
+        "trinary_is_functional_not_authority_rank": true,
+        "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+        "zero_sum_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cancellation_scope": [],
+          "cell_id": "cell:08",
+          "closure_state": "CLOSED",
+          "continuation_admitted": true,
+          "global_rejection_propagated": false,
+          "lane_root_hash72": "v1NlLCoqxPJOTUZQlrvjWn4<xifSRNCw4Q>mIcufAbMoh1-9Er!R!548U4ruJ6UxMY/<o(q-",
+          "schema": "HHS_ZERO_SUM_EQUILIBRIUM_LANE_V1",
+          "source_phase_erased": false,
+          "trit": -1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+          "zero_sum_residue": {
+            "denominator": 1,
+            "numerator": 0
+          }
+        }
+      },
+      "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+    },
+    {
+      "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+      "cell_closed": true,
+      "cell_id": "cell:09",
+      "cell_identity_count": 1,
+      "cell_root_hash72": "r/v/Zm+t*5U?WzlJoeyls>0yl)BVJwE7XaRyX5(ybB+goLEewQrl9(qtIA1<-yy?>qXob<*T",
+      "column": 0,
+      "domain_id": "SYMBOLIC_LOGIC",
+      "energy_credit": 40,
+      "global_index": 9,
+      "lane_count": 3,
+      "lo_shu_value": 8,
+      "phase_tensor": "y",
+      "row": 1,
+      "schema": "HHS_TRINARY_PHASE_QUDIT_CELL_V1",
+      "subgrid_id": "subgrid:1",
+      "transition": {
+        "all_three_lane_witnesses_present": true,
+        "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+        "cell_id": "cell:09",
+        "current_phase": "y",
+        "execution_order": [
+          "POSITIVE",
+          "PLASTIC",
+          "ZERO_SUM"
+        ],
+        "next_phase": "z",
+        "plastic_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cell_id": "cell:09",
+          "continuation_admitted": true,
+          "creates_information_energy": false,
+          "gradient_residue": {
+            "denominator": 1,
+            "numerator": 0
+          },
+          "gradient_state": "EQUILIBRIUM",
+          "lane_root_hash72": "gY6sftEGFmBQTNd?sxnt6(XEb!+juunMyeZi2xkZuUWf?6jyBNUYN-0u/o9QBUuz8vSS</H4",
+          "minimal_polynomial": "rho^3-rho-1",
+          "schema": "HHS_PLASTIC_GRADIENT_LANE_V1",
+          "trit": 0,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "positive_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "authority_rank_implied": false,
+          "cell_id": "cell:09",
+          "constructive_proposal": true,
+          "lane_root_hash72": "3MoCeM8L7GG*!YIsWkiFWMJ05Css4tX/Mf9?x6/M1D?<DaC3UAaWTxF6Qlvk+6zrwh+JgSvh",
+          "phase_state": "y",
+          "schema": "HHS_ORIENTED_PHASE_LANE_V1",
+          "source_phase_root_hash72": "l</MsQT-GA(*F3qOl<9W1W>OzbghE>)4NyV4Qb2wZ9DCPLmMm(oj9gEI<>vZjm2>mFLQjjb<",
+          "trit": 1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "schema": "HHS_THREE_LANE_PHASE_TRANSITION_V1",
+        "transition_admitted": true,
+        "transition_root_hash72": "BgMkC84la1nyFdxZ-7e?Nsa2Sy6bjJ53ZL!Hm0Ie>I78WPCDmj2PccNswvzy1vLbWmOs8lSX",
+        "trinary_is_functional_not_authority_rank": true,
+        "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+        "zero_sum_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cancellation_scope": [],
+          "cell_id": "cell:09",
+          "closure_state": "CLOSED",
+          "continuation_admitted": true,
+          "global_rejection_propagated": false,
+          "lane_root_hash72": "v1NlLCoqxPJOTUZQlrvjWn4<xifSRNCw4Q>mIcufAbMoh1-9Er!R!548U4ruK5UxMY/<o(q-",
+          "schema": "HHS_ZERO_SUM_EQUILIBRIUM_LANE_V1",
+          "source_phase_erased": false,
+          "trit": -1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+          "zero_sum_residue": {
+            "denominator": 1,
+            "numerator": 0
+          }
+        }
+      },
+      "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+    },
+    {
+      "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+      "cell_closed": true,
+      "cell_id": "cell:10",
+      "cell_identity_count": 1,
+      "cell_root_hash72": "Tc9BCZn5-mx-2PrT2jh)J9Vh4UgBsm65f1qxv35V)*yP8F?Sx0lLI-lHj3nGk46HfH82te8g",
+      "column": 1,
+      "domain_id": "SYMBOLIC_LOGIC",
+      "energy_credit": 5,
+      "global_index": 10,
+      "lane_count": 3,
+      "lo_shu_value": 1,
+      "phase_tensor": "z",
+      "row": 1,
+      "schema": "HHS_TRINARY_PHASE_QUDIT_CELL_V1",
+      "subgrid_id": "subgrid:1",
+      "transition": {
+        "all_three_lane_witnesses_present": true,
+        "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+        "cell_id": "cell:10",
+        "current_phase": "z",
+        "execution_order": [
+          "POSITIVE",
+          "PLASTIC",
+          "ZERO_SUM"
+        ],
+        "next_phase": "w",
+        "plastic_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cell_id": "cell:10",
+          "continuation_admitted": true,
+          "creates_information_energy": false,
+          "gradient_residue": {
+            "denominator": 1,
+            "numerator": 0
+          },
+          "gradient_state": "EQUILIBRIUM",
+          "lane_root_hash72": "gY6sftEGFmBQTNd?sxnt6(XEb!+juunNonZi2xkZuUWf?6jyBNUYN-0u/o9QBUuz8vSS</H4",
+          "minimal_polynomial": "rho^3-rho-1",
+          "schema": "HHS_PLASTIC_GRADIENT_LANE_V1",
+          "trit": 0,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "positive_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "authority_rank_implied": false,
+          "cell_id": "cell:10",
+          "constructive_proposal": true,
+          "lane_root_hash72": "rMpxz1cV6Rx*AW<aOySLlVYWidNT5<X5>4nrYX-iTXA3Tyk)RftNU703(h+qPYT42JIg56F9",
+          "phase_state": "z",
+          "schema": "HHS_ORIENTED_PHASE_LANE_V1",
+          "source_phase_root_hash72": ">dsc/R7FtK9K7ZHksVJ!qnR)PXcWtxL9o?GbOj2G*RXlJJuT71xQfd0tuSIPi3zKaO(vnnra",
+          "trit": 1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "schema": "HHS_THREE_LANE_PHASE_TRANSITION_V1",
+        "transition_admitted": true,
+        "transition_root_hash72": "H!OO9tngAe*vPQq(MuZcI/SH)tyzcolg(?wD09a+e?I<cEWAM7q+LBj(BYmFxlZIiKQ6Qowg",
+        "trinary_is_functional_not_authority_rank": true,
+        "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+        "zero_sum_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cancellation_scope": [],
+          "cell_id": "cell:10",
+          "closure_state": "CLOSED",
+          "continuation_admitted": true,
+          "global_rejection_propagated": false,
+          "lane_root_hash72": "v1NlLCoqxPJOTUZQlrvjWn4<xifSRNCw4Q>mIcufAbMoh1-9Er!R!548U4rvAeUxMY/<o(q-",
+          "schema": "HHS_ZERO_SUM_EQUILIBRIUM_LANE_V1",
+          "source_phase_erased": false,
+          "trit": -1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+          "zero_sum_residue": {
+            "denominator": 1,
+            "numerator": 0
+          }
+        }
+      },
+      "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+    },
+    {
+      "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+      "cell_closed": true,
+      "cell_id": "cell:11",
+      "cell_identity_count": 1,
+      "cell_root_hash72": "QUoL*QVMA/E4wx/gOfg>E/ktT/ljd3951wkn1QVnPBw?0z7pCZo67TcwHmOrw(xPHuSr-T>F",
+      "column": 2,
+      "domain_id": "SYMBOLIC_LOGIC",
+      "energy_credit": 30,
+      "global_index": 11,
+      "lane_count": 3,
+      "lo_shu_value": 6,
+      "phase_tensor": "w",
+      "row": 1,
+      "schema": "HHS_TRINARY_PHASE_QUDIT_CELL_V1",
+      "subgrid_id": "subgrid:1",
+      "transition": {
+        "all_three_lane_witnesses_present": true,
+        "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+        "cell_id": "cell:11",
+        "current_phase": "w",
+        "execution_order": [
+          "POSITIVE",
+          "PLASTIC",
+          "ZERO_SUM"
+        ],
+        "next_phase": "xy",
+        "plastic_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cell_id": "cell:11",
+          "continuation_admitted": true,
+          "creates_information_energy": false,
+          "gradient_residue": {
+            "denominator": 1,
+            "numerator": 0
+          },
+          "gradient_state": "EQUILIBRIUM",
+          "lane_root_hash72": "gY6sftEGFmBQTNd?sxnt6(XEb!+juunNpmZi2xkZuUWf?6jyBNUYN-0u/o9QBUuz8vSS</H4",
+          "minimal_polynomial": "rho^3-rho-1",
+          "schema": "HHS_PLASTIC_GRADIENT_LANE_V1",
+          "trit": 0,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "positive_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "authority_rank_implied": false,
+          "cell_id": "cell:11",
+          "constructive_proposal": true,
+          "lane_root_hash72": "7JFU<ZxOUUGJl4mydBSZG/QbjeroUpSVv?rwQ*<BanDD<zA<t(n4c!J!kvvSDndZD)C!C0Rw",
+          "phase_state": "w",
+          "schema": "HHS_ORIENTED_PHASE_LANE_V1",
+          "source_phase_root_hash72": "R4H3IrjLV0BaN9(3nKZMLvUF3cBr!DQcg1ocJ)PQy!>+EZ6GuxdvUmQ(tRVrKUm?Vv0i6yiz",
+          "trit": 1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "schema": "HHS_THREE_LANE_PHASE_TRANSITION_V1",
+        "transition_admitted": true,
+        "transition_root_hash72": "ziCRRcJSr6sb!<5/0Ax?i4eDd1sCrgS+i4eRZ<770/9L(pcW4G59jSqOKINuppw2<!!k>Kh>",
+        "trinary_is_functional_not_authority_rank": true,
+        "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+        "zero_sum_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cancellation_scope": [],
+          "cell_id": "cell:11",
+          "closure_state": "CLOSED",
+          "continuation_admitted": true,
+          "global_rejection_propagated": false,
+          "lane_root_hash72": "v1NlLCoqxPJOTUZQlrvjWn4<xifSRNCw4Q>mIcufAbMoh1-9Er!R!548U4rvBdUxMY/<o(q-",
+          "schema": "HHS_ZERO_SUM_EQUILIBRIUM_LANE_V1",
+          "source_phase_erased": false,
+          "trit": -1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+          "zero_sum_residue": {
+            "denominator": 1,
+            "numerator": 0
+          }
+        }
+      },
+      "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+    },
+    {
+      "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+      "cell_closed": true,
+      "cell_id": "cell:12",
+      "cell_identity_count": 1,
+      "cell_root_hash72": "YNlo1KtxCNMYtJdVosnvO77rV?*xjiQHtlXG-2ziLY+EE*gCqF+Ii3>bze5UEkyBo8Plw>Lw",
+      "column": 3,
+      "domain_id": "SYMBOLIC_LOGIC",
+      "energy_credit": 15,
+      "global_index": 12,
+      "lane_count": 3,
+      "lo_shu_value": 3,
+      "phase_tensor": "x",
+      "row": 1,
+      "schema": "HHS_TRINARY_PHASE_QUDIT_CELL_V1",
+      "subgrid_id": "subgrid:1",
+      "transition": {
+        "all_three_lane_witnesses_present": true,
+        "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+        "cell_id": "cell:12",
+        "current_phase": "xy",
+        "execution_order": [
+          "POSITIVE",
+          "PLASTIC",
+          "ZERO_SUM"
+        ],
+        "next_phase": "yx",
+        "plastic_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cell_id": "cell:12",
+          "continuation_admitted": true,
+          "creates_information_energy": false,
+          "gradient_residue": {
+            "denominator": 1,
+            "numerator": 0
+          },
+          "gradient_state": "EQUILIBRIUM",
+          "lane_root_hash72": "gY6sftEGFmBQTNd?sxnt6(XEb!+juunNqlZi2xkZuUWf?6jyBNUYN-0u/o9QBUuz8vSS</H4",
+          "minimal_polynomial": "rho^3-rho-1",
+          "schema": "HHS_PLASTIC_GRADIENT_LANE_V1",
+          "trit": 0,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "positive_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "authority_rank_implied": false,
+          "cell_id": "cell:12",
+          "constructive_proposal": true,
+          "lane_root_hash72": "oEN54ixSPX4Yl9e5eKlVTbf+65v8Vq5La/Ki/7QYEcbwvE0y3-QiRY0?WFHAG6AV+4FcFTpV",
+          "phase_state": "xy",
+          "schema": "HHS_ORIENTED_PHASE_LANE_V1",
+          "source_phase_root_hash72": "w!t7bqo/q0xlsmjDpIcX8RyV5AG5B/pMXmD<2diSRY?O-f9Z>)E+8N?U(TV?9w>hsjbelzFx",
+          "trit": 1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "schema": "HHS_THREE_LANE_PHASE_TRANSITION_V1",
+        "transition_admitted": true,
+        "transition_root_hash72": "lOEH33T0Ix1xwtPeB/EqaI)n4xDu?B+TbrsOmX8pcqGrVUw-<oGNMKRqLG1353E5eSlBh*!t",
+        "trinary_is_functional_not_authority_rank": true,
+        "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+        "zero_sum_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cancellation_scope": [],
+          "cell_id": "cell:12",
+          "closure_state": "CLOSED",
+          "continuation_admitted": true,
+          "global_rejection_propagated": false,
+          "lane_root_hash72": "v1NlLCoqxPJOTUZQlrvjWn4<xifSRNCw4Q>mIcufAbMoh1-9Er!R!548U4rvCcUxMY/<o(q-",
+          "schema": "HHS_ZERO_SUM_EQUILIBRIUM_LANE_V1",
+          "source_phase_erased": false,
+          "trit": -1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+          "zero_sum_residue": {
+            "denominator": 1,
+            "numerator": 0
+          }
+        }
+      },
+      "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+    },
+    {
+      "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+      "cell_closed": true,
+      "cell_id": "cell:13",
+      "cell_identity_count": 1,
+      "cell_root_hash72": "ZriMztiXM<!bL39WgD64(/v0iFgaAJ9azyThYpk-HmPK)IY3VM*rhC!8YrmvMo/cStT/L8kv",
+      "column": 4,
+      "domain_id": "SYMBOLIC_LOGIC",
+      "energy_credit": 25,
+      "global_index": 13,
+      "lane_count": 3,
+      "lo_shu_value": 5,
+      "phase_tensor": "y",
+      "row": 1,
+      "schema": "HHS_TRINARY_PHASE_QUDIT_CELL_V1",
+      "subgrid_id": "subgrid:1",
+      "transition": {
+        "all_three_lane_witnesses_present": true,
+        "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+        "cell_id": "cell:13",
+        "current_phase": "yx",
+        "execution_order": [
+          "POSITIVE",
+          "PLASTIC",
+          "ZERO_SUM"
+        ],
+        "next_phase": "zw",
+        "plastic_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cell_id": "cell:13",
+          "continuation_admitted": true,
+          "creates_information_energy": false,
+          "gradient_residue": {
+            "denominator": 1,
+            "numerator": 0
+          },
+          "gradient_state": "EQUILIBRIUM",
+          "lane_root_hash72": "gY6sftEGFmBQTNd?sxnt6(XEb!+juunNrkZi2xkZuUWf?6jyBNUYN-0u/o9QBUuz8vSS</H4",
+          "minimal_polynomial": "rho^3-rho-1",
+          "schema": "HHS_PLASTIC_GRADIENT_LANE_V1",
+          "trit": 0,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "positive_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "authority_rank_implied": false,
+          "cell_id": "cell:13",
+          "constructive_proposal": true,
+          "lane_root_hash72": "HXlBF18/V(*c*uot)sRfB6B44L)O?snxSNnUGoMbJBHj6Sll<(B9ot(b(lL0FqX>NOUyLt*o",
+          "phase_state": "yx",
+          "schema": "HHS_ORIENTED_PHASE_LANE_V1",
+          "source_phase_root_hash72": "l</MsQT-GA(*F3qOl<9W1W>OzbghE>)4NyV4Qb2wZ9DCPLmMm(oj9gEI<>vZjm2>mFLQjjb<",
+          "trit": 1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "schema": "HHS_THREE_LANE_PHASE_TRANSITION_V1",
+        "transition_admitted": true,
+        "transition_root_hash72": "/G4NLkEe(bmXXnmrMsNHiPj6H?LxiynMnX<g4edT?v//Mx/)IosqZ*E!QWKeZHwmKfM0PUiH",
+        "trinary_is_functional_not_authority_rank": true,
+        "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+        "zero_sum_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cancellation_scope": [],
+          "cell_id": "cell:13",
+          "closure_state": "CLOSED",
+          "continuation_admitted": true,
+          "global_rejection_propagated": false,
+          "lane_root_hash72": "v1NlLCoqxPJOTUZQlrvjWn4<xifSRNCw4Q>mIcufAbMoh1-9Er!R!548U4rvDbUxMY/<o(q-",
+          "schema": "HHS_ZERO_SUM_EQUILIBRIUM_LANE_V1",
+          "source_phase_erased": false,
+          "trit": -1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+          "zero_sum_residue": {
+            "denominator": 1,
+            "numerator": 0
+          }
+        }
+      },
+      "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+    },
+    {
+      "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+      "cell_closed": true,
+      "cell_id": "cell:14",
+      "cell_identity_count": 1,
+      "cell_root_hash72": "a!acSIRGygP1clteTUkKey9Q1jiIN(*)5cc?ks8Z4/Qh8ygt51kvKLiqT+Ci!4QnZ7CyVZ+9",
+      "column": 5,
+      "domain_id": "SYMBOLIC_LOGIC",
+      "energy_credit": 35,
+      "global_index": 14,
+      "lane_count": 3,
+      "lo_shu_value": 7,
+      "phase_tensor": "z",
+      "row": 1,
+      "schema": "HHS_TRINARY_PHASE_QUDIT_CELL_V1",
+      "subgrid_id": "subgrid:1",
+      "transition": {
+        "all_three_lane_witnesses_present": true,
+        "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+        "cell_id": "cell:14",
+        "current_phase": "zw",
+        "execution_order": [
+          "POSITIVE",
+          "PLASTIC",
+          "ZERO_SUM"
+        ],
+        "next_phase": "wz",
+        "plastic_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cell_id": "cell:14",
+          "continuation_admitted": true,
+          "creates_information_energy": false,
+          "gradient_residue": {
+            "denominator": 1,
+            "numerator": 0
+          },
+          "gradient_state": "EQUILIBRIUM",
+          "lane_root_hash72": "gY6sftEGFmBQTNd?sxnt6(XEb!+juunNsjZi2xkZuUWf?6jyBNUYN-0u/o9QBUuz8vSS</H4",
+          "minimal_polynomial": "rho^3-rho-1",
+          "schema": "HHS_PLASTIC_GRADIENT_LANE_V1",
+          "trit": 0,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "positive_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "authority_rank_implied": false,
+          "cell_id": "cell:14",
+          "constructive_proposal": true,
+          "lane_root_hash72": "zblCAmx>)/33*<mRNk)PHFKj-YG?qt-x(!c!?Mv8fj+Ud!J3Y+gsfuEG+zHwLeO8qkcfiigy",
+          "phase_state": "zw",
+          "schema": "HHS_ORIENTED_PHASE_LANE_V1",
+          "source_phase_root_hash72": ">dsc/R7FtK9K7ZHksVJ!qnR)PXcWtxL9o?GbOj2G*RXlJJuT71xQfd0tuSIPi3zKaO(vnnra",
+          "trit": 1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "schema": "HHS_THREE_LANE_PHASE_TRANSITION_V1",
+        "transition_admitted": true,
+        "transition_root_hash72": "YXrm-mltphpf!foF8l18i/bFIH!FseCLU(?!QGgccfU)3bEYkPZ4B7HGsL9j*eN74xD!W94M",
+        "trinary_is_functional_not_authority_rank": true,
+        "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+        "zero_sum_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cancellation_scope": [],
+          "cell_id": "cell:14",
+          "closure_state": "CLOSED",
+          "continuation_admitted": true,
+          "global_rejection_propagated": false,
+          "lane_root_hash72": "v1NlLCoqxPJOTUZQlrvjWn4<xifSRNCw4Q>mIcufAbMoh1-9Er!R!548U4rvEaUxMY/<o(q-",
+          "schema": "HHS_ZERO_SUM_EQUILIBRIUM_LANE_V1",
+          "source_phase_erased": false,
+          "trit": -1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+          "zero_sum_residue": {
+            "denominator": 1,
+            "numerator": 0
+          }
+        }
+      },
+      "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+    },
+    {
+      "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+      "cell_closed": true,
+      "cell_id": "cell:15",
+      "cell_identity_count": 1,
+      "cell_root_hash72": "j09JYR6IG?8nyNbaOIpj5GsB-d-voc*9NCPj+-Ti05>v8!W*M6(bz-B*UGl+tZ9URcUMl0Li",
+      "column": 6,
+      "domain_id": "SYMBOLIC_LOGIC",
+      "energy_credit": 20,
+      "global_index": 15,
+      "lane_count": 3,
+      "lo_shu_value": 4,
+      "phase_tensor": "w",
+      "row": 1,
+      "schema": "HHS_TRINARY_PHASE_QUDIT_CELL_V1",
+      "subgrid_id": "subgrid:1",
+      "transition": {
+        "all_three_lane_witnesses_present": true,
+        "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+        "cell_id": "cell:15",
+        "current_phase": "wz",
+        "execution_order": [
+          "POSITIVE",
+          "PLASTIC",
+          "ZERO_SUM"
+        ],
+        "next_phase": "x",
+        "plastic_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cell_id": "cell:15",
+          "continuation_admitted": true,
+          "creates_information_energy": false,
+          "gradient_residue": {
+            "denominator": 1,
+            "numerator": 0
+          },
+          "gradient_state": "EQUILIBRIUM",
+          "lane_root_hash72": "gY6sftEGFmBQTNd?sxnt6(XEb!+juunNtiZi2xkZuUWf?6jyBNUYN-0u/o9QBUuz8vSS</H4",
+          "minimal_polynomial": "rho^3-rho-1",
+          "schema": "HHS_PLASTIC_GRADIENT_LANE_V1",
+          "trit": 0,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "positive_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "authority_rank_implied": false,
+          "cell_id": "cell:15",
+          "constructive_proposal": true,
+          "lane_root_hash72": "W+iSXTliYH6cJRE71T!PV-SbfZHN)8jsKw721NueyKrXNbKjZD)mGWvfWZV033bDbVy90PaK",
+          "phase_state": "wz",
+          "schema": "HHS_ORIENTED_PHASE_LANE_V1",
+          "source_phase_root_hash72": "R4H3IrjLV0BaN9(3nKZMLvUF3cBr!DQcg1ocJ)PQy!>+EZ6GuxdvUmQ(tRVrKUm?Vv0i6yiz",
+          "trit": 1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "schema": "HHS_THREE_LANE_PHASE_TRANSITION_V1",
+        "transition_admitted": true,
+        "transition_root_hash72": "iwdw*8eoKRr6Vbe?7c0kCr!F9!NC/<g!yk4JPgiCY61LaXbyO5mWG>kbGrQe1jqiNpbt3Rdt",
+        "trinary_is_functional_not_authority_rank": true,
+        "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+        "zero_sum_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cancellation_scope": [],
+          "cell_id": "cell:15",
+          "closure_state": "CLOSED",
+          "continuation_admitted": true,
+          "global_rejection_propagated": false,
+          "lane_root_hash72": "v1NlLCoqxPJOTUZQlrvjWn4<xifSRNCw4Q>mIcufAbMoh1-9Er!R!548U4rvF9UxMY/<o(q-",
+          "schema": "HHS_ZERO_SUM_EQUILIBRIUM_LANE_V1",
+          "source_phase_erased": false,
+          "trit": -1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+          "zero_sum_residue": {
+            "denominator": 1,
+            "numerator": 0
+          }
+        }
+      },
+      "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+    },
+    {
+      "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+      "cell_closed": true,
+      "cell_id": "cell:16",
+      "cell_identity_count": 1,
+      "cell_root_hash72": "oDqG</Q-*93CeaI/vF>1NlFkWiGfLv-FR6-GFr3eWr4m8tRW7Lkqh!YjGPCuUNSU2Rj4vmq2",
+      "column": 7,
+      "domain_id": "SYMBOLIC_LOGIC",
+      "energy_credit": 45,
+      "global_index": 16,
+      "lane_count": 3,
+      "lo_shu_value": 9,
+      "phase_tensor": "x",
+      "row": 1,
+      "schema": "HHS_TRINARY_PHASE_QUDIT_CELL_V1",
+      "subgrid_id": "subgrid:1",
+      "transition": {
+        "all_three_lane_witnesses_present": true,
+        "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+        "cell_id": "cell:16",
+        "current_phase": "x",
+        "execution_order": [
+          "POSITIVE",
+          "PLASTIC",
+          "ZERO_SUM"
+        ],
+        "next_phase": "y",
+        "plastic_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cell_id": "cell:16",
+          "continuation_admitted": true,
+          "creates_information_energy": false,
+          "gradient_residue": {
+            "denominator": 1,
+            "numerator": 0
+          },
+          "gradient_state": "EQUILIBRIUM",
+          "lane_root_hash72": "gY6sftEGFmBQTNd?sxnt6(XEb!+juunNuhZi2xkZuUWf?6jyBNUYN-0u/o9QBUuz8vSS</H4",
+          "minimal_polynomial": "rho^3-rho-1",
+          "schema": "HHS_PLASTIC_GRADIENT_LANE_V1",
+          "trit": 0,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "positive_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "authority_rank_implied": false,
+          "cell_id": "cell:16",
+          "constructive_proposal": true,
+          "lane_root_hash72": "U4*1v1>F0SilNOkL4YYX+qw2z2We2b1l*CHndcGHM7clpZPaQPjfeDt!0h)lJOqFW2FDGf*!",
+          "phase_state": "x",
+          "schema": "HHS_ORIENTED_PHASE_LANE_V1",
+          "source_phase_root_hash72": "w!t7bqo/q0xlsmjDpIcX8RyV5AG5B/pMXmD<2diSRY?O-f9Z>)E+8N?U(TV?9w>hsjbelzFx",
+          "trit": 1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "schema": "HHS_THREE_LANE_PHASE_TRANSITION_V1",
+        "transition_admitted": true,
+        "transition_root_hash72": "*Tv4kSn!y<Lljq2iZm7<(3ZjZ0H*oY-k/m17hx0b5V4>zlWb-Klv6NSXgPwLMCaiijY3dw!w",
+        "trinary_is_functional_not_authority_rank": true,
+        "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+        "zero_sum_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cancellation_scope": [],
+          "cell_id": "cell:16",
+          "closure_state": "CLOSED",
+          "continuation_admitted": true,
+          "global_rejection_propagated": false,
+          "lane_root_hash72": "v1NlLCoqxPJOTUZQlrvjWn4<xifSRNCw4Q>mIcufAbMoh1-9Er!R!548U4rvG8UxMY/<o(q-",
+          "schema": "HHS_ZERO_SUM_EQUILIBRIUM_LANE_V1",
+          "source_phase_erased": false,
+          "trit": -1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+          "zero_sum_residue": {
+            "denominator": 1,
+            "numerator": 0
+          }
+        }
+      },
+      "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+    },
+    {
+      "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+      "cell_closed": true,
+      "cell_id": "cell:17",
+      "cell_identity_count": 1,
+      "cell_root_hash72": "JjhpP<eJRRputN7mze/m4YfH(f(cQ8vznq)x5gE!SzBU0L+-/U3x5092us+jex/!xs)V0adg",
+      "column": 8,
+      "domain_id": "SYMBOLIC_LOGIC",
+      "energy_credit": 10,
+      "global_index": 17,
+      "lane_count": 3,
+      "lo_shu_value": 2,
+      "phase_tensor": "y",
+      "row": 1,
+      "schema": "HHS_TRINARY_PHASE_QUDIT_CELL_V1",
+      "subgrid_id": "subgrid:1",
+      "transition": {
+        "all_three_lane_witnesses_present": true,
+        "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+        "cell_id": "cell:17",
+        "current_phase": "y",
+        "execution_order": [
+          "POSITIVE",
+          "PLASTIC",
+          "ZERO_SUM"
+        ],
+        "next_phase": "z",
+        "plastic_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cell_id": "cell:17",
+          "continuation_admitted": true,
+          "creates_information_energy": false,
+          "gradient_residue": {
+            "denominator": 1,
+            "numerator": 0
+          },
+          "gradient_state": "EQUILIBRIUM",
+          "lane_root_hash72": "gY6sftEGFmBQTNd?sxnt6(XEb!+juunNvgZi2xkZuUWf?6jyBNUYN-0u/o9QBUuz8vSS</H4",
+          "minimal_polynomial": "rho^3-rho-1",
+          "schema": "HHS_PLASTIC_GRADIENT_LANE_V1",
+          "trit": 0,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "positive_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "authority_rank_implied": false,
+          "cell_id": "cell:17",
+          "constructive_proposal": true,
+          "lane_root_hash72": "3MoCeM8L7GG*!YIsWkiFWMJ05Css4tX/Mf9?x6/M1D?<DaC3UAaWTxF6Qlvk*3Brwh+JgSvh",
+          "phase_state": "y",
+          "schema": "HHS_ORIENTED_PHASE_LANE_V1",
+          "source_phase_root_hash72": "l</MsQT-GA(*F3qOl<9W1W>OzbghE>)4NyV4Qb2wZ9DCPLmMm(oj9gEI<>vZjm2>mFLQjjb<",
+          "trit": 1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "schema": "HHS_THREE_LANE_PHASE_TRANSITION_V1",
+        "transition_admitted": true,
+        "transition_root_hash72": "BgMkC91na1mwY>xZ-7e?Nsa2Sy77oH53ZM)Jm0Ie>K1cWPCDmj2PccNswvzy1vM7+kOs8lSX",
+        "trinary_is_functional_not_authority_rank": true,
+        "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+        "zero_sum_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cancellation_scope": [],
+          "cell_id": "cell:17",
+          "closure_state": "CLOSED",
+          "continuation_admitted": true,
+          "global_rejection_propagated": false,
+          "lane_root_hash72": "v1NlLCoqxPJOTUZQlrvjWn4<xifSRNCw4Q>mIcufAbMoh1-9Er!R!548U4rvH7UxMY/<o(q-",
+          "schema": "HHS_ZERO_SUM_EQUILIBRIUM_LANE_V1",
+          "source_phase_erased": false,
+          "trit": -1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+          "zero_sum_residue": {
+            "denominator": 1,
+            "numerator": 0
+          }
+        }
+      },
+      "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+    },
+    {
+      "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+      "cell_closed": true,
+      "cell_id": "cell:18",
+      "cell_identity_count": 1,
+      "cell_root_hash72": "pBDtsqm?t7mJ7n4-W56Lq8e6(Ip(/)cEz!8r6l1NqrITOIxbYzc2VHpqkM-ReDh+cyn5iGnx",
+      "column": 0,
+      "domain_id": "SEMANTIC_TRANSLATION",
+      "energy_credit": 40,
+      "global_index": 18,
+      "lane_count": 3,
+      "lo_shu_value": 8,
+      "phase_tensor": "z",
+      "row": 2,
+      "schema": "HHS_TRINARY_PHASE_QUDIT_CELL_V1",
+      "subgrid_id": "subgrid:2",
+      "transition": {
+        "all_three_lane_witnesses_present": true,
+        "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+        "cell_id": "cell:18",
+        "current_phase": "z",
+        "execution_order": [
+          "POSITIVE",
+          "PLASTIC",
+          "ZERO_SUM"
+        ],
+        "next_phase": "w",
+        "plastic_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cell_id": "cell:18",
+          "continuation_admitted": true,
+          "creates_information_energy": false,
+          "gradient_residue": {
+            "denominator": 1,
+            "numerator": 0
+          },
+          "gradient_state": "EQUILIBRIUM",
+          "lane_root_hash72": "gY6sftEGFmBQTNd?sxnt6(XEb!+juunNwfZi2xkZuUWf?6jyBNUYN-0u/o9QBUuz8vSS</H4",
+          "minimal_polynomial": "rho^3-rho-1",
+          "schema": "HHS_PLASTIC_GRADIENT_LANE_V1",
+          "trit": 0,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "positive_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "authority_rank_implied": false,
+          "cell_id": "cell:18",
+          "constructive_proposal": true,
+          "lane_root_hash72": "rMpxz1cV6Rx*AW<aOySLlVYWidNT5<X5>4nrYX-iTXA3Tyk)RftNU703(h+qP<L42JIg56F9",
+          "phase_state": "z",
+          "schema": "HHS_ORIENTED_PHASE_LANE_V1",
+          "source_phase_root_hash72": ">dsc/R7FtK9K7ZHksVJ!qnR)PXcWtxL9o?GbOj2G*RXlJJuT71xQfd0tuSIPi3zKaO(vnnra",
+          "trit": 1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "schema": "HHS_THREE_LANE_PHASE_TRANSITION_V1",
+        "transition_admitted": true,
+        "transition_root_hash72": "H!OO9tv8Ae*20Yq(MuZcI/SH)tyH<wlg(?Ev09a+e?YQcEWAM7q+LBj(BYmFxlZQzlQ6Qowg",
+        "trinary_is_functional_not_authority_rank": true,
+        "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+        "zero_sum_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cancellation_scope": [],
+          "cell_id": "cell:18",
+          "closure_state": "CLOSED",
+          "continuation_admitted": true,
+          "global_rejection_propagated": false,
+          "lane_root_hash72": "v1NlLCoqxPJOTUZQlrvjWn4<xifSRNCw4Q>mIcufAbMoh1-9Er!R!548U4rvI6UxMY/<o(q-",
+          "schema": "HHS_ZERO_SUM_EQUILIBRIUM_LANE_V1",
+          "source_phase_erased": false,
+          "trit": -1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+          "zero_sum_residue": {
+            "denominator": 1,
+            "numerator": 0
+          }
+        }
+      },
+      "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+    },
+    {
+      "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+      "cell_closed": true,
+      "cell_id": "cell:19",
+      "cell_identity_count": 1,
+      "cell_root_hash72": "g764mx8JVNE6gXAAPSmeeC!V7h7*R9WpvUgK)5Jv9O/fwA0n0t87BRuG3rxmU12bHZoJqIhc",
+      "column": 1,
+      "domain_id": "SEMANTIC_TRANSLATION",
+      "energy_credit": 5,
+      "global_index": 19,
+      "lane_count": 3,
+      "lo_shu_value": 1,
+      "phase_tensor": "w",
+      "row": 2,
+      "schema": "HHS_TRINARY_PHASE_QUDIT_CELL_V1",
+      "subgrid_id": "subgrid:2",
+      "transition": {
+        "all_three_lane_witnesses_present": true,
+        "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+        "cell_id": "cell:19",
+        "current_phase": "w",
+        "execution_order": [
+          "POSITIVE",
+          "PLASTIC",
+          "ZERO_SUM"
+        ],
+        "next_phase": "xy",
+        "plastic_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cell_id": "cell:19",
+          "continuation_admitted": true,
+          "creates_information_energy": false,
+          "gradient_residue": {
+            "denominator": 1,
+            "numerator": 0
+          },
+          "gradient_state": "EQUILIBRIUM",
+          "lane_root_hash72": "gY6sftEGFmBQTNd?sxnt6(XEb!+juunNxeZi2xkZuUWf?6jyBNUYN-0u/o9QBUuz8vSS</H4",
+          "minimal_polynomial": "rho^3-rho-1",
+          "schema": "HHS_PLASTIC_GRADIENT_LANE_V1",
+          "trit": 0,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "positive_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "authority_rank_implied": false,
+          "cell_id": "cell:19",
+          "constructive_proposal": true,
+          "lane_root_hash72": "7JFU<ZxOUUGJl4mydBSZG/QbjeroUpSVv?rwQ*<BanDD<zA<t(n4c!J!kvvSDv5ZD)C!C0Rw",
+          "phase_state": "w",
+          "schema": "HHS_ORIENTED_PHASE_LANE_V1",
+          "source_phase_root_hash72": "R4H3IrjLV0BaN9(3nKZMLvUF3cBr!DQcg1ocJ)PQy!>+EZ6GuxdvUmQ(tRVrKUm?Vv0i6yiz",
+          "trit": 1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "schema": "HHS_THREE_LANE_PHASE_TRANSITION_V1",
+        "transition_admitted": true,
+        "transition_root_hash72": "ziCRRcRKr6sb6dQ/0Ax?i4eDd1sCz0-+i4eZR<770/9+OpcW4G59jSqOKINuppw24fJk>Kh>",
+        "trinary_is_functional_not_authority_rank": true,
+        "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+        "zero_sum_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cancellation_scope": [],
+          "cell_id": "cell:19",
+          "closure_state": "CLOSED",
+          "continuation_admitted": true,
+          "global_rejection_propagated": false,
+          "lane_root_hash72": "v1NlLCoqxPJOTUZQlrvjWn4<xifSRNCw4Q>mIcufAbMoh1-9Er!R!548U4rvJ5UxMY/<o(q-",
+          "schema": "HHS_ZERO_SUM_EQUILIBRIUM_LANE_V1",
+          "source_phase_erased": false,
+          "trit": -1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+          "zero_sum_residue": {
+            "denominator": 1,
+            "numerator": 0
+          }
+        }
+      },
+      "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+    },
+    {
+      "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+      "cell_closed": true,
+      "cell_id": "cell:20",
+      "cell_identity_count": 1,
+      "cell_root_hash72": "P2a3QqI9jR?FGSFnuqdBiffAs(o<Kea)7E<<FGbgsQE5wHlM+F*k--4rTRZlcBI1wYCQrnri",
+      "column": 2,
+      "domain_id": "SEMANTIC_TRANSLATION",
+      "energy_credit": 30,
+      "global_index": 20,
+      "lane_count": 3,
+      "lo_shu_value": 6,
+      "phase_tensor": "x",
+      "row": 2,
+      "schema": "HHS_TRINARY_PHASE_QUDIT_CELL_V1",
+      "subgrid_id": "subgrid:2",
+      "transition": {
+        "all_three_lane_witnesses_present": true,
+        "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+        "cell_id": "cell:20",
+        "current_phase": "xy",
+        "execution_order": [
+          "POSITIVE",
+          "PLASTIC",
+          "ZERO_SUM"
+        ],
+        "next_phase": "yx",
+        "plastic_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cell_id": "cell:20",
+          "continuation_admitted": true,
+          "creates_information_energy": false,
+          "gradient_residue": {
+            "denominator": 1,
+            "numerator": 0
+          },
+          "gradient_state": "EQUILIBRIUM",
+          "lane_root_hash72": "gY6sftEGFmBQTNd?sxnt6(XEb!+juunOnnZi2xkZuUWf?6jyBNUYN-0u/o9QBUuz8vSS</H4",
+          "minimal_polynomial": "rho^3-rho-1",
+          "schema": "HHS_PLASTIC_GRADIENT_LANE_V1",
+          "trit": 0,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "positive_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "authority_rank_implied": false,
+          "cell_id": "cell:20",
+          "constructive_proposal": true,
+          "lane_root_hash72": "oEN54ixSPX4Yl9e5eKlVTbf+65v8Vq5La/Ki/7QYEcbwvE0y3-QiRY0?WFHAH3CV+4FcFTpV",
+          "phase_state": "xy",
+          "schema": "HHS_ORIENTED_PHASE_LANE_V1",
+          "source_phase_root_hash72": "w!t7bqo/q0xlsmjDpIcX8RyV5AG5B/pMXmD<2diSRY?O-f9Z>)E+8N?U(TV?9w>hsjbelzFx",
+          "trit": 1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "schema": "HHS_THREE_LANE_PHASE_TRANSITION_V1",
+        "transition_admitted": true,
+        "transition_root_hash72": "lOEH34Q2Ix1xxpUcB/EqaI)n4xDu0x<RbrsOnUapcqGtPYw-<oGNMKRqLG1353E5eT3Uf*!t",
+        "trinary_is_functional_not_authority_rank": true,
+        "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+        "zero_sum_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cancellation_scope": [],
+          "cell_id": "cell:20",
+          "closure_state": "CLOSED",
+          "continuation_admitted": true,
+          "global_rejection_propagated": false,
+          "lane_root_hash72": "v1NlLCoqxPJOTUZQlrvjWn4<xifSRNCw4Q>mIcufAbMoh1-9Er!R!548U4rwzeUxMY/<o(q-",
+          "schema": "HHS_ZERO_SUM_EQUILIBRIUM_LANE_V1",
+          "source_phase_erased": false,
+          "trit": -1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+          "zero_sum_residue": {
+            "denominator": 1,
+            "numerator": 0
+          }
+        }
+      },
+      "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+    },
+    {
+      "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+      "cell_closed": true,
+      "cell_id": "cell:21",
+      "cell_identity_count": 1,
+      "cell_root_hash72": "3TbeppJkT5xong/sQNw(eg7LaEES!XHBvhd43nhtorCshfhaPLe5yrAxUAYUcz>eNzKUWeTa",
+      "column": 3,
+      "domain_id": "SEMANTIC_TRANSLATION",
+      "energy_credit": 15,
+      "global_index": 21,
+      "lane_count": 3,
+      "lo_shu_value": 3,
+      "phase_tensor": "y",
+      "row": 2,
+      "schema": "HHS_TRINARY_PHASE_QUDIT_CELL_V1",
+      "subgrid_id": "subgrid:2",
+      "transition": {
+        "all_three_lane_witnesses_present": true,
+        "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+        "cell_id": "cell:21",
+        "current_phase": "yx",
+        "execution_order": [
+          "POSITIVE",
+          "PLASTIC",
+          "ZERO_SUM"
+        ],
+        "next_phase": "zw",
+        "plastic_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cell_id": "cell:21",
+          "continuation_admitted": true,
+          "creates_information_energy": false,
+          "gradient_residue": {
+            "denominator": 1,
+            "numerator": 0
+          },
+          "gradient_state": "EQUILIBRIUM",
+          "lane_root_hash72": "gY6sftEGFmBQTNd?sxnt6(XEb!+juunOomZi2xkZuUWf?6jyBNUYN-0u/o9QBUuz8vSS</H4",
+          "minimal_polynomial": "rho^3-rho-1",
+          "schema": "HHS_PLASTIC_GRADIENT_LANE_V1",
+          "trit": 0,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "positive_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "authority_rank_implied": false,
+          "cell_id": "cell:21",
+          "constructive_proposal": true,
+          "lane_root_hash72": "HXlBF18/V(*c*uot)sRfB6B44L)O?snxSNnUGoMbJBHj6Sll<(B9ot(b(lL0GnZ>NOUyLt*o",
+          "phase_state": "yx",
+          "schema": "HHS_ORIENTED_PHASE_LANE_V1",
+          "source_phase_root_hash72": "l</MsQT-GA(*F3qOl<9W1W>OzbghE>)4NyV4Qb2wZ9DCPLmMm(oj9gEI<>vZjm2>mFLQjjb<",
+          "trit": 1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "schema": "HHS_THREE_LANE_PHASE_TRANSITION_V1",
+        "transition_admitted": true,
+        "transition_root_hash72": "/G4NLlBg(bmXYjrpMsNHiPj6H?LxjusKnX<g5bfT?v/)GB/)IosqZ*E!QWKeZHwmKgI5NUiH",
+        "trinary_is_functional_not_authority_rank": true,
+        "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+        "zero_sum_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cancellation_scope": [],
+          "cell_id": "cell:21",
+          "closure_state": "CLOSED",
+          "continuation_admitted": true,
+          "global_rejection_propagated": false,
+          "lane_root_hash72": "v1NlLCoqxPJOTUZQlrvjWn4<xifSRNCw4Q>mIcufAbMoh1-9Er!R!548U4rwAdUxMY/<o(q-",
+          "schema": "HHS_ZERO_SUM_EQUILIBRIUM_LANE_V1",
+          "source_phase_erased": false,
+          "trit": -1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+          "zero_sum_residue": {
+            "denominator": 1,
+            "numerator": 0
+          }
+        }
+      },
+      "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+    },
+    {
+      "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+      "cell_closed": true,
+      "cell_id": "cell:22",
+      "cell_identity_count": 1,
+      "cell_root_hash72": "Wol)<3(+LFQDdZk-xD!byIK*nbYnMDqfxPqbd)X7R9!v5eORQir)-asVcEh/vS*O/m<AJp-Y",
+      "column": 4,
+      "domain_id": "SEMANTIC_TRANSLATION",
+      "energy_credit": 25,
+      "global_index": 22,
+      "lane_count": 3,
+      "lo_shu_value": 5,
+      "phase_tensor": "z",
+      "row": 2,
+      "schema": "HHS_TRINARY_PHASE_QUDIT_CELL_V1",
+      "subgrid_id": "subgrid:2",
+      "transition": {
+        "all_three_lane_witnesses_present": true,
+        "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+        "cell_id": "cell:22",
+        "current_phase": "zw",
+        "execution_order": [
+          "POSITIVE",
+          "PLASTIC",
+          "ZERO_SUM"
+        ],
+        "next_phase": "wz",
+        "plastic_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cell_id": "cell:22",
+          "continuation_admitted": true,
+          "creates_information_energy": false,
+          "gradient_residue": {
+            "denominator": 1,
+            "numerator": 0
+          },
+          "gradient_state": "EQUILIBRIUM",
+          "lane_root_hash72": "gY6sftEGFmBQTNd?sxnt6(XEb!+juunOplZi2xkZuUWf?6jyBNUYN-0u/o9QBUuz8vSS</H4",
+          "minimal_polynomial": "rho^3-rho-1",
+          "schema": "HHS_PLASTIC_GRADIENT_LANE_V1",
+          "trit": 0,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "positive_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "authority_rank_implied": false,
+          "cell_id": "cell:22",
+          "constructive_proposal": true,
+          "lane_root_hash72": "zblCAmx>)/33*<mRNk)PHFKj-YG?qt-x(!c!?Mv8fj+Ud!J3Y+gsfuEG+zHwMbQ8qkcfiigy",
+          "phase_state": "zw",
+          "schema": "HHS_ORIENTED_PHASE_LANE_V1",
+          "source_phase_root_hash72": ">dsc/R7FtK9K7ZHksVJ!qnR)PXcWtxL9o?GbOj2G*RXlJJuT71xQfd0tuSIPi3zKaO(vnnra",
+          "trit": 1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "schema": "HHS_THREE_LANE_PHASE_TRANSITION_V1",
+        "transition_admitted": true,
+        "transition_root_hash72": "YXrm-nivphpf?btD8l18i/bFIH!FtaHJU(?!RDiccfU>>fEYkPZ4B7HGsL9j*eN74yz3U94M",
+        "trinary_is_functional_not_authority_rank": true,
+        "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+        "zero_sum_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cancellation_scope": [],
+          "cell_id": "cell:22",
+          "closure_state": "CLOSED",
+          "continuation_admitted": true,
+          "global_rejection_propagated": false,
+          "lane_root_hash72": "v1NlLCoqxPJOTUZQlrvjWn4<xifSRNCw4Q>mIcufAbMoh1-9Er!R!548U4rwBcUxMY/<o(q-",
+          "schema": "HHS_ZERO_SUM_EQUILIBRIUM_LANE_V1",
+          "source_phase_erased": false,
+          "trit": -1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+          "zero_sum_residue": {
+            "denominator": 1,
+            "numerator": 0
+          }
+        }
+      },
+      "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+    },
+    {
+      "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+      "cell_closed": true,
+      "cell_id": "cell:23",
+      "cell_identity_count": 1,
+      "cell_root_hash72": "97b9Mg6TV)-Er>zN-ZlCgGx-nVPv)of96x-z4ttxktGZVAL2-ywrrorS/i68Nl(oVYtmI3<Z",
+      "column": 5,
+      "domain_id": "SEMANTIC_TRANSLATION",
+      "energy_credit": 35,
+      "global_index": 23,
+      "lane_count": 3,
+      "lo_shu_value": 7,
+      "phase_tensor": "w",
+      "row": 2,
+      "schema": "HHS_TRINARY_PHASE_QUDIT_CELL_V1",
+      "subgrid_id": "subgrid:2",
+      "transition": {
+        "all_three_lane_witnesses_present": true,
+        "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+        "cell_id": "cell:23",
+        "current_phase": "wz",
+        "execution_order": [
+          "POSITIVE",
+          "PLASTIC",
+          "ZERO_SUM"
+        ],
+        "next_phase": "x",
+        "plastic_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cell_id": "cell:23",
+          "continuation_admitted": true,
+          "creates_information_energy": false,
+          "gradient_residue": {
+            "denominator": 1,
+            "numerator": 0
+          },
+          "gradient_state": "EQUILIBRIUM",
+          "lane_root_hash72": "gY6sftEGFmBQTNd?sxnt6(XEb!+juunOqkZi2xkZuUWf?6jyBNUYN-0u/o9QBUuz8vSS</H4",
+          "minimal_polynomial": "rho^3-rho-1",
+          "schema": "HHS_PLASTIC_GRADIENT_LANE_V1",
+          "trit": 0,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "positive_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "authority_rank_implied": false,
+          "cell_id": "cell:23",
+          "constructive_proposal": true,
+          "lane_root_hash72": "W+iSXTliYH6cJRE71T!PV-SbfZHN)8jsKw721NueyKrXNbKjZD)mGWvfWZV040dDbVy90PaK",
+          "phase_state": "wz",
+          "schema": "HHS_ORIENTED_PHASE_LANE_V1",
+          "source_phase_root_hash72": "R4H3IrjLV0BaN9(3nKZMLvUF3cBr!DQcg1ocJ)PQy!>+EZ6GuxdvUmQ(tRVrKUm?Vv0i6yiz",
+          "trit": 1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "schema": "HHS_THREE_LANE_PHASE_TRANSITION_V1",
+        "transition_admitted": true,
+        "transition_root_hash72": "iwdw*9bqKRr7Rgc?7c0kCr!F9!NDZ1e!yk4KMiiCY63FeXbyO5mWG>kbGrQe1jqiOlTY3Rdt",
+        "trinary_is_functional_not_authority_rank": true,
+        "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+        "zero_sum_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cancellation_scope": [],
+          "cell_id": "cell:23",
+          "closure_state": "CLOSED",
+          "continuation_admitted": true,
+          "global_rejection_propagated": false,
+          "lane_root_hash72": "v1NlLCoqxPJOTUZQlrvjWn4<xifSRNCw4Q>mIcufAbMoh1-9Er!R!548U4rwCbUxMY/<o(q-",
+          "schema": "HHS_ZERO_SUM_EQUILIBRIUM_LANE_V1",
+          "source_phase_erased": false,
+          "trit": -1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+          "zero_sum_residue": {
+            "denominator": 1,
+            "numerator": 0
+          }
+        }
+      },
+      "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+    },
+    {
+      "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+      "cell_closed": true,
+      "cell_id": "cell:24",
+      "cell_identity_count": 1,
+      "cell_root_hash72": "TjYuv<8xK09Y+jVXV42!PhoT(Ena92rLcmn)LZx1wNlo?Tmj0kxWt9(kjxYg?OLG<3e2NW4>",
+      "column": 6,
+      "domain_id": "SEMANTIC_TRANSLATION",
+      "energy_credit": 20,
+      "global_index": 24,
+      "lane_count": 3,
+      "lo_shu_value": 4,
+      "phase_tensor": "x",
+      "row": 2,
+      "schema": "HHS_TRINARY_PHASE_QUDIT_CELL_V1",
+      "subgrid_id": "subgrid:2",
+      "transition": {
+        "all_three_lane_witnesses_present": true,
+        "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+        "cell_id": "cell:24",
+        "current_phase": "x",
+        "execution_order": [
+          "POSITIVE",
+          "PLASTIC",
+          "ZERO_SUM"
+        ],
+        "next_phase": "y",
+        "plastic_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cell_id": "cell:24",
+          "continuation_admitted": true,
+          "creates_information_energy": false,
+          "gradient_residue": {
+            "denominator": 1,
+            "numerator": 0
+          },
+          "gradient_state": "EQUILIBRIUM",
+          "lane_root_hash72": "gY6sftEGFmBQTNd?sxnt6(XEb!+juunOrjZi2xkZuUWf?6jyBNUYN-0u/o9QBUuz8vSS</H4",
+          "minimal_polynomial": "rho^3-rho-1",
+          "schema": "HHS_PLASTIC_GRADIENT_LANE_V1",
+          "trit": 0,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "positive_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "authority_rank_implied": false,
+          "cell_id": "cell:24",
+          "constructive_proposal": true,
+          "lane_root_hash72": "U4*1v1>F0SilNOkL4YYX+qw2z2We2b1l*CHndcGHM7clpZPaQPjfeDt!0h)lKLsFW2FDGf*!",
+          "phase_state": "x",
+          "schema": "HHS_ORIENTED_PHASE_LANE_V1",
+          "source_phase_root_hash72": "w!t7bqo/q0xlsmjDpIcX8RyV5AG5B/pMXmD<2diSRY?O-f9Z>)E+8N?U(TV?9w>hsjbelzFx",
+          "trit": 1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "schema": "HHS_THREE_LANE_PHASE_TRANSITION_V1",
+        "transition_admitted": true,
+        "transition_root_hash72": "*Tv4kTk0y<Mhoo2iZm7<(3ZjZ0IYtW-k/n!9hx0b5X!1zlWb-Klv6NSXgPwLMCbe-OY3dw!w",
+        "trinary_is_functional_not_authority_rank": true,
+        "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+        "zero_sum_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cancellation_scope": [],
+          "cell_id": "cell:24",
+          "closure_state": "CLOSED",
+          "continuation_admitted": true,
+          "global_rejection_propagated": false,
+          "lane_root_hash72": "v1NlLCoqxPJOTUZQlrvjWn4<xifSRNCw4Q>mIcufAbMoh1-9Er!R!548U4rwDaUxMY/<o(q-",
+          "schema": "HHS_ZERO_SUM_EQUILIBRIUM_LANE_V1",
+          "source_phase_erased": false,
+          "trit": -1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+          "zero_sum_residue": {
+            "denominator": 1,
+            "numerator": 0
+          }
+        }
+      },
+      "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+    },
+    {
+      "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+      "cell_closed": true,
+      "cell_id": "cell:25",
+      "cell_identity_count": 1,
+      "cell_root_hash72": "kJtiiatdMZL+p2Kv7<iAeKssZ-ONTpE*bjsIgT3lBEVQUDvrBK(kWdRs2EMijCvjldnWY0za",
+      "column": 7,
+      "domain_id": "SEMANTIC_TRANSLATION",
+      "energy_credit": 45,
+      "global_index": 25,
+      "lane_count": 3,
+      "lo_shu_value": 9,
+      "phase_tensor": "y",
+      "row": 2,
+      "schema": "HHS_TRINARY_PHASE_QUDIT_CELL_V1",
+      "subgrid_id": "subgrid:2",
+      "transition": {
+        "all_three_lane_witnesses_present": true,
+        "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+        "cell_id": "cell:25",
+        "current_phase": "y",
+        "execution_order": [
+          "POSITIVE",
+          "PLASTIC",
+          "ZERO_SUM"
+        ],
+        "next_phase": "z",
+        "plastic_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cell_id": "cell:25",
+          "continuation_admitted": true,
+          "creates_information_energy": false,
+          "gradient_residue": {
+            "denominator": 1,
+            "numerator": 0
+          },
+          "gradient_state": "EQUILIBRIUM",
+          "lane_root_hash72": "gY6sftEGFmBQTNd?sxnt6(XEb!+juunOsiZi2xkZuUWf?6jyBNUYN-0u/o9QBUuz8vSS</H4",
+          "minimal_polynomial": "rho^3-rho-1",
+          "schema": "HHS_PLASTIC_GRADIENT_LANE_V1",
+          "trit": 0,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "positive_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "authority_rank_implied": false,
+          "cell_id": "cell:25",
+          "constructive_proposal": true,
+          "lane_root_hash72": "3MoCeM8L7GG*!YIsWkiFWMJ05Css4tX/Mf9?x6/M1D?<DaC3UAaWTxF6Qlvk/0Drwh+JgSvh",
+          "phase_state": "y",
+          "schema": "HHS_ORIENTED_PHASE_LANE_V1",
+          "source_phase_root_hash72": "l</MsQT-GA(*F3qOl<9W1W>OzbghE>)4NyV4Qb2wZ9DCPLmMm(oj9gEI<>vZjm2>mFLQjjb<",
+          "trit": 1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "schema": "HHS_THREE_LANE_PHASE_TRANSITION_V1",
+        "transition_admitted": true,
+        "transition_root_hash72": "BgMkCa!pa1ro/)xZ-7e?Nsa2Sy83tF53ZN*Lm0Ie>M)gWPCDmj2PccNswvzy1vN3<iOs8lSX",
+        "trinary_is_functional_not_authority_rank": true,
+        "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+        "zero_sum_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cancellation_scope": [],
+          "cell_id": "cell:25",
+          "closure_state": "CLOSED",
+          "continuation_admitted": true,
+          "global_rejection_propagated": false,
+          "lane_root_hash72": "v1NlLCoqxPJOTUZQlrvjWn4<xifSRNCw4Q>mIcufAbMoh1-9Er!R!548U4rwE9UxMY/<o(q-",
+          "schema": "HHS_ZERO_SUM_EQUILIBRIUM_LANE_V1",
+          "source_phase_erased": false,
+          "trit": -1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+          "zero_sum_residue": {
+            "denominator": 1,
+            "numerator": 0
+          }
+        }
+      },
+      "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+    },
+    {
+      "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+      "cell_closed": true,
+      "cell_id": "cell:26",
+      "cell_identity_count": 1,
+      "cell_root_hash72": "CGBtsri-zhiJ7n4-W6bFs2i6(Ip(kAzjB!8r6l1NroKUKg*b/>loXImslJ*ReE36btgekHjk",
+      "column": 8,
+      "domain_id": "SEMANTIC_TRANSLATION",
+      "energy_credit": 10,
+      "global_index": 26,
+      "lane_count": 3,
+      "lo_shu_value": 2,
+      "phase_tensor": "z",
+      "row": 2,
+      "schema": "HHS_TRINARY_PHASE_QUDIT_CELL_V1",
+      "subgrid_id": "subgrid:2",
+      "transition": {
+        "all_three_lane_witnesses_present": true,
+        "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+        "cell_id": "cell:26",
+        "current_phase": "z",
+        "execution_order": [
+          "POSITIVE",
+          "PLASTIC",
+          "ZERO_SUM"
+        ],
+        "next_phase": "w",
+        "plastic_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cell_id": "cell:26",
+          "continuation_admitted": true,
+          "creates_information_energy": false,
+          "gradient_residue": {
+            "denominator": 1,
+            "numerator": 0
+          },
+          "gradient_state": "EQUILIBRIUM",
+          "lane_root_hash72": "gY6sftEGFmBQTNd?sxnt6(XEb!+juunOthZi2xkZuUWf?6jyBNUYN-0u/o9QBUuz8vSS</H4",
+          "minimal_polynomial": "rho^3-rho-1",
+          "schema": "HHS_PLASTIC_GRADIENT_LANE_V1",
+          "trit": 0,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "positive_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "authority_rank_implied": false,
+          "cell_id": "cell:26",
+          "constructive_proposal": true,
+          "lane_root_hash72": "rMpxz1cV6Rx*AW<aOySLlVYWidNT5<X5>4nrYX-iTXA3Tyk)RftNU703(h+qQ/N42JIg56F9",
+          "phase_state": "z",
+          "schema": "HHS_ORIENTED_PHASE_LANE_V1",
+          "source_phase_root_hash72": ">dsc/R7FtK9K7ZHksVJ!qnR)PXcWtxL9o?GbOj2G*RXlJJuT71xQfd0tuSIPi3zKaO(vnnra",
+          "trit": 1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "schema": "HHS_THREE_LANE_PHASE_TRANSITION_V1",
+        "transition_admitted": true,
+        "transition_root_hash72": "H!OO9usaAe/YfWq(MuZcI/SH)tzD1ulg(0Bx09a+e1SUcEWAM7q+LBj(BYmFxl-MEjQ6Qowg",
+        "trinary_is_functional_not_authority_rank": true,
+        "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+        "zero_sum_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cancellation_scope": [],
+          "cell_id": "cell:26",
+          "closure_state": "CLOSED",
+          "continuation_admitted": true,
+          "global_rejection_propagated": false,
+          "lane_root_hash72": "v1NlLCoqxPJOTUZQlrvjWn4<xifSRNCw4Q>mIcufAbMoh1-9Er!R!548U4rwF8UxMY/<o(q-",
+          "schema": "HHS_ZERO_SUM_EQUILIBRIUM_LANE_V1",
+          "source_phase_erased": false,
+          "trit": -1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+          "zero_sum_residue": {
+            "denominator": 1,
+            "numerator": 0
+          }
+        }
+      },
+      "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+    },
+    {
+      "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+      "cell_closed": true,
+      "cell_id": "cell:27",
+      "cell_identity_count": 1,
+      "cell_root_hash72": "gbMfV0Ln>dWL5XX3-MBhppvwWkbQjEd3dWFcVN<<(KEBddpro>*<1-hvhlBsxkpc8pUXSVUk",
+      "column": 0,
+      "domain_id": "RUNTIME_EXECUTION",
+      "energy_credit": 40,
+      "global_index": 27,
+      "lane_count": 3,
+      "lo_shu_value": 8,
+      "phase_tensor": "w",
+      "row": 3,
+      "schema": "HHS_TRINARY_PHASE_QUDIT_CELL_V1",
+      "subgrid_id": "subgrid:3",
+      "transition": {
+        "all_three_lane_witnesses_present": true,
+        "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+        "cell_id": "cell:27",
+        "current_phase": "w",
+        "execution_order": [
+          "POSITIVE",
+          "PLASTIC",
+          "ZERO_SUM"
+        ],
+        "next_phase": "xy",
+        "plastic_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cell_id": "cell:27",
+          "continuation_admitted": true,
+          "creates_information_energy": false,
+          "gradient_residue": {
+            "denominator": 1,
+            "numerator": 0
+          },
+          "gradient_state": "EQUILIBRIUM",
+          "lane_root_hash72": "gY6sftEGFmBQTNd?sxnt6(XEb!+juunOugZi2xkZuUWf?6jyBNUYN-0u/o9QBUuz8vSS</H4",
+          "minimal_polynomial": "rho^3-rho-1",
+          "schema": "HHS_PLASTIC_GRADIENT_LANE_V1",
+          "trit": 0,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "positive_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "authority_rank_implied": false,
+          "cell_id": "cell:27",
+          "constructive_proposal": true,
+          "lane_root_hash72": "7JFU<ZxOUUGJl4mydBSZG/QbjeroUpSVv?rwQ*<BanDD<zA<t(n4c!J!kvvSEs7ZD)C!C0Rw",
+          "phase_state": "w",
+          "schema": "HHS_ORIENTED_PHASE_LANE_V1",
+          "source_phase_root_hash72": "R4H3IrjLV0BaN9(3nKZMLvUF3cBr!DQcg1ocJ)PQy!>+EZ6GuxdvUmQ(tRVrKUm?Vv0i6yiz",
+          "trit": 1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "schema": "HHS_THREE_LANE_PHASE_TRANSITION_V1",
+        "transition_admitted": true,
+        "transition_root_hash72": "ziCRRdOMr6sc2iO/0Ax?i4eDd1sDv5Y+i4fWT<770/bVSpcW4G59jSqOKINuppw30kHk>Kh>",
+        "trinary_is_functional_not_authority_rank": true,
+        "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+        "zero_sum_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cancellation_scope": [],
+          "cell_id": "cell:27",
+          "closure_state": "CLOSED",
+          "continuation_admitted": true,
+          "global_rejection_propagated": false,
+          "lane_root_hash72": "v1NlLCoqxPJOTUZQlrvjWn4<xifSRNCw4Q>mIcufAbMoh1-9Er!R!548U4rwG7UxMY/<o(q-",
+          "schema": "HHS_ZERO_SUM_EQUILIBRIUM_LANE_V1",
+          "source_phase_erased": false,
+          "trit": -1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+          "zero_sum_residue": {
+            "denominator": 1,
+            "numerator": 0
+          }
+        }
+      },
+      "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+    },
+    {
+      "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+      "cell_closed": true,
+      "cell_id": "cell:28",
+      "cell_identity_count": 1,
+      "cell_root_hash72": "ai696vqo8e3O61/g6xY4XNrDTc6Hy+Sf9gA/sg/Al4BBjzngdPA5(VBFmtJydmHlgxqC1/T4",
+      "column": 1,
+      "domain_id": "RUNTIME_EXECUTION",
+      "energy_credit": 5,
+      "global_index": 28,
+      "lane_count": 3,
+      "lo_shu_value": 1,
+      "phase_tensor": "x",
+      "row": 3,
+      "schema": "HHS_TRINARY_PHASE_QUDIT_CELL_V1",
+      "subgrid_id": "subgrid:3",
+      "transition": {
+        "all_three_lane_witnesses_present": true,
+        "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+        "cell_id": "cell:28",
+        "current_phase": "xy",
+        "execution_order": [
+          "POSITIVE",
+          "PLASTIC",
+          "ZERO_SUM"
+        ],
+        "next_phase": "yx",
+        "plastic_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cell_id": "cell:28",
+          "continuation_admitted": true,
+          "creates_information_energy": false,
+          "gradient_residue": {
+            "denominator": 1,
+            "numerator": 0
+          },
+          "gradient_state": "EQUILIBRIUM",
+          "lane_root_hash72": "gY6sftEGFmBQTNd?sxnt6(XEb!+juunOvfZi2xkZuUWf?6jyBNUYN-0u/o9QBUuz8vSS</H4",
+          "minimal_polynomial": "rho^3-rho-1",
+          "schema": "HHS_PLASTIC_GRADIENT_LANE_V1",
+          "trit": 0,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "positive_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "authority_rank_implied": false,
+          "cell_id": "cell:28",
+          "constructive_proposal": true,
+          "lane_root_hash72": "oEN54ixSPX4Yl9e5eKlVTbf+65v8Vq5La/Ki/7QYEcbwvE0y3-QiRY0?WFHAHbuV+4FcFTpV",
+          "phase_state": "xy",
+          "schema": "HHS_ORIENTED_PHASE_LANE_V1",
+          "source_phase_root_hash72": "w!t7bqo/q0xlsmjDpIcX8RyV5AG5B/pMXmD<2diSRY?O-f9Z>)E+8N?U(TV?9w>hsjbelzFx",
+          "trit": 1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "schema": "HHS_THREE_LANE_PHASE_TRANSITION_V1",
+        "transition_admitted": true,
+        "transition_root_hash72": "lOEH34Y(Ix1xx0XyB/EqaI)n4xDu0FQZbrsOn*2pcqGt)Iw-<oGNMKRqLG1353E5eTpX-*!t",
+        "trinary_is_functional_not_authority_rank": true,
+        "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+        "zero_sum_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cancellation_scope": [],
+          "cell_id": "cell:28",
+          "closure_state": "CLOSED",
+          "continuation_admitted": true,
+          "global_rejection_propagated": false,
+          "lane_root_hash72": "v1NlLCoqxPJOTUZQlrvjWn4<xifSRNCw4Q>mIcufAbMoh1-9Er!R!548U4rwH6UxMY/<o(q-",
+          "schema": "HHS_ZERO_SUM_EQUILIBRIUM_LANE_V1",
+          "source_phase_erased": false,
+          "trit": -1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+          "zero_sum_residue": {
+            "denominator": 1,
+            "numerator": 0
+          }
+        }
+      },
+      "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+    },
+    {
+      "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+      "cell_closed": true,
+      "cell_id": "cell:29",
+      "cell_identity_count": 1,
+      "cell_root_hash72": "psDrLS-vdbdBkh(iw*7J?1EWWvSe8lD(WHgfXcZOKg>C<SJkim-IJLyD05fIzKJxzDykkNPn",
+      "column": 2,
+      "domain_id": "RUNTIME_EXECUTION",
+      "energy_credit": 30,
+      "global_index": 29,
+      "lane_count": 3,
+      "lo_shu_value": 6,
+      "phase_tensor": "y",
+      "row": 3,
+      "schema": "HHS_TRINARY_PHASE_QUDIT_CELL_V1",
+      "subgrid_id": "subgrid:3",
+      "transition": {
+        "all_three_lane_witnesses_present": true,
+        "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+        "cell_id": "cell:29",
+        "current_phase": "yx",
+        "execution_order": [
+          "POSITIVE",
+          "PLASTIC",
+          "ZERO_SUM"
+        ],
+        "next_phase": "zw",
+        "plastic_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cell_id": "cell:29",
+          "continuation_admitted": true,
+          "creates_information_energy": false,
+          "gradient_residue": {
+            "denominator": 1,
+            "numerator": 0
+          },
+          "gradient_state": "EQUILIBRIUM",
+          "lane_root_hash72": "gY6sftEGFmBQTNd?sxnt6(XEb!+juunOweZi2xkZuUWf?6jyBNUYN-0u/o9QBUuz8vSS</H4",
+          "minimal_polynomial": "rho^3-rho-1",
+          "schema": "HHS_PLASTIC_GRADIENT_LANE_V1",
+          "trit": 0,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "positive_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "authority_rank_implied": false,
+          "cell_id": "cell:29",
+          "constructive_proposal": true,
+          "lane_root_hash72": "HXlBF18/V(*c*uot)sRfB6B44L)O?snxSNnUGoMbJBHj6Sll<(B9ot(b(lL0GvR>NOUyLt*o",
+          "phase_state": "yx",
+          "schema": "HHS_ORIENTED_PHASE_LANE_V1",
+          "source_phase_root_hash72": "l</MsQT-GA(*F3qOl<9W1W>OzbghE>)4NyV4Qb2wZ9DCPLmMm(oj9gEI<>vZjm2>mFLQjjb<",
+          "trit": 1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "schema": "HHS_THREE_LANE_PHASE_TRANSITION_V1",
+        "transition_admitted": true,
+        "transition_root_hash72": "/G4NLlJ8(bmXYrbxMsNHiPj6H?LxjCcSnX<g5j7T?v/)Wl/)IosqZ*E!QWKeZHwmKgQmoUiH",
+        "trinary_is_functional_not_authority_rank": true,
+        "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+        "zero_sum_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cancellation_scope": [],
+          "cell_id": "cell:29",
+          "closure_state": "CLOSED",
+          "continuation_admitted": true,
+          "global_rejection_propagated": false,
+          "lane_root_hash72": "v1NlLCoqxPJOTUZQlrvjWn4<xifSRNCw4Q>mIcufAbMoh1-9Er!R!548U4rwI5UxMY/<o(q-",
+          "schema": "HHS_ZERO_SUM_EQUILIBRIUM_LANE_V1",
+          "source_phase_erased": false,
+          "trit": -1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+          "zero_sum_residue": {
+            "denominator": 1,
+            "numerator": 0
+          }
+        }
+      },
+      "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+    },
+    {
+      "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+      "cell_closed": true,
+      "cell_id": "cell:30",
+      "cell_identity_count": 1,
+      "cell_root_hash72": "t?iA7VLEs2mZk!VIYcAd(yb6r9y>Wn18C9nkBFHaO/60rHDsdOudUKrf9oyD0bkJfqKx9a?z",
+      "column": 3,
+      "domain_id": "RUNTIME_EXECUTION",
+      "energy_credit": 15,
+      "global_index": 30,
+      "lane_count": 3,
+      "lo_shu_value": 3,
+      "phase_tensor": "z",
+      "row": 3,
+      "schema": "HHS_TRINARY_PHASE_QUDIT_CELL_V1",
+      "subgrid_id": "subgrid:3",
+      "transition": {
+        "all_three_lane_witnesses_present": true,
+        "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+        "cell_id": "cell:30",
+        "current_phase": "zw",
+        "execution_order": [
+          "POSITIVE",
+          "PLASTIC",
+          "ZERO_SUM"
+        ],
+        "next_phase": "wz",
+        "plastic_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cell_id": "cell:30",
+          "continuation_admitted": true,
+          "creates_information_energy": false,
+          "gradient_residue": {
+            "denominator": 1,
+            "numerator": 0
+          },
+          "gradient_state": "EQUILIBRIUM",
+          "lane_root_hash72": "gY6sftEGFmBQTNd?sxnt6(XEb!+juunPmnZi2xkZuUWf?6jyBNUYN-0u/o9QBUuz8vSS</H4",
+          "minimal_polynomial": "rho^3-rho-1",
+          "schema": "HHS_PLASTIC_GRADIENT_LANE_V1",
+          "trit": 0,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "positive_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "authority_rank_implied": false,
+          "cell_id": "cell:30",
+          "constructive_proposal": true,
+          "lane_root_hash72": "zblCAmx>)/33*<mRNk)PHFKj-YG?qt-x(!c!?Mv8fj+Ud!J3Y+gsfuEG+zHwN8S8qkcfiigy",
+          "phase_state": "zw",
+          "schema": "HHS_ORIENTED_PHASE_LANE_V1",
+          "source_phase_root_hash72": ">dsc/R7FtK9K7ZHksVJ!qnR)PXcWtxL9o?GbOj2G*RXlJJuT71xQfd0tuSIPi3zKaO(vnnra",
+          "trit": 1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "schema": "HHS_THREE_LANE_PHASE_TRANSITION_V1",
+        "transition_admitted": true,
+        "transition_root_hash72": "YXrm-ofxphpf0E1B8l18i/bFIH!Fu6MHU(?!SAkccfU?+jEYkPZ4B7HGsL9j*eN74zhmS94M",
+        "trinary_is_functional_not_authority_rank": true,
+        "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+        "zero_sum_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cancellation_scope": [],
+          "cell_id": "cell:30",
+          "closure_state": "CLOSED",
+          "continuation_admitted": true,
+          "global_rejection_propagated": false,
+          "lane_root_hash72": "v1NlLCoqxPJOTUZQlrvjWn4<xifSRNCw4Q>mIcufAbMoh1-9Er!R!548U4rxyeUxMY/<o(q-",
+          "schema": "HHS_ZERO_SUM_EQUILIBRIUM_LANE_V1",
+          "source_phase_erased": false,
+          "trit": -1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+          "zero_sum_residue": {
+            "denominator": 1,
+            "numerator": 0
+          }
+        }
+      },
+      "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+    },
+    {
+      "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+      "cell_closed": true,
+      "cell_id": "cell:31",
+      "cell_identity_count": 1,
+      "cell_root_hash72": "KLzPZ6(S7DKRbr7(g(B+2uV>zsjWQ>>(F!JY+8+T4O>ToKVxKIO2my43oG1GWyc82kw4Blh4",
+      "column": 4,
+      "domain_id": "RUNTIME_EXECUTION",
+      "energy_credit": 25,
+      "global_index": 31,
+      "lane_count": 3,
+      "lo_shu_value": 5,
+      "phase_tensor": "w",
+      "row": 3,
+      "schema": "HHS_TRINARY_PHASE_QUDIT_CELL_V1",
+      "subgrid_id": "subgrid:3",
+      "transition": {
+        "all_three_lane_witnesses_present": true,
+        "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+        "cell_id": "cell:31",
+        "current_phase": "wz",
+        "execution_order": [
+          "POSITIVE",
+          "PLASTIC",
+          "ZERO_SUM"
+        ],
+        "next_phase": "x",
+        "plastic_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cell_id": "cell:31",
+          "continuation_admitted": true,
+          "creates_information_energy": false,
+          "gradient_residue": {
+            "denominator": 1,
+            "numerator": 0
+          },
+          "gradient_state": "EQUILIBRIUM",
+          "lane_root_hash72": "gY6sftEGFmBQTNd?sxnt6(XEb!+juunPnmZi2xkZuUWf?6jyBNUYN-0u/o9QBUuz8vSS</H4",
+          "minimal_polynomial": "rho^3-rho-1",
+          "schema": "HHS_PLASTIC_GRADIENT_LANE_V1",
+          "trit": 0,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "positive_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "authority_rank_implied": false,
+          "cell_id": "cell:31",
+          "constructive_proposal": true,
+          "lane_root_hash72": "W+iSXTliYH6cJRE71T!PV-SbfZHN)8jsKw721NueyKrXNbKjZD)mGWvfWZV05>fDbVy90PaK",
+          "phase_state": "wz",
+          "schema": "HHS_ORIENTED_PHASE_LANE_V1",
+          "source_phase_root_hash72": "R4H3IrjLV0BaN9(3nKZMLvUF3cBr!DQcg1ocJ)PQy!>+EZ6GuxdvUmQ(tRVrKUm?Vv0i6yiz",
+          "trit": 1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "schema": "HHS_THREE_LANE_PHASE_TRANSITION_V1",
+        "transition_admitted": true,
+        "transition_root_hash72": "iwdw*a8sKRr8(4a?7c0kCr!F9!NEV6c!yk4LJkiCY65ziXbyO5mWG>kbGrQe1jqiP32W3Rdt",
+        "trinary_is_functional_not_authority_rank": true,
+        "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+        "zero_sum_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cancellation_scope": [],
+          "cell_id": "cell:31",
+          "closure_state": "CLOSED",
+          "continuation_admitted": true,
+          "global_rejection_propagated": false,
+          "lane_root_hash72": "v1NlLCoqxPJOTUZQlrvjWn4<xifSRNCw4Q>mIcufAbMoh1-9Er!R!548U4rxzdUxMY/<o(q-",
+          "schema": "HHS_ZERO_SUM_EQUILIBRIUM_LANE_V1",
+          "source_phase_erased": false,
+          "trit": -1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+          "zero_sum_residue": {
+            "denominator": 1,
+            "numerator": 0
+          }
+        }
+      },
+      "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+    },
+    {
+      "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+      "cell_closed": true,
+      "cell_id": "cell:32",
+      "cell_identity_count": 1,
+      "cell_root_hash72": "(ybOO)<)NP03lmmKNv5++1EFeH*!k4I4FD5*vl8zKWOC>XCM*jI+XYkUw*vi<Uo2Kw7fOlCe",
+      "column": 5,
+      "domain_id": "RUNTIME_EXECUTION",
+      "energy_credit": 35,
+      "global_index": 32,
+      "lane_count": 3,
+      "lo_shu_value": 7,
+      "phase_tensor": "x",
+      "row": 3,
+      "schema": "HHS_TRINARY_PHASE_QUDIT_CELL_V1",
+      "subgrid_id": "subgrid:3",
+      "transition": {
+        "all_three_lane_witnesses_present": true,
+        "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+        "cell_id": "cell:32",
+        "current_phase": "x",
+        "execution_order": [
+          "POSITIVE",
+          "PLASTIC",
+          "ZERO_SUM"
+        ],
+        "next_phase": "y",
+        "plastic_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cell_id": "cell:32",
+          "continuation_admitted": true,
+          "creates_information_energy": false,
+          "gradient_residue": {
+            "denominator": 1,
+            "numerator": 0
+          },
+          "gradient_state": "EQUILIBRIUM",
+          "lane_root_hash72": "gY6sftEGFmBQTNd?sxnt6(XEb!+juunPolZi2xkZuUWf?6jyBNUYN-0u/o9QBUuz8vSS</H4",
+          "minimal_polynomial": "rho^3-rho-1",
+          "schema": "HHS_PLASTIC_GRADIENT_LANE_V1",
+          "trit": 0,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "positive_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "authority_rank_implied": false,
+          "cell_id": "cell:32",
+          "constructive_proposal": true,
+          "lane_root_hash72": "U4*1v1>F0SilNOkL4YYX+qw2z2We2b1l*CHndcGHM7clpZPaQPjfeDt!0h)lLIuFW2FDGf*!",
+          "phase_state": "x",
+          "schema": "HHS_ORIENTED_PHASE_LANE_V1",
+          "source_phase_root_hash72": "w!t7bqo/q0xlsmjDpIcX8RyV5AG5B/pMXmD<2diSRY?O-f9Z>)E+8N?U(TV?9w>hsjbelzFx",
+          "trit": 1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "schema": "HHS_THREE_LANE_PHASE_TRANSITION_V1",
+        "transition_admitted": true,
+        "transition_root_hash72": "*Tv4kUh2y<Ndtm2iZm7<(3ZjZ0JUyU-k/o)bhx0b5Z*5zlWb-Klv6NSXgPwLMCca)MY3dw!w",
+        "trinary_is_functional_not_authority_rank": true,
+        "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+        "zero_sum_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cancellation_scope": [],
+          "cell_id": "cell:32",
+          "closure_state": "CLOSED",
+          "continuation_admitted": true,
+          "global_rejection_propagated": false,
+          "lane_root_hash72": "v1NlLCoqxPJOTUZQlrvjWn4<xifSRNCw4Q>mIcufAbMoh1-9Er!R!548U4rxAcUxMY/<o(q-",
+          "schema": "HHS_ZERO_SUM_EQUILIBRIUM_LANE_V1",
+          "source_phase_erased": false,
+          "trit": -1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+          "zero_sum_residue": {
+            "denominator": 1,
+            "numerator": 0
+          }
+        }
+      },
+      "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+    },
+    {
+      "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+      "cell_closed": true,
+      "cell_id": "cell:33",
+      "cell_identity_count": 1,
+      "cell_root_hash72": "Slp?uBhxQdT*/IeZg(z(A<-<Rhv8?sF9i8?yPq??2SnL5gD*cEMN<HsHycbrs9O)uHlKrQ)m",
+      "column": 6,
+      "domain_id": "RUNTIME_EXECUTION",
+      "energy_credit": 20,
+      "global_index": 33,
+      "lane_count": 3,
+      "lo_shu_value": 4,
+      "phase_tensor": "y",
+      "row": 3,
+      "schema": "HHS_TRINARY_PHASE_QUDIT_CELL_V1",
+      "subgrid_id": "subgrid:3",
+      "transition": {
+        "all_three_lane_witnesses_present": true,
+        "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+        "cell_id": "cell:33",
+        "current_phase": "y",
+        "execution_order": [
+          "POSITIVE",
+          "PLASTIC",
+          "ZERO_SUM"
+        ],
+        "next_phase": "z",
+        "plastic_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cell_id": "cell:33",
+          "continuation_admitted": true,
+          "creates_information_energy": false,
+          "gradient_residue": {
+            "denominator": 1,
+            "numerator": 0
+          },
+          "gradient_state": "EQUILIBRIUM",
+          "lane_root_hash72": "gY6sftEGFmBQTNd?sxnt6(XEb!+juunPpkZi2xkZuUWf?6jyBNUYN-0u/o9QBUuz8vSS</H4",
+          "minimal_polynomial": "rho^3-rho-1",
+          "schema": "HHS_PLASTIC_GRADIENT_LANE_V1",
+          "trit": 0,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "positive_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "authority_rank_implied": false,
+          "cell_id": "cell:33",
+          "constructive_proposal": true,
+          "lane_root_hash72": "3MoCeM8L7GG*!YIsWkiFWMJ05Css4tX/Mf9?x6/M1D?<DaC3UAaWTxF6Qlvk(>Frwh+JgSvh",
+          "phase_state": "y",
+          "schema": "HHS_ORIENTED_PHASE_LANE_V1",
+          "source_phase_root_hash72": "l</MsQT-GA(*F3qOl<9W1W>OzbghE>)4NyV4Qb2wZ9DCPLmMm(oj9gEI<>vZjm2>mFLQjjb<",
+          "trit": 1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "schema": "HHS_THREE_LANE_PHASE_TRANSITION_V1",
+        "transition_admitted": true,
+        "transition_root_hash72": "BgMkCb)ra1kJR/xZ-7e?Nsa2Sy9?yD53ZOZNm0Ie>OZkWPCDmj2PccNswvzy1vO?ENOs8lSX",
+        "trinary_is_functional_not_authority_rank": true,
+        "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+        "zero_sum_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cancellation_scope": [],
+          "cell_id": "cell:33",
+          "closure_state": "CLOSED",
+          "continuation_admitted": true,
+          "global_rejection_propagated": false,
+          "lane_root_hash72": "v1NlLCoqxPJOTUZQlrvjWn4<xifSRNCw4Q>mIcufAbMoh1-9Er!R!548U4rxBbUxMY/<o(q-",
+          "schema": "HHS_ZERO_SUM_EQUILIBRIUM_LANE_V1",
+          "source_phase_erased": false,
+          "trit": -1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+          "zero_sum_residue": {
+            "denominator": 1,
+            "numerator": 0
+          }
+        }
+      },
+      "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+    },
+    {
+      "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+      "cell_closed": true,
+      "cell_id": "cell:34",
+      "cell_identity_count": 1,
+      "cell_root_hash72": "/vGY7Fs4y)4monoRm8*Te1IH!PtE5SkZ1!Bw7gTY6xb8ZIoCrN7h>-yW>7lLvdmiW3*uGaLu",
+      "column": 7,
+      "domain_id": "RUNTIME_EXECUTION",
+      "energy_credit": 45,
+      "global_index": 34,
+      "lane_count": 3,
+      "lo_shu_value": 9,
+      "phase_tensor": "z",
+      "row": 3,
+      "schema": "HHS_TRINARY_PHASE_QUDIT_CELL_V1",
+      "subgrid_id": "subgrid:3",
+      "transition": {
+        "all_three_lane_witnesses_present": true,
+        "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+        "cell_id": "cell:34",
+        "current_phase": "z",
+        "execution_order": [
+          "POSITIVE",
+          "PLASTIC",
+          "ZERO_SUM"
+        ],
+        "next_phase": "w",
+        "plastic_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cell_id": "cell:34",
+          "continuation_admitted": true,
+          "creates_information_energy": false,
+          "gradient_residue": {
+            "denominator": 1,
+            "numerator": 0
+          },
+          "gradient_state": "EQUILIBRIUM",
+          "lane_root_hash72": "gY6sftEGFmBQTNd?sxnt6(XEb!+juunPqjZi2xkZuUWf?6jyBNUYN-0u/o9QBUuz8vSS</H4",
+          "minimal_polynomial": "rho^3-rho-1",
+          "schema": "HHS_PLASTIC_GRADIENT_LANE_V1",
+          "trit": 0,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "positive_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "authority_rank_implied": false,
+          "cell_id": "cell:34",
+          "constructive_proposal": true,
+          "lane_root_hash72": "rMpxz1cV6Rx*AW<aOySLlVYWidNT5<X5>4nrYX-iTXA3Tyk)RftNU703(h+qR-P42JIg56F9",
+          "phase_state": "z",
+          "schema": "HHS_ORIENTED_PHASE_LANE_V1",
+          "source_phase_root_hash72": ">dsc/R7FtK9K7ZHksVJ!qnR)PXcWtxL9o?GbOj2G*RXlJJuT71xQfd0tuSIPi3zKaO(vnnra",
+          "trit": 1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "schema": "HHS_THREE_LANE_PHASE_TRANSITION_V1",
+        "transition_admitted": true,
+        "transition_root_hash72": "H!OO9vpcAe(VjUq(MuZcI/SH)tAz6slg(1yz09a+e3MYcEWAM7q+LBj(BYmFxl+IcOQ6Qowg",
+        "trinary_is_functional_not_authority_rank": true,
+        "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+        "zero_sum_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cancellation_scope": [],
+          "cell_id": "cell:34",
+          "closure_state": "CLOSED",
+          "continuation_admitted": true,
+          "global_rejection_propagated": false,
+          "lane_root_hash72": "v1NlLCoqxPJOTUZQlrvjWn4<xifSRNCw4Q>mIcufAbMoh1-9Er!R!548U4rxCaUxMY/<o(q-",
+          "schema": "HHS_ZERO_SUM_EQUILIBRIUM_LANE_V1",
+          "source_phase_erased": false,
+          "trit": -1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+          "zero_sum_residue": {
+            "denominator": 1,
+            "numerator": 0
+          }
+        }
+      },
+      "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+    },
+    {
+      "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+      "cell_closed": true,
+      "cell_id": "cell:35",
+      "cell_identity_count": 1,
+      "cell_root_hash72": "l9MgR5Lf79WL5XY0*ML3tpvwWkbRux65dWFcVN>/<LAGbdpmcjV!1*bzhlBttpnd31a-L/Tg",
+      "column": 8,
+      "domain_id": "RUNTIME_EXECUTION",
+      "energy_credit": 10,
+      "global_index": 35,
+      "lane_count": 3,
+      "lo_shu_value": 2,
+      "phase_tensor": "w",
+      "row": 3,
+      "schema": "HHS_TRINARY_PHASE_QUDIT_CELL_V1",
+      "subgrid_id": "subgrid:3",
+      "transition": {
+        "all_three_lane_witnesses_present": true,
+        "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+        "cell_id": "cell:35",
+        "current_phase": "w",
+        "execution_order": [
+          "POSITIVE",
+          "PLASTIC",
+          "ZERO_SUM"
+        ],
+        "next_phase": "xy",
+        "plastic_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cell_id": "cell:35",
+          "continuation_admitted": true,
+          "creates_information_energy": false,
+          "gradient_residue": {
+            "denominator": 1,
+            "numerator": 0
+          },
+          "gradient_state": "EQUILIBRIUM",
+          "lane_root_hash72": "gY6sftEGFmBQTNd?sxnt6(XEb!+juunPriZi2xkZuUWf?6jyBNUYN-0u/o9QBUuz8vSS</H4",
+          "minimal_polynomial": "rho^3-rho-1",
+          "schema": "HHS_PLASTIC_GRADIENT_LANE_V1",
+          "trit": 0,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "positive_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "authority_rank_implied": false,
+          "cell_id": "cell:35",
+          "constructive_proposal": true,
+          "lane_root_hash72": "7JFU<ZxOUUGJl4mydBSZG/QbjeroUpSVv?rwQ*<BanDD<zA<t(n4c!J!kvvSFp9ZD)C!C0Rw",
+          "phase_state": "w",
+          "schema": "HHS_ORIENTED_PHASE_LANE_V1",
+          "source_phase_root_hash72": "R4H3IrjLV0BaN9(3nKZMLvUF3cBr!DQcg1ocJ)PQy!>+EZ6GuxdvUmQ(tRVrKUm?Vv0i6yiz",
+          "trit": 1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "schema": "HHS_THREE_LANE_PHASE_TRANSITION_V1",
+        "transition_admitted": true,
+        "transition_root_hash72": "ziCRReLOr6sd!nM/0Ax?i4eDd1sEraW+i4gTV<770/dPWpcW4G59jSqOKINuppw4<pFk>Kh>",
+        "trinary_is_functional_not_authority_rank": true,
+        "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+        "zero_sum_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cancellation_scope": [],
+          "cell_id": "cell:35",
+          "closure_state": "CLOSED",
+          "continuation_admitted": true,
+          "global_rejection_propagated": false,
+          "lane_root_hash72": "v1NlLCoqxPJOTUZQlrvjWn4<xifSRNCw4Q>mIcufAbMoh1-9Er!R!548U4rxD9UxMY/<o(q-",
+          "schema": "HHS_ZERO_SUM_EQUILIBRIUM_LANE_V1",
+          "source_phase_erased": false,
+          "trit": -1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+          "zero_sum_residue": {
+            "denominator": 1,
+            "numerator": 0
+          }
+        }
+      },
+      "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+    },
+    {
+      "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+      "cell_closed": true,
+      "cell_id": "cell:36",
+      "cell_identity_count": 1,
+      "cell_root_hash72": "akQA0AooaZuK62-i6xZ?+NrDTc6Hy+TaDw+>ta!w5ll6ehepi3djE?i/!W1/RCRrmdTh>)Y2",
+      "column": 0,
+      "domain_id": "PROVENANCE_AUDIT",
+      "energy_credit": 40,
+      "global_index": 36,
+      "lane_count": 3,
+      "lo_shu_value": 8,
+      "phase_tensor": "x",
+      "row": 4,
+      "schema": "HHS_TRINARY_PHASE_QUDIT_CELL_V1",
+      "subgrid_id": "subgrid:4",
+      "transition": {
+        "all_three_lane_witnesses_present": true,
+        "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+        "cell_id": "cell:36",
+        "current_phase": "xy",
+        "execution_order": [
+          "POSITIVE",
+          "PLASTIC",
+          "ZERO_SUM"
+        ],
+        "next_phase": "yx",
+        "plastic_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cell_id": "cell:36",
+          "continuation_admitted": true,
+          "creates_information_energy": false,
+          "gradient_residue": {
+            "denominator": 1,
+            "numerator": 0
+          },
+          "gradient_state": "EQUILIBRIUM",
+          "lane_root_hash72": "gY6sftEGFmBQTNd?sxnt6(XEb!+juunPshZi2xkZuUWf?6jyBNUYN-0u/o9QBUuz8vSS</H4",
+          "minimal_polynomial": "rho^3-rho-1",
+          "schema": "HHS_PLASTIC_GRADIENT_LANE_V1",
+          "trit": 0,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "positive_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "authority_rank_implied": false,
+          "cell_id": "cell:36",
+          "constructive_proposal": true,
+          "lane_root_hash72": "oEN54ixSPX4Yl9e5eKlVTbf+65v8Vq5La/Ki/7QYEcbwvE0y3-QiRY0?WFHAI8wV+4FcFTpV",
+          "phase_state": "xy",
+          "schema": "HHS_ORIENTED_PHASE_LANE_V1",
+          "source_phase_root_hash72": "w!t7bqo/q0xlsmjDpIcX8RyV5AG5B/pMXmD<2diSRY?O-f9Z>)E+8N?U(TV?9w>hsjbelzFx",
+          "trit": 1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "schema": "HHS_THREE_LANE_PHASE_TRANSITION_V1",
+        "transition_admitted": true,
+        "transition_root_hash72": "lOEH35V<Ix1xytvwB/EqaI)n4xDu1BVXbrsOoZ4pcqGvZMw-<oGNMKRqLG1353E5eUl*Y*!t",
+        "trinary_is_functional_not_authority_rank": true,
+        "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+        "zero_sum_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cancellation_scope": [],
+          "cell_id": "cell:36",
+          "closure_state": "CLOSED",
+          "continuation_admitted": true,
+          "global_rejection_propagated": false,
+          "lane_root_hash72": "v1NlLCoqxPJOTUZQlrvjWn4<xifSRNCw4Q>mIcufAbMoh1-9Er!R!548U4rxE8UxMY/<o(q-",
+          "schema": "HHS_ZERO_SUM_EQUILIBRIUM_LANE_V1",
+          "source_phase_erased": false,
+          "trit": -1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+          "zero_sum_residue": {
+            "denominator": 1,
+            "numerator": 0
+          }
+        }
+      },
+      "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+    },
+    {
+      "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+      "cell_closed": true,
+      "cell_id": "cell:37",
+      "cell_identity_count": 1,
+      "cell_root_hash72": "Kv6uMPA4SWW5ACFgIafZ+qaKxGC+51G!ZGeL4X6brtI->bfMVD7(b2QNkDutbcFHD4e(G(YJ",
+      "column": 1,
+      "domain_id": "PROVENANCE_AUDIT",
+      "energy_credit": 5,
+      "global_index": 37,
+      "lane_count": 3,
+      "lo_shu_value": 1,
+      "phase_tensor": "y",
+      "row": 4,
+      "schema": "HHS_TRINARY_PHASE_QUDIT_CELL_V1",
+      "subgrid_id": "subgrid:4",
+      "transition": {
+        "all_three_lane_witnesses_present": true,
+        "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+        "cell_id": "cell:37",
+        "current_phase": "yx",
+        "execution_order": [
+          "POSITIVE",
+          "PLASTIC",
+          "ZERO_SUM"
+        ],
+        "next_phase": "zw",
+        "plastic_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cell_id": "cell:37",
+          "continuation_admitted": true,
+          "creates_information_energy": false,
+          "gradient_residue": {
+            "denominator": 1,
+            "numerator": 0
+          },
+          "gradient_state": "EQUILIBRIUM",
+          "lane_root_hash72": "gY6sftEGFmBQTNd?sxnt6(XEb!+juunPtgZi2xkZuUWf?6jyBNUYN-0u/o9QBUuz8vSS</H4",
+          "minimal_polynomial": "rho^3-rho-1",
+          "schema": "HHS_PLASTIC_GRADIENT_LANE_V1",
+          "trit": 0,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "positive_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "authority_rank_implied": false,
+          "cell_id": "cell:37",
+          "constructive_proposal": true,
+          "lane_root_hash72": "HXlBF18/V(*c*uot)sRfB6B44L)O?snxSNnUGoMbJBHj6Sll<(B9ot(b(lL0HsT>NOUyLt*o",
+          "phase_state": "yx",
+          "schema": "HHS_ORIENTED_PHASE_LANE_V1",
+          "source_phase_root_hash72": "l</MsQT-GA(*F3qOl<9W1W>OzbghE>)4NyV4Qb2wZ9DCPLmMm(oj9gEI<>vZjm2>mFLQjjb<",
+          "trit": 1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "schema": "HHS_THREE_LANE_PHASE_TRANSITION_V1",
+        "transition_admitted": true,
+        "transition_root_hash72": "/G4NLmGa(bmXZngvMsNHiPj6H?LxkyhQnX<g6g9T?v/>Qp/)IosqZ*E!QWKeZHwmKhMrmUiH",
+        "trinary_is_functional_not_authority_rank": true,
+        "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+        "zero_sum_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cancellation_scope": [],
+          "cell_id": "cell:37",
+          "closure_state": "CLOSED",
+          "continuation_admitted": true,
+          "global_rejection_propagated": false,
+          "lane_root_hash72": "v1NlLCoqxPJOTUZQlrvjWn4<xifSRNCw4Q>mIcufAbMoh1-9Er!R!548U4rxF7UxMY/<o(q-",
+          "schema": "HHS_ZERO_SUM_EQUILIBRIUM_LANE_V1",
+          "source_phase_erased": false,
+          "trit": -1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+          "zero_sum_residue": {
+            "denominator": 1,
+            "numerator": 0
+          }
+        }
+      },
+      "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+    },
+    {
+      "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+      "cell_closed": true,
+      "cell_id": "cell:38",
+      "cell_identity_count": 1,
+      "cell_root_hash72": "q>2VZo5mQQXQ9fJ(m-mpW(+(VBm+Y2dWa>)YSDsWO*ObXaM1i7P7r0Mzh3lGee>bEf4mO8d(",
+      "column": 2,
+      "domain_id": "PROVENANCE_AUDIT",
+      "energy_credit": 30,
+      "global_index": 38,
+      "lane_count": 3,
+      "lo_shu_value": 6,
+      "phase_tensor": "z",
+      "row": 4,
+      "schema": "HHS_TRINARY_PHASE_QUDIT_CELL_V1",
+      "subgrid_id": "subgrid:4",
+      "transition": {
+        "all_three_lane_witnesses_present": true,
+        "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+        "cell_id": "cell:38",
+        "current_phase": "zw",
+        "execution_order": [
+          "POSITIVE",
+          "PLASTIC",
+          "ZERO_SUM"
+        ],
+        "next_phase": "wz",
+        "plastic_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cell_id": "cell:38",
+          "continuation_admitted": true,
+          "creates_information_energy": false,
+          "gradient_residue": {
+            "denominator": 1,
+            "numerator": 0
+          },
+          "gradient_state": "EQUILIBRIUM",
+          "lane_root_hash72": "gY6sftEGFmBQTNd?sxnt6(XEb!+juunPufZi2xkZuUWf?6jyBNUYN-0u/o9QBUuz8vSS</H4",
+          "minimal_polynomial": "rho^3-rho-1",
+          "schema": "HHS_PLASTIC_GRADIENT_LANE_V1",
+          "trit": 0,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "positive_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "authority_rank_implied": false,
+          "cell_id": "cell:38",
+          "constructive_proposal": true,
+          "lane_root_hash72": "zblCAmx>)/33*<mRNk)PHFKj-YG?qt-x(!c!?Mv8fj+Ud!J3Y+gsfuEG+zHwNgK8qkcfiigy",
+          "phase_state": "zw",
+          "schema": "HHS_ORIENTED_PHASE_LANE_V1",
+          "source_phase_root_hash72": ">dsc/R7FtK9K7ZHksVJ!qnR)PXcWtxL9o?GbOj2G*RXlJJuT71xQfd0tuSIPi3zKaO(vnnra",
+          "trit": 1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "schema": "HHS_THREE_LANE_PHASE_TRANSITION_V1",
+        "transition_admitted": true,
+        "transition_root_hash72": "YXrm-onpphpf0fiJ8l18i/bFIH!FuewPU(?!SIcccfU?73EYkPZ4B7HGsL9j*eN74zDpt94M",
+        "trinary_is_functional_not_authority_rank": true,
+        "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+        "zero_sum_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cancellation_scope": [],
+          "cell_id": "cell:38",
+          "closure_state": "CLOSED",
+          "continuation_admitted": true,
+          "global_rejection_propagated": false,
+          "lane_root_hash72": "v1NlLCoqxPJOTUZQlrvjWn4<xifSRNCw4Q>mIcufAbMoh1-9Er!R!548U4rxG6UxMY/<o(q-",
+          "schema": "HHS_ZERO_SUM_EQUILIBRIUM_LANE_V1",
+          "source_phase_erased": false,
+          "trit": -1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+          "zero_sum_residue": {
+            "denominator": 1,
+            "numerator": 0
+          }
+        }
+      },
+      "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+    },
+    {
+      "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+      "cell_closed": true,
+      "cell_id": "cell:39",
+      "cell_identity_count": 1,
+      "cell_root_hash72": "a!h+O)bv4LKYCB)m4-i0!ES24mbVyXdT?Z<elX1kj*7hekMDW<Rx+UCNzGojoAo!)vhIRaqA",
+      "column": 3,
+      "domain_id": "PROVENANCE_AUDIT",
+      "energy_credit": 15,
+      "global_index": 39,
+      "lane_count": 3,
+      "lo_shu_value": 3,
+      "phase_tensor": "w",
+      "row": 4,
+      "schema": "HHS_TRINARY_PHASE_QUDIT_CELL_V1",
+      "subgrid_id": "subgrid:4",
+      "transition": {
+        "all_three_lane_witnesses_present": true,
+        "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+        "cell_id": "cell:39",
+        "current_phase": "wz",
+        "execution_order": [
+          "POSITIVE",
+          "PLASTIC",
+          "ZERO_SUM"
+        ],
+        "next_phase": "x",
+        "plastic_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cell_id": "cell:39",
+          "continuation_admitted": true,
+          "creates_information_energy": false,
+          "gradient_residue": {
+            "denominator": 1,
+            "numerator": 0
+          },
+          "gradient_state": "EQUILIBRIUM",
+          "lane_root_hash72": "gY6sftEGFmBQTNd?sxnt6(XEb!+juunPveZi2xkZuUWf?6jyBNUYN-0u/o9QBUuz8vSS</H4",
+          "minimal_polynomial": "rho^3-rho-1",
+          "schema": "HHS_PLASTIC_GRADIENT_LANE_V1",
+          "trit": 0,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "positive_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "authority_rank_implied": false,
+          "cell_id": "cell:39",
+          "constructive_proposal": true,
+          "lane_root_hash72": "W+iSXTliYH6cJRE71T!PV-SbfZHN)8jsKw721NueyKrXNbKjZD)mGWvfWZV0557DbVy90PaK",
+          "phase_state": "wz",
+          "schema": "HHS_ORIENTED_PHASE_LANE_V1",
+          "source_phase_root_hash72": "R4H3IrjLV0BaN9(3nKZMLvUF3cBr!DQcg1ocJ)PQy!>+EZ6GuxdvUmQ(tRVrKUm?Vv0i6yiz",
+          "trit": 1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "schema": "HHS_THREE_LANE_PHASE_TRANSITION_V1",
+        "transition_admitted": true,
+        "transition_root_hash72": "iwdw*agkKRr8VCV?7c0kCr!F9!NE/-k!yk4LRciCY65P2XbyO5mWG>kbGrQe1jqiPp5x3Rdt",
+        "trinary_is_functional_not_authority_rank": true,
+        "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+        "zero_sum_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cancellation_scope": [],
+          "cell_id": "cell:39",
+          "closure_state": "CLOSED",
+          "continuation_admitted": true,
+          "global_rejection_propagated": false,
+          "lane_root_hash72": "v1NlLCoqxPJOTUZQlrvjWn4<xifSRNCw4Q>mIcufAbMoh1-9Er!R!548U4rxH5UxMY/<o(q-",
+          "schema": "HHS_ZERO_SUM_EQUILIBRIUM_LANE_V1",
+          "source_phase_erased": false,
+          "trit": -1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+          "zero_sum_residue": {
+            "denominator": 1,
+            "numerator": 0
+          }
+        }
+      },
+      "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+    },
+    {
+      "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+      "cell_closed": true,
+      "cell_id": "cell:40",
+      "cell_identity_count": 1,
+      "cell_root_hash72": "Z+421kkHti<!xRA/Hn84FnqRkb(zHJ9p1l0Sz1TUvNdJktDOZl<XiZk(V1<Hb<FlMN/dttXU",
+      "column": 4,
+      "domain_id": "PROVENANCE_AUDIT",
+      "energy_credit": 25,
+      "global_index": 40,
+      "lane_count": 3,
+      "lo_shu_value": 5,
+      "phase_tensor": "x",
+      "row": 4,
+      "schema": "HHS_TRINARY_PHASE_QUDIT_CELL_V1",
+      "subgrid_id": "subgrid:4",
+      "transition": {
+        "all_three_lane_witnesses_present": true,
+        "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+        "cell_id": "cell:40",
+        "current_phase": "x",
+        "execution_order": [
+          "POSITIVE",
+          "PLASTIC",
+          "ZERO_SUM"
+        ],
+        "next_phase": "y",
+        "plastic_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cell_id": "cell:40",
+          "continuation_admitted": true,
+          "creates_information_energy": false,
+          "gradient_residue": {
+            "denominator": 1,
+            "numerator": 0
+          },
+          "gradient_state": "EQUILIBRIUM",
+          "lane_root_hash72": "gY6sftEGFmBQTNd?sxnt6(XEb!+juunQlnZi2xkZuUWf?6jyBNUYN-0u/o9QBUuz8vSS</H4",
+          "minimal_polynomial": "rho^3-rho-1",
+          "schema": "HHS_PLASTIC_GRADIENT_LANE_V1",
+          "trit": 0,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "positive_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "authority_rank_implied": false,
+          "cell_id": "cell:40",
+          "constructive_proposal": true,
+          "lane_root_hash72": "U4*1v1>F0SilNOkL4YYX+qw2z2We2b1l*CHndcGHM7clpZPaQPjfeDt!0h)lMFwFW2FDGf*!",
+          "phase_state": "x",
+          "schema": "HHS_ORIENTED_PHASE_LANE_V1",
+          "source_phase_root_hash72": "w!t7bqo/q0xlsmjDpIcX8RyV5AG5B/pMXmD<2diSRY?O-f9Z>)E+8N?U(TV?9w>hsjbelzFx",
+          "trit": 1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "schema": "HHS_THREE_LANE_PHASE_TRANSITION_V1",
+        "transition_admitted": true,
+        "transition_root_hash72": "*Tv4kVe4y<O9yk2iZm7<(3ZjZ0KQDS-k/p*dhx0b5+W9zlWb-Klv6NSXgPwLMCd*eKY3dw!w",
+        "trinary_is_functional_not_authority_rank": true,
+        "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+        "zero_sum_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cancellation_scope": [],
+          "cell_id": "cell:40",
+          "closure_state": "CLOSED",
+          "continuation_admitted": true,
+          "global_rejection_propagated": false,
+          "lane_root_hash72": "v1NlLCoqxPJOTUZQlrvjWn4<xifSRNCw4Q>mIcufAbMoh1-9Er!R!548U4ryxeUxMY/<o(q-",
+          "schema": "HHS_ZERO_SUM_EQUILIBRIUM_LANE_V1",
+          "source_phase_erased": false,
+          "trit": -1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+          "zero_sum_residue": {
+            "denominator": 1,
+            "numerator": 0
+          }
+        }
+      },
+      "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+    },
+    {
+      "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+      "cell_closed": true,
+      "cell_id": "cell:41",
+      "cell_identity_count": 1,
+      "cell_root_hash72": "M5pvfkWK+1VGTJPw6QdMAJRk(QxT)Ge2GfG2E*jcvimRNAkpcpS<1<9)5RWm3BQ5X+o*XV)I",
+      "column": 5,
+      "domain_id": "PROVENANCE_AUDIT",
+      "energy_credit": 35,
+      "global_index": 41,
+      "lane_count": 3,
+      "lo_shu_value": 7,
+      "phase_tensor": "y",
+      "row": 4,
+      "schema": "HHS_TRINARY_PHASE_QUDIT_CELL_V1",
+      "subgrid_id": "subgrid:4",
+      "transition": {
+        "all_three_lane_witnesses_present": true,
+        "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+        "cell_id": "cell:41",
+        "current_phase": "y",
+        "execution_order": [
+          "POSITIVE",
+          "PLASTIC",
+          "ZERO_SUM"
+        ],
+        "next_phase": "z",
+        "plastic_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cell_id": "cell:41",
+          "continuation_admitted": true,
+          "creates_information_energy": false,
+          "gradient_residue": {
+            "denominator": 1,
+            "numerator": 0
+          },
+          "gradient_state": "EQUILIBRIUM",
+          "lane_root_hash72": "gY6sftEGFmBQTNd?sxnt6(XEb!+juunQmmZi2xkZuUWf?6jyBNUYN-0u/o9QBUuz8vSS</H4",
+          "minimal_polynomial": "rho^3-rho-1",
+          "schema": "HHS_PLASTIC_GRADIENT_LANE_V1",
+          "trit": 0,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "positive_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "authority_rank_implied": false,
+          "cell_id": "cell:41",
+          "constructive_proposal": true,
+          "lane_root_hash72": "3MoCeM8L7GG*!YIsWkiFWMJ05Css4tX/Mf9?x6/M1D?<DaC3UAaWTxF6Qlvk)(Hrwh+JgSvh",
+          "phase_state": "y",
+          "schema": "HHS_ORIENTED_PHASE_LANE_V1",
+          "source_phase_root_hash72": "l</MsQT-GA(*F3qOl<9W1W>OzbghE>)4NyV4Qb2wZ9DCPLmMm(oj9gEI<>vZjm2>mFLQjjb<",
+          "trit": 1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "schema": "HHS_THREE_LANE_PHASE_TRANSITION_V1",
+        "transition_admitted": true,
+        "transition_root_hash72": "BgMkCc*ta1lm5+xZ-7e?Nsa2Sya)DB53ZPWPm0Ie>QToWPCDmj2PccNswvzy1vPRXLOs8lSX",
+        "trinary_is_functional_not_authority_rank": true,
+        "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+        "zero_sum_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cancellation_scope": [],
+          "cell_id": "cell:41",
+          "closure_state": "CLOSED",
+          "continuation_admitted": true,
+          "global_rejection_propagated": false,
+          "lane_root_hash72": "v1NlLCoqxPJOTUZQlrvjWn4<xifSRNCw4Q>mIcufAbMoh1-9Er!R!548U4ryydUxMY/<o(q-",
+          "schema": "HHS_ZERO_SUM_EQUILIBRIUM_LANE_V1",
+          "source_phase_erased": false,
+          "trit": -1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+          "zero_sum_residue": {
+            "denominator": 1,
+            "numerator": 0
+          }
+        }
+      },
+      "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+    },
+    {
+      "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+      "cell_closed": true,
+      "cell_id": "cell:42",
+      "cell_identity_count": 1,
+      "cell_root_hash72": "Wme8jQ8sJmf1yTHCk84pFrsBq1IZll(VwREuuM8g6aTB5e)MjUm>k1qt0+?wE(a8jy84aZZT",
+      "column": 6,
+      "domain_id": "PROVENANCE_AUDIT",
+      "energy_credit": 20,
+      "global_index": 42,
+      "lane_count": 3,
+      "lo_shu_value": 4,
+      "phase_tensor": "z",
+      "row": 4,
+      "schema": "HHS_TRINARY_PHASE_QUDIT_CELL_V1",
+      "subgrid_id": "subgrid:4",
+      "transition": {
+        "all_three_lane_witnesses_present": true,
+        "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+        "cell_id": "cell:42",
+        "current_phase": "z",
+        "execution_order": [
+          "POSITIVE",
+          "PLASTIC",
+          "ZERO_SUM"
+        ],
+        "next_phase": "w",
+        "plastic_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cell_id": "cell:42",
+          "continuation_admitted": true,
+          "creates_information_energy": false,
+          "gradient_residue": {
+            "denominator": 1,
+            "numerator": 0
+          },
+          "gradient_state": "EQUILIBRIUM",
+          "lane_root_hash72": "gY6sftEGFmBQTNd?sxnt6(XEb!+juunQnlZi2xkZuUWf?6jyBNUYN-0u/o9QBUuz8vSS</H4",
+          "minimal_polynomial": "rho^3-rho-1",
+          "schema": "HHS_PLASTIC_GRADIENT_LANE_V1",
+          "trit": 0,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "positive_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "authority_rank_implied": false,
+          "cell_id": "cell:42",
+          "constructive_proposal": true,
+          "lane_root_hash72": "rMpxz1cV6Rx*AW<aOySLlVYWidNT5<X5>4nrYX-iTXA3Tyk)RftNU703(h+qSXR42JIg56F9",
+          "phase_state": "z",
+          "schema": "HHS_ORIENTED_PHASE_LANE_V1",
+          "source_phase_root_hash72": ">dsc/R7FtK9K7ZHksVJ!qnR)PXcWtxL9o?GbOj2G*RXlJJuT71xQfd0tuSIPi3zKaO(vnnra",
+          "trit": 1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "schema": "HHS_THREE_LANE_PHASE_TRANSITION_V1",
+        "transition_admitted": true,
+        "transition_root_hash72": "H!OO9wmeAe)rOSq(MuZcI/SH)tBvbqlg(2vB09a+e5G*cEWAM7q+LBj(BYmFxl*qvMQ6Qowg",
+        "trinary_is_functional_not_authority_rank": true,
+        "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+        "zero_sum_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cancellation_scope": [],
+          "cell_id": "cell:42",
+          "closure_state": "CLOSED",
+          "continuation_admitted": true,
+          "global_rejection_propagated": false,
+          "lane_root_hash72": "v1NlLCoqxPJOTUZQlrvjWn4<xifSRNCw4Q>mIcufAbMoh1-9Er!R!548U4ryzcUxMY/<o(q-",
+          "schema": "HHS_ZERO_SUM_EQUILIBRIUM_LANE_V1",
+          "source_phase_erased": false,
+          "trit": -1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+          "zero_sum_residue": {
+            "denominator": 1,
+            "numerator": 0
+          }
+        }
+      },
+      "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+    },
+    {
+      "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+      "cell_closed": true,
+      "cell_id": "cell:43",
+      "cell_identity_count": 1,
+      "cell_root_hash72": "yrLH!EABt4ES!j-8W!gH/ehp<e7gCzw>kVk8-(86qqoVJYL2T9p1mN5Me6c)pvu(oIZ-M0Xg",
+      "column": 7,
+      "domain_id": "PROVENANCE_AUDIT",
+      "energy_credit": 45,
+      "global_index": 43,
+      "lane_count": 3,
+      "lo_shu_value": 9,
+      "phase_tensor": "w",
+      "row": 4,
+      "schema": "HHS_TRINARY_PHASE_QUDIT_CELL_V1",
+      "subgrid_id": "subgrid:4",
+      "transition": {
+        "all_three_lane_witnesses_present": true,
+        "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+        "cell_id": "cell:43",
+        "current_phase": "w",
+        "execution_order": [
+          "POSITIVE",
+          "PLASTIC",
+          "ZERO_SUM"
+        ],
+        "next_phase": "xy",
+        "plastic_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cell_id": "cell:43",
+          "continuation_admitted": true,
+          "creates_information_energy": false,
+          "gradient_residue": {
+            "denominator": 1,
+            "numerator": 0
+          },
+          "gradient_state": "EQUILIBRIUM",
+          "lane_root_hash72": "gY6sftEGFmBQTNd?sxnt6(XEb!+juunQokZi2xkZuUWf?6jyBNUYN-0u/o9QBUuz8vSS</H4",
+          "minimal_polynomial": "rho^3-rho-1",
+          "schema": "HHS_PLASTIC_GRADIENT_LANE_V1",
+          "trit": 0,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "positive_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "authority_rank_implied": false,
+          "cell_id": "cell:43",
+          "constructive_proposal": true,
+          "lane_root_hash72": "7JFU<ZxOUUGJl4mydBSZG/QbjeroUpSVv?rwQ*<BanDD<zA<t(n4c!J!kvvSGmbZD)C!C0Rw",
+          "phase_state": "w",
+          "schema": "HHS_ORIENTED_PHASE_LANE_V1",
+          "source_phase_root_hash72": "R4H3IrjLV0BaN9(3nKZMLvUF3cBr!DQcg1ocJ)PQy!>+EZ6GuxdvUmQ(tRVrKUm?Vv0i6yiz",
+          "trit": 1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "schema": "HHS_THREE_LANE_PHASE_TRANSITION_V1",
+        "transition_admitted": true,
+        "transition_root_hash72": "ziCRRfIQr6se()7/0Ax?i4eDd1sFnfU+i4hQX<770/fJ-pcW4G59jSqOKINuppw5*>0k>Kh>",
+        "trinary_is_functional_not_authority_rank": true,
+        "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+        "zero_sum_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cancellation_scope": [],
+          "cell_id": "cell:43",
+          "closure_state": "CLOSED",
+          "continuation_admitted": true,
+          "global_rejection_propagated": false,
+          "lane_root_hash72": "v1NlLCoqxPJOTUZQlrvjWn4<xifSRNCw4Q>mIcufAbMoh1-9Er!R!548U4ryAbUxMY/<o(q-",
+          "schema": "HHS_ZERO_SUM_EQUILIBRIUM_LANE_V1",
+          "source_phase_erased": false,
+          "trit": -1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+          "zero_sum_residue": {
+            "denominator": 1,
+            "numerator": 0
+          }
+        }
+      },
+      "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+    },
+    {
+      "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+      "cell_closed": true,
+      "cell_id": "cell:44",
+      "cell_identity_count": 1,
+      "cell_root_hash72": "alMG(FmocREG63Xk6x?V)NrDTc6Hy+U5(qK>ta!x2nm2-I8vi48Gk?h)!W1(NHPrmeA+E/wx",
+      "column": 8,
+      "domain_id": "PROVENANCE_AUDIT",
+      "energy_credit": 10,
+      "global_index": 44,
+      "lane_count": 3,
+      "lo_shu_value": 2,
+      "phase_tensor": "x",
+      "row": 4,
+      "schema": "HHS_TRINARY_PHASE_QUDIT_CELL_V1",
+      "subgrid_id": "subgrid:4",
+      "transition": {
+        "all_three_lane_witnesses_present": true,
+        "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+        "cell_id": "cell:44",
+        "current_phase": "xy",
+        "execution_order": [
+          "POSITIVE",
+          "PLASTIC",
+          "ZERO_SUM"
+        ],
+        "next_phase": "yx",
+        "plastic_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cell_id": "cell:44",
+          "continuation_admitted": true,
+          "creates_information_energy": false,
+          "gradient_residue": {
+            "denominator": 1,
+            "numerator": 0
+          },
+          "gradient_state": "EQUILIBRIUM",
+          "lane_root_hash72": "gY6sftEGFmBQTNd?sxnt6(XEb!+juunQpjZi2xkZuUWf?6jyBNUYN-0u/o9QBUuz8vSS</H4",
+          "minimal_polynomial": "rho^3-rho-1",
+          "schema": "HHS_PLASTIC_GRADIENT_LANE_V1",
+          "trit": 0,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "positive_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "authority_rank_implied": false,
+          "cell_id": "cell:44",
+          "constructive_proposal": true,
+          "lane_root_hash72": "oEN54ixSPX4Yl9e5eKlVTbf+65v8Vq5La/Ki/7QYEcbwvE0y3-QiRY0?WFHAJ5yV+4FcFTpV",
+          "phase_state": "xy",
+          "schema": "HHS_ORIENTED_PHASE_LANE_V1",
+          "source_phase_root_hash72": "w!t7bqo/q0xlsmjDpIcX8RyV5AG5B/pMXmD<2diSRY?O-f9Z>)E+8N?U(TV?9w>hsjbelzFx",
+          "trit": 1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "schema": "HHS_THREE_LANE_PHASE_TRANSITION_V1",
+        "transition_admitted": true,
+        "transition_root_hash72": "lOEH36S!Ix1xzpAuB/EqaI)n4xDu2x-VbrsOpW6pcqGxTQw-<oGNMKRqLG1353E5eVhAj*!t",
+        "trinary_is_functional_not_authority_rank": true,
+        "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+        "zero_sum_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cancellation_scope": [],
+          "cell_id": "cell:44",
+          "closure_state": "CLOSED",
+          "continuation_admitted": true,
+          "global_rejection_propagated": false,
+          "lane_root_hash72": "v1NlLCoqxPJOTUZQlrvjWn4<xifSRNCw4Q>mIcufAbMoh1-9Er!R!548U4ryBaUxMY/<o(q-",
+          "schema": "HHS_ZERO_SUM_EQUILIBRIUM_LANE_V1",
+          "source_phase_erased": false,
+          "trit": -1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+          "zero_sum_residue": {
+            "denominator": 1,
+            "numerator": 0
+          }
+        }
+      },
+      "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+    },
+    {
+      "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+      "cell_closed": true,
+      "cell_id": "cell:45",
+      "cell_identity_count": 1,
+      "cell_root_hash72": "lsHhq30rdxPVch<cA*5PX9EWWvSe8lD<MU7hZcZYbx/6Bs1ngmi8+BqL05fIBCTtzDA<RCJx",
+      "column": 0,
+      "domain_id": "MULTIMODAL_FUSION",
+      "energy_credit": 40,
+      "global_index": 45,
+      "lane_count": 3,
+      "lo_shu_value": 8,
+      "phase_tensor": "y",
+      "row": 5,
+      "schema": "HHS_TRINARY_PHASE_QUDIT_CELL_V1",
+      "subgrid_id": "subgrid:5",
+      "transition": {
+        "all_three_lane_witnesses_present": true,
+        "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+        "cell_id": "cell:45",
+        "current_phase": "yx",
+        "execution_order": [
+          "POSITIVE",
+          "PLASTIC",
+          "ZERO_SUM"
+        ],
+        "next_phase": "zw",
+        "plastic_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cell_id": "cell:45",
+          "continuation_admitted": true,
+          "creates_information_energy": false,
+          "gradient_residue": {
+            "denominator": 1,
+            "numerator": 0
+          },
+          "gradient_state": "EQUILIBRIUM",
+          "lane_root_hash72": "gY6sftEGFmBQTNd?sxnt6(XEb!+juunQqiZi2xkZuUWf?6jyBNUYN-0u/o9QBUuz8vSS</H4",
+          "minimal_polynomial": "rho^3-rho-1",
+          "schema": "HHS_PLASTIC_GRADIENT_LANE_V1",
+          "trit": 0,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "positive_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "authority_rank_implied": false,
+          "cell_id": "cell:45",
+          "constructive_proposal": true,
+          "lane_root_hash72": "HXlBF18/V(*c*uot)sRfB6B44L)O?snxSNnUGoMbJBHj6Sll<(B9ot(b(lL0IpV>NOUyLt*o",
+          "phase_state": "yx",
+          "schema": "HHS_ORIENTED_PHASE_LANE_V1",
+          "source_phase_root_hash72": "l</MsQT-GA(*F3qOl<9W1W>OzbghE>)4NyV4Qb2wZ9DCPLmMm(oj9gEI<>vZjm2>mFLQjjb<",
+          "trit": 1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "schema": "HHS_THREE_LANE_PHASE_TRANSITION_V1",
+        "transition_admitted": true,
+        "transition_root_hash72": "/G4NLnDc(bmX-jltMsNHiPj6H?LxlumOnX<g7dbT?v/?Kt/)IosqZ*E!QWKeZHwmKiIwkUiH",
+        "trinary_is_functional_not_authority_rank": true,
+        "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+        "zero_sum_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cancellation_scope": [],
+          "cell_id": "cell:45",
+          "closure_state": "CLOSED",
+          "continuation_admitted": true,
+          "global_rejection_propagated": false,
+          "lane_root_hash72": "v1NlLCoqxPJOTUZQlrvjWn4<xifSRNCw4Q>mIcufAbMoh1-9Er!R!548U4ryC9UxMY/<o(q-",
+          "schema": "HHS_ZERO_SUM_EQUILIBRIUM_LANE_V1",
+          "source_phase_erased": false,
+          "trit": -1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+          "zero_sum_residue": {
+            "denominator": 1,
+            "numerator": 0
+          }
+        }
+      },
+      "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+    },
+    {
+      "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+      "cell_closed": true,
+      "cell_id": "cell:46",
+      "cell_identity_count": 1,
+      "cell_root_hash72": "q?>+Tt3mCY>M9gG<m-nk-(+(VBm+Y2spxX3STJn2n2Y0>3W+dV*AgW/fFK/d?LT5yBB4t0i*",
+      "column": 1,
+      "domain_id": "MULTIMODAL_FUSION",
+      "energy_credit": 5,
+      "global_index": 46,
+      "lane_count": 3,
+      "lo_shu_value": 1,
+      "phase_tensor": "z",
+      "row": 5,
+      "schema": "HHS_TRINARY_PHASE_QUDIT_CELL_V1",
+      "subgrid_id": "subgrid:5",
+      "transition": {
+        "all_three_lane_witnesses_present": true,
+        "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+        "cell_id": "cell:46",
+        "current_phase": "zw",
+        "execution_order": [
+          "POSITIVE",
+          "PLASTIC",
+          "ZERO_SUM"
+        ],
+        "next_phase": "wz",
+        "plastic_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cell_id": "cell:46",
+          "continuation_admitted": true,
+          "creates_information_energy": false,
+          "gradient_residue": {
+            "denominator": 1,
+            "numerator": 0
+          },
+          "gradient_state": "EQUILIBRIUM",
+          "lane_root_hash72": "gY6sftEGFmBQTNd?sxnt6(XEb!+juunQrhZi2xkZuUWf?6jyBNUYN-0u/o9QBUuz8vSS</H4",
+          "minimal_polynomial": "rho^3-rho-1",
+          "schema": "HHS_PLASTIC_GRADIENT_LANE_V1",
+          "trit": 0,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "positive_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "authority_rank_implied": false,
+          "cell_id": "cell:46",
+          "constructive_proposal": true,
+          "lane_root_hash72": "zblCAmx>)/33*<mRNk)PHFKj-YG?qt-x(!c!?Mv8fj+Ud!J3Y+gsfuEG+zHwOdM8qkcfiigy",
+          "phase_state": "zw",
+          "schema": "HHS_ORIENTED_PHASE_LANE_V1",
+          "source_phase_root_hash72": ">dsc/R7FtK9K7ZHksVJ!qnR)PXcWtxL9o?GbOj2G*RXlJJuT71xQfd0tuSIPi3zKaO(vnnra",
+          "trit": 1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "schema": "HHS_THREE_LANE_PHASE_TRANSITION_V1",
+        "transition_admitted": true,
+        "transition_root_hash72": "YXrm-pkrphpf1bnH8l18i/bFIH!FvaBNU(?!TFeccfU117EYkPZ4B7HGsL9j*eN74Azur94M",
+        "trinary_is_functional_not_authority_rank": true,
+        "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+        "zero_sum_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cancellation_scope": [],
+          "cell_id": "cell:46",
+          "closure_state": "CLOSED",
+          "continuation_admitted": true,
+          "global_rejection_propagated": false,
+          "lane_root_hash72": "v1NlLCoqxPJOTUZQlrvjWn4<xifSRNCw4Q>mIcufAbMoh1-9Er!R!548U4ryD8UxMY/<o(q-",
+          "schema": "HHS_ZERO_SUM_EQUILIBRIUM_LANE_V1",
+          "source_phase_erased": false,
+          "trit": -1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+          "zero_sum_residue": {
+            "denominator": 1,
+            "numerator": 0
+          }
+        }
+      },
+      "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+    },
+    {
+      "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+      "cell_closed": true,
+      "cell_id": "cell:47",
+      "cell_identity_count": 1,
+      "cell_root_hash72": "LPqU/)0UtApRbr8?a(B3-uV>zsjWQ!RUpyOW/8+(I)-*nNUzKdsFzAe+oG1HJ1V83nfnxzsN",
+      "column": 2,
+      "domain_id": "MULTIMODAL_FUSION",
+      "energy_credit": 30,
+      "global_index": 47,
+      "lane_count": 3,
+      "lo_shu_value": 6,
+      "phase_tensor": "w",
+      "row": 5,
+      "schema": "HHS_TRINARY_PHASE_QUDIT_CELL_V1",
+      "subgrid_id": "subgrid:5",
+      "transition": {
+        "all_three_lane_witnesses_present": true,
+        "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+        "cell_id": "cell:47",
+        "current_phase": "wz",
+        "execution_order": [
+          "POSITIVE",
+          "PLASTIC",
+          "ZERO_SUM"
+        ],
+        "next_phase": "x",
+        "plastic_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cell_id": "cell:47",
+          "continuation_admitted": true,
+          "creates_information_energy": false,
+          "gradient_residue": {
+            "denominator": 1,
+            "numerator": 0
+          },
+          "gradient_state": "EQUILIBRIUM",
+          "lane_root_hash72": "gY6sftEGFmBQTNd?sxnt6(XEb!+juunQsgZi2xkZuUWf?6jyBNUYN-0u/o9QBUuz8vSS</H4",
+          "minimal_polynomial": "rho^3-rho-1",
+          "schema": "HHS_PLASTIC_GRADIENT_LANE_V1",
+          "trit": 0,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "positive_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "authority_rank_implied": false,
+          "cell_id": "cell:47",
+          "constructive_proposal": true,
+          "lane_root_hash72": "W+iSXTliYH6cJRE71T!PV-SbfZHN)8jsKw721NueyKrXNbKjZD)mGWvfWZV0629DbVy90PaK",
+          "phase_state": "wz",
+          "schema": "HHS_ORIENTED_PHASE_LANE_V1",
+          "source_phase_root_hash72": "R4H3IrjLV0BaN9(3nKZMLvUF3cBr!DQcg1ocJ)PQy!>+EZ6GuxdvUmQ(tRVrKUm?Vv0i6yiz",
+          "trit": 1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "schema": "HHS_THREE_LANE_PHASE_TRANSITION_V1",
+        "transition_admitted": true,
+        "transition_root_hash72": "iwdw*bdmKRr9RHT?7c0kCr!F9!NFZ)i!yk4MOeiCY67J6XbyO5mWG>kbGrQe1jqiQlav3Rdt",
+        "trinary_is_functional_not_authority_rank": true,
+        "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+        "zero_sum_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cancellation_scope": [],
+          "cell_id": "cell:47",
+          "closure_state": "CLOSED",
+          "continuation_admitted": true,
+          "global_rejection_propagated": false,
+          "lane_root_hash72": "v1NlLCoqxPJOTUZQlrvjWn4<xifSRNCw4Q>mIcufAbMoh1-9Er!R!548U4ryE7UxMY/<o(q-",
+          "schema": "HHS_ZERO_SUM_EQUILIBRIUM_LANE_V1",
+          "source_phase_erased": false,
+          "trit": -1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+          "zero_sum_residue": {
+            "denominator": 1,
+            "numerator": 0
+          }
+        }
+      },
+      "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+    },
+    {
+      "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+      "cell_closed": true,
+      "cell_id": "cell:48",
+      "cell_identity_count": 1,
+      "cell_root_hash72": "(yeQ*US1NP03lmnPHxdR+1EFeI)VYJI4Fya-xmdDadL(KVEuddI+X-uIw*wmV+rXh08j?4UX",
+      "column": 3,
+      "domain_id": "MULTIMODAL_FUSION",
+      "energy_credit": 15,
+      "global_index": 48,
+      "lane_count": 3,
+      "lo_shu_value": 3,
+      "phase_tensor": "x",
+      "row": 5,
+      "schema": "HHS_TRINARY_PHASE_QUDIT_CELL_V1",
+      "subgrid_id": "subgrid:5",
+      "transition": {
+        "all_three_lane_witnesses_present": true,
+        "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+        "cell_id": "cell:48",
+        "current_phase": "x",
+        "execution_order": [
+          "POSITIVE",
+          "PLASTIC",
+          "ZERO_SUM"
+        ],
+        "next_phase": "y",
+        "plastic_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cell_id": "cell:48",
+          "continuation_admitted": true,
+          "creates_information_energy": false,
+          "gradient_residue": {
+            "denominator": 1,
+            "numerator": 0
+          },
+          "gradient_state": "EQUILIBRIUM",
+          "lane_root_hash72": "gY6sftEGFmBQTNd?sxnt6(XEb!+juunQtfZi2xkZuUWf?6jyBNUYN-0u/o9QBUuz8vSS</H4",
+          "minimal_polynomial": "rho^3-rho-1",
+          "schema": "HHS_PLASTIC_GRADIENT_LANE_V1",
+          "trit": 0,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "positive_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "authority_rank_implied": false,
+          "cell_id": "cell:48",
+          "constructive_proposal": true,
+          "lane_root_hash72": "U4*1v1>F0SilNOkL4YYX+qw2z2We2b1l*CHndcGHM7clpZPaQPjfeDt!0h)lMNoFW2FDGf*!",
+          "phase_state": "x",
+          "schema": "HHS_ORIENTED_PHASE_LANE_V1",
+          "source_phase_root_hash72": "w!t7bqo/q0xlsmjDpIcX8RyV5AG5B/pMXmD<2diSRY?O-f9Z>)E+8N?U(TV?9w>hsjbelzFx",
+          "trit": 1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "schema": "HHS_THREE_LANE_PHASE_TRANSITION_V1",
+        "transition_admitted": true,
+        "transition_root_hash72": "*Tv4kVm<y<Ohis2iZm7<(3ZjZ0KYn--k/p05hx0b5+2/zlWb-Klv6NSXgPwLMCdehlY3dw!w",
+        "trinary_is_functional_not_authority_rank": true,
+        "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+        "zero_sum_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cancellation_scope": [],
+          "cell_id": "cell:48",
+          "closure_state": "CLOSED",
+          "continuation_admitted": true,
+          "global_rejection_propagated": false,
+          "lane_root_hash72": "v1NlLCoqxPJOTUZQlrvjWn4<xifSRNCw4Q>mIcufAbMoh1-9Er!R!548U4ryF6UxMY/<o(q-",
+          "schema": "HHS_ZERO_SUM_EQUILIBRIUM_LANE_V1",
+          "source_phase_erased": false,
+          "trit": -1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+          "zero_sum_residue": {
+            "denominator": 1,
+            "numerator": 0
+          }
+        }
+      },
+      "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+    },
+    {
+      "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+      "cell_closed": true,
+      "cell_id": "cell:49",
+      "cell_identity_count": 1,
+      "cell_root_hash72": "Sls1le/cQdT*/If(a<HUA<-<Rii<S>F9i34wRr43Cb2jSead0XMN<JCvyccek>!<LBmOORws",
+      "column": 4,
+      "domain_id": "MULTIMODAL_FUSION",
+      "energy_credit": 25,
+      "global_index": 49,
+      "lane_count": 3,
+      "lo_shu_value": 5,
+      "phase_tensor": "y",
+      "row": 5,
+      "schema": "HHS_TRINARY_PHASE_QUDIT_CELL_V1",
+      "subgrid_id": "subgrid:5",
+      "transition": {
+        "all_three_lane_witnesses_present": true,
+        "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+        "cell_id": "cell:49",
+        "current_phase": "y",
+        "execution_order": [
+          "POSITIVE",
+          "PLASTIC",
+          "ZERO_SUM"
+        ],
+        "next_phase": "z",
+        "plastic_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cell_id": "cell:49",
+          "continuation_admitted": true,
+          "creates_information_energy": false,
+          "gradient_residue": {
+            "denominator": 1,
+            "numerator": 0
+          },
+          "gradient_state": "EQUILIBRIUM",
+          "lane_root_hash72": "gY6sftEGFmBQTNd?sxnt6(XEb!+juunQueZi2xkZuUWf?6jyBNUYN-0u/o9QBUuz8vSS</H4",
+          "minimal_polynomial": "rho^3-rho-1",
+          "schema": "HHS_PLASTIC_GRADIENT_LANE_V1",
+          "trit": 0,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "positive_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "authority_rank_implied": false,
+          "cell_id": "cell:49",
+          "constructive_proposal": true,
+          "lane_root_hash72": "3MoCeM8L7GG*!YIsWkiFWMJ05Css4tX/Mf9?x6/M1D?<DaC3UAaWTxF6Qlvk)2zrwh+JgSvh",
+          "phase_state": "y",
+          "schema": "HHS_ORIENTED_PHASE_LANE_V1",
+          "source_phase_root_hash72": "l</MsQT-GA(*F3qOl<9W1W>OzbghE>)4NyV4Qb2wZ9DCPLmMm(oj9gEI<>vZjm2>mFLQjjb<",
+          "trit": 1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "schema": "HHS_THREE_LANE_PHASE_TRANSITION_V1",
+        "transition_admitted": true,
+        "transition_root_hash72": "BgMkCc0la1lwJdxZ-7e?Nsa2Sya3nJ53ZP(Hm0Ie>Q?8WPCDmj2PccNswvzy1vP3-mOs8lSX",
+        "trinary_is_functional_not_authority_rank": true,
+        "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+        "zero_sum_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cancellation_scope": [],
+          "cell_id": "cell:49",
+          "closure_state": "CLOSED",
+          "continuation_admitted": true,
+          "global_rejection_propagated": false,
+          "lane_root_hash72": "v1NlLCoqxPJOTUZQlrvjWn4<xifSRNCw4Q>mIcufAbMoh1-9Er!R!548U4ryG5UxMY/<o(q-",
+          "schema": "HHS_ZERO_SUM_EQUILIBRIUM_LANE_V1",
+          "source_phase_erased": false,
+          "trit": -1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+          "zero_sum_residue": {
+            "denominator": 1,
+            "numerator": 0
+          }
+        }
+      },
+      "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+    },
+    {
+      "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+      "cell_closed": true,
+      "cell_id": "cell:50",
+      "cell_identity_count": 1,
+      "cell_root_hash72": "/vKOllbxy)4monqLqcO/e1IH!TZGzWkZ1/Gu9iN2HMdGCZr+LR7h>(m(>7nd)bc357(8)1>c",
+      "column": 5,
+      "domain_id": "MULTIMODAL_FUSION",
+      "energy_credit": 35,
+      "global_index": 50,
+      "lane_count": 3,
+      "lo_shu_value": 7,
+      "phase_tensor": "z",
+      "row": 5,
+      "schema": "HHS_TRINARY_PHASE_QUDIT_CELL_V1",
+      "subgrid_id": "subgrid:5",
+      "transition": {
+        "all_three_lane_witnesses_present": true,
+        "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+        "cell_id": "cell:50",
+        "current_phase": "z",
+        "execution_order": [
+          "POSITIVE",
+          "PLASTIC",
+          "ZERO_SUM"
+        ],
+        "next_phase": "w",
+        "plastic_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cell_id": "cell:50",
+          "continuation_admitted": true,
+          "creates_information_energy": false,
+          "gradient_residue": {
+            "denominator": 1,
+            "numerator": 0
+          },
+          "gradient_state": "EQUILIBRIUM",
+          "lane_root_hash72": "gY6sftEGFmBQTNd?sxnt6(XEb!+juunRknZi2xkZuUWf?6jyBNUYN-0u/o9QBUuz8vSS</H4",
+          "minimal_polynomial": "rho^3-rho-1",
+          "schema": "HHS_PLASTIC_GRADIENT_LANE_V1",
+          "trit": 0,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "positive_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "authority_rank_implied": false,
+          "cell_id": "cell:50",
+          "constructive_proposal": true,
+          "lane_root_hash72": "rMpxz1cV6Rx*AW<aOySLlVYWidNT5<X5>4nrYX-iTXA3Tyk)RftNU703(h+qTUT42JIg56F9",
+          "phase_state": "z",
+          "schema": "HHS_ORIENTED_PHASE_LANE_V1",
+          "source_phase_root_hash72": ">dsc/R7FtK9K7ZHksVJ!qnR)PXcWtxL9o?GbOj2G*RXlJJuT71xQfd0tuSIPi3zKaO(vnnra",
+          "trit": 1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "schema": "HHS_THREE_LANE_PHASE_TRANSITION_V1",
+        "transition_admitted": true,
+        "transition_root_hash72": "H!OO9xjgAe<nTQq(MuZcI/SH)tCrgolg(3sD09a+e7A<cEWAM7q+LBj(BYmFxl/mAKQ6Qowg",
+        "trinary_is_functional_not_authority_rank": true,
+        "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+        "zero_sum_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cancellation_scope": [],
+          "cell_id": "cell:50",
+          "closure_state": "CLOSED",
+          "continuation_admitted": true,
+          "global_rejection_propagated": false,
+          "lane_root_hash72": "v1NlLCoqxPJOTUZQlrvjWn4<xifSRNCw4Q>mIcufAbMoh1-9Er!R!548U4rzweUxMY/<o(q-",
+          "schema": "HHS_ZERO_SUM_EQUILIBRIUM_LANE_V1",
+          "source_phase_erased": false,
+          "trit": -1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+          "zero_sum_residue": {
+            "denominator": 1,
+            "numerator": 0
+          }
+        }
+      },
+      "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+    },
+    {
+      "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+      "cell_closed": true,
+      "cell_id": "cell:51",
+      "cell_identity_count": 1,
+      "cell_root_hash72": "v5OgJfL?IUWL5X-(<MN/BpvwWkbTH9OGdRKaXN?>z0kiUaorkhnm1<?HhlBvl2Qf/j<<qVc8",
+      "column": 6,
+      "domain_id": "MULTIMODAL_FUSION",
+      "energy_credit": 20,
+      "global_index": 51,
+      "lane_count": 3,
+      "lo_shu_value": 4,
+      "phase_tensor": "w",
+      "row": 5,
+      "schema": "HHS_TRINARY_PHASE_QUDIT_CELL_V1",
+      "subgrid_id": "subgrid:5",
+      "transition": {
+        "all_three_lane_witnesses_present": true,
+        "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+        "cell_id": "cell:51",
+        "current_phase": "w",
+        "execution_order": [
+          "POSITIVE",
+          "PLASTIC",
+          "ZERO_SUM"
+        ],
+        "next_phase": "xy",
+        "plastic_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cell_id": "cell:51",
+          "continuation_admitted": true,
+          "creates_information_energy": false,
+          "gradient_residue": {
+            "denominator": 1,
+            "numerator": 0
+          },
+          "gradient_state": "EQUILIBRIUM",
+          "lane_root_hash72": "gY6sftEGFmBQTNd?sxnt6(XEb!+juunRlmZi2xkZuUWf?6jyBNUYN-0u/o9QBUuz8vSS</H4",
+          "minimal_polynomial": "rho^3-rho-1",
+          "schema": "HHS_PLASTIC_GRADIENT_LANE_V1",
+          "trit": 0,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "positive_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "authority_rank_implied": false,
+          "cell_id": "cell:51",
+          "constructive_proposal": true,
+          "lane_root_hash72": "7JFU<ZxOUUGJl4mydBSZG/QbjeroUpSVv?rwQ*<BanDD<zA<t(n4c!J!kvvSHjdZD)C!C0Rw",
+          "phase_state": "w",
+          "schema": "HHS_ORIENTED_PHASE_LANE_V1",
+          "source_phase_root_hash72": "R4H3IrjLV0BaN9(3nKZMLvUF3cBr!DQcg1ocJ)PQy!>+EZ6GuxdvUmQ(tRVrKUm?Vv0i6yiz",
+          "trit": 1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "schema": "HHS_THREE_LANE_PHASE_TRANSITION_V1",
+        "transition_admitted": true,
+        "transition_root_hash72": "ziCRRgFSr6sf-05/0Ax?i4eDd1sGjkS+i4iNZ<770/hD(pcW4G59jSqOKINuppw6Kg!k>Kh>",
+        "trinary_is_functional_not_authority_rank": true,
+        "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+        "zero_sum_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cancellation_scope": [],
+          "cell_id": "cell:51",
+          "closure_state": "CLOSED",
+          "continuation_admitted": true,
+          "global_rejection_propagated": false,
+          "lane_root_hash72": "v1NlLCoqxPJOTUZQlrvjWn4<xifSRNCw4Q>mIcufAbMoh1-9Er!R!548U4rzxdUxMY/<o(q-",
+          "schema": "HHS_ZERO_SUM_EQUILIBRIUM_LANE_V1",
+          "source_phase_erased": false,
+          "trit": -1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+          "zero_sum_residue": {
+            "denominator": 1,
+            "numerator": 0
+          }
+        }
+      },
+      "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+    },
+    {
+      "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+      "cell_closed": true,
+      "cell_id": "cell:52",
+      "cell_identity_count": 1,
+      "cell_root_hash72": "FTJcS0R+uArVZ)K+8<bSGv(G079RC>-QPf(CMge-ZJnb?J/?xOGU/vCRB5hjphdjv8KzOCQ4",
+      "column": 7,
+      "domain_id": "MULTIMODAL_FUSION",
+      "energy_credit": 45,
+      "global_index": 52,
+      "lane_count": 3,
+      "lo_shu_value": 9,
+      "phase_tensor": "x",
+      "row": 5,
+      "schema": "HHS_TRINARY_PHASE_QUDIT_CELL_V1",
+      "subgrid_id": "subgrid:5",
+      "transition": {
+        "all_three_lane_witnesses_present": true,
+        "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+        "cell_id": "cell:52",
+        "current_phase": "xy",
+        "execution_order": [
+          "POSITIVE",
+          "PLASTIC",
+          "ZERO_SUM"
+        ],
+        "next_phase": "yx",
+        "plastic_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cell_id": "cell:52",
+          "continuation_admitted": true,
+          "creates_information_energy": false,
+          "gradient_residue": {
+            "denominator": 1,
+            "numerator": 0
+          },
+          "gradient_state": "EQUILIBRIUM",
+          "lane_root_hash72": "gY6sftEGFmBQTNd?sxnt6(XEb!+juunRmlZi2xkZuUWf?6jyBNUYN-0u/o9QBUuz8vSS</H4",
+          "minimal_polynomial": "rho^3-rho-1",
+          "schema": "HHS_PLASTIC_GRADIENT_LANE_V1",
+          "trit": 0,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "positive_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "authority_rank_implied": false,
+          "cell_id": "cell:52",
+          "constructive_proposal": true,
+          "lane_root_hash72": "oEN54ixSPX4Yl9e5eKlVTbf+65v8Vq5La/Ki/7QYEcbwvE0y3-QiRY0?WFHAK2AV+4FcFTpV",
+          "phase_state": "xy",
+          "schema": "HHS_ORIENTED_PHASE_LANE_V1",
+          "source_phase_root_hash72": "w!t7bqo/q0xlsmjDpIcX8RyV5AG5B/pMXmD<2diSRY?O-f9Z>)E+8N?U(TV?9w>hsjbelzFx",
+          "trit": 1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "schema": "HHS_THREE_LANE_PHASE_TRANSITION_V1",
+        "transition_admitted": true,
+        "transition_root_hash72": "lOEH37P0Ix1xAlTeB/EqaI)n4xDu3t)TbrsOqT8pcqGzNUw-<oGNMKRqLG1353E5eW?Th*!t",
+        "trinary_is_functional_not_authority_rank": true,
+        "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+        "zero_sum_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cancellation_scope": [],
+          "cell_id": "cell:52",
+          "closure_state": "CLOSED",
+          "continuation_admitted": true,
+          "global_rejection_propagated": false,
+          "lane_root_hash72": "v1NlLCoqxPJOTUZQlrvjWn4<xifSRNCw4Q>mIcufAbMoh1-9Er!R!548U4rzycUxMY/<o(q-",
+          "schema": "HHS_ZERO_SUM_EQUILIBRIUM_LANE_V1",
+          "source_phase_erased": false,
+          "trit": -1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+          "zero_sum_residue": {
+            "denominator": 1,
+            "numerator": 0
+          }
+        }
+      },
+      "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+    },
+    {
+      "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+      "cell_closed": true,
+      "cell_id": "cell:53",
+      "cell_identity_count": 1,
+      "cell_root_hash72": "QsIdw>5pdjX)8h>9C*dJRdEWWvSe8lD>f2(IZcZYcu)7xx?hmmg60wmP05fICyYrzDB+Xztj",
+      "column": 8,
+      "domain_id": "MULTIMODAL_FUSION",
+      "energy_credit": 10,
+      "global_index": 53,
+      "lane_count": 3,
+      "lo_shu_value": 2,
+      "phase_tensor": "y",
+      "row": 5,
+      "schema": "HHS_TRINARY_PHASE_QUDIT_CELL_V1",
+      "subgrid_id": "subgrid:5",
+      "transition": {
+        "all_three_lane_witnesses_present": true,
+        "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+        "cell_id": "cell:53",
+        "current_phase": "yx",
+        "execution_order": [
+          "POSITIVE",
+          "PLASTIC",
+          "ZERO_SUM"
+        ],
+        "next_phase": "zw",
+        "plastic_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cell_id": "cell:53",
+          "continuation_admitted": true,
+          "creates_information_energy": false,
+          "gradient_residue": {
+            "denominator": 1,
+            "numerator": 0
+          },
+          "gradient_state": "EQUILIBRIUM",
+          "lane_root_hash72": "gY6sftEGFmBQTNd?sxnt6(XEb!+juunRnkZi2xkZuUWf?6jyBNUYN-0u/o9QBUuz8vSS</H4",
+          "minimal_polynomial": "rho^3-rho-1",
+          "schema": "HHS_PLASTIC_GRADIENT_LANE_V1",
+          "trit": 0,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "positive_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "authority_rank_implied": false,
+          "cell_id": "cell:53",
+          "constructive_proposal": true,
+          "lane_root_hash72": "HXlBF18/V(*c*uot)sRfB6B44L)O?snxSNnUGoMbJBHj6Sll<(B9ot(b(lL0JmX>NOUyLt*o",
+          "phase_state": "yx",
+          "schema": "HHS_ORIENTED_PHASE_LANE_V1",
+          "source_phase_root_hash72": "l</MsQT-GA(*F3qOl<9W1W>OzbghE>)4NyV4Qb2wZ9DCPLmMm(oj9gEI<>vZjm2>mFLQjjb<",
+          "trit": 1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "schema": "HHS_THREE_LANE_PHASE_TRANSITION_V1",
+        "transition_admitted": true,
+        "transition_root_hash72": "/G4NLoAe(bmX+fqrMsNHiPj6H?LxmqrMnX<g8adT?v/1Ex/)IosqZ*E!QWKeZHwmKjqiPUiH",
+        "trinary_is_functional_not_authority_rank": true,
+        "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+        "zero_sum_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cancellation_scope": [],
+          "cell_id": "cell:53",
+          "closure_state": "CLOSED",
+          "continuation_admitted": true,
+          "global_rejection_propagated": false,
+          "lane_root_hash72": "v1NlLCoqxPJOTUZQlrvjWn4<xifSRNCw4Q>mIcufAbMoh1-9Er!R!548U4rzzbUxMY/<o(q-",
+          "schema": "HHS_ZERO_SUM_EQUILIBRIUM_LANE_V1",
+          "source_phase_erased": false,
+          "trit": -1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+          "zero_sum_residue": {
+            "denominator": 1,
+            "numerator": 0
+          }
+        }
+      },
+      "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+    },
+    {
+      "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+      "cell_closed": true,
+      "cell_id": "cell:54",
+      "cell_identity_count": 1,
+      "cell_root_hash72": "K!s-!PmDi0wP-)XLQmhPczLWX+MR4rkhc+/XV>hh?C!Q<W8RqrT9gG*MuUL1aF>VzDwZA77P",
+      "column": 0,
+      "domain_id": "CONSTRAINT_TOPOLOGY",
+      "energy_credit": 40,
+      "global_index": 54,
+      "lane_count": 3,
+      "lo_shu_value": 8,
+      "phase_tensor": "z",
+      "row": 6,
+      "schema": "HHS_TRINARY_PHASE_QUDIT_CELL_V1",
+      "subgrid_id": "subgrid:6",
+      "transition": {
+        "all_three_lane_witnesses_present": true,
+        "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+        "cell_id": "cell:54",
+        "current_phase": "zw",
+        "execution_order": [
+          "POSITIVE",
+          "PLASTIC",
+          "ZERO_SUM"
+        ],
+        "next_phase": "wz",
+        "plastic_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cell_id": "cell:54",
+          "continuation_admitted": true,
+          "creates_information_energy": false,
+          "gradient_residue": {
+            "denominator": 1,
+            "numerator": 0
+          },
+          "gradient_state": "EQUILIBRIUM",
+          "lane_root_hash72": "gY6sftEGFmBQTNd?sxnt6(XEb!+juunRojZi2xkZuUWf?6jyBNUYN-0u/o9QBUuz8vSS</H4",
+          "minimal_polynomial": "rho^3-rho-1",
+          "schema": "HHS_PLASTIC_GRADIENT_LANE_V1",
+          "trit": 0,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "positive_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "authority_rank_implied": false,
+          "cell_id": "cell:54",
+          "constructive_proposal": true,
+          "lane_root_hash72": "zblCAmx>)/33*<mRNk)PHFKj-YG?qt-x(!c!?Mv8fj+Ud!J3Y+gsfuEG+zHwPaO8qkcfiigy",
+          "phase_state": "zw",
+          "schema": "HHS_ORIENTED_PHASE_LANE_V1",
+          "source_phase_root_hash72": ">dsc/R7FtK9K7ZHksVJ!qnR)PXcWtxL9o?GbOj2G*RXlJJuT71xQfd0tuSIPi3zKaO(vnnra",
+          "trit": 1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "schema": "HHS_THREE_LANE_PHASE_TRANSITION_V1",
+        "transition_admitted": true,
+        "transition_root_hash72": "YXrm-qhtphpf27sF8l18i/bFIH!Fw6GLU(?!UCgccfU3)bEYkPZ4B7HGsL9j*eN74Bv2W94M",
+        "trinary_is_functional_not_authority_rank": true,
+        "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+        "zero_sum_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cancellation_scope": [],
+          "cell_id": "cell:54",
+          "closure_state": "CLOSED",
+          "continuation_admitted": true,
+          "global_rejection_propagated": false,
+          "lane_root_hash72": "v1NlLCoqxPJOTUZQlrvjWn4<xifSRNCw4Q>mIcufAbMoh1-9Er!R!548U4rzAaUxMY/<o(q-",
+          "schema": "HHS_ZERO_SUM_EQUILIBRIUM_LANE_V1",
+          "source_phase_erased": false,
+          "trit": -1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+          "zero_sum_residue": {
+            "denominator": 1,
+            "numerator": 0
+          }
+        }
+      },
+      "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+    },
+    {
+      "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+      "cell_closed": true,
+      "cell_id": "cell:55",
+      "cell_identity_count": 1,
+      "cell_root_hash72": "Vl>1Y17F*H)Z40>gS2CwSqL0uXp(Rf!H9FwGE+0FqLSyaEjyJYkD2bZpU9p-K?Fs0UHPAXDQ",
+      "column": 1,
+      "domain_id": "CONSTRAINT_TOPOLOGY",
+      "energy_credit": 5,
+      "global_index": 55,
+      "lane_count": 3,
+      "lo_shu_value": 1,
+      "phase_tensor": "w",
+      "row": 6,
+      "schema": "HHS_TRINARY_PHASE_QUDIT_CELL_V1",
+      "subgrid_id": "subgrid:6",
+      "transition": {
+        "all_three_lane_witnesses_present": true,
+        "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+        "cell_id": "cell:55",
+        "current_phase": "wz",
+        "execution_order": [
+          "POSITIVE",
+          "PLASTIC",
+          "ZERO_SUM"
+        ],
+        "next_phase": "x",
+        "plastic_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cell_id": "cell:55",
+          "continuation_admitted": true,
+          "creates_information_energy": false,
+          "gradient_residue": {
+            "denominator": 1,
+            "numerator": 0
+          },
+          "gradient_state": "EQUILIBRIUM",
+          "lane_root_hash72": "gY6sftEGFmBQTNd?sxnt6(XEb!+juunRpiZi2xkZuUWf?6jyBNUYN-0u/o9QBUuz8vSS</H4",
+          "minimal_polynomial": "rho^3-rho-1",
+          "schema": "HHS_PLASTIC_GRADIENT_LANE_V1",
+          "trit": 0,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "positive_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "authority_rank_implied": false,
+          "cell_id": "cell:55",
+          "constructive_proposal": true,
+          "lane_root_hash72": "W+iSXTliYH6cJRE71T!PV-SbfZHN)8jsKw721NueyKrXNbKjZD)mGWvfWZV07?bDbVy90PaK",
+          "phase_state": "wz",
+          "schema": "HHS_ORIENTED_PHASE_LANE_V1",
+          "source_phase_root_hash72": "R4H3IrjLV0BaN9(3nKZMLvUF3cBr!DQcg1ocJ)PQy!>+EZ6GuxdvUmQ(tRVrKUm?Vv0i6yiz",
+          "trit": 1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "schema": "HHS_THREE_LANE_PHASE_TRANSITION_V1",
+        "transition_admitted": true,
+        "transition_root_hash72": "iwdw*caoKRra/?e?7c0kCr!F9!NGV0g!yk4NLgiCY69DaXbyO5mWG>kbGrQe1jqiRhft3Rdt",
+        "trinary_is_functional_not_authority_rank": true,
+        "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+        "zero_sum_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cancellation_scope": [],
+          "cell_id": "cell:55",
+          "closure_state": "CLOSED",
+          "continuation_admitted": true,
+          "global_rejection_propagated": false,
+          "lane_root_hash72": "v1NlLCoqxPJOTUZQlrvjWn4<xifSRNCw4Q>mIcufAbMoh1-9Er!R!548U4rzB9UxMY/<o(q-",
+          "schema": "HHS_ZERO_SUM_EQUILIBRIUM_LANE_V1",
+          "source_phase_erased": false,
+          "trit": -1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+          "zero_sum_residue": {
+            "denominator": 1,
+            "numerator": 0
+          }
+        }
+      },
+      "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+    },
+    {
+      "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+      "cell_closed": true,
+      "cell_id": "cell:56",
+      "cell_identity_count": 1,
+      "cell_root_hash72": "bEZp+/kCAeREufQ?ho80T3ExgqzhwofFTH!iMJb?CX*HpFO5jzOKsAZOpr!F9kV>aW1+>+8H",
+      "column": 2,
+      "domain_id": "CONSTRAINT_TOPOLOGY",
+      "energy_credit": 30,
+      "global_index": 56,
+      "lane_count": 3,
+      "lo_shu_value": 6,
+      "phase_tensor": "x",
+      "row": 6,
+      "schema": "HHS_TRINARY_PHASE_QUDIT_CELL_V1",
+      "subgrid_id": "subgrid:6",
+      "transition": {
+        "all_three_lane_witnesses_present": true,
+        "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+        "cell_id": "cell:56",
+        "current_phase": "x",
+        "execution_order": [
+          "POSITIVE",
+          "PLASTIC",
+          "ZERO_SUM"
+        ],
+        "next_phase": "y",
+        "plastic_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cell_id": "cell:56",
+          "continuation_admitted": true,
+          "creates_information_energy": false,
+          "gradient_residue": {
+            "denominator": 1,
+            "numerator": 0
+          },
+          "gradient_state": "EQUILIBRIUM",
+          "lane_root_hash72": "gY6sftEGFmBQTNd?sxnt6(XEb!+juunRqhZi2xkZuUWf?6jyBNUYN-0u/o9QBUuz8vSS</H4",
+          "minimal_polynomial": "rho^3-rho-1",
+          "schema": "HHS_PLASTIC_GRADIENT_LANE_V1",
+          "trit": 0,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "positive_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "authority_rank_implied": false,
+          "cell_id": "cell:56",
+          "constructive_proposal": true,
+          "lane_root_hash72": "U4*1v1>F0SilNOkL4YYX+qw2z2We2b1l*CHndcGHM7clpZPaQPjfeDt!0h)lNKqFW2FDGf*!",
+          "phase_state": "x",
+          "schema": "HHS_ORIENTED_PHASE_LANE_V1",
+          "source_phase_root_hash72": "w!t7bqo/q0xlsmjDpIcX8RyV5AG5B/pMXmD<2diSRY?O-f9Z>)E+8N?U(TV?9w>hsjbelzFx",
+          "trit": 1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "schema": "HHS_THREE_LANE_PHASE_TRANSITION_V1",
+        "transition_admitted": true,
+        "transition_root_hash72": "*Tv4kWj!y<Pdnq2iZm7<(3ZjZ0LUsY-k/q>7hx0b5/<>zlWb-Klv6NSXgPwLMCeamjY3dw!w",
+        "trinary_is_functional_not_authority_rank": true,
+        "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+        "zero_sum_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cancellation_scope": [],
+          "cell_id": "cell:56",
+          "closure_state": "CLOSED",
+          "continuation_admitted": true,
+          "global_rejection_propagated": false,
+          "lane_root_hash72": "v1NlLCoqxPJOTUZQlrvjWn4<xifSRNCw4Q>mIcufAbMoh1-9Er!R!548U4rzC8UxMY/<o(q-",
+          "schema": "HHS_ZERO_SUM_EQUILIBRIUM_LANE_V1",
+          "source_phase_erased": false,
+          "trit": -1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+          "zero_sum_residue": {
+            "denominator": 1,
+            "numerator": 0
+          }
+        }
+      },
+      "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+    },
+    {
+      "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+      "cell_closed": true,
+      "cell_id": "cell:57",
+      "cell_identity_count": 1,
+      "cell_root_hash72": "/9Nc5eLIt>U2d4ol9DMyc7dsCR2+?ai/QMLXGfv4tnkW*BW(rd8Uwm?wwf0Z7aiZ>PV2bmUh",
+      "column": 3,
+      "domain_id": "CONSTRAINT_TOPOLOGY",
+      "energy_credit": 15,
+      "global_index": 57,
+      "lane_count": 3,
+      "lo_shu_value": 3,
+      "phase_tensor": "y",
+      "row": 6,
+      "schema": "HHS_TRINARY_PHASE_QUDIT_CELL_V1",
+      "subgrid_id": "subgrid:6",
+      "transition": {
+        "all_three_lane_witnesses_present": true,
+        "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+        "cell_id": "cell:57",
+        "current_phase": "y",
+        "execution_order": [
+          "POSITIVE",
+          "PLASTIC",
+          "ZERO_SUM"
+        ],
+        "next_phase": "z",
+        "plastic_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cell_id": "cell:57",
+          "continuation_admitted": true,
+          "creates_information_energy": false,
+          "gradient_residue": {
+            "denominator": 1,
+            "numerator": 0
+          },
+          "gradient_state": "EQUILIBRIUM",
+          "lane_root_hash72": "gY6sftEGFmBQTNd?sxnt6(XEb!+juunRrgZi2xkZuUWf?6jyBNUYN-0u/o9QBUuz8vSS</H4",
+          "minimal_polynomial": "rho^3-rho-1",
+          "schema": "HHS_PLASTIC_GRADIENT_LANE_V1",
+          "trit": 0,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "positive_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "authority_rank_implied": false,
+          "cell_id": "cell:57",
+          "constructive_proposal": true,
+          "lane_root_hash72": "3MoCeM8L7GG*!YIsWkiFWMJ05Css4tX/Mf9?x6/M1D?<DaC3UAaWTxF6Qlvk<?Brwh+JgSvh",
+          "phase_state": "y",
+          "schema": "HHS_ORIENTED_PHASE_LANE_V1",
+          "source_phase_root_hash72": "l</MsQT-GA(*F3qOl<9W1W>OzbghE>)4NyV4Qb2wZ9DCPLmMm(oj9gEI<>vZjm2>mFLQjjb<",
+          "trit": 1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "schema": "HHS_THREE_LANE_PHASE_TRANSITION_V1",
+        "transition_admitted": true,
+        "transition_root_hash72": "BgMkCd>na1EqM>xZ-7e?Nsa2Syb?sH53ZQ+Jm0Ie>S/cWPCDmj2PccNswvzy1vQ?)kOs8lSX",
+        "trinary_is_functional_not_authority_rank": true,
+        "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+        "zero_sum_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cancellation_scope": [],
+          "cell_id": "cell:57",
+          "closure_state": "CLOSED",
+          "continuation_admitted": true,
+          "global_rejection_propagated": false,
+          "lane_root_hash72": "v1NlLCoqxPJOTUZQlrvjWn4<xifSRNCw4Q>mIcufAbMoh1-9Er!R!548U4rzD7UxMY/<o(q-",
+          "schema": "HHS_ZERO_SUM_EQUILIBRIUM_LANE_V1",
+          "source_phase_erased": false,
+          "trit": -1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+          "zero_sum_residue": {
+            "denominator": 1,
+            "numerator": 0
+          }
+        }
+      },
+      "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+    },
+    {
+      "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+      "cell_closed": true,
+      "cell_id": "cell:58",
+      "cell_identity_count": 1,
+      "cell_root_hash72": "XhYmm3on/ECUyyT0jvTLE>+xksjr)DrjvsuN8dX(dcoiwBG8Swb4+-1OBvzU?Ipq82dyS6!y",
+      "column": 4,
+      "domain_id": "CONSTRAINT_TOPOLOGY",
+      "energy_credit": 25,
+      "global_index": 58,
+      "lane_count": 3,
+      "lo_shu_value": 5,
+      "phase_tensor": "z",
+      "row": 6,
+      "schema": "HHS_TRINARY_PHASE_QUDIT_CELL_V1",
+      "subgrid_id": "subgrid:6",
+      "transition": {
+        "all_three_lane_witnesses_present": true,
+        "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+        "cell_id": "cell:58",
+        "current_phase": "z",
+        "execution_order": [
+          "POSITIVE",
+          "PLASTIC",
+          "ZERO_SUM"
+        ],
+        "next_phase": "w",
+        "plastic_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cell_id": "cell:58",
+          "continuation_admitted": true,
+          "creates_information_energy": false,
+          "gradient_residue": {
+            "denominator": 1,
+            "numerator": 0
+          },
+          "gradient_state": "EQUILIBRIUM",
+          "lane_root_hash72": "gY6sftEGFmBQTNd?sxnt6(XEb!+juunRsfZi2xkZuUWf?6jyBNUYN-0u/o9QBUuz8vSS</H4",
+          "minimal_polynomial": "rho^3-rho-1",
+          "schema": "HHS_PLASTIC_GRADIENT_LANE_V1",
+          "trit": 0,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "positive_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "authority_rank_implied": false,
+          "cell_id": "cell:58",
+          "constructive_proposal": true,
+          "lane_root_hash72": "rMpxz1cV6Rx*AW<aOySLlVYWidNT5<X5>4nrYX-iTXA3Tyk)RftNU703(h+qT*L42JIg56F9",
+          "phase_state": "z",
+          "schema": "HHS_ORIENTED_PHASE_LANE_V1",
+          "source_phase_root_hash72": ">dsc/R7FtK9K7ZHksVJ!qnR)PXcWtxL9o?GbOj2G*RXlJJuT71xQfd0tuSIPi3zKaO(vnnra",
+          "trit": 1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "schema": "HHS_THREE_LANE_PHASE_TRANSITION_V1",
+        "transition_admitted": true,
+        "transition_root_hash72": "H!OO9xr8Ae<QiYq(MuZcI/SH)tCz0wlg(3Av09a+e7QQcEWAM7q+LBj(BYmFxl/IDlQ6Qowg",
+        "trinary_is_functional_not_authority_rank": true,
+        "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+        "zero_sum_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cancellation_scope": [],
+          "cell_id": "cell:58",
+          "closure_state": "CLOSED",
+          "continuation_admitted": true,
+          "global_rejection_propagated": false,
+          "lane_root_hash72": "v1NlLCoqxPJOTUZQlrvjWn4<xifSRNCw4Q>mIcufAbMoh1-9Er!R!548U4rzE6UxMY/<o(q-",
+          "schema": "HHS_ZERO_SUM_EQUILIBRIUM_LANE_V1",
+          "source_phase_erased": false,
+          "trit": -1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+          "zero_sum_residue": {
+            "denominator": 1,
+            "numerator": 0
+          }
+        }
+      },
+      "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+    },
+    {
+      "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+      "cell_closed": true,
+      "cell_id": "cell:59",
+      "cell_identity_count": 1,
+      "cell_root_hash72": "g?a4qx0NwH?6gXAATOqamu!V7h7*Rd-lrEGBc/Bprnawum<t8nQIPD6Pd9T!dxoqf5i+1aOr",
+      "column": 5,
+      "domain_id": "CONSTRAINT_TOPOLOGY",
+      "energy_credit": 35,
+      "global_index": 59,
+      "lane_count": 3,
+      "lo_shu_value": 7,
+      "phase_tensor": "w",
+      "row": 6,
+      "schema": "HHS_TRINARY_PHASE_QUDIT_CELL_V1",
+      "subgrid_id": "subgrid:6",
+      "transition": {
+        "all_three_lane_witnesses_present": true,
+        "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+        "cell_id": "cell:59",
+        "current_phase": "w",
+        "execution_order": [
+          "POSITIVE",
+          "PLASTIC",
+          "ZERO_SUM"
+        ],
+        "next_phase": "xy",
+        "plastic_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cell_id": "cell:59",
+          "continuation_admitted": true,
+          "creates_information_energy": false,
+          "gradient_residue": {
+            "denominator": 1,
+            "numerator": 0
+          },
+          "gradient_state": "EQUILIBRIUM",
+          "lane_root_hash72": "gY6sftEGFmBQTNd?sxnt6(XEb!+juunRteZi2xkZuUWf?6jyBNUYN-0u/o9QBUuz8vSS</H4",
+          "minimal_polynomial": "rho^3-rho-1",
+          "schema": "HHS_PLASTIC_GRADIENT_LANE_V1",
+          "trit": 0,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "positive_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "authority_rank_implied": false,
+          "cell_id": "cell:59",
+          "constructive_proposal": true,
+          "lane_root_hash72": "7JFU<ZxOUUGJl4mydBSZG/QbjeroUpSVv?rwQ*<BanDD<zA<t(n4c!J!kvvSHr5ZD)C!C0Rw",
+          "phase_state": "w",
+          "schema": "HHS_ORIENTED_PHASE_LANE_V1",
+          "source_phase_root_hash72": "R4H3IrjLV0BaN9(3nKZMLvUF3cBr!DQcg1ocJ)PQy!>+EZ6GuxdvUmQ(tRVrKUm?Vv0i6yiz",
+          "trit": 1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "schema": "HHS_THREE_LANE_PHASE_TRANSITION_V1",
+        "transition_admitted": true,
+        "transition_root_hash72": "ziCRRgNKr6sf!hQ/0Ax?i4eDd1sGr4-+i4iVR<770/hTOpcW4G59jSqOKINuppw6<jJk>Kh>",
+        "trinary_is_functional_not_authority_rank": true,
+        "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+        "zero_sum_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cancellation_scope": [],
+          "cell_id": "cell:59",
+          "closure_state": "CLOSED",
+          "continuation_admitted": true,
+          "global_rejection_propagated": false,
+          "lane_root_hash72": "v1NlLCoqxPJOTUZQlrvjWn4<xifSRNCw4Q>mIcufAbMoh1-9Er!R!548U4rzF5UxMY/<o(q-",
+          "schema": "HHS_ZERO_SUM_EQUILIBRIUM_LANE_V1",
+          "source_phase_erased": false,
+          "trit": -1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+          "zero_sum_residue": {
+            "denominator": 1,
+            "numerator": 0
+          }
+        }
+      },
+      "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+    },
+    {
+      "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+      "cell_closed": true,
+      "cell_id": "cell:60",
+      "cell_identity_count": 1,
+      "cell_root_hash72": "3*yKmpK5zhyFz7gIEANtT6d)GrlPPb0+1R/Vpnq*G8J4ru?>LXd9rFBxGu3S/llA-7MHz6Y4",
+      "column": 6,
+      "domain_id": "CONSTRAINT_TOPOLOGY",
+      "energy_credit": 20,
+      "global_index": 60,
+      "lane_count": 3,
+      "lo_shu_value": 4,
+      "phase_tensor": "x",
+      "row": 6,
+      "schema": "HHS_TRINARY_PHASE_QUDIT_CELL_V1",
+      "subgrid_id": "subgrid:6",
+      "transition": {
+        "all_three_lane_witnesses_present": true,
+        "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+        "cell_id": "cell:60",
+        "current_phase": "xy",
+        "execution_order": [
+          "POSITIVE",
+          "PLASTIC",
+          "ZERO_SUM"
+        ],
+        "next_phase": "yx",
+        "plastic_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cell_id": "cell:60",
+          "continuation_admitted": true,
+          "creates_information_energy": false,
+          "gradient_residue": {
+            "denominator": 1,
+            "numerator": 0
+          },
+          "gradient_state": "EQUILIBRIUM",
+          "lane_root_hash72": "gY6sftEGFmBQTNd?sxnt6(XEb!+juunSjnZi2xkZuUWf?6jyBNUYN-0u/o9QBUuz8vSS</H4",
+          "minimal_polynomial": "rho^3-rho-1",
+          "schema": "HHS_PLASTIC_GRADIENT_LANE_V1",
+          "trit": 0,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "positive_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "authority_rank_implied": false,
+          "cell_id": "cell:60",
+          "constructive_proposal": true,
+          "lane_root_hash72": "oEN54ixSPX4Yl9e5eKlVTbf+65v8Vq5La/Ki/7QYEcbwvE0y3-QiRY0?WFHAL?CV+4FcFTpV",
+          "phase_state": "xy",
+          "schema": "HHS_ORIENTED_PHASE_LANE_V1",
+          "source_phase_root_hash72": "w!t7bqo/q0xlsmjDpIcX8RyV5AG5B/pMXmD<2diSRY?O-f9Z>)E+8N?U(TV?9w>hsjbelzFx",
+          "trit": 1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "schema": "HHS_THREE_LANE_PHASE_TRANSITION_V1",
+        "transition_admitted": true,
+        "transition_root_hash72": "lOEH38M2Ix1xBxIcB/EqaI)n4xDu4p0RbrsOrQapcqGBHYw-<oGNMKRqLG1353E5e1RYf*!t",
+        "trinary_is_functional_not_authority_rank": true,
+        "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+        "zero_sum_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cancellation_scope": [],
+          "cell_id": "cell:60",
+          "closure_state": "CLOSED",
+          "continuation_admitted": true,
+          "global_rejection_propagated": false,
+          "lane_root_hash72": "v1NlLCoqxPJOTUZQlrvjWn4<xifSRNCw4Q>mIcufAbMoh1-9Er!R!548U4rAveUxMY/<o(q-",
+          "schema": "HHS_ZERO_SUM_EQUILIBRIUM_LANE_V1",
+          "source_phase_erased": false,
+          "trit": -1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+          "zero_sum_residue": {
+            "denominator": 1,
+            "numerator": 0
+          }
+        }
+      },
+      "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+    },
+    {
+      "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+      "cell_closed": true,
+      "cell_id": "cell:61",
+      "cell_identity_count": 1,
+      "cell_root_hash72": "G7JjlXoFXPha)Jl(+S8oU!oNgH73oIGfOPIMptDYh6<Z?qj?Rh-R?N5hptCS+KyBRfQ2qy08",
+      "column": 7,
+      "domain_id": "CONSTRAINT_TOPOLOGY",
+      "energy_credit": 45,
+      "global_index": 61,
+      "lane_count": 3,
+      "lo_shu_value": 9,
+      "phase_tensor": "y",
+      "row": 6,
+      "schema": "HHS_TRINARY_PHASE_QUDIT_CELL_V1",
+      "subgrid_id": "subgrid:6",
+      "transition": {
+        "all_three_lane_witnesses_present": true,
+        "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+        "cell_id": "cell:61",
+        "current_phase": "yx",
+        "execution_order": [
+          "POSITIVE",
+          "PLASTIC",
+          "ZERO_SUM"
+        ],
+        "next_phase": "zw",
+        "plastic_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cell_id": "cell:61",
+          "continuation_admitted": true,
+          "creates_information_energy": false,
+          "gradient_residue": {
+            "denominator": 1,
+            "numerator": 0
+          },
+          "gradient_state": "EQUILIBRIUM",
+          "lane_root_hash72": "gY6sftEGFmBQTNd?sxnt6(XEb!+juunSkmZi2xkZuUWf?6jyBNUYN-0u/o9QBUuz8vSS</H4",
+          "minimal_polynomial": "rho^3-rho-1",
+          "schema": "HHS_PLASTIC_GRADIENT_LANE_V1",
+          "trit": 0,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "positive_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "authority_rank_implied": false,
+          "cell_id": "cell:61",
+          "constructive_proposal": true,
+          "lane_root_hash72": "HXlBF18/V(*c*uot)sRfB6B44L)O?snxSNnUGoMbJBHj6Sll<(B9ot(b(lL0KjZ>NOUyLt*o",
+          "phase_state": "yx",
+          "schema": "HHS_ORIENTED_PHASE_LANE_V1",
+          "source_phase_root_hash72": "l</MsQT-GA(*F3qOl<9W1W>OzbghE>)4NyV4Qb2wZ9DCPLmMm(oj9gEI<>vZjm2>mFLQjjb<",
+          "trit": 1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "schema": "HHS_THREE_LANE_PHASE_TRANSITION_V1",
+        "transition_admitted": true,
+        "transition_root_hash72": "/G4NLpxg(bmX*bvpMsNHiPj6H?LxnmwKnX<g97fT?v/3yB/)IosqZ*E!QWKeZHwmKy8nNUiH",
+        "trinary_is_functional_not_authority_rank": true,
+        "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+        "zero_sum_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cancellation_scope": [],
+          "cell_id": "cell:61",
+          "closure_state": "CLOSED",
+          "continuation_admitted": true,
+          "global_rejection_propagated": false,
+          "lane_root_hash72": "v1NlLCoqxPJOTUZQlrvjWn4<xifSRNCw4Q>mIcufAbMoh1-9Er!R!548U4rAwdUxMY/<o(q-",
+          "schema": "HHS_ZERO_SUM_EQUILIBRIUM_LANE_V1",
+          "source_phase_erased": false,
+          "trit": -1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+          "zero_sum_residue": {
+            "denominator": 1,
+            "numerator": 0
+          }
+        }
+      },
+      "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+    },
+    {
+      "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+      "cell_closed": true,
+      "cell_id": "cell:62",
+      "cell_identity_count": 1,
+      "cell_root_hash72": "ghq-?xGxn!wRBmTLRjrHcBF-X+MR4rkhc6)s>?hh?C?N!X4WolZ9hQUItWL1aF!e7BwZB2d-",
+      "column": 8,
+      "domain_id": "CONSTRAINT_TOPOLOGY",
+      "energy_credit": 10,
+      "global_index": 62,
+      "lane_count": 3,
+      "lo_shu_value": 2,
+      "phase_tensor": "z",
+      "row": 6,
+      "schema": "HHS_TRINARY_PHASE_QUDIT_CELL_V1",
+      "subgrid_id": "subgrid:6",
+      "transition": {
+        "all_three_lane_witnesses_present": true,
+        "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+        "cell_id": "cell:62",
+        "current_phase": "zw",
+        "execution_order": [
+          "POSITIVE",
+          "PLASTIC",
+          "ZERO_SUM"
+        ],
+        "next_phase": "wz",
+        "plastic_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cell_id": "cell:62",
+          "continuation_admitted": true,
+          "creates_information_energy": false,
+          "gradient_residue": {
+            "denominator": 1,
+            "numerator": 0
+          },
+          "gradient_state": "EQUILIBRIUM",
+          "lane_root_hash72": "gY6sftEGFmBQTNd?sxnt6(XEb!+juunSllZi2xkZuUWf?6jyBNUYN-0u/o9QBUuz8vSS</H4",
+          "minimal_polynomial": "rho^3-rho-1",
+          "schema": "HHS_PLASTIC_GRADIENT_LANE_V1",
+          "trit": 0,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "positive_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "authority_rank_implied": false,
+          "cell_id": "cell:62",
+          "constructive_proposal": true,
+          "lane_root_hash72": "zblCAmx>)/33*<mRNk)PHFKj-YG?qt-x(!c!?Mv8fj+Ud!J3Y+gsfuEG+zHwQ7Q8qkcfiigy",
+          "phase_state": "zw",
+          "schema": "HHS_ORIENTED_PHASE_LANE_V1",
+          "source_phase_root_hash72": ">dsc/R7FtK9K7ZHksVJ!qnR)PXcWtxL9o?GbOj2G*RXlJJuT71xQfd0tuSIPi3zKaO(vnnra",
+          "trit": 1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "schema": "HHS_THREE_LANE_PHASE_TRANSITION_V1",
+        "transition_admitted": true,
+        "transition_root_hash72": "YXrm-revphpf3A0D8l18i/bFIH!Fx2LJU(?!VziccfU5ZfEYkPZ4B7HGsL9j*eN74Q?lU94M",
+        "trinary_is_functional_not_authority_rank": true,
+        "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+        "zero_sum_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cancellation_scope": [],
+          "cell_id": "cell:62",
+          "closure_state": "CLOSED",
+          "continuation_admitted": true,
+          "global_rejection_propagated": false,
+          "lane_root_hash72": "v1NlLCoqxPJOTUZQlrvjWn4<xifSRNCw4Q>mIcufAbMoh1-9Er!R!548U4rAxcUxMY/<o(q-",
+          "schema": "HHS_ZERO_SUM_EQUILIBRIUM_LANE_V1",
+          "source_phase_erased": false,
+          "trit": -1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+          "zero_sum_residue": {
+            "denominator": 1,
+            "numerator": 0
+          }
+        }
+      },
+      "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+    },
+    {
+      "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+      "cell_closed": true,
+      "cell_id": "cell:63",
+      "cell_identity_count": 1,
+      "cell_root_hash72": "gm/7W>cDxSjV40>hP4BzMuL0uXp(RfMLK1QzI/>KCsUn)+pq<EgU4(*CEv1j3pV!c+ID+K9G",
+      "column": 0,
+      "domain_id": "INFORMATION_ENERGY",
+      "energy_credit": 40,
+      "global_index": 63,
+      "lane_count": 3,
+      "lo_shu_value": 8,
+      "phase_tensor": "w",
+      "row": 7,
+      "schema": "HHS_TRINARY_PHASE_QUDIT_CELL_V1",
+      "subgrid_id": "subgrid:7",
+      "transition": {
+        "all_three_lane_witnesses_present": true,
+        "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+        "cell_id": "cell:63",
+        "current_phase": "wz",
+        "execution_order": [
+          "POSITIVE",
+          "PLASTIC",
+          "ZERO_SUM"
+        ],
+        "next_phase": "x",
+        "plastic_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cell_id": "cell:63",
+          "continuation_admitted": true,
+          "creates_information_energy": false,
+          "gradient_residue": {
+            "denominator": 1,
+            "numerator": 0
+          },
+          "gradient_state": "EQUILIBRIUM",
+          "lane_root_hash72": "gY6sftEGFmBQTNd?sxnt6(XEb!+juunSmkZi2xkZuUWf?6jyBNUYN-0u/o9QBUuz8vSS</H4",
+          "minimal_polynomial": "rho^3-rho-1",
+          "schema": "HHS_PLASTIC_GRADIENT_LANE_V1",
+          "trit": 0,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "positive_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "authority_rank_implied": false,
+          "cell_id": "cell:63",
+          "constructive_proposal": true,
+          "lane_root_hash72": "W+iSXTliYH6cJRE71T!PV-SbfZHN)8jsKw721NueyKrXNbKjZD)mGWvfWZV08<dDbVy90PaK",
+          "phase_state": "wz",
+          "schema": "HHS_ORIENTED_PHASE_LANE_V1",
+          "source_phase_root_hash72": "R4H3IrjLV0BaN9(3nKZMLvUF3cBr!DQcg1ocJ)PQy!>+EZ6GuxdvUmQ(tRVrKUm?Vv0i6yiz",
+          "trit": 1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "schema": "HHS_THREE_LANE_PHASE_TRANSITION_V1",
+        "transition_admitted": true,
+        "transition_root_hash72": "iwdw*d7qKRrbZ4c?7c0kCr!F9!NHR5e!yk4OIiiCY6bxeXbyO5mWG>kbGrQe1jqi<V1Y3Rdt",
+        "trinary_is_functional_not_authority_rank": true,
+        "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+        "zero_sum_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cancellation_scope": [],
+          "cell_id": "cell:63",
+          "closure_state": "CLOSED",
+          "continuation_admitted": true,
+          "global_rejection_propagated": false,
+          "lane_root_hash72": "v1NlLCoqxPJOTUZQlrvjWn4<xifSRNCw4Q>mIcufAbMoh1-9Er!R!548U4rAybUxMY/<o(q-",
+          "schema": "HHS_ZERO_SUM_EQUILIBRIUM_LANE_V1",
+          "source_phase_erased": false,
+          "trit": -1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+          "zero_sum_residue": {
+            "denominator": 1,
+            "numerator": 0
+          }
+        }
+      },
+      "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+    },
+    {
+      "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+      "cell_closed": true,
+      "cell_id": "cell:64",
+      "cell_identity_count": 1,
+      "cell_root_hash72": "(yiG0NZ?NP03lmpJLB?++1EFeYtv72I4Fu7+yC!tG>AWgi2e87y!7Z4!ag5WBOJ/HoJlpg(T",
+      "column": 1,
+      "domain_id": "INFORMATION_ENERGY",
+      "energy_credit": 5,
+      "global_index": 64,
+      "lane_count": 3,
+      "lo_shu_value": 1,
+      "phase_tensor": "x",
+      "row": 7,
+      "schema": "HHS_TRINARY_PHASE_QUDIT_CELL_V1",
+      "subgrid_id": "subgrid:7",
+      "transition": {
+        "all_three_lane_witnesses_present": true,
+        "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+        "cell_id": "cell:64",
+        "current_phase": "x",
+        "execution_order": [
+          "POSITIVE",
+          "PLASTIC",
+          "ZERO_SUM"
+        ],
+        "next_phase": "y",
+        "plastic_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cell_id": "cell:64",
+          "continuation_admitted": true,
+          "creates_information_energy": false,
+          "gradient_residue": {
+            "denominator": 1,
+            "numerator": 0
+          },
+          "gradient_state": "EQUILIBRIUM",
+          "lane_root_hash72": "gY6sftEGFmBQTNd?sxnt6(XEb!+juunSnjZi2xkZuUWf?6jyBNUYN-0u/o9QBUuz8vSS</H4",
+          "minimal_polynomial": "rho^3-rho-1",
+          "schema": "HHS_PLASTIC_GRADIENT_LANE_V1",
+          "trit": 0,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "positive_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "authority_rank_implied": false,
+          "cell_id": "cell:64",
+          "constructive_proposal": true,
+          "lane_root_hash72": "U4*1v1>F0SilNOkL4YYX+qw2z2We2b1l*CHndcGHM7clpZPaQPjfeDt!0h)lOHsFW2FDGf*!",
+          "phase_state": "x",
+          "schema": "HHS_ORIENTED_PHASE_LANE_V1",
+          "source_phase_root_hash72": "w!t7bqo/q0xlsmjDpIcX8RyV5AG5B/pMXmD<2diSRY?O-f9Z>)E+8N?U(TV?9w>hsjbelzFx",
+          "trit": 1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "schema": "HHS_THREE_LANE_PHASE_TRANSITION_V1",
+        "transition_admitted": true,
+        "transition_root_hash72": "*Tv4kXg0y<Q9so2iZm7<(3ZjZ0MQxW-k/r(9hx0b5)-1zlWb-Klv6NSXgPwLMCtO8OY3dw!w",
+        "trinary_is_functional_not_authority_rank": true,
+        "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+        "zero_sum_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cancellation_scope": [],
+          "cell_id": "cell:64",
+          "closure_state": "CLOSED",
+          "continuation_admitted": true,
+          "global_rejection_propagated": false,
+          "lane_root_hash72": "v1NlLCoqxPJOTUZQlrvjWn4<xifSRNCw4Q>mIcufAbMoh1-9Er!R!548U4rAzaUxMY/<o(q-",
+          "schema": "HHS_ZERO_SUM_EQUILIBRIUM_LANE_V1",
+          "source_phase_erased": false,
+          "trit": -1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+          "zero_sum_residue": {
+            "denominator": 1,
+            "numerator": 0
+          }
+        }
+      },
+      "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+    },
+    {
+      "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+      "cell_closed": true,
+      "cell_id": "cell:65",
+      "cell_identity_count": 1,
+      "cell_root_hash72": "yrH1>LCWH2)-fSeoK4JlP<d5t5M+za0ApL*ZiRiRNtWK/Jt6*vawNG3WaFHPx04Gkj0GcTtf",
+      "column": 2,
+      "domain_id": "INFORMATION_ENERGY",
+      "energy_credit": 30,
+      "global_index": 65,
+      "lane_count": 3,
+      "lo_shu_value": 6,
+      "phase_tensor": "y",
+      "row": 7,
+      "schema": "HHS_TRINARY_PHASE_QUDIT_CELL_V1",
+      "subgrid_id": "subgrid:7",
+      "transition": {
+        "all_three_lane_witnesses_present": true,
+        "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+        "cell_id": "cell:65",
+        "current_phase": "y",
+        "execution_order": [
+          "POSITIVE",
+          "PLASTIC",
+          "ZERO_SUM"
+        ],
+        "next_phase": "z",
+        "plastic_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cell_id": "cell:65",
+          "continuation_admitted": true,
+          "creates_information_energy": false,
+          "gradient_residue": {
+            "denominator": 1,
+            "numerator": 0
+          },
+          "gradient_state": "EQUILIBRIUM",
+          "lane_root_hash72": "gY6sftEGFmBQTNd?sxnt6(XEb!+juunSoiZi2xkZuUWf?6jyBNUYN-0u/o9QBUuz8vSS</H4",
+          "minimal_polynomial": "rho^3-rho-1",
+          "schema": "HHS_PLASTIC_GRADIENT_LANE_V1",
+          "trit": 0,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "positive_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "authority_rank_implied": false,
+          "cell_id": "cell:65",
+          "constructive_proposal": true,
+          "lane_root_hash72": "3MoCeM8L7GG*!YIsWkiFWMJ05Css4tX/Mf9?x6/M1D?<DaC3UAaWTxF6Qlvk><Drwh+JgSvh",
+          "phase_state": "y",
+          "schema": "HHS_ORIENTED_PHASE_LANE_V1",
+          "source_phase_root_hash72": "l</MsQT-GA(*F3qOl<9W1W>OzbghE>)4NyV4Qb2wZ9DCPLmMm(oj9gEI<>vZjm2>mFLQjjb<",
+          "trit": 1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "schema": "HHS_THREE_LANE_PHASE_TRANSITION_V1",
+        "transition_admitted": true,
+        "transition_root_hash72": "BgMkCe(pa1GlR)xZ-7e?Nsa2Syc)xF53ZRYLm0Ie>UXgWPCDmj2PccNswvzy1v)R0iOs8lSX",
+        "trinary_is_functional_not_authority_rank": true,
+        "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+        "zero_sum_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cancellation_scope": [],
+          "cell_id": "cell:65",
+          "closure_state": "CLOSED",
+          "continuation_admitted": true,
+          "global_rejection_propagated": false,
+          "lane_root_hash72": "v1NlLCoqxPJOTUZQlrvjWn4<xifSRNCw4Q>mIcufAbMoh1-9Er!R!548U4rAA9UxMY/<o(q-",
+          "schema": "HHS_ZERO_SUM_EQUILIBRIUM_LANE_V1",
+          "source_phase_erased": false,
+          "trit": -1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+          "zero_sum_residue": {
+            "denominator": 1,
+            "numerator": 0
+          }
+        }
+      },
+      "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+    },
+    {
+      "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+      "cell_closed": true,
+      "cell_id": "cell:66",
+      "cell_identity_count": 1,
+      "cell_root_hash72": "GCRiWoG>eUNbJd/yCaYMFKiX4mZvFlqf5uSrg98BCxByqtH?3nb+hHn-q4CGLsF?pLwd<(+)",
+      "column": 3,
+      "domain_id": "INFORMATION_ENERGY",
+      "energy_credit": 15,
+      "global_index": 66,
+      "lane_count": 3,
+      "lo_shu_value": 3,
+      "phase_tensor": "z",
+      "row": 7,
+      "schema": "HHS_TRINARY_PHASE_QUDIT_CELL_V1",
+      "subgrid_id": "subgrid:7",
+      "transition": {
+        "all_three_lane_witnesses_present": true,
+        "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+        "cell_id": "cell:66",
+        "current_phase": "z",
+        "execution_order": [
+          "POSITIVE",
+          "PLASTIC",
+          "ZERO_SUM"
+        ],
+        "next_phase": "w",
+        "plastic_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cell_id": "cell:66",
+          "continuation_admitted": true,
+          "creates_information_energy": false,
+          "gradient_residue": {
+            "denominator": 1,
+            "numerator": 0
+          },
+          "gradient_state": "EQUILIBRIUM",
+          "lane_root_hash72": "gY6sftEGFmBQTNd?sxnt6(XEb!+juunSphZi2xkZuUWf?6jyBNUYN-0u/o9QBUuz8vSS</H4",
+          "minimal_polynomial": "rho^3-rho-1",
+          "schema": "HHS_PLASTIC_GRADIENT_LANE_V1",
+          "trit": 0,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "positive_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "authority_rank_implied": false,
+          "cell_id": "cell:66",
+          "constructive_proposal": true,
+          "lane_root_hash72": "rMpxz1cV6Rx*AW<aOySLlVYWidNT5<X5>4nrYX-iTXA3Tyk)RftNU703(h+qUZN42JIg56F9",
+          "phase_state": "z",
+          "schema": "HHS_ORIENTED_PHASE_LANE_V1",
+          "source_phase_root_hash72": ">dsc/R7FtK9K7ZHksVJ!qnR)PXcWtxL9o?GbOj2G*RXlJJuT71xQfd0tuSIPi3zKaO(vnnra",
+          "trit": 1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "schema": "HHS_THREE_LANE_PHASE_TRANSITION_V1",
+        "transition_admitted": true,
+        "transition_root_hash72": "H!OO9yoaAe>rIWq(MuZcI/SH)tDv5ulg(4xx09a+e9KUcEWAM7q+LBj(BYmFxl8qIjQ6Qowg",
+        "trinary_is_functional_not_authority_rank": true,
+        "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+        "zero_sum_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cancellation_scope": [],
+          "cell_id": "cell:66",
+          "closure_state": "CLOSED",
+          "continuation_admitted": true,
+          "global_rejection_propagated": false,
+          "lane_root_hash72": "v1NlLCoqxPJOTUZQlrvjWn4<xifSRNCw4Q>mIcufAbMoh1-9Er!R!548U4rAB8UxMY/<o(q-",
+          "schema": "HHS_ZERO_SUM_EQUILIBRIUM_LANE_V1",
+          "source_phase_erased": false,
+          "trit": -1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+          "zero_sum_residue": {
+            "denominator": 1,
+            "numerator": 0
+          }
+        }
+      },
+      "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+    },
+    {
+      "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+      "cell_closed": true,
+      "cell_id": "cell:67",
+      "cell_identity_count": 1,
+      "cell_root_hash72": "m/xllZbqdr)/!(t!VQnB*VGK/ahWwsc4jGGv<XCTIjVUVR-(YELI<LqB4oQT->L9kS<UZm94",
+      "column": 4,
+      "domain_id": "INFORMATION_ENERGY",
+      "energy_credit": 25,
+      "global_index": 67,
+      "lane_count": 3,
+      "lo_shu_value": 5,
+      "phase_tensor": "w",
+      "row": 7,
+      "schema": "HHS_TRINARY_PHASE_QUDIT_CELL_V1",
+      "subgrid_id": "subgrid:7",
+      "transition": {
+        "all_three_lane_witnesses_present": true,
+        "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+        "cell_id": "cell:67",
+        "current_phase": "w",
+        "execution_order": [
+          "POSITIVE",
+          "PLASTIC",
+          "ZERO_SUM"
+        ],
+        "next_phase": "xy",
+        "plastic_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cell_id": "cell:67",
+          "continuation_admitted": true,
+          "creates_information_energy": false,
+          "gradient_residue": {
+            "denominator": 1,
+            "numerator": 0
+          },
+          "gradient_state": "EQUILIBRIUM",
+          "lane_root_hash72": "gY6sftEGFmBQTNd?sxnt6(XEb!+juunSqgZi2xkZuUWf?6jyBNUYN-0u/o9QBUuz8vSS</H4",
+          "minimal_polynomial": "rho^3-rho-1",
+          "schema": "HHS_PLASTIC_GRADIENT_LANE_V1",
+          "trit": 0,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "positive_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "authority_rank_implied": false,
+          "cell_id": "cell:67",
+          "constructive_proposal": true,
+          "lane_root_hash72": "7JFU<ZxOUUGJl4mydBSZG/QbjeroUpSVv?rwQ*<BanDD<zA<t(n4c!J!kvvSIo7ZD)C!C0Rw",
+          "phase_state": "w",
+          "schema": "HHS_ORIENTED_PHASE_LANE_V1",
+          "source_phase_root_hash72": "R4H3IrjLV0BaN9(3nKZMLvUF3cBr!DQcg1ocJ)PQy!>+EZ6GuxdvUmQ(tRVrKUm?Vv0i6yiz",
+          "trit": 1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "schema": "HHS_THREE_LANE_PHASE_TRANSITION_V1",
+        "transition_admitted": true,
+        "transition_root_hash72": "ziCRRhKMr6sg(mO/0Ax?i4eDd1sHn9Y+i4jST<770/jNSpcW4G59jSqOKINuppwlOoHk>Kh>",
+        "trinary_is_functional_not_authority_rank": true,
+        "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+        "zero_sum_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cancellation_scope": [],
+          "cell_id": "cell:67",
+          "closure_state": "CLOSED",
+          "continuation_admitted": true,
+          "global_rejection_propagated": false,
+          "lane_root_hash72": "v1NlLCoqxPJOTUZQlrvjWn4<xifSRNCw4Q>mIcufAbMoh1-9Er!R!548U4rAC7UxMY/<o(q-",
+          "schema": "HHS_ZERO_SUM_EQUILIBRIUM_LANE_V1",
+          "source_phase_erased": false,
+          "trit": -1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+          "zero_sum_residue": {
+            "denominator": 1,
+            "numerator": 0
+          }
+        }
+      },
+      "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+    },
+    {
+      "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+      "cell_closed": true,
+      "cell_id": "cell:68",
+      "cell_identity_count": 1,
+      "cell_root_hash72": "mX5hkUhd3QysW-BSS*I)KcA93o4UM1<VuyLxbM5>wQzNZ(cHs-erX<NSfIAzN!IIHhDPm9r1",
+      "column": 5,
+      "domain_id": "INFORMATION_ENERGY",
+      "energy_credit": 35,
+      "global_index": 68,
+      "lane_count": 3,
+      "lo_shu_value": 7,
+      "phase_tensor": "x",
+      "row": 7,
+      "schema": "HHS_TRINARY_PHASE_QUDIT_CELL_V1",
+      "subgrid_id": "subgrid:7",
+      "transition": {
+        "all_three_lane_witnesses_present": true,
+        "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+        "cell_id": "cell:68",
+        "current_phase": "xy",
+        "execution_order": [
+          "POSITIVE",
+          "PLASTIC",
+          "ZERO_SUM"
+        ],
+        "next_phase": "yx",
+        "plastic_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cell_id": "cell:68",
+          "continuation_admitted": true,
+          "creates_information_energy": false,
+          "gradient_residue": {
+            "denominator": 1,
+            "numerator": 0
+          },
+          "gradient_state": "EQUILIBRIUM",
+          "lane_root_hash72": "gY6sftEGFmBQTNd?sxnt6(XEb!+juunSrfZi2xkZuUWf?6jyBNUYN-0u/o9QBUuz8vSS</H4",
+          "minimal_polynomial": "rho^3-rho-1",
+          "schema": "HHS_PLASTIC_GRADIENT_LANE_V1",
+          "trit": 0,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "positive_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "authority_rank_implied": false,
+          "cell_id": "cell:68",
+          "constructive_proposal": true,
+          "lane_root_hash72": "oEN54ixSPX4Yl9e5eKlVTbf+65v8Vq5La/Ki/7QYEcbwvE0y3-QiRY0?WFHAL7uV+4FcFTpV",
+          "phase_state": "xy",
+          "schema": "HHS_ORIENTED_PHASE_LANE_V1",
+          "source_phase_root_hash72": "w!t7bqo/q0xlsmjDpIcX8RyV5AG5B/pMXmD<2diSRY?O-f9Z>)E+8N?U(TV?9w>hsjbelzFx",
+          "trit": 1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "schema": "HHS_THREE_LANE_PHASE_TRANSITION_V1",
+        "transition_admitted": true,
+        "transition_root_hash72": "lOEH38U(Ix1xBpuyB/EqaI)n4xDu4xUZbrsOrY2pcqGBXIw-<oGNMKRqLG1353E5e13+-*!t",
+        "trinary_is_functional_not_authority_rank": true,
+        "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+        "zero_sum_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cancellation_scope": [],
+          "cell_id": "cell:68",
+          "closure_state": "CLOSED",
+          "continuation_admitted": true,
+          "global_rejection_propagated": false,
+          "lane_root_hash72": "v1NlLCoqxPJOTUZQlrvjWn4<xifSRNCw4Q>mIcufAbMoh1-9Er!R!548U4rAD6UxMY/<o(q-",
+          "schema": "HHS_ZERO_SUM_EQUILIBRIUM_LANE_V1",
+          "source_phase_erased": false,
+          "trit": -1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+          "zero_sum_residue": {
+            "denominator": 1,
+            "numerator": 0
+          }
+        }
+      },
+      "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+    },
+    {
+      "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+      "cell_closed": true,
+      "cell_id": "cell:69",
+      "cell_identity_count": 1,
+      "cell_root_hash72": "B!Ogl)RBBz32<9X50mF)CniTjast9Hkysx)2?Z1Iu3klVszeOLW?bv9Oe7Ax2bZxBl!GOB5O",
+      "column": 6,
+      "domain_id": "INFORMATION_ENERGY",
+      "energy_credit": 20,
+      "global_index": 69,
+      "lane_count": 3,
+      "lo_shu_value": 4,
+      "phase_tensor": "y",
+      "row": 7,
+      "schema": "HHS_TRINARY_PHASE_QUDIT_CELL_V1",
+      "subgrid_id": "subgrid:7",
+      "transition": {
+        "all_three_lane_witnesses_present": true,
+        "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+        "cell_id": "cell:69",
+        "current_phase": "yx",
+        "execution_order": [
+          "POSITIVE",
+          "PLASTIC",
+          "ZERO_SUM"
+        ],
+        "next_phase": "zw",
+        "plastic_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cell_id": "cell:69",
+          "continuation_admitted": true,
+          "creates_information_energy": false,
+          "gradient_residue": {
+            "denominator": 1,
+            "numerator": 0
+          },
+          "gradient_state": "EQUILIBRIUM",
+          "lane_root_hash72": "gY6sftEGFmBQTNd?sxnt6(XEb!+juunSseZi2xkZuUWf?6jyBNUYN-0u/o9QBUuz8vSS</H4",
+          "minimal_polynomial": "rho^3-rho-1",
+          "schema": "HHS_PLASTIC_GRADIENT_LANE_V1",
+          "trit": 0,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "positive_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "authority_rank_implied": false,
+          "cell_id": "cell:69",
+          "constructive_proposal": true,
+          "lane_root_hash72": "HXlBF18/V(*c*uot)sRfB6B44L)O?snxSNnUGoMbJBHj6Sll<(B9ot(b(lL0KrR>NOUyLt*o",
+          "phase_state": "yx",
+          "schema": "HHS_ORIENTED_PHASE_LANE_V1",
+          "source_phase_root_hash72": "l</MsQT-GA(*F3qOl<9W1W>OzbghE>)4NyV4Qb2wZ9DCPLmMm(oj9gEI<>vZjm2>mFLQjjb<",
+          "trit": 1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "schema": "HHS_THREE_LANE_PHASE_TRANSITION_V1",
+        "transition_admitted": true,
+        "transition_root_hash72": "/G4NLpF8(bmX*jfxMsNHiPj6H?LxnugSnX<g9f7T?v/3Ol/)IosqZ*E!QWKeZHwmKyuqoUiH",
+        "trinary_is_functional_not_authority_rank": true,
+        "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+        "zero_sum_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cancellation_scope": [],
+          "cell_id": "cell:69",
+          "closure_state": "CLOSED",
+          "continuation_admitted": true,
+          "global_rejection_propagated": false,
+          "lane_root_hash72": "v1NlLCoqxPJOTUZQlrvjWn4<xifSRNCw4Q>mIcufAbMoh1-9Er!R!548U4rAE5UxMY/<o(q-",
+          "schema": "HHS_ZERO_SUM_EQUILIBRIUM_LANE_V1",
+          "source_phase_erased": false,
+          "trit": -1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+          "zero_sum_residue": {
+            "denominator": 1,
+            "numerator": 0
+          }
+        }
+      },
+      "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+    },
+    {
+      "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+      "cell_closed": true,
+      "cell_id": "cell:70",
+      "cell_identity_count": 1,
+      "cell_root_hash72": "N2l)gFUmKOM6H9E<qO-m7iPqDP69*lm<UIY94Duq-7>ujXo8(yeiXV>-RgTQ>Mq8N1VS*ty!",
+      "column": 7,
+      "domain_id": "INFORMATION_ENERGY",
+      "energy_credit": 45,
+      "global_index": 70,
+      "lane_count": 3,
+      "lo_shu_value": 9,
+      "phase_tensor": "z",
+      "row": 7,
+      "schema": "HHS_TRINARY_PHASE_QUDIT_CELL_V1",
+      "subgrid_id": "subgrid:7",
+      "transition": {
+        "all_three_lane_witnesses_present": true,
+        "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+        "cell_id": "cell:70",
+        "current_phase": "zw",
+        "execution_order": [
+          "POSITIVE",
+          "PLASTIC",
+          "ZERO_SUM"
+        ],
+        "next_phase": "wz",
+        "plastic_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cell_id": "cell:70",
+          "continuation_admitted": true,
+          "creates_information_energy": false,
+          "gradient_residue": {
+            "denominator": 1,
+            "numerator": 0
+          },
+          "gradient_state": "EQUILIBRIUM",
+          "lane_root_hash72": "gY6sftEGFmBQTNd?sxnt6(XEb!+juunTinZi2xkZuUWf?6jyBNUYN-0u/o9QBUuz8vSS</H4",
+          "minimal_polynomial": "rho^3-rho-1",
+          "schema": "HHS_PLASTIC_GRADIENT_LANE_V1",
+          "trit": 0,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "positive_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "authority_rank_implied": false,
+          "cell_id": "cell:70",
+          "constructive_proposal": true,
+          "lane_root_hash72": "zblCAmx>)/33*<mRNk)PHFKj-YG?qt-x(!c!?Mv8fj+Ud!J3Y+gsfuEG+zHwR4S8qkcfiigy",
+          "phase_state": "zw",
+          "schema": "HHS_ORIENTED_PHASE_LANE_V1",
+          "source_phase_root_hash72": ">dsc/R7FtK9K7ZHksVJ!qnR)PXcWtxL9o?GbOj2G*RXlJJuT71xQfd0tuSIPi3zKaO(vnnra",
+          "trit": 1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "schema": "HHS_THREE_LANE_PHASE_TRANSITION_V1",
+        "transition_admitted": true,
+        "transition_root_hash72": "YXrm-sbxphpf4w5B8l18i/bFIH!Fy!QHU(?!WwkccfU7TjEYkPZ4B7HGsL9j*eN74R)qS94M",
+        "trinary_is_functional_not_authority_rank": true,
+        "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+        "zero_sum_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cancellation_scope": [],
+          "cell_id": "cell:70",
+          "closure_state": "CLOSED",
+          "continuation_admitted": true,
+          "global_rejection_propagated": false,
+          "lane_root_hash72": "v1NlLCoqxPJOTUZQlrvjWn4<xifSRNCw4Q>mIcufAbMoh1-9Er!R!548U4rBueUxMY/<o(q-",
+          "schema": "HHS_ZERO_SUM_EQUILIBRIUM_LANE_V1",
+          "source_phase_erased": false,
+          "trit": -1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+          "zero_sum_residue": {
+            "denominator": 1,
+            "numerator": 0
+          }
+        }
+      },
+      "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+    },
+    {
+      "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+      "cell_closed": true,
+      "cell_id": "cell:71",
+      "cell_identity_count": 1,
+      "cell_root_hash72": "enZcV/hBzKtR40>iM6JtGyL0uXp(RfOFT(SzI/>KDpWo+<nq-L1Qk>-BGv1j4b0<c*DfhK8L",
+      "column": 8,
+      "domain_id": "INFORMATION_ENERGY",
+      "energy_credit": 10,
+      "global_index": 71,
+      "lane_count": 3,
+      "lo_shu_value": 2,
+      "phase_tensor": "w",
+      "row": 7,
+      "schema": "HHS_TRINARY_PHASE_QUDIT_CELL_V1",
+      "subgrid_id": "subgrid:7",
+      "transition": {
+        "all_three_lane_witnesses_present": true,
+        "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+        "cell_id": "cell:71",
+        "current_phase": "wz",
+        "execution_order": [
+          "POSITIVE",
+          "PLASTIC",
+          "ZERO_SUM"
+        ],
+        "next_phase": "x",
+        "plastic_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cell_id": "cell:71",
+          "continuation_admitted": true,
+          "creates_information_energy": false,
+          "gradient_residue": {
+            "denominator": 1,
+            "numerator": 0
+          },
+          "gradient_state": "EQUILIBRIUM",
+          "lane_root_hash72": "gY6sftEGFmBQTNd?sxnt6(XEb!+juunTjmZi2xkZuUWf?6jyBNUYN-0u/o9QBUuz8vSS</H4",
+          "minimal_polynomial": "rho^3-rho-1",
+          "schema": "HHS_PLASTIC_GRADIENT_LANE_V1",
+          "trit": 0,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "positive_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "authority_rank_implied": false,
+          "cell_id": "cell:71",
+          "constructive_proposal": true,
+          "lane_root_hash72": "W+iSXTliYH6cJRE71T!PV-SbfZHN)8jsKw721NueyKrXNbKjZD)mGWvfWZV09/fDbVy90PaK",
+          "phase_state": "wz",
+          "schema": "HHS_ORIENTED_PHASE_LANE_V1",
+          "source_phase_root_hash72": "R4H3IrjLV0BaN9(3nKZMLvUF3cBr!DQcg1ocJ)PQy!>+EZ6GuxdvUmQ(tRVrKUm?Vv0i6yiz",
+          "trit": 1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "schema": "HHS_THREE_LANE_PHASE_TRANSITION_V1",
+        "transition_admitted": true,
+        "transition_root_hash72": "iwdw*e4sKRrcLja?7c0kCr!F9!NINac!yk4PFkiCY6driXbyO5mWG>kbGrQe1jqi>R6W3Rdt",
+        "trinary_is_functional_not_authority_rank": true,
+        "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+        "zero_sum_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cancellation_scope": [],
+          "cell_id": "cell:71",
+          "closure_state": "CLOSED",
+          "continuation_admitted": true,
+          "global_rejection_propagated": false,
+          "lane_root_hash72": "v1NlLCoqxPJOTUZQlrvjWn4<xifSRNCw4Q>mIcufAbMoh1-9Er!R!548U4rBvdUxMY/<o(q-",
+          "schema": "HHS_ZERO_SUM_EQUILIBRIUM_LANE_V1",
+          "source_phase_erased": false,
+          "trit": -1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+          "zero_sum_residue": {
+            "denominator": 1,
+            "numerator": 0
+          }
+        }
+      },
+      "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+    },
+    {
+      "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+      "cell_closed": true,
+      "cell_id": "cell:72",
+      "cell_identity_count": 1,
+      "cell_root_hash72": "?aVz(MOVDISdz0m<OziMElCz4Efc/E-nLtte7vGoNCslJixp>12Mkir2(>-3Ci(-nFglBpQD",
+      "column": 0,
+      "domain_id": "CANONICAL_REVALIDATION",
+      "energy_credit": 40,
+      "global_index": 72,
+      "lane_count": 3,
+      "lo_shu_value": 8,
+      "phase_tensor": "x",
+      "row": 8,
+      "schema": "HHS_TRINARY_PHASE_QUDIT_CELL_V1",
+      "subgrid_id": "subgrid:8",
+      "transition": {
+        "all_three_lane_witnesses_present": true,
+        "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+        "cell_id": "cell:72",
+        "current_phase": "x",
+        "execution_order": [
+          "POSITIVE",
+          "PLASTIC",
+          "ZERO_SUM"
+        ],
+        "next_phase": "y",
+        "plastic_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cell_id": "cell:72",
+          "continuation_admitted": true,
+          "creates_information_energy": false,
+          "gradient_residue": {
+            "denominator": 1,
+            "numerator": 0
+          },
+          "gradient_state": "EQUILIBRIUM",
+          "lane_root_hash72": "gY6sftEGFmBQTNd?sxnt6(XEb!+juunTklZi2xkZuUWf?6jyBNUYN-0u/o9QBUuz8vSS</H4",
+          "minimal_polynomial": "rho^3-rho-1",
+          "schema": "HHS_PLASTIC_GRADIENT_LANE_V1",
+          "trit": 0,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "positive_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "authority_rank_implied": false,
+          "cell_id": "cell:72",
+          "constructive_proposal": true,
+          "lane_root_hash72": "U4*1v1>F0SilNOkL4YYX+qw2z2We2b1l*CHndcGHM7clpZPaQPjfeDt!0h)lPEuFW2FDGf*!",
+          "phase_state": "x",
+          "schema": "HHS_ORIENTED_PHASE_LANE_V1",
+          "source_phase_root_hash72": "w!t7bqo/q0xlsmjDpIcX8RyV5AG5B/pMXmD<2diSRY?O-f9Z>)E+8N?U(TV?9w>hsjbelzFx",
+          "trit": 1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "schema": "HHS_THREE_LANE_PHASE_TRANSITION_V1",
+        "transition_admitted": true,
+        "transition_root_hash72": "*Tv4kYd2y<R5xm2iZm7<(3ZjZ0NMCU-k/s+bhx0b5>U5zlWb-Klv6NSXgPwLMCuKdMY3dw!w",
+        "trinary_is_functional_not_authority_rank": true,
+        "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+        "zero_sum_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cancellation_scope": [],
+          "cell_id": "cell:72",
+          "closure_state": "CLOSED",
+          "continuation_admitted": true,
+          "global_rejection_propagated": false,
+          "lane_root_hash72": "v1NlLCoqxPJOTUZQlrvjWn4<xifSRNCw4Q>mIcufAbMoh1-9Er!R!548U4rBwcUxMY/<o(q-",
+          "schema": "HHS_ZERO_SUM_EQUILIBRIUM_LANE_V1",
+          "source_phase_erased": false,
+          "trit": -1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+          "zero_sum_residue": {
+            "denominator": 1,
+            "numerator": 0
+          }
+        }
+      },
+      "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+    },
+    {
+      "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+      "cell_closed": true,
+      "cell_id": "cell:73",
+      "cell_identity_count": 1,
+      "cell_root_hash72": "J+j<ousSCr6OeeIRh>J?sUNLZdXpI0F+qZ)U5wk-TN0tpfTcD1a>4ybtj9Oeqfi0<CkKbMNW",
+      "column": 1,
+      "domain_id": "CANONICAL_REVALIDATION",
+      "energy_credit": 5,
+      "global_index": 73,
+      "lane_count": 3,
+      "lo_shu_value": 1,
+      "phase_tensor": "y",
+      "row": 8,
+      "schema": "HHS_TRINARY_PHASE_QUDIT_CELL_V1",
+      "subgrid_id": "subgrid:8",
+      "transition": {
+        "all_three_lane_witnesses_present": true,
+        "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+        "cell_id": "cell:73",
+        "current_phase": "y",
+        "execution_order": [
+          "POSITIVE",
+          "PLASTIC",
+          "ZERO_SUM"
+        ],
+        "next_phase": "z",
+        "plastic_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cell_id": "cell:73",
+          "continuation_admitted": true,
+          "creates_information_energy": false,
+          "gradient_residue": {
+            "denominator": 1,
+            "numerator": 0
+          },
+          "gradient_state": "EQUILIBRIUM",
+          "lane_root_hash72": "gY6sftEGFmBQTNd?sxnt6(XEb!+juunTlkZi2xkZuUWf?6jyBNUYN-0u/o9QBUuz8vSS</H4",
+          "minimal_polynomial": "rho^3-rho-1",
+          "schema": "HHS_PLASTIC_GRADIENT_LANE_V1",
+          "trit": 0,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "positive_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "authority_rank_implied": false,
+          "cell_id": "cell:73",
+          "constructive_proposal": true,
+          "lane_root_hash72": "3MoCeM8L7GG*!YIsWkiFWMJ05Css4tX/Mf9?x6/M1D?<DaC3UAaWTxF6Qlvk!/Frwh+JgSvh",
+          "phase_state": "y",
+          "schema": "HHS_ORIENTED_PHASE_LANE_V1",
+          "source_phase_root_hash72": "l</MsQT-GA(*F3qOl<9W1W>OzbghE>)4NyV4Qb2wZ9DCPLmMm(oj9gEI<>vZjm2>mFLQjjb<",
+          "trit": 1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "schema": "HHS_THREE_LANE_PHASE_TRANSITION_V1",
+        "transition_admitted": true,
+        "transition_root_hash72": "BgMkCf+ra1dB</xZ-7e?Nsa2Syd+CD53ZSVNm0Ie>WRkWPCDmj2PccNswvzy1v<zWNOs8lSX",
+        "trinary_is_functional_not_authority_rank": true,
+        "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+        "zero_sum_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cancellation_scope": [],
+          "cell_id": "cell:73",
+          "closure_state": "CLOSED",
+          "continuation_admitted": true,
+          "global_rejection_propagated": false,
+          "lane_root_hash72": "v1NlLCoqxPJOTUZQlrvjWn4<xifSRNCw4Q>mIcufAbMoh1-9Er!R!548U4rBxbUxMY/<o(q-",
+          "schema": "HHS_ZERO_SUM_EQUILIBRIUM_LANE_V1",
+          "source_phase_erased": false,
+          "trit": -1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+          "zero_sum_residue": {
+            "denominator": 1,
+            "numerator": 0
+          }
+        }
+      },
+      "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+    },
+    {
+      "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+      "cell_closed": true,
+      "cell_id": "cell:74",
+      "cell_identity_count": 1,
+      "cell_root_hash72": "e0GOaLLgN4KoIVC0>ClML(fk!+fg)o(>HT7-*+1Uhen<!O8WD/MILhXzk7*fGT9QquJj6cno",
+      "column": 2,
+      "domain_id": "CANONICAL_REVALIDATION",
+      "energy_credit": 30,
+      "global_index": 74,
+      "lane_count": 3,
+      "lo_shu_value": 6,
+      "phase_tensor": "z",
+      "row": 8,
+      "schema": "HHS_TRINARY_PHASE_QUDIT_CELL_V1",
+      "subgrid_id": "subgrid:8",
+      "transition": {
+        "all_three_lane_witnesses_present": true,
+        "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+        "cell_id": "cell:74",
+        "current_phase": "z",
+        "execution_order": [
+          "POSITIVE",
+          "PLASTIC",
+          "ZERO_SUM"
+        ],
+        "next_phase": "w",
+        "plastic_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cell_id": "cell:74",
+          "continuation_admitted": true,
+          "creates_information_energy": false,
+          "gradient_residue": {
+            "denominator": 1,
+            "numerator": 0
+          },
+          "gradient_state": "EQUILIBRIUM",
+          "lane_root_hash72": "gY6sftEGFmBQTNd?sxnt6(XEb!+juunTmjZi2xkZuUWf?6jyBNUYN-0u/o9QBUuz8vSS</H4",
+          "minimal_polynomial": "rho^3-rho-1",
+          "schema": "HHS_PLASTIC_GRADIENT_LANE_V1",
+          "trit": 0,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "positive_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "authority_rank_implied": false,
+          "cell_id": "cell:74",
+          "constructive_proposal": true,
+          "lane_root_hash72": "rMpxz1cV6Rx*AW<aOySLlVYWidNT5<X5>4nrYX-iTXA3Tyk)RftNU703(h+qVWP42JIg56F9",
+          "phase_state": "z",
+          "schema": "HHS_ORIENTED_PHASE_LANE_V1",
+          "source_phase_root_hash72": ">dsc/R7FtK9K7ZHksVJ!qnR)PXcWtxL9o?GbOj2G*RXlJJuT71xQfd0tuSIPi3zKaO(vnnra",
+          "trit": 1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "schema": "HHS_THREE_LANE_PHASE_TRANSITION_V1",
+        "transition_admitted": true,
+        "transition_root_hash72": "H!OO9zlcAe!nNUq(MuZcI/SH)tEraslg(5uz09a+ebEYcEWAM7q+LBj(BYmFxl98uOQ6Qowg",
+        "trinary_is_functional_not_authority_rank": true,
+        "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+        "zero_sum_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cancellation_scope": [],
+          "cell_id": "cell:74",
+          "closure_state": "CLOSED",
+          "continuation_admitted": true,
+          "global_rejection_propagated": false,
+          "lane_root_hash72": "v1NlLCoqxPJOTUZQlrvjWn4<xifSRNCw4Q>mIcufAbMoh1-9Er!R!548U4rByaUxMY/<o(q-",
+          "schema": "HHS_ZERO_SUM_EQUILIBRIUM_LANE_V1",
+          "source_phase_erased": false,
+          "trit": -1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+          "zero_sum_residue": {
+            "denominator": 1,
+            "numerator": 0
+          }
+        }
+      },
+      "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+    },
+    {
+      "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+      "cell_closed": true,
+      "cell_id": "cell:75",
+      "cell_identity_count": 1,
+      "cell_root_hash72": "skYMY7pih+>HDCQSmjWb(ALib6D3Ucla6svg83ZY>*Qi?Ft?5foejOm81b(+k3n*K-VwqYxk",
+      "column": 3,
+      "domain_id": "CANONICAL_REVALIDATION",
+      "energy_credit": 15,
+      "global_index": 75,
+      "lane_count": 3,
+      "lo_shu_value": 3,
+      "phase_tensor": "w",
+      "row": 8,
+      "schema": "HHS_TRINARY_PHASE_QUDIT_CELL_V1",
+      "subgrid_id": "subgrid:8",
+      "transition": {
+        "all_three_lane_witnesses_present": true,
+        "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+        "cell_id": "cell:75",
+        "current_phase": "w",
+        "execution_order": [
+          "POSITIVE",
+          "PLASTIC",
+          "ZERO_SUM"
+        ],
+        "next_phase": "xy",
+        "plastic_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cell_id": "cell:75",
+          "continuation_admitted": true,
+          "creates_information_energy": false,
+          "gradient_residue": {
+            "denominator": 1,
+            "numerator": 0
+          },
+          "gradient_state": "EQUILIBRIUM",
+          "lane_root_hash72": "gY6sftEGFmBQTNd?sxnt6(XEb!+juunTniZi2xkZuUWf?6jyBNUYN-0u/o9QBUuz8vSS</H4",
+          "minimal_polynomial": "rho^3-rho-1",
+          "schema": "HHS_PLASTIC_GRADIENT_LANE_V1",
+          "trit": 0,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "positive_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "authority_rank_implied": false,
+          "cell_id": "cell:75",
+          "constructive_proposal": true,
+          "lane_root_hash72": "7JFU<ZxOUUGJl4mydBSZG/QbjeroUpSVv?rwQ*<BanDD<zA<t(n4c!J!kvvSJl9ZD)C!C0Rw",
+          "phase_state": "w",
+          "schema": "HHS_ORIENTED_PHASE_LANE_V1",
+          "source_phase_root_hash72": "R4H3IrjLV0BaN9(3nKZMLvUF3cBr!DQcg1ocJ)PQy!>+EZ6GuxdvUmQ(tRVrKUm?Vv0i6yiz",
+          "trit": 1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "schema": "HHS_THREE_LANE_PHASE_TRANSITION_V1",
+        "transition_admitted": true,
+        "transition_root_hash72": "ziCRRiHOr6sh-rM/0Ax?i4eDd1sIjeW+i4kPV<770/lHWpcW4G59jSqOKINuppwmwHFk>Kh>",
+        "trinary_is_functional_not_authority_rank": true,
+        "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+        "zero_sum_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cancellation_scope": [],
+          "cell_id": "cell:75",
+          "closure_state": "CLOSED",
+          "continuation_admitted": true,
+          "global_rejection_propagated": false,
+          "lane_root_hash72": "v1NlLCoqxPJOTUZQlrvjWn4<xifSRNCw4Q>mIcufAbMoh1-9Er!R!548U4rBz9UxMY/<o(q-",
+          "schema": "HHS_ZERO_SUM_EQUILIBRIUM_LANE_V1",
+          "source_phase_erased": false,
+          "trit": -1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+          "zero_sum_residue": {
+            "denominator": 1,
+            "numerator": 0
+          }
+        }
+      },
+      "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+    },
+    {
+      "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+      "cell_closed": true,
+      "cell_id": "cell:76",
+      "cell_identity_count": 1,
+      "cell_root_hash72": "RyRI>(?fb<*zzRp9kb)(+M)L1nBC(q88lymwi6?hERjv-17!1q>HW<-!VF9bvn7Iw<J2Kss-",
+      "column": 4,
+      "domain_id": "CANONICAL_REVALIDATION",
+      "energy_credit": 25,
+      "global_index": 76,
+      "lane_count": 3,
+      "lo_shu_value": 5,
+      "phase_tensor": "x",
+      "row": 8,
+      "schema": "HHS_TRINARY_PHASE_QUDIT_CELL_V1",
+      "subgrid_id": "subgrid:8",
+      "transition": {
+        "all_three_lane_witnesses_present": true,
+        "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+        "cell_id": "cell:76",
+        "current_phase": "xy",
+        "execution_order": [
+          "POSITIVE",
+          "PLASTIC",
+          "ZERO_SUM"
+        ],
+        "next_phase": "yx",
+        "plastic_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cell_id": "cell:76",
+          "continuation_admitted": true,
+          "creates_information_energy": false,
+          "gradient_residue": {
+            "denominator": 1,
+            "numerator": 0
+          },
+          "gradient_state": "EQUILIBRIUM",
+          "lane_root_hash72": "gY6sftEGFmBQTNd?sxnt6(XEb!+juunTohZi2xkZuUWf?6jyBNUYN-0u/o9QBUuz8vSS</H4",
+          "minimal_polynomial": "rho^3-rho-1",
+          "schema": "HHS_PLASTIC_GRADIENT_LANE_V1",
+          "trit": 0,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "positive_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "authority_rank_implied": false,
+          "cell_id": "cell:76",
+          "constructive_proposal": true,
+          "lane_root_hash72": "oEN54ixSPX4Yl9e5eKlVTbf+65v8Vq5La/Ki/7QYEcbwvE0y3-QiRY0?WFHAM4wV+4FcFTpV",
+          "phase_state": "xy",
+          "schema": "HHS_ORIENTED_PHASE_LANE_V1",
+          "source_phase_root_hash72": "w!t7bqo/q0xlsmjDpIcX8RyV5AG5B/pMXmD<2diSRY?O-f9Z>)E+8N?U(TV?9w>hsjbelzFx",
+          "trit": 1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "schema": "HHS_THREE_LANE_PHASE_TRANSITION_V1",
+        "transition_admitted": true,
+        "transition_root_hash72": "lOEH39R<Ix1xClzwB/EqaI)n4xDu5tZXbrsOsV4pcqGDRMw-<oGNMKRqLG1353E5e2?<Y*!t",
+        "trinary_is_functional_not_authority_rank": true,
+        "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+        "zero_sum_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cancellation_scope": [],
+          "cell_id": "cell:76",
+          "closure_state": "CLOSED",
+          "continuation_admitted": true,
+          "global_rejection_propagated": false,
+          "lane_root_hash72": "v1NlLCoqxPJOTUZQlrvjWn4<xifSRNCw4Q>mIcufAbMoh1-9Er!R!548U4rBA8UxMY/<o(q-",
+          "schema": "HHS_ZERO_SUM_EQUILIBRIUM_LANE_V1",
+          "source_phase_erased": false,
+          "trit": -1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+          "zero_sum_residue": {
+            "denominator": 1,
+            "numerator": 0
+          }
+        }
+      },
+      "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+    },
+    {
+      "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+      "cell_closed": true,
+      "cell_id": "cell:77",
+      "cell_identity_count": 1,
+      "cell_root_hash72": "9*ygc5IRJ7sX>A(Tuuig96+M/yjcacwRS4K9gZno2(f6Yo*G>YF/dMzJ54E8uW7GV9-+EwXR",
+      "column": 5,
+      "domain_id": "CANONICAL_REVALIDATION",
+      "energy_credit": 35,
+      "global_index": 77,
+      "lane_count": 3,
+      "lo_shu_value": 7,
+      "phase_tensor": "y",
+      "row": 8,
+      "schema": "HHS_TRINARY_PHASE_QUDIT_CELL_V1",
+      "subgrid_id": "subgrid:8",
+      "transition": {
+        "all_three_lane_witnesses_present": true,
+        "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+        "cell_id": "cell:77",
+        "current_phase": "yx",
+        "execution_order": [
+          "POSITIVE",
+          "PLASTIC",
+          "ZERO_SUM"
+        ],
+        "next_phase": "zw",
+        "plastic_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cell_id": "cell:77",
+          "continuation_admitted": true,
+          "creates_information_energy": false,
+          "gradient_residue": {
+            "denominator": 1,
+            "numerator": 0
+          },
+          "gradient_state": "EQUILIBRIUM",
+          "lane_root_hash72": "gY6sftEGFmBQTNd?sxnt6(XEb!+juunTpgZi2xkZuUWf?6jyBNUYN-0u/o9QBUuz8vSS</H4",
+          "minimal_polynomial": "rho^3-rho-1",
+          "schema": "HHS_PLASTIC_GRADIENT_LANE_V1",
+          "trit": 0,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "positive_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "authority_rank_implied": false,
+          "cell_id": "cell:77",
+          "constructive_proposal": true,
+          "lane_root_hash72": "HXlBF18/V(*c*uot)sRfB6B44L)O?snxSNnUGoMbJBHj6Sll<(B9ot(b(lL0LoT>NOUyLt*o",
+          "phase_state": "yx",
+          "schema": "HHS_ORIENTED_PHASE_LANE_V1",
+          "source_phase_root_hash72": "l</MsQT-GA(*F3qOl<9W1W>OzbghE>)4NyV4Qb2wZ9DCPLmMm(oj9gEI<>vZjm2>mFLQjjb<",
+          "trit": 1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "schema": "HHS_THREE_LANE_PHASE_TRANSITION_V1",
+        "transition_admitted": true,
+        "transition_root_hash72": "/G4NLqCa(bmX/fkvMsNHiPj6H?LxoqlQnX<gac9T?v/5Ip/)IosqZ*E!QWKeZHwmKzqvmUiH",
+        "trinary_is_functional_not_authority_rank": true,
+        "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+        "zero_sum_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cancellation_scope": [],
+          "cell_id": "cell:77",
+          "closure_state": "CLOSED",
+          "continuation_admitted": true,
+          "global_rejection_propagated": false,
+          "lane_root_hash72": "v1NlLCoqxPJOTUZQlrvjWn4<xifSRNCw4Q>mIcufAbMoh1-9Er!R!548U4rBB7UxMY/<o(q-",
+          "schema": "HHS_ZERO_SUM_EQUILIBRIUM_LANE_V1",
+          "source_phase_erased": false,
+          "trit": -1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+          "zero_sum_residue": {
+            "denominator": 1,
+            "numerator": 0
+          }
+        }
+      },
+      "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+    },
+    {
+      "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+      "cell_closed": true,
+      "cell_id": "cell:78",
+      "cell_identity_count": 1,
+      "cell_root_hash72": "N7e-mWf*xhRngPBKxh05Kob4wPwTuRaxBSMHH<j<IIIYkrQFuvGAlH*W!<<cX)qZQJ6O-cK*",
+      "column": 6,
+      "domain_id": "CANONICAL_REVALIDATION",
+      "energy_credit": 20,
+      "global_index": 78,
+      "lane_count": 3,
+      "lo_shu_value": 4,
+      "phase_tensor": "z",
+      "row": 8,
+      "schema": "HHS_TRINARY_PHASE_QUDIT_CELL_V1",
+      "subgrid_id": "subgrid:8",
+      "transition": {
+        "all_three_lane_witnesses_present": true,
+        "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+        "cell_id": "cell:78",
+        "current_phase": "zw",
+        "execution_order": [
+          "POSITIVE",
+          "PLASTIC",
+          "ZERO_SUM"
+        ],
+        "next_phase": "wz",
+        "plastic_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cell_id": "cell:78",
+          "continuation_admitted": true,
+          "creates_information_energy": false,
+          "gradient_residue": {
+            "denominator": 1,
+            "numerator": 0
+          },
+          "gradient_state": "EQUILIBRIUM",
+          "lane_root_hash72": "gY6sftEGFmBQTNd?sxnt6(XEb!+juunTqfZi2xkZuUWf?6jyBNUYN-0u/o9QBUuz8vSS</H4",
+          "minimal_polynomial": "rho^3-rho-1",
+          "schema": "HHS_PLASTIC_GRADIENT_LANE_V1",
+          "trit": 0,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "positive_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "authority_rank_implied": false,
+          "cell_id": "cell:78",
+          "constructive_proposal": true,
+          "lane_root_hash72": "zblCAmx>)/33*<mRNk)PHFKj-YG?qt-x(!c!?Mv8fj+Ud!J3Y+gsfuEG+zHwRcK8qkcfiigy",
+          "phase_state": "zw",
+          "schema": "HHS_ORIENTED_PHASE_LANE_V1",
+          "source_phase_root_hash72": ">dsc/R7FtK9K7ZHksVJ!qnR)PXcWtxL9o?GbOj2G*RXlJJuT71xQfd0tuSIPi3zKaO(vnnra",
+          "trit": 1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "schema": "HHS_THREE_LANE_PHASE_TRANSITION_V1",
+        "transition_admitted": true,
+        "transition_root_hash72": "YXrm-sjpphpf47mJ8l18i/bFIH!Fy6APU(?!WEcccfU7?3EYkPZ4B7HGsL9j*eN74Rhtt94M",
+        "trinary_is_functional_not_authority_rank": true,
+        "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+        "zero_sum_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cancellation_scope": [],
+          "cell_id": "cell:78",
+          "closure_state": "CLOSED",
+          "continuation_admitted": true,
+          "global_rejection_propagated": false,
+          "lane_root_hash72": "v1NlLCoqxPJOTUZQlrvjWn4<xifSRNCw4Q>mIcufAbMoh1-9Er!R!548U4rBC6UxMY/<o(q-",
+          "schema": "HHS_ZERO_SUM_EQUILIBRIUM_LANE_V1",
+          "source_phase_erased": false,
+          "trit": -1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+          "zero_sum_residue": {
+            "denominator": 1,
+            "numerator": 0
+          }
+        }
+      },
+      "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+    },
+    {
+      "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+      "cell_closed": true,
+      "cell_id": "cell:79",
+      "cell_identity_count": 1,
+      "cell_root_hash72": "KW+ivw+/Y7S->55pspuq<Q/cbzItlZtiqM4V4VE*J!b8>RpDRN/KtISSLHA<MaIsXas<h3Aw",
+      "column": 7,
+      "domain_id": "CANONICAL_REVALIDATION",
+      "energy_credit": 45,
+      "global_index": 79,
+      "lane_count": 3,
+      "lo_shu_value": 9,
+      "phase_tensor": "w",
+      "row": 8,
+      "schema": "HHS_TRINARY_PHASE_QUDIT_CELL_V1",
+      "subgrid_id": "subgrid:8",
+      "transition": {
+        "all_three_lane_witnesses_present": true,
+        "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+        "cell_id": "cell:79",
+        "current_phase": "wz",
+        "execution_order": [
+          "POSITIVE",
+          "PLASTIC",
+          "ZERO_SUM"
+        ],
+        "next_phase": "x",
+        "plastic_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cell_id": "cell:79",
+          "continuation_admitted": true,
+          "creates_information_energy": false,
+          "gradient_residue": {
+            "denominator": 1,
+            "numerator": 0
+          },
+          "gradient_state": "EQUILIBRIUM",
+          "lane_root_hash72": "gY6sftEGFmBQTNd?sxnt6(XEb!+juunTreZi2xkZuUWf?6jyBNUYN-0u/o9QBUuz8vSS</H4",
+          "minimal_polynomial": "rho^3-rho-1",
+          "schema": "HHS_PLASTIC_GRADIENT_LANE_V1",
+          "trit": 0,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "positive_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "authority_rank_implied": false,
+          "cell_id": "cell:79",
+          "constructive_proposal": true,
+          "lane_root_hash72": "W+iSXTliYH6cJRE71T!PV-SbfZHN)8jsKw721NueyKrXNbKjZD)mGWvfWZV0917DbVy90PaK",
+          "phase_state": "wz",
+          "schema": "HHS_ORIENTED_PHASE_LANE_V1",
+          "source_phase_root_hash72": "R4H3IrjLV0BaN9(3nKZMLvUF3cBr!DQcg1ocJ)PQy!>+EZ6GuxdvUmQ(tRVrKUm?Vv0i6yiz",
+          "trit": 1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "schema": "HHS_THREE_LANE_PHASE_TRANSITION_V1",
+        "transition_admitted": true,
+        "transition_root_hash72": "iwdw*eckKRrcNGV?7c0kCr!F9!NIV(k!yk4PNciCY6dH2XbyO5mWG>kbGrQe1jqi>39x3Rdt",
+        "trinary_is_functional_not_authority_rank": true,
+        "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+        "zero_sum_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cancellation_scope": [],
+          "cell_id": "cell:79",
+          "closure_state": "CLOSED",
+          "continuation_admitted": true,
+          "global_rejection_propagated": false,
+          "lane_root_hash72": "v1NlLCoqxPJOTUZQlrvjWn4<xifSRNCw4Q>mIcufAbMoh1-9Er!R!548U4rBD5UxMY/<o(q-",
+          "schema": "HHS_ZERO_SUM_EQUILIBRIUM_LANE_V1",
+          "source_phase_erased": false,
+          "trit": -1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+          "zero_sum_residue": {
+            "denominator": 1,
+            "numerator": 0
+          }
+        }
+      },
+      "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+    },
+    {
+      "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+      "cell_closed": true,
+      "cell_id": "cell:80",
+      "cell_identity_count": 1,
+      "cell_root_hash72": ")dv+*MOWzOJnv0m<OzqFBnEt8Efc/E+iUmve7vGoNCtiLjtu)13HB4q4(>+0Ei(+jKfgKiSE",
+      "column": 8,
+      "domain_id": "CANONICAL_REVALIDATION",
+      "energy_credit": 10,
+      "global_index": 80,
+      "lane_count": 3,
+      "lo_shu_value": 2,
+      "phase_tensor": "x",
+      "row": 8,
+      "schema": "HHS_TRINARY_PHASE_QUDIT_CELL_V1",
+      "subgrid_id": "subgrid:8",
+      "transition": {
+        "all_three_lane_witnesses_present": true,
+        "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+        "cell_id": "cell:80",
+        "current_phase": "x",
+        "execution_order": [
+          "POSITIVE",
+          "PLASTIC",
+          "ZERO_SUM"
+        ],
+        "next_phase": "y",
+        "plastic_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cell_id": "cell:80",
+          "continuation_admitted": true,
+          "creates_information_energy": false,
+          "gradient_residue": {
+            "denominator": 1,
+            "numerator": 0
+          },
+          "gradient_state": "EQUILIBRIUM",
+          "lane_root_hash72": "gY6sftEGFmBQTNd?sxnt6(XEb!+juunUhnZi2xkZuUWf?6jyBNUYN-0u/o9QBUuz8vSS</H4",
+          "minimal_polynomial": "rho^3-rho-1",
+          "schema": "HHS_PLASTIC_GRADIENT_LANE_V1",
+          "trit": 0,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "positive_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "authority_rank_implied": false,
+          "cell_id": "cell:80",
+          "constructive_proposal": true,
+          "lane_root_hash72": "U4*1v1>F0SilNOkL4YYX+qw2z2We2b1l*CHndcGHM7clpZPaQPjfeDt!0h)lQBwFW2FDGf*!",
+          "phase_state": "x",
+          "schema": "HHS_ORIENTED_PHASE_LANE_V1",
+          "source_phase_root_hash72": "w!t7bqo/q0xlsmjDpIcX8RyV5AG5B/pMXmD<2diSRY?O-f9Z>)E+8N?U(TV?9w>hsjbelzFx",
+          "trit": 1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+        },
+        "schema": "HHS_THREE_LANE_PHASE_TRANSITION_V1",
+        "transition_admitted": true,
+        "transition_root_hash72": "*Tv4kZa4y<S1Ck2iZm7<(3ZjZ0OIHS-k/tYdhx0b5?O9zlWb-Klv6NSXgPwLMCvGiKY3dw!w",
+        "trinary_is_functional_not_authority_rank": true,
+        "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+        "zero_sum_lane": {
+          "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+          "cancellation_scope": [],
+          "cell_id": "cell:80",
+          "closure_state": "CLOSED",
+          "continuation_admitted": true,
+          "global_rejection_propagated": false,
+          "lane_root_hash72": "v1NlLCoqxPJOTUZQlrvjWn4<xifSRNCw4Q>mIcufAbMoh1-9Er!R!548U4rCteUxMY/<o(q-",
+          "schema": "HHS_ZERO_SUM_EQUILIBRIUM_LANE_V1",
+          "source_phase_erased": false,
+          "trit": -1,
+          "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1",
+          "zero_sum_residue": {
+            "denominator": 1,
+            "numerator": 0
+          }
+        }
+      },
+      "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+    }
+  ],
+  "lattice_root_hash72": "7v099Jj-Zj!x9<Un<BLGCWo8v3+zmByPgDxj9C0fu9Rz+R6?5YKErefG>LBUi9Zd>HR>yBO!",
+  "schema": "HHS_TRINARY_QUDIT_CELL_REGISTRY_PASS_068_V1"
+}
+```

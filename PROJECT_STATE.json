@@ -1,0 +1,449 @@
+{
+  "authority_layers": {
+    "backend": "FastAPI/websocket runtime projection, event/replay/receipt services",
+    "c_runtime": "performance-critical VM / ABI execution",
+    "gui": "consumer/professional runtime OS surface; projection only, not authority",
+    "kernel": "HHS algebraic / symbolic invariants and receipt lineage remain computational authority",
+    "python_bridge": "translation, orchestration, smoke verification, backend integration"
+  },
+  "authorized_execution_failure_policy": {
+    "enabled": true,
+    "execution_performed_on_rejection": false,
+    "failure_record_schema": "HHS_AUTHORIZED_EXECUTION_FAILURE_RECORD_V1",
+    "foundational_audit_required": true,
+    "hash72_u72_witness_required": true,
+    "ledger_receipt_required": true,
+    "make_target": "make authorized-execution-failure-policy",
+    "manifest": "AUTHORIZED_EXECUTION_FAILURES_PASS_032.json",
+    "module": "hhs_runtime.hhs_authorized_execution_failure_policy_v1",
+    "policy": "malformed unsafe forbidden or non_allowlisted authorized execution requests reject with witnessed ledgered failure records before target function body execution",
+    "reason_codes_tested": [
+      "MALFORMED_EXECUTION_REQUEST",
+      "FORBIDDEN_AUTHORIZATION_FLAG",
+      "NOT_ALLOWLISTED_FUNCTION"
+    ],
+    "report": "AUTHORIZED_EXECUTION_FAILURES_PASS_032.md",
+    "service": "authorized_execution_failure_policy.self_test"
+  },
+  "authorized_pure_function_execution": {
+    "authorized_targets": [
+      "hhs_runtime/hhs_srcg_gate_v1.py::check_1001_invariant",
+      "hhs_runtime/hhs_system_closure_harness_v1.py::summarize_closure_cycle",
+      "hhs_runtime/hhs_runtime_contract_v1.py::is_hash72"
+    ],
+    "enabled": true,
+    "failure_policy_required": true,
+    "make_target": "make authorized-pure-function-executor",
+    "manifest": "AUTHORIZED_PURE_FUNCTION_EXECUTIONS_PASS_032.json",
+    "module": "hhs_runtime.hhs_authorized_pure_function_executor_v1",
+    "mutation_write_network_process": "blocked",
+    "policy": "explicit_allowlisted_pure_deterministic_functions_only_after_dryrun_pass030_schema_validation_failure_policy_gate_and_hash72_u72_witnessing",
+    "raw_plugin_execution": "blocked",
+    "report": "AUTHORIZED_PURE_FUNCTION_EXECUTIONS_PASS_032.md",
+    "service": "authorized_pure_function_executor.self_test"
+  },
+  "baseline": "Holofractal_Harmonicode-v1-release-execution-pass001-clean.zip",
+  "canonical_objective": "universal semantic runtime with plug-and-play data ingestion, HHS kernel authority, C/Python execution, ML/NLP/semantic search services, GUI/API access surfaces, and deterministic release packaging",
+  "completed_passes": [
+    "003",
+    "004",
+    "005",
+    "006",
+    "007",
+    "008",
+    "009",
+    "PASS_010",
+    "PASS_011",
+    "012",
+    "PASS_013",
+    "PASS_014",
+    "PASS_015",
+    "PASS_016",
+    "PASS_017",
+    "PASS_018",
+    "PASS_019",
+    "PASS_020",
+    "PASS_021",
+    "PASS_022",
+    "PASS_023",
+    "PASS_024",
+    "PASS_025",
+    "PASS_026",
+    "PASS_028",
+    "PASS_029",
+    "PASS_027",
+    "PASS_030",
+    "PASS_031",
+    "PASS_032",
+    "PASS_072"
+  ],
+  "constitutional_layer": {
+    "authority_role": "semantic/governance conformance before and after guarded service dispatch",
+    "enabled": true,
+    "meaning_conservation": true,
+    "module": "hhs_foundation.hhs_foundational_standards_v1",
+    "version": "HHS-M001..HHS-M007"
+  },
+  "constraint_stack_security_harness": {
+    "enabled": true,
+    "module": "hhs_runtime.hhs_constraint_stack_security_harness_v1",
+    "purpose": "exercise Pass 033 full constraint/admissibility stack against non-silent propagation, terminal-value forgery, incomplete witness, and brute-force rule-following equivalence scenarios",
+    "rejected_without_execution": true,
+    "rule_following_bruteforce_reclassified_as_valid_propagation": true,
+    "scenario_count": 9,
+    "service": "constraint_stack_security_harness.self_test",
+    "terminal_value_sufficient": false,
+    "version": "PASS_034"
+  },
+  "contract_schema_registry": {
+    "enabled": true,
+    "family_count": 10,
+    "make_target": "make contract-schema-registry",
+    "manifest": "CONTRACT_SCHEMA_REGISTRY_PASS_030.json",
+    "module": "hhs_runtime.hhs_contract_schema_registry_v1",
+    "pipeline_map": "EXECUTION_PIPELINE_MAP_PASS_030.md",
+    "pipeline_stage_count": 7,
+    "policy": "Every execution-related object must be schema-identifiable, versioned, comparable, Hash72/u^72 witness-compatible, foundational-audit compatible, ledger-compatible, and failure-path explicit before authorized execution promotion.",
+    "report": "CONTRACT_SCHEMA_REGISTRY_PASS_030.md",
+    "service": "contract_schema_registry.self_test"
+  },
+  "controlled_live_plugin_execution": {
+    "authority": "HHS_HASH72_KERNEL_U72_DIGITAL_DNA_V1",
+    "enabled": true,
+    "policy": "explicit_allowlisted_self_tests_only",
+    "raw_plugin_execution": "blocked"
+  },
+  "current_pass": "PASS_072",
+  "dryrun_live_plugin_execution": {
+    "authority": "HHS_HASH72_KERNEL_U72_DIGITAL_DNA_V1",
+    "enabled": true,
+    "module": "hhs_runtime.hhs_dryrun_live_plugin_executor_v1",
+    "mutation_write_network_process": "blocked",
+    "policy": "explicit_allowlisted_contract_bound_dry_run_traces_only",
+    "promotion_rule": "future passes must explicitly promote dry-run targets through mutation-safe adapters with before/after witnesses and rollback",
+    "service": "dryrun_live_plugin_executor.self_test",
+    "target_function_body_execution": "blocked",
+    "test_target": "make dryrun-live-plugin-executor"
+  },
+  "frontend_contract_surface": {
+    "authority": "frontend-observes-backend-kernel-authority-only",
+    "contract_version": "HHS_CANONICAL_RUNTIME_CONTRACT_V1",
+    "enabled": true,
+    "hash72_kernel_witness_required_on_runtime_surfaces": true,
+    "version": "HHS_GUI_RUNTIME_CONTRACT_SURFACE_V1"
+  },
+  "guarded_plugin_pipeline": {
+    "adapter_execution_policy": "read-only imports and dry-run planned invocation traces may execute; target function bodies remain blocked unless explicitly promoted through controlled adapters",
+    "authorized_execution_failure_policy": "PASS_032",
+    "capability_planner": "PASS_024",
+    "contract_schema_registry": "PASS_030",
+    "direct_plugin_execution": "still_blocked_until_adapter_closure_harness_and_explicit_allowlist",
+    "dryrun_live_plugin_executor": "PASS_029",
+    "invocation_executor": "PASS_025",
+    "next_promotion_gate": "broader authorized execution may only proceed after success and failure paths both emit schema-valid Hash72/u^72 witnessed ledger records with zero target-body execution on rejection.",
+    "semantic_adapter_runtime": "PASS_026"
+  },
+  "hash72": {
+    "surface_authority": "C_u72_Digital_DNA_kernel_witnesses_on_io_semantic_contract_surfaces"
+  },
+  "hash72_kernel_authority": {
+    "authority_role": "unified Hash72 ledger digests are derived through the C u^72 Digital DNA ring bridge rather than the legacy static projection helper",
+    "enabled": true,
+    "ledger_authority": "HHS_HASH72_KERNEL_U72_DIGITAL_DNA_V1",
+    "migration_rule": "legacy ledgers without kernel authority metadata are rebuilt before new propagation is accepted",
+    "module": "hhs_runtime.hhs_hash72_kernel_authority_v1",
+    "test_target": "make hash72-kernel-authority",
+    "witness_schema": "HHS_HASH72_KERNEL_WITNESS_V1"
+  },
+  "hash72_u72_kernel": {
+    "authority_role": "kernel-native positional Digital DNA state machine below deterministic receipt chain",
+    "c_abi_functions": [
+      "hhs_hash72_ring_init",
+      "hhs_hash72_ring_rotate",
+      "hhs_hash72_dna_validate",
+      "hhs_hash72_tensor_project",
+      "hhs_hash72_reverse_state"
+    ],
+    "c_abi_struct": "HHSHash72RingState",
+    "closure_rule": "sum(V(S_i)) == 0 mod 72 required before propagation",
+    "enabled": true,
+    "identity_rule": "positions are primary; visible 72-symbol DNA is a projection; rotation_profile is the reversible key schedule",
+    "python_bridge": "HHSHash72RingBridge"
+  },
+  "implemented_passes": [
+    "PASS_033",
+    "PASS_072"
+  ],
+  "known_open_items": [
+    "Audit remaining non-emulator service modules for direct execution paths and bind them through the authority gate or mark as diagnostic/deprecated.",
+    "GUI TypeScript build still requires Node dependencies; node_modules are not bundled in repository ZIP.",
+    "Full GUI typecheck must be run after npm install in hhs_gui.",
+    "C runtime compiles with warnings in demo/native initializer code; not blocking verify-c, but should be cleaned in a later pass.",
+    "Bind GUI command palette/runtime shell to guarded backend service discovery and dispatch routes.",
+    "Adapt GUI consumers to guarded response envelopes for runtime/vector/packet routes.",
+    "Audit remaining direct runtime_state_store.store_event/store_snapshot call sites for richer source metadata, now that compatibility wrappers are guarded.",
+    "Audit graph/replay/snapshot/transport/prediction/sandbox modules for duplicate local Hash72 helpers and direct packet emission.",
+    "Migrate remaining legacy runtime surfaces to emit explicit proposition_identity and meaning_witness packets instead of relying on service-dispatch upgrade.",
+    "Extend foundational conformance reports to GUI/IDE/plugin paths after full GUI contract migration.",
+    "Continue migrating remaining local hash72_digest callers to kernel-backed Hash72 witnesses where they represent authority, not merely display/projection.",
+    "Build a GUI closure harness panel so users can see convergence signatures and Hash72/u^72 witnesses directly.",
+    "Promote selected capability plans into dedicated semantic adapters with explicit input/output contracts and closure-harness coverage.",
+    "Promote only deterministic dry-run targets through mutation-safe adapters with before/after witnesses, rollback, and closure-harness coverage.",
+    "Expand authorized-pure execution only with closure-harness coverage and explicit rollback/mutation policy before promoting any state-changing plugin functions."
+  ],
+  "last_completed_pass": "PASS_072",
+  "last_updated_utc": "2026-07-13T10:38:47Z",
+  "latest_artifact": "hhs_pass_072_total_system_recursive_holographic_closure.zip",
+  "latest_focus": "Executable total-system recursive holographic closure with exact rational phase-gear pathfinding across the 81-cell qudit kernel",
+  "latest_pass": "PASS_072",
+  "latest_verified_results": {
+    "focused inherited pytest": "22 passed",
+    "guarded service dispatch": "passed",
+    "kernel conformance": "passed, surface_count=340, edge_count=4495, underived_surface_count=0",
+    "pass072 dedicated pytest": "19 passed",
+    "runtime reachability": "passed, service_count=317, orphan_count=0"
+  },
+  "make_targets": [
+    "foundational-standards",
+    "hash72-u72",
+    "persistence-guard",
+    "runtime-contract",
+    "system-closure-harness",
+    "guarded-plugin-invocation-executor",
+    "semantic-plugin-adapter-runtime",
+    "runtime-reachability",
+    "readonly-live-plugin-adapter",
+    "authorized-pure-function-executor"
+  ],
+  "mode": "release-integration; no feature expansion unless explicitly directed",
+  "next_pass": "PASS_073",
+  "next_pass_recommendation": "Controlled authorized execution for allow-listed pure functions only, gated by the Pass 030 contract/witness schema registry and rollback/failure records.",
+  "next_priority": "Admit bounded authority-gated inter-subgrid, phase, rotation, and u^72 routing choices to discover emergent nontrivial closed-loop periods.",
+  "next_recommended_pass": "PASS_073_EMERGENT_FULL_MANIFOLD_HOLOFRACTAL_ROUTING",
+  "pass_033": {
+    "accepted_status": "PROPAGATION_ADMISSIBLE",
+    "make_target": "reality-to-manifold-translation",
+    "module": "hhs_runtime/hhs_reality_to_manifold_translation_v1.py",
+    "rejected_status": "REJECTED_AS_NON_HARMONIC_NOISE",
+    "service": "reality_to_manifold_translation.self_test",
+    "standards": [
+      "HHS-S009",
+      "HHS-S010",
+      "HHS-S011",
+      "HHS-S012",
+      "HHS-S013",
+      "HHS-S014"
+    ]
+  },
+  "passes": {
+    "019": {
+      "status": "complete",
+      "summary": "Exposed SelfSolve_AB_Gate through canonical backend API response contract and GUI bridge methods.",
+      "title": "SRCG API / GUI Contract Surface",
+      "verification": [
+        "make verify-c",
+        "make srcg-primitive",
+        "make backend-routes",
+        "make gui-runtime-contract",
+        "make srcg-api-surface"
+      ]
+    },
+    "020": {
+      "status": "complete",
+      "summary": "Added a deterministic full-chain harness that runs the same proposition through guarded runtime surfaces and verifies stable normalized Hash72/u^72 closure signatures.",
+      "title": "System Closure Harness",
+      "verification": [
+        "make verify-c",
+        "make system-closure-harness",
+        "make backend-routes",
+        "make service-registry",
+        "make runtime-contract",
+        "make srcg-primitive",
+        "make hash72-kernel-surfaces",
+        "python -m pytest -q"
+      ]
+    },
+    "072": {
+      "status": "complete",
+      "summary": "Nine source-bound subsystem capsules, reciprocal part/whole paths, acyclic reconstruction DAG, eight closure receipts, bounded reconstruction, exact phase-gear pathfinding, and canonical Pass 072 continuation.",
+      "title": "Total-System Recursive Holographic Closure",
+      "verification": [
+        "19 Pass 072 dedicated tests passed",
+        "22 focused inherited tests passed",
+        "guarded Pass 072 service dispatch admitted",
+        "317 services / 340 surfaces / 4495 edges / 0 orphans / 0 underived"
+      ]
+    }
+  },
+  "plugin_capability_planner": {
+    "artifact_manifest": "PLUGIN_CAPABILITY_PLANS_PASS_024.json",
+    "artifact_report": "PLUGIN_CAPABILITY_PLANS_PASS_024.md",
+    "default_plan_count": 24,
+    "enabled": true,
+    "make_target": "make plugin-capability-planner",
+    "module": "hhs_runtime.hhs_plugin_capability_planner_v1",
+    "pass": "PASS_024",
+    "policy": "static capability planning only; no plugin-ready module import or execution",
+    "service": "plugin_capability_planner.self_test",
+    "version": "HHS_PLUGIN_CAPABILITY_PLANNER_V1"
+  },
+  "project": "Holofractal Harmonicode System / Sopheon Runtime",
+  "readonly_live_plugin_adapter": {
+    "enabled": true,
+    "hash72_authority": "HHS_HASH72_KERNEL_U72_DIGITAL_DNA_V1",
+    "manifest": "READONLY_LIVE_PLUGIN_ADAPTERS_PASS_028.json",
+    "policy": "explicit allow-listed module import/introspection only; no arbitrary function body execution, mutation, network, or write surfaces",
+    "report": "READONLY_LIVE_PLUGIN_ADAPTERS_PASS_028.md",
+    "service": "readonly_live_plugin_adapter.self_test",
+    "version": "PASS_028"
+  },
+  "release_mode": "sealed_runtime_finalization",
+  "release_pass": "PASS_030",
+  "release_passes": [
+    {
+      "pass": "017",
+      "status": "complete",
+      "summary": "Frontend runtime bridge and websocket manager now normalize canonical runtime contract envelopes and surface kernel-backed Hash72 witness metadata without deriving authority client-side.",
+      "title": "GUI Runtime Contract Surface"
+    },
+    {
+      "adapter_batch_count": 12,
+      "name": "Guarded Plugin Adapter Surface",
+      "orphan_count": 0,
+      "pass": "PASS_023",
+      "policy": "static guarded reachability only; no direct legacy module execution",
+      "service_added": "guarded_plugin_adapters.self_test",
+      "status": "complete"
+    },
+    "PASS_028"
+  ],
+  "release_stage": "runtime_reachability_audit",
+  "runtime_authority": "constitutional + algebraic invariants + Hash72 receipt chain + canonical runtime contract",
+  "runtime_reachability": {
+    "active_surface_count": 340,
+    "artifacts": [
+      "RUNTIME_REACHABILITY_MANIFEST.json",
+      "KERNEL_CONFORMANCE_SURFACE_MAP_PASS_072.json"
+    ],
+    "conformance_edge_count": 4495,
+    "orphan_count": 0,
+    "policy": "Every active Pass 072 surface is guarded, kernel-derived, witnessed, and present in committed source.",
+    "service_count": 317,
+    "underived_service_count": 0,
+    "underived_surface_count": 0,
+    "version": "PASS_072"
+  },
+  "runtime_status": {
+    "api_runtime_step_io_wrapped": "implemented",
+    "api_service_io_wrapped": "implemented",
+    "api_vector_packet_io_wrapped": "implemented",
+    "authority_gate": "implemented",
+    "backend_guarded_step_route": "implemented",
+    "backend_service_discovery_routes": "implemented",
+    "backend_service_dispatch_route": "implemented",
+    "c_emulator_autoboot": "implemented",
+    "canonical_io_gateway": "implemented",
+    "canonical_runtime_contract": "implemented",
+    "emulator_service_dispatch": "implemented",
+    "event_bus_propagation_guard": "implemented",
+    "execution_request_contract": "implemented in guarded service dispatch",
+    "guarded_service_registry": "implemented",
+    "hash72_non_bypass": "emulator/controller commit path gated and ledgered",
+    "runtime_dataflow_guard": "implemented",
+    "runtime_event_schema_native_hash72": "implemented",
+    "runtime_packet_contract": "implemented in IO gateway and guarded dispatch",
+    "runtime_state_store_vector_guard": "implemented compatibility wrapper with Hash72 guard receipts",
+    "semantic_hash72_normalization": "implemented for semantic memory writes and searches",
+    "semantic_memory_guard": "implemented",
+    "service_descriptor_contracts": "implemented in service registry",
+    "service_registry_semantic_guard": "semantic_memory.guard_self_test registered",
+    "unified_hash72_canonical_verification": "implemented",
+    "validated_vector_cache_rule": "implemented for gateway writes",
+    "websocket_egress_guard": "implemented"
+  },
+  "runtime_surfaces": {
+    "guarded_plugin_invocation_executor": "enabled"
+  },
+  "srcg_layer": {
+    "authority": "C ABI primitive + Python GCP fabric + Hash72/u^72 receipt trace",
+    "enabled": true,
+    "execution_model": "constructive constraint harmonization, not conventional sequential solving",
+    "non_flattening_rule": "nested quartic carriers preserve branch shape through gate execution",
+    "primitive": "SelfSolve_AB_Gate",
+    "rollback_rule": "branches outside 1.001 drift threshold roll back to last-known-closure-point",
+    "version": "HHS_SRCG_PRIMITIVE_V1"
+  },
+  "system_closure_harness": {
+    "api_route": "POST /api/runtime/closure/harness",
+    "chain": [
+      "canonical IO ingress",
+      "authorized runtime receipt",
+      "C u^72 Hash72 kernel witness",
+      "SRCG SelfSolve_AB_Gate",
+      "semantic memory guard",
+      "receipt-backed vector cache",
+      "persistence guard",
+      "canonical API response contract",
+      "canonical IO egress"
+    ],
+    "convergence_rule": "identical proposition/transformation class must produce identical normalized closure signatures while dynamic transport metadata may differ",
+    "enabled": true,
+    "module": "hhs_runtime.hhs_system_closure_harness_v1",
+    "purpose": "run repeated full-chain guarded cycles and compare normalized closure signatures",
+    "service": "system_closure.harness_self_test",
+    "signature": "HHS_SYSTEM_CLOSURE_SIGNATURE_V1"
+  },
+  "test_status": {
+    "pass_010": {
+      "make_persistence_guard": "passed before aggregate command timeout",
+      "make_verify_c": "passed",
+      "targeted_pytest_groups": "55 passed across split pytest groups"
+    },
+    "pass_011": {
+      "make_backend_routes": "passed",
+      "make_io_gateway": "passed",
+      "make_persistence_guard": "passed with extended timeout due ledger growth/output size",
+      "make_runtime_contract": "passed",
+      "make_runtime_dataflow_guard": "passed",
+      "make_semantic_memory_guard": "passed",
+      "make_service_registry": "passed",
+      "make_verify_c": "passed",
+      "pytest": "59 passed"
+    }
+  },
+  "verification": {
+    "make backend-routes": "passed",
+    "make hash72-kernel-surfaces": "passed",
+    "make runtime-contract": "passed",
+    "make service-registry": "passed",
+    "make srcg-primitive": "passed",
+    "make system-closure-harness": "passed",
+    "make verify-c": "passed",
+    "pass_016": "split pytest suite 76 passed; targeted make/hash72 surfaces passed; verify-c passed",
+    "pass_020": "system closure harness target passed; backend route/harness tests passed",
+    "pass_034": "make verify-c, make constraint-stack-security-harness, make service-registry, make runtime-reachability, targeted pytest 6 passed; orphan count 0; service count 27",
+    "pytest": "88 passed"
+  },
+  "verified_commands": [
+    "make backend-routes",
+    "make service-registry",
+    "make verify-c",
+    "python -c 'from hhs_backend.server import app; print(app.title)'",
+    "python -c 'from hhs_runtime.hhs_unified_hash72_ledger_v1 import verify_unified_ledger; print(verify_unified_ledger()[\"ok\"])'",
+    "python -c 'import hhs_backend.runtime.runtime_orchestrator'",
+    "python -m hhs_python.runtime.hhs_ctypes_bridge",
+    "python -m hhs_runtime.hhs_service_registry_v1",
+    "python -m pytest -q",
+    "make io-gateway",
+    "pytest -q",
+    "make semantic-memory-guard",
+    "make runtime-dataflow-guard",
+    "make runtime-contract",
+    "make persistence-guard",
+    "make guarded-plugin-adapters",
+    "make runtime-reachability",
+    "pytest -q tests/test_hhs_guarded_plugin_adapters_v1.py tests/test_hhs_runtime_integration_decisions_v1.py",
+    "make semantic-plugin-adapter-runtime",
+    "python -m pytest -q tests/test_hhs_semantic_plugin_adapter_runtime_v1.py tests/test_hhs_guarded_plugin_invocation_executor_v1.py tests/test_hhs_plugin_capability_planner_v1.py"
+  ]
+}

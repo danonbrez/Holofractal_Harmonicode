@@ -1,0 +1,1266 @@
+{
+  "alpha_release_baseline": {
+    "canonical_pass": "PASS_072",
+    "canonical_state": {
+      "all_artifacts_digest_verified": true,
+      "artifact_bindings": {
+        "pass068_three_lane_81_cell_qudit_kernel": {
+          "artifact_id": "pass068_three_lane_81_cell_qudit_kernel",
+          "relative_path": "THREE_LANE_81_CELL_QUDIT_KERNEL_PASS_068.json",
+          "root_field": "lattice_root_hash72",
+          "root_value": "s9q6ZCI!lm2Lx1zIdgquSd9rMuRC!GUJaLmB+)zFR4Dqy0rlR?!1A7)8LCa2wk67<//ghu+(",
+          "schema": "HHS_81_CELL_TRINARY_QUDIT_LATTICE_V1",
+          "sha256": "38699b924aa9eb3f5d2829eef83cb4aa66e240df42db5d355f33aff9b7d57d53"
+        },
+        "pass070_binary_trinary_round_trip": {
+          "artifact_id": "pass070_binary_trinary_round_trip",
+          "relative_path": "BINARY_TRINARY_ROUND_TRIP_PASS_070.json",
+          "schema": "HHS_BINARY_TRINARY_ROUND_TRIP_REPORT_PASS_070",
+          "sha256": "a6b95ad8773b37e1623e7ce4d4eae3ad043393f958d70ab3d6786bad4e14ea04"
+        },
+        "pass070_universal_binary_trinary_translation": {
+          "artifact_id": "pass070_universal_binary_trinary_translation",
+          "relative_path": "UNIVERSAL_BINARY_TRINARY_TRANSLATION_PASS_070.json",
+          "root_field": "run_root_hash72",
+          "root_value": "4x7/dTn<Q5axZHyM/OryqrIl6ZJGuWKugBOKSjR054M)*SZbVZ0M!<bD3vd9Y1+FT!sQRr(T",
+          "schema": "HHS_UNIVERSAL_BINARY_TRINARY_TRANSLATION_V1",
+          "sha256": "1efe896d382a44e5d46edea6bd6eb51b25d8a926383cc9200068479f49589b5c"
+        },
+        "pass070_zero_sum_switching_closure": {
+          "artifact_id": "pass070_zero_sum_switching_closure",
+          "relative_path": "ZERO_SUM_SWITCHING_CLOSURE_PASS_070.json",
+          "schema": "HHS_ZERO_SUM_SWITCHING_CLOSURE_REPORT_PASS_070",
+          "sha256": "42c221a895d7c0ee3ee045b0654eb96256bb2314b89d3c49331bb5ca0009204b"
+        },
+        "pass072_total_system_root": {
+          "artifact_id": "pass072_total_system_root",
+          "relative_path": "PASS_072_TOTAL_SYSTEM_ROOT.json",
+          "root_field": "total_system_root_hash72",
+          "root_value": "ZF9bto?tV>P(KcFPL5L+csyy!jxdrAaadua1a!w-uwug8/MeMSqSS3*R>lXIefi)nyjXpc+)",
+          "schema": "HHS_TOTAL_SYSTEM_ROOT_V1",
+          "sha256": "77bdd081872a66ee7a3cd0afc5ed53b7b1002f302ea0e66659e2e820ae309b12"
+        }
+      },
+      "canonical_input_manifest": {
+        "relative_path": "native_projects/pass073_deterministic_transform/artifacts/PASS_073_CANONICAL_INPUT_MANIFEST.json",
+        "sha256": "9c8cfd26c7fc21e1ecc177928423be62e36f37bd653409a67565e5f61c6e3d1c"
+      },
+      "host_path_committed": false,
+      "schema": "HHS_PASS073_HASH72_SURFACE_CANONICAL_STATE_V2",
+      "system_root_hash72": "ZF9bto?tV>P(KcFPL5L+csyy!jxdrAaadua1a!w-uwug8/MeMSqSS3*R>lXIefi)nyjXpc+)"
+    },
+    "foundation_authority_delta": 0,
+    "foundation_frozen": true,
+    "foundation_service_delta": 0,
+    "foundation_surface_delta": 0,
+    "host_path_excluded_from_semantic_baseline": true,
+    "ordinary_workload_may_mutate_foundation": false,
+    "pass068_kernel_binding": {
+      "artifact_consumed_as_read_only_kernel_surface": true,
+      "cell_count": 81,
+      "first_subgrid_cell_ids": [
+        "cell:00",
+        "cell:01",
+        "cell:02",
+        "cell:03",
+        "cell:04",
+        "cell:05",
+        "cell:06",
+        "cell:07",
+        "cell:08"
+      ],
+      "global_closure": true,
+      "lattice_root_hash72": "s9q6ZCI!lm2Lx1zIdgquSd9rMuRC!GUJaLmB+)zFR4Dqy0rlR?!1A7)8LCa2wk67<//ghu+(",
+      "lo_shu_cycle": [
+        8,
+        1,
+        6,
+        3,
+        5,
+        7,
+        4,
+        9,
+        2
+      ],
+      "schema": "HHS_PASS073_PASS068_KERNEL_BINDING_V1",
+      "source_artifact_id": "pass068_three_lane_81_cell_qudit_kernel",
+      "source_relative_path": "THREE_LANE_81_CELL_QUDIT_KERNEL_PASS_068.json",
+      "source_schema": "HHS_81_CELL_TRINARY_QUDIT_LATTICE_V1",
+      "source_sha256": "38699b924aa9eb3f5d2829eef83cb4aa66e240df42db5d355f33aff9b7d57d53",
+      "subgrid_count": 9
+    },
+    "runtime_mode_excluded_from_semantic_baseline": true,
+    "schema": "HHS_ALPHA_RELEASE_SEMANTIC_BASELINE_V2",
+    "source_archive_sha256": "3BE8F1393B16E12EA7D2E2931BED7F26D9D095774C0979B3692AEB6174D2D794",
+    "system_baseline_root_hash72": "0000000000000000000000000000001(ElX4RQLqRyeF^TnaAL1KFl1fsh7TDoK!UT+WJ3je",
+    "system_root_matches_frozen_release": true,
+    "total_system_root_hash72": "ZF9bto?tV>P(KcFPL5L+csyy!jxdrAaadua1a!w-uwug8/MeMSqSS3*R>lXIefi)nyjXpc+)",
+    "total_system_witness": {
+      "execution_mode_does_not_reclassify_witness": true,
+      "object_id": "PASS_072_TOTAL_SYSTEM_ROOT",
+      "recorded_witness_not_new_kernel_witness": true,
+      "schema": "HHS_PASS073_HASH72_SURFACE_WITNESS_RECORD_V2",
+      "witness": {
+        "authority": "HHS_PASS072_TOTAL_SYSTEM_CLOSURE_AUTHORITY_V1",
+        "root_field": "total_system_root_hash72",
+        "root_hash72": "ZF9bto?tV>P(KcFPL5L+csyy!jxdrAaadua1a!w-uwug8/MeMSqSS3*R>lXIefi)nyjXpc+)",
+        "source_artifact_id": "pass072_total_system_root",
+        "source_relative_path": "PASS_072_TOTAL_SYSTEM_ROOT.json",
+        "source_sha256": "77bdd081872a66ee7a3cd0afc5ed53b7b1002f302ea0e66659e2e820ae309b12"
+      },
+      "witness_source": "COMMITTED_CANONICAL_ARTIFACT"
+    },
+    "version": "PASS_073_PORTABILITY_AND_PROVENANCE_REPAIR_V1",
+    "version_label": "1.0-alpha"
+  },
+  "build_receipt": {
+    "build_interpreted_not_compiled": true,
+    "build_root_hash72": "0000000000000000000000000000000(q?b(JXOKF7SDQ)aAfHT64FDS^L0G2-x1e2=i=Dx*",
+    "foundation_delta": {
+      "authority": 0,
+      "services": 0,
+      "surfaces": 0
+    },
+    "implicit_platform_build_performed": false,
+    "product_artifact_root_hash72": "0000000000000000000000000000000UZ5opS?)q9+T*Q9J!D=eH)65CS4r*vM)Xf6gOV1RH",
+    "project_root_hash72": "000000000000000000000000000000437l3GpQ*sB74?b>t9EB2D^Ac^oAt>4+e6R=!/7Mu/",
+    "schema": "HHS_PROJECT_BUILD_RECEIPT_V2",
+    "test_plan_root_hash72": "0000000000000000000000000000000irWKwKerNYPmM/hAFM9PeCm5-UtBeC80j>aaqx+0L",
+    "version": "PASS_073_PORTABILITY_AND_PROVENANCE_REPAIR_V1"
+  },
+  "context_independent_development_capsule": {
+    "canonical_inputs_manifest_relative_path": "native_projects/pass073_deterministic_transform/artifacts/PASS_073_CANONICAL_INPUT_MANIFEST.json",
+    "canonical_inputs_manifest_sha256": "9c8cfd26c7fc21e1ecc177928423be62e36f37bd653409a67565e5f61c6e3d1c",
+    "completed_stage": "VERIFIED_NATIVE_PRODUCT_RELEASE",
+    "conversation_narrative_is_non_authoritative": true,
+    "development_capsule_root_hash72": "00000000000000000000000000000036IMta6sT!tkOMIYiegNmY9rfjeUXg+iePmFW3peaV",
+    "entrypoint": "python -m native_projects.pass073_deterministic_transform.hhs_native_deterministic_transform_v1 --write-artifacts",
+    "host_path_required": false,
+    "llm_context_window_required": false,
+    "next_stage": "COMPLETE",
+    "pass_id": "PASS_073",
+    "plan_root_hash72": "0000000000000000000000000000000N3xBkcGxG=9t5))Imvl>uDn=0=AV/G=!2iG9(U+Qy",
+    "product_artifact_root_hash72": "0000000000000000000000000000000UZ5opS?)q9+T*Q9J!D=eH)65CS4r*vM)Xf6gOV1RH",
+    "project_id": "NATIVE_HHS_DETERMINISTIC_TRANSFORMATION_PACKAGE",
+    "project_root_hash72": "000000000000000000000000000000437l3GpQ*sB74?b>t9EB2D^Ac^oAt>4+e6R=!/7Mu/",
+    "repository_state_is_authoritative": true,
+    "requirement_root_hash72": "0000000000000000000000000000000ZJB8PTTmAy4)jgsBUU1sLd+41zL^r1IA4k55!t?Tu",
+    "restart_safe": true,
+    "resume_algorithm": [
+      "verify source_bindings sha256",
+      "verify canonical input manifest sha256",
+      "load committed requirement/specification/plan/project roots",
+      "select live runtime only when shared library already exists",
+      "otherwise execute authenticated committed-artifact mode",
+      "rebuild semantic product and compare product root"
+    ],
+    "resume_contract": {
+      "callable": "run_native_transform_product",
+      "default_resolution_mode": "AUTO",
+      "expected_product_root_hash72": "0000000000000000000000000000000UZ5opS?)q9+T*Q9J!D=eH)65CS4r*vM)Xf6gOV1RH",
+      "python_module": "native_projects.pass073_deterministic_transform.hhs_native_deterministic_transform_v1",
+      "typed_input": {
+        "mode": "binary_trinary_loshu_three_lane_zero_sum",
+        "sequence": "1011001110001111",
+        "width": 16
+      }
+    },
+    "schema": "HHS_CONTEXT_INDEPENDENT_NATIVE_DEVELOPMENT_CAPSULE_V1",
+    "source_bindings": [
+      {
+        "relative_path": "native_projects/pass073_deterministic_transform/__init__.py",
+        "sha256": "3baa467118c4fe23246d98d29fb613c230ce0a44dd5db149b6319b43efe47435",
+        "size_bytes": 852
+      },
+      {
+        "relative_path": "native_projects/pass073_deterministic_transform/hhs_native_deterministic_transform_v1.py",
+        "sha256": "d3ce34775bc5827bf89c254aa0eebbc79bec0d21f76d46ad9479516b805104b3",
+        "size_bytes": 55879
+      },
+      {
+        "relative_path": "native_projects/pass073_deterministic_transform/hhs_context_independent_project_runner_v1.py",
+        "sha256": "e567f089b9bc6192aba27cc49113f0e2f49e58ab39ed09b80965d8a35e5cef61",
+        "size_bytes": 6021
+      },
+      {
+        "relative_path": "tests/test_hhs_pass073_native_deterministic_transform_v1.py",
+        "sha256": "02858f949f40a6a6ce0895d6e21ffdb9ec067facf0b967dbbf6a0b53dcaabf21",
+        "size_bytes": 13361
+      },
+      {
+        "relative_path": "native_projects/pass073_deterministic_transform/artifacts/PASS_073_CANONICAL_INPUT_MANIFEST.json",
+        "sha256": "9c8cfd26c7fc21e1ecc177928423be62e36f37bd653409a67565e5f61c6e3d1c",
+        "size_bytes": 2294
+      }
+    ],
+    "specification_root_hash72": "0000000000000000000000000000000WokxsrrM?+)dyZmb>prFXORkUi?5NSln)8yCdJyMg",
+    "thread_context_required": false,
+    "verification_command": "python -m pytest -q tests/test_hhs_pass073_native_deterministic_transform_v1.py",
+    "version": "PASS_073_PORTABILITY_AND_PROVENANCE_REPAIR_V1"
+  },
+  "execution_environment": {
+    "capabilities": {
+      "canonical_artifact_access": true,
+      "committed_artifact_integrity_verified": true,
+      "compiler_available": true,
+      "compiler_observation": {
+        "cc": "/usr/bin/cc",
+        "make": "/usr/bin/make"
+      },
+      "context_window_required": false,
+      "foundation_modified": false,
+      "hash72_surface_mode": "COMMITTED_ARTIFACT",
+      "host_path_required_for_canonical_identity": false,
+      "implicit_build_authorized": false,
+      "live_c_runtime_available": false,
+      "new_kernel_witness_generation": false,
+      "runtime_library_relative_path": "hhs_runtime/builds/libhhs_runtime.so",
+      "status": "ADMIT_CONSTRAINED_NATIVE_WORKLOAD_FROM_AUTHENTICATED_ARTIFACTS"
+    },
+    "execution_environment_root_hash72": "0000000000000000000000000000003t2Z*tNFpKp3K5P^rgChHzPfRlUP3F?fJmkzzN?Jaq",
+    "execution_mode": "COMMITTED_ARTIFACT",
+    "foundation_mutation": false,
+    "implicit_foundation_build_performed": false,
+    "live_platform_verification_error": "LIVE_RUNTIME_NOT_REQUESTED",
+    "platform_verification": {
+      "artifact_integrity_verified": true,
+      "committed_root_hash72": "ZF9bto?tV>P(KcFPL5L+csyy!jxdrAaadua1a!w-uwug8/MeMSqSS3*R>lXIefi)nyjXpc+)",
+      "committed_root_verified": true,
+      "execution_mode": "COMMITTED_ARTIFACT",
+      "expected_root_hash72": "ZF9bto?tV>P(KcFPL5L+csyy!jxdrAaadua1a!w-uwug8/MeMSqSS3*R>lXIefi)nyjXpc+)",
+      "live_pass068_kernel_verification_executed": false,
+      "live_pass068_lattice_root_hash72": null,
+      "live_pass068_lattice_root_matches": null,
+      "live_total_system_root_hash72": null,
+      "live_total_system_root_matches": null,
+      "live_total_system_verification_executed": false,
+      "schema": "HHS_PASS073_HASH72_SURFACE_VERIFICATION_RESULT_V2"
+    },
+    "requested_resolution_mode": "COMMITTED_ARTIFACT",
+    "schema": "HHS_PASS073_EXECUTION_ENVIRONMENT_ENVELOPE_V1",
+    "semantic_product_root_must_not_depend_on_this_envelope": true,
+    "version": "PASS_073_PORTABILITY_AND_PROVENANCE_REPAIR_V1"
+  },
+  "execution_receipt": {
+    "execution_envelope_separate_from_semantic_product_commitment": true,
+    "execution_environment_root_hash72": "0000000000000000000000000000003t2Z*tNFpKp3K5P^rgChHzPfRlUP3F?fJmkzzN?Jaq",
+    "execution_mode": "COMMITTED_ARTIFACT",
+    "execution_result": {
+      "binary_switch_mask": [
+        0,
+        1,
+        0,
+        1,
+        0,
+        0,
+        1,
+        1
+      ],
+      "canonical_bits": "1011001110001111",
+      "lo_shu_schedule": [
+        {
+          "binary_switch": 0,
+          "kernel_cell_id": "cell:00",
+          "lo_shu_slot": 0,
+          "lo_shu_value": 8,
+          "pair_index": 0,
+          "round_trip_valid": true,
+          "translation_root_hash72": "7<MMJF)ErGa3oHbCy)!HQpi7OPXh(kqw3Dtzl3!TEkFM8<ujRV6VuAova!9DpmoTHxAH6g!>",
+          "trinary_phase": -1,
+          "zero_sum_closed": true
+        },
+        {
+          "binary_switch": 1,
+          "kernel_cell_id": "cell:01",
+          "lo_shu_slot": 1,
+          "lo_shu_value": 1,
+          "pair_index": 1,
+          "round_trip_valid": true,
+          "translation_root_hash72": "x?sPTF?v?CZ-7?Fgyu/zjU2lK>Nb-*B<QR<2R/A2xs4?iR5>35E6ouI937+9TsSZqkRUo2g!",
+          "trinary_phase": 0,
+          "zero_sum_closed": true
+        },
+        {
+          "binary_switch": 0,
+          "kernel_cell_id": "cell:02",
+          "lo_shu_slot": 2,
+          "lo_shu_value": 6,
+          "pair_index": 2,
+          "round_trip_valid": true,
+          "translation_root_hash72": "IyUqar0KDkVOBZMybe<)3X35RXZn)+n)MW0jqSLYOKR)m3Il2*Z0AdrQjlVU<tO4/8LSp28H",
+          "trinary_phase": 0,
+          "zero_sum_closed": true
+        },
+        {
+          "binary_switch": 1,
+          "kernel_cell_id": "cell:03",
+          "lo_shu_slot": 3,
+          "lo_shu_value": 3,
+          "pair_index": 3,
+          "round_trip_valid": true,
+          "translation_root_hash72": "x?sPTF?v?CZ-7?Fgyu/zjU2lK>Nb-*B<QR<2R/A2xs4?iR5>35E6ouI937+9TsSZqkRUo2g!",
+          "trinary_phase": 0,
+          "zero_sum_closed": true
+        },
+        {
+          "binary_switch": 0,
+          "kernel_cell_id": "cell:04",
+          "lo_shu_slot": 4,
+          "lo_shu_value": 5,
+          "pair_index": 4,
+          "round_trip_valid": true,
+          "translation_root_hash72": "7<MMJF)ErGa3oHbCy)!HQpi7OPXh(kqw3Dtzl3!TEkFM8<ujRV6VuAova!9DpmoTHxAH6g!>",
+          "trinary_phase": -1,
+          "zero_sum_closed": true
+        },
+        {
+          "binary_switch": 0,
+          "kernel_cell_id": "cell:05",
+          "lo_shu_slot": 5,
+          "lo_shu_value": 7,
+          "pair_index": 5,
+          "round_trip_valid": true,
+          "translation_root_hash72": "IyUqar0KDkVOBZMybe<)3X35RXZn)+n)MW0jqSLYOKR)m3Il2*Z0AdrQjlVU<tO4/8LSp28H",
+          "trinary_phase": 0,
+          "zero_sum_closed": true
+        },
+        {
+          "binary_switch": 1,
+          "kernel_cell_id": "cell:06",
+          "lo_shu_slot": 6,
+          "lo_shu_value": 4,
+          "pair_index": 6,
+          "round_trip_valid": true,
+          "translation_root_hash72": "x?sPTF?v?CZ-7?Fgyu/zjU2lK>Nb-*B<QR<2R/A2xs4?iR5>35E6ouI937+9TsSZqkRUo2g!",
+          "trinary_phase": 0,
+          "zero_sum_closed": true
+        },
+        {
+          "binary_switch": 1,
+          "kernel_cell_id": "cell:07",
+          "lo_shu_slot": 7,
+          "lo_shu_value": 9,
+          "pair_index": 7,
+          "round_trip_valid": true,
+          "translation_root_hash72": "x?sPTF?v?CZ-7?Fgyu/zjU2lK>Nb-*B<QR<2R/A2xs4?iR5>35E6ouI937+9TsSZqkRUo2g!",
+          "trinary_phase": 0,
+          "zero_sum_closed": true
+        }
+      ],
+      "reconstructed_word": 45967,
+      "round_trip_valid": true,
+      "source_word": 45967,
+      "trinary_lane_vector": [
+        -1,
+        0,
+        0,
+        0,
+        -1,
+        0,
+        0,
+        0
+      ],
+      "zero_sum_closed": true
+    },
+    "execution_root_hash72": "00000000000000000000000000000043DcrLb!K=avNagS?+vez/yrA^!A06xBV35M8gUQUS",
+    "execution_root_is_product_specific": true,
+    "product_artifact_root_hash72": "0000000000000000000000000000000UZ5opS?)q9+T*Q9J!D=eH)65CS4r*vM)Xf6gOV1RH",
+    "schema": "HHS_PROJECT_EXECUTION_RECEIPT_V2",
+    "test_plan_root_hash72": "0000000000000000000000000000000irWKwKerNYPmM/hAFM9PeCm5-UtBeC80j>aaqx+0L",
+    "tests_passed": true,
+    "version": "PASS_073_PORTABILITY_AND_PROVENANCE_REPAIR_V1"
+  },
+  "ok": true,
+  "plan": {
+    "all_leases_native_scoped": true,
+    "capability_leases": [
+      {
+        "capability": "commit requirement as data",
+        "lease_id": "PASS073_LEASE_00",
+        "revocable": true,
+        "role": "requirements_custodian",
+        "scope": "native_project_only"
+      },
+      {
+        "capability": "compose authenticated translation and kernel artifacts",
+        "lease_id": "PASS073_LEASE_01",
+        "revocable": true,
+        "role": "transform_implementer",
+        "scope": "native_project_only"
+      },
+      {
+        "capability": "replay committed project inputs and compare semantic roots",
+        "lease_id": "PASS073_LEASE_02",
+        "revocable": true,
+        "role": "verification_replayer",
+        "scope": "native_project_only"
+      }
+    ],
+    "conversation_context_may_not_be_a_dependency": true,
+    "foundation_mutation_allowed": false,
+    "plan_root_hash72": "0000000000000000000000000000000N3xBkcGxG=9t5))Imvl>uDn=0=AV/G=!2iG9(U+Qy",
+    "restart_state_must_be_committed_to_repository": true,
+    "role_contracts": [
+      {
+        "authority": "commit requirement as data",
+        "may_mutate_foundation": false,
+        "role": "requirements_custodian"
+      },
+      {
+        "authority": "compose authenticated translation and kernel artifacts",
+        "may_mutate_foundation": false,
+        "role": "transform_implementer"
+      },
+      {
+        "authority": "replay committed project inputs and compare semantic roots",
+        "may_mutate_foundation": false,
+        "role": "verification_replayer"
+      }
+    ],
+    "schema": "HHS_PROJECT_PLAN_V2",
+    "specification_root_hash72": "0000000000000000000000000000000WokxsrrM?+)dyZmb>prFXORkUi?5NSln)8yCdJyMg",
+    "task_graph": [
+      {
+        "depends_on": [],
+        "lease_id": "PASS073_LEASE_00",
+        "task_id": "T1_REQUIREMENT"
+      },
+      {
+        "depends_on": [
+          "T1_REQUIREMENT"
+        ],
+        "lease_id": "PASS073_LEASE_00",
+        "task_id": "T2_SPECIFICATION"
+      },
+      {
+        "depends_on": [
+          "T2_SPECIFICATION"
+        ],
+        "lease_id": "PASS073_LEASE_01",
+        "task_id": "T3_IMPLEMENTATION"
+      },
+      {
+        "depends_on": [
+          "T3_IMPLEMENTATION"
+        ],
+        "lease_id": "PASS073_LEASE_02",
+        "task_id": "T4_TESTING"
+      },
+      {
+        "depends_on": [
+          "T4_TESTING"
+        ],
+        "lease_id": "PASS073_LEASE_02",
+        "task_id": "T5_REPLAY"
+      },
+      {
+        "depends_on": [
+          "T5_REPLAY"
+        ],
+        "lease_id": "PASS073_LEASE_02",
+        "task_id": "T6_RELEASE"
+      }
+    ],
+    "version": "PASS_073_PORTABILITY_AND_PROVENANCE_REPAIR_V1"
+  },
+  "product_artifact": {
+    "binary_trinary_packet": {
+      "all_round_trip_valid": true,
+      "all_zero_sum_closed": true,
+      "binary_switch_mask": [
+        0,
+        1,
+        0,
+        1,
+        0,
+        0,
+        1,
+        1
+      ],
+      "bits": "1011001110001111",
+      "execution_mode_excluded_from_semantic_commitment": true,
+      "packet_root_hash72": "0000000000000000000000000000001u48gA2wnaLtOZGZ>pT8+UPcvnlXlk1UDepSs>vKsU",
+      "pairs": [
+        {
+          "committed_witness": {
+            "execution_mode_does_not_reclassify_witness": true,
+            "object_id": "10",
+            "recorded_witness_not_new_kernel_witness": true,
+            "schema": "HHS_PASS073_HASH72_SURFACE_WITNESS_RECORD_V2",
+            "witness": {
+              "authority": "HHS_BINARY_TRINARY_TRANSLATION_AUTHORITY_V1",
+              "gate_root_hash72": "Qntc7jxaMKs<IF6mdyJEKESIbU95g81nVhygfF!31V7jFi)07Aggkfl<c4rm7h4n?*>oUNB7",
+              "reconstruction_root_hash72": "7A)2W1kO/)jWZ-5Q4Tk2<SbzMVLaSxz*A2L8O(y1FNgyfWonPnadp(FO5fYpynMXeIxoc+?Q",
+              "source_artifact_id": "pass070_binary_trinary_round_trip",
+              "source_relative_path": "BINARY_TRINARY_ROUND_TRIP_PASS_070.json",
+              "source_root_hash72": "j(NYcIO!OwD9>7j7-zEO!bQ4O)4vol0aL1hx-F)+y+>3gkceX-OYG3ceQV3eyCgLLgGyalRD",
+              "source_sha256": "a6b95ad8773b37e1623e7ce4d4eae3ad043393f958d70ab3d6786bad4e14ea04",
+              "translation_root_hash72": "7<MMJF)ErGa3oHbCy)!HQpi7OPXh(kqw3Dtzl3!TEkFM8<ujRV6VuAova!9DpmoTHxAH6g!>"
+            },
+            "witness_source": "COMMITTED_CANONICAL_ARTIFACT"
+          },
+          "gate": {
+            "gate_root_hash72": "Qntc7jxaMKs<IF6mdyJEKESIbU95g81nVhygfF!31V7jFi)07Aggkfl<c4rm7h4n?*>oUNB7",
+            "round_trip_valid": true,
+            "zero_sum_closed": true
+          },
+          "pair_index": 0,
+          "reconstruction": {
+            "left_bit": 1,
+            "reconstruction_root_hash72": "7A)2W1kO/)jWZ-5Q4Tk2<SbzMVLaSxz*A2L8O(y1FNgyfWonPnadp(FO5fYpynMXeIxoc+?Q",
+            "right_bit": 0
+          },
+          "source": {
+            "left_bit": 1,
+            "right_bit": 0
+          },
+          "state": {
+            "binary_switch": 0,
+            "recorded_witness_not_new_kernel_witness": true,
+            "translation_root_hash72": "7<MMJF)ErGa3oHbCy)!HQpi7OPXh(kqw3Dtzl3!TEkFM8<ujRV6VuAova!9DpmoTHxAH6g!>",
+            "trinary_phase": -1
+          }
+        },
+        {
+          "committed_witness": {
+            "execution_mode_does_not_reclassify_witness": true,
+            "object_id": "11",
+            "recorded_witness_not_new_kernel_witness": true,
+            "schema": "HHS_PASS073_HASH72_SURFACE_WITNESS_RECORD_V2",
+            "witness": {
+              "authority": "HHS_BINARY_TRINARY_TRANSLATION_AUTHORITY_V1",
+              "gate_root_hash72": "Pks(tFCbS!Q!rZ5JjtOAEuIMsi3Tlm-3JyH5ur20vYv)7kHqU?1Hx5iITjunAkx)pQ679INT",
+              "reconstruction_root_hash72": "G12*8s*q-)FxGSFUej)mEiqlUZWc0lQMCWlue0LufR7716BlrMA?7HUKFiHX0Vb5IE5W+Al-",
+              "source_artifact_id": "pass070_binary_trinary_round_trip",
+              "source_relative_path": "BINARY_TRINARY_ROUND_TRIP_PASS_070.json",
+              "source_root_hash72": "j(NYcIO!OwD9>7j7-zEO!bQ4O)4vol0aL1hx-F)+y+>3gkddX-OYG3ceQV3eyChKLgGyalRD",
+              "source_sha256": "a6b95ad8773b37e1623e7ce4d4eae3ad043393f958d70ab3d6786bad4e14ea04",
+              "translation_root_hash72": "x?sPTF?v?CZ-7?Fgyu/zjU2lK>Nb-*B<QR<2R/A2xs4?iR5>35E6ouI937+9TsSZqkRUo2g!"
+            },
+            "witness_source": "COMMITTED_CANONICAL_ARTIFACT"
+          },
+          "gate": {
+            "gate_root_hash72": "Pks(tFCbS!Q!rZ5JjtOAEuIMsi3Tlm-3JyH5ur20vYv)7kHqU?1Hx5iITjunAkx)pQ679INT",
+            "round_trip_valid": true,
+            "zero_sum_closed": true
+          },
+          "pair_index": 1,
+          "reconstruction": {
+            "left_bit": 1,
+            "reconstruction_root_hash72": "G12*8s*q-)FxGSFUej)mEiqlUZWc0lQMCWlue0LufR7716BlrMA?7HUKFiHX0Vb5IE5W+Al-",
+            "right_bit": 1
+          },
+          "source": {
+            "left_bit": 1,
+            "right_bit": 1
+          },
+          "state": {
+            "binary_switch": 1,
+            "recorded_witness_not_new_kernel_witness": true,
+            "translation_root_hash72": "x?sPTF?v?CZ-7?Fgyu/zjU2lK>Nb-*B<QR<2R/A2xs4?iR5>35E6ouI937+9TsSZqkRUo2g!",
+            "trinary_phase": 0
+          }
+        },
+        {
+          "committed_witness": {
+            "execution_mode_does_not_reclassify_witness": true,
+            "object_id": "00",
+            "recorded_witness_not_new_kernel_witness": true,
+            "schema": "HHS_PASS073_HASH72_SURFACE_WITNESS_RECORD_V2",
+            "witness": {
+              "authority": "HHS_BINARY_TRINARY_TRANSLATION_AUTHORITY_V1",
+              "gate_root_hash72": "zFiu(bl+ttfK*Ii72k*(bc*3g8r8lA*>x8HVc)8aU)j(7WnvQ/*l7tVG-??B/b1)S?EG)V!k",
+              "reconstruction_root_hash72": "q*Snl?EZiyiNm/0+H>l8CygEGZGhHu)VlS<zZsDvd1xIQw-bXl<s/qfIv3+c)nTkhI8VgO7n",
+              "source_artifact_id": "pass070_binary_trinary_round_trip",
+              "source_relative_path": "BINARY_TRINARY_ROUND_TRIP_PASS_070.json",
+              "source_root_hash72": "j(NYcIO!OwD9>7j7-zEO!bQ4O)4vol0aL1hx-F)+y+>3flceX-OYG3ceQV3eyCeNLgGyalRD",
+              "source_sha256": "a6b95ad8773b37e1623e7ce4d4eae3ad043393f958d70ab3d6786bad4e14ea04",
+              "translation_root_hash72": "IyUqar0KDkVOBZMybe<)3X35RXZn)+n)MW0jqSLYOKR)m3Il2*Z0AdrQjlVU<tO4/8LSp28H"
+            },
+            "witness_source": "COMMITTED_CANONICAL_ARTIFACT"
+          },
+          "gate": {
+            "gate_root_hash72": "zFiu(bl+ttfK*Ii72k*(bc*3g8r8lA*>x8HVc)8aU)j(7WnvQ/*l7tVG-??B/b1)S?EG)V!k",
+            "round_trip_valid": true,
+            "zero_sum_closed": true
+          },
+          "pair_index": 2,
+          "reconstruction": {
+            "left_bit": 0,
+            "reconstruction_root_hash72": "q*Snl?EZiyiNm/0+H>l8CygEGZGhHu)VlS<zZsDvd1xIQw-bXl<s/qfIv3+c)nTkhI8VgO7n",
+            "right_bit": 0
+          },
+          "source": {
+            "left_bit": 0,
+            "right_bit": 0
+          },
+          "state": {
+            "binary_switch": 0,
+            "recorded_witness_not_new_kernel_witness": true,
+            "translation_root_hash72": "IyUqar0KDkVOBZMybe<)3X35RXZn)+n)MW0jqSLYOKR)m3Il2*Z0AdrQjlVU<tO4/8LSp28H",
+            "trinary_phase": 0
+          }
+        },
+        {
+          "committed_witness": {
+            "execution_mode_does_not_reclassify_witness": true,
+            "object_id": "11",
+            "recorded_witness_not_new_kernel_witness": true,
+            "schema": "HHS_PASS073_HASH72_SURFACE_WITNESS_RECORD_V2",
+            "witness": {
+              "authority": "HHS_BINARY_TRINARY_TRANSLATION_AUTHORITY_V1",
+              "gate_root_hash72": "Pks(tFCbS!Q!rZ5JjtOAEuIMsi3Tlm-3JyH5ur20vYv)7kHqU?1Hx5iITjunAkx)pQ679INT",
+              "reconstruction_root_hash72": "G12*8s*q-)FxGSFUej)mEiqlUZWc0lQMCWlue0LufR7716BlrMA?7HUKFiHX0Vb5IE5W+Al-",
+              "source_artifact_id": "pass070_binary_trinary_round_trip",
+              "source_relative_path": "BINARY_TRINARY_ROUND_TRIP_PASS_070.json",
+              "source_root_hash72": "j(NYcIO!OwD9>7j7-zEO!bQ4O)4vol0aL1hx-F)+y+>3gkddX-OYG3ceQV3eyChKLgGyalRD",
+              "source_sha256": "a6b95ad8773b37e1623e7ce4d4eae3ad043393f958d70ab3d6786bad4e14ea04",
+              "translation_root_hash72": "x?sPTF?v?CZ-7?Fgyu/zjU2lK>Nb-*B<QR<2R/A2xs4?iR5>35E6ouI937+9TsSZqkRUo2g!"
+            },
+            "witness_source": "COMMITTED_CANONICAL_ARTIFACT"
+          },
+          "gate": {
+            "gate_root_hash72": "Pks(tFCbS!Q!rZ5JjtOAEuIMsi3Tlm-3JyH5ur20vYv)7kHqU?1Hx5iITjunAkx)pQ679INT",
+            "round_trip_valid": true,
+            "zero_sum_closed": true
+          },
+          "pair_index": 3,
+          "reconstruction": {
+            "left_bit": 1,
+            "reconstruction_root_hash72": "G12*8s*q-)FxGSFUej)mEiqlUZWc0lQMCWlue0LufR7716BlrMA?7HUKFiHX0Vb5IE5W+Al-",
+            "right_bit": 1
+          },
+          "source": {
+            "left_bit": 1,
+            "right_bit": 1
+          },
+          "state": {
+            "binary_switch": 1,
+            "recorded_witness_not_new_kernel_witness": true,
+            "translation_root_hash72": "x?sPTF?v?CZ-7?Fgyu/zjU2lK>Nb-*B<QR<2R/A2xs4?iR5>35E6ouI937+9TsSZqkRUo2g!",
+            "trinary_phase": 0
+          }
+        },
+        {
+          "committed_witness": {
+            "execution_mode_does_not_reclassify_witness": true,
+            "object_id": "10",
+            "recorded_witness_not_new_kernel_witness": true,
+            "schema": "HHS_PASS073_HASH72_SURFACE_WITNESS_RECORD_V2",
+            "witness": {
+              "authority": "HHS_BINARY_TRINARY_TRANSLATION_AUTHORITY_V1",
+              "gate_root_hash72": "Qntc7jxaMKs<IF6mdyJEKESIbU95g81nVhygfF!31V7jFi)07Aggkfl<c4rm7h4n?*>oUNB7",
+              "reconstruction_root_hash72": "7A)2W1kO/)jWZ-5Q4Tk2<SbzMVLaSxz*A2L8O(y1FNgyfWonPnadp(FO5fYpynMXeIxoc+?Q",
+              "source_artifact_id": "pass070_binary_trinary_round_trip",
+              "source_relative_path": "BINARY_TRINARY_ROUND_TRIP_PASS_070.json",
+              "source_root_hash72": "j(NYcIO!OwD9>7j7-zEO!bQ4O)4vol0aL1hx-F)+y+>3gkceX-OYG3ceQV3eyCgLLgGyalRD",
+              "source_sha256": "a6b95ad8773b37e1623e7ce4d4eae3ad043393f958d70ab3d6786bad4e14ea04",
+              "translation_root_hash72": "7<MMJF)ErGa3oHbCy)!HQpi7OPXh(kqw3Dtzl3!TEkFM8<ujRV6VuAova!9DpmoTHxAH6g!>"
+            },
+            "witness_source": "COMMITTED_CANONICAL_ARTIFACT"
+          },
+          "gate": {
+            "gate_root_hash72": "Qntc7jxaMKs<IF6mdyJEKESIbU95g81nVhygfF!31V7jFi)07Aggkfl<c4rm7h4n?*>oUNB7",
+            "round_trip_valid": true,
+            "zero_sum_closed": true
+          },
+          "pair_index": 4,
+          "reconstruction": {
+            "left_bit": 1,
+            "reconstruction_root_hash72": "7A)2W1kO/)jWZ-5Q4Tk2<SbzMVLaSxz*A2L8O(y1FNgyfWonPnadp(FO5fYpynMXeIxoc+?Q",
+            "right_bit": 0
+          },
+          "source": {
+            "left_bit": 1,
+            "right_bit": 0
+          },
+          "state": {
+            "binary_switch": 0,
+            "recorded_witness_not_new_kernel_witness": true,
+            "translation_root_hash72": "7<MMJF)ErGa3oHbCy)!HQpi7OPXh(kqw3Dtzl3!TEkFM8<ujRV6VuAova!9DpmoTHxAH6g!>",
+            "trinary_phase": -1
+          }
+        },
+        {
+          "committed_witness": {
+            "execution_mode_does_not_reclassify_witness": true,
+            "object_id": "00",
+            "recorded_witness_not_new_kernel_witness": true,
+            "schema": "HHS_PASS073_HASH72_SURFACE_WITNESS_RECORD_V2",
+            "witness": {
+              "authority": "HHS_BINARY_TRINARY_TRANSLATION_AUTHORITY_V1",
+              "gate_root_hash72": "zFiu(bl+ttfK*Ii72k*(bc*3g8r8lA*>x8HVc)8aU)j(7WnvQ/*l7tVG-??B/b1)S?EG)V!k",
+              "reconstruction_root_hash72": "q*Snl?EZiyiNm/0+H>l8CygEGZGhHu)VlS<zZsDvd1xIQw-bXl<s/qfIv3+c)nTkhI8VgO7n",
+              "source_artifact_id": "pass070_binary_trinary_round_trip",
+              "source_relative_path": "BINARY_TRINARY_ROUND_TRIP_PASS_070.json",
+              "source_root_hash72": "j(NYcIO!OwD9>7j7-zEO!bQ4O)4vol0aL1hx-F)+y+>3flceX-OYG3ceQV3eyCeNLgGyalRD",
+              "source_sha256": "a6b95ad8773b37e1623e7ce4d4eae3ad043393f958d70ab3d6786bad4e14ea04",
+              "translation_root_hash72": "IyUqar0KDkVOBZMybe<)3X35RXZn)+n)MW0jqSLYOKR)m3Il2*Z0AdrQjlVU<tO4/8LSp28H"
+            },
+            "witness_source": "COMMITTED_CANONICAL_ARTIFACT"
+          },
+          "gate": {
+            "gate_root_hash72": "zFiu(bl+ttfK*Ii72k*(bc*3g8r8lA*>x8HVc)8aU)j(7WnvQ/*l7tVG-??B/b1)S?EG)V!k",
+            "round_trip_valid": true,
+            "zero_sum_closed": true
+          },
+          "pair_index": 5,
+          "reconstruction": {
+            "left_bit": 0,
+            "reconstruction_root_hash72": "q*Snl?EZiyiNm/0+H>l8CygEGZGhHu)VlS<zZsDvd1xIQw-bXl<s/qfIv3+c)nTkhI8VgO7n",
+            "right_bit": 0
+          },
+          "source": {
+            "left_bit": 0,
+            "right_bit": 0
+          },
+          "state": {
+            "binary_switch": 0,
+            "recorded_witness_not_new_kernel_witness": true,
+            "translation_root_hash72": "IyUqar0KDkVOBZMybe<)3X35RXZn)+n)MW0jqSLYOKR)m3Il2*Z0AdrQjlVU<tO4/8LSp28H",
+            "trinary_phase": 0
+          }
+        },
+        {
+          "committed_witness": {
+            "execution_mode_does_not_reclassify_witness": true,
+            "object_id": "11",
+            "recorded_witness_not_new_kernel_witness": true,
+            "schema": "HHS_PASS073_HASH72_SURFACE_WITNESS_RECORD_V2",
+            "witness": {
+              "authority": "HHS_BINARY_TRINARY_TRANSLATION_AUTHORITY_V1",
+              "gate_root_hash72": "Pks(tFCbS!Q!rZ5JjtOAEuIMsi3Tlm-3JyH5ur20vYv)7kHqU?1Hx5iITjunAkx)pQ679INT",
+              "reconstruction_root_hash72": "G12*8s*q-)FxGSFUej)mEiqlUZWc0lQMCWlue0LufR7716BlrMA?7HUKFiHX0Vb5IE5W+Al-",
+              "source_artifact_id": "pass070_binary_trinary_round_trip",
+              "source_relative_path": "BINARY_TRINARY_ROUND_TRIP_PASS_070.json",
+              "source_root_hash72": "j(NYcIO!OwD9>7j7-zEO!bQ4O)4vol0aL1hx-F)+y+>3gkddX-OYG3ceQV3eyChKLgGyalRD",
+              "source_sha256": "a6b95ad8773b37e1623e7ce4d4eae3ad043393f958d70ab3d6786bad4e14ea04",
+              "translation_root_hash72": "x?sPTF?v?CZ-7?Fgyu/zjU2lK>Nb-*B<QR<2R/A2xs4?iR5>35E6ouI937+9TsSZqkRUo2g!"
+            },
+            "witness_source": "COMMITTED_CANONICAL_ARTIFACT"
+          },
+          "gate": {
+            "gate_root_hash72": "Pks(tFCbS!Q!rZ5JjtOAEuIMsi3Tlm-3JyH5ur20vYv)7kHqU?1Hx5iITjunAkx)pQ679INT",
+            "round_trip_valid": true,
+            "zero_sum_closed": true
+          },
+          "pair_index": 6,
+          "reconstruction": {
+            "left_bit": 1,
+            "reconstruction_root_hash72": "G12*8s*q-)FxGSFUej)mEiqlUZWc0lQMCWlue0LufR7716BlrMA?7HUKFiHX0Vb5IE5W+Al-",
+            "right_bit": 1
+          },
+          "source": {
+            "left_bit": 1,
+            "right_bit": 1
+          },
+          "state": {
+            "binary_switch": 1,
+            "recorded_witness_not_new_kernel_witness": true,
+            "translation_root_hash72": "x?sPTF?v?CZ-7?Fgyu/zjU2lK>Nb-*B<QR<2R/A2xs4?iR5>35E6ouI937+9TsSZqkRUo2g!",
+            "trinary_phase": 0
+          }
+        },
+        {
+          "committed_witness": {
+            "execution_mode_does_not_reclassify_witness": true,
+            "object_id": "11",
+            "recorded_witness_not_new_kernel_witness": true,
+            "schema": "HHS_PASS073_HASH72_SURFACE_WITNESS_RECORD_V2",
+            "witness": {
+              "authority": "HHS_BINARY_TRINARY_TRANSLATION_AUTHORITY_V1",
+              "gate_root_hash72": "Pks(tFCbS!Q!rZ5JjtOAEuIMsi3Tlm-3JyH5ur20vYv)7kHqU?1Hx5iITjunAkx)pQ679INT",
+              "reconstruction_root_hash72": "G12*8s*q-)FxGSFUej)mEiqlUZWc0lQMCWlue0LufR7716BlrMA?7HUKFiHX0Vb5IE5W+Al-",
+              "source_artifact_id": "pass070_binary_trinary_round_trip",
+              "source_relative_path": "BINARY_TRINARY_ROUND_TRIP_PASS_070.json",
+              "source_root_hash72": "j(NYcIO!OwD9>7j7-zEO!bQ4O)4vol0aL1hx-F)+y+>3gkddX-OYG3ceQV3eyChKLgGyalRD",
+              "source_sha256": "a6b95ad8773b37e1623e7ce4d4eae3ad043393f958d70ab3d6786bad4e14ea04",
+              "translation_root_hash72": "x?sPTF?v?CZ-7?Fgyu/zjU2lK>Nb-*B<QR<2R/A2xs4?iR5>35E6ouI937+9TsSZqkRUo2g!"
+            },
+            "witness_source": "COMMITTED_CANONICAL_ARTIFACT"
+          },
+          "gate": {
+            "gate_root_hash72": "Pks(tFCbS!Q!rZ5JjtOAEuIMsi3Tlm-3JyH5ur20vYv)7kHqU?1Hx5iITjunAkx)pQ679INT",
+            "round_trip_valid": true,
+            "zero_sum_closed": true
+          },
+          "pair_index": 7,
+          "reconstruction": {
+            "left_bit": 1,
+            "reconstruction_root_hash72": "G12*8s*q-)FxGSFUej)mEiqlUZWc0lQMCWlue0LufR7716BlrMA?7HUKFiHX0Vb5IE5W+Al-",
+            "right_bit": 1
+          },
+          "source": {
+            "left_bit": 1,
+            "right_bit": 1
+          },
+          "state": {
+            "binary_switch": 1,
+            "recorded_witness_not_new_kernel_witness": true,
+            "translation_root_hash72": "x?sPTF?v?CZ-7?Fgyu/zjU2lK>Nb-*B<QR<2R/A2xs4?iR5>35E6ouI937+9TsSZqkRUo2g!",
+            "trinary_phase": 0
+          }
+        }
+      ],
+      "projection_access_not_platform_authority": true,
+      "schema": "HHS_NATIVE_PRODUCT_BINARY_TRINARY_PACKET_V2",
+      "trinary_lane_vector": [
+        -1,
+        0,
+        0,
+        0,
+        -1,
+        0,
+        0,
+        0
+      ],
+      "version": "PASS_073_PORTABILITY_AND_PROVENANCE_REPAIR_V1",
+      "width": 16,
+      "witness_source": "AUTHENTICATED_PASS070_COMMITTED_ARTIFACT",
+      "word": 45967
+    },
+    "derived_artifact": {
+      "binary_switch_mask": [
+        0,
+        1,
+        0,
+        1,
+        0,
+        0,
+        1,
+        1
+      ],
+      "canonical_bits": "1011001110001111",
+      "lo_shu_schedule": [
+        {
+          "binary_switch": 0,
+          "kernel_cell_id": "cell:00",
+          "lo_shu_slot": 0,
+          "lo_shu_value": 8,
+          "pair_index": 0,
+          "round_trip_valid": true,
+          "translation_root_hash72": "7<MMJF)ErGa3oHbCy)!HQpi7OPXh(kqw3Dtzl3!TEkFM8<ujRV6VuAova!9DpmoTHxAH6g!>",
+          "trinary_phase": -1,
+          "zero_sum_closed": true
+        },
+        {
+          "binary_switch": 1,
+          "kernel_cell_id": "cell:01",
+          "lo_shu_slot": 1,
+          "lo_shu_value": 1,
+          "pair_index": 1,
+          "round_trip_valid": true,
+          "translation_root_hash72": "x?sPTF?v?CZ-7?Fgyu/zjU2lK>Nb-*B<QR<2R/A2xs4?iR5>35E6ouI937+9TsSZqkRUo2g!",
+          "trinary_phase": 0,
+          "zero_sum_closed": true
+        },
+        {
+          "binary_switch": 0,
+          "kernel_cell_id": "cell:02",
+          "lo_shu_slot": 2,
+          "lo_shu_value": 6,
+          "pair_index": 2,
+          "round_trip_valid": true,
+          "translation_root_hash72": "IyUqar0KDkVOBZMybe<)3X35RXZn)+n)MW0jqSLYOKR)m3Il2*Z0AdrQjlVU<tO4/8LSp28H",
+          "trinary_phase": 0,
+          "zero_sum_closed": true
+        },
+        {
+          "binary_switch": 1,
+          "kernel_cell_id": "cell:03",
+          "lo_shu_slot": 3,
+          "lo_shu_value": 3,
+          "pair_index": 3,
+          "round_trip_valid": true,
+          "translation_root_hash72": "x?sPTF?v?CZ-7?Fgyu/zjU2lK>Nb-*B<QR<2R/A2xs4?iR5>35E6ouI937+9TsSZqkRUo2g!",
+          "trinary_phase": 0,
+          "zero_sum_closed": true
+        },
+        {
+          "binary_switch": 0,
+          "kernel_cell_id": "cell:04",
+          "lo_shu_slot": 4,
+          "lo_shu_value": 5,
+          "pair_index": 4,
+          "round_trip_valid": true,
+          "translation_root_hash72": "7<MMJF)ErGa3oHbCy)!HQpi7OPXh(kqw3Dtzl3!TEkFM8<ujRV6VuAova!9DpmoTHxAH6g!>",
+          "trinary_phase": -1,
+          "zero_sum_closed": true
+        },
+        {
+          "binary_switch": 0,
+          "kernel_cell_id": "cell:05",
+          "lo_shu_slot": 5,
+          "lo_shu_value": 7,
+          "pair_index": 5,
+          "round_trip_valid": true,
+          "translation_root_hash72": "IyUqar0KDkVOBZMybe<)3X35RXZn)+n)MW0jqSLYOKR)m3Il2*Z0AdrQjlVU<tO4/8LSp28H",
+          "trinary_phase": 0,
+          "zero_sum_closed": true
+        },
+        {
+          "binary_switch": 1,
+          "kernel_cell_id": "cell:06",
+          "lo_shu_slot": 6,
+          "lo_shu_value": 4,
+          "pair_index": 6,
+          "round_trip_valid": true,
+          "translation_root_hash72": "x?sPTF?v?CZ-7?Fgyu/zjU2lK>Nb-*B<QR<2R/A2xs4?iR5>35E6ouI937+9TsSZqkRUo2g!",
+          "trinary_phase": 0,
+          "zero_sum_closed": true
+        },
+        {
+          "binary_switch": 1,
+          "kernel_cell_id": "cell:07",
+          "lo_shu_slot": 7,
+          "lo_shu_value": 9,
+          "pair_index": 7,
+          "round_trip_valid": true,
+          "translation_root_hash72": "x?sPTF?v?CZ-7?Fgyu/zjU2lK>Nb-*B<QR<2R/A2xs4?iR5>35E6ouI937+9TsSZqkRUo2g!",
+          "trinary_phase": 0,
+          "zero_sum_closed": true
+        }
+      ],
+      "reconstructed_word": 45967,
+      "round_trip_valid": true,
+      "source_word": 45967,
+      "trinary_lane_vector": [
+        -1,
+        0,
+        0,
+        0,
+        -1,
+        0,
+        0,
+        0
+      ],
+      "zero_sum_closed": true
+    },
+    "foundation_mutation": false,
+    "lo_shu_schedule": {
+      "all_pairs_round_trip_valid": true,
+      "all_pairs_zero_sum_closed": true,
+      "lane_sums": {
+        "plastic_lane_count": 6,
+        "positive_lane_count": 0,
+        "zero_sum_lane_count": 2
+      },
+      "lo_shu_cycle": [
+        8,
+        1,
+        6,
+        3,
+        5,
+        7,
+        4,
+        9,
+        2
+      ],
+      "packet_root_hash72": "0000000000000000000000000000001u48gA2wnaLtOZGZ>pT8+UPcvnlXlk1UDepSs>vKsU",
+      "pair_count": 8,
+      "pass068_artifact_sha256": "38699b924aa9eb3f5d2829eef83cb4aa66e240df42db5d355f33aff9b7d57d53",
+      "pass068_kernel_explicitly_consumed": true,
+      "pass068_lattice_root_hash72": "s9q6ZCI!lm2Lx1zIdgquSd9rMuRC!GUJaLmB+)zFR4Dqy0rlR?!1A7)8LCa2wk67<//ghu+(",
+      "schedule_root_hash72": "0000000000000000000000000000003Z>oAWAypsr*-KV*OpI?)Ien8i8DJXW=O/NNJ(43zw",
+      "scheduled_pairs": [
+        {
+          "binary_switch": 0,
+          "kernel_cell_id": "cell:00",
+          "lo_shu_slot": 0,
+          "lo_shu_value": 8,
+          "pair_index": 0,
+          "round_trip_valid": true,
+          "translation_root_hash72": "7<MMJF)ErGa3oHbCy)!HQpi7OPXh(kqw3Dtzl3!TEkFM8<ujRV6VuAova!9DpmoTHxAH6g!>",
+          "trinary_phase": -1,
+          "zero_sum_closed": true
+        },
+        {
+          "binary_switch": 1,
+          "kernel_cell_id": "cell:01",
+          "lo_shu_slot": 1,
+          "lo_shu_value": 1,
+          "pair_index": 1,
+          "round_trip_valid": true,
+          "translation_root_hash72": "x?sPTF?v?CZ-7?Fgyu/zjU2lK>Nb-*B<QR<2R/A2xs4?iR5>35E6ouI937+9TsSZqkRUo2g!",
+          "trinary_phase": 0,
+          "zero_sum_closed": true
+        },
+        {
+          "binary_switch": 0,
+          "kernel_cell_id": "cell:02",
+          "lo_shu_slot": 2,
+          "lo_shu_value": 6,
+          "pair_index": 2,
+          "round_trip_valid": true,
+          "translation_root_hash72": "IyUqar0KDkVOBZMybe<)3X35RXZn)+n)MW0jqSLYOKR)m3Il2*Z0AdrQjlVU<tO4/8LSp28H",
+          "trinary_phase": 0,
+          "zero_sum_closed": true
+        },
+        {
+          "binary_switch": 1,
+          "kernel_cell_id": "cell:03",
+          "lo_shu_slot": 3,
+          "lo_shu_value": 3,
+          "pair_index": 3,
+          "round_trip_valid": true,
+          "translation_root_hash72": "x?sPTF?v?CZ-7?Fgyu/zjU2lK>Nb-*B<QR<2R/A2xs4?iR5>35E6ouI937+9TsSZqkRUo2g!",
+          "trinary_phase": 0,
+          "zero_sum_closed": true
+        },
+        {
+          "binary_switch": 0,
+          "kernel_cell_id": "cell:04",
+          "lo_shu_slot": 4,
+          "lo_shu_value": 5,
+          "pair_index": 4,
+          "round_trip_valid": true,
+          "translation_root_hash72": "7<MMJF)ErGa3oHbCy)!HQpi7OPXh(kqw3Dtzl3!TEkFM8<ujRV6VuAova!9DpmoTHxAH6g!>",
+          "trinary_phase": -1,
+          "zero_sum_closed": true
+        },
+        {
+          "binary_switch": 0,
+          "kernel_cell_id": "cell:05",
+          "lo_shu_slot": 5,
+          "lo_shu_value": 7,
+          "pair_index": 5,
+          "round_trip_valid": true,
+          "translation_root_hash72": "IyUqar0KDkVOBZMybe<)3X35RXZn)+n)MW0jqSLYOKR)m3Il2*Z0AdrQjlVU<tO4/8LSp28H",
+          "trinary_phase": 0,
+          "zero_sum_closed": true
+        },
+        {
+          "binary_switch": 1,
+          "kernel_cell_id": "cell:06",
+          "lo_shu_slot": 6,
+          "lo_shu_value": 4,
+          "pair_index": 6,
+          "round_trip_valid": true,
+          "translation_root_hash72": "x?sPTF?v?CZ-7?Fgyu/zjU2lK>Nb-*B<QR<2R/A2xs4?iR5>35E6ouI937+9TsSZqkRUo2g!",
+          "trinary_phase": 0,
+          "zero_sum_closed": true
+        },
+        {
+          "binary_switch": 1,
+          "kernel_cell_id": "cell:07",
+          "lo_shu_slot": 7,
+          "lo_shu_value": 9,
+          "pair_index": 7,
+          "round_trip_valid": true,
+          "translation_root_hash72": "x?sPTF?v?CZ-7?Fgyu/zjU2lK>Nb-*B<QR<2R/A2xs4?iR5>35E6ouI937+9TsSZqkRUo2g!",
+          "trinary_phase": 0,
+          "zero_sum_closed": true
+        }
+      ],
+      "schema": "HHS_NATIVE_PASS068_BOUND_LO_SHU_TRANSFORMATION_SCHEDULE_V2",
+      "version": "PASS_073_PORTABILITY_AND_PROVENANCE_REPAIR_V1"
+    },
+    "pass068_kernel_binding": {
+      "artifact_consumed_as_read_only_kernel_surface": true,
+      "cell_count": 81,
+      "first_subgrid_cell_ids": [
+        "cell:00",
+        "cell:01",
+        "cell:02",
+        "cell:03",
+        "cell:04",
+        "cell:05",
+        "cell:06",
+        "cell:07",
+        "cell:08"
+      ],
+      "global_closure": true,
+      "lattice_root_hash72": "s9q6ZCI!lm2Lx1zIdgquSd9rMuRC!GUJaLmB+)zFR4Dqy0rlR?!1A7)8LCa2wk67<//ghu+(",
+      "lo_shu_cycle": [
+        8,
+        1,
+        6,
+        3,
+        5,
+        7,
+        4,
+        9,
+        2
+      ],
+      "schema": "HHS_PASS073_PASS068_KERNEL_BINDING_V1",
+      "source_artifact_id": "pass068_three_lane_81_cell_qudit_kernel",
+      "source_relative_path": "THREE_LANE_81_CELL_QUDIT_KERNEL_PASS_068.json",
+      "source_schema": "HHS_81_CELL_TRINARY_QUDIT_LATTICE_V1",
+      "source_sha256": "38699b924aa9eb3f5d2829eef83cb4aa66e240df42db5d355f33aff9b7d57d53",
+      "subgrid_count": 9
+    },
+    "plan_root_hash72": "0000000000000000000000000000000N3xBkcGxG=9t5))Imvl>uDn=0=AV/G=!2iG9(U+Qy",
+    "product_artifact_root_hash72": "0000000000000000000000000000000UZ5opS?)q9+T*Q9J!D=eH)65CS4r*vM)Xf6gOV1RH",
+    "product_id": "NATIVE_HHS_DETERMINISTIC_TRANSFORMATION_PACKAGE",
+    "projection_access_not_platform_authority": true,
+    "recorded_witness_not_newly_generated_witness": true,
+    "requirement_root_hash72": "0000000000000000000000000000000ZJB8PTTmAy4)jgsBUU1sLd+41zL^r1IA4k55!t?Tu",
+    "round_trip": {
+      "canonical_reconstruction": true,
+      "packet_root_hash72": "0000000000000000000000000000001u48gA2wnaLtOZGZ>pT8+UPcvnlXlk1UDepSs>vKsU",
+      "reconstructed_bits": "1011001110001111",
+      "reconstructed_word": 45967,
+      "round_trip_root_hash72": "0000000000000000000000000000000)>O)8XgN6wP6R1*=Ca>-CU)SgoTW*T6d^jMRGZV*a",
+      "round_trip_valid": true,
+      "schema": "HHS_NATIVE_PRODUCT_RECONSTRUCTION_V1",
+      "version": "PASS_073_PORTABILITY_AND_PROVENANCE_REPAIR_V1"
+    },
+    "schema": "HHS_PROJECT_SOURCE_ARTIFACT_V2",
+    "semantic_commitment_excludes_execution_mode": true,
+    "semantic_commitment_excludes_host_paths": true,
+    "specification_root_hash72": "0000000000000000000000000000000WokxsrrM?+)dyZmb>prFXORkUi?5NSln)8yCdJyMg",
+    "strict_input_normalization_receipt": {
+      "canonical_bits": "1011001110001111",
+      "canonical_bits_sha256": "9414efb4957f9a6ff4f1a89a726d8c97a4b9c1bb193dcda70ae5c20f86cfdf95",
+      "left_zero_count": 0,
+      "normalization_operation": "IDENTITY",
+      "original_sequence": "1011001110001111",
+      "original_sequence_sha256": "9414efb4957f9a6ff4f1a89a726d8c97a4b9c1bb193dcda70ae5c20f86cfdf95",
+      "schema": "HHS_STRICT_BINARY_INPUT_NORMALIZATION_RECEIPT_V1",
+      "source_identity_preserved": true,
+      "source_word": 45967,
+      "undeclared_characters_removed": false,
+      "width": 16
+    },
+    "system_root_hash72": "ZF9bto?tV>P(KcFPL5L+csyy!jxdrAaadua1a!w-uwug8/MeMSqSS3*R>lXIefi)nyjXpc+)",
+    "typed_input": {
+      "mode": "binary_trinary_loshu_three_lane_zero_sum",
+      "sequence": "1011001110001111",
+      "width": 16
+    },
+    "version": "PASS_073_PORTABILITY_AND_PROVENANCE_REPAIR_V1"
+  },
+  "product_release_manifest": {
+    "context_independent_development_state": true,
+    "deterministic_replay": true,
+    "development_capsule_root_hash72": "00000000000000000000000000000036IMta6sT!tkOMIYiegNmY9rfjeUXg+iePmFW3peaV",
+    "environment_independent_semantic_commitment": true,
+    "execution_root_hash72": "00000000000000000000000000000043DcrLb!K=avNagS?+vez/yrA^!A06xBV35M8gUQUS",
+    "foundation_delta": {
+      "authority": 0,
+      "services": 0,
+      "surfaces": 0
+    },
+    "pass_id": "PASS_073",
+    "portable_cross_mode_semantic_replay": true,
+    "product_artifact_root_hash72": "0000000000000000000000000000000UZ5opS?)q9+T*Q9J!D=eH)65CS4r*vM)Xf6gOV1RH",
+    "product_id": "NATIVE_HHS_DETERMINISTIC_TRANSFORMATION_PACKAGE",
+    "product_release_root_hash72": "0000000000000000000000000000001nsMpCRO8o8pCr/)xYKI8H0bzH9RZd*Ekcs(CsGh>J",
+    "product_verified": true,
+    "project_root_hash72": "000000000000000000000000000000437l3GpQ*sB74?b>t9EB2D^Ac^oAt>4+e6R=!/7Mu/",
+    "replay_root_hash72": "0000000000000000000000000000001VZu3N5VYPMthpr)go6)?lh48)=Ap+/Pm1+O4QHFb?",
+    "root_distinctions": {
+      "execution_root_distinct_from_system_root": true,
+      "product_root_distinct_from_system_root": true,
+      "project_root_distinct_from_system_root": true,
+      "semantic_product_root_distinct_from_execution_root": true
+    },
+    "schema": "HHS_PRODUCT_RELEASE_MANIFEST_V2",
+    "system_root_hash72": "ZF9bto?tV>P(KcFPL5L+csyy!jxdrAaadua1a!w-uwug8/MeMSqSS3*R>lXIefi)nyjXpc+)",
+    "version": "PASS_073_PORTABILITY_AND_PROVENANCE_REPAIR_V1"
+  },
+  "project": {
+    "conversation_context_not_project_state": true,
+    "foundation_mutation_allowed": false,
+    "host_environment_not_canonical_identity": true,
+    "pass_id": "PASS_073",
+    "plan_root_hash72": "0000000000000000000000000000000N3xBkcGxG=9t5))Imvl>uDn=0=AV/G=!2iG9(U+Qy",
+    "project_name": "First Native HHS Deterministic Transformation Workload",
+    "project_root_hash72": "000000000000000000000000000000437l3GpQ*sB74?b>t9EB2D^Ac^oAt>4+e6R=!/7Mu/",
+    "requirement_root_hash72": "0000000000000000000000000000000ZJB8PTTmAy4)jgsBUU1sLd+41zL^r1IA4k55!t?Tu",
+    "schema": "HHS_NATIVE_PROJECT_V2",
+    "specification_root_hash72": "0000000000000000000000000000000WokxsrrM?+)dyZmb>prFXORkUi?5NSln)8yCdJyMg",
+    "system_root_hash72": "ZF9bto?tV>P(KcFPL5L+csyy!jxdrAaadua1a!w-uwug8/MeMSqSS3*R>lXIefi)nyjXpc+)",
+    "version": "PASS_073_PORTABILITY_AND_PROVENANCE_REPAIR_V1"
+  },
+  "replay_receipt": {
+    "admitted_plan_root_hash72": "0000000000000000000000000000000N3xBkcGxG=9t5))Imvl>uDn=0=AV/G=!2iG9(U+Qy",
+    "cross_mode_semantic_replay_supported": true,
+    "expected_product_root_hash72": "0000000000000000000000000000000UZ5opS?)q9+T*Q9J!D=eH)65CS4r*vM)Xf6gOV1RH",
+    "mode_specific_receipt_not_used_as_product_identity": true,
+    "product_root_matches": true,
+    "project_root_hash72": "000000000000000000000000000000437l3GpQ*sB74?b>t9EB2D^Ac^oAt>4+e6R=!/7Mu/",
+    "reconstruction_verified": true,
+    "replay_execution_mode": "COMMITTED_ARTIFACT",
+    "replay_root_hash72": "0000000000000000000000000000001VZu3N5VYPMthpr)go6)?lh48)=Ap+/Pm1+O4QHFb?",
+    "replayed_product_root_hash72": "0000000000000000000000000000000UZ5opS?)q9+T*Q9J!D=eH)65CS4r*vM)Xf6gOV1RH",
+    "schema": "HHS_PROJECT_REPLAY_RECEIPT_V2",
+    "system_root_hash72": "ZF9bto?tV>P(KcFPL5L+csyy!jxdrAaadua1a!w-uwug8/MeMSqSS3*R>lXIefi)nyjXpc+)",
+    "version": "PASS_073_PORTABILITY_AND_PROVENANCE_REPAIR_V1"
+  },
+  "requirement": {
+    "context_window_independence_required": true,
+    "environment_independence_required": true,
+    "foundation_mutation_requested": false,
+    "pass_id": "PASS_073",
+    "product_goal": "derive a deterministic binary/trinary Lo Shu scheduled artifact with replay",
+    "requirement_root_hash72": "0000000000000000000000000000000ZJB8PTTmAy4)jgsBUU1sLd+41zL^r1IA4k55!t?Tu",
+    "requirement_text": "Build a native deterministic HHS transformation product without mutating the frozen platform.",
+    "schema": "HHS_PROJECT_REQUIREMENT_V2",
+    "typed_input": {
+      "mode": "binary_trinary_loshu_three_lane_zero_sum",
+      "sequence": "1011001110001111",
+      "width": 16
+    },
+    "version": "PASS_073_PORTABILITY_AND_PROVENANCE_REPAIR_V1"
+  },
+  "schema": "HHS_PASS_073_NATIVE_DEVELOPMENT_WORKLOAD_BUNDLE_V2",
+  "specification": {
+    "adds_foundational_service": false,
+    "canonical_identity_uses_repository_relative_content_addresses": true,
+    "live_verification_optional_not_semantic": true,
+    "product_root_must_differ_from_system_root": true,
+    "requirement_root_hash72": "0000000000000000000000000000000ZJB8PTTmAy4)jgsBUU1sLd+41zL^r1IA4k55!t?Tu",
+    "schema": "HHS_PROJECT_SPECIFICATION_V2",
+    "specification_root_hash72": "0000000000000000000000000000000WokxsrrM?+)dyZmb>prFXORkUi?5NSln)8yCdJyMg",
+    "system_baseline_root_hash72": "0000000000000000000000000000001(ElX4RQLqRyeF^TnaAL1KFl1fsh7TDoK!UT+WJ3je",
+    "system_root_hash72": "ZF9bto?tV>P(KcFPL5L+csyy!jxdrAaadua1a!w-uwug8/MeMSqSS3*R>lXIefi)nyjXpc+)",
+    "transformation": [
+      "strict_binary_input_commitment",
+      "authenticated_pass070_binary_to_trinary_switch_packet",
+      "authenticated_pass068_81_cell_loshu_schedule",
+      "three_lane_validation",
+      "zero_sum_round_trip_closure"
+    ],
+    "uses_existing_platform_surfaces": [
+      "PASS_070_UNIVERSAL_BINARY_TRINARY_TRANSLATION_COMMITTED_ARTIFACT",
+      "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_COMMITTED_ARTIFACT",
+      "PASS_072_TOTAL_SYSTEM_ROOT"
+    ],
+    "version": "PASS_073_PORTABILITY_AND_PROVENANCE_REPAIR_V1"
+  },
+  "test_plan": {
+    "all_tests_passed": true,
+    "product_artifact_root_hash72": "0000000000000000000000000000000UZ5opS?)q9+T*Q9J!D=eH)65CS4r*vM)Xf6gOV1RH",
+    "schema": "HHS_PROJECT_TEST_PLAN_V2",
+    "test_plan_root_hash72": "0000000000000000000000000000000irWKwKerNYPmM/hAFM9PeCm5-UtBeC80j>aaqx+0L",
+    "tests": [
+      {
+        "case": "positive_round_trip",
+        "passed": true
+      },
+      {
+        "case": "negative_invalid_width_rejected",
+        "passed": true
+      },
+      {
+        "case": "negative_non_binary_rejected",
+        "passed": true
+      },
+      {
+        "case": "negative_whitespace_rejected",
+        "passed": true
+      },
+      {
+        "case": "reconstruction_case",
+        "passed": true
+      },
+      {
+        "case": "pass068_kernel_binding",
+        "passed": true
+      }
+    ],
+    "version": "PASS_073_PORTABILITY_AND_PROVENANCE_REPAIR_V1"
+  },
+  "version": "PASS_073_PORTABILITY_AND_PROVENANCE_REPAIR_V1"
+}

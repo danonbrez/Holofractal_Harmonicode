@@ -91,8 +91,7 @@ export const RuntimeTopbar: React.FC<
                     windows:
                     {" "}
                     {
-                        runtimeOS.workspace
-                            .layout.windows.length
+                        metrics.workspaceWindows
                     }
                 </div>
 

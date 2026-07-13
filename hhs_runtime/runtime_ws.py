@@ -16,6 +16,8 @@ from typing import Set
 from fastapi import WebSocket
 from fastapi import WebSocketDisconnect
 
+from hhs_runtime.hhs_runtime_dataflow_guard_v1 import attach_egress_record
+
 from hhs_runtime.runtime_event_bus import (
 
     runtime_event_bus
@@ -209,6 +211,11 @@ class RuntimeWebSocketHub:
         # Event Buffer
         # -------------------------------------------------
 
+        payload = attach_egress_record(
+            f"hhs_runtime.runtime_ws.broadcast.{channel}",
+            payload,
+        )
+
         self.event_history[channel].append(
             payload
         )
@@ -291,17 +298,16 @@ class RuntimeWebSocketHub:
 
                 await websocket.send_text(
 
-                    json.dumps({
-
-                        "event_type":
-                            "heartbeat",
-
-                        "timestamp_ns":
-                            time.time_ns(),
-
-                        "channel":
-                            channel
-                    })
+                    json.dumps(
+                        attach_egress_record(
+                            f"hhs_runtime.runtime_ws.heartbeat.{channel}",
+                            {
+                                "event_type": "heartbeat",
+                                "timestamp_ns": time.time_ns(),
+                                "channel": channel,
+                            },
+                        )
+                    )
                 )
 
         except asyncio.CancelledError:

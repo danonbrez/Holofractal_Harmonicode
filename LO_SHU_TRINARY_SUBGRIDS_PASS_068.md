@@ -1,0 +1,434 @@
+# LO SHU TRINARY SUBGRIDS PASS 068
+
+```json
+{
+  "schema": "HHS_LO_SHU_TRINARY_SUBGRIDS_PASS_068_V1",
+  "subgrid_count": 9,
+  "subgrids": [
+    {
+      "all_cells_closed": true,
+      "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+      "cell_ids": [
+        "cell:00",
+        "cell:01",
+        "cell:02",
+        "cell:03",
+        "cell:04",
+        "cell:05",
+        "cell:06",
+        "cell:07",
+        "cell:08"
+      ],
+      "cell_roots_hash72": [
+        "+MwIWY8EkT*Mr0MVPjc(ZUFU84EQ<+KBD*Vl47RDPVDMgnpun>cF7KvIpZgOSvkw2jE8n9Nr",
+        "04FTaUWWT2UHKzSCo+qIB8NI4EaO>FcHHM-y-2FbZo7Hz4RTs>kr48pkNU><*5seyo7r4Snx",
+        "B99wH4cXnU(T0NxP2ji(J8-8bSgBsm65fXwKASe9HMgEQRYUx?oJIZn<+4GQ(25LQ3aam68B",
+        "3VuHIY(c4ku2Gn7!lH6Sx3eluOJ3EaaV/nGOr/GK+ejmX9bXB10n*3HJZ3DZl)n27bxbPShW",
+        "w/2KDzaR*se?SHOAIJG+L-coL)WnYu>bS--AOKvLgr3</Q4SQhmycXoBMDLeG5IknAwI0u7p",
+        "A-q8mmfebOBhcDPsTrh6xeVVhjzEf1L*)WBy1v3HOs<nJoFdfMjxLXnZZUA8KAMzQj3kO360",
+        "7S-rB)Yx!vrSuX7)0EZp2*BE)l>RA>jyJfj(4j24ltDvEQp3E4n-U6HTp0nuqnXstgEzvKUl",
+        "jGuJCBxiaYN4WF1!OMAfabmtZ*ZRn+ex?SDAGZx4oRPD)r>c?H5P?obS97GXa<ZyToJE0yZr",
+        "LFBSWY8EkT*Uj0*FPjkWZUNg1HEQ<+KBD*/d4fRvPVLiKfpun>kx7KDI9>X+w>kEjT4Tn9Nz"
+      ],
+      "cluster_energy": 225,
+      "columns": [
+        75,
+        75,
+        75
+      ],
+      "diagonals": [
+        75,
+        75
+      ],
+      "domain_id": "FORMAL_ALGEBRA",
+      "local_lo_shu_conservation": true,
+      "rows": [
+        75,
+        75,
+        75
+      ],
+      "schema": "HHS_LO_SHU_TRINARY_SUBGRID_V1",
+      "subgrid_id": "subgrid:0",
+      "subgrid_root_hash72": "QG?/okD-GRWGBf/DFf9oBYB!nJE-AnRnCs391r)(0zrvZL8VFf7cKxbRMCKqK+VXwi!2Bjtr",
+      "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+    },
+    {
+      "all_cells_closed": true,
+      "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+      "cell_ids": [
+        "cell:09",
+        "cell:10",
+        "cell:11",
+        "cell:12",
+        "cell:13",
+        "cell:14",
+        "cell:15",
+        "cell:16",
+        "cell:17"
+      ],
+      "cell_roots_hash72": [
+        "r/v/Zm+t*5U?WzlJoeyls>0yl)BVJwE7XaRyX5(ybB+goLEewQrl9(qtIA1<-yy?>qXob<*T",
+        "Tc9BCZn5-mx-2PrT2jh)J9Vh4UgBsm65f1qxv35V)*yP8F?Sx0lLI-lHj3nGk46HfH82te8g",
+        "QUoL*QVMA/E4wx/gOfg>E/ktT/ljd3951wkn1QVnPBw?0z7pCZo67TcwHmOrw(xPHuSr-T>F",
+        "YNlo1KtxCNMYtJdVosnvO77rV?*xjiQHtlXG-2ziLY+EE*gCqF+Ii3>bze5UEkyBo8Plw>Lw",
+        "ZriMztiXM<!bL39WgD64(/v0iFgaAJ9azyThYpk-HmPK)IY3VM*rhC!8YrmvMo/cStT/L8kv",
+        "a!acSIRGygP1clteTUkKey9Q1jiIN(*)5cc?ks8Z4/Qh8ygt51kvKLiqT+Ci!4QnZ7CyVZ+9",
+        "j09JYR6IG?8nyNbaOIpj5GsB-d-voc*9NCPj+-Ti05>v8!W*M6(bz-B*UGl+tZ9URcUMl0Li",
+        "oDqG</Q-*93CeaI/vF>1NlFkWiGfLv-FR6-GFr3eWr4m8tRW7Lkqh!YjGPCuUNSU2Rj4vmq2",
+        "JjhpP<eJRRputN7mze/m4YfH(f(cQ8vznq)x5gE!SzBU0L+-/U3x5092us+jex/!xs)V0adg"
+      ],
+      "cluster_energy": 225,
+      "columns": [
+        75,
+        75,
+        75
+      ],
+      "diagonals": [
+        75,
+        75
+      ],
+      "domain_id": "SYMBOLIC_LOGIC",
+      "local_lo_shu_conservation": true,
+      "rows": [
+        75,
+        75,
+        75
+      ],
+      "schema": "HHS_LO_SHU_TRINARY_SUBGRID_V1",
+      "subgrid_id": "subgrid:1",
+      "subgrid_root_hash72": "4Bu6)JlJMcXDb?XJ5V/Q3UhpxSeLVXhKmqaqojb>z)SkPD>w569QnLXs<G-yd9pzfs<Qw+hk",
+      "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+    },
+    {
+      "all_cells_closed": true,
+      "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+      "cell_ids": [
+        "cell:18",
+        "cell:19",
+        "cell:20",
+        "cell:21",
+        "cell:22",
+        "cell:23",
+        "cell:24",
+        "cell:25",
+        "cell:26"
+      ],
+      "cell_roots_hash72": [
+        "pBDtsqm?t7mJ7n4-W56Lq8e6(Ip(/)cEz!8r6l1NqrITOIxbYzc2VHpqkM-ReDh+cyn5iGnx",
+        "g764mx8JVNE6gXAAPSmeeC!V7h7*R9WpvUgK)5Jv9O/fwA0n0t87BRuG3rxmU12bHZoJqIhc",
+        "P2a3QqI9jR?FGSFnuqdBiffAs(o<Kea)7E<<FGbgsQE5wHlM+F*k--4rTRZlcBI1wYCQrnri",
+        "3TbeppJkT5xong/sQNw(eg7LaEES!XHBvhd43nhtorCshfhaPLe5yrAxUAYUcz>eNzKUWeTa",
+        "Wol)<3(+LFQDdZk-xD!byIK*nbYnMDqfxPqbd)X7R9!v5eORQir)-asVcEh/vS*O/m<AJp-Y",
+        "97b9Mg6TV)-Er>zN-ZlCgGx-nVPv)of96x-z4ttxktGZVAL2-ywrrorS/i68Nl(oVYtmI3<Z",
+        "TjYuv<8xK09Y+jVXV42!PhoT(Ena92rLcmn)LZx1wNlo?Tmj0kxWt9(kjxYg?OLG<3e2NW4>",
+        "kJtiiatdMZL+p2Kv7<iAeKssZ-ONTpE*bjsIgT3lBEVQUDvrBK(kWdRs2EMijCvjldnWY0za",
+        "CGBtsri-zhiJ7n4-W6bFs2i6(Ip(kAzjB!8r6l1NroKUKg*b/>loXImslJ*ReE36btgekHjk"
+      ],
+      "cluster_energy": 225,
+      "columns": [
+        75,
+        75,
+        75
+      ],
+      "diagonals": [
+        75,
+        75
+      ],
+      "domain_id": "SEMANTIC_TRANSLATION",
+      "local_lo_shu_conservation": true,
+      "rows": [
+        75,
+        75,
+        75
+      ],
+      "schema": "HHS_LO_SHU_TRINARY_SUBGRID_V1",
+      "subgrid_id": "subgrid:2",
+      "subgrid_root_hash72": "XyR*v1n<C2R/UA)9Q>DswN(82L**ati9oNqsM!!wos7>JoJQ>dpkv8y0kE+O(rw!fD<m!9Dk",
+      "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+    },
+    {
+      "all_cells_closed": true,
+      "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+      "cell_ids": [
+        "cell:27",
+        "cell:28",
+        "cell:29",
+        "cell:30",
+        "cell:31",
+        "cell:32",
+        "cell:33",
+        "cell:34",
+        "cell:35"
+      ],
+      "cell_roots_hash72": [
+        "gbMfV0Ln>dWL5XX3-MBhppvwWkbQjEd3dWFcVN<<(KEBddpro>*<1-hvhlBsxkpc8pUXSVUk",
+        "ai696vqo8e3O61/g6xY4XNrDTc6Hy+Sf9gA/sg/Al4BBjzngdPA5(VBFmtJydmHlgxqC1/T4",
+        "psDrLS-vdbdBkh(iw*7J?1EWWvSe8lD(WHgfXcZOKg>C<SJkim-IJLyD05fIzKJxzDykkNPn",
+        "t?iA7VLEs2mZk!VIYcAd(yb6r9y>Wn18C9nkBFHaO/60rHDsdOudUKrf9oyD0bkJfqKx9a?z",
+        "KLzPZ6(S7DKRbr7(g(B+2uV>zsjWQ>>(F!JY+8+T4O>ToKVxKIO2my43oG1GWyc82kw4Blh4",
+        "(ybOO)<)NP03lmmKNv5++1EFeH*!k4I4FD5*vl8zKWOC>XCM*jI+XYkUw*vi<Uo2Kw7fOlCe",
+        "Slp?uBhxQdT*/IeZg(z(A<-<Rhv8?sF9i8?yPq??2SnL5gD*cEMN<HsHycbrs9O)uHlKrQ)m",
+        "/vGY7Fs4y)4monoRm8*Te1IH!PtE5SkZ1!Bw7gTY6xb8ZIoCrN7h>-yW>7lLvdmiW3*uGaLu",
+        "l9MgR5Lf79WL5XY0*ML3tpvwWkbRux65dWFcVN>/<LAGbdpmcjV!1*bzhlBttpnd31a-L/Tg"
+      ],
+      "cluster_energy": 225,
+      "columns": [
+        75,
+        75,
+        75
+      ],
+      "diagonals": [
+        75,
+        75
+      ],
+      "domain_id": "RUNTIME_EXECUTION",
+      "local_lo_shu_conservation": true,
+      "rows": [
+        75,
+        75,
+        75
+      ],
+      "schema": "HHS_LO_SHU_TRINARY_SUBGRID_V1",
+      "subgrid_id": "subgrid:3",
+      "subgrid_root_hash72": "1-FiJ)x-!gSjXVZ(Rb5MUtmTMKjm7(kn4<9V/DCtn6dKEna5</y88b4wn(6/qH73M3KvJe1T",
+      "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+    },
+    {
+      "all_cells_closed": true,
+      "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+      "cell_ids": [
+        "cell:36",
+        "cell:37",
+        "cell:38",
+        "cell:39",
+        "cell:40",
+        "cell:41",
+        "cell:42",
+        "cell:43",
+        "cell:44"
+      ],
+      "cell_roots_hash72": [
+        "akQA0AooaZuK62-i6xZ?+NrDTc6Hy+TaDw+>ta!w5ll6ehepi3djE?i/!W1/RCRrmdTh>)Y2",
+        "Kv6uMPA4SWW5ACFgIafZ+qaKxGC+51G!ZGeL4X6brtI->bfMVD7(b2QNkDutbcFHD4e(G(YJ",
+        "q>2VZo5mQQXQ9fJ(m-mpW(+(VBm+Y2dWa>)YSDsWO*ObXaM1i7P7r0Mzh3lGee>bEf4mO8d(",
+        "a!h+O)bv4LKYCB)m4-i0!ES24mbVyXdT?Z<elX1kj*7hekMDW<Rx+UCNzGojoAo!)vhIRaqA",
+        "Z+421kkHti<!xRA/Hn84FnqRkb(zHJ9p1l0Sz1TUvNdJktDOZl<XiZk(V1<Hb<FlMN/dttXU",
+        "M5pvfkWK+1VGTJPw6QdMAJRk(QxT)Ge2GfG2E*jcvimRNAkpcpS<1<9)5RWm3BQ5X+o*XV)I",
+        "Wme8jQ8sJmf1yTHCk84pFrsBq1IZll(VwREuuM8g6aTB5e)MjUm>k1qt0+?wE(a8jy84aZZT",
+        "yrLH!EABt4ES!j-8W!gH/ehp<e7gCzw>kVk8-(86qqoVJYL2T9p1mN5Me6c)pvu(oIZ-M0Xg",
+        "alMG(FmocREG63Xk6x?V)NrDTc6Hy+U5(qK>ta!x2nm2-I8vi48Gk?h)!W1(NHPrmeA+E/wx"
+      ],
+      "cluster_energy": 225,
+      "columns": [
+        75,
+        75,
+        75
+      ],
+      "diagonals": [
+        75,
+        75
+      ],
+      "domain_id": "PROVENANCE_AUDIT",
+      "local_lo_shu_conservation": true,
+      "rows": [
+        75,
+        75,
+        75
+      ],
+      "schema": "HHS_LO_SHU_TRINARY_SUBGRID_V1",
+      "subgrid_id": "subgrid:4",
+      "subgrid_root_hash72": "lbuhx!?5+1ApBzs!VkD/uOgcryupZke<N9RvPAZadQl8CKa</emIKXAwEiuyILI->ED7+UlT",
+      "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+    },
+    {
+      "all_cells_closed": true,
+      "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+      "cell_ids": [
+        "cell:45",
+        "cell:46",
+        "cell:47",
+        "cell:48",
+        "cell:49",
+        "cell:50",
+        "cell:51",
+        "cell:52",
+        "cell:53"
+      ],
+      "cell_roots_hash72": [
+        "lsHhq30rdxPVch<cA*5PX9EWWvSe8lD<MU7hZcZYbx/6Bs1ngmi8+BqL05fIBCTtzDA<RCJx",
+        "q?>+Tt3mCY>M9gG<m-nk-(+(VBm+Y2spxX3STJn2n2Y0>3W+dV*AgW/fFK/d?LT5yBB4t0i*",
+        "LPqU/)0UtApRbr8?a(B3-uV>zsjWQ!RUpyOW/8+(I)-*nNUzKdsFzAe+oG1HJ1V83nfnxzsN",
+        "(yeQ*US1NP03lmnPHxdR+1EFeI)VYJI4Fya-xmdDadL(KVEuddI+X-uIw*wmV+rXh08j?4UX",
+        "Sls1le/cQdT*/If(a<HUA<-<Rii<S>F9i34wRr43Cb2jSead0XMN<JCvyccek>!<LBmOORws",
+        "/vKOllbxy)4monqLqcO/e1IH!TZGzWkZ1/Gu9iN2HMdGCZr+LR7h>(m(>7nd)bc357(8)1>c",
+        "v5OgJfL?IUWL5X-(<MN/BpvwWkbTH9OGdRKaXN?>z0kiUaorkhnm1<?HhlBvl2Qf/j<<qVc8",
+        "FTJcS0R+uArVZ)K+8<bSGv(G079RC>-QPf(CMge-ZJnb?J/?xOGU/vCRB5hjphdjv8KzOCQ4",
+        "QsIdw>5pdjX)8h>9C*dJRdEWWvSe8lD>f2(IZcZYcu)7xx?hmmg60wmP05fICyYrzDB+Xztj"
+      ],
+      "cluster_energy": 225,
+      "columns": [
+        75,
+        75,
+        75
+      ],
+      "diagonals": [
+        75,
+        75
+      ],
+      "domain_id": "MULTIMODAL_FUSION",
+      "local_lo_shu_conservation": true,
+      "rows": [
+        75,
+        75,
+        75
+      ],
+      "schema": "HHS_LO_SHU_TRINARY_SUBGRID_V1",
+      "subgrid_id": "subgrid:5",
+      "subgrid_root_hash72": "GJmkdgYaHH/(*kBt?!S+3JdqJNuqu/4qr**ThR79QYJg1kX<I2b0-tHG0Ics7sa*kXqe*340",
+      "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+    },
+    {
+      "all_cells_closed": true,
+      "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+      "cell_ids": [
+        "cell:54",
+        "cell:55",
+        "cell:56",
+        "cell:57",
+        "cell:58",
+        "cell:59",
+        "cell:60",
+        "cell:61",
+        "cell:62"
+      ],
+      "cell_roots_hash72": [
+        "K!s-!PmDi0wP-)XLQmhPczLWX+MR4rkhc+/XV>hh?C!Q<W8RqrT9gG*MuUL1aF>VzDwZA77P",
+        "Vl>1Y17F*H)Z40>gS2CwSqL0uXp(Rf!H9FwGE+0FqLSyaEjyJYkD2bZpU9p-K?Fs0UHPAXDQ",
+        "bEZp+/kCAeREufQ?ho80T3ExgqzhwofFTH!iMJb?CX*HpFO5jzOKsAZOpr!F9kV>aW1+>+8H",
+        "/9Nc5eLIt>U2d4ol9DMyc7dsCR2+?ai/QMLXGfv4tnkW*BW(rd8Uwm?wwf0Z7aiZ>PV2bmUh",
+        "XhYmm3on/ECUyyT0jvTLE>+xksjr)DrjvsuN8dX(dcoiwBG8Swb4+-1OBvzU?Ipq82dyS6!y",
+        "g?a4qx0NwH?6gXAATOqamu!V7h7*Rd-lrEGBc/Bprnawum<t8nQIPD6Pd9T!dxoqf5i+1aOr",
+        "3*yKmpK5zhyFz7gIEANtT6d)GrlPPb0+1R/Vpnq*G8J4ru?>LXd9rFBxGu3S/llA-7MHz6Y4",
+        "G7JjlXoFXPha)Jl(+S8oU!oNgH73oIGfOPIMptDYh6<Z?qj?Rh-R?N5hptCS+KyBRfQ2qy08",
+        "ghq-?xGxn!wRBmTLRjrHcBF-X+MR4rkhc6)s>?hh?C?N!X4WolZ9hQUItWL1aF!e7BwZB2d-"
+      ],
+      "cluster_energy": 225,
+      "columns": [
+        75,
+        75,
+        75
+      ],
+      "diagonals": [
+        75,
+        75
+      ],
+      "domain_id": "CONSTRAINT_TOPOLOGY",
+      "local_lo_shu_conservation": true,
+      "rows": [
+        75,
+        75,
+        75
+      ],
+      "schema": "HHS_LO_SHU_TRINARY_SUBGRID_V1",
+      "subgrid_id": "subgrid:6",
+      "subgrid_root_hash72": "R?guk3iB?zcuFLx)HInwJuHkKWlySqxDFFhUgafL5yq/3)KZWj<MUxT8ExCNwOOOX6vSr25<",
+      "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+    },
+    {
+      "all_cells_closed": true,
+      "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+      "cell_ids": [
+        "cell:63",
+        "cell:64",
+        "cell:65",
+        "cell:66",
+        "cell:67",
+        "cell:68",
+        "cell:69",
+        "cell:70",
+        "cell:71"
+      ],
+      "cell_roots_hash72": [
+        "gm/7W>cDxSjV40>hP4BzMuL0uXp(RfMLK1QzI/>KCsUn)+pq<EgU4(*CEv1j3pV!c+ID+K9G",
+        "(yiG0NZ?NP03lmpJLB?++1EFeYtv72I4Fu7+yC!tG>AWgi2e87y!7Z4!ag5WBOJ/HoJlpg(T",
+        "yrH1>LCWH2)-fSeoK4JlP<d5t5M+za0ApL*ZiRiRNtWK/Jt6*vawNG3WaFHPx04Gkj0GcTtf",
+        "GCRiWoG>eUNbJd/yCaYMFKiX4mZvFlqf5uSrg98BCxByqtH?3nb+hHn-q4CGLsF?pLwd<(+)",
+        "m/xllZbqdr)/!(t!VQnB*VGK/ahWwsc4jGGv<XCTIjVUVR-(YELI<LqB4oQT->L9kS<UZm94",
+        "mX5hkUhd3QysW-BSS*I)KcA93o4UM1<VuyLxbM5>wQzNZ(cHs-erX<NSfIAzN!IIHhDPm9r1",
+        "B!Ogl)RBBz32<9X50mF)CniTjast9Hkysx)2?Z1Iu3klVszeOLW?bv9Oe7Ax2bZxBl!GOB5O",
+        "N2l)gFUmKOM6H9E<qO-m7iPqDP69*lm<UIY94Duq-7>ujXo8(yeiXV>-RgTQ>Mq8N1VS*ty!",
+        "enZcV/hBzKtR40>iM6JtGyL0uXp(RfOFT(SzI/>KDpWo+<nq-L1Qk>-BGv1j4b0<c*DfhK8L"
+      ],
+      "cluster_energy": 225,
+      "columns": [
+        75,
+        75,
+        75
+      ],
+      "diagonals": [
+        75,
+        75
+      ],
+      "domain_id": "INFORMATION_ENERGY",
+      "local_lo_shu_conservation": true,
+      "rows": [
+        75,
+        75,
+        75
+      ],
+      "schema": "HHS_LO_SHU_TRINARY_SUBGRID_V1",
+      "subgrid_id": "subgrid:7",
+      "subgrid_root_hash72": "zAeua)ML>WKwJ/Dd?mwooanH2vN8Gd70!3ZuV1RKG6PKTB+(Pw2LehQXR(gj36NJov4qA3jw",
+      "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+    },
+    {
+      "all_cells_closed": true,
+      "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+      "cell_ids": [
+        "cell:72",
+        "cell:73",
+        "cell:74",
+        "cell:75",
+        "cell:76",
+        "cell:77",
+        "cell:78",
+        "cell:79",
+        "cell:80"
+      ],
+      "cell_roots_hash72": [
+        "?aVz(MOVDISdz0m<OziMElCz4Efc/E-nLtte7vGoNCslJixp>12Mkir2(>-3Ci(-nFglBpQD",
+        "J+j<ousSCr6OeeIRh>J?sUNLZdXpI0F+qZ)U5wk-TN0tpfTcD1a>4ybtj9Oeqfi0<CkKbMNW",
+        "e0GOaLLgN4KoIVC0>ClML(fk!+fg)o(>HT7-*+1Uhen<!O8WD/MILhXzk7*fGT9QquJj6cno",
+        "skYMY7pih+>HDCQSmjWb(ALib6D3Ucla6svg83ZY>*Qi?Ft?5foejOm81b(+k3n*K-VwqYxk",
+        "RyRI>(?fb<*zzRp9kb)(+M)L1nBC(q88lymwi6?hERjv-17!1q>HW<-!VF9bvn7Iw<J2Kss-",
+        "9*ygc5IRJ7sX>A(Tuuig96+M/yjcacwRS4K9gZno2(f6Yo*G>YF/dMzJ54E8uW7GV9-+EwXR",
+        "N7e-mWf*xhRngPBKxh05Kob4wPwTuRaxBSMHH<j<IIIYkrQFuvGAlH*W!<<cX)qZQJ6O-cK*",
+        "KW+ivw+/Y7S->55pspuq<Q/cbzItlZtiqM4V4VE*J!b8>RpDRN/KtISSLHA<MaIsXas<h3Aw",
+        ")dv+*MOWzOJnv0m<OzqFBnEt8Efc/E+iUmve7vGoNCtiLjtu)13HB4q4(>+0Ei(+jKfgKiSE"
+      ],
+      "cluster_energy": 225,
+      "columns": [
+        75,
+        75,
+        75
+      ],
+      "diagonals": [
+        75,
+        75
+      ],
+      "domain_id": "CANONICAL_REVALIDATION",
+      "local_lo_shu_conservation": true,
+      "rows": [
+        75,
+        75,
+        75
+      ],
+      "schema": "HHS_LO_SHU_TRINARY_SUBGRID_V1",
+      "subgrid_id": "subgrid:8",
+      "subgrid_root_hash72": "j<GxMGDFPRvd3i7TlycLNY-nQs5Ndi-bpa49jKgEK<cxrx3dn6l>UBKAIc5vKFwXV6SPLhuB",
+      "version": "PASS_068_THREE_LANE_81_CELL_QUDIT_KERNEL_V1"
+    }
+  ],
+  "total_energy": 2025
+}
+```

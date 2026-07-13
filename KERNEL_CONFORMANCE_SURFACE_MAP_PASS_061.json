@@ -1,0 +1,11 @@
+{
+  "api_route_count": 21,
+  "conformance_edge_count": 2912,
+  "conformance_root_hash72": "vSqWvpidyKyv<H<UbZuez(ICRa89b2b39UUySME652X?gps11v?-9s+KM-4A!4F!XZ?*p0x9",
+  "control_flow_gate_count": 2,
+  "ok": true,
+  "schema": "HHS_KERNEL_CONFORMANCE_SURFACE_MAP_SELF_TEST_V1",
+  "service_count": 187,
+  "surface_count": 210,
+  "underived_surface_count": 0
+}

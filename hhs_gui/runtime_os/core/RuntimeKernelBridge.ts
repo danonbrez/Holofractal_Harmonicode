@@ -21,6 +21,11 @@
  * Ω = true
  */
 
+import {
+    unwrapRuntimePacketEnvelope,
+    validateRuntimeContract
+} from "./RuntimeContractEnvelope"
+
 export interface RuntimeKernelBridgeConfig {
 
     websocketUrl: string
@@ -28,6 +33,8 @@ export interface RuntimeKernelBridgeConfig {
     reconnectIntervalMs?: number
 
     telemetryIntervalMs?: number
+
+    apiBaseUrl?: string
 }
 
 export interface RuntimeKernelReceipt {
@@ -60,6 +67,30 @@ export interface RuntimeKernelTelemetry {
     receiptCount?: number
 }
 
+export interface RuntimeServiceDispatchPayload {
+
+    service: string
+
+    payload?: Record<string, unknown>
+}
+
+export interface RuntimeSRCGSelfSolvePayload {
+
+    A: number
+
+    B: number
+
+    learning_rate?: number
+
+    drift_threshold?: number
+
+    max_steps?: number
+
+    quartic_carrier?: unknown
+
+    proposition?: string
+}
+
 export interface RuntimeKernelBridgeState {
 
     initialized: boolean
@@ -71,6 +102,12 @@ export interface RuntimeKernelBridgeState {
     replaySynchronized: boolean
 
     lastReceipt?: string
+
+    lastContractHash72?: string
+
+    lastContractValid?: boolean
+
+    lastContractReasons?: string[]
 
     telemetry?: RuntimeKernelTelemetry
 }
@@ -266,10 +303,60 @@ export class RuntimeKernelBridge {
             const message =
                 JSON.parse(raw)
 
+            const contractEnvelope =
+                unwrapRuntimePacketEnvelope(message)
+
+            if (
+                message.runtime_contract
+            ) {
+
+                const apiValidation =
+                    validateRuntimeContract(
+                        message.runtime_contract,
+                        "api_response"
+                    )
+
+                this.state.lastContractValid =
+                    apiValidation.ok
+
+                this.state.lastContractReasons =
+                    apiValidation.reasons
+
+                if (
+                    typeof message.runtime_contract.contract_hash72
+                    === "string"
+                ) {
+
+                    this.state.lastContractHash72 =
+                        message.runtime_contract.contract_hash72
+                }
+            }
+
+            if (
+                contractEnvelope.runtime_packet
+            ) {
+
+                this.state.lastContractValid =
+                    contractEnvelope.contract_valid
+
+                this.state.lastContractReasons =
+                    contractEnvelope.reasons
+
+                if (
+                    typeof contractEnvelope.runtime_packet.contract_hash72
+                    === "string"
+                ) {
+
+                    this.state.lastContractHash72 =
+                        contractEnvelope.runtime_packet.contract_hash72
+                }
+            }
+
             const type =
                 message.type ??
-
-                "unknown"
+                message.event_type ??
+                contractEnvelope.runtime_packet?.source ??
+                "runtime_event"
 
             switch (type) {
 
@@ -469,6 +556,103 @@ export class RuntimeKernelBridge {
 
     /**
      * ---------------------------------------------------
+     * Canonical API Dispatch
+     * ---------------------------------------------------
+     */
+
+    private apiUrl(
+        path: string
+    ): string {
+
+        const base =
+            this.config.apiBaseUrl ??
+            ""
+
+        return `${base}${path}`
+    }
+
+    private async postContractAPI(
+        path: string,
+        payload: object
+    ): Promise<any> {
+
+        const response =
+            await fetch(
+                this.apiUrl(path),
+                {
+                    method: "POST",
+                    headers: {
+                        "content-type": "application/json"
+                    },
+                    body: JSON.stringify(payload)
+                }
+            )
+
+        const envelope =
+            await response.json()
+
+        if (
+            envelope.runtime_contract
+        ) {
+
+            const validation =
+                validateRuntimeContract(
+                    envelope.runtime_contract,
+                    "api_response"
+                )
+
+            this.state.lastContractValid =
+                validation.ok
+
+            this.state.lastContractReasons =
+                validation.reasons
+
+            if (
+                typeof envelope.runtime_contract.contract_hash72
+                === "string"
+            ) {
+
+                this.state.lastContractHash72 =
+                    envelope.runtime_contract.contract_hash72
+            }
+        }
+
+        if (!response.ok) {
+
+            throw new Error(
+                `runtime_api_error:${response.status}`
+            )
+        }
+
+        return envelope
+    }
+
+    public async dispatchService(
+        service: string,
+        payload?: Record<string, unknown>
+    ): Promise<any> {
+
+        return this.postContractAPI(
+            "/api/runtime/services/dispatch",
+            {
+                service,
+                payload: payload ?? {}
+            }
+        )
+    }
+
+    public async executeSRCGSelfSolve(
+        payload: RuntimeSRCGSelfSolvePayload
+    ): Promise<any> {
+
+        return this.postContractAPI(
+            "/api/runtime/srcg/selfsolve",
+            payload
+        )
+    }
+
+    /**
+     * ---------------------------------------------------
      * Event Subscription
      * ---------------------------------------------------
      */
@@ -583,6 +767,15 @@ export class RuntimeKernelBridge {
 
             lastReceipt:
                 this.state.lastReceipt,
+
+            lastContractHash72:
+                this.state.lastContractHash72,
+
+            lastContractValid:
+                this.state.lastContractValid,
+
+            lastContractReasons:
+                this.state.lastContractReasons,
 
             telemetry:
                 this.state.telemetry

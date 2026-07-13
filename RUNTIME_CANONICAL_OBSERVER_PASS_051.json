@@ -1,0 +1,72 @@
+{
+  "admitted": {
+    "admission_id": "admission:c338604e2f4f4b4482bba24e28ea3b2a",
+    "admission_root_hash72": "Y3enSaWjB6nj)zb17whYWCHyi8nP6gQYGWAb!jjWI/u22p677M-vA<cIlHn<J*hUkbQk*YV-",
+    "authority": "HHS_RUNTIME_CANONICAL_OBSERVER_AUTHORITY_V1",
+    "authority_decision": {
+      "ok": true
+    },
+    "canonical_identity_admitted": true,
+    "observation_id": "observation:b2e12f89878e47248d61e945930eb2a9",
+    "observation_root_hash72": "k6HFUBn8NNikujtv)Gf>5KlNJ7AdP73kHrm(/yx5F76(7uk!X+P8bj-cmHmtCCAqrPhm29M0",
+    "ok": true,
+    "reasons": [],
+    "schema": "HHS_RUNTIME_CANONICAL_IDENTITY_ADMISSION_V1",
+    "status": "ADMIT_RUNTIME_CANONICAL_IDENTITY",
+    "translated_record_root_hash72": "kleg*90e!e3C2c!tmb8D6lObcoDvfVm)(oO0kLnJCOvR>mdMY-EOA)YNK5IXgNO4>O9>8Zyl",
+    "translated_record_schema": "HHS_TRANSLATED_REQUEST_V1",
+    "version": "PASS_051_RUNTIME_CANONICAL_OBSERVER_CAPABILITY_PROVIDER_FABRIC_V1"
+  },
+  "invariant": {
+    "authority": "HHS_RUNTIME_CANONICAL_OBSERVER_AUTHORITY_V1",
+    "clauses": [
+      "NO_INTERFACE_IS_CANONICAL",
+      "NO_PROVIDER_IS_CANONICAL",
+      "NO_PROJECTION_IS_CANONICAL",
+      "NO_TRANSLATION_SELF_AUTHORIZES",
+      "ONLY_RUNTIME_ADMITTED_IDENTITY_MAY_ENTER_CANONICAL_RUNTIME_STATE"
+    ],
+    "invariant_id": "HHS-I017",
+    "name": "Runtime canonical observer boundary",
+    "observer_invariant_hash72": "QZz9qlEA/nKrvMy5Y6pf5M)<>6URLh)YnB00BL>u4uJ(b>KdOVSK?xX?(Od8!sekq/Cblq1b",
+    "rejection_codes": [
+      "REJECT_INTERFACE_AS_CANONICAL_AUTHORITY",
+      "REJECT_PROVIDER_AS_CANONICAL_AUTHORITY",
+      "REJECT_PROJECTION_AS_CANONICAL_IDENTITY",
+      "REJECT_TRANSLATION_SELF_AUTHORIZATION"
+    ],
+    "roles": {
+      "GUI": "human-facing projection/request adapter",
+      "Kernel": "invariant enforcement substrate",
+      "Modality": "information-facing translation adapter",
+      "Provider": "capability-facing execution adapter",
+      "Runtime": "canonical observation and translation boundary"
+    },
+    "schema": "HHS_RUNTIME_CANONICAL_OBSERVER_INVARIANT_V1",
+    "statement": "Only Runtime-admitted identity may enter canonical HHS state; interfaces, providers, projections, and translations are request/observation/projection surfaces, not canonical authorities.",
+    "version": "PASS_051_RUNTIME_CANONICAL_OBSERVER_CAPABILITY_PROVIDER_FABRIC_V1"
+  },
+  "ok": true,
+  "rejected": {
+    "admission_id": "admission:403b20c7880147329e9eb27f8e36b0eb",
+    "admission_root_hash72": "<-+7P*wf74CDgPQkvQeQsiwGQo!>R?Owj>q>42piE56GqlWr)kHujg?3Y!ZW?3IfJ-IoXo6d",
+    "authority": "HHS_RUNTIME_CANONICAL_OBSERVER_AUTHORITY_V1",
+    "authority_decision": {
+      "ok": true
+    },
+    "canonical_identity_admitted": false,
+    "observation_id": "observation:b2e12f89878e47248d61e945930eb2a9",
+    "observation_root_hash72": "k6HFUBn8NNikujtv)Gf>5KlNJ7AdP73kHrm(/yx5F76(7uk!X+P8bj-cmHmtCCAqrPhm29M0",
+    "ok": false,
+    "reasons": [
+      "REJECT_PROVIDER_AS_CANONICAL_AUTHORITY"
+    ],
+    "schema": "HHS_RUNTIME_CANONICAL_IDENTITY_ADMISSION_V1",
+    "status": "REJECT_RUNTIME_CANONICAL_IDENTITY",
+    "translated_record_root_hash72": "kleg*90e!e3C2c!tmb8D6lObcoDvfVm)(oO0kLnJCOvR>mdMY-EOA)YNK5IXgNO4>O9>8Zyl",
+    "translated_record_schema": "HHS_TRANSLATED_REQUEST_V1",
+    "version": "PASS_051_RUNTIME_CANONICAL_OBSERVER_CAPABILITY_PROVIDER_FABRIC_V1"
+  },
+  "schema": "HHS_RUNTIME_CANONICAL_OBSERVER_SELF_TEST_V1",
+  "version": "PASS_051_RUNTIME_CANONICAL_OBSERVER_CAPABILITY_PROVIDER_FABRIC_V1"
+}

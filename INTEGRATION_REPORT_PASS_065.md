@@ -1,0 +1,17 @@
+# Integration Report Pass 065
+
+```json
+{
+  "branch_tree_run_root_hash72": "EMf/Z4X(bwFn4f(v2+<IBa2rJZIES<bGGEehYQXHN1W+9cOCeRXUU+w4vm(mDlWPr0iDvpeV",
+  "conformance_edge_count": 3394,
+  "derived_service_count": 228,
+  "integration_status": "PASS",
+  "orphan_count": 0,
+  "schema": "HHS_INTEGRATION_REPORT_PASS_065_V1",
+  "service_count": 228,
+  "surface_count": 251,
+  "test_count": 18,
+  "underived_service_count": 0,
+  "underived_surface_count": 0
+}
+```

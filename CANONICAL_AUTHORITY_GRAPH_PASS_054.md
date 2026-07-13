@@ -1,0 +1,122 @@
+# Canonical Authority Graph — Pass 054
+
+The graph makes roles, competencies, task authority, witnessed handoffs, revalidation, and canonical continuation first-class Runtime relations.
+
+```json
+{
+  "authority": "HHS_I019_CANONICAL_DERIVATION_AUTHORITY_BOUNDARY_V1",
+  "authority_graph_root_hash72": ">stO9Qu+Y5be*v+o6--9DM/7k4G!V/iMalk<NvU+0<VGIMtFpTa<I+D*NSHQzLIsE9ixAIen",
+  "competence_implies_authority": false,
+  "edges": [
+    {
+      "from": "HHS-I019",
+      "to": "role:implementation-agent",
+      "type": "SHARES_INVARIANT"
+    },
+    {
+      "from": "role:implementation-agent",
+      "to": "agent:development",
+      "type": "DECLARES_ROLE"
+    },
+    {
+      "from": "agent:development",
+      "to": "task:pass054-module",
+      "type": "ASSIGNED_TO"
+    },
+    {
+      "from": "task:pass054-module",
+      "to": "handoff:pass054-module",
+      "type": "PRODUCES"
+    },
+    {
+      "from": "handoff:pass054-module",
+      "to": "PCQa?DM/Xb1sCEt9h0Hp8mN3LJ>SL7vvfqCnqUWXGSp)?W0LeLE5)kZv63Zf6UQbWgfy9aV2",
+      "type": "REVALIDATED_BY"
+    },
+    {
+      "from": "PCQa?DM/Xb1sCEt9h0Hp8mN3LJ>SL7vvfqCnqUWXGSp)?W0LeLE5)kZv63Zf6UQbWgfy9aV2",
+      "to": "canonical-state:pass054",
+      "type": "CANONICALLY_CONTINUES"
+    },
+    {
+      "from": "agent:development",
+      "to": "competency:CAN_WRITE_CODE",
+      "type": "POSSESSES_COMPETENCY"
+    },
+    {
+      "from": "agent:development",
+      "to": "competency:CAN_ANALYZE_ARCHITECTURE",
+      "type": "POSSESSES_COMPETENCY"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "HHS-I019",
+      "type": "CANONICAL_INVARIANT"
+    },
+    {
+      "id": "role:implementation-agent",
+      "type": "ROLE"
+    },
+    {
+      "id": "agent:development",
+      "type": "COMPONENT"
+    },
+    {
+      "id": "task:pass054-module",
+      "type": "TASK_ASSIGNMENT"
+    },
+    {
+      "id": "handoff:pass054-module",
+      "type": "HANDOFF"
+    },
+    {
+      "id": "PCQa?DM/Xb1sCEt9h0Hp8mN3LJ>SL7vvfqCnqUWXGSp)?W0LeLE5)kZv63Zf6UQbWgfy9aV2",
+      "type": "VALIDATION"
+    },
+    {
+      "id": "canonical-state:pass054",
+      "type": "CANONICAL_STATE"
+    },
+    {
+      "id": "competency:CAN_WRITE_CODE",
+      "type": "COMPETENCY"
+    },
+    {
+      "id": "competency:CAN_ANALYZE_ARCHITECTURE",
+      "type": "COMPETENCY"
+    }
+  ],
+  "rejection_codes": [
+    "REJECT_AGENT_CAPABILITY_AS_CANONICAL_AUTHORITY",
+    "REJECT_OUTPUT_EQUIVALENCE_AS_DERIVATION_EQUIVALENCE",
+    "REJECT_OUTPUT_SIMILARITY_AS_IDENTITY_PROOF",
+    "REJECT_CORRECT_OUTPUT_SHAPE_WITHOUT_CANONICAL_DERIVATION_PATH",
+    "REJECT_CROSS_AGENT_HANDOFF_WITHOUT_PROVENANCE",
+    "REJECT_SPECIALIZED_PROJECTION_AS_COMPLETE_SYSTEM_IDENTITY",
+    "REJECT_UNVALIDATED_CROSS_ROLE_SUBSTITUTION",
+    "REJECT_ROLE_AUTHORITY_SCOPE_EXCEEDED",
+    "REJECT_TASK_AUTHORITY_EXPIRED",
+    "REJECT_FINAL_TRANSFORMER_AS_UPSTREAM_AUTHORITY",
+    "REJECT_ATTENTION_AS_TRUTH_WEIGHT",
+    "REJECT_RECENCY_AS_AUTHORITY",
+    "REJECT_CONFIDENCE_AS_EVIDENCE",
+    "REJECT_RESPONSE_PRIORITY_AS_SEMANTIC_AUTHORITY",
+    "REJECT_PRESENTATION_OPTIMIZATION_MUTATES_MEANING",
+    "REJECT_CANONICAL_CONTINUATION_WITHOUT_REVALIDATION"
+  ],
+  "schema": "HHS_CANONICAL_AUTHORITY_GRAPH_V1",
+  "source_precedence": [
+    "CANONICAL_KERNEL_INVARIANT",
+    "ADMITTED_RUNTIME_STATE",
+    "COMMITTED_REPOSITORY_STATE",
+    "VALIDATED_DERIVATION",
+    "ADMITTED_USER_INTENT",
+    "ROLE_LOCAL_WORKING_STATE",
+    "UNVALIDATED_PROPOSAL",
+    "MODEL_MEMORY",
+    "GENERATIVE_INFERENCE"
+  ],
+  "version": "PASS_054_CANONICAL_AUTHORITY_GRAPH_ROLE_BOUND_AGENT_ORCHESTRATION_V1"
+}
+```

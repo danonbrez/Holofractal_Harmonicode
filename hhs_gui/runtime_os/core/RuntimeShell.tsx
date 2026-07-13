@@ -25,6 +25,22 @@ import ReceiptInspector from
 import ReplayTimeline from
     "../../runtime_apps/instruments/ReplayTimeline"
 
+import {
+    LiveRuntimeProjectionPanel
+} from "./LiveRuntimeProjectionPanel"
+
+import {
+    RuntimeCommandPanel
+} from "./RuntimeCommandPanel"
+
+import {
+    RuntimeMutationPanel
+} from "./RuntimeMutationPanel"
+
+import {
+    HHSWorkspaceShell
+} from "../workspace/HHSWorkspaceShell"
+
 // =========================================================
 // Props
 // =========================================================
@@ -183,6 +199,45 @@ export const RuntimeShell: React.FC<
                     w-[340px]
                 "
             >
+
+                {/* --------------------------------------------- */}
+                {/* Live Kernel Projection */}
+                {/* --------------------------------------------- */}
+
+                <LiveRuntimeProjectionPanel
+                    runtimeOS={runtimeOS}
+                />
+
+                {/* --------------------------------------------- */}
+                {/* Runtime Command Authority Loop */}
+                {/* --------------------------------------------- */}
+
+                <RuntimeCommandPanel
+                    runtimeOS={runtimeOS}
+                />
+
+                {/* --------------------------------------------- */}
+                {/* Authorized Live Mutation Loop */}
+                {/* --------------------------------------------- */}
+
+                <RuntimeMutationPanel
+                    runtimeOS={runtimeOS}
+                />
+
+                {/* --------------------------------------------- */}
+                {/* HHS Visual Runtime OS Workspace */}
+                {/* --------------------------------------------- */}
+
+                <div
+                    className="
+                        w-[980px]
+                        -translate-x-[650px]
+                    "
+                >
+
+                    <HHSWorkspaceShell />
+
+                </div>
 
                 {/* --------------------------------------------- */}
                 {/* Runtime Status */}

@@ -24,7 +24,14 @@ import sys
 import os
 import struct
 import importlib.util
+import types as _hhs_import_types
 
+# Import compatibility: some topology tests load this kernel with
+# importlib.util.module_from_spec without pre-registering sys.modules.
+# dataclasses consult sys.modules[__name__] during class construction, so
+# ensure a module dictionary exists without changing runtime behavior.
+if __name__ not in sys.modules:
+    sys.modules[__name__] = _hhs_import_types.ModuleType(__name__)
 
 
 OnFail = Literal["ROLLBACK", "QUARANTINE", "NULL_BRANCH"]
@@ -46,6 +53,14 @@ STATE_HASH_VERSION = "3"
 VM_NAME = "PhaseTransportVM"
 VM_VERSION = "3.1-spec"
 VM_SPEC_HASH = hashlib.sha256(b"HHS PhaseTransportVM v3.1 semantics").hexdigest()
+
+
+def _hhs_repo_root_v1() -> Path:
+    return Path(__file__).resolve().parent
+
+
+def _hhs_runtime_artifact_path_v1(*parts: str) -> Path:
+    return _hhs_repo_root_v1().joinpath(*parts)
 
 
 
@@ -8438,9 +8453,9 @@ MembraneGateV43 = MembraneGateV43_1
 def _load_full_schema_module_v43_2() -> Optional[Any]:
     candidates = [
         Path(__file__).with_name("harmonicode_full_schema_v1_1_fullpkg.py"),
-        Path("/mnt/data/harmonicode_full_schema_v1_1_fullpkg.py"),
+        _hhs_runtime_artifact_path_v1("harmonicode_full_schema_v1_1_fullpkg.py"),
         Path(__file__).with_name("harmonicode_full_schema_v1_0.py"),
-        Path("/mnt/data/harmonicode_full_schema_v1_0.py"),
+        _hhs_runtime_artifact_path_v1("harmonicode_full_schema_v1_0.py"),
     ]
     for candidate in candidates:
         try:
@@ -9189,7 +9204,7 @@ import json as _json
 try:
     from harmonicode_full_schema_v1_1_fullpkg import UHMCA_SCHEMA_V1_1, SEED_IDENTITY as _SEED_IDENTITY_V11
 except Exception:
-    _schema_v11_path = Path("/mnt/data/harmonicode_full_schema_v1_1_fullpkg.py")
+    _schema_v11_path = _hhs_runtime_artifact_path_v1("harmonicode_full_schema_v1_1_fullpkg.py")
     if _schema_v11_path.exists():
         _spec = importlib.util.spec_from_file_location("harmonicode_full_schema_v1_1", str(_schema_v11_path))
         _mod_v11 = importlib.util.module_from_spec(_spec)
@@ -9357,7 +9372,7 @@ class ReplayIntegrityError(RuntimeError):
 
 
 def _security_hardened_schema_path() -> Path:
-    return Path('/mnt/data/harmonicode_full_schema_v1_1_security_hardened.py')
+    return _hhs_runtime_artifact_path_v1("harmonicode_full_schema_v1_1_security_hardened.py")
 
 
 def _load_full_schema_module_v43_2() -> Optional[Any]:
@@ -10339,7 +10354,7 @@ def dual_stereo_wav_serializer_v1(self: Optional["Torus72"] = None, output_path:
         channels['R2'].append(r2)
         frames.append((l1, r1, l2, r2))
     if output_path is None:
-        output_path = '/mnt/data/harmonicode_dual_stereo_4d_loop.wav'
+        output_path = str(_hhs_runtime_artifact_path_v1('artifacts', 'harmonicode_dual_stereo_4d_loop.wav'))
     file_info = _write_ieee_float64_wav_v1(output_path, frames, sample_rate)
     return {
         'format': '4d_dual_stereo_64bit_wav_projection',

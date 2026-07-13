@@ -1,0 +1,16 @@
+{
+  "active_surface_count": 316,
+  "conformance_edge_count": 4136,
+  "dedicated_tests": 8,
+  "integration_status": "PASS",
+  "orphan_count": 0,
+  "pass069_root_hash72": "4CXXKtYD8(VQH+4L?cnQvOs*8Y0u8L6wC+v)Bxo(Do!/HH//536)860RB2o(Mk36))vg)!0n",
+  "pass_id": "PASS_070",
+  "run_root_hash72": "4x7/dTn<Q5axZHyM/OryqrIl6ZJGuWKugBOKSjR054M)*SZbVZ0M!<bD3vd9Y1+FT!sQRr(T",
+  "schema": "HHS_INTEGRATION_REPORT_PASS_070",
+  "service_count": 293,
+  "sha256_labeled_hash72": false,
+  "translation_reversible": true,
+  "underived_service_count": 0,
+  "underived_surface_count": 0
+}

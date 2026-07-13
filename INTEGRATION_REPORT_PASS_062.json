@@ -1,0 +1,19 @@
+{
+  "authority_non_amplifying": true,
+  "conformance_edge_count": 3034,
+  "contraction_left_inverse_verified": true,
+  "expansion_preserves_local_identity": true,
+  "internal_contradiction_detected": false,
+  "name": "Global Reciprocal Contract Topology and xyzw Phase-Gear Expansion / Contraction",
+  "ok": true,
+  "orphan_count": 0,
+  "pass": "062",
+  "rejection_non_amplifying": true,
+  "run_root_hash72": "LVqKRZFpAZJP-mWn(q*McSMW<5dLvLYoKInX8F!tw2f9>/KhiJyIBEtiHF3lkg)U3vQ)ZXjo",
+  "schema": "HHS_PASS_062_INTEGRATION_REPORT_V1",
+  "service_count": 196,
+  "surface_count": 219,
+  "typed_equality_frames_preserved": true,
+  "underived_service_count": 0,
+  "underived_surface_count": 0
+}

@@ -1,0 +1,114 @@
+{
+  "authority": "HHS_I019_PARTITION_TOLERANT_FEDERATED_AUTHORITY_RECOVERY_V1",
+  "ok": true,
+  "partition_evidence": {
+    "authority": "HHS_I019_PARTITION_TOLERANT_FEDERATED_AUTHORITY_RECOVERY_V1",
+    "delegation_chain_root_hash72": "aY+bses*)gX-ryQgWhhR4J4dhww9)N9)zVLtOlHJk7yN26djXpH4!TxFSLxcZ7or8B1zp-6q",
+    "federation_contract_root_hash72": "/3lxma4O5vKX2?Pf3k?(8KkfKf<?PWsM!6!8KF7A652kTFR-sROrPKLVHmxI!ly3q9uaJO+8",
+    "last_acknowledged_sequence": 129,
+    "observed_sequence": 160,
+    "partition_detected": true,
+    "partition_evidence_root_hash72": "F973aVm3KMd5hn7gN1/(AnG64VTcPdaiuaQQykbQ<xLwUY9HtNbhh7*0eieRZc02ZNj-TA5Z",
+    "remote_domain_current_authority": false,
+    "schema": "HHS_FEDERATION_PARTITION_EVIDENCE_V1",
+    "version": "PASS_057_PARTITION_TOLERANT_REVOCATION_CONSENSUS_FEDERATED_RECOVERY_V1"
+  },
+  "pass056_federation_root_hash72": "*oKkH8<jt8gQydzcAq(Yzc>QTsp5vYtkxXsSw136uG)jv(Jy?852J>V?IOJ*vJmGh<9nsPOp",
+  "reconciliation_receipt": {
+    "authority": "HHS_I019_PARTITION_TOLERANT_FEDERATED_AUTHORITY_RECOVERY_V1",
+    "delegation_chain_root_hash72": "aY+bses*)gX-ryQgWhhR4J4dhww9)N9)zVLtOlHJk7yN26djXpH4!TxFSLxcZ7or8B1zp-6q",
+    "partition_evidence_root_hash72": "F973aVm3KMd5hn7gN1/(AnG64VTcPdaiuaQQykbQ<xLwUY9HtNbhh7*0eieRZc02ZNj-TA5Z",
+    "quarantine_root_hash72": "ZP4DhIIfsWlK?g*1EV?An52C0TOPZQOqLgF!!Zi0vf/dCDe(fEFV355snCsiF!)hT*cr<aiF",
+    "reasons": [],
+    "reconciliation_complete": true,
+    "reconciliation_receipt_root_hash72": ")OQJo-ZFp6zkCl45*UmLOBhbGvHNniTyqo)0YW6!XW8X6?(F2w4iWJSPNGMcXzvGtOydFUYB",
+    "revocation_consensus_root_hash72": "t+1-gVQojwjzOsi-ZJL72LQPV7>O>b!C8TL(9Zlz9fheI2sw6uy<cuejA/u7IA2dFfPImvCL",
+    "schema": "HHS_FEDERATION_RECONCILIATION_RECEIPT_V1",
+    "stale_remote_results_disposition": "PRESERVED_AS_NONCANONICAL_EVIDENCE",
+    "version": "PASS_057_PARTITION_TOLERANT_REVOCATION_CONSENSUS_FEDERATED_RECOVERY_V1"
+  },
+  "recovery_decision": {
+    "authority": "HHS_I019_PARTITION_TOLERANT_FEDERATED_AUTHORITY_RECOVERY_V1",
+    "canonical_continuation": true,
+    "federated_recovery_root_hash72": "/9JichDWsd-u*2A3-gdhLBs8thhGN1h(gjOE6P>6B>MH>wYRIOt1Q<Ii)h6rfAk)*EF1iHC7",
+    "local_revalidation_performed": true,
+    "reasons": [],
+    "reconciliation_receipt_root_hash72": ")OQJo-ZFp6zkCl45*UmLOBhbGvHNniTyqo)0YW6!XW8X6?(F2w4iWJSPNGMcXzvGtOydFUYB",
+    "recovered": true,
+    "schema": "HHS_FEDERATED_RECOVERY_DECISION_V1",
+    "stale_remote_execution_became_local_authority": false,
+    "status": "ADMIT_FEDERATED_RECOVERY",
+    "version": "PASS_057_PARTITION_TOLERANT_REVOCATION_CONSENSUS_FEDERATED_RECOVERY_V1"
+  },
+  "rejection_codes": [
+    "REJECT_PARTITIONED_DOMAIN_AS_CURRENT_AUTHORITY",
+    "REJECT_STALE_SUBLEASE_AFTER_REVOCATION_SEQUENCE",
+    "REJECT_REMOTE_CHECKPOINT_DURING_UNWITNESSED_PARTITION",
+    "REJECT_REVOCATION_CONSENSUS_WITHOUT_QUORUM",
+    "REJECT_CONFLICTING_REVOCATION_EPOCH",
+    "REJECT_STALE_LEASE_NOT_QUARANTINED",
+    "REJECT_RECONCILIATION_WITH_BROKEN_ANCESTRY",
+    "REJECT_RECOVERY_WITHOUT_REVOCATION_CONVERGENCE",
+    "REJECT_PARTITION_RESULT_AS_LOCAL_CANONICAL_STATE",
+    "REJECT_RECOVERY_WITHOUT_LOCAL_REVALIDATION"
+  ],
+  "revocation_consensus": {
+    "authority": "HHS_I019_PARTITION_TOLERANT_FEDERATED_AUTHORITY_RECOVERY_V1",
+    "consensus_reached": true,
+    "decision": "REVOKE",
+    "quorum": 2,
+    "reasons": [],
+    "revocation_consensus_root_hash72": "t+1-gVQojwjzOsi-ZJL72LQPV7>O>b!C8TL(9Zlz9fheI2sw6uy<cuejA/u7IA2dFfPImvCL",
+    "revocation_epoch": 7,
+    "schema": "HHS_PARTITION_TOLERANT_REVOCATION_CONSENSUS_V1",
+    "version": "PASS_057_PARTITION_TOLERANT_REVOCATION_CONSENSUS_FEDERATED_RECOVERY_V1",
+    "votes": [
+      {
+        "authority": "HHS_I019_PARTITION_TOLERANT_FEDERATED_AUTHORITY_RECOVERY_V1",
+        "decision": "REVOKE",
+        "domain_id": "runtime:local",
+        "parent_lease_root_hash72": "HH5/R7X09laHvodpaLM2)?qPLIb6u*f-eREHdaK9k4GhnOY!JA?yj)SH*b<Vb1PqoJPzW*EP",
+        "revocation_epoch": 7,
+        "schema": "HHS_REVOCATION_CONSENSUS_VOTE_V1",
+        "version": "PASS_057_PARTITION_TOLERANT_REVOCATION_CONSENSUS_FEDERATED_RECOVERY_V1",
+        "vote_root_hash72": "xz4eiCGwvb6uu6ykY!mgO!rD?pBp4/Gdr)r/2pCDaRK0cn)Wp1UQ4z8z>K7rtu!nAhuSlHED"
+      },
+      {
+        "authority": "HHS_I019_PARTITION_TOLERANT_FEDERATED_AUTHORITY_RECOVERY_V1",
+        "decision": "REVOKE",
+        "domain_id": "runtime:witness-b",
+        "parent_lease_root_hash72": "HH5/R7X09laHvodpaLM2)?qPLIb6u*f-eREHdaK9k4GhnOY!JA?yj)SH*b<Vb1PqoJPzW*EP",
+        "revocation_epoch": 7,
+        "schema": "HHS_REVOCATION_CONSENSUS_VOTE_V1",
+        "version": "PASS_057_PARTITION_TOLERANT_REVOCATION_CONSENSUS_FEDERATED_RECOVERY_V1",
+        "vote_root_hash72": "65uSohnozC>/MeoGdajHI0Kusg!Hek)GP*K0v4z+rxFPq+pnfu+ESyTRoIgnU2d??pykFN!b"
+      },
+      {
+        "authority": "HHS_I019_PARTITION_TOLERANT_FEDERATED_AUTHORITY_RECOVERY_V1",
+        "decision": "UNKNOWN",
+        "domain_id": "runtime:remote-a",
+        "parent_lease_root_hash72": "HH5/R7X09laHvodpaLM2)?qPLIb6u*f-eREHdaK9k4GhnOY!JA?yj)SH*b<Vb1PqoJPzW*EP",
+        "revocation_epoch": 7,
+        "schema": "HHS_REVOCATION_CONSENSUS_VOTE_V1",
+        "version": "PASS_057_PARTITION_TOLERANT_REVOCATION_CONSENSUS_FEDERATED_RECOVERY_V1",
+        "vote_root_hash72": "bfh?9tW*xeb4D?CFeajHI0Kusg!Hek)GP*K0v4z+rxFPq+pnfu(KyIY)O-AjDfnP2J9zuvKP"
+      }
+    ]
+  },
+  "run_root_hash72": "E+JYwH-H/iTe9TVa13QcKA<Gi(lst4j+*?3Hyi9FsAv-xr*txwFSTZ5LhNc<16B)jy?*b5o7",
+  "schema": "HHS_PARTITION_TOLERANT_FEDERATED_RECOVERY_RUN_V1",
+  "stale_sublease_quarantine": {
+    "authority": "HHS_I019_PARTITION_TOLERANT_FEDERATED_AUTHORITY_RECOVERY_V1",
+    "canonical_ingress_allowed": false,
+    "execution_allowed": false,
+    "partition_evidence_root_hash72": "F973aVm3KMd5hn7gN1/(AnG64VTcPdaiuaQQykbQ<xLwUY9HtNbhh7*0eieRZc02ZNj-TA5Z",
+    "quarantine_root_hash72": "ZP4DhIIfsWlK?g*1EV?An52C0TOPZQOqLgF!!Zi0vf/dCDe(fEFV355snCsiF!)hT*cr<aiF",
+    "quarantine_state": "QUARANTINED",
+    "reasons": [],
+    "revocation_consensus_root_hash72": "t+1-gVQojwjzOsi-ZJL72LQPV7>O>b!C8TL(9Zlz9fheI2sw6uy<cuejA/u7IA2dFfPImvCL",
+    "schema": "HHS_STALE_SUBLEASE_QUARANTINE_V1",
+    "sublease_root_hash72": "XATqoxRF<!4ihItDhsAqn(Gaa+5ghZO1EIxGA50)h0G<ZcO7unULDeo!PGbh*rrfomQXi>jh",
+    "version": "PASS_057_PARTITION_TOLERANT_REVOCATION_CONSENSUS_FEDERATED_RECOVERY_V1"
+  },
+  "version": "PASS_057_PARTITION_TOLERANT_REVOCATION_CONSENSUS_FEDERATED_RECOVERY_V1"
+}

@@ -1,0 +1,35 @@
+# Delegated Capability Sublease Pass 056
+
+Authoritative source: corresponding JSON artifact.
+
+```json
+{
+  "allowed_operations": [
+    "CREATE_DECLARED_MODULES"
+  ],
+  "authority": "HHS_I019_FEDERATED_AUTHORITY_PROPAGATION_BOUNDARY_V1",
+  "authority_amplified": false,
+  "capability_ids": [
+    "capability:repository-mutation"
+  ],
+  "delegable": false,
+  "delegation_depth": 1,
+  "expires_at_sequence": 130,
+  "federation_contract_root_hash72": "/3lxma4O5vKX2?Pf3k?(8KkfKf<?PWsM!6!8KF7A652kTFR-sROrPKLVHmxI!ly3q9uaJO+8",
+  "issuance_ok": true,
+  "parent_lease_root_hash72": "HH5/R7X09laHvodpaLM2)?qPLIb6u*f-eREHdaK9k4GhnOY!JA?yj)SH*b<Vb1PqoJPzW*EP",
+  "reasons": [],
+  "remote_component_id": "agent:remote-executor",
+  "remote_identity_root_hash72": "hYxG-wiGL6(m*V/X3nsEhGBJq0xe+szLMT?hBAAbxu((yMXl0T>RP-3jGszeu*oQYLq-w<Gt",
+  "remote_role_id": "role:remote-execution-agent",
+  "schema": "HHS_DELEGATED_CAPABILITY_SUBLEASE_V1",
+  "source_scope": [
+    "object:canonical-pass054-repository"
+  ],
+  "sublease_id": "sublease:pass056-remote-a",
+  "sublease_root_hash72": "XATqoxRF<!4ihItDhsAqn(Gaa+5ghZO1EIxGA50)h0G<ZcO7unULDeo!PGbh*rrfomQXi>jh",
+  "sublease_state": "ACTIVE",
+  "valid_from_sequence": 110,
+  "version": "PASS_056_DISTRIBUTED_AUTHORITY_FEDERATION_WITNESSED_DELEGATION_CHAINS_V1"
+}
+```

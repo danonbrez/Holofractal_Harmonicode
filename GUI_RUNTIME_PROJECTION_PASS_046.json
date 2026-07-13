@@ -1,0 +1,28 @@
+{
+  "channel_health_statuses": [
+    "LIVE_KERNEL_CONNECTED",
+    "NO_LIVE_KERNEL_SOURCE",
+    "STALE_LIVE_KERNEL_STATE"
+  ],
+  "failure_states": [
+    "REJECT_GUI_SYNTHETIC_RUNTIME_PACKET",
+    "REJECT_GUI_STATE_WITHOUT_KERNEL_PACKET",
+    "REJECT_NODE_GENERATED_RUNTIME_EVENT",
+    "REJECT_WEBSOCKET_PACKET_WITHOUT_RECEIPT",
+    "REJECT_CHANNEL_SEQUENCE_DRIFT",
+    "REJECT_STALE_GUI_RUNTIME_STATE"
+  ],
+  "projection_rule": "Every live GUI state is derived from a FastAPI kernel websocket packet or an explicitly witnessed projection of one.",
+  "required_packet_fields": [
+    "event_type",
+    "channel",
+    "sequence_id",
+    "kernel_tick",
+    "event_hash72",
+    "receipt_hash72",
+    "runtime_state_hash72",
+    "authority",
+    "payload"
+  ],
+  "schema": "HHS_GUI_RUNTIME_PROJECTION_PASS_046_V1"
+}

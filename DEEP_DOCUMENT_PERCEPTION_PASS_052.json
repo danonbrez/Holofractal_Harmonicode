@@ -1,0 +1,51 @@
+{
+  "sample_run_summary": {
+    "artifact_pipeline_ok": true,
+    "fusion_state": "OBSERVATION_DISAGREEMENT",
+    "ok": true,
+    "pipeline_run_root_hash72": "Uszr4!SB)p?R<-)4IWv*om*xmB2>?nqB5AQedxOZ9Vu7M?-*F-muw>j2Aa-XPBvjkQCa>XCJ",
+    "projection_bundle_root_hash72": "386(vnt1kbnUiGKAfX!FxELLz*rQ<T1icQvp>oGU7rHc0uHXWOj9MwGX<To?7o0QD<ftQv(P",
+    "provider_result_ingress_ok": true,
+    "receipt_root_hash72": "CHK3SQ>!kxvL7kU+2vJCAl5yx5Rwl>bEMm>bUsNSdA2qXkQR-Cc1/lvIyIS+ETU1)Usd-AaJ",
+    "reconstruction_plan_root_hash72": "dk4?wBqTVIabA-+cV)>emM+0smf)D+KBSvshde(EXn5s(eT>zEGYax/!+0LbgiTw-WxCxZ*!",
+    "source_root_hash72": "fn-RSdDBp14uMgtQz1f>mrAt<xU5SAVUAZxbjI04C5CoX!iwR7vAkPDgYaBkeW9XkRmQNVtS",
+    "status": "ADMIT_DEEP_DOCUMENT_PERCEPTION"
+  },
+  "schema": "HHS_DEEP_DOCUMENT_PERCEPTION_PASS_052_REPORT_V1",
+  "status": {
+    "doctrine": "document provider outputs are typed projections, not canonical document identity",
+    "fusion_states": [
+      "OBSERVATION_AGREEMENT",
+      "OBSERVATION_DISAGREEMENT",
+      "UNRESOLVED_AMBIGUITY",
+      "MISSING_REGION_OBSERVATION",
+      "SELECTED_PROJECTION_WITH_EVIDENCE"
+    ],
+    "ok": true,
+    "projection_types": [
+      "PDF_NATIVE_TEXT_PROJECTION",
+      "PAGE_LAYOUT_PROJECTION",
+      "PAGE_IMAGE_REGION_PROJECTION",
+      "OCR_TEXT_PROJECTION",
+      "DOCUMENT_GRAPH_PROJECTION"
+    ],
+    "providers": [
+      "provider:pdf-native-text",
+      "provider:pdf-page-geometry",
+      "provider:document-image-region",
+      "provider:deterministic-ocr"
+    ],
+    "schema": "HHS_DEEP_DOCUMENT_PERCEPTION_STATUS_V1",
+    "version": "PASS_052_DEEP_DETERMINISTIC_DOCUMENT_PERCEPTION_V1"
+  },
+  "validation": {
+    "authority": "HHS_DOCUMENT_PERCEPTION_RUNTIME_AUTHORITY_V1",
+    "ok": true,
+    "pipeline_run_root_hash72": "Uszr4!SB)p?R<-)4IWv*om*xmB2>?nqB5AQedxOZ9Vu7M?-*F-muw>j2Aa-XPBvjkQCa>XCJ",
+    "reasons": [],
+    "schema": "HHS_DEEP_DOCUMENT_PERCEPTION_VALIDATION_V1",
+    "status": "ADMIT_DEEP_DOCUMENT_PERCEPTION_RUN",
+    "validation_root_hash72": "I-zZ<<fU4GB2hgb>PKoC42GwG)+Cz>ErnY6FcaysuJ8PQXFZ/uW7-5RuYYtKGfMR+7!7(COU",
+    "version": "PASS_052_DEEP_DETERMINISTIC_DOCUMENT_PERCEPTION_V1"
+  }
+}

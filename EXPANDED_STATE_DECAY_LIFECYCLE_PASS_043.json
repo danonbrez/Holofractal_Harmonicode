@@ -1,0 +1,82 @@
+{
+  "audit": {
+    "expired_expanded_states": [],
+    "invalid_decay_policy_states": [],
+    "ok": true,
+    "reasons": [],
+    "schema": "HHS_EXPANDED_STATE_DECAY_AUDIT_V1",
+    "status": "ADMIT_NO_EXPIRED_EXPANDED_STATES",
+    "version": "PASS_043_KERNEL_DERIVED_RUNTIME_AUTOCOMPOSITION_V1"
+  },
+  "expired_self_delete": {
+    "decay_witness": {
+      "created_at_tick": 10,
+      "decay_status": "EXPANDED_STATE_SELF_DELETED",
+      "decay_window_ticks": 3,
+      "decay_witness_hash72": "UOJ2<CQN5-c0CbCa/e(i9PaO+Awb29wj4ej!TdTlrh/RSEFLIDopWi6i47ymx3<>?jwDJdGp",
+      "deleted_at_tick": 13,
+      "expanded_payload_retained": false,
+      "expanded_state_id": "expanded:test:pass043",
+      "kernel_authority": "HHS_HASH72_KERNEL_U72_DIGITAL_DNA_V1",
+      "propagated": false,
+      "propagated_hash72": null,
+      "retained_residue": {
+        "decay_root_hash72": "t+*(8Xj*HjG4-O?!zdJBZcCE/2ca9A4aUsg4GeFu3!Ti(axbNyOPCe0efCdOmZl*2?e+b6<k",
+        "reason": "DECAY_WINDOW_EXPIRED_WITHOUT_PROPAGATION",
+        "reconstruction_available": false
+      },
+      "schema": "HHS_EXPANDED_STATE_DECAY_RECORD_V1",
+      "source_surface_id": "service:kernel_runtime_autocomposer.self_test",
+      "version": "PASS_043_KERNEL_DERIVED_RUNTIME_AUTOCOMPOSITION_V1"
+    },
+    "decision": {
+      "age_ticks": 3,
+      "expired": true,
+      "remaining_ticks": 0,
+      "schema": "HHS_EXPANDED_STATE_DECAY_WINDOW_DECISION_V1",
+      "status": "DECAY_WINDOW_EXPIRED",
+      "terminal": false,
+      "version": "PASS_043_KERNEL_DERIVED_RUNTIME_AUTOCOMPOSITION_V1"
+    },
+    "expanded_payload": null,
+    "ok": true,
+    "schema": "HHS_EXPANDED_STATE_SELF_DELETE_DECISION_V1",
+    "status": "EXPANDED_STATE_SELF_DELETED",
+    "version": "PASS_043_KERNEL_DERIVED_RUNTIME_AUTOCOMPOSITION_V1"
+  },
+  "ok": true,
+  "propagated": {
+    "created_at_tick": 10,
+    "decay_root_hash72": null,
+    "decay_window_ticks": 3,
+    "deletion_tick": null,
+    "expanded_payload_root_hash72": "dSqqAvoGxWlfE60fI0LViI6pvjZj0Nyv4oBuNq)9O(jaJVXBy*Q+r1LF!MYXgO*JcPlXwT9q",
+    "expanded_state_id": "expanded:test:pass043",
+    "handle_hash72": "0Iesjzs!!TgtIGVFgP0OV97kGK8Gp43Y*o49PLn4wvRDN>cHx(>actOj48s62x<u1o6YMvKz",
+    "propagated": true,
+    "propagated_hash72": "02egY>pgW3t1A2g>A3waAW6xq7KdySmAkxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-+*/()<>!z",
+    "propagation_tick": 12,
+    "propagation_witness_hash72": "obTqFA>FUR(-BugGuf)sL/KG(><6m4qZzTFZDKryItF6dZPuVdk2o>*lZ1)zE)4m-5TWV84Q",
+    "schema": "HHS_EXPANDED_STATE_HANDLE_V1",
+    "source_surface_id": "service:kernel_runtime_autocomposer.self_test",
+    "status": "PROPAGATED_TO_HASH_STATE",
+    "version": "PASS_043_KERNEL_DERIVED_RUNTIME_AUTOCOMPOSITION_V1"
+  },
+  "registered": {
+    "created_at_tick": 10,
+    "decay_root_hash72": null,
+    "decay_window_ticks": 3,
+    "deletion_tick": null,
+    "expanded_payload_root_hash72": "dSqqAvoGxWlfE60fI0LViI6pvjZj0Nyv4oBuNq)9O(jaJVXBy*Q+r1LF!MYXgO*JcPlXwT9q",
+    "expanded_state_id": "expanded:test:pass043",
+    "handle_hash72": "0Iesjzs!!TgtIGVFgP0OV97kGK8Gp43Y*o49PLn4wvRDN>cHx(>actOj48s62x<u1o6YMvKz",
+    "propagated": false,
+    "propagated_hash72": null,
+    "schema": "HHS_EXPANDED_STATE_HANDLE_V1",
+    "source_surface_id": "service:kernel_runtime_autocomposer.self_test",
+    "status": "EXPANDED_FOR_VALIDATION",
+    "version": "PASS_043_KERNEL_DERIVED_RUNTIME_AUTOCOMPOSITION_V1"
+  },
+  "schema": "HHS_EXPANDED_STATE_DECAY_LIFECYCLE_SELF_TEST_V1",
+  "version": "PASS_043_KERNEL_DERIVED_RUNTIME_AUTOCOMPOSITION_V1"
+}

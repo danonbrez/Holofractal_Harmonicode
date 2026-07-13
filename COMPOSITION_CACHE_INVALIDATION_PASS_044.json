@@ -1,0 +1,49 @@
+{
+  "invalid": {
+    "cache_authority_rule": "CACHE_HIT_REQUIRES_CURRENT_KERNEL_DEPENDENCY_ROOTS",
+    "cache_key_hash72": "fnDRNMR?pu3BngMz(KrfTWO2TLUbx9QvAQ-Vi+MdNDzQvDoh(uhoXMHzg7--f+bL/FC8BZV8",
+    "decision": {
+      "cache_key_hash72": "fnDRNMR?pu3BngMz(KrfTWO2TLUbx9QvAQ-Vi+MdNDzQvDoh(uhoXMHzg7--f+bL/FC8BZV8",
+      "ok": false,
+      "reasons": [
+        "REJECT_CACHE_HIT_WITH_INVALID_CONFORMANCE_ROOT",
+        "REJECT_COMPOSITION_CACHE_STALE"
+      ],
+      "schema": "HHS_COMPOSITION_CACHE_VALIDATION_DECISION_V1",
+      "status": "REJECT_SEMANTIC_COMPOSITION_CACHE_ENTRY",
+      "surface_id": "api_route:GET /api/runtime/conformance/invariants",
+      "version": "PASS_044_SEMANTIC_COMPOSITION_CACHE_V1"
+    },
+    "invalidated": true,
+    "invalidation_hash72": "tWMjgmzzTME7Haj2>fQ(hy<9QssBDOp605!NJcBJ(NZBrYt2N9!neoGYiBwOO91pqYTAnKOA",
+    "invalidation_reasons": [
+      "REJECT_CACHE_HIT_WITH_INVALID_CONFORMANCE_ROOT",
+      "REJECT_COMPOSITION_CACHE_STALE"
+    ],
+    "schema": "HHS_COMPOSITION_INVALIDATION_RECORD_V1",
+    "surface_id": "api_route:GET /api/runtime/conformance/invariants",
+    "version": "PASS_044_SEMANTIC_COMPOSITION_CACHE_V1"
+  },
+  "ok": true,
+  "schema": "HHS_COMPOSITION_CACHE_INVALIDATION_SELF_TEST_V1",
+  "valid": {
+    "cache_authority_rule": "CACHE_HIT_REQUIRES_CURRENT_KERNEL_DEPENDENCY_ROOTS",
+    "cache_key_hash72": "fnDRNMR?pu3BngMz(KrfTWO2TLUbx9QvAQ-Vi+MdNDzQvDoh(uhoXMHzg7--f+bL/FC8BZV8",
+    "decision": {
+      "cache_key_hash72": "fnDRNMR?pu3BngMz(KrfTWO2TLUbx9QvAQ-Vi+MdNDzQvDoh(uhoXMHzg7--f+bL/FC8BZV8",
+      "ok": true,
+      "reasons": [],
+      "schema": "HHS_COMPOSITION_CACHE_VALIDATION_DECISION_V1",
+      "status": "ADMIT_SEMANTIC_COMPOSITION_CACHE_ENTRY",
+      "surface_id": "api_route:GET /api/runtime/conformance/invariants",
+      "version": "PASS_044_SEMANTIC_COMPOSITION_CACHE_V1"
+    },
+    "invalidated": false,
+    "invalidation_hash72": "jFOpyy?PEKrmPpqn9IgT0BN96H(F?McVEQ72gpwPHF+!u2s5eX6nx1UZ9i*(KiPac4TCZNC1",
+    "invalidation_reasons": [],
+    "schema": "HHS_COMPOSITION_INVALIDATION_RECORD_V1",
+    "surface_id": "api_route:GET /api/runtime/conformance/invariants",
+    "version": "PASS_044_SEMANTIC_COMPOSITION_CACHE_V1"
+  },
+  "version": "PASS_044_SEMANTIC_COMPOSITION_CACHE_V1"
+}

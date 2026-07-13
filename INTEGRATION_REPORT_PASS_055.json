@@ -1,0 +1,58 @@
+{
+  "authority_activation_chain": [
+    "CANONICAL_TASK",
+    "ROLE_VALIDATION",
+    "AUTHORITY_SCOPE_VALIDATION",
+    "CAPABILITY_REQUIREMENT",
+    "BOUNDED_LEASE_ISSUANCE",
+    "DISPATCH",
+    "CONTINUOUS_LEASE_VALIDATION",
+    "EXECUTION_RECEIPT",
+    "LEASE_CONSUMPTION_OR_REVOCATION",
+    "RESULT_HANDOFF",
+    "INDEPENDENT_REVALIDATION"
+  ],
+  "conformance_edge_count": 2169,
+  "execution_receipt_root_hash72": "v?K?mJXsViLHpRYg4gK0FALEk93r?lz(UHmv>r1WauJc?w<Z(AuTHcnTQ9K4ofhcDQp8+cXp",
+  "hard_guarantees": {
+    "capability_lease_is_not_capability_ownership": true,
+    "continuous_lease_validation_required": true,
+    "provider_result_extends_lease": false,
+    "role_authority_is_not_permanent_execution_authority": true,
+    "successful_execution_confers_authority": false,
+    "task_assignment_is_not_unbounded_capability_access": true
+  },
+  "lease_states": [
+    "ISSUED",
+    "ACTIVE",
+    "CONSUMED",
+    "EXPIRED",
+    "REVOKED",
+    "TASK_CLOSED"
+  ],
+  "name": "Authority-Enforced Runtime Dispatch and Revocable Capability Leases",
+  "ok": true,
+  "orphan_count": 0,
+  "pass": "055",
+  "rejection_codes": [
+    "REJECT_DISPATCH_WITHOUT_ROLE_AUTHORITY",
+    "REJECT_DISPATCH_WITHOUT_TASK_ASSIGNMENT",
+    "REJECT_CAPABILITY_INVOCATION_WITHOUT_LEASE",
+    "REJECT_LEASE_SCOPE_EXCEEDS_ROLE",
+    "REJECT_LEASE_SOURCE_SCOPE_VIOLATION",
+    "REJECT_LEASE_EXPIRED",
+    "REJECT_LEASE_REVOKED",
+    "REJECT_UNAUTHORIZED_LEASE_DELEGATION",
+    "REJECT_EXECUTION_AFTER_TASK_CLOSURE",
+    "REJECT_RESULT_AS_RETROACTIVE_AUTHORIZATION",
+    "REJECT_LEASE_OUTLIVES_TASK",
+    "REJECT_PROVIDER_RESULT_EXTENDS_LEASE",
+    "REJECT_EXECUTION_WITHOUT_CONTINUOUS_LEASE_VALIDATION"
+  ],
+  "run_root_hash72": "zaP1Q*JmGfetkk+)vwK94A6?9n8D1t1wrGIHFHtPef!<UF-nhxKXbw6cNh?zfwMiKX3Nf0YL",
+  "schema": "HHS_PASS_055_INTEGRATION_REPORT_V1",
+  "service_count": 132,
+  "surface_count": 155,
+  "underived_service_count": 0,
+  "underived_surface_count": 0
+}

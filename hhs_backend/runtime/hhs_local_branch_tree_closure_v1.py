@@ -1,0 +1,2 @@
+from .hhs_local_parallel_branch_tree_v1 import local_parallel_branch_tree_self_test
+def self_test(): return local_parallel_branch_tree_self_test()

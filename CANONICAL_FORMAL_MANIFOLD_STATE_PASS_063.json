@@ -1,0 +1,185 @@
+{
+  "authority": "HHS_DETERMINISTIC_MANIFOLD_EXECUTION_AUTHORITY_V1",
+  "canonical_relation_count": 14,
+  "formal_state_root_hash72": "vn8i<i7HYX7!5nlzbkIUi//3)?/jfJi5v(MihqnH(N)<!hHrQb-p-V0yGw>>om-e3ej)mn9A",
+  "linguistic_interpretation_inserted": false,
+  "operator_semantics_source": "EXISTING_RUNTIME_OPERATOR_REGISTRY",
+  "phase_topology_root_hash72": "?XlSt<S08GJ8zEgpkdWUdJDg?wPWXD46xrP40Bt)Qbf(dYi>mV(qeexF-OVN)*1SaIAk-IoE",
+  "reasons": [],
+  "relations": [
+    {
+      "active": true,
+      "relation": {
+        "members": [
+          "x",
+          "y",
+          "0",
+          "1"
+        ],
+        "relation": "DISTINCT"
+      },
+      "relation_id": "relation:00",
+      "source": "PASS_062_XYZW_ALGEBRA"
+    },
+    {
+      "active": true,
+      "relation": {
+        "members": [
+          "i",
+          "x",
+          "y",
+          "xy",
+          "yx"
+        ],
+        "relation": "DISTINCT"
+      },
+      "relation_id": "relation:01",
+      "source": "PASS_062_XYZW_ALGEBRA"
+    },
+    {
+      "active": true,
+      "relation": {
+        "expression": "xy = -yx",
+        "lhs": "xy",
+        "relation": "ORIENTED_ANTICOMMUTATION",
+        "rhs": "-yx"
+      },
+      "relation_id": "relation:02",
+      "source": "PASS_062_XYZW_ALGEBRA"
+    },
+    {
+      "active": true,
+      "relation": {
+        "expression": "x = 1/y",
+        "lhs": "x",
+        "relation": "RECIPROCAL",
+        "rhs": "1/y"
+      },
+      "relation_id": "relation:03",
+      "source": "PASS_062_XYZW_ALGEBRA"
+    },
+    {
+      "active": true,
+      "relation": {
+        "expression": "y = -x",
+        "lhs": "y",
+        "relation": "PHASE_INVERSE",
+        "rhs": "-x"
+      },
+      "relation_id": "relation:04",
+      "source": "PASS_062_XYZW_ALGEBRA"
+    },
+    {
+      "active": true,
+      "relation": {
+        "frame": "LOCAL_PRODUCT_CLOSURE",
+        "lhs": "xy",
+        "relation": "NORMALIZED_UNIT",
+        "rhs": "1"
+      },
+      "relation_id": "relation:05",
+      "source": "PASS_062_XYZW_ALGEBRA"
+    },
+    {
+      "active": true,
+      "relation": {
+        "frame": "RECIPROCAL_PRODUCT_CLOSURE",
+        "lhs": "yx",
+        "relation": "NORMALIZED_UNIT",
+        "rhs": "1"
+      },
+      "relation_id": "relation:06",
+      "source": "PASS_062_XYZW_ALGEBRA"
+    },
+    {
+      "active": true,
+      "relation": {
+        "canonical_ratio": "I:I^3 = 1:-1",
+        "lhs": [
+          "x",
+          "y"
+        ],
+        "relation": "ORIENTED_RATIO",
+        "rhs": [
+          "xy",
+          "yx"
+        ]
+      },
+      "relation_id": "relation:07",
+      "source": "PASS_062_XYZW_ALGEBRA"
+    },
+    {
+      "active": true,
+      "relation": {
+        "relation": "ZERO_SUM",
+        "result": "0",
+        "terms": [
+          "x",
+          "y",
+          "xy",
+          "yx"
+        ]
+      },
+      "relation_id": "relation:08",
+      "source": "PASS_062_XYZW_ALGEBRA"
+    },
+    {
+      "active": true,
+      "relation": {
+        "lhs": "xyx",
+        "relation": "BRAID",
+        "rhs": "yxy"
+      },
+      "relation_id": "relation:09",
+      "source": "PASS_062_XYZW_ALGEBRA"
+    },
+    {
+      "active": true,
+      "relation": {
+        "members": [
+          "X",
+          "xy",
+          "z"
+        ],
+        "relation": "ALIAS"
+      },
+      "relation_id": "relation:10",
+      "source": "PASS_062_XYZW_ALGEBRA"
+    },
+    {
+      "active": true,
+      "relation": {
+        "members": [
+          "Y",
+          "yx",
+          "w"
+        ],
+        "relation": "ALIAS"
+      },
+      "relation_id": "relation:11",
+      "source": "PASS_062_XYZW_ALGEBRA"
+    },
+    {
+      "active": true,
+      "relation": {
+        "expression": "xyXY = xyzw = 1",
+        "relation": "GLOBAL_PRODUCT_CLOSURE"
+      },
+      "relation_id": "relation:12",
+      "source": "PASS_062_XYZW_ALGEBRA"
+    },
+    {
+      "active": true,
+      "relation": {
+        "expression": "x + y - z - w = 0",
+        "relation": "TOPOLOGICAL_BALANCE"
+      },
+      "relation_id": "relation:13",
+      "source": "PASS_062_XYZW_ALGEBRA"
+    }
+  ],
+  "schema": "HHS_CANONICAL_FORMAL_MANIFOLD_STATE_V1",
+  "source_pass062_root_hash72": "LVqKRZFpAZJP-mWn(q*McSMW<5dLvLYoKInX8F!tw2f9>/KhiJyIBEtiHF3lkg)U3vQ)ZXjo",
+  "status": "ADMIT_CANONICAL_FORMAL_STATE",
+  "version": "PASS_063_DETERMINISTIC_MANIFOLD_EXECUTION_SCOPED_PHASE_CANCELLATION_V1"
+}

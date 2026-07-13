@@ -1,0 +1,20 @@
+{
+  "canonical_continuation": true,
+  "common_ancestor_required": true,
+  "conflict_count": 1,
+  "conflicts_preserved": true,
+  "conformance_edge_count": 2554,
+  "local_revalidation_required": true,
+  "name": "Canonical Federated State Reconciliation and Conflict-Preserving Merge",
+  "ok": true,
+  "orphan_count": 0,
+  "pass": "058",
+  "remote_clock_used_as_precedence": false,
+  "run_root_hash72": "<f78f+(Ht9*WAgi+8xe<x!CS3T?qBhs?j2DNXyfmvhrH4XtQpUVQbMr<jlMcSyZSYzQPkF?S",
+  "schema": "HHS_PASS_058_INTEGRATION_REPORT_V1",
+  "service_count": 160,
+  "silent_overwrite_performed": false,
+  "surface_count": 183,
+  "underived_service_count": 0,
+  "underived_surface_count": 0
+}

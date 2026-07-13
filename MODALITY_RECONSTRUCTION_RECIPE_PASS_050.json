@@ -1,0 +1,23 @@
+{
+  "ok": true,
+  "rejected": {
+    "ok": false,
+    "reasons": [
+      "REJECT_WORKSPACE_PERSISTENCE_EXPANDED_METADATA"
+    ],
+    "recipe_id": "modality-recipe:4463abac6eec4177b0ce4f4180f23ef1",
+    "schema": "HHS_MODALITY_RECONSTRUCTION_RECIPE_VALIDATION_V1",
+    "status": "REJECT_MODALITY_RECONSTRUCTION_RECIPE",
+    "version": "PASS_050_HHS_UNIVERSAL_MODALITY_ADAPTER_AND_ARTIFACT_PIPELINE_V1"
+  },
+  "schema": "HHS_MODALITY_RECONSTRUCTION_RECIPE_SELF_TEST_V1",
+  "valid": {
+    "ok": true,
+    "reasons": [],
+    "recipe_id": "modality-recipe:4463abac6eec4177b0ce4f4180f23ef1",
+    "schema": "HHS_MODALITY_RECONSTRUCTION_RECIPE_VALIDATION_V1",
+    "status": "ADMIT_MODALITY_RECONSTRUCTION_RECIPE",
+    "version": "PASS_050_HHS_UNIVERSAL_MODALITY_ADAPTER_AND_ARTIFACT_PIPELINE_V1"
+  },
+  "version": "PASS_050_HHS_UNIVERSAL_MODALITY_ADAPTER_AND_ARTIFACT_PIPELINE_V1"
+}

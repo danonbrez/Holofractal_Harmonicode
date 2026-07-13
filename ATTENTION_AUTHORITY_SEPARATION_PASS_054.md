@@ -1,0 +1,33 @@
+# Attention / Authority Separation — Pass 054
+
+Attention locates relevant material; it does not establish semantic authority.
+
+```json
+{
+  "attention_used_for_admission": false,
+  "conflict_case": {
+    "admissible": false,
+    "attention_used_for_admission": false,
+    "authority": "HHS_I019_CANONICAL_DERIVATION_AUTHORITY_BOUNDARY_V1",
+    "candidate_id": "recent",
+    "decision_root_hash72": "zgWZU8>6-PsZNizZ(84!-?3>GOkQ9G3++Aon?/O*egVVLcqgYc-?(Kj6Fez<ogb))2zAhvU>",
+    "ranking_allowed": false,
+    "reasons": [
+      "REJECT_ATTENTION_AS_TRUTH_WEIGHT",
+      "REJECT_RECENCY_AS_AUTHORITY"
+    ],
+    "schema": "HHS_RESPONSE_PRIORITY_AUTHORITY_DECISION_V1",
+    "selection_rule": "ADMISSIBLE(candidate) INTERSECT RELEVANT(candidate)",
+    "version": "PASS_054_CANONICAL_AUTHORITY_GRAPH_ROLE_BOUND_AGENT_ORCHESTRATION_V1"
+  },
+  "rules": [
+    "attention determines search pressure",
+    "authority determines admissibility",
+    "provenance determines continuity",
+    "validation determines acceptance",
+    "intent determines relevance",
+    "presentation determines expression"
+  ],
+  "schema": "HHS_ATTENTION_AUTHORITY_SEPARATION_PASS_054_V1"
+}
+```

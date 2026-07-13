@@ -1,0 +1,28 @@
+# LOCAL BRANCH TREE CLOSURE PASS 065
+
+```json
+{
+  "all_branch_authority_expired": true,
+  "authority": "HHS_LOCAL_BRANCH_RESOLUTION_AUTHORITY_V1",
+  "branch_contract_roots_hash72": [
+    "4BAlke2NdIW<R4ada+<XX0->(WYPAjqL-1wgZ!r7rpp3gy1LU*(G4BqmKI!2(Zy-Q+3V93xh",
+    "meeS-EtUjv3HVmrlFB(HjNWk/ION-2AH9PFOGFO<yEB*4EI?mS3rUcxnPC)!/yzKGAqKg<vn",
+    "QbIEqh!MON0s)PY)7mNlqy-2CLmYbaZXDJlgMibdWqNqces9Wfs0<rddw/m*t(tsfp1unn3T"
+  ],
+  "branch_execution_roots_hash72": [
+    ">lR/hOxzcn?<AHJhNtRx)PluzhRVB-y!U<0WMVMG-rlmnpiLAybk*ydopzYpdXQWREGMWUaw",
+    "o/A<cwNLdrOWC8vVZSfMCDMnTs4Z/WUfi2P7**YBnxVhD27v)ZuS/I5Jo)PbOy*Apo-GtUNi",
+    "))NmLqL7UO0UaeJP1D9w6>!Bepz<X4JFhwT18s+GOJgF?KGgozOD3Dvk10KAq>F/*vGeHQ9?"
+  ],
+  "branch_tree_closure_root_hash72": "0gBE<<UoUEboZvhXT/7nSRa3m)N!<hF55+N9K6EHM(ZNDY(*0YPiosiAwtaH(1SdK1dQPLSW",
+  "canonical_continuation": true,
+  "closed_local_tree": true,
+  "failed_branch_rejection_propagated": false,
+  "global_rejection_emitted": false,
+  "parent_root_hash72": "vE(LKbdy1fQoD96jKNU64p8xmtYa2X?(3sUTu84cdAzhNm1DE1/3?5?58uU-?JiwpSY!TyQA",
+  "reintegration_root_hash72": "xG?NPI7DLbYXuxyorU)N/AQa68/2kXgYpnRPxH4NAZ3IZ1H+v/-njClyail55QSdbc8VT6Wh",
+  "schema": "HHS_LOCAL_BRANCH_TREE_CLOSURE_RECEIPT_V1",
+  "status": "ADMIT_CANONICAL_CONTINUATION",
+  "version": "PASS_065_LOCAL_CLOSED_PARALLEL_BRANCH_TREE_V1"
+}
+```

@@ -1,0 +1,51 @@
+{
+  "api_route_count": 26,
+  "canonical_observer_clauses": [
+    "NO_INTERFACE_IS_CANONICAL",
+    "NO_PROVIDER_IS_CANONICAL",
+    "NO_PROJECTION_IS_CANONICAL",
+    "NO_TRANSLATION_SELF_AUTHORIZES",
+    "ONLY_RUNTIME_ADMITTED_IDENTITY_MAY_ENTER_CANONICAL_RUNTIME_STATE"
+  ],
+  "capability_classes": [
+    "TEXT_GENERATION",
+    "TEXT_EMBEDDING",
+    "OCR",
+    "IMAGE_ANALYSIS",
+    "IMAGE_GENERATION",
+    "SPEECH_TO_TEXT",
+    "TEXT_TO_SPEECH",
+    "AUDIO_ANALYSIS",
+    "VIDEO_DECODING",
+    "CODE_ANALYSIS",
+    "CODE_EXECUTION",
+    "DOCUMENT_EXTRACTION",
+    "GRAPH_ANALYSIS",
+    "SEARCH",
+    "MEMORY_RETRIEVAL",
+    "COMPILATION",
+    "EMULATION"
+  ],
+  "capability_count": 17,
+  "conformance_edge_count": 1651,
+  "derived_service_count": 99,
+  "doctrine": {
+    "gui": "human-facing projection/request adapter",
+    "kernel": "invariant enforcement substrate",
+    "modality": "information-facing translation adapter",
+    "provider": "capability-facing execution adapter",
+    "runtime": "canonical observation and translation boundary",
+    "separation": "provider != capability != authority; provider output != canonical truth; successful invocation != admitted mutation"
+  },
+  "generated_at_unix_ms": 1783817672542,
+  "module_count": 1123,
+  "ok": true,
+  "orphan_count": 0,
+  "provider_count": 5,
+  "schema": "HHS_RUNTIME_CANONICAL_OBSERVER_CAPABILITY_FABRIC_PASS_051_SUMMARY_V1",
+  "service_count": 99,
+  "surface_count": 122,
+  "underived_service_count": 0,
+  "underived_surface_count": 0,
+  "version": "PASS_051_RUNTIME_CANONICAL_OBSERVER_CAPABILITY_PROVIDER_FABRIC_V1"
+}

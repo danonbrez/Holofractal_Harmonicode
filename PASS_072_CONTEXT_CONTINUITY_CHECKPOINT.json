@@ -1,0 +1,19 @@
+{
+  "authority": "HHS_PASS072_TOTAL_SYSTEM_CLOSURE_AUTHORITY_V1",
+  "checkpoint_root_hash72": "uVf4yRk0Uxj8A1MrGMhruCPZ4)SB5QuVR/hf0DE/Y8I1JBAJ(R*WCfR57t1iUJjF4uX7aPp+",
+  "closure_dimension_registry_root_hash72": "p?4rhHzg?6HuRKek4SjlefoNSfbi3?ifsnJra*i9/PDoe>aaJ(esT<UpA*hO3-Hjl!LWmcPc",
+  "completed_stage": "INDEPENDENT_REVALIDATION",
+  "dependency_index_root_hash72": "flyepEPcD2nYWnb1JDG66laL0BF*NQkB*-6nUKrI1(a*Ngn3lawyhHHZdKu1/YoavGSaKzcX",
+  "descriptor_registry_root_hash72": "pcM2tm<ypnju3gaY6*eKk6Rd!*TMHnb8h8LfkgeOeowEel8?eYRgzoSpJ8Bpmzh>r*Tw8NPq",
+  "next_stage": "COMPLETE",
+  "parent_pass_id": "PASS_071",
+  "pass071_root_hash72": "O+0/3dn0KX?!0ENFJ(bowzP3(Hl08cCJ/yQMh(ABjkupVznBWY2<gGgbpt!C!8<he(e*yln*",
+  "pass_id": "PASS_072",
+  "restart_safe": true,
+  "resume_rule": "REBUILD_FROM_COMMITTED_PASS071_AND_PASS072_SOURCE_ROOTS",
+  "schema": "HHS_PASS072_RESUMABLE_EXECUTION_CHECKPOINT_V1",
+  "subsystem_registry_root_hash72": "0t8h*KxSk)i>!H653WQZDy907MhmnWyk(<5<CWAA5AqmYP(FelE(DtYzJat5PV?HyIhxMGhq",
+  "thread_context_required": false,
+  "total_system_root_hash72": "ZF9bto?tV>P(KcFPL5L+csyy!jxdrAaadua1a!w-uwug8/MeMSqSS3*R>lXIefi)nyjXpc+)",
+  "version": "PASS_072_TOTAL_SYSTEM_RECURSIVE_HOLOGRAPHIC_CLOSURE_V1"
+}

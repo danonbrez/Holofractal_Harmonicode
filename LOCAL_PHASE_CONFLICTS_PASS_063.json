@@ -1,0 +1,41 @@
+{
+  "authority": "HHS_DETERMINISTIC_MANIFOLD_EXECUTION_AUTHORITY_V1",
+  "conflict_count": 1,
+  "conflicts": [
+    {
+      "affected_scope": [
+        "relation:02",
+        "relation:05"
+      ],
+      "conflict_id": "conflict:local-phase-orientation",
+      "conflict_type": "UNTYPED_FRAME_COLLISION",
+      "global_failure": false,
+      "relation_ids": [
+        "relation:02",
+        "relation:05"
+      ],
+      "resolution": "RESTORE_TYPED_EQUALITY_BOUNDARY",
+      "unaffected_relation_ids": [
+        "relation:00",
+        "relation:01",
+        "relation:03",
+        "relation:04",
+        "relation:06",
+        "relation:07",
+        "relation:08",
+        "relation:09",
+        "relation:10",
+        "relation:11",
+        "relation:12",
+        "relation:13"
+      ]
+    }
+  ],
+  "constraint_propagation_root_hash72": ">7IdEjzHUiY1lRkU)/faBzyM!>1w9s!M>1K73/JczJ*SanQE20<IGsyxmV7Dmw0iB-/GOK-g",
+  "contradiction_implies_global_failure": false,
+  "local_conflict_set_root_hash72": "6cPKAFUHk1o3ZTY)dDo6kPf/hts1B-4Jk(7n!4v8EIjg5b3f3hFsCt()egVZOs1t/1?<se7d",
+  "reasons": [],
+  "schema": "HHS_LOCAL_PHASE_CONFLICT_SET_V1",
+  "status": "ADMIT_LOCALIZED_CONFLICT_SET",
+  "version": "PASS_063_DETERMINISTIC_MANIFOLD_EXECUTION_SCOPED_PHASE_CANCELLATION_V1"
+}

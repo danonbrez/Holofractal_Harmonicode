@@ -1,0 +1,47 @@
+# Response Priority Authority Map — Pass 054
+
+Candidates are admitted before relevance or presentation ranking.
+
+```json
+{
+  "canonical_case": {
+    "admissible": true,
+    "attention_used_for_admission": false,
+    "authority": "HHS_I019_CANONICAL_DERIVATION_AUTHORITY_BOUNDARY_V1",
+    "candidate_id": "response-candidate:pass054",
+    "decision_root_hash72": "-)CmLyEYEpn*7K!J1N>LAjM9k5U4tFSEON91EZ7v3usxWwSVl-Ld4I?wnkE?HgR60+)dm9>n",
+    "ranking_allowed": true,
+    "reasons": [],
+    "schema": "HHS_RESPONSE_PRIORITY_AUTHORITY_DECISION_V1",
+    "selection_rule": "ADMISSIBLE(candidate) INTERSECT RELEVANT(candidate)",
+    "version": "PASS_054_CANONICAL_AUTHORITY_GRAPH_ROLE_BOUND_AGENT_ORCHESTRATION_V1"
+  },
+  "presentation_mutation_case": {
+    "admissible": false,
+    "attention_used_for_admission": false,
+    "authority": "HHS_I019_CANONICAL_DERIVATION_AUTHORITY_BOUNDARY_V1",
+    "candidate_id": "projection",
+    "decision_root_hash72": "M*3sURy-j)F-mau-ayO<uw6hQK/4qdtXqMr?tGgDRkr0yv+RC>p6*-J?<xnaB(2zwzt08DKE",
+    "ranking_allowed": false,
+    "reasons": [
+      "REJECT_PRESENTATION_OPTIMIZATION_MUTATES_MEANING"
+    ],
+    "schema": "HHS_RESPONSE_PRIORITY_AUTHORITY_DECISION_V1",
+    "selection_rule": "ADMISSIBLE(candidate) INTERSECT RELEVANT(candidate)",
+    "version": "PASS_054_CANONICAL_AUTHORITY_GRAPH_ROLE_BOUND_AGENT_ORCHESTRATION_V1"
+  },
+  "schema": "HHS_RESPONSE_PRIORITY_AUTHORITY_MAP_PASS_054_V1",
+  "selection_rule": "ADMISSIBLE(candidate) INTERSECT RELEVANT(candidate)",
+  "source_precedence": [
+    "CANONICAL_KERNEL_INVARIANT",
+    "ADMITTED_RUNTIME_STATE",
+    "COMMITTED_REPOSITORY_STATE",
+    "VALIDATED_DERIVATION",
+    "ADMITTED_USER_INTENT",
+    "ROLE_LOCAL_WORKING_STATE",
+    "UNVALIDATED_PROPOSAL",
+    "MODEL_MEMORY",
+    "GENERATIVE_INFERENCE"
+  ]
+}
+```

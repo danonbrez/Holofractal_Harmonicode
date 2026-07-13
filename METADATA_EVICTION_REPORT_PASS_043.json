@@ -1,0 +1,25 @@
+{
+  "compactor_eviction": {
+    "eviction_hash72": "tI4AlAo+!?xrMlb-3iVOeDlDz<vNMz+Ul646OuHPlOgy1jC-bFs-Atk4!X9cjEytsbxycxA8",
+    "eviction_status": "EXPANDED_METADATA_EVICTED_AFTER_COMPACTION",
+    "had_expanded_payload": false,
+    "residue_root_hash72": "Cr?SHnH4vIth9L08<Z6E*1DQC>>V5V8R0ChbfiMVlhsSXL<ZKStcltIzZd!QTkgzPlOaEaFH",
+    "retained_residue_only": true,
+    "schema": "HHS_EXPANDED_METADATA_EVICTION_RECORD_V1",
+    "source_id": "pass043:surface_map",
+    "version": "PASS_043_KERNEL_DERIVED_RUNTIME_AUTOCOMPOSITION_V1"
+  },
+  "expanded_payload_persisted": false,
+  "lifecycle_persistence": {
+    "expanded_payload_retained": false,
+    "lifecycle_state": "PERSISTED_AS_ROOT",
+    "persistence_hash72": "AVUV)5Q3zTVc)-i<Zf4AWdUwTc*Gd?Yk)8b<b9rhmdzjRW-qgUpMCGrvyl96uIRuRk+ed3MH",
+    "persistence_mode": "ROOT_PLUS_RECONSTRUCTION_RECIPE_ONLY",
+    "recipe_hash72": "GT(*MT2wv4xW>RNPAndwhdaz(yaWpmV!k/QDSkU(5dYqiMi+8c9vF2WKHzFFmoerb(kyc8!Z",
+    "residue_root_hash72": "zAh9ATH?i(G4?fS4X8Cn*aPgnpll9sWu6)KjZUwRRfEodAqk-jI(V!hGeZAMJ>bHsHofKwPm",
+    "schema": "HHS_COMPACT_ROOT_PERSISTENCE_RECORD_V1",
+    "version": "PASS_043_KERNEL_DERIVED_RUNTIME_AUTOCOMPOSITION_V1"
+  },
+  "ok": true,
+  "schema": "HHS_METADATA_EVICTION_REPORT_PASS_043_V1"
+}

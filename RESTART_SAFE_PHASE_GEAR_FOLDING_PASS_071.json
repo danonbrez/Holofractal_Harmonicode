@@ -1,0 +1,2523 @@
+{
+  "all_three_lane_paths_valid": true,
+  "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+  "bindings": {
+    "all_bindings_ordered": true,
+    "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+    "binding_count": 16,
+    "binding_registry_root_hash72": "<lhJJ*Bb>Ujx)LguO+keGB1j3jgwzPlu0KQ3>Tztso0qr?BPMz!NWb2SPxc*GMxDOW/*BG6G",
+    "bindings": [
+      {
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "binding_confers_authority": false,
+        "binding_id": "binding:00",
+        "binding_root_hash72": "-tmk5HMUd4r!AToDCsKLyX+!MIhnP)(>FxCn>e/x+md?dJ3Mp7Me3EcNsDO-Aca)PADRWlR6",
+        "delta_mu": 1,
+        "left_token_id": "token:00",
+        "left_token_root_hash72": "fQ8!Y?az<7ak!*M(zfokn!3gByCjpN)DmehpIxs+vhStczSU/V<giH)6LA6GAkwk?byV+a>M",
+        "order_preserved": true,
+        "ordered_relation": "zw",
+        "reciprocal_phase_contract_valid": true,
+        "reverse_relation": "wz",
+        "right_token_id": "token:31",
+        "right_token_root_hash72": "8U5jul7qkEKmNO4ixs2WvWZ-h0k7Xop7RBM-9v<MqfC6YNeCzJY5ZMdaSzLL0sA0dzG0Ys3c",
+        "schema": "HHS_RECIPROCAL_BINDING_CONTRACT_V1",
+        "sequence_distance": 31,
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+      },
+      {
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "binding_confers_authority": false,
+        "binding_id": "binding:01",
+        "binding_root_hash72": "+rnk5e4Vd4s>AToDCsKLyX+!MIgp<P*>FxCn>e/x+md?dJ7Ft6Nd2H7RrDO-Aca)PADRWlQ7",
+        "delta_mu": 1,
+        "left_token_id": "token:01",
+        "left_token_root_hash72": "fQ8!Y?az<7ak!*M(zfokg36fByCjpN)DmehpIxs/siStczSU/V<giH)6LA6GAkwk?byV+a!L",
+        "order_preserved": true,
+        "ordered_relation": "zw",
+        "reciprocal_phase_contract_valid": true,
+        "reverse_relation": "wz",
+        "right_token_id": "token:30",
+        "right_token_root_hash72": "9U5jul7qkEKmNO4ixs2WvWY/e1k7Xop7RBM-9v<MpfE5YNeCzJY5ZMdaSzLL0sA0dzG0Ys3b",
+        "schema": "HHS_RECIPROCAL_BINDING_CONTRACT_V1",
+        "sequence_distance": 29,
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+      },
+      {
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "binding_confers_authority": false,
+        "binding_id": "binding:02",
+        "binding_root_hash72": "/ltExhNU+aRXdOLh1C3*+GsmnlF)BJivV1url8PK(H)Ss<TJ+6MK?02ZvPWrES+UUOHbQO<E",
+        "delta_mu": 1,
+        "left_token_id": "token:02",
+        "left_token_root_hash72": "fQ8!Y?az<7ak!*M(zfokh09eByCjpN)DmehpIxs)pjStczSU/V<giH)6LA6GAkwk?byV+a?K",
+        "order_preserved": true,
+        "ordered_relation": "z>y",
+        "reciprocal_phase_contract_valid": true,
+        "reverse_relation": "y>z",
+        "right_token_id": "token:29",
+        "right_token_root_hash72": "pv(Zq8EZREfZ!uk5B-VzCruVv)iJXii8<+HXm*udATmq68s/X4q-mVCIVAVrxSQd6VgP++Xp",
+        "schema": "HHS_RECIPROCAL_BINDING_CONTRACT_V1",
+        "sequence_distance": 27,
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+      },
+      {
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "binding_confers_authority": false,
+        "binding_id": "binding:03",
+        "binding_root_hash72": "<(om)Zrj5!8jHqjl02Uy6<(WMcJs5>9afkIk6UVb<iEsQXVW>lfKbb7+tbz4+W*M7QnAHy71",
+        "delta_mu": 0,
+        "left_token_id": "token:03",
+        "left_token_root_hash72": "fQ8!Z1yLcxB40j?(zfokAs43jipwsN)DmehpIxs>mkStczT2JW<ggJ)6LA7FAkwk?byV+a0J",
+        "order_preserved": true,
+        "ordered_relation": "x>w",
+        "reciprocal_phase_contract_valid": true,
+        "reverse_relation": "w>x",
+        "right_token_id": "token:28",
+        "right_token_root_hash72": "1U5jul7qkEKmNO4ixs2WveK6nBk7Xop7RBM-9v<Ltl9rYNeCzJY5ZMdaSzLL0sA0dzG0Ys2k",
+        "schema": "HHS_RECIPROCAL_BINDING_CONTRACT_V1",
+        "sequence_distance": 25,
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+      },
+      {
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "binding_confers_authority": false,
+        "binding_id": "binding:04",
+        "binding_root_hash72": "cc08UkMQ<svCVrgI8ib0*5*<UmS1-D/e!XwneKAINJeD)R-uE2cp!GeYut6f(cWq+7S1tEHp",
+        "delta_mu": 1,
+        "left_token_id": "token:04",
+        "left_token_root_hash72": "fQ8!Y?az<7ak!*M(zfokCLfcByCjpN)DmehpIxs?jlStczSU/V<giH)6LA6GAkwk?byV+a1I",
+        "order_preserved": true,
+        "ordered_relation": "z>x",
+        "reciprocal_phase_contract_valid": true,
+        "reverse_relation": "x>z",
+        "right_token_id": "token:27",
+        "right_token_root_hash72": "z*nTdQObI>rWFBqH6gj3CTdCbGS(P7zs6Bjpn!S3ku+UyDrpVDiZ6Pf?SrGkrpJC6WuA<qhm",
+        "schema": "HHS_RECIPROCAL_BINDING_CONTRACT_V1",
+        "sequence_distance": 23,
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+      },
+      {
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "binding_confers_authority": false,
+        "binding_id": "binding:05",
+        "binding_root_hash72": "fYN<A8>NLUM4G2UafWAd25jYgthJSNe>+BbSdd)5Ih-/45B/dzZQ<AjbNfXZYqmSRZBc(tf<",
+        "delta_mu": 0,
+        "left_token_id": "token:05",
+        "left_token_root_hash72": "i6WfJhPHTxzX?uSUauGoV)jjN1K1OyqN)QSqon3yhvlqhocO>tT6oOV9U0/L/(/sB2AHJQ3w",
+        "order_preserved": true,
+        "ordered_relation": "y>w",
+        "reciprocal_phase_contract_valid": true,
+        "reverse_relation": "w>y",
+        "right_token_id": "token:26",
+        "right_token_root_hash72": "3U5jul7qkEKmNO4ixs2WveIqL)k7Xop7RBM-9v<LrlrbYNeCzJY5ZMdaSzLL0sA0dzG0Ys2i",
+        "schema": "HHS_RECIPROCAL_BINDING_CONTRACT_V1",
+        "sequence_distance": 21,
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+      },
+      {
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "binding_confers_authority": false,
+        "binding_id": "binding:06",
+        "binding_root_hash72": "aecQ0mIR>syzXniI8ib?(4*<TnS2?WyegHwneJEaPrQv-R9Ez0en!GB!HxOg4MZq+7S1tEHp",
+        "delta_mu": 0,
+        "left_token_id": "token:06",
+        "left_token_root_hash72": "fQ8!Y?az<7ak!*M(zfokDW5aByCjpN)DmehpIxs3dnStczSU/V<giH)6LA6GAkwk?byV+a3G",
+        "order_preserved": true,
+        "ordered_relation": "z>z",
+        "reciprocal_phase_contract_valid": true,
+        "reverse_relation": "z>z",
+        "right_token_id": "token:25",
+        "right_token_root_hash72": "B*nTdPRCtW!Fvt2U6gj3CTydH1i?q4zs6Bjpn!S3iu9EyDroVDjZ8Nf?SrGjspJC6WuA<qhk",
+        "schema": "HHS_RECIPROCAL_BINDING_CONTRACT_V1",
+        "sequence_distance": 19,
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+      },
+      {
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "binding_confers_authority": false,
+        "binding_id": "binding:07",
+        "binding_root_hash72": "I90G*zTJCB*7jMui/gpE*eXlb2g?fXAJGI-D6g9AhUYKO7V*7DFAkLPOOIb<myMela-u+2QJ",
+        "delta_mu": 0,
+        "left_token_id": "token:07",
+        "left_token_root_hash72": "ZftIz9O-AOoBD(W9f-tSTIEawAd5DgbMGT5Q<!0Dx82iRsp6D?!0pr96*uAwlbNoo6Xt?96l",
+        "order_preserved": true,
+        "ordered_relation": "w>w",
+        "reciprocal_phase_contract_valid": true,
+        "reverse_relation": "w>w",
+        "right_token_id": "token:24",
+        "right_token_root_hash72": "5U5jul7qkEKmNO4ixs2WveGwF>k7Xop7RBM-9v<Lplv9YNeCzJY5ZMdaSzLL0sA0dzG0Ys2g",
+        "schema": "HHS_RECIPROCAL_BINDING_CONTRACT_V1",
+        "sequence_distance": 17,
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+      },
+      {
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "binding_confers_authority": false,
+        "binding_id": "binding:08",
+        "binding_root_hash72": "+?aOR(ho5!deHqjl02Uy6<(WMcJ3v*LHpfIk6UVb<iEsQXObUgkFbb2*-l<4+W*M7QnAHy71",
+        "delta_mu": 0,
+        "left_token_id": "token:08",
+        "left_token_root_hash72": "fQ8!Z1yLcxB40j?(zfokp-0UjipwsN)DmehpIxs77pStczT2JW<ggJ)6LA7FAkwk?byV+a5E",
+        "order_preserved": true,
+        "ordered_relation": "x>w",
+        "reciprocal_phase_contract_valid": true,
+        "reverse_relation": "w>x",
+        "right_token_id": "token:23",
+        "right_token_root_hash72": "6U5jul7qkEKmNO4ixs2WveFzC!k7Xop7RBM-9v<Lolx8YNeCzJY5ZMdaSzLL0sA0dzG0Ys2f",
+        "schema": "HHS_RECIPROCAL_BINDING_CONTRACT_V1",
+        "sequence_distance": 15,
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+      },
+      {
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "binding_confers_authority": false,
+        "binding_id": "binding:09",
+        "binding_root_hash72": "I25Il8P++aYQdOLh1C3*+GsmnlF4*W)!?(url8PK(H)Ss<?FW?TD?04bwg<rES+UUOHbQO<E",
+        "delta_mu": 1,
+        "left_token_id": "token:09",
+        "left_token_root_hash72": "fQ8!Y?az<7ak!*M(zfokqUn7ByCjpN)DmehpIxs94qStczSU/V<giH)6LA6GAkwk?byV+a6D",
+        "order_preserved": true,
+        "ordered_relation": "z>y",
+        "reciprocal_phase_contract_valid": true,
+        "reverse_relation": "y>z",
+        "right_token_id": "token:22",
+        "right_token_root_hash72": "wv(Zq8EZREfZ!uk5B-VzCrwnGgiJXii8<+HXm*udtt4568s/X4q-mVCIVAVrxSQd6VgP++Xi",
+        "schema": "HHS_RECIPROCAL_BINDING_CONTRACT_V1",
+        "sequence_distance": 13,
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+      },
+      {
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "binding_confers_authority": false,
+        "binding_id": "binding:10",
+        "binding_root_hash72": "yLI?EyjbP(Ok1sJgr(H0>zxQEDucD?SIMGE909tsCdVNK)E9gghA!pK9VPJim17*DQ)a39BM",
+        "delta_mu": 0,
+        "left_token_id": "token:10",
+        "left_token_root_hash72": "G*nTdQObI>rWFBqH6gj3CUC0Y5S(P7zs6Bjpn!S2fuizyDrpVDiZ6Pf?SrGkrpJC6WuA<qgg",
+        "order_preserved": true,
+        "ordered_relation": "xy",
+        "reciprocal_phase_contract_valid": true,
+        "reverse_relation": "yx",
+        "right_token_id": "token:21",
+        "right_token_root_hash72": "xv(Zq8EZREfZ!uk5B-VzCrvqDhiJXii8<+HXm*udst6468s/X4q-mVCIVAVrxSQd6VgP++Xh",
+        "schema": "HHS_RECIPROCAL_BINDING_CONTRACT_V1",
+        "sequence_distance": 11,
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+      },
+      {
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "binding_confers_authority": false,
+        "binding_id": "binding:11",
+        "binding_root_hash72": ">7x(Ry8EjC1RZlJgr(H0>zxQEDC?y7Bu9wU2>BRqNKDZXNr-se-7N/pmxJ<cNwe/*kzwp7VJ",
+        "delta_mu": 0,
+        "left_token_id": "token:11",
+        "left_token_root_hash72": "F*nTdQObI>rWFBqH6gj3CU6u+4S(P7zs6Bjpn!S2gugAyDrpVDiZ6Pf?SrGkrpJC6WuA<qgh",
+        "order_preserved": true,
+        "ordered_relation": "xy",
+        "reciprocal_phase_contract_valid": true,
+        "reverse_relation": "yx",
+        "right_token_id": "token:20",
+        "right_token_root_hash72": "yv(Zq8EZREfZ!uk5B-VzCrutAiiJXii8<+HXm*udrt8368s/X4q-mVCIVAVrxSQd6VgP++Xg",
+        "schema": "HHS_RECIPROCAL_BINDING_CONTRACT_V1",
+        "sequence_distance": 9,
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+      },
+      {
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "binding_confers_authority": false,
+        "binding_id": "binding:12",
+        "binding_root_hash72": ">7?7HNvrrkSXPLYkXN3W>Cl-PXRUKKdBdf0Eo-nB<OOzNZJWtBumVW6!X)sc+cMq4E-(E5YX",
+        "delta_mu": 0,
+        "left_token_id": "token:12",
+        "left_token_root_hash72": "E*nTdQObI>rWFBqH6gj3CU7r8ZS(P7zs6Bjpn!S2hueByDrpVDiZ6Pf?SrGkrpJC6WuA<qgi",
+        "order_preserved": true,
+        "ordered_relation": "x>x",
+        "reciprocal_phase_contract_valid": false,
+        "reverse_relation": "x>x",
+        "right_token_id": "token:19",
+        "right_token_root_hash72": "x*nTdQObI>rWFBqH6gj3CUPi(ES(P7zs6Bjpn!S2oRzWyDrpVDiZ6Pf?SrGkrpJC6WuA<qgp",
+        "schema": "HHS_RECIPROCAL_BINDING_CONTRACT_V1",
+        "sequence_distance": 7,
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+      },
+      {
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "binding_confers_authority": false,
+        "binding_id": "binding:13",
+        "binding_root_hash72": "bI3wsbwfYdFhwid<unCa5QJV7*?IxKyKminc!2fJFUWD2L3E?h14Y?H0THy?qh+oSppSf*oP",
+        "delta_mu": 0,
+        "left_token_id": "token:13",
+        "left_token_root_hash72": "vv(Zq8EZREfZ!uk5B-VzCswjKfiJXii8<+HXm*ucwt1668s/X4q-mVCIVAVrxSQd6VgP++Wk",
+        "order_preserved": true,
+        "ordered_relation": "y>y",
+        "reciprocal_phase_contract_valid": false,
+        "reverse_relation": "y>y",
+        "right_token_id": "token:18",
+        "right_token_root_hash72": "qv(Zq8EZREfZ!uk5B-VzCsvUt<iJXii8<+HXm*ucBTnp68s/X4q-mVCIVAVrxSQd6VgP++Wp",
+        "schema": "HHS_RECIPROCAL_BINDING_CONTRACT_V1",
+        "sequence_distance": 5,
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+      },
+      {
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "binding_confers_authority": false,
+        "binding_id": "binding:14",
+        "binding_root_hash72": "J>48/fYPi1MUWZ+Eb-712lFWByqbF586poBMXSpqqS2r5GgG0b75pP!3SYQvhh2wmh)7<Bo8",
+        "delta_mu": -1,
+        "left_token_id": "token:14",
+        "left_token_root_hash72": "C*nTdQObI>rWFBqH6gj3CU9leXS(P7zs6Bjpn!S2juaDyDrpVDiZ6Pf?SrGkrpJC6WuA<qgk",
+        "order_preserved": true,
+        "ordered_relation": "x>z",
+        "reciprocal_phase_contract_valid": true,
+        "reverse_relation": "z>x",
+        "right_token_id": "token:17",
+        "right_token_root_hash72": "z*nTdPRCtW!Fvt2U6gj3CUzpXHi?q4zs6Bjpn!S2mu-UyDroVDjZ8Nf?SrGjspJC6WuA<qgn",
+        "schema": "HHS_RECIPROCAL_BINDING_CONTRACT_V1",
+        "sequence_distance": 3,
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+      },
+      {
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "binding_confers_authority": false,
+        "binding_id": "binding:15",
+        "binding_root_hash72": "XZJtNQyMxzqTQ>(<E2rzTQKrBkat4)iKAV?HmDAYaNC(ora?NhcQZRmQsNGUbu2PFgPtJadZ",
+        "delta_mu": 0,
+        "left_token_id": "token:15",
+        "left_token_root_hash72": "4U5jul7qkEKmNO4ixs2WvfGsJ<k7Xop7RBM-9v<KslsaYNeCzJY5ZMdaSzLL0sA0dzG0Ys1i",
+        "order_preserved": true,
+        "ordered_relation": "w>y",
+        "reciprocal_phase_contract_valid": true,
+        "reverse_relation": "y>w",
+        "right_token_id": "token:16",
+        "right_token_root_hash72": "sv(Zq8EZREfZ!uk5B-VzCszaTciJXii8<+HXm*uczt)968s/X4q-mVCIVAVrxSQd6VgP++Wn",
+        "schema": "HHS_RECIPROCAL_BINDING_CONTRACT_V1",
+        "sequence_distance": 1,
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+      }
+    ],
+    "genome_root_hash72": "med9zg>NhxrZ4cme6h<rOASuM703Eqh0*e/qrY>GteJUk)iscS)e9C8cZ5A9cZU!H3kOJP51",
+    "potential_field_root_hash72": "sbj4zeZ(2oqwQ4txbycnxsthK8T+Pc7q35c9<uw43jR3Go8HiURqhD3vzAH>R06A5AQkJBfw",
+    "schema": "HHS_RECIPROCAL_BINDING_REGISTRY_V1",
+    "source_sequence_distance_preserved": true,
+    "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+  },
+  "canonical_continuation": true,
+  "checkpoint": {
+    "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+    "checkpoint_root_hash72": "t!kVP+pDXjWr2duZu5>VTbKfp3>CKQy0Ghw?cp(HTXR2txNRQeBHm-9hbl>V/dvSfOAiKw7*",
+    "completed_stage": "INDEPENDENT_REVALIDATION",
+    "completed_stage_names": [
+      "PASS070_HANDOFF",
+      "OVERLAP_BUFFER",
+      "SYMBOLIC_GENOME",
+      "INFORMATION_ENERGY_POTENTIAL",
+      "RECIPROCAL_BINDINGS",
+      "PHASE_GEAR_FOLDS",
+      "FOLDED_TOPOLOGY",
+      "UNFOLDING",
+      "INDEPENDENT_REVALIDATION"
+    ],
+    "completed_stage_roots_hash72": {
+      "FOLDED_TOPOLOGY": "tjVb45fukLKQXqh3/gX+9ukSJfWWos*)GhUgEJ6kZyN-!u)uz-8rs5OE!Ve?K<)BXJ*xaKx1",
+      "INDEPENDENT_REVALIDATION": "9UsJy1p03UrbF<D1UsK>rxgbwJHcmFOkjf?1uFnpLP2iKbn/s*P3j0HFf!46d9tADatWGAck",
+      "INFORMATION_ENERGY_POTENTIAL": "sbj4zeZ(2oqwQ4txbycnxsthK8T+Pc7q35c9<uw43jR3Go8HiURqhD3vzAH>R06A5AQkJBfw",
+      "OVERLAP_BUFFER": "4x7/dTn<Q5axZHyM/OryqrIl6ZJGuWKugBOKSjR054M)*SZbVZ0M!<bD3vd9Y1+FT!sQRr(T",
+      "PASS070_HANDOFF": "4x7/dTn<Q5axZHyM/OryqrIl6ZJGuWKugBOKSjR054M)*SZbVZ0M!<bD3vd9Y1+FT!sQRr(T",
+      "PHASE_GEAR_FOLDS": "Nuuq2/sdfgSiPWo-CN1?xhRpDaYzY8OKHdMb3*G3f>p9lNUkd<4X/(HFQ!MS2>Peu2j*Jc3?",
+      "RECIPROCAL_BINDINGS": "sbj4zeZ(2oqwQ4txbycnxsthK8T+Pc7q35c9<uw43jR3Go8HiURqhD3vzAH>R06A5AQkJBfw",
+      "SYMBOLIC_GENOME": "ifg(NSvYCGTmY49?mRajj6zWMKeP3dHHb7lu/-lYAa83u<>4Fsdi>*4pz>btVZe)W9TvHPGs",
+      "UNFOLDING": "9UsJy1p03UrbF<D1UsK>rxgbwJHcmFOkjf?1uFnpLP2iKbn/s*P3j0HFf!46d9tADatWGAck"
+    },
+    "context_reset_permitted": false,
+    "next_stage": "COMPLETE",
+    "overlap_root_hash72": "76A9BfCvc9!Hj9x7M5(WWRqXp7Vppp>qVQ(>xAG+2cRQJxrx6FRkBuw0Ve!InZps8rkxYNJN",
+    "parent_pass_id": "PASS_070",
+    "pass070_root_hash72": "4x7/dTn<Q5axZHyM/OryqrIl6ZJGuWKugBOKSjR054M)*SZbVZ0M!<bD3vd9Y1+FT!sQRr(T",
+    "pass_id": "PASS_071",
+    "reconstruction_inputs": {
+      "mapping": {
+        "00": [
+          0,
+          0
+        ],
+        "01": [
+          1,
+          0
+        ],
+        "10": [
+          -1,
+          0
+        ],
+        "11": [
+          0,
+          1
+        ]
+      },
+      "source_packet_root_hash72": "ifg(NSvYCGTmY49?mRajj6zWMKeP3dHHb7lu/-lYAa83u<>4Fsdi>*4pz>btVZe)W9TvHPGs",
+      "source_word": 81985529216486895
+    },
+    "restart_safe": true,
+    "resume_requires_parent_root_match": true,
+    "schema": "HHS_RESUMABLE_EXECUTION_CHECKPOINT_V1",
+    "thread_context_required": false,
+    "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+  },
+  "context_continuity_preserved": true,
+  "folds": {
+    "admitted_fold_count": 14,
+    "all_paths_use_three_lanes": true,
+    "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+    "binding_registry_root_hash72": "<lhJJ*Bb>Ujx)LguO+keGB1j3jgwzPlu0KQ3>Tztso0qr?BPMz!NWb2SPxc*GMxDOW/*BG6G",
+    "fold_count": 16,
+    "fold_registry_root_hash72": "Nuuq2/sdfgSiPWo-CN1?xhRpDaYzY8OKHdMb3*G3f>p9lNUkd<4X/(HFQ!MS2>Peu2j*Jc3?",
+    "folds": [
+      {
+        "all_three_lanes_executed": true,
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "binding_root_hash72": "-tmk5HMUd4r!AToDCsKLyX+!MIhnP)(>FxCn>e/x+md?dJ3Mp7Me3EcNsDO-Aca)PADRWlR6",
+        "failed_fold_erases_provenance": false,
+        "fold_admitted": true,
+        "fold_id": "fold:00",
+        "fold_rewrites_source_sequence": false,
+        "fold_root_hash72": "EQLNcsmbAz7gU(2ikdh8tT*EDZnAQ5rYtYAXntH8(ajp3nr*ie(J5qGJcN+7cb2HAZIfnWA1",
+        "left_token_root_hash72": "fQ8!Y?az<7ak!*M(zfokn!3gByCjpN)DmehpIxs+vhStczSU/V<giH)6LA6GAkwk?byV+a>M",
+        "plastic_lane": {
+          "bounded_correction": 2,
+          "equilibrated": true,
+          "plastic_relation": "rho^3-rho-1=0",
+          "post_correction_residue": 0,
+          "pre_correction_residue": -2
+        },
+        "positive_lane": {
+          "proposal": "zw",
+          "proposed": true
+        },
+        "right_token_root_hash72": "8U5jul7qkEKmNO4ixs2WvWZ-h0k7Xop7RBM-9v<MqfC6YNeCzJY5ZMdaSzLL0sA0dzG0Ys3c",
+        "schema": "HHS_PHASE_GEAR_FOLD_CANDIDATE_V1",
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1",
+        "zero_sum_lane": {
+          "bounded_correction": 0,
+          "closed": true,
+          "post_correction_residue": 0,
+          "pre_correction_residue": 0,
+          "source_phase_erased": false
+        }
+      },
+      {
+        "all_three_lanes_executed": true,
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "binding_root_hash72": "+rnk5e4Vd4s>AToDCsKLyX+!MIgp<P*>FxCn>e/x+md?dJ7Ft6Nd2H7RrDO-Aca)PADRWlQ7",
+        "failed_fold_erases_provenance": false,
+        "fold_admitted": true,
+        "fold_id": "fold:01",
+        "fold_rewrites_source_sequence": false,
+        "fold_root_hash72": "EQLNb1LcDy7J3j1ilFY8sV+EDZnt5-nZs+eKWrH8(ajo6izUmd(J9fREeL+bBW!Kx-IfnWA1",
+        "left_token_root_hash72": "fQ8!Y?az<7ak!*M(zfokg36fByCjpN)DmehpIxs/siStczSU/V<giH)6LA6GAkwk?byV+a!L",
+        "plastic_lane": {
+          "bounded_correction": 2,
+          "equilibrated": true,
+          "plastic_relation": "rho^3-rho-1=0",
+          "post_correction_residue": 0,
+          "pre_correction_residue": -2
+        },
+        "positive_lane": {
+          "proposal": "zw",
+          "proposed": true
+        },
+        "right_token_root_hash72": "9U5jul7qkEKmNO4ixs2WvWY/e1k7Xop7RBM-9v<MpfE5YNeCzJY5ZMdaSzLL0sA0dzG0Ys3b",
+        "schema": "HHS_PHASE_GEAR_FOLD_CANDIDATE_V1",
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1",
+        "zero_sum_lane": {
+          "bounded_correction": 0,
+          "closed": true,
+          "post_correction_residue": 0,
+          "pre_correction_residue": 0,
+          "source_phase_erased": false
+        }
+      },
+      {
+        "all_three_lanes_executed": true,
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "binding_root_hash72": "/ltExhNU+aRXdOLh1C3*+GsmnlF)BJivV1url8PK(H)Ss<TJ+6MK?02ZvPWrES+UUOHbQO<E",
+        "failed_fold_erases_provenance": false,
+        "fold_admitted": true,
+        "fold_id": "fold:02",
+        "fold_rewrites_source_sequence": false,
+        "fold_root_hash72": "l4z+)4uBg>1lBnV>7Vjk4Jz9(9doMQv5vyu(E726daubaI3ro5Zlqq5Xhe+ZWk3<n9m?kNJs",
+        "left_token_root_hash72": "fQ8!Y?az<7ak!*M(zfokh09eByCjpN)DmehpIxs)pjStczSU/V<giH)6LA6GAkwk?byV+a?K",
+        "plastic_lane": {
+          "bounded_correction": 2,
+          "equilibrated": true,
+          "plastic_relation": "rho^3-rho-1=0",
+          "post_correction_residue": 0,
+          "pre_correction_residue": -2
+        },
+        "positive_lane": {
+          "proposal": "z>y",
+          "proposed": true
+        },
+        "right_token_root_hash72": "pv(Zq8EZREfZ!uk5B-VzCruVv)iJXii8<+HXm*udATmq68s/X4q-mVCIVAVrxSQd6VgP++Xp",
+        "schema": "HHS_PHASE_GEAR_FOLD_CANDIDATE_V1",
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1",
+        "zero_sum_lane": {
+          "bounded_correction": 1,
+          "closed": true,
+          "post_correction_residue": 0,
+          "pre_correction_residue": -1,
+          "source_phase_erased": false
+        }
+      },
+      {
+        "all_three_lanes_executed": true,
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "binding_root_hash72": "<(om)Zrj5!8jHqjl02Uy6<(WMcJs5>9afkIk6UVb<iEsQXVW>lfKbb7+tbz4+W*M7QnAHy71",
+        "failed_fold_erases_provenance": false,
+        "fold_admitted": true,
+        "fold_id": "fold:03",
+        "fold_rewrites_source_sequence": false,
+        "fold_root_hash72": "qGe<r10oRF<ZuQpbun6)G6DA14(<vBdBAHtxdDAn?R)e?FuuplUfICZ+oEq7w-S4iEDP9Wvo",
+        "left_token_root_hash72": "fQ8!Z1yLcxB40j?(zfokAs43jipwsN)DmehpIxs>mkStczT2JW<ggJ)6LA7FAkwk?byV+a0J",
+        "plastic_lane": {
+          "bounded_correction": -4,
+          "equilibrated": true,
+          "plastic_relation": "rho^3-rho-1=0",
+          "post_correction_residue": 0,
+          "pre_correction_residue": 4
+        },
+        "positive_lane": {
+          "proposal": "x>w",
+          "proposed": true
+        },
+        "right_token_root_hash72": "1U5jul7qkEKmNO4ixs2WveK6nBk7Xop7RBM-9v<Ltl9rYNeCzJY5ZMdaSzLL0sA0dzG0Ys2k",
+        "schema": "HHS_PHASE_GEAR_FOLD_CANDIDATE_V1",
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1",
+        "zero_sum_lane": {
+          "bounded_correction": -1,
+          "closed": true,
+          "post_correction_residue": 0,
+          "pre_correction_residue": 1,
+          "source_phase_erased": false
+        }
+      },
+      {
+        "all_three_lanes_executed": true,
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "binding_root_hash72": "cc08UkMQ<svCVrgI8ib0*5*<UmS1-D/e!XwneKAINJeD)R-uE2cp!GeYut6f(cWq+7S1tEHp",
+        "failed_fold_erases_provenance": false,
+        "fold_admitted": true,
+        "fold_id": "fold:04",
+        "fold_rewrites_source_sequence": false,
+        "fold_root_hash72": "lOLO/-o-acL0wHkApHSXjB!w4SW1pVPu9T(NQUaKVNza2IJEm)GF*PjRwQodnjs83blPrAT5",
+        "left_token_root_hash72": "fQ8!Y?az<7ak!*M(zfokCLfcByCjpN)DmehpIxs?jlStczSU/V<giH)6LA6GAkwk?byV+a1I",
+        "plastic_lane": {
+          "bounded_correction": 2,
+          "equilibrated": true,
+          "plastic_relation": "rho^3-rho-1=0",
+          "post_correction_residue": 0,
+          "pre_correction_residue": -2
+        },
+        "positive_lane": {
+          "proposal": "z>x",
+          "proposed": true
+        },
+        "right_token_root_hash72": "z*nTdQObI>rWFBqH6gj3CTdCbGS(P7zs6Bjpn!S3ku+UyDrpVDiZ6Pf?SrGkrpJC6WuA<qhm",
+        "schema": "HHS_PHASE_GEAR_FOLD_CANDIDATE_V1",
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1",
+        "zero_sum_lane": {
+          "bounded_correction": -1,
+          "closed": true,
+          "post_correction_residue": 0,
+          "pre_correction_residue": 1,
+          "source_phase_erased": false
+        }
+      },
+      {
+        "all_three_lanes_executed": true,
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "binding_root_hash72": "fYN<A8>NLUM4G2UafWAd25jYgthJSNe>+BbSdd)5Ih-/45B/dzZQ<AjbNfXZYqmSRZBc(tf<",
+        "failed_fold_erases_provenance": false,
+        "fold_admitted": true,
+        "fold_id": "fold:05",
+        "fold_rewrites_source_sequence": false,
+        "fold_root_hash72": "5XydpGztEXEcQ?Y*r4HL3q5dV2<hr+Om2mG>F(jd(b6hkY*5YURPb?V3Zk2g7ET!7xch9TVY",
+        "left_token_root_hash72": "i6WfJhPHTxzX?uSUauGoV)jjN1K1OyqN)QSqon3yhvlqhocO>tT6oOV9U0/L/(/sB2AHJQ3w",
+        "plastic_lane": {
+          "bounded_correction": -4,
+          "equilibrated": true,
+          "plastic_relation": "rho^3-rho-1=0",
+          "post_correction_residue": 0,
+          "pre_correction_residue": 4
+        },
+        "positive_lane": {
+          "proposal": "y>w",
+          "proposed": true
+        },
+        "right_token_root_hash72": "3U5jul7qkEKmNO4ixs2WveIqL)k7Xop7RBM-9v<LrlrbYNeCzJY5ZMdaSzLL0sA0dzG0Ys2i",
+        "schema": "HHS_PHASE_GEAR_FOLD_CANDIDATE_V1",
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1",
+        "zero_sum_lane": {
+          "bounded_correction": 1,
+          "closed": true,
+          "post_correction_residue": 0,
+          "pre_correction_residue": -1,
+          "source_phase_erased": false
+        }
+      },
+      {
+        "all_three_lanes_executed": true,
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "binding_root_hash72": "aecQ0mIR>syzXniI8ib?(4*<TnS2?WyegHwneJEaPrQv-R9Ez0en!GB!HxOg4MZq+7S1tEHp",
+        "failed_fold_erases_provenance": false,
+        "fold_admitted": true,
+        "fold_id": "fold:06",
+        "fold_rewrites_source_sequence": false,
+        "fold_root_hash72": "x<l+YOQAex*Y)(F0xinwurkr>2tabBLxyNeA0!auN1mVR+fitV*zLio3WfLwq4v3yeTrYnR*",
+        "left_token_root_hash72": "fQ8!Y?az<7ak!*M(zfokDW5aByCjpN)DmehpIxs3dnStczSU/V<giH)6LA6GAkwk?byV+a3G",
+        "plastic_lane": {
+          "bounded_correction": 1,
+          "equilibrated": true,
+          "plastic_relation": "rho^3-rho-1=0",
+          "post_correction_residue": 0,
+          "pre_correction_residue": -1
+        },
+        "positive_lane": {
+          "proposal": "z>z",
+          "proposed": true
+        },
+        "right_token_root_hash72": "B*nTdPRCtW!Fvt2U6gj3CTydH1i?q4zs6Bjpn!S3iu9EyDroVDjZ8Nf?SrGjspJC6WuA<qhk",
+        "schema": "HHS_PHASE_GEAR_FOLD_CANDIDATE_V1",
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1",
+        "zero_sum_lane": {
+          "bounded_correction": 0,
+          "closed": true,
+          "post_correction_residue": 0,
+          "pre_correction_residue": 0,
+          "source_phase_erased": false
+        }
+      },
+      {
+        "all_three_lanes_executed": true,
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "binding_root_hash72": "I90G*zTJCB*7jMui/gpE*eXlb2g?fXAJGI-D6g9AhUYKO7V*7DFAkLPOOIb<myMela-u+2QJ",
+        "failed_fold_erases_provenance": false,
+        "fold_admitted": true,
+        "fold_id": "fold:07",
+        "fold_rewrites_source_sequence": false,
+        "fold_root_hash72": "8JExVwOmx9kyXht/R)aS80KY3*/sk?-nN+ed1Q)H2wFqHE<6oIucTTPpAqCX4Tr2iFUnC6ui",
+        "left_token_root_hash72": "ZftIz9O-AOoBD(W9f-tSTIEawAd5DgbMGT5Q<!0Dx82iRsp6D?!0pr96*uAwlbNoo6Xt?96l",
+        "plastic_lane": {
+          "bounded_correction": -4,
+          "equilibrated": true,
+          "plastic_relation": "rho^3-rho-1=0",
+          "post_correction_residue": 0,
+          "pre_correction_residue": 4
+        },
+        "positive_lane": {
+          "proposal": "w>w",
+          "proposed": true
+        },
+        "right_token_root_hash72": "5U5jul7qkEKmNO4ixs2WveGwF>k7Xop7RBM-9v<Lplv9YNeCzJY5ZMdaSzLL0sA0dzG0Ys2g",
+        "schema": "HHS_PHASE_GEAR_FOLD_CANDIDATE_V1",
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1",
+        "zero_sum_lane": {
+          "bounded_correction": 0,
+          "closed": true,
+          "post_correction_residue": 0,
+          "pre_correction_residue": 0,
+          "source_phase_erased": false
+        }
+      },
+      {
+        "all_three_lanes_executed": true,
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "binding_root_hash72": "+?aOR(ho5!deHqjl02Uy6<(WMcJ3v*LHpfIk6UVb<iEsQXObUgkFbb2*-l<4+W*M7QnAHy71",
+        "failed_fold_erases_provenance": false,
+        "fold_admitted": true,
+        "fold_id": "fold:08",
+        "fold_rewrites_source_sequence": false,
+        "fold_root_hash72": "qGe<r6J>gp)G3-kb2Kb)G1Nv14(HWvP3APekQ)?84R)e(GU/JgUfBU1zyuv7r(Pi9RpP9Wvo",
+        "left_token_root_hash72": "fQ8!Z1yLcxB40j?(zfokp-0UjipwsN)DmehpIxs77pStczT2JW<ggJ)6LA7FAkwk?byV+a5E",
+        "plastic_lane": {
+          "bounded_correction": -4,
+          "equilibrated": true,
+          "plastic_relation": "rho^3-rho-1=0",
+          "post_correction_residue": 0,
+          "pre_correction_residue": 4
+        },
+        "positive_lane": {
+          "proposal": "x>w",
+          "proposed": true
+        },
+        "right_token_root_hash72": "6U5jul7qkEKmNO4ixs2WveFzC!k7Xop7RBM-9v<Lolx8YNeCzJY5ZMdaSzLL0sA0dzG0Ys2f",
+        "schema": "HHS_PHASE_GEAR_FOLD_CANDIDATE_V1",
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1",
+        "zero_sum_lane": {
+          "bounded_correction": -1,
+          "closed": true,
+          "post_correction_residue": 0,
+          "pre_correction_residue": 1,
+          "source_phase_erased": false
+        }
+      },
+      {
+        "all_three_lanes_executed": true,
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "binding_root_hash72": "I25Il8P++aYQdOLh1C3*+GsmnlF4*W)!?(url8PK(H)Ss<?FW?TD?04bwg<rES+UUOHbQO<E",
+        "failed_fold_erases_provenance": false,
+        "fold_admitted": true,
+        "fold_id": "fold:09",
+        "fold_rewrites_source_sequence": false,
+        "fold_root_hash72": "l4z+))Wwb*VVmIr>eHqk4CN2(9dx4<4PvJ)vzW*kmaubc(kYt!Zl5HRof0!ZYqL?sxa?kNJs",
+        "left_token_root_hash72": "fQ8!Y?az<7ak!*M(zfokqUn7ByCjpN)DmehpIxs94qStczSU/V<giH)6LA6GAkwk?byV+a6D",
+        "plastic_lane": {
+          "bounded_correction": 2,
+          "equilibrated": true,
+          "plastic_relation": "rho^3-rho-1=0",
+          "post_correction_residue": 0,
+          "pre_correction_residue": -2
+        },
+        "positive_lane": {
+          "proposal": "z>y",
+          "proposed": true
+        },
+        "right_token_root_hash72": "wv(Zq8EZREfZ!uk5B-VzCrwnGgiJXii8<+HXm*udtt4568s/X4q-mVCIVAVrxSQd6VgP++Xi",
+        "schema": "HHS_PHASE_GEAR_FOLD_CANDIDATE_V1",
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1",
+        "zero_sum_lane": {
+          "bounded_correction": 1,
+          "closed": true,
+          "post_correction_residue": 0,
+          "pre_correction_residue": -1,
+          "source_phase_erased": false
+        }
+      },
+      {
+        "all_three_lanes_executed": true,
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "binding_root_hash72": "yLI?EyjbP(Ok1sJgr(H0>zxQEDucD?SIMGE909tsCdVNK)E9gghA!pK9VPJim17*DQ)a39BM",
+        "failed_fold_erases_provenance": false,
+        "fold_admitted": true,
+        "fold_id": "fold:10",
+        "fold_rewrites_source_sequence": false,
+        "fold_root_hash72": "Z8)+d>UoUdFmOQfzv0+tehC)gHDUybJICtv3E2RB)+PeYpNLvYwc?dfHcR>XcHneOMge+av>",
+        "left_token_root_hash72": "G*nTdQObI>rWFBqH6gj3CUC0Y5S(P7zs6Bjpn!S2fuizyDrpVDiZ6Pf?SrGkrpJC6WuA<qgg",
+        "plastic_lane": {
+          "bounded_correction": -4,
+          "equilibrated": true,
+          "plastic_relation": "rho^3-rho-1=0",
+          "post_correction_residue": 0,
+          "pre_correction_residue": 4
+        },
+        "positive_lane": {
+          "proposal": "xy",
+          "proposed": true
+        },
+        "right_token_root_hash72": "xv(Zq8EZREfZ!uk5B-VzCrvqDhiJXii8<+HXm*udst6468s/X4q-mVCIVAVrxSQd6VgP++Xh",
+        "schema": "HHS_PHASE_GEAR_FOLD_CANDIDATE_V1",
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1",
+        "zero_sum_lane": {
+          "bounded_correction": 0,
+          "closed": true,
+          "post_correction_residue": 0,
+          "pre_correction_residue": 0,
+          "source_phase_erased": false
+        }
+      },
+      {
+        "all_three_lanes_executed": true,
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "binding_root_hash72": ">7x(Ry8EjC1RZlJgr(H0>zxQEDC?y7Bu9wU2>BRqNKDZXNr-se-7N/pmxJ<cNwe/*kzwp7VJ",
+        "failed_fold_erases_provenance": false,
+        "fold_admitted": true,
+        "fold_id": "fold:11",
+        "fold_rewrites_source_sequence": false,
+        "fold_root_hash72": "Ily0zK1YRf5910!AK5VRkjB)gHDUy!T1xIMev+ZxzE08lP(bBgOl7sDtruQlGV6MDV+HDF0N",
+        "left_token_root_hash72": "F*nTdQObI>rWFBqH6gj3CU6u+4S(P7zs6Bjpn!S2gugAyDrpVDiZ6Pf?SrGkrpJC6WuA<qgh",
+        "plastic_lane": {
+          "bounded_correction": -4,
+          "equilibrated": true,
+          "plastic_relation": "rho^3-rho-1=0",
+          "post_correction_residue": 0,
+          "pre_correction_residue": 4
+        },
+        "positive_lane": {
+          "proposal": "xy",
+          "proposed": true
+        },
+        "right_token_root_hash72": "yv(Zq8EZREfZ!uk5B-VzCrutAiiJXii8<+HXm*udrt8368s/X4q-mVCIVAVrxSQd6VgP++Xg",
+        "schema": "HHS_PHASE_GEAR_FOLD_CANDIDATE_V1",
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1",
+        "zero_sum_lane": {
+          "bounded_correction": 0,
+          "closed": true,
+          "post_correction_residue": 0,
+          "pre_correction_residue": 0,
+          "source_phase_erased": false
+        }
+      },
+      {
+        "all_three_lanes_executed": true,
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "binding_root_hash72": ">7?7HNvrrkSXPLYkXN3W>Cl-PXRUKKdBdf0Eo-nB<OOzNZJWtBumVW6!X)sc+cMq4E-(E5YX",
+        "failed_fold_erases_provenance": false,
+        "fold_admitted": false,
+        "fold_id": "fold:12",
+        "fold_rewrites_source_sequence": false,
+        "fold_root_hash72": "*zQ*ec-)pMlJajESDi)zL31ZiDszbtfED5rj7x)zr2Ez(Vi03q)RyrtS9JD-RriiSrY5Ntuz",
+        "left_token_root_hash72": "E*nTdQObI>rWFBqH6gj3CU7r8ZS(P7zs6Bjpn!S2hueByDrpVDiZ6Pf?SrGkrpJC6WuA<qgi",
+        "plastic_lane": {
+          "bounded_correction": -4,
+          "equilibrated": true,
+          "plastic_relation": "rho^3-rho-1=0",
+          "post_correction_residue": 0,
+          "pre_correction_residue": 4
+        },
+        "positive_lane": {
+          "proposal": "x>x",
+          "proposed": true
+        },
+        "right_token_root_hash72": "x*nTdQObI>rWFBqH6gj3CUPi(ES(P7zs6Bjpn!S2oRzWyDrpVDiZ6Pf?SrGkrpJC6WuA<qgp",
+        "schema": "HHS_PHASE_GEAR_FOLD_CANDIDATE_V1",
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1",
+        "zero_sum_lane": {
+          "bounded_correction": -2,
+          "closed": true,
+          "post_correction_residue": 0,
+          "pre_correction_residue": 2,
+          "source_phase_erased": false
+        }
+      },
+      {
+        "all_three_lanes_executed": true,
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "binding_root_hash72": "bI3wsbwfYdFhwid<unCa5QJV7*?IxKyKminc!2fJFUWD2L3E?h14Y?H0THy?qh+oSppSf*oP",
+        "failed_fold_erases_provenance": false,
+        "fold_admitted": false,
+        "fold_id": "fold:13",
+        "fold_rewrites_source_sequence": false,
+        "fold_root_hash72": "oJ)NTpLmuqCuVIgYcJsd>bDYCyxp5njMoD</y?*fX4kMv6?R3)L)KY*MiNsq8CP!dXA+2Lo/",
+        "left_token_root_hash72": "vv(Zq8EZREfZ!uk5B-VzCswjKfiJXii8<+HXm*ucwt1668s/X4q-mVCIVAVrxSQd6VgP++Wk",
+        "plastic_lane": {
+          "bounded_correction": -4,
+          "equilibrated": true,
+          "plastic_relation": "rho^3-rho-1=0",
+          "post_correction_residue": 0,
+          "pre_correction_residue": 4
+        },
+        "positive_lane": {
+          "proposal": "y>y",
+          "proposed": true
+        },
+        "right_token_root_hash72": "qv(Zq8EZREfZ!uk5B-VzCsvUt<iJXii8<+HXm*ucBTnp68s/X4q-mVCIVAVrxSQd6VgP++Wp",
+        "schema": "HHS_PHASE_GEAR_FOLD_CANDIDATE_V1",
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1",
+        "zero_sum_lane": {
+          "bounded_correction": 2,
+          "closed": true,
+          "post_correction_residue": 0,
+          "pre_correction_residue": -2,
+          "source_phase_erased": false
+        }
+      },
+      {
+        "all_three_lanes_executed": true,
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "binding_root_hash72": "J>48/fYPi1MUWZ+Eb-712lFWByqbF586poBMXSpqqS2r5GgG0b75pP!3SYQvhh2wmh)7<Bo8",
+        "failed_fold_erases_provenance": false,
+        "fold_admitted": true,
+        "fold_id": "fold:14",
+        "fold_rewrites_source_sequence": false,
+        "fold_root_hash72": "rU<q(rjsHvhtrXtacWTH)!AR1lgnAFBhROkM(b9F4LGOCo8<tRUc?)7JVn-hLqQG7pINP1ES",
+        "left_token_root_hash72": "C*nTdQObI>rWFBqH6gj3CU9leXS(P7zs6Bjpn!S2juaDyDrpVDiZ6Pf?SrGkrpJC6WuA<qgk",
+        "plastic_lane": {
+          "bounded_correction": -5,
+          "equilibrated": true,
+          "plastic_relation": "rho^3-rho-1=0",
+          "post_correction_residue": 0,
+          "pre_correction_residue": 5
+        },
+        "positive_lane": {
+          "proposal": "x>z",
+          "proposed": true
+        },
+        "right_token_root_hash72": "z*nTdPRCtW!Fvt2U6gj3CUzpXHi?q4zs6Bjpn!S2mu-UyDroVDjZ8Nf?SrGjspJC6WuA<qgn",
+        "schema": "HHS_PHASE_GEAR_FOLD_CANDIDATE_V1",
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1",
+        "zero_sum_lane": {
+          "bounded_correction": -1,
+          "closed": true,
+          "post_correction_residue": 0,
+          "pre_correction_residue": 1,
+          "source_phase_erased": false
+        }
+      },
+      {
+        "all_three_lanes_executed": true,
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "binding_root_hash72": "XZJtNQyMxzqTQ>(<E2rzTQKrBkat4)iKAV?HmDAYaNC(ora?NhcQZRmQsNGUbu2PFgPtJadZ",
+        "failed_fold_erases_provenance": false,
+        "fold_admitted": true,
+        "fold_id": "fold:15",
+        "fold_rewrites_source_sequence": false,
+        "fold_root_hash72": "iAMZjL6hGa>wmi1Nk4bh29LR0phj+Wu-KKZ58N4XZHmTt6n*p/5MyrS64yz?12MD9w3qUklS",
+        "left_token_root_hash72": "4U5jul7qkEKmNO4ixs2WvfGsJ<k7Xop7RBM-9v<KslsaYNeCzJY5ZMdaSzLL0sA0dzG0Ys1i",
+        "plastic_lane": {
+          "bounded_correction": -4,
+          "equilibrated": true,
+          "plastic_relation": "rho^3-rho-1=0",
+          "post_correction_residue": 0,
+          "pre_correction_residue": 4
+        },
+        "positive_lane": {
+          "proposal": "w>y",
+          "proposed": true
+        },
+        "right_token_root_hash72": "sv(Zq8EZREfZ!uk5B-VzCszaTciJXii8<+HXm*uczt)968s/X4q-mVCIVAVrxSQd6VgP++Wn",
+        "schema": "HHS_PHASE_GEAR_FOLD_CANDIDATE_V1",
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1",
+        "zero_sum_lane": {
+          "bounded_correction": 1,
+          "closed": true,
+          "post_correction_residue": 0,
+          "pre_correction_residue": -1,
+          "source_phase_erased": false
+        }
+      }
+    ],
+    "schema": "HHS_PHASE_GEAR_FOLD_REGISTRY_V1",
+    "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+  },
+  "genome": {
+    "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+    "folding_may_rewrite_source": false,
+    "genome_root_hash72": "med9zg>NhxrZ4cme6h<rOASuM703Eqh0*e/qrY>GteJUk)iscS)e9C8cZ5A9cZU!H3kOJP51",
+    "overlap_root_hash72": "76A9BfCvc9!Hj9x7M5(WWRqXp7Vppp>qVQ(>xAG+2cRQJxrx6FRkBuw0Ve!InZps8rkxYNJN",
+    "schema": "HHS_SYMBOLIC_GENOME_V1",
+    "source_packet_root_hash72": "ifg(NSvYCGTmY49?mRajj6zWMKeP3dHHb7lu/-lYAa83u<>4Fsdi>*4pz>btVZe)W9TvHPGs",
+    "source_sequence_immutable": true,
+    "source_word": 81985529216486895,
+    "token_count": 32,
+    "tokens": [
+      {
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "binary_switch": 0,
+        "phase_symbol": "z",
+        "schema": "HHS_SEQUENCE_PHASE_TOKEN_V1",
+        "sequence_index": 0,
+        "source_bits": [
+          0,
+          0
+        ],
+        "source_identity_preserved": true,
+        "source_pair_root_hash72": "j(NYcIO!OwD9>7j7-zEO!bQ4O)4vol0aL1hx-F)+y+>3flceX-OYG3ceQV3eyCeNLgGyalRD",
+        "token_id": "token:00",
+        "token_root_hash72": "fQ8!Y?az<7ak!*M(zfokn!3gByCjpN)DmehpIxs+vhStczSU/V<giH)6LA6GAkwk?byV+a>M",
+        "translation_root_hash72": "IyUqar0KDkVOBZMybe<)3X35RXZn)+n)MW0jqSLYOKR)m3Il2*Z0AdrQjlVU<tO4/8LSp28H",
+        "trinary_phase": 0,
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+      },
+      {
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "binary_switch": 0,
+        "phase_symbol": "z",
+        "schema": "HHS_SEQUENCE_PHASE_TOKEN_V1",
+        "sequence_index": 1,
+        "source_bits": [
+          0,
+          0
+        ],
+        "source_identity_preserved": true,
+        "source_pair_root_hash72": "j(NYcIO!OwD9>7j7-zEO!bQ4O)4vol0aL1hx-F)+y+>3flceX-OYG3ceQV3eyCfMLgGyalRD",
+        "token_id": "token:01",
+        "token_root_hash72": "fQ8!Y?az<7ak!*M(zfokg36fByCjpN)DmehpIxs/siStczSU/V<giH)6LA6GAkwk?byV+a!L",
+        "translation_root_hash72": "IyUqar0KDkVOBZMybe<)3X35RXZn)+n)MW0jqSLYOKR)m3Il2*Z0AdrQjlVU<tO4(6MSp28H",
+        "trinary_phase": 0,
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+      },
+      {
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "binary_switch": 0,
+        "phase_symbol": "z",
+        "schema": "HHS_SEQUENCE_PHASE_TOKEN_V1",
+        "sequence_index": 2,
+        "source_bits": [
+          0,
+          0
+        ],
+        "source_identity_preserved": true,
+        "source_pair_root_hash72": "j(NYcIO!OwD9>7j7-zEO!bQ4O)4vol0aL1hx-F)+y+>3flceX-OYG3ceQV3eyCgLLgGyalRD",
+        "token_id": "token:02",
+        "token_root_hash72": "fQ8!Y?az<7ak!*M(zfokh09eByCjpN)DmehpIxs)pjStczSU/V<giH)6LA6GAkwk?byV+a?K",
+        "translation_root_hash72": "IyUqar0KDkVOBZMybe<)3X35RXZn)+n)MW0jqSLYOKR)m3Il2*Z0AdrQjlVU<tO4)4NSp28H",
+        "trinary_phase": 0,
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+      },
+      {
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "binary_switch": 0,
+        "phase_symbol": "x",
+        "schema": "HHS_SEQUENCE_PHASE_TOKEN_V1",
+        "sequence_index": 3,
+        "source_bits": [
+          0,
+          1
+        ],
+        "source_identity_preserved": true,
+        "source_pair_root_hash72": "j(NYcIO!OwD9>7j7-zEO!bQ4O)4vol0aL1hx-F)+y+>3flddX-OYG3ceQV3eyChKLgGyalRD",
+        "token_id": "token:03",
+        "token_root_hash72": "fQ8!Z1yLcxB40j?(zfokAs43jipwsN)DmehpIxs>mkStczT2JW<ggJ)6LA7FAkwk?byV+a0J",
+        "translation_root_hash72": "IyUqar0KDkVOBZMybe<<2X35RXZn)+n)MW0jqSLYOKR)m3Il3--WxmNe8UVU<tO4<cx)6w(E",
+        "trinary_phase": 1,
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+      },
+      {
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "binary_switch": 0,
+        "phase_symbol": "z",
+        "schema": "HHS_SEQUENCE_PHASE_TOKEN_V1",
+        "sequence_index": 4,
+        "source_bits": [
+          0,
+          0
+        ],
+        "source_identity_preserved": true,
+        "source_pair_root_hash72": "j(NYcIO!OwD9>7j7-zEO!bQ4O)4vol0aL1hx-F)+y+>3flceX-OYG3ceQV3eyCiJLgGyalRD",
+        "token_id": "token:04",
+        "token_root_hash72": "fQ8!Y?az<7ak!*M(zfokCLfcByCjpN)DmehpIxs?jlStczSU/V<giH)6LA6GAkwk?byV+a1I",
+        "translation_root_hash72": "IyUqar0KDkVOBZMybe<)3X35RXZn)+n)MW0jqSLYOKR)m3Il2*Z0AdrQjlVU<tO4>0PSp28H",
+        "trinary_phase": 0,
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+      },
+      {
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "binary_switch": 0,
+        "phase_symbol": "y",
+        "schema": "HHS_SEQUENCE_PHASE_TOKEN_V1",
+        "sequence_index": 5,
+        "source_bits": [
+          1,
+          0
+        ],
+        "source_identity_preserved": true,
+        "source_pair_root_hash72": "j(NYcIO!OwD9>7j7-zEO!bQ4O)4vol0aL1hx-F)+y+>3gkceX-OYG3ceQV3eyCjILgGyalRD",
+        "token_id": "token:05",
+        "token_root_hash72": "i6WfJhPHTxzX?uSUauGoV)jjN1K1OyqN)QSqon3yhvlqhocO>tT6oOV9U0/L/(/sB2AHJQ3w",
+        "translation_root_hash72": "7<MMJF)ErGa3oHbCy)!HQpi7OPXh(kqw3Dtzl3!TEkFM8<ujRV6VuAova!9DpmoTKrDH6g!>",
+        "trinary_phase": -1,
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+      },
+      {
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "binary_switch": 0,
+        "phase_symbol": "z",
+        "schema": "HHS_SEQUENCE_PHASE_TOKEN_V1",
+        "sequence_index": 6,
+        "source_bits": [
+          0,
+          0
+        ],
+        "source_identity_preserved": true,
+        "source_pair_root_hash72": "j(NYcIO!OwD9>7j7-zEO!bQ4O)4vol0aL1hx-F)+y+>3flceX-OYG3ceQV3eyCkHLgGyalRD",
+        "token_id": "token:06",
+        "token_root_hash72": "fQ8!Y?az<7ak!*M(zfokDW5aByCjpN)DmehpIxs3dnStczSU/V<giH)6LA6GAkwk?byV+a3G",
+        "translation_root_hash72": "IyUqar0KDkVOBZMybe<)3X35RXZn)+n)MW0jqSLYOKR)m3Il2*Z0AdrQjlVU<tO4?<RSp28H",
+        "trinary_phase": 0,
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+      },
+      {
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "binary_switch": 1,
+        "phase_symbol": "w",
+        "schema": "HHS_SEQUENCE_PHASE_TOKEN_V1",
+        "sequence_index": 7,
+        "source_bits": [
+          1,
+          1
+        ],
+        "source_identity_preserved": true,
+        "source_pair_root_hash72": "j(NYcIO!OwD9>7j7-zEO!bQ4O)4vol0aL1hx-F)+y+>3gkddX-OYG3ceQV3eyClGLgGyalRD",
+        "token_id": "token:07",
+        "token_root_hash72": "ZftIz9O-AOoBD(W9f-tSTIEawAd5DgbMGT5Q<!0Dx82iRsp6D?!0pr96*uAwlbNoo6Xt?96l",
+        "translation_root_hash72": "x?sPTF?v?CZ-7?Fgyu/zjU2lK>Nb-*B<QR<2R/A2xs4?iR5>35E6ouI937+9TsSZucVUo2g!",
+        "trinary_phase": 0,
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+      },
+      {
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "binary_switch": 0,
+        "phase_symbol": "x",
+        "schema": "HHS_SEQUENCE_PHASE_TOKEN_V1",
+        "sequence_index": 8,
+        "source_bits": [
+          0,
+          1
+        ],
+        "source_identity_preserved": true,
+        "source_pair_root_hash72": "j(NYcIO!OwD9>7j7-zEO!bQ4O)4vol0aL1hx-F)+y+>3flddX-OYG3ceQV3eyCmFLgGyalRD",
+        "token_id": "token:08",
+        "token_root_hash72": "fQ8!Z1yLcxB40j?(zfokp-0UjipwsN)DmehpIxs77pStczT2JW<ggJ)6LA7FAkwk?byV+a5E",
+        "translation_root_hash72": "IyUqar0KDkVOBZMybe<<2X35RXZn)+n)MW0jqSLYOKR)m3Il3--WxmNe8UVU<tO412C)6w(E",
+        "trinary_phase": 1,
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+      },
+      {
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "binary_switch": 0,
+        "phase_symbol": "z",
+        "schema": "HHS_SEQUENCE_PHASE_TOKEN_V1",
+        "sequence_index": 9,
+        "source_bits": [
+          0,
+          0
+        ],
+        "source_identity_preserved": true,
+        "source_pair_root_hash72": "j(NYcIO!OwD9>7j7-zEO!bQ4O)4vol0aL1hx-F)+y+>3flceX-OYG3ceQV3eyCnELgGyalRD",
+        "token_id": "token:09",
+        "token_root_hash72": "fQ8!Y?az<7ak!*M(zfokqUn7ByCjpN)DmehpIxs94qStczSU/V<giH)6LA6GAkwk?byV+a6D",
+        "translation_root_hash72": "IyUqar0KDkVOBZMybe<)3X35RXZn)+n)MW0jqSLYOKR)m3Il2*Z0AdrQjlVU<tO42-USp28H",
+        "trinary_phase": 0,
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+      },
+      {
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "binary_switch": 0,
+        "phase_symbol": "x",
+        "schema": "HHS_SEQUENCE_PHASE_TOKEN_V1",
+        "sequence_index": 10,
+        "source_bits": [
+          0,
+          1
+        ],
+        "source_identity_preserved": true,
+        "source_pair_root_hash72": "ZDV8vdvRnGVT0KZ(-MUI4+UJeEJleap4qHTMyXBD4hWi1e)PLV>t)RFU*<XlBa+SGAd15sfA",
+        "token_id": "token:10",
+        "token_root_hash72": "G*nTdQObI>rWFBqH6gj3CUC0Y5S(P7zs6Bjpn!S2fuizyDrpVDiZ6Pf?SrGkrpJC6WuA<qgg",
+        "translation_root_hash72": "VbH!-WQSPuDHv!7<Lfbn+Bs3E5ZtZvn(Pla5Tvm2VKvRWw9)nt!DL(*3k>y>X?YhN9ky13mj",
+        "trinary_phase": 1,
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+      },
+      {
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "binary_switch": 0,
+        "phase_symbol": "x",
+        "schema": "HHS_SEQUENCE_PHASE_TOKEN_V1",
+        "sequence_index": 11,
+        "source_bits": [
+          0,
+          1
+        ],
+        "source_identity_preserved": true,
+        "source_pair_root_hash72": "ZDV8vdvRnGVT0KZ(-MUI4+UJeEJleap4qHTMyXBD4hWi1e)PLV>t)RFU*<XlBa+TFAd15sfA",
+        "token_id": "token:11",
+        "token_root_hash72": "F*nTdQObI>rWFBqH6gj3CU6u+4S(P7zs6Bjpn!S2gugAyDrpVDiZ6Pf?SrGkrpJC6WuA<qgh",
+        "translation_root_hash72": "VbH!-WQSPuDHv!7<Lfbn+Bs3E5ZtZvn(Pla5Tvm2VKvRWw9)nt!DL(*3k>y>X?YhNaiz13mj",
+        "trinary_phase": 1,
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+      },
+      {
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "binary_switch": 0,
+        "phase_symbol": "x",
+        "schema": "HHS_SEQUENCE_PHASE_TOKEN_V1",
+        "sequence_index": 12,
+        "source_bits": [
+          0,
+          1
+        ],
+        "source_identity_preserved": true,
+        "source_pair_root_hash72": "ZDV8vdvRnGVT0KZ(-MUI4+UJeEJleap4qHTMyXBD4hWi1e)PLV>t)RFU*<XlBa+UEAd15sfA",
+        "token_id": "token:12",
+        "token_root_hash72": "E*nTdQObI>rWFBqH6gj3CU7r8ZS(P7zs6Bjpn!S2hueByDrpVDiZ6Pf?SrGkrpJC6WuA<qgi",
+        "translation_root_hash72": "VbH!-WQSPuDHv!7<Lfbn+Bs3E5ZtZvn(Pla5Tvm2VKvRWw9)nt!DL(*3k>y>X?YhNbgA13mj",
+        "trinary_phase": 1,
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+      },
+      {
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "binary_switch": 0,
+        "phase_symbol": "y",
+        "schema": "HHS_SEQUENCE_PHASE_TOKEN_V1",
+        "sequence_index": 13,
+        "source_bits": [
+          1,
+          0
+        ],
+        "source_identity_preserved": true,
+        "source_pair_root_hash72": "ZDV8vdvRnGVT0KZ(-MUI4+UJeEJleap4qHTMyXBD4hWi2d(QLV>t)RFU*<XlBa+VDAd15sfA",
+        "token_id": "token:13",
+        "token_root_hash72": "vv(Zq8EZREfZ!uk5B-VzCswjKfiJXii8<+HXm*ucwt1668s/X4q-mVCIVAVrxSQd6VgP++Wk",
+        "translation_root_hash72": "kJzkp0LMDQ*<iQG0!<d!F3H5B>XnYYqv62DlOQJ>LkjyIp)/1oeCI8DkmbWQg*y<pvid1XqM",
+        "trinary_phase": -1,
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+      },
+      {
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "binary_switch": 0,
+        "phase_symbol": "x",
+        "schema": "HHS_SEQUENCE_PHASE_TOKEN_V1",
+        "sequence_index": 14,
+        "source_bits": [
+          0,
+          1
+        ],
+        "source_identity_preserved": true,
+        "source_pair_root_hash72": "ZDV8vdvRnGVT0KZ(-MUI4+UJeEJleap4qHTMyXBD4hWi1e)PLV>t)RFU*<XlBa+WCAd15sfA",
+        "token_id": "token:14",
+        "token_root_hash72": "C*nTdQObI>rWFBqH6gj3CU9leXS(P7zs6Bjpn!S2juaDyDrpVDiZ6Pf?SrGkrpJC6WuA<qgk",
+        "translation_root_hash72": "VbH!-WQSPuDHv!7<Lfbn+Bs3E5ZtZvn(Pla5Tvm2VKvRWw9)nt!DL(*3k>y>X?YhNdcC13mj",
+        "trinary_phase": 1,
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+      },
+      {
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "binary_switch": 1,
+        "phase_symbol": "w",
+        "schema": "HHS_SEQUENCE_PHASE_TOKEN_V1",
+        "sequence_index": 15,
+        "source_bits": [
+          1,
+          1
+        ],
+        "source_identity_preserved": true,
+        "source_pair_root_hash72": "ZDV8vdvRnGVT0KZ(-MUI4+UJeEJleap4qHTMyXBD4hWi2d)PLV>t)RFU*<XlBa+XBAd15sfA",
+        "token_id": "token:15",
+        "token_root_hash72": "4U5jul7qkEKmNO4ixs2WvfGsJ<k7Xop7RBM-9v<KslsaYNeCzJY5ZMdaSzLL0sA0dzG0Ys1i",
+        "translation_root_hash72": "KMfnz0PDbMHT180O!v8-8yrjxfNhUwB)Tg6YaGbgEsSVSaGHnIMXC2X!fkEmK!*27musjJIN",
+        "trinary_phase": 0,
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+      },
+      {
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "binary_switch": 0,
+        "phase_symbol": "y",
+        "schema": "HHS_SEQUENCE_PHASE_TOKEN_V1",
+        "sequence_index": 16,
+        "source_bits": [
+          1,
+          0
+        ],
+        "source_identity_preserved": true,
+        "source_pair_root_hash72": "ZDV8vdvRnGVT0KZ(-MUI4+UJeEJleap4qHTMyXBD4hWi2d(QLV>t)RFU*<XlBa+YAAd15sfA",
+        "token_id": "token:16",
+        "token_root_hash72": "sv(Zq8EZREfZ!uk5B-VzCszaTciJXii8<+HXm*uczt)968s/X4q-mVCIVAVrxSQd6VgP++Wn",
+        "translation_root_hash72": "kJzkp0LMDQ*<iQG0!<d!F3H5B>XnYYqv62DlOQJ>LkjyIp)/1oeCI8DkmbWQg*y<pycg1XqM",
+        "trinary_phase": -1,
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+      },
+      {
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "binary_switch": 0,
+        "phase_symbol": "z",
+        "schema": "HHS_SEQUENCE_PHASE_TOKEN_V1",
+        "sequence_index": 17,
+        "source_bits": [
+          0,
+          0
+        ],
+        "source_identity_preserved": true,
+        "source_pair_root_hash72": "ZDV8vdvRnGVT0KZ(-MUI4+UJeEJleap4qHTMyXBD4hWi1e(QLV>t)RFU*<XlBa+ZzAd15sfA",
+        "token_id": "token:17",
+        "token_root_hash72": "z*nTdPRCtW!Fvt2U6gj3CUzpXHi?q4zs6Bjpn!S2mu-UyDroVDjZ8Nf?SrGjspJC6WuA<qgn",
+        "translation_root_hash72": "VbH!-WQSPuDHv!7<Lfbm*Bs3E5ZtZvn(Pla5Tvm2VKvRWw9)mv>ROVGFvyy>X?YhN69GkJAm",
+        "trinary_phase": 0,
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+      },
+      {
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "binary_switch": 0,
+        "phase_symbol": "y",
+        "schema": "HHS_SEQUENCE_PHASE_TOKEN_V1",
+        "sequence_index": 18,
+        "source_bits": [
+          1,
+          0
+        ],
+        "source_identity_preserved": true,
+        "source_pair_root_hash72": "ZDV8vdvRnGVT0KZ(-MUI4+UJeEJleap4qHTMyXBD4hWi2d(QLV>t)RFU*<XlBa+-yAd15sfA",
+        "token_id": "token:18",
+        "token_root_hash72": "qv(Zq8EZREfZ!uk5B-VzCsvUt<iJXii8<+HXm*ucBTnp68s/X4q-mVCIVAVrxSQd6VgP++Wp",
+        "translation_root_hash72": "kJzkp0LMDQ*<iQG0!<d!F3H5B>XnYYqv62DlOQJ>LkjyIp)/1oeCI8DkmbWQg*y<p-Ew1XqM",
+        "trinary_phase": -1,
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+      },
+      {
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "binary_switch": 0,
+        "phase_symbol": "x",
+        "schema": "HHS_SEQUENCE_PHASE_TOKEN_V1",
+        "sequence_index": 19,
+        "source_bits": [
+          0,
+          1
+        ],
+        "source_identity_preserved": true,
+        "source_pair_root_hash72": "ZDV8vdvRnGVT0KZ(-MUI4+UJeEJleap4qHTMyXBD4hWi1e)PLV>t)RFU*<XlBa++xAd15sfA",
+        "token_id": "token:19",
+        "token_root_hash72": "x*nTdQObI>rWFBqH6gj3CUPi(ES(P7zs6Bjpn!S2oRzWyDrpVDiZ6Pf?SrGkrpJC6WuA<qgp",
+        "translation_root_hash72": "VbH!-WQSPuDHv!7<Lfbn+Bs3E5ZtZvn(Pla5Tvm2VKvRWw9)nt!DL(*3k>y>X?YhNFBV13mj",
+        "trinary_phase": 1,
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+      },
+      {
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "binary_switch": 0,
+        "phase_symbol": "y",
+        "schema": "HHS_SEQUENCE_PHASE_TOKEN_V1",
+        "sequence_index": 20,
+        "source_bits": [
+          1,
+          0
+        ],
+        "source_identity_preserved": true,
+        "source_pair_root_hash72": "ZDV8vdvRnGVT0KZ(-MUI4+UJeEJleap4qHTMyXBD4hWi2d(QLV>t)RFU*<XlBa*RGAd15sfA",
+        "token_id": "token:20",
+        "token_root_hash72": "yv(Zq8EZREfZ!uk5B-VzCrutAiiJXii8<+HXm*udrt8368s/X4q-mVCIVAVrxSQd6VgP++Xg",
+        "translation_root_hash72": "kJzkp0LMDQ*<iQG0!<d!F3H5B>XnYYqv62DlOQJ>LkjyIp)/1oeCI8DkmbWQg*y<ospa1XqM",
+        "trinary_phase": -1,
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+      },
+      {
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "binary_switch": 0,
+        "phase_symbol": "y",
+        "schema": "HHS_SEQUENCE_PHASE_TOKEN_V1",
+        "sequence_index": 21,
+        "source_bits": [
+          1,
+          0
+        ],
+        "source_identity_preserved": true,
+        "source_pair_root_hash72": "ZDV8vdvRnGVT0KZ(-MUI4+UJeEJleap4qHTMyXBD4hWi2d(QLV>t)RFU*<XlBa*SFAd15sfA",
+        "token_id": "token:21",
+        "token_root_hash72": "xv(Zq8EZREfZ!uk5B-VzCrvqDhiJXii8<+HXm*udst6468s/X4q-mVCIVAVrxSQd6VgP++Xh",
+        "translation_root_hash72": "kJzkp0LMDQ*<iQG0!<d!F3H5B>XnYYqv62DlOQJ>LkjyIp)/1oeCI8DkmbWQg*y<otnb1XqM",
+        "trinary_phase": -1,
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+      },
+      {
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "binary_switch": 0,
+        "phase_symbol": "y",
+        "schema": "HHS_SEQUENCE_PHASE_TOKEN_V1",
+        "sequence_index": 22,
+        "source_bits": [
+          1,
+          0
+        ],
+        "source_identity_preserved": true,
+        "source_pair_root_hash72": "ZDV8vdvRnGVT0KZ(-MUI4+UJeEJleap4qHTMyXBD4hWi2d(QLV>t)RFU*<XlBa*TEAd15sfA",
+        "token_id": "token:22",
+        "token_root_hash72": "wv(Zq8EZREfZ!uk5B-VzCrwnGgiJXii8<+HXm*udtt4568s/X4q-mVCIVAVrxSQd6VgP++Xi",
+        "translation_root_hash72": "kJzkp0LMDQ*<iQG0!<d!F3H5B>XnYYqv62DlOQJ>LkjyIp)/1oeCI8DkmbWQg*y<oulc1XqM",
+        "trinary_phase": -1,
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+      },
+      {
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "binary_switch": 1,
+        "phase_symbol": "w",
+        "schema": "HHS_SEQUENCE_PHASE_TOKEN_V1",
+        "sequence_index": 23,
+        "source_bits": [
+          1,
+          1
+        ],
+        "source_identity_preserved": true,
+        "source_pair_root_hash72": "ZDV8vdvRnGVT0KZ(-MUI4+UJeEJleap4qHTMyXBD4hWi2d)PLV>t)RFU*<XlBa*UDAd15sfA",
+        "token_id": "token:23",
+        "token_root_hash72": "6U5jul7qkEKmNO4ixs2WveFzC!k7Xop7RBM-9v<Lolx8YNeCzJY5ZMdaSzLL0sA0dzG0Ys2f",
+        "translation_root_hash72": "KMfnz0PDbMHT180O!v8-8yrjxfNhUwB)Tg6YaGbgEsSVSaGHnIMXC2X!fkEmK!*26kzqjJIN",
+        "trinary_phase": 0,
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+      },
+      {
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "binary_switch": 1,
+        "phase_symbol": "w",
+        "schema": "HHS_SEQUENCE_PHASE_TOKEN_V1",
+        "sequence_index": 24,
+        "source_bits": [
+          1,
+          1
+        ],
+        "source_identity_preserved": true,
+        "source_pair_root_hash72": "ZDV8vdvRnGVT0KZ(-MUI4+UJeEJleap4qHTMyXBD4hWi2d)PLV>t)RFU*<XlBa*VCAd15sfA",
+        "token_id": "token:24",
+        "token_root_hash72": "5U5jul7qkEKmNO4ixs2WveGwF>k7Xop7RBM-9v<Lplv9YNeCzJY5ZMdaSzLL0sA0dzG0Ys2g",
+        "translation_root_hash72": "KMfnz0PDbMHT180O!v8-8yrjxfNhUwB)Tg6YaGbgEsSVSaGHnIMXC2X!fkEmK!*26lxrjJIN",
+        "trinary_phase": 0,
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+      },
+      {
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "binary_switch": 0,
+        "phase_symbol": "z",
+        "schema": "HHS_SEQUENCE_PHASE_TOKEN_V1",
+        "sequence_index": 25,
+        "source_bits": [
+          0,
+          0
+        ],
+        "source_identity_preserved": true,
+        "source_pair_root_hash72": "ZDV8vdvRnGVT0KZ(-MUI4+UJeEJleap4qHTMyXBD4hWi1e(QLV>t)RFU*<XlBa*WBAd15sfA",
+        "token_id": "token:25",
+        "token_root_hash72": "B*nTdPRCtW!Fvt2U6gj3CTydH1i?q4zs6Bjpn!S3iu9EyDroVDjZ8Nf?SrGjspJC6WuA<qhk",
+        "translation_root_hash72": "VbH!-WQSPuDHv!7<Lfbm*Bs3E5ZtZvn(Pla5Tvm2VKvRWw9)mv>ROVGFvyy>X?YhM4sqkJAm",
+        "trinary_phase": 0,
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+      },
+      {
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "binary_switch": 1,
+        "phase_symbol": "w",
+        "schema": "HHS_SEQUENCE_PHASE_TOKEN_V1",
+        "sequence_index": 26,
+        "source_bits": [
+          1,
+          1
+        ],
+        "source_identity_preserved": true,
+        "source_pair_root_hash72": "ZDV8vdvRnGVT0KZ(-MUI4+UJeEJleap4qHTMyXBD4hWi2d)PLV>t)RFU*<XlBa*XAAd15sfA",
+        "token_id": "token:26",
+        "token_root_hash72": "3U5jul7qkEKmNO4ixs2WveIqL)k7Xop7RBM-9v<LrlrbYNeCzJY5ZMdaSzLL0sA0dzG0Ys2i",
+        "translation_root_hash72": "KMfnz0PDbMHT180O!v8-8yrjxfNhUwB)Tg6YaGbgEsSVSaGHnIMXC2X!fkEmK!*26nttjJIN",
+        "trinary_phase": 0,
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+      },
+      {
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "binary_switch": 0,
+        "phase_symbol": "x",
+        "schema": "HHS_SEQUENCE_PHASE_TOKEN_V1",
+        "sequence_index": 27,
+        "source_bits": [
+          0,
+          1
+        ],
+        "source_identity_preserved": true,
+        "source_pair_root_hash72": "ZDV8vdvRnGVT0KZ(-MUI4+UJeEJleap4qHTMyXBD4hWi1e)PLV>t)RFU*<XlBa*YzAd15sfA",
+        "token_id": "token:27",
+        "token_root_hash72": "z*nTdQObI>rWFBqH6gj3CTdCbGS(P7zs6Bjpn!S3ku+UyDrpVDiZ6Pf?SrGkrpJC6WuA<qhm",
+        "translation_root_hash72": "VbH!-WQSPuDHv!7<Lfbn+Bs3E5ZtZvn(Pla5Tvm2VKvRWw9)nt!DL(*3k>y>X?YhMg/T13mj",
+        "trinary_phase": 1,
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+      },
+      {
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "binary_switch": 1,
+        "phase_symbol": "w",
+        "schema": "HHS_SEQUENCE_PHASE_TOKEN_V1",
+        "sequence_index": 28,
+        "source_bits": [
+          1,
+          1
+        ],
+        "source_identity_preserved": true,
+        "source_pair_root_hash72": "ZDV8vdvRnGVT0KZ(-MUI4+UJeEJleap4qHTMyXBD4hWi2d)PLV>t)RFU*<XlBa*ZyAd15sfA",
+        "token_id": "token:28",
+        "token_root_hash72": "1U5jul7qkEKmNO4ixs2WveK6nBk7Xop7RBM-9v<Ltl9rYNeCzJY5ZMdaSzLL0sA0dzG0Ys2k",
+        "translation_root_hash72": "KMfnz0PDbMHT180O!v8-8yrjxfNhUwB)Tg6YaGbgEsSVSaGHnIMXC2X!fkEmK!*26pbJjJIN",
+        "trinary_phase": 0,
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+      },
+      {
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "binary_switch": 0,
+        "phase_symbol": "y",
+        "schema": "HHS_SEQUENCE_PHASE_TOKEN_V1",
+        "sequence_index": 29,
+        "source_bits": [
+          1,
+          0
+        ],
+        "source_identity_preserved": true,
+        "source_pair_root_hash72": "ZDV8vdvRnGVT0KZ(-MUI4+UJeEJleap4qHTMyXBD4hWi2d(QLV>t)RFU*<XlBa*-xAd15sfA",
+        "token_id": "token:29",
+        "token_root_hash72": "pv(Zq8EZREfZ!uk5B-VzCruVv)iJXii8<+HXm*udATmq68s/X4q-mVCIVAVrxSQd6VgP++Xp",
+        "translation_root_hash72": "kJzkp0LMDQ*<iQG0!<d!F3H5B>XnYYqv62DlOQJ>LkjyIp)/1oeCI8DkmbWQg*y<o+Dx1XqM",
+        "trinary_phase": -1,
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+      },
+      {
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "binary_switch": 1,
+        "phase_symbol": "w",
+        "schema": "HHS_SEQUENCE_PHASE_TOKEN_V1",
+        "sequence_index": 30,
+        "source_bits": [
+          1,
+          1
+        ],
+        "source_identity_preserved": true,
+        "source_pair_root_hash72": "ZDV8vdvRnGVT0KZ(-MUI4+UJeEJleap4qHTMyXBD4hWi2d)PLV>t)RFU*<XlBa/QGAd15sfA",
+        "token_id": "token:30",
+        "token_root_hash72": "9U5jul7qkEKmNO4ixs2WvWY/e1k7Xop7RBM-9v<MpfE5YNeCzJY5ZMdaSzLL0sA0dzG0Ys3b",
+        "translation_root_hash72": "KMfnz0PDbMHT180O!v8-8yrjxfNhUwB)Tg6YaGbgEsSVSaGHnIMXC2X!fkEmK!*2bbGnjJIN",
+        "trinary_phase": 0,
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+      },
+      {
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "binary_switch": 1,
+        "phase_symbol": "w",
+        "schema": "HHS_SEQUENCE_PHASE_TOKEN_V1",
+        "sequence_index": 31,
+        "source_bits": [
+          1,
+          1
+        ],
+        "source_identity_preserved": true,
+        "source_pair_root_hash72": "ZDV8vdvRnGVT0KZ(-MUI4+UJeEJleap4qHTMyXBD4hWi2d)PLV>t)RFU*<XlBa/RFAd15sfA",
+        "token_id": "token:31",
+        "token_root_hash72": "8U5jul7qkEKmNO4ixs2WvWZ-h0k7Xop7RBM-9v<MqfC6YNeCzJY5ZMdaSzLL0sA0dzG0Ys3c",
+        "translation_root_hash72": "KMfnz0PDbMHT180O!v8-8yrjxfNhUwB)Tg6YaGbgEsSVSaGHnIMXC2X!fkEmK!*2bcEojJIN",
+        "trinary_phase": 0,
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+      }
+    ],
+    "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+  },
+  "handoff": {
+    "all_pair_round_trips_valid": true,
+    "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+    "binary_packet_root_hash72": "ifg(NSvYCGTmY49?mRajj6zWMKeP3dHHb7lu/-lYAa83u<>4Fsdi>*4pz>btVZe)W9TvHPGs",
+    "binary_round_trip_root_hash72": "(mZ+CRIKgj-0VgNnlioLUezJ16Wl+eqR3Ay2R78V5?ddNvQXecn(q*ziVnCjLRK+wFE*Gj8E",
+    "handoff_closed": true,
+    "handoff_is_overlap_not_reset": true,
+    "handoff_root_hash72": "+U7+QHsPu?Lo>VH6-n7JyM1hrkBcjkpbwr2drDZ0YG4vS)XycwVRg-RO8XdOaLWTXkF66rR3",
+    "operator_proof_roots_hash72": [
+      "VLr??n)9DijChr+jo?W!s)Fy0AXdKC(a6YcyurbeNGzAI9Pnzwre!lS1GgO5GM/2Nx-(vIs?",
+      "6B-LE48zJj?*bxmJ0hkqkU>NMBR3Ka4nPORW<!3sdq5DGCJPRS?diZKQzG+Z1hkpna2quf(K",
+      "VLr??n)9DijChr+jo?W!s)Gx0AXdKC(a6YzcHdbeNGzAI9Pnzwre!lS1GgO5GM/2Nx-(vIs?",
+      "aqBAnSe<dciW+xVY!nEA04Q6VXWjUCm0/fzRjLEmz6P(Fbmt7e5G?1e9+no*WhoLqYcS?JVx",
+      "VLr??n)9DijChr+jo?W!s(Gz?AXdKC(a6YpmHdbeNGzAI9Pnzwre!lS1GgO5GM/2Nx-(vIs?",
+      "aqBAnSe<dciW+xVY!nEA04Q5WXWjUCm0/fJU7Yqmz6P(Fbmt7e5G?1e9+no*WhoLqYcS?JVx"
+    ],
+    "pass069_root_hash72": "4CXXKtYD8(VQH+4L?cnQvOs*8Y0u8L6wC+v)Bxo(Do!/HH//536)860RB2o(Mk36))vg)!0n",
+    "pass070_root_hash72": "4x7/dTn<Q5axZHyM/OryqrIl6ZJGuWKugBOKSjR054M)*SZbVZ0M!<bD3vd9Y1+FT!sQRr(T",
+    "schema": "HHS_PASS070_TO_PASS071_HANDOFF_V1",
+    "translation_reversible": true,
+    "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1",
+    "word_round_trip_valid": true
+  },
+  "journal": {
+    "append_only_verified": true,
+    "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+    "complete_without_thread_context": true,
+    "entries": [
+      {
+        "append_only": true,
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "entry_root_hash72": "!u>dvtr6+37HbkTVlWM?q?r2q9bNLTBosl8McOhV1yQGRAvhbGjsq9fPkKvbjW3JYP-9WsP0",
+        "previous_entry_root_hash72": "76A9BfCvc9!Hj9x7M5(WWRqXp7Vppp>qVQ(>xAG+2cRQJxrx6FRkBuw0Ve!InZps8rkxYNJN",
+        "schema": "HHS_CONTEXT_CONTINUITY_JOURNAL_ENTRY_V1",
+        "sequence": 0,
+        "stage": "PASS070_HANDOFF",
+        "stage_object_root_hash72": "4x7/dTn<Q5axZHyM/OryqrIl6ZJGuWKugBOKSjR054M)*SZbVZ0M!<bD3vd9Y1+FT!sQRr(T",
+        "thread_context_dependency": false,
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+      },
+      {
+        "append_only": true,
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "entry_root_hash72": "R4ZIMTVE4T*BM?5kO(7SQfB7n-AGUSewx*hM5>U-RzBL9TZ?h3IpM)EJ8o41oukba0l?letk",
+        "previous_entry_root_hash72": "!u>dvtr6+37HbkTVlWM?q?r2q9bNLTBosl8McOhV1yQGRAvhbGjsq9fPkKvbjW3JYP-9WsP0",
+        "schema": "HHS_CONTEXT_CONTINUITY_JOURNAL_ENTRY_V1",
+        "sequence": 1,
+        "stage": "OVERLAP_BUFFER",
+        "stage_object_root_hash72": "4x7/dTn<Q5axZHyM/OryqrIl6ZJGuWKugBOKSjR054M)*SZbVZ0M!<bD3vd9Y1+FT!sQRr(T",
+        "thread_context_dependency": false,
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+      },
+      {
+        "append_only": true,
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "entry_root_hash72": "K5dpSdgM<0TUvu/hlrpplw72AInELTxdZBA+zi2EhL*Gh!47nkqFTeSAoO-2plsiYtlI/oh*",
+        "previous_entry_root_hash72": "R4ZIMTVE4T*BM?5kO(7SQfB7n-AGUSewx*hM5>U-RzBL9TZ?h3IpM)EJ8o41oukba0l?letk",
+        "schema": "HHS_CONTEXT_CONTINUITY_JOURNAL_ENTRY_V1",
+        "sequence": 2,
+        "stage": "SYMBOLIC_GENOME",
+        "stage_object_root_hash72": "ifg(NSvYCGTmY49?mRajj6zWMKeP3dHHb7lu/-lYAa83u<>4Fsdi>*4pz>btVZe)W9TvHPGs",
+        "thread_context_dependency": false,
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+      },
+      {
+        "append_only": true,
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "entry_root_hash72": "KZXuxQcSANIGa1kat3l+><6N89QVgGReP9jmGlg/rYLlZ<mBY0xdY1Dua5IWAkzup1QKnB+l",
+        "previous_entry_root_hash72": "K5dpSdgM<0TUvu/hlrpplw72AInELTxdZBA+zi2EhL*Gh!47nkqFTeSAoO-2plsiYtlI/oh*",
+        "schema": "HHS_CONTEXT_CONTINUITY_JOURNAL_ENTRY_V1",
+        "sequence": 3,
+        "stage": "INFORMATION_ENERGY_POTENTIAL",
+        "stage_object_root_hash72": "sbj4zeZ(2oqwQ4txbycnxsthK8T+Pc7q35c9<uw43jR3Go8HiURqhD3vzAH>R06A5AQkJBfw",
+        "thread_context_dependency": false,
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+      },
+      {
+        "append_only": true,
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "entry_root_hash72": "pe!pKbnbir5QU*K69j!w7M00T2l2xDt5)UJN63u719Jd0igbMtnAxY1!4+(gZ>oIafEAM>S)",
+        "previous_entry_root_hash72": "KZXuxQcSANIGa1kat3l+><6N89QVgGReP9jmGlg/rYLlZ<mBY0xdY1Dua5IWAkzup1QKnB+l",
+        "schema": "HHS_CONTEXT_CONTINUITY_JOURNAL_ENTRY_V1",
+        "sequence": 4,
+        "stage": "RECIPROCAL_BINDINGS",
+        "stage_object_root_hash72": "sbj4zeZ(2oqwQ4txbycnxsthK8T+Pc7q35c9<uw43jR3Go8HiURqhD3vzAH>R06A5AQkJBfw",
+        "thread_context_dependency": false,
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+      },
+      {
+        "append_only": true,
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "entry_root_hash72": "L4W?NXftBZUs3IHol88vc!uMa+coBebyf0>!xVSTwDcn?blOi5A+h/vjcE?OeZrlE4DbAKdA",
+        "previous_entry_root_hash72": "pe!pKbnbir5QU*K69j!w7M00T2l2xDt5)UJN63u719Jd0igbMtnAxY1!4+(gZ>oIafEAM>S)",
+        "schema": "HHS_CONTEXT_CONTINUITY_JOURNAL_ENTRY_V1",
+        "sequence": 5,
+        "stage": "PHASE_GEAR_FOLDS",
+        "stage_object_root_hash72": "Nuuq2/sdfgSiPWo-CN1?xhRpDaYzY8OKHdMb3*G3f>p9lNUkd<4X/(HFQ!MS2>Peu2j*Jc3?",
+        "thread_context_dependency": false,
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+      },
+      {
+        "append_only": true,
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "entry_root_hash72": "d3yxDh1dwsUP!0b-LX7b/i(sM7thtpiBmrnMud9KaO6PreWRkM?Ax09qij4e06TFc<lvCIxQ",
+        "previous_entry_root_hash72": "L4W?NXftBZUs3IHol88vc!uMa+coBebyf0>!xVSTwDcn?blOi5A+h/vjcE?OeZrlE4DbAKdA",
+        "schema": "HHS_CONTEXT_CONTINUITY_JOURNAL_ENTRY_V1",
+        "sequence": 6,
+        "stage": "FOLDED_TOPOLOGY",
+        "stage_object_root_hash72": "tjVb45fukLKQXqh3/gX+9ukSJfWWos*)GhUgEJ6kZyN-!u)uz-8rs5OE!Ve?K<)BXJ*xaKx1",
+        "thread_context_dependency": false,
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+      },
+      {
+        "append_only": true,
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "entry_root_hash72": "M92wzzga/r3O*zfyIM3ay/x3BRNHzGX<d+q0ClAAjE?ouh/fI!alTk>7?O<qCbsWmHgDqmtV",
+        "previous_entry_root_hash72": "d3yxDh1dwsUP!0b-LX7b/i(sM7thtpiBmrnMud9KaO6PreWRkM?Ax09qij4e06TFc<lvCIxQ",
+        "schema": "HHS_CONTEXT_CONTINUITY_JOURNAL_ENTRY_V1",
+        "sequence": 7,
+        "stage": "UNFOLDING",
+        "stage_object_root_hash72": "9UsJy1p03UrbF<D1UsK>rxgbwJHcmFOkjf?1uFnpLP2iKbn/s*P3j0HFf!46d9tADatWGAck",
+        "thread_context_dependency": false,
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+      },
+      {
+        "append_only": true,
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "entry_root_hash72": "K9oWp2rqnV9yo0?<S?B)AzhhkT)ct30EQr)Oj2VtL1GZiFpqciYj/)j?swQS6ge/R7mF52g5",
+        "previous_entry_root_hash72": "M92wzzga/r3O*zfyIM3ay/x3BRNHzGX<d+q0ClAAjE?ouh/fI!alTk>7?O<qCbsWmHgDqmtV",
+        "schema": "HHS_CONTEXT_CONTINUITY_JOURNAL_ENTRY_V1",
+        "sequence": 8,
+        "stage": "INDEPENDENT_REVALIDATION",
+        "stage_object_root_hash72": "9UsJy1p03UrbF<D1UsK>rxgbwJHcmFOkjf?1uFnpLP2iKbn/s*P3j0HFf!46d9tADatWGAck",
+        "thread_context_dependency": false,
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+      }
+    ],
+    "entry_count": 9,
+    "journal_root_hash72": "SY?3U>zGlpege6z(cR7-jWBHbu4bKZjS-4<FgAu7BuVD!Nhq6gcaQDM3xhhETmra7<kxxHwu",
+    "overlap_root_hash72": "76A9BfCvc9!Hj9x7M5(WWRqXp7Vppp>qVQ(>xAG+2cRQJxrx6FRkBuw0Ve!InZps8rkxYNJN",
+    "schema": "HHS_CONTEXT_CONTINUITY_JOURNAL_V1",
+    "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+  },
+  "mid_checkpoint": {
+    "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+    "checkpoint_root_hash72": "WcRr6*OjfBI?BeS<+68oMTiZwNnwC?y5z?s!u0<6cnkovOcXMF6/+Zsd45WH6nPf!K/(WErr",
+    "completed_stage": "INFORMATION_ENERGY_POTENTIAL",
+    "completed_stage_names": [
+      "PASS070_HANDOFF",
+      "OVERLAP_BUFFER",
+      "SYMBOLIC_GENOME",
+      "INFORMATION_ENERGY_POTENTIAL"
+    ],
+    "completed_stage_roots_hash72": {
+      "INFORMATION_ENERGY_POTENTIAL": "sbj4zeZ(2oqwQ4txbycnxsthK8T+Pc7q35c9<uw43jR3Go8HiURqhD3vzAH>R06A5AQkJBfw",
+      "OVERLAP_BUFFER": "4x7/dTn<Q5axZHyM/OryqrIl6ZJGuWKugBOKSjR054M)*SZbVZ0M!<bD3vd9Y1+FT!sQRr(T",
+      "PASS070_HANDOFF": "4x7/dTn<Q5axZHyM/OryqrIl6ZJGuWKugBOKSjR054M)*SZbVZ0M!<bD3vd9Y1+FT!sQRr(T",
+      "SYMBOLIC_GENOME": "ifg(NSvYCGTmY49?mRajj6zWMKeP3dHHb7lu/-lYAa83u<>4Fsdi>*4pz>btVZe)W9TvHPGs"
+    },
+    "context_reset_permitted": false,
+    "next_stage": "RECIPROCAL_BINDINGS",
+    "overlap_root_hash72": "76A9BfCvc9!Hj9x7M5(WWRqXp7Vppp>qVQ(>xAG+2cRQJxrx6FRkBuw0Ve!InZps8rkxYNJN",
+    "parent_pass_id": "PASS_070",
+    "pass070_root_hash72": "4x7/dTn<Q5axZHyM/OryqrIl6ZJGuWKugBOKSjR054M)*SZbVZ0M!<bD3vd9Y1+FT!sQRr(T",
+    "pass_id": "PASS_071",
+    "reconstruction_inputs": {
+      "mapping": {
+        "00": [
+          0,
+          0
+        ],
+        "01": [
+          1,
+          0
+        ],
+        "10": [
+          -1,
+          0
+        ],
+        "11": [
+          0,
+          1
+        ]
+      },
+      "source_packet_root_hash72": "ifg(NSvYCGTmY49?mRajj6zWMKeP3dHHb7lu/-lYAa83u<>4Fsdi>*4pz>btVZe)W9TvHPGs",
+      "source_word": 81985529216486895
+    },
+    "restart_safe": true,
+    "resume_requires_parent_root_match": true,
+    "schema": "HHS_RESUMABLE_EXECUTION_CHECKPOINT_V1",
+    "thread_context_required": false,
+    "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+  },
+  "overlap": {
+    "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+    "context_capsule": {
+      "active_forward_pass": "PASS_071",
+      "binary_operator_set": [
+        "AND",
+        "OR",
+        "XOR",
+        "NAND",
+        "NOR",
+        "XNOR"
+      ],
+      "canonical_parent_pass": "PASS_070",
+      "fixed_invariants": [
+        "SOURCE_IDENTITY_PRESERVED",
+        "TRINARY_SWITCH_REVERSIBLE",
+        "PLASTIC_GRADIENT_MEDIATES",
+        "ZERO_SUM_CLOSES",
+        "AUTHORITY_REMAINS_BOUNDED",
+        "HASH72_WITNESSES_CONTINUITY"
+      ],
+      "forbidden_substitutions": [
+        "THREAD_MEMORY_AS_CANONICAL_SOURCE",
+        "LINGUISTIC_RECONSTRUCTION_AS_OPERATOR_AUTHORITY",
+        "ENERGY_MINIMUM_AS_AUTHORITY",
+        "FOLDING_TOPOLOGY_AS_SOURCE_REWRITE"
+      ],
+      "phase_states": [
+        "x",
+        "y",
+        "z",
+        "w",
+        "xy",
+        "yx",
+        "zw",
+        "wz"
+      ],
+      "resume_rule": "REBUILD_FROM_COMMITTED_ROOTS_NOT_THREAD_CONTEXT",
+      "source_mapping": {
+        "00": [
+          0,
+          0
+        ],
+        "01": [
+          1,
+          0
+        ],
+        "10": [
+          -1,
+          0
+        ],
+        "11": [
+          0,
+          1
+        ]
+      },
+      "three_lane_order": [
+        "POSITIVE",
+        "PLASTIC",
+        "ZERO_SUM"
+      ]
+    },
+    "context_capsule_complete": true,
+    "context_reset_permitted": false,
+    "handoff_root_hash72": "+U7+QHsPu?Lo>VH6-n7JyM1hrkBcjkpbwr2drDZ0YG4vS)XycwVRg-RO8XdOaLWTXkF66rR3",
+    "overlap_root_hash72": "76A9BfCvc9!Hj9x7M5(WWRqXp7Vppp>qVQ(>xAG+2cRQJxrx6FRkBuw0Ve!InZps8rkxYNJN",
+    "pass070_root_hash72": "4x7/dTn<Q5axZHyM/OryqrIl6ZJGuWKugBOKSjR054M)*SZbVZ0M!<bD3vd9Y1+FT!sQRr(T",
+    "schema": "HHS_PASS_OVERLAP_BUFFER_V1",
+    "source_and_projection_overlap_preserved": true,
+    "thread_context_required_for_resume": false,
+    "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+  },
+  "pass070_root_hash72": "4x7/dTn<Q5axZHyM/OryqrIl6ZJGuWKugBOKSjR054M)*SZbVZ0M!<bD3vd9Y1+FT!sQRr(T",
+  "potential": {
+    "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+    "floating_point_used": false,
+    "genome_root_hash72": "med9zg>NhxrZ4cme6h<rOASuM703Eqh0*e/qrY>GteJUk)iscS)e9C8cZ5A9cZU!H3kOJP51",
+    "potential_field_root_hash72": "sbj4zeZ(2oqwQ4txbycnxsthK8T+Pc7q35c9<uw43jR3Go8HiURqhD3vzAH>R06A5AQkJBfw",
+    "potential_guides_search_not_authority": true,
+    "record_count": 32,
+    "records": [
+      {
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "computational_potential_not_empirical_measurement": true,
+        "dependency_potential": 0,
+        "local_information_energy": 1,
+        "phase_potential": 0,
+        "potential_root_hash72": "JrI!OfngoWr+j!HPezyM3sQoM9XxoAzUiDQInbMbAiROHA<f9q0lY1A?lfOiT9YLfId9elZo",
+        "potential_vector": [
+          1,
+          0,
+          0
+        ],
+        "schema": "HHS_ELECTROCHEMICAL_PHASE_POTENTIAL_V1",
+        "thermodynamic_bias_confers_authority": false,
+        "token_id": "token:00",
+        "token_root_hash72": "fQ8!Y?az<7ak!*M(zfokn!3gByCjpN)DmehpIxs+vhStczSU/V<giH)6LA6GAkwk?byV+a>M",
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+      },
+      {
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "computational_potential_not_empirical_measurement": true,
+        "dependency_potential": 0,
+        "local_information_energy": 1,
+        "phase_potential": 0,
+        "potential_root_hash72": "JrI!S8rfoWr+j?GPezyM3sQoM9XxoAzUiDQfPcMbAiROHA<f9q0lY1A?l833PaYLfId9elZo",
+        "potential_vector": [
+          1,
+          0,
+          0
+        ],
+        "schema": "HHS_ELECTROCHEMICAL_PHASE_POTENTIAL_V1",
+        "thermodynamic_bias_confers_authority": false,
+        "token_id": "token:01",
+        "token_root_hash72": "fQ8!Y?az<7ak!*M(zfokg36fByCjpN)DmehpIxs/siStczSU/V<giH)6LA6GAkwk?byV+a!L",
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+      },
+      {
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "computational_potential_not_empirical_measurement": true,
+        "dependency_potential": 0,
+        "local_information_energy": 1,
+        "phase_potential": 0,
+        "potential_root_hash72": "JrI!MbveoWr+j0FPezyM3sQoM9XxoAzUiDQJkdMbAiROHA<f9q0lY1A?l9?9LbYLfId9elZo",
+        "potential_vector": [
+          1,
+          0,
+          0
+        ],
+        "schema": "HHS_ELECTROCHEMICAL_PHASE_POTENTIAL_V1",
+        "thermodynamic_bias_confers_authority": false,
+        "token_id": "token:02",
+        "token_root_hash72": "fQ8!Y?az<7ak!*M(zfokh09eByCjpN)DmehpIxs)pjStczSU/V<giH)6LA6GAkwk?byV+a?K",
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+      },
+      {
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "computational_potential_not_empirical_measurement": true,
+        "dependency_potential": 0,
+        "local_information_energy": 2,
+        "phase_potential": 2,
+        "potential_root_hash72": "JrI!>XzdoWr*T+gMexCK3sQpKaXxoAzUiDQuzdO9AjCgJNm+VoNf21A?lGx92t4ATyb8elZo",
+        "potential_vector": [
+          2,
+          2,
+          0
+        ],
+        "schema": "HHS_ELECTROCHEMICAL_PHASE_POTENTIAL_V1",
+        "thermodynamic_bias_confers_authority": false,
+        "token_id": "token:03",
+        "token_root_hash72": "fQ8!Z1yLcxB40j?(zfokAs43jipwsN)DmehpIxs>mkStczT2JW<ggJ)6LA7FAkwk?byV+a0J",
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+      },
+      {
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "computational_potential_not_empirical_measurement": true,
+        "dependency_potential": 0,
+        "local_information_energy": 1,
+        "phase_potential": 0,
+        "potential_root_hash72": "JrI!!TDcoWr+j2DPezyM3sQoM9XxoAzUiDQvwfMbAiROHA<f9q0lY1A?lI*q0dYLfId9elZo",
+        "potential_vector": [
+          1,
+          0,
+          0
+        ],
+        "schema": "HHS_ELECTROCHEMICAL_PHASE_POTENTIAL_V1",
+        "thermodynamic_bias_confers_authority": false,
+        "token_id": "token:04",
+        "token_root_hash72": "fQ8!Y?az<7ak!*M(zfokCLfcByCjpN)DmehpIxs?jlStczSU/V<giH)6LA6GAkwk?byV+a1I",
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+      },
+      {
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "computational_potential_not_empirical_measurement": true,
+        "dependency_potential": 0,
+        "local_information_energy": 2,
+        "phase_potential": -2,
+        "potential_root_hash72": "7TAH1SPuqr/xqGgyQh48/N-ZcU*Y?DEI1luHh5wqjBGux3DQEWC+s*pkukfgDhoGCrfjSTg5",
+        "potential_vector": [
+          2,
+          -2,
+          0
+        ],
+        "schema": "HHS_ELECTROCHEMICAL_PHASE_POTENTIAL_V1",
+        "thermodynamic_bias_confers_authority": false,
+        "token_id": "token:05",
+        "token_root_hash72": "i6WfJhPHTxzX?uSUauGoV)jjN1K1OyqN)QSqon3yhvlqhocO>tT6oOV9U0/L/(/sB2AHJQ3w",
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+      },
+      {
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "computational_potential_not_empirical_measurement": true,
+        "dependency_potential": 0,
+        "local_information_energy": 1,
+        "phase_potential": 0,
+        "potential_root_hash72": "JrI!WZLaoWr+j4BPezyM3sQoM9XxoAzUiDQxshMbAiROHA<f9q0lY1A?lJ2CLfYLfId9elZo",
+        "potential_vector": [
+          1,
+          0,
+          0
+        ],
+        "schema": "HHS_ELECTROCHEMICAL_PHASE_POTENTIAL_V1",
+        "thermodynamic_bias_confers_authority": false,
+        "token_id": "token:06",
+        "token_root_hash72": "fQ8!Y?az<7ak!*M(zfokDW5aByCjpN)DmehpIxs3dnStczSU/V<giH)6LA6GAkwk?byV+a3G",
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+      },
+      {
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "computational_potential_not_empirical_measurement": true,
+        "dependency_potential": 1,
+        "local_information_energy": 2,
+        "phase_potential": 1,
+        "potential_root_hash72": "/JGi!*JvKQBrvV/KWp>mX((Td471>8f)9t*4+E9NhaeCUKf5quzx)A?Z*dI<v<n*1RbECKa-",
+        "potential_vector": [
+          2,
+          1,
+          1
+        ],
+        "schema": "HHS_ELECTROCHEMICAL_PHASE_POTENTIAL_V1",
+        "thermodynamic_bias_confers_authority": false,
+        "token_id": "token:07",
+        "token_root_hash72": "ZftIz9O-AOoBD(W9f-tSTIEawAd5DgbMGT5Q<!0Dx82iRsp6D?!0pr96*uAwlbNoo6Xt?96l",
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+      },
+      {
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "computational_potential_not_empirical_measurement": true,
+        "dependency_potential": 0,
+        "local_information_energy": 2,
+        "phase_potential": 2,
+        "potential_root_hash72": "JrI!-cm8oWr*T<bMexCK3sQpKaXxoAzUiDQzpiO9AjCgJNm+VoNf21A?lhY3E)4ATyb8elZo",
+        "potential_vector": [
+          2,
+          2,
+          0
+        ],
+        "schema": "HHS_ELECTROCHEMICAL_PHASE_POTENTIAL_V1",
+        "thermodynamic_bias_confers_authority": false,
+        "token_id": "token:08",
+        "token_root_hash72": "fQ8!Z1yLcxB40j?(zfokp-0UjipwsN)DmehpIxs77pStczT2JW<ggJ)6LA7FAkwk?byV+a5E",
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+      },
+      {
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "computational_potential_not_empirical_measurement": true,
+        "dependency_potential": 0,
+        "local_information_energy": 1,
+        "phase_potential": 0,
+        "potential_root_hash72": "JrI!*7q7oWr+j7yPezyM3sQoM9XxoAzUiDQAmkMbAiROHA<f9q0lY1A?lirpkVYLfId9elZo",
+        "potential_vector": [
+          1,
+          0,
+          0
+        ],
+        "schema": "HHS_ELECTROCHEMICAL_PHASE_POTENTIAL_V1",
+        "thermodynamic_bias_confers_authority": false,
+        "token_id": "token:09",
+        "token_root_hash72": "fQ8!Y?az<7ak!*M(zfokqUn7ByCjpN)DmehpIxs94qStczSU/V<giH)6LA6GAkwk?byV+a6D",
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+      },
+      {
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "computational_potential_not_empirical_measurement": true,
+        "dependency_potential": 0,
+        "local_information_energy": 2,
+        "phase_potential": 2,
+        "potential_root_hash72": "H**Rh*Qp82n4g9YEs>ltnqm*)mfTt)x+15P>9pGuxOYeB1-pIbXxUJx/Gs1SUfFX56nEQ+9Z",
+        "potential_vector": [
+          2,
+          2,
+          0
+        ],
+        "schema": "HHS_ELECTROCHEMICAL_PHASE_POTENTIAL_V1",
+        "thermodynamic_bias_confers_authority": false,
+        "token_id": "token:10",
+        "token_root_hash72": "G*nTdQObI>rWFBqH6gj3CUC0Y5S(P7zs6Bjpn!S2fuizyDrpVDiZ6Pf?SrGkrpJC6WuA<qgg",
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+      },
+      {
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "computational_potential_not_empirical_measurement": true,
+        "dependency_potential": 0,
+        "local_information_energy": 2,
+        "phase_potential": 2,
+        "potential_root_hash72": "H**Rh/PnpXn4gaXEs>ltnqm*)mfTt)x+15P>anHuxOYeB1-pIbXxUJx/Gs1F(IeY56nEQ+9Z",
+        "potential_vector": [
+          2,
+          2,
+          0
+        ],
+        "schema": "HHS_ELECTROCHEMICAL_PHASE_POTENTIAL_V1",
+        "thermodynamic_bias_confers_authority": false,
+        "token_id": "token:11",
+        "token_root_hash72": "F*nTdQObI>rWFBqH6gj3CU6u+4S(P7zs6Bjpn!S2gugAyDrpVDiZ6Pf?SrGkrpJC6WuA<qgh",
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+      },
+      {
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "computational_potential_not_empirical_measurement": true,
+        "dependency_potential": 0,
+        "local_information_energy": 2,
+        "phase_potential": 2,
+        "potential_root_hash72": "H**Rh(OlsWn4gbWEs>ltnqm*)mfTt)x+15P>blIuxOYeB1-pIbXxUJx/Gs1G-YDm56nEQ+9Z",
+        "potential_vector": [
+          2,
+          2,
+          0
+        ],
+        "schema": "HHS_ELECTROCHEMICAL_PHASE_POTENTIAL_V1",
+        "thermodynamic_bias_confers_authority": false,
+        "token_id": "token:12",
+        "token_root_hash72": "E*nTdQObI>rWFBqH6gj3CU7r8ZS(P7zs6Bjpn!S2hueByDrpVDiZ6Pf?SrGkrpJC6WuA<qgi",
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+      },
+      {
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "computational_potential_not_empirical_measurement": true,
+        "dependency_potential": 0,
+        "local_information_energy": 2,
+        "phase_potential": -2,
+        "potential_root_hash72": "mam(7Iz)9G/GlFFhACCf2npKs6+nFu+LNn04a7UP!!59iE<w+hYvWgFlZzbWYsbDm4a3t+2K",
+        "potential_vector": [
+          2,
+          -2,
+          0
+        ],
+        "schema": "HHS_ELECTROCHEMICAL_PHASE_POTENTIAL_V1",
+        "thermodynamic_bias_confers_authority": false,
+        "token_id": "token:13",
+        "token_root_hash72": "vv(Zq8EZREfZ!uk5B-VzCswjKfiJXii8<+HXm*ucwt1668s/X4q-mVCIVAVrxSQd6VgP++Wk",
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+      },
+      {
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "computational_potential_not_empirical_measurement": true,
+        "dependency_potential": 0,
+        "local_information_energy": 2,
+        "phase_potential": 2,
+        "potential_root_hash72": "H**Rh<MhyUn4gdUEs>ltnqm*)mfTt)x+15P>dhKuxOYeB1-pIbXxUJx/Gs1ISD*o56nEQ+9Z",
+        "potential_vector": [
+          2,
+          2,
+          0
+        ],
+        "schema": "HHS_ELECTROCHEMICAL_PHASE_POTENTIAL_V1",
+        "thermodynamic_bias_confers_authority": false,
+        "token_id": "token:14",
+        "token_root_hash72": "C*nTdQObI>rWFBqH6gj3CU9leXS(P7zs6Bjpn!S2juaDyDrpVDiZ6Pf?SrGkrpJC6WuA<qgk",
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+      },
+      {
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "computational_potential_not_empirical_measurement": true,
+        "dependency_potential": 1,
+        "local_information_energy": 2,
+        "phase_potential": 1,
+        "potential_root_hash72": "56Wh/QuIJ)/RUnoj7!SuX*uZvXcHjYmSuPod/5u3FI!z4kzPx>*v66P>-HDFL5+4<??K27Rw",
+        "potential_vector": [
+          2,
+          1,
+          1
+        ],
+        "schema": "HHS_ELECTROCHEMICAL_PHASE_POTENTIAL_V1",
+        "thermodynamic_bias_confers_authority": false,
+        "token_id": "token:15",
+        "token_root_hash72": "4U5jul7qkEKmNO4ixs2WvfGsJ<k7Xop7RBM-9v<KslsaYNeCzJY5ZMdaSzLL0sA0dzG0Ys1i",
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+      },
+      {
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "computational_potential_not_empirical_measurement": true,
+        "dependency_potential": 0,
+        "local_information_energy": 2,
+        "phase_potential": -2,
+        "potential_root_hash72": "mam(7Iz!6y4DlFFkxCCf2npKs6+nFu+LNn04a7XJ1!59iE<w+hYvWgFlZzbWYv?Va7a3t+2K",
+        "potential_vector": [
+          2,
+          -2,
+          0
+        ],
+        "schema": "HHS_ELECTROCHEMICAL_PHASE_POTENTIAL_V1",
+        "thermodynamic_bias_confers_authority": false,
+        "token_id": "token:16",
+        "token_root_hash72": "sv(Zq8EZREfZ!uk5B-VzCszaTciJXii8<+HXm*uczt)968s/X4q-mVCIVAVrxSQd6VgP++Wn",
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+      },
+      {
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "computational_potential_not_empirical_measurement": true,
+        "dependency_potential": 0,
+        "local_information_energy": 1,
+        "phase_potential": 0,
+        "potential_root_hash72": "H**Rh?JBvDn4fhPHr?hvnqm*(oeTt)x+15P>f!ZwxOXi33I+A4Z*Ywx/Gs1B/mZ-6gWIQ+9Z",
+        "potential_vector": [
+          1,
+          0,
+          0
+        ],
+        "schema": "HHS_ELECTROCHEMICAL_PHASE_POTENTIAL_V1",
+        "thermodynamic_bias_confers_authority": false,
+        "token_id": "token:17",
+        "token_root_hash72": "z*nTdPRCtW!Fvt2U6gj3CUzpXHi?q4zs6Bjpn!S2mu-UyDroVDjZ8Nf?SrGjspJC6WuA<qgn",
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+      },
+      {
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "computational_potential_not_empirical_measurement": true,
+        "dependency_potential": 0,
+        "local_information_energy": 2,
+        "phase_potential": -2,
+        "potential_root_hash72": "mam(7Izeu+-UlFFmvCCf2npKs6+nFu+LNn04a7ZF3!59iE<w+hYvWgFlZzbWYr+tbKa3t+2K",
+        "potential_vector": [
+          2,
+          -2,
+          0
+        ],
+        "schema": "HHS_ELECTROCHEMICAL_PHASE_POTENTIAL_V1",
+        "thermodynamic_bias_confers_authority": false,
+        "token_id": "token:18",
+        "token_root_hash72": "qv(Zq8EZREfZ!uk5B-VzCsvUt<iJXii8<+HXm*ucBTnp68s/X4q-mVCIVAVrxSQd6VgP++Wp",
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+      },
+      {
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "computational_potential_not_empirical_measurement": true,
+        "dependency_potential": 0,
+        "local_information_energy": 2,
+        "phase_potential": 2,
+        "potential_root_hash72": "H**Rh185sBn4giPEs>ltnqm*)mfTt)x+15P>i//uxOYeB1-pIbXxUJx/Gs1)sRyH56nEQ+9Z",
+        "potential_vector": [
+          2,
+          2,
+          0
+        ],
+        "schema": "HHS_ELECTROCHEMICAL_PHASE_POTENTIAL_V1",
+        "thermodynamic_bias_confers_authority": false,
+        "token_id": "token:19",
+        "token_root_hash72": "x*nTdQObI>rWFBqH6gj3CUPi(ES(P7zs6Bjpn!S2oRzWyDrpVDiZ6Pf?SrGkrpJC6WuA<qgp",
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+      },
+      {
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "computational_potential_not_empirical_measurement": true,
+        "dependency_potential": 0,
+        "local_information_energy": 2,
+        "phase_potential": -2,
+        "potential_root_hash72": "mam(7IAZeNTJlFGdDCCf2npKs6+nFu+LNn04a8PW)!59iE<w+hYvWgFlZzbWXrnjz1a3t+2K",
+        "potential_vector": [
+          2,
+          -2,
+          0
+        ],
+        "schema": "HHS_ELECTROCHEMICAL_PHASE_POTENTIAL_V1",
+        "thermodynamic_bias_confers_authority": false,
+        "token_id": "token:20",
+        "token_root_hash72": "yv(Zq8EZREfZ!uk5B-VzCrutAiiJXii8<+HXm*udrt8368s/X4q-mVCIVAVrxSQd6VgP++Xg",
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+      },
+      {
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "computational_potential_not_empirical_measurement": true,
+        "dependency_potential": 0,
+        "local_information_energy": 2,
+        "phase_potential": -2,
+        "potential_root_hash72": "mam(7IA-dLWIlFGeCCCf2npKs6+nFu+LNn04a8QU<!59iE<w+hYvWgFlZzbWXsjpv2a3t+2K",
+        "potential_vector": [
+          2,
+          -2,
+          0
+        ],
+        "schema": "HHS_ELECTROCHEMICAL_PHASE_POTENTIAL_V1",
+        "thermodynamic_bias_confers_authority": false,
+        "token_id": "token:21",
+        "token_root_hash72": "xv(Zq8EZREfZ!uk5B-VzCrvqDhiJXii8<+HXm*udst6468s/X4q-mVCIVAVrxSQd6VgP++Xh",
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+      },
+      {
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "computational_potential_not_empirical_measurement": true,
+        "dependency_potential": 0,
+        "local_information_energy": 2,
+        "phase_potential": -2,
+        "potential_root_hash72": "mam(7IA+cJZHlFGfBCCf2npKs6+nFu+LNn04a8RS>!59iE<w+hYvWgFlZzbWXtfvr3a3t+2K",
+        "potential_vector": [
+          2,
+          -2,
+          0
+        ],
+        "schema": "HHS_ELECTROCHEMICAL_PHASE_POTENTIAL_V1",
+        "thermodynamic_bias_confers_authority": false,
+        "token_id": "token:22",
+        "token_root_hash72": "wv(Zq8EZREfZ!uk5B-VzCrwnGgiJXii8<+HXm*udtt4568s/X4q-mVCIVAVrxSQd6VgP++Xi",
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+      },
+      {
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "computational_potential_not_empirical_measurement": true,
+        "dependency_potential": 1,
+        "local_information_energy": 2,
+        "phase_potential": 1,
+        "potential_root_hash72": "56Wh(LyN?A/RVkqj7!SuX*uZvXcHjYmSuPoeZas3FI!z4kzPx>*v66P>-HCFT+Hv<??K27Rw",
+        "potential_vector": [
+          2,
+          1,
+          1
+        ],
+        "schema": "HHS_ELECTROCHEMICAL_PHASE_POTENTIAL_V1",
+        "thermodynamic_bias_confers_authority": false,
+        "token_id": "token:23",
+        "token_root_hash72": "6U5jul7qkEKmNO4ixs2WveFzC!k7Xop7RBM-9v<Lolx8YNeCzJY5ZMdaSzLL0sA0dzG0Ys2f",
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+      },
+      {
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "computational_potential_not_empirical_measurement": true,
+        "dependency_potential": 1,
+        "local_information_energy": 2,
+        "phase_potential": 1,
+        "potential_root_hash72": "56Wh(MxL2z/RVlpj7!SuX*uZvXcHjYmSuPoe-8t3FI!z4kzPx>*v66P>-HCGP>>2<??K27Rw",
+        "potential_vector": [
+          2,
+          1,
+          1
+        ],
+        "schema": "HHS_ELECTROCHEMICAL_PHASE_POTENTIAL_V1",
+        "thermodynamic_bias_confers_authority": false,
+        "token_id": "token:24",
+        "token_root_hash72": "5U5jul7qkEKmNO4ixs2WveGwF>k7Xop7RBM-9v<Lplv9YNeCzJY5ZMdaSzLL0sA0dzG0Ys2g",
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+      },
+      {
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "computational_potential_not_empirical_measurement": true,
+        "dependency_potential": 0,
+        "local_information_energy": 1,
+        "phase_potential": 0,
+        "potential_root_hash72": "H**Ri(NN3Tn4geRHr?hvnqm*(oeTt)x+15P!bhJwxOXi33I+A4Z*Ywx/Gs0BSiSd6gWIQ+9Z",
+        "potential_vector": [
+          1,
+          0,
+          0
+        ],
+        "schema": "HHS_ELECTROCHEMICAL_PHASE_POTENTIAL_V1",
+        "thermodynamic_bias_confers_authority": false,
+        "token_id": "token:25",
+        "token_root_hash72": "B*nTdPRCtW!Fvt2U6gj3CTydH1i?q4zs6Bjpn!S3iu9EyDroVDjZ8Nf?SrGjspJC6WuA<qhk",
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+      },
+      {
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "computational_potential_not_empirical_measurement": true,
+        "dependency_potential": 1,
+        "local_information_energy": 2,
+        "phase_potential": 1,
+        "potential_root_hash72": "56Wh(OvHL(/RVnnj7!SuX*uZvXcHjYmSuPoe*4v3FI!z4kzPx>*v66P>-HCIH9Gn<??K27Rw",
+        "potential_vector": [
+          2,
+          1,
+          1
+        ],
+        "schema": "HHS_ELECTROCHEMICAL_PHASE_POTENTIAL_V1",
+        "thermodynamic_bias_confers_authority": false,
+        "token_id": "token:26",
+        "token_root_hash72": "3U5jul7qkEKmNO4ixs2WveIqL)k7Xop7RBM-9v<LrlrbYNeCzJY5ZMdaSzLL0sA0dzG0Ys2i",
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+      },
+      {
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "computational_potential_not_empirical_measurement": true,
+        "dependency_potential": 0,
+        "local_information_energy": 2,
+        "phase_potential": 2,
+        "potential_root_hash72": "H**Ri<LzxDn4hfREs>ltnqm*)mfTt)x+15P!e!+uxOYeB1-pIbXxUJx/Gs0gG5OF56nEQ+9Z",
+        "potential_vector": [
+          2,
+          2,
+          0
+        ],
+        "schema": "HHS_ELECTROCHEMICAL_PHASE_POTENTIAL_V1",
+        "thermodynamic_bias_confers_authority": false,
+        "token_id": "token:27",
+        "token_root_hash72": "z*nTdQObI>rWFBqH6gj3CTdCbGS(P7zs6Bjpn!S3ku+UyDrpVDiZ6Pf?SrGkrpJC6WuA<qhm",
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+      },
+      {
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "computational_potential_not_empirical_measurement": true,
+        "dependency_potential": 1,
+        "local_information_energy": 2,
+        "phase_potential": 1,
+        "potential_root_hash72": "56Wh(QtWMO/RVplj7!SuX*uZvXcHjYmSuPoe(0x3FI!z4kzPx>*v66P>-HCKSux!<??K27Rw",
+        "potential_vector": [
+          2,
+          1,
+          1
+        ],
+        "schema": "HHS_ELECTROCHEMICAL_PHASE_POTENTIAL_V1",
+        "thermodynamic_bias_confers_authority": false,
+        "token_id": "token:28",
+        "token_root_hash72": "1U5jul7qkEKmNO4ixs2WveK6nBk7Xop7RBM-9v<Ltl9rYNeCzJY5ZMdaSzLL0sA0dzG0Ys2k",
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+      },
+      {
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "computational_potential_not_empirical_measurement": true,
+        "dependency_potential": 0,
+        "local_information_energy": 2,
+        "phase_potential": -2,
+        "potential_root_hash72": "mam(7IAcv-*TlFGmuCCf2npKs6+nFu+LNn04a8YE4!59iE<w+hYvWgFlZzbWXr/u-/a3t+2K",
+        "potential_vector": [
+          2,
+          -2,
+          0
+        ],
+        "schema": "HHS_ELECTROCHEMICAL_PHASE_POTENTIAL_V1",
+        "thermodynamic_bias_confers_authority": false,
+        "token_id": "token:29",
+        "token_root_hash72": "pv(Zq8EZREfZ!uk5B-VzCruVv)iJXii8<+HXm*udATmq68s/X4q-mVCIVAVrxSQd6VgP++Xp",
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+      },
+      {
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "computational_potential_not_empirical_measurement": true,
+        "dependency_potential": 1,
+        "local_information_energy": 2,
+        "phase_potential": 1,
+        "potential_root_hash72": "56Wh)Lr4LD/RWgtj7!SuX*uZvXcHjYmSuPofUhp3FI!z4kzPx>*v66P>-Ho2xspf<??K27Rw",
+        "potential_vector": [
+          2,
+          1,
+          1
+        ],
+        "schema": "HHS_ELECTROCHEMICAL_PHASE_POTENTIAL_V1",
+        "thermodynamic_bias_confers_authority": false,
+        "token_id": "token:30",
+        "token_root_hash72": "9U5jul7qkEKmNO4ixs2WvWY/e1k7Xop7RBM-9v<MpfE5YNeCzJY5ZMdaSzLL0sA0dzG0Ys3b",
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+      },
+      {
+        "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+        "computational_potential_not_empirical_measurement": true,
+        "dependency_potential": 1,
+        "local_information_energy": 2,
+        "phase_potential": 1,
+        "potential_root_hash72": "56Wh)Mq2OC/RWhsj7!SuX*uZvXcHjYmSuPofVfq3FI!z4kzPx>*v66P>-Ho3uxlg<??K27Rw",
+        "potential_vector": [
+          2,
+          1,
+          1
+        ],
+        "schema": "HHS_ELECTROCHEMICAL_PHASE_POTENTIAL_V1",
+        "thermodynamic_bias_confers_authority": false,
+        "token_id": "token:31",
+        "token_root_hash72": "8U5jul7qkEKmNO4ixs2WvWZ-h0k7Xop7RBM-9v<MqfC6YNeCzJY5ZMdaSzLL0sA0dzG0Ys3c",
+        "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+      }
+    ],
+    "schema": "HHS_INFORMATION_ENERGY_POTENTIAL_FIELD_V1",
+    "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+  },
+  "rejection_codes": [
+    "REJECT_PASS071_WITHOUT_PASS070_CANONICAL_ROOT",
+    "REJECT_OVERLAP_BUFFER_WITHOUT_COMPLETE_CONTEXT_CAPSULE",
+    "REJECT_RESUME_WITH_PARENT_ROOT_MISMATCH",
+    "REJECT_CHECKPOINT_WITH_MISSING_STAGE_ROOT",
+    "REJECT_CONTEXT_RESET_AS_VALID_RESUME",
+    "REJECT_FOLD_REWRITES_CANONICAL_SOURCE_SEQUENCE",
+    "REJECT_LOCAL_BINDING_WITHOUT_RECIPROCAL_PHASE_CONTRACT",
+    "REJECT_FOLDING_PATH_BYPASSES_THREE_LANE_VALIDATION",
+    "REJECT_THERMODYNAMIC_BIAS_AS_SEMANTIC_AUTHORITY",
+    "REJECT_FAILED_FOLD_ERASES_PROVENANCE",
+    "REJECT_BINARY_SOURCE_IDENTITY_LOST_DURING_FOLDING",
+    "REJECT_FOLDED_TOPOLOGY_WITHOUT_INDEPENDENT_REVALIDATION"
+  ],
+  "resume_proof": {
+    "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+    "checkpoint_root_hash72": "WcRr6*OjfBI?BeS<+68oMTiZwNnwC?y5z?s!u0<6cnkovOcXMF6/+Zsd45WH6nPf!K/(WErr",
+    "completed_stage_roots_match": true,
+    "context_reset_occurred": false,
+    "final_derivation_root_hash72": "Z</W)mhf/y)f2ckIulwW+x+cM/m5Z7qisR425/ItWPg/+aYtuqSkBxc0DE!zyB(DcpyRO9Z!",
+    "parent_root_matches": true,
+    "pass070_root_hash72": "4x7/dTn<Q5axZHyM/OryqrIl6ZJGuWKugBOKSjR054M)*SZbVZ0M!<bD3vd9Y1+FT!sQRr(T",
+    "resume_receipt_root_hash72": "hqcg<-4vN-U+MXf>XeIzbnjFSzZ2kc)zTl>B!o3Pb7J3A+u0A<ROc80rg21*iupS6UKl<eHg",
+    "resumed": true,
+    "resumed_without_thread_context": true,
+    "schema": "HHS_PASS071_RESUME_RECEIPT_V1",
+    "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+  },
+  "revalidation": {
+    "all_three_lane_paths_valid": true,
+    "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+    "binding_registry_root_hash72": "<lhJJ*Bb>Ujx)LguO+keGB1j3jgwzPlu0KQ3>Tztso0qr?BPMz!NWb2SPxc*GMxDOW/*BG6G",
+    "canonical_continuation": true,
+    "derivation_root_hash72": "Z</W)mhf/y)f2ckIulwW+x+cM/m5Z7qisR425/ItWPg/+aYtuqSkBxc0DE!zyB(DcpyRO9Z!",
+    "fold_registry_root_hash72": "Nuuq2/sdfgSiPWo-CN1?xhRpDaYzY8OKHdMb3*G3f>p9lNUkd<4X/(HFQ!MS2>Peu2j*Jc3?",
+    "genome_root_hash72": "med9zg>NhxrZ4cme6h<rOASuM703Eqh0*e/qrY>GteJUk)iscS)e9C8cZ5A9cZU!H3kOJP51",
+    "independent_revalidation_performed": true,
+    "overlap_root_hash72": "76A9BfCvc9!Hj9x7M5(WWRqXp7Vppp>qVQ(>xAG+2cRQJxrx6FRkBuw0Ve!InZps8rkxYNJN",
+    "pass070_root_hash72": "4x7/dTn<Q5axZHyM/OryqrIl6ZJGuWKugBOKSjR054M)*SZbVZ0M!<bD3vd9Y1+FT!sQRr(T",
+    "potential_field_root_hash72": "sbj4zeZ(2oqwQ4txbycnxsthK8T+Pc7q35c9<uw43jR3Go8HiURqhD3vzAH>R06A5AQkJBfw",
+    "schema": "HHS_SEQUENCE_TO_EXECUTION_DERIVATION_V1",
+    "source_identity_preserved": true,
+    "status": "ADMIT_PASS071_CANONICAL_CONTINUATION",
+    "topology_root_hash72": "tjVb45fukLKQXqh3/gX+9ukSJfWWos*)GhUgEJ6kZyN-!u)uz-8rs5OE!Ve?K<)BXJ*xaKx1",
+    "unfolding_root_hash72": "9UsJy1p03UrbF<D1UsK>rxgbwJHcmFOkjf?1uFnpLP2iKbn/s*P3j0HFf!46d9tADatWGAck",
+    "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+  },
+  "run_root_hash72": "O+0/3dn0KX?!0ENFJ(bowzP3(Hl08cCJ/yQMh(ABjkupVznBWY2<gGgbpt!C!8<he(e*yln*",
+  "schema": "HHS_RESTART_SAFE_PHASE_GEAR_FOLDING_V1",
+  "sha256_labeled_hash72": false,
+  "source_identity_preserved": true,
+  "thread_context_required_for_recovery": false,
+  "topology": {
+    "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+    "edge_count": 14,
+    "edges": [
+      {
+        "binding_root_hash72": "-tmk5HMUd4r!AToDCsKLyX+!MIhnP)(>FxCn>e/x+md?dJ3Mp7Me3EcNsDO-Aca)PADRWlR6",
+        "edge_id": "edge:00",
+        "fold_root_hash72": "EQLNcsmbAz7gU(2ikdh8tT*EDZnAQ5rYtYAXntH8(ajp3nr*ie(J5qGJcN+7cb2HAZIfnWA1"
+      },
+      {
+        "binding_root_hash72": "+rnk5e4Vd4s>AToDCsKLyX+!MIgp<P*>FxCn>e/x+md?dJ7Ft6Nd2H7RrDO-Aca)PADRWlQ7",
+        "edge_id": "edge:01",
+        "fold_root_hash72": "EQLNb1LcDy7J3j1ilFY8sV+EDZnt5-nZs+eKWrH8(ajo6izUmd(J9fREeL+bBW!Kx-IfnWA1"
+      },
+      {
+        "binding_root_hash72": "/ltExhNU+aRXdOLh1C3*+GsmnlF)BJivV1url8PK(H)Ss<TJ+6MK?02ZvPWrES+UUOHbQO<E",
+        "edge_id": "edge:02",
+        "fold_root_hash72": "l4z+)4uBg>1lBnV>7Vjk4Jz9(9doMQv5vyu(E726daubaI3ro5Zlqq5Xhe+ZWk3<n9m?kNJs"
+      },
+      {
+        "binding_root_hash72": "<(om)Zrj5!8jHqjl02Uy6<(WMcJs5>9afkIk6UVb<iEsQXVW>lfKbb7+tbz4+W*M7QnAHy71",
+        "edge_id": "edge:03",
+        "fold_root_hash72": "qGe<r10oRF<ZuQpbun6)G6DA14(<vBdBAHtxdDAn?R)e?FuuplUfICZ+oEq7w-S4iEDP9Wvo"
+      },
+      {
+        "binding_root_hash72": "cc08UkMQ<svCVrgI8ib0*5*<UmS1-D/e!XwneKAINJeD)R-uE2cp!GeYut6f(cWq+7S1tEHp",
+        "edge_id": "edge:04",
+        "fold_root_hash72": "lOLO/-o-acL0wHkApHSXjB!w4SW1pVPu9T(NQUaKVNza2IJEm)GF*PjRwQodnjs83blPrAT5"
+      },
+      {
+        "binding_root_hash72": "fYN<A8>NLUM4G2UafWAd25jYgthJSNe>+BbSdd)5Ih-/45B/dzZQ<AjbNfXZYqmSRZBc(tf<",
+        "edge_id": "edge:05",
+        "fold_root_hash72": "5XydpGztEXEcQ?Y*r4HL3q5dV2<hr+Om2mG>F(jd(b6hkY*5YURPb?V3Zk2g7ET!7xch9TVY"
+      },
+      {
+        "binding_root_hash72": "aecQ0mIR>syzXniI8ib?(4*<TnS2?WyegHwneJEaPrQv-R9Ez0en!GB!HxOg4MZq+7S1tEHp",
+        "edge_id": "edge:06",
+        "fold_root_hash72": "x<l+YOQAex*Y)(F0xinwurkr>2tabBLxyNeA0!auN1mVR+fitV*zLio3WfLwq4v3yeTrYnR*"
+      },
+      {
+        "binding_root_hash72": "I90G*zTJCB*7jMui/gpE*eXlb2g?fXAJGI-D6g9AhUYKO7V*7DFAkLPOOIb<myMela-u+2QJ",
+        "edge_id": "edge:07",
+        "fold_root_hash72": "8JExVwOmx9kyXht/R)aS80KY3*/sk?-nN+ed1Q)H2wFqHE<6oIucTTPpAqCX4Tr2iFUnC6ui"
+      },
+      {
+        "binding_root_hash72": "+?aOR(ho5!deHqjl02Uy6<(WMcJ3v*LHpfIk6UVb<iEsQXObUgkFbb2*-l<4+W*M7QnAHy71",
+        "edge_id": "edge:08",
+        "fold_root_hash72": "qGe<r6J>gp)G3-kb2Kb)G1Nv14(HWvP3APekQ)?84R)e(GU/JgUfBU1zyuv7r(Pi9RpP9Wvo"
+      },
+      {
+        "binding_root_hash72": "I25Il8P++aYQdOLh1C3*+GsmnlF4*W)!?(url8PK(H)Ss<?FW?TD?04bwg<rES+UUOHbQO<E",
+        "edge_id": "edge:09",
+        "fold_root_hash72": "l4z+))Wwb*VVmIr>eHqk4CN2(9dx4<4PvJ)vzW*kmaubc(kYt!Zl5HRof0!ZYqL?sxa?kNJs"
+      },
+      {
+        "binding_root_hash72": "yLI?EyjbP(Ok1sJgr(H0>zxQEDucD?SIMGE909tsCdVNK)E9gghA!pK9VPJim17*DQ)a39BM",
+        "edge_id": "edge:10",
+        "fold_root_hash72": "Z8)+d>UoUdFmOQfzv0+tehC)gHDUybJICtv3E2RB)+PeYpNLvYwc?dfHcR>XcHneOMge+av>"
+      },
+      {
+        "binding_root_hash72": ">7x(Ry8EjC1RZlJgr(H0>zxQEDC?y7Bu9wU2>BRqNKDZXNr-se-7N/pmxJ<cNwe/*kzwp7VJ",
+        "edge_id": "edge:11",
+        "fold_root_hash72": "Ily0zK1YRf5910!AK5VRkjB)gHDUy!T1xIMev+ZxzE08lP(bBgOl7sDtruQlGV6MDV+HDF0N"
+      },
+      {
+        "binding_root_hash72": "J>48/fYPi1MUWZ+Eb-712lFWByqbF586poBMXSpqqS2r5GgG0b75pP!3SYQvhh2wmh)7<Bo8",
+        "edge_id": "edge:12",
+        "fold_root_hash72": "rU<q(rjsHvhtrXtacWTH)!AR1lgnAFBhROkM(b9F4LGOCo8<tRUc?)7JVn-hLqQG7pINP1ES"
+      },
+      {
+        "binding_root_hash72": "XZJtNQyMxzqTQ>(<E2rzTQKrBkat4)iKAV?HmDAYaNC(ora?NhcQZRmQsNGUbu2PFgPtJadZ",
+        "edge_id": "edge:13",
+        "fold_root_hash72": "iAMZjL6hGa>wmi1Nk4bh29LR0phj+Wu-KKZ58N4XZHmTt6n*p/5MyrS64yz?12MD9w3qUklS"
+      }
+    ],
+    "fold_registry_root_hash72": "Nuuq2/sdfgSiPWo-CN1?xhRpDaYzY8OKHdMb3*G3f>p9lNUkd<4X/(HFQ!MS2>Peu2j*Jc3?",
+    "genome_root_hash72": "med9zg>NhxrZ4cme6h<rOASuM703Eqh0*e/qrY>GteJUk)iscS)e9C8cZ5A9cZU!H3kOJP51",
+    "local_contradiction_denatures_global_topology": false,
+    "node_count": 32,
+    "nodes": [
+      "fQ8!Y?az<7ak!*M(zfokn!3gByCjpN)DmehpIxs+vhStczSU/V<giH)6LA6GAkwk?byV+a>M",
+      "fQ8!Y?az<7ak!*M(zfokg36fByCjpN)DmehpIxs/siStczSU/V<giH)6LA6GAkwk?byV+a!L",
+      "fQ8!Y?az<7ak!*M(zfokh09eByCjpN)DmehpIxs)pjStczSU/V<giH)6LA6GAkwk?byV+a?K",
+      "fQ8!Z1yLcxB40j?(zfokAs43jipwsN)DmehpIxs>mkStczT2JW<ggJ)6LA7FAkwk?byV+a0J",
+      "fQ8!Y?az<7ak!*M(zfokCLfcByCjpN)DmehpIxs?jlStczSU/V<giH)6LA6GAkwk?byV+a1I",
+      "i6WfJhPHTxzX?uSUauGoV)jjN1K1OyqN)QSqon3yhvlqhocO>tT6oOV9U0/L/(/sB2AHJQ3w",
+      "fQ8!Y?az<7ak!*M(zfokDW5aByCjpN)DmehpIxs3dnStczSU/V<giH)6LA6GAkwk?byV+a3G",
+      "ZftIz9O-AOoBD(W9f-tSTIEawAd5DgbMGT5Q<!0Dx82iRsp6D?!0pr96*uAwlbNoo6Xt?96l",
+      "fQ8!Z1yLcxB40j?(zfokp-0UjipwsN)DmehpIxs77pStczT2JW<ggJ)6LA7FAkwk?byV+a5E",
+      "fQ8!Y?az<7ak!*M(zfokqUn7ByCjpN)DmehpIxs94qStczSU/V<giH)6LA6GAkwk?byV+a6D",
+      "G*nTdQObI>rWFBqH6gj3CUC0Y5S(P7zs6Bjpn!S2fuizyDrpVDiZ6Pf?SrGkrpJC6WuA<qgg",
+      "F*nTdQObI>rWFBqH6gj3CU6u+4S(P7zs6Bjpn!S2gugAyDrpVDiZ6Pf?SrGkrpJC6WuA<qgh",
+      "E*nTdQObI>rWFBqH6gj3CU7r8ZS(P7zs6Bjpn!S2hueByDrpVDiZ6Pf?SrGkrpJC6WuA<qgi",
+      "vv(Zq8EZREfZ!uk5B-VzCswjKfiJXii8<+HXm*ucwt1668s/X4q-mVCIVAVrxSQd6VgP++Wk",
+      "C*nTdQObI>rWFBqH6gj3CU9leXS(P7zs6Bjpn!S2juaDyDrpVDiZ6Pf?SrGkrpJC6WuA<qgk",
+      "4U5jul7qkEKmNO4ixs2WvfGsJ<k7Xop7RBM-9v<KslsaYNeCzJY5ZMdaSzLL0sA0dzG0Ys1i",
+      "sv(Zq8EZREfZ!uk5B-VzCszaTciJXii8<+HXm*uczt)968s/X4q-mVCIVAVrxSQd6VgP++Wn",
+      "z*nTdPRCtW!Fvt2U6gj3CUzpXHi?q4zs6Bjpn!S2mu-UyDroVDjZ8Nf?SrGjspJC6WuA<qgn",
+      "qv(Zq8EZREfZ!uk5B-VzCsvUt<iJXii8<+HXm*ucBTnp68s/X4q-mVCIVAVrxSQd6VgP++Wp",
+      "x*nTdQObI>rWFBqH6gj3CUPi(ES(P7zs6Bjpn!S2oRzWyDrpVDiZ6Pf?SrGkrpJC6WuA<qgp",
+      "yv(Zq8EZREfZ!uk5B-VzCrutAiiJXii8<+HXm*udrt8368s/X4q-mVCIVAVrxSQd6VgP++Xg",
+      "xv(Zq8EZREfZ!uk5B-VzCrvqDhiJXii8<+HXm*udst6468s/X4q-mVCIVAVrxSQd6VgP++Xh",
+      "wv(Zq8EZREfZ!uk5B-VzCrwnGgiJXii8<+HXm*udtt4568s/X4q-mVCIVAVrxSQd6VgP++Xi",
+      "6U5jul7qkEKmNO4ixs2WveFzC!k7Xop7RBM-9v<Lolx8YNeCzJY5ZMdaSzLL0sA0dzG0Ys2f",
+      "5U5jul7qkEKmNO4ixs2WveGwF>k7Xop7RBM-9v<Lplv9YNeCzJY5ZMdaSzLL0sA0dzG0Ys2g",
+      "B*nTdPRCtW!Fvt2U6gj3CTydH1i?q4zs6Bjpn!S3iu9EyDroVDjZ8Nf?SrGjspJC6WuA<qhk",
+      "3U5jul7qkEKmNO4ixs2WveIqL)k7Xop7RBM-9v<LrlrbYNeCzJY5ZMdaSzLL0sA0dzG0Ys2i",
+      "z*nTdQObI>rWFBqH6gj3CTdCbGS(P7zs6Bjpn!S3ku+UyDrpVDiZ6Pf?SrGkrpJC6WuA<qhm",
+      "1U5jul7qkEKmNO4ixs2WveK6nBk7Xop7RBM-9v<Ltl9rYNeCzJY5ZMdaSzLL0sA0dzG0Ys2k",
+      "pv(Zq8EZREfZ!uk5B-VzCruVv)iJXii8<+HXm*udATmq68s/X4q-mVCIVAVrxSQd6VgP++Xp",
+      "9U5jul7qkEKmNO4ixs2WvWY/e1k7Xop7RBM-9v<MpfE5YNeCzJY5ZMdaSzLL0sA0dzG0Ys3b",
+      "8U5jul7qkEKmNO4ixs2WvWZ-h0k7Xop7RBM-9v<MqfC6YNeCzJY5ZMdaSzLL0sA0dzG0Ys3c"
+    ],
+    "schema": "HHS_FOLDED_PROGRAM_TOPOLOGY_V1",
+    "source_sequence_preserved": true,
+    "topology_closed": true,
+    "topology_is_projection_not_source": true,
+    "topology_root_hash72": "tjVb45fukLKQXqh3/gX+9ukSJfWWos*)GhUgEJ6kZyN-!u)uz-8rs5OE!Ve?K<)BXJ*xaKx1",
+    "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+  },
+  "unfolding": {
+    "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+    "binary_source_identity_recovered": true,
+    "genome_root_hash72": "med9zg>NhxrZ4cme6h<rOASuM703Eqh0*e/qrY>GteJUk)iscS)e9C8cZ5A9cZU!H3kOJP51",
+    "reconstructed_word": 81985529216486895,
+    "schema": "HHS_TOPOLOGY_UNFOLDING_RECEIPT_V1",
+    "source_packet_root_hash72": "ifg(NSvYCGTmY49?mRajj6zWMKeP3dHHb7lu/-lYAa83u<>4Fsdi>*4pz>btVZe)W9TvHPGs",
+    "source_word": 81985529216486895,
+    "switch_states_preserved": true,
+    "token_order_preserved": true,
+    "topology_root_hash72": "tjVb45fukLKQXqh3/gX+9ukSJfWWos*)GhUgEJ6kZyN-!u)uz-8rs5OE!Ve?K<)BXJ*xaKx1",
+    "unfolding_root_hash72": "9UsJy1p03UrbF<D1UsK>rxgbwJHcmFOkjf?1uFnpLP2iKbn/s*P3j0HFf!46d9tADatWGAck",
+    "unfolding_valid": true,
+    "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+  },
+  "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+}

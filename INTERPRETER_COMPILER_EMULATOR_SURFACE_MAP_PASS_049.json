@@ -1,0 +1,843 @@
+{
+  "compiler": {
+    "ok": true,
+    "result": {
+      "artifact": {
+        "artifact_id": "artifact:39l8/0hA)vfRIDMN",
+        "authority": "HHS_RUNTIME_WORKSPACE_AUTHORITY_V1",
+        "compiler_pipeline_root_hash72": "nYpV/tVB!rTXt6tB6N5XPwT(5y>F!!J>D?zD/HKSzA?*U*!qwJbn(7VEF)7)wSA3JX*0KHYW",
+        "conformance_status": "ADMIT_COMPILED_ARTIFACT",
+        "execution_authorized": false,
+        "ir": {
+          "authority": "HHS_RUNTIME_WORKSPACE_AUTHORITY_V1",
+          "deterministic_ordering": true,
+          "explicit_authority_gates": [
+            "zero_bypass_interposer",
+            "kernel_conformance_surface_map"
+          ],
+          "explicit_failure_paths": [
+            "REJECT_INVARIANT_DERIVATION_FAILURE",
+            "REJECT_COMPILER_EFFECT_MISMATCH"
+          ],
+          "ir_root_hash72": "39l8/0hA)vfRIDMNKVL<wyuuISmoUL14F7RZP>?e0N1fEZPXWp2*Y(xU?dy<4O>fc0iEAze5",
+          "operations": [
+            {
+              "invariant_owners": [
+                "HHS-I001",
+                "HHS-I002",
+                "HHS-I008",
+                "HHS-I011"
+              ],
+              "op_index": 0,
+              "operation": "SYMBOLIC_TOKEN",
+              "token_hash72": "02egTfk<f!0pab9I6dfeuDeXWgGLkTfXljDzABCDEFGHIJKLMNOPQRSTUVWXYZ-+*/()<>!z",
+              "witness_required": true
+            },
+            {
+              "invariant_owners": [
+                "HHS-I001",
+                "HHS-I002",
+                "HHS-I008",
+                "HHS-I011"
+              ],
+              "op_index": 1,
+              "operation": "SYMBOLIC_TOKEN",
+              "token_hash72": "02egTfk<f!0pab9I6dfeuDeXWgGLlSfXmiDzABCDEFGHIJKLMNOPQRSTUVWXYZ-+*/()<>!z",
+              "witness_required": true
+            }
+          ],
+          "schema": "HHS_COMPILER_IR_V1",
+          "source_object_id": "object:source",
+          "state_inputs": [],
+          "state_outputs": [],
+          "version": "PASS_049_HHS_VISUAL_RUNTIME_OS_WORKSPACE_V1"
+        },
+        "ir_root_hash72": "39l8/0hA)vfRIDMNKVL<wyuuISmoUL14F7RZP>?e0N1fEZPXWp2*Y(xU?dy<4O>fc0iEAze5",
+        "ok": true,
+        "receipt_hash72": "taUC1xkp9PS>FLk-J)1pzwiQFjT6Nb+r9gosU8sqR37x8v2F!MWld>Ao3Xk3aL76N2R8BvrL",
+        "schema": "HHS_COMPILED_ARTIFACT_V1",
+        "source_object_ids": [
+          "object:source"
+        ],
+        "target": "HHS_IR",
+        "target_root_hash72": "R<clr*)yp?xZJd(S3d2v*1w7tY4QX*0O*u?qeG53COHL1PS-HI70*06yERjv2f/MN3f3E-IL",
+        "version": "PASS_049_HHS_VISUAL_RUNTIME_OS_WORKSPACE_V1"
+      },
+      "authority": "HHS_RUNTIME_WORKSPACE_AUTHORITY_V1",
+      "execution_authorized": false,
+      "ok": true,
+      "request": {
+        "execution_authorization_requested": false,
+        "project_id": "project:pass049",
+        "request_id": "compile:6ecd047ee2fb43e0a73a9f79c259343b",
+        "request_root_hash72": "t!RTRxtW9ZWDFM3aVTQ)44Tiv)OZtO9!*c+D4+zbXkAIH(S(/cfg93SuKGTlrVdWdc<H/7sG",
+        "requires_conformance": true,
+        "schema": "HHS_COMPILER_REQUEST_V1",
+        "source_object_id": "object:source",
+        "source_root_hash72": "02egNi5b2d4pq2bme3lKa7GkAh-ZjJOnWi-okw+o<vrDIJKLMNOPQRSTUVWXYZ-+*/()<>!z",
+        "target": "HHS_IR",
+        "version": "PASS_049_HHS_VISUAL_RUNTIME_OS_WORKSPACE_V1"
+      },
+      "result_root_hash72": "G6JE99oYbivb1tjJJH2Ef0tMujXAWZPU)/J1/aid)VW(gGVI2LTQQU(Nhdu+sw?gfQ-<6<W3",
+      "schema": "HHS_COMPILER_RESULT_V1",
+      "source_to_artifact_provenance": {
+        "artifact_id": "artifact:39l8/0hA)vfRIDMN",
+        "artifact_root_hash72": "taUC1xkp9PS>FLk-J)1pzwiQFjT6Nb+r9gosU8sqR37x8v2F!MWld>Ao3Xk3aL76N2R8BvrL",
+        "source_object_id": "object:source",
+        "source_root_hash72": "02egNi5b2d4pq2bme3lKa7GkAh-ZjJOnWi-okw+o<vrDIJKLMNOPQRSTUVWXYZ-+*/()<>!z"
+      },
+      "status": "COMPILER_ARTIFACT_CREATED",
+      "version": "PASS_049_HHS_VISUAL_RUNTIME_OS_WORKSPACE_V1"
+    },
+    "schema": "HHS_INTERPRETING_COMPILER_SELF_TEST_V1",
+    "supported_targets": [
+      "HHS_IR",
+      "C_KERNEL_PLAN",
+      "C_SOURCE",
+      "PYTHON_ADAPTER",
+      "JSON_EXECUTION_GRAPH",
+      "DOT_GRAPH",
+      "BYTECODE_OR_VM_PLAN",
+      "RECEIPT_ONLY_PLAN"
+    ],
+    "unsupported_target_rejection": {
+      "artifact": {
+        "ok": false,
+        "rejection_hash72": "aHk!U9rfP)0m3A5-zJ7g3jkkQ)f?8RukcB>g-3v*aPj>9L)NjULYfs8<!<bW*HnYVeI<t7St",
+        "schema": "HHS_COMPILED_ARTIFACT_REJECTION_V1",
+        "status": "REJECT_COMPILER_TARGET_UNAUTHORIZED",
+        "target": "HOST_SIDE_EFFECT_BINARY",
+        "version": "PASS_049_HHS_VISUAL_RUNTIME_OS_WORKSPACE_V1"
+      },
+      "ok": false,
+      "request": {
+        "execution_authorization_requested": false,
+        "project_id": "project:pass049",
+        "request_id": "compile:e8a5ec0032fa426f80130a67ff2476a6",
+        "request_root_hash72": "v-SoW2Erc<lrEV)s02bq63-ni0YbJ(/D<l5d!Byo<QyY5Psl1+VePhdK(>NPppl*<KW!+DXT",
+        "requires_conformance": true,
+        "schema": "HHS_COMPILER_REQUEST_V1",
+        "source_object_id": "object:source",
+        "source_root_hash72": "02egNi5b2d4pq2bme3lKa7GkAh-ZjJOnWi-omDCDEFGHIJKLMNOPQRSTUVWXYZ-+*/()<>!z",
+        "target": "HOST_SIDE_EFFECT_BINARY",
+        "version": "PASS_049_HHS_VISUAL_RUNTIME_OS_WORKSPACE_V1"
+      },
+      "schema": "HHS_COMPILER_RESULT_V1",
+      "status": "REJECT_COMPILER_TARGET_UNAUTHORIZED",
+      "version": "PASS_049_HHS_VISUAL_RUNTIME_OS_WORKSPACE_V1"
+    },
+    "version": "PASS_049_HHS_VISUAL_RUNTIME_OS_WORKSPACE_V1"
+  },
+  "emulator": {
+    "branch": {
+      "ok": true,
+      "receipt": {
+        "authority": "HHS_RUNTIME_WORKSPACE_AUTHORITY_V1",
+        "command": "branch",
+        "history_erased": false,
+        "mode": "PAUSED",
+        "post_state_hash72": "E4jHGy9Yeus2epxlztYeYqyl>r2!+-u!VHvJesYjdddN)qcY!x!uKJlU-pPE7C51RZDy!?q!",
+        "pre_state_hash72": "s7bLa7/B>UdwYnY?9qastyH6EHllIom0FYnp8za<XC7+-y+WAIInb7mIb9ZAc(wAiZ0XG<aK",
+        "receipt_hash72": "DoB1x5MThLvS2T)(Ic-)nmB<5a/uw*BI5VF75wEtA4)sP*X*mCtE+K!Y6G1/0vd!-t7fB6N?",
+        "schema": "HHS_EMULATOR_STEP_RECEIPT_V1",
+        "session_id": "emulator:d2a4c3156dc146d8ab7d3fbeba3f3b19",
+        "tick": 4
+      },
+      "schema": "HHS_EMULATOR_COMMAND_RESULT_V1",
+      "session": {
+        "branch_id": "branch:7bc3c3f2e2d74e699edfe65f5cdc5d8f",
+        "current_state_root_hash72": "E4jHGy9Yeus2epxlztYeYqyl>r2!+-u!VHvJesYjdddN)qcY!x!uKJlU-pPE7C51RZDy!?q!",
+        "execution_policy": "AUTHORIZED_KERNEL_EMULATION",
+        "initial_state_root_hash72": "02egPef?!t6fq*kbs7bvEao5IbRj*+lL>hIBiVoJ/iXnWHG)kNOPQRSTUVWXYZ-+*/()<>!z",
+        "mode": "PAUSED",
+        "parent_receipt_hash72": "H<JqjWdgBu)HK1dBvfzuV(wWqMUZKf)NL1zLEOUQ<SpjJBvv)khpb<5<yd2vGL4NcCw>5dp3",
+        "program_artifact_id": "artifact:hhs-ir",
+        "project_id": "project:pass049",
+        "receipt_tip_hash72": "DoB1x5MThLvS2T)(Ic-)nmB<5a/uw*BI5VF75wEtA4)sP*X*mCtE+K!Y6G1/0vd!-t7fB6N?",
+        "receipts": [
+          {
+            "authority": "HHS_RUNTIME_WORKSPACE_AUTHORITY_V1",
+            "command": "step",
+            "history_erased": false,
+            "mode": "PAUSED",
+            "post_state_hash72": "z/EcHNpw4ZOFaR4ozhVYGQLP8LiHpGm9BBfBnTxzPjUI2a)m6T9c5-q7ILwH4EJumWWGD?8h",
+            "pre_state_hash72": "02egPef?!t6fq*kbs7bvEao5IbRj*+lL>hIBiVoJ/iXnWHG)kNOPQRSTUVWXYZ-+*/()<>!z",
+            "receipt_hash72": "H<JqjWdgBu)HK1dBvfzuV(wWqMUZKf)NL1zLEOUQ<SpjJBvv)khpb<5<yd2vGL4NcCw>5dp3",
+            "schema": "HHS_EMULATOR_STEP_RECEIPT_V1",
+            "session_id": "emulator:d2a4c3156dc146d8ab7d3fbeba3f3b19",
+            "tick": 1
+          },
+          {
+            "authority": "HHS_RUNTIME_WORKSPACE_AUTHORITY_V1",
+            "command": "run",
+            "history_erased": false,
+            "mode": "PAUSED",
+            "post_state_hash72": "<zi7GLzN?qn(i7JC2(EaD9vw5iiRS)v9zV0AjHm?VTFvkNJ*lfqr3BQ+QH3V5fU>GYKoYM2G",
+            "pre_state_hash72": "z/EcHNpw4ZOFaR4ozhVYGQLP8LiHpGm9BBfBnTxzPjUI2a)m6T9c5-q7ILwH4EJumWWGD?8h",
+            "receipt_hash72": "9bticRg?ZdyQTqZdNahFj>0h)jqhAkiQag5*mYPeSCom*v!79Km*6/yBg(5X!AD*qzT<bRLo",
+            "schema": "HHS_EMULATOR_STEP_RECEIPT_V1",
+            "session_id": "emulator:d2a4c3156dc146d8ab7d3fbeba3f3b19",
+            "tick": 4
+          },
+          {
+            "authority": "HHS_RUNTIME_WORKSPACE_AUTHORITY_V1",
+            "command": "pause",
+            "history_erased": false,
+            "mode": "PAUSED",
+            "post_state_hash72": "i!71KOX9SJC)(0smRQlXKU-OOqW(nKlW<?b4F63gxf-pdeoQp9g>4t(yY!ln*v*UI2dNRt7F",
+            "pre_state_hash72": "<zi7GLzN?qn(i7JC2(EaD9vw5iiRS)v9zV0AjHm?VTFvkNJ*lfqr3BQ+QH3V5fU>GYKoYM2G",
+            "receipt_hash72": "!(-5E8Hi/C-r5G/OIYUTvOEMifYt-DZINY(mFg/1zL5<JK!(-oM8P(ED)VS0zCCn779pj**r",
+            "schema": "HHS_EMULATOR_STEP_RECEIPT_V1",
+            "session_id": "emulator:d2a4c3156dc146d8ab7d3fbeba3f3b19",
+            "tick": 4
+          },
+          {
+            "authority": "HHS_RUNTIME_WORKSPACE_AUTHORITY_V1",
+            "command": "snapshot",
+            "history_erased": false,
+            "mode": "SNAPSHOTTED",
+            "post_state_hash72": "TnBKUjxStCHFU<KzW39uuCeb0YgP9DG)Y5yOZ)MY(JRN3QeyhmRva*wQJbEHgtk3b->boLUD",
+            "pre_state_hash72": "i!71KOX9SJC)(0smRQlXKU-OOqW(nKlW<?b4F63gxf-pdeoQp9g>4t(yY!ln*v*UI2dNRt7F",
+            "receipt_hash72": "Q1qqR-M)ktT!G(q**oB6em(qGyHxO6MIjV)z+>x<a)wKAocIwrTlFb6Nk-OgYC4qKDZpJH<f",
+            "schema": "HHS_EMULATOR_STEP_RECEIPT_V1",
+            "session_id": "emulator:d2a4c3156dc146d8ab7d3fbeba3f3b19",
+            "tick": 4
+          },
+          {
+            "authority": "HHS_RUNTIME_WORKSPACE_AUTHORITY_V1",
+            "command": "restore",
+            "history_erased": false,
+            "mode": "PAUSED",
+            "post_state_hash72": "B*7G8u2Yms1/loWVMTnOzLrg8oQS!E(urGgkEskD900r/RAFO4FPLyvFCe8vb6FeLKysFnxs",
+            "pre_state_hash72": "TnBKUjxStCHFU<KzW39uuCeb0YgP9DG)Y5yOZ)MY(JRN3QeyhmRva*wQJbEHgtk3b->boLUD",
+            "receipt_hash72": "oFPe)AH7p-qqiNHG!p)B5wwoMJ+KkU8yBOow2QAz(fjW+457b45PUinMj-4ch>?6>yZ>BY1m",
+            "schema": "HHS_EMULATOR_STEP_RECEIPT_V1",
+            "session_id": "emulator:d2a4c3156dc146d8ab7d3fbeba3f3b19",
+            "tick": 4
+          },
+          {
+            "authority": "HHS_RUNTIME_WORKSPACE_AUTHORITY_V1",
+            "command": "replay",
+            "history_erased": false,
+            "mode": "REPLAYING",
+            "post_state_hash72": "s7bLa7/B>UdwYnY?9qastyH6EHllIom0FYnp8za<XC7+-y+WAIInb7mIb9ZAc(wAiZ0XG<aK",
+            "pre_state_hash72": "B*7G8u2Yms1/loWVMTnOzLrg8oQS!E(urGgkEskD900r/RAFO4FPLyvFCe8vb6FeLKysFnxs",
+            "receipt_hash72": "BPPZSp<p7?wTzhNQ+Mxv2E64EIhCGqvWeYoqQh56Ng1?5gIIY->lh?9Amm7xbdHRHpn)GTX(",
+            "schema": "HHS_EMULATOR_STEP_RECEIPT_V1",
+            "session_id": "emulator:d2a4c3156dc146d8ab7d3fbeba3f3b19",
+            "tick": 4
+          },
+          {
+            "authority": "HHS_RUNTIME_WORKSPACE_AUTHORITY_V1",
+            "command": "branch",
+            "history_erased": false,
+            "mode": "PAUSED",
+            "post_state_hash72": "E4jHGy9Yeus2epxlztYeYqyl>r2!+-u!VHvJesYjdddN)qcY!x!uKJlU-pPE7C51RZDy!?q!",
+            "pre_state_hash72": "s7bLa7/B>UdwYnY?9qastyH6EHllIom0FYnp8za<XC7+-y+WAIInb7mIb9ZAc(wAiZ0XG<aK",
+            "receipt_hash72": "DoB1x5MThLvS2T)(Ic-)nmB<5a/uw*BI5VF75wEtA4)sP*X*mCtE+K!Y6G1/0vd!-t7fB6N?",
+            "schema": "HHS_EMULATOR_STEP_RECEIPT_V1",
+            "session_id": "emulator:d2a4c3156dc146d8ab7d3fbeba3f3b19",
+            "tick": 4
+          }
+        ],
+        "schema": "HHS_EMULATOR_SESSION_V1",
+        "session_id": "emulator:d2a4c3156dc146d8ab7d3fbeba3f3b19",
+        "snapshot_ids": [
+          "snapshot:0db6038416c9460abb00769b2f654732"
+        ],
+        "tick": 4,
+        "version": "PASS_049_HHS_VISUAL_RUNTIME_OS_WORKSPACE_V1"
+      },
+      "status": "EMULATOR_BRANCH_COMMITTED",
+      "version": "PASS_049_HHS_VISUAL_RUNTIME_OS_WORKSPACE_V1"
+    },
+    "constraint": "REWIND_OR_REPLAY_DOES_NOT_ERASE_HISTORY",
+    "created": {
+      "ok": true,
+      "receipt_hash72": "ODhAFee!zyB7TytM-c2?US51Sk1G4fTl3P4xty/YQqqAaxrc)6NK+1lMeoUg5Cj8xS05yj*6",
+      "schema": "HHS_EMULATOR_SESSION_CREATE_RESULT_V1",
+      "session": {
+        "branch_id": "branch:main",
+        "current_state_root_hash72": "02egPef?!t6fq*kbs7bvEao5IbRj*+lL>hIBiVoJ/iXnWHG)kNOPQRSTUVWXYZ-+*/()<>!z",
+        "execution_policy": "AUTHORIZED_KERNEL_EMULATION",
+        "initial_state_root_hash72": "02egPef?!t6fq*kbs7bvEao5IbRj*+lL>hIBiVoJ/iXnWHG)kNOPQRSTUVWXYZ-+*/()<>!z",
+        "mode": "PAUSED",
+        "parent_receipt_hash72": null,
+        "program_artifact_id": "artifact:hhs-ir",
+        "project_id": "project:pass049",
+        "receipt_tip_hash72": "02egPef?!t6fq*kbs7bvEao5IbRj*+lL>hIBiVoJ/iXnWHG)kNOPQRSTUVWXYZ-+*/()<>!z",
+        "receipts": [],
+        "schema": "HHS_EMULATOR_SESSION_V1",
+        "session_id": "emulator:d2a4c3156dc146d8ab7d3fbeba3f3b19",
+        "snapshot_ids": [],
+        "tick": 0,
+        "version": "PASS_049_HHS_VISUAL_RUNTIME_OS_WORKSPACE_V1"
+      },
+      "status": "EMULATOR_SESSION_CREATED",
+      "version": "PASS_049_HHS_VISUAL_RUNTIME_OS_WORKSPACE_V1"
+    },
+    "ok": true,
+    "pause": {
+      "ok": true,
+      "receipt": {
+        "authority": "HHS_RUNTIME_WORKSPACE_AUTHORITY_V1",
+        "command": "pause",
+        "history_erased": false,
+        "mode": "PAUSED",
+        "post_state_hash72": "i!71KOX9SJC)(0smRQlXKU-OOqW(nKlW<?b4F63gxf-pdeoQp9g>4t(yY!ln*v*UI2dNRt7F",
+        "pre_state_hash72": "<zi7GLzN?qn(i7JC2(EaD9vw5iiRS)v9zV0AjHm?VTFvkNJ*lfqr3BQ+QH3V5fU>GYKoYM2G",
+        "receipt_hash72": "!(-5E8Hi/C-r5G/OIYUTvOEMifYt-DZINY(mFg/1zL5<JK!(-oM8P(ED)VS0zCCn779pj**r",
+        "schema": "HHS_EMULATOR_STEP_RECEIPT_V1",
+        "session_id": "emulator:d2a4c3156dc146d8ab7d3fbeba3f3b19",
+        "tick": 4
+      },
+      "schema": "HHS_EMULATOR_COMMAND_RESULT_V1",
+      "session": {
+        "branch_id": "branch:main",
+        "current_state_root_hash72": "i!71KOX9SJC)(0smRQlXKU-OOqW(nKlW<?b4F63gxf-pdeoQp9g>4t(yY!ln*v*UI2dNRt7F",
+        "execution_policy": "AUTHORIZED_KERNEL_EMULATION",
+        "initial_state_root_hash72": "02egPef?!t6fq*kbs7bvEao5IbRj*+lL>hIBiVoJ/iXnWHG)kNOPQRSTUVWXYZ-+*/()<>!z",
+        "mode": "PAUSED",
+        "parent_receipt_hash72": null,
+        "program_artifact_id": "artifact:hhs-ir",
+        "project_id": "project:pass049",
+        "receipt_tip_hash72": "!(-5E8Hi/C-r5G/OIYUTvOEMifYt-DZINY(mFg/1zL5<JK!(-oM8P(ED)VS0zCCn779pj**r",
+        "receipts": [
+          {
+            "authority": "HHS_RUNTIME_WORKSPACE_AUTHORITY_V1",
+            "command": "step",
+            "history_erased": false,
+            "mode": "PAUSED",
+            "post_state_hash72": "z/EcHNpw4ZOFaR4ozhVYGQLP8LiHpGm9BBfBnTxzPjUI2a)m6T9c5-q7ILwH4EJumWWGD?8h",
+            "pre_state_hash72": "02egPef?!t6fq*kbs7bvEao5IbRj*+lL>hIBiVoJ/iXnWHG)kNOPQRSTUVWXYZ-+*/()<>!z",
+            "receipt_hash72": "H<JqjWdgBu)HK1dBvfzuV(wWqMUZKf)NL1zLEOUQ<SpjJBvv)khpb<5<yd2vGL4NcCw>5dp3",
+            "schema": "HHS_EMULATOR_STEP_RECEIPT_V1",
+            "session_id": "emulator:d2a4c3156dc146d8ab7d3fbeba3f3b19",
+            "tick": 1
+          },
+          {
+            "authority": "HHS_RUNTIME_WORKSPACE_AUTHORITY_V1",
+            "command": "run",
+            "history_erased": false,
+            "mode": "PAUSED",
+            "post_state_hash72": "<zi7GLzN?qn(i7JC2(EaD9vw5iiRS)v9zV0AjHm?VTFvkNJ*lfqr3BQ+QH3V5fU>GYKoYM2G",
+            "pre_state_hash72": "z/EcHNpw4ZOFaR4ozhVYGQLP8LiHpGm9BBfBnTxzPjUI2a)m6T9c5-q7ILwH4EJumWWGD?8h",
+            "receipt_hash72": "9bticRg?ZdyQTqZdNahFj>0h)jqhAkiQag5*mYPeSCom*v!79Km*6/yBg(5X!AD*qzT<bRLo",
+            "schema": "HHS_EMULATOR_STEP_RECEIPT_V1",
+            "session_id": "emulator:d2a4c3156dc146d8ab7d3fbeba3f3b19",
+            "tick": 4
+          },
+          {
+            "authority": "HHS_RUNTIME_WORKSPACE_AUTHORITY_V1",
+            "command": "pause",
+            "history_erased": false,
+            "mode": "PAUSED",
+            "post_state_hash72": "i!71KOX9SJC)(0smRQlXKU-OOqW(nKlW<?b4F63gxf-pdeoQp9g>4t(yY!ln*v*UI2dNRt7F",
+            "pre_state_hash72": "<zi7GLzN?qn(i7JC2(EaD9vw5iiRS)v9zV0AjHm?VTFvkNJ*lfqr3BQ+QH3V5fU>GYKoYM2G",
+            "receipt_hash72": "!(-5E8Hi/C-r5G/OIYUTvOEMifYt-DZINY(mFg/1zL5<JK!(-oM8P(ED)VS0zCCn779pj**r",
+            "schema": "HHS_EMULATOR_STEP_RECEIPT_V1",
+            "session_id": "emulator:d2a4c3156dc146d8ab7d3fbeba3f3b19",
+            "tick": 4
+          }
+        ],
+        "schema": "HHS_EMULATOR_SESSION_V1",
+        "session_id": "emulator:d2a4c3156dc146d8ab7d3fbeba3f3b19",
+        "snapshot_ids": [],
+        "tick": 4,
+        "version": "PASS_049_HHS_VISUAL_RUNTIME_OS_WORKSPACE_V1"
+      },
+      "status": "EMULATOR_PAUSE_COMMITTED",
+      "version": "PASS_049_HHS_VISUAL_RUNTIME_OS_WORKSPACE_V1"
+    },
+    "replay": {
+      "ok": true,
+      "receipt": {
+        "authority": "HHS_RUNTIME_WORKSPACE_AUTHORITY_V1",
+        "command": "replay",
+        "history_erased": false,
+        "mode": "REPLAYING",
+        "post_state_hash72": "s7bLa7/B>UdwYnY?9qastyH6EHllIom0FYnp8za<XC7+-y+WAIInb7mIb9ZAc(wAiZ0XG<aK",
+        "pre_state_hash72": "B*7G8u2Yms1/loWVMTnOzLrg8oQS!E(urGgkEskD900r/RAFO4FPLyvFCe8vb6FeLKysFnxs",
+        "receipt_hash72": "BPPZSp<p7?wTzhNQ+Mxv2E64EIhCGqvWeYoqQh56Ng1?5gIIY->lh?9Amm7xbdHRHpn)GTX(",
+        "schema": "HHS_EMULATOR_STEP_RECEIPT_V1",
+        "session_id": "emulator:d2a4c3156dc146d8ab7d3fbeba3f3b19",
+        "tick": 4
+      },
+      "schema": "HHS_EMULATOR_COMMAND_RESULT_V1",
+      "session": {
+        "branch_id": "branch:main",
+        "current_state_root_hash72": "s7bLa7/B>UdwYnY?9qastyH6EHllIom0FYnp8za<XC7+-y+WAIInb7mIb9ZAc(wAiZ0XG<aK",
+        "execution_policy": "AUTHORIZED_KERNEL_EMULATION",
+        "initial_state_root_hash72": "02egPef?!t6fq*kbs7bvEao5IbRj*+lL>hIBiVoJ/iXnWHG)kNOPQRSTUVWXYZ-+*/()<>!z",
+        "mode": "REPLAYING",
+        "parent_receipt_hash72": null,
+        "program_artifact_id": "artifact:hhs-ir",
+        "project_id": "project:pass049",
+        "receipt_tip_hash72": "BPPZSp<p7?wTzhNQ+Mxv2E64EIhCGqvWeYoqQh56Ng1?5gIIY->lh?9Amm7xbdHRHpn)GTX(",
+        "receipts": [
+          {
+            "authority": "HHS_RUNTIME_WORKSPACE_AUTHORITY_V1",
+            "command": "step",
+            "history_erased": false,
+            "mode": "PAUSED",
+            "post_state_hash72": "z/EcHNpw4ZOFaR4ozhVYGQLP8LiHpGm9BBfBnTxzPjUI2a)m6T9c5-q7ILwH4EJumWWGD?8h",
+            "pre_state_hash72": "02egPef?!t6fq*kbs7bvEao5IbRj*+lL>hIBiVoJ/iXnWHG)kNOPQRSTUVWXYZ-+*/()<>!z",
+            "receipt_hash72": "H<JqjWdgBu)HK1dBvfzuV(wWqMUZKf)NL1zLEOUQ<SpjJBvv)khpb<5<yd2vGL4NcCw>5dp3",
+            "schema": "HHS_EMULATOR_STEP_RECEIPT_V1",
+            "session_id": "emulator:d2a4c3156dc146d8ab7d3fbeba3f3b19",
+            "tick": 1
+          },
+          {
+            "authority": "HHS_RUNTIME_WORKSPACE_AUTHORITY_V1",
+            "command": "run",
+            "history_erased": false,
+            "mode": "PAUSED",
+            "post_state_hash72": "<zi7GLzN?qn(i7JC2(EaD9vw5iiRS)v9zV0AjHm?VTFvkNJ*lfqr3BQ+QH3V5fU>GYKoYM2G",
+            "pre_state_hash72": "z/EcHNpw4ZOFaR4ozhVYGQLP8LiHpGm9BBfBnTxzPjUI2a)m6T9c5-q7ILwH4EJumWWGD?8h",
+            "receipt_hash72": "9bticRg?ZdyQTqZdNahFj>0h)jqhAkiQag5*mYPeSCom*v!79Km*6/yBg(5X!AD*qzT<bRLo",
+            "schema": "HHS_EMULATOR_STEP_RECEIPT_V1",
+            "session_id": "emulator:d2a4c3156dc146d8ab7d3fbeba3f3b19",
+            "tick": 4
+          },
+          {
+            "authority": "HHS_RUNTIME_WORKSPACE_AUTHORITY_V1",
+            "command": "pause",
+            "history_erased": false,
+            "mode": "PAUSED",
+            "post_state_hash72": "i!71KOX9SJC)(0smRQlXKU-OOqW(nKlW<?b4F63gxf-pdeoQp9g>4t(yY!ln*v*UI2dNRt7F",
+            "pre_state_hash72": "<zi7GLzN?qn(i7JC2(EaD9vw5iiRS)v9zV0AjHm?VTFvkNJ*lfqr3BQ+QH3V5fU>GYKoYM2G",
+            "receipt_hash72": "!(-5E8Hi/C-r5G/OIYUTvOEMifYt-DZINY(mFg/1zL5<JK!(-oM8P(ED)VS0zCCn779pj**r",
+            "schema": "HHS_EMULATOR_STEP_RECEIPT_V1",
+            "session_id": "emulator:d2a4c3156dc146d8ab7d3fbeba3f3b19",
+            "tick": 4
+          },
+          {
+            "authority": "HHS_RUNTIME_WORKSPACE_AUTHORITY_V1",
+            "command": "snapshot",
+            "history_erased": false,
+            "mode": "SNAPSHOTTED",
+            "post_state_hash72": "TnBKUjxStCHFU<KzW39uuCeb0YgP9DG)Y5yOZ)MY(JRN3QeyhmRva*wQJbEHgtk3b->boLUD",
+            "pre_state_hash72": "i!71KOX9SJC)(0smRQlXKU-OOqW(nKlW<?b4F63gxf-pdeoQp9g>4t(yY!ln*v*UI2dNRt7F",
+            "receipt_hash72": "Q1qqR-M)ktT!G(q**oB6em(qGyHxO6MIjV)z+>x<a)wKAocIwrTlFb6Nk-OgYC4qKDZpJH<f",
+            "schema": "HHS_EMULATOR_STEP_RECEIPT_V1",
+            "session_id": "emulator:d2a4c3156dc146d8ab7d3fbeba3f3b19",
+            "tick": 4
+          },
+          {
+            "authority": "HHS_RUNTIME_WORKSPACE_AUTHORITY_V1",
+            "command": "restore",
+            "history_erased": false,
+            "mode": "PAUSED",
+            "post_state_hash72": "B*7G8u2Yms1/loWVMTnOzLrg8oQS!E(urGgkEskD900r/RAFO4FPLyvFCe8vb6FeLKysFnxs",
+            "pre_state_hash72": "TnBKUjxStCHFU<KzW39uuCeb0YgP9DG)Y5yOZ)MY(JRN3QeyhmRva*wQJbEHgtk3b->boLUD",
+            "receipt_hash72": "oFPe)AH7p-qqiNHG!p)B5wwoMJ+KkU8yBOow2QAz(fjW+457b45PUinMj-4ch>?6>yZ>BY1m",
+            "schema": "HHS_EMULATOR_STEP_RECEIPT_V1",
+            "session_id": "emulator:d2a4c3156dc146d8ab7d3fbeba3f3b19",
+            "tick": 4
+          },
+          {
+            "authority": "HHS_RUNTIME_WORKSPACE_AUTHORITY_V1",
+            "command": "replay",
+            "history_erased": false,
+            "mode": "REPLAYING",
+            "post_state_hash72": "s7bLa7/B>UdwYnY?9qastyH6EHllIom0FYnp8za<XC7+-y+WAIInb7mIb9ZAc(wAiZ0XG<aK",
+            "pre_state_hash72": "B*7G8u2Yms1/loWVMTnOzLrg8oQS!E(urGgkEskD900r/RAFO4FPLyvFCe8vb6FeLKysFnxs",
+            "receipt_hash72": "BPPZSp<p7?wTzhNQ+Mxv2E64EIhCGqvWeYoqQh56Ng1?5gIIY->lh?9Amm7xbdHRHpn)GTX(",
+            "schema": "HHS_EMULATOR_STEP_RECEIPT_V1",
+            "session_id": "emulator:d2a4c3156dc146d8ab7d3fbeba3f3b19",
+            "tick": 4
+          }
+        ],
+        "schema": "HHS_EMULATOR_SESSION_V1",
+        "session_id": "emulator:d2a4c3156dc146d8ab7d3fbeba3f3b19",
+        "snapshot_ids": [
+          "snapshot:0db6038416c9460abb00769b2f654732"
+        ],
+        "tick": 4,
+        "version": "PASS_049_HHS_VISUAL_RUNTIME_OS_WORKSPACE_V1"
+      },
+      "status": "EMULATOR_REPLAY_COMMITTED",
+      "version": "PASS_049_HHS_VISUAL_RUNTIME_OS_WORKSPACE_V1"
+    },
+    "restore": {
+      "ok": true,
+      "receipt": {
+        "authority": "HHS_RUNTIME_WORKSPACE_AUTHORITY_V1",
+        "command": "restore",
+        "history_erased": false,
+        "mode": "PAUSED",
+        "post_state_hash72": "B*7G8u2Yms1/loWVMTnOzLrg8oQS!E(urGgkEskD900r/RAFO4FPLyvFCe8vb6FeLKysFnxs",
+        "pre_state_hash72": "TnBKUjxStCHFU<KzW39uuCeb0YgP9DG)Y5yOZ)MY(JRN3QeyhmRva*wQJbEHgtk3b->boLUD",
+        "receipt_hash72": "oFPe)AH7p-qqiNHG!p)B5wwoMJ+KkU8yBOow2QAz(fjW+457b45PUinMj-4ch>?6>yZ>BY1m",
+        "schema": "HHS_EMULATOR_STEP_RECEIPT_V1",
+        "session_id": "emulator:d2a4c3156dc146d8ab7d3fbeba3f3b19",
+        "tick": 4
+      },
+      "schema": "HHS_EMULATOR_COMMAND_RESULT_V1",
+      "session": {
+        "branch_id": "branch:main",
+        "current_state_root_hash72": "B*7G8u2Yms1/loWVMTnOzLrg8oQS!E(urGgkEskD900r/RAFO4FPLyvFCe8vb6FeLKysFnxs",
+        "execution_policy": "AUTHORIZED_KERNEL_EMULATION",
+        "initial_state_root_hash72": "02egPef?!t6fq*kbs7bvEao5IbRj*+lL>hIBiVoJ/iXnWHG)kNOPQRSTUVWXYZ-+*/()<>!z",
+        "mode": "PAUSED",
+        "parent_receipt_hash72": null,
+        "program_artifact_id": "artifact:hhs-ir",
+        "project_id": "project:pass049",
+        "receipt_tip_hash72": "oFPe)AH7p-qqiNHG!p)B5wwoMJ+KkU8yBOow2QAz(fjW+457b45PUinMj-4ch>?6>yZ>BY1m",
+        "receipts": [
+          {
+            "authority": "HHS_RUNTIME_WORKSPACE_AUTHORITY_V1",
+            "command": "step",
+            "history_erased": false,
+            "mode": "PAUSED",
+            "post_state_hash72": "z/EcHNpw4ZOFaR4ozhVYGQLP8LiHpGm9BBfBnTxzPjUI2a)m6T9c5-q7ILwH4EJumWWGD?8h",
+            "pre_state_hash72": "02egPef?!t6fq*kbs7bvEao5IbRj*+lL>hIBiVoJ/iXnWHG)kNOPQRSTUVWXYZ-+*/()<>!z",
+            "receipt_hash72": "H<JqjWdgBu)HK1dBvfzuV(wWqMUZKf)NL1zLEOUQ<SpjJBvv)khpb<5<yd2vGL4NcCw>5dp3",
+            "schema": "HHS_EMULATOR_STEP_RECEIPT_V1",
+            "session_id": "emulator:d2a4c3156dc146d8ab7d3fbeba3f3b19",
+            "tick": 1
+          },
+          {
+            "authority": "HHS_RUNTIME_WORKSPACE_AUTHORITY_V1",
+            "command": "run",
+            "history_erased": false,
+            "mode": "PAUSED",
+            "post_state_hash72": "<zi7GLzN?qn(i7JC2(EaD9vw5iiRS)v9zV0AjHm?VTFvkNJ*lfqr3BQ+QH3V5fU>GYKoYM2G",
+            "pre_state_hash72": "z/EcHNpw4ZOFaR4ozhVYGQLP8LiHpGm9BBfBnTxzPjUI2a)m6T9c5-q7ILwH4EJumWWGD?8h",
+            "receipt_hash72": "9bticRg?ZdyQTqZdNahFj>0h)jqhAkiQag5*mYPeSCom*v!79Km*6/yBg(5X!AD*qzT<bRLo",
+            "schema": "HHS_EMULATOR_STEP_RECEIPT_V1",
+            "session_id": "emulator:d2a4c3156dc146d8ab7d3fbeba3f3b19",
+            "tick": 4
+          },
+          {
+            "authority": "HHS_RUNTIME_WORKSPACE_AUTHORITY_V1",
+            "command": "pause",
+            "history_erased": false,
+            "mode": "PAUSED",
+            "post_state_hash72": "i!71KOX9SJC)(0smRQlXKU-OOqW(nKlW<?b4F63gxf-pdeoQp9g>4t(yY!ln*v*UI2dNRt7F",
+            "pre_state_hash72": "<zi7GLzN?qn(i7JC2(EaD9vw5iiRS)v9zV0AjHm?VTFvkNJ*lfqr3BQ+QH3V5fU>GYKoYM2G",
+            "receipt_hash72": "!(-5E8Hi/C-r5G/OIYUTvOEMifYt-DZINY(mFg/1zL5<JK!(-oM8P(ED)VS0zCCn779pj**r",
+            "schema": "HHS_EMULATOR_STEP_RECEIPT_V1",
+            "session_id": "emulator:d2a4c3156dc146d8ab7d3fbeba3f3b19",
+            "tick": 4
+          },
+          {
+            "authority": "HHS_RUNTIME_WORKSPACE_AUTHORITY_V1",
+            "command": "snapshot",
+            "history_erased": false,
+            "mode": "SNAPSHOTTED",
+            "post_state_hash72": "TnBKUjxStCHFU<KzW39uuCeb0YgP9DG)Y5yOZ)MY(JRN3QeyhmRva*wQJbEHgtk3b->boLUD",
+            "pre_state_hash72": "i!71KOX9SJC)(0smRQlXKU-OOqW(nKlW<?b4F63gxf-pdeoQp9g>4t(yY!ln*v*UI2dNRt7F",
+            "receipt_hash72": "Q1qqR-M)ktT!G(q**oB6em(qGyHxO6MIjV)z+>x<a)wKAocIwrTlFb6Nk-OgYC4qKDZpJH<f",
+            "schema": "HHS_EMULATOR_STEP_RECEIPT_V1",
+            "session_id": "emulator:d2a4c3156dc146d8ab7d3fbeba3f3b19",
+            "tick": 4
+          },
+          {
+            "authority": "HHS_RUNTIME_WORKSPACE_AUTHORITY_V1",
+            "command": "restore",
+            "history_erased": false,
+            "mode": "PAUSED",
+            "post_state_hash72": "B*7G8u2Yms1/loWVMTnOzLrg8oQS!E(urGgkEskD900r/RAFO4FPLyvFCe8vb6FeLKysFnxs",
+            "pre_state_hash72": "TnBKUjxStCHFU<KzW39uuCeb0YgP9DG)Y5yOZ)MY(JRN3QeyhmRva*wQJbEHgtk3b->boLUD",
+            "receipt_hash72": "oFPe)AH7p-qqiNHG!p)B5wwoMJ+KkU8yBOow2QAz(fjW+457b45PUinMj-4ch>?6>yZ>BY1m",
+            "schema": "HHS_EMULATOR_STEP_RECEIPT_V1",
+            "session_id": "emulator:d2a4c3156dc146d8ab7d3fbeba3f3b19",
+            "tick": 4
+          }
+        ],
+        "schema": "HHS_EMULATOR_SESSION_V1",
+        "session_id": "emulator:d2a4c3156dc146d8ab7d3fbeba3f3b19",
+        "snapshot_ids": [
+          "snapshot:0db6038416c9460abb00769b2f654732"
+        ],
+        "tick": 4,
+        "version": "PASS_049_HHS_VISUAL_RUNTIME_OS_WORKSPACE_V1"
+      },
+      "status": "EMULATOR_RESTORE_COMMITTED",
+      "version": "PASS_049_HHS_VISUAL_RUNTIME_OS_WORKSPACE_V1"
+    },
+    "run": {
+      "ok": true,
+      "receipt": {
+        "authority": "HHS_RUNTIME_WORKSPACE_AUTHORITY_V1",
+        "command": "run",
+        "history_erased": false,
+        "mode": "PAUSED",
+        "post_state_hash72": "<zi7GLzN?qn(i7JC2(EaD9vw5iiRS)v9zV0AjHm?VTFvkNJ*lfqr3BQ+QH3V5fU>GYKoYM2G",
+        "pre_state_hash72": "z/EcHNpw4ZOFaR4ozhVYGQLP8LiHpGm9BBfBnTxzPjUI2a)m6T9c5-q7ILwH4EJumWWGD?8h",
+        "receipt_hash72": "9bticRg?ZdyQTqZdNahFj>0h)jqhAkiQag5*mYPeSCom*v!79Km*6/yBg(5X!AD*qzT<bRLo",
+        "schema": "HHS_EMULATOR_STEP_RECEIPT_V1",
+        "session_id": "emulator:d2a4c3156dc146d8ab7d3fbeba3f3b19",
+        "tick": 4
+      },
+      "schema": "HHS_EMULATOR_COMMAND_RESULT_V1",
+      "session": {
+        "branch_id": "branch:main",
+        "current_state_root_hash72": "<zi7GLzN?qn(i7JC2(EaD9vw5iiRS)v9zV0AjHm?VTFvkNJ*lfqr3BQ+QH3V5fU>GYKoYM2G",
+        "execution_policy": "AUTHORIZED_KERNEL_EMULATION",
+        "initial_state_root_hash72": "02egPef?!t6fq*kbs7bvEao5IbRj*+lL>hIBiVoJ/iXnWHG)kNOPQRSTUVWXYZ-+*/()<>!z",
+        "mode": "PAUSED",
+        "parent_receipt_hash72": null,
+        "program_artifact_id": "artifact:hhs-ir",
+        "project_id": "project:pass049",
+        "receipt_tip_hash72": "9bticRg?ZdyQTqZdNahFj>0h)jqhAkiQag5*mYPeSCom*v!79Km*6/yBg(5X!AD*qzT<bRLo",
+        "receipts": [
+          {
+            "authority": "HHS_RUNTIME_WORKSPACE_AUTHORITY_V1",
+            "command": "step",
+            "history_erased": false,
+            "mode": "PAUSED",
+            "post_state_hash72": "z/EcHNpw4ZOFaR4ozhVYGQLP8LiHpGm9BBfBnTxzPjUI2a)m6T9c5-q7ILwH4EJumWWGD?8h",
+            "pre_state_hash72": "02egPef?!t6fq*kbs7bvEao5IbRj*+lL>hIBiVoJ/iXnWHG)kNOPQRSTUVWXYZ-+*/()<>!z",
+            "receipt_hash72": "H<JqjWdgBu)HK1dBvfzuV(wWqMUZKf)NL1zLEOUQ<SpjJBvv)khpb<5<yd2vGL4NcCw>5dp3",
+            "schema": "HHS_EMULATOR_STEP_RECEIPT_V1",
+            "session_id": "emulator:d2a4c3156dc146d8ab7d3fbeba3f3b19",
+            "tick": 1
+          },
+          {
+            "authority": "HHS_RUNTIME_WORKSPACE_AUTHORITY_V1",
+            "command": "run",
+            "history_erased": false,
+            "mode": "PAUSED",
+            "post_state_hash72": "<zi7GLzN?qn(i7JC2(EaD9vw5iiRS)v9zV0AjHm?VTFvkNJ*lfqr3BQ+QH3V5fU>GYKoYM2G",
+            "pre_state_hash72": "z/EcHNpw4ZOFaR4ozhVYGQLP8LiHpGm9BBfBnTxzPjUI2a)m6T9c5-q7ILwH4EJumWWGD?8h",
+            "receipt_hash72": "9bticRg?ZdyQTqZdNahFj>0h)jqhAkiQag5*mYPeSCom*v!79Km*6/yBg(5X!AD*qzT<bRLo",
+            "schema": "HHS_EMULATOR_STEP_RECEIPT_V1",
+            "session_id": "emulator:d2a4c3156dc146d8ab7d3fbeba3f3b19",
+            "tick": 4
+          }
+        ],
+        "schema": "HHS_EMULATOR_SESSION_V1",
+        "session_id": "emulator:d2a4c3156dc146d8ab7d3fbeba3f3b19",
+        "snapshot_ids": [],
+        "tick": 4,
+        "version": "PASS_049_HHS_VISUAL_RUNTIME_OS_WORKSPACE_V1"
+      },
+      "status": "EMULATOR_RUN_COMMITTED",
+      "version": "PASS_049_HHS_VISUAL_RUNTIME_OS_WORKSPACE_V1"
+    },
+    "schema": "HHS_VISUAL_EMULATOR_SESSION_SELF_TEST_V1",
+    "snapshot": {
+      "ok": true,
+      "receipt": {
+        "authority": "HHS_RUNTIME_WORKSPACE_AUTHORITY_V1",
+        "command": "snapshot",
+        "history_erased": false,
+        "mode": "SNAPSHOTTED",
+        "post_state_hash72": "TnBKUjxStCHFU<KzW39uuCeb0YgP9DG)Y5yOZ)MY(JRN3QeyhmRva*wQJbEHgtk3b->boLUD",
+        "pre_state_hash72": "i!71KOX9SJC)(0smRQlXKU-OOqW(nKlW<?b4F63gxf-pdeoQp9g>4t(yY!ln*v*UI2dNRt7F",
+        "receipt_hash72": "Q1qqR-M)ktT!G(q**oB6em(qGyHxO6MIjV)z+>x<a)wKAocIwrTlFb6Nk-OgYC4qKDZpJH<f",
+        "schema": "HHS_EMULATOR_STEP_RECEIPT_V1",
+        "session_id": "emulator:d2a4c3156dc146d8ab7d3fbeba3f3b19",
+        "tick": 4
+      },
+      "schema": "HHS_EMULATOR_COMMAND_RESULT_V1",
+      "session": {
+        "branch_id": "branch:main",
+        "current_state_root_hash72": "TnBKUjxStCHFU<KzW39uuCeb0YgP9DG)Y5yOZ)MY(JRN3QeyhmRva*wQJbEHgtk3b->boLUD",
+        "execution_policy": "AUTHORIZED_KERNEL_EMULATION",
+        "initial_state_root_hash72": "02egPef?!t6fq*kbs7bvEao5IbRj*+lL>hIBiVoJ/iXnWHG)kNOPQRSTUVWXYZ-+*/()<>!z",
+        "mode": "SNAPSHOTTED",
+        "parent_receipt_hash72": null,
+        "program_artifact_id": "artifact:hhs-ir",
+        "project_id": "project:pass049",
+        "receipt_tip_hash72": "Q1qqR-M)ktT!G(q**oB6em(qGyHxO6MIjV)z+>x<a)wKAocIwrTlFb6Nk-OgYC4qKDZpJH<f",
+        "receipts": [
+          {
+            "authority": "HHS_RUNTIME_WORKSPACE_AUTHORITY_V1",
+            "command": "step",
+            "history_erased": false,
+            "mode": "PAUSED",
+            "post_state_hash72": "z/EcHNpw4ZOFaR4ozhVYGQLP8LiHpGm9BBfBnTxzPjUI2a)m6T9c5-q7ILwH4EJumWWGD?8h",
+            "pre_state_hash72": "02egPef?!t6fq*kbs7bvEao5IbRj*+lL>hIBiVoJ/iXnWHG)kNOPQRSTUVWXYZ-+*/()<>!z",
+            "receipt_hash72": "H<JqjWdgBu)HK1dBvfzuV(wWqMUZKf)NL1zLEOUQ<SpjJBvv)khpb<5<yd2vGL4NcCw>5dp3",
+            "schema": "HHS_EMULATOR_STEP_RECEIPT_V1",
+            "session_id": "emulator:d2a4c3156dc146d8ab7d3fbeba3f3b19",
+            "tick": 1
+          },
+          {
+            "authority": "HHS_RUNTIME_WORKSPACE_AUTHORITY_V1",
+            "command": "run",
+            "history_erased": false,
+            "mode": "PAUSED",
+            "post_state_hash72": "<zi7GLzN?qn(i7JC2(EaD9vw5iiRS)v9zV0AjHm?VTFvkNJ*lfqr3BQ+QH3V5fU>GYKoYM2G",
+            "pre_state_hash72": "z/EcHNpw4ZOFaR4ozhVYGQLP8LiHpGm9BBfBnTxzPjUI2a)m6T9c5-q7ILwH4EJumWWGD?8h",
+            "receipt_hash72": "9bticRg?ZdyQTqZdNahFj>0h)jqhAkiQag5*mYPeSCom*v!79Km*6/yBg(5X!AD*qzT<bRLo",
+            "schema": "HHS_EMULATOR_STEP_RECEIPT_V1",
+            "session_id": "emulator:d2a4c3156dc146d8ab7d3fbeba3f3b19",
+            "tick": 4
+          },
+          {
+            "authority": "HHS_RUNTIME_WORKSPACE_AUTHORITY_V1",
+            "command": "pause",
+            "history_erased": false,
+            "mode": "PAUSED",
+            "post_state_hash72": "i!71KOX9SJC)(0smRQlXKU-OOqW(nKlW<?b4F63gxf-pdeoQp9g>4t(yY!ln*v*UI2dNRt7F",
+            "pre_state_hash72": "<zi7GLzN?qn(i7JC2(EaD9vw5iiRS)v9zV0AjHm?VTFvkNJ*lfqr3BQ+QH3V5fU>GYKoYM2G",
+            "receipt_hash72": "!(-5E8Hi/C-r5G/OIYUTvOEMifYt-DZINY(mFg/1zL5<JK!(-oM8P(ED)VS0zCCn779pj**r",
+            "schema": "HHS_EMULATOR_STEP_RECEIPT_V1",
+            "session_id": "emulator:d2a4c3156dc146d8ab7d3fbeba3f3b19",
+            "tick": 4
+          },
+          {
+            "authority": "HHS_RUNTIME_WORKSPACE_AUTHORITY_V1",
+            "command": "snapshot",
+            "history_erased": false,
+            "mode": "SNAPSHOTTED",
+            "post_state_hash72": "TnBKUjxStCHFU<KzW39uuCeb0YgP9DG)Y5yOZ)MY(JRN3QeyhmRva*wQJbEHgtk3b->boLUD",
+            "pre_state_hash72": "i!71KOX9SJC)(0smRQlXKU-OOqW(nKlW<?b4F63gxf-pdeoQp9g>4t(yY!ln*v*UI2dNRt7F",
+            "receipt_hash72": "Q1qqR-M)ktT!G(q**oB6em(qGyHxO6MIjV)z+>x<a)wKAocIwrTlFb6Nk-OgYC4qKDZpJH<f",
+            "schema": "HHS_EMULATOR_STEP_RECEIPT_V1",
+            "session_id": "emulator:d2a4c3156dc146d8ab7d3fbeba3f3b19",
+            "tick": 4
+          }
+        ],
+        "schema": "HHS_EMULATOR_SESSION_V1",
+        "session_id": "emulator:d2a4c3156dc146d8ab7d3fbeba3f3b19",
+        "snapshot_ids": [
+          "snapshot:0db6038416c9460abb00769b2f654732"
+        ],
+        "tick": 4,
+        "version": "PASS_049_HHS_VISUAL_RUNTIME_OS_WORKSPACE_V1"
+      },
+      "status": "EMULATOR_SNAPSHOT_COMMITTED",
+      "version": "PASS_049_HHS_VISUAL_RUNTIME_OS_WORKSPACE_V1"
+    },
+    "step": {
+      "ok": true,
+      "receipt": {
+        "authority": "HHS_RUNTIME_WORKSPACE_AUTHORITY_V1",
+        "command": "step",
+        "history_erased": false,
+        "mode": "PAUSED",
+        "post_state_hash72": "z/EcHNpw4ZOFaR4ozhVYGQLP8LiHpGm9BBfBnTxzPjUI2a)m6T9c5-q7ILwH4EJumWWGD?8h",
+        "pre_state_hash72": "02egPef?!t6fq*kbs7bvEao5IbRj*+lL>hIBiVoJ/iXnWHG)kNOPQRSTUVWXYZ-+*/()<>!z",
+        "receipt_hash72": "H<JqjWdgBu)HK1dBvfzuV(wWqMUZKf)NL1zLEOUQ<SpjJBvv)khpb<5<yd2vGL4NcCw>5dp3",
+        "schema": "HHS_EMULATOR_STEP_RECEIPT_V1",
+        "session_id": "emulator:d2a4c3156dc146d8ab7d3fbeba3f3b19",
+        "tick": 1
+      },
+      "schema": "HHS_EMULATOR_COMMAND_RESULT_V1",
+      "session": {
+        "branch_id": "branch:main",
+        "current_state_root_hash72": "z/EcHNpw4ZOFaR4ozhVYGQLP8LiHpGm9BBfBnTxzPjUI2a)m6T9c5-q7ILwH4EJumWWGD?8h",
+        "execution_policy": "AUTHORIZED_KERNEL_EMULATION",
+        "initial_state_root_hash72": "02egPef?!t6fq*kbs7bvEao5IbRj*+lL>hIBiVoJ/iXnWHG)kNOPQRSTUVWXYZ-+*/()<>!z",
+        "mode": "PAUSED",
+        "parent_receipt_hash72": null,
+        "program_artifact_id": "artifact:hhs-ir",
+        "project_id": "project:pass049",
+        "receipt_tip_hash72": "H<JqjWdgBu)HK1dBvfzuV(wWqMUZKf)NL1zLEOUQ<SpjJBvv)khpb<5<yd2vGL4NcCw>5dp3",
+        "receipts": [
+          {
+            "authority": "HHS_RUNTIME_WORKSPACE_AUTHORITY_V1",
+            "command": "step",
+            "history_erased": false,
+            "mode": "PAUSED",
+            "post_state_hash72": "z/EcHNpw4ZOFaR4ozhVYGQLP8LiHpGm9BBfBnTxzPjUI2a)m6T9c5-q7ILwH4EJumWWGD?8h",
+            "pre_state_hash72": "02egPef?!t6fq*kbs7bvEao5IbRj*+lL>hIBiVoJ/iXnWHG)kNOPQRSTUVWXYZ-+*/()<>!z",
+            "receipt_hash72": "H<JqjWdgBu)HK1dBvfzuV(wWqMUZKf)NL1zLEOUQ<SpjJBvv)khpb<5<yd2vGL4NcCw>5dp3",
+            "schema": "HHS_EMULATOR_STEP_RECEIPT_V1",
+            "session_id": "emulator:d2a4c3156dc146d8ab7d3fbeba3f3b19",
+            "tick": 1
+          }
+        ],
+        "schema": "HHS_EMULATOR_SESSION_V1",
+        "session_id": "emulator:d2a4c3156dc146d8ab7d3fbeba3f3b19",
+        "snapshot_ids": [],
+        "tick": 1,
+        "version": "PASS_049_HHS_VISUAL_RUNTIME_OS_WORKSPACE_V1"
+      },
+      "status": "EMULATOR_STEP_COMMITTED",
+      "version": "PASS_049_HHS_VISUAL_RUNTIME_OS_WORKSPACE_V1"
+    },
+    "unbounded_rejection": {
+      "limit": 32,
+      "ok": false,
+      "schema": "HHS_EMULATOR_COMMAND_REJECTION_V1",
+      "status": "REJECT_EMULATOR_UNBOUNDED_RUN"
+    },
+    "unknown_session_rejection": {
+      "ok": false,
+      "schema": "HHS_EMULATOR_COMMAND_REJECTION_V1",
+      "status": "REJECT_EMULATOR_SESSION_UNKNOWN"
+    },
+    "version": "PASS_049_HHS_VISUAL_RUNTIME_OS_WORKSPACE_V1"
+  },
+  "interpreter": {
+    "constraint": "NO_ARBITRARY_HOST_LANGUAGE_EVALUATION",
+    "host_eval_rejection": {
+      "ok": false,
+      "reasons": [
+        "REJECT_INTERPRETER_HOST_EVAL",
+        "REJECT_UNDERIVED_PRIMITIVE"
+      ],
+      "request_id": "interpret:0ef1254642f54325a69a037d30f5cf3a",
+      "result_root_hash72": "q663urM-E!n50*TLh)-RoP42/h(iMpbTjsKvdTblgFN92)keF8Crds0Vt()P8hBt0+j8MyWj",
+      "schema": "HHS_INTERPRETER_RESULT_V1",
+      "status": "INTERPRETER_REJECTED",
+      "version": "PASS_049_HHS_VISUAL_RUNTIME_OS_WORKSPACE_V1",
+      "witnessed_rejection": true
+    },
+    "ok": true,
+    "request": {
+      "execution_mode": "AUTHORIZED_INTERPRET",
+      "expression_hash72": "02egTbd/m8d?s?st+Bbm8AnevpIj*+lLQNtHtLzJnDGHIJKLMNOPQRSTUVWXYZ-+*/()<>!z",
+      "expression_range": {
+        "end": 7,
+        "start": 0
+      },
+      "input_state_ids": [],
+      "project_id": "project:pass049",
+      "request_id": "interpret:0ef1254642f54325a69a037d30f5cf3a",
+      "request_root_hash72": "yyMzt5NY)WN86dMPSJ186X9UZLiTMB!8g+Rk!iIA3VrVtG(MXv<m6TnbobwIqJz4M+EQFQhu",
+      "requested_outputs": [
+        "VALUE",
+        "STATE_TRANSITION",
+        "WITNESS",
+        "GRAPH_PROJECTION",
+        "RECEIPT"
+      ],
+      "requires_authority": true,
+      "schema": "HHS_INTERPRETER_REQUEST_V1",
+      "source_object_id": "object:expr",
+      "version": "PASS_049_HHS_VISUAL_RUNTIME_OS_WORKSPACE_V1"
+    },
+    "result": {
+      "display_value": "5/2",
+      "exact_symbolic_value": {
+        "denominator": 2,
+        "numerator": 5
+      },
+      "execution_receipt": {
+        "authority": "HHS_RUNTIME_WORKSPACE_AUTHORITY_V1",
+        "receipt_hash72": "/NlZ8hAi+YsH-9Zt0<lWXH4yhg98(7l3TsymhrCIKGel2nV5JTci(EbeP-koEvzJ1qt3P)i1",
+        "request_id": "interpret:0ef1254642f54325a69a037d30f5cf3a",
+        "schema": "HHS_INTERPRETER_RECEIPT_V1",
+        "transition_hash72": "+SHUX!xdMnhHrpsA4s1!KZ(5pwuc4l3K4+UXVB0FBP/iov7yv8l!)j(J(vZcpjZZ4FI-SiA("
+      },
+      "floating_point_is_display_only": true,
+      "graph_projection": {
+        "node_type": "INTERPRETER_RESULT",
+        "value_root_hash72": "02egTbd/m8d?s?st8>ut5MeXWgG*cowFywvFoVyHx(zCzOSEF+y?MVL8QWkXYZ-+*/()<>!z"
+      },
+      "ok": true,
+      "request_id": "interpret:0ef1254642f54325a69a037d30f5cf3a",
+      "result_root_hash72": "E-qWlFICmg!7p-zycKLiUxIRt(bY3ZFcNOERpRNisv8BVuyhb0qGng2iMR2H1PM0GqROYfpl",
+      "schema": "HHS_INTERPRETER_RESULT_V1",
+      "status": "INTERPRETER_RESULT",
+      "transition_witness": {
+        "operation": "interpret.execute",
+        "post_state_root_hash72": "02egTbd/m8d?s?st2hnlwao5IbRj*+lL>htBKDBAKt-DMC?EHETXJK<D4R-QdV+k*/()<>!z",
+        "pre_state_root_hash72": "do2yZGes3945+O7jfd8(J2HikcdAHqlK4eur5-VEFL>/22E!n?aqaE407>Y7*li0289E(Cip",
+        "schema": "HHS_INTERPRETER_STATE_TRANSITION_V1",
+        "transition_hash72": "+SHUX!xdMnhHrpsA4s1!KZ(5pwuc4l3K4+UXVB0FBP/iov7yv8l!)j(J(vZcpjZZ4FI-SiA("
+      },
+      "version": "PASS_049_HHS_VISUAL_RUNTIME_OS_WORKSPACE_V1"
+    },
+    "schema": "HHS_LIVE_INTERPRETER_SELF_TEST_V1",
+    "version": "PASS_049_HHS_VISUAL_RUNTIME_OS_WORKSPACE_V1"
+  },
+  "schema": "INTERPRETER_COMPILER_EMULATOR_SURFACE_MAP_PASS_049_V1"
+}

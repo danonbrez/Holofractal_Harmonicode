@@ -1,0 +1,801 @@
+# EXACT AGENT ACTIVATION PROBABILITIES PASS 067
+
+```json
+{
+  "distributions": [
+    {
+      "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+      "distribution_root_hash72": "OP1+1AJUUzlAb30zteZ1ptxPZ/rhdwEUi)NZgfJb+b7cCZMkx/j+)ybgjYVk49/gSIiCvoFI",
+      "domain_id": "FORMAL_ALGEBRA",
+      "floating_point_used": false,
+      "probabilities": [
+        {
+          "admissible": true,
+          "agent_id": "agent:minimal-direct:formal_algebra:1",
+          "probability": {
+            "denominator": 344,
+            "numerator": 81
+          }
+        },
+        {
+          "admissible": true,
+          "agent_id": "agent:bridge:formal_algebra:2",
+          "probability": {
+            "denominator": 688,
+            "numerator": 189
+          }
+        },
+        {
+          "admissible": true,
+          "agent_id": "agent:minimal-direct:formal_algebra:4",
+          "probability": {
+            "denominator": 1376,
+            "numerator": 81
+          }
+        },
+        {
+          "admissible": true,
+          "agent_id": "agent:minimal-direct:formal_algebra:7",
+          "probability": {
+            "denominator": 1376,
+            "numerator": 81
+          }
+        },
+        {
+          "admissible": true,
+          "agent_id": "agent:contract:formal_algebra:3",
+          "probability": {
+            "denominator": 11008,
+            "numerator": 945
+          }
+        },
+        {
+          "admissible": true,
+          "agent_id": "agent:bridge:formal_algebra:5",
+          "probability": {
+            "denominator": 1376,
+            "numerator": 147
+          }
+        },
+        {
+          "admissible": true,
+          "agent_id": "agent:minimal-direct:formal_algebra:10",
+          "probability": {
+            "denominator": 688,
+            "numerator": 81
+          }
+        },
+        {
+          "admissible": true,
+          "agent_id": "agent:bridge:formal_algebra:8",
+          "probability": {
+            "denominator": 688,
+            "numerator": 7
+          }
+        },
+        {
+          "admissible": true,
+          "agent_id": "agent:contract:formal_algebra:6",
+          "probability": {
+            "denominator": 11008,
+            "numerator": 567
+          }
+        }
+      ],
+      "probability_confers_authority": false,
+      "probability_sum": {
+        "denominator": 1,
+        "numerator": 1
+      },
+      "schema": "HHS_EXACT_AGENT_ACTIVATION_DISTRIBUTION_V1",
+      "tensor_root_hash72": "EgrDgcO1uaL7?0fhrXB6KLIvigs>HURFmyqp(Dh?hEE!Rgyam4hXhjYji**rmqy*iV<EtjpV",
+      "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+    },
+    {
+      "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+      "distribution_root_hash72": "WLZ9h8G)IXo(f435!?hbZDYWKY3+en+HBjG1XMdvWlEVtL1o5Nd9/U!M57jjHNx02nd3JHvE",
+      "domain_id": "SYMBOLIC_LOGIC",
+      "floating_point_used": false,
+      "probabilities": [
+        {
+          "admissible": true,
+          "agent_id": "agent:minimal-direct:symbolic_logic:1",
+          "probability": {
+            "denominator": 344,
+            "numerator": 81
+          }
+        },
+        {
+          "admissible": true,
+          "agent_id": "agent:bridge:symbolic_logic:2",
+          "probability": {
+            "denominator": 688,
+            "numerator": 189
+          }
+        },
+        {
+          "admissible": true,
+          "agent_id": "agent:minimal-direct:symbolic_logic:4",
+          "probability": {
+            "denominator": 1376,
+            "numerator": 81
+          }
+        },
+        {
+          "admissible": true,
+          "agent_id": "agent:minimal-direct:symbolic_logic:7",
+          "probability": {
+            "denominator": 1376,
+            "numerator": 81
+          }
+        },
+        {
+          "admissible": true,
+          "agent_id": "agent:contract:symbolic_logic:3",
+          "probability": {
+            "denominator": 11008,
+            "numerator": 945
+          }
+        },
+        {
+          "admissible": true,
+          "agent_id": "agent:bridge:symbolic_logic:5",
+          "probability": {
+            "denominator": 1376,
+            "numerator": 147
+          }
+        },
+        {
+          "admissible": true,
+          "agent_id": "agent:minimal-direct:symbolic_logic:10",
+          "probability": {
+            "denominator": 688,
+            "numerator": 81
+          }
+        },
+        {
+          "admissible": true,
+          "agent_id": "agent:bridge:symbolic_logic:8",
+          "probability": {
+            "denominator": 688,
+            "numerator": 7
+          }
+        },
+        {
+          "admissible": true,
+          "agent_id": "agent:contract:symbolic_logic:6",
+          "probability": {
+            "denominator": 11008,
+            "numerator": 567
+          }
+        }
+      ],
+      "probability_confers_authority": false,
+      "probability_sum": {
+        "denominator": 1,
+        "numerator": 1
+      },
+      "schema": "HHS_EXACT_AGENT_ACTIVATION_DISTRIBUTION_V1",
+      "tensor_root_hash72": "bxQx+vKKcY<6s0SJi8hLo*uYh?8/doxO2NijUte2W<+FP3XKXc!MxD8UPSX(fGXn6B/+5wlq",
+      "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+    },
+    {
+      "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+      "distribution_root_hash72": "whjd*Up*K+CWEX7ka6-gxKH<VltUvfdLJDe47tq1?VwX4!w/hBVnnuNMtB-R9uZqht(>IRUa",
+      "domain_id": "SEMANTIC_TRANSLATION",
+      "floating_point_used": false,
+      "probabilities": [
+        {
+          "admissible": true,
+          "agent_id": "agent:minimal-direct:semantic_translation:1",
+          "probability": {
+            "denominator": 344,
+            "numerator": 81
+          }
+        },
+        {
+          "admissible": true,
+          "agent_id": "agent:bridge:semantic_translation:2",
+          "probability": {
+            "denominator": 688,
+            "numerator": 189
+          }
+        },
+        {
+          "admissible": true,
+          "agent_id": "agent:minimal-direct:semantic_translation:4",
+          "probability": {
+            "denominator": 1376,
+            "numerator": 81
+          }
+        },
+        {
+          "admissible": true,
+          "agent_id": "agent:minimal-direct:semantic_translation:7",
+          "probability": {
+            "denominator": 1376,
+            "numerator": 81
+          }
+        },
+        {
+          "admissible": true,
+          "agent_id": "agent:contract:semantic_translation:3",
+          "probability": {
+            "denominator": 11008,
+            "numerator": 945
+          }
+        },
+        {
+          "admissible": true,
+          "agent_id": "agent:bridge:semantic_translation:5",
+          "probability": {
+            "denominator": 1376,
+            "numerator": 147
+          }
+        },
+        {
+          "admissible": true,
+          "agent_id": "agent:minimal-direct:semantic_translation:10",
+          "probability": {
+            "denominator": 688,
+            "numerator": 81
+          }
+        },
+        {
+          "admissible": true,
+          "agent_id": "agent:bridge:semantic_translation:8",
+          "probability": {
+            "denominator": 688,
+            "numerator": 7
+          }
+        },
+        {
+          "admissible": true,
+          "agent_id": "agent:contract:semantic_translation:6",
+          "probability": {
+            "denominator": 11008,
+            "numerator": 567
+          }
+        }
+      ],
+      "probability_confers_authority": false,
+      "probability_sum": {
+        "denominator": 1,
+        "numerator": 1
+      },
+      "schema": "HHS_EXACT_AGENT_ACTIVATION_DISTRIBUTION_V1",
+      "tensor_root_hash72": "QZbSM<U00ss4S2/d3A9SKEs87HXgRBVOM(LunDylQl3L1HpxTF*5)JhaYZCDyi!TncClali3",
+      "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+    },
+    {
+      "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+      "distribution_root_hash72": "cuc!50E11N4e5o58vin4EMRys/zC4UDnr4<vbfsVtfE4uA(MIzT2sEFLpTKtY)vdSs)0Gu?(",
+      "domain_id": "RUNTIME_EXECUTION",
+      "floating_point_used": false,
+      "probabilities": [
+        {
+          "admissible": true,
+          "agent_id": "agent:minimal-direct:runtime_execution:1",
+          "probability": {
+            "denominator": 344,
+            "numerator": 81
+          }
+        },
+        {
+          "admissible": true,
+          "agent_id": "agent:bridge:runtime_execution:2",
+          "probability": {
+            "denominator": 688,
+            "numerator": 189
+          }
+        },
+        {
+          "admissible": true,
+          "agent_id": "agent:minimal-direct:runtime_execution:4",
+          "probability": {
+            "denominator": 1376,
+            "numerator": 81
+          }
+        },
+        {
+          "admissible": true,
+          "agent_id": "agent:minimal-direct:runtime_execution:7",
+          "probability": {
+            "denominator": 1376,
+            "numerator": 81
+          }
+        },
+        {
+          "admissible": true,
+          "agent_id": "agent:contract:runtime_execution:3",
+          "probability": {
+            "denominator": 11008,
+            "numerator": 945
+          }
+        },
+        {
+          "admissible": true,
+          "agent_id": "agent:bridge:runtime_execution:5",
+          "probability": {
+            "denominator": 1376,
+            "numerator": 147
+          }
+        },
+        {
+          "admissible": true,
+          "agent_id": "agent:minimal-direct:runtime_execution:10",
+          "probability": {
+            "denominator": 688,
+            "numerator": 81
+          }
+        },
+        {
+          "admissible": true,
+          "agent_id": "agent:bridge:runtime_execution:8",
+          "probability": {
+            "denominator": 688,
+            "numerator": 7
+          }
+        },
+        {
+          "admissible": true,
+          "agent_id": "agent:contract:runtime_execution:6",
+          "probability": {
+            "denominator": 11008,
+            "numerator": 567
+          }
+        }
+      ],
+      "probability_confers_authority": false,
+      "probability_sum": {
+        "denominator": 1,
+        "numerator": 1
+      },
+      "schema": "HHS_EXACT_AGENT_ACTIVATION_DISTRIBUTION_V1",
+      "tensor_root_hash72": "+7c<QiYMNAOYEWxD<-!ymPu)s)32NlLsEH<Y6F<o1FzDz36N3Ok7DBoT3q13ylGqWLzTKw/y",
+      "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+    },
+    {
+      "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+      "distribution_root_hash72": "RdvYImPo0p*UimV!HzF0o4HtMzrza14yr>jL0RQH9(y-Y1Q!6K!RKB3-6IfDxBy7S4apY0>1",
+      "domain_id": "PROVENANCE_AUDIT",
+      "floating_point_used": false,
+      "probabilities": [
+        {
+          "admissible": true,
+          "agent_id": "agent:minimal-direct:provenance_audit:1",
+          "probability": {
+            "denominator": 344,
+            "numerator": 81
+          }
+        },
+        {
+          "admissible": true,
+          "agent_id": "agent:bridge:provenance_audit:2",
+          "probability": {
+            "denominator": 688,
+            "numerator": 189
+          }
+        },
+        {
+          "admissible": true,
+          "agent_id": "agent:minimal-direct:provenance_audit:4",
+          "probability": {
+            "denominator": 1376,
+            "numerator": 81
+          }
+        },
+        {
+          "admissible": true,
+          "agent_id": "agent:minimal-direct:provenance_audit:7",
+          "probability": {
+            "denominator": 1376,
+            "numerator": 81
+          }
+        },
+        {
+          "admissible": true,
+          "agent_id": "agent:contract:provenance_audit:3",
+          "probability": {
+            "denominator": 11008,
+            "numerator": 945
+          }
+        },
+        {
+          "admissible": true,
+          "agent_id": "agent:bridge:provenance_audit:5",
+          "probability": {
+            "denominator": 1376,
+            "numerator": 147
+          }
+        },
+        {
+          "admissible": true,
+          "agent_id": "agent:minimal-direct:provenance_audit:10",
+          "probability": {
+            "denominator": 688,
+            "numerator": 81
+          }
+        },
+        {
+          "admissible": true,
+          "agent_id": "agent:bridge:provenance_audit:8",
+          "probability": {
+            "denominator": 688,
+            "numerator": 7
+          }
+        },
+        {
+          "admissible": true,
+          "agent_id": "agent:contract:provenance_audit:6",
+          "probability": {
+            "denominator": 11008,
+            "numerator": 567
+          }
+        }
+      ],
+      "probability_confers_authority": false,
+      "probability_sum": {
+        "denominator": 1,
+        "numerator": 1
+      },
+      "schema": "HHS_EXACT_AGENT_ACTIVATION_DISTRIBUTION_V1",
+      "tensor_root_hash72": "g3u(ONWuu1fXaf*KRY1a)M>2V>SUKS<fkj6Cgw>72fLB)Te<)+-FgbAHal55Z5*G+10)KPr2",
+      "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+    },
+    {
+      "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+      "distribution_root_hash72": "jF-oNQ2Y?<dp6GRMz(VYepFPtnvjHqn>CCLrXPz52Iz>S?OCXZZtO?2DrB>O2USTqhBdUHQ4",
+      "domain_id": "MULTIMODAL_FUSION",
+      "floating_point_used": false,
+      "probabilities": [
+        {
+          "admissible": true,
+          "agent_id": "agent:minimal-direct:multimodal_fusion:1",
+          "probability": {
+            "denominator": 344,
+            "numerator": 81
+          }
+        },
+        {
+          "admissible": true,
+          "agent_id": "agent:bridge:multimodal_fusion:2",
+          "probability": {
+            "denominator": 688,
+            "numerator": 189
+          }
+        },
+        {
+          "admissible": true,
+          "agent_id": "agent:minimal-direct:multimodal_fusion:4",
+          "probability": {
+            "denominator": 1376,
+            "numerator": 81
+          }
+        },
+        {
+          "admissible": true,
+          "agent_id": "agent:minimal-direct:multimodal_fusion:7",
+          "probability": {
+            "denominator": 1376,
+            "numerator": 81
+          }
+        },
+        {
+          "admissible": true,
+          "agent_id": "agent:contract:multimodal_fusion:3",
+          "probability": {
+            "denominator": 11008,
+            "numerator": 945
+          }
+        },
+        {
+          "admissible": true,
+          "agent_id": "agent:bridge:multimodal_fusion:5",
+          "probability": {
+            "denominator": 1376,
+            "numerator": 147
+          }
+        },
+        {
+          "admissible": true,
+          "agent_id": "agent:minimal-direct:multimodal_fusion:10",
+          "probability": {
+            "denominator": 688,
+            "numerator": 81
+          }
+        },
+        {
+          "admissible": true,
+          "agent_id": "agent:bridge:multimodal_fusion:8",
+          "probability": {
+            "denominator": 688,
+            "numerator": 7
+          }
+        },
+        {
+          "admissible": true,
+          "agent_id": "agent:contract:multimodal_fusion:6",
+          "probability": {
+            "denominator": 11008,
+            "numerator": 567
+          }
+        }
+      ],
+      "probability_confers_authority": false,
+      "probability_sum": {
+        "denominator": 1,
+        "numerator": 1
+      },
+      "schema": "HHS_EXACT_AGENT_ACTIVATION_DISTRIBUTION_V1",
+      "tensor_root_hash72": "7Ueh*qdh7ewujuxrGT?MS?ol8fPSWTgv4s-A?T5<-Fc(zjihqQ4waP2!(dQh?K6YABnlhf4C",
+      "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+    },
+    {
+      "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+      "distribution_root_hash72": "kI3fi-YnL3ez1H(WB?tz*BLtaOTCTrs-XJirsa8MJZjx!9!>i)!F(Ilb(<tiSuDhwJl7l1dY",
+      "domain_id": "CONSTRAINT_TOPOLOGY",
+      "floating_point_used": false,
+      "probabilities": [
+        {
+          "admissible": true,
+          "agent_id": "agent:minimal-direct:constraint_topology:1",
+          "probability": {
+            "denominator": 344,
+            "numerator": 81
+          }
+        },
+        {
+          "admissible": true,
+          "agent_id": "agent:bridge:constraint_topology:2",
+          "probability": {
+            "denominator": 688,
+            "numerator": 189
+          }
+        },
+        {
+          "admissible": true,
+          "agent_id": "agent:minimal-direct:constraint_topology:4",
+          "probability": {
+            "denominator": 1376,
+            "numerator": 81
+          }
+        },
+        {
+          "admissible": true,
+          "agent_id": "agent:minimal-direct:constraint_topology:7",
+          "probability": {
+            "denominator": 1376,
+            "numerator": 81
+          }
+        },
+        {
+          "admissible": true,
+          "agent_id": "agent:contract:constraint_topology:3",
+          "probability": {
+            "denominator": 11008,
+            "numerator": 945
+          }
+        },
+        {
+          "admissible": true,
+          "agent_id": "agent:bridge:constraint_topology:5",
+          "probability": {
+            "denominator": 1376,
+            "numerator": 147
+          }
+        },
+        {
+          "admissible": true,
+          "agent_id": "agent:minimal-direct:constraint_topology:10",
+          "probability": {
+            "denominator": 688,
+            "numerator": 81
+          }
+        },
+        {
+          "admissible": true,
+          "agent_id": "agent:bridge:constraint_topology:8",
+          "probability": {
+            "denominator": 688,
+            "numerator": 7
+          }
+        },
+        {
+          "admissible": true,
+          "agent_id": "agent:contract:constraint_topology:6",
+          "probability": {
+            "denominator": 11008,
+            "numerator": 567
+          }
+        }
+      ],
+      "probability_confers_authority": false,
+      "probability_sum": {
+        "denominator": 1,
+        "numerator": 1
+      },
+      "schema": "HHS_EXACT_AGENT_ACTIVATION_DISTRIBUTION_V1",
+      "tensor_root_hash72": "bUYd*wcCYUVMRmvZbbC1nc!-)12TqnkFx1R<lh*/-qWhPOGV*BtLlIpK82Tu6rtzCIReCowm",
+      "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+    },
+    {
+      "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+      "distribution_root_hash72": "ciof1!hOi1RawROwskF0Z5S-(GDNu(kUcE1TuBRE9IHRk8OikTl<F4l)Q1!masHHRgdya121",
+      "domain_id": "INFORMATION_ENERGY",
+      "floating_point_used": false,
+      "probabilities": [
+        {
+          "admissible": true,
+          "agent_id": "agent:minimal-direct:information_energy:1",
+          "probability": {
+            "denominator": 344,
+            "numerator": 81
+          }
+        },
+        {
+          "admissible": true,
+          "agent_id": "agent:bridge:information_energy:2",
+          "probability": {
+            "denominator": 688,
+            "numerator": 189
+          }
+        },
+        {
+          "admissible": true,
+          "agent_id": "agent:minimal-direct:information_energy:4",
+          "probability": {
+            "denominator": 1376,
+            "numerator": 81
+          }
+        },
+        {
+          "admissible": true,
+          "agent_id": "agent:minimal-direct:information_energy:7",
+          "probability": {
+            "denominator": 1376,
+            "numerator": 81
+          }
+        },
+        {
+          "admissible": true,
+          "agent_id": "agent:contract:information_energy:3",
+          "probability": {
+            "denominator": 11008,
+            "numerator": 945
+          }
+        },
+        {
+          "admissible": true,
+          "agent_id": "agent:bridge:information_energy:5",
+          "probability": {
+            "denominator": 1376,
+            "numerator": 147
+          }
+        },
+        {
+          "admissible": true,
+          "agent_id": "agent:minimal-direct:information_energy:10",
+          "probability": {
+            "denominator": 688,
+            "numerator": 81
+          }
+        },
+        {
+          "admissible": true,
+          "agent_id": "agent:bridge:information_energy:8",
+          "probability": {
+            "denominator": 688,
+            "numerator": 7
+          }
+        },
+        {
+          "admissible": true,
+          "agent_id": "agent:contract:information_energy:6",
+          "probability": {
+            "denominator": 11008,
+            "numerator": 567
+          }
+        }
+      ],
+      "probability_confers_authority": false,
+      "probability_sum": {
+        "denominator": 1,
+        "numerator": 1
+      },
+      "schema": "HHS_EXACT_AGENT_ACTIVATION_DISTRIBUTION_V1",
+      "tensor_root_hash72": ")n<s4ASTV*jSHyw3Zlcfj3/bH8uD9n!AqiIHSzx>SNyGs>S*TQ17CNj4sjHMs3S?Vv>Y4-9v",
+      "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+    },
+    {
+      "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+      "distribution_root_hash72": "Er2Gozyc+6nj64Ys8BpnBbDVZUMEF6VEnHl*-9P!k+MukuR-g-3+piUiy/HRg6aTxLy*S>tD",
+      "domain_id": "CANONICAL_REVALIDATION",
+      "floating_point_used": false,
+      "probabilities": [
+        {
+          "admissible": true,
+          "agent_id": "agent:minimal-direct:canonical_revalidation:1",
+          "probability": {
+            "denominator": 344,
+            "numerator": 81
+          }
+        },
+        {
+          "admissible": true,
+          "agent_id": "agent:bridge:canonical_revalidation:2",
+          "probability": {
+            "denominator": 688,
+            "numerator": 189
+          }
+        },
+        {
+          "admissible": true,
+          "agent_id": "agent:minimal-direct:canonical_revalidation:4",
+          "probability": {
+            "denominator": 1376,
+            "numerator": 81
+          }
+        },
+        {
+          "admissible": true,
+          "agent_id": "agent:minimal-direct:canonical_revalidation:7",
+          "probability": {
+            "denominator": 1376,
+            "numerator": 81
+          }
+        },
+        {
+          "admissible": true,
+          "agent_id": "agent:contract:canonical_revalidation:3",
+          "probability": {
+            "denominator": 11008,
+            "numerator": 945
+          }
+        },
+        {
+          "admissible": true,
+          "agent_id": "agent:bridge:canonical_revalidation:5",
+          "probability": {
+            "denominator": 1376,
+            "numerator": 147
+          }
+        },
+        {
+          "admissible": true,
+          "agent_id": "agent:minimal-direct:canonical_revalidation:10",
+          "probability": {
+            "denominator": 688,
+            "numerator": 81
+          }
+        },
+        {
+          "admissible": true,
+          "agent_id": "agent:bridge:canonical_revalidation:8",
+          "probability": {
+            "denominator": 688,
+            "numerator": 7
+          }
+        },
+        {
+          "admissible": true,
+          "agent_id": "agent:contract:canonical_revalidation:6",
+          "probability": {
+            "denominator": 11008,
+            "numerator": 567
+          }
+        }
+      ],
+      "probability_confers_authority": false,
+      "probability_sum": {
+        "denominator": 1,
+        "numerator": 1
+      },
+      "schema": "HHS_EXACT_AGENT_ACTIVATION_DISTRIBUTION_V1",
+      "tensor_root_hash72": "UIjeVAl8AnurY<WCO9QbFLj*mr!6LEK(Y*Cw2euFyT/TukKlUWYYjB/kt?Y9?!Sw-!VwC2ch",
+      "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+    }
+  ],
+  "schema": "HHS_EXACT_AGENT_ACTIVATION_PROBABILITIES_PASS_067"
+}
+```

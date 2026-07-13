@@ -1,0 +1,58 @@
+{
+  "canonical_state_machine": "u^72_hash72_multimodal_state_machine",
+  "core_invariants": [
+    "validation expansion residue compresses to previous_state_root -> compressed_state -> receipt",
+    "carrier read/write/repair is a witnessed transformation surface",
+    "reconstruction is never silent",
+    "no raw validation cache persistence",
+    "no shadow memory lane",
+    "no duplicate payload storage"
+  ],
+  "guarded_services_added": [
+    "validation_residue_compressor.self_test",
+    "hhfs_carrier_adapter.self_test",
+    "hhfs_reconstruction_protocol.self_test"
+  ],
+  "hash_authority": "HASH72_U72_C_KERNEL",
+  "make_targets_added": [
+    "validation-residue-compressor",
+    "hhfs-carrier-adapter",
+    "hhfs-reconstruction-protocol",
+    "hhfs-carrier-reconstruction-tests"
+  ],
+  "pass": "040",
+  "runtime_modules_added": [
+    "hhs_runtime/hhs_validation_residue_compressor_v1.py",
+    "hhs_runtime/hhs_hhfs_carrier_adapter_v1.py",
+    "hhs_runtime/hhs_hhfs_reconstruction_protocol_v1.py"
+  ],
+  "schema": "HHS_CARRIER_RECONSTRUCTION_PASS_040_REPORT_V1",
+  "service_count_after_pass": 38,
+  "status": "completed",
+  "targeted_pytest_added": "17 passed",
+  "tests_added": [
+    "tests/test_hhs_validation_residue_compressor_v1.py",
+    "tests/test_hhs_hhfs_carrier_adapter_v1.py",
+    "tests/test_hhs_hhfs_reconstruction_protocol_v1.py"
+  ],
+  "title": "Carrier Reconstruction and Validation Residue Compression",
+  "verification": {
+    "hhs_v1_bundle_runner_2_py": "exit 0",
+    "hhs_v1_bundle_runner_py": "exit 0",
+    "make_hhfs_carrier_adapter": true,
+    "make_hhfs_carrier_reconstruction_tests": "17 passed",
+    "make_hhfs_reconstruction_protocol": true,
+    "make_hhfs_udfp_tests": "21 passed",
+    "make_phase_disjoint_continuity_tests": "22 passed",
+    "make_validation_residue_compressor": true,
+    "make_verify_c": true,
+    "make_zero_bypass_runtime_interposer": true,
+    "py_compile_new_modules": true,
+    "runtime_reachability": {
+      "api_route_count": 20,
+      "module_count": 833,
+      "orphan_count": 0,
+      "service_count": 38
+    }
+  }
+}

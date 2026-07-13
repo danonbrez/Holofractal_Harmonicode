@@ -91,7 +91,7 @@ export const RuntimeDock: React.FC<
             RuntimeDockApplication
     ) => {
 
-        runtimeOS.workspace.addWindow({
+        runtimeOS.windowManager.openWindow({
 
             id:
                 crypto.randomUUID(),
@@ -102,33 +102,21 @@ export const RuntimeDock: React.FC<
             applicationId:
                 app.id,
 
-            position: {
+            width: 840,
 
-                x:
-                    220 +
-                    Math.random() * 240,
+            height: 560,
 
-                y:
-                    120 +
-                    Math.random() * 180
-            },
+            x:
+                220 + Math.random() * 240,
 
-            size: {
-
-                width: 840,
-
-                height: 560
-            },
+            y:
+                120 + Math.random() * 180,
 
             minimized: false,
 
             maximized: false,
 
-            focused: true,
-
-            zIndex:
-                runtimeOS.workspace
-                    .layout.windows.length + 1
+            focused: true
         })
 
         console.log(
@@ -258,8 +246,8 @@ export const RuntimeDock: React.FC<
                 windows:
                 {" "}
                 {
-                    runtimeOS.workspace
-                        .layout.windows.length
+                    runtimeOS.getMetrics()
+                        .workspaceWindows
                 }
 
                 {" • "}
@@ -267,7 +255,7 @@ export const RuntimeDock: React.FC<
                 apps:
                 {" "}
                 {
-                    runtimeOS.state
+                    runtimeOS.getMetrics()
                         .applicationsMounted
                 }
 

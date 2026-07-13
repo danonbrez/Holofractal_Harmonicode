@@ -1,0 +1,20 @@
+{
+  "browser_source_verifier": "hhs_gui/scripts/workspace-source-verify.mjs",
+  "components": [
+    "HHSWorkspaceShell",
+    "RuntimeProjectTree",
+    "MultimodalIngressPanel",
+    "HHSSymbolicEditor",
+    "InterpreterConsole",
+    "CompilerWorkbench",
+    "EmulatorControlPanel",
+    "RuntimeGraphCanvas",
+    "SemanticMemoryPanel",
+    "ReceiptLedgerInspector",
+    "MutationHistoryPanel",
+    "WorkspaceObjectInspector",
+    "WorkspaceAuthorityStatus"
+  ],
+  "projection_only": true,
+  "schema": "WORKSPACE_GUI_COMPONENT_MAP_PASS_049_V1"
+}

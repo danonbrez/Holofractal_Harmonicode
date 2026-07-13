@@ -1,0 +1,588 @@
+{
+  "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+  "floating_point_used": false,
+  "genome_root_hash72": "med9zg>NhxrZ4cme6h<rOASuM703Eqh0*e/qrY>GteJUk)iscS)e9C8cZ5A9cZU!H3kOJP51",
+  "potential_field_root_hash72": "sbj4zeZ(2oqwQ4txbycnxsthK8T+Pc7q35c9<uw43jR3Go8HiURqhD3vzAH>R06A5AQkJBfw",
+  "potential_guides_search_not_authority": true,
+  "record_count": 32,
+  "records": [
+    {
+      "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+      "computational_potential_not_empirical_measurement": true,
+      "dependency_potential": 0,
+      "local_information_energy": 1,
+      "phase_potential": 0,
+      "potential_root_hash72": "JrI!OfngoWr+j!HPezyM3sQoM9XxoAzUiDQInbMbAiROHA<f9q0lY1A?lfOiT9YLfId9elZo",
+      "potential_vector": [
+        1,
+        0,
+        0
+      ],
+      "schema": "HHS_ELECTROCHEMICAL_PHASE_POTENTIAL_V1",
+      "thermodynamic_bias_confers_authority": false,
+      "token_id": "token:00",
+      "token_root_hash72": "fQ8!Y?az<7ak!*M(zfokn!3gByCjpN)DmehpIxs+vhStczSU/V<giH)6LA6GAkwk?byV+a>M",
+      "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+    },
+    {
+      "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+      "computational_potential_not_empirical_measurement": true,
+      "dependency_potential": 0,
+      "local_information_energy": 1,
+      "phase_potential": 0,
+      "potential_root_hash72": "JrI!S8rfoWr+j?GPezyM3sQoM9XxoAzUiDQfPcMbAiROHA<f9q0lY1A?l833PaYLfId9elZo",
+      "potential_vector": [
+        1,
+        0,
+        0
+      ],
+      "schema": "HHS_ELECTROCHEMICAL_PHASE_POTENTIAL_V1",
+      "thermodynamic_bias_confers_authority": false,
+      "token_id": "token:01",
+      "token_root_hash72": "fQ8!Y?az<7ak!*M(zfokg36fByCjpN)DmehpIxs/siStczSU/V<giH)6LA6GAkwk?byV+a!L",
+      "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+    },
+    {
+      "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+      "computational_potential_not_empirical_measurement": true,
+      "dependency_potential": 0,
+      "local_information_energy": 1,
+      "phase_potential": 0,
+      "potential_root_hash72": "JrI!MbveoWr+j0FPezyM3sQoM9XxoAzUiDQJkdMbAiROHA<f9q0lY1A?l9?9LbYLfId9elZo",
+      "potential_vector": [
+        1,
+        0,
+        0
+      ],
+      "schema": "HHS_ELECTROCHEMICAL_PHASE_POTENTIAL_V1",
+      "thermodynamic_bias_confers_authority": false,
+      "token_id": "token:02",
+      "token_root_hash72": "fQ8!Y?az<7ak!*M(zfokh09eByCjpN)DmehpIxs)pjStczSU/V<giH)6LA6GAkwk?byV+a?K",
+      "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+    },
+    {
+      "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+      "computational_potential_not_empirical_measurement": true,
+      "dependency_potential": 0,
+      "local_information_energy": 2,
+      "phase_potential": 2,
+      "potential_root_hash72": "JrI!>XzdoWr*T+gMexCK3sQpKaXxoAzUiDQuzdO9AjCgJNm+VoNf21A?lGx92t4ATyb8elZo",
+      "potential_vector": [
+        2,
+        2,
+        0
+      ],
+      "schema": "HHS_ELECTROCHEMICAL_PHASE_POTENTIAL_V1",
+      "thermodynamic_bias_confers_authority": false,
+      "token_id": "token:03",
+      "token_root_hash72": "fQ8!Z1yLcxB40j?(zfokAs43jipwsN)DmehpIxs>mkStczT2JW<ggJ)6LA7FAkwk?byV+a0J",
+      "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+    },
+    {
+      "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+      "computational_potential_not_empirical_measurement": true,
+      "dependency_potential": 0,
+      "local_information_energy": 1,
+      "phase_potential": 0,
+      "potential_root_hash72": "JrI!!TDcoWr+j2DPezyM3sQoM9XxoAzUiDQvwfMbAiROHA<f9q0lY1A?lI*q0dYLfId9elZo",
+      "potential_vector": [
+        1,
+        0,
+        0
+      ],
+      "schema": "HHS_ELECTROCHEMICAL_PHASE_POTENTIAL_V1",
+      "thermodynamic_bias_confers_authority": false,
+      "token_id": "token:04",
+      "token_root_hash72": "fQ8!Y?az<7ak!*M(zfokCLfcByCjpN)DmehpIxs?jlStczSU/V<giH)6LA6GAkwk?byV+a1I",
+      "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+    },
+    {
+      "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+      "computational_potential_not_empirical_measurement": true,
+      "dependency_potential": 0,
+      "local_information_energy": 2,
+      "phase_potential": -2,
+      "potential_root_hash72": "7TAH1SPuqr/xqGgyQh48/N-ZcU*Y?DEI1luHh5wqjBGux3DQEWC+s*pkukfgDhoGCrfjSTg5",
+      "potential_vector": [
+        2,
+        -2,
+        0
+      ],
+      "schema": "HHS_ELECTROCHEMICAL_PHASE_POTENTIAL_V1",
+      "thermodynamic_bias_confers_authority": false,
+      "token_id": "token:05",
+      "token_root_hash72": "i6WfJhPHTxzX?uSUauGoV)jjN1K1OyqN)QSqon3yhvlqhocO>tT6oOV9U0/L/(/sB2AHJQ3w",
+      "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+    },
+    {
+      "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+      "computational_potential_not_empirical_measurement": true,
+      "dependency_potential": 0,
+      "local_information_energy": 1,
+      "phase_potential": 0,
+      "potential_root_hash72": "JrI!WZLaoWr+j4BPezyM3sQoM9XxoAzUiDQxshMbAiROHA<f9q0lY1A?lJ2CLfYLfId9elZo",
+      "potential_vector": [
+        1,
+        0,
+        0
+      ],
+      "schema": "HHS_ELECTROCHEMICAL_PHASE_POTENTIAL_V1",
+      "thermodynamic_bias_confers_authority": false,
+      "token_id": "token:06",
+      "token_root_hash72": "fQ8!Y?az<7ak!*M(zfokDW5aByCjpN)DmehpIxs3dnStczSU/V<giH)6LA6GAkwk?byV+a3G",
+      "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+    },
+    {
+      "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+      "computational_potential_not_empirical_measurement": true,
+      "dependency_potential": 1,
+      "local_information_energy": 2,
+      "phase_potential": 1,
+      "potential_root_hash72": "/JGi!*JvKQBrvV/KWp>mX((Td471>8f)9t*4+E9NhaeCUKf5quzx)A?Z*dI<v<n*1RbECKa-",
+      "potential_vector": [
+        2,
+        1,
+        1
+      ],
+      "schema": "HHS_ELECTROCHEMICAL_PHASE_POTENTIAL_V1",
+      "thermodynamic_bias_confers_authority": false,
+      "token_id": "token:07",
+      "token_root_hash72": "ZftIz9O-AOoBD(W9f-tSTIEawAd5DgbMGT5Q<!0Dx82iRsp6D?!0pr96*uAwlbNoo6Xt?96l",
+      "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+    },
+    {
+      "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+      "computational_potential_not_empirical_measurement": true,
+      "dependency_potential": 0,
+      "local_information_energy": 2,
+      "phase_potential": 2,
+      "potential_root_hash72": "JrI!-cm8oWr*T<bMexCK3sQpKaXxoAzUiDQzpiO9AjCgJNm+VoNf21A?lhY3E)4ATyb8elZo",
+      "potential_vector": [
+        2,
+        2,
+        0
+      ],
+      "schema": "HHS_ELECTROCHEMICAL_PHASE_POTENTIAL_V1",
+      "thermodynamic_bias_confers_authority": false,
+      "token_id": "token:08",
+      "token_root_hash72": "fQ8!Z1yLcxB40j?(zfokp-0UjipwsN)DmehpIxs77pStczT2JW<ggJ)6LA7FAkwk?byV+a5E",
+      "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+    },
+    {
+      "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+      "computational_potential_not_empirical_measurement": true,
+      "dependency_potential": 0,
+      "local_information_energy": 1,
+      "phase_potential": 0,
+      "potential_root_hash72": "JrI!*7q7oWr+j7yPezyM3sQoM9XxoAzUiDQAmkMbAiROHA<f9q0lY1A?lirpkVYLfId9elZo",
+      "potential_vector": [
+        1,
+        0,
+        0
+      ],
+      "schema": "HHS_ELECTROCHEMICAL_PHASE_POTENTIAL_V1",
+      "thermodynamic_bias_confers_authority": false,
+      "token_id": "token:09",
+      "token_root_hash72": "fQ8!Y?az<7ak!*M(zfokqUn7ByCjpN)DmehpIxs94qStczSU/V<giH)6LA6GAkwk?byV+a6D",
+      "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+    },
+    {
+      "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+      "computational_potential_not_empirical_measurement": true,
+      "dependency_potential": 0,
+      "local_information_energy": 2,
+      "phase_potential": 2,
+      "potential_root_hash72": "H**Rh*Qp82n4g9YEs>ltnqm*)mfTt)x+15P>9pGuxOYeB1-pIbXxUJx/Gs1SUfFX56nEQ+9Z",
+      "potential_vector": [
+        2,
+        2,
+        0
+      ],
+      "schema": "HHS_ELECTROCHEMICAL_PHASE_POTENTIAL_V1",
+      "thermodynamic_bias_confers_authority": false,
+      "token_id": "token:10",
+      "token_root_hash72": "G*nTdQObI>rWFBqH6gj3CUC0Y5S(P7zs6Bjpn!S2fuizyDrpVDiZ6Pf?SrGkrpJC6WuA<qgg",
+      "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+    },
+    {
+      "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+      "computational_potential_not_empirical_measurement": true,
+      "dependency_potential": 0,
+      "local_information_energy": 2,
+      "phase_potential": 2,
+      "potential_root_hash72": "H**Rh/PnpXn4gaXEs>ltnqm*)mfTt)x+15P>anHuxOYeB1-pIbXxUJx/Gs1F(IeY56nEQ+9Z",
+      "potential_vector": [
+        2,
+        2,
+        0
+      ],
+      "schema": "HHS_ELECTROCHEMICAL_PHASE_POTENTIAL_V1",
+      "thermodynamic_bias_confers_authority": false,
+      "token_id": "token:11",
+      "token_root_hash72": "F*nTdQObI>rWFBqH6gj3CU6u+4S(P7zs6Bjpn!S2gugAyDrpVDiZ6Pf?SrGkrpJC6WuA<qgh",
+      "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+    },
+    {
+      "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+      "computational_potential_not_empirical_measurement": true,
+      "dependency_potential": 0,
+      "local_information_energy": 2,
+      "phase_potential": 2,
+      "potential_root_hash72": "H**Rh(OlsWn4gbWEs>ltnqm*)mfTt)x+15P>blIuxOYeB1-pIbXxUJx/Gs1G-YDm56nEQ+9Z",
+      "potential_vector": [
+        2,
+        2,
+        0
+      ],
+      "schema": "HHS_ELECTROCHEMICAL_PHASE_POTENTIAL_V1",
+      "thermodynamic_bias_confers_authority": false,
+      "token_id": "token:12",
+      "token_root_hash72": "E*nTdQObI>rWFBqH6gj3CU7r8ZS(P7zs6Bjpn!S2hueByDrpVDiZ6Pf?SrGkrpJC6WuA<qgi",
+      "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+    },
+    {
+      "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+      "computational_potential_not_empirical_measurement": true,
+      "dependency_potential": 0,
+      "local_information_energy": 2,
+      "phase_potential": -2,
+      "potential_root_hash72": "mam(7Iz)9G/GlFFhACCf2npKs6+nFu+LNn04a7UP!!59iE<w+hYvWgFlZzbWYsbDm4a3t+2K",
+      "potential_vector": [
+        2,
+        -2,
+        0
+      ],
+      "schema": "HHS_ELECTROCHEMICAL_PHASE_POTENTIAL_V1",
+      "thermodynamic_bias_confers_authority": false,
+      "token_id": "token:13",
+      "token_root_hash72": "vv(Zq8EZREfZ!uk5B-VzCswjKfiJXii8<+HXm*ucwt1668s/X4q-mVCIVAVrxSQd6VgP++Wk",
+      "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+    },
+    {
+      "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+      "computational_potential_not_empirical_measurement": true,
+      "dependency_potential": 0,
+      "local_information_energy": 2,
+      "phase_potential": 2,
+      "potential_root_hash72": "H**Rh<MhyUn4gdUEs>ltnqm*)mfTt)x+15P>dhKuxOYeB1-pIbXxUJx/Gs1ISD*o56nEQ+9Z",
+      "potential_vector": [
+        2,
+        2,
+        0
+      ],
+      "schema": "HHS_ELECTROCHEMICAL_PHASE_POTENTIAL_V1",
+      "thermodynamic_bias_confers_authority": false,
+      "token_id": "token:14",
+      "token_root_hash72": "C*nTdQObI>rWFBqH6gj3CU9leXS(P7zs6Bjpn!S2juaDyDrpVDiZ6Pf?SrGkrpJC6WuA<qgk",
+      "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+    },
+    {
+      "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+      "computational_potential_not_empirical_measurement": true,
+      "dependency_potential": 1,
+      "local_information_energy": 2,
+      "phase_potential": 1,
+      "potential_root_hash72": "56Wh/QuIJ)/RUnoj7!SuX*uZvXcHjYmSuPod/5u3FI!z4kzPx>*v66P>-HDFL5+4<??K27Rw",
+      "potential_vector": [
+        2,
+        1,
+        1
+      ],
+      "schema": "HHS_ELECTROCHEMICAL_PHASE_POTENTIAL_V1",
+      "thermodynamic_bias_confers_authority": false,
+      "token_id": "token:15",
+      "token_root_hash72": "4U5jul7qkEKmNO4ixs2WvfGsJ<k7Xop7RBM-9v<KslsaYNeCzJY5ZMdaSzLL0sA0dzG0Ys1i",
+      "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+    },
+    {
+      "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+      "computational_potential_not_empirical_measurement": true,
+      "dependency_potential": 0,
+      "local_information_energy": 2,
+      "phase_potential": -2,
+      "potential_root_hash72": "mam(7Iz!6y4DlFFkxCCf2npKs6+nFu+LNn04a7XJ1!59iE<w+hYvWgFlZzbWYv?Va7a3t+2K",
+      "potential_vector": [
+        2,
+        -2,
+        0
+      ],
+      "schema": "HHS_ELECTROCHEMICAL_PHASE_POTENTIAL_V1",
+      "thermodynamic_bias_confers_authority": false,
+      "token_id": "token:16",
+      "token_root_hash72": "sv(Zq8EZREfZ!uk5B-VzCszaTciJXii8<+HXm*uczt)968s/X4q-mVCIVAVrxSQd6VgP++Wn",
+      "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+    },
+    {
+      "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+      "computational_potential_not_empirical_measurement": true,
+      "dependency_potential": 0,
+      "local_information_energy": 1,
+      "phase_potential": 0,
+      "potential_root_hash72": "H**Rh?JBvDn4fhPHr?hvnqm*(oeTt)x+15P>f!ZwxOXi33I+A4Z*Ywx/Gs1B/mZ-6gWIQ+9Z",
+      "potential_vector": [
+        1,
+        0,
+        0
+      ],
+      "schema": "HHS_ELECTROCHEMICAL_PHASE_POTENTIAL_V1",
+      "thermodynamic_bias_confers_authority": false,
+      "token_id": "token:17",
+      "token_root_hash72": "z*nTdPRCtW!Fvt2U6gj3CUzpXHi?q4zs6Bjpn!S2mu-UyDroVDjZ8Nf?SrGjspJC6WuA<qgn",
+      "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+    },
+    {
+      "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+      "computational_potential_not_empirical_measurement": true,
+      "dependency_potential": 0,
+      "local_information_energy": 2,
+      "phase_potential": -2,
+      "potential_root_hash72": "mam(7Izeu+-UlFFmvCCf2npKs6+nFu+LNn04a7ZF3!59iE<w+hYvWgFlZzbWYr+tbKa3t+2K",
+      "potential_vector": [
+        2,
+        -2,
+        0
+      ],
+      "schema": "HHS_ELECTROCHEMICAL_PHASE_POTENTIAL_V1",
+      "thermodynamic_bias_confers_authority": false,
+      "token_id": "token:18",
+      "token_root_hash72": "qv(Zq8EZREfZ!uk5B-VzCsvUt<iJXii8<+HXm*ucBTnp68s/X4q-mVCIVAVrxSQd6VgP++Wp",
+      "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+    },
+    {
+      "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+      "computational_potential_not_empirical_measurement": true,
+      "dependency_potential": 0,
+      "local_information_energy": 2,
+      "phase_potential": 2,
+      "potential_root_hash72": "H**Rh185sBn4giPEs>ltnqm*)mfTt)x+15P>i//uxOYeB1-pIbXxUJx/Gs1)sRyH56nEQ+9Z",
+      "potential_vector": [
+        2,
+        2,
+        0
+      ],
+      "schema": "HHS_ELECTROCHEMICAL_PHASE_POTENTIAL_V1",
+      "thermodynamic_bias_confers_authority": false,
+      "token_id": "token:19",
+      "token_root_hash72": "x*nTdQObI>rWFBqH6gj3CUPi(ES(P7zs6Bjpn!S2oRzWyDrpVDiZ6Pf?SrGkrpJC6WuA<qgp",
+      "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+    },
+    {
+      "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+      "computational_potential_not_empirical_measurement": true,
+      "dependency_potential": 0,
+      "local_information_energy": 2,
+      "phase_potential": -2,
+      "potential_root_hash72": "mam(7IAZeNTJlFGdDCCf2npKs6+nFu+LNn04a8PW)!59iE<w+hYvWgFlZzbWXrnjz1a3t+2K",
+      "potential_vector": [
+        2,
+        -2,
+        0
+      ],
+      "schema": "HHS_ELECTROCHEMICAL_PHASE_POTENTIAL_V1",
+      "thermodynamic_bias_confers_authority": false,
+      "token_id": "token:20",
+      "token_root_hash72": "yv(Zq8EZREfZ!uk5B-VzCrutAiiJXii8<+HXm*udrt8368s/X4q-mVCIVAVrxSQd6VgP++Xg",
+      "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+    },
+    {
+      "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+      "computational_potential_not_empirical_measurement": true,
+      "dependency_potential": 0,
+      "local_information_energy": 2,
+      "phase_potential": -2,
+      "potential_root_hash72": "mam(7IA-dLWIlFGeCCCf2npKs6+nFu+LNn04a8QU<!59iE<w+hYvWgFlZzbWXsjpv2a3t+2K",
+      "potential_vector": [
+        2,
+        -2,
+        0
+      ],
+      "schema": "HHS_ELECTROCHEMICAL_PHASE_POTENTIAL_V1",
+      "thermodynamic_bias_confers_authority": false,
+      "token_id": "token:21",
+      "token_root_hash72": "xv(Zq8EZREfZ!uk5B-VzCrvqDhiJXii8<+HXm*udst6468s/X4q-mVCIVAVrxSQd6VgP++Xh",
+      "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+    },
+    {
+      "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+      "computational_potential_not_empirical_measurement": true,
+      "dependency_potential": 0,
+      "local_information_energy": 2,
+      "phase_potential": -2,
+      "potential_root_hash72": "mam(7IA+cJZHlFGfBCCf2npKs6+nFu+LNn04a8RS>!59iE<w+hYvWgFlZzbWXtfvr3a3t+2K",
+      "potential_vector": [
+        2,
+        -2,
+        0
+      ],
+      "schema": "HHS_ELECTROCHEMICAL_PHASE_POTENTIAL_V1",
+      "thermodynamic_bias_confers_authority": false,
+      "token_id": "token:22",
+      "token_root_hash72": "wv(Zq8EZREfZ!uk5B-VzCrwnGgiJXii8<+HXm*udtt4568s/X4q-mVCIVAVrxSQd6VgP++Xi",
+      "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+    },
+    {
+      "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+      "computational_potential_not_empirical_measurement": true,
+      "dependency_potential": 1,
+      "local_information_energy": 2,
+      "phase_potential": 1,
+      "potential_root_hash72": "56Wh(LyN?A/RVkqj7!SuX*uZvXcHjYmSuPoeZas3FI!z4kzPx>*v66P>-HCFT+Hv<??K27Rw",
+      "potential_vector": [
+        2,
+        1,
+        1
+      ],
+      "schema": "HHS_ELECTROCHEMICAL_PHASE_POTENTIAL_V1",
+      "thermodynamic_bias_confers_authority": false,
+      "token_id": "token:23",
+      "token_root_hash72": "6U5jul7qkEKmNO4ixs2WveFzC!k7Xop7RBM-9v<Lolx8YNeCzJY5ZMdaSzLL0sA0dzG0Ys2f",
+      "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+    },
+    {
+      "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+      "computational_potential_not_empirical_measurement": true,
+      "dependency_potential": 1,
+      "local_information_energy": 2,
+      "phase_potential": 1,
+      "potential_root_hash72": "56Wh(MxL2z/RVlpj7!SuX*uZvXcHjYmSuPoe-8t3FI!z4kzPx>*v66P>-HCGP>>2<??K27Rw",
+      "potential_vector": [
+        2,
+        1,
+        1
+      ],
+      "schema": "HHS_ELECTROCHEMICAL_PHASE_POTENTIAL_V1",
+      "thermodynamic_bias_confers_authority": false,
+      "token_id": "token:24",
+      "token_root_hash72": "5U5jul7qkEKmNO4ixs2WveGwF>k7Xop7RBM-9v<Lplv9YNeCzJY5ZMdaSzLL0sA0dzG0Ys2g",
+      "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+    },
+    {
+      "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+      "computational_potential_not_empirical_measurement": true,
+      "dependency_potential": 0,
+      "local_information_energy": 1,
+      "phase_potential": 0,
+      "potential_root_hash72": "H**Ri(NN3Tn4geRHr?hvnqm*(oeTt)x+15P!bhJwxOXi33I+A4Z*Ywx/Gs0BSiSd6gWIQ+9Z",
+      "potential_vector": [
+        1,
+        0,
+        0
+      ],
+      "schema": "HHS_ELECTROCHEMICAL_PHASE_POTENTIAL_V1",
+      "thermodynamic_bias_confers_authority": false,
+      "token_id": "token:25",
+      "token_root_hash72": "B*nTdPRCtW!Fvt2U6gj3CTydH1i?q4zs6Bjpn!S3iu9EyDroVDjZ8Nf?SrGjspJC6WuA<qhk",
+      "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+    },
+    {
+      "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+      "computational_potential_not_empirical_measurement": true,
+      "dependency_potential": 1,
+      "local_information_energy": 2,
+      "phase_potential": 1,
+      "potential_root_hash72": "56Wh(OvHL(/RVnnj7!SuX*uZvXcHjYmSuPoe*4v3FI!z4kzPx>*v66P>-HCIH9Gn<??K27Rw",
+      "potential_vector": [
+        2,
+        1,
+        1
+      ],
+      "schema": "HHS_ELECTROCHEMICAL_PHASE_POTENTIAL_V1",
+      "thermodynamic_bias_confers_authority": false,
+      "token_id": "token:26",
+      "token_root_hash72": "3U5jul7qkEKmNO4ixs2WveIqL)k7Xop7RBM-9v<LrlrbYNeCzJY5ZMdaSzLL0sA0dzG0Ys2i",
+      "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+    },
+    {
+      "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+      "computational_potential_not_empirical_measurement": true,
+      "dependency_potential": 0,
+      "local_information_energy": 2,
+      "phase_potential": 2,
+      "potential_root_hash72": "H**Ri<LzxDn4hfREs>ltnqm*)mfTt)x+15P!e!+uxOYeB1-pIbXxUJx/Gs0gG5OF56nEQ+9Z",
+      "potential_vector": [
+        2,
+        2,
+        0
+      ],
+      "schema": "HHS_ELECTROCHEMICAL_PHASE_POTENTIAL_V1",
+      "thermodynamic_bias_confers_authority": false,
+      "token_id": "token:27",
+      "token_root_hash72": "z*nTdQObI>rWFBqH6gj3CTdCbGS(P7zs6Bjpn!S3ku+UyDrpVDiZ6Pf?SrGkrpJC6WuA<qhm",
+      "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+    },
+    {
+      "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+      "computational_potential_not_empirical_measurement": true,
+      "dependency_potential": 1,
+      "local_information_energy": 2,
+      "phase_potential": 1,
+      "potential_root_hash72": "56Wh(QtWMO/RVplj7!SuX*uZvXcHjYmSuPoe(0x3FI!z4kzPx>*v66P>-HCKSux!<??K27Rw",
+      "potential_vector": [
+        2,
+        1,
+        1
+      ],
+      "schema": "HHS_ELECTROCHEMICAL_PHASE_POTENTIAL_V1",
+      "thermodynamic_bias_confers_authority": false,
+      "token_id": "token:28",
+      "token_root_hash72": "1U5jul7qkEKmNO4ixs2WveK6nBk7Xop7RBM-9v<Ltl9rYNeCzJY5ZMdaSzLL0sA0dzG0Ys2k",
+      "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+    },
+    {
+      "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+      "computational_potential_not_empirical_measurement": true,
+      "dependency_potential": 0,
+      "local_information_energy": 2,
+      "phase_potential": -2,
+      "potential_root_hash72": "mam(7IAcv-*TlFGmuCCf2npKs6+nFu+LNn04a8YE4!59iE<w+hYvWgFlZzbWXr/u-/a3t+2K",
+      "potential_vector": [
+        2,
+        -2,
+        0
+      ],
+      "schema": "HHS_ELECTROCHEMICAL_PHASE_POTENTIAL_V1",
+      "thermodynamic_bias_confers_authority": false,
+      "token_id": "token:29",
+      "token_root_hash72": "pv(Zq8EZREfZ!uk5B-VzCruVv)iJXii8<+HXm*udATmq68s/X4q-mVCIVAVrxSQd6VgP++Xp",
+      "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+    },
+    {
+      "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+      "computational_potential_not_empirical_measurement": true,
+      "dependency_potential": 1,
+      "local_information_energy": 2,
+      "phase_potential": 1,
+      "potential_root_hash72": "56Wh)Lr4LD/RWgtj7!SuX*uZvXcHjYmSuPofUhp3FI!z4kzPx>*v66P>-Ho2xspf<??K27Rw",
+      "potential_vector": [
+        2,
+        1,
+        1
+      ],
+      "schema": "HHS_ELECTROCHEMICAL_PHASE_POTENTIAL_V1",
+      "thermodynamic_bias_confers_authority": false,
+      "token_id": "token:30",
+      "token_root_hash72": "9U5jul7qkEKmNO4ixs2WvWY/e1k7Xop7RBM-9v<MpfE5YNeCzJY5ZMdaSzLL0sA0dzG0Ys3b",
+      "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+    },
+    {
+      "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+      "computational_potential_not_empirical_measurement": true,
+      "dependency_potential": 1,
+      "local_information_energy": 2,
+      "phase_potential": 1,
+      "potential_root_hash72": "56Wh)Mq2OC/RWhsj7!SuX*uZvXcHjYmSuPofVfq3FI!z4kzPx>*v66P>-Ho3uxlg<??K27Rw",
+      "potential_vector": [
+        2,
+        1,
+        1
+      ],
+      "schema": "HHS_ELECTROCHEMICAL_PHASE_POTENTIAL_V1",
+      "thermodynamic_bias_confers_authority": false,
+      "token_id": "token:31",
+      "token_root_hash72": "8U5jul7qkEKmNO4ixs2WvWZ-h0k7Xop7RBM-9v<MqfC6YNeCzJY5ZMdaSzLL0sA0dzG0Ys3c",
+      "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+    }
+  ],
+  "schema": "HHS_INFORMATION_ENERGY_POTENTIAL_FIELD_V1",
+  "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+}

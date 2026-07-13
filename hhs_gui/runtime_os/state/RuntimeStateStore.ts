@@ -376,6 +376,17 @@ export class RuntimeStateStore {
                 break
         }
 
+        if (
+            event.event_type !== "receipt"
+            &&
+            event.receipt_hash72
+        ) {
+
+            this.ingestReceipt(
+                event
+            )
+        }
+
         this.notify()
     }
 
@@ -475,17 +486,21 @@ export class RuntimeStateStore {
             receipt_hash72:
 
                 String(
+                    event.receipt_hash72
+                    ??
                     payload
                         .receipt_hash72
-                        ?? ""
+                    ?? ""
                 ),
 
             source_hash72:
 
                 String(
+                    event.runtime_state_hash72
+                    ??
                     payload
                         .source_hash72
-                        ?? ""
+                    ?? ""
                 ),
 
             operation:
@@ -493,6 +508,7 @@ export class RuntimeStateStore {
                 String(
                     payload
                         .operation
+                        ?? event.event_type
                         ?? "runtime"
                 ),
 

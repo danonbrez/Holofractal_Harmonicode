@@ -1,0 +1,24 @@
+# Federated Transaction Contract Pass 059
+
+```json
+{
+  "atomicity_policy": "ALL_PREPARED_OR_COMPENSATE",
+  "authority": "HHS_I019_CANONICAL_FEDERATED_TRANSACTION_AUTHORITY_V1",
+  "canonical_merge_base_root_hash72": "n?<XBkEb2+WvogWbdBY)AP3oXxqBZ??C3acJe5*5(2jfsmj((!Z5JIN7Ut0m?hl)U2/ask+I",
+  "commit_epoch": 9,
+  "partial_success_is_canonical_completion": false,
+  "participant_operations": {
+    "runtime:local": "WRITE_LOCAL",
+    "runtime:remote-a": "WRITE_REMOTE"
+  },
+  "participants": [
+    "runtime:local",
+    "runtime:remote-a"
+  ],
+  "reasons": [],
+  "schema": "HHS_FEDERATED_TRANSACTION_CONTRACT_V1",
+  "transaction_contract_root_hash72": "RpT9)S1y<xM/3?DS7aB8DPd6V7kzsquSREA>Rtv0Cx8s/WCr>r3aYoztEsn-SnHgsUr<P8da",
+  "transaction_id": "txn:pass059",
+  "version": "PASS_059_CANONICAL_FEDERATED_TRANSACTION_COMMIT_COMPENSATING_ROLLBACK_V1"
+}
+```

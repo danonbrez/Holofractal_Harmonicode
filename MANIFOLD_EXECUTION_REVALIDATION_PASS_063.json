@@ -1,0 +1,11 @@
+{
+  "authority": "HHS_DETERMINISTIC_MANIFOLD_EXECUTION_AUTHORITY_V1",
+  "canonical_continuation": true,
+  "local_revalidation_performed": true,
+  "manifold_closure_root_hash72": "Q59ER>WJ?St+(MBwKgT9KwYSKui8Sn-BvzlBX/Ai>bqQo6IcB-TZtg<Cd!EsJuG3?3nGzZ>(",
+  "reasons": [],
+  "revalidation_root_hash72": "!v<(Yc?-oKbKrhgGtSp!yLFHRciGzU>/x/I7!Pcjq<WYe(wZNQmFQK3MEAXWkk6)Pm3z6whL",
+  "schema": "HHS_MANIFOLD_EXECUTION_REVALIDATION_DECISION_V1",
+  "status": "ADMIT_CANONICAL_MANIFOLD_CONTINUATION",
+  "version": "PASS_063_DETERMINISTIC_MANIFOLD_EXECUTION_SCOPED_PHASE_CANCELLATION_V1"
+}

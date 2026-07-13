@@ -22,7 +22,11 @@ import json
 from collections import Counter
 
 
-DEFAULT_KERNEL_PATH = Path("/mnt/data/HARMONICODE_KERNEL_v44_2_lockcore_patched_selfsolving_hash72authority_locked-7.py")
+def _repo_root() -> Path:
+    return Path(__file__).resolve().parents[2]
+
+
+DEFAULT_KERNEL_PATH = _repo_root() / "HARMONICODE_KERNEL_v44_2_lockcore_patched_selfsolving_hash72authority_locked-7.py"
 GENESIS_RECEIPT_HASH72 = "H72N-GENESIS"
 HASH72_ALPHABET = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-+*/()^√=≠"
 

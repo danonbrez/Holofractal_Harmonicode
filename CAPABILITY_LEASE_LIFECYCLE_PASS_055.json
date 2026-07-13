@@ -1,0 +1,110 @@
+{
+  "active": {
+    "allowed_operations": [
+      "CREATE_DECLARED_MODULES",
+      "UPDATE_REGISTRY",
+      "ADD_TESTS",
+      "REGENERATE_MANIFESTS"
+    ],
+    "authority": "HHS_I019_AUTHORITY_ACTIVATION_BOUNDARY_V1",
+    "capability_ids": [
+      "capability:repository-mutation"
+    ],
+    "component_id": "agent:development",
+    "delegable": false,
+    "expires_at_sequence": 140,
+    "issuance_ok": true,
+    "issuance_reasons": [],
+    "issued_from_authority_graph_root_hash72": "EEHb?aKes**8AFv1IHQdt+7yDJ5Nb*5CQ7AmX<dgLfRmAp(jHY4S)gH58h1dW!(rdp)TPN/!",
+    "last_transition_root_hash72": "?bshU!DFhDynFB1iFGwpLRsH5wY+U3ee3cn?jx71)PGA>f?9f(o!UyDFJcKTm46N!Jt7fWrT",
+    "lease_id": "lease:pass055-runtime-dispatch",
+    "lease_root_hash72": "HH5/R7X09laHvodpaLM2)?qPLIb6u*f-eREHdaK9k4GhnOY!JA?yj)SH*b<Vb1PqoJPzW*EP",
+    "lease_state": "ACTIVE",
+    "mutation_authority": "EXPLICIT_ONLY",
+    "revocable": true,
+    "role_contract_root_hash72": "F-e+euO>iHTcgzU9wfkFDrGGzG)Bg4-FJ4/>>!Qz>Ln9cepmeBE>fEJ7+>rXRZI4U>?wUga0",
+    "role_id": "role:implementation-agent",
+    "schema": "HHS_REVOCABLE_CAPABILITY_LEASE_V1",
+    "source_scope": [
+      "object:canonical-pass054-repository"
+    ],
+    "task_assignment_root_hash72": "abAv0*YWuxi>(Bj1>elec5Azp0JuzRdA5?iR/WLSh?Qom!bPOnydNAwKU?O1Qj3-Chfl?E<O",
+    "task_id": "task:pass055-runtime-dispatch",
+    "valid_from_sequence": 100,
+    "version": "PASS_055_AUTHORITY_ENFORCED_RUNTIME_DISPATCH_REVOCABLE_CAPABILITY_LEASES_V1"
+  },
+  "consumed": {
+    "allowed_operations": [
+      "CREATE_DECLARED_MODULES",
+      "UPDATE_REGISTRY",
+      "ADD_TESTS",
+      "REGENERATE_MANIFESTS"
+    ],
+    "authority": "HHS_I019_AUTHORITY_ACTIVATION_BOUNDARY_V1",
+    "capability_ids": [
+      "capability:repository-mutation"
+    ],
+    "component_id": "agent:development",
+    "delegable": false,
+    "expires_at_sequence": 140,
+    "issuance_ok": true,
+    "issuance_reasons": [],
+    "issued_from_authority_graph_root_hash72": "EEHb?aKes**8AFv1IHQdt+7yDJ5Nb*5CQ7AmX<dgLfRmAp(jHY4S)gH58h1dW!(rdp)TPN/!",
+    "last_transition_root_hash72": "W)qsLRnBHsLyheEN2r!IMSx8Id3cl83LaQ!vd9C-KDryRc11kGh2aud?w8uwAeP41wu7<gG6",
+    "lease_id": "lease:pass055-runtime-dispatch",
+    "lease_root_hash72": "HH5/R7X09laHvodpaLM2)?qPLIb6u*f-eREHdaK9k4GhnOY!JA?yj)SH*b<Vb1PqoJPzW*EP",
+    "lease_state": "CONSUMED",
+    "mutation_authority": "EXPLICIT_ONLY",
+    "revocable": true,
+    "role_contract_root_hash72": "F-e+euO>iHTcgzU9wfkFDrGGzG)Bg4-FJ4/>>!Qz>Ln9cepmeBE>fEJ7+>rXRZI4U>?wUga0",
+    "role_id": "role:implementation-agent",
+    "schema": "HHS_REVOCABLE_CAPABILITY_LEASE_V1",
+    "source_scope": [
+      "object:canonical-pass054-repository"
+    ],
+    "task_assignment_root_hash72": "abAv0*YWuxi>(Bj1>elec5Azp0JuzRdA5?iR/WLSh?Qom!bPOnydNAwKU?O1Qj3-Chfl?E<O",
+    "task_id": "task:pass055-runtime-dispatch",
+    "valid_from_sequence": 100,
+    "version": "PASS_055_AUTHORITY_ENFORCED_RUNTIME_DISPATCH_REVOCABLE_CAPABILITY_LEASES_V1"
+  },
+  "issued": {
+    "allowed_operations": [
+      "CREATE_DECLARED_MODULES",
+      "UPDATE_REGISTRY",
+      "ADD_TESTS",
+      "REGENERATE_MANIFESTS"
+    ],
+    "authority": "HHS_I019_AUTHORITY_ACTIVATION_BOUNDARY_V1",
+    "capability_ids": [
+      "capability:repository-mutation"
+    ],
+    "component_id": "agent:development",
+    "delegable": false,
+    "expires_at_sequence": 140,
+    "issuance_ok": true,
+    "issuance_reasons": [],
+    "issued_from_authority_graph_root_hash72": "EEHb?aKes**8AFv1IHQdt+7yDJ5Nb*5CQ7AmX<dgLfRmAp(jHY4S)gH58h1dW!(rdp)TPN/!",
+    "lease_id": "lease:pass055-runtime-dispatch",
+    "lease_root_hash72": "HH5/R7X09laHvodpaLM2)?qPLIb6u*f-eREHdaK9k4GhnOY!JA?yj)SH*b<Vb1PqoJPzW*EP",
+    "lease_state": "ISSUED",
+    "mutation_authority": "EXPLICIT_ONLY",
+    "revocable": true,
+    "role_contract_root_hash72": "F-e+euO>iHTcgzU9wfkFDrGGzG)Bg4-FJ4/>>!Qz>Ln9cepmeBE>fEJ7+>rXRZI4U>?wUga0",
+    "role_id": "role:implementation-agent",
+    "schema": "HHS_REVOCABLE_CAPABILITY_LEASE_V1",
+    "source_scope": [
+      "object:canonical-pass054-repository"
+    ],
+    "task_assignment_root_hash72": "abAv0*YWuxi>(Bj1>elec5Azp0JuzRdA5?iR/WLSh?Qom!bPOnydNAwKU?O1Qj3-Chfl?E<O",
+    "task_id": "task:pass055-runtime-dispatch",
+    "valid_from_sequence": 100,
+    "version": "PASS_055_AUTHORITY_ENFORCED_RUNTIME_DISPATCH_REVOCABLE_CAPABILITY_LEASES_V1"
+  },
+  "schema": "HHS_CAPABILITY_LEASE_LIFECYCLE_PASS_055_V1",
+  "terminal_states": [
+    "CONSUMED",
+    "EXPIRED",
+    "REVOKED",
+    "TASK_CLOSED"
+  ]
+}

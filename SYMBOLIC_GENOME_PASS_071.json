@@ -1,0 +1,590 @@
+{
+  "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+  "folding_may_rewrite_source": false,
+  "genome_root_hash72": "med9zg>NhxrZ4cme6h<rOASuM703Eqh0*e/qrY>GteJUk)iscS)e9C8cZ5A9cZU!H3kOJP51",
+  "overlap_root_hash72": "76A9BfCvc9!Hj9x7M5(WWRqXp7Vppp>qVQ(>xAG+2cRQJxrx6FRkBuw0Ve!InZps8rkxYNJN",
+  "schema": "HHS_SYMBOLIC_GENOME_V1",
+  "source_packet_root_hash72": "ifg(NSvYCGTmY49?mRajj6zWMKeP3dHHb7lu/-lYAa83u<>4Fsdi>*4pz>btVZe)W9TvHPGs",
+  "source_sequence_immutable": true,
+  "source_word": 81985529216486895,
+  "token_count": 32,
+  "tokens": [
+    {
+      "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+      "binary_switch": 0,
+      "phase_symbol": "z",
+      "schema": "HHS_SEQUENCE_PHASE_TOKEN_V1",
+      "sequence_index": 0,
+      "source_bits": [
+        0,
+        0
+      ],
+      "source_identity_preserved": true,
+      "source_pair_root_hash72": "j(NYcIO!OwD9>7j7-zEO!bQ4O)4vol0aL1hx-F)+y+>3flceX-OYG3ceQV3eyCeNLgGyalRD",
+      "token_id": "token:00",
+      "token_root_hash72": "fQ8!Y?az<7ak!*M(zfokn!3gByCjpN)DmehpIxs+vhStczSU/V<giH)6LA6GAkwk?byV+a>M",
+      "translation_root_hash72": "IyUqar0KDkVOBZMybe<)3X35RXZn)+n)MW0jqSLYOKR)m3Il2*Z0AdrQjlVU<tO4/8LSp28H",
+      "trinary_phase": 0,
+      "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+    },
+    {
+      "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+      "binary_switch": 0,
+      "phase_symbol": "z",
+      "schema": "HHS_SEQUENCE_PHASE_TOKEN_V1",
+      "sequence_index": 1,
+      "source_bits": [
+        0,
+        0
+      ],
+      "source_identity_preserved": true,
+      "source_pair_root_hash72": "j(NYcIO!OwD9>7j7-zEO!bQ4O)4vol0aL1hx-F)+y+>3flceX-OYG3ceQV3eyCfMLgGyalRD",
+      "token_id": "token:01",
+      "token_root_hash72": "fQ8!Y?az<7ak!*M(zfokg36fByCjpN)DmehpIxs/siStczSU/V<giH)6LA6GAkwk?byV+a!L",
+      "translation_root_hash72": "IyUqar0KDkVOBZMybe<)3X35RXZn)+n)MW0jqSLYOKR)m3Il2*Z0AdrQjlVU<tO4(6MSp28H",
+      "trinary_phase": 0,
+      "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+    },
+    {
+      "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+      "binary_switch": 0,
+      "phase_symbol": "z",
+      "schema": "HHS_SEQUENCE_PHASE_TOKEN_V1",
+      "sequence_index": 2,
+      "source_bits": [
+        0,
+        0
+      ],
+      "source_identity_preserved": true,
+      "source_pair_root_hash72": "j(NYcIO!OwD9>7j7-zEO!bQ4O)4vol0aL1hx-F)+y+>3flceX-OYG3ceQV3eyCgLLgGyalRD",
+      "token_id": "token:02",
+      "token_root_hash72": "fQ8!Y?az<7ak!*M(zfokh09eByCjpN)DmehpIxs)pjStczSU/V<giH)6LA6GAkwk?byV+a?K",
+      "translation_root_hash72": "IyUqar0KDkVOBZMybe<)3X35RXZn)+n)MW0jqSLYOKR)m3Il2*Z0AdrQjlVU<tO4)4NSp28H",
+      "trinary_phase": 0,
+      "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+    },
+    {
+      "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+      "binary_switch": 0,
+      "phase_symbol": "x",
+      "schema": "HHS_SEQUENCE_PHASE_TOKEN_V1",
+      "sequence_index": 3,
+      "source_bits": [
+        0,
+        1
+      ],
+      "source_identity_preserved": true,
+      "source_pair_root_hash72": "j(NYcIO!OwD9>7j7-zEO!bQ4O)4vol0aL1hx-F)+y+>3flddX-OYG3ceQV3eyChKLgGyalRD",
+      "token_id": "token:03",
+      "token_root_hash72": "fQ8!Z1yLcxB40j?(zfokAs43jipwsN)DmehpIxs>mkStczT2JW<ggJ)6LA7FAkwk?byV+a0J",
+      "translation_root_hash72": "IyUqar0KDkVOBZMybe<<2X35RXZn)+n)MW0jqSLYOKR)m3Il3--WxmNe8UVU<tO4<cx)6w(E",
+      "trinary_phase": 1,
+      "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+    },
+    {
+      "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+      "binary_switch": 0,
+      "phase_symbol": "z",
+      "schema": "HHS_SEQUENCE_PHASE_TOKEN_V1",
+      "sequence_index": 4,
+      "source_bits": [
+        0,
+        0
+      ],
+      "source_identity_preserved": true,
+      "source_pair_root_hash72": "j(NYcIO!OwD9>7j7-zEO!bQ4O)4vol0aL1hx-F)+y+>3flceX-OYG3ceQV3eyCiJLgGyalRD",
+      "token_id": "token:04",
+      "token_root_hash72": "fQ8!Y?az<7ak!*M(zfokCLfcByCjpN)DmehpIxs?jlStczSU/V<giH)6LA6GAkwk?byV+a1I",
+      "translation_root_hash72": "IyUqar0KDkVOBZMybe<)3X35RXZn)+n)MW0jqSLYOKR)m3Il2*Z0AdrQjlVU<tO4>0PSp28H",
+      "trinary_phase": 0,
+      "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+    },
+    {
+      "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+      "binary_switch": 0,
+      "phase_symbol": "y",
+      "schema": "HHS_SEQUENCE_PHASE_TOKEN_V1",
+      "sequence_index": 5,
+      "source_bits": [
+        1,
+        0
+      ],
+      "source_identity_preserved": true,
+      "source_pair_root_hash72": "j(NYcIO!OwD9>7j7-zEO!bQ4O)4vol0aL1hx-F)+y+>3gkceX-OYG3ceQV3eyCjILgGyalRD",
+      "token_id": "token:05",
+      "token_root_hash72": "i6WfJhPHTxzX?uSUauGoV)jjN1K1OyqN)QSqon3yhvlqhocO>tT6oOV9U0/L/(/sB2AHJQ3w",
+      "translation_root_hash72": "7<MMJF)ErGa3oHbCy)!HQpi7OPXh(kqw3Dtzl3!TEkFM8<ujRV6VuAova!9DpmoTKrDH6g!>",
+      "trinary_phase": -1,
+      "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+    },
+    {
+      "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+      "binary_switch": 0,
+      "phase_symbol": "z",
+      "schema": "HHS_SEQUENCE_PHASE_TOKEN_V1",
+      "sequence_index": 6,
+      "source_bits": [
+        0,
+        0
+      ],
+      "source_identity_preserved": true,
+      "source_pair_root_hash72": "j(NYcIO!OwD9>7j7-zEO!bQ4O)4vol0aL1hx-F)+y+>3flceX-OYG3ceQV3eyCkHLgGyalRD",
+      "token_id": "token:06",
+      "token_root_hash72": "fQ8!Y?az<7ak!*M(zfokDW5aByCjpN)DmehpIxs3dnStczSU/V<giH)6LA6GAkwk?byV+a3G",
+      "translation_root_hash72": "IyUqar0KDkVOBZMybe<)3X35RXZn)+n)MW0jqSLYOKR)m3Il2*Z0AdrQjlVU<tO4?<RSp28H",
+      "trinary_phase": 0,
+      "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+    },
+    {
+      "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+      "binary_switch": 1,
+      "phase_symbol": "w",
+      "schema": "HHS_SEQUENCE_PHASE_TOKEN_V1",
+      "sequence_index": 7,
+      "source_bits": [
+        1,
+        1
+      ],
+      "source_identity_preserved": true,
+      "source_pair_root_hash72": "j(NYcIO!OwD9>7j7-zEO!bQ4O)4vol0aL1hx-F)+y+>3gkddX-OYG3ceQV3eyClGLgGyalRD",
+      "token_id": "token:07",
+      "token_root_hash72": "ZftIz9O-AOoBD(W9f-tSTIEawAd5DgbMGT5Q<!0Dx82iRsp6D?!0pr96*uAwlbNoo6Xt?96l",
+      "translation_root_hash72": "x?sPTF?v?CZ-7?Fgyu/zjU2lK>Nb-*B<QR<2R/A2xs4?iR5>35E6ouI937+9TsSZucVUo2g!",
+      "trinary_phase": 0,
+      "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+    },
+    {
+      "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+      "binary_switch": 0,
+      "phase_symbol": "x",
+      "schema": "HHS_SEQUENCE_PHASE_TOKEN_V1",
+      "sequence_index": 8,
+      "source_bits": [
+        0,
+        1
+      ],
+      "source_identity_preserved": true,
+      "source_pair_root_hash72": "j(NYcIO!OwD9>7j7-zEO!bQ4O)4vol0aL1hx-F)+y+>3flddX-OYG3ceQV3eyCmFLgGyalRD",
+      "token_id": "token:08",
+      "token_root_hash72": "fQ8!Z1yLcxB40j?(zfokp-0UjipwsN)DmehpIxs77pStczT2JW<ggJ)6LA7FAkwk?byV+a5E",
+      "translation_root_hash72": "IyUqar0KDkVOBZMybe<<2X35RXZn)+n)MW0jqSLYOKR)m3Il3--WxmNe8UVU<tO412C)6w(E",
+      "trinary_phase": 1,
+      "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+    },
+    {
+      "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+      "binary_switch": 0,
+      "phase_symbol": "z",
+      "schema": "HHS_SEQUENCE_PHASE_TOKEN_V1",
+      "sequence_index": 9,
+      "source_bits": [
+        0,
+        0
+      ],
+      "source_identity_preserved": true,
+      "source_pair_root_hash72": "j(NYcIO!OwD9>7j7-zEO!bQ4O)4vol0aL1hx-F)+y+>3flceX-OYG3ceQV3eyCnELgGyalRD",
+      "token_id": "token:09",
+      "token_root_hash72": "fQ8!Y?az<7ak!*M(zfokqUn7ByCjpN)DmehpIxs94qStczSU/V<giH)6LA6GAkwk?byV+a6D",
+      "translation_root_hash72": "IyUqar0KDkVOBZMybe<)3X35RXZn)+n)MW0jqSLYOKR)m3Il2*Z0AdrQjlVU<tO42-USp28H",
+      "trinary_phase": 0,
+      "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+    },
+    {
+      "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+      "binary_switch": 0,
+      "phase_symbol": "x",
+      "schema": "HHS_SEQUENCE_PHASE_TOKEN_V1",
+      "sequence_index": 10,
+      "source_bits": [
+        0,
+        1
+      ],
+      "source_identity_preserved": true,
+      "source_pair_root_hash72": "ZDV8vdvRnGVT0KZ(-MUI4+UJeEJleap4qHTMyXBD4hWi1e)PLV>t)RFU*<XlBa+SGAd15sfA",
+      "token_id": "token:10",
+      "token_root_hash72": "G*nTdQObI>rWFBqH6gj3CUC0Y5S(P7zs6Bjpn!S2fuizyDrpVDiZ6Pf?SrGkrpJC6WuA<qgg",
+      "translation_root_hash72": "VbH!-WQSPuDHv!7<Lfbn+Bs3E5ZtZvn(Pla5Tvm2VKvRWw9)nt!DL(*3k>y>X?YhN9ky13mj",
+      "trinary_phase": 1,
+      "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+    },
+    {
+      "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+      "binary_switch": 0,
+      "phase_symbol": "x",
+      "schema": "HHS_SEQUENCE_PHASE_TOKEN_V1",
+      "sequence_index": 11,
+      "source_bits": [
+        0,
+        1
+      ],
+      "source_identity_preserved": true,
+      "source_pair_root_hash72": "ZDV8vdvRnGVT0KZ(-MUI4+UJeEJleap4qHTMyXBD4hWi1e)PLV>t)RFU*<XlBa+TFAd15sfA",
+      "token_id": "token:11",
+      "token_root_hash72": "F*nTdQObI>rWFBqH6gj3CU6u+4S(P7zs6Bjpn!S2gugAyDrpVDiZ6Pf?SrGkrpJC6WuA<qgh",
+      "translation_root_hash72": "VbH!-WQSPuDHv!7<Lfbn+Bs3E5ZtZvn(Pla5Tvm2VKvRWw9)nt!DL(*3k>y>X?YhNaiz13mj",
+      "trinary_phase": 1,
+      "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+    },
+    {
+      "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+      "binary_switch": 0,
+      "phase_symbol": "x",
+      "schema": "HHS_SEQUENCE_PHASE_TOKEN_V1",
+      "sequence_index": 12,
+      "source_bits": [
+        0,
+        1
+      ],
+      "source_identity_preserved": true,
+      "source_pair_root_hash72": "ZDV8vdvRnGVT0KZ(-MUI4+UJeEJleap4qHTMyXBD4hWi1e)PLV>t)RFU*<XlBa+UEAd15sfA",
+      "token_id": "token:12",
+      "token_root_hash72": "E*nTdQObI>rWFBqH6gj3CU7r8ZS(P7zs6Bjpn!S2hueByDrpVDiZ6Pf?SrGkrpJC6WuA<qgi",
+      "translation_root_hash72": "VbH!-WQSPuDHv!7<Lfbn+Bs3E5ZtZvn(Pla5Tvm2VKvRWw9)nt!DL(*3k>y>X?YhNbgA13mj",
+      "trinary_phase": 1,
+      "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+    },
+    {
+      "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+      "binary_switch": 0,
+      "phase_symbol": "y",
+      "schema": "HHS_SEQUENCE_PHASE_TOKEN_V1",
+      "sequence_index": 13,
+      "source_bits": [
+        1,
+        0
+      ],
+      "source_identity_preserved": true,
+      "source_pair_root_hash72": "ZDV8vdvRnGVT0KZ(-MUI4+UJeEJleap4qHTMyXBD4hWi2d(QLV>t)RFU*<XlBa+VDAd15sfA",
+      "token_id": "token:13",
+      "token_root_hash72": "vv(Zq8EZREfZ!uk5B-VzCswjKfiJXii8<+HXm*ucwt1668s/X4q-mVCIVAVrxSQd6VgP++Wk",
+      "translation_root_hash72": "kJzkp0LMDQ*<iQG0!<d!F3H5B>XnYYqv62DlOQJ>LkjyIp)/1oeCI8DkmbWQg*y<pvid1XqM",
+      "trinary_phase": -1,
+      "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+    },
+    {
+      "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+      "binary_switch": 0,
+      "phase_symbol": "x",
+      "schema": "HHS_SEQUENCE_PHASE_TOKEN_V1",
+      "sequence_index": 14,
+      "source_bits": [
+        0,
+        1
+      ],
+      "source_identity_preserved": true,
+      "source_pair_root_hash72": "ZDV8vdvRnGVT0KZ(-MUI4+UJeEJleap4qHTMyXBD4hWi1e)PLV>t)RFU*<XlBa+WCAd15sfA",
+      "token_id": "token:14",
+      "token_root_hash72": "C*nTdQObI>rWFBqH6gj3CU9leXS(P7zs6Bjpn!S2juaDyDrpVDiZ6Pf?SrGkrpJC6WuA<qgk",
+      "translation_root_hash72": "VbH!-WQSPuDHv!7<Lfbn+Bs3E5ZtZvn(Pla5Tvm2VKvRWw9)nt!DL(*3k>y>X?YhNdcC13mj",
+      "trinary_phase": 1,
+      "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+    },
+    {
+      "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+      "binary_switch": 1,
+      "phase_symbol": "w",
+      "schema": "HHS_SEQUENCE_PHASE_TOKEN_V1",
+      "sequence_index": 15,
+      "source_bits": [
+        1,
+        1
+      ],
+      "source_identity_preserved": true,
+      "source_pair_root_hash72": "ZDV8vdvRnGVT0KZ(-MUI4+UJeEJleap4qHTMyXBD4hWi2d)PLV>t)RFU*<XlBa+XBAd15sfA",
+      "token_id": "token:15",
+      "token_root_hash72": "4U5jul7qkEKmNO4ixs2WvfGsJ<k7Xop7RBM-9v<KslsaYNeCzJY5ZMdaSzLL0sA0dzG0Ys1i",
+      "translation_root_hash72": "KMfnz0PDbMHT180O!v8-8yrjxfNhUwB)Tg6YaGbgEsSVSaGHnIMXC2X!fkEmK!*27musjJIN",
+      "trinary_phase": 0,
+      "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+    },
+    {
+      "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+      "binary_switch": 0,
+      "phase_symbol": "y",
+      "schema": "HHS_SEQUENCE_PHASE_TOKEN_V1",
+      "sequence_index": 16,
+      "source_bits": [
+        1,
+        0
+      ],
+      "source_identity_preserved": true,
+      "source_pair_root_hash72": "ZDV8vdvRnGVT0KZ(-MUI4+UJeEJleap4qHTMyXBD4hWi2d(QLV>t)RFU*<XlBa+YAAd15sfA",
+      "token_id": "token:16",
+      "token_root_hash72": "sv(Zq8EZREfZ!uk5B-VzCszaTciJXii8<+HXm*uczt)968s/X4q-mVCIVAVrxSQd6VgP++Wn",
+      "translation_root_hash72": "kJzkp0LMDQ*<iQG0!<d!F3H5B>XnYYqv62DlOQJ>LkjyIp)/1oeCI8DkmbWQg*y<pycg1XqM",
+      "trinary_phase": -1,
+      "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+    },
+    {
+      "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+      "binary_switch": 0,
+      "phase_symbol": "z",
+      "schema": "HHS_SEQUENCE_PHASE_TOKEN_V1",
+      "sequence_index": 17,
+      "source_bits": [
+        0,
+        0
+      ],
+      "source_identity_preserved": true,
+      "source_pair_root_hash72": "ZDV8vdvRnGVT0KZ(-MUI4+UJeEJleap4qHTMyXBD4hWi1e(QLV>t)RFU*<XlBa+ZzAd15sfA",
+      "token_id": "token:17",
+      "token_root_hash72": "z*nTdPRCtW!Fvt2U6gj3CUzpXHi?q4zs6Bjpn!S2mu-UyDroVDjZ8Nf?SrGjspJC6WuA<qgn",
+      "translation_root_hash72": "VbH!-WQSPuDHv!7<Lfbm*Bs3E5ZtZvn(Pla5Tvm2VKvRWw9)mv>ROVGFvyy>X?YhN69GkJAm",
+      "trinary_phase": 0,
+      "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+    },
+    {
+      "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+      "binary_switch": 0,
+      "phase_symbol": "y",
+      "schema": "HHS_SEQUENCE_PHASE_TOKEN_V1",
+      "sequence_index": 18,
+      "source_bits": [
+        1,
+        0
+      ],
+      "source_identity_preserved": true,
+      "source_pair_root_hash72": "ZDV8vdvRnGVT0KZ(-MUI4+UJeEJleap4qHTMyXBD4hWi2d(QLV>t)RFU*<XlBa+-yAd15sfA",
+      "token_id": "token:18",
+      "token_root_hash72": "qv(Zq8EZREfZ!uk5B-VzCsvUt<iJXii8<+HXm*ucBTnp68s/X4q-mVCIVAVrxSQd6VgP++Wp",
+      "translation_root_hash72": "kJzkp0LMDQ*<iQG0!<d!F3H5B>XnYYqv62DlOQJ>LkjyIp)/1oeCI8DkmbWQg*y<p-Ew1XqM",
+      "trinary_phase": -1,
+      "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+    },
+    {
+      "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+      "binary_switch": 0,
+      "phase_symbol": "x",
+      "schema": "HHS_SEQUENCE_PHASE_TOKEN_V1",
+      "sequence_index": 19,
+      "source_bits": [
+        0,
+        1
+      ],
+      "source_identity_preserved": true,
+      "source_pair_root_hash72": "ZDV8vdvRnGVT0KZ(-MUI4+UJeEJleap4qHTMyXBD4hWi1e)PLV>t)RFU*<XlBa++xAd15sfA",
+      "token_id": "token:19",
+      "token_root_hash72": "x*nTdQObI>rWFBqH6gj3CUPi(ES(P7zs6Bjpn!S2oRzWyDrpVDiZ6Pf?SrGkrpJC6WuA<qgp",
+      "translation_root_hash72": "VbH!-WQSPuDHv!7<Lfbn+Bs3E5ZtZvn(Pla5Tvm2VKvRWw9)nt!DL(*3k>y>X?YhNFBV13mj",
+      "trinary_phase": 1,
+      "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+    },
+    {
+      "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+      "binary_switch": 0,
+      "phase_symbol": "y",
+      "schema": "HHS_SEQUENCE_PHASE_TOKEN_V1",
+      "sequence_index": 20,
+      "source_bits": [
+        1,
+        0
+      ],
+      "source_identity_preserved": true,
+      "source_pair_root_hash72": "ZDV8vdvRnGVT0KZ(-MUI4+UJeEJleap4qHTMyXBD4hWi2d(QLV>t)RFU*<XlBa*RGAd15sfA",
+      "token_id": "token:20",
+      "token_root_hash72": "yv(Zq8EZREfZ!uk5B-VzCrutAiiJXii8<+HXm*udrt8368s/X4q-mVCIVAVrxSQd6VgP++Xg",
+      "translation_root_hash72": "kJzkp0LMDQ*<iQG0!<d!F3H5B>XnYYqv62DlOQJ>LkjyIp)/1oeCI8DkmbWQg*y<ospa1XqM",
+      "trinary_phase": -1,
+      "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+    },
+    {
+      "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+      "binary_switch": 0,
+      "phase_symbol": "y",
+      "schema": "HHS_SEQUENCE_PHASE_TOKEN_V1",
+      "sequence_index": 21,
+      "source_bits": [
+        1,
+        0
+      ],
+      "source_identity_preserved": true,
+      "source_pair_root_hash72": "ZDV8vdvRnGVT0KZ(-MUI4+UJeEJleap4qHTMyXBD4hWi2d(QLV>t)RFU*<XlBa*SFAd15sfA",
+      "token_id": "token:21",
+      "token_root_hash72": "xv(Zq8EZREfZ!uk5B-VzCrvqDhiJXii8<+HXm*udst6468s/X4q-mVCIVAVrxSQd6VgP++Xh",
+      "translation_root_hash72": "kJzkp0LMDQ*<iQG0!<d!F3H5B>XnYYqv62DlOQJ>LkjyIp)/1oeCI8DkmbWQg*y<otnb1XqM",
+      "trinary_phase": -1,
+      "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+    },
+    {
+      "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+      "binary_switch": 0,
+      "phase_symbol": "y",
+      "schema": "HHS_SEQUENCE_PHASE_TOKEN_V1",
+      "sequence_index": 22,
+      "source_bits": [
+        1,
+        0
+      ],
+      "source_identity_preserved": true,
+      "source_pair_root_hash72": "ZDV8vdvRnGVT0KZ(-MUI4+UJeEJleap4qHTMyXBD4hWi2d(QLV>t)RFU*<XlBa*TEAd15sfA",
+      "token_id": "token:22",
+      "token_root_hash72": "wv(Zq8EZREfZ!uk5B-VzCrwnGgiJXii8<+HXm*udtt4568s/X4q-mVCIVAVrxSQd6VgP++Xi",
+      "translation_root_hash72": "kJzkp0LMDQ*<iQG0!<d!F3H5B>XnYYqv62DlOQJ>LkjyIp)/1oeCI8DkmbWQg*y<oulc1XqM",
+      "trinary_phase": -1,
+      "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+    },
+    {
+      "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+      "binary_switch": 1,
+      "phase_symbol": "w",
+      "schema": "HHS_SEQUENCE_PHASE_TOKEN_V1",
+      "sequence_index": 23,
+      "source_bits": [
+        1,
+        1
+      ],
+      "source_identity_preserved": true,
+      "source_pair_root_hash72": "ZDV8vdvRnGVT0KZ(-MUI4+UJeEJleap4qHTMyXBD4hWi2d)PLV>t)RFU*<XlBa*UDAd15sfA",
+      "token_id": "token:23",
+      "token_root_hash72": "6U5jul7qkEKmNO4ixs2WveFzC!k7Xop7RBM-9v<Lolx8YNeCzJY5ZMdaSzLL0sA0dzG0Ys2f",
+      "translation_root_hash72": "KMfnz0PDbMHT180O!v8-8yrjxfNhUwB)Tg6YaGbgEsSVSaGHnIMXC2X!fkEmK!*26kzqjJIN",
+      "trinary_phase": 0,
+      "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+    },
+    {
+      "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+      "binary_switch": 1,
+      "phase_symbol": "w",
+      "schema": "HHS_SEQUENCE_PHASE_TOKEN_V1",
+      "sequence_index": 24,
+      "source_bits": [
+        1,
+        1
+      ],
+      "source_identity_preserved": true,
+      "source_pair_root_hash72": "ZDV8vdvRnGVT0KZ(-MUI4+UJeEJleap4qHTMyXBD4hWi2d)PLV>t)RFU*<XlBa*VCAd15sfA",
+      "token_id": "token:24",
+      "token_root_hash72": "5U5jul7qkEKmNO4ixs2WveGwF>k7Xop7RBM-9v<Lplv9YNeCzJY5ZMdaSzLL0sA0dzG0Ys2g",
+      "translation_root_hash72": "KMfnz0PDbMHT180O!v8-8yrjxfNhUwB)Tg6YaGbgEsSVSaGHnIMXC2X!fkEmK!*26lxrjJIN",
+      "trinary_phase": 0,
+      "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+    },
+    {
+      "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+      "binary_switch": 0,
+      "phase_symbol": "z",
+      "schema": "HHS_SEQUENCE_PHASE_TOKEN_V1",
+      "sequence_index": 25,
+      "source_bits": [
+        0,
+        0
+      ],
+      "source_identity_preserved": true,
+      "source_pair_root_hash72": "ZDV8vdvRnGVT0KZ(-MUI4+UJeEJleap4qHTMyXBD4hWi1e(QLV>t)RFU*<XlBa*WBAd15sfA",
+      "token_id": "token:25",
+      "token_root_hash72": "B*nTdPRCtW!Fvt2U6gj3CTydH1i?q4zs6Bjpn!S3iu9EyDroVDjZ8Nf?SrGjspJC6WuA<qhk",
+      "translation_root_hash72": "VbH!-WQSPuDHv!7<Lfbm*Bs3E5ZtZvn(Pla5Tvm2VKvRWw9)mv>ROVGFvyy>X?YhM4sqkJAm",
+      "trinary_phase": 0,
+      "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+    },
+    {
+      "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+      "binary_switch": 1,
+      "phase_symbol": "w",
+      "schema": "HHS_SEQUENCE_PHASE_TOKEN_V1",
+      "sequence_index": 26,
+      "source_bits": [
+        1,
+        1
+      ],
+      "source_identity_preserved": true,
+      "source_pair_root_hash72": "ZDV8vdvRnGVT0KZ(-MUI4+UJeEJleap4qHTMyXBD4hWi2d)PLV>t)RFU*<XlBa*XAAd15sfA",
+      "token_id": "token:26",
+      "token_root_hash72": "3U5jul7qkEKmNO4ixs2WveIqL)k7Xop7RBM-9v<LrlrbYNeCzJY5ZMdaSzLL0sA0dzG0Ys2i",
+      "translation_root_hash72": "KMfnz0PDbMHT180O!v8-8yrjxfNhUwB)Tg6YaGbgEsSVSaGHnIMXC2X!fkEmK!*26nttjJIN",
+      "trinary_phase": 0,
+      "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+    },
+    {
+      "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+      "binary_switch": 0,
+      "phase_symbol": "x",
+      "schema": "HHS_SEQUENCE_PHASE_TOKEN_V1",
+      "sequence_index": 27,
+      "source_bits": [
+        0,
+        1
+      ],
+      "source_identity_preserved": true,
+      "source_pair_root_hash72": "ZDV8vdvRnGVT0KZ(-MUI4+UJeEJleap4qHTMyXBD4hWi1e)PLV>t)RFU*<XlBa*YzAd15sfA",
+      "token_id": "token:27",
+      "token_root_hash72": "z*nTdQObI>rWFBqH6gj3CTdCbGS(P7zs6Bjpn!S3ku+UyDrpVDiZ6Pf?SrGkrpJC6WuA<qhm",
+      "translation_root_hash72": "VbH!-WQSPuDHv!7<Lfbn+Bs3E5ZtZvn(Pla5Tvm2VKvRWw9)nt!DL(*3k>y>X?YhMg/T13mj",
+      "trinary_phase": 1,
+      "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+    },
+    {
+      "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+      "binary_switch": 1,
+      "phase_symbol": "w",
+      "schema": "HHS_SEQUENCE_PHASE_TOKEN_V1",
+      "sequence_index": 28,
+      "source_bits": [
+        1,
+        1
+      ],
+      "source_identity_preserved": true,
+      "source_pair_root_hash72": "ZDV8vdvRnGVT0KZ(-MUI4+UJeEJleap4qHTMyXBD4hWi2d)PLV>t)RFU*<XlBa*ZyAd15sfA",
+      "token_id": "token:28",
+      "token_root_hash72": "1U5jul7qkEKmNO4ixs2WveK6nBk7Xop7RBM-9v<Ltl9rYNeCzJY5ZMdaSzLL0sA0dzG0Ys2k",
+      "translation_root_hash72": "KMfnz0PDbMHT180O!v8-8yrjxfNhUwB)Tg6YaGbgEsSVSaGHnIMXC2X!fkEmK!*26pbJjJIN",
+      "trinary_phase": 0,
+      "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+    },
+    {
+      "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+      "binary_switch": 0,
+      "phase_symbol": "y",
+      "schema": "HHS_SEQUENCE_PHASE_TOKEN_V1",
+      "sequence_index": 29,
+      "source_bits": [
+        1,
+        0
+      ],
+      "source_identity_preserved": true,
+      "source_pair_root_hash72": "ZDV8vdvRnGVT0KZ(-MUI4+UJeEJleap4qHTMyXBD4hWi2d(QLV>t)RFU*<XlBa*-xAd15sfA",
+      "token_id": "token:29",
+      "token_root_hash72": "pv(Zq8EZREfZ!uk5B-VzCruVv)iJXii8<+HXm*udATmq68s/X4q-mVCIVAVrxSQd6VgP++Xp",
+      "translation_root_hash72": "kJzkp0LMDQ*<iQG0!<d!F3H5B>XnYYqv62DlOQJ>LkjyIp)/1oeCI8DkmbWQg*y<o+Dx1XqM",
+      "trinary_phase": -1,
+      "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+    },
+    {
+      "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+      "binary_switch": 1,
+      "phase_symbol": "w",
+      "schema": "HHS_SEQUENCE_PHASE_TOKEN_V1",
+      "sequence_index": 30,
+      "source_bits": [
+        1,
+        1
+      ],
+      "source_identity_preserved": true,
+      "source_pair_root_hash72": "ZDV8vdvRnGVT0KZ(-MUI4+UJeEJleap4qHTMyXBD4hWi2d)PLV>t)RFU*<XlBa/QGAd15sfA",
+      "token_id": "token:30",
+      "token_root_hash72": "9U5jul7qkEKmNO4ixs2WvWY/e1k7Xop7RBM-9v<MpfE5YNeCzJY5ZMdaSzLL0sA0dzG0Ys3b",
+      "translation_root_hash72": "KMfnz0PDbMHT180O!v8-8yrjxfNhUwB)Tg6YaGbgEsSVSaGHnIMXC2X!fkEmK!*2bbGnjJIN",
+      "trinary_phase": 0,
+      "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+    },
+    {
+      "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+      "binary_switch": 1,
+      "phase_symbol": "w",
+      "schema": "HHS_SEQUENCE_PHASE_TOKEN_V1",
+      "sequence_index": 31,
+      "source_bits": [
+        1,
+        1
+      ],
+      "source_identity_preserved": true,
+      "source_pair_root_hash72": "ZDV8vdvRnGVT0KZ(-MUI4+UJeEJleap4qHTMyXBD4hWi2d)PLV>t)RFU*<XlBa/RFAd15sfA",
+      "token_id": "token:31",
+      "token_root_hash72": "8U5jul7qkEKmNO4ixs2WvWZ-h0k7Xop7RBM-9v<MqfC6YNeCzJY5ZMdaSzLL0sA0dzG0Ys3c",
+      "translation_root_hash72": "KMfnz0PDbMHT180O!v8-8yrjxfNhUwB)Tg6YaGbgEsSVSaGHnIMXC2X!fkEmK!*2bcEojJIN",
+      "trinary_phase": 0,
+      "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+    }
+  ],
+  "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+}

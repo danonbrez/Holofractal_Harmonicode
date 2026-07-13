@@ -1,0 +1,49 @@
+{
+  "added_modules": [
+    "hhs_backend/runtime/gui_projection_contract_v1.py",
+    "hhs_gui/runtime_os/core/LiveRuntimeProjectionPanel.tsx",
+    "hhs_gui/scripts/live-gui-e2e-source-verify.mjs"
+  ],
+  "api_routes": [
+    "/api/runtime/gui/projection/status"
+  ],
+  "doctrine": "GUI_IS_PROJECTION_LAYER_FASTAPI_IS_RUNTIME_AUTHORITY",
+  "gui_panels": {
+    "/ws/graph": "Graph panel",
+    "/ws/replay": "Replay panel",
+    "/ws/runtime": "Runtime panel",
+    "/ws/transport": "Transport panel"
+  },
+  "module_count": 957,
+  "name": "Live GUI WebSocket Binding and Browser Projection Verification",
+  "new_service": "live_gui_projection_contract.self_test",
+  "orphan_count": 0,
+  "pass": "046",
+  "schema": "HHS_LIVE_GUI_WEBSOCKET_BINDING_PASS_046_SUMMARY_V1",
+  "service_count": 60,
+  "updated_modules": [
+    "hhs_backend/runtime/runtime_ws.py",
+    "hhs_backend/server.py",
+    "hhs_gui/runtime_os/core/RuntimeSocketManager.ts",
+    "hhs_gui/runtime_os/core/RuntimeShell.tsx",
+    "hhs_gui/runtime_os/state/RuntimeStateStore.ts",
+    "hhs_gui/package.json",
+    "hhs_runtime/hhs_service_registry_v1.py",
+    "Makefile"
+  ],
+  "verified": {
+    "live_gui_e2e_source_verify": "passed",
+    "live_gui_full": "passed",
+    "live_gui_websocket_binding": "8 passed",
+    "live_runtime_smoke": "8 passed",
+    "runtime_reachability": "orphan_count=0",
+    "verify_c": "passed"
+  },
+  "version": "PASS_046_LIVE_GUI_WEBSOCKET_BINDING_V1",
+  "websocket_channels": [
+    "/ws/runtime",
+    "/ws/replay",
+    "/ws/graph",
+    "/ws/transport"
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "channels": {
+    "authority": "FASTAPI_WEBSOCKET_KERNEL_CHANNEL_ROUTER_V1",
+    "channels": [
+      "/ws/runtime",
+      "/ws/replay",
+      "/ws/graph",
+      "/ws/transport"
+    ],
+    "projection_rule": "ALL_CHANNEL_PAYLOADS_ORIGINATE_FROM_HHSRuntimeEventEnvelope_OR_WITNESSED_PROJECTION",
+    "schema": "HHS_WEBSOCKET_KERNEL_CHANNEL_LIST_V1",
+    "version": "PASS_045_WEBSOCKET_KERNEL_CHANNEL_ROUTER_V1"
+  },
+  "health": {
+    "metrics": {
+      "graph_sockets": 0,
+      "replay_cache": 0,
+      "replay_sockets": 0,
+      "runtime_index": 0,
+      "runtime_sockets": 0,
+      "total_connections": 0,
+      "total_disconnects": 0,
+      "total_events_sent": 0,
+      "total_graph_events": 0,
+      "total_replay_events": 0,
+      "total_transport_events": 0,
+      "transport_sockets": 0
+    },
+    "status": "healthy"
+  },
+  "ok": true,
+  "rejected": {
+    "channel": null,
+    "event_hash72": null,
+    "missing": [
+      "event_hash72",
+      "receipt_hash72",
+      "runtime_state_hash72",
+      "authority"
+    ],
+    "ok": false,
+    "schema": "HHS_WEBSOCKET_KERNEL_CHANNEL_VALIDATION_V1",
+    "status": "REJECT_NON_KERNEL_WEBSOCKET_PACKET",
+    "version": "PASS_045_WEBSOCKET_KERNEL_CHANNEL_ROUTER_V1"
+  },
+  "sample": {
+    "channel": "/ws/runtime",
+    "event_hash72": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "missing": [],
+    "ok": true,
+    "schema": "HHS_WEBSOCKET_KERNEL_CHANNEL_VALIDATION_V1",
+    "status": "ADMIT_KERNEL_CHANNEL_PACKET",
+    "version": "PASS_045_WEBSOCKET_KERNEL_CHANNEL_ROUTER_V1"
+  },
+  "schema": "HHS_WEBSOCKET_KERNEL_CHANNEL_ROUTER_SELF_TEST_V1",
+  "version": "PASS_045_WEBSOCKET_KERNEL_CHANNEL_ROUTER_V1"
+}

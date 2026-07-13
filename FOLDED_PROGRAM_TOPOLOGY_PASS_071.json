@@ -1,0 +1,120 @@
+{
+  "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+  "edge_count": 14,
+  "edges": [
+    {
+      "binding_root_hash72": "-tmk5HMUd4r!AToDCsKLyX+!MIhnP)(>FxCn>e/x+md?dJ3Mp7Me3EcNsDO-Aca)PADRWlR6",
+      "edge_id": "edge:00",
+      "fold_root_hash72": "EQLNcsmbAz7gU(2ikdh8tT*EDZnAQ5rYtYAXntH8(ajp3nr*ie(J5qGJcN+7cb2HAZIfnWA1"
+    },
+    {
+      "binding_root_hash72": "+rnk5e4Vd4s>AToDCsKLyX+!MIgp<P*>FxCn>e/x+md?dJ7Ft6Nd2H7RrDO-Aca)PADRWlQ7",
+      "edge_id": "edge:01",
+      "fold_root_hash72": "EQLNb1LcDy7J3j1ilFY8sV+EDZnt5-nZs+eKWrH8(ajo6izUmd(J9fREeL+bBW!Kx-IfnWA1"
+    },
+    {
+      "binding_root_hash72": "/ltExhNU+aRXdOLh1C3*+GsmnlF)BJivV1url8PK(H)Ss<TJ+6MK?02ZvPWrES+UUOHbQO<E",
+      "edge_id": "edge:02",
+      "fold_root_hash72": "l4z+)4uBg>1lBnV>7Vjk4Jz9(9doMQv5vyu(E726daubaI3ro5Zlqq5Xhe+ZWk3<n9m?kNJs"
+    },
+    {
+      "binding_root_hash72": "<(om)Zrj5!8jHqjl02Uy6<(WMcJs5>9afkIk6UVb<iEsQXVW>lfKbb7+tbz4+W*M7QnAHy71",
+      "edge_id": "edge:03",
+      "fold_root_hash72": "qGe<r10oRF<ZuQpbun6)G6DA14(<vBdBAHtxdDAn?R)e?FuuplUfICZ+oEq7w-S4iEDP9Wvo"
+    },
+    {
+      "binding_root_hash72": "cc08UkMQ<svCVrgI8ib0*5*<UmS1-D/e!XwneKAINJeD)R-uE2cp!GeYut6f(cWq+7S1tEHp",
+      "edge_id": "edge:04",
+      "fold_root_hash72": "lOLO/-o-acL0wHkApHSXjB!w4SW1pVPu9T(NQUaKVNza2IJEm)GF*PjRwQodnjs83blPrAT5"
+    },
+    {
+      "binding_root_hash72": "fYN<A8>NLUM4G2UafWAd25jYgthJSNe>+BbSdd)5Ih-/45B/dzZQ<AjbNfXZYqmSRZBc(tf<",
+      "edge_id": "edge:05",
+      "fold_root_hash72": "5XydpGztEXEcQ?Y*r4HL3q5dV2<hr+Om2mG>F(jd(b6hkY*5YURPb?V3Zk2g7ET!7xch9TVY"
+    },
+    {
+      "binding_root_hash72": "aecQ0mIR>syzXniI8ib?(4*<TnS2?WyegHwneJEaPrQv-R9Ez0en!GB!HxOg4MZq+7S1tEHp",
+      "edge_id": "edge:06",
+      "fold_root_hash72": "x<l+YOQAex*Y)(F0xinwurkr>2tabBLxyNeA0!auN1mVR+fitV*zLio3WfLwq4v3yeTrYnR*"
+    },
+    {
+      "binding_root_hash72": "I90G*zTJCB*7jMui/gpE*eXlb2g?fXAJGI-D6g9AhUYKO7V*7DFAkLPOOIb<myMela-u+2QJ",
+      "edge_id": "edge:07",
+      "fold_root_hash72": "8JExVwOmx9kyXht/R)aS80KY3*/sk?-nN+ed1Q)H2wFqHE<6oIucTTPpAqCX4Tr2iFUnC6ui"
+    },
+    {
+      "binding_root_hash72": "+?aOR(ho5!deHqjl02Uy6<(WMcJ3v*LHpfIk6UVb<iEsQXObUgkFbb2*-l<4+W*M7QnAHy71",
+      "edge_id": "edge:08",
+      "fold_root_hash72": "qGe<r6J>gp)G3-kb2Kb)G1Nv14(HWvP3APekQ)?84R)e(GU/JgUfBU1zyuv7r(Pi9RpP9Wvo"
+    },
+    {
+      "binding_root_hash72": "I25Il8P++aYQdOLh1C3*+GsmnlF4*W)!?(url8PK(H)Ss<?FW?TD?04bwg<rES+UUOHbQO<E",
+      "edge_id": "edge:09",
+      "fold_root_hash72": "l4z+))Wwb*VVmIr>eHqk4CN2(9dx4<4PvJ)vzW*kmaubc(kYt!Zl5HRof0!ZYqL?sxa?kNJs"
+    },
+    {
+      "binding_root_hash72": "yLI?EyjbP(Ok1sJgr(H0>zxQEDucD?SIMGE909tsCdVNK)E9gghA!pK9VPJim17*DQ)a39BM",
+      "edge_id": "edge:10",
+      "fold_root_hash72": "Z8)+d>UoUdFmOQfzv0+tehC)gHDUybJICtv3E2RB)+PeYpNLvYwc?dfHcR>XcHneOMge+av>"
+    },
+    {
+      "binding_root_hash72": ">7x(Ry8EjC1RZlJgr(H0>zxQEDC?y7Bu9wU2>BRqNKDZXNr-se-7N/pmxJ<cNwe/*kzwp7VJ",
+      "edge_id": "edge:11",
+      "fold_root_hash72": "Ily0zK1YRf5910!AK5VRkjB)gHDUy!T1xIMev+ZxzE08lP(bBgOl7sDtruQlGV6MDV+HDF0N"
+    },
+    {
+      "binding_root_hash72": "J>48/fYPi1MUWZ+Eb-712lFWByqbF586poBMXSpqqS2r5GgG0b75pP!3SYQvhh2wmh)7<Bo8",
+      "edge_id": "edge:12",
+      "fold_root_hash72": "rU<q(rjsHvhtrXtacWTH)!AR1lgnAFBhROkM(b9F4LGOCo8<tRUc?)7JVn-hLqQG7pINP1ES"
+    },
+    {
+      "binding_root_hash72": "XZJtNQyMxzqTQ>(<E2rzTQKrBkat4)iKAV?HmDAYaNC(ora?NhcQZRmQsNGUbu2PFgPtJadZ",
+      "edge_id": "edge:13",
+      "fold_root_hash72": "iAMZjL6hGa>wmi1Nk4bh29LR0phj+Wu-KKZ58N4XZHmTt6n*p/5MyrS64yz?12MD9w3qUklS"
+    }
+  ],
+  "fold_registry_root_hash72": "Nuuq2/sdfgSiPWo-CN1?xhRpDaYzY8OKHdMb3*G3f>p9lNUkd<4X/(HFQ!MS2>Peu2j*Jc3?",
+  "genome_root_hash72": "med9zg>NhxrZ4cme6h<rOASuM703Eqh0*e/qrY>GteJUk)iscS)e9C8cZ5A9cZU!H3kOJP51",
+  "local_contradiction_denatures_global_topology": false,
+  "node_count": 32,
+  "nodes": [
+    "fQ8!Y?az<7ak!*M(zfokn!3gByCjpN)DmehpIxs+vhStczSU/V<giH)6LA6GAkwk?byV+a>M",
+    "fQ8!Y?az<7ak!*M(zfokg36fByCjpN)DmehpIxs/siStczSU/V<giH)6LA6GAkwk?byV+a!L",
+    "fQ8!Y?az<7ak!*M(zfokh09eByCjpN)DmehpIxs)pjStczSU/V<giH)6LA6GAkwk?byV+a?K",
+    "fQ8!Z1yLcxB40j?(zfokAs43jipwsN)DmehpIxs>mkStczT2JW<ggJ)6LA7FAkwk?byV+a0J",
+    "fQ8!Y?az<7ak!*M(zfokCLfcByCjpN)DmehpIxs?jlStczSU/V<giH)6LA6GAkwk?byV+a1I",
+    "i6WfJhPHTxzX?uSUauGoV)jjN1K1OyqN)QSqon3yhvlqhocO>tT6oOV9U0/L/(/sB2AHJQ3w",
+    "fQ8!Y?az<7ak!*M(zfokDW5aByCjpN)DmehpIxs3dnStczSU/V<giH)6LA6GAkwk?byV+a3G",
+    "ZftIz9O-AOoBD(W9f-tSTIEawAd5DgbMGT5Q<!0Dx82iRsp6D?!0pr96*uAwlbNoo6Xt?96l",
+    "fQ8!Z1yLcxB40j?(zfokp-0UjipwsN)DmehpIxs77pStczT2JW<ggJ)6LA7FAkwk?byV+a5E",
+    "fQ8!Y?az<7ak!*M(zfokqUn7ByCjpN)DmehpIxs94qStczSU/V<giH)6LA6GAkwk?byV+a6D",
+    "G*nTdQObI>rWFBqH6gj3CUC0Y5S(P7zs6Bjpn!S2fuizyDrpVDiZ6Pf?SrGkrpJC6WuA<qgg",
+    "F*nTdQObI>rWFBqH6gj3CU6u+4S(P7zs6Bjpn!S2gugAyDrpVDiZ6Pf?SrGkrpJC6WuA<qgh",
+    "E*nTdQObI>rWFBqH6gj3CU7r8ZS(P7zs6Bjpn!S2hueByDrpVDiZ6Pf?SrGkrpJC6WuA<qgi",
+    "vv(Zq8EZREfZ!uk5B-VzCswjKfiJXii8<+HXm*ucwt1668s/X4q-mVCIVAVrxSQd6VgP++Wk",
+    "C*nTdQObI>rWFBqH6gj3CU9leXS(P7zs6Bjpn!S2juaDyDrpVDiZ6Pf?SrGkrpJC6WuA<qgk",
+    "4U5jul7qkEKmNO4ixs2WvfGsJ<k7Xop7RBM-9v<KslsaYNeCzJY5ZMdaSzLL0sA0dzG0Ys1i",
+    "sv(Zq8EZREfZ!uk5B-VzCszaTciJXii8<+HXm*uczt)968s/X4q-mVCIVAVrxSQd6VgP++Wn",
+    "z*nTdPRCtW!Fvt2U6gj3CUzpXHi?q4zs6Bjpn!S2mu-UyDroVDjZ8Nf?SrGjspJC6WuA<qgn",
+    "qv(Zq8EZREfZ!uk5B-VzCsvUt<iJXii8<+HXm*ucBTnp68s/X4q-mVCIVAVrxSQd6VgP++Wp",
+    "x*nTdQObI>rWFBqH6gj3CUPi(ES(P7zs6Bjpn!S2oRzWyDrpVDiZ6Pf?SrGkrpJC6WuA<qgp",
+    "yv(Zq8EZREfZ!uk5B-VzCrutAiiJXii8<+HXm*udrt8368s/X4q-mVCIVAVrxSQd6VgP++Xg",
+    "xv(Zq8EZREfZ!uk5B-VzCrvqDhiJXii8<+HXm*udst6468s/X4q-mVCIVAVrxSQd6VgP++Xh",
+    "wv(Zq8EZREfZ!uk5B-VzCrwnGgiJXii8<+HXm*udtt4568s/X4q-mVCIVAVrxSQd6VgP++Xi",
+    "6U5jul7qkEKmNO4ixs2WveFzC!k7Xop7RBM-9v<Lolx8YNeCzJY5ZMdaSzLL0sA0dzG0Ys2f",
+    "5U5jul7qkEKmNO4ixs2WveGwF>k7Xop7RBM-9v<Lplv9YNeCzJY5ZMdaSzLL0sA0dzG0Ys2g",
+    "B*nTdPRCtW!Fvt2U6gj3CTydH1i?q4zs6Bjpn!S3iu9EyDroVDjZ8Nf?SrGjspJC6WuA<qhk",
+    "3U5jul7qkEKmNO4ixs2WveIqL)k7Xop7RBM-9v<LrlrbYNeCzJY5ZMdaSzLL0sA0dzG0Ys2i",
+    "z*nTdQObI>rWFBqH6gj3CTdCbGS(P7zs6Bjpn!S3ku+UyDrpVDiZ6Pf?SrGkrpJC6WuA<qhm",
+    "1U5jul7qkEKmNO4ixs2WveK6nBk7Xop7RBM-9v<Ltl9rYNeCzJY5ZMdaSzLL0sA0dzG0Ys2k",
+    "pv(Zq8EZREfZ!uk5B-VzCruVv)iJXii8<+HXm*udATmq68s/X4q-mVCIVAVrxSQd6VgP++Xp",
+    "9U5jul7qkEKmNO4ixs2WvWY/e1k7Xop7RBM-9v<MpfE5YNeCzJY5ZMdaSzLL0sA0dzG0Ys3b",
+    "8U5jul7qkEKmNO4ixs2WvWZ-h0k7Xop7RBM-9v<MqfC6YNeCzJY5ZMdaSzLL0sA0dzG0Ys3c"
+  ],
+  "schema": "HHS_FOLDED_PROGRAM_TOPOLOGY_V1",
+  "source_sequence_preserved": true,
+  "topology_closed": true,
+  "topology_is_projection_not_source": true,
+  "topology_root_hash72": "tjVb45fukLKQXqh3/gX+9ukSJfWWos*)GhUgEJ6kZyN-!u)uz-8rs5OE!Ve?K<)BXJ*xaKx1",
+  "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+}

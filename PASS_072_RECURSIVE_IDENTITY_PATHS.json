@@ -1,0 +1,301 @@
+{
+  "all_paths_identity_preserving": true,
+  "authority": "HHS_PASS072_TOTAL_SYSTEM_CLOSURE_AUTHORITY_V1",
+  "identity_path_registry_root_hash72": "BCXeLWzRae<Jbn9A6RJ*gtOQiqt5PgrB>0ppyZTj>0kGDpX7)husNJO)gXyHK6MvwCcnyOsB",
+  "part_to_whole_path_count": 9,
+  "path_count": 18,
+  "paths": [
+    {
+      "authority": "HHS_PASS072_TOTAL_SYSTEM_CLOSURE_AUTHORITY_V1",
+      "direction": "PART_TO_WHOLE",
+      "identity_path_root_hash72": "5Tt5wMl?/f*3c8Se)5R/82<S(2r3GVs6eyXEA46H+MSFmSqBciw0va3-6xKR(RVt>(TUhODm",
+      "identity_preserved": true,
+      "path": [
+        "LwDYM+nnXHEzyhPzPGcYVJxubIMGa)EdHdt23<Vtwl13+zBWo<Jv7a<M>msodUzI2d>kAQ+>",
+        "qssyFdpBBpFFlwgKnBcVHwrb+z0Cn9mrUoZwBian)dzVJJnpQ<8ERSp6!NjzM+M?CDf>fe9j",
+        "a9vD7nmok+y)EartzNbn/?Dy1P7svXDPkiN)pWEySJ3XNLdWJnWiV66x+Cl/jT3-e-ao3psm"
+      ],
+      "schema": "HHS_RECURSIVE_IDENTITY_PATH_V1",
+      "source_root_hash72": "LwDYM+nnXHEzyhPzPGcYVJxubIMGa)EdHdt23<Vtwl13+zBWo<Jv7a<M>msodUzI2d>kAQ+>",
+      "subsystem_id": "PASS071_RESTART_CAPSULE",
+      "target_root_hash72": "a9vD7nmok+y)EartzNbn/?Dy1P7svXDPkiN)pWEySJ3XNLdWJnWiV66x+Cl/jT3-e-ao3psm",
+      "version": "PASS_072_TOTAL_SYSTEM_RECURSIVE_HOLOGRAPHIC_CLOSURE_V1"
+    },
+    {
+      "authority": "HHS_PASS072_TOTAL_SYSTEM_CLOSURE_AUTHORITY_V1",
+      "direction": "WHOLE_TO_PART",
+      "identity_path_root_hash72": "jd28Tm4b!<LbJ7KHDrbbQd5EwK5X+pKX?U19YR1V)pnq5>TBrVQdMqF)o3DNERn?CFIWn09T",
+      "identity_preserved": true,
+      "path": [
+        "a9vD7nmok+y)EartzNbn/?Dy1P7svXDPkiN)pWEySJ3XNLdWJnWiV66x+Cl/jT3-e-ao3psm",
+        "qssyFdpBBpFFlwgKnBcVHwrb+z0Cn9mrUoZwBian)dzVJJnpQ<8ERSp6!NjzM+M?CDf>fe9j",
+        "LwDYM+nnXHEzyhPzPGcYVJxubIMGa)EdHdt23<Vtwl13+zBWo<Jv7a<M>msodUzI2d>kAQ+>"
+      ],
+      "schema": "HHS_RECURSIVE_IDENTITY_PATH_V1",
+      "source_root_hash72": "a9vD7nmok+y)EartzNbn/?Dy1P7svXDPkiN)pWEySJ3XNLdWJnWiV66x+Cl/jT3-e-ao3psm",
+      "subsystem_id": "PASS071_RESTART_CAPSULE",
+      "target_root_hash72": "LwDYM+nnXHEzyhPzPGcYVJxubIMGa)EdHdt23<Vtwl13+zBWo<Jv7a<M>msodUzI2d>kAQ+>",
+      "version": "PASS_072_TOTAL_SYSTEM_RECURSIVE_HOLOGRAPHIC_CLOSURE_V1"
+    },
+    {
+      "authority": "HHS_PASS072_TOTAL_SYSTEM_CLOSURE_AUTHORITY_V1",
+      "direction": "PART_TO_WHOLE",
+      "identity_path_root_hash72": "kHPSt(Ne1Hbss5br<z*g29zDvcoQzF<MO65aRDWHDFq4DXcBEM9pQ<PhyvVW1K5ItKwFe7M/",
+      "identity_preserved": true,
+      "path": [
+        "EDylR<qy0+7VQbnY<)MvNG>NriYMyz1gbw5m<7bPzVKUP<Z*KF/Vcbgwf<AUSfiw7Oe/MW/w",
+        "Rw9XzB9++p1q(iYbqIc2tl->AA2nR0Ir<6bwv(9?e8)Q3OLwpABf<RXk>XT>2oJc)JOnmrk!",
+        "a9vD7nmok+y)EartzNbn/?Dy1P7svXDPkiN)pWEySJ3XNLdWJnWiV66x+Cl/jT3-e-ao3psm"
+      ],
+      "schema": "HHS_RECURSIVE_IDENTITY_PATH_V1",
+      "source_root_hash72": "EDylR<qy0+7VQbnY<)MvNG>NriYMyz1gbw5m<7bPzVKUP<Z*KF/Vcbgwf<AUSfiw7Oe/MW/w",
+      "subsystem_id": "SYMBOLIC_GENOME",
+      "target_root_hash72": "a9vD7nmok+y)EartzNbn/?Dy1P7svXDPkiN)pWEySJ3XNLdWJnWiV66x+Cl/jT3-e-ao3psm",
+      "version": "PASS_072_TOTAL_SYSTEM_RECURSIVE_HOLOGRAPHIC_CLOSURE_V1"
+    },
+    {
+      "authority": "HHS_PASS072_TOTAL_SYSTEM_CLOSURE_AUTHORITY_V1",
+      "direction": "WHOLE_TO_PART",
+      "identity_path_root_hash72": "JkWoKEwOT+vF-2+PdUJouOJ>d>2E9QfehS3H5zgfh*dj*G65xmsgHoFI369hIb/G!Fa>Dq9h",
+      "identity_preserved": true,
+      "path": [
+        "a9vD7nmok+y)EartzNbn/?Dy1P7svXDPkiN)pWEySJ3XNLdWJnWiV66x+Cl/jT3-e-ao3psm",
+        "Rw9XzB9++p1q(iYbqIc2tl->AA2nR0Ir<6bwv(9?e8)Q3OLwpABf<RXk>XT>2oJc)JOnmrk!",
+        "EDylR<qy0+7VQbnY<)MvNG>NriYMyz1gbw5m<7bPzVKUP<Z*KF/Vcbgwf<AUSfiw7Oe/MW/w"
+      ],
+      "schema": "HHS_RECURSIVE_IDENTITY_PATH_V1",
+      "source_root_hash72": "a9vD7nmok+y)EartzNbn/?Dy1P7svXDPkiN)pWEySJ3XNLdWJnWiV66x+Cl/jT3-e-ao3psm",
+      "subsystem_id": "SYMBOLIC_GENOME",
+      "target_root_hash72": "EDylR<qy0+7VQbnY<)MvNG>NriYMyz1gbw5m<7bPzVKUP<Z*KF/Vcbgwf<AUSfiw7Oe/MW/w",
+      "version": "PASS_072_TOTAL_SYSTEM_RECURSIVE_HOLOGRAPHIC_CLOSURE_V1"
+    },
+    {
+      "authority": "HHS_PASS072_TOTAL_SYSTEM_CLOSURE_AUTHORITY_V1",
+      "direction": "PART_TO_WHOLE",
+      "identity_path_root_hash72": "<vk/-nQdYt+laL-vAylBgj+BGGtU+5WCRl>tazNaI1/cXx!J)zX>A4P3eP)-zqyn3Xie0>8?",
+      "identity_preserved": true,
+      "path": [
+        "hVyt7r0MA?o0q4P16?>p>NGVTj)NPs?*EAf>15B1IElc2l3<QfcMhYv0eulKzSR<2hoQ!l+4",
+        "Heouhpq+vsc92(sWHdA)7l76Fymlb8-5i5u)SyHtz/qJtu9z-Wcq419kGr-sIUL-8Y4NkydO",
+        "a9vD7nmok+y)EartzNbn/?Dy1P7svXDPkiN)pWEySJ3XNLdWJnWiV66x+Cl/jT3-e-ao3psm"
+      ],
+      "schema": "HHS_RECURSIVE_IDENTITY_PATH_V1",
+      "source_root_hash72": "hVyt7r0MA?o0q4P16?>p>NGVTj)NPs?*EAf>15B1IElc2l3<QfcMhYv0eulKzSR<2hoQ!l+4",
+      "subsystem_id": "INFORMATION_ENERGY_FIELD",
+      "target_root_hash72": "a9vD7nmok+y)EartzNbn/?Dy1P7svXDPkiN)pWEySJ3XNLdWJnWiV66x+Cl/jT3-e-ao3psm",
+      "version": "PASS_072_TOTAL_SYSTEM_RECURSIVE_HOLOGRAPHIC_CLOSURE_V1"
+    },
+    {
+      "authority": "HHS_PASS072_TOTAL_SYSTEM_CLOSURE_AUTHORITY_V1",
+      "direction": "WHOLE_TO_PART",
+      "identity_path_root_hash72": "Fac*O>EnQH)SR?b2nvOzFt/<WMfkg9b5hIToEBZl056!vxs(Kn?zx+IiZ8>x1N!X>A?u86mf",
+      "identity_preserved": true,
+      "path": [
+        "a9vD7nmok+y)EartzNbn/?Dy1P7svXDPkiN)pWEySJ3XNLdWJnWiV66x+Cl/jT3-e-ao3psm",
+        "Heouhpq+vsc92(sWHdA)7l76Fymlb8-5i5u)SyHtz/qJtu9z-Wcq419kGr-sIUL-8Y4NkydO",
+        "hVyt7r0MA?o0q4P16?>p>NGVTj)NPs?*EAf>15B1IElc2l3<QfcMhYv0eulKzSR<2hoQ!l+4"
+      ],
+      "schema": "HHS_RECURSIVE_IDENTITY_PATH_V1",
+      "source_root_hash72": "a9vD7nmok+y)EartzNbn/?Dy1P7svXDPkiN)pWEySJ3XNLdWJnWiV66x+Cl/jT3-e-ao3psm",
+      "subsystem_id": "INFORMATION_ENERGY_FIELD",
+      "target_root_hash72": "hVyt7r0MA?o0q4P16?>p>NGVTj)NPs?*EAf>15B1IElc2l3<QfcMhYv0eulKzSR<2hoQ!l+4",
+      "version": "PASS_072_TOTAL_SYSTEM_RECURSIVE_HOLOGRAPHIC_CLOSURE_V1"
+    },
+    {
+      "authority": "HHS_PASS072_TOTAL_SYSTEM_CLOSURE_AUTHORITY_V1",
+      "direction": "PART_TO_WHOLE",
+      "identity_path_root_hash72": "md-*NPD/OC+?BJlXQgsu*E3)erBq<nl>YjSSA(TDb8qVFQ!Z>bSJzT*m5F8KKTu))(0<bTLe",
+      "identity_preserved": true,
+      "path": [
+        "tI?N15Fid-5-KKNpocH6r6Wld!?*LzkkreKJ+nBCI/<-i?zI(OazXFlucTrG??fdHKW0GpOP",
+        "(N8)8H-rNNEvpMuCXldFoj(sX7?s0ROfR?HSFBVKT1jou*AH4da<Ru6nY-09WlWa!dkWwd-H",
+        "a9vD7nmok+y)EartzNbn/?Dy1P7svXDPkiN)pWEySJ3XNLdWJnWiV66x+Cl/jT3-e-ao3psm"
+      ],
+      "schema": "HHS_RECURSIVE_IDENTITY_PATH_V1",
+      "source_root_hash72": "tI?N15Fid-5-KKNpocH6r6Wld!?*LzkkreKJ+nBCI/<-i?zI(OazXFlucTrG??fdHKW0GpOP",
+      "subsystem_id": "RECIPROCAL_BINDING_REGISTRY",
+      "target_root_hash72": "a9vD7nmok+y)EartzNbn/?Dy1P7svXDPkiN)pWEySJ3XNLdWJnWiV66x+Cl/jT3-e-ao3psm",
+      "version": "PASS_072_TOTAL_SYSTEM_RECURSIVE_HOLOGRAPHIC_CLOSURE_V1"
+    },
+    {
+      "authority": "HHS_PASS072_TOTAL_SYSTEM_CLOSURE_AUTHORITY_V1",
+      "direction": "WHOLE_TO_PART",
+      "identity_path_root_hash72": "PsSh/8t-1IbjOnYUXl+CjbYG5tUYjpC/xc7mKwJ22d!IbK49FU13crlH1wz3xI26/3QT(bQS",
+      "identity_preserved": true,
+      "path": [
+        "a9vD7nmok+y)EartzNbn/?Dy1P7svXDPkiN)pWEySJ3XNLdWJnWiV66x+Cl/jT3-e-ao3psm",
+        "(N8)8H-rNNEvpMuCXldFoj(sX7?s0ROfR?HSFBVKT1jou*AH4da<Ru6nY-09WlWa!dkWwd-H",
+        "tI?N15Fid-5-KKNpocH6r6Wld!?*LzkkreKJ+nBCI/<-i?zI(OazXFlucTrG??fdHKW0GpOP"
+      ],
+      "schema": "HHS_RECURSIVE_IDENTITY_PATH_V1",
+      "source_root_hash72": "a9vD7nmok+y)EartzNbn/?Dy1P7svXDPkiN)pWEySJ3XNLdWJnWiV66x+Cl/jT3-e-ao3psm",
+      "subsystem_id": "RECIPROCAL_BINDING_REGISTRY",
+      "target_root_hash72": "tI?N15Fid-5-KKNpocH6r6Wld!?*LzkkreKJ+nBCI/<-i?zI(OazXFlucTrG??fdHKW0GpOP",
+      "version": "PASS_072_TOTAL_SYSTEM_RECURSIVE_HOLOGRAPHIC_CLOSURE_V1"
+    },
+    {
+      "authority": "HHS_PASS072_TOTAL_SYSTEM_CLOSURE_AUTHORITY_V1",
+      "direction": "PART_TO_WHOLE",
+      "identity_path_root_hash72": "S?YCQTFL1)ttE?WZmGEYwKjy6l2/MgsbtSZ5q8m6CtjAHcT-pb(HW13o3QlW(S453PtoN>PP",
+      "identity_preserved": true,
+      "path": [
+        "7-)*VPiSXkR)tdK!FKtIAGMVruSUBr(zGl*V8aZ!8Fj1HrkpKLbK9fs+tORCBWLC>R04TB)P",
+        "75r-PMD/AQ7fH4E05jf*R5v29m-/y-78WwfdIHoJE+OJexlN19A-3frq!Jib+ENTsHVeZgKs",
+        "a9vD7nmok+y)EartzNbn/?Dy1P7svXDPkiN)pWEySJ3XNLdWJnWiV66x+Cl/jT3-e-ao3psm"
+      ],
+      "schema": "HHS_RECURSIVE_IDENTITY_PATH_V1",
+      "source_root_hash72": "7-)*VPiSXkR)tdK!FKtIAGMVruSUBr(zGl*V8aZ!8Fj1HrkpKLbK9fs+tORCBWLC>R04TB)P",
+      "subsystem_id": "PHASE_GEAR_FOLD_REGISTRY",
+      "target_root_hash72": "a9vD7nmok+y)EartzNbn/?Dy1P7svXDPkiN)pWEySJ3XNLdWJnWiV66x+Cl/jT3-e-ao3psm",
+      "version": "PASS_072_TOTAL_SYSTEM_RECURSIVE_HOLOGRAPHIC_CLOSURE_V1"
+    },
+    {
+      "authority": "HHS_PASS072_TOTAL_SYSTEM_CLOSURE_AUTHORITY_V1",
+      "direction": "WHOLE_TO_PART",
+      "identity_path_root_hash72": "-u>F*2IGTBkScAVkCZWNzo8)Ea<xUYYgLUz(oFQ6S?31GT)cz0eacSF38ho/vQSyN?3s71f4",
+      "identity_preserved": true,
+      "path": [
+        "a9vD7nmok+y)EartzNbn/?Dy1P7svXDPkiN)pWEySJ3XNLdWJnWiV66x+Cl/jT3-e-ao3psm",
+        "75r-PMD/AQ7fH4E05jf*R5v29m-/y-78WwfdIHoJE+OJexlN19A-3frq!Jib+ENTsHVeZgKs",
+        "7-)*VPiSXkR)tdK!FKtIAGMVruSUBr(zGl*V8aZ!8Fj1HrkpKLbK9fs+tORCBWLC>R04TB)P"
+      ],
+      "schema": "HHS_RECURSIVE_IDENTITY_PATH_V1",
+      "source_root_hash72": "a9vD7nmok+y)EartzNbn/?Dy1P7svXDPkiN)pWEySJ3XNLdWJnWiV66x+Cl/jT3-e-ao3psm",
+      "subsystem_id": "PHASE_GEAR_FOLD_REGISTRY",
+      "target_root_hash72": "7-)*VPiSXkR)tdK!FKtIAGMVruSUBr(zGl*V8aZ!8Fj1HrkpKLbK9fs+tORCBWLC>R04TB)P",
+      "version": "PASS_072_TOTAL_SYSTEM_RECURSIVE_HOLOGRAPHIC_CLOSURE_V1"
+    },
+    {
+      "authority": "HHS_PASS072_TOTAL_SYSTEM_CLOSURE_AUTHORITY_V1",
+      "direction": "PART_TO_WHOLE",
+      "identity_path_root_hash72": "SEUMTsS8XdSZaReaZIfN6gRN)nvL<vllS<lzposSgyQgiiMlEDpLJT0<aGHZ5G5GoXtf6tbr",
+      "identity_preserved": true,
+      "path": [
+        "0ZCXNiuFcl8cjA7ZS!lae7Iio6TEYxC3irj*3/S?Ar9xc0BQG*S9ThDBCyrFnXRfP5nDaDI-",
+        "oN1!R2+XLI3iZwfS2R5im4si+q2d1JE3ySLYYO8iyEWsvKGmLdJCWF0IRepMeyxaWfd0Z0xB",
+        "a9vD7nmok+y)EartzNbn/?Dy1P7svXDPkiN)pWEySJ3XNLdWJnWiV66x+Cl/jT3-e-ao3psm"
+      ],
+      "schema": "HHS_RECURSIVE_IDENTITY_PATH_V1",
+      "source_root_hash72": "0ZCXNiuFcl8cjA7ZS!lae7Iio6TEYxC3irj*3/S?Ar9xc0BQG*S9ThDBCyrFnXRfP5nDaDI-",
+      "subsystem_id": "FOLDED_PROGRAM_TOPOLOGY",
+      "target_root_hash72": "a9vD7nmok+y)EartzNbn/?Dy1P7svXDPkiN)pWEySJ3XNLdWJnWiV66x+Cl/jT3-e-ao3psm",
+      "version": "PASS_072_TOTAL_SYSTEM_RECURSIVE_HOLOGRAPHIC_CLOSURE_V1"
+    },
+    {
+      "authority": "HHS_PASS072_TOTAL_SYSTEM_CLOSURE_AUTHORITY_V1",
+      "direction": "WHOLE_TO_PART",
+      "identity_path_root_hash72": "mbnIeyqGM)82v6s-VW>WT/PoEZNr1C!t9QKngPSjmKNscyrV8Z*YpsLVK1XWldpCV3MTJCtd",
+      "identity_preserved": true,
+      "path": [
+        "a9vD7nmok+y)EartzNbn/?Dy1P7svXDPkiN)pWEySJ3XNLdWJnWiV66x+Cl/jT3-e-ao3psm",
+        "oN1!R2+XLI3iZwfS2R5im4si+q2d1JE3ySLYYO8iyEWsvKGmLdJCWF0IRepMeyxaWfd0Z0xB",
+        "0ZCXNiuFcl8cjA7ZS!lae7Iio6TEYxC3irj*3/S?Ar9xc0BQG*S9ThDBCyrFnXRfP5nDaDI-"
+      ],
+      "schema": "HHS_RECURSIVE_IDENTITY_PATH_V1",
+      "source_root_hash72": "a9vD7nmok+y)EartzNbn/?Dy1P7svXDPkiN)pWEySJ3XNLdWJnWiV66x+Cl/jT3-e-ao3psm",
+      "subsystem_id": "FOLDED_PROGRAM_TOPOLOGY",
+      "target_root_hash72": "0ZCXNiuFcl8cjA7ZS!lae7Iio6TEYxC3irj*3/S?Ar9xc0BQG*S9ThDBCyrFnXRfP5nDaDI-",
+      "version": "PASS_072_TOTAL_SYSTEM_RECURSIVE_HOLOGRAPHIC_CLOSURE_V1"
+    },
+    {
+      "authority": "HHS_PASS072_TOTAL_SYSTEM_CLOSURE_AUTHORITY_V1",
+      "direction": "PART_TO_WHOLE",
+      "identity_path_root_hash72": "YmFi!infibux-am/bKUPj>f/fMsP2MX2n(xxU5MnZ!sFIxRyw0Lrs4cq?wGtk-iMD-VB4J*w",
+      "identity_preserved": true,
+      "path": [
+        "70NHsn4lXh-U20Yu<GjLev8X*FIrVDpEq<zfYI?*<C!B6kSz!db/BI4?>DiEo22)x4CE>?4w",
+        "xvyPunziiBHDfrXdifllu-k2*rmZIcJ/AZm4FgRDyws)oGv2GjryFhtp2TbaL1EuhHRdm0Vu",
+        "a9vD7nmok+y)EartzNbn/?Dy1P7svXDPkiN)pWEySJ3XNLdWJnWiV66x+Cl/jT3-e-ao3psm"
+      ],
+      "schema": "HHS_RECURSIVE_IDENTITY_PATH_V1",
+      "source_root_hash72": "70NHsn4lXh-U20Yu<GjLev8X*FIrVDpEq<zfYI?*<C!B6kSz!db/BI4?>DiEo22)x4CE>?4w",
+      "subsystem_id": "QUDIT81_KERNEL",
+      "target_root_hash72": "a9vD7nmok+y)EartzNbn/?Dy1P7svXDPkiN)pWEySJ3XNLdWJnWiV66x+Cl/jT3-e-ao3psm",
+      "version": "PASS_072_TOTAL_SYSTEM_RECURSIVE_HOLOGRAPHIC_CLOSURE_V1"
+    },
+    {
+      "authority": "HHS_PASS072_TOTAL_SYSTEM_CLOSURE_AUTHORITY_V1",
+      "direction": "WHOLE_TO_PART",
+      "identity_path_root_hash72": "LBqEBMlTzPHsfOCrpy5JYPlv0X0RoBYyBZuQ+4yc7H3!UVc5g-x(lTx+j?HD/0aSxxdrpKtR",
+      "identity_preserved": true,
+      "path": [
+        "a9vD7nmok+y)EartzNbn/?Dy1P7svXDPkiN)pWEySJ3XNLdWJnWiV66x+Cl/jT3-e-ao3psm",
+        "xvyPunziiBHDfrXdifllu-k2*rmZIcJ/AZm4FgRDyws)oGv2GjryFhtp2TbaL1EuhHRdm0Vu",
+        "70NHsn4lXh-U20Yu<GjLev8X*FIrVDpEq<zfYI?*<C!B6kSz!db/BI4?>DiEo22)x4CE>?4w"
+      ],
+      "schema": "HHS_RECURSIVE_IDENTITY_PATH_V1",
+      "source_root_hash72": "a9vD7nmok+y)EartzNbn/?Dy1P7svXDPkiN)pWEySJ3XNLdWJnWiV66x+Cl/jT3-e-ao3psm",
+      "subsystem_id": "QUDIT81_KERNEL",
+      "target_root_hash72": "70NHsn4lXh-U20Yu<GjLev8X*FIrVDpEq<zfYI?*<C!B6kSz!db/BI4?>DiEo22)x4CE>?4w",
+      "version": "PASS_072_TOTAL_SYSTEM_RECURSIVE_HOLOGRAPHIC_CLOSURE_V1"
+    },
+    {
+      "authority": "HHS_PASS072_TOTAL_SYSTEM_CLOSURE_AUTHORITY_V1",
+      "direction": "PART_TO_WHOLE",
+      "identity_path_root_hash72": "7tIXoczrD0utCelnQcaKbyRUjhsExeBjbuDq0-36nW/ylJ(Zb9XbohBcqzFJbSKfjolOp1WL",
+      "identity_preserved": true,
+      "path": [
+        "yHVzLR-R>b28BhqqJWb0uB3G*owZUlI2!GTY5PD8+ryYOqgx/Gapu)hdc0vEaCaUdhtJjXR!",
+        "Lv+/jY8ShdMdol2!zHp8/h/fbY?)Z!rvv39K6!894Ik3(okVHaRxlijxy(jS1S3!cI)BEqC7",
+        "a9vD7nmok+y)EartzNbn/?Dy1P7svXDPkiN)pWEySJ3XNLdWJnWiV66x+Cl/jT3-e-ao3psm"
+      ],
+      "schema": "HHS_RECURSIVE_IDENTITY_PATH_V1",
+      "source_root_hash72": "yHVzLR-R>b28BhqqJWb0uB3G*owZUlI2!GTY5PD8+ryYOqgx/Gapu)hdc0vEaCaUdhtJjXR!",
+      "subsystem_id": "HOLOFRACTAL_PHASE_GEAR_PATHFINDER",
+      "target_root_hash72": "a9vD7nmok+y)EartzNbn/?Dy1P7svXDPkiN)pWEySJ3XNLdWJnWiV66x+Cl/jT3-e-ao3psm",
+      "version": "PASS_072_TOTAL_SYSTEM_RECURSIVE_HOLOGRAPHIC_CLOSURE_V1"
+    },
+    {
+      "authority": "HHS_PASS072_TOTAL_SYSTEM_CLOSURE_AUTHORITY_V1",
+      "direction": "WHOLE_TO_PART",
+      "identity_path_root_hash72": "<HaBMVkDNW?Am9bizOEEh76dJFrEdZNhiPt(Ml4tgs4okTSD4fLlkZqhR+lqqGdgDRXkh<aA",
+      "identity_preserved": true,
+      "path": [
+        "a9vD7nmok+y)EartzNbn/?Dy1P7svXDPkiN)pWEySJ3XNLdWJnWiV66x+Cl/jT3-e-ao3psm",
+        "Lv+/jY8ShdMdol2!zHp8/h/fbY?)Z!rvv39K6!894Ik3(okVHaRxlijxy(jS1S3!cI)BEqC7",
+        "yHVzLR-R>b28BhqqJWb0uB3G*owZUlI2!GTY5PD8+ryYOqgx/Gapu)hdc0vEaCaUdhtJjXR!"
+      ],
+      "schema": "HHS_RECURSIVE_IDENTITY_PATH_V1",
+      "source_root_hash72": "a9vD7nmok+y)EartzNbn/?Dy1P7svXDPkiN)pWEySJ3XNLdWJnWiV66x+Cl/jT3-e-ao3psm",
+      "subsystem_id": "HOLOFRACTAL_PHASE_GEAR_PATHFINDER",
+      "target_root_hash72": "yHVzLR-R>b28BhqqJWb0uB3G*owZUlI2!GTY5PD8+ryYOqgx/Gapu)hdc0vEaCaUdhtJjXR!",
+      "version": "PASS_072_TOTAL_SYSTEM_RECURSIVE_HOLOGRAPHIC_CLOSURE_V1"
+    },
+    {
+      "authority": "HHS_PASS072_TOTAL_SYSTEM_CLOSURE_AUTHORITY_V1",
+      "direction": "PART_TO_WHOLE",
+      "identity_path_root_hash72": "-/<pJBt2(acJapfiDNmhyW62Y!V4VxxstnObD!8qsS?QREYgaLqt0tAuIDvM?5mXCI4jKR3S",
+      "identity_preserved": true,
+      "path": [
+        "uLs>CRDVEr041U4Wi<yx(3OI6un+FMb*T0/g3R8hhsmFcYcZ7u6isiQj(nEvLk!RR<w8>LMI",
+        "9ZYQriA++ksFXsmkO9qvDfLu!iI4SEOIJgrg4<bDcm4A!VPAGc0X/(p2xFR>NNtqr22E-KLS",
+        "a9vD7nmok+y)EartzNbn/?Dy1P7svXDPkiN)pWEySJ3XNLdWJnWiV66x+Cl/jT3-e-ao3psm"
+      ],
+      "schema": "HHS_RECURSIVE_IDENTITY_PATH_V1",
+      "source_root_hash72": "uLs>CRDVEr041U4Wi<yx(3OI6un+FMb*T0/g3R8hhsmFcYcZ7u6isiQj(nEvLk!RR<w8>LMI",
+      "subsystem_id": "CONTINUITY_AND_REVALIDATION",
+      "target_root_hash72": "a9vD7nmok+y)EartzNbn/?Dy1P7svXDPkiN)pWEySJ3XNLdWJnWiV66x+Cl/jT3-e-ao3psm",
+      "version": "PASS_072_TOTAL_SYSTEM_RECURSIVE_HOLOGRAPHIC_CLOSURE_V1"
+    },
+    {
+      "authority": "HHS_PASS072_TOTAL_SYSTEM_CLOSURE_AUTHORITY_V1",
+      "direction": "WHOLE_TO_PART",
+      "identity_path_root_hash72": "B+WEDzc!!OOmHooRNj-F)x+ogqVJCtlc4qK/yR(B-?6(6H/6FCly!C)R7S0eT0L>XgYaDxhi",
+      "identity_preserved": true,
+      "path": [
+        "a9vD7nmok+y)EartzNbn/?Dy1P7svXDPkiN)pWEySJ3XNLdWJnWiV66x+Cl/jT3-e-ao3psm",
+        "9ZYQriA++ksFXsmkO9qvDfLu!iI4SEOIJgrg4<bDcm4A!VPAGc0X/(p2xFR>NNtqr22E-KLS",
+        "uLs>CRDVEr041U4Wi<yx(3OI6un+FMb*T0/g3R8hhsmFcYcZ7u6isiQj(nEvLk!RR<w8>LMI"
+      ],
+      "schema": "HHS_RECURSIVE_IDENTITY_PATH_V1",
+      "source_root_hash72": "a9vD7nmok+y)EartzNbn/?Dy1P7svXDPkiN)pWEySJ3XNLdWJnWiV66x+Cl/jT3-e-ao3psm",
+      "subsystem_id": "CONTINUITY_AND_REVALIDATION",
+      "target_root_hash72": "uLs>CRDVEr041U4Wi<yx(3OI6un+FMb*T0/g3R8hhsmFcYcZ7u6isiQj(nEvLk!RR<w8>LMI",
+      "version": "PASS_072_TOTAL_SYSTEM_RECURSIVE_HOLOGRAPHIC_CLOSURE_V1"
+    }
+  ],
+  "schema": "HHS_RECURSIVE_IDENTITY_PATH_REGISTRY_V1",
+  "version": "PASS_072_TOTAL_SYSTEM_RECURSIVE_HOLOGRAPHIC_CLOSURE_V1",
+  "whole_identity_root_hash72": "a9vD7nmok+y)EartzNbn/?Dy1P7svXDPkiN)pWEySJ3XNLdWJnWiV66x+Cl/jT3-e-ao3psm",
+  "whole_to_part_path_count": 9
+}

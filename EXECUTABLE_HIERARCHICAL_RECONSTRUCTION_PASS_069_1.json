@@ -1,0 +1,12 @@
+{
+  "admitted_lattice_block_root_hash72": "4wIilTYf3qhD(gDTlAERJ<zuFZUD/BH7GyRsp<WL3QmiTimsBpE*VKSDD2-cZdl2QrSt5S*J",
+  "authority": "HHS_THREE_LANE_QUDIT_KERNEL_AUTHORITY_V1",
+  "hierarchical_reconstruction_verified": true,
+  "lattice_block_matches": true,
+  "reconstructed_lattice_block_root_hash72": "4wIilTYf3qhD(gDTlAERJ<zuFZUD/BH7GyRsp<WL3QmiTimsBpE*VKSDD2-cZdl2QrSt5S*J",
+  "reconstruction_root_hash72": "/mijonKZhbQ8QJ-IjYy-/oVrWN>>TH5Xs/vu<3ANcyYY!aP<b9DHgY9VJp)opZ1v5*/m<t3u",
+  "router_matches": true,
+  "schema": "HHS_EXECUTABLE_HIERARCHICAL_RECONSTRUCTION_V1",
+  "subgrids_match": true,
+  "version": "PASS_068_1_DYNAMIC_CLOSURE_REPAIR_V1"
+}

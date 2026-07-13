@@ -372,7 +372,7 @@ export const RuntimeGraphRenderer: React.FC<
                     replay:
                     {" "}
                     {
-                        runtimeOS.state
+                        runtimeOS.getMetrics()
                             .replayReady
                                 ? "online"
                                 : "offline"
@@ -383,7 +383,7 @@ export const RuntimeGraphRenderer: React.FC<
                     transport:
                     {" "}
                     {
-                        runtimeOS.state
+                        runtimeOS.getMetrics()
                             .transportReady
                                 ? "online"
                                 : "offline"

@@ -31,6 +31,8 @@ from typing import Dict, List, Optional, Callable, Any
 from hhs_python.runtime.hhs_ctypes_bridge import (
     HHSRuntimeBridge
 )
+from hhs_runtime.hhs_authority_gate_v1 import assert_runtime_authorized
+from hhs_runtime.hhs_unified_hash72_ledger_v1 import append_payload
 
 # ============================================================================
 # RUNTIME EVENTS
@@ -92,6 +94,8 @@ class HHSRuntimeController:
         self.execution_history = []
 
         self.replay_cache = []
+
+        self.authority_audit_cache = []
 
     # =====================================================================
     # EVENT SYSTEM
@@ -232,7 +236,32 @@ class HHSRuntimeController:
                     self.runtime.receipt_hash72,
             }
 
+            runtime_state = (
+                self.runtime.export_runtime_dict()
+            )
+
+            authority_audit = assert_runtime_authorized(
+                runtime_state,
+                source="HHSRuntimeController.commit_receipt",
+                receipt=receipt_data,
+                require_receipt=True,
+            ).to_dict()
+
+            receipt_data["authority_audit"] = authority_audit
+
+            unified_ledger = append_payload(
+                "RUNTIME_RECEIPT",
+                "HHSRuntimeController.commit_receipt",
+                receipt_data,
+            )
+            receipt_data["unified_ledger"] = {
+                "entry_count": unified_ledger.get("entry_count"),
+                "tip_hash72": unified_ledger.get("tip_hash72"),
+                "ledger_hash72": unified_ledger.get("ledger_hash72"),
+            }
+
             self.replay_cache.append(receipt_data)
+            self.authority_audit_cache.append(authority_audit)
 
             self.emit_event(
                 EVENT_RECEIPT_COMMIT,
@@ -240,6 +269,35 @@ class HHSRuntimeController:
             )
 
             return receipt_data
+
+    # ---------------------------------------------------------------------
+
+    def authorized_tick(self, source: str = "HHSRuntimeController.authorized_tick"):
+        """Advance one runtime step and commit through the authority gate.
+
+        This is the canonical automatic execution path for emulator/API/GUI
+        callers. Direct ``step`` remains available for low-level diagnostics,
+        but production execution chains should use this method so Hash72 and
+        invariant validation cannot be bypassed.
+        """
+
+        with self.runtime_lock:
+
+            runtime_state = self.step()
+            receipt_data = self.commit_receipt()
+
+            authority_audit = assert_runtime_authorized(
+                runtime_state,
+                source=source,
+                receipt=receipt_data,
+                require_receipt=True,
+            ).to_dict()
+
+            return {
+                "runtime": runtime_state,
+                "receipt": receipt_data,
+                "authority_audit": authority_audit,
+            }
 
     # =====================================================================
     # SANDBOXES
@@ -290,8 +348,26 @@ class HHSRuntimeController:
         sandbox = self.sandboxes[sandbox_id]
 
         sandbox.runtime.runtime_step()
+        sandbox.runtime.receipt_commit()
 
-        return sandbox.runtime.export_runtime_dict()
+        runtime_state = sandbox.runtime.export_runtime_dict()
+        receipt_data = {
+            "step": sandbox.runtime.step,
+            "state_hash72": sandbox.runtime.state_hash72,
+            "receipt_hash72": sandbox.runtime.receipt_hash72,
+        }
+
+        authority_audit = assert_runtime_authorized(
+            runtime_state,
+            source="HHSRuntimeController.sandbox_step",
+            receipt=receipt_data,
+            require_receipt=True,
+        ).to_dict()
+
+        runtime_state["authority_audit"] = authority_audit
+        runtime_state["receipt"] = receipt_data
+
+        return runtime_state
 
     # =====================================================================
     # REPLAY

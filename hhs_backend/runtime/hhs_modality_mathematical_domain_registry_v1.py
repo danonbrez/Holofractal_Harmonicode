@@ -1,0 +1,2 @@
+from .hhs_dynamic_lo_shu_agent_tensor_v1 import dynamic_lo_shu_agent_tensor_self_test
+def self_test(): return dynamic_lo_shu_agent_tensor_self_test()

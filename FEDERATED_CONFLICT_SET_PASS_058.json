@@ -1,0 +1,41 @@
+{
+  "conflict_set": {
+    "agreements": [
+      {
+        "field": "counter",
+        "value": 8
+      }
+    ],
+    "authority": "HHS_I019_CANONICAL_FEDERATED_STATE_RECONCILIATION_V1",
+    "common_ancestor_root_hash72": "*oKkH8<jt8gQydzcAq(Yzc>QTsp5vYtkxXsSw136uG)jv(Jy?852J>V?IOJ*vJmGh<9nsPOp",
+    "conflict_count": 1,
+    "conflict_set_root_hash72": "l!8X5Z+ZyaAGFPfj(UmYBfleadU6p15lAlG<T+tQC/Ky6uXy<y<R21c9kJ17cACYuel!Csc)",
+    "conflicts": [
+      {
+        "field": "document",
+        "local_value": "v2",
+        "remote_value": "v3-partition",
+        "status": "PRESERVED_UNRESOLVED"
+      }
+    ],
+    "conflicts_preserved": true,
+    "local_only": [
+      {
+        "field": "policy",
+        "value": "strict"
+      }
+    ],
+    "local_snapshot_root_hash72": "c4SFr)376cb4B5x/nu?O-MpA0k<lr*ygMQy8OR7nnHoISOztti/*0ccsz5O4gZmBvUj7YRDl",
+    "reasons": [],
+    "remote_only": [
+      {
+        "field": "remote_note",
+        "value": "preserve"
+      }
+    ],
+    "remote_snapshot_root_hash72": "+Tnp5E17Cf13e?WJ-3WEONw4D7mFXsUBJ2N65Nlx3usGtbLjJ19DcAp+-BKzSS31LEn)Wz1F",
+    "schema": "HHS_FEDERATED_STATE_CONFLICT_SET_V1",
+    "version": "PASS_058_CANONICAL_FEDERATED_STATE_RECONCILIATION_CONFLICT_PRESERVING_MERGE_V1"
+  },
+  "schema": "HHS_FEDERATED_CONFLICT_SET_PASS_058_V1"
+}

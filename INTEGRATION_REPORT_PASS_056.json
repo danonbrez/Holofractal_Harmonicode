@@ -1,0 +1,20 @@
+{
+  "canonical_continuation": true,
+  "conformance_edge_count": 2315,
+  "conformance_root_hash72": "DrkQD/<5pf1TyPSimYv7/IarZK2a<<ArY<hf1(omd4v*Z*BctWUhPzSnk8DoqH*oLeLfBY3f",
+  "delegation_non_amplifying": true,
+  "local_revalidation_required": true,
+  "name": "Distributed Authority Federation and Witnessed Delegation Chains",
+  "ok": true,
+  "orphan_count": 0,
+  "pass": "056",
+  "reachability_root_hash72": "db2wz*s4bT*d4Tbfk9+Rh6Wts9(!xDPvcN9H8gtBfp7ULsq4cfKRZGuY9vo0++)tA0S4gLbN",
+  "remote_result_is_local_authority": false,
+  "revocation_propagation_verified": true,
+  "run_root_hash72": "*oKkH8<jt8gQydzcAq(Yzc>QTsp5vYtkxXsSw136uG)jv(Jy?852J>V?IOJ*vJmGh<9nsPOp",
+  "schema": "HHS_PASS_056_INTEGRATION_REPORT_V1",
+  "service_count": 142,
+  "surface_count": 165,
+  "underived_service_count": 0,
+  "underived_surface_count": 0
+}

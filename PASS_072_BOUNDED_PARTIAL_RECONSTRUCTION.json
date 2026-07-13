@@ -1,0 +1,27 @@
+{
+  "admitted_total_system_root_hash72": "ZF9bto?tV>P(KcFPL5L+csyy!jxdrAaadua1a!w-uwug8/MeMSqSS3*R>lXIefi)nyjXpc+)",
+  "all_selected_capsules_match": true,
+  "authority": "HHS_PASS072_TOTAL_SYSTEM_CLOSURE_AUTHORITY_V1",
+  "bounded": true,
+  "fresh_parent_pass071_root_hash72": "O+0/3dn0KX?!0ENFJ(bowzP3(Hl08cCJ/yQMh(ABjkupVznBWY2<gGgbpt!C!8<he(e*yln*",
+  "maximum_bounded_subsystems": 9,
+  "reconstructed_root_matches_admitted_root": true,
+  "reconstructed_total_system_root_hash72": "ZF9bto?tV>P(KcFPL5L+csyy!jxdrAaadua1a!w-uwug8/MeMSqSS3*R>lXIefi)nyjXpc+)",
+  "reconstruction_receipt_root_hash72": "H+TVhVcFVBPzDzig5HzxNj0<oA8fkb0Id7oNTsgeeGneLG?WBlLI2gVQ4a)zixYD8ycdcO9*",
+  "schema": "HHS_BOUNDED_PARTIAL_RECONSTRUCTION_V1",
+  "selected_capsule_matches": {
+    "FOLDED_PROGRAM_TOPOLOGY": true,
+    "HOLOFRACTAL_PHASE_GEAR_PATHFINDER": true,
+    "PASS071_RESTART_CAPSULE": true,
+    "QUDIT81_KERNEL": true
+  },
+  "selected_count": 4,
+  "selected_subsystem_ids": [
+    "PASS071_RESTART_CAPSULE",
+    "FOLDED_PROGRAM_TOPOLOGY",
+    "QUDIT81_KERNEL",
+    "HOLOFRACTAL_PHASE_GEAR_PATHFINDER"
+  ],
+  "status": "ADMIT_BOUNDED_PARTIAL_RECONSTRUCTION",
+  "version": "PASS_072_TOTAL_SYSTEM_RECURSIVE_HOLOGRAPHIC_CLOSURE_V1"
+}

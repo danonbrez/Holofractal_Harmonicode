@@ -58,6 +58,10 @@ export interface RuntimeOSConfig {
     graphEndpoint: string
 
     transportEndpoint: string
+
+    diagnosticsEnabled?: boolean
+
+    mobileMode?: boolean
 }
 
 // =========================================================
@@ -95,6 +99,12 @@ export class RuntimeOS {
     private readonly subscriptions:
         (() => void)[] = []
 
+    public readonly config:
+        RuntimeOSConfig
+
+    private readonly bootTimeMs =
+        Date.now()
+
     // =====================================================
     // Constructor
     // =====================================================
@@ -102,6 +112,9 @@ export class RuntimeOS {
     constructor(
         config: RuntimeOSConfig
     ) {
+
+        this.config =
+            config
 
         this.socketManager =
             new RuntimeSocketManager({
@@ -392,6 +405,24 @@ export class RuntimeOS {
 
     public getMetrics() {
 
+        const registryMetrics =
+            this.registry.metrics()
+
+        const storeMetrics =
+            this.store.getMetrics()
+
+        const socketMetrics =
+            this.socketManager.getMetrics() as {
+                runtimeConnected: boolean
+                replayConnected: boolean
+                graphConnected: boolean
+                transportConnected: boolean
+                totalEvents: number
+            }
+
+        const windowMetrics =
+            this.windowManager.getMetrics()
+
         return {
 
             initialized:
@@ -400,19 +431,62 @@ export class RuntimeOS {
             destroyed:
                 this.destroyed,
 
+            diagnosticsEnabled:
+                Boolean(
+                    this.config.diagnosticsEnabled
+                ),
+
+            mobileMode:
+                Boolean(
+                    this.config.mobileMode
+                ),
+
+            uptimeMs:
+                Date.now() - this.bootTimeMs,
+
+            connected:
+                socketMetrics.runtimeConnected,
+
+            replayReady:
+                socketMetrics.replayConnected,
+
+            graphReady:
+                socketMetrics.graphConnected,
+
+            transportReady:
+                socketMetrics.transportConnected,
+
+            totalEvents:
+                socketMetrics.totalEvents,
+
+            workspaceWindows:
+                windowMetrics.windows,
+
+            applicationsMounted:
+                registryMetrics.registeredApplications,
+
             registry:
-                this.registry.metrics(),
+                registryMetrics,
 
             store:
-                this.store.getMetrics(),
+                storeMetrics,
 
             sockets:
-                this.socketManager.getMetrics(),
+                socketMetrics,
 
             windows:
-                this.windowManager
-                    .getMetrics()
+                windowMetrics
         }
+    }
+
+    // =====================================================
+    // Destroy
+    // =====================================================
+
+    public shutdown():
+        void {
+
+        this.destroy()
     }
 
     // =====================================================

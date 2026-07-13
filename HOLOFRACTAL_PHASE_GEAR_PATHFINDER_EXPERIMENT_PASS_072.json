@@ -1,0 +1,569 @@
+{
+  "authority": "HHS_PASS072_EXACT_ROTATIONAL_PATH_AUTHORITY_V1",
+  "cell_coverage_count": 81,
+  "floating_point_used": false,
+  "holofractal_closure": true,
+  "kernel_global_closure": true,
+  "lattice_root_hash72": "s9q6ZCI!lm2Lx1zIdgquSd9rMuRC!GUJaLmB+)zFR4Dqy0rlR?!1A7)8LCa2wk67<//ghu+(",
+  "lo_shu_tensor": [
+    [
+      4,
+      9,
+      2
+    ],
+    [
+      3,
+      5,
+      7
+    ],
+    [
+      8,
+      1,
+      6
+    ]
+  ],
+  "local_loop_count": 9,
+  "local_loops": [
+    {
+      "authority": "HHS_PASS072_EXACT_ROTATIONAL_PATH_AUTHORITY_V1",
+      "cell_ids": [
+        "cell:00",
+        "cell:01",
+        "cell:02",
+        "cell:03",
+        "cell:04",
+        "cell:05",
+        "cell:06",
+        "cell:07",
+        "cell:08"
+      ],
+      "cell_roots_hash72": [
+        "p2h0ISB4X70<*I>sBTI/geDUhdk*S/9xCo4+W4JGs0jBHV-)RmdgZk))8MdWll87-TXgmErm",
+        "rXY(esTxaTy2WYUJhAN/2!BB8MT)sPs(Qt7M4C-(?3sQHJV2SpAzQo9+<hRkh1QZ/tpLyv2T",
+        "Y(RVMz0B!2vzF7y1D?p?Jrn90>scDMymCVDxM!+1J<AS<5fwCc4AuBlDfS6jRT/PPHYGjBrD",
+        "qTe2CH*UNU>gi5)R?evM-5cigdkOQzAnp467dAkoL9HrwOA2NjFrZKOkwhto4U5QlaqC00BO",
+        "SQzN/ODP39FuclCT4yGWo90UL)3X5IcboJ1xOf+dO0xJdYn+CKqqZvPyNEgJxALc7/sioDCs",
+        "c2VK!<pvp7!Dh*1uXi1A?+PeT(n3U>ra7(MPh-6og9-m!fjFUQUnDC*4pDKeVOC*8iKm?k4h",
+        "!2>R?X40VI2Xwdg/IFT(qIMmfPPCLTc>WhXRW0Y/z*r*7l-/8?qE9ppzgC19fOkQJ?3IxdWe",
+        "7k+Nw6)SoLsrQpBP9780A5+Fjq3HlfyLGaTT1eo!Kal3OOFsr+3g4gCUQ7VSiZC(ZJaMFV?R",
+        "*r!F<XRjYBfYZ8kpyUQOIZ28ftss*HIyh6KhzFvDcQYaRt-mi3j<s/rB4Pu?Hjz6Bpy*lC<G"
+      ],
+      "closed": true,
+      "domain_id": "FORMAL_ALGEBRA",
+      "intermediate_states_nonidentical": true,
+      "local_loop_root_hash72": "qww)czrv?D2ejGWGh!k*xk!*aARaG7uD<*BzXSjLDP8(JT0ji*WuksFDAuzJw671Wt4!mHuK",
+      "nonempty": true,
+      "orientation_path": [
+        0,
+        1,
+        2,
+        3,
+        0
+      ],
+      "reciprocal_invariants_preserved": true,
+      "schema": "HHS_SUBGRID_PHASE_GEAR_LOOP_V1",
+      "start_orientation": 0,
+      "subgrid_id": "subgrid:0",
+      "subgrid_loop_root_hash72": "6AQSD!Fx<QMDDv7c9eyv*35nM-0HoHYhKgRj*ww/vdNB12GvR)Ml?R2(e-mMC?sq5Wiu/rDk",
+      "subgrid_root_hash72": "f>uI0W16lXeVBjZ26aff(qsLt5(4L--Yvdi*u*FwLB2uI*HA)HsK+n-592B(WI5W!q5>V)F4",
+      "transition_count": 4,
+      "version": "PASS_072_HOLOFRACTAL_PHASE_GEAR_PATHFINDER_V1"
+    },
+    {
+      "authority": "HHS_PASS072_EXACT_ROTATIONAL_PATH_AUTHORITY_V1",
+      "cell_ids": [
+        "cell:09",
+        "cell:10",
+        "cell:11",
+        "cell:12",
+        "cell:13",
+        "cell:14",
+        "cell:15",
+        "cell:16",
+        "cell:17"
+      ],
+      "cell_roots_hash72": [
+        "htXf!5W0dP7eEOfK<6Jq?X4*7IFjPj9Wu88yuZ/QPWQoMPqjtocv?yiKPGMEmF>GkuDkM(tn",
+        ">Mc?Abfubpo*Bd<4L(Djyz*MQ8wnUb?uGTc97gWze3U?OYv2CRBy65QmkQ6x5Jqo?aLh+<j1",
+        "A0jsGJzS<ueKNy*4!R-kx*OsRF4?-RoSI0roLnkfb?dmRSImkkGRgFUzm>RtG)hHlUGle?i<",
+        "L63?4tR+e2uXUlf?CWBjY3No1B<LQW4aVP8>bpkaysmziQvenN9gGHSOAQ?tnURLm/jsH7vW",
+        "Op148qc*5IS2O8cMS?-BIc5QLwbpE9e5o2BE*5fJkAL8?8pu/ly-eIslZkdiNM-ZnDw1NN71",
+        "6+ct8aQ+jGdsjnYtJ1?iUN)YUJ)8lfOr(sjwzB*J5iaDeU!Lgwpos0C2FoIX1KflC2LC!J/a",
+        "EnA(NCMMu*nzfeZyCJSxIC8IfPA8iK67P>oiSEktUosjmdLA?>srkDCQgV8w7lLPoRIkcRgO",
+        "A2F*)>MHlL2*9GyAN9dUieW7z!cFMS4C-4CQwKJfryZb<8D!3gYMY7+7FQxKuxf(Fmx6LRT*",
+        "/94Yo-6PxQX(>rmoANRXTnq-p76b*D<3--QI1h!T1yjXANcIW<pJL8rxfWIZXtd<B*QBQH9k"
+      ],
+      "closed": true,
+      "domain_id": "SYMBOLIC_LOGIC",
+      "intermediate_states_nonidentical": true,
+      "local_loop_root_hash72": "aSfW*1VVIpazBCM32sUM18+wpOyeUudsMshn+>Ip(txb(xMrAgx6Rxji1Tt<+Gi1gp+(131A",
+      "nonempty": true,
+      "orientation_path": [
+        1,
+        2,
+        3,
+        0,
+        1
+      ],
+      "reciprocal_invariants_preserved": true,
+      "schema": "HHS_SUBGRID_PHASE_GEAR_LOOP_V1",
+      "start_orientation": 1,
+      "subgrid_id": "subgrid:1",
+      "subgrid_loop_root_hash72": "xcbx2anOQD98z?2VK>cL3Nin5G5MrQ6>Rb<-Zl/UZDSbLcF<qkk5!aK>1XWReQq3>ebbjfLw",
+      "subgrid_root_hash72": "?QyhIT?R*gwlD7bAlFtoN9kEwrWC**w5nb)v2iSm*Aw<l36TRgl(K0JGGIQN*>Wa-0yB1rtA",
+      "transition_count": 4,
+      "version": "PASS_072_HOLOFRACTAL_PHASE_GEAR_PATHFINDER_V1"
+    },
+    {
+      "authority": "HHS_PASS072_EXACT_ROTATIONAL_PATH_AUTHORITY_V1",
+      "cell_ids": [
+        "cell:18",
+        "cell:19",
+        "cell:20",
+        "cell:21",
+        "cell:22",
+        "cell:23",
+        "cell:24",
+        "cell:25",
+        "cell:26"
+      ],
+      "cell_roots_hash72": [
+        "gtc9(cN6szCzXi58AZbp!XXsIUIbnpacPll1o8ql6qh<HzcBFxn+3juyS4Zts+eS/JS1/c(r",
+        "/-EIp)8t09mgRmADca+Dx8lbCd*KYeEaAq(x)ZAu6sF4/YbNK<+x(S(CXhzFx2dBwtJ4zX<b",
+        "pD>/SWAY5Y+kmgcIgjN7kze4V2/YifnELgugZwtV4SBOukkcbPZ<ai7g2)X(X329svnjSZ/P",
+        "F70YKKloZzq4>SO068oGMAvRvaV1lY(1>r(x*o/Pf6y6K)W4wB64uUXg5sKg5>uO+KA?oMRg",
+        "FE-ngtLNOEKUi<VwQyLEPCE46cBD>XK(ge3ERc>Ug/f5SLeKrL>VLeUCpY(xqVxVo!f9jgOS",
+        "jYuZnUd4ULNy/)uA71>6O(GQUrVwLVBnUOy+>vwEm1SUxqz!j5sisWWLfH-TPam+fH2)60xB",
+        "ErUt(y9>7YpG)Ilq0yW>1y1HMUgF0BtmRC7NLsHMaQXrUVj8>8s3)IzMGwD!/W4tN8m0*QF3",
+        "nRMKe4WbCWqM1Ugbzyj/hdS*K0UGB-z6jX6euT>IVh24LkmG6C?O224?GBdbUo/5yUau-l1-",
+        "c3XF)qcHqKDPqe<IC+80lMCp4mXxNjdRaj)b+F*aq(Rntnm3?hUa(vpVkXCCd*L3IxQabPy!"
+      ],
+      "closed": true,
+      "domain_id": "SEMANTIC_TRANSLATION",
+      "intermediate_states_nonidentical": true,
+      "local_loop_root_hash72": "(!K7Z6(atdx2NC)9luOIzTA05kpn5FUvM9r!XJU8m5nwQQouw(--He9y6tFvAt39>e/!46F-",
+      "nonempty": true,
+      "orientation_path": [
+        2,
+        3,
+        0,
+        1,
+        2
+      ],
+      "reciprocal_invariants_preserved": true,
+      "schema": "HHS_SUBGRID_PHASE_GEAR_LOOP_V1",
+      "start_orientation": 2,
+      "subgrid_id": "subgrid:2",
+      "subgrid_loop_root_hash72": "jp+HNdbmb0aZVSny9*i4apba6dwFPFk01Nzr9qbZ8VVz2SbGXBAorbcXy(FCl8bNHQwN7id6",
+      "subgrid_root_hash72": "OvFO37?pGRM38BXnfP1zjh)!7Cf)g7T-G3YXEqslZ1Lw?3DnDCVzqbFMJvCZDjcWcV+m!y4b",
+      "transition_count": 4,
+      "version": "PASS_072_HOLOFRACTAL_PHASE_GEAR_PATHFINDER_V1"
+    },
+    {
+      "authority": "HHS_PASS072_EXACT_ROTATIONAL_PATH_AUTHORITY_V1",
+      "cell_ids": [
+        "cell:27",
+        "cell:28",
+        "cell:29",
+        "cell:30",
+        "cell:31",
+        "cell:32",
+        "cell:33",
+        "cell:34",
+        "cell:35"
+      ],
+      "cell_roots_hash72": [
+        "ZA2MoY6VHnw6/*/7vhtQBnQprq<SRkJWA9QiF8nUFk1b3oMra?7z7rv-8?psbwl3dcxlh5oo",
+        "JSMqgmwHBrWrod)/Otbx3Gg*KZgmSKoEN!)m/IPzsErTzl*>15OHEyiLo3jsCSk*O6zqIwTp",
+        "4!CjF*yh8Sv1rJwAi-w)Sc5?y<CI<vUV)UEEzGB-lnkI7*QS*-xuO?oGBYM7mMQfR?rr5OsQ",
+        "MDEd?FlXhTCaRzwwLD9BSiSL62n(k6umOZZZQjEdl)WWKYavuIG57kuh5Xd-3hWJ)TTc4UKM",
+        "EDgjXJtoVABcnkQmUai6D/tUVvW/vZ)dgqptzjcyOF-)*9rDJ/SX+T9ytysFm)439-mUDxi(",
+        "1)RN7n-?UHrDYHU4/RsBTS-iPyw6SOvdnJGPvCI)7QH5!ZgtgT8B1imxgVe8JHHEGs>DB6hG",
+        "ey)x?OHt(y!zed8ag9LRa8Igi6>8?ATSj3KT0XG<dn/!IYSdt+wW+cmLplEtlw>gkxkz+Hwm",
+        "3rOOopeT/okuRRBhMNu7(3qP+YbT-ADO16*kFSVQQa?altajUICZrXmX<7NhN0yVmDx(Eh>b",
+        "pX5g/)hczO*/LT2q4Ih-X27tWTKA?lKf*l?Vwuqra1(p/w7RSJkpoZmwBpr?5!vcoCf*NZc?"
+      ],
+      "closed": true,
+      "domain_id": "RUNTIME_EXECUTION",
+      "intermediate_states_nonidentical": true,
+      "local_loop_root_hash72": "/p-LZ8cHeVH/?zr>J?E/3lJ<pH<4PncqyVW)XMn+nUHCecmITa8KRap2nfIFg202AGyQv*qQ",
+      "nonempty": true,
+      "orientation_path": [
+        3,
+        0,
+        1,
+        2,
+        3
+      ],
+      "reciprocal_invariants_preserved": true,
+      "schema": "HHS_SUBGRID_PHASE_GEAR_LOOP_V1",
+      "start_orientation": 3,
+      "subgrid_id": "subgrid:3",
+      "subgrid_loop_root_hash72": "/xwZ1KV5dJLn?J?JDJ)(iETkCbYOqGTQmO<NyGND*uQY6xG7)ZZ58<fxttwh>zaTJ<NP2(86",
+      "subgrid_root_hash72": "2XCkynj)u>!z5VS>5x?L2xMY6W3rJPAqo6BBL!TctQ/mxO53?>?0bGzdtbxtqIk!wa(+ajNk",
+      "transition_count": 4,
+      "version": "PASS_072_HOLOFRACTAL_PHASE_GEAR_PATHFINDER_V1"
+    },
+    {
+      "authority": "HHS_PASS072_EXACT_ROTATIONAL_PATH_AUTHORITY_V1",
+      "cell_ids": [
+        "cell:36",
+        "cell:37",
+        "cell:38",
+        "cell:39",
+        "cell:40",
+        "cell:41",
+        "cell:42",
+        "cell:43",
+        "cell:44"
+      ],
+      "cell_roots_hash72": [
+        "x2XWp8Txe/7kpm(mqB*x>4HB?OvbY3i*11DLyhN<2wow-jy8(78VSANT<XNjdl81k8ja?jN6",
+        "95L<<mC1u++lmRW-8iZ>lD*ybs2kMK07IFvv-pmiTYEK8Zb-vuOgQZPfS!muddM54gqyDSDo",
+        "fbRDNcnyuC8nM>ZqKEI-Q/xg*9tdrXBmn5d8kxL1XxADG1VZ!0aM41)AGUHSTfZxoBGOJ(XD",
+        "r7uKsFSE0TQtYOGusZ4(MF1pQ3lX>w*BOxk>I4L4k1+xDVdq>iqyZTbjYnWv-Q8zQQ*E)HaZ",
+        "kRwrOz-Jvq(AwrM72iehaaZ2hsfGWX8lpH9H)732dm4Eh(xMHx*sTkV3YW5C6IpE34hDQYP6",
+        "EZ(/C7rILVs+sHY7N!>qgfy+T0mYuu93(BYG(saYhCfFl!shva<OM/bYrXCI/TC14/0)ZlYc",
+        "RPNaww+k8ngjfN2L*5zN9E-Myj0!uh5qWYisxuOs?n6ZNwD2vuv3PCj7UIDHaSHdSEbdQgQA",
+        "yV/LCbKmdLJWiRg1hFqUd<pLYk6rgOnBFdLgsChsVVG(nhA4V-?uSQ)LXRtS)Cj9<RgSxHwA",
+        "IDJGOQ4iuWyo0zp7)eTHWJKpUYSo+R7IM6sFMcP+UcWe-KugYy2mWCmhlmEoIg8st)9!BF5("
+      ],
+      "closed": true,
+      "domain_id": "PROVENANCE_AUDIT",
+      "intermediate_states_nonidentical": true,
+      "local_loop_root_hash72": "qww)czrv?D2ejGWGh!k*xk!*aARaG7uD<*BzXSjLDP8(JT0ji*WuksFDAuzJw671Wt4!mHuK",
+      "nonempty": true,
+      "orientation_path": [
+        0,
+        1,
+        2,
+        3,
+        0
+      ],
+      "reciprocal_invariants_preserved": true,
+      "schema": "HHS_SUBGRID_PHASE_GEAR_LOOP_V1",
+      "start_orientation": 0,
+      "subgrid_id": "subgrid:4",
+      "subgrid_loop_root_hash72": "pWZsJMcbJoXpR3NDLaGRCVW5xMYM//qPs!7ZNda*mVFha84sMySE6d5)x1!QxZ*2hj0bNgsh",
+      "subgrid_root_hash72": "An+7l!9uHgPhtT/v+k2gD3CDayRH-wef>fzuMu4XyH5iTY>p42A5!L9(Q!1G0wY7hCQkR5<I",
+      "transition_count": 4,
+      "version": "PASS_072_HOLOFRACTAL_PHASE_GEAR_PATHFINDER_V1"
+    },
+    {
+      "authority": "HHS_PASS072_EXACT_ROTATIONAL_PATH_AUTHORITY_V1",
+      "cell_ids": [
+        "cell:45",
+        "cell:46",
+        "cell:47",
+        "cell:48",
+        "cell:49",
+        "cell:50",
+        "cell:51",
+        "cell:52",
+        "cell:53"
+      ],
+      "cell_roots_hash72": [
+        "2ZAD+zi1VYa4?2oyC?Zp07e9whH0aqcjDBYv2db?W*Yxf72zx?B4kx8v*TT/-sHceDYv-ir/",
+        "SG?c9>9/<U?k5>KD52G5R+enYndY)V47*JX4mbd3qDhv6WjqHP9Y2!DRa3VJx>XHOFn71es*",
+        "KKv</m58FnFUK!2Nlon<MJw4Xpriw+m-U7GoiB1Jt3-PMUB7euvA7RkDT>Q2<p9>vzf>g8Ce",
+        "p>9+2f(7CM>VDke9(2CBLv6aa*E4Dh7+sCUuqvmIM?e3)yfMFbuw?+wW4?*IvQy2oB+Ro7gO",
+        "c9nxhO>cz9hAJ0V/r92i<T4<U>W*XbiBvhGqyG3JVZ28>T*?<*B0Dbx0rN4Czv)Z9H-j84rJ",
+        "Soe4gIE*55knGJVX*BRlG<z+dXg)/Nb?GpxdV58Cmk>82Exl8+Sn!v-Vjkq6tXe(F>svH<n<",
+        "/BY1aY6VbHccj*(kXt(xznVdGm(QTqke!rKzhCLF-STs9kJer?7xbsm<82bN>Aj99b!Tp?om",
+        "wM?bA17(UKeYEO3gNw8NgDRFLx-iv)ullmGny>XxIH6/T<CMR++02yzDgNIgnszg)9*>X1ss",
+        "e>QA>rmUt1)g3PvuP*OqcjlDsRFS954SH4R-7hiMqY>sPT!pEMqeUehTb3ZpHno6K6CoT4Z9"
+      ],
+      "closed": true,
+      "domain_id": "MULTIMODAL_FUSION",
+      "intermediate_states_nonidentical": true,
+      "local_loop_root_hash72": "aSfW*1VVIpazBCM32sUM18+wpOyeUudsMshn+>Ip(txb(xMrAgx6Rxji1Tt<+Gi1gp+(131A",
+      "nonempty": true,
+      "orientation_path": [
+        1,
+        2,
+        3,
+        0,
+        1
+      ],
+      "reciprocal_invariants_preserved": true,
+      "schema": "HHS_SUBGRID_PHASE_GEAR_LOOP_V1",
+      "start_orientation": 1,
+      "subgrid_id": "subgrid:5",
+      "subgrid_loop_root_hash72": "AqkEW)502KDDlA>*n!DTCdu!7qc+k<+k7iXUGbDojL6C7n/?sQpCZMHrWb-jUL!wIC/cO)X7",
+      "subgrid_root_hash72": "fGx2WZZ9AS(0j44+JZyslyy/knwZFoCGjD(a!5F38CP4xhGxWT8JI8plm/o6rt0nRwnx2)s>",
+      "transition_count": 4,
+      "version": "PASS_072_HOLOFRACTAL_PHASE_GEAR_PATHFINDER_V1"
+    },
+    {
+      "authority": "HHS_PASS072_EXACT_ROTATIONAL_PATH_AUTHORITY_V1",
+      "cell_ids": [
+        "cell:54",
+        "cell:55",
+        "cell:56",
+        "cell:57",
+        "cell:58",
+        "cell:59",
+        "cell:60",
+        "cell:61",
+        "cell:62"
+      ],
+      "cell_roots_hash72": [
+        "Ygpr(Q43hp(FoQ0n2tf*Jd1W7TGM79EN89J7KSyhFPqd5yJ940DwgLIJEw0k*qjcSaBa<fu)",
+        "t9J5VVB3?VhntFgIuJ/fO>lB)y/Ztz0/rq0k7Df<L3PZgBrkmdgTkFsbhMlCYk77)dwH<AqL",
+        "Pz82B1glHyKAHN0!bU!UmTqU0KEB8A)ehzRlrgm/z0yo0xmBgeQbj51UytLEJJJ8AeA5RPYN",
+        ")MbNL<q!jMSQs-YE(De-wB)T0EYQ!gsoNbwvYvN>Dkk26TBV/i)QX779)t<NF0Zu?t!ZodzF",
+        "s<0av<DfoE)jIIcuSL>IQtDB6umvK7ywX6V-11JU)M!)/cr0>9x5myvJnAyUphR4iLD2p7/Y",
+        "X6+/6yv9TdgKVmmFW9uFv/dYxu84Hblf/b*-z>dNxGI7N8gq5UKp+7k1wHKP<C2ZUd*Bicc-",
+        "FOU+2Uk+<QHn7<A0YrM!wgts0ioc9AEfnwdJYT8?OjdGbp0AyJB6W*In(T/Q(0u7w9ZLn?*i",
+        "uZu+LtFC*Eex6m6WapodTHgG>poU>6q8u>SNRZgervvw5??IhlqnYry+)kKc4LoCz1f?!m(w",
+        "4-69zQBeeCE+so1e6ZvJAK)eRFe2HTSH-SabMomdx6KRh->0U*BHNo(xzhv-DI)M?w+Kb/h-"
+      ],
+      "closed": true,
+      "domain_id": "CONSTRAINT_TOPOLOGY",
+      "intermediate_states_nonidentical": true,
+      "local_loop_root_hash72": "(!K7Z6(atdx2NC)9luOIzTA05kpn5FUvM9r!XJU8m5nwQQouw(--He9y6tFvAt39>e/!46F-",
+      "nonempty": true,
+      "orientation_path": [
+        2,
+        3,
+        0,
+        1,
+        2
+      ],
+      "reciprocal_invariants_preserved": true,
+      "schema": "HHS_SUBGRID_PHASE_GEAR_LOOP_V1",
+      "start_orientation": 2,
+      "subgrid_id": "subgrid:6",
+      "subgrid_loop_root_hash72": "yBI16N?aX!9vWx6xZwZ(UYz(YZATQyFrN<+i6bzjC7lMy+ojYoVF1G?UZg4XD/(JD1A)w3R/",
+      "subgrid_root_hash72": "s/sHh2R(mX)jhc(KAaN(*FEwcE5G+Z+xX/(5baE>tm1Z5d-VSQnoa!wtDeOqiL/v8cs44+M?",
+      "transition_count": 4,
+      "version": "PASS_072_HOLOFRACTAL_PHASE_GEAR_PATHFINDER_V1"
+    },
+    {
+      "authority": "HHS_PASS072_EXACT_ROTATIONAL_PATH_AUTHORITY_V1",
+      "cell_ids": [
+        "cell:63",
+        "cell:64",
+        "cell:65",
+        "cell:66",
+        "cell:67",
+        "cell:68",
+        "cell:69",
+        "cell:70",
+        "cell:71"
+      ],
+      "cell_roots_hash72": [
+        "K!Ro7oy-JKWCR!etupuA?gahT*9)6THq9(BBMnNiX9vI?1jcpXS4VPnZn82ckg6D*cU4Es/p",
+        "hgKVE25H20ZCSwmuYDv*Qr+***P!rTXXu*Yt2<57rmVkBxs((*y66Xp)B*VhrQh4+oPI6dDp",
+        "7Nlnlq<dp5G9n+yfhL9T5QxV)0a>Tnww/szcp(vclew)90gTKw1*yOe?cuzgrHYKNq!G(CoV",
+        "SJ7m-Zr(b*kHDUaP7h3J?95T2wOZvD>mRJ2MkeaRMJVUPmR)G)7t/(6EvdZ/fu?omfu/w6Z1",
+        "T*vGmfge*rdy9*PwdLK282Wu3wcP-NMX4PzmRaSAcTUf9WGAe-R/02UC!npu5Q5y9>dg6uZf",
+        "aM/<ual8o/hZ1J?6U/hw<wOJ3uml2unkj>pagnh0CU6b!l75Me*Z4x/9Syzytgcy)cs5rVfg",
+        "Rof7H1G/57EjHICHil<zasgDTHak)JnfBpMUn<4(<pBozE1UORCz!<>w2?e1pwJBa04YfOvl",
+        "cTzQp?1eE)7IeN!6Ui/p(rRek/y6x/37oLOcim+KRbmgD7-DAo4SvOehoWOTCQyc0CzAPrpx",
+        "tLP2dSTOUj7xa?1/+eZ2<j7>5SrVTmrshMsoT99grBkDJD)4TZXT8QVR9hXsNRYQN9dv+z!G"
+      ],
+      "closed": true,
+      "domain_id": "INFORMATION_ENERGY",
+      "intermediate_states_nonidentical": true,
+      "local_loop_root_hash72": "/p-LZ8cHeVH/?zr>J?E/3lJ<pH<4PncqyVW)XMn+nUHCecmITa8KRap2nfIFg202AGyQv*qQ",
+      "nonempty": true,
+      "orientation_path": [
+        3,
+        0,
+        1,
+        2,
+        3
+      ],
+      "reciprocal_invariants_preserved": true,
+      "schema": "HHS_SUBGRID_PHASE_GEAR_LOOP_V1",
+      "start_orientation": 3,
+      "subgrid_id": "subgrid:7",
+      "subgrid_loop_root_hash72": "Kt+UNqgQ0nWL65*>gt+z>N7Jm)vxd(otb?(ZuR>R>8iU(tHf7NVgoNWd6!9C6HVRCSDa1TKd",
+      "subgrid_root_hash72": "fauVSv48jTpQ3Ol4fUy9fQIJYW7w-vRv(H?>Li*u4zIk-ewD(4H*P>/(G!6H>JdlIE?sJcP8",
+      "transition_count": 4,
+      "version": "PASS_072_HOLOFRACTAL_PHASE_GEAR_PATHFINDER_V1"
+    },
+    {
+      "authority": "HHS_PASS072_EXACT_ROTATIONAL_PATH_AUTHORITY_V1",
+      "cell_ids": [
+        "cell:72",
+        "cell:73",
+        "cell:74",
+        "cell:75",
+        "cell:76",
+        "cell:77",
+        "cell:78",
+        "cell:79",
+        "cell:80"
+      ],
+      "cell_roots_hash72": [
+        "eKzL0S>nUpbSlkfne27CnbQ(PqYu)>ErY-(*baGq<OCBz4Gejx4grK+Dvr89f7smYl(BgDe4",
+        "<O3cIY-RHrwT6B8<?cg*(GfT<dyFwm4GA</ttp)06PWM2k4vmldnGKQxCsbwyDyro!pAwEYK",
+        "FzrLqIdVp-3bI>8zUbDeJqaxos)uYrTb6(q<YXka6q6xqGDyt)dj4Id-<c!0z/s71s0uND65",
+        "(4X4tpFB!-xIZQ5XL-j)?MfXZWasVty2f3L4??<Fv!lndXZ/qcjCon-cCn5Bq0iGOezRS-73",
+        "j<G7?ApBRQZ/A7QjwhKlmdxC!+JPJ3zYYtk?t3u6Yv6GX(RwF0aszg5h>ewmp0P?t-WE3jXJ",
+        "?!0s?r+4Bfdfxcud-/4Mt2n/Wrv)LAkFbGljc+0aj4noddOSppzVc1hb*wCQmOWb7qY0IH1A",
+        "XyOx/JUWy1drEdl*hRGBNhI8l>nm6+1Cj26LLhNT*TKzIpfIvW4mSaES?UVmDkJHD+drD11i",
+        "8xEHH/vXb7tl4dApjDh5qkEmnj116fvWxdlkS(+*(HDo9hQ/q<kgDZ7d*1N?ffATS/p9c4cA",
+        "dibjUmvR2DnF6VdJbg00F/whMnYk9n?j?T<ZvjE?8gN9H4oCXy-T0VwFW*Q8xhdHAhj?65Ox"
+      ],
+      "closed": true,
+      "domain_id": "CANONICAL_REVALIDATION",
+      "intermediate_states_nonidentical": true,
+      "local_loop_root_hash72": "qww)czrv?D2ejGWGh!k*xk!*aARaG7uD<*BzXSjLDP8(JT0ji*WuksFDAuzJw671Wt4!mHuK",
+      "nonempty": true,
+      "orientation_path": [
+        0,
+        1,
+        2,
+        3,
+        0
+      ],
+      "reciprocal_invariants_preserved": true,
+      "schema": "HHS_SUBGRID_PHASE_GEAR_LOOP_V1",
+      "start_orientation": 0,
+      "subgrid_id": "subgrid:8",
+      "subgrid_loop_root_hash72": "kr8j)11BPKSE>yHclT!T?h8)Kxsn7BN>ZEbWSDSu>y4szO3YYfV73)bzA)uSlE3IdHxWa6Z3",
+      "subgrid_root_hash72": "?JK(Mt5dSbX+/!v7j72PvibewY(h7/GZEQDEXKAAbFyaTEKwBwX6Ne!<w39>pPauei7*KMWG",
+      "transition_count": 4,
+      "version": "PASS_072_HOLOFRACTAL_PHASE_GEAR_PATHFINDER_V1"
+    }
+  ],
+  "local_periods": [
+    4,
+    4,
+    4,
+    4,
+    4,
+    4,
+    4,
+    4,
+    4
+  ],
+  "macro_loop": {
+    "all_81_cells_covered_once": true,
+    "all_intermediate_states_nonidentical": true,
+    "all_local_loops_closed": true,
+    "authority": "HHS_PASS072_EXACT_ROTATIONAL_PATH_AUTHORITY_V1",
+    "covered_cell_count": 81,
+    "kernel_global_closure": true,
+    "lattice_root_hash72": "s9q6ZCI!lm2Lx1zIdgquSd9rMuRC!GUJaLmB+)zFR4Dqy0rlR?!1A7)8LCa2wk67<//ghu+(",
+    "local_loop_count": 9,
+    "local_periods": [
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4
+    ],
+    "macro_loop_root_hash72": "VW-oP71sc72V6CcCywkvaM7?Ues/RQ5nWD<Oqu7u-56VXruKpSqshqFNSDWWgbT+Fyiv8X0s",
+    "phase_gear_root_hash72": "(G19fZi!5bMOjBCS(/G)r+i1nHxLsg+B0-SRX)mgbc3vm?HQPur9-y9zyXSO*Z-K)GtSy7sr",
+    "reciprocal_invariants_preserved": true,
+    "schema": "HHS_HOLOFRACTAL_PHASE_GEAR_MACRO_LOOP_V1",
+    "subgrid_loop_roots_hash72": [
+      "6AQSD!Fx<QMDDv7c9eyv*35nM-0HoHYhKgRj*ww/vdNB12GvR)Ml?R2(e-mMC?sq5Wiu/rDk",
+      "xcbx2anOQD98z?2VK>cL3Nin5G5MrQ6>Rb<-Zl/UZDSbLcF<qkk5!aK>1XWReQq3>ebbjfLw",
+      "jp+HNdbmb0aZVSny9*i4apba6dwFPFk01Nzr9qbZ8VVz2SbGXBAorbcXy(FCl8bNHQwN7id6",
+      "/xwZ1KV5dJLn?J?JDJ)(iETkCbYOqGTQmO<NyGND*uQY6xG7)ZZ58<fxttwh>zaTJ<NP2(86",
+      "pWZsJMcbJoXpR3NDLaGRCVW5xMYM//qPs!7ZNda*mVFha84sMySE6d5)x1!QxZ*2hj0bNgsh",
+      "AqkEW)502KDDlA>*n!DTCdu!7qc+k<+k7iXUGbDojL6C7n/?sQpCZMHrWb-jUL!wIC/cO)X7",
+      "yBI16N?aX!9vWx6xZwZ(UYz(YZATQyFrN<+i6bzjC7lMy+ojYoVF1G?UZg4XD/(JD1A)w3R/",
+      "Kt+UNqgQ0nWL65*>gt+z>N7Jm)vxd(otb?(ZuR>R>8iU(tHf7NVgoNWd6!9C6HVRCSDa1TKd",
+      "kr8j)11BPKSE>yHclT!T?h8)Kxsn7BN>ZEbWSDSu>y4szO3YYfV73)bzA)uSlE3IdHxWa6Z3"
+    ],
+    "total_rotation_steps": 36,
+    "version": "PASS_072_HOLOFRACTAL_PHASE_GEAR_PATHFINDER_V1"
+  },
+  "phase_gear": {
+    "authority": "HHS_PASS072_EXACT_ROTATIONAL_PATH_AUTHORITY_V1",
+    "floating_point_used": false,
+    "matrix": [
+      [
+        {
+          "denominator": 1,
+          "numerator": 2
+        },
+        {
+          "denominator": 1,
+          "numerator": -1
+        },
+        {
+          "denominator": 1,
+          "numerator": 3
+        }
+      ],
+      [
+        {
+          "denominator": 1,
+          "numerator": 1
+        },
+        {
+          "denominator": 2,
+          "numerator": 5
+        },
+        {
+          "denominator": 1,
+          "numerator": 1
+        }
+      ],
+      [
+        {
+          "denominator": 3,
+          "numerator": 1
+        },
+        {
+          "denominator": 1,
+          "numerator": -1
+        },
+        {
+          "denominator": 2,
+          "numerator": 1
+        }
+      ]
+    ],
+    "phase_gear_root_hash72": "(G19fZi!5bMOjBCS(/G)r+i1nHxLsg+B0-SRX)mgbc3vm?HQPur9-y9zyXSO*Z-K)GtSy7sr",
+    "reciprocal_normalization_valid": true,
+    "relations": {
+      "wz": "1",
+      "xy": "1",
+      "y": "x^-1",
+      "z": "w^-1"
+    },
+    "schema": "HHS_NORMALIZED_RECIPROCAL_PHASE_GEAR_V1",
+    "version": "PASS_072_HOLOFRACTAL_PHASE_GEAR_PATHFINDER_V1",
+    "w": {
+      "denominator": 3,
+      "numerator": 1
+    },
+    "x": {
+      "denominator": 1,
+      "numerator": 2
+    },
+    "y": {
+      "denominator": 2,
+      "numerator": 1
+    },
+    "z": {
+      "denominator": 1,
+      "numerator": 3
+    }
+  },
+  "rejection_codes": [
+    "REJECT_PHASE_GEAR_WITHOUT_RECIPROCAL_NORMALIZATION",
+    "REJECT_FLOATING_POINT_PHASE_STATE",
+    "REJECT_ZERO_LENGTH_LOOP_AS_COMPUTATION",
+    "REJECT_ROTATION_WITHOUT_HASH72_TRANSITION_WITNESS",
+    "REJECT_LOCAL_LOOP_WITHOUT_81_CELL_MEMBERSHIP",
+    "REJECT_HOLOFRACTAL_CLOSURE_WITH_OPEN_QUDIT_KERNEL"
+  ],
+  "rotation_operator_period": 4,
+  "run_root_hash72": "IuFerCr0d+WXUT6DPkxgXD10bomvouTmqVRgo/*>cS+VZ3z3nGz8KDP!es*LlkA<KMICp2+I",
+  "schema": "HHS_HOLOFRACTAL_PHASE_GEAR_PATHFINDER_V1",
+  "total_rotation_steps": 36,
+  "version": "PASS_072_HOLOFRACTAL_PHASE_GEAR_PATHFINDER_V1"
+}

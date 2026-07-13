@@ -1,0 +1,104 @@
+{
+  "nodes": [
+    {
+      "agent_id": "agent:minimal-direct",
+      "authority": "HHS_EVOLUTIONARY_AGENT_IDENTITY_AUTHORITY_V1",
+      "cache_projection_claims_source_identity": false,
+      "edges": [
+        {
+          "edge": "RESOLVED_CONSTRAINT",
+          "target": "constraint:A=B:integration"
+        },
+        {
+          "edge": "DERIVES_FROM",
+          "target": "TT9XiJ0kliogL<yD8A8Hk-enEvPS3QikPSIKU)oOWy0PC+I+ZGKkgo!H680o17TyGiMlqm6S"
+        },
+        {
+          "edge": "COOPERATED_WITH",
+          "target": "agent:bridge"
+        },
+        {
+          "edge": "COOPERATED_WITH",
+          "target": "agent:contract"
+        }
+      ],
+      "knowledge_graph_root_hash72": "!ZFB92FT81HmyVDcCFUc6Rf50<6lmqVQhu-A?24wFtiGq)gFD*xnEgg0+O049iS8g0dP/TEb",
+      "modalities": [
+        "FORMAL_ALGEBRA",
+        "SEMANTIC_TEXT",
+        "RUNTIME_RECEIPT"
+      ],
+      "node_id": "kg:agent:minimal-direct",
+      "schema": "HHS_MULTIMODAL_AGENT_KNOWLEDGE_GRAPH_NODE_V1",
+      "source_identity_preserved": true,
+      "version": "PASS_066_CANONICAL_RESOLUTION_AGENT_ECONOMY_V1"
+    },
+    {
+      "agent_id": "agent:bridge",
+      "authority": "HHS_EVOLUTIONARY_AGENT_IDENTITY_AUTHORITY_V1",
+      "cache_projection_claims_source_identity": false,
+      "edges": [
+        {
+          "edge": "RESOLVED_CONSTRAINT",
+          "target": "constraint:A=B:integration"
+        },
+        {
+          "edge": "DERIVES_FROM",
+          "target": "P5mFedG/ikX6tx!-NEPNKjqfyTpX9w>ch+oX3DdeU4yI3Vy14dOIa8Nbb*FJU/1VD<HRD4rF"
+        },
+        {
+          "edge": "COOPERATED_WITH",
+          "target": "agent:minimal-direct"
+        },
+        {
+          "edge": "COOPERATED_WITH",
+          "target": "agent:contract"
+        }
+      ],
+      "knowledge_graph_root_hash72": "nuJG/PElj4Y6cPhgopHygXi/p29ApIhd1tLRfmSPg(mCbHfRgXDhcmV4P()N!Di7JXbSrUI(",
+      "modalities": [
+        "FORMAL_ALGEBRA",
+        "SEMANTIC_TEXT",
+        "RUNTIME_RECEIPT"
+      ],
+      "node_id": "kg:agent:bridge",
+      "schema": "HHS_MULTIMODAL_AGENT_KNOWLEDGE_GRAPH_NODE_V1",
+      "source_identity_preserved": true,
+      "version": "PASS_066_CANONICAL_RESOLUTION_AGENT_ECONOMY_V1"
+    },
+    {
+      "agent_id": "agent:contract",
+      "authority": "HHS_EVOLUTIONARY_AGENT_IDENTITY_AUTHORITY_V1",
+      "cache_projection_claims_source_identity": false,
+      "edges": [
+        {
+          "edge": "RESOLVED_CONSTRAINT",
+          "target": "constraint:A=B:integration"
+        },
+        {
+          "edge": "DERIVES_FROM",
+          "target": ">1IfJ>prs7OA1val5Vr3(vJYq(adv!M-AWpuaWjNQh03I)BW0gzCEUi2GxyP4fUJdQ9/D0bE"
+        },
+        {
+          "edge": "COOPERATED_WITH",
+          "target": "agent:minimal-direct"
+        },
+        {
+          "edge": "COOPERATED_WITH",
+          "target": "agent:bridge"
+        }
+      ],
+      "knowledge_graph_root_hash72": "KHEjGIz/caw10RrNEcDiDPk)N+!C9pujI4BIHD!z1wVebHE3J3T8oaD7ZYi2WEX<c4gN?6H(",
+      "modalities": [
+        "FORMAL_ALGEBRA",
+        "SEMANTIC_TEXT",
+        "RUNTIME_RECEIPT"
+      ],
+      "node_id": "kg:agent:contract",
+      "schema": "HHS_MULTIMODAL_AGENT_KNOWLEDGE_GRAPH_NODE_V1",
+      "source_identity_preserved": true,
+      "version": "PASS_066_CANONICAL_RESOLUTION_AGENT_ECONOMY_V1"
+    }
+  ],
+  "schema": "HHS_MULTIMODAL_AGENT_KNOWLEDGE_GRAPH_PASS_066"
+}

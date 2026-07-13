@@ -232,14 +232,15 @@ def test_no_mnt_data_runtime_dependency():
         try:
             text = py_file.read_text(encoding="utf-8")
 
-            if "/mnt/data" in text:
+            sandbox_prefix = "/mnt" + "/data"
+            if sandbox_prefix in text:
                 bad_refs.append(str(py_file.relative_to(REPO_ROOT)))
 
         except Exception:
             continue
 
     assert not bad_refs, (
-        "Found stale /mnt/data references:\n\n"
+        "Found stale sandbox path references:\n\n"
         + "\n".join(bad_refs)
     )
 

@@ -1,0 +1,48 @@
+# Federated Transaction Commit Pass 059
+
+```json
+{
+  "commit_decision": {
+    "authority": "HHS_I019_CANONICAL_FEDERATED_TRANSACTION_AUTHORITY_V1",
+    "canonical_completion": false,
+    "commit_decision_root_hash72": "m?!SQhiUuwtKV(btbCL!Zlu0fVq4+e(5bu13TfGQWPam3)zyG4NKk1/B0MOVEoHuaLVCaGOx",
+    "commit_epoch": 9,
+    "commit_state": "COMMITTED",
+    "decision_witnessed": true,
+    "participant_success_confers_global_commit_authority": false,
+    "prepare_record_roots_hash72": [
+      "xmpR<UIbE998HlATtt5eMNX*XMkip<Qll8WQe?5!gvvCQw>7)9cLVH6kz(RfJv<)5EN!UROU",
+      "KJy9qnrstHPo>QGQ1SC<Z574Zcczk?7H)7U+3?QrMT(4tMAl!0EtZ*qW(Q*j<3LRvMt6g?*?"
+    ],
+    "reasons": [],
+    "schema": "HHS_FEDERATED_TRANSACTION_COMMIT_DECISION_V1",
+    "transaction_contract_root_hash72": "RpT9)S1y<xM/3?DS7aB8DPd6V7kzsquSREA>Rtv0Cx8s/WCr>r3aYoztEsn-SnHgsUr<P8da",
+    "version": "PASS_059_CANONICAL_FEDERATED_TRANSACTION_COMMIT_COMPENSATING_ROLLBACK_V1"
+  },
+  "participant_receipts": [
+    {
+      "authority": "HHS_I019_CANONICAL_FEDERATED_TRANSACTION_AUTHORITY_V1",
+      "commit_decision_root_hash72": "m?!SQhiUuwtKV(btbCL!Zlu0fVq4+e(5bu13TfGQWPam3)zyG4NKk1/B0MOVEoHuaLVCaGOx",
+      "effect_root_hash72": "w2eUq4-le*dt2ke1ykglkq9nkwssssMbUB<qQ2mxRMAOuXD0MKkPQRSTUVWXYZ-+*/()<>!z",
+      "participant_id": "runtime:local",
+      "participant_receipt_root_hash72": "UbN+5PzwTkW0-Xkz5j)<DAz!!Re8odNf+A!727Sl?UM8eeGUw1!N?yMokoWo(Kz/2Ag>usor",
+      "schema": "HHS_FEDERATED_PARTICIPANT_COMMIT_RECEIPT_V1",
+      "success": true,
+      "success_confers_global_authority": false,
+      "version": "PASS_059_CANONICAL_FEDERATED_TRANSACTION_COMMIT_COMPENSATING_ROLLBACK_V1"
+    },
+    {
+      "authority": "HHS_I019_CANONICAL_FEDERATED_TRANSACTION_AUTHORITY_V1",
+      "commit_decision_root_hash72": "m?!SQhiUuwtKV(btbCL!Zlu0fVq4+e(5bu13TfGQWPam3)zyG4NKk1/B0MOVEoHuaLVCaGOx",
+      "effect_root_hash72": "w2eUq4-le*dt2ke1ykglkq9nkwssssMbUB<qQ2mMsOJNuEPYTHVB(K7TRkWXYZ-+*/()<>!z",
+      "participant_id": "runtime:remote-a",
+      "participant_receipt_root_hash72": "J*Hd>+NJi9uNEyBaTpTdgu<P1AHSv?nEiPgMu+M?qEySsVWP27+k9G32J5WA)ntIF1Q>v+-D",
+      "schema": "HHS_FEDERATED_PARTICIPANT_COMMIT_RECEIPT_V1",
+      "success": true,
+      "success_confers_global_authority": false,
+      "version": "PASS_059_CANONICAL_FEDERATED_TRANSACTION_COMMIT_COMPENSATING_ROLLBACK_V1"
+    }
+  ],
+  "schema": "HHS_FEDERATED_TRANSACTION_COMMIT_PASS_059_V1"
+}
+```

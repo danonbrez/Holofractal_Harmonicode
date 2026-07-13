@@ -1,0 +1,10 @@
+{
+  "alignment_drift_root_hash72": "u4nA?dWwQ)ylO<li4VBawDoFLwmPuoZf6UraGE1vZ2QQ!kMrioVDXG?Z*R43OK0gLjTASdyW",
+  "authority": "HHS_PROMPT_RESPONSE_ALIGNMENT_AUTHORITY_V1",
+  "presentation_mutated_semantics": false,
+  "reasons": [],
+  "schema": "HHS_ALIGNMENT_DRIFT_DECISION_V1",
+  "semantic_drift": false,
+  "status": "ADMIT_NO_ALIGNMENT_DRIFT",
+  "version": "PASS_064_RECIPROCAL_PROMPT_RESPONSE_ALIGNMENT_AGENT_V1"
+}

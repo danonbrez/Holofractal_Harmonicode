@@ -1,0 +1,18 @@
+{
+  "canonical_continuation": true,
+  "conformance_edge_count": 3138,
+  "contradiction_implies_global_failure": false,
+  "linguistic_interpretation_inserted": false,
+  "minimum_necessary_cancellation": true,
+  "name": "Deterministic Manifold Execution and Scoped Phase-Cancellation Closure",
+  "ok": true,
+  "orphan_count": 0,
+  "pass": "063",
+  "run_root_hash72": "+pHwHDq0W6n-ANJG9)p?EZFCyNqZq?0L3jdDk!owh6o(/u(Bvh9D-hBxx?zwTS64Z/D*-(cH",
+  "schema": "HHS_PASS_063_INTEGRATION_REPORT_V1",
+  "service_count": 205,
+  "surface_count": 228,
+  "unaffected_structure_preserved": true,
+  "underived_service_count": 0,
+  "underived_surface_count": 0
+}

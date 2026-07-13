@@ -33,6 +33,8 @@ from typing import Dict, List, Set, Optional, Any
 
 from fastapi import WebSocket
 
+from hhs_runtime.hhs_runtime_dataflow_guard_v1 import attach_egress_record
+
 # ============================================================================
 # LOGGING
 # ============================================================================
@@ -255,7 +257,12 @@ class HHSRuntimeStreamManager:
 
         dead = []
 
-        encoded = json.dumps(packet)
+        guarded_packet = attach_egress_record(
+            "runtime_stream_manager.broadcast",
+            packet,
+        )
+
+        encoded = json.dumps(guarded_packet)
 
         for client_id, client in self.clients.items():
 
@@ -286,7 +293,12 @@ class HHSRuntimeStreamManager:
         if channel not in self.channels:
             return
 
-        encoded = json.dumps(packet)
+        guarded_packet = attach_egress_record(
+            f"runtime_stream_manager.broadcast_channel.{channel}",
+            packet,
+        )
+
+        encoded = json.dumps(guarded_packet)
 
         dead = []
 
@@ -334,7 +346,12 @@ class HHSRuntimeStreamManager:
             try:
 
                 await client.websocket.send_text(
-                    json.dumps(packet)
+                    json.dumps(
+                        attach_egress_record(
+                            "runtime_stream_manager.stream_replay",
+                            packet,
+                        )
+                    )
                 )
 
                 await asyncio.sleep(delay)

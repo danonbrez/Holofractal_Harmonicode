@@ -1,0 +1,2 @@
+from .hhs_three_lane_81_cell_qudit_kernel_v1 import three_lane_81_cell_kernel_self_test
+def self_test(): return three_lane_81_cell_kernel_self_test()

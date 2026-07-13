@@ -1,0 +1,48 @@
+{
+  "artifact_count": 5,
+  "artifacts": [
+    {
+      "artifact_id": "pass072_total_system_root",
+      "relative_path": "PASS_072_TOTAL_SYSTEM_ROOT.json",
+      "root_field": "total_system_root_hash72",
+      "root_value": "ZF9bto?tV>P(KcFPL5L+csyy!jxdrAaadua1a!w-uwug8/MeMSqSS3*R>lXIefi)nyjXpc+)",
+      "schema": "HHS_TOTAL_SYSTEM_ROOT_V1",
+      "sha256": "77bdd081872a66ee7a3cd0afc5ed53b7b1002f302ea0e66659e2e820ae309b12"
+    },
+    {
+      "artifact_id": "pass070_universal_binary_trinary_translation",
+      "relative_path": "UNIVERSAL_BINARY_TRINARY_TRANSLATION_PASS_070.json",
+      "root_field": "run_root_hash72",
+      "root_value": "4x7/dTn<Q5axZHyM/OryqrIl6ZJGuWKugBOKSjR054M)*SZbVZ0M!<bD3vd9Y1+FT!sQRr(T",
+      "schema": "HHS_UNIVERSAL_BINARY_TRINARY_TRANSLATION_V1",
+      "sha256": "1efe896d382a44e5d46edea6bd6eb51b25d8a926383cc9200068479f49589b5c"
+    },
+    {
+      "artifact_id": "pass070_binary_trinary_round_trip",
+      "relative_path": "BINARY_TRINARY_ROUND_TRIP_PASS_070.json",
+      "schema": "HHS_BINARY_TRINARY_ROUND_TRIP_REPORT_PASS_070",
+      "sha256": "a6b95ad8773b37e1623e7ce4d4eae3ad043393f958d70ab3d6786bad4e14ea04"
+    },
+    {
+      "artifact_id": "pass070_zero_sum_switching_closure",
+      "relative_path": "ZERO_SUM_SWITCHING_CLOSURE_PASS_070.json",
+      "schema": "HHS_ZERO_SUM_SWITCHING_CLOSURE_REPORT_PASS_070",
+      "sha256": "42c221a895d7c0ee3ee045b0654eb96256bb2314b89d3c49331bb5ca0009204b"
+    },
+    {
+      "artifact_id": "pass068_three_lane_81_cell_qudit_kernel",
+      "relative_path": "THREE_LANE_81_CELL_QUDIT_KERNEL_PASS_068.json",
+      "root_field": "lattice_root_hash72",
+      "root_value": "s9q6ZCI!lm2Lx1zIdgquSd9rMuRC!GUJaLmB+)zFR4Dqy0rlR?!1A7)8LCa2wk67<//ghu+(",
+      "schema": "HHS_81_CELL_TRINARY_QUDIT_LATTICE_V1",
+      "sha256": "38699b924aa9eb3f5d2829eef83cb4aa66e240df42db5d355f33aff9b7d57d53"
+    }
+  ],
+  "authority": "PASS073_NATIVE_WORKLOAD_READ_ONLY_INPUT_BINDING",
+  "foundation_mutation_allowed": false,
+  "frozen_parent_pass": "PASS_072",
+  "frozen_parent_root_hash72": "ZF9bto?tV>P(KcFPL5L+csyy!jxdrAaadua1a!w-uwug8/MeMSqSS3*R>lXIefi)nyjXpc+)",
+  "path_semantics": "REPOSITORY_RELATIVE_ONLY",
+  "schema": "HHS_PASS_073_CANONICAL_INPUT_MANIFEST_V1",
+  "version": "PASS_073_PORTABILITY_AND_PROVENANCE_REPAIR_V1"
+}

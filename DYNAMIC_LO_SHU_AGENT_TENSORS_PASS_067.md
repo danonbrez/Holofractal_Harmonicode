@@ -1,0 +1,2754 @@
+# DYNAMIC LO SHU AGENT TENSORS PASS 067
+
+```json
+{
+  "domain_runs": [
+    {
+      "domain_id": "FORMAL_ALGEBRA",
+      "tensor": {
+        "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+        "cells": [
+          {
+            "agent_id": "agent:minimal-direct:formal_algebra:1",
+            "candidate_root_hash72": "*z/FwlW>wGVsBO?QH>0l8Za-zzg6yfP4H>XD)VqP6u3<USU!Gdut4BShP(VKkY)MC?T(dJWX",
+            "column": 0,
+            "exact_weight": {
+              "denominator": 7,
+              "numerator": 14400
+            },
+            "lo_shu_value": 4,
+            "row": 0
+          },
+          {
+            "agent_id": "agent:bridge:formal_algebra:2",
+            "candidate_root_hash72": "dMFG/xzG1neuX1i3iuYb<>e5C4W(nlcvNsLSBizWc!yU(L<<JFfu)fC+-7iL2jk?fOVHbBjV",
+            "column": 1,
+            "exact_weight": {
+              "denominator": 1,
+              "numerator": 2400
+            },
+            "lo_shu_value": 9,
+            "row": 0
+          },
+          {
+            "agent_id": "agent:minimal-direct:formal_algebra:4",
+            "candidate_root_hash72": "*z/FwlW>wGVsBO?QH>0jcXa-zzg9vfP4H>XD)VqP6u3<USU!Gdut4BShP(VKkY)MC?T(dJWX",
+            "column": 2,
+            "exact_weight": {
+              "denominator": 7,
+              "numerator": 3600
+            },
+            "lo_shu_value": 2,
+            "row": 0
+          },
+          {
+            "agent_id": "agent:minimal-direct:formal_algebra:7",
+            "candidate_root_hash72": "*z/FwlW>wGVsBO?QH>0j6/a-zzgcsfP4H>XD)VqP6u3<USU!Gdut4BShP(VKkY)MC?T(dJWX",
+            "column": 0,
+            "exact_weight": {
+              "denominator": 7,
+              "numerator": 3600
+            },
+            "lo_shu_value": 3,
+            "row": 1
+          },
+          {
+            "agent_id": "agent:contract:formal_algebra:3",
+            "candidate_root_hash72": "S7ZACg>IDsCd!IfuxoDXwyDCXKvR8L!63E8DqnM)8WUN?zS5(jF2p*C70H*teX6EB2D)0*3R",
+            "column": 1,
+            "exact_weight": {
+              "denominator": 1,
+              "numerator": 750
+            },
+            "lo_shu_value": 5,
+            "row": 1
+          },
+          {
+            "agent_id": "agent:bridge:formal_algebra:5",
+            "candidate_root_hash72": "dMFG/xzG1neq+1i3iuYe/>e5C4W(nlcvNsLSBizWc!yU(L<<JFfu)fC+-7iL2jk?fOVHbBjV",
+            "column": 2,
+            "exact_weight": {
+              "denominator": 3,
+              "numerator": 2800
+            },
+            "lo_shu_value": 7,
+            "row": 1
+          },
+          {
+            "agent_id": "agent:minimal-direct:formal_algebra:10",
+            "candidate_root_hash72": "FQLnm>5NmPQyfn+SasAzh<-/Tav)uDbukq5>+KB1n*wDA23wGf7ZWboUKU-X5u(mzRO>CPp9",
+            "column": 0,
+            "exact_weight": {
+              "denominator": 7,
+              "numerator": 7200
+            },
+            "lo_shu_value": 8,
+            "row": 2
+          },
+          {
+            "agent_id": "agent:bridge:formal_algebra:8",
+            "candidate_root_hash72": "dMFG/xzG1neuX1i3iuYh->e5C4W(nlcvNsLSBizWc!yU(L<<JFfu)fC+-7iL2jk?fOVHbHdV",
+            "column": 1,
+            "exact_weight": {
+              "denominator": 9,
+              "numerator": 800
+            },
+            "lo_shu_value": 1,
+            "row": 2
+          },
+          {
+            "agent_id": "agent:contract:formal_algebra:6",
+            "candidate_root_hash72": "vSU*itZgEv3RQ0Zv2JPjLHR<x!QJKAF*GgYM6doAgC)zL1Cv44gsZuB1Htp>H6uYv4eJilbV",
+            "column": 2,
+            "exact_weight": {
+              "denominator": 1,
+              "numerator": 450
+            },
+            "lo_shu_value": 6,
+            "row": 2
+          }
+        ],
+        "domain_id": "FORMAL_ALGEBRA",
+        "lo_shu_layout": [
+          4,
+          9,
+          2,
+          3,
+          5,
+          7,
+          8,
+          1,
+          6
+        ],
+        "magic_sum": 15,
+        "probability_confers_authority": false,
+        "schema": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_V1",
+        "shape": [
+          3,
+          3
+        ],
+        "tensor_is_canonical_truth": false,
+        "tensor_root_hash72": "EgrDgcO1uaL7?0fhrXB6KLIvigs>HURFmyqp(Dh?hEE!Rgyam4hXhjYji**rmqy*iV<EtjpV",
+        "unique_agent_count": 9,
+        "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+      },
+      "top_nine": {
+        "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+        "candidate_count": 12,
+        "domain_id": "FORMAL_ALGEBRA",
+        "fitness_confers_authority": false,
+        "schema": "HHS_DOMAIN_TOP_NINE_SELECTION_V1",
+        "selected_agents": [
+          {
+            "admissible": true,
+            "agent_id": "agent:minimal-direct:formal_algebra:1",
+            "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+            "candidate_root_hash72": "*z/FwlW>wGVsBO?QH>0l8Za-zzg6yfP4H>XD)VqP6u3<USU!Gdut4BShP(VKkY)MC?T(dJWX",
+            "domain_id": "FORMAL_ALGEBRA",
+            "exact_fitness": {
+              "denominator": 7,
+              "numerator": 3600
+            },
+            "parent_agent_id": "agent:minimal-direct",
+            "parent_fitness_root_hash72": "FDmJzIrI7Oddvj*IIm/</6h4SY?bxVAS<?t1OZW7kLgf1-fy2myHvd7/8hSqzY/AzKlWgvkf",
+            "probability_confers_authority": false,
+            "provenance_valid": true,
+            "role_scope_valid": true,
+            "schema": "HHS_DOMAIN_AGENT_CANDIDATE_V1",
+            "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+          },
+          {
+            "admissible": true,
+            "agent_id": "agent:bridge:formal_algebra:2",
+            "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+            "candidate_root_hash72": "dMFG/xzG1neuX1i3iuYb<>e5C4W(nlcvNsLSBizWc!yU(L<<JFfu)fC+-7iL2jk?fOVHbBjV",
+            "domain_id": "FORMAL_ALGEBRA",
+            "exact_fitness": {
+              "denominator": 3,
+              "numerator": 800
+            },
+            "parent_agent_id": "agent:bridge",
+            "parent_fitness_root_hash72": "IUl)v9mdbaL2qk*ltQN01>ko+)9oTU?T5*yizApcwWNtww0?4XVhZDyVcvundqYLyGc2)?c!",
+            "probability_confers_authority": false,
+            "provenance_valid": true,
+            "role_scope_valid": true,
+            "schema": "HHS_DOMAIN_AGENT_CANDIDATE_V1",
+            "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+          },
+          {
+            "admissible": true,
+            "agent_id": "agent:minimal-direct:formal_algebra:4",
+            "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+            "candidate_root_hash72": "*z/FwlW>wGVsBO?QH>0jcXa-zzg9vfP4H>XD)VqP6u3<USU!Gdut4BShP(VKkY)MC?T(dJWX",
+            "domain_id": "FORMAL_ALGEBRA",
+            "exact_fitness": {
+              "denominator": 7,
+              "numerator": 1800
+            },
+            "parent_agent_id": "agent:minimal-direct",
+            "parent_fitness_root_hash72": "FDmJzIrI7Oddvj*IIm/</6h4SY?bxVAS<?t1OZW7kLgf1-fy2myHvd7/8hSqzY/AzKlWgvkf",
+            "probability_confers_authority": false,
+            "provenance_valid": true,
+            "role_scope_valid": true,
+            "schema": "HHS_DOMAIN_AGENT_CANDIDATE_V1",
+            "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+          },
+          {
+            "admissible": true,
+            "agent_id": "agent:minimal-direct:formal_algebra:7",
+            "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+            "candidate_root_hash72": "*z/FwlW>wGVsBO?QH>0j6/a-zzgcsfP4H>XD)VqP6u3<USU!Gdut4BShP(VKkY)MC?T(dJWX",
+            "domain_id": "FORMAL_ALGEBRA",
+            "exact_fitness": {
+              "denominator": 7,
+              "numerator": 1200
+            },
+            "parent_agent_id": "agent:minimal-direct",
+            "parent_fitness_root_hash72": "FDmJzIrI7Oddvj*IIm/</6h4SY?bxVAS<?t1OZW7kLgf1-fy2myHvd7/8hSqzY/AzKlWgvkf",
+            "probability_confers_authority": false,
+            "provenance_valid": true,
+            "role_scope_valid": true,
+            "schema": "HHS_DOMAIN_AGENT_CANDIDATE_V1",
+            "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+          },
+          {
+            "admissible": true,
+            "agent_id": "agent:contract:formal_algebra:3",
+            "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+            "candidate_root_hash72": "S7ZACg>IDsCd!IfuxoDXwyDCXKvR8L!63E8DqnM)8WUN?zS5(jF2p*C70H*teX6EB2D)0*3R",
+            "domain_id": "FORMAL_ALGEBRA",
+            "exact_fitness": {
+              "denominator": 1,
+              "numerator": 150
+            },
+            "parent_agent_id": "agent:contract",
+            "parent_fitness_root_hash72": "-xT6TRAhE-NycVfu20QQqA0V8Kf7!8vqs5pXBohvLci!YtEAQ*q!+aHZJACs6G1E<oRPhcDF",
+            "probability_confers_authority": false,
+            "provenance_valid": true,
+            "role_scope_valid": true,
+            "schema": "HHS_DOMAIN_AGENT_CANDIDATE_V1",
+            "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+          },
+          {
+            "admissible": true,
+            "agent_id": "agent:bridge:formal_algebra:5",
+            "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+            "candidate_root_hash72": "dMFG/xzG1neq+1i3iuYe/>e5C4W(nlcvNsLSBizWc!yU(L<<JFfu)fC+-7iL2jk?fOVHbBjV",
+            "domain_id": "FORMAL_ALGEBRA",
+            "exact_fitness": {
+              "denominator": 3,
+              "numerator": 400
+            },
+            "parent_agent_id": "agent:bridge",
+            "parent_fitness_root_hash72": "IUl)v9mdbaL2qk*ltQN01>ko+)9oTU?T5*yizApcwWNtww0?4XVhZDyVcvundqYLyGc2)?c!",
+            "probability_confers_authority": false,
+            "provenance_valid": true,
+            "role_scope_valid": true,
+            "schema": "HHS_DOMAIN_AGENT_CANDIDATE_V1",
+            "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+          },
+          {
+            "admissible": true,
+            "agent_id": "agent:minimal-direct:formal_algebra:10",
+            "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+            "candidate_root_hash72": "FQLnm>5NmPQyfn+SasAzh<-/Tav)uDbukq5>+KB1n*wDA23wGf7ZWboUKU-X5u(mzRO>CPp9",
+            "domain_id": "FORMAL_ALGEBRA",
+            "exact_fitness": {
+              "denominator": 7,
+              "numerator": 900
+            },
+            "parent_agent_id": "agent:minimal-direct",
+            "parent_fitness_root_hash72": "FDmJzIrI7Oddvj*IIm/</6h4SY?bxVAS<?t1OZW7kLgf1-fy2myHvd7/8hSqzY/AzKlWgvkf",
+            "probability_confers_authority": false,
+            "provenance_valid": true,
+            "role_scope_valid": true,
+            "schema": "HHS_DOMAIN_AGENT_CANDIDATE_V1",
+            "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+          },
+          {
+            "admissible": true,
+            "agent_id": "agent:bridge:formal_algebra:8",
+            "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+            "candidate_root_hash72": "dMFG/xzG1neuX1i3iuYh->e5C4W(nlcvNsLSBizWc!yU(L<<JFfu)fC+-7iL2jk?fOVHbHdV",
+            "domain_id": "FORMAL_ALGEBRA",
+            "exact_fitness": {
+              "denominator": 9,
+              "numerator": 800
+            },
+            "parent_agent_id": "agent:bridge",
+            "parent_fitness_root_hash72": "IUl)v9mdbaL2qk*ltQN01>ko+)9oTU?T5*yizApcwWNtww0?4XVhZDyVcvundqYLyGc2)?c!",
+            "probability_confers_authority": false,
+            "provenance_valid": true,
+            "role_scope_valid": true,
+            "schema": "HHS_DOMAIN_AGENT_CANDIDATE_V1",
+            "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+          },
+          {
+            "admissible": true,
+            "agent_id": "agent:contract:formal_algebra:6",
+            "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+            "candidate_root_hash72": "vSU*itZgEv3RQ0Zv2JPjLHR<x!QJKAF*GgYM6doAgC)zL1Cv44gsZuB1Htp>H6uYv4eJilbV",
+            "domain_id": "FORMAL_ALGEBRA",
+            "exact_fitness": {
+              "denominator": 1,
+              "numerator": 75
+            },
+            "parent_agent_id": "agent:contract",
+            "parent_fitness_root_hash72": "-xT6TRAhE-NycVfu20QQqA0V8Kf7!8vqs5pXBohvLci!YtEAQ*q!+aHZJACs6G1E<oRPhcDF",
+            "probability_confers_authority": false,
+            "provenance_valid": true,
+            "role_scope_valid": true,
+            "schema": "HHS_DOMAIN_AGENT_CANDIDATE_V1",
+            "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+          }
+        ],
+        "selected_count": 9,
+        "selection_rule": "ADMISSIBLE_THEN_EXACT_FITNESS_THEN_AGENT_ID",
+        "top_nine_root_hash72": "<Z+qs3*(6aYWKoLgZHJ<cDsgpq)HELbmUyDQ*aFahH8wpnB4ie0K/6we*MlUKe(BJhQcSmG)",
+        "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+      }
+    },
+    {
+      "domain_id": "SYMBOLIC_LOGIC",
+      "tensor": {
+        "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+        "cells": [
+          {
+            "agent_id": "agent:minimal-direct:symbolic_logic:1",
+            "candidate_root_hash72": "*z/FwlW>wGVsOLUK<Tad/7fVlKe6yf*1s+cpJ9HBbpZ7SSU!Gdut4BShP(VKkY)MC?T(dJWX",
+            "column": 0,
+            "exact_weight": {
+              "denominator": 7,
+              "numerator": 14400
+            },
+            "lo_shu_value": 4,
+            "row": 0
+          },
+          {
+            "agent_id": "agent:bridge:symbolic_logic:2",
+            "candidate_root_hash72": "dMFG6ukAq9omIjn!4FWb<>r2n!bQ1JthSnx/zizWc!yU(L<<JFfu)fC+-7iL2jk?fOVHbBjV",
+            "column": 1,
+            "exact_weight": {
+              "denominator": 1,
+              "numerator": 2400
+            },
+            "lo_shu_value": 9,
+            "row": 0
+          },
+          {
+            "agent_id": "agent:minimal-direct:symbolic_logic:4",
+            "candidate_root_hash72": "*z/FwlW>wGVsOLUK<Tab>5fVlKe9vf*1s+cpJ9HBbpZ7SSU!Gdut4BShP(VKkY)MC?T(dJWX",
+            "column": 2,
+            "exact_weight": {
+              "denominator": 7,
+              "numerator": 3600
+            },
+            "lo_shu_value": 2,
+            "row": 0
+          },
+          {
+            "agent_id": "agent:minimal-direct:symbolic_logic:7",
+            "candidate_root_hash72": "*z/FwlW>wGVsOLUK<Tab+bfVlKecsf*1s+cpJ9HBbpZ7SSU!Gdut4BShP(VKkY)MC?T(dJWX",
+            "column": 0,
+            "exact_weight": {
+              "denominator": 7,
+              "numerator": 3600
+            },
+            "lo_shu_value": 3,
+            "row": 1
+          },
+          {
+            "agent_id": "agent:contract:symbolic_logic:3",
+            "candidate_root_hash72": "S7ZACgaFom+?8A0MCjp!uyDC0HgLxxMukqdycyK)8WUN?zS5(jF2p*C70H*teX6EB2D)0*3R",
+            "column": 1,
+            "exact_weight": {
+              "denominator": 1,
+              "numerator": 750
+            },
+            "lo_shu_value": 5,
+            "row": 1
+          },
+          {
+            "agent_id": "agent:bridge:symbolic_logic:5",
+            "candidate_root_hash72": "dMFG6ukAq9oiMjn!4FWe/>r2n!bQ1JthSnx/zizWc!yU(L<<JFfu)fC+-7iL2jk?fOVHbBjV",
+            "column": 2,
+            "exact_weight": {
+              "denominator": 3,
+              "numerator": 2800
+            },
+            "lo_shu_value": 7,
+            "row": 1
+          },
+          {
+            "agent_id": "agent:minimal-direct:symbolic_logic:10",
+            "candidate_root_hash72": "FQLnm>5NmPQyskMMzeKr2e)YFlt)uDbHhb?mNoZi9>rpL03wGf7ZWboUKU-X5u(mzRO>CPp9",
+            "column": 0,
+            "exact_weight": {
+              "denominator": 7,
+              "numerator": 7200
+            },
+            "lo_shu_value": 8,
+            "row": 2
+          },
+          {
+            "agent_id": "agent:bridge:symbolic_logic:8",
+            "candidate_root_hash72": "dMFG6ukAq9omIjn!4FWh->r2n!bQ1JthSnx/zizWc!yU(L<<JFfu)fC+-7iL2jk?fOVHbHdV",
+            "column": 1,
+            "exact_weight": {
+              "denominator": 9,
+              "numerator": 800
+            },
+            "lo_shu_value": 1,
+            "row": 2
+          },
+          {
+            "agent_id": "agent:contract:symbolic_logic:6",
+            "candidate_root_hash72": "vSU*it2dppsD-*KN7EBuJHR<K)BD?mjgX2/H*omAgC)zL1Cv44gsZuB1Htp>H6uYv4eJilbV",
+            "column": 2,
+            "exact_weight": {
+              "denominator": 1,
+              "numerator": 450
+            },
+            "lo_shu_value": 6,
+            "row": 2
+          }
+        ],
+        "domain_id": "SYMBOLIC_LOGIC",
+        "lo_shu_layout": [
+          4,
+          9,
+          2,
+          3,
+          5,
+          7,
+          8,
+          1,
+          6
+        ],
+        "magic_sum": 15,
+        "probability_confers_authority": false,
+        "schema": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_V1",
+        "shape": [
+          3,
+          3
+        ],
+        "tensor_is_canonical_truth": false,
+        "tensor_root_hash72": "bxQx+vKKcY<6s0SJi8hLo*uYh?8/doxO2NijUte2W<+FP3XKXc!MxD8UPSX(fGXn6B/+5wlq",
+        "unique_agent_count": 9,
+        "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+      },
+      "top_nine": {
+        "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+        "candidate_count": 12,
+        "domain_id": "SYMBOLIC_LOGIC",
+        "fitness_confers_authority": false,
+        "schema": "HHS_DOMAIN_TOP_NINE_SELECTION_V1",
+        "selected_agents": [
+          {
+            "admissible": true,
+            "agent_id": "agent:minimal-direct:symbolic_logic:1",
+            "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+            "candidate_root_hash72": "*z/FwlW>wGVsOLUK<Tad/7fVlKe6yf*1s+cpJ9HBbpZ7SSU!Gdut4BShP(VKkY)MC?T(dJWX",
+            "domain_id": "SYMBOLIC_LOGIC",
+            "exact_fitness": {
+              "denominator": 7,
+              "numerator": 3600
+            },
+            "parent_agent_id": "agent:minimal-direct",
+            "parent_fitness_root_hash72": "FDmJzIrI7Oddvj*IIm/</6h4SY?bxVAS<?t1OZW7kLgf1-fy2myHvd7/8hSqzY/AzKlWgvkf",
+            "probability_confers_authority": false,
+            "provenance_valid": true,
+            "role_scope_valid": true,
+            "schema": "HHS_DOMAIN_AGENT_CANDIDATE_V1",
+            "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+          },
+          {
+            "admissible": true,
+            "agent_id": "agent:bridge:symbolic_logic:2",
+            "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+            "candidate_root_hash72": "dMFG6ukAq9omIjn!4FWb<>r2n!bQ1JthSnx/zizWc!yU(L<<JFfu)fC+-7iL2jk?fOVHbBjV",
+            "domain_id": "SYMBOLIC_LOGIC",
+            "exact_fitness": {
+              "denominator": 3,
+              "numerator": 800
+            },
+            "parent_agent_id": "agent:bridge",
+            "parent_fitness_root_hash72": "IUl)v9mdbaL2qk*ltQN01>ko+)9oTU?T5*yizApcwWNtww0?4XVhZDyVcvundqYLyGc2)?c!",
+            "probability_confers_authority": false,
+            "provenance_valid": true,
+            "role_scope_valid": true,
+            "schema": "HHS_DOMAIN_AGENT_CANDIDATE_V1",
+            "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+          },
+          {
+            "admissible": true,
+            "agent_id": "agent:minimal-direct:symbolic_logic:4",
+            "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+            "candidate_root_hash72": "*z/FwlW>wGVsOLUK<Tab>5fVlKe9vf*1s+cpJ9HBbpZ7SSU!Gdut4BShP(VKkY)MC?T(dJWX",
+            "domain_id": "SYMBOLIC_LOGIC",
+            "exact_fitness": {
+              "denominator": 7,
+              "numerator": 1800
+            },
+            "parent_agent_id": "agent:minimal-direct",
+            "parent_fitness_root_hash72": "FDmJzIrI7Oddvj*IIm/</6h4SY?bxVAS<?t1OZW7kLgf1-fy2myHvd7/8hSqzY/AzKlWgvkf",
+            "probability_confers_authority": false,
+            "provenance_valid": true,
+            "role_scope_valid": true,
+            "schema": "HHS_DOMAIN_AGENT_CANDIDATE_V1",
+            "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+          },
+          {
+            "admissible": true,
+            "agent_id": "agent:minimal-direct:symbolic_logic:7",
+            "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+            "candidate_root_hash72": "*z/FwlW>wGVsOLUK<Tab+bfVlKecsf*1s+cpJ9HBbpZ7SSU!Gdut4BShP(VKkY)MC?T(dJWX",
+            "domain_id": "SYMBOLIC_LOGIC",
+            "exact_fitness": {
+              "denominator": 7,
+              "numerator": 1200
+            },
+            "parent_agent_id": "agent:minimal-direct",
+            "parent_fitness_root_hash72": "FDmJzIrI7Oddvj*IIm/</6h4SY?bxVAS<?t1OZW7kLgf1-fy2myHvd7/8hSqzY/AzKlWgvkf",
+            "probability_confers_authority": false,
+            "provenance_valid": true,
+            "role_scope_valid": true,
+            "schema": "HHS_DOMAIN_AGENT_CANDIDATE_V1",
+            "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+          },
+          {
+            "admissible": true,
+            "agent_id": "agent:contract:symbolic_logic:3",
+            "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+            "candidate_root_hash72": "S7ZACgaFom+?8A0MCjp!uyDC0HgLxxMukqdycyK)8WUN?zS5(jF2p*C70H*teX6EB2D)0*3R",
+            "domain_id": "SYMBOLIC_LOGIC",
+            "exact_fitness": {
+              "denominator": 1,
+              "numerator": 150
+            },
+            "parent_agent_id": "agent:contract",
+            "parent_fitness_root_hash72": "-xT6TRAhE-NycVfu20QQqA0V8Kf7!8vqs5pXBohvLci!YtEAQ*q!+aHZJACs6G1E<oRPhcDF",
+            "probability_confers_authority": false,
+            "provenance_valid": true,
+            "role_scope_valid": true,
+            "schema": "HHS_DOMAIN_AGENT_CANDIDATE_V1",
+            "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+          },
+          {
+            "admissible": true,
+            "agent_id": "agent:bridge:symbolic_logic:5",
+            "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+            "candidate_root_hash72": "dMFG6ukAq9oiMjn!4FWe/>r2n!bQ1JthSnx/zizWc!yU(L<<JFfu)fC+-7iL2jk?fOVHbBjV",
+            "domain_id": "SYMBOLIC_LOGIC",
+            "exact_fitness": {
+              "denominator": 3,
+              "numerator": 400
+            },
+            "parent_agent_id": "agent:bridge",
+            "parent_fitness_root_hash72": "IUl)v9mdbaL2qk*ltQN01>ko+)9oTU?T5*yizApcwWNtww0?4XVhZDyVcvundqYLyGc2)?c!",
+            "probability_confers_authority": false,
+            "provenance_valid": true,
+            "role_scope_valid": true,
+            "schema": "HHS_DOMAIN_AGENT_CANDIDATE_V1",
+            "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+          },
+          {
+            "admissible": true,
+            "agent_id": "agent:minimal-direct:symbolic_logic:10",
+            "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+            "candidate_root_hash72": "FQLnm>5NmPQyskMMzeKr2e)YFlt)uDbHhb?mNoZi9>rpL03wGf7ZWboUKU-X5u(mzRO>CPp9",
+            "domain_id": "SYMBOLIC_LOGIC",
+            "exact_fitness": {
+              "denominator": 7,
+              "numerator": 900
+            },
+            "parent_agent_id": "agent:minimal-direct",
+            "parent_fitness_root_hash72": "FDmJzIrI7Oddvj*IIm/</6h4SY?bxVAS<?t1OZW7kLgf1-fy2myHvd7/8hSqzY/AzKlWgvkf",
+            "probability_confers_authority": false,
+            "provenance_valid": true,
+            "role_scope_valid": true,
+            "schema": "HHS_DOMAIN_AGENT_CANDIDATE_V1",
+            "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+          },
+          {
+            "admissible": true,
+            "agent_id": "agent:bridge:symbolic_logic:8",
+            "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+            "candidate_root_hash72": "dMFG6ukAq9omIjn!4FWh->r2n!bQ1JthSnx/zizWc!yU(L<<JFfu)fC+-7iL2jk?fOVHbHdV",
+            "domain_id": "SYMBOLIC_LOGIC",
+            "exact_fitness": {
+              "denominator": 9,
+              "numerator": 800
+            },
+            "parent_agent_id": "agent:bridge",
+            "parent_fitness_root_hash72": "IUl)v9mdbaL2qk*ltQN01>ko+)9oTU?T5*yizApcwWNtww0?4XVhZDyVcvundqYLyGc2)?c!",
+            "probability_confers_authority": false,
+            "provenance_valid": true,
+            "role_scope_valid": true,
+            "schema": "HHS_DOMAIN_AGENT_CANDIDATE_V1",
+            "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+          },
+          {
+            "admissible": true,
+            "agent_id": "agent:contract:symbolic_logic:6",
+            "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+            "candidate_root_hash72": "vSU*it2dppsD-*KN7EBuJHR<K)BD?mjgX2/H*omAgC)zL1Cv44gsZuB1Htp>H6uYv4eJilbV",
+            "domain_id": "SYMBOLIC_LOGIC",
+            "exact_fitness": {
+              "denominator": 1,
+              "numerator": 75
+            },
+            "parent_agent_id": "agent:contract",
+            "parent_fitness_root_hash72": "-xT6TRAhE-NycVfu20QQqA0V8Kf7!8vqs5pXBohvLci!YtEAQ*q!+aHZJACs6G1E<oRPhcDF",
+            "probability_confers_authority": false,
+            "provenance_valid": true,
+            "role_scope_valid": true,
+            "schema": "HHS_DOMAIN_AGENT_CANDIDATE_V1",
+            "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+          }
+        ],
+        "selected_count": 9,
+        "selection_rule": "ADMISSIBLE_THEN_EXACT_FITNESS_THEN_AGENT_ID",
+        "top_nine_root_hash72": "fVbTBoei?/5k3I2vmR1N6w/h+iHnic6bkPF8pu+OHyhKdiMqgL1R!o8Xq+G4jtX!K0S<RFlX",
+        "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+      }
+    },
+    {
+      "domain_id": "SEMANTIC_TRANSLATION",
+      "tensor": {
+        "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+        "cells": [
+          {
+            "agent_id": "agent:minimal-direct:semantic_translation:1",
+            "candidate_root_hash72": "KGOE!4Q-v)gFxvd5dT03)?XZj/l6Avev0/l*3GIVpeNPEO1zE)eR)<C+Hm4s*VjKnA-TC</Q",
+            "column": 0,
+            "exact_weight": {
+              "denominator": 7,
+              "numerator": 14400
+            },
+            "lo_shu_value": 4,
+            "row": 0
+          },
+          {
+            "agent_id": "agent:bridge:semantic_translation:2",
+            "candidate_root_hash72": "X<5o4(VLmr8nx!Oj8S04osKxifhgkT*eLeY8UrlIZ3fl6mhshjA9wfOgX9hyrb!+fk8Pl4qb",
+            "column": 1,
+            "exact_weight": {
+              "denominator": 1,
+              "numerator": 2400
+            },
+            "lo_shu_value": 9,
+            "row": 0
+          },
+          {
+            "agent_id": "agent:minimal-direct:semantic_translation:4",
+            "candidate_root_hash72": "KGOE!4Q-v)gFxvd5dT03)?XZj/l6Avet4(i*3GIVpeNPEO1zE)eR)<C+Hm4s*VjKnA-TC</Q",
+            "column": 2,
+            "exact_weight": {
+              "denominator": 7,
+              "numerator": 3600
+            },
+            "lo_shu_value": 2,
+            "row": 0
+          },
+          {
+            "agent_id": "agent:minimal-direct:semantic_translation:7",
+            "candidate_root_hash72": "KGOE!4Q-v)gFxvd5dT03)?XZj/l6Avet!3f*3GIVpeNPEO1zE)eR)<C+Hm4s*VjKnA-TC</Q",
+            "column": 0,
+            "exact_weight": {
+              "denominator": 7,
+              "numerator": 3600
+            },
+            "lo_shu_value": 3,
+            "row": 1
+          },
+          {
+            "agent_id": "agent:contract:semantic_translation:3",
+            "candidate_root_hash72": "MCZt5AiQ5O/JG>If4LCpWBhdxDi3!N9VicFbrS3Ge8>6rl+X)-D!5w+>s6a9SsR5-gShDoh5",
+            "column": 1,
+            "exact_weight": {
+              "denominator": 1,
+              "numerator": 750
+            },
+            "lo_shu_value": 5,
+            "row": 1
+          },
+          {
+            "agent_id": "agent:bridge:semantic_translation:5",
+            "candidate_root_hash72": "X<5o4(VLmr8nx!Oj8S04osKtmiegkT*eLeY8UrlIZ3fl6mhshjA9wfOgX9hyrb!+fk8Pl4qb",
+            "column": 2,
+            "exact_weight": {
+              "denominator": 3,
+              "numerator": 2800
+            },
+            "lo_shu_value": 7,
+            "row": 1
+          },
+          {
+            "agent_id": "agent:minimal-direct:semantic_translation:10",
+            "candidate_root_hash72": "W4vSz1R+oEt8cA9sxg7h9KN9(6!E8J2BbPhgmw/qb2!WWncbWd*KA/JugfEp62Iih7GOnzOT",
+            "column": 0,
+            "exact_weight": {
+              "denominator": 7,
+              "numerator": 7200
+            },
+            "lo_shu_value": 8,
+            "row": 2
+          },
+          {
+            "agent_id": "agent:bridge:semantic_translation:8",
+            "candidate_root_hash72": "X<5o4(VLmx2nx!Oj8S04osKxilbgkT*eLeY8UrlIZ3fl6mhshjA9wfOgX9hyrb!+fk8Pl4qb",
+            "column": 1,
+            "exact_weight": {
+              "denominator": 9,
+              "numerator": 800
+            },
+            "lo_shu_value": 1,
+            "row": 2
+          },
+          {
+            "agent_id": "agent:contract:semantic_translation:6",
+            "candidate_root_hash72": "5VdN?C/un71NjIDHUYu>XESRf)*7A!lhxiWF16oyQ>E*(>H<LQfDdc2T4I(n4dsvqSRbaaOJ",
+            "column": 2,
+            "exact_weight": {
+              "denominator": 1,
+              "numerator": 450
+            },
+            "lo_shu_value": 6,
+            "row": 2
+          }
+        ],
+        "domain_id": "SEMANTIC_TRANSLATION",
+        "lo_shu_layout": [
+          4,
+          9,
+          2,
+          3,
+          5,
+          7,
+          8,
+          1,
+          6
+        ],
+        "magic_sum": 15,
+        "probability_confers_authority": false,
+        "schema": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_V1",
+        "shape": [
+          3,
+          3
+        ],
+        "tensor_is_canonical_truth": false,
+        "tensor_root_hash72": "QZbSM<U00ss4S2/d3A9SKEs87HXgRBVOM(LunDylQl3L1HpxTF*5)JhaYZCDyi!TncClali3",
+        "unique_agent_count": 9,
+        "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+      },
+      "top_nine": {
+        "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+        "candidate_count": 12,
+        "domain_id": "SEMANTIC_TRANSLATION",
+        "fitness_confers_authority": false,
+        "schema": "HHS_DOMAIN_TOP_NINE_SELECTION_V1",
+        "selected_agents": [
+          {
+            "admissible": true,
+            "agent_id": "agent:minimal-direct:semantic_translation:1",
+            "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+            "candidate_root_hash72": "KGOE!4Q-v)gFxvd5dT03)?XZj/l6Avev0/l*3GIVpeNPEO1zE)eR)<C+Hm4s*VjKnA-TC</Q",
+            "domain_id": "SEMANTIC_TRANSLATION",
+            "exact_fitness": {
+              "denominator": 7,
+              "numerator": 3600
+            },
+            "parent_agent_id": "agent:minimal-direct",
+            "parent_fitness_root_hash72": "FDmJzIrI7Oddvj*IIm/</6h4SY?bxVAS<?t1OZW7kLgf1-fy2myHvd7/8hSqzY/AzKlWgvkf",
+            "probability_confers_authority": false,
+            "provenance_valid": true,
+            "role_scope_valid": true,
+            "schema": "HHS_DOMAIN_AGENT_CANDIDATE_V1",
+            "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+          },
+          {
+            "admissible": true,
+            "agent_id": "agent:bridge:semantic_translation:2",
+            "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+            "candidate_root_hash72": "X<5o4(VLmr8nx!Oj8S04osKxifhgkT*eLeY8UrlIZ3fl6mhshjA9wfOgX9hyrb!+fk8Pl4qb",
+            "domain_id": "SEMANTIC_TRANSLATION",
+            "exact_fitness": {
+              "denominator": 3,
+              "numerator": 800
+            },
+            "parent_agent_id": "agent:bridge",
+            "parent_fitness_root_hash72": "IUl)v9mdbaL2qk*ltQN01>ko+)9oTU?T5*yizApcwWNtww0?4XVhZDyVcvundqYLyGc2)?c!",
+            "probability_confers_authority": false,
+            "provenance_valid": true,
+            "role_scope_valid": true,
+            "schema": "HHS_DOMAIN_AGENT_CANDIDATE_V1",
+            "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+          },
+          {
+            "admissible": true,
+            "agent_id": "agent:minimal-direct:semantic_translation:4",
+            "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+            "candidate_root_hash72": "KGOE!4Q-v)gFxvd5dT03)?XZj/l6Avet4(i*3GIVpeNPEO1zE)eR)<C+Hm4s*VjKnA-TC</Q",
+            "domain_id": "SEMANTIC_TRANSLATION",
+            "exact_fitness": {
+              "denominator": 7,
+              "numerator": 1800
+            },
+            "parent_agent_id": "agent:minimal-direct",
+            "parent_fitness_root_hash72": "FDmJzIrI7Oddvj*IIm/</6h4SY?bxVAS<?t1OZW7kLgf1-fy2myHvd7/8hSqzY/AzKlWgvkf",
+            "probability_confers_authority": false,
+            "provenance_valid": true,
+            "role_scope_valid": true,
+            "schema": "HHS_DOMAIN_AGENT_CANDIDATE_V1",
+            "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+          },
+          {
+            "admissible": true,
+            "agent_id": "agent:minimal-direct:semantic_translation:7",
+            "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+            "candidate_root_hash72": "KGOE!4Q-v)gFxvd5dT03)?XZj/l6Avet!3f*3GIVpeNPEO1zE)eR)<C+Hm4s*VjKnA-TC</Q",
+            "domain_id": "SEMANTIC_TRANSLATION",
+            "exact_fitness": {
+              "denominator": 7,
+              "numerator": 1200
+            },
+            "parent_agent_id": "agent:minimal-direct",
+            "parent_fitness_root_hash72": "FDmJzIrI7Oddvj*IIm/</6h4SY?bxVAS<?t1OZW7kLgf1-fy2myHvd7/8hSqzY/AzKlWgvkf",
+            "probability_confers_authority": false,
+            "provenance_valid": true,
+            "role_scope_valid": true,
+            "schema": "HHS_DOMAIN_AGENT_CANDIDATE_V1",
+            "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+          },
+          {
+            "admissible": true,
+            "agent_id": "agent:contract:semantic_translation:3",
+            "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+            "candidate_root_hash72": "MCZt5AiQ5O/JG>If4LCpWBhdxDi3!N9VicFbrS3Ge8>6rl+X)-D!5w+>s6a9SsR5-gShDoh5",
+            "domain_id": "SEMANTIC_TRANSLATION",
+            "exact_fitness": {
+              "denominator": 1,
+              "numerator": 150
+            },
+            "parent_agent_id": "agent:contract",
+            "parent_fitness_root_hash72": "-xT6TRAhE-NycVfu20QQqA0V8Kf7!8vqs5pXBohvLci!YtEAQ*q!+aHZJACs6G1E<oRPhcDF",
+            "probability_confers_authority": false,
+            "provenance_valid": true,
+            "role_scope_valid": true,
+            "schema": "HHS_DOMAIN_AGENT_CANDIDATE_V1",
+            "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+          },
+          {
+            "admissible": true,
+            "agent_id": "agent:bridge:semantic_translation:5",
+            "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+            "candidate_root_hash72": "X<5o4(VLmr8nx!Oj8S04osKtmiegkT*eLeY8UrlIZ3fl6mhshjA9wfOgX9hyrb!+fk8Pl4qb",
+            "domain_id": "SEMANTIC_TRANSLATION",
+            "exact_fitness": {
+              "denominator": 3,
+              "numerator": 400
+            },
+            "parent_agent_id": "agent:bridge",
+            "parent_fitness_root_hash72": "IUl)v9mdbaL2qk*ltQN01>ko+)9oTU?T5*yizApcwWNtww0?4XVhZDyVcvundqYLyGc2)?c!",
+            "probability_confers_authority": false,
+            "provenance_valid": true,
+            "role_scope_valid": true,
+            "schema": "HHS_DOMAIN_AGENT_CANDIDATE_V1",
+            "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+          },
+          {
+            "admissible": true,
+            "agent_id": "agent:minimal-direct:semantic_translation:10",
+            "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+            "candidate_root_hash72": "W4vSz1R+oEt8cA9sxg7h9KN9(6!E8J2BbPhgmw/qb2!WWncbWd*KA/JugfEp62Iih7GOnzOT",
+            "domain_id": "SEMANTIC_TRANSLATION",
+            "exact_fitness": {
+              "denominator": 7,
+              "numerator": 900
+            },
+            "parent_agent_id": "agent:minimal-direct",
+            "parent_fitness_root_hash72": "FDmJzIrI7Oddvj*IIm/</6h4SY?bxVAS<?t1OZW7kLgf1-fy2myHvd7/8hSqzY/AzKlWgvkf",
+            "probability_confers_authority": false,
+            "provenance_valid": true,
+            "role_scope_valid": true,
+            "schema": "HHS_DOMAIN_AGENT_CANDIDATE_V1",
+            "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+          },
+          {
+            "admissible": true,
+            "agent_id": "agent:bridge:semantic_translation:8",
+            "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+            "candidate_root_hash72": "X<5o4(VLmx2nx!Oj8S04osKxilbgkT*eLeY8UrlIZ3fl6mhshjA9wfOgX9hyrb!+fk8Pl4qb",
+            "domain_id": "SEMANTIC_TRANSLATION",
+            "exact_fitness": {
+              "denominator": 9,
+              "numerator": 800
+            },
+            "parent_agent_id": "agent:bridge",
+            "parent_fitness_root_hash72": "IUl)v9mdbaL2qk*ltQN01>ko+)9oTU?T5*yizApcwWNtww0?4XVhZDyVcvundqYLyGc2)?c!",
+            "probability_confers_authority": false,
+            "provenance_valid": true,
+            "role_scope_valid": true,
+            "schema": "HHS_DOMAIN_AGENT_CANDIDATE_V1",
+            "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+          },
+          {
+            "admissible": true,
+            "agent_id": "agent:contract:semantic_translation:6",
+            "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+            "candidate_root_hash72": "5VdN?C/un71NjIDHUYu>XESRf)*7A!lhxiWF16oyQ>E*(>H<LQfDdc2T4I(n4dsvqSRbaaOJ",
+            "domain_id": "SEMANTIC_TRANSLATION",
+            "exact_fitness": {
+              "denominator": 1,
+              "numerator": 75
+            },
+            "parent_agent_id": "agent:contract",
+            "parent_fitness_root_hash72": "-xT6TRAhE-NycVfu20QQqA0V8Kf7!8vqs5pXBohvLci!YtEAQ*q!+aHZJACs6G1E<oRPhcDF",
+            "probability_confers_authority": false,
+            "provenance_valid": true,
+            "role_scope_valid": true,
+            "schema": "HHS_DOMAIN_AGENT_CANDIDATE_V1",
+            "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+          }
+        ],
+        "selected_count": 9,
+        "selection_rule": "ADMISSIBLE_THEN_EXACT_FITNESS_THEN_AGENT_ID",
+        "top_nine_root_hash72": "wz5t5(5zWqVN-PKq9t(JP<IXLS>ygvHqoOPzAi<DoF6<vNaFPz80jZw4kf242A2vfDLl9eog",
+        "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+      }
+    },
+    {
+      "domain_id": "RUNTIME_EXECUTION",
+      "tensor": {
+        "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+        "cells": [
+          {
+            "agent_id": "agent:minimal-direct:runtime_execution:1",
+            "candidate_root_hash72": "W>l35rlPR5dRSbL09Uy3giX+Q/3lrJ8fmddiTEblx24/r3-9rTwAIqyPyEeFUJd99Amu6GLs",
+            "column": 0,
+            "exact_weight": {
+              "denominator": 7,
+              "numerator": 14400
+            },
+            "lo_shu_value": 4,
+            "row": 0
+          },
+          {
+            "agent_id": "agent:bridge:runtime_execution:2",
+            "candidate_root_hash72": ")/0h2TWYf6Oy7j2pDwGu8lBIJt*M7o3F3?j2Bcbj5E4vdu5gE>Zs)hw>y6d!jcP5?SriW-5u",
+            "column": 1,
+            "exact_weight": {
+              "denominator": 1,
+              "numerator": 2400
+            },
+            "lo_shu_value": 9,
+            "row": 0
+          },
+          {
+            "agent_id": "agent:minimal-direct:runtime_execution:4",
+            "candidate_root_hash72": "W>l35rlPR5dRSbL09Uy3giX+Q+7jrJbcmddiTEblx24/r3-9rTwAIqyPyEeFUJd99Amu6GLs",
+            "column": 2,
+            "exact_weight": {
+              "denominator": 7,
+              "numerator": 3600
+            },
+            "lo_shu_value": 2,
+            "row": 0
+          },
+          {
+            "agent_id": "agent:minimal-direct:runtime_execution:7",
+            "candidate_root_hash72": "W>l35rlPR5dRSbL09Uy3giX+Q+1prJe9mddiTEblx24/r3-9rTwAIqyPyEeFUJd99Amu6GLs",
+            "column": 0,
+            "exact_weight": {
+              "denominator": 7,
+              "numerator": 3600
+            },
+            "lo_shu_value": 3,
+            "row": 1
+          },
+          {
+            "agent_id": "agent:contract:runtime_execution:3",
+            "candidate_root_hash72": "MbJu7S8a4eMxa*4<wglXXHWA*P0pEzfX)kH-p!TV)3Wg9zXbKRmnOsNVo(0EJgfZ7i2J(zHR",
+            "column": 1,
+            "exact_weight": {
+              "denominator": 1,
+              "numerator": 750
+            },
+            "lo_shu_value": 5,
+            "row": 1
+          },
+          {
+            "agent_id": "agent:bridge:runtime_execution:5",
+            "candidate_root_hash72": ")/0h2TWYf6Oy7j2pDsKu8lEFJt*M7o3F3?j2Bcbj5E4vdu5gE>Zs)hw>y6d!jcP5?SriW-5u",
+            "column": 2,
+            "exact_weight": {
+              "denominator": 3,
+              "numerator": 2800
+            },
+            "lo_shu_value": 7,
+            "row": 1
+          },
+          {
+            "agent_id": "agent:minimal-direct:runtime_execution:10",
+            "candidate_root_hash72": "SRseZzwp(ryc2-D<Dc+80Cyfu42C2Y>bKxV?+<NBbyBPHvjV?ZG6onVBb+r+L/tYZi)5qTvH",
+            "column": 0,
+            "exact_weight": {
+              "denominator": 7,
+              "numerator": 7200
+            },
+            "lo_shu_value": 8,
+            "row": 2
+          },
+          {
+            "agent_id": "agent:bridge:runtime_execution:8",
+            "candidate_root_hash72": ")/0n<TWYf6Oy7j2pDwGu8lHCJt*M7o3F3?j2Bcbj5E4vdu5gE>Zs)hw>y6d!jcP5?SriW-5u",
+            "column": 1,
+            "exact_weight": {
+              "denominator": 9,
+              "numerator": 800
+            },
+            "lo_shu_value": 1,
+            "row": 2
+          },
+          {
+            "agent_id": "agent:contract:runtime_execution:6",
+            "candidate_root_hash72": "nZ+XfWVV?GsK2A5?>U3fxIrV78fvV/Zbgc9P<UmxLcC6V4)+VD!ZyM/G?kA6IaWLEWv*iTBT",
+            "column": 2,
+            "exact_weight": {
+              "denominator": 1,
+              "numerator": 450
+            },
+            "lo_shu_value": 6,
+            "row": 2
+          }
+        ],
+        "domain_id": "RUNTIME_EXECUTION",
+        "lo_shu_layout": [
+          4,
+          9,
+          2,
+          3,
+          5,
+          7,
+          8,
+          1,
+          6
+        ],
+        "magic_sum": 15,
+        "probability_confers_authority": false,
+        "schema": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_V1",
+        "shape": [
+          3,
+          3
+        ],
+        "tensor_is_canonical_truth": false,
+        "tensor_root_hash72": "+7c<QiYMNAOYEWxD<-!ymPu)s)32NlLsEH<Y6F<o1FzDz36N3Ok7DBoT3q13ylGqWLzTKw/y",
+        "unique_agent_count": 9,
+        "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+      },
+      "top_nine": {
+        "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+        "candidate_count": 12,
+        "domain_id": "RUNTIME_EXECUTION",
+        "fitness_confers_authority": false,
+        "schema": "HHS_DOMAIN_TOP_NINE_SELECTION_V1",
+        "selected_agents": [
+          {
+            "admissible": true,
+            "agent_id": "agent:minimal-direct:runtime_execution:1",
+            "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+            "candidate_root_hash72": "W>l35rlPR5dRSbL09Uy3giX+Q/3lrJ8fmddiTEblx24/r3-9rTwAIqyPyEeFUJd99Amu6GLs",
+            "domain_id": "RUNTIME_EXECUTION",
+            "exact_fitness": {
+              "denominator": 7,
+              "numerator": 3600
+            },
+            "parent_agent_id": "agent:minimal-direct",
+            "parent_fitness_root_hash72": "FDmJzIrI7Oddvj*IIm/</6h4SY?bxVAS<?t1OZW7kLgf1-fy2myHvd7/8hSqzY/AzKlWgvkf",
+            "probability_confers_authority": false,
+            "provenance_valid": true,
+            "role_scope_valid": true,
+            "schema": "HHS_DOMAIN_AGENT_CANDIDATE_V1",
+            "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+          },
+          {
+            "admissible": true,
+            "agent_id": "agent:bridge:runtime_execution:2",
+            "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+            "candidate_root_hash72": ")/0h2TWYf6Oy7j2pDwGu8lBIJt*M7o3F3?j2Bcbj5E4vdu5gE>Zs)hw>y6d!jcP5?SriW-5u",
+            "domain_id": "RUNTIME_EXECUTION",
+            "exact_fitness": {
+              "denominator": 3,
+              "numerator": 800
+            },
+            "parent_agent_id": "agent:bridge",
+            "parent_fitness_root_hash72": "IUl)v9mdbaL2qk*ltQN01>ko+)9oTU?T5*yizApcwWNtww0?4XVhZDyVcvundqYLyGc2)?c!",
+            "probability_confers_authority": false,
+            "provenance_valid": true,
+            "role_scope_valid": true,
+            "schema": "HHS_DOMAIN_AGENT_CANDIDATE_V1",
+            "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+          },
+          {
+            "admissible": true,
+            "agent_id": "agent:minimal-direct:runtime_execution:4",
+            "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+            "candidate_root_hash72": "W>l35rlPR5dRSbL09Uy3giX+Q+7jrJbcmddiTEblx24/r3-9rTwAIqyPyEeFUJd99Amu6GLs",
+            "domain_id": "RUNTIME_EXECUTION",
+            "exact_fitness": {
+              "denominator": 7,
+              "numerator": 1800
+            },
+            "parent_agent_id": "agent:minimal-direct",
+            "parent_fitness_root_hash72": "FDmJzIrI7Oddvj*IIm/</6h4SY?bxVAS<?t1OZW7kLgf1-fy2myHvd7/8hSqzY/AzKlWgvkf",
+            "probability_confers_authority": false,
+            "provenance_valid": true,
+            "role_scope_valid": true,
+            "schema": "HHS_DOMAIN_AGENT_CANDIDATE_V1",
+            "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+          },
+          {
+            "admissible": true,
+            "agent_id": "agent:minimal-direct:runtime_execution:7",
+            "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+            "candidate_root_hash72": "W>l35rlPR5dRSbL09Uy3giX+Q+1prJe9mddiTEblx24/r3-9rTwAIqyPyEeFUJd99Amu6GLs",
+            "domain_id": "RUNTIME_EXECUTION",
+            "exact_fitness": {
+              "denominator": 7,
+              "numerator": 1200
+            },
+            "parent_agent_id": "agent:minimal-direct",
+            "parent_fitness_root_hash72": "FDmJzIrI7Oddvj*IIm/</6h4SY?bxVAS<?t1OZW7kLgf1-fy2myHvd7/8hSqzY/AzKlWgvkf",
+            "probability_confers_authority": false,
+            "provenance_valid": true,
+            "role_scope_valid": true,
+            "schema": "HHS_DOMAIN_AGENT_CANDIDATE_V1",
+            "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+          },
+          {
+            "admissible": true,
+            "agent_id": "agent:contract:runtime_execution:3",
+            "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+            "candidate_root_hash72": "MbJu7S8a4eMxa*4<wglXXHWA*P0pEzfX)kH-p!TV)3Wg9zXbKRmnOsNVo(0EJgfZ7i2J(zHR",
+            "domain_id": "RUNTIME_EXECUTION",
+            "exact_fitness": {
+              "denominator": 1,
+              "numerator": 150
+            },
+            "parent_agent_id": "agent:contract",
+            "parent_fitness_root_hash72": "-xT6TRAhE-NycVfu20QQqA0V8Kf7!8vqs5pXBohvLci!YtEAQ*q!+aHZJACs6G1E<oRPhcDF",
+            "probability_confers_authority": false,
+            "provenance_valid": true,
+            "role_scope_valid": true,
+            "schema": "HHS_DOMAIN_AGENT_CANDIDATE_V1",
+            "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+          },
+          {
+            "admissible": true,
+            "agent_id": "agent:bridge:runtime_execution:5",
+            "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+            "candidate_root_hash72": ")/0h2TWYf6Oy7j2pDsKu8lEFJt*M7o3F3?j2Bcbj5E4vdu5gE>Zs)hw>y6d!jcP5?SriW-5u",
+            "domain_id": "RUNTIME_EXECUTION",
+            "exact_fitness": {
+              "denominator": 3,
+              "numerator": 400
+            },
+            "parent_agent_id": "agent:bridge",
+            "parent_fitness_root_hash72": "IUl)v9mdbaL2qk*ltQN01>ko+)9oTU?T5*yizApcwWNtww0?4XVhZDyVcvundqYLyGc2)?c!",
+            "probability_confers_authority": false,
+            "provenance_valid": true,
+            "role_scope_valid": true,
+            "schema": "HHS_DOMAIN_AGENT_CANDIDATE_V1",
+            "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+          },
+          {
+            "admissible": true,
+            "agent_id": "agent:minimal-direct:runtime_execution:10",
+            "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+            "candidate_root_hash72": "SRseZzwp(ryc2-D<Dc+80Cyfu42C2Y>bKxV?+<NBbyBPHvjV?ZG6onVBb+r+L/tYZi)5qTvH",
+            "domain_id": "RUNTIME_EXECUTION",
+            "exact_fitness": {
+              "denominator": 7,
+              "numerator": 900
+            },
+            "parent_agent_id": "agent:minimal-direct",
+            "parent_fitness_root_hash72": "FDmJzIrI7Oddvj*IIm/</6h4SY?bxVAS<?t1OZW7kLgf1-fy2myHvd7/8hSqzY/AzKlWgvkf",
+            "probability_confers_authority": false,
+            "provenance_valid": true,
+            "role_scope_valid": true,
+            "schema": "HHS_DOMAIN_AGENT_CANDIDATE_V1",
+            "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+          },
+          {
+            "admissible": true,
+            "agent_id": "agent:bridge:runtime_execution:8",
+            "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+            "candidate_root_hash72": ")/0n<TWYf6Oy7j2pDwGu8lHCJt*M7o3F3?j2Bcbj5E4vdu5gE>Zs)hw>y6d!jcP5?SriW-5u",
+            "domain_id": "RUNTIME_EXECUTION",
+            "exact_fitness": {
+              "denominator": 9,
+              "numerator": 800
+            },
+            "parent_agent_id": "agent:bridge",
+            "parent_fitness_root_hash72": "IUl)v9mdbaL2qk*ltQN01>ko+)9oTU?T5*yizApcwWNtww0?4XVhZDyVcvundqYLyGc2)?c!",
+            "probability_confers_authority": false,
+            "provenance_valid": true,
+            "role_scope_valid": true,
+            "schema": "HHS_DOMAIN_AGENT_CANDIDATE_V1",
+            "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+          },
+          {
+            "admissible": true,
+            "agent_id": "agent:contract:runtime_execution:6",
+            "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+            "candidate_root_hash72": "nZ+XfWVV?GsK2A5?>U3fxIrV78fvV/Zbgc9P<UmxLcC6V4)+VD!ZyM/G?kA6IaWLEWv*iTBT",
+            "domain_id": "RUNTIME_EXECUTION",
+            "exact_fitness": {
+              "denominator": 1,
+              "numerator": 75
+            },
+            "parent_agent_id": "agent:contract",
+            "parent_fitness_root_hash72": "-xT6TRAhE-NycVfu20QQqA0V8Kf7!8vqs5pXBohvLci!YtEAQ*q!+aHZJACs6G1E<oRPhcDF",
+            "probability_confers_authority": false,
+            "provenance_valid": true,
+            "role_scope_valid": true,
+            "schema": "HHS_DOMAIN_AGENT_CANDIDATE_V1",
+            "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+          }
+        ],
+        "selected_count": 9,
+        "selection_rule": "ADMISSIBLE_THEN_EXACT_FITNESS_THEN_AGENT_ID",
+        "top_nine_root_hash72": "dp49?s2mo!z638v7mC2Q)PoW2<hiHgXam6tI2axI(dx*vok)e/9Y<nLGeO>?9Z//QRT3d?Bj",
+        "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+      }
+    },
+    {
+      "domain_id": "PROVENANCE_AUDIT",
+      "tensor": {
+        "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+        "cells": [
+          {
+            "agent_id": "agent:minimal-direct:provenance_audit:1",
+            "candidate_root_hash72": "OnRc1<88VG44BVYfSSneHecWYO>Dvj>+qML2EAoquwjGC/<6PQqa0-qyT1JGEgQ)RuY!WWt7",
+            "column": 0,
+            "exact_weight": {
+              "denominator": 7,
+              "numerator": 14400
+            },
+            "lo_shu_value": 4,
+            "row": 0
+          },
+          {
+            "agent_id": "agent:bridge:provenance_audit:2",
+            "candidate_root_hash72": "<dwsW4qiEpVbYwRfTg)xFEFXVY8FK60MCl6hDJbUfRM?>UnLo!4rmEr2HYaU2WHlqhIgI+3p",
+            "column": 1,
+            "exact_weight": {
+              "denominator": 1,
+              "numerator": 2400
+            },
+            "lo_shu_value": 9,
+            "row": 0
+          },
+          {
+            "agent_id": "agent:minimal-direct:provenance_audit:4",
+            "candidate_root_hash72": "OnRc1<88VG44BVYfSSneHecU*M>Dvm(+qML2EAoquwjGC/<6PQqa0-qyT1JGEgQ)RuY!WWt7",
+            "column": 2,
+            "exact_weight": {
+              "denominator": 7,
+              "numerator": 3600
+            },
+            "lo_shu_value": 2,
+            "row": 0
+          },
+          {
+            "agent_id": "agent:minimal-direct:provenance_audit:7",
+            "candidate_root_hash72": "OnRc1<88VG44BVYfSSneHecUWS>Dvp++qML2EAoquwjGC/<6PQqa0-qyT1JGEgQ)RuY!WWt7",
+            "column": 0,
+            "exact_weight": {
+              "denominator": 7,
+              "numerator": 3600
+            },
+            "lo_shu_value": 3,
+            "row": 1
+          },
+          {
+            "agent_id": "agent:contract:provenance_audit:3",
+            "candidate_root_hash72": "zTudWmX-k/sU0MPxWvrKwMMRI5?3CwP?XXRIFPIEopJqAB29aRLYt8d!>-b/wnGv1b+7AL+)",
+            "column": 1,
+            "exact_weight": {
+              "denominator": 1,
+              "numerator": 750
+            },
+            "lo_shu_value": 5,
+            "row": 1
+          },
+          {
+            "agent_id": "agent:bridge:provenance_audit:5",
+            "candidate_root_hash72": "<dwsW4qiEpVbYwRbXg)xFHCXVY8FK60MCl6hDJbUfRM?>UnLo!4rmEr2HYaU2WHlqhIgI+3p",
+            "column": 2,
+            "exact_weight": {
+              "denominator": 3,
+              "numerator": 2800
+            },
+            "lo_shu_value": 7,
+            "row": 1
+          },
+          {
+            "agent_id": "agent:minimal-direct:provenance_audit:10",
+            "candidate_root_hash72": "ttRnv+mEAOgf3Y2uZ-yWv8/rAOheK8/fMjnd3+OcypfXAEcZDv!BO7hlXkrldi5cuxr>OKHj",
+            "column": 0,
+            "exact_weight": {
+              "denominator": 7,
+              "numerator": 7200
+            },
+            "lo_shu_value": 8,
+            "row": 2
+          },
+          {
+            "agent_id": "agent:bridge:provenance_audit:8",
+            "candidate_root_hash72": "<jqsW4qiEpVbYwRfTg)xFKzXVY8FK60MCl6hDJbUfRM?>UnLo!4rmEr2HYaU2WHlqhIgI+3p",
+            "column": 1,
+            "exact_weight": {
+              "denominator": 9,
+              "numerator": 800
+            },
+            "lo_shu_value": 1,
+            "row": 2
+          },
+          {
+            "agent_id": "agent:contract:provenance_audit:6",
+            "candidate_root_hash72": "RcChz>Si06ks1Pg1EX1L1>YgUbgxcU0+pMou8roN4fl)Ihd)WjvaH/YoxsaX393?uufruNCJ",
+            "column": 2,
+            "exact_weight": {
+              "denominator": 1,
+              "numerator": 450
+            },
+            "lo_shu_value": 6,
+            "row": 2
+          }
+        ],
+        "domain_id": "PROVENANCE_AUDIT",
+        "lo_shu_layout": [
+          4,
+          9,
+          2,
+          3,
+          5,
+          7,
+          8,
+          1,
+          6
+        ],
+        "magic_sum": 15,
+        "probability_confers_authority": false,
+        "schema": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_V1",
+        "shape": [
+          3,
+          3
+        ],
+        "tensor_is_canonical_truth": false,
+        "tensor_root_hash72": "g3u(ONWuu1fXaf*KRY1a)M>2V>SUKS<fkj6Cgw>72fLB)Te<)+-FgbAHal55Z5*G+10)KPr2",
+        "unique_agent_count": 9,
+        "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+      },
+      "top_nine": {
+        "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+        "candidate_count": 12,
+        "domain_id": "PROVENANCE_AUDIT",
+        "fitness_confers_authority": false,
+        "schema": "HHS_DOMAIN_TOP_NINE_SELECTION_V1",
+        "selected_agents": [
+          {
+            "admissible": true,
+            "agent_id": "agent:minimal-direct:provenance_audit:1",
+            "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+            "candidate_root_hash72": "OnRc1<88VG44BVYfSSneHecWYO>Dvj>+qML2EAoquwjGC/<6PQqa0-qyT1JGEgQ)RuY!WWt7",
+            "domain_id": "PROVENANCE_AUDIT",
+            "exact_fitness": {
+              "denominator": 7,
+              "numerator": 3600
+            },
+            "parent_agent_id": "agent:minimal-direct",
+            "parent_fitness_root_hash72": "FDmJzIrI7Oddvj*IIm/</6h4SY?bxVAS<?t1OZW7kLgf1-fy2myHvd7/8hSqzY/AzKlWgvkf",
+            "probability_confers_authority": false,
+            "provenance_valid": true,
+            "role_scope_valid": true,
+            "schema": "HHS_DOMAIN_AGENT_CANDIDATE_V1",
+            "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+          },
+          {
+            "admissible": true,
+            "agent_id": "agent:bridge:provenance_audit:2",
+            "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+            "candidate_root_hash72": "<dwsW4qiEpVbYwRfTg)xFEFXVY8FK60MCl6hDJbUfRM?>UnLo!4rmEr2HYaU2WHlqhIgI+3p",
+            "domain_id": "PROVENANCE_AUDIT",
+            "exact_fitness": {
+              "denominator": 3,
+              "numerator": 800
+            },
+            "parent_agent_id": "agent:bridge",
+            "parent_fitness_root_hash72": "IUl)v9mdbaL2qk*ltQN01>ko+)9oTU?T5*yizApcwWNtww0?4XVhZDyVcvundqYLyGc2)?c!",
+            "probability_confers_authority": false,
+            "provenance_valid": true,
+            "role_scope_valid": true,
+            "schema": "HHS_DOMAIN_AGENT_CANDIDATE_V1",
+            "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+          },
+          {
+            "admissible": true,
+            "agent_id": "agent:minimal-direct:provenance_audit:4",
+            "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+            "candidate_root_hash72": "OnRc1<88VG44BVYfSSneHecU*M>Dvm(+qML2EAoquwjGC/<6PQqa0-qyT1JGEgQ)RuY!WWt7",
+            "domain_id": "PROVENANCE_AUDIT",
+            "exact_fitness": {
+              "denominator": 7,
+              "numerator": 1800
+            },
+            "parent_agent_id": "agent:minimal-direct",
+            "parent_fitness_root_hash72": "FDmJzIrI7Oddvj*IIm/</6h4SY?bxVAS<?t1OZW7kLgf1-fy2myHvd7/8hSqzY/AzKlWgvkf",
+            "probability_confers_authority": false,
+            "provenance_valid": true,
+            "role_scope_valid": true,
+            "schema": "HHS_DOMAIN_AGENT_CANDIDATE_V1",
+            "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+          },
+          {
+            "admissible": true,
+            "agent_id": "agent:minimal-direct:provenance_audit:7",
+            "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+            "candidate_root_hash72": "OnRc1<88VG44BVYfSSneHecUWS>Dvp++qML2EAoquwjGC/<6PQqa0-qyT1JGEgQ)RuY!WWt7",
+            "domain_id": "PROVENANCE_AUDIT",
+            "exact_fitness": {
+              "denominator": 7,
+              "numerator": 1200
+            },
+            "parent_agent_id": "agent:minimal-direct",
+            "parent_fitness_root_hash72": "FDmJzIrI7Oddvj*IIm/</6h4SY?bxVAS<?t1OZW7kLgf1-fy2myHvd7/8hSqzY/AzKlWgvkf",
+            "probability_confers_authority": false,
+            "provenance_valid": true,
+            "role_scope_valid": true,
+            "schema": "HHS_DOMAIN_AGENT_CANDIDATE_V1",
+            "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+          },
+          {
+            "admissible": true,
+            "agent_id": "agent:contract:provenance_audit:3",
+            "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+            "candidate_root_hash72": "zTudWmX-k/sU0MPxWvrKwMMRI5?3CwP?XXRIFPIEopJqAB29aRLYt8d!>-b/wnGv1b+7AL+)",
+            "domain_id": "PROVENANCE_AUDIT",
+            "exact_fitness": {
+              "denominator": 1,
+              "numerator": 150
+            },
+            "parent_agent_id": "agent:contract",
+            "parent_fitness_root_hash72": "-xT6TRAhE-NycVfu20QQqA0V8Kf7!8vqs5pXBohvLci!YtEAQ*q!+aHZJACs6G1E<oRPhcDF",
+            "probability_confers_authority": false,
+            "provenance_valid": true,
+            "role_scope_valid": true,
+            "schema": "HHS_DOMAIN_AGENT_CANDIDATE_V1",
+            "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+          },
+          {
+            "admissible": true,
+            "agent_id": "agent:bridge:provenance_audit:5",
+            "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+            "candidate_root_hash72": "<dwsW4qiEpVbYwRbXg)xFHCXVY8FK60MCl6hDJbUfRM?>UnLo!4rmEr2HYaU2WHlqhIgI+3p",
+            "domain_id": "PROVENANCE_AUDIT",
+            "exact_fitness": {
+              "denominator": 3,
+              "numerator": 400
+            },
+            "parent_agent_id": "agent:bridge",
+            "parent_fitness_root_hash72": "IUl)v9mdbaL2qk*ltQN01>ko+)9oTU?T5*yizApcwWNtww0?4XVhZDyVcvundqYLyGc2)?c!",
+            "probability_confers_authority": false,
+            "provenance_valid": true,
+            "role_scope_valid": true,
+            "schema": "HHS_DOMAIN_AGENT_CANDIDATE_V1",
+            "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+          },
+          {
+            "admissible": true,
+            "agent_id": "agent:minimal-direct:provenance_audit:10",
+            "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+            "candidate_root_hash72": "ttRnv+mEAOgf3Y2uZ-yWv8/rAOheK8/fMjnd3+OcypfXAEcZDv!BO7hlXkrldi5cuxr>OKHj",
+            "domain_id": "PROVENANCE_AUDIT",
+            "exact_fitness": {
+              "denominator": 7,
+              "numerator": 900
+            },
+            "parent_agent_id": "agent:minimal-direct",
+            "parent_fitness_root_hash72": "FDmJzIrI7Oddvj*IIm/</6h4SY?bxVAS<?t1OZW7kLgf1-fy2myHvd7/8hSqzY/AzKlWgvkf",
+            "probability_confers_authority": false,
+            "provenance_valid": true,
+            "role_scope_valid": true,
+            "schema": "HHS_DOMAIN_AGENT_CANDIDATE_V1",
+            "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+          },
+          {
+            "admissible": true,
+            "agent_id": "agent:bridge:provenance_audit:8",
+            "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+            "candidate_root_hash72": "<jqsW4qiEpVbYwRfTg)xFKzXVY8FK60MCl6hDJbUfRM?>UnLo!4rmEr2HYaU2WHlqhIgI+3p",
+            "domain_id": "PROVENANCE_AUDIT",
+            "exact_fitness": {
+              "denominator": 9,
+              "numerator": 800
+            },
+            "parent_agent_id": "agent:bridge",
+            "parent_fitness_root_hash72": "IUl)v9mdbaL2qk*ltQN01>ko+)9oTU?T5*yizApcwWNtww0?4XVhZDyVcvundqYLyGc2)?c!",
+            "probability_confers_authority": false,
+            "provenance_valid": true,
+            "role_scope_valid": true,
+            "schema": "HHS_DOMAIN_AGENT_CANDIDATE_V1",
+            "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+          },
+          {
+            "admissible": true,
+            "agent_id": "agent:contract:provenance_audit:6",
+            "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+            "candidate_root_hash72": "RcChz>Si06ks1Pg1EX1L1>YgUbgxcU0+pMou8roN4fl)Ihd)WjvaH/YoxsaX393?uufruNCJ",
+            "domain_id": "PROVENANCE_AUDIT",
+            "exact_fitness": {
+              "denominator": 1,
+              "numerator": 75
+            },
+            "parent_agent_id": "agent:contract",
+            "parent_fitness_root_hash72": "-xT6TRAhE-NycVfu20QQqA0V8Kf7!8vqs5pXBohvLci!YtEAQ*q!+aHZJACs6G1E<oRPhcDF",
+            "probability_confers_authority": false,
+            "provenance_valid": true,
+            "role_scope_valid": true,
+            "schema": "HHS_DOMAIN_AGENT_CANDIDATE_V1",
+            "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+          }
+        ],
+        "selected_count": 9,
+        "selection_rule": "ADMISSIBLE_THEN_EXACT_FITNESS_THEN_AGENT_ID",
+        "top_nine_root_hash72": "C9sm+EovCi?s*Gl7cG7Ud)(>a<l2foBZqVMAMJ4>ljxb9mJN2DqO(B6hFd-moZrsGrg0fzV7",
+        "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+      }
+    },
+    {
+      "domain_id": "MULTIMODAL_FUSION",
+      "tensor": {
+        "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+        "cells": [
+          {
+            "agent_id": "agent:minimal-direct:multimodal_fusion:1",
+            "candidate_root_hash72": "W>l35rlPR5dRNgJ29UI!7a/0N*4lrJ8fm8igVEbv<p<v40ZarTwAIqyPyEeFUJd99Amu6GLs",
+            "column": 0,
+            "exact_weight": {
+              "denominator": 7,
+              "numerator": 14400
+            },
+            "lo_shu_value": 4,
+            "row": 0
+          },
+          {
+            "agent_id": "agent:bridge:multimodal_fusion:2",
+            "candidate_root_hash72": ")/0h>YU-f6Yt!b8yAvHu8lBIJo>K9o3PCmbEe9ak5E4vdu5gE>Zs)hw>y6d!jcP5?SriW-5u",
+            "column": 1,
+            "exact_weight": {
+              "denominator": 1,
+              "numerator": 2400
+            },
+            "lo_shu_value": 9,
+            "row": 0
+          },
+          {
+            "agent_id": "agent:minimal-direct:multimodal_fusion:4",
+            "candidate_root_hash72": "W>l35rlPR5dRNgJ29UI!7a/0N-8jrJbcm8igVEbv<p<v40ZarTwAIqyPyEeFUJd99Amu6GLs",
+            "column": 2,
+            "exact_weight": {
+              "denominator": 7,
+              "numerator": 3600
+            },
+            "lo_shu_value": 2,
+            "row": 0
+          },
+          {
+            "agent_id": "agent:minimal-direct:multimodal_fusion:7",
+            "candidate_root_hash72": "W>l35rlPR5dRNgJ29UI!7a/0N-2prJe9m8igVEbv<p<v40ZarTwAIqyPyEeFUJd99Amu6GLs",
+            "column": 0,
+            "exact_weight": {
+              "denominator": 7,
+              "numerator": 3600
+            },
+            "lo_shu_value": 3,
+            "row": 1
+          },
+          {
+            "agent_id": "agent:contract:multimodal_fusion:3",
+            "candidate_root_hash72": "MbJu7S3f2gMxkX)YCpiWYHWA*P0kJxhX)u6dhAwS(4Wg9zXbKRmnOsNVo(0EJgfZ7i2J(zHR",
+            "column": 1,
+            "exact_weight": {
+              "denominator": 1,
+              "numerator": 750
+            },
+            "lo_shu_value": 5,
+            "row": 1
+          },
+          {
+            "agent_id": "agent:bridge:multimodal_fusion:5",
+            "candidate_root_hash72": ")/0h>YU-f6Yt!b8yArLu8lEFJo>K9o3PCmbEe9ak5E4vdu5gE>Zs)hw>y6d!jcP5?SriW-5u",
+            "column": 2,
+            "exact_weight": {
+              "denominator": 3,
+              "numerator": 2800
+            },
+            "lo_shu_value": 7,
+            "row": 1
+          },
+          {
+            "agent_id": "agent:minimal-direct:multimodal_fusion:10",
+            "candidate_root_hash72": "SRseZzwp(ryc>)B!Dc13+uEor33C2Y>bKxQ4Z!NBl>YH98gU0ZG6onVBb+r+L/tYZi)5qTvH",
+            "column": 0,
+            "exact_weight": {
+              "denominator": 7,
+              "numerator": 7200
+            },
+            "lo_shu_value": 8,
+            "row": 2
+          },
+          {
+            "agent_id": "agent:bridge:multimodal_fusion:8",
+            "candidate_root_hash72": ")/0n+YU-f6Yt!b8yAvHu8lHCJo>K9o3PCmbEe9ak5E4vdu5gE>Zs)hw>y6d!jcP5?SriW-5u",
+            "column": 1,
+            "exact_weight": {
+              "denominator": 9,
+              "numerator": 800
+            },
+            "lo_shu_value": 1,
+            "row": 2
+          },
+          {
+            "agent_id": "agent:contract:multimodal_fusion:6",
+            "candidate_root_hash72": "nZ+XfWQ->IsKcv<+3/0eyIrV78fq-++bgmI2Ym?uKdC6V4)+VD!ZyM/G?kA6IaWLEWv*iTBT",
+            "column": 2,
+            "exact_weight": {
+              "denominator": 1,
+              "numerator": 450
+            },
+            "lo_shu_value": 6,
+            "row": 2
+          }
+        ],
+        "domain_id": "MULTIMODAL_FUSION",
+        "lo_shu_layout": [
+          4,
+          9,
+          2,
+          3,
+          5,
+          7,
+          8,
+          1,
+          6
+        ],
+        "magic_sum": 15,
+        "probability_confers_authority": false,
+        "schema": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_V1",
+        "shape": [
+          3,
+          3
+        ],
+        "tensor_is_canonical_truth": false,
+        "tensor_root_hash72": "7Ueh*qdh7ewujuxrGT?MS?ol8fPSWTgv4s-A?T5<-Fc(zjihqQ4waP2!(dQh?K6YABnlhf4C",
+        "unique_agent_count": 9,
+        "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+      },
+      "top_nine": {
+        "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+        "candidate_count": 12,
+        "domain_id": "MULTIMODAL_FUSION",
+        "fitness_confers_authority": false,
+        "schema": "HHS_DOMAIN_TOP_NINE_SELECTION_V1",
+        "selected_agents": [
+          {
+            "admissible": true,
+            "agent_id": "agent:minimal-direct:multimodal_fusion:1",
+            "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+            "candidate_root_hash72": "W>l35rlPR5dRNgJ29UI!7a/0N*4lrJ8fm8igVEbv<p<v40ZarTwAIqyPyEeFUJd99Amu6GLs",
+            "domain_id": "MULTIMODAL_FUSION",
+            "exact_fitness": {
+              "denominator": 7,
+              "numerator": 3600
+            },
+            "parent_agent_id": "agent:minimal-direct",
+            "parent_fitness_root_hash72": "FDmJzIrI7Oddvj*IIm/</6h4SY?bxVAS<?t1OZW7kLgf1-fy2myHvd7/8hSqzY/AzKlWgvkf",
+            "probability_confers_authority": false,
+            "provenance_valid": true,
+            "role_scope_valid": true,
+            "schema": "HHS_DOMAIN_AGENT_CANDIDATE_V1",
+            "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+          },
+          {
+            "admissible": true,
+            "agent_id": "agent:bridge:multimodal_fusion:2",
+            "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+            "candidate_root_hash72": ")/0h>YU-f6Yt!b8yAvHu8lBIJo>K9o3PCmbEe9ak5E4vdu5gE>Zs)hw>y6d!jcP5?SriW-5u",
+            "domain_id": "MULTIMODAL_FUSION",
+            "exact_fitness": {
+              "denominator": 3,
+              "numerator": 800
+            },
+            "parent_agent_id": "agent:bridge",
+            "parent_fitness_root_hash72": "IUl)v9mdbaL2qk*ltQN01>ko+)9oTU?T5*yizApcwWNtww0?4XVhZDyVcvundqYLyGc2)?c!",
+            "probability_confers_authority": false,
+            "provenance_valid": true,
+            "role_scope_valid": true,
+            "schema": "HHS_DOMAIN_AGENT_CANDIDATE_V1",
+            "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+          },
+          {
+            "admissible": true,
+            "agent_id": "agent:minimal-direct:multimodal_fusion:4",
+            "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+            "candidate_root_hash72": "W>l35rlPR5dRNgJ29UI!7a/0N-8jrJbcm8igVEbv<p<v40ZarTwAIqyPyEeFUJd99Amu6GLs",
+            "domain_id": "MULTIMODAL_FUSION",
+            "exact_fitness": {
+              "denominator": 7,
+              "numerator": 1800
+            },
+            "parent_agent_id": "agent:minimal-direct",
+            "parent_fitness_root_hash72": "FDmJzIrI7Oddvj*IIm/</6h4SY?bxVAS<?t1OZW7kLgf1-fy2myHvd7/8hSqzY/AzKlWgvkf",
+            "probability_confers_authority": false,
+            "provenance_valid": true,
+            "role_scope_valid": true,
+            "schema": "HHS_DOMAIN_AGENT_CANDIDATE_V1",
+            "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+          },
+          {
+            "admissible": true,
+            "agent_id": "agent:minimal-direct:multimodal_fusion:7",
+            "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+            "candidate_root_hash72": "W>l35rlPR5dRNgJ29UI!7a/0N-2prJe9m8igVEbv<p<v40ZarTwAIqyPyEeFUJd99Amu6GLs",
+            "domain_id": "MULTIMODAL_FUSION",
+            "exact_fitness": {
+              "denominator": 7,
+              "numerator": 1200
+            },
+            "parent_agent_id": "agent:minimal-direct",
+            "parent_fitness_root_hash72": "FDmJzIrI7Oddvj*IIm/</6h4SY?bxVAS<?t1OZW7kLgf1-fy2myHvd7/8hSqzY/AzKlWgvkf",
+            "probability_confers_authority": false,
+            "provenance_valid": true,
+            "role_scope_valid": true,
+            "schema": "HHS_DOMAIN_AGENT_CANDIDATE_V1",
+            "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+          },
+          {
+            "admissible": true,
+            "agent_id": "agent:contract:multimodal_fusion:3",
+            "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+            "candidate_root_hash72": "MbJu7S3f2gMxkX)YCpiWYHWA*P0kJxhX)u6dhAwS(4Wg9zXbKRmnOsNVo(0EJgfZ7i2J(zHR",
+            "domain_id": "MULTIMODAL_FUSION",
+            "exact_fitness": {
+              "denominator": 1,
+              "numerator": 150
+            },
+            "parent_agent_id": "agent:contract",
+            "parent_fitness_root_hash72": "-xT6TRAhE-NycVfu20QQqA0V8Kf7!8vqs5pXBohvLci!YtEAQ*q!+aHZJACs6G1E<oRPhcDF",
+            "probability_confers_authority": false,
+            "provenance_valid": true,
+            "role_scope_valid": true,
+            "schema": "HHS_DOMAIN_AGENT_CANDIDATE_V1",
+            "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+          },
+          {
+            "admissible": true,
+            "agent_id": "agent:bridge:multimodal_fusion:5",
+            "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+            "candidate_root_hash72": ")/0h>YU-f6Yt!b8yArLu8lEFJo>K9o3PCmbEe9ak5E4vdu5gE>Zs)hw>y6d!jcP5?SriW-5u",
+            "domain_id": "MULTIMODAL_FUSION",
+            "exact_fitness": {
+              "denominator": 3,
+              "numerator": 400
+            },
+            "parent_agent_id": "agent:bridge",
+            "parent_fitness_root_hash72": "IUl)v9mdbaL2qk*ltQN01>ko+)9oTU?T5*yizApcwWNtww0?4XVhZDyVcvundqYLyGc2)?c!",
+            "probability_confers_authority": false,
+            "provenance_valid": true,
+            "role_scope_valid": true,
+            "schema": "HHS_DOMAIN_AGENT_CANDIDATE_V1",
+            "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+          },
+          {
+            "admissible": true,
+            "agent_id": "agent:minimal-direct:multimodal_fusion:10",
+            "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+            "candidate_root_hash72": "SRseZzwp(ryc>)B!Dc13+uEor33C2Y>bKxQ4Z!NBl>YH98gU0ZG6onVBb+r+L/tYZi)5qTvH",
+            "domain_id": "MULTIMODAL_FUSION",
+            "exact_fitness": {
+              "denominator": 7,
+              "numerator": 900
+            },
+            "parent_agent_id": "agent:minimal-direct",
+            "parent_fitness_root_hash72": "FDmJzIrI7Oddvj*IIm/</6h4SY?bxVAS<?t1OZW7kLgf1-fy2myHvd7/8hSqzY/AzKlWgvkf",
+            "probability_confers_authority": false,
+            "provenance_valid": true,
+            "role_scope_valid": true,
+            "schema": "HHS_DOMAIN_AGENT_CANDIDATE_V1",
+            "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+          },
+          {
+            "admissible": true,
+            "agent_id": "agent:bridge:multimodal_fusion:8",
+            "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+            "candidate_root_hash72": ")/0n+YU-f6Yt!b8yAvHu8lHCJo>K9o3PCmbEe9ak5E4vdu5gE>Zs)hw>y6d!jcP5?SriW-5u",
+            "domain_id": "MULTIMODAL_FUSION",
+            "exact_fitness": {
+              "denominator": 9,
+              "numerator": 800
+            },
+            "parent_agent_id": "agent:bridge",
+            "parent_fitness_root_hash72": "IUl)v9mdbaL2qk*ltQN01>ko+)9oTU?T5*yizApcwWNtww0?4XVhZDyVcvundqYLyGc2)?c!",
+            "probability_confers_authority": false,
+            "provenance_valid": true,
+            "role_scope_valid": true,
+            "schema": "HHS_DOMAIN_AGENT_CANDIDATE_V1",
+            "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+          },
+          {
+            "admissible": true,
+            "agent_id": "agent:contract:multimodal_fusion:6",
+            "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+            "candidate_root_hash72": "nZ+XfWQ->IsKcv<+3/0eyIrV78fq-++bgmI2Ym?uKdC6V4)+VD!ZyM/G?kA6IaWLEWv*iTBT",
+            "domain_id": "MULTIMODAL_FUSION",
+            "exact_fitness": {
+              "denominator": 1,
+              "numerator": 75
+            },
+            "parent_agent_id": "agent:contract",
+            "parent_fitness_root_hash72": "-xT6TRAhE-NycVfu20QQqA0V8Kf7!8vqs5pXBohvLci!YtEAQ*q!+aHZJACs6G1E<oRPhcDF",
+            "probability_confers_authority": false,
+            "provenance_valid": true,
+            "role_scope_valid": true,
+            "schema": "HHS_DOMAIN_AGENT_CANDIDATE_V1",
+            "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+          }
+        ],
+        "selected_count": 9,
+        "selection_rule": "ADMISSIBLE_THEN_EXACT_FITNESS_THEN_AGENT_ID",
+        "top_nine_root_hash72": "7>yRAYBfC!GAb2M1tKrSE8KcOjWTDpiwuc)Q+1(Kj-gI5u(xg1cAEEU1HyA3U)7LLtkU<eS8",
+        "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+      }
+    },
+    {
+      "domain_id": "CONSTRAINT_TOPOLOGY",
+      "tensor": {
+        "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+        "cells": [
+          {
+            "agent_id": "agent:minimal-direct:constraint_topology:1",
+            "candidate_root_hash72": "pTt3!OrutLRGJv7Y-bgGyCr2XYVuGfBuQ/2lgbK)EO3DKMJ7KI(vDBopecw1p*jqxM?VhNg1",
+            "column": 0,
+            "exact_weight": {
+              "denominator": 7,
+              "numerator": 14400
+            },
+            "lo_shu_value": 4,
+            "row": 0
+          },
+          {
+            "agent_id": "agent:bridge:constraint_topology:2",
+            "candidate_root_hash72": "GBwVrwMdEHpBrQ!R(f-JU75vu!shO-2kIX<SKrv8DiWGIvZ6C3kIj!7AXj>gybW6pJ-IvfAY",
+            "column": 1,
+            "exact_weight": {
+              "denominator": 1,
+              "numerator": 2400
+            },
+            "lo_shu_value": 9,
+            "row": 0
+          },
+          {
+            "agent_id": "agent:minimal-direct:constraint_topology:4",
+            "candidate_root_hash72": "pTt3!OrutLRGJv7Y-bgGyCr2XYVuGdFsT-2lgbK)EO3DKMJ7KI(vDBopecw1p*jqxM?VhNg1",
+            "column": 2,
+            "exact_weight": {
+              "denominator": 7,
+              "numerator": 3600
+            },
+            "lo_shu_value": 2,
+            "row": 0
+          },
+          {
+            "agent_id": "agent:minimal-direct:constraint_topology:7",
+            "candidate_root_hash72": "pTt3!OrutLRGJv7Y-bgGyCr2XYVuGdzyWX2lgbK)EO3DKMJ7KI(vDBopecw1p*jqxM?VhNg1",
+            "column": 0,
+            "exact_weight": {
+              "denominator": 7,
+              "numerator": 3600
+            },
+            "lo_shu_value": 3,
+            "row": 1
+          },
+          {
+            "agent_id": "agent:contract:constraint_topology:3",
+            "candidate_root_hash72": "ke>c(au)QPuiSGeiPd7/GuohSEPWDLh2fBkYwWY2?44XV*WRgBHgkD<lw-y0N0C<Q2S+/dt/",
+            "column": 1,
+            "exact_weight": {
+              "denominator": 1,
+              "numerator": 750
+            },
+            "lo_shu_value": 5,
+            "row": 1
+          },
+          {
+            "agent_id": "agent:bridge:constraint_topology:5",
+            "candidate_root_hash72": "GBwVrwMdEHpBrQ!R(f-JU39vx)shO-2kIX<SKrv8DiWGIvZ6C3kIj!7AXj>gybW6pJ-IvfAY",
+            "column": 2,
+            "exact_weight": {
+              "denominator": 3,
+              "numerator": 2800
+            },
+            "lo_shu_value": 7,
+            "row": 1
+          },
+          {
+            "agent_id": "agent:minimal-direct:constraint_topology:10",
+            "candidate_root_hash72": "PfmI()nm+fG5iKX)49h)rdqs6pXld(8GFZqUA)Zao>-mP+sNOcVohzVy9na9LrIqAgjsu?eH",
+            "column": 0,
+            "exact_weight": {
+              "denominator": 7,
+              "numerator": 7200
+            },
+            "lo_shu_value": 8,
+            "row": 2
+          },
+          {
+            "agent_id": "agent:bridge:constraint_topology:8",
+            "candidate_root_hash72": "GBwVrwMjyHpBrQ!R(f-JU75vA*shO-2kIX<SKrv8DiWGIvZ6C3kIj!7AXj>gybW6pJ-IvfAY",
+            "column": 1,
+            "exact_weight": {
+              "denominator": 9,
+              "numerator": 800
+            },
+            "lo_shu_value": 1,
+            "row": 2
+          },
+          {
+            "agent_id": "agent:contract:constraint_topology:6",
+            "candidate_root_hash72": "Iy+eFYMoYT7/N!(vHV8<7!6JsFn4P7w8w)(cROq+G-HzB1CH*6P<vpIXg6SVoq2yP<pNqRWc",
+            "column": 2,
+            "exact_weight": {
+              "denominator": 1,
+              "numerator": 450
+            },
+            "lo_shu_value": 6,
+            "row": 2
+          }
+        ],
+        "domain_id": "CONSTRAINT_TOPOLOGY",
+        "lo_shu_layout": [
+          4,
+          9,
+          2,
+          3,
+          5,
+          7,
+          8,
+          1,
+          6
+        ],
+        "magic_sum": 15,
+        "probability_confers_authority": false,
+        "schema": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_V1",
+        "shape": [
+          3,
+          3
+        ],
+        "tensor_is_canonical_truth": false,
+        "tensor_root_hash72": "bUYd*wcCYUVMRmvZbbC1nc!-)12TqnkFx1R<lh*/-qWhPOGV*BtLlIpK82Tu6rtzCIReCowm",
+        "unique_agent_count": 9,
+        "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+      },
+      "top_nine": {
+        "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+        "candidate_count": 12,
+        "domain_id": "CONSTRAINT_TOPOLOGY",
+        "fitness_confers_authority": false,
+        "schema": "HHS_DOMAIN_TOP_NINE_SELECTION_V1",
+        "selected_agents": [
+          {
+            "admissible": true,
+            "agent_id": "agent:minimal-direct:constraint_topology:1",
+            "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+            "candidate_root_hash72": "pTt3!OrutLRGJv7Y-bgGyCr2XYVuGfBuQ/2lgbK)EO3DKMJ7KI(vDBopecw1p*jqxM?VhNg1",
+            "domain_id": "CONSTRAINT_TOPOLOGY",
+            "exact_fitness": {
+              "denominator": 7,
+              "numerator": 3600
+            },
+            "parent_agent_id": "agent:minimal-direct",
+            "parent_fitness_root_hash72": "FDmJzIrI7Oddvj*IIm/</6h4SY?bxVAS<?t1OZW7kLgf1-fy2myHvd7/8hSqzY/AzKlWgvkf",
+            "probability_confers_authority": false,
+            "provenance_valid": true,
+            "role_scope_valid": true,
+            "schema": "HHS_DOMAIN_AGENT_CANDIDATE_V1",
+            "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+          },
+          {
+            "admissible": true,
+            "agent_id": "agent:bridge:constraint_topology:2",
+            "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+            "candidate_root_hash72": "GBwVrwMdEHpBrQ!R(f-JU75vu!shO-2kIX<SKrv8DiWGIvZ6C3kIj!7AXj>gybW6pJ-IvfAY",
+            "domain_id": "CONSTRAINT_TOPOLOGY",
+            "exact_fitness": {
+              "denominator": 3,
+              "numerator": 800
+            },
+            "parent_agent_id": "agent:bridge",
+            "parent_fitness_root_hash72": "IUl)v9mdbaL2qk*ltQN01>ko+)9oTU?T5*yizApcwWNtww0?4XVhZDyVcvundqYLyGc2)?c!",
+            "probability_confers_authority": false,
+            "provenance_valid": true,
+            "role_scope_valid": true,
+            "schema": "HHS_DOMAIN_AGENT_CANDIDATE_V1",
+            "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+          },
+          {
+            "admissible": true,
+            "agent_id": "agent:minimal-direct:constraint_topology:4",
+            "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+            "candidate_root_hash72": "pTt3!OrutLRGJv7Y-bgGyCr2XYVuGdFsT-2lgbK)EO3DKMJ7KI(vDBopecw1p*jqxM?VhNg1",
+            "domain_id": "CONSTRAINT_TOPOLOGY",
+            "exact_fitness": {
+              "denominator": 7,
+              "numerator": 1800
+            },
+            "parent_agent_id": "agent:minimal-direct",
+            "parent_fitness_root_hash72": "FDmJzIrI7Oddvj*IIm/</6h4SY?bxVAS<?t1OZW7kLgf1-fy2myHvd7/8hSqzY/AzKlWgvkf",
+            "probability_confers_authority": false,
+            "provenance_valid": true,
+            "role_scope_valid": true,
+            "schema": "HHS_DOMAIN_AGENT_CANDIDATE_V1",
+            "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+          },
+          {
+            "admissible": true,
+            "agent_id": "agent:minimal-direct:constraint_topology:7",
+            "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+            "candidate_root_hash72": "pTt3!OrutLRGJv7Y-bgGyCr2XYVuGdzyWX2lgbK)EO3DKMJ7KI(vDBopecw1p*jqxM?VhNg1",
+            "domain_id": "CONSTRAINT_TOPOLOGY",
+            "exact_fitness": {
+              "denominator": 7,
+              "numerator": 1200
+            },
+            "parent_agent_id": "agent:minimal-direct",
+            "parent_fitness_root_hash72": "FDmJzIrI7Oddvj*IIm/</6h4SY?bxVAS<?t1OZW7kLgf1-fy2myHvd7/8hSqzY/AzKlWgvkf",
+            "probability_confers_authority": false,
+            "provenance_valid": true,
+            "role_scope_valid": true,
+            "schema": "HHS_DOMAIN_AGENT_CANDIDATE_V1",
+            "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+          },
+          {
+            "admissible": true,
+            "agent_id": "agent:contract:constraint_topology:3",
+            "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+            "candidate_root_hash72": "ke>c(au)QPuiSGeiPd7/GuohSEPWDLh2fBkYwWY2?44XV*WRgBHgkD<lw-y0N0C<Q2S+/dt/",
+            "domain_id": "CONSTRAINT_TOPOLOGY",
+            "exact_fitness": {
+              "denominator": 1,
+              "numerator": 150
+            },
+            "parent_agent_id": "agent:contract",
+            "parent_fitness_root_hash72": "-xT6TRAhE-NycVfu20QQqA0V8Kf7!8vqs5pXBohvLci!YtEAQ*q!+aHZJACs6G1E<oRPhcDF",
+            "probability_confers_authority": false,
+            "provenance_valid": true,
+            "role_scope_valid": true,
+            "schema": "HHS_DOMAIN_AGENT_CANDIDATE_V1",
+            "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+          },
+          {
+            "admissible": true,
+            "agent_id": "agent:bridge:constraint_topology:5",
+            "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+            "candidate_root_hash72": "GBwVrwMdEHpBrQ!R(f-JU39vx)shO-2kIX<SKrv8DiWGIvZ6C3kIj!7AXj>gybW6pJ-IvfAY",
+            "domain_id": "CONSTRAINT_TOPOLOGY",
+            "exact_fitness": {
+              "denominator": 3,
+              "numerator": 400
+            },
+            "parent_agent_id": "agent:bridge",
+            "parent_fitness_root_hash72": "IUl)v9mdbaL2qk*ltQN01>ko+)9oTU?T5*yizApcwWNtww0?4XVhZDyVcvundqYLyGc2)?c!",
+            "probability_confers_authority": false,
+            "provenance_valid": true,
+            "role_scope_valid": true,
+            "schema": "HHS_DOMAIN_AGENT_CANDIDATE_V1",
+            "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+          },
+          {
+            "admissible": true,
+            "agent_id": "agent:minimal-direct:constraint_topology:10",
+            "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+            "candidate_root_hash72": "PfmI()nm+fG5iKX)49h)rdqs6pXld(8GFZqUA)Zao>-mP+sNOcVohzVy9na9LrIqAgjsu?eH",
+            "domain_id": "CONSTRAINT_TOPOLOGY",
+            "exact_fitness": {
+              "denominator": 7,
+              "numerator": 900
+            },
+            "parent_agent_id": "agent:minimal-direct",
+            "parent_fitness_root_hash72": "FDmJzIrI7Oddvj*IIm/</6h4SY?bxVAS<?t1OZW7kLgf1-fy2myHvd7/8hSqzY/AzKlWgvkf",
+            "probability_confers_authority": false,
+            "provenance_valid": true,
+            "role_scope_valid": true,
+            "schema": "HHS_DOMAIN_AGENT_CANDIDATE_V1",
+            "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+          },
+          {
+            "admissible": true,
+            "agent_id": "agent:bridge:constraint_topology:8",
+            "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+            "candidate_root_hash72": "GBwVrwMjyHpBrQ!R(f-JU75vA*shO-2kIX<SKrv8DiWGIvZ6C3kIj!7AXj>gybW6pJ-IvfAY",
+            "domain_id": "CONSTRAINT_TOPOLOGY",
+            "exact_fitness": {
+              "denominator": 9,
+              "numerator": 800
+            },
+            "parent_agent_id": "agent:bridge",
+            "parent_fitness_root_hash72": "IUl)v9mdbaL2qk*ltQN01>ko+)9oTU?T5*yizApcwWNtww0?4XVhZDyVcvundqYLyGc2)?c!",
+            "probability_confers_authority": false,
+            "provenance_valid": true,
+            "role_scope_valid": true,
+            "schema": "HHS_DOMAIN_AGENT_CANDIDATE_V1",
+            "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+          },
+          {
+            "admissible": true,
+            "agent_id": "agent:contract:constraint_topology:6",
+            "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+            "candidate_root_hash72": "Iy+eFYMoYT7/N!(vHV8<7!6JsFn4P7w8w)(cROq+G-HzB1CH*6P<vpIXg6SVoq2yP<pNqRWc",
+            "domain_id": "CONSTRAINT_TOPOLOGY",
+            "exact_fitness": {
+              "denominator": 1,
+              "numerator": 75
+            },
+            "parent_agent_id": "agent:contract",
+            "parent_fitness_root_hash72": "-xT6TRAhE-NycVfu20QQqA0V8Kf7!8vqs5pXBohvLci!YtEAQ*q!+aHZJACs6G1E<oRPhcDF",
+            "probability_confers_authority": false,
+            "provenance_valid": true,
+            "role_scope_valid": true,
+            "schema": "HHS_DOMAIN_AGENT_CANDIDATE_V1",
+            "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+          }
+        ],
+        "selected_count": 9,
+        "selection_rule": "ADMISSIBLE_THEN_EXACT_FITNESS_THEN_AGENT_ID",
+        "top_nine_root_hash72": "3LQqSImwkvxn>VWj*iC-1knQKY0pvd/>5HjU*n9l8nSYIgaE6EBTMu+nDavCu6l*pr2JE1i5",
+        "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+      }
+    },
+    {
+      "domain_id": "INFORMATION_ENERGY",
+      "tensor": {
+        "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+        "cells": [
+          {
+            "agent_id": "agent:minimal-direct:information_energy:1",
+            "candidate_root_hash72": "W-VStf6Z/CPD-ufluK1wOZk)pSmI(!bb<ym/P8I?JvCuxtawzwpHLmPUsl2byd0f>fKaleXD",
+            "column": 0,
+            "exact_weight": {
+              "denominator": 7,
+              "numerator": 14400
+            },
+            "lo_shu_value": 4,
+            "row": 0
+          },
+          {
+            "agent_id": "agent:bridge:information_energy:2",
+            "candidate_root_hash72": "<YFkFepy9RBGno9cWqRSgZa!1c/rlTSxvqfL?0E?jNbmCw(v82guXXMn(C0Y3EYWZasYpZ08",
+            "column": 1,
+            "exact_weight": {
+              "denominator": 1,
+              "numerator": 2400
+            },
+            "lo_shu_value": 9,
+            "row": 0
+          },
+          {
+            "agent_id": "agent:minimal-direct:information_energy:4",
+            "candidate_root_hash72": "W-VStf6Z/CPD-ufluK1wOZk)pSmG!<be/ym/P8I?JvCuxtawzwpHLmPUsl2byd0f>fKaleXD",
+            "column": 2,
+            "exact_weight": {
+              "denominator": 7,
+              "numerator": 3600
+            },
+            "lo_shu_value": 2,
+            "row": 0
+          },
+          {
+            "agent_id": "agent:minimal-direct:information_energy:7",
+            "candidate_root_hash72": "W-VStf6Z/CPD-ufluK1wOZk)pSmG*2bh-ym/P8I?JvCuxtawzwpHLmPUsl2byd0f>fKaleXD",
+            "column": 0,
+            "exact_weight": {
+              "denominator": 7,
+              "numerator": 3600
+            },
+            "lo_shu_value": 3,
+            "row": 1
+          },
+          {
+            "agent_id": "agent:contract:information_energy:3",
+            "candidate_root_hash72": "9MVM*mscMt(XG<B(JP/s8*K27aN!S)LeNS4VKbY7BxHEDttP4oIXy(9KtuS9uz9<I3-ox6VC",
+            "column": 1,
+            "exact_weight": {
+              "denominator": 1,
+              "numerator": 750
+            },
+            "lo_shu_value": 5,
+            "row": 1
+          },
+          {
+            "agent_id": "agent:bridge:information_energy:5",
+            "candidate_root_hash72": "<YFkFepy9RBGno9cWqROkZa1!c/rlTSxvqfL?0E?jNbmCw(v82guXXMn(C0Y3EYWZasYpZ08",
+            "column": 2,
+            "exact_weight": {
+              "denominator": 3,
+              "numerator": 2800
+            },
+            "lo_shu_value": 7,
+            "row": 1
+          },
+          {
+            "agent_id": "agent:minimal-direct:information_energy:10",
+            "candidate_root_hash72": ">Xp(FaXOTbSvy>3qfWIa4DQ2u3G6aGq0*WPqzcZYUcMjYIt7j?MR0Z1qk/fHOIw6-l+YCGlI",
+            "column": 0,
+            "exact_weight": {
+              "denominator": 7,
+              "numerator": 7200
+            },
+            "lo_shu_value": 8,
+            "row": 2
+          },
+          {
+            "agent_id": "agent:bridge:information_energy:8",
+            "candidate_root_hash72": "<YFkFkjy9RBGno9cWqRSgZa4)c/rlTSxvqfL?0E?jNbmCw(v82guXXMn(C0Y3EYWZasYpZ08",
+            "column": 1,
+            "exact_weight": {
+              "denominator": 9,
+              "numerator": 800
+            },
+            "lo_shu_value": 1,
+            "row": 2
+          },
+          {
+            "agent_id": "agent:contract:information_energy:6",
+            "candidate_root_hash72": "3OwqaPAgp4Zfm9tCKSu<-kk3MyWu>1*In6pNc0v/49nNjj5kc4TJaw/*Lftz(18-fZn*-p9W",
+            "column": 2,
+            "exact_weight": {
+              "denominator": 1,
+              "numerator": 450
+            },
+            "lo_shu_value": 6,
+            "row": 2
+          }
+        ],
+        "domain_id": "INFORMATION_ENERGY",
+        "lo_shu_layout": [
+          4,
+          9,
+          2,
+          3,
+          5,
+          7,
+          8,
+          1,
+          6
+        ],
+        "magic_sum": 15,
+        "probability_confers_authority": false,
+        "schema": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_V1",
+        "shape": [
+          3,
+          3
+        ],
+        "tensor_is_canonical_truth": false,
+        "tensor_root_hash72": ")n<s4ASTV*jSHyw3Zlcfj3/bH8uD9n!AqiIHSzx>SNyGs>S*TQ17CNj4sjHMs3S?Vv>Y4-9v",
+        "unique_agent_count": 9,
+        "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+      },
+      "top_nine": {
+        "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+        "candidate_count": 12,
+        "domain_id": "INFORMATION_ENERGY",
+        "fitness_confers_authority": false,
+        "schema": "HHS_DOMAIN_TOP_NINE_SELECTION_V1",
+        "selected_agents": [
+          {
+            "admissible": true,
+            "agent_id": "agent:minimal-direct:information_energy:1",
+            "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+            "candidate_root_hash72": "W-VStf6Z/CPD-ufluK1wOZk)pSmI(!bb<ym/P8I?JvCuxtawzwpHLmPUsl2byd0f>fKaleXD",
+            "domain_id": "INFORMATION_ENERGY",
+            "exact_fitness": {
+              "denominator": 7,
+              "numerator": 3600
+            },
+            "parent_agent_id": "agent:minimal-direct",
+            "parent_fitness_root_hash72": "FDmJzIrI7Oddvj*IIm/</6h4SY?bxVAS<?t1OZW7kLgf1-fy2myHvd7/8hSqzY/AzKlWgvkf",
+            "probability_confers_authority": false,
+            "provenance_valid": true,
+            "role_scope_valid": true,
+            "schema": "HHS_DOMAIN_AGENT_CANDIDATE_V1",
+            "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+          },
+          {
+            "admissible": true,
+            "agent_id": "agent:bridge:information_energy:2",
+            "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+            "candidate_root_hash72": "<YFkFepy9RBGno9cWqRSgZa!1c/rlTSxvqfL?0E?jNbmCw(v82guXXMn(C0Y3EYWZasYpZ08",
+            "domain_id": "INFORMATION_ENERGY",
+            "exact_fitness": {
+              "denominator": 3,
+              "numerator": 800
+            },
+            "parent_agent_id": "agent:bridge",
+            "parent_fitness_root_hash72": "IUl)v9mdbaL2qk*ltQN01>ko+)9oTU?T5*yizApcwWNtww0?4XVhZDyVcvundqYLyGc2)?c!",
+            "probability_confers_authority": false,
+            "provenance_valid": true,
+            "role_scope_valid": true,
+            "schema": "HHS_DOMAIN_AGENT_CANDIDATE_V1",
+            "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+          },
+          {
+            "admissible": true,
+            "agent_id": "agent:minimal-direct:information_energy:4",
+            "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+            "candidate_root_hash72": "W-VStf6Z/CPD-ufluK1wOZk)pSmG!<be/ym/P8I?JvCuxtawzwpHLmPUsl2byd0f>fKaleXD",
+            "domain_id": "INFORMATION_ENERGY",
+            "exact_fitness": {
+              "denominator": 7,
+              "numerator": 1800
+            },
+            "parent_agent_id": "agent:minimal-direct",
+            "parent_fitness_root_hash72": "FDmJzIrI7Oddvj*IIm/</6h4SY?bxVAS<?t1OZW7kLgf1-fy2myHvd7/8hSqzY/AzKlWgvkf",
+            "probability_confers_authority": false,
+            "provenance_valid": true,
+            "role_scope_valid": true,
+            "schema": "HHS_DOMAIN_AGENT_CANDIDATE_V1",
+            "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+          },
+          {
+            "admissible": true,
+            "agent_id": "agent:minimal-direct:information_energy:7",
+            "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+            "candidate_root_hash72": "W-VStf6Z/CPD-ufluK1wOZk)pSmG*2bh-ym/P8I?JvCuxtawzwpHLmPUsl2byd0f>fKaleXD",
+            "domain_id": "INFORMATION_ENERGY",
+            "exact_fitness": {
+              "denominator": 7,
+              "numerator": 1200
+            },
+            "parent_agent_id": "agent:minimal-direct",
+            "parent_fitness_root_hash72": "FDmJzIrI7Oddvj*IIm/</6h4SY?bxVAS<?t1OZW7kLgf1-fy2myHvd7/8hSqzY/AzKlWgvkf",
+            "probability_confers_authority": false,
+            "provenance_valid": true,
+            "role_scope_valid": true,
+            "schema": "HHS_DOMAIN_AGENT_CANDIDATE_V1",
+            "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+          },
+          {
+            "admissible": true,
+            "agent_id": "agent:contract:information_energy:3",
+            "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+            "candidate_root_hash72": "9MVM*mscMt(XG<B(JP/s8*K27aN!S)LeNS4VKbY7BxHEDttP4oIXy(9KtuS9uz9<I3-ox6VC",
+            "domain_id": "INFORMATION_ENERGY",
+            "exact_fitness": {
+              "denominator": 1,
+              "numerator": 150
+            },
+            "parent_agent_id": "agent:contract",
+            "parent_fitness_root_hash72": "-xT6TRAhE-NycVfu20QQqA0V8Kf7!8vqs5pXBohvLci!YtEAQ*q!+aHZJACs6G1E<oRPhcDF",
+            "probability_confers_authority": false,
+            "provenance_valid": true,
+            "role_scope_valid": true,
+            "schema": "HHS_DOMAIN_AGENT_CANDIDATE_V1",
+            "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+          },
+          {
+            "admissible": true,
+            "agent_id": "agent:bridge:information_energy:5",
+            "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+            "candidate_root_hash72": "<YFkFepy9RBGno9cWqROkZa1!c/rlTSxvqfL?0E?jNbmCw(v82guXXMn(C0Y3EYWZasYpZ08",
+            "domain_id": "INFORMATION_ENERGY",
+            "exact_fitness": {
+              "denominator": 3,
+              "numerator": 400
+            },
+            "parent_agent_id": "agent:bridge",
+            "parent_fitness_root_hash72": "IUl)v9mdbaL2qk*ltQN01>ko+)9oTU?T5*yizApcwWNtww0?4XVhZDyVcvundqYLyGc2)?c!",
+            "probability_confers_authority": false,
+            "provenance_valid": true,
+            "role_scope_valid": true,
+            "schema": "HHS_DOMAIN_AGENT_CANDIDATE_V1",
+            "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+          },
+          {
+            "admissible": true,
+            "agent_id": "agent:minimal-direct:information_energy:10",
+            "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+            "candidate_root_hash72": ">Xp(FaXOTbSvy>3qfWIa4DQ2u3G6aGq0*WPqzcZYUcMjYIt7j?MR0Z1qk/fHOIw6-l+YCGlI",
+            "domain_id": "INFORMATION_ENERGY",
+            "exact_fitness": {
+              "denominator": 7,
+              "numerator": 900
+            },
+            "parent_agent_id": "agent:minimal-direct",
+            "parent_fitness_root_hash72": "FDmJzIrI7Oddvj*IIm/</6h4SY?bxVAS<?t1OZW7kLgf1-fy2myHvd7/8hSqzY/AzKlWgvkf",
+            "probability_confers_authority": false,
+            "provenance_valid": true,
+            "role_scope_valid": true,
+            "schema": "HHS_DOMAIN_AGENT_CANDIDATE_V1",
+            "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+          },
+          {
+            "admissible": true,
+            "agent_id": "agent:bridge:information_energy:8",
+            "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+            "candidate_root_hash72": "<YFkFkjy9RBGno9cWqRSgZa4)c/rlTSxvqfL?0E?jNbmCw(v82guXXMn(C0Y3EYWZasYpZ08",
+            "domain_id": "INFORMATION_ENERGY",
+            "exact_fitness": {
+              "denominator": 9,
+              "numerator": 800
+            },
+            "parent_agent_id": "agent:bridge",
+            "parent_fitness_root_hash72": "IUl)v9mdbaL2qk*ltQN01>ko+)9oTU?T5*yizApcwWNtww0?4XVhZDyVcvundqYLyGc2)?c!",
+            "probability_confers_authority": false,
+            "provenance_valid": true,
+            "role_scope_valid": true,
+            "schema": "HHS_DOMAIN_AGENT_CANDIDATE_V1",
+            "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+          },
+          {
+            "admissible": true,
+            "agent_id": "agent:contract:information_energy:6",
+            "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+            "candidate_root_hash72": "3OwqaPAgp4Zfm9tCKSu<-kk3MyWu>1*In6pNc0v/49nNjj5kc4TJaw/*Lftz(18-fZn*-p9W",
+            "domain_id": "INFORMATION_ENERGY",
+            "exact_fitness": {
+              "denominator": 1,
+              "numerator": 75
+            },
+            "parent_agent_id": "agent:contract",
+            "parent_fitness_root_hash72": "-xT6TRAhE-NycVfu20QQqA0V8Kf7!8vqs5pXBohvLci!YtEAQ*q!+aHZJACs6G1E<oRPhcDF",
+            "probability_confers_authority": false,
+            "provenance_valid": true,
+            "role_scope_valid": true,
+            "schema": "HHS_DOMAIN_AGENT_CANDIDATE_V1",
+            "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+          }
+        ],
+        "selected_count": 9,
+        "selection_rule": "ADMISSIBLE_THEN_EXACT_FITNESS_THEN_AGENT_ID",
+        "top_nine_root_hash72": "4fCt*>qO>VrJ9+xLZ!eJ>t3Xzb!CbkKMywUXml+8vS690OrhCN3kkNYa(s66>xBZ1fBpFp4S",
+        "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+      }
+    },
+    {
+      "domain_id": "CANONICAL_REVALIDATION",
+      "tensor": {
+        "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+        "cells": [
+          {
+            "agent_id": "agent:minimal-direct:canonical_revalidation:1",
+            "candidate_root_hash72": "bt99l66!Gf0Qml8IDy0ElrYOoiXS/eVjB0HbH?W<S(7>EpXrLvIFSWfKnZk4UR6fH!FCYGai",
+            "column": 0,
+            "exact_weight": {
+              "denominator": 7,
+              "numerator": 14400
+            },
+            "lo_shu_value": 4,
+            "row": 0
+          },
+          {
+            "agent_id": "agent:bridge:canonical_revalidation:2",
+            "candidate_root_hash72": "pGFBizPgEVGhh+ni6HE/9sB9lr1Q?TwfPwslk7FMKJzPu390h2gLirTjqrPPc7guX*HcaEDo",
+            "column": 1,
+            "exact_weight": {
+              "denominator": 1,
+              "numerator": 2400
+            },
+            "lo_shu_value": 9,
+            "row": 0
+          },
+          {
+            "agent_id": "agent:minimal-direct:canonical_revalidation:4",
+            "candidate_root_hash72": "bt99l66!Gf0Qml8IDy0ElrYOoiXS/eVjB0HcI>W<S(7>EpXrLvIFSWfKnZk4UR6fH!FCYGai",
+            "column": 2,
+            "exact_weight": {
+              "denominator": 7,
+              "numerator": 3600
+            },
+            "lo_shu_value": 2,
+            "row": 0
+          },
+          {
+            "agent_id": "agent:minimal-direct:canonical_revalidation:7",
+            "candidate_root_hash72": "bt99l66!Gf0Qml8IDy0ElrYOoiXS/eVjB0Hfz3W<S(7>EpXrLvIFSWfKnZk4UR6fH!FCYGai",
+            "column": 0,
+            "exact_weight": {
+              "denominator": 7,
+              "numerator": 3600
+            },
+            "lo_shu_value": 3,
+            "row": 1
+          },
+          {
+            "agent_id": "agent:contract:canonical_revalidation:3",
+            "candidate_root_hash72": "f6+rSAJ(MtC+1?ek6(xZgfpSTCUWJ9aWP680qIYYGmcUHR?QHrx?pDz3U<Smhs5ub2Kra/Io",
+            "column": 1,
+            "exact_weight": {
+              "denominator": 1,
+              "numerator": 750
+            },
+            "lo_shu_value": 5,
+            "row": 1
+          },
+          {
+            "agent_id": "agent:bridge:canonical_revalidation:5",
+            "candidate_root_hash72": "pGFBizPgEVGhh+ni6HE/9sB9lr1P0TwfPwslk7FMKJzPu390h2gLirTjqrPPc7guX*HcaEDo",
+            "column": 2,
+            "exact_weight": {
+              "denominator": 3,
+              "numerator": 2800
+            },
+            "lo_shu_value": 7,
+            "row": 1
+          },
+          {
+            "agent_id": "agent:minimal-direct:canonical_revalidation:10",
+            "candidate_root_hash72": "AlZiQNdcE1SvLIaHb!IVY>orVz!BVS1KNWqvzkluarkSJxqpr*-hYZgbpP5WH1*V>rIm2hSK",
+            "column": 0,
+            "exact_weight": {
+              "denominator": 7,
+              "numerator": 7200
+            },
+            "lo_shu_value": 8,
+            "row": 2
+          },
+          {
+            "agent_id": "agent:bridge:canonical_revalidation:8",
+            "candidate_root_hash72": "pGFBizPgEVGhh>hi6HE/9sB9lr1W/TwfPwslk7FMKJzPu390h2gLirTjqrPPc7guX*HcaEDo",
+            "column": 1,
+            "exact_weight": {
+              "denominator": 9,
+              "numerator": 800
+            },
+            "lo_shu_value": 1,
+            "row": 2
+          },
+          {
+            "agent_id": "agent:contract:canonical_revalidation:6",
+            "candidate_root_hash72": "W*o)bT>eGvdFjsmoTFsh<shqUFlqrERXkrkwFO5igKxM9GGCa3d85tbI*M/8/(ZEBXlRKvHi",
+            "column": 2,
+            "exact_weight": {
+              "denominator": 1,
+              "numerator": 450
+            },
+            "lo_shu_value": 6,
+            "row": 2
+          }
+        ],
+        "domain_id": "CANONICAL_REVALIDATION",
+        "lo_shu_layout": [
+          4,
+          9,
+          2,
+          3,
+          5,
+          7,
+          8,
+          1,
+          6
+        ],
+        "magic_sum": 15,
+        "probability_confers_authority": false,
+        "schema": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_V1",
+        "shape": [
+          3,
+          3
+        ],
+        "tensor_is_canonical_truth": false,
+        "tensor_root_hash72": "UIjeVAl8AnurY<WCO9QbFLj*mr!6LEK(Y*Cw2euFyT/TukKlUWYYjB/kt?Y9?!Sw-!VwC2ch",
+        "unique_agent_count": 9,
+        "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+      },
+      "top_nine": {
+        "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+        "candidate_count": 12,
+        "domain_id": "CANONICAL_REVALIDATION",
+        "fitness_confers_authority": false,
+        "schema": "HHS_DOMAIN_TOP_NINE_SELECTION_V1",
+        "selected_agents": [
+          {
+            "admissible": true,
+            "agent_id": "agent:minimal-direct:canonical_revalidation:1",
+            "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+            "candidate_root_hash72": "bt99l66!Gf0Qml8IDy0ElrYOoiXS/eVjB0HbH?W<S(7>EpXrLvIFSWfKnZk4UR6fH!FCYGai",
+            "domain_id": "CANONICAL_REVALIDATION",
+            "exact_fitness": {
+              "denominator": 7,
+              "numerator": 3600
+            },
+            "parent_agent_id": "agent:minimal-direct",
+            "parent_fitness_root_hash72": "FDmJzIrI7Oddvj*IIm/</6h4SY?bxVAS<?t1OZW7kLgf1-fy2myHvd7/8hSqzY/AzKlWgvkf",
+            "probability_confers_authority": false,
+            "provenance_valid": true,
+            "role_scope_valid": true,
+            "schema": "HHS_DOMAIN_AGENT_CANDIDATE_V1",
+            "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+          },
+          {
+            "admissible": true,
+            "agent_id": "agent:bridge:canonical_revalidation:2",
+            "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+            "candidate_root_hash72": "pGFBizPgEVGhh+ni6HE/9sB9lr1Q?TwfPwslk7FMKJzPu390h2gLirTjqrPPc7guX*HcaEDo",
+            "domain_id": "CANONICAL_REVALIDATION",
+            "exact_fitness": {
+              "denominator": 3,
+              "numerator": 800
+            },
+            "parent_agent_id": "agent:bridge",
+            "parent_fitness_root_hash72": "IUl)v9mdbaL2qk*ltQN01>ko+)9oTU?T5*yizApcwWNtww0?4XVhZDyVcvundqYLyGc2)?c!",
+            "probability_confers_authority": false,
+            "provenance_valid": true,
+            "role_scope_valid": true,
+            "schema": "HHS_DOMAIN_AGENT_CANDIDATE_V1",
+            "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+          },
+          {
+            "admissible": true,
+            "agent_id": "agent:minimal-direct:canonical_revalidation:4",
+            "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+            "candidate_root_hash72": "bt99l66!Gf0Qml8IDy0ElrYOoiXS/eVjB0HcI>W<S(7>EpXrLvIFSWfKnZk4UR6fH!FCYGai",
+            "domain_id": "CANONICAL_REVALIDATION",
+            "exact_fitness": {
+              "denominator": 7,
+              "numerator": 1800
+            },
+            "parent_agent_id": "agent:minimal-direct",
+            "parent_fitness_root_hash72": "FDmJzIrI7Oddvj*IIm/</6h4SY?bxVAS<?t1OZW7kLgf1-fy2myHvd7/8hSqzY/AzKlWgvkf",
+            "probability_confers_authority": false,
+            "provenance_valid": true,
+            "role_scope_valid": true,
+            "schema": "HHS_DOMAIN_AGENT_CANDIDATE_V1",
+            "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+          },
+          {
+            "admissible": true,
+            "agent_id": "agent:minimal-direct:canonical_revalidation:7",
+            "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+            "candidate_root_hash72": "bt99l66!Gf0Qml8IDy0ElrYOoiXS/eVjB0Hfz3W<S(7>EpXrLvIFSWfKnZk4UR6fH!FCYGai",
+            "domain_id": "CANONICAL_REVALIDATION",
+            "exact_fitness": {
+              "denominator": 7,
+              "numerator": 1200
+            },
+            "parent_agent_id": "agent:minimal-direct",
+            "parent_fitness_root_hash72": "FDmJzIrI7Oddvj*IIm/</6h4SY?bxVAS<?t1OZW7kLgf1-fy2myHvd7/8hSqzY/AzKlWgvkf",
+            "probability_confers_authority": false,
+            "provenance_valid": true,
+            "role_scope_valid": true,
+            "schema": "HHS_DOMAIN_AGENT_CANDIDATE_V1",
+            "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+          },
+          {
+            "admissible": true,
+            "agent_id": "agent:contract:canonical_revalidation:3",
+            "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+            "candidate_root_hash72": "f6+rSAJ(MtC+1?ek6(xZgfpSTCUWJ9aWP680qIYYGmcUHR?QHrx?pDz3U<Smhs5ub2Kra/Io",
+            "domain_id": "CANONICAL_REVALIDATION",
+            "exact_fitness": {
+              "denominator": 1,
+              "numerator": 150
+            },
+            "parent_agent_id": "agent:contract",
+            "parent_fitness_root_hash72": "-xT6TRAhE-NycVfu20QQqA0V8Kf7!8vqs5pXBohvLci!YtEAQ*q!+aHZJACs6G1E<oRPhcDF",
+            "probability_confers_authority": false,
+            "provenance_valid": true,
+            "role_scope_valid": true,
+            "schema": "HHS_DOMAIN_AGENT_CANDIDATE_V1",
+            "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+          },
+          {
+            "admissible": true,
+            "agent_id": "agent:bridge:canonical_revalidation:5",
+            "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+            "candidate_root_hash72": "pGFBizPgEVGhh+ni6HE/9sB9lr1P0TwfPwslk7FMKJzPu390h2gLirTjqrPPc7guX*HcaEDo",
+            "domain_id": "CANONICAL_REVALIDATION",
+            "exact_fitness": {
+              "denominator": 3,
+              "numerator": 400
+            },
+            "parent_agent_id": "agent:bridge",
+            "parent_fitness_root_hash72": "IUl)v9mdbaL2qk*ltQN01>ko+)9oTU?T5*yizApcwWNtww0?4XVhZDyVcvundqYLyGc2)?c!",
+            "probability_confers_authority": false,
+            "provenance_valid": true,
+            "role_scope_valid": true,
+            "schema": "HHS_DOMAIN_AGENT_CANDIDATE_V1",
+            "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+          },
+          {
+            "admissible": true,
+            "agent_id": "agent:minimal-direct:canonical_revalidation:10",
+            "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+            "candidate_root_hash72": "AlZiQNdcE1SvLIaHb!IVY>orVz!BVS1KNWqvzkluarkSJxqpr*-hYZgbpP5WH1*V>rIm2hSK",
+            "domain_id": "CANONICAL_REVALIDATION",
+            "exact_fitness": {
+              "denominator": 7,
+              "numerator": 900
+            },
+            "parent_agent_id": "agent:minimal-direct",
+            "parent_fitness_root_hash72": "FDmJzIrI7Oddvj*IIm/</6h4SY?bxVAS<?t1OZW7kLgf1-fy2myHvd7/8hSqzY/AzKlWgvkf",
+            "probability_confers_authority": false,
+            "provenance_valid": true,
+            "role_scope_valid": true,
+            "schema": "HHS_DOMAIN_AGENT_CANDIDATE_V1",
+            "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+          },
+          {
+            "admissible": true,
+            "agent_id": "agent:bridge:canonical_revalidation:8",
+            "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+            "candidate_root_hash72": "pGFBizPgEVGhh>hi6HE/9sB9lr1W/TwfPwslk7FMKJzPu390h2gLirTjqrPPc7guX*HcaEDo",
+            "domain_id": "CANONICAL_REVALIDATION",
+            "exact_fitness": {
+              "denominator": 9,
+              "numerator": 800
+            },
+            "parent_agent_id": "agent:bridge",
+            "parent_fitness_root_hash72": "IUl)v9mdbaL2qk*ltQN01>ko+)9oTU?T5*yizApcwWNtww0?4XVhZDyVcvundqYLyGc2)?c!",
+            "probability_confers_authority": false,
+            "provenance_valid": true,
+            "role_scope_valid": true,
+            "schema": "HHS_DOMAIN_AGENT_CANDIDATE_V1",
+            "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+          },
+          {
+            "admissible": true,
+            "agent_id": "agent:contract:canonical_revalidation:6",
+            "authority": "HHS_DYNAMIC_LO_SHU_AGENT_TENSOR_AUTHORITY_V1",
+            "candidate_root_hash72": "W*o)bT>eGvdFjsmoTFsh<shqUFlqrERXkrkwFO5igKxM9GGCa3d85tbI*M/8/(ZEBXlRKvHi",
+            "domain_id": "CANONICAL_REVALIDATION",
+            "exact_fitness": {
+              "denominator": 1,
+              "numerator": 75
+            },
+            "parent_agent_id": "agent:contract",
+            "parent_fitness_root_hash72": "-xT6TRAhE-NycVfu20QQqA0V8Kf7!8vqs5pXBohvLci!YtEAQ*q!+aHZJACs6G1E<oRPhcDF",
+            "probability_confers_authority": false,
+            "provenance_valid": true,
+            "role_scope_valid": true,
+            "schema": "HHS_DOMAIN_AGENT_CANDIDATE_V1",
+            "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+          }
+        ],
+        "selected_count": 9,
+        "selection_rule": "ADMISSIBLE_THEN_EXACT_FITNESS_THEN_AGENT_ID",
+        "top_nine_root_hash72": "!DlpUI2jLaVbGG)ApDai2Gg6AQJMwMPt+gI9qlfaia0fMbUQUkTcQbF-Bt>jvLw?0JBbg<wm",
+        "version": "PASS_067_DYNAMIC_LO_SHU_AGENT_TENSOR_V1"
+      }
+    }
+  ],
+  "schema": "HHS_DYNAMIC_LO_SHU_AGENT_TENSORS_PASS_067"
+}
+```

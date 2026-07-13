@@ -1,0 +1,11 @@
+{
+  "admitted": false,
+  "authority": "HHS_PASS072_TOTAL_SYSTEM_CLOSURE_AUTHORITY_V1",
+  "claims_authority_from_membership": true,
+  "decision_root_hash72": "KQb9Es8/Y>C((V9pXlT0xHw4NOu5D1n>LgcvEdtLhzrMv7PPd1VN4u0X!wuzBcN<+loHm5zp",
+  "membership_confers_authority": false,
+  "schema": "HHS_MEMBERSHIP_AUTHORITY_DECISION_V1",
+  "status": "REJECT_MEMBERSHIP_AS_AUTHORITY",
+  "subsystem_id": "SYMBOLIC_GENOME",
+  "version": "PASS_072_TOTAL_SYSTEM_RECURSIVE_HOLOGRAPHIC_CLOSURE_V1"
+}

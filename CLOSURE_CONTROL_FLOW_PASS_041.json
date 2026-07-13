@@ -1,0 +1,52 @@
+{
+  "added_make_targets": [
+    "closure-harness-bounded-runtime",
+    "control-flow-transition-audit",
+    "closure-control-flow-tests"
+  ],
+  "added_services": [
+    "closure_harness.bounded_runtime_self_test",
+    "control_flow.transition_audit_self_test"
+  ],
+  "bounded_closure_runtime": {
+    "admitted_status": "ADMIT_BOUNDED_CLOSURE_RUNTIME",
+    "bounded_ledger_ok": true,
+    "bounded_ledger_status": "ADMIT_BOUNDED_LEDGER_SUMMARY",
+    "budget_root_hash72": "lDqSnGaX(KA0L>BIP8ZwgDto3)2lvu8vjH0a2OVQV?5ZUc(9E!<YdGw0na<tAuzrpG/yjY3L",
+    "cycle_rejection_status": "REJECT_CLOSURE_HARNESS_UNBOUNDED_CYCLES",
+    "detail_rejection_status": "REJECT_CLOSURE_HARNESS_DETAILS_EXPANSION",
+    "ledger_summary_root_hash72": "mEDj9QgsV+4xtCE(qNabD7ysmWKcB+hAWG/zU3Weu1xo*DAg3wNENQ2*zlnnOPqBRsnrVkBm",
+    "ok": true,
+    "schema": "HHS_CLOSURE_HARNESS_BOUNDED_RUNTIME_SELF_TEST_V1",
+    "state_machine": "u^72_hash72_multimodal_state_machine",
+    "step_rejection_status": "REJECT_CLOSURE_HARNESS_UNBOUNDED_STEPS",
+    "version": "PASS_041_CLOSURE_HARNESS_BOUNDED_RUNTIME_V1"
+  },
+  "control_flow_transition_audit": {
+    "ok": true,
+    "residue_chain_root_hash72": "c)(UFE*vPs1NR0?HOb(a?<7JTrIG2<V(l>kTBz-FQD!KMwLIh?6BS*6eO5nDrAGhB?PJQy?3",
+    "scalar_proxy_rejection_status": "REJECT_CONTROL_FLOW_SCALAR_PROXY_ONLY",
+    "schema": "HHS_CONTROL_FLOW_TRANSITION_AUDIT_SELF_TEST_V1",
+    "state_machine": "u^72_hash72_multimodal_state_machine",
+    "transition_root_hash72": "15boH-JdgvbhZGd?27YWi0J+IvMu3d*q>fEuX+>vrSi7)(VQ>6Hh/xFxVHZRa0H(0bOI(pcG",
+    "valid_status": "ADMIT_CONTROL_FLOW_TRANSITION_AUDIT",
+    "version": "PASS_041_CONTROL_FLOW_TRANSITION_AUDIT_V1"
+  },
+  "doctrine_lock": [
+    "Certification harnesses must not become unbounded validation-artifact generators.",
+    "Control-flow gates may not lock from scalar proxy audits when branch/step results are richer state transitions.",
+    "Locked control-flow transitions require full pre-state/post-state/result Hash72 witnesses and compressed residue chains."
+  ],
+  "name": "Closure Harness Bounded Runtime and Control-Flow Transition Audits",
+  "ok": true,
+  "pass": 41,
+  "reachability": {
+    "api_route_count": 20,
+    "module_count": 848,
+    "ok": true,
+    "orphan_count": 0,
+    "service_count": 40
+  },
+  "schema": "CLOSURE_CONTROL_FLOW_PASS_041_SUMMARY_V1",
+  "service_count": 40
+}

@@ -1,0 +1,30 @@
+{
+  "api_routes": [
+    "/api/runtime/live/status",
+    "/api/runtime/live/tick"
+  ],
+  "conformance_edge_count": 863,
+  "derived_service_count": 59,
+  "node_role": "GUI_PROXY_ONLY_NO_SYNTHETIC_RUNTIME_STREAM",
+  "pass": "045",
+  "schema": "HHS_LIVE_FASTAPI_KERNEL_RUNTIME_PASS_045_SUMMARY_V1",
+  "service_count": 59,
+  "surface_count": 67,
+  "underived_service_count": 0,
+  "underived_surface_count": 0,
+  "verified": {
+    "live_kernel_event_bridge_self_test": true,
+    "live_runtime_smoke_tests": "8 passed",
+    "node_proxy_contract_self_test": true,
+    "runtime_reachability": "passed",
+    "verify_c": "passed",
+    "websocket_kernel_channel_router_self_test": true
+  },
+  "version": "PASS_045_LIVE_FASTAPI_KERNEL_RUNTIME_V1",
+  "websocket_channels": [
+    "/ws/runtime",
+    "/ws/replay",
+    "/ws/graph",
+    "/ws/transport"
+  ]
+}

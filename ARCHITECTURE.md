@@ -720,3 +720,14 @@ Every layer MUST preserve:
 - semantic topology,
 - deterministic reconstruction,
 - distributed recoverability.
+
+## v1 Release Freeze
+
+The active release plan is [`docs/V1_RELEASE_EXECUTION_PLAN.md`](docs/V1_RELEASE_EXECUTION_PLAN.md). For v1, architecture is frozen around the existing runtime chain:
+
+```text
+C VM81 / ABI -> Python ctypes bridge -> backend runtime -> GUI/interface -> receipt/export surfaces
+```
+
+No new symbolic, ethical, security, kernel, or ontology layers are part of the v1 release-finalization scope unless explicitly requested.
+

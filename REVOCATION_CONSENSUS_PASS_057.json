@@ -1,0 +1,43 @@
+{
+  "authority": "HHS_I019_PARTITION_TOLERANT_FEDERATED_AUTHORITY_RECOVERY_V1",
+  "consensus_reached": true,
+  "decision": "REVOKE",
+  "quorum": 2,
+  "reasons": [],
+  "revocation_consensus_root_hash72": "t+1-gVQojwjzOsi-ZJL72LQPV7>O>b!C8TL(9Zlz9fheI2sw6uy<cuejA/u7IA2dFfPImvCL",
+  "revocation_epoch": 7,
+  "schema": "HHS_PARTITION_TOLERANT_REVOCATION_CONSENSUS_V1",
+  "version": "PASS_057_PARTITION_TOLERANT_REVOCATION_CONSENSUS_FEDERATED_RECOVERY_V1",
+  "votes": [
+    {
+      "authority": "HHS_I019_PARTITION_TOLERANT_FEDERATED_AUTHORITY_RECOVERY_V1",
+      "decision": "REVOKE",
+      "domain_id": "runtime:local",
+      "parent_lease_root_hash72": "HH5/R7X09laHvodpaLM2)?qPLIb6u*f-eREHdaK9k4GhnOY!JA?yj)SH*b<Vb1PqoJPzW*EP",
+      "revocation_epoch": 7,
+      "schema": "HHS_REVOCATION_CONSENSUS_VOTE_V1",
+      "version": "PASS_057_PARTITION_TOLERANT_REVOCATION_CONSENSUS_FEDERATED_RECOVERY_V1",
+      "vote_root_hash72": "xz4eiCGwvb6uu6ykY!mgO!rD?pBp4/Gdr)r/2pCDaRK0cn)Wp1UQ4z8z>K7rtu!nAhuSlHED"
+    },
+    {
+      "authority": "HHS_I019_PARTITION_TOLERANT_FEDERATED_AUTHORITY_RECOVERY_V1",
+      "decision": "REVOKE",
+      "domain_id": "runtime:witness-b",
+      "parent_lease_root_hash72": "HH5/R7X09laHvodpaLM2)?qPLIb6u*f-eREHdaK9k4GhnOY!JA?yj)SH*b<Vb1PqoJPzW*EP",
+      "revocation_epoch": 7,
+      "schema": "HHS_REVOCATION_CONSENSUS_VOTE_V1",
+      "version": "PASS_057_PARTITION_TOLERANT_REVOCATION_CONSENSUS_FEDERATED_RECOVERY_V1",
+      "vote_root_hash72": "65uSohnozC>/MeoGdajHI0Kusg!Hek)GP*K0v4z+rxFPq+pnfu+ESyTRoIgnU2d??pykFN!b"
+    },
+    {
+      "authority": "HHS_I019_PARTITION_TOLERANT_FEDERATED_AUTHORITY_RECOVERY_V1",
+      "decision": "UNKNOWN",
+      "domain_id": "runtime:remote-a",
+      "parent_lease_root_hash72": "HH5/R7X09laHvodpaLM2)?qPLIb6u*f-eREHdaK9k4GhnOY!JA?yj)SH*b<Vb1PqoJPzW*EP",
+      "revocation_epoch": 7,
+      "schema": "HHS_REVOCATION_CONSENSUS_VOTE_V1",
+      "version": "PASS_057_PARTITION_TOLERANT_REVOCATION_CONSENSUS_FEDERATED_RECOVERY_V1",
+      "vote_root_hash72": "bfh?9tW*xeb4D?CFeajHI0Kusg!Hek)GP*K0v4z+rxFPq+pnfu(KyIY)O-AjDfnP2J9zuvKP"
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+# ARTIFACT LINEAGE REGISTRY PASS 050
+
+Status: `True`
+
+Schema: `HHS_ARTIFACT_LINEAGE_REGISTRY_SELF_TEST_V1`
+
+```json
+{
+  "lineage": {
+    "artifact_execution_authority_inferred": false,
+    "artifact_id": "artifact:ff3c28d4a0884e6b9ac9eec91f52a734",
+    "artifact_root_hash72": "7/Ihtd7-qU+SP59g/SFd6wTBHv73Pn8zr)1ss80eRvcJKIC9xq)/(XCBYC>LPfhp-ga)wgFc",
+    "authority": "HHS_UNIVERSAL_MODALITY_PIPELINE_AUTHORITY_V1",
+    "lineage_id": "lineage:b8003e05fe1440feaf66d076b9e0cc9f",
+    "lineage_root_hash72": "qO<2(Wcu*4NkSDGt9Lk56SOzvTx3dASQnNtC8NWt3pxt1zcW+!k*vTs35V+l)EV>u)Fa<X36",
+    "projection_ids": [
+      "projection:778ef30af0c341c0a52f6b947115c19f"
+    ],
+    "projection_not_confused_with_artifact": true,
+    "projection_root_hash72s": [
+      "9dGqUJ*sdlU*Ga/B)?u-xKS7F2vsTPz)LvF4fPCO?Ne2EvUVpkqYM0u6DUCpj9k)XT2?soaX"
+    ],
+    "reconstruction_recipe_id": "modality-recipe:aedc8fb86f2f43c7a2d3740d0c579008",
+    "schema": "HHS_ARTIFACT_LINEAGE_RECORD_V1",
+    "source_commitment_id": "source:582289ba1b864f9ea552a9acf5a5215a",
+    "source_modality": "JSON",
+    "source_not_replaced_by_projection": true,
+    "source_root_hash72": "uphiM18qPGdDz-k9Ihzge5Z!tEat/MGm8!4OKhoLFnVgi*AsYUNxer0(l/-3N)5>IulDN62?",
+    "transformation_plan_id": "xmodal-plan:d2b2d2e7d3854e0e86a76fdecf465280",
+    "transformation_plan_root_hash72": "W*DF<r(vFG974adOmqJ+N7CLJj6cAy)uY-FVdDbWTWyCJ?qnb?Dg8Q9/!4BB/jKPxNaJszru",
+    "version": "PASS_050_HHS_UNIVERSAL_MODALITY_ADAPTER_AND_ARTIFACT_PIPELINE_V1"
+  },
+  "ok": true,
+  "projection_replace_rejection": {
+    "lineage_id": "lineage:b8003e05fe1440feaf66d076b9e0cc9f",
+    "ok": false,
+    "reasons": [
+      "REJECT_PROJECTION_REPLACES_SOURCE"
+    ],
+    "schema": "HHS_ARTIFACT_LINEAGE_RECORD_VALIDATION_V1",
+    "status": "REJECT_ARTIFACT_LINEAGE",
+    "version": "PASS_050_HHS_UNIVERSAL_MODALITY_ADAPTER_AND_ARTIFACT_PIPELINE_V1"
+  },
+  "schema": "HHS_ARTIFACT_LINEAGE_REGISTRY_SELF_TEST_V1",
+  "version": "PASS_050_HHS_UNIVERSAL_MODALITY_ADAPTER_AND_ARTIFACT_PIPELINE_V1"
+}
+```

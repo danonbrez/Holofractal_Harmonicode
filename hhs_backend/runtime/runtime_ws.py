@@ -52,6 +52,12 @@ from fastapi import WebSocketDisconnect
 from hhs_backend.runtime.runtime_event_schema import (
     HHSRuntimeEventEnvelope,
 )
+from hhs_backend.runtime.gui_projection_contract_v1 import (
+    AUTHORITY as GUI_KERNEL_AUTHORITY,
+    CHANNEL_BINDINGS,
+    validate_gui_projection_payload,
+)
+from hhs_runtime.hhs_runtime_dataflow_guard_v1 import attach_egress_record
 
 # ============================================================================
 # Logging
@@ -256,6 +262,79 @@ class RuntimeWSManager:
         )
 
     # =====================================================================
+    # Channel Projection Payload
+    # =====================================================================
+
+    def build_channel_projection_payload(
+        self,
+        event: HHSRuntimeEventEnvelope,
+        channel: str,
+    ) -> Dict[str, Any]:
+        """Build the canonical GUI-facing payload for one websocket channel.
+
+        Pass 046 requires each browser panel to receive a channel-specific
+        projection with the live kernel fields needed to reject synthetic GUI
+        state.  The event envelope remains the source of truth; this helper
+        only projects it into runtime/replay/graph/transport panel shape.
+        """
+
+        binding = CHANNEL_BINDINGS[channel]
+        event_type = binding["event_type"]
+        base_payload = event.to_websocket_payload()
+        sequence_id = base_payload.get("sequence_id")
+        kernel_tick = base_payload.get("kernel_tick")
+        runtime_state_hash72 = base_payload.get("runtime_state_hash72")
+        payload: Dict[str, Any] = {
+            **base_payload,
+            "event": event_type,
+            "event_type": event_type,
+            "source_event_type": event.event_type,
+            "channel": channel,
+            "panel": binding["panel"],
+            "state_lane": binding["state_lane"],
+            "sequence_id": sequence_id,
+            "kernel_tick": kernel_tick,
+            "runtime_state_hash72": runtime_state_hash72,
+            "authority": base_payload.get("authority") or GUI_KERNEL_AUTHORITY,
+            "gui_projection_contract": "HHS_LIVE_GUI_PROJECTION_CONTRACT_V1",
+            "node_generated_runtime_event": False,
+        }
+
+        if event_type == "replay":
+            payload["payload"] = {
+                "replay_packet": event.to_replay_packet(),
+                "runtime_payload": event.payload,
+                "receipt_hash72": event.receipt_hash72,
+                "runtime_state_hash72": runtime_state_hash72,
+            }
+        elif event_type == "graph":
+            graph_projection = event.to_graph_projection()
+            payload["payload"] = {
+                "nodes": [graph_projection],
+                "edges": ([{
+                    "source": event.parent_event_hash72,
+                    "target": event.event_hash72,
+                    "edge_type": "kernel_event_transition",
+                }] if event.parent_event_hash72 else []),
+                "runtime_state_hash72": runtime_state_hash72,
+            }
+        elif event_type == "transport":
+            payload["payload"] = {
+                "transport": "kernel_event_projection",
+                "channel": channel,
+                "sequence_id": sequence_id,
+                "kernel_tick": kernel_tick,
+                "runtime_state_hash72": runtime_state_hash72,
+                "connected_channels": list(CHANNEL_BINDINGS.keys()),
+                "receipt_hash72": event.receipt_hash72,
+            }
+
+        decision = validate_gui_projection_payload(payload)
+        payload["gui_projection_valid"] = decision["ok"]
+        payload["gui_projection_reasons"] = decision["reasons"]
+        return payload
+
+    # =====================================================================
     # Runtime Event Broadcast
     # =====================================================================
 
@@ -268,8 +347,18 @@ class RuntimeWSManager:
 
     ):
 
+        # Pass 045: when no websocket clients are attached, retain the
+        # canonical event projection in replay cache without appending a fresh
+        # egress-ledger record on every background kernel tick.  This prevents
+        # inert live workflow metadata from accumulating after validation.
+        base_payload = self.build_channel_projection_payload(event, "/ws/runtime")
         payload = (
-            event.to_websocket_payload()
+            attach_egress_record(
+                "runtime_ws.broadcast_runtime_event",
+                base_payload,
+            )
+            if self.runtime_sockets
+            else base_payload
         )
 
         # -------------------------------------------------------------
@@ -332,8 +421,12 @@ class RuntimeWSManager:
 
     ):
 
-        payload = (
-            event.to_replay_packet()
+        if not self.replay_sockets:
+            return
+
+        payload = attach_egress_record(
+            "runtime_ws.broadcast_replay_event",
+            self.build_channel_projection_payload(event, "/ws/replay"),
         )
 
         await self._broadcast_json(
@@ -358,8 +451,12 @@ class RuntimeWSManager:
 
     ):
 
-        payload = (
-            event.to_graph_projection()
+        if not self.graph_sockets:
+            return
+
+        payload = attach_egress_record(
+            "runtime_ws.broadcast_graph_event",
+            self.build_channel_projection_payload(event, "/ws/graph"),
         )
 
         await self._broadcast_json(
@@ -384,29 +481,13 @@ class RuntimeWSManager:
 
     ):
 
-        payload = {
+        if not self.transport_sockets:
+            return
 
-            "event_type":
-                event.event_type,
-
-            "runtime_id":
-                event.runtime_id,
-
-            "branch_id":
-                event.branch_id,
-
-            "event_hash72":
-                event.event_hash72,
-
-            "receipt_hash72":
-                event.receipt_hash72,
-
-            "timestamp_ns":
-                event.created_at_ns,
-
-            "transport":
-                "active"
-        }
+        payload = attach_egress_record(
+            "runtime_ws.broadcast_transport_event",
+            self.build_channel_projection_payload(event, "/ws/transport"),
+        )
 
         await self._broadcast_json(
 
@@ -473,10 +554,19 @@ class RuntimeWSManager:
                 json.dumps({
 
                     "event_type":
+                        "replay",
+
+                    "channel":
+                        "/ws/replay",
+
+                    "source_event_type":
                         "replay_snapshot",
 
+                    "authority":
+                        GUI_KERNEL_AUTHORITY,
+
                     "payload":
-                        self.replay_cache
+                        {"replay_cache": self.replay_cache}
                 })
             )
 

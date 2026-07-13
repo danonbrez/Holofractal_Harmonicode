@@ -1,0 +1,119 @@
+{
+  "algorithms": [
+    {
+      "agent_id": "agent:minimal-direct",
+      "algorithm_name": "minimal_reciprocal_align",
+      "algorithm_root_hash72": "(//jSpO/t3zCrWG)(BN+rOtTuJH41VfTu-bogh56qAKx9rLN1nrG8L0L613iu6V?!oBS5Rqe",
+      "algorithm_source": "minimal_reciprocal_align",
+      "algorithmic_size_units": 24,
+      "authority": "HHS_EVOLUTIONARY_AGENT_IDENTITY_AUTHORITY_V1",
+      "dense_matrix_dependency": false,
+      "dependencies": [],
+      "dependency_count": 0,
+      "hidden_dependencies": false,
+      "schema": "HHS_AGENT_ALGORITHM_IDENTITY_V1",
+      "version": "PASS_066_CANONICAL_RESOLUTION_AGENT_ECONOMY_V1"
+    },
+    {
+      "agent_id": "agent:bridge",
+      "algorithm_name": "translation_phase_bridge",
+      "algorithm_root_hash72": "Ch?uhtxo)*xheuFaMqcXZ/WXUyOxj1d?BCX25kPcefA7L+h<J+SteyHfJSr8diJcWxyD>dBr",
+      "algorithm_source": "translation_phase_bridge",
+      "algorithmic_size_units": 24,
+      "authority": "HHS_EVOLUTIONARY_AGENT_IDENTITY_AUTHORITY_V1",
+      "dense_matrix_dependency": false,
+      "dependencies": [
+        "phase_bridge"
+      ],
+      "dependency_count": 1,
+      "hidden_dependencies": false,
+      "schema": "HHS_AGENT_ALGORITHM_IDENTITY_V1",
+      "version": "PASS_066_CANONICAL_RESOLUTION_AGENT_ECONOMY_V1"
+    },
+    {
+      "agent_id": "agent:contract",
+      "algorithm_name": "local_reciprocal_contract",
+      "algorithm_root_hash72": "?OTUTZwl142YVI2LrdAvZluHU>d3)KKxwBS6!AEsQE(EFuT>olZZKnQkgdTtqY4J2doOxdCq",
+      "algorithm_source": "local_reciprocal_contract",
+      "algorithmic_size_units": 25,
+      "authority": "HHS_EVOLUTIONARY_AGENT_IDENTITY_AUTHORITY_V1",
+      "dense_matrix_dependency": false,
+      "dependencies": [
+        "contractor"
+      ],
+      "dependency_count": 1,
+      "hidden_dependencies": false,
+      "schema": "HHS_AGENT_ALGORITHM_IDENTITY_V1",
+      "version": "PASS_066_CANONICAL_RESOLUTION_AGENT_ECONOMY_V1"
+    }
+  ],
+  "identities": [
+    {
+      "agent_id": "agent:minimal-direct",
+      "agent_identity_root_hash72": "Jn<kpK?CF6p8TU2K0<18l/FpyKIaaJmThoWT)maZM+qqkhRaL>9LVolLXdPk?zWUEsF1dxKX",
+      "algorithm_root_hash72": "(//jSpO/t3zCrWG)(BN+rOtTuJH41VfTu-bogh56qAKx9rLN1nrG8L0L613iu6V?!oBS5Rqe",
+      "authority": "HHS_EVOLUTIONARY_AGENT_IDENTITY_AUTHORITY_V1",
+      "competency_profile": [
+        "LOCAL_BRANCH_REASONING",
+        "A_EQUALS_B_REINTEGRATION",
+        "PROVENANCE_PRESERVATION"
+      ],
+      "dependency_root_hash72": "w2eU7c5hfZgdo3o6ir8qhA3LsXhHxwQvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-+*/()<>!z",
+      "fitness_confers_authority": false,
+      "genesis_root_hash72": "zu4dRe)QWIb4IRo2WOfrA2KRjxi9BM(J/kAfvGT0owIW/R)Mq1GriwN)dA2oTXCtW6C3tv(K",
+      "identity_is_process_instance": false,
+      "knowledge_graph_node_id": "kg:agent:minimal-direct",
+      "parent_agent_ids": [],
+      "role_contract_root_hash72": "k2q4)el/en2dpvY0efcepymun9tJ8Ry/nNDP7FrCQZfUIPMKwWUW*FG!RT<XO<-k3UD>dK4D",
+      "schema": "HHS_CANONICAL_RESOLUTION_AGENT_IDENTITY_V1",
+      "status": "ACTIVE",
+      "verbatim_semantic_record_id": "semantic:agent:minimal-direct",
+      "version": "PASS_066_CANONICAL_RESOLUTION_AGENT_ECONOMY_V1"
+    },
+    {
+      "agent_id": "agent:bridge",
+      "agent_identity_root_hash72": "P>lmaH!SZ>6yUjCERpeJaQZhLzDUJfFVQx/-+>xNbXpKODYU-42C7j1<7kclLKchjEDa99gk",
+      "algorithm_root_hash72": "Ch?uhtxo)*xheuFaMqcXZ/WXUyOxj1d?BCX25kPcefA7L+h<J+SteyHfJSr8diJcWxyD>dBr",
+      "authority": "HHS_EVOLUTIONARY_AGENT_IDENTITY_AUTHORITY_V1",
+      "competency_profile": [
+        "LOCAL_BRANCH_REASONING",
+        "A_EQUALS_B_REINTEGRATION",
+        "PROVENANCE_PRESERVATION"
+      ],
+      "dependency_root_hash72": "w2eU7c5hfZgdo3o6ir8qhA3LsXhHxJBoqQluESuzIEMvQJKLMNOPQRSTUVWXYZ-+*/()<>!z",
+      "fitness_confers_authority": false,
+      "genesis_root_hash72": "dEH1yS7Q<cx?V5bnF6uDhvSQyLJajz<eg>xMWx66pQKUzcaIksJiF/XRa(DHDOw4ju+cUtj/",
+      "identity_is_process_instance": false,
+      "knowledge_graph_node_id": "kg:agent:bridge",
+      "parent_agent_ids": [],
+      "role_contract_root_hash72": "k2q4)el/en2dpvY0efcepymun9tJ8Ry/nNDP7FrCQZfUIPMKwWUW*FG!RT<XO<-k3UD>dK4D",
+      "schema": "HHS_CANONICAL_RESOLUTION_AGENT_IDENTITY_V1",
+      "status": "ACTIVE",
+      "verbatim_semantic_record_id": "semantic:agent:bridge",
+      "version": "PASS_066_CANONICAL_RESOLUTION_AGENT_ECONOMY_V1"
+    },
+    {
+      "agent_id": "agent:contract",
+      "agent_identity_root_hash72": "qFZ7v-jx>SQT1P8?>l(gD5I8Yt?o6LxzUu?F3lBb?CyD*4aTN?by3Jd5iRcHFi*?Jc9amOn?",
+      "algorithm_root_hash72": "?OTUTZwl142YVI2LrdAvZluHU>d3)KKxwBS6!AEsQE(EFuT>olZZKnQkgdTtqY4J2doOxdCq",
+      "authority": "HHS_EVOLUTIONARY_AGENT_IDENTITY_AUTHORITY_V1",
+      "competency_profile": [
+        "LOCAL_BRANCH_REASONING",
+        "A_EQUALS_B_REINTEGRATION",
+        "PROVENANCE_PRESERVATION"
+      ],
+      "dependency_root_hash72": "w2eU7c5hfZgdo3o6ir8qhA3LsXhHxJoIwExjDTyHxtQHIJKLMNOPQRSTUVWXYZ-+*/()<>!z",
+      "fitness_confers_authority": false,
+      "genesis_root_hash72": "rP7gZrHZ9704Y/OsY7qkbShkw++3?uVXalnjxzvpoQGYV!7upw7J)g)Te1BDzGt>Ir<K(cTK",
+      "identity_is_process_instance": false,
+      "knowledge_graph_node_id": "kg:agent:contract",
+      "parent_agent_ids": [],
+      "role_contract_root_hash72": "k2q4)el/en2dpvY0efcepymun9tJ8Ry/nNDP7FrCQZfUIPMKwWUW*FG!RT<XO<-k3UD>dK4D",
+      "schema": "HHS_CANONICAL_RESOLUTION_AGENT_IDENTITY_V1",
+      "status": "ACTIVE",
+      "verbatim_semantic_record_id": "semantic:agent:contract",
+      "version": "PASS_066_CANONICAL_RESOLUTION_AGENT_ECONOMY_V1"
+    }
+  ],
+  "schema": "HHS_CANONICAL_RESOLUTION_AGENT_IDENTITIES_PASS_066"
+}

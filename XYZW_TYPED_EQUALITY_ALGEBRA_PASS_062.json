@@ -1,0 +1,323 @@
+{
+  "contracts": [
+    {
+      "authority": "HHS_GLOBAL_RECIPROCAL_CONTRACT_TOPOLOGY_AUTHORITY_V1",
+      "contradiction_boundary": "ONLY_IF_EQUALITY_FRAMES_ARE_ERASED",
+      "equality_frames": {
+        "ALIAS_EQ": "multiple names for one committed projection",
+        "CLOSURE_EQ": "equivalent closed expressions in the admitted manifold",
+        "IDENTITY_EQ": "same declared symbol/object identity",
+        "NORMALIZED_EQ": "shared unit ratio after declared normalization",
+        "PHASE_EQ": "orientation/phase normalization",
+        "RELATIONAL_EQ": "contract-preserving relation between distinct states"
+      },
+      "external_untyped_equality_assumption_allowed": false,
+      "internal_contradiction_detected": false,
+      "lo_shu_tensor": [
+        [
+          4,
+          9,
+          2
+        ],
+        [
+          3,
+          5,
+          7
+        ],
+        [
+          8,
+          1,
+          6
+        ]
+      ],
+      "local_reciprocal_pair_root_hash72": "G48qkbnmuc4kj(AfIdjN<<GTq/vq>B3XVdbBvHcQs5My(>RILR(dBf?L6UgC+DX4z00M4!3n",
+      "reasons": [],
+      "relations": [
+        {
+          "members": [
+            "x",
+            "y",
+            "0",
+            "1"
+          ],
+          "relation": "DISTINCT"
+        },
+        {
+          "members": [
+            "i",
+            "x",
+            "y",
+            "xy",
+            "yx"
+          ],
+          "relation": "DISTINCT"
+        },
+        {
+          "expression": "xy = -yx",
+          "lhs": "xy",
+          "relation": "ORIENTED_ANTICOMMUTATION",
+          "rhs": "-yx"
+        },
+        {
+          "expression": "x = 1/y",
+          "lhs": "x",
+          "relation": "RECIPROCAL",
+          "rhs": "1/y"
+        },
+        {
+          "expression": "y = -x",
+          "lhs": "y",
+          "relation": "PHASE_INVERSE",
+          "rhs": "-x"
+        },
+        {
+          "frame": "LOCAL_PRODUCT_CLOSURE",
+          "lhs": "xy",
+          "relation": "NORMALIZED_UNIT",
+          "rhs": "1"
+        },
+        {
+          "frame": "RECIPROCAL_PRODUCT_CLOSURE",
+          "lhs": "yx",
+          "relation": "NORMALIZED_UNIT",
+          "rhs": "1"
+        },
+        {
+          "canonical_ratio": "I:I^3 = 1:-1",
+          "lhs": [
+            "x",
+            "y"
+          ],
+          "relation": "ORIENTED_RATIO",
+          "rhs": [
+            "xy",
+            "yx"
+          ]
+        },
+        {
+          "relation": "ZERO_SUM",
+          "result": "0",
+          "terms": [
+            "x",
+            "y",
+            "xy",
+            "yx"
+          ]
+        },
+        {
+          "lhs": "xyx",
+          "relation": "BRAID",
+          "rhs": "yxy"
+        },
+        {
+          "members": [
+            "X",
+            "xy",
+            "z"
+          ],
+          "relation": "ALIAS"
+        },
+        {
+          "members": [
+            "Y",
+            "yx",
+            "w"
+          ],
+          "relation": "ALIAS"
+        },
+        {
+          "expression": "xyXY = xyzw = 1",
+          "relation": "GLOBAL_PRODUCT_CLOSURE"
+        },
+        {
+          "expression": "x + y - z - w = 0",
+          "relation": "TOPOLOGICAL_BALANCE"
+        }
+      ],
+      "schema": "HHS_XYZW_ALGEBRA_CONTRACT_V1",
+      "status": "ADMIT_XYZW_TYPED_EQUALITY_ALGEBRA",
+      "symbols": [
+        "i",
+        "x",
+        "y",
+        "xy",
+        "yx",
+        "X",
+        "Y",
+        "z",
+        "w",
+        "0",
+        "1"
+      ],
+      "transport_constant": {
+        "decimal_string": "179971.179971",
+        "floating_point_used": false,
+        "integer_denominator": 1000000,
+        "integer_numerator": 179971179971
+      },
+      "unit_ring": "u^72",
+      "version": "PASS_062_GLOBAL_RECIPROCAL_CONTRACT_TOPOLOGY_XYZW_PHASE_GEAR_V1",
+      "xyzw_algebra_contract_root_hash72": "wr)GKZ/B00Djan--COGlo<0T07/mavLRn-RGE!dhSBMvkDZ85EY)ihl1R+UQ+coPW-YPLKkK"
+    },
+    {
+      "authority": "HHS_GLOBAL_RECIPROCAL_CONTRACT_TOPOLOGY_AUTHORITY_V1",
+      "contradiction_boundary": "ONLY_IF_EQUALITY_FRAMES_ARE_ERASED",
+      "equality_frames": {
+        "ALIAS_EQ": "multiple names for one committed projection",
+        "CLOSURE_EQ": "equivalent closed expressions in the admitted manifold",
+        "IDENTITY_EQ": "same declared symbol/object identity",
+        "NORMALIZED_EQ": "shared unit ratio after declared normalization",
+        "PHASE_EQ": "orientation/phase normalization",
+        "RELATIONAL_EQ": "contract-preserving relation between distinct states"
+      },
+      "external_untyped_equality_assumption_allowed": false,
+      "internal_contradiction_detected": false,
+      "lo_shu_tensor": [
+        [
+          4,
+          9,
+          2
+        ],
+        [
+          3,
+          5,
+          7
+        ],
+        [
+          8,
+          1,
+          6
+        ]
+      ],
+      "local_reciprocal_pair_root_hash72": "RrsAx9o!m4a+mvDypdB+D06UdzHaO(?2MsIuOBcNjgJV)Qtpg*cl8QlHeaczxXdXo3/uD>ZH",
+      "reasons": [],
+      "relations": [
+        {
+          "members": [
+            "x",
+            "y",
+            "0",
+            "1"
+          ],
+          "relation": "DISTINCT"
+        },
+        {
+          "members": [
+            "i",
+            "x",
+            "y",
+            "xy",
+            "yx"
+          ],
+          "relation": "DISTINCT"
+        },
+        {
+          "expression": "xy = -yx",
+          "lhs": "xy",
+          "relation": "ORIENTED_ANTICOMMUTATION",
+          "rhs": "-yx"
+        },
+        {
+          "expression": "x = 1/y",
+          "lhs": "x",
+          "relation": "RECIPROCAL",
+          "rhs": "1/y"
+        },
+        {
+          "expression": "y = -x",
+          "lhs": "y",
+          "relation": "PHASE_INVERSE",
+          "rhs": "-x"
+        },
+        {
+          "frame": "LOCAL_PRODUCT_CLOSURE",
+          "lhs": "xy",
+          "relation": "NORMALIZED_UNIT",
+          "rhs": "1"
+        },
+        {
+          "frame": "RECIPROCAL_PRODUCT_CLOSURE",
+          "lhs": "yx",
+          "relation": "NORMALIZED_UNIT",
+          "rhs": "1"
+        },
+        {
+          "canonical_ratio": "I:I^3 = 1:-1",
+          "lhs": [
+            "x",
+            "y"
+          ],
+          "relation": "ORIENTED_RATIO",
+          "rhs": [
+            "xy",
+            "yx"
+          ]
+        },
+        {
+          "relation": "ZERO_SUM",
+          "result": "0",
+          "terms": [
+            "x",
+            "y",
+            "xy",
+            "yx"
+          ]
+        },
+        {
+          "lhs": "xyx",
+          "relation": "BRAID",
+          "rhs": "yxy"
+        },
+        {
+          "members": [
+            "X",
+            "xy",
+            "z"
+          ],
+          "relation": "ALIAS"
+        },
+        {
+          "members": [
+            "Y",
+            "yx",
+            "w"
+          ],
+          "relation": "ALIAS"
+        },
+        {
+          "expression": "xyXY = xyzw = 1",
+          "relation": "GLOBAL_PRODUCT_CLOSURE"
+        },
+        {
+          "expression": "x + y - z - w = 0",
+          "relation": "TOPOLOGICAL_BALANCE"
+        }
+      ],
+      "schema": "HHS_XYZW_ALGEBRA_CONTRACT_V1",
+      "status": "ADMIT_XYZW_TYPED_EQUALITY_ALGEBRA",
+      "symbols": [
+        "i",
+        "x",
+        "y",
+        "xy",
+        "yx",
+        "X",
+        "Y",
+        "z",
+        "w",
+        "0",
+        "1"
+      ],
+      "transport_constant": {
+        "decimal_string": "179971.179971",
+        "floating_point_used": false,
+        "integer_denominator": 1000000,
+        "integer_numerator": 179971179971
+      },
+      "unit_ring": "u^72",
+      "version": "PASS_062_GLOBAL_RECIPROCAL_CONTRACT_TOPOLOGY_XYZW_PHASE_GEAR_V1",
+      "xyzw_algebra_contract_root_hash72": "2m+3(oYE>gXQGsxGx<sBLqxcCtmKGztetXLtXCNz>GAALYH>?+Dw24HgJf9(XR0*<VBuIb9*"
+    }
+  ],
+  "schema": "HHS_XYZW_TYPED_EQUALITY_ALGEBRA_PASS_062_V1"
+}

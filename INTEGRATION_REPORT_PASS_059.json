@@ -1,0 +1,14 @@
+{
+  "canonical_continuation": true,
+  "conformance_edge_count": 2673,
+  "name": "Canonical Federated Transaction Commit and Compensating Rollback",
+  "ok": true,
+  "orphan_count": 0,
+  "pass": "059",
+  "schema": "HHS_PASS_059_INTEGRATION_REPORT_V1",
+  "service_count": 169,
+  "successful_participant_confers_global_authority": false,
+  "surface_count": 192,
+  "underived_service_count": 0,
+  "underived_surface_count": 0
+}

@@ -1,0 +1,118 @@
+{
+  "fusion_record": {
+    "ambiguities": [],
+    "authority": "HHS_DOCUMENT_PERCEPTION_RUNTIME_AUTHORITY_V1",
+    "created_at_unix_ms": 1783820839470,
+    "disagreements": [
+      {
+        "resolution": "PRESERVED_NOT_COLLAPSED",
+        "roots": [
+          "E2dqp(?Hi))m0p5PVtsCYwmtdh5OcXgmsH90EY)xUekw9u88Ex6x6IOUX)oVr0M/YUASl72C",
+          "L0qIwWj3fcGYbluW)tWW7k7A!!jNvwMj1lKXWbtLi<gHd!ow<I34K6dA)1pd<-j*-!-L*0n?"
+        ],
+        "type": "TEXT_ROOT_MISMATCH"
+      }
+    ],
+    "fusion_id": "document-fusion:bd781145b9ff4a05a311ae1b959ae03b",
+    "fusion_root_hash72": "lq-!MtyY1/QSLM8zk4sfz18ZA4BZaJ/?0QYxhre!8sbqnH>xenKLMRoxlME6mScNdPhOM-(!",
+    "fusion_state": "OBSERVATION_DISAGREEMENT",
+    "fusion_states_supported": [
+      "OBSERVATION_AGREEMENT",
+      "OBSERVATION_DISAGREEMENT",
+      "UNRESOLVED_AMBIGUITY",
+      "PROVIDER_CONFIDENCE_CONFLICT",
+      "MISSING_REGION_OBSERVATION",
+      "SELECTED_PROJECTION_WITH_EVIDENCE",
+      "REJECTED_PROJECTION_WITH_REASON"
+    ],
+    "observation_count": 4,
+    "observation_roots": [
+      "*FiUYnAugJlVvKHs3KWIhxhAJqIdW34L>jjuS5<Tr5PNRj)W+mYm-aLLEoXiNTt4iIZqdOk*",
+      "7)HjGE<UAcaRwQ0L4yqqjF5QniHw33iRNHr+sUSrnozer8n1JPn8L8a?IAaewWm<8OZZn-EC",
+      "j5IRDwKo*Rl88e0Mz-kKypQKqyZ0Cg*oa+)LRZrmWDQWpHhD69?ZO5>aB)hhqhDRV+BFoi6O",
+      "nE8+/927>0-GQ5yjN?NX*41x0QesFByfj*QKb3RqJleh(o4cMU/aQ(YQhbYNnF(Fl34y5ZEz"
+    ],
+    "provider_disagreement_collapsed_silently": false,
+    "schema": "HHS_DOCUMENT_STRUCTURE_FUSION_RECORD_V1",
+    "selected_projection": {
+      "observation_root_hash72": "*FiUYnAugJlVvKHs3KWIhxhAJqIdW34L>jjuS5<Tr5PNRj)W+mYm-aLLEoXiNTt4iIZqdOk*",
+      "projection_type": "PDF_NATIVE_TEXT_PROJECTION",
+      "reason": "native text selected as projection candidate, not document identity",
+      "selection_state": "SELECTED_PROJECTION_WITH_EVIDENCE"
+    },
+    "selection_policy": "PRESERVE_DISAGREEMENT_SELECT_NATIVE_TEXT_WHEN_AVAILABLE",
+    "source_commitment_root_hash72": "fn-RSdDBp14uMgtQz1f>mrAt<xU5SAVUAZxbjI04C5CoX!iwR7vAkPDgYaBkeW9XkRmQNVtS",
+    "source_remains_canonical": true,
+    "version": "PASS_052_DEEP_DETERMINISTIC_DOCUMENT_PERCEPTION_V1"
+  },
+  "projection_bundle": {
+    "authority": "HHS_DOCUMENT_PERCEPTION_RUNTIME_AUTHORITY_V1",
+    "bundle_id": "document-projection-bundle:073a47c7dfc8498b805c82016360d092",
+    "bundle_root_hash72": "386(vnt1kbnUiGKAfX!FxELLz*rQ<T1icQvp>oGU7rHc0uHXWOj9MwGX<To?7o0QD<ftQv(P",
+    "created_at_unix_ms": 1783820839473,
+    "document_graph_projection_available": true,
+    "fusion_root_hash72": "lq-!MtyY1/QSLM8zk4sfz18ZA4BZaJ/?0QYxhre!8sbqnH>xenKLMRoxlME6mScNdPhOM-(!",
+    "projection_records": [
+      {
+        "loss_profile": "LOSSLESS_WHEN_TEXT_LAYER_PRESENT__INCOMPLETE_FOR_IMAGE_ONLY_REGIONS",
+        "observation_root_hash72": "*FiUYnAugJlVvKHs3KWIhxhAJqIdW34L>jjuS5<Tr5PNRj)W+mYm-aLLEoXiNTt4iIZqdOk*",
+        "projection_replaces_source": false,
+        "projection_type": "PDF_NATIVE_TEXT_PROJECTION",
+        "provider_id": "provider:pdf-native-text"
+      },
+      {
+        "loss_profile": "LOSSLESS_FOR_DECLARED_BOUNDING_BOXES_ONLY__DOES_NOT_CAPTURE_COMPLETE_DOCUMENT_SEMANTICS",
+        "observation_root_hash72": "7)HjGE<UAcaRwQ0L4yqqjF5QniHw33iRNHr+sUSrnozer8n1JPn8L8a?IAaewWm<8OZZn-EC",
+        "projection_replaces_source": false,
+        "projection_type": "PAGE_LAYOUT_PROJECTION",
+        "provider_id": "provider:pdf-page-geometry"
+      },
+      {
+        "loss_profile": "REGION_COMMITMENT_LOSSLESS_FOR_BOUNDING_BOX_AND_SOURCE_ROOT__VISUAL_CONTENT_REQUIRES_SOURCE_RECONSTRUCTION",
+        "observation_root_hash72": "j5IRDwKo*Rl88e0Mz-kKypQKqyZ0Cg*oa+)LRZrmWDQWpHhD69?ZO5>aB)hhqhDRV+BFoi6O",
+        "projection_replaces_source": false,
+        "projection_type": "PAGE_IMAGE_REGION_PROJECTION",
+        "provider_id": "provider:document-image-region"
+      },
+      {
+        "loss_profile": "LOSSY_TEXT_PROJECTION_FROM_IMAGE_REGION__SOURCE_IMAGE_PRESERVED",
+        "observation_root_hash72": "nE8+/927>0-GQ5yjN?NX*41x0QesFByfj*QKb3RqJleh(o4cMU/aQ(YQhbYNnF(Fl34y5ZEz",
+        "projection_replaces_source": false,
+        "projection_type": "OCR_TEXT_PROJECTION",
+        "provider_id": "provider:deterministic-ocr"
+      }
+    ],
+    "schema": "HHS_DOCUMENT_PROJECTION_BUNDLE_V1",
+    "source_commitment_root_hash72": "fn-RSdDBp14uMgtQz1f>mrAt<xU5SAVUAZxbjI04C5CoX!iwR7vAkPDgYaBkeW9XkRmQNVtS",
+    "source_remains_distinct_from_projections": true,
+    "version": "PASS_052_DEEP_DETERMINISTIC_DOCUMENT_PERCEPTION_V1"
+  },
+  "reconstruction_plan": {
+    "authority": "HHS_DOCUMENT_PERCEPTION_RUNTIME_AUTHORITY_V1",
+    "bundle_root_hash72": "386(vnt1kbnUiGKAfX!FxELLz*rQ<T1icQvp>oGU7rHc0uHXWOj9MwGX<To?7o0QD<ftQv(P",
+    "created_at_unix_ms": 1783820839477,
+    "expanded_metadata_retained": false,
+    "observation_roots": [
+      "*FiUYnAugJlVvKHs3KWIhxhAJqIdW34L>jjuS5<Tr5PNRj)W+mYm-aLLEoXiNTt4iIZqdOk*",
+      "7)HjGE<UAcaRwQ0L4yqqjF5QniHw33iRNHr+sUSrnozer8n1JPn8L8a?IAaewWm<8OZZn-EC",
+      "j5IRDwKo*Rl88e0Mz-kKypQKqyZ0Cg*oa+)LRZrmWDQWpHhD69?ZO5>aB)hhqhDRV+BFoi6O",
+      "nE8+/927>0-GQ5yjN?NX*41x0QesFByfj*QKb3RqJleh(o4cMU/aQ(YQhbYNnF(Fl34y5ZEz"
+    ],
+    "perception_receipt_root_hash72": "CHK3SQ>!kxvL7kU+2vJCAl5yx5Rwl>bEMm>bUsNSdA2qXkQR-Cc1/lvIyIS+ETU1)Usd-AaJ",
+    "plan_id": "document-reconstruction:8018b827c38343d6bf053653faa7ba45",
+    "projection_replaces_source": false,
+    "reconstruction_plan_root_hash72": "dk4?wBqTVIabA-+cV)>emM+0smf)D+KBSvshde(EXn5s(eT>zEGYax/!+0LbgiTw-WxCxZ*!",
+    "schema": "HHS_DOCUMENT_RECONSTRUCTION_PLAN_V1",
+    "source_commitment_root_hash72": "fn-RSdDBp14uMgtQz1f>mrAt<xU5SAVUAZxbjI04C5CoX!iwR7vAkPDgYaBkeW9XkRmQNVtS",
+    "source_preserved": true,
+    "steps": [
+      "restore original source commitment",
+      "replay provider observation roots",
+      "rebuild projection bundle",
+      "re-evaluate fusion/disagreement states",
+      "verify perception receipt"
+    ],
+    "version": "PASS_052_DEEP_DETERMINISTIC_DOCUMENT_PERCEPTION_V1"
+  },
+  "schema": "HHS_DOCUMENT_PROJECTION_FUSION_PASS_052_V1"
+}

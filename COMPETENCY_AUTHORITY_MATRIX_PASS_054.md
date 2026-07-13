@@ -1,0 +1,29 @@
+# Competency / Authority Matrix — Pass 054
+
+Capability never grants authority automatically.
+
+```json
+{
+  "rows": [
+    {
+      "authority_granted_by_competency": false,
+      "authority_scope": [
+        "IMPLEMENT_APPROVED_PASS_SPECIFICATION",
+        "MODIFY_DECLARED_REPOSITORY_PATHS",
+        "RUN_DECLARED_VERIFICATION_TARGETS"
+      ],
+      "competencies": [
+        "SOURCE_TREE_INSPECTION",
+        "CODE_MUTATION",
+        "TEST_EXECUTION",
+        "ARTIFACT_REGENERATION"
+      ],
+      "component": "agent:development",
+      "current_task": "task:pass054-module",
+      "revalidation": "ADMIT_CANONICAL_CONTINUATION",
+      "source_root_hash72": "V(mSoSgeie2OK7iEc5lpbH2wlaZ5MJz/kE9mrqRtPSEYG1op6<P*6XRsIJU7N/?e3U-)0<dr"
+    }
+  ],
+  "schema": "HHS_COMPETENCY_AUTHORITY_MATRIX_PASS_054_V1"
+}
+```

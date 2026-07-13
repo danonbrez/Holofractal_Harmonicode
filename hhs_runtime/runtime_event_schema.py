@@ -81,11 +81,9 @@ class RuntimeEventPayload:
 
     uptime: float
 
-    receipt_hash72:
-        Optional[str] = None
+    receipt_hash72: Optional[str] = None
 
-    source_hash72:
-        Optional[str] = None
+    source_hash72: Optional[str] = None
 
     closure_state: str = "stable"
 
@@ -109,8 +107,7 @@ class RuntimeEvent(HHSEvent):
 
         cls,
 
-        runtime_payload:
-            RuntimeEventPayload,
+        runtime_payload: RuntimeEventPayload,
 
         *,
 
@@ -149,8 +146,7 @@ class ReplayEventPayload:
 
     replay_mode: str = "live"
 
-    replay_hash72:
-        Optional[str] = None
+    replay_hash72: Optional[str] = None
 
 # ---------------------------------------------------------
 
@@ -164,8 +160,7 @@ class ReplayEvent(HHSEvent):
 
         cls,
 
-        replay_payload:
-            ReplayEventPayload,
+        replay_payload: ReplayEventPayload,
 
         *,
 
@@ -248,8 +243,7 @@ class GraphEvent(HHSEvent):
 
         cls,
 
-        graph_payload:
-            GraphEventPayload,
+        graph_payload: GraphEventPayload,
 
         *,
 
@@ -322,8 +316,7 @@ class TransportEvent(HHSEvent):
 
         cls,
 
-        transport_payload:
-            TransportEventPayload,
+        transport_payload: TransportEventPayload,
 
         *,
 
@@ -378,8 +371,7 @@ class ReceiptEvent(HHSEvent):
 
         cls,
 
-        receipt_payload:
-            ReceiptEventPayload,
+        receipt_payload: ReceiptEventPayload,
 
         *,
 
@@ -414,8 +406,7 @@ class CertificationEventPayload:
 
     passed: bool
 
-    certification_hash72:
-        Optional[str] = None
+    certification_hash72: Optional[str] = None
 
 # ---------------------------------------------------------
 
@@ -429,8 +420,7 @@ class CertificationEvent(HHSEvent):
 
         cls,
 
-        certification_payload:
-            CertificationEventPayload,
+        certification_payload: CertificationEventPayload,
 
         *,
 
@@ -458,23 +448,17 @@ class CertificationEvent(HHSEvent):
 
 EVENT_CLASS_REGISTRY = {
 
-    EVENT_RUNTIME:
-        RuntimeEvent,
+    EVENT_RUNTIME: RuntimeEvent,
 
-    EVENT_REPLAY:
-        ReplayEvent,
+    EVENT_REPLAY: ReplayEvent,
 
-    EVENT_GRAPH:
-        GraphEvent,
+    EVENT_GRAPH: GraphEvent,
 
-    EVENT_TRANSPORT:
-        TransportEvent,
+    EVENT_TRANSPORT: TransportEvent,
 
-    EVENT_RECEIPT:
-        ReceiptEvent,
+    EVENT_RECEIPT: ReceiptEvent,
 
-    EVENT_CERTIFICATION:
-        CertificationEvent
+    EVENT_CERTIFICATION: CertificationEvent
 }
 
 # ---------------------------------------------------------
@@ -551,21 +535,15 @@ def decode_event(
 
 EVENT_SCHEMA_REGISTRY = {
 
-    EVENT_RUNTIME:
-        RuntimeEvent,
+    EVENT_RUNTIME: RuntimeEvent,
 
-    EVENT_REPLAY:
-        ReplayEvent,
+    EVENT_REPLAY: ReplayEvent,
 
-    EVENT_GRAPH:
-        GraphEvent,
+    EVENT_GRAPH: GraphEvent,
 
-    EVENT_TRANSPORT:
-        TransportEvent,
+    EVENT_TRANSPORT: TransportEvent,
 
-    EVENT_RECEIPT:
-        ReceiptEvent,
+    EVENT_RECEIPT: ReceiptEvent,
 
-    EVENT_CERTIFICATION:
-        CertificationEvent
+    EVENT_CERTIFICATION: CertificationEvent
 }

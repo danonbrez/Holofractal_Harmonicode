@@ -1,0 +1,2 @@
+from .hhs_deterministic_manifold_execution_v1 import deterministic_manifold_execution_self_test
+def self_test(): return deterministic_manifold_execution_self_test()

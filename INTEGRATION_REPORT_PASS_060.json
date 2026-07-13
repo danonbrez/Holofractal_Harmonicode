@@ -1,0 +1,17 @@
+{
+  "canonical_admission_count": 1,
+  "conformance_edge_count": 2792,
+  "duplicate_effects_suppressed": true,
+  "exactly_once_admitted": true,
+  "name": "Federated Transaction Recovery, Idempotent Replay, and Exactly-Once Canonical Admission",
+  "ok": true,
+  "orphan_count": 0,
+  "pass": "060",
+  "replay_confers_authority": false,
+  "run_root_hash72": "rUp>by2g2gswKA9)-zHqj>ZRIQmC)/QKp+)f(JX7Z5tg/fyui6y(CRhzpkFOuI(pHvMgVQWv",
+  "schema": "HHS_PASS_060_INTEGRATION_REPORT_V1",
+  "service_count": 178,
+  "surface_count": 201,
+  "underived_service_count": 0,
+  "underived_surface_count": 0
+}

@@ -1,0 +1,1753 @@
+{
+  "all_rejections_prevented_execution": true,
+  "execution_performed": false,
+  "expanded_authorized_pure_manifest_summary": {
+    "allowlist_size": 3,
+    "default_target_count": 3,
+    "execution_note": "failure-policy manifest summarizes the expanded allow-list but does not execute successful targets; run make authorized-pure-function-executor for the success path.",
+    "schema": "HHS_AUTHORIZED_PURE_FUNCTION_EXPANSION_SUMMARY_PASS_032",
+    "targets": [
+      {
+        "function": "check_1001_invariant",
+        "path": "hhs_runtime/hhs_srcg_gate_v1.py"
+      },
+      {
+        "function": "summarize_closure_cycle",
+        "path": "hhs_runtime/hhs_system_closure_harness_v1.py"
+      },
+      {
+        "function": "is_hash72",
+        "path": "hhs_runtime/hhs_runtime_contract_v1.py"
+      }
+    ]
+  },
+  "failure_reason_codes": [
+    "FORBIDDEN_AUTHORIZATION_FLAG",
+    "MALFORMED_EXECUTION_REQUEST",
+    "NOT_ALLOWLISTED_FUNCTION"
+  ],
+  "failure_record_count": 3,
+  "failure_records": [
+    {
+      "call_performed": false,
+      "execution_performed": false,
+      "execution_policy": {
+        "direct_legacy_execution": false,
+        "failure_record_required": true,
+        "foundational_audit_required": true,
+        "hash72_u72_witness_required": true,
+        "ledger_receipt_required": true,
+        "mutation_allowed": false,
+        "network_allowed": false,
+        "process_allowed": false,
+        "raw_plugin_execution": false,
+        "schema": "HHS_AUTHORIZED_EXECUTION_FAILURE_POLICY_RULES_V1",
+        "target_function_body_execution": false,
+        "version": "PASS_032",
+        "write_allowed": false
+      },
+      "execution_request": {
+        "contract_hash72": "ibD*dE1k*nJ0NU>dO1IaKaP4M/A(XZVaL+k6X)hmGuNI*LdL2HXBrCLedywHlt0QR3AM9x*3",
+        "contract_type": "execution_request",
+        "contract_version": "HHS_CANONICAL_RUNTIME_CONTRACT_V1",
+        "created_at": 1783615471.4318233,
+        "operation": "authorized_execution.rejected_without_execution",
+        "payload": {
+          "execution_policy": {
+            "direct_legacy_execution": false,
+            "failure_record_required": true,
+            "foundational_audit_required": true,
+            "hash72_u72_witness_required": true,
+            "ledger_receipt_required": true,
+            "mutation_allowed": false,
+            "network_allowed": false,
+            "process_allowed": false,
+            "raw_plugin_execution": false,
+            "schema": "HHS_AUTHORIZED_EXECUTION_FAILURE_POLICY_RULES_V1",
+            "target_function_body_execution": false,
+            "version": "PASS_032",
+            "write_allowed": false
+          },
+          "meaning_witness": {
+            "after_identity_hash72": "dW+*eSTQ*NoiN8bxFEtN84Z929≠ybFMtAzosWIes3I6LwGju2fRwRXfa^1KXtk7X6√7-FzYq",
+            "before_identity_hash72": "dW+*eSTQ*NoiN8bxFEtN84Z929≠ybFMtAzosWIes3I6LwGju2fRwRXfa^1KXtk7X6√7-FzYq",
+            "meaning_conserved": true,
+            "receipt_hash72": "",
+            "reversible": true,
+            "schema": "HHS_MEANING_CONSERVATION_WITNESS_V1",
+            "standard_version": "HHS_FOUNDATIONAL_STANDARDS_M001_M007_V1",
+            "transformation_rule": "execution rejection preserves proposition identity and forbids target function-body execution",
+            "witness_hash72": "p9ucq1≠ngUkPZ√=04Qv)^Dn+V/4uR5OpurX8RCn/tEzCIU*TAnIYY√1QZiUI2TMMjV/GByfo"
+          },
+          "proposition_identity": {
+            "context": {
+              "reason_code": "NOT_ALLOWLISTED_FUNCTION",
+              "rejection_stage": "ALLOWLIST_PREFLIGHT",
+              "requested_target": {
+                "arguments": [
+                  {
+                    "A": 1,
+                    "B": 1
+                  }
+                ],
+                "function": "selfsolve_ab_gate",
+                "keyword_arguments": {},
+                "path": "hhs_runtime/hhs_srcg_gate_v1.py",
+                "sample_payload": {
+                  "A": 1,
+                  "B": 1
+                }
+              }
+            },
+            "declared_dimensions": [
+              "equality",
+              "functional_equivalence",
+              "identity",
+              "interchangeability",
+              "similarity"
+            ],
+            "identity_hash72": "dW+*eSTQ*NoiN8bxFEtN84Z929≠ybFMtAzosWIes3I6LwGju2fRwRXfa^1KXtk7X6√7-FzYq",
+            "proposition_id": "c5ae7498-70f7-4b1b-80c0-57ff073102d2",
+            "schema": "HHS_PROPOSITION_IDENTITY_V1",
+            "source": "hhs_authorized_execution_failure_policy_v1.hhs_runtime/hhs_srcg_gate_v1.py.selfsolve_ab_gate",
+            "standard_version": "HHS_FOUNDATIONAL_STANDARDS_M001_M007_V1",
+            "statement": "Rejected authorized execution request preserves explicit target identity and produces a witnessed failure record before any target body execution."
+          },
+          "reason": "target function is not allow-listed for authorized pure execution: hhs_runtime/hhs_srcg_gate_v1.py.selfsolve_ab_gate",
+          "reason_code": "NOT_ALLOWLISTED_FUNCTION",
+          "rejection_stage": "ALLOWLIST_PREFLIGHT",
+          "requested_target": {
+            "arguments": [
+              {
+                "A": 1,
+                "B": 1
+              }
+            ],
+            "function": "selfsolve_ab_gate",
+            "keyword_arguments": {},
+            "path": "hhs_runtime/hhs_srcg_gate_v1.py",
+            "sample_payload": {
+              "A": 1,
+              "B": 1
+            }
+          },
+          "schema": "HHS_AUTHORIZED_EXECUTION_FAILURE_PAYLOAD_V1",
+          "source": "hhs_authorized_execution_failure_policy_v1.hhs_runtime/hhs_srcg_gate_v1.py.selfsolve_ab_gate",
+          "version": "PASS_032"
+        },
+        "request_id": "390628c3-e27b-48cb-9954-28300dec2e97",
+        "requires_authority": true,
+        "schema": "HHS_EXECUTION_REQUEST_CONTRACT_V1",
+        "source": "hhs_authorized_execution_failure_policy_v1.hhs_runtime/hhs_srcg_gate_v1.py.selfsolve_ab_gate"
+      },
+      "execution_status": "REJECTED_WITHOUT_EXECUTION",
+      "failure_kernel_witness": {
+        "authority": "HHS_HASH72_KERNEL_U72_DIGITAL_DNA_V1",
+        "canonical_payload": "\"{\\\"execution_performed\\\":false,\\\"policy\\\":{\\\"direct_legacy_execution\\\":false,\\\"failure_record_required\\\":true,\\\"foundational_audit_required\\\":true,\\\"hash72_u72_witness_required\\\":true,\\\"ledger_receipt_required\\\":true,\\\"mutation_allowed\\\":false,\\\"network_allowed\\\":false,\\\"process_allowed\\\":false,\\\"raw_plugin_execution\\\":false,\\\"schema\\\":\\\"HHS_AUTHORIZED_EXECUTION_FAILURE_POLICY_RULES_V1\\\",\\\"target_function_body_execution\\\":false,\\\"version\\\":\\\"PASS_032\\\",\\\"write_allowed\\\":false},\\\"reason\\\":\\\"target function is not allow-listed for authorized pure execution: hhs_runtime/hhs_srcg_gate_v1.py.selfsolve_ab_gate\\\",\\\"reason_code\\\":\\\"NOT_ALLOWLISTED_FUNCTION\\\",\\\"requested_target\\\":{\\\"arguments\\\":[{\\\"A\\\":1,\\\"B\\\":1}],\\\"function\\\":\\\"selfsolve_ab_gate\\\",\\\"keyword_arguments\\\":{},\\\"path\\\":\\\"hhs_runtime/hhs_srcg_gate_v1.py\\\",\\\"sample_payload\\\":{\\\"A\\\":1,\\\"B\\\":1}},\\\"source\\\":\\\"hhs_authorized_execution_failure_policy_v1.hhs_runtime/hhs_srcg_gate_v1.py.selfsolve_ab_gate\\\"}\"",
+        "digest": "91NDYyPREqfFCZr!FnZ1hnJ*k54VU2m81E<MCZ?ffK*kbsjUe)+vpriQrL5+pdDKSJLDYmFW",
+        "digest72": "91NDYyPREqfFCZr!FnZ1hnJ*k54VU2m81E<MCZ?ffK*kbsjUe)+vpriQrL5+pdDKSJLDYmFW",
+        "dna": "91NDYyPREqfFCZr!FnZ1hnJ*k54VU2m81E<MCZ?ffK*kbsjUe)+vpriQrL5+pdDKSJLDYmFW",
+        "label": "hhs_authorized_execution_failure_record_v1",
+        "positions": [
+          9,
+          1,
+          49,
+          39,
+          60,
+          34,
+          51,
+          53,
+          40,
+          26,
+          15,
+          41,
+          38,
+          61,
+          27,
+          70,
+          41,
+          23,
+          61,
+          1,
+          17,
+          23,
+          45,
+          64,
+          20,
+          5,
+          4,
+          57,
+          56,
+          2,
+          22,
+          8,
+          1,
+          40,
+          68,
+          48,
+          38,
+          61,
+          71,
+          15,
+          15,
+          46,
+          64,
+          20,
+          11,
+          28,
+          19,
+          56,
+          14,
+          67,
+          63,
+          31,
+          25,
+          27,
+          18,
+          52,
+          27,
+          47,
+          5,
+          63,
+          25,
+          13,
+          39,
+          46,
+          54,
+          45,
+          47,
+          39,
+          60,
+          22,
+          41,
+          58
+        ],
+        "rotation_profile": [
+          9,
+          72,
+          -25,
+          36,
+          -16,
+          -43,
+          117,
+          -26,
+          32,
+          17,
+          5,
+          30,
+          -46,
+          -24,
+          13,
+          55,
+          25,
+          6,
+          -29,
+          54,
+          -75,
+          74,
+          -49,
+          41,
+          -4,
+          -20,
+          -22,
+          -42,
+          28,
+          -171,
+          208,
+          -167,
+          185,
+          -209,
+          106,
+          -59,
+          -142,
+          96,
+          33,
+          -24,
+          -25,
+          -67,
+          22,
+          -95,
+          39,
+          -89,
+          117,
+          9,
+          -106,
+          18,
+          -59,
+          196,
+          -243,
+          118,
+          -108,
+          69,
+          43,
+          -82,
+          19,
+          76,
+          37,
+          24,
+          -23,
+          -17,
+          -10,
+          -20,
+          -19,
+          44,
+          64,
+          25,
+          -29,
+          23
+        ],
+        "schema": "HHS_HASH72_KERNEL_WITNESS_V1",
+        "trace_count": 1013,
+        "zero_sum": true
+      },
+      "foundational_conformance": {
+        "conformance_hash72": "rn√tHS^jZOamSQU+3ncNIb/√xJf8jDh/1K9e)≠9waTenS^wb√a(r5w4)R37D≠Jyl1PJx3≠+j",
+        "meaning_witness": {
+          "after_identity_hash72": "dW+*eSTQ*NoiN8bxFEtN84Z929≠ybFMtAzosWIes3I6LwGju2fRwRXfa^1KXtk7X6√7-FzYq",
+          "before_identity_hash72": "dW+*eSTQ*NoiN8bxFEtN84Z929≠ybFMtAzosWIes3I6LwGju2fRwRXfa^1KXtk7X6√7-FzYq",
+          "meaning_conserved": true,
+          "receipt_hash72": "",
+          "reversible": true,
+          "schema": "HHS_MEANING_CONSERVATION_WITNESS_V1",
+          "standard_version": "HHS_FOUNDATIONAL_STANDARDS_M001_M007_V1",
+          "transformation_rule": "execution rejection preserves proposition identity and forbids target function-body execution",
+          "witness_hash72": "p9ucq1≠ngUkPZ√=04Qv)^Dn+V/4uR5OpurX8RCn/tEzCIU*TAnIYY√1QZiUI2TMMjV/GByfo"
+        },
+        "ok": true,
+        "proposition_identity": {
+          "context": {
+            "reason_code": "NOT_ALLOWLISTED_FUNCTION",
+            "rejection_stage": "ALLOWLIST_PREFLIGHT",
+            "requested_target": {
+              "arguments": [
+                {
+                  "A": 1,
+                  "B": 1
+                }
+              ],
+              "function": "selfsolve_ab_gate",
+              "keyword_arguments": {},
+              "path": "hhs_runtime/hhs_srcg_gate_v1.py",
+              "sample_payload": {
+                "A": 1,
+                "B": 1
+              }
+            }
+          },
+          "declared_dimensions": [
+            "equality",
+            "functional_equivalence",
+            "identity",
+            "interchangeability",
+            "similarity"
+          ],
+          "identity_hash72": "dW+*eSTQ*NoiN8bxFEtN84Z929≠ybFMtAzosWIes3I6LwGju2fRwRXfa^1KXtk7X6√7-FzYq",
+          "proposition_id": "c5ae7498-70f7-4b1b-80c0-57ff073102d2",
+          "schema": "HHS_PROPOSITION_IDENTITY_V1",
+          "source": "hhs_authorized_execution_failure_policy_v1.hhs_runtime/hhs_srcg_gate_v1.py.selfsolve_ab_gate",
+          "standard_version": "HHS_FOUNDATIONAL_STANDARDS_M001_M007_V1",
+          "statement": "Rejected authorized execution request preserves explicit target identity and produces a witnessed failure record before any target body execution."
+        },
+        "reasons": [],
+        "schema": "HHS_FOUNDATIONAL_CONFORMANCE_V1",
+        "source": "hhs_authorized_execution_failure_policy_v1.hhs_runtime/hhs_srcg_gate_v1.py.selfsolve_ab_gate.failure_foundational_audit",
+        "standard_version": "HHS_FOUNDATIONAL_STANDARDS_M001_M007_V1",
+        "standards": {
+          "HHS-M001": true,
+          "HHS-M002": true,
+          "HHS-M003": true,
+          "HHS-M004": true,
+          "HHS-M005": true,
+          "HHS-M006": true,
+          "HHS-M007": true
+        }
+      },
+      "function_body_execution_performed": false,
+      "ledger": {
+        "entry_count": 22,
+        "hash72_authority": "HHS_HASH72_KERNEL_U72_DIGITAL_DNA_V1",
+        "ledger_hash72": "S456-<147p8A4>hLa4IUEOa>",
+        "tip_hash72": "gTF7K4nVarALdV-dMZ4LAjGB"
+      },
+      "meaning_witness": {
+        "after_identity_hash72": "dW+*eSTQ*NoiN8bxFEtN84Z929≠ybFMtAzosWIes3I6LwGju2fRwRXfa^1KXtk7X6√7-FzYq",
+        "before_identity_hash72": "dW+*eSTQ*NoiN8bxFEtN84Z929≠ybFMtAzosWIes3I6LwGju2fRwRXfa^1KXtk7X6√7-FzYq",
+        "meaning_conserved": true,
+        "receipt_hash72": "",
+        "reversible": true,
+        "schema": "HHS_MEANING_CONSERVATION_WITNESS_V1",
+        "standard_version": "HHS_FOUNDATIONAL_STANDARDS_M001_M007_V1",
+        "transformation_rule": "execution rejection preserves proposition identity and forbids target function-body execution",
+        "witness_hash72": "p9ucq1≠ngUkPZ√=04Qv)^Dn+V/4uR5OpurX8RCn/tEzCIU*TAnIYY√1QZiUI2TMMjV/GByfo"
+      },
+      "mutation_performed": false,
+      "network_performed": false,
+      "process_performed": false,
+      "proposition_identity": {
+        "context": {
+          "reason_code": "NOT_ALLOWLISTED_FUNCTION",
+          "rejection_stage": "ALLOWLIST_PREFLIGHT",
+          "requested_target": {
+            "arguments": [
+              {
+                "A": 1,
+                "B": 1
+              }
+            ],
+            "function": "selfsolve_ab_gate",
+            "keyword_arguments": {},
+            "path": "hhs_runtime/hhs_srcg_gate_v1.py",
+            "sample_payload": {
+              "A": 1,
+              "B": 1
+            }
+          }
+        },
+        "declared_dimensions": [
+          "equality",
+          "functional_equivalence",
+          "identity",
+          "interchangeability",
+          "similarity"
+        ],
+        "identity_hash72": "dW+*eSTQ*NoiN8bxFEtN84Z929≠ybFMtAzosWIes3I6LwGju2fRwRXfa^1KXtk7X6√7-FzYq",
+        "proposition_id": "c5ae7498-70f7-4b1b-80c0-57ff073102d2",
+        "schema": "HHS_PROPOSITION_IDENTITY_V1",
+        "source": "hhs_authorized_execution_failure_policy_v1.hhs_runtime/hhs_srcg_gate_v1.py.selfsolve_ab_gate",
+        "standard_version": "HHS_FOUNDATIONAL_STANDARDS_M001_M007_V1",
+        "statement": "Rejected authorized execution request preserves explicit target identity and produces a witnessed failure record before any target body execution."
+      },
+      "raw_plugin_execution": false,
+      "reason": "target function is not allow-listed for authorized pure execution: hhs_runtime/hhs_srcg_gate_v1.py.selfsolve_ab_gate",
+      "reason_code": "NOT_ALLOWLISTED_FUNCTION",
+      "rejection_stage": "ALLOWLIST_PREFLIGHT",
+      "requested_target": {
+        "arguments": [
+          {
+            "A": 1,
+            "B": 1
+          }
+        ],
+        "function": "selfsolve_ab_gate",
+        "keyword_arguments": {},
+        "path": "hhs_runtime/hhs_srcg_gate_v1.py",
+        "sample_payload": {
+          "A": 1,
+          "B": 1
+        }
+      },
+      "runtime_packet": {
+        "contract_hash72": "zmC2DNmD0qiHHK76?)?jqWjTRA3RMXxbtU/Tj-5rfNdvp!WEq+Om9Et5roA9!W9O/4lrkR0)",
+        "contract_type": "runtime_packet",
+        "contract_version": "HHS_CANONICAL_RUNTIME_CONTRACT_V1",
+        "created_at": 1783615471.4357052,
+        "direction": "INTERNAL",
+        "io_receipt": {},
+        "packet_id": "0d6829a7-a233-45ac-8cb2-3cd56b8acb29",
+        "payload": {
+          "execution_policy": {
+            "direct_legacy_execution": false,
+            "failure_record_required": true,
+            "foundational_audit_required": true,
+            "hash72_u72_witness_required": true,
+            "ledger_receipt_required": true,
+            "mutation_allowed": false,
+            "network_allowed": false,
+            "process_allowed": false,
+            "raw_plugin_execution": false,
+            "schema": "HHS_AUTHORIZED_EXECUTION_FAILURE_POLICY_RULES_V1",
+            "target_function_body_execution": false,
+            "version": "PASS_032",
+            "write_allowed": false
+          },
+          "meaning_witness": {
+            "after_identity_hash72": "dW+*eSTQ*NoiN8bxFEtN84Z929≠ybFMtAzosWIes3I6LwGju2fRwRXfa^1KXtk7X6√7-FzYq",
+            "before_identity_hash72": "dW+*eSTQ*NoiN8bxFEtN84Z929≠ybFMtAzosWIes3I6LwGju2fRwRXfa^1KXtk7X6√7-FzYq",
+            "meaning_conserved": true,
+            "receipt_hash72": "",
+            "reversible": true,
+            "schema": "HHS_MEANING_CONSERVATION_WITNESS_V1",
+            "standard_version": "HHS_FOUNDATIONAL_STANDARDS_M001_M007_V1",
+            "transformation_rule": "execution rejection preserves proposition identity and forbids target function-body execution",
+            "witness_hash72": "p9ucq1≠ngUkPZ√=04Qv)^Dn+V/4uR5OpurX8RCn/tEzCIU*TAnIYY√1QZiUI2TMMjV/GByfo"
+          },
+          "proposition_identity": {
+            "context": {
+              "reason_code": "NOT_ALLOWLISTED_FUNCTION",
+              "rejection_stage": "ALLOWLIST_PREFLIGHT",
+              "requested_target": {
+                "arguments": [
+                  {
+                    "A": 1,
+                    "B": 1
+                  }
+                ],
+                "function": "selfsolve_ab_gate",
+                "keyword_arguments": {},
+                "path": "hhs_runtime/hhs_srcg_gate_v1.py",
+                "sample_payload": {
+                  "A": 1,
+                  "B": 1
+                }
+              }
+            },
+            "declared_dimensions": [
+              "equality",
+              "functional_equivalence",
+              "identity",
+              "interchangeability",
+              "similarity"
+            ],
+            "identity_hash72": "dW+*eSTQ*NoiN8bxFEtN84Z929≠ybFMtAzosWIes3I6LwGju2fRwRXfa^1KXtk7X6√7-FzYq",
+            "proposition_id": "c5ae7498-70f7-4b1b-80c0-57ff073102d2",
+            "schema": "HHS_PROPOSITION_IDENTITY_V1",
+            "source": "hhs_authorized_execution_failure_policy_v1.hhs_runtime/hhs_srcg_gate_v1.py.selfsolve_ab_gate",
+            "standard_version": "HHS_FOUNDATIONAL_STANDARDS_M001_M007_V1",
+            "statement": "Rejected authorized execution request preserves explicit target identity and produces a witnessed failure record before any target body execution."
+          },
+          "reason": "target function is not allow-listed for authorized pure execution: hhs_runtime/hhs_srcg_gate_v1.py.selfsolve_ab_gate",
+          "reason_code": "NOT_ALLOWLISTED_FUNCTION",
+          "rejection_stage": "ALLOWLIST_PREFLIGHT",
+          "requested_target": {
+            "arguments": [
+              {
+                "A": 1,
+                "B": 1
+              }
+            ],
+            "function": "selfsolve_ab_gate",
+            "keyword_arguments": {},
+            "path": "hhs_runtime/hhs_srcg_gate_v1.py",
+            "sample_payload": {
+              "A": 1,
+              "B": 1
+            }
+          },
+          "schema": "HHS_AUTHORIZED_EXECUTION_FAILURE_PAYLOAD_V1",
+          "source": "hhs_authorized_execution_failure_policy_v1.hhs_runtime/hhs_srcg_gate_v1.py.selfsolve_ab_gate",
+          "version": "PASS_032"
+        },
+        "payload_hash72": "njTdgn-S(27fQyKNyQvO2JpuALBCZactpui*A>0JYz>I-P7ffcVat?UllXmZU1oeEV2d5>QM",
+        "schema": "HHS_RUNTIME_PACKET_CONTRACT_V1",
+        "source": "hhs_authorized_execution_failure_policy_v1.hhs_runtime/hhs_srcg_gate_v1.py.selfsolve_ab_gate"
+      },
+      "schema": "HHS_AUTHORIZED_EXECUTION_FAILURE_RECORD_V1",
+      "schema_registry_classification": {
+        "confidence": "HIGH",
+        "contract_type": "",
+        "family": "FAILURE_RECORD",
+        "reasons": [
+          "matched authorized execution failure record schema"
+        ],
+        "registry_schema": "HHS_SCHEMA_OBJECT_CLASSIFICATION_V1",
+        "registry_version": "PASS_030",
+        "schema": "HHS_AUTHORIZED_EXECUTION_FAILURE_RECORD_V1"
+      },
+      "schema_registry_validation": {
+        "contract_type": "",
+        "family": "FAILURE_RECORD",
+        "foundational_audit_required": true,
+        "kernel_witness_required": true,
+        "ledger_binding_required": true,
+        "missing_fields": [],
+        "missing_hash72_fields": [],
+        "ok": true,
+        "reasons": [],
+        "registry_schema": "HHS_SCHEMA_OBJECT_VALIDATION_V1",
+        "registry_version": "PASS_030",
+        "schema": "HHS_AUTHORIZED_EXECUTION_FAILURE_RECORD_V1"
+      },
+      "source": "hhs_authorized_execution_failure_policy_v1.hhs_runtime/hhs_srcg_gate_v1.py.selfsolve_ab_gate",
+      "version": "PASS_032",
+      "write_performed": false
+    },
+    {
+      "call_performed": false,
+      "execution_performed": false,
+      "execution_policy": {
+        "direct_legacy_execution": false,
+        "failure_record_required": true,
+        "foundational_audit_required": true,
+        "hash72_u72_witness_required": true,
+        "ledger_receipt_required": true,
+        "mutation_allowed": false,
+        "network_allowed": false,
+        "process_allowed": false,
+        "raw_plugin_execution": false,
+        "schema": "HHS_AUTHORIZED_EXECUTION_FAILURE_POLICY_RULES_V1",
+        "target_function_body_execution": false,
+        "version": "PASS_032",
+        "write_allowed": false
+      },
+      "execution_request": {
+        "contract_hash72": "YhSU1C>OEEemLS-bO0))!k0XC*W+R(*)A1AB78U?IdikMaSi4(5)(>0)?isbxC/XWJp/fDrl",
+        "contract_type": "execution_request",
+        "contract_version": "HHS_CANONICAL_RUNTIME_CONTRACT_V1",
+        "created_at": 1783615472.6030807,
+        "operation": "authorized_execution.rejected_without_execution",
+        "payload": {
+          "execution_policy": {
+            "direct_legacy_execution": false,
+            "failure_record_required": true,
+            "foundational_audit_required": true,
+            "hash72_u72_witness_required": true,
+            "ledger_receipt_required": true,
+            "mutation_allowed": false,
+            "network_allowed": false,
+            "process_allowed": false,
+            "raw_plugin_execution": false,
+            "schema": "HHS_AUTHORIZED_EXECUTION_FAILURE_POLICY_RULES_V1",
+            "target_function_body_execution": false,
+            "version": "PASS_032",
+            "write_allowed": false
+          },
+          "meaning_witness": {
+            "after_identity_hash72": "CT6√3)wu4ivAaOXourKws√UkGRJl72^0L)5V2W^hXi1cVfejXD+-*gkM+BJaH47biaT√d56h",
+            "before_identity_hash72": "CT6√3)wu4ivAaOXourKws√UkGRJl72^0L)5V2W^hXi1cVfejXD+-*gkM+BJaH47biaT√d56h",
+            "meaning_conserved": true,
+            "receipt_hash72": "",
+            "reversible": true,
+            "schema": "HHS_MEANING_CONSERVATION_WITNESS_V1",
+            "standard_version": "HHS_FOUNDATIONAL_STANDARDS_M001_M007_V1",
+            "transformation_rule": "execution rejection preserves proposition identity and forbids target function-body execution",
+            "witness_hash72": "QX/szlkoR≠/Agw)y/dPVy6qPT13-6SkG9xto=UAa√≠pkPrtKwAdq^o7uirW3b3nyDa7jz+QM"
+          },
+          "proposition_identity": {
+            "context": {
+              "reason_code": "FORBIDDEN_AUTHORIZATION_FLAG",
+              "rejection_stage": "PRE_EXECUTION_POLICY_PREFLIGHT",
+              "requested_target": {
+                "arguments": [
+                  "000000000000000000000000000000000000000000000000000000000000000000000000"
+                ],
+                "function": "is_hash72",
+                "keyword_arguments": {},
+                "mutation_authorized": true,
+                "path": "hhs_runtime/hhs_runtime_contract_v1.py",
+                "sample_payload": {
+                  "value": "000000000000000000000000000000000000000000000000000000000000000000000000"
+                }
+              }
+            },
+            "declared_dimensions": [
+              "equality",
+              "functional_equivalence",
+              "identity",
+              "interchangeability",
+              "similarity"
+            ],
+            "identity_hash72": "CT6√3)wu4ivAaOXourKws√UkGRJl72^0L)5V2W^hXi1cVfejXD+-*gkM+BJaH47biaT√d56h",
+            "proposition_id": "dc58c285-4a74-416e-b556-783caaa3686b",
+            "schema": "HHS_PROPOSITION_IDENTITY_V1",
+            "source": "hhs_authorized_execution_failure_policy_v1.hhs_runtime/hhs_runtime_contract_v1.py.is_hash72",
+            "standard_version": "HHS_FOUNDATIONAL_STANDARDS_M001_M007_V1",
+            "statement": "Rejected authorized execution request preserves explicit target identity and produces a witnessed failure record before any target body execution."
+          },
+          "reason": "authorized pure execution forbids direct/mutation/write/network/process authorization flags: mutation_authorized",
+          "reason_code": "FORBIDDEN_AUTHORIZATION_FLAG",
+          "rejection_stage": "PRE_EXECUTION_POLICY_PREFLIGHT",
+          "requested_target": {
+            "arguments": [
+              "000000000000000000000000000000000000000000000000000000000000000000000000"
+            ],
+            "function": "is_hash72",
+            "keyword_arguments": {},
+            "mutation_authorized": true,
+            "path": "hhs_runtime/hhs_runtime_contract_v1.py",
+            "sample_payload": {
+              "value": "000000000000000000000000000000000000000000000000000000000000000000000000"
+            }
+          },
+          "schema": "HHS_AUTHORIZED_EXECUTION_FAILURE_PAYLOAD_V1",
+          "source": "hhs_authorized_execution_failure_policy_v1.hhs_runtime/hhs_runtime_contract_v1.py.is_hash72",
+          "version": "PASS_032"
+        },
+        "request_id": "5ed33333-80f0-46d0-a813-0b716a417a10",
+        "requires_authority": true,
+        "schema": "HHS_EXECUTION_REQUEST_CONTRACT_V1",
+        "source": "hhs_authorized_execution_failure_policy_v1.hhs_runtime/hhs_runtime_contract_v1.py.is_hash72"
+      },
+      "execution_status": "REJECTED_WITHOUT_EXECUTION",
+      "failure_kernel_witness": {
+        "authority": "HHS_HASH72_KERNEL_U72_DIGITAL_DNA_V1",
+        "canonical_payload": "\"{\\\"execution_performed\\\":false,\\\"policy\\\":{\\\"direct_legacy_execution\\\":false,\\\"failure_record_required\\\":true,\\\"foundational_audit_required\\\":true,\\\"hash72_u72_witness_required\\\":true,\\\"ledger_receipt_required\\\":true,\\\"mutation_allowed\\\":false,\\\"network_allowed\\\":false,\\\"process_allowed\\\":false,\\\"raw_plugin_execution\\\":false,\\\"schema\\\":\\\"HHS_AUTHORIZED_EXECUTION_FAILURE_POLICY_RULES_V1\\\",\\\"target_function_body_execution\\\":false,\\\"version\\\":\\\"PASS_032\\\",\\\"write_allowed\\\":false},\\\"reason\\\":\\\"authorized pure execution forbids direct/mutation/write/network/process authorization flags: mutation_authorized\\\",\\\"reason_code\\\":\\\"FORBIDDEN_AUTHORIZATION_FLAG\\\",\\\"requested_target\\\":{\\\"arguments\\\":[\\\"000000000000000000000000000000000000000000000000000000000000000000000000\\\"],\\\"function\\\":\\\"is_hash72\\\",\\\"keyword_arguments\\\":{},\\\"mutation_authorized\\\":true,\\\"path\\\":\\\"hhs_runtime/hhs_runtime_contract_v1.py\\\",\\\"sample_payload\\\":{\\\"value\\\":\\\"000000000000000000000000000000000000000000000000000000000000000000000000\\\"}},\\\"source\\\":\\\"hhs_authorized_execution_failure_policy_v1.hhs_runtime/hhs_runtime_contract_v1.py.is_hash72\\\"}\"",
+        "digest": "+r914GTvUV+fhW060i-vQ-iS6-)9o)1LeqsQTJ5!7A(sgU02)giZnV*AO8hL<H+>+5gz-A33",
+        "digest72": "+r914GTvUV+fhW060i-vQ-iS6-)9o)1LeqsQTJ5!7A(sgU02)giZnV*AO8hL<H+>+5gz-A33",
+        "dna": "+r914GTvUV+fhW060i-vQ-iS6-)9o)1LeqsQTJ5!7A(sgU02)giZnV*AO8hL<H+>+5gz-A33",
+        "label": "hhs_authorized_execution_failure_record_v1",
+        "positions": [
+          63,
+          27,
+          9,
+          1,
+          4,
+          42,
+          55,
+          31,
+          56,
+          57,
+          63,
+          15,
+          17,
+          58,
+          0,
+          6,
+          0,
+          18,
+          62,
+          31,
+          52,
+          62,
+          18,
+          54,
+          6,
+          62,
+          67,
+          9,
+          24,
+          67,
+          1,
+          47,
+          14,
+          26,
+          28,
+          52,
+          55,
+          45,
+          5,
+          70,
+          7,
+          36,
+          66,
+          28,
+          16,
+          56,
+          0,
+          2,
+          67,
+          16,
+          18,
+          61,
+          23,
+          57,
+          64,
+          36,
+          50,
+          8,
+          17,
+          47,
+          68,
+          43,
+          63,
+          69,
+          63,
+          5,
+          16,
+          35,
+          62,
+          36,
+          3,
+          3
+        ],
+        "rotation_profile": [
+          63,
+          98,
+          -65,
+          -2,
+          72,
+          -35,
+          121,
+          -48,
+          -24,
+          48,
+          53,
+          4,
+          5,
+          -27,
+          -14,
+          63,
+          56,
+          -71,
+          -28,
+          12,
+          32,
+          -31,
+          -4,
+          31,
+          54,
+          -107,
+          -175,
+          126,
+          -148,
+          38,
+          187,
+          -344,
+          198,
+          -223,
+          66,
+          17,
+          -197,
+          296,
+          39,
+          -185,
+          111,
+          -149,
+          -120,
+          129,
+          -28,
+          11,
+          26,
+          27,
+          -197,
+          111,
+          -104,
+          82,
+          -29,
+          4,
+          -62,
+          53,
+          66,
+          -49,
+          -41,
+          132,
+          8,
+          -18,
+          1,
+          -66,
+          71,
+          12,
+          -50,
+          40,
+          66,
+          39,
+          -67,
+          40
+        ],
+        "schema": "HHS_HASH72_KERNEL_WITNESS_V1",
+        "trace_count": 1170,
+        "zero_sum": true
+      },
+      "foundational_conformance": {
+        "conformance_hash72": "mO=VLFp*FP≠≠ID8yRGP√sXUPtS3=MUQ=p)WDqIGlx0aU^X(qE2IrAVuEo-FKv9zme*(Knum^",
+        "meaning_witness": {
+          "after_identity_hash72": "CT6√3)wu4ivAaOXourKws√UkGRJl72^0L)5V2W^hXi1cVfejXD+-*gkM+BJaH47biaT√d56h",
+          "before_identity_hash72": "CT6√3)wu4ivAaOXourKws√UkGRJl72^0L)5V2W^hXi1cVfejXD+-*gkM+BJaH47biaT√d56h",
+          "meaning_conserved": true,
+          "receipt_hash72": "",
+          "reversible": true,
+          "schema": "HHS_MEANING_CONSERVATION_WITNESS_V1",
+          "standard_version": "HHS_FOUNDATIONAL_STANDARDS_M001_M007_V1",
+          "transformation_rule": "execution rejection preserves proposition identity and forbids target function-body execution",
+          "witness_hash72": "QX/szlkoR≠/Agw)y/dPVy6qPT13-6SkG9xto=UAa√≠pkPrtKwAdq^o7uirW3b3nyDa7jz+QM"
+        },
+        "ok": true,
+        "proposition_identity": {
+          "context": {
+            "reason_code": "FORBIDDEN_AUTHORIZATION_FLAG",
+            "rejection_stage": "PRE_EXECUTION_POLICY_PREFLIGHT",
+            "requested_target": {
+              "arguments": [
+                "000000000000000000000000000000000000000000000000000000000000000000000000"
+              ],
+              "function": "is_hash72",
+              "keyword_arguments": {},
+              "mutation_authorized": true,
+              "path": "hhs_runtime/hhs_runtime_contract_v1.py",
+              "sample_payload": {
+                "value": "000000000000000000000000000000000000000000000000000000000000000000000000"
+              }
+            }
+          },
+          "declared_dimensions": [
+            "equality",
+            "functional_equivalence",
+            "identity",
+            "interchangeability",
+            "similarity"
+          ],
+          "identity_hash72": "CT6√3)wu4ivAaOXourKws√UkGRJl72^0L)5V2W^hXi1cVfejXD+-*gkM+BJaH47biaT√d56h",
+          "proposition_id": "dc58c285-4a74-416e-b556-783caaa3686b",
+          "schema": "HHS_PROPOSITION_IDENTITY_V1",
+          "source": "hhs_authorized_execution_failure_policy_v1.hhs_runtime/hhs_runtime_contract_v1.py.is_hash72",
+          "standard_version": "HHS_FOUNDATIONAL_STANDARDS_M001_M007_V1",
+          "statement": "Rejected authorized execution request preserves explicit target identity and produces a witnessed failure record before any target body execution."
+        },
+        "reasons": [],
+        "schema": "HHS_FOUNDATIONAL_CONFORMANCE_V1",
+        "source": "hhs_authorized_execution_failure_policy_v1.hhs_runtime/hhs_runtime_contract_v1.py.is_hash72.failure_foundational_audit",
+        "standard_version": "HHS_FOUNDATIONAL_STANDARDS_M001_M007_V1",
+        "standards": {
+          "HHS-M001": true,
+          "HHS-M002": true,
+          "HHS-M003": true,
+          "HHS-M004": true,
+          "HHS-M005": true,
+          "HHS-M006": true,
+          "HHS-M007": true
+        }
+      },
+      "function_body_execution_performed": false,
+      "ledger": {
+        "entry_count": 24,
+        "hash72_authority": "HHS_HASH72_KERNEL_U72_DIGITAL_DNA_V1",
+        "ledger_hash72": "Mn)uWRqR7s)dVKps/YiHvzIV",
+        "tip_hash72": "!kFOMn5+0z0QWHE>)qFb+eqw"
+      },
+      "meaning_witness": {
+        "after_identity_hash72": "CT6√3)wu4ivAaOXourKws√UkGRJl72^0L)5V2W^hXi1cVfejXD+-*gkM+BJaH47biaT√d56h",
+        "before_identity_hash72": "CT6√3)wu4ivAaOXourKws√UkGRJl72^0L)5V2W^hXi1cVfejXD+-*gkM+BJaH47biaT√d56h",
+        "meaning_conserved": true,
+        "receipt_hash72": "",
+        "reversible": true,
+        "schema": "HHS_MEANING_CONSERVATION_WITNESS_V1",
+        "standard_version": "HHS_FOUNDATIONAL_STANDARDS_M001_M007_V1",
+        "transformation_rule": "execution rejection preserves proposition identity and forbids target function-body execution",
+        "witness_hash72": "QX/szlkoR≠/Agw)y/dPVy6qPT13-6SkG9xto=UAa√≠pkPrtKwAdq^o7uirW3b3nyDa7jz+QM"
+      },
+      "mutation_performed": false,
+      "network_performed": false,
+      "process_performed": false,
+      "proposition_identity": {
+        "context": {
+          "reason_code": "FORBIDDEN_AUTHORIZATION_FLAG",
+          "rejection_stage": "PRE_EXECUTION_POLICY_PREFLIGHT",
+          "requested_target": {
+            "arguments": [
+              "000000000000000000000000000000000000000000000000000000000000000000000000"
+            ],
+            "function": "is_hash72",
+            "keyword_arguments": {},
+            "mutation_authorized": true,
+            "path": "hhs_runtime/hhs_runtime_contract_v1.py",
+            "sample_payload": {
+              "value": "000000000000000000000000000000000000000000000000000000000000000000000000"
+            }
+          }
+        },
+        "declared_dimensions": [
+          "equality",
+          "functional_equivalence",
+          "identity",
+          "interchangeability",
+          "similarity"
+        ],
+        "identity_hash72": "CT6√3)wu4ivAaOXourKws√UkGRJl72^0L)5V2W^hXi1cVfejXD+-*gkM+BJaH47biaT√d56h",
+        "proposition_id": "dc58c285-4a74-416e-b556-783caaa3686b",
+        "schema": "HHS_PROPOSITION_IDENTITY_V1",
+        "source": "hhs_authorized_execution_failure_policy_v1.hhs_runtime/hhs_runtime_contract_v1.py.is_hash72",
+        "standard_version": "HHS_FOUNDATIONAL_STANDARDS_M001_M007_V1",
+        "statement": "Rejected authorized execution request preserves explicit target identity and produces a witnessed failure record before any target body execution."
+      },
+      "raw_plugin_execution": false,
+      "reason": "authorized pure execution forbids direct/mutation/write/network/process authorization flags: mutation_authorized",
+      "reason_code": "FORBIDDEN_AUTHORIZATION_FLAG",
+      "rejection_stage": "PRE_EXECUTION_POLICY_PREFLIGHT",
+      "requested_target": {
+        "arguments": [
+          "000000000000000000000000000000000000000000000000000000000000000000000000"
+        ],
+        "function": "is_hash72",
+        "keyword_arguments": {},
+        "mutation_authorized": true,
+        "path": "hhs_runtime/hhs_runtime_contract_v1.py",
+        "sample_payload": {
+          "value": "000000000000000000000000000000000000000000000000000000000000000000000000"
+        }
+      },
+      "runtime_packet": {
+        "contract_hash72": "(FyoREbKlK6xkrl+>*mR476EK+26>tKv?bakIjM48fKRRebjGn8yY/)VjF+)(W?D>QPkBCdN",
+        "contract_type": "runtime_packet",
+        "contract_version": "HHS_CANONICAL_RUNTIME_CONTRACT_V1",
+        "created_at": 1783615472.6070225,
+        "direction": "INTERNAL",
+        "io_receipt": {},
+        "packet_id": "3aac881d-8ba6-4868-8ced-4dbbde480408",
+        "payload": {
+          "execution_policy": {
+            "direct_legacy_execution": false,
+            "failure_record_required": true,
+            "foundational_audit_required": true,
+            "hash72_u72_witness_required": true,
+            "ledger_receipt_required": true,
+            "mutation_allowed": false,
+            "network_allowed": false,
+            "process_allowed": false,
+            "raw_plugin_execution": false,
+            "schema": "HHS_AUTHORIZED_EXECUTION_FAILURE_POLICY_RULES_V1",
+            "target_function_body_execution": false,
+            "version": "PASS_032",
+            "write_allowed": false
+          },
+          "meaning_witness": {
+            "after_identity_hash72": "CT6√3)wu4ivAaOXourKws√UkGRJl72^0L)5V2W^hXi1cVfejXD+-*gkM+BJaH47biaT√d56h",
+            "before_identity_hash72": "CT6√3)wu4ivAaOXourKws√UkGRJl72^0L)5V2W^hXi1cVfejXD+-*gkM+BJaH47biaT√d56h",
+            "meaning_conserved": true,
+            "receipt_hash72": "",
+            "reversible": true,
+            "schema": "HHS_MEANING_CONSERVATION_WITNESS_V1",
+            "standard_version": "HHS_FOUNDATIONAL_STANDARDS_M001_M007_V1",
+            "transformation_rule": "execution rejection preserves proposition identity and forbids target function-body execution",
+            "witness_hash72": "QX/szlkoR≠/Agw)y/dPVy6qPT13-6SkG9xto=UAa√≠pkPrtKwAdq^o7uirW3b3nyDa7jz+QM"
+          },
+          "proposition_identity": {
+            "context": {
+              "reason_code": "FORBIDDEN_AUTHORIZATION_FLAG",
+              "rejection_stage": "PRE_EXECUTION_POLICY_PREFLIGHT",
+              "requested_target": {
+                "arguments": [
+                  "000000000000000000000000000000000000000000000000000000000000000000000000"
+                ],
+                "function": "is_hash72",
+                "keyword_arguments": {},
+                "mutation_authorized": true,
+                "path": "hhs_runtime/hhs_runtime_contract_v1.py",
+                "sample_payload": {
+                  "value": "000000000000000000000000000000000000000000000000000000000000000000000000"
+                }
+              }
+            },
+            "declared_dimensions": [
+              "equality",
+              "functional_equivalence",
+              "identity",
+              "interchangeability",
+              "similarity"
+            ],
+            "identity_hash72": "CT6√3)wu4ivAaOXourKws√UkGRJl72^0L)5V2W^hXi1cVfejXD+-*gkM+BJaH47biaT√d56h",
+            "proposition_id": "dc58c285-4a74-416e-b556-783caaa3686b",
+            "schema": "HHS_PROPOSITION_IDENTITY_V1",
+            "source": "hhs_authorized_execution_failure_policy_v1.hhs_runtime/hhs_runtime_contract_v1.py.is_hash72",
+            "standard_version": "HHS_FOUNDATIONAL_STANDARDS_M001_M007_V1",
+            "statement": "Rejected authorized execution request preserves explicit target identity and produces a witnessed failure record before any target body execution."
+          },
+          "reason": "authorized pure execution forbids direct/mutation/write/network/process authorization flags: mutation_authorized",
+          "reason_code": "FORBIDDEN_AUTHORIZATION_FLAG",
+          "rejection_stage": "PRE_EXECUTION_POLICY_PREFLIGHT",
+          "requested_target": {
+            "arguments": [
+              "000000000000000000000000000000000000000000000000000000000000000000000000"
+            ],
+            "function": "is_hash72",
+            "keyword_arguments": {},
+            "mutation_authorized": true,
+            "path": "hhs_runtime/hhs_runtime_contract_v1.py",
+            "sample_payload": {
+              "value": "000000000000000000000000000000000000000000000000000000000000000000000000"
+            }
+          },
+          "schema": "HHS_AUTHORIZED_EXECUTION_FAILURE_PAYLOAD_V1",
+          "source": "hhs_authorized_execution_failure_policy_v1.hhs_runtime/hhs_runtime_contract_v1.py.is_hash72",
+          "version": "PASS_032"
+        },
+        "payload_hash72": "id8CmzoSa?UC1QbaxC6U0xt-WAK1B5QodFE3N<Cva5RDe5tK+>5Of8ZJ5!bBMwWi/037TyUs",
+        "schema": "HHS_RUNTIME_PACKET_CONTRACT_V1",
+        "source": "hhs_authorized_execution_failure_policy_v1.hhs_runtime/hhs_runtime_contract_v1.py.is_hash72"
+      },
+      "schema": "HHS_AUTHORIZED_EXECUTION_FAILURE_RECORD_V1",
+      "schema_registry_classification": {
+        "confidence": "HIGH",
+        "contract_type": "",
+        "family": "FAILURE_RECORD",
+        "reasons": [
+          "matched authorized execution failure record schema"
+        ],
+        "registry_schema": "HHS_SCHEMA_OBJECT_CLASSIFICATION_V1",
+        "registry_version": "PASS_030",
+        "schema": "HHS_AUTHORIZED_EXECUTION_FAILURE_RECORD_V1"
+      },
+      "schema_registry_validation": {
+        "contract_type": "",
+        "family": "FAILURE_RECORD",
+        "foundational_audit_required": true,
+        "kernel_witness_required": true,
+        "ledger_binding_required": true,
+        "missing_fields": [],
+        "missing_hash72_fields": [],
+        "ok": true,
+        "reasons": [],
+        "registry_schema": "HHS_SCHEMA_OBJECT_VALIDATION_V1",
+        "registry_version": "PASS_030",
+        "schema": "HHS_AUTHORIZED_EXECUTION_FAILURE_RECORD_V1"
+      },
+      "source": "hhs_authorized_execution_failure_policy_v1.hhs_runtime/hhs_runtime_contract_v1.py.is_hash72",
+      "version": "PASS_032",
+      "write_performed": false
+    },
+    {
+      "call_performed": false,
+      "execution_performed": false,
+      "execution_policy": {
+        "direct_legacy_execution": false,
+        "failure_record_required": true,
+        "foundational_audit_required": true,
+        "hash72_u72_witness_required": true,
+        "ledger_receipt_required": true,
+        "mutation_allowed": false,
+        "network_allowed": false,
+        "process_allowed": false,
+        "raw_plugin_execution": false,
+        "schema": "HHS_AUTHORIZED_EXECUTION_FAILURE_POLICY_RULES_V1",
+        "target_function_body_execution": false,
+        "version": "PASS_032",
+        "write_allowed": false
+      },
+      "execution_request": {
+        "contract_hash72": "6Bwi1lmC2VXMkW<nUb8Mz9eU!(qK1WJ<aBt2nIaFmH)>pZALM5C91I*vClO9OY7JuD>ywiwR",
+        "contract_type": "execution_request",
+        "contract_version": "HHS_CANONICAL_RUNTIME_CONTRACT_V1",
+        "created_at": 1783615473.7687948,
+        "operation": "authorized_execution.rejected_without_execution",
+        "payload": {
+          "execution_policy": {
+            "direct_legacy_execution": false,
+            "failure_record_required": true,
+            "foundational_audit_required": true,
+            "hash72_u72_witness_required": true,
+            "ledger_receipt_required": true,
+            "mutation_allowed": false,
+            "network_allowed": false,
+            "process_allowed": false,
+            "raw_plugin_execution": false,
+            "schema": "HHS_AUTHORIZED_EXECUTION_FAILURE_POLICY_RULES_V1",
+            "target_function_body_execution": false,
+            "version": "PASS_032",
+            "write_allowed": false
+          },
+          "meaning_witness": {
+            "after_identity_hash72": "L41^s2M0oM6+lWxS^Ows3√Z5(fmy8NkiJg82^q6W)I9QOA(Dk^K1f41di=M^q5XYKtgVlaJH",
+            "before_identity_hash72": "L41^s2M0oM6+lWxS^Ows3√Z5(fmy8NkiJg82^q6W)I9QOA(Dk^K1f41di=M^q5XYKtgVlaJH",
+            "meaning_conserved": true,
+            "receipt_hash72": "",
+            "reversible": true,
+            "schema": "HHS_MEANING_CONSERVATION_WITNESS_V1",
+            "standard_version": "HHS_FOUNDATIONAL_STANDARDS_M001_M007_V1",
+            "transformation_rule": "execution rejection preserves proposition identity and forbids target function-body execution",
+            "witness_hash72": "QE/yEgnR)nh(5zn-=HQxWpaV≠StqsxxN9-=Fqa0gIaO6(Va^KexbJJh63Nbj+RSk(N=6D5gi"
+          },
+          "proposition_identity": {
+            "context": {
+              "reason_code": "MALFORMED_EXECUTION_REQUEST",
+              "rejection_stage": "PRE_EXECUTION_STRUCTURAL_PREFLIGHT",
+              "requested_target": {
+                "arguments": [
+                  "000000000000000000000000000000000000000000000000000000000000000000000000"
+                ],
+                "function": "is_hash72",
+                "keyword_arguments": {},
+                "sample_payload": {
+                  "value": "000000000000000000000000000000000000000000000000000000000000000000000000"
+                }
+              }
+            },
+            "declared_dimensions": [
+              "equality",
+              "functional_equivalence",
+              "identity",
+              "interchangeability",
+              "similarity"
+            ],
+            "identity_hash72": "L41^s2M0oM6+lWxS^Ows3√Z5(fmy8NkiJg82^q6W)I9QOA(Dk^K1f41di=M^q5XYKtgVlaJH",
+            "proposition_id": "5d9c35d9-389c-4aa0-b35f-58c1875cdaec",
+            "schema": "HHS_PROPOSITION_IDENTITY_V1",
+            "source": "hhs_authorized_execution_failure_policy_v1.<missing>.is_hash72",
+            "standard_version": "HHS_FOUNDATIONAL_STANDARDS_M001_M007_V1",
+            "statement": "Rejected authorized execution request preserves explicit target identity and produces a witnessed failure record before any target body execution."
+          },
+          "reason": "execution target requires non-empty path and function fields",
+          "reason_code": "MALFORMED_EXECUTION_REQUEST",
+          "rejection_stage": "PRE_EXECUTION_STRUCTURAL_PREFLIGHT",
+          "requested_target": {
+            "arguments": [
+              "000000000000000000000000000000000000000000000000000000000000000000000000"
+            ],
+            "function": "is_hash72",
+            "keyword_arguments": {},
+            "sample_payload": {
+              "value": "000000000000000000000000000000000000000000000000000000000000000000000000"
+            }
+          },
+          "schema": "HHS_AUTHORIZED_EXECUTION_FAILURE_PAYLOAD_V1",
+          "source": "hhs_authorized_execution_failure_policy_v1.<missing>.is_hash72",
+          "version": "PASS_032"
+        },
+        "request_id": "57bce579-4945-4cf8-9874-d31a90f7a9f5",
+        "requires_authority": true,
+        "schema": "HHS_EXECUTION_REQUEST_CONTRACT_V1",
+        "source": "hhs_authorized_execution_failure_policy_v1.<missing>.is_hash72"
+      },
+      "execution_status": "REJECTED_WITHOUT_EXECUTION",
+      "failure_kernel_witness": {
+        "authority": "HHS_HASH72_KERNEL_U72_DIGITAL_DNA_V1",
+        "canonical_payload": "\"{\\\"execution_performed\\\":false,\\\"policy\\\":{\\\"direct_legacy_execution\\\":false,\\\"failure_record_required\\\":true,\\\"foundational_audit_required\\\":true,\\\"hash72_u72_witness_required\\\":true,\\\"ledger_receipt_required\\\":true,\\\"mutation_allowed\\\":false,\\\"network_allowed\\\":false,\\\"process_allowed\\\":false,\\\"raw_plugin_execution\\\":false,\\\"schema\\\":\\\"HHS_AUTHORIZED_EXECUTION_FAILURE_POLICY_RULES_V1\\\",\\\"target_function_body_execution\\\":false,\\\"version\\\":\\\"PASS_032\\\",\\\"write_allowed\\\":false},\\\"reason\\\":\\\"execution target requires non-empty path and function fields\\\",\\\"reason_code\\\":\\\"MALFORMED_EXECUTION_REQUEST\\\",\\\"requested_target\\\":{\\\"arguments\\\":[\\\"000000000000000000000000000000000000000000000000000000000000000000000000\\\"],\\\"function\\\":\\\"is_hash72\\\",\\\"keyword_arguments\\\":{},\\\"sample_payload\\\":{\\\"value\\\":\\\"000000000000000000000000000000000000000000000000000000000000000000000000\\\"}},\\\"source\\\":\\\"hhs_authorized_execution_failure_policy_v1.<missing>.is_hash72\\\"}\"",
+        "digest": "jXse00Jb3UKVVZuEnaYx4KZlqtRuHNCDLt29/RSuTCZ(Dw+G*<5hvKcTYS0s3I5+cht42lNT",
+        "digest72": "jXse00Jb3UKVVZuEnaYx4KZlqtRuHNCDLt29/RSuTCZ(Dw+G*<5hvKcTYS0s3I5+cht42lNT",
+        "dna": "jXse00Jb3UKVVZuEnaYx4KZlqtRuHNCDLt29/RSuTCZ(Dw+G*<5hvKcTYS0s3I5+cht42lNT",
+        "label": "hhs_authorized_execution_failure_record_v1",
+        "positions": [
+          19,
+          59,
+          28,
+          14,
+          0,
+          0,
+          45,
+          11,
+          3,
+          56,
+          46,
+          57,
+          57,
+          61,
+          30,
+          40,
+          23,
+          10,
+          60,
+          33,
+          4,
+          46,
+          61,
+          21,
+          26,
+          29,
+          53,
+          30,
+          43,
+          49,
+          38,
+          39,
+          47,
+          29,
+          2,
+          9,
+          65,
+          53,
+          54,
+          30,
+          55,
+          38,
+          61,
+          66,
+          39,
+          32,
+          63,
+          42,
+          64,
+          68,
+          5,
+          17,
+          31,
+          46,
+          12,
+          55,
+          60,
+          54,
+          0,
+          28,
+          3,
+          44,
+          5,
+          63,
+          12,
+          17,
+          29,
+          4,
+          2,
+          21,
+          49,
+          55
+        ],
+        "rotation_profile": [
+          19,
+          130,
+          -46,
+          11,
+          -4,
+          -5,
+          111,
+          4,
+          -5,
+          47,
+          -36,
+          46,
+          -27,
+          -24,
+          16,
+          25,
+          79,
+          -79,
+          42,
+          14,
+          56,
+          -47,
+          -33,
+          -2,
+          2,
+          -140,
+          27,
+          75,
+          -57,
+          -52,
+          152,
+          -280,
+          231,
+          -220,
+          40,
+          -98,
+          -43,
+          304,
+          -200,
+          63,
+          -57,
+          -3,
+          -53,
+          23,
+          -5,
+          -85,
+          89,
+          67,
+          -200,
+          19,
+          -45,
+          110,
+          -93,
+          65,
+          -42,
+          0,
+          148,
+          -147,
+          14,
+          113,
+          -57,
+          55,
+          15,
+          0,
+          -52,
+          24,
+          -37,
+          81,
+          6,
+          24,
+          51,
+          -124
+        ],
+        "schema": "HHS_HASH72_KERNEL_WITNESS_V1",
+        "trace_count": 1007,
+        "zero_sum": true
+      },
+      "foundational_conformance": {
+        "conformance_hash72": "S5Zn5UFCWly^S36dJa)(qjSj(MK4ek=omx)ZhQ√bB=7TA09yAGkmgMXvY(oHtEt*POceZ=5u",
+        "meaning_witness": {
+          "after_identity_hash72": "L41^s2M0oM6+lWxS^Ows3√Z5(fmy8NkiJg82^q6W)I9QOA(Dk^K1f41di=M^q5XYKtgVlaJH",
+          "before_identity_hash72": "L41^s2M0oM6+lWxS^Ows3√Z5(fmy8NkiJg82^q6W)I9QOA(Dk^K1f41di=M^q5XYKtgVlaJH",
+          "meaning_conserved": true,
+          "receipt_hash72": "",
+          "reversible": true,
+          "schema": "HHS_MEANING_CONSERVATION_WITNESS_V1",
+          "standard_version": "HHS_FOUNDATIONAL_STANDARDS_M001_M007_V1",
+          "transformation_rule": "execution rejection preserves proposition identity and forbids target function-body execution",
+          "witness_hash72": "QE/yEgnR)nh(5zn-=HQxWpaV≠StqsxxN9-=Fqa0gIaO6(Va^KexbJJh63Nbj+RSk(N=6D5gi"
+        },
+        "ok": true,
+        "proposition_identity": {
+          "context": {
+            "reason_code": "MALFORMED_EXECUTION_REQUEST",
+            "rejection_stage": "PRE_EXECUTION_STRUCTURAL_PREFLIGHT",
+            "requested_target": {
+              "arguments": [
+                "000000000000000000000000000000000000000000000000000000000000000000000000"
+              ],
+              "function": "is_hash72",
+              "keyword_arguments": {},
+              "sample_payload": {
+                "value": "000000000000000000000000000000000000000000000000000000000000000000000000"
+              }
+            }
+          },
+          "declared_dimensions": [
+            "equality",
+            "functional_equivalence",
+            "identity",
+            "interchangeability",
+            "similarity"
+          ],
+          "identity_hash72": "L41^s2M0oM6+lWxS^Ows3√Z5(fmy8NkiJg82^q6W)I9QOA(Dk^K1f41di=M^q5XYKtgVlaJH",
+          "proposition_id": "5d9c35d9-389c-4aa0-b35f-58c1875cdaec",
+          "schema": "HHS_PROPOSITION_IDENTITY_V1",
+          "source": "hhs_authorized_execution_failure_policy_v1.<missing>.is_hash72",
+          "standard_version": "HHS_FOUNDATIONAL_STANDARDS_M001_M007_V1",
+          "statement": "Rejected authorized execution request preserves explicit target identity and produces a witnessed failure record before any target body execution."
+        },
+        "reasons": [],
+        "schema": "HHS_FOUNDATIONAL_CONFORMANCE_V1",
+        "source": "hhs_authorized_execution_failure_policy_v1.<missing>.is_hash72.failure_foundational_audit",
+        "standard_version": "HHS_FOUNDATIONAL_STANDARDS_M001_M007_V1",
+        "standards": {
+          "HHS-M001": true,
+          "HHS-M002": true,
+          "HHS-M003": true,
+          "HHS-M004": true,
+          "HHS-M005": true,
+          "HHS-M006": true,
+          "HHS-M007": true
+        }
+      },
+      "function_body_execution_performed": false,
+      "ledger": {
+        "entry_count": 26,
+        "hash72_authority": "HHS_HASH72_KERNEL_U72_DIGITAL_DNA_V1",
+        "ledger_hash72": "8l!bk/B!*Q13s2sq?x4kfY9(",
+        "tip_hash72": "tNP05/ngJAXlWk7kVBnR0/Pe"
+      },
+      "meaning_witness": {
+        "after_identity_hash72": "L41^s2M0oM6+lWxS^Ows3√Z5(fmy8NkiJg82^q6W)I9QOA(Dk^K1f41di=M^q5XYKtgVlaJH",
+        "before_identity_hash72": "L41^s2M0oM6+lWxS^Ows3√Z5(fmy8NkiJg82^q6W)I9QOA(Dk^K1f41di=M^q5XYKtgVlaJH",
+        "meaning_conserved": true,
+        "receipt_hash72": "",
+        "reversible": true,
+        "schema": "HHS_MEANING_CONSERVATION_WITNESS_V1",
+        "standard_version": "HHS_FOUNDATIONAL_STANDARDS_M001_M007_V1",
+        "transformation_rule": "execution rejection preserves proposition identity and forbids target function-body execution",
+        "witness_hash72": "QE/yEgnR)nh(5zn-=HQxWpaV≠StqsxxN9-=Fqa0gIaO6(Va^KexbJJh63Nbj+RSk(N=6D5gi"
+      },
+      "mutation_performed": false,
+      "network_performed": false,
+      "process_performed": false,
+      "proposition_identity": {
+        "context": {
+          "reason_code": "MALFORMED_EXECUTION_REQUEST",
+          "rejection_stage": "PRE_EXECUTION_STRUCTURAL_PREFLIGHT",
+          "requested_target": {
+            "arguments": [
+              "000000000000000000000000000000000000000000000000000000000000000000000000"
+            ],
+            "function": "is_hash72",
+            "keyword_arguments": {},
+            "sample_payload": {
+              "value": "000000000000000000000000000000000000000000000000000000000000000000000000"
+            }
+          }
+        },
+        "declared_dimensions": [
+          "equality",
+          "functional_equivalence",
+          "identity",
+          "interchangeability",
+          "similarity"
+        ],
+        "identity_hash72": "L41^s2M0oM6+lWxS^Ows3√Z5(fmy8NkiJg82^q6W)I9QOA(Dk^K1f41di=M^q5XYKtgVlaJH",
+        "proposition_id": "5d9c35d9-389c-4aa0-b35f-58c1875cdaec",
+        "schema": "HHS_PROPOSITION_IDENTITY_V1",
+        "source": "hhs_authorized_execution_failure_policy_v1.<missing>.is_hash72",
+        "standard_version": "HHS_FOUNDATIONAL_STANDARDS_M001_M007_V1",
+        "statement": "Rejected authorized execution request preserves explicit target identity and produces a witnessed failure record before any target body execution."
+      },
+      "raw_plugin_execution": false,
+      "reason": "execution target requires non-empty path and function fields",
+      "reason_code": "MALFORMED_EXECUTION_REQUEST",
+      "rejection_stage": "PRE_EXECUTION_STRUCTURAL_PREFLIGHT",
+      "requested_target": {
+        "arguments": [
+          "000000000000000000000000000000000000000000000000000000000000000000000000"
+        ],
+        "function": "is_hash72",
+        "keyword_arguments": {},
+        "sample_payload": {
+          "value": "000000000000000000000000000000000000000000000000000000000000000000000000"
+        }
+      },
+      "runtime_packet": {
+        "contract_hash72": "TK0*((4lYN?qOz0D8/9RAUGbvt26jn0B<ssTA)+T0YlllYd90H>?SIhGbb3)cLu(Y5ZNo+R6",
+        "contract_type": "runtime_packet",
+        "contract_version": "HHS_CANONICAL_RUNTIME_CONTRACT_V1",
+        "created_at": 1783615473.7727103,
+        "direction": "INTERNAL",
+        "io_receipt": {},
+        "packet_id": "6c90acad-3876-45b5-ab87-3bdaa4f4f592",
+        "payload": {
+          "execution_policy": {
+            "direct_legacy_execution": false,
+            "failure_record_required": true,
+            "foundational_audit_required": true,
+            "hash72_u72_witness_required": true,
+            "ledger_receipt_required": true,
+            "mutation_allowed": false,
+            "network_allowed": false,
+            "process_allowed": false,
+            "raw_plugin_execution": false,
+            "schema": "HHS_AUTHORIZED_EXECUTION_FAILURE_POLICY_RULES_V1",
+            "target_function_body_execution": false,
+            "version": "PASS_032",
+            "write_allowed": false
+          },
+          "meaning_witness": {
+            "after_identity_hash72": "L41^s2M0oM6+lWxS^Ows3√Z5(fmy8NkiJg82^q6W)I9QOA(Dk^K1f41di=M^q5XYKtgVlaJH",
+            "before_identity_hash72": "L41^s2M0oM6+lWxS^Ows3√Z5(fmy8NkiJg82^q6W)I9QOA(Dk^K1f41di=M^q5XYKtgVlaJH",
+            "meaning_conserved": true,
+            "receipt_hash72": "",
+            "reversible": true,
+            "schema": "HHS_MEANING_CONSERVATION_WITNESS_V1",
+            "standard_version": "HHS_FOUNDATIONAL_STANDARDS_M001_M007_V1",
+            "transformation_rule": "execution rejection preserves proposition identity and forbids target function-body execution",
+            "witness_hash72": "QE/yEgnR)nh(5zn-=HQxWpaV≠StqsxxN9-=Fqa0gIaO6(Va^KexbJJh63Nbj+RSk(N=6D5gi"
+          },
+          "proposition_identity": {
+            "context": {
+              "reason_code": "MALFORMED_EXECUTION_REQUEST",
+              "rejection_stage": "PRE_EXECUTION_STRUCTURAL_PREFLIGHT",
+              "requested_target": {
+                "arguments": [
+                  "000000000000000000000000000000000000000000000000000000000000000000000000"
+                ],
+                "function": "is_hash72",
+                "keyword_arguments": {},
+                "sample_payload": {
+                  "value": "000000000000000000000000000000000000000000000000000000000000000000000000"
+                }
+              }
+            },
+            "declared_dimensions": [
+              "equality",
+              "functional_equivalence",
+              "identity",
+              "interchangeability",
+              "similarity"
+            ],
+            "identity_hash72": "L41^s2M0oM6+lWxS^Ows3√Z5(fmy8NkiJg82^q6W)I9QOA(Dk^K1f41di=M^q5XYKtgVlaJH",
+            "proposition_id": "5d9c35d9-389c-4aa0-b35f-58c1875cdaec",
+            "schema": "HHS_PROPOSITION_IDENTITY_V1",
+            "source": "hhs_authorized_execution_failure_policy_v1.<missing>.is_hash72",
+            "standard_version": "HHS_FOUNDATIONAL_STANDARDS_M001_M007_V1",
+            "statement": "Rejected authorized execution request preserves explicit target identity and produces a witnessed failure record before any target body execution."
+          },
+          "reason": "execution target requires non-empty path and function fields",
+          "reason_code": "MALFORMED_EXECUTION_REQUEST",
+          "rejection_stage": "PRE_EXECUTION_STRUCTURAL_PREFLIGHT",
+          "requested_target": {
+            "arguments": [
+              "000000000000000000000000000000000000000000000000000000000000000000000000"
+            ],
+            "function": "is_hash72",
+            "keyword_arguments": {},
+            "sample_payload": {
+              "value": "000000000000000000000000000000000000000000000000000000000000000000000000"
+            }
+          },
+          "schema": "HHS_AUTHORIZED_EXECUTION_FAILURE_PAYLOAD_V1",
+          "source": "hhs_authorized_execution_failure_policy_v1.<missing>.is_hash72",
+          "version": "PASS_032"
+        },
+        "payload_hash72": "3*g!g1xxW3)v2Jo0n5Yo1uGtxAbM3m5q+10MoIine-Ex5m+!s)KHN6InuQrpsES7)a7kp2tB",
+        "schema": "HHS_RUNTIME_PACKET_CONTRACT_V1",
+        "source": "hhs_authorized_execution_failure_policy_v1.<missing>.is_hash72"
+      },
+      "schema": "HHS_AUTHORIZED_EXECUTION_FAILURE_RECORD_V1",
+      "schema_registry_classification": {
+        "confidence": "HIGH",
+        "contract_type": "",
+        "family": "FAILURE_RECORD",
+        "reasons": [
+          "matched authorized execution failure record schema"
+        ],
+        "registry_schema": "HHS_SCHEMA_OBJECT_CLASSIFICATION_V1",
+        "registry_version": "PASS_030",
+        "schema": "HHS_AUTHORIZED_EXECUTION_FAILURE_RECORD_V1"
+      },
+      "schema_registry_validation": {
+        "contract_type": "",
+        "family": "FAILURE_RECORD",
+        "foundational_audit_required": true,
+        "kernel_witness_required": true,
+        "ledger_binding_required": true,
+        "missing_fields": [],
+        "missing_hash72_fields": [],
+        "ok": true,
+        "reasons": [],
+        "registry_schema": "HHS_SCHEMA_OBJECT_VALIDATION_V1",
+        "registry_version": "PASS_030",
+        "schema": "HHS_AUTHORIZED_EXECUTION_FAILURE_RECORD_V1"
+      },
+      "source": "hhs_authorized_execution_failure_policy_v1.<missing>.is_hash72",
+      "version": "PASS_032",
+      "write_performed": false
+    }
+  ],
+  "hash72_kernel_witness": {
+    "authority": "HHS_HASH72_KERNEL_U72_DIGITAL_DNA_V1",
+    "canonical_payload": "\"{\\\"all_rejections_prevented_execution\\\":true,\\\"execution_performed\\\":false,\\\"expanded_authorized_pure_manifest_summary\\\":{\\\"allowlist_size\\\":3,\\\"default_target_count\\\":3,\\\"execution_note\\\":\\\"failure-policy manifest summarizes the expanded allow-list but does not execute successful targets; run make authorized-pure-function-executor for the success path.\\\",\\\"schema\\\":\\\"HHS_AUTHORIZED_PURE_FUNCTION_EXPANSION_SUMMARY_PASS_032\\\",\\\"targets\\\":[{\\\"function\\\":\\\"check_1001_invariant\\\",\\\"path\\\":\\\"hhs_runtime/hhs_srcg_gate_v1.py\\\"},{\\\"function\\\":\\\"summarize_closure_cycle\\\",\\\"path\\\":\\\"hhs_runtime/hhs_system_closure_harness_v1.py\\\"},{\\\"function\\\":\\\"is_hash72\\\",\\\"path\\\":\\\"hhs_runtime/hhs_runtime_contract_v1.py\\\"}]},\\\"failure_reason_codes\\\":[\\\"FORBIDDEN_AUTHORIZATION_FLAG\\\",\\\"MALFORMED_EXECUTION_REQUEST\\\",\\\"NOT_ALLOWLISTED_FUNCTION\\\"],\\\"failure_record_count\\\":3,\\\"hash72_u72_witnessed\\\":true,\\\"ledger_ok\\\":true,\\\"policy\\\":\\\"Invalid, unsafe, malformed, and non-allow-listed authorized execution requests must reject with first-class failure records before any target function-body execution.\\\",\\\"schema\\\":\\\"HHS_AUTHORIZED_EXECUTION_FAILURE_POLICY_V1\\\",\\\"schema_registry_classified_as_failure_record\\\":true,\\\"schema_registry_valid\\\":true,\\\"version\\\":\\\"PASS_032\\\"}\"",
+    "digest": "(h7K9Pmbj6KTi>H-4!(6AbWu2yir)0+kkcp6s9HXlA!iRGRVF-3ftuX0o?4NNam/-+mQFz8l",
+    "digest72": "(h7K9Pmbj6KTi>H-4!(6AbWu2yir)0+kkcp6s9HXlA!iRGRVF-3ftuX0o?4NNam/-+mQFz8l",
+    "dna": "(h7K9Pmbj6KTi>H-4!(6AbWu2yir)0+kkcp6s9HXlA!iRGRVF-3ftuX0o?4NNam/-+mQFz8l",
+    "label": "hhs_authorized_execution_failure_policy_manifest_v1",
+    "positions": [
+      66,
+      17,
+      7,
+      46,
+      9,
+      51,
+      22,
+      11,
+      19,
+      6,
+      46,
+      55,
+      18,
+      69,
+      43,
+      62,
+      4,
+      70,
+      66,
+      6,
+      36,
+      11,
+      58,
+      30,
+      2,
+      34,
+      18,
+      27,
+      67,
+      0,
+      63,
+      20,
+      20,
+      12,
+      25,
+      6,
+      28,
+      9,
+      43,
+      59,
+      21,
+      36,
+      70,
+      18,
+      53,
+      42,
+      53,
+      57,
+      41,
+      62,
+      3,
+      15,
+      29,
+      30,
+      59,
+      0,
+      24,
+      71,
+      4,
+      49,
+      49,
+      10,
+      22,
+      65,
+      62,
+      63,
+      22,
+      52,
+      41,
+      35,
+      8,
+      21
+    ],
+    "rotation_profile": [
+      -78,
+      88,
+      77,
+      -29,
+      -67,
+      118,
+      -56,
+      4,
+      11,
+      -3,
+      36,
+      44,
+      6,
+      56,
+      -115,
+      191,
+      -12,
+      -91,
+      48,
+      -13,
+      16,
+      -10,
+      108,
+      7,
+      -22,
+      9,
+      -8,
+      -72,
+      39,
+      -245,
+      321,
+      -299,
+      132,
+      -165,
+      -9,
+      -29,
+      136,
+      -100,
+      5,
+      -52,
+      53,
+      67,
+      -188,
+      -97,
+      -63,
+      69,
+      151,
+      -278,
+      137,
+      85,
+      -119,
+      36,
+      -23,
+      -95,
+      -67,
+      89,
+      40,
+      14,
+      -54,
+      134,
+      -11,
+      -51,
+      -40,
+      74,
+      -2,
+      -2,
+      100,
+      -15,
+      -99,
+      110,
+      82,
+      -14
+    ],
+    "schema": "HHS_HASH72_KERNEL_WITNESS_V1",
+    "trace_count": 1314,
+    "zero_sum": true
+  },
+  "hash72_u72_witnessed": true,
+  "ledger": {
+    "entry_count": 26,
+    "hash72_authority": "HHS_HASH72_KERNEL_U72_DIGITAL_DNA_V1",
+    "invalid": [],
+    "ledger_hash72": "8l!bk/B!*Q13s2sq?x4kfY9(",
+    "ledger_path": "/mnt/data/pass032_work/hhs_pass001_clean/data/runtime/hhs_unified_hash72_ledger.json",
+    "ok": true,
+    "recomputed_ledger_hash72": "8l!bk/B!*Q13s2sq?x4kfY9(",
+    "tip_hash72": "tNP05/ngJAXlWk7kVBnR0/Pe"
+  },
+  "ledger_ok": true,
+  "ok": true,
+  "policy": "Invalid, unsafe, malformed, and non-allow-listed authorized execution requests must reject with first-class failure records before any target function-body execution.",
+  "repo_root": "/mnt/data/pass032_work/hhs_pass001_clean",
+  "schema": "HHS_AUTHORIZED_EXECUTION_FAILURE_POLICY_V1",
+  "schema_registry_classified_as_failure_record": true,
+  "schema_registry_valid": true,
+  "version": "PASS_032"
+}

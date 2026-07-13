@@ -1,0 +1,16 @@
+# Integration Report Pass 064
+
+```json
+{
+  "alignment_run_root_hash72": "vE(LKbdy1fQoD96jKNU64p8xmtYa2X?(3sUTu84cdAzhNm1DE1/3?5?58uU-?JiwpSY!TyQA",
+  "conformance_edge_count": 3256,
+  "integration_status": "PASS",
+  "orphan_count": 0,
+  "schema": "HHS_INTEGRATION_REPORT_PASS_064_V1",
+  "service_count": 216,
+  "surface_count": 239,
+  "test_count": 12,
+  "underived_service_count": 0,
+  "underived_surface_count": 0
+}
+```

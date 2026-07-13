@@ -1,0 +1,16 @@
+{
+  "affected_rebuild_count": 6,
+  "conformance_edge_count": 817,
+  "expanded_payload_persisted_in_cache": false,
+  "guarded_semantic_search": true,
+  "incremental_rebuild_scope": "AFFECTED_SURFACES_ONLY",
+  "loshu_phase_ml_projection": true,
+  "performance_root_hash72": "+x43axR6g3mEeg(Mp<OOP8QpmcZT2)ybS(0wKdbTOIHfiRu-9RzW0qhE38hCUQ+D(z9nRyON",
+  "receipt_vector_nearest_search": true,
+  "schema": "HHS_PERFORMANCE_DELTA_PASS_044_V1",
+  "semantic_cache_verbatim_storage": true,
+  "semantic_db_may_authorize_runtime": false,
+  "service_count": 55,
+  "surface_count": 63,
+  "version": "PASS_044_SEMANTIC_COMPOSITION_CACHE_V1"
+}

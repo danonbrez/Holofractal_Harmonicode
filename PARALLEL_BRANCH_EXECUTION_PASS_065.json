@@ -1,0 +1,72 @@
+{
+  "receipts": [
+    {
+      "authority": "HHS_LOCAL_BRANCH_RESOLUTION_AUTHORITY_V1",
+      "branch_contract_root_hash72": "4BAlke2NdIW<R4ada+<XX0->(WYPAjqL-1wgZ!r7rpp3gy1LU*(G4BqmKI!2(Zy-Q+3V93xh",
+      "branch_execution_root_hash72": ">lR/hOxzcn?<AHJhNtRx)PluzhRVB-y!U<0WMVMG-rlmnpiLAybk*ydopzYpdXQWREGMWUaw",
+      "branch_id": "branch:direct",
+      "candidate": {
+        "A": "P^2",
+        "B": "P^2",
+        "cost": 3,
+        "phase_residue": "0",
+        "relation": "A=B"
+      },
+      "canonical_parent_mutated": false,
+      "diagnostics": [],
+      "execution_status": "CANDIDATE_RETURNED",
+      "local_only": true,
+      "provenance_complete": true,
+      "schema": "HHS_BRANCH_EXECUTION_RECEIPT_V1",
+      "strategy": "DIRECT_RECIPROCAL_ALIGNMENT",
+      "version": "PASS_065_LOCAL_CLOSED_PARALLEL_BRANCH_TREE_V1"
+    },
+    {
+      "authority": "HHS_LOCAL_BRANCH_RESOLUTION_AUTHORITY_V1",
+      "branch_contract_root_hash72": "meeS-EtUjv3HVmrlFB(HjNWk/ION-2AH9PFOGFO<yEB*4EI?mS3rUcxnPC)!/yzKGAqKg<vn",
+      "branch_execution_root_hash72": "o/A<cwNLdrOWC8vVZSfMCDMnTs4Z/WUfi2P7**YBnxVhD27v)ZuS/I5Jo)PbOy*Apo-GtUNi",
+      "branch_id": "branch:bridge",
+      "candidate": {
+        "A": "LHS",
+        "B": "RHS",
+        "cost": 5,
+        "phase_residue": "0",
+        "relation": "A~B via witnessed bridge"
+      },
+      "canonical_parent_mutated": false,
+      "diagnostics": [
+        "LOCAL_INFORMATION_ENERGY_BOTTLENECK"
+      ],
+      "execution_status": "CANDIDATE_RETURNED",
+      "local_only": true,
+      "provenance_complete": true,
+      "schema": "HHS_BRANCH_EXECUTION_RECEIPT_V1",
+      "strategy": "TRANSLATION_PHASE_BRIDGE",
+      "version": "PASS_065_LOCAL_CLOSED_PARALLEL_BRANCH_TREE_V1"
+    },
+    {
+      "authority": "HHS_LOCAL_BRANCH_RESOLUTION_AUTHORITY_V1",
+      "branch_contract_root_hash72": "QbIEqh!MON0s)PY)7mNlqy-2CLmYbaZXDJlgMibdWqNqces9Wfs0<rddw/m*t(tsfp1unn3T",
+      "branch_execution_root_hash72": "))NmLqL7UO0UaeJP1D9w6>!Bepz<X4JFhwT18s+GOJgF?KGgozOD3Dvk10KAq>F/*vGeHQ9?",
+      "branch_id": "branch:contract",
+      "candidate": {
+        "A": "P^2",
+        "B": "P^2",
+        "cost": 4,
+        "phase_residue": "0",
+        "relation": "A=B after local contraction"
+      },
+      "canonical_parent_mutated": false,
+      "diagnostics": [
+        "LOCAL_CONTRADICTION_DETECTED"
+      ],
+      "execution_status": "CANDIDATE_RETURNED",
+      "local_only": true,
+      "provenance_complete": true,
+      "schema": "HHS_BRANCH_EXECUTION_RECEIPT_V1",
+      "strategy": "LOCAL_RECIPROCAL_CONTRACTION",
+      "version": "PASS_065_LOCAL_CLOSED_PARALLEL_BRANCH_TREE_V1"
+    }
+  ],
+  "schema": "HHS_PARALLEL_BRANCH_EXECUTION_PASS_065_V1"
+}

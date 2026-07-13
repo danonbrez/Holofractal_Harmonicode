@@ -1,0 +1,1599 @@
+{
+  "hits": [
+    "api_route:GET /api/runtime/conformance/invariants",
+    "api_route:GET /api/runtime/conformance/invariants/{invariant_id}",
+    "api_route:GET /api/runtime/conformance/status",
+    "api_route:GET /api/runtime/conformance/surfaces",
+    "api_route:GET /api/runtime/conformance/surfaces/{surface_id}",
+    "api_route:POST /api/runtime/conformance/evaluate",
+    "service:authority_gate.self_test",
+    "service:authorized_execution_failure_policy.self_test"
+  ],
+  "index": {
+    "conformance_graph_root": "7NBLbOg1B*MrtcEa10)WqBI?U+5dUMGkQ19T?Lf0Po+3w3Lqp0n(-NVrJ(Yht*Id<z6gfYlZ",
+    "dependency_families": {
+      "contract_to_surfaces": {
+        "HHS_AUDITED_IF_TRANSITION_CONTRACT_V1": [
+          "control_flow_gate:audited_if"
+        ],
+        "HHS_AUDITED_LOOP_TRANSITION_CONTRACT_V1": [
+          "control_flow_gate:audited_loop"
+        ],
+        "HHS_AUTHORITY_GATE_SELF_TEST_CONTRACT_V1": [
+          "service:authority_gate.self_test"
+        ],
+        "HHS_AUTHORIZED_EXECUTION_FAILURE_POLICY_SELF_TEST_CONTRACT_V1": [
+          "service:authorized_execution_failure_policy.self_test"
+        ],
+        "HHS_AUTHORIZED_PURE_FUNCTION_EXECUTOR_SELF_TEST_CONTRACT_V1": [
+          "service:authorized_pure_function_executor.self_test"
+        ],
+        "HHS_BOUNDED_METADATA_LIFECYCLE_SELF_TEST_CONTRACT_V1": [
+          "service:bounded_metadata_lifecycle.self_test"
+        ],
+        "HHS_CLOSURE_HARNESS_BOUNDED_RUNTIME_SELF_TEST_CONTRACT_V1": [
+          "service:closure_harness.bounded_runtime_self_test"
+        ],
+        "HHS_COMPOSITION_CACHE_INVALIDATION_SELF_TEST_CONTRACT_V1": [
+          "service:composition_cache_invalidation.self_test"
+        ],
+        "HHS_COMPOSITION_DEPENDENCY_INDEX_SELF_TEST_CONTRACT_V1": [
+          "service:composition_dependency_index.self_test"
+        ],
+        "HHS_CONFORMANCE_API_ROUTE_CONTRACT_V1": [
+          "api_route:GET /api/runtime/conformance/invariants",
+          "api_route:GET /api/runtime/conformance/invariants/{invariant_id}",
+          "api_route:GET /api/runtime/conformance/status",
+          "api_route:GET /api/runtime/conformance/surfaces",
+          "api_route:GET /api/runtime/conformance/surfaces/{surface_id}",
+          "api_route:POST /api/runtime/conformance/evaluate"
+        ],
+        "HHS_CONFORMANCE_DECISION_CACHE_SELF_TEST_CONTRACT_V1": [
+          "service:conformance_decision_cache.self_test"
+        ],
+        "HHS_CONSTRAINT_STACK_SECURITY_HARNESS_SELF_TEST_CONTRACT_V1": [
+          "service:constraint_stack_security_harness.self_test"
+        ],
+        "HHS_CONTRACT_SCHEMA_REGISTRY_SELF_TEST_CONTRACT_V1": [
+          "service:contract_schema_registry.self_test"
+        ],
+        "HHS_CONTROLLED_LIVE_PLUGIN_EXECUTOR_SELF_TEST_CONTRACT_V1": [
+          "service:controlled_live_plugin_executor.self_test"
+        ],
+        "HHS_CONTROL_FLOW_TRANSITION_AUDIT_SELF_TEST_CONTRACT_V1": [
+          "service:control_flow.transition_audit_self_test"
+        ],
+        "HHS_C_BRIDGE_ABI_SELF_TEST_CONTRACT_V1": [
+          "service:c_bridge.abi_self_test"
+        ],
+        "HHS_DRYRUN_LIVE_PLUGIN_EXECUTOR_SELF_TEST_CONTRACT_V1": [
+          "service:dryrun_live_plugin_executor.self_test"
+        ],
+        "HHS_EXPANDED_STATE_DECAY_LIFECYCLE_SELF_TEST_CONTRACT_V1": [
+          "service:expanded_state_decay_lifecycle.self_test"
+        ],
+        "HHS_FOUNDATIONAL_STANDARDS_SELF_TEST_CONTRACT_V1": [
+          "service:foundational_standards.self_test"
+        ],
+        "HHS_GENESIS_SEVERANCE_PROTOCOL_SELF_TEST_CONTRACT_V1": [
+          "service:genesis_severance_protocol.self_test"
+        ],
+        "HHS_GUARDED_PLUGIN_ADAPTERS_SELF_TEST_CONTRACT_V1": [
+          "service:guarded_plugin_adapters.self_test"
+        ],
+        "HHS_GUARDED_PLUGIN_INVOCATION_EXECUTOR_SELF_TEST_CONTRACT_V1": [
+          "service:guarded_plugin_invocation_executor.self_test"
+        ],
+        "HHS_HASH72_KERNEL_AUTHORITY_SELF_TEST_CONTRACT_V1": [
+          "service:hash72.kernel_authority_self_test"
+        ],
+        "HHS_HHFS_CARRIER_ADAPTER_SELF_TEST_CONTRACT_V1": [
+          "service:hhfs_carrier_adapter.self_test"
+        ],
+        "HHS_HHFS_CARRIER_CAPSULE_SELF_TEST_CONTRACT_V1": [
+          "service:hhfs_carrier_capsule.self_test"
+        ],
+        "HHS_HHFS_RECONSTRUCTION_PROTOCOL_SELF_TEST_CONTRACT_V1": [
+          "service:hhfs_reconstruction_protocol.self_test"
+        ],
+        "HHS_INCREMENTAL_PIPELINE_REBUILDER_SELF_TEST_CONTRACT_V1": [
+          "service:incremental_pipeline_rebuilder.self_test"
+        ],
+        "HHS_IO_GATEWAY_SELF_TEST_CONTRACT_V1": [
+          "service:io_gateway.self_test"
+        ],
+        "HHS_KERNEL_CONFORMANCE_DECISION_SELF_TEST_CONTRACT_V1": [
+          "service:kernel_conformance_decision.self_test"
+        ],
+        "HHS_KERNEL_CONFORMANCE_REGISTRATION_SELF_TEST_CONTRACT_V1": [
+          "service:kernel_conformance_registration.self_test"
+        ],
+        "HHS_KERNEL_CONFORMANCE_SURFACE_MAP_SELF_TEST_CONTRACT_V1": [
+          "service:kernel_conformance_surface_map.self_test"
+        ],
+        "HHS_KERNEL_INVARIANT_REGISTRY_SELF_TEST_CONTRACT_V1": [
+          "service:kernel_invariant_registry.self_test"
+        ],
+        "HHS_KERNEL_RUNTIME_AUTOCOMPOSER_SELF_TEST_CONTRACT_V1": [
+          "service:kernel_runtime_autocomposer.self_test"
+        ],
+        "HHS_LEDGER_VERIFY_CONTRACT_V1": [
+          "service:ledger.verify"
+        ],
+        "HHS_METADATA_ENHANCEMENT_BLOCK_SELF_TEST_CONTRACT_V1": [
+          "service:metadata_enhancement_block.self_test"
+        ],
+        "HHS_PERSISTENCE_GUARD_SELF_TEST_CONTRACT_V1": [
+          "service:persistence.guard_self_test"
+        ],
+        "HHS_PHASE_DISJOINT_CONTINUITY_SELF_TEST_CONTRACT_V1": [
+          "service:phase_disjoint_continuity.self_test"
+        ],
+        "HHS_PLUGIN_CAPABILITY_PLANNER_SELF_TEST_CONTRACT_V1": [
+          "service:plugin_capability_planner.self_test"
+        ],
+        "HHS_READONLY_LIVE_PLUGIN_ADAPTER_SELF_TEST_CONTRACT_V1": [
+          "service:readonly_live_plugin_adapter.self_test"
+        ],
+        "HHS_REALITY_TO_MANIFOLD_TRANSLATION_SELF_TEST_CONTRACT_V1": [
+          "service:reality_to_manifold_translation.self_test"
+        ],
+        "HHS_RUNTIME_COMPOSITION_PERFORMANCE_PROFILE_SELF_TEST_CONTRACT_V1": [
+          "service:runtime_composition_performance_profile.self_test"
+        ],
+        "HHS_RUNTIME_CONSTRAINT_ENFORCEMENT_SELF_TEST_CONTRACT_V1": [
+          "service:runtime_constraint_enforcement.self_test"
+        ],
+        "HHS_RUNTIME_CONTRACT_SELF_TEST_CONTRACT_V1": [
+          "service:runtime_contract.self_test"
+        ],
+        "HHS_RUNTIME_DATAFLOW_GUARD_SELF_TEST_CONTRACT_V1": [
+          "service:runtime_dataflow.guard_self_test"
+        ],
+        "HHS_RUNTIME_INTEGRATION_DECISIONS_SELF_TEST_CONTRACT_V1": [
+          "service:runtime_integration.decisions_self_test"
+        ],
+        "HHS_RUNTIME_REACHABILITY_AUDIT_SELF_TEST_CONTRACT_V1": [
+          "service:runtime_reachability.audit_self_test"
+        ],
+        "HHS_SEMANTIC_COMPOSITION_CACHE_SELF_TEST_CONTRACT_V1": [
+          "service:semantic_composition_cache.self_test"
+        ],
+        "HHS_SEMANTIC_MEMORY_GUARD_SELF_TEST_CONTRACT_V1": [
+          "service:semantic_memory.guard_self_test"
+        ],
+        "HHS_SEMANTIC_PLUGIN_ADAPTER_RUNTIME_SELF_TEST_CONTRACT_V1": [
+          "service:semantic_plugin_adapter_runtime.self_test"
+        ],
+        "HHS_SEMANTIC_RUNTIME_QUERY_SELF_TEST_CONTRACT_V1": [
+          "service:semantic_runtime_query.self_test"
+        ],
+        "HHS_SRCG_PRIMITIVE_SELF_TEST_CONTRACT_V1": [
+          "service:srcg.primitive_self_test"
+        ],
+        "HHS_SRCG_SELFSOLVE_AB_GATE_CONTRACT_V1": [
+          "service:srcg.selfsolve_ab_gate"
+        ],
+        "HHS_SYSTEM_CLOSURE_HARNESS_SELF_TEST_CONTRACT_V1": [
+          "service:system_closure.harness_self_test"
+        ],
+        "HHS_TRANSFORMATION_PERMANENCE_VALIDATOR_SELF_TEST_CONTRACT_V1": [
+          "service:transformation_permanence_validator.self_test"
+        ],
+        "HHS_UDFP_FRAME_SELF_TEST_CONTRACT_V1": [
+          "service:udfp_frame.self_test"
+        ],
+        "HHS_VALIDATION_RESIDUE_COMPACTOR_SELF_TEST_CONTRACT_V1": [
+          "service:validation_residue_compactor.self_test"
+        ],
+        "HHS_VALIDATION_RESIDUE_COMPRESSOR_SELF_TEST_CONTRACT_V1": [
+          "service:validation_residue_compressor.self_test"
+        ],
+        "HHS_ZERO_BYPASS_RUNTIME_INTERPOSER_SELF_TEST_CONTRACT_V1": [
+          "service:zero_bypass_runtime_interposer.self_test"
+        ]
+      },
+      "guard_to_surfaces": {
+        "io_gateway": [
+          "api_route:GET /api/runtime/conformance/invariants",
+          "api_route:GET /api/runtime/conformance/invariants/{invariant_id}",
+          "api_route:GET /api/runtime/conformance/status",
+          "api_route:GET /api/runtime/conformance/surfaces",
+          "api_route:GET /api/runtime/conformance/surfaces/{surface_id}",
+          "api_route:POST /api/runtime/conformance/evaluate"
+        ],
+        "kernel_conformance_registration_interposer": [
+          "service:authority_gate.self_test",
+          "service:authorized_execution_failure_policy.self_test",
+          "service:authorized_pure_function_executor.self_test",
+          "service:bounded_metadata_lifecycle.self_test",
+          "service:c_bridge.abi_self_test",
+          "service:closure_harness.bounded_runtime_self_test",
+          "service:composition_cache_invalidation.self_test",
+          "service:composition_dependency_index.self_test",
+          "service:conformance_decision_cache.self_test",
+          "service:constraint_stack_security_harness.self_test",
+          "service:contract_schema_registry.self_test",
+          "service:control_flow.transition_audit_self_test",
+          "service:controlled_live_plugin_executor.self_test",
+          "service:dryrun_live_plugin_executor.self_test",
+          "service:expanded_state_decay_lifecycle.self_test",
+          "service:foundational_standards.self_test",
+          "service:genesis_severance_protocol.self_test",
+          "service:guarded_plugin_adapters.self_test",
+          "service:guarded_plugin_invocation_executor.self_test",
+          "service:hash72.kernel_authority_self_test",
+          "service:hhfs_carrier_adapter.self_test",
+          "service:hhfs_carrier_capsule.self_test",
+          "service:hhfs_reconstruction_protocol.self_test",
+          "service:incremental_pipeline_rebuilder.self_test",
+          "service:io_gateway.self_test",
+          "service:kernel_conformance_decision.self_test",
+          "service:kernel_conformance_registration.self_test",
+          "service:kernel_conformance_surface_map.self_test",
+          "service:kernel_invariant_registry.self_test",
+          "service:kernel_runtime_autocomposer.self_test",
+          "service:ledger.verify",
+          "service:metadata_enhancement_block.self_test",
+          "service:persistence.guard_self_test",
+          "service:phase_disjoint_continuity.self_test",
+          "service:plugin_capability_planner.self_test",
+          "service:readonly_live_plugin_adapter.self_test",
+          "service:reality_to_manifold_translation.self_test",
+          "service:runtime_composition_performance_profile.self_test",
+          "service:runtime_constraint_enforcement.self_test",
+          "service:runtime_contract.self_test",
+          "service:runtime_dataflow.guard_self_test",
+          "service:runtime_integration.decisions_self_test",
+          "service:runtime_reachability.audit_self_test",
+          "service:semantic_composition_cache.self_test",
+          "service:semantic_memory.guard_self_test",
+          "service:semantic_plugin_adapter_runtime.self_test",
+          "service:semantic_runtime_query.self_test",
+          "service:srcg.primitive_self_test",
+          "service:srcg.selfsolve_ab_gate",
+          "service:system_closure.harness_self_test",
+          "service:transformation_permanence_validator.self_test",
+          "service:udfp_frame.self_test",
+          "service:validation_residue_compactor.self_test",
+          "service:validation_residue_compressor.self_test",
+          "service:zero_bypass_runtime_interposer.self_test"
+        ],
+        "runtime_constraint_enforcement": [
+          "api_route:GET /api/runtime/conformance/invariants",
+          "api_route:GET /api/runtime/conformance/invariants/{invariant_id}",
+          "api_route:GET /api/runtime/conformance/status",
+          "api_route:GET /api/runtime/conformance/surfaces",
+          "api_route:GET /api/runtime/conformance/surfaces/{surface_id}",
+          "api_route:POST /api/runtime/conformance/evaluate",
+          "control_flow_gate:audited_if",
+          "control_flow_gate:audited_loop"
+        ],
+        "zero_bypass_runtime_interposer": [
+          "control_flow_gate:audited_if",
+          "control_flow_gate:audited_loop",
+          "service:authority_gate.self_test",
+          "service:authorized_execution_failure_policy.self_test",
+          "service:authorized_pure_function_executor.self_test",
+          "service:bounded_metadata_lifecycle.self_test",
+          "service:c_bridge.abi_self_test",
+          "service:closure_harness.bounded_runtime_self_test",
+          "service:composition_cache_invalidation.self_test",
+          "service:composition_dependency_index.self_test",
+          "service:conformance_decision_cache.self_test",
+          "service:constraint_stack_security_harness.self_test",
+          "service:contract_schema_registry.self_test",
+          "service:control_flow.transition_audit_self_test",
+          "service:controlled_live_plugin_executor.self_test",
+          "service:dryrun_live_plugin_executor.self_test",
+          "service:expanded_state_decay_lifecycle.self_test",
+          "service:foundational_standards.self_test",
+          "service:genesis_severance_protocol.self_test",
+          "service:guarded_plugin_adapters.self_test",
+          "service:guarded_plugin_invocation_executor.self_test",
+          "service:hash72.kernel_authority_self_test",
+          "service:hhfs_carrier_adapter.self_test",
+          "service:hhfs_carrier_capsule.self_test",
+          "service:hhfs_reconstruction_protocol.self_test",
+          "service:incremental_pipeline_rebuilder.self_test",
+          "service:io_gateway.self_test",
+          "service:kernel_conformance_decision.self_test",
+          "service:kernel_conformance_registration.self_test",
+          "service:kernel_conformance_surface_map.self_test",
+          "service:kernel_invariant_registry.self_test",
+          "service:kernel_runtime_autocomposer.self_test",
+          "service:ledger.verify",
+          "service:metadata_enhancement_block.self_test",
+          "service:persistence.guard_self_test",
+          "service:phase_disjoint_continuity.self_test",
+          "service:plugin_capability_planner.self_test",
+          "service:readonly_live_plugin_adapter.self_test",
+          "service:reality_to_manifold_translation.self_test",
+          "service:runtime_composition_performance_profile.self_test",
+          "service:runtime_constraint_enforcement.self_test",
+          "service:runtime_contract.self_test",
+          "service:runtime_dataflow.guard_self_test",
+          "service:runtime_integration.decisions_self_test",
+          "service:runtime_reachability.audit_self_test",
+          "service:semantic_composition_cache.self_test",
+          "service:semantic_memory.guard_self_test",
+          "service:semantic_plugin_adapter_runtime.self_test",
+          "service:semantic_runtime_query.self_test",
+          "service:srcg.primitive_self_test",
+          "service:srcg.selfsolve_ab_gate",
+          "service:system_closure.harness_self_test",
+          "service:transformation_permanence_validator.self_test",
+          "service:udfp_frame.self_test",
+          "service:validation_residue_compactor.self_test",
+          "service:validation_residue_compressor.self_test",
+          "service:zero_bypass_runtime_interposer.self_test"
+        ]
+      },
+      "invariant_to_surfaces": {
+        "HHS-I001": [
+          "control_flow_gate:audited_if",
+          "service:control_flow.transition_audit_self_test",
+          "service:genesis_severance_protocol.self_test",
+          "service:io_gateway.self_test",
+          "service:phase_disjoint_continuity.self_test",
+          "service:runtime_dataflow.guard_self_test",
+          "service:semantic_memory.guard_self_test",
+          "service:transformation_permanence_validator.self_test"
+        ],
+        "HHS-I002": [
+          "service:authority_gate.self_test",
+          "service:c_bridge.abi_self_test",
+          "service:hash72.kernel_authority_self_test",
+          "service:kernel_conformance_decision.self_test",
+          "service:kernel_conformance_registration.self_test",
+          "service:kernel_conformance_surface_map.self_test",
+          "service:kernel_invariant_registry.self_test",
+          "service:kernel_runtime_autocomposer.self_test",
+          "service:ledger.verify"
+        ],
+        "HHS-I003": [
+          "control_flow_gate:audited_if",
+          "control_flow_gate:audited_loop",
+          "service:control_flow.transition_audit_self_test"
+        ],
+        "HHS-I004": [
+          "control_flow_gate:audited_loop",
+          "service:bounded_metadata_lifecycle.self_test",
+          "service:closure_harness.bounded_runtime_self_test",
+          "service:constraint_stack_security_harness.self_test",
+          "service:system_closure.harness_self_test"
+        ],
+        "HHS-I005": [
+          "service:authority_gate.self_test",
+          "service:authorized_execution_failure_policy.self_test",
+          "service:authorized_pure_function_executor.self_test",
+          "service:c_bridge.abi_self_test",
+          "service:constraint_stack_security_harness.self_test",
+          "service:controlled_live_plugin_executor.self_test",
+          "service:dryrun_live_plugin_executor.self_test",
+          "service:guarded_plugin_adapters.self_test",
+          "service:guarded_plugin_invocation_executor.self_test",
+          "service:hash72.kernel_authority_self_test",
+          "service:hhfs_carrier_adapter.self_test",
+          "service:io_gateway.self_test",
+          "service:kernel_conformance_decision.self_test",
+          "service:kernel_conformance_registration.self_test",
+          "service:kernel_conformance_surface_map.self_test",
+          "service:kernel_invariant_registry.self_test",
+          "service:kernel_runtime_autocomposer.self_test",
+          "service:ledger.verify",
+          "service:plugin_capability_planner.self_test",
+          "service:readonly_live_plugin_adapter.self_test",
+          "service:reality_to_manifold_translation.self_test",
+          "service:runtime_constraint_enforcement.self_test",
+          "service:runtime_contract.self_test",
+          "service:runtime_dataflow.guard_self_test",
+          "service:semantic_memory.guard_self_test",
+          "service:semantic_plugin_adapter_runtime.self_test",
+          "service:zero_bypass_runtime_interposer.self_test"
+        ],
+        "HHS-I006": [
+          "service:io_gateway.self_test",
+          "service:ledger.verify",
+          "service:persistence.guard_self_test",
+          "service:runtime_dataflow.guard_self_test",
+          "service:semantic_memory.guard_self_test"
+        ],
+        "HHS-I007": [
+          "control_flow_gate:audited_if",
+          "control_flow_gate:audited_loop",
+          "service:bounded_metadata_lifecycle.self_test",
+          "service:closure_harness.bounded_runtime_self_test",
+          "service:composition_cache_invalidation.self_test",
+          "service:composition_dependency_index.self_test",
+          "service:conformance_decision_cache.self_test",
+          "service:constraint_stack_security_harness.self_test",
+          "service:control_flow.transition_audit_self_test",
+          "service:expanded_state_decay_lifecycle.self_test",
+          "service:incremental_pipeline_rebuilder.self_test",
+          "service:kernel_runtime_autocomposer.self_test",
+          "service:runtime_composition_performance_profile.self_test",
+          "service:semantic_composition_cache.self_test",
+          "service:semantic_runtime_query.self_test",
+          "service:system_closure.harness_self_test",
+          "service:validation_residue_compactor.self_test",
+          "service:validation_residue_compressor.self_test"
+        ],
+        "HHS-I008": [
+          "service:authorized_execution_failure_policy.self_test",
+          "service:authorized_pure_function_executor.self_test",
+          "service:bounded_metadata_lifecycle.self_test",
+          "service:composition_cache_invalidation.self_test",
+          "service:composition_dependency_index.self_test",
+          "service:conformance_decision_cache.self_test",
+          "service:controlled_live_plugin_executor.self_test",
+          "service:dryrun_live_plugin_executor.self_test",
+          "service:expanded_state_decay_lifecycle.self_test",
+          "service:guarded_plugin_adapters.self_test",
+          "service:guarded_plugin_invocation_executor.self_test",
+          "service:hhfs_carrier_adapter.self_test",
+          "service:incremental_pipeline_rebuilder.self_test",
+          "service:kernel_runtime_autocomposer.self_test",
+          "service:plugin_capability_planner.self_test",
+          "service:readonly_live_plugin_adapter.self_test",
+          "service:runtime_composition_performance_profile.self_test",
+          "service:runtime_contract.self_test",
+          "service:semantic_composition_cache.self_test",
+          "service:semantic_plugin_adapter_runtime.self_test",
+          "service:semantic_runtime_query.self_test",
+          "service:validation_residue_compactor.self_test",
+          "service:validation_residue_compressor.self_test"
+        ],
+        "HHS-I009": [
+          "service:bounded_metadata_lifecycle.self_test",
+          "service:conformance_decision_cache.self_test",
+          "service:expanded_state_decay_lifecycle.self_test",
+          "service:hhfs_carrier_adapter.self_test",
+          "service:hhfs_carrier_capsule.self_test",
+          "service:hhfs_reconstruction_protocol.self_test",
+          "service:metadata_enhancement_block.self_test",
+          "service:udfp_frame.self_test",
+          "service:validation_residue_compactor.self_test",
+          "service:validation_residue_compressor.self_test"
+        ],
+        "HHS-I010": [
+          "service:bounded_metadata_lifecycle.self_test",
+          "service:conformance_decision_cache.self_test",
+          "service:expanded_state_decay_lifecycle.self_test",
+          "service:hhfs_carrier_adapter.self_test",
+          "service:hhfs_carrier_capsule.self_test",
+          "service:hhfs_reconstruction_protocol.self_test",
+          "service:metadata_enhancement_block.self_test",
+          "service:udfp_frame.self_test",
+          "service:validation_residue_compactor.self_test",
+          "service:validation_residue_compressor.self_test"
+        ],
+        "HHS-I011": [
+          "api_route:GET /api/runtime/conformance/invariants",
+          "api_route:GET /api/runtime/conformance/invariants/{invariant_id}",
+          "api_route:GET /api/runtime/conformance/status",
+          "api_route:GET /api/runtime/conformance/surfaces",
+          "api_route:GET /api/runtime/conformance/surfaces/{surface_id}",
+          "api_route:POST /api/runtime/conformance/evaluate",
+          "service:authority_gate.self_test",
+          "service:authorized_execution_failure_policy.self_test",
+          "service:authorized_pure_function_executor.self_test",
+          "service:bounded_metadata_lifecycle.self_test",
+          "service:c_bridge.abi_self_test",
+          "service:closure_harness.bounded_runtime_self_test",
+          "service:composition_cache_invalidation.self_test",
+          "service:composition_dependency_index.self_test",
+          "service:conformance_decision_cache.self_test",
+          "service:constraint_stack_security_harness.self_test",
+          "service:contract_schema_registry.self_test",
+          "service:control_flow.transition_audit_self_test",
+          "service:controlled_live_plugin_executor.self_test",
+          "service:dryrun_live_plugin_executor.self_test",
+          "service:expanded_state_decay_lifecycle.self_test",
+          "service:foundational_standards.self_test",
+          "service:genesis_severance_protocol.self_test",
+          "service:guarded_plugin_adapters.self_test",
+          "service:guarded_plugin_invocation_executor.self_test",
+          "service:hash72.kernel_authority_self_test",
+          "service:hhfs_carrier_adapter.self_test",
+          "service:hhfs_carrier_capsule.self_test",
+          "service:hhfs_reconstruction_protocol.self_test",
+          "service:incremental_pipeline_rebuilder.self_test",
+          "service:io_gateway.self_test",
+          "service:kernel_conformance_decision.self_test",
+          "service:kernel_conformance_registration.self_test",
+          "service:kernel_conformance_surface_map.self_test",
+          "service:kernel_invariant_registry.self_test",
+          "service:kernel_runtime_autocomposer.self_test",
+          "service:ledger.verify",
+          "service:metadata_enhancement_block.self_test",
+          "service:persistence.guard_self_test",
+          "service:phase_disjoint_continuity.self_test",
+          "service:plugin_capability_planner.self_test",
+          "service:readonly_live_plugin_adapter.self_test",
+          "service:reality_to_manifold_translation.self_test",
+          "service:runtime_composition_performance_profile.self_test",
+          "service:runtime_constraint_enforcement.self_test",
+          "service:runtime_contract.self_test",
+          "service:runtime_dataflow.guard_self_test",
+          "service:runtime_integration.decisions_self_test",
+          "service:runtime_reachability.audit_self_test",
+          "service:semantic_composition_cache.self_test",
+          "service:semantic_memory.guard_self_test",
+          "service:semantic_plugin_adapter_runtime.self_test",
+          "service:semantic_runtime_query.self_test",
+          "service:srcg.primitive_self_test",
+          "service:srcg.selfsolve_ab_gate",
+          "service:system_closure.harness_self_test",
+          "service:transformation_permanence_validator.self_test",
+          "service:udfp_frame.self_test",
+          "service:validation_residue_compactor.self_test",
+          "service:validation_residue_compressor.self_test",
+          "service:zero_bypass_runtime_interposer.self_test"
+        ],
+        "HHS-I012": [
+          "service:authority_gate.self_test",
+          "service:authorized_execution_failure_policy.self_test",
+          "service:authorized_pure_function_executor.self_test",
+          "service:c_bridge.abi_self_test",
+          "service:constraint_stack_security_harness.self_test",
+          "service:controlled_live_plugin_executor.self_test",
+          "service:dryrun_live_plugin_executor.self_test",
+          "service:guarded_plugin_adapters.self_test",
+          "service:guarded_plugin_invocation_executor.self_test",
+          "service:hash72.kernel_authority_self_test",
+          "service:hhfs_carrier_adapter.self_test",
+          "service:kernel_conformance_decision.self_test",
+          "service:kernel_conformance_registration.self_test",
+          "service:kernel_conformance_surface_map.self_test",
+          "service:kernel_invariant_registry.self_test",
+          "service:kernel_runtime_autocomposer.self_test",
+          "service:ledger.verify",
+          "service:plugin_capability_planner.self_test",
+          "service:readonly_live_plugin_adapter.self_test",
+          "service:reality_to_manifold_translation.self_test",
+          "service:runtime_constraint_enforcement.self_test",
+          "service:runtime_contract.self_test",
+          "service:semantic_plugin_adapter_runtime.self_test",
+          "service:zero_bypass_runtime_interposer.self_test"
+        ],
+        "HHS-I013": [
+          "service:bounded_metadata_lifecycle.self_test",
+          "service:conformance_decision_cache.self_test",
+          "service:expanded_state_decay_lifecycle.self_test",
+          "service:genesis_severance_protocol.self_test",
+          "service:hhfs_carrier_adapter.self_test",
+          "service:hhfs_carrier_capsule.self_test",
+          "service:hhfs_reconstruction_protocol.self_test",
+          "service:ledger.verify",
+          "service:metadata_enhancement_block.self_test",
+          "service:persistence.guard_self_test",
+          "service:phase_disjoint_continuity.self_test",
+          "service:transformation_permanence_validator.self_test",
+          "service:udfp_frame.self_test",
+          "service:validation_residue_compactor.self_test",
+          "service:validation_residue_compressor.self_test"
+        ],
+        "HHS-I014": [
+          "api_route:GET /api/runtime/conformance/invariants",
+          "api_route:GET /api/runtime/conformance/invariants/{invariant_id}",
+          "api_route:GET /api/runtime/conformance/status",
+          "api_route:GET /api/runtime/conformance/surfaces",
+          "api_route:GET /api/runtime/conformance/surfaces/{surface_id}",
+          "api_route:POST /api/runtime/conformance/evaluate",
+          "service:authority_gate.self_test",
+          "service:authorized_execution_failure_policy.self_test",
+          "service:authorized_pure_function_executor.self_test",
+          "service:bounded_metadata_lifecycle.self_test",
+          "service:c_bridge.abi_self_test",
+          "service:closure_harness.bounded_runtime_self_test",
+          "service:composition_cache_invalidation.self_test",
+          "service:composition_dependency_index.self_test",
+          "service:conformance_decision_cache.self_test",
+          "service:constraint_stack_security_harness.self_test",
+          "service:contract_schema_registry.self_test",
+          "service:control_flow.transition_audit_self_test",
+          "service:controlled_live_plugin_executor.self_test",
+          "service:dryrun_live_plugin_executor.self_test",
+          "service:expanded_state_decay_lifecycle.self_test",
+          "service:foundational_standards.self_test",
+          "service:genesis_severance_protocol.self_test",
+          "service:guarded_plugin_adapters.self_test",
+          "service:guarded_plugin_invocation_executor.self_test",
+          "service:hash72.kernel_authority_self_test",
+          "service:hhfs_carrier_adapter.self_test",
+          "service:hhfs_carrier_capsule.self_test",
+          "service:hhfs_reconstruction_protocol.self_test",
+          "service:incremental_pipeline_rebuilder.self_test",
+          "service:io_gateway.self_test",
+          "service:kernel_conformance_decision.self_test",
+          "service:kernel_conformance_registration.self_test",
+          "service:kernel_conformance_surface_map.self_test",
+          "service:kernel_invariant_registry.self_test",
+          "service:kernel_runtime_autocomposer.self_test",
+          "service:ledger.verify",
+          "service:metadata_enhancement_block.self_test",
+          "service:persistence.guard_self_test",
+          "service:phase_disjoint_continuity.self_test",
+          "service:plugin_capability_planner.self_test",
+          "service:readonly_live_plugin_adapter.self_test",
+          "service:reality_to_manifold_translation.self_test",
+          "service:runtime_composition_performance_profile.self_test",
+          "service:runtime_constraint_enforcement.self_test",
+          "service:runtime_contract.self_test",
+          "service:runtime_dataflow.guard_self_test",
+          "service:runtime_integration.decisions_self_test",
+          "service:runtime_reachability.audit_self_test",
+          "service:semantic_composition_cache.self_test",
+          "service:semantic_memory.guard_self_test",
+          "service:semantic_plugin_adapter_runtime.self_test",
+          "service:semantic_runtime_query.self_test",
+          "service:srcg.primitive_self_test",
+          "service:srcg.selfsolve_ab_gate",
+          "service:system_closure.harness_self_test",
+          "service:transformation_permanence_validator.self_test",
+          "service:udfp_frame.self_test",
+          "service:validation_residue_compactor.self_test",
+          "service:validation_residue_compressor.self_test",
+          "service:zero_bypass_runtime_interposer.self_test"
+        ],
+        "HHS-I015": [
+          "api_route:GET /api/runtime/conformance/invariants",
+          "api_route:GET /api/runtime/conformance/status",
+          "api_route:GET /api/runtime/conformance/surfaces",
+          "api_route:POST /api/runtime/conformance/evaluate",
+          "service:bounded_metadata_lifecycle.self_test",
+          "service:closure_harness.bounded_runtime_self_test",
+          "service:composition_cache_invalidation.self_test",
+          "service:composition_dependency_index.self_test",
+          "service:conformance_decision_cache.self_test",
+          "service:constraint_stack_security_harness.self_test",
+          "service:expanded_state_decay_lifecycle.self_test",
+          "service:incremental_pipeline_rebuilder.self_test",
+          "service:kernel_conformance_decision.self_test",
+          "service:kernel_conformance_registration.self_test",
+          "service:kernel_conformance_surface_map.self_test",
+          "service:kernel_invariant_registry.self_test",
+          "service:kernel_runtime_autocomposer.self_test",
+          "service:runtime_composition_performance_profile.self_test",
+          "service:semantic_composition_cache.self_test",
+          "service:semantic_runtime_query.self_test",
+          "service:system_closure.harness_self_test",
+          "service:validation_residue_compactor.self_test"
+        ],
+        "HHS-I016": [
+          "service:bounded_metadata_lifecycle.self_test",
+          "service:composition_cache_invalidation.self_test",
+          "service:composition_dependency_index.self_test",
+          "service:conformance_decision_cache.self_test",
+          "service:expanded_state_decay_lifecycle.self_test",
+          "service:incremental_pipeline_rebuilder.self_test",
+          "service:kernel_runtime_autocomposer.self_test",
+          "service:runtime_composition_performance_profile.self_test",
+          "service:semantic_composition_cache.self_test",
+          "service:semantic_runtime_query.self_test",
+          "service:validation_residue_compactor.self_test",
+          "service:validation_residue_compressor.self_test"
+        ]
+      },
+      "rejection_code_to_surfaces": {
+        "REJECT_CONTROL_FLOW_SCALAR_PROXY_ONLY": [
+          "control_flow_gate:audited_if",
+          "control_flow_gate:audited_loop"
+        ],
+        "REJECT_OPERATION_NOT_DERIVED_FROM_KERNEL_INVARIANT": [
+          "api_route:GET /api/runtime/conformance/invariants",
+          "api_route:GET /api/runtime/conformance/invariants/{invariant_id}",
+          "api_route:GET /api/runtime/conformance/status",
+          "api_route:GET /api/runtime/conformance/surfaces",
+          "api_route:GET /api/runtime/conformance/surfaces/{surface_id}",
+          "api_route:POST /api/runtime/conformance/evaluate",
+          "service:authority_gate.self_test",
+          "service:authorized_execution_failure_policy.self_test",
+          "service:authorized_pure_function_executor.self_test",
+          "service:bounded_metadata_lifecycle.self_test",
+          "service:c_bridge.abi_self_test",
+          "service:closure_harness.bounded_runtime_self_test",
+          "service:composition_cache_invalidation.self_test",
+          "service:composition_dependency_index.self_test",
+          "service:conformance_decision_cache.self_test",
+          "service:constraint_stack_security_harness.self_test",
+          "service:contract_schema_registry.self_test",
+          "service:control_flow.transition_audit_self_test",
+          "service:controlled_live_plugin_executor.self_test",
+          "service:dryrun_live_plugin_executor.self_test",
+          "service:expanded_state_decay_lifecycle.self_test",
+          "service:foundational_standards.self_test",
+          "service:genesis_severance_protocol.self_test",
+          "service:guarded_plugin_adapters.self_test",
+          "service:guarded_plugin_invocation_executor.self_test",
+          "service:hash72.kernel_authority_self_test",
+          "service:hhfs_carrier_adapter.self_test",
+          "service:hhfs_carrier_capsule.self_test",
+          "service:hhfs_reconstruction_protocol.self_test",
+          "service:incremental_pipeline_rebuilder.self_test",
+          "service:io_gateway.self_test",
+          "service:kernel_conformance_decision.self_test",
+          "service:kernel_conformance_registration.self_test",
+          "service:kernel_conformance_surface_map.self_test",
+          "service:kernel_invariant_registry.self_test",
+          "service:kernel_runtime_autocomposer.self_test",
+          "service:ledger.verify",
+          "service:metadata_enhancement_block.self_test",
+          "service:persistence.guard_self_test",
+          "service:phase_disjoint_continuity.self_test",
+          "service:plugin_capability_planner.self_test",
+          "service:readonly_live_plugin_adapter.self_test",
+          "service:reality_to_manifold_translation.self_test",
+          "service:runtime_composition_performance_profile.self_test",
+          "service:runtime_constraint_enforcement.self_test",
+          "service:runtime_contract.self_test",
+          "service:runtime_dataflow.guard_self_test",
+          "service:runtime_integration.decisions_self_test",
+          "service:runtime_reachability.audit_self_test",
+          "service:semantic_composition_cache.self_test",
+          "service:semantic_memory.guard_self_test",
+          "service:semantic_plugin_adapter_runtime.self_test",
+          "service:semantic_runtime_query.self_test",
+          "service:srcg.primitive_self_test",
+          "service:srcg.selfsolve_ab_gate",
+          "service:system_closure.harness_self_test",
+          "service:transformation_permanence_validator.self_test",
+          "service:udfp_frame.self_test",
+          "service:validation_residue_compactor.self_test",
+          "service:validation_residue_compressor.self_test",
+          "service:zero_bypass_runtime_interposer.self_test"
+        ],
+        "REJECT_UNBOUNDED_RECURSIVE_CLOSURE": [
+          "control_flow_gate:audited_loop"
+        ],
+        "REJECT_UNDERIVED_RUNTIME_SURFACE": [
+          "api_route:GET /api/runtime/conformance/invariants",
+          "api_route:GET /api/runtime/conformance/invariants/{invariant_id}",
+          "api_route:GET /api/runtime/conformance/status",
+          "api_route:GET /api/runtime/conformance/surfaces",
+          "api_route:GET /api/runtime/conformance/surfaces/{surface_id}",
+          "api_route:POST /api/runtime/conformance/evaluate",
+          "service:authority_gate.self_test",
+          "service:authorized_execution_failure_policy.self_test",
+          "service:authorized_pure_function_executor.self_test",
+          "service:bounded_metadata_lifecycle.self_test",
+          "service:c_bridge.abi_self_test",
+          "service:closure_harness.bounded_runtime_self_test",
+          "service:composition_cache_invalidation.self_test",
+          "service:composition_dependency_index.self_test",
+          "service:conformance_decision_cache.self_test",
+          "service:constraint_stack_security_harness.self_test",
+          "service:contract_schema_registry.self_test",
+          "service:control_flow.transition_audit_self_test",
+          "service:controlled_live_plugin_executor.self_test",
+          "service:dryrun_live_plugin_executor.self_test",
+          "service:expanded_state_decay_lifecycle.self_test",
+          "service:foundational_standards.self_test",
+          "service:genesis_severance_protocol.self_test",
+          "service:guarded_plugin_adapters.self_test",
+          "service:guarded_plugin_invocation_executor.self_test",
+          "service:hash72.kernel_authority_self_test",
+          "service:hhfs_carrier_adapter.self_test",
+          "service:hhfs_carrier_capsule.self_test",
+          "service:hhfs_reconstruction_protocol.self_test",
+          "service:incremental_pipeline_rebuilder.self_test",
+          "service:io_gateway.self_test",
+          "service:kernel_conformance_decision.self_test",
+          "service:kernel_conformance_registration.self_test",
+          "service:kernel_conformance_surface_map.self_test",
+          "service:kernel_invariant_registry.self_test",
+          "service:kernel_runtime_autocomposer.self_test",
+          "service:ledger.verify",
+          "service:metadata_enhancement_block.self_test",
+          "service:persistence.guard_self_test",
+          "service:phase_disjoint_continuity.self_test",
+          "service:plugin_capability_planner.self_test",
+          "service:readonly_live_plugin_adapter.self_test",
+          "service:reality_to_manifold_translation.self_test",
+          "service:runtime_composition_performance_profile.self_test",
+          "service:runtime_constraint_enforcement.self_test",
+          "service:runtime_contract.self_test",
+          "service:runtime_dataflow.guard_self_test",
+          "service:runtime_integration.decisions_self_test",
+          "service:runtime_reachability.audit_self_test",
+          "service:semantic_composition_cache.self_test",
+          "service:semantic_memory.guard_self_test",
+          "service:semantic_plugin_adapter_runtime.self_test",
+          "service:semantic_runtime_query.self_test",
+          "service:srcg.primitive_self_test",
+          "service:srcg.selfsolve_ab_gate",
+          "service:system_closure.harness_self_test",
+          "service:transformation_permanence_validator.self_test",
+          "service:udfp_frame.self_test",
+          "service:validation_residue_compactor.self_test",
+          "service:validation_residue_compressor.self_test",
+          "service:zero_bypass_runtime_interposer.self_test"
+        ]
+      },
+      "surface_to_contracts": {
+        "api_route:GET /api/runtime/conformance/invariants": [
+          "HHS_CONFORMANCE_API_ROUTE_CONTRACT_V1"
+        ],
+        "api_route:GET /api/runtime/conformance/invariants/{invariant_id}": [
+          "HHS_CONFORMANCE_API_ROUTE_CONTRACT_V1"
+        ],
+        "api_route:GET /api/runtime/conformance/status": [
+          "HHS_CONFORMANCE_API_ROUTE_CONTRACT_V1"
+        ],
+        "api_route:GET /api/runtime/conformance/surfaces": [
+          "HHS_CONFORMANCE_API_ROUTE_CONTRACT_V1"
+        ],
+        "api_route:GET /api/runtime/conformance/surfaces/{surface_id}": [
+          "HHS_CONFORMANCE_API_ROUTE_CONTRACT_V1"
+        ],
+        "api_route:POST /api/runtime/conformance/evaluate": [
+          "HHS_CONFORMANCE_API_ROUTE_CONTRACT_V1"
+        ],
+        "control_flow_gate:audited_if": [
+          "HHS_AUDITED_IF_TRANSITION_CONTRACT_V1"
+        ],
+        "control_flow_gate:audited_loop": [
+          "HHS_AUDITED_LOOP_TRANSITION_CONTRACT_V1"
+        ],
+        "service:authority_gate.self_test": [
+          "HHS_AUTHORITY_GATE_SELF_TEST_CONTRACT_V1"
+        ],
+        "service:authorized_execution_failure_policy.self_test": [
+          "HHS_AUTHORIZED_EXECUTION_FAILURE_POLICY_SELF_TEST_CONTRACT_V1"
+        ],
+        "service:authorized_pure_function_executor.self_test": [
+          "HHS_AUTHORIZED_PURE_FUNCTION_EXECUTOR_SELF_TEST_CONTRACT_V1"
+        ],
+        "service:bounded_metadata_lifecycle.self_test": [
+          "HHS_BOUNDED_METADATA_LIFECYCLE_SELF_TEST_CONTRACT_V1"
+        ],
+        "service:c_bridge.abi_self_test": [
+          "HHS_C_BRIDGE_ABI_SELF_TEST_CONTRACT_V1"
+        ],
+        "service:closure_harness.bounded_runtime_self_test": [
+          "HHS_CLOSURE_HARNESS_BOUNDED_RUNTIME_SELF_TEST_CONTRACT_V1"
+        ],
+        "service:composition_cache_invalidation.self_test": [
+          "HHS_COMPOSITION_CACHE_INVALIDATION_SELF_TEST_CONTRACT_V1"
+        ],
+        "service:composition_dependency_index.self_test": [
+          "HHS_COMPOSITION_DEPENDENCY_INDEX_SELF_TEST_CONTRACT_V1"
+        ],
+        "service:conformance_decision_cache.self_test": [
+          "HHS_CONFORMANCE_DECISION_CACHE_SELF_TEST_CONTRACT_V1"
+        ],
+        "service:constraint_stack_security_harness.self_test": [
+          "HHS_CONSTRAINT_STACK_SECURITY_HARNESS_SELF_TEST_CONTRACT_V1"
+        ],
+        "service:contract_schema_registry.self_test": [
+          "HHS_CONTRACT_SCHEMA_REGISTRY_SELF_TEST_CONTRACT_V1"
+        ],
+        "service:control_flow.transition_audit_self_test": [
+          "HHS_CONTROL_FLOW_TRANSITION_AUDIT_SELF_TEST_CONTRACT_V1"
+        ],
+        "service:controlled_live_plugin_executor.self_test": [
+          "HHS_CONTROLLED_LIVE_PLUGIN_EXECUTOR_SELF_TEST_CONTRACT_V1"
+        ],
+        "service:dryrun_live_plugin_executor.self_test": [
+          "HHS_DRYRUN_LIVE_PLUGIN_EXECUTOR_SELF_TEST_CONTRACT_V1"
+        ],
+        "service:expanded_state_decay_lifecycle.self_test": [
+          "HHS_EXPANDED_STATE_DECAY_LIFECYCLE_SELF_TEST_CONTRACT_V1"
+        ],
+        "service:foundational_standards.self_test": [
+          "HHS_FOUNDATIONAL_STANDARDS_SELF_TEST_CONTRACT_V1"
+        ],
+        "service:genesis_severance_protocol.self_test": [
+          "HHS_GENESIS_SEVERANCE_PROTOCOL_SELF_TEST_CONTRACT_V1"
+        ],
+        "service:guarded_plugin_adapters.self_test": [
+          "HHS_GUARDED_PLUGIN_ADAPTERS_SELF_TEST_CONTRACT_V1"
+        ],
+        "service:guarded_plugin_invocation_executor.self_test": [
+          "HHS_GUARDED_PLUGIN_INVOCATION_EXECUTOR_SELF_TEST_CONTRACT_V1"
+        ],
+        "service:hash72.kernel_authority_self_test": [
+          "HHS_HASH72_KERNEL_AUTHORITY_SELF_TEST_CONTRACT_V1"
+        ],
+        "service:hhfs_carrier_adapter.self_test": [
+          "HHS_HHFS_CARRIER_ADAPTER_SELF_TEST_CONTRACT_V1"
+        ],
+        "service:hhfs_carrier_capsule.self_test": [
+          "HHS_HHFS_CARRIER_CAPSULE_SELF_TEST_CONTRACT_V1"
+        ],
+        "service:hhfs_reconstruction_protocol.self_test": [
+          "HHS_HHFS_RECONSTRUCTION_PROTOCOL_SELF_TEST_CONTRACT_V1"
+        ],
+        "service:incremental_pipeline_rebuilder.self_test": [
+          "HHS_INCREMENTAL_PIPELINE_REBUILDER_SELF_TEST_CONTRACT_V1"
+        ],
+        "service:io_gateway.self_test": [
+          "HHS_IO_GATEWAY_SELF_TEST_CONTRACT_V1"
+        ],
+        "service:kernel_conformance_decision.self_test": [
+          "HHS_KERNEL_CONFORMANCE_DECISION_SELF_TEST_CONTRACT_V1"
+        ],
+        "service:kernel_conformance_registration.self_test": [
+          "HHS_KERNEL_CONFORMANCE_REGISTRATION_SELF_TEST_CONTRACT_V1"
+        ],
+        "service:kernel_conformance_surface_map.self_test": [
+          "HHS_KERNEL_CONFORMANCE_SURFACE_MAP_SELF_TEST_CONTRACT_V1"
+        ],
+        "service:kernel_invariant_registry.self_test": [
+          "HHS_KERNEL_INVARIANT_REGISTRY_SELF_TEST_CONTRACT_V1"
+        ],
+        "service:kernel_runtime_autocomposer.self_test": [
+          "HHS_KERNEL_RUNTIME_AUTOCOMPOSER_SELF_TEST_CONTRACT_V1"
+        ],
+        "service:ledger.verify": [
+          "HHS_LEDGER_VERIFY_CONTRACT_V1"
+        ],
+        "service:metadata_enhancement_block.self_test": [
+          "HHS_METADATA_ENHANCEMENT_BLOCK_SELF_TEST_CONTRACT_V1"
+        ],
+        "service:persistence.guard_self_test": [
+          "HHS_PERSISTENCE_GUARD_SELF_TEST_CONTRACT_V1"
+        ],
+        "service:phase_disjoint_continuity.self_test": [
+          "HHS_PHASE_DISJOINT_CONTINUITY_SELF_TEST_CONTRACT_V1"
+        ],
+        "service:plugin_capability_planner.self_test": [
+          "HHS_PLUGIN_CAPABILITY_PLANNER_SELF_TEST_CONTRACT_V1"
+        ],
+        "service:readonly_live_plugin_adapter.self_test": [
+          "HHS_READONLY_LIVE_PLUGIN_ADAPTER_SELF_TEST_CONTRACT_V1"
+        ],
+        "service:reality_to_manifold_translation.self_test": [
+          "HHS_REALITY_TO_MANIFOLD_TRANSLATION_SELF_TEST_CONTRACT_V1"
+        ],
+        "service:runtime_composition_performance_profile.self_test": [
+          "HHS_RUNTIME_COMPOSITION_PERFORMANCE_PROFILE_SELF_TEST_CONTRACT_V1"
+        ],
+        "service:runtime_constraint_enforcement.self_test": [
+          "HHS_RUNTIME_CONSTRAINT_ENFORCEMENT_SELF_TEST_CONTRACT_V1"
+        ],
+        "service:runtime_contract.self_test": [
+          "HHS_RUNTIME_CONTRACT_SELF_TEST_CONTRACT_V1"
+        ],
+        "service:runtime_dataflow.guard_self_test": [
+          "HHS_RUNTIME_DATAFLOW_GUARD_SELF_TEST_CONTRACT_V1"
+        ],
+        "service:runtime_integration.decisions_self_test": [
+          "HHS_RUNTIME_INTEGRATION_DECISIONS_SELF_TEST_CONTRACT_V1"
+        ],
+        "service:runtime_reachability.audit_self_test": [
+          "HHS_RUNTIME_REACHABILITY_AUDIT_SELF_TEST_CONTRACT_V1"
+        ],
+        "service:semantic_composition_cache.self_test": [
+          "HHS_SEMANTIC_COMPOSITION_CACHE_SELF_TEST_CONTRACT_V1"
+        ],
+        "service:semantic_memory.guard_self_test": [
+          "HHS_SEMANTIC_MEMORY_GUARD_SELF_TEST_CONTRACT_V1"
+        ],
+        "service:semantic_plugin_adapter_runtime.self_test": [
+          "HHS_SEMANTIC_PLUGIN_ADAPTER_RUNTIME_SELF_TEST_CONTRACT_V1"
+        ],
+        "service:semantic_runtime_query.self_test": [
+          "HHS_SEMANTIC_RUNTIME_QUERY_SELF_TEST_CONTRACT_V1"
+        ],
+        "service:srcg.primitive_self_test": [
+          "HHS_SRCG_PRIMITIVE_SELF_TEST_CONTRACT_V1"
+        ],
+        "service:srcg.selfsolve_ab_gate": [
+          "HHS_SRCG_SELFSOLVE_AB_GATE_CONTRACT_V1"
+        ],
+        "service:system_closure.harness_self_test": [
+          "HHS_SYSTEM_CLOSURE_HARNESS_SELF_TEST_CONTRACT_V1"
+        ],
+        "service:transformation_permanence_validator.self_test": [
+          "HHS_TRANSFORMATION_PERMANENCE_VALIDATOR_SELF_TEST_CONTRACT_V1"
+        ],
+        "service:udfp_frame.self_test": [
+          "HHS_UDFP_FRAME_SELF_TEST_CONTRACT_V1"
+        ],
+        "service:validation_residue_compactor.self_test": [
+          "HHS_VALIDATION_RESIDUE_COMPACTOR_SELF_TEST_CONTRACT_V1"
+        ],
+        "service:validation_residue_compressor.self_test": [
+          "HHS_VALIDATION_RESIDUE_COMPRESSOR_SELF_TEST_CONTRACT_V1"
+        ],
+        "service:zero_bypass_runtime_interposer.self_test": [
+          "HHS_ZERO_BYPASS_RUNTIME_INTERPOSER_SELF_TEST_CONTRACT_V1"
+        ]
+      },
+      "surface_to_operations": {
+        "api_route:GET /api/runtime/conformance/invariants": [
+          "conformance.invariants"
+        ],
+        "api_route:GET /api/runtime/conformance/invariants/{invariant_id}": [
+          "conformance.invariant_detail"
+        ],
+        "api_route:GET /api/runtime/conformance/status": [
+          "conformance.status"
+        ],
+        "api_route:GET /api/runtime/conformance/surfaces": [
+          "conformance.surfaces"
+        ],
+        "api_route:GET /api/runtime/conformance/surfaces/{surface_id}": [
+          "conformance.surface_detail"
+        ],
+        "api_route:POST /api/runtime/conformance/evaluate": [
+          "conformance.evaluate"
+        ],
+        "control_flow_gate:audited_if": [
+          "audited_if"
+        ],
+        "control_flow_gate:audited_loop": [
+          "audited_loop"
+        ],
+        "service:authority_gate.self_test": [
+          "authority_gate_self_test"
+        ],
+        "service:authorized_execution_failure_policy.self_test": [
+          "authorized_execution_failure_policy_self_test"
+        ],
+        "service:authorized_pure_function_executor.self_test": [
+          "authorized_pure_function_executor_self_test"
+        ],
+        "service:bounded_metadata_lifecycle.self_test": [
+          "bounded_metadata_lifecycle_self_test"
+        ],
+        "service:c_bridge.abi_self_test": [
+          "abi_self_test"
+        ],
+        "service:closure_harness.bounded_runtime_self_test": [
+          "closure_harness_bounded_runtime_self_test"
+        ],
+        "service:composition_cache_invalidation.self_test": [
+          "composition_cache_invalidation_self_test"
+        ],
+        "service:composition_dependency_index.self_test": [
+          "composition_dependency_index_self_test"
+        ],
+        "service:conformance_decision_cache.self_test": [
+          "conformance_decision_cache_self_test"
+        ],
+        "service:constraint_stack_security_harness.self_test": [
+          "constraint_stack_security_harness_self_test"
+        ],
+        "service:contract_schema_registry.self_test": [
+          "contract_schema_registry_self_test"
+        ],
+        "service:control_flow.transition_audit_self_test": [
+          "control_flow_transition_audit_self_test"
+        ],
+        "service:controlled_live_plugin_executor.self_test": [
+          "controlled_live_plugin_executor_self_test"
+        ],
+        "service:dryrun_live_plugin_executor.self_test": [
+          "dryrun_live_plugin_executor_self_test"
+        ],
+        "service:expanded_state_decay_lifecycle.self_test": [
+          "expanded_state_decay_lifecycle_self_test"
+        ],
+        "service:foundational_standards.self_test": [
+          "foundational_standards_self_test"
+        ],
+        "service:genesis_severance_protocol.self_test": [
+          "genesis_severance_protocol_self_test"
+        ],
+        "service:guarded_plugin_adapters.self_test": [
+          "guarded_plugin_adapters_self_test"
+        ],
+        "service:guarded_plugin_invocation_executor.self_test": [
+          "guarded_plugin_invocation_executor_self_test"
+        ],
+        "service:hash72.kernel_authority_self_test": [
+          "hash72_kernel_authority_self_test"
+        ],
+        "service:hhfs_carrier_adapter.self_test": [
+          "hhfs_carrier_adapter_self_test"
+        ],
+        "service:hhfs_carrier_capsule.self_test": [
+          "hhfs_carrier_capsule_self_test"
+        ],
+        "service:hhfs_reconstruction_protocol.self_test": [
+          "hhfs_reconstruction_protocol_self_test"
+        ],
+        "service:incremental_pipeline_rebuilder.self_test": [
+          "incremental_pipeline_rebuilder_self_test"
+        ],
+        "service:io_gateway.self_test": [
+          "io_gateway_self_test"
+        ],
+        "service:kernel_conformance_decision.self_test": [
+          "kernel_conformance_decision_self_test"
+        ],
+        "service:kernel_conformance_registration.self_test": [
+          "kernel_conformance_registration_self_test"
+        ],
+        "service:kernel_conformance_surface_map.self_test": [
+          "kernel_conformance_surface_map_self_test"
+        ],
+        "service:kernel_invariant_registry.self_test": [
+          "kernel_invariant_registry_self_test"
+        ],
+        "service:kernel_runtime_autocomposer.self_test": [
+          "kernel_runtime_autocomposer_self_test"
+        ],
+        "service:ledger.verify": [
+          "verify_unified_ledger"
+        ],
+        "service:metadata_enhancement_block.self_test": [
+          "metadata_enhancement_block_self_test"
+        ],
+        "service:persistence.guard_self_test": [
+          "persistence_guard_self_test"
+        ],
+        "service:phase_disjoint_continuity.self_test": [
+          "phase_disjoint_continuity_self_test"
+        ],
+        "service:plugin_capability_planner.self_test": [
+          "plugin_capability_planner_self_test"
+        ],
+        "service:readonly_live_plugin_adapter.self_test": [
+          "readonly_live_plugin_adapter_self_test"
+        ],
+        "service:reality_to_manifold_translation.self_test": [
+          "reality_to_manifold_translation_self_test"
+        ],
+        "service:runtime_composition_performance_profile.self_test": [
+          "runtime_composition_performance_profile_self_test"
+        ],
+        "service:runtime_constraint_enforcement.self_test": [
+          "runtime_constraint_enforcement_self_test"
+        ],
+        "service:runtime_contract.self_test": [
+          "runtime_contract_self_test"
+        ],
+        "service:runtime_dataflow.guard_self_test": [
+          "runtime_dataflow_guard_self_test"
+        ],
+        "service:runtime_integration.decisions_self_test": [
+          "integration_decisions_self_test"
+        ],
+        "service:runtime_reachability.audit_self_test": [
+          "reachability_audit_self_test"
+        ],
+        "service:semantic_composition_cache.self_test": [
+          "semantic_composition_cache_self_test"
+        ],
+        "service:semantic_memory.guard_self_test": [
+          "semantic_memory_guard_self_test"
+        ],
+        "service:semantic_plugin_adapter_runtime.self_test": [
+          "semantic_plugin_adapter_runtime_self_test"
+        ],
+        "service:semantic_runtime_query.self_test": [
+          "semantic_runtime_query_self_test"
+        ],
+        "service:srcg.primitive_self_test": [
+          "srcg_primitive_self_test"
+        ],
+        "service:srcg.selfsolve_ab_gate": [
+          "selfsolve_ab_gate"
+        ],
+        "service:system_closure.harness_self_test": [
+          "system_closure_harness_self_test"
+        ],
+        "service:transformation_permanence_validator.self_test": [
+          "transformation_permanence_validator_self_test"
+        ],
+        "service:udfp_frame.self_test": [
+          "udfp_frame_self_test"
+        ],
+        "service:validation_residue_compactor.self_test": [
+          "validation_residue_compactor_self_test"
+        ],
+        "service:validation_residue_compressor.self_test": [
+          "validation_residue_compressor_self_test"
+        ],
+        "service:zero_bypass_runtime_interposer.self_test": [
+          "zero_bypass_runtime_interposer_self_test"
+        ]
+      },
+      "validator_to_surfaces": {
+        "validate_api_route_kernel_derivation": [
+          "api_route:GET /api/runtime/conformance/invariants",
+          "api_route:GET /api/runtime/conformance/invariants/{invariant_id}",
+          "api_route:GET /api/runtime/conformance/status",
+          "api_route:GET /api/runtime/conformance/surfaces",
+          "api_route:GET /api/runtime/conformance/surfaces/{surface_id}",
+          "api_route:POST /api/runtime/conformance/evaluate"
+        ],
+        "validate_authority_gate_self_test_kernel_derivation": [
+          "service:authority_gate.self_test"
+        ],
+        "validate_authorized_execution_failure_policy_self_test_kernel_derivation": [
+          "service:authorized_execution_failure_policy.self_test"
+        ],
+        "validate_authorized_pure_function_executor_self_test_kernel_derivation": [
+          "service:authorized_pure_function_executor.self_test"
+        ],
+        "validate_bounded_metadata_lifecycle_self_test_kernel_derivation": [
+          "service:bounded_metadata_lifecycle.self_test"
+        ],
+        "validate_bounded_recursive_closure": [
+          "control_flow_gate:audited_loop"
+        ],
+        "validate_c_bridge_abi_self_test_kernel_derivation": [
+          "service:c_bridge.abi_self_test"
+        ],
+        "validate_closure_harness_bounded_runtime_self_test_kernel_derivation": [
+          "service:closure_harness.bounded_runtime_self_test"
+        ],
+        "validate_composition_cache_invalidation_self_test_kernel_derivation": [
+          "service:composition_cache_invalidation.self_test"
+        ],
+        "validate_composition_dependency_index_self_test_kernel_derivation": [
+          "service:composition_dependency_index.self_test"
+        ],
+        "validate_conformance_decision_cache_self_test_kernel_derivation": [
+          "service:conformance_decision_cache.self_test"
+        ],
+        "validate_constraint_stack_security_harness_self_test_kernel_derivation": [
+          "service:constraint_stack_security_harness.self_test"
+        ],
+        "validate_contract_schema_registry_self_test_kernel_derivation": [
+          "service:contract_schema_registry.self_test"
+        ],
+        "validate_control_flow_transition_audit": [
+          "control_flow_gate:audited_if",
+          "control_flow_gate:audited_loop"
+        ],
+        "validate_control_flow_transition_audit_self_test_kernel_derivation": [
+          "service:control_flow.transition_audit_self_test"
+        ],
+        "validate_controlled_live_plugin_executor_self_test_kernel_derivation": [
+          "service:controlled_live_plugin_executor.self_test"
+        ],
+        "validate_dryrun_live_plugin_executor_self_test_kernel_derivation": [
+          "service:dryrun_live_plugin_executor.self_test"
+        ],
+        "validate_expanded_state_decay_lifecycle_self_test_kernel_derivation": [
+          "service:expanded_state_decay_lifecycle.self_test"
+        ],
+        "validate_foundational_standards_self_test_kernel_derivation": [
+          "service:foundational_standards.self_test"
+        ],
+        "validate_genesis_severance_protocol_self_test_kernel_derivation": [
+          "service:genesis_severance_protocol.self_test"
+        ],
+        "validate_guarded_plugin_adapters_self_test_kernel_derivation": [
+          "service:guarded_plugin_adapters.self_test"
+        ],
+        "validate_guarded_plugin_invocation_executor_self_test_kernel_derivation": [
+          "service:guarded_plugin_invocation_executor.self_test"
+        ],
+        "validate_hash72_kernel_authority_self_test_kernel_derivation": [
+          "service:hash72.kernel_authority_self_test"
+        ],
+        "validate_hhfs_carrier_adapter_self_test_kernel_derivation": [
+          "service:hhfs_carrier_adapter.self_test"
+        ],
+        "validate_hhfs_carrier_capsule_self_test_kernel_derivation": [
+          "service:hhfs_carrier_capsule.self_test"
+        ],
+        "validate_hhfs_reconstruction_protocol_self_test_kernel_derivation": [
+          "service:hhfs_reconstruction_protocol.self_test"
+        ],
+        "validate_incremental_pipeline_rebuilder_self_test_kernel_derivation": [
+          "service:incremental_pipeline_rebuilder.self_test"
+        ],
+        "validate_io_gateway_self_test_kernel_derivation": [
+          "service:io_gateway.self_test"
+        ],
+        "validate_kernel_conformance_decision_self_test_kernel_derivation": [
+          "service:kernel_conformance_decision.self_test"
+        ],
+        "validate_kernel_conformance_registration_self_test_kernel_derivation": [
+          "service:kernel_conformance_registration.self_test"
+        ],
+        "validate_kernel_conformance_surface_map_self_test_kernel_derivation": [
+          "service:kernel_conformance_surface_map.self_test"
+        ],
+        "validate_kernel_invariant_registry_self_test_kernel_derivation": [
+          "service:kernel_invariant_registry.self_test"
+        ],
+        "validate_kernel_runtime_autocomposer_self_test_kernel_derivation": [
+          "service:kernel_runtime_autocomposer.self_test"
+        ],
+        "validate_ledger_verify_kernel_derivation": [
+          "service:ledger.verify"
+        ],
+        "validate_metadata_enhancement_block_self_test_kernel_derivation": [
+          "service:metadata_enhancement_block.self_test"
+        ],
+        "validate_persistence_guard_self_test_kernel_derivation": [
+          "service:persistence.guard_self_test"
+        ],
+        "validate_phase_disjoint_continuity_self_test_kernel_derivation": [
+          "service:phase_disjoint_continuity.self_test"
+        ],
+        "validate_plugin_capability_planner_self_test_kernel_derivation": [
+          "service:plugin_capability_planner.self_test"
+        ],
+        "validate_readonly_live_plugin_adapter_self_test_kernel_derivation": [
+          "service:readonly_live_plugin_adapter.self_test"
+        ],
+        "validate_reality_to_manifold_translation_self_test_kernel_derivation": [
+          "service:reality_to_manifold_translation.self_test"
+        ],
+        "validate_runtime_composition_performance_profile_self_test_kernel_derivation": [
+          "service:runtime_composition_performance_profile.self_test"
+        ],
+        "validate_runtime_constraint_enforcement_self_test_kernel_derivation": [
+          "service:runtime_constraint_enforcement.self_test"
+        ],
+        "validate_runtime_contract_self_test_kernel_derivation": [
+          "service:runtime_contract.self_test"
+        ],
+        "validate_runtime_dataflow_guard_self_test_kernel_derivation": [
+          "service:runtime_dataflow.guard_self_test"
+        ],
+        "validate_runtime_integration_decisions_self_test_kernel_derivation": [
+          "service:runtime_integration.decisions_self_test"
+        ],
+        "validate_runtime_reachability_audit_self_test_kernel_derivation": [
+          "service:runtime_reachability.audit_self_test"
+        ],
+        "validate_semantic_composition_cache_self_test_kernel_derivation": [
+          "service:semantic_composition_cache.self_test"
+        ],
+        "validate_semantic_memory_guard_self_test_kernel_derivation": [
+          "service:semantic_memory.guard_self_test"
+        ],
+        "validate_semantic_plugin_adapter_runtime_self_test_kernel_derivation": [
+          "service:semantic_plugin_adapter_runtime.self_test"
+        ],
+        "validate_semantic_runtime_query_self_test_kernel_derivation": [
+          "service:semantic_runtime_query.self_test"
+        ],
+        "validate_srcg_primitive_self_test_kernel_derivation": [
+          "service:srcg.primitive_self_test"
+        ],
+        "validate_srcg_selfsolve_ab_gate_kernel_derivation": [
+          "service:srcg.selfsolve_ab_gate"
+        ],
+        "validate_system_closure_harness_self_test_kernel_derivation": [
+          "service:system_closure.harness_self_test"
+        ],
+        "validate_transformation_permanence_validator_self_test_kernel_derivation": [
+          "service:transformation_permanence_validator.self_test"
+        ],
+        "validate_udfp_frame_self_test_kernel_derivation": [
+          "service:udfp_frame.self_test"
+        ],
+        "validate_validation_residue_compactor_self_test_kernel_derivation": [
+          "service:validation_residue_compactor.self_test"
+        ],
+        "validate_validation_residue_compressor_self_test_kernel_derivation": [
+          "service:validation_residue_compressor.self_test"
+        ],
+        "validate_zero_bypass_runtime_interposer_self_test_kernel_derivation": [
+          "service:zero_bypass_runtime_interposer.self_test"
+        ]
+      },
+      "witness_to_surfaces": {
+        "HHS_CONTROL_FLOW_TRANSITION_WITNESS_V1": [
+          "control_flow_gate:audited_if",
+          "control_flow_gate:audited_loop"
+        ],
+        "HHS_HASH72_KERNEL_WITNESS_V1": [
+          "service:authority_gate.self_test",
+          "service:authorized_execution_failure_policy.self_test",
+          "service:authorized_pure_function_executor.self_test",
+          "service:bounded_metadata_lifecycle.self_test",
+          "service:c_bridge.abi_self_test",
+          "service:closure_harness.bounded_runtime_self_test",
+          "service:composition_cache_invalidation.self_test",
+          "service:composition_dependency_index.self_test",
+          "service:conformance_decision_cache.self_test",
+          "service:constraint_stack_security_harness.self_test",
+          "service:contract_schema_registry.self_test",
+          "service:control_flow.transition_audit_self_test",
+          "service:controlled_live_plugin_executor.self_test",
+          "service:dryrun_live_plugin_executor.self_test",
+          "service:expanded_state_decay_lifecycle.self_test",
+          "service:foundational_standards.self_test",
+          "service:genesis_severance_protocol.self_test",
+          "service:guarded_plugin_adapters.self_test",
+          "service:guarded_plugin_invocation_executor.self_test",
+          "service:hash72.kernel_authority_self_test",
+          "service:hhfs_carrier_adapter.self_test",
+          "service:hhfs_carrier_capsule.self_test",
+          "service:hhfs_reconstruction_protocol.self_test",
+          "service:incremental_pipeline_rebuilder.self_test",
+          "service:io_gateway.self_test",
+          "service:kernel_conformance_decision.self_test",
+          "service:kernel_conformance_registration.self_test",
+          "service:kernel_conformance_surface_map.self_test",
+          "service:kernel_invariant_registry.self_test",
+          "service:kernel_runtime_autocomposer.self_test",
+          "service:ledger.verify",
+          "service:metadata_enhancement_block.self_test",
+          "service:persistence.guard_self_test",
+          "service:phase_disjoint_continuity.self_test",
+          "service:plugin_capability_planner.self_test",
+          "service:readonly_live_plugin_adapter.self_test",
+          "service:reality_to_manifold_translation.self_test",
+          "service:runtime_composition_performance_profile.self_test",
+          "service:runtime_constraint_enforcement.self_test",
+          "service:runtime_contract.self_test",
+          "service:runtime_dataflow.guard_self_test",
+          "service:runtime_integration.decisions_self_test",
+          "service:runtime_reachability.audit_self_test",
+          "service:semantic_composition_cache.self_test",
+          "service:semantic_memory.guard_self_test",
+          "service:semantic_plugin_adapter_runtime.self_test",
+          "service:semantic_runtime_query.self_test",
+          "service:srcg.primitive_self_test",
+          "service:srcg.selfsolve_ab_gate",
+          "service:system_closure.harness_self_test",
+          "service:transformation_permanence_validator.self_test",
+          "service:udfp_frame.self_test",
+          "service:validation_residue_compactor.self_test",
+          "service:validation_residue_compressor.self_test",
+          "service:zero_bypass_runtime_interposer.self_test"
+        ],
+        "HHS_KERNEL_DERIVATION_WITNESS_V1": [
+          "api_route:GET /api/runtime/conformance/invariants",
+          "api_route:GET /api/runtime/conformance/invariants/{invariant_id}",
+          "api_route:GET /api/runtime/conformance/status",
+          "api_route:GET /api/runtime/conformance/surfaces",
+          "api_route:GET /api/runtime/conformance/surfaces/{surface_id}",
+          "api_route:POST /api/runtime/conformance/evaluate",
+          "service:authority_gate.self_test",
+          "service:authorized_execution_failure_policy.self_test",
+          "service:authorized_pure_function_executor.self_test",
+          "service:bounded_metadata_lifecycle.self_test",
+          "service:c_bridge.abi_self_test",
+          "service:closure_harness.bounded_runtime_self_test",
+          "service:composition_cache_invalidation.self_test",
+          "service:composition_dependency_index.self_test",
+          "service:conformance_decision_cache.self_test",
+          "service:constraint_stack_security_harness.self_test",
+          "service:contract_schema_registry.self_test",
+          "service:control_flow.transition_audit_self_test",
+          "service:controlled_live_plugin_executor.self_test",
+          "service:dryrun_live_plugin_executor.self_test",
+          "service:expanded_state_decay_lifecycle.self_test",
+          "service:foundational_standards.self_test",
+          "service:genesis_severance_protocol.self_test",
+          "service:guarded_plugin_adapters.self_test",
+          "service:guarded_plugin_invocation_executor.self_test",
+          "service:hash72.kernel_authority_self_test",
+          "service:hhfs_carrier_adapter.self_test",
+          "service:hhfs_carrier_capsule.self_test",
+          "service:hhfs_reconstruction_protocol.self_test",
+          "service:incremental_pipeline_rebuilder.self_test",
+          "service:io_gateway.self_test",
+          "service:kernel_conformance_decision.self_test",
+          "service:kernel_conformance_registration.self_test",
+          "service:kernel_conformance_surface_map.self_test",
+          "service:kernel_invariant_registry.self_test",
+          "service:kernel_runtime_autocomposer.self_test",
+          "service:ledger.verify",
+          "service:metadata_enhancement_block.self_test",
+          "service:persistence.guard_self_test",
+          "service:phase_disjoint_continuity.self_test",
+          "service:plugin_capability_planner.self_test",
+          "service:readonly_live_plugin_adapter.self_test",
+          "service:reality_to_manifold_translation.self_test",
+          "service:runtime_composition_performance_profile.self_test",
+          "service:runtime_constraint_enforcement.self_test",
+          "service:runtime_contract.self_test",
+          "service:runtime_dataflow.guard_self_test",
+          "service:runtime_integration.decisions_self_test",
+          "service:runtime_reachability.audit_self_test",
+          "service:semantic_composition_cache.self_test",
+          "service:semantic_memory.guard_self_test",
+          "service:semantic_plugin_adapter_runtime.self_test",
+          "service:semantic_runtime_query.self_test",
+          "service:srcg.primitive_self_test",
+          "service:srcg.selfsolve_ab_gate",
+          "service:system_closure.harness_self_test",
+          "service:transformation_permanence_validator.self_test",
+          "service:udfp_frame.self_test",
+          "service:validation_residue_compactor.self_test",
+          "service:validation_residue_compressor.self_test",
+          "service:zero_bypass_runtime_interposer.self_test"
+        ],
+        "HHS_SURFACE_REACHABILITY_WITNESS_V1": [
+          "api_route:GET /api/runtime/conformance/invariants",
+          "api_route:GET /api/runtime/conformance/invariants/{invariant_id}",
+          "api_route:GET /api/runtime/conformance/status",
+          "api_route:GET /api/runtime/conformance/surfaces",
+          "api_route:GET /api/runtime/conformance/surfaces/{surface_id}",
+          "api_route:POST /api/runtime/conformance/evaluate"
+        ],
+        "HHS_VALIDATION_RESIDUE_RECEIPT_V1": [
+          "control_flow_gate:audited_if",
+          "control_flow_gate:audited_loop"
+        ]
+      }
+    },
+    "schema": "HHS_SEMANTIC_DEPENDENCY_INDEX_V1",
+    "semantic_dependency_index_hash72": "SRat-MCExNNXdV!H(ErCYBnk9K<fbqhh??>il8dQYl95rVaSjM!rIl07rFdOUGLrNfrIL)f<",
+    "semantic_index_authority": "DEPENDENCY_LOOKUP_ONLY_KERNEL_CONFORMANCE_REMAINS_AUTHORITY",
+    "surface_count": 63,
+    "version": "PASS_044_SEMANTIC_COMPOSITION_CACHE_V1"
+  },
+  "ok": true,
+  "query": {
+    "hit_families": [
+      "invariant_to_surfaces"
+    ],
+    "hits": {
+      "invariant_to_surfaces": [
+        "api_route:GET /api/runtime/conformance/invariants",
+        "api_route:GET /api/runtime/conformance/invariants/{invariant_id}",
+        "api_route:GET /api/runtime/conformance/status",
+        "api_route:GET /api/runtime/conformance/surfaces",
+        "api_route:GET /api/runtime/conformance/surfaces/{surface_id}",
+        "api_route:POST /api/runtime/conformance/evaluate",
+        "service:authority_gate.self_test",
+        "service:authorized_execution_failure_policy.self_test",
+        "service:authorized_pure_function_executor.self_test",
+        "service:bounded_metadata_lifecycle.self_test",
+        "service:c_bridge.abi_self_test",
+        "service:closure_harness.bounded_runtime_self_test",
+        "service:composition_cache_invalidation.self_test",
+        "service:composition_dependency_index.self_test",
+        "service:conformance_decision_cache.self_test",
+        "service:constraint_stack_security_harness.self_test",
+        "service:contract_schema_registry.self_test",
+        "service:control_flow.transition_audit_self_test",
+        "service:controlled_live_plugin_executor.self_test",
+        "service:dryrun_live_plugin_executor.self_test",
+        "service:expanded_state_decay_lifecycle.self_test",
+        "service:foundational_standards.self_test",
+        "service:genesis_severance_protocol.self_test",
+        "service:guarded_plugin_adapters.self_test",
+        "service:guarded_plugin_invocation_executor.self_test",
+        "service:hash72.kernel_authority_self_test",
+        "service:hhfs_carrier_adapter.self_test",
+        "service:hhfs_carrier_capsule.self_test",
+        "service:hhfs_reconstruction_protocol.self_test",
+        "service:incremental_pipeline_rebuilder.self_test",
+        "service:io_gateway.self_test",
+        "service:kernel_conformance_decision.self_test",
+        "service:kernel_conformance_registration.self_test",
+        "service:kernel_conformance_surface_map.self_test",
+        "service:kernel_invariant_registry.self_test",
+        "service:kernel_runtime_autocomposer.self_test",
+        "service:ledger.verify",
+        "service:metadata_enhancement_block.self_test",
+        "service:persistence.guard_self_test",
+        "service:phase_disjoint_continuity.self_test",
+        "service:plugin_capability_planner.self_test",
+        "service:readonly_live_plugin_adapter.self_test",
+        "service:reality_to_manifold_translation.self_test",
+        "service:runtime_composition_performance_profile.self_test",
+        "service:runtime_constraint_enforcement.self_test",
+        "service:runtime_contract.self_test",
+        "service:runtime_dataflow.guard_self_test",
+        "service:runtime_integration.decisions_self_test",
+        "service:runtime_reachability.audit_self_test",
+        "service:semantic_composition_cache.self_test",
+        "service:semantic_memory.guard_self_test",
+        "service:semantic_plugin_adapter_runtime.self_test",
+        "service:semantic_runtime_query.self_test",
+        "service:srcg.primitive_self_test",
+        "service:srcg.selfsolve_ab_gate",
+        "service:system_closure.harness_self_test",
+        "service:transformation_permanence_validator.self_test",
+        "service:udfp_frame.self_test",
+        "service:validation_residue_compactor.self_test",
+        "service:validation_residue_compressor.self_test",
+        "service:zero_bypass_runtime_interposer.self_test"
+      ]
+    },
+    "query": "HHS-I011",
+    "schema": "HHS_SEMANTIC_DEPENDENCY_QUERY_RESULT_V1",
+    "version": "PASS_044_SEMANTIC_COMPOSITION_CACHE_V1"
+  },
+  "schema": "HHS_COMPOSITION_DEPENDENCY_INDEX_SELF_TEST_V1",
+  "version": "PASS_044_SEMANTIC_COMPOSITION_CACHE_V1"
+}

@@ -1,0 +1,63 @@
+{
+  "idempotency_records": [
+    {
+      "authority": "HHS_I019_FEDERATED_TRANSACTION_RECOVERY_AUTHORITY_V1",
+      "canonical_admission_count": 0,
+      "effect_application_count": 1,
+      "effect_root_hash72": "w2eUq4-le*dt2ke1ykglkq9nkwssssMbUB<qQ2mxRMAOuXD0MKkPQRSTUVWXYZ-+*/()<>!z",
+      "idempotency_key": "idem:runtime:local:pass060",
+      "idempotency_record_root_hash72": "e68lCP*CNk6?44pUEis>J>Wq3+iDdSXa(n5AiN6UmYt>NaL-ug!lyOdhDv/!))dNp2FFFQA8",
+      "participant_id": "runtime:local",
+      "reasons": [],
+      "recovery_contract_root_hash72": ">bkviO)Uzy2Denx4KRahCmXZ2<H<s0!OBkjiYT1v?+xTq?Oq-*T1F0FNK3K5epDQN/O2L2Gf",
+      "schema": "HHS_TRANSACTION_IDEMPOTENCY_RECORD_V1",
+      "version": "PASS_060_FEDERATED_TRANSACTION_RECOVERY_IDEMPOTENT_REPLAY_EXACTLY_ONCE_ADMISSION_V1"
+    },
+    {
+      "authority": "HHS_I019_FEDERATED_TRANSACTION_RECOVERY_AUTHORITY_V1",
+      "canonical_admission_count": 0,
+      "effect_application_count": 1,
+      "effect_root_hash72": "w2eUq4-le*dt2ke1ykglkq9nkwssssMbUB<qQ2mMsOJNuEPYTHVB(K7TRkWXYZ-+*/()<>!z",
+      "idempotency_key": "idem:runtime:remote-a:pass060",
+      "idempotency_record_root_hash72": "W-rAdQWCV*plUnVv-44CBWsRYwNRgeIc-AXi9-a6FdNMG/IuPnK<Xv1n9YYWTZW6kpHcnruP",
+      "participant_id": "runtime:remote-a",
+      "reasons": [],
+      "recovery_contract_root_hash72": ">bkviO)Uzy2Denx4KRahCmXZ2<H<s0!OBkjiYT1v?+xTq?Oq-*T1F0FNK3K5epDQN/O2L2Gf",
+      "schema": "HHS_TRANSACTION_IDEMPOTENCY_RECORD_V1",
+      "version": "PASS_060_FEDERATED_TRANSACTION_RECOVERY_IDEMPOTENT_REPLAY_EXACTLY_ONCE_ADMISSION_V1"
+    }
+  ],
+  "policy": "REPEATED_EVIDENCE_DOES_NOT_REAPPLY_EFFECT",
+  "replay_decisions": [
+    {
+      "authority": "HHS_I019_FEDERATED_TRANSACTION_RECOVERY_AUTHORITY_V1",
+      "candidate_effect_root_hash72": "w2eUq4-le*dt2ke1ykglkq9nkwssssMbUB<qQ2mxRMAOuXD0MKkPQRSTUVWXYZ-+*/()<>!z",
+      "duplicate_effect_suppressed": true,
+      "effect_applied": false,
+      "idempotency_record_root_hash72": "e68lCP*CNk6?44pUEis>J>Wq3+iDdSXa(n5AiN6UmYt>NaL-ug!lyOdhDv/!))dNp2FFFQA8",
+      "prior_effect_application_count": 1,
+      "reasons": [],
+      "replay_confers_new_authority": false,
+      "replay_decision_root_hash72": "jl><EdS6WWSl8LzVhz)jnbpn-euCq9FYydm8KvtJxAQsQHuA/gOZDveFxOMAgQFkiOB<x<XQ",
+      "same_effect": true,
+      "schema": "HHS_IDEMPOTENT_REPLAY_DECISION_V1",
+      "status": "ADMIT_IDEMPOTENT_REPLAY",
+      "version": "PASS_060_FEDERATED_TRANSACTION_RECOVERY_IDEMPOTENT_REPLAY_EXACTLY_ONCE_ADMISSION_V1"
+    },
+    {
+      "authority": "HHS_I019_FEDERATED_TRANSACTION_RECOVERY_AUTHORITY_V1",
+      "candidate_effect_root_hash72": "w2eUq4-le*dt2ke1ykglkq9nkwssssMbUB<qQ2mMsOJNuEPYTHVB(K7TRkWXYZ-+*/()<>!z",
+      "duplicate_effect_suppressed": true,
+      "effect_applied": false,
+      "idempotency_record_root_hash72": "W-rAdQWCV*plUnVv-44CBWsRYwNRgeIc-AXi9-a6FdNMG/IuPnK<Xv1n9YYWTZW6kpHcnruP",
+      "prior_effect_application_count": 1,
+      "reasons": [],
+      "replay_confers_new_authority": false,
+      "replay_decision_root_hash72": "ixW2O211!d/erj>-c6?X)CxmF1i+e<UYsOgvOpVEE)nO*mce!Jd4Ht6jUvq/+T4*RwQ<fRGy",
+      "same_effect": true,
+      "schema": "HHS_IDEMPOTENT_REPLAY_DECISION_V1",
+      "status": "ADMIT_IDEMPOTENT_REPLAY",
+      "version": "PASS_060_FEDERATED_TRANSACTION_RECOVERY_IDEMPOTENT_REPLAY_EXACTLY_ONCE_ADMISSION_V1"
+    }
+  ]
+}

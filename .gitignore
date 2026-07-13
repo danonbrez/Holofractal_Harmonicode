@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Native build outputs
+hhs_runtime/builds/
+*.so
+*.dylib
+*.dll
+*.o
+*.exe
+
+# Frontend dependencies/build outputs
+node_modules/
+dist/
+.vite/
+
+# Local environment
+.env
+.venv/
+venv/

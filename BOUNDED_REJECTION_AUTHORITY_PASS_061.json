@@ -1,0 +1,114 @@
+{
+  "authority": "HHS_I019_BOUNDED_REJECTION_AUTHORITY_V1",
+  "non_amplification_validation": {
+    "authority": "HHS_I019_BOUNDED_REJECTION_AUTHORITY_V1",
+    "non_amplification_validation_root_hash72": "9aU3mpRMf9UgUUW8/rODFQSyfM>liDZJA6xXwlhsP4z63p2nNTWcAozVYGb?73ytEi*>Rf)Q",
+    "non_amplifying": true,
+    "permanent_denial": false,
+    "propagation_root_hash72": "0JPttaIyNBxTF)m(sC>GaVp1dGLwp51f)0(t40jBb7+B<P!JlOWpSg-x?m)IC86>CI56X7Rs",
+    "reasons": [],
+    "rejection_decision_root_hash72": "<gky!H*5/Do1X0w4SU8XE2ORfN+fAIgT9m01!YgWkjQ4dm-p08e3Uy1sN*PHAWBGplwN50I*",
+    "schema": "HHS_REJECTION_NON_AMPLIFICATION_VALIDATION_V1",
+    "source_identity_preserved": true,
+    "status": "ADMIT_BOUNDED_REJECTION_EFFECT",
+    "unrelated_capabilities_preserved": true,
+    "version": "PASS_061_BOUNDED_REJECTION_AUTHORITY_MINIMAL_CORRECTIVE_PROPAGATION_V1"
+  },
+  "ok": true,
+  "pass060_root_hash72": "rUp>by2g2gswKA9)-zHqj>ZRIQmC)/QKp+)f(JX7Z5tg/fyui6y(CRhzpkFOuI(pHvMgVQWv",
+  "propagation": {
+    "affected_descendant_ids": [],
+    "allowed_depth": 0,
+    "authority": "HHS_I019_BOUNDED_REJECTION_AUTHORITY_V1",
+    "necessity_evidence_roots_hash72": [],
+    "propagated_target_ids": [],
+    "propagation_minimal": true,
+    "propagation_root_hash72": "0JPttaIyNBxTF)m(sC>GaVp1dGLwp51f)0(t40jBb7+B<P!JlOWpSg-x?m)IC86>CI56X7Rs",
+    "reasons": [],
+    "rejection_decision_root_hash72": "<gky!H*5/Do1X0w4SU8XE2ORfN+fAIgT9m01!YgWkjQ4dm-p08e3Uy1sN*PHAWBGplwN50I*",
+    "requested_depth": 0,
+    "requested_target_ids": [],
+    "schema": "HHS_MINIMAL_CORRECTIVE_PROPAGATION_V1",
+    "status": "ADMIT_MINIMAL_CORRECTIVE_PROPAGATION",
+    "version": "PASS_061_BOUNDED_REJECTION_AUTHORITY_MINIMAL_CORRECTIVE_PROPAGATION_V1"
+  },
+  "rejection_codes": [
+    "REJECT_REJECTION_WITHOUT_ROLE_AUTHORITY",
+    "REJECT_REJECTION_SCOPE_EXCEEDS_ROLE",
+    "REJECT_LOCAL_REJECTION_AS_GLOBAL_DENIAL",
+    "REJECT_REJECTION_WITHOUT_PROVENANCE",
+    "REJECT_REJECTION_WITHOUT_TYPED_REASON",
+    "REJECT_REJECTION_OUTLIVES_EVIDENCE",
+    "REJECT_REJECTION_PROPAGATION_WITHOUT_NECESSITY_PROOF",
+    "REJECT_REJECTION_PROPAGATION_EXCEEDS_AFFECTED_DERIVATION",
+    "REJECT_CORRECTED_STATE_REMAINS_REJECTED_WITHOUT_REVALIDATION",
+    "REJECT_REJECTION_AS_PERMANENT_AMBIENT_DENIAL",
+    "REJECT_REJECTION_OF_PROJECTION_AS_SOURCE_INVALIDATION",
+    "REJECT_REJECTION_OF_OPERATION_AS_UNRELATED_CAPABILITY_DENIAL",
+    "REJECT_REMEDIATION_WITHOUT_INDEPENDENT_REVALIDATION",
+    "REJECT_REJECTION_ESCALATION_WITHOUT_EXPLICIT_AUTHORITY"
+  ],
+  "rejection_decision": {
+    "authority": "HHS_I019_BOUNDED_REJECTION_AUTHORITY_V1",
+    "correction_scope": [
+      "LOCAL_ADMISSION_ONLY"
+    ],
+    "evidence_roots_hash72": [
+      "?Qq23dq8w84yAwR75W9(7R)w?JMy<!+3HQc)sdHCeyO9KfWl>66XQC4bmlO-foA7WhNUDDO9"
+    ],
+    "expires_at_sequence": 340,
+    "global_effect": false,
+    "issued_at_sequence": 300,
+    "permanent_effect": false,
+    "reason_code": "MISSING_LOCAL_REVALIDATION",
+    "reasons": [],
+    "rejection_active": true,
+    "rejection_decision_root_hash72": "<gky!H*5/Do1X0w4SU8XE2ORfN+fAIgT9m01!YgWkjQ4dm-p08e3Uy1sN*PHAWBGplwN50I*",
+    "rejection_role_contract_root_hash72": "HK1AguU<ydaEmR/nuHV<BH-<?QKiZxPswL5INOp<x*l6TBak-dlY*2(A95cD5-QCZPs+S4mh",
+    "schema": "HHS_BOUNDED_REJECTION_DECISION_V1",
+    "status": "ADMIT_BOUNDED_LOCAL_REJECTION",
+    "subject_id": "admission:pass060",
+    "subject_root_hash72": "K/<Drziw+)ARm0kdK1?A5fG!m2G<)hknwzYYeQfKAlHXQIaI43N7O3KZsGGnRzTlpLUJIq5M",
+    "subject_type": "CANONICAL_ADMISSION_RECORD",
+    "version": "PASS_061_BOUNDED_REJECTION_AUTHORITY_MINIMAL_CORRECTIVE_PROPAGATION_V1"
+  },
+  "release_decision": {
+    "ambient_denial_created": false,
+    "authority": "HHS_I019_BOUNDED_REJECTION_AUTHORITY_V1",
+    "corrected": true,
+    "corrected_subject_root_hash72": "NHA19Bkapa8YLrz-(TUsIEn67Auand<sgX>pk-3lPKvlE?I-s2+u<RqdFblZw>C(Dv<)Zy7a",
+    "expired": false,
+    "local_revalidation_performed": true,
+    "reasons": [],
+    "rejection_decision_root_hash72": "<gky!H*5/Do1X0w4SU8XE2ORfN+fAIgT9m01!YgWkjQ4dm-p08e3Uy1sN*PHAWBGplwN50I*",
+    "rejection_release_root_hash72": "ZEo5yddHlV0dUd?kz0cu8jia<z)bL/7(wMuLtcEoGlAOQR!6W5!tnavzWVRgA0GliQ?ci0/m",
+    "rejection_released": true,
+    "schema": "HHS_REJECTION_RELEASE_DECISION_V1",
+    "status": "ADMIT_REJECTION_RELEASE",
+    "version": "PASS_061_BOUNDED_REJECTION_AUTHORITY_MINIMAL_CORRECTIVE_PROPAGATION_V1"
+  },
+  "role_contract": {
+    "allowed_reason_codes": [
+      "INVALID_EFFECT_IDENTITY",
+      "MISSING_LOCAL_REVALIDATION"
+    ],
+    "allowed_subject_types": [
+      "CANONICAL_ADMISSION_RECORD",
+      "PROJECTION"
+    ],
+    "authority": "HHS_I019_BOUNDED_REJECTION_AUTHORITY_V1",
+    "global_denial_authority": false,
+    "max_propagation_depth": 0,
+    "permanent_denial_authority": false,
+    "rejection_role_contract_root_hash72": "HK1AguU<ydaEmR/nuHV<BH-<?QKiZxPswL5INOp<x*l6TBak-dlY*2(A95cD5-QCZPs+S4mh",
+    "requires_expiry_or_release_condition": true,
+    "requires_independent_revalidation": true,
+    "requires_provenance": true,
+    "role_id": "role:transaction-recovery-validator",
+    "schema": "HHS_BOUNDED_REJECTION_ROLE_CONTRACT_V1",
+    "version": "PASS_061_BOUNDED_REJECTION_AUTHORITY_MINIMAL_CORRECTIVE_PROPAGATION_V1"
+  },
+  "run_root_hash72": "6d7I07gwWyEl9HzMaH/AlFd7GhJ2D)qP3gp<s6svLG63*Vt<xO>gPL?2qbFO+Gwt14t/H-wM",
+  "schema": "HHS_BOUNDED_REJECTION_AUTHORITY_RUN_V1",
+  "version": "PASS_061_BOUNDED_REJECTION_AUTHORITY_MINIMAL_CORRECTIVE_PROPAGATION_V1"
+}

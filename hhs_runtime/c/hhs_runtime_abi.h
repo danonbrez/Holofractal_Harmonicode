@@ -74,6 +74,53 @@ extern "C" {
 typedef char HHSHash72[HHS_HASH72_STRLEN];
 
 // ============================================================================
+// HASH72 u^72 DIGITAL DNA RING STATE
+// ============================================================================
+
+typedef struct {
+
+    uint8_t positions[HHS_HASH72_LEN];
+
+    int64_t rotation_profile[HHS_HASH72_LEN];
+
+    HHSHash72 dna;
+
+    uint64_t trace_count;
+
+    uint8_t zero_sum;
+    uint8_t last_index;
+    int64_t last_delta;
+
+} HHSHash72RingState;
+
+
+// ============================================================================
+// SRCG SELF-SOLVING RECURSIVE CONSTRAINT GATE STATE
+// ============================================================================
+
+typedef struct {
+
+    double A;
+    double B;
+
+    double phi;
+    double delta;
+    double learning_rate;
+    double drift_threshold;
+
+    double last_valid_A;
+    double last_valid_B;
+
+    uint64_t trace_count;
+
+    uint8_t unit_unity_valid;
+    uint8_t lo_shu_valid;
+    uint8_t quartic_carrier_preserved;
+    uint8_t rolled_back;
+
+} HHSSRCGState;
+
+// ============================================================================
 // CLOSURE CLASSES
 // ============================================================================
 
@@ -437,6 +484,62 @@ uint64_t hhs_hash72_compare(
     const HHSHash72 b
 );
 
+HHS_API
+void hhs_hash72_ring_init(
+    HHSHash72RingState* ring
+);
+
+HHS_API
+uint8_t hhs_hash72_ring_rotate(
+    HHSHash72RingState* ring,
+    uint8_t index,
+    int64_t delta
+);
+
+HHS_API
+uint8_t hhs_hash72_dna_validate(
+    const HHSHash72RingState* ring
+);
+
+HHS_API
+void hhs_hash72_tensor_project(
+    const HHSHash72RingState* ring,
+    uint8_t out_tensor81[81]
+);
+
+HHS_API
+uint8_t hhs_hash72_reverse_state(
+    const HHSHash72RingState* current,
+    HHSHash72RingState* out_original
+);
+
+
+// ============================================================================
+// SRCG SELF-SOLVING RECURSIVE CONSTRAINT GATE FUNCTIONS
+// ============================================================================
+
+HHS_API
+void hhs_srcg_init(
+    HHSSRCGState* gate,
+    double A,
+    double B,
+    double learning_rate,
+    double drift_threshold
+);
+
+HHS_API
+uint8_t hhs_srcg_step(
+    HHSSRCGState* gate
+);
+
+HHS_API
+uint8_t hhs_srcg_validate(
+    const HHSSRCGState* gate
+);
+
+HHS_API
+size_t hhs_sizeof_srcg_state(void);
+
 // ============================================================================
 // TRANSPORT FUNCTIONS
 // ============================================================================
@@ -503,6 +606,9 @@ size_t hhs_sizeof_receipt(void);
 
 HHS_API
 size_t hhs_sizeof_tensor_state(void);
+
+HHS_API
+size_t hhs_sizeof_hash72_ring_state(void);
 
 HHS_API
 size_t hhs_sizeof_graph_node(void);

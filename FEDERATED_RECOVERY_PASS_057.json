@@ -1,0 +1,13 @@
+{
+  "authority": "HHS_I019_PARTITION_TOLERANT_FEDERATED_AUTHORITY_RECOVERY_V1",
+  "canonical_continuation": true,
+  "federated_recovery_root_hash72": "/9JichDWsd-u*2A3-gdhLBs8thhGN1h(gjOE6P>6B>MH>wYRIOt1Q<Ii)h6rfAk)*EF1iHC7",
+  "local_revalidation_performed": true,
+  "reasons": [],
+  "reconciliation_receipt_root_hash72": ")OQJo-ZFp6zkCl45*UmLOBhbGvHNniTyqo)0YW6!XW8X6?(F2w4iWJSPNGMcXzvGtOydFUYB",
+  "recovered": true,
+  "schema": "HHS_FEDERATED_RECOVERY_DECISION_V1",
+  "stale_remote_execution_became_local_authority": false,
+  "status": "ADMIT_FEDERATED_RECOVERY",
+  "version": "PASS_057_PARTITION_TOLERANT_REVOCATION_CONSENSUS_FEDERATED_RECOVERY_V1"
+}

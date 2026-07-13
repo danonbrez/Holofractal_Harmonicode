@@ -1,0 +1,12 @@
+{
+  "conformance_edge_count": 3778,
+  "integration_status": "PASS",
+  "orphan_count": 0,
+  "run_root_hash72": "B(h3Ef)J>*2<*?OY4KKrp7usfVYx/di0+1ZWyQwck*ALp2H3Z2wzV*K(CXYhlyLUSBOm-om5",
+  "schema": "HHS_INTEGRATION_REPORT_PASS_067_1",
+  "service_count": 263,
+  "surface_count": 286,
+  "tests_passed": 16,
+  "underived_service_count": 0,
+  "underived_surface_count": 0
+}

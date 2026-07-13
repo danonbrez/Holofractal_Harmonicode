@@ -1,0 +1,64 @@
+{
+  "analog_dynamics_alignment": {
+    "capability_providers": "external instruments and actuators",
+    "conformance_graph": "admissible coupling topology",
+    "gui": "oscilloscope/control surface/workbench",
+    "kernel": "physical enforcement substrate",
+    "modality_adapters": "transducers",
+    "receipts_hash72": "measurement trace and state continuity",
+    "runtime": "measurement and canonical observation boundary"
+  },
+  "conformance_edge_count": 1842,
+  "derived_service_count": 0,
+  "doctrine": {
+    "document_enters_as_coupled_observation_field": true,
+    "document_graph_ne_document_identity": true,
+    "ocr_text_ne_page_image": true,
+    "page_image_ne_document": true,
+    "pdf_parser_output_ne_pdf": true,
+    "provider_agreement_ne_automatic_truth": true,
+    "provider_disagreement_ne_failure": true,
+    "table_extraction_ne_table_source": true
+  },
+  "document_private_truth_pipeline_allowed": false,
+  "fusion_states": [
+    "OBSERVATION_AGREEMENT",
+    "OBSERVATION_DISAGREEMENT",
+    "UNRESOLVED_AMBIGUITY",
+    "MISSING_REGION_OBSERVATION",
+    "SELECTED_PROJECTION_WITH_EVIDENCE"
+  ],
+  "module_count": 1170,
+  "name": "Deep Deterministic Document Perception",
+  "ok": true,
+  "pass": "052",
+  "projection_types": [
+    "PDF_NATIVE_TEXT_PROJECTION",
+    "PAGE_LAYOUT_PROJECTION",
+    "PAGE_IMAGE_REGION_PROJECTION",
+    "OCR_TEXT_PROJECTION",
+    "DOCUMENT_GRAPH_PROJECTION"
+  ],
+  "providers": [
+    "provider:pdf-native-text",
+    "provider:pdf-page-geometry",
+    "provider:document-image-region",
+    "provider:deterministic-ocr"
+  ],
+  "rejection_codes": [
+    "REJECT_DOCUMENT_PROVIDER_AS_AUTHORITY",
+    "REJECT_OCR_TEXT_AS_DOCUMENT_SOURCE",
+    "REJECT_PDF_TEXT_AS_COMPLETE_DOCUMENT",
+    "REJECT_TABLE_EXTRACTION_WITHOUT_REGION_SOURCE",
+    "REJECT_DOCUMENT_FUSION_WITHOUT_PROVENANCE",
+    "REJECT_UNMARKED_DOCUMENT_EXTRACTION_LOSS",
+    "REJECT_PROVIDER_DISAGREEMENT_COLLAPSED_SILENTLY",
+    "REJECT_DOCUMENT_PROJECTION_WITHOUT_RECONSTRUCTION"
+  ],
+  "runtime_as_canonical_observer": true,
+  "schema": "HHS_PASS_052_INTEGRATION_REPORT_V1",
+  "service_count": 0,
+  "surface_count": 132,
+  "underived_service_count": 0,
+  "underived_surface_count": null
+}

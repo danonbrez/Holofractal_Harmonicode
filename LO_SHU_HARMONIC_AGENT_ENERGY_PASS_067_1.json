@@ -1,0 +1,1948 @@
+{
+  "authority": "HHS_LO_SHU_GEOMETRY_AUTHORITY_V1",
+  "base_conservation": {
+    "cluster": {
+      "denominator": 1,
+      "numerator": 225
+    },
+    "columns": [
+      {
+        "denominator": 1,
+        "numerator": 75
+      },
+      {
+        "denominator": 1,
+        "numerator": 75
+      },
+      {
+        "denominator": 1,
+        "numerator": 75
+      }
+    ],
+    "diagonals": [
+      {
+        "denominator": 1,
+        "numerator": 75
+      },
+      {
+        "denominator": 1,
+        "numerator": 75
+      }
+    ],
+    "ok": true,
+    "rows": [
+      {
+        "denominator": 1,
+        "numerator": 75
+      },
+      {
+        "denominator": 1,
+        "numerator": 75
+      },
+      {
+        "denominator": 1,
+        "numerator": 75
+      }
+    ]
+  },
+  "base_energy": [
+    40,
+    5,
+    30,
+    15,
+    25,
+    35,
+    20,
+    45,
+    10
+  ],
+  "effective_transition_grammar": "PHASE -> PLASTIC_EQUILIBRIUM -> A:B_ALIGNMENT -> ZERO_SUM_CLOSURE -> PHASE",
+  "energy_confers_authority": false,
+  "interstitial_constraint_states": [
+    "PLASTIC_EQUILIBRIUM",
+    "ZERO_SUM_CLOSURE"
+  ],
+  "ok": true,
+  "ordered_phase_gates": {
+    "wz": {
+      "authority": "HHS_LO_SHU_GEOMETRY_AUTHORITY_V1",
+      "continuation_admitted": true,
+      "gate_root_hash72": "GTMI5>XjTAqAPuuPsaLlnTKgnqqvtcr>WH-Q/Td4TyRQC1RPH55ny-eDfby/zBu?Ls5NRStG",
+      "left_phase": "w",
+      "orientation_preserved": true,
+      "plastic_equilibrium": {
+        "equilibrium_satisfied": true,
+        "minimal_polynomial": "rho^3-rho-1",
+        "residue": {
+          "denominator": 1,
+          "numerator": 0
+        }
+      },
+      "relation": "wz",
+      "relation_type": "A_B_ALIGNMENT_BOUNDARY",
+      "right_phase": "z",
+      "schema": "HHS_RECIPROCAL_VECTOR_ALIGNMENT_GATE_V1",
+      "variables_are_vectors": true,
+      "version": "PASS_067_1_LO_SHU_HARMONIC_PHASE_ENERGY_V1",
+      "zero_sum_closure": {
+        "closure_satisfied": true,
+        "left_cluster": {
+          "denominator": 1,
+          "numerator": 225
+        },
+        "right_cluster": {
+          "denominator": 1,
+          "numerator": 225
+        }
+      }
+    },
+    "xy": {
+      "authority": "HHS_LO_SHU_GEOMETRY_AUTHORITY_V1",
+      "continuation_admitted": true,
+      "gate_root_hash72": "GTMI5>XjTApBPuuPsaLlnTLeoqqvtcr>WH-Q/Ub5TyRQC1RPH55ny-eDfby/zBu?Mr5NRStG",
+      "left_phase": "x",
+      "orientation_preserved": true,
+      "plastic_equilibrium": {
+        "equilibrium_satisfied": true,
+        "minimal_polynomial": "rho^3-rho-1",
+        "residue": {
+          "denominator": 1,
+          "numerator": 0
+        }
+      },
+      "relation": "xy",
+      "relation_type": "A_B_ALIGNMENT_BOUNDARY",
+      "right_phase": "y",
+      "schema": "HHS_RECIPROCAL_VECTOR_ALIGNMENT_GATE_V1",
+      "variables_are_vectors": true,
+      "version": "PASS_067_1_LO_SHU_HARMONIC_PHASE_ENERGY_V1",
+      "zero_sum_closure": {
+        "closure_satisfied": true,
+        "left_cluster": {
+          "denominator": 1,
+          "numerator": 225
+        },
+        "right_cluster": {
+          "denominator": 1,
+          "numerator": 225
+        }
+      }
+    },
+    "yx": {
+      "authority": "HHS_LO_SHU_GEOMETRY_AUTHORITY_V1",
+      "continuation_admitted": true,
+      "gate_root_hash72": "GTMI5>XjTAoCPuuPsaLlnTMcpqqvtcr>WH-Q/V96TyRQC1RPH55ny-eDfby/zBu?Nq5NRStG",
+      "left_phase": "y",
+      "orientation_preserved": true,
+      "plastic_equilibrium": {
+        "equilibrium_satisfied": true,
+        "minimal_polynomial": "rho^3-rho-1",
+        "residue": {
+          "denominator": 1,
+          "numerator": 0
+        }
+      },
+      "relation": "yx",
+      "relation_type": "A_B_ALIGNMENT_BOUNDARY",
+      "right_phase": "x",
+      "schema": "HHS_RECIPROCAL_VECTOR_ALIGNMENT_GATE_V1",
+      "variables_are_vectors": true,
+      "version": "PASS_067_1_LO_SHU_HARMONIC_PHASE_ENERGY_V1",
+      "zero_sum_closure": {
+        "closure_satisfied": true,
+        "left_cluster": {
+          "denominator": 1,
+          "numerator": 225
+        },
+        "right_cluster": {
+          "denominator": 1,
+          "numerator": 225
+        }
+      }
+    },
+    "zw": {
+      "authority": "HHS_LO_SHU_GEOMETRY_AUTHORITY_V1",
+      "continuation_admitted": true,
+      "gate_root_hash72": "GTMI5>XjTAnDPuuPsaLlnTNaqqqvtcr>WH-Q/W77TyRQC1RPH55ny-eDfby/zBu?Op5NRStG",
+      "left_phase": "z",
+      "orientation_preserved": true,
+      "plastic_equilibrium": {
+        "equilibrium_satisfied": true,
+        "minimal_polynomial": "rho^3-rho-1",
+        "residue": {
+          "denominator": 1,
+          "numerator": 0
+        }
+      },
+      "relation": "zw",
+      "relation_type": "A_B_ALIGNMENT_BOUNDARY",
+      "right_phase": "w",
+      "schema": "HHS_RECIPROCAL_VECTOR_ALIGNMENT_GATE_V1",
+      "variables_are_vectors": true,
+      "version": "PASS_067_1_LO_SHU_HARMONIC_PHASE_ENERGY_V1",
+      "zero_sum_closure": {
+        "closure_satisfied": true,
+        "left_cluster": {
+          "denominator": 1,
+          "numerator": 225
+        },
+        "right_cluster": {
+          "denominator": 1,
+          "numerator": 225
+        }
+      }
+    }
+  },
+  "ordered_products_distinct": true,
+  "pass067_root_hash72": "y/>QlcrJfverGwsAm1?ehJ4C/lr8Ehxnitl7Jr35N<4BASIb3d1FA0s7FPoVTP)fGp1>SrrH",
+  "phase_states": [
+    "x",
+    "y",
+    "z",
+    "w",
+    "xy",
+    "yx",
+    "zw",
+    "wz"
+  ],
+  "rejection_codes": [
+    "REJECT_LO_SHU_ROW_ENERGY_IMBALANCE",
+    "REJECT_LO_SHU_COLUMN_ENERGY_IMBALANCE",
+    "REJECT_LO_SHU_DIAGONAL_ENERGY_IMBALANCE",
+    "REJECT_CLUSTER_ENERGY_NOT_225",
+    "REJECT_BEHAVIOR_SCORE_AS_DIRECT_ENERGY",
+    "REJECT_REDISTRIBUTION_OUTSIDE_LO_SHU_SUBSPACE",
+    "REJECT_REDISTRIBUTION_CREATES_NEGATIVE_CELL_CREDIT",
+    "REJECT_ENERGY_CONFERS_SEMANTIC_AUTHORITY",
+    "REJECT_PHASE_TENSOR_BREAKS_LO_SHU_GEOMETRY",
+    "REJECT_ORDERED_TENSOR_PRODUCT_COLLAPSES_TO_COMMUTATIVE_PRODUCT",
+    "REJECT_PLASTIC_ALIGNMENT_GATE_RESIDUE",
+    "REJECT_ZERO_SUM_CLOSURE_FAILURE"
+  ],
+  "run_root_hash72": "B(h3Ef)J>*2<*?OY4KKrp7usfVYx/di0+1ZWyQwck*ALp2H3Z2wzV*K(CXYhlyLUSBOm-om5",
+  "schema": "HHS_LO_SHU_HARMONIC_PHASE_ENERGY_RUN_V1",
+  "total_four_tensor_energy": 900,
+  "version": "PASS_067_1_LO_SHU_HARMONIC_PHASE_ENERGY_V1",
+  "weighted_tensors": {
+    "w": {
+      "authority": "HHS_LO_SHU_GEOMETRY_AUTHORITY_V1",
+      "base_energy": [
+        40,
+        5,
+        30,
+        15,
+        25,
+        35,
+        20,
+        45,
+        10
+      ],
+      "behavior_evidence": [
+        {
+          "cooperation": {
+            "denominator": 3,
+            "numerator": 2
+          },
+          "dependency": {
+            "denominator": 9,
+            "numerator": 1
+          },
+          "independence": {
+            "denominator": 9,
+            "numerator": 7
+          },
+          "raw_pressure": {
+            "denominator": 351,
+            "numerator": 187
+          },
+          "reciprocal_penalty": {
+            "denominator": 27,
+            "numerator": 5
+          },
+          "reciprocal_reward": {
+            "denominator": 39,
+            "numerator": 28
+          },
+          "self_centering": {
+            "denominator": 9,
+            "numerator": 5
+          }
+        },
+        {
+          "cooperation": {
+            "denominator": 9,
+            "numerator": 4
+          },
+          "dependency": {
+            "denominator": 3,
+            "numerator": 1
+          },
+          "independence": {
+            "denominator": 3,
+            "numerator": 1
+          },
+          "raw_pressure": {
+            "denominator": 42,
+            "numerator": -5
+          },
+          "reciprocal_penalty": {
+            "denominator": 2,
+            "numerator": 1
+          },
+          "reciprocal_reward": {
+            "denominator": 21,
+            "numerator": 8
+          },
+          "self_centering": {
+            "denominator": 1,
+            "numerator": 1
+          }
+        },
+        {
+          "cooperation": {
+            "denominator": 9,
+            "numerator": 2
+          },
+          "dependency": {
+            "denominator": 9,
+            "numerator": 5
+          },
+          "independence": {
+            "denominator": 9,
+            "numerator": 8
+          },
+          "raw_pressure": {
+            "denominator": 405,
+            "numerator": -56
+          },
+          "reciprocal_penalty": {
+            "denominator": 81,
+            "numerator": 40
+          },
+          "reciprocal_reward": {
+            "denominator": 45,
+            "numerator": 16
+          },
+          "self_centering": {
+            "denominator": 9,
+            "numerator": 4
+          }
+        },
+        {
+          "cooperation": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "dependency": {
+            "denominator": 9,
+            "numerator": 7
+          },
+          "independence": {
+            "denominator": 9,
+            "numerator": 4
+          },
+          "raw_pressure": {
+            "denominator": 1755,
+            "numerator": -376
+          },
+          "reciprocal_penalty": {
+            "denominator": 135,
+            "numerator": 112
+          },
+          "reciprocal_reward": {
+            "denominator": 13,
+            "numerator": 8
+          },
+          "self_centering": {
+            "denominator": 9,
+            "numerator": 8
+          }
+        },
+        {
+          "cooperation": {
+            "denominator": 9,
+            "numerator": 7
+          },
+          "dependency": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "independence": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "raw_pressure": {
+            "denominator": 8,
+            "numerator": 3
+          },
+          "reciprocal_penalty": {
+            "denominator": 2,
+            "numerator": 1
+          },
+          "reciprocal_reward": {
+            "denominator": 8,
+            "numerator": 7
+          },
+          "self_centering": {
+            "denominator": 3,
+            "numerator": 1
+          }
+        },
+        {
+          "cooperation": {
+            "denominator": 9,
+            "numerator": 5
+          },
+          "dependency": {
+            "denominator": 9,
+            "numerator": 2
+          },
+          "independence": {
+            "denominator": 9,
+            "numerator": 5
+          },
+          "raw_pressure": {
+            "denominator": 81,
+            "numerator": 17
+          },
+          "reciprocal_penalty": {
+            "denominator": 81,
+            "numerator": 28
+          },
+          "reciprocal_reward": {
+            "denominator": 9,
+            "numerator": 5
+          },
+          "self_centering": {
+            "denominator": 9,
+            "numerator": 7
+          }
+        },
+        {
+          "cooperation": {
+            "denominator": 3,
+            "numerator": 1
+          },
+          "dependency": {
+            "denominator": 9,
+            "numerator": 4
+          },
+          "independence": {
+            "denominator": 9,
+            "numerator": 1
+          },
+          "raw_pressure": {
+            "denominator": 54,
+            "numerator": -7
+          },
+          "reciprocal_penalty": {
+            "denominator": 27,
+            "numerator": 8
+          },
+          "reciprocal_reward": {
+            "denominator": 6,
+            "numerator": 1
+          },
+          "self_centering": {
+            "denominator": 9,
+            "numerator": 2
+          }
+        },
+        {
+          "cooperation": {
+            "denominator": 9,
+            "numerator": 1
+          },
+          "dependency": {
+            "denominator": 3,
+            "numerator": 2
+          },
+          "independence": {
+            "denominator": 3,
+            "numerator": 2
+          },
+          "raw_pressure": {
+            "denominator": 21,
+            "numerator": -10
+          },
+          "reciprocal_penalty": {
+            "denominator": 3,
+            "numerator": 2
+          },
+          "reciprocal_reward": {
+            "denominator": 21,
+            "numerator": 4
+          },
+          "self_centering": {
+            "denominator": 3,
+            "numerator": 2
+          }
+        },
+        {
+          "cooperation": {
+            "denominator": 9,
+            "numerator": 8
+          },
+          "dependency": {
+            "denominator": 9,
+            "numerator": 8
+          },
+          "independence": {
+            "denominator": 9,
+            "numerator": 2
+          },
+          "raw_pressure": {
+            "denominator": 405,
+            "numerator": 64
+          },
+          "reciprocal_penalty": {
+            "denominator": 81,
+            "numerator": 16
+          },
+          "reciprocal_reward": {
+            "denominator": 45,
+            "numerator": 16
+          },
+          "self_centering": {
+            "denominator": 9,
+            "numerator": 1
+          }
+        }
+      ],
+      "cluster_energy": 225,
+      "energy_confers_authority": false,
+      "phase": "w",
+      "projection": {
+        "a": {
+          "denominator": 147420,
+          "numerator": 10853
+        },
+        "authority": "HHS_LO_SHU_GEOMETRY_AUTHORITY_V1",
+        "b": {
+          "denominator": 29484,
+          "numerator": 1711
+        },
+        "center_fixed": true,
+        "conservation": {
+          "cluster": {
+            "denominator": 1,
+            "numerator": 225
+          },
+          "columns": [
+            {
+              "denominator": 1,
+              "numerator": 75
+            },
+            {
+              "denominator": 1,
+              "numerator": 75
+            },
+            {
+              "denominator": 1,
+              "numerator": 75
+            }
+          ],
+          "diagonals": [
+            {
+              "denominator": 1,
+              "numerator": 75
+            },
+            {
+              "denominator": 1,
+              "numerator": 75
+            }
+          ],
+          "ok": true,
+          "rows": [
+            {
+              "denominator": 1,
+              "numerator": 75
+            },
+            {
+              "denominator": 1,
+              "numerator": 75
+            },
+            {
+              "denominator": 1,
+              "numerator": 75
+            }
+          ]
+        },
+        "delta": [
+          {
+            "denominator": 147420,
+            "numerator": 10853
+          },
+          {
+            "denominator": 29484,
+            "numerator": 1711
+          },
+          {
+            "denominator": 36855,
+            "numerator": -4852
+          },
+          {
+            "denominator": 7020,
+            "numerator": -1441
+          },
+          {
+            "denominator": 1,
+            "numerator": 0
+          },
+          {
+            "denominator": 7020,
+            "numerator": 1441
+          },
+          {
+            "denominator": 36855,
+            "numerator": 4852
+          },
+          {
+            "denominator": 29484,
+            "numerator": -1711
+          },
+          {
+            "denominator": 147420,
+            "numerator": -10853
+          }
+        ],
+        "final_energy": [
+          {
+            "denominator": 147420,
+            "numerator": 5907653
+          },
+          {
+            "denominator": 29484,
+            "numerator": 149131
+          },
+          {
+            "denominator": 36855,
+            "numerator": 1100798
+          },
+          {
+            "denominator": 7020,
+            "numerator": 103859
+          },
+          {
+            "denominator": 1,
+            "numerator": 25
+          },
+          {
+            "denominator": 7020,
+            "numerator": 247141
+          },
+          {
+            "denominator": 36855,
+            "numerator": 741952
+          },
+          {
+            "denominator": 29484,
+            "numerator": 1325069
+          },
+          {
+            "denominator": 147420,
+            "numerator": 1463347
+          }
+        ],
+        "geometry_determines_redistribution": true,
+        "projection_root_hash72": "Oa8gg-<o?EOsY-V!)f!0!eawH9Jjn2h!9-yKr*rdGYH3UFimKVF8yNqYT!6V*q7!zw6KS4gu",
+        "schema": "HHS_LO_SHU_REDISTRIBUTION_PROJECTION_V1",
+        "version": "PASS_067_1_LO_SHU_HARMONIC_PHASE_ENERGY_V1"
+      },
+      "row_column_diagonal_target": 75,
+      "schema": "HHS_WEIGHTED_LO_SHU_PHASE_TENSOR_V1",
+      "tensor_root_hash72": "R4H3IrjLV0BaN9(3nKZMLvUF3cBr!DQcg1ocJ)PQy!>+EZ6GuxdvUmQ(tRVrKUm?Vv0i6yiz",
+      "version": "PASS_067_1_LO_SHU_HARMONIC_PHASE_ENERGY_V1"
+    },
+    "x": {
+      "authority": "HHS_LO_SHU_GEOMETRY_AUTHORITY_V1",
+      "base_energy": [
+        40,
+        5,
+        30,
+        15,
+        25,
+        35,
+        20,
+        45,
+        10
+      ],
+      "behavior_evidence": [
+        {
+          "cooperation": {
+            "denominator": 3,
+            "numerator": 1
+          },
+          "dependency": {
+            "denominator": 9,
+            "numerator": 4
+          },
+          "independence": {
+            "denominator": 9,
+            "numerator": 1
+          },
+          "raw_pressure": {
+            "denominator": 54,
+            "numerator": -7
+          },
+          "reciprocal_penalty": {
+            "denominator": 27,
+            "numerator": 8
+          },
+          "reciprocal_reward": {
+            "denominator": 6,
+            "numerator": 1
+          },
+          "self_centering": {
+            "denominator": 9,
+            "numerator": 2
+          }
+        },
+        {
+          "cooperation": {
+            "denominator": 9,
+            "numerator": 1
+          },
+          "dependency": {
+            "denominator": 3,
+            "numerator": 2
+          },
+          "independence": {
+            "denominator": 3,
+            "numerator": 2
+          },
+          "raw_pressure": {
+            "denominator": 21,
+            "numerator": -10
+          },
+          "reciprocal_penalty": {
+            "denominator": 3,
+            "numerator": 2
+          },
+          "reciprocal_reward": {
+            "denominator": 21,
+            "numerator": 4
+          },
+          "self_centering": {
+            "denominator": 3,
+            "numerator": 2
+          }
+        },
+        {
+          "cooperation": {
+            "denominator": 9,
+            "numerator": 8
+          },
+          "dependency": {
+            "denominator": 9,
+            "numerator": 8
+          },
+          "independence": {
+            "denominator": 9,
+            "numerator": 2
+          },
+          "raw_pressure": {
+            "denominator": 405,
+            "numerator": 64
+          },
+          "reciprocal_penalty": {
+            "denominator": 81,
+            "numerator": 16
+          },
+          "reciprocal_reward": {
+            "denominator": 45,
+            "numerator": 16
+          },
+          "self_centering": {
+            "denominator": 9,
+            "numerator": 1
+          }
+        },
+        {
+          "cooperation": {
+            "denominator": 3,
+            "numerator": 2
+          },
+          "dependency": {
+            "denominator": 9,
+            "numerator": 1
+          },
+          "independence": {
+            "denominator": 9,
+            "numerator": 7
+          },
+          "raw_pressure": {
+            "denominator": 351,
+            "numerator": 187
+          },
+          "reciprocal_penalty": {
+            "denominator": 27,
+            "numerator": 5
+          },
+          "reciprocal_reward": {
+            "denominator": 39,
+            "numerator": 28
+          },
+          "self_centering": {
+            "denominator": 9,
+            "numerator": 5
+          }
+        },
+        {
+          "cooperation": {
+            "denominator": 9,
+            "numerator": 4
+          },
+          "dependency": {
+            "denominator": 3,
+            "numerator": 1
+          },
+          "independence": {
+            "denominator": 3,
+            "numerator": 1
+          },
+          "raw_pressure": {
+            "denominator": 42,
+            "numerator": -5
+          },
+          "reciprocal_penalty": {
+            "denominator": 2,
+            "numerator": 1
+          },
+          "reciprocal_reward": {
+            "denominator": 21,
+            "numerator": 8
+          },
+          "self_centering": {
+            "denominator": 1,
+            "numerator": 1
+          }
+        },
+        {
+          "cooperation": {
+            "denominator": 9,
+            "numerator": 2
+          },
+          "dependency": {
+            "denominator": 9,
+            "numerator": 5
+          },
+          "independence": {
+            "denominator": 9,
+            "numerator": 8
+          },
+          "raw_pressure": {
+            "denominator": 405,
+            "numerator": -56
+          },
+          "reciprocal_penalty": {
+            "denominator": 81,
+            "numerator": 40
+          },
+          "reciprocal_reward": {
+            "denominator": 45,
+            "numerator": 16
+          },
+          "self_centering": {
+            "denominator": 9,
+            "numerator": 4
+          }
+        },
+        {
+          "cooperation": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "dependency": {
+            "denominator": 9,
+            "numerator": 7
+          },
+          "independence": {
+            "denominator": 9,
+            "numerator": 4
+          },
+          "raw_pressure": {
+            "denominator": 1755,
+            "numerator": -376
+          },
+          "reciprocal_penalty": {
+            "denominator": 135,
+            "numerator": 112
+          },
+          "reciprocal_reward": {
+            "denominator": 13,
+            "numerator": 8
+          },
+          "self_centering": {
+            "denominator": 9,
+            "numerator": 8
+          }
+        },
+        {
+          "cooperation": {
+            "denominator": 9,
+            "numerator": 7
+          },
+          "dependency": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "independence": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "raw_pressure": {
+            "denominator": 8,
+            "numerator": 3
+          },
+          "reciprocal_penalty": {
+            "denominator": 2,
+            "numerator": 1
+          },
+          "reciprocal_reward": {
+            "denominator": 8,
+            "numerator": 7
+          },
+          "self_centering": {
+            "denominator": 3,
+            "numerator": 1
+          }
+        },
+        {
+          "cooperation": {
+            "denominator": 9,
+            "numerator": 5
+          },
+          "dependency": {
+            "denominator": 9,
+            "numerator": 2
+          },
+          "independence": {
+            "denominator": 9,
+            "numerator": 5
+          },
+          "raw_pressure": {
+            "denominator": 81,
+            "numerator": 17
+          },
+          "reciprocal_penalty": {
+            "denominator": 81,
+            "numerator": 28
+          },
+          "reciprocal_reward": {
+            "denominator": 9,
+            "numerator": 5
+          },
+          "self_centering": {
+            "denominator": 9,
+            "numerator": 7
+          }
+        }
+      ],
+      "cluster_energy": 225,
+      "energy_confers_authority": false,
+      "phase": "x",
+      "projection": {
+        "a": {
+          "denominator": 589680,
+          "numerator": -15661
+        },
+        "authority": "HHS_LO_SHU_GEOMETRY_AUTHORITY_V1",
+        "b": {
+          "denominator": 58968,
+          "numerator": -17053
+        },
+        "center_fixed": true,
+        "conservation": {
+          "cluster": {
+            "denominator": 1,
+            "numerator": 225
+          },
+          "columns": [
+            {
+              "denominator": 1,
+              "numerator": 75
+            },
+            {
+              "denominator": 1,
+              "numerator": 75
+            },
+            {
+              "denominator": 1,
+              "numerator": 75
+            }
+          ],
+          "diagonals": [
+            {
+              "denominator": 1,
+              "numerator": 75
+            },
+            {
+              "denominator": 1,
+              "numerator": 75
+            }
+          ],
+          "ok": true,
+          "rows": [
+            {
+              "denominator": 1,
+              "numerator": 75
+            },
+            {
+              "denominator": 1,
+              "numerator": 75
+            },
+            {
+              "denominator": 1,
+              "numerator": 75
+            }
+          ]
+        },
+        "delta": [
+          {
+            "denominator": 589680,
+            "numerator": -15661
+          },
+          {
+            "denominator": 58968,
+            "numerator": -17053
+          },
+          {
+            "denominator": 589680,
+            "numerator": 186191
+          },
+          {
+            "denominator": 260,
+            "numerator": 89
+          },
+          {
+            "denominator": 1,
+            "numerator": 0
+          },
+          {
+            "denominator": 260,
+            "numerator": -89
+          },
+          {
+            "denominator": 589680,
+            "numerator": -186191
+          },
+          {
+            "denominator": 58968,
+            "numerator": 17053
+          },
+          {
+            "denominator": 589680,
+            "numerator": 15661
+          }
+        ],
+        "final_energy": [
+          {
+            "denominator": 589680,
+            "numerator": 23571539
+          },
+          {
+            "denominator": 58968,
+            "numerator": 277787
+          },
+          {
+            "denominator": 589680,
+            "numerator": 17876591
+          },
+          {
+            "denominator": 260,
+            "numerator": 3989
+          },
+          {
+            "denominator": 1,
+            "numerator": 25
+          },
+          {
+            "denominator": 260,
+            "numerator": 9011
+          },
+          {
+            "denominator": 589680,
+            "numerator": 11607409
+          },
+          {
+            "denominator": 58968,
+            "numerator": 2670613
+          },
+          {
+            "denominator": 589680,
+            "numerator": 5912461
+          }
+        ],
+        "geometry_determines_redistribution": true,
+        "projection_root_hash72": "uMZkUT>!OUx7vr0iEgYz!iQ2CYv0ufHV<rD8zkhd/yvaK1TMd(BZITtlYQ?kLftveoib+Gwm",
+        "schema": "HHS_LO_SHU_REDISTRIBUTION_PROJECTION_V1",
+        "version": "PASS_067_1_LO_SHU_HARMONIC_PHASE_ENERGY_V1"
+      },
+      "row_column_diagonal_target": 75,
+      "schema": "HHS_WEIGHTED_LO_SHU_PHASE_TENSOR_V1",
+      "tensor_root_hash72": "w!t7bqo/q0xlsmjDpIcX8RyV5AG5B/pMXmD<2diSRY?O-f9Z>)E+8N?U(TV?9w>hsjbelzFx",
+      "version": "PASS_067_1_LO_SHU_HARMONIC_PHASE_ENERGY_V1"
+    },
+    "y": {
+      "authority": "HHS_LO_SHU_GEOMETRY_AUTHORITY_V1",
+      "base_energy": [
+        40,
+        5,
+        30,
+        15,
+        25,
+        35,
+        20,
+        45,
+        10
+      ],
+      "behavior_evidence": [
+        {
+          "cooperation": {
+            "denominator": 9,
+            "numerator": 1
+          },
+          "dependency": {
+            "denominator": 3,
+            "numerator": 2
+          },
+          "independence": {
+            "denominator": 3,
+            "numerator": 2
+          },
+          "raw_pressure": {
+            "denominator": 21,
+            "numerator": -10
+          },
+          "reciprocal_penalty": {
+            "denominator": 3,
+            "numerator": 2
+          },
+          "reciprocal_reward": {
+            "denominator": 21,
+            "numerator": 4
+          },
+          "self_centering": {
+            "denominator": 3,
+            "numerator": 2
+          }
+        },
+        {
+          "cooperation": {
+            "denominator": 9,
+            "numerator": 8
+          },
+          "dependency": {
+            "denominator": 9,
+            "numerator": 8
+          },
+          "independence": {
+            "denominator": 9,
+            "numerator": 2
+          },
+          "raw_pressure": {
+            "denominator": 405,
+            "numerator": 64
+          },
+          "reciprocal_penalty": {
+            "denominator": 81,
+            "numerator": 16
+          },
+          "reciprocal_reward": {
+            "denominator": 45,
+            "numerator": 16
+          },
+          "self_centering": {
+            "denominator": 9,
+            "numerator": 1
+          }
+        },
+        {
+          "cooperation": {
+            "denominator": 3,
+            "numerator": 2
+          },
+          "dependency": {
+            "denominator": 9,
+            "numerator": 1
+          },
+          "independence": {
+            "denominator": 9,
+            "numerator": 7
+          },
+          "raw_pressure": {
+            "denominator": 351,
+            "numerator": 187
+          },
+          "reciprocal_penalty": {
+            "denominator": 27,
+            "numerator": 5
+          },
+          "reciprocal_reward": {
+            "denominator": 39,
+            "numerator": 28
+          },
+          "self_centering": {
+            "denominator": 9,
+            "numerator": 5
+          }
+        },
+        {
+          "cooperation": {
+            "denominator": 9,
+            "numerator": 4
+          },
+          "dependency": {
+            "denominator": 3,
+            "numerator": 1
+          },
+          "independence": {
+            "denominator": 3,
+            "numerator": 1
+          },
+          "raw_pressure": {
+            "denominator": 42,
+            "numerator": -5
+          },
+          "reciprocal_penalty": {
+            "denominator": 2,
+            "numerator": 1
+          },
+          "reciprocal_reward": {
+            "denominator": 21,
+            "numerator": 8
+          },
+          "self_centering": {
+            "denominator": 1,
+            "numerator": 1
+          }
+        },
+        {
+          "cooperation": {
+            "denominator": 9,
+            "numerator": 2
+          },
+          "dependency": {
+            "denominator": 9,
+            "numerator": 5
+          },
+          "independence": {
+            "denominator": 9,
+            "numerator": 8
+          },
+          "raw_pressure": {
+            "denominator": 405,
+            "numerator": -56
+          },
+          "reciprocal_penalty": {
+            "denominator": 81,
+            "numerator": 40
+          },
+          "reciprocal_reward": {
+            "denominator": 45,
+            "numerator": 16
+          },
+          "self_centering": {
+            "denominator": 9,
+            "numerator": 4
+          }
+        },
+        {
+          "cooperation": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "dependency": {
+            "denominator": 9,
+            "numerator": 7
+          },
+          "independence": {
+            "denominator": 9,
+            "numerator": 4
+          },
+          "raw_pressure": {
+            "denominator": 1755,
+            "numerator": -376
+          },
+          "reciprocal_penalty": {
+            "denominator": 135,
+            "numerator": 112
+          },
+          "reciprocal_reward": {
+            "denominator": 13,
+            "numerator": 8
+          },
+          "self_centering": {
+            "denominator": 9,
+            "numerator": 8
+          }
+        },
+        {
+          "cooperation": {
+            "denominator": 9,
+            "numerator": 7
+          },
+          "dependency": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "independence": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "raw_pressure": {
+            "denominator": 8,
+            "numerator": 3
+          },
+          "reciprocal_penalty": {
+            "denominator": 2,
+            "numerator": 1
+          },
+          "reciprocal_reward": {
+            "denominator": 8,
+            "numerator": 7
+          },
+          "self_centering": {
+            "denominator": 3,
+            "numerator": 1
+          }
+        },
+        {
+          "cooperation": {
+            "denominator": 9,
+            "numerator": 5
+          },
+          "dependency": {
+            "denominator": 9,
+            "numerator": 2
+          },
+          "independence": {
+            "denominator": 9,
+            "numerator": 5
+          },
+          "raw_pressure": {
+            "denominator": 81,
+            "numerator": 17
+          },
+          "reciprocal_penalty": {
+            "denominator": 81,
+            "numerator": 28
+          },
+          "reciprocal_reward": {
+            "denominator": 9,
+            "numerator": 5
+          },
+          "self_centering": {
+            "denominator": 9,
+            "numerator": 7
+          }
+        },
+        {
+          "cooperation": {
+            "denominator": 3,
+            "numerator": 1
+          },
+          "dependency": {
+            "denominator": 9,
+            "numerator": 4
+          },
+          "independence": {
+            "denominator": 9,
+            "numerator": 1
+          },
+          "raw_pressure": {
+            "denominator": 54,
+            "numerator": -7
+          },
+          "reciprocal_penalty": {
+            "denominator": 27,
+            "numerator": 8
+          },
+          "reciprocal_reward": {
+            "denominator": 6,
+            "numerator": 1
+          },
+          "self_centering": {
+            "denominator": 9,
+            "numerator": 2
+          }
+        }
+      ],
+      "cluster_energy": 225,
+      "energy_confers_authority": false,
+      "phase": "y",
+      "projection": {
+        "a": {
+          "denominator": 7371,
+          "numerator": -479
+        },
+        "authority": "HHS_LO_SHU_GEOMETRY_AUTHORITY_V1",
+        "b": {
+          "denominator": 589680,
+          "numerator": 8363
+        },
+        "center_fixed": true,
+        "conservation": {
+          "cluster": {
+            "denominator": 1,
+            "numerator": 225
+          },
+          "columns": [
+            {
+              "denominator": 1,
+              "numerator": 75
+            },
+            {
+              "denominator": 1,
+              "numerator": 75
+            },
+            {
+              "denominator": 1,
+              "numerator": 75
+            }
+          ],
+          "diagonals": [
+            {
+              "denominator": 1,
+              "numerator": 75
+            },
+            {
+              "denominator": 1,
+              "numerator": 75
+            }
+          ],
+          "ok": true,
+          "rows": [
+            {
+              "denominator": 1,
+              "numerator": 75
+            },
+            {
+              "denominator": 1,
+              "numerator": 75
+            },
+            {
+              "denominator": 1,
+              "numerator": 75
+            }
+          ]
+        },
+        "delta": [
+          {
+            "denominator": 7371,
+            "numerator": -479
+          },
+          {
+            "denominator": 589680,
+            "numerator": 8363
+          },
+          {
+            "denominator": 589680,
+            "numerator": 29957
+          },
+          {
+            "denominator": 196560,
+            "numerator": 22759
+          },
+          {
+            "denominator": 1,
+            "numerator": 0
+          },
+          {
+            "denominator": 196560,
+            "numerator": -22759
+          },
+          {
+            "denominator": 589680,
+            "numerator": -29957
+          },
+          {
+            "denominator": 589680,
+            "numerator": -8363
+          },
+          {
+            "denominator": 7371,
+            "numerator": 479
+          }
+        ],
+        "final_energy": [
+          {
+            "denominator": 7371,
+            "numerator": 294361
+          },
+          {
+            "denominator": 589680,
+            "numerator": 2956763
+          },
+          {
+            "denominator": 589680,
+            "numerator": 17720357
+          },
+          {
+            "denominator": 196560,
+            "numerator": 2971159
+          },
+          {
+            "denominator": 1,
+            "numerator": 25
+          },
+          {
+            "denominator": 196560,
+            "numerator": 6856841
+          },
+          {
+            "denominator": 589680,
+            "numerator": 11763643
+          },
+          {
+            "denominator": 589680,
+            "numerator": 26527237
+          },
+          {
+            "denominator": 7371,
+            "numerator": 74189
+          }
+        ],
+        "geometry_determines_redistribution": true,
+        "projection_root_hash72": "KHd4fuCa0TRSGZqFEeJ1cYZS-l4JUcLlRUhO0gd+/A+sRu?ASLlT3ZVAaGR5GptHUlRK*NM8",
+        "schema": "HHS_LO_SHU_REDISTRIBUTION_PROJECTION_V1",
+        "version": "PASS_067_1_LO_SHU_HARMONIC_PHASE_ENERGY_V1"
+      },
+      "row_column_diagonal_target": 75,
+      "schema": "HHS_WEIGHTED_LO_SHU_PHASE_TENSOR_V1",
+      "tensor_root_hash72": "l</MsQT-GA(*F3qOl<9W1W>OzbghE>)4NyV4Qb2wZ9DCPLmMm(oj9gEI<>vZjm2>mFLQjjb<",
+      "version": "PASS_067_1_LO_SHU_HARMONIC_PHASE_ENERGY_V1"
+    },
+    "z": {
+      "authority": "HHS_LO_SHU_GEOMETRY_AUTHORITY_V1",
+      "base_energy": [
+        40,
+        5,
+        30,
+        15,
+        25,
+        35,
+        20,
+        45,
+        10
+      ],
+      "behavior_evidence": [
+        {
+          "cooperation": {
+            "denominator": 9,
+            "numerator": 8
+          },
+          "dependency": {
+            "denominator": 9,
+            "numerator": 8
+          },
+          "independence": {
+            "denominator": 9,
+            "numerator": 2
+          },
+          "raw_pressure": {
+            "denominator": 405,
+            "numerator": 64
+          },
+          "reciprocal_penalty": {
+            "denominator": 81,
+            "numerator": 16
+          },
+          "reciprocal_reward": {
+            "denominator": 45,
+            "numerator": 16
+          },
+          "self_centering": {
+            "denominator": 9,
+            "numerator": 1
+          }
+        },
+        {
+          "cooperation": {
+            "denominator": 3,
+            "numerator": 2
+          },
+          "dependency": {
+            "denominator": 9,
+            "numerator": 1
+          },
+          "independence": {
+            "denominator": 9,
+            "numerator": 7
+          },
+          "raw_pressure": {
+            "denominator": 351,
+            "numerator": 187
+          },
+          "reciprocal_penalty": {
+            "denominator": 27,
+            "numerator": 5
+          },
+          "reciprocal_reward": {
+            "denominator": 39,
+            "numerator": 28
+          },
+          "self_centering": {
+            "denominator": 9,
+            "numerator": 5
+          }
+        },
+        {
+          "cooperation": {
+            "denominator": 9,
+            "numerator": 4
+          },
+          "dependency": {
+            "denominator": 3,
+            "numerator": 1
+          },
+          "independence": {
+            "denominator": 3,
+            "numerator": 1
+          },
+          "raw_pressure": {
+            "denominator": 42,
+            "numerator": -5
+          },
+          "reciprocal_penalty": {
+            "denominator": 2,
+            "numerator": 1
+          },
+          "reciprocal_reward": {
+            "denominator": 21,
+            "numerator": 8
+          },
+          "self_centering": {
+            "denominator": 1,
+            "numerator": 1
+          }
+        },
+        {
+          "cooperation": {
+            "denominator": 9,
+            "numerator": 2
+          },
+          "dependency": {
+            "denominator": 9,
+            "numerator": 5
+          },
+          "independence": {
+            "denominator": 9,
+            "numerator": 8
+          },
+          "raw_pressure": {
+            "denominator": 405,
+            "numerator": -56
+          },
+          "reciprocal_penalty": {
+            "denominator": 81,
+            "numerator": 40
+          },
+          "reciprocal_reward": {
+            "denominator": 45,
+            "numerator": 16
+          },
+          "self_centering": {
+            "denominator": 9,
+            "numerator": 4
+          }
+        },
+        {
+          "cooperation": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "dependency": {
+            "denominator": 9,
+            "numerator": 7
+          },
+          "independence": {
+            "denominator": 9,
+            "numerator": 4
+          },
+          "raw_pressure": {
+            "denominator": 1755,
+            "numerator": -376
+          },
+          "reciprocal_penalty": {
+            "denominator": 135,
+            "numerator": 112
+          },
+          "reciprocal_reward": {
+            "denominator": 13,
+            "numerator": 8
+          },
+          "self_centering": {
+            "denominator": 9,
+            "numerator": 8
+          }
+        },
+        {
+          "cooperation": {
+            "denominator": 9,
+            "numerator": 7
+          },
+          "dependency": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "independence": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "raw_pressure": {
+            "denominator": 8,
+            "numerator": 3
+          },
+          "reciprocal_penalty": {
+            "denominator": 2,
+            "numerator": 1
+          },
+          "reciprocal_reward": {
+            "denominator": 8,
+            "numerator": 7
+          },
+          "self_centering": {
+            "denominator": 3,
+            "numerator": 1
+          }
+        },
+        {
+          "cooperation": {
+            "denominator": 9,
+            "numerator": 5
+          },
+          "dependency": {
+            "denominator": 9,
+            "numerator": 2
+          },
+          "independence": {
+            "denominator": 9,
+            "numerator": 5
+          },
+          "raw_pressure": {
+            "denominator": 81,
+            "numerator": 17
+          },
+          "reciprocal_penalty": {
+            "denominator": 81,
+            "numerator": 28
+          },
+          "reciprocal_reward": {
+            "denominator": 9,
+            "numerator": 5
+          },
+          "self_centering": {
+            "denominator": 9,
+            "numerator": 7
+          }
+        },
+        {
+          "cooperation": {
+            "denominator": 3,
+            "numerator": 1
+          },
+          "dependency": {
+            "denominator": 9,
+            "numerator": 4
+          },
+          "independence": {
+            "denominator": 9,
+            "numerator": 1
+          },
+          "raw_pressure": {
+            "denominator": 54,
+            "numerator": -7
+          },
+          "reciprocal_penalty": {
+            "denominator": 27,
+            "numerator": 8
+          },
+          "reciprocal_reward": {
+            "denominator": 6,
+            "numerator": 1
+          },
+          "self_centering": {
+            "denominator": 9,
+            "numerator": 2
+          }
+        },
+        {
+          "cooperation": {
+            "denominator": 9,
+            "numerator": 1
+          },
+          "dependency": {
+            "denominator": 3,
+            "numerator": 2
+          },
+          "independence": {
+            "denominator": 3,
+            "numerator": 2
+          },
+          "raw_pressure": {
+            "denominator": 21,
+            "numerator": -10
+          },
+          "reciprocal_penalty": {
+            "denominator": 3,
+            "numerator": 2
+          },
+          "reciprocal_reward": {
+            "denominator": 21,
+            "numerator": 4
+          },
+          "self_centering": {
+            "denominator": 3,
+            "numerator": 2
+          }
+        }
+      ],
+      "cluster_energy": 225,
+      "energy_confers_authority": false,
+      "phase": "z",
+      "projection": {
+        "a": {
+          "denominator": 117936,
+          "numerator": 9535
+        },
+        "authority": "HHS_LO_SHU_GEOMETRY_AUTHORITY_V1",
+        "b": {
+          "denominator": 147420,
+          "numerator": 25049
+        },
+        "center_fixed": true,
+        "conservation": {
+          "cluster": {
+            "denominator": 1,
+            "numerator": 225
+          },
+          "columns": [
+            {
+              "denominator": 1,
+              "numerator": 75
+            },
+            {
+              "denominator": 1,
+              "numerator": 75
+            },
+            {
+              "denominator": 1,
+              "numerator": 75
+            }
+          ],
+          "diagonals": [
+            {
+              "denominator": 1,
+              "numerator": 75
+            },
+            {
+              "denominator": 1,
+              "numerator": 75
+            }
+          ],
+          "ok": true,
+          "rows": [
+            {
+              "denominator": 1,
+              "numerator": 75
+            },
+            {
+              "denominator": 1,
+              "numerator": 75
+            },
+            {
+              "denominator": 1,
+              "numerator": 75
+            }
+          ]
+        },
+        "delta": [
+          {
+            "denominator": 117936,
+            "numerator": 9535
+          },
+          {
+            "denominator": 147420,
+            "numerator": 25049
+          },
+          {
+            "denominator": 589680,
+            "numerator": -147871
+          },
+          {
+            "denominator": 7560,
+            "numerator": -2507
+          },
+          {
+            "denominator": 1,
+            "numerator": 0
+          },
+          {
+            "denominator": 7560,
+            "numerator": 2507
+          },
+          {
+            "denominator": 589680,
+            "numerator": 147871
+          },
+          {
+            "denominator": 147420,
+            "numerator": -25049
+          },
+          {
+            "denominator": 117936,
+            "numerator": -9535
+          }
+        ],
+        "final_energy": [
+          {
+            "denominator": 117936,
+            "numerator": 4726975
+          },
+          {
+            "denominator": 147420,
+            "numerator": 762149
+          },
+          {
+            "denominator": 589680,
+            "numerator": 17542529
+          },
+          {
+            "denominator": 7560,
+            "numerator": 110893
+          },
+          {
+            "denominator": 1,
+            "numerator": 25
+          },
+          {
+            "denominator": 7560,
+            "numerator": 267107
+          },
+          {
+            "denominator": 589680,
+            "numerator": 11941471
+          },
+          {
+            "denominator": 147420,
+            "numerator": 6608851
+          },
+          {
+            "denominator": 117936,
+            "numerator": 1169825
+          }
+        ],
+        "geometry_determines_redistribution": true,
+        "projection_root_hash72": "i(762b9v)cBvZg!p2<NE?sOdXBrs3Z>5()kZ4DG8a?zEN1YRnmZvbw9t3aE+H7/FYts*Fa>o",
+        "schema": "HHS_LO_SHU_REDISTRIBUTION_PROJECTION_V1",
+        "version": "PASS_067_1_LO_SHU_HARMONIC_PHASE_ENERGY_V1"
+      },
+      "row_column_diagonal_target": 75,
+      "schema": "HHS_WEIGHTED_LO_SHU_PHASE_TENSOR_V1",
+      "tensor_root_hash72": ">dsc/R7FtK9K7ZHksVJ!qnR)PXcWtxL9o?GbOj2G*RXlJJuT71xQfd0tuSIPi3zKaO(vnnra",
+      "version": "PASS_067_1_LO_SHU_HARMONIC_PHASE_ENERGY_V1"
+    }
+  }
+}

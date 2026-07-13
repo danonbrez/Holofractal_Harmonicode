@@ -1,0 +1,26 @@
+{
+  "contract": {
+    "api_proxy": "/api -> http://127.0.0.1:8000",
+    "forbidden": [
+      "synthetic runtime event generation",
+      "stub websocket payloads",
+      "runtime authority in Node"
+    ],
+    "node_role": "GUI_PROXY_ONLY",
+    "runtime_authority": "hhs_backend.server:app",
+    "schema": "HHS_NODE_PROXY_CONTRACT_V1",
+    "version": "PASS_045_NODE_PROXY_CONTRACT_V1",
+    "websocket_proxy": "/ws -> ws://127.0.0.1:8000"
+  },
+  "ok": true,
+  "schema": "HHS_NODE_PROXY_CONTRACT_SELF_TEST_V1",
+  "validation": {
+    "file": "/mnt/data/pass045_work/repo/hhs_runtime/runtime_ws_server.py",
+    "forbidden_tokens_found": [],
+    "ok": true,
+    "schema": "HHS_NODE_PROXY_STUB_VALIDATION_V1",
+    "status": "NODE_RUNTIME_STUB_DEPRECATED",
+    "version": "PASS_045_NODE_PROXY_CONTRACT_V1"
+  },
+  "version": "PASS_045_NODE_PROXY_CONTRACT_V1"
+}

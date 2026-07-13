@@ -1,0 +1,231 @@
+{
+  "allowed_scope": [
+    "relation:02",
+    "relation:05"
+  ],
+  "authority": "HHS_DETERMINISTIC_MANIFOLD_EXECUTION_AUTHORITY_V1",
+  "cancelled_relations": [
+    {
+      "cancellation": "PHASE_FRAME_CORRECTION_ONLY",
+      "relation_id": "relation:02",
+      "source_relation_preserved": true
+    },
+    {
+      "cancellation": "PHASE_FRAME_CORRECTION_ONLY",
+      "relation_id": "relation:05",
+      "source_relation_preserved": true
+    }
+  ],
+  "constraint_propagation_root_hash72": ">7IdEjzHUiY1lRkU)/faBzyM!>1w9s!M>1K73/JczJ*SanQE20<IGsyxmV7Dmw0iB-/GOK-g",
+  "local_conflict_set_root_hash72": "6cPKAFUHk1o3ZTY)dDo6kPf/hts1B-4Jk(7n!4v8EIjg5b3f3hFsCt()egVZOs1t/1?<se7d",
+  "minimum_necessary_cancellation": true,
+  "negative_phase_acquired_global_rejection_authority": false,
+  "phase_cancellation_root_hash72": "N2Yg?fhiE+I/!sBsIj6rv(S>0BneYbC?EPZ>?hAb1utay7afxN5R*Yb(qLIHonckiMpZHzaf",
+  "reasons": [],
+  "requested_scope": [
+    "relation:02",
+    "relation:05"
+  ],
+  "schema": "HHS_SCOPED_RECIPROCAL_PHASE_CANCELLATION_V1",
+  "status": "ADMIT_SCOPED_PHASE_CANCELLATION",
+  "surviving_relations": [
+    {
+      "active": true,
+      "derived_scope": [
+        "relation:00"
+      ],
+      "propagation_status": "PRESERVED",
+      "relation": {
+        "members": [
+          "x",
+          "y",
+          "0",
+          "1"
+        ],
+        "relation": "DISTINCT"
+      },
+      "relation_id": "relation:00",
+      "source": "PASS_062_XYZW_ALGEBRA"
+    },
+    {
+      "active": true,
+      "derived_scope": [
+        "relation:01"
+      ],
+      "propagation_status": "PRESERVED",
+      "relation": {
+        "members": [
+          "i",
+          "x",
+          "y",
+          "xy",
+          "yx"
+        ],
+        "relation": "DISTINCT"
+      },
+      "relation_id": "relation:01",
+      "source": "PASS_062_XYZW_ALGEBRA"
+    },
+    {
+      "active": true,
+      "derived_scope": [
+        "relation:03"
+      ],
+      "propagation_status": "PRESERVED",
+      "relation": {
+        "expression": "x = 1/y",
+        "lhs": "x",
+        "relation": "RECIPROCAL",
+        "rhs": "1/y"
+      },
+      "relation_id": "relation:03",
+      "source": "PASS_062_XYZW_ALGEBRA"
+    },
+    {
+      "active": true,
+      "derived_scope": [
+        "relation:04"
+      ],
+      "propagation_status": "PRESERVED",
+      "relation": {
+        "expression": "y = -x",
+        "lhs": "y",
+        "relation": "PHASE_INVERSE",
+        "rhs": "-x"
+      },
+      "relation_id": "relation:04",
+      "source": "PASS_062_XYZW_ALGEBRA"
+    },
+    {
+      "active": true,
+      "derived_scope": [
+        "relation:06"
+      ],
+      "propagation_status": "PRESERVED",
+      "relation": {
+        "frame": "RECIPROCAL_PRODUCT_CLOSURE",
+        "lhs": "yx",
+        "relation": "NORMALIZED_UNIT",
+        "rhs": "1"
+      },
+      "relation_id": "relation:06",
+      "source": "PASS_062_XYZW_ALGEBRA"
+    },
+    {
+      "active": true,
+      "derived_scope": [
+        "relation:07"
+      ],
+      "propagation_status": "PRESERVED",
+      "relation": {
+        "canonical_ratio": "I:I^3 = 1:-1",
+        "lhs": [
+          "x",
+          "y"
+        ],
+        "relation": "ORIENTED_RATIO",
+        "rhs": [
+          "xy",
+          "yx"
+        ]
+      },
+      "relation_id": "relation:07",
+      "source": "PASS_062_XYZW_ALGEBRA"
+    },
+    {
+      "active": true,
+      "derived_scope": [
+        "relation:08"
+      ],
+      "propagation_status": "PRESERVED",
+      "relation": {
+        "relation": "ZERO_SUM",
+        "result": "0",
+        "terms": [
+          "x",
+          "y",
+          "xy",
+          "yx"
+        ]
+      },
+      "relation_id": "relation:08",
+      "source": "PASS_062_XYZW_ALGEBRA"
+    },
+    {
+      "active": true,
+      "derived_scope": [
+        "relation:09"
+      ],
+      "propagation_status": "PRESERVED",
+      "relation": {
+        "lhs": "xyx",
+        "relation": "BRAID",
+        "rhs": "yxy"
+      },
+      "relation_id": "relation:09",
+      "source": "PASS_062_XYZW_ALGEBRA"
+    },
+    {
+      "active": true,
+      "derived_scope": [
+        "relation:10"
+      ],
+      "propagation_status": "PRESERVED",
+      "relation": {
+        "members": [
+          "X",
+          "xy",
+          "z"
+        ],
+        "relation": "ALIAS"
+      },
+      "relation_id": "relation:10",
+      "source": "PASS_062_XYZW_ALGEBRA"
+    },
+    {
+      "active": true,
+      "derived_scope": [
+        "relation:11"
+      ],
+      "propagation_status": "PRESERVED",
+      "relation": {
+        "members": [
+          "Y",
+          "yx",
+          "w"
+        ],
+        "relation": "ALIAS"
+      },
+      "relation_id": "relation:11",
+      "source": "PASS_062_XYZW_ALGEBRA"
+    },
+    {
+      "active": true,
+      "derived_scope": [
+        "relation:12"
+      ],
+      "propagation_status": "PRESERVED",
+      "relation": {
+        "expression": "xyXY = xyzw = 1",
+        "relation": "GLOBAL_PRODUCT_CLOSURE"
+      },
+      "relation_id": "relation:12",
+      "source": "PASS_062_XYZW_ALGEBRA"
+    },
+    {
+      "active": true,
+      "derived_scope": [
+        "relation:13"
+      ],
+      "propagation_status": "PRESERVED",
+      "relation": {
+        "expression": "x + y - z - w = 0",
+        "relation": "TOPOLOGICAL_BALANCE"
+      },
+      "relation_id": "relation:13",
+      "source": "PASS_062_XYZW_ALGEBRA"
+    }
+  ],
+  "unaffected_structure_preserved": true,
+  "version": "PASS_063_DETERMINISTIC_MANIFOLD_EXECUTION_SCOPED_PHASE_CANCELLATION_V1"
+}

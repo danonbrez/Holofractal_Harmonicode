@@ -130,10 +130,10 @@ export const RuntimeSidebar: React.FC<
                 </div>
 
                 <div>
-                    workspace:
+                    windows:
                     {" "}
                     {
-                        runtimeOS.workspace.id
+                        metrics.workspaceWindows
                     }
                 </div>
 

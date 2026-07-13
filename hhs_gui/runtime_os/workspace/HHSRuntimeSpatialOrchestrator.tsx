@@ -843,7 +843,8 @@ React.FC<
                                     text-sm
                                     font-semibold
                                     text-cyan-300
-                                >
+                                "
+                            >
                                     Runtime Telemetry
                                 </div>
 

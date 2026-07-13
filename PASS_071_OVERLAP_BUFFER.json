@@ -1,0 +1,72 @@
+{
+  "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+  "context_capsule": {
+    "active_forward_pass": "PASS_071",
+    "binary_operator_set": [
+      "AND",
+      "OR",
+      "XOR",
+      "NAND",
+      "NOR",
+      "XNOR"
+    ],
+    "canonical_parent_pass": "PASS_070",
+    "fixed_invariants": [
+      "SOURCE_IDENTITY_PRESERVED",
+      "TRINARY_SWITCH_REVERSIBLE",
+      "PLASTIC_GRADIENT_MEDIATES",
+      "ZERO_SUM_CLOSES",
+      "AUTHORITY_REMAINS_BOUNDED",
+      "HASH72_WITNESSES_CONTINUITY"
+    ],
+    "forbidden_substitutions": [
+      "THREAD_MEMORY_AS_CANONICAL_SOURCE",
+      "LINGUISTIC_RECONSTRUCTION_AS_OPERATOR_AUTHORITY",
+      "ENERGY_MINIMUM_AS_AUTHORITY",
+      "FOLDING_TOPOLOGY_AS_SOURCE_REWRITE"
+    ],
+    "phase_states": [
+      "x",
+      "y",
+      "z",
+      "w",
+      "xy",
+      "yx",
+      "zw",
+      "wz"
+    ],
+    "resume_rule": "REBUILD_FROM_COMMITTED_ROOTS_NOT_THREAD_CONTEXT",
+    "source_mapping": {
+      "00": [
+        0,
+        0
+      ],
+      "01": [
+        1,
+        0
+      ],
+      "10": [
+        -1,
+        0
+      ],
+      "11": [
+        0,
+        1
+      ]
+    },
+    "three_lane_order": [
+      "POSITIVE",
+      "PLASTIC",
+      "ZERO_SUM"
+    ]
+  },
+  "context_capsule_complete": true,
+  "context_reset_permitted": false,
+  "handoff_root_hash72": "+U7+QHsPu?Lo>VH6-n7JyM1hrkBcjkpbwr2drDZ0YG4vS)XycwVRg-RO8XdOaLWTXkF66rR3",
+  "overlap_root_hash72": "76A9BfCvc9!Hj9x7M5(WWRqXp7Vppp>qVQ(>xAG+2cRQJxrx6FRkBuw0Ve!InZps8rkxYNJN",
+  "pass070_root_hash72": "4x7/dTn<Q5axZHyM/OryqrIl6ZJGuWKugBOKSjR054M)*SZbVZ0M!<bD3vd9Y1+FT!sQRr(T",
+  "schema": "HHS_PASS_OVERLAP_BUFFER_V1",
+  "source_and_projection_overlap_preserved": true,
+  "thread_context_required_for_resume": false,
+  "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+}

@@ -1,0 +1,2 @@
+from .hhs_universal_binary_trinary_translation_v1 import universal_binary_trinary_translation_self_test
+def self_test(): return universal_binary_trinary_translation_self_test()

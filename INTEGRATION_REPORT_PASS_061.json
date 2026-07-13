@@ -1,0 +1,17 @@
+{
+  "conformance_edge_count": 2912,
+  "name": "Bounded Rejection Authority and Minimal Corrective Propagation",
+  "ok": true,
+  "orphan_count": 0,
+  "pass": "061",
+  "permanent_denial_authority": false,
+  "propagation_minimal": true,
+  "rejection_global_effect": false,
+  "release_requires_revalidation": true,
+  "run_root_hash72": "6d7I07gwWyEl9HzMaH/AlFd7GhJ2D)qP3gp<s6svLG63*Vt<xO>gPL?2qbFO+Gwt14t/H-wM",
+  "schema": "HHS_PASS_061_INTEGRATION_REPORT_V1",
+  "service_count": 187,
+  "surface_count": 210,
+  "underived_service_count": 0,
+  "underived_surface_count": 0
+}

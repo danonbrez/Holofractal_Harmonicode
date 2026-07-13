@@ -1,0 +1,12 @@
+{
+  "authority": "HHS_PASS072_TOTAL_SYSTEM_CLOSURE_AUTHORITY_V1",
+  "checkpoint_root_hash72": "uVf4yRk0Uxj8A1MrGMhruCPZ4)SB5QuVR/hf0DE/Y8I1JBAJ(R*WCfR57t1iUJjF4uX7aPp+",
+  "context_reset_occurred": false,
+  "parent_root_matches": true,
+  "resume_receipt_root_hash72": "!I>E9ndUm+U)h3b)QI34KN9mhJn7NQuZ+GhJxLe7X/Jg7-MVfs?Oll6qjQEWev/fBhYs(y/T",
+  "resumed": true,
+  "resumed_without_thread_context": true,
+  "schema": "HHS_PASS072_RESUME_RECEIPT_V1",
+  "total_system_root_matches": true,
+  "version": "PASS_072_TOTAL_SYSTEM_RECURSIVE_HOLOGRAPHIC_CLOSURE_V1"
+}

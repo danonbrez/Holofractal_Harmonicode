@@ -1,0 +1,56 @@
+{
+  "handoffs": [
+    {
+      "allowed_interpretive_freedom": [
+        "LOCAL_CODE_ORGANIZATION",
+        "NONSEMANTIC_NAMING",
+        "PERFORMANCE_OPTIMIZATION_WITH_EQUIVALENCE_PROOF"
+      ],
+      "authority": "HHS_I019_CANONICAL_DERIVATION_AUTHORITY_BOUNDARY_V1",
+      "handoff_id": "handoff:pass054-module",
+      "handoff_root_hash72": "p8q*yaDidP-MPtX2t74goj!fUZOP2JwIhRnrP27IxUzr0O8sbP*0e!UESH4UR3Tut9q)YJd!",
+      "receiver_role_id": "role:audit-agent",
+      "required_return_evidence": [
+        "PATCH_ROOT",
+        "TEST_ROOT",
+        "REACHABILITY_ROOT",
+        "CONFORMANCE_ROOT"
+      ],
+      "return_evidence": {
+        "CONFORMANCE_ROOT": "toIR3G-DF?fG(a018lILdmoKOuIhu!?XHJwQssx*PW(!>Hz(M-rqxZv3qgF!7TSBDiFoFi>E",
+        "PATCH_ROOT": ">xFErO0Xc50NTU0YggHb<PqrO6)!PbfdF1ivV!VEqYGUlkrTp>kaz*1NMvxizizc+!+hq(Pe",
+        "REACHABILITY_ROOT": "B?AejI4JJG(Y66R98h2WEH3T44Q*As6V4-!x7dwLNO?aTkLg)N+sry-w4rhG?8UTCEiGpGjy",
+        "TEST_ROOT": "+t!Z9C46454jItP97->3lJ<kQJOwd7roS/wNzfzdXFTkjqSo<j9y+0MLuwiyhyb->-gp/ON0"
+      },
+      "schema": "HHS_CROSS_ROLE_HANDOFF_V1",
+      "semantic_fields_to_preserve": [
+        "INVARIANTS",
+        "AUTHORITY_BOUNDARIES",
+        "REJECTION_CONDITIONS",
+        "COMPLETION_CRITERIA"
+      ],
+      "sender_role_id": "role:implementation-agent",
+      "source_object_ids": [
+        "task:pass054-module"
+      ],
+      "source_root_hash72s": [
+        "V(mSoSgeie2OK7iEc5lpbH2wlaZ5MJz/kE9mrqRtPSEYG1op6<P*6XRsIJU7N/?e3U-)0<dr",
+        "I?MBmQxc6rgD1TYugggsaK+Ym5)RArEXl)7Hq-j8iyD(AeKHv<xRWPvK)L!QS)fEqo8><//y"
+      ],
+      "version": "PASS_054_CANONICAL_AUTHORITY_GRAPH_ROLE_BOUND_AGENT_ORCHESTRATION_V1"
+    }
+  ],
+  "schema": "HHS_CROSS_ROLE_HANDOFF_REGISTRY_PASS_054_V1",
+  "validation": [
+    {
+      "authority": "HHS_I019_CANONICAL_DERIVATION_AUTHORITY_BOUNDARY_V1",
+      "decision_root_hash72": "meXLXj0RIDP1wdY/gAE31gYNBkGhx?BC+tP0Ty4rNOXG?azz-2)z6pLBHGsvxc+hKBxOO6E0",
+      "missing_evidence": [],
+      "ok": true,
+      "reasons": [],
+      "schema": "HHS_HANDOFF_PROVENANCE_DECISION_V1",
+      "status": "ADMIT_CROSS_ROLE_HANDOFF",
+      "version": "PASS_054_CANONICAL_AUTHORITY_GRAPH_ROLE_BOUND_AGENT_ORCHESTRATION_V1"
+    }
+  ]
+}

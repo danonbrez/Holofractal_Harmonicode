@@ -1,0 +1,2 @@
+from .hhs_lo_shu_harmonic_phase_energy_v1 import harmonic_phase_energy_self_test
+def self_test(): return harmonic_phase_energy_self_test()

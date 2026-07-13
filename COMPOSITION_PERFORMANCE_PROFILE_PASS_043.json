@@ -1,0 +1,38 @@
+{
+  "cache_reuse": {
+    "cache_entry_count": 1,
+    "expanded_metadata_persisted": false,
+    "first_cache_hit": false,
+    "operation": "authority_gate_self_test",
+    "schema": "HHS_COMPOSITION_CACHE_REUSE_PROFILE_V1",
+    "second_cache_hit": true,
+    "surface_id": "service:authority_gate.self_test",
+    "version": "PASS_043_KERNEL_DERIVED_RUNTIME_AUTOCOMPOSITION_V1"
+  },
+  "conformance_edge_count": 742,
+  "decay_lifecycle": {
+    "decay_status": "EXPANDED_STATE_SELF_DELETED",
+    "decay_witness_hash72": "jtPl7M**UvOEz3G/Fml0XBq+nVo1y61VY+2hA91rQFQ6rq+xj81DNWWwQFYZwo*S-(T8aVzz",
+    "expanded_payload_persisted_after_decay": false,
+    "registered_root_hash72": "dYheHt3XN-!kIi+htZX<8KCgdb25jTVxh4yLmKJv/30EOFRGUHXI-J/K<oaO!K<Z1S4kJA?L",
+    "schema": "HHS_DECAY_LIFECYCLE_PERFORMANCE_PROFILE_V1",
+    "version": "PASS_043_KERNEL_DERIVED_RUNTIME_AUTOCOMPOSITION_V1"
+  },
+  "expanded_vs_compact": {
+    "bytes_saved": 963835,
+    "compact_bytes": 4848,
+    "compression_ratio": 199.8108498349835,
+    "expanded_bytes": 968683,
+    "expanded_payload_persisted": false,
+    "profile_hash72": "XXFDY9ncWT6b**ZnR?U2zs-UQyG9pmXBeqGXy!qQekOnhL-GTb/xA7?*NzRXt)WDlXXpOo7j",
+    "residue_root_hash72": "LxzqS9Oy73ajEj!HFDDA)TAT5m1tWc(!Ke+ixu231kb<uPZRDsIVp+VtKXZKcXcMLFfjUH+Z",
+    "schema": "HHS_COMPOSITION_PERFORMANCE_PROFILE_V1",
+    "version": "PASS_043_KERNEL_DERIVED_RUNTIME_AUTOCOMPOSITION_V1"
+  },
+  "ok": true,
+  "performance_doctrine": "VALIDATION_MAY_EXPAND_PERSISTENCE_MUST_COMPRESS",
+  "performance_root_hash72": "J*bj4aGSeAjiZxQhn<hkYVPXi!VPR/uLXjsft>JGgdlvH<E?K><u+pB!1XTB+7nb*?vSK>DY",
+  "schema": "HHS_RUNTIME_COMPOSITION_PERFORMANCE_PROFILE_REPORT_V1",
+  "surface_count": 58,
+  "version": "PASS_043_KERNEL_DERIVED_RUNTIME_AUTOCOMPOSITION_V1"
+}

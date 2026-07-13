@@ -1,0 +1,15 @@
+{
+  "merge_policy": {
+    "authority": "HHS_I019_CANONICAL_FEDERATED_STATE_RECONCILIATION_V1",
+    "merge_policy_root_hash72": "b80IwMK2eZKPiv/mUT20+<otivqiE<7vH+10Jh)MmjGg)hdkmPz7??pxMND(5F(<QOJvJh5H",
+    "policy_id": "PRESERVE_CONFLICTS_REQUIRE_EXPLICIT_RESOLUTION",
+    "remote_clock_establishes_precedence": false,
+    "requires_common_ancestor": true,
+    "requires_local_revalidation": true,
+    "schema": "HHS_CONFLICT_PRESERVING_MERGE_POLICY_V1",
+    "silent_overwrite_allowed": false,
+    "unresolved_conflicts_remain_typed": true,
+    "version": "PASS_058_CANONICAL_FEDERATED_STATE_RECONCILIATION_CONFLICT_PRESERVING_MERGE_V1"
+  },
+  "schema": "HHS_CONFLICT_PRESERVING_MERGE_POLICY_PASS_058_V1"
+}

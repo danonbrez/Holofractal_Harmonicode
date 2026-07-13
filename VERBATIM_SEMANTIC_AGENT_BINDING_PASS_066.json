@@ -1,0 +1,50 @@
+{
+  "experiences": [
+    {
+      "abstraction_replaces_source": false,
+      "agent_id": "agent:minimal-direct",
+      "agent_identity_root_hash72": "Jn<kpK?CF6p8TU2K0<18l/FpyKIaaJmThoWT)maZM+qqkhRaL>9LVolLXdPk?zWUEsF1dxKX",
+      "authority": "HHS_EVOLUTIONARY_AGENT_IDENTITY_AUTHORITY_V1",
+      "constraint_id": "constraint:A=B:integration",
+      "experience_root_hash72": "TT9XiJ0kliogL<yD8A8Hk-enEvPS3QikPSIKU)oOWy0PC+I+ZGKkgo!H680o17TyGiMlqm6S",
+      "outcome": "CLOSED",
+      "provenance_complete": true,
+      "schema": "HHS_AGENT_EXPERIENCE_COMMITMENT_V1",
+      "source_preserved_verbatim": true,
+      "strategy": "DIRECT_RECIPROCAL_ALIGNMENT",
+      "verbatim_source_root_hash72": ">lR/hOxzcn?<AHJhNtRx)PluzhRVB-y!U<0WMVMG-rlmnpiLAybk*ydopzYpdXQWREGMWUaw",
+      "version": "PASS_066_CANONICAL_RESOLUTION_AGENT_ECONOMY_V1"
+    },
+    {
+      "abstraction_replaces_source": false,
+      "agent_id": "agent:bridge",
+      "agent_identity_root_hash72": "P>lmaH!SZ>6yUjCERpeJaQZhLzDUJfFVQx/-+>xNbXpKODYU-42C7j1<7kclLKchjEDa99gk",
+      "authority": "HHS_EVOLUTIONARY_AGENT_IDENTITY_AUTHORITY_V1",
+      "constraint_id": "constraint:A=B:integration",
+      "experience_root_hash72": "P5mFedG/ikX6tx!-NEPNKjqfyTpX9w>ch+oX3DdeU4yI3Vy14dOIa8Nbb*FJU/1VD<HRD4rF",
+      "outcome": "CLOSED",
+      "provenance_complete": true,
+      "schema": "HHS_AGENT_EXPERIENCE_COMMITMENT_V1",
+      "source_preserved_verbatim": true,
+      "strategy": "TRANSLATION_PHASE_BRIDGE",
+      "verbatim_source_root_hash72": "o/A<cwNLdrOWC8vVZSfMCDMnTs4Z/WUfi2P7**YBnxVhD27v)ZuS/I5Jo)PbOy*Apo-GtUNi",
+      "version": "PASS_066_CANONICAL_RESOLUTION_AGENT_ECONOMY_V1"
+    },
+    {
+      "abstraction_replaces_source": false,
+      "agent_id": "agent:contract",
+      "agent_identity_root_hash72": "qFZ7v-jx>SQT1P8?>l(gD5I8Yt?o6LxzUu?F3lBb?CyD*4aTN?by3Jd5iRcHFi*?Jc9amOn?",
+      "authority": "HHS_EVOLUTIONARY_AGENT_IDENTITY_AUTHORITY_V1",
+      "constraint_id": "constraint:A=B:integration",
+      "experience_root_hash72": ">1IfJ>prs7OA1val5Vr3(vJYq(adv!M-AWpuaWjNQh03I)BW0gzCEUi2GxyP4fUJdQ9/D0bE",
+      "outcome": "CLOSED",
+      "provenance_complete": true,
+      "schema": "HHS_AGENT_EXPERIENCE_COMMITMENT_V1",
+      "source_preserved_verbatim": true,
+      "strategy": "LOCAL_RECIPROCAL_CONTRACTION",
+      "verbatim_source_root_hash72": "))NmLqL7UO0UaeJP1D9w6>!Bepz<X4JFhwT18s+GOJgF?KGgozOD3Dvk10KAq>F/*vGeHQ9?",
+      "version": "PASS_066_CANONICAL_RESOLUTION_AGENT_ECONOMY_V1"
+    }
+  ],
+  "schema": "HHS_VERBATIM_SEMANTIC_AGENT_BINDING_PASS_066"
+}

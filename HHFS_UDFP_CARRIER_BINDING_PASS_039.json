@@ -1,0 +1,90 @@
+{
+  "canonical_capsule_field_count": 29,
+  "canonical_metadata_field_count": 22,
+  "canonical_udfp_frame_field_count": 19,
+  "carrier_profile_count": 5,
+  "carrier_profiles": [
+    "jpeg",
+    "mp3",
+    "png",
+    "text",
+    "wav"
+  ],
+  "ok": true,
+  "pass": "039",
+  "schema": "HHS_HHFS_UDFP_PASS_039_SUMMARY_V1",
+  "security_invariants": [
+    "legacy carriers remain backwards-compatible",
+    "HHFS stores commitments and witness capsules, not duplicate payloads",
+    "no sidecar, remote resolver, external database, or alternate block store is required for validity",
+    "only error correction and transformation history are permitted auxiliary lanes",
+    "UDFP frames bind carrier capsule, metadata enhancement, transformation trace, ECC, and root witness via Hash72/u^72",
+    "opaque/privacy phase behavior remains governed by Pass 038 Genesis severance"
+  ],
+  "self_tests": {
+    "hhfs_carrier_capsule": {
+      "canonical_capsule_field_count": 29,
+      "capsule_hash72": "L(3Y1TN?n12k->azXh7MPsMZ2sN1+5JoY6<igJkkogg(<2be126D/862do0Fb9KWKLQ)W9SY",
+      "carrier_count": 5,
+      "duplicate_rejection_status": "REJECT_DUPLICATE_PAYLOAD_STORAGE",
+      "ledger_verified": true,
+      "ok": true,
+      "schema": "HHS_HHFS_CARRIER_CAPSULE_SELF_TEST_V1",
+      "sidecar_rejection_status": "REJECT_PARALLEL_STORAGE_LANE",
+      "valid_status": "ADMIT_HHFS_CARRIER_CAPSULE",
+      "version": "PASS_039_HHFS_CARRIER_CAPSULE_V1"
+    },
+    "metadata_enhancement_block": {
+      "canonical_metadata_field_count": 22,
+      "duplicate_rejection_status": "REJECT_METADATA_DUPLICATE_PAYLOAD",
+      "ledger_verified": true,
+      "metadata_enhancement_root": "VH/RDWQVXvMrsqefp>9pF!3cjSQvZ<QkXWl53T+9HQiHZ1/V?<iqh(+QC6(1E7Knfr4eEAo0",
+      "missing_trace_rejection_status": "REJECT_METADATA_TRANSFORMATION_TRACE_REQUIRED",
+      "ok": true,
+      "schema": "HHS_METADATA_ENHANCEMENT_BLOCK_SELF_TEST_V1",
+      "valid_status": "ADMIT_METADATA_ENHANCEMENT_BLOCK",
+      "version": "PASS_039_METADATA_ENHANCEMENT_BLOCK_V1"
+    },
+    "udfp_frame": {
+      "canonical_frame_field_count": 19,
+      "current_frame_root": "c4A7uswN)h-Jtqdqgeim2IM6D(<eQ!tU8fixCqBkoUiYqtEfGQGs2DQnAqqiv)TJmsHcJFZu",
+      "hash_mismatch_status": "REJECT_UDFP_FRAME_HASH_MISMATCH",
+      "invalid_capsule_status": "REJECT_UDFP_INVALID_CARRIER_CAPSULE",
+      "ledger_verified": true,
+      "ok": true,
+      "schema": "HHS_UDFP_FRAME_SELF_TEST_V1",
+      "valid_status": "ADMIT_UDFP_FRAME",
+      "version": "PASS_039_UDFP_FRAME_V1"
+    }
+  },
+  "targeted_tests": {
+    "files": [
+      "tests/test_hhs_hhfs_carrier_capsule_v1.py",
+      "tests/test_hhs_metadata_enhancement_block_v1.py",
+      "tests/test_hhs_udfp_frame_v1.py"
+    ],
+    "passed": 21
+  },
+  "title": "HHFS Carrier-Compatible Witness Archive Binding",
+  "verification": {
+    "bundle_runner": {
+      "hhs_v1_bundle_runner-2.py": "exit 0",
+      "hhs_v1_bundle_runner.py": "exit 0"
+    },
+    "make_hhfs_udfp_tests": {
+      "passed": 21
+    },
+    "make_phase_disjoint_continuity_tests": {
+      "passed": 22
+    },
+    "make_runtime_reachability": {
+      "api_route_count": 20,
+      "module_count": 820,
+      "ok": true,
+      "orphan_count": 0,
+      "service_count": 35
+    },
+    "make_verify_c": true,
+    "make_zero_bypass_runtime_interposer": true
+  }
+}

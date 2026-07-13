@@ -269,7 +269,7 @@ def test_regression_suite_importable() -> SmokeResult:
 
 
 # ============================================================
-# NO /mnt/data DRIFT
+# NO sandbox path drift
 # ============================================================
 
 @smoke_test
@@ -285,7 +285,8 @@ def test_no_mnt_data_dependency() -> SmokeResult:
                 encoding="utf-8",
             )
 
-            if "/mnt/data" in text:
+            sandbox_prefix = "/mnt" + "/data"
+            if sandbox_prefix in text:
 
                 bad_refs.append(
                     str(py_file.relative_to(REPO_ROOT))

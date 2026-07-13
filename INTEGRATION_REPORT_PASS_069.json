@@ -1,0 +1,22 @@
+{
+  "active_surfaces": 306,
+  "all_loops_closed": true,
+  "all_paths_use_three_lanes": true,
+  "canonical_continuation": true,
+  "conformance_edges": 4034,
+  "edge_count": 4,
+  "loop_count": 1,
+  "node_count": 4,
+  "orphan_modules": 0,
+  "pass": "069",
+  "program_count": 1,
+  "run_root_hash72": "Fp8ER3OVpYg?XpsBBlH1(ag0i?hrLMRYa?s6?TW01jw7-C02xhMZUg0kERpOxYEx!>>SW1Yx",
+  "schema": "HHS_INTEGRATION_REPORT_PASS_069_V1",
+  "services": 283,
+  "sha256_labeled_hash72": false,
+  "status": "PASS",
+  "tests_passed": 40,
+  "title": "Closed-Loop Three-Lane Program Weaving and High-Level Runtime Composition",
+  "underived_services": 0,
+  "underived_surfaces": 0
+}

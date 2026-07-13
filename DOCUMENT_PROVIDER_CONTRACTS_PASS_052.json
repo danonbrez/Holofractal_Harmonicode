@@ -1,0 +1,153 @@
+{
+  "contracts": [
+    {
+      "authority": "HHS_DOCUMENT_PERCEPTION_RUNTIME_AUTHORITY_V1",
+      "capability_class": "DOCUMENT_EXTRACTION",
+      "contract_id": "document-provider-contract:6848653e61f342bb95150c215b9f32b6",
+      "contract_root_hash72": "MBYb-kGNabZK9UA6k((SZ(0lkLrQ0kezwWWEEhph*p4jJp4MWlbdneoiuMwoWn6*qfC<PCyV",
+      "created_at_unix_ms": 1783820839674,
+      "loss_profile": "DECLARED_MIXED_LOSSLESS_AND_LOSSY",
+      "observed_modalities": [
+        "PDF"
+      ],
+      "projection_replaces_source": false,
+      "projection_types": [
+        "PDF_NATIVE_TEXT_PROJECTION"
+      ],
+      "provider_id": "provider:pdf-native-text",
+      "provider_is_canonical_authority": false,
+      "provider_output_is_canonical_source": false,
+      "rejection_codes": [
+        "REJECT_DOCUMENT_PROVIDER_AS_AUTHORITY",
+        "REJECT_OCR_TEXT_AS_DOCUMENT_SOURCE",
+        "REJECT_PDF_TEXT_AS_COMPLETE_DOCUMENT",
+        "REJECT_TABLE_EXTRACTION_WITHOUT_REGION_SOURCE",
+        "REJECT_DOCUMENT_FUSION_WITHOUT_PROVENANCE",
+        "REJECT_UNMARKED_DOCUMENT_EXTRACTION_LOSS",
+        "REJECT_PROVIDER_DISAGREEMENT_COLLAPSED_SILENTLY",
+        "REJECT_DOCUMENT_PROJECTION_WITHOUT_RECONSTRUCTION"
+      ],
+      "requires_reconstruction_recipe": true,
+      "requires_runtime_canonical_ingress": true,
+      "requires_universal_modality_pipeline": true,
+      "schema": "HHS_DOCUMENT_PROVIDER_CONTRACT_V1",
+      "source_preserved": true,
+      "version": "PASS_052_DEEP_DETERMINISTIC_DOCUMENT_PERCEPTION_V1"
+    },
+    {
+      "authority": "HHS_DOCUMENT_PERCEPTION_RUNTIME_AUTHORITY_V1",
+      "capability_class": "DOCUMENT_EXTRACTION",
+      "contract_id": "document-provider-contract:5270a27544d242b6a4adf1932c4ac87a",
+      "contract_root_hash72": "0m!fSfQ2-0xkSRqe7XgmAfZh7gsLEt2DK+Ql3uZ9lH2pLTzebDDyf-eYTWm4d9HSQ--7vAhJ",
+      "created_at_unix_ms": 1783820839675,
+      "loss_profile": "DECLARED_MIXED_LOSSLESS_AND_LOSSY",
+      "observed_modalities": [
+        "PDF"
+      ],
+      "projection_replaces_source": false,
+      "projection_types": [
+        "PAGE_LAYOUT_PROJECTION"
+      ],
+      "provider_id": "provider:pdf-page-geometry",
+      "provider_is_canonical_authority": false,
+      "provider_output_is_canonical_source": false,
+      "rejection_codes": [
+        "REJECT_DOCUMENT_PROVIDER_AS_AUTHORITY",
+        "REJECT_OCR_TEXT_AS_DOCUMENT_SOURCE",
+        "REJECT_PDF_TEXT_AS_COMPLETE_DOCUMENT",
+        "REJECT_TABLE_EXTRACTION_WITHOUT_REGION_SOURCE",
+        "REJECT_DOCUMENT_FUSION_WITHOUT_PROVENANCE",
+        "REJECT_UNMARKED_DOCUMENT_EXTRACTION_LOSS",
+        "REJECT_PROVIDER_DISAGREEMENT_COLLAPSED_SILENTLY",
+        "REJECT_DOCUMENT_PROJECTION_WITHOUT_RECONSTRUCTION"
+      ],
+      "requires_reconstruction_recipe": true,
+      "requires_runtime_canonical_ingress": true,
+      "requires_universal_modality_pipeline": true,
+      "schema": "HHS_DOCUMENT_PROVIDER_CONTRACT_V1",
+      "source_preserved": true,
+      "version": "PASS_052_DEEP_DETERMINISTIC_DOCUMENT_PERCEPTION_V1"
+    },
+    {
+      "authority": "HHS_DOCUMENT_PERCEPTION_RUNTIME_AUTHORITY_V1",
+      "capability_class": "IMAGE_ANALYSIS",
+      "contract_id": "document-provider-contract:b86df708e89c4cf989aaa5b3a93fe1d4",
+      "contract_root_hash72": "-G6s0SNgnlf8ODfFQ!xqzUXhSAF<)ih80L(Tv?-LlmgnTOOc0v7VQy4RU*lq>?k+mm3vawq*",
+      "created_at_unix_ms": 1783820839676,
+      "loss_profile": "DECLARED_MIXED_LOSSLESS_AND_LOSSY",
+      "observed_modalities": [
+        "IMAGE",
+        "PDF"
+      ],
+      "projection_replaces_source": false,
+      "projection_types": [
+        "PAGE_IMAGE_REGION_PROJECTION"
+      ],
+      "provider_id": "provider:document-image-region",
+      "provider_is_canonical_authority": false,
+      "provider_output_is_canonical_source": false,
+      "rejection_codes": [
+        "REJECT_DOCUMENT_PROVIDER_AS_AUTHORITY",
+        "REJECT_OCR_TEXT_AS_DOCUMENT_SOURCE",
+        "REJECT_PDF_TEXT_AS_COMPLETE_DOCUMENT",
+        "REJECT_TABLE_EXTRACTION_WITHOUT_REGION_SOURCE",
+        "REJECT_DOCUMENT_FUSION_WITHOUT_PROVENANCE",
+        "REJECT_UNMARKED_DOCUMENT_EXTRACTION_LOSS",
+        "REJECT_PROVIDER_DISAGREEMENT_COLLAPSED_SILENTLY",
+        "REJECT_DOCUMENT_PROJECTION_WITHOUT_RECONSTRUCTION"
+      ],
+      "requires_reconstruction_recipe": true,
+      "requires_runtime_canonical_ingress": true,
+      "requires_universal_modality_pipeline": true,
+      "schema": "HHS_DOCUMENT_PROVIDER_CONTRACT_V1",
+      "source_preserved": true,
+      "version": "PASS_052_DEEP_DETERMINISTIC_DOCUMENT_PERCEPTION_V1"
+    },
+    {
+      "authority": "HHS_DOCUMENT_PERCEPTION_RUNTIME_AUTHORITY_V1",
+      "capability_class": "OCR",
+      "contract_id": "document-provider-contract:0637294bd83841d489aa18e3267c1cca",
+      "contract_root_hash72": "V!Y84G-BxNVDMnUVwa+BzB7I3y31-W6OJz>(PPU8gMDqAy1MP+di66w+3Ho!MSJNfOQ>?Kz>",
+      "created_at_unix_ms": 1783820839678,
+      "loss_profile": "DECLARED_MIXED_LOSSLESS_AND_LOSSY",
+      "observed_modalities": [
+        "IMAGE",
+        "PDF"
+      ],
+      "projection_replaces_source": false,
+      "projection_types": [
+        "OCR_TEXT_PROJECTION"
+      ],
+      "provider_id": "provider:deterministic-ocr",
+      "provider_is_canonical_authority": false,
+      "provider_output_is_canonical_source": false,
+      "rejection_codes": [
+        "REJECT_DOCUMENT_PROVIDER_AS_AUTHORITY",
+        "REJECT_OCR_TEXT_AS_DOCUMENT_SOURCE",
+        "REJECT_PDF_TEXT_AS_COMPLETE_DOCUMENT",
+        "REJECT_TABLE_EXTRACTION_WITHOUT_REGION_SOURCE",
+        "REJECT_DOCUMENT_FUSION_WITHOUT_PROVENANCE",
+        "REJECT_UNMARKED_DOCUMENT_EXTRACTION_LOSS",
+        "REJECT_PROVIDER_DISAGREEMENT_COLLAPSED_SILENTLY",
+        "REJECT_DOCUMENT_PROJECTION_WITHOUT_RECONSTRUCTION"
+      ],
+      "requires_reconstruction_recipe": true,
+      "requires_runtime_canonical_ingress": true,
+      "requires_universal_modality_pipeline": true,
+      "schema": "HHS_DOCUMENT_PROVIDER_CONTRACT_V1",
+      "source_preserved": true,
+      "version": "PASS_052_DEEP_DETERMINISTIC_DOCUMENT_PERCEPTION_V1"
+    }
+  ],
+  "rejection_codes": [
+    "REJECT_DOCUMENT_PROVIDER_AS_AUTHORITY",
+    "REJECT_OCR_TEXT_AS_DOCUMENT_SOURCE",
+    "REJECT_PDF_TEXT_AS_COMPLETE_DOCUMENT",
+    "REJECT_TABLE_EXTRACTION_WITHOUT_REGION_SOURCE",
+    "REJECT_DOCUMENT_FUSION_WITHOUT_PROVENANCE",
+    "REJECT_UNMARKED_DOCUMENT_EXTRACTION_LOSS",
+    "REJECT_PROVIDER_DISAGREEMENT_COLLAPSED_SILENTLY",
+    "REJECT_DOCUMENT_PROJECTION_WITHOUT_RECONSTRUCTION"
+  ],
+  "schema": "HHS_DOCUMENT_PROVIDER_CONTRACTS_PASS_052_V1"
+}

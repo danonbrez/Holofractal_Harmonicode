@@ -1,0 +1,125 @@
+{
+  "bridge": {
+    "authority": "HHS_FASTAPI_KERNEL_RUNTIME_AUTHORITY_V1",
+    "event_hash72": "3Lc6pxQqfwPm)FJht9NtB-NfnqfjfUXCjaQtsGdBM^*Nz*\u221aUV*Ux8KsGpsC/DiIMJMIgt3n0",
+    "ok": true,
+    "receipt_hash72": "OTYwBGLQV49ejoty*8<16OTY/!3mrwBGLQaqejo<16bglEJOTY/!sIwBGejotyDW+<16bgK-",
+    "runtime_state_hash72": "159dhlptxBFJNRVZ/>159dhlptxBFJNRVZ/>159dhlptxBFJNRVZ/>159dhlptxBFJNRVZ/>",
+    "schema": "HHS_LIVE_KERNEL_EVENT_BRIDGE_SELF_TEST_V1",
+    "sequence_id": 1,
+    "version": "PASS_045_LIVE_FASTAPI_KERNEL_RUNTIME_V1"
+  },
+  "channels": {
+    "channels": {
+      "authority": "FASTAPI_WEBSOCKET_KERNEL_CHANNEL_ROUTER_V1",
+      "channels": [
+        "/ws/runtime",
+        "/ws/replay",
+        "/ws/graph",
+        "/ws/transport"
+      ],
+      "projection_rule": "ALL_CHANNEL_PAYLOADS_ORIGINATE_FROM_HHSRuntimeEventEnvelope_OR_WITNESSED_PROJECTION",
+      "schema": "HHS_WEBSOCKET_KERNEL_CHANNEL_LIST_V1",
+      "version": "PASS_045_WEBSOCKET_KERNEL_CHANNEL_ROUTER_V1"
+    },
+    "health": {
+      "metrics": {
+        "graph_sockets": 0,
+        "replay_cache": 0,
+        "replay_sockets": 0,
+        "runtime_index": 0,
+        "runtime_sockets": 0,
+        "total_connections": 0,
+        "total_disconnects": 0,
+        "total_events_sent": 0,
+        "total_graph_events": 0,
+        "total_replay_events": 0,
+        "total_transport_events": 0,
+        "transport_sockets": 0
+      },
+      "status": "healthy"
+    },
+    "ok": true,
+    "rejected": {
+      "channel": null,
+      "event_hash72": null,
+      "missing": [
+        "event_hash72",
+        "receipt_hash72",
+        "runtime_state_hash72",
+        "authority"
+      ],
+      "ok": false,
+      "schema": "HHS_WEBSOCKET_KERNEL_CHANNEL_VALIDATION_V1",
+      "status": "REJECT_NON_KERNEL_WEBSOCKET_PACKET",
+      "version": "PASS_045_WEBSOCKET_KERNEL_CHANNEL_ROUTER_V1"
+    },
+    "sample": {
+      "channel": "/ws/runtime",
+      "event_hash72": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+      "missing": [],
+      "ok": true,
+      "schema": "HHS_WEBSOCKET_KERNEL_CHANNEL_VALIDATION_V1",
+      "status": "ADMIT_KERNEL_CHANNEL_PACKET",
+      "version": "PASS_045_WEBSOCKET_KERNEL_CHANNEL_ROUTER_V1"
+    },
+    "schema": "HHS_WEBSOCKET_KERNEL_CHANNEL_ROUTER_SELF_TEST_V1",
+    "version": "PASS_045_WEBSOCKET_KERNEL_CHANNEL_ROUTER_V1"
+  },
+  "node": {
+    "contract": {
+      "api_proxy": "/api -> http://127.0.0.1:8000",
+      "forbidden": [
+        "synthetic runtime event generation",
+        "stub websocket payloads",
+        "runtime authority in Node"
+      ],
+      "node_role": "GUI_PROXY_ONLY",
+      "runtime_authority": "hhs_backend.server:app",
+      "schema": "HHS_NODE_PROXY_CONTRACT_V1",
+      "version": "PASS_045_NODE_PROXY_CONTRACT_V1",
+      "websocket_proxy": "/ws -> ws://127.0.0.1:8000"
+    },
+    "ok": true,
+    "schema": "HHS_NODE_PROXY_CONTRACT_SELF_TEST_V1",
+    "validation": {
+      "file": "/mnt/data/pass045_work/repo/hhs_runtime/runtime_ws_server.py",
+      "forbidden_tokens_found": [],
+      "ok": true,
+      "schema": "HHS_NODE_PROXY_STUB_VALIDATION_V1",
+      "status": "NODE_RUNTIME_STUB_DEPRECATED",
+      "version": "PASS_045_NODE_PROXY_CONTRACT_V1"
+    },
+    "version": "PASS_045_NODE_PROXY_CONTRACT_V1"
+  },
+  "summary": {
+    "api_routes": [
+      "/api/runtime/live/status",
+      "/api/runtime/live/tick"
+    ],
+    "conformance_edge_count": 863,
+    "derived_service_count": 59,
+    "node_role": "GUI_PROXY_ONLY_NO_SYNTHETIC_RUNTIME_STREAM",
+    "pass": "045",
+    "schema": "HHS_LIVE_FASTAPI_KERNEL_RUNTIME_PASS_045_SUMMARY_V1",
+    "service_count": 59,
+    "surface_count": 67,
+    "underived_service_count": 0,
+    "underived_surface_count": 0,
+    "verified": {
+      "live_kernel_event_bridge_self_test": true,
+      "live_runtime_smoke_tests": "8 passed",
+      "node_proxy_contract_self_test": true,
+      "runtime_reachability": "passed",
+      "verify_c": "passed",
+      "websocket_kernel_channel_router_self_test": true
+    },
+    "version": "PASS_045_LIVE_FASTAPI_KERNEL_RUNTIME_V1",
+    "websocket_channels": [
+      "/ws/runtime",
+      "/ws/replay",
+      "/ws/graph",
+      "/ws/transport"
+    ]
+  }
+}

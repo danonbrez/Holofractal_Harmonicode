@@ -1,0 +1,71 @@
+{
+  "ok": true,
+  "plan": {
+    "affected_surface_count": 6,
+    "affected_surfaces": [
+      "api_route:GET /api/runtime/conformance/invariants",
+      "api_route:GET /api/runtime/conformance/invariants/{invariant_id}",
+      "api_route:GET /api/runtime/conformance/status",
+      "api_route:GET /api/runtime/conformance/surfaces",
+      "api_route:GET /api/runtime/conformance/surfaces/{surface_id}",
+      "api_route:POST /api/runtime/conformance/evaluate"
+    ],
+    "conformance_graph_root": "7NBLbOg1B*MrtcEa10)WqBI?U+5dUMGkQ19T?Lf0Po+3w3Lqp0n(-NVrJ(Yht*Id<z6gfYlZ",
+    "dependency_family": "contract_to_surfaces",
+    "dependency_id": "HHS_CONFORMANCE_API_ROUTE_CONTRACT_V1",
+    "full_recomposition_required": false,
+    "rebuild_plan_hash72": "sxoZOtBcZY-G8ztkq2FU3v4Jc3-5GY3DHM<(oYiX*zJRbH8ZryjX54980vU/dRlU?!a0ovbE",
+    "rebuild_scope": "AFFECTED_SURFACES_ONLY",
+    "schema": "HHS_INCREMENTAL_PIPELINE_REBUILD_PLAN_V1",
+    "version": "PASS_044_SEMANTIC_COMPOSITION_CACHE_V1"
+  },
+  "result": {
+    "missed_surfaces": [],
+    "ok": true,
+    "rebuild_result_hash72": "oqM>+W4EcXTF9PVXe47eDN9DT386eqP(UKgAl4dl5YdTzy8!0UUqnX0BuI44RUyHtq<rJPgh",
+    "rebuilt": [
+      {
+        "cache_key_hash72": "fnDRNMR?pu3BngMz(KrfTWO2TLUbx9QvAQ-Vi+MdNDzQvDoh(uhoXMHzg7--f+bL/FC8BZV8",
+        "composition_root_hash72": "4dqRfgxD5TMdOlE-?3?SOp-O4mgkF7ozsCue9Lf3jhUo?8)rsEmFF!WRK1zPZ)gEFu)pq6Bp",
+        "operation": "conformance.invariants",
+        "surface_id": "api_route:GET /api/runtime/conformance/invariants"
+      },
+      {
+        "cache_key_hash72": "9LqOZFe9I8oM>IeGOjKt5x22nAV>0)TlL*HeUfIuBXqEqUdy3DO(mTBCKl3uk!03dliZqk8C",
+        "composition_root_hash72": "FDDflZq5)dOZ+EqLAGoNNqbH?ns?2quXup+y1SY)0q7s)KBVs8/FC32/OUD3c3ZtOxpS1>/W",
+        "operation": "conformance.invariant_detail",
+        "surface_id": "api_route:GET /api/runtime/conformance/invariants/{invariant_id}"
+      },
+      {
+        "cache_key_hash72": "vSHHS+Z*Xs(?7eg*!rspFTaA8)zsBk6Z<ZRdn-aqMF-RGHlQEpW//A80kMQnZek<op3zP(A)",
+        "composition_root_hash72": "pJ4*81mTb14jd1b0cVYXONzd*R/NN2//UMitYE<RRdkkgmxOSOQD)D4*14<UINvuB5Ia3W)e",
+        "operation": "conformance.status",
+        "surface_id": "api_route:GET /api/runtime/conformance/status"
+      },
+      {
+        "cache_key_hash72": "4c2qk<!zA9y22c?J8<EkT?85WY?dQ?e)TR?y-0C/9Len0ql0FBDale*l5+K>NTmBQ>xjv!pR",
+        "composition_root_hash72": "-3DffHB<nKHdMeji<pDvsWLE!x9wq8*z/PDIiDPN>oC>)c08YpNSYgTM<lanmkA<Jmo-UZdU",
+        "operation": "conformance.surfaces",
+        "surface_id": "api_route:GET /api/runtime/conformance/surfaces"
+      },
+      {
+        "cache_key_hash72": "3)Kt5cZHRC!fm/aHDWC3bLOW2O8xVyheSPOz1yl((7Sg6VO>OS3-EliV*EY(e((k)ghVC2HV",
+        "composition_root_hash72": "<y?Y1b4JBzInlTPL6L1Tepu>NdPh9ya>w(wrj!arUida-K3vXYvbn*rQgzz7dTWCgnFoLD7D",
+        "operation": "conformance.surface_detail",
+        "surface_id": "api_route:GET /api/runtime/conformance/surfaces/{surface_id}"
+      },
+      {
+        "cache_key_hash72": "rHtSMybe55)!U3NrVkDDxkPE)vZoQ4Rp*hNlddD+B7x29/jZiPR1RoGOb2ZuhALPJ7nzV0jJ",
+        "composition_root_hash72": "XpAKxRn(WrUaWAkO0SMR(Vv>kub(F)<lGPNin8!j2B(YlnKW??0Sg6<9<C3znWdvgr*PyKrs",
+        "operation": "conformance.evaluate",
+        "surface_id": "api_route:POST /api/runtime/conformance/evaluate"
+      }
+    ],
+    "rebuilt_count": 6,
+    "schema": "HHS_INCREMENTAL_PIPELINE_REBUILD_RESULT_V1",
+    "status": "ADMIT_INCREMENTAL_REBUILD",
+    "version": "PASS_044_SEMANTIC_COMPOSITION_CACHE_V1"
+  },
+  "schema": "HHS_INCREMENTAL_PIPELINE_REBUILDER_SELF_TEST_V1",
+  "version": "PASS_044_SEMANTIC_COMPOSITION_CACHE_V1"
+}

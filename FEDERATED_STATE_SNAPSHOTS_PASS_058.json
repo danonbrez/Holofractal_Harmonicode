@@ -1,0 +1,35 @@
+{
+  "local_snapshot": {
+    "authority": "HHS_I019_CANONICAL_FEDERATED_STATE_RECONCILIATION_V1",
+    "authority_root_hash72": "/9JichDWsd-u*2A3-gdhLBs8thhGN1h(gjOE6P>6B>MH>wYRIOt1Q<Ii)h6rfAk)*EF1iHC7",
+    "common_ancestor_root_hash72": "*oKkH8<jt8gQydzcAq(Yzc>QTsp5vYtkxXsSw136uG)jv(Jy?852J>V?IOJ*vJmGh<9nsPOp",
+    "domain_id": "runtime:local",
+    "schema": "HHS_FEDERATED_STATE_SNAPSHOT_V1",
+    "sequence": 170,
+    "snapshot_root_hash72": "c4SFr)376cb4B5x/nu?O-MpA0k<lr*ygMQy8OR7nnHoISOztti/*0ccsz5O4gZmBvUj7YRDl",
+    "state": {
+      "counter": 8,
+      "document": "v2",
+      "policy": "strict"
+    },
+    "state_root_hash72": "G4dM7n>ty/u>c9zh!B4eC7LbscunQx*mM!itNIwKqTz<HyBGYC>IJ+ZK9y?*J0R!*+*-jTnc",
+    "version": "PASS_058_CANONICAL_FEDERATED_STATE_RECONCILIATION_CONFLICT_PRESERVING_MERGE_V1"
+  },
+  "remote_snapshot": {
+    "authority": "HHS_I019_CANONICAL_FEDERATED_STATE_RECONCILIATION_V1",
+    "authority_root_hash72": "/9JichDWsd-u*2A3-gdhLBs8thhGN1h(gjOE6P>6B>MH>wYRIOt1Q<Ii)h6rfAk)*EF1iHC7",
+    "common_ancestor_root_hash72": "*oKkH8<jt8gQydzcAq(Yzc>QTsp5vYtkxXsSw136uG)jv(Jy?852J>V?IOJ*vJmGh<9nsPOp",
+    "domain_id": "runtime:remote-a",
+    "schema": "HHS_FEDERATED_STATE_SNAPSHOT_V1",
+    "sequence": 168,
+    "snapshot_root_hash72": "+Tnp5E17Cf13e?WJ-3WEONw4D7mFXsUBJ2N65Nlx3usGtbLjJ19DcAp+-BKzSS31LEn)Wz1F",
+    "state": {
+      "counter": 8,
+      "document": "v3-partition",
+      "remote_note": "preserve"
+    },
+    "state_root_hash72": "nb2/fb*4C)ATiyco1pj1QcvhM7unQx*mM!itNIwKqTz<HyBGYC>IJ+ZK9y?/TVM9)T6V3>)K",
+    "version": "PASS_058_CANONICAL_FEDERATED_STATE_RECONCILIATION_CONFLICT_PRESERVING_MERGE_V1"
+  },
+  "schema": "HHS_FEDERATED_STATE_SNAPSHOTS_PASS_058_V1"
+}

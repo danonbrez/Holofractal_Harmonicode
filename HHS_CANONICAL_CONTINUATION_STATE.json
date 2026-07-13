@@ -1,0 +1,16 @@
+{
+  "canonical_continuation": true,
+  "checkpoint_root_hash72": "uVf4yRk0Uxj8A1MrGMhruCPZ4)SB5QuVR/hf0DE/Y8I1JBAJ(R*WCfR57t1iUJjF4uX7aPp+",
+  "current_pass": "PASS_072",
+  "next_pass": "PASS_073",
+  "parent_pass": "PASS_071",
+  "pass071_root_hash72": "O+0/3dn0KX?!0ENFJ(bowzP3(Hl08cCJ/yQMh(ABjkupVznBWY2<gGgbpt!C!8<he(e*yln*",
+  "pass072_run_root_hash72": "I7jXFafv<cEUAD?pP7uXe(nHZ??PA<d3??5-+ebIXQ0eOBX/8H<<Wn5Xlwwf9D2JQJp5/kUo",
+  "pass072_total_system_root_hash72": "ZF9bto?tV>P(KcFPL5L+csyy!jxdrAaadua1a!w-uwug8/MeMSqSS3*R>lXIefi)nyjXpc+)",
+  "phase_gear_pathfinder_root_hash72": "IuFerCr0d+WXUT6DPkxgXD10bomvouTmqVRgo/*>cS+VZ3z3nGz8KDP!es*LlkA<KMICp2+I",
+  "reconstruction_receipt_root_hash72": "H+TVhVcFVBPzDzig5HzxNj0<oA8fkb0Id7oNTsgeeGneLG?WBlLI2gVQ4a)zixYD8ycdcO9*",
+  "resume_file": "HHS_CANONICAL_RESUME_CHECKPOINT.json",
+  "resume_rule": "REBUILD_FROM_COMMITTED_PASS071_AND_PASS072_SOURCE_ROOTS",
+  "schema": "HHS_CANONICAL_CONTINUATION_STATE_V1",
+  "thread_context_required": false
+}

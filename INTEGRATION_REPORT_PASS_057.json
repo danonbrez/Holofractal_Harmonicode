@@ -1,0 +1,19 @@
+{
+  "conformance_edge_count": 2434,
+  "local_revalidation_required": true,
+  "name": "Partition-Tolerant Revocation Consensus and Federated Recovery",
+  "ok": true,
+  "orphan_count": 0,
+  "partition_detected": true,
+  "pass": "057",
+  "reconciliation_complete": true,
+  "revocation_consensus_reached": true,
+  "run_root_hash72": "E+JYwH-H/iTe9TVa13QcKA<Gi(lst4j+*?3Hyi9FsAv-xr*txwFSTZ5LhNc<16B)jy?*b5o7",
+  "schema": "HHS_PASS_057_INTEGRATION_REPORT_V1",
+  "service_count": 151,
+  "stale_remote_result_became_local_authority": false,
+  "stale_sublease_quarantined": true,
+  "surface_count": 174,
+  "underived_service_count": 0,
+  "underived_surface_count": 0
+}

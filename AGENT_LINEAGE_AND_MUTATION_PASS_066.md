@@ -1,0 +1,23 @@
+# Agent Lineage And Mutation Pass 066
+
+Authoritative source: `AGENT_LINEAGE_AND_MUTATION_PASS_066.json`.
+
+```json
+{
+  "mutation_lineage": {
+    "algorithm_delta": "ADD_LOCAL_PHASE_CACHE",
+    "authority": "HHS_EVOLUTIONARY_AGENT_IDENTITY_AUTHORITY_V1",
+    "descendant_agent_id": "agent:minimal-direct:mutation:1",
+    "descendant_identity_root_hash72": "hkCrOz+tlB(FdWqJR4oq(*MR4opt3UUgy853swSz7yyLpovy5?kvc/fh3<2i3x!ojLMQkbCE",
+    "lineage_continuous": true,
+    "mutation_redefines_invariants": false,
+    "mutation_root_hash72": "Q*rgh(XWTVkGjqs!>v!R-*?(Lb(TXz6m262Q0GIC6PH(9HC4t3g<Nrd2hxuhKnaTaxoHC9(m",
+    "parent_agent_id": "agent:minimal-direct",
+    "parent_identity_root_hash72": "Jn<kpK?CF6p8TU2K0<18l/FpyKIaaJmThoWT)maZM+qqkhRaL>9LVolLXdPk?zWUEsF1dxKX",
+    "parent_preserved": true,
+    "schema": "HHS_AGENT_MUTATION_LINEAGE_V1",
+    "version": "PASS_066_CANONICAL_RESOLUTION_AGENT_ECONOMY_V1"
+  },
+  "schema": "HHS_AGENT_LINEAGE_AND_MUTATION_PASS_066"
+}
+```

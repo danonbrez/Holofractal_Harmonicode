@@ -1,0 +1,2 @@
+from .hhs_global_reciprocal_contract_topology_v1 import global_reciprocal_contract_topology_self_test
+def self_test(): return global_reciprocal_contract_topology_self_test()

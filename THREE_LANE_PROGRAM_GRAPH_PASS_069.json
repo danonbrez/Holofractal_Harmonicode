@@ -1,0 +1,217 @@
+{
+  "all_nodes_admissible": true,
+  "authority": "HHS_HIGH_LEVEL_PROGRAM_WEAVING_AUTHORITY_V1",
+  "closed_cycle": true,
+  "edges": [
+    {
+      "authority": "HHS_HIGH_LEVEL_PROGRAM_WEAVING_AUTHORITY_V1",
+      "branch_escape": false,
+      "edge_id": "edge:00",
+      "edge_root_hash72": "l/bilO/r7>N3PTVmhT?5evbVS/HTPUvNJLw3nQiG!IIEz8ymAPHwe0tUwigJdLL7mAgnWMQA",
+      "from_node_id": "node:00",
+      "hash72_continuity": true,
+      "lane_order": [
+        "POSITIVE",
+        "PLASTIC",
+        "ZERO_SUM"
+      ],
+      "schema": "HHS_THREE_LANE_PROGRAM_EDGE_V1",
+      "to_node_id": "node:01",
+      "version": "PASS_069_CLOSED_LOOP_THREE_LANE_PROGRAM_WEAVING_V1"
+    },
+    {
+      "authority": "HHS_HIGH_LEVEL_PROGRAM_WEAVING_AUTHORITY_V1",
+      "branch_escape": false,
+      "edge_id": "edge:01",
+      "edge_root_hash72": "l/bilP*r7>N3QSVmhT?5evbVS/HTPUvNJLw3nQiG!IIEz8ymAPHwe0tUwigKcLL7mAgnWMQA",
+      "from_node_id": "node:01",
+      "hash72_continuity": true,
+      "lane_order": [
+        "POSITIVE",
+        "PLASTIC",
+        "ZERO_SUM"
+      ],
+      "schema": "HHS_THREE_LANE_PROGRAM_EDGE_V1",
+      "to_node_id": "node:02",
+      "version": "PASS_069_CLOSED_LOOP_THREE_LANE_PROGRAM_WEAVING_V1"
+    },
+    {
+      "authority": "HHS_HIGH_LEVEL_PROGRAM_WEAVING_AUTHORITY_V1",
+      "branch_escape": false,
+      "edge_id": "edge:02",
+      "edge_root_hash72": "l/bilQ+r7>N3RRVmhT?5evbVS/HTPUvNJLw3nQiG!IIEz8ymAPHwe0tUwigLbLL7mAgnWMQA",
+      "from_node_id": "node:02",
+      "hash72_continuity": true,
+      "lane_order": [
+        "POSITIVE",
+        "PLASTIC",
+        "ZERO_SUM"
+      ],
+      "schema": "HHS_THREE_LANE_PROGRAM_EDGE_V1",
+      "to_node_id": "node:03",
+      "version": "PASS_069_CLOSED_LOOP_THREE_LANE_PROGRAM_WEAVING_V1"
+    },
+    {
+      "authority": "HHS_HIGH_LEVEL_PROGRAM_WEAVING_AUTHORITY_V1",
+      "branch_escape": false,
+      "edge_id": "edge:03",
+      "edge_root_hash72": "l/bilN(r7>N3SQVmhT?5evbVS/HTPUvNJLw3nQiG!IIEz8ymAPHwe0tUwigMaLL7mAgnWMQA",
+      "from_node_id": "node:03",
+      "hash72_continuity": true,
+      "lane_order": [
+        "POSITIVE",
+        "PLASTIC",
+        "ZERO_SUM"
+      ],
+      "schema": "HHS_THREE_LANE_PROGRAM_EDGE_V1",
+      "to_node_id": "node:00",
+      "version": "PASS_069_CLOSED_LOOP_THREE_LANE_PROGRAM_WEAVING_V1"
+    }
+  ],
+  "entry_node_id": "node:00",
+  "lattice_root_hash72": "7v099Jj-Zj!x9<Un<BLGCWo8v3+zmByPgDxj9C0fu9Rz+R6?5YKErefG>LBUi9Zd>HR>yBO!",
+  "loop_contracts": [
+    {
+      "authority": "HHS_HIGH_LEVEL_PROGRAM_WEAVING_AUTHORITY_V1",
+      "entry_phase": "x",
+      "exit_phase": "x",
+      "fixed_point_required": true,
+      "global_mutation_authority": false,
+      "local_scope_only": true,
+      "loop_contract_root_hash72": "KZxdGa2(FMb7E!C?kYBBJs1)>0zCU4iPRAC4Zh7E)0WLTOTvuA6pf3dBE9<FcV!lyayCBQqm",
+      "loop_id": "loop:canonical",
+      "node_ids": [
+        "node:00",
+        "node:01",
+        "node:02",
+        "node:03"
+      ],
+      "required_lanes": [
+        "POSITIVE",
+        "PLASTIC",
+        "ZERO_SUM"
+      ],
+      "schema": "HHS_THREE_LANE_LOOP_CONTRACT_V1",
+      "version": "PASS_069_CLOSED_LOOP_THREE_LANE_PROGRAM_WEAVING_V1"
+    }
+  ],
+  "nodes": [
+    {
+      "all_three_lanes_present": true,
+      "arguments": [
+        "prompt:A",
+        "response:B"
+      ],
+      "authority": "HHS_HIGH_LEVEL_PROGRAM_WEAVING_AUTHORITY_V1",
+      "cell_id": "cell:00",
+      "cell_root_hash72": "+MwIWY8EkT*Mr0MVPjc(ZUFU84EQ<+KBD*Vl47RDPVDMgnpun>cF7KvIpZgOSvkw2jE8n9Nr",
+      "entry_phase": "x",
+      "exit_phase": "z",
+      "local_scope": [
+        "cell:00"
+      ],
+      "node_id": "node:00",
+      "node_root_hash72": "LZk04FLsULT--ts<p/>2)*T1!ac5!yMqx>PRCudbiUpn?ykz3rTGQN<sF<eBO3B8vu>W))K0",
+      "operation": "ALIGN",
+      "operator_from_canonical_registry": true,
+      "plastic_equilibrium_admitted": true,
+      "plastic_lane_root_hash72": "gY6sftEGFmBQTNd?sxnt6(XEb!+juunMpnZi2xkZuUWf?6jyBNUYN-0u/o9QBUuz8vSS</H4",
+      "positive_lane_root_hash72": "U4*1v1>F0SilNOkL4YYX+qw2z2We2b1l*CHndcGHM7clpZPaQPjfeDt!0h)lIJwFW2FDGf*!",
+      "reciprocal_phase": "xy",
+      "schema": "HHS_THREE_LANE_PATH_NODE_V1",
+      "version": "PASS_069_CLOSED_LOOP_THREE_LANE_PROGRAM_WEAVING_V1",
+      "zero_sum_closed": true,
+      "zero_sum_lane_root_hash72": "v1NlLCoqxPJOTUZQlrvjWn4<xifSRNCw4Q>mIcufAbMoh1-9Er!R!548U4ruBeUxMY/<o(q-"
+    },
+    {
+      "all_three_lanes_present": true,
+      "arguments": [
+        "formal",
+        "human"
+      ],
+      "authority": "HHS_HIGH_LEVEL_PROGRAM_WEAVING_AUTHORITY_V1",
+      "cell_id": "cell:20",
+      "cell_root_hash72": "P2a3QqI9jR?FGSFnuqdBiffAs(o<Kea)7E<<FGbgsQE5wHlM+F*k--4rTRZlcBI1wYCQrnri",
+      "entry_phase": "y",
+      "exit_phase": "w",
+      "local_scope": [
+        "cell:20"
+      ],
+      "node_id": "node:01",
+      "node_root_hash72": "ieYRsF7Qyw>WE/KeJisqJyfaRYWoLOWSQNFz/OjXXOylX)3g)QG4FO/d4sxAicgZI((AmCIf",
+      "operation": "TRANSLATE",
+      "operator_from_canonical_registry": true,
+      "plastic_equilibrium_admitted": true,
+      "plastic_lane_root_hash72": "gY6sftEGFmBQTNd?sxnt6(XEb!+juunOnnZi2xkZuUWf?6jyBNUYN-0u/o9QBUuz8vSS</H4",
+      "positive_lane_root_hash72": "oEN54ixSPX4Yl9e5eKlVTbf+65v8Vq5La/Ki/7QYEcbwvE0y3-QiRY0?WFHAH3CV+4FcFTpV",
+      "reciprocal_phase": "yx",
+      "schema": "HHS_THREE_LANE_PATH_NODE_V1",
+      "version": "PASS_069_CLOSED_LOOP_THREE_LANE_PROGRAM_WEAVING_V1",
+      "zero_sum_closed": true,
+      "zero_sum_lane_root_hash72": "v1NlLCoqxPJOTUZQlrvjWn4<xifSRNCw4Q>mIcufAbMoh1-9Er!R!548U4rwzeUxMY/<o(q-"
+    },
+    {
+      "all_three_lanes_present": true,
+      "arguments": [
+        "candidate"
+      ],
+      "authority": "HHS_HIGH_LEVEL_PROGRAM_WEAVING_AUTHORITY_V1",
+      "cell_id": "cell:40",
+      "cell_root_hash72": "Z+421kkHti<!xRA/Hn84FnqRkb(zHJ9p1l0Sz1TUvNdJktDOZl<XiZk(V1<Hb<FlMN/dttXU",
+      "entry_phase": "xy",
+      "exit_phase": "xy",
+      "local_scope": [
+        "cell:40"
+      ],
+      "node_id": "node:02",
+      "node_root_hash72": "LbT)bWw5z(H6hb-od-zADEvH2/mkg<uEkSPy-psF*DnF6vg9R03m?)IrMQVLXf0x(?N(6WFR",
+      "operation": "VERIFY",
+      "operator_from_canonical_registry": true,
+      "plastic_equilibrium_admitted": true,
+      "plastic_lane_root_hash72": "gY6sftEGFmBQTNd?sxnt6(XEb!+juunQlnZi2xkZuUWf?6jyBNUYN-0u/o9QBUuz8vSS</H4",
+      "positive_lane_root_hash72": "U4*1v1>F0SilNOkL4YYX+qw2z2We2b1l*CHndcGHM7clpZPaQPjfeDt!0h)lMFwFW2FDGf*!",
+      "reciprocal_phase": "z",
+      "schema": "HHS_THREE_LANE_PATH_NODE_V1",
+      "version": "PASS_069_CLOSED_LOOP_THREE_LANE_PROGRAM_WEAVING_V1",
+      "zero_sum_closed": true,
+      "zero_sum_lane_root_hash72": "v1NlLCoqxPJOTUZQlrvjWn4<xifSRNCw4Q>mIcufAbMoh1-9Er!R!548U4ryxeUxMY/<o(q-"
+    },
+    {
+      "all_three_lanes_present": true,
+      "arguments": [
+        "canonical"
+      ],
+      "authority": "HHS_HIGH_LEVEL_PROGRAM_WEAVING_AUTHORITY_V1",
+      "cell_id": "cell:60",
+      "cell_root_hash72": "3*yKmpK5zhyFz7gIEANtT6d)GrlPPb0+1R/Vpnq*G8J4ru?>LXd9rFBxGu3S/llA-7MHz6Y4",
+      "entry_phase": "wz",
+      "exit_phase": "wz",
+      "local_scope": [
+        "cell:60"
+      ],
+      "node_id": "node:03",
+      "node_root_hash72": "n<XoWLdnUlSEgH7KWj1w6TDXCvxF>>uxRcbY06n!/Un(pa7X2p1jAUVt5V-R2sdIucvTU>-v",
+      "operation": "CLOSE",
+      "operator_from_canonical_registry": true,
+      "plastic_equilibrium_admitted": true,
+      "plastic_lane_root_hash72": "gY6sftEGFmBQTNd?sxnt6(XEb!+juunSjnZi2xkZuUWf?6jyBNUYN-0u/o9QBUuz8vSS</H4",
+      "positive_lane_root_hash72": "oEN54ixSPX4Yl9e5eKlVTbf+65v8Vq5La/Ki/7QYEcbwvE0y3-QiRY0?WFHAL?CV+4FcFTpV",
+      "reciprocal_phase": "w",
+      "schema": "HHS_THREE_LANE_PATH_NODE_V1",
+      "version": "PASS_069_CLOSED_LOOP_THREE_LANE_PROGRAM_WEAVING_V1",
+      "zero_sum_closed": true,
+      "zero_sum_lane_root_hash72": "v1NlLCoqxPJOTUZQlrvjWn4<xifSRNCw4Q>mIcufAbMoh1-9Er!R!548U4rAveUxMY/<o(q-"
+    }
+  ],
+  "parallel_semantics_created": false,
+  "program_graph_root_hash72": "!DvUp0XUsN*FoyjC6-W(y8/?mMC5T0rs8(la)Nw/zg(b1BDBx*cqftgL5hQ5hP67Z0qFCei-",
+  "program_id": "program:pass069:canonical",
+  "required_lane_order": [
+    "POSITIVE",
+    "PLASTIC",
+    "ZERO_SUM"
+  ],
+  "schema": "HHS_THREE_LANE_PROGRAM_GRAPH_V1",
+  "source_root_hash72": "cSTQZU!LBqA8UJtT?W>uFOLpsD5g-B2qjgD1kWUpjNRtv+uZwV!1PJRE9UWF)!58TtNDw<mN",
+  "version": "PASS_069_CLOSED_LOOP_THREE_LANE_PROGRAM_WEAVING_V1"
+}

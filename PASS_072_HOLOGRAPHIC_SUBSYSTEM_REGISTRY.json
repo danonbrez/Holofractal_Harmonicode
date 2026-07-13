@@ -1,0 +1,43 @@
+{
+  "all_membership_authority_false": true,
+  "authority": "HHS_PASS072_TOTAL_SYSTEM_CLOSURE_AUTHORITY_V1",
+  "capsule_roots_hash72": [
+    "LwDYM+nnXHEzyhPzPGcYVJxubIMGa)EdHdt23<Vtwl13+zBWo<Jv7a<M>msodUzI2d>kAQ+>",
+    "EDylR<qy0+7VQbnY<)MvNG>NriYMyz1gbw5m<7bPzVKUP<Z*KF/Vcbgwf<AUSfiw7Oe/MW/w",
+    "hVyt7r0MA?o0q4P16?>p>NGVTj)NPs?*EAf>15B1IElc2l3<QfcMhYv0eulKzSR<2hoQ!l+4",
+    "tI?N15Fid-5-KKNpocH6r6Wld!?*LzkkreKJ+nBCI/<-i?zI(OazXFlucTrG??fdHKW0GpOP",
+    "7-)*VPiSXkR)tdK!FKtIAGMVruSUBr(zGl*V8aZ!8Fj1HrkpKLbK9fs+tORCBWLC>R04TB)P",
+    "0ZCXNiuFcl8cjA7ZS!lae7Iio6TEYxC3irj*3/S?Ar9xc0BQG*S9ThDBCyrFnXRfP5nDaDI-",
+    "70NHsn4lXh-U20Yu<GjLev8X*FIrVDpEq<zfYI?*<C!B6kSz!db/BI4?>DiEo22)x4CE>?4w",
+    "yHVzLR-R>b28BhqqJWb0uB3G*owZUlI2!GTY5PD8+ryYOqgx/Gapu)hdc0vEaCaUdhtJjXR!",
+    "uLs>CRDVEr041U4Wi<yx(3OI6un+FMb*T0/g3R8hhsmFcYcZ7u6isiQj(nEvLk!RR<w8>LMI"
+  ],
+  "lo_shu_layout": [
+    4,
+    9,
+    2,
+    3,
+    5,
+    7,
+    8,
+    1,
+    6
+  ],
+  "schema": "HHS_HOLOGRAPHIC_SUBSYSTEM_REGISTRY_V1",
+  "subsystem_count": 9,
+  "subsystem_ids": [
+    "PASS071_RESTART_CAPSULE",
+    "SYMBOLIC_GENOME",
+    "INFORMATION_ENERGY_FIELD",
+    "RECIPROCAL_BINDING_REGISTRY",
+    "PHASE_GEAR_FOLD_REGISTRY",
+    "FOLDED_PROGRAM_TOPOLOGY",
+    "QUDIT81_KERNEL",
+    "HOLOFRACTAL_PHASE_GEAR_PATHFINDER",
+    "CONTINUITY_AND_REVALIDATION"
+  ],
+  "subsystem_registry_root_hash72": "0t8h*KxSk)i>!H653WQZDy907MhmnWyk(<5<CWAA5AqmYP(FelE(DtYzJat5PV?HyIhxMGhq",
+  "total_system_id": "HHS_TOTAL_SYSTEM_PASS_072",
+  "unique_subsystem_identity": true,
+  "version": "PASS_072_TOTAL_SYSTEM_RECURSIVE_HOLOGRAPHIC_CLOSURE_V1"
+}

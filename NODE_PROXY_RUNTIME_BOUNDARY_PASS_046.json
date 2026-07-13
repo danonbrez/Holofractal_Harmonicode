@@ -1,0 +1,14 @@
+{
+  "fastapi_role": "RUNTIME_AUTHORITY",
+  "forbidden": [
+    "Node-generated runtime events",
+    "frontend synthetic runtime truth",
+    "placeholder live channel packets in live mode"
+  ],
+  "node_role": "GUI_PROXY_ONLY",
+  "schema": "HHS_NODE_PROXY_RUNTIME_BOUNDARY_PASS_046_V1",
+  "vite_proxy": {
+    "/api": "http://127.0.0.1:8000",
+    "/ws": "ws://127.0.0.1:8000"
+  }
+}

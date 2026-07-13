@@ -1,0 +1,60 @@
+{
+  "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+  "checkpoint_root_hash72": "t!kVP+pDXjWr2duZu5>VTbKfp3>CKQy0Ghw?cp(HTXR2txNRQeBHm-9hbl>V/dvSfOAiKw7*",
+  "completed_stage": "INDEPENDENT_REVALIDATION",
+  "completed_stage_names": [
+    "PASS070_HANDOFF",
+    "OVERLAP_BUFFER",
+    "SYMBOLIC_GENOME",
+    "INFORMATION_ENERGY_POTENTIAL",
+    "RECIPROCAL_BINDINGS",
+    "PHASE_GEAR_FOLDS",
+    "FOLDED_TOPOLOGY",
+    "UNFOLDING",
+    "INDEPENDENT_REVALIDATION"
+  ],
+  "completed_stage_roots_hash72": {
+    "FOLDED_TOPOLOGY": "tjVb45fukLKQXqh3/gX+9ukSJfWWos*)GhUgEJ6kZyN-!u)uz-8rs5OE!Ve?K<)BXJ*xaKx1",
+    "INDEPENDENT_REVALIDATION": "9UsJy1p03UrbF<D1UsK>rxgbwJHcmFOkjf?1uFnpLP2iKbn/s*P3j0HFf!46d9tADatWGAck",
+    "INFORMATION_ENERGY_POTENTIAL": "sbj4zeZ(2oqwQ4txbycnxsthK8T+Pc7q35c9<uw43jR3Go8HiURqhD3vzAH>R06A5AQkJBfw",
+    "OVERLAP_BUFFER": "4x7/dTn<Q5axZHyM/OryqrIl6ZJGuWKugBOKSjR054M)*SZbVZ0M!<bD3vd9Y1+FT!sQRr(T",
+    "PASS070_HANDOFF": "4x7/dTn<Q5axZHyM/OryqrIl6ZJGuWKugBOKSjR054M)*SZbVZ0M!<bD3vd9Y1+FT!sQRr(T",
+    "PHASE_GEAR_FOLDS": "Nuuq2/sdfgSiPWo-CN1?xhRpDaYzY8OKHdMb3*G3f>p9lNUkd<4X/(HFQ!MS2>Peu2j*Jc3?",
+    "RECIPROCAL_BINDINGS": "sbj4zeZ(2oqwQ4txbycnxsthK8T+Pc7q35c9<uw43jR3Go8HiURqhD3vzAH>R06A5AQkJBfw",
+    "SYMBOLIC_GENOME": "ifg(NSvYCGTmY49?mRajj6zWMKeP3dHHb7lu/-lYAa83u<>4Fsdi>*4pz>btVZe)W9TvHPGs",
+    "UNFOLDING": "9UsJy1p03UrbF<D1UsK>rxgbwJHcmFOkjf?1uFnpLP2iKbn/s*P3j0HFf!46d9tADatWGAck"
+  },
+  "context_reset_permitted": false,
+  "next_stage": "COMPLETE",
+  "overlap_root_hash72": "76A9BfCvc9!Hj9x7M5(WWRqXp7Vppp>qVQ(>xAG+2cRQJxrx6FRkBuw0Ve!InZps8rkxYNJN",
+  "parent_pass_id": "PASS_070",
+  "pass070_root_hash72": "4x7/dTn<Q5axZHyM/OryqrIl6ZJGuWKugBOKSjR054M)*SZbVZ0M!<bD3vd9Y1+FT!sQRr(T",
+  "pass_id": "PASS_071",
+  "reconstruction_inputs": {
+    "mapping": {
+      "00": [
+        0,
+        0
+      ],
+      "01": [
+        1,
+        0
+      ],
+      "10": [
+        -1,
+        0
+      ],
+      "11": [
+        0,
+        1
+      ]
+    },
+    "source_packet_root_hash72": "ifg(NSvYCGTmY49?mRajj6zWMKeP3dHHb7lu/-lYAa83u<>4Fsdi>*4pz>btVZe)W9TvHPGs",
+    "source_word": 81985529216486895
+  },
+  "restart_safe": true,
+  "resume_requires_parent_root_match": true,
+  "schema": "HHS_RESUMABLE_EXECUTION_CHECKPOINT_V1",
+  "thread_context_required": false,
+  "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+}

@@ -1,0 +1,111 @@
+# Authority Activation Negative Cases Pass 055
+
+- schema: `HHS_AUTHORITY_ACTIVATION_NEGATIVE_CASES_PASS_055_V1`
+
+```json
+{
+  "negative_cases": {
+    "expired": {
+      "authority": "HHS_I019_AUTHORITY_ACTIVATION_BOUNDARY_V1",
+      "capability_id": "capability:repository-mutation",
+      "dispatch_decision_root_hash72": "NNu(EH/>5SAzr7j-EvRr7<b>D5VYM-Os8kj0oxAJLPECO8-UHPkUr*vDnI-o1(HL2mQ9-Hny",
+      "lease_root_hash72": "HH5/R7X09laHvodpaLM2)?qPLIb6u*f-eREHdaK9k4GhnOY!JA?yj)SH*b<Vb1PqoJPzW*EP",
+      "ok": false,
+      "operation": "CREATE_DECLARED_MODULES",
+      "reasons": [
+        "REJECT_LEASE_EXPIRED"
+      ],
+      "schema": "HHS_AUTHORITY_ENFORCED_DISPATCH_DECISION_V1",
+      "sequence": 141,
+      "source_object_id": "object:canonical-pass054-repository",
+      "status": "REJECT_RUNTIME_DISPATCH",
+      "task_id": "task:pass055-runtime-dispatch",
+      "version": "PASS_055_AUTHORITY_ENFORCED_RUNTIME_DISPATCH_REVOCABLE_CAPABILITY_LEASES_V1"
+    },
+    "missing_lease": {
+      "authority": "HHS_I019_AUTHORITY_ACTIVATION_BOUNDARY_V1",
+      "capability_id": "capability:repository-mutation",
+      "dispatch_decision_root_hash72": "*LB7I1aPaYnBZICpIS*sOQG*>oj1865EIQJ-MJU9Hwc6D1?BQyxtB5886ZpTR0aBRIpIBjwa",
+      "lease_root_hash72": null,
+      "ok": false,
+      "operation": "CREATE_DECLARED_MODULES",
+      "reasons": [
+        "REJECT_CAPABILITY_INVOCATION_WITHOUT_LEASE"
+      ],
+      "schema": "HHS_AUTHORITY_ENFORCED_DISPATCH_DECISION_V1",
+      "sequence": 101,
+      "source_object_id": "object:canonical-pass054-repository",
+      "status": "REJECT_RUNTIME_DISPATCH",
+      "task_id": "task:pass055-runtime-dispatch",
+      "version": "PASS_055_AUTHORITY_ENFORCED_RUNTIME_DISPATCH_REVOCABLE_CAPABILITY_LEASES_V1"
+    },
+    "revoked": {
+      "authority": "HHS_I019_AUTHORITY_ACTIVATION_BOUNDARY_V1",
+      "capability_id": "capability:repository-mutation",
+      "dispatch_decision_root_hash72": "NNu(EH/>5SAzr7j-EvRr7<b>D5VYM-Os8xXpokEMLPECO8-UHPkUr*vDnI-o1(HL2mQ9-Hny",
+      "lease_root_hash72": "HH5/R7X09laHvodpaLM2)?qPLIb6u*f-eREHdaK9k4GhnOY!JA?yj)SH*b<Vb1PqoJPzW*EP",
+      "ok": false,
+      "operation": "CREATE_DECLARED_MODULES",
+      "reasons": [
+        "REJECT_LEASE_REVOKED"
+      ],
+      "schema": "HHS_AUTHORITY_ENFORCED_DISPATCH_DECISION_V1",
+      "sequence": 111,
+      "source_object_id": "object:canonical-pass054-repository",
+      "status": "REJECT_RUNTIME_DISPATCH",
+      "task_id": "task:pass055-runtime-dispatch",
+      "version": "PASS_055_AUTHORITY_ENFORCED_RUNTIME_DISPATCH_REVOCABLE_CAPABILITY_LEASES_V1"
+    },
+    "scope_violation": {
+      "authority": "HHS_I019_AUTHORITY_ACTIVATION_BOUNDARY_V1",
+      "capability_id": "capability:repository-mutation",
+      "dispatch_decision_root_hash72": "8?192Gw/4LRnRdPmzcxN(PpqdJFtLKT0p(CGV4Pi*Byw!tPIkUXUsn!H)3h-N-I<M+-wr1ir",
+      "lease_root_hash72": "HH5/R7X09laHvodpaLM2)?qPLIb6u*f-eREHdaK9k4GhnOY!JA?yj)SH*b<Vb1PqoJPzW*EP",
+      "ok": false,
+      "operation": "DELETE_CANONICAL_INVARIANT",
+      "reasons": [
+        "REJECT_LEASE_SCOPE_EXCEEDS_ROLE"
+      ],
+      "schema": "HHS_AUTHORITY_ENFORCED_DISPATCH_DECISION_V1",
+      "sequence": 101,
+      "source_object_id": "object:canonical-pass054-repository",
+      "status": "REJECT_RUNTIME_DISPATCH",
+      "task_id": "task:pass055-runtime-dispatch",
+      "version": "PASS_055_AUTHORITY_ENFORCED_RUNTIME_DISPATCH_REVOCABLE_CAPABILITY_LEASES_V1"
+    },
+    "source_violation": {
+      "authority": "HHS_I019_AUTHORITY_ACTIVATION_BOUNDARY_V1",
+      "capability_id": "capability:repository-mutation",
+      "dispatch_decision_root_hash72": "eqNoZFQ8>K/Pj?N<Qa/IFa4Bwi0Wsv2+XkdIYnkXbC)YuI>3jOB5k9lu29J/Cr6wE/sKfMv4",
+      "lease_root_hash72": "HH5/R7X09laHvodpaLM2)?qPLIb6u*f-eREHdaK9k4GhnOY!JA?yj)SH*b<Vb1PqoJPzW*EP",
+      "ok": false,
+      "operation": "CREATE_DECLARED_MODULES",
+      "reasons": [
+        "REJECT_LEASE_SOURCE_SCOPE_VIOLATION"
+      ],
+      "schema": "HHS_AUTHORITY_ENFORCED_DISPATCH_DECISION_V1",
+      "sequence": 101,
+      "source_object_id": "object:wrong-source",
+      "status": "REJECT_RUNTIME_DISPATCH",
+      "task_id": "task:pass055-runtime-dispatch",
+      "version": "PASS_055_AUTHORITY_ENFORCED_RUNTIME_DISPATCH_REVOCABLE_CAPABILITY_LEASES_V1"
+    },
+    "task_closed": {
+      "authority": "HHS_I019_AUTHORITY_ACTIVATION_BOUNDARY_V1",
+      "checkpoint_id": "closed-task",
+      "checkpoint_root_hash72": "0Qry0xSm8j3kOZbMr7078AJw69f?/eC876PnO9MI)VMAxMa5NWDwU7J+6C6RP-0L(w/F2j4j",
+      "lease_root_hash72": "HH5/R7X09laHvodpaLM2)?qPLIb6u*f-eREHdaK9k4GhnOY!JA?yj)SH*b<Vb1PqoJPzW*EP",
+      "lease_state": "ACTIVE",
+      "ok": false,
+      "reasons": [
+        "REJECT_EXECUTION_AFTER_TASK_CLOSURE"
+      ],
+      "schema": "HHS_EXECUTION_LEASE_CHECKPOINT_V1",
+      "sequence": 110,
+      "version": "PASS_055_AUTHORITY_ENFORCED_RUNTIME_DISPATCH_REVOCABLE_CAPABILITY_LEASES_V1"
+    }
+  },
+  "ok": true,
+  "schema": "HHS_AUTHORITY_ACTIVATION_NEGATIVE_CASES_PASS_055_V1"
+}
+```

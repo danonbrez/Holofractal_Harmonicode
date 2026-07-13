@@ -1,0 +1,498 @@
+{
+  "authority": "HHS_RUNTIME_CANONICAL_OBSERVER_AUTHORITY_V1",
+  "capability_count": 17,
+  "provider_count": 5,
+  "provider_private_truth_pipeline_allowed": false,
+  "provider_registry_root_hash72": "Jssb8*Z9nJyXH0v7N(MkNFh3g/4w?5e+qqwq)itMZLGKX1**DyLwn8T2!dPM+fYdGMS8H9TJ",
+  "providers": [
+    {
+      "authority": "HHS_RUNTIME_CANONICAL_OBSERVER_AUTHORITY_V1",
+      "authority_scope": "PROVIDE_RAW_RESULT_ONLY",
+      "capability_classes": [
+        "TEXT_GENERATION",
+        "TEXT_EMBEDDING",
+        "SEARCH",
+        "MEMORY_RETRIEVAL"
+      ],
+      "capability_contracts": [
+        {
+          "authority": "HHS_RUNTIME_CANONICAL_OBSERVER_AUTHORITY_V1",
+          "authority_tier": "AUTHORIZED_NONMUTATING",
+          "capability_class": "TEXT_GENERATION",
+          "capability_contract_hash72": "vuo9Y>WcAQFNZZ6qfRbLpuv9fpDdd4EQTjSc!l?Xu(9/9*tqxGYkZk4nJ57MbF1gXA6vxfvm",
+          "capability_grants_execution_authority": false,
+          "capability_id": "capability:text_generation",
+          "input_modalities": [
+            "TEXT"
+          ],
+          "mutating_capability_requires_explicit_authority_admission": true,
+          "output_modality": "TEXT",
+          "provider_owns_capability_identity": false,
+          "raw_provider_output_is_canonical": false,
+          "raw_result_must_reenter_universal_modality_pipeline": true,
+          "schema": "HHS_CAPABILITY_CONTRACT_V1",
+          "version": "PASS_051_RUNTIME_CANONICAL_OBSERVER_CAPABILITY_PROVIDER_FABRIC_V1"
+        },
+        {
+          "authority": "HHS_RUNTIME_CANONICAL_OBSERVER_AUTHORITY_V1",
+          "authority_tier": "AUTHORIZED_NONMUTATING",
+          "capability_class": "TEXT_EMBEDDING",
+          "capability_contract_hash72": "1C0H/>e26a?cSW!+aDpOtXo!n53YdvGt6tH7jUh*D)oXq<Pkg>JIN2yTPLsN9aQgAEA35v3z",
+          "capability_grants_execution_authority": false,
+          "capability_id": "capability:text_embedding",
+          "input_modalities": [
+            "TEXT"
+          ],
+          "mutating_capability_requires_explicit_authority_admission": true,
+          "output_modality": "SEMANTIC_MEMORY_OBJECT",
+          "provider_owns_capability_identity": false,
+          "raw_provider_output_is_canonical": false,
+          "raw_result_must_reenter_universal_modality_pipeline": true,
+          "schema": "HHS_CAPABILITY_CONTRACT_V1",
+          "version": "PASS_051_RUNTIME_CANONICAL_OBSERVER_CAPABILITY_PROVIDER_FABRIC_V1"
+        },
+        {
+          "authority": "HHS_RUNTIME_CANONICAL_OBSERVER_AUTHORITY_V1",
+          "authority_tier": "AUTHORIZED_NONMUTATING",
+          "capability_class": "SEARCH",
+          "capability_contract_hash72": "iRugRE-D(VMLEzbe)U7zM0/S2iNLIdpbgy5*-3g*RVm3-qaWYm(+gEU8GjY7D9J/PIkpDh2Q",
+          "capability_grants_execution_authority": false,
+          "capability_id": "capability:search",
+          "input_modalities": [
+            "TEXT"
+          ],
+          "mutating_capability_requires_explicit_authority_admission": true,
+          "output_modality": "SEMANTIC_MEMORY_OBJECT",
+          "provider_owns_capability_identity": false,
+          "raw_provider_output_is_canonical": false,
+          "raw_result_must_reenter_universal_modality_pipeline": true,
+          "schema": "HHS_CAPABILITY_CONTRACT_V1",
+          "version": "PASS_051_RUNTIME_CANONICAL_OBSERVER_CAPABILITY_PROVIDER_FABRIC_V1"
+        },
+        {
+          "authority": "HHS_RUNTIME_CANONICAL_OBSERVER_AUTHORITY_V1",
+          "authority_tier": "AUTHORIZED_NONMUTATING",
+          "capability_class": "MEMORY_RETRIEVAL",
+          "capability_contract_hash72": "suEllL2camy*3U45!AheU!Ccr3>gC42NG?U(C(h6(S?wZ?/N6OSikUCEvUd!nP!kxzoMQQ<V",
+          "capability_grants_execution_authority": false,
+          "capability_id": "capability:memory_retrieval",
+          "input_modalities": [
+            "TEXT"
+          ],
+          "mutating_capability_requires_explicit_authority_admission": true,
+          "output_modality": "SEMANTIC_MEMORY_OBJECT",
+          "provider_owns_capability_identity": false,
+          "raw_provider_output_is_canonical": false,
+          "raw_result_must_reenter_universal_modality_pipeline": true,
+          "schema": "HHS_CAPABILITY_CONTRACT_V1",
+          "version": "PASS_051_RUNTIME_CANONICAL_OBSERVER_CAPABILITY_PROVIDER_FABRIC_V1"
+        }
+      ],
+      "private_truth_pipeline_allowed": false,
+      "provider_id": "provider:hhs.local.text",
+      "provider_is_canonical_authority": false,
+      "provider_kind": "LOCAL_STUB_PROVIDER",
+      "provider_name": "HHS Local Text Provider",
+      "provider_output_replaces_source": false,
+      "provider_root_hash72": "0VhYGrm(hUUFSv4?uNkSf*Guw>)O)KoZg+4KUb?Fp7dRYGMm*s7dXVU8MOfd+KD1D-P+DyI-",
+      "provider_self_authorizes": false,
+      "result_ingress_required": true,
+      "schema": "HHS_CAPABILITY_PROVIDER_RECORD_V1",
+      "version": "PASS_051_RUNTIME_CANONICAL_OBSERVER_CAPABILITY_PROVIDER_FABRIC_V1"
+    },
+    {
+      "authority": "HHS_RUNTIME_CANONICAL_OBSERVER_AUTHORITY_V1",
+      "authority_scope": "PROVIDE_RAW_RESULT_ONLY",
+      "capability_classes": [
+        "OCR",
+        "DOCUMENT_EXTRACTION"
+      ],
+      "capability_contracts": [
+        {
+          "authority": "HHS_RUNTIME_CANONICAL_OBSERVER_AUTHORITY_V1",
+          "authority_tier": "AUTHORIZED_NONMUTATING",
+          "capability_class": "OCR",
+          "capability_contract_hash72": "cUS)!R5xN+REi/44uiRPv-ErvyQWf7oM60-LQ8X1*3hiBbaF>LKET5Yw2gWtk5-rjiBJ*EEl",
+          "capability_grants_execution_authority": false,
+          "capability_id": "capability:ocr",
+          "input_modalities": [
+            "TEXT"
+          ],
+          "mutating_capability_requires_explicit_authority_admission": true,
+          "output_modality": "TEXT",
+          "provider_owns_capability_identity": false,
+          "raw_provider_output_is_canonical": false,
+          "raw_result_must_reenter_universal_modality_pipeline": true,
+          "schema": "HHS_CAPABILITY_CONTRACT_V1",
+          "version": "PASS_051_RUNTIME_CANONICAL_OBSERVER_CAPABILITY_PROVIDER_FABRIC_V1"
+        },
+        {
+          "authority": "HHS_RUNTIME_CANONICAL_OBSERVER_AUTHORITY_V1",
+          "authority_tier": "AUTHORIZED_NONMUTATING",
+          "capability_class": "DOCUMENT_EXTRACTION",
+          "capability_contract_hash72": "+<!LK(ob6TZXTuQ4w!QOxTNUrYvP(4kMaTSDDtDJS67LhF)WKQ7Wl)A?deSRIDstIvxR7RhS",
+          "capability_grants_execution_authority": false,
+          "capability_id": "capability:document_extraction",
+          "input_modalities": [
+            "TEXT"
+          ],
+          "mutating_capability_requires_explicit_authority_admission": true,
+          "output_modality": "TEXT",
+          "provider_owns_capability_identity": false,
+          "raw_provider_output_is_canonical": false,
+          "raw_result_must_reenter_universal_modality_pipeline": true,
+          "schema": "HHS_CAPABILITY_CONTRACT_V1",
+          "version": "PASS_051_RUNTIME_CANONICAL_OBSERVER_CAPABILITY_PROVIDER_FABRIC_V1"
+        }
+      ],
+      "private_truth_pipeline_allowed": false,
+      "provider_id": "provider:hhs.local.document",
+      "provider_is_canonical_authority": false,
+      "provider_kind": "LOCAL_STUB_PROVIDER",
+      "provider_name": "HHS Local Document Provider",
+      "provider_output_replaces_source": false,
+      "provider_root_hash72": "qgrE!qdsvpV4V07!>QcjhQW*0DM*euoiWksTX4R4(oBI8Gdf+-V/oc6Jq2RUPH<e(uVQY1Nn",
+      "provider_self_authorizes": false,
+      "result_ingress_required": true,
+      "schema": "HHS_CAPABILITY_PROVIDER_RECORD_V1",
+      "version": "PASS_051_RUNTIME_CANONICAL_OBSERVER_CAPABILITY_PROVIDER_FABRIC_V1"
+    },
+    {
+      "authority": "HHS_RUNTIME_CANONICAL_OBSERVER_AUTHORITY_V1",
+      "authority_scope": "PROVIDE_RAW_RESULT_ONLY",
+      "capability_classes": [
+        "IMAGE_ANALYSIS",
+        "AUDIO_ANALYSIS",
+        "VIDEO_DECODING",
+        "SPEECH_TO_TEXT",
+        "TEXT_TO_SPEECH"
+      ],
+      "capability_contracts": [
+        {
+          "authority": "HHS_RUNTIME_CANONICAL_OBSERVER_AUTHORITY_V1",
+          "authority_tier": "AUTHORIZED_NONMUTATING",
+          "capability_class": "IMAGE_ANALYSIS",
+          "capability_contract_hash72": "+<g/W8xIEG6v!V0Ymrv6tYyPg+Vr/T0l()v7Gd3c>qTro(?w)oOI?A!as32CV)H>V2qt*)!O",
+          "capability_grants_execution_authority": false,
+          "capability_id": "capability:image_analysis",
+          "input_modalities": [
+            "TEXT"
+          ],
+          "mutating_capability_requires_explicit_authority_admission": true,
+          "output_modality": "GRAPH_OBJECT",
+          "provider_owns_capability_identity": false,
+          "raw_provider_output_is_canonical": false,
+          "raw_result_must_reenter_universal_modality_pipeline": true,
+          "schema": "HHS_CAPABILITY_CONTRACT_V1",
+          "version": "PASS_051_RUNTIME_CANONICAL_OBSERVER_CAPABILITY_PROVIDER_FABRIC_V1"
+        },
+        {
+          "authority": "HHS_RUNTIME_CANONICAL_OBSERVER_AUTHORITY_V1",
+          "authority_tier": "AUTHORIZED_NONMUTATING",
+          "capability_class": "AUDIO_ANALYSIS",
+          "capability_contract_hash72": "+<g/W8pYzFel!V0Ymrv6tYyP87Qq1J0l()v7Gd3c>qTro(?w)oOI?A!as32CV)H>V2qt*)!O",
+          "capability_grants_execution_authority": false,
+          "capability_id": "capability:audio_analysis",
+          "input_modalities": [
+            "TEXT"
+          ],
+          "mutating_capability_requires_explicit_authority_admission": true,
+          "output_modality": "GRAPH_OBJECT",
+          "provider_owns_capability_identity": false,
+          "raw_provider_output_is_canonical": false,
+          "raw_result_must_reenter_universal_modality_pipeline": true,
+          "schema": "HHS_CAPABILITY_CONTRACT_V1",
+          "version": "PASS_051_RUNTIME_CANONICAL_OBSERVER_CAPABILITY_PROVIDER_FABRIC_V1"
+        },
+        {
+          "authority": "HHS_RUNTIME_CANONICAL_OBSERVER_AUTHORITY_V1",
+          "authority_tier": "AUTHORIZED_NONMUTATING",
+          "capability_class": "VIDEO_DECODING",
+          "capability_contract_hash72": "ZR(Jb!jhJjF)<+xh3zG>-3L*fDaBPT0SydNv5>ZmMj89<vxVhUQb+w+b(sc?BA87IvwrBV(y",
+          "capability_grants_execution_authority": false,
+          "capability_id": "capability:video_decoding",
+          "input_modalities": [
+            "TEXT"
+          ],
+          "mutating_capability_requires_explicit_authority_admission": true,
+          "output_modality": "VIDEO",
+          "provider_owns_capability_identity": false,
+          "raw_provider_output_is_canonical": false,
+          "raw_result_must_reenter_universal_modality_pipeline": true,
+          "schema": "HHS_CAPABILITY_CONTRACT_V1",
+          "version": "PASS_051_RUNTIME_CANONICAL_OBSERVER_CAPABILITY_PROVIDER_FABRIC_V1"
+        },
+        {
+          "authority": "HHS_RUNTIME_CANONICAL_OBSERVER_AUTHORITY_V1",
+          "authority_tier": "AUTHORIZED_NONMUTATING",
+          "capability_class": "SPEECH_TO_TEXT",
+          "capability_contract_hash72": "q9M-B5RVg3L(uR>!Fbu-OEo3fM+<EEJZi>cjAw?O2SJglPQ8-+oZfMmlZVdGG++HO9)79KiS",
+          "capability_grants_execution_authority": false,
+          "capability_id": "capability:speech_to_text",
+          "input_modalities": [
+            "TEXT"
+          ],
+          "mutating_capability_requires_explicit_authority_admission": true,
+          "output_modality": "TEXT",
+          "provider_owns_capability_identity": false,
+          "raw_provider_output_is_canonical": false,
+          "raw_result_must_reenter_universal_modality_pipeline": true,
+          "schema": "HHS_CAPABILITY_CONTRACT_V1",
+          "version": "PASS_051_RUNTIME_CANONICAL_OBSERVER_CAPABILITY_PROVIDER_FABRIC_V1"
+        },
+        {
+          "authority": "HHS_RUNTIME_CANONICAL_OBSERVER_AUTHORITY_V1",
+          "authority_tier": "AUTHORIZED_NONMUTATING",
+          "capability_class": "TEXT_TO_SPEECH",
+          "capability_contract_hash72": "ZR(Jb!hfMLuIe6n23uz9Z3L*dBywkk-BU!Nq!9YmMj89<vxVhUQb+w+b(sc?BA87IvwrBV(y",
+          "capability_grants_execution_authority": false,
+          "capability_id": "capability:text_to_speech",
+          "input_modalities": [
+            "TEXT"
+          ],
+          "mutating_capability_requires_explicit_authority_admission": true,
+          "output_modality": "AUDIO",
+          "provider_owns_capability_identity": false,
+          "raw_provider_output_is_canonical": false,
+          "raw_result_must_reenter_universal_modality_pipeline": true,
+          "schema": "HHS_CAPABILITY_CONTRACT_V1",
+          "version": "PASS_051_RUNTIME_CANONICAL_OBSERVER_CAPABILITY_PROVIDER_FABRIC_V1"
+        }
+      ],
+      "private_truth_pipeline_allowed": false,
+      "provider_id": "provider:hhs.local.media",
+      "provider_is_canonical_authority": false,
+      "provider_kind": "LOCAL_STUB_PROVIDER",
+      "provider_name": "HHS Local Media Provider",
+      "provider_output_replaces_source": false,
+      "provider_root_hash72": "0WImo78KVYW1Z6v*s(>XgYo6rSdBOZveuVhi85W4!x5tWHWusFqatjlONvY64xnlOF4WC>Fb",
+      "provider_self_authorizes": false,
+      "result_ingress_required": true,
+      "schema": "HHS_CAPABILITY_PROVIDER_RECORD_V1",
+      "version": "PASS_051_RUNTIME_CANONICAL_OBSERVER_CAPABILITY_PROVIDER_FABRIC_V1"
+    },
+    {
+      "authority": "HHS_RUNTIME_CANONICAL_OBSERVER_AUTHORITY_V1",
+      "authority_scope": "PROVIDE_RAW_RESULT_ONLY",
+      "capability_classes": [
+        "CODE_ANALYSIS",
+        "CODE_EXECUTION",
+        "COMPILATION",
+        "EMULATION",
+        "GRAPH_ANALYSIS"
+      ],
+      "capability_contracts": [
+        {
+          "authority": "HHS_RUNTIME_CANONICAL_OBSERVER_AUTHORITY_V1",
+          "authority_tier": "AUTHORIZED_NONMUTATING",
+          "capability_class": "CODE_ANALYSIS",
+          "capability_contract_hash72": "s3MRHH5vE1yuu3Bk3R3J9NZHwl+AcSmwkmdt*YUBZ)5fuMXeXUxI?5srm119vF!tft8vK-pK",
+          "capability_grants_execution_authority": false,
+          "capability_id": "capability:code_analysis",
+          "input_modalities": [
+            "TEXT"
+          ],
+          "mutating_capability_requires_explicit_authority_admission": true,
+          "output_modality": "GRAPH_OBJECT",
+          "provider_owns_capability_identity": false,
+          "raw_provider_output_is_canonical": false,
+          "raw_result_must_reenter_universal_modality_pipeline": true,
+          "schema": "HHS_CAPABILITY_CONTRACT_V1",
+          "version": "PASS_051_RUNTIME_CANONICAL_OBSERVER_CAPABILITY_PROVIDER_FABRIC_V1"
+        },
+        {
+          "authority": "HHS_RUNTIME_CANONICAL_OBSERVER_AUTHORITY_V1",
+          "authority_tier": "REQUIRES_EXPLICIT_MUTATION_ADMISSION",
+          "capability_class": "CODE_EXECUTION",
+          "capability_contract_hash72": "4Ccuw2LYmkQ><EvvwI<k5Sde5(CdMolpLMGO7zDMtvmxD!*ckG)EC8rCVT-rcd3EM3QoR9qk",
+          "capability_grants_execution_authority": false,
+          "capability_id": "capability:code_execution",
+          "input_modalities": [
+            "TEXT"
+          ],
+          "mutating_capability_requires_explicit_authority_admission": true,
+          "output_modality": "RUNTIME_RECEIPT",
+          "provider_owns_capability_identity": false,
+          "raw_provider_output_is_canonical": false,
+          "raw_result_must_reenter_universal_modality_pipeline": true,
+          "schema": "HHS_CAPABILITY_CONTRACT_V1",
+          "version": "PASS_051_RUNTIME_CANONICAL_OBSERVER_CAPABILITY_PROVIDER_FABRIC_V1"
+        },
+        {
+          "authority": "HHS_RUNTIME_CANONICAL_OBSERVER_AUTHORITY_V1",
+          "authority_tier": "AUTHORIZED_NONMUTATING",
+          "capability_class": "COMPILATION",
+          "capability_contract_hash72": "BH-kp*53IamL0exjzqI5k4q7qw8?Gzfc-W>>sB-3?SIS/5MFdv2Hu(>7r5xuJ))EEs-pZFpB",
+          "capability_grants_execution_authority": false,
+          "capability_id": "capability:compilation",
+          "input_modalities": [
+            "TEXT"
+          ],
+          "mutating_capability_requires_explicit_authority_admission": true,
+          "output_modality": "COMPILED_ARTIFACT",
+          "provider_owns_capability_identity": false,
+          "raw_provider_output_is_canonical": false,
+          "raw_result_must_reenter_universal_modality_pipeline": true,
+          "schema": "HHS_CAPABILITY_CONTRACT_V1",
+          "version": "PASS_051_RUNTIME_CANONICAL_OBSERVER_CAPABILITY_PROVIDER_FABRIC_V1"
+        },
+        {
+          "authority": "HHS_RUNTIME_CANONICAL_OBSERVER_AUTHORITY_V1",
+          "authority_tier": "REQUIRES_EXPLICIT_MUTATION_ADMISSION",
+          "capability_class": "EMULATION",
+          "capability_contract_hash72": "B5JqaxFhOkIm454AUFEUQ(TiW-ZXAvUrH8Shrsuwrk?TtGj*KYvtMBzU6nmTe>pvv)nHoW1j",
+          "capability_grants_execution_authority": false,
+          "capability_id": "capability:emulation",
+          "input_modalities": [
+            "TEXT"
+          ],
+          "mutating_capability_requires_explicit_authority_admission": true,
+          "output_modality": "EMULATOR_STATE",
+          "provider_owns_capability_identity": false,
+          "raw_provider_output_is_canonical": false,
+          "raw_result_must_reenter_universal_modality_pipeline": true,
+          "schema": "HHS_CAPABILITY_CONTRACT_V1",
+          "version": "PASS_051_RUNTIME_CANONICAL_OBSERVER_CAPABILITY_PROVIDER_FABRIC_V1"
+        },
+        {
+          "authority": "HHS_RUNTIME_CANONICAL_OBSERVER_AUTHORITY_V1",
+          "authority_tier": "AUTHORIZED_NONMUTATING",
+          "capability_class": "GRAPH_ANALYSIS",
+          "capability_contract_hash72": "+<g/W8vPzP0s!V0Ymrv6tYyPe!QAXQ0l()v7Gd3c>qTro(?w)oOI?A!as32CV)H>V2qt*)!O",
+          "capability_grants_execution_authority": false,
+          "capability_id": "capability:graph_analysis",
+          "input_modalities": [
+            "TEXT"
+          ],
+          "mutating_capability_requires_explicit_authority_admission": true,
+          "output_modality": "GRAPH_OBJECT",
+          "provider_owns_capability_identity": false,
+          "raw_provider_output_is_canonical": false,
+          "raw_result_must_reenter_universal_modality_pipeline": true,
+          "schema": "HHS_CAPABILITY_CONTRACT_V1",
+          "version": "PASS_051_RUNTIME_CANONICAL_OBSERVER_CAPABILITY_PROVIDER_FABRIC_V1"
+        }
+      ],
+      "private_truth_pipeline_allowed": false,
+      "provider_id": "provider:hhs.local.code",
+      "provider_is_canonical_authority": false,
+      "provider_kind": "LOCAL_STUB_PROVIDER",
+      "provider_name": "HHS Local Code Provider",
+      "provider_output_replaces_source": false,
+      "provider_root_hash72": "wfsTUHMpY(VRTLKjyg?7Vgl3EZ81VQbJiceAdsSnROpJJUmoRf<ECQ>T/nqS4sMmc8O7<M*o",
+      "provider_self_authorizes": false,
+      "result_ingress_required": true,
+      "schema": "HHS_CAPABILITY_PROVIDER_RECORD_V1",
+      "version": "PASS_051_RUNTIME_CANONICAL_OBSERVER_CAPABILITY_PROVIDER_FABRIC_V1"
+    },
+    {
+      "authority": "HHS_RUNTIME_CANONICAL_OBSERVER_AUTHORITY_V1",
+      "authority_scope": "PROVIDE_RAW_RESULT_ONLY",
+      "capability_classes": [
+        "IMAGE_GENERATION"
+      ],
+      "capability_contracts": [
+        {
+          "authority": "HHS_RUNTIME_CANONICAL_OBSERVER_AUTHORITY_V1",
+          "authority_tier": "AUTHORIZED_NONMUTATING",
+          "capability_class": "IMAGE_GENERATION",
+          "capability_contract_hash72": "YUvk9-<q8rwong-?Ov8?fSRvYjgm8Es8boDTetV27TF-!nN?MdATlHJ7JeGqCsSGZZQDYH*9",
+          "capability_grants_execution_authority": false,
+          "capability_id": "capability:image_generation",
+          "input_modalities": [
+            "TEXT"
+          ],
+          "mutating_capability_requires_explicit_authority_admission": true,
+          "output_modality": "IMAGE",
+          "provider_owns_capability_identity": false,
+          "raw_provider_output_is_canonical": false,
+          "raw_result_must_reenter_universal_modality_pipeline": true,
+          "schema": "HHS_CAPABILITY_CONTRACT_V1",
+          "version": "PASS_051_RUNTIME_CANONICAL_OBSERVER_CAPABILITY_PROVIDER_FABRIC_V1"
+        }
+      ],
+      "private_truth_pipeline_allowed": false,
+      "provider_id": "provider:hhs.local.image_gen",
+      "provider_is_canonical_authority": false,
+      "provider_kind": "LOCAL_STUB_PROVIDER",
+      "provider_name": "HHS Local Image Proposal Provider",
+      "provider_output_replaces_source": false,
+      "provider_root_hash72": "VPWOVJpWxWdhj1)JMN>HKsfdYKOzG!LOEqN0BFh+D0c8>zzRXXRf3r?rCwe/bJK<dNzDK<MY",
+      "provider_self_authorizes": false,
+      "result_ingress_required": true,
+      "schema": "HHS_CAPABILITY_PROVIDER_RECORD_V1",
+      "version": "PASS_051_RUNTIME_CANONICAL_OBSERVER_CAPABILITY_PROVIDER_FABRIC_V1"
+    }
+  ],
+  "schema": "HHS_CAPABILITY_PROVIDER_REGISTRY_V1",
+  "validations": [
+    {
+      "capability_classes": [
+        "TEXT_GENERATION",
+        "TEXT_EMBEDDING",
+        "SEARCH",
+        "MEMORY_RETRIEVAL"
+      ],
+      "ok": true,
+      "provider_id": "provider:hhs.local.text",
+      "reasons": [],
+      "schema": "HHS_CAPABILITY_PROVIDER_VALIDATION_V1",
+      "status": "ADMIT_CAPABILITY_PROVIDER",
+      "version": "PASS_051_RUNTIME_CANONICAL_OBSERVER_CAPABILITY_PROVIDER_FABRIC_V1"
+    },
+    {
+      "capability_classes": [
+        "OCR",
+        "DOCUMENT_EXTRACTION"
+      ],
+      "ok": true,
+      "provider_id": "provider:hhs.local.document",
+      "reasons": [],
+      "schema": "HHS_CAPABILITY_PROVIDER_VALIDATION_V1",
+      "status": "ADMIT_CAPABILITY_PROVIDER",
+      "version": "PASS_051_RUNTIME_CANONICAL_OBSERVER_CAPABILITY_PROVIDER_FABRIC_V1"
+    },
+    {
+      "capability_classes": [
+        "IMAGE_ANALYSIS",
+        "AUDIO_ANALYSIS",
+        "VIDEO_DECODING",
+        "SPEECH_TO_TEXT",
+        "TEXT_TO_SPEECH"
+      ],
+      "ok": true,
+      "provider_id": "provider:hhs.local.media",
+      "reasons": [],
+      "schema": "HHS_CAPABILITY_PROVIDER_VALIDATION_V1",
+      "status": "ADMIT_CAPABILITY_PROVIDER",
+      "version": "PASS_051_RUNTIME_CANONICAL_OBSERVER_CAPABILITY_PROVIDER_FABRIC_V1"
+    },
+    {
+      "capability_classes": [
+        "CODE_ANALYSIS",
+        "CODE_EXECUTION",
+        "COMPILATION",
+        "EMULATION",
+        "GRAPH_ANALYSIS"
+      ],
+      "ok": true,
+      "provider_id": "provider:hhs.local.code",
+      "reasons": [],
+      "schema": "HHS_CAPABILITY_PROVIDER_VALIDATION_V1",
+      "status": "ADMIT_CAPABILITY_PROVIDER",
+      "version": "PASS_051_RUNTIME_CANONICAL_OBSERVER_CAPABILITY_PROVIDER_FABRIC_V1"
+    },
+    {
+      "capability_classes": [
+        "IMAGE_GENERATION"
+      ],
+      "ok": true,
+      "provider_id": "provider:hhs.local.image_gen",
+      "reasons": [],
+      "schema": "HHS_CAPABILITY_PROVIDER_VALIDATION_V1",
+      "status": "ADMIT_CAPABILITY_PROVIDER",
+      "version": "PASS_051_RUNTIME_CANONICAL_OBSERVER_CAPABILITY_PROVIDER_FABRIC_V1"
+    }
+  ],
+  "version": "PASS_051_RUNTIME_CANONICAL_OBSERVER_CAPABILITY_PROVIDER_FABRIC_V1"
+}

@@ -1,0 +1,84 @@
+# Information Energy Economy Pass 066
+
+Authoritative source: `INFORMATION_ENERGY_ECONOMY_PASS_066.json`.
+
+```json
+{
+  "accounts": [
+    {
+      "agent_id": "agent:minimal-direct",
+      "authority": "HHS_EVOLUTIONARY_AGENT_IDENTITY_AUTHORITY_V1",
+      "branch_execution_root_hash72": ">lR/hOxzcn?<AHJhNtRx)PluzhRVB-y!U<0WMVMG-rlmnpiLAybk*ydopzYpdXQWREGMWUaw",
+      "cost_vector": {
+        "branch": 1,
+        "closure": 1,
+        "compute": 3,
+        "dependency": 0,
+        "memory": 1,
+        "revalidation": 1
+      },
+      "floating_point_used": false,
+      "information_energy_root_hash72": "EjwdYepDD)55Uf3<QOzKqM((akpWer+DF/dl<v?DEHBk0Ng)92*AZyBQK(KJsOQYj11!w>CQ",
+      "schema": "HHS_INFORMATION_ENERGY_ACCOUNTING_V1",
+      "total_cost_units": 7,
+      "transfer_witnessed": true,
+      "version": "PASS_066_CANONICAL_RESOLUTION_AGENT_ECONOMY_V1"
+    },
+    {
+      "agent_id": "agent:bridge",
+      "authority": "HHS_EVOLUTIONARY_AGENT_IDENTITY_AUTHORITY_V1",
+      "branch_execution_root_hash72": "o/A<cwNLdrOWC8vVZSfMCDMnTs4Z/WUfi2P7**YBnxVhD27v)ZuS/I5Jo)PbOy*Apo-GtUNi",
+      "cost_vector": {
+        "branch": 1,
+        "closure": 1,
+        "compute": 5,
+        "dependency": 0,
+        "memory": 1,
+        "revalidation": 1
+      },
+      "floating_point_used": false,
+      "information_energy_root_hash72": "SV2CeW0gZ+)pnjJdA3FL!6HEREM4u>*RPx8!E(lInsrIwNQfzL21ZPPJnxuds1sFGDvpPAgV",
+      "schema": "HHS_INFORMATION_ENERGY_ACCOUNTING_V1",
+      "total_cost_units": 9,
+      "transfer_witnessed": true,
+      "version": "PASS_066_CANONICAL_RESOLUTION_AGENT_ECONOMY_V1"
+    },
+    {
+      "agent_id": "agent:contract",
+      "authority": "HHS_EVOLUTIONARY_AGENT_IDENTITY_AUTHORITY_V1",
+      "branch_execution_root_hash72": "))NmLqL7UO0UaeJP1D9w6>!Bepz<X4JFhwT18s+GOJgF?KGgozOD3Dvk10KAq>F/*vGeHQ9?",
+      "cost_vector": {
+        "branch": 1,
+        "closure": 1,
+        "compute": 4,
+        "dependency": 0,
+        "memory": 1,
+        "revalidation": 1
+      },
+      "floating_point_used": false,
+      "information_energy_root_hash72": "Lc8yS6ocinQfC>eIKWX9WWC!RIm8KZ(zocq+rlovH2kAs6Te<kUDuWNkKH9-l<55++RYoplP",
+      "schema": "HHS_INFORMATION_ENERGY_ACCOUNTING_V1",
+      "total_cost_units": 8,
+      "transfer_witnessed": true,
+      "version": "PASS_066_CANONICAL_RESOLUTION_AGENT_ECONOMY_V1"
+    }
+  ],
+  "difficulty": {
+    "authority": "HHS_EVOLUTIONARY_AGENT_IDENTITY_AUTHORITY_V1",
+    "constraint_id": "constraint:A=B:integration",
+    "difficulty_root_hash72": "s5oVHfCaH3)oYNT(39fqutK41u)d5R98yPp62S(Z5QHAKkMm54YAzqthGrErK9((joHEMH*S",
+    "difficulty_units": 12,
+    "difficulty_vector": {
+      "branch_depth": 1,
+      "contradiction_density": 1,
+      "operator_diversity": 3,
+      "phase_misalignment": 1,
+      "relation_count": 4,
+      "translation_distance": 2
+    },
+    "schema": "HHS_CONSTRAINT_DIFFICULTY_PROFILE_V1",
+    "version": "PASS_066_CANONICAL_RESOLUTION_AGENT_ECONOMY_V1"
+  },
+  "schema": "HHS_INFORMATION_ENERGY_ECONOMY_PASS_066"
+}
+```

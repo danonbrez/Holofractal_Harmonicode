@@ -1,0 +1,12 @@
+{
+  "pair_gate_roots_hash72": [
+    "zFiu(bl+ttfK*Ii72k*(bc*3g8r8lA*>x8HVc)8aU)j(7WnvQ/*l7tVG-??B/b1)S?EG)V!k",
+    "zFjKOkniuNb*QjR72k*Xx*HfdJHePA*>ya)>T(y)WmG(7W*3xKX9+cIT/??B/b1)S?EG)V!k",
+    "Qntc7jxaMKs<IF6mdyJEKESIbU95g81nVhygfF!31V7jFi)07Aggkfl<c4rm7h4n?*>oUNB7",
+    "Pks(tFCbS!Q!rZ5JjtOAEuIMsi3Tlm-3JyH5ur20vYv)7kHqU?1Hx5iITjunAkx)pQ679INT"
+  ],
+  "schema": "HHS_ZERO_SUM_SWITCHING_CLOSURE_REPORT_PASS_070",
+  "switch_confers_authority": false,
+  "translation_reversible": true,
+  "zero_states_distinguished": true
+}

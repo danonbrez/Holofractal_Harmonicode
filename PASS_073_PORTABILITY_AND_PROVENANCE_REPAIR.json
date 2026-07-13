@@ -1,0 +1,63 @@
+{
+  "canonical_bundle_mode": "COMMITTED_ARTIFACT",
+  "canonical_input_manifest": {
+    "artifact_count": 5,
+    "relative_path": "native_projects/pass073_deterministic_transform/artifacts/PASS_073_CANONICAL_INPUT_MANIFEST.json",
+    "sha256": "9c8cfd26c7fc21e1ecc177928423be62e36f37bd653409a67565e5f61c6e3d1c"
+  },
+  "canonical_roots": {
+    "pass072_total_system_root_hash72": "ZF9bto?tV>P(KcFPL5L+csyy!jxdrAaadua1a!w-uwug8/MeMSqSS3*R>lXIefi)nyjXpc+)",
+    "pass073_development_capsule_root_hash72": "00000000000000000000000000000036IMta6sT!tkOMIYiegNmY9rfjeUXg+iePmFW3peaV",
+    "pass073_execution_root_hash72": "00000000000000000000000000000043DcrLb!K=avNagS?+vez/yrA^!A06xBV35M8gUQUS",
+    "pass073_product_artifact_root_hash72": "0000000000000000000000000000000UZ5opS?)q9+T*Q9J!D=eH)65CS4r*vM)Xf6gOV1RH",
+    "pass073_project_root_hash72": "000000000000000000000000000000437l3GpQ*sB74?b>t9EB2D^Ac^oAt>4+e6R=!/7Mu/",
+    "pass073_release_root_hash72": "0000000000000000000000000000001nsMpCRO8o8pCr/)xYKI8H0bzH9RZd*Ekcs(CsGh>J",
+    "pass073_system_baseline_root_hash72": "0000000000000000000000000000001(ElX4RQLqRyeF^TnaAL1KFl1fsh7TDoK!UT+WJ3je"
+  },
+  "cross_mode_product_root_verified": true,
+  "dedicated_tests": {
+    "exit_status": 0,
+    "failed": 0,
+    "passed": 20
+  },
+  "focused_inherited_chain": {
+    "exit_status": 0,
+    "failed": 0,
+    "passed": 61
+  },
+  "foundation_byte_preserved": true,
+  "foundation_changed_files": 0,
+  "foundation_delta": {
+    "authority": 0,
+    "services": 0,
+    "surfaces": 0
+  },
+  "foundation_files_compared": 1899,
+  "foundation_missing_files": 0,
+  "host_path_required": false,
+  "parent_pass": "PASS_072",
+  "pass_id": "PASS_073",
+  "repairs": {
+    "canonical_paths_repository_relative": true,
+    "committed_artifact_digest_binding": true,
+    "compiler_capability_observed": true,
+    "context_independent_development_capsule": true,
+    "cross_mode_semantic_replay": true,
+    "implicit_c_autobuild_prohibited": true,
+    "llm_context_window_required": false,
+    "manifest_self_digest_binding": true,
+    "pass068_kernel_explicitly_consumed": true,
+    "recorded_witness_identity_preserved": true,
+    "repository_state_authoritative": true,
+    "semantic_product_mode_neutral": true,
+    "strict_binary_input_identity": true
+  },
+  "runtime_modes": [
+    "LIVE_RUNTIME",
+    "COMMITTED_ARTIFACT"
+  ],
+  "schema": "HHS_PASS_073_PORTABILITY_AND_PROVENANCE_REPAIR_REPORT_V1",
+  "status": "PASS_073_PORTABILITY_AND_PROVENANCE_REPAIR_PASS",
+  "syntax_compile": "PASS",
+  "thread_context_required": false
+}

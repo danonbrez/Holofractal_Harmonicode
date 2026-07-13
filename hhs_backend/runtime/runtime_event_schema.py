@@ -31,7 +31,6 @@
 
 from __future__ import annotations
 
-import hashlib
 import json
 import logging
 import time
@@ -40,6 +39,9 @@ import uuid
 from typing import Any
 from typing import Dict
 from typing import Optional
+
+from hhs_runtime.hhs_io_gateway_v1 import canonical_json
+from hhs_runtime.hhs_loshu_phase_embedding_v1 import hash72_digest
 
 # ============================================================================
 # Logging
@@ -65,24 +67,12 @@ def compute_hash72(
     payload: Dict[str, Any]
 ) -> str:
 
-    serialized = json.dumps(
+    serialized = canonical_json(payload)
 
-        payload,
-
-        sort_keys=True,
-
-        separators=(",", ":"),
-
-        ensure_ascii=False
+    return hash72_digest(
+        ("hhs_runtime_event_schema_v1", serialized),
+        width=HASH72_LENGTH,
     )
-
-    digest = hashlib.sha256(
-
-        serialized.encode("utf-8")
-
-    ).hexdigest()
-
-    return digest[:HASH72_LENGTH]
 
 # ============================================================================
 # Runtime Event Envelope
@@ -428,6 +418,27 @@ class HHSRuntimeEventEnvelope:
 
             "timestamp_ns":
                 self.created_at_ns,
+
+            "sequence_id":
+                self.metadata.get("sequence_id"),
+
+            "authority":
+                self.metadata.get("authority"),
+
+            "kernel_tick":
+                self.metadata.get("kernel_tick"),
+
+            "runtime_state_hash72":
+                self.metadata.get("runtime_state_hash72"),
+
+            "contract_hash72":
+                self.metadata.get("contract_hash72"),
+
+            "conformance_root":
+                self.metadata.get("conformance_root"),
+
+            "zero_bypass_status":
+                self.metadata.get("zero_bypass_status"),
 
             "payload":
                 self.payload

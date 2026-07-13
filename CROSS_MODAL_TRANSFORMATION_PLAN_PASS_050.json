@@ -1,0 +1,57 @@
+{
+  "ok": true,
+  "plan": {
+    "artifact_creation_authorized": true,
+    "authority": "HHS_UNIVERSAL_MODALITY_PIPELINE_AUTHORITY_V1",
+    "created_at_unix_ms": 1783809205903,
+    "execution_authorized": false,
+    "plan_id": "xmodal-plan:14858158d4384cee893520f07b4a6738",
+    "plan_root_hash72": "m6*(zPHLM5zos?E)uKaLZ*Fl97gmVDKVZRNAV07q<XDJagUgadQlX+8rxxLG*jDn/9MmOZ)C",
+    "private_truth_pipeline_allowed": false,
+    "projection_root_hash72s": [
+      "4W*!8r)70N6>yN9CZ(dBmpVl*qNO5O+GbC2Fig7DQi5dkrtvvgHPV2KC()XoUEvjk+**3CD6"
+    ],
+    "reconstruction_recipe": {
+      "artifact_root_hash72": "",
+      "authority": "HHS_UNIVERSAL_MODALITY_PIPELINE_AUTHORITY_V1",
+      "expanded_metadata_retained": false,
+      "operations": [
+        {
+          "operation": "DERIVE_ARTIFACT",
+          "target_artifact_type": "HARMONIC_TIME_GRAPH",
+          "target_modality": "GRAPH_OBJECT"
+        }
+      ],
+      "projection_roots": [
+        "4W*!8r)70N6>yN9CZ(dBmpVl*qNO5O+GbC2Fig7DQi5dkrtvvgHPV2KC()XoUEvjk+**3CD6"
+      ],
+      "recipe_id": "modality-recipe:eb3d3a6ad21f494f9887e8fe7d16487a",
+      "recipe_root_hash72": "FO9Xn7YC(t(RN-J5Isp*67O8><XcPzsr8l7pEsM)-1y9LvrOwx1*97zlAhVeQTLIXBT22orG",
+      "reconstruction_strategy": "SOURCE_ROOT_PLUS_TYPED_PROJECTION_STEPS_PLUS_ARTIFACT_LINEAGE",
+      "schema": "HHS_MODALITY_RECONSTRUCTION_RECIPE_V1",
+      "source_root_hash72": "nVin4gscPbO)1zNU+nmCDSy498vbk9Ik*S9?se<Xg7FH)>MHb9hDSCnbnJIj!M-A<(Mgd3Ai",
+      "version": "PASS_050_HHS_UNIVERSAL_MODALITY_ADAPTER_AND_ARTIFACT_PIPELINE_V1"
+    },
+    "requires_witness": true,
+    "schema": "HHS_CROSS_MODAL_TRANSFORMATION_PLAN_V1",
+    "source_root_hash72s": [
+      "nVin4gscPbO)1zNU+nmCDSy498vbk9Ik*S9?se<Xg7FH)>MHb9hDSCnbnJIj!M-A<(Mgd3Ai"
+    ],
+    "target_artifact_type": "HARMONIC_TIME_GRAPH",
+    "target_modality": "GRAPH_OBJECT",
+    "transformation_kind": "DERIVE_ARTIFACT",
+    "version": "PASS_050_HHS_UNIVERSAL_MODALITY_ADAPTER_AND_ARTIFACT_PIPELINE_V1"
+  },
+  "reconstruction_rejection": {
+    "ok": false,
+    "plan_id": "xmodal-plan:14858158d4384cee893520f07b4a6738",
+    "reasons": [
+      "REJECT_CROSS_MODAL_PLAN_WITHOUT_RECONSTRUCTION"
+    ],
+    "schema": "HHS_CROSS_MODAL_TRANSFORMATION_PLAN_VALIDATION_V1",
+    "status": "REJECT_CROSS_MODAL_TRANSFORMATION_PLAN",
+    "version": "PASS_050_HHS_UNIVERSAL_MODALITY_ADAPTER_AND_ARTIFACT_PIPELINE_V1"
+  },
+  "schema": "HHS_CROSS_MODAL_TRANSFORMATION_PLAN_SELF_TEST_V1",
+  "version": "PASS_050_HHS_UNIVERSAL_MODALITY_ADAPTER_AND_ARTIFACT_PIPELINE_V1"
+}

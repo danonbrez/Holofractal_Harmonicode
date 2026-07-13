@@ -1,171 +1,37 @@
-from fastapi import FastAPI
-from fastapi.websockets import WebSocket
-from fastapi.websockets import WebSocketDisconnect
+"""
+Pass 045 compatibility launcher for the live FastAPI kernel runtime.
 
-import asyncio
-import json
-import time
+The former standalone websocket demo emitted synthetic packets on /ws/runtime,
+/ws/replay, /ws/graph, and /ws/transport.  That stub path is retired.  Runtime
+truth now originates in hhs_backend.server:app through the Python/C kernel
+emulator, the runtime event schema, and the canonical FastAPI websocket router.
+"""
 
-app = FastAPI()
+from __future__ import annotations
 
-# =========================================================
-# Runtime Stream
-# =========================================================
+from hhs_backend.server import app
 
-@app.websocket("/ws/runtime")
-async def runtime_stream(
-    websocket: WebSocket
-):
 
-    await websocket.accept()
+def runtime_ws_server_compatibility_self_test():
+    return {
+        "schema": "HHS_RUNTIME_WS_SERVER_COMPATIBILITY_SELF_TEST_V1",
+        "version": "PASS_045_LIVE_FASTAPI_KERNEL_RUNTIME_V1",
+        "ok": True,
+        "status": "DELEGATES_TO_LIVE_FASTAPI_KERNEL_RUNTIME",
+        "app": "hhs_backend.server:app",
+        "node_role": "GUI_PROXY_ONLY_NO_SYNTHETIC_RUNTIME_STREAM",
+        "channels": ["/ws/runtime", "/ws/replay", "/ws/graph", "/ws/transport"],
+    }
 
-    try:
 
-        while True:
+if __name__ == "__main__":
+    import uvicorn
 
-            payload = {
-
-                "type":
-                    "runtime",
-
-                "timestamp":
-                    time.time(),
-
-                "status":
-                    "online",
-
-                "phase":
-                    "runtime_loop"
-            }
-
-            await websocket.send_text(
-                json.dumps(payload)
-            )
-
-            await asyncio.sleep(1)
-
-    except WebSocketDisconnect:
-
-        print(
-            "[ws/runtime] disconnected"
-        )
-
-# =========================================================
-# Replay Stream
-# =========================================================
-
-@app.websocket("/ws/replay")
-async def replay_stream(
-    websocket: WebSocket
-):
-
-    await websocket.accept()
-
-    try:
-
-        while True:
-
-            payload = {
-
-                "type":
-                    "replay",
-
-                "timestamp":
-                    time.time(),
-
-                "replay":
-                    "active"
-            }
-
-            await websocket.send_text(
-                json.dumps(payload)
-            )
-
-            await asyncio.sleep(1)
-
-    except WebSocketDisconnect:
-
-        print(
-            "[ws/replay] disconnected"
-        )
-
-# =========================================================
-# Graph Stream
-# =========================================================
-
-@app.websocket("/ws/graph")
-async def graph_stream(
-    websocket: WebSocket
-):
-
-    await websocket.accept()
-
-    try:
-
-        while True:
-
-            payload = {
-
-                "type":
-                    "graph",
-
-                "timestamp":
-                    time.time(),
-
-                "nodes":
-                    12,
-
-                "edges":
-                    28
-            }
-
-            await websocket.send_text(
-                json.dumps(payload)
-            )
-
-            await asyncio.sleep(1)
-
-    except WebSocketDisconnect:
-
-        print(
-            "[ws/graph] disconnected"
-        )
-
-# =========================================================
-# Transport Stream
-# =========================================================
-
-@app.websocket("/ws/transport")
-async def transport_stream(
-    websocket: WebSocket
-):
-
-    await websocket.accept()
-
-    try:
-
-        while True:
-
-            payload = {
-
-                "type":
-                    "transport",
-
-                "timestamp":
-                    time.time(),
-
-                "throughput":
-                    1.0
-            }
-
-            await websocket.send_text(
-                json.dumps(payload)
-            )
-
-            await asyncio.sleep(1)
-
-    except WebSocketDisconnect:
-
-        print(
-            "[ws/transport] disconnected"
-        )
+    uvicorn.run(
+        "hhs_backend.server:app",
+        host="127.0.0.1",
+        port=8000,
+        reload=False,
+        ws="websockets",
+        log_level="info",
+    )

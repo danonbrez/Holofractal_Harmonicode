@@ -1,0 +1,86 @@
+{
+  "all_steps_authority_valid": true,
+  "all_steps_energy_valid": true,
+  "authority": "HHS_HIGH_LEVEL_PROGRAM_WEAVING_AUTHORITY_V1",
+  "cell_ids": [
+    "cell:00",
+    "cell:20",
+    "cell:40",
+    "cell:60"
+  ],
+  "program_graph_root_hash72": "!DvUp0XUsN*FoyjC6-W(y8/?mMC5T0rs8(la)Nw/zg(b1BDBx*cqftgL5hQ5hP67Z0qFCei-",
+  "schedule_root_hash72": "GNgVhqEIt0Z0IQt*B(o62xF99*9gUDDHW(AIfA6AnzVnXN*rQAm(uLigZwVgFZ?Kx(v6ihK6",
+  "schema": "HHS_THREE_LANE_PROGRAM_SCHEDULE_V1",
+  "steps": [
+    {
+      "authority": "HHS_HIGH_LEVEL_PROGRAM_WEAVING_AUTHORITY_V1",
+      "authority_valid": true,
+      "cell_id": "cell:00",
+      "energy_budget_valid": true,
+      "lane_order": [
+        "POSITIVE",
+        "PLASTIC",
+        "ZERO_SUM"
+      ],
+      "node_id": "node:00",
+      "schedule_step_root_hash72": "wtIjd2M!cgGVD7X54t8I2t88q88F9puz6pGbXW4s5VYe)x*Ehf9?VDqDutR259iLL2kjb7ty",
+      "schema": "HHS_PROGRAM_SCHEDULE_STEP_V1",
+      "sequence": 0,
+      "u72_phase_index": 0,
+      "version": "PASS_069_CLOSED_LOOP_THREE_LANE_PROGRAM_WEAVING_V1"
+    },
+    {
+      "authority": "HHS_HIGH_LEVEL_PROGRAM_WEAVING_AUTHORITY_V1",
+      "authority_valid": true,
+      "cell_id": "cell:20",
+      "energy_budget_valid": true,
+      "lane_order": [
+        "POSITIVE",
+        "PLASTIC",
+        "ZERO_SUM"
+      ],
+      "node_id": "node:01",
+      "schedule_step_root_hash72": "Y7amt2M!dfH<BVgLgE*P51UafLqt<Ix00YMa5JM2TYX0lyG+4ZS+xZ+8dAUTxQd0VY)R/j!)",
+      "schema": "HHS_PROGRAM_SCHEDULE_STEP_V1",
+      "sequence": 1,
+      "u72_phase_index": 18,
+      "version": "PASS_069_CLOSED_LOOP_THREE_LANE_PROGRAM_WEAVING_V1"
+    },
+    {
+      "authority": "HHS_HIGH_LEVEL_PROGRAM_WEAVING_AUTHORITY_V1",
+      "authority_valid": true,
+      "cell_id": "cell:40",
+      "energy_budget_valid": true,
+      "lane_order": [
+        "POSITIVE",
+        "PLASTIC",
+        "ZERO_SUM"
+      ],
+      "node_id": "node:02",
+      "schedule_step_root_hash72": "Y7amt2M!eeJ*DVgLgE*P51UafLqt<Ix00YMa5JM2TYX0lyG+4ZS+xZ+8dCSTxQe?VY)R/j!)",
+      "schema": "HHS_PROGRAM_SCHEDULE_STEP_V1",
+      "sequence": 2,
+      "u72_phase_index": 36,
+      "version": "PASS_069_CLOSED_LOOP_THREE_LANE_PROGRAM_WEAVING_V1"
+    },
+    {
+      "authority": "HHS_HIGH_LEVEL_PROGRAM_WEAVING_AUTHORITY_V1",
+      "authority_valid": true,
+      "cell_id": "cell:60",
+      "energy_budget_valid": true,
+      "lane_order": [
+        "POSITIVE",
+        "PLASTIC",
+        "ZERO_SUM"
+      ],
+      "node_id": "node:03",
+      "schedule_step_root_hash72": "Y7amt2M!fdLYFVgLgE*P51UafLqt<Ix00YMa5JM2TYX0lyG+4ZS+xZ+8dEQTxQf!VY)R/j!)",
+      "schema": "HHS_PROGRAM_SCHEDULE_STEP_V1",
+      "sequence": 3,
+      "u72_phase_index": 54,
+      "version": "PASS_069_CLOSED_LOOP_THREE_LANE_PROGRAM_WEAVING_V1"
+    }
+  ],
+  "u72_schedule_closed": true,
+  "version": "PASS_069_CLOSED_LOOP_THREE_LANE_PROGRAM_WEAVING_V1"
+}

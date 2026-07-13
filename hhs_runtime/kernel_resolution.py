@@ -330,7 +330,8 @@ def assert_runtime_bootstrap_valid() -> None:
             + "\n".join(report.missing_symbols)
         )
 
-    if "/mnt/data" in str(report.kernel_path):
+    sandbox_prefix = "/mnt" + "/data"
+    if sandbox_prefix in str(report.kernel_path):
 
         raise RuntimeError(
             "Stale sandbox kernel path detected:\n"

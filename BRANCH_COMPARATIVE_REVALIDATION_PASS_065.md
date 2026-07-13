@@ -1,0 +1,25 @@
+# BRANCH COMPARATIVE REVALIDATION PASS 065
+
+```json
+{
+  "admissible_branch_ids": [
+    "branch:direct",
+    "branch:bridge",
+    "branch:contract"
+  ],
+  "authority": "HHS_LOCAL_BRANCH_RESOLUTION_AUTHORITY_V1",
+  "branch_roots_hash72": [
+    ">lR/hOxzcn?<AHJhNtRx)PluzhRVB-y!U<0WMVMG-rlmnpiLAybk*ydopzYpdXQWREGMWUaw",
+    "o/A<cwNLdrOWC8vVZSfMCDMnTs4Z/WUfi2P7**YBnxVhD27v)ZuS/I5Jo)PbOy*Apo-GtUNi",
+    "))NmLqL7UO0UaeJP1D9w6>!Bepz<X4JFhwT18s+GOJgF?KGgozOD3Dvk10KAq>F/*vGeHQ9?"
+  ],
+  "comparative_revalidation_performed": true,
+  "comparative_revalidation_root_hash72": "mffQQ)dsFmeRRr/Gh9+YD/ql)0U7+lQn8qOW>Y/>t(pwx0QTAjA7Aqpv<agPlDg+-kCswzLz",
+  "reasons": [],
+  "schema": "HHS_PARALLEL_BRANCH_COMPARATIVE_REVALIDATION_V1",
+  "selected_branch_id": "branch:direct",
+  "selection_rule": "MINIMUM_ADMISSIBLE_LOCAL_CORRECTION_COST_THEN_BRANCH_ID",
+  "status": "ADMIT_LOCAL_BRANCH_SELECTION",
+  "version": "PASS_065_LOCAL_CLOSED_PARALLEL_BRANCH_TREE_V1"
+}
+```

@@ -47,6 +47,12 @@ from hhs_backend.runtime.runtime_prediction_engine import (
     runtime_prediction_engine
 )
 
+from hhs_runtime.hhs_semantic_memory_guard_v1 import (
+    commit_semantic_record,
+    normalize_hash72,
+    semantic_hash72,
+)
+
 # ============================================================================
 # LOGGING
 # ============================================================================
@@ -89,6 +95,10 @@ class HHSSemanticMemoryRecord:
     embedding: List[float]
 
     metadata: Dict[str, Any] = field(
+        default_factory=dict
+    )
+
+    guard_receipt: Dict[str, Any] = field(
         default_factory=dict
     )
 
@@ -210,16 +220,44 @@ class HHSSemanticMemoryEngine:
 
         with self.lock:
 
-            if hash72 is None:
+            semantic_payload = {
 
-                hash72 = hashlib.sha256(
+                "memory_type": memory_type,
 
-                    semantic_text.encode("utf-8")
+                "semantic_text": semantic_text,
 
-                ).hexdigest()[:72]
+                "metadata": metadata or {},
+            }
+
+            hash72 = normalize_hash72(
+                hash72,
+                payload=semantic_payload,
+            )
+
+            ingress_receipt = commit_semantic_record(
+                "MEMORY_INGRESS",
+                "runtime_semantic_memory_engine.ingest_memory",
+                {
+                    **semantic_payload,
+                    "hash72": hash72,
+                    "semantic_text_hash72": semantic_hash72(semantic_text),
+                },
+            )
 
             embedding = self.generate_embedding(
                 semantic_text
+            )
+
+            vector_receipt = commit_semantic_record(
+                "VECTOR_DERIVE",
+                "runtime_semantic_memory_engine.generate_embedding",
+                {
+                    "hash72": hash72,
+                    "dimensions": len(embedding),
+                    "embedding_hash72": semantic_hash72(embedding),
+                    "backing_guard_id": ingress_receipt.get("guard_id"),
+                    "backing_payload_hash72": ingress_receipt.get("payload_hash72"),
+                },
             )
 
             record = HHSSemanticMemoryRecord(
@@ -236,7 +274,18 @@ class HHSSemanticMemoryEngine:
 
                 embedding=embedding,
 
-                metadata=metadata or {}
+                metadata={
+                    **(metadata or {}),
+                    "semantic_guard": {
+                        "ingress": ingress_receipt,
+                        "vector": vector_receipt,
+                    },
+                },
+
+                guard_receipt={
+                    "ingress": ingress_receipt,
+                    "vector": vector_receipt,
+                }
             )
 
             self.memories[
@@ -255,7 +304,13 @@ class HHSSemanticMemoryEngine:
 
                 hash72=hash72,
 
-                vector=embedding
+                vector=embedding,
+
+                metadata={
+                    "source": "runtime_semantic_memory_engine.ingest_memory",
+                    "memory_type": memory_type,
+                    "memory_guard": vector_receipt,
+                }
             )
 
             self.total_memories += 1
@@ -301,6 +356,24 @@ class HHSSemanticMemoryEngine:
                 weight=weight,
 
                 relationship=relationship
+            )
+
+            link_guard = commit_semantic_record(
+                "MEMORY_LINK",
+                "runtime_semantic_memory_engine.link_memories",
+                {
+                    "link_id": link.link_id,
+                    "source_memory_id": source_memory_id,
+                    "target_memory_id": target_memory_id,
+                    "relationship": relationship,
+                    "weight": weight,
+                },
+            )
+
+            link.relationship = (
+                relationship
+                if "guard:" in relationship
+                else f"{relationship}|guard:{link_guard.get('payload_hash72')}"
             )
 
             self.links[
@@ -364,6 +437,15 @@ class HHSSemanticMemoryEngine:
 
             self.total_queries += 1
 
+            query_guard = commit_semantic_record(
+                "SEARCH_INGRESS",
+                "runtime_semantic_memory_engine.semantic_search",
+                {
+                    "query_hash72": semantic_hash72(query),
+                    "limit": limit,
+                },
+            )
+
             query_embedding = (
                 self.generate_embedding(query)
             )
@@ -406,7 +488,28 @@ class HHSSemanticMemoryEngine:
                 reverse=True
             )
 
-            return results[:limit]
+            selected = results[:limit]
+
+            egress_guard = commit_semantic_record(
+                "SEARCH_EGRESS",
+                "runtime_semantic_memory_engine.semantic_search",
+                {
+                    "query_guard_id": query_guard.get("guard_id"),
+                    "result_count": len(selected),
+                    "result_hash72": semantic_hash72([
+                        {
+                            "memory_id": result.memory_id,
+                            "similarity": result.similarity,
+                        }
+                        for result in selected
+                    ]),
+                },
+            )
+
+            for result in selected:
+                result.metadata.setdefault("semantic_search_guard", egress_guard)
+
+            return selected
 
     # =====================================================================
     # REPLAY INGESTION

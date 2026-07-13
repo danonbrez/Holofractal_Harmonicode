@@ -1,0 +1,230 @@
+{
+  "authority_loop_self_test": {
+    "admitted": {
+      "command_decision_hash72": "Fw7b3c3svOK3-2<Wz(Mri<?v6BGQG+QM5aBwfHOcV)?ce!<opEqB/HsPnlsOL1E>OpSB1m8P",
+      "command_id": "gui-command:107111f47e9644019154545db4b13be4",
+      "gui_mutated_runtime_truth": false,
+      "ok": true,
+      "receipt_only_no_handler_invocation": true,
+      "status": "GUI_COMMAND_ADMITTED_RECEIPT_ONLY",
+      "statuses": [
+        "GUI_COMMAND_ACCEPTED_FOR_PREFLIGHT",
+        "GUI_COMMAND_ADMITTED_RECEIPT_ONLY",
+        "GUI_COMMAND_REPLAYED_TO_WEBSOCKET_FEEDBACK",
+        "GUI_COMMAND_VISIBLE_IN_RUNTIME_PROJECTION"
+      ],
+      "websocket_feedback_ok": true,
+      "websocket_feedback_receipt_hash72": "ur*>p4+HYWj0y*Iyu*M3HM?yTEbNLu3ct4<U-X?-(d+4aL7?clUw(9hTHq0(s5LsKdfYAOg?"
+    },
+    "direct_mutation_rejection": {
+      "command_decision_hash72": "mO<IgPO-GUR*d(1dXIvT4T+qbAGCFN6THUR7udsvd<<NtBljdpE<08V<68<2FlWyTEF18Flh",
+      "command_id": "gui-command:c90eda683c3a46979db79e4674142cea",
+      "ok": false,
+      "reasons": [
+        "REJECT_GUI_DIRECT_MUTATION",
+        "REJECT_GUI_DIRECT_MUTATION"
+      ],
+      "status": "REJECT_GUI_COMMAND_ENVELOPE"
+    },
+    "history": {
+      "bounded_history": true,
+      "command_count": 2,
+      "expanded_metadata_persisted": false
+    },
+    "ok": true,
+    "projection_rule": "GUI_REQUESTS_KERNEL_DECIDES_FASTAPI_ENFORCES_WEBSOCKETS_REPORT_GUI_PROJECTS",
+    "schema": "HHS_LIVE_GUI_COMMAND_AUTHORITY_LOOP_SELF_TEST_V1",
+    "version": "PASS_047_LIVE_GUI_COMMAND_AUTHORITY_LOOP_V1"
+  },
+  "command_doctrine": "GUI may request; kernel decides; FastAPI enforces; WebSockets report; GUI projects.",
+  "command_routes": {
+    "authority": "HHS_FASTAPI_GUI_COMMAND_AUTHORITY_V1",
+    "command_schema": "HHS_LIVE_GUI_COMMAND_ENVELOPE_V1",
+    "node_role": "GUI_PROXY_ONLY_NO_RUNTIME_EVENT_AUTHORITY",
+    "routes": [
+      {
+        "authority": "HHS_FASTAPI_GUI_COMMAND_AUTHORITY_V1",
+        "method": "POST",
+        "path": "/api/runtime/gui/command",
+        "semantics": "submit command envelope to FastAPI authority loop"
+      },
+      {
+        "authority": "HHS_FASTAPI_GUI_COMMAND_AUTHORITY_V1",
+        "method": "GET",
+        "path": "/api/runtime/gui/command/status/{command_id}",
+        "semantics": "read bounded command status/result record"
+      },
+      {
+        "authority": "HHS_FASTAPI_GUI_COMMAND_AUTHORITY_V1",
+        "method": "GET",
+        "path": "/api/runtime/gui/command/history",
+        "semantics": "read bounded command history without expanded metadata persistence"
+      }
+    ],
+    "schema": "HHS_LIVE_GUI_COMMAND_ROUTE_MAP_V1",
+    "version": "PASS_047_LIVE_GUI_COMMAND_AUTHORITY_LOOP_V1"
+  },
+  "conformance_edge_count": 982,
+  "contract_self_test": {
+    "command": {
+      "client_sequence_id": 7,
+      "command_id": "gui-command:f4497915293843d1a07b8e8a2d04cbc3",
+      "command_root_hash72": "RvuUjadmcG!EgPZaPbx!s/5I<-G!<IAIdJogS1U)eD7)>OWg>-QUUo9rzXPq477n10ndBQ7j",
+      "contract_schema": "HHS_LIVE_RUNTIME_TICK_COMMAND_V1",
+      "created_at_unix_ms": 1783778025483,
+      "execution_mode": "RECEIPT_ONLY",
+      "payload": {},
+      "requested_operation": "runtime.tick",
+      "requires_admissibility": true,
+      "schema": "HHS_LIVE_GUI_COMMAND_ENVELOPE_V1",
+      "surface_id": "gui:runtime.command_panel",
+      "target_surface": "api_route:POST /api/runtime/live/tick",
+      "version": "PASS_047_LIVE_GUI_COMMAND_AUTHORITY_LOOP_V1"
+    },
+    "contract": {
+      "authority": "HHS_FASTAPI_GUI_COMMAND_AUTHORITY_V1",
+      "browser_authority": "REQUEST_ONLY_NO_DIRECT_MUTATION",
+      "command_id": "gui-command:f4497915293843d1a07b8e8a2d04cbc3",
+      "contract_root_hash72": "m2oVCK+pSCsQ0y*PfeNH?az5i!uR*+-jjSneJ0Qne7APvva+gk5vLY!YfP7D9FwCxvLEvEgN",
+      "contract_schema": "HHS_LIVE_RUNTIME_TICK_COMMAND_V1",
+      "execution_mode": "RECEIPT_ONLY",
+      "requested_operation": "runtime.tick",
+      "required_path": [
+        "gui_command_envelope",
+        "fastapi_command_endpoint",
+        "zero_bypass_interposer",
+        "kernel_runtime_autocomposer_or_cache",
+        "runtime_constraint_enforcement",
+        "receipt_chain",
+        "kernel_event_bridge",
+        "websocket_feedback",
+        "gui_projection_update"
+      ],
+      "schema": "HHS_LIVE_GUI_COMMAND_CONTRACT_V1",
+      "surface_id": "gui:runtime.command_panel",
+      "target_surface": "api_route:POST /api/runtime/live/tick",
+      "version": "PASS_047_LIVE_GUI_COMMAND_AUTHORITY_LOOP_V1"
+    },
+    "direct_mutation_rejection": {
+      "authority": "HHS_FASTAPI_GUI_COMMAND_AUTHORITY_V1",
+      "command": {
+        "client_sequence_id": 1,
+        "command_id": "gui-command:e6c85e28ea3948f0a2f649b06dab770a",
+        "command_root_hash72": "4HqtbQa-gs54WLveCAY/IjFUrwmjpbI!?SYxSzRK-Ii1XDvYE(<qmdaK!M0e8nnzOLvvC0-Q",
+        "contract_schema": "HHS_FORBIDDEN_DIRECT_MUTATION_V1",
+        "created_at_unix_ms": 1783778025486,
+        "execution_mode": "RECEIPT_ONLY",
+        "payload": {
+          "mutate_runtime_truth_directly": true
+        },
+        "requested_operation": "direct.mutate_runtime_truth",
+        "requires_admissibility": true,
+        "schema": "HHS_LIVE_GUI_COMMAND_ENVELOPE_V1",
+        "surface_id": "gui:runtime.command_panel",
+        "target_surface": "browser.local_state",
+        "version": "PASS_047_LIVE_GUI_COMMAND_AUTHORITY_LOOP_V1"
+      },
+      "command_root_hash72": "4HqtbQa-gs54WLveCAY/IjFUrwmjpbI!?SYxSzRK-Ii1XDvYE(<qmdaK!M0e8nnzOLvvC0-Q",
+      "ok": false,
+      "reasons": [
+        "REJECT_GUI_DIRECT_MUTATION",
+        "REJECT_GUI_DIRECT_MUTATION"
+      ],
+      "schema": "HHS_LIVE_GUI_COMMAND_VALIDATION_DECISION_V1",
+      "status": "REJECT_GUI_COMMAND_ENVELOPE",
+      "version": "PASS_047_LIVE_GUI_COMMAND_AUTHORITY_LOOP_V1"
+    },
+    "ok": true,
+    "schema": "HHS_LIVE_GUI_COMMAND_CONTRACT_SELF_TEST_V1",
+    "validation": {
+      "authority": "HHS_FASTAPI_GUI_COMMAND_AUTHORITY_V1",
+      "command": {
+        "client_sequence_id": 7,
+        "command_id": "gui-command:f4497915293843d1a07b8e8a2d04cbc3",
+        "command_root_hash72": "RvuUjadmcG!EgPZaPbx!s/5I<-G!<IAIdJogS1U)eD7)>OWg>-QUUo9rzXPq486n10ndBQ7j",
+        "contract_schema": "HHS_LIVE_RUNTIME_TICK_COMMAND_V1",
+        "created_at_unix_ms": 1783778025484,
+        "execution_mode": "RECEIPT_ONLY",
+        "payload": {},
+        "requested_operation": "runtime.tick",
+        "requires_admissibility": true,
+        "schema": "HHS_LIVE_GUI_COMMAND_ENVELOPE_V1",
+        "surface_id": "gui:runtime.command_panel",
+        "target_surface": "api_route:POST /api/runtime/live/tick",
+        "version": "PASS_047_LIVE_GUI_COMMAND_AUTHORITY_LOOP_V1"
+      },
+      "command_root_hash72": "RvuUjadmcG!EgPZaPbx!s/5I<-G!<IAIdJogS1U)eD7)>OWg>-QUUo9rzXPq486n10ndBQ7j",
+      "ok": true,
+      "reasons": [],
+      "schema": "HHS_LIVE_GUI_COMMAND_VALIDATION_DECISION_V1",
+      "status": "GUI_COMMAND_ACCEPTED_FOR_PREFLIGHT",
+      "version": "PASS_047_LIVE_GUI_COMMAND_AUTHORITY_LOOP_V1"
+    },
+    "version": "PASS_047_LIVE_GUI_COMMAND_AUTHORITY_LOOP_V1"
+  },
+  "derived_service_count": 63,
+  "ok": true,
+  "router_self_test": {
+    "contract_root_hash72": "m2oVCK+pSCsQ0y*PfeNH?az1rGOP*Lf/CvFmH3TPv0)G*3AIE?!ZEZLXfP7D9FwCxvLEvEgN",
+    "ok": true,
+    "routes": {
+      "authority": "HHS_FASTAPI_GUI_COMMAND_AUTHORITY_V1",
+      "command_schema": "HHS_LIVE_GUI_COMMAND_ENVELOPE_V1",
+      "node_role": "GUI_PROXY_ONLY_NO_RUNTIME_EVENT_AUTHORITY",
+      "routes": [
+        {
+          "authority": "HHS_FASTAPI_GUI_COMMAND_AUTHORITY_V1",
+          "method": "POST",
+          "path": "/api/runtime/gui/command",
+          "semantics": "submit command envelope to FastAPI authority loop"
+        },
+        {
+          "authority": "HHS_FASTAPI_GUI_COMMAND_AUTHORITY_V1",
+          "method": "GET",
+          "path": "/api/runtime/gui/command/status/{command_id}",
+          "semantics": "read bounded command status/result record"
+        },
+        {
+          "authority": "HHS_FASTAPI_GUI_COMMAND_AUTHORITY_V1",
+          "method": "GET",
+          "path": "/api/runtime/gui/command/history",
+          "semantics": "read bounded command history without expanded metadata persistence"
+        }
+      ],
+      "schema": "HHS_LIVE_GUI_COMMAND_ROUTE_MAP_V1",
+      "version": "PASS_047_LIVE_GUI_COMMAND_AUTHORITY_LOOP_V1"
+    },
+    "schema": "HHS_LIVE_GUI_COMMAND_ROUTER_SELF_TEST_V1",
+    "validation": {
+      "authority": "HHS_FASTAPI_GUI_COMMAND_AUTHORITY_V1",
+      "command": {
+        "client_sequence_id": 3,
+        "command_id": "gui-command:b9e624d9d6a041e59aac065068749134",
+        "command_root_hash72": "RvuUjadmcG!EgL!S?9xSRDole!E1?0RBIAVY8S8K7>0<KNWg>-QUUo9rzTTq53an10ndBQ7j",
+        "contract_schema": "HHS_LIVE_RUNTIME_TICK_COMMAND_V1",
+        "created_at_unix_ms": 1783778025490,
+        "execution_mode": "RECEIPT_ONLY",
+        "payload": {},
+        "requested_operation": "runtime.tick",
+        "requires_admissibility": true,
+        "schema": "HHS_LIVE_GUI_COMMAND_ENVELOPE_V1",
+        "surface_id": "gui:runtime.command_panel",
+        "target_surface": "api_route:POST /api/runtime/live/tick",
+        "version": "PASS_047_LIVE_GUI_COMMAND_AUTHORITY_LOOP_V1"
+      },
+      "command_root_hash72": "RvuUjadmcG!EgL!S?9xSRDole!E1?0RBIAVY8S8K7>0<KNWg>-QUUo9rzTTq53an10ndBQ7j",
+      "ok": true,
+      "reasons": [],
+      "schema": "HHS_LIVE_GUI_COMMAND_VALIDATION_DECISION_V1",
+      "status": "GUI_COMMAND_ACCEPTED_FOR_PREFLIGHT",
+      "version": "PASS_047_LIVE_GUI_COMMAND_AUTHORITY_LOOP_V1"
+    },
+    "version": "PASS_047_LIVE_GUI_COMMAND_AUTHORITY_LOOP_V1"
+  },
+  "schema": "HHS_PASS_047_LIVE_GUI_COMMAND_AUTHORITY_SUMMARY_V1",
+  "service_count": 63,
+  "surface_count": 77,
+  "underived_service_count": 0,
+  "underived_surface_count": 0,
+  "version": "PASS_047_LIVE_GUI_COMMAND_AUTHORITY_LOOP_V1"
+}

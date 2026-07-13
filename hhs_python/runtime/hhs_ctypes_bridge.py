@@ -28,8 +28,10 @@
 from __future__ import annotations
 
 import ctypes
+import os
 import pathlib
 import platform
+import subprocess
 
 from ctypes import (
     Structure,
@@ -77,6 +79,35 @@ def _resolve_runtime_library() -> pathlib.Path:
     libpath = runtime_dir / libname
 
     if not libpath.exists():
+
+        auto_build = (
+            os.environ.get(
+                "HHS_DISABLE_C_AUTOBUILD",
+                ""
+            ).lower()
+            not in {"1", "true", "yes", "on"}
+        )
+
+        if auto_build:
+
+            try:
+                subprocess.run(
+                    ["make", "c-abi"],
+                    cwd=str(root),
+                    check=True,
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
+                    text=True,
+                )
+
+            except Exception as exc:
+                raise FileNotFoundError(
+                    "HHS runtime shared library was not found "
+                    "and automatic C ABI build failed:\n"
+                    f"{libpath}\n{exc}"
+                ) from exc
+
+    if not libpath.exists():
         raise FileNotFoundError(
             f"HHS runtime shared library not found:\n{libpath}"
         )
@@ -93,6 +124,23 @@ class HHSHash72(ctypes.Array):
     _type_ = c_char
     _length_ = HASH72_STRLEN
 
+
+
+# ============================================================================
+# HASH72 u^72 DIGITAL DNA RING STATE
+# ============================================================================
+
+class HHSHash72RingState(Structure):
+
+    _fields_ = [
+        ("positions", c_uint8 * HASH72_LEN),
+        ("rotation_profile", c_int64 * HASH72_LEN),
+        ("dna", HHSHash72),
+        ("trace_count", c_uint64),
+        ("zero_sum", c_uint8),
+        ("last_index", c_uint8),
+        ("last_delta", c_int64),
+    ]
 
 # ============================================================================
 # TRANSPORT VECTOR
@@ -215,6 +263,29 @@ class HHSRuntimeState(Structure):
 
     ]
 
+
+
+# ============================================================================
+# SRCG SELF-SOLVING RECURSIVE CONSTRAINT GATE STATE
+# ============================================================================
+
+class HHSSRCGState(Structure):
+
+    _fields_ = [
+        ("A", c_double),
+        ("B", c_double),
+        ("phi", c_double),
+        ("delta", c_double),
+        ("learning_rate", c_double),
+        ("drift_threshold", c_double),
+        ("last_valid_A", c_double),
+        ("last_valid_B", c_double),
+        ("trace_count", c_uint64),
+        ("unit_unity_valid", c_uint8),
+        ("lo_shu_valid", c_uint8),
+        ("quartic_carrier_preserved", c_uint8),
+        ("rolled_back", c_uint8),
+    ]
 
 # ============================================================================
 # VECTOR CACHE RECORD
@@ -344,6 +415,37 @@ _RUNTIME_LIB.hhs_validate_abi.argtypes = [
 _RUNTIME_LIB.hhs_validate_abi.restype = ctypes.c_int
 
 # --------------------------------------------------------------------------
+_RUNTIME_LIB.hhs_hash72_ring_init.argtypes = [
+    POINTER(HHSHash72RingState)
+]
+_RUNTIME_LIB.hhs_hash72_ring_init.restype = None
+
+_RUNTIME_LIB.hhs_hash72_ring_rotate.argtypes = [
+    POINTER(HHSHash72RingState),
+    c_uint8,
+    c_int64,
+]
+_RUNTIME_LIB.hhs_hash72_ring_rotate.restype = c_uint8
+
+_RUNTIME_LIB.hhs_hash72_dna_validate.argtypes = [
+    POINTER(HHSHash72RingState)
+]
+_RUNTIME_LIB.hhs_hash72_dna_validate.restype = c_uint8
+
+_RUNTIME_LIB.hhs_hash72_tensor_project.argtypes = [
+    POINTER(HHSHash72RingState),
+    POINTER(c_uint8)
+]
+_RUNTIME_LIB.hhs_hash72_tensor_project.restype = None
+
+_RUNTIME_LIB.hhs_hash72_reverse_state.argtypes = [
+    POINTER(HHSHash72RingState),
+    POINTER(HHSHash72RingState),
+]
+_RUNTIME_LIB.hhs_hash72_reverse_state.restype = c_uint8
+
+# --------------------------------------------------------------------------
+
 
 _RUNTIME_LIB.hhs_sizeof_runtime_state.argtypes = []
 
@@ -360,6 +462,140 @@ _RUNTIME_LIB.hhs_sizeof_receipt.restype = c_size_t
 _RUNTIME_LIB.hhs_sizeof_tensor_state.argtypes = []
 
 _RUNTIME_LIB.hhs_sizeof_tensor_state.restype = c_size_t
+
+_RUNTIME_LIB.hhs_sizeof_hash72_ring_state.argtypes = []
+_RUNTIME_LIB.hhs_sizeof_hash72_ring_state.restype = c_size_t
+
+
+
+_RUNTIME_LIB.hhs_srcg_init.argtypes = [
+    POINTER(HHSSRCGState),
+    c_double,
+    c_double,
+    c_double,
+    c_double,
+]
+_RUNTIME_LIB.hhs_srcg_init.restype = None
+
+_RUNTIME_LIB.hhs_srcg_step.argtypes = [
+    POINTER(HHSSRCGState),
+]
+_RUNTIME_LIB.hhs_srcg_step.restype = c_uint8
+
+_RUNTIME_LIB.hhs_srcg_validate.argtypes = [
+    POINTER(HHSSRCGState),
+]
+_RUNTIME_LIB.hhs_srcg_validate.restype = c_uint8
+
+_RUNTIME_LIB.hhs_sizeof_srcg_state.argtypes = []
+_RUNTIME_LIB.hhs_sizeof_srcg_state.restype = c_size_t
+
+# ============================================================================
+# HASH72 u^72 DIGITAL DNA RING WRAPPER
+# ============================================================================
+
+def _hash72_to_str(value) -> str:
+    return bytes(value).decode("utf-8", errors="ignore").rstrip("\x00")
+
+
+class HHSHash72RingBridge:
+
+    """Python bridge to the kernel-native C Hash72 u^72 Digital DNA ring.
+
+    This object preserves the distinction between the receipt digest shell and
+    the positional rotation-profile identity of the Hash72 ring.
+    """
+
+    def __init__(self):
+        self.ring = HHSHash72RingState()
+        _RUNTIME_LIB.hhs_hash72_ring_init(ctypes.byref(self.ring))
+
+    @property
+    def dna(self) -> str:
+        return _hash72_to_str(self.ring.dna)
+
+    @property
+    def zero_sum(self) -> bool:
+        return bool(self.ring.zero_sum)
+
+    def validate(self) -> bool:
+        return bool(_RUNTIME_LIB.hhs_hash72_dna_validate(ctypes.byref(self.ring)))
+
+    def rotate(self, index: int, delta: int) -> bool:
+        return bool(_RUNTIME_LIB.hhs_hash72_ring_rotate(ctypes.byref(self.ring), index % HASH72_LEN, int(delta)))
+
+    def tensor_project(self) -> list[int]:
+        tensor = (c_uint8 * 81)()
+        _RUNTIME_LIB.hhs_hash72_tensor_project(ctypes.byref(self.ring), tensor)
+        return [int(x) for x in tensor]
+
+    def reverse_state(self) -> "HHSHash72RingBridge":
+        out = HHSHash72RingBridge.__new__(HHSHash72RingBridge)
+        out.ring = HHSHash72RingState()
+        ok = _RUNTIME_LIB.hhs_hash72_reverse_state(ctypes.byref(self.ring), ctypes.byref(out.ring))
+        if not ok:
+            raise RuntimeError("Hash72 reverse_state failed DNA validation")
+        return out
+
+    def export(self) -> dict:
+        return {
+            "dna": self.dna,
+            "zero_sum": self.zero_sum,
+            "trace_count": int(self.ring.trace_count),
+            "last_index": int(self.ring.last_index),
+            "last_delta": int(self.ring.last_delta),
+            "positions": [int(x) for x in self.ring.positions],
+            "rotation_profile": [int(x) for x in self.ring.rotation_profile],
+        }
+
+
+
+# ============================================================================
+# SRCG SELF-SOLVING RECURSIVE CONSTRAINT GATE WRAPPER
+# ============================================================================
+
+class HHSSRCGBridge:
+
+    """Python bridge to the C-kernel SRCG primitive instruction.
+
+    The bridge keeps A/B as a paired manifold state and exposes traceable
+    rollback metadata without flattening higher-level quartic carriers.
+    """
+
+    def __init__(self, A: float, B: float, learning_rate: float = 0.125, drift_threshold: float = 1.001):
+        self.state = HHSSRCGState()
+        _RUNTIME_LIB.hhs_srcg_init(
+            ctypes.byref(self.state),
+            float(A),
+            float(B),
+            float(learning_rate),
+            float(drift_threshold),
+        )
+
+    def step(self) -> bool:
+        return bool(_RUNTIME_LIB.hhs_srcg_step(ctypes.byref(self.state)))
+
+    def validate(self) -> bool:
+        return bool(_RUNTIME_LIB.hhs_srcg_validate(ctypes.byref(self.state)))
+
+    def export(self) -> dict:
+        return {
+            "schema": "HHS_SRCG_C_KERNEL_STATE_V1",
+            "A": float(self.state.A),
+            "B": float(self.state.B),
+            "phi": float(self.state.phi),
+            "delta": float(self.state.delta),
+            "learning_rate": float(self.state.learning_rate),
+            "drift_threshold": float(self.state.drift_threshold),
+            "last_valid_A": float(self.state.last_valid_A),
+            "last_valid_B": float(self.state.last_valid_B),
+            "trace_count": int(self.state.trace_count),
+            "unit_unity_valid": bool(self.state.unit_unity_valid),
+            "lo_shu_valid": bool(self.state.lo_shu_valid),
+            "quartic_carrier_preserved": bool(self.state.quartic_carrier_preserved),
+            "rolled_back": bool(self.state.rolled_back),
+            "valid": self.validate(),
+        }
 
 # ============================================================================
 # PYTHON RUNTIME WRAPPER
@@ -405,6 +641,20 @@ class HHSRuntimeBridge:
             ctypes.byref(self.state),
             ctypes.byref(self.tensor)
         )
+
+    # ----------------------------------------------------------------------
+
+    def step(self, instruction=None):
+        """Compatibility alias for orchestrators that dispatch instructions.
+
+        The current C ABI owns deterministic VM advancement. The optional
+        instruction envelope is accepted for higher-level dispatch continuity
+        and reserved for future opcode/tensor binding without changing callers.
+        """
+
+        _ = instruction
+        self.runtime_step()
+        return self.export_runtime_dict()
 
     # ----------------------------------------------------------------------
 
@@ -541,6 +791,20 @@ def abi_self_test():
         "Tensor:",
         _RUNTIME_LIB.hhs_sizeof_tensor_state()
     )
+
+    print(
+        "Hash72Ring:",
+        _RUNTIME_LIB.hhs_sizeof_hash72_ring_state()
+    )
+
+    ring = HHSHash72RingBridge()
+    assert ring.validate()
+    before = ring.dna
+    assert ring.rotate(0, 5)
+    after = ring.dna
+    original = ring.reverse_state()
+    assert original.validate()
+    print({"hash72_ring_before": before, "hash72_ring_after": after, "hash72_ring_reversed": original.dna})
 
     runtime.runtime_step()
 

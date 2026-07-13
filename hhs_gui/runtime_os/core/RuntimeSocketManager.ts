@@ -27,6 +27,11 @@
  * NEVER derive runtime truth here.
  */
 
+import {
+    unwrapRuntimePacketEnvelope,
+    validateRuntimeContract
+} from "./RuntimeContractEnvelope"
+
 export type RuntimeEventType =
 
     | "runtime"
@@ -61,6 +66,22 @@ export interface RuntimeSocketEvent {
 
     event_type: RuntimeEventType
 
+    channel?: string
+
+    source_event_type?: string
+
+    kernel_tick?: number
+
+    runtime_state_hash72?: string
+
+    conformance_root?: string
+
+    zero_bypass_status?: string
+
+    gui_projection_valid?: boolean
+
+    gui_projection_reasons?: string[]
+
     timestamp_ns: number
 
     sequence_id?: number
@@ -77,10 +98,47 @@ export interface RuntimeSocketEvent {
 
     receipt_hash72?: string
 
+    contract_hash72?: string
+
+    payload_hash72?: string
+
+    contract_valid?: boolean
+
+    contract_reasons?: string[]
+
     payload: Record<
         string,
         unknown
     >
+}
+
+// =========================================================
+// Channel Health
+// =========================================================
+
+export interface RuntimeChannelHealth {
+
+    channel: RuntimeEventType
+
+    endpoint: string
+
+    connected: boolean
+
+    status: "LIVE_KERNEL_CONNECTED" | "NO_LIVE_KERNEL_SOURCE" | "STALE_LIVE_KERNEL_STATE"
+
+    lastSequenceId?: number
+
+    lastKernelTick?: number
+
+    lastReceiptHash72?: string
+
+    lastRuntimeStateHash72?: string
+
+    lastEventHash72?: string
+
+    lastPacketAgeMs?: number
+
+    totalEvents: number
 }
 
 // =========================================================
@@ -593,18 +651,77 @@ export class RuntimeSocketManager {
 
     ): RuntimeSocketEvent {
 
+        const packetEnvelope =
+            unwrapRuntimePacketEnvelope(raw)
+
+        const apiValidation =
+            raw.runtime_contract
+
+                ? validateRuntimeContract(
+                    raw.runtime_contract,
+                    "api_response"
+                )
+
+                : { ok: false, reasons: ["api response contract missing"] }
+
         const payload =
 
-            typeof raw.payload === "object"
-            &&
-            raw.payload !== null
+            packetEnvelope.runtime_packet
 
-                ? raw.payload as Record<
-                    string,
-                    unknown
-                >
+                ? packetEnvelope.payload
 
-                : {}
+                : (
+                    typeof raw.payload === "object"
+                    &&
+                    raw.payload !== null
+
+                        ? raw.payload as Record<
+                            string,
+                            unknown
+                        >
+
+                        : {}
+                )
+
+        const contractHash72 =
+            typeof packetEnvelope.runtime_packet?.contract_hash72 === "string"
+
+                ? packetEnvelope.runtime_packet.contract_hash72
+
+                : (
+                    typeof (raw.runtime_contract as Record<string, unknown> | undefined)?.contract_hash72 === "string"
+
+                        ? (raw.runtime_contract as Record<string, unknown>).contract_hash72 as string
+
+                        : undefined
+                )
+
+        const payloadHash72 =
+            typeof packetEnvelope.runtime_packet?.payload_hash72 === "string"
+
+                ? packetEnvelope.runtime_packet.payload_hash72
+
+                : (
+                    typeof (raw.runtime_contract as Record<string, unknown> | undefined)?.payload_hash72 === "string"
+
+                        ? (raw.runtime_contract as Record<string, unknown>).payload_hash72 as string
+
+                        : undefined
+                )
+
+        const contractValid =
+            packetEnvelope.runtime_packet
+
+                ? packetEnvelope.contract_valid
+
+                : apiValidation.ok
+
+        const contractReasons =
+            packetEnvelope.runtime_packet
+
+                ? packetEnvelope.reasons
+
+                : apiValidation.reasons
 
         return {
 
@@ -617,6 +734,54 @@ export class RuntimeSocketManager {
                     ??
                     channel
                 ) as RuntimeEventType,
+
+            channel:
+
+                typeof raw.channel === "string"
+                    ? raw.channel
+                    : this.config[`${channel}Endpoint` as keyof RuntimeSocketConfig] as string,
+
+            source_event_type:
+
+                typeof raw.source_event_type === "string"
+                    ? raw.source_event_type
+                    : undefined,
+
+            kernel_tick:
+
+                typeof raw.kernel_tick === "number"
+                    ? raw.kernel_tick
+                    : undefined,
+
+            runtime_state_hash72:
+
+                typeof raw.runtime_state_hash72 === "string"
+                    ? raw.runtime_state_hash72
+                    : undefined,
+
+            conformance_root:
+
+                typeof raw.conformance_root === "string"
+                    ? raw.conformance_root
+                    : undefined,
+
+            zero_bypass_status:
+
+                typeof raw.zero_bypass_status === "string"
+                    ? raw.zero_bypass_status
+                    : undefined,
+
+            gui_projection_valid:
+
+                typeof raw.gui_projection_valid === "boolean"
+                    ? raw.gui_projection_valid
+                    : undefined,
+
+            gui_projection_reasons:
+
+                Array.isArray(raw.gui_projection_reasons)
+                    ? raw.gui_projection_reasons.map(String)
+                    : undefined,
 
             timestamp_ns:
 
@@ -689,6 +854,18 @@ export class RuntimeSocketManager {
                     ? raw.receipt_hash72
 
                     : undefined,
+
+            contract_hash72:
+                contractHash72,
+
+            payload_hash72:
+                payloadHash72,
+
+            contract_valid:
+                contractValid,
+
+            contract_reasons:
+                contractReasons,
 
             payload
         }
@@ -914,6 +1091,96 @@ export class RuntimeSocketManager {
     }
 
     // =====================================================
+    // Channel Health
+    // =====================================================
+
+    public getChannelHealth():
+        RuntimeChannelHealth[] {
+
+        const now =
+            Date.now() * 1_000_000
+
+        const build = (
+            channel: RuntimeEventType,
+            endpoint: string,
+            connected: boolean,
+            history: RuntimeSocketEvent[],
+            last?: RuntimeSocketEvent
+        ): RuntimeChannelHealth => {
+
+            const lastAgeMs =
+                last?.timestamp_ns
+                    ? Math.max(
+                        0,
+                        Math.round((now - last.timestamp_ns) / 1_000_000)
+                    )
+                    : undefined
+
+            const hasKernelSource = Boolean(
+                last?.receipt_hash72
+                &&
+                last?.runtime_state_hash72
+                &&
+                last?.authority === "HHS_FASTAPI_KERNEL_RUNTIME_AUTHORITY_V1"
+            )
+
+            const stale =
+                connected
+                &&
+                typeof lastAgeMs === "number"
+                &&
+                lastAgeMs > 15000
+
+            return {
+                channel,
+                endpoint,
+                connected,
+                status: connected && hasKernelSource
+                    ? (stale ? "STALE_LIVE_KERNEL_STATE" : "LIVE_KERNEL_CONNECTED")
+                    : "NO_LIVE_KERNEL_SOURCE",
+                lastSequenceId: last?.sequence_id,
+                lastKernelTick: last?.kernel_tick,
+                lastReceiptHash72: last?.receipt_hash72,
+                lastRuntimeStateHash72: last?.runtime_state_hash72,
+                lastEventHash72: last?.event_hash72,
+                lastPacketAgeMs: lastAgeMs,
+                totalEvents: history.length
+            }
+        }
+
+        return [
+            build(
+                "runtime",
+                this.config.runtimeEndpoint,
+                this.state.runtimeConnected,
+                this.state.runtimeHistory,
+                this.state.lastRuntimeEvent
+            ),
+            build(
+                "replay",
+                this.config.replayEndpoint,
+                this.state.replayConnected,
+                this.state.replayHistory,
+                this.state.lastReplayEvent
+            ),
+            build(
+                "graph",
+                this.config.graphEndpoint,
+                this.state.graphConnected,
+                this.state.graphHistory,
+                this.state.lastGraphEvent
+            ),
+            build(
+                "transport",
+                this.config.transportEndpoint,
+                this.state.transportConnected,
+                this.state.transportHistory,
+                this.state.lastTransportEvent
+            )
+        ]
+    }
+
+    // =====================================================
     // Shutdown
     // =====================================================
 
@@ -988,6 +1255,9 @@ export class RuntimeSocketManager {
                 this.state
                     .transportHistory
                     .length,
+
+            channelHealth:
+                this.getChannelHealth(),
 
             totalEvents:
                 this.state

@@ -14,6 +14,8 @@ from typing import Dict
 from typing import List
 from typing import Optional
 
+from hhs_runtime.hhs_runtime_dataflow_guard_v1 import attach_propagation_record
+
 from hhs_runtime.runtime_event_schema import (
 
     EVENT_RUNTIME,
@@ -178,6 +180,11 @@ class RuntimeEventBus:
 
         event.sequence_id = (
             self.sequence_id
+        )
+
+        event.payload = attach_propagation_record(
+            f"hhs_runtime.event_bus.{event.event_type}",
+            event.payload,
         )
 
         self.metrics.emitted_events += 1

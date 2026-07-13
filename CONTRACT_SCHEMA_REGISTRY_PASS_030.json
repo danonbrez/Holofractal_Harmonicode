@@ -1,0 +1,2097 @@
+{
+  "families": [
+    "EXECUTION_REQUEST",
+    "RUNTIME_PACKET",
+    "INVOCATION_RECORD",
+    "SEMANTIC_ADAPTER_RECORD",
+    "DRYRUN_TRACE",
+    "KERNEL_WITNESS",
+    "FOUNDATIONAL_AUDIT",
+    "LEDGER_ENTRY",
+    "API_ENVELOPE",
+    "FAILURE_RECORD"
+  ],
+  "family_count": 10,
+  "hash72_kernel_witness": {
+    "canonical_payload": "{\"families\":[\"EXECUTION_REQUEST\",\"RUNTIME_PACKET\",\"INVOCATION_RECORD\",\"SEMANTIC_ADAPTER_RECORD\",\"DRYRUN_TRACE\",\"KERNEL_WITNESS\",\"FOUNDATIONAL_AUDIT\",\"LEDGER_ENTRY\",\"API_ENVELOPE\",\"FAILURE_RECORD\"],\"family_count\":10,\"pipeline_stage_count\":7,\"pipeline_stages\":[\"DISCOVERY\",\"REACHABILITY\",\"CAPABILITY_PLANNING\",\"GUARDED_INVOCATION_RECORD\",\"SEMANTIC_ADAPTER_EXECUTION\",\"DRYRUN_LIVE_EXECUTION\",\"AUTHORIZED_EXECUTION_CANDIDATE\"],\"policy\":\"Every execution-related object must be schema-identifiable, versioned, comparable, Hash72/u^72 witness-compatible, and failure-path explicit before promotion to authorized execution.\",\"schema\":\"HHS_CONTRACT_SCHEMA_REGISTRY_V1\",\"version\":\"PASS_030\"}",
+    "digest": "R3SF)gq(nVxIGz*PwD!MXjj<iU+h>VIuUbRKP5jmIugaOlfDRBnOEFjiVIXZ-h8N4Lm)rc2K",
+    "digest72": "R3SF)gq(nVxIGz*PwD!MXjj<iU+h>VIuUbRKP5jmIugaOlfDRBnOEFjiVIXZ-h8N4Lm)rc2K",
+    "dna": "R3SF)gq(nVxIGz*PwD!MXjj<iU+h>VIuUbRKP5jmIugaOlfDRBnOEFjiVIXZ-h8N4Lm)rc2K",
+    "label": "hhs_contract_schema_registry_manifest_v1",
+    "positions": [
+      53,
+      3,
+      54,
+      41,
+      67,
+      16,
+      26,
+      66,
+      23,
+      57,
+      33,
+      44,
+      42,
+      35,
+      64,
+      51,
+      32,
+      39,
+      70,
+      48,
+      59,
+      19,
+      19,
+      68,
+      18,
+      56,
+      63,
+      17,
+      69,
+      57,
+      44,
+      30,
+      56,
+      11,
+      53,
+      46,
+      51,
+      5,
+      19,
+      22,
+      44,
+      30,
+      16,
+      10,
+      50,
+      21,
+      15,
+      39,
+      53,
+      37,
+      23,
+      50,
+      40,
+      41,
+      19,
+      18,
+      57,
+      44,
+      59,
+      61,
+      62,
+      17,
+      8,
+      49,
+      4,
+      47,
+      22,
+      67,
+      27,
+      12,
+      2,
+      46
+    ],
+    "rotation_profile": [
+      -91,
+      74,
+      -20,
+      38,
+      -9,
+      83,
+      -124,
+      -85,
+      87,
+      -24,
+      23,
+      33,
+      -42,
+      22,
+      -22,
+      -36,
+      16,
+      94,
+      -20,
+      29,
+      -33,
+      70,
+      -75,
+      45,
+      66,
+      31,
+      -35,
+      -82,
+      41,
+      -44,
+      -58,
+      143,
+      -48,
+      -22,
+      -53,
+      -61,
+      87,
+      40,
+      -19,
+      -89,
+      76,
+      -83,
+      118,
+      -105,
+      6,
+      -24,
+      -31,
+      64,
+      -67,
+      60,
+      -99,
+      143,
+      -84,
+      60,
+      37,
+      -109,
+      73,
+      59,
+      -71,
+      146,
+      -142,
+      -44,
+      18,
+      -14,
+      228,
+      -234,
+      28,
+      0,
+      103,
+      -201,
+      76,
+      83
+    ],
+    "schema": "HHS_HASH72_KERNEL_WITNESS_V1",
+    "trace_count": 724,
+    "zero_sum": true
+  },
+  "ok": true,
+  "pipeline_stage_count": 7,
+  "pipeline_stages": [
+    "DISCOVERY",
+    "REACHABILITY",
+    "CAPABILITY_PLANNING",
+    "GUARDED_INVOCATION_RECORD",
+    "SEMANTIC_ADAPTER_EXECUTION",
+    "DRYRUN_LIVE_EXECUTION",
+    "AUTHORIZED_EXECUTION_CANDIDATE"
+  ],
+  "policy": "Every execution-related object must be schema-identifiable, versioned, comparable, Hash72/u^72 witness-compatible, and failure-path explicit before promotion to authorized execution.",
+  "repo_root": "/mnt/data/pass032_work/hhs_pass001_clean",
+  "sample_classifications": {
+    "api_envelope": {
+      "confidence": "HIGH",
+      "contract_type": "api_response",
+      "family": "API_ENVELOPE",
+      "reasons": [
+        "matched api_response contract type or envelope schema"
+      ],
+      "registry_schema": "HHS_SCHEMA_OBJECT_CLASSIFICATION_V1",
+      "registry_version": "PASS_030",
+      "schema": "HHS_API_RESPONSE_CONTRACT_V1"
+    },
+    "dryrun_trace": {
+      "confidence": "HIGH",
+      "contract_type": "",
+      "family": "DRYRUN_TRACE",
+      "reasons": [
+        "matched dry-run execution trace fields"
+      ],
+      "registry_schema": "HHS_SCHEMA_OBJECT_CLASSIFICATION_V1",
+      "registry_version": "PASS_030",
+      "schema": "HHS_DRYRUN_LIVE_PLUGIN_EXECUTION_V1"
+    },
+    "execution_request": {
+      "confidence": "HIGH",
+      "contract_type": "execution_request",
+      "family": "EXECUTION_REQUEST",
+      "reasons": [
+        "matched execution_request contract type or schema"
+      ],
+      "registry_schema": "HHS_SCHEMA_OBJECT_CLASSIFICATION_V1",
+      "registry_version": "PASS_030",
+      "schema": "HHS_EXECUTION_REQUEST_CONTRACT_V1"
+    },
+    "failure_record": {
+      "confidence": "MEDIUM",
+      "contract_type": "",
+      "family": "FAILURE_RECORD",
+      "reasons": [
+        "matched failure/rejection/rollback indicators"
+      ],
+      "registry_schema": "HHS_SCHEMA_OBJECT_CLASSIFICATION_V1",
+      "registry_version": "PASS_030",
+      "schema": "HHS_FAILURE_RECORD_V1"
+    },
+    "foundational_audit": {
+      "confidence": "HIGH",
+      "contract_type": "",
+      "family": "FOUNDATIONAL_AUDIT",
+      "reasons": [
+        "matched foundational/conservation schema"
+      ],
+      "registry_schema": "HHS_SCHEMA_OBJECT_CLASSIFICATION_V1",
+      "registry_version": "PASS_030",
+      "schema": "HHS_FOUNDATIONAL_CONFORMANCE_V1"
+    },
+    "invocation_record": {
+      "confidence": "HIGH",
+      "contract_type": "",
+      "family": "INVOCATION_RECORD",
+      "reasons": [
+        "matched guarded invocation/service dispatch schema"
+      ],
+      "registry_schema": "HHS_SCHEMA_OBJECT_CLASSIFICATION_V1",
+      "registry_version": "PASS_030",
+      "schema": "HHS_SERVICE_DISPATCH_RECORD_V1"
+    },
+    "kernel_witness": {
+      "confidence": "HIGH",
+      "contract_type": "",
+      "family": "KERNEL_WITNESS",
+      "reasons": [
+        "matched Hash72/u^72 kernel witness structure"
+      ],
+      "registry_schema": "HHS_SCHEMA_OBJECT_CLASSIFICATION_V1",
+      "registry_version": "PASS_030",
+      "schema": "HHS_HASH72_KERNEL_WITNESS_V1"
+    },
+    "ledger_entry": {
+      "confidence": "HIGH",
+      "contract_type": "",
+      "family": "LEDGER_ENTRY",
+      "reasons": [
+        "matched ledger hash summary fields"
+      ],
+      "registry_schema": "HHS_SCHEMA_OBJECT_CLASSIFICATION_V1",
+      "registry_version": "PASS_030",
+      "schema": "HHS_UNIFIED_HASH72_LEDGER_SUMMARY_V1"
+    },
+    "runtime_packet": {
+      "confidence": "HIGH",
+      "contract_type": "runtime_packet",
+      "family": "RUNTIME_PACKET",
+      "reasons": [
+        "matched runtime_packet contract type or schema"
+      ],
+      "registry_schema": "HHS_SCHEMA_OBJECT_CLASSIFICATION_V1",
+      "registry_version": "PASS_030",
+      "schema": "HHS_RUNTIME_PACKET_CONTRACT_V1"
+    },
+    "semantic_adapter_record": {
+      "confidence": "HIGH",
+      "contract_type": "",
+      "family": "SEMANTIC_ADAPTER_RECORD",
+      "reasons": [
+        "matched semantic adapter schema pattern"
+      ],
+      "registry_schema": "HHS_SCHEMA_OBJECT_CLASSIFICATION_V1",
+      "registry_version": "PASS_030",
+      "schema": "HHS_SEMANTIC_PLUGIN_ADAPTER_RECORD_V1"
+    }
+  },
+  "sample_objects": {
+    "api_envelope": {
+      "contract_hash72": "yfO14hNOanrxwBwqjG6TZLAV83frB!EKPqku<Eifz(dBpjqpz)RBuwIEZ+M1k48pg887CjI1",
+      "contract_type": "api_response",
+      "contract_version": "HHS_CANONICAL_RUNTIME_CONTRACT_V1",
+      "created_at": 1783615467.2988236,
+      "io": {},
+      "method": "GET",
+      "payload": {
+        "ok": true
+      },
+      "payload_hash72": "w2eU94k9855ao1yjao8odgrAowpbvLaNiWmDnFy+I3xX*+g-SKA(5ERXFaEDYZ-+*/()<>!z",
+      "route": "/api/runtime/contract-schema-registry",
+      "schema": "HHS_API_RESPONSE_CONTRACT_V1",
+      "status": "ok"
+    },
+    "dryrun_trace": {
+      "dry_run_result": {
+        "call_performed": false,
+        "mutation_performed": false
+      },
+      "dryrun_kernel_witness": {
+        "canonical_payload": "{\"packet\":{\"contract_hash72\":\"QuagMc7!-geN99qzJYYbrvTVipIni0rmQM!O6WfBGYLzXD7T<QQ4sq4KP/VgJ76eWg5!5jV9\",\"contract_type\":\"runtime_packet\",\"contract_version\":\"HHS_CANONICAL_RUNTIME_CONTRACT_V1\",\"created_at\":1783615467.2953515,\"direction\":\"INTERNAL\",\"io_receipt\":{},\"packet_id\":\"3f4b6676-f693-464a-96fa-76b10363da70\",\"payload\":{\"meaning_witness\":{\"after_identity_hash72\":\"sCAC√T≠yVD=7oCwRjBs^9=vwbJw√jw7VyjKUPrQ545j=vKpjN√+)zB7CzkSZ1fH8≠(JFT7E*\",\"before_identity_hash72\":\"sCAC√T≠yVD=7oCwRjBs^9=vwbJw√jw7VyjKUPrQ545j=vKpjN√+)zB7CzkSZ1fH8≠(JFT7E*\",\"meaning_conserved\":true,\"receipt_hash72\":\"\",\"reversible\":true,\"schema\":\"HHS_MEANING_CONSERVATION_WITNESS_V1\",\"standard_version\":\"HHS_FOUNDATIONAL_STANDARDS_M001_M007_V1\",\"transformation_rule\":\"schema registry classification preserves object identity\",\"witness_hash72\":\"c/a9P2)gwO=3*+b0P≠cJH6fEfP=34TRMtJ)8xPne-hQC87ilCjiPnqUbRONXtFv5ODpo+t2√\"},\"proposition_identity\":{\"context\":{\"pass\":\"PASS_030\"},\"declared_dimensions\":[\"equality\",\"functional_equivalence\",\"identity\",\"interchangeability\",\"similarity\"],\"identity_hash72\":\"sCAC√T≠yVD=7oCwRjBs^9=vwbJw√jw7VyjKUPrQ545j=vKpjN√+)zB7CzkSZ1fH8≠(JFT7E*\",\"proposition_id\":\"92e254b0-806b-48d4-aa04-4fef674a137b\",\"schema\":\"HHS_PROPOSITION_IDENTITY_V1\",\"source\":\"hhs_contract_schema_registry_v1.sample_objects\",\"standard_version\":\"HHS_FOUNDATIONAL_STANDARDS_M001_M007_V1\",\"statement\":\"Pass 030 preserves authority-layer schema identity before authorized execution expansion.\"}},\"payload_hash72\":\"V3+hjw-mK1R7?kfX)d+3SJ(rspRnx05vJgS/xUNwTONX*3QOMj4xu<hYLk)TWrPGZH>TEaHq\",\"schema\":\"HHS_RUNTIME_PACKET_CONTRACT_V1\",\"source\":\"hhs_contract_schema_registry_v1.sample_objects\"},\"request\":{\"contract_hash72\":\"MsBGztN1A50Wm319E+4l0M7YrPrgX)0fw>07Y(wFH-?(vsDm?VMS8rna2o+7IStkpR2h!T?B\",\"contract_type\":\"execution_request\",\"contract_version\":\"HHS_CANONICAL_RUNTIME_CONTRACT_V1\",\"created_at\":1783615467.293204,\"operation\":\"contract_schema_registry.self_test\",\"payload\":{\"meaning_witness\":{\"after_identity_hash72\":\"sCAC√T≠yVD=7oCwRjBs^9=vwbJw√jw7VyjKUPrQ545j=vKpjN√+)zB7CzkSZ1fH8≠(JFT7E*\",\"before_identity_hash72\":\"sCAC√T≠yVD=7oCwRjBs^9=vwbJw√jw7VyjKUPrQ545j=vKpjN√+)zB7CzkSZ1fH8≠(JFT7E*\",\"meaning_conserved\":true,\"receipt_hash72\":\"\",\"reversible\":true,\"schema\":\"HHS_MEANING_CONSERVATION_WITNESS_V1\",\"standard_version\":\"HHS_FOUNDATIONAL_STANDARDS_M001_M007_V1\",\"transformation_rule\":\"schema registry classification preserves object identity\",\"witness_hash72\":\"c/a9P2)gwO=3*+b0P≠cJH6fEfP=34TRMtJ)8xPne-hQC87ilCjiPnqUbRONXtFv5ODpo+t2√\"},\"proposition_identity\":{\"context\":{\"pass\":\"PASS_030\"},\"declared_dimensions\":[\"equality\",\"functional_equivalence\",\"identity\",\"interchangeability\",\"similarity\"],\"identity_hash72\":\"sCAC√T≠yVD=7oCwRjBs^9=vwbJw√jw7VyjKUPrQ545j=vKpjN√+)zB7CzkSZ1fH8≠(JFT7E*\",\"proposition_id\":\"92e254b0-806b-48d4-aa04-4fef674a137b\",\"schema\":\"HHS_PROPOSITION_IDENTITY_V1\",\"source\":\"hhs_contract_schema_registry_v1.sample_objects\",\"standard_version\":\"HHS_FOUNDATIONAL_STANDARDS_M001_M007_V1\",\"statement\":\"Pass 030 preserves authority-layer schema identity before authorized execution expansion.\"}},\"request_id\":\"6cd79fc6-eee9-4e37-936b-16c2e6ba1a5e\",\"requires_authority\":true,\"schema\":\"HHS_EXECUTION_REQUEST_CONTRACT_V1\",\"source\":\"hhs_contract_schema_registry_v1.sample_objects\"}}",
+        "digest": "d<8L>s7Ac4qff)h+yD/Juj+93COkwzdEp0mpL85Uy7yO?Aw(T3LEz2I/!m-0TJwm/Qeuw/te",
+        "digest72": "d<8L>s7Ac4qff)h+yD/Juj+93COkwzdEp0mpL85Uy7yO?Aw(T3LEz2I/!m-0TJwm/Qeuw/te",
+        "dna": "d<8L>s7Ac4qff)h+yD/Juj+93COkwzdEp0mpL85Uy7yO?Aw(T3LEz2I/!m-0TJwm/Qeuw/te",
+        "label": "hhs_contract_schema_registry_sample_v1",
+        "positions": [
+          13,
+          68,
+          8,
+          47,
+          69,
+          28,
+          7,
+          36,
+          12,
+          4,
+          26,
+          15,
+          15,
+          67,
+          17,
+          63,
+          34,
+          39,
+          65,
+          45,
+          30,
+          19,
+          63,
+          9,
+          3,
+          38,
+          50,
+          20,
+          32,
+          35,
+          13,
+          40,
+          25,
+          0,
+          22,
+          25,
+          47,
+          8,
+          5,
+          56,
+          34,
+          7,
+          34,
+          50,
+          71,
+          36,
+          32,
+          66,
+          55,
+          3,
+          47,
+          40,
+          35,
+          2,
+          44,
+          65,
+          70,
+          22,
+          62,
+          0,
+          55,
+          45,
+          32,
+          22,
+          65,
+          52,
+          14,
+          30,
+          32,
+          65,
+          29,
+          14
+        ],
+        "rotation_profile": [
+          229,
+          -221,
+          222,
+          -28,
+          281,
+          -49,
+          -71,
+          -43,
+          76,
+          -5,
+          16,
+          4,
+          147,
+          54,
+          147,
+          -96,
+          18,
+          94,
+          -169,
+          98,
+          -206,
+          -2,
+          257,
+          -230,
+          123,
+          -203,
+          240,
+          -7,
+          76,
+          -354,
+          55,
+          -351,
+          209,
+          183,
+          -300,
+          -154,
+          83,
+          43,
+          111,
+          -271,
+          -78,
+          110,
+          -152,
+          79,
+          -189,
+          63,
+          -86,
+          -125,
+          79,
+          98,
+          -147,
+          61,
+          55,
+          -51,
+          206,
+          82,
+          -130,
+          181,
+          -68,
+          13,
+          67,
+          -160,
+          42,
+          31,
+          -71,
+          131,
+          -124,
+          179,
+          -36,
+          -4,
+          -41,
+          -21
+        ],
+        "schema": "HHS_HASH72_KERNEL_WITNESS_V1",
+        "trace_count": 3365,
+        "zero_sum": true
+      },
+      "execution_policy": {
+        "dry_run_execution": true,
+        "function_body_execution": false
+      },
+      "execution_request": {
+        "contract_hash72": "MsBGztN1A50Wm319E+4l0M7YrPrgX)0fw>07Y(wFH-?(vsDm?VMS8rna2o+7IStkpR2h!T?B",
+        "contract_type": "execution_request",
+        "contract_version": "HHS_CANONICAL_RUNTIME_CONTRACT_V1",
+        "created_at": 1783615467.293204,
+        "operation": "contract_schema_registry.self_test",
+        "payload": {
+          "meaning_witness": {
+            "after_identity_hash72": "sCAC√T≠yVD=7oCwRjBs^9=vwbJw√jw7VyjKUPrQ545j=vKpjN√+)zB7CzkSZ1fH8≠(JFT7E*",
+            "before_identity_hash72": "sCAC√T≠yVD=7oCwRjBs^9=vwbJw√jw7VyjKUPrQ545j=vKpjN√+)zB7CzkSZ1fH8≠(JFT7E*",
+            "meaning_conserved": true,
+            "receipt_hash72": "",
+            "reversible": true,
+            "schema": "HHS_MEANING_CONSERVATION_WITNESS_V1",
+            "standard_version": "HHS_FOUNDATIONAL_STANDARDS_M001_M007_V1",
+            "transformation_rule": "schema registry classification preserves object identity",
+            "witness_hash72": "c/a9P2)gwO=3*+b0P≠cJH6fEfP=34TRMtJ)8xPne-hQC87ilCjiPnqUbRONXtFv5ODpo+t2√"
+          },
+          "proposition_identity": {
+            "context": {
+              "pass": "PASS_030"
+            },
+            "declared_dimensions": [
+              "equality",
+              "functional_equivalence",
+              "identity",
+              "interchangeability",
+              "similarity"
+            ],
+            "identity_hash72": "sCAC√T≠yVD=7oCwRjBs^9=vwbJw√jw7VyjKUPrQ545j=vKpjN√+)zB7CzkSZ1fH8≠(JFT7E*",
+            "proposition_id": "92e254b0-806b-48d4-aa04-4fef674a137b",
+            "schema": "HHS_PROPOSITION_IDENTITY_V1",
+            "source": "hhs_contract_schema_registry_v1.sample_objects",
+            "standard_version": "HHS_FOUNDATIONAL_STANDARDS_M001_M007_V1",
+            "statement": "Pass 030 preserves authority-layer schema identity before authorized execution expansion."
+          }
+        },
+        "request_id": "6cd79fc6-eee9-4e37-936b-16c2e6ba1a5e",
+        "requires_authority": true,
+        "schema": "HHS_EXECUTION_REQUEST_CONTRACT_V1",
+        "source": "hhs_contract_schema_registry_v1.sample_objects"
+      },
+      "foundational_conformance_post": {
+        "conformance_hash72": "BC≠VRMHq=I5Fo√G≠*-eCS^IE*OQ(qO+I^rjE≠0KIDFPQi2g2TFkke)PG9hh(sHeT√-EJ=Q-D",
+        "meaning_witness": {
+          "after_identity_hash72": "sCAC√T≠yVD=7oCwRjBs^9=vwbJw√jw7VyjKUPrQ545j=vKpjN√+)zB7CzkSZ1fH8≠(JFT7E*",
+          "before_identity_hash72": "sCAC√T≠yVD=7oCwRjBs^9=vwbJw√jw7VyjKUPrQ545j=vKpjN√+)zB7CzkSZ1fH8≠(JFT7E*",
+          "meaning_conserved": true,
+          "receipt_hash72": "",
+          "reversible": true,
+          "schema": "HHS_MEANING_CONSERVATION_WITNESS_V1",
+          "standard_version": "HHS_FOUNDATIONAL_STANDARDS_M001_M007_V1",
+          "transformation_rule": "schema registry classification preserves object identity",
+          "witness_hash72": "c/a9P2)gwO=3*+b0P≠cJH6fEfP=34TRMtJ)8xPne-hQC87ilCjiPnqUbRONXtFv5ODpo+t2√"
+        },
+        "ok": true,
+        "proposition_identity": {
+          "context": {
+            "pass": "PASS_030"
+          },
+          "declared_dimensions": [
+            "equality",
+            "functional_equivalence",
+            "identity",
+            "interchangeability",
+            "similarity"
+          ],
+          "identity_hash72": "sCAC√T≠yVD=7oCwRjBs^9=vwbJw√jw7VyjKUPrQ545j=vKpjN√+)zB7CzkSZ1fH8≠(JFT7E*",
+          "proposition_id": "92e254b0-806b-48d4-aa04-4fef674a137b",
+          "schema": "HHS_PROPOSITION_IDENTITY_V1",
+          "source": "hhs_contract_schema_registry_v1.sample_objects",
+          "standard_version": "HHS_FOUNDATIONAL_STANDARDS_M001_M007_V1",
+          "statement": "Pass 030 preserves authority-layer schema identity before authorized execution expansion."
+        },
+        "reasons": [],
+        "schema": "HHS_FOUNDATIONAL_CONFORMANCE_V1",
+        "source": "hhs_contract_schema_registry_v1.sample_objects",
+        "standard_version": "HHS_FOUNDATIONAL_STANDARDS_M001_M007_V1",
+        "standards": {
+          "HHS-M001": true,
+          "HHS-M002": true,
+          "HHS-M003": true,
+          "HHS-M004": true,
+          "HHS-M005": true,
+          "HHS-M006": true,
+          "HHS-M007": true
+        }
+      },
+      "foundational_conformance_pre": {
+        "conformance_hash72": "BC≠VRMHq=I5Fo√G≠*-eCS^IE*OQ(qO+I^rjE≠0KIDFPQi2g2TFkke)PG9hh(sHeT√-EJ=Q-D",
+        "meaning_witness": {
+          "after_identity_hash72": "sCAC√T≠yVD=7oCwRjBs^9=vwbJw√jw7VyjKUPrQ545j=vKpjN√+)zB7CzkSZ1fH8≠(JFT7E*",
+          "before_identity_hash72": "sCAC√T≠yVD=7oCwRjBs^9=vwbJw√jw7VyjKUPrQ545j=vKpjN√+)zB7CzkSZ1fH8≠(JFT7E*",
+          "meaning_conserved": true,
+          "receipt_hash72": "",
+          "reversible": true,
+          "schema": "HHS_MEANING_CONSERVATION_WITNESS_V1",
+          "standard_version": "HHS_FOUNDATIONAL_STANDARDS_M001_M007_V1",
+          "transformation_rule": "schema registry classification preserves object identity",
+          "witness_hash72": "c/a9P2)gwO=3*+b0P≠cJH6fEfP=34TRMtJ)8xPne-hQC87ilCjiPnqUbRONXtFv5ODpo+t2√"
+        },
+        "ok": true,
+        "proposition_identity": {
+          "context": {
+            "pass": "PASS_030"
+          },
+          "declared_dimensions": [
+            "equality",
+            "functional_equivalence",
+            "identity",
+            "interchangeability",
+            "similarity"
+          ],
+          "identity_hash72": "sCAC√T≠yVD=7oCwRjBs^9=vwbJw√jw7VyjKUPrQ545j=vKpjN√+)zB7CzkSZ1fH8≠(JFT7E*",
+          "proposition_id": "92e254b0-806b-48d4-aa04-4fef674a137b",
+          "schema": "HHS_PROPOSITION_IDENTITY_V1",
+          "source": "hhs_contract_schema_registry_v1.sample_objects",
+          "standard_version": "HHS_FOUNDATIONAL_STANDARDS_M001_M007_V1",
+          "statement": "Pass 030 preserves authority-layer schema identity before authorized execution expansion."
+        },
+        "reasons": [],
+        "schema": "HHS_FOUNDATIONAL_CONFORMANCE_V1",
+        "source": "hhs_contract_schema_registry_v1.sample_objects",
+        "standard_version": "HHS_FOUNDATIONAL_STANDARDS_M001_M007_V1",
+        "standards": {
+          "HHS-M001": true,
+          "HHS-M002": true,
+          "HHS-M003": true,
+          "HHS-M004": true,
+          "HHS-M005": true,
+          "HHS-M006": true,
+          "HHS-M007": true
+        }
+      },
+      "function_surface": {
+        "body_execution_performed": false,
+        "function": "sample"
+      },
+      "ledger": {
+        "entry_count": 0,
+        "ledger_hash72": "d<8L>s7Ac4qff)h+yD/Juj+93COkwzdEp0mpL85Uy7yO?Aw(T3LEz2I/!m-0TJwm/Qeuw/te",
+        "schema": "HHS_UNIFIED_HASH72_LEDGER_SUMMARY_V1",
+        "tip_hash72": "d<8L>s7Ac4qff)h+yD/Juj+93COkwzdEp0mpL85Uy7yO?Aw(T3LEz2I/!m-0TJwm/Qeuw/te"
+      },
+      "runtime_packet": {
+        "contract_hash72": "QuagMc7!-geN99qzJYYbrvTVipIni0rmQM!O6WfBGYLzXD7T<QQ4sq4KP/VgJ76eWg5!5jV9",
+        "contract_type": "runtime_packet",
+        "contract_version": "HHS_CANONICAL_RUNTIME_CONTRACT_V1",
+        "created_at": 1783615467.2953515,
+        "direction": "INTERNAL",
+        "io_receipt": {},
+        "packet_id": "3f4b6676-f693-464a-96fa-76b10363da70",
+        "payload": {
+          "meaning_witness": {
+            "after_identity_hash72": "sCAC√T≠yVD=7oCwRjBs^9=vwbJw√jw7VyjKUPrQ545j=vKpjN√+)zB7CzkSZ1fH8≠(JFT7E*",
+            "before_identity_hash72": "sCAC√T≠yVD=7oCwRjBs^9=vwbJw√jw7VyjKUPrQ545j=vKpjN√+)zB7CzkSZ1fH8≠(JFT7E*",
+            "meaning_conserved": true,
+            "receipt_hash72": "",
+            "reversible": true,
+            "schema": "HHS_MEANING_CONSERVATION_WITNESS_V1",
+            "standard_version": "HHS_FOUNDATIONAL_STANDARDS_M001_M007_V1",
+            "transformation_rule": "schema registry classification preserves object identity",
+            "witness_hash72": "c/a9P2)gwO=3*+b0P≠cJH6fEfP=34TRMtJ)8xPne-hQC87ilCjiPnqUbRONXtFv5ODpo+t2√"
+          },
+          "proposition_identity": {
+            "context": {
+              "pass": "PASS_030"
+            },
+            "declared_dimensions": [
+              "equality",
+              "functional_equivalence",
+              "identity",
+              "interchangeability",
+              "similarity"
+            ],
+            "identity_hash72": "sCAC√T≠yVD=7oCwRjBs^9=vwbJw√jw7VyjKUPrQ545j=vKpjN√+)zB7CzkSZ1fH8≠(JFT7E*",
+            "proposition_id": "92e254b0-806b-48d4-aa04-4fef674a137b",
+            "schema": "HHS_PROPOSITION_IDENTITY_V1",
+            "source": "hhs_contract_schema_registry_v1.sample_objects",
+            "standard_version": "HHS_FOUNDATIONAL_STANDARDS_M001_M007_V1",
+            "statement": "Pass 030 preserves authority-layer schema identity before authorized execution expansion."
+          }
+        },
+        "payload_hash72": "V3+hjw-mK1R7?kfX)d+3SJ(rspRnx05vJgS/xUNwTONX*3QOMj4xu<hYLk)TWrPGZH>TEaHq",
+        "schema": "HHS_RUNTIME_PACKET_CONTRACT_V1",
+        "source": "hhs_contract_schema_registry_v1.sample_objects"
+      },
+      "schema": "HHS_DRYRUN_LIVE_PLUGIN_EXECUTION_V1"
+    },
+    "execution_request": {
+      "contract_hash72": "MsBGztN1A50Wm319E+4l0M7YrPrgX)0fw>07Y(wFH-?(vsDm?VMS8rna2o+7IStkpR2h!T?B",
+      "contract_type": "execution_request",
+      "contract_version": "HHS_CANONICAL_RUNTIME_CONTRACT_V1",
+      "created_at": 1783615467.293204,
+      "operation": "contract_schema_registry.self_test",
+      "payload": {
+        "meaning_witness": {
+          "after_identity_hash72": "sCAC√T≠yVD=7oCwRjBs^9=vwbJw√jw7VyjKUPrQ545j=vKpjN√+)zB7CzkSZ1fH8≠(JFT7E*",
+          "before_identity_hash72": "sCAC√T≠yVD=7oCwRjBs^9=vwbJw√jw7VyjKUPrQ545j=vKpjN√+)zB7CzkSZ1fH8≠(JFT7E*",
+          "meaning_conserved": true,
+          "receipt_hash72": "",
+          "reversible": true,
+          "schema": "HHS_MEANING_CONSERVATION_WITNESS_V1",
+          "standard_version": "HHS_FOUNDATIONAL_STANDARDS_M001_M007_V1",
+          "transformation_rule": "schema registry classification preserves object identity",
+          "witness_hash72": "c/a9P2)gwO=3*+b0P≠cJH6fEfP=34TRMtJ)8xPne-hQC87ilCjiPnqUbRONXtFv5ODpo+t2√"
+        },
+        "proposition_identity": {
+          "context": {
+            "pass": "PASS_030"
+          },
+          "declared_dimensions": [
+            "equality",
+            "functional_equivalence",
+            "identity",
+            "interchangeability",
+            "similarity"
+          ],
+          "identity_hash72": "sCAC√T≠yVD=7oCwRjBs^9=vwbJw√jw7VyjKUPrQ545j=vKpjN√+)zB7CzkSZ1fH8≠(JFT7E*",
+          "proposition_id": "92e254b0-806b-48d4-aa04-4fef674a137b",
+          "schema": "HHS_PROPOSITION_IDENTITY_V1",
+          "source": "hhs_contract_schema_registry_v1.sample_objects",
+          "standard_version": "HHS_FOUNDATIONAL_STANDARDS_M001_M007_V1",
+          "statement": "Pass 030 preserves authority-layer schema identity before authorized execution expansion."
+        }
+      },
+      "request_id": "6cd79fc6-eee9-4e37-936b-16c2e6ba1a5e",
+      "requires_authority": true,
+      "schema": "HHS_EXECUTION_REQUEST_CONTRACT_V1",
+      "source": "hhs_contract_schema_registry_v1.sample_objects"
+    },
+    "failure_record": {
+      "foundational_conformance": {
+        "conformance_hash72": "BC≠VRMHq=I5Fo√G≠*-eCS^IE*OQ(qO+I^rjE≠0KIDFPQi2g2TFkke)PG9hh(sHeT√-EJ=Q-D",
+        "meaning_witness": {
+          "after_identity_hash72": "sCAC√T≠yVD=7oCwRjBs^9=vwbJw√jw7VyjKUPrQ545j=vKpjN√+)zB7CzkSZ1fH8≠(JFT7E*",
+          "before_identity_hash72": "sCAC√T≠yVD=7oCwRjBs^9=vwbJw√jw7VyjKUPrQ545j=vKpjN√+)zB7CzkSZ1fH8≠(JFT7E*",
+          "meaning_conserved": true,
+          "receipt_hash72": "",
+          "reversible": true,
+          "schema": "HHS_MEANING_CONSERVATION_WITNESS_V1",
+          "standard_version": "HHS_FOUNDATIONAL_STANDARDS_M001_M007_V1",
+          "transformation_rule": "schema registry classification preserves object identity",
+          "witness_hash72": "c/a9P2)gwO=3*+b0P≠cJH6fEfP=34TRMtJ)8xPne-hQC87ilCjiPnqUbRONXtFv5ODpo+t2√"
+        },
+        "ok": true,
+        "proposition_identity": {
+          "context": {
+            "pass": "PASS_030"
+          },
+          "declared_dimensions": [
+            "equality",
+            "functional_equivalence",
+            "identity",
+            "interchangeability",
+            "similarity"
+          ],
+          "identity_hash72": "sCAC√T≠yVD=7oCwRjBs^9=vwbJw√jw7VyjKUPrQ545j=vKpjN√+)zB7CzkSZ1fH8≠(JFT7E*",
+          "proposition_id": "92e254b0-806b-48d4-aa04-4fef674a137b",
+          "schema": "HHS_PROPOSITION_IDENTITY_V1",
+          "source": "hhs_contract_schema_registry_v1.sample_objects",
+          "standard_version": "HHS_FOUNDATIONAL_STANDARDS_M001_M007_V1",
+          "statement": "Pass 030 preserves authority-layer schema identity before authorized execution expansion."
+        },
+        "reasons": [],
+        "schema": "HHS_FOUNDATIONAL_CONFORMANCE_V1",
+        "source": "hhs_contract_schema_registry_v1.sample_objects",
+        "standard_version": "HHS_FOUNDATIONAL_STANDARDS_M001_M007_V1",
+        "standards": {
+          "HHS-M001": true,
+          "HHS-M002": true,
+          "HHS-M003": true,
+          "HHS-M004": true,
+          "HHS-M005": true,
+          "HHS-M006": true,
+          "HHS-M007": true
+        }
+      },
+      "kernel_witness": {
+        "canonical_payload": "{\"packet\":{\"contract_hash72\":\"QuagMc7!-geN99qzJYYbrvTVipIni0rmQM!O6WfBGYLzXD7T<QQ4sq4KP/VgJ76eWg5!5jV9\",\"contract_type\":\"runtime_packet\",\"contract_version\":\"HHS_CANONICAL_RUNTIME_CONTRACT_V1\",\"created_at\":1783615467.2953515,\"direction\":\"INTERNAL\",\"io_receipt\":{},\"packet_id\":\"3f4b6676-f693-464a-96fa-76b10363da70\",\"payload\":{\"meaning_witness\":{\"after_identity_hash72\":\"sCAC√T≠yVD=7oCwRjBs^9=vwbJw√jw7VyjKUPrQ545j=vKpjN√+)zB7CzkSZ1fH8≠(JFT7E*\",\"before_identity_hash72\":\"sCAC√T≠yVD=7oCwRjBs^9=vwbJw√jw7VyjKUPrQ545j=vKpjN√+)zB7CzkSZ1fH8≠(JFT7E*\",\"meaning_conserved\":true,\"receipt_hash72\":\"\",\"reversible\":true,\"schema\":\"HHS_MEANING_CONSERVATION_WITNESS_V1\",\"standard_version\":\"HHS_FOUNDATIONAL_STANDARDS_M001_M007_V1\",\"transformation_rule\":\"schema registry classification preserves object identity\",\"witness_hash72\":\"c/a9P2)gwO=3*+b0P≠cJH6fEfP=34TRMtJ)8xPne-hQC87ilCjiPnqUbRONXtFv5ODpo+t2√\"},\"proposition_identity\":{\"context\":{\"pass\":\"PASS_030\"},\"declared_dimensions\":[\"equality\",\"functional_equivalence\",\"identity\",\"interchangeability\",\"similarity\"],\"identity_hash72\":\"sCAC√T≠yVD=7oCwRjBs^9=vwbJw√jw7VyjKUPrQ545j=vKpjN√+)zB7CzkSZ1fH8≠(JFT7E*\",\"proposition_id\":\"92e254b0-806b-48d4-aa04-4fef674a137b\",\"schema\":\"HHS_PROPOSITION_IDENTITY_V1\",\"source\":\"hhs_contract_schema_registry_v1.sample_objects\",\"standard_version\":\"HHS_FOUNDATIONAL_STANDARDS_M001_M007_V1\",\"statement\":\"Pass 030 preserves authority-layer schema identity before authorized execution expansion.\"}},\"payload_hash72\":\"V3+hjw-mK1R7?kfX)d+3SJ(rspRnx05vJgS/xUNwTONX*3QOMj4xu<hYLk)TWrPGZH>TEaHq\",\"schema\":\"HHS_RUNTIME_PACKET_CONTRACT_V1\",\"source\":\"hhs_contract_schema_registry_v1.sample_objects\"},\"request\":{\"contract_hash72\":\"MsBGztN1A50Wm319E+4l0M7YrPrgX)0fw>07Y(wFH-?(vsDm?VMS8rna2o+7IStkpR2h!T?B\",\"contract_type\":\"execution_request\",\"contract_version\":\"HHS_CANONICAL_RUNTIME_CONTRACT_V1\",\"created_at\":1783615467.293204,\"operation\":\"contract_schema_registry.self_test\",\"payload\":{\"meaning_witness\":{\"after_identity_hash72\":\"sCAC√T≠yVD=7oCwRjBs^9=vwbJw√jw7VyjKUPrQ545j=vKpjN√+)zB7CzkSZ1fH8≠(JFT7E*\",\"before_identity_hash72\":\"sCAC√T≠yVD=7oCwRjBs^9=vwbJw√jw7VyjKUPrQ545j=vKpjN√+)zB7CzkSZ1fH8≠(JFT7E*\",\"meaning_conserved\":true,\"receipt_hash72\":\"\",\"reversible\":true,\"schema\":\"HHS_MEANING_CONSERVATION_WITNESS_V1\",\"standard_version\":\"HHS_FOUNDATIONAL_STANDARDS_M001_M007_V1\",\"transformation_rule\":\"schema registry classification preserves object identity\",\"witness_hash72\":\"c/a9P2)gwO=3*+b0P≠cJH6fEfP=34TRMtJ)8xPne-hQC87ilCjiPnqUbRONXtFv5ODpo+t2√\"},\"proposition_identity\":{\"context\":{\"pass\":\"PASS_030\"},\"declared_dimensions\":[\"equality\",\"functional_equivalence\",\"identity\",\"interchangeability\",\"similarity\"],\"identity_hash72\":\"sCAC√T≠yVD=7oCwRjBs^9=vwbJw√jw7VyjKUPrQ545j=vKpjN√+)zB7CzkSZ1fH8≠(JFT7E*\",\"proposition_id\":\"92e254b0-806b-48d4-aa04-4fef674a137b\",\"schema\":\"HHS_PROPOSITION_IDENTITY_V1\",\"source\":\"hhs_contract_schema_registry_v1.sample_objects\",\"standard_version\":\"HHS_FOUNDATIONAL_STANDARDS_M001_M007_V1\",\"statement\":\"Pass 030 preserves authority-layer schema identity before authorized execution expansion.\"}},\"request_id\":\"6cd79fc6-eee9-4e37-936b-16c2e6ba1a5e\",\"requires_authority\":true,\"schema\":\"HHS_EXECUTION_REQUEST_CONTRACT_V1\",\"source\":\"hhs_contract_schema_registry_v1.sample_objects\"}}",
+        "digest": "d<8L>s7Ac4qff)h+yD/Juj+93COkwzdEp0mpL85Uy7yO?Aw(T3LEz2I/!m-0TJwm/Qeuw/te",
+        "digest72": "d<8L>s7Ac4qff)h+yD/Juj+93COkwzdEp0mpL85Uy7yO?Aw(T3LEz2I/!m-0TJwm/Qeuw/te",
+        "dna": "d<8L>s7Ac4qff)h+yD/Juj+93COkwzdEp0mpL85Uy7yO?Aw(T3LEz2I/!m-0TJwm/Qeuw/te",
+        "label": "hhs_contract_schema_registry_sample_v1",
+        "positions": [
+          13,
+          68,
+          8,
+          47,
+          69,
+          28,
+          7,
+          36,
+          12,
+          4,
+          26,
+          15,
+          15,
+          67,
+          17,
+          63,
+          34,
+          39,
+          65,
+          45,
+          30,
+          19,
+          63,
+          9,
+          3,
+          38,
+          50,
+          20,
+          32,
+          35,
+          13,
+          40,
+          25,
+          0,
+          22,
+          25,
+          47,
+          8,
+          5,
+          56,
+          34,
+          7,
+          34,
+          50,
+          71,
+          36,
+          32,
+          66,
+          55,
+          3,
+          47,
+          40,
+          35,
+          2,
+          44,
+          65,
+          70,
+          22,
+          62,
+          0,
+          55,
+          45,
+          32,
+          22,
+          65,
+          52,
+          14,
+          30,
+          32,
+          65,
+          29,
+          14
+        ],
+        "rotation_profile": [
+          229,
+          -221,
+          222,
+          -28,
+          281,
+          -49,
+          -71,
+          -43,
+          76,
+          -5,
+          16,
+          4,
+          147,
+          54,
+          147,
+          -96,
+          18,
+          94,
+          -169,
+          98,
+          -206,
+          -2,
+          257,
+          -230,
+          123,
+          -203,
+          240,
+          -7,
+          76,
+          -354,
+          55,
+          -351,
+          209,
+          183,
+          -300,
+          -154,
+          83,
+          43,
+          111,
+          -271,
+          -78,
+          110,
+          -152,
+          79,
+          -189,
+          63,
+          -86,
+          -125,
+          79,
+          98,
+          -147,
+          61,
+          55,
+          -51,
+          206,
+          82,
+          -130,
+          181,
+          -68,
+          13,
+          67,
+          -160,
+          42,
+          31,
+          -71,
+          131,
+          -124,
+          179,
+          -36,
+          -4,
+          -41,
+          -21
+        ],
+        "schema": "HHS_HASH72_KERNEL_WITNESS_V1",
+        "trace_count": 3365,
+        "zero_sum": true
+      },
+      "ledger": {
+        "entry_count": 0,
+        "ledger_hash72": "d<8L>s7Ac4qff)h+yD/Juj+93COkwzdEp0mpL85Uy7yO?Aw(T3LEz2I/!m-0TJwm/Qeuw/te",
+        "schema": "HHS_UNIFIED_HASH72_LEDGER_SUMMARY_V1",
+        "tip_hash72": "d<8L>s7Ac4qff)h+yD/Juj+93COkwzdEp0mpL85Uy7yO?Aw(T3LEz2I/!m-0TJwm/Qeuw/te"
+      },
+      "reason": "sample rejection path",
+      "rollback": false,
+      "schema": "HHS_FAILURE_RECORD_V1",
+      "source": "hhs_contract_schema_registry_v1.sample_objects"
+    },
+    "foundational_audit": {
+      "conformance_hash72": "BC≠VRMHq=I5Fo√G≠*-eCS^IE*OQ(qO+I^rjE≠0KIDFPQi2g2TFkke)PG9hh(sHeT√-EJ=Q-D",
+      "meaning_witness": {
+        "after_identity_hash72": "sCAC√T≠yVD=7oCwRjBs^9=vwbJw√jw7VyjKUPrQ545j=vKpjN√+)zB7CzkSZ1fH8≠(JFT7E*",
+        "before_identity_hash72": "sCAC√T≠yVD=7oCwRjBs^9=vwbJw√jw7VyjKUPrQ545j=vKpjN√+)zB7CzkSZ1fH8≠(JFT7E*",
+        "meaning_conserved": true,
+        "receipt_hash72": "",
+        "reversible": true,
+        "schema": "HHS_MEANING_CONSERVATION_WITNESS_V1",
+        "standard_version": "HHS_FOUNDATIONAL_STANDARDS_M001_M007_V1",
+        "transformation_rule": "schema registry classification preserves object identity",
+        "witness_hash72": "c/a9P2)gwO=3*+b0P≠cJH6fEfP=34TRMtJ)8xPne-hQC87ilCjiPnqUbRONXtFv5ODpo+t2√"
+      },
+      "ok": true,
+      "proposition_identity": {
+        "context": {
+          "pass": "PASS_030"
+        },
+        "declared_dimensions": [
+          "equality",
+          "functional_equivalence",
+          "identity",
+          "interchangeability",
+          "similarity"
+        ],
+        "identity_hash72": "sCAC√T≠yVD=7oCwRjBs^9=vwbJw√jw7VyjKUPrQ545j=vKpjN√+)zB7CzkSZ1fH8≠(JFT7E*",
+        "proposition_id": "92e254b0-806b-48d4-aa04-4fef674a137b",
+        "schema": "HHS_PROPOSITION_IDENTITY_V1",
+        "source": "hhs_contract_schema_registry_v1.sample_objects",
+        "standard_version": "HHS_FOUNDATIONAL_STANDARDS_M001_M007_V1",
+        "statement": "Pass 030 preserves authority-layer schema identity before authorized execution expansion."
+      },
+      "reasons": [],
+      "schema": "HHS_FOUNDATIONAL_CONFORMANCE_V1",
+      "source": "hhs_contract_schema_registry_v1.sample_objects",
+      "standard_version": "HHS_FOUNDATIONAL_STANDARDS_M001_M007_V1",
+      "standards": {
+        "HHS-M001": true,
+        "HHS-M002": true,
+        "HHS-M003": true,
+        "HHS-M004": true,
+        "HHS-M005": true,
+        "HHS-M006": true,
+        "HHS-M007": true
+      }
+    },
+    "invocation_record": {
+      "execution_request": {
+        "contract_hash72": "MsBGztN1A50Wm319E+4l0M7YrPrgX)0fw>07Y(wFH-?(vsDm?VMS8rna2o+7IStkpR2h!T?B",
+        "contract_type": "execution_request",
+        "contract_version": "HHS_CANONICAL_RUNTIME_CONTRACT_V1",
+        "created_at": 1783615467.293204,
+        "operation": "contract_schema_registry.self_test",
+        "payload": {
+          "meaning_witness": {
+            "after_identity_hash72": "sCAC√T≠yVD=7oCwRjBs^9=vwbJw√jw7VyjKUPrQ545j=vKpjN√+)zB7CzkSZ1fH8≠(JFT7E*",
+            "before_identity_hash72": "sCAC√T≠yVD=7oCwRjBs^9=vwbJw√jw7VyjKUPrQ545j=vKpjN√+)zB7CzkSZ1fH8≠(JFT7E*",
+            "meaning_conserved": true,
+            "receipt_hash72": "",
+            "reversible": true,
+            "schema": "HHS_MEANING_CONSERVATION_WITNESS_V1",
+            "standard_version": "HHS_FOUNDATIONAL_STANDARDS_M001_M007_V1",
+            "transformation_rule": "schema registry classification preserves object identity",
+            "witness_hash72": "c/a9P2)gwO=3*+b0P≠cJH6fEfP=34TRMtJ)8xPne-hQC87ilCjiPnqUbRONXtFv5ODpo+t2√"
+          },
+          "proposition_identity": {
+            "context": {
+              "pass": "PASS_030"
+            },
+            "declared_dimensions": [
+              "equality",
+              "functional_equivalence",
+              "identity",
+              "interchangeability",
+              "similarity"
+            ],
+            "identity_hash72": "sCAC√T≠yVD=7oCwRjBs^9=vwbJw√jw7VyjKUPrQ545j=vKpjN√+)zB7CzkSZ1fH8≠(JFT7E*",
+            "proposition_id": "92e254b0-806b-48d4-aa04-4fef674a137b",
+            "schema": "HHS_PROPOSITION_IDENTITY_V1",
+            "source": "hhs_contract_schema_registry_v1.sample_objects",
+            "standard_version": "HHS_FOUNDATIONAL_STANDARDS_M001_M007_V1",
+            "statement": "Pass 030 preserves authority-layer schema identity before authorized execution expansion."
+          }
+        },
+        "request_id": "6cd79fc6-eee9-4e37-936b-16c2e6ba1a5e",
+        "requires_authority": true,
+        "schema": "HHS_EXECUTION_REQUEST_CONTRACT_V1",
+        "source": "hhs_contract_schema_registry_v1.sample_objects"
+      },
+      "foundational_conformance_post": {
+        "conformance_hash72": "BC≠VRMHq=I5Fo√G≠*-eCS^IE*OQ(qO+I^rjE≠0KIDFPQi2g2TFkke)PG9hh(sHeT√-EJ=Q-D",
+        "meaning_witness": {
+          "after_identity_hash72": "sCAC√T≠yVD=7oCwRjBs^9=vwbJw√jw7VyjKUPrQ545j=vKpjN√+)zB7CzkSZ1fH8≠(JFT7E*",
+          "before_identity_hash72": "sCAC√T≠yVD=7oCwRjBs^9=vwbJw√jw7VyjKUPrQ545j=vKpjN√+)zB7CzkSZ1fH8≠(JFT7E*",
+          "meaning_conserved": true,
+          "receipt_hash72": "",
+          "reversible": true,
+          "schema": "HHS_MEANING_CONSERVATION_WITNESS_V1",
+          "standard_version": "HHS_FOUNDATIONAL_STANDARDS_M001_M007_V1",
+          "transformation_rule": "schema registry classification preserves object identity",
+          "witness_hash72": "c/a9P2)gwO=3*+b0P≠cJH6fEfP=34TRMtJ)8xPne-hQC87ilCjiPnqUbRONXtFv5ODpo+t2√"
+        },
+        "ok": true,
+        "proposition_identity": {
+          "context": {
+            "pass": "PASS_030"
+          },
+          "declared_dimensions": [
+            "equality",
+            "functional_equivalence",
+            "identity",
+            "interchangeability",
+            "similarity"
+          ],
+          "identity_hash72": "sCAC√T≠yVD=7oCwRjBs^9=vwbJw√jw7VyjKUPrQ545j=vKpjN√+)zB7CzkSZ1fH8≠(JFT7E*",
+          "proposition_id": "92e254b0-806b-48d4-aa04-4fef674a137b",
+          "schema": "HHS_PROPOSITION_IDENTITY_V1",
+          "source": "hhs_contract_schema_registry_v1.sample_objects",
+          "standard_version": "HHS_FOUNDATIONAL_STANDARDS_M001_M007_V1",
+          "statement": "Pass 030 preserves authority-layer schema identity before authorized execution expansion."
+        },
+        "reasons": [],
+        "schema": "HHS_FOUNDATIONAL_CONFORMANCE_V1",
+        "source": "hhs_contract_schema_registry_v1.sample_objects",
+        "standard_version": "HHS_FOUNDATIONAL_STANDARDS_M001_M007_V1",
+        "standards": {
+          "HHS-M001": true,
+          "HHS-M002": true,
+          "HHS-M003": true,
+          "HHS-M004": true,
+          "HHS-M005": true,
+          "HHS-M006": true,
+          "HHS-M007": true
+        }
+      },
+      "foundational_conformance_pre": {
+        "conformance_hash72": "BC≠VRMHq=I5Fo√G≠*-eCS^IE*OQ(qO+I^rjE≠0KIDFPQi2g2TFkke)PG9hh(sHeT√-EJ=Q-D",
+        "meaning_witness": {
+          "after_identity_hash72": "sCAC√T≠yVD=7oCwRjBs^9=vwbJw√jw7VyjKUPrQ545j=vKpjN√+)zB7CzkSZ1fH8≠(JFT7E*",
+          "before_identity_hash72": "sCAC√T≠yVD=7oCwRjBs^9=vwbJw√jw7VyjKUPrQ545j=vKpjN√+)zB7CzkSZ1fH8≠(JFT7E*",
+          "meaning_conserved": true,
+          "receipt_hash72": "",
+          "reversible": true,
+          "schema": "HHS_MEANING_CONSERVATION_WITNESS_V1",
+          "standard_version": "HHS_FOUNDATIONAL_STANDARDS_M001_M007_V1",
+          "transformation_rule": "schema registry classification preserves object identity",
+          "witness_hash72": "c/a9P2)gwO=3*+b0P≠cJH6fEfP=34TRMtJ)8xPne-hQC87ilCjiPnqUbRONXtFv5ODpo+t2√"
+        },
+        "ok": true,
+        "proposition_identity": {
+          "context": {
+            "pass": "PASS_030"
+          },
+          "declared_dimensions": [
+            "equality",
+            "functional_equivalence",
+            "identity",
+            "interchangeability",
+            "similarity"
+          ],
+          "identity_hash72": "sCAC√T≠yVD=7oCwRjBs^9=vwbJw√jw7VyjKUPrQ545j=vKpjN√+)zB7CzkSZ1fH8≠(JFT7E*",
+          "proposition_id": "92e254b0-806b-48d4-aa04-4fef674a137b",
+          "schema": "HHS_PROPOSITION_IDENTITY_V1",
+          "source": "hhs_contract_schema_registry_v1.sample_objects",
+          "standard_version": "HHS_FOUNDATIONAL_STANDARDS_M001_M007_V1",
+          "statement": "Pass 030 preserves authority-layer schema identity before authorized execution expansion."
+        },
+        "reasons": [],
+        "schema": "HHS_FOUNDATIONAL_CONFORMANCE_V1",
+        "source": "hhs_contract_schema_registry_v1.sample_objects",
+        "standard_version": "HHS_FOUNDATIONAL_STANDARDS_M001_M007_V1",
+        "standards": {
+          "HHS-M001": true,
+          "HHS-M002": true,
+          "HHS-M003": true,
+          "HHS-M004": true,
+          "HHS-M005": true,
+          "HHS-M006": true,
+          "HHS-M007": true
+        }
+      },
+      "runtime_packet": {
+        "contract_hash72": "QuagMc7!-geN99qzJYYbrvTVipIni0rmQM!O6WfBGYLzXD7T<QQ4sq4KP/VgJ76eWg5!5jV9",
+        "contract_type": "runtime_packet",
+        "contract_version": "HHS_CANONICAL_RUNTIME_CONTRACT_V1",
+        "created_at": 1783615467.2953515,
+        "direction": "INTERNAL",
+        "io_receipt": {},
+        "packet_id": "3f4b6676-f693-464a-96fa-76b10363da70",
+        "payload": {
+          "meaning_witness": {
+            "after_identity_hash72": "sCAC√T≠yVD=7oCwRjBs^9=vwbJw√jw7VyjKUPrQ545j=vKpjN√+)zB7CzkSZ1fH8≠(JFT7E*",
+            "before_identity_hash72": "sCAC√T≠yVD=7oCwRjBs^9=vwbJw√jw7VyjKUPrQ545j=vKpjN√+)zB7CzkSZ1fH8≠(JFT7E*",
+            "meaning_conserved": true,
+            "receipt_hash72": "",
+            "reversible": true,
+            "schema": "HHS_MEANING_CONSERVATION_WITNESS_V1",
+            "standard_version": "HHS_FOUNDATIONAL_STANDARDS_M001_M007_V1",
+            "transformation_rule": "schema registry classification preserves object identity",
+            "witness_hash72": "c/a9P2)gwO=3*+b0P≠cJH6fEfP=34TRMtJ)8xPne-hQC87ilCjiPnqUbRONXtFv5ODpo+t2√"
+          },
+          "proposition_identity": {
+            "context": {
+              "pass": "PASS_030"
+            },
+            "declared_dimensions": [
+              "equality",
+              "functional_equivalence",
+              "identity",
+              "interchangeability",
+              "similarity"
+            ],
+            "identity_hash72": "sCAC√T≠yVD=7oCwRjBs^9=vwbJw√jw7VyjKUPrQ545j=vKpjN√+)zB7CzkSZ1fH8≠(JFT7E*",
+            "proposition_id": "92e254b0-806b-48d4-aa04-4fef674a137b",
+            "schema": "HHS_PROPOSITION_IDENTITY_V1",
+            "source": "hhs_contract_schema_registry_v1.sample_objects",
+            "standard_version": "HHS_FOUNDATIONAL_STANDARDS_M001_M007_V1",
+            "statement": "Pass 030 preserves authority-layer schema identity before authorized execution expansion."
+          }
+        },
+        "payload_hash72": "V3+hjw-mK1R7?kfX)d+3SJ(rspRnx05vJgS/xUNwTONX*3QOMj4xu<hYLk)TWrPGZH>TEaHq",
+        "schema": "HHS_RUNTIME_PACKET_CONTRACT_V1",
+        "source": "hhs_contract_schema_registry_v1.sample_objects"
+      },
+      "schema": "HHS_SERVICE_DISPATCH_RECORD_V1",
+      "unified_ledger": {
+        "entry_count": 0,
+        "ledger_hash72": "d<8L>s7Ac4qff)h+yD/Juj+93COkwzdEp0mpL85Uy7yO?Aw(T3LEz2I/!m-0TJwm/Qeuw/te",
+        "schema": "HHS_UNIFIED_HASH72_LEDGER_SUMMARY_V1",
+        "tip_hash72": "d<8L>s7Ac4qff)h+yD/Juj+93COkwzdEp0mpL85Uy7yO?Aw(T3LEz2I/!m-0TJwm/Qeuw/te"
+      }
+    },
+    "kernel_witness": {
+      "canonical_payload": "{\"packet\":{\"contract_hash72\":\"QuagMc7!-geN99qzJYYbrvTVipIni0rmQM!O6WfBGYLzXD7T<QQ4sq4KP/VgJ76eWg5!5jV9\",\"contract_type\":\"runtime_packet\",\"contract_version\":\"HHS_CANONICAL_RUNTIME_CONTRACT_V1\",\"created_at\":1783615467.2953515,\"direction\":\"INTERNAL\",\"io_receipt\":{},\"packet_id\":\"3f4b6676-f693-464a-96fa-76b10363da70\",\"payload\":{\"meaning_witness\":{\"after_identity_hash72\":\"sCAC√T≠yVD=7oCwRjBs^9=vwbJw√jw7VyjKUPrQ545j=vKpjN√+)zB7CzkSZ1fH8≠(JFT7E*\",\"before_identity_hash72\":\"sCAC√T≠yVD=7oCwRjBs^9=vwbJw√jw7VyjKUPrQ545j=vKpjN√+)zB7CzkSZ1fH8≠(JFT7E*\",\"meaning_conserved\":true,\"receipt_hash72\":\"\",\"reversible\":true,\"schema\":\"HHS_MEANING_CONSERVATION_WITNESS_V1\",\"standard_version\":\"HHS_FOUNDATIONAL_STANDARDS_M001_M007_V1\",\"transformation_rule\":\"schema registry classification preserves object identity\",\"witness_hash72\":\"c/a9P2)gwO=3*+b0P≠cJH6fEfP=34TRMtJ)8xPne-hQC87ilCjiPnqUbRONXtFv5ODpo+t2√\"},\"proposition_identity\":{\"context\":{\"pass\":\"PASS_030\"},\"declared_dimensions\":[\"equality\",\"functional_equivalence\",\"identity\",\"interchangeability\",\"similarity\"],\"identity_hash72\":\"sCAC√T≠yVD=7oCwRjBs^9=vwbJw√jw7VyjKUPrQ545j=vKpjN√+)zB7CzkSZ1fH8≠(JFT7E*\",\"proposition_id\":\"92e254b0-806b-48d4-aa04-4fef674a137b\",\"schema\":\"HHS_PROPOSITION_IDENTITY_V1\",\"source\":\"hhs_contract_schema_registry_v1.sample_objects\",\"standard_version\":\"HHS_FOUNDATIONAL_STANDARDS_M001_M007_V1\",\"statement\":\"Pass 030 preserves authority-layer schema identity before authorized execution expansion.\"}},\"payload_hash72\":\"V3+hjw-mK1R7?kfX)d+3SJ(rspRnx05vJgS/xUNwTONX*3QOMj4xu<hYLk)TWrPGZH>TEaHq\",\"schema\":\"HHS_RUNTIME_PACKET_CONTRACT_V1\",\"source\":\"hhs_contract_schema_registry_v1.sample_objects\"},\"request\":{\"contract_hash72\":\"MsBGztN1A50Wm319E+4l0M7YrPrgX)0fw>07Y(wFH-?(vsDm?VMS8rna2o+7IStkpR2h!T?B\",\"contract_type\":\"execution_request\",\"contract_version\":\"HHS_CANONICAL_RUNTIME_CONTRACT_V1\",\"created_at\":1783615467.293204,\"operation\":\"contract_schema_registry.self_test\",\"payload\":{\"meaning_witness\":{\"after_identity_hash72\":\"sCAC√T≠yVD=7oCwRjBs^9=vwbJw√jw7VyjKUPrQ545j=vKpjN√+)zB7CzkSZ1fH8≠(JFT7E*\",\"before_identity_hash72\":\"sCAC√T≠yVD=7oCwRjBs^9=vwbJw√jw7VyjKUPrQ545j=vKpjN√+)zB7CzkSZ1fH8≠(JFT7E*\",\"meaning_conserved\":true,\"receipt_hash72\":\"\",\"reversible\":true,\"schema\":\"HHS_MEANING_CONSERVATION_WITNESS_V1\",\"standard_version\":\"HHS_FOUNDATIONAL_STANDARDS_M001_M007_V1\",\"transformation_rule\":\"schema registry classification preserves object identity\",\"witness_hash72\":\"c/a9P2)gwO=3*+b0P≠cJH6fEfP=34TRMtJ)8xPne-hQC87ilCjiPnqUbRONXtFv5ODpo+t2√\"},\"proposition_identity\":{\"context\":{\"pass\":\"PASS_030\"},\"declared_dimensions\":[\"equality\",\"functional_equivalence\",\"identity\",\"interchangeability\",\"similarity\"],\"identity_hash72\":\"sCAC√T≠yVD=7oCwRjBs^9=vwbJw√jw7VyjKUPrQ545j=vKpjN√+)zB7CzkSZ1fH8≠(JFT7E*\",\"proposition_id\":\"92e254b0-806b-48d4-aa04-4fef674a137b\",\"schema\":\"HHS_PROPOSITION_IDENTITY_V1\",\"source\":\"hhs_contract_schema_registry_v1.sample_objects\",\"standard_version\":\"HHS_FOUNDATIONAL_STANDARDS_M001_M007_V1\",\"statement\":\"Pass 030 preserves authority-layer schema identity before authorized execution expansion.\"}},\"request_id\":\"6cd79fc6-eee9-4e37-936b-16c2e6ba1a5e\",\"requires_authority\":true,\"schema\":\"HHS_EXECUTION_REQUEST_CONTRACT_V1\",\"source\":\"hhs_contract_schema_registry_v1.sample_objects\"}}",
+      "digest": "d<8L>s7Ac4qff)h+yD/Juj+93COkwzdEp0mpL85Uy7yO?Aw(T3LEz2I/!m-0TJwm/Qeuw/te",
+      "dna": "d<8L>s7Ac4qff)h+yD/Juj+93COkwzdEp0mpL85Uy7yO?Aw(T3LEz2I/!m-0TJwm/Qeuw/te",
+      "label": "hhs_contract_schema_registry_sample_v1",
+      "positions": [
+        13,
+        68,
+        8,
+        47,
+        69,
+        28,
+        7,
+        36,
+        12,
+        4,
+        26,
+        15,
+        15,
+        67,
+        17,
+        63,
+        34,
+        39,
+        65,
+        45,
+        30,
+        19,
+        63,
+        9,
+        3,
+        38,
+        50,
+        20,
+        32,
+        35,
+        13,
+        40,
+        25,
+        0,
+        22,
+        25,
+        47,
+        8,
+        5,
+        56,
+        34,
+        7,
+        34,
+        50,
+        71,
+        36,
+        32,
+        66,
+        55,
+        3,
+        47,
+        40,
+        35,
+        2,
+        44,
+        65,
+        70,
+        22,
+        62,
+        0,
+        55,
+        45,
+        32,
+        22,
+        65,
+        52,
+        14,
+        30,
+        32,
+        65,
+        29,
+        14
+      ],
+      "rotation_profile": [
+        229,
+        -221,
+        222,
+        -28,
+        281,
+        -49,
+        -71,
+        -43,
+        76,
+        -5,
+        16,
+        4,
+        147,
+        54,
+        147,
+        -96,
+        18,
+        94,
+        -169,
+        98,
+        -206,
+        -2,
+        257,
+        -230,
+        123,
+        -203,
+        240,
+        -7,
+        76,
+        -354,
+        55,
+        -351,
+        209,
+        183,
+        -300,
+        -154,
+        83,
+        43,
+        111,
+        -271,
+        -78,
+        110,
+        -152,
+        79,
+        -189,
+        63,
+        -86,
+        -125,
+        79,
+        98,
+        -147,
+        61,
+        55,
+        -51,
+        206,
+        82,
+        -130,
+        181,
+        -68,
+        13,
+        67,
+        -160,
+        42,
+        31,
+        -71,
+        131,
+        -124,
+        179,
+        -36,
+        -4,
+        -41,
+        -21
+      ],
+      "schema": "HHS_HASH72_KERNEL_WITNESS_V1",
+      "trace_count": 3365,
+      "zero_sum": true
+    },
+    "ledger_entry": {
+      "entry_count": 0,
+      "ledger_hash72": "d<8L>s7Ac4qff)h+yD/Juj+93COkwzdEp0mpL85Uy7yO?Aw(T3LEz2I/!m-0TJwm/Qeuw/te",
+      "schema": "HHS_UNIFIED_HASH72_LEDGER_SUMMARY_V1",
+      "tip_hash72": "d<8L>s7Ac4qff)h+yD/Juj+93COkwzdEp0mpL85Uy7yO?Aw(T3LEz2I/!m-0TJwm/Qeuw/te"
+    },
+    "runtime_packet": {
+      "contract_hash72": "QuagMc7!-geN99qzJYYbrvTVipIni0rmQM!O6WfBGYLzXD7T<QQ4sq4KP/VgJ76eWg5!5jV9",
+      "contract_type": "runtime_packet",
+      "contract_version": "HHS_CANONICAL_RUNTIME_CONTRACT_V1",
+      "created_at": 1783615467.2953515,
+      "direction": "INTERNAL",
+      "io_receipt": {},
+      "packet_id": "3f4b6676-f693-464a-96fa-76b10363da70",
+      "payload": {
+        "meaning_witness": {
+          "after_identity_hash72": "sCAC√T≠yVD=7oCwRjBs^9=vwbJw√jw7VyjKUPrQ545j=vKpjN√+)zB7CzkSZ1fH8≠(JFT7E*",
+          "before_identity_hash72": "sCAC√T≠yVD=7oCwRjBs^9=vwbJw√jw7VyjKUPrQ545j=vKpjN√+)zB7CzkSZ1fH8≠(JFT7E*",
+          "meaning_conserved": true,
+          "receipt_hash72": "",
+          "reversible": true,
+          "schema": "HHS_MEANING_CONSERVATION_WITNESS_V1",
+          "standard_version": "HHS_FOUNDATIONAL_STANDARDS_M001_M007_V1",
+          "transformation_rule": "schema registry classification preserves object identity",
+          "witness_hash72": "c/a9P2)gwO=3*+b0P≠cJH6fEfP=34TRMtJ)8xPne-hQC87ilCjiPnqUbRONXtFv5ODpo+t2√"
+        },
+        "proposition_identity": {
+          "context": {
+            "pass": "PASS_030"
+          },
+          "declared_dimensions": [
+            "equality",
+            "functional_equivalence",
+            "identity",
+            "interchangeability",
+            "similarity"
+          ],
+          "identity_hash72": "sCAC√T≠yVD=7oCwRjBs^9=vwbJw√jw7VyjKUPrQ545j=vKpjN√+)zB7CzkSZ1fH8≠(JFT7E*",
+          "proposition_id": "92e254b0-806b-48d4-aa04-4fef674a137b",
+          "schema": "HHS_PROPOSITION_IDENTITY_V1",
+          "source": "hhs_contract_schema_registry_v1.sample_objects",
+          "standard_version": "HHS_FOUNDATIONAL_STANDARDS_M001_M007_V1",
+          "statement": "Pass 030 preserves authority-layer schema identity before authorized execution expansion."
+        }
+      },
+      "payload_hash72": "V3+hjw-mK1R7?kfX)d+3SJ(rspRnx05vJgS/xUNwTONX*3QOMj4xu<hYLk)TWrPGZH>TEaHq",
+      "schema": "HHS_RUNTIME_PACKET_CONTRACT_V1",
+      "source": "hhs_contract_schema_registry_v1.sample_objects"
+    },
+    "semantic_adapter_record": {
+      "adapter_kernel_witness": {
+        "canonical_payload": "{\"packet\":{\"contract_hash72\":\"QuagMc7!-geN99qzJYYbrvTVipIni0rmQM!O6WfBGYLzXD7T<QQ4sq4KP/VgJ76eWg5!5jV9\",\"contract_type\":\"runtime_packet\",\"contract_version\":\"HHS_CANONICAL_RUNTIME_CONTRACT_V1\",\"created_at\":1783615467.2953515,\"direction\":\"INTERNAL\",\"io_receipt\":{},\"packet_id\":\"3f4b6676-f693-464a-96fa-76b10363da70\",\"payload\":{\"meaning_witness\":{\"after_identity_hash72\":\"sCAC√T≠yVD=7oCwRjBs^9=vwbJw√jw7VyjKUPrQ545j=vKpjN√+)zB7CzkSZ1fH8≠(JFT7E*\",\"before_identity_hash72\":\"sCAC√T≠yVD=7oCwRjBs^9=vwbJw√jw7VyjKUPrQ545j=vKpjN√+)zB7CzkSZ1fH8≠(JFT7E*\",\"meaning_conserved\":true,\"receipt_hash72\":\"\",\"reversible\":true,\"schema\":\"HHS_MEANING_CONSERVATION_WITNESS_V1\",\"standard_version\":\"HHS_FOUNDATIONAL_STANDARDS_M001_M007_V1\",\"transformation_rule\":\"schema registry classification preserves object identity\",\"witness_hash72\":\"c/a9P2)gwO=3*+b0P≠cJH6fEfP=34TRMtJ)8xPne-hQC87ilCjiPnqUbRONXtFv5ODpo+t2√\"},\"proposition_identity\":{\"context\":{\"pass\":\"PASS_030\"},\"declared_dimensions\":[\"equality\",\"functional_equivalence\",\"identity\",\"interchangeability\",\"similarity\"],\"identity_hash72\":\"sCAC√T≠yVD=7oCwRjBs^9=vwbJw√jw7VyjKUPrQ545j=vKpjN√+)zB7CzkSZ1fH8≠(JFT7E*\",\"proposition_id\":\"92e254b0-806b-48d4-aa04-4fef674a137b\",\"schema\":\"HHS_PROPOSITION_IDENTITY_V1\",\"source\":\"hhs_contract_schema_registry_v1.sample_objects\",\"standard_version\":\"HHS_FOUNDATIONAL_STANDARDS_M001_M007_V1\",\"statement\":\"Pass 030 preserves authority-layer schema identity before authorized execution expansion.\"}},\"payload_hash72\":\"V3+hjw-mK1R7?kfX)d+3SJ(rspRnx05vJgS/xUNwTONX*3QOMj4xu<hYLk)TWrPGZH>TEaHq\",\"schema\":\"HHS_RUNTIME_PACKET_CONTRACT_V1\",\"source\":\"hhs_contract_schema_registry_v1.sample_objects\"},\"request\":{\"contract_hash72\":\"MsBGztN1A50Wm319E+4l0M7YrPrgX)0fw>07Y(wFH-?(vsDm?VMS8rna2o+7IStkpR2h!T?B\",\"contract_type\":\"execution_request\",\"contract_version\":\"HHS_CANONICAL_RUNTIME_CONTRACT_V1\",\"created_at\":1783615467.293204,\"operation\":\"contract_schema_registry.self_test\",\"payload\":{\"meaning_witness\":{\"after_identity_hash72\":\"sCAC√T≠yVD=7oCwRjBs^9=vwbJw√jw7VyjKUPrQ545j=vKpjN√+)zB7CzkSZ1fH8≠(JFT7E*\",\"before_identity_hash72\":\"sCAC√T≠yVD=7oCwRjBs^9=vwbJw√jw7VyjKUPrQ545j=vKpjN√+)zB7CzkSZ1fH8≠(JFT7E*\",\"meaning_conserved\":true,\"receipt_hash72\":\"\",\"reversible\":true,\"schema\":\"HHS_MEANING_CONSERVATION_WITNESS_V1\",\"standard_version\":\"HHS_FOUNDATIONAL_STANDARDS_M001_M007_V1\",\"transformation_rule\":\"schema registry classification preserves object identity\",\"witness_hash72\":\"c/a9P2)gwO=3*+b0P≠cJH6fEfP=34TRMtJ)8xPne-hQC87ilCjiPnqUbRONXtFv5ODpo+t2√\"},\"proposition_identity\":{\"context\":{\"pass\":\"PASS_030\"},\"declared_dimensions\":[\"equality\",\"functional_equivalence\",\"identity\",\"interchangeability\",\"similarity\"],\"identity_hash72\":\"sCAC√T≠yVD=7oCwRjBs^9=vwbJw√jw7VyjKUPrQ545j=vKpjN√+)zB7CzkSZ1fH8≠(JFT7E*\",\"proposition_id\":\"92e254b0-806b-48d4-aa04-4fef674a137b\",\"schema\":\"HHS_PROPOSITION_IDENTITY_V1\",\"source\":\"hhs_contract_schema_registry_v1.sample_objects\",\"standard_version\":\"HHS_FOUNDATIONAL_STANDARDS_M001_M007_V1\",\"statement\":\"Pass 030 preserves authority-layer schema identity before authorized execution expansion.\"}},\"request_id\":\"6cd79fc6-eee9-4e37-936b-16c2e6ba1a5e\",\"requires_authority\":true,\"schema\":\"HHS_EXECUTION_REQUEST_CONTRACT_V1\",\"source\":\"hhs_contract_schema_registry_v1.sample_objects\"}}",
+        "digest": "d<8L>s7Ac4qff)h+yD/Juj+93COkwzdEp0mpL85Uy7yO?Aw(T3LEz2I/!m-0TJwm/Qeuw/te",
+        "digest72": "d<8L>s7Ac4qff)h+yD/Juj+93COkwzdEp0mpL85Uy7yO?Aw(T3LEz2I/!m-0TJwm/Qeuw/te",
+        "dna": "d<8L>s7Ac4qff)h+yD/Juj+93COkwzdEp0mpL85Uy7yO?Aw(T3LEz2I/!m-0TJwm/Qeuw/te",
+        "label": "hhs_contract_schema_registry_sample_v1",
+        "positions": [
+          13,
+          68,
+          8,
+          47,
+          69,
+          28,
+          7,
+          36,
+          12,
+          4,
+          26,
+          15,
+          15,
+          67,
+          17,
+          63,
+          34,
+          39,
+          65,
+          45,
+          30,
+          19,
+          63,
+          9,
+          3,
+          38,
+          50,
+          20,
+          32,
+          35,
+          13,
+          40,
+          25,
+          0,
+          22,
+          25,
+          47,
+          8,
+          5,
+          56,
+          34,
+          7,
+          34,
+          50,
+          71,
+          36,
+          32,
+          66,
+          55,
+          3,
+          47,
+          40,
+          35,
+          2,
+          44,
+          65,
+          70,
+          22,
+          62,
+          0,
+          55,
+          45,
+          32,
+          22,
+          65,
+          52,
+          14,
+          30,
+          32,
+          65,
+          29,
+          14
+        ],
+        "rotation_profile": [
+          229,
+          -221,
+          222,
+          -28,
+          281,
+          -49,
+          -71,
+          -43,
+          76,
+          -5,
+          16,
+          4,
+          147,
+          54,
+          147,
+          -96,
+          18,
+          94,
+          -169,
+          98,
+          -206,
+          -2,
+          257,
+          -230,
+          123,
+          -203,
+          240,
+          -7,
+          76,
+          -354,
+          55,
+          -351,
+          209,
+          183,
+          -300,
+          -154,
+          83,
+          43,
+          111,
+          -271,
+          -78,
+          110,
+          -152,
+          79,
+          -189,
+          63,
+          -86,
+          -125,
+          79,
+          98,
+          -147,
+          61,
+          55,
+          -51,
+          206,
+          82,
+          -130,
+          181,
+          -68,
+          13,
+          67,
+          -160,
+          42,
+          31,
+          -71,
+          131,
+          -124,
+          179,
+          -36,
+          -4,
+          -41,
+          -21
+        ],
+        "schema": "HHS_HASH72_KERNEL_WITNESS_V1",
+        "trace_count": 3365,
+        "zero_sum": true
+      },
+      "execution_request": {
+        "contract_hash72": "MsBGztN1A50Wm319E+4l0M7YrPrgX)0fw>07Y(wFH-?(vsDm?VMS8rna2o+7IStkpR2h!T?B",
+        "contract_type": "execution_request",
+        "contract_version": "HHS_CANONICAL_RUNTIME_CONTRACT_V1",
+        "created_at": 1783615467.293204,
+        "operation": "contract_schema_registry.self_test",
+        "payload": {
+          "meaning_witness": {
+            "after_identity_hash72": "sCAC√T≠yVD=7oCwRjBs^9=vwbJw√jw7VyjKUPrQ545j=vKpjN√+)zB7CzkSZ1fH8≠(JFT7E*",
+            "before_identity_hash72": "sCAC√T≠yVD=7oCwRjBs^9=vwbJw√jw7VyjKUPrQ545j=vKpjN√+)zB7CzkSZ1fH8≠(JFT7E*",
+            "meaning_conserved": true,
+            "receipt_hash72": "",
+            "reversible": true,
+            "schema": "HHS_MEANING_CONSERVATION_WITNESS_V1",
+            "standard_version": "HHS_FOUNDATIONAL_STANDARDS_M001_M007_V1",
+            "transformation_rule": "schema registry classification preserves object identity",
+            "witness_hash72": "c/a9P2)gwO=3*+b0P≠cJH6fEfP=34TRMtJ)8xPne-hQC87ilCjiPnqUbRONXtFv5ODpo+t2√"
+          },
+          "proposition_identity": {
+            "context": {
+              "pass": "PASS_030"
+            },
+            "declared_dimensions": [
+              "equality",
+              "functional_equivalence",
+              "identity",
+              "interchangeability",
+              "similarity"
+            ],
+            "identity_hash72": "sCAC√T≠yVD=7oCwRjBs^9=vwbJw√jw7VyjKUPrQ545j=vKpjN√+)zB7CzkSZ1fH8≠(JFT7E*",
+            "proposition_id": "92e254b0-806b-48d4-aa04-4fef674a137b",
+            "schema": "HHS_PROPOSITION_IDENTITY_V1",
+            "source": "hhs_contract_schema_registry_v1.sample_objects",
+            "standard_version": "HHS_FOUNDATIONAL_STANDARDS_M001_M007_V1",
+            "statement": "Pass 030 preserves authority-layer schema identity before authorized execution expansion."
+          }
+        },
+        "request_id": "6cd79fc6-eee9-4e37-936b-16c2e6ba1a5e",
+        "requires_authority": true,
+        "schema": "HHS_EXECUTION_REQUEST_CONTRACT_V1",
+        "source": "hhs_contract_schema_registry_v1.sample_objects"
+      },
+      "ledger": {
+        "entry_count": 0,
+        "ledger_hash72": "d<8L>s7Ac4qff)h+yD/Juj+93COkwzdEp0mpL85Uy7yO?Aw(T3LEz2I/!m-0TJwm/Qeuw/te",
+        "schema": "HHS_UNIFIED_HASH72_LEDGER_SUMMARY_V1",
+        "tip_hash72": "d<8L>s7Ac4qff)h+yD/Juj+93COkwzdEp0mpL85Uy7yO?Aw(T3LEz2I/!m-0TJwm/Qeuw/te"
+      },
+      "meaning_witness": {
+        "after_identity_hash72": "sCAC√T≠yVD=7oCwRjBs^9=vwbJw√jw7VyjKUPrQ545j=vKpjN√+)zB7CzkSZ1fH8≠(JFT7E*",
+        "before_identity_hash72": "sCAC√T≠yVD=7oCwRjBs^9=vwbJw√jw7VyjKUPrQ545j=vKpjN√+)zB7CzkSZ1fH8≠(JFT7E*",
+        "meaning_conserved": true,
+        "receipt_hash72": "",
+        "reversible": true,
+        "schema": "HHS_MEANING_CONSERVATION_WITNESS_V1",
+        "standard_version": "HHS_FOUNDATIONAL_STANDARDS_M001_M007_V1",
+        "transformation_rule": "schema registry classification preserves object identity",
+        "witness_hash72": "c/a9P2)gwO=3*+b0P≠cJH6fEfP=34TRMtJ)8xPne-hQC87ilCjiPnqUbRONXtFv5ODpo+t2√"
+      },
+      "proposition_identity": {
+        "context": {
+          "pass": "PASS_030"
+        },
+        "declared_dimensions": [
+          "equality",
+          "functional_equivalence",
+          "identity",
+          "interchangeability",
+          "similarity"
+        ],
+        "identity_hash72": "sCAC√T≠yVD=7oCwRjBs^9=vwbJw√jw7VyjKUPrQ545j=vKpjN√+)zB7CzkSZ1fH8≠(JFT7E*",
+        "proposition_id": "92e254b0-806b-48d4-aa04-4fef674a137b",
+        "schema": "HHS_PROPOSITION_IDENTITY_V1",
+        "source": "hhs_contract_schema_registry_v1.sample_objects",
+        "standard_version": "HHS_FOUNDATIONAL_STANDARDS_M001_M007_V1",
+        "statement": "Pass 030 preserves authority-layer schema identity before authorized execution expansion."
+      },
+      "runtime_packet": {
+        "contract_hash72": "QuagMc7!-geN99qzJYYbrvTVipIni0rmQM!O6WfBGYLzXD7T<QQ4sq4KP/VgJ76eWg5!5jV9",
+        "contract_type": "runtime_packet",
+        "contract_version": "HHS_CANONICAL_RUNTIME_CONTRACT_V1",
+        "created_at": 1783615467.2953515,
+        "direction": "INTERNAL",
+        "io_receipt": {},
+        "packet_id": "3f4b6676-f693-464a-96fa-76b10363da70",
+        "payload": {
+          "meaning_witness": {
+            "after_identity_hash72": "sCAC√T≠yVD=7oCwRjBs^9=vwbJw√jw7VyjKUPrQ545j=vKpjN√+)zB7CzkSZ1fH8≠(JFT7E*",
+            "before_identity_hash72": "sCAC√T≠yVD=7oCwRjBs^9=vwbJw√jw7VyjKUPrQ545j=vKpjN√+)zB7CzkSZ1fH8≠(JFT7E*",
+            "meaning_conserved": true,
+            "receipt_hash72": "",
+            "reversible": true,
+            "schema": "HHS_MEANING_CONSERVATION_WITNESS_V1",
+            "standard_version": "HHS_FOUNDATIONAL_STANDARDS_M001_M007_V1",
+            "transformation_rule": "schema registry classification preserves object identity",
+            "witness_hash72": "c/a9P2)gwO=3*+b0P≠cJH6fEfP=34TRMtJ)8xPne-hQC87ilCjiPnqUbRONXtFv5ODpo+t2√"
+          },
+          "proposition_identity": {
+            "context": {
+              "pass": "PASS_030"
+            },
+            "declared_dimensions": [
+              "equality",
+              "functional_equivalence",
+              "identity",
+              "interchangeability",
+              "similarity"
+            ],
+            "identity_hash72": "sCAC√T≠yVD=7oCwRjBs^9=vwbJw√jw7VyjKUPrQ545j=vKpjN√+)zB7CzkSZ1fH8≠(JFT7E*",
+            "proposition_id": "92e254b0-806b-48d4-aa04-4fef674a137b",
+            "schema": "HHS_PROPOSITION_IDENTITY_V1",
+            "source": "hhs_contract_schema_registry_v1.sample_objects",
+            "standard_version": "HHS_FOUNDATIONAL_STANDARDS_M001_M007_V1",
+            "statement": "Pass 030 preserves authority-layer schema identity before authorized execution expansion."
+          }
+        },
+        "payload_hash72": "V3+hjw-mK1R7?kfX)d+3SJ(rspRnx05vJgS/xUNwTONX*3QOMj4xu<hYLk)TWrPGZH>TEaHq",
+        "schema": "HHS_RUNTIME_PACKET_CONTRACT_V1",
+        "source": "hhs_contract_schema_registry_v1.sample_objects"
+      },
+      "schema": "HHS_SEMANTIC_PLUGIN_ADAPTER_RECORD_V1"
+    }
+  },
+  "sample_validations": {
+    "api_envelope": {
+      "contract_type": "api_response",
+      "family": "API_ENVELOPE",
+      "foundational_audit_required": false,
+      "kernel_witness_required": true,
+      "ledger_binding_required": false,
+      "missing_fields": [],
+      "missing_hash72_fields": [],
+      "ok": true,
+      "reasons": [],
+      "registry_schema": "HHS_SCHEMA_OBJECT_VALIDATION_V1",
+      "registry_version": "PASS_030",
+      "schema": "HHS_API_RESPONSE_CONTRACT_V1"
+    },
+    "dryrun_trace": {
+      "contract_type": "",
+      "family": "DRYRUN_TRACE",
+      "foundational_audit_required": true,
+      "kernel_witness_required": true,
+      "ledger_binding_required": true,
+      "missing_fields": [],
+      "missing_hash72_fields": [],
+      "ok": true,
+      "reasons": [],
+      "registry_schema": "HHS_SCHEMA_OBJECT_VALIDATION_V1",
+      "registry_version": "PASS_030",
+      "schema": "HHS_DRYRUN_LIVE_PLUGIN_EXECUTION_V1"
+    },
+    "execution_request": {
+      "contract_type": "execution_request",
+      "family": "EXECUTION_REQUEST",
+      "foundational_audit_required": true,
+      "kernel_witness_required": false,
+      "ledger_binding_required": false,
+      "missing_fields": [],
+      "missing_hash72_fields": [],
+      "ok": true,
+      "reasons": [],
+      "registry_schema": "HHS_SCHEMA_OBJECT_VALIDATION_V1",
+      "registry_version": "PASS_030",
+      "schema": "HHS_EXECUTION_REQUEST_CONTRACT_V1"
+    },
+    "failure_record": {
+      "contract_type": "",
+      "family": "FAILURE_RECORD",
+      "foundational_audit_required": true,
+      "kernel_witness_required": true,
+      "ledger_binding_required": true,
+      "missing_fields": [],
+      "missing_hash72_fields": [],
+      "ok": true,
+      "reasons": [],
+      "registry_schema": "HHS_SCHEMA_OBJECT_VALIDATION_V1",
+      "registry_version": "PASS_030",
+      "schema": "HHS_FAILURE_RECORD_V1"
+    },
+    "foundational_audit": {
+      "contract_type": "",
+      "family": "FOUNDATIONAL_AUDIT",
+      "foundational_audit_required": false,
+      "kernel_witness_required": false,
+      "ledger_binding_required": false,
+      "missing_fields": [],
+      "missing_hash72_fields": [],
+      "ok": true,
+      "reasons": [],
+      "registry_schema": "HHS_SCHEMA_OBJECT_VALIDATION_V1",
+      "registry_version": "PASS_030",
+      "schema": "HHS_FOUNDATIONAL_CONFORMANCE_V1"
+    },
+    "invocation_record": {
+      "contract_type": "",
+      "family": "INVOCATION_RECORD",
+      "foundational_audit_required": true,
+      "kernel_witness_required": true,
+      "ledger_binding_required": true,
+      "missing_fields": [],
+      "missing_hash72_fields": [],
+      "ok": true,
+      "reasons": [],
+      "registry_schema": "HHS_SCHEMA_OBJECT_VALIDATION_V1",
+      "registry_version": "PASS_030",
+      "schema": "HHS_SERVICE_DISPATCH_RECORD_V1"
+    },
+    "kernel_witness": {
+      "contract_type": "",
+      "family": "KERNEL_WITNESS",
+      "foundational_audit_required": false,
+      "kernel_witness_required": false,
+      "ledger_binding_required": false,
+      "missing_fields": [],
+      "missing_hash72_fields": [],
+      "ok": true,
+      "reasons": [],
+      "registry_schema": "HHS_SCHEMA_OBJECT_VALIDATION_V1",
+      "registry_version": "PASS_030",
+      "schema": "HHS_HASH72_KERNEL_WITNESS_V1"
+    },
+    "ledger_entry": {
+      "contract_type": "",
+      "family": "LEDGER_ENTRY",
+      "foundational_audit_required": false,
+      "kernel_witness_required": true,
+      "ledger_binding_required": false,
+      "missing_fields": [],
+      "missing_hash72_fields": [],
+      "ok": true,
+      "reasons": [],
+      "registry_schema": "HHS_SCHEMA_OBJECT_VALIDATION_V1",
+      "registry_version": "PASS_030",
+      "schema": "HHS_UNIFIED_HASH72_LEDGER_SUMMARY_V1"
+    },
+    "runtime_packet": {
+      "contract_type": "runtime_packet",
+      "family": "RUNTIME_PACKET",
+      "foundational_audit_required": true,
+      "kernel_witness_required": true,
+      "ledger_binding_required": false,
+      "missing_fields": [],
+      "missing_hash72_fields": [],
+      "ok": true,
+      "reasons": [],
+      "registry_schema": "HHS_SCHEMA_OBJECT_VALIDATION_V1",
+      "registry_version": "PASS_030",
+      "schema": "HHS_RUNTIME_PACKET_CONTRACT_V1"
+    },
+    "semantic_adapter_record": {
+      "contract_type": "",
+      "family": "SEMANTIC_ADAPTER_RECORD",
+      "foundational_audit_required": true,
+      "kernel_witness_required": true,
+      "ledger_binding_required": true,
+      "missing_fields": [],
+      "missing_hash72_fields": [],
+      "ok": true,
+      "reasons": [],
+      "registry_schema": "HHS_SCHEMA_OBJECT_VALIDATION_V1",
+      "registry_version": "PASS_030",
+      "schema": "HHS_SEMANTIC_PLUGIN_ADAPTER_RECORD_V1"
+    }
+  },
+  "schema": "HHS_CONTRACT_SCHEMA_REGISTRY_V1",
+  "schema_families": [
+    {
+      "consumers": [
+        "service_registry",
+        "plugin_invocation_executor",
+        "semantic_adapter_runtime",
+        "dryrun_live_plugin_executor"
+      ],
+      "contract_types": [
+        "execution_request"
+      ],
+      "description": "Intent-to-execute object generated before service, adapter, dry-run, or future live execution.",
+      "failure_behavior": "reject_with_failure_record",
+      "family": "EXECUTION_REQUEST",
+      "producers": [
+        "hhs_runtime_contract_v1.make_execution_request"
+      ],
+      "required_fields": [
+        "request_id",
+        "source",
+        "operation",
+        "payload",
+        "contract_hash72"
+      ],
+      "required_hash72_fields": [
+        "contract_hash72"
+      ],
+      "requires_foundational_audit": true,
+      "requires_kernel_witness": false,
+      "requires_ledger_binding": false,
+      "schema_patterns": [
+        "HHS_EXECUTION_REQUEST_CONTRACT_V1"
+      ]
+    },
+    {
+      "consumers": [
+        "io_gateway",
+        "runtime_dataflow_guard",
+        "api_envelope",
+        "gui_runtime_contract_surface"
+      ],
+      "contract_types": [
+        "runtime_packet"
+      ],
+      "description": "Canonical transport packet for internal/ingress/propagation/egress runtime movement.",
+      "failure_behavior": "reject_with_failure_record",
+      "family": "RUNTIME_PACKET",
+      "producers": [
+        "hhs_runtime_contract_v1.make_runtime_packet"
+      ],
+      "required_fields": [
+        "packet_id",
+        "direction",
+        "source",
+        "payload",
+        "payload_hash72",
+        "contract_hash72"
+      ],
+      "required_hash72_fields": [
+        "payload_hash72",
+        "contract_hash72"
+      ],
+      "requires_foundational_audit": true,
+      "requires_kernel_witness": true,
+      "requires_ledger_binding": false,
+      "schema_patterns": [
+        "HHS_RUNTIME_PACKET_CONTRACT_V1"
+      ]
+    },
+    {
+      "consumers": [
+        "semantic_plugin_adapter_runtime",
+        "dryrun_live_plugin_executor"
+      ],
+      "contract_types": [],
+      "description": "Guarded invocation record for planned plugin/service execution without bypassing authority.",
+      "failure_behavior": "reject_with_failure_record",
+      "family": "INVOCATION_RECORD",
+      "producers": [
+        "hhs_guarded_plugin_invocation_executor_v1",
+        "hhs_service_registry_v1"
+      ],
+      "required_fields": [
+        "execution_request",
+        "runtime_packet",
+        "foundational_conformance_pre",
+        "foundational_conformance_post"
+      ],
+      "required_hash72_fields": [],
+      "requires_foundational_audit": true,
+      "requires_kernel_witness": true,
+      "requires_ledger_binding": true,
+      "schema_patterns": [
+        "HHS_GUARDED_PLUGIN_INVOCATION",
+        "HHS_SERVICE_DISPATCH_RECORD"
+      ]
+    },
+    {
+      "consumers": [
+        "dryrun_live_plugin_executor",
+        "system_closure_harness"
+      ],
+      "contract_types": [],
+      "description": "Meaning-preserving adapter execution record that summarizes a plugin function without raw legacy body execution.",
+      "failure_behavior": "reject_with_failure_record",
+      "family": "SEMANTIC_ADAPTER_RECORD",
+      "producers": [
+        "hhs_semantic_plugin_adapter_runtime_v1"
+      ],
+      "required_fields": [
+        "execution_request",
+        "runtime_packet",
+        "proposition_identity",
+        "meaning_witness"
+      ],
+      "required_hash72_fields": [],
+      "requires_foundational_audit": true,
+      "requires_kernel_witness": true,
+      "requires_ledger_binding": true,
+      "schema_patterns": [
+        "HHS_SEMANTIC_PLUGIN_ADAPTER",
+        "HHS_SEMANTIC_ADAPTER"
+      ]
+    },
+    {
+      "consumers": [
+        "future_authorized_execution_gate",
+        "contract_schema_registry"
+      ],
+      "contract_types": [],
+      "description": "Contract-bound dry-run invocation trace; imports/signature validation may occur, but target function bodies and mutation remain blocked.",
+      "failure_behavior": "reject_with_failure_record",
+      "family": "DRYRUN_TRACE",
+      "producers": [
+        "hhs_dryrun_live_plugin_executor_v1"
+      ],
+      "required_fields": [
+        "execution_policy",
+        "function_surface",
+        "dry_run_result",
+        "execution_request",
+        "runtime_packet",
+        "dryrun_kernel_witness"
+      ],
+      "required_hash72_fields": [
+        "dryrun_kernel_witness.digest72"
+      ],
+      "requires_foundational_audit": true,
+      "requires_kernel_witness": true,
+      "requires_ledger_binding": true,
+      "schema_patterns": [
+        "HHS_DRYRUN_LIVE_PLUGIN"
+      ]
+    },
+    {
+      "consumers": [
+        "all authority-bearing schemas"
+      ],
+      "contract_types": [],
+      "description": "C u^72 Digital DNA witness proving Hash72 authority via rotation profile and zero-sum closure.",
+      "failure_behavior": "reject_with_failure_record",
+      "family": "KERNEL_WITNESS",
+      "producers": [
+        "hhs_hash72_kernel_authority_v1"
+      ],
+      "required_fields": [
+        "label",
+        "dna",
+        "digest",
+        "zero_sum",
+        "trace_count",
+        "rotation_profile",
+        "positions"
+      ],
+      "required_hash72_fields": [
+        "digest"
+      ],
+      "requires_foundational_audit": false,
+      "requires_kernel_witness": false,
+      "requires_ledger_binding": false,
+      "schema_patterns": [
+        "HHS_HASH72_KERNEL_WITNESS_V1"
+      ]
+    },
+    {
+      "consumers": [
+        "service_registry",
+        "plugin_adapters",
+        "dryrun_live_plugin_executor",
+        "future_authorized_execution_gate"
+      ],
+      "contract_types": [],
+      "description": "HHS-M001..M007 conformance record for referential identity, transformation transparency, and meaning conservation.",
+      "failure_behavior": "reject_with_failure_record",
+      "family": "FOUNDATIONAL_AUDIT",
+      "producers": [
+        "hhs_foundational_standards_v1"
+      ],
+      "required_fields": [
+        "schema"
+      ],
+      "required_hash72_fields": [],
+      "requires_foundational_audit": false,
+      "requires_kernel_witness": false,
+      "requires_ledger_binding": false,
+      "schema_patterns": [
+        "HHS_FOUNDATIONAL_CONFORMANCE_V1",
+        "HHS_MEANING_CONSERVATION_WITNESS_V1",
+        "HHS_PROPOSITION_IDENTITY_V1"
+      ]
+    },
+    {
+      "consumers": [
+        "service_registry",
+        "persistence_guard",
+        "closure_harness",
+        "contract_schema_registry"
+      ],
+      "contract_types": [],
+      "description": "Persistent receipt-chain summary or entry binding authority-bearing transformations to the unified Hash72 ledger.",
+      "failure_behavior": "reject_with_failure_record",
+      "family": "LEDGER_ENTRY",
+      "producers": [
+        "hhs_unified_hash72_ledger_v1"
+      ],
+      "required_fields": [
+        "ledger_hash72",
+        "tip_hash72"
+      ],
+      "required_hash72_fields": [
+        "ledger_hash72",
+        "tip_hash72"
+      ],
+      "requires_foundational_audit": false,
+      "requires_kernel_witness": true,
+      "requires_ledger_binding": false,
+      "schema_patterns": [
+        "HHS_UNIFIED_HASH72_LEDGER",
+        "HHS_*_LEDGER_PAYLOAD"
+      ]
+    },
+    {
+      "consumers": [
+        "gui_runtime_contract_surface"
+      ],
+      "contract_types": [
+        "api_response"
+      ],
+      "description": "Backend/GUI-safe response envelope carrying canonical API response contract and payload witness.",
+      "failure_behavior": "reject_with_failure_record",
+      "family": "API_ENVELOPE",
+      "producers": [
+        "hhs_runtime_contract_v1.envelope_api_response",
+        "backend_routes"
+      ],
+      "required_fields": [
+        "route",
+        "method",
+        "payload",
+        "payload_hash72",
+        "contract_hash72"
+      ],
+      "required_hash72_fields": [
+        "payload_hash72",
+        "contract_hash72"
+      ],
+      "requires_foundational_audit": false,
+      "requires_kernel_witness": true,
+      "requires_ledger_binding": false,
+      "schema_patterns": [
+        "HHS_API_RESPONSE_CONTRACT_V1",
+        "HHS_CANONICAL_API_RESPONSE_ENVELOPE_V1"
+      ]
+    },
+    {
+      "consumers": [
+        "ledger",
+        "operator_reports",
+        "closure_harness"
+      ],
+      "contract_types": [],
+      "description": "Explicit rejection/rollback/error record for schema violations, blocked executions, and failed closure checks.",
+      "failure_behavior": "reject_with_failure_record",
+      "family": "FAILURE_RECORD",
+      "producers": [
+        "future_authorized_execution_gate",
+        "rollback_handlers"
+      ],
+      "required_fields": [
+        "schema",
+        "source",
+        "reason"
+      ],
+      "required_hash72_fields": [],
+      "requires_foundational_audit": true,
+      "requires_kernel_witness": true,
+      "requires_ledger_binding": true,
+      "schema_patterns": [
+        "HHS_FAILURE_RECORD",
+        "HHS_AUTHORIZED_EXECUTION_FAILURE_RECORD_V1",
+        "HHS_ROLLBACK",
+        "HHS_REJECTION"
+      ]
+    }
+  ],
+  "version": "PASS_030"
+}

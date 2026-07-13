@@ -1,0 +1,120 @@
+{
+  "append_only_verified": true,
+  "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+  "complete_without_thread_context": true,
+  "entries": [
+    {
+      "append_only": true,
+      "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+      "entry_root_hash72": "!u>dvtr6+37HbkTVlWM?q?r2q9bNLTBosl8McOhV1yQGRAvhbGjsq9fPkKvbjW3JYP-9WsP0",
+      "previous_entry_root_hash72": "76A9BfCvc9!Hj9x7M5(WWRqXp7Vppp>qVQ(>xAG+2cRQJxrx6FRkBuw0Ve!InZps8rkxYNJN",
+      "schema": "HHS_CONTEXT_CONTINUITY_JOURNAL_ENTRY_V1",
+      "sequence": 0,
+      "stage": "PASS070_HANDOFF",
+      "stage_object_root_hash72": "4x7/dTn<Q5axZHyM/OryqrIl6ZJGuWKugBOKSjR054M)*SZbVZ0M!<bD3vd9Y1+FT!sQRr(T",
+      "thread_context_dependency": false,
+      "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+    },
+    {
+      "append_only": true,
+      "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+      "entry_root_hash72": "R4ZIMTVE4T*BM?5kO(7SQfB7n-AGUSewx*hM5>U-RzBL9TZ?h3IpM)EJ8o41oukba0l?letk",
+      "previous_entry_root_hash72": "!u>dvtr6+37HbkTVlWM?q?r2q9bNLTBosl8McOhV1yQGRAvhbGjsq9fPkKvbjW3JYP-9WsP0",
+      "schema": "HHS_CONTEXT_CONTINUITY_JOURNAL_ENTRY_V1",
+      "sequence": 1,
+      "stage": "OVERLAP_BUFFER",
+      "stage_object_root_hash72": "4x7/dTn<Q5axZHyM/OryqrIl6ZJGuWKugBOKSjR054M)*SZbVZ0M!<bD3vd9Y1+FT!sQRr(T",
+      "thread_context_dependency": false,
+      "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+    },
+    {
+      "append_only": true,
+      "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+      "entry_root_hash72": "K5dpSdgM<0TUvu/hlrpplw72AInELTxdZBA+zi2EhL*Gh!47nkqFTeSAoO-2plsiYtlI/oh*",
+      "previous_entry_root_hash72": "R4ZIMTVE4T*BM?5kO(7SQfB7n-AGUSewx*hM5>U-RzBL9TZ?h3IpM)EJ8o41oukba0l?letk",
+      "schema": "HHS_CONTEXT_CONTINUITY_JOURNAL_ENTRY_V1",
+      "sequence": 2,
+      "stage": "SYMBOLIC_GENOME",
+      "stage_object_root_hash72": "ifg(NSvYCGTmY49?mRajj6zWMKeP3dHHb7lu/-lYAa83u<>4Fsdi>*4pz>btVZe)W9TvHPGs",
+      "thread_context_dependency": false,
+      "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+    },
+    {
+      "append_only": true,
+      "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+      "entry_root_hash72": "KZXuxQcSANIGa1kat3l+><6N89QVgGReP9jmGlg/rYLlZ<mBY0xdY1Dua5IWAkzup1QKnB+l",
+      "previous_entry_root_hash72": "K5dpSdgM<0TUvu/hlrpplw72AInELTxdZBA+zi2EhL*Gh!47nkqFTeSAoO-2plsiYtlI/oh*",
+      "schema": "HHS_CONTEXT_CONTINUITY_JOURNAL_ENTRY_V1",
+      "sequence": 3,
+      "stage": "INFORMATION_ENERGY_POTENTIAL",
+      "stage_object_root_hash72": "sbj4zeZ(2oqwQ4txbycnxsthK8T+Pc7q35c9<uw43jR3Go8HiURqhD3vzAH>R06A5AQkJBfw",
+      "thread_context_dependency": false,
+      "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+    },
+    {
+      "append_only": true,
+      "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+      "entry_root_hash72": "pe!pKbnbir5QU*K69j!w7M00T2l2xDt5)UJN63u719Jd0igbMtnAxY1!4+(gZ>oIafEAM>S)",
+      "previous_entry_root_hash72": "KZXuxQcSANIGa1kat3l+><6N89QVgGReP9jmGlg/rYLlZ<mBY0xdY1Dua5IWAkzup1QKnB+l",
+      "schema": "HHS_CONTEXT_CONTINUITY_JOURNAL_ENTRY_V1",
+      "sequence": 4,
+      "stage": "RECIPROCAL_BINDINGS",
+      "stage_object_root_hash72": "sbj4zeZ(2oqwQ4txbycnxsthK8T+Pc7q35c9<uw43jR3Go8HiURqhD3vzAH>R06A5AQkJBfw",
+      "thread_context_dependency": false,
+      "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+    },
+    {
+      "append_only": true,
+      "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+      "entry_root_hash72": "L4W?NXftBZUs3IHol88vc!uMa+coBebyf0>!xVSTwDcn?blOi5A+h/vjcE?OeZrlE4DbAKdA",
+      "previous_entry_root_hash72": "pe!pKbnbir5QU*K69j!w7M00T2l2xDt5)UJN63u719Jd0igbMtnAxY1!4+(gZ>oIafEAM>S)",
+      "schema": "HHS_CONTEXT_CONTINUITY_JOURNAL_ENTRY_V1",
+      "sequence": 5,
+      "stage": "PHASE_GEAR_FOLDS",
+      "stage_object_root_hash72": "Nuuq2/sdfgSiPWo-CN1?xhRpDaYzY8OKHdMb3*G3f>p9lNUkd<4X/(HFQ!MS2>Peu2j*Jc3?",
+      "thread_context_dependency": false,
+      "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+    },
+    {
+      "append_only": true,
+      "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+      "entry_root_hash72": "d3yxDh1dwsUP!0b-LX7b/i(sM7thtpiBmrnMud9KaO6PreWRkM?Ax09qij4e06TFc<lvCIxQ",
+      "previous_entry_root_hash72": "L4W?NXftBZUs3IHol88vc!uMa+coBebyf0>!xVSTwDcn?blOi5A+h/vjcE?OeZrlE4DbAKdA",
+      "schema": "HHS_CONTEXT_CONTINUITY_JOURNAL_ENTRY_V1",
+      "sequence": 6,
+      "stage": "FOLDED_TOPOLOGY",
+      "stage_object_root_hash72": "tjVb45fukLKQXqh3/gX+9ukSJfWWos*)GhUgEJ6kZyN-!u)uz-8rs5OE!Ve?K<)BXJ*xaKx1",
+      "thread_context_dependency": false,
+      "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+    },
+    {
+      "append_only": true,
+      "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+      "entry_root_hash72": "M92wzzga/r3O*zfyIM3ay/x3BRNHzGX<d+q0ClAAjE?ouh/fI!alTk>7?O<qCbsWmHgDqmtV",
+      "previous_entry_root_hash72": "d3yxDh1dwsUP!0b-LX7b/i(sM7thtpiBmrnMud9KaO6PreWRkM?Ax09qij4e06TFc<lvCIxQ",
+      "schema": "HHS_CONTEXT_CONTINUITY_JOURNAL_ENTRY_V1",
+      "sequence": 7,
+      "stage": "UNFOLDING",
+      "stage_object_root_hash72": "9UsJy1p03UrbF<D1UsK>rxgbwJHcmFOkjf?1uFnpLP2iKbn/s*P3j0HFf!46d9tADatWGAck",
+      "thread_context_dependency": false,
+      "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+    },
+    {
+      "append_only": true,
+      "authority": "HHS_PASS071_OVERLAP_AND_FOLDING_AUTHORITY_V1",
+      "entry_root_hash72": "K9oWp2rqnV9yo0?<S?B)AzhhkT)ct30EQr)Oj2VtL1GZiFpqciYj/)j?swQS6ge/R7mF52g5",
+      "previous_entry_root_hash72": "M92wzzga/r3O*zfyIM3ay/x3BRNHzGX<d+q0ClAAjE?ouh/fI!alTk>7?O<qCbsWmHgDqmtV",
+      "schema": "HHS_CONTEXT_CONTINUITY_JOURNAL_ENTRY_V1",
+      "sequence": 8,
+      "stage": "INDEPENDENT_REVALIDATION",
+      "stage_object_root_hash72": "9UsJy1p03UrbF<D1UsK>rxgbwJHcmFOkjf?1uFnpLP2iKbn/s*P3j0HFf!46d9tADatWGAck",
+      "thread_context_dependency": false,
+      "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+    }
+  ],
+  "entry_count": 9,
+  "journal_root_hash72": "SY?3U>zGlpege6z(cR7-jWBHbu4bKZjS-4<FgAu7BuVD!Nhq6gcaQDM3xhhETmra7<kxxHwu",
+  "overlap_root_hash72": "76A9BfCvc9!Hj9x7M5(WWRqXp7Vppp>qVQ(>xAG+2cRQJxrx6FRkBuw0Ve!InZps8rkxYNJN",
+  "schema": "HHS_CONTEXT_CONTINUITY_JOURNAL_V1",
+  "version": "PASS_071_RESTART_SAFE_PHASE_GEAR_FOLDING_V1"
+}

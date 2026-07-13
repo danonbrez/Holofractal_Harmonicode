@@ -1,0 +1,140 @@
+{
+  "all_dimensions_closed": true,
+  "authority": "HHS_PASS072_TOTAL_SYSTEM_CLOSURE_AUTHORITY_V1",
+  "closure_dimension_registry_root_hash72": "p?4rhHzg?6HuRKek4SjlefoNSfbi3?ifsnJra*i9/PDoe>aaJ(esT<UpA*hO3-Hjl!LWmcPc",
+  "dimensions": [
+    "IDENTITY",
+    "PROVENANCE",
+    "AUTHORITY",
+    "EXECUTION",
+    "SEMANTIC",
+    "ENERGY",
+    "TEMPORAL",
+    "RECONSTRUCTION"
+  ],
+  "independently_closed_count": 8,
+  "receipts": [
+    {
+      "authority": "HHS_PASS072_TOTAL_SYSTEM_CLOSURE_AUTHORITY_V1",
+      "closed": true,
+      "dimension": "IDENTITY",
+      "dimension_receipt_root_hash72": "MmeLeub12wPtcEVI/iQGb4ggUoou0r*Jdv3u>UXGaD4TrKzMnuqbCfCgT5xu>nR-GJc6Xeg<",
+      "evidence_count": 3,
+      "evidence_roots_hash72": [
+        "LwDYM+nnXHEzyhPzPGcYVJxubIMGa)EdHdt23<Vtwl13+zBWo<Jv7a<M>msodUzI2d>kAQ+>",
+        "EDylR<qy0+7VQbnY<)MvNG>NriYMyz1gbw5m<7bPzVKUP<Z*KF/Vcbgwf<AUSfiw7Oe/MW/w",
+        "tI?N15Fid-5-KKNpocH6r6Wld!?*LzkkreKJ+nBCI/<-i?zI(OazXFlucTrG??fdHKW0GpOP"
+      ],
+      "independently_witnessed": true,
+      "schema": "HHS_CLOSURE_DIMENSION_RECEIPT_V1",
+      "version": "PASS_072_TOTAL_SYSTEM_RECURSIVE_HOLOGRAPHIC_CLOSURE_V1"
+    },
+    {
+      "authority": "HHS_PASS072_TOTAL_SYSTEM_CLOSURE_AUTHORITY_V1",
+      "closed": true,
+      "dimension": "PROVENANCE",
+      "dimension_receipt_root_hash72": "<H582s(CLOjifHL*pT?RquVZ!iSvA3ieiOn/?myMZDu)d9X4-A)RWJSuLSIIB/o2)(ME!ZKA",
+      "evidence_count": 3,
+      "evidence_roots_hash72": [
+        "LwDYM+nnXHEzyhPzPGcYVJxubIMGa)EdHdt23<Vtwl13+zBWo<Jv7a<M>msodUzI2d>kAQ+>",
+        "hVyt7r0MA?o0q4P16?>p>NGVTj)NPs?*EAf>15B1IElc2l3<QfcMhYv0eulKzSR<2hoQ!l+4",
+        "uLs>CRDVEr041U4Wi<yx(3OI6un+FMb*T0/g3R8hhsmFcYcZ7u6isiQj(nEvLk!RR<w8>LMI"
+      ],
+      "independently_witnessed": true,
+      "schema": "HHS_CLOSURE_DIMENSION_RECEIPT_V1",
+      "version": "PASS_072_TOTAL_SYSTEM_RECURSIVE_HOLOGRAPHIC_CLOSURE_V1"
+    },
+    {
+      "authority": "HHS_PASS072_TOTAL_SYSTEM_CLOSURE_AUTHORITY_V1",
+      "closed": true,
+      "dimension": "AUTHORITY",
+      "dimension_receipt_root_hash72": "sYYGX?2d*mY<bclEdYCiJEZdzCwGwmiPY?sQhi/joL)2Ndc9Gw!!L)mN3Ty2xD8RnY!Hy!kK",
+      "evidence_count": 2,
+      "evidence_roots_hash72": [
+        "tI?N15Fid-5-KKNpocH6r6Wld!?*LzkkreKJ+nBCI/<-i?zI(OazXFlucTrG??fdHKW0GpOP",
+        "uLs>CRDVEr041U4Wi<yx(3OI6un+FMb*T0/g3R8hhsmFcYcZ7u6isiQj(nEvLk!RR<w8>LMI"
+      ],
+      "independently_witnessed": true,
+      "schema": "HHS_CLOSURE_DIMENSION_RECEIPT_V1",
+      "version": "PASS_072_TOTAL_SYSTEM_RECURSIVE_HOLOGRAPHIC_CLOSURE_V1"
+    },
+    {
+      "authority": "HHS_PASS072_TOTAL_SYSTEM_CLOSURE_AUTHORITY_V1",
+      "closed": true,
+      "dimension": "EXECUTION",
+      "dimension_receipt_root_hash72": "(3h2b7GgD1BUqFwGoCQix8>4AD)7?0QL1asFBqWWSiOLZfUlq(uksyr<J3GmaQsvIz3gaOdh",
+      "evidence_count": 4,
+      "evidence_roots_hash72": [
+        "7-)*VPiSXkR)tdK!FKtIAGMVruSUBr(zGl*V8aZ!8Fj1HrkpKLbK9fs+tORCBWLC>R04TB)P",
+        "0ZCXNiuFcl8cjA7ZS!lae7Iio6TEYxC3irj*3/S?Ar9xc0BQG*S9ThDBCyrFnXRfP5nDaDI-",
+        "70NHsn4lXh-U20Yu<GjLev8X*FIrVDpEq<zfYI?*<C!B6kSz!db/BI4?>DiEo22)x4CE>?4w",
+        "yHVzLR-R>b28BhqqJWb0uB3G*owZUlI2!GTY5PD8+ryYOqgx/Gapu)hdc0vEaCaUdhtJjXR!"
+      ],
+      "independently_witnessed": true,
+      "schema": "HHS_CLOSURE_DIMENSION_RECEIPT_V1",
+      "version": "PASS_072_TOTAL_SYSTEM_RECURSIVE_HOLOGRAPHIC_CLOSURE_V1"
+    },
+    {
+      "authority": "HHS_PASS072_TOTAL_SYSTEM_CLOSURE_AUTHORITY_V1",
+      "closed": true,
+      "dimension": "SEMANTIC",
+      "dimension_receipt_root_hash72": "L*AkIAZKY4zU5FbU5avrt-9oJDrOJ)/OlcE-h+O7(EcAIsNPZCGi?3zpQMZQez4CnAdL99Q1",
+      "evidence_count": 2,
+      "evidence_roots_hash72": [
+        "EDylR<qy0+7VQbnY<)MvNG>NriYMyz1gbw5m<7bPzVKUP<Z*KF/Vcbgwf<AUSfiw7Oe/MW/w",
+        "0ZCXNiuFcl8cjA7ZS!lae7Iio6TEYxC3irj*3/S?Ar9xc0BQG*S9ThDBCyrFnXRfP5nDaDI-"
+      ],
+      "independently_witnessed": true,
+      "schema": "HHS_CLOSURE_DIMENSION_RECEIPT_V1",
+      "version": "PASS_072_TOTAL_SYSTEM_RECURSIVE_HOLOGRAPHIC_CLOSURE_V1"
+    },
+    {
+      "authority": "HHS_PASS072_TOTAL_SYSTEM_CLOSURE_AUTHORITY_V1",
+      "closed": true,
+      "dimension": "ENERGY",
+      "dimension_receipt_root_hash72": "7c/zSfwVlL?iZImN5hA84de1ja3/?)GTWw*KObmc(tp21u5)DOyR6/dzVM-)(UmhLUV(8+jq",
+      "evidence_count": 3,
+      "evidence_roots_hash72": [
+        "hVyt7r0MA?o0q4P16?>p>NGVTj)NPs?*EAf>15B1IElc2l3<QfcMhYv0eulKzSR<2hoQ!l+4",
+        "7-)*VPiSXkR)tdK!FKtIAGMVruSUBr(zGl*V8aZ!8Fj1HrkpKLbK9fs+tORCBWLC>R04TB)P",
+        "70NHsn4lXh-U20Yu<GjLev8X*FIrVDpEq<zfYI?*<C!B6kSz!db/BI4?>DiEo22)x4CE>?4w"
+      ],
+      "independently_witnessed": true,
+      "schema": "HHS_CLOSURE_DIMENSION_RECEIPT_V1",
+      "version": "PASS_072_TOTAL_SYSTEM_RECURSIVE_HOLOGRAPHIC_CLOSURE_V1"
+    },
+    {
+      "authority": "HHS_PASS072_TOTAL_SYSTEM_CLOSURE_AUTHORITY_V1",
+      "closed": true,
+      "dimension": "TEMPORAL",
+      "dimension_receipt_root_hash72": "wc?N?b*(q*eBKCBZDxESzshpb)M5c/3eR8mE3nJ!)l9FiCJHW1JvgMsV>RbS5tSXeS>!Lz>j",
+      "evidence_count": 3,
+      "evidence_roots_hash72": [
+        "LwDYM+nnXHEzyhPzPGcYVJxubIMGa)EdHdt23<Vtwl13+zBWo<Jv7a<M>msodUzI2d>kAQ+>",
+        "yHVzLR-R>b28BhqqJWb0uB3G*owZUlI2!GTY5PD8+ryYOqgx/Gapu)hdc0vEaCaUdhtJjXR!",
+        "uLs>CRDVEr041U4Wi<yx(3OI6un+FMb*T0/g3R8hhsmFcYcZ7u6isiQj(nEvLk!RR<w8>LMI"
+      ],
+      "independently_witnessed": true,
+      "schema": "HHS_CLOSURE_DIMENSION_RECEIPT_V1",
+      "version": "PASS_072_TOTAL_SYSTEM_RECURSIVE_HOLOGRAPHIC_CLOSURE_V1"
+    },
+    {
+      "authority": "HHS_PASS072_TOTAL_SYSTEM_CLOSURE_AUTHORITY_V1",
+      "closed": true,
+      "dimension": "RECONSTRUCTION",
+      "dimension_receipt_root_hash72": "ABlXdO5WAxR5XHy5++x<K!1qYBxlZ96r/>6NmJMmI+ByD534Ju+UhGraH5fPv<LN/m/bF1Gk",
+      "evidence_count": 4,
+      "evidence_roots_hash72": [
+        "0ZCXNiuFcl8cjA7ZS!lae7Iio6TEYxC3irj*3/S?Ar9xc0BQG*S9ThDBCyrFnXRfP5nDaDI-",
+        "70NHsn4lXh-U20Yu<GjLev8X*FIrVDpEq<zfYI?*<C!B6kSz!db/BI4?>DiEo22)x4CE>?4w",
+        "yHVzLR-R>b28BhqqJWb0uB3G*owZUlI2!GTY5PD8+ryYOqgx/Gapu)hdc0vEaCaUdhtJjXR!",
+        "uLs>CRDVEr041U4Wi<yx(3OI6un+FMb*T0/g3R8hhsmFcYcZ7u6isiQj(nEvLk!RR<w8>LMI"
+      ],
+      "independently_witnessed": true,
+      "schema": "HHS_CLOSURE_DIMENSION_RECEIPT_V1",
+      "version": "PASS_072_TOTAL_SYSTEM_RECURSIVE_HOLOGRAPHIC_CLOSURE_V1"
+    }
+  ],
+  "schema": "HHS_CLOSURE_DIMENSION_REGISTRY_V1",
+  "version": "PASS_072_TOTAL_SYSTEM_RECURSIVE_HOLOGRAPHIC_CLOSURE_V1"
+}

@@ -36,6 +36,8 @@ from pathlib import Path
 from typing import Any, Callable, Dict, List, Optional, Tuple
 import json
 
+from hhs_runtime.hhs_control_flow_transition_audit_v1 import make_control_flow_transition_audit
+
 from hhs_general_runtime_layer_v1 import (
     AuditedRunner,
     DEFAULT_KERNEL_PATH,
@@ -125,22 +127,50 @@ class HHSControlFlowGatesV1:
 
         try:
             branch_result = selected_fn()
-            # Audit scalar-compatible branch outputs directly. If a branch returns
-            # a dict with audit_value, the runner honors that.
-            branch_exec = self.runner.execute(
-                "SUM",
-                [branch_result] if isinstance(branch_result, (int, Fraction)) else [0],
+            branch_transition_audit = make_control_flow_transition_audit(
+                gate="IF",
+                label=label,
+                transition_index=0,
+                pre_state={
+                    "condition": bool(condition),
+                    "selected_branch": selected_name,
+                    "rejected_branch": rejected_name,
+                    "selected_branch_descriptor": selected_branch_descriptor,
+                },
+                post_state={
+                    "selected_branch": selected_name,
+                    "branch_result": canonicalize_for_hash72(branch_result),
+                },
+                result=canonicalize_for_hash72(branch_result),
+                decision=f"{selected_name}_SELECTED",
+                condition=bool(condition),
+            )
+            branch_exec = self.runner.commitments.commit_transition(
+                operation="IF_SELECTED_BRANCH_FULL_TRANSITION",
                 input_payload={
-                    "control": "IF_SELECTED_BRANCH_RESULT",
+                    "control": "IF_SELECTED_BRANCH_FULL_TRANSITION",
                     "label": label,
                     "selected_branch": selected_name,
-                    "result": canonicalize_for_hash72(branch_result),
+                    "pre_state_hash72": branch_transition_audit["canonical_transition_fields"]["pre_state_hash72"],
+                    "post_state_hash72": branch_transition_audit["canonical_transition_fields"]["post_state_hash72"],
                 },
+                pre_state={
+                    "tip": self.runner.commitments.tip_hash72,
+                    "phase": self.runner.commitments.phase,
+                    "selected_branch": selected_name,
+                },
+                post_state={
+                    "branch_result": canonicalize_for_hash72(branch_result),
+                    "transition_root_hash72": branch_transition_audit["canonical_transition_fields"]["transition_root_hash72"],
+                },
+                witness=branch_transition_audit,
+                gate_status="LOCKED",
+                reason="full branch transition audited",
             )
-            branch_locked = bool(branch_exec.get("ok"))
+            branch_locked = bool(branch_exec.locked and branch_transition_audit.get("ok"))
             gate_status = "LOCKED" if branch_locked else "QUARANTINED"
-            reason = "" if branch_locked else "selected branch result failed audit"
-            branch_receipt = branch_exec.get("receipt")
+            reason = "" if branch_locked else "selected branch full transition audit failed"
+            branch_receipt = branch_exec.to_dict()
         except Exception as exc:
             branch_result = None
             branch_locked = False
@@ -159,6 +189,7 @@ class HHSControlFlowGatesV1:
             "rejected_branch": rejected_branch_descriptor,
             "rejected_branch_hash72": authority.commit(rejected_branch_descriptor, domain="HHS_IF_REJECTED_BRANCH"),
             "branch_locked": branch_locked,
+            "transition_audit": branch_transition_audit if 'branch_transition_audit' in locals() else None,
             "reason": reason,
         }
 
@@ -262,31 +293,62 @@ class HHSControlFlowGatesV1:
                 break
 
             next_variant = Fraction(variant_fn(next_state))
-            audit_exec = self.runner.execute(
-                "SUM",
-                [next_variant],
+            transition_audit = make_control_flow_transition_audit(
+                gate="LOOP",
+                label=label,
+                transition_index=i,
+                pre_state=canonicalize_for_hash72(state),
+                post_state=canonicalize_for_hash72(next_state),
+                result={
+                    "next_state": canonicalize_for_hash72(next_state),
+                    "current_variant": str(current_variant),
+                    "next_variant": str(next_variant),
+                },
+                decision="STEP",
+                condition=condition,
+                variant={
+                    "previous_variant": str(prev_variant),
+                    "current_variant": str(current_variant),
+                    "next_variant": str(next_variant),
+                },
+            )
+            audit_exec = self.runner.commitments.commit_transition(
+                operation="LOOP_ITERATION_FULL_TRANSITION",
                 input_payload={
-                    "control": "LOOP_ITERATION_VARIANT",
+                    "control": "LOOP_ITERATION_FULL_TRANSITION",
                     "label": label,
                     "iteration": i,
-                    "variant": next_variant,
+                    "transition_root_hash72": transition_audit["canonical_transition_fields"]["transition_root_hash72"],
                 },
+                pre_state={
+                    "tip": self.runner.commitments.tip_hash72,
+                    "phase": self.runner.commitments.phase,
+                    "state": canonicalize_for_hash72(state),
+                },
+                post_state={
+                    "state": canonicalize_for_hash72(next_state),
+                    "next_variant": str(next_variant),
+                },
+                witness=transition_audit,
+                gate_status="LOCKED",
+                reason="full loop step transition audited",
             )
 
             iteration_witness.update({
                 "decision": "STEP",
                 "next_state": canonicalize_for_hash72(next_state),
                 "next_variant": next_variant,
-                "iteration_receipt": audit_exec.get("receipt"),
-                "iteration_locked": bool(audit_exec.get("ok")),
+                "transition_audit": transition_audit,
+                "iteration_receipt": audit_exec.to_dict(),
+                "iteration_locked": bool(audit_exec.locked and transition_audit.get("ok")),
             })
 
             path.append(iteration_witness)
-            iteration_receipts.append(audit_exec.get("receipt"))
+            iteration_receipts.append(audit_exec.to_dict())
 
-            if not audit_exec.get("ok"):
+            if not (audit_exec.locked and transition_audit.get("ok")):
                 quarantine = True
-                reason = "iteration variant audit failed"
+                reason = "iteration full-state transition audit failed"
                 break
 
             state = next_state

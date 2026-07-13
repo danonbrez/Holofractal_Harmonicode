@@ -41,8 +41,20 @@ from typing import Dict, List, Optional, Any
 from hhs_python.runtime.hhs_runtime_state import (
     HHSRuntimeState,
     create_runtime_state,
-    V44_KERNEL_AVAILABLE,
-    AUTHORITATIVE_TRUST_POLICY_V44,
+)
+
+try:
+    from hhs_python.runtime.runtime_object_registry import (
+        V44_KERNEL_AVAILABLE,
+        AUTHORITATIVE_TRUST_POLICY_V44,
+    )
+except Exception:
+    V44_KERNEL_AVAILABLE = False
+    AUTHORITATIVE_TRUST_POLICY_V44 = None
+
+from hhs_runtime.hhs_semantic_memory_guard_v1 import (
+    commit_semantic_record,
+    semantic_hash72,
 )
 
 # ============================================================================
@@ -107,6 +119,27 @@ class HHSRuntimeEvent:
 
     parent_event_id: Optional[str] = None
 
+@dataclass
+class HHSVectorCacheRecord:
+
+    record_id: str
+
+    created_at_ns: int
+
+    hash72: str
+
+    vector: List[float]
+
+    vector_hash72: str
+
+    metadata: Dict[str, Any] = field(
+        default_factory=dict
+    )
+
+    guard_receipt: Dict[str, Any] = field(
+        default_factory=dict
+    )
+
 # ============================================================================
 # BRANCH
 # ============================================================================
@@ -166,6 +199,14 @@ class HHSRuntimeStateStoreV1:
         self.runtime_timelines = defaultdict(list)
 
         self.event_subscribers = []
+
+        self.vector_records: List[
+            HHSVectorCacheRecord
+        ] = []
+
+        self.replay_records: List[
+            Dict[str, Any]
+        ] = []
 
     # =====================================================================
     # HASH72
@@ -737,6 +778,134 @@ class HHSRuntimeStateStoreV1:
         )
 
         return payload
+
+
+    # =====================================================================
+    # GUARDED COMPATIBILITY STORAGE SURFACES
+    # =====================================================================
+
+    def store_vector_record(
+        self,
+        hash72: str,
+        vector: List[float],
+        metadata: Optional[Dict[str, Any]] = None,
+    ) -> HHSVectorCacheRecord:
+        """Store a validated vector-cache record with Hash72 guard receipt.
+
+        This preserves legacy call sites while preventing semantic/vector data
+        from becoming an unreceipted alternate persistence path.
+        """
+
+        with self.lock:
+
+            vector_payload = {
+                "hash72": hash72,
+                "vector_hash72": semantic_hash72(vector),
+                "dimensions": len(vector),
+                "metadata": metadata or {},
+            }
+
+            guard = commit_semantic_record(
+                "RUNTIME_STATE_STORE_VECTOR_WRITE",
+                "runtime_state_store.store_vector_record",
+                vector_payload,
+            )
+
+            record = HHSVectorCacheRecord(
+                record_id=str(uuid.uuid4()),
+                created_at_ns=time.time_ns(),
+                hash72=hash72,
+                vector=list(vector),
+                vector_hash72=vector_payload["vector_hash72"],
+                metadata=metadata or {},
+                guard_receipt=guard,
+            )
+
+            self.vector_records.append(record)
+
+            logger.info(
+                f"Vector cache record stored: {record.record_id}"
+            )
+
+            return record
+
+    def latest_vector_record(self) -> Optional[HHSVectorCacheRecord]:
+        with self.lock:
+            return self.vector_records[-1] if self.vector_records else None
+
+    def store_event(
+        self,
+        event_type: str,
+        payload: Dict[str, Any],
+        runtime_state: Optional[HHSRuntimeState] = None,
+        source: str = "runtime_state_store.store_event",
+        **metadata: Any,
+    ) -> HHSRuntimeEvent:
+        """Compatibility event writer that still emits Hash72 ledger authority."""
+
+        state = runtime_state or create_runtime_state()
+        guard = commit_semantic_record(
+            "RUNTIME_STATE_STORE_EVENT",
+            source,
+            {
+                "event_type": event_type,
+                "payload_hash72": semantic_hash72(payload),
+                "metadata": metadata,
+            },
+        )
+        payload = {**payload, "storage_guard": guard, "storage_source": source}
+        return self.append_event(state, event_type, payload)
+
+    def store_snapshot(
+        self,
+        runtime_state: HHSRuntimeState,
+        branch_id: str = "main",
+    ) -> HHSRuntimeSnapshot:
+        snapshot = self.create_snapshot(runtime_state, branch_id=branch_id)
+        commit_semantic_record(
+            "RUNTIME_STATE_STORE_SNAPSHOT",
+            "runtime_state_store.store_snapshot",
+            {
+                "snapshot_id": snapshot.snapshot_id,
+                "runtime_id": snapshot.runtime_id,
+                "receipt_hash72": snapshot.receipt_hash72,
+                "state_hash72": snapshot.state_hash72,
+            },
+        )
+        return snapshot
+
+    def latest_snapshot(self) -> Optional[HHSRuntimeSnapshot]:
+        with self.lock:
+            if not self.snapshots:
+                return None
+            return sorted(
+                self.snapshots.values(),
+                key=lambda snapshot: snapshot.created_at_ns,
+                reverse=True,
+            )[0]
+
+    def store_replay_record(self, payload: Dict[str, Any]) -> Dict[str, Any]:
+        with self.lock:
+            guard = commit_semantic_record(
+                "RUNTIME_STATE_STORE_REPLAY_RECORD",
+                "runtime_state_store.store_replay_record",
+                {"payload_hash72": semantic_hash72(payload)},
+            )
+            record = {
+                "record_id": str(uuid.uuid4()),
+                "created_at_ns": time.time_ns(),
+                "payload": payload,
+                "guard_receipt": guard,
+            }
+            self.replay_records.append(record)
+            return record
+
+    def replay_chain(self, runtime_id: Optional[str] = None) -> List[HHSRuntimeEvent]:
+        with self.lock:
+            if runtime_id is None:
+                return list(self.events)
+            event_ids = set(self.runtime_timelines.get(runtime_id, []))
+            return [event for event in self.events if event.event_id in event_ids]
 
 # ============================================================================
 # GLOBAL STORE

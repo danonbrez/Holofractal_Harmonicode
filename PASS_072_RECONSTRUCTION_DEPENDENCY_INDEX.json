@@ -1,0 +1,85 @@
+{
+  "authority": "HHS_PASS072_TOTAL_SYSTEM_CLOSURE_AUTHORITY_V1",
+  "dependency_index_root_hash72": "flyepEPcD2nYWnb1JDG66laL0BF*NQkB*-6nUKrI1(a*Ngn3lawyhHHZdKu1/YoavGSaKzcX",
+  "derivation_ancestry_acyclic": true,
+  "edges": [
+    {
+      "dependency": "FOLDED_PROGRAM_TOPOLOGY",
+      "dependent": "CONTINUITY_AND_REVALIDATION"
+    },
+    {
+      "dependency": "HOLOFRACTAL_PHASE_GEAR_PATHFINDER",
+      "dependent": "CONTINUITY_AND_REVALIDATION"
+    },
+    {
+      "dependency": "INFORMATION_ENERGY_FIELD",
+      "dependent": "QUDIT81_KERNEL"
+    },
+    {
+      "dependency": "INFORMATION_ENERGY_FIELD",
+      "dependent": "RECIPROCAL_BINDING_REGISTRY"
+    },
+    {
+      "dependency": "PASS071_RESTART_CAPSULE",
+      "dependent": "QUDIT81_KERNEL"
+    },
+    {
+      "dependency": "PASS071_RESTART_CAPSULE",
+      "dependent": "SYMBOLIC_GENOME"
+    },
+    {
+      "dependency": "PHASE_GEAR_FOLD_REGISTRY",
+      "dependent": "FOLDED_PROGRAM_TOPOLOGY"
+    },
+    {
+      "dependency": "QUDIT81_KERNEL",
+      "dependent": "HOLOFRACTAL_PHASE_GEAR_PATHFINDER"
+    },
+    {
+      "dependency": "RECIPROCAL_BINDING_REGISTRY",
+      "dependent": "HOLOFRACTAL_PHASE_GEAR_PATHFINDER"
+    },
+    {
+      "dependency": "RECIPROCAL_BINDING_REGISTRY",
+      "dependent": "PHASE_GEAR_FOLD_REGISTRY"
+    },
+    {
+      "dependency": "SYMBOLIC_GENOME",
+      "dependent": "FOLDED_PROGRAM_TOPOLOGY"
+    },
+    {
+      "dependency": "SYMBOLIC_GENOME",
+      "dependent": "INFORMATION_ENERGY_FIELD"
+    },
+    {
+      "dependency": "SYMBOLIC_GENOME",
+      "dependent": "RECIPROCAL_BINDING_REGISTRY"
+    }
+  ],
+  "nodes": [
+    "CONTINUITY_AND_REVALIDATION",
+    "FOLDED_PROGRAM_TOPOLOGY",
+    "HOLOFRACTAL_PHASE_GEAR_PATHFINDER",
+    "INFORMATION_ENERGY_FIELD",
+    "PASS071_RESTART_CAPSULE",
+    "PHASE_GEAR_FOLD_REGISTRY",
+    "QUDIT81_KERNEL",
+    "RECIPROCAL_BINDING_REGISTRY",
+    "SYMBOLIC_GENOME"
+  ],
+  "schema": "HHS_RECONSTRUCTION_DEPENDENCY_INDEX_V1",
+  "status": "ADMIT_ACYCLIC_RECONSTRUCTION_INDEX",
+  "topological_order": [
+    "PASS071_RESTART_CAPSULE",
+    "SYMBOLIC_GENOME",
+    "INFORMATION_ENERGY_FIELD",
+    "QUDIT81_KERNEL",
+    "RECIPROCAL_BINDING_REGISTRY",
+    "HOLOFRACTAL_PHASE_GEAR_PATHFINDER",
+    "PHASE_GEAR_FOLD_REGISTRY",
+    "FOLDED_PROGRAM_TOPOLOGY",
+    "CONTINUITY_AND_REVALIDATION"
+  ],
+  "undeclared_dependency_count": 0,
+  "version": "PASS_072_TOTAL_SYSTEM_RECURSIVE_HOLOGRAPHIC_CLOSURE_V1"
+}

@@ -1,0 +1,29 @@
+{
+  "context_independent_development_state": true,
+  "deterministic_replay": true,
+  "development_capsule_root_hash72": "00000000000000000000000000000036IMta6sT!tkOMIYiegNmY9rfjeUXg+iePmFW3peaV",
+  "environment_independent_semantic_commitment": true,
+  "execution_root_hash72": "00000000000000000000000000000043DcrLb!K=avNagS?+vez/yrA^!A06xBV35M8gUQUS",
+  "foundation_delta": {
+    "authority": 0,
+    "services": 0,
+    "surfaces": 0
+  },
+  "pass_id": "PASS_073",
+  "portable_cross_mode_semantic_replay": true,
+  "product_artifact_root_hash72": "0000000000000000000000000000000UZ5opS?)q9+T*Q9J!D=eH)65CS4r*vM)Xf6gOV1RH",
+  "product_id": "NATIVE_HHS_DETERMINISTIC_TRANSFORMATION_PACKAGE",
+  "product_release_root_hash72": "0000000000000000000000000000001nsMpCRO8o8pCr/)xYKI8H0bzH9RZd*Ekcs(CsGh>J",
+  "product_verified": true,
+  "project_root_hash72": "000000000000000000000000000000437l3GpQ*sB74?b>t9EB2D^Ac^oAt>4+e6R=!/7Mu/",
+  "replay_root_hash72": "0000000000000000000000000000001VZu3N5VYPMthpr)go6)?lh48)=Ap+/Pm1+O4QHFb?",
+  "root_distinctions": {
+    "execution_root_distinct_from_system_root": true,
+    "product_root_distinct_from_system_root": true,
+    "project_root_distinct_from_system_root": true,
+    "semantic_product_root_distinct_from_execution_root": true
+  },
+  "schema": "HHS_PRODUCT_RELEASE_MANIFEST_V2",
+  "system_root_hash72": "ZF9bto?tV>P(KcFPL5L+csyy!jxdrAaadua1a!w-uwug8/MeMSqSS3*R>lXIefi)nyjXpc+)",
+  "version": "PASS_073_PORTABILITY_AND_PROVENANCE_REPAIR_V1"
+}

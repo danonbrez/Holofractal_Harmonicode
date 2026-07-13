@@ -19,6 +19,35 @@ for the [Holofractal_Harmonicode repository](https://github.com/danonbrez/Holofr
 
 ---
 
+## Automatic C Runtime Emulator Boot
+
+Pass 003 adds an emulator-style C runtime surface. The deterministic C kernel no longer has to be driven manually through separate build, ABI, bridge, step, receipt, and packet commands.
+
+Use:
+
+```bash
+make emulate-c
+```
+
+or directly:
+
+```bash
+python -m hhs_python.runtime.hhs_runtime_emulator
+```
+
+The emulator lifecycle is:
+
+```text
+boot → validate C ABI → tick VM → commit receipt → export multimodal packet → repeat/halt
+```
+
+The ctypes bridge also attempts to build the C ABI automatically when the shared library is missing. To disable that behavior:
+
+```bash
+HHS_DISABLE_C_AUTOBUILD=1 python -m hhs_python.runtime.hhs_ctypes_bridge
+```
+
+
 # Holofractal Harmonicode (HHS)
 
 ## Deterministic Runtime • Receipt-Locked Execution • Multimodal Constraint Computation • Hash72 Runtime Topology
@@ -832,4 +861,97 @@ The repository at **426 commits** with structured directories (`hhs_backend/`, `
 
 **Critical Success Factor**: The "Hash72" authority system and receipt-chain continuity represent a novel approach to trustworthy computing that could obviate traditional blockchain architectures for many use cases, replacing consensus with deterministic replay and cryptographic commitment.
 
+## v1 Release Execution
 
+The current development mode is interface finalization, not theory expansion. The release plan is maintained in [`docs/V1_RELEASE_EXECUTION_PLAN.md`](docs/V1_RELEASE_EXECUTION_PLAN.md).
+
+Primary v1 execution gates:
+
+```bash
+make verify-c
+pytest -q
+```
+
+The canonical C ABI build target places the Python-loadable shared library at:
+
+```text
+hhs_runtime/builds/libhhs_runtime.so
+```
+
+
+
+## v1 Local Runbook
+
+Use these commands from the repository root for the current release-finalization path:
+
+```bash
+# Build and verify C VM81 + ABI
+make verify-c
+
+# Run Python topology/regression suite
+pytest -q
+
+# Verify Python ↔ C ctypes bridge
+python -m hhs_python.runtime.hhs_ctypes_bridge
+
+# Verify backend import / ASGI app path
+python - <<'PY'
+import importlib
+server = importlib.import_module("hhs_backend.server")
+print("backend_import_ok", hasattr(server, "app"))
+PY
+```
+
+Backend dev server path once dependencies are installed:
+
+```bash
+uvicorn hhs_backend.server:app --reload --host 0.0.0.0 --port 8000
+```
+
+GUI dev path once Node dependencies are installed:
+
+```bash
+cd hhs_gui
+npm install
+npm run typecheck
+npm run build
+npm run dev
+```
+
+Current GUI authority flow:
+
+```text
+hhs_gui/src/App.tsx
+    -> RuntimeOS
+    -> RuntimeShell
+    -> /ws/runtime, /ws/replay, /ws/graph, /ws/transport
+    -> backend runtime authority
+```
+
+## Current v1 Execution Status
+
+As of the latest release-finalization pass:
+
+```text
+pytest -q      -> 30 passed
+make verify-c  -> C VM81 verified; ABI shared library built and symbols exported
+```
+
+The Python ctypes bridge successfully loads `hhs_runtime/builds/libhhs_runtime.so`, validates the ABI, executes one runtime step, and commits a receipt.
+
+
+## Pass 007 sealed IO gateway
+
+Pass 007 adds the canonical IO gateway for the non-bypass dataflow rule:
+
+```text
+external input → HHSIOGateway.ingress → guarded runtime/service/vector path → HHSIOGateway.egress → external output
+```
+
+Run:
+
+```bash
+make io-gateway
+```
+
+The gateway records ingress, propagation, egress, and receipt-backed vector-cache writes into the unified Hash72 ledger.

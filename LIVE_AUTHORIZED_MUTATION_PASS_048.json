@@ -1,0 +1,60 @@
+{
+  "added_modules": [
+    "hhs_backend/runtime/live_authorized_mutation_contract_v1.py",
+    "hhs_backend/runtime/live_authorized_mutation_executor_v1.py",
+    "hhs_backend/runtime/live_mutation_receipt_chain_v1.py",
+    "hhs_backend/runtime/live_state_reversal_witness_v1.py",
+    "hhs_gui/runtime_os/core/RuntimeMutationClient.ts",
+    "hhs_gui/runtime_os/core/RuntimeMutationPanel.tsx",
+    "tests/test_hhs_live_authorized_mutation_pass048_v1.py"
+  ],
+  "allowlisted_operations": [
+    "runtime.tick",
+    "runtime.pause",
+    "runtime.resume",
+    "runtime.request_status_snapshot",
+    "semantic_cache.refresh_composition_index",
+    "expanded_state_decay.sweep"
+  ],
+  "conformance_edge_count": 1040,
+  "derived_service_count": 67,
+  "hard_invariants": [
+    "NO_UI_EVENT_DIRECTLY_BECOMES_RUNTIME_TRUTH",
+    "EVERY_MUTATION_REQUIRES_PRE_STATE_IDENTITY_TRANSFORMATION_IDENTITY_POST_STATE_IDENTITY_MUTATION_RECEIPT_PROJECTED_FEEDBACK"
+  ],
+  "module_count": 991,
+  "name": "Authorized Live Mutation Execution + Reversible State Receipts",
+  "notes": [
+    "Runtime tick can now be requested as AUTHORIZED_MUTATION through the existing GUI command endpoint.",
+    "GUI mutation panel displays receipt, pre-state, transform, and post-state hashes.",
+    "Non-allowlisted GUI mutation operations remain rejected.",
+    "GUI does not assume mutation success locally; state projection remains websocket/receipt driven."
+  ],
+  "objective": "Move a conservative allow-list of GUI-requested operations from RECEIPT_ONLY into AUTHORIZED_MUTATION while preserving GUI request-only authority.",
+  "orphan_count": 0,
+  "pass": "048",
+  "schema": "HHS_PASS_048_SUMMARY_V1",
+  "service_count": 67,
+  "surface_count": 82,
+  "tests": {
+    "kernel_conformance_surface_map": "passed",
+    "node_source_verifier": "passed",
+    "pass048_pytest": "7 passed",
+    "py_compile": "passed",
+    "runtime_reachability": "passed",
+    "service_registry": "passed",
+    "verify_c": "passed"
+  },
+  "underived_service_count": 0,
+  "updated_modules": [
+    "hhs_backend/runtime/live_gui_command_authority_loop_v1.py",
+    "hhs_backend/runtime/live_gui_command_contract_v1.py",
+    "hhs_backend/server.py",
+    "hhs_runtime/hhs_kernel_conformance_surface_map_v1.py",
+    "hhs_runtime/hhs_service_registry_v1.py",
+    "hhs_gui/runtime_os/core/RuntimeShell.tsx",
+    "hhs_gui/scripts/live-gui-e2e-source-verify.mjs",
+    "Makefile"
+  ],
+  "version": "PASS_048_AUTHORIZED_LIVE_MUTATION_EXECUTION_V1"
+}

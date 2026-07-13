@@ -1,0 +1,23 @@
+# LOCAL CONSTRAINT BOTTLENECK PASS 065
+
+```json
+{
+  "authority": "HHS_LOCAL_BRANCH_RESOLUTION_AUTHORITY_V1",
+  "bottleneck_root_hash72": "HL01tILosnx(jjwVkSoU3+c+rrz83B<ncW1WhJGj8d)<37T+?Ed+ZH9lJASIBWN*k6Wf*gCo",
+  "canonical_parent_root_hash72": "vE(LKbdy1fQoD96jKNU64p8xmtYa2X?(3sUTu84cdAzhNm1DE1/3?5?58uU-?JiwpSY!TyQA",
+  "conflict_type": "PHASE_INTEGRATION_MISALIGNMENT",
+  "constraint_id": "constraint:A=B:integration",
+  "global_state_invalid": false,
+  "local_scope": [
+    "A",
+    "B",
+    "P",
+    "TRANSLATION_PHASE"
+  ],
+  "minimum_correction_scope": "LOCAL_RELATION_SUBGRAPH",
+  "preserve_unaffected_structure": true,
+  "requires_parallel_resolution": true,
+  "schema": "HHS_LOCAL_CONSTRAINT_BOTTLENECK_V1",
+  "version": "PASS_065_LOCAL_CLOSED_PARALLEL_BRANCH_TREE_V1"
+}
+```

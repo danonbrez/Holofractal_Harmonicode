@@ -36,6 +36,8 @@ from typing import (
     Optional
 )
 
+from hhs_runtime.hhs_runtime_dataflow_guard_v1 import compact_io_record, guard_propagation
+
 # ============================================================================
 # LOGGING
 # ============================================================================
@@ -144,6 +146,18 @@ class HHSRuntimeEventBus:
         metadata: Optional[Dict] = None
     ) -> HHSEvent:
 
+        metadata_dict = dict(metadata or {})
+        io_record = guard_propagation(
+            f"runtime_event_bus.{event_type}",
+            {
+                "event_type": event_type,
+                "payload": payload,
+                "source": source,
+                "metadata": metadata_dict,
+            },
+        )
+        metadata_dict["io_propagation_record"] = compact_io_record(io_record)
+
         event = HHSEvent(
 
             event_id=str(uuid.uuid4()),
@@ -156,7 +170,7 @@ class HHSRuntimeEventBus:
 
             source=source,
 
-            metadata=metadata or {}
+            metadata=metadata_dict
         )
 
         self.event_history.append(event)
