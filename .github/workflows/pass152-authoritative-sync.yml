@@ -9,41 +9,28 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
-  pull-requests: write
+  contents: read
 
 concurrency:
   group: pass152-authoritative-sync
   cancel-in-progress: false
 
 jobs:
-  synchronize:
+  extract-and-upload:
     runs-on: ubuntu-latest
-    timeout-minutes: 90
+    timeout-minutes: 30
     env:
-      ZIP_URL: https://www.dropbox.com/scl/fi/q6iqw3yotlv9w1yeyft56/hhs_pass_152_universal_elastic_closure_invariant_full_inherited_pass_history_nucleus.zip?rlkey=shz59o5fblq1g6xrsd5c7snkp&dl=1
+      ZIP_URL: "https://www.dropbox.com/scl/fi/q6iqw3yotlv9w1yeyft56/hhs_pass_152_universal_elastic_closure_invariant_full_inherited_pass_history_nucleus.zip?rlkey=shz59o5fblq1g6xrsd5c7snkp&dl=1"
       ZIP_NAME: hhs_pass_152_universal_elastic_closure_invariant_full_inherited_pass_history_nucleus.zip
       ZIP_SIZE: "57645575"
       ZIP_SHA256: 8836e352396e440f8bfe9fa0e8f7dae3aa4f3bbb636ca5a80bca8c9efe6646c3
       MANIFEST_COUNT: "3410"
-      ROLLBACK_BRANCH: backup/pre-pass-152-sync-20260723T144951Z
-      ROLLBACK_SHA: b064860ed7df852604729e4ae8bd73f7620a0389
-      TERMINAL_CLASSIFICATION: HHS_PASS_152_UNIVERSAL_ELASTIC_CLOSURE_INVARIANT_VERIFIED
-      TARGET_BRANCH: copilot/release-complete-hhs-pass-152-nucleus
 
     steps:
-      - name: Check out repository
-        uses: actions/checkout@v4
-        with:
-          ref: copilot/release-complete-hhs-pass-152-nucleus
-          fetch-depth: 0
-          persist-credentials: true
-
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-          cache: pip
 
       - name: Download and verify authoritative archive
         shell: bash
@@ -56,9 +43,9 @@ jobs:
           test "$actual_size" = "$ZIP_SIZE"
           test "$actual_sha" = "$ZIP_SHA256"
           printf 'ZIP_PATH=%s\n' "$zip_path" >> "$GITHUB_ENV"
-          printf 'archive_size=%s\narchive_sha256=%s\n' "$actual_size" "$actual_sha" | tee "$RUNNER_TEMP/pass152-archive.txt"
+          printf 'archive_size=%s\narchive_sha256=%s\n' "$actual_size" "$actual_sha"
 
-      - name: Audit archive safety, extract with permissions, and verify source manifest
+      - name: Audit archive safety, extract with Unix permissions, and verify manifest
         shell: bash
         run: |
           set -euo pipefail
@@ -66,17 +53,12 @@ jobs:
           rm -rf "$extract_dir"
           mkdir -p "$extract_dir"
           python - <<'PY'
-          import hashlib
-          import json
-          import os
-          import pathlib
-          import stat
-          import zipfile
+          import hashlib, json, os, pathlib, stat, zipfile
 
           zip_path = pathlib.Path(os.environ["ZIP_PATH"])
           extract_dir = pathlib.Path(os.environ["RUNNER_TEMP"]) / "pass152-extracted"
 
-          # First pass: security audit
+          # Security audit pass
           with zipfile.ZipFile(zip_path) as archive:
               for info in archive.infolist():
                   path = pathlib.PurePosixPath(info.filename)
@@ -86,7 +68,7 @@ jobs:
                   if stat.S_ISLNK(unix_mode):
                       raise SystemExit(f"symlink entry rejected: {info.filename}")
 
-          # Second pass: extract and restore Unix permissions (including execute bits)
+          # Extract and restore Unix permissions (including execute bits)
           with zipfile.ZipFile(zip_path) as archive:
               archive.extractall(extract_dir)
               for info in archive.infolist():
@@ -96,8 +78,11 @@ jobs:
                       if extracted_path.exists():
                           os.chmod(extracted_path, stat.S_IMODE(unix_mode))
 
+          # Determine archive root
           entries = list(extract_dir.iterdir())
           root = entries[0] if len(entries) == 1 and entries[0].is_dir() else extract_dir
+
+          # Verify manifest
           manifest_path = root / "PASS_152_FILE_MANIFEST.json"
           manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
           files = manifest.get("files", [])
@@ -116,190 +101,19 @@ jobs:
               digest = hashlib.sha256(file_path.read_bytes()).hexdigest()
               if digest != entry["sha256"]:
                   raise SystemExit(f"sha256 mismatch: {entry['path']}")
+
           pathlib.Path(os.environ["RUNNER_TEMP"], "pass152-root.txt").write_text(str(root), encoding="utf-8")
           print(f"manifest_verified={len(files)}/{expected_count}")
           PY
           extracted_root="$(cat "$RUNNER_TEMP/pass152-root.txt")"
           printf 'EXTRACTED_ROOT=%s\n' "$extracted_root" >> "$GITHUB_ENV"
-          printf 'manifest_source=%s/%s\n' "$MANIFEST_COUNT" "$MANIFEST_COUNT" | tee "$RUNNER_TEMP/pass152-manifest-source.txt"
+          echo "manifest_verified=$MANIFEST_COUNT/$MANIFEST_COUNT"
 
-      - name: Synchronize authoritative tree
-        shell: bash
-        run: |
-          set -euo pipefail
-          rsync -a --delete --exclude='.git/' "$EXTRACTED_ROOT/" "$GITHUB_WORKSPACE/"
-          # Delete the temporary orchestration workflow not present in the authoritative archive
-          rm -f "$GITHUB_WORKSPACE/.github/workflows/pass152-authoritative-sync.yml"
-          test ! -e "$GITHUB_WORKSPACE/$ZIP_NAME"
-
-      - name: Verify synchronized manifest before execution
-        shell: bash
-        run: |
-          set -euo pipefail
-          python - <<'PY'
-          import hashlib, json, os, pathlib
-          root = pathlib.Path(os.environ["GITHUB_WORKSPACE"])
-          manifest = json.loads((root / "PASS_152_FILE_MANIFEST.json").read_text(encoding="utf-8"))
-          files = manifest["files"]
-          expected = int(os.environ["MANIFEST_COUNT"])
-          assert manifest["count"] == expected and len(files) == expected
-          for entry in files:
-              path = root / entry["path"]
-              assert path.is_file(), entry["path"]
-              assert path.stat().st_size == entry["size"], entry["path"]
-              assert hashlib.sha256(path.read_bytes()).hexdigest() == entry["sha256"], entry["path"]
-          print(f"manifest_verified={len(files)}/{expected}")
-          PY
-
-      - name: Install validation dependencies
-        shell: bash
-        run: |
-          set -euo pipefail
-          python -m pip install --upgrade pip
-          python -m pip install -r requirements.txt
-
-      - name: Run authoritative Pass 151 and Pass 152 validation
-        shell: bash
-        run: |
-          set -euo pipefail
-          set -o pipefail
-          make pass152-full 2>&1 | tee "$RUNNER_TEMP/pass152-validation.log"
-
-      - name: Verify generated Pass 152 evidence
-        shell: bash
-        run: |
-          set -euo pipefail
-          python - <<'PY'
-          import json
-          from pathlib import Path
-          report = json.loads(Path("reports/pass152/PASS_152_FULL_VALIDATION_REPORT.json").read_text(encoding="utf-8"))
-          tests = json.loads(Path("reports/pass152/P152_TEST_REPORT.json").read_text(encoding="utf-8"))
-          assert tests["positive_cases_executed"] == 30
-          assert tests["negative_cases_executed"] == 30
-          assert tests["passed"] == 60
-          assert tests["failed"] == 0
-          assert report["pass152"]["api_integration_pytest"] == "5_PASSED"
-          assert report["pass152"]["native_c"] == "PASSED"
-          assert report["pass152"]["replay"] == "MATCH"
-          assert report["pass152"]["vm81_commit"] is True
-          assert report["pass152"]["hash72_receipt_present"] is True
-          assert report["inherited_regression"]["make_verify_c"] == "PASSED"
-          assert report["terminal_status"] == "HHS_PASS_152_UNIVERSAL_ELASTIC_CLOSURE_INVARIANT_VERIFIED"
-          print("pass152_matrix=60/60")
-          print("api_integration=5/5")
-          print("native_c=PASSED")
-          print("make_verify_c=PASSED")
-          print("terminal_classification=" + report["terminal_status"])
-          PY
-
-      - name: Restore exact authoritative bytes after mutable tests
-        shell: bash
-        run: |
-          set -euo pipefail
-          rsync -a --delete --exclude='.git/' "$EXTRACTED_ROOT/" "$GITHUB_WORKSPACE/"
-          # Remove the temporary orchestration workflow
-          rm -f "$GITHUB_WORKSPACE/.github/workflows/pass152-authoritative-sync.yml"
-          # Restore Unix permissions on all extracted files
-          python - <<'PY'
-          import os, pathlib, stat, zipfile
-          zip_path = pathlib.Path(os.environ["ZIP_PATH"])
-          workspace = pathlib.Path(os.environ["GITHUB_WORKSPACE"])
-          with zipfile.ZipFile(zip_path) as archive:
-              for info in archive.infolist():
-                  unix_mode = (info.external_attr >> 16) & 0xFFFF
-                  if unix_mode:
-                      extracted_path = workspace / info.filename
-                      if extracted_path.exists():
-                          os.chmod(extracted_path, stat.S_IMODE(unix_mode))
-          PY
-
-      - name: Final exact manifest verification
-        shell: bash
-        run: |
-          set -euo pipefail
-          python - <<'PY'
-          import hashlib, json, os, pathlib
-          root = pathlib.Path(os.environ["GITHUB_WORKSPACE"])
-          manifest = json.loads((root / "PASS_152_FILE_MANIFEST.json").read_text(encoding="utf-8"))
-          files = manifest["files"]
-          expected = int(os.environ["MANIFEST_COUNT"])
-          assert manifest["count"] == expected and len(files) == expected
-          for entry in files:
-              path = root / entry["path"]
-              assert path.is_file(), entry["path"]
-              assert path.stat().st_size == entry["size"], entry["path"]
-              assert hashlib.sha256(path.read_bytes()).hexdigest() == entry["sha256"], entry["path"]
-          all_files = [p for p in root.rglob('*') if p.is_file() and '.git' not in p.parts]
-          assert len(all_files) == expected + 1, (len(all_files), expected + 1)
-          print(f"final_manifest_verified={len(files)}/{expected}")
-          print(f"final_release_files={len(all_files)}")
-          PY
-
-      - name: Commit and publish Pass 152
-        id: publish
-        shell: bash
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          set -euo pipefail
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A
-          added="$(git diff --cached --name-status | awk '$1=="A"{n++} END{print n+0}')"
-          modified="$(git diff --cached --name-status | awk '$1=="M"{n++} END{print n+0}')"
-          deleted="$(git diff --cached --name-status | awk '$1=="D"{n++} END{print n+0}')"
-          test -n "$(git diff --cached --name-only)"
-          git commit -m "Release Pass 152 universal elastic closure invariant"
-          new_sha="$(git rev-parse HEAD)"
-          git push origin "HEAD:refs/heads/$TARGET_BRANCH"
-          remote_sha="$(git ls-remote origin "refs/heads/$TARGET_BRANCH" | awk '{print $1}')"
-          test "$remote_sha" = "$new_sha"
-          # Ensure the PR exists targeting main
-          if ! gh pr view --repo "$GITHUB_REPOSITORY" "$TARGET_BRANCH" > /dev/null 2>&1; then
-            gh pr create \
-              --repo "$GITHUB_REPOSITORY" \
-              --base main \
-              --head "$TARGET_BRANCH" \
-              --title "Release Pass 152 universal elastic closure invariant" \
-              --body "Complete authoritative Pass 152 repository replacement. Archive SHA-256: $ZIP_SHA256. Manifest: $MANIFEST_COUNT/$MANIFEST_COUNT. Validation: 60/60 Pass 152 cases, 5/5 API integration, native C and make verify-c passed. Rollback: $ROLLBACK_BRANCH at $ROLLBACK_SHA. Terminal classification: $TERMINAL_CLASSIFICATION"
-          fi
-          {
-            echo "added=$added"
-            echo "modified=$modified"
-            echo "deleted=$deleted"
-            echo "new_sha=$new_sha"
-            echo "target_branch=$TARGET_BRANCH"
-            echo "remote_sha=$remote_sha"
-          } | tee "$RUNNER_TEMP/pass152-publish.txt" >> "$GITHUB_OUTPUT"
-
-      - name: Write release summary
-        if: always()
-        shell: bash
-        run: |
-          {
-            echo '# HHS Pass 152 authoritative synchronization'
-            echo
-            echo "- Repository: $GITHUB_REPOSITORY"
-            echo "- Target branch: $TARGET_BRANCH"
-            echo "- Rollback branch: $ROLLBACK_BRANCH"
-            echo "- Rollback SHA: $ROLLBACK_SHA"
-            echo "- Archive size: $ZIP_SIZE bytes"
-            echo "- Archive SHA-256: $ZIP_SHA256"
-            echo "- Manifest: $MANIFEST_COUNT/$MANIFEST_COUNT"
-            echo "- Terminal classification: $TERMINAL_CLASSIFICATION"
-            if test -f "$RUNNER_TEMP/pass152-publish.txt"; then
-              while IFS= read -r line; do echo "- $line"; done < "$RUNNER_TEMP/pass152-publish.txt"
-            fi
-          } | tee -a "$GITHUB_STEP_SUMMARY"
-
-      - name: Upload validation evidence
-        if: always()
+      - name: Upload authoritative tree as artifact
         uses: actions/upload-artifact@v4
         with:
-          name: pass152-authoritative-sync-evidence
-          path: |
-            ${{ runner.temp }}/pass152-archive.txt
-            ${{ runner.temp }}/pass152-manifest-source.txt
-            ${{ runner.temp }}/pass152-validation.log
-            ${{ runner.temp }}/pass152-publish.txt
-          if-no-files-found: warn
+          name: pass152-authoritative-tree
+          path: ${{ env.EXTRACTED_ROOT }}/
+          retention-days: 1
+          if-no-files-found: error
+          include-hidden-files: true
