@@ -215,7 +215,7 @@ def _build_pass152_scaled_cycle(
             OperationNode(
                 alias_id,
                 "MERGE_ALIAS",
-                compute=lambda d, left=left_id, right=right_id: d[left] + d[right],
+                compute=lambda d, merge=merge_id: d[merge],
                 estimated_cost=Fraction(4, 1),
                 lane_id=f"A{index}",
             )
@@ -235,12 +235,11 @@ def _build_pass152_scaled_cycle(
             ("y", right_id),
             (left_id, merge_id),
             (right_id, merge_id),
-            (left_id, alias_id),
-            (right_id, alias_id),
+            (merge_id, alias_id),
             (alias_id, identity_id),
         ):
             engine.add_edge(source, target, EdgeType.VALUE_DEPENDS_ON)
-        operand_digest = sha256_json({left_id: left_value, right_id: right_value})
+        operand_digest = sha256_json({merge_id: merged_value})
         engine.register_equivalence_witness(
             EquivalenceWitness(
                 f"EQ-{index}",
