@@ -46,20 +46,28 @@ def test_resolver_contract_freezes_exact_bounds_and_authority_partition():
         "FIXED_WIDTH_BIG_ENDIAN"
     )
     assert manifest["canonical_serialization"]["physical_pointer_included"] is False
+    assert manifest["resolver"]["candidate_snapshot_only"] is True
+    assert manifest["resolver"]["sealed_candidate_mutable"] is False
+    assert manifest["resolver"]["authoritative_publication_performed"] is False
+    assert manifest["resolver"]["vm81_authorized_publication_required"] is True
     assert manifest["authority"]["vm81_execution_authority_transferred"] is False
     assert manifest["authority"]["host_physical_address_authority"] is False
+    assert manifest["authority"]["sealed_candidate_is_authoritative"] is False
+    assert manifest["authority"]["vm81_authorized_resolver_publication_implemented"] is False
     assert manifest["authority"]["runtime_mutation_surface_exposed"] is False
     assert manifest["authority"]["single_use_mutation_capability_implemented"] is False
 
 
-def test_resolver_closure_is_integrated_without_mutation_promotion():
+def test_resolver_closure_is_integrated_without_mutation_or_publication_promotion():
     manifest = build_manifest(ROOT)
     architecture = build_architecture_surface(ROOT)
     assert manifest["closure"]["canonical_hash216_address_implemented"] is True
     assert manifest["closure"]["bounded_immutable_vector_descriptor_implemented"] is True
-    assert manifest["closure"]["immutable_resolver_snapshot_implemented"] is True
+    assert manifest["closure"]["immutable_resolver_candidate_snapshot_implemented"] is True
     assert manifest["closure"]["bounded_vresolve_implemented"] is True
     assert manifest["closure"]["bounded_vread_implemented"] is True
+    assert manifest["closure"]["no_partial_candidate_exposure_implemented"] is True
+    assert manifest["closure"]["vm81_authorized_resolver_publication_implemented"] is False
     assert manifest["closure"]["vector_mutation_implemented"] is False
     assert architecture["hash216_vector_resolver"]["manifest_root_hash72"] == (
         manifest["resolver_manifest_root_hash72"]
