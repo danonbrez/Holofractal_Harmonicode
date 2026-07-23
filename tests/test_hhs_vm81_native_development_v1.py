@@ -15,19 +15,33 @@ from native_projects.hhs_vm81_native_development.hhs_vm81_native_development_v1 
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def test_architecture_surface_is_deterministic_and_truth_preserving():
-    first = build_architecture_surface(ROOT)
-    second = build_architecture_surface(ROOT)
-    assert first == second
-    assert first["vm81_cell_count"] == 81
-    assert first["hash216_position_count"] == 216
-    assert first["capability_counts"]["legacy_public_c_abi_callable"] == 29
-    assert first["capability_counts"]["hash72_hash216_public_c_abi_callable"] == 8
-    assert first["capability_counts"]["total_public_c_abi_callable"] == 37
-    assert first["closure"]["all_legacy_direct_abi_capabilities_bound"] is True
-    assert first["closure"]["all_current_linked_direct_abi_capabilities_bound"] is False
-    assert first["closure"]["level0_terminal_classification_emitted"] is False
-    assert first["closure"]["level1_terminal_classification_emitted"] is False
+def test_architecture_surface_is_deterministic():
+    assert build_architecture_surface(ROOT) == build_architecture_surface(ROOT)
+
+
+def test_architecture_dimensions_are_exact():
+    surface = build_architecture_surface(ROOT)
+    assert surface["vm81_cell_count"] == 81
+    assert surface["hash216_position_count"] == 216
+
+
+def test_legacy_public_abi_count_matches_pass079():
+    surface = build_architecture_surface(ROOT)
+    assert surface["capability_counts"]["legacy_public_c_abi_callable"] == 29
+    assert surface["closure"]["all_legacy_direct_abi_capabilities_bound"] is True
+
+
+def test_hash72_hash216_linked_abi_count_is_discovered():
+    surface = build_architecture_surface(ROOT)
+    assert surface["capability_counts"]["hash72_hash216_public_c_abi_callable"] == 8
+
+
+def test_current_linked_abi_total_remains_unbound_until_new_registry_layer():
+    surface = build_architecture_surface(ROOT)
+    assert surface["capability_counts"]["total_public_c_abi_callable"] == 37
+    assert surface["closure"]["all_current_linked_direct_abi_capabilities_bound"] is False
+    assert surface["closure"]["level0_terminal_classification_emitted"] is False
+    assert surface["closure"]["level1_terminal_classification_emitted"] is False
 
 
 def test_hash72_compare_schema_erratum_preserves_frozen_c_semantics():
