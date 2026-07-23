@@ -8,6 +8,7 @@ on:
     paths:
       - native_projects/hhs_vm81_native_development/**
       - tests/test_hhs_vm81_native_development_v1.py
+      - tests/test_hhs_vm81_typed_status_and_hash_bindings_v1.py
       - hhs_runtime/c/hhs_runtime_abi.c
       - hhs_runtime/c/hhs_runtime_abi.h
       - hhs_runtime/src/hhs_hash216.c
@@ -35,57 +36,63 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install pytest pytest-asyncio "fastapi==0.128.2" "starlette==0.50.0"
 
-      - name: Validate deterministic architecture surface
-        run: python -m pytest -q tests/test_hhs_vm81_native_development_v1.py::test_architecture_surface_is_deterministic
+      - name: Validate architecture discovery and complete ABI binding
+        run: |
+          python -m pytest -q \
+            tests/test_hhs_vm81_native_development_v1.py::test_architecture_surface_is_deterministic \
+            tests/test_hhs_vm81_native_development_v1.py::test_architecture_dimensions_are_exact \
+            tests/test_hhs_vm81_native_development_v1.py::test_legacy_public_abi_count_matches_pass079 \
+            tests/test_hhs_vm81_native_development_v1.py::test_hash72_hash216_linked_abi_is_bound \
+            tests/test_hhs_vm81_typed_status_and_hash_bindings_v1.py::test_hash_binding_registry_is_complete_and_deterministic
 
-      - name: Validate VM81 and Hash216 dimensions
-        run: python -m pytest -q tests/test_hhs_vm81_native_development_v1.py::test_architecture_dimensions_are_exact
-
-      - name: Validate inherited Pass079 direct ABI count
-        run: python -m pytest -q tests/test_hhs_vm81_native_development_v1.py::test_legacy_public_abi_count_matches_pass079
-
-      - name: Validate linked Hash72 and Hash216 ABI discovery count
-        run: python -m pytest -q tests/test_hhs_vm81_native_development_v1.py::test_hash72_hash216_linked_abi_count_is_discovered
-
-      - name: Validate current linked ABI remains explicitly unbound
-        run: python -m pytest -q tests/test_hhs_vm81_native_development_v1.py::test_current_linked_abi_total_remains_unbound_until_new_registry_layer
-
-      - name: Validate Hash72 compare erratum
-        run: python -m pytest -q tests/test_hhs_vm81_native_development_v1.py::test_hash72_compare_schema_erratum_preserves_frozen_c_semantics
-
-      - name: Validate non-authoritative float classification
-        run: python -m pytest -q tests/test_hhs_vm81_native_development_v1.py::test_float_surfaces_are_explicitly_non_authoritative
-
-      - name: Validate explicit missing capability ledger
-        run: python -m pytest -q tests/test_hhs_vm81_native_development_v1.py::test_missing_capabilities_remain_explicit_and_unclaimed
+      - name: Validate authority and status classifications
+        run: |
+          python -m pytest -q \
+            tests/test_hhs_vm81_native_development_v1.py::test_hash72_compare_schema_erratum_preserves_frozen_c_semantics \
+            tests/test_hhs_vm81_native_development_v1.py::test_float_surfaces_are_explicitly_non_authoritative \
+            tests/test_hhs_vm81_native_development_v1.py::test_missing_capabilities_remain_explicit_and_unclaimed \
+            tests/test_hhs_vm81_typed_status_and_hash_bindings_v1.py::test_typed_execution_result_abi_declares_required_statuses_and_guards \
+            tests/test_hhs_vm81_typed_status_and_hash_bindings_v1.py::test_completed_gaps_are_removed_without_claiming_single_use_capability
 
       - name: Execute exact VM81 public C ABI smoke program
         run: python -m pytest -q tests/test_hhs_vm81_native_development_v1.py::test_direct_c_abi_exact_foundation_smoke
 
-      - name: Execute Hash216 identity smoke program
-        run: python -m pytest -q tests/test_hhs_vm81_native_development_v1.py::test_hash216_identity_foundation_smoke
+      - name: Execute complete Hash72 and Hash216 linked ABI smoke program
+        run: python -m pytest -q tests/test_hhs_vm81_native_development_v1.py::test_complete_hash72_hash216_linked_abi_smoke
 
-      - name: Generate deterministic architecture surface
+      - name: Execute typed status and rejection state preservation smoke program
+        run: python -m pytest -q tests/test_hhs_vm81_typed_status_and_hash_bindings_v1.py::test_typed_status_and_rejection_state_preservation_native_smoke
+
+      - name: Generate deterministic Level 0-1 evidence
         run: |
           python -m native_projects.hhs_vm81_native_development.hhs_vm81_native_development_v1 > "$RUNNER_TEMP/VM81_ARCHITECTURE_SURFACE_LEVEL_0_1.json"
+          python -m native_projects.hhs_vm81_native_development.hhs_hash_native_binding_registry_v1 > "$RUNNER_TEMP/HASH72_HASH216_NATIVE_BINDING_REGISTRY.json"
           python - <<'PY'
           import json
           import os
           from pathlib import Path
 
-          path = Path(os.environ["RUNNER_TEMP"]) / "VM81_ARCHITECTURE_SURFACE_LEVEL_0_1.json"
-          data = json.loads(path.read_text(encoding="utf-8"))
-          assert data["vm81_cell_count"] == 81
-          assert data["hash216_position_count"] == 216
-          assert data["implementation_status"] == "FOUNDATION_IMPLEMENTED_TERMINAL_VERIFICATION_NOT_YET_CLAIMED"
-          assert data["closure"]["level0_terminal_classification_emitted"] is False
-          assert data["closure"]["level1_terminal_classification_emitted"] is False
-          print(data["architecture_surface_root_hash72"])
+          root = Path(os.environ["RUNNER_TEMP"])
+          architecture = json.loads((root / "VM81_ARCHITECTURE_SURFACE_LEVEL_0_1.json").read_text(encoding="utf-8"))
+          registry = json.loads((root / "HASH72_HASH216_NATIVE_BINDING_REGISTRY.json").read_text(encoding="utf-8"))
+          assert architecture["vm81_cell_count"] == 81
+          assert architecture["hash216_position_count"] == 216
+          assert architecture["capability_counts"]["total_public_c_abi_callable"] == 37
+          assert architecture["closure"]["all_current_linked_direct_abi_capabilities_bound"] is True
+          assert architecture["implementation_status"] == "LEVEL_0_1_TYPED_ABI_AND_HASH_BINDING_IMPLEMENTED_TERMINAL_VERIFICATION_NOT_YET_CLAIMED"
+          assert architecture["closure"]["level0_terminal_classification_emitted"] is False
+          assert architecture["closure"]["level1_terminal_classification_emitted"] is False
+          assert registry["registered_bindings"] == 8
+          assert registry["all_expected_bindings_present"] is True
+          print(architecture["architecture_surface_root_hash72"])
+          print(registry["registry_root_hash72"])
           PY
 
-      - name: Upload Level 0-1 architecture evidence
+      - name: Upload Level 0-1 evidence
         uses: actions/upload-artifact@v4
         with:
-          name: vm81-architecture-surface-level0-level1
-          path: ${{ runner.temp }}/VM81_ARCHITECTURE_SURFACE_LEVEL_0_1.json
+          name: vm81-level0-level1-typed-abi-and-hash-bindings
+          path: |
+            ${{ runner.temp }}/VM81_ARCHITECTURE_SURFACE_LEVEL_0_1.json
+            ${{ runner.temp }}/HASH72_HASH216_NATIVE_BINDING_REGISTRY.json
           if-no-files-found: error
