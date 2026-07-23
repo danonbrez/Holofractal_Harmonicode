@@ -33,8 +33,19 @@ jobs:
       - name: Install test dependency
         run: python -m pip install pytest
 
-      - name: Run architecture and native smoke validation
-        run: python -m pytest -q tests/test_hhs_vm81_native_development_v1.py
+      - name: Validate architecture discovery and authority classifications
+        run: |
+          python -m pytest -q \
+            tests/test_hhs_vm81_native_development_v1.py::test_architecture_surface_is_deterministic_and_truth_preserving \
+            tests/test_hhs_vm81_native_development_v1.py::test_hash72_compare_schema_erratum_preserves_frozen_c_semantics \
+            tests/test_hhs_vm81_native_development_v1.py::test_float_surfaces_are_explicitly_non_authoritative \
+            tests/test_hhs_vm81_native_development_v1.py::test_missing_capabilities_remain_explicit_and_unclaimed
+
+      - name: Execute exact VM81 public C ABI smoke program
+        run: python -m pytest -q tests/test_hhs_vm81_native_development_v1.py::test_direct_c_abi_exact_foundation_smoke
+
+      - name: Execute Hash216 identity smoke program
+        run: python -m pytest -q tests/test_hhs_vm81_native_development_v1.py::test_hash216_identity_foundation_smoke
 
       - name: Generate deterministic architecture surface
         run: |
