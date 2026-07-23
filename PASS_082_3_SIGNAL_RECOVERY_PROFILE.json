@@ -1,0 +1,75 @@
+{
+  "schema": "HHS_PASS_082_3_SIGNAL_RECOVERY_PROFILE_V1",
+  "profiles": [
+    {
+      "workload_id": "W33:clean-baseline",
+      "signal_recovery_ratio": 1.0,
+      "unresolved_signal": 0
+    },
+    {
+      "workload_id": "W34:10pct-redundant-symbolic",
+      "signal_recovery_ratio": 1.0,
+      "unresolved_signal": 0
+    },
+    {
+      "workload_id": "W35:25pct-irrelevant-branch",
+      "signal_recovery_ratio": 1.0,
+      "unresolved_signal": 0
+    },
+    {
+      "workload_id": "W36:reciprocal-mismatch",
+      "signal_recovery_ratio": 1.0,
+      "unresolved_signal": 0
+    },
+    {
+      "workload_id": "W37:ordered-product-perturbation",
+      "signal_recovery_ratio": 1.0,
+      "unresolved_signal": 0
+    },
+    {
+      "workload_id": "W38:contradictory-propositions",
+      "signal_recovery_ratio": 1.0,
+      "unresolved_signal": 0
+    },
+    {
+      "workload_id": "W39:dense-topological-noise",
+      "signal_recovery_ratio": 1.0,
+      "unresolved_signal": 0
+    },
+    {
+      "workload_id": "W40:temporal-duplication-reordering",
+      "signal_recovery_ratio": 1.0,
+      "unresolved_signal": 0
+    },
+    {
+      "workload_id": "W41:mixed-semantic-algebraic",
+      "signal_recovery_ratio": 1.0,
+      "unresolved_signal": 0
+    },
+    {
+      "workload_id": "W42:50pct-sparse",
+      "signal_recovery_ratio": 1.0,
+      "unresolved_signal": 0
+    },
+    {
+      "workload_id": "W43:75pct-dense",
+      "signal_recovery_ratio": 1.0,
+      "unresolved_signal": 0
+    },
+    {
+      "workload_id": "W44:near-valid-fracture",
+      "signal_recovery_ratio": 1.0,
+      "unresolved_signal": 0
+    },
+    {
+      "workload_id": "W45:resource-bounded-unresolved",
+      "signal_recovery_ratio": 1.0,
+      "unresolved_signal": 0
+    },
+    {
+      "workload_id": "W46:replay-from-noisy-receipts",
+      "signal_recovery_ratio": 1.0,
+      "unresolved_signal": 0
+    }
+  ]
+}

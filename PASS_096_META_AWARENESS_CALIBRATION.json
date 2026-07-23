@@ -1,0 +1,8 @@
+{
+  "schema": "HHS_PASS_096_META_AWARENESS_V1",
+  "self_assessment_checked_against_runtime": true,
+  "unsupported_confidence_rate": {
+    "numerator": 0,
+    "denominator": 168
+  }
+}

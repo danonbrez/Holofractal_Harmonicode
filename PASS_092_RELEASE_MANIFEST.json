@@ -1,0 +1,21 @@
+{
+  "schema": "HHS_PASS_092_RELEASE_MANIFEST_V1",
+  "pass_id": "PASS_092",
+  "parent_pass091_release_root_hash72": "0000000000000000000000000000002AE-ACdtbtMUl3xF^379YU*2MF9oaREfe28FiFGUP>",
+  "workload_count": 12,
+  "negative_case_count": 10,
+  "all_negative_cases_passed": true,
+  "all_replays_verified": true,
+  "artifacts": [
+    "PASS_092_WORKLOAD_REGISTRY.json",
+    "PASS_092_OPERATOR_REGISTRY.json",
+    "PASS_092_COMPOSITE_SEED_RECEIPTS.json",
+    "PASS_092_LANE_RECEIPTS.json",
+    "PASS_092_INTERSECTION_RECEIPTS.json",
+    "PASS_092_SCALING_RESULTS.json",
+    "PASS_092_NEGATIVE_CASES.json",
+    "PASS_092_CALIBRATION_REPORT.md",
+    "CHANGELOG_PASS_092.md"
+  ],
+  "pass092_release_root_hash72": "0000000000000000000000000000003g/gut30BDzzNCgDgX2Md3fYAqo*FeD-^!FfVYHXF1"
+}

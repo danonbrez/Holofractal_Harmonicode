@@ -1,0 +1,404 @@
+{
+  "compilation_plan_root_hash72": "0000000000000000000000000000001iXZ//ALcsvv6>+/MWwN>B*NIIc8*g2OMBiuOZ!KxJ",
+  "deterministic": true,
+  "effects_declared_only": true,
+  "exact_integer_model": true,
+  "exact_rational_model": true,
+  "executable_ir_root_hash72": "0000000000000000000000000000003nz(rIc=TJv68wNxB1?EX(8axOjviJDyzdpoAqZ2?g",
+  "float_operations_present": false,
+  "instruction_count": 9,
+  "instructions": [
+    {
+      "authority_requirements": [],
+      "effect_declaration": "PURE_SYMBOLIC",
+      "instruction_index": 1,
+      "instruction_root_hash72": "0000000000000000000000000000001WA-r+SYag/FVBGXkzD-p5ln37O->F5?^7q4QayKUZ",
+      "invariant_bindings": [
+        {
+          "invariant": "Δe=0",
+          "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+        },
+        {
+          "invariant": "Ψ=0",
+          "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+        },
+        {
+          "invariant": "Θ15=true",
+          "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+        },
+        {
+          "invariant": "Ω=true",
+          "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+        }
+      ],
+      "name": "PHASE_GATE",
+      "opcode": "GATE_DECLARE",
+      "operands": [],
+      "schema": "HHS_TARGET_IR_INSTRUCTION_V1",
+      "source_operation": "DEFINE_GATE",
+      "source_span": {
+        "column_end": 2,
+        "column_start": 1,
+        "end": 82,
+        "line_end": 9,
+        "line_start": 1,
+        "start": 0,
+        "text_sha256": "9ceaedf9e7b09356db8d26da2fd5cce1270b844d69b81b3fe36e20473e225fcc"
+      },
+      "source_statement_id": "statement:node:0:D-B=Bju5c36F>r5K",
+      "source_statement_root_hash72": "0000000000000000000000000000004z*T9GQIZR?4r^?o?!waIq30iWpP*)?=3*gnXYVAAv"
+    },
+    {
+      "authority_requirements": [],
+      "effect_declaration": "PURE_SYMBOLIC",
+      "instruction_index": 2,
+      "instruction_root_hash72": "0000000000000000000000000000000EKSQd50=KBDU/dbeU)tfL+CXtUwMvQ^mAURKCZ*I*",
+      "invariant_bindings": [
+        {
+          "invariant": "Δe=0",
+          "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+        },
+        {
+          "invariant": "Ψ=0",
+          "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+        },
+        {
+          "invariant": "Θ15=true",
+          "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+        },
+        {
+          "invariant": "Ω=true",
+          "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+        }
+      ],
+      "name": "PHASE_GATE",
+      "opcode": "GATE_INVOKE",
+      "operands": [],
+      "schema": "HHS_TARGET_IR_INSTRUCTION_V1",
+      "source_operation": "INVOKE_GATE",
+      "source_span": {
+        "column_end": 11,
+        "column_start": 1,
+        "end": 93,
+        "line_end": 10,
+        "line_start": 10,
+        "start": 83,
+        "text_sha256": "c63aa569b9769c867626d70a00e43d78540936babe18218e0808368fd827cd27"
+      },
+      "source_statement_id": "statement:node:1:bMw+L>HGOMCD0fhK",
+      "source_statement_root_hash72": "0000000000000000000000000000001anO31>NJWSAkrGW(ng=X4/l!Ns(QPqUEZWnDEQWk2"
+    },
+    {
+      "authority_requirements": [],
+      "effect_declaration": "PURE_SYMBOLIC",
+      "instruction_index": 3,
+      "instruction_root_hash72": "0000000000000000000000000000004EaUTsblUYr94IXGtgGt6i+tDp9Ql)xVr)4kWWRv1W",
+      "invariant_bindings": [
+        {
+          "invariant": "Δe=0",
+          "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+        },
+        {
+          "invariant": "Ψ=0",
+          "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+        },
+        {
+          "invariant": "Θ15=true",
+          "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+        },
+        {
+          "invariant": "Ω=true",
+          "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+        }
+      ],
+      "name": "",
+      "opcode": "RELATION_EQUAL",
+      "operands": [
+        "x",
+        "1/y"
+      ],
+      "schema": "HHS_TARGET_IR_INSTRUCTION_V1",
+      "source_operation": "EVALUATE_EQUALITY",
+      "source_span": {
+        "column_end": 9,
+        "column_start": 3,
+        "end": 24,
+        "line_end": 2,
+        "line_start": 2,
+        "start": 18,
+        "text_sha256": "9e78cd33e953051a8ffe3507d447e90c57c27a27a4a0917d45239c1fa6daf19e"
+      },
+      "source_statement_id": "statement:node:0:Olnme15U=NuapZff",
+      "source_statement_root_hash72": "0000000000000000000000000000001?p8j(Hfdpfh^ecHw+JC61=YjE+!D4bkB1V0yk7qN5"
+    },
+    {
+      "authority_requirements": [],
+      "effect_declaration": "PURE_SYMBOLIC",
+      "instruction_index": 4,
+      "instruction_root_hash72": "0000000000000000000000000000004m-K1vWq2jZaBeeJkbPEvhNQ>+Y4vhBICOWjePC1Hn",
+      "invariant_bindings": [
+        {
+          "invariant": "Δe=0",
+          "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+        },
+        {
+          "invariant": "Ψ=0",
+          "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+        },
+        {
+          "invariant": "Θ15=true",
+          "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+        },
+        {
+          "invariant": "Ω=true",
+          "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+        }
+      ],
+      "name": "",
+      "opcode": "RELATION_EQUAL",
+      "operands": [
+        "z",
+        "1/w"
+      ],
+      "schema": "HHS_TARGET_IR_INSTRUCTION_V1",
+      "source_operation": "EVALUATE_EQUALITY",
+      "source_span": {
+        "column_end": 9,
+        "column_start": 3,
+        "end": 34,
+        "line_end": 3,
+        "line_start": 3,
+        "start": 28,
+        "text_sha256": "1ece3fc5d0a1a2223a74d764f990cacb0c092525e2544791b8c636d929996d5b"
+      },
+      "source_statement_id": "statement:node:1:zQoLQrgk2iPmQ(?m",
+      "source_statement_root_hash72": "0000000000000000000000000000000a2u(23D3ZdAG-Mg9tG3pqki3Z4jHYkuMLVewCe>2+"
+    },
+    {
+      "authority_requirements": [],
+      "effect_declaration": "PURE_SYMBOLIC",
+      "instruction_index": 5,
+      "instruction_root_hash72": "0000000000000000000000000000001HJ?v7QTdJMa>K3NyPGbyrRBotNn9u9xBOB-o6agPV",
+      "invariant_bindings": [
+        {
+          "invariant": "Δe=0",
+          "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+        },
+        {
+          "invariant": "Ψ=0",
+          "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+        },
+        {
+          "invariant": "Θ15=true",
+          "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+        },
+        {
+          "invariant": "Ω=true",
+          "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+        }
+      ],
+      "name": "",
+      "opcode": "ORDERED_DISTINCT",
+      "operands": [
+        "xy",
+        "yx"
+      ],
+      "schema": "HHS_TARGET_IR_INSTRUCTION_V1",
+      "source_operation": "EVALUATE_DISTINCTNESS",
+      "source_span": {
+        "column_end": 8,
+        "column_start": 3,
+        "end": 43,
+        "line_end": 4,
+        "line_start": 4,
+        "start": 38,
+        "text_sha256": "2b8b8a6a2df353aa816e471ce20675f62899ce6ee3942c81324a036063f3a2e6"
+      },
+      "source_statement_id": "statement:node:2:fK1xD9moOlkW6PUI",
+      "source_statement_root_hash72": "0000000000000000000000000000001HjYPdGbKn-f*)SXL)U0qzRNH0bvy8!Do2ItUeONc1"
+    },
+    {
+      "authority_requirements": [],
+      "effect_declaration": "PURE_SYMBOLIC",
+      "instruction_index": 6,
+      "instruction_root_hash72": "00000000000000000000000000000039HyAOMkR=fEnicjT=3(IiQ3IAfPDG7dwR>eQ/ki6V",
+      "invariant_bindings": [
+        {
+          "invariant": "Δe=0",
+          "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+        },
+        {
+          "invariant": "Ψ=0",
+          "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+        },
+        {
+          "invariant": "Θ15=true",
+          "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+        },
+        {
+          "invariant": "Ω=true",
+          "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+        }
+      ],
+      "name": "",
+      "opcode": "RELATION_EQUAL",
+      "operands": [
+        "Δe",
+        "0"
+      ],
+      "schema": "HHS_TARGET_IR_INSTRUCTION_V1",
+      "source_operation": "EVALUATE_EQUALITY",
+      "source_span": {
+        "column_end": 7,
+        "column_start": 3,
+        "end": 51,
+        "line_end": 5,
+        "line_start": 5,
+        "start": 47,
+        "text_sha256": "4756f457b3adc91fdb83f202a2556e83ebab77fd5dc71b8ae92f63ccc2c54ba8"
+      },
+      "source_statement_id": "statement:node:3:4ydIHfE5FRxsTeaE",
+      "source_statement_root_hash72": "0000000000000000000000000000001va+hb^LTonB)88UaKa5JAq+>zc/AgHpFJ+vHH!j!0"
+    },
+    {
+      "authority_requirements": [],
+      "effect_declaration": "PURE_SYMBOLIC",
+      "instruction_index": 7,
+      "instruction_root_hash72": "0000000000000000000000000000001Qm(0AQ(z/AbFb85C2>+KObjb(AsPKNH0lfat=wCQK",
+      "invariant_bindings": [
+        {
+          "invariant": "Δe=0",
+          "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+        },
+        {
+          "invariant": "Ψ=0",
+          "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+        },
+        {
+          "invariant": "Θ15=true",
+          "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+        },
+        {
+          "invariant": "Ω=true",
+          "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+        }
+      ],
+      "name": "",
+      "opcode": "RELATION_EQUAL",
+      "operands": [
+        "Ψ",
+        "0"
+      ],
+      "schema": "HHS_TARGET_IR_INSTRUCTION_V1",
+      "source_operation": "EVALUATE_EQUALITY",
+      "source_span": {
+        "column_end": 6,
+        "column_start": 3,
+        "end": 58,
+        "line_end": 6,
+        "line_start": 6,
+        "start": 55,
+        "text_sha256": "98bd2afe37342b2c2f357b9ae753f034478fde52e911f9b81a390f7831e51774"
+      },
+      "source_statement_id": "statement:node:4:d9KItwdq7(Nyj0eC",
+      "source_statement_root_hash72": "0000000000000000000000000000000i88lP!d8PDugy26vdeo+dXwouXPfapR-b>t=c9M04"
+    },
+    {
+      "authority_requirements": [],
+      "effect_declaration": "PURE_SYMBOLIC",
+      "instruction_index": 8,
+      "instruction_root_hash72": "0000000000000000000000000000001/SHzgv0hr)j7G^P-N9c5T)eVg^akH/AOa1-CJ!NvU",
+      "invariant_bindings": [
+        {
+          "invariant": "Δe=0",
+          "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+        },
+        {
+          "invariant": "Ψ=0",
+          "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+        },
+        {
+          "invariant": "Θ15=true",
+          "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+        },
+        {
+          "invariant": "Ω=true",
+          "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+        }
+      ],
+      "name": "",
+      "opcode": "RELATION_EQUAL",
+      "operands": [
+        "Θ15",
+        "true"
+      ],
+      "schema": "HHS_TARGET_IR_INSTRUCTION_V1",
+      "source_operation": "EVALUATE_EQUALITY",
+      "source_span": {
+        "column_end": 11,
+        "column_start": 3,
+        "end": 70,
+        "line_end": 7,
+        "line_start": 7,
+        "start": 62,
+        "text_sha256": "ec90a1149adec349ae66707412985bfe3c3e9f72568b35ce8807f1e23e350582"
+      },
+      "source_statement_id": "statement:node:5:uvo*?TxCW?(D6BGT",
+      "source_statement_root_hash72": "0000000000000000000000000000001C+o?5^/=b9padKFNsxoQ+18SpijQKyJH4e)TAIMw0"
+    },
+    {
+      "authority_requirements": [],
+      "effect_declaration": "PURE_SYMBOLIC",
+      "instruction_index": 9,
+      "instruction_root_hash72": "0000000000000000000000000000000)iWq2O54?f*50So34)ioEmRBMd^iwfzB0bw9EylK(",
+      "invariant_bindings": [
+        {
+          "invariant": "Δe=0",
+          "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+        },
+        {
+          "invariant": "Ψ=0",
+          "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+        },
+        {
+          "invariant": "Θ15=true",
+          "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+        },
+        {
+          "invariant": "Ω=true",
+          "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+        }
+      ],
+      "name": "",
+      "opcode": "RELATION_EQUAL",
+      "operands": [
+        "Ω",
+        "true"
+      ],
+      "schema": "HHS_TARGET_IR_INSTRUCTION_V1",
+      "source_operation": "EVALUATE_EQUALITY",
+      "source_span": {
+        "column_end": 9,
+        "column_start": 3,
+        "end": 80,
+        "line_end": 8,
+        "line_start": 8,
+        "start": 74,
+        "text_sha256": "dd380a36632d9164982bf1f417f6a08be9cf8f43f54301b749cd69e73238e92c"
+      },
+      "source_statement_id": "statement:node:6:jT/f-762EwbJb4y1",
+      "source_statement_root_hash72": "0000000000000000000000000000004sYwEIacQN78zK>bpK7yFk-MQl9ji2Ay-r4/=s-!sR"
+    }
+  ],
+  "schema": "HHS_TARGET_IR_V1",
+  "source_identity": {
+    "executable_ir_root_hash72": "0000000000000000000000000000003nz(rIc=TJv68wNxB1?EX(8axOjviJDyzdpoAqZ2?g",
+    "source_artifact_root_hash72": "0000000000000000000000000000003lJE1vAB*mDssQv68yr(^)vCAdpg(15a=Y-!ICA-5V",
+    "source_sha256": "605954aa1754cd052741f66f9b023918fec433e2dc393886fc60d89f771045ef",
+    "typed_ir_root_hash72": "00000000000000000000000000000049*>gYacfoAFr2RDhvw>K/nm3bsh3yBrZG)gFHKHcu"
+  },
+  "target_contract_root_hash72": "0000000000000000000000000000000HAWphs>PD8Sr?Yv*OJTIyWspEUHK4l*RHfx)whw!b",
+  "target_id": "HHS_PORTABLE_BYTECODE_V1",
+  "target_ir_id": "target-ir:pass077:portable",
+  "target_ir_root_hash72": "0000000000000000000000000000003ZNAJZfEpKSYHea91DEQ=ku(1jt89*g*H2bxrTvXAE"
+}

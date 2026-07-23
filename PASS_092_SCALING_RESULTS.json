@@ -1,0 +1,125 @@
+{
+  "schema": "HHS_PASS_092_SCALING_RESULTS_V1",
+  "results": [
+    {
+      "prime_seed_count": 3,
+      "composite_seed_count": 12,
+      "operator_prime_count": 1,
+      "lane_count": 16,
+      "bounded_lanes": 0,
+      "status": "DETERMINISTIC_FRONTIER_COMPLETE",
+      "tensor_root_hash72": "0000000000000000000000000000002M2ih0lKSOq*CS=XDJVz0dB?IJiexgppdcT?pSqrx1",
+      "workload_id": "W92-01:prime-powers-under-T3"
+    },
+    {
+      "prime_seed_count": 4,
+      "composite_seed_count": 11,
+      "operator_prime_count": 1,
+      "lane_count": 16,
+      "bounded_lanes": 0,
+      "status": "DETERMINISTIC_FRONTIER_COMPLETE",
+      "tensor_root_hash72": "0000000000000000000000000000000+K5AX/Q)-bawTX1yfL*Bf-p=ESbjsgwdoG(u*F4+a",
+      "workload_id": "W92-02:square-free-first-four-under-T3"
+    },
+    {
+      "prime_seed_count": 4,
+      "composite_seed_count": 11,
+      "operator_prime_count": 3,
+      "lane_count": 48,
+      "bounded_lanes": 18,
+      "status": "DETERMINISTIC_FRONTIER_COMPLETE",
+      "tensor_root_hash72": "0000000000000000000000000000004eXa0b+NCf>9-BfNth(/I!nR/nJbxvXmLMNneMIWG4",
+      "workload_id": "W92-03:same-seeds-T3-T5-T7"
+    },
+    {
+      "prime_seed_count": 5,
+      "composite_seed_count": 26,
+      "operator_prime_count": 3,
+      "lane_count": 96,
+      "bounded_lanes": 48,
+      "status": "DETERMINISTIC_FRONTIER_COMPLETE",
+      "tensor_root_hash72": "0000000000000000000000000000002Ct6Ty=?0lcS4^8v^+U+4Oz5)Uv2nE/2lUc-JEyI=c",
+      "workload_id": "W92-04:first-five-square-free-tensor"
+    },
+    {
+      "prime_seed_count": 4,
+      "composite_seed_count": 59,
+      "operator_prime_count": 3,
+      "lane_count": 192,
+      "bounded_lanes": 101,
+      "status": "DETERMINISTIC_FRONTIER_COMPLETE",
+      "tensor_root_hash72": "0000000000000000000000000000003ZsiKshBuq=b=wVOn=GX+y-h)riTrRq8Cc0xVl3JJ!",
+      "workload_id": "W92-05:mixed-exponents-two"
+    },
+    {
+      "prime_seed_count": 5,
+      "composite_seed_count": 26,
+      "operator_prime_count": 4,
+      "lane_count": 128,
+      "bounded_lanes": 85,
+      "status": "DETERMINISTIC_FRONTIER_COMPLETE",
+      "tensor_root_hash72": "0000000000000000000000000000000KziWXuhfV(OmfuzNpML?IDG=Q)M)LbvrSDt(alQBA",
+      "workload_id": "W92-06:primorial-frontier"
+    },
+    {
+      "prime_seed_count": 4,
+      "composite_seed_count": 11,
+      "operator_prime_count": 4,
+      "lane_count": 64,
+      "bounded_lanes": 34,
+      "status": "DETERMINISTIC_FRONTIER_COMPLETE",
+      "tensor_root_hash72": "0000000000000000000000000000003wL^huoXSiGV/ffPgQDjWlLWYjk)B3N6+nR6HHaRHT",
+      "workload_id": "W92-07:cross-operator-intersections"
+    },
+    {
+      "prime_seed_count": 3,
+      "composite_seed_count": 4,
+      "operator_prime_count": 3,
+      "lane_count": 24,
+      "bounded_lanes": 4,
+      "status": "DETERMINISTIC_FRONTIER_COMPLETE",
+      "tensor_root_hash72": "0000000000000000000000000000003GbNZND^uMNIs->wy9jLbXthQTi(skBNf>=nfZ*XeU",
+      "workload_id": "W92-08:cycle-discovery-5n1-7n1"
+    },
+    {
+      "prime_seed_count": 3,
+      "composite_seed_count": 4,
+      "operator_prime_count": 3,
+      "lane_count": 24,
+      "bounded_lanes": 0,
+      "status": "DETERMINISTIC_FRONTIER_COMPLETE",
+      "tensor_root_hash72": "0000000000000000000000000000000OCsx?T/tnv*u3IIiU^PQkw>v17r?=-9IjnavF?f2*",
+      "workload_id": "W92-09:noncommutative-prime-schedule"
+    },
+    {
+      "prime_seed_count": 5,
+      "composite_seed_count": 26,
+      "operator_prime_count": 2,
+      "lane_count": 64,
+      "bounded_lanes": 20,
+      "status": "DETERMINISTIC_FRONTIER_COMPLETE",
+      "tensor_root_hash72": "0000000000000000000000000000002PQ1CVZyHebMC0rOmw>(EbtYmZ*TmF4^zBsLs0Dlu9",
+      "workload_id": "W92-10:same-operator-suffix-compression"
+    },
+    {
+      "prime_seed_count": 6,
+      "composite_seed_count": 57,
+      "operator_prime_count": 4,
+      "lane_count": 256,
+      "bounded_lanes": 205,
+      "status": "DETERMINISTIC_FRONTIER_COMPLETE",
+      "tensor_root_hash72": "00000000000000000000000000000048wT8Qmf^o)-0e7Jth>hmZAMrA!mb-kzq24lCFvRN^",
+      "workload_id": "W92-11:resource-bounded-large-tensor"
+    },
+    {
+      "prime_seed_count": 5,
+      "composite_seed_count": 26,
+      "operator_prime_count": 3,
+      "lane_count": 96,
+      "bounded_lanes": 49,
+      "status": "DETERMINISTIC_FRONTIER_COMPLETE",
+      "tensor_root_hash72": "0000000000000000000000000000003wjUgHf=iqIrR3kjl^KxS4OZ5cJj>!0O*CxNfRNro6",
+      "workload_id": "W92-12:checkpoint-exact-replay"
+    }
+  ]
+}

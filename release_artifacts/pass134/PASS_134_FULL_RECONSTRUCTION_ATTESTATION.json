@@ -1,0 +1,18 @@
+{
+  "full_ancestry_tree_reconstructed": true,
+  "historical_first_corrupt_checkpoint": "PASS_133_ORIGINAL_PACKAGE",
+  "historical_pass_id": "PASS_134",
+  "missing_parent_paths": 0,
+  "original_pass132_source_bytes_recovered": false,
+  "parent_archive_sha256": "fb8c73fe850fa0ef1eab52aee4015e179d38479740b961583aa4205bf2e7dd17",
+  "parent_pass": "PASS_133_RECOVERED_R1",
+  "parent_tree_root_sha256": "10f20d0c63ab86241cbf943358f886822c1e3b099a433cc2482eae254b14829f",
+  "pass131_full_tree_migrated": true,
+  "pass132_functional_reconstruction_verified": true,
+  "pass132_source_identity_erratum_inherited": true,
+  "pass133_full_tree_recovered": true,
+  "pass_id": "PASS_134_FULL_R1",
+  "repaired_lineage": "PASS_131_MIGRATED_R1 -> PASS_132_RECONSTRUCTED_R1 -> PASS_133_RECOVERED_R1 -> PASS_134_FULL_R1",
+  "schema": "HHS_PASS134_FULL_RECONSTRUCTION_ATTESTATION_V1",
+  "terminal_status": "FULL_CHECKPOINT_CHAIN_RECONSTRUCTED_WITH_PASS132_SOURCE_IDENTITY_ERRATUM"
+}

@@ -1,0 +1,13 @@
+{
+  "schema": "HHS_PASS_093_TRANSFER_V1",
+  "result": {
+    "status": "ATTEMPTED_NON_AUTHORITATIVE",
+    "target": "VM81_ROUTING",
+    "transferred_symbols": [
+      "ORDER",
+      "BRANCH",
+      "MERGE",
+      "CYCLE"
+    ]
+  }
+}

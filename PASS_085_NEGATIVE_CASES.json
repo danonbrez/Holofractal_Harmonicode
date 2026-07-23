@@ -1,0 +1,65 @@
+{
+  "schema": "HHS_PASS_085_NEGATIVE_CASES_V1",
+  "cases": [
+    {
+      "case": "duplicate-observation",
+      "expected": "REJECT_DUPLICATE_SPATIAL_OBSERVATION_IDENTITY",
+      "observed": "REJECT_DUPLICATE_SPATIAL_OBSERVATION_IDENTITY",
+      "passed": true
+    },
+    {
+      "case": "missing-camera-pose",
+      "expected": "REJECT_UNWITNESSED_CAMERA_POSE",
+      "observed": "REJECT_UNWITNESSED_CAMERA_POSE",
+      "passed": true
+    },
+    {
+      "case": "missing-spatial-ray",
+      "expected": "REJECT_UNWITNESSED_SPATIAL_RAY",
+      "observed": "REJECT_UNWITNESSED_SPATIAL_RAY",
+      "passed": true
+    },
+    {
+      "case": "entity-without-support",
+      "expected": "REJECT_SPATIAL_ENTITY_WITHOUT_SUPPORT",
+      "observed": "REJECT_SPATIAL_ENTITY_WITHOUT_SUPPORT",
+      "passed": true
+    },
+    {
+      "case": "identity-collapse",
+      "expected": "REJECT_OBSERVED_RECONSTRUCTED_IDENTITY_COLLAPSE",
+      "observed": "REJECT_OBSERVED_RECONSTRUCTED_IDENTITY_COLLAPSE",
+      "passed": true
+    },
+    {
+      "case": "latency-as-geometry",
+      "expected": "REJECT_PIPELINE_LATENCY_AS_GEOMETRY",
+      "observed": "REJECT_PIPELINE_LATENCY_AS_GEOMETRY",
+      "passed": true
+    },
+    {
+      "case": "unauthorized-persistence",
+      "expected": "REJECT_UNAUTHORIZED_SPATIAL_PERSISTENCE",
+      "observed": "REJECT_UNAUTHORIZED_SPATIAL_PERSISTENCE",
+      "passed": true
+    },
+    {
+      "case": "opaque-float",
+      "expected": "REJECT_OPAQUE_FLOAT_AS_CANONICAL_GEOMETRY",
+      "observed": "REJECT_OPAQUE_FLOAT_AS_CANONICAL_GEOMETRY",
+      "passed": true
+    },
+    {
+      "case": "closure-failure",
+      "expected": "REJECT_SPATIAL_CLOSURE_FAILURE",
+      "observed": "REJECT_SPATIAL_CLOSURE_FAILURE",
+      "passed": true
+    },
+    {
+      "case": "replay-mismatch",
+      "expected": "REJECT_SPACE_REPLAY_MISMATCH",
+      "observed": "REJECT_SPACE_REPLAY_MISMATCH",
+      "passed": true
+    }
+  ]
+}

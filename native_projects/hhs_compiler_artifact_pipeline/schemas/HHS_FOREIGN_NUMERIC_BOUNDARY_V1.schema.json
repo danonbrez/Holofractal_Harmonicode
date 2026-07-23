@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "loss_classification": {
+      "enum": [
+        "EXACT_FOR_VALUE",
+        "LOSSY_ROUNDING",
+        "OVERFLOW",
+        "NAN_INF_SUBSTITUTION"
+      ]
+    },
+    "schema": {
+      "const": "HHS_FOREIGN_NUMERIC_BOUNDARY_V1"
+    },
+    "untrusted_status": {
+      "const": true
+    }
+  },
+  "required": [
+    "schema",
+    "input_exact_value",
+    "conversion_rule",
+    "rounding_mode",
+    "target_width",
+    "overflow_behavior",
+    "nan_inf_policy",
+    "resulting_foreign_value",
+    "loss_classification",
+    "reconstruction_limits",
+    "untrusted_status"
+  ],
+  "title": "HHS_FOREIGN_NUMERIC_BOUNDARY_V1",
+  "type": "object"
+}

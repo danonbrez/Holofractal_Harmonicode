@@ -1,0 +1,122 @@
+{
+  "file_count": 23,
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "450648a2a8a015ee2af52122074cd5da2376e52de5183bc486b9cbae48d88ecb",
+      "size_bytes": 1448
+    },
+    {
+      "path": "contracts/pass133/HHS-I133_SCHIC_v1.0.md",
+      "sha256": "79ce272e8a7047d03bf6fb18922a0553319cde5b10ac9add54036caedb4050aa",
+      "size_bytes": 2916
+    },
+    {
+      "path": "contracts/pass133/PASS_133_CONTRACT.json",
+      "sha256": "268d68662052df9d1a22eb9801881b5120cc33873482a2ff796000ed1c70f79f",
+      "size_bytes": 631
+    },
+    {
+      "path": "hhs_runtime/__init__.py",
+      "sha256": "00c5bfd66d9018117508997c269bdf052f7dcace8146f854e792416295da5b7c",
+      "size_bytes": 86
+    },
+    {
+      "path": "hhs_runtime/bigint_envelope.py",
+      "sha256": "5f19657246912a89081e63b534bb3aa4df45fdfbc5b681b6901072a1491b1629",
+      "size_bytes": 3246
+    },
+    {
+      "path": "hhs_runtime/canonical.py",
+      "sha256": "08f62111fafa0bbf5baaaa24e60e2b6f3c851c3d37bc70d116179f8b8d87dca0",
+      "size_bytes": 5918
+    },
+    {
+      "path": "hhs_runtime/hash72_checkpoint.py",
+      "sha256": "c9358913b586c88cc1fe0b16d3633b48a703709443571203cd90863ddf14986d",
+      "size_bytes": 6085
+    },
+    {
+      "path": "hhs_runtime/native/pass133_checkpoint_native.c",
+      "sha256": "6ca62e0995c68df52dedaf99d844c14087ee77c18e930d4c1601b22f190ccd02",
+      "size_bytes": 3893
+    },
+    {
+      "path": "hhs_runtime/palindromic_ecc.py",
+      "sha256": "f1a74b353bf6483ed8c023711a033b326b920c93669136cdaf53fe496dcb365f",
+      "size_bytes": 9268
+    },
+    {
+      "path": "hhs_runtime/pass133_release.py",
+      "sha256": "3fbe0bebad989676c28f4a42a960b31c6da70b393322d7a3f6d8411251b2c89c",
+      "size_bytes": 9397
+    },
+    {
+      "path": "hhs_runtime/phase_tensor.py",
+      "sha256": "c0abeb878258af723a1db6b420bfaa67068365cfc2dcc4e22242d029a3dc2612",
+      "size_bytes": 10650
+    },
+    {
+      "path": "hhs_runtime/prime_generation.py",
+      "sha256": "d95b6f98546123e03aa25dbbae3cdab3b3dfae0f2046634f9ac5811b34f2506a",
+      "size_bytes": 5297
+    },
+    {
+      "path": "hhs_runtime/prime_magic_key_state.py",
+      "sha256": "884f4f0a4ca7d7746d6085960c1107f8811d3533dbe0e1d8e251b9ed9f3ae38c",
+      "size_bytes": 9049
+    },
+    {
+      "path": "hhs_runtime/semantic_continuity.py",
+      "sha256": "86542837bd6a8cad7f62fb73512ba5a8ba340ffc13fe398ad1746963248ab925",
+      "size_bytes": 5930
+    },
+    {
+      "path": "hhs_runtime/sudoku_tensor.py",
+      "sha256": "2a376956ff8a6927299e8059011b05c3454c40021c4f88d55b4ac8e8d4084608",
+      "size_bytes": 4860
+    },
+    {
+      "path": "parent_checkpoint/PASS_132_COMPLETION_ATTESTATION.json",
+      "sha256": "a004f6fecbc8747870e64be4ac9cab6778a57e365b7c70aa9ded07a241ae823f",
+      "size_bytes": 7409
+    },
+    {
+      "path": "parent_checkpoint/PASS_132_CONTINUATION_CHECKPOINT.json",
+      "sha256": "98ca86ab3010b2156d96d2b2d2073b6c02de0387838e2feb302b385f3fa1446a",
+      "size_bytes": 1872
+    },
+    {
+      "path": "parent_checkpoint/PASS_132_RELEASE_EVIDENCE.zip",
+      "sha256": "32e4bc0f6e54d37697634c6101af5670b65f2f470878b981c0f2887db9b332ea",
+      "size_bytes": 2151100
+    },
+    {
+      "path": "parent_checkpoint/PASS_132_RELEASE_EVIDENCE.zip.sha256",
+      "sha256": "b24e6bae1d9bbd084b5b2de781403cf06e9b7f4abee60cd7fa9dab5503fd2926",
+      "size_bytes": 113
+    },
+    {
+      "path": "parent_checkpoint/PASS_132_RELEASE_MANIFEST.json",
+      "sha256": "95c8d29d41ab74f9ab20c2090a07759749e0fd16cda9fc7842b5bda17dc3c893",
+      "size_bytes": 6540
+    },
+    {
+      "path": "pyproject.toml",
+      "sha256": "30efe20c143e63961d8c84203c6f633188bbc442374c76647d85bd2b8a2b88b6",
+      "size_bytes": 265
+    },
+    {
+      "path": "tests/test_pass133.py",
+      "sha256": "fffeacdb63d0259b065a7ab5951c5aadee5391dbba3a7bcdd293a87a9d181ea2",
+      "size_bytes": 4003
+    },
+    {
+      "path": "tools/run_pass133.py",
+      "sha256": "32a2e7ec199570ef3c1da2a33256c32231c597950a0ec23c685605e8c54ad2c1",
+      "size_bytes": 388
+    }
+  ],
+  "schema": "HHS_PASS133_SOURCE_MANIFEST_V1",
+  "source_root_sha256": "b2db07966eb8c8a77c6601210e9fcf0f1dca0c3796a5edd6431406292d17f82c"
+}

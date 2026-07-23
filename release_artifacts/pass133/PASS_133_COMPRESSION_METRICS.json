@@ -1,0 +1,21 @@
+{
+  "ecc": {
+    "carrier_bit_length": 85927
+  },
+  "phase": {
+    "counter_bits": 361,
+    "encrypted_bigint_bits": 25463,
+    "raw_prime_carrier_bits": 5184,
+    "seed_bits": 256,
+    "topology_bits": 167
+  },
+  "prime_magic": {
+    "alphabet_or_seed_bits": 656,
+    "gross_ratio_raw_to_alphabet_plus_topology": "5184/823",
+    "net_ratio_denominator": 5520,
+    "net_ratio_numerator": 5184,
+    "operational_envelope_bits": 5520,
+    "raw_tensor_bits": 5184,
+    "topology_bits": 167
+  }
+}

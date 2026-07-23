@@ -1,0 +1,434 @@
+{
+  "closed": true,
+  "deterministic": true,
+  "exact_arithmetic_only": true,
+  "executable_ir_ref": "executable-ir:repair:pass076:omega",
+  "executable_ir_root_hash72": "0000000000000000000000000000003nz(rIc=TJv68wNxB1?EX(8axOjviJDyzdpoAqZ2?g",
+  "execution_run_root_hash72": "0000000000000000000000000000003AUIc)5ePGkN?GwFM?ifYV>Z-QVCtmw6nSB^20iVXI",
+  "external_effects_executed": false,
+  "final_state": {
+    "bindings": {
+      "x": {
+        "operands": [
+          {
+            "denominator": 1,
+            "numerator": 1,
+            "type": "EXACT_RATIONAL"
+          },
+          {
+            "name": "y",
+            "type": "SYMBOL"
+          }
+        ],
+        "operator": "DIVIDE",
+        "type": "SYMBOLIC_EXPRESSION"
+      },
+      "z": {
+        "operands": [
+          {
+            "denominator": 1,
+            "numerator": 1,
+            "type": "EXACT_RATIONAL"
+          },
+          {
+            "name": "w",
+            "type": "SYMBOL"
+          }
+        ],
+        "operator": "DIVIDE",
+        "type": "SYMBOLIC_EXPRESSION"
+      },
+      "Δe": {
+        "denominator": 1,
+        "numerator": 0,
+        "type": "EXACT_RATIONAL"
+      },
+      "Θ15": {
+        "type": "BOOLEAN",
+        "value": true
+      },
+      "Ψ": {
+        "denominator": 1,
+        "numerator": 0,
+        "type": "EXACT_RATIONAL"
+      },
+      "Ω": {
+        "type": "BOOLEAN",
+        "value": true
+      }
+    },
+    "defined_gates": {
+      "PHASE_GATE": "0000000000000000000000000000004z*T9GQIZR?4r^?o?!waIq30iWpP*)?=3*gnXYVAAv"
+    },
+    "diagnostics": [],
+    "executable_ir_ref": "executable-ir:repair:pass076:omega",
+    "executable_ir_root_hash72": "0000000000000000000000000000003nz(rIc=TJv68wNxB1?EX(8axOjviJDyzdpoAqZ2?g",
+    "external_effects_executed": false,
+    "foundation_mutated": false,
+    "invariant_status": {
+      "Δe": "SATISFIED",
+      "Θ15": "SATISFIED",
+      "Ψ": "SATISFIED",
+      "Ω": "SATISFIED"
+    },
+    "plan_length": 9,
+    "previous_state_root_hash72": "0000000000000000000000000000003pkCzGC+T+btm>ho(NH?EFKEdeJg7g6u*u*Or/ftWI",
+    "program_counter": 9,
+    "run_id": "execution:repair:pass076:omega",
+    "schema": "HHS_HARMONICODE_INTERPRETER_STATE_V1",
+    "state_root_hash72": "0000000000000000000000000000000JWu(TYBh9xl3hCG2Bf6/5+)UvzJxk!hgNf!Rh+v-?",
+    "status": "CLOSED",
+    "step_count": 9,
+    "version": "HHS_EXACT_SYMBOLIC_INTERPRETER_PASS_076_V1"
+  },
+  "foundation_mutated": false,
+  "initial_state_root_hash72": "0000000000000000000000000000002rWB>1a*>imNgDknf-ILWrAc7usYnjEgRlmtRwZZyi",
+  "run_id": "execution:repair:pass076:omega",
+  "schema": "HHS_INTERPRETER_EXECUTION_RUN_V1",
+  "status": "CLOSED",
+  "step_count": 9,
+  "step_receipts": [
+    {
+      "external_effects_executed": false,
+      "foundation_mutated": false,
+      "operation": "DEFINE_GATE",
+      "outcome": {
+        "gate_defined": "PHASE_GATE",
+        "satisfied": true
+      },
+      "previous_state_root_hash72": "0000000000000000000000000000002rWB>1a*>imNgDknf-ILWrAc7usYnjEgRlmtRwZZyi",
+      "previous_step_receipt_root_hash72": "GENESIS",
+      "program_counter_after": 1,
+      "program_counter_before": 0,
+      "resulting_state_root_hash72": "0000000000000000000000000000003(ipwZXRt(tzFjTw6c01-axlHcjT2Z4>/geDN62n/k",
+      "run_id": "execution:repair:pass076:omega",
+      "schema": "HHS_INTERPRETER_STEP_RECEIPT_V1",
+      "statement_id": "statement:node:0:D-B=Bju5c36F>r5K",
+      "statement_root_hash72": "0000000000000000000000000000004z*T9GQIZR?4r^?o?!waIq30iWpP*)?=3*gnXYVAAv",
+      "status_after": "RUNNING",
+      "step_index": 1,
+      "step_receipt_root_hash72": "0000000000000000000000000000000DkO)nNMw)zvs!Xqmtl1v1(7ZGveTt9pZxQbA(wsy="
+    },
+    {
+      "external_effects_executed": false,
+      "foundation_mutated": false,
+      "operation": "INVOKE_GATE",
+      "outcome": {
+        "gate_invoked": "PHASE_GATE",
+        "satisfied": true
+      },
+      "previous_state_root_hash72": "0000000000000000000000000000003(ipwZXRt(tzFjTw6c01-axlHcjT2Z4>/geDN62n/k",
+      "previous_step_receipt_root_hash72": "0000000000000000000000000000000DkO)nNMw)zvs!Xqmtl1v1(7ZGveTt9pZxQbA(wsy=",
+      "program_counter_after": 2,
+      "program_counter_before": 1,
+      "resulting_state_root_hash72": "0000000000000000000000000000003w3we^G-0fR9QbNPEs-Zzt=pvTvNSEpaQiWQ)v2(g>",
+      "run_id": "execution:repair:pass076:omega",
+      "schema": "HHS_INTERPRETER_STEP_RECEIPT_V1",
+      "statement_id": "statement:node:1:bMw+L>HGOMCD0fhK",
+      "statement_root_hash72": "0000000000000000000000000000001anO31>NJWSAkrGW(ng=X4/l!Ns(QPqUEZWnDEQWk2",
+      "status_after": "RUNNING",
+      "step_index": 2,
+      "step_receipt_root_hash72": "0000000000000000000000000000003IdQBJzl9pCZ5O*>U(J+Lai69Ehah(h9>tB0QmVI2!"
+    },
+    {
+      "external_effects_executed": false,
+      "foundation_mutated": false,
+      "operation": "EVALUATE_EQUALITY",
+      "outcome": {
+        "observations": [
+          {
+            "action": "BOUND_LEFT_SYMBOL",
+            "equal": true,
+            "left_text": "x",
+            "left_value": {
+              "operands": [
+                {
+                  "denominator": 1,
+                  "numerator": 1,
+                  "type": "EXACT_RATIONAL"
+                },
+                {
+                  "name": "y",
+                  "type": "SYMBOL"
+                }
+              ],
+              "operator": "DIVIDE",
+              "type": "SYMBOLIC_EXPRESSION"
+            },
+            "right_text": "1/y",
+            "right_value": {
+              "operands": [
+                {
+                  "denominator": 1,
+                  "numerator": 1,
+                  "type": "EXACT_RATIONAL"
+                },
+                {
+                  "name": "y",
+                  "type": "SYMBOL"
+                }
+              ],
+              "operator": "DIVIDE",
+              "type": "SYMBOLIC_EXPRESSION"
+            }
+          }
+        ],
+        "satisfied": true
+      },
+      "previous_state_root_hash72": "0000000000000000000000000000003w3we^G-0fR9QbNPEs-Zzt=pvTvNSEpaQiWQ)v2(g>",
+      "previous_step_receipt_root_hash72": "0000000000000000000000000000003IdQBJzl9pCZ5O*>U(J+Lai69Ehah(h9>tB0QmVI2!",
+      "program_counter_after": 3,
+      "program_counter_before": 2,
+      "resulting_state_root_hash72": "0000000000000000000000000000004eMhz4E7gEhwKIGCNnaNCKO!4MZNJ>CMG*?aI0Iq0a",
+      "run_id": "execution:repair:pass076:omega",
+      "schema": "HHS_INTERPRETER_STEP_RECEIPT_V1",
+      "statement_id": "statement:node:0:Olnme15U=NuapZff",
+      "statement_root_hash72": "0000000000000000000000000000001?p8j(Hfdpfh^ecHw+JC61=YjE+!D4bkB1V0yk7qN5",
+      "status_after": "RUNNING",
+      "step_index": 3,
+      "step_receipt_root_hash72": "0000000000000000000000000000002neP==nMsd-lBScdy/bRKs(GQfbNZ98iE9-l=-pW?h"
+    },
+    {
+      "external_effects_executed": false,
+      "foundation_mutated": false,
+      "operation": "EVALUATE_EQUALITY",
+      "outcome": {
+        "observations": [
+          {
+            "action": "BOUND_LEFT_SYMBOL",
+            "equal": true,
+            "left_text": "z",
+            "left_value": {
+              "operands": [
+                {
+                  "denominator": 1,
+                  "numerator": 1,
+                  "type": "EXACT_RATIONAL"
+                },
+                {
+                  "name": "w",
+                  "type": "SYMBOL"
+                }
+              ],
+              "operator": "DIVIDE",
+              "type": "SYMBOLIC_EXPRESSION"
+            },
+            "right_text": "1/w",
+            "right_value": {
+              "operands": [
+                {
+                  "denominator": 1,
+                  "numerator": 1,
+                  "type": "EXACT_RATIONAL"
+                },
+                {
+                  "name": "w",
+                  "type": "SYMBOL"
+                }
+              ],
+              "operator": "DIVIDE",
+              "type": "SYMBOLIC_EXPRESSION"
+            }
+          }
+        ],
+        "satisfied": true
+      },
+      "previous_state_root_hash72": "0000000000000000000000000000004eMhz4E7gEhwKIGCNnaNCKO!4MZNJ>CMG*?aI0Iq0a",
+      "previous_step_receipt_root_hash72": "0000000000000000000000000000002neP==nMsd-lBScdy/bRKs(GQfbNZ98iE9-l=-pW?h",
+      "program_counter_after": 4,
+      "program_counter_before": 3,
+      "resulting_state_root_hash72": "0000000000000000000000000000004gNvIIwLO2Uk9+tcyoLThnK!vf^w=j3YYam+jy>6Ad",
+      "run_id": "execution:repair:pass076:omega",
+      "schema": "HHS_INTERPRETER_STEP_RECEIPT_V1",
+      "statement_id": "statement:node:1:zQoLQrgk2iPmQ(?m",
+      "statement_root_hash72": "0000000000000000000000000000000a2u(23D3ZdAG-Mg9tG3pqki3Z4jHYkuMLVewCe>2+",
+      "status_after": "RUNNING",
+      "step_index": 4,
+      "step_receipt_root_hash72": "00000000000000000000000000000023TCSpw>MfzwAH?I05n/baeK/>>4cx9H0Vmphs^MQT"
+    },
+    {
+      "external_effects_executed": false,
+      "foundation_mutated": false,
+      "operation": "EVALUATE_DISTINCTNESS",
+      "outcome": {
+        "observations": [
+          {
+            "distinct": true,
+            "left_text": "xy",
+            "left_value": {
+              "name": "xy",
+              "type": "ORDERED_PRODUCT"
+            },
+            "right_text": "yx",
+            "right_value": {
+              "name": "yx",
+              "type": "ORDERED_PRODUCT"
+            }
+          }
+        ],
+        "satisfied": true
+      },
+      "previous_state_root_hash72": "0000000000000000000000000000004gNvIIwLO2Uk9+tcyoLThnK!vf^w=j3YYam+jy>6Ad",
+      "previous_step_receipt_root_hash72": "00000000000000000000000000000023TCSpw>MfzwAH?I05n/baeK/>>4cx9H0Vmphs^MQT",
+      "program_counter_after": 5,
+      "program_counter_before": 4,
+      "resulting_state_root_hash72": "0000000000000000000000000000002xW/4yEgBBmHbvPIq5NxjK/rff428A=x^WiCrbmMv=",
+      "run_id": "execution:repair:pass076:omega",
+      "schema": "HHS_INTERPRETER_STEP_RECEIPT_V1",
+      "statement_id": "statement:node:2:fK1xD9moOlkW6PUI",
+      "statement_root_hash72": "0000000000000000000000000000001HjYPdGbKn-f*)SXL)U0qzRNH0bvy8!Do2ItUeONc1",
+      "status_after": "RUNNING",
+      "step_index": 5,
+      "step_receipt_root_hash72": "0000000000000000000000000000001aGK)UHzr2Pbnhzmwbp^>=RWWULl7gASwiXS=EycGy"
+    },
+    {
+      "external_effects_executed": false,
+      "foundation_mutated": false,
+      "operation": "EVALUATE_EQUALITY",
+      "outcome": {
+        "observations": [
+          {
+            "action": "BOUND_LEFT_SYMBOL",
+            "equal": true,
+            "left_text": "Δe",
+            "left_value": {
+              "denominator": 1,
+              "numerator": 0,
+              "type": "EXACT_RATIONAL"
+            },
+            "right_text": "0",
+            "right_value": {
+              "denominator": 1,
+              "numerator": 0,
+              "type": "EXACT_RATIONAL"
+            }
+          }
+        ],
+        "satisfied": true
+      },
+      "previous_state_root_hash72": "0000000000000000000000000000002xW/4yEgBBmHbvPIq5NxjK/rff428A=x^WiCrbmMv=",
+      "previous_step_receipt_root_hash72": "0000000000000000000000000000001aGK)UHzr2Pbnhzmwbp^>=RWWULl7gASwiXS=EycGy",
+      "program_counter_after": 6,
+      "program_counter_before": 5,
+      "resulting_state_root_hash72": "0000000000000000000000000000000c(k/zK-?ACECel6*UyaV5>)Ud?lVgnwhN+6af4?QZ",
+      "run_id": "execution:repair:pass076:omega",
+      "schema": "HHS_INTERPRETER_STEP_RECEIPT_V1",
+      "statement_id": "statement:node:3:4ydIHfE5FRxsTeaE",
+      "statement_root_hash72": "0000000000000000000000000000001va+hb^LTonB)88UaKa5JAq+>zc/AgHpFJ+vHH!j!0",
+      "status_after": "RUNNING",
+      "step_index": 6,
+      "step_receipt_root_hash72": "00000000000000000000000000000048j7PvQf5VTmBq^HEnoaPx7DPjbp+3jp?F)en2we(O"
+    },
+    {
+      "external_effects_executed": false,
+      "foundation_mutated": false,
+      "operation": "EVALUATE_EQUALITY",
+      "outcome": {
+        "observations": [
+          {
+            "action": "BOUND_LEFT_SYMBOL",
+            "equal": true,
+            "left_text": "Ψ",
+            "left_value": {
+              "denominator": 1,
+              "numerator": 0,
+              "type": "EXACT_RATIONAL"
+            },
+            "right_text": "0",
+            "right_value": {
+              "denominator": 1,
+              "numerator": 0,
+              "type": "EXACT_RATIONAL"
+            }
+          }
+        ],
+        "satisfied": true
+      },
+      "previous_state_root_hash72": "0000000000000000000000000000000c(k/zK-?ACECel6*UyaV5>)Ud?lVgnwhN+6af4?QZ",
+      "previous_step_receipt_root_hash72": "00000000000000000000000000000048j7PvQf5VTmBq^HEnoaPx7DPjbp+3jp?F)en2we(O",
+      "program_counter_after": 7,
+      "program_counter_before": 6,
+      "resulting_state_root_hash72": "00000000000000000000000000000017FBlB95(o04q=1qGeIploI47uq9R(McQWrDwRZ6Kk",
+      "run_id": "execution:repair:pass076:omega",
+      "schema": "HHS_INTERPRETER_STEP_RECEIPT_V1",
+      "statement_id": "statement:node:4:d9KItwdq7(Nyj0eC",
+      "statement_root_hash72": "0000000000000000000000000000000i88lP!d8PDugy26vdeo+dXwouXPfapR-b>t=c9M04",
+      "status_after": "RUNNING",
+      "step_index": 7,
+      "step_receipt_root_hash72": "0000000000000000000000000000003V+-x?8SPhnc-tu)iCQ?/J?o7cERX-yDTIdgkA7wc3"
+    },
+    {
+      "external_effects_executed": false,
+      "foundation_mutated": false,
+      "operation": "EVALUATE_EQUALITY",
+      "outcome": {
+        "observations": [
+          {
+            "action": "BOUND_LEFT_SYMBOL",
+            "equal": true,
+            "left_text": "Θ15",
+            "left_value": {
+              "type": "BOOLEAN",
+              "value": true
+            },
+            "right_text": "true",
+            "right_value": {
+              "type": "BOOLEAN",
+              "value": true
+            }
+          }
+        ],
+        "satisfied": true
+      },
+      "previous_state_root_hash72": "00000000000000000000000000000017FBlB95(o04q=1qGeIploI47uq9R(McQWrDwRZ6Kk",
+      "previous_step_receipt_root_hash72": "0000000000000000000000000000003V+-x?8SPhnc-tu)iCQ?/J?o7cERX-yDTIdgkA7wc3",
+      "program_counter_after": 8,
+      "program_counter_before": 7,
+      "resulting_state_root_hash72": "0000000000000000000000000000003pkCzGC+T+btm>ho(NH?EFKEdeJg7g6u*u*Or/ftWI",
+      "run_id": "execution:repair:pass076:omega",
+      "schema": "HHS_INTERPRETER_STEP_RECEIPT_V1",
+      "statement_id": "statement:node:5:uvo*?TxCW?(D6BGT",
+      "statement_root_hash72": "0000000000000000000000000000001C+o?5^/=b9padKFNsxoQ+18SpijQKyJH4e)TAIMw0",
+      "status_after": "RUNNING",
+      "step_index": 8,
+      "step_receipt_root_hash72": "0000000000000000000000000000001Ks0SrS?x*zx2KK5S^F0UvxqfQUVJUO6?1leQ^MVZQ"
+    },
+    {
+      "external_effects_executed": false,
+      "foundation_mutated": false,
+      "operation": "EVALUATE_EQUALITY",
+      "outcome": {
+        "observations": [
+          {
+            "action": "BOUND_LEFT_SYMBOL",
+            "equal": true,
+            "left_text": "Ω",
+            "left_value": {
+              "type": "BOOLEAN",
+              "value": true
+            },
+            "right_text": "true",
+            "right_value": {
+              "type": "BOOLEAN",
+              "value": true
+            }
+          }
+        ],
+        "satisfied": true
+      },
+      "previous_state_root_hash72": "0000000000000000000000000000003pkCzGC+T+btm>ho(NH?EFKEdeJg7g6u*u*Or/ftWI",
+      "previous_step_receipt_root_hash72": "0000000000000000000000000000001Ks0SrS?x*zx2KK5S^F0UvxqfQUVJUO6?1leQ^MVZQ",
+      "program_counter_after": 9,
+      "program_counter_before": 8,
+      "resulting_state_root_hash72": "0000000000000000000000000000000JWu(TYBh9xl3hCG2Bf6/5+)UvzJxk!hgNf!Rh+v-?",
+      "run_id": "execution:repair:pass076:omega",
+      "schema": "HHS_INTERPRETER_STEP_RECEIPT_V1",
+      "statement_id": "statement:node:6:jT/f-762EwbJb4y1",
+      "statement_root_hash72": "0000000000000000000000000000004sYwEIacQN78zK>bpK7yFk-MQl9ji2Ay-r4/=s-!sR",
+      "status_after": "CLOSED",
+      "step_index": 9,
+      "step_receipt_root_hash72": "0000000000000000000000000000004s8p?LN*q7WGxHsGfviCW3+5iJYIev6NPWg3^5SDfN"
+    }
+  ],
+  "version": "HHS_EXACT_SYMBOLIC_INTERPRETER_PASS_076_V1"
+}

@@ -1,0 +1,30 @@
+{
+  "commands": [
+    "python -m pytest -q",
+    "python -m compileall -q hhs_runtime tools",
+    "python tools/run_pass134.py"
+  ],
+  "full_historical_monolithic_suite_run": false,
+  "pass_id": "PASS_134",
+  "pytest": "22 passed",
+  "schema": "HHS_PASS134_DEPENDENCY_SCOPED_TEST_REPORT_V1",
+  "status": "PASS",
+  "tests_failed": 0,
+  "tests_passed": 22,
+  "validated": [
+    "authoritative manifest generation and recomputation",
+    "evidence-only parent rejection",
+    "full parent non-cache path preservation",
+    "cache exclusion",
+    "same-path system mutation preservation",
+    "system deletion control rejection",
+    "manifest tamper detection",
+    "unified patch modification and creation",
+    "unified patch deletion rejection",
+    "deterministic byte-identical checkpoint rebuild",
+    "first-corruption localization",
+    "parent SHA-256 mismatch rejection",
+    "Pass 133 workload regression scope",
+    "Pass 133 recovery-operation regression scope"
+  ]
+}

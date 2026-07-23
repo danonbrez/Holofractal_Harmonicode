@@ -1,0 +1,89 @@
+{
+  "schema": "HHS_PASS_098_NEGATIVE_CASES_V1",
+  "cases": [
+    {
+      "case": "unwitnessed_prime",
+      "expected": "REJECT_UNWITNESSED_PERIOD_PRIME",
+      "observed": "REJECT_UNWITNESSED_PERIOD_PRIME",
+      "passed": true
+    },
+    {
+      "case": "missing_offset",
+      "expected": "REJECT_UNWITNESSED_PHASE_OFFSET",
+      "observed": "REJECT_UNWITNESSED_PHASE_OFFSET",
+      "passed": true
+    },
+    {
+      "case": "identity_collapse",
+      "expected": "REJECT_POLYPERIODIC_LAYER_IDENTITY_COLLAPSE",
+      "observed": "REJECT_POLYPERIODIC_LAYER_IDENTITY_COLLAPSE",
+      "passed": true
+    },
+    {
+      "case": "order_mismatch",
+      "expected": "REJECT_POLYPERIODIC_ORDER_MISMATCH",
+      "observed": "REJECT_POLYPERIODIC_ORDER_MISMATCH",
+      "passed": true
+    },
+    {
+      "case": "noncoprime_unique_claim",
+      "expected": "REJECT_INVALID_COMPOSITE_COORDINATE_CLAIM",
+      "observed": "REJECT_INVALID_COMPOSITE_COORDINATE_CLAIM",
+      "passed": true
+    },
+    {
+      "case": "duplicated_lane",
+      "expected": "REJECT_FALSE_MULTILANE_INFORMATION_GAIN",
+      "observed": "REJECT_FALSE_MULTILANE_INFORMATION_GAIN",
+      "passed": true
+    },
+    {
+      "case": "synthetic_sample",
+      "expected": "REJECT_SYNTHETIC_SAMPLE_AS_SOURCE_EVIDENCE",
+      "observed": "REJECT_SYNTHETIC_SAMPLE_AS_SOURCE_EVIDENCE",
+      "passed": true
+    },
+    {
+      "case": "unwitnessed_relation",
+      "expected": "REJECT_UNWITNESSED_PHASE_RELATION",
+      "observed": "REJECT_UNWITNESSED_PHASE_RELATION",
+      "passed": true
+    },
+    {
+      "case": "normalization_mutates_source",
+      "expected": "REJECT_NORMALIZATION_AS_SOURCE_MUTATION",
+      "observed": "REJECT_NORMALIZATION_AS_SOURCE_MUTATION",
+      "passed": true
+    },
+    {
+      "case": "direct_equality_confusion",
+      "expected": "REJECT_DIRECT_EQUALITY_OFFSET_CONFUSION",
+      "observed": "REJECT_DIRECT_EQUALITY_OFFSET_CONFUSION",
+      "passed": true
+    },
+    {
+      "case": "terminal_residue_history_collapse",
+      "expected": "REJECT_HISTORY_COLLAPSE_AT_COMMON_RESIDUE",
+      "observed": "REJECT_HISTORY_COLLAPSE_AT_COMMON_RESIDUE",
+      "passed": true
+    },
+    {
+      "case": "conflict_erasure",
+      "expected": "REJECT_INTERFERENCE_CONFLICT_ERASURE",
+      "observed": "REJECT_INTERFERENCE_CONFLICT_ERASURE",
+      "passed": true
+    },
+    {
+      "case": "projection_as_exact_authority",
+      "expected": "REJECT_PROJECTION_AS_CANONICAL_ARITHMETIC",
+      "observed": "REJECT_PROJECTION_AS_CANONICAL_ARITHMETIC",
+      "passed": true
+    },
+    {
+      "case": "resource_as_semantic_failure",
+      "expected": "REJECT_RESOURCE_BOUND_AS_SEMANTIC_DIVERGENCE",
+      "observed": "REJECT_RESOURCE_BOUND_AS_SEMANTIC_DIVERGENCE",
+      "passed": true
+    }
+  ]
+}

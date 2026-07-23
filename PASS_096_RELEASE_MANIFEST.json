@@ -1,0 +1,32 @@
+{
+  "schema": "HHS_PASS_096_RELEASE_MANIFEST_V1",
+  "pass_id": "PASS_096",
+  "parent_pass095_release_root_hash72": "0000000000000000000000000000001Y!5QO9Be>mUxd^b7eZIRrU2sReQG-KXl7>>Z4ufwB",
+  "source_count": 4,
+  "register_count": 6,
+  "temperature_count": 7,
+  "window_count": 9,
+  "workload_count": 16,
+  "negative_case_count": 12,
+  "all_negative_cases_passed": true,
+  "all_replays_verified": true,
+  "language_projection_is_authority": false,
+  "artifacts": [
+    "PASS_096_CANONICAL_TRANSLATION_SOURCES.json",
+    "PASS_096_TRANSLATION_REGISTER_CONTRACTS.json",
+    "PASS_096_TEMPERATURE_CALIBRATION_RESULTS.json",
+    "PASS_096_TOKEN_WINDOW_SCALING_RESULTS.json",
+    "PASS_096_FORWARD_BACKWARD_ASYMMETRY.json",
+    "PASS_096_NONCOMMUTATIVE_TRANSLATION_PATHS.json",
+    "PASS_096_ENTROPIC_DIFFERENTIATION_PROFILE.json",
+    "PASS_096_METAPHOR_RECONSTRUCTION_RESULTS.json",
+    "PASS_096_META_AWARENESS_CALIBRATION.json",
+    "PASS_096_PATTERN_AWARE_AB_RESULTS.json",
+    "PASS_096_MEANING_SURVIVAL_FRONTIERS.json",
+    "PASS_096_WORKLOAD_REGISTRY.json",
+    "PASS_096_NEGATIVE_CASES.json",
+    "PASS_096_CALIBRATION_REPORT.md",
+    "CHANGELOG_PASS_096.md"
+  ],
+  "pass096_release_root_hash72": "0000000000000000000000000000001^vzrDjLjFZY)ca^rvZO2Jc+?mWwUVHgKMpHz>zsZ7"
+}

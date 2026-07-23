@@ -1,0 +1,441 @@
+{
+  "available_workloads": [
+    {
+      "comparison_causes": [
+        "IEEE_REPRESENTATION_ROUNDING_OR_CANCELLATION",
+        "IEEE_REPRESENTATION_ROUNDING_OR_CANCELLATION"
+      ],
+      "comparison_outcomes": [
+        "IEEE_ROUNDING_DIVERGENCE",
+        "IEEE_ROUNDING_DIVERGENCE"
+      ],
+      "contamination_free": true,
+      "execution_root": "wcObWMwDIDu/AZC/YDWBEi+jlesnv*mVq4OHB<kFnX(L)AlKpfU9qys)lXLWV2Z(+j*BZv!<",
+      "native_outcome": "EXHAUSTIVE_WITHIN_BOUND",
+      "outcome": "EXECUTABLE_CONSEQUENCE_CLOSURE_VERIFIED",
+      "replay_verified": true,
+      "workload_id": "repeated_decimal_accumulation"
+    },
+    {
+      "comparison_causes": [
+        "IEEE_REPRESENTATION_ROUNDING_OR_CANCELLATION",
+        "IEEE_REPRESENTATION_ROUNDING_OR_CANCELLATION"
+      ],
+      "comparison_outcomes": [
+        "IEEE_ROUNDING_DIVERGENCE",
+        "IEEE_ROUNDING_DIVERGENCE"
+      ],
+      "contamination_free": true,
+      "execution_root": "hz32OquqK<dqE0O!uJOJ97nU6KBsnuX6qbxLmkyM5rP2f4B2<TwteTtz*ABV4Nvj3G-I)Xj8",
+      "native_outcome": "EXHAUSTIVE_WITHIN_BOUND",
+      "outcome": "EXECUTABLE_CONSEQUENCE_CLOSURE_VERIFIED",
+      "replay_verified": true,
+      "workload_id": "catastrophic_cancellation"
+    },
+    {
+      "comparison_causes": [
+        "WITNESSED_PROJECTION_EQUALITY",
+        "WITNESSED_PROJECTION_EQUALITY"
+      ],
+      "comparison_outcomes": [
+        "EXACT_PROJECTED_AGREEMENT",
+        "EXACT_PROJECTED_AGREEMENT"
+      ],
+      "contamination_free": true,
+      "execution_root": "0jX7W2k7zvBECNFgD/Z<(7LCIJ5R7oEKM!Q*W5jlX/n+D<SK/DF9Pc(>M49YTT)Nb?!m0OyT",
+      "native_outcome": "EXHAUSTIVE_WITHIN_BOUND",
+      "outcome": "EXECUTABLE_CONSEQUENCE_CLOSURE_VERIFIED",
+      "replay_verified": true,
+      "workload_id": "alternating_accumulation"
+    },
+    {
+      "comparison_causes": [
+        "WITNESSED_PROJECTION_EQUALITY",
+        "WITNESSED_PROJECTION_EQUALITY"
+      ],
+      "comparison_outcomes": [
+        "EXACT_PROJECTED_AGREEMENT",
+        "EXACT_PROJECTED_AGREEMENT"
+      ],
+      "contamination_free": true,
+      "execution_root": "x-SpOuYRayw3F6bqC>ktd+79YbNDOAj)AoF?m+96mm3sXh*wD+xp/bpp4mSvD0+V!kviAFD9",
+      "native_outcome": "EXHAUSTIVE_WITHIN_BOUND",
+      "outcome": "EXECUTABLE_CONSEQUENCE_CLOSURE_VERIFIED",
+      "replay_verified": true,
+      "workload_id": "nonassociative_left"
+    },
+    {
+      "comparison_causes": [
+        "IEEE_REPRESENTATION_ROUNDING_OR_CANCELLATION",
+        "IEEE_REPRESENTATION_ROUNDING_OR_CANCELLATION"
+      ],
+      "comparison_outcomes": [
+        "IEEE_ROUNDING_DIVERGENCE",
+        "IEEE_ROUNDING_DIVERGENCE"
+      ],
+      "contamination_free": true,
+      "execution_root": "qF?utnR5+SEscDjUA4z4wXllL4Y?6k2)8odJHl)60qHTa5iczEZtXXc-jIPppo923W(BnVE-",
+      "native_outcome": "EXHAUSTIVE_WITHIN_BOUND",
+      "outcome": "EXECUTABLE_CONSEQUENCE_CLOSURE_VERIFIED",
+      "replay_verified": true,
+      "workload_id": "nonassociative_right"
+    },
+    {
+      "comparison_causes": [
+        "WITNESSED_PROJECTION_EQUALITY",
+        "WITNESSED_PROJECTION_EQUALITY"
+      ],
+      "comparison_outcomes": [
+        "EXACT_PROJECTED_AGREEMENT",
+        "EXACT_PROJECTED_AGREEMENT"
+      ],
+      "contamination_free": true,
+      "execution_root": ")V5ysvINVWN<?9CYo0BvZu!YtMbW/nOR4pT/sQSz91+s35ym9hqo-ecm<sz0873R1BQvp3iz",
+      "native_outcome": "EXHAUSTIVE_WITHIN_BOUND",
+      "outcome": "EXECUTABLE_CONSEQUENCE_CLOSURE_VERIFIED",
+      "replay_verified": true,
+      "workload_id": "inverse_normalization"
+    },
+    {
+      "comparison_causes": [
+        "IEEE_OVERFLOW_UNDERFLOW_OR_EXCEPTIONAL_RANGE",
+        "IEEE_OVERFLOW_UNDERFLOW_OR_EXCEPTIONAL_RANGE"
+      ],
+      "comparison_outcomes": [
+        "IEEE_RANGE_DIVERGENCE",
+        "IEEE_RANGE_DIVERGENCE"
+      ],
+      "contamination_free": true,
+      "execution_root": "P-X2zpq26Zf?T5cs!PjwEqKW5G1zv02ey*r<6/2Ff13KHVa*ogQ?Bebm5DD2sdnIrGWg+EqX",
+      "native_outcome": "EXHAUSTIVE_WITHIN_BOUND",
+      "outcome": "EXECUTABLE_CONSEQUENCE_CLOSURE_VERIFIED",
+      "replay_verified": true,
+      "workload_id": "overflow_boundary"
+    },
+    {
+      "comparison_causes": [
+        "IEEE_OVERFLOW_UNDERFLOW_OR_EXCEPTIONAL_RANGE",
+        "IEEE_OVERFLOW_UNDERFLOW_OR_EXCEPTIONAL_RANGE"
+      ],
+      "comparison_outcomes": [
+        "IEEE_RANGE_DIVERGENCE",
+        "IEEE_RANGE_DIVERGENCE"
+      ],
+      "contamination_free": true,
+      "execution_root": "l*7*h(tBqaepE<jMa4LvHPMco+?LjpT4soBo9WwhrEEksypPMWAXTiOvB73(ua<S/20M6JL2",
+      "native_outcome": "EXHAUSTIVE_WITHIN_BOUND",
+      "outcome": "EXECUTABLE_CONSEQUENCE_CLOSURE_VERIFIED",
+      "replay_verified": true,
+      "workload_id": "underflow_boundary"
+    },
+    {
+      "comparison_causes": [
+        "WITNESSED_PROJECTION_EQUALITY",
+        "WITNESSED_PROJECTION_EQUALITY"
+      ],
+      "comparison_outcomes": [
+        "EXACT_PROJECTED_AGREEMENT",
+        "EXACT_PROJECTED_AGREEMENT"
+      ],
+      "contamination_free": true,
+      "execution_root": "fiaU(G*6An!de-5<ZO-1/(jT8*707Z?RTjl)p!lv*jFRm54Q3s<HSp-u!(kU6qiyA7ZW8*KY",
+      "native_outcome": "EXHAUSTIVE_WITHIN_BOUND",
+      "outcome": "EXECUTABLE_CONSEQUENCE_CLOSURE_VERIFIED",
+      "replay_verified": true,
+      "workload_id": "signed_zero_propagation"
+    },
+    {
+      "comparison_causes": [
+        "IEEE_REPRESENTATION_ROUNDING_OR_CANCELLATION",
+        "IEEE_REPRESENTATION_ROUNDING_OR_CANCELLATION"
+      ],
+      "comparison_outcomes": [
+        "IEEE_ROUNDING_DIVERGENCE",
+        "IEEE_ROUNDING_DIVERGENCE"
+      ],
+      "contamination_free": true,
+      "execution_root": "vIekedUW)LLc?<D3KR(wqd>hI>rLmgxxPPn>qz>R!EgBmD/PYz5u)s!/>MoLMa4s<1k<w2UZ",
+      "native_outcome": "EXHAUSTIVE_WITHIN_BOUND",
+      "outcome": "EXECUTABLE_CONSEQUENCE_CLOSURE_VERIFIED",
+      "replay_verified": true,
+      "workload_id": "iterative_drift"
+    },
+    {
+      "comparison_causes": [
+        "WITNESSED_PROJECTION_EQUALITY",
+        "WITNESSED_PROJECTION_EQUALITY"
+      ],
+      "comparison_outcomes": [
+        "EXACT_PROJECTED_AGREEMENT",
+        "EXACT_PROJECTED_AGREEMENT"
+      ],
+      "contamination_free": true,
+      "execution_root": "x-o)A1vZEW+ono60V8B75(04u98j95Hg)V?sndQZfbOZFwnbWxfe-Qy/KXI4nFnLrts1JEi4",
+      "native_outcome": "EXHAUSTIVE_WITHIN_BOUND",
+      "outcome": "EXECUTABLE_CONSEQUENCE_CLOSURE_VERIFIED",
+      "replay_verified": true,
+      "workload_id": "long_phase_cycle"
+    },
+    {
+      "comparison_causes": [
+        "WITNESSED_PROJECTION_EQUALITY",
+        "WITNESSED_PROJECTION_EQUALITY"
+      ],
+      "comparison_outcomes": [
+        "EXACT_PROJECTED_AGREEMENT",
+        "EXACT_PROJECTED_AGREEMENT"
+      ],
+      "contamination_free": true,
+      "execution_root": "fL5GxqYa4VPc!EiT1GuavYo41x5-tJJREpkvWM9Zh5Yeo9wy8zwKF0sETDQ/evrR9Mje-Gpc",
+      "native_outcome": "EXHAUSTIVE_WITHIN_BOUND",
+      "outcome": "EXECUTABLE_CONSEQUENCE_CLOSURE_VERIFIED",
+      "replay_verified": true,
+      "workload_id": "repeated_normalization"
+    },
+    {
+      "comparison_causes": [
+        "WITNESSED_PROJECTION_EQUALITY",
+        "WITNESSED_PROJECTION_EQUALITY"
+      ],
+      "comparison_outcomes": [
+        "EXACT_PROJECTED_AGREEMENT",
+        "EXACT_PROJECTED_AGREEMENT"
+      ],
+      "contamination_free": true,
+      "execution_root": "fR4V1Z1z3w)uL?CrAB>ctkcF8I-U(pavs3al*6-/m>wThGc1R4a-1FKXA(I)UKV2y4c9/CIT",
+      "native_outcome": "EXHAUSTIVE_WITHIN_BOUND",
+      "outcome": "EXECUTABLE_CONSEQUENCE_CLOSURE_VERIFIED",
+      "replay_verified": true,
+      "workload_id": "loshu_cell_sum"
+    },
+    {
+      "comparison_causes": [
+        "HHS_LANE_GATE_OR_CARRIER_CONTEXT_NOT_PRESENT_IN_IEEE_CONTROL",
+        "HHS_LANE_GATE_OR_CARRIER_CONTEXT_NOT_PRESENT_IN_IEEE_CONTROL"
+      ],
+      "comparison_outcomes": [
+        "STATE_CONTEXT_DIVERGENCE",
+        "STATE_CONTEXT_DIVERGENCE"
+      ],
+      "contamination_free": true,
+      "execution_root": "nVQll4doE8zWLDzF?yW1mPpfpFVj?<TCqX6zQXHlKV2fP6A!iRjW?X8tx4Ke?+-fNWVVr74t",
+      "native_outcome": "EXHAUSTIVE_WITHIN_BOUND",
+      "outcome": "EXECUTABLE_CONSEQUENCE_CLOSURE_VERIFIED",
+      "replay_verified": true,
+      "workload_id": "dual_t_constraints"
+    },
+    {
+      "comparison_causes": [
+        "NO_AUTHORITATIVE_IEEE_TRANSLATION",
+        "NO_AUTHORITATIVE_IEEE_TRANSLATION"
+      ],
+      "comparison_outcomes": [
+        "NO_AUTHORIZED_COMPARISON_MAP",
+        "NO_AUTHORIZED_COMPARISON_MAP"
+      ],
+      "contamination_free": true,
+      "execution_root": "ocS?T?V8/bZzl<+lKhnZ?86-Yj!Wx393ryEh)dIA6oVQKyGfSOCwwqP2zRl<ZLT9/HnF(m*O",
+      "native_outcome": "EXHAUSTIVE_WITHIN_BOUND",
+      "outcome": "EXECUTABLE_CONSEQUENCE_CLOSURE_VERIFIED",
+      "replay_verified": true,
+      "workload_id": "conformal_radius"
+    },
+    {
+      "comparison_causes": [
+        "HHS_LANE_GATE_OR_CARRIER_CONTEXT_NOT_PRESENT_IN_IEEE_CONTROL",
+        "HHS_LANE_GATE_OR_CARRIER_CONTEXT_NOT_PRESENT_IN_IEEE_CONTROL"
+      ],
+      "comparison_outcomes": [
+        "STATE_CONTEXT_DIVERGENCE",
+        "STATE_CONTEXT_DIVERGENCE"
+      ],
+      "contamination_free": true,
+      "execution_root": "4>wAI(h?F6G/jz+s1w9-gqm9u!E1Xdu<+1ACjh3Rjrqw>V4/eHz(Ht((FaYLq8!ISPHX!2vv",
+      "native_outcome": "EXHAUSTIVE_WITHIN_BOUND",
+      "outcome": "EXECUTABLE_CONSEQUENCE_CLOSURE_VERIFIED",
+      "replay_verified": true,
+      "workload_id": "master_matrix"
+    },
+    {
+      "comparison_causes": [
+        "TYPED_PHASE_FILTER",
+        "TYPED_PHASE_FILTER"
+      ],
+      "comparison_outcomes": [
+        "SEMANTIC_OPERATOR_DIVERGENCE",
+        "SEMANTIC_OPERATOR_DIVERGENCE"
+      ],
+      "contamination_free": true,
+      "execution_root": "Xs4<)mRiUauuYn90nKn8ktG2TGc6t122i7w)AG22kUAsWgj1D/6w)7bCh+cuKc!(Ms0Q-Vc1",
+      "native_outcome": "EXHAUSTIVE_WITHIN_BOUND",
+      "outcome": "EXECUTABLE_CONSEQUENCE_CLOSURE_VERIFIED",
+      "replay_verified": true,
+      "workload_id": "genesis_kernel"
+    },
+    {
+      "comparison_causes": [
+        "TYPED_NORMALIZATION_INVERSE",
+        "TYPED_NORMALIZATION_INVERSE"
+      ],
+      "comparison_outcomes": [
+        "SEMANTIC_OPERATOR_DIVERGENCE",
+        "SEMANTIC_OPERATOR_DIVERGENCE"
+      ],
+      "contamination_free": true,
+      "execution_root": "13U5aiNkCDBFc*TWZqhtSAHmHk(8z6!OsDaQFfw0qoLvXn46PZm!fIQb<d*nVcrXEE+YWYe7",
+      "native_outcome": "EXHAUSTIVE_WITHIN_BOUND",
+      "outcome": "EXECUTABLE_CONSEQUENCE_CLOSURE_VERIFIED",
+      "replay_verified": true,
+      "workload_id": "T1_transport"
+    }
+  ],
+  "ceuac_schema_validation": [
+    {
+      "audit_root": "4Eu!T/sSh+KjOSnANK53F2YR22uF>8f5O<8rZh1T6Ocvn*3EKb4Ar/YXo6VKIFtFnew7WWY?",
+      "errors": [],
+      "valid": true,
+      "workload_id": "repeated_decimal_accumulation"
+    },
+    {
+      "audit_root": "qFBYSEXF3Uz<y3j4mlpobo+x)2t5MDd!a+Pc5Z3*fP-i(B*)w1baqXlw(J-C0*DEB!ilr/KB",
+      "errors": [],
+      "valid": true,
+      "workload_id": "catastrophic_cancellation"
+    },
+    {
+      "audit_root": "(2jGiePH3k!b1EVcL(yhnc/vUhFqI-S-EoDg0aJ9xUfwE8JS>-zz9YgB2*VnexLNIa!s!H-Z",
+      "errors": [],
+      "valid": true,
+      "workload_id": "alternating_accumulation"
+    },
+    {
+      "audit_root": "k4e7C1ejCnYdKb>cqP41z4FfGEA8Pm(vCHG6IMn-)quAYwJWjumop16puEr?djl-9TYwkGst",
+      "errors": [],
+      "valid": true,
+      "workload_id": "nonassociative_left"
+    },
+    {
+      "audit_root": "WLrT?<wT4j?1ZcdTqH3KNjD8<4y)POa1j0prVbatXF4g8RW0/4Cbx!QILgbglejxIlrdw9oU",
+      "errors": [],
+      "valid": true,
+      "workload_id": "nonassociative_right"
+    },
+    {
+      "audit_root": "r!?yiIlaHIJcjeQB>/Ig-6PxIq45bLUdO+Si1myS(/dx9Fyf1QzD1yBytS4WenOHD9I4L+bC",
+      "errors": [],
+      "valid": true,
+      "workload_id": "inverse_normalization"
+    },
+    {
+      "audit_root": "lmbEV1j8CzDTA5eu9WGW62SXq-EJy*534hZ4KtfWwUMs5Hda*AEgWn3Xx*KfbB!WIasX(7xt",
+      "errors": [],
+      "valid": true,
+      "workload_id": "overflow_boundary"
+    },
+    {
+      "audit_root": "YWYcUqqhfcocoOM-vcUN(cFZ!?dU1ToMlQ-o29YrEho!dfP!lH1zOxN7mKMRQ8-Dp3DcjiQ!",
+      "errors": [],
+      "valid": true,
+      "workload_id": "underflow_boundary"
+    },
+    {
+      "audit_root": "sbRSXVp3ti5haFPC<0D-*n/482D44u>Ld1mBr(1a4vZszLCMG!O9!re0IOyZ2XCQFKFJhmE6",
+      "errors": [],
+      "valid": true,
+      "workload_id": "signed_zero_propagation"
+    },
+    {
+      "audit_root": "<oAZzqW<!>Drp4Z5Fd<h<8NV/O0/RW!wUR/Fc*F7QX?Js(1bl/P09a<KP1bD)aPelk-6ozRb",
+      "errors": [],
+      "valid": true,
+      "workload_id": "iterative_drift"
+    },
+    {
+      "audit_root": "hhb+?gYCB(9?4R?JDNbMQOs<m0x4wQATP<ujIp6IPfYLM!dbwn0M7<er+jIu0vdqC)KD*VHz",
+      "errors": [],
+      "valid": true,
+      "workload_id": "long_phase_cycle"
+    },
+    {
+      "audit_root": "abkZtnjHwPzFuE5AzZNjyVpeptR*EeZUdU!gR*6/D!NdnLV>f6RxuYGk-Hx/YZNW*>KHsL9Q",
+      "errors": [],
+      "valid": true,
+      "workload_id": "repeated_normalization"
+    },
+    {
+      "audit_root": "+vDRUq7S>S0a+0xLuTiyyS4l4GwNjCxzs6lWtjNvcDmRrfG?H>Tkqn1q2m1p7Xa2nAb/6XHF",
+      "errors": [],
+      "valid": true,
+      "workload_id": "loshu_cell_sum"
+    },
+    {
+      "audit_root": "w1DW212lFJb?eEgLf0Y9v<>/BF6oGdfz+I/cW<MEtYXTbbyqoHuwcQJBy1BoUmmfsehTdC3<",
+      "errors": [],
+      "valid": true,
+      "workload_id": "dual_t_constraints"
+    },
+    {
+      "audit_root": "cwGtlDVSf6gzeVJ95B5!SY7ADYcStqjqVzwjyayZkMU>oY(L7Uh8DgxOP*AicE7Lo94(Sw<<",
+      "errors": [],
+      "valid": true,
+      "workload_id": "conformal_radius"
+    },
+    {
+      "audit_root": "*DSPIn!Ab*RPsvUDw!H>a?GlaHkkFC35pNPqco7jdv(PI?cto?7cNJoIii>nQ-aO<AAA!yDV",
+      "errors": [],
+      "valid": true,
+      "workload_id": "master_matrix"
+    },
+    {
+      "audit_root": "6*7kB<-V*xvBx6P<+svho/qo?rULUml<0)EVmrWWsSmrj8i2XVI+jVl(/3QO0gCXfpRonxZA",
+      "errors": [],
+      "valid": true,
+      "workload_id": "genesis_kernel"
+    },
+    {
+      "audit_root": "!mrWe3PL5u736(Il<nK6KgPyp+*YyatVh6Gnmo?JVdpCnU>T?F3fj9-p/LjTS!MyUd-/)4qG",
+      "errors": [],
+      "valid": true,
+      "workload_id": "T1_transport"
+    }
+  ],
+  "closure_state": "CLOSED",
+  "continuation_checkpoint_root_hash72": "LU>(>B(X(AIRes1gTIFi/Ie-9tV+S(gLt3iDMXh)953UEweNj(b9D30xbH61x)nwI9W7Bg9J",
+  "contract_root_hash72": "7N5Vmb(ik1clYBnQsC0XfcFkbObzkGl2Gyg89Ue)764-au0u)sw+PzbRDe85oaoAxf<mvN+K",
+  "execution_manifest_root_hash72": ")GpRfLUth34rZXbKI2f5CdDHw)ZN!VDaWEn*WezmBsy!VGGQyKwtbi1S-Ez>NKzwaVg0mjxk",
+  "global_completion_status": "EXECUTABLE_CONSEQUENCE_CLOSURE_VERIFIED",
+  "missing_required_sources": [],
+  "negative_tests": {
+    "passed": 21,
+    "synthetic_rejections_used": false,
+    "total": 21
+  },
+  "pass_id": "PASS_132",
+  "release_timestamp": "2026-07-18T16:09:58.717223+00:00",
+  "required_reports": [
+    "PASS_132_EXECUTION_MANIFEST.json",
+    "PASS_132_CANONICAL_INPUT_ROOT.json",
+    "PASS_132_AST_DISPATCH_GRAPH.json",
+    "PASS_132_ORDERED_LANE_TRACE.jsonl",
+    "PASS_132_LOGICAL_CONSEQUENCES.jsonl",
+    "PASS_132_COMPUTATIONAL_CONSEQUENCES.jsonl",
+    "PASS_132_FOREIGN_MODEL_COMPARISON.json",
+    "PASS_132_NORMALIZATION_PROOF.json",
+    "PASS_132_CONTRADICTION_AUDIT.json",
+    "PASS_132_REPLAY_RECEIPT.json",
+    "PASS_132_NEGATIVE_TEST_REPORT.json",
+    "PASS_132_COMPLETION_ATTESTATION.json",
+    "PASS_132_AB_CONTROL_MANIFEST.json",
+    "PASS_132_HHS_EXECUTION_TRACE.jsonl",
+    "PASS_132_IEEE_BINARY32_TRACE.jsonl",
+    "PASS_132_IEEE_BINARY64_TRACE.jsonl",
+    "PASS_132_TRANSLATION_CLASSIFICATION.json",
+    "PASS_132_NUMERICAL_ERROR_REPORT.json",
+    "PASS_132_SEMANTIC_DIVERGENCE_REPORT.json",
+    "PASS_132_ORDER_SENSITIVITY_REPORT.json",
+    "PASS_132_AB_REPLAY_REPORT.json",
+    "PASS_132_AB_COMPARISON_RECEIPT.json"
+  ],
+  "runtime_root_hash72": "qHmoPTAsfVDXEVm<G/rQ5TKG+cylsWFGJI1(cmTRY!aJAf<+)0z-Py-)CTfmn4u*>lFVts6Y",
+  "schema": "HHS_PASS132_EXECUTED_RELEASE_V1"
+}

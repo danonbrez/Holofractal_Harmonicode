@@ -1,0 +1,11 @@
+{
+  "archive_name": "hhs_pass_150_hash216_constraint_genome_full_inherited_pass_history_nucleus-2(1).zip",
+  "archive_sha256": "7021546b1851ee3187fbb179238b9a807495c720c7c7396e2a97ca42bd2253b4",
+  "archive_size_bytes": 54776635,
+  "classification": "PARENT_NUCLEUS_MATERIALIZED_AND_HASH_VERIFIED",
+  "manifest_entries": 3275,
+  "materialized_parent_entries": 3277,
+  "parent": "HHS-P150",
+  "schema": "HHS_PARENT_MATERIALIZATION_STATUS_V2",
+  "substitution_attempted": false
+}

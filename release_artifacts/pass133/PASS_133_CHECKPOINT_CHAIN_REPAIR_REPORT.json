@@ -1,0 +1,20 @@
+{
+  "actual_digest": "dO6p3HqQTU9U<zh8qkbIy>)CqwZo8JNL(1nL9?6xJ7FlAF4KIpgTtng9pu6cWlKLBT!WLplR",
+  "alphabet": "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-+*/()<>!?",
+  "alphabet_length": 72,
+  "chain_rule": "MISSING_SOURCE_BODY_IS_A_REPAIR_OBLIGATION_NOT_NONEXISTENCE_EVIDENCE",
+  "expected_digest": "dO6p3HqQTU9U<zh8qkbIy>)CqwZo8JNL(1nL9?6xJ7FlAF4KIpgTtng9pu6cWlKLBT!WLplR",
+  "matches": {
+    "dna": true,
+    "positions": true,
+    "rotation_profile": true,
+    "trace_count": true,
+    "zero_sum": true
+  },
+  "native_backend": "/mnt/data/hhs_pass_133_checkpoint/hhs_runtime/build/libhhs_pass133_checkpoint.so",
+  "ok": true,
+  "parent_pass": "PASS_132",
+  "parent_root": "dO6p3HqQTU9U<zh8qkbIy>)CqwZo8JNL(1nL9?6xJ7FlAF4KIpgTtng9pu6cWlKLBT!WLplR",
+  "schema": "HHS_PASS133_PARENT_HASH72_REPAIR_VERIFICATION_V1",
+  "source_status": "PARENT_EVIDENCE_CHECKPOINT_PRESENT; SOURCE_HASHES_PRESERVED; NATIVE_HASH72_LINK_REPAIRED"
+}

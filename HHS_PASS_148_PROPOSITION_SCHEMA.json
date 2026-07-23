@@ -1,0 +1,125 @@
+{
+  "$id": "hhs://schemas/pass148/proposition",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "assumptions": {
+      "type": "array"
+    },
+    "authority_level": {
+      "enum": [
+        "A1",
+        "A4",
+        "A2",
+        "A3"
+      ]
+    },
+    "branch_conditions": {
+      "type": "array"
+    },
+    "canonical_ast_hash": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "consequence_class": {
+      "enum": [
+        "EXCLUDED",
+        "UNDETERMINED",
+        "GATE_LOCAL",
+        "INVARIANT",
+        "CONDITIONAL",
+        "LANE_LOCAL",
+        "NORMALIZATION_LOCAL",
+        "NECESSARY"
+      ]
+    },
+    "dependencies": {
+      "type": "array"
+    },
+    "gate_scope": {
+      "type": "array"
+    },
+    "hash72_identity": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "interpretation_hash": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "interpretation_version": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "lane_scope": {
+      "type": "array"
+    },
+    "operator_profile": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "primary_class": {
+      "enum": [
+        "CONTROL_PROJECTION",
+        "DECLARED_SYSTEM_LAW",
+        "DERIVABLE_CONSEQUENCE",
+        "UNRESOLVED_EXPRESSION",
+        "NARRATIVE_EXTRAPOLATION"
+      ]
+    },
+    "prohibited_promotions": {
+      "type": "array"
+    },
+    "proposition_id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "source_expression": {
+      "type": "string"
+    },
+    "source_reference": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "source_type": {
+      "enum": [
+        "control_engine",
+        "contract",
+        "documentation",
+        "user_declaration",
+        "model_output",
+        "fiction",
+        "runtime"
+      ]
+    },
+    "timestamp": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "required": [
+    "proposition_id",
+    "source_expression",
+    "canonical_ast_hash",
+    "source_type",
+    "source_reference",
+    "primary_class",
+    "consequence_class",
+    "authority_level",
+    "operator_profile",
+    "lane_scope",
+    "gate_scope",
+    "branch_conditions",
+    "dependencies",
+    "assumptions",
+    "prohibited_promotions",
+    "interpretation_version",
+    "interpretation_hash",
+    "hash72_identity",
+    "timestamp"
+  ],
+  "title": "HHS Pass 148 Proposition",
+  "type": "object"
+}

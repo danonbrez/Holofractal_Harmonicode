@@ -1,0 +1,188 @@
+{
+  "failed_count": 0,
+  "obligation_count": 18,
+  "obligations": [
+    {
+      "evidence": {
+        "final_execution_summary": "receipts/pass152/final/P152_FINAL_EXECUTION_SUMMARY.json",
+        "parent_inheritance_report": "reports/pass152/PASS_152_PARENT_INHERITANCE_REPORT.json",
+        "test_report": "reports/pass152/P152_TEST_REPORT.json"
+      },
+      "obligation_id": "P152-COMP-001",
+      "requirement": "Candidate and authoritative states are separated",
+      "state": "VERIFIED"
+    },
+    {
+      "evidence": {
+        "final_execution_summary": "receipts/pass152/final/P152_FINAL_EXECUTION_SUMMARY.json",
+        "parent_inheritance_report": "reports/pass152/PASS_152_PARENT_INHERITANCE_REPORT.json",
+        "test_report": "reports/pass152/P152_TEST_REPORT.json"
+      },
+      "obligation_id": "P152-COMP-002",
+      "requirement": "Resolved dependencies propagate before global closure",
+      "state": "VERIFIED"
+    },
+    {
+      "evidence": {
+        "final_execution_summary": "receipts/pass152/final/P152_FINAL_EXECUTION_SUMMARY.json",
+        "parent_inheritance_report": "reports/pass152/PASS_152_PARENT_INHERITANCE_REPORT.json",
+        "test_report": "reports/pass152/P152_TEST_REPORT.json"
+      },
+      "obligation_id": "P152-COMP-003",
+      "requirement": "Independent branches execute concurrently",
+      "state": "VERIFIED"
+    },
+    {
+      "evidence": {
+        "final_execution_summary": "receipts/pass152/final/P152_FINAL_EXECUTION_SUMMARY.json",
+        "parent_inheritance_report": "reports/pass152/PASS_152_PARENT_INHERITANCE_REPORT.json",
+        "test_report": "reports/pass152/P152_TEST_REPORT.json"
+      },
+      "obligation_id": "P152-COMP-004",
+      "requirement": "Critical-path scheduling is observable",
+      "state": "VERIFIED"
+    },
+    {
+      "evidence": {
+        "final_execution_summary": "receipts/pass152/final/P152_FINAL_EXECUTION_SUMMARY.json",
+        "parent_inheritance_report": "reports/pass152/PASS_152_PARENT_INHERITANCE_REPORT.json",
+        "test_report": "reports/pass152/P152_TEST_REPORT.json"
+      },
+      "obligation_id": "P152-COMP-005",
+      "requirement": "Equivalence reuse eliminates duplicate work",
+      "state": "VERIFIED"
+    },
+    {
+      "evidence": {
+        "final_execution_summary": "receipts/pass152/final/P152_FINAL_EXECUTION_SUMMARY.json",
+        "parent_inheritance_report": "reports/pass152/PASS_152_PARENT_INHERITANCE_REPORT.json",
+        "test_report": "reports/pass152/P152_TEST_REPORT.json"
+      },
+      "obligation_id": "P152-COMP-006",
+      "requirement": "Invariant operations skip only with witnesses",
+      "state": "VERIFIED"
+    },
+    {
+      "evidence": {
+        "final_execution_summary": "receipts/pass152/final/P152_FINAL_EXECUTION_SUMMARY.json",
+        "parent_inheritance_report": "reports/pass152/PASS_152_PARENT_INHERITANCE_REPORT.json",
+        "test_report": "reports/pass152/P152_TEST_REPORT.json"
+      },
+      "obligation_id": "P152-COMP-007",
+      "requirement": "Stale candidates are deterministically invalidated",
+      "state": "VERIFIED"
+    },
+    {
+      "evidence": {
+        "final_execution_summary": "receipts/pass152/final/P152_FINAL_EXECUTION_SUMMARY.json",
+        "parent_inheritance_report": "reports/pass152/PASS_152_PARENT_INHERITANCE_REPORT.json",
+        "test_report": "reports/pass152/P152_TEST_REPORT.json"
+      },
+      "obligation_id": "P152-COMP-008",
+      "requirement": "Provisional state cannot advance authoritative receipts",
+      "state": "VERIFIED"
+    },
+    {
+      "evidence": {
+        "final_execution_summary": "receipts/pass152/final/P152_FINAL_EXECUTION_SUMMARY.json",
+        "parent_inheritance_report": "reports/pass152/PASS_152_PARENT_INHERITANCE_REPORT.json",
+        "test_report": "reports/pass152/P152_TEST_REPORT.json"
+      },
+      "obligation_id": "P152-COMP-009",
+      "requirement": "Final commitment is VM81-authorized",
+      "state": "VERIFIED"
+    },
+    {
+      "evidence": {
+        "final_execution_summary": "receipts/pass152/final/P152_FINAL_EXECUTION_SUMMARY.json",
+        "parent_inheritance_report": "reports/pass152/PASS_152_PARENT_INHERITANCE_REPORT.json",
+        "test_report": "reports/pass152/P152_TEST_REPORT.json"
+      },
+      "obligation_id": "P152-COMP-010",
+      "requirement": "Replay reproduces committed state and evidence",
+      "state": "VERIFIED"
+    },
+    {
+      "evidence": {
+        "final_execution_summary": "receipts/pass152/final/P152_FINAL_EXECUTION_SUMMARY.json",
+        "parent_inheritance_report": "reports/pass152/PASS_152_PARENT_INHERITANCE_REPORT.json",
+        "test_report": "reports/pass152/P152_TEST_REPORT.json"
+      },
+      "obligation_id": "P152-COMP-011",
+      "requirement": "Negative tests fail safely",
+      "state": "VERIFIED"
+    },
+    {
+      "evidence": {
+        "final_execution_summary": "receipts/pass152/final/P152_FINAL_EXECUTION_SUMMARY.json",
+        "parent_inheritance_report": "reports/pass152/PASS_152_PARENT_INHERITANCE_REPORT.json",
+        "test_report": "reports/pass152/P152_TEST_REPORT.json"
+      },
+      "obligation_id": "P152-COMP-012",
+      "requirement": "Delayed closure performs productive work",
+      "state": "VERIFIED"
+    },
+    {
+      "evidence": {
+        "final_execution_summary": "receipts/pass152/final/P152_FINAL_EXECUTION_SUMMARY.json",
+        "parent_inheritance_report": "reports/pass152/PASS_152_PARENT_INHERITANCE_REPORT.json",
+        "test_report": "reports/pass152/P152_TEST_REPORT.json"
+      },
+      "obligation_id": "P152-RCI-001",
+      "requirement": "Higher layers optimize policy rather than lower-layer truth",
+      "state": "VERIFIED"
+    },
+    {
+      "evidence": {
+        "final_execution_summary": "receipts/pass152/final/P152_FINAL_EXECUTION_SUMMARY.json",
+        "parent_inheritance_report": "reports/pass152/PASS_152_PARENT_INHERITANCE_REPORT.json",
+        "test_report": "reports/pass152/P152_TEST_REPORT.json"
+      },
+      "obligation_id": "P152-RCI-002",
+      "requirement": "Layer histories are append-only and valid",
+      "state": "VERIFIED"
+    },
+    {
+      "evidence": {
+        "final_execution_summary": "receipts/pass152/final/P152_FINAL_EXECUTION_SUMMARY.json",
+        "parent_inheritance_report": "reports/pass152/PASS_152_PARENT_INHERITANCE_REPORT.json",
+        "test_report": "reports/pass152/P152_TEST_REPORT.json"
+      },
+      "obligation_id": "P152-RCI-003",
+      "requirement": "Plans are revisable without rewriting committed prefix",
+      "state": "VERIFIED"
+    },
+    {
+      "evidence": {
+        "final_execution_summary": "receipts/pass152/final/P152_FINAL_EXECUTION_SUMMARY.json",
+        "parent_inheritance_report": "reports/pass152/PASS_152_PARENT_INHERITANCE_REPORT.json",
+        "test_report": "reports/pass152/P152_TEST_REPORT.json"
+      },
+      "obligation_id": "P152-RCI-004",
+      "requirement": "Control projection is downward and bounded",
+      "state": "VERIFIED"
+    },
+    {
+      "evidence": {
+        "final_execution_summary": "receipts/pass152/final/P152_FINAL_EXECUTION_SUMMARY.json",
+        "parent_inheritance_report": "reports/pass152/PASS_152_PARENT_INHERITANCE_REPORT.json",
+        "test_report": "reports/pass152/P152_TEST_REPORT.json"
+      },
+      "obligation_id": "P152-RCI-005",
+      "requirement": "Causal history extends monotonically at commit",
+      "state": "VERIFIED"
+    },
+    {
+      "evidence": {
+        "final_execution_summary": "receipts/pass152/final/P152_FINAL_EXECUTION_SUMMARY.json",
+        "parent_inheritance_report": "reports/pass152/PASS_152_PARENT_INHERITANCE_REPORT.json",
+        "test_report": "reports/pass152/P152_TEST_REPORT.json"
+      },
+      "obligation_id": "P152-LEGACY-001",
+      "requirement": "Complete Pass 150 history remains present",
+      "state": "VERIFIED"
+    }
+  ],
+  "schema": "HHS_PASS152_OBLIGATION_LEDGER_V1",
+  "verified_count": 18
+}

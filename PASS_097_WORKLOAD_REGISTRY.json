@@ -1,0 +1,89 @@
+{
+  "schema": "HHS_PASS_097_WORKLOAD_REGISTRY_V1",
+  "workloads": [
+    {
+      "held_out": false,
+      "name": "Formal reconstruction",
+      "schema": "HHS_PASS_097_WORKLOAD_V1",
+      "workload_id": "W97-01",
+      "workload_root_hash72": "0000000000000000000000000000001RSt415dIcfahWMzS6xIQyKpyMoAqgn+2Wr*5tS26Q"
+    },
+    {
+      "held_out": false,
+      "name": "Common-language reasoning",
+      "schema": "HHS_PASS_097_WORKLOAD_V1",
+      "workload_id": "W97-02",
+      "workload_root_hash72": "0000000000000000000000000000001r66tPFavfpSmAfQKIIbla9KC9kdYdY/rZapA*G6c9"
+    },
+    {
+      "held_out": false,
+      "name": "Academic STEM translation",
+      "schema": "HHS_PASS_097_WORKLOAD_V1",
+      "workload_id": "W97-03",
+      "workload_root_hash72": "0000000000000000000000000000000>7jrU?!u>65s^s-zdyJunJUrMKqdvtp7YynDAk/uA"
+    },
+    {
+      "held_out": false,
+      "name": "Reverse reconstruction",
+      "schema": "HHS_PASS_097_WORKLOAD_V1",
+      "workload_id": "W97-04",
+      "workload_root_hash72": "0000000000000000000000000000004I5HoqwtwAtuw(zl)7pPHn3/JNF=gCJOEdhm3Xt3fA"
+    },
+    {
+      "held_out": false,
+      "name": "Ambiguous instruction",
+      "schema": "HHS_PASS_097_WORKLOAD_V1",
+      "workload_id": "W97-05",
+      "workload_root_hash72": "0000000000000000000000000000000twgi0()8HWB3^(dyjbA7HMPS9EKukO7Ok0?Ryc*+L"
+    },
+    {
+      "held_out": false,
+      "name": "Causal reasoning",
+      "schema": "HHS_PASS_097_WORKLOAD_V1",
+      "workload_id": "W97-06",
+      "workload_root_hash72": "0000000000000000000000000000003jU*M+Y^dCEeaGmw-eRQTna(9IRUznBORWR)MN*pAz"
+    },
+    {
+      "held_out": false,
+      "name": "Mythopoetic projection",
+      "schema": "HHS_PASS_097_WORKLOAD_V1",
+      "workload_id": "W97-07",
+      "workload_root_hash72": "0000000000000000000000000000002Eh1tDiciIu)ZD()vJQWAU0?N2Zw+2Q31(Zimj8^H7"
+    },
+    {
+      "held_out": false,
+      "name": "Cross-modal invariant reasoning",
+      "schema": "HHS_PASS_097_WORKLOAD_V1",
+      "workload_id": "W97-08",
+      "workload_root_hash72": "00000000000000000000000000000041OUSS+G*qFUSiz^Y*B-lIkH1(+q(e)aGY9RXaZ9*6"
+    },
+    {
+      "held_out": true,
+      "name": "Novel vocabulary task",
+      "schema": "HHS_PASS_097_WORKLOAD_V1",
+      "workload_id": "W97-09",
+      "workload_root_hash72": "0000000000000000000000000000004tfTAk-/NZni+XMyJu?>gpl2D+t!??Hex=Bigb5CO2"
+    },
+    {
+      "held_out": true,
+      "name": "Missing-knowledge recognition",
+      "schema": "HHS_PASS_097_WORKLOAD_V1",
+      "workload_id": "W97-10",
+      "workload_root_hash72": "0000000000000000000000000000000OpmzJsDl/y53Q1R*greEku-QT37qI*J!Xx>2upUdz"
+    },
+    {
+      "held_out": false,
+      "name": "Long-context compression",
+      "schema": "HHS_PASS_097_WORKLOAD_V1",
+      "workload_id": "W97-11",
+      "workload_root_hash72": "0000000000000000000000000000002RdTqhvutoy??9HjDVDiY)IRTFw-4SFBbQgTz5RAUn"
+    },
+    {
+      "held_out": true,
+      "name": "Zero-context continuation",
+      "schema": "HHS_PASS_097_WORKLOAD_V1",
+      "workload_id": "W97-12",
+      "workload_root_hash72": "00000000000000000000000000000037*K9!DfPy^ka*9j83INevRSikNzhhlOJXLnH-v+cy"
+    }
+  ]
+}

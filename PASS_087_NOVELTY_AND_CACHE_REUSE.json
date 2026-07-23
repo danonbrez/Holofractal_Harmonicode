@@ -1,0 +1,1496 @@
+{
+  "schema": "HHS_PASS_087_NOVELTY_CACHE_V1",
+  "novelty": [
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000004f>/h4/4kIFTA(c*37KceSxUUje9W7RRj2KSTZLQID",
+      "pattern_root_hash72": "0000000000000000000000000000002pel6Y0BB8-s51ihJ>Vtt/ZE^iusesXxzgeyZ574qp",
+      "update_root_hash72": "0000000000000000000000000000001eoVuk*m38ve-**UTPsy06EZ))Uvwn=PLY6cg^emaW"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000000X2vd+DwUq^zc(f7G21ZCvj2okdralA)9Iezg05MOt",
+      "pattern_root_hash72": "0000000000000000000000000000002oV)?Kf5lrYgIuL5y4zT6)Cg4Ej^tnjvzfR6A9fT4M",
+      "update_root_hash72": "0000000000000000000000000000001eoVuk*m38ve-**UTPsy06EZ))Uvwn=PLY6cg^emaW"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000004jFqybHH135Ivj81lIpbzLRI83MZ>1P0K(VN-9wQVL",
+      "pattern_root_hash72": "0000000000000000000000000000002pel6Y0BB8-s51ihJ>Vtt/ZE^iusesXxzgeyZ574qp",
+      "update_root_hash72": "0000000000000000000000000000002M56zcWBa1DgH6E8!t+)^vWs!2d8aCO0fawcGIxJOr"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000001h*eR(!0Gg9sUPJT6-dW-dgGfQu1+2WTCLpKJqub!O",
+      "pattern_root_hash72": "0000000000000000000000000000002vDbNfx9H6jfCZ2o+++U=K^kIFwM=2D7vT(Zax6z-F",
+      "update_root_hash72": "0000000000000000000000000000002M56zcWBa1DgH6E8!t+)^vWs!2d8aCO0fawcGIxJOr"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000002rH/9-GY^s06KPoto)smnWEr/9Yj(AT=>nDL7zg5Tb",
+      "pattern_root_hash72": "0000000000000000000000000000002)C(7mvtJG=(Ws+J?aFs7vXFyuoAasfRdSr^brcf>4",
+      "update_root_hash72": "0000000000000000000000000000002M56zcWBa1DgH6E8!t+)^vWs!2d8aCO0fawcGIxJOr"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000003tA6qGh)sDZpVD6c^uxf)iAPn61+QdvcYJ5u9GWPn>",
+      "pattern_root_hash72": "0000000000000000000000000000001smHqOkWhszEgk+6/+rIutab/tJTd/X2LVJT(0Aywq",
+      "update_root_hash72": "0000000000000000000000000000002M56zcWBa1DgH6E8!t+)^vWs!2d8aCO0fawcGIxJOr"
+    },
+    {
+      "novel_node_root_hash72": "00000000000000000000000000000034v1dqBv*vSzFcMWVow-FpLsX3>8iAR=x9/IZut96k",
+      "pattern_root_hash72": "0000000000000000000000000000002oV)?Kf5lrYgIuL5y4zT6)Cg4Ej^tnjvzfR6A9fT4M",
+      "update_root_hash72": "0000000000000000000000000000004rp>uw?BVgn!bFZmDR/Fz8H>v8)n!Xdji3i!QfhaI4"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000000js/dN/cS?za*Ae)Juw(X8=xAe1mW1oiE7jAIDl0Yg",
+      "pattern_root_hash72": "000000000000000000000000000000092*sqDqLCx6y!N2PE?Ck(FmSMy1fQ8D3ncPjhiMWm",
+      "update_root_hash72": "0000000000000000000000000000004rp>uw?BVgn!bFZmDR/Fz8H>v8)n!Xdji3i!QfhaI4"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000001I*jvFuoenBu3bzX5rT49L/?NWGJLi1*oSbtJ+M4(!",
+      "pattern_root_hash72": "0000000000000000000000000000004g9MFs+1P7>5+PtgsWED*PLNJY-iGCf1H7FkaM9Loh",
+      "update_root_hash72": "0000000000000000000000000000004rp>uw?BVgn!bFZmDR/Fz8H>v8)n!Xdji3i!QfhaI4"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000000X-d3E0d?UD-SCu3S312OfmkKJF?q>LbZmhcTT>R3L",
+      "pattern_root_hash72": "0000000000000000000000000000002QSI4JH2>+!rt/1=4myZ8uqOp68BO8Xax0VR)U2jFH",
+      "update_root_hash72": "0000000000000000000000000000004rp>uw?BVgn!bFZmDR/Fz8H>v8)n!Xdji3i!QfhaI4"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000002VXFN8xz6kn-GqOlYL1WMlifl8^^xrhHmM)7oH7zpV",
+      "pattern_root_hash72": "0000000000000000000000000000003!5c/3omHX?UgHVPy/hLdtJa-EPzhGe5mSz4y-U7z-",
+      "update_root_hash72": "0000000000000000000000000000002QxsG0a15RuB*Dc2Fwbs3?5QCAPWHIyJTu2Rm=Wr)Z"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000002ggSpWjnVhmcMd)TWy0-iM?nvcWBxv6bpLlOLwC=xK",
+      "pattern_root_hash72": "0000000000000000000000000000002ozp()/kJHb0T-F2MLp9mMEn^RkL8Idnn-F2kv0bCU",
+      "update_root_hash72": "0000000000000000000000000000002QxsG0a15RuB*Dc2Fwbs3?5QCAPWHIyJTu2Rm=Wr)Z"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000003lz-W!A^L>lH81lK6TxUUAYhJ9nUnW3k=FCZ69qQ^B",
+      "pattern_root_hash72": "0000000000000000000000000000002efJlVwfvWPmLHF1)HOwEsdXdTch^cP2+e*rl2rar4",
+      "update_root_hash72": "0000000000000000000000000000002QxsG0a15RuB*Dc2Fwbs3?5QCAPWHIyJTu2Rm=Wr)Z"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000000/ZL/>jJS8b!AFS0UmQf2TB!kH*VgK6lRyeDKB-4AU",
+      "pattern_root_hash72": "0000000000000000000000000000000T7gnHNakIh3RIT18pRLP77TW^(OOjzVTDoWX91NEq",
+      "update_root_hash72": "0000000000000000000000000000002QxsG0a15RuB*Dc2Fwbs3?5QCAPWHIyJTu2Rm=Wr)Z"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000004s1CubtjVtwKX36*irZmBqnrgy/mk2liWv8j5-a7A-",
+      "pattern_root_hash72": "0000000000000000000000000000000F(uK=-/IJJCnCG>cCVW>jXKpL!3GLeKHrN27nHafs",
+      "update_root_hash72": "0000000000000000000000000000000Mj>M)mi>Y=hThwVU^(++L2osce8(P/2ir31eVkEve"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000002=fbNL7qRW/aL2dovuN*jrn*zI9IQ9E>D!)ikIK-96",
+      "pattern_root_hash72": "0000000000000000000000000000001QXjfNyngGq(qg^zYuh9(9J6v!Ol??4VOCDs*17wBa",
+      "update_root_hash72": "0000000000000000000000000000000Mj>M)mi>Y=hThwVU^(++L2osce8(P/2ir31eVkEve"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000000qIE4Zkd3)-)*pJ05g6Q7PhRt+(GgcmGN54q+y!>AS",
+      "pattern_root_hash72": "0000000000000000000000000000004cYVZ/8atQZxi>QJmcC)rlYru5=U-i!(acjs/5xu^J",
+      "update_root_hash72": "0000000000000000000000000000000Mj>M)mi>Y=hThwVU^(++L2osce8(P/2ir31eVkEve"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000001Zdg2*=EgcLE!ucXmD!!gwbGBc1gk>PmR!?KUPd9oh",
+      "pattern_root_hash72": "0000000000000000000000000000004m9xQhvKp/AC=NxeRTUkvggz-J(u5KFnSQgcyn3z2D",
+      "update_root_hash72": "0000000000000000000000000000000Mj>M)mi>Y=hThwVU^(++L2osce8(P/2ir31eVkEve"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000002o-FUBD7NUn-*8ooWoqC32tF0>WQzO3+MPvS^H3WlE",
+      "pattern_root_hash72": "0000000000000000000000000000003!5c/3omHX?UgHVPy/hLdtJa-EPzhGe5mSz4y-U7z-",
+      "update_root_hash72": "0000000000000000000000000000001DR2kqRoqcJ3mhPPq--6nREMk/lRvZIU/)efNU836v"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000002s*O57(9oTfLPnTjF9NPmH=WJex0FJ*sGKqF)GOB+z",
+      "pattern_root_hash72": "0000000000000000000000000000002ozp()/kJHb0T-F2MLp9mMEn^RkL8Idnn-F2kv0bCU",
+      "update_root_hash72": "0000000000000000000000000000001DR2kqRoqcJ3mhPPq--6nREMk/lRvZIU/)efNU836v"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000002HNwsbk7UGp2GL*hYSdHyfoCrEM6RwzJGQqjBE+2sg",
+      "pattern_root_hash72": "0000000000000000000000000000002efJlVwfvWPmLHF1)HOwEsdXdTch^cP2+e*rl2rar4",
+      "update_root_hash72": "0000000000000000000000000000001DR2kqRoqcJ3mhPPq--6nREMk/lRvZIU/)efNU836v"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000004wUx(QkY=c1fKvH?I(U^?/uHf0lnE9lfqO-V47nmwB",
+      "pattern_root_hash72": "0000000000000000000000000000000T7gnHNakIh3RIT18pRLP77TW^(OOjzVTDoWX91NEq",
+      "update_root_hash72": "0000000000000000000000000000001DR2kqRoqcJ3mhPPq--6nREMk/lRvZIU/)efNU836v"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000000M(t-vmSu(mGAEq6jj42!vPxjkEHJ?n9y9PVZ(HOBM",
+      "pattern_root_hash72": "0000000000000000000000000000000F(uK=-/IJJCnCG>cCVW>jXKpL!3GLeKHrN27nHafs",
+      "update_root_hash72": "00000000000000000000000000000009-9d931cCL-BM7-(+Lie^X-ueBZs7wdGBxPa5-H7J"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000002^n6HhN=-YTpNOo2et5DIG7V(b0-?I/^=*JwckUcg>",
+      "pattern_root_hash72": "0000000000000000000000000000001QXjfNyngGq(qg^zYuh9(9J6v!Ol??4VOCDs*17wBa",
+      "update_root_hash72": "00000000000000000000000000000009-9d931cCL-BM7-(+Lie^X-ueBZs7wdGBxPa5-H7J"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000002(?hpJKNJiPDDjf6(EpfRZptq/m9P-xJ8-ewPHq2Eb",
+      "pattern_root_hash72": "0000000000000000000000000000004cYVZ/8atQZxi>QJmcC)rlYru5=U-i!(acjs/5xu^J",
+      "update_root_hash72": "00000000000000000000000000000009-9d931cCL-BM7-(+Lie^X-ueBZs7wdGBxPa5-H7J"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000000u-5S(0Zrwj??XKO-fVB8AOxd0V?jl+uCGyh7+ZB-r",
+      "pattern_root_hash72": "0000000000000000000000000000004m9xQhvKp/AC=NxeRTUkvggz-J(u5KFnSQgcyn3z2D",
+      "update_root_hash72": "00000000000000000000000000000009-9d931cCL-BM7-(+Lie^X-ueBZs7wdGBxPa5-H7J"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000000JQz5+WS-YDue!STyb*EtfiL!qtNn?Ihdn4iCwfmLk",
+      "pattern_root_hash72": "0000000000000000000000000000002JK7p7?Gs6w+7jAciNStf3MOzYvwqOygl8i5aGB=/v",
+      "update_root_hash72": "0000000000000000000000000000004uj0bVL3IxrDyI-X02>Tkyf*)mk7IKkVNOzGBG9fJ5"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000000dEOOXueR)20s*UrnughRn!2u/69MYsRrUZI6F(rY0",
+      "pattern_root_hash72": "00000000000000000000000000000013dA7+qQ0XVaOJjy6n3q/o9Oy>>Wt(nH/Nspo/?=6q",
+      "update_root_hash72": "0000000000000000000000000000004uj0bVL3IxrDyI-X02>Tkyf*)mk7IKkVNOzGBG9fJ5"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000001hE>(wgzDj-)2G>D8M3XWlOb6BhaSALj2RaS*3PodP",
+      "pattern_root_hash72": "0000000000000000000000000000004kSK2fBWFg)>s-8jLLshYtE(/Q(Q8uWIEr^q!FY72?",
+      "update_root_hash72": "0000000000000000000000000000004uj0bVL3IxrDyI-X02>Tkyf*)mk7IKkVNOzGBG9fJ5"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000001bi1JJeroMzN5o(pft^?sj3F?dTX)mWDV?iDaWptm4",
+      "pattern_root_hash72": "0000000000000000000000000000000U/BtGJV=fTUcqu>>WUVhzTu()UyWL3hvfq*mQQfg3",
+      "update_root_hash72": "0000000000000000000000000000004uj0bVL3IxrDyI-X02>Tkyf*)mk7IKkVNOzGBG9fJ5"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000000R36z8>5Bbe*KpNztjkt(a3g!C=RKwJ3tTJ+(/f*p7",
+      "pattern_root_hash72": "0000000000000000000000000000001iLtvMyJXSu-MsddHKatj4t!UKGu5B8/MQQ5SD1S--",
+      "update_root_hash72": "0000000000000000000000000000003YEPEh9?vJc*!9^))ro13?CiejnV+jQpVi5G))o-S^"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000000MnBbtaFd?R?XIXTw6sEVGW24ael(Jnpd2V)H6aaRG",
+      "pattern_root_hash72": "0000000000000000000000000000001e/2)Kh?4j8zov-TIFnFS1gUhAyXeam3^KJvELOJ=S",
+      "update_root_hash72": "0000000000000000000000000000003YEPEh9?vJc*!9^))ro13?CiejnV+jQpVi5G))o-S^"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000002y*L!n*Krpnr7uKsXZER0FyEsnB4?qz3!fUvxINAvZ",
+      "pattern_root_hash72": "0000000000000000000000000000001lvAq*SswlWTh7Zlry*w)XJl)Lor6Jgvl*aKopXofS",
+      "update_root_hash72": "0000000000000000000000000000003YEPEh9?vJc*!9^))ro13?CiejnV+jQpVi5G))o-S^"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000003fuEh8Lks!90Y60CyhItJdZXLCR>9uaQgR7zMmBnBD",
+      "pattern_root_hash72": "0000000000000000000000000000001gRp5l*Oy!ww4(JFfBzq40AVH^=zacks4jv4XEFG94",
+      "update_root_hash72": "0000000000000000000000000000003YEPEh9?vJc*!9^))ro13?CiejnV+jQpVi5G))o-S^"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000001bZCK6OIhxtu!+pA4c8?FX^u^AWRE(Dws3dfZmKlhF",
+      "pattern_root_hash72": "0000000000000000000000000000002JK7p7?Gs6w+7jAciNStf3MOzYvwqOygl8i5aGB=/v",
+      "update_root_hash72": "0000000000000000000000000000003XaGY09*2(A?Wr=MzZXuyLQfTmf4g=y3fFCYfa2Rn)"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000002Yejo=XL8yxALU-)+zT(fEa0TsGA4MzXh>YboE51p)",
+      "pattern_root_hash72": "00000000000000000000000000000013dA7+qQ0XVaOJjy6n3q/o9Oy>>Wt(nH/Nspo/?=6q",
+      "update_root_hash72": "0000000000000000000000000000003XaGY09*2(A?Wr=MzZXuyLQfTmf4g=y3fFCYfa2Rn)"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000003Z6i+iPxw39ehn*hfGS)TvU(5i>3WnTziG8cNgMkCo",
+      "pattern_root_hash72": "0000000000000000000000000000004yjRTDuTAvWk8lp?2SoO^fEQd(n2oYx1jlq?q/+7rh",
+      "update_root_hash72": "0000000000000000000000000000003XaGY09*2(A?Wr=MzZXuyLQfTmf4g=y3fFCYfa2Rn)"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000000LWe(XEkE6vs7LT8qxvN58ke^>EMPE3Y2fjx9H5NY)",
+      "pattern_root_hash72": "0000000000000000000000000000002!*V8)o^PdFLClFS+Yq2zdglcf-ZRNbICg^84wZ+Df",
+      "update_root_hash72": "0000000000000000000000000000003XaGY09*2(A?Wr=MzZXuyLQfTmf4g=y3fFCYfa2Rn)"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000004rDO*vOicitoF2Z!C/Xi150Yud)P/VSHAVXLDAMM4M",
+      "pattern_root_hash72": "0000000000000000000000000000003qPID/OIDmRmpyOFqN867AHPa5)IK+UypxJFi41BwR",
+      "update_root_hash72": "0000000000000000000000000000003XaGY09*2(A?Wr=MzZXuyLQfTmf4g=y3fFCYfa2Rn)"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000004HoX5U5rxhvmt=dOoxHnlpWgg=jeNQa0x/*k/S*e28",
+      "pattern_root_hash72": "0000000000000000000000000000002*+nCGmuteju49Fa1Fl+nNhoYtpYO3HvRGmUThgswj",
+      "update_root_hash72": "0000000000000000000000000000003XaGY09*2(A?Wr=MzZXuyLQfTmf4g=y3fFCYfa2Rn)"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000003i-1*J^fyB78aPrikbDbM>(CFyVuOoFiB*ZP?lUJo9",
+      "pattern_root_hash72": "0000000000000000000000000000002FY/BYV5NUr1sZt*w0^73TZ8>NL8DhjKTL+lcSbyn3",
+      "update_root_hash72": "0000000000000000000000000000003XaGY09*2(A?Wr=MzZXuyLQfTmf4g=y3fFCYfa2Rn)"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000002R6=(K-CI27-LdnRmxByK0r>aEyv0R>S0uylege*Jy",
+      "pattern_root_hash72": "0000000000000000000000000000002u2ifA=(4U!ueB7(^/)3+qVVt+ZJ19/Z9mlMpEyTV2",
+      "update_root_hash72": "0000000000000000000000000000003XaGY09*2(A?Wr=MzZXuyLQfTmf4g=y3fFCYfa2Rn)"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000002mQgc-=A0^T97+UX47x9SIZjhecC?0jYJBVCwTYpV)",
+      "pattern_root_hash72": "0000000000000000000000000000001iLtvMyJXSu-MsddHKatj4t!UKGu5B8/MQQ5SD1S--",
+      "update_root_hash72": "0000000000000000000000000000002WRENDYQbC0RC-iNZZ*NJCqqO^!Q?S(gULcUfvW1d-"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000001>An6c1/Gvv8*toQYet7Tbngm6XEdOfwpv1-cPpv4/",
+      "pattern_root_hash72": "0000000000000000000000000000001e/2)Kh?4j8zov-TIFnFS1gUhAyXeam3^KJvELOJ=S",
+      "update_root_hash72": "0000000000000000000000000000002WRENDYQbC0RC-iNZZ*NJCqqO^!Q?S(gULcUfvW1d-"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000002Qv1ZmWJWKKYXCzxK2gJtjb-Naq^P2>AVtQ3!wX1PD",
+      "pattern_root_hash72": "0000000000000000000000000000003FAb+qjz=zx)sU/M+EXqDJl>ZLu7odW8(yw^(^V+TG",
+      "update_root_hash72": "0000000000000000000000000000002WRENDYQbC0RC-iNZZ*NJCqqO^!Q?S(gULcUfvW1d-"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000000!FI5W)aP((qD8B(OJ4CMy4>pb*jo*XVb66OszmbvK",
+      "pattern_root_hash72": "00000000000000000000000000000020Kh=luE>HFjxvl2sEZhqsE^Xl)GqNg2ut?Q08WtOB",
+      "update_root_hash72": "0000000000000000000000000000002WRENDYQbC0RC-iNZZ*NJCqqO^!Q?S(gULcUfvW1d-"
+    },
+    {
+      "novel_node_root_hash72": "00000000000000000000000000000008OHv^R9gKBI9ScGaz>vkLTPDE6b-Whm?r/NGsjqqw",
+      "pattern_root_hash72": "00000000000000000000000000000004/nut0GBz+8tk!?vAKQO2D5(z9+Q!2siLT!W4w5(=",
+      "update_root_hash72": "0000000000000000000000000000002WRENDYQbC0RC-iNZZ*NJCqqO^!Q?S(gULcUfvW1d-"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000002w?5^ssLThRw)-0Fkm2AUyiFv>lWxKnuBY)mfK*uwf",
+      "pattern_root_hash72": "0000000000000000000000000000003e2bIMB6?3ax6^O46EaRnmA1BC2LezJGK!+0Ph4(uI",
+      "update_root_hash72": "0000000000000000000000000000002WRENDYQbC0RC-iNZZ*NJCqqO^!Q?S(gULcUfvW1d-"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000004K!RKy91w=im>!Z6RUXRrTvoezqW*fuMItcXdS7l/u",
+      "pattern_root_hash72": "0000000000000000000000000000001HJTpsn5ohNg!xL1QsEWCpxQJod8up*1xSA2kTdUr8",
+      "update_root_hash72": "0000000000000000000000000000002WRENDYQbC0RC-iNZZ*NJCqqO^!Q?S(gULcUfvW1d-"
+    },
+    {
+      "novel_node_root_hash72": "00000000000000000000000000000014d?g>GES>LrRi6e4ZS8-UPr/2Ka(c^/3u9kw+J=0P",
+      "pattern_root_hash72": "0000000000000000000000000000004raIW!4=^=?63nkwk2ZvFbD2Nz=rQfqMlVy22SUSn-",
+      "update_root_hash72": "0000000000000000000000000000002WRENDYQbC0RC-iNZZ*NJCqqO^!Q?S(gULcUfvW1d-"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000002E^TtnRcc2?qezXgE?j3z(cIJ!uIpH=ip3+HUOe!uW",
+      "pattern_root_hash72": "0000000000000000000000000000002Y?XYibOdr4sN6bqu2adXe>0N(WRa/FxMv4QnDdQJ^",
+      "update_root_hash72": "0000000000000000000000000000002j>NiLdt2tM7m(XWm>wXZHIk58o>hw^h+rIeX^o-wS"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000001Ehx3btT?TciCeke5dznv8r(zt>X)Bpq*96FOVCnT>",
+      "pattern_root_hash72": "0000000000000000000000000000001nuT0uap*q0RBl0yav/njZK)-kr8vtch7xHDYH+qqQ",
+      "update_root_hash72": "0000000000000000000000000000002j>NiLdt2tM7m(XWm>wXZHIk58o>hw^h+rIeX^o-wS"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000000bCoolJoz>SM>yLZXTkn5vCinN84Nplt9bFqLYFI??",
+      "pattern_root_hash72": "0000000000000000000000000000002369kQ>J6HN0rR)93QGaGfjZ2zFU8*w-Xkz?uzDRvi",
+      "update_root_hash72": "0000000000000000000000000000002j>NiLdt2tM7m(XWm>wXZHIk58o>hw^h+rIeX^o-wS"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000000(TQ7WBG(0zU79W6LCem?I)tCGyq(mmc(O(LVp0bnk",
+      "pattern_root_hash72": "0000000000000000000000000000001nVK?V2F*!E-MR*WVsPI*D9RNclY6zXx=7ONgR*QI9",
+      "update_root_hash72": "0000000000000000000000000000002j>NiLdt2tM7m(XWm>wXZHIk58o>hw^h+rIeX^o-wS"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000003RIVufLv0FhCmBVsisErdRYT0+55EwsENBnCL7dVYj",
+      "pattern_root_hash72": "00000000000000000000000000000044?OidF=!KY944dn3KD4MHZ83x!P1EIe9nDHPIOyjr",
+      "update_root_hash72": "0000000000000000000000000000002j>NiLdt2tM7m(XWm>wXZHIk58o>hw^h+rIeX^o-wS"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000000YhQwnFf/l6potVXQeCQFRGqU94Y9i?ZvCzy^um508",
+      "pattern_root_hash72": "0000000000000000000000000000002)OBcA6BN=X9iFzqBeyu!oHTxvhK6J1PH()4gm)hEn",
+      "update_root_hash72": "0000000000000000000000000000002j>NiLdt2tM7m(XWm>wXZHIk58o>hw^h+rIeX^o-wS"
+    },
+    {
+      "novel_node_root_hash72": "00000000000000000000000000000015KTzb=XCGi=cj)3Wi-^u8Yf?GmD1jYxRotWMT-CL-",
+      "pattern_root_hash72": "0000000000000000000000000000001r4)JkD04iVxBu((g)829vkuSDwNltMvJt?ZMRi?E=",
+      "update_root_hash72": "0000000000000000000000000000002j>NiLdt2tM7m(XWm>wXZHIk58o>hw^h+rIeX^o-wS"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000001RT2riJBWd6fSDjUXM6)DRel1Bfmp/o^X1eGN7zzU1",
+      "pattern_root_hash72": "0000000000000000000000000000002NSDTGHwHzERnq6r=F3KOEJRVI6=k3rnJVhUneWuEd",
+      "update_root_hash72": "0000000000000000000000000000002j>NiLdt2tM7m(XWm>wXZHIk58o>hw^h+rIeX^o-wS"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000004y8e18Y)7/O7MO=dpmxfsvwimJ2oauZcSjiNzBcH91",
+      "pattern_root_hash72": "0000000000000000000000000000001wsq)/wPDN!^d/y?oMkD4!?n+QR/Q(4Is6eAoQ?tOY",
+      "update_root_hash72": "0000000000000000000000000000001fHF3etGH/LcZXWji8S)fXoR>WsR*Vff^hIzjhE!OC"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000004p(flKyZsv9N5pD5PKNQh+9HUFGO3SBx7cH5D(puh*",
+      "pattern_root_hash72": "0000000000000000000000000000001NuDDW3M2f=m0o8Ob0(9sodR+)W4rjp0NKN*zS?Hak",
+      "update_root_hash72": "0000000000000000000000000000001fHF3etGH/LcZXWji8S)fXoR>WsR*Vff^hIzjhE!OC"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000003ky!zOPuGB2pW=2!FXaEoRV=M0IZa5I9oh+WuyqF*i",
+      "pattern_root_hash72": "0000000000000000000000000000004KUHXUP0pVDU)2/(CKiKOXF(>kiS84OJnsSyt*bx(c",
+      "update_root_hash72": "0000000000000000000000000000001fHF3etGH/LcZXWji8S)fXoR>WsR*Vff^hIzjhE!OC"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000001Tfxx/7pchIqH4)VuxI8Nkp=+ba(52)RC+Dgz)1mAv",
+      "pattern_root_hash72": "0000000000000000000000000000001iEoJ+4jTwoHPRl1VtQY*oz=rpFTRF*AfLBsNSiw>Q",
+      "update_root_hash72": "0000000000000000000000000000001fHF3etGH/LcZXWji8S)fXoR>WsR*Vff^hIzjhE!OC"
+    },
+    {
+      "novel_node_root_hash72": "00000000000000000000000000000020/MS=eXK^lCPZGCRBT1ALTR1zQx!LyJqwn/9mN^gl",
+      "pattern_root_hash72": "0000000000000000000000000000001sFRsezQEaBwSwzACEGK()HvW1(muz!r5Q769?D=Zu",
+      "update_root_hash72": "0000000000000000000000000000001fHF3etGH/LcZXWji8S)fXoR>WsR*Vff^hIzjhE!OC"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000000IT?po9(SPJNEJ4l)D?FLk+/wdflQhTBCTK0+eXd-x",
+      "pattern_root_hash72": "0000000000000000000000000000000Q3?hPR^x>!6nP?s>QEa9H?mS7Y/bY15^iTtCmjsnb",
+      "update_root_hash72": "0000000000000000000000000000001fHF3etGH/LcZXWji8S)fXoR>WsR*Vff^hIzjhE!OC"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000002QfhX*yt4x6KwqQ1O+y8h17gcIaQKBd4+4cD4(ks>R",
+      "pattern_root_hash72": "0000000000000000000000000000003A48^kJ>XyDiOMqqf2va8VhzJS=wxBf2J5^h8xuaX*",
+      "update_root_hash72": "0000000000000000000000000000001fHF3etGH/LcZXWji8S)fXoR>WsR*Vff^hIzjhE!OC"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000001bH-mGDyvLosCkYcOKFlhuAdd>H4ZxPIVLJ-2-F1Id",
+      "pattern_root_hash72": "0000000000000000000000000000000c+TKyuw6XiiMy=jflQwhP0f?ie+p2osxmcH4o8DEy",
+      "update_root_hash72": "0000000000000000000000000000001fHF3etGH/LcZXWji8S)fXoR>WsR*Vff^hIzjhE!OC"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000003V=Jv*6XZR2SnYUJ2L5OjpIkPZ)GKmcu1(GbnLQ>ia",
+      "pattern_root_hash72": "0000000000000000000000000000003Gw^QSJ6P8?MkaNA+MDTy3fy9xjzX-xuZAS^Sn4J^d",
+      "update_root_hash72": "0000000000000000000000000000001WDsPPD/E/)75^eMBZSitafcSct5BhNTYArV-Pr>JV"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000000JSFxEl3sZ)uUeStucsjKZOx)W-=>A0iZLG1gu>^H3",
+      "pattern_root_hash72": "0000000000000000000000000000002kfVTps6M=Vt)5!/lN6z9iak6Be^w0Nn!ox+fqtj-P",
+      "update_root_hash72": "0000000000000000000000000000001WDsPPD/E/)75^eMBZSitafcSct5BhNTYArV-Pr>JV"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000003I+ShqFIE+7+HqckJ/GY(THlQnFDGiwGRzoTir0xqr",
+      "pattern_root_hash72": "00000000000000000000000000000010q6=cYeumD9ep9D^FgeYLOsW)4TXCw>hyQxu9yt!q",
+      "update_root_hash72": "0000000000000000000000000000001WDsPPD/E/)75^eMBZSitafcSct5BhNTYArV-Pr>JV"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000001A5=!60vxjtmIHwfxHC5A0vql4BD?f!WAU7lOhaNpg",
+      "pattern_root_hash72": "00000000000000000000000000000036sQkmR85)nldf>e5kITNaAa8LR!43bz!^!9HVhO-c",
+      "update_root_hash72": "0000000000000000000000000000001WDsPPD/E/)75^eMBZSitafcSct5BhNTYArV-Pr>JV"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000003v66(t9paas=m^j)Xv2mFf8O30CeIR5/tHYP3CzAa^",
+      "pattern_root_hash72": "0000000000000000000000000000000Xp*FwV1bRFuIywp*!hEhXQidmS>7rbN(q/v2!YhIf",
+      "update_root_hash72": "0000000000000000000000000000001WDsPPD/E/)75^eMBZSitafcSct5BhNTYArV-Pr>JV"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000002km)5n9k9Ncm)Z4m^wXcHmA^guMp(PftehP22nS(q0",
+      "pattern_root_hash72": "0000000000000000000000000000003!0ToKj!>Bz6V-FuxKa1i/1i(BLnGsG1xdcqD/nI^T",
+      "update_root_hash72": "0000000000000000000000000000001WDsPPD/E/)75^eMBZSitafcSct5BhNTYArV-Pr>JV"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000004k1yQMHnPssqBe=6^NpB0wM8JvMU5-kWhB=BnB?2lN",
+      "pattern_root_hash72": "0000000000000000000000000000001*VPJb>mEZASF^H>v>8E=JrhAASRoV!wHBjOnebG+B",
+      "update_root_hash72": "0000000000000000000000000000001WDsPPD/E/)75^eMBZSitafcSct5BhNTYArV-Pr>JV"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000000Bf5Xai=6y9IL?+25HQ3VascuGJ63IEvt/+XqHjIK?",
+      "pattern_root_hash72": "0000000000000000000000000000004v5VhTQk/VlCi(XCtqsUsMecUG>t=b5aXewO=G?Lzf",
+      "update_root_hash72": "0000000000000000000000000000001WDsPPD/E/)75^eMBZSitafcSct5BhNTYArV-Pr>JV"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000001nwmWgk?0vDM1uW(^OKp7/VC?HDNkuN(vBD!O^W8/O",
+      "pattern_root_hash72": "0000000000000000000000000000002bgigu0CBAmbdK1n(kqyOGYtj9rP=Sgk2h27HW!JMv",
+      "update_root_hash72": "0000000000000000000000000000001WDsPPD/E/)75^eMBZSitafcSct5BhNTYArV-Pr>JV"
+    },
+    {
+      "novel_node_root_hash72": "000000000000000000000000000000006Vrs5OKF15K^7jXwRobc+f7K/hgWk7RmhnK0j^q5",
+      "pattern_root_hash72": "0000000000000000000000000000002u9?nmqyRU3^5m(c+wI1^YYAbf1!WEIYxZu(5LG7GV",
+      "update_root_hash72": "0000000000000000000000000000001WDsPPD/E/)75^eMBZSitafcSct5BhNTYArV-Pr>JV"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000001foLK?nfh!UvxZ5Rc3rjfP+)M!)cfIxBNjoxn5s*?B",
+      "pattern_root_hash72": "0000000000000000000000000000000Hj/TzCM9KX-d-/8EZRvzW>z8PGhdDlxT51mlB4C>N",
+      "update_root_hash72": "0000000000000000000000000000001WDsPPD/E/)75^eMBZSitafcSct5BhNTYArV-Pr>JV"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000002A-dQiD-h+e2+y?f>!88yW4yHpNwVNGv?d6!j)x27P",
+      "pattern_root_hash72": "0000000000000000000000000000001fBcqu4*6d?QrAbzh6VDU(FzF/q3*/-qmvZWZb+NJS",
+      "update_root_hash72": "0000000000000000000000000000001WDsPPD/E/)75^eMBZSitafcSct5BhNTYArV-Pr>JV"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000001avcCk+wfCQNX!/e+DHws9PMFR/sMwTbIwvIE*h!Ro",
+      "pattern_root_hash72": "0000000000000000000000000000003P4C(i9X7yGUXocOw+iaCWhxGckRbbazSGqb!SwGxc",
+      "update_root_hash72": "0000000000000000000000000000001WDsPPD/E/)75^eMBZSitafcSct5BhNTYArV-Pr>JV"
+    },
+    {
+      "novel_node_root_hash72": "00000000000000000000000000000043ivVoJEgo7>fRpJQ0q^YdKVSKXyKui>C^7IZ8j7xk",
+      "pattern_root_hash72": "00000000000000000000000000000039697LQzq4oqtPS7l>D7raZjb1ryjFIZazuPiV>0ph",
+      "update_root_hash72": "0000000000000000000000000000001WDsPPD/E/)75^eMBZSitafcSct5BhNTYArV-Pr>JV"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000000tGH=F*hWup>05aG-Ws^j0JNY9Z85zJUi*5AQ-A?n0",
+      "pattern_root_hash72": "0000000000000000000000000000003*TXmFTnfI0V?EYcAq06/zuQk7X*nYXIcRgd0tPfj7",
+      "update_root_hash72": "0000000000000000000000000000001WDsPPD/E/)75^eMBZSitafcSct5BhNTYArV-Pr>JV"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000002k3W^JW1*dWC!N-9NXItIfER*P(n^i8*OSqaL5r5g>",
+      "pattern_root_hash72": "000000000000000000000000000000444uQy/QszmHFIfyRkB-WykFETEtr9XfBDedORm/w9",
+      "update_root_hash72": "0000000000000000000000000000001WDsPPD/E/)75^eMBZSitafcSct5BhNTYArV-Pr>JV"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000002mR55*2u5-G6ygP2pFvlj?KaNxfjp4RDBO+L/2-BuV",
+      "pattern_root_hash72": "00000000000000000000000000000011!sq?o0JOe8SNG?pm*Hcdnu=Vhw-*m7kbwdAtzHO0",
+      "update_root_hash72": "0000000000000000000000000000002cw1-O1u2rojejHK>EtYa1!dV0=rSq?D=iwIy4rtni"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000002ArJF=b(1kPSpD^-7Ag/4clnJ3DU2rvfnjHCeHBcn+",
+      "pattern_root_hash72": "0000000000000000000000000000000DgNaacut7n6J+zh=z)/?l28H!xGk5g*fd=CrHzwqK",
+      "update_root_hash72": "0000000000000000000000000000002cw1-O1u2rojejHK>EtYa1!dV0=rSq?D=iwIy4rtni"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000001RM07U!UDJM7+!qICJCPxQi0/st-v9lgM?k1LsJP!B",
+      "pattern_root_hash72": "0000000000000000000000000000001XkK171QUn=CcPfnsZ=^By9L4g2VuSy=kOOCLJu*30",
+      "update_root_hash72": "0000000000000000000000000000002cw1-O1u2rojejHK>EtYa1!dV0=rSq?D=iwIy4rtni"
+    },
+    {
+      "novel_node_root_hash72": "000000000000000000000000000000017xK/zDRr!hS*oP!*Kcv1l(USnu1qj4LkxNM6bP^5",
+      "pattern_root_hash72": "0000000000000000000000000000001CcQ^0?*!nOgi2DBJp8(/a^t3Qm59zQd1lp7S!(g=N",
+      "update_root_hash72": "0000000000000000000000000000002cw1-O1u2rojejHK>EtYa1!dV0=rSq?D=iwIy4rtni"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000000=FaM1GAkGxlCAfs1E8dq-)/>xgUUAW9RLL(ZXkd^8",
+      "pattern_root_hash72": "00000000000000000000000000000021pe+7bU7omLghPjw0Lir>3J2M7Wxc/)Ujuw14cM6U",
+      "update_root_hash72": "0000000000000000000000000000002cw1-O1u2rojejHK>EtYa1!dV0=rSq?D=iwIy4rtni"
+    },
+    {
+      "novel_node_root_hash72": "00000000000000000000000000000022PI8jDUf6eFLDHt!+eF-HyuipPPZF3l=LCOPHKr!-",
+      "pattern_root_hash72": "0000000000000000000000000000000bOESNC^gq=PpL!Sv-o)+xrmxFM?WFEz^OA2nP1*ur",
+      "update_root_hash72": "0000000000000000000000000000002cw1-O1u2rojejHK>EtYa1!dV0=rSq?D=iwIy4rtni"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000001S4hwKu=F2GTAOZ*Q-s//AVSZOq!-mM>EvM)w=sIG!",
+      "pattern_root_hash72": "0000000000000000000000000000004mtduirbGah+8FO+ED?Zl2n7qUNBs1?9=hlsM8^W-t",
+      "update_root_hash72": "0000000000000000000000000000002cw1-O1u2rojejHK>EtYa1!dV0=rSq?D=iwIy4rtni"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000002ThS6>w2W+Z+OOv?BE4UnYrg75c=V^xaXSZ2bZwQwy",
+      "pattern_root_hash72": "0000000000000000000000000000001VRGTddfUyj!IHDEPGn40?RckRpa/ol+gPViD*Hze3",
+      "update_root_hash72": "0000000000000000000000000000002cw1-O1u2rojejHK>EtYa1!dV0=rSq?D=iwIy4rtni"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000001FGRE5Ue10W6f>y(B(c13oS-oOqiXhAUBPvCfkDF1u",
+      "pattern_root_hash72": "0000000000000000000000000000004clw(U9!HTAkZ>egJTJbEI4/*1RH6M2kg4E)rYEbAj",
+      "update_root_hash72": "0000000000000000000000000000002cw1-O1u2rojejHK>EtYa1!dV0=rSq?D=iwIy4rtni"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000002eT22ucN/TnI6CnjHyZJ+IwG6l+2K90Vn=SELxWfuX",
+      "pattern_root_hash72": "00000000000000000000000000000020?Akg8BsZQSv^?Yfvf(IpV9oWlliYPmiEifbJBrlg",
+      "update_root_hash72": "0000000000000000000000000000002cw1-O1u2rojejHK>EtYa1!dV0=rSq?D=iwIy4rtni"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000001=G6rjDAQh9oijZd0K0/b(sXeMkY1J7+CGqFM9n^8(",
+      "pattern_root_hash72": "00000000000000000000000000000014C-/(q0NtbL>ypPrWqa>yu)kUV1-B*vEFfo+36/Ar",
+      "update_root_hash72": "0000000000000000000000000000002cw1-O1u2rojejHK>EtYa1!dV0=rSq?D=iwIy4rtni"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000001>6+Lp=zxksWjtioSn/VT5*01Q>Q>jL/hgicALO30D",
+      "pattern_root_hash72": "0000000000000000000000000000003mJ-Db8dUmq-7E*2KfNXtgy90lmYU/dJ1=>)rKLMBn",
+      "update_root_hash72": "0000000000000000000000000000002cw1-O1u2rojejHK>EtYa1!dV0=rSq?D=iwIy4rtni"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000000i4Zwvjy4O^P=rSmz=HvCmb/59P*kQn8S70xPm1X(Y",
+      "pattern_root_hash72": "0000000000000000000000000000004j8M8v4tzmR=SkBDQOPAsxOm6gefQuiSjO6xXwseuk",
+      "update_root_hash72": "0000000000000000000000000000002cw1-O1u2rojejHK>EtYa1!dV0=rSq?D=iwIy4rtni"
+    },
+    {
+      "novel_node_root_hash72": "00000000000000000000000000000010X)=JuFq8*wwzbUUuh4p5JWP289Yjl>^v(drF5Y>R",
+      "pattern_root_hash72": "0000000000000000000000000000001kHZ?a*6Ec4ExJsf>h-PO8Ro^FgbhOsfiDQ0>Q5=c?",
+      "update_root_hash72": "0000000000000000000000000000002cw1-O1u2rojejHK>EtYa1!dV0=rSq?D=iwIy4rtni"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000003CBJ)?-vcGt+4r-mXF/h^lEe0wc75Uq7PcJEz5pw37",
+      "pattern_root_hash72": "0000000000000000000000000000000WS73TwH094BYC3SZuTqhJsj1UM*eYPU(lTKidq3-R",
+      "update_root_hash72": "0000000000000000000000000000002cw1-O1u2rojejHK>EtYa1!dV0=rSq?D=iwIy4rtni"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000003JihlH(WsfM7YOBsZo3QQ!aX>4NAyJi>JeFPEI!lD/",
+      "pattern_root_hash72": "0000000000000000000000000000002xg>>US^XZAY5/)rl*ya9JepE68fYKb==e3RLM3fuf",
+      "update_root_hash72": "0000000000000000000000000000002cw1-O1u2rojejHK>EtYa1!dV0=rSq?D=iwIy4rtni"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000001HUlo4eirNG1UysUY2Lb89BogAspGrER(rdSO2FUJ3",
+      "pattern_root_hash72": "0000000000000000000000000000002Y?XYibOdr4sN6bqu2adXe>0N(WRa/FxMv4QnDdQJ^",
+      "update_root_hash72": "0000000000000000000000000000004i=K=g3uGE8XBdg/Di4?PNzEcYzROZu294E0PDb0IL"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000003z1C1Nqc!6jAq-JHb3!1f)M6Kul/zUPLTNS^wUTska",
+      "pattern_root_hash72": "0000000000000000000000000000002369kQ>J6HN0rR)93QGaGfjZ2zFU8*w-Xkz?uzDRvi",
+      "update_root_hash72": "0000000000000000000000000000004i=K=g3uGE8XBdg/Di4?PNzEcYzROZu294E0PDb0IL"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000001SJLA/LvsgqgN**gP*NeO!xSP874G?W4Ec?0wmpeEr",
+      "pattern_root_hash72": "00000000000000000000000000000044?OidF=!KY944dn3KD4MHZ83x!P1EIe9nDHPIOyjr",
+      "update_root_hash72": "0000000000000000000000000000004i=K=g3uGE8XBdg/Di4?PNzEcYzROZu294E0PDb0IL"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000001BQ37Gj8Z^JS?2fIRQ0-YVWdsOE>tQkkLXvh!J6wt0",
+      "pattern_root_hash72": "0000000000000000000000000000001r4)JkD04iVxBu((g)829vkuSDwNltMvJt?ZMRi?E=",
+      "update_root_hash72": "0000000000000000000000000000004i=K=g3uGE8XBdg/Di4?PNzEcYzROZu294E0PDb0IL"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000000i/9jzd>5wv>OisIkflPBCSMPgMezcO^)A3hXnNdPY",
+      "pattern_root_hash72": "0000000000000000000000000000002FYFc7cHrpVBv-*k7I!Dm)ke^CrV!mx2KF(/fNb0U8",
+      "update_root_hash72": "0000000000000000000000000000004i=K=g3uGE8XBdg/Di4?PNzEcYzROZu294E0PDb0IL"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000002D-Md(X1pcXilT1zJp>z4v2az+vl3^M!Kzg78BGlGD",
+      "pattern_root_hash72": "00000000000000000000000000000000KtrUgT5d5-hZg**oy^jANjZJGULHzdlC)M7iYKN=",
+      "update_root_hash72": "0000000000000000000000000000004i=K=g3uGE8XBdg/Di4?PNzEcYzROZu294E0PDb0IL"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000000Xq^/aT30-Y?ERukcJFe6(rh*kF(OR^om*7AIjPy(z",
+      "pattern_root_hash72": "0000000000000000000000000000004a1n!q4E+m(KIQE=mD=5LRICfsvBkW4lZY40nI1Ap?",
+      "update_root_hash72": "0000000000000000000000000000004i=K=g3uGE8XBdg/Di4?PNzEcYzROZu294E0PDb0IL"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000001KxI84XUvZg3m(H>xNW-t8isaQk?x6q3UQ7U32)V4n",
+      "pattern_root_hash72": "00000000000000000000000000000033iV*Pytcr2/fLaHv/8fHV*rpuin6eQG5gc(92iuxN",
+      "update_root_hash72": "0000000000000000000000000000004i=K=g3uGE8XBdg/Di4?PNzEcYzROZu294E0PDb0IL"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000003rJFlzBqsqhPpmOAhr4W7lD9ifQLf/f=EWprUD!(Mr",
+      "pattern_root_hash72": "0000000000000000000000000000001wsq)/wPDN!^d/y?oMkD4!?n+QR/Q(4Is6eAoQ?tOY",
+      "update_root_hash72": "00000000000000000000000000000015MWoL4en8^jD/DP5nt)8AzNbZUoDpc1o-wpMElfOQ"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000003G3sqG5qNOdAv-EZp-7=5)ieAjSat*PX4RYUG0rCVG",
+      "pattern_root_hash72": "0000000000000000000000000000004KUHXUP0pVDU)2/(CKiKOXF(>kiS84OJnsSyt*bx(c",
+      "update_root_hash72": "00000000000000000000000000000015MWoL4en8^jD/DP5nt)8AzNbZUoDpc1o-wpMElfOQ"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000003rhW>DsIVid)Vfy(QFsGtavk4wVf=O=!8RzvO7q0*w",
+      "pattern_root_hash72": "0000000000000000000000000000001sFRsezQEaBwSwzACEGK()HvW1(muz!r5Q769?D=Zu",
+      "update_root_hash72": "00000000000000000000000000000015MWoL4en8^jD/DP5nt)8AzNbZUoDpc1o-wpMElfOQ"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000003hE(eg-48B-3Qxd)SlkEfF^tW)k/VzUJ!Iuco=m4IQ",
+      "pattern_root_hash72": "0000000000000000000000000000003A48^kJ>XyDiOMqqf2va8VhzJS=wxBf2J5^h8xuaX*",
+      "update_root_hash72": "00000000000000000000000000000015MWoL4en8^jD/DP5nt)8AzNbZUoDpc1o-wpMElfOQ"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000003/d=hxs6bD1r!s0t-T/FSa=l9l9zgGZlk522^l-JW1",
+      "pattern_root_hash72": "0000000000000000000000000000002r0zGLi?mEzJJM0)ylf>MYlHv9pwpi-04>vXYs)?tB",
+      "update_root_hash72": "00000000000000000000000000000015MWoL4en8^jD/DP5nt)8AzNbZUoDpc1o-wpMElfOQ"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000001-xGzc8c6P^8>VXQiH!B5p?3+yvd/S=IsTB^OczQPZ",
+      "pattern_root_hash72": "00000000000000000000000000000014w(WRF4!bzGAU4fTj27ZVaYV3P8b3IkfIMLx09O8s",
+      "update_root_hash72": "00000000000000000000000000000015MWoL4en8^jD/DP5nt)8AzNbZUoDpc1o-wpMElfOQ"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000000EIQmbdW-eNavMa**KTWVx5Fxwwp>fgVYn?ho!MAiM",
+      "pattern_root_hash72": "0000000000000000000000000000003/GyfoZ??xzgn=+jaF>Nf8P3+!t?DvE0>DXi6mErln",
+      "update_root_hash72": "00000000000000000000000000000015MWoL4en8^jD/DP5nt)8AzNbZUoDpc1o-wpMElfOQ"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000003(v3h7ebRb^L3ZzqC=KQEOOy5N/4j3BaHMh-JOw5aG",
+      "pattern_root_hash72": "0000000000000000000000000000001VELk!1G4Z^dJfGoPmeEQYfQs^H6M-3xcI0c=NMQ(9",
+      "update_root_hash72": "00000000000000000000000000000015MWoL4en8^jD/DP5nt)8AzNbZUoDpc1o-wpMElfOQ"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000000iJj58a3?QdaujnZL?LvvjvrcT4du+*rbDyHICbPmQ",
+      "pattern_root_hash72": "0000000000000000000000000000001nuT0uap*q0RBl0yav/njZK)-kr8vtch7xHDYH+qqQ",
+      "update_root_hash72": "0000000000000000000000000000002Vtpbp>WJz2*5XTvt494E*htRZ8h0?LPy4q80X+^AM"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000001^3sMd=!8oYDszGCVNa?^>ZG7llYgw2V1(u8f8CZ^B",
+      "pattern_root_hash72": "0000000000000000000000000000001nVK?V2F*!E-MR*WVsPI*D9RNclY6zXx=7ONgR*QI9",
+      "update_root_hash72": "0000000000000000000000000000002Vtpbp>WJz2*5XTvt494E*htRZ8h0?LPy4q80X+^AM"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000003UfYIJDvtd>SQhju=*0ju2hUC9eqL8Xi2ljljJGIz>",
+      "pattern_root_hash72": "0000000000000000000000000000002)OBcA6BN=X9iFzqBeyu!oHTxvhK6J1PH()4gm)hEn",
+      "update_root_hash72": "0000000000000000000000000000002Vtpbp>WJz2*5XTvt494E*htRZ8h0?LPy4q80X+^AM"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000004c/1FmYye^9kf3g/AjZ/dDt59b0dpNwHKIu=m0Mq05",
+      "pattern_root_hash72": "0000000000000000000000000000002NSDTGHwHzERnq6r=F3KOEJRVI6=k3rnJVhUneWuEd",
+      "update_root_hash72": "0000000000000000000000000000002Vtpbp>WJz2*5XTvt494E*htRZ8h0?LPy4q80X+^AM"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000001W89WABDFiBPqkcCfCG=DR0rJMFfggsLTHHOnOf3Qe",
+      "pattern_root_hash72": "0000000000000000000000000000002ECV=gnly(>GEXOZkhPuPS^R=Fe=rA-ksvPtraZ6v8",
+      "update_root_hash72": "0000000000000000000000000000002Vtpbp>WJz2*5XTvt494E*htRZ8h0?LPy4q80X+^AM"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000000+CHYWvtItqD0GKe?yXl4VC)j)hPznMoBZ*7p9sK8K",
+      "pattern_root_hash72": "0000000000000000000000000000003Mgn)9TSsGP7frvLVWTaPJ!wXkH0v)R?m6iO=nSF3!",
+      "update_root_hash72": "0000000000000000000000000000002Vtpbp>WJz2*5XTvt494E*htRZ8h0?LPy4q80X+^AM"
+    },
+    {
+      "novel_node_root_hash72": "00000000000000000000000000000027bSH9yXRDD+zE40bCuWP>mYcv4>pbsaIQL=)-iQzt",
+      "pattern_root_hash72": "00000000000000000000000000000047bbZCuse)O(13vaF4>71P6dTZ?4-S0mymaoszDr^Y",
+      "update_root_hash72": "0000000000000000000000000000002Vtpbp>WJz2*5XTvt494E*htRZ8h0?LPy4q80X+^AM"
+    },
+    {
+      "novel_node_root_hash72": "00000000000000000000000000000014btI3Cn(le*^eKRaLS/)pWP/2^O)R5PYdQ=JF43SF",
+      "pattern_root_hash72": "00000000000000000000000000000034z/wZ8>CH1fTNZtx(0P6Ba/U+!1Oc4uX?5mb+8b6N",
+      "update_root_hash72": "0000000000000000000000000000002Vtpbp>WJz2*5XTvt494E*htRZ8h0?LPy4q80X+^AM"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000001eN=/Om0mwbBt*UZGm+T9jkaaN8E6dcK!JP1!hLiEH",
+      "pattern_root_hash72": "0000000000000000000000000000001NuDDW3M2f=m0o8Ob0(9sodR+)W4rjp0NKN*zS?Hak",
+      "update_root_hash72": "0000000000000000000000000000000hOZqnhs(nN3wunzmskvQ=GQfgWzVNatapSwomO+iK"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000003EtewVFveL-jFhl8XzgeBULy-/OVB5aQnHbGz9rzYq",
+      "pattern_root_hash72": "0000000000000000000000000000001iEoJ+4jTwoHPRl1VtQY*oz=rpFTRF*AfLBsNSiw>Q",
+      "update_root_hash72": "0000000000000000000000000000000hOZqnhs(nN3wunzmskvQ=GQfgWzVNatapSwomO+iK"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000002Wdl8hsa9eBV+7ws1YSK!ZGo0Dx?5ntMh5cie?b!Y4",
+      "pattern_root_hash72": "0000000000000000000000000000000Q3?hPR^x>!6nP?s>QEa9H?mS7Y/bY15^iTtCmjsnb",
+      "update_root_hash72": "0000000000000000000000000000000hOZqnhs(nN3wunzmskvQ=GQfgWzVNatapSwomO+iK"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000002EV*d9*Bw^nN6Uo8E8bfFO)-5ey!RW)/CSu!5w+vra",
+      "pattern_root_hash72": "0000000000000000000000000000000c+TKyuw6XiiMy=jflQwhP0f?ie+p2osxmcH4o8DEy",
+      "update_root_hash72": "0000000000000000000000000000000hOZqnhs(nN3wunzmskvQ=GQfgWzVNatapSwomO+iK"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000003He(3VM56l3KtVKnnUHbP^a!O=Yw+V^VhczMXQ6aMQ",
+      "pattern_root_hash72": "0000000000000000000000000000000zSvx!CA(qbT/?qFN8r0X+gm=NTHWtK!4O+2-1CF4z",
+      "update_root_hash72": "0000000000000000000000000000000hOZqnhs(nN3wunzmskvQ=GQfgWzVNatapSwomO+iK"
+    },
+    {
+      "novel_node_root_hash72": "000000000000000000000000000000442ojdxC*Q7E)^q6/(AuC(qfeEgSR+dkQrJvTTWglt",
+      "pattern_root_hash72": "0000000000000000000000000000004e8kisT!YYsU?)!4CZ+mPN1Jh1S^!+IkjK4nGs6+Om",
+      "update_root_hash72": "0000000000000000000000000000000hOZqnhs(nN3wunzmskvQ=GQfgWzVNatapSwomO+iK"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000000goPRM6nhl=muMKA4V*nq/RnFUztN4J-AG4xQaCYf-",
+      "pattern_root_hash72": "0000000000000000000000000000001oWGQspJ^Fhqn9vw7wFBWN!ZZJxaER7z/(Q-*HLwwk",
+      "update_root_hash72": "0000000000000000000000000000000hOZqnhs(nN3wunzmskvQ=GQfgWzVNatapSwomO+iK"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000002pquVk+JT8vVNOd)RALIXe/3axmu56qu71y^HBwZop",
+      "pattern_root_hash72": "0000000000000000000000000000001ynUm80f)GsUHrXt(6yTPoh?fL5yl/VacCttsDWhWZ",
+      "update_root_hash72": "0000000000000000000000000000000hOZqnhs(nN3wunzmskvQ=GQfgWzVNatapSwomO+iK"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000001vPcrWU-922l3W)ibTY^xA^a^=l>Kh)+bpWtwpe+FG",
+      "pattern_root_hash72": "0000000000000000000000000000002JK7p7?Gs6w+7jAciNStf3MOzYvwqOygl8i5aGB=/v",
+      "update_root_hash72": "0000000000000000000000000000002J3kU!*DryjQCU05FZ+eCP1KX5SG!>x9oOYbh=vMft"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000003BFeh1BzOMxQ8Rw?>vl8x2fIeAO46Sjg0j0VUa=7fN",
+      "pattern_root_hash72": "00000000000000000000000000000013dA7+qQ0XVaOJjy6n3q/o9Oy>>Wt(nH/Nspo/?=6q",
+      "update_root_hash72": "0000000000000000000000000000002J3kU!*DryjQCU05FZ+eCP1KX5SG!>x9oOYbh=vMft"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000000IF87-z=-kjYCZIwNpb=clX2+?D2YB/+T51W>1guo=",
+      "pattern_root_hash72": "0000000000000000000000000000004kSK2fBWFg)>s-8jLLshYtE(/Q(Q8uWIEr^q!FY72?",
+      "update_root_hash72": "0000000000000000000000000000002J3kU!*DryjQCU05FZ+eCP1KX5SG!>x9oOYbh=vMft"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000004GEklguY!(Vx5)sjJR3xj*aEM-k(ypEz39)yoBN+Up",
+      "pattern_root_hash72": "0000000000000000000000000000000U/BtGJV=fTUcqu>>WUVhzTu()UyWL3hvfq*mQQfg3",
+      "update_root_hash72": "0000000000000000000000000000002J3kU!*DryjQCU05FZ+eCP1KX5SG!>x9oOYbh=vMft"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000003v^?>^AW)Dae-*^82t47OibktIdxR^KFyUuulAJuN2",
+      "pattern_root_hash72": "0000000000000000000000000000003qPID/OIDmRmpyOFqN867AHPa5)IK+UypxJFi41BwR",
+      "update_root_hash72": "0000000000000000000000000000002J3kU!*DryjQCU05FZ+eCP1KX5SG!>x9oOYbh=vMft"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000001S3^cnGD0yoZSpjUoWq8>lO-a60=*2mE8c?Bucm6qt",
+      "pattern_root_hash72": "0000000000000000000000000000002*+nCGmuteju49Fa1Fl+nNhoYtpYO3HvRGmUThgswj",
+      "update_root_hash72": "0000000000000000000000000000002J3kU!*DryjQCU05FZ+eCP1KX5SG!>x9oOYbh=vMft"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000000lZPPH-2f)Zt3Vm*+oN9qlWLaj2X)m4D)VwMK4adC9",
+      "pattern_root_hash72": "0000000000000000000000000000002j59g8OyUghj))k*U(yvN7Gp*-o=vWq^737nxm*blC",
+      "update_root_hash72": "0000000000000000000000000000002J3kU!*DryjQCU05FZ+eCP1KX5SG!>x9oOYbh=vMft"
+    },
+    {
+      "novel_node_root_hash72": "00000000000000000000000000000032Th8=Uz*/ghMUJ1lF3C8Xxr^OJ9JwIRHf=OTM2m/T",
+      "pattern_root_hash72": "0000000000000000000000000000000aLct^i0PVFzO/lTzSfwON(NpsrU91/1j8ho+NEhLm",
+      "update_root_hash72": "0000000000000000000000000000002J3kU!*DryjQCU05FZ+eCP1KX5SG!>x9oOYbh=vMft"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000000rT!UvCVWjH4uxCWcj3fw*UP(gHC3T73*Ia0wx6=eW",
+      "pattern_root_hash72": "0000000000000000000000000000001iLtvMyJXSu-MsddHKatj4t!UKGu5B8/MQQ5SD1S--",
+      "update_root_hash72": "0000000000000000000000000000000qrr-lBcIH/iBkB54N?gZ7Jvh)4CPHNp^IyX/NkL7K"
+    },
+    {
+      "novel_node_root_hash72": "00000000000000000000000000000038pXOh0*XpuF7tBE>2XMLC0eW6Lc!Vh)Jr^+p+ctpV",
+      "pattern_root_hash72": "0000000000000000000000000000001e/2)Kh?4j8zov-TIFnFS1gUhAyXeam3^KJvELOJ=S",
+      "update_root_hash72": "0000000000000000000000000000000qrr-lBcIH/iBkB54N?gZ7Jvh)4CPHNp^IyX/NkL7K"
+    },
+    {
+      "novel_node_root_hash72": "00000000000000000000000000000014/m)wI*M04T?cn5)SuFPN9bEelIjH1YEOF9i!1Vtq",
+      "pattern_root_hash72": "0000000000000000000000000000001lvAq*SswlWTh7Zlry*w)XJl)Lor6Jgvl*aKopXofS",
+      "update_root_hash72": "0000000000000000000000000000000qrr-lBcIH/iBkB54N?gZ7Jvh)4CPHNp^IyX/NkL7K"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000001pnXa!V=Z(px+WnKpKUm?Ws+2)5CQdRH(9-nWR(Z9d",
+      "pattern_root_hash72": "0000000000000000000000000000001gRp5l*Oy!ww4(JFfBzq40AVH^=zacks4jv4XEFG94",
+      "update_root_hash72": "0000000000000000000000000000000qrr-lBcIH/iBkB54N?gZ7Jvh)4CPHNp^IyX/NkL7K"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000003yIB)zwUicPec*njRup+rvjk7EsCmcli595K-Aj>9s",
+      "pattern_root_hash72": "00000000000000000000000000000004/nut0GBz+8tk!?vAKQO2D5(z9+Q!2siLT!W4w5(=",
+      "update_root_hash72": "0000000000000000000000000000000qrr-lBcIH/iBkB54N?gZ7Jvh)4CPHNp^IyX/NkL7K"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000000Mv17nY5RI!agzhXRXoP*8!FYsFZvHnzhVK^KL6FZq",
+      "pattern_root_hash72": "0000000000000000000000000000003e2bIMB6?3ax6^O46EaRnmA1BC2LezJGK!+0Ph4(uI",
+      "update_root_hash72": "0000000000000000000000000000000qrr-lBcIH/iBkB54N?gZ7Jvh)4CPHNp^IyX/NkL7K"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000000knwFq8y^0OjA2zUx-Ec/G!PFd)143seA/dh1NUYJ(",
+      "pattern_root_hash72": "0000000000000000000000000000000dK2cn>dDl!fxTRaREkrEv3LmQLhpw-w>HJ7/k0P!V",
+      "update_root_hash72": "0000000000000000000000000000000qrr-lBcIH/iBkB54N?gZ7Jvh)4CPHNp^IyX/NkL7K"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000001HqtG(3S)mOrKJ8W7rcxfvKc^*ccj6)jk7Ft*NSW=f",
+      "pattern_root_hash72": "00000000000000000000000000000012e(uMpA9qSdeAlB-6?i6gluBEDDA)^7+qADxvQmhP",
+      "update_root_hash72": "0000000000000000000000000000000qrr-lBcIH/iBkB54N?gZ7Jvh)4CPHNp^IyX/NkL7K"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000000E0T(f(9M6EO(7H5654LTSf=s/+QX2jk6zr+??PeQF",
+      "pattern_root_hash72": "0000000000000000000000000000004nEyC==9a-tBcI7kruhM^QujmEp(ZsSiEl>)?RkoCw",
+      "update_root_hash72": "0000000000000000000000000000001dUJBL>nIFmb(roeC^!Nvv6pAHI/jB74vkLLRgxdHd"
+    },
+    {
+      "novel_node_root_hash72": "00000000000000000000000000000009(yL2B+FwXV4BNjWNJeZgsuYYTV)M6UxvNTPv/0FV",
+      "pattern_root_hash72": "0000000000000000000000000000000YUwIVwvoyIG(tJ74l02nb-2ldyxeUwy-mNfIZN)aN",
+      "update_root_hash72": "0000000000000000000000000000001dUJBL>nIFmb(roeC^!Nvv6pAHI/jB74vkLLRgxdHd"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000003gp0Q6wTEONgkcS0uyEddQ3KGHNH5+GceeRwMmS!bn",
+      "pattern_root_hash72": "0000000000000000000000000000003xKThUAhLI!Q4gZEpwg84Xp/6tWWsuKC86cnM2-^+G",
+      "update_root_hash72": "0000000000000000000000000000001dUJBL>nIFmb(roeC^!Nvv6pAHI/jB74vkLLRgxdHd"
+    },
+    {
+      "novel_node_root_hash72": "00000000000000000000000000000022RtRo)mJ8F8125)d^s*4tVyMKy/WMjlb4M/XDr)cC",
+      "pattern_root_hash72": "0000000000000000000000000000000>*7/ZXzkPcYhLaEXCnjbiJ1/QggO--VG>kQvcgVs3",
+      "update_root_hash72": "0000000000000000000000000000001dUJBL>nIFmb(roeC^!Nvv6pAHI/jB74vkLLRgxdHd"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000004zEzNp^p9JSxX+chjRrXC72vbUFB7yfW5O>9/ok2ey",
+      "pattern_root_hash72": "00000000000000000000000000000021KFi!c0vd+q)Y-nm)xzZc)Lm=6mGSQ5RJ1drPoQxf",
+      "update_root_hash72": "0000000000000000000000000000001dUJBL>nIFmb(roeC^!Nvv6pAHI/jB74vkLLRgxdHd"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000000=M^oEvmZmx26/+-5uGid3>2R77iDaoghzGKvYTsS?",
+      "pattern_root_hash72": "00000000000000000000000000000022-Rmpr5qI6g9?aZ+RV+Ey=98>Hwihk0A-LYM?Al?I",
+      "update_root_hash72": "0000000000000000000000000000001dUJBL>nIFmb(roeC^!Nvv6pAHI/jB74vkLLRgxdHd"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000000b4T>c-0?uh7sb8/sP3gqr!i)2GeY2!iqpclcLqFgc",
+      "pattern_root_hash72": "0000000000000000000000000000002QW!nELaR>yjM?na>0ytGGe+94Ow00F=W1G20)WkDE",
+      "update_root_hash72": "0000000000000000000000000000001dUJBL>nIFmb(roeC^!Nvv6pAHI/jB74vkLLRgxdHd"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000003f*CY?xaNHOkLU>4yNU?D6pR-Q!+If?4INMQn+vJIr",
+      "pattern_root_hash72": "0000000000000000000000000000003I>c5?qFj6sTzxphEg2FLD/bqI=3X--huIz=hN1B?K",
+      "update_root_hash72": "0000000000000000000000000000001dUJBL>nIFmb(roeC^!Nvv6pAHI/jB74vkLLRgxdHd"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000002bkwDWQB9/Vb)xo7p2x>sviF4vuD5qF3vPzRRrINTu",
+      "pattern_root_hash72": "0000000000000000000000000000001IpZiVyz)RaWRRyGBB6qM1g(mfj(53Lv2o>QC4GR3P",
+      "update_root_hash72": "0000000000000000000000000000001dUJBL>nIFmb(roeC^!Nvv6pAHI/jB74vkLLRgxdHd"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000002eJ5kx+TIJsYdiVa80vmsR+E9uZLHMGc^6fLQ!^1Fc",
+      "pattern_root_hash72": "0000000000000000000000000000002?j452HP9!V>fGoL!WV0A3aZhF3*hqAMqh?j*amaka",
+      "update_root_hash72": "0000000000000000000000000000001dUJBL>nIFmb(roeC^!Nvv6pAHI/jB74vkLLRgxdHd"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000000fIOAzyZw>SYRALKzpaPKoIASIk(Eaj/osR?bPO7^*",
+      "pattern_root_hash72": "0000000000000000000000000000001l0^b+jKhB8JjIx7nl0zPc9xo^7HWbfh7dDE4K-TOs",
+      "update_root_hash72": "0000000000000000000000000000001dUJBL>nIFmb(roeC^!Nvv6pAHI/jB74vkLLRgxdHd"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000004J+h)Zj/E*Q*J!bWzL-kiBWes?4ZFgrZZJZBV^-3xL",
+      "pattern_root_hash72": "0000000000000000000000000000003)eAO*XoDwO/mmLeNpjrArO!F?MAOfsLbY3CHGIl8t",
+      "update_root_hash72": "0000000000000000000000000000001dUJBL>nIFmb(roeC^!Nvv6pAHI/jB74vkLLRgxdHd"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000001*>tOnx8QiNud!WCv-otJSIM!9E2gog7q0h9b5X8+l",
+      "pattern_root_hash72": "0000000000000000000000000000000RUL34KDo)zbZJzj^G?B!4atOenj/Ff1s1gKq>dW=i",
+      "update_root_hash72": "0000000000000000000000000000001dUJBL>nIFmb(roeC^!Nvv6pAHI/jB74vkLLRgxdHd"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000000E*GcK!iF67(ca7Pe(pOhYwq=Jk5(10/-jCg5bkT-v",
+      "pattern_root_hash72": "0000000000000000000000000000000=R2=91A4dt60GJ9sKSBE1zQvsYd9(sGUDWlPaCm!z",
+      "update_root_hash72": "0000000000000000000000000000001dUJBL>nIFmb(roeC^!Nvv6pAHI/jB74vkLLRgxdHd"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000001epXJIl8PUL*E?^tWEX4x4RsO5TUgoEMwx*(+fgmJf",
+      "pattern_root_hash72": "0000000000000000000000000000000htqx(bNj1qW+lVjn=jCJj=^o1rfwy=G39oP/GzV=9",
+      "update_root_hash72": "0000000000000000000000000000001dUJBL>nIFmb(roeC^!Nvv6pAHI/jB74vkLLRgxdHd"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000001V>/vm?YqD(v(7^)OixoUL0p1HAbD>dGjTtu6n?=bs",
+      "pattern_root_hash72": "0000000000000000000000000000001ea41zohOExb1M60>Aj9s5DG9VUYGpRew0gY!Hxc2c",
+      "update_root_hash72": "0000000000000000000000000000001dUJBL>nIFmb(roeC^!Nvv6pAHI/jB74vkLLRgxdHd"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000003Ubw22nvDf3PlYFWZP4jw1GsK/JJK)t+D?a)cG!hyJ",
+      "pattern_root_hash72": "0000000000000000000000000000000!AtTssQlXBHB)6BaeDhz>oZDmHIGL-ybqMs3J=zsU",
+      "update_root_hash72": "0000000000000000000000000000003tAfV5L05U*p2O0UJOWELdBYJ0+XViu>>czaGV/WAT"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000000+2r?q((gBp9F+UgC)Iq1phexx(3e*7B!xjYcK!0-c",
+      "pattern_root_hash72": "0000000000000000000000000000002vM^lB6tLUSqxgIrG61X6G3eJnp7OWd53mwD^pFvrk",
+      "update_root_hash72": "0000000000000000000000000000003tAfV5L05U*p2O0UJOWELdBYJ0+XViu>>czaGV/WAT"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000001yivgDKR8(V)fTGL4yjt43qE8gG*)=fcRLB5NDb1UY",
+      "pattern_root_hash72": "0000000000000000000000000000002Ts*7kvSBuqvza2UIoFReNxye2=gs>E-zz7j3q8hEA",
+      "update_root_hash72": "0000000000000000000000000000003tAfV5L05U*p2O0UJOWELdBYJ0+XViu>>czaGV/WAT"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000000*fUwJs5pYvJe?n>c)TocWxpVxQI>v-uchdo0UI2y(",
+      "pattern_root_hash72": "0000000000000000000000000000003(GymttF*(?V(lZ3pBwjwp0FlrMKf4DcMsxmEvgsxN",
+      "update_root_hash72": "0000000000000000000000000000003tAfV5L05U*p2O0UJOWELdBYJ0+XViu>>czaGV/WAT"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000001syIE=f6Rr8Mce=eC)1clzRHS9ndw>u/y(vqd^/86R",
+      "pattern_root_hash72": "0000000000000000000000000000001oFrl(u5*keIw?(=iB?m=-=ZMbg?^>^-bH5AxSd4/A",
+      "update_root_hash72": "0000000000000000000000000000003tAfV5L05U*p2O0UJOWELdBYJ0+XViu>>czaGV/WAT"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000002xJMoMSnJeOjApDrBy2wguRCZFnz1w0L1ACDMhaJal",
+      "pattern_root_hash72": "0000000000000000000000000000001R9NTU!cWatLNH2(>5^^(PB40sfr3p8VWEnJez2aOA",
+      "update_root_hash72": "0000000000000000000000000000003tAfV5L05U*p2O0UJOWELdBYJ0+XViu>>czaGV/WAT"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000002bPk+M=*LSAVF2KsLN81UaSu13Psx-KxTn(U0ryfCO",
+      "pattern_root_hash72": "0000000000000000000000000000004yW(XBg>?fpZpqzG64kRl!9C8pi^A5RJ15/40rB40u",
+      "update_root_hash72": "0000000000000000000000000000003tAfV5L05U*p2O0UJOWELdBYJ0+XViu>>czaGV/WAT"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000003*)+r3MYAvhNjsGU)2(47U6-0fVlwrU^?hnhj?V=bK",
+      "pattern_root_hash72": "0000000000000000000000000000004l+xu0Q8Uy/^jY!w48)2SX>D0Q90*))K0T9>c3knTn",
+      "update_root_hash72": "0000000000000000000000000000003tAfV5L05U*p2O0UJOWELdBYJ0+XViu>>czaGV/WAT"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000004g8HlnE!vJI-1MQUlE4vA!jjQgIkTbU1GDDJ/Cc4ZF",
+      "pattern_root_hash72": "0000000000000000000000000000000d+wHcBa+brLfKit/n5bJI27Z+u(e18P7inYTV^sSO",
+      "update_root_hash72": "0000000000000000000000000000003tAfV5L05U*p2O0UJOWELdBYJ0+XViu>>czaGV/WAT"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000000LgoecFOy>8xW7HnD^SmYP6Eg!cjsoa-(*L?rnGA>=",
+      "pattern_root_hash72": "0000000000000000000000000000000(QD82*NlOXg)GKl7NKT82cV8AnoBq^es=?AlPNGK?",
+      "update_root_hash72": "0000000000000000000000000000003tAfV5L05U*p2O0UJOWELdBYJ0+XViu>>czaGV/WAT"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000000Yv/Z3?82qzpUi9+Ae>04/hu-YD6V^m=sJBCa?23*x",
+      "pattern_root_hash72": "0000000000000000000000000000000wL/d5rp^EBqw^B196!OPMKR-Bj(8EH6xfqQF?)iOB",
+      "update_root_hash72": "0000000000000000000000000000003tAfV5L05U*p2O0UJOWELdBYJ0+XViu>>czaGV/WAT"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000002(yFhoUN1b1Cqwec2Ti+Or^pzb8eQ3(PRui488/Z2H",
+      "pattern_root_hash72": "0000000000000000000000000000003G3q9lV(TCKX?C2W?oMo?j*>(MiHQu6etQz6DO4uk2",
+      "update_root_hash72": "0000000000000000000000000000003tAfV5L05U*p2O0UJOWELdBYJ0+XViu>>czaGV/WAT"
+    },
+    {
+      "novel_node_root_hash72": "00000000000000000000000000000012yroStyo!V1+-7WP+(gbE-Iwz?BnLheKOIcPnr)g0",
+      "pattern_root_hash72": "0000000000000000000000000000001b8Fk!TD0gBLneq?VJ>=Qu9jwsW^Kjeo(FL7Yz^Z--",
+      "update_root_hash72": "0000000000000000000000000000003tAfV5L05U*p2O0UJOWELdBYJ0+XViu>>czaGV/WAT"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000001-W4s8I?(da+lW>-)WC=Xn!(j-rJ6PczpM/qoOOuxz",
+      "pattern_root_hash72": "0000000000000000000000000000003rh>XHjTgv2syzOBPAC7mGbbV3n06c>12p^0+6gZDp",
+      "update_root_hash72": "0000000000000000000000000000003tAfV5L05U*p2O0UJOWELdBYJ0+XViu>>czaGV/WAT"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000000Jtt))E/AGQ9dwHfhD7w)O))PRQ3bm?0WngOm+(X^K",
+      "pattern_root_hash72": "0000000000000000000000000000001Q?F=IqmYB3wS-Lx?5Zv7Cz-K*Q6LciE*MiP()IZun",
+      "update_root_hash72": "0000000000000000000000000000003tAfV5L05U*p2O0UJOWELdBYJ0+XViu>>czaGV/WAT"
+    },
+    {
+      "novel_node_root_hash72": "00000000000000000000000000000025xG9JpKp>BIlix0PGnC9Mdl60jZ-EsjI66jhZ8s3Y",
+      "pattern_root_hash72": "0000000000000000000000000000002m8m3W=4soxW)>Laf+^GObPErB4giBLzj?Gj!ATw6R",
+      "update_root_hash72": "0000000000000000000000000000003tAfV5L05U*p2O0UJOWELdBYJ0+XViu>>czaGV/WAT"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000001UGR7RzRv6Ob0+*fQjKEyJm-0NIbnrH2E+a!*6ZHx0",
+      "pattern_root_hash72": "0000000000000000000000000000003/ebkOqmwH=L?FsDTrRSHwyd1yiLFEg)oRx+TzDJqN",
+      "update_root_hash72": "00000000000000000000000000000021VGr-92SiD2hwD+uiMUaBt>XbVhoclk*7!PPcyO97"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000001/6*z*z5iQwGWc2j1O-h50?w5(-AE^f^ZZR/XnZ)oi",
+      "pattern_root_hash72": "0000000000000000000000000000003Bq3QSUm9wlYTH+)iXy(!R^UZBbNlV8VHIE>RcUwEx",
+      "update_root_hash72": "00000000000000000000000000000021VGr-92SiD2hwD+uiMUaBt>XbVhoclk*7!PPcyO97"
+    },
+    {
+      "novel_node_root_hash72": "00000000000000000000000000000049GuxFziMv)0OioG//EZsZjEokD3n(1C(P76yS1UlK",
+      "pattern_root_hash72": "0000000000000000000000000000003Syh9rP=kfpQWaGI3C1JmlsS!s5^F1/K1o5>=gskJ9",
+      "update_root_hash72": "00000000000000000000000000000021VGr-92SiD2hwD+uiMUaBt>XbVhoclk*7!PPcyO97"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000001oQ8AK*tHY1QkU*4g-Su!9(PSSzeWZzcUuCItlHU!s",
+      "pattern_root_hash72": "0000000000000000000000000000003UXyFd13*G6u7)92D2FRYxS6Gzi9OF+r+2B7v04rwJ",
+      "update_root_hash72": "00000000000000000000000000000021VGr-92SiD2hwD+uiMUaBt>XbVhoclk*7!PPcyO97"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000003mxMZR*=2?oE^(yjjHGDV4Y0XF+pVAlctx)oyWtFNn",
+      "pattern_root_hash72": "0000000000000000000000000000004A+8jf8d3lnWDn^6tMYtL4>UY*vly^Wz5S-yUph1no",
+      "update_root_hash72": "00000000000000000000000000000021VGr-92SiD2hwD+uiMUaBt>XbVhoclk*7!PPcyO97"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000000Oxj0o8?cY?+XlKl*fH2khiSfSArodAUDaRgucK4eG",
+      "pattern_root_hash72": "0000000000000000000000000000002YN8DmecF!Ea*E0ON>ryKGIOn=W7EkXPzSOyA-5tK8",
+      "update_root_hash72": "00000000000000000000000000000021VGr-92SiD2hwD+uiMUaBt>XbVhoclk*7!PPcyO97"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000001cpx*4ZUH!I)DjWuVLL>oJLr9KzfZM+grkdk+avr9>",
+      "pattern_root_hash72": "0000000000000000000000000000002?6m2LKF7!(Vce/k4K1uCWCSjRO3=^n3c(aicj)XQV",
+      "update_root_hash72": "00000000000000000000000000000021VGr-92SiD2hwD+uiMUaBt>XbVhoclk*7!PPcyO97"
+    },
+    {
+      "novel_node_root_hash72": "00000000000000000000000000000005e=ECaIC=R!v2aY8hD4H=7RBAIf(M0s?qKeSlO3e>",
+      "pattern_root_hash72": "0000000000000000000000000000001Pm4zIrwy>FbaIhFoKPeKBx)8)9>KEv1vnQIdVCQ8=",
+      "update_root_hash72": "00000000000000000000000000000021VGr-92SiD2hwD+uiMUaBt>XbVhoclk*7!PPcyO97"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000001kWJsR2uPUQK*H7R=q0d9fr5/6Rfv3zjIxhh2k*p23",
+      "pattern_root_hash72": "000000000000000000000000000000055tiBi4uYfKDR/9?5YE^xC++e>GCejZx950hns6NV",
+      "update_root_hash72": "00000000000000000000000000000021VGr-92SiD2hwD+uiMUaBt>XbVhoclk*7!PPcyO97"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000001V2nZD4Gy0i)*6?Zablh>wVb+Eu5CvO-kSZqze^>1K",
+      "pattern_root_hash72": "0000000000000000000000000000004h=nbOhcK5LARwcExX-G2CSVo2WR(oIQS8X>*u4(qp",
+      "update_root_hash72": "00000000000000000000000000000021VGr-92SiD2hwD+uiMUaBt>XbVhoclk*7!PPcyO97"
+    },
+    {
+      "novel_node_root_hash72": "00000000000000000000000000000040rwgJW0ioy-I5plig3/XdimrlB*I3idGjg+epH*v-",
+      "pattern_root_hash72": "0000000000000000000000000000002Hyo(C-X+I0zhlGzfBx/IakcW7sCs4=f(8Y5/C77MD",
+      "update_root_hash72": "00000000000000000000000000000021VGr-92SiD2hwD+uiMUaBt>XbVhoclk*7!PPcyO97"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000001nlB2i>MniShnBAH!a520R!?EWZ6wynya=fyuEywXd",
+      "pattern_root_hash72": "0000000000000000000000000000003OevUE6)B!?p(btjlT*gcQaV)gFSMy1)*Jgr26srYm",
+      "update_root_hash72": "00000000000000000000000000000021VGr-92SiD2hwD+uiMUaBt>XbVhoclk*7!PPcyO97"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000004hoq-RIzZAXy^NjMTjtShn^c6GiFmihSs!9>CLg1fi",
+      "pattern_root_hash72": "0000000000000000000000000000002Rcr6dGqpSNV(LcTpQ-Ey2f*0g7(kNmKiWQKB4DSWt",
+      "update_root_hash72": "00000000000000000000000000000021VGr-92SiD2hwD+uiMUaBt>XbVhoclk*7!PPcyO97"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000003Les7qp9AKr(vyT=-C?f-VDCRL0u/vIFf7E+MpL7vD",
+      "pattern_root_hash72": "0000000000000000000000000000000nlUOI5S9kqui?JWWhy6ksu^dz5!2VJHYCrABgoa/h",
+      "update_root_hash72": "00000000000000000000000000000021VGr-92SiD2hwD+uiMUaBt>XbVhoclk*7!PPcyO97"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000000^U3OCnmKK(F-0f6Mqk)WBvzM/LM9Ty4/F3u-JQstd",
+      "pattern_root_hash72": "0000000000000000000000000000000Jvk(Z5)OBsLAI53JQ53wN/7FO^KbthMq2A7/xZp1-",
+      "update_root_hash72": "00000000000000000000000000000021VGr-92SiD2hwD+uiMUaBt>XbVhoclk*7!PPcyO97"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000002=pjKyKPlhXYrgA^/LpCTN!c=Q*Zi=dB1cpNEUZ+yN",
+      "pattern_root_hash72": "00000000000000000000000000000011oIXrftxf3QJBztnP5THE6Hicw9Hn(8+D(N/!ygAz",
+      "update_root_hash72": "00000000000000000000000000000021VGr-92SiD2hwD+uiMUaBt>XbVhoclk*7!PPcyO97"
+    },
+    {
+      "novel_node_root_hash72": "00000000000000000000000000000002)j+gHIQGAQiA(bn!Lt(6oIr(tkt/fWknq/CsnYKk",
+      "pattern_root_hash72": "0000000000000000000000000000001B!1LmIys?dN(+A^qSjFZDR*Rw5UZQa+I?bwy!Kzsr",
+      "update_root_hash72": "0000000000000000000000000000004f2RX)cSILY5Gn>Pse/FcWB?6cBj5yW18i=ow4ewvT"
+    },
+    {
+      "novel_node_root_hash72": "00000000000000000000000000000026Yd7PI8tlJ+fluDy>-j+wkm=6atWsJRHwJG4E45kH",
+      "pattern_root_hash72": "0000000000000000000000000000001Kv>/Ey=i80OLc^eo7frTj+turh0j=Z-)o^0JklA>e",
+      "update_root_hash72": "0000000000000000000000000000004f2RX)cSILY5Gn>Pse/FcWB?6cBj5yW18i=ow4ewvT"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000002IkxxwsSmxY1w41hjUUyEaZeL(DEBgM3MJtWf-I5-N",
+      "pattern_root_hash72": "00000000000000000000000000000036UAs?m7kIc4nP5/qP0MIcSBFXlbInGD?UhkmVS2=/",
+      "update_root_hash72": "0000000000000000000000000000004f2RX)cSILY5Gn>Pse/FcWB?6cBj5yW18i=ow4ewvT"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000003fw)YqiNZyi+8gHd7bEv4zU+DZc6S+OA1C/A=486vK",
+      "pattern_root_hash72": "0000000000000000000000000000000O3jD5*dMShNZ*HNMNo5qLG^G4tC6cWw8m5>ZHf>NG",
+      "update_root_hash72": "0000000000000000000000000000004f2RX)cSILY5Gn>Pse/FcWB?6cBj5yW18i=ow4ewvT"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000004nAf4a(Ore/oirrp*kH68bhcA0+r1no-TSHBU^6^r?",
+      "pattern_root_hash72": "00000000000000000000000000000028zDOJBR8OFCA2Uj4-Ygx=9b(jo>YA(O!fIQ9DUusb",
+      "update_root_hash72": "0000000000000000000000000000004f2RX)cSILY5Gn>Pse/FcWB?6cBj5yW18i=ow4ewvT"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000002Hf(oBQ2ka0+Gs?A-21p^bg)14*e+?w7tP!eU7b2)u",
+      "pattern_root_hash72": "00000000000000000000000000000006KWyi5M1hqp78K8)yH1HE2phFemnVhiaRAher6b93",
+      "update_root_hash72": "0000000000000000000000000000004f2RX)cSILY5Gn>Pse/FcWB?6cBj5yW18i=ow4ewvT"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000002ee6)Lp3N+BSW3G*UO7FUO2ha5^x1Tr1VZoZQ)H08i",
+      "pattern_root_hash72": "0000000000000000000000000000001c9/d9MeSw(VFmQ3Q=D0AMw>(zxBKj8g0>Gae8!a4v",
+      "update_root_hash72": "0000000000000000000000000000004f2RX)cSILY5Gn>Pse/FcWB?6cBj5yW18i=ow4ewvT"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000002ro8+qaevVypiL00ruizA!D3wUAtQr2AO6AdZ4TOat",
+      "pattern_root_hash72": "0000000000000000000000000000002Yh*UyUcvJktorPJFhuOWy22LSe>jebA*/6o6*S4Km",
+      "update_root_hash72": "0000000000000000000000000000004f2RX)cSILY5Gn>Pse/FcWB?6cBj5yW18i=ow4ewvT"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000003tvcjMrH7E44nLhZ86PJys5lN8jxSOjF+-lzoo)I)D",
+      "pattern_root_hash72": "0000000000000000000000000000002WQ/G^6nhC3jfA?W?WSlgsPsz)Q?D65)xLSNfXEX00",
+      "update_root_hash72": "0000000000000000000000000000004f2RX)cSILY5Gn>Pse/FcWB?6cBj5yW18i=ow4ewvT"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000000MQchme8zCE=SCkM7X9mo^YW6kS0P(ct>*u>N9iqb?",
+      "pattern_root_hash72": "0000000000000000000000000000002eedLdJolZ>2s>H1rN>Zd(9t^KCer2)Ac+gQ=!+GHg",
+      "update_root_hash72": "0000000000000000000000000000004f2RX)cSILY5Gn>Pse/FcWB?6cBj5yW18i=ow4ewvT"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000002f=*/y*!>+8vfHXgx!+a2759Xieu9eyTXMKA^Podzx",
+      "pattern_root_hash72": "0000000000000000000000000000003zR1VHR/rbe)VxVgChcbVyx739oG7p?78yYYl+9H4X",
+      "update_root_hash72": "0000000000000000000000000000004f2RX)cSILY5Gn>Pse/FcWB?6cBj5yW18i=ow4ewvT"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000002VeMaCRndg=W*v=C2sWTbEqen8p1GgxsFi!39!iGd8",
+      "pattern_root_hash72": "0000000000000000000000000000001NkTV)ppK9+>C-d)^!mK(C+qjNsy9Av)3Tzz8+UJAo",
+      "update_root_hash72": "0000000000000000000000000000004f2RX)cSILY5Gn>Pse/FcWB?6cBj5yW18i=ow4ewvT"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000002r0iaFN2ztdeNfZ018O/N7??xKw0=M)gy16VV9i*!5",
+      "pattern_root_hash72": "0000000000000000000000000000004EU)Y+uDLj5cSy24L1^3KKdFp)J0^tndUoVvep0m!T",
+      "update_root_hash72": "0000000000000000000000000000004f2RX)cSILY5Gn>Pse/FcWB?6cBj5yW18i=ow4ewvT"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000001RX-R6kt3Owz9jY04L9A/WX3iMM3Rh)c4BXfGhf28S",
+      "pattern_root_hash72": "0000000000000000000000000000001VAcbBOPXiCYe/dpyLydFRu/IDascpe1B5FYz6Tst?",
+      "update_root_hash72": "0000000000000000000000000000004f2RX)cSILY5Gn>Pse/FcWB?6cBj5yW18i=ow4ewvT"
+    },
+    {
+      "novel_node_root_hash72": "00000000000000000000000000000048NWmoca=w/Kn9uonQllzduGfw9am9eKHg62Tylsi)",
+      "pattern_root_hash72": "0000000000000000000000000000000wQRwvh9H+jTjH1>B/iC9KUadNRsHRi1b4dnuO8Q4c",
+      "update_root_hash72": "0000000000000000000000000000004f2RX)cSILY5Gn>Pse/FcWB?6cBj5yW18i=ow4ewvT"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000002KbO!i0Y-lx8!-LK+sM9(mu)-08v?B2A(HAh2GmIA9",
+      "pattern_root_hash72": "0000000000000000000000000000001oO3S9-0sWfjPhn!Gjs(5pwvjpM=B5syRe>t+T61gl",
+      "update_root_hash72": "0000000000000000000000000000004f2RX)cSILY5Gn>Pse/FcWB?6cBj5yW18i=ow4ewvT"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000004i^-XVyGpUw1egd9A1Vdi=Og>QU4ZN4jtq6!36jwEs",
+      "pattern_root_hash72": "0000000000000000000000000000001FOVJIaKBdyuNOAykZDUVHmwi4B!eR/tMLMVIWDqUg",
+      "update_root_hash72": "0000000000000000000000000000001hNHTu)syvgqhk(R1Gv*DUjGpb2N-fYDNcgJSn)LHo"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000000hY8uHDAK?1fUoL+=G/DT(yO!bBSLA(K14U/9lOm4r",
+      "pattern_root_hash72": "0000000000000000000000000000000sBSINMJhK7)GE3l-587sjisIBDg1SKUg6U5V+=)rO",
+      "update_root_hash72": "0000000000000000000000000000001hNHTu)syvgqhk(R1Gv*DUjGpb2N-fYDNcgJSn)LHo"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000004orOE=TTKEI8RjY*6mQ6(YDsKBKed/nON-Zsq)KJ6T",
+      "pattern_root_hash72": "0000000000000000000000000000000o4r9O9iGFCt2br!2E9v4>WR!z5cN+7eN2S^xgIj3w",
+      "update_root_hash72": "0000000000000000000000000000001hNHTu)syvgqhk(R1Gv*DUjGpb2N-fYDNcgJSn)LHo"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000000zG(R--UwS6jK?9hTzd1sP>S=YhQLN=C(vEazLbR>V",
+      "pattern_root_hash72": "000000000000000000000000000000467tbpdVTTKet!AmF9q^2=nMx5-^KzUCulA4F2w!kb",
+      "update_root_hash72": "0000000000000000000000000000001hNHTu)syvgqhk(R1Gv*DUjGpb2N-fYDNcgJSn)LHo"
+    },
+    {
+      "novel_node_root_hash72": "00000000000000000000000000000005XoMoCnB-G2v!(VP!mt1)rUov)QjU>+ixgbwVXsYV",
+      "pattern_root_hash72": "0000000000000000000000000000002YoLSw=I^rPO5!?ar1UvpqAfQv1Qk8xQk)eS^0bz!+",
+      "update_root_hash72": "0000000000000000000000000000001hNHTu)syvgqhk(R1Gv*DUjGpb2N-fYDNcgJSn)LHo"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000001vyDb3NCdl(0q7MIM(aI*-yT)^N^HYsIfylXgSw^g1",
+      "pattern_root_hash72": "00000000000000000000000000000043d+7K>JhTfkRpTGy-FHYrd+B^wM3N+AR!HhZwQ3N*",
+      "update_root_hash72": "0000000000000000000000000000001hNHTu)syvgqhk(R1Gv*DUjGpb2N-fYDNcgJSn)LHo"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000000Oj5s6(E?XEl)^BDEcjZ8Mlq7AX5OTS^dqbL(LoHoa",
+      "pattern_root_hash72": "0000000000000000000000000000000yH9RGu+t?+kMvQ(8t7SdwsbxqclJie-0XRuaiGe?v",
+      "update_root_hash72": "0000000000000000000000000000001hNHTu)syvgqhk(R1Gv*DUjGpb2N-fYDNcgJSn)LHo"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000003gmz*dV/>AOPSLfcOJy27l0!h=XYLAO*s3wlM)CD/g",
+      "pattern_root_hash72": "0000000000000000000000000000001a32kB9rqpv4KWRiaCoSvWV-!H/sVi?NB)kjuWw*)S",
+      "update_root_hash72": "0000000000000000000000000000001hNHTu)syvgqhk(R1Gv*DUjGpb2N-fYDNcgJSn)LHo"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000000WQT?kPL1PDhQ4FCs+il^^YtXS+w-sQb/yaLo6fNgP",
+      "pattern_root_hash72": "0000000000000000000000000000000!c7(Ky-fr/usqMbAb5=j09p3at14epiHOmLrHu*ie",
+      "update_root_hash72": "0000000000000000000000000000001hNHTu)syvgqhk(R1Gv*DUjGpb2N-fYDNcgJSn)LHo"
+    },
+    {
+      "novel_node_root_hash72": "000000000000000000000000000000385Y6F2-3cYWbyFdv*nuTo5ZIFk6AUWyBe343xno!C",
+      "pattern_root_hash72": "00000000000000000000000000000048^4E6H^-C!(G6Ws2w9QgIzmNMSt=kanl>4e8wYQfE",
+      "update_root_hash72": "0000000000000000000000000000001hNHTu)syvgqhk(R1Gv*DUjGpb2N-fYDNcgJSn)LHo"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000000>XzZJo?6Bh741j?gwFY4ym?xXSDXDbDc2Ggr0U(3v",
+      "pattern_root_hash72": "0000000000000000000000000000000?4?DKs=Au4kZYpXv?VY76+rme2BJVkJ-As-bZrVkp",
+      "update_root_hash72": "0000000000000000000000000000001hNHTu)syvgqhk(R1Gv*DUjGpb2N-fYDNcgJSn)LHo"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000001d/IzQ?Ouk5EPM5Pj+yK7zMaH78pMaKgKx9KjZ0!^+",
+      "pattern_root_hash72": "0000000000000000000000000000002iK=(wG!*K5A8Qln^00J^6kDiHGzD9H((zU/ooRO=^",
+      "update_root_hash72": "0000000000000000000000000000001hNHTu)syvgqhk(R1Gv*DUjGpb2N-fYDNcgJSn)LHo"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000001XS1MYEM/FRm0pj41vp^dbOHtJOPRiA7pNv5hc2Z2a",
+      "pattern_root_hash72": "0000000000000000000000000000003cAVApFB9)^LNKhJ--ngZ7u!(7CwIZtG/DW(kalDF*",
+      "update_root_hash72": "0000000000000000000000000000001hNHTu)syvgqhk(R1Gv*DUjGpb2N-fYDNcgJSn)LHo"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000003+?TOf3EC(>)=3)jPnxgUM!>nqY>JL?CELrMMTffki",
+      "pattern_root_hash72": "0000000000000000000000000000003TKLwJHyca^x?GId1(>aCFLnWmPKxja+2wv5nbg+so",
+      "update_root_hash72": "0000000000000000000000000000001hNHTu)syvgqhk(R1Gv*DUjGpb2N-fYDNcgJSn)LHo"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000000ZHP2Z(c+wtNL*3?493bofUF=+k?6glDwyYI9gShV?",
+      "pattern_root_hash72": "0000000000000000000000000000001911h428k(t4^2+sGr2fppJqrsgA+yf+gU2t!eA)7f",
+      "update_root_hash72": "0000000000000000000000000000001hNHTu)syvgqhk(R1Gv*DUjGpb2N-fYDNcgJSn)LHo"
+    },
+    {
+      "novel_node_root_hash72": "00000000000000000000000000000001+=6VS0ir1AZ0K?(7Qe83k/S48sQ4caUVHQ962A9r",
+      "pattern_root_hash72": "0000000000000000000000000000000fjrTsUrjogiUmeINq8w66q8f7gqhQt/+vsPzVk1r-",
+      "update_root_hash72": "0000000000000000000000000000001hNHTu)syvgqhk(R1Gv*DUjGpb2N-fYDNcgJSn)LHo"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000001GvqL17/Pw?*V(e^g4?BbLBp6R/4Ammp)t6S^SHFX7",
+      "pattern_root_hash72": "0000000000000000000000000000002X5TEYOHP/J+OHB3^zPPM57KBr)1U0sj+*Xj/3*?*l",
+      "update_root_hash72": "0000000000000000000000000000000fU*bwVWw(F?CBPF+cj7Tl8Vj5gQvZ-UgmctdwnBWa"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000002L?Z-6S^bU=n6HoSB!oty5)Jtc3Hi2PODllvMa6ju3",
+      "pattern_root_hash72": "0000000000000000000000000000000zWKwD+HN=mW(JTCBOLK9l(xqKFGCpnOdVsX?yo*/h",
+      "update_root_hash72": "0000000000000000000000000000000fU*bwVWw(F?CBPF+cj7Tl8Vj5gQvZ-UgmctdwnBWa"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000000?YD5x-azA2?O^62)ZnbOqwszyYTLg4)hT*z*-^tKk",
+      "pattern_root_hash72": "0000000000000000000000000000003iz=UlxSNWsHwVWNlss=Ob0+9G!ecvGB=8rmd1L6Ua",
+      "update_root_hash72": "0000000000000000000000000000000fU*bwVWw(F?CBPF+cj7Tl8Vj5gQvZ-UgmctdwnBWa"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000003DxG7!al=NL4uZUwEjpi3MGjp0399!n9hDV=px=s)N",
+      "pattern_root_hash72": "000000000000000000000000000000366/)ACW)xLj>2Sa>/*dbW)FU8287B>)L=kORHo8lQ",
+      "update_root_hash72": "0000000000000000000000000000000fU*bwVWw(F?CBPF+cj7Tl8Vj5gQvZ-UgmctdwnBWa"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000002vM36kArXRY2eQet8*iPex3i-x!qQwC4auP4JR-*r^",
+      "pattern_root_hash72": "0000000000000000000000000000004pvfF5vtOUdyFHY)Bh^(^guQlU=9BrZfh+OS6BL6b6",
+      "update_root_hash72": "0000000000000000000000000000000fU*bwVWw(F?CBPF+cj7Tl8Vj5gQvZ-UgmctdwnBWa"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000002^(xp?zT!QdkFu5glcwUcTOvC-s>X7MD-MyOPmy7hJ",
+      "pattern_root_hash72": "0000000000000000000000000000002UjfSFoqukp+Y!D!j)b4Tt?vb35Vfn^cFep*a5c8Wz",
+      "update_root_hash72": "0000000000000000000000000000000fU*bwVWw(F?CBPF+cj7Tl8Vj5gQvZ-UgmctdwnBWa"
+    },
+    {
+      "novel_node_root_hash72": "00000000000000000000000000000004XwSov(Yrwide(W)hi/?xQ>wFg37Og-2UnJJLdiCf",
+      "pattern_root_hash72": "0000000000000000000000000000000BnKpTkN=1h!OR(TiVc1(RC2PmHtoa9(GB!SeJ/W4f",
+      "update_root_hash72": "0000000000000000000000000000000fU*bwVWw(F?CBPF+cj7Tl8Vj5gQvZ-UgmctdwnBWa"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000003tmPBMHDmEOAcFq3/1*XEXAmmN=^0G!YLJeI*2YMQt",
+      "pattern_root_hash72": "00000000000000000000000000000019+wj8/ev0^3V4B/11BfJgYc*!XMIWpyEM9yrO71(F",
+      "update_root_hash72": "0000000000000000000000000000000fU*bwVWw(F?CBPF+cj7Tl8Vj5gQvZ-UgmctdwnBWa"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000001Mjwfd298Pbg8U>onDhIkApjcIBWOVXkEEYf6ed>q*",
+      "pattern_root_hash72": "0000000000000000000000000000002HEnZTX!^zIhq3)bq*dG93?uTWZgcKE(q5QC46Iw^w",
+      "update_root_hash72": "0000000000000000000000000000000fU*bwVWw(F?CBPF+cj7Tl8Vj5gQvZ-UgmctdwnBWa"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000002fOUL!87V0eOTaQ-N5!B1g0!I0myPXW*1w^M2CN4wc",
+      "pattern_root_hash72": "0000000000000000000000000000003>I>31v623RossqfE/+xveR9xT7zfR8wnzxuZOKui5",
+      "update_root_hash72": "0000000000000000000000000000000fU*bwVWw(F?CBPF+cj7Tl8Vj5gQvZ-UgmctdwnBWa"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000004fVPJ*Uru94>QoGZayhZg3sUZiR*hFvqFcK)?n6pVe",
+      "pattern_root_hash72": "0000000000000000000000000000000MB^Ej9lYW-PrjBtfViQ2U68WVo+GnlXHMWKHNlZcp",
+      "update_root_hash72": "0000000000000000000000000000000fU*bwVWw(F?CBPF+cj7Tl8Vj5gQvZ-UgmctdwnBWa"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000003BFuiCZkX38RpL^VkGRj4q*DZpTW8NiZXxCiQECj/i",
+      "pattern_root_hash72": "0000000000000000000000000000003jH-NwB?M2HZA/tD)y9qBghpl)v2J+->L>THXOHN^y",
+      "update_root_hash72": "0000000000000000000000000000000fU*bwVWw(F?CBPF+cj7Tl8Vj5gQvZ-UgmctdwnBWa"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000003dUmRhs!yTqd(Ql43JPTEa7MdrDjWfSTM^epaWJXTu",
+      "pattern_root_hash72": "0000000000000000000000000000000WkkDY+U/fg=RGgR843giFthi*8=Pbxyww!OgTqjL-",
+      "update_root_hash72": "0000000000000000000000000000000fU*bwVWw(F?CBPF+cj7Tl8Vj5gQvZ-UgmctdwnBWa"
+    },
+    {
+      "novel_node_root_hash72": "00000000000000000000000000000032P!ZHt5zywpLnP3x+UTJqI>Fzeotlt(eFriv3!(Gu",
+      "pattern_root_hash72": "00000000000000000000000000000008p7-VIVUoN^dBqr75o2TJGu^mUorKFPLzHpn>XBQa",
+      "update_root_hash72": "0000000000000000000000000000000fU*bwVWw(F?CBPF+cj7Tl8Vj5gQvZ-UgmctdwnBWa"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000001uN9VSKU5MMD+ziu*deO9Lyd^c/47g=h)i6Ex5oG(7",
+      "pattern_root_hash72": "0000000000000000000000000000002/Oy-LcS*AndMu^*l3pzQ!gvQAxsE2JwfFYQw(DVx*",
+      "update_root_hash72": "0000000000000000000000000000000fU*bwVWw(F?CBPF+cj7Tl8Vj5gQvZ-UgmctdwnBWa"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000001NbVi6B?P^z2GjsZDM0**CORNl8kPf!8pGl-(-KPvQ",
+      "pattern_root_hash72": "0000000000000000000000000000003QwemV>u0tid-)-1HK8Gh5(3ZzR-+o8d3orpiqx>Nd",
+      "update_root_hash72": "0000000000000000000000000000000fU*bwVWw(F?CBPF+cj7Tl8Vj5gQvZ-UgmctdwnBWa"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000004mC^3oziNOTInCHOXn^hc!WHC>reYhJUxt(p8DncU2",
+      "pattern_root_hash72": "0000000000000000000000000000003vkWL/GZfz0aqDJSF(vG0966ENvE-HlPjSRJ9fCt>w",
+      "update_root_hash72": "0000000000000000000000000000002=3zaQc5*?V1Lh**fk1W5?^=v=56I4B?tNsXWXU/2k"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000004FC1mD>nloL4za80w7zS2pUBAXQmFMwn=O5uzEQ+/B",
+      "pattern_root_hash72": "0000000000000000000000000000000cRJ)sdWuN3q+JL-V*bYp!i=Ai>/6^DRgCT+ithY>x",
+      "update_root_hash72": "0000000000000000000000000000002=3zaQc5*?V1Lh**fk1W5?^=v=56I4B?tNsXWXU/2k"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000002>GT*?jw!jMfYqKoz*dNuAJbuuM?x1TtU)oz3!BJ+h",
+      "pattern_root_hash72": "0000000000000000000000000000003ovP=qBTTYqSI=Cgesa9^/97-w^/eIbz>rBQ0IMCdo",
+      "update_root_hash72": "0000000000000000000000000000002=3zaQc5*?V1Lh**fk1W5?^=v=56I4B?tNsXWXU/2k"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000004II9pHR86qvvx(pmqJE9w^g9ruKbmpElVxGz7W(1N2",
+      "pattern_root_hash72": "0000000000000000000000000000001ysjzeZiPOh/R?kfrmy^Zrj>h1w=i>I=x^z7Gi(=fS",
+      "update_root_hash72": "0000000000000000000000000000002=3zaQc5*?V1Lh**fk1W5?^=v=56I4B?tNsXWXU/2k"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000003psez/eFQFs-XytDW-=LQ4Eklhc-s0ROzuu)23=*WO",
+      "pattern_root_hash72": "0000000000000000000000000000000cf>orO4XE+s5NnrkGg=zJ^T=in6heMf*ezN+*lDxJ",
+      "update_root_hash72": "0000000000000000000000000000002=3zaQc5*?V1Lh**fk1W5?^=v=56I4B?tNsXWXU/2k"
+    },
+    {
+      "novel_node_root_hash72": "00000000000000000000000000000021nKXobK4MYYXy7UBlg00/XIO)lX?z9/oNWOkrr9xH",
+      "pattern_root_hash72": "00000000000000000000000000000032+vus+1JYxKvmq-lCS^HdzGRQ7NhmYtbGWRYdN1A0",
+      "update_root_hash72": "0000000000000000000000000000002=3zaQc5*?V1Lh**fk1W5?^=v=56I4B?tNsXWXU/2k"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000004nI3!W>=PZj2Puny>eA?I6ks1HVRQZlA->IlP0whws",
+      "pattern_root_hash72": "0000000000000000000000000000002w5aJcFQ2Vy^=^B)8YTRHMhbGSu2VOkz70V*5afuW!",
+      "update_root_hash72": "0000000000000000000000000000002=3zaQc5*?V1Lh**fk1W5?^=v=56I4B?tNsXWXU/2k"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000004Kz0bx5pT/S?ueq8)PD2QIY086NKe)7FmJSZC9vhaG",
+      "pattern_root_hash72": "0000000000000000000000000000001yFwyDlzI6!WPCK1!b*6zu-vN(ySZ*HL-HfO2HoD0B",
+      "update_root_hash72": "0000000000000000000000000000002=3zaQc5*?V1Lh**fk1W5?^=v=56I4B?tNsXWXU/2k"
+    },
+    {
+      "novel_node_root_hash72": "000000000000000000000000000000324XIlmI-UfQYHvOYeN^bjywI2HF8T17F0+sOQAHLS",
+      "pattern_root_hash72": "00000000000000000000000000000029uP*>V4T)mTrZyyWE0-r2CzjlC?XXskBq=/nr+2L8",
+      "update_root_hash72": "0000000000000000000000000000002=3zaQc5*?V1Lh**fk1W5?^=v=56I4B?tNsXWXU/2k"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000002f>de-4LoMuA3roeTG8!QpMi7KdLz^f*-8tn/8b0jO",
+      "pattern_root_hash72": "0000000000000000000000000000002ZWx3sAbHZtJ!gPCnJO(j/tkWgo5kTaTwN-R/IJOkK",
+      "update_root_hash72": "0000000000000000000000000000002=3zaQc5*?V1Lh**fk1W5?^=v=56I4B?tNsXWXU/2k"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000004smg?W6MC0glW-bHqWGPsS4NOKoV9R?VuEK(BGQ/FK",
+      "pattern_root_hash72": "0000000000000000000000000000004bSAK(dza(tYw1b(iroK^HajDEd!HHOyJe>R2SzBeu",
+      "update_root_hash72": "0000000000000000000000000000002=3zaQc5*?V1Lh**fk1W5?^=v=56I4B?tNsXWXU/2k"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000000(RYcCf>Xc*XSfhXF/7H)bM-U5G=L5jb9*e*aWBm2J",
+      "pattern_root_hash72": "0000000000000000000000000000002I>)wK7dAqJNODhixiUIebvrZvBPLfqHh2EUM0(P5+",
+      "update_root_hash72": "0000000000000000000000000000002=3zaQc5*?V1Lh**fk1W5?^=v=56I4B?tNsXWXU/2k"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000000^h-3otYtY5/^-Y3U9Gx51=p^fo6Dot08)P!VTjt>H",
+      "pattern_root_hash72": "0000000000000000000000000000000MvY?KKnhpT!MyCkeOG(sYYKeMk(TX!FUb4G7dxj18",
+      "update_root_hash72": "0000000000000000000000000000002=3zaQc5*?V1Lh**fk1W5?^=v=56I4B?tNsXWXU/2k"
+    },
+    {
+      "novel_node_root_hash72": "000000000000000000000000000000281F+cSr^/>c1Rd)UB5ForO9eq)cM^EhZdVn3/4Q7)",
+      "pattern_root_hash72": "0000000000000000000000000000002(y!j=?l=WIB0=x=^BQ?tcu3tpfEOv+tNjynyi/(V!",
+      "update_root_hash72": "0000000000000000000000000000002=3zaQc5*?V1Lh**fk1W5?^=v=56I4B?tNsXWXU/2k"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000003/s^uQC>slmX9Amey7>>x5ygibHcAXEEOlu1W4c-I/",
+      "pattern_root_hash72": "0000000000000000000000000000003MHRS1bY9piDze2WpZOW+?e1a-k!V4QNjm8sK?hquz",
+      "update_root_hash72": "0000000000000000000000000000002=3zaQc5*?V1Lh**fk1W5?^=v=56I4B?tNsXWXU/2k"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000000dtghBu2XlrncGkTAULJhFA?RX^sc1+QGkwypgYMbJ",
+      "pattern_root_hash72": "0000000000000000000000000000004wYYotiu>2nZjA/xtLFKt8R4lD/NH?5=YJGC)0Bhak",
+      "update_root_hash72": "0000000000000000000000000000002=3zaQc5*?V1Lh**fk1W5?^=v=56I4B?tNsXWXU/2k"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000001jExb/u*ZO3atIFWouZE+p4Iqr-2bo^?ku1Abv3BZQ",
+      "pattern_root_hash72": "0000000000000000000000000000001uJKV)tZGRmx!hkrpEl8t!r)KF7Z8YWMMJIW0yqR2K",
+      "update_root_hash72": "0000000000000000000000000000003v7kPmi7rIKFyY>X91FXMwpxXEKLv68qc4BSei?Q)("
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000001B+xndR8!4!A2aoHruIerZTIBIf*?A/V/m03x8NbA8",
+      "pattern_root_hash72": "0000000000000000000000000000001j*cSn9cHtUj3+S-w/KxHjZVcDG>monYuVgci7Fx+O",
+      "update_root_hash72": "0000000000000000000000000000003v7kPmi7rIKFyY>X91FXMwpxXEKLv68qc4BSei?Q)("
+    },
+    {
+      "novel_node_root_hash72": "000000000000000000000000000000156q0zvQyAHu7zAr-3)4TL?4e4eT?Zyti2W-aCL-p8",
+      "pattern_root_hash72": "0000000000000000000000000000003Cqwbwjh)1=*E3VKlqpPZ7uyfxD!DeLJ)(Z=T2w?tg",
+      "update_root_hash72": "0000000000000000000000000000003v7kPmi7rIKFyY>X91FXMwpxXEKLv68qc4BSei?Q)("
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000002mRVgpQ0!+nORX6T?mw>)8vaFdIlQkVbtLoUImnEjx",
+      "pattern_root_hash72": "00000000000000000000000000000036zYKZiJU>lK)KJTRKX27==zOFsS/VvZimxGIkfUYc",
+      "update_root_hash72": "0000000000000000000000000000003v7kPmi7rIKFyY>X91FXMwpxXEKLv68qc4BSei?Q)("
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000003NvPM2gltowB!DF/L^Uneoil8P5=tbFbDocP44q2wx",
+      "pattern_root_hash72": "00000000000000000000000000000034koVXDKv7S1AYssCxYmtGz8UTm1DpIxRw3d6bUwpd",
+      "update_root_hash72": "0000000000000000000000000000003v7kPmi7rIKFyY>X91FXMwpxXEKLv68qc4BSei?Q)("
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000001iTUP=rV4DsKS)ajfq-DtB?g)=93+XYWnNOw6eW^Cn",
+      "pattern_root_hash72": "0000000000000000000000000000002UD-zR6p2=8KbWjBrR0!>WLbHrriMN-NrOEkRnAy)V",
+      "update_root_hash72": "0000000000000000000000000000003v7kPmi7rIKFyY>X91FXMwpxXEKLv68qc4BSei?Q)("
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000002w/B!sJXd>5GimFvZqjhPs76r^z*5-y=?qAG^ssIch",
+      "pattern_root_hash72": "0000000000000000000000000000003Ds-t-iPk3hjVnNhrDdPVV=8FJTJZTVUm3LTcLq=M9",
+      "update_root_hash72": "0000000000000000000000000000003v7kPmi7rIKFyY>X91FXMwpxXEKLv68qc4BSei?Q)("
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000004B/UrkLxi!+6oTTHR+fB^Td04V(jnf(b9AtZMY=KF4",
+      "pattern_root_hash72": "0000000000000000000000000000004DpHk!kgXu2avEmE3OMXw(yDs9oLIU*ueU=A93*y9^",
+      "update_root_hash72": "0000000000000000000000000000003v7kPmi7rIKFyY>X91FXMwpxXEKLv68qc4BSei?Q)("
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000004h0fF=Km*2lApdPudpITv2hq1uEXYXRX6-DitW(WDe",
+      "pattern_root_hash72": "0000000000000000000000000000000Q?7SogjTy1hb2GV>3dV2oEWvAljj7qN7yAM8nPpla",
+      "update_root_hash72": "0000000000000000000000000000003v7kPmi7rIKFyY>X91FXMwpxXEKLv68qc4BSei?Q)("
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000001s9wu7OCql=KZT*f5ud3^ii2ekzRXox?15Gdmu-J9t",
+      "pattern_root_hash72": "0000000000000000000000000000001q/clt2ypbpqrvd9V5DCatdxPfEV7J!tVo(lZ/=0UJ",
+      "update_root_hash72": "0000000000000000000000000000003v7kPmi7rIKFyY>X91FXMwpxXEKLv68qc4BSei?Q)("
+    },
+    {
+      "novel_node_root_hash72": "00000000000000000000000000000030xmwy/5F7?wAnnFWSQRszJOeeA*p=MdOxIduNnZUy",
+      "pattern_root_hash72": "0000000000000000000000000000001qvk9uD>unNzGI8kp(wBkK7mj/)ubPFWexX^n/-ZJ(",
+      "update_root_hash72": "0000000000000000000000000000003v7kPmi7rIKFyY>X91FXMwpxXEKLv68qc4BSei?Q)("
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000004yFLozFWruTMZ4qpE9B*1uvqslF)A!u!WMsho+gfdM",
+      "pattern_root_hash72": "00000000000000000000000000000008)!(4Dem8T6ls2(B)hpdDOs/N(pR1E=1ewT>uhRN9",
+      "update_root_hash72": "0000000000000000000000000000003v7kPmi7rIKFyY>X91FXMwpxXEKLv68qc4BSei?Q)("
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000000^ormLg69UOwM1(ws(aS/xH(bgap3//O>b/wuguqBO",
+      "pattern_root_hash72": "00000000000000000000000000000023HUkG6c5o!QN^V!yjldzw-0EYeaX7J9pbIp=ZYAs^",
+      "update_root_hash72": "0000000000000000000000000000003v7kPmi7rIKFyY>X91FXMwpxXEKLv68qc4BSei?Q)("
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000001FzEuV?0NIlo+/77B(vxy+7-)!>RDGz1ql41ehWUWT",
+      "pattern_root_hash72": "00000000000000000000000000000024Hn(ADeU9KDmPIud1e56bRjZrmUHuHkm*Sff+?00F",
+      "update_root_hash72": "0000000000000000000000000000003v7kPmi7rIKFyY>X91FXMwpxXEKLv68qc4BSei?Q)("
+    },
+    {
+      "novel_node_root_hash72": "00000000000000000000000000000013YX6YaZ6gGjcE)m4=s?svdQCPu)V(FZWG5Ck(O>sj",
+      "pattern_root_hash72": "0000000000000000000000000000001^tWDEWOOoi6ruqZ-D^NRVpH)G!XtwCF6RAE=zC9pY",
+      "update_root_hash72": "0000000000000000000000000000003v7kPmi7rIKFyY>X91FXMwpxXEKLv68qc4BSei?Q)("
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000002(!(w!+Y?NOr4cnYXAwms7MeEqMIM)MuIZZCqbszjh",
+      "pattern_root_hash72": "0000000000000000000000000000003l*(?Z*GpqqxNyP>MlKv5YdrV4Tt)A4blIztC*XFSr",
+      "update_root_hash72": "0000000000000000000000000000003v7kPmi7rIKFyY>X91FXMwpxXEKLv68qc4BSei?Q)("
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000001t!cBg0D/y5+EqPHNz3c9y!3^z)cnIJD(5OYOTFAt4",
+      "pattern_root_hash72": "0000000000000000000000000000002JK7p7?Gs6w+7jAciNStf3MOzYvwqOygl8i5aGB=/v",
+      "update_root_hash72": "0000000000000000000000000000004lCZZj-7S)/yuFUmM?si=(Hq53ns0PCq6J(pH7iS(m"
+    },
+    {
+      "novel_node_root_hash72": "00000000000000000000000000000048L7-=(6V!oO*ADEMWAr^ZUMQe(IIuxVGhvz*TzVje",
+      "pattern_root_hash72": "00000000000000000000000000000013dA7+qQ0XVaOJjy6n3q/o9Oy>>Wt(nH/Nspo/?=6q",
+      "update_root_hash72": "0000000000000000000000000000004lCZZj-7S)/yuFUmM?si=(Hq53ns0PCq6J(pH7iS(m"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000003--LKbiOlj3vZ1Godiykvt7ZKTyh-So^tk3SU3B6/M",
+      "pattern_root_hash72": "0000000000000000000000000000004kSK2fBWFg)>s-8jLLshYtE(/Q(Q8uWIEr^q!FY72?",
+      "update_root_hash72": "0000000000000000000000000000004lCZZj-7S)/yuFUmM?si=(Hq53ns0PCq6J(pH7iS(m"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000000raDX2L0k9wg!ceagx+Fk7+!M5WQ5dIFpyGe2XkdW8",
+      "pattern_root_hash72": "0000000000000000000000000000000U/BtGJV=fTUcqu>>WUVhzTu()UyWL3hvfq*mQQfg3",
+      "update_root_hash72": "0000000000000000000000000000004lCZZj-7S)/yuFUmM?si=(Hq53ns0PCq6J(pH7iS(m"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000004r5yMNw6Y1=bLPmgs!?s)GWlD?3ZHn35*zhy3zd^HK",
+      "pattern_root_hash72": "0000000000000000000000000000001iLtvMyJXSu-MsddHKatj4t!UKGu5B8/MQQ5SD1S--",
+      "update_root_hash72": "0000000000000000000000000000004H(x9Brb>Go-qXArm=t6n?yVXdwAFYM3eX>C^0SP9X"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000003dpkTXc4rlUf0pRU72(b6eK-N^T+(QQsn1lEv=8WfD",
+      "pattern_root_hash72": "0000000000000000000000000000001e/2)Kh?4j8zov-TIFnFS1gUhAyXeam3^KJvELOJ=S",
+      "update_root_hash72": "0000000000000000000000000000004H(x9Brb>Go-qXArm=t6n?yVXdwAFYM3eX>C^0SP9X"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000004pl9y9R^)axlgSh!2/WpNWatzLEPb79D8mHSWgvL4U",
+      "pattern_root_hash72": "0000000000000000000000000000001lvAq*SswlWTh7Zlry*w)XJl)Lor6Jgvl*aKopXofS",
+      "update_root_hash72": "0000000000000000000000000000004H(x9Brb>Go-qXArm=t6n?yVXdwAFYM3eX>C^0SP9X"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000002lhcax=x8QpENvAPV-3s0K4VqpdkLZObrRnJ*3Wqun",
+      "pattern_root_hash72": "0000000000000000000000000000001gRp5l*Oy!ww4(JFfBzq40AVH^=zacks4jv4XEFG94",
+      "update_root_hash72": "0000000000000000000000000000004H(x9Brb>Go-qXArm=t6n?yVXdwAFYM3eX>C^0SP9X"
+    },
+    {
+      "novel_node_root_hash72": "00000000000000000000000000000041OT+xG3rrnnM*gMPK*4Y8UOH3QJ-BEQMm?zjVF47g",
+      "pattern_root_hash72": "0000000000000000000000000000002Y?XYibOdr4sN6bqu2adXe>0N(WRa/FxMv4QnDdQJ^",
+      "update_root_hash72": "0000000000000000000000000000004InLvq4=mNhTBAO^1z8?pkt->jV>932?gRAog*2HPF"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000004E+Rlu)Sh0ogpOuqK/9ePij9qG?Ri=(wwlevOj)UVq",
+      "pattern_root_hash72": "0000000000000000000000000000001nuT0uap*q0RBl0yav/njZK)-kr8vtch7xHDYH+qqQ",
+      "update_root_hash72": "0000000000000000000000000000004InLvq4=mNhTBAO^1z8?pkt->jV>932?gRAog*2HPF"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000002VK9yniwq>X4Le+1L2TurxkdcXwu5/rJ4oY9-tI0Ny",
+      "pattern_root_hash72": "0000000000000000000000000000002369kQ>J6HN0rR)93QGaGfjZ2zFU8*w-Xkz?uzDRvi",
+      "update_root_hash72": "0000000000000000000000000000004InLvq4=mNhTBAO^1z8?pkt->jV>932?gRAog*2HPF"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000004Hu+c*(FVkNjd1c21M3mV7KjF=3zKXbWXVmNGlm*Iw",
+      "pattern_root_hash72": "0000000000000000000000000000001nVK?V2F*!E-MR*WVsPI*D9RNclY6zXx=7ONgR*QI9",
+      "update_root_hash72": "0000000000000000000000000000004InLvq4=mNhTBAO^1z8?pkt->jV>932?gRAog*2HPF"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000000ims5g0+FibvIw!bHYn=o6n9>8^sJd+Lo!A/QyOq0G",
+      "pattern_root_hash72": "00000000000000000000000000000044?OidF=!KY944dn3KD4MHZ83x!P1EIe9nDHPIOyjr",
+      "update_root_hash72": "0000000000000000000000000000004InLvq4=mNhTBAO^1z8?pkt->jV>932?gRAog*2HPF"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000000r5>/GuAX?1BU1Zl8PKtawwQawKMxLJDU^)SESQCRs",
+      "pattern_root_hash72": "0000000000000000000000000000002)OBcA6BN=X9iFzqBeyu!oHTxvhK6J1PH()4gm)hEn",
+      "update_root_hash72": "0000000000000000000000000000004InLvq4=mNhTBAO^1z8?pkt->jV>932?gRAog*2HPF"
+    },
+    {
+      "novel_node_root_hash72": "00000000000000000000000000000038zXJSMUb1cXHZ2ou=YivWSl+Ykbq0)XNwC*G!EA(W",
+      "pattern_root_hash72": "0000000000000000000000000000001r4)JkD04iVxBu((g)829vkuSDwNltMvJt?ZMRi?E=",
+      "update_root_hash72": "0000000000000000000000000000004InLvq4=mNhTBAO^1z8?pkt->jV>932?gRAog*2HPF"
+    },
+    {
+      "novel_node_root_hash72": "00000000000000000000000000000034>pIRP^/096A5qC>5=CV(O-KhMfLAn0=sP!gmK/*W",
+      "pattern_root_hash72": "0000000000000000000000000000002NSDTGHwHzERnq6r=F3KOEJRVI6=k3rnJVhUneWuEd",
+      "update_root_hash72": "0000000000000000000000000000004InLvq4=mNhTBAO^1z8?pkt->jV>932?gRAog*2HPF"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000002Uf3f?v(doXr!p)B4Y4L!=9F=yIfDFsWd7efDm5fOC",
+      "pattern_root_hash72": "0000000000000000000000000000001wsq)/wPDN!^d/y?oMkD4!?n+QR/Q(4Is6eAoQ?tOY",
+      "update_root_hash72": "0000000000000000000000000000000rk5W1dYo6uCu^FNfc?LIAWoq>)zI34hfH3-5Z7wqq"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000002^r!DCSceNFxLJrC1^UTv+5qAn53Dpwu=Ylj/0hk2t",
+      "pattern_root_hash72": "0000000000000000000000000000001NuDDW3M2f=m0o8Ob0(9sodR+)W4rjp0NKN*zS?Hak",
+      "update_root_hash72": "0000000000000000000000000000000rk5W1dYo6uCu^FNfc?LIAWoq>)zI34hfH3-5Z7wqq"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000002kZOKRWG3Gk=XYrgSRs?4Wx44mLj3MQUMV^3?r5hfw",
+      "pattern_root_hash72": "0000000000000000000000000000004KUHXUP0pVDU)2/(CKiKOXF(>kiS84OJnsSyt*bx(c",
+      "update_root_hash72": "0000000000000000000000000000000rk5W1dYo6uCu^FNfc?LIAWoq>)zI34hfH3-5Z7wqq"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000003Epn5QPSoyD9Bds)8)Q=zH+zZc*wys*XDJlT0+(jNM",
+      "pattern_root_hash72": "0000000000000000000000000000001iEoJ+4jTwoHPRl1VtQY*oz=rpFTRF*AfLBsNSiw>Q",
+      "update_root_hash72": "0000000000000000000000000000000rk5W1dYo6uCu^FNfc?LIAWoq>)zI34hfH3-5Z7wqq"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000000X6bYS-Ob)QDo)-g!mb2wdg?!w3C(1(nwncpCORE+!",
+      "pattern_root_hash72": "0000000000000000000000000000001sFRsezQEaBwSwzACEGK()HvW1(muz!r5Q769?D=Zu",
+      "update_root_hash72": "0000000000000000000000000000000rk5W1dYo6uCu^FNfc?LIAWoq>)zI34hfH3-5Z7wqq"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000000A3cZ3^-cHY5NQSo5lg1wh>nqC*onyGDmG!Nv-2uEs",
+      "pattern_root_hash72": "0000000000000000000000000000000Q3?hPR^x>!6nP?s>QEa9H?mS7Y/bY15^iTtCmjsnb",
+      "update_root_hash72": "0000000000000000000000000000000rk5W1dYo6uCu^FNfc?LIAWoq>)zI34hfH3-5Z7wqq"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000002gjTQCW*NEjs6Yk^pq(ySeV!wrtwWCG8fPhIBnKhLR",
+      "pattern_root_hash72": "0000000000000000000000000000003A48^kJ>XyDiOMqqf2va8VhzJS=wxBf2J5^h8xuaX*",
+      "update_root_hash72": "0000000000000000000000000000000rk5W1dYo6uCu^FNfc?LIAWoq>)zI34hfH3-5Z7wqq"
+    },
+    {
+      "novel_node_root_hash72": "0000000000000000000000000000002Qc*qiNZ=P*JRg9S8fEbfPs^AOxYU-xb2W^DK5pLya",
+      "pattern_root_hash72": "0000000000000000000000000000000c+TKyuw6XiiMy=jflQwhP0f?ie+p2osxmcH4o8DEy",
+      "update_root_hash72": "0000000000000000000000000000000rk5W1dYo6uCu^FNfc?LIAWoq>)zI34hfH3-5Z7wqq"
+    }
+  ],
+  "cache_reuse": []
+}

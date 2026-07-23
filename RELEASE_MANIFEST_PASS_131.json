@@ -1,0 +1,38 @@
+{
+  "files": [
+    {
+      "bytes": 19191,
+      "path": "hhs_runtime/hhs_pass131_electrochemical_atomic_physics_sandbox_v1.py",
+      "sha256": "cab316b6a4b32fd56c5ed6fbe216b5dc6a26f7505bc369fe9bcf67687031c2e6"
+    },
+    {
+      "bytes": 5299,
+      "path": "tests/test_hhs_pass131_electrochemical_atomic_physics_sandbox_v1.py",
+      "sha256": "48248266ff60ac6c11f966ef35e953bd11ae630e2586b0a7d3e51c64aaa235c9"
+    },
+    {
+      "bytes": 263400,
+      "path": "hhs_runtime/hhs_service_registry_v1.py",
+      "sha256": "b9001d35d0d21aa75f98ab2db2619091671d5e2d40ec415e57b182ae73e890bd"
+    },
+    {
+      "bytes": 725,
+      "path": "ELECTROCHEMICAL_ATOMIC_PHYSICS_SANDBOX_PASS_131.json",
+      "sha256": "cc1537a5573f2157ee9ebeeb961a4e0b8943914401e8d1e55f3ad00512e49483"
+    },
+    {
+      "bytes": 2069,
+      "path": "ELECTROCHEMICAL_ATOMIC_PHYSICS_SANDBOX_PASS_131.md",
+      "sha256": "dc960f5e58e9688da9b03682c6b2fc9ab65fb66f52a382e5d88efa4ce8fe1adb"
+    }
+  ],
+  "manifest_sha256": "0cb876db327c39c25511f3be2925fe87a19e2a1c2c3acf5b6d738f0f1ee0acff",
+  "pass_id": "PASS_131",
+  "schema": "HHS_PASS_131_RELEASE_MANIFEST_V1",
+  "service": "runtime.electrochemical_atomic_physics_sandbox.pass131",
+  "status": "IMPLEMENTED_AND_VERIFIED",
+  "tests": {
+    "dependency_scoped_pass129_to_pass131": 56,
+    "focused_pass131": 17
+  }
+}

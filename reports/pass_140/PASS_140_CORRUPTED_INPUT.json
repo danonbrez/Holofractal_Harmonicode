@@ -1,0 +1,207 @@
+{
+  "artifacts": [
+    {
+      "artifact_receipt_root": "607508bcc174cf9e684563c87e3ea044920f9fba3328b33d6bd757669aa8e7dc",
+      "metadata": {
+        "artifact_id": "source",
+        "content_root": "b4a92740eab2db5b7334e51383c283fe7c99153d56219dae3de6946f723a1234",
+        "data_shards": 4,
+        "dependencies": [],
+        "dependency_graph_root": "6e1f138185a19f262c5aa797796b97b79cc63e79997667903f3c277fc6445758",
+        "hash72": "00000000000000000000000000000BIf9q3gijjRSpJb4uF2W_vycHKzLY6ThZtcb6zoEX8q",
+        "mime": "application/octet-stream",
+        "parity_shards": 1,
+        "path": "formal/source.eq",
+        "shard_width": 7,
+        "size": 26
+      },
+      "metadata_root": "ff07bcbaf2fbb8137b235be836b5a6f8f843290b0a4f51a65f5e8d40b99bc8a9",
+      "shards": [
+        {
+          "index": 0,
+          "kind": "data",
+          "meta_root": "ff07bcbaf2fbb8137b235be836b5a6f8f843290b0a4f51a65f5e8d40b99bc8a9",
+          "payload_b64": "ZypoID09IA==",
+          "payload_root": "943d6db0a0730d5d19cd7f21c15ab4b1cfacf87e0e79513aaa6f8b1e4cae2ba2",
+          "shard_root": "7cf81e6b41c5a4158d5b1d25367d5205998ea9d335c25ea32ff60e9ba2c85c49"
+        },
+        {
+          "index": 1,
+          "kind": "data",
+          "meta_root": "ff07bcbaf2fbb8137b235be836b5a6f8f843290b0a4f51a65f5e8d40b99bc8a9",
+          "payload_b64": "eHkKcmhvIA==",
+          "payload_root": "b521cb9d8d6ec1d56fecfc10f4dd9c15be4aa91eabf07b518e2c73c368ba029f",
+          "shard_root": "b439121a99f23cdbf17d7f1742bd350e4b222e41cbb56200ebf1135638fab54d"
+        },
+        {
+          "index": 2,
+          "kind": "data",
+          "meta_root": "ff07bcbaf2fbb8137b235be836b5a6f8f843290b0a4f51a65f5e8d40b99bc8a9",
+          "payload_b64": "PT0gZytoLQ==",
+          "payload_root": "9f9d1b463d5539c7e2803fa91dca0456eda8d5f413616a505f8421c817a4bc09",
+          "shard_root": "382dc2b5ad9d95adf2f754dd8ee6a9aaacf94742ef75f55cbeee9c75115a2e0b"
+        },
+        {
+          "index": 3,
+          "kind": "data",
+          "meta_root": "ff07bcbaf2fbb8137b235be836b5a6f8f843290b0a4f51a65f5e8d40b99bc8a9",
+          "payload_b64": "Mip4eQoAAA==",
+          "payload_root": "849ef57060e57ca1c8bb0b437b7354b1842c60f7beac309d2d15c37cddf3a894",
+          "shard_root": "59d890dd335f3ceedd492541c30e43047d104b6ddb64b491bf8d86e3c0414b6d"
+        },
+        {
+          "index": 4,
+          "kind": "parity",
+          "meta_root": "ff07bcbaf2fbb8137b235be836b5a6f8f843290b0a4f51a65f5e8d40b99bc8a9",
+          "payload_b64": "EEQ6THQ6LQ==",
+          "payload_root": "e6da922954fa4955e972fe84ebb8cff80121c492eed54b85ea84c5c2065aa1a0",
+          "shard_root": "fa01911db6f743afddb1ec2793e71744ff560f5639370d99dae8e88684acf295"
+        }
+      ]
+    },
+    {
+      "artifact_receipt_root": "36379025b8791a02b3f43d7b24d830cb1edf60cec855eb2d81b04eaa20ddcdd7",
+      "metadata": {
+        "artifact_id": "proof",
+        "content_root": "d199ad558baf28c24e227d23b634ff9f4c378d501a194eb8e61aa42e784c9e37",
+        "data_shards": 4,
+        "dependencies": [
+          "source"
+        ],
+        "dependency_graph_root": "6e1f138185a19f262c5aa797796b97b79cc63e79997667903f3c277fc6445758",
+        "hash72": "00000000000000000000000000000D6PhLMBhoZ2JY9z8xOq_vzCDurG6XbEkEOQf2vuJ9ut",
+        "mime": "application/json",
+        "parity_shards": 1,
+        "path": "formal/proof.json",
+        "shard_width": 10,
+        "size": 40
+      },
+      "metadata_root": "b9f0a51a6b0025d443337a1ec94d6455b90a1e1e4a613ffa6965bd1dcd9a67dd",
+      "shards": [
+        {
+          "index": 0,
+          "kind": "data",
+          "meta_root": "b9f0a51a6b0025d443337a1ec94d6455b90a1e1e4a613ffa6965bd1dcd9a67dd",
+          "payload_b64": "eyJnb2FsIjoicg==",
+          "payload_root": "062c4840095ac232a9fff99d8ce33bd57ca00de31a5baf2882ec12143253a286",
+          "shard_root": "1987967626486a23298fbd69ae0009c00a629ab4e0f2e61d2ad452bdc54dde2c"
+        },
+        {
+          "index": 1,
+          "kind": "data",
+          "meta_root": "b9f0a51a6b0025d443337a1ec94d6455b90a1e1e4a613ffa6965bd1dcd9a67dd",
+          "payload_b64": "Mm8qZz09KGcteA==",
+          "payload_root": "69d0bf176bbf01382de207e4ca60f0186e81ba9921c0a4e3f5115d063c3b641e",
+          "shard_root": "9896585129d33da4e5bf8fe08ec5b3b9cd3e2891e40553e76c33a1b8ecbfa5ea"
+        },
+        {
+          "index": 2,
+          "kind": "data",
+          "meta_root": "b9f0a51a6b0025d443337a1ec94d6455b90a1e1e4a613ffa6965bd1dcd9a67dd",
+          "payload_b64": "eSleMiIsInBybw==",
+          "payload_root": "834c37c0ff0baf6253e0ec0d5bfa2e16309328dc74fd0db5efa4e8a591627147",
+          "shard_root": "3b362038a65f8e947e464313a23d184796bb74639c5c74fa84de71b5d7919a64"
+        },
+        {
+          "index": 3,
+          "kind": "data",
+          "meta_root": "b9f0a51a6b0025d443337a1ec94d6455b90a1e1e4a613ffa6965bd1dcd9a67dd",
+          "payload_b64": "dmVkIjp0cnVlfQ==",
+          "payload_root": "96adc41d13f299a8e3543b51f899920ba279d35d038ebdbe20ad67ac6e57c9b8",
+          "shard_root": "32cf83062f51507d190f2a63b2a536331e0b10ab81dd1e687e7d2eb37c09c7c9"
+        },
+        {
+          "index": 4,
+          "kind": "parity",
+          "meta_root": "b9f0a51a6b0025d443337a1ec94d6455b90a1e1e4a613ffa6965bd1dcd9a67dd",
+          "payload_b64": "HAF3GEQJWlgYGA==",
+          "payload_root": "b1db0b05d2c1bc02e07d53fac4592ce493ca725c024de0ece399076e60933984",
+          "shard_root": "6524787ae090291c2c6279863c95db00050bc4d53080d4fad90a505d1f449102"
+        }
+      ]
+    },
+    {
+      "artifact_receipt_root": "06014052ae8bb39da071985e8c6f04948a8c715177b4d70404439c8fcf10e957",
+      "metadata": {
+        "artifact_id": "release",
+        "content_root": "1454cf9dda54302ab95ce65af417bf53868ecaae4679b6e48cbdf54451fa4f42",
+        "data_shards": 4,
+        "dependencies": [
+          "proof"
+        ],
+        "dependency_graph_root": "6e1f138185a19f262c5aa797796b97b79cc63e79997667903f3c277fc6445758",
+        "hash72": "000000000000000000000000000001HKpvtQL30gkLpcMlGNlrE6ZigkHdcsv8ozzKHH-az2",
+        "mime": "text/plain",
+        "parity_shards": 1,
+        "path": "release/receipt.txt",
+        "shard_width": 4,
+        "size": 15
+      },
+      "metadata_root": "6a6479843c90e9e58cb353457446f243d434f46eca7120867a480ff63d6a64d7",
+      "shards": [
+        {
+          "index": 0,
+          "kind": "data",
+          "meta_root": "6a6479843c90e9e58cb353457446f243d434f46eca7120867a480ff63d6a64d7",
+          "payload_b64": "UkVMRQ==",
+          "payload_root": "4f9b83c774ec474b9794f8382c91a809fd75f41db3d2ae011b0438091a215253",
+          "shard_root": "75c0edfbd8d75c205da15bc4dde12764f704e604ccbcdf1e38aba3cd0864c6b6"
+        },
+        {
+          "index": 1,
+          "kind": "data",
+          "meta_root": "6a6479843c90e9e58cb353457446f243d434f46eca7120867a480ff63d6a64d7",
+          "payload_b64": "QVNFXw==",
+          "payload_root": "a859dd91e55137edc8ba22b7a77d30bd347603112ff140343221293adfcc5999",
+          "shard_root": "892632145f5019428459ed2de1e5139cca95c9b7035b537db5f15a3d2bc508bd"
+        },
+        {
+          "index": 2,
+          "kind": "data",
+          "meta_root": "6a6479843c90e9e58cb353457446f243d434f46eca7120867a480ff63d6a64d7",
+          "payload_b64": "UFJPVg==",
+          "payload_root": "5029af19eafc8e0cf42b8bb6b2d05e7fb8c106e5926a2a03e541916e3f8812aa",
+          "shard_root": "a56521666659bb532416fbfc1a13d4ca48e3cac0f1e4034c5a2e72eb7b70b5fe"
+        },
+        {
+          "index": 3,
+          "kind": "data",
+          "meta_root": "6a6479843c90e9e58cb353457446f243d434f46eca7120867a480ff63d6a64d7",
+          "payload_b64": "RUQKAA==",
+          "payload_root": "38337abcd987671f9e02a20c6d6d73de24ab68c329e84f3604acf465e0d72d56",
+          "shard_root": "53a95a7547ebfb3619f94486c8b92b0869a7c3bc205c3bc250e2b893edb99da5"
+        },
+        {
+          "index": 4,
+          "kind": "parity",
+          "meta_root": "6a6479843c90e9e58cb353457446f243d434f46eca7120867a480ff63d6a64d7",
+          "payload_b64": "BgBMTA==",
+          "payload_root": "3434f0da2432ad2dcaeb28374296af792fb93f8499bbeb6d80f11c117e12103a",
+          "shard_root": "edf27ed609871e14d32f5d5314c7619bff10d6c02fe09c3cd141aee53d26e9ea"
+        }
+      ]
+    }
+  ],
+  "authority": "A1_EXECUTION_EVIDENCE",
+  "dependency_graph": {
+    "proof": [
+      "source"
+    ],
+    "release": [
+      "proof"
+    ],
+    "source": []
+  },
+  "dependency_graph_root": "6e1f138185a19f262c5aa797796b97b79cc63e79997667903f3c277fc6445758",
+  "invariants": {
+    "byte_exact_readmission_required": true,
+    "dependency_receipts_bound": true,
+    "metadata_pattern_bound": true,
+    "no_authority_promotion": true,
+    "one_shard_loss_per_stripe_recoverable": true
+  },
+  "pass_id": "PASS_140_HOLOGRAPHIC_ENTANGLEMENT_TRACKING",
+  "receipt_root": "21459166c4eddaf9f229f0413d8af4746ad6a0a4885143a7801b191facd16998",
+  "request_id": "pass-140-reference-workload",
+  "schema": "HHS_HOLOGRAPHIC_RECOVERY_API_V1"
+}

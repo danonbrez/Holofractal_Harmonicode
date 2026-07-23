@@ -1,0 +1,159 @@
+{
+  "schema": "HHS_PASS_085_SCALING_V1",
+  "results": [
+    {
+      "workload_id": "W89:two-camera-spatial-normalization",
+      "audio_sensor_count": 0,
+      "camera_count": 2,
+      "entity_state_count": 8,
+      "observation_count": 16,
+      "persistent_entity_count": 4,
+      "scene_receipt_bytes": 8305,
+      "trajectory_count": 4,
+      "unresolved_state_count": 0
+    },
+    {
+      "workload_id": "W90:stereo-depth-reconstruction",
+      "audio_sensor_count": 0,
+      "camera_count": 2,
+      "entity_state_count": 12,
+      "observation_count": 24,
+      "persistent_entity_count": 4,
+      "scene_receipt_bytes": 11589,
+      "trajectory_count": 4,
+      "unresolved_state_count": 0
+    },
+    {
+      "workload_id": "W91:four-camera-scene",
+      "audio_sensor_count": 0,
+      "camera_count": 4,
+      "entity_state_count": 12,
+      "observation_count": 48,
+      "persistent_entity_count": 4,
+      "scene_receipt_bytes": 15173,
+      "trajectory_count": 4,
+      "unresolved_state_count": 0
+    },
+    {
+      "workload_id": "W92:audio-assisted-localization",
+      "audio_sensor_count": 4,
+      "camera_count": 2,
+      "entity_state_count": 12,
+      "observation_count": 72,
+      "persistent_entity_count": 4,
+      "scene_receipt_bytes": 18765,
+      "trajectory_count": 4,
+      "unresolved_state_count": 0
+    },
+    {
+      "workload_id": "W93:occlusion-aware-persistence",
+      "audio_sensor_count": 2,
+      "camera_count": 4,
+      "entity_state_count": 10,
+      "observation_count": 60,
+      "persistent_entity_count": 4,
+      "scene_receipt_bytes": 15923,
+      "trajectory_count": 4,
+      "unresolved_state_count": 0
+    },
+    {
+      "workload_id": "W94:trajectory-reconstruction",
+      "audio_sensor_count": 4,
+      "camera_count": 4,
+      "entity_state_count": 16,
+      "observation_count": 128,
+      "persistent_entity_count": 4,
+      "scene_receipt_bytes": 29257,
+      "trajectory_count": 4,
+      "unresolved_state_count": 0
+    },
+    {
+      "workload_id": "W95:eight-sensor-scene",
+      "audio_sensor_count": 4,
+      "camera_count": 4,
+      "entity_state_count": 16,
+      "observation_count": 128,
+      "persistent_entity_count": 4,
+      "scene_receipt_bytes": 29243,
+      "trajectory_count": 4,
+      "unresolved_state_count": 0
+    },
+    {
+      "workload_id": "W96:sixteen-sensor-scene",
+      "audio_sensor_count": 8,
+      "camera_count": 8,
+      "entity_state_count": 12,
+      "observation_count": 192,
+      "persistent_entity_count": 4,
+      "scene_receipt_bytes": 36787,
+      "trajectory_count": 4,
+      "unresolved_state_count": 0
+    },
+    {
+      "workload_id": "W97:thirty-two-sensor-scene",
+      "audio_sensor_count": 16,
+      "camera_count": 16,
+      "entity_state_count": 8,
+      "observation_count": 256,
+      "persistent_entity_count": 4,
+      "scene_receipt_bytes": 44303,
+      "trajectory_count": 4,
+      "unresolved_state_count": 0
+    },
+    {
+      "workload_id": "W98:sixty-four-sensor-scene",
+      "audio_sensor_count": 32,
+      "camera_count": 32,
+      "entity_state_count": 6,
+      "observation_count": 384,
+      "persistent_entity_count": 4,
+      "scene_receipt_bytes": 62449,
+      "trajectory_count": 4,
+      "unresolved_state_count": 0
+    },
+    {
+      "workload_id": "W99:partial-scene-stable-unresolved",
+      "audio_sensor_count": 2,
+      "camera_count": 1,
+      "entity_state_count": 0,
+      "observation_count": 24,
+      "persistent_entity_count": 0,
+      "scene_receipt_bytes": 4237,
+      "trajectory_count": 0,
+      "unresolved_state_count": 8
+    },
+    {
+      "workload_id": "W100:resource-bounded-space",
+      "audio_sensor_count": 16,
+      "camera_count": 16,
+      "entity_state_count": 32,
+      "observation_count": 1024,
+      "persistent_entity_count": 4,
+      "scene_receipt_bytes": 172087,
+      "trajectory_count": 4,
+      "unresolved_state_count": 0
+    },
+    {
+      "workload_id": "W101:identity-layer-separation",
+      "audio_sensor_count": 4,
+      "camera_count": 4,
+      "entity_state_count": 12,
+      "observation_count": 96,
+      "persistent_entity_count": 4,
+      "scene_receipt_bytes": 22367,
+      "trajectory_count": 4,
+      "unresolved_state_count": 0
+    },
+    {
+      "workload_id": "W102:space-receipt-only-replay",
+      "audio_sensor_count": 8,
+      "camera_count": 8,
+      "entity_state_count": 10,
+      "observation_count": 160,
+      "persistent_entity_count": 4,
+      "scene_receipt_bytes": 30949,
+      "trajectory_count": 4,
+      "unresolved_state_count": 0
+    }
+  ]
+}

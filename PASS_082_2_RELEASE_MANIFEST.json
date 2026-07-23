@@ -1,0 +1,25 @@
+{
+  "schema": "HHS_PASS_082_2_RELEASE_MANIFEST_V1",
+  "pass_id": "PASS_082_2",
+  "parent_pass": "PASS_082_1",
+  "parent_release_root_hash72": "0000000000000000000000000000003HBLg4OyD9pwYdrbv2fV3ExsFHfyD5osuIhJ7qNBN!",
+  "workloads": [
+    "W21:2x2-isolated",
+    "W22:2x4-reciprocal",
+    "W23:4x4-chain",
+    "W24:4x8-ring",
+    "W25:8x8-tree",
+    "W26:8x8-star",
+    "W27:16x4-sparse-mesh",
+    "W28:16x8-dense-mesh",
+    "W29:32x4-mixed",
+    "W30:fully-connected-small",
+    "W31:cyclic-anti-commutative",
+    "W32:stable-unresolved"
+  ],
+  "group_identity_preserved": true,
+  "global_replay_verified": true,
+  "closed_unresolved_and_cyclic_classifications_verified": true,
+  "resource_bound_distinct_from_logical_failure": true,
+  "pass082_2_release_root_hash72": "00000000000000000000000000000049?J+HQw7n)rD/1SKwI-rExThTXQt2X0jecxD^rZ0O"
+}

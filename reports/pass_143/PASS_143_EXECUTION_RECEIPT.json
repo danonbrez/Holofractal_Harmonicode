@@ -1,0 +1,287 @@
+{
+  "authority": "A1_EXECUTION_EVIDENCE",
+  "classification": "CONFLICT_SMOOTHED",
+  "dimensions": [
+    "x",
+    "y"
+  ],
+  "final_conflict_energy": "34521088/645700815",
+  "final_residuals": {
+    "difference": "1792/6561",
+    "sum": "0",
+    "x_anchor": "896/6561"
+  },
+  "final_state": {
+    "x": "8353/13122",
+    "y": "4769/13122"
+  },
+  "initial_conflict_energy": "2107/60",
+  "orthogonality_closed": true,
+  "pass_id": "PASS_143_CONTINUOUS_CONSTRAINT_CONFLICT_GRADIENTS",
+  "receipt_root": "ca0b399c321ed314fe1913ff6d1639e3207c265a6b5faad4900aa16921a0a6ba",
+  "request_id": "pass143-reference",
+  "schema": "HHS_CONSTRAINT_GRADIENT_SIMULATION_API_V1",
+  "simulation_projections": {
+    "audio": {
+      "phase_offsets": [
+        19,
+        35
+      ],
+      "sample_rate": 72,
+      "symbolic_amplitudes": [
+        "8353/13122",
+        "4769/13122"
+      ]
+    },
+    "authority": "SIMULATION_PROJECTION_ONLY",
+    "quantum": {
+      "basis_residue": [
+        19,
+        35
+      ],
+      "normalization_witness": "46257985/86093442"
+    },
+    "visual": {
+      "constraint_intensity": {
+        "difference": "1792/6561",
+        "sum": "0",
+        "x_anchor": "896/6561"
+      },
+      "coordinates": [
+        "8353/13122",
+        "4769/13122"
+      ]
+    }
+  },
+  "smoothed_or_equal": true,
+  "temperature_axis": [
+    "31/30",
+    "1/6"
+  ],
+  "trace": [
+    {
+      "admission": "MONOTONIC_ENERGY_MINIMUM",
+      "branch_constraints": [
+        "sum",
+        "difference",
+        "x_anchor",
+        "sum"
+      ],
+      "conflict_energy": "2107/135",
+      "conflict_residuals": {
+        "difference": "14/3",
+        "sum": "0",
+        "x_anchor": "7/3"
+      },
+      "iteration": 0,
+      "phase_index": 0,
+      "state": {
+        "x": "17/6",
+        "y": "-11/6"
+      },
+      "temperature_orthogonality": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "trace_root": "d5650876c4f789b9d138d814f1f729bc56a59d568c6c9218fc99724176c2840c"
+    },
+    {
+      "admission": "MONOTONIC_ENERGY_MINIMUM",
+      "branch_constraints": [
+        "difference",
+        "x_anchor",
+        "sum",
+        "difference"
+      ],
+      "conflict_energy": "8428/1215",
+      "conflict_residuals": {
+        "difference": "28/9",
+        "sum": "0",
+        "x_anchor": "14/9"
+      },
+      "iteration": 1,
+      "phase_index": 1,
+      "state": {
+        "x": "37/18",
+        "y": "-19/18"
+      },
+      "temperature_orthogonality": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "trace_root": "0b414c32fa9f5230e70990fcadc00c3bbf15fa452b3fae064f7c01ae20eab016"
+    },
+    {
+      "admission": "MONOTONIC_ENERGY_MINIMUM",
+      "branch_constraints": [
+        "x_anchor",
+        "sum",
+        "difference",
+        "x_anchor"
+      ],
+      "conflict_energy": "33712/10935",
+      "conflict_residuals": {
+        "difference": "56/27",
+        "sum": "0",
+        "x_anchor": "28/27"
+      },
+      "iteration": 2,
+      "phase_index": 2,
+      "state": {
+        "x": "83/54",
+        "y": "-29/54"
+      },
+      "temperature_orthogonality": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "trace_root": "421f384358249001e8b8d6ba75de7d0f5307e043a06ccf78b1a10303e0671e09"
+    },
+    {
+      "admission": "MONOTONIC_ENERGY_MINIMUM",
+      "branch_constraints": [
+        "sum",
+        "difference",
+        "x_anchor",
+        "sum"
+      ],
+      "conflict_energy": "134848/98415",
+      "conflict_residuals": {
+        "difference": "112/81",
+        "sum": "0",
+        "x_anchor": "56/81"
+      },
+      "iteration": 3,
+      "phase_index": 3,
+      "state": {
+        "x": "193/162",
+        "y": "-31/162"
+      },
+      "temperature_orthogonality": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "trace_root": "d36eee87604cbd41539ef96a3d16820025aaebabbb6ec055b2cd4bab6cf24089"
+    },
+    {
+      "admission": "MONOTONIC_ENERGY_MINIMUM",
+      "branch_constraints": [
+        "difference",
+        "x_anchor",
+        "sum",
+        "difference"
+      ],
+      "conflict_energy": "539392/885735",
+      "conflict_residuals": {
+        "difference": "224/243",
+        "sum": "0",
+        "x_anchor": "112/243"
+      },
+      "iteration": 4,
+      "phase_index": 4,
+      "state": {
+        "x": "467/486",
+        "y": "19/486"
+      },
+      "temperature_orthogonality": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "trace_root": "0f7d90e07f6a83b2fcdff8b5e610d95a94a4bdef595e604fae900e64bf6c8b3d"
+    },
+    {
+      "admission": "MONOTONIC_ENERGY_MINIMUM",
+      "branch_constraints": [
+        "x_anchor",
+        "sum",
+        "difference",
+        "x_anchor"
+      ],
+      "conflict_energy": "2157568/7971615",
+      "conflict_residuals": {
+        "difference": "448/729",
+        "sum": "0",
+        "x_anchor": "224/729"
+      },
+      "iteration": 5,
+      "phase_index": 5,
+      "state": {
+        "x": "1177/1458",
+        "y": "281/1458"
+      },
+      "temperature_orthogonality": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "trace_root": "a7f18b9d19ab8f4d4c0a75d93a1568ba55f4f45aec29edad0c3923fe506fd37b"
+    },
+    {
+      "admission": "MONOTONIC_ENERGY_MINIMUM",
+      "branch_constraints": [
+        "sum",
+        "difference",
+        "x_anchor",
+        "sum"
+      ],
+      "conflict_energy": "8630272/71744535",
+      "conflict_residuals": {
+        "difference": "896/2187",
+        "sum": "0",
+        "x_anchor": "448/2187"
+      },
+      "iteration": 6,
+      "phase_index": 6,
+      "state": {
+        "x": "3083/4374",
+        "y": "1291/4374"
+      },
+      "temperature_orthogonality": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "trace_root": "f68888adb7ce736b26897a33969f0e29ecfad9bbf0078f6793ebc2dde0abae4f"
+    },
+    {
+      "admission": "MONOTONIC_ENERGY_MINIMUM",
+      "branch_constraints": [
+        "difference",
+        "x_anchor",
+        "sum",
+        "difference"
+      ],
+      "conflict_energy": "34521088/645700815",
+      "conflict_residuals": {
+        "difference": "1792/6561",
+        "sum": "0",
+        "x_anchor": "896/6561"
+      },
+      "iteration": 7,
+      "phase_index": 7,
+      "state": {
+        "x": "8353/13122",
+        "y": "4769/13122"
+      },
+      "temperature_orthogonality": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "trace_root": "4e7e60c851f8bcdd69a1bf247997fb21d2cef54564df28cf6a98ba76499fbc47"
+    }
+  ]
+}

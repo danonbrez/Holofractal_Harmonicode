@@ -1,0 +1,149 @@
+{
+  "schema": "HHS_PASS107_WITNESSED_DEPENDENCY_REPAIR_CLOSURE_V1",
+  "pass_id": "PASS_107",
+  "background_scan": {
+    "schema": "HHS_PASS107_BACKGROUND_DEPENDENCY_SCAN_V1",
+    "records": [
+      {
+        "path": "/tmp/hhs-pass107-6h1xi9w6/dependency_binding.json",
+        "status": "BROKEN_DEPENDENCY_OBSERVED",
+        "failure": "REJECT_CLAIM_WITHOUT_IMPLEMENTATION: missing callable hhs_runtime.hhs_pass105_6_real_c_asm_backend_closure_v1.missing_backend_entrypoint"
+      }
+    ],
+    "broken_count": 1,
+    "mutation_performed": false,
+    "scan_root_hash72": "0000000000000000000000000000003)lt7ue72Kox2a*U6nK+3Ql3yk7th>MQDoURV*aecq"
+  },
+  "observed_failure": {
+    "schema": "HHS_OBSERVED_DEPENDENCY_FAILURE_V1",
+    "capability_id": "hhs:pass105_6:real_c_asm_backend",
+    "binding_path": "/tmp/hhs-pass107-6h1xi9w6/dependency_binding.json",
+    "observed_entrypoint": "hhs_runtime.hhs_pass105_6_real_c_asm_backend_closure_v1.missing_backend_entrypoint",
+    "expected_entrypoint": "hhs_runtime.hhs_pass105_6_real_c_asm_backend_closure_v1.pass105_6_self_test",
+    "failure_code": "REJECT_CLAIM_WITHOUT_IMPLEMENTATION",
+    "failure_message": "REJECT_CLAIM_WITHOUT_IMPLEMENTATION: missing callable hhs_runtime.hhs_pass105_6_real_c_asm_backend_closure_v1.missing_backend_entrypoint",
+    "binding_snapshot_root_hash72": "0000000000000000000000000000002WN(+m^z9DSPfnCxF*O*79yn49VtBcI8h9IJ12!B9F",
+    "status": "FAILURE_OBSERVED",
+    "failure_receipt_root_hash72": "0000000000000000000000000000002KnoyncuDpkYh(yD9XGrBBH5QK7TxF6xlNmoZ9N^w8"
+  },
+  "root_cause": {
+    "schema": "HHS_DEPENDENCY_ROOT_CAUSE_RECEIPT_V1",
+    "failure_receipt_root_hash72": "0000000000000000000000000000002KnoyncuDpkYh(yD9XGrBBH5QK7TxF6xlNmoZ9N^w8",
+    "ordered_dependency_path": [
+      {
+        "source": "0000000000000000000000000000002KnoyncuDpkYh(yD9XGrBBH5QK7TxF6xlNmoZ9N^w8",
+        "relation": "FAILED_THROUGH",
+        "target": "0000000000000000000000000000001YY1ZwbKfzj1wr/S+A(oMcuQQ2Y57r=QX4QRxoAGgF"
+      },
+      {
+        "source": "0000000000000000000000000000001YY1ZwbKfzj1wr/S+A(oMcuQQ2Y57r=QX4QRxoAGgF",
+        "relation": "SHOULD_BIND",
+        "target": "0000000000000000000000000000000+S-?Obrzd6GkeW9Ah4TEes>(n*4Gu40+cX3yhSr*G"
+      },
+      {
+        "source": "0000000000000000000000000000000+S-?Obrzd6GkeW9Ah4TEes>(n*4Gu40+cX3yhSr*G",
+        "relation": "IMPLEMENTED_BY",
+        "target": "0000000000000000000000000000004DrIaH=^-P^KK-w?Q7SFoYhL(M>9g0R*e0jm/(05dP"
+      }
+    ],
+    "root_cause_class": "BROKEN_DEPENDENCY_BINDING",
+    "root_cause_root_hash72": "0000000000000000000000000000001X+wFRPnl-R->/(a0DM2^pbxd!j*^bhYPY5YijkX+8",
+    "affected_capability_roots": [
+      "0000000000000000000000000000000+S-?Obrzd6GkeW9Ah4TEes>(n*4Gu40+cX3yhSr*G"
+    ],
+    "localization_confidence": "PROVEN_BY_BINDING_CONTRACT_MISMATCH",
+    "status": "ROOT_CAUSE_LOCALIZED",
+    "localization_receipt_root_hash72": "0000000000000000000000000000003MnKmK!0p3pq!/tUhkRGtIcgls>FoH^2Yzw3D+og?M"
+  },
+  "repair_obligation": {
+    "schema": "HHS_CAPABILITY_REPAIR_OBLIGATION_V1",
+    "capability_id": "hhs:pass105_6:real_c_asm_backend",
+    "claimed_behavior_root_hash72": "0000000000000000000000000000001ZxrEwTs1IHXC!JK^WF*rpo?i9*z7!k5?v?aaCC)?i",
+    "observed_defect_root_hash72": "0000000000000000000000000000001X+wFRPnl-R->/(a0DM2^pbxd!j*^bhYPY5YijkX+8",
+    "required_disposition": "REPAIR_OR_PROVEN_SUPERSESSION",
+    "repair_status": "REPAIRED_AND_PRODUCTION_VALIDATED",
+    "replacement_capability_root_hash72": null,
+    "production_test_receipt_root_hash72": "0000000000000000000000000000001q1dCaxdW1!imFh?RW=ACoZT-5jOS-+gfg!Mj0e-NL",
+    "closure_receipt_root_hash72": "0000000000000000000000000000001A/iyCeev)QMn0QwKcuhx>!gv9Cad21gSZVLxaS58Q",
+    "repair_obligation_root_hash72": "0000000000000000000000000000003HfqbWT0Qf^E9uoQ^9Ve=dvVs(qfxABN>8R+PW70qc"
+  },
+  "repair_proposal": {
+    "schema": "HHS_WITNESSED_REPAIR_PROPOSAL_V1",
+    "repair_obligation_root_hash72": "0000000000000000000000000000003HfqbWT0Qf^E9uoQ^9Ve=dvVs(qfxABN>8R+PW70qc",
+    "root_cause_root_hash72": "0000000000000000000000000000001X+wFRPnl-R->/(a0DM2^pbxd!j*^bhYPY5YijkX+8",
+    "repair_class": "RECONNECT_EXISTING_ADMITTED_DEPENDENCY",
+    "target_path": "/tmp/hhs-pass107-6h1xi9w6/dependency_binding.json",
+    "proposed_binding": {
+      "schema": "HHS_RUNTIME_DEPENDENCY_BINDING_V1",
+      "capability_id": "hhs:pass105_6:real_c_asm_backend",
+      "module": "hhs_runtime.hhs_pass105_6_real_c_asm_backend_closure_v1",
+      "function": "pass105_6_self_test"
+    },
+    "reused_capability_roots": [
+      "0000000000000000000000000000000+S-?Obrzd6GkeW9Ah4TEes>(n*4Gu40+cX3yhSr*G"
+    ],
+    "new_implementation_required": false,
+    "rollback_required": true,
+    "status": "REPAIR_PROPOSED",
+    "repair_proposal_root_hash72": "0000000000000000000000000000000Qzx2GUDP?B-xcn*KKlfbt5e*8Rwoudk?(2TDiTk!2"
+  },
+  "failed_repair_rollback": {
+    "schema": "HHS_FAILED_REPAIR_ROLLBACK_V1",
+    "mutation_receipt_root_hash72": "0000000000000000000000000000002)-(t-ktpBOnrMRi+D*EzrfNdB7xK29>XHSiOa+54J",
+    "failure": "REJECT_CLAIM_WITHOUT_IMPLEMENTATION: missing callable hhs_runtime.hhs_pass105_6_real_c_asm_backend_closure_v1.still_missing_backend_entrypoint",
+    "restored_root_hash72": "0000000000000000000000000000002mD!-l4p>vvsfq4TJJVQ9L3ZPSEE6k3mf0x0p*=XGF",
+    "repair_status": "ROLLED_BACK",
+    "obligation_remains_open": true,
+    "rollback_receipt_root_hash72": "00000000000000000000000000000028zbH^9ycd+eZ+VnoNyS*n5>emzZweSc>IP-DqInWx"
+  },
+  "repair_mutation": {
+    "schema": "HHS_WITNESSED_REPAIR_MUTATION_V1",
+    "repair_proposal_root_hash72": "0000000000000000000000000000000Qzx2GUDP?B-xcn*KKlfbt5e*8Rwoudk?(2TDiTk!2",
+    "repair_lease_root_hash72": "0000000000000000000000000000002S*0*nuiD^k^spbNg8ocK/Ai072SgxP4tY^Wsz(RlF",
+    "target_path": "/tmp/hhs-pass107-6h1xi9w6/dependency_binding.json",
+    "target_root_before_hash72": "0000000000000000000000000000001Xi8/Xgh9k9G7ZOQ5v*lq7RuOEZ9joCvNNtRr)wch>",
+    "mutation_operation": "REPLACE_DEPENDENCY_BINDING",
+    "target_root_after_hash72": "0000000000000000000000000000003VAdKLDDY5O8YW?g5x(48^bu-gL=3H5ITA*LQzKTpR",
+    "rollback_snapshot": {
+      "capability_id": "hhs:pass105_6:real_c_asm_backend",
+      "function": "missing_backend_entrypoint",
+      "module": "hhs_runtime.hhs_pass105_6_real_c_asm_backend_closure_v1",
+      "schema": "HHS_RUNTIME_DEPENDENCY_BINDING_V1"
+    },
+    "status": "REPAIR_EXECUTED_PENDING_VALIDATION",
+    "mutation_receipt_root_hash72": "00000000000000000000000000000044l-oO4FO3/2bU/0s3SoaAyPyLQ!)S+pFTmLx-C-WU"
+  },
+  "repair_closure": {
+    "schema": "HHS_WITNESSED_REPAIR_CLOSURE_V1",
+    "repair_obligation_root_hash72": "0000000000000000000000000000003HfqbWT0Qf^E9uoQ^9Ve=dvVs(qfxABN>8R+PW70qc",
+    "root_cause_receipt_root_hash72": "0000000000000000000000000000003MnKmK!0p3pq!/tUhkRGtIcgls>FoH^2Yzw3D+og?M",
+    "mutation_receipt_roots": [
+      "00000000000000000000000000000044l-oO4FO3/2bU/0s3SoaAyPyLQ!)S+pFTmLx-C-WU"
+    ],
+    "original_failure_replay_root_hash72": "0000000000000000000000000000002KnoyncuDpkYh(yD9XGrBBH5QK7TxF6xlNmoZ9N^w8",
+    "repaired_execution_receipt_root_hash72": "0000000000000000000000000000001q1dCaxdW1!imFh?RW=ACoZT-5jOS-+gfg!Mj0e-NL",
+    "negative_attack_receipt_roots": [
+      "0000000000000000000000000000001giGy=t//X=ofnP-Zs1C-vrZrIfYR!EWZjUCAKY1e(",
+      "0000000000000000000000000000004rnYnEZeM(FFNsSu/lu/WVi)Eapp!p=U2=G7wajp/>"
+    ],
+    "new_capability_admission_root_hash72": "0000000000000000000000000000002QVG=XG6(-DT1y4r)I(lQbNUuWXt14LFbh6r(sQ=I8",
+    "invocation_admission_root_hash72": "00000000000000000000000000000032/LqNl74Qmq5/==M3B5xayYH)GF/LbonIywONr7hX",
+    "repair_status": "REPAIRED_AND_PRODUCTION_VALIDATED",
+    "parallel_repair_implementation_used": false,
+    "mock_components": [],
+    "repair_closure_root_hash72": "0000000000000000000000000000001A/iyCeev)QMn0QwKcuhx>!gv9Cad21gSZVLxaS58Q"
+  },
+  "repaired_binding": {
+    "capability_id": "hhs:pass105_6:real_c_asm_backend",
+    "function": "pass105_6_self_test",
+    "module": "hhs_runtime.hhs_pass105_6_real_c_asm_backend_closure_v1",
+    "schema": "HHS_RUNTIME_DEPENDENCY_BINDING_V1"
+  },
+  "agent_final_state": "REPAIRED",
+  "real_production_workload_executed": true,
+  "new_capability_admission_created": true,
+  "parallel_repair_implementation_used": false,
+  "mock_components": [],
+  "status": "PASS",
+  "closure_root_hash72": "0000000000000000000000000000003Y7N7fv9GfArLT*l^4vQTk-NZJxsNC=huivP7fSeZP"
+}

@@ -1,0 +1,21 @@
+{
+  "ancestry_root": "HHS-P150",
+  "archive_name": "hhs_pass_152_universal_elastic_closure_invariant_full_inherited_pass_history_nucleus.zip",
+  "backward_compatibility_validation": true,
+  "canonical_invariant": "DELAY_AUTHORITY_NOT_COMPUTATION",
+  "complete_parent_files_preserved": true,
+  "contract_id": "HHS-P152-UECI",
+  "deterministic_replay_validation": true,
+  "hash72_receipt_validation": true,
+  "native_c11_validation": true,
+  "negative_cases": 30,
+  "parent": "HHS-P151",
+  "pass151_terminal_status": "PASS_151_INTERNAL_LANGUAGE_PROCESSING_LAYERS_VERIFIED",
+  "pass_id": "HHS-P152",
+  "positive_cases": 30,
+  "recursive_control_invariant": "EXPLOIT_FREEDOM_RECURSIVELY_PRESERVE_INVARIANTS_ABSOLUTELY_EXTEND_HISTORY_MONOTONICALLY",
+  "release_scope": "FULL_INHERITED_HHS_PASS_HISTORY_NUCLEUS",
+  "schema": "HHS_PASS152_RELEASE_MANIFEST_V1",
+  "terminal_status": "HHS_PASS_152_UNIVERSAL_ELASTIC_CLOSURE_INVARIANT_VERIFIED",
+  "vm81_commit_validation": true
+}

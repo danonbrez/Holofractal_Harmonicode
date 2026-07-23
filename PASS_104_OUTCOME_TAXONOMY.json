@@ -1,0 +1,10 @@
+{
+  "outcomes": [
+    "STRING_BOUND",
+    "TEMPLATE_EXPANDED",
+    "PARTIAL_EXPANSION",
+    "DICTIONARY_REPLAYED",
+    "DEPENDENCY_STALE",
+    "DICTIONARY_CONFLICT"
+  ]
+}

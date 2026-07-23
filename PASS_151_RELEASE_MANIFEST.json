@@ -1,0 +1,17 @@
+{
+  "contract_id": "HHS-P151-CGILP",
+  "contract_root": "86fc541a71b4c0331b2261ed4b40fea4bb02bfa2d33e75d0c12d0393329e5582",
+  "native_validation": true,
+  "negative_cases": 35,
+  "obligation_count": 100,
+  "parent": "HHS-P150",
+  "parent_materialized": true,
+  "pass_id": "HHS-P151",
+  "positive_cases": 25,
+  "proposition_count": 186,
+  "release_scope": "FULL_INHERITED_HHS_PASS_HISTORY_NUCLEUS",
+  "replay_validation": true,
+  "restart_validation": true,
+  "schema": "HHS_PASS151_RELEASE_MANIFEST_V1",
+  "terminal_status": "PASS_151_INTERNAL_LANGUAGE_PROCESSING_LAYERS_VERIFIED"
+}

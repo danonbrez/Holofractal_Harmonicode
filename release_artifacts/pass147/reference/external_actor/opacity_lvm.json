@@ -1,0 +1,26 @@
+{
+  "capabilities": [
+    "NATIVE_RUNTIME",
+    "DATABASE_READ",
+    "DATABASE_WRITE"
+  ],
+  "components": [
+    {
+      "id": "query_script",
+      "input": "$input",
+      "script_id": "SCR-dafc6925527d80cb155e595a",
+      "type": "SCRIPT"
+    }
+  ],
+  "edges": [],
+  "failure_policy": "HALT_AND_RECEIPT",
+  "name": "Opacity Query LVM",
+  "outputs": {
+    "result": "$query_script"
+  },
+  "replay_policy": "DETERMINISTIC",
+  "resource_policy": {
+    "max_recursive_depth": 8
+  },
+  "version": 1
+}

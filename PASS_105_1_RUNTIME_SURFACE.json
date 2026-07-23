@@ -1,0 +1,31 @@
+{
+  "contract_schemas": [
+    "HHS_HARMONICODE_DICTIONARY_PARSE_RECEIPT_V1_1",
+    "HHS_HARMONICODE_DICTIONARY_ENFORCEMENT_RECEIPT_V1_1"
+  ],
+  "function": "compile_dictionary",
+  "guards": [
+    "unicode_policy",
+    "grammar_validation",
+    "semantic_enforcement",
+    "authority_gate",
+    "zero_bypass_runtime_interposer"
+  ],
+  "invariant_ids": [
+    "HHS-I001",
+    "HHS-I002",
+    "HHS-I003",
+    "HHS-I004",
+    "HHS-I008",
+    "HHS-I010",
+    "HHS-I011",
+    "HHS-I012",
+    "HHS-I019"
+  ],
+  "module": "hhs_runtime.hhs_pass105_1_dictionary_grammar_closure_v1",
+  "mutation_policy": "NO_GLOBAL_DICTIONARY_MUTATION",
+  "persistence_policy": "HASH72_PARSE_AND_ENFORCEMENT_RECEIPTS_ONLY",
+  "schema": "HHS_PASS_105_1_RUNTIME_SURFACE_V1",
+  "service_name": "harmonicode.dictionary.compile_enforce_v1",
+  "surface_root_hash72": "0000000000000000000000000000004bRevw5MkAl2i*PrW(2GdXN3tUBtMdtb7t7P-uKKv1"
+}

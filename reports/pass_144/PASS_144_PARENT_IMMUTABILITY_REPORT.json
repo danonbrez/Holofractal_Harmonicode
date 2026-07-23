@@ -1,0 +1,30 @@
+{
+  "addition_count": 20,
+  "additions": [
+    "PASS_144_RELEASE_MANIFEST.json",
+    "docs/pass_144/API_MANUAL.md",
+    "docs/pass_144/CLI_MANUAL.md",
+    "docs/pass_144/GLOSSARY.md",
+    "docs/pass_144/INVARIANT_ALGEBRA_GUIDE.md",
+    "docs/pass_144/PROOF_LEMMA_CORPUS_GUIDE.md",
+    "docs/pass_144/README.md",
+    "docs/pass_144/RECEIPTS_AND_AUTHORITY.md",
+    "docs/pass_144/USER_GUIDE.md",
+    "formal/lemmas/pass_144/LEMMA_CORPUS.json",
+    "formal/lemmas/pass_144/LEMMA_DERIVATIONS.md",
+    "reports/pass_144/PASS_143_PARENT_IMMUTABILITY_BASELINE.json",
+    "reports/pass_144/PASS_144_PARENT_IMMUTABILITY_REPORT.json",
+    "reports/pass_144/PASS_144_TEST_REPORT.json",
+    "tests/test_pass144_documentation_immutability.py",
+    "tools/verify_pass144_parent_immutability.py",
+    "whitepapers/pass_144/01_INVARIANT_ALGEBRA_AS_VIRTUAL_HARDWARE.md",
+    "whitepapers/pass_144/02_SYMBOLIC_LOGIC_EVOLUTIONARY_REPOSITORY.md",
+    "whitepapers/pass_144/03_PERIODIC_WAVE_MECHANICS_AND_COHERENCE.md",
+    "whitepapers/pass_144/04_ENTROPY_NEUTRAL_INFORMATION_TRANSFORMATION.md"
+  ],
+  "errors": [],
+  "inherited_file_count": 2931,
+  "parent_pass": 143,
+  "schema": "HHS_PASS_144_PARENT_IMMUTABILITY_REPORT_V1",
+  "status": "VERIFIED_IMMUTABLE"
+}

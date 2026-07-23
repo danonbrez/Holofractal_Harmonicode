@@ -2,14 +2,13 @@
 Core Sandbox General Runtime Layer V1
 =====================================
 
-Standalone canonical implementation for the post-quantum secure development
-sandbox.  Root-level modules are compatibility shims only.
+Canonical implementation for the post-quantum secure development sandbox.
+Root-level modules are compatibility shims only.
 
-This implementation is dependency-light and fails closed: every operation emits
-Hash72-native receipts, verifies parent continuity, and quarantines invalid
-operations.  When an external locked kernel is present, it can still be supplied
-by path; when not present, this sandbox uses its internal Hash72 receipt authority
-so development can proceed without root-level indirection.
+This layer fails closed and has no substitute receipt authority. Every operation
+must load the authoritative HHS kernel, use its Hash72 implementation, preserve
+parent continuity, and quarantine invalid operations. Kernel unavailability is a
+runtime load failure, never permission to fabricate a local authority.
 """
 
 from __future__ import annotations
@@ -28,7 +27,6 @@ def _repo_root() -> Path:
 
 DEFAULT_KERNEL_PATH = _repo_root() / "HARMONICODE_KERNEL_v44_2_lockcore_patched_selfsolving_hash72authority_locked-7.py"
 GENESIS_RECEIPT_HASH72 = "H72N-GENESIS"
-HASH72_ALPHABET = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-+*/()^√=≠"
 
 
 class HHSRuntimeLoadError(RuntimeError):
@@ -61,47 +59,44 @@ def canonical_json(obj: Any) -> str:
     return json.dumps(canonicalize_for_hash72(obj), sort_keys=True, separators=(",", ":"), ensure_ascii=False)
 
 
-def _base72(value: int, width: int = 18) -> str:
-    if value < 0:
-        value = -value
-    chars: List[str] = []
-    if value == 0:
-        chars.append(HASH72_ALPHABET[0])
-    while value:
-        value, r = divmod(value, 72)
-        chars.append(HASH72_ALPHABET[r])
-    encoded = "".join(reversed(chars))
-    return (HASH72_ALPHABET[0] * max(0, width - len(encoded)) + encoded)[-width:]
-
-
-def security_hash72_v44(payload: Any, *, domain: str = "HHS") -> str:
-    text = domain + "|" + canonical_json(payload)
-    state = 179971
-    modulus = 72 ** 18
-    for ch in text:
-        state = (state * 179971 + ord(ch) + 1) % modulus
-        state ^= (state << 7) % modulus
-        state %= modulus
-    return "H72N-" + _base72(state, 18)
 
 
 def load_authoritative_kernel(kernel_path: str | Path = DEFAULT_KERNEL_PATH):
-    # Standalone sandbox authority. External kernel loading is intentionally not
-    # required for package import; callers can still inspect DEFAULT_KERNEL_PATH.
-    return None
+    """Load and verify the actual authoritative kernel or fail closed."""
+    requested = Path(kernel_path).resolve()
+    try:
+        if requested == DEFAULT_KERNEL_PATH.resolve():
+            from hhs_runtime.kernel_resolution import resolve_authoritative_kernel
+            return resolve_authoritative_kernel()
+        from hhs_runtime.kernel_resolution import import_module_from_path, verify_kernel_symbols
+        if not requested.is_file():
+            raise HHSRuntimeLoadError(f"Authoritative kernel not found: {requested}")
+        module = import_module_from_path(requested, requested.stem)
+        missing = verify_kernel_symbols(module)
+        if missing:
+            raise HHSRuntimeLoadError(f"Kernel missing authoritative symbols: {missing}")
+        return module
+    except HHSRuntimeLoadError:
+        raise
+    except Exception as exc:
+        raise HHSRuntimeLoadError(f"Unable to load authoritative kernel: {exc}") from exc
 
 
 class Hash72Authority:
-    def __init__(self, kernel_module: Any = None):
+    def __init__(self, kernel_module: Any):
+        if kernel_module is None or not callable(getattr(kernel_module, "security_hash72_v44", None)):
+            raise HHSRuntimeLoadError("Authoritative kernel Hash72 function is required")
         self.kernel = kernel_module
+        kernel_policy = getattr(kernel_module, "AUTHORITATIVE_TRUST_POLICY_V44", None)
         self.trust_policy = {
             "authoritative_integrity": "HASH72",
             "forbid_legacy_sha_for_security_or_integrity": True,
-            "authoritative_seal": "HHS_CORE_SANDBOX_HASH72_AUTHORITY_V1",
+            "authoritative_seal": "HHS_AUTHORITATIVE_KERNEL_HASH72_V44",
+            "kernel_policy": canonicalize_for_hash72(kernel_policy),
         }
 
     def commit(self, payload: Any, *, domain: str = "HHS_RUNTIME_COMMITMENT") -> str:
-        return security_hash72_v44(payload, domain=domain)
+        return self.kernel.security_hash72_v44(canonicalize_for_hash72(payload), domain=domain)
 
     def integrity_bundle(self, payload: Any, *, symbols: str = "xyzw") -> Dict[str, Any]:
         return {

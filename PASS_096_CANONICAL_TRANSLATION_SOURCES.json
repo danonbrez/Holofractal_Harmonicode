@@ -1,0 +1,163 @@
+{
+  "schema": "HHS_PASS_096_SOURCE_REGISTRY_V1",
+  "sources": [
+    {
+      "allowed_equivalences": [
+        "REGISTER_REPHRASING",
+        "DECLARED_METAPHOR_MAP"
+      ],
+      "authority_scope": "CANONICAL_SOURCE_ONLY",
+      "forbidden_mutations": [
+        "QUANTITY",
+        "ORDER",
+        "SCOPE",
+        "EPISTEMIC_STATUS",
+        "PROVENANCE"
+      ],
+      "invariant_fields": {
+        "ambiguities": [],
+        "causal_direction": "CONSTRAINT_NOT_CAUSE",
+        "entities": [
+          "lane_a",
+          "lane_b"
+        ],
+        "operator_order": [
+          "ROTATE_A",
+          "ROTATE_B"
+        ],
+        "quantities": [
+          "9/8",
+          "8/9",
+          "36 mod 72"
+        ],
+        "relations": [
+          "RECIPROCAL",
+          "OPPOSITE_PHASE"
+        ]
+      },
+      "name": "RECIPROCAL_PHASE_GEAR",
+      "schema": "HHS_CANONICAL_TRANSLATION_SOURCE_V1",
+      "source_commitment_root_hash72": "0000000000000000000000000000001bv/MdpBSyOm6RS7W-UgbxEKtpmwrSLRQqLhJDuv/m",
+      "source_id": "S96-01",
+      "source_modality": "FORMAL_HARMONICODE",
+      "source_root_hash72": "0000000000000000000000000000000k8xp9/5J7tLG+juP33OBxG5mRflRAZP)6Nf-G2pNw"
+    },
+    {
+      "allowed_equivalences": [
+        "REGISTER_REPHRASING",
+        "DECLARED_METAPHOR_MAP"
+      ],
+      "authority_scope": "CANONICAL_SOURCE_ONLY",
+      "forbidden_mutations": [
+        "QUANTITY",
+        "ORDER",
+        "SCOPE",
+        "EPISTEMIC_STATUS",
+        "PROVENANCE"
+      ],
+      "invariant_fields": {
+        "ambiguities": [],
+        "causal_direction": "FORWARD_EXECUTION",
+        "entities": [
+          "A",
+          "B"
+        ],
+        "operator_order": [
+          "A",
+          "B"
+        ],
+        "quantities": [],
+        "relations": [
+          "ORDERED_COMPOSITION"
+        ]
+      },
+      "name": "NONCOMMUTATIVE_HISTORY",
+      "schema": "HHS_CANONICAL_TRANSLATION_SOURCE_V1",
+      "source_commitment_root_hash72": "0000000000000000000000000000002MyIrWZa7t^Kuxj2=oYh6rFsrAZ8RubPESLmeTl-1>",
+      "source_id": "S96-02",
+      "source_modality": "FORMAL_HARMONICODE",
+      "source_root_hash72": "0000000000000000000000000000002f6gQk0u?5YQ6rmQI5R=C9SgsIOzdHSHltyop6!!Lt"
+    },
+    {
+      "allowed_equivalences": [
+        "REGISTER_REPHRASING",
+        "DECLARED_METAPHOR_MAP"
+      ],
+      "authority_scope": "CANONICAL_SOURCE_ONLY",
+      "forbidden_mutations": [
+        "QUANTITY",
+        "ORDER",
+        "SCOPE",
+        "EPISTEMIC_STATUS",
+        "PROVENANCE"
+      ],
+      "invariant_fields": {
+        "ambiguities": [
+          "B_HAS_MULTIPLE_CANDIDATE_ANTECEDENTS"
+        ],
+        "causal_direction": "FORWARD_ONLY",
+        "entities": [
+          "A",
+          "B"
+        ],
+        "operator_order": [
+          "A",
+          "B"
+        ],
+        "quantities": [],
+        "relations": [
+          "A_IMPLIES_B"
+        ]
+      },
+      "name": "AMBIGUOUS_CAUSAL_SOURCE",
+      "schema": "HHS_CANONICAL_TRANSLATION_SOURCE_V1",
+      "source_commitment_root_hash72": "0000000000000000000000000000001=h=b3+f)+yiM)xUrIFHu76(i9ZjtvrlfG1Dooo0PP",
+      "source_id": "S96-03",
+      "source_modality": "FORMAL_HARMONICODE",
+      "source_root_hash72": "0000000000000000000000000000002Tkr9qfE7Q/A?K+i?F1aET38*gWU8PPU-p8-xdHeyM"
+    },
+    {
+      "allowed_equivalences": [
+        "REGISTER_REPHRASING",
+        "DECLARED_METAPHOR_MAP"
+      ],
+      "authority_scope": "CANONICAL_SOURCE_ONLY",
+      "forbidden_mutations": [
+        "QUANTITY",
+        "ORDER",
+        "SCOPE",
+        "EPISTEMIC_STATUS",
+        "PROVENANCE"
+      ],
+      "invariant_fields": {
+        "ambiguities": [],
+        "causal_direction": "NONE",
+        "entities": [
+          "64",
+          "72",
+          "81"
+        ],
+        "operator_order": [
+          "64",
+          "72",
+          "81"
+        ],
+        "quantities": [
+          "64",
+          "72",
+          "81",
+          "72^2=64*81"
+        ],
+        "relations": [
+          "GEOMETRIC_PROPORTION"
+        ]
+      },
+      "name": "GOLDEN_TRIPLET",
+      "schema": "HHS_CANONICAL_TRANSLATION_SOURCE_V1",
+      "source_commitment_root_hash72": "0000000000000000000000000000001G6s>MkL68GWdKod7Z0lK)TQ5DnKE^SV*!/XpFgX*f",
+      "source_id": "S96-04",
+      "source_modality": "FORMAL_HARMONICODE",
+      "source_root_hash72": "0000000000000000000000000000000)h(VxxFH=6/JHQ(6^uwcC5O-7VVCNkapH^EcidFyD"
+    }
+  ]
+}

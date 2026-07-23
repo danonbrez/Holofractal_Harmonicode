@@ -1,0 +1,46 @@
+{
+  "schema": "HHS_PASS_102_RELEASE_MANIFEST_V1",
+  "pass_id": "PASS_102",
+  "parent_pass101_release_root_hash72": "0000000000000000000000000000000DUMIwNl0C8ovL2XXCf-eKbOa0Vi7Y1NfI/E-FVkEA",
+  "physical_cell_count": 289,
+  "mapped_lane_step_count": 288,
+  "center_zero_hub_unique": true,
+  "ring_cell_counts": [
+    8,
+    16,
+    24,
+    32,
+    40,
+    48,
+    56,
+    64
+  ],
+  "lane_cells_per_ring": [
+    2,
+    4,
+    6,
+    8,
+    10,
+    12,
+    14,
+    16
+  ],
+  "mapping_completeness": 1.0,
+  "tensor_utilization": 1.0,
+  "cell_reconstruction_coverage": 1.0,
+  "all_magic_closures_verified": true,
+  "correction_replay_exact": true,
+  "all_negative_cases_passed": true,
+  "artifacts": [
+    "PASS_102_17X17_TENSOR.json",
+    "PASS_102_289_CELL_INDEX.json",
+    "PASS_102_SINGLE_CELL_SYNDROME.json",
+    "PASS_102_CORRECTION_RECEIPT.json",
+    "PASS_102_WORKLOAD_REGISTRY.json",
+    "PASS_102_NEGATIVE_CASES.json",
+    "PASS_102_OUTCOME_TAXONOMY.json",
+    "PASS_102_CALIBRATION_REPORT.md",
+    "CHANGELOG_PASS_102.md"
+  ],
+  "pass102_release_root_hash72": "0000000000000000000000000000001h9iwsap8?N9=1CosNmecVk8NUhGSjrMs53(TA=2qH"
+}

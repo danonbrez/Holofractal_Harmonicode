@@ -1,0 +1,207 @@
+{
+  "schema": "HHS_PASS_094_SURVIVAL_RECEIPTS_V1",
+  "receipts": [
+    {
+      "ambiguous_fields": [],
+      "changed_but_equivalent_fields": [],
+      "exact_survival": true,
+      "final_invariant_root_hash72": "00000000000000000000000000000014dF!bI*ZDr8jzI0F*e0pgoSdRc*JtwUVXMD9w4^Bi",
+      "final_status": "EXACT_SURVIVAL",
+      "lost_fields": [],
+      "preserved_fields": [
+        "ordered_values",
+        "reduced_ratio",
+        "orientation"
+      ],
+      "receipt_root_hash72": "0000000000000000000000000000001>=F6-3/=kRtwMSofxvI9wmEIWuj8uTIsDxwImx9JZ",
+      "reconstructed_fields": [
+        "ordered_values",
+        "orientation",
+        "reduced_ratio"
+      ],
+      "schema": "HHS_MULTIMODAL_INVARIANT_SURVIVAL_RECEIPT_V1",
+      "source_invariant_root_hash72": "00000000000000000000000000000014dF!bI*ZDr8jzI0F*e0pgoSdRc*JtwUVXMD9w4^Bi",
+      "step_receipt_roots": [
+        "00000000000000000000000000000030Z7xV5>BekXuT^dr^Blp(w!ufbp6JsS4WB?u(CL+1",
+        "0000000000000000000000000000001S/^/DEaR^w3E=GUU1EdHUzJV8rXW9b5raVgz4e>mI"
+      ],
+      "translation_path": [
+        "FORMAL_SYMBOLIC",
+        "GRAPH",
+        "FORMAL_SYMBOLIC"
+      ]
+    },
+    {
+      "ambiguous_fields": [],
+      "changed_but_equivalent_fields": [],
+      "exact_survival": true,
+      "final_invariant_root_hash72": "0000000000000000000000000000001t(umqwMKDJUxPgmAzQWg77+H^2Gupde4UEN5UyfN9",
+      "final_status": "EXACT_SURVIVAL",
+      "lost_fields": [],
+      "preserved_fields": [
+        "ordered_values",
+        "reduced_ratios",
+        "product_closure",
+        "orientation"
+      ],
+      "receipt_root_hash72": "0000000000000000000000000000003LybYj^vH1x3UT/)PJ//nP8WoxLSoRo6pGIB?>Oez*",
+      "reconstructed_fields": [
+        "ordered_values",
+        "orientation",
+        "product_closure",
+        "reduced_ratios"
+      ],
+      "schema": "HHS_MULTIMODAL_INVARIANT_SURVIVAL_RECEIPT_V1",
+      "source_invariant_root_hash72": "0000000000000000000000000000001t(umqwMKDJUxPgmAzQWg77+H^2Gupde4UEN5UyfN9",
+      "step_receipt_roots": [
+        "0000000000000000000000000000002Ie6DuZ6a3TKYT+iATN2gYeiyhYnfo>E=9x(Atfm-5",
+        "0000000000000000000000000000004ERcN?3r+D9njG)(nDQ)Di?^9oT)sYpiD*)6f5MAGD",
+        "00000000000000000000000000000014ML))FAelMrY^e)QZgPf>G7Hlqj-HAjSQ>6RGNxNO"
+      ],
+      "translation_path": [
+        "FORMAL_SYMBOLIC",
+        "GEOMETRIC_DIAGRAM",
+        "AUDIO_TONE_SEQUENCE",
+        "FORMAL_SYMBOLIC"
+      ]
+    },
+    {
+      "ambiguous_fields": [],
+      "changed_but_equivalent_fields": [],
+      "exact_survival": true,
+      "final_invariant_root_hash72": "0000000000000000000000000000003?+j)o9!xNJfuKGDjgLJnhIuegVM9U1>^2VktZ924Z",
+      "final_status": "EXACT_SURVIVAL",
+      "lost_fields": [],
+      "preserved_fields": [
+        "ordered_ratios",
+        "product",
+        "orientation"
+      ],
+      "receipt_root_hash72": "0000000000000000000000000000002DB72RenJMPb9u2jWiqPQ01DdWj4=kNErZMKRq!MxJ",
+      "reconstructed_fields": [
+        "ordered_ratios",
+        "orientation",
+        "product"
+      ],
+      "schema": "HHS_MULTIMODAL_INVARIANT_SURVIVAL_RECEIPT_V1",
+      "source_invariant_root_hash72": "0000000000000000000000000000003?+j)o9!xNJfuKGDjgLJnhIuegVM9U1>^2VktZ924Z",
+      "step_receipt_roots": [
+        "0000000000000000000000000000000D>SCOMr/aub3?Wk5p9UL*^=-vnxXQ1K>4h1Bl6fR+",
+        "0000000000000000000000000000001JuGpQ9?v4uK/u6rBzwGcPfQpW-FSQoL5TXnR0tf*F",
+        "0000000000000000000000000000000CE)>v4(Z3JWXvcbZN6/GZiMTSr+5B9JfcW0t?QOc*",
+        "0000000000000000000000000000003KueJr3FSgT?JsX>qHhvwZonMm4WpKi?dCqCd*iFVw",
+        "0000000000000000000000000000003YMJ3^vvNu4/4(cszL4SXlS(m1dkf?KfWo9F4gONh7",
+        "0000000000000000000000000000002PGHvW=nL0B?3GX9WH(ZsaczN4+BtFt!(LD2BT+4J8"
+      ],
+      "translation_path": [
+        "NATURAL_LANGUAGE",
+        "HARMONICODE_SOURCE",
+        "TYPED_IR",
+        "EXECUTABLE_IR",
+        "VM81_CELL_FIELD",
+        "RECEIPT_GRAPH",
+        "FORMAL_SYMBOLIC"
+      ]
+    },
+    {
+      "ambiguous_fields": [],
+      "changed_but_equivalent_fields": [],
+      "exact_survival": true,
+      "final_invariant_root_hash72": "000000000000000000000000000000273SnNDFb-dwNG+*Q-6OS+Gi944>C7U1qVRRGP7+h*",
+      "final_status": "EXACT_SURVIVAL",
+      "lost_fields": [],
+      "preserved_fields": [
+        "ordered_values",
+        "squared_sum",
+        "topology"
+      ],
+      "receipt_root_hash72": "0000000000000000000000000000002*q?pQW6n0c5PeH6=-pbnYXVL3w(PggR393CsVZDPl",
+      "reconstructed_fields": [
+        "ordered_values",
+        "squared_sum",
+        "topology"
+      ],
+      "schema": "HHS_MULTIMODAL_INVARIANT_SURVIVAL_RECEIPT_V1",
+      "source_invariant_root_hash72": "000000000000000000000000000000273SnNDFb-dwNG+*Q-6OS+Gi944>C7U1qVRRGP7+h*",
+      "step_receipt_roots": [
+        "0000000000000000000000000000003t)k2hOOF-OYM+)4o-^Pt3GA^QO/aaRwW!OJ=XD6r(",
+        "0000000000000000000000000000001izw?GshNDJv)mBTc^O7FE8YH5u8Lk5k4fYfV4801g",
+        "00000000000000000000000000000039NDVnSQ0I/X2g>-d9dSJPwRp6WZy26=Zwc1Gfh!np",
+        "0000000000000000000000000000001X2u4aVEnOal0Z2l^7ArW*nzjqDXySpPqi8ks?3qq(",
+        "0000000000000000000000000000002)td7e+=a8^u!vDZSzZg3+krWN=Ur(2!Je3?+jj6z8",
+        "0000000000000000000000000000002kCmU9!gCIx-X?Lqe99SGaZ4cS90!ntvBSCslrvV2p"
+      ],
+      "translation_path": [
+        "FORMAL_SYMBOLIC",
+        "BINARY_PACKET",
+        "GRAPH",
+        "RASTER_IMAGE",
+        "AUDIO_TONE_SEQUENCE",
+        "NATURAL_LANGUAGE",
+        "FORMAL_SYMBOLIC"
+      ]
+    },
+    {
+      "ambiguous_fields": [],
+      "changed_but_equivalent_fields": [],
+      "exact_survival": true,
+      "final_invariant_root_hash72": "0000000000000000000000000000000XL8vXiA4R(!t>SUM=?g3AYneiw>I*77VIYX5-e78O",
+      "final_status": "EXACT_SURVIVAL",
+      "lost_fields": [],
+      "preserved_fields": [
+        "modulus",
+        "phase_difference",
+        "orientation"
+      ],
+      "receipt_root_hash72": "00000000000000000000000000000030rwtFEiVmGUD2Hm6zUkG=qnzE-tjg2SJvxws>zOIy",
+      "reconstructed_fields": [
+        "modulus",
+        "orientation",
+        "phase_difference"
+      ],
+      "schema": "HHS_MULTIMODAL_INVARIANT_SURVIVAL_RECEIPT_V1",
+      "source_invariant_root_hash72": "0000000000000000000000000000000XL8vXiA4R(!t>SUM=?g3AYneiw>I*77VIYX5-e78O",
+      "step_receipt_roots": [
+        "0000000000000000000000000000003a48UGjLIGPEALVZ2Z5wLLi*JON3H86Ks)>yMh7E3l",
+        "0000000000000000000000000000003uOBHC!^8AfsAZwbGUAD9-MPDdSs5tZHoo7-fkt(0e"
+      ],
+      "translation_path": [
+        "FORMAL_SYMBOLIC",
+        "GRAPH",
+        "FORMAL_SYMBOLIC"
+      ]
+    },
+    {
+      "ambiguous_fields": [],
+      "changed_but_equivalent_fields": [],
+      "exact_survival": true,
+      "final_invariant_root_hash72": "0000000000000000000000000000003+^G5sN+1jxewbUF7Mcjjt7^NP-8joE(CjN9wYxfZ2",
+      "final_status": "EXACT_SURVIVAL",
+      "lost_fields": [],
+      "preserved_fields": [
+        "operator_word",
+        "equal",
+        "history_required"
+      ],
+      "receipt_root_hash72": "0000000000000000000000000000000p?-UggGwUeO?bO6>cenJlzJMljm/Zla?BrsZ6c0*W",
+      "reconstructed_fields": [
+        "equal",
+        "history_required",
+        "operator_word"
+      ],
+      "schema": "HHS_MULTIMODAL_INVARIANT_SURVIVAL_RECEIPT_V1",
+      "source_invariant_root_hash72": "0000000000000000000000000000003+^G5sN+1jxewbUF7Mcjjt7^NP-8joE(CjN9wYxfZ2",
+      "step_receipt_roots": [
+        "0000000000000000000000000000003(-B/GmXmDFpRKA36yCbRxJER2JS>SfrVQy?h*6Cys",
+        "00000000000000000000000000000018s2PlSqdDm3pAOnWM9rDneKEWQLR!o-(!TamDfCeB",
+        "0000000000000000000000000000004m/WgfFzVkhMu6CmevJ286()ew81?Rf^8^RmFn9yRD"
+      ],
+      "translation_path": [
+        "FORMAL_SYMBOLIC",
+        "GEOMETRIC_DIAGRAM",
+        "AUDIO_TONE_SEQUENCE",
+        "FORMAL_SYMBOLIC"
+      ]
+    }
+  ]
+}

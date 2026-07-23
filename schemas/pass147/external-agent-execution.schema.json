@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "hhs://schemas/pass147/external-agent-execution",
+  "type": "object",
+  "required": ["operation", "construction", "execution", "privileged_internal_access", "public_primitives_only"],
+  "properties": {
+    "operation": {"type": "string"},
+    "construction": {"type": "object"},
+    "execution": {"type": "object"},
+    "privileged_internal_access": {"const": 0},
+    "public_primitives_only": {"const": true}
+  },
+  "additionalProperties": true
+}

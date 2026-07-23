@@ -1,0 +1,18 @@
+{
+  "closure_root_hash72": "0000000000000000000000000000000sfZM2yF^x?Tz1zxkq)qO/rcdy9CVOPrQk3=8Ui)iz",
+  "files": [
+    "hhs_runtime/hhs_ir_transpiler_v1.py",
+    "hhs_runtime/hhs_pass105_6_real_c_asm_backend_closure_v1.py",
+    "tests/test_hhs_pass105_6_real_c_asm_backend_closure_v1.py",
+    "PASS_105_6_REAL_C_ASM_BACKEND_CLOSURE.json"
+  ],
+  "manifest_sha256": "ef2306814b08f407be75ea40633e3a95830ad4195119b42ad79a028d320811ca",
+  "parent_archive": "hhs_pass_105_5_machine_readable_conformance_reconstruction.zip",
+  "parent_pass": "PASS_105_5",
+  "pass_id": "PASS_105_6",
+  "real_compilation_executed": true,
+  "real_generated_binaries_executed": true,
+  "repair_issue": "HHS-AUDIT-008",
+  "schema": "HHS_PASS_105_6_RELEASE_MANIFEST_V1",
+  "status": "PASS"
+}

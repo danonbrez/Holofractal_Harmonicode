@@ -1,0 +1,65 @@
+{
+  "schema": "HHS_PASS_087_NEGATIVE_CASES_V1",
+  "cases": [
+    {
+      "case": "missing-parent",
+      "expected": "REJECT_GRAPH_UPDATE_WITHOUT_PARENT",
+      "observed": "REJECT_GRAPH_UPDATE_WITHOUT_PARENT",
+      "passed": true
+    },
+    {
+      "case": "silent-overwrite",
+      "expected": "REJECT_SILENT_SEMANTIC_OVERWRITE",
+      "observed": "REJECT_SILENT_SEMANTIC_OVERWRITE",
+      "passed": true
+    },
+    {
+      "case": "scope-bypass",
+      "expected": "REJECT_DEPENDENCY_SCOPE_BYPASS",
+      "observed": "REJECT_DEPENDENCY_SCOPE_BYPASS",
+      "passed": true
+    },
+    {
+      "case": "unwitnessed-supersession",
+      "expected": "REJECT_UNWITNESSED_SUPERSESSION",
+      "observed": "REJECT_UNWITNESSED_SUPERSESSION",
+      "passed": true
+    },
+    {
+      "case": "cache-no-revalidation",
+      "expected": "REJECT_CACHE_REUSE_WITHOUT_REVALIDATION",
+      "observed": "REJECT_CACHE_REUSE_WITHOUT_REVALIDATION",
+      "passed": true
+    },
+    {
+      "case": "novelty-collapse",
+      "expected": "REJECT_NOVELTY_COLLAPSE",
+      "observed": "REJECT_NOVELTY_COLLAPSE",
+      "passed": true
+    },
+    {
+      "case": "edge-collapse",
+      "expected": "REJECT_GRAPH_EDGE_IDENTITY_COLLAPSE",
+      "observed": "REJECT_GRAPH_EDGE_IDENTITY_COLLAPSE",
+      "passed": true
+    },
+    {
+      "case": "provider-authority",
+      "expected": "REJECT_PROVIDER_SCORE_AS_SEMANTIC_AUTHORITY",
+      "observed": "REJECT_PROVIDER_SCORE_AS_SEMANTIC_AUTHORITY",
+      "passed": true
+    },
+    {
+      "case": "closure-failure",
+      "expected": "REJECT_INCREMENTAL_GRAPH_CLOSURE_FAILURE",
+      "observed": "REJECT_INCREMENTAL_GRAPH_CLOSURE_FAILURE",
+      "passed": true
+    },
+    {
+      "case": "replay-mismatch",
+      "expected": "REJECT_GRAPH_REPLAY_MISMATCH",
+      "observed": "REJECT_GRAPH_REPLAY_MISMATCH",
+      "passed": true
+    }
+  ]
+}

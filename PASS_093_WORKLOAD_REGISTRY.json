@@ -1,0 +1,149 @@
+{
+  "schema": "HHS_PASS_093_WORKLOAD_REGISTRY_V1",
+  "workloads": [
+    {
+      "canonical_statistics": "INTEGER_RATIONAL_SYMBOLIC_ONLY",
+      "held_out_partition": "EVEN_LANE_INDEX",
+      "input_commitment_root_hash72": "00000000000000000000000000000003M-ATTCb?9mdMDb8*u*4NtTOxDgtvlcE+W0d0zs>g",
+      "parent_pass092_release_root_hash72": "0000000000000000000000000000003g/gut30BDzzNCgDgX2Md3fYAqo*FeD-^!FfVYHXF1",
+      "preserve_failure_results": true,
+      "preserve_noncommutative_history": true,
+      "required_null_models": 3,
+      "schema": "HHS_PASS_093_WORKLOAD_V1",
+      "training_partition": "ODD_LANE_INDEX",
+      "workload_id": "W93-01:prime-versus-composite-trajectory-motifs"
+    },
+    {
+      "canonical_statistics": "INTEGER_RATIONAL_SYMBOLIC_ONLY",
+      "held_out_partition": "EVEN_LANE_INDEX",
+      "input_commitment_root_hash72": "00000000000000000000000000000003M-ATTCb?9mdMDb8*u*4NtTOxDgtvlcE+W0d0zs>g",
+      "parent_pass092_release_root_hash72": "0000000000000000000000000000003g/gut30BDzzNCgDgX2Md3fYAqo*FeD-^!FfVYHXF1",
+      "preserve_failure_results": true,
+      "preserve_noncommutative_history": true,
+      "required_null_models": 3,
+      "schema": "HHS_PASS_093_WORKLOAD_V1",
+      "training_partition": "ODD_LANE_INDEX",
+      "workload_id": "W93-02:scale-transfer"
+    },
+    {
+      "canonical_statistics": "INTEGER_RATIONAL_SYMBOLIC_ONLY",
+      "held_out_partition": "EVEN_LANE_INDEX",
+      "input_commitment_root_hash72": "00000000000000000000000000000003M-ATTCb?9mdMDb8*u*4NtTOxDgtvlcE+W0d0zs>g",
+      "parent_pass092_release_root_hash72": "0000000000000000000000000000003g/gut30BDzzNCgDgX2Md3fYAqo*FeD-^!FfVYHXF1",
+      "preserve_failure_results": true,
+      "preserve_noncommutative_history": true,
+      "required_null_models": 3,
+      "schema": "HHS_PASS_093_WORKLOAD_V1",
+      "training_partition": "ODD_LANE_INDEX",
+      "workload_id": "W93-03:prime-power-lifting"
+    },
+    {
+      "canonical_statistics": "INTEGER_RATIONAL_SYMBOLIC_ONLY",
+      "held_out_partition": "EVEN_LANE_INDEX",
+      "input_commitment_root_hash72": "00000000000000000000000000000003M-ATTCb?9mdMDb8*u*4NtTOxDgtvlcE+W0d0zs>g",
+      "parent_pass092_release_root_hash72": "0000000000000000000000000000003g/gut30BDzzNCgDgX2Md3fYAqo*FeD-^!FfVYHXF1",
+      "preserve_failure_results": true,
+      "preserve_noncommutative_history": true,
+      "required_null_models": 3,
+      "schema": "HHS_PASS_093_WORKLOAD_V1",
+      "training_partition": "ODD_LANE_INDEX",
+      "workload_id": "W93-04:composite-product-lifting"
+    },
+    {
+      "canonical_statistics": "INTEGER_RATIONAL_SYMBOLIC_ONLY",
+      "held_out_partition": "EVEN_LANE_INDEX",
+      "input_commitment_root_hash72": "00000000000000000000000000000003M-ATTCb?9mdMDb8*u*4NtTOxDgtvlcE+W0d0zs>g",
+      "parent_pass092_release_root_hash72": "0000000000000000000000000000003g/gut30BDzzNCgDgX2Md3fYAqo*FeD-^!FfVYHXF1",
+      "preserve_failure_results": true,
+      "preserve_noncommutative_history": true,
+      "required_null_models": 3,
+      "schema": "HHS_PASS_093_WORKLOAD_V1",
+      "training_partition": "ODD_LANE_INDEX",
+      "workload_id": "W93-05:cross-operator-invariants"
+    },
+    {
+      "canonical_statistics": "INTEGER_RATIONAL_SYMBOLIC_ONLY",
+      "held_out_partition": "EVEN_LANE_INDEX",
+      "input_commitment_root_hash72": "00000000000000000000000000000003M-ATTCb?9mdMDb8*u*4NtTOxDgtvlcE+W0d0zs>g",
+      "parent_pass092_release_root_hash72": "0000000000000000000000000000003g/gut30BDzzNCgDgX2Md3fYAqo*FeD-^!FfVYHXF1",
+      "preserve_failure_results": true,
+      "preserve_noncommutative_history": true,
+      "required_null_models": 3,
+      "schema": "HHS_PASS_093_WORKLOAD_V1",
+      "training_partition": "ODD_LANE_INDEX",
+      "workload_id": "W93-06:noncommutative-order-analysis"
+    },
+    {
+      "canonical_statistics": "INTEGER_RATIONAL_SYMBOLIC_ONLY",
+      "held_out_partition": "EVEN_LANE_INDEX",
+      "input_commitment_root_hash72": "00000000000000000000000000000003M-ATTCb?9mdMDb8*u*4NtTOxDgtvlcE+W0d0zs>g",
+      "parent_pass092_release_root_hash72": "0000000000000000000000000000003g/gut30BDzzNCgDgX2Md3fYAqo*FeD-^!FfVYHXF1",
+      "preserve_failure_results": true,
+      "preserve_noncommutative_history": true,
+      "required_null_models": 3,
+      "schema": "HHS_PASS_093_WORKLOAD_V1",
+      "training_partition": "ODD_LANE_INDEX",
+      "workload_id": "W93-07:alphabet-compression"
+    },
+    {
+      "canonical_statistics": "INTEGER_RATIONAL_SYMBOLIC_ONLY",
+      "held_out_partition": "EVEN_LANE_INDEX",
+      "input_commitment_root_hash72": "00000000000000000000000000000003M-ATTCb?9mdMDb8*u*4NtTOxDgtvlcE+W0d0zs>g",
+      "parent_pass092_release_root_hash72": "0000000000000000000000000000003g/gut30BDzzNCgDgX2Md3fYAqo*FeD-^!FfVYHXF1",
+      "preserve_failure_results": true,
+      "preserve_noncommutative_history": true,
+      "required_null_models": 3,
+      "schema": "HHS_PASS_093_WORKLOAD_V1",
+      "training_partition": "ODD_LANE_INDEX",
+      "workload_id": "W93-08:held-out-reconstruction"
+    },
+    {
+      "canonical_statistics": "INTEGER_RATIONAL_SYMBOLIC_ONLY",
+      "held_out_partition": "EVEN_LANE_INDEX",
+      "input_commitment_root_hash72": "00000000000000000000000000000003M-ATTCb?9mdMDb8*u*4NtTOxDgtvlcE+W0d0zs>g",
+      "parent_pass092_release_root_hash72": "0000000000000000000000000000003g/gut30BDzzNCgDgX2Md3fYAqo*FeD-^!FfVYHXF1",
+      "preserve_failure_results": true,
+      "preserve_noncommutative_history": true,
+      "required_null_models": 3,
+      "schema": "HHS_PASS_093_WORKLOAD_V1",
+      "training_partition": "ODD_LANE_INDEX",
+      "workload_id": "W93-09:null-model-comparison"
+    },
+    {
+      "canonical_statistics": "INTEGER_RATIONAL_SYMBOLIC_ONLY",
+      "held_out_partition": "EVEN_LANE_INDEX",
+      "input_commitment_root_hash72": "00000000000000000000000000000003M-ATTCb?9mdMDb8*u*4NtTOxDgtvlcE+W0d0zs>g",
+      "parent_pass092_release_root_hash72": "0000000000000000000000000000003g/gut30BDzzNCgDgX2Md3fYAqo*FeD-^!FfVYHXF1",
+      "preserve_failure_results": true,
+      "preserve_noncommutative_history": true,
+      "required_null_models": 3,
+      "schema": "HHS_PASS_093_WORKLOAD_V1",
+      "training_partition": "ODD_LANE_INDEX",
+      "workload_id": "W93-10:noise-frontier"
+    },
+    {
+      "canonical_statistics": "INTEGER_RATIONAL_SYMBOLIC_ONLY",
+      "held_out_partition": "EVEN_LANE_INDEX",
+      "input_commitment_root_hash72": "00000000000000000000000000000003M-ATTCb?9mdMDb8*u*4NtTOxDgtvlcE+W0d0zs>g",
+      "parent_pass092_release_root_hash72": "0000000000000000000000000000003g/gut30BDzzNCgDgX2Md3fYAqo*FeD-^!FfVYHXF1",
+      "preserve_failure_results": true,
+      "preserve_noncommutative_history": true,
+      "required_null_models": 3,
+      "schema": "HHS_PASS_093_WORKLOAD_V1",
+      "training_partition": "ODD_LANE_INDEX",
+      "workload_id": "W93-11:targeted-ablation"
+    },
+    {
+      "canonical_statistics": "INTEGER_RATIONAL_SYMBOLIC_ONLY",
+      "held_out_partition": "EVEN_LANE_INDEX",
+      "input_commitment_root_hash72": "00000000000000000000000000000003M-ATTCb?9mdMDb8*u*4NtTOxDgtvlcE+W0d0zs>g",
+      "parent_pass092_release_root_hash72": "0000000000000000000000000000003g/gut30BDzzNCgDgX2Md3fYAqo*FeD-^!FfVYHXF1",
+      "preserve_failure_results": true,
+      "preserve_noncommutative_history": true,
+      "required_null_models": 3,
+      "schema": "HHS_PASS_093_WORKLOAD_V1",
+      "training_partition": "ODD_LANE_INDEX",
+      "workload_id": "W93-12:cross-domain-transfer"
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "schema": "HHS_PASS_097_RELATION_ALPHABET_V1",
+  "relations": [
+    "IDENTITY",
+    "DISTINCTION",
+    "SEQUENCE",
+    "HIERARCHY",
+    "RECIPROCITY",
+    "CAUSE",
+    "CONSTRAINT",
+    "ALTERNATIVE",
+    "NEGATION",
+    "SCALE",
+    "CYCLE",
+    "ANALOGY"
+  ],
+  "composition_examples": {
+    "comparison": [
+      "IDENTITY",
+      "DISTINCTION"
+    ],
+    "conditional": [
+      "CAUSE",
+      "CONSTRAINT",
+      "ALTERNATIVE"
+    ],
+    "metaphor": [
+      "ANALOGY",
+      "DISTINCTION"
+    ]
+  }
+}

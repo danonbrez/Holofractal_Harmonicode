@@ -1,0 +1,20 @@
+{
+  "schema": "HHS_PASS_105_RELEASE_MANIFEST_V1",
+  "pass_id": "PASS_105",
+  "parent_pass104_release_root_hash72": "0000000000000000000000000000000r8GXn3r60C*sLdxM+PW^Pfk9kUPb-q0^Z(mklCH?F",
+  "syntax_version": "1.0",
+  "parse_replay_exact": true,
+  "serialization_reparse_exact": true,
+  "all_negative_cases_passed": true,
+  "artifacts": [
+    "PASS_105_SYNTAX_SPECIFICATION.json",
+    "PASS_105_PARSE_RECEIPT.json",
+    "PASS_105_CANONICAL_DICTIONARY.hhs",
+    "PASS_105_WORKLOAD_REGISTRY.json",
+    "PASS_105_NEGATIVE_CASES.json",
+    "PASS_105_OUTCOME_TAXONOMY.json",
+    "PASS_105_CALIBRATION_REPORT.md",
+    "CHANGELOG_PASS_105.md"
+  ],
+  "pass105_release_root_hash72": "0000000000000000000000000000002)CqhZmaZ(-xO=vbRAovI=KhHFQ5wYDIEPz1k!!>Sq"
+}

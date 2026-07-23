@@ -1,0 +1,81 @@
+{
+  "compilation_id": "compilation:pass077:portable",
+  "compilation_plan_root_hash72": "0000000000000000000000000000001iXZ//ALcsvv6>+/MWwN>B*NIIc8*g2OMBiuOZ!KxJ",
+  "compiler_identity": "HHS_PASS_077_PORTABLE_BYTECODE_COMPILER",
+  "compiler_version": "0.1.0",
+  "deterministic": true,
+  "effects_executed_during_planning": false,
+  "equivalence_test_plan": {
+    "comparison": "EXACT_CANONICAL_PROJECTION_ROOT_EQUALITY",
+    "compiled_target_execution_required": true,
+    "reference_interpreter_required": true,
+    "tolerance": "EXACT"
+  },
+  "executable_ir_root_hash72": "0000000000000000000000000000003nz(rIc=TJv68wNxB1?EX(8axOjviJDyzdpoAqZ2?g",
+  "lowering_steps": [
+    {
+      "sequence": 1,
+      "source_operation": "DEFINE_GATE",
+      "source_statement_root_hash72": "0000000000000000000000000000004z*T9GQIZR?4r^?o?!waIq30iWpP*)?=3*gnXYVAAv",
+      "target_operation": "GATE_DECLARE"
+    },
+    {
+      "sequence": 2,
+      "source_operation": "INVOKE_GATE",
+      "source_statement_root_hash72": "0000000000000000000000000000001anO31>NJWSAkrGW(ng=X4/l!Ns(QPqUEZWnDEQWk2",
+      "target_operation": "GATE_INVOKE"
+    },
+    {
+      "sequence": 3,
+      "source_operation": "EVALUATE_EQUALITY",
+      "source_statement_root_hash72": "0000000000000000000000000000001?p8j(Hfdpfh^ecHw+JC61=YjE+!D4bkB1V0yk7qN5",
+      "target_operation": "RELATION_EQUAL"
+    },
+    {
+      "sequence": 4,
+      "source_operation": "EVALUATE_EQUALITY",
+      "source_statement_root_hash72": "0000000000000000000000000000000a2u(23D3ZdAG-Mg9tG3pqki3Z4jHYkuMLVewCe>2+",
+      "target_operation": "RELATION_EQUAL"
+    },
+    {
+      "sequence": 5,
+      "source_operation": "EVALUATE_DISTINCTNESS",
+      "source_statement_root_hash72": "0000000000000000000000000000001HjYPdGbKn-f*)SXL)U0qzRNH0bvy8!Do2ItUeONc1",
+      "target_operation": "ORDERED_DISTINCT"
+    },
+    {
+      "sequence": 6,
+      "source_operation": "EVALUATE_EQUALITY",
+      "source_statement_root_hash72": "0000000000000000000000000000001va+hb^LTonB)88UaKa5JAq+>zc/AgHpFJ+vHH!j!0",
+      "target_operation": "RELATION_EQUAL"
+    },
+    {
+      "sequence": 7,
+      "source_operation": "EVALUATE_EQUALITY",
+      "source_statement_root_hash72": "0000000000000000000000000000000i88lP!d8PDugy26vdeo+dXwouXPfapR-b>t=c9M04",
+      "target_operation": "RELATION_EQUAL"
+    },
+    {
+      "sequence": 8,
+      "source_operation": "EVALUATE_EQUALITY",
+      "source_statement_root_hash72": "0000000000000000000000000000001C+o?5^/=b9padKFNsxoQ+18SpijQKyJH4e)TAIMw0",
+      "target_operation": "RELATION_EQUAL"
+    },
+    {
+      "sequence": 9,
+      "source_operation": "EVALUATE_EQUALITY",
+      "source_statement_root_hash72": "0000000000000000000000000000004sYwEIacQN78zK>bpK7yFk-MQl9ji2Ay-r4/=s-!sR",
+      "target_operation": "RELATION_EQUAL"
+    }
+  ],
+  "planned_optimizations": [
+    "IDENTITY_CANONICALIZATION"
+  ],
+  "requirement_root_hash72": "0000000000000000000000000000004Hj2h!No)Lr^*zoZl9xCQnfUBM1dE^5!7T6QQH4d-j",
+  "schema": "HHS_COMPILATION_PLAN_V1",
+  "source_artifact_root_hash72": "0000000000000000000000000000003lJE1vAB*mDssQv68yr(^)vCAdpg(15a=Y-!ICA-5V",
+  "target_contract_root_hash72": "0000000000000000000000000000000HAWphs>PD8Sr?Yv*OJTIyWspEUHK4l*RHfx)whw!b",
+  "target_id": "HHS_PORTABLE_BYTECODE_V1",
+  "test_receipt_root_hash72": "0000000000000000000000000000002dT/lRUXjCaBNW95r!*iQppnKVF46*2aR0M!VDgW+7",
+  "typed_ir_root_hash72": "00000000000000000000000000000049*>gYacfoAFr2RDhvw>K/nm3bsh3yBrZG)gFHKHcu"
+}

@@ -1,0 +1,9 @@
+{
+  "defect": "ZIP_EXTRACTION_DID_NOT_RESTORE_POSIX_EXECUTABLE_MODE",
+  "historical_evidence_rewritten": false,
+  "new_negative_regression_test": "test_executable_mode_survives_deterministic_zip_and_validation",
+  "observed_effect": "A valid child containing a newly executable tool failed manifest recomputation after extraction.",
+  "repair": "safe_extract_zip now restores stat.S_IMODE from ZipInfo.external_attr before validation.",
+  "schema": "HHS_PASS134_COMPILER_MODE_REPAIR_ERRATUM_V1",
+  "status": "REPAIRED_AND_REGRESSION_TESTED"
+}

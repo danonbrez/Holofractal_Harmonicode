@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "oneOf": [
+    {
+      "properties": {
+        "parent_artifact_root_hash72": {
+          "type": "null"
+        }
+      },
+      "required": [
+        "genesis_source_root_hash72"
+      ]
+    },
+    {
+      "properties": {
+        "genesis_source_root_hash72": {
+          "type": "null"
+        }
+      },
+      "required": [
+        "parent_artifact_root_hash72"
+      ]
+    }
+  ],
+  "properties": {
+    "artifact_content_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "embedded_validator_self_authorizes": {
+      "const": false
+    },
+    "lineage_root_hash72": {
+      "type": "string"
+    },
+    "schema": {
+      "const": "HHS_ARTIFACT_LINEAGE_CERTIFICATE_V1"
+    }
+  },
+  "required": [
+    "schema",
+    "artifact_id",
+    "artifact_root_hash72",
+    "artifact_content_sha256",
+    "project_root_hash72",
+    "requirement_root_hash72",
+    "source_artifact_root_hash72",
+    "typed_ir_root_hash72",
+    "executable_ir_root_hash72",
+    "compilation_plan_root_hash72",
+    "target_contract_root_hash72",
+    "interpreter_reference_execution_root_hash72",
+    "compiled_execution_root_hash72",
+    "semantic_equivalence_receipt_root_hash72",
+    "test_receipt_root_hash72",
+    "compiler_identity",
+    "compiler_version",
+    "lineage_root_hash72"
+  ],
+  "title": "HHS_ARTIFACT_LINEAGE_CERTIFICATE_V1",
+  "type": "object"
+}

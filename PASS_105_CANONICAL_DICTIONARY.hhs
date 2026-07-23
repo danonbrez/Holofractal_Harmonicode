@@ -1,0 +1,6 @@
+dictionary hhs.phase.gear version 1 {
+    symbol Ψ : CONSTRAINT_OPERATOR := ref ( hhs.operator.psi );
+    string phase_name : CANONICAL_STRING := "reciprocal phase";
+    phrase "opposite phase" : SEMANTIC_REFERENCE := ref ( hhs.phase.opposite );
+    alias ↔ -> ref ( hhs.relation.reciprocal );
+}

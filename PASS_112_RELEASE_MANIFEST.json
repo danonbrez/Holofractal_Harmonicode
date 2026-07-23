@@ -1,0 +1,52 @@
+{
+  "broader_legacy_audit_status": "NOT_CLAIMED_TIMEOUT",
+  "implementation_files": [
+    {
+      "bytes": 28374,
+      "path": "hhs_runtime/hhs_pass112_pass_safe_resume_exit_v1.py",
+      "sha256": "d6c16516b035ca126e0bcc76ba0d9804b5beea0297d332416123f93d25867643"
+    },
+    {
+      "bytes": 6965,
+      "path": "tests/test_hhs_pass112_pass_safe_resume_exit_v1.py",
+      "sha256": "1b010742d06cf7ee2853a5735ddf997522ebc5b01e4eb2a7f60c225758f7c7cc"
+    },
+    {
+      "bytes": 213907,
+      "path": "hhs_runtime/hhs_service_registry_v1.py",
+      "sha256": "b7db8db6e2f10376b42d0a4e39940dfa40d9cc109d3307a8c88719d7ada38a4a"
+    },
+    {
+      "bytes": 33785,
+      "path": "Makefile",
+      "sha256": "9fd36032834771a250293eac4cab63d6f02e06b8cd711182c93175b3ce1b7698"
+    },
+    {
+      "bytes": 21550,
+      "path": "PASS_112_PASS_SAFE_RESUME_EXIT.json",
+      "sha256": "b60e1a97e06a6953900007b490d3b8490d3283a186eaeb57714dc2b0fa54d012"
+    },
+    {
+      "bytes": 1918,
+      "path": "PASS_112_PASS_SAFE_RESUME_EXIT.md",
+      "sha256": "ecdc361c32f45099fe073bd7225d5e6e1469acfa19645d1339ab3399a4486ee1"
+    },
+    {
+      "bytes": 503,
+      "path": "CHANGELOG_PASS_112.md",
+      "sha256": "544e16147aee98e67325283438f31e5a7b2f9dcc61b287427b484fc49431f7f4"
+    }
+  ],
+  "manifest_sha256": "f6e30026c5ce2a10508ad8774a8f2df7a99ea999975452c318447a4ff77bc2a6",
+  "mock_components": [],
+  "parent_pass": "PASS_111",
+  "parent_seed": "hhs_pass_111_predictive_continuation_cache.zip",
+  "pass_id": "PASS_112",
+  "schema": "HHS_PASS_112_RELEASE_MANIFEST_V1",
+  "targeted_test_command": "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest -q tests/test_hhs_pass111_predictive_continuation_cache_v1.py tests/test_hhs_pass112_pass_safe_resume_exit_v1.py",
+  "targeted_test_result": {
+    "failed": 0,
+    "passed": 23,
+    "warning_count": 1
+  }
+}

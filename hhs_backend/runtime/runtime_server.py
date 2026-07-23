@@ -55,6 +55,7 @@ from hhs_backend.runtime.runtime_ws import (
     runtime_ws_health,
     runtime_ws_router,
 )
+from hhs_runtime.harmonicode_constraint_solver_v1 import interpret_and_solve
 
 # ============================================================================
 # Logging
@@ -120,35 +121,20 @@ class SolveRequest(BaseModel):
 # Runtime Solve
 # ============================================================================
 
-async def execute_runtime_expression(
-
-    expression: str
-
-) -> Dict[str, Any]:
-
-    """
-    Placeholder execution bridge.
-
-    Replace with:
-        - VM81 bridge
-        - ABI runtime
-        - symbolic runtime
-        - transport manifold
-    """
-
+async def execute_runtime_expression(expression: str) -> Dict[str, Any]:
+    """Execute source through the real Harmonicode interpreter and solver."""
+    if not isinstance(expression, str) or not expression.strip():
+        raise ValueError("expression must be a non-empty Harmonicode source string")
+    result = interpret_and_solve(expression)
+    solver = result.get("solver", {})
+    receipt = solver.get("receipt", {})
     return {
-
-        "expression":
-            expression,
-
-        "status":
-            "executed",
-
-        "result":
-            expression,
-
-        "transport":
-            "runtime_projection"
+        "expression": expression,
+        "status": receipt.get("status", "UNKNOWN"),
+        "result": result,
+        "transport": "harmonicode_interpreter_solver",
+        "execution_performed": True,
+        "full_receipt_hash72": result["full_receipt_hash72"],
     }
 
 # ============================================================================
@@ -221,7 +207,7 @@ async def solve(
 
             branch_id=request.branch_id,
 
-            receipt_hash72="runtime_receipt",
+            receipt_hash72=result["full_receipt_hash72"],
 
             payload={
 

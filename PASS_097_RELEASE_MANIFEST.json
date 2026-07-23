@@ -1,0 +1,31 @@
+{
+  "schema": "HHS_PASS_097_RELEASE_MANIFEST_V1",
+  "pass_id": "PASS_097",
+  "parent_pass096_release_root_hash72": "0000000000000000000000000000001^vzrDjLjFZY)ca^rvZO2Jc+?mWwUVHgKMpHz>zsZ7",
+  "minimality_level_count": 6,
+  "workload_count": 12,
+  "relation_primitive_count": 12,
+  "epistemic_type_count": 7,
+  "authority_rule_count": 6,
+  "negative_case_count": 8,
+  "all_negative_cases_passed": true,
+  "all_replays_verified": true,
+  "prior_thread_accessed": false,
+  "artifacts": [
+    "PASS_097_PERMANENT_SEED_REGISTRY.json",
+    "PASS_097_MINIMAL_RELATION_ALPHABET.json",
+    "PASS_097_EPISTEMIC_AUTHORITY_KERNEL.json",
+    "PASS_097_COLD_BOOT_REASONING_RESULTS.json",
+    "PASS_097_CONSTRAINT_ABLATION_RESULTS.json",
+    "PASS_097_PATTERN_MINIMIZATION_RESULTS.json",
+    "PASS_097_MEMORY_COMPLEXITY_ACCOUNTING.json",
+    "PASS_097_PARETO_FRONTIER.json",
+    "PASS_097_CAPABILITY_BOUNDARIES.json",
+    "PASS_097_WORKLOAD_REGISTRY.json",
+    "PASS_097_NEGATIVE_CASES.json",
+    "PASS_097_REPLAY_RESULT.json",
+    "PASS_097_CALIBRATION_REPORT.md",
+    "CHANGELOG_PASS_097.md"
+  ],
+  "pass097_release_root_hash72": "0000000000000000000000000000004F+na(JLwP*v9uN8ikoZqXP05LlWzV?e^l0pnZuo1z"
+}

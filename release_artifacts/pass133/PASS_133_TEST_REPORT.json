@@ -1,0 +1,16 @@
+{
+  "commands": [
+    "pytest -q",
+    "python -m compileall -q hhs_runtime tools",
+    "full Pass 133 release execution at 64-bit prime width"
+  ],
+  "full_historical_monolithic_suite_run": false,
+  "json_artifacts_validated": 17,
+  "jsonl_rows_validated": 423,
+  "native_checkpoint_adapter_compiled": true,
+  "parent_hash72_witness_replayed_exactly": true,
+  "pytest": "9 passed",
+  "schema": "HHS_PASS133_DEPENDENCY_SCOPED_TEST_REPORT_V1",
+  "status": "PASS",
+  "test_policy": "DEPENDENCY_SCOPED_REGRESSION_AND_BOUNDED_SENTINELS"
+}

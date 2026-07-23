@@ -1,0 +1,26 @@
+{
+  "architectural_identity": [
+    "RECURSIVE",
+    "HOLOGRAPHIC",
+    "FRACTAL",
+    "HARMONIC",
+    "EVOLUTIONARY",
+    "SYMBOLIC",
+    "TEMPORAL",
+    "INTERACTIVE"
+  ],
+  "parent": {
+    "database_schema": {
+      "id": "HHS_PASS145_KNOWLEDGE_DATABASE",
+      "version": "1.2.0"
+    },
+    "parent": "HHS-P144",
+    "parser_version": "1.0.0",
+    "pass_id": "HHS-P145",
+    "schema": "HHS_PASS145_VERSION_V1",
+    "version": "145.1.0"
+  },
+  "pass_id": "HHS-P146",
+  "schema": "HHS_PASS146_VERSION_V1",
+  "version": "146.1.0"
+}

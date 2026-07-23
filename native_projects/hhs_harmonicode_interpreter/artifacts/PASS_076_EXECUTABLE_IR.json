@@ -1,0 +1,428 @@
+{
+  "all_effects_pure_symbolic": true,
+  "executable_ir_id": "executable-ir:repair:pass076:omega",
+  "executable_ir_root_hash72": "0000000000000000000000000000003nz(rIc=TJv68wNxB1?EX(8axOjviJDyzdpoAqZ2?g",
+  "execution_requires_runtime_authority": true,
+  "gate_names": [
+    "PHASE_GATE"
+  ],
+  "lowering_executes_no_program_effects": true,
+  "ordered_products_not_commuted": true,
+  "schema": "HHS_EXECUTABLE_IR_V1",
+  "source_artifact_ref": "artifact:pass076:source:repaired",
+  "source_artifact_root_hash72": "0000000000000000000000000000003lJE1vAB*mDssQv68yr(^)vCAdpg(15a=Y-!ICA-5V",
+  "source_sha256": "605954aa1754cd052741f66f9b023918fec433e2dc393886fc60d89f771045ef",
+  "source_spans_preserved": true,
+  "statement_count": 9,
+  "statements": [
+    {
+      "authority_requirements": [],
+      "block_ref": "ir-block:0:D-B=Bju5c36F>r5K",
+      "children": [
+        {
+          "authority_requirements": [],
+          "block_ref": "ir-block:1:Olnme15U=NuapZff",
+          "children": [],
+          "effect_declaration": "PURE_SYMBOLIC",
+          "invariant_bindings": [
+            {
+              "invariant": "Δe=0",
+              "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+            },
+            {
+              "invariant": "Ψ=0",
+              "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+            },
+            {
+              "invariant": "Θ15=true",
+              "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+            },
+            {
+              "invariant": "Ω=true",
+              "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+            }
+          ],
+          "name": "",
+          "node_kind": "AssertEquality",
+          "node_ref": "node:0:Olnme15U=NuapZff",
+          "operands": [
+            "x",
+            "1/y"
+          ],
+          "operation": "EVALUATE_EQUALITY",
+          "operator": "==",
+          "schema": "HHS_EXECUTABLE_IR_STATEMENT_V1",
+          "source_span": {
+            "column_end": 9,
+            "column_start": 3,
+            "end": 24,
+            "line_end": 2,
+            "line_start": 2,
+            "start": 18,
+            "text_sha256": "9e78cd33e953051a8ffe3507d447e90c57c27a27a4a0917d45239c1fa6daf19e"
+          },
+          "statement_id": "statement:node:0:Olnme15U=NuapZff",
+          "statement_root_hash72": "0000000000000000000000000000001?p8j(Hfdpfh^ecHw+JC61=YjE+!D4bkB1V0yk7qN5"
+        },
+        {
+          "authority_requirements": [],
+          "block_ref": "ir-block:2:zQoLQrgk2iPmQ(?m",
+          "children": [],
+          "effect_declaration": "PURE_SYMBOLIC",
+          "invariant_bindings": [
+            {
+              "invariant": "Δe=0",
+              "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+            },
+            {
+              "invariant": "Ψ=0",
+              "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+            },
+            {
+              "invariant": "Θ15=true",
+              "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+            },
+            {
+              "invariant": "Ω=true",
+              "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+            }
+          ],
+          "name": "",
+          "node_kind": "AssertEquality",
+          "node_ref": "node:1:zQoLQrgk2iPmQ(?m",
+          "operands": [
+            "z",
+            "1/w"
+          ],
+          "operation": "EVALUATE_EQUALITY",
+          "operator": "==",
+          "schema": "HHS_EXECUTABLE_IR_STATEMENT_V1",
+          "source_span": {
+            "column_end": 9,
+            "column_start": 3,
+            "end": 34,
+            "line_end": 3,
+            "line_start": 3,
+            "start": 28,
+            "text_sha256": "1ece3fc5d0a1a2223a74d764f990cacb0c092525e2544791b8c636d929996d5b"
+          },
+          "statement_id": "statement:node:1:zQoLQrgk2iPmQ(?m",
+          "statement_root_hash72": "0000000000000000000000000000000a2u(23D3ZdAG-Mg9tG3pqki3Z4jHYkuMLVewCe>2+"
+        },
+        {
+          "authority_requirements": [],
+          "block_ref": "ir-block:3:fK1xD9moOlkW6PUI",
+          "children": [],
+          "effect_declaration": "PURE_SYMBOLIC",
+          "invariant_bindings": [
+            {
+              "invariant": "Δe=0",
+              "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+            },
+            {
+              "invariant": "Ψ=0",
+              "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+            },
+            {
+              "invariant": "Θ15=true",
+              "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+            },
+            {
+              "invariant": "Ω=true",
+              "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+            }
+          ],
+          "name": "",
+          "node_kind": "DistinctChain",
+          "node_ref": "node:2:fK1xD9moOlkW6PUI",
+          "operands": [
+            "xy",
+            "yx"
+          ],
+          "operation": "EVALUATE_DISTINCTNESS",
+          "operator": "≠",
+          "schema": "HHS_EXECUTABLE_IR_STATEMENT_V1",
+          "source_span": {
+            "column_end": 8,
+            "column_start": 3,
+            "end": 43,
+            "line_end": 4,
+            "line_start": 4,
+            "start": 38,
+            "text_sha256": "2b8b8a6a2df353aa816e471ce20675f62899ce6ee3942c81324a036063f3a2e6"
+          },
+          "statement_id": "statement:node:2:fK1xD9moOlkW6PUI",
+          "statement_root_hash72": "0000000000000000000000000000001HjYPdGbKn-f*)SXL)U0qzRNH0bvy8!Do2ItUeONc1"
+        },
+        {
+          "authority_requirements": [],
+          "block_ref": "ir-block:4:4ydIHfE5FRxsTeaE",
+          "children": [],
+          "effect_declaration": "PURE_SYMBOLIC",
+          "invariant_bindings": [
+            {
+              "invariant": "Δe=0",
+              "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+            },
+            {
+              "invariant": "Ψ=0",
+              "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+            },
+            {
+              "invariant": "Θ15=true",
+              "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+            },
+            {
+              "invariant": "Ω=true",
+              "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+            }
+          ],
+          "name": "",
+          "node_kind": "ChainEquality",
+          "node_ref": "node:3:4ydIHfE5FRxsTeaE",
+          "operands": [
+            "Δe",
+            "0"
+          ],
+          "operation": "EVALUATE_EQUALITY",
+          "operator": "=",
+          "schema": "HHS_EXECUTABLE_IR_STATEMENT_V1",
+          "source_span": {
+            "column_end": 7,
+            "column_start": 3,
+            "end": 51,
+            "line_end": 5,
+            "line_start": 5,
+            "start": 47,
+            "text_sha256": "4756f457b3adc91fdb83f202a2556e83ebab77fd5dc71b8ae92f63ccc2c54ba8"
+          },
+          "statement_id": "statement:node:3:4ydIHfE5FRxsTeaE",
+          "statement_root_hash72": "0000000000000000000000000000001va+hb^LTonB)88UaKa5JAq+>zc/AgHpFJ+vHH!j!0"
+        },
+        {
+          "authority_requirements": [],
+          "block_ref": "ir-block:5:d9KItwdq7(Nyj0eC",
+          "children": [],
+          "effect_declaration": "PURE_SYMBOLIC",
+          "invariant_bindings": [
+            {
+              "invariant": "Δe=0",
+              "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+            },
+            {
+              "invariant": "Ψ=0",
+              "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+            },
+            {
+              "invariant": "Θ15=true",
+              "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+            },
+            {
+              "invariant": "Ω=true",
+              "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+            }
+          ],
+          "name": "",
+          "node_kind": "ChainEquality",
+          "node_ref": "node:4:d9KItwdq7(Nyj0eC",
+          "operands": [
+            "Ψ",
+            "0"
+          ],
+          "operation": "EVALUATE_EQUALITY",
+          "operator": "=",
+          "schema": "HHS_EXECUTABLE_IR_STATEMENT_V1",
+          "source_span": {
+            "column_end": 6,
+            "column_start": 3,
+            "end": 58,
+            "line_end": 6,
+            "line_start": 6,
+            "start": 55,
+            "text_sha256": "98bd2afe37342b2c2f357b9ae753f034478fde52e911f9b81a390f7831e51774"
+          },
+          "statement_id": "statement:node:4:d9KItwdq7(Nyj0eC",
+          "statement_root_hash72": "0000000000000000000000000000000i88lP!d8PDugy26vdeo+dXwouXPfapR-b>t=c9M04"
+        },
+        {
+          "authority_requirements": [],
+          "block_ref": "ir-block:6:uvo*?TxCW?(D6BGT",
+          "children": [],
+          "effect_declaration": "PURE_SYMBOLIC",
+          "invariant_bindings": [
+            {
+              "invariant": "Δe=0",
+              "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+            },
+            {
+              "invariant": "Ψ=0",
+              "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+            },
+            {
+              "invariant": "Θ15=true",
+              "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+            },
+            {
+              "invariant": "Ω=true",
+              "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+            }
+          ],
+          "name": "",
+          "node_kind": "ChainEquality",
+          "node_ref": "node:5:uvo*?TxCW?(D6BGT",
+          "operands": [
+            "Θ15",
+            "true"
+          ],
+          "operation": "EVALUATE_EQUALITY",
+          "operator": "=",
+          "schema": "HHS_EXECUTABLE_IR_STATEMENT_V1",
+          "source_span": {
+            "column_end": 11,
+            "column_start": 3,
+            "end": 70,
+            "line_end": 7,
+            "line_start": 7,
+            "start": 62,
+            "text_sha256": "ec90a1149adec349ae66707412985bfe3c3e9f72568b35ce8807f1e23e350582"
+          },
+          "statement_id": "statement:node:5:uvo*?TxCW?(D6BGT",
+          "statement_root_hash72": "0000000000000000000000000000001C+o?5^/=b9padKFNsxoQ+18SpijQKyJH4e)TAIMw0"
+        },
+        {
+          "authority_requirements": [],
+          "block_ref": "ir-block:7:jT/f-762EwbJb4y1",
+          "children": [],
+          "effect_declaration": "PURE_SYMBOLIC",
+          "invariant_bindings": [
+            {
+              "invariant": "Δe=0",
+              "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+            },
+            {
+              "invariant": "Ψ=0",
+              "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+            },
+            {
+              "invariant": "Θ15=true",
+              "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+            },
+            {
+              "invariant": "Ω=true",
+              "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+            }
+          ],
+          "name": "",
+          "node_kind": "ChainEquality",
+          "node_ref": "node:6:jT/f-762EwbJb4y1",
+          "operands": [
+            "Ω",
+            "true"
+          ],
+          "operation": "EVALUATE_EQUALITY",
+          "operator": "=",
+          "schema": "HHS_EXECUTABLE_IR_STATEMENT_V1",
+          "source_span": {
+            "column_end": 9,
+            "column_start": 3,
+            "end": 80,
+            "line_end": 8,
+            "line_start": 8,
+            "start": 74,
+            "text_sha256": "dd380a36632d9164982bf1f417f6a08be9cf8f43f54301b749cd69e73238e92c"
+          },
+          "statement_id": "statement:node:6:jT/f-762EwbJb4y1",
+          "statement_root_hash72": "0000000000000000000000000000004sYwEIacQN78zK>bpK7yFk-MQl9ji2Ay-r4/=s-!sR"
+        }
+      ],
+      "effect_declaration": "PURE_SYMBOLIC",
+      "invariant_bindings": [
+        {
+          "invariant": "Δe=0",
+          "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+        },
+        {
+          "invariant": "Ψ=0",
+          "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+        },
+        {
+          "invariant": "Θ15=true",
+          "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+        },
+        {
+          "invariant": "Ω=true",
+          "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+        }
+      ],
+      "name": "PHASE_GATE",
+      "node_kind": "GateDeclaration",
+      "node_ref": "node:0:D-B=Bju5c36F>r5K",
+      "operands": [],
+      "operation": "DEFINE_GATE",
+      "operator": ":=",
+      "schema": "HHS_EXECUTABLE_IR_STATEMENT_V1",
+      "source_span": {
+        "column_end": 2,
+        "column_start": 1,
+        "end": 82,
+        "line_end": 9,
+        "line_start": 1,
+        "start": 0,
+        "text_sha256": "9ceaedf9e7b09356db8d26da2fd5cce1270b844d69b81b3fe36e20473e225fcc"
+      },
+      "statement_id": "statement:node:0:D-B=Bju5c36F>r5K",
+      "statement_root_hash72": "0000000000000000000000000000004z*T9GQIZR?4r^?o?!waIq30iWpP*)?=3*gnXYVAAv"
+    },
+    {
+      "authority_requirements": [],
+      "block_ref": "ir-block:8:bMw+L>HGOMCD0fhK",
+      "children": [],
+      "effect_declaration": "PURE_SYMBOLIC",
+      "invariant_bindings": [
+        {
+          "invariant": "Δe=0",
+          "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+        },
+        {
+          "invariant": "Ψ=0",
+          "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+        },
+        {
+          "invariant": "Θ15=true",
+          "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+        },
+        {
+          "invariant": "Ω=true",
+          "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+        }
+      ],
+      "name": "PHASE_GATE",
+      "node_kind": "GateInvocation",
+      "node_ref": "node:1:bMw+L>HGOMCD0fhK",
+      "operands": [],
+      "operation": "INVOKE_GATE",
+      "operator": "",
+      "schema": "HHS_EXECUTABLE_IR_STATEMENT_V1",
+      "source_span": {
+        "column_end": 11,
+        "column_start": 1,
+        "end": 93,
+        "line_end": 10,
+        "line_start": 10,
+        "start": 83,
+        "text_sha256": "c63aa569b9769c867626d70a00e43d78540936babe18218e0808368fd827cd27"
+      },
+      "statement_id": "statement:node:1:bMw+L>HGOMCD0fhK",
+      "statement_root_hash72": "0000000000000000000000000000001anO31>NJWSAkrGW(ng=X4/l!Ns(QPqUEZWnDEQWk2"
+    }
+  ],
+  "typed_ir_artifact_ref": "artifact:typed-ir:repair:pass076:omega",
+  "typed_ir_artifact_root_hash72": "0000000000000000000000000000003t7p04ZbA-RO^PCK?kC4n8vN>RN/bc!HVlF-qx84ZO",
+  "typed_ir_ref": "typed-ir:repair:pass076:omega",
+  "typed_ir_revalidated_before_lowering": true,
+  "typed_ir_root_hash72": "00000000000000000000000000000049*>gYacfoAFr2RDhvw>K/nm3bsh3yBrZG)gFHKHcu",
+  "unsupported_effects": [],
+  "validation_ref": "validation:typed-ir:repair:pass076:omega",
+  "validation_root_hash72": "0000000000000000000000000000003od^gXh)JEwrW^QlzeEJ9F8YQgy=QHkSYBIQ!67gA4",
+  "version": "HHS_EXECUTABLE_IR_LOWERING_PASS_076_V1"
+}

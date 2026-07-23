@@ -1,0 +1,14 @@
+{
+  "authority_level": "A3",
+  "correction_type": "APPEND_ONLY_BOUNDED_FINDING_ADDITION",
+  "erratum_id": "PASS_135_COMPLETION_ERRATUM_001",
+  "omitted_finding": "CONFORMANCE_API_NOT_EXPOSED_ON_RESPONSIVE_RUNTIME",
+  "original_completion_unchanged": true,
+  "original_evidence_unchanged": true,
+  "reason": "The evidence and A3 interpretation already classified the conformance endpoint as not exposed, but the completion summary omitted it from bounded_findings.",
+  "schema": "HHS_PASS135_COMPLETION_ERRATUM_V1",
+  "status": "ERRATUM_APPLIED_IN_EFFECTIVE_VIEW",
+  "supporting_evidence_id": "evidence:3188f52752d3063cbd63cf0d4490209f605d74e52664a5f2a5fd436b128fa4c5",
+  "target_artifact": "PASS_135_COMPLETION_ATTESTATION.json",
+  "target_sha256": "05643e789073078149c5896ffd6e04f8997be21aaebc32cecd75d34cc778ec6d"
+}

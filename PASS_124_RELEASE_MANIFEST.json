@@ -1,0 +1,19 @@
+{
+  "claims": [
+    "parallel deterministic double evaluation",
+    "independent lane agreement",
+    "invariant intersection isolation",
+    "minimum independent witness admission",
+    "exact probability after authority",
+    "deterministic Hash72 replay"
+  ],
+  "pass_id": "PASS_124",
+  "runtime_module": "hhs_runtime.hhs_pass124_parallel_deterministic_generalization_v1",
+  "schema": "HHS_PASS_124_RELEASE_MANIFEST_V1",
+  "service": "runtime.parallel_deterministic_generalization.pass124",
+  "tests": {
+    "dependency_scoped_117_124": 123,
+    "failures": 0,
+    "pass124": 12
+  }
+}

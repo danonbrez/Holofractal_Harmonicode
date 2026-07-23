@@ -1,0 +1,2 @@
+#!/bin/sh
+exec python -m hhs_runtime.harmonicode_constraint_conflict_gradient_simulation_v1 "$@"

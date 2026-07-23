@@ -1,0 +1,28 @@
+{
+  "capture_avoiding": true,
+  "escaping_verified": true,
+  "expanded_string_root_hash72": "0000000000000000000000000000000W8q2a2of1kskQ/mvZqtezIj7QXs*8*cU6=!*!6L10",
+  "expanded_text": "Apply Normalize to x at phase 18.",
+  "expansion_mode": "SYMBOLIC",
+  "expansion_receipt_root_hash72": "0000000000000000000000000000002cDW1U=F^LTi8uKX2eS5JwW6XcUF)TGiG0V-j8hZAI",
+  "ordered_variable_bindings": [
+    {
+      "value_root_hash72": "00000000000000000000000000000010xB^rp0srj+8!Qa0+aA3pWn8*(0XqaTAA/gt6aDZ-",
+      "value_type": "OPERATION_REFERENCE",
+      "variable": "operation"
+    },
+    {
+      "value_root_hash72": "00000000000000000000000000000000P3iwzNuxxYb^DNf-IFEklBxn!w1vY+zKH)quZkX*",
+      "value_type": "LANE_REFERENCE",
+      "variable": "lane"
+    },
+    {
+      "value_root_hash72": "0000000000000000000000000000004fo-sUuz16nA4(xCeuMNQoH2ulBmDIR9E6Njj5R!P1",
+      "value_type": "U72_PHASE",
+      "variable": "phase"
+    }
+  ],
+  "schema": "HHS_VARIABLE_STRING_EXPANSION_RECEIPT_V1",
+  "template_root_hash72": "0000000000000000000000000000000kgffIE(^axay-M!iIf9m?OI!YTX/z2v3(Cj)g9)aI",
+  "unresolved_slots": []
+}

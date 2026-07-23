@@ -1,0 +1,293 @@
+{
+  "schema": "HHS_PASS_094_NOISE_FRONTIERS_V1",
+  "results": [
+    {
+      "classification": "EXACT_SURVIVAL",
+      "invariant_id": "invariant:ratio-8-9",
+      "lineage_preserved": true,
+      "noise_class": "LANGUAGE_SYNONYM",
+      "noise_receipt_root_hash72": "0000000000000000000000000000003Bg3O6rFhi)wZHQ4xRqP(IHNoZ6xudV1h(A0!fHJqa",
+      "preserves_declared_invariant": true
+    },
+    {
+      "classification": "EXACT_SURVIVAL",
+      "invariant_id": "invariant:ratio-8-9",
+      "lineage_preserved": true,
+      "noise_class": "IMAGE_ROTATION",
+      "noise_receipt_root_hash72": "0000000000000000000000000000003UbIxHXRFGkNWP?1dpbtwgu^)^KKArIAI!kiEdIYm2",
+      "preserves_declared_invariant": true
+    },
+    {
+      "classification": "EXACT_SURVIVAL",
+      "invariant_id": "invariant:ratio-8-9",
+      "lineage_preserved": true,
+      "noise_class": "AUDIO_TEMPO",
+      "noise_receipt_root_hash72": "0000000000000000000000000000004sSfT2cvlU-N(hkkopHvIsYgFO86SWgmtXojaaJx1J",
+      "preserves_declared_invariant": true
+    },
+    {
+      "classification": "EXACT_SURVIVAL",
+      "invariant_id": "invariant:ratio-8-9",
+      "lineage_preserved": true,
+      "noise_class": "GRAPH_NODE_RELABEL",
+      "noise_receipt_root_hash72": "0000000000000000000000000000002)/TMvkspNH(zRhKXefzyzb6YPmoOu/TuFu=m(etZH",
+      "preserves_declared_invariant": true
+    },
+    {
+      "classification": "EXACT_SURVIVAL",
+      "invariant_id": "invariant:ratio-8-9",
+      "lineage_preserved": true,
+      "noise_class": "BINARY_PADDING",
+      "noise_receipt_root_hash72": "0000000000000000000000000000004ahaI/HLCh=VjEplK+emg1+>>7TC+ufnlXCcg)n?5z",
+      "preserves_declared_invariant": true
+    },
+    {
+      "classification": "EXACT_SURVIVAL",
+      "invariant_id": "invariant:ratio-8-9",
+      "lineage_preserved": true,
+      "noise_class": "TARGETED_ORDER_REVERSAL",
+      "noise_receipt_root_hash72": "0000000000000000000000000000000Lq9)/RE39?yAuMf2DO(q80jldXITII6bS7d3^pPY+",
+      "preserves_declared_invariant": true
+    },
+    {
+      "classification": "EXACT_SURVIVAL",
+      "invariant_id": "invariant:golden-triplet-64-72-81",
+      "lineage_preserved": true,
+      "noise_class": "LANGUAGE_SYNONYM",
+      "noise_receipt_root_hash72": "0000000000000000000000000000003mDkSe85JbLZ!Y)LTrtk?FBwGIvy!sqvv/ZPaF74sk",
+      "preserves_declared_invariant": true
+    },
+    {
+      "classification": "EXACT_SURVIVAL",
+      "invariant_id": "invariant:golden-triplet-64-72-81",
+      "lineage_preserved": true,
+      "noise_class": "IMAGE_ROTATION",
+      "noise_receipt_root_hash72": "0000000000000000000000000000003bxgEBqaRMo-x>?qXIaTgQFexi*>WC8nfXnfRjNdSF",
+      "preserves_declared_invariant": true
+    },
+    {
+      "classification": "EXACT_SURVIVAL",
+      "invariant_id": "invariant:golden-triplet-64-72-81",
+      "lineage_preserved": true,
+      "noise_class": "AUDIO_TEMPO",
+      "noise_receipt_root_hash72": "000000000000000000000000000000216q-FuLlb2ze6awCCqpCs5?YCG+/evZwuMBz2IT6G",
+      "preserves_declared_invariant": true
+    },
+    {
+      "classification": "EXACT_SURVIVAL",
+      "invariant_id": "invariant:golden-triplet-64-72-81",
+      "lineage_preserved": true,
+      "noise_class": "GRAPH_NODE_RELABEL",
+      "noise_receipt_root_hash72": "0000000000000000000000000000004vim=nbVg?>6GWypJd*3xtZl>iO7Iy(S9Yi/Y5Upo5",
+      "preserves_declared_invariant": true
+    },
+    {
+      "classification": "EXACT_SURVIVAL",
+      "invariant_id": "invariant:golden-triplet-64-72-81",
+      "lineage_preserved": true,
+      "noise_class": "BINARY_PADDING",
+      "noise_receipt_root_hash72": "0000000000000000000000000000004KUBJYVU=Al9A(4j28xCCAEa7yUtF4kDT3xxiNA4Mg",
+      "preserves_declared_invariant": true
+    },
+    {
+      "classification": "EXACT_SURVIVAL",
+      "invariant_id": "invariant:golden-triplet-64-72-81",
+      "lineage_preserved": true,
+      "noise_class": "TARGETED_ORDER_REVERSAL",
+      "noise_receipt_root_hash72": "0000000000000000000000000000001cV7CY+5zWqls3mLlpFPR+sJgjvk)WlO4=XxKU/r4w",
+      "preserves_declared_invariant": true
+    },
+    {
+      "classification": "EXACT_SURVIVAL",
+      "invariant_id": "invariant:reciprocal-9-8",
+      "lineage_preserved": true,
+      "noise_class": "LANGUAGE_SYNONYM",
+      "noise_receipt_root_hash72": "0000000000000000000000000000003oPZ*dK?idI0jIVyKUGqwhAFU2>8^vb9BbOunZfDD/",
+      "preserves_declared_invariant": true
+    },
+    {
+      "classification": "EXACT_SURVIVAL",
+      "invariant_id": "invariant:reciprocal-9-8",
+      "lineage_preserved": true,
+      "noise_class": "IMAGE_ROTATION",
+      "noise_receipt_root_hash72": "0000000000000000000000000000000G(MmTQ13/Vr4F7w-dDMAfs49L3Qj*0dzP8ciHf>BQ",
+      "preserves_declared_invariant": true
+    },
+    {
+      "classification": "EXACT_SURVIVAL",
+      "invariant_id": "invariant:reciprocal-9-8",
+      "lineage_preserved": true,
+      "noise_class": "AUDIO_TEMPO",
+      "noise_receipt_root_hash72": "0000000000000000000000000000003Tz!9N/+ZovzZjTBR^1*Kz1EmJXXmLkgUQ=!lIktfo",
+      "preserves_declared_invariant": true
+    },
+    {
+      "classification": "EXACT_SURVIVAL",
+      "invariant_id": "invariant:reciprocal-9-8",
+      "lineage_preserved": true,
+      "noise_class": "GRAPH_NODE_RELABEL",
+      "noise_receipt_root_hash72": "0000000000000000000000000000003igVZwPU2cV5Iwm7qYqnDHGbZqX1x6vU=mixhfQjc=",
+      "preserves_declared_invariant": true
+    },
+    {
+      "classification": "EXACT_SURVIVAL",
+      "invariant_id": "invariant:reciprocal-9-8",
+      "lineage_preserved": true,
+      "noise_class": "BINARY_PADDING",
+      "noise_receipt_root_hash72": "00000000000000000000000000000031qOUlqEDf*EYCTDZ6m7dGBOewgw2YOTuS2TO=Q5Y>",
+      "preserves_declared_invariant": true
+    },
+    {
+      "classification": "EXACT_SURVIVAL",
+      "invariant_id": "invariant:reciprocal-9-8",
+      "lineage_preserved": true,
+      "noise_class": "TARGETED_ORDER_REVERSAL",
+      "noise_receipt_root_hash72": "0000000000000000000000000000002omqK4DZy!MD97Pp>u0GCGakMF0dDBlS-gspZxMAtv",
+      "preserves_declared_invariant": true
+    },
+    {
+      "classification": "EXACT_SURVIVAL",
+      "invariant_id": "invariant:pythagorean-3-4-5",
+      "lineage_preserved": true,
+      "noise_class": "LANGUAGE_SYNONYM",
+      "noise_receipt_root_hash72": "0000000000000000000000000000002S6bk8JgiQn-f?7Ad4ROt!xaOWEqmPgD0T*okZ9QyV",
+      "preserves_declared_invariant": true
+    },
+    {
+      "classification": "EXACT_SURVIVAL",
+      "invariant_id": "invariant:pythagorean-3-4-5",
+      "lineage_preserved": true,
+      "noise_class": "IMAGE_ROTATION",
+      "noise_receipt_root_hash72": "0000000000000000000000000000000cixLO9BOsj?g9s9N6YnuKoaY^fe/zeDgmCrSDncWT",
+      "preserves_declared_invariant": true
+    },
+    {
+      "classification": "EXACT_SURVIVAL",
+      "invariant_id": "invariant:pythagorean-3-4-5",
+      "lineage_preserved": true,
+      "noise_class": "AUDIO_TEMPO",
+      "noise_receipt_root_hash72": "0000000000000000000000000000000?jkzw8Cg3o>H>JEdjSwzMkS+MHf2Kvz1wfDM?N5GQ",
+      "preserves_declared_invariant": true
+    },
+    {
+      "classification": "EXACT_SURVIVAL",
+      "invariant_id": "invariant:pythagorean-3-4-5",
+      "lineage_preserved": true,
+      "noise_class": "GRAPH_NODE_RELABEL",
+      "noise_receipt_root_hash72": "0000000000000000000000000000000>fO!JxLOhQzYu-)=K9FNKzS8KmYa-aKnEqmUl5D*z",
+      "preserves_declared_invariant": true
+    },
+    {
+      "classification": "EXACT_SURVIVAL",
+      "invariant_id": "invariant:pythagorean-3-4-5",
+      "lineage_preserved": true,
+      "noise_class": "BINARY_PADDING",
+      "noise_receipt_root_hash72": "0000000000000000000000000000002e64Pq^CjfnK*c/kax+fheiP30NWF^tL/IiMrZTGcf",
+      "preserves_declared_invariant": true
+    },
+    {
+      "classification": "EXACT_SURVIVAL",
+      "invariant_id": "invariant:pythagorean-3-4-5",
+      "lineage_preserved": true,
+      "noise_class": "TARGETED_ORDER_REVERSAL",
+      "noise_receipt_root_hash72": "0000000000000000000000000000001jpqtUewoxxwQHW6r3Kh0HxQePPMN7M2rI^*9NVO-u",
+      "preserves_declared_invariant": true
+    },
+    {
+      "classification": "EXACT_SURVIVAL",
+      "invariant_id": "invariant:opposite-phase-u72",
+      "lineage_preserved": true,
+      "noise_class": "LANGUAGE_SYNONYM",
+      "noise_receipt_root_hash72": "0000000000000000000000000000003npGa0vtE333*GkZJyYo!SYAB1HEnen6)O^*KvKZcP",
+      "preserves_declared_invariant": true
+    },
+    {
+      "classification": "EXACT_SURVIVAL",
+      "invariant_id": "invariant:opposite-phase-u72",
+      "lineage_preserved": true,
+      "noise_class": "IMAGE_ROTATION",
+      "noise_receipt_root_hash72": "0000000000000000000000000000000w4n6cEJGXzLO*+c2Ohu4nZDKOGaxQf*XR>T7ly=b8",
+      "preserves_declared_invariant": true
+    },
+    {
+      "classification": "EXACT_SURVIVAL",
+      "invariant_id": "invariant:opposite-phase-u72",
+      "lineage_preserved": true,
+      "noise_class": "AUDIO_TEMPO",
+      "noise_receipt_root_hash72": "0000000000000000000000000000001aWK+2T^?MPcfeYmcX^kt!E5OWkaWCc?6KB=zLfZBk",
+      "preserves_declared_invariant": true
+    },
+    {
+      "classification": "EXACT_SURVIVAL",
+      "invariant_id": "invariant:opposite-phase-u72",
+      "lineage_preserved": true,
+      "noise_class": "GRAPH_NODE_RELABEL",
+      "noise_receipt_root_hash72": "0000000000000000000000000000002h5x))YBuD/tiCt4z=m=tp^BhZFUpQAnvt^)XyIK1Y",
+      "preserves_declared_invariant": true
+    },
+    {
+      "classification": "EXACT_SURVIVAL",
+      "invariant_id": "invariant:opposite-phase-u72",
+      "lineage_preserved": true,
+      "noise_class": "BINARY_PADDING",
+      "noise_receipt_root_hash72": "0000000000000000000000000000001a?wqISxd^o0>H3tuF-I+Uvh!NLXQhWuDZersOsIP^",
+      "preserves_declared_invariant": true
+    },
+    {
+      "classification": "EXACT_SURVIVAL",
+      "invariant_id": "invariant:opposite-phase-u72",
+      "lineage_preserved": true,
+      "noise_class": "TARGETED_ORDER_REVERSAL",
+      "noise_receipt_root_hash72": "0000000000000000000000000000004ehnWp+T2MxoFQjBVc0nUFY+gC03RpOJeQ8eVD^9st",
+      "preserves_declared_invariant": true
+    },
+    {
+      "classification": "EXACT_SURVIVAL",
+      "invariant_id": "invariant:noncommutative-A-B",
+      "lineage_preserved": true,
+      "noise_class": "LANGUAGE_SYNONYM",
+      "noise_receipt_root_hash72": "0000000000000000000000000000000ygSPqyTbll(P!EdkWXkP0jD/aYt4ax^clr=Qlpa(h",
+      "preserves_declared_invariant": true
+    },
+    {
+      "classification": "EXACT_SURVIVAL",
+      "invariant_id": "invariant:noncommutative-A-B",
+      "lineage_preserved": true,
+      "noise_class": "IMAGE_ROTATION",
+      "noise_receipt_root_hash72": "0000000000000000000000000000004my51vai7-hZbwqe3?>klvvz3u!J95ek-*ZayW697u",
+      "preserves_declared_invariant": true
+    },
+    {
+      "classification": "EXACT_SURVIVAL",
+      "invariant_id": "invariant:noncommutative-A-B",
+      "lineage_preserved": true,
+      "noise_class": "AUDIO_TEMPO",
+      "noise_receipt_root_hash72": "00000000000000000000000000000008Umb+i5gTmWEH=/*N9!4(PwF*?Om1!/vwx9qs8P6U",
+      "preserves_declared_invariant": true
+    },
+    {
+      "classification": "EXACT_SURVIVAL",
+      "invariant_id": "invariant:noncommutative-A-B",
+      "lineage_preserved": true,
+      "noise_class": "GRAPH_NODE_RELABEL",
+      "noise_receipt_root_hash72": "0000000000000000000000000000002^EcX-WO6bF!-jm+d-Q/KggctlWeG6Hv(5^S?whoR9",
+      "preserves_declared_invariant": true
+    },
+    {
+      "classification": "EXACT_SURVIVAL",
+      "invariant_id": "invariant:noncommutative-A-B",
+      "lineage_preserved": true,
+      "noise_class": "BINARY_PADDING",
+      "noise_receipt_root_hash72": "0000000000000000000000000000002?DQ5GfoZAXVTEfqxLOfRo8+yW5K^Co=>6AtX6IEDd",
+      "preserves_declared_invariant": true
+    },
+    {
+      "classification": "INVARIANT_FAILURE",
+      "invariant_id": "invariant:noncommutative-A-B",
+      "lineage_preserved": true,
+      "noise_class": "TARGETED_ORDER_REVERSAL",
+      "noise_receipt_root_hash72": "0000000000000000000000000000002N/wwEHbdpGW-X>6N21+K5)NAhIcdf6J(9D+W7tKOk",
+      "preserves_declared_invariant": false
+    }
+  ]
+}

@@ -1,0 +1,65 @@
+{
+  "schema": "HHS_PASS_086_NEGATIVE_CASES_V1",
+  "cases": [
+    {
+      "case": "missing-evidence",
+      "expected": "REJECT_PATTERN_WITHOUT_EVIDENCE",
+      "observed": "REJECT_PATTERN_WITHOUT_EVIDENCE",
+      "passed": true
+    },
+    {
+      "case": "identity-collapse",
+      "expected": "REJECT_PATTERN_IDENTITY_COLLAPSE",
+      "observed": "REJECT_PATTERN_IDENTITY_COLLAPSE",
+      "passed": true
+    },
+    {
+      "case": "proposal-authority",
+      "expected": "REJECT_PROPOSAL_AS_AUTHORITY",
+      "observed": "REJECT_PROPOSAL_AS_AUTHORITY",
+      "passed": true
+    },
+    {
+      "case": "cache-authority",
+      "expected": "REJECT_CACHE_AS_AUTHORITY",
+      "observed": "REJECT_CACHE_AS_AUTHORITY",
+      "passed": true
+    },
+    {
+      "case": "unwitnessed-edge",
+      "expected": "REJECT_UNWITNESSED_GRAPH_EDGE",
+      "observed": "REJECT_UNWITNESSED_GRAPH_EDGE",
+      "passed": true
+    },
+    {
+      "case": "context-violation",
+      "expected": "REJECT_PATTERN_CONTEXT_SCOPE_VIOLATION",
+      "observed": "REJECT_PATTERN_CONTEXT_SCOPE_VIOLATION",
+      "passed": true
+    },
+    {
+      "case": "silent-overwrite",
+      "expected": "REJECT_SILENT_PATTERN_OVERWRITE",
+      "observed": "REJECT_SILENT_PATTERN_OVERWRITE",
+      "passed": true
+    },
+    {
+      "case": "opaque-embedding",
+      "expected": "REJECT_OPAQUE_EMBEDDING_AS_CANONICAL_EVIDENCE",
+      "observed": "REJECT_OPAQUE_EMBEDDING_AS_CANONICAL_EVIDENCE",
+      "passed": true
+    },
+    {
+      "case": "closure-failure",
+      "expected": "REJECT_PATTERN_ADMISSION_CLOSURE_FAILURE",
+      "observed": "REJECT_PATTERN_ADMISSION_CLOSURE_FAILURE",
+      "passed": true
+    },
+    {
+      "case": "replay-mismatch",
+      "expected": "REJECT_PATTERN_REPLAY_MISMATCH",
+      "observed": "REJECT_PATTERN_REPLAY_MISMATCH",
+      "passed": true
+    }
+  ]
+}

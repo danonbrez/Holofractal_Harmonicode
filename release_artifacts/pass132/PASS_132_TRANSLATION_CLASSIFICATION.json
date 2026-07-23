@@ -1,0 +1,4623 @@
+{
+  "classification_root_hash72": "vLi+xeB>hspKI/ckCxX0rGw?tOEZV0QRmpSmARdeIkYQF9BEf?Pzgl*NhxZ!nFj(tLS43RiN",
+  "schema": "HHS_PASS132_TRANSLATION_CLASSIFICATION_REPORT_V1",
+  "workloads": [
+    {
+      "nodes": [
+        {
+          "node_kind": "ROOT",
+          "node_path": [],
+          "node_root_hash72": "5D(Cq-2hpwO?TP1sT>Na87CegL+Yhzr7OJal/!C<81Ote3!huuWmfAu-hWgdbbp0QIXrzKQO",
+          "node_value": "0+0.1+0.1+0.1+0.1+0.1+0.1+0.1+0.1+0.1+0.1",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            0
+          ],
+          "node_root_hash72": "C/l9?Gl5amD<6GiNUj/Whc3U(IA!OU>Me5uYyDncM<(3ovevGTQTJ<G/Rak-cQW1T0jX*Y0y",
+          "node_value": "0",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            1
+          ],
+          "node_root_hash72": "C/l9?Gl5amD<6GiNUj/Wib3U(IA!OU>Hj5uYyDncM<(4nvevGTQTJ<G/Rak-cQW1T0jY+Y0y",
+          "node_value": "+",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            2
+          ],
+          "node_root_hash72": "C/l9?Gl5amD<6GiNUj/Wja3U(IA!OU>Me5uYyDncM<(5mvevGTQTJ<G/Rak-cQW1T0jZ-Y0y",
+          "node_value": "0",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            3
+          ],
+          "node_root_hash72": "C/l9?Gl5amD<6GiNUj/Wk93U(IA!OU>Kg5uYyDncM<(6lvevGTQTJ<G/Rak-cQW1T0j-ZY0y",
+          "node_value": ".",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            4
+          ],
+          "node_root_hash72": "C/l9?Gl5amD<6GiNUj/Wl83U(IA!OU>Nd5uYyDncM<(7kvevGTQTJ<G/Rak-cQW1T0j+YY0y",
+          "node_value": "1",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            5
+          ],
+          "node_root_hash72": "C/l9?Gl5amD<6GiNUj/Wm73U(IA!OU>Hj5uYyDncM<(8jvevGTQTJ<G/Rak-cQW1T0j*XY0y",
+          "node_value": "+",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            6
+          ],
+          "node_root_hash72": "C/l9?Gl5amD<6GiNUj/Wn63U(IA!OU>Me5uYyDncM<(9ivevGTQTJ<G/Rak-cQW1T0j/WY0y",
+          "node_value": "0",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            7
+          ],
+          "node_root_hash72": "C/l9?Gl5amD<6GiNUj/Wo53U(IA!OU>Kg5uYyDncM<(ahvevGTQTJ<G/Rak-cQW1T0j(VY0y",
+          "node_value": ".",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            8
+          ],
+          "node_root_hash72": "C/l9?Gl5amD<6GiNUj/Wp43U(IA!OU>Nd5uYyDncM<(bgvevGTQTJ<G/Rak-cQW1T0j)UY0y",
+          "node_value": "1",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            9
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oPf0yrcCntBJaBNWZiYZHyKV7hz14GTQTJ<G/Rak-cQW1T0jX<(ZB",
+          "node_value": "+",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            10
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP7cE5J6pSgqW40phjIa9/wz!ctE53qQTJ<G/Rak-cQW1T0jX>/ZB",
+          "node_value": "0",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            11
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP7dD5J6pSgqW4!rhjIa9/wz!ctF43qQTJ<G/Rak-cQW1T0jX!*ZB",
+          "node_value": ".",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            12
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP7eC5J6pSgqW41ohjIa9/wz!ctG33qQTJ<G/Rak-cQW1T0jX?+ZB",
+          "node_value": "1",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            13
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP7fB5J6pSgqW4)uhjIa9/wz!ctH23qQTJ<G/Rak-cQW1T0jX0-ZB",
+          "node_value": "+",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            14
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP7gA5J6pSgqW40phjIa9/wz!ctI13qQTJ<G/Rak-cQW1T0jX1ZZB",
+          "node_value": "0",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            15
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP7hz5J6pSgqW4!rhjIa9/wz!ctJ03qQTJ<G/Rak-cQW1T0jX2YZB",
+          "node_value": ".",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            16
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP7iy5J6pSgqW41ohjIa9/wz!ctK?3qQTJ<G/Rak-cQW1T0jX3XZB",
+          "node_value": "1",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            17
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP7jx5J6pSgqW4)uhjIa9/wz!ctL!3qQTJ<G/Rak-cQW1T0jX4WZB",
+          "node_value": "+",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            18
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP7kw5J6pSgqW40phjIa9/wz!ctM>3qQTJ<G/Rak-cQW1T0jX5VZB",
+          "node_value": "0",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            19
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP7lv5J6pSgqW4!rhjIa9/wz!ctN<3qQTJ<G/Rak-cQW1T0jY)(ZB",
+          "node_value": ".",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            20
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP8bE5J6pSgqW41ohjIa9/wz!cuD53qQTJ<G/Rak-cQW1T0jY</ZB",
+          "node_value": "1",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            21
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP8cD5J6pSgqW4)uhjIa9/wz!cuE43qQTJ<G/Rak-cQW1T0jY>*ZB",
+          "node_value": "+",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            22
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP8dC5J6pSgqW40phjIa9/wz!cuF33qQTJ<G/Rak-cQW1T0jY!+ZB",
+          "node_value": "0",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            23
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP8eB5J6pSgqW4!rhjIa9/wz!cuG23qQTJ<G/Rak-cQW1T0jY?-ZB",
+          "node_value": ".",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            24
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP8fA5J6pSgqW41ohjIa9/wz!cuH13qQTJ<G/Rak-cQW1T0jY0ZZB",
+          "node_value": "1",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            25
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP8gz5J6pSgqW4)uhjIa9/wz!cuI03qQTJ<G/Rak-cQW1T0jY1YZB",
+          "node_value": "+",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            26
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP8hy5J6pSgqW40phjIa9/wz!cuJ?3qQTJ<G/Rak-cQW1T0jY2XZB",
+          "node_value": "0",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            27
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP8ix5J6pSgqW4!rhjIa9/wz!cuK!3qQTJ<G/Rak-cQW1T0jY3WZB",
+          "node_value": ".",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            28
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP8jw5J6pSgqW41ohjIa9/wz!cuL>3qQTJ<G/Rak-cQW1T0jY4VZB",
+          "node_value": "1",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            29
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP8kv5J6pSgqW4)uhjIa9/wz!cuM<3qQTJ<G/Rak-cQW1T0jZ((ZB",
+          "node_value": "+",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            30
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP9aE5J6pSgqW40phjIa9/wz!cvC53qQTJ<G/Rak-cQW1T0jZ)/ZB",
+          "node_value": "0",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            31
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP9bD5J6pSgqW4!rhjIa9/wz!cvD43qQTJ<G/Rak-cQW1T0jZ<*ZB",
+          "node_value": ".",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            32
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP9cC5J6pSgqW41ohjIa9/wz!cvE33qQTJ<G/Rak-cQW1T0jZ>+ZB",
+          "node_value": "1",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            33
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP9dB5J6pSgqW4)uhjIa9/wz!cvF23qQTJ<G/Rak-cQW1T0jZ!-ZB",
+          "node_value": "+",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            34
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP9eA5J6pSgqW40phjIa9/wz!cvG13qQTJ<G/Rak-cQW1T0jZ?ZZB",
+          "node_value": "0",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            35
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP9fz5J6pSgqW4!rhjIa9/wz!cvH03qQTJ<G/Rak-cQW1T0jZ0YZB",
+          "node_value": ".",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            36
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP9gy5J6pSgqW41ohjIa9/wz!cvI?3qQTJ<G/Rak-cQW1T0jZ1XZB",
+          "node_value": "1",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            37
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP9hx5J6pSgqW4)uhjIa9/wz!cvJ!3qQTJ<G/Rak-cQW1T0jZ2WZB",
+          "node_value": "+",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            38
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP9iw5J6pSgqW40phjIa9/wz!cvK>3qQTJ<G/Rak-cQW1T0jZ3VZB",
+          "node_value": "0",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            39
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP9jv5J6pSgqW4!rhjIa9/wz!cvL<3qQTJ<G/Rak-cQW1T0j-/(ZB",
+          "node_value": ".",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            40
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oPa9E5J6pSgqW41ohjIa9/wz!cwB53qQTJ<G/Rak-cQW1T0j-(/ZB",
+          "node_value": "1",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        }
+      ],
+      "workload_id": "repeated_decimal_accumulation"
+    },
+    {
+      "nodes": [
+        {
+          "node_kind": "ROOT",
+          "node_path": [],
+          "node_root_hash72": "od(!k3HL7!-)GoB4nl>ZAwZ6jWEGni-WqQ8P3ZxvREJ8mKLEsxxNDchD+id<Ob9zl2jqA/ZP",
+          "node_value": "(10000000000000000+1)-10000000000000000",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "PAREN",
+          "node_path": [
+            0
+          ],
+          "node_root_hash72": "JeprtI<mo?kr1(lZ0uVcSjMGYa8iUo5JHVvSAO8AN?)cP7IK3WbFPZvnLOWNYFOf<>PJG-0z",
+          "node_value": "(",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            0,
+            0
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP78yrcCntBJaHVD!sS4oKIxKP?FwHG0LA3sdGdJoGN+LgrjX4WZB",
+          "node_value": "10000000000000000",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            0,
+            1
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP7kw5J6pSgqW4)uhjIa9/wz!csBBfgmTJ<G/Rak-cQW1T0jX5VZB",
+          "node_value": "+",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            0,
+            2
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP7lv5J6pSgqW41ohjIa9/wz!csBCegmTJ<G/Rak-cQW1T0jY)(ZB",
+          "node_value": "1",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "CLOSE",
+          "node_path": [
+            0,
+            3
+          ],
+          "node_root_hash72": "v85+LEXijh>nqnq>ky5oP8bE5J6pSgqW4/whjIa9/wz!csBDdgmTJ<G/Rak-cQW1T0jY</ZB",
+          "node_value": ")",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            1
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP8cD5J6pSgqW4>shjIa9/wz!ctd*eTQTJ<G/Rak-cQW1T0jY>*ZB",
+          "node_value": "-",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            2
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP8dC5J6pSgqW41C!sS4oKIxKP?FwHUD3BXNP1?nfKcuyb0jZ3VZB",
+          "node_value": "10000000000000000",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        }
+      ],
+      "workload_id": "catastrophic_cancellation"
+    },
+    {
+      "nodes": [
+        {
+          "node_kind": "ROOT",
+          "node_path": [],
+          "node_root_hash72": "eSz0>2+3iW-wd0Wutk4c2MMbb2yjz6GxHuxnwxbipzZ8gdhzsBcy-3V>hiYjB4*TN7serHpj",
+          "node_value": "Σ(+0.1-0.1)",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            0
+          ],
+          "node_root_hash72": "C/l9?Gl5amD<6GiNUj/Whc3U(IA!OU>-V1WZiYZHyKV78I14GTQTJ<G/Rak-cQW1T0jX*Y0y",
+          "node_value": "Σ",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "PAREN",
+          "node_path": [
+            1
+          ],
+          "node_root_hash72": "wOv-u?GXYb)3XYRgh)aheHXGcOM74J4uUqr22K79sZ*fB11rfU0YvEx/xK1UKJ7bjlNNqVj7",
+          "node_value": "(",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            1,
+            0
+          ],
+          "node_root_hash72": "C/l9?Gl5amD<6GiNUj/Wja3U(IA!OU>Hj5uYyDncM<(4K3e*eTQTJ<G/Rak-cQW1T0jZ-Y0y",
+          "node_value": "+",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            1,
+            1
+          ],
+          "node_root_hash72": "C/l9?Gl5amD<6GiNUj/Wk93U(IA!OU>Me5uYyDncM<(4K4d*eTQTJ<G/Rak-cQW1T0j-ZY0y",
+          "node_value": "0",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            1,
+            2
+          ],
+          "node_root_hash72": "C/l9?Gl5amD<6GiNUj/Wl83U(IA!OU>Kg5uYyDncM<(4K5c*eTQTJ<G/Rak-cQW1T0j+YY0y",
+          "node_value": ".",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            1,
+            3
+          ],
+          "node_root_hash72": "C/l9?Gl5amD<6GiNUj/Wm73U(IA!OU>Nd5uYyDncM<(4K6b*eTQTJ<G/Rak-cQW1T0j*XY0y",
+          "node_value": "1",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            1,
+            4
+          ],
+          "node_root_hash72": "C/l9?Gl5amD<6GiNUj/Wn63U(IA!OU>Jh5uYyDncM<(4K7a*eTQTJ<G/Rak-cQW1T0j/WY0y",
+          "node_value": "-",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            1,
+            5
+          ],
+          "node_root_hash72": "C/l9?Gl5amD<6GiNUj/Wo53U(IA!OU>Me5uYyDncM<(4K89*eTQTJ<G/Rak-cQW1T0j(VY0y",
+          "node_value": "0",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            1,
+            6
+          ],
+          "node_root_hash72": "C/l9?Gl5amD<6GiNUj/Wp43U(IA!OU>Kg5uYyDncM<(4K98*eTQTJ<G/Rak-cQW1T0j)UY0y",
+          "node_value": ".",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            1,
+            7
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oPf0yrcCntBJaHHWZiYZHyKV79(Q!3qQTJ<G/Rak-cQW1T0jX<(ZB",
+          "node_value": "1",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "CLOSE",
+          "node_path": [
+            1,
+            8
+          ],
+          "node_root_hash72": "v85+LEXijh>nqnq>ky5oP7cE5J6pSgqW4/whjIa9/wz!ctAI8gmTJ<G/Rak-cQW1T0jX>/ZB",
+          "node_value": ")",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        }
+      ],
+      "workload_id": "alternating_accumulation"
+    },
+    {
+      "nodes": [
+        {
+          "node_kind": "ROOT",
+          "node_path": [],
+          "node_root_hash72": "W2uKt?Og/vsDL(El9DWbeDotKE3-Y(<iaX*bN(G>WMtPxsUdi<K!ZiZRIIp-ZKp1M-6Uda2>",
+          "node_value": "(100000000000000000000-100000000000000000000)+3",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "PAREN",
+          "node_path": [
+            0
+          ],
+          "node_root_hash72": "OrCICQ12HpQfcaxG+(Wy/*ntWRSaQtOjP*oP>1uLFJKeGrBea?7LIeSOkPO82ag*<2Rq!r!g",
+          "node_value": "(",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            0,
+            0
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP78yrcCntBJaHVD!sS4oKIxKP?FwHURUKT-VIh6a1Tbzd>oyufZB",
+          "node_value": "100000000000000000000",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            0,
+            1
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP8dC5J6pSgqW4>shjIa9/wz!csBBfgmTJ<G/Rak-cQW1T0jY!+ZB",
+          "node_value": "-",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            0,
+            2
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP8eB5J6pSgqW41C!sS4oKIxKP?FwHURUK>tdJ1rMwFZqhug>FnbB",
+          "node_value": "100000000000000000000",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "CLOSE",
+          "node_path": [
+            0,
+            3
+          ],
+          "node_root_hash72": "v85+LEXijh>nqnq>ky5oPadA5J6pSgqW4/whjIa9/wz!csBDdgmTJ<G/Rak-cQW1T0j-!ZZB",
+          "node_value": ")",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            1
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oPaez5J6pSgqW4)uhjIa9/wz!ctd*eTQTJ<G/Rak-cQW1T0j-?YZB",
+          "node_value": "+",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            2
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oPafy5J6pSgqW43mhjIa9/wz!cuc*eTQTJ<G/Rak-cQW1T0j-0XZB",
+          "node_value": "3",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        }
+      ],
+      "workload_id": "nonassociative_left"
+    },
+    {
+      "nodes": [
+        {
+          "node_kind": "ROOT",
+          "node_path": [],
+          "node_root_hash72": "Km+4WCBgfdp>V/3YtlNHbqXo2AX8)1)M9r3U10UoG)rAbDRvqF+tZH<HJHoUB<t)Rb2FGJei",
+          "node_value": "100000000000000000000+(-100000000000000000000+3)",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            0
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP69yrcCntBJaHVD!sS4oKIxKP?FwHURUKT-VIh6a1TbzdKQd</ZB",
+          "node_value": "100000000000000000000",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            1
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP8cD5J6pSgqW4)uhjIa9/wz!ctd*eTQTJ<G/Rak-cQW1T0jY>*ZB",
+          "node_value": "+",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "PAREN",
+          "node_path": [
+            2
+          ],
+          "node_root_hash72": "2c-ftfev*TVp/R>1(uA(pz?D6LXsU4jBKP-p)pMk8NrXAOb7<EN>xGaq-b-QFj0WWOLxb/K0",
+          "node_value": "(",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            2,
+            0
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP8eB5J6pSgqW4>shjIa9/wz!cuzAggmTJ<G/Rak-cQW1T0jY?-ZB",
+          "node_value": "-",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            2,
+            1
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP8fA5J6pSgqW41C!sS4oKIxKP?FwHURUK>tdJ1rMwFZqhwe<HmbB",
+          "node_value": "100000000000000000000",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            2,
+            2
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oPaez5J6pSgqW4)uhjIa9/wz!cuzCegmTJ<G/Rak-cQW1T0j-?YZB",
+          "node_value": "+",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            2,
+            3
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oPafy5J6pSgqW43mhjIa9/wz!cuzDdgmTJ<G/Rak-cQW1T0j-0XZB",
+          "node_value": "3",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "CLOSE",
+          "node_path": [
+            2,
+            4
+          ],
+          "node_root_hash72": "v85+LEXijh>nqnq>ky5oPagx5J6pSgqW4/whjIa9/wz!cuzEcgmTJ<G/Rak-cQW1T0j-1WZB",
+          "node_value": ")",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        }
+      ],
+      "workload_id": "nonassociative_right"
+    },
+    {
+      "nodes": [
+        {
+          "node_kind": "ROOT",
+          "node_path": [],
+          "node_root_hash72": "Ec6zz<-phb7qqYo<O7DT-!n3nbZVPf6cuchBGK3eTVYQ318o!rlc82mYf(sR-qhnB4qeT4T>",
+          "node_value": "(3/7)*(7/3)",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "PAREN",
+          "node_path": [
+            0
+          ],
+          "node_root_hash72": "3(dLtl1fdk!?vYQg<R(tKBxDrunhlLUu>*s6DnIl!IDH5EM7*T**U>BuOUtBmDM8wxgoRlzS",
+          "node_value": "(",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            0,
+            0
+          ],
+          "node_root_hash72": "C/l9?Gl5amD<6GiNUj/Wib3U(IA!OU>Pb5uYyDncM<(3L3e*eTQTJ<G/Rak-cQW1T0jY+Y0y",
+          "node_value": "3",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            0,
+            1
+          ],
+          "node_root_hash72": "C/l9?Gl5amD<6GiNUj/Wja3U(IA!OU>Lf5uYyDncM<(3L4d*eTQTJ<G/Rak-cQW1T0jZ-Y0y",
+          "node_value": "/",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            0,
+            2
+          ],
+          "node_root_hash72": "C/l9?Gl5amD<6GiNUj/Wk93U(IA!OU>T75uYyDncM<(3L5c*eTQTJ<G/Rak-cQW1T0j-ZY0y",
+          "node_value": "7",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "CLOSE",
+          "node_path": [
+            0,
+            3
+          ],
+          "node_root_hash72": "C/l9?pzck?M<6GiNUj/Wl83U(IA!OU>Fl5uYyDncM<(3L6b*eTQTJ<G/Rak-cQW1T0j+YY0y",
+          "node_value": ")",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            1
+          ],
+          "node_root_hash72": "C/l9?Gl5amD<6GiNUj/Wm73U(IA!OU>Gk5uYyDncM<(4nvevGTQTJ<G/Rak-cQW1T0j*XY0y",
+          "node_value": "*",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "PAREN",
+          "node_path": [
+            2
+          ],
+          "node_root_hash72": "Mm*qYnoKEbIs<e>j/sx8g!ZepM9vbuyVo>UJhoGNNw+2zvX+!/!1vW*G)8HdCuyBU-Zw<Le+",
+          "node_value": "(",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            2,
+            0
+          ],
+          "node_root_hash72": "C/l9?Gl5amD<6GiNUj/Wo53U(IA!OU>T75uYyDncM<(5J3e*eTQTJ<G/Rak-cQW1T0j(VY0y",
+          "node_value": "7",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            2,
+            1
+          ],
+          "node_root_hash72": "C/l9?Gl5amD<6GiNUj/Wp43U(IA!OU>Lf5uYyDncM<(5J4d*eTQTJ<G/Rak-cQW1T0j)UY0y",
+          "node_value": "/",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            2,
+            2
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oPf0yrcCntBJaJFWZiYZHyKV7a/L33qQTJ<G/Rak-cQW1T0jX<(ZB",
+          "node_value": "3",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "CLOSE",
+          "node_path": [
+            2,
+            3
+          ],
+          "node_root_hash72": "v85+LEXijh>nqnq>ky5oP7cE5J6pSgqW4/whjIa9/wz!cuzDdgmTJ<G/Rak-cQW1T0jX>/ZB",
+          "node_value": ")",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        }
+      ],
+      "workload_id": "inverse_normalization"
+    },
+    {
+      "nodes": [
+        {
+          "node_kind": "ROOT",
+          "node_path": [],
+          "node_root_hash72": "am9ZW/pb<hEuOLkRb5Ptehoo*P4a2IJL/Y>Q/9Qw)S!JTR)gaZ56mNcf-qQi0OyvC1rrQ4If",
+          "node_value": "1e308*1e308",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            0
+          ],
+          "node_root_hash72": "C/l9?Gl5amD<6GiNUj/Whc3U(IA!OU>Nd5uYyDncM<(3ovevGTQTJ<G/Rak-cQW1T0jX*Y0y",
+          "node_value": "1",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            1
+          ],
+          "node_root_hash72": "C/l9?Gl5amD<6GiNUj/Wib3U(IA!OU>tOTLMLJ(uv+lM3w?43qQTJ<G/Rak-cQW1T0j+YY0y",
+          "node_value": "e308",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            2
+          ],
+          "node_root_hash72": "C/l9?Gl5amD<6GiNUj/Wm73U(IA!OU>Gk5uYyDncM<(5mvevGTQTJ<G/Rak-cQW1T0j*XY0y",
+          "node_value": "*",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            3
+          ],
+          "node_root_hash72": "C/l9?Gl5amD<6GiNUj/Wn63U(IA!OU>Nd5uYyDncM<(6lvevGTQTJ<G/Rak-cQW1T0j/WY0y",
+          "node_value": "1",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            4
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oPd2yrcCntBJan8A661)eQtQyRn2/cgmTJ<G/Rak-cQW1T0jX>/ZB",
+          "node_value": "e308",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        }
+      ],
+      "workload_id": "overflow_boundary"
+    },
+    {
+      "nodes": [
+        {
+          "node_kind": "ROOT",
+          "node_path": [],
+          "node_root_hash72": "1OqoEf85>ypZ8QXsht/J?XI*xMO4z6ggtvQX-e8yRScGWR!ES!pQF97-i?xD1eOfmo9pv*15",
+          "node_value": "1e-320/2",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            0
+          ],
+          "node_root_hash72": "C/l9?Gl5amD<6GiNUj/Whc3U(IA!OU>Nd5uYyDncM<(3ovevGTQTJ<G/Rak-cQW1T0jX*Y0y",
+          "node_value": "1",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            1
+          ],
+          "node_root_hash72": "C/l9?Gl5amD<6GiNUj/Wib3U(IA!OU>tx5uYyDncM<(4nvevGTQTJ<G/Rak-cQW1T0jY+Y0y",
+          "node_value": "e",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            2
+          ],
+          "node_root_hash72": "C/l9?Gl5amD<6GiNUj/Wja3U(IA!OU>Jh5uYyDncM<(5mvevGTQTJ<G/Rak-cQW1T0jZ-Y0y",
+          "node_value": "-",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            3
+          ],
+          "node_root_hash72": "C/l9?Gl5amD<6GiNUj/Wk93U(IA!OU>PrUphjIa9/wz!cvb*eTQTJ<G/Rak-cQW1T0j*XY0y",
+          "node_value": "320",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            4
+          ],
+          "node_root_hash72": "C/l9?Gl5amD<6GiNUj/Wn63U(IA!OU>Lf5uYyDncM<(7kvevGTQTJ<G/Rak-cQW1T0j/WY0y",
+          "node_value": "/",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            5
+          ],
+          "node_root_hash72": "C/l9?Gl5amD<6GiNUj/Wo53U(IA!OU>Oc5uYyDncM<(8jvevGTQTJ<G/Rak-cQW1T0j(VY0y",
+          "node_value": "2",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        }
+      ],
+      "workload_id": "underflow_boundary"
+    },
+    {
+      "nodes": [
+        {
+          "node_kind": "ROOT",
+          "node_path": [],
+          "node_root_hash72": "*dk0nNx0/sv*9ANcn3)hS4f8bZ0/45xC1vK6CT-3PxS+D8ZU)lm-5nh+1wwEUmAzEU>?ccdW",
+          "node_value": "(-0)*3",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "PAREN",
+          "node_path": [
+            0
+          ],
+          "node_root_hash72": "gStk>!(TFp)oJEb*5VUCDcnZA5EiwIkUSXe?yE5iH4C-+(WuwcEnEO+2D!3zY1?2/Yv*G5gd",
+          "node_value": "(",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            0,
+            0
+          ],
+          "node_root_hash72": "C/l9?Gl5amD<6GiNUj/Wib3U(IA!OU>Jh5uYyDncM<(3L3e*eTQTJ<G/Rak-cQW1T0jY+Y0y",
+          "node_value": "-",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            0,
+            1
+          ],
+          "node_root_hash72": "C/l9?Gl5amD<6GiNUj/Wja3U(IA!OU>Me5uYyDncM<(3L4d*eTQTJ<G/Rak-cQW1T0jZ-Y0y",
+          "node_value": "0",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "CLOSE",
+          "node_path": [
+            0,
+            2
+          ],
+          "node_root_hash72": "C/l9?pzck?M<6GiNUj/Wk93U(IA!OU>Fl5uYyDncM<(3L5c*eTQTJ<G/Rak-cQW1T0j-ZY0y",
+          "node_value": ")",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            1
+          ],
+          "node_root_hash72": "C/l9?Gl5amD<6GiNUj/Wl83U(IA!OU>Gk5uYyDncM<(4nvevGTQTJ<G/Rak-cQW1T0j+YY0y",
+          "node_value": "*",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            2
+          ],
+          "node_root_hash72": "C/l9?Gl5amD<6GiNUj/Wm73U(IA!OU>Pb5uYyDncM<(5mvevGTQTJ<G/Rak-cQW1T0j*XY0y",
+          "node_value": "3",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        }
+      ],
+      "workload_id": "signed_zero_propagation"
+    },
+    {
+      "nodes": [
+        {
+          "node_kind": "ROOT",
+          "node_path": [],
+          "node_root_hash72": "Bevwy1INJk<fxnlVX38gFN28()B7NtTBYwFCc7D?6rG*R!FuSk)WBhiL+JjJaVNgS8iNGpYo",
+          "node_value": "repeat_add(0.1,100)",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            0
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP69yrcCntBJaAJOXo1TqNID/GZLh-IT87qgqhak-cQW1T0jX<(ZB",
+          "node_value": "repeat_add",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "PAREN",
+          "node_path": [
+            1
+          ],
+          "node_root_hash72": "nhAVzjv1HD3ukRJqOzslgpeu2kxE7iyux<MQM8ZLu*1kDLBQmYogieYLptQ3YJgdg>Myz?<)",
+          "node_value": "(",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            1,
+            0
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP7dD5J6pSgqW40phjIa9/wz!ctAAggmTJ<G/Rak-cQW1T0jX!*ZB",
+          "node_value": "0",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            1,
+            1
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP7eC5J6pSgqW4!rhjIa9/wz!ctABfgmTJ<G/Rak-cQW1T0jX?+ZB",
+          "node_value": ".",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            1,
+            2
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP7fB5J6pSgqW41ohjIa9/wz!ctACegmTJ<G/Rak-cQW1T0jX0-ZB",
+          "node_value": "1",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "COMMA",
+          "node_path": [
+            1,
+            3
+          ],
+          "node_root_hash72": "v85+LEXled?rqnq>ky5oP7gA5J6pSgqW4<thjIa9/wz!ctADdgmTJ<G/Rak-cQW1T0jX1ZZB",
+          "node_value": ",",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            1,
+            4
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP7hz5J6pSgqW41C!e1)eQtQyRn2-C*mgd<G/Rak-cQW1T0jX4WZB",
+          "node_value": "100",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "CLOSE",
+          "node_path": [
+            1,
+            5
+          ],
+          "node_root_hash72": "v85+LEXijh>nqnq>ky5oP7kw5J6pSgqW4/whjIa9/wz!ctAFbgmTJ<G/Rak-cQW1T0jX5VZB",
+          "node_value": ")",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        }
+      ],
+      "workload_id": "iterative_drift"
+    },
+    {
+      "nodes": [
+        {
+          "node_kind": "ROOT",
+          "node_path": [],
+          "node_root_hash72": "jc93g*hSFsaZ4jZw4bfR>gRG6(OqI7WhS7g7E(RLt9LkodNQcV+c6XOs1wwEYy1eVh*Vv<)(",
+          "node_value": "(-1)^72",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "PAREN",
+          "node_path": [
+            0
+          ],
+          "node_root_hash72": "gStk>!(TFp)oJEb*5VUCDcnZA5EiwIkUSYd?yE5iH4C-+(WuwcEnEO+2D!3zY1?2/Yv*G5gd",
+          "node_value": "(",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            0,
+            0
+          ],
+          "node_root_hash72": "C/l9?Gl5amD<6GiNUj/Wib3U(IA!OU>Jh5uYyDncM<(3L3e*eTQTJ<G/Rak-cQW1T0jY+Y0y",
+          "node_value": "-",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            0,
+            1
+          ],
+          "node_root_hash72": "C/l9?Gl5amD<6GiNUj/Wja3U(IA!OU>Nd5uYyDncM<(3L4d*eTQTJ<G/Rak-cQW1T0jZ-Y0y",
+          "node_value": "1",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "CLOSE",
+          "node_path": [
+            0,
+            2
+          ],
+          "node_root_hash72": "C/l9?pzck?M<6GiNUj/Wk93U(IA!OU>Fl5uYyDncM<(3L5c*eTQTJ<G/Rak-cQW1T0j-ZY0y",
+          "node_value": ")",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            1
+          ],
+          "node_root_hash72": "C/l9?Gl5amD<6GiNUj/Wl83U(IA!OU>mE5uYyDncM<(4nvevGTQTJ<G/Rak-cQW1T0j+YY0y",
+          "node_value": "^",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            2
+          ],
+          "node_root_hash72": "C/l9?Gl5amD<6GiNUj/Wm73U(IA!OU>TnGWZiYZHyKV7aG14GTQTJ<G/Rak-cQW1T0j/WY0y",
+          "node_value": "72",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        }
+      ],
+      "workload_id": "long_phase_cycle"
+    },
+    {
+      "nodes": [
+        {
+          "node_kind": "ROOT",
+          "node_path": [],
+          "node_root_hash72": "(aVVJOV(+Jk)AH763T8vU<Y3QWTTLEwv55wZ8AinEcYMh)wJHNlyQG8(zHiRfN9?5Jqh-ra6",
+          "node_value": "repeat((10/3)*(3/10),20)",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            0
+          ],
+          "node_root_hash72": "C/l9?Gl5amD<6GiNUj/Whc3U(IA!OU>Gf>s(LInfAOi/D1//0tdoJ<G/Rak-cQW1T0j*XY0y",
+          "node_value": "repeat",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "PAREN",
+          "node_path": [
+            1
+          ],
+          "node_root_hash72": "*Lx*D3sq1l9Xq<bkZvr)YbqHxJ/dp2mqh)<9Pc06(Lcj2ecjtDk/(kN3zsGcpp/52iXEMxh-",
+          "node_value": "(",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "PAREN",
+          "node_path": [
+            1,
+            0
+          ],
+          "node_root_hash72": "uZ(WweD2l?p0kFxpSWydbu+6IBQY-zuHuGDg33Hncl5zTtpd*T+pzvFEqd8EjQVwT3Y4VOW<",
+          "node_value": "(",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            1,
+            0,
+            0
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oPe1yrcCntBJaHVphjIa9/wz!ctAADYqgd<G/Rak-cQW1T0jX<(ZB",
+          "node_value": "10",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            1,
+            0,
+            1
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP7cE5J6pSgqW4?qhjIa9/wz!ctAADZpgd<G/Rak-cQW1T0jX>/ZB",
+          "node_value": "/",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            1,
+            0,
+            2
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP7dD5J6pSgqW43mhjIa9/wz!ctAAD-ogd<G/Rak-cQW1T0jX!*ZB",
+          "node_value": "3",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "CLOSE",
+          "node_path": [
+            1,
+            0,
+            3
+          ],
+          "node_root_hash72": "v85+LEXijh>nqnq>ky5oP7eC5J6pSgqW4/whjIa9/wz!ctAAD+ngd<G/Rak-cQW1T0jX?+ZB",
+          "node_value": ")",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            1,
+            1
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP7fB5J6pSgqW4(vhjIa9/wz!ctABfgmTJ<G/Rak-cQW1T0jX0-ZB",
+          "node_value": "*",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "PAREN",
+          "node_path": [
+            1,
+            2
+          ],
+          "node_root_hash72": "2<1j*-KtNJCohGFOxJ4Sp4Gn5wI1IxuZj0bn1(?nhqWsQ?3Z7mitR7HbX4odJB9G)XnlVWgJ",
+          "node_value": "(",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            1,
+            2,
+            0
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP7hz5J6pSgqW43mhjIa9/wz!ctACBYqgd<G/Rak-cQW1T0jX2YZB",
+          "node_value": "3",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            1,
+            2,
+            1
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP7iy5J6pSgqW4?qhjIa9/wz!ctACBZpgd<G/Rak-cQW1T0jX3XZB",
+          "node_value": "/",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            1,
+            2,
+            2
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP7jx5J6pSgqW41CULJ(uv+lM3w?rNOXr6zG/Rak-cQW1T0jX5VZB",
+          "node_value": "10",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "CLOSE",
+          "node_path": [
+            1,
+            2,
+            3
+          ],
+          "node_root_hash72": "v85+LEXijh>nqnq>ky5oP7lv5J6pSgqW4/whjIa9/wz!ctACB+ngd<G/Rak-cQW1T0jY)(ZB",
+          "node_value": ")",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "COMMA",
+          "node_path": [
+            1,
+            3
+          ],
+          "node_root_hash72": "v85+LEXled?rqnq>ky5oP8bE5J6pSgqW4<thjIa9/wz!ctADdgmTJ<G/Rak-cQW1T0jY</ZB",
+          "node_value": ",",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            1,
+            4
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP8cD5J6pSgqW42BULJ(uv+lM3w?rPpdoJ<G/Rak-cQW1T0jY!+ZB",
+          "node_value": "20",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "CLOSE",
+          "node_path": [
+            1,
+            5
+          ],
+          "node_root_hash72": "v85+LEXijh>nqnq>ky5oP8eB5J6pSgqW4/whjIa9/wz!ctAFbgmTJ<G/Rak-cQW1T0jY?-ZB",
+          "node_value": ")",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        }
+      ],
+      "workload_id": "repeated_normalization"
+    },
+    {
+      "nodes": [
+        {
+          "node_kind": "ROOT",
+          "node_path": [],
+          "node_root_hash72": "DWdS6pHLXtF)3e3P8ykHmzSud4Dw*y-v+o)yd0t83Pi8X8dAzAFFMsgSroxD*4t5Z16zc+7c",
+          "node_value": "List(List(4,9,2),List(3,5,7),List(8,1,6))",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            0
+          ],
+          "node_root_hash72": "C/l9?Gl5amD<6GiNUj/Whc3U(IA!OU>4V<EYLJ(uv+lM3w!53qQTJ<G/Rak-cQW1T0j-ZY0y",
+          "node_value": "List",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "PAREN",
+          "node_path": [
+            1
+          ],
+          "node_root_hash72": "J2qAyBn5Pl68GOC)GX/WJ0ogJgz*V(72ze?iEc7HmeaUe45!<dSjFhuJ(g1fJLE0MU)bld<M",
+          "node_value": "(",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            1,
+            0
+          ],
+          "node_root_hash72": "C/l9?Gl5amD<6GiNUj/Wm73U(IA!OU>4V<EYLJ(uv+lM3w?rLtdoJ<G/Rak-cQW1T0j)UY0y",
+          "node_value": "List",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "PAREN",
+          "node_path": [
+            1,
+            1
+          ],
+          "node_root_hash72": "(1R>anRJZyV(qJbdO*Fb8!PLk6?bK?EMDBqV3rSoB9MG!jLoUUNkrzJRqriRT2DUe9u8/I*y",
+          "node_value": "(",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            1,
+            1,
+            0
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP7cE5J6pSgqW44lhjIa9/wz!ctABCYqgd<G/Rak-cQW1T0jX>/ZB",
+          "node_value": "4",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "COMMA",
+          "node_path": [
+            1,
+            1,
+            1
+          ],
+          "node_root_hash72": "v85+LEXled?rqnq>ky5oP7dD5J6pSgqW4<thjIa9/wz!ctABCZpgd<G/Rak-cQW1T0jX!*ZB",
+          "node_value": ",",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            1,
+            1,
+            2
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP7eC5J6pSgqW49ghjIa9/wz!ctABC-ogd<G/Rak-cQW1T0jX?+ZB",
+          "node_value": "9",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "COMMA",
+          "node_path": [
+            1,
+            1,
+            3
+          ],
+          "node_root_hash72": "v85+LEXled?rqnq>ky5oP7fB5J6pSgqW4<thjIa9/wz!ctABC+ngd<G/Rak-cQW1T0jX0-ZB",
+          "node_value": ",",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            1,
+            1,
+            4
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP7gA5J6pSgqW42nhjIa9/wz!ctABC*mgd<G/Rak-cQW1T0jX1ZZB",
+          "node_value": "2",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "CLOSE",
+          "node_path": [
+            1,
+            1,
+            5
+          ],
+          "node_root_hash72": "v85+LEXijh>nqnq>ky5oP7hz5J6pSgqW4/whjIa9/wz!ctABC/lgd<G/Rak-cQW1T0jX2YZB",
+          "node_value": ")",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "COMMA",
+          "node_path": [
+            1,
+            2
+          ],
+          "node_root_hash72": "v85+LEXled?rqnq>ky5oP7iy5J6pSgqW4<thjIa9/wz!ctACegmTJ<G/Rak-cQW1T0jX3XZB",
+          "node_value": ",",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            1,
+            3
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP7jx5J6pSgqW4s<8tInfAOi/D1//1PYq6zG/Rak-cQW1T0jY</ZB",
+          "node_value": "List",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "PAREN",
+          "node_path": [
+            1,
+            4
+          ],
+          "node_root_hash72": "/?R>anRK+xYZrK9dP/Db8!PLk709G3EMDBrX2pLAGX9a1Jn6wqZ)TBu0*W4vK64JMiBx/I/A",
+          "node_value": "(",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            1,
+            4,
+            0
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP8dC5J6pSgqW43mhjIa9/wz!ctAEzYqgd<G/Rak-cQW1T0jY!+ZB",
+          "node_value": "3",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "COMMA",
+          "node_path": [
+            1,
+            4,
+            1
+          ],
+          "node_root_hash72": "v85+LEXled?rqnq>ky5oP8eB5J6pSgqW4<thjIa9/wz!ctAEzZpgd<G/Rak-cQW1T0jY?-ZB",
+          "node_value": ",",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            1,
+            4,
+            2
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP8fA5J6pSgqW45khjIa9/wz!ctAEz-ogd<G/Rak-cQW1T0jY0ZZB",
+          "node_value": "5",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "COMMA",
+          "node_path": [
+            1,
+            4,
+            3
+          ],
+          "node_root_hash72": "v85+LEXled?rqnq>ky5oP8gz5J6pSgqW4<thjIa9/wz!ctAEz+ngd<G/Rak-cQW1T0jY1YZB",
+          "node_value": ",",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            1,
+            4,
+            4
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP8hy5J6pSgqW47ihjIa9/wz!ctAEz*mgd<G/Rak-cQW1T0jY2XZB",
+          "node_value": "7",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "CLOSE",
+          "node_path": [
+            1,
+            4,
+            5
+          ],
+          "node_root_hash72": "v85+LEXijh>nqnq>ky5oP8ix5J6pSgqW4/whjIa9/wz!ctAEz/lgd<G/Rak-cQW1T0jY3WZB",
+          "node_value": ")",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "COMMA",
+          "node_path": [
+            1,
+            5
+          ],
+          "node_root_hash72": "v85+LEXled?rqnq>ky5oP8jw5J6pSgqW4<thjIa9/wz!ctAFbgmTJ<G/Rak-cQW1T0jY4VZB",
+          "node_value": ",",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            1,
+            6
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP8kv5J6pSgqW4s<8tInfAOi/D1//1P+n6zG/Rak-cQW1T0jZ>+ZB",
+          "node_value": "List",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "PAREN",
+          "node_path": [
+            1,
+            7
+          ],
+          "node_root_hash72": "*>R>anRL/wV-tAhdQ(Bb8!PLk817C7EMDBs--xMBEX9a2Kq1wqZ)TCv!*W4vK76INfBx/I(C",
+          "node_value": "(",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            1,
+            7,
+            0
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP9eA5J6pSgqW48hhjIa9/wz!ctAHwYqgd<G/Rak-cQW1T0jZ?ZZB",
+          "node_value": "8",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "COMMA",
+          "node_path": [
+            1,
+            7,
+            1
+          ],
+          "node_root_hash72": "v85+LEXled?rqnq>ky5oP9fz5J6pSgqW4<thjIa9/wz!ctAHwZpgd<G/Rak-cQW1T0jZ0YZB",
+          "node_value": ",",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            1,
+            7,
+            2
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP9gy5J6pSgqW41ohjIa9/wz!ctAHw-ogd<G/Rak-cQW1T0jZ1XZB",
+          "node_value": "1",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "COMMA",
+          "node_path": [
+            1,
+            7,
+            3
+          ],
+          "node_root_hash72": "v85+LEXled?rqnq>ky5oP9hx5J6pSgqW4<thjIa9/wz!ctAHw+ngd<G/Rak-cQW1T0jZ2WZB",
+          "node_value": ",",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            1,
+            7,
+            4
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP9iw5J6pSgqW46jhjIa9/wz!ctAHw*mgd<G/Rak-cQW1T0jZ3VZB",
+          "node_value": "6",
+          "translation_class": "AUTHORIZED_PROJECTION_MAP"
+        },
+        {
+          "node_kind": "CLOSE",
+          "node_path": [
+            1,
+            7,
+            5
+          ],
+          "node_root_hash72": "v85+LEXijh>nqnq>ky5oP9jv5J6pSgqW4/whjIa9/wz!ctAHw/lgd<G/Rak-cQW1T0j-/(ZB",
+          "node_value": ")",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "CLOSE",
+          "node_path": [
+            1,
+            8
+          ],
+          "node_root_hash72": "v85+LEXijh>nqnq>ky5oPa9E5J6pSgqW4/whjIa9/wz!ctAI8gmTJ<G/Rak-cQW1T0j-(/ZB",
+          "node_value": ")",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        }
+      ],
+      "workload_id": "loshu_cell_sum"
+    },
+    {
+      "nodes": [
+        {
+          "node_kind": "ROOT",
+          "node_path": [],
+          "node_root_hash72": "5XEyBTfkWCP!9-etBXotZuHsmB>wY<7J1Uf8*PwD)IV?Au6wIAqHbEDGUhm>d)ps+BAYFS1a",
+          "node_value": "LaneA{t^3-t==1},LaneB{t^4==2}",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            0
+          ],
+          "node_root_hash72": "C/l9?Gl5amD<6GiNUj/Whc3U(IA!OU>4N?uy>1)eQtQyRn2ZggmTJ<G/Rak-cQW1T0j+YY0y",
+          "node_value": "LaneA",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "BRACE",
+          "node_path": [
+            1
+          ],
+          "node_root_hash72": "9O)uMb3PDW9Kh1AIxgLxa1MEU65?+Egxo<RwnPLCF-V!7QeyL7ESy?OsGYF?4vzwMrmswM1t",
+          "node_value": "{",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            1,
+            0
+          ],
+          "node_root_hash72": "C/l9?Gl5amD<6GiNUj/Wn63U(IA!OU>Ii5uYyDncM<(4K3e*eTQTJ<G/Rak-cQW1T0j/WY0y",
+          "node_value": "t",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            1,
+            1
+          ],
+          "node_root_hash72": "C/l9?Gl5amD<6GiNUj/Wo53U(IA!OU>mE5uYyDncM<(4K4d*eTQTJ<G/Rak-cQW1T0j(VY0y",
+          "node_value": "^",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            1,
+            2
+          ],
+          "node_root_hash72": "C/l9?Gl5amD<6GiNUj/Wp43U(IA!OU>Pb5uYyDncM<(4K5c*eTQTJ<G/Rak-cQW1T0j)UY0y",
+          "node_value": "3",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            1,
+            3
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oPf0yrcCntBJaDLWZiYZHyKV79(M23qQTJ<G/Rak-cQW1T0jX<(ZB",
+          "node_value": "-",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            1,
+            4
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP7cE5J6pSgqW4<thjIa9/wz!ctAEcgmTJ<G/Rak-cQW1T0jX>/ZB",
+          "node_value": "t",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "GATE",
+          "node_path": [
+            1,
+            5
+          ],
+          "node_root_hash72": "v85+LE+3z!M<6GiNUj/Wig8yrcCntBJaTWchjIa9/wz!ctAFbgmTJ<G/Rak-cQW1T0jX?+ZB",
+          "node_value": "==",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            1,
+            6
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP7fB5J6pSgqW41ohjIa9/wz!ctAGagmTJ<G/Rak-cQW1T0jX0-ZB",
+          "node_value": "1",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "CLOSE",
+          "node_path": [
+            1,
+            7
+          ],
+          "node_root_hash72": "v85+LEXijh>nqnq>ky5oP7gA5J6pSgqW45khjIa9/wz!ctAH9gmTJ<G/Rak-cQW1T0jX1ZZB",
+          "node_value": "}",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "COMMA",
+          "node_path": [
+            2
+          ],
+          "node_root_hash72": "v85+LEXled?rqnq>ky5oP7hz5J6pSgqW4<thjIa9/wz!cuc*eTQTJ<G/Rak-cQW1T0jX2YZB",
+          "node_value": ",",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            3
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP7iy5J6pSgqW4sYbjjIHByDv!XHU4gngd<G/Rak-cQW1T0jY</ZB",
+          "node_value": "LaneB",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "BRACE",
+          "node_path": [
+            4
+          ],
+          "node_root_hash72": "U+5S!VlVPwmgVD4l!hi1+!PxPJf2O4EMDBrX32>AGX9a1Kfdwq0UTBv?*W4vK68i4Vp/GdJU",
+          "node_value": "{",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            4,
+            0
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP8dC5J6pSgqW4<thjIa9/wz!cwxAggmTJ<G/Rak-cQW1T0jY!+ZB",
+          "node_value": "t",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            4,
+            1
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP8eB5J6pSgqW4KPhjIa9/wz!cwxBfgmTJ<G/Rak-cQW1T0jY?-ZB",
+          "node_value": "^",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            4,
+            2
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP8fA5J6pSgqW44lhjIa9/wz!cwxCegmTJ<G/Rak-cQW1T0jY0ZZB",
+          "node_value": "4",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "GATE",
+          "node_path": [
+            4,
+            3
+          ],
+          "node_root_hash72": "v85+LE+3z!M<6GiNUj/Wjj4yrcCntBJaTWchjIa9/wz!cwxDdgmTJ<G/Rak-cQW1T0jY2XZB",
+          "node_value": "==",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            4,
+            4
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP8ix5J6pSgqW42nhjIa9/wz!cwxEcgmTJ<G/Rak-cQW1T0jY3WZB",
+          "node_value": "2",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "CLOSE",
+          "node_path": [
+            4,
+            5
+          ],
+          "node_root_hash72": "v85+LEXijh>nqnq>ky5oP8jw5J6pSgqW45khjIa9/wz!cwxFbgmTJ<G/Rak-cQW1T0jY4VZB",
+          "node_value": "}",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        }
+      ],
+      "workload_id": "dual_t_constraints"
+    },
+    {
+      "nodes": [
+        {
+          "node_kind": "ROOT",
+          "node_path": [],
+          "node_root_hash72": "ZLeJAQZc-<q7MEEvdQdMl0tV2tLdZW3so!XEDxdhDY/EfhjL4CLtc>KC0M>rov8I01VtYr<n",
+          "node_value": "r==x*b,r^(b^2)==1/pi,O!=pi",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            0
+          ],
+          "node_root_hash72": "C/l9?Gl5amD<6GiNUj/Whc3U(IA!OU>Gk5uYyDncM<(3ovevGTQTJ<G/Rak-cQW1T0jX*Y0y",
+          "node_value": "r",
+          "translation_class": "NO_VALID_IEEE_MAP"
+        },
+        {
+          "node_kind": "GATE",
+          "node_path": [
+            1
+          ],
+          "node_root_hash72": "C/l9?tks1OlMpy!dF7rpm6pnqGbj>8My15uYyDncM<(4nvevGTQTJ<G/Rak-cQW1T0jZ-Y0y",
+          "node_value": "==",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            2
+          ],
+          "node_root_hash72": "C/l9?Gl5amD<6GiNUj/Wk93U(IA!OU>Me5uYyDncM<(5mvevGTQTJ<G/Rak-cQW1T0j-ZY0y",
+          "node_value": "x",
+          "translation_class": "NO_VALID_IEEE_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            3
+          ],
+          "node_root_hash72": "C/l9?Gl5amD<6GiNUj/Wl83U(IA!OU>Gk5uYyDncM<(6lvevGTQTJ<G/Rak-cQW1T0j+YY0y",
+          "node_value": "*",
+          "translation_class": "NO_VALID_IEEE_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            4
+          ],
+          "node_root_hash72": "C/l9?Gl5amD<6GiNUj/Wm73U(IA!OU>qA5uYyDncM<(7kvevGTQTJ<G/Rak-cQW1T0j*XY0y",
+          "node_value": "b",
+          "translation_class": "NO_VALID_IEEE_MAP"
+        },
+        {
+          "node_kind": "COMMA",
+          "node_path": [
+            5
+          ],
+          "node_root_hash72": "C/l9?pC7g1Q<6GiNUj/Wn63U(IA!OU>Ii5uYyDncM<(8jvevGTQTJ<G/Rak-cQW1T0j/WY0y",
+          "node_value": ",",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            6
+          ],
+          "node_root_hash72": "C/l9?Gl5amD<6GiNUj/Wo53U(IA!OU>Gk5uYyDncM<(9ivevGTQTJ<G/Rak-cQW1T0j(VY0y",
+          "node_value": "r",
+          "translation_class": "NO_VALID_IEEE_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            7
+          ],
+          "node_root_hash72": "C/l9?Gl5amD<6GiNUj/Wp43U(IA!OU>mE5uYyDncM<(ahvevGTQTJ<G/Rak-cQW1T0j)UY0y",
+          "node_value": "^",
+          "translation_class": "NO_VALID_IEEE_MAP"
+        },
+        {
+          "node_kind": "PAREN",
+          "node_path": [
+            8
+          ],
+          "node_root_hash72": "vY(WweD9*rYDcFxpSXxdbu+6IBRXZAuItGwr9st+eKUgv-iz*T+pzvGDsb8EjQVxS3Y4VOW<",
+          "node_value": "(",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            8,
+            0
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP7cE5J6pSgqW4OLhjIa9/wz!cAtAggmTJ<G/Rak-cQW1T0jX>/ZB",
+          "node_value": "b",
+          "translation_class": "NO_VALID_IEEE_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            8,
+            1
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP7dD5J6pSgqW4KPhjIa9/wz!cAtBfgmTJ<G/Rak-cQW1T0jX!*ZB",
+          "node_value": "^",
+          "translation_class": "NO_VALID_IEEE_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            8,
+            2
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP7eC5J6pSgqW42nhjIa9/wz!cAtCegmTJ<G/Rak-cQW1T0jX?+ZB",
+          "node_value": "2",
+          "translation_class": "NO_VALID_IEEE_MAP"
+        },
+        {
+          "node_kind": "CLOSE",
+          "node_path": [
+            8,
+            3
+          ],
+          "node_root_hash72": "v85+LEXijh>nqnq>ky5oP7fB5J6pSgqW4/whjIa9/wz!cAtDdgmTJ<G/Rak-cQW1T0jX0-ZB",
+          "node_value": ")",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "GATE",
+          "node_path": [
+            9
+          ],
+          "node_root_hash72": "v85+LE+3z!M<6GiNUj/Wij5yrcCntBJaTWchjIa9/wz!cB5*eTQTJ<G/Rak-cQW1T0jX2YZB",
+          "node_value": "==",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            10
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP7iy5J6pSgqW41ohjIa9/wz!ctE53qQTJ<G/Rak-cQW1T0jX3XZB",
+          "node_value": "1",
+          "translation_class": "NO_VALID_IEEE_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            11
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP7jx5J6pSgqW4?qhjIa9/wz!ctF43qQTJ<G/Rak-cQW1T0jX4WZB",
+          "node_value": "/",
+          "translation_class": "NO_VALID_IEEE_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            12
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP7kw5J6pSgqW4*w?LJ(uv+lM3w?xegmTJ<G/Rak-cQW1T0jY)(ZB",
+          "node_value": "pi",
+          "translation_class": "NO_VALID_IEEE_MAP"
+        },
+        {
+          "node_kind": "COMMA",
+          "node_path": [
+            13
+          ],
+          "node_root_hash72": "v85+LEXled?rqnq>ky5oP8bE5J6pSgqW4<thjIa9/wz!ctH23qQTJ<G/Rak-cQW1T0jY</ZB",
+          "node_value": ",",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            14
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP8cD5J6pSgqW4v(hjIa9/wz!ctI13qQTJ<G/Rak-cQW1T0jY>*ZB",
+          "node_value": "O",
+          "translation_class": "NO_VALID_IEEE_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            15
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP8dC5J6pSgqW4VEhjIa9/wz!ctJ03qQTJ<G/Rak-cQW1T0jY!+ZB",
+          "node_value": "!",
+          "translation_class": "NO_VALID_IEEE_MAP"
+        },
+        {
+          "node_kind": "BIND",
+          "node_path": [
+            16
+          ],
+          "node_root_hash72": "v85+LEWgl3N<6GiNUj/Wjh6yrcCntBJaTvWZiYZHyKV7948*eTQTJ<G/Rak-cQW1T0jY?-ZB",
+          "node_value": "=",
+          "translation_class": "NO_VALID_IEEE_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            17
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP8fA5J6pSgqW4*w?LJ(uv+lM3w?C9gmTJ<G/Rak-cQW1T0jY1YZB",
+          "node_value": "pi",
+          "translation_class": "NO_VALID_IEEE_MAP"
+        }
+      ],
+      "workload_id": "conformal_radius"
+    },
+    {
+      "nodes": [
+        {
+          "node_kind": "ROOT",
+          "node_path": [],
+          "node_root_hash72": "Xb295Epldk!E-m2MNBJ1)!yN>u>o/nB71N53PgvgY/b9VBvyb/AAJ4xE1Qp9Ok-aPT(hS*WT",
+          "node_value": "M_H-L/(x*y)==x+y-z-w==0",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            0
+          ],
+          "node_root_hash72": "C/l9?Gl5amD<6GiNUj/Whc3U(IA!OU>5Kz1hjIa9/wz!cse*eTQTJ<G/Rak-cQW1T0jZ-Y0y",
+          "node_value": "M_H",
+          "translation_class": "NO_VALID_IEEE_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            1
+          ],
+          "node_root_hash72": "C/l9?Gl5amD<6GiNUj/Wk93U(IA!OU>Jh5uYyDncM<(4nvevGTQTJ<G/Rak-cQW1T0j-ZY0y",
+          "node_value": "-",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            2
+          ],
+          "node_root_hash72": "C/l9?Gl5amD<6GiNUj/Wl83U(IA!OU>4W5uYyDncM<(5mvevGTQTJ<G/Rak-cQW1T0j+YY0y",
+          "node_value": "L",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            3
+          ],
+          "node_root_hash72": "C/l9?Gl5amD<6GiNUj/Wm73U(IA!OU>Lf5uYyDncM<(6lvevGTQTJ<G/Rak-cQW1T0j*XY0y",
+          "node_value": "/",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "PAREN",
+          "node_path": [
+            4
+          ],
+          "node_root_hash72": "Mm(oYnoKEbIs<e>j/sx8g!ZcrM9vbuyVo*ZJhoGNNw+2sCX+!/!1vW*G)8HdCuyBU-Zw<Le+",
+          "node_value": "(",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            4,
+            0
+          ],
+          "node_root_hash72": "C/l9?Gl5amD<6GiNUj/Wo53U(IA!OU>Me5uYyDncM<(7H3e*eTQTJ<G/Rak-cQW1T0j(VY0y",
+          "node_value": "x",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            4,
+            1
+          ],
+          "node_root_hash72": "C/l9?Gl5amD<6GiNUj/Wp43U(IA!OU>Gk5uYyDncM<(7H4d*eTQTJ<G/Rak-cQW1T0j)UY0y",
+          "node_value": "*",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            4,
+            2
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oPf0yrcCntBJaHHWZiYZHyKV7c+L33qQTJ<G/Rak-cQW1T0jX<(ZB",
+          "node_value": "y",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "CLOSE",
+          "node_path": [
+            4,
+            3
+          ],
+          "node_root_hash72": "v85+LEXijh>nqnq>ky5oP7cE5J6pSgqW4/whjIa9/wz!cwxDdgmTJ<G/Rak-cQW1T0jX>/ZB",
+          "node_value": ")",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "GATE",
+          "node_path": [
+            5
+          ],
+          "node_root_hash72": "v85+LE+3z!M<6GiNUj/Wig8yrcCntBJaTWchjIa9/wz!cx9*eTQTJ<G/Rak-cQW1T0jX?+ZB",
+          "node_value": "==",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            6
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP7fB5J6pSgqW40phjIa9/wz!cy8*eTQTJ<G/Rak-cQW1T0jX0-ZB",
+          "node_value": "x",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            7
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP7gA5J6pSgqW4)uhjIa9/wz!cz7*eTQTJ<G/Rak-cQW1T0jX1ZZB",
+          "node_value": "+",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            8
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP7hz5J6pSgqW41ohjIa9/wz!cA6*eTQTJ<G/Rak-cQW1T0jX2YZB",
+          "node_value": "y",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            9
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP7iy5J6pSgqW4>shjIa9/wz!cB5*eTQTJ<G/Rak-cQW1T0jX3XZB",
+          "node_value": "-",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            10
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP7jx5J6pSgqW42nhjIa9/wz!ctE53qQTJ<G/Rak-cQW1T0jX4WZB",
+          "node_value": "z",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            11
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP7kw5J6pSgqW4>shjIa9/wz!ctF43qQTJ<G/Rak-cQW1T0jX5VZB",
+          "node_value": "-",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            12
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP7lv5J6pSgqW4?qhjIa9/wz!ctG33qQTJ<G/Rak-cQW1T0jY)(ZB",
+          "node_value": "w",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "GATE",
+          "node_path": [
+            13
+          ],
+          "node_root_hash72": "v85+LE+3z!M<6GiNUj/Wje9yrcCntBJaTWchjIa9/wz!ctH23qQTJ<G/Rak-cQW1T0jY>*ZB",
+          "node_value": "==",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            14
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP8dC5J6pSgqW40phjIa9/wz!ctI13qQTJ<G/Rak-cQW1T0jY!+ZB",
+          "node_value": "0",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        }
+      ],
+      "workload_id": "master_matrix"
+    },
+    {
+      "nodes": [
+        {
+          "node_kind": "ROOT",
+          "node_path": [],
+          "node_root_hash72": "LEV?H2dpcmSFf9<FkSwv3P45yUhz<TfBm1cV+T79+?XJiGI97*kKA)6darkhnEzfCqeuvL*q",
+          "node_value": "F(x,y,a,b)==(x+y)^2+(x*y-a^2)^2+(a^2-b)^2+(a^4-2)^2==0",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            0
+          ],
+          "node_root_hash72": "C/l9?Gl5amD<6GiNUj/Whc3U(IA!OU>!*5uYyDncM<(3ovevGTQTJ<G/Rak-cQW1T0jX*Y0y",
+          "node_value": "F",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "PAREN",
+          "node_path": [
+            1
+          ],
+          "node_root_hash72": "n>?jfsVlA7a5J6X0pUk)wkXKlF+Ut/Yb-2-xsQ3>qI0+-c1w!<5w(QFoams+iN68(e)VSOD-",
+          "node_value": "(",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            1,
+            0
+          ],
+          "node_root_hash72": "C/l9?Gl5amD<6GiNUj/Wja3U(IA!OU>Me5uYyDncM<(4K3e*eTQTJ<G/Rak-cQW1T0jZ-Y0y",
+          "node_value": "x",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "COMMA",
+          "node_path": [
+            1,
+            1
+          ],
+          "node_root_hash72": "C/l9?pC7g1Q<6GiNUj/Wk93U(IA!OU>Ii5uYyDncM<(4K4d*eTQTJ<G/Rak-cQW1T0j-ZY0y",
+          "node_value": ",",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            1,
+            2
+          ],
+          "node_root_hash72": "C/l9?Gl5amD<6GiNUj/Wl83U(IA!OU>Nd5uYyDncM<(4K5c*eTQTJ<G/Rak-cQW1T0j+YY0y",
+          "node_value": "y",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "COMMA",
+          "node_path": [
+            1,
+            3
+          ],
+          "node_root_hash72": "C/l9?pC7g1Q<6GiNUj/Wm73U(IA!OU>Ii5uYyDncM<(4K6b*eTQTJ<G/Rak-cQW1T0j*XY0y",
+          "node_value": ",",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            1,
+            4
+          ],
+          "node_root_hash72": "C/l9?Gl5amD<6GiNUj/Wn63U(IA!OU>pB5uYyDncM<(4K7a*eTQTJ<G/Rak-cQW1T0j/WY0y",
+          "node_value": "a",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "COMMA",
+          "node_path": [
+            1,
+            5
+          ],
+          "node_root_hash72": "C/l9?pC7g1Q<6GiNUj/Wo53U(IA!OU>Ii5uYyDncM<(4K89*eTQTJ<G/Rak-cQW1T0j(VY0y",
+          "node_value": ",",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            1,
+            6
+          ],
+          "node_root_hash72": "C/l9?Gl5amD<6GiNUj/Wp43U(IA!OU>qA5uYyDncM<(4K98*eTQTJ<G/Rak-cQW1T0j)UY0y",
+          "node_value": "b",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "CLOSE",
+          "node_path": [
+            1,
+            7
+          ],
+          "node_root_hash72": "v85+LEXijh>nqnq>ky5oPf0yrcCntBJazPWZiYZHyKV79(Q!3qQTJ<G/Rak-cQW1T0jX<(ZB",
+          "node_value": ")",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "GATE",
+          "node_path": [
+            2
+          ],
+          "node_root_hash72": "v85+LE+3z!M<6GiNUj/Wif9yrcCntBJaTWchjIa9/wz!cuc*eTQTJ<G/Rak-cQW1T0jX!*ZB",
+          "node_value": "==",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "PAREN",
+          "node_path": [
+            3
+          ],
+          "node_root_hash72": "i6whi*u5-B8McFxpS-udbu+6IBUUYBuLqGwu6N8+eKUgv-Ed*T+pzvJAkpciQkXZuUAK>pe>",
+          "node_value": "(",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            3,
+            0
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP7fB5J6pSgqW40phjIa9/wz!cvyAggmTJ<G/Rak-cQW1T0jX0-ZB",
+          "node_value": "x",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            3,
+            1
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP7gA5J6pSgqW4)uhjIa9/wz!cvyBfgmTJ<G/Rak-cQW1T0jX1ZZB",
+          "node_value": "+",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            3,
+            2
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP7hz5J6pSgqW41ohjIa9/wz!cvyCegmTJ<G/Rak-cQW1T0jX2YZB",
+          "node_value": "y",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "CLOSE",
+          "node_path": [
+            3,
+            3
+          ],
+          "node_root_hash72": "v85+LEXijh>nqnq>ky5oP7iy5J6pSgqW4/whjIa9/wz!cvyDdgmTJ<G/Rak-cQW1T0jX3XZB",
+          "node_value": ")",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            4
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP7jx5J6pSgqW4KPhjIa9/wz!cwa*eTQTJ<G/Rak-cQW1T0jX4WZB",
+          "node_value": "^",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            5
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP7kw5J6pSgqW42nhjIa9/wz!cx9*eTQTJ<G/Rak-cQW1T0jX5VZB",
+          "node_value": "2",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            6
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP7lv5J6pSgqW4)uhjIa9/wz!cy8*eTQTJ<G/Rak-cQW1T0jY)(ZB",
+          "node_value": "+",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "PAREN",
+          "node_path": [
+            7
+          ],
+          "node_root_hash72": "1M0B!*tf8VqIyFI)JnAWLG8YJ1F(h38jB7L+ZXk?x03<o07t!S61y45/dC<->K7h9Ff2a6ZE",
+          "node_value": "(",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            7,
+            0
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP8cD5J6pSgqW40phjIa9/wz!czuAggmTJ<G/Rak-cQW1T0jY>*ZB",
+          "node_value": "x",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            7,
+            1
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP8dC5J6pSgqW4(vhjIa9/wz!czuBfgmTJ<G/Rak-cQW1T0jY!+ZB",
+          "node_value": "*",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            7,
+            2
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP8eB5J6pSgqW41ohjIa9/wz!czuCegmTJ<G/Rak-cQW1T0jY?-ZB",
+          "node_value": "y",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            7,
+            3
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP8fA5J6pSgqW4>shjIa9/wz!czuDdgmTJ<G/Rak-cQW1T0jY0ZZB",
+          "node_value": "-",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            7,
+            4
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP8gz5J6pSgqW4NMhjIa9/wz!czuEcgmTJ<G/Rak-cQW1T0jY1YZB",
+          "node_value": "a",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            7,
+            5
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP8hy5J6pSgqW4KPhjIa9/wz!czuFbgmTJ<G/Rak-cQW1T0jY2XZB",
+          "node_value": "^",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            7,
+            6
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP8ix5J6pSgqW42nhjIa9/wz!czuGagmTJ<G/Rak-cQW1T0jY3WZB",
+          "node_value": "2",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "CLOSE",
+          "node_path": [
+            7,
+            7
+          ],
+          "node_root_hash72": "v85+LEXijh>nqnq>ky5oP8jw5J6pSgqW4/whjIa9/wz!czuH9gmTJ<G/Rak-cQW1T0jY4VZB",
+          "node_value": ")",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            8
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP8kv5J6pSgqW4KPhjIa9/wz!cA6*eTQTJ<G/Rak-cQW1T0jZ((ZB",
+          "node_value": "^",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            9
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP9aE5J6pSgqW42nhjIa9/wz!cB5*eTQTJ<G/Rak-cQW1T0jZ)/ZB",
+          "node_value": "2",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            10
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP9bD5J6pSgqW4)uhjIa9/wz!ctE53qQTJ<G/Rak-cQW1T0jZ<*ZB",
+          "node_value": "+",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "PAREN",
+          "node_path": [
+            11
+          ],
+          "node_root_hash72": "*!R>anRL*wL1qEt0Q/Cc7!PLk808D6EMDBsY12!AFX9a2J<wwqZ)TCu?*W4vK75Ns*s2ev(B",
+          "node_value": "(",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            11,
+            0
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP9dB5J6pSgqW4NMhjIa9/wz!ctFrLtdoJ<G/Rak-cQW1T0jZ!-ZB",
+          "node_value": "a",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            11,
+            1
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP9eA5J6pSgqW4KPhjIa9/wz!ctFrMsdoJ<G/Rak-cQW1T0jZ?ZZB",
+          "node_value": "^",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            11,
+            2
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP9fz5J6pSgqW42nhjIa9/wz!ctFrNrdoJ<G/Rak-cQW1T0jZ0YZB",
+          "node_value": "2",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            11,
+            3
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP9gy5J6pSgqW4>shjIa9/wz!ctFrOqdoJ<G/Rak-cQW1T0jZ1XZB",
+          "node_value": "-",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            11,
+            4
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP9hx5J6pSgqW4OLhjIa9/wz!ctFrPpdoJ<G/Rak-cQW1T0jZ2WZB",
+          "node_value": "b",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "CLOSE",
+          "node_path": [
+            11,
+            5
+          ],
+          "node_root_hash72": "v85+LEXijh>nqnq>ky5oP9iw5J6pSgqW4/whjIa9/wz!ctFrQodoJ<G/Rak-cQW1T0jZ3VZB",
+          "node_value": ")",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            12
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP9jv5J6pSgqW4KPhjIa9/wz!ctG33qQTJ<G/Rak-cQW1T0j-/(ZB",
+          "node_value": "^",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            13
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oPa9E5J6pSgqW42nhjIa9/wz!ctH23qQTJ<G/Rak-cQW1T0j-(/ZB",
+          "node_value": "2",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            14
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oPaaD5J6pSgqW4)uhjIa9/wz!ctI13qQTJ<G/Rak-cQW1T0j-)*ZB",
+          "node_value": "+",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "PAREN",
+          "node_path": [
+            15
+          ],
+          "node_root_hash72": "+!R>anRM*v?NrDt0R*Cc7!PLk9?8F4EMDBtY02?zFX9a3I<wwqZ)TDt?*W4vK85Qo*s2ev)B",
+          "node_value": "(",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            15,
+            0
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oPacB5J6pSgqW4NMhjIa9/wz!ctJnLtdoJ<G/Rak-cQW1T0j->-ZB",
+          "node_value": "a",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            15,
+            1
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oPadA5J6pSgqW4KPhjIa9/wz!ctJnMsdoJ<G/Rak-cQW1T0j-!ZZB",
+          "node_value": "^",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            15,
+            2
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oPaez5J6pSgqW44lhjIa9/wz!ctJnNrdoJ<G/Rak-cQW1T0j-?YZB",
+          "node_value": "4",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            15,
+            3
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oPafy5J6pSgqW4>shjIa9/wz!ctJnOqdoJ<G/Rak-cQW1T0j-0XZB",
+          "node_value": "-",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            15,
+            4
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oPagx5J6pSgqW42nhjIa9/wz!ctJnPpdoJ<G/Rak-cQW1T0j-1WZB",
+          "node_value": "2",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "CLOSE",
+          "node_path": [
+            15,
+            5
+          ],
+          "node_root_hash72": "v85+LEXijh>nqnq>ky5oPahw5J6pSgqW4/whjIa9/wz!ctJnQodoJ<G/Rak-cQW1T0j-2VZB",
+          "node_value": ")",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            16
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oPaiv5J6pSgqW4KPhjIa9/wz!ctK?3qQTJ<G/Rak-cQW1T0j+*(ZB",
+          "node_value": "^",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            17
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oPb8E5J6pSgqW42nhjIa9/wz!ctL!3qQTJ<G/Rak-cQW1T0j+//ZB",
+          "node_value": "2",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "GATE",
+          "node_path": [
+            18
+          ],
+          "node_root_hash72": "v85+LE+3z!M<6GiNUj/Wmc8yrcCntBJaTWchjIa9/wz!ctM>3qQTJ<G/Rak-cQW1T0j+)+ZB",
+          "node_value": "==",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            19
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oPbbB5J6pSgqW40phjIa9/wz!ctN<3qQTJ<G/Rak-cQW1T0j+<-ZB",
+          "node_value": "0",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        }
+      ],
+      "workload_id": "genesis_kernel"
+    },
+    {
+      "nodes": [
+        {
+          "node_kind": "ROOT",
+          "node_path": [],
+          "node_root_hash72": "C>-UryAoFjax0dRhePYqZ/FY)uPlQVkQmoIRCRHPHwU3rE70Vvr8xUn6R1fq8GHVHQ(S/SbB",
+          "node_value": "T_1==b^6*((t^3-t)*(m-m^(-1))/(m^2-m)*u^72/D==E^(x^2*pi)==((c^2==t^4+a^2)-(b^2==t^4))/(a^2==c^2-b^2)==(((x*y)*z)*w)-x-y+z+w==u^72)*(b^2*c^2)^(-1),D==(((x*y)*z)*w)+x^s+y^(-s)-z^v-w^(-v)",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            0
+          ],
+          "node_root_hash72": "C/l9?Gl5amD<6GiNUj/Whc3U(IA!OU>cDcohjIa9/wz!cse*eTQTJ<G/Rak-cQW1T0jZ-Y0y",
+          "node_value": "T_1",
+          "translation_class": "NO_VALID_IEEE_MAP"
+        },
+        {
+          "node_kind": "GATE",
+          "node_path": [
+            1
+          ],
+          "node_root_hash72": "C/l9?tks1OlMpy!dF7rrk6pnqGbj>8My15uYyDncM<(4nvevGTQTJ<G/Rak-cQW1T0j+YY0y",
+          "node_value": "==",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            2
+          ],
+          "node_root_hash72": "C/l9?Gl5amD<6GiNUj/Wm73U(IA!OU>qA5uYyDncM<(5mvevGTQTJ<G/Rak-cQW1T0j*XY0y",
+          "node_value": "b",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            3
+          ],
+          "node_root_hash72": "C/l9?Gl5amD<6GiNUj/Wn63U(IA!OU>mE5uYyDncM<(6lvevGTQTJ<G/Rak-cQW1T0j/WY0y",
+          "node_value": "^",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            4
+          ],
+          "node_root_hash72": "C/l9?Gl5amD<6GiNUj/Wo53U(IA!OU>S85uYyDncM<(7kvevGTQTJ<G/Rak-cQW1T0j(VY0y",
+          "node_value": "6",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            5
+          ],
+          "node_root_hash72": "C/l9?Gl5amD<6GiNUj/Wp43U(IA!OU>Gk5uYyDncM<(8jvevGTQTJ<G/Rak-cQW1T0j)UY0y",
+          "node_value": "*",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "PAREN",
+          "node_path": [
+            6
+          ],
+          "node_root_hash72": "FrzDUuyXxqnbpgv73N?Dfg9iPz)II+DKucIid0Y)duv!vD5MFegXWquH874BUDCiICFCfY)C",
+          "node_value": "(",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "PAREN",
+          "node_path": [
+            6,
+            0
+          ],
+          "node_root_hash72": "(0R>anRJ-y)ToEv0O/Ec7!PLk60aE5EMDBqW34<AHX9a0JhdwqZ)TAu1*W4vK58F-5zrev*z",
+          "node_value": "(",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            6,
+            0,
+            0
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP7dD5J6pSgqW4<thjIa9/wz!cyvADYqgd<G/Rak-cQW1T0jX!*ZB",
+          "node_value": "t",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            6,
+            0,
+            1
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP7eC5J6pSgqW4KPhjIa9/wz!cyvADZpgd<G/Rak-cQW1T0jX?+ZB",
+          "node_value": "^",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            6,
+            0,
+            2
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP7fB5J6pSgqW43mhjIa9/wz!cyvAD-ogd<G/Rak-cQW1T0jX0-ZB",
+          "node_value": "3",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            6,
+            0,
+            3
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP7gA5J6pSgqW4>shjIa9/wz!cyvAD+ngd<G/Rak-cQW1T0jX1ZZB",
+          "node_value": "-",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            6,
+            0,
+            4
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP7hz5J6pSgqW4<thjIa9/wz!cyvAD*mgd<G/Rak-cQW1T0jX2YZB",
+          "node_value": "t",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "CLOSE",
+          "node_path": [
+            6,
+            0,
+            5
+          ],
+          "node_root_hash72": "v85+LEXijh>nqnq>ky5oP7iy5J6pSgqW4/whjIa9/wz!cyvAD/lgd<G/Rak-cQW1T0jX3XZB",
+          "node_value": ")",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            6,
+            1
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP7jx5J6pSgqW4(vhjIa9/wz!cyvBfgmTJ<G/Rak-cQW1T0jX4WZB",
+          "node_value": "*",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "PAREN",
+          "node_path": [
+            6,
+            2
+          ],
+          "node_root_hash72": "eIHB1PBW7wzIC?PAdSZGZG/uW751Qk1B9!rYsf2)NrICbW2!y*eBSbL?cv5L4-RMDf-mETbt",
+          "node_value": "(",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            6,
+            2,
+            0
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP7lv5J6pSgqW4ZAhjIa9/wz!cyvCBYqgd<G/Rak-cQW1T0jY)(ZB",
+          "node_value": "m",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            6,
+            2,
+            1
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP8bE5J6pSgqW4>shjIa9/wz!cyvCBZpgd<G/Rak-cQW1T0jY</ZB",
+          "node_value": "-",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            6,
+            2,
+            2
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP8cD5J6pSgqW4ZAhjIa9/wz!cyvCB-ogd<G/Rak-cQW1T0jY>*ZB",
+          "node_value": "m",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            6,
+            2,
+            3
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP8dC5J6pSgqW4KPhjIa9/wz!cyvCB+ngd<G/Rak-cQW1T0jY!+ZB",
+          "node_value": "^",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "PAREN",
+          "node_path": [
+            6,
+            2,
+            4
+          ],
+          "node_root_hash72": "rAcbdSU?g(-cQiq/b1Hccj*fNGK*JkChQWxzY)rgTP*L8TLlucJmaoVOMcsnuPq/zx9W(5zr",
+          "node_value": "(",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            6,
+            2,
+            4,
+            0
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP8fA5J6pSgqW4>shjIa9/wz!cyvCB*JYjt8/Rak-cQW1T0jY0ZZB",
+          "node_value": "-",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            6,
+            2,
+            4,
+            1
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP8gz5J6pSgqW41ohjIa9/wz!cyvCB*JZit8/Rak-cQW1T0jY1YZB",
+          "node_value": "1",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "CLOSE",
+          "node_path": [
+            6,
+            2,
+            4,
+            2
+          ],
+          "node_root_hash72": "v85+LEXijh>nqnq>ky5oP8hy5J6pSgqW4/whjIa9/wz!cyvCB*J-ht8/Rak-cQW1T0jY2XZB",
+          "node_value": ")",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "CLOSE",
+          "node_path": [
+            6,
+            2,
+            5
+          ],
+          "node_root_hash72": "v85+LEXijh>nqnq>ky5oP8ix5J6pSgqW4/whjIa9/wz!cyvCB/lgd<G/Rak-cQW1T0jY3WZB",
+          "node_value": ")",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            6,
+            3
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP8jw5J6pSgqW4?qhjIa9/wz!cyvDdgmTJ<G/Rak-cQW1T0jY4VZB",
+          "node_value": "/",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "PAREN",
+          "node_path": [
+            6,
+            4
+          ],
+          "node_root_hash72": "*1R>anRLZwZ-qBw0Q-Fc7!PLk8>bD6EMDBsV15>IyX9a2GbkwqZ)TCr2*W4vK77D)1zrev(y",
+          "node_value": "(",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            6,
+            4,
+            0
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP9aE5J6pSgqW4ZAhjIa9/wz!cyvEzYqgd<G/Rak-cQW1T0jZ)/ZB",
+          "node_value": "m",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            6,
+            4,
+            1
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP9bD5J6pSgqW4KPhjIa9/wz!cyvEzZpgd<G/Rak-cQW1T0jZ<*ZB",
+          "node_value": "^",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            6,
+            4,
+            2
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP9cC5J6pSgqW42nhjIa9/wz!cyvEz-ogd<G/Rak-cQW1T0jZ>+ZB",
+          "node_value": "2",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            6,
+            4,
+            3
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP9dB5J6pSgqW4>shjIa9/wz!cyvEz+ngd<G/Rak-cQW1T0jZ!-ZB",
+          "node_value": "-",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            6,
+            4,
+            4
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP9eA5J6pSgqW4ZAhjIa9/wz!cyvEz*mgd<G/Rak-cQW1T0jZ?ZZB",
+          "node_value": "m",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "CLOSE",
+          "node_path": [
+            6,
+            4,
+            5
+          ],
+          "node_root_hash72": "v85+LEXijh>nqnq>ky5oP9fz5J6pSgqW4/whjIa9/wz!cyvEz/lgd<G/Rak-cQW1T0jZ0YZB",
+          "node_value": ")",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            6,
+            5
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP9gy5J6pSgqW4(vhjIa9/wz!cyvFbgmTJ<G/Rak-cQW1T0jZ1XZB",
+          "node_value": "*",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            6,
+            6
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP9hx5J6pSgqW4>shjIa9/wz!cyvGagmTJ<G/Rak-cQW1T0jZ2WZB",
+          "node_value": "u",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            6,
+            7
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP9iw5J6pSgqW4KPhjIa9/wz!cyvH9gmTJ<G/Rak-cQW1T0jZ3VZB",
+          "node_value": "^",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            6,
+            8
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oP9jv5J6pSgqW47ySLJ(uv+lM3w4mTldoJ<G/Rak-cQW1T0j-(/ZB",
+          "node_value": "72",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            6,
+            9
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oPaaD5J6pSgqW4?qhjIa9/wz!cyvJ7gmTJ<G/Rak-cQW1T0j-)*ZB",
+          "node_value": "/",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            6,
+            10
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oPabC5J6pSgqW4k5hjIa9/wz!cyvBGtdoJ<G/Rak-cQW1T0j-<+ZB",
+          "node_value": "D",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "GATE",
+          "node_path": [
+            6,
+            11
+          ],
+          "node_root_hash72": "v85+LE+3z!M<6GiNUj/Wlf6yrcCntBJaTWchjIa9/wz!cyvBHsdoJ<G/Rak-cQW1T0j-!ZZB",
+          "node_value": "==",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            6,
+            12
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oPaez5J6pSgqW4l4hjIa9/wz!cyvBIrdoJ<G/Rak-cQW1T0j-?YZB",
+          "node_value": "E",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            6,
+            13
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oPafy5J6pSgqW4KPhjIa9/wz!cyvBJqdoJ<G/Rak-cQW1T0j-0XZB",
+          "node_value": "^",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "PAREN",
+          "node_path": [
+            6,
+            14
+          ],
+          "node_root_hash72": "CI)HZEeIIYEEDVqpxNEm5uSrmlpc?VTf(FLC>RukRP2rqh+cj1NsVg5<xYOt-t0gRfDcN7Ld",
+          "node_value": "(",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            6,
+            14,
+            0
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oPahw5J6pSgqW40phjIa9/wz!cyvBKMVt6zG/Rak-cQW1T0j-2VZB",
+          "node_value": "x",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            6,
+            14,
+            1
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oPaiv5J6pSgqW4KPhjIa9/wz!cyvBKMWs6zG/Rak-cQW1T0j+*(ZB",
+          "node_value": "^",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            6,
+            14,
+            2
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oPb8E5J6pSgqW42nhjIa9/wz!cyvBKMXr6zG/Rak-cQW1T0j+//ZB",
+          "node_value": "2",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            6,
+            14,
+            3
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oPb9D5J6pSgqW4(vhjIa9/wz!cyvBKMYq6zG/Rak-cQW1T0j+(*ZB",
+          "node_value": "*",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            6,
+            14,
+            4
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oPbaC5J6pSgqW4*w?LJ(uv+lM3w4mMXJ*ft8/Rak-cQW1T0j+<-ZB",
+          "node_value": "pi",
+          "translation_class": "NO_VALID_IEEE_MAP"
+        },
+        {
+          "node_kind": "CLOSE",
+          "node_path": [
+            6,
+            14,
+            5
+          ],
+          "node_root_hash72": "v85+LEXijh>nqnq>ky5oPbcA5J6pSgqW4/whjIa9/wz!cyvBKM-o6zG/Rak-cQW1T0j+>ZZB",
+          "node_value": ")",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "GATE",
+          "node_path": [
+            6,
+            15
+          ],
+          "node_root_hash72": "v85+LE+3z!M<6GiNUj/Wmg4yrcCntBJaTWchjIa9/wz!cyvBLodoJ<G/Rak-cQW1T0j+?XZB",
+          "node_value": "==",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "PAREN",
+          "node_path": [
+            6,
+            16
+          ],
+          "node_root_hash72": "LBq?kB8L/jdasFDj<xY*2DH-wou-B?EYVsIgr1Vghq6ytLirZ2QN2?qbn*5Lj67<agqMhysQ",
+          "node_value": "(",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "PAREN",
+          "node_path": [
+            6,
+            16,
+            0
+          ],
+          "node_root_hash72": "tMLu5Qk4Yh6F+H8p45S3nW-w-zVj<X*zVYtFv88jd029Dl3akShHsI/IST5I!d?8A4fAPpXr",
+          "node_value": "(",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            6,
+            16,
+            0,
+            0
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oPbhv5J6pSgqW4PKhjIa9/wz!cyvBMKVQOG3uRak-cQW1T0j*+(ZB",
+          "node_value": "c",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            6,
+            16,
+            0,
+            1
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oPc7E5J6pSgqW4KPhjIa9/wz!cyvBMKVQPF3uRak-cQW1T0j**/ZB",
+          "node_value": "^",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            6,
+            16,
+            0,
+            2
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oPc8D5J6pSgqW42nhjIa9/wz!cyvBMKVQQE3uRak-cQW1T0j*/*ZB",
+          "node_value": "2",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "GATE",
+          "node_path": [
+            6,
+            16,
+            0,
+            3
+          ],
+          "node_root_hash72": "v85+LE+3z!M<6GiNUj/Wnc7yrcCntBJaTWchjIa9/wz!cyvBMKVQRD3uRak-cQW1T0j*)-ZB",
+          "node_value": "==",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            6,
+            16,
+            0,
+            4
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oPcbA5J6pSgqW4<thjIa9/wz!cyvBMKVQSC3uRak-cQW1T0j*<ZZB",
+          "node_value": "t",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            6,
+            16,
+            0,
+            5
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oPccz5J6pSgqW4KPhjIa9/wz!cyvBMKVQTB3uRak-cQW1T0j*>YZB",
+          "node_value": "^",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            6,
+            16,
+            0,
+            6
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oPcdy5J6pSgqW44lhjIa9/wz!cyvBMKVQUA3uRak-cQW1T0j*!XZB",
+          "node_value": "4",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            6,
+            16,
+            0,
+            7
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oPcex5J6pSgqW4)uhjIa9/wz!cyvBMKVQVz3uRak-cQW1T0j*?WZB",
+          "node_value": "+",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            6,
+            16,
+            0,
+            8
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oPcfw5J6pSgqW4NMhjIa9/wz!cyvBMKVQWy3uRak-cQW1T0j*0VZB",
+          "node_value": "a",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            6,
+            16,
+            0,
+            9
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oPcgv5J6pSgqW4KPhjIa9/wz!cyvBMKVQXx3uRak-cQW1T0j/-(ZB",
+          "node_value": "^",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            6,
+            16,
+            0,
+            10
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oPd6E5J6pSgqW42nhjIa9/wz!cyvBMKVQP<gqhak-cQW1T0j/+/ZB",
+          "node_value": "2",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "CLOSE",
+          "node_path": [
+            6,
+            16,
+            0,
+            11
+          ],
+          "node_root_hash72": "v85+LEXijh>nqnq>ky5oPd7D5J6pSgqW4/whjIa9/wz!cyvBMKVQP>fqhak-cQW1T0j/**ZB",
+          "node_value": ")",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            6,
+            16,
+            1
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oPd8C5J6pSgqW4>shjIa9/wz!cyvBMKWs6zG/Rak-cQW1T0j//+ZB",
+          "node_value": "-",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "PAREN",
+          "node_path": [
+            6,
+            16,
+            2
+          ],
+          "node_root_hash72": "XpAmWq2n0R**(Djg>P0RAE5YJ6JPo28jB7Q)KJE?x032hiAcZZOy8>aZdC<->Q0l)CIRIYK+",
+          "node_value": "(",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            6,
+            16,
+            2,
+            0
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oPdaA5J6pSgqW4OLhjIa9/wz!cyvBMKXOOG3uRak-cQW1T0j/)ZZB",
+          "node_value": "b",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            6,
+            16,
+            2,
+            1
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oPdbz5J6pSgqW4KPhjIa9/wz!cyvBMKXOPF3uRak-cQW1T0j/<YZB",
+          "node_value": "^",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            6,
+            16,
+            2,
+            2
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oPdcy5J6pSgqW42nhjIa9/wz!cyvBMKXOQE3uRak-cQW1T0j/>XZB",
+          "node_value": "2",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "GATE",
+          "node_path": [
+            6,
+            16,
+            2,
+            3
+          ],
+          "node_root_hash72": "v85+LE+3z!M<6GiNUj/Wog2yrcCntBJaTWchjIa9/wz!cyvBMKXORD3uRak-cQW1T0j/?VZB",
+          "node_value": "==",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            6,
+            16,
+            2,
+            4
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oPdfv5J6pSgqW4<thjIa9/wz!cyvBMKXOSC3uRak-cQW1T0j(Z(ZB",
+          "node_value": "t",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            6,
+            16,
+            2,
+            5
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oPe5E5J6pSgqW4KPhjIa9/wz!cyvBMKXOTB3uRak-cQW1T0j(-/ZB",
+          "node_value": "^",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            6,
+            16,
+            2,
+            6
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oPe6D5J6pSgqW44lhjIa9/wz!cyvBMKXOUA3uRak-cQW1T0j(+*ZB",
+          "node_value": "4",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "CLOSE",
+          "node_path": [
+            6,
+            16,
+            2,
+            7
+          ],
+          "node_root_hash72": "v85+LEXijh>nqnq>ky5oPe7C5J6pSgqW4/whjIa9/wz!cyvBMKXOVz3uRak-cQW1T0j(*+ZB",
+          "node_value": ")",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "CLOSE",
+          "node_path": [
+            6,
+            16,
+            3
+          ],
+          "node_root_hash72": "v85+LEXijh>nqnq>ky5oPe8B5J6pSgqW4/whjIa9/wz!cyvBMKYq6zG/Rak-cQW1T0j(/-ZB",
+          "node_value": ")",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            6,
+            17
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oPe9A5J6pSgqW4?qhjIa9/wz!cyvBNmdoJ<G/Rak-cQW1T0j((ZZB",
+          "node_value": "/",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "PAREN",
+          "node_path": [
+            6,
+            18
+          ],
+          "node_root_hash72": "GyLu5Qmb+9VYC?E*4iy6nW-w-EX9?X(EOYzwvb8jd02cAi5bkShHvH)GTN8I!g>lk6fAPp-p",
+          "node_value": "(",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            6,
+            18,
+            0
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oPeby5J6pSgqW4NMhjIa9/wz!cyvBOIVt6zG/Rak-cQW1T0j(<XZB",
+          "node_value": "a",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            6,
+            18,
+            1
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oPecx5J6pSgqW4KPhjIa9/wz!cyvBOIWs6zG/Rak-cQW1T0j(>WZB",
+          "node_value": "^",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            6,
+            18,
+            2
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oPedw5J6pSgqW42nhjIa9/wz!cyvBOIXr6zG/Rak-cQW1T0j(!VZB",
+          "node_value": "2",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "GATE",
+          "node_path": [
+            6,
+            18,
+            3
+          ],
+          "node_root_hash72": "v85+LE+3z!M<6GiNUj/Wph0yrcCntBJaTWchjIa9/wz!cyvBOIYq6zG/Rak-cQW1T0j)Z/ZB",
+          "node_value": "==",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            6,
+            18,
+            4
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oPf5D5J6pSgqW4PKhjIa9/wz!cyvBOIZp6zG/Rak-cQW1T0j)-*ZB",
+          "node_value": "c",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            6,
+            18,
+            5
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oPf6C5J6pSgqW4KPhjIa9/wz!cyvBOI-o6zG/Rak-cQW1T0j)++ZB",
+          "node_value": "^",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            6,
+            18,
+            6
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oPf7B5J6pSgqW42nhjIa9/wz!cyvBOI+n6zG/Rak-cQW1T0j)*-ZB",
+          "node_value": "2",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            6,
+            18,
+            7
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oPf8A5J6pSgqW4>shjIa9/wz!cyvBOI*m6zG/Rak-cQW1T0j)/ZZB",
+          "node_value": "-",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            6,
+            18,
+            8
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oPf9z5J6pSgqW4OLhjIa9/wz!cyvBOI/l6zG/Rak-cQW1T0j)(YZB",
+          "node_value": "b",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            6,
+            18,
+            9
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oPfay5J6pSgqW4KPhjIa9/wz!cyvBOI(k6zG/Rak-cQW1T0j))XZB",
+          "node_value": "^",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            6,
+            18,
+            10
+          ],
+          "node_root_hash72": "v85+LE44c7keqnq>ky5oPfbx5J6pSgqW42nhjIa9/wz!cyvBOIWTjt8/Rak-cQW1T0j)<WZB",
+          "node_value": "2",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "CLOSE",
+          "node_path": [
+            6,
+            18,
+            11
+          ],
+          "node_root_hash72": "v85+LEXijh>nqnq>ky5oPfcw5J6pSgqW4/whjIa9/wz!cyvBOIWUit8/Rak-cQW1T0j)>VZB",
+          "node_value": ")",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "GATE",
+          "node_path": [
+            6,
+            19
+          ],
+          "node_root_hash72": "y1kLtg2Kaw<nqnq>ky5oPfdv5J6pSgqW4dDHLJ(uv+lM3w4mM*hgd<G/Rak-cQW1T0jX<?(q",
+          "node_value": "==",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "PAREN",
+          "node_path": [
+            6,
+            20
+          ],
+          "node_root_hash72": "ZwAoURjGL<j7O7GRw4kZ7+Wq9kqiX(5Lsk?oMTU9QpB-fFspPy*jFx>Urg)AG3E4x0uL/)j<",
+          "node_value": "(",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "PAREN",
+          "node_path": [
+            6,
+            20,
+            0
+          ],
+          "node_root_hash72": "USY<8!pa+xxqb)6n!<wLTJq5ec/DdC6HICK2fsBd0nfxuZr(P?X75fiswCWajd/tTYePsr0q",
+          "node_value": "(",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "PAREN",
+          "node_path": [
+            6,
+            20,
+            0,
+            0
+          ],
+          "node_root_hash72": "9CWXDabxwIGFHN23D3eg8oihAd*OI+y1By>O*Y2nCru9jxsjdKdtCjQzaKPR5g)+*5vFba)k",
+          "node_value": "(",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            6,
+            20,
+            0,
+            0,
+            0
+          ],
+          "node_root_hash72": "y1kLtg2Xb95)IH75E!kAhE4HjphqoHuixafce1)eQtQyRn2)x-PQO/L-WURncQW1T0jX<3-q",
+          "node_value": "x",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            6,
+            20,
+            0,
+            0,
+            1
+          ],
+          "node_root_hash72": "y1kLtg2Xb95)IH75E!kAhE4HkohqoHuixaf6k1)eQtQyRn2)x-PQO/L-XTRncQW1T0jX<4Zq",
+          "node_value": "*",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            6,
+            20,
+            0,
+            0,
+            2
+          ],
+          "node_root_hash72": "y1kLtg2Xb95)IH75E!kAhE4HlnhqoHuixafdd1)eQtQyRn2)x-PQO/L-YSRncQW1T0jX<5Yq",
+          "node_value": "y",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "CLOSE",
+          "node_path": [
+            6,
+            20,
+            0,
+            0,
+            3
+          ],
+          "node_root_hash72": "y1kLtg2GpgfIRH75E!kAhE4HmmhqoHuixaf5l1)eQtQyRn2)x-PQO/L-ZRRncQW1T0jX<6Xq",
+          "node_value": ")",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            6,
+            20,
+            0,
+            1
+          ],
+          "node_root_hash72": "y1kLtg2Xb95)IH75E!kAhE4HnlhqoHuixaf6k1)eQtQyRn2)x-PQO/MCeJk-cQW1T0jX<7Wq",
+          "node_value": "*",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            6,
+            20,
+            0,
+            2
+          ],
+          "node_root_hash72": "y1kLtg2Xb95)IH75E!kAhE4HokhqoHuixafec1)eQtQyRn2)x-PQO/NBeJk-cQW1T0jX>>)q",
+          "node_value": "z",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "CLOSE",
+          "node_path": [
+            6,
+            20,
+            0,
+            3
+          ],
+          "node_root_hash72": "y1kLtg2GpgfIRH75E!kAhE4IethqoHuixaf5l1)eQtQyRn2)x-PQO/OAeJk-cQW1T0jX>!(q",
+          "node_value": ")",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            6,
+            20,
+            1
+          ],
+          "node_root_hash72": "y1kLtg2Xb95)IH75E!kAhE4IfshqoHuixaf6k1)eQtQyRn2)x-PQPF3uRak-cQW1T0jX>?/q",
+          "node_value": "*",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            6,
+            20,
+            2
+          ],
+          "node_root_hash72": "y1kLtg2Xb95)IH75E!kAhE4IgrhqoHuixafbf1)eQtQyRn2)x-PQQE3uRak-cQW1T0jX>0*q",
+          "node_value": "w",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "CLOSE",
+          "node_path": [
+            6,
+            20,
+            3
+          ],
+          "node_root_hash72": "y1kLtg2GpgfIRH75E!kAhE4IhqhqoHuixaf5l1)eQtQyRn2)x-PQRD3uRak-cQW1T0jX>1+q",
+          "node_value": ")",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            6,
+            21
+          ],
+          "node_root_hash72": "y1kLtg2Xb95)IH75E!kAhE4IiphqoHuixaf9h1)eQtQyRn2)x-Qs6zG/Rak-cQW1T0jX>2-q",
+          "node_value": "-",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            6,
+            22
+          ],
+          "node_root_hash72": "y1kLtg2Xb95)IH75E!kAhE4IjohqoHuixafce1)eQtQyRn2)x-Rr6zG/Rak-cQW1T0jX>3Zq",
+          "node_value": "x",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            6,
+            23
+          ],
+          "node_root_hash72": "y1kLtg2Xb95)IH75E!kAhE4IknhqoHuixaf9h1)eQtQyRn2)x-Sq6zG/Rak-cQW1T0jX>4Yq",
+          "node_value": "-",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            6,
+            24
+          ],
+          "node_root_hash72": "y1kLtg2Xb95)IH75E!kAhE4IlmhqoHuixafdd1)eQtQyRn2)x-Tp6zG/Rak-cQW1T0jX>5Xq",
+          "node_value": "y",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            6,
+            25
+          ],
+          "node_root_hash72": "y1kLtg2Xb95)IH75E!kAhE4ImlhqoHuixaf7j1)eQtQyRn2)x-Uo6zG/Rak-cQW1T0jX>6Wq",
+          "node_value": "+",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            6,
+            26
+          ],
+          "node_root_hash72": "y1kLtg2Xb95)IH75E!kAhE4InkhqoHuixafec1)eQtQyRn2)x-Vn6zG/Rak-cQW1T0jX!<)q",
+          "node_value": "z",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            6,
+            27
+          ],
+          "node_root_hash72": "y1kLtg2Xb95)IH75E!kAhE4JdthqoHuixaf7j1)eQtQyRn2)x-Wm6zG/Rak-cQW1T0jX!>(q",
+          "node_value": "+",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            6,
+            28
+          ],
+          "node_root_hash72": "y1kLtg2Xb95)IH75E!kAhE4JeshqoHuixafbf1)eQtQyRn2)x-Xl6zG/Rak-cQW1T0jX!!/q",
+          "node_value": "w",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "GATE",
+          "node_path": [
+            6,
+            29
+          ],
+          "node_root_hash72": "y1kLtg2Kaw<nqnq>ky5oP7eI9nD/UF5DQy(!11)eQtQyRn2)x-Yk6zG/Rak-cQW1T0jX!0+q",
+          "node_value": "==",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            6,
+            30
+          ],
+          "node_root_hash72": "y1kLtg2Xb95)IH75E!kAhE4JhphqoHuixaf9h1)eQtQyRn2)x+Ot6zG/Rak-cQW1T0jX!1-q",
+          "node_value": "u",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            6,
+            31
+          ],
+          "node_root_hash72": "y1kLtg2Xb95)IH75E!kAhE4JiohqoHuixafWE1)eQtQyRn2)x+Ps6zG/Rak-cQW1T0jX!2Zq",
+          "node_value": "^",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            6,
+            32
+          ],
+          "node_root_hash72": "y1kLtg2Xb95)IH75E!kAhE4JjnhqoHuixafjnCnfAOi/D1//6KYTht8/Rak-cQW1T0jX!4Xq",
+          "node_value": "72",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "CLOSE",
+          "node_path": [
+            6,
+            33
+          ],
+          "node_root_hash72": "y1kLtg2GpgfIRH75E!kAhE4JllhqoHuixaf5l1)eQtQyRn2)x+Rq6zG/Rak-cQW1T0jX!5Wq",
+          "node_value": ")",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            7
+          ],
+          "node_root_hash72": "y1kLtg2Xb95)IH75E!kAhE4JmkhqoHuixaf6k1)eQtQyRn2<9gmTJ<G/Rak-cQW1T0jX?))q",
+          "node_value": "*",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "PAREN",
+          "node_path": [
+            8
+          ],
+          "node_root_hash72": "+U6BiaAiQYHEM*vDN7CdnBVQzvsY8ual(+*WYFR(JuU*>+cdSCo<B(0Zr0r-pO9uLOH7z!KZ",
+          "node_value": "(",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            8,
+            0
+          ],
+          "node_root_hash72": "y1kLtg2Xb95)IH75E!kAhE4KdshqoHuixaf-A1)eQtQyRn2>vYqgd<G/Rak-cQW1T0jX?>/q",
+          "node_value": "b",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            8,
+            1
+          ],
+          "node_root_hash72": "y1kLtg2Xb95)IH75E!kAhE4KerhqoHuixafWE1)eQtQyRn2>vZpgd<G/Rak-cQW1T0jX?!*q",
+          "node_value": "^",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            8,
+            2
+          ],
+          "node_root_hash72": "y1kLtg2Xb95)IH75E!kAhE4KfqhqoHuixafec1)eQtQyRn2>v-ogd<G/Rak-cQW1T0jX??+q",
+          "node_value": "2",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            8,
+            3
+          ],
+          "node_root_hash72": "y1kLtg2Xb95)IH75E!kAhE4KgphqoHuixaf6k1)eQtQyRn2>v+ngd<G/Rak-cQW1T0jX?0-q",
+          "node_value": "*",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            8,
+            4
+          ],
+          "node_root_hash72": "y1kLtg2Xb95)IH75E!kAhE4KhohqoHuixaf+z1)eQtQyRn2>v*mgd<G/Rak-cQW1T0jX?1Zq",
+          "node_value": "c",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            8,
+            5
+          ],
+          "node_root_hash72": "y1kLtg2Xb95)IH75E!kAhE4KinhqoHuixafWE1)eQtQyRn2>v/lgd<G/Rak-cQW1T0jX?2Yq",
+          "node_value": "^",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            8,
+            6
+          ],
+          "node_root_hash72": "y1kLtg2Xb95)IH75E!kAhE4KjmhqoHuixafec1)eQtQyRn2>v(kgd<G/Rak-cQW1T0jX?3Xq",
+          "node_value": "2",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "CLOSE",
+          "node_path": [
+            8,
+            7
+          ],
+          "node_root_hash72": "y1kLtg2GpgfIRH75E!kAhE4KklhqoHuixaf5l1)eQtQyRn2>v)jgd<G/Rak-cQW1T0jX?4Wq",
+          "node_value": ")",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            9
+          ],
+          "node_root_hash72": "y1kLtg2Xb95)IH75E!kAhE4KlkhqoHuixafWE1)eQtQyRn2!7gmTJ<G/Rak-cQW1T0jX0()q",
+          "node_value": "^",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "PAREN",
+          "node_path": [
+            10
+          ],
+          "node_root_hash72": "Ps>UGzMSr>9<Hbgk!G(!F2iJ!eFTjCWQKCP)Z5tuvNlaQ4R3RC6D2vRlVn25b?wksorwl0<v",
+          "node_value": "(",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            10,
+            0
+          ],
+          "node_root_hash72": "y1kLtg2Xb95)IH75E!kAhE4LcshqoHuixaf9h1)eQtQyRn2-GQVt6zG/Rak-cQW1T0jX0</q",
+          "node_value": "-",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            10,
+            1
+          ],
+          "node_root_hash72": "y1kLtg2Xb95)IH75E!kAhE4LdrhqoHuixafdd1)eQtQyRn2-GQWs6zG/Rak-cQW1T0jX0>*q",
+          "node_value": "1",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "CLOSE",
+          "node_path": [
+            10,
+            2
+          ],
+          "node_root_hash72": "y1kLtg2GpgfIRH75E!kAhE4LeqhqoHuixaf5l1)eQtQyRn2-GQXr6zG/Rak-cQW1T0jX0!+q",
+          "node_value": ")",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "COMMA",
+          "node_path": [
+            11
+          ],
+          "node_root_hash72": "y1kLtg2GsbbKVH75E!kAhE4LfphqoHuixaf8i1)eQtQyRn2-HsdoJ<G/Rak-cQW1T0jX0?-q",
+          "node_value": ",",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            12
+          ],
+          "node_root_hash72": "y1kLtg2Xb95)IH75E!kAhE4LgohqoHuixafw(1)eQtQyRn2-IrdoJ<G/Rak-cQW1T0jX00Zq",
+          "node_value": "D",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "GATE",
+          "node_path": [
+            13
+          ],
+          "node_root_hash72": "y1kLtg2Kaw<nqnq>ky5oP7gK5nD/UF5DQy(!11)eQtQyRn2-JqdoJ<G/Rak-cQW1T0jX02Xq",
+          "node_value": "==",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "PAREN",
+          "node_path": [
+            14
+          ],
+          "node_root_hash72": "*pFgXRoyS44aOcDMD7dZcYRxcdqi*+0Onxy+Ss)9Qut>mBlpUq?qBvZ*jj0sJ3J<A5mO/)j0",
+          "node_value": "(",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "PAREN",
+          "node_path": [
+            14,
+            0
+          ],
+          "node_root_hash72": "ZPT?8!pfYsEt4)6s-?wLTJv>hc/Diu9LLvK77zI9/nkpx(j>P4Paa7lswC-dc86fZGyx)40q",
+          "node_value": "(",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "PAREN",
+          "node_path": [
+            14,
+            0,
+            0
+          ],
+          "node_root_hash72": "9C+PGabxwNyIHN28v69t(un9gFchQ<q4By>O>Q5suuu9jxsjdKdtCjQzaKPRa8!+*5AC6d)k",
+          "node_value": "(",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            14,
+            0,
+            0,
+            0
+          ],
+          "node_root_hash72": "y1kLtg2Xb95)IH75E!kAhE4MbshqoHuixafce1)eQtQyRn2-KMVQO/LDeJk-cQW1T0jX1)/q",
+          "node_value": "x",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            14,
+            0,
+            0,
+            1
+          ],
+          "node_root_hash72": "y1kLtg2Xb95)IH75E!kAhE4McrhqoHuixaf6k1)eQtQyRn2-KMVQO/MCeJk-cQW1T0jX1<*q",
+          "node_value": "*",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            14,
+            0,
+            0,
+            2
+          ],
+          "node_root_hash72": "y1kLtg2Xb95)IH75E!kAhE4MdqhqoHuixafdd1)eQtQyRn2-KMVQO/NBeJk-cQW1T0jX1>+q",
+          "node_value": "y",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "CLOSE",
+          "node_path": [
+            14,
+            0,
+            0,
+            3
+          ],
+          "node_root_hash72": "y1kLtg2GpgfIRH75E!kAhE4MephqoHuixaf5l1)eQtQyRn2-KMVQO/OAeJk-cQW1T0jX1!-q",
+          "node_value": ")",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            14,
+            0,
+            1
+          ],
+          "node_root_hash72": "y1kLtg2Xb95)IH75E!kAhE4MfohqoHuixaf6k1)eQtQyRn2-KMVQPF3uRak-cQW1T0jX1?Zq",
+          "node_value": "*",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            14,
+            0,
+            2
+          ],
+          "node_root_hash72": "y1kLtg2Xb95)IH75E!kAhE4MgnhqoHuixafec1)eQtQyRn2-KMVQQE3uRak-cQW1T0jX10Yq",
+          "node_value": "z",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "CLOSE",
+          "node_path": [
+            14,
+            0,
+            3
+          ],
+          "node_root_hash72": "y1kLtg2GpgfIRH75E!kAhE4MhmhqoHuixaf5l1)eQtQyRn2-KMVQRD3uRak-cQW1T0jX11Xq",
+          "node_value": ")",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            14,
+            1
+          ],
+          "node_root_hash72": "y1kLtg2Xb95)IH75E!kAhE4MilhqoHuixaf6k1)eQtQyRn2-KMWs6zG/Rak-cQW1T0jX12Wq",
+          "node_value": "*",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            14,
+            2
+          ],
+          "node_root_hash72": "y1kLtg2Xb95)IH75E!kAhE4MjkhqoHuixafbf1)eQtQyRn2-KMXr6zG/Rak-cQW1T0jX2*)q",
+          "node_value": "w",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "CLOSE",
+          "node_path": [
+            14,
+            3
+          ],
+          "node_root_hash72": "y1kLtg2GpgfIRH75E!kAhE4N9thqoHuixaf5l1)eQtQyRn2-KMYq6zG/Rak-cQW1T0jX2/(q",
+          "node_value": ")",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            15
+          ],
+          "node_root_hash72": "y1kLtg2Xb95)IH75E!kAhE4NashqoHuixaf7j1)eQtQyRn2-LodoJ<G/Rak-cQW1T0jX2(/q",
+          "node_value": "+",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            16
+          ],
+          "node_root_hash72": "y1kLtg2Xb95)IH75E!kAhE4NbrhqoHuixafce1)eQtQyRn2-MndoJ<G/Rak-cQW1T0jX2)*q",
+          "node_value": "x",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            17
+          ],
+          "node_root_hash72": "y1kLtg2Xb95)IH75E!kAhE4NcqhqoHuixafWE1)eQtQyRn2-NmdoJ<G/Rak-cQW1T0jX2<+q",
+          "node_value": "^",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            18
+          ],
+          "node_root_hash72": "y1kLtg2Xb95)IH75E!kAhE4NdphqoHuixaf7j1)eQtQyRn2-OldoJ<G/Rak-cQW1T0jX2>-q",
+          "node_value": "s",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            19
+          ],
+          "node_root_hash72": "y1kLtg2Xb95)IH75E!kAhE4NeohqoHuixaf7j1)eQtQyRn2-PkdoJ<G/Rak-cQW1T0jX2!Zq",
+          "node_value": "+",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            20
+          ],
+          "node_root_hash72": "y1kLtg2Xb95)IH75E!kAhE4NfnhqoHuixafdd1)eQtQyRn2+FtdoJ<G/Rak-cQW1T0jX2?Yq",
+          "node_value": "y",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            21
+          ],
+          "node_root_hash72": "y1kLtg2Xb95)IH75E!kAhE4NgmhqoHuixafWE1)eQtQyRn2+GsdoJ<G/Rak-cQW1T0jX20Xq",
+          "node_value": "^",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "PAREN",
+          "node_path": [
+            22
+          ],
+          "node_root_hash72": "Pu6HIzMSr04!Hbgk!G(!F2lE0fGRjFRSKCP)+bluvHraQ4U!TC6D2vRlVn25b?wksorzg2<v",
+          "node_value": "(",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            22,
+            0
+          ],
+          "node_root_hash72": "y1kLtg2Xb95)IH75E!kAhE4NikhqoHuixaf9h1)eQtQyRn2+HOVt6zG/Rak-cQW1T0jX3+)q",
+          "node_value": "-",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            22,
+            1
+          ],
+          "node_root_hash72": "y1kLtg2Xb95)IH75E!kAhE4O8thqoHuixaf7j1)eQtQyRn2+HOWs6zG/Rak-cQW1T0jX3*(q",
+          "node_value": "s",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "CLOSE",
+          "node_path": [
+            22,
+            2
+          ],
+          "node_root_hash72": "y1kLtg2GpgfIRH75E!kAhE4O9shqoHuixaf5l1)eQtQyRn2+HOXr6zG/Rak-cQW1T0jX3//q",
+          "node_value": ")",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            23
+          ],
+          "node_root_hash72": "y1kLtg2Xb95)IH75E!kAhE4OarhqoHuixaf9h1)eQtQyRn2+IqdoJ<G/Rak-cQW1T0jX3(*q",
+          "node_value": "-",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            24
+          ],
+          "node_root_hash72": "y1kLtg2Xb95)IH75E!kAhE4ObqhqoHuixafec1)eQtQyRn2+JpdoJ<G/Rak-cQW1T0jX3)+q",
+          "node_value": "z",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            25
+          ],
+          "node_root_hash72": "y1kLtg2Xb95)IH75E!kAhE4OcphqoHuixafWE1)eQtQyRn2+KodoJ<G/Rak-cQW1T0jX3<-q",
+          "node_value": "^",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            26
+          ],
+          "node_root_hash72": "y1kLtg2Xb95)IH75E!kAhE4OdohqoHuixafag1)eQtQyRn2+LndoJ<G/Rak-cQW1T0jX3>Zq",
+          "node_value": "v",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            27
+          ],
+          "node_root_hash72": "y1kLtg2Xb95)IH75E!kAhE4OenhqoHuixaf9h1)eQtQyRn2+MmdoJ<G/Rak-cQW1T0jX3!Yq",
+          "node_value": "-",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            28
+          ],
+          "node_root_hash72": "y1kLtg2Xb95)IH75E!kAhE4OfmhqoHuixafbf1)eQtQyRn2+NldoJ<G/Rak-cQW1T0jX3?Xq",
+          "node_value": "w",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            29
+          ],
+          "node_root_hash72": "y1kLtg2Xb95)IH75E!kAhE4OglhqoHuixafWE1)eQtQyRn2+OkdoJ<G/Rak-cQW1T0jX30Wq",
+          "node_value": "^",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "PAREN",
+          "node_path": [
+            30
+          ],
+          "node_root_hash72": "Pv7GHzMSr14>Hbgk!G(!F2mE?gDTjGRRKCP)/0uuvKoaQ4V!SC6D2vRlVn25b?wksorAg1<v",
+          "node_value": "(",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            30,
+            0
+          ],
+          "node_root_hash72": "y1kLtg2Xb95)IH75E!kAhE4P7thqoHuixaf9h1)eQtQyRn2*EQVt6zG/Rak-cQW1T0jX4+(q",
+          "node_value": "-",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "TOKEN",
+          "node_path": [
+            30,
+            1
+          ],
+          "node_root_hash72": "y1kLtg2Xb95)IH75E!kAhE4P8shqoHuixafag1)eQtQyRn2*EQWs6zG/Rak-cQW1T0jX4*/q",
+          "node_value": "v",
+          "translation_class": "APPROXIMATE_CONTROL_MAP"
+        },
+        {
+          "node_kind": "CLOSE",
+          "node_path": [
+            30,
+            2
+          ],
+          "node_root_hash72": "y1kLtg2GpgfIRH75E!kAhE4P9rhqoHuixaf5l1)eQtQyRn2*EQXr6zG/Rak-cQW1T0jX4/*q",
+          "node_value": ")",
+          "translation_class": "STRUCTURAL_SIMULATION"
+        }
+      ],
+      "workload_id": "T1_transport"
+    }
+  ]
+}

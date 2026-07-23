@@ -1,0 +1,40 @@
+{
+  "acceptance": {
+    "authoritative_float_results": 0,
+    "hash72_replay_order_losses": 0,
+    "indeterminate_trinary_collapses": 0,
+    "mock_components": 0,
+    "multimodal_source_binding_losses": 0,
+    "phase_gear_authority_bypasses": 0,
+    "runtime_equivalence_mismatches": 0
+  },
+  "capabilities": [
+    "typed exact HARMONICODE JSON AST and execution",
+    "exact rational and Q(b,i) symbolic arithmetic",
+    "trinary logic preserving the zero state",
+    "formal proof receipts for assertions",
+    "runtime equivalence replay through production exact operations",
+    "payload-bearing ordered Hash72 symbolic transitions",
+    "x-y-z-w reciprocal phase-gear logic through VM81",
+    "native (i,-i) ERS zero-sum closure",
+    "typed provenance-bound multimodal token construction and emission"
+  ],
+  "implementation_module": "hhs_runtime/hhs_pass118_symbolic_harmonicode_runtime_v1.py",
+  "new_test_count": 17,
+  "parent_pass": "PASS_117_NATIVE_SYMBOLIC_TENSOR_EMULATION_REPAIR",
+  "pass_id": "PASS_118",
+  "runtime_service": "runtime.symbolic_harmonicode_reasoning.pass118",
+  "schema": "HHS_PASS_118_RELEASE_MANIFEST_V1",
+  "scoped_test_count": 95,
+  "scoped_test_failures": 0,
+  "self_test_root": {
+    "equivalence_root_hash72": "0000000000000000000000000000002pQw>9TPX^UUdOBY*GEl3HXpfjAr2V(>HE>9nMJCKS",
+    "execution_receipt_root_hash72": "0000000000000000000000000000002oz^5R*ynFXDUktX64ucG4o/lVhCwnzOx*r63rZqga",
+    "phase_gear_root_hash72": "0000000000000000000000000000004F4wBV2/nGe^fQ=LYPrH!!9SAykuAnOwdp?(XCYPhm",
+    "schema": "HHS_PASS118_SELF_TEST_V1",
+    "status": "PASS",
+    "token_root_hash72": "00000000000000000000000000000037rWJn5lrWLepy0O98pc!t31pfariIEtd6FpA6HS9L"
+  },
+  "test_module": "tests/test_hhs_pass118_symbolic_harmonicode_runtime_v1.py",
+  "title": "Runtime-Validated Symbolic HARMONICODE Reasoning, Hash72 Transitions, Phase-Gear Logic, and Multimodal Tokens"
+}

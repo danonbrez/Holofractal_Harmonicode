@@ -1,0 +1,192 @@
+{
+  "operation_registry_root_hash72": "0000000000000000000000000000002q3BHFAYH2^CJeKR1nJ+kgL5AON(Q?bB99ZYpsItn1",
+  "operations": [
+    {
+      "description": "Create or resolve a native workspace project",
+      "implemented": true,
+      "operation_class": "INGRESS",
+      "operation_id": "workspace.project.create",
+      "private_authority_path": false,
+      "unified_api_only": true
+    },
+    {
+      "description": "Open a project-scoped workspace session",
+      "implemented": true,
+      "operation_class": "INGRESS",
+      "operation_id": "workspace.session.open",
+      "private_authority_path": false,
+      "unified_api_only": true
+    },
+    {
+      "description": "Create a presentation-only editor buffer",
+      "implemented": true,
+      "operation_class": "INGRESS",
+      "operation_id": "workspace.buffer.open",
+      "private_authority_path": false,
+      "unified_api_only": true
+    },
+    {
+      "description": "Register a non-authorizing human, LLM, tool, or CI agent identity",
+      "implemented": true,
+      "operation_class": "INGRESS",
+      "operation_id": "workspace.agent.register",
+      "private_authority_path": false,
+      "unified_api_only": true
+    },
+    {
+      "description": "Submit a repository-native capability-bearing change proposal",
+      "implemented": true,
+      "operation_class": "INGRESS",
+      "operation_id": "workspace.change.propose",
+      "private_authority_path": false,
+      "unified_api_only": true
+    },
+    {
+      "description": "Read canonical product runtime state",
+      "implemented": true,
+      "operation_class": "QUERY",
+      "operation_id": "workspace.state.get",
+      "private_authority_path": false,
+      "unified_api_only": true
+    },
+    {
+      "description": "Read the project object index",
+      "implemented": true,
+      "operation_class": "QUERY",
+      "operation_id": "workspace.project.index",
+      "private_authority_path": false,
+      "unified_api_only": true
+    },
+    {
+      "description": "Mutate an editor projection under authority and alignment",
+      "implemented": true,
+      "operation_class": "MUTATE",
+      "operation_id": "workspace.buffer.update",
+      "private_authority_path": false,
+      "unified_api_only": true
+    },
+    {
+      "description": "Commit a buffer as a source artifact",
+      "implemented": true,
+      "operation_class": "MUTATE",
+      "operation_id": "workspace.source.commit",
+      "private_authority_path": false,
+      "unified_api_only": true
+    },
+    {
+      "description": "Attach witnessed test evidence to a change proposal",
+      "implemented": true,
+      "operation_class": "MUTATE",
+      "operation_id": "workspace.test.record",
+      "private_authority_path": false,
+      "unified_api_only": true
+    },
+    {
+      "description": "Create a context-independent agent handoff capsule",
+      "implemented": true,
+      "operation_class": "MUTATE",
+      "operation_id": "workspace.handoff.create",
+      "private_authority_path": false,
+      "unified_api_only": true
+    },
+    {
+      "description": "Run bounded source inspection",
+      "implemented": true,
+      "operation_class": "EXECUTE",
+      "operation_id": "workspace.source.inspect",
+      "private_authority_path": false,
+      "unified_api_only": true
+    },
+    {
+      "description": "Evaluate post-freeze reciprocal development constraints",
+      "implemented": true,
+      "operation_class": "EXECUTE",
+      "operation_id": "workspace.alignment.evaluate",
+      "private_authority_path": false,
+      "unified_api_only": true
+    },
+    {
+      "description": "Create a bounded product-local self-healing plan",
+      "implemented": true,
+      "operation_class": "EXECUTE",
+      "operation_id": "workspace.healing.plan",
+      "private_authority_path": false,
+      "unified_api_only": true
+    },
+    {
+      "description": "Reserved Pass 076 interpreter surface",
+      "implemented": false,
+      "operation_class": "EXECUTE",
+      "operation_id": "workspace.interpreter.execute",
+      "private_authority_path": false,
+      "unified_api_only": true
+    },
+    {
+      "description": "Reserved Pass 077 compiler surface",
+      "implemented": false,
+      "operation_class": "COMPILE",
+      "operation_id": "workspace.compiler.compile",
+      "private_authority_path": false,
+      "unified_api_only": true
+    },
+    {
+      "description": "Reserved Pass 078 emulator surface",
+      "implemented": false,
+      "operation_class": "EMULATE",
+      "operation_id": "workspace.emulator.run",
+      "private_authority_path": false,
+      "unified_api_only": true
+    },
+    {
+      "description": "Parse Harmonicode source into a span-preserving derived language document and HHS_TYPED_IR_V1",
+      "implemented": true,
+      "operation_class": "EXECUTE",
+      "operation_id": "workspace.language.parse",
+      "private_authority_path": false,
+      "unified_api_only": true
+    },
+    {
+      "description": "Validate HHS_TYPED_IR_V1 identity, spans, types, effects, lineage, and invariant bindings",
+      "implemented": true,
+      "operation_class": "EXECUTE",
+      "operation_id": "workspace.language.validate",
+      "private_authority_path": false,
+      "unified_api_only": true
+    },
+    {
+      "description": "Project the typed symbol index for an IR object",
+      "implemented": true,
+      "operation_class": "QUERY",
+      "operation_id": "workspace.language.symbols",
+      "private_authority_path": false,
+      "unified_api_only": true
+    },
+    {
+      "description": "Read a derived HHS_TYPED_IR_V1 object",
+      "implemented": true,
+      "operation_class": "QUERY",
+      "operation_id": "workspace.language.ir.get",
+      "private_authority_path": false,
+      "unified_api_only": true
+    },
+    {
+      "description": "Commit validated typed IR with committed-source lineage under authority and lease",
+      "implemented": true,
+      "operation_class": "MUTATE",
+      "operation_id": "workspace.language.ir.commit",
+      "private_authority_path": false,
+      "unified_api_only": true
+    },
+    {
+      "description": "Build an aligned agent-coordinated deterministic test selection and sharding plan",
+      "implemented": true,
+      "operation_class": "EXECUTE",
+      "operation_id": "workspace.tests.accelerate",
+      "private_authority_path": false,
+      "unified_api_only": true
+    }
+  ],
+  "parent_operation_registry_root_hash72": "0000000000000000000000000000001shM^RJmUhaP=QdhZs>GRPRVtsQ4OPrVDGwlZq3!Jk",
+  "schema": "HHS_API_OPERATION_REGISTRY_V1",
+  "version": "PASS_075_HARMONICODE_TYPED_IR_AND_TEST_ACCELERATION_V1"
+}

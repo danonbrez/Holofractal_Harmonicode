@@ -1,0 +1,154 @@
+[PASS] runtime_bootstrap
+[PASS] kernel_authority_loaded
+[PASS] receipt_replay_verifier
+[PASS] runtime_gate_integrity
+[PASS] database_bridge_available
+[PASS] regression_suite_importable
+[PASS] no_mnt_data_dependency
+[PASS] runtime_package_topology
+
+
+============================================================
+HHS RUNTIME SMOKE SUMMARY
+============================================================
+{
+  "passed": 8,
+  "failed": 0,
+  "all_ok": true
+}
+
+
+============================================================
+HHS CERTIFICATION REPORT
+============================================================
+{
+  "certification": "HHS_GENERAL_PROGRAMMING_ENVIRONMENT_V1",
+  "status": "CERTIFIED_LOCKED",
+  "locked": true,
+  "topology_ok": true,
+  "kernel_ok": true,
+  "smoke_ok": true,
+  "regression_ok": true,
+  "database_ok": true,
+  "replay_ok": true,
+  "stages": [
+    {
+      "name": "runtime_topology",
+      "ok": true,
+      "details": {
+        "repo_root": "/mnt/data/hhs147_work/hhs146_work",
+        "kernel_path": "/mnt/data/hhs147_work/hhs146_work/HARMONICODE_KERNEL_v44_2_lockcore_patched_selfsolving_hash72authority_locked-7.py",
+        "module_name": "HARMONICODE_KERNEL_v44_2_lockcore_patched_selfsolving_hash72authority_locked-7",
+        "python": "/opt/pyvenv/bin/python"
+      }
+    },
+    {
+      "name": "kernel_authority",
+      "ok": true,
+      "details": {
+        "kernel_module": "HARMONICODE_KERNEL_v44_2_lockcore_patched_selfsolving_hash72authority_locked-7"
+      }
+    },
+    {
+      "name": "runtime_smoke",
+      "ok": true,
+      "details": {
+        "report": {
+          "summary": {
+            "passed": 8,
+            "failed": 0,
+            "all_ok": true
+          },
+          "results": [
+            {
+              "name": "runtime_bootstrap",
+              "ok": true,
+              "details": {
+                "repo_root": "/mnt/data/hhs147_work/hhs146_work",
+                "kernel_path": "/mnt/data/hhs147_work/hhs146_work/HARMONICODE_KERNEL_v44_2_lockcore_patched_selfsolving_hash72authority_locked-7.py",
+                "module_name": "HARMONICODE_KERNEL_v44_2_lockcore_patched_selfsolving_hash72authority_locked-7",
+                "python": "/opt/pyvenv/bin/python"
+              }
+            },
+            {
+              "name": "kernel_authority_loaded",
+              "ok": true,
+              "details": {
+                "verified_symbols": [
+                  "AUTHORITATIVE_TRUST_POLICY_V44",
+                  "security_hash72_v44",
+                  "NativeHash72Codec",
+                  "Manifold9",
+                  "Tensor"
+                ],
+                "kernel_module": "HARMONICODE_KERNEL_v44_2_lockcore_patched_selfsolving_hash72authority_locked-7"
+              }
+            },
+            {
+              "name": "receipt_replay_verifier",
+              "ok": true,
+              "details": {
+                "module": "<module 'hhs_receipt_replay_verifier_v1' from '/mnt/data/hhs147_work/hhs146_work/hhs_receipt_replay_verifier_v1.py'>"
+              }
+            },
+            {
+              "name": "runtime_gate_integrity",
+              "ok": true,
+              "details": {
+                "module": "<module 'hhs_control_flow_gates_v1' from '/mnt/data/hhs147_work/hhs146_work/hhs_control_flow_gates_v1.py'>"
+              }
+            },
+            {
+              "name": "database_bridge_available",
+              "ok": true,
+              "details": {
+                "module": "<module 'hhs_database_integration_layer_v1' from '/mnt/data/hhs147_work/hhs146_work/hhs_database_integration_layer_v1.py'>"
+              }
+            },
+            {
+              "name": "regression_suite_importable",
+              "ok": true,
+              "details": {
+                "module": "<module 'hhs_regression_suite_v1' from '/mnt/data/hhs147_work/hhs146_work/hhs_regression_suite_v1.py'>"
+              }
+            },
+            {
+              "name": "no_mnt_data_dependency",
+              "ok": true,
+              "details": {}
+            },
+            {
+              "name": "runtime_package_topology",
+              "ok": true,
+              "details": {
+                "runtime_path": "/mnt/data/hhs147_work/hhs146_work/hhs_runtime/__init__.py"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "regression_suite",
+      "ok": true,
+      "details": {
+        "import_only": true
+      }
+    },
+    {
+      "name": "database_persistence",
+      "ok": true,
+      "details": {
+        "module": "<module 'hhs_database_integration_layer_v1' from '/mnt/data/hhs147_work/hhs146_work/hhs_database_integration_layer_v1.py'>"
+      }
+    },
+    {
+      "name": "receipt_replay",
+      "ok": true,
+      "details": {
+        "module": "<module 'hhs_receipt_replay_verifier_v1' from '/mnt/data/hhs147_work/hhs146_work/hhs_receipt_replay_verifier_v1.py'>"
+      }
+    }
+  ]
+}
+============================================================

@@ -1,0 +1,48 @@
+{
+  "files": [
+    {
+      "bytes": 19176,
+      "path": "hhs_runtime/hhs_pass114_palindromic_decimal_state_v1.py",
+      "sha256": "ee39b610924539d6a36465a27d3939145458a6d4a8011acc978744ab30f81fd4"
+    },
+    {
+      "bytes": 3913,
+      "path": "tests/test_hhs_pass114_palindromic_decimal_state_v1.py",
+      "sha256": "54418c5b9b1ea7068f65df2540d3b9f32b9eae76ebe93d95d194ade4105dddc2"
+    },
+    {
+      "bytes": 1014,
+      "path": "PASS_114_PALINDROMIC_DECIMAL_STATE.md",
+      "sha256": "a1c4ffd27bf1cef54253e1b31e7ef5d64fa19a32a1149eb8a8fe732106998b2f"
+    },
+    {
+      "bytes": 432,
+      "path": "CHANGELOG_PASS_114.md",
+      "sha256": "266eb3e21faaac7046deccd57844ff878d773da8adcf17417826b99234abbcc9"
+    },
+    {
+      "bytes": 215060,
+      "path": "PASS_114_SELF_TEST.json",
+      "sha256": "ea3905d7cab6aac1d01d9ec8c41ffe06556179bd39c51be6a4d92ac3dedde353"
+    },
+    {
+      "bytes": 425,
+      "path": "PASS_114_TARGETED_TEST_REPORT.txt",
+      "sha256": "1e2f9f1470eb9b2dd751a75a267d732b9539303cb0393728e5b695289281b208"
+    },
+    {
+      "bytes": 219353,
+      "path": "hhs_runtime/hhs_service_registry_v1.py",
+      "sha256": "6d84e41367e06c74281f1974eea8eef476ee25315d471e820168e186667aff6d"
+    }
+  ],
+  "parent_pass": "PASS_113",
+  "pass_id": "PASS_114",
+  "release_manifest_sha256": "63bd40f7b03292d3924b588a192d330290e0f92816d54c774fd2bc473a9e730a",
+  "runtime_service": "runtime.palindromic_decimal_state.pass114",
+  "schema": "HHS_PASS_114_RELEASE_MANIFEST_V1",
+  "targeted_tests": {
+    "failed": 0,
+    "passed": 37
+  }
+}

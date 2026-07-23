@@ -1,0 +1,157 @@
+{
+  "schema": "HHS_PASS_094_INVARIANT_REGISTRY_V1",
+  "invariants": [
+    {
+      "canonical_projection_fields": [
+        "ordered_values",
+        "reduced_ratio",
+        "orientation"
+      ],
+      "formal_definition": {
+        "ordered_values": [
+          8,
+          9
+        ],
+        "orientation": "FORWARD",
+        "reduced_ratio": [
+          8,
+          9
+        ],
+        "type": "ORDERED_RATIO"
+      },
+      "invariant_id": "invariant:ratio-8-9",
+      "invariant_root_hash72": "00000000000000000000000000000014dF!bI*ZDr8jzI0F*e0pgoSdRc*JtwUVXMD9w4^Bi",
+      "schema": "HHS_MULTIMODAL_MATHEMATICAL_INVARIANT_V1",
+      "source_root_hash72": "0000000000000000000000000000004K*wr8BtHoznNsE7!d1EYR-51)j*LA65Yu+CiMPpR+"
+    },
+    {
+      "canonical_projection_fields": [
+        "ordered_values",
+        "reduced_ratios",
+        "product_closure",
+        "orientation"
+      ],
+      "formal_definition": {
+        "ordered_values": [
+          64,
+          72,
+          81
+        ],
+        "orientation": "FORWARD",
+        "product_closure": [
+          5184,
+          5184
+        ],
+        "reduced_ratios": [
+          [
+            8,
+            9
+          ],
+          [
+            8,
+            9
+          ]
+        ],
+        "type": "GEOMETRIC_PROPORTION"
+      },
+      "invariant_id": "invariant:golden-triplet-64-72-81",
+      "invariant_root_hash72": "0000000000000000000000000000001t(umqwMKDJUxPgmAzQWg77+H^2Gupde4UEN5UyfN9",
+      "schema": "HHS_MULTIMODAL_MATHEMATICAL_INVARIANT_V1",
+      "source_root_hash72": "0000000000000000000000000000001gBJu0sqw5o5s-oa>5X2P)hP1zE?I^QY>CamFg^>e^"
+    },
+    {
+      "canonical_projection_fields": [
+        "ordered_ratios",
+        "product",
+        "orientation"
+      ],
+      "formal_definition": {
+        "ordered_ratios": [
+          [
+            9,
+            8
+          ],
+          [
+            8,
+            9
+          ]
+        ],
+        "orientation": "RECIPROCAL",
+        "product": [
+          1,
+          1
+        ],
+        "type": "RECIPROCAL_CLOSURE"
+      },
+      "invariant_id": "invariant:reciprocal-9-8",
+      "invariant_root_hash72": "0000000000000000000000000000003?+j)o9!xNJfuKGDjgLJnhIuegVM9U1>^2VktZ924Z",
+      "schema": "HHS_MULTIMODAL_MATHEMATICAL_INVARIANT_V1",
+      "source_root_hash72": "0000000000000000000000000000004tw!aV>S^kga0E>UK^F=w7AP9TLRFfxw!/SwktKd4w"
+    },
+    {
+      "canonical_projection_fields": [
+        "ordered_values",
+        "squared_sum",
+        "topology"
+      ],
+      "formal_definition": {
+        "ordered_values": [
+          3,
+          4,
+          5
+        ],
+        "squared_sum": [
+          25,
+          25
+        ],
+        "topology": "RIGHT_TRIANGLE",
+        "type": "PYTHAGOREAN_CLOSURE"
+      },
+      "invariant_id": "invariant:pythagorean-3-4-5",
+      "invariant_root_hash72": "000000000000000000000000000000273SnNDFb-dwNG+*Q-6OS+Gi944>C7U1qVRRGP7+h*",
+      "schema": "HHS_MULTIMODAL_MATHEMATICAL_INVARIANT_V1",
+      "source_root_hash72": "0000000000000000000000000000003EUFtvcweZJRT=mlUSeqtmloeLQMksLk04ihq-ozU?"
+    },
+    {
+      "canonical_projection_fields": [
+        "modulus",
+        "phase_difference",
+        "orientation"
+      ],
+      "formal_definition": {
+        "modulus": 72,
+        "orientation": "OPPOSITE",
+        "phase_difference": 36,
+        "type": "MODULAR_PHASE"
+      },
+      "invariant_id": "invariant:opposite-phase-u72",
+      "invariant_root_hash72": "0000000000000000000000000000000XL8vXiA4R(!t>SUM=?g3AYneiw>I*77VIYX5-e78O",
+      "schema": "HHS_MULTIMODAL_MATHEMATICAL_INVARIANT_V1",
+      "source_root_hash72": "0000000000000000000000000000000qg/SrvJa(SIfXbGi3rpf^dk?=8ScwSl)d5aJC2LAO"
+    },
+    {
+      "canonical_projection_fields": [
+        "operator_word",
+        "equal",
+        "history_required"
+      ],
+      "formal_definition": {
+        "equal": false,
+        "history_required": true,
+        "operator_word": [
+          "A",
+          "B"
+        ],
+        "reversed_word": [
+          "B",
+          "A"
+        ],
+        "type": "ORDERED_HISTORY"
+      },
+      "invariant_id": "invariant:noncommutative-A-B",
+      "invariant_root_hash72": "0000000000000000000000000000003+^G5sN+1jxewbUF7Mcjjt7^NP-8joE(CjN9wYxfZ2",
+      "schema": "HHS_MULTIMODAL_MATHEMATICAL_INVARIANT_V1",
+      "source_root_hash72": "0000000000000000000000000000004uwtetVE1HD0gi?iB55cDsN!byfLlHpcVzUw-Sd)Vq"
+    }
+  ]
+}

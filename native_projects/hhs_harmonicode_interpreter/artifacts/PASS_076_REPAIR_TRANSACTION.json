@@ -1,0 +1,33 @@
+{
+  "authority_revalidated_before_apply": true,
+  "execution_run_root_hash72": "0000000000000000000000000000003AUIc)5ePGkN?GwFM?ifYV>Z-QVCtmw6nSB^20iVXI",
+  "foundation_mutated": false,
+  "healing_plan_ref": "healing:proposal:pass076:repair:test-record:pass076:failure",
+  "healing_plan_root_hash72": "0000000000000000000000000000001MGMa+I-rdvVHHRprXBZJ/MkV78EXKRhnZiR!>xFOY",
+  "history_erased": false,
+  "post_artifact_ref": "artifact:pass076:source:repaired",
+  "post_artifact_root_hash72": "0000000000000000000000000000003lJE1vAB*mDssQv68yr(^)vCAdpg(15a=Y-!ICA-5V",
+  "pre_artifact_ref": "artifact:pass076:source:failing",
+  "pre_artifact_root_hash72": "0000000000000000000000000000001e=O/kZ9m/eM+Yp(YAPJxBkR/vLrk8d8A>gMN/8GpE",
+  "repair_test_receipt_root_hash72": "0000000000000000000000000000002dT/lRUXjCaBNW95r!*iQppnKVF46*2aR0M!VDgW+7",
+  "repair_transaction_root_hash72": "0000000000000000000000000000003tKbMA50KXgYg-0=MqGMhlhO9uuxJnYzg2ps/fbLda",
+  "replacement_receipts": [
+    {
+      "after_root_hash72": "0000000000000000000000000000004s4YmD^BvFovYbL8FQcAFq9Q7k4bQCTVU2Q+KhQ9u0",
+      "before_root_hash72": "0000000000000000000000000000000Ncnu^DfAtvleC40sIR0YCCJFPWdL(3MGSYETGb8^)",
+      "expected_count": 1,
+      "index": 0,
+      "new": "Ω=true",
+      "observed_count": 1,
+      "old": "Ω=false"
+    }
+  ],
+  "rollback_available": true,
+  "rollback_ref": "rollback:repair:pass076:omega",
+  "rollback_root_hash72": "0000000000000000000000000000004JpwCqDT=Zo/Ic)hKbeHs/i3>xG-vfP(3lS/k=*6K3",
+  "schema": "HHS_BOUNDED_PRODUCT_REPAIR_TRANSACTION_V1",
+  "status": "APPLIED_PRODUCT_LOCAL",
+  "target_path": "native_projects/hhs_harmonicode_interpreter/demo/main.hhs",
+  "transaction_id": "repair:pass076:omega",
+  "validation_root_hash72": "0000000000000000000000000000003od^gXh)JEwrW^QlzeEJ9F8YQgy=QHkSYBIQ!67gA4"
+}

@@ -1,0 +1,159 @@
+{
+  "schema": "HHS_PASS_084_LATENCY_RESULTS_V1",
+  "results": [
+    {
+      "workload_id": "W75:two-stream-av-normalization",
+      "audio_observation_count": 8,
+      "audio_stream_count": 1,
+      "audiovisual_edge_count": 8,
+      "normalization_operations": 32,
+      "receipt_bytes": 12226,
+      "shared_event_count": 8,
+      "video_observation_count": 8,
+      "video_stream_count": 1
+    },
+    {
+      "workload_id": "W76:opposite-phase-av-pair",
+      "audio_observation_count": 8,
+      "audio_stream_count": 1,
+      "audiovisual_edge_count": 8,
+      "normalization_operations": 32,
+      "receipt_bytes": 12221,
+      "shared_event_count": 8,
+      "video_observation_count": 8,
+      "video_stream_count": 1
+    },
+    {
+      "workload_id": "W77:eight-stream-av-field",
+      "audio_observation_count": 48,
+      "audio_stream_count": 4,
+      "audiovisual_edge_count": 12,
+      "normalization_operations": 192,
+      "receipt_bytes": 51916,
+      "shared_event_count": 12,
+      "video_observation_count": 48,
+      "video_stream_count": 4
+    },
+    {
+      "workload_id": "W78:latency-offset-normalization",
+      "audio_observation_count": 16,
+      "audio_stream_count": 2,
+      "audiovisual_edge_count": 8,
+      "normalization_operations": 64,
+      "receipt_bytes": 19747,
+      "shared_event_count": 8,
+      "video_observation_count": 16,
+      "video_stream_count": 2
+    },
+    {
+      "workload_id": "W79:lip-synchronization-pattern",
+      "audio_observation_count": 32,
+      "audio_stream_count": 2,
+      "audiovisual_edge_count": 16,
+      "normalization_operations": 128,
+      "receipt_bytes": 38966,
+      "shared_event_count": 16,
+      "video_observation_count": 32,
+      "video_stream_count": 2
+    },
+    {
+      "workload_id": "W80:speaker-localization-binding",
+      "audio_observation_count": 48,
+      "audio_stream_count": 4,
+      "audiovisual_edge_count": 12,
+      "normalization_operations": 192,
+      "receipt_bytes": 51923,
+      "shared_event_count": 12,
+      "video_observation_count": 48,
+      "video_stream_count": 4
+    },
+    {
+      "workload_id": "W81:sixteen-stream-av",
+      "audio_observation_count": 80,
+      "audio_stream_count": 8,
+      "audiovisual_edge_count": 10,
+      "normalization_operations": 320,
+      "receipt_bytes": 80926,
+      "shared_event_count": 10,
+      "video_observation_count": 80,
+      "video_stream_count": 8
+    },
+    {
+      "workload_id": "W82:thirty-two-stream-av",
+      "audio_observation_count": 128,
+      "audio_stream_count": 16,
+      "audiovisual_edge_count": 8,
+      "normalization_operations": 512,
+      "receipt_bytes": 125115,
+      "shared_event_count": 8,
+      "video_observation_count": 128,
+      "video_stream_count": 16
+    },
+    {
+      "workload_id": "W83:sixty-four-stream-av",
+      "audio_observation_count": 192,
+      "audio_stream_count": 32,
+      "audiovisual_edge_count": 6,
+      "normalization_operations": 768,
+      "receipt_bytes": 184413,
+      "shared_event_count": 6,
+      "video_observation_count": 192,
+      "video_stream_count": 32
+    },
+    {
+      "workload_id": "W84:partial-av-overlap",
+      "audio_observation_count": 32,
+      "audio_stream_count": 4,
+      "audiovisual_edge_count": 8,
+      "normalization_operations": 128,
+      "receipt_bytes": 34788,
+      "shared_event_count": 8,
+      "video_observation_count": 32,
+      "video_stream_count": 4
+    },
+    {
+      "workload_id": "W85:resource-bounded-av",
+      "audio_observation_count": 512,
+      "audio_stream_count": 16,
+      "audiovisual_edge_count": 32,
+      "normalization_operations": 2048,
+      "receipt_bytes": 500184,
+      "shared_event_count": 32,
+      "video_observation_count": 512,
+      "video_stream_count": 16
+    },
+    {
+      "workload_id": "W86:normalization-order-comparison",
+      "audio_observation_count": 48,
+      "audio_stream_count": 4,
+      "audiovisual_edge_count": 12,
+      "normalization_operations": 192,
+      "receipt_bytes": 51925,
+      "shared_event_count": 12,
+      "video_observation_count": 48,
+      "video_stream_count": 4
+    },
+    {
+      "workload_id": "W87:shared-event-identity",
+      "audio_observation_count": 80,
+      "audio_stream_count": 8,
+      "audiovisual_edge_count": 10,
+      "normalization_operations": 320,
+      "receipt_bytes": 80930,
+      "shared_event_count": 10,
+      "video_observation_count": 80,
+      "video_stream_count": 8
+    },
+    {
+      "workload_id": "W88:av-receipt-only-replay",
+      "audio_observation_count": 128,
+      "audio_stream_count": 16,
+      "audiovisual_edge_count": 8,
+      "normalization_operations": 512,
+      "receipt_bytes": 125117,
+      "shared_event_count": 8,
+      "video_observation_count": 128,
+      "video_stream_count": 16
+    }
+  ]
+}

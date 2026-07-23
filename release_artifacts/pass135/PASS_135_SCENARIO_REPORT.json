@@ -1,0 +1,72 @@
+{
+  "facts": {
+    "alternate_server_responsive": true,
+    "ancestry_closed": true,
+    "canonical_server_responsive": false,
+    "conformance_exposed": false,
+    "consequence_routes_exposed": false,
+    "inventory_valid": true,
+    "replay_receipt_stable": true,
+    "runtime_progressed": true,
+    "workspace_exposed": false,
+    "zero_bypass_closed": false
+  },
+  "scenarios": [
+    {
+      "authority_level": "A1",
+      "scenario_id": "A1_NATIVE_BUILD",
+      "status": "PASS"
+    },
+    {
+      "authority_level": "A1",
+      "scenario_id": "A1_CANONICAL_BACKEND_PROCESS_START",
+      "status": "PASS"
+    },
+    {
+      "authority_level": "A2",
+      "scenario_id": "A2_CANONICAL_BACKEND_HEALTH",
+      "status": "OBSERVED_FAILING"
+    },
+    {
+      "authority_level": "A2",
+      "scenario_id": "A2_ALTERNATE_RUNTIME_BOOT",
+      "status": "PASS"
+    },
+    {
+      "authority_level": "A2",
+      "scenario_id": "A2_RUNTIME_SOLVE_AND_EVENT",
+      "status": "PASS"
+    },
+    {
+      "authority_level": "A2",
+      "scenario_id": "A2_ANCESTRY_RECONSTRUCTION",
+      "status": "PASS"
+    },
+    {
+      "authority_level": "A2",
+      "scenario_id": "A2_CHECKPOINT_CONTINUITY",
+      "status": "PASS"
+    },
+    {
+      "authority_level": "A2",
+      "scenario_id": "A2_ANCESTRY_INTEGRITY",
+      "status": "PASS"
+    },
+    {
+      "authority_level": "A2",
+      "scenario_id": "A2_PASS132_CONSEQUENCE_DISCOVERABILITY",
+      "status": "NOT_EXPOSED"
+    },
+    {
+      "authority_level": "A2",
+      "scenario_id": "A2_ZERO_BYPASS",
+      "status": "NOT_EXPOSED"
+    },
+    {
+      "authority_level": "A2",
+      "scenario_id": "A2_WORKSPACE_PERSISTENCE",
+      "status": "NOT_EXPOSED"
+    }
+  ],
+  "schema": "HHS_PASS135_SCENARIO_REPORT_V1"
+}

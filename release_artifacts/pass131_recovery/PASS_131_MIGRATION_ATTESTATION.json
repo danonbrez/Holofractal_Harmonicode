@@ -1,0 +1,11 @@
+{
+  "schema": "HHS_PASS131_LEGACY_FULL_TREE_MIGRATION_ATTESTATION_V1",
+  "pass_id": "PASS_131_MIGRATED_R1",
+  "historical_pass_id": "PASS_131",
+  "source_archive": "hhs_pass_131_electrochemical_atomic_physics_sandbox.zip",
+  "migration_type": "LEGACY_COMPLETE_TREE_TO_RFACC_FULL_SYSTEM_CHECKPOINT",
+  "system_files_deleted": false,
+  "transient_caches_excluded": true,
+  "historical_source_files_modified": false,
+  "status": "FULL_ANCESTOR_COPY_VERIFIED"
+}

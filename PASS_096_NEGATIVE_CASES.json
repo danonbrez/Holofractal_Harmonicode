@@ -1,0 +1,77 @@
+{
+  "schema": "HHS_PASS_096_NEGATIVE_CASES_V1",
+  "cases": [
+    {
+      "case": "metaphor_as_authority",
+      "expected": "REJECT_METAPHOR_AS_FORMAL_AUTHORITY",
+      "observed": "REJECT_METAPHOR_AS_FORMAL_AUTHORITY",
+      "passed": true
+    },
+    {
+      "case": "reverse_unique_cause",
+      "expected": "REJECT_REVERSE_CAUSAL_COLLAPSE",
+      "observed": "REJECT_REVERSE_CAUSAL_COLLAPSE",
+      "passed": true
+    },
+    {
+      "case": "quantity_mutation",
+      "expected": "REJECT_TRANSLATION_QUANTITY_MUTATION",
+      "observed": "REJECT_TRANSLATION_QUANTITY_MUTATION",
+      "passed": true
+    },
+    {
+      "case": "order_loss",
+      "expected": "REJECT_NONCOMMUTATIVE_TRANSLATION_ORDER_LOSS",
+      "observed": "REJECT_NONCOMMUTATIVE_TRANSLATION_ORDER_LOSS",
+      "passed": true
+    },
+    {
+      "case": "silent_truncation",
+      "expected": "REJECT_CONTEXT_TRUNCATION_WITHOUT_LOSS_DECLARATION",
+      "observed": "REJECT_CONTEXT_TRUNCATION_WITHOUT_LOSS_DECLARATION",
+      "passed": true
+    },
+    {
+      "case": "context_contamination",
+      "expected": "REJECT_CONTEXT_CONTAMINATION",
+      "observed": "REJECT_CONTEXT_CONTAMINATION",
+      "passed": true
+    },
+    {
+      "case": "false_verbatim",
+      "expected": "REJECT_FALSE_VERBATIM_CLASSIFICATION",
+      "observed": "REJECT_FALSE_VERBATIM_CLASSIFICATION",
+      "passed": true
+    },
+    {
+      "case": "missing_reconstruction_map",
+      "expected": "REJECT_ALLEGORY_WITHOUT_RECONSTRUCTION_MAP",
+      "observed": "REJECT_ALLEGORY_WITHOUT_RECONSTRUCTION_MAP",
+      "passed": true
+    },
+    {
+      "case": "self_assessment_mismatch",
+      "expected": "REJECT_TRANSLATOR_SELF_ASSESSMENT_MISMATCH",
+      "observed": "REJECT_TRANSLATOR_SELF_ASSESSMENT_MISMATCH",
+      "passed": true
+    },
+    {
+      "case": "nondeterministic_formal",
+      "expected": "REJECT_NONDETERMINISTIC_FORMAL_TRANSLATION",
+      "observed": "REJECT_NONDETERMINISTIC_FORMAL_TRANSLATION",
+      "passed": true
+    },
+    {
+      "case": "ambiguity_collapse",
+      "expected": "REJECT_SILENT_AMBIGUITY_COLLAPSE",
+      "observed": "REJECT_SILENT_AMBIGUITY_COLLAPSE",
+      "passed": true
+    },
+    {
+      "case": "invented_source",
+      "expected": "REJECT_RECONSTRUCTION_WITH_INVENTED_SOURCE",
+      "observed": "REJECT_RECONSTRUCTION_WITH_INVENTED_SOURCE",
+      "passed": true
+    }
+  ]
+}

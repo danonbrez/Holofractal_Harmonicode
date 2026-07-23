@@ -1,0 +1,85 @@
+{
+  "all_contract_fields_match": true,
+  "artifact_admission_permitted": true,
+  "canonical_continuation_permitted": true,
+  "compiled_artifact_root_hash72": "0000000000000000000000000000000RVIT*g=?u5ek+PE*4Z2BO+-3e9UFcpV1qZ!A(28f0",
+  "compiled_execution_root_hash72": "0000000000000000000000000000001ozxhTz*DtFz8I>9IU(lQbTz4-p9/hoFQ>V*E-3rS4",
+  "compiled_semantic_projection_root_hash72": "0000000000000000000000000000001lI2v?htlS)E!4sq>JgARMt2lQ)tmYIHx=XMpOc2d9",
+  "executable_ir_root_hash72": "0000000000000000000000000000003nz(rIc=TJv68wNxB1?EX(8axOjviJDyzdpoAqZ2?g",
+  "execution_roots_expected_to_match": false,
+  "execution_roots_match": false,
+  "fallback_used": false,
+  "field_comparisons": [
+    {
+      "compiled_value_root_hash72": "0000000000000000000000000000002iwDVKh/rJV4N>5pE+i>SAx6zJiv?mc2mYli/XYJ=)",
+      "field": "output_values",
+      "interpreter_value_root_hash72": "0000000000000000000000000000002iwDVKh/rJV4N>5pE+i>SAx6zJiv?mc2mYli/XYJ=)",
+      "match": true
+    },
+    {
+      "compiled_value_root_hash72": "0000000000000000000000000000003vZp!MvA^VpYd*BvJQ/0eGJ!HYBUW/E3/1GLyzSAL5",
+      "field": "symbolic_relations",
+      "interpreter_value_root_hash72": "0000000000000000000000000000003vZp!MvA^VpYd*BvJQ/0eGJ!HYBUW/E3/1GLyzSAL5",
+      "match": true
+    },
+    {
+      "compiled_value_root_hash72": "0000000000000000000000000000001=BEnPq*87B3gQ3P!lxg4H9gVXYbujg7do9WvhhH6r",
+      "field": "ordered_products",
+      "interpreter_value_root_hash72": "0000000000000000000000000000001=BEnPq*87B3gQ3P!lxg4H9gVXYbujg7do9WvhhH6r",
+      "match": true
+    },
+    {
+      "compiled_value_root_hash72": "0000000000000000000000000000001Ql-*QvdrZ^c)Har(JdU1ewJKV)fre=4McMLdaVs^k",
+      "field": "reciprocal_bindings",
+      "interpreter_value_root_hash72": "0000000000000000000000000000001Ql-*QvdrZ^c)Har(JdU1ewJKV)fre=4McMLdaVs^k",
+      "match": true
+    },
+    {
+      "compiled_value_root_hash72": "0000000000000000000000000000004xXveKYj597bKQsr=)bnO3-(>3qhQ1B0R6UKDLl8M>",
+      "field": "gate_results",
+      "interpreter_value_root_hash72": "0000000000000000000000000000004xXveKYj597bKQsr=)bnO3-(>3qhQ1B0R6UKDLl8M>",
+      "match": true
+    },
+    {
+      "compiled_value_root_hash72": "0000000000000000000000000000002)R+7ejEQHLciCdkFJ6dh=o5-mlNWOP-h!I8W6(t>-",
+      "field": "zero_sum_closure",
+      "interpreter_value_root_hash72": "0000000000000000000000000000002)R+7ejEQHLciCdkFJ6dh=o5-mlNWOP-h!I8W6(t>-",
+      "match": true
+    },
+    {
+      "compiled_value_root_hash72": "0000000000000000000000000000003KneYkAWyKAieU4^Cg7F)5E1XPlw**vugD3!jYfz=K",
+      "field": "required_invariants",
+      "interpreter_value_root_hash72": "0000000000000000000000000000003KneYkAWyKAieU4^Cg7F)5E1XPlw**vugD3!jYfz=K",
+      "match": true
+    },
+    {
+      "compiled_value_root_hash72": "0000000000000000000000000000002t0gqQJAGn1lFn*HJv^hL0wLzGAn3Ib!w+GP>R4K!f",
+      "field": "declared_effects",
+      "interpreter_value_root_hash72": "0000000000000000000000000000002t0gqQJAGn1lFn*HJv^hL0wLzGAn3Ib!w+GP>R4K!f",
+      "match": true
+    },
+    {
+      "compiled_value_root_hash72": "0000000000000000000000000000003HGz=3pmQ=A(8M^f38)-o/gvHp3*Vj!w*Rt5oiVFja",
+      "field": "authority_scope",
+      "interpreter_value_root_hash72": "0000000000000000000000000000003HGz=3pmQ=A(8M^f38)-o/gvHp3*Vj!w*Rt5oiVFja",
+      "match": true
+    },
+    {
+      "compiled_value_root_hash72": "0000000000000000000000000000001sw0dJZs9b*S8oXetf9*65ti)F53O4h1xZ9*zVDU=Z",
+      "field": "source_identity",
+      "interpreter_value_root_hash72": "0000000000000000000000000000001sw0dJZs9b*S8oXetf9*65ti)F53O4h1xZ9*zVDU=Z",
+      "match": true
+    }
+  ],
+  "field_rejection_codes": [],
+  "interpreter_execution_root_hash72": "0000000000000000000000000000003AUIc)5ePGkN?GwFM?ifYV>Z-QVCtmw6nSB^20iVXI",
+  "interpreter_semantic_projection_root_hash72": "0000000000000000000000000000001lI2v?htlS)E!4sq>JgARMt2lQ)tmYIHx=XMpOc2d9",
+  "receipt_id": "equivalence:pass077:portable",
+  "receipt_root_hash72": "0000000000000000000000000000000gr9-^07UhJpw-6sUOu8L+=LrHnqpzIW9TJrBtxT8h",
+  "schema": "HHS_INTERPRETER_COMPILER_EQUIVALENCE_RECEIPT_V1",
+  "semantic_projection_roots_match": true,
+  "source_artifact_root_hash72": "0000000000000000000000000000003lJE1vAB*mDssQv68yr(^)vCAdpg(15a=Y-!ICA-5V",
+  "status": "SEMANTIC_IDENTITY_VERIFIED",
+  "summary_rejection_code": null,
+  "target_contract_root_hash72": "0000000000000000000000000000000HAWphs>PD8Sr?Yv*OJTIyWspEUHK4l*RHfx)whw!b"
+}

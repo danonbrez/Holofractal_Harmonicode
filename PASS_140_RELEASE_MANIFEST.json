@@ -1,0 +1,51 @@
+{
+  "authority": "A1_EXECUTION_EVIDENCE",
+  "capabilities": [
+    "metadata_pattern_binding",
+    "xor_single_shard_recovery",
+    "dependency_impact_analysis",
+    "topological_reconstruction",
+    "byte_exact_readmission",
+    "transitive_failure_blocking",
+    "deterministic_replay"
+  ],
+  "files": [
+    {
+      "path": "hhs_runtime/holographic_entanglement_recovery_v1.py",
+      "sha256": "253c4e4c81ca8c14d29c3eacee75da2aca436e4fda884bc2783e4a1b21edc0ef",
+      "size": 10269
+    },
+    {
+      "path": "tests/test_pass140_holographic_recovery.py",
+      "sha256": "a30cc49319faca539b0df4d24daad669df9551e4a918ebd22237747f8ff73022",
+      "size": 2688
+    },
+    {
+      "path": "PASS_140_HOLOGRAPHIC_ENTANGLEMENT_TRACKING_CONTRACT.md",
+      "sha256": "918ef81b9b5fe4dffcd55fc60f1c8268870ee517da750656dd5cdb1246761265",
+      "size": 1232
+    },
+    {
+      "path": "examples/pass_140/holographic_recovery_request.json",
+      "sha256": "6948ec31b8573652ad733819293ca4749433827da9cc43bdff81156265ce1a6f",
+      "size": 423
+    },
+    {
+      "path": "reports/pass_140/PASS_140_ENCODING_RECEIPT.json",
+      "sha256": "0df0df30452ccb6e9ccb1f9729a31c70f0b27b24c56a961c34ec9e9136e7c418",
+      "size": 8934
+    },
+    {
+      "path": "reports/pass_140/PASS_140_RECOVERY_RECEIPT.json",
+      "sha256": "c82495689c813a1333b1a0fc70e8b005bf75aaaf374f5cebc82aaa052376d7c3",
+      "size": 1442
+    }
+  ],
+  "manifest_root": "b268b05f115d16fd9590977f075263f390819c9727d082649e0f4a501751d3c8",
+  "pass_id": "PASS_140_HOLOGRAPHIC_ENTANGLEMENT_TRACKING",
+  "status": "IMPLEMENTED_CALLABLE_TESTED",
+  "test_result": {
+    "dependency_scoped": "40 passed",
+    "failures": 0
+  }
+}

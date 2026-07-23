@@ -1,0 +1,205 @@
+{
+  "authority_probes": {
+    "ok": true,
+    "results": {
+      "PASS_118": {
+        "equivalence_root_hash72": "0000000000000000000000000000002pQw>9TPX^UUdOBY*GEl3HXpfjAr2V(>HE>9nMJCKS",
+        "execution_receipt_root_hash72": "0000000000000000000000000000002oz^5R*ynFXDUktX64ucG4o/lVhCwnzOx*r63rZqga",
+        "phase_gear_root_hash72": "0000000000000000000000000000004F4wBV2/nGe^fQ=LYPrH!!9SAykuAnOwdp?(XCYPhm",
+        "schema": "HHS_PASS118_SELF_TEST_V1",
+        "status": "PASS",
+        "token_root_hash72": "00000000000000000000000000000037rWJn5lrWLepy0O98pc!t31pfariIEtd6FpA6HS9L"
+      },
+      "PASS_121": {
+        "closed_operation_root_hash72": "0000000000000000000000000000001Jz*a/ajcjYZwsYUaS+nmdSgxyUk?9qU1n3tdTb87!",
+        "core_spec_root_hash72": "0000000000000000000000000000003h=pRuPpG!G7tU2W3g-3g7/IT(4-wxVcg^>AUfuG0d",
+        "export_root_hash72": "0000000000000000000000000000001LXxre6X75WR3sC6Ykrv^HuDRsqr8Kes(PcwyH-a5w",
+        "ok": true
+      },
+      "PASS_130": {
+        "default_constraints_safe_for_quantum_and_high_entropy_layers": true,
+        "defaults_select_state": false,
+        "entropy_preserved": true,
+        "envelope_root_hash72": "0000000000000000000000000000001SCDBQKk*qY>f9flLRHbH70yBjChbTPAmN*+I6-Zmh",
+        "pass_id": "PASS_130",
+        "quantum_admission_root_hash72": "0000000000000000000000000000004FW0CMySazIxC07bBcRb=a?sLJl2>cAQ2NoA9)qCTj",
+        "replay_root_hash72": "00000000000000000000000000000021*X!Co-O^u)/3ngYePQXr5C^YnjYqTAK>ZnIVd^nQ",
+        "self_test_root_hash72": "00000000000000000000000000000047I)Q8QduK!gLITUqy!iHjS=Rg>7y1)?/x1+nT1v^^",
+        "status": "PASS"
+      },
+      "PASS_131": {
+        "exact_symbolic_rational_authority": true,
+        "finite_solution_constraint_path_rule": true,
+        "global_state_mutated": false,
+        "pass_id": "PASS_131",
+        "promotion_root_hash72": "00000000000000000000000000000009k?2nkwComq9sGM9nu4+59X!KmBEAHstQ8draxuwY",
+        "replay_root_hash72": "0000000000000000000000000000001m^*?)2+DjAnB?+d/i3LcPGg2E+zXBLixQ+wLoPXpN",
+        "self_test_root_hash72": "0000000000000000000000000000000SSVJ34+WTMsZu1/BIbfIajsQak!wVkqg!CZSZj9Dn",
+        "state_root_hash72": "0000000000000000000000000000002EYZ*C9wJa2w41oNdua0SKFG-ASgW25b9fO)7!sp!o",
+        "status": "PASS",
+        "tensor_substitution_operational": true,
+        "transition_root_hash72": "0000000000000000000000000000002k+tAU+Uy>X6LhN4YIft6Uu1Gef=I8fXhM^c3Yb>5P"
+      }
+    },
+    "schema": "HHS_PASS132_RECONSTRUCTED_AUTHORITY_PROBES_V1",
+    "statuses": {
+      "PASS_118": true,
+      "PASS_121": true,
+      "PASS_130": true,
+      "PASS_131": true
+    }
+  },
+  "checks": [
+    {
+      "comparison_count": 2,
+      "execute_ok": true,
+      "execution_root": "13U5aiNkCDBFc*TWZqhtSAHmHk(8z6!OsDaQFfw0qoLvXn46PZm!fIQb<d*nVcrXEE+YWYe7",
+      "replay_ok": true,
+      "workload_id": "T1_transport"
+    },
+    {
+      "comparison_count": 2,
+      "execute_ok": true,
+      "execution_root": "0jX7W2k7zvBECNFgD/Z<(7LCIJ5R7oEKM!Q*W5jlX/n+D<SK/DF9Pc(>M49YTT)Nb?!m0OyT",
+      "replay_ok": true,
+      "workload_id": "alternating_accumulation"
+    },
+    {
+      "comparison_count": 2,
+      "execute_ok": true,
+      "execution_root": "hz32OquqK<dqE0O!uJOJ97nU6KBsnuX6qbxLmkyM5rP2f4B2<TwteTtz*ABV4Nvj3G-I)Xj8",
+      "replay_ok": true,
+      "workload_id": "catastrophic_cancellation"
+    },
+    {
+      "comparison_count": 2,
+      "execute_ok": true,
+      "execution_root": "ocS?T?V8/bZzl<+lKhnZ?86-Yj!Wx393ryEh)dIA6oVQKyGfSOCwwqP2zRl<ZLT9/HnF(m*O",
+      "replay_ok": true,
+      "workload_id": "conformal_radius"
+    },
+    {
+      "comparison_count": 2,
+      "execute_ok": true,
+      "execution_root": "nVQll4doE8zWLDzF?yW1mPpfpFVj?<TCqX6zQXHlKV2fP6A!iRjW?X8tx4Ke?+-fNWVVr74t",
+      "replay_ok": true,
+      "workload_id": "dual_t_constraints"
+    },
+    {
+      "comparison_count": 2,
+      "execute_ok": true,
+      "execution_root": "Xs4<)mRiUauuYn90nKn8ktG2TGc6t122i7w)AG22kUAsWgj1D/6w)7bCh+cuKc!(Ms0Q-Vc1",
+      "replay_ok": true,
+      "workload_id": "genesis_kernel"
+    },
+    {
+      "comparison_count": 2,
+      "execute_ok": true,
+      "execution_root": ")V5ysvINVWN<?9CYo0BvZu!YtMbW/nOR4pT/sQSz91+s35ym9hqo-ecm<sz0873R1BQvp3iz",
+      "replay_ok": true,
+      "workload_id": "inverse_normalization"
+    },
+    {
+      "comparison_count": 2,
+      "execute_ok": true,
+      "execution_root": "vIekedUW)LLc?<D3KR(wqd>hI>rLmgxxPPn>qz>R!EgBmD/PYz5u)s!/>MoLMa4s<1k<w2UZ",
+      "replay_ok": true,
+      "workload_id": "iterative_drift"
+    },
+    {
+      "comparison_count": 2,
+      "execute_ok": true,
+      "execution_root": "x-o)A1vZEW+ono60V8B75(04u98j95Hg)V?sndQZfbOZFwnbWxfe-Qy/KXI4nFnLrts1JEi4",
+      "replay_ok": true,
+      "workload_id": "long_phase_cycle"
+    },
+    {
+      "comparison_count": 2,
+      "execute_ok": true,
+      "execution_root": "fR4V1Z1z3w)uL?CrAB>ctkcF8I-U(pavs3al*6-/m>wThGc1R4a-1FKXA(I)UKV2y4c9/CIT",
+      "replay_ok": true,
+      "workload_id": "loshu_cell_sum"
+    },
+    {
+      "comparison_count": 2,
+      "execute_ok": true,
+      "execution_root": "4>wAI(h?F6G/jz+s1w9-gqm9u!E1Xdu<+1ACjh3Rjrqw>V4/eHz(Ht((FaYLq8!ISPHX!2vv",
+      "replay_ok": true,
+      "workload_id": "master_matrix"
+    },
+    {
+      "comparison_count": 2,
+      "execute_ok": true,
+      "execution_root": "x-SpOuYRayw3F6bqC>ktd+79YbNDOAj)AoF?m+96mm3sXh*wD+xp/bpp4mSvD0+V!kviAFD9",
+      "replay_ok": true,
+      "workload_id": "nonassociative_left"
+    },
+    {
+      "comparison_count": 2,
+      "execute_ok": true,
+      "execution_root": "qF?utnR5+SEscDjUA4z4wXllL4Y?6k2)8odJHl)60qHTa5iczEZtXXc-jIPppo923W(BnVE-",
+      "replay_ok": true,
+      "workload_id": "nonassociative_right"
+    },
+    {
+      "comparison_count": 2,
+      "execute_ok": true,
+      "execution_root": "P-X2zpq26Zf?T5cs!PjwEqKW5G1zv02ey*r<6/2Ff13KHVa*ogQ?Bebm5DD2sdnIrGWg+EqX",
+      "replay_ok": true,
+      "workload_id": "overflow_boundary"
+    },
+    {
+      "comparison_count": 2,
+      "execute_ok": true,
+      "execution_root": "wcObWMwDIDu/AZC/YDWBEi+jlesnv*mVq4OHB<kFnX(L)AlKpfU9qys)lXLWV2Z(+j*BZv!<",
+      "replay_ok": true,
+      "workload_id": "repeated_decimal_accumulation"
+    },
+    {
+      "comparison_count": 2,
+      "execute_ok": true,
+      "execution_root": "fL5GxqYa4VPc!EiT1GuavYo41x5-tJJREpkvWM9Zh5Yeo9wy8zwKF0sETDQ/evrR9Mje-Gpc",
+      "replay_ok": true,
+      "workload_id": "repeated_normalization"
+    },
+    {
+      "comparison_count": 2,
+      "execute_ok": true,
+      "execution_root": "fiaU(G*6An!de-5<ZO-1/(jT8*707Z?RTjl)p!lv*jFRm54Q3s<HSp-u!(kU6qiyA7ZW8*KY",
+      "replay_ok": true,
+      "workload_id": "signed_zero_propagation"
+    },
+    {
+      "comparison_count": 2,
+      "execute_ok": true,
+      "execution_root": "l*7*h(tBqaepE<jMa4LvHPMco+?LjpT4soBo9WwhrEEksypPMWAXTiOvB73(ua<S/20M6JL2",
+      "replay_ok": true,
+      "workload_id": "underflow_boundary"
+    }
+  ],
+  "evidence_validation": {
+    "evidence_root": "/mnt/data/recovered_build/stage132/release_artifacts/pass132",
+    "file_failures": [],
+    "listed_file_count": 50,
+    "native_hash72_authority": "PASS_131_HHS_HASH72_KERNEL_AUTHORITY_V1",
+    "ok": true,
+    "original_source_bytes_recovered": false,
+    "release_manifest_witness_matches": {
+      "canonical_payload": true,
+      "digest": true,
+      "dna": true,
+      "positions": true,
+      "rotation_profile": true,
+      "trace_count": true,
+      "zero_sum": true
+    },
+    "schema": "HHS_PASS132_RECONSTRUCTED_EVIDENCE_VALIDATION_V1",
+    "verified_file_count": 50
+  },
+  "ok": true,
+  "original_source_bytes_recovered": false,
+  "pass_id": "PASS_132_RECONSTRUCTED_R1",
+  "schema": "HHS_PASS132_RECONSTRUCTED_REPLAY_SELF_TEST_V1",
+  "terminal_status": "PASS_132_FUNCTIONAL_RECONSTRUCTION_VERIFIED_WITH_SOURCE_IDENTITY_ERRATUM",
+  "workload_count": 18
+}

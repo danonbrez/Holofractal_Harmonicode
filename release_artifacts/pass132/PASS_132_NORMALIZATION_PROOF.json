@@ -1,0 +1,852 @@
+{
+  "all_cross_arm_repair_absent": true,
+  "proof_root_hash72": "Naxewj!ZyS9iBb8<?pvX)5*Kop5kmsFTTavWe7v?4KxFEqFAn4)15+vs/aDWYsC5tQp6BVU2",
+  "schema": "HHS_PASS132_NORMALIZATION_PROOF_REPORT_V1",
+  "workloads": [
+    {
+      "cross_arm_repair_detected": false,
+      "ieee_normalizations": [
+        {
+          "format": "binary32",
+          "normalization_result": {
+            "contract": "IEEE_CONTROL_IDENTITY_PROJECTION",
+            "native_hhs_normalization_used": false,
+            "value": {
+              "bits_hex": "3f800001",
+              "classification": "FINITE",
+              "decimal_projection": "1.0000001192092896",
+              "flags": [
+                "FE_INEXACT"
+              ],
+              "format": "binary32",
+              "signed_zero": false
+            }
+          }
+        },
+        {
+          "format": "binary64",
+          "normalization_result": {
+            "contract": "IEEE_CONTROL_IDENTITY_PROJECTION",
+            "native_hhs_normalization_used": false,
+            "value": {
+              "bits_hex": "3fefffffffffffff",
+              "classification": "FINITE",
+              "decimal_projection": "0.9999999999999999",
+              "flags": [
+                "FE_INEXACT"
+              ],
+              "format": "binary64",
+              "signed_zero": false
+            }
+          }
+        }
+      ],
+      "native_normalization": {
+        "canonical_value": {
+          "denominator": 1,
+          "kind": "RATIONAL",
+          "numerator": 1,
+          "prime_exponents": {},
+          "text": "1/1"
+        },
+        "contract_root_hash72": "wM/Qo1w!rihFpdcez5M1frvrC62bV<OrMhyGEIJoGy2j/Z9o*lXiZ/>F/n4OdCt*46QRf!BC",
+        "ieee_control_value_used": false
+      },
+      "native_normalization_root_hash72": "2Re7AkkBxqD5qV5ZwVWxgjvsNNg9)ecVK575XxLeR-*u9na5zAtYKcOd1C95<wZJb3Tf!80!",
+      "workload_id": "repeated_decimal_accumulation"
+    },
+    {
+      "cross_arm_repair_detected": false,
+      "ieee_normalizations": [
+        {
+          "format": "binary32",
+          "normalization_result": {
+            "contract": "IEEE_CONTROL_IDENTITY_PROJECTION",
+            "native_hhs_normalization_used": false,
+            "value": {
+              "bits_hex": "00000000",
+              "classification": "POSITIVE_ZERO",
+              "decimal_projection": "0.0",
+              "flags": [],
+              "format": "binary32",
+              "signed_zero": false
+            }
+          }
+        },
+        {
+          "format": "binary64",
+          "normalization_result": {
+            "contract": "IEEE_CONTROL_IDENTITY_PROJECTION",
+            "native_hhs_normalization_used": false,
+            "value": {
+              "bits_hex": "0000000000000000",
+              "classification": "POSITIVE_ZERO",
+              "decimal_projection": "0.0",
+              "flags": [],
+              "format": "binary64",
+              "signed_zero": false
+            }
+          }
+        }
+      ],
+      "native_normalization": {
+        "canonical_value": {
+          "denominator": 1,
+          "kind": "RATIONAL",
+          "numerator": 1,
+          "prime_exponents": {},
+          "text": "1/1"
+        },
+        "contract_root_hash72": "wM/Qo1w!rihFpdcez5M1frvrC62bV<OrMhyGEIJoGy2j/Z9o*lXiZ/>F/n4OdCt*46QRf!BC",
+        "ieee_control_value_used": false
+      },
+      "native_normalization_root_hash72": "2Re7AkkBxqD5qV5ZwVWxgjvsNNg9)ecVK575XxLeR-*u9na5zAtYKcOd1C95<wZJb3Tf!80!",
+      "workload_id": "catastrophic_cancellation"
+    },
+    {
+      "cross_arm_repair_detected": false,
+      "ieee_normalizations": [
+        {
+          "format": "binary32",
+          "normalization_result": {
+            "contract": "IEEE_CONTROL_IDENTITY_PROJECTION",
+            "native_hhs_normalization_used": false,
+            "value": {
+              "bits_hex": "00000000",
+              "classification": "POSITIVE_ZERO",
+              "decimal_projection": "0.0",
+              "flags": [],
+              "format": "binary32",
+              "signed_zero": false
+            }
+          }
+        },
+        {
+          "format": "binary64",
+          "normalization_result": {
+            "contract": "IEEE_CONTROL_IDENTITY_PROJECTION",
+            "native_hhs_normalization_used": false,
+            "value": {
+              "bits_hex": "0000000000000000",
+              "classification": "POSITIVE_ZERO",
+              "decimal_projection": "0.0",
+              "flags": [],
+              "format": "binary64",
+              "signed_zero": false
+            }
+          }
+        }
+      ],
+      "native_normalization": {
+        "canonical_value": {
+          "denominator": 1,
+          "kind": "RATIONAL",
+          "numerator": 0,
+          "prime_exponents": {},
+          "text": "0/1"
+        },
+        "contract_root_hash72": "wM/Qo1w!rihFpdcez5M1frvrC62bV<OrMhyGEIJoGy2j/Z9o*lXiZ/>F/n4OdCt*46QRf!BC",
+        "ieee_control_value_used": false
+      },
+      "native_normalization_root_hash72": "2Re7AkkBxqD5qV5ZwVWxgjvsNMh9)ecVK575XxLeR-*u9na5zAtYKcOd0D95<wZJb3Tf!80!",
+      "workload_id": "alternating_accumulation"
+    },
+    {
+      "cross_arm_repair_detected": false,
+      "ieee_normalizations": [
+        {
+          "format": "binary32",
+          "normalization_result": {
+            "contract": "IEEE_CONTROL_IDENTITY_PROJECTION",
+            "native_hhs_normalization_used": false,
+            "value": {
+              "bits_hex": "40400000",
+              "classification": "FINITE",
+              "decimal_projection": "3.0",
+              "flags": [],
+              "format": "binary32",
+              "signed_zero": false
+            }
+          }
+        },
+        {
+          "format": "binary64",
+          "normalization_result": {
+            "contract": "IEEE_CONTROL_IDENTITY_PROJECTION",
+            "native_hhs_normalization_used": false,
+            "value": {
+              "bits_hex": "4008000000000000",
+              "classification": "FINITE",
+              "decimal_projection": "3.0",
+              "flags": [],
+              "format": "binary64",
+              "signed_zero": false
+            }
+          }
+        }
+      ],
+      "native_normalization": {
+        "canonical_value": {
+          "denominator": 1,
+          "kind": "RATIONAL",
+          "numerator": 3,
+          "prime_exponents": {
+            "3": 1
+          },
+          "text": "3/1"
+        },
+        "contract_root_hash72": "wM/Qo1w!rihFpdcez5M1frvrC62bV<OrMhyGEIJoGy2j/Z9o*lXiZ/>F/n4OdCt*46QRf!BC",
+        "ieee_control_value_used": false
+      },
+      "native_normalization_root_hash72": "<r3tOKFCZuvlZoNAX993W?PPZ5qB2ncH<kvHf2h/Vgq0BTGc9X8+kvqG8RlxA5M1LJBRX-mj",
+      "workload_id": "nonassociative_left"
+    },
+    {
+      "cross_arm_repair_detected": false,
+      "ieee_normalizations": [
+        {
+          "format": "binary32",
+          "normalization_result": {
+            "contract": "IEEE_CONTROL_IDENTITY_PROJECTION",
+            "native_hhs_normalization_used": false,
+            "value": {
+              "bits_hex": "00000000",
+              "classification": "POSITIVE_ZERO",
+              "decimal_projection": "0.0",
+              "flags": [],
+              "format": "binary32",
+              "signed_zero": false
+            }
+          }
+        },
+        {
+          "format": "binary64",
+          "normalization_result": {
+            "contract": "IEEE_CONTROL_IDENTITY_PROJECTION",
+            "native_hhs_normalization_used": false,
+            "value": {
+              "bits_hex": "0000000000000000",
+              "classification": "POSITIVE_ZERO",
+              "decimal_projection": "0.0",
+              "flags": [],
+              "format": "binary64",
+              "signed_zero": false
+            }
+          }
+        }
+      ],
+      "native_normalization": {
+        "canonical_value": {
+          "denominator": 1,
+          "kind": "RATIONAL",
+          "numerator": 3,
+          "prime_exponents": {
+            "3": 1
+          },
+          "text": "3/1"
+        },
+        "contract_root_hash72": "wM/Qo1w!rihFpdcez5M1frvrC62bV<OrMhyGEIJoGy2j/Z9o*lXiZ/>F/n4OdCt*46QRf!BC",
+        "ieee_control_value_used": false
+      },
+      "native_normalization_root_hash72": "<r3tOKFCZuvlZoNAX993W?PPZ5qB2ncH<kvHf2h/Vgq0BTGc9X8+kvqG8RlxA5M1LJBRX-mj",
+      "workload_id": "nonassociative_right"
+    },
+    {
+      "cross_arm_repair_detected": false,
+      "ieee_normalizations": [
+        {
+          "format": "binary32",
+          "normalization_result": {
+            "contract": "IEEE_CONTROL_IDENTITY_PROJECTION",
+            "native_hhs_normalization_used": false,
+            "value": {
+              "bits_hex": "3f800000",
+              "classification": "FINITE",
+              "decimal_projection": "1.0",
+              "flags": [
+                "FE_INEXACT"
+              ],
+              "format": "binary32",
+              "signed_zero": false
+            }
+          }
+        },
+        {
+          "format": "binary64",
+          "normalization_result": {
+            "contract": "IEEE_CONTROL_IDENTITY_PROJECTION",
+            "native_hhs_normalization_used": false,
+            "value": {
+              "bits_hex": "3ff0000000000000",
+              "classification": "FINITE",
+              "decimal_projection": "1.0",
+              "flags": [
+                "FE_INEXACT"
+              ],
+              "format": "binary64",
+              "signed_zero": false
+            }
+          }
+        }
+      ],
+      "native_normalization": {
+        "canonical_value": {
+          "denominator": 1,
+          "kind": "RATIONAL",
+          "numerator": 1,
+          "prime_exponents": {},
+          "text": "1/1"
+        },
+        "contract_root_hash72": "wM/Qo1w!rihFpdcez5M1frvrC62bV<OrMhyGEIJoGy2j/Z9o*lXiZ/>F/n4OdCt*46QRf!BC",
+        "ieee_control_value_used": false
+      },
+      "native_normalization_root_hash72": "2Re7AkkBxqD5qV5ZwVWxgjvsNNg9)ecVK575XxLeR-*u9na5zAtYKcOd1C95<wZJb3Tf!80!",
+      "workload_id": "inverse_normalization"
+    },
+    {
+      "cross_arm_repair_detected": false,
+      "ieee_normalizations": [
+        {
+          "format": "binary32",
+          "normalization_result": {
+            "contract": "IEEE_CONTROL_IDENTITY_PROJECTION",
+            "native_hhs_normalization_used": false,
+            "value": {
+              "bits_hex": "7f800000",
+              "classification": "POSITIVE_INFINITY",
+              "decimal_projection": "inf",
+              "flags": [],
+              "format": "binary32",
+              "signed_zero": false
+            }
+          }
+        },
+        {
+          "format": "binary64",
+          "normalization_result": {
+            "contract": "IEEE_CONTROL_IDENTITY_PROJECTION",
+            "native_hhs_normalization_used": false,
+            "value": {
+              "bits_hex": "7ff0000000000000",
+              "classification": "POSITIVE_INFINITY",
+              "decimal_projection": "inf",
+              "flags": [
+                "FE_OVERFLOW",
+                "FE_INEXACT"
+              ],
+              "format": "binary64",
+              "signed_zero": false
+            }
+          }
+        }
+      ],
+      "native_normalization": {
+        "canonical_value": {
+          "denominator": 1,
+          "kind": "RATIONAL",
+          "numerator": 10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000,
+          "prime_exponents": {
+            "2": 616,
+            "5": 616
+          },
+          "text": "10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000/1"
+        },
+        "contract_root_hash72": "wM/Qo1w!rihFpdcez5M1frvrC62bV<OrMhyGEIJoGy2j/Z9o*lXiZ/>F/n4OdCt*46QRf!BC",
+        "ieee_control_value_used": false
+      },
+      "native_normalization_root_hash72": "0Ck0SZbqqE<cTbcKhU0xOE)m1)B2mG5m!LXOpZ!tjrYdoi7OK-NPUL(EUDilmg06BBLq(D(f",
+      "workload_id": "overflow_boundary"
+    },
+    {
+      "cross_arm_repair_detected": false,
+      "ieee_normalizations": [
+        {
+          "format": "binary32",
+          "normalization_result": {
+            "contract": "IEEE_CONTROL_IDENTITY_PROJECTION",
+            "native_hhs_normalization_used": false,
+            "value": {
+              "bits_hex": "00000000",
+              "classification": "POSITIVE_ZERO",
+              "decimal_projection": "0.0",
+              "flags": [],
+              "format": "binary32",
+              "signed_zero": false
+            }
+          }
+        },
+        {
+          "format": "binary64",
+          "normalization_result": {
+            "contract": "IEEE_CONTROL_IDENTITY_PROJECTION",
+            "native_hhs_normalization_used": false,
+            "value": {
+              "bits_hex": "00000000000003f4",
+              "classification": "FINITE",
+              "decimal_projection": "5e-321",
+              "flags": [],
+              "format": "binary64",
+              "signed_zero": false
+            }
+          }
+        }
+      ],
+      "native_normalization": {
+        "canonical_value": {
+          "denominator": 200000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000,
+          "kind": "RATIONAL",
+          "numerator": 1,
+          "prime_exponents": {
+            "2": -321,
+            "5": -320
+          },
+          "text": "1/200000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+        },
+        "contract_root_hash72": "wM/Qo1w!rihFpdcez5M1frvrC62bV<OrMhyGEIJoGy2j/Z9o*lXiZ/>F/n4OdCt*46QRf!BC",
+        "ieee_control_value_used": false
+      },
+      "native_normalization_root_hash72": "EcFOd(uuR9xobSwgUC4P1B?r)JtIwoxzd4+8g*oowfy2Qd(-I8>-LkNa!AkKt?xv!*(Dt(Sv",
+      "workload_id": "underflow_boundary"
+    },
+    {
+      "cross_arm_repair_detected": false,
+      "ieee_normalizations": [
+        {
+          "format": "binary32",
+          "normalization_result": {
+            "contract": "IEEE_CONTROL_IDENTITY_PROJECTION",
+            "native_hhs_normalization_used": false,
+            "value": {
+              "bits_hex": "80000000",
+              "classification": "NEGATIVE_ZERO",
+              "decimal_projection": "-0.0",
+              "flags": [],
+              "format": "binary32",
+              "signed_zero": true
+            }
+          }
+        },
+        {
+          "format": "binary64",
+          "normalization_result": {
+            "contract": "IEEE_CONTROL_IDENTITY_PROJECTION",
+            "native_hhs_normalization_used": false,
+            "value": {
+              "bits_hex": "8000000000000000",
+              "classification": "NEGATIVE_ZERO",
+              "decimal_projection": "-0.0",
+              "flags": [],
+              "format": "binary64",
+              "signed_zero": true
+            }
+          }
+        }
+      ],
+      "native_normalization": {
+        "canonical_value": {
+          "denominator": 1,
+          "kind": "RATIONAL",
+          "numerator": 0,
+          "prime_exponents": {},
+          "text": "0/1"
+        },
+        "contract_root_hash72": "wM/Qo1w!rihFpdcez5M1frvrC62bV<OrMhyGEIJoGy2j/Z9o*lXiZ/>F/n4OdCt*46QRf!BC",
+        "ieee_control_value_used": false
+      },
+      "native_normalization_root_hash72": "2Re7AkkBxqD5qV5ZwVWxgjvsNMh9)ecVK575XxLeR-*u9na5zAtYKcOd0D95<wZJb3Tf!80!",
+      "workload_id": "signed_zero_propagation"
+    },
+    {
+      "cross_arm_repair_detected": false,
+      "ieee_normalizations": [
+        {
+          "format": "binary32",
+          "normalization_result": {
+            "contract": "IEEE_CONTROL_IDENTITY_PROJECTION",
+            "native_hhs_normalization_used": false,
+            "value": {
+              "bits_hex": "41200002",
+              "classification": "FINITE",
+              "decimal_projection": "10.000001907348633",
+              "flags": [
+                "FE_INEXACT"
+              ],
+              "format": "binary32",
+              "signed_zero": false
+            }
+          }
+        },
+        {
+          "format": "binary64",
+          "normalization_result": {
+            "contract": "IEEE_CONTROL_IDENTITY_PROJECTION",
+            "native_hhs_normalization_used": false,
+            "value": {
+              "bits_hex": "4023fffffffffff5",
+              "classification": "FINITE",
+              "decimal_projection": "9.99999999999998",
+              "flags": [
+                "FE_INEXACT"
+              ],
+              "format": "binary64",
+              "signed_zero": false
+            }
+          }
+        }
+      ],
+      "native_normalization": {
+        "canonical_value": {
+          "denominator": 1,
+          "kind": "RATIONAL",
+          "numerator": 10,
+          "prime_exponents": {
+            "2": 1,
+            "5": 1
+          },
+          "text": "10/1"
+        },
+        "contract_root_hash72": "wM/Qo1w!rihFpdcez5M1frvrC62bV<OrMhyGEIJoGy2j/Z9o*lXiZ/>F/n4OdCt*46QRf!BC",
+        "ieee_control_value_used": false
+      },
+      "native_normalization_root_hash72": ">fCs)5x8I0ycbFNGIQDqCTGEC-tanZcgxka?+u84iZsF0LxT7f/EvOe1P6F-QJ33jOR</!ZH",
+      "workload_id": "iterative_drift"
+    },
+    {
+      "cross_arm_repair_detected": false,
+      "ieee_normalizations": [
+        {
+          "format": "binary32",
+          "normalization_result": {
+            "contract": "IEEE_CONTROL_IDENTITY_PROJECTION",
+            "native_hhs_normalization_used": false,
+            "value": {
+              "bits_hex": "3f800000",
+              "classification": "FINITE",
+              "decimal_projection": "1.0",
+              "flags": [],
+              "format": "binary32",
+              "signed_zero": false
+            }
+          }
+        },
+        {
+          "format": "binary64",
+          "normalization_result": {
+            "contract": "IEEE_CONTROL_IDENTITY_PROJECTION",
+            "native_hhs_normalization_used": false,
+            "value": {
+              "bits_hex": "3ff0000000000000",
+              "classification": "FINITE",
+              "decimal_projection": "1.0",
+              "flags": [],
+              "format": "binary64",
+              "signed_zero": false
+            }
+          }
+        }
+      ],
+      "native_normalization": {
+        "canonical_value": {
+          "denominator": 1,
+          "kind": "RATIONAL",
+          "numerator": 1,
+          "prime_exponents": {},
+          "text": "1/1"
+        },
+        "contract_root_hash72": "wM/Qo1w!rihFpdcez5M1frvrC62bV<OrMhyGEIJoGy2j/Z9o*lXiZ/>F/n4OdCt*46QRf!BC",
+        "ieee_control_value_used": false
+      },
+      "native_normalization_root_hash72": "2Re7AkkBxqD5qV5ZwVWxgjvsNNg9)ecVK575XxLeR-*u9na5zAtYKcOd1C95<wZJb3Tf!80!",
+      "workload_id": "long_phase_cycle"
+    },
+    {
+      "cross_arm_repair_detected": false,
+      "ieee_normalizations": [
+        {
+          "format": "binary32",
+          "normalization_result": {
+            "contract": "IEEE_CONTROL_IDENTITY_PROJECTION",
+            "native_hhs_normalization_used": false,
+            "value": {
+              "bits_hex": "3f800000",
+              "classification": "FINITE",
+              "decimal_projection": "1.0",
+              "flags": [
+                "FE_INEXACT"
+              ],
+              "format": "binary32",
+              "signed_zero": false
+            }
+          }
+        },
+        {
+          "format": "binary64",
+          "normalization_result": {
+            "contract": "IEEE_CONTROL_IDENTITY_PROJECTION",
+            "native_hhs_normalization_used": false,
+            "value": {
+              "bits_hex": "3ff0000000000000",
+              "classification": "FINITE",
+              "decimal_projection": "1.0",
+              "flags": [
+                "FE_INEXACT"
+              ],
+              "format": "binary64",
+              "signed_zero": false
+            }
+          }
+        }
+      ],
+      "native_normalization": {
+        "canonical_value": {
+          "denominator": 1,
+          "kind": "RATIONAL",
+          "numerator": 1,
+          "prime_exponents": {},
+          "text": "1/1"
+        },
+        "contract_root_hash72": "wM/Qo1w!rihFpdcez5M1frvrC62bV<OrMhyGEIJoGy2j/Z9o*lXiZ/>F/n4OdCt*46QRf!BC",
+        "ieee_control_value_used": false
+      },
+      "native_normalization_root_hash72": "2Re7AkkBxqD5qV5ZwVWxgjvsNNg9)ecVK575XxLeR-*u9na5zAtYKcOd1C95<wZJb3Tf!80!",
+      "workload_id": "repeated_normalization"
+    },
+    {
+      "cross_arm_repair_detected": false,
+      "ieee_normalizations": [
+        {
+          "format": "binary32",
+          "normalization_result": {
+            "contract": "IEEE_CONTROL_IDENTITY_PROJECTION",
+            "native_hhs_normalization_used": false,
+            "value": {
+              "bits_hex": "42340000",
+              "classification": "FINITE",
+              "decimal_projection": "45.0",
+              "flags": [],
+              "format": "binary32",
+              "signed_zero": false
+            }
+          }
+        },
+        {
+          "format": "binary64",
+          "normalization_result": {
+            "contract": "IEEE_CONTROL_IDENTITY_PROJECTION",
+            "native_hhs_normalization_used": false,
+            "value": {
+              "bits_hex": "4046800000000000",
+              "classification": "FINITE",
+              "decimal_projection": "45.0",
+              "flags": [],
+              "format": "binary64",
+              "signed_zero": false
+            }
+          }
+        }
+      ],
+      "native_normalization": {
+        "canonical_value": {
+          "denominator": 1,
+          "kind": "RATIONAL",
+          "numerator": 45,
+          "prime_exponents": {
+            "3": 2,
+            "5": 1
+          },
+          "text": "45/1"
+        },
+        "contract_root_hash72": "wM/Qo1w!rihFpdcez5M1frvrC62bV<OrMhyGEIJoGy2j/Z9o*lXiZ/>F/n4OdCt*46QRf!BC",
+        "ieee_control_value_used": false
+      },
+      "native_normalization_root_hash72": ">fCs)5x8I0ycbFNGIQDqCTGEC/v5nZcgxka?+u84iZsF0LxT8e/FuOe1P6F-QJ33jOR<<0UH",
+      "workload_id": "loshu_cell_sum"
+    },
+    {
+      "cross_arm_repair_detected": false,
+      "ieee_normalizations": [
+        {
+          "format": "binary32",
+          "normalization_result": {
+            "contract": "STRUCTURAL_SIMULATION_NO_SCALAR_NORMALIZATION",
+            "native_hhs_normalization_used": false,
+            "value": null
+          }
+        },
+        {
+          "format": "binary64",
+          "normalization_result": {
+            "contract": "STRUCTURAL_SIMULATION_NO_SCALAR_NORMALIZATION",
+            "native_hhs_normalization_used": false,
+            "value": null
+          }
+        }
+      ],
+      "native_normalization": {
+        "contract": "HHS_PASS132_IDENTITY_NORMALIZATION_V1",
+        "contract_root_hash72": "wM/Qo1w!rihFpdcez5M1frvrC62bV<OrMhyGEIJoGy2j/Z9o*lXiZ/>F/n4OdCt*46QRf!BC",
+        "inversion_permitted": false
+      },
+      "native_normalization_root_hash72": "TQ078/senC4Qh9A4ytsxE4CR!FXAcC0d5eqhd!V76f<w(RphFpe!kls>M/a<PYXJ?owzk4xw",
+      "workload_id": "dual_t_constraints"
+    },
+    {
+      "cross_arm_repair_detected": false,
+      "ieee_normalizations": [
+        {
+          "format": "binary32",
+          "normalization_result": {
+            "contract": "NO_VALID_IEEE_MAP_NO_NORMALIZATION",
+            "native_hhs_normalization_used": false,
+            "value": null
+          }
+        },
+        {
+          "format": "binary64",
+          "normalization_result": {
+            "contract": "NO_VALID_IEEE_MAP_NO_NORMALIZATION",
+            "native_hhs_normalization_used": false,
+            "value": null
+          }
+        }
+      ],
+      "native_normalization": {
+        "contract": "HHS_PASS132_IDENTITY_NORMALIZATION_V1",
+        "contract_root_hash72": "wM/Qo1w!rihFpdcez5M1frvrC62bV<OrMhyGEIJoGy2j/Z9o*lXiZ/>F/n4OdCt*46QRf!BC",
+        "inversion_permitted": false
+      },
+      "native_normalization_root_hash72": "TQ078/senC4Qh9A4ytsxE4CR!FXAcC0d5eqhd!V76f<w(RphFpe!kls>M/a<PYXJ?owzk4xw",
+      "workload_id": "conformal_radius"
+    },
+    {
+      "cross_arm_repair_detected": false,
+      "ieee_normalizations": [
+        {
+          "format": "binary32",
+          "normalization_result": {
+            "contract": "STRUCTURAL_SIMULATION_NO_SCALAR_NORMALIZATION",
+            "native_hhs_normalization_used": false,
+            "value": null
+          }
+        },
+        {
+          "format": "binary64",
+          "normalization_result": {
+            "contract": "STRUCTURAL_SIMULATION_NO_SCALAR_NORMALIZATION",
+            "native_hhs_normalization_used": false,
+            "value": null
+          }
+        }
+      ],
+      "native_normalization": {
+        "contract": "HHS_PASS132_IDENTITY_NORMALIZATION_V1",
+        "contract_root_hash72": "wM/Qo1w!rihFpdcez5M1frvrC62bV<OrMhyGEIJoGy2j/Z9o*lXiZ/>F/n4OdCt*46QRf!BC",
+        "inversion_permitted": false
+      },
+      "native_normalization_root_hash72": "TQ078/senC4Qh9A4ytsxE4CR!FXAcC0d5eqhd!V76f<w(RphFpe!kls>M/a<PYXJ?owzk4xw",
+      "workload_id": "master_matrix"
+    },
+    {
+      "cross_arm_repair_detected": false,
+      "ieee_normalizations": [
+        {
+          "format": "binary32",
+          "normalization_result": {
+            "contract": "IEEE_CONTROL_IDENTITY_PROJECTION",
+            "native_hhs_normalization_used": false,
+            "value": {
+              "bits_hex": "3f95f61a",
+              "classification": "FINITE",
+              "decimal_projection": "1.1715729236602783",
+              "flags": [],
+              "format": "binary32",
+              "signed_zero": false
+            }
+          }
+        },
+        {
+          "format": "binary64",
+          "normalization_result": {
+            "contract": "IEEE_CONTROL_IDENTITY_PROJECTION",
+            "native_hhs_normalization_used": false,
+            "value": {
+              "bits_hex": "3ff2bec333018866",
+              "classification": "FINITE",
+              "decimal_projection": "1.1715728752538097",
+              "flags": [],
+              "format": "binary64",
+              "signed_zero": false
+            }
+          }
+        }
+      ],
+      "native_normalization": {
+        "canonical_value": {
+          "denominator": 1,
+          "kind": "RATIONAL",
+          "numerator": 0,
+          "prime_exponents": {},
+          "text": "0/1"
+        },
+        "contract_root_hash72": "wM/Qo1w!rihFpdcez5M1frvrC62bV<OrMhyGEIJoGy2j/Z9o*lXiZ/>F/n4OdCt*46QRf!BC",
+        "foreign_result_promoted": false,
+        "ieee_control_value_used": false,
+        "projection_contract_root_hash72": "xpC!Fd3<DWMNcMa04Y<n0Rx+rWPpp!clQAYdZ2FtT51mFYzCSk(pBhG1bHFmNmS-HeJkvzX8",
+        "target_carrier": "NATIVE_ZERO_CLOSURE"
+      },
+      "native_normalization_root_hash72": "h?emHVoLTGT*0O/FGnhDxMqV1dYmrBzsip/vg4wmHSaodGYgvOzeL3U(QXtmphF9K0qoPsgP",
+      "workload_id": "genesis_kernel"
+    },
+    {
+      "cross_arm_repair_detected": false,
+      "ieee_normalizations": [
+        {
+          "format": "binary32",
+          "normalization_result": {
+            "contract": "IEEE_CONTROL_IDENTITY_PROJECTION",
+            "native_hhs_normalization_used": false,
+            "value": {
+              "bits_hex": "3faaaaab",
+              "classification": "FINITE",
+              "decimal_projection": "1.3333333730697632",
+              "flags": [],
+              "format": "binary32",
+              "signed_zero": false
+            }
+          }
+        },
+        {
+          "format": "binary64",
+          "normalization_result": {
+            "contract": "IEEE_CONTROL_IDENTITY_PROJECTION",
+            "native_hhs_normalization_used": false,
+            "value": {
+              "bits_hex": "3ff5555555555555",
+              "classification": "FINITE",
+              "decimal_projection": "1.3333333333333333",
+              "flags": [],
+              "format": "binary64",
+              "signed_zero": false
+            }
+          }
+        }
+      ],
+      "native_normalization": {
+        "canonical_value": {
+          "denominator": 1,
+          "kind": "RATIONAL",
+          "numerator": 1,
+          "prime_exponents": {},
+          "text": "1/1"
+        },
+        "contract_root_hash72": "wM/Qo1w!rihFpdcez5M1frvrC62bV<OrMhyGEIJoGy2j/Z9o*lXiZ/>F/n4OdCt*46QRf!BC",
+        "foreign_result_promoted": false,
+        "ieee_control_value_used": false,
+        "projection_contract_root_hash72": "lFSB?b0Q>r6hD*+m/4*kNFiy3Sq40EJ!IAcD(058+JM!-*fuJxW2SgMu4XfQ3<CTDj<kO7aZ",
+        "target_carrier": "LO_SHU_CELL_1_A2"
+      },
+      "native_normalization_root_hash72": "DdD?gyzbROK+SVxkkOfQTaZ*TlNQhRLt<WMYpVKTfWzOTs5MANXX8px9ND0s/AUEk(K3<NI!",
+      "workload_id": "T1_transport"
+    }
+  ]
+}

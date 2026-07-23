@@ -1,0 +1,624 @@
+{
+  "claim_policy": "NO_CLAIM_MAY_EXCEED_LIVE_EXECUTABLE_EVIDENCE",
+  "closed_repair_obligation_count": 9,
+  "conformance_reconstruction_root_hash72": "0000000000000000000000000000000LT!7HLWDdS-tt/gN7jAUqxZVD+jjvmWX0YFPxb3kH",
+  "full_system_conformance": true,
+  "open_repair_obligation_count": 0,
+  "open_repair_obligation_ids": [],
+  "pass_001_105_coverage_complete": true,
+  "pass_id": "PASS_105_5",
+  "pass_numbers_observed": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    39,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48,
+    49,
+    50,
+    51,
+    52,
+    53,
+    54,
+    55,
+    56,
+    57,
+    58,
+    59,
+    60,
+    61,
+    62,
+    63,
+    64,
+    65,
+    66,
+    67,
+    68,
+    69,
+    70,
+    71,
+    72,
+    73,
+    74,
+    75,
+    76,
+    77,
+    78,
+    79,
+    80,
+    81,
+    82,
+    83,
+    84,
+    85,
+    86,
+    87,
+    88,
+    89,
+    90,
+    91,
+    92,
+    93,
+    94,
+    95,
+    96,
+    97,
+    98,
+    99,
+    100,
+    101,
+    102,
+    103,
+    104,
+    105
+  ],
+  "python_static_parse": {
+    "failures": [],
+    "python_file_count": 873,
+    "python_parse_failed": 0,
+    "python_parse_passed": 873
+  },
+  "reconstruction_complete": true,
+  "repair_obligations": [
+    {
+      "issue_id": "HHS-AUDIT-001",
+      "repair_evidence_root_hash72": "0000000000000000000000000000000ZZuMGdN=Qly!D/mqMGSFj)JvtVxo?VV*As06pjv48",
+      "repair_pass": "PASS_105_3",
+      "required_disposition": "REPAIR_OR_PROVEN_SUPERSESSION",
+      "status": "CLOSED_REPAIRED",
+      "title": "Reachability manifest contains 79 orphans"
+    },
+    {
+      "issue_id": "HHS-AUDIT-002",
+      "repair_evidence_root_hash72": "0000000000000000000000000000004dN5fm^EOb1^N-G>b9cukgLlQ->416LUit*om(yh^^",
+      "repair_pass": "PASS_105_2",
+      "required_disposition": "REPAIR_OR_PROVEN_SUPERSESSION",
+      "status": "CLOSED_REPAIRED",
+      "title": "Internal sandbox authority bypasses authoritative kernel"
+    },
+    {
+      "issue_id": "HHS-AUDIT-003",
+      "repair_evidence_root_hash72": "0000000000000000000000000000004dN5fm^EOb1^N-G>b9cukgLlQ->416LUit*om(yh^^",
+      "repair_pass": "PASS_105_2",
+      "required_disposition": "REPAIR_OR_PROVEN_SUPERSESSION",
+      "status": "CLOSED_REPAIRED",
+      "title": "Backend placeholder reports echoed expression as executed"
+    },
+    {
+      "issue_id": "HHS-AUDIT-004",
+      "repair_evidence_root_hash72": "0000000000000000000000000000004dN5fm^EOb1^N-G>b9cukgLlQ->416LUit*om(yh^^",
+      "repair_pass": "PASS_105_2",
+      "required_disposition": "REPAIR_OR_PROVEN_SUPERSESSION",
+      "status": "CLOSED_REPAIRED",
+      "title": "GUI silently falls back to mock canonical-looking state"
+    },
+    {
+      "issue_id": "HHS-AUDIT-005",
+      "repair_evidence_root_hash72": "0000000000000000000000000000000JdXDP=13E/C^1Pt/NhF3maAVgoz-xqiQ--GWKVZUO",
+      "repair_pass": "PASS_105_1",
+      "required_disposition": "REPAIR_OR_PROVEN_SUPERSESSION",
+      "status": "CLOSED_REPAIRED",
+      "title": "Pass 105 formatter drops template parameters"
+    },
+    {
+      "issue_id": "HHS-AUDIT-006",
+      "repair_evidence_root_hash72": "00000000000000000000000000000017-3*yd9bXVBU0YKSwr3udk/8T5FpHbcPW7JKqTFVJ",
+      "repair_pass": "PASS_105_4",
+      "required_disposition": "REPAIR_OR_PROVEN_SUPERSESSION",
+      "status": "CLOSED_REPAIRED",
+      "title": "Negative-case results are synthetically marked passed"
+    },
+    {
+      "issue_id": "HHS-AUDIT-007",
+      "repair_evidence_root_hash72": "0000000000000000000000000000000JdXDP=13E/C^1Pt/NhF3maAVgoz-xqiQ--GWKVZUO",
+      "repair_pass": "PASS_105_1",
+      "required_disposition": "REPAIR_OR_PROVEN_SUPERSESSION",
+      "status": "CLOSED_REPAIRED",
+      "title": "Pass 105 claims phases that are not implemented"
+    },
+    {
+      "issue_id": "HHS-AUDIT-009",
+      "repair_evidence_root_hash72": "0000000000000000000000000000004dN5fm^EOb1^N-G>b9cukgLlQ->416LUit*om(yh^^",
+      "repair_pass": "PASS_105_2",
+      "required_disposition": "REPAIR_OR_PROVEN_SUPERSESSION",
+      "status": "CLOSED_REPAIRED",
+      "title": "Active kernel contains registered placeholder membrane face"
+    },
+    {
+      "evidence_path": "hhs_runtime/hhs_ir_transpiler_v1.py",
+      "issue_id": "HHS-AUDIT-008",
+      "repair_evidence_root_hash72": "0000000000000000000000000000000B>49u0HjN)IbInN7)Ow8>?Xd4I^ZUjB0=VXEQY0/E",
+      "repair_pass": "PASS_105_6",
+      "required_disposition": "REPAIR_OR_PROVEN_SUPERSESSION",
+      "status": "CLOSED_REPAIRED",
+      "stub_markers_present": false
+    }
+  ],
+  "repair_results": {
+    "PASS_105_1": {
+      "canonical_source": "dictionary hhs.phase.gear version 1 {\n    symbol \u03a8 : CONSTRAINT_OPERATOR := ref (hhs.operator.psi);\n    string phase_name : CANONICAL_STRING := \"reciprocal phase\";\n    template normalize_lane(lane : LANE_REFERENCE, phase : U72_PHASE) -> HARMONICODE_SOURCE_STRING := t\"Normalize ${lane} at ${phase}.\";\n    phrase \"opposite phase\" : SEMANTIC_REFERENCE := ref (hhs.phase.opposite);\n    alias \u2194 -> ref (hhs.relation.reciprocal);\n}\n",
+      "enforcement_receipt": {
+        "admission_status": "ADMITTED",
+        "authority_validation_root_hash72": "0000000000000000000000000000002!b-AUEX171OR2pkghl1T4SjO4!7/enX?YkdkSueG5",
+        "binding_resolution_root_hash72": "0000000000000000000000000000002lu^jtMV*Y+FbrvKwIC8D5NM2Cx17HD+9v41yAMFWk",
+        "canonical_dictionary_root_hash72": "0000000000000000000000000000000FmZ?DzcWS^AxQ?twymrsm2>Z9fD-/>jjy62cSPedW",
+        "dependency_graph_root_hash72": "0000000000000000000000000000001YY0rkHU()Tz)V-o8PaBu^3hnur!*>+gjj>N(!oSkv",
+        "enforcement_receipt_root_hash72": "0000000000000000000000000000001bvc(T!nc0KkkqHycbK1c1tvMOWoyTHKM+^en3gua)",
+        "import_lock_root_hash72": "0000000000000000000000000000003q3Y=)iY>+yy4*qrMEbg+Ex9w1iFMdW1uHNtN!1jGv",
+        "schema": "HHS_HARMONICODE_DICTIONARY_ENFORCEMENT_RECEIPT_V1_1",
+        "scope_resolution_root_hash72": "0000000000000000000000000000000S+Kl2Ok7IhVSXcdOw*H6HI(>Iv=QJ8?24v*W)1O7x",
+        "syntax_tree_root_hash72": "0000000000000000000000000000002w67WZCGPPauGHDZ8nZ9UtULN/^SVZ4yTS!iUzAR(4",
+        "type_resolution_root_hash72": "0000000000000000000000000000001LPCPNF8+Kc=uaMS6Dr4*2vwdVdB3M7/(uz)aU?Me4"
+      },
+      "input_commitment_root_hash72": "0000000000000000000000000000003w?lh>vACDn?Ph-Oiq5b/BQPN3SxBpCqk2AxeosB^7",
+      "negative_cases": [
+        {
+          "expected": "REJECT_INVALID_SOURCE_ENCODING",
+          "fixture_root_hash72": "0000000000000000000000000000000e1Cs-t5yVqr1k2i6udcZ^=CBHnRx6yBfF2kpC8bH)",
+          "observed": "REJECT_INVALID_SOURCE_ENCODING",
+          "passed": true
+        },
+        {
+          "expected": "REJECT_BIDIRECTIONAL_TEXT_CONTROL",
+          "fixture_root_hash72": "0000000000000000000000000000001^7Ubn71H7jZ0mqhRA5IBdozy0bNT0C4ecv7umHxC/",
+          "observed": "REJECT_BIDIRECTIONAL_TEXT_CONTROL",
+          "passed": true
+        },
+        {
+          "expected": "REJECT_SYNTAX_HOMOGLYPH_SUBSTITUTION",
+          "fixture_root_hash72": "0000000000000000000000000000002=sUhWOFqfvE+6neL8GEK=osj>g)v*tgeivb?yph4i",
+          "observed": "REJECT_SYNTAX_HOMOGLYPH_SUBSTITUTION",
+          "passed": true
+        },
+        {
+          "expected": "REJECT_RESERVED_KEYWORD_REBINDING",
+          "fixture_root_hash72": "0000000000000000000000000000001VY-UsVyW7l(v?qPAmx1xWe>NCQNXl/z30OZz+jVGs",
+          "observed": "REJECT_RESERVED_KEYWORD_REBINDING",
+          "passed": true
+        },
+        {
+          "expected": "REJECT_RECOVERED_PARSE_AS_CANONICAL_SOURCE",
+          "fixture_root_hash72": "0000000000000000000000000000002Yd>>)EWYDrbUYeeTA!68ia?mZZKx=l4cqdF+WTTfc",
+          "observed": "REJECT_RECOVERED_PARSE_AS_CANONICAL_SOURCE",
+          "passed": true
+        },
+        {
+          "expected": "REJECT_UNDECLARED_TEMPLATE_VARIABLE",
+          "fixture_root_hash72": "0000000000000000000000000000001ht9m6p>mk+x!VHap/tIsCmciza!Ch1PP4vuuiJ8OJ",
+          "observed": "REJECT_UNDECLARED_TEMPLATE_VARIABLE",
+          "passed": true
+        },
+        {
+          "expected": "REJECT_TEMPLATE_ARGUMENT_TYPE_MISMATCH",
+          "fixture_root_hash72": "0000000000000000000000000000003pUG1uYwRKtXqY0DM=8-W0v=+ZuDetDqotccutu*rR",
+          "observed": "REJECT_TEMPLATE_ARGUMENT_TYPE_MISMATCH",
+          "passed": true
+        },
+        {
+          "expected": "REJECT_LITERAL_EXECUTION_SYNTAX_CONFUSION",
+          "fixture_root_hash72": "0000000000000000000000000000001??WEf?OF-k7=lLkxmxOu82eVhYzufg/8XWBRtZsrB",
+          "observed": "REJECT_LITERAL_EXECUTION_SYNTAX_CONFUSION",
+          "passed": true
+        },
+        {
+          "expected": "REJECT_ALIAS_REBINDING_COLLAPSE",
+          "fixture_root_hash72": "0000000000000000000000000000002lk4?95N=H3WF>R3Jb9QPvVcwoKq3/g6!!-/rY7!h8",
+          "observed": "REJECT_ALIAS_REBINDING_COLLAPSE",
+          "passed": true
+        },
+        {
+          "expected": "REJECT_DUPLICATE_SCOPE_BINDING",
+          "fixture_root_hash72": "0000000000000000000000000000002AjaFNhMrlcCr!rwD/8CBQ)P(ItkXUeKoQIEoYexG!",
+          "observed": "REJECT_DUPLICATE_SCOPE_BINDING",
+          "passed": true
+        },
+        {
+          "expected": "REJECT_UNWITNESSED_DICTIONARY_SHADOWING",
+          "fixture_root_hash72": "0000000000000000000000000000003iYIcMUDFX*gnnq2EnDKW>E=hWP+RIb^?EXx/Q6i9R",
+          "observed": "REJECT_UNWITNESSED_DICTIONARY_SHADOWING",
+          "passed": true
+        },
+        {
+          "expected": "REJECT_NONDETERMINISTIC_IMPORT_RESOLUTION",
+          "fixture_root_hash72": "000000000000000000000000000000486P8V+hHdfoJha-l((qUQEctbaurf4HTjGA>6X9e7",
+          "observed": "REJECT_NONDETERMINISTIC_IMPORT_RESOLUTION",
+          "passed": true
+        },
+        {
+          "expected": "REJECT_UNPINNED_DICTIONARY_DEPENDENCY",
+          "fixture_root_hash72": "0000000000000000000000000000003EHSX3vRu5A168x)NhYx(IFx=KzS2J3Pcc03B23!5C",
+          "observed": "REJECT_UNPINNED_DICTIONARY_DEPENDENCY",
+          "passed": true
+        },
+        {
+          "expected": "REJECT_SILENT_DICTIONARY_CONFLICT_OVERWRITE",
+          "fixture_root_hash72": "00000000000000000000000000000033?SmB8MkMb2?sK2w7bg0hoxbCvG5O8ITAOKlI8Py-",
+          "observed": "REJECT_SILENT_DICTIONARY_CONFLICT_OVERWRITE",
+          "passed": true
+        },
+        {
+          "expected": "REJECT_PARSE_ONLY_EXECUTION_BYPASS",
+          "fixture_root_hash72": "0000000000000000000000000000002/(K7OOr-QH(mU47myJPq0>BOvNAJULtHYRtxUGYnv",
+          "observed": "REJECT_PARSE_ONLY_EXECUTION_BYPASS",
+          "passed": true
+        },
+        {
+          "expected": "REJECT_NONDETERMINISTIC_DICTIONARY_PARSE",
+          "fixture_root_hash72": "00000000000000000000000000000021RBQfTkAg2g-NsSoJ420U14TCe/Wp1iDcbfX!Z8*u",
+          "observed": "REJECT_NONDETERMINISTIC_DICTIONARY_PARSE",
+          "passed": true
+        },
+        {
+          "expected": "REJECT_FORMATTER_SEMANTIC_MUTATION",
+          "fixture_root_hash72": "0000000000000000000000000000003wj6=XtVhzGTSt8tDIE5/Z>RnjWPnXso!=xgk1gOVx",
+          "observed": "REJECT_FORMATTER_SEMANTIC_MUTATION",
+          "passed": true
+        },
+        {
+          "expected": "REJECT_TEMPORAL_GRAMMAR_DRIFT",
+          "fixture_root_hash72": "0000000000000000000000000000000enHO*TEX5A1lsnlyrFPxjD)TkQcqV/4JV6Iu+/InZ",
+          "observed": "REJECT_TEMPORAL_GRAMMAR_DRIFT",
+          "passed": true
+        },
+        {
+          "expected": "REJECT_UNAUTHORIZED_SYNTAX_EXTENSION",
+          "fixture_root_hash72": "0000000000000000000000000000003SIZ=JEl14i+1zq*!?fAsCBTlbWQdWxR=BxjRHUeR3",
+          "observed": "REJECT_UNAUTHORIZED_SYNTAX_EXTENSION",
+          "passed": true
+        }
+      ],
+      "outcome": "DICTIONARY_ADMITTED",
+      "parent_pass105_release_root_hash72": "0000000000000000000000000000002)CqhZmaZ(-xO=vbRAovI=KhHFQ5wYDIEPz1k!!>Sq",
+      "parse_receipt": {
+        "diagnostics": [],
+        "normalized_source_root_hash72": "0000000000000000000000000000004miv7v)j)CzXjt39840jx>AksfWH?C2RRd1(BFter/",
+        "parse_receipt_root_hash72": "0000000000000000000000000000003xrMPr1sRiaauHOXQ=sh4PT7Lf*wAP/0I/vx^RXk6*",
+        "recovery_used": false,
+        "schema": "HHS_HARMONICODE_DICTIONARY_PARSE_RECEIPT_V1_1",
+        "source_root_hash72": "0000000000000000000000000000001M=o+cdK/ZnN7eh8kpzd/EHli0)h(d!dJft9Ie-RCJ",
+        "syntax_status": "VALID",
+        "syntax_tree_root_hash72": "0000000000000000000000000000002w67WZCGPPauGHDZ8nZ9UtULN/^SVZ4yTS!iUzAR(4",
+        "syntax_version": "1.0",
+        "token_stream_root_hash72": "0000000000000000000000000000001wjzX83oUuaYvoR!S-OoM(Y0TJ5kQh^!Vzj?5/oro6"
+      },
+      "parse_replay_exact": true,
+      "pass_id": "PASS_105_1",
+      "result_root_hash72": "0000000000000000000000000000002gg08ql9ndhx0M4?/-GKfNRPwX7BU9Od0dezl-clsN",
+      "runtime_surface": {
+        "contract_schemas": [
+          "HHS_HARMONICODE_DICTIONARY_PARSE_RECEIPT_V1_1",
+          "HHS_HARMONICODE_DICTIONARY_ENFORCEMENT_RECEIPT_V1_1"
+        ],
+        "function": "compile_dictionary",
+        "guards": [
+          "unicode_policy",
+          "grammar_validation",
+          "semantic_enforcement",
+          "authority_gate",
+          "zero_bypass_runtime_interposer"
+        ],
+        "invariant_ids": [
+          "HHS-I001",
+          "HHS-I002",
+          "HHS-I003",
+          "HHS-I004",
+          "HHS-I008",
+          "HHS-I010",
+          "HHS-I011",
+          "HHS-I012",
+          "HHS-I019"
+        ],
+        "module": "hhs_runtime.hhs_pass105_1_dictionary_grammar_closure_v1",
+        "mutation_policy": "NO_GLOBAL_DICTIONARY_MUTATION",
+        "persistence_policy": "HASH72_PARSE_AND_ENFORCEMENT_RECEIPTS_ONLY",
+        "schema": "HHS_PASS_105_1_RUNTIME_SURFACE_V1",
+        "service_name": "harmonicode.dictionary.compile_enforce_v1",
+        "surface_root_hash72": "0000000000000000000000000000004bRevw5MkAl2i*PrW(2GdXN3tUBtMdtb7t7P-uKKv1"
+      },
+      "schema": "HHS_PASS_105_1_RESULT_V1",
+      "serialization_reparse_exact": true,
+      "syntax_specification": {
+        "encoding": "UTF-8",
+        "grammar_root_hash72": "0000000000000000000000000000001A^=0e=Ghic^=07icmI/>+E1dLjk4EKC2GTAfW!k6=",
+        "import_policy": "EXACT_VERSION_AND_ROOT_LOCK_REQUIRED",
+        "known_types": [
+          "AST",
+          "BOOLEAN",
+          "CANONICAL_STRING",
+          "CONSTRAINT_OPERATOR",
+          "DICTIONARY",
+          "GRAPH",
+          "HARMONICODE_SOURCE_STRING",
+          "HASH72_ROOT",
+          "INTEGER",
+          "LANE_REFERENCE",
+          "NATURAL_LANGUAGE_STRING",
+          "OPERATION_REFERENCE",
+          "RATIONAL",
+          "RECEIPT",
+          "SEMANTIC_REFERENCE",
+          "SYMBOL_REFERENCE",
+          "T",
+          "TEMPLATE",
+          "TENSOR_REFERENCE",
+          "TRINARY",
+          "U72_PHASE",
+          "UNICODE_STRING",
+          "VOID"
+        ],
+        "merge_policy": "NO_LAST_WRITE_WINS",
+        "parser_phases": [
+          "UTF8",
+          "UNICODE",
+          "LEX",
+          "PARSE",
+          "TYPE",
+          "SCOPE",
+          "BINDING",
+          "DEPENDENCY",
+          "AUTHORITY",
+          "SERIALIZE"
+        ],
+        "recovery_policy": "DIAGNOSTICS_ONLY_NEVER_CANONICAL",
+        "reserved_keywords": [
+          "alias",
+          "as",
+          "bind",
+          "case",
+          "constant",
+          "default",
+          "defer",
+          "dictionary",
+          "else",
+          "empty",
+          "expand",
+          "experimental",
+          "export",
+          "extends",
+          "false",
+          "from",
+          "global",
+          "if",
+          "import",
+          "invoke",
+          "literal",
+          "local",
+          "match",
+          "merge",
+          "module",
+          "namespace",
+          "null",
+          "partial",
+          "phrase",
+          "policy",
+          "project",
+          "rebind",
+          "ref",
+          "requires",
+          "returns",
+          "root",
+          "scope",
+          "session",
+          "shadows",
+          "string",
+          "symbol",
+          "template",
+          "true",
+          "type",
+          "unavailable",
+          "unresolved",
+          "variable",
+          "version",
+          "where"
+        ],
+        "schema": "HHS_HARMONICODE_DICTIONARY_SYNTAX_SPECIFICATION_V1_1",
+        "supported_dictionary_versions": [
+          1
+        ],
+        "syntax_specification_root_hash72": "0000000000000000000000000000002>wS-v1fJMmwB8)-RxE=tex314rW8(*N)EuE2I(3qf",
+        "syntax_version": "1.0",
+        "unicode_normalization": "NFC"
+      },
+      "template_parameters_preserved": true
+    },
+    "PASS_105_2": {
+      "all_repairs_verified": true,
+      "authoritative_kernel": {
+        "kernel_file": "/mnt/data/p1056/pass105_5/HARMONICODE_KERNEL_v44_2_lockcore_patched_selfsolving_hash72authority_locked-7.py",
+        "kernel_hash72_probe": "H72N-db30158c5996b9cee0",
+        "kernel_loaded": true,
+        "kernel_module": "HARMONICODE_KERNEL_v44_2_lockcore_patched_selfsolving_hash72authority_locked-7",
+        "local_substitute_authority_used": false
+      },
+      "mobile_failure_integrity": {
+        "canonical_mock_fallback_absent": true,
+        "forbidden_hits": [],
+        "typed_unavailable_snapshot_present": true
+      },
+      "pass_id": "PASS_105_2",
+      "px1_face": {
+        "equation_implemented": true,
+        "placeholder_class_absent": true,
+        "real_face_registered": true
+      },
+      "runtime_execution": {
+        "echo_executor": false,
+        "execution_performed": true,
+        "full_receipt_hash72": "eC4itzt(aBRrQ8*WTRr(s11r",
+        "solver_receipt_hash72": "FrTbU*Z)k7yK/2(7UJ7Ba\u221asM",
+        "status": "SOLVED",
+        "transport": "harmonicode_interpreter_solver"
+      },
+      "schema": "HHS_PASS105_2_AUTHORITY_PLACEHOLDER_CLOSURE_V1",
+      "status": "PASS"
+    },
+    "PASS_105_3": {
+      "all_native_projects_owned": true,
+      "all_repairs_verified": true,
+      "native_project_record_count": 158,
+      "native_status_counts": {
+        "BUILD_REACHABLE": 2,
+        "DOCUMENTED_ONLY": 7,
+        "GUI_REACHABLE": 1,
+        "OWNED_ARTIFACT": 75,
+        "PLUGIN_READY": 72,
+        "TOOL_REACHABLE": 1
+      },
+      "orphan_count": 0,
+      "pass_id": "PASS_105_3",
+      "schema": "HHS_PASS105_3_REACHABILITY_ORPHAN_CLOSURE_V1",
+      "status": "PASS"
+    },
+    "PASS_105_4": {
+      "all_attacks_structurally_executed": true,
+      "all_attacks_used_production_entrypoints": true,
+      "all_repairs_verified": true,
+      "attack_count": 77,
+      "attack_registry_root_hash72": "0000000000000000000000000000001wCuWWgCSe3Y)Ll>LGd1/p>i-1EmV^oqM2LR0JPZa)",
+      "failed_count": 0,
+      "mock_component_count": 0,
+      "parallel_test_computation_count": 0,
+      "pass_id": "PASS_105_4",
+      "passed_count": 77,
+      "schema": "HHS_PASS105_4_PRODUCTION_NEGATIVE_ATTACK_CLOSURE_V1",
+      "status": "PASS"
+    },
+    "PASS_105_6": {
+      "all_repairs_verified": true,
+      "closure_root_hash72": "00000000000000000000000000000033D!=!U9bl*ALUx>+tkE5LLte*tumKn3!D^jn8/qt=",
+      "executions": [
+        {
+          "compile_command": [
+            "/usr/bin/gcc",
+            "-std=c11",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "/tmp/hhs_transpile_7k1uiojd/packet.c",
+            "-o",
+            "/tmp/hhs_transpile_7k1uiojd/packet"
+          ],
+          "compiled_and_executed": true,
+          "compiler": "/usr/bin/x86_64-linux-gnu-gcc-14",
+          "compiler_returncode": 0,
+          "execution_receipt_hash72": "yy7JYWsKCj)vGlv47v)kZ2D8",
+          "execution_returncode": 0,
+          "observed": {
+            "equation_hash72": "H72-PASS1056-EQ",
+            "manifest_hash72": "H72-PASS1056-MANIFEST",
+            "phase_count": 4,
+            "phase_sum": 72,
+            "target": "c"
+          },
+          "schema": "HHS_REAL_TRANSPILER_EXECUTION_RECEIPT_V1",
+          "source_hash72": "i+fOFd3R9D\u2260w6ZUbFk+h+gC7",
+          "target": "c"
+        },
+        {
+          "compile_command": [
+            "/usr/bin/gcc",
+            "-std=c11",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "/tmp/hhs_transpile_1xn9580e/harness.c",
+            "/tmp/hhs_transpile_1xn9580e/packet.S",
+            "-o",
+            "/tmp/hhs_transpile_1xn9580e/packet"
+          ],
+          "compiled_and_executed": true,
+          "compiler": "/usr/bin/x86_64-linux-gnu-gcc-14",
+          "compiler_returncode": 0,
+          "execution_receipt_hash72": "IBqK\u221atdEpDmm9RHbHP3eM84l",
+          "execution_returncode": 0,
+          "observed": {
+            "equation_hash72": "H72-PASS1056-EQ",
+            "manifest_hash72": "H72-PASS1056-MANIFEST",
+            "phase_count": 4,
+            "phase_sum": 72,
+            "target": "asm"
+          },
+          "schema": "HHS_REAL_TRANSPILER_EXECUTION_RECEIPT_V1",
+          "source_hash72": "7QsNFkYpoAiYdQdgYKHqF\u2260g\u221a",
+          "target": "asm"
+        }
+      ],
+      "parallel_test_computation_used": false,
+      "pass_id": "PASS_105_6",
+      "real_compilation_executed": true,
+      "real_generated_binaries_executed": true,
+      "schema": "HHS_PASS105_6_REAL_C_ASM_BACKEND_CLOSURE_V1",
+      "status": "PASS",
+      "targets": [
+        "c",
+        "asm"
+      ],
+      "transpile_receipt_hash72": "x(Fv14/8R1k3sbE4U1)dUT)g"
+    }
+  },
+  "repository_root": "/mnt/data/p1056/pass105_5",
+  "schema": "HHS_PASS105_5_MACHINE_READABLE_CONFORMANCE_RECONSTRUCTION_V1",
+  "status": "PASS"
+}

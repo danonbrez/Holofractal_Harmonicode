@@ -1,0 +1,65 @@
+{
+  "schema": "HHS_PASS_095_NEGATIVE_CASES_V1",
+  "cases": [
+    {
+      "case": "answer_key_leak",
+      "expected": "REJECT_AB_EVALUATION_LEAKAGE",
+      "observed": "REJECT_AB_EVALUATION_LEAKAGE",
+      "passed": true
+    },
+    {
+      "case": "baseline_pattern_access",
+      "expected": "REJECT_BASELINE_CONTAMINATION",
+      "observed": "REJECT_BASELINE_CONTAMINATION",
+      "passed": true
+    },
+    {
+      "case": "skip_validation",
+      "expected": "REJECT_PATTERN_GAIN_WITHOUT_CANONICAL_VALIDATION",
+      "observed": "REJECT_PATTERN_GAIN_WITHOUT_CANONICAL_VALIDATION",
+      "passed": true
+    },
+    {
+      "case": "redefine_task",
+      "expected": "REJECT_PATTERN_REDEFINES_TASK",
+      "observed": "REJECT_PATTERN_REDEFINES_TASK",
+      "passed": true
+    },
+    {
+      "case": "unwitnessed_efficiency",
+      "expected": "REJECT_UNWITNESSED_EFFICIENCY_GAIN",
+      "observed": "REJECT_UNWITNESSED_EFFICIENCY_GAIN",
+      "passed": true
+    },
+    {
+      "case": "unmatched_budget",
+      "expected": "REJECT_UNMATCHED_AB_TRIAL",
+      "observed": "REJECT_UNMATCHED_AB_TRIAL",
+      "passed": true
+    },
+    {
+      "case": "shared_cache",
+      "expected": "REJECT_SHARED_ADAPTIVE_CACHE",
+      "observed": "REJECT_SHARED_ADAPTIVE_CACHE",
+      "passed": true
+    },
+    {
+      "case": "held_out_leak",
+      "expected": "REJECT_HELD_OUT_TASK_LEAKAGE",
+      "observed": "REJECT_HELD_OUT_TASK_LEAKAGE",
+      "passed": true
+    },
+    {
+      "case": "fixed_task_order_bias",
+      "expected": "REJECT_TASK_ORDER_CONTAMINATION",
+      "observed": "REJECT_TASK_ORDER_CONTAMINATION",
+      "passed": true
+    },
+    {
+      "case": "replay_mismatch",
+      "expected": "REJECT_REPLAY_MISMATCH",
+      "observed": "REJECT_REPLAY_MISMATCH",
+      "passed": true
+    }
+  ]
+}

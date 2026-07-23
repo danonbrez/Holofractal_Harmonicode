@@ -1,0 +1,27 @@
+{
+  "schema": "HHS_PASS_082_1_OFFSET_NEGATIVE_CASES_V1",
+  "results": [
+    {
+      "rejection_code": "REJECT_NONUNIQUE_BRANCH_OFFSET",
+      "status": "EXPECTED_REJECTION",
+      "workload_id": "W18:duplicate-offset-rejection"
+    },
+    {
+      "rejection_code": "REJECT_OFFSET_ENTANGLEMENT_CLOSURE_FAILURE",
+      "status": "EXPECTED_REJECTION",
+      "workload_id": "W19:inverse-normalization-failure"
+    }
+  ],
+  "required_rejection_codes": [
+    "REJECT_NONUNIQUE_BRANCH_OFFSET",
+    "REJECT_OFFSET_OUT_OF_DOMAIN",
+    "REJECT_OFFSET_WITHOUT_INVERSE",
+    "REJECT_OFFSET_BRANCH_IDENTITY_COLLAPSE",
+    "REJECT_OFFSET_ENTANGLEMENT_CLOSURE_FAILURE",
+    "REJECT_NONCOMMUTATIVE_OFFSET_ORDER_COLLAPSE",
+    "REJECT_UNWITNESSED_OFFSET",
+    "REJECT_OFFSET_OPERATION_OUTSIDE_LEASE",
+    "REJECT_OFFSET_REPLAY_MISMATCH",
+    "REJECT_OPAQUE_NATIVE_FLOAT_AS_CANONICAL_ARITHMETIC"
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "capture_avoiding": true,
+  "escaping_verified": true,
+  "expanded_string_root_hash72": "0000000000000000000000000000002!nbbT(Jy+1ZoJ>xLt+9sq9qIHXu(t0CV85RRT?io3",
+  "expanded_text": "A >> ${right}",
+  "expansion_mode": "SYMBOLIC",
+  "expansion_receipt_root_hash72": "0000000000000000000000000000002F+s0Ql?Rp(W!CE0yHgvJ+j*ajKqgy6Jc?Ila3Gy5H",
+  "ordered_variable_bindings": [
+    {
+      "value_root_hash72": "000000000000000000000000000000005ahVrvP>)WC?g!rZgCuI4>DDoM!6MYxRK9k/Fog!",
+      "value_type": "OPERATION_REFERENCE",
+      "variable": "left"
+    }
+  ],
+  "schema": "HHS_VARIABLE_STRING_EXPANSION_RECEIPT_V1",
+  "template_root_hash72": "00000000000000000000000000000047l1*2c)YbsjuAYM+8djty92tX6?H(*//l7F0f/x2d",
+  "unresolved_slots": [
+    "right"
+  ]
+}

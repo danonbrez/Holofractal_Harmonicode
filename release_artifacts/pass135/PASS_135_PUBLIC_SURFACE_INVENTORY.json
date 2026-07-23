@@ -1,0 +1,15 @@
+{
+  "operation_count": 7,
+  "pass132_consequence_paths": [],
+  "path_count": 7,
+  "paths": [
+    "/api/healthz",
+    "/api/hhs/solve",
+    "/api/runtime/event",
+    "/api/runtime/graph",
+    "/api/runtime/metrics",
+    "/api/runtime/replay",
+    "/api/runtime/transport"
+  ],
+  "schema": "HHS_PASS135_PUBLIC_SURFACE_INVENTORY_V1"
+}

@@ -1,0 +1,228 @@
+{
+  "all_closed": true,
+  "equation_gate_definition": {
+    "canonical": "Log_H(g)==sigma iff E_H^sigma==g==unit/(unit-u)",
+    "closure": "E_H^sigma * E_H^Cancel(sigma)==unit",
+    "dual_cancellation": "epsilon_H(g)+epsilon_H(Inverse_unit(g))==rho_H(g)",
+    "gfe_energy": "epsilon_H(g)==g-unit-Log_H(g)",
+    "inverse": "Log_H(Inverse_unit(g))==Cancel(sigma)",
+    "polynomialized_normalized": "rho_H(g)g==(g-unit)^2 under unit==1",
+    "rho": "rho_H(g)==g+Inverse_unit(g)-2unit"
+  },
+  "floating_point_authority_paths": 0,
+  "pass_id": "PASS_135_GFE_EXTENSION",
+  "reciprocal_pair_rho_equal": true,
+  "schema": "HHS_GFE_LOG_CONSTRAINT_RUNTIME_V1",
+  "suite_root": "a5ccb52566bbab329358c9f8018b84bbdf59bc6267c505712e6fdeeceff16c86",
+  "symbolic_log_paths": 4,
+  "traces": [
+    {
+      "authority_level": "A1",
+      "dual_energy_cancellation_residue": "0",
+      "epsilon_g": {
+        "rational_part": "0",
+        "symbolic_log_part": "0"
+      },
+      "epsilon_g_inverse": {
+        "rational_part": "0",
+        "symbolic_log_part": "0"
+      },
+      "g": "1",
+      "g_inverse": "1",
+      "label": "GFE_EXACT_EQUILIBRIUM",
+      "local_unit": "1",
+      "log_witness": {
+        "branch_contract": "SAME_ADMITTED_SYMBOLIC_PHASE_BRANCH",
+        "definition": "Log_H(g)==sigma iff E_H^sigma==g and E_H^Cancel(sigma)==Inverse_unit(g)",
+        "equality_gate_chain": [
+          "E_H^(0)==1",
+          "E_H^(0)==1",
+          "(1)*(1)==1",
+          "ComposePhase(0,0)==0"
+        ],
+        "floating_point_authority_paths": 0,
+        "g": "1",
+        "g_inverse": "1",
+        "inverse_sigma": "0",
+        "local_unit": "1",
+        "numeric_projection_authorized": false,
+        "reciprocal_branch_rule": "Log_H(1)==0",
+        "schema": "HHS_EQUALITY_GATED_LOG_WITNESS_V1",
+        "sigma": "0",
+        "witness_root": "031d73667bc83a1b9cb9558d24ec26f3c106d010b9d6991c01669f6f63030562"
+      },
+      "no_float_authority": true,
+      "normalized_unit_gate": true,
+      "overall_status": "VERIFIED_CLOSED",
+      "pass_id": "PASS_135_GFE_EXTENSION",
+      "polynomialized_residual": "0",
+      "reciprocal_closure_residue": "0",
+      "rho": "0",
+      "schema": "HHS_INTEGRATED_GFE_TRACE_V1",
+      "statuses": {
+        "dual_log_cancellation": "VERIFIED_CLOSED",
+        "polynomialized_residual": "VERIFIED_CLOSED",
+        "reciprocal_closure": "VERIFIED_CLOSED"
+      },
+      "symbolic_log_cancellation_residue": "0",
+      "theta": "0",
+      "trace_root": "d2d1babc5ef1aa48a29879af414eb11d8deac0edfea0ecc153691bd40606b399"
+    },
+    {
+      "authority_level": "A1",
+      "dual_energy_cancellation_residue": "0",
+      "epsilon_g": {
+        "rational_part": "1/2",
+        "symbolic_log_part": "Cancel(Log_H(3/2|unit=1))"
+      },
+      "epsilon_g_inverse": {
+        "rational_part": "-1/3",
+        "symbolic_log_part": "Log_H(3/2|unit=1)"
+      },
+      "g": "3/2",
+      "g_inverse": "2/3",
+      "label": "PAIR_RATIO_COORDINATE",
+      "local_unit": "1",
+      "log_witness": {
+        "branch_contract": "SAME_ADMITTED_SYMBOLIC_PHASE_BRANCH",
+        "definition": "Log_H(g)==sigma iff E_H^sigma==g and E_H^Cancel(sigma)==Inverse_unit(g)",
+        "equality_gate_chain": [
+          "E_H^(Log_H(3/2|unit=1))==3/2",
+          "E_H^(Cancel(Log_H(3/2|unit=1)))==2/3",
+          "(3/2)*(2/3)==1",
+          "ComposePhase(Log_H(3/2|unit=1),Cancel(Log_H(3/2|unit=1)))==0"
+        ],
+        "floating_point_authority_paths": 0,
+        "g": "3/2",
+        "g_inverse": "2/3",
+        "inverse_sigma": "Cancel(Log_H(3/2|unit=1))",
+        "local_unit": "1",
+        "numeric_projection_authorized": false,
+        "reciprocal_branch_rule": "Log_H(2/3)==Cancel(Log_H(3/2|unit=1))",
+        "schema": "HHS_EQUALITY_GATED_LOG_WITNESS_V1",
+        "sigma": "Log_H(3/2|unit=1)",
+        "witness_root": "d9ce5ca54aa45ef8811cd3575404a2b8a6baa1f9d95b0a535e8bdea190e1622b"
+      },
+      "no_float_authority": true,
+      "normalized_unit_gate": true,
+      "overall_status": "VERIFIED_CLOSED",
+      "pass_id": "PASS_135_GFE_EXTENSION",
+      "polynomialized_residual": "0",
+      "reciprocal_closure_residue": "0",
+      "rho": "1/6",
+      "schema": "HHS_INTEGRATED_GFE_TRACE_V1",
+      "statuses": {
+        "dual_log_cancellation": "VERIFIED_CLOSED",
+        "polynomialized_residual": "VERIFIED_CLOSED",
+        "reciprocal_closure": "VERIFIED_CLOSED"
+      },
+      "symbolic_log_cancellation_residue": "0",
+      "theta": "1/2",
+      "trace_root": "4b82a7396cbccd601fa032c17d9777bc35a51286e76bf93a40a2d1703216c654"
+    },
+    {
+      "authority_level": "A1",
+      "dual_energy_cancellation_residue": "0",
+      "epsilon_g": {
+        "rational_part": "-1/3",
+        "symbolic_log_part": "Cancel(Log_H(2/3|unit=1))"
+      },
+      "epsilon_g_inverse": {
+        "rational_part": "1/2",
+        "symbolic_log_part": "Log_H(2/3|unit=1)"
+      },
+      "g": "2/3",
+      "g_inverse": "3/2",
+      "label": "INVERSE_PAIR_RATIO",
+      "local_unit": "1",
+      "log_witness": {
+        "branch_contract": "SAME_ADMITTED_SYMBOLIC_PHASE_BRANCH",
+        "definition": "Log_H(g)==sigma iff E_H^sigma==g and E_H^Cancel(sigma)==Inverse_unit(g)",
+        "equality_gate_chain": [
+          "E_H^(Log_H(2/3|unit=1))==2/3",
+          "E_H^(Cancel(Log_H(2/3|unit=1)))==3/2",
+          "(2/3)*(3/2)==1",
+          "ComposePhase(Log_H(2/3|unit=1),Cancel(Log_H(2/3|unit=1)))==0"
+        ],
+        "floating_point_authority_paths": 0,
+        "g": "2/3",
+        "g_inverse": "3/2",
+        "inverse_sigma": "Cancel(Log_H(2/3|unit=1))",
+        "local_unit": "1",
+        "numeric_projection_authorized": false,
+        "reciprocal_branch_rule": "Log_H(3/2)==Cancel(Log_H(2/3|unit=1))",
+        "schema": "HHS_EQUALITY_GATED_LOG_WITNESS_V1",
+        "sigma": "Log_H(2/3|unit=1)",
+        "witness_root": "5fbdaec261a914a001a9cd0f2e014ca23d3df6822280061a27b94b752ebf4691"
+      },
+      "no_float_authority": true,
+      "normalized_unit_gate": true,
+      "overall_status": "VERIFIED_CLOSED",
+      "pass_id": "PASS_135_GFE_EXTENSION",
+      "polynomialized_residual": "0",
+      "reciprocal_closure_residue": "0",
+      "rho": "1/6",
+      "schema": "HHS_INTEGRATED_GFE_TRACE_V1",
+      "statuses": {
+        "dual_log_cancellation": "VERIFIED_CLOSED",
+        "polynomialized_residual": "VERIFIED_CLOSED",
+        "reciprocal_closure": "VERIFIED_CLOSED"
+      },
+      "symbolic_log_cancellation_residue": "0",
+      "theta": "-1/3",
+      "trace_root": "2e5475395b4c8d6a30351f8e14d26c628d9d8438182108db87bc5fc6e4840c6b"
+    },
+    {
+      "authority_level": "A1",
+      "dual_energy_cancellation_residue": "0",
+      "epsilon_g": {
+        "rational_part": "1/4",
+        "symbolic_log_part": "Cancel(Log_H(5/4|unit=1))"
+      },
+      "epsilon_g_inverse": {
+        "rational_part": "-1/5",
+        "symbolic_log_part": "Log_H(5/4|unit=1)"
+      },
+      "g": "5/4",
+      "g_inverse": "4/5",
+      "label": "NON_EQUILIBRIUM_DISPLACEMENT",
+      "local_unit": "1",
+      "log_witness": {
+        "branch_contract": "SAME_ADMITTED_SYMBOLIC_PHASE_BRANCH",
+        "definition": "Log_H(g)==sigma iff E_H^sigma==g and E_H^Cancel(sigma)==Inverse_unit(g)",
+        "equality_gate_chain": [
+          "E_H^(Log_H(5/4|unit=1))==5/4",
+          "E_H^(Cancel(Log_H(5/4|unit=1)))==4/5",
+          "(5/4)*(4/5)==1",
+          "ComposePhase(Log_H(5/4|unit=1),Cancel(Log_H(5/4|unit=1)))==0"
+        ],
+        "floating_point_authority_paths": 0,
+        "g": "5/4",
+        "g_inverse": "4/5",
+        "inverse_sigma": "Cancel(Log_H(5/4|unit=1))",
+        "local_unit": "1",
+        "numeric_projection_authorized": false,
+        "reciprocal_branch_rule": "Log_H(4/5)==Cancel(Log_H(5/4|unit=1))",
+        "schema": "HHS_EQUALITY_GATED_LOG_WITNESS_V1",
+        "sigma": "Log_H(5/4|unit=1)",
+        "witness_root": "7f6d786cbbefe9d7613af755ed2aa026617cc514940ac14d5df7bedc85e16f70"
+      },
+      "no_float_authority": true,
+      "normalized_unit_gate": true,
+      "overall_status": "VERIFIED_CLOSED",
+      "pass_id": "PASS_135_GFE_EXTENSION",
+      "polynomialized_residual": "0",
+      "reciprocal_closure_residue": "0",
+      "rho": "1/20",
+      "schema": "HHS_INTEGRATED_GFE_TRACE_V1",
+      "statuses": {
+        "dual_log_cancellation": "VERIFIED_CLOSED",
+        "polynomialized_residual": "VERIFIED_CLOSED",
+        "reciprocal_closure": "VERIFIED_CLOSED"
+      },
+      "symbolic_log_cancellation_residue": "0",
+      "theta": "1/4",
+      "trace_root": "37761169a17d3e29a23b779899217a279b00582667f51a4b7d9d21623fb410e1"
+    }
+  ]
+}

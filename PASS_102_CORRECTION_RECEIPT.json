@@ -1,0 +1,14 @@
+{
+  "corrected_coordinate": [
+    3,
+    -5
+  ],
+  "correction_authority": "EXACT_UNIQUE_INTERSECTION",
+  "correction_receipt_root_hash72": "0000000000000000000000000000003aLBfGQtg5UvVTdDd*n4nnKS)Bp3(Vg5RdB/01vdUa",
+  "expected_cell_root_hash72": "0000000000000000000000000000003c8aZe3DtjCod^sW)M^W2U+>djC5*xeMwrDaUGFby7",
+  "original_evidence_preserved": true,
+  "replay_verified": true,
+  "schema": "HHS_17X17_TENSOR_CORRECTION_RECEIPT_V1",
+  "syndrome_root_hash72": "0000000000000000000000000000003uAXeLQ^Txj>FfXX/u6at?s)woEfKuseZ^lOUkDDU*",
+  "tensor_root_hash72": "0000000000000000000000000000001g5nui9PYKT-Pm7QsR((vEyRLv^1*r0(OKPvw)zhtT"
+}

@@ -1,0 +1,61 @@
+{
+  "schema": "HHS_PASS_098_LAYER_REGISTRY_V1",
+  "layers": [
+    {
+      "carrier_modulus": 72,
+      "initial_offset": 0,
+      "layer_id": "phase-layer:prime:11:offset:0",
+      "layer_root_hash72": "0000000000000000000000000000003GrS6aKd/))6h=5*kvlJtA8LNlSc*m9rOUpz=ZTP67",
+      "normalization_contract_root_hash72": "0000000000000000000000000000002J?EMXP2*VL(va4T-3HX)-m/gAXD4Ca^*v)YLF8NlB",
+      "operation_contract_root_hash72": "0000000000000000000000000000000bhggS4Ai7UlaOV8Dwop!Q^qsX4Olnlk/85obU>owF",
+      "operation_family": "SYMBOLIC_CONSTRAINT_ORDERING",
+      "period_prime": 11,
+      "period_prime_source_root_hash72": "PASS098:DECLARED:PRIME:SOURCE",
+      "prime_witness_root_hash72": "00000000000000000000000000000033?GoSzj-9Qi?+t/^9K2Prly=OCz2/^OUe!ccTCbV5",
+      "reciprocal_partner_layer_ids": [],
+      "schema": "HHS_PRIME_PERIODIC_OPERATION_LAYER_V1"
+    },
+    {
+      "carrier_modulus": 72,
+      "initial_offset": 6,
+      "layer_id": "phase-layer:prime:13:offset:6",
+      "layer_root_hash72": "0000000000000000000000000000004jF1/dvzB2HYUU9(FjOxsx9JOEbtx4khh*K?tt/8si",
+      "normalization_contract_root_hash72": "0000000000000000000000000000002J?EMXP2*VL(va4T-3HX)-m/gAXD4Ca^*v)YLF8NlB",
+      "operation_contract_root_hash72": "0000000000000000000000000000004Ke*WVR1hYp893m?5>+N)qLCgkoctxnO-/D6IduqKh",
+      "operation_family": "VM81_ROUTING",
+      "period_prime": 13,
+      "period_prime_source_root_hash72": "PASS098:DECLARED:PRIME:SOURCE",
+      "prime_witness_root_hash72": "0000000000000000000000000000001vkxDp3X)4roBVH*T0uFSQDmf+CtZK(luv)=IMR)Tb",
+      "reciprocal_partner_layer_ids": [],
+      "schema": "HHS_PRIME_PERIODIC_OPERATION_LAYER_V1"
+    },
+    {
+      "carrier_modulus": 72,
+      "initial_offset": 12,
+      "layer_id": "phase-layer:prime:17:offset:12",
+      "layer_root_hash72": "0000000000000000000000000000001z1Rt8+m>GFI*jKR7bHz9^W^VkE!HDRCz)1^*OgM0c",
+      "normalization_contract_root_hash72": "0000000000000000000000000000002J?EMXP2*VL(va4T-3HX)-m/gAXD4Ca^*v)YLF8NlB",
+      "operation_contract_root_hash72": "00000000000000000000000000000049Y>hx(E7^acR+ou^w06uOpKSC80c2*qUjkwKR8G7N",
+      "operation_family": "AST_TRAVERSAL",
+      "period_prime": 17,
+      "period_prime_source_root_hash72": "PASS098:DECLARED:PRIME:SOURCE",
+      "prime_witness_root_hash72": "0000000000000000000000000000001LnIilT)+ke?vQf*4SkT>hVeyAFlv+h9FPNhg3!c>F",
+      "reciprocal_partner_layer_ids": [],
+      "schema": "HHS_PRIME_PERIODIC_OPERATION_LAYER_V1"
+    },
+    {
+      "carrier_modulus": 72,
+      "initial_offset": 18,
+      "layer_id": "phase-layer:prime:19:offset:18",
+      "layer_root_hash72": "0000000000000000000000000000003bMM^J05hdR8dZhQvbHg*)w!VXnwje*?mg4cFk>=tW",
+      "normalization_contract_root_hash72": "0000000000000000000000000000002J?EMXP2*VL(va4T-3HX)-m/gAXD4Ca^*v)YLF8NlB",
+      "operation_contract_root_hash72": "0000000000000000000000000000003NztorqG3zsjMduDM(Rmu(YCwO2^?jnsi=8(L(8pyB",
+      "operation_family": "MULTIMODAL_PHASE_NORMALIZATION",
+      "period_prime": 19,
+      "period_prime_source_root_hash72": "PASS098:DECLARED:PRIME:SOURCE",
+      "prime_witness_root_hash72": "00000000000000000000000000000018MC-H6Dm)zsxdg!I-LLaFxKxT4)=s2MOkL4GtcM/H",
+      "reciprocal_partner_layer_ids": [],
+      "schema": "HHS_PRIME_PERIODIC_OPERATION_LAYER_V1"
+    }
+  ]
+}

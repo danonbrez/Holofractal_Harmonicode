@@ -1,0 +1,17 @@
+{
+  "request_id": "architect-gfe-optimization-001",
+  "agent": "THE_ARCHITECT",
+  "max_cycles": 4,
+  "seed_request": {
+    "request_id": "gfe-seed",
+    "agent": "GARU",
+    "assignments": {"g": "5/4", "h": "4/5", "rho": "1/20", "xy": 1},
+    "constraints": [{"id": "reciprocal", "lhs": "g*h", "rhs": "xy"}],
+    "goals": [{"id": "candidate_goal", "lhs": "rho*g", "rhs": "0"}]
+  },
+  "candidate_patches": [
+    {"goals": [{"id": "polynomialized_closure", "lhs": "rho*g", "rhs": "(g-xy)**2"}]},
+    {"assignments": {"rho": "1/10"}},
+    {"goals": [{"id": "polynomialized_closure", "lhs": "rho*g", "rhs": "(g-xy)**2"}]}
+  ]
+}

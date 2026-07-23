@@ -1,0 +1,53 @@
+{
+  "schema": "HHS_PASS_092_OPERATOR_REGISTRY_V1",
+  "operators": [
+    {
+      "even_rule": {
+        "predicate": "n mod 2 = 0",
+        "transform": "n / 2"
+      },
+      "floating_point_used": false,
+      "integer_only": true,
+      "odd_rule": {
+        "predicate": "n mod 2 = 1",
+        "transform": "p*n + 1"
+      },
+      "operator_prime": 3,
+      "operator_prime_source_root_hash72": "0000000000000000000000000000002VCBhLEnphZliRoYof4024ZORQ^eJtcQY(g5L=9DQq",
+      "operator_root_hash72": "0000000000000000000000000000001e/jxKVsNl(50Et35V+MXI035pwQF1Rx*GEa?QJPU2",
+      "schema": "HHS_GENERALIZED_COLLATZ_OPERATOR_V1"
+    },
+    {
+      "even_rule": {
+        "predicate": "n mod 2 = 0",
+        "transform": "n / 2"
+      },
+      "floating_point_used": false,
+      "integer_only": true,
+      "odd_rule": {
+        "predicate": "n mod 2 = 1",
+        "transform": "p*n + 1"
+      },
+      "operator_prime": 5,
+      "operator_prime_source_root_hash72": "0000000000000000000000000000001^+wyP)RB-pXV1q4K7wZw=yKR/k7+>YaHMstHZ?ocW",
+      "operator_root_hash72": "0000000000000000000000000000002T7R9kImd)C-VYV+vcY?E3/>+tsc=fTbbdrDmWeaEG",
+      "schema": "HHS_GENERALIZED_COLLATZ_OPERATOR_V1"
+    },
+    {
+      "even_rule": {
+        "predicate": "n mod 2 = 0",
+        "transform": "n / 2"
+      },
+      "floating_point_used": false,
+      "integer_only": true,
+      "odd_rule": {
+        "predicate": "n mod 2 = 1",
+        "transform": "p*n + 1"
+      },
+      "operator_prime": 7,
+      "operator_prime_source_root_hash72": "0000000000000000000000000000004BMN4SM/epDcK3+djXrauOcKeB7hj4gqQ/cGIK(^SC",
+      "operator_root_hash72": "0000000000000000000000000000000dfcNKZ^(tdZ-0X3*ChAqA1dusbTXXJbq!meTW-00i",
+      "schema": "HHS_GENERALIZED_COLLATZ_OPERATOR_V1"
+    }
+  ]
+}

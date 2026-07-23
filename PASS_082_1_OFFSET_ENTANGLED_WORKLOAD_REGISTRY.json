@@ -1,0 +1,2180 @@
+{
+  "schema": "HHS_OFFSET_ENTANGLED_WORKLOAD_REGISTRY_V1",
+  "workloads": [
+    {
+      "branches": [
+        {
+          "branch_id": "lane:0",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000002QIUSreBjz=v)NwJF/l=)hV!+e)UZls?saPyd0dSm?",
+          "lease_root_hash72": "0000000000000000000000000000002MwUP-Q/v0u8B=wfWB6eO4x5asBs5Bd8ZWKbWU9?5s",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 0,
+          "offset_transform_root_hash72": "0000000000000000000000000000002mUB?v-l8t/3Sc-)7cxU6N5kCju/Zxd-GDWzNz8W3e",
+          "source_ast_root_hash72": "0000000000000000000000000000001c8)eV=b*826lgZDPMZSPbZjx6YEfWXejdyyF+o/Mk",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:1",
+          "inverse_offset_transform_root_hash72": "00000000000000000000000000000019uI>(b>QchEVZSzLcg3wwJW2bIr8TtP5Lz34L7VDG",
+          "lease_root_hash72": "0000000000000000000000000000001dhLHgYEh/TuJbJDBUtrUg-IS1-33Tr5S5rA?1>5e6",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 1,
+          "offset_transform_root_hash72": "00000000000000000000000000000028O?Vue^hHaREwY8hm?7*u6-v2su/ht!SaJJGy46yB",
+          "source_ast_root_hash72": "00000000000000000000000000000034wLx?o->Vs/IdwYFKSp^TPVmt42E>-pUrAGS76^Zb",
+          "transform_order": [
+            "PHASE"
+          ]
+        }
+      ],
+      "closure_contract": {
+        "comparison": "EXACT_NORMALIZED_ROOT_EQUALITY",
+        "coordinate": 0,
+        "normalization": "APPLY_INVERSE_COMMITTED_OFFSET",
+        "raw_branch_roots_must_remain_distinct": true,
+        "semantic_value": "P^2"
+      },
+      "native_binding": {
+        "binding_root_hash72": "0000000000000000000000000000000eQ4THv*YHsCO2upx6Q8R96ZL9YBc1NF=NULsqLFgd",
+        "opcode": "NATIVE_VECTORIZE_HASH72",
+        "registry_root_hash72": "0000000000000000000000000000003tNkS)j=sQgSkBmHM8rQGXJTi4RcNyQDjiBTjhoWF=",
+        "semantic_identity": "vm81.native.hhs_vectorize_hash72"
+      },
+      "native_binding_root_hash72": "0000000000000000000000000000000eQ4THv*YHsCO2upx6Q8R96ZL9YBc1NF=NULsqLFgd",
+      "offset_allocation": {
+        "strategy": "CONSECUTIVE",
+        "stride": null,
+        "unique_required": true
+      },
+      "offset_domain": {
+        "canonical_arithmetic": "EXACT_INTEGER_MODULAR",
+        "modulus": 72,
+        "type": "U72_PHASE_OFFSET"
+      },
+      "schema": "HHS_OFFSET_ENTANGLED_BIFURCATION_WORKLOAD_V1",
+      "shared_genesis_root_hash72": "0000000000000000000000000000004A*DNdX/40YjK20f4z+IQu0ywACMlRh9RD0(ejpLVm",
+      "workload_id": "W11:offsets-0-1"
+    },
+    {
+      "branches": [
+        {
+          "branch_id": "lane:0",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000002QIUSreBjz=v)NwJF/l=)hV!+e)UZls?saPyd0dSm?",
+          "lease_root_hash72": "0000000000000000000000000000002MwUP-Q/v0u8B=wfWB6eO4x5asBs5Bd8ZWKbWU9?5s",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 0,
+          "offset_transform_root_hash72": "0000000000000000000000000000002mUB?v-l8t/3Sc-)7cxU6N5kCju/Zxd-GDWzNz8W3e",
+          "source_ast_root_hash72": "0000000000000000000000000000001c8)eV=b*826lgZDPMZSPbZjx6YEfWXejdyyF+o/Mk",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:1",
+          "inverse_offset_transform_root_hash72": "00000000000000000000000000000041QhvYYf?X=4yYY2Mj+Vmky)k4P2S/Dp48UObSSUAb",
+          "lease_root_hash72": "0000000000000000000000000000001dhLHgYEh/TuJbJDBUtrUg-IS1-33Tr5S5rA?1>5e6",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 36,
+          "offset_transform_root_hash72": "00000000000000000000000000000039mxACg+N4d5qPBo-FMz71agbLn0QpPVDKvpylUKkJ",
+          "source_ast_root_hash72": "0000000000000000000000000000004kocSzN(eF^w5E-a*6gtcz/(5AHD9-arn*!xo(NN*O",
+          "transform_order": [
+            "PHASE"
+          ]
+        }
+      ],
+      "closure_contract": {
+        "comparison": "EXACT_NORMALIZED_ROOT_EQUALITY",
+        "coordinate": 0,
+        "normalization": "APPLY_INVERSE_COMMITTED_OFFSET",
+        "raw_branch_roots_must_remain_distinct": true,
+        "semantic_value": "P^2"
+      },
+      "native_binding": {
+        "binding_root_hash72": "0000000000000000000000000000000eQ4THv*YHsCO2upx6Q8R96ZL9YBc1NF=NULsqLFgd",
+        "opcode": "NATIVE_VECTORIZE_HASH72",
+        "registry_root_hash72": "0000000000000000000000000000003tNkS)j=sQgSkBmHM8rQGXJTi4RcNyQDjiBTjhoWF=",
+        "semantic_identity": "vm81.native.hhs_vectorize_hash72"
+      },
+      "native_binding_root_hash72": "0000000000000000000000000000000eQ4THv*YHsCO2upx6Q8R96ZL9YBc1NF=NULsqLFgd",
+      "offset_allocation": {
+        "strategy": "MAXIMUM_DISTANCE",
+        "stride": null,
+        "unique_required": true
+      },
+      "offset_domain": {
+        "canonical_arithmetic": "EXACT_INTEGER_MODULAR",
+        "modulus": 72,
+        "type": "U72_PHASE_OFFSET"
+      },
+      "schema": "HHS_OFFSET_ENTANGLED_BIFURCATION_WORKLOAD_V1",
+      "shared_genesis_root_hash72": "0000000000000000000000000000004A*DNdX/40YjK20f4z+IQu0ywACMlRh9RD0(ejpLVm",
+      "workload_id": "W12:offsets-0-36"
+    },
+    {
+      "branches": [
+        {
+          "branch_id": "lane:0",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000002QIUSreBjz=v)NwJF/l=)hV!+e)UZls?saPyd0dSm?",
+          "lease_root_hash72": "0000000000000000000000000000002MwUP-Q/v0u8B=wfWB6eO4x5asBs5Bd8ZWKbWU9?5s",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 0,
+          "offset_transform_root_hash72": "0000000000000000000000000000002mUB?v-l8t/3Sc-)7cxU6N5kCju/Zxd-GDWzNz8W3e",
+          "source_ast_root_hash72": "0000000000000000000000000000001c8)eV=b*826lgZDPMZSPbZjx6YEfWXejdyyF+o/Mk",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:1",
+          "inverse_offset_transform_root_hash72": "00000000000000000000000000000019uI>(b>QchEVZSzLcg3wwJW2bIr8TtP5Lz34L7VDG",
+          "lease_root_hash72": "0000000000000000000000000000001dhLHgYEh/TuJbJDBUtrUg-IS1-33Tr5S5rA?1>5e6",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 1,
+          "offset_transform_root_hash72": "00000000000000000000000000000028O?Vue^hHaREwY8hm?7*u6-v2su/ht!SaJJGy46yB",
+          "source_ast_root_hash72": "00000000000000000000000000000034wLx?o->Vs/IdwYFKSp^TPVmt42E>-pUrAGS76^Zb",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:2",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000002?OO8Kz3F=+TL2e?3H/Ly(YA4AlhUx3alxZP>RKao^",
+          "lease_root_hash72": "00000000000000000000000000000032o3s=0V)nK!a*dB8l>hKLgp4WMzswU9Odvlf9(1Lt",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 2,
+          "offset_transform_root_hash72": "0000000000000000000000000000002tR1CSH42Ru-)PAQ58BFKfOQw-pM/AK/CccMiS4zJx",
+          "source_ast_root_hash72": "0000000000000000000000000000001on5R5^m!?72FuFu/rSrN+Ta+Iq2zCi?tRvS(k3dj(",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:3",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000004qsBo4hf94k3k!sQK0UaxZ!N=2lRB-ThT5TUu(2zin",
+          "lease_root_hash72": "0000000000000000000000000000003-EA!il*N9Eg4rBTTpCq=G9dD!zSfWAejah1KsUckf",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 3,
+          "offset_transform_root_hash72": "0000000000000000000000000000000DX5(w>=i*sxcC!pW^8pafAS5xB?y/)(o?hvhGna8*",
+          "source_ast_root_hash72": "0000000000000000000000000000003IQ+!8C5=WSxz0QddE?iV-uVB8V-w?O2A(jdrp13/(",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:4",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000002afJaFv+BrC)79PthT2dcDt6ZCnD6K6lhSWD443gO8",
+          "lease_root_hash72": "0000000000000000000000000000001e^StJ^3RoFmA+tpaY/p51lZgBfo(Td!c/NRy?+Lav",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 4,
+          "offset_transform_root_hash72": "00000000000000000000000000000049kvn*h=BHGb2p)=3kHw(c)zH-(v1xpYCs7nxBqgf9",
+          "source_ast_root_hash72": "00000000000000000000000000000027OnfX^DBM5Ttp)!ADZ*YDLlLKKrXOEbMLZDxy8aWK",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:5",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000001/A?OtfXT=-L3cT51)xYDEFRslktxj>wC)S33doqnU",
+          "lease_root_hash72": "0000000000000000000000000000002Ces7n7msmq9LnjNxy+I+ciBtok6iWk?ZLrO-F4jxl",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 5,
+          "offset_transform_root_hash72": "0000000000000000000000000000001^MP2IF0A45jJo*K13!K9Avi)9UCxXH>eC3aje>R7N",
+          "source_ast_root_hash72": "0000000000000000000000000000002cEopSlEUGGOL3KCGGdSZv+nVwX*6fh)Z()J1xFeJh",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:6",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000001p66VSWWVDJ^5>KEvWf-YeNE!81QKtF(zITiGlDxb?",
+          "lease_root_hash72": "0000000000000000000000000000001h0hCt!oVDH1!UOMqTA=ndUBSEqQa1oYu^Ax4ZPbK1",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 6,
+          "offset_transform_root_hash72": "0000000000000000000000000000004rL=xOzPyqWk0VVVO^Z=2lcAAje>wG3Q)A*v2eLl05",
+          "source_ast_root_hash72": "0000000000000000000000000000000O)xp3SMUAzGr9*DyQ2*2f5gGwsv6w5RS36fey3egU",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:7",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000002cguYOSVl?-j6cOgz-1(8W+2N-*UJXpzd/AnF+/Xap",
+          "lease_root_hash72": "0000000000000000000000000000002f+EEr08ER6oYyOwsdCmE9n7^lXS6uKP57OXJZPmmw",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 7,
+          "offset_transform_root_hash72": "00000000000000000000000000000010E2iMzaaAQOYKLLAbdhnzfQ)C5f-aH2)?DzyR8)C!",
+          "source_ast_root_hash72": "0000000000000000000000000000003-^OD1+>v^TV81cqmZd(jNEiv2JaVNj!)w9NlC0/>c",
+          "transform_order": [
+            "PHASE"
+          ]
+        }
+      ],
+      "closure_contract": {
+        "comparison": "EXACT_NORMALIZED_ROOT_EQUALITY",
+        "coordinate": 0,
+        "normalization": "APPLY_INVERSE_COMMITTED_OFFSET",
+        "raw_branch_roots_must_remain_distinct": true,
+        "semantic_value": "P^2"
+      },
+      "native_binding": {
+        "binding_root_hash72": "0000000000000000000000000000000eQ4THv*YHsCO2upx6Q8R96ZL9YBc1NF=NULsqLFgd",
+        "opcode": "NATIVE_VECTORIZE_HASH72",
+        "registry_root_hash72": "0000000000000000000000000000003tNkS)j=sQgSkBmHM8rQGXJTi4RcNyQDjiBTjhoWF=",
+        "semantic_identity": "vm81.native.hhs_vectorize_hash72"
+      },
+      "native_binding_root_hash72": "0000000000000000000000000000000eQ4THv*YHsCO2upx6Q8R96ZL9YBc1NF=NULsqLFgd",
+      "offset_allocation": {
+        "strategy": "CONSECUTIVE",
+        "stride": null,
+        "unique_required": true
+      },
+      "offset_domain": {
+        "canonical_arithmetic": "EXACT_INTEGER_MODULAR",
+        "modulus": 72,
+        "type": "U72_PHASE_OFFSET"
+      },
+      "schema": "HHS_OFFSET_ENTANGLED_BIFURCATION_WORKLOAD_V1",
+      "shared_genesis_root_hash72": "0000000000000000000000000000004A*DNdX/40YjK20f4z+IQu0ywACMlRh9RD0(ejpLVm",
+      "workload_id": "W13:eight-consecutive"
+    },
+    {
+      "branches": [
+        {
+          "branch_id": "lane:0",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000002QIUSreBjz=v)NwJF/l=)hV!+e)UZls?saPyd0dSm?",
+          "lease_root_hash72": "0000000000000000000000000000002MwUP-Q/v0u8B=wfWB6eO4x5asBs5Bd8ZWKbWU9?5s",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 0,
+          "offset_transform_root_hash72": "0000000000000000000000000000002mUB?v-l8t/3Sc-)7cxU6N5kCju/Zxd-GDWzNz8W3e",
+          "source_ast_root_hash72": "0000000000000000000000000000001c8)eV=b*826lgZDPMZSPbZjx6YEfWXejdyyF+o/Mk",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:1",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000001/A?OtfXT=-L3cT51)xYDEFRslktxj>wC)S33doqnU",
+          "lease_root_hash72": "0000000000000000000000000000001dhLHgYEh/TuJbJDBUtrUg-IS1-33Tr5S5rA?1>5e6",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 5,
+          "offset_transform_root_hash72": "0000000000000000000000000000001^MP2IF0A45jJo*K13!K9Avi)9UCxXH>eC3aje>R7N",
+          "source_ast_root_hash72": "0000000000000000000000000000003lQVtW6903Der?aMKtxDC>!YDU8W/*XuEz=zN*n4T0",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:2",
+          "inverse_offset_transform_root_hash72": "00000000000000000000000000000048nW)5sLvjIuTv(-jNi1)X1u-*u/-IxshByzN6bJqx",
+          "lease_root_hash72": "00000000000000000000000000000032o3s=0V)nK!a*dB8l>hKLgp4WMzswU9Odvlf9(1Lt",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 10,
+          "offset_transform_root_hash72": "0000000000000000000000000000000s4qBiqJIa+Of)Kel1wKdRZIH7)!6pXiVS9xMTokJs",
+          "source_ast_root_hash72": "0000000000000000000000000000001q0h)FnnGKW+VajB+DN^-tw5xoy?jrA!BD**2V/Adn",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:3",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000000mD9AtVjmbOjgwiS4=7wODHW/Fgjqc1F0Gng>qKalg",
+          "lease_root_hash72": "0000000000000000000000000000003-EA!il*N9Eg4rBTTpCq=G9dD!zSfWAejah1KsUckf",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 15,
+          "offset_transform_root_hash72": "0000000000000000000000000000003owy+*ESuwNz>mqZg!csBl4kyxig20wo(VLzv5!dQh",
+          "source_ast_root_hash72": "0000000000000000000000000000003IuqTjUgK07^Zl*x+zRiBt^cPZ1LNQScOHHbdgUayn",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:4",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000002slsX+JoC8Nc9j9GAEaa/VMMvJW!NtNa*4zF?GO6iw",
+          "lease_root_hash72": "0000000000000000000000000000001e^StJ^3RoFmA+tpaY/p51lZgBfo(Td!c/NRy?+Lav",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 20,
+          "offset_transform_root_hash72": "0000000000000000000000000000003WiFvz0ZC1y1swDguK!v^9lDdR53S4xl4LUG>mL02s",
+          "source_ast_root_hash72": "0000000000000000000000000000000!HABiPyZC+6sMFb?6Jr8ECZO)EgN7!1CHH8W28f(p",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:5",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000003Tno>KN)5DTzfBmkrh-14cvBwxITdLkP3DJd=1lV+?",
+          "lease_root_hash72": "0000000000000000000000000000002Ces7n7msmq9LnjNxy+I+ciBtok6iWk?ZLrO-F4jxl",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 25,
+          "offset_transform_root_hash72": "00000000000000000000000000000016TBUqERiDwq*FVXZ-+x>a-eA?7vTyurhB1XT8dV4E",
+          "source_ast_root_hash72": "0000000000000000000000000000000l93+5m1L!fJgIy2nK^A71RrrT+S+cLv?6b+mBS=qR",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:6",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000001TgpfeTU5D!tgstCc)Q*/3pHL!osl9C(yqW+U8J4/P",
+          "lease_root_hash72": "0000000000000000000000000000001h0hCt!oVDH1!UOMqTA=ndUBSEqQa1oYu^Ax4ZPbK1",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 30,
+          "offset_transform_root_hash72": "0000000000000000000000000000004cE=Fh2i6bjScxh8Y9U^MdEiEBFUk-oW(zhSgzhH3D",
+          "source_ast_root_hash72": "0000000000000000000000000000002T=*nKSRX*EY0wajF7euok*Au!9x/=9?TlUgmB0pUE",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:7",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000002ifw2Qri=6d(h0+E?vLrEmm+goM5ExYGlffY45nmAb",
+          "lease_root_hash72": "0000000000000000000000000000002f+EEr08ER6oYyOwsdCmE9n7^lXS6uKP57OXJZPmmw",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 35,
+          "offset_transform_root_hash72": "0000000000000000000000000000001-kgj>6X9B1UnM3gY7T>?QLzQMaVasy*7TDE7h1QXz",
+          "source_ast_root_hash72": "0000000000000000000000000000001A!^?mEFMOkj^UoHUPMQA*+UX1ow>z?vkRNr5cU5mE",
+          "transform_order": [
+            "PHASE"
+          ]
+        }
+      ],
+      "closure_contract": {
+        "comparison": "EXACT_NORMALIZED_ROOT_EQUALITY",
+        "coordinate": 0,
+        "normalization": "APPLY_INVERSE_COMMITTED_OFFSET",
+        "raw_branch_roots_must_remain_distinct": true,
+        "semantic_value": "P^2"
+      },
+      "native_binding": {
+        "binding_root_hash72": "0000000000000000000000000000000eQ4THv*YHsCO2upx6Q8R96ZL9YBc1NF=NULsqLFgd",
+        "opcode": "NATIVE_VECTORIZE_HASH72",
+        "registry_root_hash72": "0000000000000000000000000000003tNkS)j=sQgSkBmHM8rQGXJTi4RcNyQDjiBTjhoWF=",
+        "semantic_identity": "vm81.native.hhs_vectorize_hash72"
+      },
+      "native_binding_root_hash72": "0000000000000000000000000000000eQ4THv*YHsCO2upx6Q8R96ZL9YBc1NF=NULsqLFgd",
+      "offset_allocation": {
+        "strategy": "COPRIME_STRIDE",
+        "stride": 5,
+        "unique_required": true
+      },
+      "offset_domain": {
+        "canonical_arithmetic": "EXACT_INTEGER_MODULAR",
+        "modulus": 72,
+        "type": "U72_PHASE_OFFSET"
+      },
+      "schema": "HHS_OFFSET_ENTANGLED_BIFURCATION_WORKLOAD_V1",
+      "shared_genesis_root_hash72": "0000000000000000000000000000004A*DNdX/40YjK20f4z+IQu0ywACMlRh9RD0(ejpLVm",
+      "workload_id": "W14:eight-stride-5"
+    },
+    {
+      "branches": [
+        {
+          "branch_id": "lane:0",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000002QIUSreBjz=v)NwJF/l=)hV!+e)UZls?saPyd0dSm?",
+          "lease_root_hash72": "0000000000000000000000000000002MwUP-Q/v0u8B=wfWB6eO4x5asBs5Bd8ZWKbWU9?5s",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 0,
+          "offset_transform_root_hash72": "0000000000000000000000000000002mUB?v-l8t/3Sc-)7cxU6N5kCju/Zxd-GDWzNz8W3e",
+          "source_ast_root_hash72": "0000000000000000000000000000001c8)eV=b*826lgZDPMZSPbZjx6YEfWXejdyyF+o/Mk",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:1",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000002afJaFv+BrC)79PthT2dcDt6ZCnD6K6lhSWD443gO8",
+          "lease_root_hash72": "0000000000000000000000000000001dhLHgYEh/TuJbJDBUtrUg-IS1-33Tr5S5rA?1>5e6",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 4,
+          "offset_transform_root_hash72": "00000000000000000000000000000049kvn*h=BHGb2p)=3kHw(c)zH-(v1xpYCs7nxBqgf9",
+          "source_ast_root_hash72": "0000000000000000000000000000004yYl*7>+WkP)Kg8>0UgXmMgyq2LdFb6LzFl-**WQ6U",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:2",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000002dw32xTvts6Z8iBKJ9K8H*JMiehLEI!qQWRWo(VuQR",
+          "lease_root_hash72": "00000000000000000000000000000032o3s=0V)nK!a*dB8l>hKLgp4WMzswU9Odvlf9(1Lt",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 9,
+          "offset_transform_root_hash72": "0000000000000000000000000000000e(kB?x/e3Bt>6(2F)kN9msxVh+P-J3o(XU2u7HzN>",
+          "source_ast_root_hash72": "0000000000000000000000000000002oD(ZQ=(Dsznlj>FOYo=s/2=zIOH?wa?ts/3dQN?/d",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:3",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000004dU4WLEE1K/0z/iLW7fevgiJDAI6xeI8*fPIMmE^Hc",
+          "lease_root_hash72": "0000000000000000000000000000003-EA!il*N9Eg4rBTTpCq=G9dD!zSfWAejah1KsUckf",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 13,
+          "offset_transform_root_hash72": "0000000000000000000000000000001caaPo=Uuc?F6hKEuigGBZ7=(YM^bw4VltR0zHF*vi",
+          "source_ast_root_hash72": "0000000000000000000000000000002RG8b7J>)BE7OA/!xLCpP4+9NlamWv^OE3gTxiF8HH",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:4",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000003NmS1VEnL!gw+h>+dSGQRUeuezMQsa?vnWfaJVJ1Y7",
+          "lease_root_hash72": "0000000000000000000000000000001e^StJ^3RoFmA+tpaY/p51lZgBfo(Td!c/NRy?+Lav",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 18,
+          "offset_transform_root_hash72": "0000000000000000000000000000004axX9Gn=xA!EUv3Lc93qO2w((Y(8y+8esp*prZA-W1",
+          "source_ast_root_hash72": "0000000000000000000000000000004s894pwFfL4heLsQ(YRrM*rZwG9CcQIf8+rg5-F(Cx",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:5",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000003dbbSSEisRuygZGptuOGoAse^*HGHlLalUL!>Ep(gx",
+          "lease_root_hash72": "0000000000000000000000000000002Ces7n7msmq9LnjNxy+I+ciBtok6iWk?ZLrO-F4jxl",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 22,
+          "offset_transform_root_hash72": "0000000000000000000000000000003abCp(hjNaubUGgXYzLFZSq)H3!FCc/Nr(wLyT)Amu",
+          "source_ast_root_hash72": "0000000000000000000000000000002JjO)=6kbxBepDWC7cAO=12+Xrv/T-TJYOnalX6rh*",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:6",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000002NbmuI0dWIHC2>1ud>DLKF>=J++QPbIAesPh=idvZc",
+          "lease_root_hash72": "0000000000000000000000000000001h0hCt!oVDH1!UOMqTA=ndUBSEqQa1oYu^Ax4ZPbK1",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 27,
+          "offset_transform_root_hash72": "0000000000000000000000000000000H3wHLhKR2VYY-*pc)fHf7NcVfCj?lUjYiFE!DbWw!",
+          "source_ast_root_hash72": "00000000000000000000000000000043BP-S(/>k>HjQ5pYNLU4LWk=dJ>ZdNLiiN^V5HQzM",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:7",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000003mFyoJ)4k=qmW(mqS6K5Cnp0)0jXZ4A(LaqUEUgM^7",
+          "lease_root_hash72": "0000000000000000000000000000002f+EEr08ER6oYyOwsdCmE9n7^lXS6uKP57OXJZPmmw",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 31,
+          "offset_transform_root_hash72": "00000000000000000000000000000012MnaJ54(Qn+05T3FxI>3jd/KO?!6Dr?)bE-u*NpKX",
+          "source_ast_root_hash72": "0000000000000000000000000000004qXZiDhFVPO0K3OMbDP>b^1Opr^EMer5soJ5JHw=B(",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:8",
+          "inverse_offset_transform_root_hash72": "00000000000000000000000000000041QhvYYf?X=4yYY2Mj+Vmky)k4P2S/Dp48UObSSUAb",
+          "lease_root_hash72": "0000000000000000000000000000002tZegU3)bZY9nrZ39WfBU1ENx?BA!qRtBt0a=ngjEv",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 36,
+          "offset_transform_root_hash72": "00000000000000000000000000000039mxACg+N4d5qPBo-FMz71agbLn0QpPVDKvpylUKkJ",
+          "source_ast_root_hash72": "0000000000000000000000000000001b/k*MjrtkRYG(?O(psM3F?g7(H(bXU=50pfPWvhz3",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:9",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000000rYHgL=kywHBdld7M5LXNaabqrH7V24j(OmMcd/QQe",
+          "lease_root_hash72": "0000000000000000000000000000000T!XoNZdsjBGF8m?zxUrydLe1RfC56^Az22?wKXRnX",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 40,
+          "offset_transform_root_hash72": "0000000000000000000000000000003R7X431uJKFGpHUkqSQ=ybt+8A4fBiwXKbn=5dmS+p",
+          "source_ast_root_hash72": "0000000000000000000000000000003uTIkW/tod?9ue-T*gRIXfecaU*WN(dSu*Zl)^BDQE",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:10",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000002>(6IMxmgw5hjtR)*HqL1H*2jst0UEzQHCZRETx9ia",
+          "lease_root_hash72": "0000000000000000000000000000000=IskXKQ?/7BsH^9Fsmjs(ay=S?ZfZKGOjIrY^>zOG",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 45,
+          "offset_transform_root_hash72": "00000000000000000000000000000036?jL/oWoqg!Xn=9*vh/*vMb0do34^)tkZoqRpTUMV",
+          "source_ast_root_hash72": "0000000000000000000000000000003fgfP0s3zfva((!+DAU>a5TfDklmBlPhdMtu^MwEZU",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:11",
+          "inverse_offset_transform_root_hash72": "00000000000000000000000000000039EKm1F14Ml=vGx^G/)ETenFn7+G1zsl-A0WAcqC95",
+          "lease_root_hash72": "0000000000000000000000000000004zQsiRc3uwc>ZErXYd^ikVxyBsXbTD/R?T)rg)Mlt=",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 49,
+          "offset_transform_root_hash72": "0000000000000000000000000000002GzliSA*v-SjSj43p=XIJiYLRgrPhir6OI?>n+KZs?",
+          "source_ast_root_hash72": "0000000000000000000000000000000GGrjuY!4Qp8yAFtL0q8bqrHXMNh>UTdwiv4)73Ca2",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:12",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000001y5yj62J*tFdd7?Ia/7qI)Z)OPdYpEpb1Mwh0Z5z!0",
+          "lease_root_hash72": "0000000000000000000000000000004gW2IN*3s3?yi6bXG)ZObJr(-IHSnF89wCCmcRXmn=",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 54,
+          "offset_transform_root_hash72": "0000000000000000000000000000002sBS7EUWHVhqN2ZUOQ2BOlvZIiW5J6v*w)8jolwEk2",
+          "source_ast_root_hash72": "00000000000000000000000000000027KLeh56xNiH7wBS8mMA4>0zLB^sy+IsS9SffGsWB5",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:13",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000000+I?^1Zu=2bxzve497IS2udP?8=-iGrBTA(ofokQFN",
+          "lease_root_hash72": "0000000000000000000000000000004iTQ^!7k0mgjdl(Lvb3f/^7OfsE9oX^2?gubzSZQ2n",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 58,
+          "offset_transform_root_hash72": "0000000000000000000000000000001(GM*banLj0p+l3>Fuj=xO8Z9Y3vj6gEmChpG0-DCs",
+          "source_ast_root_hash72": "0000000000000000000000000000003z))+JAcTq9/cQQHSss2Q2UIMyCOSL7euDdxc9qb82",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:14",
+          "inverse_offset_transform_root_hash72": "00000000000000000000000000000039jM*2Q1mFjS>iwb7Siv1DpVJrjQP?pj^U?^OOd3XU",
+          "lease_root_hash72": "0000000000000000000000000000000)5ngM2G=t6TtVQ=A(M3fBIsxA^Q8YLO/czhcvErZ>",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 63,
+          "offset_transform_root_hash72": "0000000000000000000000000000003d=(=-daf*(Jd5q-+52??1AMg4VPob15y205nMZIVb",
+          "source_ast_root_hash72": "0000000000000000000000000000003qqhs!tyebcZesGh7wbpze)=M()ZRo4sY?tR>x0Q^r",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:15",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000004rPUKTob(pU1Juv+EA)1C+(oJEvl>CdHx44SplqFOY",
+          "lease_root_hash72": "0000000000000000000000000000003()=h^NUs9gCb+l4dqxwFFsFpIgSY50lYNl-IDAGuO",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 67,
+          "offset_transform_root_hash72": "0000000000000000000000000000001HH+P^8MUzZ-ZCNBAmQtiB2!gSiqrBu5Gie>u/y6sQ",
+          "source_ast_root_hash72": "0000000000000000000000000000001px*(/TG7zo7fr1=yXm=Be+wDTA/5Ud>4n!fD??6rV",
+          "transform_order": [
+            "PHASE"
+          ]
+        }
+      ],
+      "closure_contract": {
+        "comparison": "EXACT_NORMALIZED_ROOT_EQUALITY",
+        "coordinate": 0,
+        "normalization": "APPLY_INVERSE_COMMITTED_OFFSET",
+        "raw_branch_roots_must_remain_distinct": true,
+        "semantic_value": "P^2"
+      },
+      "native_binding": {
+        "binding_root_hash72": "0000000000000000000000000000000eQ4THv*YHsCO2upx6Q8R96ZL9YBc1NF=NULsqLFgd",
+        "opcode": "NATIVE_VECTORIZE_HASH72",
+        "registry_root_hash72": "0000000000000000000000000000003tNkS)j=sQgSkBmHM8rQGXJTi4RcNyQDjiBTjhoWF=",
+        "semantic_identity": "vm81.native.hhs_vectorize_hash72"
+      },
+      "native_binding_root_hash72": "0000000000000000000000000000000eQ4THv*YHsCO2upx6Q8R96ZL9YBc1NF=NULsqLFgd",
+      "offset_allocation": {
+        "strategy": "EVENLY_SPACED",
+        "stride": null,
+        "unique_required": true
+      },
+      "offset_domain": {
+        "canonical_arithmetic": "EXACT_INTEGER_MODULAR",
+        "modulus": 72,
+        "type": "U72_PHASE_OFFSET"
+      },
+      "schema": "HHS_OFFSET_ENTANGLED_BIFURCATION_WORKLOAD_V1",
+      "shared_genesis_root_hash72": "0000000000000000000000000000004A*DNdX/40YjK20f4z+IQu0ywACMlRh9RD0(ejpLVm",
+      "workload_id": "W15:sixteen-evenly-spaced"
+    },
+    {
+      "branches": [
+        {
+          "branch_id": "lane:0",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000001(hMuKmG>x(9XUCh1*D-GW7r)nq?EM)J>DjyY6tOE4",
+          "lease_root_hash72": "0000000000000000000000000000002MwUP-Q/v0u8B=wfWB6eO4x5asBs5Bd8ZWKbWU9?5s",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": {
+            "cell": 0,
+            "phase": 0
+          },
+          "offset_transform_root_hash72": "0000000000000000000000000000001gHT1xgOT=ZOW4qB9(8?(ZjJoOui4?2(uy0c1d?I!p",
+          "source_ast_root_hash72": "0000000000000000000000000000001c8)eV=b*826lgZDPMZSPbZjx6YEfWXejdyyF+o/Mk",
+          "transform_order": [
+            "PHASE",
+            "CELL"
+          ]
+        },
+        {
+          "branch_id": "lane:1",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000001W*vgKE>vEgu^P4gXid?1yEmpB5SXAQzpqQ*Lzqtk4",
+          "lease_root_hash72": "0000000000000000000000000000001dhLHgYEh/TuJbJDBUtrUg-IS1-33Tr5S5rA?1>5e6",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": {
+            "cell": 7,
+            "phase": 5
+          },
+          "offset_transform_root_hash72": "0000000000000000000000000000000IraOjzH0aIH6yYpV4kfEP8RqbDb^uWVSDP!r?nZ^T",
+          "source_ast_root_hash72": "0000000000000000000000000000003lQVtW6903Der?aMKtxDC>!YDU8W/*XuEz=zN*n4T0",
+          "transform_order": [
+            "PHASE",
+            "CELL"
+          ]
+        },
+        {
+          "branch_id": "lane:2",
+          "inverse_offset_transform_root_hash72": "00000000000000000000000000000025lP8ntp+A)39TQXv-r1G5gNTLc7fC!pNh1BDT**yl",
+          "lease_root_hash72": "00000000000000000000000000000032o3s=0V)nK!a*dB8l>hKLgp4WMzswU9Odvlf9(1Lt",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": {
+            "cell": 14,
+            "phase": 10
+          },
+          "offset_transform_root_hash72": "0000000000000000000000000000002X4ZzvqOvPA+d39D^8?j7bBKLRoif!HmSxfk^QhPMX",
+          "source_ast_root_hash72": "0000000000000000000000000000001q0h)FnnGKW+VajB+DN^-tw5xoy?jrA!BD**2V/Adn",
+          "transform_order": [
+            "PHASE",
+            "CELL"
+          ]
+        },
+        {
+          "branch_id": "lane:3",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000001vvFFI6r*tjz(E-G59/AGl4!X?MhJ=^l>suu/GzN=^",
+          "lease_root_hash72": "0000000000000000000000000000003-EA!il*N9Eg4rBTTpCq=G9dD!zSfWAejah1KsUckf",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": {
+            "cell": 21,
+            "phase": 15
+          },
+          "offset_transform_root_hash72": "0000000000000000000000000000002i4(MB2WSDcSX4GSDwRLNZ+faD1LKPl-Q-eu5b-=+!",
+          "source_ast_root_hash72": "0000000000000000000000000000003IuqTjUgK07^Zl*x+zRiBt^cPZ1LNQScOHHbdgUayn",
+          "transform_order": [
+            "PHASE",
+            "CELL"
+          ]
+        },
+        {
+          "branch_id": "lane:4",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000000Tv+C3hsuY3TmqWlwy!Gy0>G4HR5H=360asIHG1Q))",
+          "lease_root_hash72": "0000000000000000000000000000001e^StJ^3RoFmA+tpaY/p51lZgBfo(Td!c/NRy?+Lav",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": {
+            "cell": 28,
+            "phase": 20
+          },
+          "offset_transform_root_hash72": "0000000000000000000000000000000JbFW-lu*eq+BCbt^wOQUK))S-l)kl>RnRdDjs^SLl",
+          "source_ast_root_hash72": "0000000000000000000000000000000!HABiPyZC+6sMFb?6Jr8ECZO)EgN7!1CHH8W28f(p",
+          "transform_order": [
+            "PHASE",
+            "CELL"
+          ]
+        },
+        {
+          "branch_id": "lane:5",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000002yt3-u8Mp*wmg1gVrCv3nI0bfNouC8BQ7WDCVdbuIp",
+          "lease_root_hash72": "0000000000000000000000000000002Ces7n7msmq9LnjNxy+I+ciBtok6iWk?ZLrO-F4jxl",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": {
+            "cell": 35,
+            "phase": 25
+          },
+          "offset_transform_root_hash72": "0000000000000000000000000000003R^v-k+a=8KysHXN*-uWKOueV*s8^avh=2WUbl6Ic>",
+          "source_ast_root_hash72": "0000000000000000000000000000000l93+5m1L!fJgIy2nK^A71RrrT+S+cLv?6b+mBS=qR",
+          "transform_order": [
+            "PHASE",
+            "CELL"
+          ]
+        },
+        {
+          "branch_id": "lane:6",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000004vwe4Pe5/l^T6PVnBrPY)K^NuIcp=*vG(HOQd4VOFK",
+          "lease_root_hash72": "0000000000000000000000000000001h0hCt!oVDH1!UOMqTA=ndUBSEqQa1oYu^Ax4ZPbK1",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": {
+            "cell": 42,
+            "phase": 30
+          },
+          "offset_transform_root_hash72": "00000000000000000000000000000016bWpdgBoFk*X3BKjTZmb/FeS!V4!I1FH/*>rHRLkZ",
+          "source_ast_root_hash72": "0000000000000000000000000000002T=*nKSRX*EY0wajF7euok*Au!9x/=9?TlUgmB0pUE",
+          "transform_order": [
+            "PHASE",
+            "CELL"
+          ]
+        },
+        {
+          "branch_id": "lane:7",
+          "inverse_offset_transform_root_hash72": "00000000000000000000000000000024NieE*^-L+quhE9GzTWBp2Iy9Zy-Za5aESWDo8XkR",
+          "lease_root_hash72": "0000000000000000000000000000002f+EEr08ER6oYyOwsdCmE9n7^lXS6uKP57OXJZPmmw",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": {
+            "cell": 49,
+            "phase": 35
+          },
+          "offset_transform_root_hash72": "0000000000000000000000000000003UV8u4l)vO8nBInV!GY/XNRNBc+?0uB/za3TuSCDeo",
+          "source_ast_root_hash72": "0000000000000000000000000000001A!^?mEFMOkj^UoHUPMQA*+UX1ow>z?vkRNr5cU5mE",
+          "transform_order": [
+            "PHASE",
+            "CELL"
+          ]
+        },
+        {
+          "branch_id": "lane:8",
+          "inverse_offset_transform_root_hash72": "00000000000000000000000000000020z)TnmMiJtZ3mLU=ATdAhPMbuL?yErjU4KLvgDlQX",
+          "lease_root_hash72": "0000000000000000000000000000002tZegU3)bZY9nrZ39WfBU1ENx?BA!qRtBt0a=ngjEv",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": {
+            "cell": 56,
+            "phase": 40
+          },
+          "offset_transform_root_hash72": "0000000000000000000000000000004404bVHRp7kS!Q)LP+IwQi95g2?NqoVEd7bu0Ei=wD",
+          "source_ast_root_hash72": "0000000000000000000000000000003k7v1g71Q!a(F^6kU^twWnZByP3s!6?e6A50ElO^s-",
+          "transform_order": [
+            "PHASE",
+            "CELL"
+          ]
+        },
+        {
+          "branch_id": "lane:9",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000004zqi7K49vIO2BkOfE3BYC*B7PoXf7-9r2VVm=7pt!r",
+          "lease_root_hash72": "0000000000000000000000000000000T!XoNZdsjBGF8m?zxUrydLe1RfC56^Az22?wKXRnX",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": {
+            "cell": 63,
+            "phase": 45
+          },
+          "offset_transform_root_hash72": "0000000000000000000000000000000wDG-nuSmG+oFMsBU3xW1rI7-bv4aBwl9^pIN6K4^p",
+          "source_ast_root_hash72": "0000000000000000000000000000002m*5ItWKV=Pqf/56DED*CsN)0Lk*GHO09EoRQ88/Ae",
+          "transform_order": [
+            "PHASE",
+            "CELL"
+          ]
+        },
+        {
+          "branch_id": "lane:10",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000003DRvjtH3OV9Wy619qzmHre4K?(lF>-=2zM9rF7K/(^",
+          "lease_root_hash72": "0000000000000000000000000000000=IskXKQ?/7BsH^9Fsmjs(ay=S?ZfZKGOjIrY^>zOG",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": {
+            "cell": 70,
+            "phase": 50
+          },
+          "offset_transform_root_hash72": "0000000000000000000000000000004FPPlQ?hH7vs(u-0MmMzQ)sO-DZzBzBn!P2D4>JieT",
+          "source_ast_root_hash72": "0000000000000000000000000000001pkv*x=9H33s!(YSkJGvl1yhxnk>P7U2PZ5HWYwQNg",
+          "transform_order": [
+            "PHASE",
+            "CELL"
+          ]
+        },
+        {
+          "branch_id": "lane:11",
+          "inverse_offset_transform_root_hash72": "000000000000000000000000000000066Gs3gy/7n7GZ3=fiuP(1XFpQO*oVtLB^zUQl2G!J",
+          "lease_root_hash72": "0000000000000000000000000000004zQsiRc3uwc>ZErXYd^ikVxyBsXbTD/R?T)rg)Mlt=",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": {
+            "cell": 77,
+            "phase": 55
+          },
+          "offset_transform_root_hash72": "0000000000000000000000000000004KePomxvg!LOz(CC-L0xlexwZJn*XapIu(rOcj5ZfB",
+          "source_ast_root_hash72": "00000000000000000000000000000007T/RS+67F(TXPvEQaQ!!1YCoY=aMDruJ?iY=HmS?D",
+          "transform_order": [
+            "PHASE",
+            "CELL"
+          ]
+        },
+        {
+          "branch_id": "lane:12",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000000ExHRZ*h^szbB1PT19addi7PBfUtp4toR8Qqw=izCO",
+          "lease_root_hash72": "0000000000000000000000000000004gW2IN*3s3?yi6bXG)ZObJr(-IHSnF89wCCmcRXmn=",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": {
+            "cell": 3,
+            "phase": 60
+          },
+          "offset_transform_root_hash72": "0000000000000000000000000000001qM12qjciA-djcJr(5wcqzc2pV-wL!YDN3HCl+ZCsB",
+          "source_ast_root_hash72": "0000000000000000000000000000004k*FSzi/?axEya22SxnkeoZg+bu+vFZjZ=od/7Emjw",
+          "transform_order": [
+            "PHASE",
+            "CELL"
+          ]
+        },
+        {
+          "branch_id": "lane:13",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000001M-tjMt8xo336lixLp3sr1pMrTxw3(*ZvnC(2kXn/H",
+          "lease_root_hash72": "0000000000000000000000000000004iTQ^!7k0mgjdl(Lvb3f/^7OfsE9oX^2?gubzSZQ2n",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": {
+            "cell": 10,
+            "phase": 65
+          },
+          "offset_transform_root_hash72": "0000000000000000000000000000003IFz5fpsHFXypRIpDm9e2rUi*hv6bm5R^qKfF6huYU",
+          "source_ast_root_hash72": "0000000000000000000000000000002uMli-I(B!8?kR4sr+>nlV/2C3GM6Y*A+bU3vDK=j3",
+          "transform_order": [
+            "PHASE",
+            "CELL"
+          ]
+        },
+        {
+          "branch_id": "lane:14",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000001LGO(qgQKgQpod?UVpoA>=mLVoEa8wIPtYdde)23sw",
+          "lease_root_hash72": "0000000000000000000000000000000)5ngM2G=t6TtVQ=A(M3fBIsxA^Q8YLO/czhcvErZ>",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": {
+            "cell": 17,
+            "phase": 70
+          },
+          "offset_transform_root_hash72": "0000000000000000000000000000002TFC7w5lSrIBRfFYWXp=wyVA)RYLusDYf+^+Okv8QR",
+          "source_ast_root_hash72": "0000000000000000000000000000004zP4OHZ)s37iZ?p!Xn^UcyUZTPCq2VrM>m^bQM)Y8>",
+          "transform_order": [
+            "PHASE",
+            "CELL"
+          ]
+        },
+        {
+          "branch_id": "lane:15",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000004qF(d8k6A7-csD*rR2XCa0S=8BybkzqpMa^4-smWEI",
+          "lease_root_hash72": "0000000000000000000000000000003()=h^NUs9gCb+l4dqxwFFsFpIgSY50lYNl-IDAGuO",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": {
+            "cell": 24,
+            "phase": 3
+          },
+          "offset_transform_root_hash72": "0000000000000000000000000000003q/+-yoUIfi6lwZHa*K>mRxib^x7pQ*2Wdn*3QqK?a",
+          "source_ast_root_hash72": "0000000000000000000000000000004gUACHFek+p6=JjLLTKGKax4er2X9Skqu^pibLeGe(",
+          "transform_order": [
+            "PHASE",
+            "CELL"
+          ]
+        },
+        {
+          "branch_id": "lane:16",
+          "inverse_offset_transform_root_hash72": "00000000000000000000000000000039eXihylQBcYsU3C*DZmvFU=ND^E0(wSuhnUTcVhyF",
+          "lease_root_hash72": "0000000000000000000000000000004r0uIubKt5/RyRs(J/owvFH-Kz86NrPR++R8kZH6aV",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": {
+            "cell": 31,
+            "phase": 8
+          },
+          "offset_transform_root_hash72": "0000000000000000000000000000000MUs-LlP+QABFSrd!y=xBeT5LEdsjqdgP^d/Zxnf(s",
+          "source_ast_root_hash72": "000000000000000000000000000000117(9*kvsWvTl(2h(V-b6Z5J+tv-Ts!ptvhkFl3BOa",
+          "transform_order": [
+            "PHASE",
+            "CELL"
+          ]
+        },
+        {
+          "branch_id": "lane:17",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000003QrnqomzD!95JinY!vv(VjaD()1q)MmEF=xMNy+*5X",
+          "lease_root_hash72": "0000000000000000000000000000002H59MRO=GaveSVQN+GRf9w*tKUY>dQYZ!jsN5WjJ>q",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": {
+            "cell": 38,
+            "phase": 13
+          },
+          "offset_transform_root_hash72": "0000000000000000000000000000001lL7ncvQw17MX/Ta2J9aW1hA858O)pT*ocJbXu3Vz=",
+          "source_ast_root_hash72": "0000000000000000000000000000000)Ao0^cH95!RoR2mrmypA0uk9rlWC(h-s8DL+YWzh5",
+          "transform_order": [
+            "PHASE",
+            "CELL"
+          ]
+        },
+        {
+          "branch_id": "lane:18",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000001r5onxDWyVuhJMnohEuHLgAFO7StJF0z7xO2O0o=1e",
+          "lease_root_hash72": "0000000000000000000000000000003A1m>+Fvu7aW)O+1xMG)A24O9dRI8WHvBrEzxQEW/J",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": {
+            "cell": 45,
+            "phase": 18
+          },
+          "offset_transform_root_hash72": "0000000000000000000000000000000IT52G-)w=ASV+2UImWCZfQ0kp=3YvHhx*fCAaX3*y",
+          "source_ast_root_hash72": "0000000000000000000000000000003EFI+tmQhs7dzzSvCLELvOhiG95(gGUuWfM+Z9X0rx",
+          "transform_order": [
+            "PHASE",
+            "CELL"
+          ]
+        },
+        {
+          "branch_id": "lane:19",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000001CuIEkz8*F?-/x^vxc05WCkjguCLT7l>GHz8qBGQtk",
+          "lease_root_hash72": "0000000000000000000000000000004Cg2LoM2PaGHR>1^U^VgAE(v05S5=FmZqR=7UY43SQ",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": {
+            "cell": 52,
+            "phase": 23
+          },
+          "offset_transform_root_hash72": "0000000000000000000000000000001JwQHr+Em-b*Z4rL6YrgAAX=EVo*Imf!t(xNeW/H8^",
+          "source_ast_root_hash72": "00000000000000000000000000000026^f8?UDsuq23bSxt/pWUya5)U!fi+KY2Wp6aNbD>8",
+          "transform_order": [
+            "PHASE",
+            "CELL"
+          ]
+        },
+        {
+          "branch_id": "lane:20",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000003u-DGyKbUT=g-jq>KDjq/fRwIoDq/+AC-5Xp7Z185V",
+          "lease_root_hash72": "00000000000000000000000000000015nUT5gs(5FF)Z7*MpOzh-4GiHw9Qz^GwVQ+Jda>Oc",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": {
+            "cell": 59,
+            "phase": 28
+          },
+          "offset_transform_root_hash72": "0000000000000000000000000000003H!nEdWQ^sP77xHzDvpT2*Wflcm^S5p/TChM+w5jqH",
+          "source_ast_root_hash72": "0000000000000000000000000000003>dFss7kUTIodXoiYte+N=eUFk8D8RLLM-/ZAcx?1T",
+          "transform_order": [
+            "PHASE",
+            "CELL"
+          ]
+        },
+        {
+          "branch_id": "lane:21",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000000TTPOjJCleepvO)l?1DHFfA61viMR*8cI*l2MrbANn",
+          "lease_root_hash72": "00000000000000000000000000000000hVt-1XYl)cEpkZ^mstMcrlYPPiFTCQ-NMtr-PxUK",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": {
+            "cell": 66,
+            "phase": 33
+          },
+          "offset_transform_root_hash72": "0000000000000000000000000000000sXd>ZNjLVytvPIYnK+31aQl4f*w6P+i=DX6dTrs4u",
+          "source_ast_root_hash72": "00000000000000000000000000000019XeHwvhqoRD+UUygGWao=UzUYpdqF6s9H4F4NuV!-",
+          "transform_order": [
+            "PHASE",
+            "CELL"
+          ]
+        },
+        {
+          "branch_id": "lane:22",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000003wFp^EgpYQQmp0KE8Z>+R)729PwcWX8hhbP+XA!2bz",
+          "lease_root_hash72": "0000000000000000000000000000003usu5!xAp/dkuSSffS5/K6gjiHG+Mm9XL8l96jPNFM",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": {
+            "cell": 73,
+            "phase": 38
+          },
+          "offset_transform_root_hash72": "0000000000000000000000000000003E+ONuWeZQ?^OLw7iDD^Dxuj(8?=ol0b-yDPTNt0Du",
+          "source_ast_root_hash72": "0000000000000000000000000000000^v?G38pJQMZ?Zpa1K^4=F>ij)4sp-=r725/aW4g0E",
+          "transform_order": [
+            "PHASE",
+            "CELL"
+          ]
+        },
+        {
+          "branch_id": "lane:23",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000001?f6=/E!>c-t>2tS2^^GcC>IYaVlj20?8L*wg5vq!y",
+          "lease_root_hash72": "0000000000000000000000000000004dUeE+Z>Im-e>MuAPO57Ch(d^Z!T)aA1faH(o!DuA!",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": {
+            "cell": 80,
+            "phase": 43
+          },
+          "offset_transform_root_hash72": "0000000000000000000000000000000-Ta4-G(M2sSq^y8GjgPjrQ6choiPYbBSQ!nBzl/io",
+          "source_ast_root_hash72": "0000000000000000000000000000001DBx^Qb7v0(^RVeewR=gLroHblt)VTcIy?iHdiYP99",
+          "transform_order": [
+            "PHASE",
+            "CELL"
+          ]
+        },
+        {
+          "branch_id": "lane:24",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000003gP8Gw?Zp(?lTvJnoIYFe7M-mCi1)c2!a28EwzovdE",
+          "lease_root_hash72": "0000000000000000000000000000003uHR(u>hmFbwkavVkAV^K=MA5CHJeUzoNyGpM(>/1?",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": {
+            "cell": 6,
+            "phase": 48
+          },
+          "offset_transform_root_hash72": "0000000000000000000000000000002NB=U-6hSu4jS9U7K5w4lqV6m0as)SeJa0xMNOB12f",
+          "source_ast_root_hash72": "00000000000000000000000000000005hODiorGIo72M3R2Q*Xx0DZ6Pbot=)csGukm4(D8p",
+          "transform_order": [
+            "PHASE",
+            "CELL"
+          ]
+        },
+        {
+          "branch_id": "lane:25",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000002Jr*-3-V5FMO58I+grlXfwz6xcF3xHNn=yyBwIEvUO",
+          "lease_root_hash72": "00000000000000000000000000000024DNZ>39^nkxjhtrN0twMGEMHlqpAfXlY10W^fBFIV",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": {
+            "cell": 13,
+            "phase": 53
+          },
+          "offset_transform_root_hash72": "0000000000000000000000000000001u3!LzhyYYN9>jnVWY?VwxtK)d52G-?CZ=CUGXBn-p",
+          "source_ast_root_hash72": "00000000000000000000000000000045rJr9l=2Bg4SrqYVJ5H6fMWBJD!omM0=Azfo(4N!P",
+          "transform_order": [
+            "PHASE",
+            "CELL"
+          ]
+        },
+        {
+          "branch_id": "lane:26",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000002n4qa=K/GZ9C>!NCFb332b=UK7z^Gs4uCkNb?X6syc",
+          "lease_root_hash72": "0000000000000000000000000000002pLoh1e24VeTAMid>+AlxMcP*0siyFxK0I71pL930t",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": {
+            "cell": 20,
+            "phase": 58
+          },
+          "offset_transform_root_hash72": "0000000000000000000000000000004l?EJ!na)87vlZl4GJ8*r(2EmsFz2i^Qk1zRFGes9t",
+          "source_ast_root_hash72": "00000000000000000000000000000037M(zYXLNO)zKpfW5jlpHf(/QB^8r)NE3y(UOI4Hzo",
+          "transform_order": [
+            "PHASE",
+            "CELL"
+          ]
+        },
+        {
+          "branch_id": "lane:27",
+          "inverse_offset_transform_root_hash72": "00000000000000000000000000000007!NdvAV99K7Mt860+Li-gYtv0Ji-wZMi!^Qz7QX-N",
+          "lease_root_hash72": "0000000000000000000000000000003yHTX!?)=(nJRTiRTaM-QGfW9(FVAg7o>O9b(1onqo",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": {
+            "cell": 27,
+            "phase": 63
+          },
+          "offset_transform_root_hash72": "00000000000000000000000000000048oj+-NWu!Sw)0uDa>ikqUjbI9oTdj33Vf30ixRovL",
+          "source_ast_root_hash72": "0000000000000000000000000000000>oEqhnGKSiV=u?wjy*IfUvgefxTIm9w2g3(o!E^=u",
+          "transform_order": [
+            "PHASE",
+            "CELL"
+          ]
+        },
+        {
+          "branch_id": "lane:28",
+          "inverse_offset_transform_root_hash72": "00000000000000000000000000000003fEgSCcc*7(nEhwXJI+xN?/(zD9mSlXHfGng9XXQF",
+          "lease_root_hash72": "00000000000000000000000000000043/F7HBiuV+W+JVj4)XGI=CR2rbHV=dZ>R4+iP70>Z",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": {
+            "cell": 34,
+            "phase": 68
+          },
+          "offset_transform_root_hash72": "00000000000000000000000000000008z+RNAhJW/BFOoMad23j5JNIui3Wiy>mVWD/hn27C",
+          "source_ast_root_hash72": "0000000000000000000000000000000/mqFTP5fIrf5PuLIG2?70=rGa8>HpR2ZELFqzJTz-",
+          "transform_order": [
+            "PHASE",
+            "CELL"
+          ]
+        },
+        {
+          "branch_id": "lane:29",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000000Oi7pmE1phC64LoL9czrraz?4eZ0G=N2kcgsQtiNaO",
+          "lease_root_hash72": "0000000000000000000000000000001-IcGAQHixG3g>5toV!WlGUFxPiPKR19/6cNgyN+hd",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": {
+            "cell": 41,
+            "phase": 1
+          },
+          "offset_transform_root_hash72": "0000000000000000000000000000002UmqFlFxn*?xlSSSB(yT1!J7OnIthv-ThV3sz*yj08",
+          "source_ast_root_hash72": "00000000000000000000000000000015CMDqFzb?*O9ThvMf/1-mv(*WZeyoVNoBjs0OejUm",
+          "transform_order": [
+            "PHASE",
+            "CELL"
+          ]
+        },
+        {
+          "branch_id": "lane:30",
+          "inverse_offset_transform_root_hash72": "00000000000000000000000000000022jA2IyK5NmSJjTfn*IjUrW>qTvkrjatfwVQr=5lpA",
+          "lease_root_hash72": "0000000000000000000000000000001FtyfKUKdM)5moue/i19F^4qt?f062K2F>N6N>e-op",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": {
+            "cell": 48,
+            "phase": 6
+          },
+          "offset_transform_root_hash72": "0000000000000000000000000000001YzeAkhTGe5>qqpAQQl2fo*fB6VNHh5mm?4/++HKAD",
+          "source_ast_root_hash72": "0000000000000000000000000000003ZIDtxcDxVppi0aAowa7y8l>Wy2Y>t^G?t6gS(AlNH",
+          "transform_order": [
+            "PHASE",
+            "CELL"
+          ]
+        },
+        {
+          "branch_id": "lane:31",
+          "inverse_offset_transform_root_hash72": "00000000000000000000000000000005Tw0poW5dOQ)iW9zeNUEVDTT9060aJzuphSjFgOBg",
+          "lease_root_hash72": "0000000000000000000000000000003lysm(-=F23*UxyhcVnMicEt==YiD?nNUafYFKG2Wy",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": {
+            "cell": 55,
+            "phase": 11
+          },
+          "offset_transform_root_hash72": "0000000000000000000000000000004z(qfZa/v=OXPRXeMbcT!2VoIIHWHbieIrxHruDpcW",
+          "source_ast_root_hash72": "0000000000000000000000000000003gyNWgBY2DbbNrMX5*f(9!B1Cd0wr9WPTAqEdPIKek",
+          "transform_order": [
+            "PHASE",
+            "CELL"
+          ]
+        }
+      ],
+      "closure_contract": {
+        "comparison": "EXACT_NORMALIZED_ROOT_EQUALITY",
+        "coordinate": 0,
+        "normalization": "APPLY_INVERSE_COMMITTED_OFFSET",
+        "raw_branch_roots_must_remain_distinct": true,
+        "semantic_value": "P^2"
+      },
+      "native_binding": {
+        "binding_root_hash72": "0000000000000000000000000000000eQ4THv*YHsCO2upx6Q8R96ZL9YBc1NF=NULsqLFgd",
+        "opcode": "NATIVE_VECTORIZE_HASH72",
+        "registry_root_hash72": "0000000000000000000000000000003tNkS)j=sQgSkBmHM8rQGXJTi4RcNyQDjiBTjhoWF=",
+        "semantic_identity": "vm81.native.hhs_vectorize_hash72"
+      },
+      "native_binding_root_hash72": "0000000000000000000000000000000eQ4THv*YHsCO2upx6Q8R96ZL9YBc1NF=NULsqLFgd",
+      "offset_allocation": {
+        "strategy": "COPRIME_STRIDE",
+        "stride": 5,
+        "unique_required": true
+      },
+      "offset_domain": {
+        "canonical_arithmetic": "EXACT_INTEGER_MODULAR",
+        "modulus": {
+          "cell": 81,
+          "phase": 72
+        },
+        "type": "COMBINED_PHASE_VM81_OFFSET"
+      },
+      "schema": "HHS_OFFSET_ENTANGLED_BIFURCATION_WORKLOAD_V1",
+      "shared_genesis_root_hash72": "0000000000000000000000000000004A*DNdX/40YjK20f4z+IQu0ywACMlRh9RD0(ejpLVm",
+      "workload_id": "W16:phase-vm81"
+    },
+    {
+      "branches": [
+        {
+          "branch_id": "lane:0",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000002QIUSreBjz=v)NwJF/l=)hV!+e)UZls?saPyd0dSm?",
+          "lease_root_hash72": "0000000000000000000000000000002MwUP-Q/v0u8B=wfWB6eO4x5asBs5Bd8ZWKbWU9?5s",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 0,
+          "offset_transform_root_hash72": "0000000000000000000000000000002mUB?v-l8t/3Sc-)7cxU6N5kCju/Zxd-GDWzNz8W3e",
+          "source_ast_root_hash72": "0000000000000000000000000000001c8)eV=b*826lgZDPMZSPbZjx6YEfWXejdyyF+o/Mk",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:1",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000001/A?OtfXT=-L3cT51)xYDEFRslktxj>wC)S33doqnU",
+          "lease_root_hash72": "0000000000000000000000000000001dhLHgYEh/TuJbJDBUtrUg-IS1-33Tr5S5rA?1>5e6",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 5,
+          "offset_transform_root_hash72": "0000000000000000000000000000001^MP2IF0A45jJo*K13!K9Avi)9UCxXH>eC3aje>R7N",
+          "source_ast_root_hash72": "0000000000000000000000000000003lQVtW6903Der?aMKtxDC>!YDU8W/*XuEz=zN*n4T0",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:2",
+          "inverse_offset_transform_root_hash72": "00000000000000000000000000000048nW)5sLvjIuTv(-jNi1)X1u-*u/-IxshByzN6bJqx",
+          "lease_root_hash72": "00000000000000000000000000000032o3s=0V)nK!a*dB8l>hKLgp4WMzswU9Odvlf9(1Lt",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 10,
+          "offset_transform_root_hash72": "0000000000000000000000000000000s4qBiqJIa+Of)Kel1wKdRZIH7)!6pXiVS9xMTokJs",
+          "source_ast_root_hash72": "0000000000000000000000000000001q0h)FnnGKW+VajB+DN^-tw5xoy?jrA!BD**2V/Adn",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:3",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000000mD9AtVjmbOjgwiS4=7wODHW/Fgjqc1F0Gng>qKalg",
+          "lease_root_hash72": "0000000000000000000000000000003-EA!il*N9Eg4rBTTpCq=G9dD!zSfWAejah1KsUckf",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 15,
+          "offset_transform_root_hash72": "0000000000000000000000000000003owy+*ESuwNz>mqZg!csBl4kyxig20wo(VLzv5!dQh",
+          "source_ast_root_hash72": "0000000000000000000000000000003IuqTjUgK07^Zl*x+zRiBt^cPZ1LNQScOHHbdgUayn",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:4",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000002slsX+JoC8Nc9j9GAEaa/VMMvJW!NtNa*4zF?GO6iw",
+          "lease_root_hash72": "0000000000000000000000000000001e^StJ^3RoFmA+tpaY/p51lZgBfo(Td!c/NRy?+Lav",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 20,
+          "offset_transform_root_hash72": "0000000000000000000000000000003WiFvz0ZC1y1swDguK!v^9lDdR53S4xl4LUG>mL02s",
+          "source_ast_root_hash72": "0000000000000000000000000000000!HABiPyZC+6sMFb?6Jr8ECZO)EgN7!1CHH8W28f(p",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:5",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000003Tno>KN)5DTzfBmkrh-14cvBwxITdLkP3DJd=1lV+?",
+          "lease_root_hash72": "0000000000000000000000000000002Ces7n7msmq9LnjNxy+I+ciBtok6iWk?ZLrO-F4jxl",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 25,
+          "offset_transform_root_hash72": "00000000000000000000000000000016TBUqERiDwq*FVXZ-+x>a-eA?7vTyurhB1XT8dV4E",
+          "source_ast_root_hash72": "0000000000000000000000000000000l93+5m1L!fJgIy2nK^A71RrrT+S+cLv?6b+mBS=qR",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:6",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000001TgpfeTU5D!tgstCc)Q*/3pHL!osl9C(yqW+U8J4/P",
+          "lease_root_hash72": "0000000000000000000000000000001h0hCt!oVDH1!UOMqTA=ndUBSEqQa1oYu^Ax4ZPbK1",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 30,
+          "offset_transform_root_hash72": "0000000000000000000000000000004cE=Fh2i6bjScxh8Y9U^MdEiEBFUk-oW(zhSgzhH3D",
+          "source_ast_root_hash72": "0000000000000000000000000000002T=*nKSRX*EY0wajF7euok*Au!9x/=9?TlUgmB0pUE",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:7",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000002ifw2Qri=6d(h0+E?vLrEmm+goM5ExYGlffY45nmAb",
+          "lease_root_hash72": "0000000000000000000000000000002f+EEr08ER6oYyOwsdCmE9n7^lXS6uKP57OXJZPmmw",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 35,
+          "offset_transform_root_hash72": "0000000000000000000000000000001-kgj>6X9B1UnM3gY7T>?QLzQMaVasy*7TDE7h1QXz",
+          "source_ast_root_hash72": "0000000000000000000000000000001A!^?mEFMOkj^UoHUPMQA*+UX1ow>z?vkRNr5cU5mE",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:8",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000000rYHgL=kywHBdld7M5LXNaabqrH7V24j(OmMcd/QQe",
+          "lease_root_hash72": "0000000000000000000000000000002tZegU3)bZY9nrZ39WfBU1ENx?BA!qRtBt0a=ngjEv",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 40,
+          "offset_transform_root_hash72": "0000000000000000000000000000003R7X431uJKFGpHUkqSQ=ybt+8A4fBiwXKbn=5dmS+p",
+          "source_ast_root_hash72": "0000000000000000000000000000003k7v1g71Q!a(F^6kU^twWnZByP3s!6?e6A50ElO^s-",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:9",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000002>(6IMxmgw5hjtR)*HqL1H*2jst0UEzQHCZRETx9ia",
+          "lease_root_hash72": "0000000000000000000000000000000T!XoNZdsjBGF8m?zxUrydLe1RfC56^Az22?wKXRnX",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 45,
+          "offset_transform_root_hash72": "00000000000000000000000000000036?jL/oWoqg!Xn=9*vh/*vMb0do34^)tkZoqRpTUMV",
+          "source_ast_root_hash72": "0000000000000000000000000000002m*5ItWKV=Pqf/56DED*CsN)0Lk*GHO09EoRQ88/Ae",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:10",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000002Y^^R0QgWuUKr6Ick?2uBRdb1KPBskLXrxlYhHrOXY",
+          "lease_root_hash72": "0000000000000000000000000000000=IskXKQ?/7BsH^9Fsmjs(ay=S?ZfZKGOjIrY^>zOG",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 50,
+          "offset_transform_root_hash72": "0000000000000000000000000000003G+qPKsjKXFf18Fx03jSkxVoorhp8yG^!xZzL4vEug",
+          "source_ast_root_hash72": "0000000000000000000000000000001pkv*x=9H33s!(YSkJGvl1yhxnk>P7U2PZ5HWYwQNg",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:11",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000002/vt?gtj+wAj(n^qenWW-Ulzi=0oEZs1WnBd*EpNMr",
+          "lease_root_hash72": "0000000000000000000000000000004zQsiRc3uwc>ZErXYd^ikVxyBsXbTD/R?T)rg)Mlt=",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 55,
+          "offset_transform_root_hash72": "0000000000000000000000000000004vzsGDQO?Lq6ie203xxsza!kR?vV)Be=jFMGkKLld*",
+          "source_ast_root_hash72": "00000000000000000000000000000007T/RS+67F(TXPvEQaQ!!1YCoY=aMDruJ?iY=HmS?D",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:12",
+          "inverse_offset_transform_root_hash72": "00000000000000000000000000000017sq4)OaB1*kcs?Ah0ZJ-yMhKDG0gfCbV5^4/^S5DR",
+          "lease_root_hash72": "0000000000000000000000000000004gW2IN*3s3?yi6bXG)ZObJr(-IHSnF89wCCmcRXmn=",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 60,
+          "offset_transform_root_hash72": "0000000000000000000000000000001Yw+b^Ib?yD521gFlUf?R6j8cULgNb?s43!CO)FiDn",
+          "source_ast_root_hash72": "0000000000000000000000000000004k*FSzi/?axEya22SxnkeoZg+bu+vFZjZ=od/7Emjw",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:13",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000002DCO6*5=jZv^c^YK*yGG7Sk4GPIKvMlWTxuvO>AoZ4",
+          "lease_root_hash72": "0000000000000000000000000000004iTQ^!7k0mgjdl(Lvb3f/^7OfsE9oX^2?gubzSZQ2n",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 65,
+          "offset_transform_root_hash72": "0000000000000000000000000000003c5fHO>GNh1vd/-7RN1LGS*Jc1+e86OJ=r?nHG0mYc",
+          "source_ast_root_hash72": "0000000000000000000000000000002uMli-I(B!8?kR4sr+>nlV/2C3GM6Y*A+bU3vDK=j3",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:14",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000000er>91g1K?tRikrUy=jbWEPX(L=EG>MEYf!o4/SA*S",
+          "lease_root_hash72": "0000000000000000000000000000000)5ngM2G=t6TtVQ=A(M3fBIsxA^Q8YLO/czhcvErZ>",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 70,
+          "offset_transform_root_hash72": "0000000000000000000000000000002xmJPXAwLLA=onQXWhhAWcc2+K)a+ijrVuyC5/Tv2M",
+          "source_ast_root_hash72": "0000000000000000000000000000004zP4OHZ)s37iZ?p!Xn^UcyUZTPCq2VrM>m^bQM)Y8>",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:15",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000004qsBo4hf94k3k!sQK0UaxZ!N=2lRB-ThT5TUu(2zin",
+          "lease_root_hash72": "0000000000000000000000000000003()=h^NUs9gCb+l4dqxwFFsFpIgSY50lYNl-IDAGuO",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 3,
+          "offset_transform_root_hash72": "0000000000000000000000000000000DX5(w>=i*sxcC!pW^8pafAS5xB?y/)(o?hvhGna8*",
+          "source_ast_root_hash72": "0000000000000000000000000000004gUACHFek+p6=JjLLTKGKax4er2X9Skqu^pibLeGe(",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:16",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000002bp!m6R+KoBT8B-/v7fw7FE1+qxHQ>DuEK?(Rd2K^u",
+          "lease_root_hash72": "0000000000000000000000000000004r0uIubKt5/RyRs(J/owvFH-Kz86NrPR++R8kZH6aV",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 8,
+          "offset_transform_root_hash72": "0000000000000000000000000000003DKG)uAX8polr>5P6?wHcAd)GfD^qBwSH01)fn1C7f",
+          "source_ast_root_hash72": "000000000000000000000000000000117(9*kvsWvTl(2h(V-b6Z5J+tv-Ts!ptvhkFl3BOa",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:17",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000004dU4WLEE1K/0z/iLW7fevgiJDAI6xeI8*fPIMmE^Hc",
+          "lease_root_hash72": "0000000000000000000000000000002H59MRO=GaveSVQN+GRf9w*tKUY>dQYZ!jsN5WjJ>q",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 13,
+          "offset_transform_root_hash72": "0000000000000000000000000000001caaPo=Uuc?F6hKEuigGBZ7=(YM^bw4VltR0zHF*vi",
+          "source_ast_root_hash72": "0000000000000000000000000000000)Ao0^cH95!RoR2mrmypA0uk9rlWC(h-s8DL+YWzh5",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:18",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000003NmS1VEnL!gw+h>+dSGQRUeuezMQsa?vnWfaJVJ1Y7",
+          "lease_root_hash72": "0000000000000000000000000000003A1m>+Fvu7aW)O+1xMG)A24O9dRI8WHvBrEzxQEW/J",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 18,
+          "offset_transform_root_hash72": "0000000000000000000000000000004axX9Gn=xA!EUv3Lc93qO2w((Y(8y+8esp*prZA-W1",
+          "source_ast_root_hash72": "0000000000000000000000000000003EFI+tmQhs7dzzSvCLELvOhiG95(gGUuWfM+Z9X0rx",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:19",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000001xT^nCvBKCv(US9>GuQaBCm>W(SX)dhk?wDGux30T6",
+          "lease_root_hash72": "0000000000000000000000000000004Cg2LoM2PaGHR>1^U^VgAE(v05S5=FmZqR=7UY43SQ",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 23,
+          "offset_transform_root_hash72": "000000000000000000000000000000426H/(nVwL8ZE(GTZF9Lb(29DisBs8Q+9H/192gvnW",
+          "source_ast_root_hash72": "00000000000000000000000000000026^f8?UDsuq23bSxt/pWUya5)U!fi+KY2Wp6aNbD>8",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:20",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000000=qCV9/oVkXNQn*^SbArq0VQA==PyDPqQ8QX-T!fO6",
+          "lease_root_hash72": "00000000000000000000000000000015nUT5gs(5FF)Z7*MpOzh-4GiHw9Qz^GwVQ+Jda>Oc",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 28,
+          "offset_transform_root_hash72": "0000000000000000000000000000000QjtHf+Ajf76fv4Kd=dr4)TJa(ay1+g92Q)b4k?pF5",
+          "source_ast_root_hash72": "0000000000000000000000000000003>dFss7kUTIodXoiYte+N=eUFk8D8RLLM-/ZAcx?1T",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:21",
+          "inverse_offset_transform_root_hash72": "00000000000000000000000000000018PxbWS-1FvBIdy)w01K8(H7NhmBClksBfe)L/kUCY",
+          "lease_root_hash72": "00000000000000000000000000000000hVt-1XYl)cEpkZ^mstMcrlYPPiFTCQ-NMtr-PxUK",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 33,
+          "offset_transform_root_hash72": "0000000000000000000000000000003B7-/xk1rBL6inC)d55Qay!Ec24?Yw?s>9xY09?zJ4",
+          "source_ast_root_hash72": "00000000000000000000000000000019XeHwvhqoRD+UUygGWao=UzUYpdqF6s9H4F4NuV!-",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:22",
+          "inverse_offset_transform_root_hash72": "00000000000000000000000000000044F-LHKm0Xz8WMPz(68WEz8OSqucb/-Wh+C252n=FO",
+          "lease_root_hash72": "0000000000000000000000000000003usu5!xAp/dkuSSffS5/K6gjiHG+Mm9XL8l96jPNFM",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 38,
+          "offset_transform_root_hash72": "0000000000000000000000000000004tw!bg--?C/x^UCQj!E7gxXxwdtXueKlr/Vl1N(VIm",
+          "source_ast_root_hash72": "0000000000000000000000000000000^v?G38pJQMZ?Zpa1K^4=F>ij)4sp-=r725/aW4g0E",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:23",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000000iI?pTMo7hB42IuYvZ/iVNv9pcJq0awZQ(RRQ-PqSC",
+          "lease_root_hash72": "0000000000000000000000000000004dUeE+Z>Im-e>MuAPO57Ch(d^Z!T)aA1faH(o!DuA!",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 43,
+          "offset_transform_root_hash72": "0000000000000000000000000000000vsoX8/7jQ-GgfjduQyEpTvv8z+SdFCwxJj/WGigti",
+          "source_ast_root_hash72": "0000000000000000000000000000001DBx^Qb7v0(^RVeewR=gLroHblt)VTcIy?iHdiYP99",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:24",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000002q^ib?46+g4FH5+f6FR+e=(0*bYFqyaI(dZT1lpdST",
+          "lease_root_hash72": "0000000000000000000000000000003uHR(u>hmFbwkavVkAV^K=MA5CHJeUzoNyGpM(>/1?",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 48,
+          "offset_transform_root_hash72": "00000000000000000000000000000036EtIxz1uBTi36-Okmv7(sJW)alOxnA+EeKl+wPw=M",
+          "source_ast_root_hash72": "00000000000000000000000000000005hODiorGIo72M3R2Q*Xx0DZ6Pbot=)csGukm4(D8p",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:25",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000002x)hUHTkb)c)OkzJvPoLzXd4Vs-?R^eogwLeXw2Goe",
+          "lease_root_hash72": "00000000000000000000000000000024DNZ>39^nkxjhtrN0twMGEMHlqpAfXlY10W^fBFIV",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 53,
+          "offset_transform_root_hash72": "0000000000000000000000000000004KXu8Ab^V+hlFKmD?phXqCrN6zW8nCAbO/cDqjyhd2",
+          "source_ast_root_hash72": "00000000000000000000000000000045rJr9l=2Bg4SrqYVJ5H6fMWBJD!omM0=Azfo(4N!P",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:26",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000000+I?^1Zu=2bxzve497IS2udP?8=-iGrBTA(ofokQFN",
+          "lease_root_hash72": "0000000000000000000000000000002pLoh1e24VeTAMid>+AlxMcP*0siyFxK0I71pL930t",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 58,
+          "offset_transform_root_hash72": "0000000000000000000000000000001(GM*banLj0p+l3>Fuj=xO8Z9Y3vj6gEmChpG0-DCs",
+          "source_ast_root_hash72": "00000000000000000000000000000037M(zYXLNO)zKpfW5jlpHf(/QB^8r)NE3y(UOI4Hzo",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:27",
+          "inverse_offset_transform_root_hash72": "00000000000000000000000000000039jM*2Q1mFjS>iwb7Siv1DpVJrjQP?pj^U?^OOd3XU",
+          "lease_root_hash72": "0000000000000000000000000000003yHTX!?)=(nJRTiRTaM-QGfW9(FVAg7o>O9b(1onqo",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 63,
+          "offset_transform_root_hash72": "0000000000000000000000000000003d=(=-daf*(Jd5q-+52??1AMg4VPob15y205nMZIVb",
+          "source_ast_root_hash72": "0000000000000000000000000000000>oEqhnGKSiV=u?wjy*IfUvgefxTIm9w2g3(o!E^=u",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:28",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000002+o*hW)vQn4h)2zj)hpO^-c?tyIgNg/Cen)E?H3sR)",
+          "lease_root_hash72": "00000000000000000000000000000043/F7HBiuV+W+JVj4)XGI=CR2rbHV=dZ>R4+iP70>Z",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 68,
+          "offset_transform_root_hash72": "0000000000000000000000000000004fmh4G2uCEhj2h0l3acvl(zLr^sCmCTy+JrlYK4=bQ",
+          "source_ast_root_hash72": "0000000000000000000000000000000/mqFTP5fIrf5PuLIG2?70=rGa8>HpR2ZELFqzJTz-",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:29",
+          "inverse_offset_transform_root_hash72": "00000000000000000000000000000019uI>(b>QchEVZSzLcg3wwJW2bIr8TtP5Lz34L7VDG",
+          "lease_root_hash72": "0000000000000000000000000000001-IcGAQHixG3g>5toV!WlGUFxPiPKR19/6cNgyN+hd",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 1,
+          "offset_transform_root_hash72": "00000000000000000000000000000028O?Vue^hHaREwY8hm?7*u6-v2su/ht!SaJJGy46yB",
+          "source_ast_root_hash72": "00000000000000000000000000000015CMDqFzb?*O9ThvMf/1-mv(*WZeyoVNoBjs0OejUm",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:30",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000001p66VSWWVDJ^5>KEvWf-YeNE!81QKtF(zITiGlDxb?",
+          "lease_root_hash72": "0000000000000000000000000000001FtyfKUKdM)5moue/i19F^4qt?f062K2F>N6N>e-op",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 6,
+          "offset_transform_root_hash72": "0000000000000000000000000000004rL=xOzPyqWk0VVVO^Z=2lcAAje>wG3Q)A*v2eLl05",
+          "source_ast_root_hash72": "0000000000000000000000000000003ZIDtxcDxVppi0aAowa7y8l>Wy2Y>t^G?t6gS(AlNH",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:31",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000002xJ-3?+rvwpVWipgrzgoPK6uvYvY9-3o3j5?hrcvYV",
+          "lease_root_hash72": "0000000000000000000000000000003lysm(-=F23*UxyhcVnMicEt==YiD?nNUafYFKG2Wy",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 11,
+          "offset_transform_root_hash72": "0000000000000000000000000000002dDxZS?c?Vxm4Pq(eOv!nlbW(Jgl7EaGfladQMXH5o",
+          "source_ast_root_hash72": "0000000000000000000000000000003gyNWgBY2DbbNrMX5*f(9!B1Cd0wr9WPTAqEdPIKek",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:32",
+          "inverse_offset_transform_root_hash72": "000000000000000000000000000000226XKwnARJ0ksb8I==Gu/5VRBK=PkquxcLFm6NVQX^",
+          "lease_root_hash72": "0000000000000000000000000000000?Bc2IQHORuaZ^8GoCC?0hw-L1T2RbfUKc9UY?euy^",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 16,
+          "offset_transform_root_hash72": "00000000000000000000000000000047jFVSzmKjoATO=ZCXG5-FSITlAbRxXO3pU()jo7GU",
+          "source_ast_root_hash72": "00000000000000000000000000000029Ci1/E?q^rOFgT4z-u!6S!gIitbl=EJ>?>gMwIeas",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:33",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000004EM1?JVbbM4)msHj!!R+zz?)oeIH6xR+QGdLM+B1gu",
+          "lease_root_hash72": "00000000000000000000000000000037DekWmE?Zwt-xuyyshpDZAvXW0A5SOem6FmL7098Q",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 21,
+          "offset_transform_root_hash72": "00000000000000000000000000000034NWKF-MI?zqb9n5t7^u)ZLB3?hm^fM9l7=7MVg2Kc",
+          "source_ast_root_hash72": "0000000000000000000000000000001MKzkatSpmR/Dj*l5u/zv51b+>Z2mo!5x!pv0WJQHT",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:34",
+          "inverse_offset_transform_root_hash72": "00000000000000000000000000000020rWWr(httGo47f>EiGLYCee5j*CzQ=5xdAN2vJPkk",
+          "lease_root_hash72": "0000000000000000000000000000002FDU^wQMA/(mlS==atA3Gj/P?(Ink!xTy?OeY1(+6u",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 26,
+          "offset_transform_root_hash72": "0000000000000000000000000000002UmWOHPw478L0m=y)TW!35xqA*oqwyT/Ghu(^3R4q+",
+          "source_ast_root_hash72": "0000000000000000000000000000000z/2c3X?7^WrLjlgPYnnO47i1GMV0s6pzdnK3X>=4B",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:35",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000003mFyoJ)4k=qmW(mqS6K5Cnp0)0jXZ4A(LaqUEUgM^7",
+          "lease_root_hash72": "0000000000000000000000000000000ymmT8Y6!biNeCMoNs9yBHr/Fg1RVDg>cEsI*L+OjB",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 31,
+          "offset_transform_root_hash72": "00000000000000000000000000000012MnaJ54(Qn+05T3FxI>3jd/KO?!6Dr?)bE-u*NpKX",
+          "source_ast_root_hash72": "0000000000000000000000000000004GWeAwuqzKGiB?8(QHtuuTrnE264-pC)tMSdytl3)3",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:36",
+          "inverse_offset_transform_root_hash72": "00000000000000000000000000000041QhvYYf?X=4yYY2Mj+Vmky)k4P2S/Dp48UObSSUAb",
+          "lease_root_hash72": "0000000000000000000000000000004cWA>-zJ^0m2mQfr6TDyp9pHNUQ)LXKiU-(lWZGlv1",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 36,
+          "offset_transform_root_hash72": "00000000000000000000000000000039mxACg+N4d5qPBo-FMz71agbLn0QpPVDKvpylUKkJ",
+          "source_ast_root_hash72": "0000000000000000000000000000000Cc3NtBunl2YN1a?ZE)sJnrr-PPZe72ul7cw5r)p7z",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:37",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000000?0tF!InK08HYXGwilxAQ+S5Mf3q-9TrhTPQzFa04l",
+          "lease_root_hash72": "0000000000000000000000000000001gNUp=)S3=l?j=me6?U9Ktm2r)C?8L9!ZcAt-512V4",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 41,
+          "offset_transform_root_hash72": "00000000000000000000000000000012Q1VuijMN4qtd7^qQ5/>dwxh)QO27UynnQ?Xrc3y2",
+          "source_ast_root_hash72": "000000000000000000000000000000354--6TfCe>?lk+Tr?ocdKT4e5yt8X+AcT)SPjE-cz",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:38",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000003z=I7DA(lzofu*SuoNbVir(RKGhWNA5SE(5!(*+o?Z",
+          "lease_root_hash72": "0000000000000000000000000000003I5kvnHhmv27gypCMBgBWq>QS0x4*FvSn3+SpNquKG",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 46,
+          "offset_transform_root_hash72": "0000000000000000000000000000000mh7D!BrDf42FbNyCrUrfuWQ=g(78?zA4aQf1r*jWO",
+          "source_ast_root_hash72": "0000000000000000000000000000000SS(FE(-BiySh!oH)4HzaX2w7x4jAbsDGtgVByxJ*/",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:39",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000001dyrGO^oWgM?>0MwzW*tT?oBVVT3U55g/U?Se700nF",
+          "lease_root_hash72": "0000000000000000000000000000002VKVqr5gSL^7=!9sK7USIS9)t3*IK*MncZv(9FXOih",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 51,
+          "offset_transform_root_hash72": "0000000000000000000000000000002iOWZ?=s7>uDM19UyIjg-)7o+oMibEc-13+13jUseg",
+          "source_ast_root_hash72": "0000000000000000000000000000003OMqd*sx^l>myvD3PbiPItdtLiudo6tvoU-6zu6yLO",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:40",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000002(REjZGMA8brCgX1n69hdvvsi2x^820AU^s-vSpt7r",
+          "lease_root_hash72": "0000000000000000000000000000004CAFIWyWMQnrOHJ)+YQPvrAQi2Jp+h4TLg95RjGl!/",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 56,
+          "offset_transform_root_hash72": "0000000000000000000000000000001MTK3xY7/OUv+-cpz8D8WuY=11qn1TWBD5/2n0s*8e",
+          "source_ast_root_hash72": "0000000000000000000000000000001XAjEDz^dvF(SQHe^KjN>5HbcqiFYsMP(eM5RUO+K^",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:41",
+          "inverse_offset_transform_root_hash72": "00000000000000000000000000000009F1uDs5TR!Inw?JVe-Wt?tMda=25JAgbkPUAJzNB9",
+          "lease_root_hash72": "0000000000000000000000000000001YC?!NYMZv>chz-mvJj5AtAjI!^jRP+kGX^q?JXgnV",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 61,
+          "offset_transform_root_hash72": "0000000000000000000000000000002BvO)9-=X*uSv*)>yU0QAQ^iSMUsGYsfOA8?Gg^pPA",
+          "source_ast_root_hash72": "0000000000000000000000000000001qUaAR79W0f^9Y=1^va^28nyn4t4SuFcyh^ByoAn+m",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:42",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000000^FRwGy5n52L/AI1A0Y!Un>E!mz5fA8unsqO>P9/O7",
+          "lease_root_hash72": "0000000000000000000000000000004avvk)VXYv5gAMI=y=/HQ/NOSaW-roz6!8jgi0XQ4p",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 66,
+          "offset_transform_root_hash72": "0000000000000000000000000000002acnI>p2k(3HkMHUGHT/e)F6g1!6^15P8TIh7q*^)>",
+          "source_ast_root_hash72": "0000000000000000000000000000001)>ZV5kY/+sRMytEsVwANMly(ibheWTW!-2jY^PsZn",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:43",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000003XyQzjqxjbL*-E3l+^IKZEx2l(5zy>k9cZUN1uty5R",
+          "lease_root_hash72": "0000000000000000000000000000001GMps57MBTdq)3)t*1MPG4D0^YTAwKvf6Bp2dVgInm",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 71,
+          "offset_transform_root_hash72": "0000000000000000000000000000003I?tgYuLTPV8ub2d(5c1R*N8lS*pgZb!mTOIXpD?7=",
+          "source_ast_root_hash72": "000000000000000000000000000000495mzYgSReVUMoZ-/jq-k)/SXtwHe5(zg?Ies6f-zL",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:44",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000002afJaFv+BrC)79PthT2dcDt6ZCnD6K6lhSWD443gO8",
+          "lease_root_hash72": "0000000000000000000000000000003YEQ?Z5-jnM^2XYqGgaY>Q8ClM1sfeT3SKeJf*XLJP",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 4,
+          "offset_transform_root_hash72": "00000000000000000000000000000049kvn*h=BHGb2p)=3kHw(c)zH-(v1xpYCs7nxBqgf9",
+          "source_ast_root_hash72": "0000000000000000000000000000001I+ORas^AjGH+CmuhAAg0cWht5wl?JPWEEB?qVO9Ho",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:45",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000002dw32xTvts6Z8iBKJ9K8H*JMiehLEI!qQWRWo(VuQR",
+          "lease_root_hash72": "0000000000000000000000000000001v5g?brsf7tdbnicK0hG-3EWQMx*xOMDvAojzY1hw2",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 9,
+          "offset_transform_root_hash72": "0000000000000000000000000000000e(kB?x/e3Bt>6(2F)kN9msxVh+P-J3o(XU2u7HzN>",
+          "source_ast_root_hash72": "0000000000000000000000000000004IY=aX4xv43SzFB+3>+(U!3hPx)7-fukx9KQr1U)Rh",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:46",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000003j/iWtrUaA)*rC?VYwMlgMB2M7zXPRcJgBL3loN!RL",
+          "lease_root_hash72": "0000000000000000000000000000000f83bEUez+2/wtNwp6Xgb=Lkr9hQaRy1ZqZ)0^iGpG",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 14,
+          "offset_transform_root_hash72": "0000000000000000000000000000003L*-Gh>Df5^djf=4c)Jp5W0)nz^A4Nkcfo9V9sWdpy",
+          "source_ast_root_hash72": "0000000000000000000000000000003LPyncLC>3=Yuwo2q)6twNuW?m!nbO+=ZkPu>?0mD+",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:47",
+          "inverse_offset_transform_root_hash72": "00000000000000000000000000000023HgnTZ0W?k9y1y3H5A-iAKc8B6Tp3Fr*/ujDRn-yE",
+          "lease_root_hash72": "000000000000000000000000000000227Yg)spmhSJre6rEm+=rgZY3OiCm>+mkyIDohlNj2",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 19,
+          "offset_transform_root_hash72": "0000000000000000000000000000002c0)*i7uw68zLgrfdYoKqeDWpF7zugLvcGZjPF!PdY",
+          "source_ast_root_hash72": "0000000000000000000000000000001-tA3E3dhP0F(EG!hVc7r>V>+HkCLubn2N*J)(yK5D",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:48",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000003jn3pOrqCgL^tuPSHKMsGPRI6T>Q4)TW/rGMu/P*Lx",
+          "lease_root_hash72": "0000000000000000000000000000003Yq5Rz2n9Pr4SwzIEh*FU*Cl7R!gZP1V2>om^ed)d^",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 24,
+          "offset_transform_root_hash72": "0000000000000000000000000000000br>T*WpTK=!l+AF-mi/v1LUv4kEpGiRiDQbZE103R",
+          "source_ast_root_hash72": "0000000000000000000000000000002MGsYg=Su-MebQF0oEzoWD+/cg9E(+z2pkI^dLyv*3",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:49",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000003=Ma>dkJRuMtrNp/3-CBO(tt72Ium?=wulu7a-Y7mN",
+          "lease_root_hash72": "0000000000000000000000000000000qdskpOIHuZ))Mj?NiYlePgrDh^)PalKv8)9-w5fC?",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 29,
+          "offset_transform_root_hash72": "0000000000000000000000000000000P-B=7k7)k8cB2^bfIU3aIKBlVhvbB(JXHlqA(Of/!",
+          "source_ast_root_hash72": "0000000000000000000000000000001DdB(wF0x7yZAZ2mM?D3LygL85lipG1*a67Gn-4MFC",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:50",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000003t)Szi/xMMtx2tzZYOC7R)cas5=Em!pMnVlv9R6nO^",
+          "lease_root_hash72": "0000000000000000000000000000000hm>1AIRhpJ>5kmOynlh)j/TQ)UtNSRzyVJjWES0bv",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 34,
+          "offset_transform_root_hash72": "0000000000000000000000000000004I-oYj(a8!FEyCm/ux)euOhEZ3WkA90YMlWQSff(B1",
+          "source_ast_root_hash72": "0000000000000000000000000000002!Jt02PHBc47Z6yd*xh=esxMfHBpirW*1D9APy*=^d",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:51",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000004e0/TNxFS*IoB9osYPL?1XB)JZ/UgP7WQbiYJ)k>V>",
+          "lease_root_hash72": "0000000000000000000000000000004yAtC(+/xCmpIWbXkB*H81x!Xgw1UMbuhrqvCSyj+6",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 39,
+          "offset_transform_root_hash72": "000000000000000000000000000000423hjH7ACnIJc7V7kXi(hHm+?ijJG7QV*jMmLO1p!j",
+          "source_ast_root_hash72": "0000000000000000000000000000000t4yy76Enreb/XZzQfyC?^6DOKL3^^v514Sk1?EmYT",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:52",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000003s8SF?IN*H00?ukuwMH/*Crk2QzD85fL-aAGGYOtsg",
+          "lease_root_hash72": "00000000000000000000000000000046tOwIWFfgZ)*B1yxwP=6nApj8LC8uxjGu2GY>CxNi",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 44,
+          "offset_transform_root_hash72": "0000000000000000000000000000003F*dSSJI2Hnr7R3SKCCzYLsvRl3yBBnCogszZd^*zy",
+          "source_ast_root_hash72": "0000000000000000000000000000003Nt/8i)YueeuM*bKo+f9XJJh)=f!xm3FNYRhjdc)aI",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:53",
+          "inverse_offset_transform_root_hash72": "00000000000000000000000000000039EKm1F14Ml=vGx^G/)ETenFn7+G1zsl-A0WAcqC95",
+          "lease_root_hash72": "0000000000000000000000000000001Rhw5NjH0)bwl2!h7jdPwtkD8E/HJwQHj>Qc?05soT",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 49,
+          "offset_transform_root_hash72": "0000000000000000000000000000002GzliSA*v-SjSj43p=XIJiYLRgrPhir6OI?>n+KZs?",
+          "source_ast_root_hash72": "0000000000000000000000000000001ZV4YjOg9+009Ga*Dd4?yc9/sMs1p0E7o^DrmL8Vjj",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:54",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000001y5yj62J*tFdd7?Ia/7qI)Z)OPdYpEpb1Mwh0Z5z!0",
+          "lease_root_hash72": "0000000000000000000000000000003u5SA/ZyLIk-URsfDb^vIu8V*iew9CfsQYjtTwr2BE",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 54,
+          "offset_transform_root_hash72": "0000000000000000000000000000002sBS7EUWHVhqN2ZUOQ2BOlvZIiW5J6v*w)8jolwEk2",
+          "source_ast_root_hash72": "0000000000000000000000000000002wFuSpwqZSIz-o9pxPsBC(3/M>O893pi7KmijzA5b-",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:55",
+          "inverse_offset_transform_root_hash72": "00000000000000000000000000000038tWDgj-AjpL^tU?-c^R3X(BwY9N(tOiXedeONZo+A",
+          "lease_root_hash72": "0000000000000000000000000000002pEh4Ho+vYxl9fZzd9N3mofHpaiK2h4dv^Yr)jCslo",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 59,
+          "offset_transform_root_hash72": "0000000000000000000000000000001X=SkN9HGRQ6!s3n5Dlwv0JPjn!w-et*fo/IhtGlVl",
+          "source_ast_root_hash72": "0000000000000000000000000000003B(C3ERac>MlV(JMgl/Yxjc(pvU)2snK*OszqI*=i5",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:56",
+          "inverse_offset_transform_root_hash72": "00000000000000000000000000000021/*6oNt^haPiJNAm-?x=pG9x8lyjXLlTRC6TBBRA0",
+          "lease_root_hash72": "0000000000000000000000000000003ZpagXXmWmg=m>r!v9xj6yq1IYRN!B?2me?FqZp2A6",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 64,
+          "offset_transform_root_hash72": "0000000000000000000000000000004nay8P5a+OTMaF(OY7RM29ePc=lFwtK+9cNxJA(ps0",
+          "source_ast_root_hash72": "0000000000000000000000000000002s*!gY74HkIC?>L*pdRNQfA=f6!ASVMo8*RJpgpY5j",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:57",
+          "inverse_offset_transform_root_hash72": "00000000000000000000000000000028>-?igdEHr7a^e/73l=gThaPIj/hIjn6pek8O*!bU",
+          "lease_root_hash72": "0000000000000000000000000000004oEXnEP2YFpYr^+-Qx5BzXP2Abl-4p!*iYZT1JaEWx",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 69,
+          "offset_transform_root_hash72": "0000000000000000000000000000000-h*gyJx?sHtLEQqi9JoZ6R==n^jI?+8*19u+X/b*K",
+          "source_ast_root_hash72": "0000000000000000000000000000001NYYqU*U4keGGP0^LVlPTws*G(>!uDCiHnR^cils0U",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:58",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000002?OO8Kz3F=+TL2e?3H/Ly(YA4AlhUx3alxZP>RKao^",
+          "lease_root_hash72": "0000000000000000000000000000000O-tQtP2atLb(ldrSNQAg^*E39/cOM7KDs^BOPSZ*A",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 2,
+          "offset_transform_root_hash72": "0000000000000000000000000000002tR1CSH42Ru-)PAQ58BFKfOQw-pM/AK/CccMiS4zJx",
+          "source_ast_root_hash72": "0000000000000000000000000000003KWx52II6j?W0WUkqvl>EjrgtvZ1KhsK8ywS1GJsKn",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:59",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000002cguYOSVl?-j6cOgz-1(8W+2N-*UJXpzd/AnF+/Xap",
+          "lease_root_hash72": "0000000000000000000000000000002kE53ph40jsBNt8So2Q7!xVMGgIf9T)?KZzrV*Db*2",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 7,
+          "offset_transform_root_hash72": "00000000000000000000000000000010E2iMzaaAQOYKLLAbdhnzfQ)C5f-aH2)?DzyR8)C!",
+          "source_ast_root_hash72": "0000000000000000000000000000004nokUWD?RajTj1BoIzP+0V>+g=(/1KpOI2TZJPJoW0",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:60",
+          "inverse_offset_transform_root_hash72": "000000000000000000000000000000443(=VxeanZfB86KlfSM!51t5^dUt!yOr94e^oZ7AG",
+          "lease_root_hash72": "00000000000000000000000000000025mxIXduMhSjE++bx*3UkmJ^cglHyjFgFh5Nax9ZFr",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 12,
+          "offset_transform_root_hash72": "0000000000000000000000000000004wiR=+bGqIGsF>eqMvlEoBxOKjhQELc1aV0!8P!(/K",
+          "source_ast_root_hash72": "0000000000000000000000000000003SKAF5Ri9aK)y-6CnNB6nRZqn)(RGY)eJ)Xf(h1ttk",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:61",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000001dNjmz6zON*+S>/n5w-a/q9kmX=54WI7k/zJJSi=ST",
+          "lease_root_hash72": "0000000000000000000000000000002xO2PsDL1kz=aF*/IPGfYfJNREll>0nDKftCRdq-iZ",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 17,
+          "offset_transform_root_hash72": "0000000000000000000000000000002VhQ/i-m9YAzbRqBQeCwgpdb1YTB1eiAi3keHTCqUX",
+          "source_ast_root_hash72": "0000000000000000000000000000002w2rqXTO+lKbvSL/eVJ64elLtE72/da)G*IkYXN1ST",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:62",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000003dbbSSEisRuygZGptuOGoAse^*HGHlLalUL!>Ep(gx",
+          "lease_root_hash72": "0000000000000000000000000000001AI)?dOwHG/5fa!5i3JLm-m/PMTs14Vs?aHs2BJlf^",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 22,
+          "offset_transform_root_hash72": "0000000000000000000000000000003abCp(hjNaubUGgXYzLFZSq)H3!FCc/Nr(wLyT)Amu",
+          "source_ast_root_hash72": "0000000000000000000000000000000SznHnYGKaQZIX4qu8d8Ie8AYXfY2vJTrl5c+MQFnw",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:63",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000002NbmuI0dWIHC2>1ud>DLKF>=J++QPbIAesPh=idvZc",
+          "lease_root_hash72": "0000000000000000000000000000003sBuxG!Bw6Mk?ZrFcdZf>aa5wARroi/D-ZRRgN6S0G",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 27,
+          "offset_transform_root_hash72": "0000000000000000000000000000000H3wHLhKR2VYY-*pc)fHf7NcVfCj?lUjYiFE!DbWw!",
+          "source_ast_root_hash72": "0000000000000000000000000000004akEQV>rEvVX*4=TCIsW7ObjN0dVQE8FTOYdgjtvn8",
+          "transform_order": [
+            "PHASE"
+          ]
+        }
+      ],
+      "closure_contract": {
+        "comparison": "EXACT_NORMALIZED_ROOT_EQUALITY",
+        "coordinate": 0,
+        "normalization": "APPLY_INVERSE_COMMITTED_OFFSET",
+        "raw_branch_roots_must_remain_distinct": true,
+        "semantic_value": "P^2"
+      },
+      "native_binding": {
+        "binding_root_hash72": "0000000000000000000000000000000eQ4THv*YHsCO2upx6Q8R96ZL9YBc1NF=NULsqLFgd",
+        "opcode": "NATIVE_VECTORIZE_HASH72",
+        "registry_root_hash72": "0000000000000000000000000000003tNkS)j=sQgSkBmHM8rQGXJTi4RcNyQDjiBTjhoWF=",
+        "semantic_identity": "vm81.native.hhs_vectorize_hash72"
+      },
+      "native_binding_root_hash72": "0000000000000000000000000000000eQ4THv*YHsCO2upx6Q8R96ZL9YBc1NF=NULsqLFgd",
+      "offset_allocation": {
+        "strategy": "COPRIME_STRIDE",
+        "stride": 5,
+        "unique_required": true
+      },
+      "offset_domain": {
+        "canonical_arithmetic": "EXACT_INTEGER_MODULAR",
+        "modulus": 72,
+        "type": "U72_PHASE_OFFSET"
+      },
+      "schema": "HHS_OFFSET_ENTANGLED_BIFURCATION_WORKLOAD_V1",
+      "shared_genesis_root_hash72": "0000000000000000000000000000004A*DNdX/40YjK20f4z+IQu0ywACMlRh9RD0(ejpLVm",
+      "workload_id": "W17:sixty-four-dense"
+    },
+    {
+      "branches": [
+        {
+          "branch_id": "lane:0",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000002QIUSreBjz=v)NwJF/l=)hV!+e)UZls?saPyd0dSm?",
+          "lease_root_hash72": "0000000000000000000000000000002MwUP-Q/v0u8B=wfWB6eO4x5asBs5Bd8ZWKbWU9?5s",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 0,
+          "offset_transform_root_hash72": "0000000000000000000000000000002mUB?v-l8t/3Sc-)7cxU6N5kCju/Zxd-GDWzNz8W3e",
+          "source_ast_root_hash72": "0000000000000000000000000000001c8)eV=b*826lgZDPMZSPbZjx6YEfWXejdyyF+o/Mk",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:1",
+          "inverse_offset_transform_root_hash72": "00000000000000000000000000000019uI>(b>QchEVZSzLcg3wwJW2bIr8TtP5Lz34L7VDG",
+          "lease_root_hash72": "0000000000000000000000000000001dhLHgYEh/TuJbJDBUtrUg-IS1-33Tr5S5rA?1>5e6",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 0,
+          "offset_transform_root_hash72": "00000000000000000000000000000028O?Vue^hHaREwY8hm?7*u6-v2su/ht!SaJJGy46yB",
+          "source_ast_root_hash72": "00000000000000000000000000000034wLx?o->Vs/IdwYFKSp^TPVmt42E>-pUrAGS76^Zb",
+          "transform_order": [
+            "PHASE"
+          ]
+        }
+      ],
+      "closure_contract": {
+        "comparison": "EXACT_NORMALIZED_ROOT_EQUALITY",
+        "coordinate": 0,
+        "normalization": "APPLY_INVERSE_COMMITTED_OFFSET",
+        "raw_branch_roots_must_remain_distinct": true,
+        "semantic_value": "P^2"
+      },
+      "native_binding": {
+        "binding_root_hash72": "0000000000000000000000000000000eQ4THv*YHsCO2upx6Q8R96ZL9YBc1NF=NULsqLFgd",
+        "opcode": "NATIVE_VECTORIZE_HASH72",
+        "registry_root_hash72": "0000000000000000000000000000003tNkS)j=sQgSkBmHM8rQGXJTi4RcNyQDjiBTjhoWF=",
+        "semantic_identity": "vm81.native.hhs_vectorize_hash72"
+      },
+      "native_binding_root_hash72": "0000000000000000000000000000000eQ4THv*YHsCO2upx6Q8R96ZL9YBc1NF=NULsqLFgd",
+      "offset_allocation": {
+        "strategy": "CONSECUTIVE",
+        "stride": null,
+        "unique_required": true
+      },
+      "offset_domain": {
+        "canonical_arithmetic": "EXACT_INTEGER_MODULAR",
+        "modulus": 72,
+        "type": "U72_PHASE_OFFSET"
+      },
+      "schema": "HHS_OFFSET_ENTANGLED_BIFURCATION_WORKLOAD_V1",
+      "shared_genesis_root_hash72": "0000000000000000000000000000004A*DNdX/40YjK20f4z+IQu0ywACMlRh9RD0(ejpLVm",
+      "workload_id": "W18:duplicate-offset-rejection"
+    },
+    {
+      "branches": [
+        {
+          "branch_id": "lane:0",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000002QIUSreBjz=v)NwJF/l=)hV!+e)UZls?saPyd0dSm?",
+          "lease_root_hash72": "0000000000000000000000000000002MwUP-Q/v0u8B=wfWB6eO4x5asBs5Bd8ZWKbWU9?5s",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 0,
+          "offset_transform_root_hash72": "0000000000000000000000000000002mUB?v-l8t/3Sc-)7cxU6N5kCju/Zxd-GDWzNz8W3e",
+          "source_ast_root_hash72": "0000000000000000000000000000001c8)eV=b*826lgZDPMZSPbZjx6YEfWXejdyyF+o/Mk",
+          "transform_order": [
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:1",
+          "inverse_offset_transform_root_hash72": "00000000000000000000000000000019uI>(b>QchEVZSzLcg3wwJW2bIr8TtP5Lz34L7VDG",
+          "lease_root_hash72": "0000000000000000000000000000001dhLHgYEh/TuJbJDBUtrUg-IS1-33Tr5S5rA?1>5e6",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": 1,
+          "offset_transform_root_hash72": "00000000000000000000000000000028O?Vue^hHaREwY8hm?7*u6-v2su/ht!SaJJGy46yB",
+          "source_ast_root_hash72": "00000000000000000000000000000034wLx?o->Vs/IdwYFKSp^TPVmt42E>-pUrAGS76^Zb",
+          "transform_order": [
+            "PHASE"
+          ]
+        }
+      ],
+      "closure_contract": {
+        "comparison": "EXACT_NORMALIZED_ROOT_EQUALITY",
+        "coordinate": 0,
+        "normalization": "APPLY_INVERSE_COMMITTED_OFFSET",
+        "raw_branch_roots_must_remain_distinct": true,
+        "semantic_value": "P^2"
+      },
+      "native_binding": {
+        "binding_root_hash72": "0000000000000000000000000000000eQ4THv*YHsCO2upx6Q8R96ZL9YBc1NF=NULsqLFgd",
+        "opcode": "NATIVE_VECTORIZE_HASH72",
+        "registry_root_hash72": "0000000000000000000000000000003tNkS)j=sQgSkBmHM8rQGXJTi4RcNyQDjiBTjhoWF=",
+        "semantic_identity": "vm81.native.hhs_vectorize_hash72"
+      },
+      "native_binding_root_hash72": "0000000000000000000000000000000eQ4THv*YHsCO2upx6Q8R96ZL9YBc1NF=NULsqLFgd",
+      "offset_allocation": {
+        "strategy": "CONSECUTIVE",
+        "stride": null,
+        "unique_required": true
+      },
+      "offset_domain": {
+        "canonical_arithmetic": "EXACT_INTEGER_MODULAR",
+        "modulus": 72,
+        "type": "U72_PHASE_OFFSET"
+      },
+      "schema": "HHS_OFFSET_ENTANGLED_BIFURCATION_WORKLOAD_V1",
+      "shared_genesis_root_hash72": "0000000000000000000000000000004A*DNdX/40YjK20f4z+IQu0ywACMlRh9RD0(ejpLVm",
+      "workload_id": "W19:inverse-normalization-failure",
+      "force_normalized_closure_mismatch": true
+    },
+    {
+      "branches": [
+        {
+          "branch_id": "lane:0",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000001(hMuKmG>x(9XUCh1*D-GW7r)nq?EM)J>DjyY6tOE4",
+          "lease_root_hash72": "0000000000000000000000000000002MwUP-Q/v0u8B=wfWB6eO4x5asBs5Bd8ZWKbWU9?5s",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": {
+            "cell": 0,
+            "phase": 0
+          },
+          "offset_transform_root_hash72": "0000000000000000000000000000001gHT1xgOT=ZOW4qB9(8?(ZjJoOui4?2(uy0c1d?I!p",
+          "source_ast_root_hash72": "0000000000000000000000000000001c8)eV=b*826lgZDPMZSPbZjx6YEfWXejdyyF+o/Mk",
+          "transform_order": [
+            "PHASE",
+            "CELL"
+          ]
+        },
+        {
+          "branch_id": "lane:1",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000001-X-JK8U2/nq>O2WgDz!qr9CX!C=KD0s0j(!!bw2rc",
+          "lease_root_hash72": "0000000000000000000000000000001dhLHgYEh/TuJbJDBUtrUg-IS1-33Tr5S5rA?1>5e6",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": {
+            "cell": 7,
+            "phase": 1
+          },
+          "offset_transform_root_hash72": "0000000000000000000000000000000C7iB?u3f((ddWI1XzHNeq>rZdjI66jX2RTmw6C9VM",
+          "source_ast_root_hash72": "00000000000000000000000000000034wLx?o->Vs/IdwYFKSp^TPVmt42E>-pUrAGS76^Zb",
+          "transform_order": [
+            "PHASE",
+            "CELL"
+          ]
+        }
+      ],
+      "closure_contract": {
+        "comparison": "EXACT_NORMALIZED_ROOT_EQUALITY",
+        "coordinate": 0,
+        "normalization": "APPLY_INVERSE_COMMITTED_OFFSET",
+        "raw_branch_roots_must_remain_distinct": true,
+        "semantic_value": "P^2"
+      },
+      "native_binding": {
+        "binding_root_hash72": "0000000000000000000000000000000eQ4THv*YHsCO2upx6Q8R96ZL9YBc1NF=NULsqLFgd",
+        "opcode": "NATIVE_VECTORIZE_HASH72",
+        "registry_root_hash72": "0000000000000000000000000000003tNkS)j=sQgSkBmHM8rQGXJTi4RcNyQDjiBTjhoWF=",
+        "semantic_identity": "vm81.native.hhs_vectorize_hash72"
+      },
+      "native_binding_root_hash72": "0000000000000000000000000000000eQ4THv*YHsCO2upx6Q8R96ZL9YBc1NF=NULsqLFgd",
+      "offset_allocation": {
+        "strategy": "CONSECUTIVE",
+        "stride": null,
+        "unique_required": true
+      },
+      "offset_domain": {
+        "canonical_arithmetic": "EXACT_INTEGER_MODULAR",
+        "modulus": {
+          "cell": 81,
+          "phase": 72
+        },
+        "type": "COMBINED_PHASE_VM81_OFFSET"
+      },
+      "schema": "HHS_OFFSET_ENTANGLED_BIFURCATION_WORKLOAD_V1",
+      "shared_genesis_root_hash72": "0000000000000000000000000000004A*DNdX/40YjK20f4z+IQu0ywACMlRh9RD0(ejpLVm",
+      "workload_id": "W20:phase-then-cell"
+    },
+    {
+      "branches": [
+        {
+          "branch_id": "lane:0",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000004ACu/**O/OV^dmVKk+XR?/nS8q2C5(cdEAS3=tPDhr",
+          "lease_root_hash72": "0000000000000000000000000000002MwUP-Q/v0u8B=wfWB6eO4x5asBs5Bd8ZWKbWU9?5s",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": {
+            "cell": 0,
+            "phase": 0
+          },
+          "offset_transform_root_hash72": "0000000000000000000000000000003T*uNaBv2/n871Q1k93VOuiJIqKOGL^6iBVS4)j5>n",
+          "source_ast_root_hash72": "0000000000000000000000000000001c8)eV=b*826lgZDPMZSPbZjx6YEfWXejdyyF+o/Mk",
+          "transform_order": [
+            "CELL",
+            "PHASE"
+          ]
+        },
+        {
+          "branch_id": "lane:1",
+          "inverse_offset_transform_root_hash72": "0000000000000000000000000000004JgTSLVrAu)IAN6XnA!bZ+l9Ey!Y3y/Ke4V+39lgvk",
+          "lease_root_hash72": "0000000000000000000000000000001dhLHgYEh/TuJbJDBUtrUg-IS1-33Tr5S5rA?1>5e6",
+          "lease_scope": "OFFSET_TRANSFORM_AND_NATIVE_INVOCATION",
+          "offset": {
+            "cell": 7,
+            "phase": 1
+          },
+          "offset_transform_root_hash72": "0000000000000000000000000000002)s5tcypg3VzyRCA2WiGI8DPvQ-Y53DO/aoH5sQdaS",
+          "source_ast_root_hash72": "00000000000000000000000000000034wLx?o->Vs/IdwYFKSp^TPVmt42E>-pUrAGS76^Zb",
+          "transform_order": [
+            "CELL",
+            "PHASE"
+          ]
+        }
+      ],
+      "closure_contract": {
+        "comparison": "EXACT_NORMALIZED_ROOT_EQUALITY",
+        "coordinate": 0,
+        "normalization": "APPLY_INVERSE_COMMITTED_OFFSET",
+        "raw_branch_roots_must_remain_distinct": true,
+        "semantic_value": "P^2"
+      },
+      "native_binding": {
+        "binding_root_hash72": "0000000000000000000000000000000eQ4THv*YHsCO2upx6Q8R96ZL9YBc1NF=NULsqLFgd",
+        "opcode": "NATIVE_VECTORIZE_HASH72",
+        "registry_root_hash72": "0000000000000000000000000000003tNkS)j=sQgSkBmHM8rQGXJTi4RcNyQDjiBTjhoWF=",
+        "semantic_identity": "vm81.native.hhs_vectorize_hash72"
+      },
+      "native_binding_root_hash72": "0000000000000000000000000000000eQ4THv*YHsCO2upx6Q8R96ZL9YBc1NF=NULsqLFgd",
+      "offset_allocation": {
+        "strategy": "CONSECUTIVE",
+        "stride": null,
+        "unique_required": true
+      },
+      "offset_domain": {
+        "canonical_arithmetic": "EXACT_INTEGER_MODULAR",
+        "modulus": {
+          "cell": 81,
+          "phase": 72
+        },
+        "type": "COMBINED_PHASE_VM81_OFFSET"
+      },
+      "schema": "HHS_OFFSET_ENTANGLED_BIFURCATION_WORKLOAD_V1",
+      "shared_genesis_root_hash72": "0000000000000000000000000000004A*DNdX/40YjK20f4z+IQu0ywACMlRh9RD0(ejpLVm",
+      "workload_id": "W20:cell-then-phase"
+    }
+  ]
+}

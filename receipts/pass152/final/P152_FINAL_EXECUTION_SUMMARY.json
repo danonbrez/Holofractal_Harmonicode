@@ -1,0 +1,258 @@
+{
+  "classification": "HHS_PASS_152_UNIVERSAL_ELASTIC_CLOSURE_INVARIANT_VERIFIED",
+  "commit": {
+    "after_authoritative_digest": "9cd6f43ee155f3447c9ec21080e260145416c965321ff6910bc1839632a275bf",
+    "authority_audit": {
+      "algebraic_closure": true,
+      "delta_e": 0,
+      "hash72_receipt_ok": true,
+      "hash72_state_ok": true,
+      "ok": true,
+      "omega": true,
+      "psi": 0,
+      "reasons": [],
+      "receipt_hash72": "OTYwBGLQV49ejoty*8<16OTY/!3mrwBGLQaqejo<16bglEJOTY/!sIwBGejotyDW+<16bgK-",
+      "runtime_step": 1,
+      "source": "HHS-P152-ElasticClosure",
+      "state_hash72": "159dhlptxBFJNRVZ/>159dhlptxBFJNRVZ/>159dhlptxBFJNRVZ/>159dhlptxBFJNRVZ/>",
+      "theta15": true
+    },
+    "before_authoritative_digest": "5103f592339b418d36335f1032b887fb160ca094bbe1f741efd347b803237293",
+    "candidate_digest": "7d601c83dfd58ea9b57dd44898f0e3559d3e757d6158ab339ef600d6ad48d282",
+    "causal_history_prefix_digest": "b368b5300c6066c1122258d30641c3311056a25226e59cf902eed9951bc580f1",
+    "closure_proof_digest": "92426cc1d6a4e1813585daed0d4bd1f68abf92f67f4aea0de655a107e8d9431b",
+    "hash72_receipt": {
+      "authority_audit": {
+        "algebraic_closure": true,
+        "delta_e": 0,
+        "hash72_receipt_ok": true,
+        "hash72_state_ok": true,
+        "ok": true,
+        "omega": true,
+        "psi": 0,
+        "reasons": [],
+        "receipt_hash72": "OTYwBGLQV49ejoty*8<16OTY/!3mrwBGLQaqejo<16bglEJOTY/!sIwBGejotyDW+<16bgK-",
+        "runtime_step": 1,
+        "source": "HHSRuntimeController.commit_receipt",
+        "state_hash72": "159dhlptxBFJNRVZ/>159dhlptxBFJNRVZ/>159dhlptxBFJNRVZ/>159dhlptxBFJNRVZ/>",
+        "theta15": true
+      },
+      "receipt_hash72": "OTYwBGLQV49ejoty*8<16OTY/!3mrwBGLQaqejo<16bglEJOTY/!sIwBGejotyDW+<16bgK-",
+      "state_hash72": "159dhlptxBFJNRVZ/>159dhlptxBFJNRVZ/>159dhlptxBFJNRVZ/>159dhlptxBFJNRVZ/>",
+      "step": 1,
+      "unified_ledger": {
+        "entry_count": 1,
+        "ledger_hash72": "n!oyfh9<(H-hqq7/cYQV5wgu",
+        "tip_hash72": "5v!NrP<zu6gZk)gT0clo9fY<"
+      }
+    },
+    "history_extended_not_rewritten": true,
+    "predictive_receipt_chain_tip": "cb4172306c3b32c4c9fd4c3b0ba74ae2325866e8c1b2823fe298a3ae996237d6",
+    "recursive_control_plan_digest": "d5fb8bc2df0bff960380821800146915768e4602e6a9612401a608a67a2c069e",
+    "schema": "HHS_PASS152_COMMIT_RECEIPT_V1",
+    "vm81_admitted": true
+  },
+  "metrics": {
+    "N_blocked": 0,
+    "N_committed": 1,
+    "N_critical": 6,
+    "N_invalidated": 0,
+    "N_partial": 2,
+    "N_propagated": 8,
+    "N_recomputed": 0,
+    "N_reused": 1,
+    "N_skipped": 1,
+    "N_verified": 8,
+    "T_closure_ns": 116074568,
+    "T_critical_ns": 18704827,
+    "T_idle_ns": 439904678,
+    "T_productive_ns": 24393594,
+    "T_recomputation_ns": 0,
+    "T_saved_reuse_ns": 2000000,
+    "T_saved_skip_ns": 1000000,
+    "T_scheduler_ns": 18996570,
+    "candidate_outputs_computed": 8,
+    "candidate_outputs_eventually_used": 8,
+    "eta_candidate": 1.0,
+    "eta_closure": 0.05253862758291722,
+    "max_concurrent_workers_observed": 2,
+    "schema": "HHS_PASS152_RUNTIME_METRICS_V1",
+    "workers": 4
+  },
+  "proof": {
+    "authoritative_state_digest": "5103f592339b418d36335f1032b887fb160ca094bbe1f741efd347b803237293",
+    "authority_root": "AUTHORITY-ROOT-152-A",
+    "candidate_state_digest": "7d601c83dfd58ea9b57dd44898f0e3559d3e757d6158ab339ef600d6ad48d282",
+    "causal_continuity": true,
+    "flags": {
+      "authority": true,
+      "constraint": true,
+      "phase": true,
+      "provenance": true,
+      "receipt": true,
+      "resource": true,
+      "value": true
+    },
+    "higher_layers_optimize_policy_not_truth": true,
+    "logical_work_order": [
+      "x",
+      "y",
+      "a",
+      "b",
+      "sum",
+      "sum_alias",
+      "identity",
+      "final"
+    ],
+    "mandatory_nodes": [
+      "a",
+      "b",
+      "final",
+      "identity",
+      "sum",
+      "sum_alias",
+      "x",
+      "y"
+    ],
+    "omega_closure": true,
+    "predictive_receipt_chain_tip": "2c715d99ea3b9518a2a8c2a847003609a46baa00149a84e50ed6e5611466220a",
+    "recursive_control": {
+      "active_plan_digest": "d5fb8bc2df0bff960380821800146915768e4602e6a9612401a608a67a2c069e",
+      "authority_root": "AUTHORITY-ROOT-152-A",
+      "canonical_invariant": "PRESERVE_CAUSAL_AUTHORITY_AT_INVARIANT_CORE_WHILE_USING_EMERGENT_FREEDOM_TO_OPTIMIZE_SUBORDINATE_EXECUTION",
+      "committed_prefix_digest": "5e43995e6e7127ec0c7629343f3cd3ca3823f08742b216e48ecea5d5afd88dc8",
+      "committed_state_digest": "5103f592339b418d36335f1032b887fb160ca094bbe1f741efd347b803237293",
+      "history_tips": {
+        "L0": "bb3c76cef918037fcccc570abef42f9a26c8f39d549453d6b282b82b262c77f2",
+        "L1": "3350457c928016f3fe05cbffd618ff42f43111e839f4df3fa4807dda35df3dca",
+        "L2": "fdcc1a15f9c6ef6a687136b9a0049e2dda4a75771b32511f90f412fa003dcf92"
+      },
+      "history_valid": true,
+      "layers": [
+        {
+          "admissible_control_fields": [
+            "batching",
+            "branch_priority",
+            "cache_placement",
+            "equivalence_reuse",
+            "representation_choice",
+            "resource_allocation",
+            "scheduling",
+            "speculative_depth",
+            "transport_order"
+          ],
+          "index": 0,
+          "invariants": [
+            "AUTHORITATIVE_STATE_IMMUTABLE_DURING_PROPAGATION",
+            "VM81_ONLY_COMMIT_AUTHORITY",
+            "HASH72_ONLY_AFTER_VM81_CLOSURE",
+            "SEMANTIC_IDENTITY_PRESERVED",
+            "PROVENANCE_PRESERVED",
+            "CAUSAL_HISTORY_APPEND_ONLY"
+          ],
+          "layer_id": "L0"
+        },
+        {
+          "admissible_control_fields": [
+            "batching",
+            "branch_priority",
+            "cache_placement",
+            "equivalence_reuse",
+            "representation_choice",
+            "resource_allocation",
+            "scheduling",
+            "speculative_depth",
+            "transport_order"
+          ],
+          "index": 1,
+          "invariants": [
+            "ELASTIC_CLOSURE",
+            "EARLY_PROPAGATION",
+            "DETERMINISTIC_LOGICAL_ORDER",
+            "RESOURCE_BOUNDED_EXECUTION"
+          ],
+          "layer_id": "L1"
+        },
+        {
+          "admissible_control_fields": [
+            "batching",
+            "branch_priority",
+            "cache_placement",
+            "equivalence_reuse",
+            "representation_choice",
+            "resource_allocation",
+            "scheduling",
+            "speculative_depth",
+            "transport_order"
+          ],
+          "index": 2,
+          "invariants": [
+            "GLOBAL_STRUCTURE_MAY_OPTIMIZE_SUBORDINATE_POLICY",
+            "PREDICTION_INFLUENCES_PRIORITY_NOT_TRUTH",
+            "PLAN_REVISION_DOES_NOT_REWRITE_COMMITTED_PREFIX"
+          ],
+          "layer_id": "L2"
+        }
+      ],
+      "policy_version": "P152-SCHEDULER-V1",
+      "schema": "HHS_PASS152_RECURSIVE_CONTROL_STATE_V1",
+      "semantic_version": "1.0.0"
+    },
+    "schema": "HHS_PASS152_GLOBAL_CLOSURE_PROOF_V1",
+    "verified_nodes": [
+      "a",
+      "b",
+      "final",
+      "identity",
+      "sum",
+      "sum_alias",
+      "x",
+      "y"
+    ]
+  },
+  "replay": {
+    "causal_history_valid": true,
+    "expected_candidate_digest": "7d601c83dfd58ea9b57dd44898f0e3559d3e757d6158ab339ef600d6ad48d282",
+    "hash72_receipt": {
+      "authority_audit": {
+        "algebraic_closure": true,
+        "delta_e": 0,
+        "hash72_receipt_ok": true,
+        "hash72_state_ok": true,
+        "ok": true,
+        "omega": true,
+        "psi": 0,
+        "reasons": [],
+        "receipt_hash72": "OTYwBGLQV49ejoty*8<16OTY/!3mrwBGLQaqejo<16bglEJOTY/!sIwBGejotyDW+<16bgK-",
+        "runtime_step": 1,
+        "source": "HHSRuntimeController.commit_receipt",
+        "state_hash72": "159dhlptxBFJNRVZ/>159dhlptxBFJNRVZ/>159dhlptxBFJNRVZ/>159dhlptxBFJNRVZ/>",
+        "theta15": true
+      },
+      "receipt_hash72": "OTYwBGLQV49ejoty*8<16OTY/!3mrwBGLQaqejo<16bglEJOTY/!sIwBGejotyDW+<16bgK-",
+      "state_hash72": "159dhlptxBFJNRVZ/>159dhlptxBFJNRVZ/>159dhlptxBFJNRVZ/>159dhlptxBFJNRVZ/>",
+      "step": 1,
+      "unified_ledger": {
+        "entry_count": 1,
+        "ledger_hash72": "n!oyfh9<(H-hqq7/cYQV5wgu",
+        "tip_hash72": "5v!NrP<zu6gZk)gT0clo9fY<"
+      }
+    },
+    "history_extended_not_rewritten": true,
+    "logical_work_order": [
+      "x",
+      "y",
+      "a",
+      "b",
+      "sum",
+      "sum_alias",
+      "identity",
+      "final"
+    ],
+    "observed_candidate_digest": "7d601c83dfd58ea9b57dd44898f0e3559d3e757d6158ab339ef600d6ad48d282",
+    "recursive_control_plan_digest": "d5fb8bc2df0bff960380821800146915768e4602e6a9612401a608a67a2c069e",
+    "replay_status": "MATCH",
+    "schema": "HHS_PASS152_REPLAY_RECEIPT_V1"
+  },
+  "schema": "HHS_PASS152_FINAL_EXECUTION_SUMMARY_V1"
+}

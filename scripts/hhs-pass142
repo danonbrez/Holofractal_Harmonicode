@@ -1,0 +1,2 @@
+#!/usr/bin/env sh
+exec python -m hhs_runtime.harmonicode_multimodal_redundant_snapshot_offsets_v1 "$@"

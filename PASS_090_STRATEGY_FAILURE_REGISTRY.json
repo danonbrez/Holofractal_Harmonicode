@@ -1,0 +1,63 @@
+{
+  "schema": "HHS_PASS_090_FAILURES_V1",
+  "failures": [
+    {
+      "workload_id": "W90-01:discover-residue-ordering",
+      "failures": []
+    },
+    {
+      "workload_id": "W90-02:held-out-prime-validation",
+      "failures": []
+    },
+    {
+      "workload_id": "W90-03:composite-residue-factor-strategy",
+      "failures": []
+    },
+    {
+      "workload_id": "W90-04:composite-strategy-ablation",
+      "failures": []
+    },
+    {
+      "workload_id": "W90-05:factor-graph-to-symbolic-closure",
+      "failures": []
+    },
+    {
+      "workload_id": "W90-06:residue-to-u72-placement",
+      "failures": []
+    },
+    {
+      "workload_id": "W90-07:branch-order-to-vm81-routing",
+      "failures": []
+    },
+    {
+      "workload_id": "W90-08:overfit-strategy-rejection",
+      "failures": [
+        {
+          "application": "HELD_OUT",
+          "reason": "NO_GAIN_OR_DIVERGENCE"
+        }
+      ]
+    },
+    {
+      "workload_id": "W90-09:prediction-before-validation",
+      "failures": []
+    },
+    {
+      "workload_id": "W90-10:no-benefit-cross-task",
+      "failures": [
+        {
+          "application": "CROSS_TASK",
+          "reason": "NO_TRANSFER"
+        }
+      ]
+    },
+    {
+      "workload_id": "W90-11:interrupted-resumed-discovery",
+      "failures": []
+    },
+    {
+      "workload_id": "W90-12:discovery-replay",
+      "failures": []
+    }
+  ]
+}

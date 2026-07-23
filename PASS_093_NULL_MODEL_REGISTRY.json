@@ -1,0 +1,81 @@
+{
+  "schema": "HHS_PASS_093_NULL_MODELS_V1",
+  "models": [
+    {
+      "null_model_id": "OPERATION_WORD_COUNT_PRESERVING_SHUFFLE",
+      "null_model_root_hash72": "0000000000000000000000000000004c-0AC8>IXM1HpQ0lJnbLfys5XkSn17JSPFJhpYWnr",
+      "null_top": [
+        [
+          "EEE",
+          37997
+        ],
+        [
+          "OOO",
+          19024
+        ],
+        [
+          "EEO",
+          512
+        ],
+        [
+          "EOO",
+          508
+        ]
+      ],
+      "observed_top": [
+        [
+          "EOE",
+          19508
+        ],
+        [
+          "OEO",
+          9909
+        ],
+        [
+          "OEE",
+          9758
+        ],
+        [
+          "EEO",
+          9638
+        ],
+        [
+          "EEE",
+          9228
+        ]
+      ],
+      "preserves": [
+        "O_COUNT",
+        "E_COUNT"
+      ]
+    },
+    {
+      "null_model_id": "RESIDUE_PRESERVING_ASSIGNMENT_SHUFFLE",
+      "null_model_root_hash72": "0000000000000000000000000000002T?X>9P9iv9UozezPR*PYOwqDXY>sD88OTnV9(sbdc",
+      "null_root": "0000000000000000000000000000001-0YV+U2QymEX?rJI1/nYcH?dniFTmf!U7mahYLWiv",
+      "observed_root": "0000000000000000000000000000001LQZBwZVBB0aTDL3pxR0!T)0N8j/Qq-tofW+CcnjoL",
+      "preserves": [
+        "MOD72_COUNTS"
+      ]
+    },
+    {
+      "null_model_id": "FACTOR_COUNT_PRESERVING_PRIME_LABEL_SHUFFLE",
+      "null_model_root_hash72": "0000000000000000000000000000003=(obRkA^uyM5EH>6V7PHa*JbObmzR-XbOwKp7l>TI",
+      "null_root": "0000000000000000000000000000001^oa9*q>Nat8+yjJCt2x3t!DOYj*H3(Ym(tajQ>eja",
+      "observed_root": "00000000000000000000000000000041QabbyyAfmyT7jdSDL45hmht>oxnMl3jNurBqNCLT",
+      "preserves": [
+        "EXPONENT_WEIGHT",
+        "SUPPORT_SIZE"
+      ]
+    },
+    {
+      "null_model_id": "TENSOR_COORDINATE_PERMUTATION",
+      "null_model_root_hash72": "0000000000000000000000000000000K3hMR/jYvyXrD2kz1-Y/vQl367f-HOuhHa9XO1k9=",
+      "null_order_root": "0000000000000000000000000000003652(gCupqhM-/RSJbk2aoH?Qd/U>16I4Ozwg2?+!-",
+      "observed_order_root": "00000000000000000000000000000015DuV=LT5mX/3frUnnGTnN**nwOUeduQGdgisl2f>B",
+      "preserves": [
+        "LANE_DATA"
+      ]
+    }
+  ]
+}

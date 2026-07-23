@@ -1,0 +1,109 @@
+{
+  "schema": "HHS_PASS_096_PATTERN_AWARE_AB_V1",
+  "trials": [
+    {
+      "arm_a": {
+        "ambiguity": "EXACT",
+        "causality": "EXACT",
+        "entity": "EQUIVALENT",
+        "epistemic": "EXACT",
+        "order": "EXACT",
+        "provenance": "EXACT",
+        "quantity": "PARTIAL",
+        "reconstruction": "PASS",
+        "relation": "EQUIVALENT"
+      },
+      "arm_b": {
+        "ambiguity": "EXACT",
+        "causality": "EXACT",
+        "entity": "EQUIVALENT",
+        "epistemic": "EXACT",
+        "order": "EXACT",
+        "provenance": "EXACT",
+        "quantity": "PARTIAL",
+        "reconstruction": "PASS",
+        "relation": "EQUIVALENT"
+      },
+      "b_not_worse": true,
+      "source": "S96-01"
+    },
+    {
+      "arm_a": {
+        "ambiguity": "EXACT",
+        "causality": "EXACT",
+        "entity": "EQUIVALENT",
+        "epistemic": "EXACT",
+        "order": "EXACT",
+        "provenance": "EXACT",
+        "quantity": "PARTIAL",
+        "reconstruction": "PASS",
+        "relation": "EQUIVALENT"
+      },
+      "arm_b": {
+        "ambiguity": "EXACT",
+        "causality": "EXACT",
+        "entity": "EQUIVALENT",
+        "epistemic": "EXACT",
+        "order": "EXACT",
+        "provenance": "EXACT",
+        "quantity": "PARTIAL",
+        "reconstruction": "PASS",
+        "relation": "EQUIVALENT"
+      },
+      "b_not_worse": true,
+      "source": "S96-02"
+    },
+    {
+      "arm_a": {
+        "ambiguity": "EXACT",
+        "causality": "EXACT",
+        "entity": "EQUIVALENT",
+        "epistemic": "EXACT",
+        "order": "EXACT",
+        "provenance": "EXACT",
+        "quantity": "PARTIAL",
+        "reconstruction": "PASS",
+        "relation": "EQUIVALENT"
+      },
+      "arm_b": {
+        "ambiguity": "EXACT",
+        "causality": "EXACT",
+        "entity": "EQUIVALENT",
+        "epistemic": "EXACT",
+        "order": "EXACT",
+        "provenance": "EXACT",
+        "quantity": "PARTIAL",
+        "reconstruction": "PASS",
+        "relation": "EQUIVALENT"
+      },
+      "b_not_worse": true,
+      "source": "S96-03"
+    },
+    {
+      "arm_a": {
+        "ambiguity": "EXACT",
+        "causality": "EXACT",
+        "entity": "EQUIVALENT",
+        "epistemic": "EXACT",
+        "order": "EXACT",
+        "provenance": "EXACT",
+        "quantity": "PARTIAL",
+        "reconstruction": "PASS",
+        "relation": "EQUIVALENT"
+      },
+      "arm_b": {
+        "ambiguity": "EXACT",
+        "causality": "EXACT",
+        "entity": "EQUIVALENT",
+        "epistemic": "EXACT",
+        "order": "EXACT",
+        "provenance": "EXACT",
+        "quantity": "PARTIAL",
+        "reconstruction": "PASS",
+        "relation": "EQUIVALENT"
+      },
+      "b_not_worse": true,
+      "source": "S96-04"
+    }
+  ]
+}

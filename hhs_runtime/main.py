@@ -428,6 +428,13 @@ async def root():
     })
 
 # =========================================================
+# Pass 132 reconstructed consequence routes
+# =========================================================
+
+from hhs_backend.api.pass132_consequence_routes import router as pass132_consequence_router
+app.include_router(pass132_consequence_router)
+
+# =========================================================
 # Entry
 # =========================================================
 

@@ -1,0 +1,117 @@
+{
+  "schema": "HHS_PASS_094_WORKLOAD_REGISTRY_V1",
+  "workloads": [
+    {
+      "canonical_authority": "SOURCE_INVARIANT_ONLY",
+      "cycles": 3,
+      "input_commitment_root_hash72": "0000000000000000000000000000001*-aRk5H9EP*l/QEQJ(s5ak8qWfGS9GGuNPd67T5VM",
+      "parent_pass093_release_root_hash72": "0000000000000000000000000000003B^jLhrEK1fUGaC-eGs)/n-yEMCF=iKk!kp-mpu7Oy",
+      "schema": "HHS_PASS_094_WORKLOAD_V1",
+      "workload_id": "W94-01:ratio-text-equation-tones-equation"
+    },
+    {
+      "canonical_authority": "SOURCE_INVARIANT_ONLY",
+      "cycles": 3,
+      "input_commitment_root_hash72": "0000000000000000000000000000001*-aRk5H9EP*l/QEQJ(s5ak8qWfGS9GGuNPd67T5VM",
+      "parent_pass093_release_root_hash72": "0000000000000000000000000000003B^jLhrEK1fUGaC-eGs)/n-yEMCF=iKk!kp-mpu7Oy",
+      "schema": "HHS_PASS_094_WORKLOAD_V1",
+      "workload_id": "W94-02:golden-triplet-table-graph-geometry-symbolic"
+    },
+    {
+      "canonical_authority": "SOURCE_INVARIANT_ONLY",
+      "cycles": 3,
+      "input_commitment_root_hash72": "0000000000000000000000000000001*-aRk5H9EP*l/QEQJ(s5ak8qWfGS9GGuNPd67T5VM",
+      "parent_pass093_release_root_hash72": "0000000000000000000000000000003B^jLhrEK1fUGaC-eGs)/n-yEMCF=iKk!kp-mpu7Oy",
+      "schema": "HHS_PASS_094_WORKLOAD_V1",
+      "workload_id": "W94-03:reciprocal-counterrotation-audio"
+    },
+    {
+      "canonical_authority": "SOURCE_INVARIANT_ONLY",
+      "cycles": 3,
+      "input_commitment_root_hash72": "0000000000000000000000000000001*-aRk5H9EP*l/QEQJ(s5ak8qWfGS9GGuNPd67T5VM",
+      "parent_pass093_release_root_hash72": "0000000000000000000000000000003B^jLhrEK1fUGaC-eGs)/n-yEMCF=iKk!kp-mpu7Oy",
+      "schema": "HHS_PASS_094_WORKLOAD_V1",
+      "workload_id": "W94-04:pythagorean-equation-image-graph-code"
+    },
+    {
+      "canonical_authority": "SOURCE_INVARIANT_ONLY",
+      "cycles": 3,
+      "input_commitment_root_hash72": "0000000000000000000000000000001*-aRk5H9EP*l/QEQJ(s5ak8qWfGS9GGuNPd67T5VM",
+      "parent_pass093_release_root_hash72": "0000000000000000000000000000003B^jLhrEK1fUGaC-eGs)/n-yEMCF=iKk!kp-mpu7Oy",
+      "schema": "HHS_PASS_094_WORKLOAD_V1",
+      "workload_id": "W94-05:u72-waveform-vm81-receipt"
+    },
+    {
+      "canonical_authority": "SOURCE_INVARIANT_ONLY",
+      "cycles": 3,
+      "input_commitment_root_hash72": "0000000000000000000000000000001*-aRk5H9EP*l/QEQJ(s5ak8qWfGS9GGuNPd67T5VM",
+      "parent_pass093_release_root_hash72": "0000000000000000000000000000003B^jLhrEK1fUGaC-eGs)/n-yEMCF=iKk!kp-mpu7Oy",
+      "schema": "HHS_PASS_094_WORKLOAD_V1",
+      "workload_id": "W94-06:noncommutative-history-code-graph-language-code"
+    },
+    {
+      "canonical_authority": "SOURCE_INVARIANT_ONLY",
+      "cycles": 3,
+      "input_commitment_root_hash72": "0000000000000000000000000000001*-aRk5H9EP*l/QEQJ(s5ak8qWfGS9GGuNPd67T5VM",
+      "parent_pass093_release_root_hash72": "0000000000000000000000000000003B^jLhrEK1fUGaC-eGs)/n-yEMCF=iKk!kp-mpu7Oy",
+      "schema": "HHS_PASS_094_WORKLOAD_V1",
+      "workload_id": "W94-07:language-hhs-vm81-explanation"
+    },
+    {
+      "canonical_authority": "SOURCE_INVARIANT_ONLY",
+      "cycles": 10,
+      "input_commitment_root_hash72": "0000000000000000000000000000001*-aRk5H9EP*l/QEQJ(s5ak8qWfGS9GGuNPd67T5VM",
+      "parent_pass093_release_root_hash72": "0000000000000000000000000000003B^jLhrEK1fUGaC-eGs)/n-yEMCF=iKk!kp-mpu7Oy",
+      "schema": "HHS_PASS_094_WORKLOAD_V1",
+      "workload_id": "W94-08:ten-recursive-cycles"
+    },
+    {
+      "canonical_authority": "SOURCE_INVARIANT_ONLY",
+      "cycles": 3,
+      "input_commitment_root_hash72": "0000000000000000000000000000001*-aRk5H9EP*l/QEQJ(s5ak8qWfGS9GGuNPd67T5VM",
+      "parent_pass093_release_root_hash72": "0000000000000000000000000000003B^jLhrEK1fUGaC-eGs)/n-yEMCF=iKk!kp-mpu7Oy",
+      "schema": "HHS_PASS_094_WORKLOAD_V1",
+      "workload_id": "W94-09:surface-preserving-invariant-mutation"
+    },
+    {
+      "canonical_authority": "SOURCE_INVARIANT_ONLY",
+      "cycles": 3,
+      "input_commitment_root_hash72": "0000000000000000000000000000001*-aRk5H9EP*l/QEQJ(s5ak8qWfGS9GGuNPd67T5VM",
+      "parent_pass093_release_root_hash72": "0000000000000000000000000000003B^jLhrEK1fUGaC-eGs)/n-yEMCF=iKk!kp-mpu7Oy",
+      "schema": "HHS_PASS_094_WORKLOAD_V1",
+      "workload_id": "W94-10:invariant-preserving-radical-modality-change"
+    },
+    {
+      "canonical_authority": "SOURCE_INVARIANT_ONLY",
+      "cycles": 3,
+      "input_commitment_root_hash72": "0000000000000000000000000000001*-aRk5H9EP*l/QEQJ(s5ak8qWfGS9GGuNPd67T5VM",
+      "parent_pass093_release_root_hash72": "0000000000000000000000000000003B^jLhrEK1fUGaC-eGs)/n-yEMCF=iKk!kp-mpu7Oy",
+      "schema": "HHS_PASS_094_WORKLOAD_V1",
+      "workload_id": "W94-11:cross-modal-alphabet-discovery"
+    },
+    {
+      "canonical_authority": "SOURCE_INVARIANT_ONLY",
+      "cycles": 3,
+      "input_commitment_root_hash72": "0000000000000000000000000000001*-aRk5H9EP*l/QEQJ(s5ak8qWfGS9GGuNPd67T5VM",
+      "parent_pass093_release_root_hash72": "0000000000000000000000000000003B^jLhrEK1fUGaC-eGs)/n-yEMCF=iKk!kp-mpu7Oy",
+      "schema": "HHS_PASS_094_WORKLOAD_V1",
+      "workload_id": "W94-12:noise-frontier"
+    },
+    {
+      "canonical_authority": "SOURCE_INVARIANT_ONLY",
+      "cycles": 3,
+      "input_commitment_root_hash72": "0000000000000000000000000000001*-aRk5H9EP*l/QEQJ(s5ak8qWfGS9GGuNPd67T5VM",
+      "parent_pass093_release_root_hash72": "0000000000000000000000000000003B^jLhrEK1fUGaC-eGs)/n-yEMCF=iKk!kp-mpu7Oy",
+      "schema": "HHS_PASS_094_WORKLOAD_V1",
+      "workload_id": "W94-13:ambiguity-preserving-round-trip"
+    },
+    {
+      "canonical_authority": "SOURCE_INVARIANT_ONLY",
+      "cycles": 3,
+      "input_commitment_root_hash72": "0000000000000000000000000000001*-aRk5H9EP*l/QEQJ(s5ak8qWfGS9GGuNPd67T5VM",
+      "parent_pass093_release_root_hash72": "0000000000000000000000000000003B^jLhrEK1fUGaC-eGs)/n-yEMCF=iKk!kp-mpu7Oy",
+      "schema": "HHS_PASS_094_WORKLOAD_V1",
+      "workload_id": "W94-14:held-out-invariant-transfer"
+    }
+  ]
+}

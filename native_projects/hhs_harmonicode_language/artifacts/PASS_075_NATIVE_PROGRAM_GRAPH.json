@@ -1,0 +1,158 @@
+{
+  "entrypoints": [
+    {
+      "kind": "PYTHON_API",
+      "target": "native_projects.hhs_harmonicode_language.hhs_pass075_api_v1:app"
+    },
+    {
+      "kind": "PYTHON_CLI",
+      "target": "native_projects.hhs_harmonicode_language.hhs_pass075_cli_v1:main"
+    },
+    {
+      "kind": "REPLAY",
+      "target": "native_projects.hhs_harmonicode_language.hhs_pass075_replay_runner_v1:replay_language_workspace"
+    },
+    {
+      "kind": "PYTHON_SERVICE",
+      "target": "native_projects.hhs_harmonicode_language:HarmonicodeLanguageService"
+    }
+  ],
+  "foundation_module_modified": false,
+  "new_emergent_capabilities": [
+    "SPAN_PRESERVING_HARMONICODE_PARSER",
+    "HHS_TYPED_IR_V1",
+    "COMMITTED_SOURCE_TO_TYPED_IR_LINEAGE",
+    "ORDERED_PRODUCT_COMMUTATION_REJECTION",
+    "AGENT_COORDINATED_TEST_SELECTION_AND_SHARDING",
+    "CONTEXT_INDEPENDENT_LANGUAGE_WORKSPACE_REPLAY"
+  ],
+  "node_count": 10,
+  "nodes": [
+    {
+      "capabilities": [
+        "language.service",
+        "typed.ir",
+        "workspace.runtime"
+      ],
+      "reachable": true,
+      "relative_path": "native_projects/hhs_harmonicode_language/__init__.py",
+      "reusable": true,
+      "role": "PACKAGE_SURFACE",
+      "sha256": "7a1ebcb4213476e1d1dcba2d4b6c4fbcfba5abe3e1b99ff64f1a4b8633441b8b"
+    },
+    {
+      "capabilities": [
+        "schemas",
+        "product.commitments",
+        "foundation.boundary"
+      ],
+      "reachable": true,
+      "relative_path": "native_projects/hhs_harmonicode_language/hhs_pass075_contracts_v1.py",
+      "reusable": true,
+      "role": "PRODUCT_CONTRACTS",
+      "sha256": "47026bdfee4db6f8f8128abeb117bdce3aa68d4a282f23e72bb7812d415db474"
+    },
+    {
+      "capabilities": [
+        "harmonicode.parse",
+        "source.spans",
+        "ordered.identity"
+      ],
+      "reachable": true,
+      "relative_path": "native_projects/hhs_harmonicode_language/hhs_harmonicode_parser_v1.py",
+      "reusable": true,
+      "role": "DETERMINISTIC_PARSER",
+      "sha256": "601fdaf6ed0b372f7569c8107d7bb13795c77a9b12a670c85075b1b4ff23eb52"
+    },
+    {
+      "capabilities": [
+        "typed.ir",
+        "type.validation",
+        "lineage",
+        "reconstruction.recipe"
+      ],
+      "reachable": true,
+      "relative_path": "native_projects/hhs_harmonicode_language/hhs_typed_ir_v1.py",
+      "reusable": true,
+      "role": "TYPED_IR",
+      "sha256": "5532e1c3c1812f9c0df82f789ba3b7b57dde5721cfdbb67c49041c1bd783a53f"
+    },
+    {
+      "capabilities": [
+        "document.parse",
+        "typed.ir.build",
+        "symbol.index"
+      ],
+      "reachable": true,
+      "relative_path": "native_projects/hhs_harmonicode_language/hhs_harmonicode_language_service_v1.py",
+      "reusable": true,
+      "role": "LANGUAGE_SERVICE",
+      "sha256": "1334c82a1737f07dfffef2dd8ed2414ef71ba017ae5a0950547a6bf1aa752efb"
+    },
+    {
+      "capabilities": [
+        "test.select",
+        "test.shard",
+        "agent.coordinate"
+      ],
+      "reachable": true,
+      "relative_path": "native_projects/hhs_harmonicode_language/hhs_agent_test_acceleration_v1.py",
+      "reusable": true,
+      "role": "TEST_ACCELERATION",
+      "sha256": "3840bb91726d004a69604ef51acf8efdd3afe122aedb8e09b3cf2d5468344ca9"
+    },
+    {
+      "capabilities": [
+        "unified.dispatch",
+        "language.state",
+        "ir.commit",
+        "test.plan"
+      ],
+      "reachable": true,
+      "relative_path": "native_projects/hhs_harmonicode_language/hhs_pass075_workspace_runtime_v1.py",
+      "reusable": true,
+      "role": "WORKSPACE_RUNTIME_EXTENSION",
+      "sha256": "14257d0a1d405c44251ea1c6a8f6ad306e98c23668be469ff4bf76a3c708e001"
+    },
+    {
+      "capabilities": [
+        "http.unified.api",
+        "websocket.inherited"
+      ],
+      "reachable": true,
+      "relative_path": "native_projects/hhs_harmonicode_language/hhs_pass075_api_v1.py",
+      "reusable": true,
+      "role": "API_PROJECTION",
+      "sha256": "f893d1ab0b58199155b7a4d0d974c16c2027fe6a74ca19c1773358b62c7ce5e5"
+    },
+    {
+      "capabilities": [
+        "cli.request",
+        "state.persistence"
+      ],
+      "reachable": true,
+      "relative_path": "native_projects/hhs_harmonicode_language/hhs_pass075_cli_v1.py",
+      "reusable": true,
+      "role": "CLI_PROJECTION",
+      "sha256": "b1dc30fe770c10c5807b33e544da42b7b1a7dc34ab9e258a5ea6ce98bcc5afed"
+    },
+    {
+      "capabilities": [
+        "capsule.verify",
+        "context.independent.replay",
+        "product.root.verify"
+      ],
+      "reachable": true,
+      "relative_path": "native_projects/hhs_harmonicode_language/hhs_pass075_replay_runner_v1.py",
+      "reusable": true,
+      "role": "REPLAY_PROGRAM",
+      "sha256": "c43019c00b43c0e32423e47eccad26c624405bc44668e4a398a5ad9c0f86d875"
+    }
+  ],
+  "orphan_node_count": 0,
+  "pass_id": "PASS_075",
+  "program_graph_root_hash72": "0000000000000000000000000000001Llnx=ojr4DXIMaGVXY=nNT*N4lE+>LAleYA(s^*h3",
+  "project_id": "HHS_HARMONICODE_LANGUAGE_SERVICE",
+  "reachable_node_count": 10,
+  "schema": "HHS_NATIVE_PROGRAM_REACHABILITY_GRAPH_V1"
+}

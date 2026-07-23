@@ -1,0 +1,401 @@
+{
+  "schema": "HHS_PASS_090_WORKLOAD_REGISTRY_V1",
+  "workloads": [
+    {
+      "admissible_operations": [
+        "FILTER_BY_RESIDUE_CLASS",
+        "ORDER_CANDIDATES_BY_PATTERN_SCORE",
+        "VALIDATE_WITH_EXACT_DIVISOR_TEST",
+        "REUSE_FACTOR_WITNESS",
+        "ORDER_BRANCHES",
+        "PLACE_VM81_ROUTE",
+        "NORMALIZE_U72_OFFSET",
+        "ORDER_CLOSURE_OBLIGATIONS",
+        "MEMOIZE_VERIFIED_PATTERN",
+        "CHECKPOINT_STATE"
+      ],
+      "correctness_oracle": "EXACT_CANONICAL_VALIDATION_UNCHANGED",
+      "cross_task_target": "SYMBOLIC_CLOSURE_ORDERING",
+      "heldout_range": [
+        4009,
+        5000
+      ],
+      "parent_pass089_release_root_hash72": "0000000000000000000000000000000zNoCUm22A1BoQM7E3Zt*Sz2boe2B=(mEs)V-T7qQi",
+      "required_status": "VALIDATED_TRANSFER",
+      "resource_budget": {
+        "max_candidates": 50000,
+        "max_receipt_bytes": 100000000,
+        "max_strategy_steps": 8
+      },
+      "schema": "HHS_AUTONOMOUS_STRATEGY_DISCOVERY_WORKLOAD_V1",
+      "training_range": [
+        11,
+        4008
+      ],
+      "workload_id": "W90-01:discover-residue-ordering"
+    },
+    {
+      "admissible_operations": [
+        "FILTER_BY_RESIDUE_CLASS",
+        "ORDER_CANDIDATES_BY_PATTERN_SCORE",
+        "VALIDATE_WITH_EXACT_DIVISOR_TEST",
+        "REUSE_FACTOR_WITNESS",
+        "ORDER_BRANCHES",
+        "PLACE_VM81_ROUTE",
+        "NORMALIZE_U72_OFFSET",
+        "ORDER_CLOSURE_OBLIGATIONS",
+        "MEMOIZE_VERIFIED_PATTERN",
+        "CHECKPOINT_STATE"
+      ],
+      "correctness_oracle": "EXACT_CANONICAL_VALIDATION_UNCHANGED",
+      "cross_task_target": "SYMBOLIC_CLOSURE_ORDERING",
+      "heldout_range": [
+        5003,
+        7000
+      ],
+      "parent_pass089_release_root_hash72": "0000000000000000000000000000000zNoCUm22A1BoQM7E3Zt*Sz2boe2B=(mEs)V-T7qQi",
+      "required_status": "VALIDATED_TRANSFER",
+      "resource_budget": {
+        "max_candidates": 50000,
+        "max_receipt_bytes": 100000000,
+        "max_strategy_steps": 8
+      },
+      "schema": "HHS_AUTONOMOUS_STRATEGY_DISCOVERY_WORKLOAD_V1",
+      "training_range": [
+        11,
+        4008
+      ],
+      "workload_id": "W90-02:held-out-prime-validation"
+    },
+    {
+      "admissible_operations": [
+        "FILTER_BY_RESIDUE_CLASS",
+        "ORDER_CANDIDATES_BY_PATTERN_SCORE",
+        "VALIDATE_WITH_EXACT_DIVISOR_TEST",
+        "REUSE_FACTOR_WITNESS",
+        "ORDER_BRANCHES",
+        "PLACE_VM81_ROUTE",
+        "NORMALIZE_U72_OFFSET",
+        "ORDER_CLOSURE_OBLIGATIONS",
+        "MEMOIZE_VERIFIED_PATTERN",
+        "CHECKPOINT_STATE"
+      ],
+      "correctness_oracle": "EXACT_CANONICAL_VALIDATION_UNCHANGED",
+      "cross_task_target": "SYMBOLIC_CLOSURE_ORDERING",
+      "heldout_range": [
+        4009,
+        5000
+      ],
+      "parent_pass089_release_root_hash72": "0000000000000000000000000000000zNoCUm22A1BoQM7E3Zt*Sz2boe2B=(mEs)V-T7qQi",
+      "required_status": "VALIDATED_TRANSFER",
+      "resource_budget": {
+        "max_candidates": 50000,
+        "max_receipt_bytes": 100000000,
+        "max_strategy_steps": 8
+      },
+      "schema": "HHS_AUTONOMOUS_STRATEGY_DISCOVERY_WORKLOAD_V1",
+      "training_range": [
+        11,
+        4008
+      ],
+      "workload_id": "W90-03:composite-residue-factor-strategy"
+    },
+    {
+      "admissible_operations": [
+        "FILTER_BY_RESIDUE_CLASS",
+        "ORDER_CANDIDATES_BY_PATTERN_SCORE",
+        "VALIDATE_WITH_EXACT_DIVISOR_TEST",
+        "REUSE_FACTOR_WITNESS",
+        "ORDER_BRANCHES",
+        "PLACE_VM81_ROUTE",
+        "NORMALIZE_U72_OFFSET",
+        "ORDER_CLOSURE_OBLIGATIONS",
+        "MEMOIZE_VERIFIED_PATTERN",
+        "CHECKPOINT_STATE"
+      ],
+      "correctness_oracle": "EXACT_CANONICAL_VALIDATION_UNCHANGED",
+      "cross_task_target": "SYMBOLIC_CLOSURE_ORDERING",
+      "heldout_range": [
+        4009,
+        5000
+      ],
+      "parent_pass089_release_root_hash72": "0000000000000000000000000000000zNoCUm22A1BoQM7E3Zt*Sz2boe2B=(mEs)V-T7qQi",
+      "required_status": "VALIDATED_TRANSFER",
+      "resource_budget": {
+        "max_candidates": 50000,
+        "max_receipt_bytes": 100000000,
+        "max_strategy_steps": 8
+      },
+      "schema": "HHS_AUTONOMOUS_STRATEGY_DISCOVERY_WORKLOAD_V1",
+      "training_range": [
+        11,
+        4008
+      ],
+      "workload_id": "W90-04:composite-strategy-ablation"
+    },
+    {
+      "admissible_operations": [
+        "FILTER_BY_RESIDUE_CLASS",
+        "ORDER_CANDIDATES_BY_PATTERN_SCORE",
+        "VALIDATE_WITH_EXACT_DIVISOR_TEST",
+        "REUSE_FACTOR_WITNESS",
+        "ORDER_BRANCHES",
+        "PLACE_VM81_ROUTE",
+        "NORMALIZE_U72_OFFSET",
+        "ORDER_CLOSURE_OBLIGATIONS",
+        "MEMOIZE_VERIFIED_PATTERN",
+        "CHECKPOINT_STATE"
+      ],
+      "correctness_oracle": "EXACT_CANONICAL_VALIDATION_UNCHANGED",
+      "cross_task_target": "SYMBOLIC_CLOSURE_ORDERING",
+      "heldout_range": [
+        4009,
+        5000
+      ],
+      "parent_pass089_release_root_hash72": "0000000000000000000000000000000zNoCUm22A1BoQM7E3Zt*Sz2boe2B=(mEs)V-T7qQi",
+      "required_status": "VALIDATED_TRANSFER",
+      "resource_budget": {
+        "max_candidates": 50000,
+        "max_receipt_bytes": 100000000,
+        "max_strategy_steps": 8
+      },
+      "schema": "HHS_AUTONOMOUS_STRATEGY_DISCOVERY_WORKLOAD_V1",
+      "training_range": [
+        11,
+        4008
+      ],
+      "workload_id": "W90-05:factor-graph-to-symbolic-closure"
+    },
+    {
+      "admissible_operations": [
+        "FILTER_BY_RESIDUE_CLASS",
+        "ORDER_CANDIDATES_BY_PATTERN_SCORE",
+        "VALIDATE_WITH_EXACT_DIVISOR_TEST",
+        "REUSE_FACTOR_WITNESS",
+        "ORDER_BRANCHES",
+        "PLACE_VM81_ROUTE",
+        "NORMALIZE_U72_OFFSET",
+        "ORDER_CLOSURE_OBLIGATIONS",
+        "MEMOIZE_VERIFIED_PATTERN",
+        "CHECKPOINT_STATE"
+      ],
+      "correctness_oracle": "EXACT_CANONICAL_VALIDATION_UNCHANGED",
+      "cross_task_target": "U72_OFFSET_PLACEMENT",
+      "heldout_range": [
+        4009,
+        5000
+      ],
+      "parent_pass089_release_root_hash72": "0000000000000000000000000000000zNoCUm22A1BoQM7E3Zt*Sz2boe2B=(mEs)V-T7qQi",
+      "required_status": "VALIDATED_TRANSFER",
+      "resource_budget": {
+        "max_candidates": 50000,
+        "max_receipt_bytes": 100000000,
+        "max_strategy_steps": 8
+      },
+      "schema": "HHS_AUTONOMOUS_STRATEGY_DISCOVERY_WORKLOAD_V1",
+      "training_range": [
+        11,
+        4008
+      ],
+      "workload_id": "W90-06:residue-to-u72-placement"
+    },
+    {
+      "admissible_operations": [
+        "FILTER_BY_RESIDUE_CLASS",
+        "ORDER_CANDIDATES_BY_PATTERN_SCORE",
+        "VALIDATE_WITH_EXACT_DIVISOR_TEST",
+        "REUSE_FACTOR_WITNESS",
+        "ORDER_BRANCHES",
+        "PLACE_VM81_ROUTE",
+        "NORMALIZE_U72_OFFSET",
+        "ORDER_CLOSURE_OBLIGATIONS",
+        "MEMOIZE_VERIFIED_PATTERN",
+        "CHECKPOINT_STATE"
+      ],
+      "correctness_oracle": "EXACT_CANONICAL_VALIDATION_UNCHANGED",
+      "cross_task_target": "VM81_ROUTING",
+      "heldout_range": [
+        4009,
+        5000
+      ],
+      "parent_pass089_release_root_hash72": "0000000000000000000000000000000zNoCUm22A1BoQM7E3Zt*Sz2boe2B=(mEs)V-T7qQi",
+      "required_status": "VALIDATED_TRANSFER",
+      "resource_budget": {
+        "max_candidates": 50000,
+        "max_receipt_bytes": 100000000,
+        "max_strategy_steps": 8
+      },
+      "schema": "HHS_AUTONOMOUS_STRATEGY_DISCOVERY_WORKLOAD_V1",
+      "training_range": [
+        11,
+        4008
+      ],
+      "workload_id": "W90-07:branch-order-to-vm81-routing"
+    },
+    {
+      "admissible_operations": [
+        "FILTER_BY_RESIDUE_CLASS",
+        "ORDER_CANDIDATES_BY_PATTERN_SCORE",
+        "VALIDATE_WITH_EXACT_DIVISOR_TEST",
+        "REUSE_FACTOR_WITNESS",
+        "ORDER_BRANCHES",
+        "PLACE_VM81_ROUTE",
+        "NORMALIZE_U72_OFFSET",
+        "ORDER_CLOSURE_OBLIGATIONS",
+        "MEMOIZE_VERIFIED_PATTERN",
+        "CHECKPOINT_STATE"
+      ],
+      "correctness_oracle": "EXACT_CANONICAL_VALIDATION_UNCHANGED",
+      "cross_task_target": "SYMBOLIC_CLOSURE_ORDERING",
+      "heldout_range": [
+        4009,
+        5000
+      ],
+      "parent_pass089_release_root_hash72": "0000000000000000000000000000000zNoCUm22A1BoQM7E3Zt*Sz2boe2B=(mEs)V-T7qQi",
+      "required_status": "REJECTED_SCOPE_OVERCLAIM",
+      "resource_budget": {
+        "max_candidates": 50000,
+        "max_receipt_bytes": 100000000,
+        "max_strategy_steps": 8
+      },
+      "schema": "HHS_AUTONOMOUS_STRATEGY_DISCOVERY_WORKLOAD_V1",
+      "training_range": [
+        11,
+        4008
+      ],
+      "workload_id": "W90-08:overfit-strategy-rejection"
+    },
+    {
+      "admissible_operations": [
+        "FILTER_BY_RESIDUE_CLASS",
+        "ORDER_CANDIDATES_BY_PATTERN_SCORE",
+        "VALIDATE_WITH_EXACT_DIVISOR_TEST",
+        "REUSE_FACTOR_WITNESS",
+        "ORDER_BRANCHES",
+        "PLACE_VM81_ROUTE",
+        "NORMALIZE_U72_OFFSET",
+        "ORDER_CLOSURE_OBLIGATIONS",
+        "MEMOIZE_VERIFIED_PATTERN",
+        "CHECKPOINT_STATE"
+      ],
+      "correctness_oracle": "EXACT_CANONICAL_VALIDATION_UNCHANGED",
+      "cross_task_target": "SYMBOLIC_CLOSURE_ORDERING",
+      "heldout_range": [
+        4009,
+        5000
+      ],
+      "parent_pass089_release_root_hash72": "0000000000000000000000000000000zNoCUm22A1BoQM7E3Zt*Sz2boe2B=(mEs)V-T7qQi",
+      "required_status": "VALIDATED_TRANSFER",
+      "resource_budget": {
+        "max_candidates": 50000,
+        "max_receipt_bytes": 100000000,
+        "max_strategy_steps": 8
+      },
+      "schema": "HHS_AUTONOMOUS_STRATEGY_DISCOVERY_WORKLOAD_V1",
+      "training_range": [
+        11,
+        4008
+      ],
+      "workload_id": "W90-09:prediction-before-validation"
+    },
+    {
+      "admissible_operations": [
+        "FILTER_BY_RESIDUE_CLASS",
+        "ORDER_CANDIDATES_BY_PATTERN_SCORE",
+        "VALIDATE_WITH_EXACT_DIVISOR_TEST",
+        "REUSE_FACTOR_WITNESS",
+        "ORDER_BRANCHES",
+        "PLACE_VM81_ROUTE",
+        "NORMALIZE_U72_OFFSET",
+        "ORDER_CLOSURE_OBLIGATIONS",
+        "MEMOIZE_VERIFIED_PATTERN",
+        "CHECKPOINT_STATE"
+      ],
+      "correctness_oracle": "EXACT_CANONICAL_VALIDATION_UNCHANGED",
+      "cross_task_target": "SYMBOLIC_CLOSURE_ORDERING",
+      "heldout_range": [
+        4009,
+        5000
+      ],
+      "parent_pass089_release_root_hash72": "0000000000000000000000000000000zNoCUm22A1BoQM7E3Zt*Sz2boe2B=(mEs)V-T7qQi",
+      "required_status": "REJECTED_NO_GAIN",
+      "resource_budget": {
+        "max_candidates": 50000,
+        "max_receipt_bytes": 100000000,
+        "max_strategy_steps": 8
+      },
+      "schema": "HHS_AUTONOMOUS_STRATEGY_DISCOVERY_WORKLOAD_V1",
+      "training_range": [
+        11,
+        4008
+      ],
+      "workload_id": "W90-10:no-benefit-cross-task"
+    },
+    {
+      "admissible_operations": [
+        "FILTER_BY_RESIDUE_CLASS",
+        "ORDER_CANDIDATES_BY_PATTERN_SCORE",
+        "VALIDATE_WITH_EXACT_DIVISOR_TEST",
+        "REUSE_FACTOR_WITNESS",
+        "ORDER_BRANCHES",
+        "PLACE_VM81_ROUTE",
+        "NORMALIZE_U72_OFFSET",
+        "ORDER_CLOSURE_OBLIGATIONS",
+        "MEMOIZE_VERIFIED_PATTERN",
+        "CHECKPOINT_STATE"
+      ],
+      "correctness_oracle": "EXACT_CANONICAL_VALIDATION_UNCHANGED",
+      "cross_task_target": "SYMBOLIC_CLOSURE_ORDERING",
+      "heldout_range": [
+        4009,
+        5000
+      ],
+      "parent_pass089_release_root_hash72": "0000000000000000000000000000000zNoCUm22A1BoQM7E3Zt*Sz2boe2B=(mEs)V-T7qQi",
+      "required_status": "VALIDATED_TRANSFER",
+      "resource_budget": {
+        "max_candidates": 50000,
+        "max_receipt_bytes": 100000000,
+        "max_strategy_steps": 8
+      },
+      "schema": "HHS_AUTONOMOUS_STRATEGY_DISCOVERY_WORKLOAD_V1",
+      "training_range": [
+        11,
+        4008
+      ],
+      "workload_id": "W90-11:interrupted-resumed-discovery"
+    },
+    {
+      "admissible_operations": [
+        "FILTER_BY_RESIDUE_CLASS",
+        "ORDER_CANDIDATES_BY_PATTERN_SCORE",
+        "VALIDATE_WITH_EXACT_DIVISOR_TEST",
+        "REUSE_FACTOR_WITNESS",
+        "ORDER_BRANCHES",
+        "PLACE_VM81_ROUTE",
+        "NORMALIZE_U72_OFFSET",
+        "ORDER_CLOSURE_OBLIGATIONS",
+        "MEMOIZE_VERIFIED_PATTERN",
+        "CHECKPOINT_STATE"
+      ],
+      "correctness_oracle": "EXACT_CANONICAL_VALIDATION_UNCHANGED",
+      "cross_task_target": "SYMBOLIC_CLOSURE_ORDERING",
+      "heldout_range": [
+        4009,
+        5000
+      ],
+      "parent_pass089_release_root_hash72": "0000000000000000000000000000000zNoCUm22A1BoQM7E3Zt*Sz2boe2B=(mEs)V-T7qQi",
+      "required_status": "VALIDATED_TRANSFER",
+      "resource_budget": {
+        "max_candidates": 50000,
+        "max_receipt_bytes": 100000000,
+        "max_strategy_steps": 8
+      },
+      "schema": "HHS_AUTONOMOUS_STRATEGY_DISCOVERY_WORKLOAD_V1",
+      "training_range": [
+        11,
+        4008
+      ],
+      "workload_id": "W90-12:discovery-replay"
+    }
+  ]
+}

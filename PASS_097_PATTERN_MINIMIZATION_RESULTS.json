@@ -1,0 +1,7 @@
+{
+  "schema": "HHS_PASS_097_PATTERN_MINIMIZATION_V1",
+  "full_patterns": 16,
+  "reduced_patterns": 8,
+  "minimal_reconstructable_patterns": 0,
+  "reconstruction_required_at_minimum": true
+}

@@ -1,0 +1,159 @@
+{
+  "schema": "HHS_PASS_089_SCALING_V1",
+  "results": [
+    {
+      "workload_id": "W145:lo-shu-prime-genesis",
+      "cache_entry_count": 21,
+      "certification_horizon_exclusive": 961,
+      "divisor_test_count": 35,
+      "highest_consecutive_prime": 31,
+      "processed_candidates": 21,
+      "receipt_bytes": 12739,
+      "validated_composite_count": 14,
+      "validated_prime_count": 7
+    },
+    {
+      "workload_id": "W146:first-external-prime-11",
+      "cache_entry_count": 2,
+      "certification_horizon_exclusive": 121,
+      "divisor_test_count": 3,
+      "highest_consecutive_prime": 11,
+      "processed_candidates": 2,
+      "receipt_bytes": 1841,
+      "validated_composite_count": 1,
+      "validated_prime_count": 1
+    },
+    {
+      "workload_id": "W147:frontier-through-47",
+      "cache_entry_count": 37,
+      "certification_horizon_exclusive": 2209,
+      "divisor_test_count": 64,
+      "highest_consecutive_prime": 47,
+      "processed_candidates": 37,
+      "receipt_bytes": 21975,
+      "validated_composite_count": 26,
+      "validated_prime_count": 11
+    },
+    {
+      "workload_id": "W148:frontier-through-97",
+      "cache_entry_count": 87,
+      "certification_horizon_exclusive": 9409,
+      "divisor_test_count": 169,
+      "highest_consecutive_prime": 97,
+      "processed_candidates": 87,
+      "receipt_bytes": 50973,
+      "validated_composite_count": 66,
+      "validated_prime_count": 21
+    },
+    {
+      "workload_id": "W149:factor-witness-calibration",
+      "cache_entry_count": 117,
+      "certification_horizon_exclusive": 16129,
+      "divisor_test_count": 234,
+      "highest_consecutive_prime": 127,
+      "processed_candidates": 117,
+      "receipt_bytes": 68457,
+      "validated_composite_count": 90,
+      "validated_prime_count": 27
+    },
+    {
+      "workload_id": "W150:prime-gap-pattern-cache",
+      "cache_entry_count": 245,
+      "certification_horizon_exclusive": 63001,
+      "divisor_test_count": 550,
+      "highest_consecutive_prime": 251,
+      "processed_candidates": 245,
+      "receipt_bytes": 143315,
+      "validated_composite_count": 195,
+      "validated_prime_count": 50
+    },
+    {
+      "workload_id": "W151:residue-pattern-calibration",
+      "cache_entry_count": 501,
+      "certification_horizon_exclusive": 259081,
+      "divisor_test_count": 1269,
+      "highest_consecutive_prime": 509,
+      "processed_candidates": 501,
+      "receipt_bytes": 293635,
+      "validated_composite_count": 408,
+      "validated_prime_count": 93
+    },
+    {
+      "workload_id": "W152:one-thousand-candidate-frontier",
+      "cache_entry_count": 1001,
+      "certification_horizon_exclusive": 1018081,
+      "divisor_test_count": 2832,
+      "highest_consecutive_prime": 1009,
+      "processed_candidates": 1001,
+      "receipt_bytes": 588343,
+      "validated_composite_count": 836,
+      "validated_prime_count": 165
+    },
+    {
+      "workload_id": "W153:two-thousand-candidate-frontier",
+      "cache_entry_count": 2001,
+      "certification_horizon_exclusive": 4044121,
+      "divisor_test_count": 6388,
+      "highest_consecutive_prime": 2011,
+      "processed_candidates": 2001,
+      "receipt_bytes": 1181694,
+      "validated_composite_count": 1700,
+      "validated_prime_count": 301
+    },
+    {
+      "workload_id": "W154:four-thousand-candidate-frontier",
+      "cache_entry_count": 4001,
+      "certification_horizon_exclusive": 16056049,
+      "divisor_test_count": 14553,
+      "highest_consecutive_prime": 4007,
+      "processed_candidates": 4001,
+      "receipt_bytes": 2374950,
+      "validated_composite_count": 3452,
+      "validated_prime_count": 549
+    },
+    {
+      "workload_id": "W155:stable-unresolved-budget",
+      "cache_entry_count": 64,
+      "certification_horizon_exclusive": 5329,
+      "divisor_test_count": 120,
+      "highest_consecutive_prime": 73,
+      "processed_candidates": 64,
+      "receipt_bytes": 37623,
+      "validated_composite_count": 47,
+      "validated_prime_count": 17
+    },
+    {
+      "workload_id": "W156:resource-bounded-frontier",
+      "cache_entry_count": 512,
+      "certification_horizon_exclusive": 271441,
+      "divisor_test_count": 1295,
+      "highest_consecutive_prime": 521,
+      "processed_candidates": 512,
+      "receipt_bytes": 300127,
+      "validated_composite_count": 418,
+      "validated_prime_count": 94
+    },
+    {
+      "workload_id": "W157:cache-authority-separation",
+      "cache_entry_count": 1013,
+      "certification_horizon_exclusive": 1042441,
+      "divisor_test_count": 2878,
+      "highest_consecutive_prime": 1021,
+      "processed_candidates": 1013,
+      "receipt_bytes": 595414,
+      "validated_composite_count": 845,
+      "validated_prime_count": 168
+    },
+    {
+      "workload_id": "W158:prime-receipt-only-replay",
+      "cache_entry_count": 2037,
+      "certification_horizon_exclusive": 4157521,
+      "divisor_test_count": 6524,
+      "highest_consecutive_prime": 2039,
+      "processed_candidates": 2037,
+      "receipt_bytes": 1203145,
+      "validated_composite_count": 1732,
+      "validated_prime_count": 305
+    }
+  ]
+}

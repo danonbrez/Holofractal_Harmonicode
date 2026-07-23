@@ -1,0 +1,971 @@
+{
+  "schema": "HHS_PASS_090_RECEIPTS_V1",
+  "receipts": [
+    {
+      "evaluations": {
+        "ABLATION": {
+          "correct": true,
+          "work_units": 6937
+        },
+        "BASELINE_EXACT": {
+          "correct": true,
+          "work_units": 9910
+        },
+        "LOCAL_STRATEGY": {
+          "correct": true,
+          "work_units": 5946
+        },
+        "TRANSFER_STRATEGY": {
+          "baseline_work_units": 4955,
+          "correct": true,
+          "work_units": 3964
+        }
+      },
+      "failed_applications": [],
+      "full_witnessing_cost_included": true,
+      "oracle_unchanged": true,
+      "prediction_separate_from_validation": true,
+      "schema": "HHS_STRATEGY_DISCOVERY_RECEIPT_V1",
+      "status": "VALIDATED_TRANSFER",
+      "strategy": {
+        "admissible_operations": [
+          "FILTER_BY_RESIDUE_CLASS",
+          "ORDER_CANDIDATES_BY_PATTERN_SCORE",
+          "VALIDATE_WITH_EXACT_DIVISOR_TEST"
+        ],
+        "authority": false,
+        "claimed_scope": {
+          "source": "PRIME_CLASSIFICATION",
+          "target": "SYMBOLIC_CLOSURE_ORDERING"
+        },
+        "composition_graph_root_hash72": "0000000000000000000000000000004q5Ul+jM/(!px3CTTkseJP9AZel4*uHVG^Oeq?6F0o",
+        "origin_workload_ids": [
+          "W90-01:discover-residue-ordering"
+        ],
+        "predicted_effect": {
+          "direction": "LOWER_IS_BETTER",
+          "metric": "DETERMINISTIC_WORK_UNITS"
+        },
+        "requires_validation": true,
+        "schema": "HHS_DISCOVERED_STRATEGY_V1",
+        "source_pattern_roots": [
+          "0000000000000000000000000000003=C+I/CBLF1fjIG-vHOcW+DLb8=)^rpJj1c+)yG1w7",
+          "00000000000000000000000000000019TpMAqNwYrnGlRTMebCCIezP17!!8Hq4md0=GrLY9",
+          "0000000000000000000000000000001zW-1hIcNC(QmO>JSU1^VQU7jF(6)lEJplDZCI-j8I"
+        ],
+        "strategy_id": "strategy:W90-01:discover-residue-ordering",
+        "strategy_root_hash72": "0000000000000000000000000000002i^2O*Z7AP9HWva)(yGupAIH!2**kxyx44!Y4e^oSV"
+      },
+      "strategy_discovery_receipt_root_hash72": "0000000000000000000000000000003lN*q+tGoIVZT9OxYG*(Dtk66Xn?eVDHyFut)Pgmwr",
+      "strategy_program": {
+        "schema": "HHS_STRATEGY_PROGRAM_V1",
+        "steps": [
+          {
+            "operation": "FILTER_BY_RESIDUE_CLASS",
+            "parameters": {
+              "modulus": 6
+            }
+          },
+          {
+            "operation": "ORDER_CANDIDATES_BY_PATTERN_SCORE",
+            "parameters": {
+              "source": "PRIME_RESIDUE_CACHE"
+            }
+          },
+          {
+            "operation": "VALIDATE_WITH_EXACT_DIVISOR_TEST",
+            "parameters": {}
+          }
+        ]
+      },
+      "training_and_evaluation_disjoint": true,
+      "workload_id": "W90-01:discover-residue-ordering"
+    },
+    {
+      "evaluations": {
+        "ABLATION": {
+          "correct": true,
+          "work_units": 13979
+        },
+        "BASELINE_EXACT": {
+          "correct": true,
+          "work_units": 19970
+        },
+        "LOCAL_STRATEGY": {
+          "correct": true,
+          "work_units": 11982
+        },
+        "TRANSFER_STRATEGY": {
+          "baseline_work_units": 9985,
+          "correct": true,
+          "work_units": 7988
+        }
+      },
+      "failed_applications": [],
+      "full_witnessing_cost_included": true,
+      "oracle_unchanged": true,
+      "prediction_separate_from_validation": true,
+      "schema": "HHS_STRATEGY_DISCOVERY_RECEIPT_V1",
+      "status": "VALIDATED_TRANSFER",
+      "strategy": {
+        "admissible_operations": [
+          "FILTER_BY_RESIDUE_CLASS",
+          "ORDER_CANDIDATES_BY_PATTERN_SCORE",
+          "VALIDATE_WITH_EXACT_DIVISOR_TEST"
+        ],
+        "authority": false,
+        "claimed_scope": {
+          "source": "PRIME_CLASSIFICATION",
+          "target": "SYMBOLIC_CLOSURE_ORDERING"
+        },
+        "composition_graph_root_hash72": "0000000000000000000000000000004q5Ul+jM/(!px3CTTkseJP9AZel4*uHVG^Oeq?6F0o",
+        "origin_workload_ids": [
+          "W90-02:held-out-prime-validation"
+        ],
+        "predicted_effect": {
+          "direction": "LOWER_IS_BETTER",
+          "metric": "DETERMINISTIC_WORK_UNITS"
+        },
+        "requires_validation": true,
+        "schema": "HHS_DISCOVERED_STRATEGY_V1",
+        "source_pattern_roots": [
+          "0000000000000000000000000000003=C+I/CBLF1fjIG-vHOcW+DLb8=)^rpJj1c+)yG1w7",
+          "00000000000000000000000000000019TpMAqNwYrnGlRTMebCCIezP17!!8Hq4md0=GrLY9",
+          "0000000000000000000000000000001zW-1hIcNC(QmO>JSU1^VQU7jF(6)lEJplDZCI-j8I"
+        ],
+        "strategy_id": "strategy:W90-02:held-out-prime-validation",
+        "strategy_root_hash72": "0000000000000000000000000000000ELh3dWbm?YeRea12py!m^NFzeqx75qV^WY(8?Etlq"
+      },
+      "strategy_discovery_receipt_root_hash72": "0000000000000000000000000000001iJ9w>ByPXQ8>Qd52l4+tVhIRX!YGDQ6NnScHNFwL6",
+      "strategy_program": {
+        "schema": "HHS_STRATEGY_PROGRAM_V1",
+        "steps": [
+          {
+            "operation": "FILTER_BY_RESIDUE_CLASS",
+            "parameters": {
+              "modulus": 6
+            }
+          },
+          {
+            "operation": "ORDER_CANDIDATES_BY_PATTERN_SCORE",
+            "parameters": {
+              "source": "PRIME_RESIDUE_CACHE"
+            }
+          },
+          {
+            "operation": "VALIDATE_WITH_EXACT_DIVISOR_TEST",
+            "parameters": {}
+          }
+        ]
+      },
+      "training_and_evaluation_disjoint": true,
+      "workload_id": "W90-02:held-out-prime-validation"
+    },
+    {
+      "evaluations": {
+        "ABLATION": {
+          "correct": true,
+          "work_units": 6937
+        },
+        "BASELINE_EXACT": {
+          "correct": true,
+          "work_units": 9910
+        },
+        "LOCAL_STRATEGY": {
+          "correct": true,
+          "work_units": 5946
+        },
+        "TRANSFER_STRATEGY": {
+          "baseline_work_units": 4955,
+          "correct": true,
+          "work_units": 3964
+        }
+      },
+      "failed_applications": [],
+      "full_witnessing_cost_included": true,
+      "oracle_unchanged": true,
+      "prediction_separate_from_validation": true,
+      "schema": "HHS_STRATEGY_DISCOVERY_RECEIPT_V1",
+      "status": "VALIDATED_TRANSFER",
+      "strategy": {
+        "admissible_operations": [
+          "FILTER_BY_RESIDUE_CLASS",
+          "REUSE_FACTOR_WITNESS",
+          "VALIDATE_WITH_EXACT_DIVISOR_TEST"
+        ],
+        "authority": false,
+        "claimed_scope": {
+          "source": "PRIME_CLASSIFICATION",
+          "target": "SYMBOLIC_CLOSURE_ORDERING"
+        },
+        "composition_graph_root_hash72": "0000000000000000000000000000003!e7h99yj)L*BvD4OTsjFK1ige0YSotzrrsuWiyVKF",
+        "origin_workload_ids": [
+          "W90-03:composite-residue-factor-strategy"
+        ],
+        "predicted_effect": {
+          "direction": "LOWER_IS_BETTER",
+          "metric": "DETERMINISTIC_WORK_UNITS"
+        },
+        "requires_validation": true,
+        "schema": "HHS_DISCOVERED_STRATEGY_V1",
+        "source_pattern_roots": [
+          "0000000000000000000000000000002VpH0gKhMBf0U/ip7gnd+(sG7f0FV=u+pPBf6COizb",
+          "00000000000000000000000000000030^*Lj95+-(=jn>fJg0x>ZjW0!)BGB9t5jGWD+*uoP",
+          "0000000000000000000000000000002GdAY5ERSE1Hm/Vs*I5cArrhtZemQD!tf?yvNMeg?r"
+        ],
+        "strategy_id": "strategy:W90-03:composite-residue-factor-strategy",
+        "strategy_root_hash72": "0000000000000000000000000000004d=Tn)>rcA6j2JTRiPpYhutb+H=pN7kmUmO7ot!Hul"
+      },
+      "strategy_discovery_receipt_root_hash72": "0000000000000000000000000000000aBs=HIKO+Pc8R^Vh4)HqxL!+E(RytNZi*SZ>3pi)P",
+      "strategy_program": {
+        "schema": "HHS_STRATEGY_PROGRAM_V1",
+        "steps": [
+          {
+            "operation": "FILTER_BY_RESIDUE_CLASS",
+            "parameters": {
+              "modulus": 30
+            }
+          },
+          {
+            "operation": "REUSE_FACTOR_WITNESS",
+            "parameters": {}
+          },
+          {
+            "operation": "VALIDATE_WITH_EXACT_DIVISOR_TEST",
+            "parameters": {}
+          }
+        ]
+      },
+      "training_and_evaluation_disjoint": true,
+      "workload_id": "W90-03:composite-residue-factor-strategy"
+    },
+    {
+      "evaluations": {
+        "ABLATION": {
+          "correct": true,
+          "work_units": 6937
+        },
+        "BASELINE_EXACT": {
+          "correct": true,
+          "work_units": 9910
+        },
+        "LOCAL_STRATEGY": {
+          "correct": true,
+          "work_units": 5946
+        },
+        "TRANSFER_STRATEGY": {
+          "baseline_work_units": 4955,
+          "correct": true,
+          "work_units": 3964
+        }
+      },
+      "failed_applications": [],
+      "full_witnessing_cost_included": true,
+      "oracle_unchanged": true,
+      "prediction_separate_from_validation": true,
+      "schema": "HHS_STRATEGY_DISCOVERY_RECEIPT_V1",
+      "status": "VALIDATED_TRANSFER",
+      "strategy": {
+        "admissible_operations": [
+          "FILTER_BY_RESIDUE_CLASS",
+          "REUSE_FACTOR_WITNESS",
+          "VALIDATE_WITH_EXACT_DIVISOR_TEST"
+        ],
+        "authority": false,
+        "claimed_scope": {
+          "source": "PRIME_CLASSIFICATION",
+          "target": "SYMBOLIC_CLOSURE_ORDERING"
+        },
+        "composition_graph_root_hash72": "0000000000000000000000000000003!e7h99yj)L*BvD4OTsjFK1ige0YSotzrrsuWiyVKF",
+        "origin_workload_ids": [
+          "W90-04:composite-strategy-ablation"
+        ],
+        "predicted_effect": {
+          "direction": "LOWER_IS_BETTER",
+          "metric": "DETERMINISTIC_WORK_UNITS"
+        },
+        "requires_validation": true,
+        "schema": "HHS_DISCOVERED_STRATEGY_V1",
+        "source_pattern_roots": [
+          "0000000000000000000000000000002VpH0gKhMBf0U/ip7gnd+(sG7f0FV=u+pPBf6COizb",
+          "00000000000000000000000000000030^*Lj95+-(=jn>fJg0x>ZjW0!)BGB9t5jGWD+*uoP",
+          "0000000000000000000000000000002GdAY5ERSE1Hm/Vs*I5cArrhtZemQD!tf?yvNMeg?r"
+        ],
+        "strategy_id": "strategy:W90-04:composite-strategy-ablation",
+        "strategy_root_hash72": "00000000000000000000000000000034EhJR/Pu1hc0DiFfKxnZaEuCuBf0i30hD+>l(SgDf"
+      },
+      "strategy_discovery_receipt_root_hash72": "0000000000000000000000000000003eodqE7bb7-o?>In*9^Ujt^r2dwsZ/2!Wvb6Rp+l(g",
+      "strategy_program": {
+        "schema": "HHS_STRATEGY_PROGRAM_V1",
+        "steps": [
+          {
+            "operation": "FILTER_BY_RESIDUE_CLASS",
+            "parameters": {
+              "modulus": 30
+            }
+          },
+          {
+            "operation": "REUSE_FACTOR_WITNESS",
+            "parameters": {}
+          },
+          {
+            "operation": "VALIDATE_WITH_EXACT_DIVISOR_TEST",
+            "parameters": {}
+          }
+        ]
+      },
+      "training_and_evaluation_disjoint": true,
+      "workload_id": "W90-04:composite-strategy-ablation"
+    },
+    {
+      "evaluations": {
+        "ABLATION": {
+          "correct": true,
+          "work_units": 6937
+        },
+        "BASELINE_EXACT": {
+          "correct": true,
+          "work_units": 9910
+        },
+        "LOCAL_STRATEGY": {
+          "correct": true,
+          "work_units": 5946
+        },
+        "TRANSFER_STRATEGY": {
+          "baseline_work_units": 4955,
+          "correct": true,
+          "work_units": 3964
+        }
+      },
+      "failed_applications": [],
+      "full_witnessing_cost_included": true,
+      "oracle_unchanged": true,
+      "prediction_separate_from_validation": true,
+      "schema": "HHS_STRATEGY_DISCOVERY_RECEIPT_V1",
+      "status": "VALIDATED_TRANSFER",
+      "strategy": {
+        "admissible_operations": [
+          "FILTER_BY_RESIDUE_CLASS",
+          "ORDER_CANDIDATES_BY_PATTERN_SCORE",
+          "VALIDATE_WITH_EXACT_DIVISOR_TEST"
+        ],
+        "authority": false,
+        "claimed_scope": {
+          "source": "PRIME_CLASSIFICATION",
+          "target": "SYMBOLIC_CLOSURE_ORDERING"
+        },
+        "composition_graph_root_hash72": "0000000000000000000000000000004q5Ul+jM/(!px3CTTkseJP9AZel4*uHVG^Oeq?6F0o",
+        "origin_workload_ids": [
+          "W90-05:factor-graph-to-symbolic-closure"
+        ],
+        "predicted_effect": {
+          "direction": "LOWER_IS_BETTER",
+          "metric": "DETERMINISTIC_WORK_UNITS"
+        },
+        "requires_validation": true,
+        "schema": "HHS_DISCOVERED_STRATEGY_V1",
+        "source_pattern_roots": [
+          "0000000000000000000000000000003=C+I/CBLF1fjIG-vHOcW+DLb8=)^rpJj1c+)yG1w7",
+          "00000000000000000000000000000019TpMAqNwYrnGlRTMebCCIezP17!!8Hq4md0=GrLY9",
+          "0000000000000000000000000000001zW-1hIcNC(QmO>JSU1^VQU7jF(6)lEJplDZCI-j8I"
+        ],
+        "strategy_id": "strategy:W90-05:factor-graph-to-symbolic-closure",
+        "strategy_root_hash72": "0000000000000000000000000000001NTBZKz2wO=cak6yORs)ONny1mtAp+-bEKrnyt*OYM"
+      },
+      "strategy_discovery_receipt_root_hash72": "0000000000000000000000000000003stsV+l=BYz>?sNKORwAgt?J6HiH?fXSgA7QEyec3X",
+      "strategy_program": {
+        "schema": "HHS_STRATEGY_PROGRAM_V1",
+        "steps": [
+          {
+            "operation": "FILTER_BY_RESIDUE_CLASS",
+            "parameters": {
+              "modulus": 6
+            }
+          },
+          {
+            "operation": "ORDER_CANDIDATES_BY_PATTERN_SCORE",
+            "parameters": {
+              "source": "PRIME_RESIDUE_CACHE"
+            }
+          },
+          {
+            "operation": "VALIDATE_WITH_EXACT_DIVISOR_TEST",
+            "parameters": {}
+          }
+        ]
+      },
+      "training_and_evaluation_disjoint": true,
+      "workload_id": "W90-05:factor-graph-to-symbolic-closure"
+    },
+    {
+      "evaluations": {
+        "ABLATION": {
+          "correct": true,
+          "work_units": 6937
+        },
+        "BASELINE_EXACT": {
+          "correct": true,
+          "work_units": 9910
+        },
+        "LOCAL_STRATEGY": {
+          "correct": true,
+          "work_units": 5946
+        },
+        "TRANSFER_STRATEGY": {
+          "baseline_work_units": 4955,
+          "correct": true,
+          "work_units": 3964
+        }
+      },
+      "failed_applications": [],
+      "full_witnessing_cost_included": true,
+      "oracle_unchanged": true,
+      "prediction_separate_from_validation": true,
+      "schema": "HHS_STRATEGY_DISCOVERY_RECEIPT_V1",
+      "status": "VALIDATED_TRANSFER",
+      "strategy": {
+        "admissible_operations": [
+          "FILTER_BY_RESIDUE_CLASS",
+          "ORDER_CANDIDATES_BY_PATTERN_SCORE",
+          "VALIDATE_WITH_EXACT_DIVISOR_TEST"
+        ],
+        "authority": false,
+        "claimed_scope": {
+          "source": "PRIME_CLASSIFICATION",
+          "target": "U72_OFFSET_PLACEMENT"
+        },
+        "composition_graph_root_hash72": "0000000000000000000000000000004q5Ul+jM/(!px3CTTkseJP9AZel4*uHVG^Oeq?6F0o",
+        "origin_workload_ids": [
+          "W90-06:residue-to-u72-placement"
+        ],
+        "predicted_effect": {
+          "direction": "LOWER_IS_BETTER",
+          "metric": "DETERMINISTIC_WORK_UNITS"
+        },
+        "requires_validation": true,
+        "schema": "HHS_DISCOVERED_STRATEGY_V1",
+        "source_pattern_roots": [
+          "0000000000000000000000000000003=C+I/CBLF1fjIG-vHOcW+DLb8=)^rpJj1c+)yG1w7",
+          "00000000000000000000000000000019TpMAqNwYrnGlRTMebCCIezP17!!8Hq4md0=GrLY9",
+          "0000000000000000000000000000001zW-1hIcNC(QmO>JSU1^VQU7jF(6)lEJplDZCI-j8I"
+        ],
+        "strategy_id": "strategy:W90-06:residue-to-u72-placement",
+        "strategy_root_hash72": "0000000000000000000000000000001/c7?QdVG59pMv12SoG0YyqUo52isHUnoVtRlgJTi("
+      },
+      "strategy_discovery_receipt_root_hash72": "0000000000000000000000000000003bpQ1aUT=nvOPHxe1xzs>(2UmJFKJCBvwF9GRlldW^",
+      "strategy_program": {
+        "schema": "HHS_STRATEGY_PROGRAM_V1",
+        "steps": [
+          {
+            "operation": "FILTER_BY_RESIDUE_CLASS",
+            "parameters": {
+              "modulus": 6
+            }
+          },
+          {
+            "operation": "ORDER_CANDIDATES_BY_PATTERN_SCORE",
+            "parameters": {
+              "source": "PRIME_RESIDUE_CACHE"
+            }
+          },
+          {
+            "operation": "VALIDATE_WITH_EXACT_DIVISOR_TEST",
+            "parameters": {}
+          }
+        ]
+      },
+      "training_and_evaluation_disjoint": true,
+      "workload_id": "W90-06:residue-to-u72-placement"
+    },
+    {
+      "evaluations": {
+        "ABLATION": {
+          "correct": true,
+          "work_units": 6937
+        },
+        "BASELINE_EXACT": {
+          "correct": true,
+          "work_units": 9910
+        },
+        "LOCAL_STRATEGY": {
+          "correct": true,
+          "work_units": 5946
+        },
+        "TRANSFER_STRATEGY": {
+          "baseline_work_units": 4955,
+          "correct": true,
+          "work_units": 3964
+        }
+      },
+      "failed_applications": [],
+      "full_witnessing_cost_included": true,
+      "oracle_unchanged": true,
+      "prediction_separate_from_validation": true,
+      "schema": "HHS_STRATEGY_DISCOVERY_RECEIPT_V1",
+      "status": "VALIDATED_TRANSFER",
+      "strategy": {
+        "admissible_operations": [
+          "FILTER_BY_RESIDUE_CLASS",
+          "ORDER_CANDIDATES_BY_PATTERN_SCORE",
+          "VALIDATE_WITH_EXACT_DIVISOR_TEST"
+        ],
+        "authority": false,
+        "claimed_scope": {
+          "source": "PRIME_CLASSIFICATION",
+          "target": "VM81_ROUTING"
+        },
+        "composition_graph_root_hash72": "0000000000000000000000000000004q5Ul+jM/(!px3CTTkseJP9AZel4*uHVG^Oeq?6F0o",
+        "origin_workload_ids": [
+          "W90-07:branch-order-to-vm81-routing"
+        ],
+        "predicted_effect": {
+          "direction": "LOWER_IS_BETTER",
+          "metric": "DETERMINISTIC_WORK_UNITS"
+        },
+        "requires_validation": true,
+        "schema": "HHS_DISCOVERED_STRATEGY_V1",
+        "source_pattern_roots": [
+          "0000000000000000000000000000003=C+I/CBLF1fjIG-vHOcW+DLb8=)^rpJj1c+)yG1w7",
+          "00000000000000000000000000000019TpMAqNwYrnGlRTMebCCIezP17!!8Hq4md0=GrLY9",
+          "0000000000000000000000000000001zW-1hIcNC(QmO>JSU1^VQU7jF(6)lEJplDZCI-j8I"
+        ],
+        "strategy_id": "strategy:W90-07:branch-order-to-vm81-routing",
+        "strategy_root_hash72": "0000000000000000000000000000000F8r!eKCc4QuQNStfj?MAid4riyZln(fd8Q9zndofc"
+      },
+      "strategy_discovery_receipt_root_hash72": "0000000000000000000000000000002FK0-A^!QE1+VnOv(LIL5+gRcREEqh4+*87hoo9Ou>",
+      "strategy_program": {
+        "schema": "HHS_STRATEGY_PROGRAM_V1",
+        "steps": [
+          {
+            "operation": "FILTER_BY_RESIDUE_CLASS",
+            "parameters": {
+              "modulus": 6
+            }
+          },
+          {
+            "operation": "ORDER_CANDIDATES_BY_PATTERN_SCORE",
+            "parameters": {
+              "source": "PRIME_RESIDUE_CACHE"
+            }
+          },
+          {
+            "operation": "VALIDATE_WITH_EXACT_DIVISOR_TEST",
+            "parameters": {}
+          }
+        ]
+      },
+      "training_and_evaluation_disjoint": true,
+      "workload_id": "W90-07:branch-order-to-vm81-routing"
+    },
+    {
+      "evaluations": {
+        "ABLATION": {
+          "correct": true,
+          "work_units": 6937
+        },
+        "BASELINE_EXACT": {
+          "correct": true,
+          "work_units": 9910
+        },
+        "LOCAL_STRATEGY": {
+          "correct": true,
+          "work_units": 5946
+        },
+        "TRANSFER_STRATEGY": {
+          "baseline_work_units": 4955,
+          "correct": true,
+          "work_units": 3964
+        }
+      },
+      "failed_applications": [
+        {
+          "application": "HELD_OUT",
+          "reason": "NO_GAIN_OR_DIVERGENCE"
+        }
+      ],
+      "full_witnessing_cost_included": true,
+      "oracle_unchanged": true,
+      "prediction_separate_from_validation": true,
+      "schema": "HHS_STRATEGY_DISCOVERY_RECEIPT_V1",
+      "status": "REJECTED_SCOPE_OVERCLAIM",
+      "strategy": {
+        "admissible_operations": [
+          "FILTER_BY_RESIDUE_CLASS",
+          "ORDER_CANDIDATES_BY_PATTERN_SCORE",
+          "VALIDATE_WITH_EXACT_DIVISOR_TEST"
+        ],
+        "authority": false,
+        "claimed_scope": {
+          "source": "PRIME_CLASSIFICATION",
+          "target": "SYMBOLIC_CLOSURE_ORDERING"
+        },
+        "composition_graph_root_hash72": "0000000000000000000000000000004q5Ul+jM/(!px3CTTkseJP9AZel4*uHVG^Oeq?6F0o",
+        "origin_workload_ids": [
+          "W90-08:overfit-strategy-rejection"
+        ],
+        "predicted_effect": {
+          "direction": "LOWER_IS_BETTER",
+          "metric": "DETERMINISTIC_WORK_UNITS"
+        },
+        "requires_validation": true,
+        "schema": "HHS_DISCOVERED_STRATEGY_V1",
+        "source_pattern_roots": [
+          "0000000000000000000000000000003=C+I/CBLF1fjIG-vHOcW+DLb8=)^rpJj1c+)yG1w7",
+          "00000000000000000000000000000019TpMAqNwYrnGlRTMebCCIezP17!!8Hq4md0=GrLY9",
+          "0000000000000000000000000000001zW-1hIcNC(QmO>JSU1^VQU7jF(6)lEJplDZCI-j8I"
+        ],
+        "strategy_id": "strategy:W90-08:overfit-strategy-rejection",
+        "strategy_root_hash72": "0000000000000000000000000000000Iq8gKwd3*B(=qW^l3GJZUQl2)PKONy/e4=N6>9HVp"
+      },
+      "strategy_discovery_receipt_root_hash72": "0000000000000000000000000000001Rlgdj5+B2Eckz//?Iz>veTEEydgp2NH/QTryX=*bc",
+      "strategy_program": {
+        "schema": "HHS_STRATEGY_PROGRAM_V1",
+        "steps": [
+          {
+            "operation": "FILTER_BY_RESIDUE_CLASS",
+            "parameters": {
+              "modulus": 6
+            }
+          },
+          {
+            "operation": "ORDER_CANDIDATES_BY_PATTERN_SCORE",
+            "parameters": {
+              "source": "PRIME_RESIDUE_CACHE"
+            }
+          },
+          {
+            "operation": "VALIDATE_WITH_EXACT_DIVISOR_TEST",
+            "parameters": {}
+          }
+        ]
+      },
+      "training_and_evaluation_disjoint": true,
+      "workload_id": "W90-08:overfit-strategy-rejection"
+    },
+    {
+      "evaluations": {
+        "ABLATION": {
+          "correct": true,
+          "work_units": 6937
+        },
+        "BASELINE_EXACT": {
+          "correct": true,
+          "work_units": 9910
+        },
+        "LOCAL_STRATEGY": {
+          "correct": true,
+          "work_units": 5946
+        },
+        "TRANSFER_STRATEGY": {
+          "baseline_work_units": 4955,
+          "correct": true,
+          "work_units": 3964
+        }
+      },
+      "failed_applications": [],
+      "full_witnessing_cost_included": true,
+      "oracle_unchanged": true,
+      "prediction_separate_from_validation": true,
+      "schema": "HHS_STRATEGY_DISCOVERY_RECEIPT_V1",
+      "status": "VALIDATED_TRANSFER",
+      "strategy": {
+        "admissible_operations": [
+          "FILTER_BY_RESIDUE_CLASS",
+          "ORDER_CANDIDATES_BY_PATTERN_SCORE",
+          "VALIDATE_WITH_EXACT_DIVISOR_TEST"
+        ],
+        "authority": false,
+        "claimed_scope": {
+          "source": "PRIME_CLASSIFICATION",
+          "target": "SYMBOLIC_CLOSURE_ORDERING"
+        },
+        "composition_graph_root_hash72": "0000000000000000000000000000004q5Ul+jM/(!px3CTTkseJP9AZel4*uHVG^Oeq?6F0o",
+        "origin_workload_ids": [
+          "W90-09:prediction-before-validation"
+        ],
+        "predicted_effect": {
+          "direction": "LOWER_IS_BETTER",
+          "metric": "DETERMINISTIC_WORK_UNITS"
+        },
+        "requires_validation": true,
+        "schema": "HHS_DISCOVERED_STRATEGY_V1",
+        "source_pattern_roots": [
+          "0000000000000000000000000000003=C+I/CBLF1fjIG-vHOcW+DLb8=)^rpJj1c+)yG1w7",
+          "00000000000000000000000000000019TpMAqNwYrnGlRTMebCCIezP17!!8Hq4md0=GrLY9",
+          "0000000000000000000000000000001zW-1hIcNC(QmO>JSU1^VQU7jF(6)lEJplDZCI-j8I"
+        ],
+        "strategy_id": "strategy:W90-09:prediction-before-validation",
+        "strategy_root_hash72": "0000000000000000000000000000003Ma=Dn2!N(n?-mE0*BC=T9QA8Kvg>XKjOYLbx9z5Pg"
+      },
+      "strategy_discovery_receipt_root_hash72": "0000000000000000000000000000004cQiMnLHoqB3v4Mc2aLIOiBQ*=1W)OQG>J6f39F>SY",
+      "strategy_program": {
+        "schema": "HHS_STRATEGY_PROGRAM_V1",
+        "steps": [
+          {
+            "operation": "FILTER_BY_RESIDUE_CLASS",
+            "parameters": {
+              "modulus": 6
+            }
+          },
+          {
+            "operation": "ORDER_CANDIDATES_BY_PATTERN_SCORE",
+            "parameters": {
+              "source": "PRIME_RESIDUE_CACHE"
+            }
+          },
+          {
+            "operation": "VALIDATE_WITH_EXACT_DIVISOR_TEST",
+            "parameters": {}
+          }
+        ]
+      },
+      "training_and_evaluation_disjoint": true,
+      "workload_id": "W90-09:prediction-before-validation"
+    },
+    {
+      "evaluations": {
+        "ABLATION": {
+          "correct": true,
+          "work_units": 6937
+        },
+        "BASELINE_EXACT": {
+          "correct": true,
+          "work_units": 9910
+        },
+        "LOCAL_STRATEGY": {
+          "correct": true,
+          "work_units": 5946
+        },
+        "TRANSFER_STRATEGY": {
+          "baseline_work_units": 4955,
+          "correct": true,
+          "work_units": 4955
+        }
+      },
+      "failed_applications": [
+        {
+          "application": "CROSS_TASK",
+          "reason": "NO_TRANSFER"
+        }
+      ],
+      "full_witnessing_cost_included": true,
+      "oracle_unchanged": true,
+      "prediction_separate_from_validation": true,
+      "schema": "HHS_STRATEGY_DISCOVERY_RECEIPT_V1",
+      "status": "REJECTED_NO_GAIN",
+      "strategy": {
+        "admissible_operations": [
+          "FILTER_BY_RESIDUE_CLASS",
+          "ORDER_CANDIDATES_BY_PATTERN_SCORE",
+          "VALIDATE_WITH_EXACT_DIVISOR_TEST"
+        ],
+        "authority": false,
+        "claimed_scope": {
+          "source": "PRIME_CLASSIFICATION",
+          "target": "SYMBOLIC_CLOSURE_ORDERING"
+        },
+        "composition_graph_root_hash72": "0000000000000000000000000000004q5Ul+jM/(!px3CTTkseJP9AZel4*uHVG^Oeq?6F0o",
+        "origin_workload_ids": [
+          "W90-10:no-benefit-cross-task"
+        ],
+        "predicted_effect": {
+          "direction": "LOWER_IS_BETTER",
+          "metric": "DETERMINISTIC_WORK_UNITS"
+        },
+        "requires_validation": true,
+        "schema": "HHS_DISCOVERED_STRATEGY_V1",
+        "source_pattern_roots": [
+          "0000000000000000000000000000003=C+I/CBLF1fjIG-vHOcW+DLb8=)^rpJj1c+)yG1w7",
+          "00000000000000000000000000000019TpMAqNwYrnGlRTMebCCIezP17!!8Hq4md0=GrLY9",
+          "0000000000000000000000000000001zW-1hIcNC(QmO>JSU1^VQU7jF(6)lEJplDZCI-j8I"
+        ],
+        "strategy_id": "strategy:W90-10:no-benefit-cross-task",
+        "strategy_root_hash72": "0000000000000000000000000000003rvnYuzqkH?fkF2qLLbmsVWkeE?tk06RAia>Ma61m9"
+      },
+      "strategy_discovery_receipt_root_hash72": "0000000000000000000000000000000T1ftJEk3/^?TkM=Q+F0bBkxx7b8W1Py/FCx^cRh7U",
+      "strategy_program": {
+        "schema": "HHS_STRATEGY_PROGRAM_V1",
+        "steps": [
+          {
+            "operation": "FILTER_BY_RESIDUE_CLASS",
+            "parameters": {
+              "modulus": 6
+            }
+          },
+          {
+            "operation": "ORDER_CANDIDATES_BY_PATTERN_SCORE",
+            "parameters": {
+              "source": "PRIME_RESIDUE_CACHE"
+            }
+          },
+          {
+            "operation": "VALIDATE_WITH_EXACT_DIVISOR_TEST",
+            "parameters": {}
+          }
+        ]
+      },
+      "training_and_evaluation_disjoint": true,
+      "workload_id": "W90-10:no-benefit-cross-task"
+    },
+    {
+      "evaluations": {
+        "ABLATION": {
+          "correct": true,
+          "work_units": 6937
+        },
+        "BASELINE_EXACT": {
+          "correct": true,
+          "work_units": 9910
+        },
+        "LOCAL_STRATEGY": {
+          "correct": true,
+          "work_units": 5946
+        },
+        "TRANSFER_STRATEGY": {
+          "baseline_work_units": 4955,
+          "correct": true,
+          "work_units": 3964
+        }
+      },
+      "failed_applications": [],
+      "full_witnessing_cost_included": true,
+      "oracle_unchanged": true,
+      "prediction_separate_from_validation": true,
+      "schema": "HHS_STRATEGY_DISCOVERY_RECEIPT_V1",
+      "status": "VALIDATED_TRANSFER",
+      "strategy": {
+        "admissible_operations": [
+          "FILTER_BY_RESIDUE_CLASS",
+          "ORDER_CANDIDATES_BY_PATTERN_SCORE",
+          "VALIDATE_WITH_EXACT_DIVISOR_TEST"
+        ],
+        "authority": false,
+        "claimed_scope": {
+          "source": "PRIME_CLASSIFICATION",
+          "target": "SYMBOLIC_CLOSURE_ORDERING"
+        },
+        "composition_graph_root_hash72": "0000000000000000000000000000004q5Ul+jM/(!px3CTTkseJP9AZel4*uHVG^Oeq?6F0o",
+        "origin_workload_ids": [
+          "W90-11:interrupted-resumed-discovery"
+        ],
+        "predicted_effect": {
+          "direction": "LOWER_IS_BETTER",
+          "metric": "DETERMINISTIC_WORK_UNITS"
+        },
+        "requires_validation": true,
+        "schema": "HHS_DISCOVERED_STRATEGY_V1",
+        "source_pattern_roots": [
+          "0000000000000000000000000000003=C+I/CBLF1fjIG-vHOcW+DLb8=)^rpJj1c+)yG1w7",
+          "00000000000000000000000000000019TpMAqNwYrnGlRTMebCCIezP17!!8Hq4md0=GrLY9",
+          "0000000000000000000000000000001zW-1hIcNC(QmO>JSU1^VQU7jF(6)lEJplDZCI-j8I"
+        ],
+        "strategy_id": "strategy:W90-11:interrupted-resumed-discovery",
+        "strategy_root_hash72": "0000000000000000000000000000002QCznC(OW(y?aaBy43sa-DJq*hhV=^W9(>pKgacFVX"
+      },
+      "strategy_discovery_receipt_root_hash72": "000000000000000000000000000000344WAcc-AcN4z3p-d4kR+=EW1u/lczK=d0W+67oNUy",
+      "strategy_program": {
+        "schema": "HHS_STRATEGY_PROGRAM_V1",
+        "steps": [
+          {
+            "operation": "FILTER_BY_RESIDUE_CLASS",
+            "parameters": {
+              "modulus": 6
+            }
+          },
+          {
+            "operation": "ORDER_CANDIDATES_BY_PATTERN_SCORE",
+            "parameters": {
+              "source": "PRIME_RESIDUE_CACHE"
+            }
+          },
+          {
+            "operation": "VALIDATE_WITH_EXACT_DIVISOR_TEST",
+            "parameters": {}
+          }
+        ]
+      },
+      "training_and_evaluation_disjoint": true,
+      "workload_id": "W90-11:interrupted-resumed-discovery"
+    },
+    {
+      "evaluations": {
+        "ABLATION": {
+          "correct": true,
+          "work_units": 6937
+        },
+        "BASELINE_EXACT": {
+          "correct": true,
+          "work_units": 9910
+        },
+        "LOCAL_STRATEGY": {
+          "correct": true,
+          "work_units": 5946
+        },
+        "TRANSFER_STRATEGY": {
+          "baseline_work_units": 4955,
+          "correct": true,
+          "work_units": 3964
+        }
+      },
+      "failed_applications": [],
+      "full_witnessing_cost_included": true,
+      "oracle_unchanged": true,
+      "prediction_separate_from_validation": true,
+      "schema": "HHS_STRATEGY_DISCOVERY_RECEIPT_V1",
+      "status": "VALIDATED_TRANSFER",
+      "strategy": {
+        "admissible_operations": [
+          "FILTER_BY_RESIDUE_CLASS",
+          "ORDER_CANDIDATES_BY_PATTERN_SCORE",
+          "VALIDATE_WITH_EXACT_DIVISOR_TEST"
+        ],
+        "authority": false,
+        "claimed_scope": {
+          "source": "PRIME_CLASSIFICATION",
+          "target": "SYMBOLIC_CLOSURE_ORDERING"
+        },
+        "composition_graph_root_hash72": "0000000000000000000000000000004q5Ul+jM/(!px3CTTkseJP9AZel4*uHVG^Oeq?6F0o",
+        "origin_workload_ids": [
+          "W90-12:discovery-replay"
+        ],
+        "predicted_effect": {
+          "direction": "LOWER_IS_BETTER",
+          "metric": "DETERMINISTIC_WORK_UNITS"
+        },
+        "requires_validation": true,
+        "schema": "HHS_DISCOVERED_STRATEGY_V1",
+        "source_pattern_roots": [
+          "0000000000000000000000000000003=C+I/CBLF1fjIG-vHOcW+DLb8=)^rpJj1c+)yG1w7",
+          "00000000000000000000000000000019TpMAqNwYrnGlRTMebCCIezP17!!8Hq4md0=GrLY9",
+          "0000000000000000000000000000001zW-1hIcNC(QmO>JSU1^VQU7jF(6)lEJplDZCI-j8I"
+        ],
+        "strategy_id": "strategy:W90-12:discovery-replay",
+        "strategy_root_hash72": "0000000000000000000000000000004FiyYO>t0=TrBEOihU-XOZYTlwHN/8ctk^+HR^i(zI"
+      },
+      "strategy_discovery_receipt_root_hash72": "0000000000000000000000000000001hIZ78-(lvsty=TrvY8WqM8Cb)Zb0KjPgbYtD?7T(D",
+      "strategy_program": {
+        "schema": "HHS_STRATEGY_PROGRAM_V1",
+        "steps": [
+          {
+            "operation": "FILTER_BY_RESIDUE_CLASS",
+            "parameters": {
+              "modulus": 6
+            }
+          },
+          {
+            "operation": "ORDER_CANDIDATES_BY_PATTERN_SCORE",
+            "parameters": {
+              "source": "PRIME_RESIDUE_CACHE"
+            }
+          },
+          {
+            "operation": "VALIDATE_WITH_EXACT_DIVISOR_TEST",
+            "parameters": {}
+          }
+        ]
+      },
+      "training_and_evaluation_disjoint": true,
+      "workload_id": "W90-12:discovery-replay"
+    }
+  ]
+}

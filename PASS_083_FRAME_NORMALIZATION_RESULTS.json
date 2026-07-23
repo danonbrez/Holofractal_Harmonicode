@@ -1,0 +1,159 @@
+{
+  "schema": "HHS_PASS_083_FRAME_NORMALIZATION_RESULTS_V1",
+  "results": [
+    {
+      "workload_id": "W61:two-stream-frame-normalization",
+      "frame_count": 12,
+      "occlusion_count": 2,
+      "receipt_bytes": 15449,
+      "region_count": 24,
+      "stream_count": 2,
+      "symbolic_tracking_steps": 24,
+      "trajectory_count": 4,
+      "visual_event_count": 6
+    },
+    {
+      "workload_id": "W62:opposite-phase-video-pair",
+      "frame_count": 16,
+      "occlusion_count": 2,
+      "receipt_bytes": 19938,
+      "region_count": 32,
+      "stream_count": 2,
+      "symbolic_tracking_steps": 32,
+      "trajectory_count": 4,
+      "visual_event_count": 8
+    },
+    {
+      "workload_id": "W63:eight-stream-visual-overlap",
+      "frame_count": 64,
+      "occlusion_count": 8,
+      "receipt_bytes": 74558,
+      "region_count": 128,
+      "stream_count": 8,
+      "symbolic_tracking_steps": 128,
+      "trajectory_count": 16,
+      "visual_event_count": 8
+    },
+    {
+      "workload_id": "W64:trajectory-continuity",
+      "frame_count": 32,
+      "occlusion_count": 2,
+      "receipt_bytes": 49764,
+      "region_count": 96,
+      "stream_count": 2,
+      "symbolic_tracking_steps": 96,
+      "trajectory_count": 6,
+      "visual_event_count": 16
+    },
+    {
+      "workload_id": "W65:occlusion-preservation",
+      "frame_count": 32,
+      "occlusion_count": 4,
+      "receipt_bytes": 50493,
+      "region_count": 96,
+      "stream_count": 4,
+      "symbolic_tracking_steps": 96,
+      "trajectory_count": 12,
+      "visual_event_count": 8
+    },
+    {
+      "workload_id": "W66:competing-correspondence",
+      "frame_count": 40,
+      "occlusion_count": 4,
+      "receipt_bytes": 77078,
+      "region_count": 160,
+      "stream_count": 4,
+      "symbolic_tracking_steps": 160,
+      "trajectory_count": 16,
+      "visual_event_count": 10
+    },
+    {
+      "workload_id": "W67:sixteen-stream-dense-video",
+      "frame_count": 192,
+      "occlusion_count": 16,
+      "receipt_bytes": 215877,
+      "region_count": 384,
+      "stream_count": 16,
+      "symbolic_tracking_steps": 384,
+      "trajectory_count": 32,
+      "visual_event_count": 12
+    },
+    {
+      "workload_id": "W68:thirty-two-stream-video",
+      "frame_count": 256,
+      "occlusion_count": 32,
+      "receipt_bytes": 294192,
+      "region_count": 512,
+      "stream_count": 32,
+      "symbolic_tracking_steps": 512,
+      "trajectory_count": 64,
+      "visual_event_count": 8
+    },
+    {
+      "workload_id": "W69:sixty-four-stream-video",
+      "frame_count": 384,
+      "occlusion_count": 64,
+      "receipt_bytes": 452152,
+      "region_count": 768,
+      "stream_count": 64,
+      "symbolic_tracking_steps": 768,
+      "trajectory_count": 128,
+      "visual_event_count": 6
+    },
+    {
+      "workload_id": "W70:resource-bounded-video",
+      "frame_count": 512,
+      "occlusion_count": 16,
+      "receipt_bytes": 558223,
+      "region_count": 1024,
+      "stream_count": 16,
+      "symbolic_tracking_steps": 1024,
+      "trajectory_count": 32,
+      "visual_event_count": 32
+    },
+    {
+      "workload_id": "W71:visual-event-binding",
+      "frame_count": 96,
+      "occlusion_count": 8,
+      "receipt_bytes": 108873,
+      "region_count": 192,
+      "stream_count": 8,
+      "symbolic_tracking_steps": 192,
+      "trajectory_count": 16,
+      "visual_event_count": 12
+    },
+    {
+      "workload_id": "W72:frame-object-trajectory-separation",
+      "frame_count": 48,
+      "occlusion_count": 4,
+      "receipt_bytes": 91399,
+      "region_count": 192,
+      "stream_count": 4,
+      "symbolic_tracking_steps": 192,
+      "trajectory_count": 16,
+      "visual_event_count": 12
+    },
+    {
+      "workload_id": "W73:occlusion-reentry",
+      "frame_count": 80,
+      "occlusion_count": 8,
+      "receipt_bytes": 121844,
+      "region_count": 240,
+      "stream_count": 8,
+      "symbolic_tracking_steps": 240,
+      "trajectory_count": 24,
+      "visual_event_count": 10
+    },
+    {
+      "workload_id": "W74:video-receipt-only-replay",
+      "frame_count": 128,
+      "occlusion_count": 16,
+      "receipt_bytes": 147698,
+      "region_count": 256,
+      "stream_count": 16,
+      "symbolic_tracking_steps": 256,
+      "trajectory_count": 32,
+      "visual_event_count": 8
+    }
+  ]
+}

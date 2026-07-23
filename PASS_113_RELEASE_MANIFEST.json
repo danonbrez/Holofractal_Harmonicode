@@ -1,0 +1,57 @@
+{
+  "broader_legacy_audit_status": "NOT_RUN_DEPENDENCY_SCOPED_VALIDATION_ONLY",
+  "implementation_files": [
+    {
+      "bytes": 27824,
+      "path": "hhs_runtime/hhs_pass113_safe_lossless_archive_v1.py",
+      "sha256": "2181b306c10f018acdf6ab1675f2f2df621a2444fd2b06fd0d4f6ba136dac8d9"
+    },
+    {
+      "bytes": 9096,
+      "path": "tests/test_hhs_pass113_safe_lossless_archive_v1.py",
+      "sha256": "6300eb0847178d2fedc3f1adc7edfcfb8c095d27c449e3603e3c0e69e988e020"
+    },
+    {
+      "bytes": 216659,
+      "path": "hhs_runtime/hhs_service_registry_v1.py",
+      "sha256": "8a7a0013a09a5d1f5e8d0cc5dd847da4339d1f0413b89f4800c583ad5c897317"
+    },
+    {
+      "bytes": 34011,
+      "path": "Makefile",
+      "sha256": "9486a5ec09d5396a3d654e519b23f214605c44dab86ac02b738f15753dc92574"
+    },
+    {
+      "bytes": 62887,
+      "path": "PASS_113_SAFE_LOSSLESS_ARCHIVE.json",
+      "sha256": "d6b6ec9f78d8f2e6a0393e2ea1927cf02ea53d959cd3da0b9519dc4ebf973a5c"
+    },
+    {
+      "bytes": 1507,
+      "path": "PASS_113_SAFE_LOSSLESS_ARCHIVE.md",
+      "sha256": "ea5bceb51ce498c25d1790b1e72544af5d3e6a20e35a7e93a8734986511176fd"
+    },
+    {
+      "bytes": 486,
+      "path": "CHANGELOG_PASS_113.md",
+      "sha256": "1f74a484a7f8a1d15f171df1e572adeb5dcb611f2f24f6c332d03e7f72aca90d"
+    },
+    {
+      "bytes": 52,
+      "path": "PASS_113_TARGETED_TEST_REPORT.txt",
+      "sha256": "924c5e175c8af6ab1c4841a3f18deeab831e08d8c19dbd0a3a20b30d3ef646bd"
+    }
+  ],
+  "manifest_sha256": "6aa7976a9c7533c0d77c4e287b2d7b4dc9fafb2ed5a982603db4c0ca57a6239c",
+  "mock_components": [],
+  "parent_pass": "PASS_112",
+  "parent_seed": "hhs_pass_112_pass_safe_resume_exit.zip",
+  "pass_id": "PASS_113",
+  "schema": "HHS_PASS_113_RELEASE_MANIFEST_V1",
+  "targeted_test_command": "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest -q tests/test_hhs_pass112_pass_safe_resume_exit_v1.py tests/test_hhs_pass113_safe_lossless_archive_v1.py",
+  "targeted_test_result": {
+    "failed": 0,
+    "passed": 29,
+    "warning_count": 1
+  }
+}

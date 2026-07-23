@@ -1,0 +1,45 @@
+{
+  "carrier": {
+    "modulus": 72,
+    "type": "U72"
+  },
+  "carrier_closure_is_global_recurrence": false,
+  "composite_field_root_hash72": "0000000000000000000000000000000/dz41fEx9PP-1s3m=B5pUu!Mil>8JkBNIf-(4BML6",
+  "field_id": "pass098:field:001",
+  "input_vector": [
+    9,
+    8,
+    72,
+    1
+  ],
+  "input_vector_root_hash72": "0000000000000000000000000000002R1+GOvK*Wv9mM208*xVQ/QenL)qNTlwBSMVITYfwF",
+  "interference_contract_root_hash72": "0000000000000000000000000000001NBV0mAB+DH8^JSRw/jkfVXbfl!+mm7AvVPBGo?n-M",
+  "joint_recurrence_period": 3325608,
+  "local_carrier_closure_period": 72,
+  "normalization_contract_root_hash72": "0000000000000000000000000000000Yrq(b9IlO22epn*B6^1T6mbHcpRztkFuzfEe-MYKC",
+  "ordered_layer_ids": [
+    "phase-layer:prime:11:offset:0",
+    "phase-layer:prime:13:offset:6",
+    "phase-layer:prime:17:offset:12",
+    "phase-layer:prime:19:offset:18"
+  ],
+  "ordered_layer_roots": [
+    "0000000000000000000000000000003GrS6aKd/))6h=5*kvlJtA8LNlSc*m9rOUpz=ZTP67",
+    "0000000000000000000000000000004jF1/dvzB2HYUU9(FjOxsx9JOEbtx4khh*K?tt/8si",
+    "0000000000000000000000000000001z1Rt8+m>GFI*jKR7bHz9^W^VkE!HDRCz)1^*OgM0c",
+    "0000000000000000000000000000003bMM^J05hdR8dZhQvbHg*)w!VXnwje*?mg4cFk>=tW"
+  ],
+  "prime_periodic_layers": [
+    11,
+    13,
+    17,
+    19
+  ],
+  "relative_offset_roots": [
+    "0000000000000000000000000000001-VsB*YFU2R4VhI!Z3VXXc/NRSHbxjt/txeQN9Mto7",
+    "0000000000000000000000000000003=9I0everfZ^>NJ1KmlgjRXT3uBxyH!8L3CpK+pcA6",
+    "0000000000000000000000000000001qOh4gS-m81*cAs58zJfLJ)xmvd2TuqiVtXH-fYl5y",
+    "0000000000000000000000000000003tHm+)?CT1a*3=X!NPsYT+9HGKl2pGV1vJ>u272OLB"
+  ],
+  "schema": "HHS_POLYPERIODIC_OPERATION_FIELD_V1"
+}

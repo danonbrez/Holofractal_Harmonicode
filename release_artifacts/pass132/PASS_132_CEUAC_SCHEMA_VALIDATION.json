@@ -1,0 +1,114 @@
+{
+  "all_valid": true,
+  "schema": "HHS_PASS132_CEUAC_SCHEMA_VALIDATION_V1",
+  "workloads": [
+    {
+      "audit_root": "4Eu!T/sSh+KjOSnANK53F2YR22uF>8f5O<8rZh1T6Ocvn*3EKb4Ar/YXo6VKIFtFnew7WWY?",
+      "errors": [],
+      "valid": true,
+      "workload_id": "repeated_decimal_accumulation"
+    },
+    {
+      "audit_root": "qFBYSEXF3Uz<y3j4mlpobo+x)2t5MDd!a+Pc5Z3*fP-i(B*)w1baqXlw(J-C0*DEB!ilr/KB",
+      "errors": [],
+      "valid": true,
+      "workload_id": "catastrophic_cancellation"
+    },
+    {
+      "audit_root": "(2jGiePH3k!b1EVcL(yhnc/vUhFqI-S-EoDg0aJ9xUfwE8JS>-zz9YgB2*VnexLNIa!s!H-Z",
+      "errors": [],
+      "valid": true,
+      "workload_id": "alternating_accumulation"
+    },
+    {
+      "audit_root": "k4e7C1ejCnYdKb>cqP41z4FfGEA8Pm(vCHG6IMn-)quAYwJWjumop16puEr?djl-9TYwkGst",
+      "errors": [],
+      "valid": true,
+      "workload_id": "nonassociative_left"
+    },
+    {
+      "audit_root": "WLrT?<wT4j?1ZcdTqH3KNjD8<4y)POa1j0prVbatXF4g8RW0/4Cbx!QILgbglejxIlrdw9oU",
+      "errors": [],
+      "valid": true,
+      "workload_id": "nonassociative_right"
+    },
+    {
+      "audit_root": "r!?yiIlaHIJcjeQB>/Ig-6PxIq45bLUdO+Si1myS(/dx9Fyf1QzD1yBytS4WenOHD9I4L+bC",
+      "errors": [],
+      "valid": true,
+      "workload_id": "inverse_normalization"
+    },
+    {
+      "audit_root": "lmbEV1j8CzDTA5eu9WGW62SXq-EJy*534hZ4KtfWwUMs5Hda*AEgWn3Xx*KfbB!WIasX(7xt",
+      "errors": [],
+      "valid": true,
+      "workload_id": "overflow_boundary"
+    },
+    {
+      "audit_root": "YWYcUqqhfcocoOM-vcUN(cFZ!?dU1ToMlQ-o29YrEho!dfP!lH1zOxN7mKMRQ8-Dp3DcjiQ!",
+      "errors": [],
+      "valid": true,
+      "workload_id": "underflow_boundary"
+    },
+    {
+      "audit_root": "sbRSXVp3ti5haFPC<0D-*n/482D44u>Ld1mBr(1a4vZszLCMG!O9!re0IOyZ2XCQFKFJhmE6",
+      "errors": [],
+      "valid": true,
+      "workload_id": "signed_zero_propagation"
+    },
+    {
+      "audit_root": "<oAZzqW<!>Drp4Z5Fd<h<8NV/O0/RW!wUR/Fc*F7QX?Js(1bl/P09a<KP1bD)aPelk-6ozRb",
+      "errors": [],
+      "valid": true,
+      "workload_id": "iterative_drift"
+    },
+    {
+      "audit_root": "hhb+?gYCB(9?4R?JDNbMQOs<m0x4wQATP<ujIp6IPfYLM!dbwn0M7<er+jIu0vdqC)KD*VHz",
+      "errors": [],
+      "valid": true,
+      "workload_id": "long_phase_cycle"
+    },
+    {
+      "audit_root": "abkZtnjHwPzFuE5AzZNjyVpeptR*EeZUdU!gR*6/D!NdnLV>f6RxuYGk-Hx/YZNW*>KHsL9Q",
+      "errors": [],
+      "valid": true,
+      "workload_id": "repeated_normalization"
+    },
+    {
+      "audit_root": "+vDRUq7S>S0a+0xLuTiyyS4l4GwNjCxzs6lWtjNvcDmRrfG?H>Tkqn1q2m1p7Xa2nAb/6XHF",
+      "errors": [],
+      "valid": true,
+      "workload_id": "loshu_cell_sum"
+    },
+    {
+      "audit_root": "w1DW212lFJb?eEgLf0Y9v<>/BF6oGdfz+I/cW<MEtYXTbbyqoHuwcQJBy1BoUmmfsehTdC3<",
+      "errors": [],
+      "valid": true,
+      "workload_id": "dual_t_constraints"
+    },
+    {
+      "audit_root": "cwGtlDVSf6gzeVJ95B5!SY7ADYcStqjqVzwjyayZkMU>oY(L7Uh8DgxOP*AicE7Lo94(Sw<<",
+      "errors": [],
+      "valid": true,
+      "workload_id": "conformal_radius"
+    },
+    {
+      "audit_root": "*DSPIn!Ab*RPsvUDw!H>a?GlaHkkFC35pNPqco7jdv(PI?cto?7cNJoIii>nQ-aO<AAA!yDV",
+      "errors": [],
+      "valid": true,
+      "workload_id": "master_matrix"
+    },
+    {
+      "audit_root": "6*7kB<-V*xvBx6P<+svho/qo?rULUml<0)EVmrWWsSmrj8i2XVI+jVl(/3QO0gCXfpRonxZA",
+      "errors": [],
+      "valid": true,
+      "workload_id": "genesis_kernel"
+    },
+    {
+      "audit_root": "!mrWe3PL5u736(Il<nK6KgPyp+*YyatVh6Gnmo?JVdpCnU>T?F3fj9-p/LjTS!MyUd-/)4qG",
+      "errors": [],
+      "valid": true,
+      "workload_id": "T1_transport"
+    }
+  ]
+}

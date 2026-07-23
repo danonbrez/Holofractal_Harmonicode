@@ -1,0 +1,67 @@
+{
+  "checks": {
+    "boundary_is_computation": {
+      "direct_dispatch_without_boundary": "REJECTED_BY_PUBLIC_PASS146_SURFACE",
+      "invariant": "O_B != O_EMPTY",
+      "ok": true
+    },
+    "boundary_security": {
+      "counts": {
+        "security_authority_grants": 1,
+        "security_boundary_contracts": 1,
+        "security_identities": 1,
+        "security_messages": 0,
+        "security_negotiations": 0,
+        "security_pathway_steps": 0,
+        "security_pathways": 1,
+        "security_peer_trust": 0
+      },
+      "invalid_paths_nonrepresentable": true,
+      "no_ambient_network_trust": true,
+      "ok": true,
+      "open_pathways": 1,
+      "pass_id": "HHS-P146",
+      "schema": "HHS_PASS146_SECURITY_STATUS_V1",
+      "version": "146.1.0"
+    },
+    "database_integrity": {
+      "database_root_hash72": "0000000000000000000000000000002AigMPRaBybMm5iKmVpDT^E9Cl2^pG0GOW0/37j((-",
+      "foreign_key_violations": [],
+      "ok": true,
+      "quick_check": [
+        "ok"
+      ],
+      "receipt_tip": "RCP-a01bc187707989b31dcdac1f",
+      "schema": "HHS_PASS145_DATABASE_INTEGRITY_V1",
+      "schema_id": "HHS_PASS145_KNOWLEDGE_DATABASE",
+      "schema_version": "1.2.0",
+      "transaction_sequence": 3
+    },
+    "query_non_mutation": {
+      "after": "0000000000000000000000000000002AigMPRaBybMm5iKmVpDT^E9Cl2^pG0GOW0/37j((-",
+      "before": "0000000000000000000000000000002AigMPRaBybMm5iKmVpDT^E9Cl2^pG0GOW0/37j((-",
+      "ok": true
+    },
+    "receipt_chain": {
+      "count": 3,
+      "failures": [],
+      "ok": true,
+      "schema": "HHS_PASS145_RECEIPT_CHAIN_VERIFICATION_V1",
+      "tip_receipt_id": "RCP-a01bc187707989b31dcdac1f"
+    },
+    "signed_envelope_crypto": {
+      "library": "cryptography",
+      "ok": true,
+      "purpose": "Ed25519 signed propagation and encrypted identity keys",
+      "version": "46.0.4"
+    },
+    "symbol_separation": {
+      "O_token": "O",
+      "constraint": "O != π",
+      "ok": true,
+      "pi_token": "π"
+    }
+  },
+  "ok": true,
+  "schema": "HHS_PASS146_DOCTOR_V1"
+}

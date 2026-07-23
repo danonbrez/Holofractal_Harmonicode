@@ -1,0 +1,269 @@
+{
+  "authority": "A1_EXECUTION_EVIDENCE",
+  "dependency_graph_index": {
+    "compressed_root": "e7b7a695f2c97fbf3f6c9fcde5c2bd017c3a8a5af3af694ab0333a6577af0982",
+    "graph_root": "8ec77e140e3b537bc7207fb1c9ef708f14c2570d52ce64d655719387b4ac458a",
+    "nodes": {
+      "ingress": {
+        "parent_offsets": [],
+        "receipt_id": "pass-142-reference:ingress",
+        "receipt_root": "15e91b02616319efa116ff5689e63fbae4a71469c0cbbb8da9df48c552415442",
+        "snapshot_offset_slot": 0,
+        "topological_offset": 0
+      },
+      "lane-a": {
+        "parent_offsets": [
+          1
+        ],
+        "receipt_id": "pass-142-reference:lane-a",
+        "receipt_root": "fe4d4d69becdf01d61bfee5d90f706c3f2cd59fdccdb8a789b1c3272d6abae73",
+        "snapshot_offset_slot": 2,
+        "topological_offset": 2
+      },
+      "lane-b": {
+        "parent_offsets": [
+          1
+        ],
+        "receipt_id": "pass-142-reference:lane-b",
+        "receipt_root": "1cd93d0ff21ddd67d79fc9e9eaf8d6ab419e18f6263d00ba823aacfcf8fa77b6",
+        "snapshot_offset_slot": 3,
+        "topological_offset": 3
+      },
+      "merge": {
+        "parent_offsets": [
+          2,
+          3
+        ],
+        "receipt_id": "pass-142-reference:merge",
+        "receipt_root": "3e584e08c1b991f379c85970570bd56ee6ea8ca3bedd1a7a237d53262fa1ea20",
+        "snapshot_offset_slot": 4,
+        "topological_offset": 4
+      },
+      "parse": {
+        "parent_offsets": [
+          0
+        ],
+        "receipt_id": "pass-142-reference:parse",
+        "receipt_root": "05d44dbee8f5c65afda26024a8d4b0f84c060def064e879da9e775bb8ffd6122",
+        "snapshot_offset_slot": 1,
+        "topological_offset": 1
+      },
+      "release": {
+        "parent_offsets": [
+          4
+        ],
+        "receipt_id": "pass-142-reference:release",
+        "receipt_root": "57092f55959fb5a50c135f4512e27eeac946badee1809c869db0c4a47f96a6d0",
+        "snapshot_offset_slot": 0,
+        "topological_offset": 5
+      }
+    },
+    "snapshot_root": "3813d15c10b6defe40c3c74cfe4fe8c4ca9bde5fe18aead1df3878a8ec29cab1",
+    "topological_order": [
+      "ingress",
+      "parse",
+      "lane-a",
+      "lane-b",
+      "merge",
+      "release"
+    ]
+  },
+  "fork_receipts": [
+    {
+      "dependency_index": {
+        "parent_offsets": [],
+        "topological_offset": 0
+      },
+      "depends_on": [],
+      "global_snapshot_offset": {
+        "compressed_length": 888,
+        "compressed_root": "e7b7a695f2c97fbf3f6c9fcde5c2bd017c3a8a5af3af694ab0333a6577af0982",
+        "graph_root": "8ec77e140e3b537bc7207fb1c9ef708f14c2570d52ce64d655719387b4ac458a",
+        "offset_kind": "DATA",
+        "offset_length": 222,
+        "offset_slot": 0,
+        "offset_start": 0,
+        "payload_base64": "eNqtVWtv2zYU/S/CPiYI348C/dBijptmi1N7aV4wjEuRtJXKtirJaZxh/31Xiq3GgbcE2PyFh4dX9xySR9afSbWeu2VeJe9uk8wnB4kPRVj4arJc4ORbtmi4ZRFKqLOWKqCsAo4OqqBEA9Z1mORhMa1nzeNQw6RbC4t06bPFFOEMqplmCHBahqpClMMiHMIWOATzUE6b5vNsHib1umhwNQMmFYLjwfAUhzLkAVoLlEjmHOWpM9JbzzyxlkROqaQ2cBM155J7SX0qJMQoozEpNcZ7o60UHpylmlpPsZWK",
+        "payload_root": "8f2e0912791d8ffbde3407c38ea8866238747dbac49290f487fd9bba16861b1b",
+        "shard_width": 222,
+        "snapshot_root": "3813d15c10b6defe40c3c74cfe4fe8c4ca9bde5fe18aead1df3878a8ec29cab1"
+      },
+      "operation": {
+        "kind": "INGRESS"
+      },
+      "operation_id": "ingress",
+      "receipt_id": "pass-142-reference:ingress",
+      "receipt_root": "15e91b02616319efa116ff5689e63fbae4a71469c0cbbb8da9df48c552415442"
+    },
+    {
+      "dependency_index": {
+        "parent_offsets": [
+          0
+        ],
+        "topological_offset": 1
+      },
+      "depends_on": [
+        "ingress"
+      ],
+      "global_snapshot_offset": {
+        "compressed_length": 888,
+        "compressed_root": "e7b7a695f2c97fbf3f6c9fcde5c2bd017c3a8a5af3af694ab0333a6577af0982",
+        "graph_root": "8ec77e140e3b537bc7207fb1c9ef708f14c2570d52ce64d655719387b4ac458a",
+        "offset_kind": "DATA",
+        "offset_length": 222,
+        "offset_slot": 1,
+        "offset_start": 222,
+        "payload_base64": "OiXBMckd0ZIpEVMboxGWOq6VExy8VsRypqU1XjWL0oY0CocNhdLYwirnaQw8glMAmmubYj2VRChClESrYLmG6D1aYkJrKX0qmSFBGgNWaEeijZxgq1HvePTHhR2MLs7Oh72L6Q17uL+eH1cnn87I9dUwx3F1ffXxEfq2KQeeei0NMVx6qgiKoGfiCLEMmObEpQE3qghoI50gLnjpKGNGR6eUlc2lgMPNWROJDIBHYVRquHLMx+gpjYoLIrwAHYIJBFLcgXUgqYogBYkuNJcIRZFnaRuTo7uqzUqqJcUD",
+        "payload_root": "b96c4fc63d426a89a6bb614b4548f43692d5f7c96ffe68a12030e19c03d5e534",
+        "shard_width": 222,
+        "snapshot_root": "3813d15c10b6defe40c3c74cfe4fe8c4ca9bde5fe18aead1df3878a8ec29cab1"
+      },
+      "operation": {
+        "kind": "PARSE"
+      },
+      "operation_id": "parse",
+      "receipt_id": "pass-142-reference:parse",
+      "receipt_root": "05d44dbee8f5c65afda26024a8d4b0f84c060def064e879da9e775bb8ffd6122"
+    },
+    {
+      "dependency_index": {
+        "parent_offsets": [
+          1
+        ],
+        "topological_offset": 2
+      },
+      "depends_on": [
+        "parse"
+      ],
+      "global_snapshot_offset": {
+        "compressed_length": 888,
+        "compressed_root": "e7b7a695f2c97fbf3f6c9fcde5c2bd017c3a8a5af3af694ab0333a6577af0982",
+        "graph_root": "8ec77e140e3b537bc7207fb1c9ef708f14c2570d52ce64d655719387b4ac458a",
+        "offset_kind": "DATA",
+        "offset_length": 222,
+        "offset_slot": 2,
+        "offset_start": 444,
+        "payload_base64": "9AHAc6Jwf1Zr7KeZEMqlEFNvmcCLiVQqjtUBqKKem9SA4pxwqqPAu+tiiXlaT5alD2UTrvXnO9e3jzeXX7LBYrj2lxfVydzfX1/+yAbZ5zX0zfebR2JP+2kdPn0rru5Osvjl/fsmg18/DoY/yGnK85Xvz3Lfz++e53wyDzU0UW4DX1WHVLDDMsRQooOQjA+Se8hXoXlpfsEX5PYWR0w0U+MDRHnDtAQlLYFIbAGlHWId4h3SY/zhZL70kGd1FpD82fKZFkrx5rGnmd42YHTckWZLyp+c7QqfkegyqcND",
+        "payload_root": "af1cc7e01adfc04f7f055892d7ef76cd8f092586dbd799d00629fc0fdde5788f",
+        "shard_width": 222,
+        "snapshot_root": "3813d15c10b6defe40c3c74cfe4fe8c4ca9bde5fe18aead1df3878a8ec29cab1"
+      },
+      "operation": {
+        "kind": "FORK"
+      },
+      "operation_id": "lane-a",
+      "receipt_id": "pass-142-reference:lane-a",
+      "receipt_root": "fe4d4d69becdf01d61bfee5d90f706c3f2cd59fdccdb8a789b1c3272d6abae73"
+    },
+    {
+      "dependency_index": {
+        "parent_offsets": [
+          1
+        ],
+        "topological_offset": 3
+      },
+      "depends_on": [
+        "parse"
+      ],
+      "global_snapshot_offset": {
+        "compressed_length": 888,
+        "compressed_root": "e7b7a695f2c97fbf3f6c9fcde5c2bd017c3a8a5af3af694ab0333a6577af0982",
+        "graph_root": "8ec77e140e3b537bc7207fb1c9ef708f14c2570d52ce64d655719387b4ac458a",
+        "offset_kind": "DATA",
+        "offset_length": 222,
+        "offset_slot": 3,
+        "offset_start": 666,
+        "payload_base64": "nXQMFRvqqMghWzxbkF0DvrH6wpUge1zpt7oiu66KcrmMu7Y2hWK8zxPb76mteOnJvNETNbuesjlMw4ujarmjAv/p9riidvz02y4xO95/qbTjxzuaXZo6kr/cJYYpOTnrD3ujUbJV+4fe20Tu1aD/rrGpUuP/osH+T42dF2qvHH/l2H7vDfu9tx1acwV7JMQrCucfhqO3KvD9m9CvSAx7v/U+dCJPOmX4vgpVPWk+7JtH2wglVQ11SLouSTFrv6hUbxdXzff5fDj42vu1SXSyWmQ1Mg/rTf+//ga5KUC8",
+        "payload_root": "5cbcf4056856738ea8323407914bca560389509da1bb7dc69327ca1ffa3637ee",
+        "shard_width": 222,
+        "snapshot_root": "3813d15c10b6defe40c3c74cfe4fe8c4ca9bde5fe18aead1df3878a8ec29cab1"
+      },
+      "operation": {
+        "kind": "FORK"
+      },
+      "operation_id": "lane-b",
+      "receipt_id": "pass-142-reference:lane-b",
+      "receipt_root": "1cd93d0ff21ddd67d79fc9e9eaf8d6ab419e18f6263d00ba823aacfcf8fa77b6"
+    },
+    {
+      "dependency_index": {
+        "parent_offsets": [
+          2,
+          3
+        ],
+        "topological_offset": 4
+      },
+      "depends_on": [
+        "lane-a",
+        "lane-b"
+      ],
+      "global_snapshot_offset": {
+        "compressed_length": 888,
+        "compressed_root": "e7b7a695f2c97fbf3f6c9fcde5c2bd017c3a8a5af3af694ab0333a6577af0982",
+        "graph_root": "8ec77e140e3b537bc7207fb1c9ef708f14c2570d52ce64d655719387b4ac458a",
+        "offset_kind": "PARITY",
+        "offset_length": 222,
+        "offset_slot": 4,
+        "offset_start": 888,
+        "payload_base64": "K4qgAhvo3Tp3W+cbHaA4S8MCtZl1KlfXFJltJGevt6Cp5ziBHDlt304/8KGcP4GqqGifIY9pSkHuL+QNEmR7wc/buIhCs7Jvjpyp7lL/Y55N7eI9UU3Bp0q++/fEEar9EJ5hR8oGasc7yUODGuOcmVwRlwMF03/KsoBt2OvAI93nHO50+zOuoxSqTfTFLO9r7CqM3ZwtkV+mT3ilnUt5nrKPsBTKz1IETapwXLLXBOXWnYKSwsvmbrJgba5QHR6XwqQnvVpTen5VYmiFvqZPu1ViMibwHdIvOP5uFNN2",
+        "payload_root": "402ed041bc369203955b8c1a95c228a98da2ed5a13ed7e2e4bc2f202fa773c33",
+        "shard_width": 222,
+        "snapshot_root": "3813d15c10b6defe40c3c74cfe4fe8c4ca9bde5fe18aead1df3878a8ec29cab1"
+      },
+      "operation": {
+        "kind": "MERGE"
+      },
+      "operation_id": "merge",
+      "receipt_id": "pass-142-reference:merge",
+      "receipt_root": "3e584e08c1b991f379c85970570bd56ee6ea8ca3bedd1a7a237d53262fa1ea20"
+    },
+    {
+      "dependency_index": {
+        "parent_offsets": [
+          4
+        ],
+        "topological_offset": 5
+      },
+      "depends_on": [
+        "merge"
+      ],
+      "global_snapshot_offset": {
+        "compressed_length": 888,
+        "compressed_root": "e7b7a695f2c97fbf3f6c9fcde5c2bd017c3a8a5af3af694ab0333a6577af0982",
+        "graph_root": "8ec77e140e3b537bc7207fb1c9ef708f14c2570d52ce64d655719387b4ac458a",
+        "offset_kind": "DATA",
+        "offset_length": 222,
+        "offset_slot": 0,
+        "offset_start": 0,
+        "payload_base64": "eNqtVWtv2zYU/S/CPiYI348C/dBijptmi1N7aV4wjEuRtJXKtirJaZxh/31Xiq3GgbcE2PyFh4dX9xySR9afSbWeu2VeJe9uk8wnB4kPRVj4arJc4ORbtmi4ZRFKqLOWKqCsAo4OqqBEA9Z1mORhMa1nzeNQw6RbC4t06bPFFOEMqplmCHBahqpClMMiHMIWOATzUE6b5vNsHib1umhwNQMmFYLjwfAUhzLkAVoLlEjmHOWpM9JbzzyxlkROqaQ2cBM155J7SX0qJMQoozEpNcZ7o60UHpylmlpPsZWK",
+        "payload_root": "8f2e0912791d8ffbde3407c38ea8866238747dbac49290f487fd9bba16861b1b",
+        "shard_width": 222,
+        "snapshot_root": "3813d15c10b6defe40c3c74cfe4fe8c4ca9bde5fe18aead1df3878a8ec29cab1"
+      },
+      "operation": {
+        "kind": "RELEASE"
+      },
+      "operation_id": "release",
+      "receipt_id": "pass-142-reference:release",
+      "receipt_root": "57092f55959fb5a50c135f4512e27eeac946badee1809c869db0c4a47f96a6d0"
+    }
+  ],
+  "pass_id": "PASS_142_MULTIMODAL_REDUNDANT_SYMBOLIC_SNAPSHOT_OFFSETS",
+  "receipt_root": "cf4b2165f3e0a20d56df61cb4f7000864d2048787936411ea001732eea3c3aa8",
+  "request_id": "pass-142-reference",
+  "schema": "HHS_MULTIMODAL_SNAPSHOT_OFFSET_API_V1",
+  "snapshot": {
+    "canonical_length": 1500,
+    "compressed_length": 888,
+    "compressed_root": "e7b7a695f2c97fbf3f6c9fcde5c2bd017c3a8a5af3af694ab0333a6577af0982",
+    "data_shards": 4,
+    "parity_shards": 1,
+    "snapshot_root": "3813d15c10b6defe40c3c74cfe4fe8c4ca9bde5fe18aead1df3878a8ec29cab1",
+    "symbolic_compression": {
+      "codec": "HHS_SYMBOL_TABLE_JSON+ZLIB9",
+      "compressed_bytes": 888,
+      "symbol_count": 31,
+      "symbolic_bytes": 2105
+    }
+  }
+}

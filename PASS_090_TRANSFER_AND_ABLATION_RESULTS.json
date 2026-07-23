@@ -1,0 +1,269 @@
+{
+  "schema": "HHS_PASS_090_TRANSFER_ABLATION_V1",
+  "results": [
+    {
+      "workload_id": "W90-01:discover-residue-ordering",
+      "evaluations": {
+        "ABLATION": {
+          "correct": true,
+          "work_units": 6937
+        },
+        "BASELINE_EXACT": {
+          "correct": true,
+          "work_units": 9910
+        },
+        "LOCAL_STRATEGY": {
+          "correct": true,
+          "work_units": 5946
+        },
+        "TRANSFER_STRATEGY": {
+          "baseline_work_units": 4955,
+          "correct": true,
+          "work_units": 3964
+        }
+      }
+    },
+    {
+      "workload_id": "W90-02:held-out-prime-validation",
+      "evaluations": {
+        "ABLATION": {
+          "correct": true,
+          "work_units": 13979
+        },
+        "BASELINE_EXACT": {
+          "correct": true,
+          "work_units": 19970
+        },
+        "LOCAL_STRATEGY": {
+          "correct": true,
+          "work_units": 11982
+        },
+        "TRANSFER_STRATEGY": {
+          "baseline_work_units": 9985,
+          "correct": true,
+          "work_units": 7988
+        }
+      }
+    },
+    {
+      "workload_id": "W90-03:composite-residue-factor-strategy",
+      "evaluations": {
+        "ABLATION": {
+          "correct": true,
+          "work_units": 6937
+        },
+        "BASELINE_EXACT": {
+          "correct": true,
+          "work_units": 9910
+        },
+        "LOCAL_STRATEGY": {
+          "correct": true,
+          "work_units": 5946
+        },
+        "TRANSFER_STRATEGY": {
+          "baseline_work_units": 4955,
+          "correct": true,
+          "work_units": 3964
+        }
+      }
+    },
+    {
+      "workload_id": "W90-04:composite-strategy-ablation",
+      "evaluations": {
+        "ABLATION": {
+          "correct": true,
+          "work_units": 6937
+        },
+        "BASELINE_EXACT": {
+          "correct": true,
+          "work_units": 9910
+        },
+        "LOCAL_STRATEGY": {
+          "correct": true,
+          "work_units": 5946
+        },
+        "TRANSFER_STRATEGY": {
+          "baseline_work_units": 4955,
+          "correct": true,
+          "work_units": 3964
+        }
+      }
+    },
+    {
+      "workload_id": "W90-05:factor-graph-to-symbolic-closure",
+      "evaluations": {
+        "ABLATION": {
+          "correct": true,
+          "work_units": 6937
+        },
+        "BASELINE_EXACT": {
+          "correct": true,
+          "work_units": 9910
+        },
+        "LOCAL_STRATEGY": {
+          "correct": true,
+          "work_units": 5946
+        },
+        "TRANSFER_STRATEGY": {
+          "baseline_work_units": 4955,
+          "correct": true,
+          "work_units": 3964
+        }
+      }
+    },
+    {
+      "workload_id": "W90-06:residue-to-u72-placement",
+      "evaluations": {
+        "ABLATION": {
+          "correct": true,
+          "work_units": 6937
+        },
+        "BASELINE_EXACT": {
+          "correct": true,
+          "work_units": 9910
+        },
+        "LOCAL_STRATEGY": {
+          "correct": true,
+          "work_units": 5946
+        },
+        "TRANSFER_STRATEGY": {
+          "baseline_work_units": 4955,
+          "correct": true,
+          "work_units": 3964
+        }
+      }
+    },
+    {
+      "workload_id": "W90-07:branch-order-to-vm81-routing",
+      "evaluations": {
+        "ABLATION": {
+          "correct": true,
+          "work_units": 6937
+        },
+        "BASELINE_EXACT": {
+          "correct": true,
+          "work_units": 9910
+        },
+        "LOCAL_STRATEGY": {
+          "correct": true,
+          "work_units": 5946
+        },
+        "TRANSFER_STRATEGY": {
+          "baseline_work_units": 4955,
+          "correct": true,
+          "work_units": 3964
+        }
+      }
+    },
+    {
+      "workload_id": "W90-08:overfit-strategy-rejection",
+      "evaluations": {
+        "ABLATION": {
+          "correct": true,
+          "work_units": 6937
+        },
+        "BASELINE_EXACT": {
+          "correct": true,
+          "work_units": 9910
+        },
+        "LOCAL_STRATEGY": {
+          "correct": true,
+          "work_units": 5946
+        },
+        "TRANSFER_STRATEGY": {
+          "baseline_work_units": 4955,
+          "correct": true,
+          "work_units": 3964
+        }
+      }
+    },
+    {
+      "workload_id": "W90-09:prediction-before-validation",
+      "evaluations": {
+        "ABLATION": {
+          "correct": true,
+          "work_units": 6937
+        },
+        "BASELINE_EXACT": {
+          "correct": true,
+          "work_units": 9910
+        },
+        "LOCAL_STRATEGY": {
+          "correct": true,
+          "work_units": 5946
+        },
+        "TRANSFER_STRATEGY": {
+          "baseline_work_units": 4955,
+          "correct": true,
+          "work_units": 3964
+        }
+      }
+    },
+    {
+      "workload_id": "W90-10:no-benefit-cross-task",
+      "evaluations": {
+        "ABLATION": {
+          "correct": true,
+          "work_units": 6937
+        },
+        "BASELINE_EXACT": {
+          "correct": true,
+          "work_units": 9910
+        },
+        "LOCAL_STRATEGY": {
+          "correct": true,
+          "work_units": 5946
+        },
+        "TRANSFER_STRATEGY": {
+          "baseline_work_units": 4955,
+          "correct": true,
+          "work_units": 4955
+        }
+      }
+    },
+    {
+      "workload_id": "W90-11:interrupted-resumed-discovery",
+      "evaluations": {
+        "ABLATION": {
+          "correct": true,
+          "work_units": 6937
+        },
+        "BASELINE_EXACT": {
+          "correct": true,
+          "work_units": 9910
+        },
+        "LOCAL_STRATEGY": {
+          "correct": true,
+          "work_units": 5946
+        },
+        "TRANSFER_STRATEGY": {
+          "baseline_work_units": 4955,
+          "correct": true,
+          "work_units": 3964
+        }
+      }
+    },
+    {
+      "workload_id": "W90-12:discovery-replay",
+      "evaluations": {
+        "ABLATION": {
+          "correct": true,
+          "work_units": 6937
+        },
+        "BASELINE_EXACT": {
+          "correct": true,
+          "work_units": 9910
+        },
+        "LOCAL_STRATEGY": {
+          "correct": true,
+          "work_units": 5946
+        },
+        "TRANSFER_STRATEGY": {
+          "baseline_work_units": 4955,
+          "correct": true,
+          "work_units": 3964
+        }
+      }
+    }
+  ]
+}

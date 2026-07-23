@@ -1,0 +1,102 @@
+{
+  "workloads": [
+    {
+      "held_out": false,
+      "name": "Clean eight-cell codeword",
+      "schema": "HHS_PASS_100_WORKLOAD_V1",
+      "workload_id": "W100-01",
+      "workload_root_hash72": "0000000000000000000000000000002evw6>Shmo3GoId=XoyI60LkxK5gZNpAOORFG7LMgW"
+    },
+    {
+      "held_out": false,
+      "name": "Single-cell value error",
+      "schema": "HHS_PASS_100_WORKLOAD_V1",
+      "workload_id": "W100-02",
+      "workload_root_hash72": "0000000000000000000000000000004w>=n(qXuBvg5jZZoGXyFQAqjfF9Wg1AwXS(DO>9SJ"
+    },
+    {
+      "held_out": false,
+      "name": "Single reciprocal-witness error",
+      "schema": "HHS_PASS_100_WORKLOAD_V1",
+      "workload_id": "W100-03",
+      "workload_root_hash72": "0000000000000000000000000000003tIdu5OzHGp+0Q8+Jn4^F/YlHPq9gtfLQxwwF8gs5J"
+    },
+    {
+      "held_out": false,
+      "name": "Single-cell phase error",
+      "schema": "HHS_PASS_100_WORKLOAD_V1",
+      "workload_id": "W100-04",
+      "workload_root_hash72": "00000000000000000000000000000004!zp^Vj>LfU+YDB->fFqo1Sq/2uCl+U^g8jqNSU=M"
+    },
+    {
+      "held_out": false,
+      "name": "Erasure recovery",
+      "schema": "HHS_PASS_100_WORKLOAD_V1",
+      "workload_id": "W100-05",
+      "workload_root_hash72": "00000000000000000000000000000042o7DEeCXLwYxLsRGSeLl/u?JWkb4)W7?1oUlBk+5G"
+    },
+    {
+      "held_out": false,
+      "name": "Opposite-phase dual execution",
+      "schema": "HHS_PASS_100_WORKLOAD_V1",
+      "workload_id": "W100-06",
+      "workload_root_hash72": "00000000000000000000000000000010N3G6/2xi5muzyGl1>5HeFWj=uS*mLMU!CHuH5cEU"
+    },
+    {
+      "held_out": false,
+      "name": "Noncommutative gate-order witness",
+      "schema": "HHS_PASS_100_WORKLOAD_V1",
+      "workload_id": "W100-07",
+      "workload_root_hash72": "00000000000000000000000000000046FVh-m>oRYBjO!7!L0ZBMm3+0!I(JZALFq?AmYDk-"
+    },
+    {
+      "held_out": false,
+      "name": "Two-lane burst error",
+      "schema": "HHS_PASS_100_WORKLOAD_V1",
+      "workload_id": "W100-08",
+      "workload_root_hash72": "0000000000000000000000000000003JISmW3K)?weH+C=dOYE8ktVdJt2n31tCRbk8T7Fc?"
+    },
+    {
+      "held_out": false,
+      "name": "Common-mode pair corruption",
+      "schema": "HHS_PASS_100_WORKLOAD_V1",
+      "workload_id": "W100-09",
+      "workload_root_hash72": "00000000000000000000000000000011tk9!0IYiV7clh4Mlg77Qx)qlB9P9J?rJzjNlQj?O"
+    },
+    {
+      "held_out": false,
+      "name": "Dynamic Pass 099 gate",
+      "schema": "HHS_PASS_100_WORKLOAD_V1",
+      "workload_id": "W100-10",
+      "workload_root_hash72": "0000000000000000000000000000004l5Es5Mt0oEQvLH(8)b7d/GO>ArKPy7y(XWS/MejXa"
+    },
+    {
+      "held_out": false,
+      "name": "Prime-periodic gate activation",
+      "schema": "HHS_PASS_100_WORKLOAD_V1",
+      "workload_id": "W100-11",
+      "workload_root_hash72": "0000000000000000000000000000001Z6RegGrQiWqd4f?y8+TPVd=mQLhlYc7/=wbJkf*gT"
+    },
+    {
+      "held_out": false,
+      "name": "Gate cascade",
+      "schema": "HHS_PASS_100_WORKLOAD_V1",
+      "workload_id": "W100-12",
+      "workload_root_hash72": "0000000000000000000000000000002?^V)=1D>hLbX*r1+8WZgg)ze9*w2hlvbP3ayObb1U"
+    },
+    {
+      "held_out": false,
+      "name": "Checkpoint and correction replay",
+      "schema": "HHS_PASS_100_WORKLOAD_V1",
+      "workload_id": "W100-13",
+      "workload_root_hash72": "0000000000000000000000000000002S1mXlpzLnBuoDKm==SnzEc^hpR+I7FQrvXrUB=ygo"
+    },
+    {
+      "held_out": true,
+      "name": "Held-out logic function",
+      "schema": "HHS_PASS_100_WORKLOAD_V1",
+      "workload_id": "W100-14",
+      "workload_root_hash72": "0000000000000000000000000000003tavW+Xy(eH^EnREEtFi2XtWWeRE/q>=qrgIeLRbRc"
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:hhs:pass145:source:v1",
+  "title": "HHS Pass 145 Source Evidence",
+  "type": "object",
+  "required": ["schema", "source_id", "source_name", "mime_type", "byte_length", "raw_sha256", "source_root_hash72", "parser_version", "policy_version"],
+  "properties": {
+    "schema": {"const": "HHS_PASS145_SOURCE_EVIDENCE_V1"},
+    "source_id": {"type": "string"},
+    "source_name": {"type": "string"},
+    "mime_type": {"type": "string"},
+    "byte_length": {"type": "integer", "minimum": 0},
+    "raw_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "source_root_hash72": {"type": "string"},
+    "parser_version": {"type": "string"},
+    "policy_version": {"type": "string"},
+    "acquisition": {"type": "object"}
+  },
+  "additionalProperties": true
+}

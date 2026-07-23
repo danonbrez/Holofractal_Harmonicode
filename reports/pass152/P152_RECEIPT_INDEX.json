@@ -1,0 +1,93 @@
+{
+  "authoritative_commit_receipt": "receipts/pass152/final/P152_COMMIT_RECEIPT.json",
+  "predictive_receipts_do_not_replace_commit": true,
+  "receipt_count": 17,
+  "receipts": [
+    {
+      "path": "receipts/pass152/final/P152_CYCLE_OPEN.json",
+      "sha256": "c6d61c110101e0e129b780d26d3931bc72d92ea9622b718721c92a1c3e241a07",
+      "size": 786
+    },
+    {
+      "path": "receipts/pass152/final/P152_DEPENDENCY_GRAPH.json",
+      "sha256": "bd1cd3d2153031732f2f9f45e2de4289a7af786688ac289da6741699713092a9",
+      "size": 2718
+    },
+    {
+      "path": "receipts/pass152/final/P152_PROPAGATION_TRACE.jsonl",
+      "sha256": "3b476762801680d1d61a33dc46cb9a9c791a21038fdde08141da9c68bbc45370",
+      "size": 3902
+    },
+    {
+      "path": "receipts/pass152/final/P152_CANDIDATE_FIELD_STATE.jsonl",
+      "sha256": "499cb93befd767158cb392092335c4db03fb110425cec0a1352163dae97f7c09",
+      "size": 25940
+    },
+    {
+      "path": "receipts/pass152/final/P152_CRITICAL_PATH_FORECAST.jsonl",
+      "sha256": "d86e00bc19d60e6df344cae38a407d586d070f8992a471f4018506b76a430bfe",
+      "size": 2876
+    },
+    {
+      "path": "receipts/pass152/final/P152_SCHEDULER_DECISIONS.jsonl",
+      "sha256": "b89ef85a6a9d18f1bd00c12035d99189b39cd062c60be6de36b7f69f3669d081",
+      "size": 3585
+    },
+    {
+      "path": "receipts/pass152/final/P152_EQUIVALENCE_REUSE.jsonl",
+      "sha256": "cc32d71f14ae36e36207fc1b332ca76b181432004dcb171d61d03c654a95b43e",
+      "size": 963
+    },
+    {
+      "path": "receipts/pass152/final/P152_INVARIANT_SKIP.jsonl",
+      "sha256": "c7042262be52592f20493aa6ccaf9d99fdfb343f13fdcda89edac82d7939cc0c",
+      "size": 778
+    },
+    {
+      "path": "receipts/pass152/final/P152_LAYER_HISTORY.jsonl",
+      "sha256": "41ddd1e6c06b41211c4ff6074af1306e6e584f75e9547414692c66ae9f94c321",
+      "size": 8620
+    },
+    {
+      "path": "receipts/pass152/final/P152_RECURSIVE_CONTROL_TRACE.jsonl",
+      "sha256": "0868e84976d4616fa0d14db8e54941be69c219b4ebf02faf7587cc6c2fc48ebb",
+      "size": 11123
+    },
+    {
+      "path": "receipts/pass152/final/P152_PLAN_REVISION.jsonl",
+      "sha256": "cceee99e33aed0d955d86b861a628adaa57e46c558f53292380524753dd6d394",
+      "size": 3768
+    },
+    {
+      "path": "receipts/pass152/final/P152_RESOURCE_ALLOCATION.jsonl",
+      "sha256": "e42294980dcf934fd794f185eaa96761dd12977ef3d27f408376819a352dc622",
+      "size": 443
+    },
+    {
+      "path": "receipts/pass152/final/P152_GLOBAL_CLOSURE_PROOF.json",
+      "sha256": "0dd43ad0577723776b01dec109dae9a03bcd89eb00c6a7927da0ff872750d3ae",
+      "size": 3166
+    },
+    {
+      "path": "receipts/pass152/final/P152_COMMIT_RECEIPT.json",
+      "sha256": "15c8f84fa7800b0a08daa49f561dd8c28e9714671e7394c3b09685a5cb81561f",
+      "size": 2020
+    },
+    {
+      "path": "receipts/pass152/final/P152_REPLAY_RECEIPT.json",
+      "sha256": "5e64f803db4e39afdfc88d06659b6c08ed873148d8070ebdd9dbc5876b38da47",
+      "size": 1595
+    },
+    {
+      "path": "receipts/pass152/final/P152_NEGATIVE_TEST_REPORT.json",
+      "sha256": "c9734ad8a353d52f3f5626100e88aee0f5523860e9ccb235c4fb0085d8f42496",
+      "size": 4544
+    },
+    {
+      "path": "receipts/pass152/final/P152_FINAL_EXECUTION_SUMMARY.json",
+      "sha256": "d61ca277b8a3e26a78b5afa771b4a83afd73f8ab7ef2d226c7d2cca88b53f4a7",
+      "size": 8837
+    }
+  ],
+  "schema": "HHS_PASS152_RECEIPT_INDEX_V1"
+}

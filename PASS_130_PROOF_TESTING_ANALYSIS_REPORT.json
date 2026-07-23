@@ -1,0 +1,60 @@
+{
+  "schema": "HHS_PASS_130_PROOF_TESTING_ANALYSIS_REPORT_V1",
+  "pass_id": "PASS_130",
+  "status": "VERIFIED",
+  "question": "Can Pass 129 be used as the default initial constraints of the quantum simulator or other high-entropy parameter layers?",
+  "answer": "YES_AS_DEFAULT_ADMISSION_ENVELOPE_NOT_AS_DEFAULT_STATE_ASSIGNMENT",
+  "verified_properties": {
+    "pass129_parent_proof_required": true,
+    "delta_unit_closure_required": true,
+    "exact_rational_authority_required": true,
+    "projection_native_separation_preserved": true,
+    "quantum_amplitudes_unassigned": true,
+    "probability_weights_unassigned": true,
+    "branches_unselected": true,
+    "measurement_seed_unassigned": true,
+    "topology_unassigned": true,
+    "entropy_coordinates_preserved": true,
+    "deterministic_replay": true,
+    "resource_bounded": true
+  },
+  "supported_layers": [
+    "GENERIC_HIGH_ENTROPY_LAYER",
+    "HIGH_ENTROPY_NOISE_RESOLUTION",
+    "MULTIMODAL_TOKEN_LAYER",
+    "PROBABILISTIC_PARAMETER_LAYER",
+    "SYMBOLIC_QUANTUM_ALGEBRA",
+    "VM81_QUANTUM_SIMULATOR"
+  ],
+  "focused_tests": {
+    "passed": 12,
+    "failed": 0
+  },
+  "dependency_scoped_tests": {
+    "passed": 71,
+    "failed": 0,
+    "scope": [
+      "Pass 082.3",
+      "Pass 117",
+      "Pass 129",
+      "Pass 130"
+    ]
+  },
+  "self_test": {
+    "pass_id": "PASS_130",
+    "status": "PASS",
+    "envelope_root_hash72": "0000000000000000000000000000001SCDBQKk*qY>f9flLRHbH70yBjChbTPAmN*+I6-Zmh",
+    "quantum_admission_root_hash72": "0000000000000000000000000000004FW0CMySazIxC07bBcRb=a?sLJl2>cAQ2NoA9)qCTj",
+    "replay_root_hash72": "00000000000000000000000000000021*X!Co-O^u)/3ngYePQXr5C^YnjYqTAK>ZnIVd^nQ",
+    "default_constraints_safe_for_quantum_and_high_entropy_layers": true,
+    "defaults_select_state": false,
+    "entropy_preserved": true,
+    "self_test_root_hash72": "00000000000000000000000000000047I)Q8QduK!gLITUqy!iHjS=Rg>7y1)?/x1+nT1v^^"
+  },
+  "limitations": [
+    "The envelope does not prove physical quantum advantage or hardware equivalence.",
+    "The envelope constrains admissibility and normalization; it does not generate workload-specific Hamiltonians, gates, amplitudes, noise models, or measurement distributions.",
+    "External projections remain non-authoritative and cannot be inserted into native state."
+  ],
+  "report_root_hash72": "0000000000000000000000000000001?7*Rggc=YQdwKVlzUW=4FAgX/hIBKTtWQtmv=QsDo"
+}

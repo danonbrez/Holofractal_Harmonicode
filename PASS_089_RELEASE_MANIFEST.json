@@ -1,0 +1,19 @@
+{
+  "schema": "HHS_PASS_089_RELEASE_MANIFEST_V1",
+  "pass_id": "PASS_089",
+  "parent_pass088_release_root_hash72": "0000000000000000000000000000003Sys=c!lomN-jRzl9A)iDLRh)p7?=nW3UJM06K(FPz",
+  "workload_count": 14,
+  "negative_case_count": 10,
+  "all_negative_cases_passed": true,
+  "artifacts": [
+    "PASS_089_PRIME_WORKLOAD_REGISTRY.json",
+    "PASS_089_PRIME_FRONTIER_RESULTS.json",
+    "PASS_089_PRIME_AND_FACTOR_RECEIPTS.json",
+    "PASS_089_REUSABLE_NUMBER_PATTERN_CACHE.json",
+    "PASS_089_PRIME_SCALING_RESULTS.json",
+    "PASS_089_NEGATIVE_CASES.json",
+    "PASS_089_CALIBRATION_REPORT.md",
+    "CHANGELOG_PASS_089.md"
+  ],
+  "pass089_release_root_hash72": "0000000000000000000000000000000zNoCUm22A1BoQM7E3Zt*Sz2boe2B=(mEs)V-T7qQi"
+}

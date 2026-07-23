@@ -1,0 +1,47 @@
+{
+  "entries": [
+    {
+      "content_hash72": null,
+      "entry_hash72": "mnkWa/R^bbyp4h0Gcr8PeW5U",
+      "event": "DATA_DIR_RESOLVED",
+      "exists": false,
+      "is_dir": false,
+      "is_file": false,
+      "parent_hash72": "H72-FS-GENESIS",
+      "path": "/mnt/data/pass151_full_work/receipts/pass152/final/runtime_data/data/runtime",
+      "recorded_at_ns": 1784805504303375809,
+      "relative_path": "receipts/pass152/final/runtime_data/data/runtime",
+      "size_bytes": null
+    },
+    {
+      "content_hash72": null,
+      "entry_hash72": "3≠+PDD3RzqSKYf902GAgXRbS",
+      "event": "RUNTIME_OUTPUT_DIR_RESOLVED",
+      "exists": false,
+      "is_dir": false,
+      "is_file": false,
+      "parent_hash72": "H72-FS-GENESIS",
+      "path": "/mnt/data/pass151_full_work/receipts/pass152/final/runtime_data/runtime/hhs_unified_hash72_ledger.json",
+      "recorded_at_ns": 1784805504304146561,
+      "relative_path": "receipts/pass152/final/runtime_data/runtime/hhs_unified_hash72_ledger.json",
+      "size_bytes": null
+    },
+    {
+      "content_hash72": null,
+      "entry_hash72": "RMukwd√≠4r*/hA^U)F5xCZSw",
+      "event": "RUNTIME_ARTIFACT_PATH",
+      "exists": false,
+      "is_dir": false,
+      "is_file": false,
+      "parent_hash72": "H72-FS-GENESIS",
+      "path": "/mnt/data/pass151_full_work/receipts/pass152/final/runtime_data/runtime/hhs_unified_hash72_ledger.json",
+      "recorded_at_ns": 1784805504305316268,
+      "relative_path": "receipts/pass152/final/runtime_data/runtime/hhs_unified_hash72_ledger.json",
+      "size_bytes": null
+    }
+  ],
+  "entry_count": 3,
+  "ledger_hash72": "=iy)≠bN)h6*Gzd6U-GhUrfCw",
+  "schema": "HHS_FILESYSTEM_HASH72_LEDGER_V1",
+  "tip_hash72": "RMukwd√≠4r*/hA^U)F5xCZSw"
+}

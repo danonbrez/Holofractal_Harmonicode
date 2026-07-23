@@ -1,0 +1,254 @@
+{
+  "all_closed": true,
+  "authority": "A1_EXECUTION_EVIDENCE",
+  "compression": {
+    "codec": "zlib-9",
+    "compressed_sha256": "7a9b6ea39a4ed7615d689aef2609fd2caee8e601fa7629f52871c55ef79da5f9",
+    "compressed_size": 5292,
+    "raw_sha256": "e525132d800793c35d92735e2aa7bff55c1684ed7e5cd7adabaa1ee057181efe",
+    "raw_size": 25284
+  },
+  "egress": {
+    "artifact_count": 3,
+    "path": "PASS_137_EGRESS"
+  },
+  "expansion": {
+    "canonical_size": 25284,
+    "root": "be0f54f41a6df6ff0a331b5158ecfc2ecb1237338a830200cfaaa53d34a99c77"
+  },
+  "generation": {
+    "artifact_count": 3,
+    "bundle_root": "be0f54f41a6df6ff0a331b5158ecfc2ecb1237338a830200cfaaa53d34a99c77"
+  },
+  "ingress": [
+    {
+      "hash72": "aWS[ECYyl-haM6Z6BD{RM5yC6iZ6-a98bwq)XbWE-A3Tb4XkqcI6SM2bS02]VXBKr1oIb3Ro",
+      "kind": "coq",
+      "name": "HHS_GFE_Field_Quotient.v",
+      "sha256": "3591325a6d93ab7adb12f327bc64b060ae6058277ba13256b7e2d4b9d2017aa8",
+      "size": 7870
+    },
+    {
+      "hash72": "{+L38KaN/ZjcbN][Gdkb9N0bT6NcZUXoJsX*EkFEUpe1DgngI*/DnIa749ZCT4qUgtTD1us]",
+      "kind": "lean",
+      "name": "HHS_GFE_Field_Quotient.lean",
+      "sha256": "7237f50d018036457c9d3b2507b635df51cdfcf91fed2f2b47ffdf80a2eb47b8",
+      "size": 3241
+    },
+    {
+      "hash72": "hkThkcF[IU1DYDXR04RHIgM8JpI9VJTeYA6b7Sr8w-CuMglu+aC8BnOP/cuGA-pCIZDc}HkC",
+      "kind": "json",
+      "name": "gfe_state_5_4_grobner.json",
+      "sha256": "a2fbe5264759be9c4918ba1ea25ae3a1b923381cefe15d61f6f28852eff60e1f",
+      "size": 1086
+    }
+  ],
+  "pass_id": "PASS_137_NATIVE_PROOF_LIFECYCLE",
+  "receipt_hash72": "Y]21sMsX6OoZIaQdPMiIuQRg(MHcXr8z0d0aK)lUIk7INKE]vPnq2aE4UoQ9X5{]W7Z-3xFL",
+  "receipt_root": "8a11585e73b04ea442f7670158737e84a1cf881ef8749021647e942c2a5d135d",
+  "revalidation": [
+    {
+      "artifact": {
+        "hash72": "aWS[ECYyl-haM6Z6BD{RM5yC6iZ6-a98bwq)XbWE-A3Tb4XkqcI6SM2bS02]VXBKr1oIb3Ro",
+        "kind": "coq",
+        "name": "HHS_GFE_Field_Quotient.v",
+        "sha256": "3591325a6d93ab7adb12f327bc64b060ae6058277ba13256b7e2d4b9d2017aa8",
+        "size": 7870
+      },
+      "checks": [
+        {
+          "check": "sha256_identity",
+          "pass": true
+        },
+        {
+          "check": "hash72_identity",
+          "pass": true
+        },
+        {
+          "check": "coq_no_escape_hatches",
+          "pass": true
+        },
+        {
+          "check": "coq_field_lemma_present",
+          "pass": true
+        },
+        {
+          "check": "coq_grobner_lemma_present",
+          "pass": true
+        }
+      ],
+      "valid": true
+    },
+    {
+      "artifact": {
+        "hash72": "{+L38KaN/ZjcbN][Gdkb9N0bT6NcZUXoJsX*EkFEUpe1DgngI*/DnIa749ZCT4qUgtTD1us]",
+        "kind": "lean",
+        "name": "HHS_GFE_Field_Quotient.lean",
+        "sha256": "7237f50d018036457c9d3b2507b635df51cdfcf91fed2f2b47ffdf80a2eb47b8",
+        "size": 3241
+      },
+      "checks": [
+        {
+          "check": "sha256_identity",
+          "pass": true
+        },
+        {
+          "check": "hash72_identity",
+          "pass": true
+        },
+        {
+          "check": "lean_field_lemma_present",
+          "pass": true
+        },
+        {
+          "check": "lean_sketch_authority_visible",
+          "pass": true
+        }
+      ],
+      "valid": true
+    },
+    {
+      "artifact": {
+        "hash72": "hkThkcF[IU1DYDXR04RHIgM8JpI9VJTeYA6b7Sr8w-CuMglu+aC8BnOP/cuGA-pCIZDc}HkC",
+        "kind": "json",
+        "name": "gfe_state_5_4_grobner.json",
+        "sha256": "a2fbe5264759be9c4918ba1ea25ae3a1b923381cefe15d61f6f28852eff60e1f",
+        "size": 1086
+      },
+      "checks": [
+        {
+          "check": "sha256_identity",
+          "pass": true
+        },
+        {
+          "check": "hash72_identity",
+          "pass": true
+        },
+        {
+          "check": "json_parse",
+          "pass": true
+        },
+        {
+          "check": "grobner_remainders_zero",
+          "pass": true
+        }
+      ],
+      "valid": true
+    }
+  ],
+  "reversibility": {
+    "artifacts": [
+      {
+        "byte_exact": true,
+        "name": "HHS_GFE_Field_Quotient.v",
+        "sha256": "3591325a6d93ab7adb12f327bc64b060ae6058277ba13256b7e2d4b9d2017aa8"
+      },
+      {
+        "byte_exact": true,
+        "name": "HHS_GFE_Field_Quotient.lean",
+        "sha256": "7237f50d018036457c9d3b2507b635df51cdfcf91fed2f2b47ffdf80a2eb47b8"
+      },
+      {
+        "byte_exact": true,
+        "name": "gfe_state_5_4_grobner.json",
+        "sha256": "a2fbe5264759be9c4918ba1ea25ae3a1b923381cefe15d61f6f28852eff60e1f"
+      }
+    ],
+    "byte_exact": true
+  },
+  "schema": "HHS_NATIVE_PROOF_LIFECYCLE_V1",
+  "storage": {
+    "cas_root": "7a9b6ea39a4ed7615d689aef2609fd2caee8e601fa7629f52871c55ef79da5f9",
+    "path": "release_artifacts/pass137/cas/7a/9b6ea39a4ed7615d689aef2609fd2caee8e601fa7629f52871c55ef79da5f9"
+  },
+  "validation": [
+    {
+      "artifact": {
+        "hash72": "aWS[ECYyl-haM6Z6BD{RM5yC6iZ6-a98bwq)XbWE-A3Tb4XkqcI6SM2bS02]VXBKr1oIb3Ro",
+        "kind": "coq",
+        "name": "HHS_GFE_Field_Quotient.v",
+        "sha256": "3591325a6d93ab7adb12f327bc64b060ae6058277ba13256b7e2d4b9d2017aa8",
+        "size": 7870
+      },
+      "checks": [
+        {
+          "check": "sha256_identity",
+          "pass": true
+        },
+        {
+          "check": "hash72_identity",
+          "pass": true
+        },
+        {
+          "check": "coq_no_escape_hatches",
+          "pass": true
+        },
+        {
+          "check": "coq_field_lemma_present",
+          "pass": true
+        },
+        {
+          "check": "coq_grobner_lemma_present",
+          "pass": true
+        }
+      ],
+      "valid": true
+    },
+    {
+      "artifact": {
+        "hash72": "{+L38KaN/ZjcbN][Gdkb9N0bT6NcZUXoJsX*EkFEUpe1DgngI*/DnIa749ZCT4qUgtTD1us]",
+        "kind": "lean",
+        "name": "HHS_GFE_Field_Quotient.lean",
+        "sha256": "7237f50d018036457c9d3b2507b635df51cdfcf91fed2f2b47ffdf80a2eb47b8",
+        "size": 3241
+      },
+      "checks": [
+        {
+          "check": "sha256_identity",
+          "pass": true
+        },
+        {
+          "check": "hash72_identity",
+          "pass": true
+        },
+        {
+          "check": "lean_field_lemma_present",
+          "pass": true
+        },
+        {
+          "check": "lean_sketch_authority_visible",
+          "pass": true
+        }
+      ],
+      "valid": true
+    },
+    {
+      "artifact": {
+        "hash72": "hkThkcF[IU1DYDXR04RHIgM8JpI9VJTeYA6b7Sr8w-CuMglu+aC8BnOP/cuGA-pCIZDc}HkC",
+        "kind": "json",
+        "name": "gfe_state_5_4_grobner.json",
+        "sha256": "a2fbe5264759be9c4918ba1ea25ae3a1b923381cefe15d61f6f28852eff60e1f",
+        "size": 1086
+      },
+      "checks": [
+        {
+          "check": "sha256_identity",
+          "pass": true
+        },
+        {
+          "check": "hash72_identity",
+          "pass": true
+        },
+        {
+          "check": "json_parse",
+          "pass": true
+        },
+        {
+          "check": "grobner_remainders_zero",
+          "pass": true
+        }
+      ],
+      "valid": true
+    }
+  ]
+}

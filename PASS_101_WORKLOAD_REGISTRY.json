@@ -1,0 +1,88 @@
+{
+  "workloads": [
+    {
+      "name": "Four-lane clean baseline",
+      "schema": "HHS_PASS_101_WORKLOAD_V1",
+      "workload_id": "W101-01",
+      "workload_root_hash72": "0000000000000000000000000000003vo+/Gm4)JcYYC2-?A+HeXjUyLHy(q/>BcO25z6+uQ"
+    },
+    {
+      "name": "Full-cycle reconstruction from lane 1",
+      "schema": "HHS_PASS_101_WORKLOAD_V1",
+      "workload_id": "W101-02",
+      "workload_root_hash72": "0000000000000000000000000000000GSBQ*jJ!Yn)g>*akFRPBZU/Dvguull5nSd-nNYROP"
+    },
+    {
+      "name": "Reconstruction from every lane",
+      "schema": "HHS_PASS_101_WORKLOAD_V1",
+      "workload_id": "W101-03",
+      "workload_root_hash72": "0000000000000000000000000000000*qutvxTvQT9oSi*A^8iuZenD!3xF+PeHTaCNx8/8m"
+    },
+    {
+      "name": "Dual-witness agreement",
+      "schema": "HHS_PASS_101_WORKLOAD_V1",
+      "workload_id": "W101-04",
+      "workload_root_hash72": "00000000000000000000000000000016ovU3va+B1)auVIQEa1OFeU4G/xmJrB-LkmJSCrtq"
+    },
+    {
+      "name": "Distinct raw histories, common cycle root",
+      "schema": "HHS_PASS_101_WORKLOAD_V1",
+      "workload_id": "W101-05",
+      "workload_root_hash72": "0000000000000000000000000000000tH+4f)vKPiyQXlgrn?a?qUA-l1jqxOB=C?*ifSwC2"
+    },
+    {
+      "name": "Single-cell corruption",
+      "schema": "HHS_PASS_101_WORKLOAD_V1",
+      "workload_id": "W101-06",
+      "workload_root_hash72": "0000000000000000000000000000001NZuJhHk3Dt2C=And+0KlUUw5mgcNhUD^V594P+Y(l"
+    },
+    {
+      "name": "Single-lane correction",
+      "schema": "HHS_PASS_101_WORKLOAD_V1",
+      "workload_id": "W101-07",
+      "workload_root_hash72": "0000000000000000000000000000002NNnEU6FiLoBoEsb^E!S>jXbNQEC)kVPXOGHXpm!tC"
+    },
+    {
+      "name": "Compensating double error",
+      "schema": "HHS_PASS_101_WORKLOAD_V1",
+      "workload_id": "W101-08",
+      "workload_root_hash72": "0000000000000000000000000000001>M9WVDi8mOx16-1-3k0a^4ZqG1kroA2uZz)p)0vqG"
+    },
+    {
+      "name": "Operation-order corruption",
+      "schema": "HHS_PASS_101_WORKLOAD_V1",
+      "workload_id": "W101-09",
+      "workload_root_hash72": "0000000000000000000000000000003yagC?234FJSI^xU)hijI-0xaJXYln-9LdVSD^OE>v"
+    },
+    {
+      "name": "Phase-offset corruption",
+      "schema": "HHS_PASS_101_WORKLOAD_V1",
+      "workload_id": "W101-10",
+      "workload_root_hash72": "0000000000000000000000000000002C*VWc7HwrvTNojWa8t>QrGA6XqYuSSdUtHgv=kUQB"
+    },
+    {
+      "name": "Missing intermediate receipt",
+      "schema": "HHS_PASS_101_WORKLOAD_V1",
+      "workload_id": "W101-11",
+      "workload_root_hash72": "0000000000000000000000000000002vE3q)R=97+JPsa5-=^gni*fL/>Vjaw9PHirV64YMG"
+    },
+    {
+      "name": "Cycle checkpoint restoration",
+      "schema": "HHS_PASS_101_WORKLOAD_V1",
+      "workload_id": "W101-12",
+      "workload_root_hash72": "0000000000000000000000000000002eOago-m0Iog4i1Ba>VoOyDmqNTg24E?Z(ALi-vgd0"
+    },
+    {
+      "name": "Prime-periodic nested layer",
+      "schema": "HHS_PASS_101_WORKLOAD_V1",
+      "workload_id": "W101-13",
+      "workload_root_hash72": "0000000000000000000000000000000cG/c(t>rSAT6sTUaa*xfWlI7R1NwijIgaT+fm-(Kx"
+    },
+    {
+      "name": "Dynamic Pass 099 operation",
+      "schema": "HHS_PASS_101_WORKLOAD_V1",
+      "workload_id": "W101-14",
+      "workload_root_hash72": "0000000000000000000000000000000gl*B!+=)eqqHj!RI^DeM5+=-RPb)?UPPFV(!9R/RO"
+    }
+  ]
+}

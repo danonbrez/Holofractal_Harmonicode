@@ -1,0 +1,287 @@
+{
+  "all_closure_vectors_passed": true,
+  "campaign_receipt_root_hash72": "0000000000000000000000000000002BON>H>NKWf3-u7ZcOvhUnNO0-I=LvHQLlqq*t7RS*",
+  "failed_loops": 0,
+  "frontier": {
+    "continuation_root_hash72": "0000000000000000000000000000001/B6O7iK6XNKibGW>^h6aIJwYKE)aYzonYlB?41c8H",
+    "current_grade": 3,
+    "executed_grade3_permutations": 0,
+    "executed_loop_roots": [
+      "0000000000000000000000000000003vc)H3P34eq7cP6EAHv+s-IJPEADLrM9UOYtyFqzgc",
+      "0000000000000000000000000000003GAae-qAWX(Zgq6Mt8s)Fq1ajk*?TJVx5Qk!mFjKs+",
+      "00000000000000000000000000000046PnWws59x2=zU7?ySst3fDPcoa-l8Oobn48u9oYmx",
+      "0000000000000000000000000000001LSDk8l3Lud!Jzqvc=U2n^1j>zvlQbJXhKb+mmU!)n",
+      "0000000000000000000000000000002n!+Cl2mk97LMI*XmqsRt36WMjg*CJny5+3vq(*wu5",
+      "0000000000000000000000000000004thKY4w3OI^!ZTP7zMEVrA?3decF8u?wpq!AxymdUc"
+    ],
+    "next_permutation_index": 0,
+    "pending_grade3_permutations": 6,
+    "resource_state": {
+      "elapsed_ns": 28237562950,
+      "maximum_real_operation_invocations": 10,
+      "real_operation_invocations": 10
+    },
+    "schema": "HHS_FACTORIAL_ENUMERATION_FRONTIER_V1",
+    "total_grade3_permutations": 6
+  },
+  "grade3_executed_unique_permutations": 0,
+  "grade3_execution_mode": "BOUNDED_FRONTIER",
+  "grade3_raw_factorial_space": 6,
+  "grades_attempted": [
+    0,
+    2,
+    3,
+    "PARALLEL"
+  ],
+  "grades_completed": [
+    0,
+    2
+  ],
+  "inventory_root_hash72": "0000000000000000000000000000001(1f0MJ8+eLl2R*mSF3YdxpIO6f7(9+Fb4Gz08KIfU",
+  "loop_receipts": [
+    {
+      "closure_vector": {
+        "authority": true,
+        "dependency": true,
+        "negative_boundaries": true,
+        "payload": true,
+        "receipt": true,
+        "semantic": true,
+        "type": true
+      },
+      "intermediate_state_roots": [
+        "0000000000000000000000000000002bnt3I0tz^^+iC780b>9>jP)-zdq(R!!wf^d9VqFvM"
+      ],
+      "loop_class": "GRADE_0_INDIVIDUAL",
+      "loop_receipt_root_hash72": "0000000000000000000000000000003vc)H3P34eq7cP6EAHv+s-IJPEADLrM9UOYtyFqzgc",
+      "loop_status": "VALID_RECEIPT_RECONSTRUCTABLE_CLOSED_LOOP",
+      "mock_components": [],
+      "ordered_forward_capability_ids": [
+        "hhs:pass105_6:real_c_asm_backend"
+      ],
+      "ordered_operation_ids": [
+        "BACKEND"
+      ],
+      "ordered_reverse_verification": [
+        {
+          "operation_id": "BACKEND",
+          "verification": "HASH72_RESULT_ROOT_PRESENT",
+          "verified_result_root_hash72": "0000000000000000000000000000002bnt3I0tz^^+iC780b>9>jP)-zdq(R!!wf^d9VqFvM"
+        }
+      ],
+      "parallel_test_computation_used": false,
+      "real_production_execution_count": 1,
+      "reconstructed_state_root_hash72": "0000000000000000000000000000004ApgU79d(/saJ>!P9og!cWnW(IIEeu!izL9MnBx6Wk",
+      "schema": "HHS_REVERSIBLE_CLOSED_LOOP_RECEIPT_V1",
+      "seed_root_hash72": "0000000000000000000000000000001fb>FAkleoMuVPbpUMs^AR3sKx5AEXf-EZqd*e9o6-"
+    },
+    {
+      "closure_vector": {
+        "authority": true,
+        "dependency": true,
+        "negative_boundaries": true,
+        "payload": true,
+        "receipt": true,
+        "semantic": true,
+        "type": true
+      },
+      "intermediate_state_roots": [
+        "0000000000000000000000000000000oYa(m=Yj?L?IsmBy2jQnw5de?JPA7jl9ZYlc6nLeG"
+      ],
+      "loop_class": "GRADE_0_INDIVIDUAL",
+      "loop_receipt_root_hash72": "0000000000000000000000000000003GAae-qAWX(Zgq6Mt8s)Fq1ajk*?TJVx5Qk!mFjKs+",
+      "loop_status": "VALID_RECEIPT_RECONSTRUCTABLE_CLOSED_LOOP",
+      "mock_components": [],
+      "ordered_forward_capability_ids": [
+        "hhs:pass105_4:production_negative_attacks"
+      ],
+      "ordered_operation_ids": [
+        "ATTACKS"
+      ],
+      "ordered_reverse_verification": [
+        {
+          "operation_id": "ATTACKS",
+          "verification": "HASH72_RESULT_ROOT_PRESENT",
+          "verified_result_root_hash72": "0000000000000000000000000000000oYa(m=Yj?L?IsmBy2jQnw5de?JPA7jl9ZYlc6nLeG"
+        }
+      ],
+      "parallel_test_computation_used": false,
+      "real_production_execution_count": 1,
+      "reconstructed_state_root_hash72": "0000000000000000000000000000004ApgU79d(/saJ>!P9og!cWnW(IIEeu!izL9MnBx6Wk",
+      "schema": "HHS_REVERSIBLE_CLOSED_LOOP_RECEIPT_V1",
+      "seed_root_hash72": "0000000000000000000000000000001fb>FAkleoMuVPbpUMs^AR3sKx5AEXf-EZqd*e9o6-"
+    },
+    {
+      "closure_vector": {
+        "authority": true,
+        "dependency": true,
+        "negative_boundaries": true,
+        "payload": true,
+        "receipt": true,
+        "semantic": true,
+        "type": true
+      },
+      "intermediate_state_roots": [
+        "0000000000000000000000000000003KLJ-mYQUEQ?(ie/kOMJUwL6P!O2*g+F!iBNf0MAmS"
+      ],
+      "loop_class": "GRADE_0_INDIVIDUAL",
+      "loop_receipt_root_hash72": "00000000000000000000000000000046PnWws59x2=zU7?ySst3fDPcoa-l8Oobn48u9oYmx",
+      "loop_status": "VALID_RECEIPT_RECONSTRUCTABLE_CLOSED_LOOP",
+      "mock_components": [],
+      "ordered_forward_capability_ids": [
+        "hhs:pass106:verified_backend_and_attack_composition"
+      ],
+      "ordered_operation_ids": [
+        "COMPOSITION"
+      ],
+      "ordered_reverse_verification": [
+        {
+          "operation_id": "COMPOSITION",
+          "verification": "HASH72_RESULT_ROOT_PRESENT",
+          "verified_result_root_hash72": "0000000000000000000000000000003KLJ-mYQUEQ?(ie/kOMJUwL6P!O2*g+F!iBNf0MAmS"
+        }
+      ],
+      "parallel_test_computation_used": false,
+      "real_production_execution_count": 1,
+      "reconstructed_state_root_hash72": "0000000000000000000000000000004ApgU79d(/saJ>!P9og!cWnW(IIEeu!izL9MnBx6Wk",
+      "schema": "HHS_REVERSIBLE_CLOSED_LOOP_RECEIPT_V1",
+      "seed_root_hash72": "0000000000000000000000000000001fb>FAkleoMuVPbpUMs^AR3sKx5AEXf-EZqd*e9o6-"
+    },
+    {
+      "closure_vector": {
+        "authority": true,
+        "dependency": true,
+        "negative_boundaries": true,
+        "payload": true,
+        "receipt": true,
+        "semantic": true,
+        "type": true
+      },
+      "intermediate_state_roots": [
+        "0000000000000000000000000000001^eWdoV9y^hFR6Ir7ITi6C6EBq9gKoHDWCVL?1lS!v",
+        "0000000000000000000000000000000oYa(m=Yj?L?IsmBy2jQnw5de?JPA7jl9ZYlc6nLeG"
+      ],
+      "loop_class": "GRADE_2_ORDERED_PAIR",
+      "loop_receipt_root_hash72": "0000000000000000000000000000001LSDk8l3Lud!Jzqvc=U2n^1j>zvlQbJXhKb+mmU!)n",
+      "loop_status": "VALID_RECEIPT_RECONSTRUCTABLE_CLOSED_LOOP",
+      "mock_components": [],
+      "ordered_forward_capability_ids": [
+        "hhs:pass105_6:real_c_asm_backend",
+        "hhs:pass105_4:production_negative_attacks"
+      ],
+      "ordered_operation_ids": [
+        "BACKEND",
+        "ATTACKS"
+      ],
+      "ordered_reverse_verification": [
+        {
+          "operation_id": "ATTACKS",
+          "verification": "HASH72_RESULT_ROOT_PRESENT",
+          "verified_result_root_hash72": "0000000000000000000000000000000oYa(m=Yj?L?IsmBy2jQnw5de?JPA7jl9ZYlc6nLeG"
+        },
+        {
+          "operation_id": "BACKEND",
+          "verification": "HASH72_RESULT_ROOT_PRESENT",
+          "verified_result_root_hash72": "0000000000000000000000000000001^eWdoV9y^hFR6Ir7ITi6C6EBq9gKoHDWCVL?1lS!v"
+        }
+      ],
+      "parallel_test_computation_used": false,
+      "real_production_execution_count": 2,
+      "reconstructed_state_root_hash72": "0000000000000000000000000000004ApgU79d(/saJ>!P9og!cWnW(IIEeu!izL9MnBx6Wk",
+      "schema": "HHS_REVERSIBLE_CLOSED_LOOP_RECEIPT_V1",
+      "seed_root_hash72": "0000000000000000000000000000001fb>FAkleoMuVPbpUMs^AR3sKx5AEXf-EZqd*e9o6-"
+    },
+    {
+      "closure_vector": {
+        "authority": true,
+        "dependency": true,
+        "negative_boundaries": true,
+        "payload": true,
+        "receipt": true,
+        "semantic": true,
+        "type": true
+      },
+      "intermediate_state_roots": [
+        "0000000000000000000000000000000oYa(m=Yj?L?IsmBy2jQnw5de?JPA7jl9ZYlc6nLeG",
+        "0000000000000000000000000000001ceY8HL2SzQrQ5T3YVwJc+(0Q4WcwowSvJ-K1R0Ve-"
+      ],
+      "loop_class": "GRADE_2_ORDERED_PAIR",
+      "loop_receipt_root_hash72": "0000000000000000000000000000002n!+Cl2mk97LMI*XmqsRt36WMjg*CJny5+3vq(*wu5",
+      "loop_status": "VALID_RECEIPT_RECONSTRUCTABLE_CLOSED_LOOP",
+      "mock_components": [],
+      "ordered_forward_capability_ids": [
+        "hhs:pass105_4:production_negative_attacks",
+        "hhs:pass105_6:real_c_asm_backend"
+      ],
+      "ordered_operation_ids": [
+        "ATTACKS",
+        "BACKEND"
+      ],
+      "ordered_reverse_verification": [
+        {
+          "operation_id": "BACKEND",
+          "verification": "HASH72_RESULT_ROOT_PRESENT",
+          "verified_result_root_hash72": "0000000000000000000000000000001ceY8HL2SzQrQ5T3YVwJc+(0Q4WcwowSvJ-K1R0Ve-"
+        },
+        {
+          "operation_id": "ATTACKS",
+          "verification": "HASH72_RESULT_ROOT_PRESENT",
+          "verified_result_root_hash72": "0000000000000000000000000000000oYa(m=Yj?L?IsmBy2jQnw5de?JPA7jl9ZYlc6nLeG"
+        }
+      ],
+      "parallel_test_computation_used": false,
+      "real_production_execution_count": 2,
+      "reconstructed_state_root_hash72": "0000000000000000000000000000004ApgU79d(/saJ>!P9og!cWnW(IIEeu!izL9MnBx6Wk",
+      "schema": "HHS_REVERSIBLE_CLOSED_LOOP_RECEIPT_V1",
+      "seed_root_hash72": "0000000000000000000000000000001fb>FAkleoMuVPbpUMs^AR3sKx5AEXf-EZqd*e9o6-"
+    },
+    {
+      "branch_result_roots": [
+        "0000000000000000000000000000000oYa(m=Yj?L?IsmBy2jQnw5de?JPA7jl9ZYlc6nLeG",
+        "00000000000000000000000000000028s4lr2JwT*m(HWvDT)W)hBPwI9rUnE?foU(PPA9>>"
+      ],
+      "closure_vector": {
+        "authority": true,
+        "dependency": true,
+        "negative_boundaries": true,
+        "payload": true,
+        "receipt": true,
+        "semantic": true,
+        "type": true
+      },
+      "composition_result_root_hash72": "0000000000000000000000000000001Dzs-/N2Qsuxb-doU93XeoP0=8)zPu1TzYyi4dzVS3",
+      "loop_class": "PARALLEL_PARTIAL_ORDER",
+      "loop_receipt_root_hash72": "0000000000000000000000000000004thKY4w3OI^!ZTP7zMEVrA?3decF8u?wpq!AxymdUc",
+      "loop_status": "VALID_RECEIPT_RECONSTRUCTABLE_CLOSED_LOOP",
+      "mock_components": [],
+      "parallel_schedule_id": "BACKEND_LEFT_ATTACKS_RIGHT",
+      "parallel_test_computation_used": false,
+      "real_production_execution_count": 3,
+      "reconstructed_state_root_hash72": "00000000000000000000000000000025U=kBbp+Vj/ba/22P0xeYZvaZ-Y/9jE5o3ZDfxR8B",
+      "schema": "HHS_REVERSIBLE_CLOSED_LOOP_RECEIPT_V1",
+      "seed_root_hash72": "0000000000000000000000000000001fb>FAkleoMuVPbpUMs^AR3sKx5AEXf-EZqd*e9o6-"
+    }
+  ],
+  "mock_components": [],
+  "parallel_schedules_executed": 1,
+  "parallel_test_computation_used": false,
+  "pass110_root_hash72": "0000000000000000000000000000003l>YOCVNz)d>S(ua4cDpZWXlImtUw8^uT3!e+?NQ?E",
+  "pass_id": "PASS_110",
+  "real_operation_invocations": 10,
+  "resource_contract": {
+    "maximum_parallel_schedules": 1,
+    "maximum_parallel_width": 2,
+    "maximum_real_operation_invocations": 10,
+    "maximum_serial_depth": 3,
+    "maximum_serial_permutations": 0,
+    "maximum_wall_time_ns": 180000000000,
+    "resource_contract_root_hash72": "0000000000000000000000000000000EM1S+hl?N3vZXRLBO=1o877azw+Ukw+j!DirTfEoj"
+  },
+  "sampled_space_reported_as_exhaustive": false,
+  "schema": "HHS_GRADUATED_FACTORIAL_BENCHMARK_V1",
+  "seed_root_hash72": "0000000000000000000000000000001fb>FAkleoMuVPbpUMs^AR3sKx5AEXf-EZqd*e9o6-",
+  "status": "PASS",
+  "termination_status": "RESOURCE_BOUND_REACHED",
+  "unique_loops_executed": 6,
+  "valid_closed_loops": 6
+}

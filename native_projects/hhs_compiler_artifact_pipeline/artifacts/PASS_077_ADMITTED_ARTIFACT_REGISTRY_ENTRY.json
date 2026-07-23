@@ -1,0 +1,11 @@
+{
+  "admitted_artifact_object_root_hash72": "0000000000000000000000000000003l+iIMQ2lZt4O)6ZMnjAI(a2LJJs)RW*XxsmJICFkK",
+  "admitted_package_root_hash72": "00000000000000000000000000000037WDI5otJeF7zwEQeW*Xm(>3Mh8il2W(Ie-1NEL?uO",
+  "artifact_id": "artifact:pass077:portable",
+  "artifact_payload_root_hash72": "0000000000000000000000000000000RVIT*g=?u5ek+PE*4Z2BO+-3e9UFcpV1qZ!A(28f0",
+  "deployment_authority_conferred": false,
+  "external_verification_root_hash72": "0000000000000000000000000000001(2f1VBhcqbwlXVy^iqW5ee-q551=iw2rp2xpyam6R",
+  "registry_entry_root_hash72": "0000000000000000000000000000002tIfT(rt^Jq?BSjzljL3CagMG4KL8txQAng8k06^GO",
+  "schema": "HHS_ADMITTED_ARTIFACT_REGISTRY_ENTRY_V1",
+  "status": "ADMITTED"
+}

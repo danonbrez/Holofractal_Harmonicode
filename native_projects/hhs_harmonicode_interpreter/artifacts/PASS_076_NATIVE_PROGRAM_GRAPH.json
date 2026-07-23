@@ -1,0 +1,267 @@
+{
+  "all_new_modules_reusable": true,
+  "edges": [
+    {
+      "edge_root_hash72": "0000000000000000000000000000001!-2-^!s*)kHdpKdD0z87YdluSdboaanyd>LEMswsb",
+      "from_node": "pass076.package",
+      "relationship": "IMPORTS_OR_CONSUMES",
+      "to_node": "pass076.runtime"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000002rp(7A0?AxDZ897=O893lkZSVO2>q-08-=*L1tK/b+",
+      "from_node": "pass076.lowering",
+      "relationship": "IMPORTS_OR_CONSUMES",
+      "to_node": "pass076.contracts"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000000EZLE/^mN2cwNf)keLxPQPkk9CC?i>qikWCVQuLcJH",
+      "from_node": "pass076.lowering",
+      "relationship": "IMPORTS_OR_CONSUMES",
+      "to_node": "pass075.parser"
+    },
+    {
+      "edge_root_hash72": "00000000000000000000000000000014pGhP+j09tOrr2PTEUsKCDFM!Cf4t-oGDMh^^RQq5",
+      "from_node": "pass076.lowering",
+      "relationship": "IMPORTS_OR_CONSUMES",
+      "to_node": "pass075.typed_ir"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000002t*iR5yZjHkV5NhOkJxZaAWBv-F/RpK4J!MUn17zS-",
+      "from_node": "pass076.interpreter",
+      "relationship": "IMPORTS_OR_CONSUMES",
+      "to_node": "pass076.contracts"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000002/ZKikZi1q-rro56v2Ln3VDk-4o2J>*i(CAFDPo4*H",
+      "from_node": "pass076.interpreter",
+      "relationship": "IMPORTS_OR_CONSUMES",
+      "to_node": "pass076.lowering"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000003MvG+bBFaD*6dCdSvO6^Y=Wn*ijR4HHUcQuV/-kkAj",
+      "from_node": "pass076.repair",
+      "relationship": "IMPORTS_OR_CONSUMES",
+      "to_node": "pass076.contracts"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000001641^thxDbHk)T?+ofSOcKDrZgu>iGE9B53zG(Ldnk",
+      "from_node": "pass076.runtime",
+      "relationship": "IMPORTS_OR_CONSUMES",
+      "to_node": "pass076.lowering"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000001azNFUyE9+BIQwY-0l2jWlNOWh9*3gkKdBJDFL96Si",
+      "from_node": "pass076.runtime",
+      "relationship": "IMPORTS_OR_CONSUMES",
+      "to_node": "pass076.interpreter"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000001-OM0RMM4o75>y6A4WrUUUhxt/6=r6/6AvhDV!2vcz",
+      "from_node": "pass076.runtime",
+      "relationship": "IMPORTS_OR_CONSUMES",
+      "to_node": "pass076.repair"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000002a=VTaZGZCWXGH(cJidj^CWQyNKZdHyZE248a5>7SH",
+      "from_node": "pass076.runtime",
+      "relationship": "IMPORTS_OR_CONSUMES",
+      "to_node": "pass075.runtime"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000000YYY1K?!lq4PNAY(u)bee1b0qN)HYx1upmm4*16igZ",
+      "from_node": "pass076.api",
+      "relationship": "IMPORTS_OR_CONSUMES",
+      "to_node": "pass076.runtime"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000003OQB3*lk4hU)LJxgkrU7(Y5YYXrD?Bj/w!fZ^aWAhS",
+      "from_node": "pass076.api",
+      "relationship": "IMPORTS_OR_CONSUMES",
+      "to_node": "pass074.api"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000001T/UvmIGazm4MUICl!bYtYvOn24R0*idb5yE4^>tqW",
+      "from_node": "pass076.cli",
+      "relationship": "IMPORTS_OR_CONSUMES",
+      "to_node": "pass076.runtime"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000003n+6lT09ejpbX)*F^=>4vYgc4Kfkt5Ncf)f9uoU5ol",
+      "from_node": "pass076.replay",
+      "relationship": "IMPORTS_OR_CONSUMES",
+      "to_node": "pass076.runtime"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000001D/O(6NB2)?lNUd+vDQOBoxBg)?Dsz7WO1l2ykNurX",
+      "from_node": "pass076.replay",
+      "relationship": "IMPORTS_OR_CONSUMES",
+      "to_node": "pass076.interpreter"
+    }
+  ],
+  "entrypoints": [
+    "pass076.api",
+    "pass076.cli",
+    "pass076.replay",
+    "pass076.package"
+  ],
+  "inherited_dependency_count": 4,
+  "native_module_count": 9,
+  "new_capabilities": [
+    "typed-ir.lower",
+    "interpreter.execute",
+    "interpreter.step",
+    "interpreter.replay",
+    "tests.execute",
+    "repair.execute",
+    "repair.rollback"
+  ],
+  "nodes": [
+    {
+      "dependencies": [
+        "pass076.runtime"
+      ],
+      "kind": "PASS076_NATIVE_MODULE",
+      "node_id": "pass076.package",
+      "node_root_hash72": "0000000000000000000000000000001Asy7>)X9/>R+eewCH/?*9iX(EWIC7pK+U>OtBNg)Z",
+      "reachable": true,
+      "relative_path": "native_projects/hhs_harmonicode_interpreter/__init__.py",
+      "reusable_capability": true
+    },
+    {
+      "dependencies": [],
+      "kind": "PASS076_NATIVE_MODULE",
+      "node_id": "pass076.contracts",
+      "node_root_hash72": "0000000000000000000000000000003aHCb1iqUIr8TWrIi+j/?PS0yZGW3ga1^0ho+)Z6K4",
+      "reachable": true,
+      "relative_path": "native_projects/hhs_harmonicode_interpreter/hhs_pass076_contracts_v1.py",
+      "reusable_capability": true
+    },
+    {
+      "dependencies": [
+        "pass076.contracts",
+        "pass075.parser",
+        "pass075.typed_ir"
+      ],
+      "kind": "PASS076_NATIVE_MODULE",
+      "node_id": "pass076.lowering",
+      "node_root_hash72": "0000000000000000000000000000002n)ZDUg93dP4BUYYEa-A/vU5?iVLn0tx)tJ+stPu>M",
+      "reachable": true,
+      "relative_path": "native_projects/hhs_harmonicode_interpreter/hhs_executable_ir_v1.py",
+      "reusable_capability": true
+    },
+    {
+      "dependencies": [
+        "pass076.contracts",
+        "pass076.lowering"
+      ],
+      "kind": "PASS076_NATIVE_MODULE",
+      "node_id": "pass076.interpreter",
+      "node_root_hash72": "0000000000000000000000000000004uBU2z(p!w4i6Pph2w9x4>!QwdXh4)fkO*Bhi-IFed",
+      "reachable": true,
+      "relative_path": "native_projects/hhs_harmonicode_interpreter/hhs_exact_symbolic_interpreter_v1.py",
+      "reusable_capability": true
+    },
+    {
+      "dependencies": [
+        "pass076.contracts"
+      ],
+      "kind": "PASS076_NATIVE_MODULE",
+      "node_id": "pass076.repair",
+      "node_root_hash72": "0000000000000000000000000000002M75U-cecI)fjls!O8Kh>Rh0S4O=mOR?tVn5X)A!tu",
+      "reachable": true,
+      "relative_path": "native_projects/hhs_harmonicode_interpreter/hhs_bounded_repair_executor_v1.py",
+      "reusable_capability": true
+    },
+    {
+      "dependencies": [
+        "pass076.lowering",
+        "pass076.interpreter",
+        "pass076.repair",
+        "pass075.runtime"
+      ],
+      "kind": "PASS076_NATIVE_MODULE",
+      "node_id": "pass076.runtime",
+      "node_root_hash72": "0000000000000000000000000000001W2QvXsASG5jV>M?YlXUVo*/kdPnPu/-7qW?wq-lSK",
+      "reachable": true,
+      "relative_path": "native_projects/hhs_harmonicode_interpreter/hhs_pass076_workspace_runtime_v1.py",
+      "reusable_capability": true
+    },
+    {
+      "dependencies": [
+        "pass076.runtime",
+        "pass074.api"
+      ],
+      "kind": "PASS076_NATIVE_MODULE",
+      "node_id": "pass076.api",
+      "node_root_hash72": "0000000000000000000000000000002e!l?hD7EbmN7c2dAKVy?VLTr^qWuk0x9EV2J)GCyH",
+      "reachable": true,
+      "relative_path": "native_projects/hhs_harmonicode_interpreter/hhs_pass076_api_v1.py",
+      "reusable_capability": true
+    },
+    {
+      "dependencies": [
+        "pass076.runtime"
+      ],
+      "kind": "PASS076_NATIVE_MODULE",
+      "node_id": "pass076.cli",
+      "node_root_hash72": "0000000000000000000000000000000dj8Zuwu>w=/KGw7P5)gqnU>zDZA6Qv8xO(ndUZ+cK",
+      "reachable": true,
+      "relative_path": "native_projects/hhs_harmonicode_interpreter/hhs_pass076_cli_v1.py",
+      "reusable_capability": true
+    },
+    {
+      "dependencies": [
+        "pass076.runtime",
+        "pass076.interpreter"
+      ],
+      "kind": "PASS076_NATIVE_MODULE",
+      "node_id": "pass076.replay",
+      "node_root_hash72": "0000000000000000000000000000000SQ(9w6XA-qVwPQAl1zDg+3SWyPH/^/xdHU8e(HvWU",
+      "reachable": true,
+      "relative_path": "native_projects/hhs_harmonicode_interpreter/hhs_pass076_replay_runner_v1.py",
+      "reusable_capability": true
+    },
+    {
+      "dependencies": [],
+      "kind": "INHERITED_REUSABLE_DEPENDENCY",
+      "node_id": "pass075.parser",
+      "node_root_hash72": "0000000000000000000000000000002HMok2//SsMbV*l?n^jGB-znZKBi4XTooFm2?JxQo4",
+      "reachable": true,
+      "relative_path": "native_projects/hhs_harmonicode_language/hhs_harmonicode_parser_v1.py",
+      "reusable_capability": true
+    },
+    {
+      "dependencies": [],
+      "kind": "INHERITED_REUSABLE_DEPENDENCY",
+      "node_id": "pass075.typed_ir",
+      "node_root_hash72": "0000000000000000000000000000003N1l6VQJ3(-Idc-Ea1ch+TMvkHMD0^DXR>fJdQeC)2",
+      "reachable": true,
+      "relative_path": "native_projects/hhs_harmonicode_language/hhs_typed_ir_v1.py",
+      "reusable_capability": true
+    },
+    {
+      "dependencies": [],
+      "kind": "INHERITED_REUSABLE_DEPENDENCY",
+      "node_id": "pass075.runtime",
+      "node_root_hash72": "0000000000000000000000000000000vbc+Sb)BodjjWZc1Z3oXERmkS/DEqSq!Dwin(gIK=",
+      "reachable": true,
+      "relative_path": "native_projects/hhs_harmonicode_language/hhs_pass075_workspace_runtime_v1.py",
+      "reusable_capability": true
+    },
+    {
+      "dependencies": [],
+      "kind": "INHERITED_REUSABLE_DEPENDENCY",
+      "node_id": "pass074.api",
+      "node_root_hash72": "0000000000000000000000000000002is2tKp88Q8m(^Z59DwniNg6IL*tx8VazT8Kyd^?FR",
+      "reachable": true,
+      "relative_path": "native_projects/hhs_ide_workspace/hhs_unified_runtime_api_v1.py",
+      "reusable_capability": true
+    }
+  ],
+  "orphan_native_module_count": 0,
+  "pass_id": "PASS_076",
+  "program_graph_root_hash72": "0000000000000000000000000000004mzAGec8YlZ(lDTBlAfOkixbZG3MhA6OGzAIE5rTBh",
+  "program_id": "program:hhs-harmonicode-interpreter-and-repair",
+  "reachable_native_module_count": 9,
+  "schema": "HHS_NATIVE_PROGRAM_REACHABILITY_GRAPH_V1"
+}

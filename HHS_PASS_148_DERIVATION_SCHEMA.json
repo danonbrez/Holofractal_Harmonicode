@@ -1,0 +1,70 @@
+{
+  "$id": "hhs://schemas/pass148/derivation",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "control_contamination": {
+      "type": "boolean"
+    },
+    "derivation_hash72": {
+      "type": "string"
+    },
+    "derivation_id": {
+      "type": "string"
+    },
+    "input_propositions": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "ordered_steps": {
+      "items": {
+        "required": [
+          "step",
+          "rule_id",
+          "before",
+          "after",
+          "operator_types",
+          "scope",
+          "conditions",
+          "authority"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "output_proposition": {
+      "type": "string"
+    },
+    "promotion_authorized": {
+      "type": "boolean"
+    },
+    "promotion_requested": {
+      "type": "boolean"
+    },
+    "receipt": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "unresolved_dependencies": {
+      "type": "array"
+    }
+  },
+  "required": [
+    "derivation_id",
+    "input_propositions",
+    "output_proposition",
+    "ordered_steps",
+    "unresolved_dependencies",
+    "control_contamination",
+    "promotion_requested",
+    "promotion_authorized",
+    "derivation_hash72",
+    "receipt"
+  ],
+  "title": "HHS Pass 148 Derivation",
+  "type": "object"
+}

@@ -1,0 +1,28 @@
+{
+  "files": [
+    {
+      "path": "hhs_runtime/HARMONICODE_VM_RUNTIME.c",
+      "sha256": "d77a455747e7740114ea346ad136a1d03ed57cc12685d7ba047d526be119b884",
+      "size": 55641
+    },
+    {
+      "path": "hhs_runtime/include/HARMONICODE_VM_RUNTIME.h",
+      "sha256": "31a3873bf3afaa3acdcf5225d1b78f820219361ec5051b6830529902b1326c6f",
+      "size": 5216
+    },
+    {
+      "path": "hhs_runtime/c/hhs_runtime_abi.c",
+      "sha256": "354b713650919712575910b8041bf456c3e9475119b22c9b06836923705f33cf",
+      "size": 18806
+    },
+    {
+      "path": "hhs_runtime/c/hhs_runtime_abi.h",
+      "sha256": "196e190ba5ca472d8929418cbe743ddca5393e33d8ab56a9d267e81f337f5e44",
+      "size": 14598
+    }
+  ],
+  "pass078_kernel_freeze_manifest_root_hash72": "0000000000000000000000000000002mMnvePZY>kj-Q3cUqFoqh4F-GJ2v7pWx>vPQ(AhG5",
+  "pass_id": "PASS_078",
+  "policy": "ANALYZE_AND_EXPOSE_WITHOUT_NATIVE_SEMANTIC_MODIFICATION",
+  "schema": "HHS_KERNEL_FREEZE_MANIFEST_PASS_078_V1"
+}

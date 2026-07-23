@@ -1,0 +1,173 @@
+{
+  "schema": "HHS_PASS_098_EXECUTION_RECEIPTS_V1",
+  "receipts": [
+    {
+      "carrier_locally_closed": true,
+      "composite_value": 115028,
+      "execution_receipt_root_hash72": "00000000000000000000000000000001Gl(ApkUFnBrg=aYdy6uX*pJ5!=ltuuH(yE)UrYL=",
+      "field_root_hash72": "0000000000000000000000000000000/dz41fEx9PP-1s3m=B5pUu!Mil>8JkBNIf-(4BML6",
+      "global_recurrence_reached": true,
+      "k": 0,
+      "ordered_layer_ids": [
+        "phase-layer:prime:11:offset:0",
+        "phase-layer:prime:13:offset:6",
+        "phase-layer:prime:17:offset:12",
+        "phase-layer:prime:19:offset:18"
+      ],
+      "ordered_state_roots": [
+        "0000000000000000000000000000002/FM*e89!p-5Jpda1tQEU>iGd>!L*!8KY=+srA7T=y",
+        "0000000000000000000000000000004g>)3KrPj5X/0Gdr5!i?^qoQGzVIClKpk--duWL6Tp",
+        "00000000000000000000000000000036V(NMSJDLA7RM*ZfbZX+zsS*RHddT?WLwok/EM(a+",
+        "0000000000000000000000000000004AeUa8^*9hMl-u8*+lJcZbVpy4^5?Afp)KdS4D)SUA"
+      ],
+      "phase_tuple": [
+        0,
+        0,
+        6,
+        12,
+        18
+      ],
+      "schema": "HHS_POLYPERIODIC_EXECUTION_RECEIPT_V1"
+    },
+    {
+      "carrier_locally_closed": true,
+      "composite_value": 89889,
+      "execution_receipt_root_hash72": "0000000000000000000000000000003kxWoh?s7eZfHkYTzAF6Zigu*nfcGEdu^tNiNAH/nb",
+      "field_root_hash72": "0000000000000000000000000000000/dz41fEx9PP-1s3m=B5pUu!Mil>8JkBNIf-(4BML6",
+      "global_recurrence_reached": false,
+      "k": 1,
+      "ordered_layer_ids": [
+        "phase-layer:prime:11:offset:0",
+        "phase-layer:prime:13:offset:6",
+        "phase-layer:prime:17:offset:12",
+        "phase-layer:prime:19:offset:18"
+      ],
+      "ordered_state_roots": [
+        "0000000000000000000000000000003SEvlIVejv4F8S4>8+!vq5AkevD^LbD3vije(>yfr=",
+        "0000000000000000000000000000000q-kPPP5ZZe=SLTZzgriZ=sfzs(h2ncpkwqLF2i=VN",
+        "000000000000000000000000000000207F1iEKYyTaiwambEK2tgEa)rc+YHok-uMtoW1a?m",
+        "0000000000000000000000000000001uGqEH?=>1vS*J6AK?r2!9wy9pWurrsSHcoUxjzVZO"
+      ],
+      "phase_tuple": [
+        1,
+        1,
+        7,
+        13,
+        0
+      ],
+      "schema": "HHS_POLYPERIODIC_EXECUTION_RECEIPT_V1"
+    },
+    {
+      "carrier_locally_closed": true,
+      "composite_value": 93867,
+      "execution_receipt_root_hash72": "0000000000000000000000000000004bu^tzowVUtM3Q=Z2OqV=EQkj(nRl9wdMUNfRtz!j7",
+      "field_root_hash72": "0000000000000000000000000000000/dz41fEx9PP-1s3m=B5pUu!Mil>8JkBNIf-(4BML6",
+      "global_recurrence_reached": false,
+      "k": 71,
+      "ordered_layer_ids": [
+        "phase-layer:prime:11:offset:0",
+        "phase-layer:prime:13:offset:6",
+        "phase-layer:prime:17:offset:12",
+        "phase-layer:prime:19:offset:18"
+      ],
+      "ordered_state_roots": [
+        "0000000000000000000000000000003pB>W7OH=*QOcAcW3+LL=dM+^Vkd+CsZYEcy5*Niqq",
+        "0000000000000000000000000000004l+94SkiC6wIE+aDgK-iFFOqp^ajI^TYXqOR!1^teP",
+        "00000000000000000000000000000021KOfaGrwbhXThLh-/r5lmXT=W5fXsu2TkNKxn/6xC",
+        "0000000000000000000000000000000qA^y)0M8CBYy3LAnumqRu=mJ1m5kASQ+A4Lt7f(jw"
+      ],
+      "phase_tuple": [
+        71,
+        5,
+        12,
+        15,
+        13
+      ],
+      "schema": "HHS_POLYPERIODIC_EXECUTION_RECEIPT_V1"
+    },
+    {
+      "carrier_locally_closed": true,
+      "composite_value": 36432,
+      "execution_receipt_root_hash72": "0000000000000000000000000000002O6xqv^RVH/EaxkNVC)zTWUiSBsMH1dRX?GQZ*(->R",
+      "field_root_hash72": "0000000000000000000000000000000/dz41fEx9PP-1s3m=B5pUu!Mil>8JkBNIf-(4BML6",
+      "global_recurrence_reached": false,
+      "k": 72,
+      "ordered_layer_ids": [
+        "phase-layer:prime:11:offset:0",
+        "phase-layer:prime:13:offset:6",
+        "phase-layer:prime:17:offset:12",
+        "phase-layer:prime:19:offset:18"
+      ],
+      "ordered_state_roots": [
+        "0000000000000000000000000000003>NoW6faU3RvKNuLJvnHZ=a(nA>Du)GEgK^=wL-C9Q",
+        "0000000000000000000000000000001j39w=hROqu8/3wTV-0Q+>/*Z2c17HTP4dWRmO-Z0N",
+        "0000000000000000000000000000004EU8iMYLFLxds*OqsWiGL35CVfDg^d=vh5qE0=MY2f",
+        "0000000000000000000000000000002fn?1v9*?Z-sYfh!ktGV0auEqedY!DYW2xf75>-?z6"
+      ],
+      "phase_tuple": [
+        0,
+        6,
+        0,
+        16,
+        14
+      ],
+      "schema": "HHS_POLYPERIODIC_EXECUTION_RECEIPT_V1"
+    },
+    {
+      "carrier_locally_closed": true,
+      "composite_value": 74941,
+      "execution_receipt_root_hash72": "0000000000000000000000000000002X-OkhkT?Ydl2G0=CBsSwVk^-(alJISr=z*/XiJdqx",
+      "field_root_hash72": "0000000000000000000000000000000/dz41fEx9PP-1s3m=B5pUu!Mil>8JkBNIf-(4BML6",
+      "global_recurrence_reached": false,
+      "k": 137,
+      "ordered_layer_ids": [
+        "phase-layer:prime:11:offset:0",
+        "phase-layer:prime:13:offset:6",
+        "phase-layer:prime:17:offset:12",
+        "phase-layer:prime:19:offset:18"
+      ],
+      "ordered_state_roots": [
+        "0000000000000000000000000000002-(ah8NG(4O?OMroK6TigZJ>Nwa/U4()5=Fjw*-=An",
+        "0000000000000000000000000000003q^OJvq>FRlqSmv2gAuqq>e^wBmuWdwc=iTl9quwQ9",
+        "0000000000000000000000000000000ur>)WMBNx2>>PN=gI3lsKHGGdKZp8kuJlC/XYL(Oi",
+        "0000000000000000000000000000002KOzt/rR-(-LxBQ+j5W(Yc1r!>47JRFK3+0elDgk=^"
+      ],
+      "phase_tuple": [
+        65,
+        5,
+        0,
+        13,
+        3
+      ],
+      "schema": "HHS_POLYPERIODIC_EXECUTION_RECEIPT_V1"
+    },
+    {
+      "carrier_locally_closed": true,
+      "composite_value": 41909,
+      "execution_receipt_root_hash72": "0000000000000000000000000000004wYSolFLt^AKOMWl^iPgPQJ-xuiHSsmPMMNw^!O^qR",
+      "field_root_hash72": "0000000000000000000000000000000/dz41fEx9PP-1s3m=B5pUu!Mil>8JkBNIf-(4BML6",
+      "global_recurrence_reached": false,
+      "k": 3325607,
+      "ordered_layer_ids": [
+        "phase-layer:prime:11:offset:0",
+        "phase-layer:prime:13:offset:6",
+        "phase-layer:prime:17:offset:12",
+        "phase-layer:prime:19:offset:18"
+      ],
+      "ordered_state_roots": [
+        "00000000000000000000000000000020t=(WX=9*Dj1qAGX=0X?fM^e4!Zd4lc5*hT52)cD/",
+        "0000000000000000000000000000004hFyJ/i>mZC)Gr7gE>3*cPL(7a8iro8X^MNifEPSip",
+        "0000000000000000000000000000000RQZkR8)ZERSh*ayN*^*FbUY39E6IBw10/2AG(5sVl",
+        "0000000000000000000000000000003jROfOVDB!n*2X2a1aSpFMQ1rw(imSa!)=dn*A!0Y6"
+      ],
+      "phase_tuple": [
+        71,
+        10,
+        5,
+        11,
+        17
+      ],
+      "schema": "HHS_POLYPERIODIC_EXECUTION_RECEIPT_V1"
+    }
+  ]
+}

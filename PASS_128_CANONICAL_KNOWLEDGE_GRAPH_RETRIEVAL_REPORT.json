@@ -1,0 +1,26 @@
+{
+  "schema": "HHS_PASS_128_IMPLEMENTATION_REPORT_V1",
+  "pass_id": "PASS_128",
+  "title": "Canonical Evidence-Grounded Knowledge Graph and Bounded Retrieval",
+  "runtime_surface": "runtime.canonical_knowledge_graph_retrieval.pass128",
+  "status": "IMPLEMENTED_AND_DEPENDENCY_SCOPED_VALIDATED",
+  "pass_128_tests": 15,
+  "dependency_scoped_tests_passed": 178,
+  "dependency_scope": "Passes 117-128",
+  "failures": 0,
+  "authority_boundary": {
+    "knowledge_authority": true,
+    "execution_authority": false,
+    "mutation_authority": false,
+    "retrieval_executable": false
+  },
+  "capabilities": [
+    "Pass 127 record to canonical graph-node conversion",
+    "typed evidence-rooted graph relations",
+    "closed endpoint validation",
+    "bounded semantic query construction",
+    "deterministic proof-path graph traversal",
+    "grounded proposition retrieval",
+    "Hash72 node edge graph query result and replay receipts"
+  ]
+}

@@ -1,0 +1,879 @@
+{
+  "artifact_lineage_preserved": true,
+  "ast_root_hash72": "0000000000000000000000000000001>oFM1OxLRp0m7gI-KW)B^H5xpPDLQ2dOlJ8D3OS(M",
+  "authority_requirements_preserved": true,
+  "blocks": [
+    {
+      "artifact_lineage": {
+        "parent_ir_ref": "GENESIS",
+        "source_kind": "COMMITTED_SOURCE_ARTIFACT",
+        "source_ref": "artifact:pass075:source:0",
+        "source_root_hash72": "00000000000000000000000000000002a!p(S)1vx8v>^Mcq-aRWU2nEOaWR?j)QVEq-EcTV",
+        "source_sha256": "605954aa1754cd052741f66f9b023918fec433e2dc393886fc60d89f771045ef"
+      },
+      "authority_requirements": [],
+      "block_id": "ir-block:0:D-B=Bju5c36F>r5K",
+      "block_root_hash72": "0000000000000000000000000000003OIW*4c>UOk-R32JEaG2=R/zy0mtcp-Zbd22RCMKHQ",
+      "effect_declaration": "PURE_SYMBOLIC",
+      "execution_permitted": false,
+      "index": 0,
+      "invariant_bindings": [
+        {
+          "invariant": "Δe=0",
+          "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+        },
+        {
+          "invariant": "Ψ=0",
+          "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+        },
+        {
+          "invariant": "Θ15=true",
+          "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+        },
+        {
+          "invariant": "Ω=true",
+          "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+        }
+      ],
+      "node_kind": "GateDeclaration",
+      "node_ref": "node:0:D-B=Bju5c36F>r5K",
+      "operand_types": [],
+      "operator": ":=",
+      "reconstruction_recipe": {
+        "deterministic_reparse_required": true,
+        "ir_version": "HHS_TYPED_IR_PASS_075_V1",
+        "node_root_hash72": "0000000000000000000000000000003>l+P=^J=E!ErWOaUszeUYQ(-*lam6qnq3pgqm00/U",
+        "parser_version": "HHS_HARMONICODE_PARSER_PASS_075_V1",
+        "source_span": {
+          "column_end": 2,
+          "column_start": 1,
+          "end": 82,
+          "line_end": 9,
+          "line_start": 1,
+          "start": 0,
+          "text_sha256": "9ceaedf9e7b09356db8d26da2fd5cce1270b844d69b81b3fe36e20473e225fcc"
+        }
+      },
+      "result_type_id": "GATE",
+      "schema": "HHS_TYPED_IR_BLOCK_V1",
+      "source_span": {
+        "column_end": 2,
+        "column_start": 1,
+        "end": 82,
+        "line_end": 9,
+        "line_start": 1,
+        "start": 0,
+        "text_sha256": "9ceaedf9e7b09356db8d26da2fd5cce1270b844d69b81b3fe36e20473e225fcc"
+      },
+      "source_text_sha256": "9ceaedf9e7b09356db8d26da2fd5cce1270b844d69b81b3fe36e20473e225fcc",
+      "typed_ir_is_not_execution_receipt": true
+    },
+    {
+      "artifact_lineage": {
+        "parent_ir_ref": "GENESIS",
+        "source_kind": "COMMITTED_SOURCE_ARTIFACT",
+        "source_ref": "artifact:pass075:source:0",
+        "source_root_hash72": "00000000000000000000000000000002a!p(S)1vx8v>^Mcq-aRWU2nEOaWR?j)QVEq-EcTV",
+        "source_sha256": "605954aa1754cd052741f66f9b023918fec433e2dc393886fc60d89f771045ef"
+      },
+      "authority_requirements": [],
+      "block_id": "ir-block:1:Olnme15U=NuapZff",
+      "block_root_hash72": "0000000000000000000000000000000DAbwLY05r//L4Hd2^xH/SVR*LT/tGgooK8?f?X3H0",
+      "effect_declaration": "PURE_SYMBOLIC",
+      "execution_permitted": false,
+      "index": 1,
+      "invariant_bindings": [
+        {
+          "invariant": "Δe=0",
+          "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+        },
+        {
+          "invariant": "Ψ=0",
+          "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+        },
+        {
+          "invariant": "Θ15=true",
+          "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+        },
+        {
+          "invariant": "Ω=true",
+          "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+        }
+      ],
+      "node_kind": "AssertEquality",
+      "node_ref": "node:0:Olnme15U=NuapZff",
+      "operand_types": [
+        {
+          "term": "x",
+          "type_id": "SYMBOL"
+        },
+        {
+          "term": "1/y",
+          "type_id": "SYMBOLIC_EXPRESSION"
+        }
+      ],
+      "operator": "==",
+      "reconstruction_recipe": {
+        "deterministic_reparse_required": true,
+        "ir_version": "HHS_TYPED_IR_PASS_075_V1",
+        "node_root_hash72": "00000000000000000000000000000019O4d9La9>Ry=4ZCvT)TcjZ0qpS9KXLU^KnHzLBk/5",
+        "parser_version": "HHS_HARMONICODE_PARSER_PASS_075_V1",
+        "source_span": {
+          "column_end": 9,
+          "column_start": 3,
+          "end": 24,
+          "line_end": 2,
+          "line_start": 2,
+          "start": 18,
+          "text_sha256": "9e78cd33e953051a8ffe3507d447e90c57c27a27a4a0917d45239c1fa6daf19e"
+        }
+      },
+      "result_type_id": "CONSTRAINT",
+      "schema": "HHS_TYPED_IR_BLOCK_V1",
+      "source_span": {
+        "column_end": 9,
+        "column_start": 3,
+        "end": 24,
+        "line_end": 2,
+        "line_start": 2,
+        "start": 18,
+        "text_sha256": "9e78cd33e953051a8ffe3507d447e90c57c27a27a4a0917d45239c1fa6daf19e"
+      },
+      "source_text_sha256": "9e78cd33e953051a8ffe3507d447e90c57c27a27a4a0917d45239c1fa6daf19e",
+      "typed_ir_is_not_execution_receipt": true
+    },
+    {
+      "artifact_lineage": {
+        "parent_ir_ref": "GENESIS",
+        "source_kind": "COMMITTED_SOURCE_ARTIFACT",
+        "source_ref": "artifact:pass075:source:0",
+        "source_root_hash72": "00000000000000000000000000000002a!p(S)1vx8v>^Mcq-aRWU2nEOaWR?j)QVEq-EcTV",
+        "source_sha256": "605954aa1754cd052741f66f9b023918fec433e2dc393886fc60d89f771045ef"
+      },
+      "authority_requirements": [],
+      "block_id": "ir-block:2:zQoLQrgk2iPmQ(?m",
+      "block_root_hash72": "0000000000000000000000000000002herOy6(Vyw-lEI2??7P9BhoAWI+c>nbRDmpV(lji0",
+      "effect_declaration": "PURE_SYMBOLIC",
+      "execution_permitted": false,
+      "index": 2,
+      "invariant_bindings": [
+        {
+          "invariant": "Δe=0",
+          "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+        },
+        {
+          "invariant": "Ψ=0",
+          "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+        },
+        {
+          "invariant": "Θ15=true",
+          "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+        },
+        {
+          "invariant": "Ω=true",
+          "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+        }
+      ],
+      "node_kind": "AssertEquality",
+      "node_ref": "node:1:zQoLQrgk2iPmQ(?m",
+      "operand_types": [
+        {
+          "term": "z",
+          "type_id": "SYMBOL"
+        },
+        {
+          "term": "1/w",
+          "type_id": "SYMBOLIC_EXPRESSION"
+        }
+      ],
+      "operator": "==",
+      "reconstruction_recipe": {
+        "deterministic_reparse_required": true,
+        "ir_version": "HHS_TYPED_IR_PASS_075_V1",
+        "node_root_hash72": "0000000000000000000000000000000*Zm3o>G1/Ow6Q4ygIo?j/6llc+gU5dIsdxLwnsn8k",
+        "parser_version": "HHS_HARMONICODE_PARSER_PASS_075_V1",
+        "source_span": {
+          "column_end": 9,
+          "column_start": 3,
+          "end": 34,
+          "line_end": 3,
+          "line_start": 3,
+          "start": 28,
+          "text_sha256": "1ece3fc5d0a1a2223a74d764f990cacb0c092525e2544791b8c636d929996d5b"
+        }
+      },
+      "result_type_id": "CONSTRAINT",
+      "schema": "HHS_TYPED_IR_BLOCK_V1",
+      "source_span": {
+        "column_end": 9,
+        "column_start": 3,
+        "end": 34,
+        "line_end": 3,
+        "line_start": 3,
+        "start": 28,
+        "text_sha256": "1ece3fc5d0a1a2223a74d764f990cacb0c092525e2544791b8c636d929996d5b"
+      },
+      "source_text_sha256": "1ece3fc5d0a1a2223a74d764f990cacb0c092525e2544791b8c636d929996d5b",
+      "typed_ir_is_not_execution_receipt": true
+    },
+    {
+      "artifact_lineage": {
+        "parent_ir_ref": "GENESIS",
+        "source_kind": "COMMITTED_SOURCE_ARTIFACT",
+        "source_ref": "artifact:pass075:source:0",
+        "source_root_hash72": "00000000000000000000000000000002a!p(S)1vx8v>^Mcq-aRWU2nEOaWR?j)QVEq-EcTV",
+        "source_sha256": "605954aa1754cd052741f66f9b023918fec433e2dc393886fc60d89f771045ef"
+      },
+      "authority_requirements": [],
+      "block_id": "ir-block:3:fK1xD9moOlkW6PUI",
+      "block_root_hash72": "0000000000000000000000000000004z4Q4kALF=jj>q!4um55xCqwoVu39TyYgIKVZSvOMX",
+      "effect_declaration": "PURE_SYMBOLIC",
+      "execution_permitted": false,
+      "index": 3,
+      "invariant_bindings": [
+        {
+          "invariant": "Δe=0",
+          "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+        },
+        {
+          "invariant": "Ψ=0",
+          "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+        },
+        {
+          "invariant": "Θ15=true",
+          "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+        },
+        {
+          "invariant": "Ω=true",
+          "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+        }
+      ],
+      "node_kind": "DistinctChain",
+      "node_ref": "node:2:fK1xD9moOlkW6PUI",
+      "operand_types": [
+        {
+          "term": "xy",
+          "type_id": "ORDERED_PRODUCT"
+        },
+        {
+          "term": "yx",
+          "type_id": "ORDERED_PRODUCT"
+        }
+      ],
+      "operator": "≠",
+      "reconstruction_recipe": {
+        "deterministic_reparse_required": true,
+        "ir_version": "HHS_TYPED_IR_PASS_075_V1",
+        "node_root_hash72": "0000000000000000000000000000002eheTgYcO1hTrrC28fADFpYfeETmcg6TkWh3ZdUN?9",
+        "parser_version": "HHS_HARMONICODE_PARSER_PASS_075_V1",
+        "source_span": {
+          "column_end": 8,
+          "column_start": 3,
+          "end": 43,
+          "line_end": 4,
+          "line_start": 4,
+          "start": 38,
+          "text_sha256": "2b8b8a6a2df353aa816e471ce20675f62899ce6ee3942c81324a036063f3a2e6"
+        }
+      },
+      "result_type_id": "CONSTRAINT",
+      "schema": "HHS_TYPED_IR_BLOCK_V1",
+      "source_span": {
+        "column_end": 8,
+        "column_start": 3,
+        "end": 43,
+        "line_end": 4,
+        "line_start": 4,
+        "start": 38,
+        "text_sha256": "2b8b8a6a2df353aa816e471ce20675f62899ce6ee3942c81324a036063f3a2e6"
+      },
+      "source_text_sha256": "2b8b8a6a2df353aa816e471ce20675f62899ce6ee3942c81324a036063f3a2e6",
+      "typed_ir_is_not_execution_receipt": true
+    },
+    {
+      "artifact_lineage": {
+        "parent_ir_ref": "GENESIS",
+        "source_kind": "COMMITTED_SOURCE_ARTIFACT",
+        "source_ref": "artifact:pass075:source:0",
+        "source_root_hash72": "00000000000000000000000000000002a!p(S)1vx8v>^Mcq-aRWU2nEOaWR?j)QVEq-EcTV",
+        "source_sha256": "605954aa1754cd052741f66f9b023918fec433e2dc393886fc60d89f771045ef"
+      },
+      "authority_requirements": [],
+      "block_id": "ir-block:4:4ydIHfE5FRxsTeaE",
+      "block_root_hash72": "0000000000000000000000000000000/dk-/H!a8Z/Uto5)XTo!J)sk/DgUmeJxyNbQ=8lLE",
+      "effect_declaration": "PURE_SYMBOLIC",
+      "execution_permitted": false,
+      "index": 4,
+      "invariant_bindings": [
+        {
+          "invariant": "Δe=0",
+          "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+        },
+        {
+          "invariant": "Ψ=0",
+          "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+        },
+        {
+          "invariant": "Θ15=true",
+          "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+        },
+        {
+          "invariant": "Ω=true",
+          "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+        }
+      ],
+      "node_kind": "ChainEquality",
+      "node_ref": "node:3:4ydIHfE5FRxsTeaE",
+      "operand_types": [
+        {
+          "term": "Δe",
+          "type_id": "SYMBOL"
+        },
+        {
+          "term": "0",
+          "type_id": "EXACT_INTEGER"
+        }
+      ],
+      "operator": "=",
+      "reconstruction_recipe": {
+        "deterministic_reparse_required": true,
+        "ir_version": "HHS_TYPED_IR_PASS_075_V1",
+        "node_root_hash72": "0000000000000000000000000000003TBhd=)/tFacy33XA*^qG)toLfYlg7GZZDtYTuQQV(",
+        "parser_version": "HHS_HARMONICODE_PARSER_PASS_075_V1",
+        "source_span": {
+          "column_end": 7,
+          "column_start": 3,
+          "end": 51,
+          "line_end": 5,
+          "line_start": 5,
+          "start": 47,
+          "text_sha256": "4756f457b3adc91fdb83f202a2556e83ebab77fd5dc71b8ae92f63ccc2c54ba8"
+        }
+      },
+      "result_type_id": "CONSTRAINT",
+      "schema": "HHS_TYPED_IR_BLOCK_V1",
+      "source_span": {
+        "column_end": 7,
+        "column_start": 3,
+        "end": 51,
+        "line_end": 5,
+        "line_start": 5,
+        "start": 47,
+        "text_sha256": "4756f457b3adc91fdb83f202a2556e83ebab77fd5dc71b8ae92f63ccc2c54ba8"
+      },
+      "source_text_sha256": "4756f457b3adc91fdb83f202a2556e83ebab77fd5dc71b8ae92f63ccc2c54ba8",
+      "typed_ir_is_not_execution_receipt": true
+    },
+    {
+      "artifact_lineage": {
+        "parent_ir_ref": "GENESIS",
+        "source_kind": "COMMITTED_SOURCE_ARTIFACT",
+        "source_ref": "artifact:pass075:source:0",
+        "source_root_hash72": "00000000000000000000000000000002a!p(S)1vx8v>^Mcq-aRWU2nEOaWR?j)QVEq-EcTV",
+        "source_sha256": "605954aa1754cd052741f66f9b023918fec433e2dc393886fc60d89f771045ef"
+      },
+      "authority_requirements": [],
+      "block_id": "ir-block:5:d9KItwdq7(Nyj0eC",
+      "block_root_hash72": "0000000000000000000000000000002Jk3ro(o0U)5SfATc^c1qDsdlPz8(5ENZ^YCHcNHj(",
+      "effect_declaration": "PURE_SYMBOLIC",
+      "execution_permitted": false,
+      "index": 5,
+      "invariant_bindings": [
+        {
+          "invariant": "Δe=0",
+          "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+        },
+        {
+          "invariant": "Ψ=0",
+          "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+        },
+        {
+          "invariant": "Θ15=true",
+          "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+        },
+        {
+          "invariant": "Ω=true",
+          "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+        }
+      ],
+      "node_kind": "ChainEquality",
+      "node_ref": "node:4:d9KItwdq7(Nyj0eC",
+      "operand_types": [
+        {
+          "term": "Ψ",
+          "type_id": "SYMBOL"
+        },
+        {
+          "term": "0",
+          "type_id": "EXACT_INTEGER"
+        }
+      ],
+      "operator": "=",
+      "reconstruction_recipe": {
+        "deterministic_reparse_required": true,
+        "ir_version": "HHS_TYPED_IR_PASS_075_V1",
+        "node_root_hash72": "0000000000000000000000000000003y>c)O-t4f5AfCRwOT?oq)Fh=VQcSwdBCjw174w2ar",
+        "parser_version": "HHS_HARMONICODE_PARSER_PASS_075_V1",
+        "source_span": {
+          "column_end": 6,
+          "column_start": 3,
+          "end": 58,
+          "line_end": 6,
+          "line_start": 6,
+          "start": 55,
+          "text_sha256": "98bd2afe37342b2c2f357b9ae753f034478fde52e911f9b81a390f7831e51774"
+        }
+      },
+      "result_type_id": "CONSTRAINT",
+      "schema": "HHS_TYPED_IR_BLOCK_V1",
+      "source_span": {
+        "column_end": 6,
+        "column_start": 3,
+        "end": 58,
+        "line_end": 6,
+        "line_start": 6,
+        "start": 55,
+        "text_sha256": "98bd2afe37342b2c2f357b9ae753f034478fde52e911f9b81a390f7831e51774"
+      },
+      "source_text_sha256": "98bd2afe37342b2c2f357b9ae753f034478fde52e911f9b81a390f7831e51774",
+      "typed_ir_is_not_execution_receipt": true
+    },
+    {
+      "artifact_lineage": {
+        "parent_ir_ref": "GENESIS",
+        "source_kind": "COMMITTED_SOURCE_ARTIFACT",
+        "source_ref": "artifact:pass075:source:0",
+        "source_root_hash72": "00000000000000000000000000000002a!p(S)1vx8v>^Mcq-aRWU2nEOaWR?j)QVEq-EcTV",
+        "source_sha256": "605954aa1754cd052741f66f9b023918fec433e2dc393886fc60d89f771045ef"
+      },
+      "authority_requirements": [],
+      "block_id": "ir-block:6:uvo*?TxCW?(D6BGT",
+      "block_root_hash72": "0000000000000000000000000000004axtaWXs!s1bw+hViMSA65(4mKPbNv2dojcCa7>WEW",
+      "effect_declaration": "PURE_SYMBOLIC",
+      "execution_permitted": false,
+      "index": 6,
+      "invariant_bindings": [
+        {
+          "invariant": "Δe=0",
+          "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+        },
+        {
+          "invariant": "Ψ=0",
+          "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+        },
+        {
+          "invariant": "Θ15=true",
+          "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+        },
+        {
+          "invariant": "Ω=true",
+          "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+        }
+      ],
+      "node_kind": "ChainEquality",
+      "node_ref": "node:5:uvo*?TxCW?(D6BGT",
+      "operand_types": [
+        {
+          "term": "Θ15",
+          "type_id": "SYMBOL"
+        },
+        {
+          "term": "true",
+          "type_id": "BOOLEAN"
+        }
+      ],
+      "operator": "=",
+      "reconstruction_recipe": {
+        "deterministic_reparse_required": true,
+        "ir_version": "HHS_TYPED_IR_PASS_075_V1",
+        "node_root_hash72": "0000000000000000000000000000000rP+E*B7j)vin-!kY)0-AKX!Jbw+R7xa3xTi6f^qEr",
+        "parser_version": "HHS_HARMONICODE_PARSER_PASS_075_V1",
+        "source_span": {
+          "column_end": 11,
+          "column_start": 3,
+          "end": 70,
+          "line_end": 7,
+          "line_start": 7,
+          "start": 62,
+          "text_sha256": "ec90a1149adec349ae66707412985bfe3c3e9f72568b35ce8807f1e23e350582"
+        }
+      },
+      "result_type_id": "CONSTRAINT",
+      "schema": "HHS_TYPED_IR_BLOCK_V1",
+      "source_span": {
+        "column_end": 11,
+        "column_start": 3,
+        "end": 70,
+        "line_end": 7,
+        "line_start": 7,
+        "start": 62,
+        "text_sha256": "ec90a1149adec349ae66707412985bfe3c3e9f72568b35ce8807f1e23e350582"
+      },
+      "source_text_sha256": "ec90a1149adec349ae66707412985bfe3c3e9f72568b35ce8807f1e23e350582",
+      "typed_ir_is_not_execution_receipt": true
+    },
+    {
+      "artifact_lineage": {
+        "parent_ir_ref": "GENESIS",
+        "source_kind": "COMMITTED_SOURCE_ARTIFACT",
+        "source_ref": "artifact:pass075:source:0",
+        "source_root_hash72": "00000000000000000000000000000002a!p(S)1vx8v>^Mcq-aRWU2nEOaWR?j)QVEq-EcTV",
+        "source_sha256": "605954aa1754cd052741f66f9b023918fec433e2dc393886fc60d89f771045ef"
+      },
+      "authority_requirements": [],
+      "block_id": "ir-block:7:jT/f-762EwbJb4y1",
+      "block_root_hash72": "0000000000000000000000000000002fN27jV^Y1qoHJ92ro!KGWLLtFwd-nZaKM/WwbwwmW",
+      "effect_declaration": "PURE_SYMBOLIC",
+      "execution_permitted": false,
+      "index": 7,
+      "invariant_bindings": [
+        {
+          "invariant": "Δe=0",
+          "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+        },
+        {
+          "invariant": "Ψ=0",
+          "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+        },
+        {
+          "invariant": "Θ15=true",
+          "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+        },
+        {
+          "invariant": "Ω=true",
+          "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+        }
+      ],
+      "node_kind": "ChainEquality",
+      "node_ref": "node:6:jT/f-762EwbJb4y1",
+      "operand_types": [
+        {
+          "term": "Ω",
+          "type_id": "SYMBOL"
+        },
+        {
+          "term": "true",
+          "type_id": "BOOLEAN"
+        }
+      ],
+      "operator": "=",
+      "reconstruction_recipe": {
+        "deterministic_reparse_required": true,
+        "ir_version": "HHS_TYPED_IR_PASS_075_V1",
+        "node_root_hash72": "0000000000000000000000000000000sb)3ma20*1XfC)pw2VJ*Z4PJi57mMpZtUWWiYMTPr",
+        "parser_version": "HHS_HARMONICODE_PARSER_PASS_075_V1",
+        "source_span": {
+          "column_end": 9,
+          "column_start": 3,
+          "end": 80,
+          "line_end": 8,
+          "line_start": 8,
+          "start": 74,
+          "text_sha256": "dd380a36632d9164982bf1f417f6a08be9cf8f43f54301b749cd69e73238e92c"
+        }
+      },
+      "result_type_id": "CONSTRAINT",
+      "schema": "HHS_TYPED_IR_BLOCK_V1",
+      "source_span": {
+        "column_end": 9,
+        "column_start": 3,
+        "end": 80,
+        "line_end": 8,
+        "line_start": 8,
+        "start": 74,
+        "text_sha256": "dd380a36632d9164982bf1f417f6a08be9cf8f43f54301b749cd69e73238e92c"
+      },
+      "source_text_sha256": "dd380a36632d9164982bf1f417f6a08be9cf8f43f54301b749cd69e73238e92c",
+      "typed_ir_is_not_execution_receipt": true
+    },
+    {
+      "artifact_lineage": {
+        "parent_ir_ref": "GENESIS",
+        "source_kind": "COMMITTED_SOURCE_ARTIFACT",
+        "source_ref": "artifact:pass075:source:0",
+        "source_root_hash72": "00000000000000000000000000000002a!p(S)1vx8v>^Mcq-aRWU2nEOaWR?j)QVEq-EcTV",
+        "source_sha256": "605954aa1754cd052741f66f9b023918fec433e2dc393886fc60d89f771045ef"
+      },
+      "authority_requirements": [],
+      "block_id": "ir-block:8:bMw+L>HGOMCD0fhK",
+      "block_root_hash72": "0000000000000000000000000000000dUMnE-yskd46xXEOqjTMbe1Htuf-fe7p33J>IS>Kk",
+      "effect_declaration": "PURE_SYMBOLIC",
+      "execution_permitted": false,
+      "index": 8,
+      "invariant_bindings": [
+        {
+          "invariant": "Δe=0",
+          "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+        },
+        {
+          "invariant": "Ψ=0",
+          "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+        },
+        {
+          "invariant": "Θ15=true",
+          "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+        },
+        {
+          "invariant": "Ω=true",
+          "status": "REQUIRED_NOT_ASSUMED_SATISFIED"
+        }
+      ],
+      "node_kind": "GateInvocation",
+      "node_ref": "node:1:bMw+L>HGOMCD0fhK",
+      "operand_types": [],
+      "operator": "",
+      "reconstruction_recipe": {
+        "deterministic_reparse_required": true,
+        "ir_version": "HHS_TYPED_IR_PASS_075_V1",
+        "node_root_hash72": "0000000000000000000000000000003idsP-zZVg5dfQ!SlTq6gNCTuu>6Do?KB-Cfwz*+RA",
+        "parser_version": "HHS_HARMONICODE_PARSER_PASS_075_V1",
+        "source_span": {
+          "column_end": 11,
+          "column_start": 1,
+          "end": 93,
+          "line_end": 10,
+          "line_start": 10,
+          "start": 83,
+          "text_sha256": "c63aa569b9769c867626d70a00e43d78540936babe18218e0808368fd827cd27"
+        }
+      },
+      "result_type_id": "CONSTRAINT",
+      "schema": "HHS_TYPED_IR_BLOCK_V1",
+      "source_span": {
+        "column_end": 11,
+        "column_start": 1,
+        "end": 93,
+        "line_end": 10,
+        "line_start": 10,
+        "start": 83,
+        "text_sha256": "c63aa569b9769c867626d70a00e43d78540936babe18218e0808368fd827cd27"
+      },
+      "source_text_sha256": "c63aa569b9769c867626d70a00e43d78540936babe18218e0808368fd827cd27",
+      "typed_ir_is_not_execution_receipt": true
+    }
+  ],
+  "diagnostics": [],
+  "effect_declarations_preserved": true,
+  "execution_permitted": false,
+  "interpreter_execution_deferred_to_pass076": true,
+  "invariant_bindings_preserved": true,
+  "ir_id": "typed-ir:pass075:main",
+  "ir_root_hash72": "00000000000000000000000000000010(OuA0K7cFZ9MZ/kQzMH9wC!AW>pd3yZFtXElzLze",
+  "ordered_products_not_commuted": true,
+  "reconstruction_recipe_preserved": true,
+  "required_invariants": [
+    "Δe=0",
+    "Ψ=0",
+    "Θ15=true",
+    "Ω=true"
+  ],
+  "schema": "HHS_TYPED_IR_V1",
+  "source_kind": "COMMITTED_SOURCE_ARTIFACT",
+  "source_ref": "artifact:pass075:source:0",
+  "source_root_hash72": "00000000000000000000000000000002a!p(S)1vx8v>^Mcq-aRWU2nEOaWR?j)QVEq-EcTV",
+  "source_sha256": "605954aa1754cd052741f66f9b023918fec433e2dc393886fc60d89f771045ef",
+  "source_spans_preserved": true,
+  "symbol_identity_preserved": true,
+  "symbol_table": [
+    {
+      "first_source_span": {
+        "column_end": 2,
+        "column_start": 1,
+        "end": 82,
+        "line_end": 9,
+        "line_start": 1,
+        "start": 0,
+        "text_sha256": "9ceaedf9e7b09356db8d26da2fd5cce1270b844d69b81b3fe36e20473e225fcc"
+      },
+      "occurrence_count": 2,
+      "schema": "HHS_TYPED_SYMBOL_V1",
+      "spelling": "PHASE_GATE",
+      "symbol_id": "symbol:KwAcZc7p/mwFoC*WLw+w",
+      "symbol_identity_is_spelling_and_scope_bound_not_position_only": true,
+      "symbol_root_hash72": "0000000000000000000000000000002>4LgSxpfuFhlQRQtVF)9cxbPj!B9(TMCyHDHt//Io",
+      "type_id": "SYMBOL"
+    },
+    {
+      "first_source_span": {
+        "column_end": 2,
+        "column_start": 1,
+        "end": 82,
+        "line_end": 9,
+        "line_start": 1,
+        "start": 0,
+        "text_sha256": "9ceaedf9e7b09356db8d26da2fd5cce1270b844d69b81b3fe36e20473e225fcc"
+      },
+      "occurrence_count": 2,
+      "schema": "HHS_TYPED_SYMBOL_V1",
+      "spelling": "w",
+      "symbol_id": "symbol:EUiVrQs^AGM8vXadm/QX",
+      "symbol_identity_is_spelling_and_scope_bound_not_position_only": true,
+      "symbol_root_hash72": "00000000000000000000000000000037DL9T570KmNIBey+GUNmBngkT0lGKAM44EMsVcP7l",
+      "type_id": "SYMBOL"
+    },
+    {
+      "first_source_span": {
+        "column_end": 2,
+        "column_start": 1,
+        "end": 82,
+        "line_end": 9,
+        "line_start": 1,
+        "start": 0,
+        "text_sha256": "9ceaedf9e7b09356db8d26da2fd5cce1270b844d69b81b3fe36e20473e225fcc"
+      },
+      "occurrence_count": 2,
+      "schema": "HHS_TYPED_SYMBOL_V1",
+      "spelling": "x",
+      "symbol_id": "symbol:35oUWQo892X^IF)2IFxH",
+      "symbol_identity_is_spelling_and_scope_bound_not_position_only": true,
+      "symbol_root_hash72": "0000000000000000000000000000002Z4SJwB=X*6O6wSM4es2h^1S(QGBtlQh6/Ug^M5mN0",
+      "type_id": "SYMBOL"
+    },
+    {
+      "first_source_span": {
+        "column_end": 2,
+        "column_start": 1,
+        "end": 82,
+        "line_end": 9,
+        "line_start": 1,
+        "start": 0,
+        "text_sha256": "9ceaedf9e7b09356db8d26da2fd5cce1270b844d69b81b3fe36e20473e225fcc"
+      },
+      "occurrence_count": 2,
+      "schema": "HHS_TYPED_SYMBOL_V1",
+      "spelling": "xy",
+      "symbol_id": "symbol:19Sf*yjV17R?JZK7daQY",
+      "symbol_identity_is_spelling_and_scope_bound_not_position_only": true,
+      "symbol_root_hash72": "0000000000000000000000000000003^CXDeb00oMLR+=j1F)oG6GpG1IH2zvwrAH=OnE)=B",
+      "type_id": "ORDERED_PRODUCT"
+    },
+    {
+      "first_source_span": {
+        "column_end": 2,
+        "column_start": 1,
+        "end": 82,
+        "line_end": 9,
+        "line_start": 1,
+        "start": 0,
+        "text_sha256": "9ceaedf9e7b09356db8d26da2fd5cce1270b844d69b81b3fe36e20473e225fcc"
+      },
+      "occurrence_count": 2,
+      "schema": "HHS_TYPED_SYMBOL_V1",
+      "spelling": "y",
+      "symbol_id": "symbol:6V^V?h/rSWXLJxm*ZuwN",
+      "symbol_identity_is_spelling_and_scope_bound_not_position_only": true,
+      "symbol_root_hash72": "0000000000000000000000000000004psn6S1x5exA1nVMu0hNB91P1gXNK/su^VFYF0tFLj",
+      "type_id": "SYMBOL"
+    },
+    {
+      "first_source_span": {
+        "column_end": 2,
+        "column_start": 1,
+        "end": 82,
+        "line_end": 9,
+        "line_start": 1,
+        "start": 0,
+        "text_sha256": "9ceaedf9e7b09356db8d26da2fd5cce1270b844d69b81b3fe36e20473e225fcc"
+      },
+      "occurrence_count": 2,
+      "schema": "HHS_TYPED_SYMBOL_V1",
+      "spelling": "yx",
+      "symbol_id": "symbol:b)WaVVq!KO9mU/i37xKj",
+      "symbol_identity_is_spelling_and_scope_bound_not_position_only": true,
+      "symbol_root_hash72": "0000000000000000000000000000001pS?D5xXjIlQcXg>uMcXOymO(-tNz5cJ6YHJ6eiSTw",
+      "type_id": "ORDERED_PRODUCT"
+    },
+    {
+      "first_source_span": {
+        "column_end": 2,
+        "column_start": 1,
+        "end": 82,
+        "line_end": 9,
+        "line_start": 1,
+        "start": 0,
+        "text_sha256": "9ceaedf9e7b09356db8d26da2fd5cce1270b844d69b81b3fe36e20473e225fcc"
+      },
+      "occurrence_count": 2,
+      "schema": "HHS_TYPED_SYMBOL_V1",
+      "spelling": "z",
+      "symbol_id": "symbol:fb^i)WopFEk1Q/>ROT5C",
+      "symbol_identity_is_spelling_and_scope_bound_not_position_only": true,
+      "symbol_root_hash72": "0000000000000000000000000000002xT7Sv)A)0qg((/^UpaQ?m!HaWWY6>EDL1mU(lL-sQ",
+      "type_id": "SYMBOL"
+    },
+    {
+      "first_source_span": {
+        "column_end": 2,
+        "column_start": 1,
+        "end": 82,
+        "line_end": 9,
+        "line_start": 1,
+        "start": 0,
+        "text_sha256": "9ceaedf9e7b09356db8d26da2fd5cce1270b844d69b81b3fe36e20473e225fcc"
+      },
+      "occurrence_count": 2,
+      "schema": "HHS_TYPED_SYMBOL_V1",
+      "spelling": "Δe",
+      "symbol_id": "symbol:hnUG4NI(oTbOdgjK8Ztu",
+      "symbol_identity_is_spelling_and_scope_bound_not_position_only": true,
+      "symbol_root_hash72": "000000000000000000000000000000273UOPwiHTMnsx8zp7>9Z9EpDV!n7PG6y3/LFC1Wiz",
+      "type_id": "SYMBOL"
+    },
+    {
+      "first_source_span": {
+        "column_end": 2,
+        "column_start": 1,
+        "end": 82,
+        "line_end": 9,
+        "line_start": 1,
+        "start": 0,
+        "text_sha256": "9ceaedf9e7b09356db8d26da2fd5cce1270b844d69b81b3fe36e20473e225fcc"
+      },
+      "occurrence_count": 2,
+      "schema": "HHS_TYPED_SYMBOL_V1",
+      "spelling": "Θ15",
+      "symbol_id": "symbol:tR/8uCFrnGW5yZV0kncf",
+      "symbol_identity_is_spelling_and_scope_bound_not_position_only": true,
+      "symbol_root_hash72": "0000000000000000000000000000000T5q)7LVrOGn?g1+>qpTueUao80)8gtu2WLzo!79I)",
+      "type_id": "SYMBOL"
+    },
+    {
+      "first_source_span": {
+        "column_end": 2,
+        "column_start": 1,
+        "end": 82,
+        "line_end": 9,
+        "line_start": 1,
+        "start": 0,
+        "text_sha256": "9ceaedf9e7b09356db8d26da2fd5cce1270b844d69b81b3fe36e20473e225fcc"
+      },
+      "occurrence_count": 2,
+      "schema": "HHS_TYPED_SYMBOL_V1",
+      "spelling": "Ψ",
+      "symbol_id": "symbol:hLwF0o5lAjKW0simIaoq",
+      "symbol_identity_is_spelling_and_scope_bound_not_position_only": true,
+      "symbol_root_hash72": "0000000000000000000000000000001=c+1zTMEnL8g*ay2EXeN^oCO>^)7WpeqYV***r/y5",
+      "type_id": "SYMBOL"
+    },
+    {
+      "first_source_span": {
+        "column_end": 2,
+        "column_start": 1,
+        "end": 82,
+        "line_end": 9,
+        "line_start": 1,
+        "start": 0,
+        "text_sha256": "9ceaedf9e7b09356db8d26da2fd5cce1270b844d69b81b3fe36e20473e225fcc"
+      },
+      "occurrence_count": 2,
+      "schema": "HHS_TYPED_SYMBOL_V1",
+      "spelling": "Ω",
+      "symbol_id": "symbol:9kgz6Y?8*whedb7OvtVQ",
+      "symbol_identity_is_spelling_and_scope_bound_not_position_only": true,
+      "symbol_root_hash72": "0000000000000000000000000000001TPNJ2*Q3vz^s9ZMoz^AuanmFGP95=r)ehvC4LSDf8",
+      "type_id": "SYMBOL"
+    }
+  ],
+  "type_information_preserved": true,
+  "version": "HHS_TYPED_IR_PASS_075_V1"
+}

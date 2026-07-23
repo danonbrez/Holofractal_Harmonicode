@@ -1,0 +1,29 @@
+{
+  "schema": "HHS_PASS_083_RELEASE_MANIFEST_V1",
+  "pass_id": "PASS_083",
+  "parent_pass": "PASS_082_4",
+  "parent_release_root_hash72": "0000000000000000000000000000001QzpEnjqcFnVF8T?S1V7QsFzr?P*OdJP6ly6!SVEOf",
+  "workloads": [
+    "W61:two-stream-frame-normalization",
+    "W62:opposite-phase-video-pair",
+    "W63:eight-stream-visual-overlap",
+    "W64:trajectory-continuity",
+    "W65:occlusion-preservation",
+    "W66:competing-correspondence",
+    "W67:sixteen-stream-dense-video",
+    "W68:thirty-two-stream-video",
+    "W69:sixty-four-stream-video",
+    "W70:resource-bounded-video",
+    "W71:visual-event-binding",
+    "W72:frame-object-trajectory-separation",
+    "W73:occlusion-reentry",
+    "W74:video-receipt-only-replay"
+  ],
+  "frame_identity_preserved": true,
+  "trajectory_identity_preserved": true,
+  "occlusion_history_preserved": true,
+  "visual_event_binding_verified": true,
+  "deterministic_replay_verified": true,
+  "opaque_pixel_float_non_authoritative": true,
+  "pass083_release_root_hash72": "0000000000000000000000000000000FbqOm+fstFM=nY*oY/7!1nWVkm*Y0D(e(S!YXhK2U"
+}

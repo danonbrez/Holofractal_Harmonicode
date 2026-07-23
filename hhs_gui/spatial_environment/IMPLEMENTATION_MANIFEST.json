@@ -1,0 +1,144 @@
+{
+  "schema": "HHS_VM81_SPATIAL_ENVIRONMENT_IMPLEMENTATION_MANIFEST_V5",
+  "stage": "PASS_152",
+  "classification": "PROJECT_SCENE_AUTHORING_APPLICATION_RUNTIME_AND_ELASTIC_CLOSURE_CONTROL",
+  "authority": {
+    "frontend": "PROJECTION_AND_ORCHESTRATION_ONLY",
+    "runtime": "VM81_BACKEND_AUTHORITATIVE",
+    "receipts": "BACKEND_COMMIT_PATH_ONLY",
+    "projection_journal": "NON_AUTHORITATIVE_HASH_CHAIN",
+    "world_snapshots": "PROJECT_STATE_DIGEST_CHAIN_NOT_HASH72",
+    "replay": "NON_AUTHORITATIVE_PRESENTATION_REPLAY",
+    "sessions": "PRESENTATION_STATE_ONLY",
+    "simulation": "NON_AUTHORITATIVE_PRESENTATION_SIMULATION",
+    "assets": "IMPORTED_CODE_AND_SHADERS_INERT_UNTIL_VALIDATED",
+    "elastic_closure": "VM81_COMMIT_ONLY_PREDICTIVE_EVIDENCE_NON_AUTHORITATIVE",
+    "recursive_control": "HIGHER_LAYERS_POLICY_ONLY_NOT_LOWER_LAYER_TRUTH"
+  },
+  "rendering": {
+    "primary": "WebGL2",
+    "fallback": "Canvas2D",
+    "external_dependencies": 0,
+    "sub_particles": 8100,
+    "anchors": 81,
+    "projection_nodes": 8181,
+    "reference_line_segments": 440,
+    "invariant_projection_degrees": 41,
+    "highlighted_modulus_field": 42
+  },
+  "applications": 22,
+  "themes": 7,
+  "custom_theme": true,
+  "templates": 9,
+  "interface_modes": 5,
+  "feature_domains": 12,
+  "workspace": {
+    "draggable_surfaces": true,
+    "resizable_surfaces": true,
+    "minimize": true,
+    "maximize": true,
+    "pin": true,
+    "dock": [
+      "left",
+      "right",
+      "bottom"
+    ],
+    "arrangements": [
+      "cascade",
+      "grid",
+      "focus"
+    ],
+    "maximum_surfaces": 24
+  },
+  "projects": {
+    "schema": "HHS_SPATIAL_PROJECT_STORE_V4",
+    "maximum_projects": 16,
+    "maximum_worlds_per_project": 32,
+    "maximum_snapshots_per_world": 32,
+    "manifest_schema": "HHS_SPATIAL_PROJECT_MANIFEST_V4",
+    "digest_algorithm": "SHA-256",
+    "snapshot_chain": true,
+    "export_import": true
+  },
+  "scene_graph": {
+    "schema": "HHS_ENTITY_SCENE_GRAPH_V4",
+    "model": "ENTITY_COMPONENT_HIERARCHY",
+    "maximum_entities": 2048,
+    "cycle_rejection": true,
+    "required_transform": true,
+    "canonical_digest": "SHA-256"
+  },
+  "asset_registry": {
+    "schema": "HHS_SPATIAL_ASSET_MANIFEST_V4",
+    "maximum_assets": 512,
+    "maximum_asset_bytes": 67108864,
+    "digest_algorithm": "SHA-256",
+    "duplicate_detection": true,
+    "script_shader_policy": "INERT_TEXT_UNTIL_VALIDATED"
+  },
+  "world_router": {
+    "schema": "HHS_SPATIAL_WORLD_ROUTER_V4",
+    "maximum_routes": 128,
+    "shortest_path_resolution": true,
+    "dangling_route_rejection": true,
+    "authority": "PRESENTATION_NAVIGATION_ONLY"
+  },
+  "simulation": {
+    "schema": "HHS_SPATIAL_SIMULATION_STATE_V4",
+    "fixed_timestep": true,
+    "default_fixed_dt": 0.016666666666666666,
+    "maximum_batch_steps": 240,
+    "authority": "NON_AUTHORITATIVE_PRESENTATION_SIMULATION"
+  },
+  "sessions": {
+    "schema": "HHS_SPATIAL_SESSION_STORE_V3",
+    "named_sessions": true,
+    "autosave": true,
+    "snapshots": true,
+    "export_import": true,
+    "maximum_sessions": 24,
+    "maximum_snapshots_per_session": 20
+  },
+  "replay": {
+    "load": true,
+    "seek": true,
+    "step": true,
+    "play_pause": true,
+    "speed_range": [
+      0.25,
+      8
+    ]
+  },
+  "runtime_routes": [
+    "GET /api/runtime/state",
+    "POST /api/runtime/step",
+    "POST /api/runtime/receipt/commit",
+    "POST /api/runtime/halt",
+    "POST /api/runtime/manifold/execution/propagate",
+    "POST /api/runtime/manifold/execution/revalidate",
+    "GET /api/runtime/authority/topology/reciprocal/status",
+    "GET /api/runtime/services/status",
+    "GET /api/runtime/pass152/status",
+    "GET /api/runtime/pass152/capabilities",
+    "GET /api/runtime/pass152/latest",
+    "POST /api/runtime/pass152/execute"
+  ],
+  "websocket_channels": [
+    "/ws/runtime",
+    "/ws/replay",
+    "/ws/graph",
+    "/ws/transport"
+  ],
+  "react_vite_mount_surface": "integration/SpatialEnvironmentPanel.tsx",
+  "pass152": {
+    "contract_id": "HHS-P152-UECI",
+    "canonical_invariant": "DELAY_AUTHORITY_NOT_COMPUTATION",
+    "recursive_control_invariant": "EXPLOIT_FREEDOM_RECURSIVELY_PRESERVE_INVARIANTS_ABSOLUTELY_EXTEND_HISTORY_MONOTONICALLY",
+    "candidate_lifecycle_states": 11,
+    "typed_edge_classes": 7,
+    "recursive_layers": 3,
+    "required_receipts": 17,
+    "positive_tests": 30,
+    "negative_tests": 30
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "bounded_product_repair_available": true,
+  "capabilities": [
+    "HHS_EXECUTABLE_IR_V1",
+    "EXACT_SYMBOLIC_INTERPRETATION",
+    "DETERMINISTIC_MICRO_STEP_RECEIPTS",
+    "EXECUTION_REPLAY",
+    "INTERPRETER_TEST_EXECUTION",
+    "BOUNDED_PRODUCT_REPAIR",
+    "ATOMIC_REPAIR_POSTCONDITIONS",
+    "NON_ERASING_ROLLBACK"
+  ],
+  "compiler_execution_available": false,
+  "dedicated_tests": {
+    "failed": 0,
+    "passed": 33
+  },
+  "emulator_execution_available": false,
+  "executable_ir_root_hash72": "0000000000000000000000000000003nz(rIc=TJv68wNxB1?EX(8axOjviJDyzdpoAqZ2?g",
+  "exhaustive_repository_suite": {
+    "reason": "NOT_RUN; BOUNDED PASS-SPECIFIC AND INHERITED CHAINS USED",
+    "status": "TYPED_UNRESOLVED_NEVER_ZERO"
+  },
+  "focused_chain_tests": {
+    "failed": 0,
+    "passed": 152
+  },
+  "foundation_modified": false,
+  "host_path_required": false,
+  "implemented_operation_count": 28,
+  "interpreter_execution_available": true,
+  "interpreter_execution_root_hash72": "0000000000000000000000000000003AUIc)5ePGkN?GwFM?ifYV>Z-QVCtmw6nSB^20iVXI",
+  "interpreter_replay_capsule_root_hash72": "0000000000000000000000000000002ra)J0xZB)WGXPAeTUP6zJM3fAzFI3TFN6n-oANva^",
+  "llm_context_window_required": false,
+  "native_continuation_root_hash72": "0000000000000000000000000000000hm9lzzHmt(mN=q0z0V2)rJ5!GsZGEel^4Im4QcIg0",
+  "new_orphan_modules": 0,
+  "operation_registry_root_hash72": "0000000000000000000000000000001vuOP5Pev)FTwLjxBP1zxtpdkO1z70^Ik/IEg8NhWl",
+  "parent_native_pass": "PASS_075",
+  "pass072_files_changed": 0,
+  "pass072_files_missing": 0,
+  "pass072_foundation_file_count": 1899,
+  "pass075_parent_file_count": 1969,
+  "pass075_parent_files_changed": 0,
+  "pass075_parent_files_missing": 0,
+  "pass076_native_files_added": 33,
+  "pass076_total_file_count": 2002,
+  "pass_id": "PASS_076",
+  "platform_dependency": {
+    "foundation_modified": false,
+    "pass_id": "PASS_072",
+    "root_hash72": "ZF9bto?tV>P(KcFPL5L+csyy!jxdrAaadua1a!w-uwug8/MeMSqSS3*R>lXIefi)nyjXpc+)"
+  },
+  "product_id": "HHS_HARMONICODE_INTERPRETER_AND_BOUNDED_REPAIR",
+  "product_root_hash72": "0000000000000000000000000000000f6?LTYKy1V4fM4zmERwPpjVjDW?e/brvwSyHc=9ME",
+  "program_graph_root_hash72": "0000000000000000000000000000004mzAGec8YlZ(lDTBlAfOkixbZG3MhA6OGzAIE5rTBh",
+  "reachable_native_program_nodes": 9,
+  "release_manifest_root_hash72": "0000000000000000000000000000001-Af5W!=yWp^bny)7J)?N4MSriin3bwaAwcoP)zaiM",
+  "repair_transaction_root_hash72": "0000000000000000000000000000003tKbMA50KXgYg-0=MqGMhlhO9uuxJnYzg2ps/fbLda",
+  "reserved_operation_count": 2,
+  "rollback_capsule_root_hash72": "0000000000000000000000000000004JpwCqDT=Zo/Ic)hKbeHs/i3>xG-vfP(3lS/k=*6K3",
+  "schema": "HHS_PRODUCT_RELEASE_MANIFEST_PASS_076_V1",
+  "status": "EXECUTABLE_AND_COMMITTED",
+  "thread_context_required": false,
+  "version": "PASS_076_HARMONICODE_INTERPRETER_AND_BOUNDED_REPAIR_V1",
+  "workspace_state_root_hash72": "0000000000000000000000000000002r2sHNx2!9MN4Ln+tGm1-z7F1azu))zFVt^nPS*)t4"
+}

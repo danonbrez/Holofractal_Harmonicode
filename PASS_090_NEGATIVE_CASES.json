@@ -1,0 +1,65 @@
+{
+  "schema": "HHS_PASS_090_NEGATIVE_CASES_V1",
+  "cases": [
+    {
+      "case": "semantic-divergence",
+      "expected": "REJECT_STRATEGY_SEMANTIC_DIVERGENCE",
+      "observed": "REJECT_STRATEGY_SEMANTIC_DIVERGENCE",
+      "passed": true
+    },
+    {
+      "case": "training-only",
+      "expected": "REJECT_STRATEGY_AS_REUSABLE_CAPABILITY",
+      "observed": "REJECT_STRATEGY_AS_REUSABLE_CAPABILITY",
+      "passed": true
+    },
+    {
+      "case": "unvalidated-transfer",
+      "expected": "REJECT_UNVALIDATED_TRANSFER_CLAIM",
+      "observed": "REJECT_UNVALIDATED_TRANSFER_CLAIM",
+      "passed": true
+    },
+    {
+      "case": "erased-failures",
+      "expected": "REJECT_STRATEGY_WITH_ERASED_FAILURES",
+      "observed": "REJECT_STRATEGY_WITH_ERASED_FAILURES",
+      "passed": true
+    },
+    {
+      "case": "cache-as-proof",
+      "expected": "REJECT_PATTERN_MEMORY_AS_PROOF",
+      "observed": "REJECT_PATTERN_MEMORY_AS_PROOF",
+      "passed": true
+    },
+    {
+      "case": "redefine-success",
+      "expected": "REJECT_STRATEGY_REDEFINES_SUCCESS",
+      "observed": "REJECT_STRATEGY_REDEFINES_SUCCESS",
+      "passed": true
+    },
+    {
+      "case": "nondeterministic-search",
+      "expected": "REJECT_NONDETERMINISTIC_STRATEGY_SEARCH",
+      "observed": "REJECT_NONDETERMINISTIC_STRATEGY_SEARCH",
+      "passed": true
+    },
+    {
+      "case": "unwitnessed-gain",
+      "expected": "REJECT_UNWITNESSED_PERFORMANCE_GAIN",
+      "observed": "REJECT_UNWITNESSED_PERFORMANCE_GAIN",
+      "passed": true
+    },
+    {
+      "case": "evaluation-leakage",
+      "expected": "REJECT_EVALUATION_LEAKAGE",
+      "observed": "REJECT_EVALUATION_LEAKAGE",
+      "passed": true
+    },
+    {
+      "case": "replay-mismatch",
+      "expected": "REJECT_STRATEGY_REPLAY_MISMATCH",
+      "observed": "REJECT_STRATEGY_REPLAY_MISMATCH",
+      "passed": true
+    }
+  ]
+}

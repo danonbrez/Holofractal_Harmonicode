@@ -1,0 +1,12 @@
+{
+  "schema": "HHS_PASS135_CANONICAL_CEUAC_EXTERNAL_USABILITY_ANCESTRY_AUDIT_CONTRACT_V1",
+  "pass_id": "PASS_135",
+  "contract_id": "HHS-I135",
+  "contract_name": "Canonical CEUAC External Usability and Ancestry Audit",
+  "parent_contracts": ["HHS-I132", "HHS-I133", "HHS-I134"],
+  "subject_checkpoint": "PASS_134_FULL_R1",
+  "required_authority_domains": ["A1", "A2", "A3", "A4_RESERVED"],
+  "required_roles": ["ACTOR", "VERIFIER", "AUDIT_CONTROLLER"],
+  "required_scenarios": ["BUILD_AND_BOOT", "PUBLIC_SURFACE_DISCOVERY", "RUNTIME_PROGRESSION", "ANCESTRY_RECONSTRUCTION", "CHECKPOINT_CONTINUITY", "ANCESTRY_INTEGRITY", "ZERO_BYPASS"],
+  "completion_rule": "CANONICAL_MACHINE_READABLE_AUDIT_WITH_IMMUTABLE_EVIDENCE_VERSIONED_INTERPRETATIONS_AND_NO_IMPLICIT_AUTHORITY_PROMOTION"
+}

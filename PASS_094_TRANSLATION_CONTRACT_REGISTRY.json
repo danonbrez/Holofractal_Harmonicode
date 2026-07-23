@@ -1,0 +1,304 @@
+{
+  "schema": "HHS_PASS_094_TRANSLATION_CONTRACT_REGISTRY_V1",
+  "contracts": [
+    {
+      "decoding_rule": {
+        "type": "EXACT_TAGGED_RECONSTRUCTION"
+      },
+      "encoding_rule": {
+        "type": "CANONICAL_TAGGED_PROJECTION"
+      },
+      "loss_classification": "LOSSLESS_FOR_DECLARED_FIELDS",
+      "requires_reconstruction": true,
+      "schema": "HHS_MULTIMODAL_TRANSLATION_CONTRACT_V1",
+      "source_modality": "FORMAL_SYMBOLIC",
+      "supported_invariants": [
+        "ORDERED_RATIO",
+        "GEOMETRIC_PROPORTION",
+        "RECIPROCAL_CLOSURE",
+        "PYTHAGOREAN_CLOSURE",
+        "MODULAR_PHASE",
+        "ORDERED_HISTORY"
+      ],
+      "target_modality": "GRAPH",
+      "translation_root_hash72": "0000000000000000000000000000002xu?o9/iJB-m1cbqRKIUXv0B-V4d)=q3O5wsVuca8P",
+      "unsupported_invariants": []
+    },
+    {
+      "decoding_rule": {
+        "type": "EXACT_TAGGED_RECONSTRUCTION"
+      },
+      "encoding_rule": {
+        "type": "CANONICAL_TAGGED_PROJECTION"
+      },
+      "loss_classification": "LOSSLESS_FOR_DECLARED_FIELDS",
+      "requires_reconstruction": true,
+      "schema": "HHS_MULTIMODAL_TRANSLATION_CONTRACT_V1",
+      "source_modality": "GRAPH",
+      "supported_invariants": [
+        "ORDERED_RATIO",
+        "GEOMETRIC_PROPORTION",
+        "RECIPROCAL_CLOSURE",
+        "PYTHAGOREAN_CLOSURE",
+        "MODULAR_PHASE",
+        "ORDERED_HISTORY"
+      ],
+      "target_modality": "FORMAL_SYMBOLIC",
+      "translation_root_hash72": "0000000000000000000000000000002QY+1G0!Fv9hB(BkK=jCZ7)M051Vzv7Z3TKwiAl!7?",
+      "unsupported_invariants": []
+    },
+    {
+      "decoding_rule": {
+        "type": "EXACT_TAGGED_RECONSTRUCTION"
+      },
+      "encoding_rule": {
+        "type": "CANONICAL_TAGGED_PROJECTION"
+      },
+      "loss_classification": "LOSSLESS_FOR_DECLARED_FIELDS",
+      "requires_reconstruction": true,
+      "schema": "HHS_MULTIMODAL_TRANSLATION_CONTRACT_V1",
+      "source_modality": "FORMAL_SYMBOLIC",
+      "supported_invariants": [
+        "ORDERED_RATIO",
+        "GEOMETRIC_PROPORTION",
+        "RECIPROCAL_CLOSURE",
+        "PYTHAGOREAN_CLOSURE",
+        "MODULAR_PHASE",
+        "ORDERED_HISTORY"
+      ],
+      "target_modality": "AUDIO_TONE_SEQUENCE",
+      "translation_root_hash72": "0000000000000000000000000000004ASqSr17=9FAcD8Fnx?HrHAdXySOrH1F!3J68pYTI0",
+      "unsupported_invariants": []
+    },
+    {
+      "decoding_rule": {
+        "type": "EXACT_TAGGED_RECONSTRUCTION"
+      },
+      "encoding_rule": {
+        "type": "CANONICAL_TAGGED_PROJECTION"
+      },
+      "loss_classification": "LOSSLESS_FOR_DECLARED_FIELDS",
+      "requires_reconstruction": true,
+      "schema": "HHS_MULTIMODAL_TRANSLATION_CONTRACT_V1",
+      "source_modality": "AUDIO_TONE_SEQUENCE",
+      "supported_invariants": [
+        "ORDERED_RATIO",
+        "GEOMETRIC_PROPORTION",
+        "RECIPROCAL_CLOSURE",
+        "PYTHAGOREAN_CLOSURE",
+        "MODULAR_PHASE",
+        "ORDERED_HISTORY"
+      ],
+      "target_modality": "FORMAL_SYMBOLIC",
+      "translation_root_hash72": "0000000000000000000000000000004um>cG0EEkCzE8/5>G^wRqLn-y9op06V=Gxyw?>zy2",
+      "unsupported_invariants": []
+    },
+    {
+      "decoding_rule": {
+        "type": "EXACT_TAGGED_RECONSTRUCTION"
+      },
+      "encoding_rule": {
+        "type": "CANONICAL_TAGGED_PROJECTION"
+      },
+      "loss_classification": "LOSSLESS_FOR_DECLARED_FIELDS",
+      "requires_reconstruction": true,
+      "schema": "HHS_MULTIMODAL_TRANSLATION_CONTRACT_V1",
+      "source_modality": "FORMAL_SYMBOLIC",
+      "supported_invariants": [
+        "ORDERED_RATIO",
+        "GEOMETRIC_PROPORTION",
+        "RECIPROCAL_CLOSURE",
+        "PYTHAGOREAN_CLOSURE",
+        "MODULAR_PHASE",
+        "ORDERED_HISTORY"
+      ],
+      "target_modality": "GEOMETRIC_DIAGRAM",
+      "translation_root_hash72": "0000000000000000000000000000004nPQ5cpyMYT4y3SXJ*4KaSb9jvU2l94RZk)dFK*4m8",
+      "unsupported_invariants": []
+    },
+    {
+      "decoding_rule": {
+        "type": "EXACT_TAGGED_RECONSTRUCTION"
+      },
+      "encoding_rule": {
+        "type": "CANONICAL_TAGGED_PROJECTION"
+      },
+      "loss_classification": "LOSSLESS_FOR_DECLARED_FIELDS",
+      "requires_reconstruction": true,
+      "schema": "HHS_MULTIMODAL_TRANSLATION_CONTRACT_V1",
+      "source_modality": "GEOMETRIC_DIAGRAM",
+      "supported_invariants": [
+        "ORDERED_RATIO",
+        "GEOMETRIC_PROPORTION",
+        "RECIPROCAL_CLOSURE",
+        "PYTHAGOREAN_CLOSURE",
+        "MODULAR_PHASE",
+        "ORDERED_HISTORY"
+      ],
+      "target_modality": "FORMAL_SYMBOLIC",
+      "translation_root_hash72": "0000000000000000000000000000002AToDwU?eFc*Da/xWHmgnl6WQA68qXK2C=V/tMxvTG",
+      "unsupported_invariants": []
+    },
+    {
+      "decoding_rule": {
+        "type": "EXACT_TAGGED_RECONSTRUCTION"
+      },
+      "encoding_rule": {
+        "type": "CANONICAL_TAGGED_PROJECTION"
+      },
+      "loss_classification": "LOSSLESS_FOR_DECLARED_FIELDS",
+      "requires_reconstruction": true,
+      "schema": "HHS_MULTIMODAL_TRANSLATION_CONTRACT_V1",
+      "source_modality": "FORMAL_SYMBOLIC",
+      "supported_invariants": [
+        "ORDERED_RATIO",
+        "GEOMETRIC_PROPORTION",
+        "RECIPROCAL_CLOSURE",
+        "PYTHAGOREAN_CLOSURE",
+        "MODULAR_PHASE",
+        "ORDERED_HISTORY"
+      ],
+      "target_modality": "NATURAL_LANGUAGE",
+      "translation_root_hash72": "0000000000000000000000000000001/4coI^8XxEzCw?UeBSB0fkfLBIP8B2Ea4-tO!Ex3L",
+      "unsupported_invariants": []
+    },
+    {
+      "decoding_rule": {
+        "type": "EXACT_TAGGED_RECONSTRUCTION"
+      },
+      "encoding_rule": {
+        "type": "CANONICAL_TAGGED_PROJECTION"
+      },
+      "loss_classification": "LOSSLESS_FOR_DECLARED_FIELDS",
+      "requires_reconstruction": true,
+      "schema": "HHS_MULTIMODAL_TRANSLATION_CONTRACT_V1",
+      "source_modality": "NATURAL_LANGUAGE",
+      "supported_invariants": [
+        "ORDERED_RATIO",
+        "GEOMETRIC_PROPORTION",
+        "RECIPROCAL_CLOSURE",
+        "PYTHAGOREAN_CLOSURE",
+        "MODULAR_PHASE",
+        "ORDERED_HISTORY"
+      ],
+      "target_modality": "FORMAL_SYMBOLIC",
+      "translation_root_hash72": "0000000000000000000000000000000b4DaChMP!B/26RpRK0P66eI9rEpXpMb)>JNEq*pTz",
+      "unsupported_invariants": []
+    },
+    {
+      "decoding_rule": {
+        "type": "EXACT_TAGGED_RECONSTRUCTION"
+      },
+      "encoding_rule": {
+        "type": "CANONICAL_TAGGED_PROJECTION"
+      },
+      "loss_classification": "LOSSLESS_FOR_DECLARED_FIELDS",
+      "requires_reconstruction": true,
+      "schema": "HHS_MULTIMODAL_TRANSLATION_CONTRACT_V1",
+      "source_modality": "FORMAL_SYMBOLIC",
+      "supported_invariants": [
+        "ORDERED_RATIO",
+        "GEOMETRIC_PROPORTION",
+        "RECIPROCAL_CLOSURE",
+        "PYTHAGOREAN_CLOSURE",
+        "MODULAR_PHASE",
+        "ORDERED_HISTORY"
+      ],
+      "target_modality": "BINARY_PACKET",
+      "translation_root_hash72": "0000000000000000000000000000003rC6A^p!Rnb*xOUeE*dYJ3dU4sE>NQWCgc)G--?(T)",
+      "unsupported_invariants": []
+    },
+    {
+      "decoding_rule": {
+        "type": "EXACT_TAGGED_RECONSTRUCTION"
+      },
+      "encoding_rule": {
+        "type": "CANONICAL_TAGGED_PROJECTION"
+      },
+      "loss_classification": "LOSSLESS_FOR_DECLARED_FIELDS",
+      "requires_reconstruction": true,
+      "schema": "HHS_MULTIMODAL_TRANSLATION_CONTRACT_V1",
+      "source_modality": "BINARY_PACKET",
+      "supported_invariants": [
+        "ORDERED_RATIO",
+        "GEOMETRIC_PROPORTION",
+        "RECIPROCAL_CLOSURE",
+        "PYTHAGOREAN_CLOSURE",
+        "MODULAR_PHASE",
+        "ORDERED_HISTORY"
+      ],
+      "target_modality": "FORMAL_SYMBOLIC",
+      "translation_root_hash72": "00000000000000000000000000000040ns(GB-wDz80qetXJAZ8HGBdc>csrSu3PSgubeepf",
+      "unsupported_invariants": []
+    },
+    {
+      "decoding_rule": {
+        "type": "EXACT_TAGGED_RECONSTRUCTION"
+      },
+      "encoding_rule": {
+        "type": "CANONICAL_TAGGED_PROJECTION"
+      },
+      "loss_classification": "LOSSLESS_FOR_DECLARED_FIELDS",
+      "requires_reconstruction": true,
+      "schema": "HHS_MULTIMODAL_TRANSLATION_CONTRACT_V1",
+      "source_modality": "FORMAL_SYMBOLIC",
+      "supported_invariants": [
+        "ORDERED_RATIO",
+        "GEOMETRIC_PROPORTION",
+        "RECIPROCAL_CLOSURE",
+        "PYTHAGOREAN_CLOSURE",
+        "MODULAR_PHASE",
+        "ORDERED_HISTORY"
+      ],
+      "target_modality": "VM81_CELL_FIELD",
+      "translation_root_hash72": "0000000000000000000000000000001o>6)SaGZPRpu0ka*)*!^ywb)Uw5B8xtJlf?Ug?))v",
+      "unsupported_invariants": []
+    },
+    {
+      "decoding_rule": {
+        "type": "EXACT_TAGGED_RECONSTRUCTION"
+      },
+      "encoding_rule": {
+        "type": "CANONICAL_TAGGED_PROJECTION"
+      },
+      "loss_classification": "LOSSLESS_FOR_DECLARED_FIELDS",
+      "requires_reconstruction": true,
+      "schema": "HHS_MULTIMODAL_TRANSLATION_CONTRACT_V1",
+      "source_modality": "VM81_CELL_FIELD",
+      "supported_invariants": [
+        "ORDERED_RATIO",
+        "GEOMETRIC_PROPORTION",
+        "RECIPROCAL_CLOSURE",
+        "PYTHAGOREAN_CLOSURE",
+        "MODULAR_PHASE",
+        "ORDERED_HISTORY"
+      ],
+      "target_modality": "RECEIPT_GRAPH",
+      "translation_root_hash72": "0000000000000000000000000000003R=*q-Whk5(ApyU=/^E+90zYo>bg-*-3pypT)udVDw",
+      "unsupported_invariants": []
+    },
+    {
+      "decoding_rule": {
+        "type": "EXACT_TAGGED_RECONSTRUCTION"
+      },
+      "encoding_rule": {
+        "type": "CANONICAL_TAGGED_PROJECTION"
+      },
+      "loss_classification": "LOSSLESS_FOR_DECLARED_FIELDS",
+      "requires_reconstruction": true,
+      "schema": "HHS_MULTIMODAL_TRANSLATION_CONTRACT_V1",
+      "source_modality": "RECEIPT_GRAPH",
+      "supported_invariants": [
+        "ORDERED_RATIO",
+        "GEOMETRIC_PROPORTION",
+        "RECIPROCAL_CLOSURE",
+        "PYTHAGOREAN_CLOSURE",
+        "MODULAR_PHASE",
+        "ORDERED_HISTORY"
+      ],
+      "target_modality": "FORMAL_SYMBOLIC",
+      "translation_root_hash72": "0000000000000000000000000000000mPZXDM)By5BVs7HtWq-HTXQwXiauIN)rdQT>PV6*4",
+      "unsupported_invariants": []
+    }
+  ]
+}

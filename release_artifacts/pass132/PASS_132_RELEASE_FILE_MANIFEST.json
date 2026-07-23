@@ -1,0 +1,415 @@
+{
+  "file_count": 50,
+  "files": [
+    {
+      "path": "PASS_132_AB_COMPARISON_RECEIPT.json",
+      "sha256": "5286239f0d7a14b31a99c5b944f540e6b288972001a6f8705b43625de3115b25",
+      "size_bytes": 21097
+    },
+    {
+      "path": "PASS_132_AB_CONTROL_MANIFEST.json",
+      "sha256": "218b2a52b1b720a664fec9be550a808a1bd26c94d500b02aa1a38a3c739485d2",
+      "size_bytes": 5871
+    },
+    {
+      "path": "PASS_132_AB_REPLAY_REPORT.json",
+      "sha256": "d090f98683d1e49119510b1bfed8ea1f51508afc0ab855a0c30b321da20578bb",
+      "size_bytes": 221207
+    },
+    {
+      "path": "PASS_132_API_SURFACE_REPORT.json",
+      "sha256": "a011aaae65d9d5e78b961fc01980b96dad981cf26b903e39247181102e57151b",
+      "size_bytes": 1956
+    },
+    {
+      "path": "PASS_132_AST_DISPATCH_GRAPH.json",
+      "sha256": "16e52c835ab8ea3268f9db457ddce1629bf6884f2e229232a1700eff512a5def",
+      "size_bytes": 1023601
+    },
+    {
+      "path": "PASS_132_CANONICAL_INPUT_ROOT.json",
+      "sha256": "55e4d2fb7e810c39c89165ea7432d104f66bf349bed38412084c15c18fd00dbd",
+      "size_bytes": 7022
+    },
+    {
+      "path": "PASS_132_CEUAC_AUDIT_ARTIFACTS.jsonl",
+      "sha256": "132b5c6d4f5d1f88f0d2ffb083e9af761d635c87b02d2fb0eba875cee4042260",
+      "size_bytes": 583297
+    },
+    {
+      "path": "PASS_132_CEUAC_SCHEMA_VALIDATION.json",
+      "sha256": "4878aa0a49928aea0eca1236827f0582cc7664e2859c79a760afb88500dcd451",
+      "size_bytes": 3567
+    },
+    {
+      "path": "PASS_132_COMPLETION_ATTESTATION.json",
+      "sha256": "a004f6fecbc8747870e64be4ac9cab6778a57e365b7c70aa9ded07a241ae823f",
+      "size_bytes": 7409
+    },
+    {
+      "path": "PASS_132_COMPUTATIONAL_CONSEQUENCES.jsonl",
+      "sha256": "58e7001972e23a903401066ae23035750d6915b0133b6080668d7358343a7483",
+      "size_bytes": 186074
+    },
+    {
+      "path": "PASS_132_CONSEQUENCE_COMPARISON_MATRIX.json",
+      "sha256": "b58e9902557dd9bd41cdb150dc483157b2e438f90a12db876c63005ec0d0a22d",
+      "size_bytes": 13581
+    },
+    {
+      "path": "PASS_132_CONTINUATION_CHECKPOINT.json",
+      "sha256": "98ca86ab3010b2156d96d2b2d2073b6c02de0387838e2feb302b385f3fa1446a",
+      "size_bytes": 1872
+    },
+    {
+      "path": "PASS_132_CONTRADICTION_AUDIT.json",
+      "sha256": "b97300ebdde06471d2038a02b6ed9d188f89126b9227b6c9cf5851b80cb26fd8",
+      "size_bytes": 73033
+    },
+    {
+      "path": "PASS_132_EXECUTION_MANIFEST.json",
+      "sha256": "f902107360dcce974f8a05c3a518c4b16c3a37167a21da2ae70e7f6a71727e71",
+      "size_bytes": 15726
+    },
+    {
+      "path": "PASS_132_FOREIGN_MODEL_COMPARISON.json",
+      "sha256": "1265d51794f317d331b9d3229c60b3c91cc3d4dbfc1b936526f4785d5a67c857",
+      "size_bytes": 166053
+    },
+    {
+      "path": "PASS_132_HHS_EXECUTION_TRACE.jsonl",
+      "sha256": "1eb48a1c30e54efa48df1c29cb395c3a84fd2becc8f02de5e66dd8b1b2a8eccd",
+      "size_bytes": 3701926
+    },
+    {
+      "path": "PASS_132_IEEE_BINARY32_TRACE.jsonl",
+      "sha256": "813a89dafbfa1d568db9f71960fd9fd22309c6b2ed59267ef37c2220d17054bb",
+      "size_bytes": 552954
+    },
+    {
+      "path": "PASS_132_IEEE_BINARY64_TRACE.jsonl",
+      "sha256": "e9db75f08dc64dbf4585144ed89dbcf5241f99bb1392409a87865bf04d7d211f",
+      "size_bytes": 566332
+    },
+    {
+      "path": "PASS_132_IMPLEMENTATION_REPORT.md",
+      "sha256": "574c3149db61031f4c7c1719a37244c773691da3f3a3b261cb02b978de59e860",
+      "size_bytes": 2446
+    },
+    {
+      "path": "PASS_132_LOGICAL_CONSEQUENCES.jsonl",
+      "sha256": "20d52622da932b82b7c9a4bdbfcbc1fa541c7d97eda750f8e3b54b5b721c68b6",
+      "size_bytes": 13376
+    },
+    {
+      "path": "PASS_132_NEGATIVE_TEST_REPORT.json",
+      "sha256": "229d24df0fe0e0ecb67debfe57aee08b81144d872f406427d20d89c8eff7b23a",
+      "size_bytes": 10481
+    },
+    {
+      "path": "PASS_132_NORMALIZATION_PROOF.json",
+      "sha256": "7512a8c8cd8b62b9edd3e1c2f5b57ca212a4981c5cbad2272879e079a9ced7ee",
+      "size_bytes": 30047
+    },
+    {
+      "path": "PASS_132_NUMERICAL_ERROR_REPORT.json",
+      "sha256": "e66f41c782aa99ae45540a936e3c8d65b3c8c114e24bd4da8172996d9fbe1d2c",
+      "size_bytes": 59453
+    },
+    {
+      "path": "PASS_132_ORDERED_LANE_TRACE.jsonl",
+      "sha256": "88c42917aafed20ae0199462f6ad014fac5c34c95815f61352e4596e97ad21e1",
+      "size_bytes": 290819
+    },
+    {
+      "path": "PASS_132_ORDER_SENSITIVITY_REPORT.json",
+      "sha256": "37a5aa94e18479dfa53af07c0c93148f0ea217893f7cb2706fa944ec717ca40a",
+      "size_bytes": 8146
+    },
+    {
+      "path": "PASS_132_PERFORMANCE_MEASUREMENTS.json",
+      "sha256": "3e762432bb8b71bc637dfe4fdb378cad3bd22b5d879f1a3876c96cfb6b60b333",
+      "size_bytes": 8385
+    },
+    {
+      "path": "PASS_132_RELEASE_MANIFEST.json",
+      "sha256": "95c8d29d41ab74f9ab20c2090a07759749e0fd16cda9fc7842b5bda17dc3c893",
+      "size_bytes": 6540
+    },
+    {
+      "path": "PASS_132_REPLAY_RECEIPT.json",
+      "sha256": "d090f98683d1e49119510b1bfed8ea1f51508afc0ab855a0c30b321da20578bb",
+      "size_bytes": 221207
+    },
+    {
+      "path": "PASS_132_SEMANTIC_DIVERGENCE_REPORT.json",
+      "sha256": "3e495567b37d2786ca068a68f10091493ff2ddaf8f9d4d9540911734c6b02420",
+      "size_bytes": 46289
+    },
+    {
+      "path": "PASS_132_TEST_REPORT.json",
+      "sha256": "fdb852586d063d2288f90e298bb28f889e499d915f36a6ad5c5cb8040144020e",
+      "size_bytes": 1761
+    },
+    {
+      "path": "PASS_132_TRANSLATION_CLASSIFICATION.json",
+      "sha256": "025974d83640bdb554b8324f46388913f3aba8932889859833590ed38a478208",
+      "size_bytes": 144903
+    },
+    {
+      "path": "evidence_store/PASS_132_UNIFIED_HASH72_LEDGER.json",
+      "sha256": "1ffa66896470042a50b0e7d5e915a50f0c76daebabcfb6501cd9ed01799bb951",
+      "size_bytes": 10157
+    },
+    {
+      "path": "evidence_store/executions/15f9fb6ec7dfa48e9b29892f452b378868015065c49a286a30de824a48874f83.json",
+      "sha256": "25ac29e2b1f14dc51500b790177828bd4c516783592b81a5d5adb572486acf1d",
+      "size_bytes": 274275
+    },
+    {
+      "path": "evidence_store/executions/25aced17fca73ccbeb2b0940644084d449f121cb6c0c41efd0a2630526528c2e.json",
+      "sha256": "fa8c8a81ee3a8ec08ac64913e729d5f50d9eaa6bab9d7dd27347694404fa1313",
+      "size_bytes": 158729
+    },
+    {
+      "path": "evidence_store/executions/2c78317dd871f4faf7f16800b01a3f38c9de3474db034fe86f194a71d24093d8.json",
+      "sha256": "1c646cc633b96f80645d35774949104f4bf97747118d91cd14bb90ac46b09472",
+      "size_bytes": 181919
+    },
+    {
+      "path": "evidence_store/executions/3ee850cabeaf916ee5be911d28d318efa0c342bb305fc699fbece9f88300ca1e.json",
+      "sha256": "045db412bed5a499322492d690bf41adac460281f6b668370f670a182eefd44c",
+      "size_bytes": 622152
+    },
+    {
+      "path": "evidence_store/executions/46f30881cc6d4ad95c8ca318279bdd6086808a006e92d4bccf4b0ab4941892e2.json",
+      "sha256": "8495b8ebc90370d1841d9a31d3cf609facdd19f93a82a2eb8f57e074c76f2a6e",
+      "size_bytes": 256377
+    },
+    {
+      "path": "evidence_store/executions/5cdd34f6d55baea5454560d8f23311e3f2f84347be30cdb38cc694d604f0942d.json",
+      "sha256": "055af4924badc92471df018806671b19ea4f9f0acaae117d4a265d19cac7449e",
+      "size_bytes": 1300742
+    },
+    {
+      "path": "evidence_store/executions/6a7e1d4d0fca2537a6baf4a4a884ded4c99c00fa68a614e8103e72d97f0abecc.json",
+      "sha256": "e7e8a5b0f5fa5e5f8a220459b7c0bfa5d343703a7803750b5cff72eee1672ab7",
+      "size_bytes": 195953
+    },
+    {
+      "path": "evidence_store/executions/74aba3c2ed8c60a8d5a29cf4f715b3e77aa9ca07e05cb5f127df4109a5cbcdfc.json",
+      "sha256": "fbf53de25d2e4e18e56de68de6aacb8748dcf5da6840359608cd572279ff76bf",
+      "size_bytes": 927049
+    },
+    {
+      "path": "evidence_store/executions/845a6c7ce4589774b458755c7dd97a7fa2e8ce4d4326552f9e9e502ed57cba16.json",
+      "sha256": "726c650809e46340b48dc426fa8de1e9f177f5907c702a707c749e6202c3c366",
+      "size_bytes": 131986
+    },
+    {
+      "path": "evidence_store/executions/84605045768ef1a289517e89b0c9c2a9eafc735adaeaf1f2d37037d67858d290.json",
+      "sha256": "10c2097f59ff14204ed28fa48df2d83bf957a8b0d06397e5da59c14a730cf02e",
+      "size_bytes": 137307
+    },
+    {
+      "path": "evidence_store/executions/871057656a2fb07a99f471fc95cf8a490da940a70c484ad1168f96788c17dd22.json",
+      "sha256": "65cc183a1a41609a407501c26ffab127d461aa1d1b0d27dba155e22de2b03815",
+      "size_bytes": 156254
+    },
+    {
+      "path": "evidence_store/executions/917ed3ef89d19f23dedb239400d9f9793bcb9113669f05e87f61507f8d0f9c2a.json",
+      "sha256": "feb13b399a83f99f60fb0a5c9c80f6044fcd11039cbe0a57812217252bfa138d",
+      "size_bytes": 411078
+    },
+    {
+      "path": "evidence_store/executions/ade41e0f559fd34510caa8c9fe79942cc4bb24ea51390800e8ed2b3561c90985.json",
+      "sha256": "a4c4d0eb0516457371706aa6caaaf96e55fd97c711ede6f712a7df131dbc30a4",
+      "size_bytes": 364151
+    },
+    {
+      "path": "evidence_store/executions/aeb16b55057a0f051d2b5f951ca2000d8779007bbfb8dee969fe435196e05258.json",
+      "sha256": "004b3f75dd98e5eb2e2d0325b5e678fa9570c1050523145bee83d8d2ef08d746",
+      "size_bytes": 133994
+    },
+    {
+      "path": "evidence_store/executions/d1e83d9d16037f8543e35b7cce0b16aa7cbbf3c99389129f696967964e70e199.json",
+      "sha256": "3a7e7bab30e84bf1844b66694072ff09ba120048f61c0eb814bde512c3159ea8",
+      "size_bytes": 164116
+    },
+    {
+      "path": "evidence_store/executions/d6f6b5e6c1d861c14c1dba7f0b99a920c724590814a53776356f8d4dd6793862.json",
+      "sha256": "73a51dde40d1ba9a4c873bf4fa43349fae37109e2617ac502dd1aa6aed7fbf00",
+      "size_bytes": 153896
+    },
+    {
+      "path": "evidence_store/executions/db87de85d556ec8e5f2b384a5c8c92fdbce7d97554d0c0f082bc7bd2457fae47.json",
+      "sha256": "56f469eb7e12eea26730ed63b9886043f250656915997ccd60fa45ac1bccb54c",
+      "size_bytes": 135820
+    },
+    {
+      "path": "evidence_store/executions/f9f22db723ba1b27d845db618a708c0a0d0fc4fc3bcbebb128e875f58c710791.json",
+      "sha256": "16f59ce3402a05645f7ddb538d0d3a2ed5714fc172e0238f98524f9c0737e709",
+      "size_bytes": 164259
+    }
+  ],
+  "global_completion_status": "EXECUTABLE_CONSEQUENCE_CLOSURE_VERIFIED",
+  "release_file_manifest_root_hash72": "+zOaCJRG*X5Iqhcu*qQk4Pv?bxfnfqi3wO8GPxOZmzF5f!EYjn9>xyIiXomwTU!RZrfBaF2A",
+  "release_file_manifest_witness": {
+    "canonical_payload": "{\"file_count\":50,\"files\":[{\"path\":\"PASS_132_AB_COMPARISON_RECEIPT.json\",\"sha256\":\"5286239f0d7a14b31a99c5b944f540e6b288972001a6f8705b43625de3115b25\",\"size_bytes\":21097},{\"path\":\"PASS_132_AB_CONTROL_MANIFEST.json\",\"sha256\":\"218b2a52b1b720a664fec9be550a808a1bd26c94d500b02aa1a38a3c739485d2\",\"size_bytes\":5871},{\"path\":\"PASS_132_AB_REPLAY_REPORT.json\",\"sha256\":\"d090f98683d1e49119510b1bfed8ea1f51508afc0ab855a0c30b321da20578bb\",\"size_bytes\":221207},{\"path\":\"PASS_132_API_SURFACE_REPORT.json\",\"sha256\":\"a011aaae65d9d5e78b961fc01980b96dad981cf26b903e39247181102e57151b\",\"size_bytes\":1956},{\"path\":\"PASS_132_AST_DISPATCH_GRAPH.json\",\"sha256\":\"16e52c835ab8ea3268f9db457ddce1629bf6884f2e229232a1700eff512a5def\",\"size_bytes\":1023601},{\"path\":\"PASS_132_CANONICAL_INPUT_ROOT.json\",\"sha256\":\"55e4d2fb7e810c39c89165ea7432d104f66bf349bed38412084c15c18fd00dbd\",\"size_bytes\":7022},{\"path\":\"PASS_132_CEUAC_AUDIT_ARTIFACTS.jsonl\",\"sha256\":\"132b5c6d4f5d1f88f0d2ffb083e9af761d635c87b02d2fb0eba875cee4042260\",\"size_bytes\":583297},{\"path\":\"PASS_132_CEUAC_SCHEMA_VALIDATION.json\",\"sha256\":\"4878aa0a49928aea0eca1236827f0582cc7664e2859c79a760afb88500dcd451\",\"size_bytes\":3567},{\"path\":\"PASS_132_COMPLETION_ATTESTATION.json\",\"sha256\":\"a004f6fecbc8747870e64be4ac9cab6778a57e365b7c70aa9ded07a241ae823f\",\"size_bytes\":7409},{\"path\":\"PASS_132_COMPUTATIONAL_CONSEQUENCES.jsonl\",\"sha256\":\"58e7001972e23a903401066ae23035750d6915b0133b6080668d7358343a7483\",\"size_bytes\":186074},{\"path\":\"PASS_132_CONSEQUENCE_COMPARISON_MATRIX.json\",\"sha256\":\"b58e9902557dd9bd41cdb150dc483157b2e438f90a12db876c63005ec0d0a22d\",\"size_bytes\":13581},{\"path\":\"PASS_132_CONTINUATION_CHECKPOINT.json\",\"sha256\":\"98ca86ab3010b2156d96d2b2d2073b6c02de0387838e2feb302b385f3fa1446a\",\"size_bytes\":1872},{\"path\":\"PASS_132_CONTRADICTION_AUDIT.json\",\"sha256\":\"b97300ebdde06471d2038a02b6ed9d188f89126b9227b6c9cf5851b80cb26fd8\",\"size_bytes\":73033},{\"path\":\"PASS_132_EXECUTION_MANIFEST.json\",\"sha256\":\"f902107360dcce974f8a05c3a518c4b16c3a37167a21da2ae70e7f6a71727e71\",\"size_bytes\":15726},{\"path\":\"PASS_132_FOREIGN_MODEL_COMPARISON.json\",\"sha256\":\"1265d51794f317d331b9d3229c60b3c91cc3d4dbfc1b936526f4785d5a67c857\",\"size_bytes\":166053},{\"path\":\"PASS_132_HHS_EXECUTION_TRACE.jsonl\",\"sha256\":\"1eb48a1c30e54efa48df1c29cb395c3a84fd2becc8f02de5e66dd8b1b2a8eccd\",\"size_bytes\":3701926},{\"path\":\"PASS_132_IEEE_BINARY32_TRACE.jsonl\",\"sha256\":\"813a89dafbfa1d568db9f71960fd9fd22309c6b2ed59267ef37c2220d17054bb\",\"size_bytes\":552954},{\"path\":\"PASS_132_IEEE_BINARY64_TRACE.jsonl\",\"sha256\":\"e9db75f08dc64dbf4585144ed89dbcf5241f99bb1392409a87865bf04d7d211f\",\"size_bytes\":566332},{\"path\":\"PASS_132_IMPLEMENTATION_REPORT.md\",\"sha256\":\"574c3149db61031f4c7c1719a37244c773691da3f3a3b261cb02b978de59e860\",\"size_bytes\":2446},{\"path\":\"PASS_132_LOGICAL_CONSEQUENCES.jsonl\",\"sha256\":\"20d52622da932b82b7c9a4bdbfcbc1fa541c7d97eda750f8e3b54b5b721c68b6\",\"size_bytes\":13376},{\"path\":\"PASS_132_NEGATIVE_TEST_REPORT.json\",\"sha256\":\"229d24df0fe0e0ecb67debfe57aee08b81144d872f406427d20d89c8eff7b23a\",\"size_bytes\":10481},{\"path\":\"PASS_132_NORMALIZATION_PROOF.json\",\"sha256\":\"7512a8c8cd8b62b9edd3e1c2f5b57ca212a4981c5cbad2272879e079a9ced7ee\",\"size_bytes\":30047},{\"path\":\"PASS_132_NUMERICAL_ERROR_REPORT.json\",\"sha256\":\"e66f41c782aa99ae45540a936e3c8d65b3c8c114e24bd4da8172996d9fbe1d2c\",\"size_bytes\":59453},{\"path\":\"PASS_132_ORDERED_LANE_TRACE.jsonl\",\"sha256\":\"88c42917aafed20ae0199462f6ad014fac5c34c95815f61352e4596e97ad21e1\",\"size_bytes\":290819},{\"path\":\"PASS_132_ORDER_SENSITIVITY_REPORT.json\",\"sha256\":\"37a5aa94e18479dfa53af07c0c93148f0ea217893f7cb2706fa944ec717ca40a\",\"size_bytes\":8146},{\"path\":\"PASS_132_PERFORMANCE_MEASUREMENTS.json\",\"sha256\":\"3e762432bb8b71bc637dfe4fdb378cad3bd22b5d879f1a3876c96cfb6b60b333\",\"size_bytes\":8385},{\"path\":\"PASS_132_RELEASE_MANIFEST.json\",\"sha256\":\"95c8d29d41ab74f9ab20c2090a07759749e0fd16cda9fc7842b5bda17dc3c893\",\"size_bytes\":6540},{\"path\":\"PASS_132_REPLAY_RECEIPT.json\",\"sha256\":\"d090f98683d1e49119510b1bfed8ea1f51508afc0ab855a0c30b321da20578bb\",\"size_bytes\":221207},{\"path\":\"PASS_132_SEMANTIC_DIVERGENCE_REPORT.json\",\"sha256\":\"3e495567b37d2786ca068a68f10091493ff2ddaf8f9d4d9540911734c6b02420\",\"size_bytes\":46289},{\"path\":\"PASS_132_TEST_REPORT.json\",\"sha256\":\"fdb852586d063d2288f90e298bb28f889e499d915f36a6ad5c5cb8040144020e\",\"size_bytes\":1761},{\"path\":\"PASS_132_TRANSLATION_CLASSIFICATION.json\",\"sha256\":\"025974d83640bdb554b8324f46388913f3aba8932889859833590ed38a478208\",\"size_bytes\":144903},{\"path\":\"evidence_store/PASS_132_UNIFIED_HASH72_LEDGER.json\",\"sha256\":\"1ffa66896470042a50b0e7d5e915a50f0c76daebabcfb6501cd9ed01799bb951\",\"size_bytes\":10157},{\"path\":\"evidence_store/executions/15f9fb6ec7dfa48e9b29892f452b378868015065c49a286a30de824a48874f83.json\",\"sha256\":\"25ac29e2b1f14dc51500b790177828bd4c516783592b81a5d5adb572486acf1d\",\"size_bytes\":274275},{\"path\":\"evidence_store/executions/25aced17fca73ccbeb2b0940644084d449f121cb6c0c41efd0a2630526528c2e.json\",\"sha256\":\"fa8c8a81ee3a8ec08ac64913e729d5f50d9eaa6bab9d7dd27347694404fa1313\",\"size_bytes\":158729},{\"path\":\"evidence_store/executions/2c78317dd871f4faf7f16800b01a3f38c9de3474db034fe86f194a71d24093d8.json\",\"sha256\":\"1c646cc633b96f80645d35774949104f4bf97747118d91cd14bb90ac46b09472\",\"size_bytes\":181919},{\"path\":\"evidence_store/executions/3ee850cabeaf916ee5be911d28d318efa0c342bb305fc699fbece9f88300ca1e.json\",\"sha256\":\"045db412bed5a499322492d690bf41adac460281f6b668370f670a182eefd44c\",\"size_bytes\":622152},{\"path\":\"evidence_store/executions/46f30881cc6d4ad95c8ca318279bdd6086808a006e92d4bccf4b0ab4941892e2.json\",\"sha256\":\"8495b8ebc90370d1841d9a31d3cf609facdd19f93a82a2eb8f57e074c76f2a6e\",\"size_bytes\":256377},{\"path\":\"evidence_store/executions/5cdd34f6d55baea5454560d8f23311e3f2f84347be30cdb38cc694d604f0942d.json\",\"sha256\":\"055af4924badc92471df018806671b19ea4f9f0acaae117d4a265d19cac7449e\",\"size_bytes\":1300742},{\"path\":\"evidence_store/executions/6a7e1d4d0fca2537a6baf4a4a884ded4c99c00fa68a614e8103e72d97f0abecc.json\",\"sha256\":\"e7e8a5b0f5fa5e5f8a220459b7c0bfa5d343703a7803750b5cff72eee1672ab7\",\"size_bytes\":195953},{\"path\":\"evidence_store/executions/74aba3c2ed8c60a8d5a29cf4f715b3e77aa9ca07e05cb5f127df4109a5cbcdfc.json\",\"sha256\":\"fbf53de25d2e4e18e56de68de6aacb8748dcf5da6840359608cd572279ff76bf\",\"size_bytes\":927049},{\"path\":\"evidence_store/executions/845a6c7ce4589774b458755c7dd97a7fa2e8ce4d4326552f9e9e502ed57cba16.json\",\"sha256\":\"726c650809e46340b48dc426fa8de1e9f177f5907c702a707c749e6202c3c366\",\"size_bytes\":131986},{\"path\":\"evidence_store/executions/84605045768ef1a289517e89b0c9c2a9eafc735adaeaf1f2d37037d67858d290.json\",\"sha256\":\"10c2097f59ff14204ed28fa48df2d83bf957a8b0d06397e5da59c14a730cf02e\",\"size_bytes\":137307},{\"path\":\"evidence_store/executions/871057656a2fb07a99f471fc95cf8a490da940a70c484ad1168f96788c17dd22.json\",\"sha256\":\"65cc183a1a41609a407501c26ffab127d461aa1d1b0d27dba155e22de2b03815\",\"size_bytes\":156254},{\"path\":\"evidence_store/executions/917ed3ef89d19f23dedb239400d9f9793bcb9113669f05e87f61507f8d0f9c2a.json\",\"sha256\":\"feb13b399a83f99f60fb0a5c9c80f6044fcd11039cbe0a57812217252bfa138d\",\"size_bytes\":411078},{\"path\":\"evidence_store/executions/ade41e0f559fd34510caa8c9fe79942cc4bb24ea51390800e8ed2b3561c90985.json\",\"sha256\":\"a4c4d0eb0516457371706aa6caaaf96e55fd97c711ede6f712a7df131dbc30a4\",\"size_bytes\":364151},{\"path\":\"evidence_store/executions/aeb16b55057a0f051d2b5f951ca2000d8779007bbfb8dee969fe435196e05258.json\",\"sha256\":\"004b3f75dd98e5eb2e2d0325b5e678fa9570c1050523145bee83d8d2ef08d746\",\"size_bytes\":133994},{\"path\":\"evidence_store/executions/d1e83d9d16037f8543e35b7cce0b16aa7cbbf3c99389129f696967964e70e199.json\",\"sha256\":\"3a7e7bab30e84bf1844b66694072ff09ba120048f61c0eb814bde512c3159ea8\",\"size_bytes\":164116},{\"path\":\"evidence_store/executions/d6f6b5e6c1d861c14c1dba7f0b99a920c724590814a53776356f8d4dd6793862.json\",\"sha256\":\"73a51dde40d1ba9a4c873bf4fa43349fae37109e2617ac502dd1aa6aed7fbf00\",\"size_bytes\":153896},{\"path\":\"evidence_store/executions/db87de85d556ec8e5f2b384a5c8c92fdbce7d97554d0c0f082bc7bd2457fae47.json\",\"sha256\":\"56f469eb7e12eea26730ed63b9886043f250656915997ccd60fa45ac1bccb54c\",\"size_bytes\":135820},{\"path\":\"evidence_store/executions/f9f22db723ba1b27d845db618a708c0a0d0fc4fc3bcbebb128e875f58c710791.json\",\"sha256\":\"16f59ce3402a05645f7ddb538d0d3a2ed5714fc172e0238f98524f9c0737e709\",\"size_bytes\":164259}],\"global_completion_status\":\"EXECUTABLE_CONSEQUENCE_CLOSURE_VERIFIED\",\"schema\":\"HHS_PASS132_RELEASE_FILE_MANIFEST_V1\"}",
+    "digest": "+zOaCJRG*X5Iqhcu*qQk4Pv?bxfnfqi3wO8GPxOZmzF5f!EYjn9>xyIiXomwTU!RZrfBaF2A",
+    "dna": "+zOaCJRG*X5Iqhcu*qQk4Pv?bxfnfqi3wO8GPxOZmzF5f!EYjn9>xyIiXomwTU!RZrfBaF2A",
+    "label": "hhs_pass132_release_file_manifest_v1",
+    "positions": [
+      63,
+      35,
+      50,
+      10,
+      38,
+      45,
+      53,
+      42,
+      64,
+      59,
+      5,
+      44,
+      26,
+      17,
+      12,
+      30,
+      64,
+      26,
+      52,
+      20,
+      4,
+      51,
+      31,
+      71,
+      11,
+      33,
+      15,
+      23,
+      15,
+      26,
+      18,
+      3,
+      32,
+      50,
+      8,
+      42,
+      51,
+      33,
+      50,
+      61,
+      22,
+      35,
+      41,
+      5,
+      15,
+      70,
+      40,
+      60,
+      19,
+      23,
+      9,
+      69,
+      33,
+      34,
+      44,
+      18,
+      59,
+      24,
+      22,
+      32,
+      55,
+      56,
+      70,
+      53,
+      61,
+      27,
+      15,
+      37,
+      10,
+      41,
+      2,
+      36
+    ],
+    "rotation_profile": [
+      -81,
+      538,
+      -312,
+      295,
+      -254,
+      256,
+      47,
+      323,
+      200,
+      -94,
+      67,
+      -39,
+      158,
+      292,
+      286,
+      15,
+      -240,
+      -135,
+      -326,
+      -143,
+      -592,
+      102,
+      -423,
+      -24,
+      -517,
+      -424,
+      565,
+      -652,
+      491,
+      -291,
+      -84,
+      -172,
+      504,
+      305,
+      -962,
+      367,
+      87,
+      212,
+      228,
+      -338,
+      126,
+      -726,
+      719,
+      -542,
+      -29,
+      -263,
+      -294,
+      -275,
+      43,
+      262,
+      -41,
+      -54,
+      -19,
+      125,
+      350,
+      251,
+      75,
+      39,
+      -36,
+      333,
+      -77,
+      -5,
+      -136,
+      350,
+      -147,
+      250,
+      -123,
+      42,
+      86,
+      116,
+      4,
+      361
+    ],
+    "schema": "HHS_HASH72_KERNEL_WITNESS_V1",
+    "trace_count": 8388,
+    "zero_sum": true
+  },
+  "schema": "HHS_PASS132_RELEASE_FILE_MANIFEST_V1"
+}

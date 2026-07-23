@@ -1,0 +1,20 @@
+{
+  "schema": "HHS_PASS_085_RELEASE_MANIFEST_V1",
+  "pass_id": "PASS_085",
+  "parent_pass084_release_root_hash72": "0000000000000000000000000000003*8)YEGe>V2onOQ0jqPr42l1?C+x9lRjR)/EnbRgu?",
+  "workload_count": 14,
+  "negative_case_count": 10,
+  "all_negative_cases_passed": true,
+  "artifacts": [
+    "PASS_085_SPACE_WORKLOAD_REGISTRY.json",
+    "PASS_085_SPATIAL_RECONSTRUCTION_RESULTS.json",
+    "PASS_085_3D_SCENE_RECEIPTS.json",
+    "PASS_085_SPATIAL_ENTITY_GRAPH.json",
+    "PASS_085_TRAJECTORY_PROFILE.json",
+    "PASS_085_SPACE_SCALING_RESULTS.json",
+    "PASS_085_NEGATIVE_CASES.json",
+    "PASS_085_CALIBRATION_REPORT.md",
+    "CHANGELOG_PASS_085.md"
+  ],
+  "pass085_release_root_hash72": "0000000000000000000000000000000DpV=yybs0SVi3J>lIO!7Ppo=x2weYb=vERbZ=o=zW"
+}

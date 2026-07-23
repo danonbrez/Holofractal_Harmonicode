@@ -1,0 +1,94 @@
+{
+  "all_historical_hashes_matched": false,
+  "all_historical_paths_present": true,
+  "authority": "PASS_131_FULL_TREE_PLUS_IMMUTABLE_PASS132_RELEASE_EVIDENCE_PLUS_NATIVE_HASH72_WITNESS_RECOMPUTATION",
+  "exact_original_source_bytes_recovered": false,
+  "functional_reconstruction_status": "VERIFIED",
+  "historical_commitments": [
+    {
+      "byte_identical": false,
+      "historical_sha256": "dd1f1c7fd77420881f72c1e236eae653ccf6583b6163e2b56ec076b61ffdae53",
+      "historical_size_bytes": 81056,
+      "path": "hhs_runtime/hhs_pass132_executable_consequence_ab_control_v1.py",
+      "reconstructed_present": true,
+      "reconstructed_sha256": "4df248501d618b43b53550a19a0f7df9d534db97dc86e795ba122af89f03119e",
+      "reconstructed_size_bytes": 709
+    },
+    {
+      "byte_identical": false,
+      "historical_sha256": "828acafbc2a485ff054f1032fb28b6f81eb969b864c75f2809d1012c3edec316",
+      "historical_size_bytes": 19735,
+      "path": "hhs_runtime/hhs_pass132_ieee_control_v1.py",
+      "reconstructed_present": true,
+      "reconstructed_sha256": "6ccad42e31774f5dbc420d65abfe66bad3fce81e197d695e0c160d2fc6835d6f",
+      "reconstructed_size_bytes": 319
+    },
+    {
+      "byte_identical": false,
+      "historical_sha256": "9098cd131a632a180f340ffc69501e2e1d49ea486523e4772c5b36349e445aec",
+      "historical_size_bytes": 3577,
+      "path": "hhs_runtime/native/pass132_ieee_control.c",
+      "reconstructed_present": true,
+      "reconstructed_sha256": "ba715d823bb774a836f053b810510e63d00e588e8ca2b11ee3726ac60a8105ce",
+      "reconstructed_size_bytes": 1123
+    },
+    {
+      "byte_identical": false,
+      "historical_sha256": "33b7b88ee9254679ff4d7cdf2d2706753905733b7b4fe09d1df01e19c96ad601",
+      "historical_size_bytes": 24931,
+      "path": "hhs_runtime/hhs_pass132_release_v1.py",
+      "reconstructed_present": true,
+      "reconstructed_sha256": "36411d33d10fc50f6344dae2663cf64f5dc6a6ca4493637f57561c5cdbdef85b",
+      "reconstructed_size_bytes": 228
+    },
+    {
+      "byte_identical": false,
+      "historical_sha256": "7d4e71365ef377918da07b44dd13d356a68b9f9f30886de1b6360fd37c1dd082",
+      "historical_size_bytes": 13184,
+      "path": "hhs_runtime/main.py",
+      "reconstructed_present": true,
+      "reconstructed_sha256": "2a3f5f9f0ed7028deb0f3194a5a58ee1d923ef798b6404ddb636accae5f275d6",
+      "reconstructed_size_bytes": 8935
+    },
+    {
+      "byte_identical": false,
+      "historical_sha256": "51d5aeb234e6dbcbcbba0912dfd6d56eb7397dc80434c62316064862e1f4d796",
+      "historical_size_bytes": 266034,
+      "path": "hhs_runtime/hhs_service_registry_v1.py",
+      "reconstructed_present": true,
+      "reconstructed_sha256": "68ab65a17732756461547e2abafb5e533919fb976f8dddbb75cbeecefdc88fcc",
+      "reconstructed_size_bytes": 265185
+    },
+    {
+      "byte_identical": false,
+      "historical_sha256": "73320bcc1de82b6cd608973b75f9ca19bbd3bc6d98ee73d75fd94dd595da9e1d",
+      "historical_size_bytes": 33722,
+      "path": "hhs_runtime/hhs_zero_bypass_runtime_interposer_v1.py",
+      "reconstructed_present": true,
+      "reconstructed_sha256": "dbe739a1bd00e7775c1ce0e54485a812908e8dc8e6fd4a8673c9ffa33161a4ed",
+      "reconstructed_size_bytes": 33289
+    },
+    {
+      "byte_identical": false,
+      "historical_sha256": "ae23d825589da8bdd40c23c8fbeb5f9e08b508449190f14cb7862eb73443f358",
+      "historical_size_bytes": 3118,
+      "path": "contracts/pass132/PASS_132_CANONICAL_WORKLOAD_SOURCES.json",
+      "reconstructed_present": true,
+      "reconstructed_sha256": "9f932bd13ea2dba4910c0814347b5a33e0cc87715b44cd5e3bfa3ad25ef04e8e",
+      "reconstructed_size_bytes": 441
+    },
+    {
+      "byte_identical": false,
+      "historical_sha256": "b682e645293b39bfa42ace1ec2033d0c507b71e7b26b9833b9041558f84fd2f5",
+      "historical_size_bytes": 5848,
+      "path": "tests/test_hhs_pass132_executable_consequence_ab_control_v1.py",
+      "reconstructed_present": true,
+      "reconstructed_sha256": "97300cb7f99ae209e6bd73d687f31261ba92ba84890dd918b2c6dadf5e33c095",
+      "reconstructed_size_bytes": 416
+    }
+  ],
+  "historical_pass_id": "PASS_132",
+  "pass_id": "PASS_132_RECONSTRUCTED_R1",
+  "schema": "HHS_PASS132_RECONSTRUCTED_SOURCE_IDENTITY_REPORT_V1",
+  "terminal_status": "PASS_132_FUNCTIONAL_RECONSTRUCTION_VERIFIED_WITH_SOURCE_IDENTITY_ERRATUM"
+}

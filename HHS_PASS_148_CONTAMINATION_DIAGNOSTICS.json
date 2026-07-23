@@ -1,0 +1,104 @@
+{
+  "diagnostics": [
+    {
+      "description": "A factor was cancelled without an authorized inverse/cancellation contract.",
+      "diagnostic_code": "CANCELLATION_INJECTION",
+      "hash72_witness": "0000000000000000000000000000003la(TdO9uCqJCzh)??7=cPjU/LB4Ow!b-FSpVg0nRB",
+      "severity": "REJECT_NATIVE_PROMOTION",
+      "version": "HHS_NATIVE_SEMANTIC_REGISTRY_148.1.0"
+    },
+    {
+      "description": "Operand order was changed without an authorized commutation rule.",
+      "diagnostic_code": "COMMUTATIVITY_INJECTION",
+      "hash72_witness": "0000000000000000000000000000003wbnNj)IL+vjURswh)/-k8a+pn>DQI(9Tt0)KIG!Z!",
+      "severity": "REJECT_NATIVE_PROMOTION",
+      "version": "HHS_NATIVE_SEMANTIC_REGISTRY_148.1.0"
+    },
+    {
+      "description": "Consciousness was inferred from recursion or self-reference.",
+      "diagnostic_code": "CONSCIOUSNESS_PROMOTION",
+      "hash72_witness": "0000000000000000000000000000004m3D>lF(wV)Qiz5^qHk9t4lyGHUpxP^f-upG/6u**=",
+      "severity": "NON_AUTHORITATIVE",
+      "version": "HHS_NATIVE_SEMANTIC_REGISTRY_148.1.0"
+    },
+    {
+      "description": "A control result attempted to mutate, repair, or satisfy native state.",
+      "diagnostic_code": "CONTROL_NATIVE_CONTAMINATION",
+      "hash72_witness": "00000000000000000000000000000037EHUW4q)yRgYu6wK3>D2g26oNo?M=g!GzlS2F29>?",
+      "severity": "REJECT_NATIVE_PROMOTION",
+      "version": "HHS_NATIVE_SEMANTIC_REGISTRY_148.1.0"
+    },
+    {
+      "description": "The HHS == gate was flattened to ordinary equality.",
+      "diagnostic_code": "EQUALITY_FLATTENING",
+      "hash72_witness": "0000000000000000000000000000003xpvNpBmp98raheyg^^Bdw/XFA?!TmphlKOwU!n5Rw",
+      "severity": "REJECT_NATIVE_PROMOTION",
+      "version": "HHS_NATIVE_SEMANTIC_REGISTRY_148.1.0"
+    },
+    {
+      "description": "Narrative content was promoted to native mathematics.",
+      "diagnostic_code": "NARRATIVE_PROMOTION",
+      "hash72_witness": "0000000000000000000000000000001a!BwfkEkRur=0mAXQCS=Aq(soJsyC0=tl8Y93-mOO",
+      "severity": "REJECT_NATIVE_PROMOTION",
+      "version": "HHS_NATIVE_SEMANTIC_REGISTRY_148.1.0"
+    },
+    {
+      "description": "Distinct HHS and external symbols/operators were aliased.",
+      "diagnostic_code": "OPERATOR_ALIAS_CONTAMINATION",
+      "hash72_witness": "00000000000000000000000000000001WxqXUE0nq?qgDoC6C=BIy-cpcbUlXnGpX?ooted!",
+      "severity": "REJECT_NATIVE_PROMOTION",
+      "version": "HHS_NATIVE_SEMANTIC_REGISTRY_148.1.0"
+    },
+    {
+      "description": "Differently ordered ASTs were treated as identical.",
+      "diagnostic_code": "ORDER_COLLAPSE",
+      "hash72_witness": "0000000000000000000000000000000>)W0fz8G7xU1I(GPu11P)khHyiE=4ZLzzkeQJGzEX",
+      "severity": "REJECT_NATIVE_PROMOTION",
+      "version": "HHS_NATIVE_SEMANTIC_REGISTRY_148.1.0"
+    },
+    {
+      "description": "Physical ontology was inferred from symbolic syntax.",
+      "diagnostic_code": "PHYSICAL_ONTOLOGY_PROMOTION",
+      "hash72_witness": "0000000000000000000000000000002g5+)su(xhJg49UrJXcsi(zG/kvcgRhrCIXk(Jy*kN",
+      "severity": "NON_AUTHORITATIVE",
+      "version": "HHS_NATIVE_SEMANTIC_REGISTRY_148.1.0"
+    },
+    {
+      "description": "Proof-strength language exceeded the available authority or evidence.",
+      "diagnostic_code": "PROOF_LANGUAGE_INFLATION",
+      "hash72_witness": "0000000000000000000000000000000tjfr1GdM2kPl(MNKc9Ki44jK4xk^j?6yf5uCtF>Qd",
+      "severity": "REJECT_AUTHORITY_CLAIM",
+      "version": "HHS_NATIVE_SEMANTIC_REGISTRY_148.1.0"
+    },
+    {
+      "description": "A typed HHS object was reduced to an ordinary scalar without an authorized profile.",
+      "diagnostic_code": "SCALARIZATION_CONTAMINATION",
+      "hash72_witness": "0000000000000000000000000000000Fd1PNu8kbdyS)hR1L6LEb>W1GfC4ORlR-5hq3KFf*",
+      "severity": "REJECT_NATIVE_PROMOTION",
+      "version": "HHS_NATIVE_SEMANTIC_REGISTRY_148.1.0"
+    },
+    {
+      "description": "A local observation was promoted to a broader scope.",
+      "diagnostic_code": "SCOPE_INFLATION",
+      "hash72_witness": "0000000000000000000000000000004JyAYsrgTsMp9uKJN**uo50rLV6WPRrisckhisAmeD",
+      "severity": "REJECT_NATIVE_PROMOTION",
+      "version": "HHS_NATIVE_SEMANTIC_REGISTRY_148.1.0"
+    },
+    {
+      "description": "Normalization or interpretation changed immutable source text.",
+      "diagnostic_code": "SOURCE_TEXT_MUTATION",
+      "hash72_witness": "0000000000000000000000000000000gJ59okVZunlz)wRT/E1jWu6RC0rjFgiNB(?RId=d0",
+      "severity": "CORRUPT",
+      "version": "HHS_NATIVE_SEMANTIC_REGISTRY_148.1.0"
+    },
+    {
+      "description": "A derivation omitted an unresolved dependency or condition.",
+      "diagnostic_code": "UNRESOLVED_DEPENDENCY_HIDDEN",
+      "hash72_witness": "0000000000000000000000000000000Z3/U2/z)0QAE*ZuT?V6dzfxkBH4(5/v+2077ii7ps",
+      "severity": "REJECT_DERIVATION",
+      "version": "HHS_NATIVE_SEMANTIC_REGISTRY_148.1.0"
+    }
+  ],
+  "registry_hash72": "0000000000000000000000000000001fOChEQ*-nas8Rxc-bLW5d4ts0TkgxS3G^QEtoqCi6",
+  "schema": "HHS_PASS148_CONTAMINATION_DIAGNOSTICS_V1"
+}

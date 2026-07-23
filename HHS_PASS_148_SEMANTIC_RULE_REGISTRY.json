@@ -1,0 +1,693 @@
+{
+  "contamination_diagnostics": [
+    {
+      "description": "A factor was cancelled without an authorized inverse/cancellation contract.",
+      "diagnostic_code": "CANCELLATION_INJECTION",
+      "hash72_witness": "0000000000000000000000000000003la(TdO9uCqJCzh)??7=cPjU/LB4Ow!b-FSpVg0nRB",
+      "severity": "REJECT_NATIVE_PROMOTION",
+      "version": "HHS_NATIVE_SEMANTIC_REGISTRY_148.1.0"
+    },
+    {
+      "description": "Operand order was changed without an authorized commutation rule.",
+      "diagnostic_code": "COMMUTATIVITY_INJECTION",
+      "hash72_witness": "0000000000000000000000000000003wbnNj)IL+vjURswh)/-k8a+pn>DQI(9Tt0)KIG!Z!",
+      "severity": "REJECT_NATIVE_PROMOTION",
+      "version": "HHS_NATIVE_SEMANTIC_REGISTRY_148.1.0"
+    },
+    {
+      "description": "Consciousness was inferred from recursion or self-reference.",
+      "diagnostic_code": "CONSCIOUSNESS_PROMOTION",
+      "hash72_witness": "0000000000000000000000000000004m3D>lF(wV)Qiz5^qHk9t4lyGHUpxP^f-upG/6u**=",
+      "severity": "NON_AUTHORITATIVE",
+      "version": "HHS_NATIVE_SEMANTIC_REGISTRY_148.1.0"
+    },
+    {
+      "description": "A control result attempted to mutate, repair, or satisfy native state.",
+      "diagnostic_code": "CONTROL_NATIVE_CONTAMINATION",
+      "hash72_witness": "00000000000000000000000000000037EHUW4q)yRgYu6wK3>D2g26oNo?M=g!GzlS2F29>?",
+      "severity": "REJECT_NATIVE_PROMOTION",
+      "version": "HHS_NATIVE_SEMANTIC_REGISTRY_148.1.0"
+    },
+    {
+      "description": "The HHS == gate was flattened to ordinary equality.",
+      "diagnostic_code": "EQUALITY_FLATTENING",
+      "hash72_witness": "0000000000000000000000000000003xpvNpBmp98raheyg^^Bdw/XFA?!TmphlKOwU!n5Rw",
+      "severity": "REJECT_NATIVE_PROMOTION",
+      "version": "HHS_NATIVE_SEMANTIC_REGISTRY_148.1.0"
+    },
+    {
+      "description": "Narrative content was promoted to native mathematics.",
+      "diagnostic_code": "NARRATIVE_PROMOTION",
+      "hash72_witness": "0000000000000000000000000000001a!BwfkEkRur=0mAXQCS=Aq(soJsyC0=tl8Y93-mOO",
+      "severity": "REJECT_NATIVE_PROMOTION",
+      "version": "HHS_NATIVE_SEMANTIC_REGISTRY_148.1.0"
+    },
+    {
+      "description": "Distinct HHS and external symbols/operators were aliased.",
+      "diagnostic_code": "OPERATOR_ALIAS_CONTAMINATION",
+      "hash72_witness": "00000000000000000000000000000001WxqXUE0nq?qgDoC6C=BIy-cpcbUlXnGpX?ooted!",
+      "severity": "REJECT_NATIVE_PROMOTION",
+      "version": "HHS_NATIVE_SEMANTIC_REGISTRY_148.1.0"
+    },
+    {
+      "description": "Differently ordered ASTs were treated as identical.",
+      "diagnostic_code": "ORDER_COLLAPSE",
+      "hash72_witness": "0000000000000000000000000000000>)W0fz8G7xU1I(GPu11P)khHyiE=4ZLzzkeQJGzEX",
+      "severity": "REJECT_NATIVE_PROMOTION",
+      "version": "HHS_NATIVE_SEMANTIC_REGISTRY_148.1.0"
+    },
+    {
+      "description": "Physical ontology was inferred from symbolic syntax.",
+      "diagnostic_code": "PHYSICAL_ONTOLOGY_PROMOTION",
+      "hash72_witness": "0000000000000000000000000000002g5+)su(xhJg49UrJXcsi(zG/kvcgRhrCIXk(Jy*kN",
+      "severity": "NON_AUTHORITATIVE",
+      "version": "HHS_NATIVE_SEMANTIC_REGISTRY_148.1.0"
+    },
+    {
+      "description": "Proof-strength language exceeded the available authority or evidence.",
+      "diagnostic_code": "PROOF_LANGUAGE_INFLATION",
+      "hash72_witness": "0000000000000000000000000000000tjfr1GdM2kPl(MNKc9Ki44jK4xk^j?6yf5uCtF>Qd",
+      "severity": "REJECT_AUTHORITY_CLAIM",
+      "version": "HHS_NATIVE_SEMANTIC_REGISTRY_148.1.0"
+    },
+    {
+      "description": "A typed HHS object was reduced to an ordinary scalar without an authorized profile.",
+      "diagnostic_code": "SCALARIZATION_CONTAMINATION",
+      "hash72_witness": "0000000000000000000000000000000Fd1PNu8kbdyS)hR1L6LEb>W1GfC4ORlR-5hq3KFf*",
+      "severity": "REJECT_NATIVE_PROMOTION",
+      "version": "HHS_NATIVE_SEMANTIC_REGISTRY_148.1.0"
+    },
+    {
+      "description": "A local observation was promoted to a broader scope.",
+      "diagnostic_code": "SCOPE_INFLATION",
+      "hash72_witness": "0000000000000000000000000000004JyAYsrgTsMp9uKJN**uo50rLV6WPRrisckhisAmeD",
+      "severity": "REJECT_NATIVE_PROMOTION",
+      "version": "HHS_NATIVE_SEMANTIC_REGISTRY_148.1.0"
+    },
+    {
+      "description": "Normalization or interpretation changed immutable source text.",
+      "diagnostic_code": "SOURCE_TEXT_MUTATION",
+      "hash72_witness": "0000000000000000000000000000000gJ59okVZunlz)wRT/E1jWu6RC0rjFgiNB(?RId=d0",
+      "severity": "CORRUPT",
+      "version": "HHS_NATIVE_SEMANTIC_REGISTRY_148.1.0"
+    },
+    {
+      "description": "A derivation omitted an unresolved dependency or condition.",
+      "diagnostic_code": "UNRESOLVED_DEPENDENCY_HIDDEN",
+      "hash72_witness": "0000000000000000000000000000000Z3/U2/z)0QAE*ZuT?V6dzfxkBH4(5/v+2077ii7ps",
+      "severity": "REJECT_DERIVATION",
+      "version": "HHS_NATIVE_SEMANTIC_REGISTRY_148.1.0"
+    }
+  ],
+  "declared_laws": [
+    {
+      "consequence_class": "INVARIANT",
+      "expressions": [
+        "O≠π",
+        "O\\neq\\pi",
+        "O != π"
+      ],
+      "hash72_witness": "0000000000000000000000000000001lsZsITRpGwxp7xjNC4rbG7pzy8k-UxluqB(ckxQF!",
+      "rule_id": "HHS_O_DISTINCT_PI_V1",
+      "scope": {
+        "global": true
+      },
+      "source_authority": "HHS-P148 Ω148.9 and inherited O ≠ π rule",
+      "statement": "O is a distinct HHS operator and is not the circular constant π.",
+      "version": "HHS_NATIVE_SEMANTIC_REGISTRY_148.1.0"
+    },
+    {
+      "consequence_class": "NORMALIZATION_LOCAL",
+      "expressions": [
+        "n/Δ=n",
+        "\\frac{n}{\\Delta}=n",
+        "\\frac n\\Delta=n"
+      ],
+      "hash72_witness": "0000000000000000000000000000003tHH2^NR1nrgyHu1!Y?4E5+gyS2Of(/yQ9A9gFkIQM",
+      "rule_id": "HHS_DELTA_NORMALIZATION_V1",
+      "scope": {
+        "normalization_lane": true
+      },
+      "source_authority": "HHS-P148 Ω148.10",
+      "statement": "n normalized through Δ returns n in the declared typed normalization lane.",
+      "version": "HHS_NATIVE_SEMANTIC_REGISTRY_148.1.0"
+    },
+    {
+      "consequence_class": "NORMALIZATION_LOCAL",
+      "expressions": [
+        "Δ^n=Δ",
+        "\\Delta^n=\\Delta"
+      ],
+      "hash72_witness": "0000000000000000000000000000000M4KOYUZfckcoaHQxfiI7miwhch0=PQrdgn3i^Vkap",
+      "rule_id": "HHS_DELTA_IDEMPOTENT_EXPONENT_V1",
+      "scope": {
+        "normalization_lane": true
+      },
+      "source_authority": "HHS-P148 Ω148.10",
+      "statement": "Declared typed Δ exponent normalization.",
+      "version": "HHS_NATIVE_SEMANTIC_REGISTRY_148.1.0"
+    },
+    {
+      "consequence_class": "NORMALIZATION_LOCAL",
+      "expressions": [
+        "Δ-Δ=x+y",
+        "\\Delta-\\Delta=x+y"
+      ],
+      "hash72_witness": "0000000000000000000000000000003FXPmIxTT8X*hOi!K^)bMtRZ!orCQG9RNCLiG*tD7a",
+      "rule_id": "HHS_DELTA_RESIDUAL_V1",
+      "scope": {
+        "residual_lane": true
+      },
+      "source_authority": "HHS-P148 §13.2",
+      "statement": "Δ residual subtraction yields x+y in the declared lane; ordinary cancellation is unauthorized.",
+      "version": "HHS_NATIVE_SEMANTIC_REGISTRY_148.1.0"
+    },
+    {
+      "consequence_class": "GATE_LOCAL",
+      "expressions": [
+        "∞^{-Δ}=Δ",
+        "\\infty^{-\\Delta}=\\Delta"
+      ],
+      "hash72_witness": "0000000000000000000000000000001(21FxWg?QH5gRn)=VhhgAsF5GH(OKW>y>mkLTX?RE",
+      "rule_id": "HHS_INFINITY_NEG_DELTA_EXPONENT_V1",
+      "scope": {
+        "infinite_boundary": true
+      },
+      "source_authority": "HHS-P148 §13.3",
+      "statement": "Typed exponent boundary law.",
+      "version": "HHS_NATIVE_SEMANTIC_REGISTRY_148.1.0"
+    },
+    {
+      "consequence_class": "GATE_LOCAL",
+      "expressions": [
+        "Δ∞=∞",
+        "\\Delta\\infty=\\infty"
+      ],
+      "hash72_witness": "0000000000000000000000000000002Q(3k(8^h/fMc1jc>lT=L)zl8XtqDhh5vB5QTNLj-?",
+      "rule_id": "HHS_DELTA_INFINITY_COMPOSITION_V1",
+      "scope": {
+        "infinite_boundary": true
+      },
+      "source_authority": "HHS-P148 §13.3",
+      "statement": "Ordered Δ-infinity composition boundary law.",
+      "version": "HHS_NATIVE_SEMANTIC_REGISTRY_148.1.0"
+    },
+    {
+      "consequence_class": "GATE_LOCAL",
+      "expressions": [
+        "∞-Δ=∞",
+        "\\infty-\\Delta=\\infty"
+      ],
+      "hash72_witness": "0000000000000000000000000000004szpU?R/)M8o)^KOLKR=hi3/Fzc7VNKG)H3rwPIny6",
+      "rule_id": "HHS_INFINITY_MINUS_DELTA_V1",
+      "scope": {
+        "infinite_boundary": true
+      },
+      "source_authority": "HHS-P148 §13.3",
+      "statement": "Typed residual infinite boundary law.",
+      "version": "HHS_NATIVE_SEMANTIC_REGISTRY_148.1.0"
+    },
+    {
+      "consequence_class": "GATE_LOCAL",
+      "expressions": [
+        "∞+Δ=∞",
+        "\\infty+\\Delta=\\infty"
+      ],
+      "hash72_witness": "0000000000000000000000000000004KWGhWavoZtjhdSQBDB^RIr0KUdB?mQGqGLlMAFn!)",
+      "rule_id": "HHS_INFINITY_PLUS_DELTA_V1",
+      "scope": {
+        "infinite_boundary": true
+      },
+      "source_authority": "HHS-P148 §13.3",
+      "statement": "Typed projection infinite boundary law.",
+      "version": "HHS_NATIVE_SEMANTIC_REGISTRY_148.1.0"
+    },
+    {
+      "consequence_class": "GATE_LOCAL",
+      "expressions": [
+        "-∞=∅^{-Δ}",
+        "-\\infty=\\varnothing^{-\\Delta}"
+      ],
+      "hash72_witness": "0000000000000000000000000000003t6618XOU0Bh(-4kVLStKS-iZAczQ0ze3?iGDL?jVd",
+      "rule_id": "HHS_NEGATIVE_INFINITY_EMPTY_EXPONENT_V1",
+      "scope": {
+        "infinite_boundary": true
+      },
+      "source_authority": "HHS-P148 §13.3",
+      "statement": "Typed negative-infinity/empty-boundary relation.",
+      "version": "HHS_NATIVE_SEMANTIC_REGISTRY_148.1.0"
+    }
+  ],
+  "derivation_rules": [
+    {
+      "authority_ceiling": "A3",
+      "conditions": [
+        "substitution n:=Δ is explicitly admitted",
+        "HHS_DELTA_NORMALIZATION_V1 is authoritative"
+      ],
+      "consequence_class": "NORMALIZATION_LOCAL",
+      "hash72_witness": "0000000000000000000000000000004CtuhuCLVkq?^VC96NmITc*a8kf7>T8g+jzBC7T6wd",
+      "input_pattern": "n/Δ=n",
+      "operator_types": [
+        "HHS_TYPED_FRACTION",
+        "HHS_DECLARATIVE_RELATION"
+      ],
+      "output_expression": "Δ/Δ=Δ",
+      "requires_declared_rule": "HHS_DELTA_NORMALIZATION_V1",
+      "rule_id": "HHS_DELTA_SELF_NORMALIZATION_SUBSTITUTION_V1",
+      "scope": {
+        "normalization_lane": true
+      },
+      "substitution": {
+        "n": "Δ"
+      },
+      "version": "HHS_NATIVE_SEMANTIC_REGISTRY_148.1.0"
+    },
+    {
+      "authority_ceiling": "A3",
+      "conditions": [
+        "source expression and AST are unchanged"
+      ],
+      "consequence_class": "NECESSARY",
+      "hash72_witness": "0000000000000000000000000000003wrvtgx=i-TA?bR?hFZG^(8K48t8Yco0b1-Mz6?RC^",
+      "input_pattern": "ANY_DECLARED_LAW",
+      "operator_types": [],
+      "rule_id": "HHS_IDENTITY_PRESERVING_RESTATEMENT_V1",
+      "scope": {
+        "same_as_input": true
+      },
+      "version": "HHS_NATIVE_SEMANTIC_REGISTRY_148.1.0"
+    }
+  ],
+  "operators": [
+    {
+      "arity": 2,
+      "associativity": "NON_ASSOCIATIVE",
+      "cancellation_rules": [],
+      "commutative": false,
+      "forbidden_aliases": [
+        "=="
+      ],
+      "glyphs": [
+        "="
+      ],
+      "hash72_witness": "0000000000000000000000000000001IEp7+Fm20z4S>E2-^pxEvNNlxz424fTlrzpWwPM8d",
+      "inverse_rules": [],
+      "lane_applicability": [
+        "DECLARATION",
+        "PROJECTION_BY_PROFILE"
+      ],
+      "operator_id": "HHS_DECLARATIVE_RELATION",
+      "precedence": 10,
+      "projection_permissions": [
+        "PROFILE_DECLARED"
+      ],
+      "semantics": "declared relation spelling; interpretation depends on source authority and profile",
+      "source_authority": "HHS-P148-NSAM",
+      "version": "HHS_NATIVE_SEMANTIC_REGISTRY_148.1.0"
+    },
+    {
+      "arity": 2,
+      "associativity": "NON_ASSOCIATIVE",
+      "cancellation_rules": [],
+      "commutative": true,
+      "forbidden_aliases": [],
+      "glyphs": [
+        "≠",
+        "\\neq",
+        "!="
+      ],
+      "hash72_witness": "0000000000000000000000000000004GMpPjA1M)(lYa+60(0nQXayR4GQ7l5DftV>NpN0ae",
+      "inverse_rules": [],
+      "lane_applicability": [
+        "ALL_DECLARED_SCOPES"
+      ],
+      "operator_id": "HHS_DISTINCT_FROM",
+      "precedence": 10,
+      "projection_permissions": [
+        "IDENTITY_PRESERVING"
+      ],
+      "semantics": "typed identity distinction",
+      "source_authority": "HHS-P148 Ω148.9",
+      "version": "HHS_NATIVE_SEMANTIC_REGISTRY_148.1.0"
+    },
+    {
+      "arity": 2,
+      "associativity": "NON_ASSOCIATIVE",
+      "cancellation_rules": [],
+      "commutative": false,
+      "forbidden_aliases": [
+        "="
+      ],
+      "glyphs": [
+        "=="
+      ],
+      "hash72_witness": "0000000000000000000000000000002Ad>QA)0jq7c0vMLN2*?EV9yxumoI2)y-U50z/bPyS",
+      "inverse_rules": [],
+      "lane_applicability": [
+        "DECLARED_BY_CONTEXT"
+      ],
+      "operator_id": "HHS_GATE_EQ",
+      "precedence": 10,
+      "projection_permissions": [
+        "EXPLICIT_CONTROL_ONLY"
+      ],
+      "semantics": "admission/equivalence gate; not ordinary scalar equality",
+      "source_authority": "HHS-P081+ inherited typed dispatch",
+      "version": "HHS_NATIVE_SEMANTIC_REGISTRY_148.1.0"
+    },
+    {
+      "arity": 2,
+      "associativity": "ORDERED_LEFT",
+      "cancellation_rules": [],
+      "commutative": false,
+      "forbidden_aliases": [],
+      "glyphs": [
+        "*",
+        "·",
+        "IMPLICIT"
+      ],
+      "hash72_witness": "0000000000000000000000000000002as41sKsjt0zDWNn6MxpaqX^M6e74XLuncnT1XOVD5",
+      "inverse_rules": [],
+      "lane_applicability": [
+        "TYPED_BY_CONTEXT"
+      ],
+      "operator_id": "HHS_ORDERED_COMPOSITION",
+      "precedence": 50,
+      "projection_permissions": [
+        "EXPLICIT_CONTROL_ONLY"
+      ],
+      "semantics": "ordered composition/phase transport; AB and BA retain order",
+      "source_authority": "HHS noncommutative typed runtime",
+      "version": "HHS_NATIVE_SEMANTIC_REGISTRY_148.1.0"
+    },
+    {
+      "arity": 2,
+      "associativity": "ORDERED_RIGHT",
+      "cancellation_rules": [],
+      "commutative": false,
+      "forbidden_aliases": [],
+      "glyphs": [
+        "^"
+      ],
+      "hash72_witness": "0000000000000000000000000000001su3GULyyj0LZXV?TuvJpHGcr>l=46KnIRgUavav?t",
+      "inverse_rules": [
+        "PROFILE_DECLARED"
+      ],
+      "lane_applicability": [
+        "TYPED_BY_CONTEXT"
+      ],
+      "operator_id": "HHS_PHASE_EXPONENT",
+      "precedence": 70,
+      "projection_permissions": [
+        "EXPLICIT_CONTROL_ONLY"
+      ],
+      "semantics": "typed exponent/phase transport; not presumed repeated scalar multiplication",
+      "source_authority": "HHS native symbolic runtime",
+      "version": "HHS_NATIVE_SEMANTIC_REGISTRY_148.1.0"
+    },
+    {
+      "arity": 2,
+      "associativity": "ORDERED_LEFT",
+      "cancellation_rules": [],
+      "commutative": false,
+      "forbidden_aliases": [],
+      "glyphs": [
+        "+"
+      ],
+      "hash72_witness": "0000000000000000000000000000003*behWjg09pUdavTc1FV2AMu7Q8Nf/reto5FUC?nZM",
+      "inverse_rules": [],
+      "lane_applicability": [
+        "TYPED_BY_CONTEXT"
+      ],
+      "operator_id": "HHS_PROJECTION_PLUS",
+      "precedence": 30,
+      "projection_permissions": [
+        "EXPLICIT_CONTROL_ONLY"
+      ],
+      "semantics": "secondary projection/composition operator; no conventional fallback",
+      "source_authority": "Inherited HHS operator contract",
+      "version": "HHS_NATIVE_SEMANTIC_REGISTRY_148.1.0"
+    },
+    {
+      "arity": 2,
+      "associativity": "ORDERED_LEFT",
+      "cancellation_rules": [],
+      "commutative": false,
+      "forbidden_aliases": [],
+      "glyphs": [
+        "-"
+      ],
+      "hash72_witness": "00000000000000000000000000000005tT)NoZpxGASYPeiXB=3/vJs+qWc5JgDzl>RYAen!",
+      "inverse_rules": [],
+      "lane_applicability": [
+        "TYPED_BY_CONTEXT"
+      ],
+      "operator_id": "HHS_RESIDUAL_MINUS",
+      "precedence": 30,
+      "projection_permissions": [
+        "EXPLICIT_CONTROL_ONLY"
+      ],
+      "semantics": "ordered residual/cancellation projection; x-x is not automatically zero",
+      "source_authority": "HHS-P148 Ω148.7 and Δ residual law",
+      "version": "HHS_NATIVE_SEMANTIC_REGISTRY_148.1.0"
+    },
+    {
+      "arity": 1,
+      "associativity": "PREFIX",
+      "cancellation_rules": [],
+      "commutative": false,
+      "forbidden_aliases": [],
+      "glyphs": [
+        "√",
+        "\\sqrt"
+      ],
+      "hash72_witness": "0000000000000000000000000000003xuc)o3wXGXM)0O!=1+2*lCjI5g^xdyD2Bb!qW^g2W",
+      "inverse_rules": [],
+      "lane_applicability": [
+        "TYPED_BY_CONTEXT"
+      ],
+      "operator_id": "HHS_SYMBOLIC_ROOT",
+      "precedence": 80,
+      "projection_permissions": [
+        "PROFILE_DECLARED"
+      ],
+      "semantics": "symbolic root object; branch and movement rules require explicit authority",
+      "source_authority": "HHS exact symbolic-root substrate",
+      "version": "HHS_NATIVE_SEMANTIC_REGISTRY_148.1.0"
+    },
+    {
+      "arity": 2,
+      "associativity": "ORDERED_LEFT",
+      "cancellation_rules": [
+        "ONLY_WHEN_EXPLICIT_RULE_MATCHES"
+      ],
+      "commutative": false,
+      "forbidden_aliases": [],
+      "glyphs": [
+        "/",
+        "\\frac"
+      ],
+      "hash72_witness": "0000000000000000000000000000003Y!QNLKRbsGYocln!X?hdx*/Cvg5cUH6E0qep9v2sZ",
+      "inverse_rules": [
+        "TYPED_BY_CONTEXT"
+      ],
+      "lane_applicability": [
+        "TYPED_BY_CONTEXT"
+      ],
+      "operator_id": "HHS_TYPED_FRACTION",
+      "precedence": 50,
+      "projection_permissions": [
+        "EXPLICIT_CONTROL_ONLY"
+      ],
+      "semantics": "typed normalization/fraction constructor; not automatic field division",
+      "source_authority": "HHS-P148 Ω148.7 and Ω148.10",
+      "version": "HHS_NATIVE_SEMANTIC_REGISTRY_148.1.0"
+    }
+  ],
+  "pass_id": "HHS-P148-NSAM",
+  "projection_profiles": [
+    {
+      "allowed_output_classes": [
+        "CONTROL_PROJECTION"
+      ],
+      "authority_ceiling": "A1",
+      "branch_rules": "conventional",
+      "cancellation_permissions": [
+        "NONZERO_COMMON_FACTOR"
+      ],
+      "commutation_permissions": [
+        "MULTIPLICATION"
+      ],
+      "equality_semantics": "ordinary field equality",
+      "hash72_witness": "0000000000000000000000000000000j(Rv6=m>w1G4/!ku-v6Qub)8tc)N2A59+p?RKFmJs",
+      "native": false,
+      "numerical_representation": "exact symbolic field",
+      "profile_id": "COMMUTATIVE_FIELD_CONTROL_V1",
+      "prohibited_native_state_mutations": [
+        "ALL"
+      ],
+      "type_domain": "commutative field with explicitly nonzero denominators",
+      "version": "HHS_NATIVE_SEMANTIC_REGISTRY_148.1.0"
+    },
+    {
+      "allowed_output_classes": [
+        "CONTROL_PROJECTION"
+      ],
+      "authority_ceiling": "A1",
+      "branch_rules": "not applicable",
+      "cancellation_permissions": [
+        "NONZERO_COMMON_FACTOR"
+      ],
+      "commutation_permissions": [
+        "ADDITION",
+        "MULTIPLICATION"
+      ],
+      "equality_semantics": "rational equality",
+      "hash72_witness": "0000000000000000000000000000002Es>j>90aOd^1I-1Jgz4QDcZvKbMZEAsbjrQE>SFU)",
+      "native": false,
+      "numerical_representation": "integer numerator/denominator",
+      "profile_id": "EXACT_RATIONAL_CONTROL_V1",
+      "prohibited_native_state_mutations": [
+        "ALL"
+      ],
+      "type_domain": "Q",
+      "version": "HHS_NATIVE_SEMANTIC_REGISTRY_148.1.0"
+    },
+    {
+      "allowed_output_classes": [
+        "DECLARED_SYSTEM_LAW",
+        "DERIVABLE_CONSEQUENCE",
+        "UNRESOLVED_EXPRESSION"
+      ],
+      "authority_ceiling": "A4",
+      "branch_rules": "registry-defined",
+      "cancellation_permissions": [],
+      "commutation_permissions": [],
+      "equality_semantics": "registry-defined",
+      "hash72_witness": "0000000000000000000000000000003XppA^P3Z43PO5PnhAs/oqlu>>*gBu(GP-Css68mi9",
+      "native": true,
+      "numerical_representation": "exact symbolic/integer/rational/prime-exponent",
+      "profile_id": "HHS_NATIVE_TYPED_V1",
+      "prohibited_native_state_mutations": [],
+      "type_domain": "typed HHS symbolic objects",
+      "version": "HHS_NATIVE_SEMANTIC_REGISTRY_148.1.0"
+    },
+    {
+      "allowed_output_classes": [
+        "CONTROL_PROJECTION"
+      ],
+      "authority_ceiling": "A1",
+      "branch_rules": "IEEE-754",
+      "cancellation_permissions": [
+        "CONTROL_PROFILE_ONLY"
+      ],
+      "commutation_permissions": [
+        "CONTROL_PROFILE_ONLY"
+      ],
+      "equality_semantics": "binary64 comparison",
+      "hash72_witness": "0000000000000000000000000000001Oax=!!TR)?h)Y)erm=7Tm1(ye?qAkKc8yzX6Q8DRc",
+      "native": false,
+      "numerical_representation": "binary64 approximate",
+      "profile_id": "IEEE754_BINARY64_CONTROL_V1",
+      "prohibited_native_state_mutations": [
+        "ALL"
+      ],
+      "type_domain": "IEEE-754 binary64",
+      "version": "HHS_NATIVE_SEMANTIC_REGISTRY_148.1.0"
+    },
+    {
+      "allowed_output_classes": [
+        "NARRATIVE_EXTRAPOLATION"
+      ],
+      "authority_ceiling": "A1",
+      "branch_rules": "narrative",
+      "cancellation_permissions": [],
+      "commutation_permissions": [],
+      "equality_semantics": "story-local consistency only",
+      "hash72_witness": "0000000000000000000000000000001flx6FFurAvIggQ0pzc+bIa4obl0mq-6GhlGHR4mD9",
+      "native": false,
+      "numerical_representation": "not authoritative",
+      "profile_id": "NARRATIVE_WORLD_MODEL_V1",
+      "prohibited_native_state_mutations": [
+        "ALL"
+      ],
+      "type_domain": "narrative propositions",
+      "version": "HHS_NATIVE_SEMANTIC_REGISTRY_148.1.0"
+    },
+    {
+      "allowed_output_classes": [
+        "CONTROL_PROJECTION"
+      ],
+      "authority_ceiling": "A1",
+      "branch_rules": "principal unless declared",
+      "cancellation_permissions": [
+        "NONZERO_COMMON_FACTOR"
+      ],
+      "commutation_permissions": [
+        "ADDITION",
+        "MULTIPLICATION"
+      ],
+      "equality_semantics": "standard complex equality",
+      "hash72_witness": "00000000000000000000000000000016mMHQWVZ5fYGuCl9hd!3i9Y)rpUyCc=Tq3*D?TxcD",
+      "native": false,
+      "numerical_representation": "exact/approximate as declared",
+      "profile_id": "STANDARD_COMPLEX_CONTROL_V1",
+      "prohibited_native_state_mutations": [
+        "ALL"
+      ],
+      "type_domain": "C",
+      "version": "HHS_NATIVE_SEMANTIC_REGISTRY_148.1.0"
+    },
+    {
+      "allowed_output_classes": [
+        "CONTROL_PROJECTION"
+      ],
+      "authority_ceiling": "A1",
+      "branch_rules": "standard real analysis",
+      "cancellation_permissions": [
+        "NONZERO_COMMON_FACTOR"
+      ],
+      "commutation_permissions": [
+        "ADDITION",
+        "MULTIPLICATION"
+      ],
+      "equality_semantics": "standard real equality",
+      "hash72_witness": "0000000000000000000000000000003EzPUoax9A*YI=mwHD3ZPa1hKkXt)7OGH2K4IqbzWr",
+      "native": false,
+      "numerical_representation": "exact/approximate as declared",
+      "profile_id": "STANDARD_REAL_ANALYSIS_CONTROL_V1",
+      "prohibited_native_state_mutations": [
+        "ALL"
+      ],
+      "type_domain": "R and standard extended-real conventions only when declared",
+      "version": "HHS_NATIVE_SEMANTIC_REGISTRY_148.1.0"
+    },
+    {
+      "allowed_output_classes": [
+        "CONTROL_PROJECTION"
+      ],
+      "authority_ceiling": "A1",
+      "branch_rules": "CAS-specific and recorded",
+      "cancellation_permissions": [
+        "CAS_DECLARED"
+      ],
+      "commutation_permissions": [
+        "CAS_DECLARED"
+      ],
+      "equality_semantics": "CAS profile",
+      "hash72_witness": "0000000000000000000000000000003i!pIn>nqIZ0Ok6)qzE?KI!D^U90mcxH^!89)eQa04",
+      "native": false,
+      "numerical_representation": "CAS-specific",
+      "profile_id": "SYMBOLIC_CAS_CONTROL_V1",
+      "prohibited_native_state_mutations": [
+        "ALL"
+      ],
+      "type_domain": "CAS-defined symbolic domain",
+      "version": "HHS_NATIVE_SEMANTIC_REGISTRY_148.1.0"
+    }
+  ],
+  "registry_hash72": "0000000000000000000000000000001Ea(9Nr(GPFO?)wXbXg5AcJEqjli-loC^fdw-EAu/D",
+  "registry_version": "HHS_NATIVE_SEMANTIC_REGISTRY_148.1.0",
+  "schema": "HHS_PASS148_NATIVE_SEMANTIC_RULE_REGISTRY_V1"
+}

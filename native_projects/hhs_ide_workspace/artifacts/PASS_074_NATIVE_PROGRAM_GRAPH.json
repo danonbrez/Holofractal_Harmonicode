@@ -1,0 +1,179 @@
+{
+  "entrypoints": [
+    {
+      "kind": "PYTHON_API",
+      "target": "native_projects.hhs_ide_workspace.hhs_unified_runtime_api_v1:app"
+    },
+    {
+      "kind": "PYTHON_CLI",
+      "target": "native_projects.hhs_ide_workspace.hhs_workspace_cli_v1:main"
+    },
+    {
+      "kind": "REPLAY",
+      "target": "native_projects.hhs_ide_workspace.hhs_workspace_replay_runner_v1:replay_workspace"
+    },
+    {
+      "kind": "GUI",
+      "target": "native_projects/hhs_ide_workspace/workspace_ui/index.html"
+    }
+  ],
+  "foundation_module_modified": false,
+  "new_emergent_capabilities": [
+    "UNIFIED_BIDIRECTIONAL_RUNTIME_API",
+    "CONTEXT_INDEPENDENT_WORKSPACE_REPLAY",
+    "AUTHORITY_AND_ALIGNMENT_GATED_PRODUCT_MUTATION",
+    "SHARED_GUI_CLI_EXTERNAL_AGENT_CONTRACT",
+    "HUMAN_LLM_TOOL_CI_REPOSITORY_EXCHANGE",
+    "CAPABILITY_BEARING_CHANGE_PROPOSAL",
+    "BOUNDED_PRODUCT_LOCAL_SELF_HEALING_PLAN",
+    "CONTEXT_INDEPENDENT_AGENT_HANDOFF"
+  ],
+  "node_count": 10,
+  "nodes": [
+    {
+      "capabilities": [
+        "workspace.runtime",
+        "workspace.api",
+        "development.protocol"
+      ],
+      "reachable": true,
+      "relative_path": "native_projects/hhs_ide_workspace/__init__.py",
+      "reusable": true,
+      "role": "PACKAGE_SURFACE",
+      "sha256": "224ef52ebb63479a003d6b58c25644b042fb56bf06aefa2677583efdbcc722bb"
+    },
+    {
+      "capabilities": [
+        "request.envelope",
+        "response.envelope",
+        "product.commitments"
+      ],
+      "reachable": true,
+      "relative_path": "native_projects/hhs_ide_workspace/hhs_workspace_contracts_v1.py",
+      "reusable": true,
+      "role": "UNIFIED_CONTRACTS",
+      "sha256": "c6b18ec40d7e4cbb65995bcbbc1e072cfa6d989b8367c727d9b4c2e74551f905"
+    },
+    {
+      "capabilities": [
+        "agent.identity",
+        "change.proposal",
+        "alignment.gate",
+        "test.evidence",
+        "handoff.capsule",
+        "bounded.healing.plan"
+      ],
+      "reachable": true,
+      "relative_path": "native_projects/hhs_ide_workspace/hhs_development_network_protocol_v1.py",
+      "reusable": true,
+      "role": "DEVELOPMENT_NETWORK_PROTOCOL",
+      "sha256": "9fc32618f2e7c8c82513da86fd2bf4bc9d37d81332dcd4214a0160e5e4a19130"
+    },
+    {
+      "capabilities": [
+        "project.model",
+        "session.model",
+        "editor.buffer",
+        "object.index",
+        "dispatch",
+        "receipts",
+        "events",
+        "snapshots",
+        "agent.exchange"
+      ],
+      "reachable": true,
+      "relative_path": "native_projects/hhs_ide_workspace/hhs_native_workspace_project_v1.py",
+      "reusable": true,
+      "role": "WORKSPACE_RUNTIME",
+      "sha256": "980ce74551f6a626bf2f532daec49acf94ca2dbddedcc6e2d4db1aaa30a54702"
+    },
+    {
+      "capabilities": [
+        "http.ingress",
+        "http.execute",
+        "http.mutate",
+        "http.query",
+        "http.artifacts",
+        "http.receipts",
+        "http.state",
+        "websocket.events"
+      ],
+      "reachable": true,
+      "relative_path": "native_projects/hhs_ide_workspace/hhs_unified_runtime_api_v1.py",
+      "reusable": true,
+      "role": "API_PROJECTION",
+      "sha256": "5671ab316359a62738624135039ba81f5673d2a016ec53582df05af4927a7f4c"
+    },
+    {
+      "capabilities": [
+        "cli.request",
+        "cli.state.persistence"
+      ],
+      "reachable": true,
+      "relative_path": "native_projects/hhs_ide_workspace/hhs_workspace_cli_v1.py",
+      "reusable": true,
+      "role": "CLI_PROJECTION",
+      "sha256": "72c4eefa562051f59ec6dbbdf6952aa150895546ddf26a43489f8d450a4a3ac6"
+    },
+    {
+      "capabilities": [
+        "capsule.verify",
+        "workspace.reconstruct",
+        "context.independent.resume",
+        "product.root.verify"
+      ],
+      "reachable": true,
+      "relative_path": "native_projects/hhs_ide_workspace/hhs_workspace_replay_runner_v1.py",
+      "reusable": true,
+      "role": "REPLAY_PROGRAM",
+      "sha256": "4c0c409f1d87366a829849f9e1ff2b6e8aeaf87b4f00a48c2a34e8d7e9e17057"
+    },
+    {
+      "capabilities": [
+        "WorkspaceShell",
+        "ProjectExplorer",
+        "EditorPanel",
+        "RuntimeConsole",
+        "ArtifactPanel",
+        "ReceiptPanel",
+        "ExecutionPanel",
+        "AgentNetworkPanel",
+        "AlignmentPanel",
+        "IterationPanel",
+        "StatusBar"
+      ],
+      "reachable": true,
+      "relative_path": "native_projects/hhs_ide_workspace/workspace_ui/index.html",
+      "reusable": true,
+      "role": "GUI_PROJECTION",
+      "sha256": "77e98d6d746fa196245f939cd7bb26a177b1a641817079214aa84056a1e9fa7e"
+    },
+    {
+      "capabilities": [
+        "unified.api.request",
+        "runtime.event.subscription"
+      ],
+      "reachable": true,
+      "relative_path": "native_projects/hhs_ide_workspace/workspace_ui/app.js",
+      "reusable": true,
+      "role": "GUI_API_CLIENT",
+      "sha256": "5d9cf968508f759509c6a1f6a8db9946a6279fe53c2ea3b5ac031c60f2657dd4"
+    },
+    {
+      "capabilities": [
+        "workspace.layout"
+      ],
+      "reachable": true,
+      "relative_path": "native_projects/hhs_ide_workspace/workspace_ui/styles.css",
+      "reusable": true,
+      "role": "GUI_PRESENTATION",
+      "sha256": "3b0dac571d7c2c6fa537af2b1cd06f4dd062d59aba137d60abf47670f8cb97d3"
+    }
+  ],
+  "orphan_node_count": 0,
+  "pass_id": "PASS_074",
+  "program_graph_root_hash72": "0000000000000000000000000000000xzrnlKGlIOwU2k3?A0Fb92=GuxL^L+S/uFCY3FYr(",
+  "project_id": "HHS_NATIVE_IDE_WORKSPACE",
+  "reachable_node_count": 10,
+  "schema": "HHS_NATIVE_PROGRAM_REACHABILITY_GRAPH_V1"
+}

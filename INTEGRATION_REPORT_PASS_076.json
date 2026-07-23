@@ -1,0 +1,43 @@
+{
+  "continuation_root_hash72": "0000000000000000000000000000000hm9lzzHmt(mN=q0z0V2)rJ5!GsZGEel^4Im4QcIg0",
+  "dedicated_tests": {
+    "failed": 0,
+    "passed": 33
+  },
+  "executable_ir_root_hash72": "0000000000000000000000000000003nz(rIc=TJv68wNxB1?EX(8axOjviJDyzdpoAqZ2?g",
+  "exhaustive_repository_suite": {
+    "reason": "NOT_RUN; BOUNDED PASS-SPECIFIC AND INHERITED CHAINS USED",
+    "status": "TYPED_UNRESOLVED_NEVER_ZERO"
+  },
+  "focused_chain_tests": {
+    "failed": 0,
+    "passed": 152
+  },
+  "foundation_modified": false,
+  "frozen_foundation_pass": "PASS_072",
+  "host_path_required": false,
+  "implemented_operation_count": 28,
+  "integration_report_root_hash72": "0000000000000000000000000000003ZgiaFkB+^wp(rWN!q!e6hjQKO+OzIeUaOF9=yI!H+",
+  "llm_context_window_required": false,
+  "new_orphan_modules": 0,
+  "parent_native_pass": "PASS_075",
+  "pass072_files_changed": 0,
+  "pass072_files_missing": 0,
+  "pass072_foundation_file_count": 1899,
+  "pass075_parent_file_count": 1969,
+  "pass075_parent_files_changed": 0,
+  "pass075_parent_files_missing": 0,
+  "pass_id": "PASS_076",
+  "product_root_hash72": "0000000000000000000000000000000f6?LTYKy1V4fM4zmERwPpjVjDW?e/brvwSyHc=9ME",
+  "program_graph_root_hash72": "0000000000000000000000000000004mzAGec8YlZ(lDTBlAfOkixbZG3MhA6OGzAIE5rTBh",
+  "repair_transaction_root_hash72": "0000000000000000000000000000003tKbMA50KXgYg-0=MqGMhlhO9uuxJnYzg2ps/fbLda",
+  "repaired_execution_root_hash72": "0000000000000000000000000000003AUIc)5ePGkN?GwFM?ifYV>Z-QVCtmw6nSB^20iVXI",
+  "replay_capsule_root_hash72": "0000000000000000000000000000002ra)J0xZB)WGXPAeTUP6zJM3fAzFI3TFN6n-oANva^",
+  "reserved_operation_count": 2,
+  "rollback_capsule_root_hash72": "0000000000000000000000000000004JpwCqDT=Zo/Ic)hKbeHs/i3>xG-vfP(3lS/k=*6K3",
+  "schema": "HHS_PASS_076_INTEGRATION_REPORT_V1",
+  "status": "EXECUTABLE_AND_COMMITTED",
+  "thread_context_required": false,
+  "version": "PASS_076_HARMONICODE_INTERPRETER_AND_BOUNDED_REPAIR_V1",
+  "workspace_state_root_hash72": "0000000000000000000000000000002r2sHNx2!9MN4Ln+tGm1-z7F1azu))zFVt^nPS*)t4"
+}

@@ -1,0 +1,13 @@
+{
+  "compilation_id": "compilation:pass077:portable",
+  "compilation_plan_root_hash72": "0000000000000000000000000000001iXZ//ALcsvv6>+/MWwN>B*NIIc8*g2OMBiuOZ!KxJ",
+  "compilation_request_root_hash72": "00000000000000000000000000000047ia?(PAlQTj91q*kbw^gJwRoyW(Rl4d)DbDJn7GdZ",
+  "executable_ir_root_hash72": "0000000000000000000000000000003nz(rIc=TJv68wNxB1?EX(8axOjviJDyzdpoAqZ2?g",
+  "requested_status": "CANDIDATE",
+  "requirement_root_hash72": "0000000000000000000000000000004Hj2h!No)Lr^*zoZl9xCQnfUBM1dE^5!7T6QQH4d-j",
+  "schema": "HHS_COMPILATION_REQUEST_V1",
+  "source_artifact_root_hash72": "0000000000000000000000000000003lJE1vAB*mDssQv68yr(^)vCAdpg(15a=Y-!ICA-5V",
+  "target_contract_root_hash72": "0000000000000000000000000000000HAWphs>PD8Sr?Yv*OJTIyWspEUHK4l*RHfx)whw!b",
+  "test_receipt_root_hash72": "0000000000000000000000000000002dT/lRUXjCaBNW95r!*iQppnKVF46*2aR0M!VDgW+7",
+  "typed_ir_root_hash72": "00000000000000000000000000000049*>gYacfoAFr2RDhvw>K/nm3bsh3yBrZG)gFHKHcu"
+}

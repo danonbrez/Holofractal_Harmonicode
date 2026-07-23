@@ -1,0 +1,18 @@
+{
+  "artifact_role": "LINEAGE_PRESERVING_EVIDENCE_PACKAGE",
+  "canonical_continuation": true,
+  "compiler_role": "VERIFIED_SEMANTIC_PROJECTION",
+  "current_pass": "PASS_077",
+  "foundation_changed": false,
+  "implementation_regenerated": true,
+  "implementation_state": "EXECUTABLE_AND_COMMITTED",
+  "integration_status": "PASS",
+  "manifests_regenerated": true,
+  "next_pass": "PASS_078",
+  "parent_changed": false,
+  "pass_id": "PASS_077",
+  "product_root_hash72": "000000000000000000000000000000447Xbi5-=mIgZ/h7AXKs!sp!Xm!8/EG?IS*y2^+iSt",
+  "schema": "HHS_INTEGRATION_REPORT_PASS_077_V1",
+  "test_coverage_expanded": true,
+  "verification_report_ref": "PASS_077_VERIFICATION_REPORT.json"
+}

@@ -1,0 +1,24 @@
+{
+  "artifact_count": 3,
+  "authority_note": "Coq source-complete but not kernel-verified in this environment; Lean remains sketch-level where sorry is present; exact Groebner certificate validated.",
+  "capabilities": [
+    "proof_ingress",
+    "proof_bundle_generation",
+    "typed_validation",
+    "canonical_expansion",
+    "deterministic_compression",
+    "content_addressed_storage",
+    "byte_exact_reversal",
+    "revalidation",
+    "proof_egress"
+  ],
+  "cas_root": "7a9b6ea39a4ed7615d689aef2609fd2caee8e601fa7629f52871c55ef79da5f9",
+  "manifest_sha256": "dbef2bdbb121fe92e9739e583f79b3d0212d677e466ed402c6d44ef925e6cf4a",
+  "pass_id": "PASS_137_NATIVE_PROOF_LIFECYCLE",
+  "report_root": "8a11585e73b04ea442f7670158737e84a1cf881ef8749021647e942c2a5d135d",
+  "runtime_surface": "python -m hhs_runtime.hhs_native_proof_lifecycle_v1",
+  "status": "VERIFIED_CLOSED",
+  "test_receipt": {
+    "targeted_and_dependency_scoped": "16 passed"
+  }
+}

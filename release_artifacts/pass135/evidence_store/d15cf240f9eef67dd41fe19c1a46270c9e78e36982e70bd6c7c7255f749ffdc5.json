@@ -1,0 +1,1 @@
+{"interface":"DOCUMENTED_SERVER_ENTRYPOINT","operation":"canonical_server_process_start","request":{"command":["/opt/pyvenv/bin/python","-m","hhs_backend.server"]},"response":{"log_path":"PASS_135_CANONICAL_SERVER.log","pid":15762,"process_started":true}}

@@ -1,0 +1,65 @@
+{
+  "schema": "HHS_PASS_089_NEGATIVE_CASES_V1",
+  "cases": [
+    {
+      "case": "invalid-genesis",
+      "expected": "REJECT_INVALID_LO_SHU_PRIME_GENESIS",
+      "observed": "REJECT_INVALID_LO_SHU_PRIME_GENESIS",
+      "passed": true
+    },
+    {
+      "case": "nonconsecutive-frontier",
+      "expected": "REJECT_NONCONSECUTIVE_PRIME_FRONTIER",
+      "observed": "REJECT_NONCONSECUTIVE_PRIME_FRONTIER",
+      "passed": true
+    },
+    {
+      "case": "missing-coverage",
+      "expected": "REJECT_PRIME_WITHOUT_COMPLETE_DIVISOR_COVERAGE",
+      "observed": "REJECT_PRIME_WITHOUT_COMPLETE_DIVISOR_COVERAGE",
+      "passed": true
+    },
+    {
+      "case": "composite-no-witness",
+      "expected": "REJECT_COMPOSITE_WITHOUT_FACTOR_WITNESS",
+      "observed": "REJECT_COMPOSITE_WITHOUT_FACTOR_WITNESS",
+      "passed": true
+    },
+    {
+      "case": "factor-mismatch",
+      "expected": "REJECT_FACTOR_WITNESS_PRODUCT_MISMATCH",
+      "observed": "REJECT_FACTOR_WITNESS_PRODUCT_MISMATCH",
+      "passed": true
+    },
+    {
+      "case": "probable-as-prime",
+      "expected": "REJECT_PROBABLE_PRIME_AS_VALIDATED_PRIME",
+      "observed": "REJECT_PROBABLE_PRIME_AS_VALIDATED_PRIME",
+      "passed": true
+    },
+    {
+      "case": "cache-authority",
+      "expected": "REJECT_PRIME_CACHE_AS_AUTHORITY",
+      "observed": "REJECT_PRIME_CACHE_AS_AUTHORITY",
+      "passed": true
+    },
+    {
+      "case": "floating-authority",
+      "expected": "REJECT_FLOATING_ARITHMETIC_IN_PRIME_AUTHORITY",
+      "observed": "REJECT_FLOATING_ARITHMETIC_IN_PRIME_AUTHORITY",
+      "passed": true
+    },
+    {
+      "case": "closure-failure",
+      "expected": "REJECT_PRIME_FRONTIER_CLOSURE_FAILURE",
+      "observed": "REJECT_PRIME_FRONTIER_CLOSURE_FAILURE",
+      "passed": true
+    },
+    {
+      "case": "replay-mismatch",
+      "expected": "REJECT_PRIME_REASONING_REPLAY_MISMATCH",
+      "observed": "REJECT_PRIME_REASONING_REPLAY_MISMATCH",
+      "passed": true
+    }
+  ]
+}

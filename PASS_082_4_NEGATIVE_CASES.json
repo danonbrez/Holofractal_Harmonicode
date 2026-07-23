@@ -1,0 +1,67 @@
+{
+  "schema": "HHS_PASS_082_4_NEGATIVE_CASES_V1",
+  "required_rejection_codes": [
+    "REJECT_DUPLICATE_STREAM_IDENTITY",
+    "REJECT_PHASE_OFFSET_OUT_OF_DOMAIN",
+    "REJECT_STREAM_WITHOUT_OFFSET_WITNESS",
+    "REJECT_UNWITNESSED_OVERLAP_RELATION",
+    "REJECT_RAW_STREAM_IDENTITY_COLLAPSE",
+    "REJECT_LATENCY_OFFSET_OMITTED_FROM_NORMALIZATION",
+    "REJECT_UNSUPPORTED_RECONSTRUCTION_PRECISION",
+    "REJECT_MULTISTRING_REPLAY_MISMATCH",
+    "REJECT_OPAQUE_NATIVE_FLOAT_AS_CANONICAL_ARITHMETIC",
+    "REJECT_OVERLAP_CLOSURE_FAILURE"
+  ],
+  "results": [
+    {
+      "expected": "REJECT_DUPLICATE_STREAM_IDENTITY",
+      "observed": "REJECT_DUPLICATE_STREAM_IDENTITY",
+      "status": "PASS"
+    },
+    {
+      "expected": "REJECT_PHASE_OFFSET_OUT_OF_DOMAIN",
+      "observed": "REJECT_PHASE_OFFSET_OUT_OF_DOMAIN",
+      "status": "PASS"
+    },
+    {
+      "expected": "REJECT_STREAM_WITHOUT_OFFSET_WITNESS",
+      "observed": "REJECT_STREAM_WITHOUT_OFFSET_WITNESS",
+      "status": "PASS"
+    },
+    {
+      "expected": "REJECT_UNWITNESSED_OVERLAP_RELATION",
+      "observed": "REJECT_UNWITNESSED_OVERLAP_RELATION",
+      "status": "PASS"
+    },
+    {
+      "expected": "REJECT_RAW_STREAM_IDENTITY_COLLAPSE",
+      "observed": "REJECT_RAW_STREAM_IDENTITY_COLLAPSE",
+      "status": "PASS"
+    },
+    {
+      "expected": "REJECT_LATENCY_OFFSET_OMITTED_FROM_NORMALIZATION",
+      "observed": "REJECT_LATENCY_OFFSET_OMITTED_FROM_NORMALIZATION",
+      "status": "PASS"
+    },
+    {
+      "expected": "REJECT_UNSUPPORTED_RECONSTRUCTION_PRECISION",
+      "observed": "REJECT_UNSUPPORTED_RECONSTRUCTION_PRECISION",
+      "status": "PASS"
+    },
+    {
+      "expected": "REJECT_OPAQUE_NATIVE_FLOAT_AS_CANONICAL_ARITHMETIC",
+      "observed": "REJECT_OPAQUE_NATIVE_FLOAT_AS_CANONICAL_ARITHMETIC",
+      "status": "PASS"
+    },
+    {
+      "expected": "REJECT_OVERLAP_CLOSURE_FAILURE",
+      "observed": "REJECT_OVERLAP_CLOSURE_FAILURE",
+      "status": "PASS"
+    },
+    {
+      "expected": "REJECT_MULTISTRING_REPLAY_MISMATCH",
+      "observed": "REJECT_MULTISTRING_REPLAY_MISMATCH",
+      "status": "PASS"
+    }
+  ]
+}

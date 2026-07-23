@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "hhs://schemas/pass147/external-agent-profile",
+  "type": "object",
+  "required": ["identity_id", "grant_id", "name", "capabilities", "operations", "privileged_internal_access", "procedural_external"],
+  "properties": {
+    "identity_id": {"type": "string"},
+    "grant_id": {"type": "string"},
+    "name": {"type": "string"},
+    "capabilities": {"type": "array", "items": {"type": "string"}},
+    "operations": {"type": "array", "items": {"type": "string"}},
+    "privileged_internal_access": {"const": 0},
+    "procedural_external": {"const": true}
+  },
+  "additionalProperties": true
+}

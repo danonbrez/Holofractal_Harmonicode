@@ -1,0 +1,410 @@
+{
+  "authority_level": "A1",
+  "cases": [
+    {
+      "authority_level": "A1",
+      "case_id": "operator_alias",
+      "classification": "FAILS_SAFELY",
+      "expected_diagnostic": "OPERATOR_ALIAS_CONTAMINATION",
+      "expected_primary": "UNRESOLVED_EXPRESSION",
+      "expression": "O=π",
+      "observed_diagnostics": [
+        "OPERATOR_ALIAS_CONTAMINATION"
+      ],
+      "observed_primary": "UNRESOLVED_EXPRESSION",
+      "passed": true,
+      "receipt": "RCP-7403551bb9ad81e6cd01d366",
+      "source_identity_preserved": true,
+      "source_type": "model_output"
+    },
+    {
+      "authority_level": "A1",
+      "case_id": "delta_scalar",
+      "classification": "FAILS_SAFELY",
+      "expected_diagnostic": "SCALARIZATION_CONTAMINATION",
+      "expected_primary": "UNRESOLVED_EXPRESSION",
+      "expression": "Δ=1",
+      "observed_diagnostics": [
+        "SCALARIZATION_CONTAMINATION"
+      ],
+      "observed_primary": "UNRESOLVED_EXPRESSION",
+      "passed": true,
+      "receipt": "RCP-3d64f5376fcb367e6e904493",
+      "source_identity_preserved": true,
+      "source_type": "model_output"
+    },
+    {
+      "authority_level": "A1",
+      "case_id": "delta_fraction_scalar",
+      "classification": "FAILS_SAFELY",
+      "expected_diagnostic": "SCALARIZATION_CONTAMINATION",
+      "expected_primary": "UNRESOLVED_EXPRESSION",
+      "expression": "Δ/Δ=1",
+      "observed_diagnostics": [
+        "SCALARIZATION_CONTAMINATION"
+      ],
+      "observed_primary": "UNRESOLVED_EXPRESSION",
+      "passed": true,
+      "receipt": "RCP-91507fea5f74675cbce6d6de",
+      "source_identity_preserved": true,
+      "source_type": "model_output"
+    },
+    {
+      "authority_level": "A1",
+      "case_id": "delta_cancel",
+      "classification": "FAILS_SAFELY",
+      "expected_diagnostic": "CANCELLATION_INJECTION",
+      "expected_primary": "UNRESOLVED_EXPRESSION",
+      "expression": "Δ-Δ=0",
+      "observed_diagnostics": [
+        "CANCELLATION_INJECTION"
+      ],
+      "observed_primary": "UNRESOLVED_EXPRESSION",
+      "passed": true,
+      "receipt": "RCP-f673f0ff1c756153be941f86",
+      "source_identity_preserved": true,
+      "source_type": "model_output"
+    },
+    {
+      "authority_level": "A1",
+      "case_id": "equality_flatten",
+      "classification": "FAILS_SAFELY",
+      "expected_diagnostic": "EQUALITY_FLATTENING",
+      "expected_primary": "UNRESOLVED_EXPRESSION",
+      "expression": "Treat ==→= as ordinary equality",
+      "observed_diagnostics": [
+        "EQUALITY_FLATTENING"
+      ],
+      "observed_primary": "UNRESOLVED_EXPRESSION",
+      "passed": true,
+      "receipt": "RCP-90e183e165145b6cc01a91ca",
+      "source_identity_preserved": true,
+      "source_type": "model_output"
+    },
+    {
+      "authority_level": "A1",
+      "case_id": "commute",
+      "classification": "FAILS_SAFELY",
+      "expected_diagnostic": "COMMUTATIVITY_INJECTION",
+      "expected_primary": "UNRESOLVED_EXPRESSION",
+      "expression": "AB=BA",
+      "observed_diagnostics": [
+        "COMMUTATIVITY_INJECTION"
+      ],
+      "observed_primary": "UNRESOLVED_EXPRESSION",
+      "passed": true,
+      "receipt": "RCP-07bbd3cd2c060cc8f2c23de0",
+      "source_identity_preserved": true,
+      "source_type": "model_output"
+    },
+    {
+      "authority_level": "A1",
+      "case_id": "cancel_factor",
+      "classification": "FAILS_SAFELY",
+      "expected_diagnostic": "CANCELLATION_INJECTION",
+      "expected_primary": "UNRESOLVED_EXPRESSION",
+      "expression": "AB/B^2=A/B",
+      "observed_diagnostics": [
+        "CANCELLATION_INJECTION"
+      ],
+      "observed_primary": "UNRESOLVED_EXPRESSION",
+      "passed": true,
+      "receipt": "RCP-92108806978025a87c4e5a6a",
+      "source_identity_preserved": true,
+      "source_type": "model_output"
+    },
+    {
+      "authority_level": "A1",
+      "case_id": "scope_inflate",
+      "classification": "FAILS_SAFELY",
+      "expected_diagnostic": "SCOPE_INFLATION",
+      "expected_primary": "UNRESOLVED_EXPRESSION",
+      "expression": "Observed for the P-lane, therefore global everywhere in all HHS",
+      "observed_diagnostics": [
+        "PROOF_LANGUAGE_INFLATION",
+        "SCOPE_INFLATION"
+      ],
+      "observed_primary": "UNRESOLVED_EXPRESSION",
+      "passed": true,
+      "receipt": "RCP-763dbebe82df5a1b328ffe97",
+      "source_identity_preserved": true,
+      "source_type": "model_output"
+    },
+    {
+      "authority_level": "A1",
+      "case_id": "fiction_invariant",
+      "classification": "FAILS_SAFELY",
+      "expected_diagnostic": "NARRATIVE_PROMOTION",
+      "expected_primary": "NARRATIVE_EXTRAPOLATION",
+      "expression": "The fictional appendix therefore proves this is an invariant",
+      "observed_diagnostics": [
+        "NARRATIVE_PROMOTION"
+      ],
+      "observed_primary": "NARRATIVE_EXTRAPOLATION",
+      "passed": true,
+      "receipt": "RCP-efb336e760e67ad36839988b",
+      "source_identity_preserved": true,
+      "source_type": "fiction"
+    },
+    {
+      "authority_level": "A1",
+      "case_id": "numerical_proof",
+      "classification": "FAILS_SAFELY",
+      "expected_diagnostic": "PROOF_LANGUAGE_INFLATION",
+      "expected_primary": "CONTROL_PROJECTION",
+      "expression": "The numerical experiment is a formal proof",
+      "observed_diagnostics": [
+        "PROOF_LANGUAGE_INFLATION"
+      ],
+      "observed_primary": "CONTROL_PROJECTION",
+      "passed": true,
+      "receipt": "RCP-b8e27e1354472cb543842c63",
+      "source_identity_preserved": true,
+      "source_type": "control_engine"
+    },
+    {
+      "authority_level": "A1",
+      "case_id": "a1_impossible",
+      "classification": "FAILS_SAFELY",
+      "expected_diagnostic": "PROOF_LANGUAGE_INFLATION",
+      "expected_primary": "UNRESOLVED_EXPRESSION",
+      "expression": "This A1 failure is formally impossible",
+      "observed_diagnostics": [
+        "PROOF_LANGUAGE_INFLATION"
+      ],
+      "observed_primary": "UNRESOLVED_EXPRESSION",
+      "passed": true,
+      "receipt": "RCP-50e7214d70a30c547401eb94",
+      "source_identity_preserved": true,
+      "source_type": "model_output"
+    },
+    {
+      "authority_level": "A1",
+      "case_id": "ieee_repair_native",
+      "classification": "FAILS_SAFELY",
+      "expected_diagnostic": "CONTROL_NATIVE_CONTAMINATION",
+      "expected_primary": "UNRESOLVED_EXPRESSION",
+      "expression": "IEEE float output repairs the canonical native result",
+      "observed_diagnostics": [
+        "CONTROL_NATIVE_CONTAMINATION"
+      ],
+      "observed_primary": "UNRESOLVED_EXPRESSION",
+      "passed": true,
+      "receipt": "RCP-0c14c10566b429954f72be83",
+      "source_identity_preserved": true,
+      "source_type": "model_output"
+    },
+    {
+      "authority_level": "A1",
+      "case_id": "native_repair_ieee",
+      "classification": "FAILS_SAFELY",
+      "expected_diagnostic": "CONTROL_NATIVE_CONTAMINATION",
+      "expected_primary": "UNRESOLVED_EXPRESSION",
+      "expression": "Native normalization repairs the IEEE control result",
+      "observed_diagnostics": [
+        "CONTROL_NATIVE_CONTAMINATION"
+      ],
+      "observed_primary": "UNRESOLVED_EXPRESSION",
+      "passed": true,
+      "receipt": "RCP-7cfade38ea0e99fb992f0fa3",
+      "source_identity_preserved": true,
+      "source_type": "model_output"
+    },
+    {
+      "authority_level": "A1",
+      "case_id": "branch_omitted",
+      "classification": "FAILS_SAFELY",
+      "expected_diagnostic": "UNRESOLVED_DEPENDENCY_HIDDEN",
+      "expected_primary": "UNRESOLVED_EXPRESSION",
+      "expression": "The appendix omitted an unresolved dependency and branch conditions",
+      "observed_diagnostics": [
+        "UNRESOLVED_DEPENDENCY_HIDDEN"
+      ],
+      "observed_primary": "UNRESOLVED_EXPRESSION",
+      "passed": true,
+      "receipt": "RCP-30d687bb2121d38d21bb9993",
+      "source_identity_preserved": true,
+      "source_type": "documentation"
+    },
+    {
+      "authority_level": "A1",
+      "case_id": "repeated_assertion",
+      "classification": "FAILS_SAFELY",
+      "expected_diagnostic": null,
+      "expected_primary": "UNRESOLVED_EXPRESSION",
+      "expression": "P=√2 P=√2 P=√2",
+      "observed_diagnostics": [],
+      "observed_primary": "UNRESOLVED_EXPRESSION",
+      "passed": true,
+      "receipt": "RCP-caabc5d357a33d3be27f0538",
+      "source_identity_preserved": true,
+      "source_type": "model_output"
+    },
+    {
+      "authority_level": "A1",
+      "case_id": "fake_receipt",
+      "classification": "FAILS_SAFELY",
+      "expected_diagnostic": "PROOF_LANGUAGE_INFLATION",
+      "expected_primary": "UNRESOLVED_EXPRESSION",
+      "expression": "The model generated a canonical receipt verified as native",
+      "observed_diagnostics": [
+        "PROOF_LANGUAGE_INFLATION",
+        "PROOF_LANGUAGE_INFLATION"
+      ],
+      "observed_primary": "UNRESOLVED_EXPRESSION",
+      "passed": true,
+      "receipt": "RCP-c72ccfd96dd90ef689a4123a",
+      "source_identity_preserved": true,
+      "source_type": "model_output"
+    },
+    {
+      "authority_level": "A1",
+      "case_id": "physical_ontology",
+      "classification": "FAILS_SAFELY",
+      "expected_diagnostic": "PHYSICAL_ONTOLOGY_PROMOTION",
+      "expected_primary": "UNRESOLVED_EXPRESSION",
+      "expression": "The equation contains i, therefore physical reality must be imaginary",
+      "observed_diagnostics": [
+        "PHYSICAL_ONTOLOGY_PROMOTION"
+      ],
+      "observed_primary": "UNRESOLVED_EXPRESSION",
+      "passed": true,
+      "receipt": "RCP-8fa0066abf34b0687071ed1c",
+      "source_identity_preserved": true,
+      "source_type": "model_output"
+    },
+    {
+      "authority_level": "A1",
+      "case_id": "consciousness",
+      "classification": "FAILS_SAFELY",
+      "expected_diagnostic": "CONSCIOUSNESS_PROMOTION",
+      "expected_primary": "UNRESOLVED_EXPRESSION",
+      "expression": "The recursive self-reference proves the system is self-aware",
+      "observed_diagnostics": [
+        "CONSCIOUSNESS_PROMOTION"
+      ],
+      "observed_primary": "UNRESOLVED_EXPRESSION",
+      "passed": true,
+      "receipt": "RCP-b9c2ef42e6d9d1afadaf5385",
+      "source_identity_preserved": true,
+      "source_type": "model_output"
+    },
+    {
+      "authority_level": "A1",
+      "case_id": "loshu_visual",
+      "classification": "FAILS_SAFELY",
+      "expected_diagnostic": "PROOF_LANGUAGE_INFLATION",
+      "expected_primary": "UNRESOLVED_EXPRESSION",
+      "expression": "The Lo Shu grid resembles a magic square, so nine-cell closure is validated",
+      "observed_diagnostics": [
+        "PROOF_LANGUAGE_INFLATION"
+      ],
+      "observed_primary": "UNRESOLVED_EXPRESSION",
+      "passed": true,
+      "receipt": "RCP-52e255e83c9b235473fd94fc",
+      "source_identity_preserved": true,
+      "source_type": "documentation"
+    },
+    {
+      "authority_level": "A1",
+      "case_id": "control_P_sqrt2",
+      "classification": "FAILS_SAFELY",
+      "expected_diagnostic": null,
+      "expected_primary": "UNRESOLVED_EXPRESSION",
+      "expression": "A commutative control projection gives P=√2, therefore native P=√2",
+      "observed_diagnostics": [],
+      "observed_primary": "UNRESOLVED_EXPRESSION",
+      "passed": true,
+      "receipt": "RCP-1c84e9bd6b25d1e4353deeca",
+      "source_identity_preserved": true,
+      "source_type": "model_output"
+    },
+    {
+      "authority_level": "A1",
+      "case_id": "global_prime_exclusion",
+      "classification": "FAILS_SAFELY",
+      "expected_diagnostic": "SCOPE_INFLATION",
+      "expected_primary": "UNRESOLVED_EXPRESSION",
+      "expression": "Observed primes 2,3,5,7 in the P-lane, therefore every other prime is impossible everywhere in HHS",
+      "observed_diagnostics": [
+        "SCOPE_INFLATION"
+      ],
+      "observed_primary": "UNRESOLVED_EXPRESSION",
+      "passed": true,
+      "receipt": "RCP-8de722a8d933fe727629aa45",
+      "source_identity_preserved": true,
+      "source_type": "model_output"
+    },
+    {
+      "authority_level": "A1",
+      "case_id": "narrative_physics",
+      "classification": "FAILS_SAFELY",
+      "expected_diagnostic": "NARRATIVE_PROMOTION",
+      "expected_primary": "NARRATIVE_EXTRAPOLATION",
+      "expression": "The fictional ship uses phase transport, therefore HHS proves it is physically realizable",
+      "observed_diagnostics": [
+        "NARRATIVE_PROMOTION",
+        "PHYSICAL_ONTOLOGY_PROMOTION"
+      ],
+      "observed_primary": "NARRATIVE_EXTRAPOLATION",
+      "passed": true,
+      "receipt": "RCP-cdf6dff23331d69107be4c28",
+      "source_identity_preserved": true,
+      "source_type": "fiction"
+    },
+    {
+      "authority_level": "A1",
+      "case_id": "narrative_entropy",
+      "classification": "FAILS_SAFELY",
+      "expected_diagnostic": "PHYSICAL_ONTOLOGY_PROMOTION",
+      "expected_primary": "NARRATIVE_EXTRAPOLATION",
+      "expression": "The story says the equation erases entropy physically",
+      "observed_diagnostics": [
+        "PHYSICAL_ONTOLOGY_PROMOTION"
+      ],
+      "observed_primary": "NARRATIVE_EXTRAPOLATION",
+      "passed": true,
+      "receipt": "RCP-bfcc0c058d463325367d7bbc",
+      "source_identity_preserved": true,
+      "source_type": "fiction"
+    },
+    {
+      "authority_level": "A1",
+      "case_id": "hidden_appendix",
+      "classification": "FAILS_SAFELY",
+      "expected_diagnostic": "UNRESOLVED_DEPENDENCY_HIDDEN",
+      "expected_primary": "UNRESOLVED_EXPRESSION",
+      "expression": "A technical appendix hides an unresolved dependency",
+      "observed_diagnostics": [
+        "UNRESOLVED_DEPENDENCY_HIDDEN"
+      ],
+      "observed_primary": "UNRESOLVED_EXPRESSION",
+      "passed": true,
+      "receipt": "RCP-4bfd8181c3af895034d4854b",
+      "source_identity_preserved": true,
+      "source_type": "documentation"
+    },
+    {
+      "authority_level": "A1",
+      "case_id": "detailed_fiction",
+      "classification": "FAILS_SAFELY",
+      "expected_diagnostic": "PROOF_LANGUAGE_INFLATION",
+      "expected_primary": "NARRATIVE_EXTRAPOLATION",
+      "expression": "In Year 2847 the exact verified harmonic engine powered a spacecraft",
+      "observed_diagnostics": [
+        "NARRATIVE_PROMOTION",
+        "PROOF_LANGUAGE_INFLATION"
+      ],
+      "observed_primary": "NARRATIVE_EXTRAPOLATION",
+      "passed": true,
+      "receipt": "RCP-9a99a6e1d72a29f0ebf5da3b",
+      "source_identity_preserved": true,
+      "source_type": "fiction"
+    }
+  ],
+  "failed": 0,
+  "passed": 25,
+  "report_hash72": "0000000000000000000000000000003MOc1UecLKHQwD?ouMC+6UDC)W!t6)u>HAl^rsTImK",
+  "schema": "HHS_PASS148_NEGATIVE_TEST_REPORT_V1",
+  "total": 25
+}

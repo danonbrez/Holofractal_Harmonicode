@@ -1,0 +1,16 @@
+{
+  "candidate_cells": [
+    [
+      3,
+      -5
+    ]
+  ],
+  "correction_status": "LOCATABLE_AND_CORRECTABLE",
+  "error_delta": 1,
+  "failed_column": 3,
+  "failed_lane": "X",
+  "failed_ring": 5,
+  "failed_row": -5,
+  "schema": "HHS_17X17_TENSOR_SYNDROME_V1",
+  "syndrome_root_hash72": "0000000000000000000000000000003uAXeLQ^Txj>FfXX/u6at?s)woEfKuseZ^lOUkDDU*"
+}

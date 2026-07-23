@@ -1,0 +1,72 @@
+{
+  "all_repairs_verified": true,
+  "closure_root_hash72": "0000000000000000000000000000000sfZM2yF^x?Tz1zxkq)qO/rcdy9CVOPrQk3=8Ui)iz",
+  "executions": [
+    {
+      "compile_command": [
+        "/usr/bin/gcc",
+        "-std=c11",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "/tmp/hhs_transpile_3v546eok/packet.c",
+        "-o",
+        "/tmp/hhs_transpile_3v546eok/packet"
+      ],
+      "compiled_and_executed": true,
+      "compiler": "/usr/bin/x86_64-linux-gnu-gcc-14",
+      "compiler_returncode": 0,
+      "execution_receipt_hash72": "1HgOSgIRVK^E57+bsVkU\u22604BG",
+      "execution_returncode": 0,
+      "observed": {
+        "equation_hash72": "H72-PASS1056-EQ",
+        "manifest_hash72": "H72-PASS1056-MANIFEST",
+        "phase_count": 4,
+        "phase_sum": 72,
+        "target": "c"
+      },
+      "schema": "HHS_REAL_TRANSPILER_EXECUTION_RECEIPT_V1",
+      "source_hash72": "i+fOFd3R9D\u2260w6ZUbFk+h+gC7",
+      "target": "c"
+    },
+    {
+      "compile_command": [
+        "/usr/bin/gcc",
+        "-std=c11",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "/tmp/hhs_transpile_ny6r0_oa/harness.c",
+        "/tmp/hhs_transpile_ny6r0_oa/packet.S",
+        "-o",
+        "/tmp/hhs_transpile_ny6r0_oa/packet"
+      ],
+      "compiled_and_executed": true,
+      "compiler": "/usr/bin/x86_64-linux-gnu-gcc-14",
+      "compiler_returncode": 0,
+      "execution_receipt_hash72": "K0pdlHtuEgre^HuHhFuW8^i\u2260",
+      "execution_returncode": 0,
+      "observed": {
+        "equation_hash72": "H72-PASS1056-EQ",
+        "manifest_hash72": "H72-PASS1056-MANIFEST",
+        "phase_count": 4,
+        "phase_sum": 72,
+        "target": "asm"
+      },
+      "schema": "HHS_REAL_TRANSPILER_EXECUTION_RECEIPT_V1",
+      "source_hash72": "7QsNFkYpoAiYdQdgYKHqF\u2260g\u221a",
+      "target": "asm"
+    }
+  ],
+  "parallel_test_computation_used": false,
+  "pass_id": "PASS_105_6",
+  "real_compilation_executed": true,
+  "real_generated_binaries_executed": true,
+  "schema": "HHS_PASS105_6_REAL_C_ASM_BACKEND_CLOSURE_V1",
+  "status": "PASS",
+  "targets": [
+    "c",
+    "asm"
+  ],
+  "transpile_receipt_hash72": "x(Fv14/8R1k3sbE4U1)dUT)g"
+}

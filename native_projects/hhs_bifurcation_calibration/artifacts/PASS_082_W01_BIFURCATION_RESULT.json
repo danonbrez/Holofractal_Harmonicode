@@ -1,0 +1,104 @@
+{
+  "bifurcation_receipt": {
+    "branch_count": 2,
+    "branch_identity_preserved": true,
+    "branch_merger_occurred": false,
+    "closure_coordinate": 0,
+    "closure_coordinate_roots_match": true,
+    "deterministic_bifurcation_verified": true,
+    "genesis_state_root_hash72": "0000000000000000000000000000001UJS7fZATZm-mxt5BQCm8U4LkTjNkj2=7R24Q/+EeF",
+    "lane_a_receipt_root_hash72": "0000000000000000000000000000003Vd41EKJ6zEJKkt(>*zWX?xMrf3rSQ?/6113v(KqKK",
+    "lane_b_receipt_root_hash72": "0000000000000000000000000000003s4kWdI0mk5MVuJl?r47+^eSdPB=W9vGhlp2QpUB7(",
+    "lane_receipt_roots_hash72": [
+      "0000000000000000000000000000003Vd41EKJ6zEJKkt(>*zWX?xMrf3rSQ?/6113v(KqKK",
+      "0000000000000000000000000000003s4kWdI0mk5MVuJl?r47+^eSdPB=W9vGhlp2QpUB7("
+    ],
+    "lane_roots_distinct": true,
+    "receipt_root_hash72": "0000000000000000000000000000000-=Y+zkl-m4Mu1llrJOvWhdK0zQbnsdaflxXtcP?xg",
+    "schema": "HHS_BIFURCATION_CLOSURE_RECEIPT_V1"
+  },
+  "branch_receipts": [
+    {
+      "branch_derivation_root_hash72": "0000000000000000000000000000003O?nXnvna*sWap0rmI0VnyKFtcs+Gw08P=o(-GE5p!",
+      "branch_id": "LANE_000_EXPANSION",
+      "canonical_operands_root_hash72": "0000000000000000000000000000003czyp66asx>MHIB)p?wvH((88V)q9PVVXqDtFr9zPt",
+      "capability_lease_root_hash72": "0000000000000000000000000000000tGu1CqGdZk-twG)/aQ!2>(gtFl7FkeHm6)Pc9hB>*",
+      "closure_coordinate_value_root_hash72": "0000000000000000000000000000000f^PbrBEG^jetL906M0>2m+Gi4=7a^Vi1P^ljQr55l",
+      "genesis_state_root_hash72": "0000000000000000000000000000001UJS7fZATZm-mxt5BQCm8U4LkTjNkj2=7R24Q/+EeF",
+      "native_opcode_binding_root_hash72": "0000000000000000000000000000000eQ4THv*YHsCO2upx6Q8R96ZL9YBc1NF=NULsqLFgd",
+      "native_result_root_hash72": "0000000000000000000000000000004plKJzjh87m>hQHf133HwJaW1p9OOF*UFgmz!QAV(A",
+      "pass080_admission_receipt_root_hash72": "0000000000000000000000000000003PjMiL?I78o8Btv=TKiZcIZU6v1SCm4/2q=>)fT421",
+      "post_state_root_hash72": "00000000000000000000000000000021Hv3hYnKEKgKHD=nS+cPh6JY9=Fz!V+H/aBk3?Opm",
+      "pre_state_root_hash72": "00000000000000000000000000000027pk=E/BNMUzI-UN83qKxCk6=ubKjzxJO0hI)8IhOK",
+      "receipt_root_hash72": "0000000000000000000000000000003Vd41EKJ6zEJKkt(>*zWX?xMrf3rSQ?/6113v(KqKK",
+      "schema": "HHS_NATIVE_INVOCATION_RECEIPT_V1",
+      "successful_result_confers_authority": false
+    },
+    {
+      "branch_derivation_root_hash72": "0000000000000000000000000000001?ynC93J>G9UEs=M9?YzK-b49XAw4QHwbtaJgow^an",
+      "branch_id": "LANE_001_INVERSE",
+      "canonical_operands_root_hash72": "00000000000000000000000000000026*4UIr7e^u2jEb4^t/dKaku=A^19tka>MP8vLnbtc",
+      "capability_lease_root_hash72": "0000000000000000000000000000000jKPaP67dOtPj+LQcg+5fu5f/Ll*YO>QYl99a>nj6U",
+      "closure_coordinate_value_root_hash72": "0000000000000000000000000000000f^PbrBEG^jetL906M0>2m+Gi4=7a^Vi1P^ljQr55l",
+      "genesis_state_root_hash72": "0000000000000000000000000000001UJS7fZATZm-mxt5BQCm8U4LkTjNkj2=7R24Q/+EeF",
+      "native_opcode_binding_root_hash72": "0000000000000000000000000000000eQ4THv*YHsCO2upx6Q8R96ZL9YBc1NF=NULsqLFgd",
+      "native_result_root_hash72": "0000000000000000000000000000003fhno0u4MRzLVoiPy6CXo8>^5JbhF+4*8>DRmseQKV",
+      "pass080_admission_receipt_root_hash72": "0000000000000000000000000000003PjMiL?I78o8Btv=TKiZcIZU6v1SCm4/2q=>)fT421",
+      "post_state_root_hash72": "0000000000000000000000000000000cd)4JlQPsB3NGH!usd2NBLBPH/uFL?Hjd+5)0TULg",
+      "pre_state_root_hash72": "00000000000000000000000000000027pk=E/BNMUzI-UN83qKxCk6=ubKjzxJO0hI)8IhOK",
+      "receipt_root_hash72": "0000000000000000000000000000003s4kWdI0mk5MVuJl?r47+^eSdPB=W9vGhlp2QpUB7(",
+      "schema": "HHS_NATIVE_INVOCATION_RECEIPT_V1",
+      "successful_result_confers_authority": false
+    }
+  ],
+  "metrics": {
+    "branch_count": 2,
+    "branches_admitted_per_second": 18.240108927012095,
+    "determinism_mismatch_count": 0,
+    "native_invocation_ns": 0,
+    "receipt_bytes": 2571,
+    "total_execution_ns": 109648468
+  },
+  "profile": "FULL_WITNESS_PROFILE",
+  "replay": false,
+  "schema": "HHS_PASS_082_BIFURCATION_BENCHMARK_RESULT_V1",
+  "status": "DETERMINISTIC_BIFURCATION_VERIFIED",
+  "workload": {
+    "branch_contracts": [
+      {
+        "branch_id": "LANE_000_EXPANSION",
+        "lo_shu_mapping_required": true,
+        "operation": "RECURSIVE_SYMBOLIC_CONSTRAINT_EXPANSION",
+        "reciprocal_projection_required": false,
+        "source_ast_root_hash72": "0000000000000000000000000000004kHT8KHRja+689GYWXpyd!?o0y9h/S6snxtFqUXJh9"
+      },
+      {
+        "branch_id": "LANE_001_INVERSE",
+        "lo_shu_mapping_required": false,
+        "operation": "INVERSE_RECIPROCAL_PHASE_PROJECTION",
+        "reciprocal_projection_required": true,
+        "source_ast_root_hash72": "0000000000000000000000000000000f(SJGDZh30N)mAGOwY=0C4RgC+1Kgl1EnLmWpPtm>"
+      }
+    ],
+    "genesis_state_root_hash72": "0000000000000000000000000000001UJS7fZATZm-mxt5BQCm8U4LkTjNkj2=7R24Q/+EeF",
+    "native_binding": {
+      "binding_root_hash72": "0000000000000000000000000000000eQ4THv*YHsCO2upx6Q8R96ZL9YBc1NF=NULsqLFgd",
+      "opcode": "NATIVE_VECTORIZE_HASH72",
+      "registry_root_hash72": "0000000000000000000000000000003tNkS)j=sQgSkBmHM8rQGXJTi4RcNyQDjiBTjhoWF=",
+      "semantic_identity": "vm81.native.hhs_vectorize_hash72"
+    },
+    "required_receipts": [
+      "HHS_NATIVE_INVOCATION_RECEIPT_V1",
+      "HHS_BRANCH_DERIVATION_RECEIPT_V1",
+      "HHS_BIFURCATION_CLOSURE_RECEIPT_V1"
+    ],
+    "schema": "HHS_DETERMINISTIC_MANIFOLD_BIFURCATION_WORKLOAD_V1",
+    "shared_closure_contract": {
+      "branch_merger_permitted": false,
+      "closure_coordinate": 0,
+      "comparison": "EXACT_CANONICAL_COORDINATE_EQUALITY",
+      "schema": "ABP_EQUALITY_CLOSURE_TENSOR_V1"
+    },
+    "workload_id": "calibration:vm81-bifurcation-001"
+  }
+}

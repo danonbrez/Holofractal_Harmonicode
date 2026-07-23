@@ -1,0 +1,25 @@
+{
+  "schema": "HHS_PASS_094_RELEASE_MANIFEST_V1",
+  "pass_id": "PASS_094",
+  "parent_pass093_release_root_hash72": "0000000000000000000000000000003B^jLhrEK1fUGaC-eGs)/n-yEMCF=iKk!kp-mpu7Oy",
+  "workload_count": 14,
+  "invariant_count": 6,
+  "modality_count": 19,
+  "translation_contract_count": 13,
+  "negative_case_count": 10,
+  "all_negative_cases_passed": true,
+  "all_replays_verified": true,
+  "artifacts": [
+    "PASS_094_INVARIANT_REGISTRY.json",
+    "PASS_094_TRANSLATION_CONTRACT_REGISTRY.json",
+    "PASS_094_INVARIANT_SURVIVAL_RECEIPTS.json",
+    "PASS_094_RECURSIVE_TRANSLATION_RESULTS.json",
+    "PASS_094_MODALITY_NOISE_FRONTIERS.json",
+    "PASS_094_MULTIMODAL_ALPHABET.json",
+    "PASS_094_NEGATIVE_CASES.json",
+    "PASS_094_WORKLOAD_REGISTRY.json",
+    "PASS_094_CALIBRATION_REPORT.md",
+    "CHANGELOG_PASS_094.md"
+  ],
+  "pass094_release_root_hash72": "0000000000000000000000000000003/EHi(>pX4X6mJCnO(^V(resH57g-P9nOyOjaD66VJ"
+}

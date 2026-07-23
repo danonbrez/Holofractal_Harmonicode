@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "artifact_admission_permitted": {
+      "type": "boolean"
+    },
+    "execution_roots_expected_to_match": {
+      "const": false
+    },
+    "field_comparisons": {
+      "type": "array"
+    },
+    "receipt_root_hash72": {
+      "type": "string"
+    },
+    "schema": {
+      "const": "HHS_INTERPRETER_COMPILER_EQUIVALENCE_RECEIPT_V1"
+    },
+    "semantic_projection_roots_match": {
+      "type": "boolean"
+    },
+    "status": {
+      "enum": [
+        "SEMANTIC_IDENTITY_VERIFIED",
+        "SEMANTIC_IDENTITY_REJECTED"
+      ]
+    }
+  },
+  "required": [
+    "schema",
+    "target_contract_root_hash72",
+    "source_artifact_root_hash72",
+    "executable_ir_root_hash72",
+    "compiled_artifact_root_hash72",
+    "interpreter_execution_root_hash72",
+    "compiled_execution_root_hash72",
+    "interpreter_semantic_projection_root_hash72",
+    "compiled_semantic_projection_root_hash72",
+    "field_comparisons",
+    "execution_roots_expected_to_match",
+    "semantic_projection_roots_match",
+    "status",
+    "artifact_admission_permitted",
+    "receipt_root_hash72"
+  ],
+  "title": "HHS_INTERPRETER_COMPILER_EQUIVALENCE_RECEIPT_V1",
+  "type": "object"
+}

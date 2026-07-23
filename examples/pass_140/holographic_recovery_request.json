@@ -1,0 +1,8 @@
+{
+  "request_id": "pass-140-reference-workload",
+  "artifacts": [
+    {"artifact_id":"source","path":"formal/source.eq","content":"g*h == xy\nrho == g+h-2*xy\n"},
+    {"artifact_id":"proof","path":"formal/proof.json","content":"{\"goal\":\"rho*g==(g-xy)^2\",\"proved\":true}","dependencies":["source"]},
+    {"artifact_id":"release","path":"release/receipt.txt","content":"RELEASE_PROVED\n","dependencies":["proof"]}
+  ]
+}

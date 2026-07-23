@@ -1,0 +1,32 @@
+{
+  "schema": "HHS_PASS_120_RELEASE_MANIFEST_V1",
+  "pass_id": "PASS_120",
+  "service": "runtime.self_solving_scientific_calculator.pass120",
+  "module": "hhs_runtime.hhs_pass120_self_solving_scientific_calculator_v1",
+  "test_module": "tests.test_hhs_pass120_self_solving_scientific_calculator_v1",
+  "capabilities": [
+    "exact_pass118_expression_evaluation",
+    "problem_classification",
+    "solver_selection",
+    "exact_linear_equation_solving",
+    "exact_quadratic_equation_solving",
+    "native_q_b_i_radical_roots",
+    "formal_proof_construction",
+    "independent_proof_integrity_verification",
+    "substitution_verification",
+    "counterexample_generation",
+    "unit_dimension_validation",
+    "hash72_calculation_replay"
+  ],
+  "tested_scope": {
+    "pass120_tests": 13,
+    "pass112_through_pass120_tests": 125,
+    "failures": 0
+  },
+  "unsupported_typed_boundaries": [
+    "general_polynomial_degree_above_2",
+    "arbitrary_algebraic_radicals_outside_current_q_b_i_field",
+    "calculus_and_general_transcendental_solver_surfaces"
+  ],
+  "mock_components": 0
+}

@@ -1,0 +1,20 @@
+{
+  "canonical_continuation": true,
+  "completed_stage": "EXACT_INTERPRETATION_AND_BOUNDED_REVERSIBLE_PRODUCT_REPAIR",
+  "continuation_root_hash72": "0000000000000000000000000000000hm9lzzHmt(mN=q0z0V2)rJ5!GsZGEel^4Im4QcIg0",
+  "current_pass": "PASS_076",
+  "current_product_root_hash72": "0000000000000000000000000000000f6?LTYKy1V4fM4zmERwPpjVjDW?e/brvwSyHc=9ME",
+  "frozen_foundation_pass": "PASS_072",
+  "frozen_platform_root_hash72": "ZF9bto?tV>P(KcFPL5L+csyy!jxdrAaadua1a!w-uwug8/MeMSqSS3*R>lXIefi)nyjXpc+)",
+  "host_path_required": false,
+  "llm_context_window_required": false,
+  "next_pass": "PASS_077",
+  "next_stage": "COMPILER_ARTIFACT_PIPELINE",
+  "parent_pass": "PASS_075",
+  "parent_product_root_hash72": "00000000000000000000000000000031GsBD6wMdJDvXqjTyKPXZX+g2qPi9G8WFUTyNmsNo",
+  "program_graph_root_hash72": "0000000000000000000000000000004mzAGec8YlZ(lDTBlAfOkixbZG3MhA6OGzAIE5rTBh",
+  "repository_state_authoritative": true,
+  "restart_safe": true,
+  "schema": "HHS_NATIVE_DEVELOPMENT_CONTINUATION_V1",
+  "thread_context_required": false
+}

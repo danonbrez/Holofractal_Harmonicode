@@ -1,0 +1,23 @@
+{
+  "schema": "HHS_PASS_144_RELEASE_MANIFEST_V1",
+  "pass": 144,
+  "title": "Natural-Language Documentation, White Papers, and Proof-Lemma Corpus",
+  "parent_pass": 143,
+  "release_mode": "APPEND_ONLY_DOCUMENTATION",
+  "prior_code_modification_allowed": false,
+  "deliverables": [
+    "API and CLI manuals",
+    "natural-language user documentation",
+    "invariant algebra guide",
+    "authority and receipt guide",
+    "four Markdown white papers",
+    "machine-readable proof lemma corpus",
+    "human-readable lemma derivations",
+    "parent-tree byte immutability verifier"
+  ],
+  "acceptance": {
+    "parent_tree_sha256_unchanged": true,
+    "new_paths_allowlisted": true,
+    "documentation_tests_required": true
+  }
+}

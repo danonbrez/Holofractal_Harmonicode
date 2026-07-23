@@ -1,0 +1,23 @@
+{
+  "schema": "HHS_PASS_091_RELEASE_MANIFEST_V1",
+  "pass_id": "PASS_091",
+  "parent_pass090_release_root_hash72": "0000000000000000000000000000002=HsSPk(A8J)PK>VSciPQCbw8pD9H)>lZvX2YEmElO",
+  "terminal_policy": "PRESERVE_4_2_1_CYCLE",
+  "workload_count": 12,
+  "negative_case_count": 8,
+  "all_negative_cases_passed": true,
+  "all_replays_verified": true,
+  "motif_proposal_count": 20,
+  "artifacts": [
+    "PASS_091_COLLATZ_WORKLOAD_REGISTRY.json",
+    "PASS_091_COLLATZ_LANE_RECEIPTS.json",
+    "PASS_091_COLLATZ_ENTANGLEMENT_RECEIPTS.json",
+    "PASS_091_COLLATZ_ENTANGLEMENT_GRAPHS.json",
+    "PASS_091_COLLATZ_SCALING_RESULTS.json",
+    "PASS_091_COLLATZ_MOTIF_PROPOSALS.json",
+    "PASS_091_NEGATIVE_CASES.json",
+    "PASS_091_CALIBRATION_REPORT.md",
+    "CHANGELOG_PASS_091.md"
+  ],
+  "pass091_release_root_hash72": "0000000000000000000000000000002AE-ACdtbtMUl3xF^379YU*2MF9oaREfe28FiFGUP>"
+}

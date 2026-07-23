@@ -1,0 +1,25 @@
+{
+  "actual_chain_repaired": false,
+  "cause": "PASS_133_FORKED_FROM_PASS132_EVIDENCE_BUNDLE_INSTEAD_OF_FULL_RUNTIME_CHECKPOINT",
+  "first_corrupt_checkpoint": "PASS_133",
+  "non_authorized_substitutions": [
+    "Pass 132 evidence ZIP",
+    "Pass 132 reports alone",
+    "fabricated source reconstructed from filenames or hashes"
+  ],
+  "pass134_operation_complete": true,
+  "pass_id": "PASS_134",
+  "required_input_alternatives": [
+    {
+      "name": "hhs_pass_132_executable_consequence_ab_control_runtime.zip",
+      "sha256": "4edfa7975be435318dace65a9ea614c433df011f35055f7ba2a30e7ded062338",
+      "type": "FULL_PARENT_CHECKPOINT"
+    },
+    {
+      "description": "nearest complete ancestor plus every ordered non-destructive pass operation through Pass 132",
+      "type": "COMPLETE_OPERATION_CHAIN"
+    }
+  ],
+  "schema": "HHS_PASS134_HISTORICAL_RECONSTRUCTION_STATUS_V1",
+  "terminal_status": "HISTORICAL_RECONSTRUCTION_INPUT_REQUIRED"
+}

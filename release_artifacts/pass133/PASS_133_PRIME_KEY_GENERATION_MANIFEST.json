@@ -1,0 +1,12 @@
+{
+  "entropy_status": "ENTROPY_SOURCE_UNATTESTED",
+  "generated_at": "2026-07-19T05:32:50.181699+00:00",
+  "mode": "explicit",
+  "parent_root": "dO6p3HqQTU9U<zh8qkbIy>)CqwZo8JNL(1nL9?6xJ7FlAF4KIpgTtng9pu6cWlKLBT!WLplR",
+  "prime_bits": 64,
+  "prime_domain": "HHS-P133-PRIME-ALPHABET-V1",
+  "schema": "HHS_PASS133_PRIME_KEY_GENERATION_MANIFEST_V1",
+  "security_boundary": "KEY_STATE_NOT_ENCRYPTION",
+  "status": "PRIME_MAGIC_SUDOKU_BIGINT_KEY_STATE_VERIFIED",
+  "sudoku_domain": "HHS-P133-SUDOKU-TOPOLOGY-V1"
+}

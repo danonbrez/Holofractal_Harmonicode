@@ -1,0 +1,1 @@
+{"interface":"PUBLIC_HTTP_API","operation":"runtime_graph_status","request":{"method":"GET","path":"/api/runtime/graph","payload":null},"response":{"body":{"graph":"available","status":"online"},"headers":{"content-type":"application/json"},"method":"GET","path":"/api/runtime/graph","status_code":200}}

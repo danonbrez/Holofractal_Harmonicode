@@ -1,0 +1,65 @@
+{
+  "schema": "HHS_PASS_084_NEGATIVE_CASES_V1",
+  "cases": [
+    {
+      "case": "duplicate-audio-id",
+      "expected": "REJECT_DUPLICATE_AUDIO_OBSERVATION_IDENTITY",
+      "observed": "REJECT_DUPLICATE_AUDIO_OBSERVATION_IDENTITY",
+      "passed": true
+    },
+    {
+      "case": "audio-time-order",
+      "expected": "REJECT_AUDIO_TIME_OUT_OF_ORDER",
+      "observed": "REJECT_AUDIO_TIME_OUT_OF_ORDER",
+      "passed": true
+    },
+    {
+      "case": "missing-audio-feature-witness",
+      "expected": "REJECT_UNWITNESSED_AUDIO_FEATURE",
+      "observed": "REJECT_UNWITNESSED_AUDIO_FEATURE",
+      "passed": true
+    },
+    {
+      "case": "unwitnessed-av-edge",
+      "expected": "REJECT_UNWITNESSED_AUDIOVISUAL_EDGE",
+      "observed": "REJECT_UNWITNESSED_AUDIOVISUAL_EDGE",
+      "passed": true
+    },
+    {
+      "case": "identity-collapse",
+      "expected": "REJECT_AUDIO_VIDEO_IDENTITY_COLLAPSE",
+      "observed": "REJECT_AUDIO_VIDEO_IDENTITY_COLLAPSE",
+      "passed": true
+    },
+    {
+      "case": "latency-as-event-time",
+      "expected": "REJECT_LATENCY_AS_EVENT_TIME",
+      "observed": "REJECT_LATENCY_AS_EVENT_TIME",
+      "passed": true
+    },
+    {
+      "case": "unauthorized-binding",
+      "expected": "REJECT_UNAUTHORIZED_AUDIOVISUAL_BINDING",
+      "observed": "REJECT_UNAUTHORIZED_AUDIOVISUAL_BINDING",
+      "passed": true
+    },
+    {
+      "case": "opaque-float",
+      "expected": "REJECT_OPAQUE_AUDIO_FLOAT_AS_CANONICAL_ARITHMETIC",
+      "observed": "REJECT_OPAQUE_AUDIO_FLOAT_AS_CANONICAL_ARITHMETIC",
+      "passed": true
+    },
+    {
+      "case": "closure-failure",
+      "expected": "REJECT_AUDIOVISUAL_EVENT_CLOSURE_FAILURE",
+      "observed": "REJECT_AUDIOVISUAL_EVENT_CLOSURE_FAILURE",
+      "passed": true
+    },
+    {
+      "case": "replay-mismatch",
+      "expected": "REJECT_AUDIOVISUAL_REPLAY_MISMATCH",
+      "observed": "REJECT_AUDIOVISUAL_REPLAY_MISMATCH",
+      "passed": true
+    }
+  ]
+}

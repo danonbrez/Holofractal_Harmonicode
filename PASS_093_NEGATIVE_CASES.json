@@ -1,0 +1,65 @@
+{
+  "schema": "HHS_PASS_093_NEGATIVE_CASES_V1",
+  "cases": [
+    {
+      "case": "geometry_without_definition",
+      "expected": "REJECT_GEOMETRY_WITHOUT_SYMBOLIC_WITNESS",
+      "observed": "REJECT_GEOMETRY_WITHOUT_SYMBOLIC_WITNESS",
+      "passed": true
+    },
+    {
+      "case": "erase_ancestry",
+      "expected": "REJECT_ALPHABET_WITH_INFORMATION_LOSS",
+      "observed": "REJECT_ALPHABET_WITH_INFORMATION_LOSS",
+      "passed": true
+    },
+    {
+      "case": "claim_training_general",
+      "expected": "REJECT_PATTERN_AS_GENERAL_INVARIANT",
+      "observed": "REJECT_PATTERN_AS_GENERAL_INVARIANT",
+      "passed": true
+    },
+    {
+      "case": "null_equal_but_signal",
+      "expected": "REJECT_PATTERN_AS_DISTINGUISHABLE_SIGNAL",
+      "observed": "REJECT_PATTERN_AS_DISTINGUISHABLE_SIGNAL",
+      "passed": true
+    },
+    {
+      "case": "discard_order",
+      "expected": "REJECT_NONCOMMUTATIVE_HISTORY_COLLAPSE",
+      "observed": "REJECT_NONCOMMUTATIVE_HISTORY_COLLAPSE",
+      "passed": true
+    },
+    {
+      "case": "approximate_as_authority",
+      "expected": "REJECT_PROBABILITY_AS_INVARIANT_AUTHORITY",
+      "observed": "REJECT_PROBABILITY_AS_INVARIANT_AUTHORITY",
+      "passed": true
+    },
+    {
+      "case": "noise_without_lineage",
+      "expected": "REJECT_NOISE_FILTERING_WITHOUT_PROVENANCE",
+      "observed": "REJECT_NOISE_FILTERING_WITHOUT_PROVENANCE",
+      "passed": true
+    },
+    {
+      "case": "reconstruction_failure_claimed_valid",
+      "expected": "REJECT_PATTERN_RECONSTRUCTION_FAILURE",
+      "observed": "REJECT_PATTERN_RECONSTRUCTION_FAILURE",
+      "passed": true
+    },
+    {
+      "case": "scale_without_map",
+      "expected": "REJECT_UNWITNESSED_SCALE_EQUIVALENCE",
+      "observed": "REJECT_UNWITNESSED_SCALE_EQUIVALENCE",
+      "passed": true
+    },
+    {
+      "case": "semantic_identity_changed",
+      "expected": "REJECT_COMPRESSED_MODEL_SEMANTIC_DIVERGENCE",
+      "observed": "REJECT_COMPRESSED_MODEL_SEMANTIC_DIVERGENCE",
+      "passed": true
+    }
+  ]
+}

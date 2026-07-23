@@ -1,0 +1,1687 @@
+{
+  "ast": {
+    "children": [
+      {
+        "children": [
+          {
+            "children": [],
+            "end": 2,
+            "kind": "TOKEN",
+            "start": 1,
+            "value": "A"
+          },
+          {
+            "children": [],
+            "end": 4,
+            "kind": "GATE",
+            "start": 2,
+            "value": "=="
+          },
+          {
+            "children": [],
+            "end": 5,
+            "kind": "TOKEN",
+            "start": 4,
+            "value": "P"
+          },
+          {
+            "children": [],
+            "end": 6,
+            "kind": "TOKEN",
+            "start": 5,
+            "value": "^"
+          },
+          {
+            "children": [],
+            "end": 7,
+            "kind": "TOKEN",
+            "start": 6,
+            "value": "2"
+          },
+          {
+            "children": [],
+            "end": 8,
+            "kind": "COMMA",
+            "start": 7,
+            "value": ","
+          },
+          {
+            "children": [],
+            "end": 13,
+            "kind": "TOKEN",
+            "start": 9,
+            "value": "Sqrt"
+          },
+          {
+            "children": [
+              {
+                "children": [],
+                "end": 15,
+                "kind": "TOKEN",
+                "start": 14,
+                "value": "A"
+              },
+              {
+                "children": [],
+                "end": 17,
+                "kind": "TOKEN",
+                "start": 16,
+                "value": "B"
+              },
+              {
+                "children": [],
+                "end": 18,
+                "kind": "CLOSE",
+                "start": 17,
+                "value": ")"
+              }
+            ],
+            "end": 18,
+            "kind": "PAREN",
+            "start": 13,
+            "value": "("
+          },
+          {
+            "children": [],
+            "end": 20,
+            "kind": "GATE",
+            "start": 18,
+            "value": "=="
+          },
+          {
+            "children": [],
+            "end": 21,
+            "kind": "TOKEN",
+            "start": 20,
+            "value": "P"
+          },
+          {
+            "children": [],
+            "end": 22,
+            "kind": "TOKEN",
+            "start": 21,
+            "value": "^"
+          },
+          {
+            "children": [],
+            "end": 23,
+            "kind": "TOKEN",
+            "start": 22,
+            "value": "2"
+          },
+          {
+            "children": [],
+            "end": 24,
+            "kind": "COMMA",
+            "start": 23,
+            "value": ","
+          },
+          {
+            "children": [],
+            "end": 26,
+            "kind": "TOKEN",
+            "start": 25,
+            "value": "A"
+          },
+          {
+            "children": [],
+            "end": 28,
+            "kind": "TOKEN",
+            "start": 27,
+            "value": "B"
+          },
+          {
+            "children": [],
+            "end": 30,
+            "kind": "GATE",
+            "start": 28,
+            "value": "=="
+          },
+          {
+            "children": [],
+            "end": 31,
+            "kind": "TOKEN",
+            "start": 30,
+            "value": "P"
+          },
+          {
+            "children": [],
+            "end": 32,
+            "kind": "TOKEN",
+            "start": 31,
+            "value": "^"
+          },
+          {
+            "children": [],
+            "end": 33,
+            "kind": "TOKEN",
+            "start": 32,
+            "value": "4"
+          },
+          {
+            "children": [],
+            "end": 34,
+            "kind": "COMMA",
+            "start": 33,
+            "value": ","
+          },
+          {
+            "children": [],
+            "end": 36,
+            "kind": "TOKEN",
+            "start": 35,
+            "value": "B"
+          },
+          {
+            "children": [],
+            "end": 38,
+            "kind": "TOKEN",
+            "start": 37,
+            "value": "A"
+          },
+          {
+            "children": [],
+            "end": 40,
+            "kind": "GATE",
+            "start": 38,
+            "value": "=="
+          },
+          {
+            "children": [],
+            "end": 41,
+            "kind": "TOKEN",
+            "start": 40,
+            "value": "P"
+          },
+          {
+            "children": [],
+            "end": 42,
+            "kind": "TOKEN",
+            "start": 41,
+            "value": "^"
+          },
+          {
+            "children": [],
+            "end": 43,
+            "kind": "TOKEN",
+            "start": 42,
+            "value": "4"
+          },
+          {
+            "children": [],
+            "end": 44,
+            "kind": "COMMA",
+            "start": 43,
+            "value": ","
+          },
+          {
+            "children": [],
+            "end": 49,
+            "kind": "TOKEN",
+            "start": 45,
+            "value": "Sqrt"
+          },
+          {
+            "children": [
+              {
+                "children": [],
+                "end": 51,
+                "kind": "TOKEN",
+                "start": 50,
+                "value": "B"
+              },
+              {
+                "children": [],
+                "end": 53,
+                "kind": "TOKEN",
+                "start": 52,
+                "value": "A"
+              },
+              {
+                "children": [],
+                "end": 54,
+                "kind": "CLOSE",
+                "start": 53,
+                "value": ")"
+              }
+            ],
+            "end": 54,
+            "kind": "PAREN",
+            "start": 49,
+            "value": "("
+          },
+          {
+            "children": [],
+            "end": 56,
+            "kind": "GATE",
+            "start": 54,
+            "value": "=="
+          },
+          {
+            "children": [],
+            "end": 57,
+            "kind": "TOKEN",
+            "start": 56,
+            "value": "P"
+          },
+          {
+            "children": [],
+            "end": 58,
+            "kind": "TOKEN",
+            "start": 57,
+            "value": "^"
+          },
+          {
+            "children": [],
+            "end": 59,
+            "kind": "TOKEN",
+            "start": 58,
+            "value": "2"
+          },
+          {
+            "children": [],
+            "end": 60,
+            "kind": "COMMA",
+            "start": 59,
+            "value": ","
+          },
+          {
+            "children": [],
+            "end": 62,
+            "kind": "TOKEN",
+            "start": 61,
+            "value": "B"
+          },
+          {
+            "children": [],
+            "end": 64,
+            "kind": "GATE",
+            "start": 62,
+            "value": "=="
+          },
+          {
+            "children": [],
+            "end": 65,
+            "kind": "TOKEN",
+            "start": 64,
+            "value": "P"
+          },
+          {
+            "children": [],
+            "end": 66,
+            "kind": "TOKEN",
+            "start": 65,
+            "value": "^"
+          },
+          {
+            "children": [],
+            "end": 67,
+            "kind": "TOKEN",
+            "start": 66,
+            "value": "2"
+          },
+          {
+            "children": [],
+            "end": 68,
+            "kind": "CLOSE",
+            "start": 67,
+            "value": "}"
+          }
+        ],
+        "end": 68,
+        "kind": "BRACE",
+        "start": 0,
+        "value": "{"
+      }
+    ],
+    "end": 68,
+    "kind": "ROOT",
+    "start": 0,
+    "value": "{A==P^2, Sqrt(A B)==P^2, A B==P^4, B A==P^4, Sqrt(B A)==P^2, B==P^2}"
+  },
+  "dependency_graph": [
+    [
+      "g1",
+      "g2"
+    ],
+    [
+      "g1",
+      "g3"
+    ],
+    [
+      "g1",
+      "g4"
+    ],
+    [
+      "g1",
+      "g5"
+    ],
+    [
+      "g1",
+      "g6"
+    ],
+    [
+      "g2",
+      "g3"
+    ],
+    [
+      "g2",
+      "g4"
+    ],
+    [
+      "g2",
+      "g5"
+    ],
+    [
+      "g2",
+      "g6"
+    ],
+    [
+      "g3",
+      "g4"
+    ],
+    [
+      "g3",
+      "g5"
+    ],
+    [
+      "g3",
+      "g6"
+    ],
+    [
+      "g4",
+      "g5"
+    ],
+    [
+      "g4",
+      "g6"
+    ],
+    [
+      "g5",
+      "g6"
+    ]
+  ],
+  "gates": [
+    {
+      "closure_tensor": [
+        [
+          "(A)-(P_g1)^2",
+          "Sqrt((A)(P^2))-(P_g1)^2",
+          "(A)(P^2)-(P_g1)^4"
+        ],
+        [
+          "((A)(P^2))/(P_g1)^2-(P^2)",
+          "(P_g1)^4/((Sqrt((A)(P^2))/2)+(Sqrt((P^2)(A))/2))-((A)+(P^2))/2",
+          "((P^2)(A))/(P_g1)^2-(A)"
+        ],
+        [
+          "(P^2)(A)-(P_g1)^4",
+          "Sqrt((P^2)(A))-(P_g1)^2",
+          "(P^2)-(P_g1)^2"
+        ]
+      ],
+      "depth": 1,
+      "forward_path": [
+        "A",
+        "P^2"
+      ],
+      "gate_id": "g1",
+      "gate_root": "0000000000000000000000000000003(a-m648mZb>^ZaxMmJ3OELJL/uZRzA0bDeqqMF)19",
+      "lhs": "A",
+      "local_p": "P_g1",
+      "local_p_state": {
+        "kind": "UNRESOLVED_RECURSIVE_CLOSURE",
+        "status": "REQUIRES_ENTANGLED_RESOLUTION"
+      },
+      "reverse_path": [
+        "P^2",
+        "A"
+      ],
+      "rhs": "P^2"
+    },
+    {
+      "closure_tensor": [
+        [
+          "(A B))-(P_g2)^2",
+          "Sqrt((A B))(P^2))-(P_g2)^2",
+          "(A B))(P^2)-(P_g2)^4"
+        ],
+        [
+          "((A B))(P^2))/(P_g2)^2-(P^2)",
+          "(P_g2)^4/((Sqrt((A B))(P^2))/2)+(Sqrt((P^2)(A B)))/2))-((A B))+(P^2))/2",
+          "((P^2)(A B)))/(P_g2)^2-(A B))"
+        ],
+        [
+          "(P^2)(A B))-(P_g2)^4",
+          "Sqrt((P^2)(A B)))-(P_g2)^2",
+          "(P^2)-(P_g2)^2"
+        ]
+      ],
+      "depth": 1,
+      "forward_path": [
+        "A B)",
+        "P^2"
+      ],
+      "gate_id": "g2",
+      "gate_root": "0000000000000000000000000000002A5*3k=PjFfiVX-^d5s5kpHexk*I)?J16K>h4z-We>",
+      "lhs": "A B)",
+      "local_p": "P_g2",
+      "local_p_state": {
+        "kind": "UNRESOLVED_RECURSIVE_CLOSURE",
+        "status": "REQUIRES_ENTANGLED_RESOLUTION"
+      },
+      "reverse_path": [
+        "P^2",
+        "A B)"
+      ],
+      "rhs": "P^2"
+    },
+    {
+      "closure_tensor": [
+        [
+          "(A B)-(P_g3)^2",
+          "Sqrt((A B)(P^4))-(P_g3)^2",
+          "(A B)(P^4)-(P_g3)^4"
+        ],
+        [
+          "((A B)(P^4))/(P_g3)^2-(P^4)",
+          "(P_g3)^4/((Sqrt((A B)(P^4))/2)+(Sqrt((P^4)(A B))/2))-((A B)+(P^4))/2",
+          "((P^4)(A B))/(P_g3)^2-(A B)"
+        ],
+        [
+          "(P^4)(A B)-(P_g3)^4",
+          "Sqrt((P^4)(A B))-(P_g3)^2",
+          "(P^4)-(P_g3)^2"
+        ]
+      ],
+      "depth": 1,
+      "forward_path": [
+        "A B",
+        "P^4"
+      ],
+      "gate_id": "g3",
+      "gate_root": "0000000000000000000000000000000i7IK+i)02vepN(lk5XP-)/oQi4tp5IxVf+XdeAJkk",
+      "lhs": "A B",
+      "local_p": "P_g3",
+      "local_p_state": {
+        "kind": "UNRESOLVED_RECURSIVE_CLOSURE",
+        "status": "REQUIRES_ENTANGLED_RESOLUTION"
+      },
+      "reverse_path": [
+        "P^4",
+        "A B"
+      ],
+      "rhs": "P^4"
+    },
+    {
+      "closure_tensor": [
+        [
+          "(B A)-(P_g4)^2",
+          "Sqrt((B A)(P^4))-(P_g4)^2",
+          "(B A)(P^4)-(P_g4)^4"
+        ],
+        [
+          "((B A)(P^4))/(P_g4)^2-(P^4)",
+          "(P_g4)^4/((Sqrt((B A)(P^4))/2)+(Sqrt((P^4)(B A))/2))-((B A)+(P^4))/2",
+          "((P^4)(B A))/(P_g4)^2-(B A)"
+        ],
+        [
+          "(P^4)(B A)-(P_g4)^4",
+          "Sqrt((P^4)(B A))-(P_g4)^2",
+          "(P^4)-(P_g4)^2"
+        ]
+      ],
+      "depth": 1,
+      "forward_path": [
+        "B A",
+        "P^4"
+      ],
+      "gate_id": "g4",
+      "gate_root": "0000000000000000000000000000002j6oGZXZP=YM+VJ28p2xtTwJ(vWFnKx*3QQJsoNNIc",
+      "lhs": "B A",
+      "local_p": "P_g4",
+      "local_p_state": {
+        "kind": "UNRESOLVED_RECURSIVE_CLOSURE",
+        "status": "REQUIRES_ENTANGLED_RESOLUTION"
+      },
+      "reverse_path": [
+        "P^4",
+        "B A"
+      ],
+      "rhs": "P^4"
+    },
+    {
+      "closure_tensor": [
+        [
+          "(B A))-(P_g5)^2",
+          "Sqrt((B A))(P^2))-(P_g5)^2",
+          "(B A))(P^2)-(P_g5)^4"
+        ],
+        [
+          "((B A))(P^2))/(P_g5)^2-(P^2)",
+          "(P_g5)^4/((Sqrt((B A))(P^2))/2)+(Sqrt((P^2)(B A)))/2))-((B A))+(P^2))/2",
+          "((P^2)(B A)))/(P_g5)^2-(B A))"
+        ],
+        [
+          "(P^2)(B A))-(P_g5)^4",
+          "Sqrt((P^2)(B A)))-(P_g5)^2",
+          "(P^2)-(P_g5)^2"
+        ]
+      ],
+      "depth": 1,
+      "forward_path": [
+        "B A)",
+        "P^2"
+      ],
+      "gate_id": "g5",
+      "gate_root": "0000000000000000000000000000004J^j5CGFq-gaJApeO!>9Jdt(tR+DXsGcT>i)^wAv/0",
+      "lhs": "B A)",
+      "local_p": "P_g5",
+      "local_p_state": {
+        "kind": "UNRESOLVED_RECURSIVE_CLOSURE",
+        "status": "REQUIRES_ENTANGLED_RESOLUTION"
+      },
+      "reverse_path": [
+        "P^2",
+        "B A)"
+      ],
+      "rhs": "P^2"
+    },
+    {
+      "closure_tensor": [
+        [
+          "(B)-(P_g6)^2",
+          "Sqrt((B)(P^2))-(P_g6)^2",
+          "(B)(P^2)-(P_g6)^4"
+        ],
+        [
+          "((B)(P^2))/(P_g6)^2-(P^2)",
+          "(P_g6)^4/((Sqrt((B)(P^2))/2)+(Sqrt((P^2)(B))/2))-((B)+(P^2))/2",
+          "((P^2)(B))/(P_g6)^2-(B)"
+        ],
+        [
+          "(P^2)(B)-(P_g6)^4",
+          "Sqrt((P^2)(B))-(P_g6)^2",
+          "(P^2)-(P_g6)^2"
+        ]
+      ],
+      "depth": 1,
+      "forward_path": [
+        "B",
+        "P^2"
+      ],
+      "gate_id": "g6",
+      "gate_root": "00000000000000000000000000000047GA(TJ3HGGkkjsGr1)T!evJEjMLW1Mz0S--Z?HWIT",
+      "lhs": "B",
+      "local_p": "P_g6",
+      "local_p_state": {
+        "kind": "UNRESOLVED_RECURSIVE_CLOSURE",
+        "status": "REQUIRES_ENTANGLED_RESOLUTION"
+      },
+      "reverse_path": [
+        "P^2",
+        "B"
+      ],
+      "rhs": "P^2"
+    }
+  ],
+  "language_tensor": {
+    "policy": [
+      "SYNONYM_RELATION_NOT_IDENTITY",
+      "DEFINITION_RELATION_NOT_REPLACEMENT",
+      "TOKEN_ORDER_AND_RELATION_DIRECTION_ARE_CANONICAL_STATE"
+    ],
+    "source": "{A==P^2, Sqrt(A B)==P^2, A B==P^4, B A==P^4, Sqrt(B A)==P^2, B==P^2}",
+    "tokens": [
+      {
+        "discourse_history": [],
+        "grammar_role": "UNRESOLVED",
+        "left_path": "",
+        "lexeme_id": "00000000000000000000000000000031bPLUnzhgIttTgu!l+cmWKPf1-I4haYy*XSIjsgzG",
+        "occurrence_id": 0,
+        "right_path": "P",
+        "scope_path": "ROOT",
+        "surface": "A",
+        "token_state_root": "00000000000000000000000000000024is5!Q/xNJYrc?HBJt+exDxX-*M)gN2rEH)0o^I1i"
+      },
+      {
+        "discourse_history": [
+          "A"
+        ],
+        "grammar_role": "UNRESOLVED",
+        "left_path": "A",
+        "lexeme_id": "0000000000000000000000000000003=vOD3QD)eR+JiDdBK-CCT*>g!TKayF+w^8BJbDD1V",
+        "occurrence_id": 1,
+        "right_path": "2",
+        "scope_path": "ROOT",
+        "surface": "P",
+        "token_state_root": "0000000000000000000000000000001oPU676U!uyo8JiNlg3cC?5xWv^1vaR3hZLNA9y957"
+      },
+      {
+        "discourse_history": [
+          "A",
+          "P"
+        ],
+        "grammar_role": "UNRESOLVED",
+        "left_path": "P",
+        "lexeme_id": "0000000000000000000000000000000+kJ6W?u)F4JaZFZNWN7?!>9ggGHlPF?aG4W=*4?qG",
+        "occurrence_id": 2,
+        "right_path": "Sqrt",
+        "scope_path": "ROOT",
+        "surface": "2",
+        "token_state_root": "0000000000000000000000000000001*mpl8S-J)eQNM3+Ox1LZ3YctbhdBlv94e/)P^W4fs"
+      },
+      {
+        "discourse_history": [
+          "A",
+          "P",
+          "2"
+        ],
+        "grammar_role": "UNRESOLVED",
+        "left_path": "2",
+        "lexeme_id": "0000000000000000000000000000003X*W-eDJoaYHq6m9Ovw2Ag6S4gZD1csrc*c-l-x/+Z",
+        "occurrence_id": 3,
+        "right_path": "A",
+        "scope_path": "ROOT",
+        "surface": "Sqrt",
+        "token_state_root": "0000000000000000000000000000002/bA8+Ysou6Ctr02Av8V)lh+Ehy2rL)V8SZ0OK>zwV"
+      },
+      {
+        "discourse_history": [
+          "A",
+          "P",
+          "2",
+          "Sqrt"
+        ],
+        "grammar_role": "UNRESOLVED",
+        "left_path": "Sqrt",
+        "lexeme_id": "00000000000000000000000000000031bPLUnzhgIttTgu!l+cmWKPf1-I4haYy*XSIjsgzG",
+        "occurrence_id": 4,
+        "right_path": "B",
+        "scope_path": "ROOT",
+        "surface": "A",
+        "token_state_root": "0000000000000000000000000000001Ah(eKV47NqR3we=tZ)oDXynAgb9?d1ENxV=6*dDkB"
+      },
+      {
+        "discourse_history": [
+          "A",
+          "P",
+          "2",
+          "Sqrt",
+          "A"
+        ],
+        "grammar_role": "UNRESOLVED",
+        "left_path": "A",
+        "lexeme_id": "0000000000000000000000000000000947p^mtojOnj>e5tDue>cjlRvkff9uP!pc2FbYAZ7",
+        "occurrence_id": 5,
+        "right_path": "P",
+        "scope_path": "ROOT",
+        "surface": "B",
+        "token_state_root": "0000000000000000000000000000000zIBdBl6*YmkP/w)IpSL1hxTGubNghDb=CyX!+7et6"
+      },
+      {
+        "discourse_history": [
+          "A",
+          "P",
+          "2",
+          "Sqrt",
+          "A",
+          "B"
+        ],
+        "grammar_role": "UNRESOLVED",
+        "left_path": "B",
+        "lexeme_id": "0000000000000000000000000000003=vOD3QD)eR+JiDdBK-CCT*>g!TKayF+w^8BJbDD1V",
+        "occurrence_id": 6,
+        "right_path": "2",
+        "scope_path": "ROOT",
+        "surface": "P",
+        "token_state_root": "0000000000000000000000000000000sq0maFE5xuJeFl?Zq48CX8eu/hgGxpnOig9HFinyV"
+      },
+      {
+        "discourse_history": [
+          "A",
+          "P",
+          "2",
+          "Sqrt",
+          "A",
+          "B",
+          "P"
+        ],
+        "grammar_role": "UNRESOLVED",
+        "left_path": "P",
+        "lexeme_id": "0000000000000000000000000000000+kJ6W?u)F4JaZFZNWN7?!>9ggGHlPF?aG4W=*4?qG",
+        "occurrence_id": 7,
+        "right_path": "A",
+        "scope_path": "ROOT",
+        "surface": "2",
+        "token_state_root": "0000000000000000000000000000002V>qp^ojR1qKM!zDe(KPT1R3G8IuUkouWlT4/HYEKr"
+      },
+      {
+        "discourse_history": [
+          "A",
+          "P",
+          "2",
+          "Sqrt",
+          "A",
+          "B",
+          "P",
+          "2"
+        ],
+        "grammar_role": "UNRESOLVED",
+        "left_path": "2",
+        "lexeme_id": "00000000000000000000000000000031bPLUnzhgIttTgu!l+cmWKPf1-I4haYy*XSIjsgzG",
+        "occurrence_id": 8,
+        "right_path": "B",
+        "scope_path": "ROOT",
+        "surface": "A",
+        "token_state_root": "0000000000000000000000000000001=BnST=L+b*ff(+9O!ebh?77a1!Z?1VTY7F4*AfLfc"
+      },
+      {
+        "discourse_history": [
+          "A",
+          "P",
+          "2",
+          "Sqrt",
+          "A",
+          "B",
+          "P",
+          "2",
+          "A"
+        ],
+        "grammar_role": "UNRESOLVED",
+        "left_path": "A",
+        "lexeme_id": "0000000000000000000000000000000947p^mtojOnj>e5tDue>cjlRvkff9uP!pc2FbYAZ7",
+        "occurrence_id": 9,
+        "right_path": "P",
+        "scope_path": "ROOT",
+        "surface": "B",
+        "token_state_root": "0000000000000000000000000000003psQypB7=Lheo!y00y2U1q(69+9m-p7SfV=goh)yHY"
+      },
+      {
+        "discourse_history": [
+          "A",
+          "P",
+          "2",
+          "Sqrt",
+          "A",
+          "B",
+          "P",
+          "2",
+          "A",
+          "B"
+        ],
+        "grammar_role": "UNRESOLVED",
+        "left_path": "B",
+        "lexeme_id": "0000000000000000000000000000003=vOD3QD)eR+JiDdBK-CCT*>g!TKayF+w^8BJbDD1V",
+        "occurrence_id": 10,
+        "right_path": "4",
+        "scope_path": "ROOT",
+        "surface": "P",
+        "token_state_root": "0000000000000000000000000000002>9c0^yDb+cmEp7!hgIR59=FXg6TAu(O-He/EB6DT!"
+      },
+      {
+        "discourse_history": [
+          "A",
+          "P",
+          "2",
+          "Sqrt",
+          "A",
+          "B",
+          "P",
+          "2",
+          "A",
+          "B",
+          "P"
+        ],
+        "grammar_role": "UNRESOLVED",
+        "left_path": "P",
+        "lexeme_id": "0000000000000000000000000000002mex^AX=c2cBdXft2eBdTzdh4R-zcRRl7yMuGQ4hzO",
+        "occurrence_id": 11,
+        "right_path": "B",
+        "scope_path": "ROOT",
+        "surface": "4",
+        "token_state_root": "0000000000000000000000000000001vM^q5KAu+gjXeMfZsnjCAgiCb)^Av7Y^ptY(voMq6"
+      },
+      {
+        "discourse_history": [
+          "A",
+          "P",
+          "2",
+          "Sqrt",
+          "A",
+          "B",
+          "P",
+          "2",
+          "A",
+          "B",
+          "P",
+          "4"
+        ],
+        "grammar_role": "UNRESOLVED",
+        "left_path": "4",
+        "lexeme_id": "0000000000000000000000000000000947p^mtojOnj>e5tDue>cjlRvkff9uP!pc2FbYAZ7",
+        "occurrence_id": 12,
+        "right_path": "A",
+        "scope_path": "ROOT",
+        "surface": "B",
+        "token_state_root": "0000000000000000000000000000001OJk2nKzn41Zfg9YQgDrQ!kzfWb5Z8VuNnj4o20R3n"
+      },
+      {
+        "discourse_history": [
+          "A",
+          "P",
+          "2",
+          "Sqrt",
+          "A",
+          "B",
+          "P",
+          "2",
+          "A",
+          "B",
+          "P",
+          "4",
+          "B"
+        ],
+        "grammar_role": "UNRESOLVED",
+        "left_path": "B",
+        "lexeme_id": "00000000000000000000000000000031bPLUnzhgIttTgu!l+cmWKPf1-I4haYy*XSIjsgzG",
+        "occurrence_id": 13,
+        "right_path": "P",
+        "scope_path": "ROOT",
+        "surface": "A",
+        "token_state_root": "0000000000000000000000000000002F)MowJzrkxn9sCUtX7j7JF>VIt^yweCSVUhx/io9l"
+      },
+      {
+        "discourse_history": [
+          "A",
+          "P",
+          "2",
+          "Sqrt",
+          "A",
+          "B",
+          "P",
+          "2",
+          "A",
+          "B",
+          "P",
+          "4",
+          "B",
+          "A"
+        ],
+        "grammar_role": "UNRESOLVED",
+        "left_path": "A",
+        "lexeme_id": "0000000000000000000000000000003=vOD3QD)eR+JiDdBK-CCT*>g!TKayF+w^8BJbDD1V",
+        "occurrence_id": 14,
+        "right_path": "4",
+        "scope_path": "ROOT",
+        "surface": "P",
+        "token_state_root": "0000000000000000000000000000003F(eo-kj*bgZITSP!qc(s^SfJUbH)JHs*nh(qE+3eP"
+      },
+      {
+        "discourse_history": [
+          "A",
+          "P",
+          "2",
+          "Sqrt",
+          "A",
+          "B",
+          "P",
+          "2",
+          "A",
+          "B",
+          "P",
+          "4",
+          "B",
+          "A",
+          "P"
+        ],
+        "grammar_role": "UNRESOLVED",
+        "left_path": "P",
+        "lexeme_id": "0000000000000000000000000000002mex^AX=c2cBdXft2eBdTzdh4R-zcRRl7yMuGQ4hzO",
+        "occurrence_id": 15,
+        "right_path": "Sqrt",
+        "scope_path": "ROOT",
+        "surface": "4",
+        "token_state_root": "00000000000000000000000000000043iJ>sUY(BKvJ-JwmbH2squNP)JfA!3ycOhbb+k?By"
+      },
+      {
+        "discourse_history": [
+          "A",
+          "P",
+          "2",
+          "Sqrt",
+          "A",
+          "B",
+          "P",
+          "2",
+          "A",
+          "B",
+          "P",
+          "4",
+          "B",
+          "A",
+          "P",
+          "4"
+        ],
+        "grammar_role": "UNRESOLVED",
+        "left_path": "4",
+        "lexeme_id": "0000000000000000000000000000003X*W-eDJoaYHq6m9Ovw2Ag6S4gZD1csrc*c-l-x/+Z",
+        "occurrence_id": 16,
+        "right_path": "B",
+        "scope_path": "ROOT",
+        "surface": "Sqrt",
+        "token_state_root": "0000000000000000000000000000001YW66V^MWvyYUEr*fprlZx3cWUF?/FaXZM2Eh(4/MV"
+      },
+      {
+        "discourse_history": [
+          "A",
+          "P",
+          "2",
+          "Sqrt",
+          "A",
+          "B",
+          "P",
+          "2",
+          "A",
+          "B",
+          "P",
+          "4",
+          "B",
+          "A",
+          "P",
+          "4",
+          "Sqrt"
+        ],
+        "grammar_role": "UNRESOLVED",
+        "left_path": "Sqrt",
+        "lexeme_id": "0000000000000000000000000000000947p^mtojOnj>e5tDue>cjlRvkff9uP!pc2FbYAZ7",
+        "occurrence_id": 17,
+        "right_path": "A",
+        "scope_path": "ROOT",
+        "surface": "B",
+        "token_state_root": "0000000000000000000000000000002BohZUI6zYGY>QgE^kidKgReg1v=a/6AdpgkV**YUW"
+      },
+      {
+        "discourse_history": [
+          "A",
+          "P",
+          "2",
+          "Sqrt",
+          "A",
+          "B",
+          "P",
+          "2",
+          "A",
+          "B",
+          "P",
+          "4",
+          "B",
+          "A",
+          "P",
+          "4",
+          "Sqrt",
+          "B"
+        ],
+        "grammar_role": "UNRESOLVED",
+        "left_path": "B",
+        "lexeme_id": "00000000000000000000000000000031bPLUnzhgIttTgu!l+cmWKPf1-I4haYy*XSIjsgzG",
+        "occurrence_id": 18,
+        "right_path": "P",
+        "scope_path": "ROOT",
+        "surface": "A",
+        "token_state_root": "0000000000000000000000000000002-coDu8E9-FCvDPbTYmDCqw^QuycV^ktoR!SxjTrOS"
+      },
+      {
+        "discourse_history": [
+          "A",
+          "P",
+          "2",
+          "Sqrt",
+          "A",
+          "B",
+          "P",
+          "2",
+          "A",
+          "B",
+          "P",
+          "4",
+          "B",
+          "A",
+          "P",
+          "4",
+          "Sqrt",
+          "B",
+          "A"
+        ],
+        "grammar_role": "UNRESOLVED",
+        "left_path": "A",
+        "lexeme_id": "0000000000000000000000000000003=vOD3QD)eR+JiDdBK-CCT*>g!TKayF+w^8BJbDD1V",
+        "occurrence_id": 19,
+        "right_path": "2",
+        "scope_path": "ROOT",
+        "surface": "P",
+        "token_state_root": "0000000000000000000000000000004bZ!sd?^iJ=p8MafB(?PE*1^6k?y45W7^T=IH?B!fr"
+      },
+      {
+        "discourse_history": [
+          "A",
+          "P",
+          "2",
+          "Sqrt",
+          "A",
+          "B",
+          "P",
+          "2",
+          "A",
+          "B",
+          "P",
+          "4",
+          "B",
+          "A",
+          "P",
+          "4",
+          "Sqrt",
+          "B",
+          "A",
+          "P"
+        ],
+        "grammar_role": "UNRESOLVED",
+        "left_path": "P",
+        "lexeme_id": "0000000000000000000000000000000+kJ6W?u)F4JaZFZNWN7?!>9ggGHlPF?aG4W=*4?qG",
+        "occurrence_id": 20,
+        "right_path": "B",
+        "scope_path": "ROOT",
+        "surface": "2",
+        "token_state_root": "0000000000000000000000000000000j+X5bH/IBXxt7*FBZybHje79EU9vK^welfkLwG3ra"
+      },
+      {
+        "discourse_history": [
+          "A",
+          "P",
+          "2",
+          "Sqrt",
+          "A",
+          "B",
+          "P",
+          "2",
+          "A",
+          "B",
+          "P",
+          "4",
+          "B",
+          "A",
+          "P",
+          "4",
+          "Sqrt",
+          "B",
+          "A",
+          "P",
+          "2"
+        ],
+        "grammar_role": "UNRESOLVED",
+        "left_path": "2",
+        "lexeme_id": "0000000000000000000000000000000947p^mtojOnj>e5tDue>cjlRvkff9uP!pc2FbYAZ7",
+        "occurrence_id": 21,
+        "right_path": "P",
+        "scope_path": "ROOT",
+        "surface": "B",
+        "token_state_root": "0000000000000000000000000000004q-Ed9eLgV70IcZp=PUPqPT00*8oz)/h0/b/yb5-bB"
+      },
+      {
+        "discourse_history": [
+          "A",
+          "P",
+          "2",
+          "Sqrt",
+          "A",
+          "B",
+          "P",
+          "2",
+          "A",
+          "B",
+          "P",
+          "4",
+          "B",
+          "A",
+          "P",
+          "4",
+          "Sqrt",
+          "B",
+          "A",
+          "P",
+          "2",
+          "B"
+        ],
+        "grammar_role": "UNRESOLVED",
+        "left_path": "B",
+        "lexeme_id": "0000000000000000000000000000003=vOD3QD)eR+JiDdBK-CCT*>g!TKayF+w^8BJbDD1V",
+        "occurrence_id": 22,
+        "right_path": "2",
+        "scope_path": "ROOT",
+        "surface": "P",
+        "token_state_root": "000000000000000000000000000000318xu!SI^RC(hSdgbXsbQqethndECuo+RuME9GW93i"
+      },
+      {
+        "discourse_history": [
+          "A",
+          "P",
+          "2",
+          "Sqrt",
+          "A",
+          "B",
+          "P",
+          "2",
+          "A",
+          "B",
+          "P",
+          "4",
+          "B",
+          "A",
+          "P",
+          "4",
+          "Sqrt",
+          "B",
+          "A",
+          "P",
+          "2",
+          "B",
+          "P"
+        ],
+        "grammar_role": "UNRESOLVED",
+        "left_path": "P",
+        "lexeme_id": "0000000000000000000000000000000+kJ6W?u)F4JaZFZNWN7?!>9ggGHlPF?aG4W=*4?qG",
+        "occurrence_id": 23,
+        "right_path": "",
+        "scope_path": "ROOT",
+        "surface": "2",
+        "token_state_root": "0000000000000000000000000000004ncLD77DEizkAL?sZd5G+ft4M4sGQU+wfiD+CAGcan"
+      }
+    ]
+  },
+  "lo_shu_vm81_mapping": [
+    {
+      "column": 0,
+      "phase_mod72": 4,
+      "row": 0,
+      "value": 4,
+      "vm81_cell": 0
+    },
+    {
+      "column": 1,
+      "phase_mod72": 9,
+      "row": 0,
+      "value": 9,
+      "vm81_cell": 1
+    },
+    {
+      "column": 2,
+      "phase_mod72": 2,
+      "row": 0,
+      "value": 2,
+      "vm81_cell": 2
+    },
+    {
+      "column": 0,
+      "phase_mod72": 3,
+      "row": 1,
+      "value": 3,
+      "vm81_cell": 9
+    },
+    {
+      "column": 1,
+      "phase_mod72": 5,
+      "row": 1,
+      "value": 5,
+      "vm81_cell": 10
+    },
+    {
+      "column": 2,
+      "phase_mod72": 7,
+      "row": 1,
+      "value": 7,
+      "vm81_cell": 11
+    },
+    {
+      "column": 0,
+      "phase_mod72": 8,
+      "row": 2,
+      "value": 8,
+      "vm81_cell": 18
+    },
+    {
+      "column": 1,
+      "phase_mod72": 1,
+      "row": 2,
+      "value": 1,
+      "vm81_cell": 19
+    },
+    {
+      "column": 2,
+      "phase_mod72": 6,
+      "row": 2,
+      "value": 6,
+      "vm81_cell": 20
+    }
+  ],
+  "local_substitutions": {
+    "language": [
+      {
+        "carrier_sequence": [
+          7
+        ],
+        "direction": "EXPAND",
+        "mapping_root": "0000000000000000000000000000001^SmxMjgdZVyKoP9yIZO2kq6CpRJ)!E(R2jnrB4PVT",
+        "parent_scope": null,
+        "reversible": true,
+        "scope": "language",
+        "value": "constraint"
+      }
+    ],
+    "math": [
+      {
+        "carrier_sequence": [
+          0,
+          1
+        ],
+        "direction": "EXPAND",
+        "mapping_root": "0000000000000000000000000000001^0jwZHV>v6^xT5PeT>0O=TjvOd^h^cUWkt(YtjqSO",
+        "parent_scope": null,
+        "reversible": true,
+        "scope": "math",
+        "value": "=="
+      }
+    ]
+  },
+  "native_execution_authority": "PASS_080_ADMITTED_EXISTING_VM81_BINDING",
+  "pass081_execution_occurred": true,
+  "receipt": {
+    "closure_classification": 0,
+    "closure_status": "BOUNDED_INDETERMINATE",
+    "dependency_graph_root": "0000000000000000000000000000002kSpG5riykGk>!kLFe-1H(j!-OlhvM+XGK6DTQoInf",
+    "exact_source": "{A==P^2, Sqrt(A B)==P^2, A B==P^4, B A==P^4, Sqrt(B A)==P^2, B==P^2}",
+    "final_hash72_witness_root": "0000000000000000000000000000003>Hh?e/gbbYXmh8u3Cd+(Mj7rEdS/fDBmN4G=ZGI>>",
+    "fixed_point_or_periodicity_status": "BOUNDED_INDETERMINATE",
+    "gate_registry_root": "0000000000000000000000000000003EZ0o*0)7Bj7PnpGxYB200dDnlU8BvtGeJzOBCccQ9",
+    "iteration_count": 16,
+    "language_tensor_root": "0000000000000000000000000000000lYMayA3D*IIjQe=ZLziLu>H*vPTRR>9MBMPt=+QeY",
+    "lease_boundary": "SEQUENCE_1",
+    "lo_shu_vm81_mapping_root": "0000000000000000000000000000004gl?i8jPEA747QRJV>(nJc1EquEsJz9dOyDZd8TZNr",
+    "local_p_state_roots": [
+      "0000000000000000000000000000004Ffncsp>2AbPArxjDv-3hsUbfalh7-?7PknbV*WNwY",
+      "0000000000000000000000000000000DJssG5=phi5zy>==vQaI+T>2cAGzjTLl+NGZekN?n",
+      "0000000000000000000000000000002HdL1ioZAs-166aPJAsBq(eUPhPaLZCUJV3*yzPhp7",
+      "0000000000000000000000000000000X*Etz2(d2cWUNMRG(LK5yQti8qdON4a=ubaBvWXyR",
+      "0000000000000000000000000000002XUDe-MuMRa^*/9WQqsilOa5PQM8KWp^mg-6!TV4)f",
+      "0000000000000000000000000000001NkwAVnQlk1gNVqyRHj2n*IkA5xgSyast6cVNV>d?5"
+    ],
+    "local_substitution_mapping_roots": [
+      "0000000000000000000000000000001^0jwZHV>v6^xT5PeT>0O=TjvOd^h^cUWkt(YtjqSO",
+      "0000000000000000000000000000001^SmxMjgdZVyKoP9yIZO2kq6CpRJ)!E(R2jnrB4PVT"
+    ],
+    "native_binding_root": "0000000000000000000000000000000JVWIGKZkFpQaaK?93smmIw-Jx7^0iAiiqWAZC*(sB",
+    "parser_root": "0000000000000000000000000000001DRly0K!U/^VHMH)gk>075inMXCW3uF=UPOby-8q!^",
+    "pass080_admission_evidence": {
+      "admission_contract_root": "0000000000000000000000000000004v^Z(DwVygR5xz/>=WE7qg1oKtH4gf+7cx(Qe37H77",
+      "binding_root_hash72": "0000000000000000000000000000000JVWIGKZkFpQaaK?93smmIw-Jx7^0iAiiqWAZC*(sB",
+      "decision": "ADMIT_NATIVE_TRANSITION",
+      "evaluations": [
+        {
+          "expected_residue": "0",
+          "observed_residue": "0",
+          "relation_id": "P080_EQUALITY_A_P2",
+          "relation_root_hash72": "0000000000000000000000000000002uHV?8uyV/EN1KDS94yyArWj-TJY6JU3abolCzgwNV",
+          "status": "PASS"
+        },
+        {
+          "expected_residue": "0",
+          "observed_residue": "0",
+          "relation_id": "P080_EQUALITY_B_P2",
+          "relation_root_hash72": "0000000000000000000000000000002C05n)pSuol1L*Hq)zRlyRryYh>tWF7p)PbAp3(AUm",
+          "status": "PASS"
+        },
+        {
+          "expected_residue": "0",
+          "observed_residue": "0",
+          "relation_id": "P080_ORDERED_AB_P4",
+          "relation_root_hash72": "0000000000000000000000000000001q8KE(SPk5(>ePf/a4-VoP3ut5G9FSAQMvjBd!+0jT",
+          "status": "PASS"
+        },
+        {
+          "expected_residue": "0",
+          "observed_residue": "0",
+          "relation_id": "P080_ORDERED_BA_P4",
+          "relation_root_hash72": "0000000000000000000000000000003SViVQw63zwU>WPwYPIdoz!)WIz/O(Q?q9nBzj5/ob",
+          "status": "PASS"
+        },
+        {
+          "expected_residue": "0",
+          "observed_residue": "0",
+          "relation_id": "P080_RADICAL_AB_P2",
+          "relation_root_hash72": "0000000000000000000000000000002>sdvYwK7)euJ1kSHaUtekDpA4-rn3zlQ6M6z4M/o3",
+          "status": "PASS"
+        },
+        {
+          "expected_residue": "0",
+          "observed_residue": "0",
+          "relation_id": "P080_RADICAL_BA_P2",
+          "relation_root_hash72": "0000000000000000000000000000002)ouUC1dLnxr)Pz5A0MsCDsPGtWMJec-mfy2WrKjGV",
+          "status": "PASS"
+        },
+        {
+          "expected_residue": "0",
+          "observed_residue": "0",
+          "relation_id": "P080_RECIPROCAL_NORMALIZATION",
+          "relation_root_hash72": "0000000000000000000000000000004zS*R)wG)>S/dvd-ZqabRoIBXeMfxpsPlA6C)Ppp+Q",
+          "status": "PASS"
+        },
+        {
+          "expected_residue": "0",
+          "observed_residue": "0",
+          "relation_id": "P080_NATIVE_POLYNOMIAL_GATE_R1",
+          "relation_root_hash72": "0000000000000000000000000000002DYL)^9epHPMf-+!5XqTfW(5IZTShleEX60AUPb-1k",
+          "status": "PASS"
+        },
+        {
+          "expected_residue": "0",
+          "observed_residue": "0",
+          "relation_id": "P080_NATIVE_POLYNOMIAL_GATE_R2",
+          "relation_root_hash72": "0000000000000000000000000000004pfvoX2rFo/ye*NEMT+f*rHl1*nF1t29rLoOFWYlfR",
+          "status": "PASS"
+        },
+        {
+          "expected_residue": "0",
+          "observed_residue": "0",
+          "relation_id": "P080_UNIT_XY",
+          "relation_root_hash72": "0000000000000000000000000000003bJ0ZfEFJTDS7DAc^aGxuvzCU!w3aeyVMcN3u4h2er",
+          "status": "PASS"
+        },
+        {
+          "expected_residue": "0",
+          "observed_residue": "0",
+          "relation_id": "P080_CANONICAL_SCALE_POLYNOMIAL",
+          "relation_root_hash72": "00000000000000000000000000000008siTmGFW?z?Wqy-iijkhRhXbc3Z-30OaEG4X3f6kY",
+          "status": "PASS"
+        },
+        {
+          "expected_residue": "0",
+          "observed_residue": "0",
+          "relation_id": "P080_CANONICAL_SCALE_RATIO",
+          "relation_root_hash72": "0000000000000000000000000000003cepvMhRGJC=DXBohRmy/AdfEBYSFT7Omx67kc-C?m",
+          "status": "PASS"
+        },
+        {
+          "expected_residue": "0",
+          "observed_residue": "0",
+          "relation_id": "P080_M_RECURRENCE",
+          "relation_root_hash72": "0000000000000000000000000000001MqL*vyfsi3xgQmMrrgLyOX-0A9dal*ICQptMfWaC9",
+          "status": "PASS"
+        },
+        {
+          "expected_residue": "0",
+          "observed_residue": "0",
+          "relation_id": "P080_PLASTIC_RECURRENCE",
+          "relation_root_hash72": "0000000000000000000000000000004yyzL/cU/W7KrU)+nJE*)eQ)-QgO=fYQyhX14GI6L7",
+          "status": "PASS"
+        },
+        {
+          "expected_residue": "0",
+          "observed_residue": "0",
+          "relation_id": "P080_QGU_RATIONAL_GATE",
+          "relation_root_hash72": "00000000000000000000000000000028ZtNXh?qgboB=0W4dkT/eT?(MXVLFbP/3IsTz7+4E",
+          "status": "PASS"
+        },
+        {
+          "expected_residue": "NONZERO",
+          "observed_residue": "1",
+          "relation_id": "P080_WAVE_DENOMINATOR",
+          "relation_root_hash72": "00000000000000000000000000000039qvH4QQapXi+wmc1fVoPnv-0EBd9-99TRqF1!vj0W",
+          "status": "PASS"
+        },
+        {
+          "expected_residue": "0",
+          "observed_residue": "0",
+          "relation_id": "P080_LO_SHU_9_CELL",
+          "relation_root_hash72": "0000000000000000000000000000001Us0j7?ceai^hQq2Sv*YPZaVNmB0NAG-jfG*5!I1+Q",
+          "status": "PASS"
+        },
+        {
+          "expected_residue": "0",
+          "observed_residue": "0",
+          "relation_id": "P080_LO_SHU_ROWS",
+          "relation_root_hash72": "0000000000000000000000000000003fnNa6cmFyykW7ihUpiWNsBJ(bl^9m2F0e^BU/xO=D",
+          "status": "PASS"
+        },
+        {
+          "expected_residue": "0",
+          "observed_residue": "0",
+          "relation_id": "P080_LO_SHU_COLUMNS",
+          "relation_root_hash72": "000000000000000000000000000000290H!OHF*J9m-X(QlrRvWc7/0tmTVFzCs-ltgeWXcH",
+          "status": "PASS"
+        },
+        {
+          "expected_residue": "0",
+          "observed_residue": "0",
+          "relation_id": "P080_LO_SHU_DIAGONALS",
+          "relation_root_hash72": "0000000000000000000000000000002o8mFXUZiV/TJyls7=E4YToBs8f3=e/owUhFT2DVIb",
+          "status": "PASS"
+        },
+        {
+          "expected_residue": "0",
+          "observed_residue": "0",
+          "relation_id": "P080_SEVEN_CELL_GATE",
+          "relation_root_hash72": "0000000000000000000000000000001T0gVfERh8)j7VTeD+lL!Tt-F7CH*(p0g67sry^X>Z",
+          "status": "PASS"
+        },
+        {
+          "expected_residue": "0",
+          "observed_residue": "0",
+          "relation_id": "P080_ORIENTATION_U72",
+          "relation_root_hash72": "0000000000000000000000000000000s2m(093QXVj/ziYfgd!uZaOdwo*7!zWJ4jRTtme2L",
+          "status": "PASS"
+        }
+      ],
+      "native_execution_occurred": false,
+      "native_state_mutated": false,
+      "pre_state_root": "00000000000000000000000000000027pk=E/BNMUzI-UN83qKxCk6=ubKjzxJO0hI)8IhOK",
+      "reason": "ALL_REQUIRED_RELATIONS_AND_AUTHORITY_CONDITIONS_PASS",
+      "receipt_root_hash72": "0000000000000000000000000000003tz2p(t07M-K6CBIXf6AxShRS3mr45)8Hq=?xU9iWQ",
+      "schema": "HHS_NATIVE_TRANSITION_ADMISSION_RECEIPT_V1"
+    },
+    "pass080_parent_root": "0000000000000000000000000000003tz2p(t07M-K6CBIXf6AxShRS3mr45)8Hq=?xU9iWQ",
+    "pass081_specification": "HHS_EXACT_RECURSIVE_SYMBOLIC_CONSTRAINT_RUNTIME_V1",
+    "rejection_evidence": [],
+    "schema": "HHS_PASS_081_EXECUTION_RECEIPT_V1",
+    "source_expression_identity": "0000000000000000000000000000002-8rPUV9vK5UYt9X(RR*O5W!^6fE>*RjEztVp+Vuu/",
+    "universal_invariant_registry_root": "0000000000000000000000000000002Bo+F/xT^hkdJVr/2IrDIz/Q7CPXwwb>E?VbHYOnVH",
+    "unresolved_dependencies": [
+      [
+        "g1",
+        "g2"
+      ],
+      [
+        "g1",
+        "g3"
+      ],
+      [
+        "g1",
+        "g4"
+      ],
+      [
+        "g1",
+        "g5"
+      ],
+      [
+        "g1",
+        "g6"
+      ],
+      [
+        "g2",
+        "g3"
+      ],
+      [
+        "g2",
+        "g4"
+      ],
+      [
+        "g2",
+        "g5"
+      ],
+      [
+        "g2",
+        "g6"
+      ],
+      [
+        "g3",
+        "g4"
+      ],
+      [
+        "g3",
+        "g5"
+      ],
+      [
+        "g3",
+        "g6"
+      ],
+      [
+        "g4",
+        "g5"
+      ],
+      [
+        "g4",
+        "g6"
+      ],
+      [
+        "g5",
+        "g6"
+      ]
+    ]
+  },
+  "schema": "HHS_PASS_081_EXECUTION_RESULT_V1",
+  "state_iteration_roots": [
+    "0000000000000000000000000000004cegtv!orveoArE3SghhlT!iSz+rJK8RuDHqiLVj5L",
+    "0000000000000000000000000000004e3(dDcCWry5plDPhH4^5/ghLrSyh8ak^Gcmo!84i0",
+    "0000000000000000000000000000004ea=o8)21n5Z(8Y=Uav!1bUxHEn>AsfMejyO70aheA",
+    "0000000000000000000000000000002vhF!T6=R!0eN8kn+6)Ep0s*9?YRN8AY)OHGVeUjio",
+    "0000000000000000000000000000000sa)XST9EejraGd+tDU0EuAGTAPo8-g^R1i/wy(n^4",
+    "0000000000000000000000000000000wrfdKDT(B)afuZsI4CLj4f!-Y?DKFG+zSl^O^NWO?",
+    "0000000000000000000000000000004aN^kaBO?7UcRBtXyoL3S>CG-ddva8M8sSa!!x4>kN",
+    "0000000000000000000000000000003oO=X!8^L4RVpCdpHiq*kl4xu!37WqWZ*tLDQQeq2t",
+    "00000000000000000000000000000024h=)Jz)8W-r-MZN!kZ9TbdC2^nhe*>Dnvx=F->uLK",
+    "0000000000000000000000000000001k*cVDMWNVM2hia!F/>Z7Yno2+qGC6BTaLax4fh8Is",
+    "0000000000000000000000000000001>3YZ-io!jrse7RkUIyT60/dn1X(qZMb)aC9JI)7lv",
+    "0000000000000000000000000000004Cb4FCKGxCPVApTWGbO=EEH-MiS+aIHFL4?fIT24!8",
+    "0000000000000000000000000000003NdoeJ5BU3/tcVi65ZTxx-H0t76E78-w=J/OZ1Pmfj",
+    "0000000000000000000000000000002a2gzkBO0A0Qme!g4WIhXEvV4fDgbHQ*w/)Vd(^umN",
+    "0000000000000000000000000000001ZW2kYGmT?PVLTyIjemxGFzNqKfdmjXmOZ0N5^*q*V",
+    "0000000000000000000000000000002QxgnarI+J5-)nPTz(Cj191zuigbSNbbt5j-pO2U5("
+  ],
+  "status": "BOUNDED_INDETERMINATE",
+  "universal_registry": {
+    "identities": {
+      "A": "0000000000000000000000000000000uOKiBzvr2s^CU4^u2r19+E=EbAecyTKRQOQ!6fLr1",
+      "B": "00000000000000000000000000000037RA=Z)VI97OYNQll?ssTXs*dXQ*OXpmoWr4iV0=Z1"
+    },
+    "occurrences": [
+      {
+        "identity_root": "0000000000000000000000000000000uOKiBzvr2s^CU4^u2r19+E=EbAecyTKRQOQ!6fLr1",
+        "name": "A",
+        "occurrence_id": 0,
+        "occurrence_root": "00000000000000000000000000000034CO8LsfJW5SWMLPBRwX>R*S+/givgt27Ij9ORi=m6",
+        "span": [
+          1,
+          2
+        ]
+      },
+      {
+        "identity_root": "0000000000000000000000000000000uOKiBzvr2s^CU4^u2r19+E=EbAecyTKRQOQ!6fLr1",
+        "name": "A",
+        "occurrence_id": 3,
+        "occurrence_root": "00000000000000000000000000000008NgCNKAV8Ig^vhc*On/D!RHxFKPK6rhoq6amU?!-u",
+        "span": [
+          14,
+          15
+        ]
+      },
+      {
+        "identity_root": "00000000000000000000000000000037RA=Z)VI97OYNQll?ssTXs*dXQ*OXpmoWr4iV0=Z1",
+        "name": "B",
+        "occurrence_id": 4,
+        "occurrence_root": "0000000000000000000000000000001CyHmaCuId8-=h0R0Kh6jc!21-mB!dsCkHWHI>i)qK",
+        "span": [
+          16,
+          17
+        ]
+      },
+      {
+        "identity_root": "0000000000000000000000000000000uOKiBzvr2s^CU4^u2r19+E=EbAecyTKRQOQ!6fLr1",
+        "name": "A",
+        "occurrence_id": 6,
+        "occurrence_root": "00000000000000000000000000000018ww4jEB^y)y>kd+FQ/a^uDm1nZ9oSTzgCs++CDVg6",
+        "span": [
+          25,
+          26
+        ]
+      },
+      {
+        "identity_root": "00000000000000000000000000000037RA=Z)VI97OYNQll?ssTXs*dXQ*OXpmoWr4iV0=Z1",
+        "name": "B",
+        "occurrence_id": 7,
+        "occurrence_root": "0000000000000000000000000000003*L3nSrOjPLJqsIY*+aRZjDyu^M4YU*g+5!4XbU3/S",
+        "span": [
+          27,
+          28
+        ]
+      },
+      {
+        "identity_root": "00000000000000000000000000000037RA=Z)VI97OYNQll?ssTXs*dXQ*OXpmoWr4iV0=Z1",
+        "name": "B",
+        "occurrence_id": 9,
+        "occurrence_root": "0000000000000000000000000000003c0cWa*cRnR-ka3*=5Z>wmvBe9+?jRvF)Fy?In>-8y",
+        "span": [
+          35,
+          36
+        ]
+      },
+      {
+        "identity_root": "0000000000000000000000000000000uOKiBzvr2s^CU4^u2r19+E=EbAecyTKRQOQ!6fLr1",
+        "name": "A",
+        "occurrence_id": 10,
+        "occurrence_root": "0000000000000000000000000000000kiruFm3AnB)ImpU5WKl787V6RL!xO+lrq4BH/rXWE",
+        "span": [
+          37,
+          38
+        ]
+      },
+      {
+        "identity_root": "00000000000000000000000000000037RA=Z)VI97OYNQll?ssTXs*dXQ*OXpmoWr4iV0=Z1",
+        "name": "B",
+        "occurrence_id": 13,
+        "occurrence_root": "0000000000000000000000000000001XKnOy*4?1JKB4wZfH?kO>eR5^?=!M7WfszXBLJ4O?",
+        "span": [
+          50,
+          51
+        ]
+      },
+      {
+        "identity_root": "0000000000000000000000000000000uOKiBzvr2s^CU4^u2r19+E=EbAecyTKRQOQ!6fLr1",
+        "name": "A",
+        "occurrence_id": 14,
+        "occurrence_root": "0000000000000000000000000000004K*>fiXfx-U8wm88^ic/KZxutqfTU!S>=nwk3Rb(ru",
+        "span": [
+          52,
+          53
+        ]
+      },
+      {
+        "identity_root": "00000000000000000000000000000037RA=Z)VI97OYNQll?ssTXs*dXQ*OXpmoWr4iV0=Z1",
+        "name": "B",
+        "occurrence_id": 16,
+        "occurrence_root": "0000000000000000000000000000001L18GIdn5P7CUv>CRBjcyE!aScv^k(XTcUCq9cCrGK",
+        "span": [
+          61,
+          62
+        ]
+      }
+    ]
+  }
+}

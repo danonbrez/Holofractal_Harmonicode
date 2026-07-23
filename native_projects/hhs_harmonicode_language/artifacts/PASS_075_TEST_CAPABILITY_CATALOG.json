@@ -1,0 +1,59 @@
+{
+  "catalog_is_repository_relative": true,
+  "catalog_root_hash72": "0000000000000000000000000000000LApJ^7BlJKb4!yXEU1cSz!BW7rrXYmEbMP/2eW*6g",
+  "schema": "HHS_TEST_CAPABILITY_CATALOG_PASS_075_V1",
+  "tests": [
+    {
+      "dimensions": [
+        "PARSER",
+        "TYPED_IR",
+        "SOURCE_SPAN",
+        "LINEAGE",
+        "REPLAY"
+      ],
+      "path": "tests/test_hhs_pass075_harmonicode_language_service_v1.py",
+      "priority": 100,
+      "test_id": "test:pass075:language-service"
+    },
+    {
+      "dimensions": [
+        "UNIFIED_API",
+        "AUTHORITY",
+        "HANDOFF",
+        "REPLAY"
+      ],
+      "path": "tests/test_hhs_pass074_unified_ide_workspace_v1.py",
+      "priority": 95,
+      "test_id": "test:pass074:workspace-protocol"
+    },
+    {
+      "dimensions": [
+        "PARSER",
+        "CONSTRAINT_GRAPH",
+        "ORDERED_PRODUCT"
+      ],
+      "path": "tests/test_hhs_live_interpreter_v1.py",
+      "priority": 80,
+      "test_id": "test:legacy:harmonicode-interpreter"
+    },
+    {
+      "dimensions": [
+        "ORDERED_PRODUCT",
+        "RECIPROCITY"
+      ],
+      "path": "tests/test_hhs_global_reciprocal_contract_topology_pass062_v1.py",
+      "priority": 70,
+      "test_id": "test:pass062:reciprocal-topology"
+    },
+    {
+      "dimensions": [
+        "LO_SHU",
+        "THETA15",
+        "QUDIT81"
+      ],
+      "path": "tests/test_hhs_three_lane_81_cell_qudit_kernel_pass068_v1.py",
+      "priority": 60,
+      "test_id": "test:pass068:qudit-kernel"
+    }
+  ]
+}

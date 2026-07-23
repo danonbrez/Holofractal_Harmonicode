@@ -1,0 +1,94 @@
+{
+  "workloads": [
+    {
+      "name": "Minimal valid dictionary",
+      "root_hash72": "0000000000000000000000000000002mUypaSc(H6kbov0=(eCgZMLr4JTDpUNebH24dRfCn",
+      "workload_id": "W105-01"
+    },
+    {
+      "name": "Full declaration suite",
+      "root_hash72": "0000000000000000000000000000002?6HefUk>5^n7eywxAXaK1(waQ5gtR!qW(1M2YMJnQ",
+      "workload_id": "W105-02"
+    },
+    {
+      "name": "Canonical formatting",
+      "root_hash72": "00000000000000000000000000000011a3cDzrq*CSVNDWC=72EmfjIzk6BN6x9yIZf8cZes",
+      "workload_id": "W105-03"
+    },
+    {
+      "name": "Raw-source distinction",
+      "root_hash72": "0000000000000000000000000000001oYA*42Oi)-kVr*yj+*)QSI5Z-vHeLsP>Hb8?rT6kX",
+      "workload_id": "W105-04"
+    },
+    {
+      "name": "Unicode grammar enforcement",
+      "root_hash72": "0000000000000000000000000000000yWw1NAK2>cybb9bD9Rb4S/?aiV5KoGBSyvjDHI!c!",
+      "workload_id": "W105-05"
+    },
+    {
+      "name": "Template syntax enforcement",
+      "root_hash72": "00000000000000000000000000000009?3dkh=g49sbJ/i2xnCzvY1x+Z5xsK)oty7Z-olKS",
+      "workload_id": "W105-06"
+    },
+    {
+      "name": "Scope enforcement",
+      "root_hash72": "0000000000000000000000000000001Z*(HTCu6A^*ghPmS)Y-1?-FEGCKt/>Ok/=YG4N80=",
+      "workload_id": "W105-07"
+    },
+    {
+      "name": "Import locking",
+      "root_hash72": "0000000000000000000000000000000U1vga-0?>PVjqyOeQf=Z5Xka?Mmb/5TgEda3oq/)!",
+      "workload_id": "W105-08"
+    },
+    {
+      "name": "Versioned inheritance",
+      "root_hash72": "0000000000000000000000000000003OY7XNzvD41nxzdhK79D-E-aIoiAhn(K3=ka8r67Dh",
+      "workload_id": "W105-09"
+    },
+    {
+      "name": "Conflict-preserving merge",
+      "root_hash72": "0000000000000000000000000000004mck3ZJsP6w4s9*mIFNq1vwTCPf7mn4qS=YZI2Tdf+",
+      "workload_id": "W105-10"
+    },
+    {
+      "name": "Type mismatch diagnostics",
+      "root_hash72": "0000000000000000000000000000003a>BZJrT8x(T*ikN^lKxS=9vxvV8HtpxPxbaEHDcUf",
+      "workload_id": "W105-11"
+    },
+    {
+      "name": "Diagnostic recovery",
+      "root_hash72": "0000000000000000000000000000000R6YORg*EC/cS(C3nY+sQ?je!IU)pQ2f)5CCDN^O^V",
+      "workload_id": "W105-12"
+    },
+    {
+      "name": "Source-to-AST replay",
+      "root_hash72": "0000000000000000000000000000002J1Bknwdf*t+n6(qvUF5G*Cn?rPS1cdAkC9I>HFrOS",
+      "workload_id": "W105-13"
+    },
+    {
+      "name": "AST serialization replay",
+      "root_hash72": "000000000000000000000000000000389yYjX?ZDOmdyQtknMzo^CskyJS4BhMsXwWuDayqo",
+      "workload_id": "W105-14"
+    },
+    {
+      "name": "Historical syntax version",
+      "root_hash72": "0000000000000000000000000000003Pwv>7ahPd4XmoT?Pnk9YnTnpWg!YoB?=5TSfi>5?D",
+      "workload_id": "W105-15"
+    },
+    {
+      "name": "Syntax migration",
+      "root_hash72": "0000000000000000000000000000000hM(?BBcgNpR)gPNNGe>OHnb/tT-BV^AzCd/^c*KLP",
+      "workload_id": "W105-16"
+    },
+    {
+      "name": "Generated dictionary validation",
+      "root_hash72": "0000000000000000000000000000002c05Uiy!(vHK7XPXiAv2cqTza2Edi/)mA^d^oDpdNH",
+      "workload_id": "W105-17"
+    },
+    {
+      "name": "Cold-boot syntax reconstruction",
+      "root_hash72": "0000000000000000000000000000000ZQseABhpWF^tPM+4^1lu+DgDMbUBuVm*S/SuzvBl(",
+      "workload_id": "W105-18"
+    }
+  ]
+}

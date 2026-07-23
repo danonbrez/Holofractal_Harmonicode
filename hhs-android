@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+set -eu
+ROOT=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+export PYTHONPATH="$ROOT${PYTHONPATH:+:$PYTHONPATH}"
+exec python -m hhs_runtime.pass148.cli "$@"

@@ -1,0 +1,26 @@
+{
+  "schema": "HHS_PASS_107_RELEASE_MANIFEST_V1",
+  "pass_id": "PASS_107",
+  "parent_pass": "PASS_106",
+  "parent_release_root_hash72": "0000000000000000000000000000003sQUh3VtPpar7D!XHIxtOmb>xuRCF2VZQX)WEfJEk8",
+  "implementation_module": "hhs_runtime/hhs_pass107_witnessed_dependency_repair_v1.py",
+  "test_module": "tests/test_hhs_pass107_witnessed_dependency_repair_v1.py",
+  "service_name": "runtime.witnessed_dependency_repair.pass107",
+  "observed_failure_root_hash72": "0000000000000000000000000000002KnoyncuDpkYh(yD9XGrBBH5QK7TxF6xlNmoZ9N^w8",
+  "root_cause_receipt_root_hash72": "0000000000000000000000000000003MnKmK!0p3pq!/tUhkRGtIcgls>FoH^2Yzw3D+og?M",
+  "repair_obligation_root_hash72": "0000000000000000000000000000003HfqbWT0Qf^E9uoQ^9Ve=dvVs(qfxABN>8R+PW70qc",
+  "failed_repair_rollback_root_hash72": "00000000000000000000000000000028zbH^9ycd+eZ+VnoNyS*n5>emzZweSc>IP-DqInWx",
+  "repair_closure_root_hash72": "0000000000000000000000000000001A/iyCeev)QMn0QwKcuhx>!gv9Cad21gSZVLxaS58Q",
+  "new_capability_admission_root_hash72": "0000000000000000000000000000002QVG=XG6(-DT1y4r)I(lQbNUuWXt14LFbh6r(sQ=I8",
+  "focused_tests": {
+    "pass107": 8,
+    "pass106": 7,
+    "pass105_6": 4,
+    "total": 19,
+    "passed": 19
+  },
+  "mock_components": 0,
+  "parallel_repair_implementation_used": false,
+  "status": "REPAIRED_AND_PRODUCTION_VALIDATED",
+  "release_root_hash72": "0000000000000000000000000000002Xd0i*!df62Rg=b5gy??ArZvRHz)GTVQQEjFzZysa("
+}

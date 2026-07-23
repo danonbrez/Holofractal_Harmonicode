@@ -1,0 +1,7 @@
+dictionary hhs.phase.gear version 1 {
+    symbol Ψ : CONSTRAINT_OPERATOR := ref (hhs.operator.psi);
+    string phase_name : CANONICAL_STRING := "reciprocal phase";
+    template normalize_lane(lane : LANE_REFERENCE, phase : U72_PHASE) -> HARMONICODE_SOURCE_STRING := t"Normalize ${lane} at ${phase}.";
+    phrase "opposite phase" : SEMANTIC_REFERENCE := ref (hhs.phase.opposite);
+    alias ↔ -> ref (hhs.relation.reciprocal);
+}

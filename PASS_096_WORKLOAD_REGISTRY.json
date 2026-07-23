@@ -1,0 +1,117 @@
+{
+  "schema": "HHS_PASS_096_WORKLOAD_REGISTRY_V1",
+  "workloads": [
+    {
+      "authority": "CALIBRATION_ONLY",
+      "name": "Harmonicode to STEM temperature sweep",
+      "schema": "HHS_PASS_096_WORKLOAD_V1",
+      "workload_id": "W96-01",
+      "workload_root_hash72": "0000000000000000000000000000003YIO05c7KOKLK6pe(oZ)qecShL8B1hQ?UX(DPs66aG"
+    },
+    {
+      "authority": "CALIBRATION_ONLY",
+      "name": "STEM to common language",
+      "schema": "HHS_PASS_096_WORKLOAD_V1",
+      "workload_id": "W96-02",
+      "workload_root_hash72": "0000000000000000000000000000000=LdED0hFPuCGZI-WCvJX7-Pe3x2x?6H^+NjuKOr2i"
+    },
+    {
+      "authority": "CALIBRATION_ONLY",
+      "name": "Common to Harmonicode reconstruction",
+      "schema": "HHS_PASS_096_WORKLOAD_V1",
+      "workload_id": "W96-03",
+      "workload_root_hash72": "00000000000000000000000000000005LUhADFeMZhl!q19GUbWV2HE4VE+p/TH70?ip1AUW"
+    },
+    {
+      "authority": "CALIBRATION_ONLY",
+      "name": "Reciprocal gear mythopoetic allegory",
+      "schema": "HHS_PASS_096_WORKLOAD_V1",
+      "workload_id": "W96-04",
+      "workload_root_hash72": "0000000000000000000000000000001m8f-^>loD-7B8UDrN*L3czugza+Wp0yPDy4g7sWgx"
+    },
+    {
+      "authority": "CALIBRATION_ONLY",
+      "name": "Cross-agent allegory reconstruction",
+      "schema": "HHS_PASS_096_WORKLOAD_V1",
+      "workload_id": "W96-05",
+      "workload_root_hash72": "0000000000000000000000000000003=M2Ff0?MkQ=gSdLs^Chz9g7THfA)elbEP=yu+1y/5"
+    },
+    {
+      "authority": "CALIBRATION_ONLY",
+      "name": "Prompt response prompt reconstruction",
+      "schema": "HHS_PASS_096_WORKLOAD_V1",
+      "workload_id": "W96-06",
+      "workload_root_hash72": "0000000000000000000000000000003P-m)56PQoFR1QV*pZ>Y9BQFoHHiYS3HFye05YYCD("
+    },
+    {
+      "authority": "CALIBRATION_ONLY",
+      "name": "Forward cause reverse candidate antecedents",
+      "schema": "HHS_PASS_096_WORKLOAD_V1",
+      "workload_id": "W96-07",
+      "workload_root_hash72": "0000000000000000000000000000000Wn8T!CTS/2Rn1*roE)7LoJR>C9PCyzW/zhQv?>45H"
+    },
+    {
+      "authority": "CALIBRATION_ONLY",
+      "name": "Noncommutative history through registers",
+      "schema": "HHS_PASS_096_WORKLOAD_V1",
+      "workload_id": "W96-08",
+      "workload_root_hash72": "0000000000000000000000000000000Quu>zaGG6a(GdfcY^p-zv>7lrjPoGv(4N/HYfYyhZ"
+    },
+    {
+      "authority": "CALIBRATION_ONLY",
+      "name": "Token-window sweep",
+      "schema": "HHS_PASS_096_WORKLOAD_V1",
+      "workload_id": "W96-09",
+      "workload_root_hash72": "00000000000000000000000000000030jpeuwds-Cc43rSy)(IG4VwKDVXue!-hAWSSZaJ/V"
+    },
+    {
+      "authority": "CALIBRATION_ONLY",
+      "name": "Critical invariant placement",
+      "schema": "HHS_PASS_096_WORKLOAD_V1",
+      "workload_id": "W96-10",
+      "workload_root_hash72": "0000000000000000000000000000002GTt21znmhIsR-M8>1(p4A01VS)/qy37a=Wh7AZv)v"
+    },
+    {
+      "authority": "CALIBRATION_ONLY",
+      "name": "Sliding window versus semantic capsule",
+      "schema": "HHS_PASS_096_WORKLOAD_V1",
+      "workload_id": "W96-11",
+      "workload_root_hash72": "0000000000000000000000000000003qmT?qe)-7HFvfr!*=P9Y/4eJs+2eZKo*rvMbl6AYa"
+    },
+    {
+      "authority": "CALIBRATION_ONLY",
+      "name": "Ten recursive cycles",
+      "schema": "HHS_PASS_096_WORKLOAD_V1",
+      "workload_id": "W96-12",
+      "workload_root_hash72": "0000000000000000000000000000001YfT(bNDX(*>HR6f?!n90HxsD5wuZmWO(bnYPviOFs"
+    },
+    {
+      "authority": "CALIBRATION_ONLY",
+      "name": "High-temperature metaphor reconstruction",
+      "schema": "HHS_PASS_096_WORKLOAD_V1",
+      "workload_id": "W96-13",
+      "workload_root_hash72": "0000000000000000000000000000003QHuLAoaWMKa3g6ID5cRoLnS-B!T6TVh3o6g4qTDX6"
+    },
+    {
+      "authority": "CALIBRATION_ONLY",
+      "name": "Ambiguity-preserving translations",
+      "schema": "HHS_PASS_096_WORKLOAD_V1",
+      "workload_id": "W96-14",
+      "workload_root_hash72": "0000000000000000000000000000002xi)IoKOJQ3q6>>S/ewyup0FLgBN9taF*F/fAak?vK"
+    },
+    {
+      "authority": "CALIBRATION_ONLY",
+      "name": "Cross-agent forward/backward",
+      "schema": "HHS_PASS_096_WORKLOAD_V1",
+      "workload_id": "W96-15",
+      "workload_root_hash72": "0000000000000000000000000000002^A7EAsJNn3!flm?5lfm4>0Z19Y)0Nq*Qtj6TYdpji"
+    },
+    {
+      "authority": "CALIBRATION_ONLY",
+      "name": "Pattern-naive versus pattern-aware",
+      "schema": "HHS_PASS_096_WORKLOAD_V1",
+      "workload_id": "W96-16",
+      "workload_root_hash72": "00000000000000000000000000000013w8sgb!Qw!Mlu/l0QLp+2qdTg+fKpoywvW3FAr9!O"
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "encoding": "UTF-8",
+  "grammar_root_hash72": "00000000000000000000000000000037HOg=la)X9pg?z*PJr^+cW2ua)XPmcKu*h^FbbUW4",
+  "parser_phases": [
+    "UTF8",
+    "UNICODE",
+    "LEX",
+    "PARSE",
+    "TYPE",
+    "SCOPE",
+    "BINDING",
+    "DEPENDENCY",
+    "AUTHORITY",
+    "SERIALIZE"
+  ],
+  "reserved_keywords": [
+    "alias",
+    "as",
+    "bind",
+    "constant",
+    "dictionary",
+    "extends",
+    "import",
+    "invoke",
+    "phrase",
+    "rebind",
+    "ref",
+    "root",
+    "scope",
+    "string",
+    "symbol",
+    "template",
+    "variable",
+    "version"
+  ],
+  "schema": "HHS_HARMONICODE_DICTIONARY_SYNTAX_SPECIFICATION_V1",
+  "syntax_specification_root_hash72": "0000000000000000000000000000003+QQN5aS3-7YULKG2z/K1f!=yENE6qESX*cvn3Qa^?",
+  "syntax_version": "1.0",
+  "unicode_normalization": "NFC"
+}

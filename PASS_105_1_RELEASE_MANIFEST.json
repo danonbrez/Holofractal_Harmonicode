@@ -1,0 +1,25 @@
+{
+  "schema": "HHS_PASS_105_1_RELEASE_MANIFEST_V1",
+  "pass_id": "PASS_105_1",
+  "parent_pass105_release_root_hash72": "0000000000000000000000000000002)CqhZmaZ(-xO=vbRAovI=KhHFQ5wYDIEPz1k!!>Sq",
+  "syntax_version": "1.0",
+  "parse_replay_exact": true,
+  "serialization_reparse_exact": true,
+  "template_parameters_preserved": true,
+  "all_negative_cases_structurally_executed": true,
+  "runtime_surface_root_hash72": "0000000000000000000000000000004bRevw5MkAl2i*PrW(2GdXN3tUBtMdtb7t7P-uKKv1",
+  "clean_release_policy": "EXCLUDE_PYC_PYTEST_CACHE_AND_UNMANIFESTED_BINARIES",
+  "artifacts": [
+    "PASS_105_1_SYNTAX_SPECIFICATION.json",
+    "PASS_105_1_PARSE_RECEIPT.json",
+    "PASS_105_1_ENFORCEMENT_RECEIPT.json",
+    "PASS_105_1_NEGATIVE_CASES.json",
+    "PASS_105_1_RUNTIME_SURFACE.json",
+    "PASS_105_1_OUTCOME_TAXONOMY.json",
+    "PASS_105_1_CANONICAL_DICTIONARY.hhs",
+    "PASS_105_1_CALIBRATION_REPORT.md",
+    "CHANGELOG_PASS_105_1.md",
+    "PASS_105_1_PACKAGING_MANIFEST.json"
+  ],
+  "pass105_1_release_root_hash72": "0000000000000000000000000000001?hC)=BylB3QD)My3uE8B?f1HW5mWOvVjjjV)iXyq("
+}

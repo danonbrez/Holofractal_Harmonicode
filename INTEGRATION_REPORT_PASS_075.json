@@ -1,0 +1,47 @@
+{
+  "agent_test_acceleration": {
+    "parallel_shard_count": 5,
+    "selected_test_count": 5,
+    "test_execution_performed": false
+  },
+  "capability_bearing_product_closure": {
+    "orphan_nodes": 0,
+    "reachable_nodes": 10,
+    "satisfied": true
+  },
+  "foundation_conservation": {
+    "changed": 0,
+    "files_compared": 1899,
+    "missing": 0,
+    "satisfied": true
+  },
+  "integration_report_root_hash72": "0000000000000000000000000000003+PubUcT5=myr1?slfm79kV-88vt^SoA8RFDtya9DO",
+  "language_service": {
+    "execution_attempted": false,
+    "typed_ir_schema": "HHS_TYPED_IR_V1",
+    "validation_status": "VALID"
+  },
+  "parent_product_conservation": {
+    "changed": 0,
+    "files_compared": 1937,
+    "missing": 0,
+    "satisfied": true
+  },
+  "pass_id": "PASS_075",
+  "roots": {
+    "continuation": "0000000000000000000000000000000Hv9Y-*ZdplqxG>2)>+KrzzBL5!b*3-4DYtNCd+IXQ",
+    "product": "00000000000000000000000000000031GsBD6wMdJDvXqjTyKPXZX+g2qPi9G8WFUTyNmsNo",
+    "program_graph": "0000000000000000000000000000001Llnx=ojr4DXIMaGVXY=nNT*N4lE+>LAleYA(s^*h3",
+    "replay_capsule": "0000000000000000000000000000002sNXT?ZpdGozIzFVBB0en2c4ckIjH^3)lzeb/KstF/",
+    "test_plan": "0000000000000000000000000000000o*VyepN^T0(uvTYZnGRHVVDZPwSy>PWTjxQi1+WAh",
+    "typed_ir": "00000000000000000000000000000010(OuA0K7cFZ9MZ/kQzMH9wC!AW>pd3yZFtXElzLze",
+    "validation": "0000000000000000000000000000001IjZF>nYwzJol^V)VO5heAHB6qrBz(ojrInq=B)-fr",
+    "workspace": "00000000000000000000000000000023+YejH7FvjXrFLWXN?Lp92S+BQ*u!BQ8(6VCp^WKQ"
+  },
+  "schema": "HHS_INTEGRATION_REPORT_PASS_075_V1",
+  "status": "PASS",
+  "tests": {
+    "dedicated_passed": 27,
+    "focused_chain_passed": 119
+  }
+}

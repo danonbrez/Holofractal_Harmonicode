@@ -8,8 +8,8 @@ Pass 023 updates integration decisions after the first guarded static adapter ba
 
 ```json
 {
-  "DOCUMENTED_ONLY": 523,
-  "PLUGIN_READY": 806,
+  "DOCUMENTED_ONLY": 631,
+  "PLUGIN_READY": 888,
   "WIRED": 14
 }
 ```
@@ -189,7 +189,7 @@ These files are retained as high-value integration candidates. They are not auth
 | `hhs_backend/runtime/hhs_leased_result_handoff_v1.py` | legacy/high-value source retained for guarded adapter integration; no direct execution authorized | `True` |
 | `hhs_backend/runtime/hhs_live_interpreter_v1.py` | legacy/high-value source retained for guarded adapter integration; no direct execution authorized | `True` |
 | `hhs_backend/runtime/hhs_lo_shu_agent_cell_assignment_v1.py` | legacy/high-value source retained for guarded adapter integration; no direct execution authorized | `True` |
-| … | 646 additional records omitted; see `RUNTIME_INTEGRATION_DECISIONS.json`. | … |
+| … | 728 additional records omitted; see `RUNTIME_INTEGRATION_DECISIONS.json`. | … |
 
 
 ## DOCUMENTED_ONLY
@@ -272,6 +272,45 @@ These files carry state, reports, specifications, configuration, generated runti
 | `CHANGELOG_PASS_070.md` | repository state/report/spec artifact; canonical context but not an executable entrypoint | `False` |
 | `CHANGELOG_PASS_071.md` | repository state/report/spec artifact; canonical context but not an executable entrypoint | `False` |
 | `CHANGELOG_PASS_072.md` | repository state/report/spec artifact; canonical context but not an executable entrypoint | `False` |
+| `CHANGELOG_PASS_073.md` | repository state/report/spec artifact; canonical context but not an executable entrypoint | `False` |
+| `CHANGELOG_PASS_074.md` | repository state/report/spec artifact; canonical context but not an executable entrypoint | `False` |
+| `CHANGELOG_PASS_075.md` | repository state/report/spec artifact; canonical context but not an executable entrypoint | `False` |
+| `CHANGELOG_PASS_076.md` | repository state/report/spec artifact; canonical context but not an executable entrypoint | `False` |
+| `CHANGELOG_PASS_077.md` | repository state/report/spec artifact; canonical context but not an executable entrypoint | `False` |
+| `CHANGELOG_PASS_078.md` | repository state/report/spec artifact; canonical context but not an executable entrypoint | `False` |
+| `CHANGELOG_PASS_078_1.md` | repository state/report/spec artifact; canonical context but not an executable entrypoint | `False` |
+| `CHANGELOG_PASS_079.md` | repository state/report/spec artifact; canonical context but not an executable entrypoint | `False` |
+| `CHANGELOG_PASS_080.md` | repository state/report/spec artifact; canonical context but not an executable entrypoint | `False` |
+| `CHANGELOG_PASS_081.md` | repository state/report/spec artifact; canonical context but not an executable entrypoint | `False` |
+| `CHANGELOG_PASS_082_1.md` | repository state/report/spec artifact; canonical context but not an executable entrypoint | `False` |
+| `CHANGELOG_PASS_082_2.md` | repository state/report/spec artifact; canonical context but not an executable entrypoint | `False` |
+| `CHANGELOG_PASS_082_3.md` | repository state/report/spec artifact; canonical context but not an executable entrypoint | `False` |
+| `CHANGELOG_PASS_082_4.md` | repository state/report/spec artifact; canonical context but not an executable entrypoint | `False` |
+| `CHANGELOG_PASS_083.md` | repository state/report/spec artifact; canonical context but not an executable entrypoint | `False` |
+| `CHANGELOG_PASS_084.md` | repository state/report/spec artifact; canonical context but not an executable entrypoint | `False` |
+| `CHANGELOG_PASS_085.md` | repository state/report/spec artifact; canonical context but not an executable entrypoint | `False` |
+| `CHANGELOG_PASS_086.md` | repository state/report/spec artifact; canonical context but not an executable entrypoint | `False` |
+| `CHANGELOG_PASS_087.md` | repository state/report/spec artifact; canonical context but not an executable entrypoint | `False` |
+| `CHANGELOG_PASS_088.md` | repository state/report/spec artifact; canonical context but not an executable entrypoint | `False` |
+| `CHANGELOG_PASS_089.md` | repository state/report/spec artifact; canonical context but not an executable entrypoint | `False` |
+| `CHANGELOG_PASS_090.md` | repository state/report/spec artifact; canonical context but not an executable entrypoint | `False` |
+| `CHANGELOG_PASS_091.md` | repository state/report/spec artifact; canonical context but not an executable entrypoint | `False` |
+| `CHANGELOG_PASS_092.md` | repository state/report/spec artifact; canonical context but not an executable entrypoint | `False` |
+| `CHANGELOG_PASS_093.md` | repository state/report/spec artifact; canonical context but not an executable entrypoint | `False` |
+| `CHANGELOG_PASS_094.md` | repository state/report/spec artifact; canonical context but not an executable entrypoint | `False` |
+| `CHANGELOG_PASS_095.md` | repository state/report/spec artifact; canonical context but not an executable entrypoint | `False` |
+| `CHANGELOG_PASS_096.md` | repository state/report/spec artifact; canonical context but not an executable entrypoint | `False` |
+| `CHANGELOG_PASS_097.md` | repository state/report/spec artifact; canonical context but not an executable entrypoint | `False` |
+| `CHANGELOG_PASS_098.md` | repository state/report/spec artifact; canonical context but not an executable entrypoint | `False` |
+| `CHANGELOG_PASS_099.md` | repository state/report/spec artifact; canonical context but not an executable entrypoint | `False` |
+| `CHANGELOG_PASS_100.md` | repository state/report/spec artifact; canonical context but not an executable entrypoint | `False` |
+| `CHANGELOG_PASS_101.md` | repository state/report/spec artifact; canonical context but not an executable entrypoint | `False` |
+| `CHANGELOG_PASS_102.md` | repository state/report/spec artifact; canonical context but not an executable entrypoint | `False` |
+| `CHANGELOG_PASS_103.md` | repository state/report/spec artifact; canonical context but not an executable entrypoint | `False` |
+| `CHANGELOG_PASS_104.md` | repository state/report/spec artifact; canonical context but not an executable entrypoint | `False` |
+| `CHANGELOG_PASS_105.md` | repository state/report/spec artifact; canonical context but not an executable entrypoint | `False` |
+| `CHANGELOG_PASS_105_1.md` | repository state/report/spec artifact; canonical context but not an executable entrypoint | `False` |
+| `CHANGELOG_PASS_105_2.md` | repository state/report/spec artifact; canonical context but not an executable entrypoint | `False` |
 | `DEVELOPMENT_OUTLINE.md` | repository state/report/spec artifact; canonical context but not an executable entrypoint | `False` |
 | `EXECUTION_GRAPH_PASS_021.json` | repository state/report/spec artifact; canonical context but not an executable entrypoint | `False` |
 | `EXECUTION_GRAPH_PASS_022.json` | repository state/report/spec artifact; canonical context but not an executable entrypoint | `False` |
@@ -279,55 +318,16 @@ These files carry state, reports, specifications, configuration, generated runti
 | `EXECUTION_GRAPH_PASS_025.json` | repository state/report/spec artifact; canonical context but not an executable entrypoint | `False` |
 | `EXECUTION_GRAPH_PASS_026.json` | repository state/report/spec artifact; canonical context but not an executable entrypoint | `False` |
 | `EXECUTION_GRAPH_PASS_030.json` | repository state/report/spec artifact; canonical context but not an executable entrypoint | `False` |
-| `EXECUTION_GRAPH_PASS_032.json` | repository state/report/spec artifact; canonical context but not an executable entrypoint | `False` |
-| `GUARDED_PLUGIN_ADAPTERS_PASS_023.json` | repository state/report/spec artifact; canonical context but not an executable entrypoint | `False` |
-| `GUARDED_PLUGIN_ADAPTERS_PASS_023.md` | repository state/report/spec artifact; canonical context but not an executable entrypoint | `False` |
-| `HHS_FOUNDATIONAL_STANDARDS.md` | repository state/report/spec artifact; canonical context but not an executable entrypoint | `False` |
-| `INTEGRATION_REPORT_PASS_002.md` | repository state/report/spec artifact; canonical context but not an executable entrypoint | `False` |
-| `INTEGRATION_REPORT_PASS_003.md` | repository state/report/spec artifact; canonical context but not an executable entrypoint | `False` |
-| `INTEGRATION_REPORT_PASS_004.md` | repository state/report/spec artifact; canonical context but not an executable entrypoint | `False` |
-| `INTEGRATION_REPORT_PASS_005.md` | repository state/report/spec artifact; canonical context but not an executable entrypoint | `False` |
-| `INTEGRATION_REPORT_PASS_006.md` | repository state/report/spec artifact; canonical context but not an executable entrypoint | `False` |
-| `INTEGRATION_REPORT_PASS_007.md` | repository state/report/spec artifact; canonical context but not an executable entrypoint | `False` |
-| `INTEGRATION_REPORT_PASS_008.md` | repository state/report/spec artifact; canonical context but not an executable entrypoint | `False` |
-| `INTEGRATION_REPORT_PASS_009.md` | repository state/report/spec artifact; canonical context but not an executable entrypoint | `False` |
-| `INTEGRATION_REPORT_PASS_010.md` | repository state/report/spec artifact; canonical context but not an executable entrypoint | `False` |
-| `INTEGRATION_REPORT_PASS_011.md` | repository state/report/spec artifact; canonical context but not an executable entrypoint | `False` |
-| `INTEGRATION_REPORT_PASS_012.md` | repository state/report/spec artifact; canonical context but not an executable entrypoint | `False` |
-| `INTEGRATION_REPORT_PASS_014.md` | repository state/report/spec artifact; canonical context but not an executable entrypoint | `False` |
-| `INTEGRATION_REPORT_PASS_015.md` | repository state/report/spec artifact; canonical context but not an executable entrypoint | `False` |
-| `INTEGRATION_REPORT_PASS_016.md` | repository state/report/spec artifact; canonical context but not an executable entrypoint | `False` |
-| `INTEGRATION_REPORT_PASS_017.md` | repository state/report/spec artifact; canonical context but not an executable entrypoint | `False` |
-| `INTEGRATION_REPORT_PASS_018.md` | repository state/report/spec artifact; canonical context but not an executable entrypoint | `False` |
-| `INTEGRATION_REPORT_PASS_019.md` | repository state/report/spec artifact; canonical context but not an executable entrypoint | `False` |
-| `INTEGRATION_REPORT_PASS_020.md` | repository state/report/spec artifact; canonical context but not an executable entrypoint | `False` |
-| `INTEGRATION_REPORT_PASS_021.md` | repository state/report/spec artifact; canonical context but not an executable entrypoint | `False` |
-| `INTEGRATION_REPORT_PASS_022.md` | repository state/report/spec artifact; canonical context but not an executable entrypoint | `False` |
-| `INTEGRATION_REPORT_PASS_023.md` | repository state/report/spec artifact; canonical context but not an executable entrypoint | `False` |
-| `INTEGRATION_REPORT_PASS_024.md` | repository state/report/spec artifact; canonical context but not an executable entrypoint | `False` |
-| `INTEGRATION_REPORT_PASS_025.md` | repository state/report/spec artifact; canonical context but not an executable entrypoint | `False` |
-| `INTEGRATION_REPORT_PASS_026.md` | repository state/report/spec artifact; canonical context but not an executable entrypoint | `False` |
-| `INTEGRATION_REPORT_PASS_027.md` | repository state/report/spec artifact; canonical context but not an executable entrypoint | `False` |
-| `INTEGRATION_REPORT_PASS_028.md` | repository state/report/spec artifact; canonical context but not an executable entrypoint | `False` |
-| `INTEGRATION_REPORT_PASS_029.md` | repository state/report/spec artifact; canonical context but not an executable entrypoint | `False` |
-| `INTEGRATION_REPORT_PASS_030.md` | repository state/report/spec artifact; canonical context but not an executable entrypoint | `False` |
-| `INTEGRATION_REPORT_PASS_031.md` | repository state/report/spec artifact; canonical context but not an executable entrypoint | `False` |
-| `INTEGRATION_REPORT_PASS_032.md` | repository state/report/spec artifact; canonical context but not an executable entrypoint | `False` |
-| `INTEGRATION_REPORT_PASS_033.md` | repository state/report/spec artifact; canonical context but not an executable entrypoint | `False` |
-| `INTEGRATION_REPORT_PASS_034.md` | repository state/report/spec artifact; canonical context but not an executable entrypoint | `False` |
-| `INTEGRATION_REPORT_PASS_035.md` | repository state/report/spec artifact; canonical context but not an executable entrypoint | `False` |
-| `INTEGRATION_REPORT_PASS_042.md` | repository state/report/spec artifact; canonical context but not an executable entrypoint | `False` |
-| `INTEGRATION_REPORT_PASS_043.md` | repository state/report/spec artifact; canonical context but not an executable entrypoint | `False` |
-| … | 403 additional records omitted; see `RUNTIME_INTEGRATION_DECISIONS.json`. | … |
+| … | 511 additional records omitted; see `RUNTIME_INTEGRATION_DECISIONS.json`. | … |
 
 
 ## Kernel Witness
 
 ```json
 {
-  "canonical_payload": "\"{\\\"decision_count\\\": 1343, \\\"decision_counts\\\": {\\\"DOCUMENTED_ONLY\\\": 523, \\\"PLUGIN_READY\\\": 806, \\\"WIRED\\\": 14}, \\\"schema\\\": \\\"HHS_RUNTIME_INTEGRATION_DECISIONS_V1\\\", \\\"version\\\": \\\"PASS_024\\\"}\"",
-  "digest": "DlzFK2o4Tg0yBmTf+8)BL*uh-CIxrQgCrxT929bH+huLPqOe0ZT-UJ/RjP81SL>ZI+VT7R1t",
-  "dna": "DlzFK2o4Tg0yBmTf+8)BL*uh-CIxrQgCrxT929bH+huLPqOe0ZT-UJ/RjP81SL>ZI+VT7R1t",
+  "canonical_payload": "\"{\\\"decision_count\\\": 1533, \\\"decision_counts\\\": {\\\"DOCUMENTED_ONLY\\\": 631, \\\"PLUGIN_READY\\\": 888, \\\"WIRED\\\": 14}, \\\"schema\\\": \\\"HHS_RUNTIME_INTEGRATION_DECISIONS_V1\\\", \\\"version\\\": \\\"PASS_024\\\"}\"",
+  "digest": "DlzFK2o4Tg0yBmTf+8)BL*uh-CIxrQgCrxT929cHYjuLPqOe0ZT-UJ/RjP81SL7QH+VT7R1t",
+  "dna": "DlzFK2o4Tg0yBmTf+8)BL*uh-CIxrQgCrxT929cHYjuLPqOe0ZT-UJ/RjP81SL7QH+VT7R1t",
   "label": "hhs_runtime_integration_decisions_v1",
   "positions": [
     39,
@@ -368,10 +368,10 @@ These files carry state, reports, specifications, configuration, generated runti
     9,
     2,
     9,
-    11,
+    12,
     43,
-    63,
-    17,
+    60,
+    19,
     30,
     47,
     51,
@@ -392,9 +392,9 @@ These files carry state, reports, specifications, configuration, generated runti
     1,
     54,
     47,
-    69,
-    61,
-    44,
+    7,
+    52,
+    43,
     63,
     57,
     55,
@@ -442,10 +442,10 @@ These files carry state, reports, specifications, configuration, generated runti
     46,
     -34,
     44,
-    -27,
+    -26,
     -68,
-    23,
-    48,
+    20,
+    50,
     -84,
     148,
     -137,
@@ -466,9 +466,9 @@ These files carry state, reports, specifications, configuration, generated runti
     14,
     -78,
     58,
-    7,
-    -2,
-    -20,
+    17,
+    -11,
+    -21,
     -2,
     -9,
     -12,

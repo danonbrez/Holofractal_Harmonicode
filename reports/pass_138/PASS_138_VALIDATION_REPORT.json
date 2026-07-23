@@ -1,0 +1,20 @@
+{
+  "conclusion": "PROVED",
+  "looking_glass_closed": true,
+  "negative_cases": [
+    "constraint failure blocks goals",
+    "goal failure not promoted",
+    "float rejected",
+    "unbound symbol rejected",
+    "receipt tamper detected",
+    "noninteger power rejected"
+  ],
+  "pass_id": "PASS_138_HARMONICODE_GENERAL_ALGEBRAIC_REASONING_UNIT",
+  "receipt_root": "328658cbc42df2e2d1b19325bb6004a80e72ef0eb4cf449d3adc3a35dfa9facd",
+  "status": "VERIFIED_CLOSED",
+  "tests": {
+    "dependency_scoped_total": 24,
+    "failures": 0,
+    "pass138": 8
+  }
+}

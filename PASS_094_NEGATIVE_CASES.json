@@ -1,0 +1,65 @@
+{
+  "schema": "HHS_PASS_094_NEGATIVE_CASES_V1",
+  "cases": [
+    {
+      "case": "visual_wrong_ratio",
+      "expected": "REJECT_VISUAL_RESEMBLANCE_AS_INVARIANT_IDENTITY",
+      "observed": "REJECT_VISUAL_RESEMBLANCE_AS_INVARIANT_IDENTITY",
+      "passed": true
+    },
+    {
+      "case": "erase_history",
+      "expected": "REJECT_HISTORY_ERASURE",
+      "observed": "REJECT_HISTORY_ERASURE",
+      "passed": true
+    },
+    {
+      "case": "scope_mutation",
+      "expected": "REJECT_SEMANTIC_SCOPE_MUTATION",
+      "observed": "REJECT_SEMANTIC_SCOPE_MUTATION",
+      "passed": true
+    },
+    {
+      "case": "undeclared_scale",
+      "expected": "REJECT_UNDECLARED_SCALE_EQUIVALENCE",
+      "observed": "REJECT_UNDECLARED_SCALE_EQUIVALENCE",
+      "passed": true
+    },
+    {
+      "case": "graph_source_alias",
+      "expected": "REJECT_GRAPH_ALIAS_AS_SOURCE_SUBSTITUTION",
+      "observed": "REJECT_GRAPH_ALIAS_AS_SOURCE_SUBSTITUTION",
+      "passed": true
+    },
+    {
+      "case": "false_lossless",
+      "expected": "REJECT_FALSE_LOSSLESS_TRANSLATION",
+      "observed": "REJECT_FALSE_LOSSLESS_TRANSLATION",
+      "passed": true
+    },
+    {
+      "case": "collapse_ambiguity",
+      "expected": "REJECT_SILENT_AMBIGUITY_COLLAPSE",
+      "observed": "REJECT_SILENT_AMBIGUITY_COLLAPSE",
+      "passed": true
+    },
+    {
+      "case": "projection_as_authority",
+      "expected": "REJECT_PROJECTION_AS_CANONICAL_SOURCE",
+      "observed": "REJECT_PROJECTION_AS_CANONICAL_SOURCE",
+      "passed": true
+    },
+    {
+      "case": "recursive_drift_claimed_exact",
+      "expected": "REJECT_RECURSIVE_TRANSLATION_DRIFT",
+      "observed": "REJECT_RECURSIVE_TRANSLATION_DRIFT",
+      "passed": true
+    },
+    {
+      "case": "alphabet_reconstruction_failure",
+      "expected": "REJECT_ALPHABET_RECONSTRUCTION_FAILURE",
+      "observed": "REJECT_ALPHABET_RECONSTRUCTION_FAILURE",
+      "passed": true
+    }
+  ]
+}

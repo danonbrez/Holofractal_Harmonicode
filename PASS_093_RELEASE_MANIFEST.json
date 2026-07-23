@@ -1,0 +1,28 @@
+{
+  "schema": "HHS_PASS_093_RELEASE_MANIFEST_V1",
+  "pass_id": "PASS_093",
+  "parent_pass092_release_root_hash72": "0000000000000000000000000000003g/gut30BDzzNCgDgX2Md3fYAqo*FeD-^!FfVYHXF1",
+  "workload_count": 12,
+  "null_model_count": 4,
+  "candidate_count": 5,
+  "alphabet_count": 1,
+  "negative_case_count": 10,
+  "all_negative_cases_passed": true,
+  "all_replays_verified": true,
+  "artifacts": [
+    "PASS_093_MULTISCALE_PATTERN_REGISTRY.json",
+    "PASS_093_GEOMETRIC_INVARIANT_CANDIDATES.json",
+    "PASS_093_DISCOVERED_PATTERN_ALPHABETS.json",
+    "PASS_093_NULL_MODEL_REGISTRY.json",
+    "PASS_093_NOISE_SCALING_RESULTS.json",
+    "PASS_093_HOLOFRACTAL_CANDIDATES.json",
+    "PASS_093_COMPLEXITY_DISTINGUISHABILITY_FRONTIERS.json",
+    "PASS_093_CROSS_DOMAIN_TRANSFER_RESULTS.json",
+    "PASS_093_PATTERN_ABLATION_REPORT.json",
+    "PASS_093_NEGATIVE_CASES.json",
+    "PASS_093_WORKLOAD_REGISTRY.json",
+    "PASS_093_CALIBRATION_REPORT.md",
+    "CHANGELOG_PASS_093.md"
+  ],
+  "pass093_release_root_hash72": "0000000000000000000000000000003B^jLhrEK1fUGaC-eGs)/n-yEMCF=iKk!kp-mpu7Oy"
+}

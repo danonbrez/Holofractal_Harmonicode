@@ -1,7 +1,7 @@
 {
   "format": "HHS_RUN_RESULT_V1",
   "program_name": "HHS_DEMO_PROGRAM_V1",
-  "program_hash72": "H72N-Ui3l+mIVrv1p1FWqze",
+  "program_hash72": "H72N-8a2dd1708cc4e6d455",
   "operation_count_declared": 4,
   "operation_count_executed": 4,
   "results": [
@@ -24,13 +24,13 @@
           "phase": 0,
           "operation": "ADD",
           "parent_receipt_hash72": "H72N-GENESIS",
-          "input_hash72": "H72N-9tVKFv4zFZc1uD+yaQ",
-          "pre_state_hash72": "H72N-BV9iso)LQad=tt^dZR",
-          "operation_hash72": "H72N-^-e3iEF4nbfYmOdDa≠",
-          "post_state_hash72": "H72N-/XOWqM√(*6^IndOsA2",
-          "witness_hash72": "H72N-AJ*E5xBR^4HI(0fJYA",
-          "receipt_hash72": "H72N-A0Gsp+KsH(XxdNnHP*",
-          "integrity_hash72": "H72N-JYb^LSg≠z9DXAD√oOc",
+          "input_hash72": "H72N-fec6b17f09c45380f2",
+          "pre_state_hash72": "H72N-a94444750f4424e699",
+          "operation_hash72": "H72N-1731c515e4fecd3271",
+          "post_state_hash72": "H72N-31e07b97d9fbaca5a0",
+          "witness_hash72": "H72N-f4568b53822cdb3fcb",
+          "receipt_hash72": "H72N-811d19ef059a4ff636",
+          "integrity_hash72": "H72N-ba55e7e42f08512ed0",
           "gate_status": "LOCKED",
           "locked": true,
           "quarantine": false,
@@ -39,7 +39,7 @@
         "chain": {
           "ok": true,
           "count": 1,
-          "tip_hash72": "H72N-A0Gsp+KsH(XxdNnHP*"
+          "tip_hash72": "H72N-811d19ef059a4ff636"
         }
       }
     },
@@ -61,14 +61,14 @@
         "receipt": {
           "phase": 1,
           "operation": "MUL",
-          "parent_receipt_hash72": "H72N-A0Gsp+KsH(XxdNnHP*",
-          "input_hash72": "H72N-S-R≠X9m9bxl√ySTNkj",
-          "pre_state_hash72": "H72N-7veRagaD0GdXJ59E7h",
-          "operation_hash72": "H72N-YKLYX7zj2fB≠hl1kOq",
-          "post_state_hash72": "H72N-RSe5=Dm/vP+√rQb=8Z",
-          "witness_hash72": "H72N-Qz699d)U^V6QPoTQvL",
-          "receipt_hash72": "H72N-(LJyPxvZX4orb*(≠z5",
-          "integrity_hash72": "H72N-kuxVU0BGXPd5sxL7=w",
+          "parent_receipt_hash72": "H72N-811d19ef059a4ff636",
+          "input_hash72": "H72N-e0888f40d6049d282d",
+          "pre_state_hash72": "H72N-c69a37201559babd46",
+          "operation_hash72": "H72N-1681e4cf1f64cf5269",
+          "post_state_hash72": "H72N-5e3ae8de24292f5fca",
+          "witness_hash72": "H72N-770bb0e1971445a0eb",
+          "receipt_hash72": "H72N-0e7d48d06fc170cb1d",
+          "integrity_hash72": "H72N-6841a843ccb5f00240",
           "gate_status": "LOCKED",
           "locked": true,
           "quarantine": false,
@@ -77,7 +77,7 @@
         "chain": {
           "ok": true,
           "count": 2,
-          "tip_hash72": "H72N-(LJyPxvZX4orb*(≠z5"
+          "tip_hash72": "H72N-0e7d48d06fc170cb1d"
         }
       }
     },
@@ -156,14 +156,14 @@
         "receipt": {
           "phase": 2,
           "operation": "SORT",
-          "parent_receipt_hash72": "H72N-(LJyPxvZX4orb*(≠z5",
-          "input_hash72": "H72N-w)TR3h60r≠≠1A4j6CS",
-          "pre_state_hash72": "H72N-XKlr4yCYK5bhs≠JLYb",
-          "operation_hash72": "H72N-TY^h33fCW^Wq≠R3T1x",
-          "post_state_hash72": "H72N-NRThxfhsCzgsO=neic",
-          "witness_hash72": "H72N-xLBTBF(CxE1JLG=ePw",
-          "receipt_hash72": "H72N-OFeUtX*8HPdqgKXa√t",
-          "integrity_hash72": "H72N-vJetfDwZdj√Y/aThYi",
+          "parent_receipt_hash72": "H72N-0e7d48d06fc170cb1d",
+          "input_hash72": "H72N-c9636c3a557b455a83",
+          "pre_state_hash72": "H72N-e5c87b20388bd01b55",
+          "operation_hash72": "H72N-787d5a5f9ced2943cd",
+          "post_state_hash72": "H72N-b88341e510c023793d",
+          "witness_hash72": "H72N-149cd754e5bf9a893e",
+          "receipt_hash72": "H72N-b7ed55bbaf5af41000",
+          "integrity_hash72": "H72N-16ed7830f640a0352e",
           "gate_status": "LOCKED",
           "locked": true,
           "quarantine": false,
@@ -172,7 +172,7 @@
         "chain": {
           "ok": true,
           "count": 3,
-          "tip_hash72": "H72N-OFeUtX*8HPdqgKXa√t"
+          "tip_hash72": "H72N-b7ed55bbaf5af41000"
         }
       }
     },
@@ -242,14 +242,14 @@
         "receipt": {
           "phase": 3,
           "operation": "BINARY_SEARCH",
-          "parent_receipt_hash72": "H72N-OFeUtX*8HPdqgKXa√t",
-          "input_hash72": "H72N-+BhZZs68+T0E5)/*xP",
-          "pre_state_hash72": "H72N-lgsV)/=WI1Lj√L64XU",
-          "operation_hash72": "H72N-2wL/UXzqU4tAsCzQCa",
-          "post_state_hash72": "H72N-m=NSxkEqg-peHN0Ode",
-          "witness_hash72": "H72N-r/Kb20GYE+eJ6r6IZO",
-          "receipt_hash72": "H72N-9PTl1√2xTZzlZR8*X4",
-          "integrity_hash72": "H72N-5m3L(7GgPo8T/y3*Vu",
+          "parent_receipt_hash72": "H72N-b7ed55bbaf5af41000",
+          "input_hash72": "H72N-5abe252c0565208956",
+          "pre_state_hash72": "H72N-3763f496da93b6360e",
+          "operation_hash72": "H72N-ba545da8ea12830b37",
+          "post_state_hash72": "H72N-aa8d03236c3757fb26",
+          "witness_hash72": "H72N-3744bda6c7f80f2437",
+          "receipt_hash72": "H72N-091491ab5b71642ae9",
+          "integrity_hash72": "H72N-f1ccf1a4adac526693",
           "gate_status": "LOCKED",
           "locked": true,
           "quarantine": false,
@@ -258,7 +258,7 @@
         "chain": {
           "ok": true,
           "count": 4,
-          "tip_hash72": "H72N-9PTl1√2xTZzlZR8*X4"
+          "tip_hash72": "H72N-091491ab5b71642ae9"
         }
       }
     }
@@ -268,13 +268,13 @@
       "phase": 0,
       "operation": "ADD",
       "parent_receipt_hash72": "H72N-GENESIS",
-      "input_hash72": "H72N-9tVKFv4zFZc1uD+yaQ",
-      "pre_state_hash72": "H72N-BV9iso)LQad=tt^dZR",
-      "operation_hash72": "H72N-^-e3iEF4nbfYmOdDa≠",
-      "post_state_hash72": "H72N-/XOWqM√(*6^IndOsA2",
-      "witness_hash72": "H72N-AJ*E5xBR^4HI(0fJYA",
-      "receipt_hash72": "H72N-A0Gsp+KsH(XxdNnHP*",
-      "integrity_hash72": "H72N-JYb^LSg≠z9DXAD√oOc",
+      "input_hash72": "H72N-fec6b17f09c45380f2",
+      "pre_state_hash72": "H72N-a94444750f4424e699",
+      "operation_hash72": "H72N-1731c515e4fecd3271",
+      "post_state_hash72": "H72N-31e07b97d9fbaca5a0",
+      "witness_hash72": "H72N-f4568b53822cdb3fcb",
+      "receipt_hash72": "H72N-811d19ef059a4ff636",
+      "integrity_hash72": "H72N-ba55e7e42f08512ed0",
       "gate_status": "LOCKED",
       "locked": true,
       "quarantine": false,
@@ -283,14 +283,14 @@
     {
       "phase": 1,
       "operation": "MUL",
-      "parent_receipt_hash72": "H72N-A0Gsp+KsH(XxdNnHP*",
-      "input_hash72": "H72N-S-R≠X9m9bxl√ySTNkj",
-      "pre_state_hash72": "H72N-7veRagaD0GdXJ59E7h",
-      "operation_hash72": "H72N-YKLYX7zj2fB≠hl1kOq",
-      "post_state_hash72": "H72N-RSe5=Dm/vP+√rQb=8Z",
-      "witness_hash72": "H72N-Qz699d)U^V6QPoTQvL",
-      "receipt_hash72": "H72N-(LJyPxvZX4orb*(≠z5",
-      "integrity_hash72": "H72N-kuxVU0BGXPd5sxL7=w",
+      "parent_receipt_hash72": "H72N-811d19ef059a4ff636",
+      "input_hash72": "H72N-e0888f40d6049d282d",
+      "pre_state_hash72": "H72N-c69a37201559babd46",
+      "operation_hash72": "H72N-1681e4cf1f64cf5269",
+      "post_state_hash72": "H72N-5e3ae8de24292f5fca",
+      "witness_hash72": "H72N-770bb0e1971445a0eb",
+      "receipt_hash72": "H72N-0e7d48d06fc170cb1d",
+      "integrity_hash72": "H72N-6841a843ccb5f00240",
       "gate_status": "LOCKED",
       "locked": true,
       "quarantine": false,
@@ -299,14 +299,14 @@
     {
       "phase": 2,
       "operation": "SORT",
-      "parent_receipt_hash72": "H72N-(LJyPxvZX4orb*(≠z5",
-      "input_hash72": "H72N-w)TR3h60r≠≠1A4j6CS",
-      "pre_state_hash72": "H72N-XKlr4yCYK5bhs≠JLYb",
-      "operation_hash72": "H72N-TY^h33fCW^Wq≠R3T1x",
-      "post_state_hash72": "H72N-NRThxfhsCzgsO=neic",
-      "witness_hash72": "H72N-xLBTBF(CxE1JLG=ePw",
-      "receipt_hash72": "H72N-OFeUtX*8HPdqgKXa√t",
-      "integrity_hash72": "H72N-vJetfDwZdj√Y/aThYi",
+      "parent_receipt_hash72": "H72N-0e7d48d06fc170cb1d",
+      "input_hash72": "H72N-c9636c3a557b455a83",
+      "pre_state_hash72": "H72N-e5c87b20388bd01b55",
+      "operation_hash72": "H72N-787d5a5f9ced2943cd",
+      "post_state_hash72": "H72N-b88341e510c023793d",
+      "witness_hash72": "H72N-149cd754e5bf9a893e",
+      "receipt_hash72": "H72N-b7ed55bbaf5af41000",
+      "integrity_hash72": "H72N-16ed7830f640a0352e",
       "gate_status": "LOCKED",
       "locked": true,
       "quarantine": false,
@@ -315,14 +315,14 @@
     {
       "phase": 3,
       "operation": "BINARY_SEARCH",
-      "parent_receipt_hash72": "H72N-OFeUtX*8HPdqgKXa√t",
-      "input_hash72": "H72N-+BhZZs68+T0E5)/*xP",
-      "pre_state_hash72": "H72N-lgsV)/=WI1Lj√L64XU",
-      "operation_hash72": "H72N-2wL/UXzqU4tAsCzQCa",
-      "post_state_hash72": "H72N-m=NSxkEqg-peHN0Ode",
-      "witness_hash72": "H72N-r/Kb20GYE+eJ6r6IZO",
-      "receipt_hash72": "H72N-9PTl1√2xTZzlZR8*X4",
-      "integrity_hash72": "H72N-5m3L(7GgPo8T/y3*Vu",
+      "parent_receipt_hash72": "H72N-b7ed55bbaf5af41000",
+      "input_hash72": "H72N-5abe252c0565208956",
+      "pre_state_hash72": "H72N-3763f496da93b6360e",
+      "operation_hash72": "H72N-ba545da8ea12830b37",
+      "post_state_hash72": "H72N-aa8d03236c3757fb26",
+      "witness_hash72": "H72N-3744bda6c7f80f2437",
+      "receipt_hash72": "H72N-091491ab5b71642ae9",
+      "integrity_hash72": "H72N-f1ccf1a4adac526693",
       "gate_status": "LOCKED",
       "locked": true,
       "quarantine": false,
@@ -332,16 +332,16 @@
   "chain": {
     "ok": true,
     "count": 4,
-    "tip_hash72": "H72N-9PTl1√2xTZzlZR8*X4"
+    "tip_hash72": "H72N-091491ab5b71642ae9"
   },
   "replay": {
     "ok": true,
     "count": 4,
-    "tip_hash72": "H72N-9PTl1√2xTZzlZR8*X4",
+    "tip_hash72": "H72N-091491ab5b71642ae9",
     "failed_index": null,
     "reason": "receipt chain verified",
     "details": {
-      "expected_tip_hash72": "H72N-9PTl1√2xTZzlZR8*X4"
+      "expected_tip_hash72": "H72N-091491ab5b71642ae9"
     }
   },
   "storage_report": null,

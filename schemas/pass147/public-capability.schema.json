@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "hhs://schemas/pass147/public-capability",
+  "type": "object",
+  "required": ["capability_id", "surface_type", "classification", "capabilities", "reversibility_class", "mutating", "capability_hash72"],
+  "properties": {
+    "capability_id": {"type": "string"},
+    "surface_type": {"enum": ["CLI", "API"]},
+    "classification": {"enum": ["PUBLICLY_CALLABLE", "PUBLICLY_COMPOSABLE", "PUBLICLY_SCRIPTABLE", "PUBLICLY_DECLARABLE", "PUBLICLY_REQUESTABLE_THROUGH_BOUNDARY", "EXPLICITLY_RESTRICTED_BY_CONTRACT", "PLATFORM_INAPPLICABLE", "OBSERVED_FAILING"]},
+    "capabilities": {"type": "array", "items": {"type": "string"}},
+    "reversibility_class": {"type": "string"},
+    "mutating": {"type": "boolean"},
+    "capability_hash72": {"type": "string"}
+  },
+  "additionalProperties": true
+}

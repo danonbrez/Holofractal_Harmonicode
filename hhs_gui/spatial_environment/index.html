@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en" data-mode="overview" data-motion="full" data-explore="false">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#020712">
+  <title>Harmonicode VM81 Spatial Environment — Stage 004</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <canvas id="spatial-canvas" aria-label="Interactive VM81 spatial projection"></canvas>
+  <div class="environment-vignette"></div>
+  <div class="scanlines" aria-hidden="true"></div>
+
+  <header class="topbar glass-panel">
+    <div class="brand-block">
+      <strong>HARMONICODE VM81</strong>
+      <span>SPATIAL ENVIRONMENT · STAGE 004</span>
+      <small class="authority-label">PROJECTION + GUARDED ORCHESTRATION</small>
+    </div>
+    <nav id="mode-switcher" class="mode-switcher" aria-label="Interface modes"></nav>
+    <div class="topbar-state">
+      <span id="session-name" class="top-metric">Default Workspace</span>
+      <span id="renderer-status" class="status-chip"><i></i> RENDERER BOOTING</span>
+      <span id="runtime-status" class="status-chip offline"><i></i> RUNTIME UNAVAILABLE</span>
+      <button id="command-palette-button" class="icon-button" title="Command palette (Ctrl+K)">⌘</button>
+    </div>
+  </header>
+
+  <aside class="left-rail glass-panel" aria-label="Runtime overview">
+    <section class="panel-section">
+      <div class="panel-heading">SYSTEM OVERVIEW <small>MEASURED</small></div>
+      <dl class="metric-list">
+        <div><dt>Renderer</dt><dd id="connection-mode">FALLBACK</dd></div>
+        <div><dt>Frame rate</dt><dd><span id="fps-value">0</span> FPS</dd></div>
+        <div><dt>VM81 state</dt><dd id="vm81-state">UNAVAILABLE</dd></div>
+        <div><dt>Runtime step</dt><dd id="runtime-step">—</dd></div>
+        <div><dt>Active cell</dt><dd id="active-cell">—</dd></div>
+        <div><dt>Active opcode</dt><dd id="active-opcode">—</dd></div>
+        <div><dt>Receipt</dt><dd id="receipt-hash">—</dd></div>
+      </dl>
+    </section>
+
+    <section class="panel-section">
+      <div class="panel-heading">CHANNELS <button id="reconnect-button" class="text-button">RECONNECT</button></div>
+      <ul id="channel-list" class="channel-list"></ul>
+    </section>
+
+    <section class="panel-section session-section">
+      <div class="panel-heading">SESSIONS <small id="session-summary">1 session</small></div>
+      <select id="session-select" class="select-control" aria-label="Active session"></select>
+      <div class="button-grid compact-buttons">
+        <button id="new-session-button" class="action-button">NEW</button>
+        <button id="rename-session-button" class="action-button">RENAME</button>
+        <button id="snapshot-session-button" class="action-button">SNAPSHOT</button>
+        <button id="delete-session-button" class="action-button danger">DELETE</button>
+      </div>
+      <button id="export-sessions-button" class="action-button full-width">EXPORT SESSION STORE</button>
+    </section>
+
+    <section class="panel-section event-section">
+      <div class="panel-heading">PROJECTION JOURNAL <small><span id="event-count">0</span> EVENTS</small></div>
+      <div class="journal-actions">
+        <button id="verify-journal-button" class="text-button">VERIFY</button>
+        <button id="export-journal-button" class="text-button">EXPORT</button>
+        <button id="clear-events-button" class="text-button">CLEAR VIEW</button>
+      </div>
+      <p class="journal-integrity">CHAIN: <b id="journal-integrity">NOT CHECKED</b></p>
+      <ul id="event-log" class="event-log"><li><strong>ENVIRONMENT BOOT</strong>Initializing projection journal.</li></ul>
+    </section>
+  </aside>
+
+  <main class="workspace" aria-label="Spatial workspace">
+    <div class="nucleus-label" aria-hidden="true">
+      <small>RUNTIME NUCLEUS</small>
+      <strong>VM81</strong>
+      <span>HARMONICODE</span>
+    </div>
+
+    <div class="loshu-hologram glass-panel" aria-label="Lo Shu harmonic grid">
+      <div>4</div><div>9</div><div>2</div>
+      <div>3</div><div class="nucleus-cell">5</div><div>7</div>
+      <div>8</div><div>1</div><div>6</div>
+      <span>LO SHU MEMBRANE</span>
+    </div>
+
+    <section id="workspace-card" class="workspace-card glass-panel">
+      <div class="workspace-title-row">
+        <div><small id="workspace-eyebrow">SPATIAL FEATURE DOMAIN</small><h1 id="workspace-title">Dashboard</h1></div>
+        <button id="workspace-close" class="icon-button" aria-label="Close feature panel">×</button>
+      </div>
+      <p id="workspace-description"></p>
+      <div id="workspace-content" class="workspace-content"></div>
+    </section>
+
+    <aside id="cell-inspector" class="cell-inspector glass-panel">
+      <div class="panel-heading">VM81 CELL <button id="clear-selection-button" class="text-button">CLEAR</button></div>
+      <div id="cell-inspector-content" class="cell-inspector-content"></div>
+    </aside>
+  </main>
+
+  <div id="surface-layer" class="surface-layer" aria-label="Open spatial tool surfaces"></div>
+
+  <aside class="right-rail glass-panel" aria-label="Spatial controls">
+    <section class="panel-section">
+      <div class="panel-heading">FIELD CONTROLS <small>LOCAL PROJECTION</small></div>
+      <label class="range-control">Active modulus <output id="modulus-output">19</output><input id="modulus-control" type="range" min="2" max="72" value="19" step="1"></label>
+      <label class="range-control">Curiosity drift <output id="curiosity-output">0.42</output><input id="curiosity-control" type="range" min="0" max="1" value="0.42" step="0.01"></label>
+      <label class="range-control">Constraint rigidity <output id="rigidity-output">0.81</output><input id="rigidity-control" type="range" min="0.1" max="1" value="0.81" step="0.01"></label>
+      <div class="button-grid">
+        <button id="visual-pulse-button" class="action-button">VISUAL PULSE</button>
+        <button id="reset-camera-button" class="action-button">RESET CAMERA</button>
+        <button id="focus-active-button" class="action-button">FOCUS ACTIVE</button>
+        <button id="explore-mode-button" class="action-button">EXPLORE</button>
+        <button id="reduce-motion-button" class="action-button">REDUCE MOTION</button>
+        <button id="surface-grid-button" class="action-button">GRID SURFACES</button>
+        <button id="surface-cascade-button" class="action-button">CASCADE</button>
+      </div>
+    </section>
+
+    <section class="panel-section">
+      <div class="panel-heading">GUARDED RUNTIME <small>BACKEND AUTHORITY</small></div>
+      <div class="button-grid runtime-command-grid">
+        <button class="action-button authoritative" data-command="state">STATE</button>
+        <button class="action-button authoritative" data-command="step">STEP</button>
+        <button class="action-button authoritative" data-command="commit">COMMIT</button>
+        <button class="action-button authoritative" data-command="halt">HALT</button>
+        <button class="action-button authoritative" data-command="propagate">PROPAGATE</button>
+        <button class="action-button authoritative" data-command="revalidate">REVALIDATE</button>
+        <button class="action-button authoritative" data-command="reciprocal">RECIPROCAL</button>
+        <button class="action-button authoritative" data-command="services">SERVICES</button>
+      </div>
+      <p class="authority-note">No UI command mutates protected state directly. Runtime-unavailable requests fail visibly.</p>
+    </section>
+
+    <section class="panel-section">
+      <div class="panel-heading">REPLAY <small id="replay-status">EMPTY</small></div>
+      <div class="replay-controls">
+        <button id="replay-load-button">LOAD</button>
+        <button id="replay-prev-button">◀</button>
+        <button id="replay-play-button">PLAY</button>
+        <button id="replay-next-button">▶</button>
+        <select id="replay-speed" aria-label="Replay speed"><option value="0.5">0.5×</option><option value="1" selected>1×</option><option value="2">2×</option><option value="4">4×</option></select>
+      </div>
+      <input id="replay-range" type="range" min="0" max="0" value="0">
+      <p id="replay-current" class="replay-current">No frame</p>
+    </section>
+
+    <section class="panel-section">
+      <div class="panel-heading">TELEMETRY <small>MEASURED</small></div>
+      <div id="telemetry-summary" class="telemetry-summary"></div>
+    </section>
+
+    <section class="panel-section">
+      <div class="panel-heading">APPLICATION LIBRARY <small>16 TOOLS</small></div>
+      <div id="application-library" class="application-library"></div>
+    </section>
+
+    <section class="panel-section">
+      <div class="panel-heading">TEMPLATES <small>WORKSPACE LAYOUT</small></div>
+      <select id="template-select" class="select-control"></select>
+      <div class="workspace-actions button-grid">
+        <button id="export-workspace-button" class="action-button">EXPORT</button>
+        <button id="import-workspace-button" class="action-button">IMPORT</button>
+      </div>
+      <input id="workspace-file-input" type="file" accept="application/json" hidden>
+    </section>
+
+    <section class="panel-section">
+      <div class="panel-heading">THEME PRESETS <small>SWAPPABLE</small></div>
+      <div id="theme-grid" class="theme-grid"></div>
+      <details class="custom-theme">
+        <summary>CUSTOM THEME</summary>
+        <div class="custom-theme-grid">
+          <label>Primary<input id="custom-primary" type="color" value="#45caff"></label>
+          <label>Secondary<input id="custom-secondary" type="color" value="#8b5cff"></label>
+          <label>Tertiary<input id="custom-tertiary" type="color" value="#b2f6ff"></label>
+          <label>Background<input id="custom-background" type="color" value="#020712"></label>
+          <button id="apply-custom-theme" class="action-button">APPLY CUSTOM</button>
+        </div>
+      </details>
+    </section>
+  </aside>
+
+  <nav id="dock" class="dock glass-panel" aria-label="Primary feature navigation"></nav>
+  <div id="crosshair" class="crosshair" aria-hidden="true"></div>
+  <div id="toast-region" class="toast-region" aria-live="polite"></div>
+
+  <dialog id="command-palette" class="command-palette glass-panel">
+    <div class="palette-head"><input id="palette-search" type="search" placeholder="Search features, applications, and commands…"><button onclick="this.closest('dialog').close()" class="icon-button">×</button></div>
+    <div id="palette-results" class="palette-results"></div>
+  </dialog>
+
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>

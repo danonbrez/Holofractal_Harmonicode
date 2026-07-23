@@ -1,0 +1,19 @@
+{
+  "schema": "HHS_PASS_103_RELEASE_MANIFEST_V1",
+  "pass_id": "PASS_103",
+  "parent_pass102_release_root_hash72": "0000000000000000000000000000001h9iwsap8?N9=1CosNmecVk8NUhGSjrMs53(TA=2qH",
+  "symbol_count": 2,
+  "historical_replay_exact": true,
+  "ordered_substitution_preserved": true,
+  "all_negative_cases_passed": true,
+  "artifacts": [
+    "PASS_103_DYNAMIC_ALPHABET.json",
+    "PASS_103_SUBSTITUTION_RECEIPT.json",
+    "PASS_103_WORKLOAD_REGISTRY.json",
+    "PASS_103_NEGATIVE_CASES.json",
+    "PASS_103_OUTCOME_TAXONOMY.json",
+    "PASS_103_CALIBRATION_REPORT.md",
+    "CHANGELOG_PASS_103.md"
+  ],
+  "pass103_release_root_hash72": "0000000000000000000000000000003*oJH7DPuS)KdkRRA8S+w7z4)Ldb!W9dB=ktCgcsLH"
+}

@@ -1,0 +1,426 @@
+{
+  "alignment": {
+    "bounded_recursion": true,
+    "execution_is_not_release": true,
+    "no_float_inherited_from_garu": true,
+    "proof_required_for_release": true,
+    "proposal_is_not_execution": true,
+    "rollback_on_nonimprovement": true
+  },
+  "authority": "A1_EXECUTION_EVIDENCE",
+  "conclusion": "RELEASE_PROVED",
+  "cycles": [
+    {
+      "cycle": 0,
+      "cycle_root": "6cd9c425a6f3037f7a86c077a1669e72e5f25e21f10fe3c7e529c98fdab69220",
+      "error": null,
+      "origin": "seed",
+      "receipt": {
+        "alignment": {
+          "authority_nonpromotion": true,
+          "execution_required": true,
+          "no_float": true,
+          "premises_preserved": true
+        },
+        "authority": "A1_EXECUTION_EVIDENCE",
+        "conclusion": "GOAL_NOT_PROVED",
+        "constraints": [
+          {
+            "closed": true,
+            "gate_id": "reciprocal",
+            "kind": "constraint",
+            "lhs": "g*h",
+            "lhs_value": "1",
+            "residual": "0",
+            "rhs": "xy",
+            "rhs_value": "1",
+            "witness_root": "d7986efde08019078508372446b156d6aeea058bd4e2f15c2b78cc8052746464"
+          }
+        ],
+        "goals": [
+          {
+            "closed": false,
+            "gate_id": "candidate_goal",
+            "kind": "goal",
+            "lhs": "rho*g",
+            "lhs_value": "1/16",
+            "residual": "1/16",
+            "rhs": "0",
+            "rhs_value": "0",
+            "witness_root": "b6dac51fd33e768dfd269f7715d86b8ae541ce7e1a91ec4a610c6149acc5bc18"
+          }
+        ],
+        "ingress": {
+          "agent": "GARU",
+          "assignments": {
+            "g": "5/4",
+            "h": "4/5",
+            "rho": "1/20",
+            "xy": "1"
+          },
+          "constraint_count": 1,
+          "goal_count": 1,
+          "ingress_root": "f351ef5ff779e3cd3ea396260a50a633d48f92d05d5aa03ca72e92fcae188620",
+          "request_id": "gfe-seed"
+        },
+        "looking_glass": {
+          "closed": true,
+          "forward": {
+            "conclusion": "GOAL_NOT_PROVED",
+            "premise_root": "f351ef5ff779e3cd3ea396260a50a633d48f92d05d5aa03ca72e92fcae188620",
+            "proof_path": [
+              "d7986efde08019078508372446b156d6aeea058bd4e2f15c2b78cc8052746464",
+              "b6dac51fd33e768dfd269f7715d86b8ae541ce7e1a91ec4a610c6149acc5bc18"
+            ]
+          },
+          "reverse": {
+            "conclusion": "GOAL_NOT_PROVED",
+            "premise_root": "f351ef5ff779e3cd3ea396260a50a633d48f92d05d5aa03ca72e92fcae188620",
+            "proof_path": [
+              "b6dac51fd33e768dfd269f7715d86b8ae541ce7e1a91ec4a610c6149acc5bc18",
+              "d7986efde08019078508372446b156d6aeea058bd4e2f15c2b78cc8052746464"
+            ]
+          }
+        },
+        "pass_id": "PASS_138_HARMONICODE_GENERAL_ALGEBRAIC_REASONING_UNIT",
+        "receipt_root": "372a0dea66eaa17c5467a95670e5b639f07d931e477e779e7ccddb5bca035bf4",
+        "schema": "HHS_GARU_API_V1"
+      },
+      "receipt_validation": {
+        "checks": {
+          "authority": true,
+          "looking_glass": true,
+          "no_float": true,
+          "receipt_root": true,
+          "schema": true
+        },
+        "valid": true
+      },
+      "request_root": "d196c15a0269673861a1fd6cdb564e89f83ba238b4423ae66e09f9d9616d6fa8",
+      "score": [
+        0,
+        0,
+        1,
+        -11
+      ],
+      "status": "EXECUTED_VALID"
+    },
+    {
+      "cycle": 1,
+      "cycle_root": "a70f66b07c0ecdf7510071dd71400b6e3a663eb7b898caf838f55e700a08fc01",
+      "decision": "COMMIT_IMPROVEMENT",
+      "error": null,
+      "origin": "patch_0",
+      "receipt": {
+        "alignment": {
+          "authority_nonpromotion": true,
+          "execution_required": true,
+          "no_float": true,
+          "premises_preserved": true
+        },
+        "authority": "A1_EXECUTION_EVIDENCE",
+        "conclusion": "PROVED",
+        "constraints": [
+          {
+            "closed": true,
+            "gate_id": "reciprocal",
+            "kind": "constraint",
+            "lhs": "g*h",
+            "lhs_value": "1",
+            "residual": "0",
+            "rhs": "xy",
+            "rhs_value": "1",
+            "witness_root": "d7986efde08019078508372446b156d6aeea058bd4e2f15c2b78cc8052746464"
+          }
+        ],
+        "goals": [
+          {
+            "closed": true,
+            "gate_id": "polynomialized_closure",
+            "kind": "goal",
+            "lhs": "rho*g",
+            "lhs_value": "1/16",
+            "residual": "0",
+            "rhs": "(g-xy)**2",
+            "rhs_value": "1/16",
+            "witness_root": "b115549ecbd0e9e34651ca24ae2dc7b44af08823ab7d06cc69abbc38611adf61"
+          }
+        ],
+        "ingress": {
+          "agent": "GARU",
+          "assignments": {
+            "g": "5/4",
+            "h": "4/5",
+            "rho": "1/20",
+            "xy": "1"
+          },
+          "constraint_count": 1,
+          "goal_count": 1,
+          "ingress_root": "f351ef5ff779e3cd3ea396260a50a633d48f92d05d5aa03ca72e92fcae188620",
+          "request_id": "gfe-seed"
+        },
+        "looking_glass": {
+          "closed": true,
+          "forward": {
+            "conclusion": "PROVED",
+            "premise_root": "f351ef5ff779e3cd3ea396260a50a633d48f92d05d5aa03ca72e92fcae188620",
+            "proof_path": [
+              "d7986efde08019078508372446b156d6aeea058bd4e2f15c2b78cc8052746464",
+              "b115549ecbd0e9e34651ca24ae2dc7b44af08823ab7d06cc69abbc38611adf61"
+            ]
+          },
+          "reverse": {
+            "conclusion": "PROVED",
+            "premise_root": "f351ef5ff779e3cd3ea396260a50a633d48f92d05d5aa03ca72e92fcae188620",
+            "proof_path": [
+              "b115549ecbd0e9e34651ca24ae2dc7b44af08823ab7d06cc69abbc38611adf61",
+              "d7986efde08019078508372446b156d6aeea058bd4e2f15c2b78cc8052746464"
+            ]
+          }
+        },
+        "pass_id": "PASS_138_HARMONICODE_GENERAL_ALGEBRAIC_REASONING_UNIT",
+        "receipt_root": "d7dd60d5919c592c3b662c31020d271509f903846e92a5db2f5e3c76e26571ab",
+        "schema": "HHS_GARU_API_V1"
+      },
+      "receipt_validation": {
+        "checks": {
+          "authority": true,
+          "looking_glass": true,
+          "no_float": true,
+          "receipt_root": true,
+          "schema": true
+        },
+        "valid": true
+      },
+      "request_root": "1a407e9865f374628e8ec25617a7d5ce46b4fc984e86142c907ef7ace2b5bf89",
+      "score": [
+        1,
+        1,
+        1,
+        -19
+      ],
+      "status": "EXECUTED_VALID"
+    },
+    {
+      "cycle": 2,
+      "cycle_root": "bed305d0522adabb800bd939c48df116901cff3d34df93e5e4ad64ea4b7905da",
+      "decision": "ROLLBACK_NO_PROVED_IMPROVEMENT",
+      "error": null,
+      "origin": "patch_1",
+      "receipt": {
+        "alignment": {
+          "authority_nonpromotion": true,
+          "execution_required": true,
+          "no_float": true,
+          "premises_preserved": true
+        },
+        "authority": "A1_EXECUTION_EVIDENCE",
+        "conclusion": "GOAL_NOT_PROVED",
+        "constraints": [
+          {
+            "closed": true,
+            "gate_id": "reciprocal",
+            "kind": "constraint",
+            "lhs": "g*h",
+            "lhs_value": "1",
+            "residual": "0",
+            "rhs": "xy",
+            "rhs_value": "1",
+            "witness_root": "d7986efde08019078508372446b156d6aeea058bd4e2f15c2b78cc8052746464"
+          }
+        ],
+        "goals": [
+          {
+            "closed": false,
+            "gate_id": "polynomialized_closure",
+            "kind": "goal",
+            "lhs": "rho*g",
+            "lhs_value": "1/8",
+            "residual": "1/16",
+            "rhs": "(g-xy)**2",
+            "rhs_value": "1/16",
+            "witness_root": "d0a5007466aa56547ea67749c23e47ffbf9024aca63a0f072377033a0c6a6976"
+          }
+        ],
+        "ingress": {
+          "agent": "GARU",
+          "assignments": {
+            "g": "5/4",
+            "h": "4/5",
+            "rho": "1/10",
+            "xy": "1"
+          },
+          "constraint_count": 1,
+          "goal_count": 1,
+          "ingress_root": "5747b50be2482c2531901150610702d687e4bb4820b1ac237de84b850c01c073",
+          "request_id": "gfe-seed"
+        },
+        "looking_glass": {
+          "closed": true,
+          "forward": {
+            "conclusion": "GOAL_NOT_PROVED",
+            "premise_root": "5747b50be2482c2531901150610702d687e4bb4820b1ac237de84b850c01c073",
+            "proof_path": [
+              "d7986efde08019078508372446b156d6aeea058bd4e2f15c2b78cc8052746464",
+              "d0a5007466aa56547ea67749c23e47ffbf9024aca63a0f072377033a0c6a6976"
+            ]
+          },
+          "reverse": {
+            "conclusion": "GOAL_NOT_PROVED",
+            "premise_root": "5747b50be2482c2531901150610702d687e4bb4820b1ac237de84b850c01c073",
+            "proof_path": [
+              "d0a5007466aa56547ea67749c23e47ffbf9024aca63a0f072377033a0c6a6976",
+              "d7986efde08019078508372446b156d6aeea058bd4e2f15c2b78cc8052746464"
+            ]
+          }
+        },
+        "pass_id": "PASS_138_HARMONICODE_GENERAL_ALGEBRAIC_REASONING_UNIT",
+        "receipt_root": "f755807feabd73d54d3a9cec6da624429352f35cec55ec7905c2abb2e7f771c5",
+        "schema": "HHS_GARU_API_V1"
+      },
+      "receipt_validation": {
+        "checks": {
+          "authority": true,
+          "looking_glass": true,
+          "no_float": true,
+          "receipt_root": true,
+          "schema": true
+        },
+        "valid": true
+      },
+      "request_root": "7a909feb70936c214249d3ca403f0af491ddb067f1078f0726f49931dcf39748",
+      "score": [
+        0,
+        0,
+        1,
+        -19
+      ],
+      "status": "EXECUTED_VALID"
+    },
+    {
+      "cycle": 3,
+      "cycle_root": "c3d8d425aa4d5d0fd20d02c08ffd134e21e289c63773071bc25812a50c9971b6",
+      "error": null,
+      "origin": "patch_2",
+      "receipt": null,
+      "receipt_validation": null,
+      "request_root": "1a407e9865f374628e8ec25617a7d5ce46b4fc984e86142c907ef7ace2b5bf89",
+      "revisited_cycle": 1,
+      "score": [
+        1,
+        1,
+        1,
+        -19
+      ],
+      "status": "OUROBOROS_STATE_REVISITED"
+    }
+  ],
+  "ingress": {
+    "agent": "THE_ARCHITECT",
+    "candidate_count": 3,
+    "ingress_root": "678c49d35ea6cb9e3c70d9cc24295c3bcc5cf10d96e12f0d541c627882f533dd",
+    "max_cycles": 4,
+    "request_id": "architect-gfe-optimization-001",
+    "seed_root": "d196c15a0269673861a1fd6cdb564e89f83ba238b4423ae66e09f9d9616d6fa8"
+  },
+  "ouroboros": {
+    "closed": true,
+    "closure": "OUROBOROS_CLOSED",
+    "forward_cycle_roots": [
+      "6cd9c425a6f3037f7a86c077a1669e72e5f25e21f10fe3c7e529c98fdab69220",
+      "a70f66b07c0ecdf7510071dd71400b6e3a663eb7b898caf838f55e700a08fc01",
+      "bed305d0522adabb800bd939c48df116901cff3d34df93e5e4ad64ea4b7905da",
+      "c3d8d425aa4d5d0fd20d02c08ffd134e21e289c63773071bc25812a50c9971b6"
+    ],
+    "premise_root": "678c49d35ea6cb9e3c70d9cc24295c3bcc5cf10d96e12f0d541c627882f533dd",
+    "reverse_cycle_roots": [
+      "c3d8d425aa4d5d0fd20d02c08ffd134e21e289c63773071bc25812a50c9971b6",
+      "bed305d0522adabb800bd939c48df116901cff3d34df93e5e4ad64ea4b7905da",
+      "a70f66b07c0ecdf7510071dd71400b6e3a663eb7b898caf838f55e700a08fc01",
+      "6cd9c425a6f3037f7a86c077a1669e72e5f25e21f10fe3c7e529c98fdab69220"
+    ]
+  },
+  "pass_id": "PASS_139_THE_ARCHITECT_OUROBOROS_MANIFOLD",
+  "receipt_root": "d7c3bde1bdc68a778a193cad35272e3fa991f49045df1bae32fb8acbd3695a35",
+  "release_authorized": true,
+  "schema": "HHS_ARCHITECT_API_V1",
+  "selected_cycle": 1,
+  "selected_receipt": {
+    "alignment": {
+      "authority_nonpromotion": true,
+      "execution_required": true,
+      "no_float": true,
+      "premises_preserved": true
+    },
+    "authority": "A1_EXECUTION_EVIDENCE",
+    "conclusion": "PROVED",
+    "constraints": [
+      {
+        "closed": true,
+        "gate_id": "reciprocal",
+        "kind": "constraint",
+        "lhs": "g*h",
+        "lhs_value": "1",
+        "residual": "0",
+        "rhs": "xy",
+        "rhs_value": "1",
+        "witness_root": "d7986efde08019078508372446b156d6aeea058bd4e2f15c2b78cc8052746464"
+      }
+    ],
+    "goals": [
+      {
+        "closed": true,
+        "gate_id": "polynomialized_closure",
+        "kind": "goal",
+        "lhs": "rho*g",
+        "lhs_value": "1/16",
+        "residual": "0",
+        "rhs": "(g-xy)**2",
+        "rhs_value": "1/16",
+        "witness_root": "b115549ecbd0e9e34651ca24ae2dc7b44af08823ab7d06cc69abbc38611adf61"
+      }
+    ],
+    "ingress": {
+      "agent": "GARU",
+      "assignments": {
+        "g": "5/4",
+        "h": "4/5",
+        "rho": "1/20",
+        "xy": "1"
+      },
+      "constraint_count": 1,
+      "goal_count": 1,
+      "ingress_root": "f351ef5ff779e3cd3ea396260a50a633d48f92d05d5aa03ca72e92fcae188620",
+      "request_id": "gfe-seed"
+    },
+    "looking_glass": {
+      "closed": true,
+      "forward": {
+        "conclusion": "PROVED",
+        "premise_root": "f351ef5ff779e3cd3ea396260a50a633d48f92d05d5aa03ca72e92fcae188620",
+        "proof_path": [
+          "d7986efde08019078508372446b156d6aeea058bd4e2f15c2b78cc8052746464",
+          "b115549ecbd0e9e34651ca24ae2dc7b44af08823ab7d06cc69abbc38611adf61"
+        ]
+      },
+      "reverse": {
+        "conclusion": "PROVED",
+        "premise_root": "f351ef5ff779e3cd3ea396260a50a633d48f92d05d5aa03ca72e92fcae188620",
+        "proof_path": [
+          "b115549ecbd0e9e34651ca24ae2dc7b44af08823ab7d06cc69abbc38611adf61",
+          "d7986efde08019078508372446b156d6aeea058bd4e2f15c2b78cc8052746464"
+        ]
+      }
+    },
+    "pass_id": "PASS_138_HARMONICODE_GENERAL_ALGEBRAIC_REASONING_UNIT",
+    "receipt_root": "d7dd60d5919c592c3b662c31020d271509f903846e92a5db2f5e3c76e26571ab",
+    "schema": "HHS_GARU_API_V1"
+  },
+  "selected_request_root": "1a407e9865f374628e8ec25617a7d5ce46b4fc984e86142c907ef7ace2b5bf89",
+  "selected_score": [
+    1,
+    1,
+    1,
+    -19
+  ]
+}

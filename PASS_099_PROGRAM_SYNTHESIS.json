@@ -1,0 +1,31 @@
+{
+  "schema": "HHS_PASS_099_SYNTHESIS_RESULTS_V1",
+  "baseline": {
+    "candidate_count": 5,
+    "program": {
+      "bias": 0,
+      "sign": -1
+    },
+    "schema": "HHS_U72_BOUNDED_SYNTHESIS_RESULT_V1",
+    "synthesis_root_hash72": "0000000000000000000000000000002CeuQ-NYs5RFV*)zOcbxy!fv3Z27D/m-(P(a(bPGV*",
+    "truth_table": {
+      "-1": 1,
+      "0": 0,
+      "1": -1
+    },
+    "universality_claimed": false,
+    "validated": true
+  },
+  "held_out": {
+    "candidate_count": 6,
+    "schema": "HHS_U72_BOUNDED_SYNTHESIS_RESULT_V1",
+    "synthesis_root_hash72": "000000000000000000000000000000222-LS/pi1FryxvY8q)1SOr-Qo6n8?m!5DQwLIO(2q",
+    "truth_table": {
+      "-1": -1,
+      "0": 1,
+      "1": 1
+    },
+    "universality_claimed": false,
+    "validated": false
+  }
+}

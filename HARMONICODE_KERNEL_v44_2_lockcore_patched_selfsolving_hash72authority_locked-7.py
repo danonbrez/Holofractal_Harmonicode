@@ -7111,7 +7111,7 @@ class M7ExponentTetrationFace(MembraneFace):
         torus.m_lift_registry.setdefault("face_payloads", {})[self.face_id] = copy.deepcopy(value)
 
 
-class M7PlaceholderPX1Face(MembraneFace):
+class M7ExponentEqualityFace(MembraneFace):
     face_id = "PX1"
 
     def project(self, torus: "Torus72") -> Dict[str, Any]:
@@ -7130,7 +7130,7 @@ M_LIFT_FACE_LIBRARY: Dict[str, MembraneFace] = {
     "C9_LIFT": M7TriadicSymmetryLiftFace(),
     "C27_LIFT": M7Triadic27LiftFace(),
     "PX_2": M7ExponentTetrationFace(),
-    "PX1": M7PlaceholderPX1Face(),
+    "PX1": M7ExponentEqualityFace(),
 }
 
 

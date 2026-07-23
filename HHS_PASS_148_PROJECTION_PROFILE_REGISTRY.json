@@ -1,0 +1,186 @@
+{
+  "profiles": [
+    {
+      "allowed_output_classes": [
+        "CONTROL_PROJECTION"
+      ],
+      "authority_ceiling": "A1",
+      "branch_rules": "conventional",
+      "cancellation_permissions": [
+        "NONZERO_COMMON_FACTOR"
+      ],
+      "commutation_permissions": [
+        "MULTIPLICATION"
+      ],
+      "equality_semantics": "ordinary field equality",
+      "hash72_witness": "0000000000000000000000000000000j(Rv6=m>w1G4/!ku-v6Qub)8tc)N2A59+p?RKFmJs",
+      "native": false,
+      "numerical_representation": "exact symbolic field",
+      "profile_id": "COMMUTATIVE_FIELD_CONTROL_V1",
+      "prohibited_native_state_mutations": [
+        "ALL"
+      ],
+      "type_domain": "commutative field with explicitly nonzero denominators",
+      "version": "HHS_NATIVE_SEMANTIC_REGISTRY_148.1.0"
+    },
+    {
+      "allowed_output_classes": [
+        "CONTROL_PROJECTION"
+      ],
+      "authority_ceiling": "A1",
+      "branch_rules": "not applicable",
+      "cancellation_permissions": [
+        "NONZERO_COMMON_FACTOR"
+      ],
+      "commutation_permissions": [
+        "ADDITION",
+        "MULTIPLICATION"
+      ],
+      "equality_semantics": "rational equality",
+      "hash72_witness": "0000000000000000000000000000002Es>j>90aOd^1I-1Jgz4QDcZvKbMZEAsbjrQE>SFU)",
+      "native": false,
+      "numerical_representation": "integer numerator/denominator",
+      "profile_id": "EXACT_RATIONAL_CONTROL_V1",
+      "prohibited_native_state_mutations": [
+        "ALL"
+      ],
+      "type_domain": "Q",
+      "version": "HHS_NATIVE_SEMANTIC_REGISTRY_148.1.0"
+    },
+    {
+      "allowed_output_classes": [
+        "DECLARED_SYSTEM_LAW",
+        "DERIVABLE_CONSEQUENCE",
+        "UNRESOLVED_EXPRESSION"
+      ],
+      "authority_ceiling": "A4",
+      "branch_rules": "registry-defined",
+      "cancellation_permissions": [],
+      "commutation_permissions": [],
+      "equality_semantics": "registry-defined",
+      "hash72_witness": "0000000000000000000000000000003XppA^P3Z43PO5PnhAs/oqlu>>*gBu(GP-Css68mi9",
+      "native": true,
+      "numerical_representation": "exact symbolic/integer/rational/prime-exponent",
+      "profile_id": "HHS_NATIVE_TYPED_V1",
+      "prohibited_native_state_mutations": [],
+      "type_domain": "typed HHS symbolic objects",
+      "version": "HHS_NATIVE_SEMANTIC_REGISTRY_148.1.0"
+    },
+    {
+      "allowed_output_classes": [
+        "CONTROL_PROJECTION"
+      ],
+      "authority_ceiling": "A1",
+      "branch_rules": "IEEE-754",
+      "cancellation_permissions": [
+        "CONTROL_PROFILE_ONLY"
+      ],
+      "commutation_permissions": [
+        "CONTROL_PROFILE_ONLY"
+      ],
+      "equality_semantics": "binary64 comparison",
+      "hash72_witness": "0000000000000000000000000000001Oax=!!TR)?h)Y)erm=7Tm1(ye?qAkKc8yzX6Q8DRc",
+      "native": false,
+      "numerical_representation": "binary64 approximate",
+      "profile_id": "IEEE754_BINARY64_CONTROL_V1",
+      "prohibited_native_state_mutations": [
+        "ALL"
+      ],
+      "type_domain": "IEEE-754 binary64",
+      "version": "HHS_NATIVE_SEMANTIC_REGISTRY_148.1.0"
+    },
+    {
+      "allowed_output_classes": [
+        "NARRATIVE_EXTRAPOLATION"
+      ],
+      "authority_ceiling": "A1",
+      "branch_rules": "narrative",
+      "cancellation_permissions": [],
+      "commutation_permissions": [],
+      "equality_semantics": "story-local consistency only",
+      "hash72_witness": "0000000000000000000000000000001flx6FFurAvIggQ0pzc+bIa4obl0mq-6GhlGHR4mD9",
+      "native": false,
+      "numerical_representation": "not authoritative",
+      "profile_id": "NARRATIVE_WORLD_MODEL_V1",
+      "prohibited_native_state_mutations": [
+        "ALL"
+      ],
+      "type_domain": "narrative propositions",
+      "version": "HHS_NATIVE_SEMANTIC_REGISTRY_148.1.0"
+    },
+    {
+      "allowed_output_classes": [
+        "CONTROL_PROJECTION"
+      ],
+      "authority_ceiling": "A1",
+      "branch_rules": "principal unless declared",
+      "cancellation_permissions": [
+        "NONZERO_COMMON_FACTOR"
+      ],
+      "commutation_permissions": [
+        "ADDITION",
+        "MULTIPLICATION"
+      ],
+      "equality_semantics": "standard complex equality",
+      "hash72_witness": "00000000000000000000000000000016mMHQWVZ5fYGuCl9hd!3i9Y)rpUyCc=Tq3*D?TxcD",
+      "native": false,
+      "numerical_representation": "exact/approximate as declared",
+      "profile_id": "STANDARD_COMPLEX_CONTROL_V1",
+      "prohibited_native_state_mutations": [
+        "ALL"
+      ],
+      "type_domain": "C",
+      "version": "HHS_NATIVE_SEMANTIC_REGISTRY_148.1.0"
+    },
+    {
+      "allowed_output_classes": [
+        "CONTROL_PROJECTION"
+      ],
+      "authority_ceiling": "A1",
+      "branch_rules": "standard real analysis",
+      "cancellation_permissions": [
+        "NONZERO_COMMON_FACTOR"
+      ],
+      "commutation_permissions": [
+        "ADDITION",
+        "MULTIPLICATION"
+      ],
+      "equality_semantics": "standard real equality",
+      "hash72_witness": "0000000000000000000000000000003EzPUoax9A*YI=mwHD3ZPa1hKkXt)7OGH2K4IqbzWr",
+      "native": false,
+      "numerical_representation": "exact/approximate as declared",
+      "profile_id": "STANDARD_REAL_ANALYSIS_CONTROL_V1",
+      "prohibited_native_state_mutations": [
+        "ALL"
+      ],
+      "type_domain": "R and standard extended-real conventions only when declared",
+      "version": "HHS_NATIVE_SEMANTIC_REGISTRY_148.1.0"
+    },
+    {
+      "allowed_output_classes": [
+        "CONTROL_PROJECTION"
+      ],
+      "authority_ceiling": "A1",
+      "branch_rules": "CAS-specific and recorded",
+      "cancellation_permissions": [
+        "CAS_DECLARED"
+      ],
+      "commutation_permissions": [
+        "CAS_DECLARED"
+      ],
+      "equality_semantics": "CAS profile",
+      "hash72_witness": "0000000000000000000000000000003i!pIn>nqIZ0Ok6)qzE?KI!D^U90mcxH^!89)eQa04",
+      "native": false,
+      "numerical_representation": "CAS-specific",
+      "profile_id": "SYMBOLIC_CAS_CONTROL_V1",
+      "prohibited_native_state_mutations": [
+        "ALL"
+      ],
+      "type_domain": "CAS-defined symbolic domain",
+      "version": "HHS_NATIVE_SEMANTIC_REGISTRY_148.1.0"
+    }
+  ],
+  "registry_hash72": "0000000000000000000000000000000H=q3I6tri4BLHai*YO?gOb!wiAm7qQbf(Yt)qWt4Q",
+  "registry_version": "HHS_NATIVE_SEMANTIC_REGISTRY_148.1.0",
+  "schema": "HHS_PASS148_PROJECTION_PROFILE_REGISTRY_V1"
+}

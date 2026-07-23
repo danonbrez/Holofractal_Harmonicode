@@ -1,0 +1,21 @@
+{
+  "schema": "HHS_PASS_144_TEST_REPORT_V1",
+  "pass": 144,
+  "result": "PASSED",
+  "passed": 63,
+  "failed": 0,
+  "warning_count": 1,
+  "warning": "Inherited pytest configuration contains an unknown cache_dir option in this environment; no test failed.",
+  "scope": [
+    "Pass 144 documentation immutability",
+    "Pass 143 conflict gradients",
+    "Pass 142 multimodal snapshots",
+    "Pass 141 equilibrium cache",
+    "Pass 140 holographic recovery",
+    "Pass 139 Architect",
+    "Pass 138 GARU",
+    "Pass 137 proof lifecycle",
+    "Pass 136 formal GfE",
+    "Pass 135 GfE logarithm constraints"
+  ]
+}

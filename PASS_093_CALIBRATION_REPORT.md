@@ -1,0 +1,3 @@
+# Pass 093 — Holofractal Pattern Discovery, Geometric Invariant Extraction, and Noise Boundary Calibration
+
+Pass 093 consumes immutable Pass 092 receipts, derives exact multiscale feature candidates, compares them with four deterministic structure-preserving null models, constructs a lossless held-out-tested symbolic alphabet, records class-specific noise degradation with provenance, attempts VM81 transfer without authority promotion, and replays the full discovery registry deterministically. Holofractal classifications remain candidates unless explicit scale maps and held-out validation survive.

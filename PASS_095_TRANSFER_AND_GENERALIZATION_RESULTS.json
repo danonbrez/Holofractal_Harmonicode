@@ -1,0 +1,22 @@
+{
+  "schema": "HHS_PASS_095_TRANSFER_RESULTS_V1",
+  "classification_counts": {
+    "GENERALIZATION_GAIN": 12,
+    "NEGATIVE_TRANSFER": 3,
+    "NO_MEASURABLE_GAIN": 9,
+    "SPECIALIZED_EFFICIENCY_GAIN": 15,
+    "TRANSFERABLE_GAIN": 9
+  },
+  "pattern_applicability": {
+    "all_applications": 69,
+    "precision": {
+      "denominator": 69,
+      "numerator": 69
+    },
+    "useful_applications": 69
+  },
+  "negative_transfer": {
+    "count": 3,
+    "denominator": 48
+  }
+}

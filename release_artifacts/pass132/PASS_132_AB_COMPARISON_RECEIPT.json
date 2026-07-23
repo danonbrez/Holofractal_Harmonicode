@@ -1,0 +1,346 @@
+{
+  "aggregate_receipt_root_hash72": "kDIfP<)F2Oo7BM32cVLBaV7gw>6rwRwS1CScI64S35EI4Z5ajN(YzRsWef6<I9F!N)d7d4Qd",
+  "aggregate_receipt_witness": {
+    "canonical_payload": "{\"available_workloads_closed\":true,\"continuation_checkpoint_root_hash72\":\"LU>(>B(X(AIRes1gTIFi/Ie-9tV+S(gLt3iDMXh)953UEweNj(b9D30xbH61x)nwI9W7Bg9J\",\"global_completion_status\":\"EXECUTABLE_CONSEQUENCE_CLOSURE_VERIFIED\",\"receipts\":[{\"comparison_roots_hash72\":[\"RJr!G6YemHDo-RyZoqzL0nc?2wnwb7h8gztec*vLc5Jz!4AM8Og4sa7-O5SGQGoK378l-1IW\",\"sfodcZMSEuhUe9de)qJhYP2r/>>G<Iv2tpAPLkT3QW1huARqkCODevK?9a(?0JEE<ZMQ/TL6\"],\"execution_root\":\"wcObWMwDIDu/AZC/YDWBEi+jlesnv*mVq4OHB<kFnX(L)AlKpfU9qys)lXLWV2Z(+j*BZv!<\",\"joint_receipt_root_hash72\":\"wcObWMwDIDu/AZC/YDWBEi+jlesnv*mVq4OHB<kFnX(L)AlKpfU9qys)lXLWV2Z(+j*BZv!<\",\"outcome\":\"EXECUTABLE_CONSEQUENCE_CLOSURE_VERIFIED\",\"workload_id\":\"repeated_decimal_accumulation\"},{\"comparison_roots_hash72\":[\"*JDdCYpD9b)ct7c27qi3S7s-q+MjX/-z/th<4WCPyQI7)/2>/xIx)v!VYYN1aqDxo6yQhAxY\",\"/JDTF)d0b8jY3nE-<vGaWrB7Snn)8cb<BREBQ9V>YF/tSu*ctas8rRspF-*1xsO3x1+y!CCj\"],\"execution_root\":\"hz32OquqK<dqE0O!uJOJ97nU6KBsnuX6qbxLmkyM5rP2f4B2<TwteTtz*ABV4Nvj3G-I)Xj8\",\"joint_receipt_root_hash72\":\"hz32OquqK<dqE0O!uJOJ97nU6KBsnuX6qbxLmkyM5rP2f4B2<TwteTtz*ABV4Nvj3G-I)Xj8\",\"outcome\":\"EXECUTABLE_CONSEQUENCE_CLOSURE_VERIFIED\",\"workload_id\":\"catastrophic_cancellation\"},{\"comparison_roots_hash72\":[\"FHG3FX?o>P5yidkP52Yd4bcbvMhbBcB710g0I3oQMZ>?bHZ7HoNCwBKwWIi-?yJEsPk4orwv\",\"<aGTdnMo*n8creC?rOrSbxtnVmaKMRzu2(doZ+F-4aT8uBpHNk5)uxHHfxqwK52VUbs!HEN6\"],\"execution_root\":\"0jX7W2k7zvBECNFgD/Z<(7LCIJ5R7oEKM!Q*W5jlX/n+D<SK/DF9Pc(>M49YTT)Nb?!m0OyT\",\"joint_receipt_root_hash72\":\"0jX7W2k7zvBECNFgD/Z<(7LCIJ5R7oEKM!Q*W5jlX/n+D<SK/DF9Pc(>M49YTT)Nb?!m0OyT\",\"outcome\":\"EXECUTABLE_CONSEQUENCE_CLOSURE_VERIFIED\",\"workload_id\":\"alternating_accumulation\"},{\"comparison_roots_hash72\":[\"1baL9MOAUzGvMZm?4aNhS9oK2zzS?w!i)WL90hBV?w-Lfz!GsmUG7dyWGu/uBxt7W)wW<7tC\",\"+DKp!W>g5xW)p/j5Utv3X?bz+B5vRXyLMu-e94*5utlE29hzcygRi<hNzZkrYvqUMjc(+37d\"],\"execution_root\":\"x-SpOuYRayw3F6bqC>ktd+79YbNDOAj)AoF?m+96mm3sXh*wD+xp/bpp4mSvD0+V!kviAFD9\",\"joint_receipt_root_hash72\":\"x-SpOuYRayw3F6bqC>ktd+79YbNDOAj)AoF?m+96mm3sXh*wD+xp/bpp4mSvD0+V!kviAFD9\",\"outcome\":\"EXECUTABLE_CONSEQUENCE_CLOSURE_VERIFIED\",\"workload_id\":\"nonassociative_left\"},{\"comparison_roots_hash72\":[\"BO8!-P8*RkXGzAcFpp9q7Ga6Sm9fgVTun/W<R70yL2TXUb5nE6hwRQAPott3b2/SUwPC2k(V\",\"N!UDJ</pNN(On>Axkc0/P7n6k8amtY?jVzl<0bqX(1s/1tU)qG-9<Q5oE5L)z3-u*m4?Sngs\"],\"execution_root\":\"qF?utnR5+SEscDjUA4z4wXllL4Y?6k2)8odJHl)60qHTa5iczEZtXXc-jIPppo923W(BnVE-\",\"joint_receipt_root_hash72\":\"qF?utnR5+SEscDjUA4z4wXllL4Y?6k2)8odJHl)60qHTa5iczEZtXXc-jIPppo923W(BnVE-\",\"outcome\":\"EXECUTABLE_CONSEQUENCE_CLOSURE_VERIFIED\",\"workload_id\":\"nonassociative_right\"},{\"comparison_roots_hash72\":[\"qU62P1>CDr4(XSuVGROrN3MkKVofIo/wyarjjLwmS!eCGYdozkcNs>O6(PiowLRBQ>QYYus7\",\"IghSxRkTMZvXLRkERKxTzF)<aCI+98S6(ee*FPoVv0UD83VYbNkg(vT)5qG-?xfGoz?JJ+V+\"],\"execution_root\":\")V5ysvINVWN<?9CYo0BvZu!YtMbW/nOR4pT/sQSz91+s35ym9hqo-ecm<sz0873R1BQvp3iz\",\"joint_receipt_root_hash72\":\")V5ysvINVWN<?9CYo0BvZu!YtMbW/nOR4pT/sQSz91+s35ym9hqo-ecm<sz0873R1BQvp3iz\",\"outcome\":\"EXECUTABLE_CONSEQUENCE_CLOSURE_VERIFIED\",\"workload_id\":\"inverse_normalization\"},{\"comparison_roots_hash72\":[\"rDS-?N)ERY>(+nn-zgUPrZbqRsCP8u-egL?PDuqCBQdp8G8qWj*aqYY1tN7brq9aG+Bjm9rT\",\"FlIHiw3wztuvqc0Uy1?3QyLATe(D7-zf)L?ZvoT(cn<CCLd<c19?vYPUZ>HE?0uAy(x>yZF4\"],\"execution_root\":\"P-X2zpq26Zf?T5cs!PjwEqKW5G1zv02ey*r<6/2Ff13KHVa*ogQ?Bebm5DD2sdnIrGWg+EqX\",\"joint_receipt_root_hash72\":\"P-X2zpq26Zf?T5cs!PjwEqKW5G1zv02ey*r<6/2Ff13KHVa*ogQ?Bebm5DD2sdnIrGWg+EqX\",\"outcome\":\"EXECUTABLE_CONSEQUENCE_CLOSURE_VERIFIED\",\"workload_id\":\"overflow_boundary\"},{\"comparison_roots_hash72\":[\"+1TXdXt7L+Rx*W!6FWE<N1LxfW!R(BzlpG>3jBn/Uf>0P-WV7QuLrZ51do>V+AQS8vIwDYgt\",\"brK*cVkL1dUqbQ<ZRF>guLwmMTY9/oASJamqSjxIgV4<Y?6fBaIhe6-aE)OH(jM)l9//s?Yy\"],\"execution_root\":\"l*7*h(tBqaepE<jMa4LvHPMco+?LjpT4soBo9WwhrEEksypPMWAXTiOvB73(ua<S/20M6JL2\",\"joint_receipt_root_hash72\":\"l*7*h(tBqaepE<jMa4LvHPMco+?LjpT4soBo9WwhrEEksypPMWAXTiOvB73(ua<S/20M6JL2\",\"outcome\":\"EXECUTABLE_CONSEQUENCE_CLOSURE_VERIFIED\",\"workload_id\":\"underflow_boundary\"},{\"comparison_roots_hash72\":[\"s!UH>usMYHoXIF1l8wcJ1s4gj(NMCIE78rpbI-vB+bI<GD9pC<pzrAnpn2nknRNxoILm7eti\",\"EYfNdN-0SVsXlK/)*VpV)Bib36!PrgUuUKV-1Z)!xFQEVQQQh>RZ)*AqbZ0XYWwK43F9g+uX\"],\"execution_root\":\"fiaU(G*6An!de-5<ZO-1/(jT8*707Z?RTjl)p!lv*jFRm54Q3s<HSp-u!(kU6qiyA7ZW8*KY\",\"joint_receipt_root_hash72\":\"fiaU(G*6An!de-5<ZO-1/(jT8*707Z?RTjl)p!lv*jFRm54Q3s<HSp-u!(kU6qiyA7ZW8*KY\",\"outcome\":\"EXECUTABLE_CONSEQUENCE_CLOSURE_VERIFIED\",\"workload_id\":\"signed_zero_propagation\"},{\"comparison_roots_hash72\":[\"M-<lhZ*W6iE-I2RS1n/k9J-(U>3l3DxrH8?ZqwKM16SZ4xf0nFy4z4xNGaAh0?ezz24i?S4b\",\"gT5tTL69(3Z-i!Q)F</+)RbfiQO0Bo3EBJ5Ozm1ooeas9aHn26sykaXvxL/(8w/jMmhc6Ck8\"],\"execution_root\":\"vIekedUW)LLc?<D3KR(wqd>hI>rLmgxxPPn>qz>R!EgBmD/PYz5u)s!/>MoLMa4s<1k<w2UZ\",\"joint_receipt_root_hash72\":\"vIekedUW)LLc?<D3KR(wqd>hI>rLmgxxPPn>qz>R!EgBmD/PYz5u)s!/>MoLMa4s<1k<w2UZ\",\"outcome\":\"EXECUTABLE_CONSEQUENCE_CLOSURE_VERIFIED\",\"workload_id\":\"iterative_drift\"},{\"comparison_roots_hash72\":[\"B+1cdC!Gd1czk0<*-XuoW3<a>XfULeVKUY90zZb-eZcIYr4aHKi8mlsUAUeOJiMvj8YI7Tbc\",\"GO5v7o49EPFGlU?zSLXrGBu+I-mMHQOQW*e3radGVYlC>w71J<aRDP4UQF27Ws)A1Ee1/Eu7\"],\"execution_root\":\"x-o)A1vZEW+ono60V8B75(04u98j95Hg)V?sndQZfbOZFwnbWxfe-Qy/KXI4nFnLrts1JEi4\",\"joint_receipt_root_hash72\":\"x-o)A1vZEW+ono60V8B75(04u98j95Hg)V?sndQZfbOZFwnbWxfe-Qy/KXI4nFnLrts1JEi4\",\"outcome\":\"EXECUTABLE_CONSEQUENCE_CLOSURE_VERIFIED\",\"workload_id\":\"long_phase_cycle\"},{\"comparison_roots_hash72\":[\"7LU0<B8TzM44aHhDX*semneKDZgm>BYghROXCFFW)tzZD<N<xH1)4duyIvp-/>wY6/rHDFuv\",\"INFZHN9Dk8NhZVfIy(MQ>8n?VNq9PoK<uugR>WX?HB*V(DWrNIla2HI*Qz*//ImnGuCs8z+N\"],\"execution_root\":\"fL5GxqYa4VPc!EiT1GuavYo41x5-tJJREpkvWM9Zh5Yeo9wy8zwKF0sETDQ/evrR9Mje-Gpc\",\"joint_receipt_root_hash72\":\"fL5GxqYa4VPc!EiT1GuavYo41x5-tJJREpkvWM9Zh5Yeo9wy8zwKF0sETDQ/evrR9Mje-Gpc\",\"outcome\":\"EXECUTABLE_CONSEQUENCE_CLOSURE_VERIFIED\",\"workload_id\":\"repeated_normalization\"},{\"comparison_roots_hash72\":[\"KL*v9oWYq>!I8pV!Kn*oUQsis5U9pd8B+sc-yQ-59Ciq<v7DF4TCu4?d!h8?benv<zv7mK1T\",\"yA/JViEV-!fF+hjqTTkFwRQEsSR6aO(wtPzfUG<WNFeSPB6zmR31yu<qyszTnsstpqbLl714\"],\"execution_root\":\"fR4V1Z1z3w)uL?CrAB>ctkcF8I-U(pavs3al*6-/m>wThGc1R4a-1FKXA(I)UKV2y4c9/CIT\",\"joint_receipt_root_hash72\":\"fR4V1Z1z3w)uL?CrAB>ctkcF8I-U(pavs3al*6-/m>wThGc1R4a-1FKXA(I)UKV2y4c9/CIT\",\"outcome\":\"EXECUTABLE_CONSEQUENCE_CLOSURE_VERIFIED\",\"workload_id\":\"loshu_cell_sum\"},{\"comparison_roots_hash72\":[\"wd(GU3pOCUp8F9T--y7/olSym)CQ(iiih*hz062lZSQNT6<3Zm!cXntj)d9A?*Iu(MW1h2GC\",\"wd(GU3pO2<JeD9T--y7/olSym)CQ(iiih*hz321nZSQQS4<gOi0cXntj)d9A?*Iu(MW1h2GC\"],\"execution_root\":\"nVQll4doE8zWLDzF?yW1mPpfpFVj?<TCqX6zQXHlKV2fP6A!iRjW?X8tx4Ke?+-fNWVVr74t\",\"joint_receipt_root_hash72\":\"nVQll4doE8zWLDzF?yW1mPpfpFVj?<TCqX6zQXHlKV2fP6A!iRjW?X8tx4Ke?+-fNWVVr74t\",\"outcome\":\"EXECUTABLE_CONSEQUENCE_CLOSURE_VERIFIED\",\"workload_id\":\"dual_t_constraints\"},{\"comparison_roots_hash72\":[\"5YPrVKjY!TGE-vYt9izA8NqDCq-ddSk2?XKx6lAw(zhvEY7GElxzArUbHjawuh6!TkwX!HkH\",\"5YPrVKjY!TGE-vYtchxAlCmFCq-ddSk2?XKx6lAw(zhvEY7GElxzArUbHjq8/*4!TkwX!HkH\"],\"execution_root\":\"ocS?T?V8/bZzl<+lKhnZ?86-Yj!Wx393ryEh)dIA6oVQKyGfSOCwwqP2zRl<ZLT9/HnF(m*O\",\"joint_receipt_root_hash72\":\"ocS?T?V8/bZzl<+lKhnZ?86-Yj!Wx393ryEh)dIA6oVQKyGfSOCwwqP2zRl<ZLT9/HnF(m*O\",\"outcome\":\"EXECUTABLE_CONSEQUENCE_CLOSURE_VERIFIED\",\"workload_id\":\"conformal_radius\"},{\"comparison_roots_hash72\":[\"P!+BFwLVb/VgpB<8)N?It)mTNkuxq>WCidl3/JfCaaM*Wey32SX)xkUkSG1Xy36gm*ROqTRg\",\"P!+BFwLVL55mnB<8)N?It)mTNkuxq>WCidl3<FeEaaM)Vcyg+OZ)xkUkSG1Xy36gm*ROqTRg\"],\"execution_root\":\"4>wAI(h?F6G/jz+s1w9-gqm9u!E1Xdu<+1ACjh3Rjrqw>V4/eHz(Ht((FaYLq8!ISPHX!2vv\",\"joint_receipt_root_hash72\":\"4>wAI(h?F6G/jz+s1w9-gqm9u!E1Xdu<+1ACjh3Rjrqw>V4/eHz(Ht((FaYLq8!ISPHX!2vv\",\"outcome\":\"EXECUTABLE_CONSEQUENCE_CLOSURE_VERIFIED\",\"workload_id\":\"master_matrix\"},{\"comparison_roots_hash72\":[\"sPEJUC)8C4I1g!+HnnGpYCfRY6y1h>zhCERPjmd<+piYGabcBa<IrPvBTESk)!zICNW?pgSY\",\"4gab4rrS5xoiKAbV+gHhn7co8xiBg)zQdw-irC1vIVFrH685r1)1+uvyMkV8dqY(cCJ>19aJ\"],\"execution_root\":\"Xs4<)mRiUauuYn90nKn8ktG2TGc6t122i7w)AG22kUAsWgj1D/6w)7bCh+cuKc!(Ms0Q-Vc1\",\"joint_receipt_root_hash72\":\"Xs4<)mRiUauuYn90nKn8ktG2TGc6t122i7w)AG22kUAsWgj1D/6w)7bCh+cuKc!(Ms0Q-Vc1\",\"outcome\":\"EXECUTABLE_CONSEQUENCE_CLOSURE_VERIFIED\",\"workload_id\":\"genesis_kernel\"},{\"comparison_roots_hash72\":[\"Jz+mzJciuwBgqLrOata//p>fqrHRcBh8)LgBH*UQcgo5bA4pdbis!x*/bBKc7J<TmZkjDWtP\",\"XRfF!4hTyVpwPZx)rwAhjD1X(G5dnyjTQYDW*hSx80>j3TcPocLnPGDanI43mBur?tZibUIB\"],\"execution_root\":\"13U5aiNkCDBFc*TWZqhtSAHmHk(8z6!OsDaQFfw0qoLvXn46PZm!fIQb<d*nVcrXEE+YWYe7\",\"joint_receipt_root_hash72\":\"13U5aiNkCDBFc*TWZqhtSAHmHk(8z6!OsDaQFfw0qoLvXn46PZm!fIQb<d*nVcrXEE+YWYe7\",\"outcome\":\"EXECUTABLE_CONSEQUENCE_CLOSURE_VERIFIED\",\"workload_id\":\"T1_transport\"}],\"schema\":\"HHS_PASS132_AB_AGGREGATE_COMPARISON_RECEIPT_V1\"}",
+    "digest": "kDIfP<)F2Oo7BM32cVLBaV7gw>6rwRwS1CScI64S35EI4Z5ajN(YzRsWef6<I9F!N)d7d4Qd",
+    "dna": "kDIfP<)F2Oo7BM32cVLBaV7gw>6rwRwS1CScI64S35EI4Z5ajN(YzRsWef6<I9F!N)d7d4Qd",
+    "label": "hhs_pass132_ab_aggregate_comparison_receipt_v1",
+    "positions": [
+      20,
+      39,
+      44,
+      15,
+      51,
+      68,
+      67,
+      41,
+      2,
+      50,
+      24,
+      7,
+      37,
+      48,
+      3,
+      2,
+      12,
+      57,
+      47,
+      37,
+      10,
+      57,
+      7,
+      16,
+      32,
+      69,
+      6,
+      27,
+      32,
+      53,
+      32,
+      54,
+      1,
+      38,
+      54,
+      12,
+      44,
+      6,
+      4,
+      54,
+      3,
+      5,
+      40,
+      44,
+      4,
+      61,
+      5,
+      10,
+      19,
+      49,
+      66,
+      60,
+      35,
+      53,
+      28,
+      58,
+      14,
+      15,
+      6,
+      68,
+      44,
+      9,
+      41,
+      70,
+      49,
+      67,
+      13,
+      7,
+      13,
+      4,
+      52,
+      13
+    ],
+    "rotation_profile": [
+      -124,
+      254,
+      -30,
+      156,
+      -313,
+      351,
+      -11,
+      -110,
+      -6,
+      -175,
+      374,
+      68,
+      97,
+      179,
+      -11,
+      59,
+      -508,
+      328,
+      245,
+      -414,
+      278,
+      36,
+      -15,
+      209,
+      -568,
+      692,
+      -308,
+      -72,
+      -572,
+      240,
+      -214,
+      -265,
+      473,
+      -283,
+      -52,
+      49,
+      -640,
+      473,
+      -394,
+      -417,
+      35,
+      108,
+      -146,
+      73,
+      -328,
+      232,
+      175,
+      107,
+      -389,
+      432,
+      -128,
+      -135,
+      199,
+      216,
+      -458,
+      435,
+      30,
+      30,
+      -124,
+      81,
+      416,
+      -484,
+      -93,
+      439,
+      -375,
+      290,
+      235,
+      -204,
+      665,
+      -425,
+      -234,
+      266
+    ],
+    "schema": "HHS_HASH72_KERNEL_WITNESS_V1",
+    "trace_count": 8665,
+    "zero_sum": true
+  },
+  "available_workloads_closed": true,
+  "continuation_checkpoint_root_hash72": "LU>(>B(X(AIRes1gTIFi/Ie-9tV+S(gLt3iDMXh)953UEweNj(b9D30xbH61x)nwI9W7Bg9J",
+  "global_completion_status": "EXECUTABLE_CONSEQUENCE_CLOSURE_VERIFIED",
+  "receipts": [
+    {
+      "comparison_roots_hash72": [
+        "RJr!G6YemHDo-RyZoqzL0nc?2wnwb7h8gztec*vLc5Jz!4AM8Og4sa7-O5SGQGoK378l-1IW",
+        "sfodcZMSEuhUe9de)qJhYP2r/>>G<Iv2tpAPLkT3QW1huARqkCODevK?9a(?0JEE<ZMQ/TL6"
+      ],
+      "execution_root": "wcObWMwDIDu/AZC/YDWBEi+jlesnv*mVq4OHB<kFnX(L)AlKpfU9qys)lXLWV2Z(+j*BZv!<",
+      "joint_receipt_root_hash72": "wcObWMwDIDu/AZC/YDWBEi+jlesnv*mVq4OHB<kFnX(L)AlKpfU9qys)lXLWV2Z(+j*BZv!<",
+      "outcome": "EXECUTABLE_CONSEQUENCE_CLOSURE_VERIFIED",
+      "workload_id": "repeated_decimal_accumulation"
+    },
+    {
+      "comparison_roots_hash72": [
+        "*JDdCYpD9b)ct7c27qi3S7s-q+MjX/-z/th<4WCPyQI7)/2>/xIx)v!VYYN1aqDxo6yQhAxY",
+        "/JDTF)d0b8jY3nE-<vGaWrB7Snn)8cb<BREBQ9V>YF/tSu*ctas8rRspF-*1xsO3x1+y!CCj"
+      ],
+      "execution_root": "hz32OquqK<dqE0O!uJOJ97nU6KBsnuX6qbxLmkyM5rP2f4B2<TwteTtz*ABV4Nvj3G-I)Xj8",
+      "joint_receipt_root_hash72": "hz32OquqK<dqE0O!uJOJ97nU6KBsnuX6qbxLmkyM5rP2f4B2<TwteTtz*ABV4Nvj3G-I)Xj8",
+      "outcome": "EXECUTABLE_CONSEQUENCE_CLOSURE_VERIFIED",
+      "workload_id": "catastrophic_cancellation"
+    },
+    {
+      "comparison_roots_hash72": [
+        "FHG3FX?o>P5yidkP52Yd4bcbvMhbBcB710g0I3oQMZ>?bHZ7HoNCwBKwWIi-?yJEsPk4orwv",
+        "<aGTdnMo*n8creC?rOrSbxtnVmaKMRzu2(doZ+F-4aT8uBpHNk5)uxHHfxqwK52VUbs!HEN6"
+      ],
+      "execution_root": "0jX7W2k7zvBECNFgD/Z<(7LCIJ5R7oEKM!Q*W5jlX/n+D<SK/DF9Pc(>M49YTT)Nb?!m0OyT",
+      "joint_receipt_root_hash72": "0jX7W2k7zvBECNFgD/Z<(7LCIJ5R7oEKM!Q*W5jlX/n+D<SK/DF9Pc(>M49YTT)Nb?!m0OyT",
+      "outcome": "EXECUTABLE_CONSEQUENCE_CLOSURE_VERIFIED",
+      "workload_id": "alternating_accumulation"
+    },
+    {
+      "comparison_roots_hash72": [
+        "1baL9MOAUzGvMZm?4aNhS9oK2zzS?w!i)WL90hBV?w-Lfz!GsmUG7dyWGu/uBxt7W)wW<7tC",
+        "+DKp!W>g5xW)p/j5Utv3X?bz+B5vRXyLMu-e94*5utlE29hzcygRi<hNzZkrYvqUMjc(+37d"
+      ],
+      "execution_root": "x-SpOuYRayw3F6bqC>ktd+79YbNDOAj)AoF?m+96mm3sXh*wD+xp/bpp4mSvD0+V!kviAFD9",
+      "joint_receipt_root_hash72": "x-SpOuYRayw3F6bqC>ktd+79YbNDOAj)AoF?m+96mm3sXh*wD+xp/bpp4mSvD0+V!kviAFD9",
+      "outcome": "EXECUTABLE_CONSEQUENCE_CLOSURE_VERIFIED",
+      "workload_id": "nonassociative_left"
+    },
+    {
+      "comparison_roots_hash72": [
+        "BO8!-P8*RkXGzAcFpp9q7Ga6Sm9fgVTun/W<R70yL2TXUb5nE6hwRQAPott3b2/SUwPC2k(V",
+        "N!UDJ</pNN(On>Axkc0/P7n6k8amtY?jVzl<0bqX(1s/1tU)qG-9<Q5oE5L)z3-u*m4?Sngs"
+      ],
+      "execution_root": "qF?utnR5+SEscDjUA4z4wXllL4Y?6k2)8odJHl)60qHTa5iczEZtXXc-jIPppo923W(BnVE-",
+      "joint_receipt_root_hash72": "qF?utnR5+SEscDjUA4z4wXllL4Y?6k2)8odJHl)60qHTa5iczEZtXXc-jIPppo923W(BnVE-",
+      "outcome": "EXECUTABLE_CONSEQUENCE_CLOSURE_VERIFIED",
+      "workload_id": "nonassociative_right"
+    },
+    {
+      "comparison_roots_hash72": [
+        "qU62P1>CDr4(XSuVGROrN3MkKVofIo/wyarjjLwmS!eCGYdozkcNs>O6(PiowLRBQ>QYYus7",
+        "IghSxRkTMZvXLRkERKxTzF)<aCI+98S6(ee*FPoVv0UD83VYbNkg(vT)5qG-?xfGoz?JJ+V+"
+      ],
+      "execution_root": ")V5ysvINVWN<?9CYo0BvZu!YtMbW/nOR4pT/sQSz91+s35ym9hqo-ecm<sz0873R1BQvp3iz",
+      "joint_receipt_root_hash72": ")V5ysvINVWN<?9CYo0BvZu!YtMbW/nOR4pT/sQSz91+s35ym9hqo-ecm<sz0873R1BQvp3iz",
+      "outcome": "EXECUTABLE_CONSEQUENCE_CLOSURE_VERIFIED",
+      "workload_id": "inverse_normalization"
+    },
+    {
+      "comparison_roots_hash72": [
+        "rDS-?N)ERY>(+nn-zgUPrZbqRsCP8u-egL?PDuqCBQdp8G8qWj*aqYY1tN7brq9aG+Bjm9rT",
+        "FlIHiw3wztuvqc0Uy1?3QyLATe(D7-zf)L?ZvoT(cn<CCLd<c19?vYPUZ>HE?0uAy(x>yZF4"
+      ],
+      "execution_root": "P-X2zpq26Zf?T5cs!PjwEqKW5G1zv02ey*r<6/2Ff13KHVa*ogQ?Bebm5DD2sdnIrGWg+EqX",
+      "joint_receipt_root_hash72": "P-X2zpq26Zf?T5cs!PjwEqKW5G1zv02ey*r<6/2Ff13KHVa*ogQ?Bebm5DD2sdnIrGWg+EqX",
+      "outcome": "EXECUTABLE_CONSEQUENCE_CLOSURE_VERIFIED",
+      "workload_id": "overflow_boundary"
+    },
+    {
+      "comparison_roots_hash72": [
+        "+1TXdXt7L+Rx*W!6FWE<N1LxfW!R(BzlpG>3jBn/Uf>0P-WV7QuLrZ51do>V+AQS8vIwDYgt",
+        "brK*cVkL1dUqbQ<ZRF>guLwmMTY9/oASJamqSjxIgV4<Y?6fBaIhe6-aE)OH(jM)l9//s?Yy"
+      ],
+      "execution_root": "l*7*h(tBqaepE<jMa4LvHPMco+?LjpT4soBo9WwhrEEksypPMWAXTiOvB73(ua<S/20M6JL2",
+      "joint_receipt_root_hash72": "l*7*h(tBqaepE<jMa4LvHPMco+?LjpT4soBo9WwhrEEksypPMWAXTiOvB73(ua<S/20M6JL2",
+      "outcome": "EXECUTABLE_CONSEQUENCE_CLOSURE_VERIFIED",
+      "workload_id": "underflow_boundary"
+    },
+    {
+      "comparison_roots_hash72": [
+        "s!UH>usMYHoXIF1l8wcJ1s4gj(NMCIE78rpbI-vB+bI<GD9pC<pzrAnpn2nknRNxoILm7eti",
+        "EYfNdN-0SVsXlK/)*VpV)Bib36!PrgUuUKV-1Z)!xFQEVQQQh>RZ)*AqbZ0XYWwK43F9g+uX"
+      ],
+      "execution_root": "fiaU(G*6An!de-5<ZO-1/(jT8*707Z?RTjl)p!lv*jFRm54Q3s<HSp-u!(kU6qiyA7ZW8*KY",
+      "joint_receipt_root_hash72": "fiaU(G*6An!de-5<ZO-1/(jT8*707Z?RTjl)p!lv*jFRm54Q3s<HSp-u!(kU6qiyA7ZW8*KY",
+      "outcome": "EXECUTABLE_CONSEQUENCE_CLOSURE_VERIFIED",
+      "workload_id": "signed_zero_propagation"
+    },
+    {
+      "comparison_roots_hash72": [
+        "M-<lhZ*W6iE-I2RS1n/k9J-(U>3l3DxrH8?ZqwKM16SZ4xf0nFy4z4xNGaAh0?ezz24i?S4b",
+        "gT5tTL69(3Z-i!Q)F</+)RbfiQO0Bo3EBJ5Ozm1ooeas9aHn26sykaXvxL/(8w/jMmhc6Ck8"
+      ],
+      "execution_root": "vIekedUW)LLc?<D3KR(wqd>hI>rLmgxxPPn>qz>R!EgBmD/PYz5u)s!/>MoLMa4s<1k<w2UZ",
+      "joint_receipt_root_hash72": "vIekedUW)LLc?<D3KR(wqd>hI>rLmgxxPPn>qz>R!EgBmD/PYz5u)s!/>MoLMa4s<1k<w2UZ",
+      "outcome": "EXECUTABLE_CONSEQUENCE_CLOSURE_VERIFIED",
+      "workload_id": "iterative_drift"
+    },
+    {
+      "comparison_roots_hash72": [
+        "B+1cdC!Gd1czk0<*-XuoW3<a>XfULeVKUY90zZb-eZcIYr4aHKi8mlsUAUeOJiMvj8YI7Tbc",
+        "GO5v7o49EPFGlU?zSLXrGBu+I-mMHQOQW*e3radGVYlC>w71J<aRDP4UQF27Ws)A1Ee1/Eu7"
+      ],
+      "execution_root": "x-o)A1vZEW+ono60V8B75(04u98j95Hg)V?sndQZfbOZFwnbWxfe-Qy/KXI4nFnLrts1JEi4",
+      "joint_receipt_root_hash72": "x-o)A1vZEW+ono60V8B75(04u98j95Hg)V?sndQZfbOZFwnbWxfe-Qy/KXI4nFnLrts1JEi4",
+      "outcome": "EXECUTABLE_CONSEQUENCE_CLOSURE_VERIFIED",
+      "workload_id": "long_phase_cycle"
+    },
+    {
+      "comparison_roots_hash72": [
+        "7LU0<B8TzM44aHhDX*semneKDZgm>BYghROXCFFW)tzZD<N<xH1)4duyIvp-/>wY6/rHDFuv",
+        "INFZHN9Dk8NhZVfIy(MQ>8n?VNq9PoK<uugR>WX?HB*V(DWrNIla2HI*Qz*//ImnGuCs8z+N"
+      ],
+      "execution_root": "fL5GxqYa4VPc!EiT1GuavYo41x5-tJJREpkvWM9Zh5Yeo9wy8zwKF0sETDQ/evrR9Mje-Gpc",
+      "joint_receipt_root_hash72": "fL5GxqYa4VPc!EiT1GuavYo41x5-tJJREpkvWM9Zh5Yeo9wy8zwKF0sETDQ/evrR9Mje-Gpc",
+      "outcome": "EXECUTABLE_CONSEQUENCE_CLOSURE_VERIFIED",
+      "workload_id": "repeated_normalization"
+    },
+    {
+      "comparison_roots_hash72": [
+        "KL*v9oWYq>!I8pV!Kn*oUQsis5U9pd8B+sc-yQ-59Ciq<v7DF4TCu4?d!h8?benv<zv7mK1T",
+        "yA/JViEV-!fF+hjqTTkFwRQEsSR6aO(wtPzfUG<WNFeSPB6zmR31yu<qyszTnsstpqbLl714"
+      ],
+      "execution_root": "fR4V1Z1z3w)uL?CrAB>ctkcF8I-U(pavs3al*6-/m>wThGc1R4a-1FKXA(I)UKV2y4c9/CIT",
+      "joint_receipt_root_hash72": "fR4V1Z1z3w)uL?CrAB>ctkcF8I-U(pavs3al*6-/m>wThGc1R4a-1FKXA(I)UKV2y4c9/CIT",
+      "outcome": "EXECUTABLE_CONSEQUENCE_CLOSURE_VERIFIED",
+      "workload_id": "loshu_cell_sum"
+    },
+    {
+      "comparison_roots_hash72": [
+        "wd(GU3pOCUp8F9T--y7/olSym)CQ(iiih*hz062lZSQNT6<3Zm!cXntj)d9A?*Iu(MW1h2GC",
+        "wd(GU3pO2<JeD9T--y7/olSym)CQ(iiih*hz321nZSQQS4<gOi0cXntj)d9A?*Iu(MW1h2GC"
+      ],
+      "execution_root": "nVQll4doE8zWLDzF?yW1mPpfpFVj?<TCqX6zQXHlKV2fP6A!iRjW?X8tx4Ke?+-fNWVVr74t",
+      "joint_receipt_root_hash72": "nVQll4doE8zWLDzF?yW1mPpfpFVj?<TCqX6zQXHlKV2fP6A!iRjW?X8tx4Ke?+-fNWVVr74t",
+      "outcome": "EXECUTABLE_CONSEQUENCE_CLOSURE_VERIFIED",
+      "workload_id": "dual_t_constraints"
+    },
+    {
+      "comparison_roots_hash72": [
+        "5YPrVKjY!TGE-vYt9izA8NqDCq-ddSk2?XKx6lAw(zhvEY7GElxzArUbHjawuh6!TkwX!HkH",
+        "5YPrVKjY!TGE-vYtchxAlCmFCq-ddSk2?XKx6lAw(zhvEY7GElxzArUbHjq8/*4!TkwX!HkH"
+      ],
+      "execution_root": "ocS?T?V8/bZzl<+lKhnZ?86-Yj!Wx393ryEh)dIA6oVQKyGfSOCwwqP2zRl<ZLT9/HnF(m*O",
+      "joint_receipt_root_hash72": "ocS?T?V8/bZzl<+lKhnZ?86-Yj!Wx393ryEh)dIA6oVQKyGfSOCwwqP2zRl<ZLT9/HnF(m*O",
+      "outcome": "EXECUTABLE_CONSEQUENCE_CLOSURE_VERIFIED",
+      "workload_id": "conformal_radius"
+    },
+    {
+      "comparison_roots_hash72": [
+        "P!+BFwLVb/VgpB<8)N?It)mTNkuxq>WCidl3/JfCaaM*Wey32SX)xkUkSG1Xy36gm*ROqTRg",
+        "P!+BFwLVL55mnB<8)N?It)mTNkuxq>WCidl3<FeEaaM)Vcyg+OZ)xkUkSG1Xy36gm*ROqTRg"
+      ],
+      "execution_root": "4>wAI(h?F6G/jz+s1w9-gqm9u!E1Xdu<+1ACjh3Rjrqw>V4/eHz(Ht((FaYLq8!ISPHX!2vv",
+      "joint_receipt_root_hash72": "4>wAI(h?F6G/jz+s1w9-gqm9u!E1Xdu<+1ACjh3Rjrqw>V4/eHz(Ht((FaYLq8!ISPHX!2vv",
+      "outcome": "EXECUTABLE_CONSEQUENCE_CLOSURE_VERIFIED",
+      "workload_id": "master_matrix"
+    },
+    {
+      "comparison_roots_hash72": [
+        "sPEJUC)8C4I1g!+HnnGpYCfRY6y1h>zhCERPjmd<+piYGabcBa<IrPvBTESk)!zICNW?pgSY",
+        "4gab4rrS5xoiKAbV+gHhn7co8xiBg)zQdw-irC1vIVFrH685r1)1+uvyMkV8dqY(cCJ>19aJ"
+      ],
+      "execution_root": "Xs4<)mRiUauuYn90nKn8ktG2TGc6t122i7w)AG22kUAsWgj1D/6w)7bCh+cuKc!(Ms0Q-Vc1",
+      "joint_receipt_root_hash72": "Xs4<)mRiUauuYn90nKn8ktG2TGc6t122i7w)AG22kUAsWgj1D/6w)7bCh+cuKc!(Ms0Q-Vc1",
+      "outcome": "EXECUTABLE_CONSEQUENCE_CLOSURE_VERIFIED",
+      "workload_id": "genesis_kernel"
+    },
+    {
+      "comparison_roots_hash72": [
+        "Jz+mzJciuwBgqLrOata//p>fqrHRcBh8)LgBH*UQcgo5bA4pdbis!x*/bBKc7J<TmZkjDWtP",
+        "XRfF!4hTyVpwPZx)rwAhjD1X(G5dnyjTQYDW*hSx80>j3TcPocLnPGDanI43mBur?tZibUIB"
+      ],
+      "execution_root": "13U5aiNkCDBFc*TWZqhtSAHmHk(8z6!OsDaQFfw0qoLvXn46PZm!fIQb<d*nVcrXEE+YWYe7",
+      "joint_receipt_root_hash72": "13U5aiNkCDBFc*TWZqhtSAHmHk(8z6!OsDaQFfw0qoLvXn46PZm!fIQb<d*nVcrXEE+YWYe7",
+      "outcome": "EXECUTABLE_CONSEQUENCE_CLOSURE_VERIFIED",
+      "workload_id": "T1_transport"
+    }
+  ],
+  "schema": "HHS_PASS132_AB_AGGREGATE_COMPARISON_RECEIPT_V1"
+}

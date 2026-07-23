@@ -1,0 +1,85 @@
+{
+  "schema": "HHS_PASS_144_PROOF_LEMMA_CORPUS_V1",
+  "lemmas": [
+    {
+      "id": "HHS-L144-001",
+      "name": "reciprocal_closure_identity",
+      "statement": "For admitted nonzero g with typed inverse h and local unit e, g*h == e.",
+      "assumptions": ["inverse_admitted(g,h)", "local_unit(e)"],
+      "status": "CONTRACT_LEMMA",
+      "dependencies": []
+    },
+    {
+      "id": "HHS-L144-002",
+      "name": "gfe_polynomial_residual_normalized",
+      "statement": "Under e == 1, rho == g + g^-1 - 2 implies rho*g == (g-1)^2.",
+      "assumptions": ["g != 0", "e == 1"],
+      "status": "EXECUTED_EXACT",
+      "dependencies": ["HHS-L144-001"]
+    },
+    {
+      "id": "HHS-L144-003",
+      "name": "log_reciprocal_cancellation",
+      "statement": "On one admitted branch, Log_H(g^-1) == Cancel(Log_H(g)).",
+      "assumptions": ["same_log_branch(g,g^-1)", "inverse_admitted(g,g^-1)"],
+      "status": "EXECUTED_EXACT",
+      "dependencies": ["HHS-L144-001"]
+    },
+    {
+      "id": "HHS-L144-004",
+      "name": "state_ideal_quotient_field",
+      "statement": "For nonzero rational alpha, Q[g,h,rho]/<g-alpha,h-alpha^-1,rho-(alpha+alpha^-1-2)> is isomorphic to Q.",
+      "assumptions": ["alpha in Q", "alpha != 0"],
+      "status": "SOURCE_COMPLETE",
+      "dependencies": ["HHS-L144-001"]
+    },
+    {
+      "id": "HHS-L144-005",
+      "name": "looking_glass_trace_closure",
+      "statement": "Reversing the recorded proof path from a conclusion reaches the same canonical premise root.",
+      "assumptions": ["receipt_valid", "ordered_witness_roots_preserved"],
+      "status": "EXECUTED_EXACT",
+      "dependencies": []
+    },
+    {
+      "id": "HHS-L144-006",
+      "name": "ouroboros_repeat_termination",
+      "statement": "Revisiting a canonical optimization state closes the bounded cycle deterministically.",
+      "assumptions": ["canonical_state_hash", "finite_cycle_bound"],
+      "status": "EXECUTED_EXACT",
+      "dependencies": ["HHS-L144-005"]
+    },
+    {
+      "id": "HHS-L144-007",
+      "name": "single_shard_exact_recovery",
+      "statement": "For four data shards and XOR parity, any one unavailable shard is reconstructed exactly from the other four.",
+      "assumptions": ["one_unavailable_shard_max", "verified_surviving_roots"],
+      "status": "EXECUTED_EXACT",
+      "dependencies": []
+    },
+    {
+      "id": "HHS-L144-008",
+      "name": "monotonic_conflict_admission",
+      "statement": "The Pass 143 selector commits only a candidate whose exact weighted conflict energy does not exceed the current state's energy.",
+      "assumptions": ["exact_rational_energy", "candidate_receipts_valid"],
+      "status": "EXECUTED_EXACT",
+      "dependencies": []
+    },
+    {
+      "id": "HHS-L144-009",
+      "name": "global_entropy_neutrality_by_reconstruction",
+      "statement": "If transformed state plus receipt reconstructs canonical input exactly, unrecoverable canonical information loss is zero under the HHS definition.",
+      "assumptions": ["byte_identity_preserved", "semantic_and_authority_metadata_preserved"],
+      "status": "CONTRACT_LEMMA",
+      "dependencies": ["HHS-L144-007"]
+    },
+    {
+      "id": "HHS-L144-010",
+      "name": "parent_tree_immutability",
+      "statement": "All inherited Pass 143 files retain their recorded byte sizes and SHA-256 identities in Pass 144.",
+      "assumptions": ["baseline_manifest_authentic", "verifier_passes"],
+      "status": "EXECUTED_EXACT",
+      "dependencies": []
+    }
+  ]
+}

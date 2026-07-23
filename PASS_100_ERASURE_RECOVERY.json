@@ -1,0 +1,52 @@
+{
+  "syndrome": {
+    "candidate_error_cells": [
+      "E"
+    ],
+    "correction_status": "LOCATABLE_AND_CORRECTABLE",
+    "error_class": "SINGLE_CELL_ERASURE",
+    "expected_values": {
+      "E": 18
+    },
+    "forward_gear_syndrome": 0,
+    "global_phase_syndrome": 1,
+    "history_syndrome": 0,
+    "pair_syndromes": [
+      0,
+      1,
+      0,
+      0
+    ],
+    "received_codeword_root_hash72": "0000000000000000000000000000003>jvOb>IJ3u*4*KL9?q!HtXgIwPVLx/3gqlADZL+GR",
+    "reciprocal_gear_syndrome": 0,
+    "schema": "HHS_EIGHT_CELL_PHASE_GEAR_SYNDROME_V1",
+    "syndrome_root_hash72": "00000000000000000000000000000026^3=^^fxjbx0bYzZDnQw1j61fT(rF=0N0c5(8>izx"
+  },
+  "receipt": {
+    "corrected_cell_id": "E",
+    "correction_authority": "EXACT_UNIQUE_SOLUTION",
+    "correction_receipt_root_hash72": "0000000000000000000000000000003cw+Uvyp/>jJpVD51Ybc4YTJ35pG/y5-wDGe4N0MZQ",
+    "corrupted_codeword_root_hash72": "0000000000000000000000000000003>jvOb>IJ3u*4*KL9?q!HtXgIwPVLx/3gqlADZL+GR",
+    "original_corrupted_value": null,
+    "post_correction_codeword_root_hash72": "0000000000000000000000000000004sQ)uP8WTeTV9d*f!AZsSmlU)TNn7fC-R9B3Y8KIwu",
+    "post_correction_values": {
+      "A": 1,
+      "B": 0,
+      "C": 71,
+      "D": 1,
+      "E": 18,
+      "F": 71,
+      "G": 53,
+      "H": 37
+    },
+    "replacement_derived_from": [
+      "RECIPROCAL_PAIR_RELATION",
+      "GEAR_HISTORY_WITNESS",
+      "GLOBAL_U72_CLOSURE"
+    ],
+    "replacement_value": 18,
+    "replay_verified": true,
+    "schema": "HHS_DUAL_WITNESS_CORRECTION_RECEIPT_V1",
+    "syndrome_root_hash72": "00000000000000000000000000000026^3=^^fxjbx0bYzZDnQw1j61fT(rF=0N0c5(8>izx"
+  }
+}

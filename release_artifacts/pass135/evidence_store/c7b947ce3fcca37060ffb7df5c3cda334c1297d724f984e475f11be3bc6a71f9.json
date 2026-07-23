@@ -1,0 +1,1 @@
+{"interface":"PUBLIC_HTTP_API","operation":"workspace_status","request":{"method":"GET","path":"/api/runtime/workspace/status","payload":null},"response":{"body":{"detail":"Not Found"},"headers":{"content-type":"application/json"},"method":"GET","path":"/api/runtime/workspace/status","status_code":404}}

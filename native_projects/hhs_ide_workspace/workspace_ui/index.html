@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>HHS Native Workspace</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div id="WorkspaceShell">
+  <header>
+    <strong>HHS Native Workspace</strong>
+    <span id="StatusBar">Runtime API: disconnected</span>
+  </header>
+  <aside id="ProjectExplorer"><h2>Project Explorer</h2><p>Runtime-projected objects</p></aside>
+  <main>
+    <section id="EditorPanel"><textarea aria-label="Harmonicode editor" placeholder="Editor buffer — not canonical source"></textarea></section>
+    <section id="RuntimeConsole"><h2>Runtime Console</h2><pre>Receipts and diagnostics appear through the unified API.</pre></section>
+    <section id="AgentNetworkPanel"><h2>Agent Network</h2><p>Human, LLM, tool, and CI identities exchange repository-native capsules.</p></section>
+    <section id="AlignmentPanel"><h2>Alignment Gate</h2><p>Pass 072 foundation conservation + reusable capability closure.</p></section>
+    <section id="IterationPanel"><h2>Iteration</h2><p>Proposals → tests → bounded healing plans → witnessed handoff.</p></section>
+  </main>
+  <aside id="ArtifactPanel"><h2>Artifacts</h2><p>Committed sources, patches, test evidence, and capsules</p></aside>
+  <footer>
+    <button id="ExecutionPanel">Inspect Source</button>
+    <span id="ReceiptPanel">Receipts</span>
+  </footer>
+</div>
+<script src="app.js"></script>
+</body>
+</html>

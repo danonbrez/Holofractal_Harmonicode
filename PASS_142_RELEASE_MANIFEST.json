@@ -1,0 +1,63 @@
+{
+  "authority": "A1_EXECUTION_EVIDENCE",
+  "capabilities": [
+    "multimodal_global_snapshot_ingress",
+    "reversible_symbol_table_compression",
+    "four_data_one_parity_offset_encoding",
+    "fork_local_receipt_offset_embedding",
+    "dependency_graph_offset_index",
+    "single_offset_corruption_recovery",
+    "byte_exact_snapshot_reconstruction",
+    "modality_identity_revalidation"
+  ],
+  "files": [
+    {
+      "bytes": 14311,
+      "path": "hhs_runtime/harmonicode_multimodal_redundant_snapshot_offsets_v1.py",
+      "sha256": "3cb60f11ac05d61dcc63b9944ddeeed51870545c2a33cd1c4d22a721696daa3f"
+    },
+    {
+      "bytes": 103,
+      "path": "scripts/hhs-pass142",
+      "sha256": "48dce3bd619d575503131041c9e5ebe2146bf6767b13815a217b5a6a5865c2de"
+    },
+    {
+      "bytes": 1436,
+      "path": "docs/pass_142/PASS_142_CONTRACT.md",
+      "sha256": "5793f8b3b419a388dfbf3145f6d09e8f61bdd28f3c14671cc6a38289c34e78bd"
+    },
+    {
+      "bytes": 782,
+      "path": "examples/pass_142/multimodal_snapshot_request.json",
+      "sha256": "5d92178415db15ece359322622477b5926ad1255303890c3fb945c1f8649c7c5"
+    },
+    {
+      "bytes": 10872,
+      "path": "reports/pass_142/PASS_142_ENCODING_RECEIPT.json",
+      "sha256": "9355bfac14d2f2307f374e7e3bc8e94b9fcc8eb6583ee8d41f2b5cdffa95c9c1"
+    },
+    {
+      "bytes": 2651,
+      "path": "reports/pass_142/PASS_142_RECONSTRUCTION_RECEIPT.json",
+      "sha256": "bc36c4c16f0a5a9e7fb66d4273e1fef251132110946de04af16dfad3907323b5"
+    },
+    {
+      "bytes": 541,
+      "path": "reports/pass_142/PASS_142_INDEX_QUERY_RECEIPT.json",
+      "sha256": "ed4e2d6662d4d9b6ce28ea86901ef023b255e0a2295782c38da1f51cc278a4ba"
+    },
+    {
+      "bytes": 3619,
+      "path": "tests/test_pass_142_multimodal_snapshot_offsets.py",
+      "sha256": "0562633ebfedf9e8d0b9db5ec9e5c949bb2290d1abfaacbd2a320a34c664d90c"
+    }
+  ],
+  "manifest_root": "cc4141772ba1eedb058a9253fcc2875119725ee5f86740f2587d537c6ccfb3ae",
+  "pass_id": "PASS_142_MULTIMODAL_REDUNDANT_SYMBOLIC_SNAPSHOT_OFFSETS",
+  "status": "IMPLEMENTED_CALLABLE_TESTED",
+  "test_receipt": {
+    "dependency_scoped_tests": 53,
+    "failed": 0,
+    "passed": 53
+  }
+}

@@ -1,0 +1,94 @@
+{
+  "workloads": [
+    {
+      "name": "Primitive binding",
+      "root_hash72": "0000000000000000000000000000003oljp=8fl35(dZ*V(X9d9uprf6Njy2auIi+nh7kcPD",
+      "workload_id": "W103-01"
+    },
+    {
+      "name": "Equation binding",
+      "root_hash72": "0000000000000000000000000000001m^20*0lBfzd>w4!/F^kgDydmCDIaVaW6H>8SL)aWF",
+      "workload_id": "W103-02"
+    },
+    {
+      "name": "Pattern binding",
+      "root_hash72": "00000000000000000000000000000015FdiK^-=+-AWe-=zLsdAlqUxjdRIkO7JMS^UqnlMg",
+      "workload_id": "W103-03"
+    },
+    {
+      "name": "Dynamic-operation binding",
+      "root_hash72": "00000000000000000000000000000006(hYF4a)zb-/XD2)7beiKvPb0si46id4aEKliVoPD",
+      "workload_id": "W103-04"
+    },
+    {
+      "name": "Gate binding",
+      "root_hash72": "0000000000000000000000000000004DLDaNM)dx^HBwhIUm3p4S=HgxL)2=4pw9VsiX1?QX",
+      "workload_id": "W103-05"
+    },
+    {
+      "name": "Normalization binding",
+      "root_hash72": "0000000000000000000000000000003O0+e^H*KTRlAk(e82zC->NC-6w/=2a0Ei0jQsnalx",
+      "workload_id": "W103-06"
+    },
+    {
+      "name": "Tensor-coordinate binding",
+      "root_hash72": "0000000000000000000000000000001q0T6*2oO6A)sBbcRu5CgqN)oozwvr9/EIN9ZV>Zy(",
+      "workload_id": "W103-07"
+    },
+    {
+      "name": "Recursive symbolic definition",
+      "root_hash72": "0000000000000000000000000000002nqLNV2=6sI!Oel>Ei31n0QNd-Bi^z)f3MKqFVe907",
+      "workload_id": "W103-08"
+    },
+    {
+      "name": "Deep nested expansion",
+      "root_hash72": "0000000000000000000000000000003=7=C>QM>lRFq*WhkLFFMiEgmjMkfXySIG8!au-^W4",
+      "workload_id": "W103-09"
+    },
+    {
+      "name": "Local shadowing",
+      "root_hash72": "0000000000000000000000000000001mdV-N6JAlV-SCr*qe2=PoY3J46)I6?kMkm1F=dC+w",
+      "workload_id": "W103-10"
+    },
+    {
+      "name": "Versioned rebinding",
+      "root_hash72": "0000000000000000000000000000004p7NzvAcTg9hneFy*cC(P5BI+hlhee4^PsMdC/eGLV",
+      "workload_id": "W103-11"
+    },
+    {
+      "name": "Unicode collision",
+      "root_hash72": "00000000000000000000000000000018+p(1ctRr!jMHK)gQ^/Wl8nxIG7l=?fyZ95h9-QrY",
+      "workload_id": "W103-12"
+    },
+    {
+      "name": "Noncommutative substitution",
+      "root_hash72": "0000000000000000000000000000001I1Os!XCJqIutZWWGABL6yHsYj1OUiP6i+2mQf-1)G",
+      "workload_id": "W103-13"
+    },
+    {
+      "name": "Cross-modal resolution",
+      "root_hash72": "0000000000000000000000000000001)NmI-6dO!7d-^=Y1Zz*F0i+vYZRr**7DLaW3sD**i",
+      "workload_id": "W103-14"
+    },
+    {
+      "name": "Pattern symbol proposal",
+      "root_hash72": "0000000000000000000000000000003N-Mhwk-()2>3zhziFm>hQ!rggsA((MVLx7iesfRoH",
+      "workload_id": "W103-15"
+    },
+    {
+      "name": "Alphabet fork and merge",
+      "root_hash72": "0000000000000000000000000000002-/fhV90o)bO6YRSmmGp*k0ONt1?-e0vB2*4dfN(yS",
+      "workload_id": "W103-16"
+    },
+    {
+      "name": "Conflicting merge rejection",
+      "root_hash72": "0000000000000000000000000000001cf9*7egS/3e8l556UK!JsTFMNg8X*uLfVdMBUNxwg",
+      "workload_id": "W103-17"
+    },
+    {
+      "name": "Cold-boot reconstruction",
+      "root_hash72": "0000000000000000000000000000003oP(0*1Gk*dJ88J6nZHMf*9ZL=LG^Pc=nOLAL+Nz0(",
+      "workload_id": "W103-18"
+    }
+  ]
+}

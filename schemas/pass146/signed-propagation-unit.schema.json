@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "hhs://schemas/pass146/signed-propagation-unit.schema.json",
+  "title": "HHS Pass 146 Signed Propagation Unit",
+  "type": "object",
+  "required": ["schema", "data", "data_hash72", "provenance", "authority", "boundary_witness", "scope", "expected_destination_state", "reversal", "source_peer", "destination_peer", "sender_public_key_b64", "sender_public_key_fingerprint", "envelope_hash72", "signature_b64", "message_hash72", "message_id"],
+  "properties": {
+    "schema": {"const": "HHS_PASS146_SIGNED_PROPAGATION_UNIT_V2"},
+    "data": {},
+    "data_hash72": {"type": "string"},
+    "provenance": {"type": "object"},
+    "authority": {"type": "object"},
+    "boundary_witness": {"type": "object"},
+    "scope": {"type": "object"},
+    "expected_destination_state": {"type": "object"},
+    "reversal": {"type": "object"},
+    "source_peer": {"type": "string"},
+    "destination_peer": {"type": "string"},
+    "sender_public_key_b64": {"type": "string"},
+    "sender_public_key_fingerprint": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "envelope_hash72": {"type": "string"},
+    "signature_b64": {"type": "string"},
+    "message_hash72": {"type": "string"},
+    "message_id": {"type": "string"}
+  },
+  "additionalProperties": false
+}

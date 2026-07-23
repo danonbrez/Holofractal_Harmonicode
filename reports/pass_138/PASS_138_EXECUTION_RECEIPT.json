@@ -1,0 +1,84 @@
+{
+  "alignment": {
+    "authority_nonpromotion": true,
+    "execution_required": true,
+    "no_float": true,
+    "premises_preserved": true
+  },
+  "authority": "A1_EXECUTION_EVIDENCE",
+  "conclusion": "PROVED",
+  "constraints": [
+    {
+      "closed": true,
+      "gate_id": "reciprocal",
+      "kind": "constraint",
+      "lhs": "g*h",
+      "lhs_value": "1",
+      "residual": "0",
+      "rhs": "xy",
+      "rhs_value": "1",
+      "witness_root": "d7986efde08019078508372446b156d6aeea058bd4e2f15c2b78cc8052746464"
+    },
+    {
+      "closed": true,
+      "gate_id": "gfe_residual",
+      "kind": "constraint",
+      "lhs": "rho",
+      "lhs_value": "1/20",
+      "residual": "0",
+      "rhs": "g+h-2*xy",
+      "rhs_value": "1/20",
+      "witness_root": "23a0975a60d1eedc6b17cce67a525d2f01f525bccd20275ea1858b827c6722b3"
+    }
+  ],
+  "goals": [
+    {
+      "closed": true,
+      "gate_id": "polynomialized_closure",
+      "kind": "goal",
+      "lhs": "rho*g",
+      "lhs_value": "1/16",
+      "residual": "0",
+      "rhs": "(g-xy)**2",
+      "rhs_value": "1/16",
+      "witness_root": "b115549ecbd0e9e34651ca24ae2dc7b44af08823ab7d06cc69abbc38611adf61"
+    }
+  ],
+  "ingress": {
+    "agent": "HARMONICODE_GARU",
+    "assignments": {
+      "g": "5/4",
+      "h": "4/5",
+      "rho": "1/20",
+      "xy": "1"
+    },
+    "constraint_count": 2,
+    "goal_count": 1,
+    "ingress_root": "c692fdc1491c436ca1d1616c5d42a41269d58466b3664f0716e9585f00a78baf",
+    "request_id": "gfe-5-4-calibration"
+  },
+  "looking_glass": {
+    "closed": true,
+    "forward": {
+      "conclusion": "PROVED",
+      "premise_root": "c692fdc1491c436ca1d1616c5d42a41269d58466b3664f0716e9585f00a78baf",
+      "proof_path": [
+        "d7986efde08019078508372446b156d6aeea058bd4e2f15c2b78cc8052746464",
+        "23a0975a60d1eedc6b17cce67a525d2f01f525bccd20275ea1858b827c6722b3",
+        "b115549ecbd0e9e34651ca24ae2dc7b44af08823ab7d06cc69abbc38611adf61"
+      ]
+    },
+    "reverse": {
+      "conclusion": "PROVED",
+      "premise_root": "c692fdc1491c436ca1d1616c5d42a41269d58466b3664f0716e9585f00a78baf",
+      "proof_path": [
+        "b115549ecbd0e9e34651ca24ae2dc7b44af08823ab7d06cc69abbc38611adf61",
+        "23a0975a60d1eedc6b17cce67a525d2f01f525bccd20275ea1858b827c6722b3",
+        "d7986efde08019078508372446b156d6aeea058bd4e2f15c2b78cc8052746464"
+      ]
+    }
+  },
+  "pass_id": "PASS_138_HARMONICODE_GENERAL_ALGEBRAIC_REASONING_UNIT",
+  "receipt_root": "328658cbc42df2e2d1b19325bb6004a80e72ef0eb4cf449d3adc3a35dfa9facd",
+  "schema": "HHS_GARU_API_V1"
+}

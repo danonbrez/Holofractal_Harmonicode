@@ -1,0 +1,17 @@
+{
+  "all_native_projects_owned": true,
+  "all_repairs_verified": true,
+  "native_project_record_count": 158,
+  "native_status_counts": {
+    "BUILD_REACHABLE": 2,
+    "DOCUMENTED_ONLY": 7,
+    "GUI_REACHABLE": 1,
+    "OWNED_ARTIFACT": 75,
+    "PLUGIN_READY": 72,
+    "TOOL_REACHABLE": 1
+  },
+  "orphan_count": 0,
+  "pass_id": "PASS_105_3",
+  "schema": "HHS_PASS105_3_REACHABILITY_ORPHAN_CLOSURE_V1",
+  "status": "PASS"
+}

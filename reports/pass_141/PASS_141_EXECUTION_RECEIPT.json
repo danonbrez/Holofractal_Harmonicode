@@ -1,0 +1,391 @@
+{
+  "architect_receipt": {
+    "alignment": {
+      "bounded_recursion": true,
+      "execution_is_not_release": true,
+      "no_float_inherited_from_garu": true,
+      "proof_required_for_release": true,
+      "proposal_is_not_execution": true,
+      "rollback_on_nonimprovement": true
+    },
+    "authority": "A1_EXECUTION_EVIDENCE",
+    "conclusion": "RELEASE_PROVED",
+    "cycles": [
+      {
+        "cycle": 0,
+        "cycle_root": "17cafddae01961fe4ea4a320590927b46c64169edc4d5de7f2f7ee0e6b60df46",
+        "error": null,
+        "origin": "seed",
+        "receipt": {
+          "alignment": {
+            "authority_nonpromotion": true,
+            "execution_required": true,
+            "no_float": true,
+            "premises_preserved": true
+          },
+          "authority": "A1_EXECUTION_EVIDENCE",
+          "conclusion": "GOAL_NOT_PROVED",
+          "constraints": [
+            {
+              "closed": true,
+              "gate_id": "reciprocal",
+              "kind": "constraint",
+              "lhs": "g*h",
+              "lhs_value": "1",
+              "residual": "0",
+              "rhs": "xy",
+              "rhs_value": "1",
+              "witness_root": "d7986efde08019078508372446b156d6aeea058bd4e2f15c2b78cc8052746464"
+            },
+            {
+              "closed": true,
+              "gate_id": "residual",
+              "kind": "constraint",
+              "lhs": "rho",
+              "lhs_value": "1/20",
+              "residual": "0",
+              "rhs": "g+h-2*xy",
+              "rhs_value": "1/20",
+              "witness_root": "85fbdfcf102f318db311512e0155df1bc426d9767d6bd423ddea111a54b74c51"
+            }
+          ],
+          "goals": [
+            {
+              "closed": false,
+              "gate_id": "initial",
+              "kind": "goal",
+              "lhs": "rho*g",
+              "lhs_value": "1/16",
+              "residual": "1/16",
+              "rhs": "0",
+              "rhs_value": "0",
+              "witness_root": "517f3f9c4fa621f1ad0be2fa9076241c5501426c6cd7b66b130ad1f76ddb28aa"
+            }
+          ],
+          "ingress": {
+            "agent": "THE_ARCHITECT",
+            "assignments": {
+              "g": "5/4",
+              "h": "4/5",
+              "rho": "1/20",
+              "xy": "1"
+            },
+            "constraint_count": 2,
+            "goal_count": 1,
+            "ingress_root": "e657dfa22cb0e5a97f462bfb35b2e0273aaf139f710164264847e4d72e01a2b0",
+            "request_id": "seed"
+          },
+          "looking_glass": {
+            "closed": true,
+            "forward": {
+              "conclusion": "GOAL_NOT_PROVED",
+              "premise_root": "e657dfa22cb0e5a97f462bfb35b2e0273aaf139f710164264847e4d72e01a2b0",
+              "proof_path": [
+                "d7986efde08019078508372446b156d6aeea058bd4e2f15c2b78cc8052746464",
+                "85fbdfcf102f318db311512e0155df1bc426d9767d6bd423ddea111a54b74c51",
+                "517f3f9c4fa621f1ad0be2fa9076241c5501426c6cd7b66b130ad1f76ddb28aa"
+              ]
+            },
+            "reverse": {
+              "conclusion": "GOAL_NOT_PROVED",
+              "premise_root": "e657dfa22cb0e5a97f462bfb35b2e0273aaf139f710164264847e4d72e01a2b0",
+              "proof_path": [
+                "517f3f9c4fa621f1ad0be2fa9076241c5501426c6cd7b66b130ad1f76ddb28aa",
+                "85fbdfcf102f318db311512e0155df1bc426d9767d6bd423ddea111a54b74c51",
+                "d7986efde08019078508372446b156d6aeea058bd4e2f15c2b78cc8052746464"
+              ]
+            }
+          },
+          "pass_id": "PASS_138_HARMONICODE_GENERAL_ALGEBRAIC_REASONING_UNIT",
+          "receipt_root": "49897cfd04b82d29351d3466e36fc0fceddce87ac7cb887b0912a88c126d1916",
+          "schema": "HHS_GARU_API_V1"
+        },
+        "receipt_validation": {
+          "checks": {
+            "authority": true,
+            "looking_glass": true,
+            "no_float": true,
+            "receipt_root": true,
+            "schema": true
+          },
+          "valid": true
+        },
+        "request_root": "fbbd2b1ff5443e1913d210ec38be1476e0775aa3d947c14cf03261286d7337fb",
+        "score": [
+          0,
+          0,
+          2,
+          -22
+        ],
+        "status": "EXECUTED_VALID"
+      },
+      {
+        "cycle": 1,
+        "cycle_root": "1223c8e09c0710f042bf13daa75be1efad104e34f0be9e988e47f5d04233f5d2",
+        "decision": "COMMIT_IMPROVEMENT",
+        "error": null,
+        "origin": "patch_0",
+        "receipt": {
+          "alignment": {
+            "authority_nonpromotion": true,
+            "execution_required": true,
+            "no_float": true,
+            "premises_preserved": true
+          },
+          "authority": "A1_EXECUTION_EVIDENCE",
+          "conclusion": "PROVED",
+          "constraints": [
+            {
+              "closed": true,
+              "gate_id": "reciprocal",
+              "kind": "constraint",
+              "lhs": "g*h",
+              "lhs_value": "1",
+              "residual": "0",
+              "rhs": "xy",
+              "rhs_value": "1",
+              "witness_root": "d7986efde08019078508372446b156d6aeea058bd4e2f15c2b78cc8052746464"
+            },
+            {
+              "closed": true,
+              "gate_id": "residual",
+              "kind": "constraint",
+              "lhs": "rho",
+              "lhs_value": "1/20",
+              "residual": "0",
+              "rhs": "g+h-2*xy",
+              "rhs_value": "1/20",
+              "witness_root": "85fbdfcf102f318db311512e0155df1bc426d9767d6bd423ddea111a54b74c51"
+            }
+          ],
+          "goals": [
+            {
+              "closed": true,
+              "gate_id": "closure",
+              "kind": "goal",
+              "lhs": "rho*g",
+              "lhs_value": "1/16",
+              "residual": "0",
+              "rhs": "(g-xy)**2",
+              "rhs_value": "1/16",
+              "witness_root": "1807605a3f356e78069d696d1becae3ea78430896e730fe51c02ac37050b4c18"
+            }
+          ],
+          "ingress": {
+            "agent": "THE_ARCHITECT",
+            "assignments": {
+              "g": "5/4",
+              "h": "4/5",
+              "rho": "1/20",
+              "xy": "1"
+            },
+            "constraint_count": 2,
+            "goal_count": 1,
+            "ingress_root": "e657dfa22cb0e5a97f462bfb35b2e0273aaf139f710164264847e4d72e01a2b0",
+            "request_id": "seed"
+          },
+          "looking_glass": {
+            "closed": true,
+            "forward": {
+              "conclusion": "PROVED",
+              "premise_root": "e657dfa22cb0e5a97f462bfb35b2e0273aaf139f710164264847e4d72e01a2b0",
+              "proof_path": [
+                "d7986efde08019078508372446b156d6aeea058bd4e2f15c2b78cc8052746464",
+                "85fbdfcf102f318db311512e0155df1bc426d9767d6bd423ddea111a54b74c51",
+                "1807605a3f356e78069d696d1becae3ea78430896e730fe51c02ac37050b4c18"
+              ]
+            },
+            "reverse": {
+              "conclusion": "PROVED",
+              "premise_root": "e657dfa22cb0e5a97f462bfb35b2e0273aaf139f710164264847e4d72e01a2b0",
+              "proof_path": [
+                "1807605a3f356e78069d696d1becae3ea78430896e730fe51c02ac37050b4c18",
+                "85fbdfcf102f318db311512e0155df1bc426d9767d6bd423ddea111a54b74c51",
+                "d7986efde08019078508372446b156d6aeea058bd4e2f15c2b78cc8052746464"
+              ]
+            }
+          },
+          "pass_id": "PASS_138_HARMONICODE_GENERAL_ALGEBRAIC_REASONING_UNIT",
+          "receipt_root": "4537239dc16ad524654e2ef3e4296854d8bae81c88302b71d95550beb12fdf31",
+          "schema": "HHS_GARU_API_V1"
+        },
+        "receipt_validation": {
+          "checks": {
+            "authority": true,
+            "looking_glass": true,
+            "no_float": true,
+            "receipt_root": true,
+            "schema": true
+          },
+          "valid": true
+        },
+        "request_root": "4a52f31e20dc175c9339d9dae4f4420a8c9657d37260eea9bad5f033c3635e44",
+        "score": [
+          1,
+          1,
+          2,
+          -30
+        ],
+        "status": "EXECUTED_VALID"
+      }
+    ],
+    "ingress": {
+      "agent": "THE_ARCHITECT",
+      "candidate_count": 1,
+      "ingress_root": "12a32a7ea47dba1143ab80720bd7c7cdbf7317e0441ea64342dd42436fc75697",
+      "max_cycles": 3,
+      "request_id": "architect-example",
+      "seed_root": "fbbd2b1ff5443e1913d210ec38be1476e0775aa3d947c14cf03261286d7337fb"
+    },
+    "ouroboros": {
+      "closed": true,
+      "closure": "BOUNDED_OPTIMUM",
+      "forward_cycle_roots": [
+        "17cafddae01961fe4ea4a320590927b46c64169edc4d5de7f2f7ee0e6b60df46",
+        "1223c8e09c0710f042bf13daa75be1efad104e34f0be9e988e47f5d04233f5d2"
+      ],
+      "premise_root": "12a32a7ea47dba1143ab80720bd7c7cdbf7317e0441ea64342dd42436fc75697",
+      "reverse_cycle_roots": [
+        "1223c8e09c0710f042bf13daa75be1efad104e34f0be9e988e47f5d04233f5d2",
+        "17cafddae01961fe4ea4a320590927b46c64169edc4d5de7f2f7ee0e6b60df46"
+      ]
+    },
+    "pass_id": "PASS_139_THE_ARCHITECT_OUROBOROS_MANIFOLD",
+    "receipt_root": "83119e539ac0aaabc55b6a00de5ff715e474a0c2f95c2442469f1c65351c8d00",
+    "release_authorized": true,
+    "schema": "HHS_ARCHITECT_API_V1",
+    "selected_cycle": 1,
+    "selected_receipt": {
+      "alignment": {
+        "authority_nonpromotion": true,
+        "execution_required": true,
+        "no_float": true,
+        "premises_preserved": true
+      },
+      "authority": "A1_EXECUTION_EVIDENCE",
+      "conclusion": "PROVED",
+      "constraints": [
+        {
+          "closed": true,
+          "gate_id": "reciprocal",
+          "kind": "constraint",
+          "lhs": "g*h",
+          "lhs_value": "1",
+          "residual": "0",
+          "rhs": "xy",
+          "rhs_value": "1",
+          "witness_root": "d7986efde08019078508372446b156d6aeea058bd4e2f15c2b78cc8052746464"
+        },
+        {
+          "closed": true,
+          "gate_id": "residual",
+          "kind": "constraint",
+          "lhs": "rho",
+          "lhs_value": "1/20",
+          "residual": "0",
+          "rhs": "g+h-2*xy",
+          "rhs_value": "1/20",
+          "witness_root": "85fbdfcf102f318db311512e0155df1bc426d9767d6bd423ddea111a54b74c51"
+        }
+      ],
+      "goals": [
+        {
+          "closed": true,
+          "gate_id": "closure",
+          "kind": "goal",
+          "lhs": "rho*g",
+          "lhs_value": "1/16",
+          "residual": "0",
+          "rhs": "(g-xy)**2",
+          "rhs_value": "1/16",
+          "witness_root": "1807605a3f356e78069d696d1becae3ea78430896e730fe51c02ac37050b4c18"
+        }
+      ],
+      "ingress": {
+        "agent": "THE_ARCHITECT",
+        "assignments": {
+          "g": "5/4",
+          "h": "4/5",
+          "rho": "1/20",
+          "xy": "1"
+        },
+        "constraint_count": 2,
+        "goal_count": 1,
+        "ingress_root": "e657dfa22cb0e5a97f462bfb35b2e0273aaf139f710164264847e4d72e01a2b0",
+        "request_id": "seed"
+      },
+      "looking_glass": {
+        "closed": true,
+        "forward": {
+          "conclusion": "PROVED",
+          "premise_root": "e657dfa22cb0e5a97f462bfb35b2e0273aaf139f710164264847e4d72e01a2b0",
+          "proof_path": [
+            "d7986efde08019078508372446b156d6aeea058bd4e2f15c2b78cc8052746464",
+            "85fbdfcf102f318db311512e0155df1bc426d9767d6bd423ddea111a54b74c51",
+            "1807605a3f356e78069d696d1becae3ea78430896e730fe51c02ac37050b4c18"
+          ]
+        },
+        "reverse": {
+          "conclusion": "PROVED",
+          "premise_root": "e657dfa22cb0e5a97f462bfb35b2e0273aaf139f710164264847e4d72e01a2b0",
+          "proof_path": [
+            "1807605a3f356e78069d696d1becae3ea78430896e730fe51c02ac37050b4c18",
+            "85fbdfcf102f318db311512e0155df1bc426d9767d6bd423ddea111a54b74c51",
+            "d7986efde08019078508372446b156d6aeea058bd4e2f15c2b78cc8052746464"
+          ]
+        }
+      },
+      "pass_id": "PASS_138_HARMONICODE_GENERAL_ALGEBRAIC_REASONING_UNIT",
+      "receipt_root": "4537239dc16ad524654e2ef3e4296854d8bae81c88302b71d95550beb12fdf31",
+      "schema": "HHS_GARU_API_V1"
+    },
+    "selected_request_root": "4a52f31e20dc175c9339d9dae4f4420a8c9657d37260eea9bad5f033c3635e44",
+    "selected_score": [
+      1,
+      1,
+      2,
+      -30
+    ]
+  },
+  "architect_validation": {
+    "checks": {
+      "authority": true,
+      "ouroboros": true,
+      "receipt_root": true,
+      "release_implication": true,
+      "schema": true,
+      "selected_receipt": true
+    },
+    "valid": true
+  },
+  "authority": "A1_EXECUTION_EVIDENCE",
+  "cache_commit": {
+    "cache_key": "34d83f2f70614374f39ffa685414a380b757f225d833dbb01b6d205beedd4e63",
+    "paths": [
+      "/tmp/hhs141_cache_a/34/34d83f2f70614374f39ffa685414a380b757f225d833dbb01b6d205beedd4e63.json",
+      "/tmp/hhs141_cache_b/34/34d83f2f70614374f39ffa685414a380b757f225d833dbb01b6d205beedd4e63.json"
+    ],
+    "payload_root": "34d83f2f70614374f39ffa685414a380b757f225d833dbb01b6d205beedd4e63",
+    "replicas": 2
+  },
+  "equilibrium": {
+    "closure": "BOUNDED_OPTIMUM",
+    "commit_count": 0,
+    "cycle_count": 2,
+    "entropic_imbalance": "0",
+    "equilibrium": true,
+    "phase_index": 1,
+    "phase_modulus": 72,
+    "rollback_count": 0
+  },
+  "ethical_policy": {
+    "allow_cache_write": true,
+    "forbid_authority_patch": true,
+    "max_cycles": 9,
+    "require_proved_release": true
+  },
+  "pass_id": "PASS_141_ARCHITECT_OUROBOROS_ENTANGLEMENT_ENTROPIC_PHASE_EQUILIBRIUM",
+  "receipt_root": "c5d88dca4e1192cfd1f520ba907b8e75cc499178a46e5dd3bc54cc21a56e188f",
+  "request_id": "pass-141-example",
+  "schema": "HHS_ARCHITECT_EPE_API_V1"
+}

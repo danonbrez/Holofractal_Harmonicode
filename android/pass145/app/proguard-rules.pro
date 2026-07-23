@@ -1,0 +1,2 @@
+-keepclassmembers class org.hhs.pass145.HhsBridge { @android.webkit.JavascriptInterface <methods>; }
+-keep class org.hhs.pass145.NativeRuntime { *; }

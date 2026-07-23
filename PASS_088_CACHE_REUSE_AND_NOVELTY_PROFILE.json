@@ -1,0 +1,89 @@
+{
+  "schema": "HHS_PASS_088_REUSE_NOVELTY_V1",
+  "results": [
+    {
+      "workload_id": "W131:cold-baseline",
+      "verified_reuse_count": 0,
+      "novel_residue_count": 16,
+      "avoided_retraining_count": 0
+    },
+    {
+      "workload_id": "W132:warm-cache-recognition",
+      "verified_reuse_count": 64,
+      "novel_residue_count": 0,
+      "avoided_retraining_count": 64
+    },
+    {
+      "workload_id": "W133:mixed-reuse-and-novelty",
+      "verified_reuse_count": 54,
+      "novel_residue_count": 10,
+      "avoided_retraining_count": 54
+    },
+    {
+      "workload_id": "W134:provider-error-rejection",
+      "verified_reuse_count": 51,
+      "novel_residue_count": 13,
+      "avoided_retraining_count": 51
+    },
+    {
+      "workload_id": "W135:constraint-density-scaling",
+      "verified_reuse_count": 56,
+      "novel_residue_count": 8,
+      "avoided_retraining_count": 56
+    },
+    {
+      "workload_id": "W136:avoided-global-retraining",
+      "verified_reuse_count": 118,
+      "novel_residue_count": 10,
+      "avoided_retraining_count": 118
+    },
+    {
+      "workload_id": "W137:hierarchical-pattern-composition",
+      "verified_reuse_count": 116,
+      "novel_residue_count": 12,
+      "avoided_retraining_count": 116
+    },
+    {
+      "workload_id": "W138:two-hundred-fifty-six-samples",
+      "verified_reuse_count": 240,
+      "novel_residue_count": 16,
+      "avoided_retraining_count": 240
+    },
+    {
+      "workload_id": "W139:five-hundred-twelve-samples",
+      "verified_reuse_count": 485,
+      "novel_residue_count": 27,
+      "avoided_retraining_count": 485
+    },
+    {
+      "workload_id": "W140:high-cache-low-novelty",
+      "verified_reuse_count": 512,
+      "novel_residue_count": 0,
+      "avoided_retraining_count": 512
+    },
+    {
+      "workload_id": "W141:high-novelty-stable-unresolved",
+      "verified_reuse_count": 64,
+      "novel_residue_count": 64,
+      "avoided_retraining_count": 64
+    },
+    {
+      "workload_id": "W142:resource-bounded-training",
+      "verified_reuse_count": 979,
+      "novel_residue_count": 45,
+      "avoided_retraining_count": 979
+    },
+    {
+      "workload_id": "W143:authority-separation",
+      "verified_reuse_count": 113,
+      "novel_residue_count": 15,
+      "avoided_retraining_count": 113
+    },
+    {
+      "workload_id": "W144:training-receipt-only-replay",
+      "verified_reuse_count": 236,
+      "novel_residue_count": 20,
+      "avoided_retraining_count": 236
+    }
+  ]
+}

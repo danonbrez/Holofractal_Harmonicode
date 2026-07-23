@@ -1,0 +1,28 @@
+{
+  "schema": "HHS_PASS_082_3_RELEASE_MANIFEST_V1",
+  "pass_id": "PASS_082_3",
+  "parent_pass": "PASS_082_2",
+  "parent_release_root_hash72": "00000000000000000000000000000049?J+HQw7n)rD/1SKwI-rExThTXQt2X0jecxD^rZ0O",
+  "workloads": [
+    "W33:clean-baseline",
+    "W34:10pct-redundant-symbolic",
+    "W35:25pct-irrelevant-branch",
+    "W36:reciprocal-mismatch",
+    "W37:ordered-product-perturbation",
+    "W38:contradictory-propositions",
+    "W39:dense-topological-noise",
+    "W40:temporal-duplication-reordering",
+    "W41:mixed-semantic-algebraic",
+    "W42:50pct-sparse",
+    "W43:75pct-dense",
+    "W44:near-valid-fracture",
+    "W45:resource-bounded-unresolved",
+    "W46:replay-from-noisy-receipts"
+  ],
+  "lossless_preservation_verified": true,
+  "deterministic_replay_verified": true,
+  "stable_unresolved_preserved": true,
+  "resource_bound_distinct_from_logical_failure": true,
+  "noise_lineage_preserved": true,
+  "pass082_3_release_root_hash72": "0000000000000000000000000000003keb0PmZ>y2pwLWB1G21FMBXZab9T7DHQwXLRlLcvG"
+}

@@ -1,0 +1,20 @@
+{
+  "schema": "HHS_PASS_104_RELEASE_MANIFEST_V1",
+  "pass_id": "PASS_104",
+  "parent_pass103_release_root_hash72": "0000000000000000000000000000003*oJH7DPuS)KdkRRA8S+w7z4)Ldb!W9dB=ktCgcsLH",
+  "entry_count": 2,
+  "historical_replay_exact": true,
+  "empty_string_bound": true,
+  "all_negative_cases_passed": true,
+  "artifacts": [
+    "PASS_104_STRING_DICTIONARY.json",
+    "PASS_104_TEMPLATE_EXPANSION_RECEIPT.json",
+    "PASS_104_PARTIAL_EXPANSION_RECEIPT.json",
+    "PASS_104_WORKLOAD_REGISTRY.json",
+    "PASS_104_NEGATIVE_CASES.json",
+    "PASS_104_OUTCOME_TAXONOMY.json",
+    "PASS_104_CALIBRATION_REPORT.md",
+    "CHANGELOG_PASS_104.md"
+  ],
+  "pass104_release_root_hash72": "0000000000000000000000000000000r8GXn3r60C*sLdxM+PW^Pfk9kUPb-q0^Z(mklCH?F"
+}

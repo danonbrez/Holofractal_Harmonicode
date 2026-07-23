@@ -1,0 +1,67 @@
+{
+  "schema": "HHS_PASS_083_VIDEO_NEGATIVE_CASES_V1",
+  "required_rejection_codes": [
+    "REJECT_DUPLICATE_FRAME_IDENTITY",
+    "REJECT_FRAME_TIME_OUT_OF_ORDER",
+    "REJECT_UNWITNESSED_REGION",
+    "REJECT_TRAJECTORY_WITHOUT_SUPPORT",
+    "REJECT_FRAME_OBJECT_IDENTITY_COLLAPSE",
+    "REJECT_OCCLUSION_AS_DELETION",
+    "REJECT_UNAUTHORIZED_OBJECT_PERSISTENCE",
+    "REJECT_VIDEO_REPLAY_MISMATCH",
+    "REJECT_OPAQUE_PIXEL_FLOAT_AS_CANONICAL_ARITHMETIC",
+    "REJECT_VISUAL_EVENT_CLOSURE_FAILURE"
+  ],
+  "results": [
+    {
+      "expected": "REJECT_DUPLICATE_FRAME_IDENTITY",
+      "observed": "REJECT_DUPLICATE_FRAME_IDENTITY",
+      "status": "PASS"
+    },
+    {
+      "expected": "REJECT_FRAME_TIME_OUT_OF_ORDER",
+      "observed": "REJECT_FRAME_TIME_OUT_OF_ORDER",
+      "status": "PASS"
+    },
+    {
+      "expected": "REJECT_UNWITNESSED_REGION",
+      "observed": "REJECT_UNWITNESSED_REGION",
+      "status": "PASS"
+    },
+    {
+      "expected": "REJECT_TRAJECTORY_WITHOUT_SUPPORT",
+      "observed": "REJECT_TRAJECTORY_WITHOUT_SUPPORT",
+      "status": "PASS"
+    },
+    {
+      "expected": "REJECT_FRAME_OBJECT_IDENTITY_COLLAPSE",
+      "observed": "REJECT_FRAME_OBJECT_IDENTITY_COLLAPSE",
+      "status": "PASS"
+    },
+    {
+      "expected": "REJECT_OCCLUSION_AS_DELETION",
+      "observed": "REJECT_OCCLUSION_AS_DELETION",
+      "status": "PASS"
+    },
+    {
+      "expected": "REJECT_UNAUTHORIZED_OBJECT_PERSISTENCE",
+      "observed": "REJECT_UNAUTHORIZED_OBJECT_PERSISTENCE",
+      "status": "PASS"
+    },
+    {
+      "expected": "REJECT_OPAQUE_PIXEL_FLOAT_AS_CANONICAL_ARITHMETIC",
+      "observed": "REJECT_OPAQUE_PIXEL_FLOAT_AS_CANONICAL_ARITHMETIC",
+      "status": "PASS"
+    },
+    {
+      "expected": "REJECT_VISUAL_EVENT_CLOSURE_FAILURE",
+      "observed": "REJECT_VISUAL_EVENT_CLOSURE_FAILURE",
+      "status": "PASS"
+    },
+    {
+      "expected": "REJECT_VIDEO_REPLAY_MISMATCH",
+      "observed": "REJECT_VIDEO_REPLAY_MISMATCH",
+      "status": "PASS"
+    }
+  ]
+}

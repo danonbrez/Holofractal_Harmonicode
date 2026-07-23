@@ -1,0 +1,30 @@
+{
+  "schema": "HHS_PASS_095_RELEASE_MANIFEST_V1",
+  "pass_id": "PASS_095",
+  "parent_pass094_release_root_hash72": "0000000000000000000000000000003/EHi(>pX4X6mJCnO(^V(resH57g-P9nOyOjaD66VJ",
+  "task_count": 16,
+  "replication_count": 3,
+  "matched_pair_count": 48,
+  "negative_case_count": 10,
+  "all_negative_cases_passed": true,
+  "all_replays_verified": true,
+  "all_correctness_exact": true,
+  "classification_counts": {
+    "GENERALIZATION_GAIN": 12,
+    "NEGATIVE_TRANSFER": 3,
+    "NO_MEASURABLE_GAIN": 9,
+    "SPECIALIZED_EFFICIENCY_GAIN": 15,
+    "TRANSFERABLE_GAIN": 9
+  },
+  "artifacts": [
+    "PASS_095_TASK_REGISTRY.json",
+    "PASS_095_AB_TRIAL_RESULTS.json",
+    "PASS_095_PATTERN_USE_RECEIPTS.json",
+    "PASS_095_TRANSFER_AND_GENERALIZATION_RESULTS.json",
+    "PASS_095_TRIAL_ISOLATION_REPORT.json",
+    "PASS_095_NEGATIVE_CASES.json",
+    "PASS_095_CALIBRATION_REPORT.md",
+    "CHANGELOG_PASS_095.md"
+  ],
+  "pass095_release_root_hash72": "0000000000000000000000000000001Y!5QO9Be>mUxd^b7eZIRrU2sReQG-KXl7>>Z4ufwB"
+}

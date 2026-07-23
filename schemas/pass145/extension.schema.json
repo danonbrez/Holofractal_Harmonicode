@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:hhs:pass145:extension:v1",
+  "title": "HHS Pass 145 Extension Manifest",
+  "type": "object",
+  "required": ["identity", "version", "publisher", "source_hash", "requested_capabilities", "supported_runtime_versions", "entrypoints", "schemas", "migrations", "tests", "uninstall_behavior"],
+  "properties": {
+    "identity": {"type": "string"},
+    "version": {"type": "string"},
+    "publisher": {"type": "string"},
+    "source_hash": {"type": "string"},
+    "requested_capabilities": {"type": "array", "items": {"type": "string"}},
+    "direct_canonical_database_access": {"const": false}
+  },
+  "additionalProperties": true
+}

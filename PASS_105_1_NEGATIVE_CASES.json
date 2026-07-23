@@ -1,0 +1,118 @@
+{
+  "cases": [
+    {
+      "expected": "REJECT_INVALID_SOURCE_ENCODING",
+      "fixture_root_hash72": "0000000000000000000000000000000e1Cs-t5yVqr1k2i6udcZ^=CBHnRx6yBfF2kpC8bH)",
+      "observed": "REJECT_INVALID_SOURCE_ENCODING",
+      "passed": true
+    },
+    {
+      "expected": "REJECT_BIDIRECTIONAL_TEXT_CONTROL",
+      "fixture_root_hash72": "0000000000000000000000000000001^7Ubn71H7jZ0mqhRA5IBdozy0bNT0C4ecv7umHxC/",
+      "observed": "REJECT_BIDIRECTIONAL_TEXT_CONTROL",
+      "passed": true
+    },
+    {
+      "expected": "REJECT_SYNTAX_HOMOGLYPH_SUBSTITUTION",
+      "fixture_root_hash72": "0000000000000000000000000000002=sUhWOFqfvE+6neL8GEK=osj>g)v*tgeivb?yph4i",
+      "observed": "REJECT_SYNTAX_HOMOGLYPH_SUBSTITUTION",
+      "passed": true
+    },
+    {
+      "expected": "REJECT_RESERVED_KEYWORD_REBINDING",
+      "fixture_root_hash72": "0000000000000000000000000000001VY-UsVyW7l(v?qPAmx1xWe>NCQNXl/z30OZz+jVGs",
+      "observed": "REJECT_RESERVED_KEYWORD_REBINDING",
+      "passed": true
+    },
+    {
+      "expected": "REJECT_RECOVERED_PARSE_AS_CANONICAL_SOURCE",
+      "fixture_root_hash72": "0000000000000000000000000000002Yd>>)EWYDrbUYeeTA!68ia?mZZKx=l4cqdF+WTTfc",
+      "observed": "REJECT_RECOVERED_PARSE_AS_CANONICAL_SOURCE",
+      "passed": true
+    },
+    {
+      "expected": "REJECT_UNDECLARED_TEMPLATE_VARIABLE",
+      "fixture_root_hash72": "0000000000000000000000000000001ht9m6p>mk+x!VHap/tIsCmciza!Ch1PP4vuuiJ8OJ",
+      "observed": "REJECT_UNDECLARED_TEMPLATE_VARIABLE",
+      "passed": true
+    },
+    {
+      "expected": "REJECT_TEMPLATE_ARGUMENT_TYPE_MISMATCH",
+      "fixture_root_hash72": "0000000000000000000000000000003pUG1uYwRKtXqY0DM=8-W0v=+ZuDetDqotccutu*rR",
+      "observed": "REJECT_TEMPLATE_ARGUMENT_TYPE_MISMATCH",
+      "passed": true
+    },
+    {
+      "expected": "REJECT_LITERAL_EXECUTION_SYNTAX_CONFUSION",
+      "fixture_root_hash72": "0000000000000000000000000000001??WEf?OF-k7=lLkxmxOu82eVhYzufg/8XWBRtZsrB",
+      "observed": "REJECT_LITERAL_EXECUTION_SYNTAX_CONFUSION",
+      "passed": true
+    },
+    {
+      "expected": "REJECT_ALIAS_REBINDING_COLLAPSE",
+      "fixture_root_hash72": "0000000000000000000000000000002lk4?95N=H3WF>R3Jb9QPvVcwoKq3/g6!!-/rY7!h8",
+      "observed": "REJECT_ALIAS_REBINDING_COLLAPSE",
+      "passed": true
+    },
+    {
+      "expected": "REJECT_DUPLICATE_SCOPE_BINDING",
+      "fixture_root_hash72": "0000000000000000000000000000002AjaFNhMrlcCr!rwD/8CBQ)P(ItkXUeKoQIEoYexG!",
+      "observed": "REJECT_DUPLICATE_SCOPE_BINDING",
+      "passed": true
+    },
+    {
+      "expected": "REJECT_UNWITNESSED_DICTIONARY_SHADOWING",
+      "fixture_root_hash72": "0000000000000000000000000000003iYIcMUDFX*gnnq2EnDKW>E=hWP+RIb^?EXx/Q6i9R",
+      "observed": "REJECT_UNWITNESSED_DICTIONARY_SHADOWING",
+      "passed": true
+    },
+    {
+      "expected": "REJECT_NONDETERMINISTIC_IMPORT_RESOLUTION",
+      "fixture_root_hash72": "000000000000000000000000000000486P8V+hHdfoJha-l((qUQEctbaurf4HTjGA>6X9e7",
+      "observed": "REJECT_NONDETERMINISTIC_IMPORT_RESOLUTION",
+      "passed": true
+    },
+    {
+      "expected": "REJECT_UNPINNED_DICTIONARY_DEPENDENCY",
+      "fixture_root_hash72": "0000000000000000000000000000003EHSX3vRu5A168x)NhYx(IFx=KzS2J3Pcc03B23!5C",
+      "observed": "REJECT_UNPINNED_DICTIONARY_DEPENDENCY",
+      "passed": true
+    },
+    {
+      "expected": "REJECT_SILENT_DICTIONARY_CONFLICT_OVERWRITE",
+      "fixture_root_hash72": "00000000000000000000000000000033?SmB8MkMb2?sK2w7bg0hoxbCvG5O8ITAOKlI8Py-",
+      "observed": "REJECT_SILENT_DICTIONARY_CONFLICT_OVERWRITE",
+      "passed": true
+    },
+    {
+      "expected": "REJECT_PARSE_ONLY_EXECUTION_BYPASS",
+      "fixture_root_hash72": "0000000000000000000000000000002/(K7OOr-QH(mU47myJPq0>BOvNAJULtHYRtxUGYnv",
+      "observed": "REJECT_PARSE_ONLY_EXECUTION_BYPASS",
+      "passed": true
+    },
+    {
+      "expected": "REJECT_NONDETERMINISTIC_DICTIONARY_PARSE",
+      "fixture_root_hash72": "00000000000000000000000000000021RBQfTkAg2g-NsSoJ420U14TCe/Wp1iDcbfX!Z8*u",
+      "observed": "REJECT_NONDETERMINISTIC_DICTIONARY_PARSE",
+      "passed": true
+    },
+    {
+      "expected": "REJECT_FORMATTER_SEMANTIC_MUTATION",
+      "fixture_root_hash72": "0000000000000000000000000000003wj6=XtVhzGTSt8tDIE5/Z>RnjWPnXso!=xgk1gOVx",
+      "observed": "REJECT_FORMATTER_SEMANTIC_MUTATION",
+      "passed": true
+    },
+    {
+      "expected": "REJECT_TEMPORAL_GRAMMAR_DRIFT",
+      "fixture_root_hash72": "0000000000000000000000000000000enHO*TEX5A1lsnlyrFPxjD)TkQcqV/4JV6Iu+/InZ",
+      "observed": "REJECT_TEMPORAL_GRAMMAR_DRIFT",
+      "passed": true
+    },
+    {
+      "expected": "REJECT_UNAUTHORIZED_SYNTAX_EXTENSION",
+      "fixture_root_hash72": "0000000000000000000000000000003SIZ=JEl14i+1zq*!?fAsCBTlbWQdWxR=BxjRHUeR3",
+      "observed": "REJECT_UNAUTHORIZED_SYNTAX_EXTENSION",
+      "passed": true
+    }
+  ]
+}

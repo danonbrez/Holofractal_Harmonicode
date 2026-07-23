@@ -1,0 +1,32 @@
+{
+  "contract": "HHS-GFE-FORMAL-136",
+  "status": "SOURCE_COMPLETE_WITH_EXTERNAL_GROBNER_VERIFICATION",
+  "coq": {
+    "artifact": "formal/coq/HHS_GFE_Field_Quotient.v",
+    "escape_hatches": 0,
+    "compiler_available": false,
+    "authority": "COQ_SOURCE_COMPLETE_NOT_KERNEL_VERIFIED"
+  },
+  "lean4": {
+    "artifact": "formal/lean/HHS_GFE_Field_Quotient.lean",
+    "classification": "STYLE_COMPLETE_VERIFICATION_SKETCH",
+    "known_sorries": 1
+  },
+  "grobner": {
+    "engine": "SymPy over QQ",
+    "calibration_alpha": "5/4",
+    "reduced_basis": ["g - 5/4", "h - 4/5", "rho - 1/20"],
+    "generic_constraints_reduce_to_zero": true,
+    "all_s_polynomials_reduce_to_zero": true,
+    "certificate": "formal/certificates/gfe_state_5_4_grobner.json"
+  },
+  "quotient_classification": {
+    "generic_ideal": "Q[g,h,rho]/<gh-1,rho-g-h+2> ~= Q[g,g^-1], integral domain, not field",
+    "state_ideal": "Q[g,h,rho]/J_alpha ~= Q for alpha != 0"
+  },
+  "tests": {
+    "targeted": 11,
+    "passed": 11,
+    "failed": 0
+  }
+}

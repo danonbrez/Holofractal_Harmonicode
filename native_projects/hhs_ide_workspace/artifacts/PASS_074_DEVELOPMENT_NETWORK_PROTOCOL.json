@@ -1,0 +1,33 @@
+{
+  "agent_classes": [
+    "CI",
+    "HUMAN",
+    "HYBRID",
+    "LLM",
+    "TOOL"
+  ],
+  "development_protocol_root_hash72": "00000000000000000000000000000040lP63bY?5m/9JeWp7KJa=Giu)ypvR5FYZqyWAnoN3",
+  "open_ended_development": {
+    "fixed_terminal_pass": false,
+    "future_passes_admissible_while_constraints_hold": true,
+    "llm_context_window_required": false,
+    "repository_state_authoritative_over_conversation_state": true
+  },
+  "pass_sequence": {
+    "PASS_074": "UNIFIED_WORKSPACE_API_AGENT_EXCHANGE_AND_ALIGNMENT_GATE",
+    "PASS_075": "HARMONICODE_TYPED_IR_AND_AGENT_COORDINATED_TEST_ACCELERATION",
+    "PASS_076_PLUS": "BOUNDED_SELF_HEALING_INTERPRETER_COMPILER_EMULATOR_AND_OPEN_ENDED_PRODUCTS"
+  },
+  "platform_boundary": {
+    "foundation_repair_requires_justified_minimal_witnessed_reversible_alignment_patch": true,
+    "frozen_pass": "PASS_072",
+    "frozen_total_system_root_hash72": "ZF9bto?tV>P(KcFPL5L+csyy!jxdrAaadua1a!w-uwug8/MeMSqSS3*R>lXIefi)nyjXpc+)",
+    "ordinary_product_development_may_modify_foundation": false
+  },
+  "product_constraint": {
+    "new_modules_must_be_reachable_reusable_runtime_governed_and_capability_bearing": true,
+    "new_orphan_modules_permitted": false
+  },
+  "purpose": "SELF_HEALING_SOFTWARE_DEVELOPMENT_ACCELERATION_ALIGNMENT_ENFORCEMENT_TESTING_ITERATION_AND_AGENT_REPOSITORY_NETWORKING",
+  "schema": "HHS_OPEN_ENDED_NATIVE_DEVELOPMENT_PROTOCOL_V1"
+}

@@ -1,0 +1,12 @@
+{
+  "execution_run_ref": "execution:repair:pass076:omega",
+  "execution_run_root_hash72": "0000000000000000000000000000003AUIc)5ePGkN?GwFM?ifYV>Z-QVCtmw6nSB^20iVXI",
+  "passed": true,
+  "repair_test_receipt_root_hash72": "0000000000000000000000000000002dT/lRUXjCaBNW95r!*iQppnKVF46*2aR0M!VDgW+7",
+  "schema": "HHS_REPAIR_VALIDATION_EXECUTION_RECEIPT_V1",
+  "status": "PASS",
+  "this_receipt_does_not_self_authorize_future_mutation": true,
+  "transaction_ref": "repair:pass076:omega",
+  "validation_ref": "validation:typed-ir:repair:pass076:omega",
+  "validation_root_hash72": "0000000000000000000000000000003od^gXh)JEwrW^QlzeEJ9F8YQgy=QHkSYBIQ!67gA4"
+}

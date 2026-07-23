@@ -1,0 +1,26 @@
+{
+  "a4_status": "RESERVED_NOT_ASSESSED",
+  "audit_root": "9cc1ad4642cd54ee0b7bc4bd94d5233aa41ba9097c8be9237705faa3f73bda5b",
+  "authority_levels_exercised": [
+    "A1",
+    "A2",
+    "A3"
+  ],
+  "bounded_findings": [
+    "CANONICAL_BACKEND_EXTERNALLY_NONRESPONSIVE",
+    "PASS_132_CONSEQUENCE_API_NOT_EXPOSED",
+    "ZERO_BYPASS_API_NOT_EXPOSED_ON_RESPONSIVE_RUNTIME",
+    "WORKSPACE_PERSISTENCE_API_NOT_EXPOSED_ON_RESPONSIVE_RUNTIME"
+  ],
+  "evidence_immutable": true,
+  "full_ancestry_scenarios": {
+    "continuity": true,
+    "integrity": true,
+    "reconstruction": true
+  },
+  "interpretations_independent": true,
+  "pass_id": "PASS_135",
+  "schema": "HHS_PASS135_COMPLETION_ATTESTATION_V1",
+  "status": "CANONICAL_CEUAC_AUDIT_COMPLETED_WITH_BOUNDED_FINDINGS",
+  "subject_pass": "PASS_134_FULL_R1"
+}

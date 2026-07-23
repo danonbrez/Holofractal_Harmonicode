@@ -1,0 +1,40 @@
+{
+  "input_vector": [
+    "72",
+    "144",
+    "216",
+    "288"
+  ],
+  "modulus": "72",
+  "normalization_divisor": "1",
+  "paired_geometry": [
+    [
+      "1",
+      "-1",
+      "2",
+      "1/2"
+    ],
+    [
+      "-1",
+      "1",
+      "1/2",
+      "2"
+    ]
+  ],
+  "projection_a": [
+    "0",
+    "0",
+    "0",
+    "0"
+  ],
+  "projection_b": [
+    "0",
+    "0",
+    "0",
+    "0"
+  ],
+  "raw_input_preserved": true,
+  "schema": "HHS_NORMALIZATION_ENTANGLEMENT_INTERFERENCE_TRANSFORM_V1",
+  "transform_is_scalar_identity_test": false,
+  "transform_root_hash72": "0000000000000000000000000000001/O>GZ6yqm?FY+HNGrTjpmUij1(Pk8x!7=e9CcnJeO"
+}

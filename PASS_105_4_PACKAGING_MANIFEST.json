@@ -1,0 +1,7 @@
+{
+  "schema": "HHS_PASS_105_4_PACKAGING_MANIFEST_V1",
+  "cache_directories_included": false,
+  "python_bytecode_included": false,
+  "unclassified_compiled_output_included": false,
+  "source_release": true
+}

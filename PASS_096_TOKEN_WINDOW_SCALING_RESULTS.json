@@ -1,0 +1,1763 @@
+{
+  "schema": "HHS_PASS_096_WINDOW_RESULTS_V1",
+  "windows": [
+    256,
+    512,
+    1024,
+    2048,
+    4096,
+    8192,
+    16384,
+    32768,
+    64000
+  ],
+  "results": [
+    {
+      "ambiguous_fields": [],
+      "authority_conferred_by_language": false,
+      "critical_position": "START",
+      "direction": "FORWARD",
+      "equivalent_fields": [
+        "entity",
+        "relation"
+      ],
+      "fidelity_vector": {
+        "ambiguity": "EXACT",
+        "causality": "EXACT",
+        "entity": "EQUIVALENT",
+        "epistemic": "EXACT",
+        "order": "EXACT",
+        "provenance": "PARTIAL",
+        "quantity": "EXACT",
+        "reconstruction": "PARTIAL",
+        "relation": "EQUIVALENT"
+      },
+      "final_status": "CONTEXT_BOUNDED_LOSS",
+      "invariant_snapshot": {
+        "ambiguities": [],
+        "causal_direction": "FORWARD_EXECUTION",
+        "entities": [
+          "A",
+          "B"
+        ],
+        "operator_order": [
+          "A",
+          "B"
+        ],
+        "quantities": [],
+        "relations": [
+          "ORDERED_COMPOSITION"
+        ]
+      },
+      "lost_fields": [],
+      "mutated_fields": [],
+      "pattern_aware": true,
+      "preserved_fields": [
+        "quantity",
+        "order",
+        "causality",
+        "epistemic",
+        "ambiguity"
+      ],
+      "receipt_root_hash72": "0000000000000000000000000000003)-l+LJACzH4Ev9OcGxIkUjNwce5bS9L+bwdiES/Xv",
+      "reconstruction_map": {},
+      "reconstruction_root_hash72": "0000000000000000000000000000002gu-8mNw1v2xU=73-APgMVgOifaF+!3mpza!DRAS4d",
+      "schema": "HHS_LANGUAGE_TRANSLATION_SURVIVAL_RECEIPT_V1",
+      "source_register": "FORMAL_HARMONICODE",
+      "source_root_hash72": "0000000000000000000000000000002f6gQk0u?5YQ6rmQI5R=C9SgsIOzdHSHltyop6!!Lt",
+      "target_register": "COMMON_USE",
+      "temperature": "0.3",
+      "token_window": 256,
+      "translation_path": [
+        "FORMAL_HARMONICODE",
+        "COMMON_USE"
+      ],
+      "translation_path_root_hash72": "0000000000000000000000000000003v9+9+5zyfL4cDbqiYepfk-AkVylaQ)!Db7wjW48SR",
+      "unsupported_additions": []
+    },
+    {
+      "ambiguous_fields": [],
+      "authority_conferred_by_language": false,
+      "critical_position": "MIDDLE",
+      "direction": "FORWARD",
+      "equivalent_fields": [
+        "entity",
+        "relation"
+      ],
+      "fidelity_vector": {
+        "ambiguity": "EXACT",
+        "causality": "EXACT",
+        "entity": "EQUIVALENT",
+        "epistemic": "EXACT",
+        "order": "PARTIAL",
+        "provenance": "PARTIAL",
+        "quantity": "EXACT",
+        "reconstruction": "PARTIAL",
+        "relation": "EQUIVALENT"
+      },
+      "final_status": "CONTEXT_BOUNDED_LOSS",
+      "invariant_snapshot": {
+        "ambiguities": [],
+        "causal_direction": "FORWARD_EXECUTION",
+        "entities": [
+          "A",
+          "B"
+        ],
+        "operator_order": [
+          "A",
+          "B"
+        ],
+        "quantities": [],
+        "relations": [
+          "ORDERED_COMPOSITION"
+        ]
+      },
+      "lost_fields": [],
+      "mutated_fields": [],
+      "pattern_aware": true,
+      "preserved_fields": [
+        "quantity",
+        "causality",
+        "epistemic",
+        "ambiguity"
+      ],
+      "receipt_root_hash72": "0000000000000000000000000000004cjs-G^)qMZnzRB^Wfub2g/0G0Q/puZ2L?ETYaP>jE",
+      "reconstruction_map": {},
+      "reconstruction_root_hash72": "0000000000000000000000000000004dIM!ZAuau?fV/-Zg96G=6yYeskb8SWfr+0v687BZ>",
+      "schema": "HHS_LANGUAGE_TRANSLATION_SURVIVAL_RECEIPT_V1",
+      "source_register": "FORMAL_HARMONICODE",
+      "source_root_hash72": "0000000000000000000000000000002f6gQk0u?5YQ6rmQI5R=C9SgsIOzdHSHltyop6!!Lt",
+      "target_register": "COMMON_USE",
+      "temperature": "0.3",
+      "token_window": 256,
+      "translation_path": [
+        "FORMAL_HARMONICODE",
+        "COMMON_USE"
+      ],
+      "translation_path_root_hash72": "0000000000000000000000000000003v9+9+5zyfL4cDbqiYepfk-AkVylaQ)!Db7wjW48SR",
+      "unsupported_additions": []
+    },
+    {
+      "ambiguous_fields": [],
+      "authority_conferred_by_language": false,
+      "critical_position": "END",
+      "direction": "FORWARD",
+      "equivalent_fields": [
+        "entity",
+        "relation"
+      ],
+      "fidelity_vector": {
+        "ambiguity": "EXACT",
+        "causality": "EXACT",
+        "entity": "EQUIVALENT",
+        "epistemic": "EXACT",
+        "order": "EXACT",
+        "provenance": "PARTIAL",
+        "quantity": "EXACT",
+        "reconstruction": "PARTIAL",
+        "relation": "EQUIVALENT"
+      },
+      "final_status": "CONTEXT_BOUNDED_LOSS",
+      "invariant_snapshot": {
+        "ambiguities": [],
+        "causal_direction": "FORWARD_EXECUTION",
+        "entities": [
+          "A",
+          "B"
+        ],
+        "operator_order": [
+          "A",
+          "B"
+        ],
+        "quantities": [],
+        "relations": [
+          "ORDERED_COMPOSITION"
+        ]
+      },
+      "lost_fields": [],
+      "mutated_fields": [],
+      "pattern_aware": true,
+      "preserved_fields": [
+        "quantity",
+        "order",
+        "causality",
+        "epistemic",
+        "ambiguity"
+      ],
+      "receipt_root_hash72": "0000000000000000000000000000001Lp-0HhrWu1UGR(/tXan2e9>(Tt5L/>7Jwrxf)SxMt",
+      "reconstruction_map": {},
+      "reconstruction_root_hash72": "0000000000000000000000000000002xEeOGXW^h3sKvW(TNjuDsgP076mMAOBnK^>Vr9FY^",
+      "schema": "HHS_LANGUAGE_TRANSLATION_SURVIVAL_RECEIPT_V1",
+      "source_register": "FORMAL_HARMONICODE",
+      "source_root_hash72": "0000000000000000000000000000002f6gQk0u?5YQ6rmQI5R=C9SgsIOzdHSHltyop6!!Lt",
+      "target_register": "COMMON_USE",
+      "temperature": "0.3",
+      "token_window": 256,
+      "translation_path": [
+        "FORMAL_HARMONICODE",
+        "COMMON_USE"
+      ],
+      "translation_path_root_hash72": "0000000000000000000000000000003v9+9+5zyfL4cDbqiYepfk-AkVylaQ)!Db7wjW48SR",
+      "unsupported_additions": []
+    },
+    {
+      "ambiguous_fields": [],
+      "authority_conferred_by_language": false,
+      "critical_position": "START",
+      "direction": "FORWARD",
+      "equivalent_fields": [
+        "entity",
+        "relation"
+      ],
+      "fidelity_vector": {
+        "ambiguity": "EXACT",
+        "causality": "EXACT",
+        "entity": "EQUIVALENT",
+        "epistemic": "EXACT",
+        "order": "EXACT",
+        "provenance": "EXACT",
+        "quantity": "EXACT",
+        "reconstruction": "EXACT",
+        "relation": "EQUIVALENT"
+      },
+      "final_status": "CONTEXT_BOUNDED_LOSS",
+      "invariant_snapshot": {
+        "ambiguities": [],
+        "causal_direction": "FORWARD_EXECUTION",
+        "entities": [
+          "A",
+          "B"
+        ],
+        "operator_order": [
+          "A",
+          "B"
+        ],
+        "quantities": [],
+        "relations": [
+          "ORDERED_COMPOSITION"
+        ]
+      },
+      "lost_fields": [],
+      "mutated_fields": [],
+      "pattern_aware": true,
+      "preserved_fields": [
+        "quantity",
+        "order",
+        "causality",
+        "epistemic",
+        "ambiguity",
+        "provenance",
+        "reconstruction"
+      ],
+      "receipt_root_hash72": "0000000000000000000000000000002GZUsfYjcKv/Kh?^LM0kUK0jbIs>Myyp7y)w6QoaxD",
+      "reconstruction_map": {},
+      "reconstruction_root_hash72": "0000000000000000000000000000002f6gQk0u?5YQ6rmQI5R=C9SgsIOzdHSHltyop6!!Lt",
+      "schema": "HHS_LANGUAGE_TRANSLATION_SURVIVAL_RECEIPT_V1",
+      "source_register": "FORMAL_HARMONICODE",
+      "source_root_hash72": "0000000000000000000000000000002f6gQk0u?5YQ6rmQI5R=C9SgsIOzdHSHltyop6!!Lt",
+      "target_register": "COMMON_USE",
+      "temperature": "0.3",
+      "token_window": 512,
+      "translation_path": [
+        "FORMAL_HARMONICODE",
+        "COMMON_USE"
+      ],
+      "translation_path_root_hash72": "0000000000000000000000000000003v9+9+5zyfL4cDbqiYepfk-AkVylaQ)!Db7wjW48SR",
+      "unsupported_additions": []
+    },
+    {
+      "ambiguous_fields": [],
+      "authority_conferred_by_language": false,
+      "critical_position": "MIDDLE",
+      "direction": "FORWARD",
+      "equivalent_fields": [
+        "entity",
+        "relation"
+      ],
+      "fidelity_vector": {
+        "ambiguity": "EXACT",
+        "causality": "EXACT",
+        "entity": "EQUIVALENT",
+        "epistemic": "EXACT",
+        "order": "PARTIAL",
+        "provenance": "EXACT",
+        "quantity": "EXACT",
+        "reconstruction": "EXACT",
+        "relation": "EQUIVALENT"
+      },
+      "final_status": "CONTEXT_BOUNDED_LOSS",
+      "invariant_snapshot": {
+        "ambiguities": [],
+        "causal_direction": "FORWARD_EXECUTION",
+        "entities": [
+          "A",
+          "B"
+        ],
+        "operator_order": [
+          "A",
+          "B"
+        ],
+        "quantities": [],
+        "relations": [
+          "ORDERED_COMPOSITION"
+        ]
+      },
+      "lost_fields": [],
+      "mutated_fields": [],
+      "pattern_aware": true,
+      "preserved_fields": [
+        "quantity",
+        "causality",
+        "epistemic",
+        "ambiguity",
+        "provenance",
+        "reconstruction"
+      ],
+      "receipt_root_hash72": "00000000000000000000000000000036DPnOv7pQ(zaIcu82pdQbCvarhKI7!X?5WTH>ALt=",
+      "reconstruction_map": {},
+      "reconstruction_root_hash72": "0000000000000000000000000000002f6gQk0u?5YQ6rmQI5R=C9SgsIOzdHSHltyop6!!Lt",
+      "schema": "HHS_LANGUAGE_TRANSLATION_SURVIVAL_RECEIPT_V1",
+      "source_register": "FORMAL_HARMONICODE",
+      "source_root_hash72": "0000000000000000000000000000002f6gQk0u?5YQ6rmQI5R=C9SgsIOzdHSHltyop6!!Lt",
+      "target_register": "COMMON_USE",
+      "temperature": "0.3",
+      "token_window": 512,
+      "translation_path": [
+        "FORMAL_HARMONICODE",
+        "COMMON_USE"
+      ],
+      "translation_path_root_hash72": "0000000000000000000000000000003v9+9+5zyfL4cDbqiYepfk-AkVylaQ)!Db7wjW48SR",
+      "unsupported_additions": []
+    },
+    {
+      "ambiguous_fields": [],
+      "authority_conferred_by_language": false,
+      "critical_position": "END",
+      "direction": "FORWARD",
+      "equivalent_fields": [
+        "entity",
+        "relation"
+      ],
+      "fidelity_vector": {
+        "ambiguity": "EXACT",
+        "causality": "EXACT",
+        "entity": "EQUIVALENT",
+        "epistemic": "EXACT",
+        "order": "EXACT",
+        "provenance": "EXACT",
+        "quantity": "EXACT",
+        "reconstruction": "EXACT",
+        "relation": "EQUIVALENT"
+      },
+      "final_status": "CONTEXT_BOUNDED_LOSS",
+      "invariant_snapshot": {
+        "ambiguities": [],
+        "causal_direction": "FORWARD_EXECUTION",
+        "entities": [
+          "A",
+          "B"
+        ],
+        "operator_order": [
+          "A",
+          "B"
+        ],
+        "quantities": [],
+        "relations": [
+          "ORDERED_COMPOSITION"
+        ]
+      },
+      "lost_fields": [],
+      "mutated_fields": [],
+      "pattern_aware": true,
+      "preserved_fields": [
+        "quantity",
+        "order",
+        "causality",
+        "epistemic",
+        "ambiguity",
+        "provenance",
+        "reconstruction"
+      ],
+      "receipt_root_hash72": "0000000000000000000000000000000QNsLYLShK?0lWKKGsOgxtYkvPTKtgcbB4TQr20/)^",
+      "reconstruction_map": {},
+      "reconstruction_root_hash72": "0000000000000000000000000000002f6gQk0u?5YQ6rmQI5R=C9SgsIOzdHSHltyop6!!Lt",
+      "schema": "HHS_LANGUAGE_TRANSLATION_SURVIVAL_RECEIPT_V1",
+      "source_register": "FORMAL_HARMONICODE",
+      "source_root_hash72": "0000000000000000000000000000002f6gQk0u?5YQ6rmQI5R=C9SgsIOzdHSHltyop6!!Lt",
+      "target_register": "COMMON_USE",
+      "temperature": "0.3",
+      "token_window": 512,
+      "translation_path": [
+        "FORMAL_HARMONICODE",
+        "COMMON_USE"
+      ],
+      "translation_path_root_hash72": "0000000000000000000000000000003v9+9+5zyfL4cDbqiYepfk-AkVylaQ)!Db7wjW48SR",
+      "unsupported_additions": []
+    },
+    {
+      "ambiguous_fields": [],
+      "authority_conferred_by_language": false,
+      "critical_position": "START",
+      "direction": "FORWARD",
+      "equivalent_fields": [
+        "entity",
+        "relation"
+      ],
+      "fidelity_vector": {
+        "ambiguity": "EXACT",
+        "causality": "EXACT",
+        "entity": "EQUIVALENT",
+        "epistemic": "EXACT",
+        "order": "EXACT",
+        "provenance": "EXACT",
+        "quantity": "EXACT",
+        "reconstruction": "EXACT",
+        "relation": "EQUIVALENT"
+      },
+      "final_status": "EQUIVALENT_SEMANTIC_SURVIVAL",
+      "invariant_snapshot": {
+        "ambiguities": [],
+        "causal_direction": "FORWARD_EXECUTION",
+        "entities": [
+          "A",
+          "B"
+        ],
+        "operator_order": [
+          "A",
+          "B"
+        ],
+        "quantities": [],
+        "relations": [
+          "ORDERED_COMPOSITION"
+        ]
+      },
+      "lost_fields": [],
+      "mutated_fields": [],
+      "pattern_aware": true,
+      "preserved_fields": [
+        "quantity",
+        "order",
+        "causality",
+        "epistemic",
+        "ambiguity",
+        "provenance",
+        "reconstruction"
+      ],
+      "receipt_root_hash72": "0000000000000000000000000000002GToTf/iKsRY?=bF9nwRM/qB7MKww^k)StusAGIULi",
+      "reconstruction_map": {},
+      "reconstruction_root_hash72": "0000000000000000000000000000002f6gQk0u?5YQ6rmQI5R=C9SgsIOzdHSHltyop6!!Lt",
+      "schema": "HHS_LANGUAGE_TRANSLATION_SURVIVAL_RECEIPT_V1",
+      "source_register": "FORMAL_HARMONICODE",
+      "source_root_hash72": "0000000000000000000000000000002f6gQk0u?5YQ6rmQI5R=C9SgsIOzdHSHltyop6!!Lt",
+      "target_register": "COMMON_USE",
+      "temperature": "0.3",
+      "token_window": 1024,
+      "translation_path": [
+        "FORMAL_HARMONICODE",
+        "COMMON_USE"
+      ],
+      "translation_path_root_hash72": "0000000000000000000000000000003v9+9+5zyfL4cDbqiYepfk-AkVylaQ)!Db7wjW48SR",
+      "unsupported_additions": []
+    },
+    {
+      "ambiguous_fields": [],
+      "authority_conferred_by_language": false,
+      "critical_position": "MIDDLE",
+      "direction": "FORWARD",
+      "equivalent_fields": [
+        "entity",
+        "relation"
+      ],
+      "fidelity_vector": {
+        "ambiguity": "EXACT",
+        "causality": "EXACT",
+        "entity": "EQUIVALENT",
+        "epistemic": "EXACT",
+        "order": "EXACT",
+        "provenance": "EXACT",
+        "quantity": "EXACT",
+        "reconstruction": "EXACT",
+        "relation": "EQUIVALENT"
+      },
+      "final_status": "EQUIVALENT_SEMANTIC_SURVIVAL",
+      "invariant_snapshot": {
+        "ambiguities": [],
+        "causal_direction": "FORWARD_EXECUTION",
+        "entities": [
+          "A",
+          "B"
+        ],
+        "operator_order": [
+          "A",
+          "B"
+        ],
+        "quantities": [],
+        "relations": [
+          "ORDERED_COMPOSITION"
+        ]
+      },
+      "lost_fields": [],
+      "mutated_fields": [],
+      "pattern_aware": true,
+      "preserved_fields": [
+        "quantity",
+        "order",
+        "causality",
+        "epistemic",
+        "ambiguity",
+        "provenance",
+        "reconstruction"
+      ],
+      "receipt_root_hash72": "0000000000000000000000000000001(>5wA+Lo59Z8J^5iQ)B=JbtfTU2e*^d2Tnd5LU^Jk",
+      "reconstruction_map": {},
+      "reconstruction_root_hash72": "0000000000000000000000000000002f6gQk0u?5YQ6rmQI5R=C9SgsIOzdHSHltyop6!!Lt",
+      "schema": "HHS_LANGUAGE_TRANSLATION_SURVIVAL_RECEIPT_V1",
+      "source_register": "FORMAL_HARMONICODE",
+      "source_root_hash72": "0000000000000000000000000000002f6gQk0u?5YQ6rmQI5R=C9SgsIOzdHSHltyop6!!Lt",
+      "target_register": "COMMON_USE",
+      "temperature": "0.3",
+      "token_window": 1024,
+      "translation_path": [
+        "FORMAL_HARMONICODE",
+        "COMMON_USE"
+      ],
+      "translation_path_root_hash72": "0000000000000000000000000000003v9+9+5zyfL4cDbqiYepfk-AkVylaQ)!Db7wjW48SR",
+      "unsupported_additions": []
+    },
+    {
+      "ambiguous_fields": [],
+      "authority_conferred_by_language": false,
+      "critical_position": "END",
+      "direction": "FORWARD",
+      "equivalent_fields": [
+        "entity",
+        "relation"
+      ],
+      "fidelity_vector": {
+        "ambiguity": "EXACT",
+        "causality": "EXACT",
+        "entity": "EQUIVALENT",
+        "epistemic": "EXACT",
+        "order": "EXACT",
+        "provenance": "EXACT",
+        "quantity": "EXACT",
+        "reconstruction": "EXACT",
+        "relation": "EQUIVALENT"
+      },
+      "final_status": "EQUIVALENT_SEMANTIC_SURVIVAL",
+      "invariant_snapshot": {
+        "ambiguities": [],
+        "causal_direction": "FORWARD_EXECUTION",
+        "entities": [
+          "A",
+          "B"
+        ],
+        "operator_order": [
+          "A",
+          "B"
+        ],
+        "quantities": [],
+        "relations": [
+          "ORDERED_COMPOSITION"
+        ]
+      },
+      "lost_fields": [],
+      "mutated_fields": [],
+      "pattern_aware": true,
+      "preserved_fields": [
+        "quantity",
+        "order",
+        "causality",
+        "epistemic",
+        "ambiguity",
+        "provenance",
+        "reconstruction"
+      ],
+      "receipt_root_hash72": "0000000000000000000000000000004eOi(g3!aaWxycq-ZkvQnTCJN>KIe+SCs!hN79VwiT",
+      "reconstruction_map": {},
+      "reconstruction_root_hash72": "0000000000000000000000000000002f6gQk0u?5YQ6rmQI5R=C9SgsIOzdHSHltyop6!!Lt",
+      "schema": "HHS_LANGUAGE_TRANSLATION_SURVIVAL_RECEIPT_V1",
+      "source_register": "FORMAL_HARMONICODE",
+      "source_root_hash72": "0000000000000000000000000000002f6gQk0u?5YQ6rmQI5R=C9SgsIOzdHSHltyop6!!Lt",
+      "target_register": "COMMON_USE",
+      "temperature": "0.3",
+      "token_window": 1024,
+      "translation_path": [
+        "FORMAL_HARMONICODE",
+        "COMMON_USE"
+      ],
+      "translation_path_root_hash72": "0000000000000000000000000000003v9+9+5zyfL4cDbqiYepfk-AkVylaQ)!Db7wjW48SR",
+      "unsupported_additions": []
+    },
+    {
+      "ambiguous_fields": [],
+      "authority_conferred_by_language": false,
+      "critical_position": "START",
+      "direction": "FORWARD",
+      "equivalent_fields": [
+        "entity",
+        "relation"
+      ],
+      "fidelity_vector": {
+        "ambiguity": "EXACT",
+        "causality": "EXACT",
+        "entity": "EQUIVALENT",
+        "epistemic": "EXACT",
+        "order": "EXACT",
+        "provenance": "EXACT",
+        "quantity": "EXACT",
+        "reconstruction": "EXACT",
+        "relation": "EQUIVALENT"
+      },
+      "final_status": "EQUIVALENT_SEMANTIC_SURVIVAL",
+      "invariant_snapshot": {
+        "ambiguities": [],
+        "causal_direction": "FORWARD_EXECUTION",
+        "entities": [
+          "A",
+          "B"
+        ],
+        "operator_order": [
+          "A",
+          "B"
+        ],
+        "quantities": [],
+        "relations": [
+          "ORDERED_COMPOSITION"
+        ]
+      },
+      "lost_fields": [],
+      "mutated_fields": [],
+      "pattern_aware": true,
+      "preserved_fields": [
+        "quantity",
+        "order",
+        "causality",
+        "epistemic",
+        "ambiguity",
+        "provenance",
+        "reconstruction"
+      ],
+      "receipt_root_hash72": "0000000000000000000000000000002rrhQty5>0q9sHhh>n6uo53k6=IFDZcr!UlY7>TF?W",
+      "reconstruction_map": {},
+      "reconstruction_root_hash72": "0000000000000000000000000000002f6gQk0u?5YQ6rmQI5R=C9SgsIOzdHSHltyop6!!Lt",
+      "schema": "HHS_LANGUAGE_TRANSLATION_SURVIVAL_RECEIPT_V1",
+      "source_register": "FORMAL_HARMONICODE",
+      "source_root_hash72": "0000000000000000000000000000002f6gQk0u?5YQ6rmQI5R=C9SgsIOzdHSHltyop6!!Lt",
+      "target_register": "COMMON_USE",
+      "temperature": "0.3",
+      "token_window": 2048,
+      "translation_path": [
+        "FORMAL_HARMONICODE",
+        "COMMON_USE"
+      ],
+      "translation_path_root_hash72": "0000000000000000000000000000003v9+9+5zyfL4cDbqiYepfk-AkVylaQ)!Db7wjW48SR",
+      "unsupported_additions": []
+    },
+    {
+      "ambiguous_fields": [],
+      "authority_conferred_by_language": false,
+      "critical_position": "MIDDLE",
+      "direction": "FORWARD",
+      "equivalent_fields": [
+        "entity",
+        "relation"
+      ],
+      "fidelity_vector": {
+        "ambiguity": "EXACT",
+        "causality": "EXACT",
+        "entity": "EQUIVALENT",
+        "epistemic": "EXACT",
+        "order": "EXACT",
+        "provenance": "EXACT",
+        "quantity": "EXACT",
+        "reconstruction": "EXACT",
+        "relation": "EQUIVALENT"
+      },
+      "final_status": "EQUIVALENT_SEMANTIC_SURVIVAL",
+      "invariant_snapshot": {
+        "ambiguities": [],
+        "causal_direction": "FORWARD_EXECUTION",
+        "entities": [
+          "A",
+          "B"
+        ],
+        "operator_order": [
+          "A",
+          "B"
+        ],
+        "quantities": [],
+        "relations": [
+          "ORDERED_COMPOSITION"
+        ]
+      },
+      "lost_fields": [],
+      "mutated_fields": [],
+      "pattern_aware": true,
+      "preserved_fields": [
+        "quantity",
+        "order",
+        "causality",
+        "epistemic",
+        "ambiguity",
+        "provenance",
+        "reconstruction"
+      ],
+      "receipt_root_hash72": "0000000000000000000000000000000ZMjqa4>IdYj7KagJL4tL=/Y)5b*De(5cYWlTHvDrv",
+      "reconstruction_map": {},
+      "reconstruction_root_hash72": "0000000000000000000000000000002f6gQk0u?5YQ6rmQI5R=C9SgsIOzdHSHltyop6!!Lt",
+      "schema": "HHS_LANGUAGE_TRANSLATION_SURVIVAL_RECEIPT_V1",
+      "source_register": "FORMAL_HARMONICODE",
+      "source_root_hash72": "0000000000000000000000000000002f6gQk0u?5YQ6rmQI5R=C9SgsIOzdHSHltyop6!!Lt",
+      "target_register": "COMMON_USE",
+      "temperature": "0.3",
+      "token_window": 2048,
+      "translation_path": [
+        "FORMAL_HARMONICODE",
+        "COMMON_USE"
+      ],
+      "translation_path_root_hash72": "0000000000000000000000000000003v9+9+5zyfL4cDbqiYepfk-AkVylaQ)!Db7wjW48SR",
+      "unsupported_additions": []
+    },
+    {
+      "ambiguous_fields": [],
+      "authority_conferred_by_language": false,
+      "critical_position": "END",
+      "direction": "FORWARD",
+      "equivalent_fields": [
+        "entity",
+        "relation"
+      ],
+      "fidelity_vector": {
+        "ambiguity": "EXACT",
+        "causality": "EXACT",
+        "entity": "EQUIVALENT",
+        "epistemic": "EXACT",
+        "order": "EXACT",
+        "provenance": "EXACT",
+        "quantity": "EXACT",
+        "reconstruction": "EXACT",
+        "relation": "EQUIVALENT"
+      },
+      "final_status": "EQUIVALENT_SEMANTIC_SURVIVAL",
+      "invariant_snapshot": {
+        "ambiguities": [],
+        "causal_direction": "FORWARD_EXECUTION",
+        "entities": [
+          "A",
+          "B"
+        ],
+        "operator_order": [
+          "A",
+          "B"
+        ],
+        "quantities": [],
+        "relations": [
+          "ORDERED_COMPOSITION"
+        ]
+      },
+      "lost_fields": [],
+      "mutated_fields": [],
+      "pattern_aware": true,
+      "preserved_fields": [
+        "quantity",
+        "order",
+        "causality",
+        "epistemic",
+        "ambiguity",
+        "provenance",
+        "reconstruction"
+      ],
+      "receipt_root_hash72": "0000000000000000000000000000000nlT1T4cIc7wPge(IEGwMJ9JezDsy1zMo5BUcoRCLW",
+      "reconstruction_map": {},
+      "reconstruction_root_hash72": "0000000000000000000000000000002f6gQk0u?5YQ6rmQI5R=C9SgsIOzdHSHltyop6!!Lt",
+      "schema": "HHS_LANGUAGE_TRANSLATION_SURVIVAL_RECEIPT_V1",
+      "source_register": "FORMAL_HARMONICODE",
+      "source_root_hash72": "0000000000000000000000000000002f6gQk0u?5YQ6rmQI5R=C9SgsIOzdHSHltyop6!!Lt",
+      "target_register": "COMMON_USE",
+      "temperature": "0.3",
+      "token_window": 2048,
+      "translation_path": [
+        "FORMAL_HARMONICODE",
+        "COMMON_USE"
+      ],
+      "translation_path_root_hash72": "0000000000000000000000000000003v9+9+5zyfL4cDbqiYepfk-AkVylaQ)!Db7wjW48SR",
+      "unsupported_additions": []
+    },
+    {
+      "ambiguous_fields": [],
+      "authority_conferred_by_language": false,
+      "critical_position": "START",
+      "direction": "FORWARD",
+      "equivalent_fields": [
+        "entity",
+        "relation"
+      ],
+      "fidelity_vector": {
+        "ambiguity": "EXACT",
+        "causality": "EXACT",
+        "entity": "EQUIVALENT",
+        "epistemic": "EXACT",
+        "order": "EXACT",
+        "provenance": "EXACT",
+        "quantity": "EXACT",
+        "reconstruction": "EXACT",
+        "relation": "EQUIVALENT"
+      },
+      "final_status": "EQUIVALENT_SEMANTIC_SURVIVAL",
+      "invariant_snapshot": {
+        "ambiguities": [],
+        "causal_direction": "FORWARD_EXECUTION",
+        "entities": [
+          "A",
+          "B"
+        ],
+        "operator_order": [
+          "A",
+          "B"
+        ],
+        "quantities": [],
+        "relations": [
+          "ORDERED_COMPOSITION"
+        ]
+      },
+      "lost_fields": [],
+      "mutated_fields": [],
+      "pattern_aware": true,
+      "preserved_fields": [
+        "quantity",
+        "order",
+        "causality",
+        "epistemic",
+        "ambiguity",
+        "provenance",
+        "reconstruction"
+      ],
+      "receipt_root_hash72": "0000000000000000000000000000000k4hmC+ki?-Z!>s74tR-9*e?XO!2uVn>1niN-/I>Qw",
+      "reconstruction_map": {},
+      "reconstruction_root_hash72": "0000000000000000000000000000002f6gQk0u?5YQ6rmQI5R=C9SgsIOzdHSHltyop6!!Lt",
+      "schema": "HHS_LANGUAGE_TRANSLATION_SURVIVAL_RECEIPT_V1",
+      "source_register": "FORMAL_HARMONICODE",
+      "source_root_hash72": "0000000000000000000000000000002f6gQk0u?5YQ6rmQI5R=C9SgsIOzdHSHltyop6!!Lt",
+      "target_register": "COMMON_USE",
+      "temperature": "0.3",
+      "token_window": 4096,
+      "translation_path": [
+        "FORMAL_HARMONICODE",
+        "COMMON_USE"
+      ],
+      "translation_path_root_hash72": "0000000000000000000000000000003v9+9+5zyfL4cDbqiYepfk-AkVylaQ)!Db7wjW48SR",
+      "unsupported_additions": []
+    },
+    {
+      "ambiguous_fields": [],
+      "authority_conferred_by_language": false,
+      "critical_position": "MIDDLE",
+      "direction": "FORWARD",
+      "equivalent_fields": [
+        "entity",
+        "relation"
+      ],
+      "fidelity_vector": {
+        "ambiguity": "EXACT",
+        "causality": "EXACT",
+        "entity": "EQUIVALENT",
+        "epistemic": "EXACT",
+        "order": "EXACT",
+        "provenance": "EXACT",
+        "quantity": "EXACT",
+        "reconstruction": "EXACT",
+        "relation": "EQUIVALENT"
+      },
+      "final_status": "EQUIVALENT_SEMANTIC_SURVIVAL",
+      "invariant_snapshot": {
+        "ambiguities": [],
+        "causal_direction": "FORWARD_EXECUTION",
+        "entities": [
+          "A",
+          "B"
+        ],
+        "operator_order": [
+          "A",
+          "B"
+        ],
+        "quantities": [],
+        "relations": [
+          "ORDERED_COMPOSITION"
+        ]
+      },
+      "lost_fields": [],
+      "mutated_fields": [],
+      "pattern_aware": true,
+      "preserved_fields": [
+        "quantity",
+        "order",
+        "causality",
+        "epistemic",
+        "ambiguity",
+        "provenance",
+        "reconstruction"
+      ],
+      "receipt_root_hash72": "0000000000000000000000000000004h3oA=ueOIAWP/cx>Nk5teZY/Ey!R*HHAydng4i-z0",
+      "reconstruction_map": {},
+      "reconstruction_root_hash72": "0000000000000000000000000000002f6gQk0u?5YQ6rmQI5R=C9SgsIOzdHSHltyop6!!Lt",
+      "schema": "HHS_LANGUAGE_TRANSLATION_SURVIVAL_RECEIPT_V1",
+      "source_register": "FORMAL_HARMONICODE",
+      "source_root_hash72": "0000000000000000000000000000002f6gQk0u?5YQ6rmQI5R=C9SgsIOzdHSHltyop6!!Lt",
+      "target_register": "COMMON_USE",
+      "temperature": "0.3",
+      "token_window": 4096,
+      "translation_path": [
+        "FORMAL_HARMONICODE",
+        "COMMON_USE"
+      ],
+      "translation_path_root_hash72": "0000000000000000000000000000003v9+9+5zyfL4cDbqiYepfk-AkVylaQ)!Db7wjW48SR",
+      "unsupported_additions": []
+    },
+    {
+      "ambiguous_fields": [],
+      "authority_conferred_by_language": false,
+      "critical_position": "END",
+      "direction": "FORWARD",
+      "equivalent_fields": [
+        "entity",
+        "relation"
+      ],
+      "fidelity_vector": {
+        "ambiguity": "EXACT",
+        "causality": "EXACT",
+        "entity": "EQUIVALENT",
+        "epistemic": "EXACT",
+        "order": "EXACT",
+        "provenance": "EXACT",
+        "quantity": "EXACT",
+        "reconstruction": "EXACT",
+        "relation": "EQUIVALENT"
+      },
+      "final_status": "EQUIVALENT_SEMANTIC_SURVIVAL",
+      "invariant_snapshot": {
+        "ambiguities": [],
+        "causal_direction": "FORWARD_EXECUTION",
+        "entities": [
+          "A",
+          "B"
+        ],
+        "operator_order": [
+          "A",
+          "B"
+        ],
+        "quantities": [],
+        "relations": [
+          "ORDERED_COMPOSITION"
+        ]
+      },
+      "lost_fields": [],
+      "mutated_fields": [],
+      "pattern_aware": true,
+      "preserved_fields": [
+        "quantity",
+        "order",
+        "causality",
+        "epistemic",
+        "ambiguity",
+        "provenance",
+        "reconstruction"
+      ],
+      "receipt_root_hash72": "0000000000000000000000000000002PDTIeoOeW3Jz((22GTL*)=kBe(vTRP2ZJrlaL4Ync",
+      "reconstruction_map": {},
+      "reconstruction_root_hash72": "0000000000000000000000000000002f6gQk0u?5YQ6rmQI5R=C9SgsIOzdHSHltyop6!!Lt",
+      "schema": "HHS_LANGUAGE_TRANSLATION_SURVIVAL_RECEIPT_V1",
+      "source_register": "FORMAL_HARMONICODE",
+      "source_root_hash72": "0000000000000000000000000000002f6gQk0u?5YQ6rmQI5R=C9SgsIOzdHSHltyop6!!Lt",
+      "target_register": "COMMON_USE",
+      "temperature": "0.3",
+      "token_window": 4096,
+      "translation_path": [
+        "FORMAL_HARMONICODE",
+        "COMMON_USE"
+      ],
+      "translation_path_root_hash72": "0000000000000000000000000000003v9+9+5zyfL4cDbqiYepfk-AkVylaQ)!Db7wjW48SR",
+      "unsupported_additions": []
+    },
+    {
+      "ambiguous_fields": [],
+      "authority_conferred_by_language": false,
+      "critical_position": "START",
+      "direction": "FORWARD",
+      "equivalent_fields": [
+        "entity",
+        "relation"
+      ],
+      "fidelity_vector": {
+        "ambiguity": "EXACT",
+        "causality": "EXACT",
+        "entity": "EQUIVALENT",
+        "epistemic": "EXACT",
+        "order": "EXACT",
+        "provenance": "EXACT",
+        "quantity": "EXACT",
+        "reconstruction": "EXACT",
+        "relation": "EQUIVALENT"
+      },
+      "final_status": "EQUIVALENT_SEMANTIC_SURVIVAL",
+      "invariant_snapshot": {
+        "ambiguities": [],
+        "causal_direction": "FORWARD_EXECUTION",
+        "entities": [
+          "A",
+          "B"
+        ],
+        "operator_order": [
+          "A",
+          "B"
+        ],
+        "quantities": [],
+        "relations": [
+          "ORDERED_COMPOSITION"
+        ]
+      },
+      "lost_fields": [],
+      "mutated_fields": [],
+      "pattern_aware": true,
+      "preserved_fields": [
+        "quantity",
+        "order",
+        "causality",
+        "epistemic",
+        "ambiguity",
+        "provenance",
+        "reconstruction"
+      ],
+      "receipt_root_hash72": "0000000000000000000000000000002vxmE?sU9bGPDP9Cr2j)MlWfz2GR+iI4svuyl)YoHv",
+      "reconstruction_map": {},
+      "reconstruction_root_hash72": "0000000000000000000000000000002f6gQk0u?5YQ6rmQI5R=C9SgsIOzdHSHltyop6!!Lt",
+      "schema": "HHS_LANGUAGE_TRANSLATION_SURVIVAL_RECEIPT_V1",
+      "source_register": "FORMAL_HARMONICODE",
+      "source_root_hash72": "0000000000000000000000000000002f6gQk0u?5YQ6rmQI5R=C9SgsIOzdHSHltyop6!!Lt",
+      "target_register": "COMMON_USE",
+      "temperature": "0.3",
+      "token_window": 8192,
+      "translation_path": [
+        "FORMAL_HARMONICODE",
+        "COMMON_USE"
+      ],
+      "translation_path_root_hash72": "0000000000000000000000000000003v9+9+5zyfL4cDbqiYepfk-AkVylaQ)!Db7wjW48SR",
+      "unsupported_additions": []
+    },
+    {
+      "ambiguous_fields": [],
+      "authority_conferred_by_language": false,
+      "critical_position": "MIDDLE",
+      "direction": "FORWARD",
+      "equivalent_fields": [
+        "entity",
+        "relation"
+      ],
+      "fidelity_vector": {
+        "ambiguity": "EXACT",
+        "causality": "EXACT",
+        "entity": "EQUIVALENT",
+        "epistemic": "EXACT",
+        "order": "EXACT",
+        "provenance": "EXACT",
+        "quantity": "EXACT",
+        "reconstruction": "EXACT",
+        "relation": "EQUIVALENT"
+      },
+      "final_status": "EQUIVALENT_SEMANTIC_SURVIVAL",
+      "invariant_snapshot": {
+        "ambiguities": [],
+        "causal_direction": "FORWARD_EXECUTION",
+        "entities": [
+          "A",
+          "B"
+        ],
+        "operator_order": [
+          "A",
+          "B"
+        ],
+        "quantities": [],
+        "relations": [
+          "ORDERED_COMPOSITION"
+        ]
+      },
+      "lost_fields": [],
+      "mutated_fields": [],
+      "pattern_aware": true,
+      "preserved_fields": [
+        "quantity",
+        "order",
+        "causality",
+        "epistemic",
+        "ambiguity",
+        "provenance",
+        "reconstruction"
+      ],
+      "receipt_root_hash72": "0000000000000000000000000000003zwXgKblsQ5i->*qQB1XF=jdgOGKmwbcx)QzDMO0w>",
+      "reconstruction_map": {},
+      "reconstruction_root_hash72": "0000000000000000000000000000002f6gQk0u?5YQ6rmQI5R=C9SgsIOzdHSHltyop6!!Lt",
+      "schema": "HHS_LANGUAGE_TRANSLATION_SURVIVAL_RECEIPT_V1",
+      "source_register": "FORMAL_HARMONICODE",
+      "source_root_hash72": "0000000000000000000000000000002f6gQk0u?5YQ6rmQI5R=C9SgsIOzdHSHltyop6!!Lt",
+      "target_register": "COMMON_USE",
+      "temperature": "0.3",
+      "token_window": 8192,
+      "translation_path": [
+        "FORMAL_HARMONICODE",
+        "COMMON_USE"
+      ],
+      "translation_path_root_hash72": "0000000000000000000000000000003v9+9+5zyfL4cDbqiYepfk-AkVylaQ)!Db7wjW48SR",
+      "unsupported_additions": []
+    },
+    {
+      "ambiguous_fields": [],
+      "authority_conferred_by_language": false,
+      "critical_position": "END",
+      "direction": "FORWARD",
+      "equivalent_fields": [
+        "entity",
+        "relation"
+      ],
+      "fidelity_vector": {
+        "ambiguity": "EXACT",
+        "causality": "EXACT",
+        "entity": "EQUIVALENT",
+        "epistemic": "EXACT",
+        "order": "EXACT",
+        "provenance": "EXACT",
+        "quantity": "EXACT",
+        "reconstruction": "EXACT",
+        "relation": "EQUIVALENT"
+      },
+      "final_status": "EQUIVALENT_SEMANTIC_SURVIVAL",
+      "invariant_snapshot": {
+        "ambiguities": [],
+        "causal_direction": "FORWARD_EXECUTION",
+        "entities": [
+          "A",
+          "B"
+        ],
+        "operator_order": [
+          "A",
+          "B"
+        ],
+        "quantities": [],
+        "relations": [
+          "ORDERED_COMPOSITION"
+        ]
+      },
+      "lost_fields": [],
+      "mutated_fields": [],
+      "pattern_aware": true,
+      "preserved_fields": [
+        "quantity",
+        "order",
+        "causality",
+        "epistemic",
+        "ambiguity",
+        "provenance",
+        "reconstruction"
+      ],
+      "receipt_root_hash72": "0000000000000000000000000000001daW7VmuwA=qdKv+hTMTn8cTKw6*e/Dw5o8xPmqS7Q",
+      "reconstruction_map": {},
+      "reconstruction_root_hash72": "0000000000000000000000000000002f6gQk0u?5YQ6rmQI5R=C9SgsIOzdHSHltyop6!!Lt",
+      "schema": "HHS_LANGUAGE_TRANSLATION_SURVIVAL_RECEIPT_V1",
+      "source_register": "FORMAL_HARMONICODE",
+      "source_root_hash72": "0000000000000000000000000000002f6gQk0u?5YQ6rmQI5R=C9SgsIOzdHSHltyop6!!Lt",
+      "target_register": "COMMON_USE",
+      "temperature": "0.3",
+      "token_window": 8192,
+      "translation_path": [
+        "FORMAL_HARMONICODE",
+        "COMMON_USE"
+      ],
+      "translation_path_root_hash72": "0000000000000000000000000000003v9+9+5zyfL4cDbqiYepfk-AkVylaQ)!Db7wjW48SR",
+      "unsupported_additions": []
+    },
+    {
+      "ambiguous_fields": [],
+      "authority_conferred_by_language": false,
+      "critical_position": "START",
+      "direction": "FORWARD",
+      "equivalent_fields": [
+        "entity",
+        "relation"
+      ],
+      "fidelity_vector": {
+        "ambiguity": "EXACT",
+        "causality": "EXACT",
+        "entity": "EQUIVALENT",
+        "epistemic": "EXACT",
+        "order": "EXACT",
+        "provenance": "EXACT",
+        "quantity": "EXACT",
+        "reconstruction": "EXACT",
+        "relation": "EQUIVALENT"
+      },
+      "final_status": "EQUIVALENT_SEMANTIC_SURVIVAL",
+      "invariant_snapshot": {
+        "ambiguities": [],
+        "causal_direction": "FORWARD_EXECUTION",
+        "entities": [
+          "A",
+          "B"
+        ],
+        "operator_order": [
+          "A",
+          "B"
+        ],
+        "quantities": [],
+        "relations": [
+          "ORDERED_COMPOSITION"
+        ]
+      },
+      "lost_fields": [],
+      "mutated_fields": [],
+      "pattern_aware": true,
+      "preserved_fields": [
+        "quantity",
+        "order",
+        "causality",
+        "epistemic",
+        "ambiguity",
+        "provenance",
+        "reconstruction"
+      ],
+      "receipt_root_hash72": "0000000000000000000000000000001lEBvyXSI09ewVl=?2HlV-KiMpER^84y^JisI1QD1e",
+      "reconstruction_map": {},
+      "reconstruction_root_hash72": "0000000000000000000000000000002f6gQk0u?5YQ6rmQI5R=C9SgsIOzdHSHltyop6!!Lt",
+      "schema": "HHS_LANGUAGE_TRANSLATION_SURVIVAL_RECEIPT_V1",
+      "source_register": "FORMAL_HARMONICODE",
+      "source_root_hash72": "0000000000000000000000000000002f6gQk0u?5YQ6rmQI5R=C9SgsIOzdHSHltyop6!!Lt",
+      "target_register": "COMMON_USE",
+      "temperature": "0.3",
+      "token_window": 16384,
+      "translation_path": [
+        "FORMAL_HARMONICODE",
+        "COMMON_USE"
+      ],
+      "translation_path_root_hash72": "0000000000000000000000000000003v9+9+5zyfL4cDbqiYepfk-AkVylaQ)!Db7wjW48SR",
+      "unsupported_additions": []
+    },
+    {
+      "ambiguous_fields": [],
+      "authority_conferred_by_language": false,
+      "critical_position": "MIDDLE",
+      "direction": "FORWARD",
+      "equivalent_fields": [
+        "entity",
+        "relation"
+      ],
+      "fidelity_vector": {
+        "ambiguity": "EXACT",
+        "causality": "EXACT",
+        "entity": "EQUIVALENT",
+        "epistemic": "EXACT",
+        "order": "EXACT",
+        "provenance": "EXACT",
+        "quantity": "EXACT",
+        "reconstruction": "EXACT",
+        "relation": "EQUIVALENT"
+      },
+      "final_status": "EQUIVALENT_SEMANTIC_SURVIVAL",
+      "invariant_snapshot": {
+        "ambiguities": [],
+        "causal_direction": "FORWARD_EXECUTION",
+        "entities": [
+          "A",
+          "B"
+        ],
+        "operator_order": [
+          "A",
+          "B"
+        ],
+        "quantities": [],
+        "relations": [
+          "ORDERED_COMPOSITION"
+        ]
+      },
+      "lost_fields": [],
+      "mutated_fields": [],
+      "pattern_aware": true,
+      "preserved_fields": [
+        "quantity",
+        "order",
+        "causality",
+        "epistemic",
+        "ambiguity",
+        "provenance",
+        "reconstruction"
+      ],
+      "receipt_root_hash72": "0000000000000000000000000000001wqspn/12QvOz-c+2BqdC16Ai7*9ESuytTEDB!rLto",
+      "reconstruction_map": {},
+      "reconstruction_root_hash72": "0000000000000000000000000000002f6gQk0u?5YQ6rmQI5R=C9SgsIOzdHSHltyop6!!Lt",
+      "schema": "HHS_LANGUAGE_TRANSLATION_SURVIVAL_RECEIPT_V1",
+      "source_register": "FORMAL_HARMONICODE",
+      "source_root_hash72": "0000000000000000000000000000002f6gQk0u?5YQ6rmQI5R=C9SgsIOzdHSHltyop6!!Lt",
+      "target_register": "COMMON_USE",
+      "temperature": "0.3",
+      "token_window": 16384,
+      "translation_path": [
+        "FORMAL_HARMONICODE",
+        "COMMON_USE"
+      ],
+      "translation_path_root_hash72": "0000000000000000000000000000003v9+9+5zyfL4cDbqiYepfk-AkVylaQ)!Db7wjW48SR",
+      "unsupported_additions": []
+    },
+    {
+      "ambiguous_fields": [],
+      "authority_conferred_by_language": false,
+      "critical_position": "END",
+      "direction": "FORWARD",
+      "equivalent_fields": [
+        "entity",
+        "relation"
+      ],
+      "fidelity_vector": {
+        "ambiguity": "EXACT",
+        "causality": "EXACT",
+        "entity": "EQUIVALENT",
+        "epistemic": "EXACT",
+        "order": "EXACT",
+        "provenance": "EXACT",
+        "quantity": "EXACT",
+        "reconstruction": "EXACT",
+        "relation": "EQUIVALENT"
+      },
+      "final_status": "EQUIVALENT_SEMANTIC_SURVIVAL",
+      "invariant_snapshot": {
+        "ambiguities": [],
+        "causal_direction": "FORWARD_EXECUTION",
+        "entities": [
+          "A",
+          "B"
+        ],
+        "operator_order": [
+          "A",
+          "B"
+        ],
+        "quantities": [],
+        "relations": [
+          "ORDERED_COMPOSITION"
+        ]
+      },
+      "lost_fields": [],
+      "mutated_fields": [],
+      "pattern_aware": true,
+      "preserved_fields": [
+        "quantity",
+        "order",
+        "causality",
+        "epistemic",
+        "ambiguity",
+        "provenance",
+        "reconstruction"
+      ],
+      "receipt_root_hash72": "0000000000000000000000000000001(CdNgpkVNya2vLI9^F-2wV)^(ozLwXDVF*ipsi9D^",
+      "reconstruction_map": {},
+      "reconstruction_root_hash72": "0000000000000000000000000000002f6gQk0u?5YQ6rmQI5R=C9SgsIOzdHSHltyop6!!Lt",
+      "schema": "HHS_LANGUAGE_TRANSLATION_SURVIVAL_RECEIPT_V1",
+      "source_register": "FORMAL_HARMONICODE",
+      "source_root_hash72": "0000000000000000000000000000002f6gQk0u?5YQ6rmQI5R=C9SgsIOzdHSHltyop6!!Lt",
+      "target_register": "COMMON_USE",
+      "temperature": "0.3",
+      "token_window": 16384,
+      "translation_path": [
+        "FORMAL_HARMONICODE",
+        "COMMON_USE"
+      ],
+      "translation_path_root_hash72": "0000000000000000000000000000003v9+9+5zyfL4cDbqiYepfk-AkVylaQ)!Db7wjW48SR",
+      "unsupported_additions": []
+    },
+    {
+      "ambiguous_fields": [],
+      "authority_conferred_by_language": false,
+      "critical_position": "START",
+      "direction": "FORWARD",
+      "equivalent_fields": [
+        "entity",
+        "relation"
+      ],
+      "fidelity_vector": {
+        "ambiguity": "EXACT",
+        "causality": "EXACT",
+        "entity": "EQUIVALENT",
+        "epistemic": "EXACT",
+        "order": "EXACT",
+        "provenance": "EXACT",
+        "quantity": "EXACT",
+        "reconstruction": "EXACT",
+        "relation": "EQUIVALENT"
+      },
+      "final_status": "EQUIVALENT_SEMANTIC_SURVIVAL",
+      "invariant_snapshot": {
+        "ambiguities": [],
+        "causal_direction": "FORWARD_EXECUTION",
+        "entities": [
+          "A",
+          "B"
+        ],
+        "operator_order": [
+          "A",
+          "B"
+        ],
+        "quantities": [],
+        "relations": [
+          "ORDERED_COMPOSITION"
+        ]
+      },
+      "lost_fields": [],
+      "mutated_fields": [],
+      "pattern_aware": true,
+      "preserved_fields": [
+        "quantity",
+        "order",
+        "causality",
+        "epistemic",
+        "ambiguity",
+        "provenance",
+        "reconstruction"
+      ],
+      "receipt_root_hash72": "0000000000000000000000000000004gn!g-G1HPl5GdoVrDYYDXxttA/f)pG*IMgusqvVlK",
+      "reconstruction_map": {},
+      "reconstruction_root_hash72": "0000000000000000000000000000002f6gQk0u?5YQ6rmQI5R=C9SgsIOzdHSHltyop6!!Lt",
+      "schema": "HHS_LANGUAGE_TRANSLATION_SURVIVAL_RECEIPT_V1",
+      "source_register": "FORMAL_HARMONICODE",
+      "source_root_hash72": "0000000000000000000000000000002f6gQk0u?5YQ6rmQI5R=C9SgsIOzdHSHltyop6!!Lt",
+      "target_register": "COMMON_USE",
+      "temperature": "0.3",
+      "token_window": 32768,
+      "translation_path": [
+        "FORMAL_HARMONICODE",
+        "COMMON_USE"
+      ],
+      "translation_path_root_hash72": "0000000000000000000000000000003v9+9+5zyfL4cDbqiYepfk-AkVylaQ)!Db7wjW48SR",
+      "unsupported_additions": []
+    },
+    {
+      "ambiguous_fields": [],
+      "authority_conferred_by_language": false,
+      "critical_position": "MIDDLE",
+      "direction": "FORWARD",
+      "equivalent_fields": [
+        "entity",
+        "relation"
+      ],
+      "fidelity_vector": {
+        "ambiguity": "EXACT",
+        "causality": "EXACT",
+        "entity": "EQUIVALENT",
+        "epistemic": "EXACT",
+        "order": "EXACT",
+        "provenance": "EXACT",
+        "quantity": "EXACT",
+        "reconstruction": "EXACT",
+        "relation": "EQUIVALENT"
+      },
+      "final_status": "EQUIVALENT_SEMANTIC_SURVIVAL",
+      "invariant_snapshot": {
+        "ambiguities": [],
+        "causal_direction": "FORWARD_EXECUTION",
+        "entities": [
+          "A",
+          "B"
+        ],
+        "operator_order": [
+          "A",
+          "B"
+        ],
+        "quantities": [],
+        "relations": [
+          "ORDERED_COMPOSITION"
+        ]
+      },
+      "lost_fields": [],
+      "mutated_fields": [],
+      "pattern_aware": true,
+      "preserved_fields": [
+        "quantity",
+        "order",
+        "causality",
+        "epistemic",
+        "ambiguity",
+        "provenance",
+        "reconstruction"
+      ],
+      "receipt_root_hash72": "0000000000000000000000000000001JC?^2F3iU-pPqaiVExs!^k/h9m?U*vujEJFJEKO0l",
+      "reconstruction_map": {},
+      "reconstruction_root_hash72": "0000000000000000000000000000002f6gQk0u?5YQ6rmQI5R=C9SgsIOzdHSHltyop6!!Lt",
+      "schema": "HHS_LANGUAGE_TRANSLATION_SURVIVAL_RECEIPT_V1",
+      "source_register": "FORMAL_HARMONICODE",
+      "source_root_hash72": "0000000000000000000000000000002f6gQk0u?5YQ6rmQI5R=C9SgsIOzdHSHltyop6!!Lt",
+      "target_register": "COMMON_USE",
+      "temperature": "0.3",
+      "token_window": 32768,
+      "translation_path": [
+        "FORMAL_HARMONICODE",
+        "COMMON_USE"
+      ],
+      "translation_path_root_hash72": "0000000000000000000000000000003v9+9+5zyfL4cDbqiYepfk-AkVylaQ)!Db7wjW48SR",
+      "unsupported_additions": []
+    },
+    {
+      "ambiguous_fields": [],
+      "authority_conferred_by_language": false,
+      "critical_position": "END",
+      "direction": "FORWARD",
+      "equivalent_fields": [
+        "entity",
+        "relation"
+      ],
+      "fidelity_vector": {
+        "ambiguity": "EXACT",
+        "causality": "EXACT",
+        "entity": "EQUIVALENT",
+        "epistemic": "EXACT",
+        "order": "EXACT",
+        "provenance": "EXACT",
+        "quantity": "EXACT",
+        "reconstruction": "EXACT",
+        "relation": "EQUIVALENT"
+      },
+      "final_status": "EQUIVALENT_SEMANTIC_SURVIVAL",
+      "invariant_snapshot": {
+        "ambiguities": [],
+        "causal_direction": "FORWARD_EXECUTION",
+        "entities": [
+          "A",
+          "B"
+        ],
+        "operator_order": [
+          "A",
+          "B"
+        ],
+        "quantities": [],
+        "relations": [
+          "ORDERED_COMPOSITION"
+        ]
+      },
+      "lost_fields": [],
+      "mutated_fields": [],
+      "pattern_aware": true,
+      "preserved_fields": [
+        "quantity",
+        "order",
+        "causality",
+        "epistemic",
+        "ambiguity",
+        "provenance",
+        "reconstruction"
+      ],
+      "receipt_root_hash72": "00000000000000000000000000000043X!^entqvLcj5clYdD7bAl/DGndJ)ojM=!yOLwR1A",
+      "reconstruction_map": {},
+      "reconstruction_root_hash72": "0000000000000000000000000000002f6gQk0u?5YQ6rmQI5R=C9SgsIOzdHSHltyop6!!Lt",
+      "schema": "HHS_LANGUAGE_TRANSLATION_SURVIVAL_RECEIPT_V1",
+      "source_register": "FORMAL_HARMONICODE",
+      "source_root_hash72": "0000000000000000000000000000002f6gQk0u?5YQ6rmQI5R=C9SgsIOzdHSHltyop6!!Lt",
+      "target_register": "COMMON_USE",
+      "temperature": "0.3",
+      "token_window": 32768,
+      "translation_path": [
+        "FORMAL_HARMONICODE",
+        "COMMON_USE"
+      ],
+      "translation_path_root_hash72": "0000000000000000000000000000003v9+9+5zyfL4cDbqiYepfk-AkVylaQ)!Db7wjW48SR",
+      "unsupported_additions": []
+    },
+    {
+      "ambiguous_fields": [],
+      "authority_conferred_by_language": false,
+      "critical_position": "START",
+      "direction": "FORWARD",
+      "equivalent_fields": [
+        "entity",
+        "relation"
+      ],
+      "fidelity_vector": {
+        "ambiguity": "EXACT",
+        "causality": "EXACT",
+        "entity": "EQUIVALENT",
+        "epistemic": "EXACT",
+        "order": "EXACT",
+        "provenance": "EXACT",
+        "quantity": "EXACT",
+        "reconstruction": "EXACT",
+        "relation": "EQUIVALENT"
+      },
+      "final_status": "EQUIVALENT_SEMANTIC_SURVIVAL",
+      "invariant_snapshot": {
+        "ambiguities": [],
+        "causal_direction": "FORWARD_EXECUTION",
+        "entities": [
+          "A",
+          "B"
+        ],
+        "operator_order": [
+          "A",
+          "B"
+        ],
+        "quantities": [],
+        "relations": [
+          "ORDERED_COMPOSITION"
+        ]
+      },
+      "lost_fields": [],
+      "mutated_fields": [],
+      "pattern_aware": true,
+      "preserved_fields": [
+        "quantity",
+        "order",
+        "causality",
+        "epistemic",
+        "ambiguity",
+        "provenance",
+        "reconstruction"
+      ],
+      "receipt_root_hash72": "00000000000000000000000000000028gqJk6aQxlP/Mm*Be1t-XNDpZ(ySsTMVp2le(J(mO",
+      "reconstruction_map": {},
+      "reconstruction_root_hash72": "0000000000000000000000000000002f6gQk0u?5YQ6rmQI5R=C9SgsIOzdHSHltyop6!!Lt",
+      "schema": "HHS_LANGUAGE_TRANSLATION_SURVIVAL_RECEIPT_V1",
+      "source_register": "FORMAL_HARMONICODE",
+      "source_root_hash72": "0000000000000000000000000000002f6gQk0u?5YQ6rmQI5R=C9SgsIOzdHSHltyop6!!Lt",
+      "target_register": "COMMON_USE",
+      "temperature": "0.3",
+      "token_window": 64000,
+      "translation_path": [
+        "FORMAL_HARMONICODE",
+        "COMMON_USE"
+      ],
+      "translation_path_root_hash72": "0000000000000000000000000000003v9+9+5zyfL4cDbqiYepfk-AkVylaQ)!Db7wjW48SR",
+      "unsupported_additions": []
+    },
+    {
+      "ambiguous_fields": [],
+      "authority_conferred_by_language": false,
+      "critical_position": "MIDDLE",
+      "direction": "FORWARD",
+      "equivalent_fields": [
+        "entity",
+        "relation"
+      ],
+      "fidelity_vector": {
+        "ambiguity": "EXACT",
+        "causality": "EXACT",
+        "entity": "EQUIVALENT",
+        "epistemic": "EXACT",
+        "order": "EXACT",
+        "provenance": "EXACT",
+        "quantity": "EXACT",
+        "reconstruction": "EXACT",
+        "relation": "EQUIVALENT"
+      },
+      "final_status": "EQUIVALENT_SEMANTIC_SURVIVAL",
+      "invariant_snapshot": {
+        "ambiguities": [],
+        "causal_direction": "FORWARD_EXECUTION",
+        "entities": [
+          "A",
+          "B"
+        ],
+        "operator_order": [
+          "A",
+          "B"
+        ],
+        "quantities": [],
+        "relations": [
+          "ORDERED_COMPOSITION"
+        ]
+      },
+      "lost_fields": [],
+      "mutated_fields": [],
+      "pattern_aware": true,
+      "preserved_fields": [
+        "quantity",
+        "order",
+        "causality",
+        "epistemic",
+        "ambiguity",
+        "provenance",
+        "reconstruction"
+      ],
+      "receipt_root_hash72": "0000000000000000000000000000004LhAF=AoPpx5i*RSaUV9HGBvK=oS(ElG!O!3UP0NL4",
+      "reconstruction_map": {},
+      "reconstruction_root_hash72": "0000000000000000000000000000002f6gQk0u?5YQ6rmQI5R=C9SgsIOzdHSHltyop6!!Lt",
+      "schema": "HHS_LANGUAGE_TRANSLATION_SURVIVAL_RECEIPT_V1",
+      "source_register": "FORMAL_HARMONICODE",
+      "source_root_hash72": "0000000000000000000000000000002f6gQk0u?5YQ6rmQI5R=C9SgsIOzdHSHltyop6!!Lt",
+      "target_register": "COMMON_USE",
+      "temperature": "0.3",
+      "token_window": 64000,
+      "translation_path": [
+        "FORMAL_HARMONICODE",
+        "COMMON_USE"
+      ],
+      "translation_path_root_hash72": "0000000000000000000000000000003v9+9+5zyfL4cDbqiYepfk-AkVylaQ)!Db7wjW48SR",
+      "unsupported_additions": []
+    },
+    {
+      "ambiguous_fields": [],
+      "authority_conferred_by_language": false,
+      "critical_position": "END",
+      "direction": "FORWARD",
+      "equivalent_fields": [
+        "entity",
+        "relation"
+      ],
+      "fidelity_vector": {
+        "ambiguity": "EXACT",
+        "causality": "EXACT",
+        "entity": "EQUIVALENT",
+        "epistemic": "EXACT",
+        "order": "EXACT",
+        "provenance": "EXACT",
+        "quantity": "EXACT",
+        "reconstruction": "EXACT",
+        "relation": "EQUIVALENT"
+      },
+      "final_status": "EQUIVALENT_SEMANTIC_SURVIVAL",
+      "invariant_snapshot": {
+        "ambiguities": [],
+        "causal_direction": "FORWARD_EXECUTION",
+        "entities": [
+          "A",
+          "B"
+        ],
+        "operator_order": [
+          "A",
+          "B"
+        ],
+        "quantities": [],
+        "relations": [
+          "ORDERED_COMPOSITION"
+        ]
+      },
+      "lost_fields": [],
+      "mutated_fields": [],
+      "pattern_aware": true,
+      "preserved_fields": [
+        "quantity",
+        "order",
+        "causality",
+        "epistemic",
+        "ambiguity",
+        "provenance",
+        "reconstruction"
+      ],
+      "receipt_root_hash72": "00000000000000000000000000000015SuG37Y?Y1t/X3st(q/Qr5JO*Nq1VzyenvyaUO8w/",
+      "reconstruction_map": {},
+      "reconstruction_root_hash72": "0000000000000000000000000000002f6gQk0u?5YQ6rmQI5R=C9SgsIOzdHSHltyop6!!Lt",
+      "schema": "HHS_LANGUAGE_TRANSLATION_SURVIVAL_RECEIPT_V1",
+      "source_register": "FORMAL_HARMONICODE",
+      "source_root_hash72": "0000000000000000000000000000002f6gQk0u?5YQ6rmQI5R=C9SgsIOzdHSHltyop6!!Lt",
+      "target_register": "COMMON_USE",
+      "temperature": "0.3",
+      "token_window": 64000,
+      "translation_path": [
+        "FORMAL_HARMONICODE",
+        "COMMON_USE"
+      ],
+      "translation_path_root_hash72": "0000000000000000000000000000003v9+9+5zyfL4cDbqiYepfk-AkVylaQ)!Db7wjW48SR",
+      "unsupported_additions": []
+    }
+  ]
+}

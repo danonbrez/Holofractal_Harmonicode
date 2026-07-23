@@ -1,0 +1,16 @@
+{
+  "closed_repair_obligation_count": 8,
+  "conformance_reconstruction_root_hash72": "0000000000000000000000000000004nv4is)jC=iNZ7269ZkD*caTqZvX3SCvDsgDLh9/Pi",
+  "full_system_conformance": false,
+  "open_repair_obligation_count": 1,
+  "open_repair_obligation_ids": [
+    "HHS-AUDIT-008"
+  ],
+  "parent_pass": "PASS_105_4",
+  "pass105_5_release_root_hash72": "0000000000000000000000000000004nv4is)jC=iNZ7269ZkD*caTqZvX3SCvDsgDLh9/Pi",
+  "pass_001_105_coverage_complete": true,
+  "pass_id": "PASS_105_5",
+  "python_parse_failed": 0,
+  "schema": "HHS_PASS_105_5_RELEASE_MANIFEST_V1",
+  "status": "PASS"
+}

@@ -1,0 +1,2176 @@
+{
+  "closure": {
+    "all_29_opcodes_membrane_bound": true,
+    "all_relations_provenanced": true,
+    "exact_no_float_authority": true,
+    "no_execution_or_mutation": true
+  },
+  "kernel_freeze_root_hash72": "0000000000000000000000000000002mMnvePZY>kj-Q3cUqFoqh4F-GJ2v7pWx>vPQ(AhG5",
+  "metrics": {
+    "admissions_without_active_lease": 0,
+    "admissions_without_binding_root": 0,
+    "admissions_without_lane_witness": 0,
+    "admissions_without_pre_state_root": 0,
+    "constraint_relations_without_provenance": 0,
+    "floating_point_authority_paths": 0,
+    "name_only_admissions": 0,
+    "native_executions_during_pass080_resolution": 0,
+    "opaque_formula_dispatch_paths": 0,
+    "opcode_contracts_with_membrane_rules": 29,
+    "registered_native_opcode_contracts": 29,
+    "signature_only_admissions": 0,
+    "typed_unavailable_collapsed_to_zero": 0,
+    "unwitnessed_rejections": 0
+  },
+  "opcode_membrane_contracts": {
+    "entries": [
+      {
+        "admission_contract_root": "0000000000000000000000000000004v^Z(DwVygR5xz/>=WE7qg1oKtH4gf+7cx(Qe37H77",
+        "authority_requirements": "NATIVE_CAPABILITY_CONTRACT_ONLY",
+        "closure_requirements": [
+          "LOCAL_LO_SHU",
+          "VM81_GLOBAL",
+          "ORIENTATION_U72"
+        ],
+        "exact_domain_checks": "REQUIRED_BEFORE_RESIDUE_EVALUATION",
+        "exact_residue_checks": "ALL_REQUIRED_RELATIONS",
+        "expected_receipt_schema": "HHS_NATIVE_TRANSITION_ADMISSION_RECEIPT_V1",
+        "lease_requirements": [
+          "TASK_BOUND",
+          "SOURCE_SCOPED",
+          "OPERATION_SCOPED",
+          "SEQUENCE_BOUNDED"
+        ],
+        "mutation_bounds": "READ_OR_BOUNDED_NATIVE_OPERATION",
+        "native_execution_permitted_by_contract_only_after_admission": true,
+        "native_opcode": "NATIVE_GRAPH_NODE_HASH",
+        "opcode_contract_root": "0000000000000000000000000000000JVWIGKZkFpQaaK?93smmIw-Jx7^0iAiiqWAZC*(sB",
+        "relation_graph_root": "0000000000000000000000000000002VP+9Q^CpasS6/)sqoHwjC466h(Ubj6yeaGOYRmKxd",
+        "required_relation_ids": [
+          "P080_EQUALITY_A_P2",
+          "P080_EQUALITY_B_P2",
+          "P080_ORDERED_AB_P4",
+          "P080_ORDERED_BA_P4",
+          "P080_RADICAL_AB_P2",
+          "P080_RADICAL_BA_P2",
+          "P080_RECIPROCAL_NORMALIZATION",
+          "P080_NATIVE_POLYNOMIAL_GATE_R1",
+          "P080_NATIVE_POLYNOMIAL_GATE_R2",
+          "P080_UNIT_XY",
+          "P080_CANONICAL_SCALE_POLYNOMIAL",
+          "P080_CANONICAL_SCALE_RATIO",
+          "P080_M_RECURRENCE",
+          "P080_PLASTIC_RECURRENCE",
+          "P080_QGU_RATIONAL_GATE",
+          "P080_WAVE_DENOMINATOR",
+          "P080_LO_SHU_9_CELL",
+          "P080_LO_SHU_ROWS",
+          "P080_LO_SHU_COLUMNS",
+          "P080_LO_SHU_DIAGONALS",
+          "P080_SEVEN_CELL_GATE",
+          "P080_ORIENTATION_U72"
+        ],
+        "resolved_binding_root": "0000000000000000000000000000000JVWIGKZkFpQaaK?93smmIw-Jx7^0iAiiqWAZC*(sB",
+        "schema": "HHS_NATIVE_TRANSITION_ADMISSION_CONTRACT_V1",
+        "witness_requirements": [
+          "VM81_LANE_BINDING",
+          "CANONICAL_OPERAND_COMMITMENT",
+          "AUTHORITY_RECEIPT"
+        ]
+      },
+      {
+        "admission_contract_root": "0000000000000000000000000000001O1U!rcGRI*Wg0kj7jc(*il^zoZrNu8)E7fnGom(ca",
+        "authority_requirements": "NATIVE_CAPABILITY_CONTRACT_ONLY",
+        "closure_requirements": [
+          "LOCAL_LO_SHU",
+          "VM81_GLOBAL",
+          "ORIENTATION_U72"
+        ],
+        "exact_domain_checks": "REQUIRED_BEFORE_RESIDUE_EVALUATION",
+        "exact_residue_checks": "ALL_REQUIRED_RELATIONS",
+        "expected_receipt_schema": "HHS_NATIVE_TRANSITION_ADMISSION_RECEIPT_V1",
+        "lease_requirements": [
+          "TASK_BOUND",
+          "SOURCE_SCOPED",
+          "OPERATION_SCOPED",
+          "SEQUENCE_BOUNDED"
+        ],
+        "mutation_bounds": "READ_OR_BOUNDED_NATIVE_OPERATION",
+        "native_execution_permitted_by_contract_only_after_admission": true,
+        "native_opcode": "NATIVE_HASH72_COMPARE",
+        "opcode_contract_root": "00000000000000000000000000000014GOKUO9=cSX^71!/!TuR+UF6dSCSf3r>kR4YcnM-q",
+        "relation_graph_root": "0000000000000000000000000000002VP+9Q^CpasS6/)sqoHwjC466h(Ubj6yeaGOYRmKxd",
+        "required_relation_ids": [
+          "P080_EQUALITY_A_P2",
+          "P080_EQUALITY_B_P2",
+          "P080_ORDERED_AB_P4",
+          "P080_ORDERED_BA_P4",
+          "P080_RADICAL_AB_P2",
+          "P080_RADICAL_BA_P2",
+          "P080_RECIPROCAL_NORMALIZATION",
+          "P080_NATIVE_POLYNOMIAL_GATE_R1",
+          "P080_NATIVE_POLYNOMIAL_GATE_R2",
+          "P080_UNIT_XY",
+          "P080_CANONICAL_SCALE_POLYNOMIAL",
+          "P080_CANONICAL_SCALE_RATIO",
+          "P080_M_RECURRENCE",
+          "P080_PLASTIC_RECURRENCE",
+          "P080_QGU_RATIONAL_GATE",
+          "P080_WAVE_DENOMINATOR",
+          "P080_LO_SHU_9_CELL",
+          "P080_LO_SHU_ROWS",
+          "P080_LO_SHU_COLUMNS",
+          "P080_LO_SHU_DIAGONALS",
+          "P080_SEVEN_CELL_GATE",
+          "P080_ORIENTATION_U72"
+        ],
+        "resolved_binding_root": "00000000000000000000000000000014GOKUO9=cSX^71!/!TuR+UF6dSCSf3r>kR4YcnM-q",
+        "schema": "HHS_NATIVE_TRANSITION_ADMISSION_CONTRACT_V1",
+        "witness_requirements": [
+          "VM81_LANE_BINDING",
+          "CANONICAL_OPERAND_COMMITMENT",
+          "AUTHORITY_RECEIPT"
+        ]
+      },
+      {
+        "admission_contract_root": "0000000000000000000000000000001YaHRNL!juzKR7!9WRV2f6gbeWZ1Ci7iXI3W9a^Kq7",
+        "authority_requirements": "NATIVE_CAPABILITY_CONTRACT_ONLY",
+        "closure_requirements": [
+          "LOCAL_LO_SHU",
+          "VM81_GLOBAL",
+          "ORIENTATION_U72"
+        ],
+        "exact_domain_checks": "REQUIRED_BEFORE_RESIDUE_EVALUATION",
+        "exact_residue_checks": "ALL_REQUIRED_RELATIONS",
+        "expected_receipt_schema": "HHS_NATIVE_TRANSITION_ADMISSION_RECEIPT_V1",
+        "lease_requirements": [
+          "TASK_BOUND",
+          "SOURCE_SCOPED",
+          "OPERATION_SCOPED",
+          "SEQUENCE_BOUNDED"
+        ],
+        "mutation_bounds": "READ_OR_BOUNDED_NATIVE_OPERATION",
+        "native_execution_permitted_by_contract_only_after_admission": true,
+        "native_opcode": "NATIVE_HASH72_DNA_VALIDATE",
+        "opcode_contract_root": "0000000000000000000000000000003CluKl5dxr=9lbWitRRsmuq0dK(*G^U-apaQ(Lnnw*",
+        "relation_graph_root": "0000000000000000000000000000002VP+9Q^CpasS6/)sqoHwjC466h(Ubj6yeaGOYRmKxd",
+        "required_relation_ids": [
+          "P080_EQUALITY_A_P2",
+          "P080_EQUALITY_B_P2",
+          "P080_ORDERED_AB_P4",
+          "P080_ORDERED_BA_P4",
+          "P080_RADICAL_AB_P2",
+          "P080_RADICAL_BA_P2",
+          "P080_RECIPROCAL_NORMALIZATION",
+          "P080_NATIVE_POLYNOMIAL_GATE_R1",
+          "P080_NATIVE_POLYNOMIAL_GATE_R2",
+          "P080_UNIT_XY",
+          "P080_CANONICAL_SCALE_POLYNOMIAL",
+          "P080_CANONICAL_SCALE_RATIO",
+          "P080_M_RECURRENCE",
+          "P080_PLASTIC_RECURRENCE",
+          "P080_QGU_RATIONAL_GATE",
+          "P080_WAVE_DENOMINATOR",
+          "P080_LO_SHU_9_CELL",
+          "P080_LO_SHU_ROWS",
+          "P080_LO_SHU_COLUMNS",
+          "P080_LO_SHU_DIAGONALS",
+          "P080_SEVEN_CELL_GATE",
+          "P080_ORIENTATION_U72"
+        ],
+        "resolved_binding_root": "0000000000000000000000000000003CluKl5dxr=9lbWitRRsmuq0dK(*G^U-apaQ(Lnnw*",
+        "schema": "HHS_NATIVE_TRANSITION_ADMISSION_CONTRACT_V1",
+        "witness_requirements": [
+          "VM81_LANE_BINDING",
+          "CANONICAL_OPERAND_COMMITMENT",
+          "AUTHORITY_RECEIPT"
+        ]
+      },
+      {
+        "admission_contract_root": "0000000000000000000000000000000XysZ0Rlv3bD>mkd1>cnNu-3-vrF10dR910B^H!sFB",
+        "authority_requirements": "NATIVE_CAPABILITY_CONTRACT_ONLY",
+        "closure_requirements": [
+          "LOCAL_LO_SHU",
+          "VM81_GLOBAL",
+          "ORIENTATION_U72"
+        ],
+        "exact_domain_checks": "REQUIRED_BEFORE_RESIDUE_EVALUATION",
+        "exact_residue_checks": "ALL_REQUIRED_RELATIONS",
+        "expected_receipt_schema": "HHS_NATIVE_TRANSITION_ADMISSION_RECEIPT_V1",
+        "lease_requirements": [
+          "TASK_BOUND",
+          "SOURCE_SCOPED",
+          "OPERATION_SCOPED",
+          "SEQUENCE_BOUNDED"
+        ],
+        "mutation_bounds": "READ_OR_BOUNDED_NATIVE_OPERATION",
+        "native_execution_permitted_by_contract_only_after_admission": true,
+        "native_opcode": "NATIVE_HASH72_PROJECT",
+        "opcode_contract_root": "0000000000000000000000000000001g2qb>ILOvZ!b3RN^!+eS1w/Tdzm4Qwp=hsa?ySIa2",
+        "relation_graph_root": "0000000000000000000000000000002VP+9Q^CpasS6/)sqoHwjC466h(Ubj6yeaGOYRmKxd",
+        "required_relation_ids": [
+          "P080_EQUALITY_A_P2",
+          "P080_EQUALITY_B_P2",
+          "P080_ORDERED_AB_P4",
+          "P080_ORDERED_BA_P4",
+          "P080_RADICAL_AB_P2",
+          "P080_RADICAL_BA_P2",
+          "P080_RECIPROCAL_NORMALIZATION",
+          "P080_NATIVE_POLYNOMIAL_GATE_R1",
+          "P080_NATIVE_POLYNOMIAL_GATE_R2",
+          "P080_UNIT_XY",
+          "P080_CANONICAL_SCALE_POLYNOMIAL",
+          "P080_CANONICAL_SCALE_RATIO",
+          "P080_M_RECURRENCE",
+          "P080_PLASTIC_RECURRENCE",
+          "P080_QGU_RATIONAL_GATE",
+          "P080_WAVE_DENOMINATOR",
+          "P080_LO_SHU_9_CELL",
+          "P080_LO_SHU_ROWS",
+          "P080_LO_SHU_COLUMNS",
+          "P080_LO_SHU_DIAGONALS",
+          "P080_SEVEN_CELL_GATE",
+          "P080_ORIENTATION_U72"
+        ],
+        "resolved_binding_root": "0000000000000000000000000000001g2qb>ILOvZ!b3RN^!+eS1w/Tdzm4Qwp=hsa?ySIa2",
+        "schema": "HHS_NATIVE_TRANSITION_ADMISSION_CONTRACT_V1",
+        "witness_requirements": [
+          "VM81_LANE_BINDING",
+          "CANONICAL_OPERAND_COMMITMENT",
+          "AUTHORITY_RECEIPT"
+        ]
+      },
+      {
+        "admission_contract_root": "0000000000000000000000000000003w7PFb)^7JDvyQWB^5Bof>4b(jyhxfU>ibFH-(ZrX6",
+        "authority_requirements": "NATIVE_CAPABILITY_CONTRACT_ONLY",
+        "closure_requirements": [
+          "LOCAL_LO_SHU",
+          "VM81_GLOBAL",
+          "ORIENTATION_U72"
+        ],
+        "exact_domain_checks": "REQUIRED_BEFORE_RESIDUE_EVALUATION",
+        "exact_residue_checks": "ALL_REQUIRED_RELATIONS",
+        "expected_receipt_schema": "HHS_NATIVE_TRANSITION_ADMISSION_RECEIPT_V1",
+        "lease_requirements": [
+          "TASK_BOUND",
+          "SOURCE_SCOPED",
+          "OPERATION_SCOPED",
+          "SEQUENCE_BOUNDED"
+        ],
+        "mutation_bounds": "READ_OR_BOUNDED_NATIVE_OPERATION",
+        "native_execution_permitted_by_contract_only_after_admission": true,
+        "native_opcode": "NATIVE_HASH72_REVERSE_STATE",
+        "opcode_contract_root": "0000000000000000000000000000003v)tV8-)K9uT3LebSzMiWEI!jqR>Ly/!F+ORu6li/h",
+        "relation_graph_root": "0000000000000000000000000000002VP+9Q^CpasS6/)sqoHwjC466h(Ubj6yeaGOYRmKxd",
+        "required_relation_ids": [
+          "P080_EQUALITY_A_P2",
+          "P080_EQUALITY_B_P2",
+          "P080_ORDERED_AB_P4",
+          "P080_ORDERED_BA_P4",
+          "P080_RADICAL_AB_P2",
+          "P080_RADICAL_BA_P2",
+          "P080_RECIPROCAL_NORMALIZATION",
+          "P080_NATIVE_POLYNOMIAL_GATE_R1",
+          "P080_NATIVE_POLYNOMIAL_GATE_R2",
+          "P080_UNIT_XY",
+          "P080_CANONICAL_SCALE_POLYNOMIAL",
+          "P080_CANONICAL_SCALE_RATIO",
+          "P080_M_RECURRENCE",
+          "P080_PLASTIC_RECURRENCE",
+          "P080_QGU_RATIONAL_GATE",
+          "P080_WAVE_DENOMINATOR",
+          "P080_LO_SHU_9_CELL",
+          "P080_LO_SHU_ROWS",
+          "P080_LO_SHU_COLUMNS",
+          "P080_LO_SHU_DIAGONALS",
+          "P080_SEVEN_CELL_GATE",
+          "P080_ORIENTATION_U72"
+        ],
+        "resolved_binding_root": "0000000000000000000000000000003v)tV8-)K9uT3LebSzMiWEI!jqR>Ly/!F+ORu6li/h",
+        "schema": "HHS_NATIVE_TRANSITION_ADMISSION_CONTRACT_V1",
+        "witness_requirements": [
+          "VM81_LANE_BINDING",
+          "CANONICAL_OPERAND_COMMITMENT",
+          "AUTHORITY_RECEIPT"
+        ]
+      },
+      {
+        "admission_contract_root": "0000000000000000000000000000002=BBQ2ZJFs=9pJCGhmNKzZpy0N04m>0f0py6MJy5Tv",
+        "authority_requirements": "NATIVE_CAPABILITY_CONTRACT_ONLY",
+        "closure_requirements": [
+          "LOCAL_LO_SHU",
+          "VM81_GLOBAL",
+          "ORIENTATION_U72"
+        ],
+        "exact_domain_checks": "REQUIRED_BEFORE_RESIDUE_EVALUATION",
+        "exact_residue_checks": "ALL_REQUIRED_RELATIONS",
+        "expected_receipt_schema": "HHS_NATIVE_TRANSITION_ADMISSION_RECEIPT_V1",
+        "lease_requirements": [
+          "TASK_BOUND",
+          "SOURCE_SCOPED",
+          "OPERATION_SCOPED",
+          "SEQUENCE_BOUNDED"
+        ],
+        "mutation_bounds": "READ_OR_BOUNDED_NATIVE_OPERATION",
+        "native_execution_permitted_by_contract_only_after_admission": true,
+        "native_opcode": "NATIVE_HASH72_RING_INIT",
+        "opcode_contract_root": "0000000000000000000000000000000AUq?4qa-TMU^SmIK)u00rf(bwz!z7U>(el^bZ5pGr",
+        "relation_graph_root": "0000000000000000000000000000002VP+9Q^CpasS6/)sqoHwjC466h(Ubj6yeaGOYRmKxd",
+        "required_relation_ids": [
+          "P080_EQUALITY_A_P2",
+          "P080_EQUALITY_B_P2",
+          "P080_ORDERED_AB_P4",
+          "P080_ORDERED_BA_P4",
+          "P080_RADICAL_AB_P2",
+          "P080_RADICAL_BA_P2",
+          "P080_RECIPROCAL_NORMALIZATION",
+          "P080_NATIVE_POLYNOMIAL_GATE_R1",
+          "P080_NATIVE_POLYNOMIAL_GATE_R2",
+          "P080_UNIT_XY",
+          "P080_CANONICAL_SCALE_POLYNOMIAL",
+          "P080_CANONICAL_SCALE_RATIO",
+          "P080_M_RECURRENCE",
+          "P080_PLASTIC_RECURRENCE",
+          "P080_QGU_RATIONAL_GATE",
+          "P080_WAVE_DENOMINATOR",
+          "P080_LO_SHU_9_CELL",
+          "P080_LO_SHU_ROWS",
+          "P080_LO_SHU_COLUMNS",
+          "P080_LO_SHU_DIAGONALS",
+          "P080_SEVEN_CELL_GATE",
+          "P080_ORIENTATION_U72"
+        ],
+        "resolved_binding_root": "0000000000000000000000000000000AUq?4qa-TMU^SmIK)u00rf(bwz!z7U>(el^bZ5pGr",
+        "schema": "HHS_NATIVE_TRANSITION_ADMISSION_CONTRACT_V1",
+        "witness_requirements": [
+          "VM81_LANE_BINDING",
+          "CANONICAL_OPERAND_COMMITMENT",
+          "AUTHORITY_RECEIPT"
+        ]
+      },
+      {
+        "admission_contract_root": "0000000000000000000000000000000Dvt8WFDZOX5*?LW0VcO+1+Yh)Zs7XsJgki+?Qt(!+",
+        "authority_requirements": "NATIVE_CAPABILITY_CONTRACT_ONLY",
+        "closure_requirements": [
+          "LOCAL_LO_SHU",
+          "VM81_GLOBAL",
+          "ORIENTATION_U72"
+        ],
+        "exact_domain_checks": "REQUIRED_BEFORE_RESIDUE_EVALUATION",
+        "exact_residue_checks": "ALL_REQUIRED_RELATIONS",
+        "expected_receipt_schema": "HHS_NATIVE_TRANSITION_ADMISSION_RECEIPT_V1",
+        "lease_requirements": [
+          "TASK_BOUND",
+          "SOURCE_SCOPED",
+          "OPERATION_SCOPED",
+          "SEQUENCE_BOUNDED"
+        ],
+        "mutation_bounds": "READ_OR_BOUNDED_NATIVE_OPERATION",
+        "native_execution_permitted_by_contract_only_after_admission": true,
+        "native_opcode": "NATIVE_HASH72_RING_ROTATE",
+        "opcode_contract_root": "0000000000000000000000000000001/T=6!kx14sak5HaVYjbdMBcVB8H?QA)tnONZ7KB26",
+        "relation_graph_root": "0000000000000000000000000000002VP+9Q^CpasS6/)sqoHwjC466h(Ubj6yeaGOYRmKxd",
+        "required_relation_ids": [
+          "P080_EQUALITY_A_P2",
+          "P080_EQUALITY_B_P2",
+          "P080_ORDERED_AB_P4",
+          "P080_ORDERED_BA_P4",
+          "P080_RADICAL_AB_P2",
+          "P080_RADICAL_BA_P2",
+          "P080_RECIPROCAL_NORMALIZATION",
+          "P080_NATIVE_POLYNOMIAL_GATE_R1",
+          "P080_NATIVE_POLYNOMIAL_GATE_R2",
+          "P080_UNIT_XY",
+          "P080_CANONICAL_SCALE_POLYNOMIAL",
+          "P080_CANONICAL_SCALE_RATIO",
+          "P080_M_RECURRENCE",
+          "P080_PLASTIC_RECURRENCE",
+          "P080_QGU_RATIONAL_GATE",
+          "P080_WAVE_DENOMINATOR",
+          "P080_LO_SHU_9_CELL",
+          "P080_LO_SHU_ROWS",
+          "P080_LO_SHU_COLUMNS",
+          "P080_LO_SHU_DIAGONALS",
+          "P080_SEVEN_CELL_GATE",
+          "P080_ORIENTATION_U72"
+        ],
+        "resolved_binding_root": "0000000000000000000000000000001/T=6!kx14sak5HaVYjbdMBcVB8H?QA)tnONZ7KB26",
+        "schema": "HHS_NATIVE_TRANSITION_ADMISSION_CONTRACT_V1",
+        "witness_requirements": [
+          "VM81_LANE_BINDING",
+          "CANONICAL_OPERAND_COMMITMENT",
+          "AUTHORITY_RECEIPT"
+        ]
+      },
+      {
+        "admission_contract_root": "0000000000000000000000000000003ckH?Xz5)tiG)?WG=nKCiuk>lS8aAjU8-F+w5ZlO25",
+        "authority_requirements": "NATIVE_CAPABILITY_CONTRACT_ONLY",
+        "closure_requirements": [
+          "LOCAL_LO_SHU",
+          "VM81_GLOBAL",
+          "ORIENTATION_U72"
+        ],
+        "exact_domain_checks": "REQUIRED_BEFORE_RESIDUE_EVALUATION",
+        "exact_residue_checks": "ALL_REQUIRED_RELATIONS",
+        "expected_receipt_schema": "HHS_NATIVE_TRANSITION_ADMISSION_RECEIPT_V1",
+        "lease_requirements": [
+          "TASK_BOUND",
+          "SOURCE_SCOPED",
+          "OPERATION_SCOPED",
+          "SEQUENCE_BOUNDED"
+        ],
+        "mutation_bounds": "READ_OR_BOUNDED_NATIVE_OPERATION",
+        "native_execution_permitted_by_contract_only_after_admission": true,
+        "native_opcode": "NATIVE_HASH72_TENSOR_PROJECT",
+        "opcode_contract_root": "0000000000000000000000000000000HjCTOp^+gVD+UDr48FfzCHq9-0625IpObRUvB6LYI",
+        "relation_graph_root": "0000000000000000000000000000002VP+9Q^CpasS6/)sqoHwjC466h(Ubj6yeaGOYRmKxd",
+        "required_relation_ids": [
+          "P080_EQUALITY_A_P2",
+          "P080_EQUALITY_B_P2",
+          "P080_ORDERED_AB_P4",
+          "P080_ORDERED_BA_P4",
+          "P080_RADICAL_AB_P2",
+          "P080_RADICAL_BA_P2",
+          "P080_RECIPROCAL_NORMALIZATION",
+          "P080_NATIVE_POLYNOMIAL_GATE_R1",
+          "P080_NATIVE_POLYNOMIAL_GATE_R2",
+          "P080_UNIT_XY",
+          "P080_CANONICAL_SCALE_POLYNOMIAL",
+          "P080_CANONICAL_SCALE_RATIO",
+          "P080_M_RECURRENCE",
+          "P080_PLASTIC_RECURRENCE",
+          "P080_QGU_RATIONAL_GATE",
+          "P080_WAVE_DENOMINATOR",
+          "P080_LO_SHU_9_CELL",
+          "P080_LO_SHU_ROWS",
+          "P080_LO_SHU_COLUMNS",
+          "P080_LO_SHU_DIAGONALS",
+          "P080_SEVEN_CELL_GATE",
+          "P080_ORIENTATION_U72"
+        ],
+        "resolved_binding_root": "0000000000000000000000000000000HjCTOp^+gVD+UDr48FfzCHq9-0625IpObRUvB6LYI",
+        "schema": "HHS_NATIVE_TRANSITION_ADMISSION_CONTRACT_V1",
+        "witness_requirements": [
+          "VM81_LANE_BINDING",
+          "CANONICAL_OPERAND_COMMITMENT",
+          "AUTHORITY_RECEIPT"
+        ]
+      },
+      {
+        "admission_contract_root": "0000000000000000000000000000003MfXEjlVqQOBU)b4+P+XOW6^GW1mZ6MVExyJNZUqML",
+        "authority_requirements": "NATIVE_CAPABILITY_CONTRACT_ONLY",
+        "closure_requirements": [
+          "LOCAL_LO_SHU",
+          "VM81_GLOBAL",
+          "ORIENTATION_U72"
+        ],
+        "exact_domain_checks": "REQUIRED_BEFORE_RESIDUE_EVALUATION",
+        "exact_residue_checks": "ALL_REQUIRED_RELATIONS",
+        "expected_receipt_schema": "HHS_NATIVE_TRANSITION_ADMISSION_RECEIPT_V1",
+        "lease_requirements": [
+          "TASK_BOUND",
+          "SOURCE_SCOPED",
+          "OPERATION_SCOPED",
+          "SEQUENCE_BOUNDED"
+        ],
+        "mutation_bounds": "MUTATE_RECEIPT_STATE",
+        "native_execution_permitted_by_contract_only_after_admission": true,
+        "native_opcode": "NATIVE_RECEIPT_COMMIT",
+        "opcode_contract_root": "0000000000000000000000000000003>lvYofL0MKA>(NBmoGWFpTn4cllvcMSMm0C(Lmu6+",
+        "relation_graph_root": "0000000000000000000000000000002VP+9Q^CpasS6/)sqoHwjC466h(Ubj6yeaGOYRmKxd",
+        "required_relation_ids": [
+          "P080_EQUALITY_A_P2",
+          "P080_EQUALITY_B_P2",
+          "P080_ORDERED_AB_P4",
+          "P080_ORDERED_BA_P4",
+          "P080_RADICAL_AB_P2",
+          "P080_RADICAL_BA_P2",
+          "P080_RECIPROCAL_NORMALIZATION",
+          "P080_NATIVE_POLYNOMIAL_GATE_R1",
+          "P080_NATIVE_POLYNOMIAL_GATE_R2",
+          "P080_UNIT_XY",
+          "P080_CANONICAL_SCALE_POLYNOMIAL",
+          "P080_CANONICAL_SCALE_RATIO",
+          "P080_M_RECURRENCE",
+          "P080_PLASTIC_RECURRENCE",
+          "P080_QGU_RATIONAL_GATE",
+          "P080_WAVE_DENOMINATOR",
+          "P080_LO_SHU_9_CELL",
+          "P080_LO_SHU_ROWS",
+          "P080_LO_SHU_COLUMNS",
+          "P080_LO_SHU_DIAGONALS",
+          "P080_SEVEN_CELL_GATE",
+          "P080_ORIENTATION_U72"
+        ],
+        "resolved_binding_root": "0000000000000000000000000000003>lvYofL0MKA>(NBmoGWFpTn4cllvcMSMm0C(Lmu6+",
+        "schema": "HHS_NATIVE_TRANSITION_ADMISSION_CONTRACT_V1",
+        "witness_requirements": [
+          "VM81_LANE_BINDING",
+          "CANONICAL_OPERAND_COMMITMENT",
+          "AUTHORITY_RECEIPT"
+        ]
+      },
+      {
+        "admission_contract_root": "00000000000000000000000000000002!>OBMTnS>FFm5!Q3sGybr/vkjcV6IO^5DLosNIJ!",
+        "authority_requirements": "NATIVE_CAPABILITY_CONTRACT_ONLY",
+        "closure_requirements": [
+          "LOCAL_LO_SHU",
+          "VM81_GLOBAL",
+          "ORIENTATION_U72"
+        ],
+        "exact_domain_checks": "REQUIRED_BEFORE_RESIDUE_EVALUATION",
+        "exact_residue_checks": "ALL_REQUIRED_RELATIONS",
+        "expected_receipt_schema": "HHS_NATIVE_TRANSITION_ADMISSION_RECEIPT_V1",
+        "lease_requirements": [
+          "TASK_BOUND",
+          "SOURCE_SCOPED",
+          "OPERATION_SCOPED",
+          "SEQUENCE_BOUNDED"
+        ],
+        "mutation_bounds": "RESET_RECEIPT_STATE",
+        "native_execution_permitted_by_contract_only_after_admission": true,
+        "native_opcode": "NATIVE_RECEIPT_RESET",
+        "opcode_contract_root": "0000000000000000000000000000003lkMO+KvX?UvkvQ=b!dr>byRXvi(*!eP76zbiIr(Xj",
+        "relation_graph_root": "0000000000000000000000000000002VP+9Q^CpasS6/)sqoHwjC466h(Ubj6yeaGOYRmKxd",
+        "required_relation_ids": [
+          "P080_EQUALITY_A_P2",
+          "P080_EQUALITY_B_P2",
+          "P080_ORDERED_AB_P4",
+          "P080_ORDERED_BA_P4",
+          "P080_RADICAL_AB_P2",
+          "P080_RADICAL_BA_P2",
+          "P080_RECIPROCAL_NORMALIZATION",
+          "P080_NATIVE_POLYNOMIAL_GATE_R1",
+          "P080_NATIVE_POLYNOMIAL_GATE_R2",
+          "P080_UNIT_XY",
+          "P080_CANONICAL_SCALE_POLYNOMIAL",
+          "P080_CANONICAL_SCALE_RATIO",
+          "P080_M_RECURRENCE",
+          "P080_PLASTIC_RECURRENCE",
+          "P080_QGU_RATIONAL_GATE",
+          "P080_WAVE_DENOMINATOR",
+          "P080_LO_SHU_9_CELL",
+          "P080_LO_SHU_ROWS",
+          "P080_LO_SHU_COLUMNS",
+          "P080_LO_SHU_DIAGONALS",
+          "P080_SEVEN_CELL_GATE",
+          "P080_ORIENTATION_U72"
+        ],
+        "resolved_binding_root": "0000000000000000000000000000003lkMO+KvX?UvkvQ=b!dr>byRXvi(*!eP76zbiIr(Xj",
+        "schema": "HHS_NATIVE_TRANSITION_ADMISSION_CONTRACT_V1",
+        "witness_requirements": [
+          "VM81_LANE_BINDING",
+          "CANONICAL_OPERAND_COMMITMENT",
+          "AUTHORITY_RECEIPT"
+        ]
+      },
+      {
+        "admission_contract_root": "0000000000000000000000000000003Vj++Jc>8aBLTBk62erNzprejSPHb9/=Im49A5uxY9",
+        "authority_requirements": "NATIVE_CAPABILITY_CONTRACT_ONLY",
+        "closure_requirements": [
+          "LOCAL_LO_SHU",
+          "VM81_GLOBAL",
+          "ORIENTATION_U72"
+        ],
+        "exact_domain_checks": "REQUIRED_BEFORE_RESIDUE_EVALUATION",
+        "exact_residue_checks": "ALL_REQUIRED_RELATIONS",
+        "expected_receipt_schema": "HHS_NATIVE_TRANSITION_ADMISSION_RECEIPT_V1",
+        "lease_requirements": [
+          "TASK_BOUND",
+          "SOURCE_SCOPED",
+          "OPERATION_SCOPED",
+          "SEQUENCE_BOUNDED"
+        ],
+        "mutation_bounds": "MUTATE_CONTROL_STATE",
+        "native_execution_permitted_by_contract_only_after_admission": true,
+        "native_opcode": "NATIVE_RUNTIME_HALT",
+        "opcode_contract_root": "0000000000000000000000000000000Cw7D32o^wAo2eHBPSeRGD^uH>jw33J-3?jIYuBxoC",
+        "relation_graph_root": "0000000000000000000000000000002VP+9Q^CpasS6/)sqoHwjC466h(Ubj6yeaGOYRmKxd",
+        "required_relation_ids": [
+          "P080_EQUALITY_A_P2",
+          "P080_EQUALITY_B_P2",
+          "P080_ORDERED_AB_P4",
+          "P080_ORDERED_BA_P4",
+          "P080_RADICAL_AB_P2",
+          "P080_RADICAL_BA_P2",
+          "P080_RECIPROCAL_NORMALIZATION",
+          "P080_NATIVE_POLYNOMIAL_GATE_R1",
+          "P080_NATIVE_POLYNOMIAL_GATE_R2",
+          "P080_UNIT_XY",
+          "P080_CANONICAL_SCALE_POLYNOMIAL",
+          "P080_CANONICAL_SCALE_RATIO",
+          "P080_M_RECURRENCE",
+          "P080_PLASTIC_RECURRENCE",
+          "P080_QGU_RATIONAL_GATE",
+          "P080_WAVE_DENOMINATOR",
+          "P080_LO_SHU_9_CELL",
+          "P080_LO_SHU_ROWS",
+          "P080_LO_SHU_COLUMNS",
+          "P080_LO_SHU_DIAGONALS",
+          "P080_SEVEN_CELL_GATE",
+          "P080_ORIENTATION_U72"
+        ],
+        "resolved_binding_root": "0000000000000000000000000000000Cw7D32o^wAo2eHBPSeRGD^uH>jw33J-3?jIYuBxoC",
+        "schema": "HHS_NATIVE_TRANSITION_ADMISSION_CONTRACT_V1",
+        "witness_requirements": [
+          "VM81_LANE_BINDING",
+          "CANONICAL_OPERAND_COMMITMENT",
+          "AUTHORITY_RECEIPT"
+        ]
+      },
+      {
+        "admission_contract_root": "0000000000000000000000000000000A=826*>Exm+D)DR8BWMu!h4ty5kNLnRalFGrHZ/v)",
+        "authority_requirements": "NATIVE_CAPABILITY_CONTRACT_ONLY",
+        "closure_requirements": [
+          "LOCAL_LO_SHU",
+          "VM81_GLOBAL",
+          "ORIENTATION_U72"
+        ],
+        "exact_domain_checks": "REQUIRED_BEFORE_RESIDUE_EVALUATION",
+        "exact_residue_checks": "ALL_REQUIRED_RELATIONS",
+        "expected_receipt_schema": "HHS_NATIVE_TRANSITION_ADMISSION_RECEIPT_V1",
+        "lease_requirements": [
+          "TASK_BOUND",
+          "SOURCE_SCOPED",
+          "OPERATION_SCOPED",
+          "SEQUENCE_BOUNDED"
+        ],
+        "mutation_bounds": "INITIALIZE_NATIVE_STATE",
+        "native_execution_permitted_by_contract_only_after_admission": true,
+        "native_opcode": "NATIVE_RUNTIME_INIT",
+        "opcode_contract_root": "0000000000000000000000000000004ETE411fdzbv2h5DiVDEBG3Bdr8eYBpCwm^W-fsS5L",
+        "relation_graph_root": "0000000000000000000000000000002VP+9Q^CpasS6/)sqoHwjC466h(Ubj6yeaGOYRmKxd",
+        "required_relation_ids": [
+          "P080_EQUALITY_A_P2",
+          "P080_EQUALITY_B_P2",
+          "P080_ORDERED_AB_P4",
+          "P080_ORDERED_BA_P4",
+          "P080_RADICAL_AB_P2",
+          "P080_RADICAL_BA_P2",
+          "P080_RECIPROCAL_NORMALIZATION",
+          "P080_NATIVE_POLYNOMIAL_GATE_R1",
+          "P080_NATIVE_POLYNOMIAL_GATE_R2",
+          "P080_UNIT_XY",
+          "P080_CANONICAL_SCALE_POLYNOMIAL",
+          "P080_CANONICAL_SCALE_RATIO",
+          "P080_M_RECURRENCE",
+          "P080_PLASTIC_RECURRENCE",
+          "P080_QGU_RATIONAL_GATE",
+          "P080_WAVE_DENOMINATOR",
+          "P080_LO_SHU_9_CELL",
+          "P080_LO_SHU_ROWS",
+          "P080_LO_SHU_COLUMNS",
+          "P080_LO_SHU_DIAGONALS",
+          "P080_SEVEN_CELL_GATE",
+          "P080_ORIENTATION_U72"
+        ],
+        "resolved_binding_root": "0000000000000000000000000000004ETE411fdzbv2h5DiVDEBG3Bdr8eYBpCwm^W-fsS5L",
+        "schema": "HHS_NATIVE_TRANSITION_ADMISSION_CONTRACT_V1",
+        "witness_requirements": [
+          "VM81_LANE_BINDING",
+          "CANONICAL_OPERAND_COMMITMENT",
+          "AUTHORITY_RECEIPT"
+        ]
+      },
+      {
+        "admission_contract_root": "00000000000000000000000000000044YEY/9>8l)j+QCcd9MvRT4ggyHAp2J*3tRB-uMf3>",
+        "authority_requirements": "NATIVE_CAPABILITY_CONTRACT_ONLY",
+        "closure_requirements": [
+          "LOCAL_LO_SHU",
+          "VM81_GLOBAL",
+          "ORIENTATION_U72"
+        ],
+        "exact_domain_checks": "REQUIRED_BEFORE_RESIDUE_EVALUATION",
+        "exact_residue_checks": "ALL_REQUIRED_RELATIONS",
+        "expected_receipt_schema": "HHS_NATIVE_TRANSITION_ADMISSION_RECEIPT_V1",
+        "lease_requirements": [
+          "TASK_BOUND",
+          "SOURCE_SCOPED",
+          "OPERATION_SCOPED",
+          "SEQUENCE_BOUNDED"
+        ],
+        "mutation_bounds": "RESET_NATIVE_STATE",
+        "native_execution_permitted_by_contract_only_after_admission": true,
+        "native_opcode": "NATIVE_RUNTIME_RESET",
+        "opcode_contract_root": "0000000000000000000000000000001y0w3?xbys^=bLujKw8+k(DqARjHQMW0/1j/ZOTMFO",
+        "relation_graph_root": "0000000000000000000000000000002VP+9Q^CpasS6/)sqoHwjC466h(Ubj6yeaGOYRmKxd",
+        "required_relation_ids": [
+          "P080_EQUALITY_A_P2",
+          "P080_EQUALITY_B_P2",
+          "P080_ORDERED_AB_P4",
+          "P080_ORDERED_BA_P4",
+          "P080_RADICAL_AB_P2",
+          "P080_RADICAL_BA_P2",
+          "P080_RECIPROCAL_NORMALIZATION",
+          "P080_NATIVE_POLYNOMIAL_GATE_R1",
+          "P080_NATIVE_POLYNOMIAL_GATE_R2",
+          "P080_UNIT_XY",
+          "P080_CANONICAL_SCALE_POLYNOMIAL",
+          "P080_CANONICAL_SCALE_RATIO",
+          "P080_M_RECURRENCE",
+          "P080_PLASTIC_RECURRENCE",
+          "P080_QGU_RATIONAL_GATE",
+          "P080_WAVE_DENOMINATOR",
+          "P080_LO_SHU_9_CELL",
+          "P080_LO_SHU_ROWS",
+          "P080_LO_SHU_COLUMNS",
+          "P080_LO_SHU_DIAGONALS",
+          "P080_SEVEN_CELL_GATE",
+          "P080_ORIENTATION_U72"
+        ],
+        "resolved_binding_root": "0000000000000000000000000000001y0w3?xbys^=bLujKw8+k(DqARjHQMW0/1j/ZOTMFO",
+        "schema": "HHS_NATIVE_TRANSITION_ADMISSION_CONTRACT_V1",
+        "witness_requirements": [
+          "VM81_LANE_BINDING",
+          "CANONICAL_OPERAND_COMMITMENT",
+          "AUTHORITY_RECEIPT"
+        ]
+      },
+      {
+        "admission_contract_root": "0000000000000000000000000000003wIpREP=iQikOnvA7HfBJgv8odfuTep63!d/VDSm/H",
+        "authority_requirements": "NATIVE_CAPABILITY_CONTRACT_ONLY",
+        "closure_requirements": [
+          "LOCAL_LO_SHU",
+          "VM81_GLOBAL",
+          "ORIENTATION_U72"
+        ],
+        "exact_domain_checks": "REQUIRED_BEFORE_RESIDUE_EVALUATION",
+        "exact_residue_checks": "ALL_REQUIRED_RELATIONS",
+        "expected_receipt_schema": "HHS_NATIVE_TRANSITION_ADMISSION_RECEIPT_V1",
+        "lease_requirements": [
+          "TASK_BOUND",
+          "SOURCE_SCOPED",
+          "OPERATION_SCOPED",
+          "SEQUENCE_BOUNDED"
+        ],
+        "mutation_bounds": "MUTATE_NATIVE_STATE",
+        "native_execution_permitted_by_contract_only_after_admission": true,
+        "native_opcode": "NATIVE_RUNTIME_STEP",
+        "opcode_contract_root": "0000000000000000000000000000004hn4rYZQ?Ty/7yeh-)!uoz7ugetdLs6fMWxHhEG+?w",
+        "relation_graph_root": "0000000000000000000000000000002VP+9Q^CpasS6/)sqoHwjC466h(Ubj6yeaGOYRmKxd",
+        "required_relation_ids": [
+          "P080_EQUALITY_A_P2",
+          "P080_EQUALITY_B_P2",
+          "P080_ORDERED_AB_P4",
+          "P080_ORDERED_BA_P4",
+          "P080_RADICAL_AB_P2",
+          "P080_RADICAL_BA_P2",
+          "P080_RECIPROCAL_NORMALIZATION",
+          "P080_NATIVE_POLYNOMIAL_GATE_R1",
+          "P080_NATIVE_POLYNOMIAL_GATE_R2",
+          "P080_UNIT_XY",
+          "P080_CANONICAL_SCALE_POLYNOMIAL",
+          "P080_CANONICAL_SCALE_RATIO",
+          "P080_M_RECURRENCE",
+          "P080_PLASTIC_RECURRENCE",
+          "P080_QGU_RATIONAL_GATE",
+          "P080_WAVE_DENOMINATOR",
+          "P080_LO_SHU_9_CELL",
+          "P080_LO_SHU_ROWS",
+          "P080_LO_SHU_COLUMNS",
+          "P080_LO_SHU_DIAGONALS",
+          "P080_SEVEN_CELL_GATE",
+          "P080_ORIENTATION_U72"
+        ],
+        "resolved_binding_root": "0000000000000000000000000000004hn4rYZQ?Ty/7yeh-)!uoz7ugetdLs6fMWxHhEG+?w",
+        "schema": "HHS_NATIVE_TRANSITION_ADMISSION_CONTRACT_V1",
+        "witness_requirements": [
+          "VM81_LANE_BINDING",
+          "CANONICAL_OPERAND_COMMITMENT",
+          "AUTHORITY_RECEIPT"
+        ]
+      },
+      {
+        "admission_contract_root": "000000000000000000000000000000197TiBrV/PKwj)0?qZe0vawey8Opyg9GDMb44>2CC>",
+        "authority_requirements": "NATIVE_CAPABILITY_CONTRACT_ONLY",
+        "closure_requirements": [
+          "LOCAL_LO_SHU",
+          "VM81_GLOBAL",
+          "ORIENTATION_U72"
+        ],
+        "exact_domain_checks": "REQUIRED_BEFORE_RESIDUE_EVALUATION",
+        "exact_residue_checks": "ALL_REQUIRED_RELATIONS",
+        "expected_receipt_schema": "HHS_NATIVE_TRANSITION_ADMISSION_RECEIPT_V1",
+        "lease_requirements": [
+          "TASK_BOUND",
+          "SOURCE_SCOPED",
+          "OPERATION_SCOPED",
+          "SEQUENCE_BOUNDED"
+        ],
+        "mutation_bounds": "READ_OR_BOUNDED_NATIVE_OPERATION",
+        "native_execution_permitted_by_contract_only_after_admission": true,
+        "native_opcode": "NATIVE_SIZEOF_GRAPH_EDGE",
+        "opcode_contract_root": "0000000000000000000000000000003ghV7ULpf>52H(Dkz43v8+C!cu)p6p?X?LEqJ-tZA2",
+        "relation_graph_root": "0000000000000000000000000000002VP+9Q^CpasS6/)sqoHwjC466h(Ubj6yeaGOYRmKxd",
+        "required_relation_ids": [
+          "P080_EQUALITY_A_P2",
+          "P080_EQUALITY_B_P2",
+          "P080_ORDERED_AB_P4",
+          "P080_ORDERED_BA_P4",
+          "P080_RADICAL_AB_P2",
+          "P080_RADICAL_BA_P2",
+          "P080_RECIPROCAL_NORMALIZATION",
+          "P080_NATIVE_POLYNOMIAL_GATE_R1",
+          "P080_NATIVE_POLYNOMIAL_GATE_R2",
+          "P080_UNIT_XY",
+          "P080_CANONICAL_SCALE_POLYNOMIAL",
+          "P080_CANONICAL_SCALE_RATIO",
+          "P080_M_RECURRENCE",
+          "P080_PLASTIC_RECURRENCE",
+          "P080_QGU_RATIONAL_GATE",
+          "P080_WAVE_DENOMINATOR",
+          "P080_LO_SHU_9_CELL",
+          "P080_LO_SHU_ROWS",
+          "P080_LO_SHU_COLUMNS",
+          "P080_LO_SHU_DIAGONALS",
+          "P080_SEVEN_CELL_GATE",
+          "P080_ORIENTATION_U72"
+        ],
+        "resolved_binding_root": "0000000000000000000000000000003ghV7ULpf>52H(Dkz43v8+C!cu)p6p?X?LEqJ-tZA2",
+        "schema": "HHS_NATIVE_TRANSITION_ADMISSION_CONTRACT_V1",
+        "witness_requirements": [
+          "VM81_LANE_BINDING",
+          "CANONICAL_OPERAND_COMMITMENT",
+          "AUTHORITY_RECEIPT"
+        ]
+      },
+      {
+        "admission_contract_root": "0000000000000000000000000000003wX7OVhzCQ3dHd3CbPpMhLYESW8Rn2ULyQTph8s2Q/",
+        "authority_requirements": "NATIVE_CAPABILITY_CONTRACT_ONLY",
+        "closure_requirements": [
+          "LOCAL_LO_SHU",
+          "VM81_GLOBAL",
+          "ORIENTATION_U72"
+        ],
+        "exact_domain_checks": "REQUIRED_BEFORE_RESIDUE_EVALUATION",
+        "exact_residue_checks": "ALL_REQUIRED_RELATIONS",
+        "expected_receipt_schema": "HHS_NATIVE_TRANSITION_ADMISSION_RECEIPT_V1",
+        "lease_requirements": [
+          "TASK_BOUND",
+          "SOURCE_SCOPED",
+          "OPERATION_SCOPED",
+          "SEQUENCE_BOUNDED"
+        ],
+        "mutation_bounds": "READ_OR_BOUNDED_NATIVE_OPERATION",
+        "native_execution_permitted_by_contract_only_after_admission": true,
+        "native_opcode": "NATIVE_SIZEOF_GRAPH_NODE",
+        "opcode_contract_root": "0000000000000000000000000000002ygah>GUOt)N0Vg)K?nYDI>lF*xrJU9lyndfXPpLSR",
+        "relation_graph_root": "0000000000000000000000000000002VP+9Q^CpasS6/)sqoHwjC466h(Ubj6yeaGOYRmKxd",
+        "required_relation_ids": [
+          "P080_EQUALITY_A_P2",
+          "P080_EQUALITY_B_P2",
+          "P080_ORDERED_AB_P4",
+          "P080_ORDERED_BA_P4",
+          "P080_RADICAL_AB_P2",
+          "P080_RADICAL_BA_P2",
+          "P080_RECIPROCAL_NORMALIZATION",
+          "P080_NATIVE_POLYNOMIAL_GATE_R1",
+          "P080_NATIVE_POLYNOMIAL_GATE_R2",
+          "P080_UNIT_XY",
+          "P080_CANONICAL_SCALE_POLYNOMIAL",
+          "P080_CANONICAL_SCALE_RATIO",
+          "P080_M_RECURRENCE",
+          "P080_PLASTIC_RECURRENCE",
+          "P080_QGU_RATIONAL_GATE",
+          "P080_WAVE_DENOMINATOR",
+          "P080_LO_SHU_9_CELL",
+          "P080_LO_SHU_ROWS",
+          "P080_LO_SHU_COLUMNS",
+          "P080_LO_SHU_DIAGONALS",
+          "P080_SEVEN_CELL_GATE",
+          "P080_ORIENTATION_U72"
+        ],
+        "resolved_binding_root": "0000000000000000000000000000002ygah>GUOt)N0Vg)K?nYDI>lF*xrJU9lyndfXPpLSR",
+        "schema": "HHS_NATIVE_TRANSITION_ADMISSION_CONTRACT_V1",
+        "witness_requirements": [
+          "VM81_LANE_BINDING",
+          "CANONICAL_OPERAND_COMMITMENT",
+          "AUTHORITY_RECEIPT"
+        ]
+      },
+      {
+        "admission_contract_root": "000000000000000000000000000000423c9RMVIgaw=mVCKHZWqkR9*d>DT3XE6=iTWiOBvi",
+        "authority_requirements": "NATIVE_CAPABILITY_CONTRACT_ONLY",
+        "closure_requirements": [
+          "LOCAL_LO_SHU",
+          "VM81_GLOBAL",
+          "ORIENTATION_U72"
+        ],
+        "exact_domain_checks": "REQUIRED_BEFORE_RESIDUE_EVALUATION",
+        "exact_residue_checks": "ALL_REQUIRED_RELATIONS",
+        "expected_receipt_schema": "HHS_NATIVE_TRANSITION_ADMISSION_RECEIPT_V1",
+        "lease_requirements": [
+          "TASK_BOUND",
+          "SOURCE_SCOPED",
+          "OPERATION_SCOPED",
+          "SEQUENCE_BOUNDED"
+        ],
+        "mutation_bounds": "READ_OR_BOUNDED_NATIVE_OPERATION",
+        "native_execution_permitted_by_contract_only_after_admission": true,
+        "native_opcode": "NATIVE_SIZEOF_HASH72_RING_STATE",
+        "opcode_contract_root": "0000000000000000000000000000001zs)1je*5-I0J=nAYeforH2AKTtjByQll42E-mOpNp",
+        "relation_graph_root": "0000000000000000000000000000002VP+9Q^CpasS6/)sqoHwjC466h(Ubj6yeaGOYRmKxd",
+        "required_relation_ids": [
+          "P080_EQUALITY_A_P2",
+          "P080_EQUALITY_B_P2",
+          "P080_ORDERED_AB_P4",
+          "P080_ORDERED_BA_P4",
+          "P080_RADICAL_AB_P2",
+          "P080_RADICAL_BA_P2",
+          "P080_RECIPROCAL_NORMALIZATION",
+          "P080_NATIVE_POLYNOMIAL_GATE_R1",
+          "P080_NATIVE_POLYNOMIAL_GATE_R2",
+          "P080_UNIT_XY",
+          "P080_CANONICAL_SCALE_POLYNOMIAL",
+          "P080_CANONICAL_SCALE_RATIO",
+          "P080_M_RECURRENCE",
+          "P080_PLASTIC_RECURRENCE",
+          "P080_QGU_RATIONAL_GATE",
+          "P080_WAVE_DENOMINATOR",
+          "P080_LO_SHU_9_CELL",
+          "P080_LO_SHU_ROWS",
+          "P080_LO_SHU_COLUMNS",
+          "P080_LO_SHU_DIAGONALS",
+          "P080_SEVEN_CELL_GATE",
+          "P080_ORIENTATION_U72"
+        ],
+        "resolved_binding_root": "0000000000000000000000000000001zs)1je*5-I0J=nAYeforH2AKTtjByQll42E-mOpNp",
+        "schema": "HHS_NATIVE_TRANSITION_ADMISSION_CONTRACT_V1",
+        "witness_requirements": [
+          "VM81_LANE_BINDING",
+          "CANONICAL_OPERAND_COMMITMENT",
+          "AUTHORITY_RECEIPT"
+        ]
+      },
+      {
+        "admission_contract_root": "0000000000000000000000000000000JtK)M5^UOq3yO)ehlMV8LC!vq^Rl3SvQb>hrnC1Ue",
+        "authority_requirements": "NATIVE_CAPABILITY_CONTRACT_ONLY",
+        "closure_requirements": [
+          "LOCAL_LO_SHU",
+          "VM81_GLOBAL",
+          "ORIENTATION_U72"
+        ],
+        "exact_domain_checks": "REQUIRED_BEFORE_RESIDUE_EVALUATION",
+        "exact_residue_checks": "ALL_REQUIRED_RELATIONS",
+        "expected_receipt_schema": "HHS_NATIVE_TRANSITION_ADMISSION_RECEIPT_V1",
+        "lease_requirements": [
+          "TASK_BOUND",
+          "SOURCE_SCOPED",
+          "OPERATION_SCOPED",
+          "SEQUENCE_BOUNDED"
+        ],
+        "mutation_bounds": "READ_OR_BOUNDED_NATIVE_OPERATION",
+        "native_execution_permitted_by_contract_only_after_admission": true,
+        "native_opcode": "NATIVE_SIZEOF_RECEIPT",
+        "opcode_contract_root": "0000000000000000000000000000003zZTg95IKjSb66nK-cIrPo0qqK3q7Nq*WGt8QR1p1M",
+        "relation_graph_root": "0000000000000000000000000000002VP+9Q^CpasS6/)sqoHwjC466h(Ubj6yeaGOYRmKxd",
+        "required_relation_ids": [
+          "P080_EQUALITY_A_P2",
+          "P080_EQUALITY_B_P2",
+          "P080_ORDERED_AB_P4",
+          "P080_ORDERED_BA_P4",
+          "P080_RADICAL_AB_P2",
+          "P080_RADICAL_BA_P2",
+          "P080_RECIPROCAL_NORMALIZATION",
+          "P080_NATIVE_POLYNOMIAL_GATE_R1",
+          "P080_NATIVE_POLYNOMIAL_GATE_R2",
+          "P080_UNIT_XY",
+          "P080_CANONICAL_SCALE_POLYNOMIAL",
+          "P080_CANONICAL_SCALE_RATIO",
+          "P080_M_RECURRENCE",
+          "P080_PLASTIC_RECURRENCE",
+          "P080_QGU_RATIONAL_GATE",
+          "P080_WAVE_DENOMINATOR",
+          "P080_LO_SHU_9_CELL",
+          "P080_LO_SHU_ROWS",
+          "P080_LO_SHU_COLUMNS",
+          "P080_LO_SHU_DIAGONALS",
+          "P080_SEVEN_CELL_GATE",
+          "P080_ORIENTATION_U72"
+        ],
+        "resolved_binding_root": "0000000000000000000000000000003zZTg95IKjSb66nK-cIrPo0qqK3q7Nq*WGt8QR1p1M",
+        "schema": "HHS_NATIVE_TRANSITION_ADMISSION_CONTRACT_V1",
+        "witness_requirements": [
+          "VM81_LANE_BINDING",
+          "CANONICAL_OPERAND_COMMITMENT",
+          "AUTHORITY_RECEIPT"
+        ]
+      },
+      {
+        "admission_contract_root": "0000000000000000000000000000002n8o+I^IvdSP!!3FY2/cE9UCq/hSWzX)76+kljs)2T",
+        "authority_requirements": "NATIVE_CAPABILITY_CONTRACT_ONLY",
+        "closure_requirements": [
+          "LOCAL_LO_SHU",
+          "VM81_GLOBAL",
+          "ORIENTATION_U72"
+        ],
+        "exact_domain_checks": "REQUIRED_BEFORE_RESIDUE_EVALUATION",
+        "exact_residue_checks": "ALL_REQUIRED_RELATIONS",
+        "expected_receipt_schema": "HHS_NATIVE_TRANSITION_ADMISSION_RECEIPT_V1",
+        "lease_requirements": [
+          "TASK_BOUND",
+          "SOURCE_SCOPED",
+          "OPERATION_SCOPED",
+          "SEQUENCE_BOUNDED"
+        ],
+        "mutation_bounds": "READ_OR_BOUNDED_NATIVE_OPERATION",
+        "native_execution_permitted_by_contract_only_after_admission": true,
+        "native_opcode": "NATIVE_SIZEOF_RUNTIME_STATE",
+        "opcode_contract_root": "0000000000000000000000000000001BUlTA6j(rOsIbK>x2UXOuMBFY-p6P831)u)d93ELx",
+        "relation_graph_root": "0000000000000000000000000000002VP+9Q^CpasS6/)sqoHwjC466h(Ubj6yeaGOYRmKxd",
+        "required_relation_ids": [
+          "P080_EQUALITY_A_P2",
+          "P080_EQUALITY_B_P2",
+          "P080_ORDERED_AB_P4",
+          "P080_ORDERED_BA_P4",
+          "P080_RADICAL_AB_P2",
+          "P080_RADICAL_BA_P2",
+          "P080_RECIPROCAL_NORMALIZATION",
+          "P080_NATIVE_POLYNOMIAL_GATE_R1",
+          "P080_NATIVE_POLYNOMIAL_GATE_R2",
+          "P080_UNIT_XY",
+          "P080_CANONICAL_SCALE_POLYNOMIAL",
+          "P080_CANONICAL_SCALE_RATIO",
+          "P080_M_RECURRENCE",
+          "P080_PLASTIC_RECURRENCE",
+          "P080_QGU_RATIONAL_GATE",
+          "P080_WAVE_DENOMINATOR",
+          "P080_LO_SHU_9_CELL",
+          "P080_LO_SHU_ROWS",
+          "P080_LO_SHU_COLUMNS",
+          "P080_LO_SHU_DIAGONALS",
+          "P080_SEVEN_CELL_GATE",
+          "P080_ORIENTATION_U72"
+        ],
+        "resolved_binding_root": "0000000000000000000000000000001BUlTA6j(rOsIbK>x2UXOuMBFY-p6P831)u)d93ELx",
+        "schema": "HHS_NATIVE_TRANSITION_ADMISSION_CONTRACT_V1",
+        "witness_requirements": [
+          "VM81_LANE_BINDING",
+          "CANONICAL_OPERAND_COMMITMENT",
+          "AUTHORITY_RECEIPT"
+        ]
+      },
+      {
+        "admission_contract_root": "0000000000000000000000000000002NwY-wE6dVC+>ZdQ(l*>CEqtH5+k)aBT92qnT?ps^X",
+        "authority_requirements": "NATIVE_CAPABILITY_CONTRACT_ONLY",
+        "closure_requirements": [
+          "LOCAL_LO_SHU",
+          "VM81_GLOBAL",
+          "ORIENTATION_U72"
+        ],
+        "exact_domain_checks": "REQUIRED_BEFORE_RESIDUE_EVALUATION",
+        "exact_residue_checks": "ALL_REQUIRED_RELATIONS",
+        "expected_receipt_schema": "HHS_NATIVE_TRANSITION_ADMISSION_RECEIPT_V1",
+        "lease_requirements": [
+          "TASK_BOUND",
+          "SOURCE_SCOPED",
+          "OPERATION_SCOPED",
+          "SEQUENCE_BOUNDED"
+        ],
+        "mutation_bounds": "READ_OR_BOUNDED_NATIVE_OPERATION",
+        "native_execution_permitted_by_contract_only_after_admission": true,
+        "native_opcode": "NATIVE_SIZEOF_SRCG_STATE",
+        "opcode_contract_root": "0000000000000000000000000000003ZwAiNOTSV?Mk714XiBfem/oX=br8pKVuBo/+BW95(",
+        "relation_graph_root": "0000000000000000000000000000002VP+9Q^CpasS6/)sqoHwjC466h(Ubj6yeaGOYRmKxd",
+        "required_relation_ids": [
+          "P080_EQUALITY_A_P2",
+          "P080_EQUALITY_B_P2",
+          "P080_ORDERED_AB_P4",
+          "P080_ORDERED_BA_P4",
+          "P080_RADICAL_AB_P2",
+          "P080_RADICAL_BA_P2",
+          "P080_RECIPROCAL_NORMALIZATION",
+          "P080_NATIVE_POLYNOMIAL_GATE_R1",
+          "P080_NATIVE_POLYNOMIAL_GATE_R2",
+          "P080_UNIT_XY",
+          "P080_CANONICAL_SCALE_POLYNOMIAL",
+          "P080_CANONICAL_SCALE_RATIO",
+          "P080_M_RECURRENCE",
+          "P080_PLASTIC_RECURRENCE",
+          "P080_QGU_RATIONAL_GATE",
+          "P080_WAVE_DENOMINATOR",
+          "P080_LO_SHU_9_CELL",
+          "P080_LO_SHU_ROWS",
+          "P080_LO_SHU_COLUMNS",
+          "P080_LO_SHU_DIAGONALS",
+          "P080_SEVEN_CELL_GATE",
+          "P080_ORIENTATION_U72"
+        ],
+        "resolved_binding_root": "0000000000000000000000000000003ZwAiNOTSV?Mk714XiBfem/oX=br8pKVuBo/+BW95(",
+        "schema": "HHS_NATIVE_TRANSITION_ADMISSION_CONTRACT_V1",
+        "witness_requirements": [
+          "VM81_LANE_BINDING",
+          "CANONICAL_OPERAND_COMMITMENT",
+          "AUTHORITY_RECEIPT"
+        ]
+      },
+      {
+        "admission_contract_root": "0000000000000000000000000000001T/udA++PZF8YdGjRT9LQ7)hjuqD94h5i?eaMtR6WJ",
+        "authority_requirements": "NATIVE_CAPABILITY_CONTRACT_ONLY",
+        "closure_requirements": [
+          "LOCAL_LO_SHU",
+          "VM81_GLOBAL",
+          "ORIENTATION_U72"
+        ],
+        "exact_domain_checks": "REQUIRED_BEFORE_RESIDUE_EVALUATION",
+        "exact_residue_checks": "ALL_REQUIRED_RELATIONS",
+        "expected_receipt_schema": "HHS_NATIVE_TRANSITION_ADMISSION_RECEIPT_V1",
+        "lease_requirements": [
+          "TASK_BOUND",
+          "SOURCE_SCOPED",
+          "OPERATION_SCOPED",
+          "SEQUENCE_BOUNDED"
+        ],
+        "mutation_bounds": "READ_OR_BOUNDED_NATIVE_OPERATION",
+        "native_execution_permitted_by_contract_only_after_admission": true,
+        "native_opcode": "NATIVE_SIZEOF_TENSOR_STATE",
+        "opcode_contract_root": "00000000000000000000000000000015Ja?O8xWs>HjFsektDUw75B-!hoE4-WZEkPSLvZhH",
+        "relation_graph_root": "0000000000000000000000000000002VP+9Q^CpasS6/)sqoHwjC466h(Ubj6yeaGOYRmKxd",
+        "required_relation_ids": [
+          "P080_EQUALITY_A_P2",
+          "P080_EQUALITY_B_P2",
+          "P080_ORDERED_AB_P4",
+          "P080_ORDERED_BA_P4",
+          "P080_RADICAL_AB_P2",
+          "P080_RADICAL_BA_P2",
+          "P080_RECIPROCAL_NORMALIZATION",
+          "P080_NATIVE_POLYNOMIAL_GATE_R1",
+          "P080_NATIVE_POLYNOMIAL_GATE_R2",
+          "P080_UNIT_XY",
+          "P080_CANONICAL_SCALE_POLYNOMIAL",
+          "P080_CANONICAL_SCALE_RATIO",
+          "P080_M_RECURRENCE",
+          "P080_PLASTIC_RECURRENCE",
+          "P080_QGU_RATIONAL_GATE",
+          "P080_WAVE_DENOMINATOR",
+          "P080_LO_SHU_9_CELL",
+          "P080_LO_SHU_ROWS",
+          "P080_LO_SHU_COLUMNS",
+          "P080_LO_SHU_DIAGONALS",
+          "P080_SEVEN_CELL_GATE",
+          "P080_ORIENTATION_U72"
+        ],
+        "resolved_binding_root": "00000000000000000000000000000015Ja?O8xWs>HjFsektDUw75B-!hoE4-WZEkPSLvZhH",
+        "schema": "HHS_NATIVE_TRANSITION_ADMISSION_CONTRACT_V1",
+        "witness_requirements": [
+          "VM81_LANE_BINDING",
+          "CANONICAL_OPERAND_COMMITMENT",
+          "AUTHORITY_RECEIPT"
+        ]
+      },
+      {
+        "admission_contract_root": "0000000000000000000000000000003JBw>h9eIyh0v*vfyYAQeIi)p?iETepBChgrZugbV9",
+        "authority_requirements": "NATIVE_CAPABILITY_CONTRACT_ONLY",
+        "closure_requirements": [
+          "LOCAL_LO_SHU",
+          "VM81_GLOBAL",
+          "ORIENTATION_U72"
+        ],
+        "exact_domain_checks": "REQUIRED_BEFORE_RESIDUE_EVALUATION",
+        "exact_residue_checks": "ALL_REQUIRED_RELATIONS",
+        "expected_receipt_schema": "HHS_NATIVE_TRANSITION_ADMISSION_RECEIPT_V1",
+        "lease_requirements": [
+          "TASK_BOUND",
+          "SOURCE_SCOPED",
+          "OPERATION_SCOPED",
+          "SEQUENCE_BOUNDED"
+        ],
+        "mutation_bounds": "READ_OR_BOUNDED_NATIVE_OPERATION",
+        "native_execution_permitted_by_contract_only_after_admission": true,
+        "native_opcode": "NATIVE_SRCG_INIT",
+        "opcode_contract_root": "0000000000000000000000000000003/vJDeDpJHzp1=sXd(g24yyEiRltDQ6lf5ST/81q5d",
+        "relation_graph_root": "0000000000000000000000000000002VP+9Q^CpasS6/)sqoHwjC466h(Ubj6yeaGOYRmKxd",
+        "required_relation_ids": [
+          "P080_EQUALITY_A_P2",
+          "P080_EQUALITY_B_P2",
+          "P080_ORDERED_AB_P4",
+          "P080_ORDERED_BA_P4",
+          "P080_RADICAL_AB_P2",
+          "P080_RADICAL_BA_P2",
+          "P080_RECIPROCAL_NORMALIZATION",
+          "P080_NATIVE_POLYNOMIAL_GATE_R1",
+          "P080_NATIVE_POLYNOMIAL_GATE_R2",
+          "P080_UNIT_XY",
+          "P080_CANONICAL_SCALE_POLYNOMIAL",
+          "P080_CANONICAL_SCALE_RATIO",
+          "P080_M_RECURRENCE",
+          "P080_PLASTIC_RECURRENCE",
+          "P080_QGU_RATIONAL_GATE",
+          "P080_WAVE_DENOMINATOR",
+          "P080_LO_SHU_9_CELL",
+          "P080_LO_SHU_ROWS",
+          "P080_LO_SHU_COLUMNS",
+          "P080_LO_SHU_DIAGONALS",
+          "P080_SEVEN_CELL_GATE",
+          "P080_ORIENTATION_U72"
+        ],
+        "resolved_binding_root": "0000000000000000000000000000003/vJDeDpJHzp1=sXd(g24yyEiRltDQ6lf5ST/81q5d",
+        "schema": "HHS_NATIVE_TRANSITION_ADMISSION_CONTRACT_V1",
+        "witness_requirements": [
+          "VM81_LANE_BINDING",
+          "CANONICAL_OPERAND_COMMITMENT",
+          "AUTHORITY_RECEIPT"
+        ]
+      },
+      {
+        "admission_contract_root": "0000000000000000000000000000002)b3sWLizo170o)F?0BR4DXJPw^-GDkNnkb3pAR*R?",
+        "authority_requirements": "NATIVE_CAPABILITY_CONTRACT_ONLY",
+        "closure_requirements": [
+          "LOCAL_LO_SHU",
+          "VM81_GLOBAL",
+          "ORIENTATION_U72"
+        ],
+        "exact_domain_checks": "REQUIRED_BEFORE_RESIDUE_EVALUATION",
+        "exact_residue_checks": "ALL_REQUIRED_RELATIONS",
+        "expected_receipt_schema": "HHS_NATIVE_TRANSITION_ADMISSION_RECEIPT_V1",
+        "lease_requirements": [
+          "TASK_BOUND",
+          "SOURCE_SCOPED",
+          "OPERATION_SCOPED",
+          "SEQUENCE_BOUNDED"
+        ],
+        "mutation_bounds": "READ_OR_BOUNDED_NATIVE_OPERATION",
+        "native_execution_permitted_by_contract_only_after_admission": true,
+        "native_opcode": "NATIVE_SRCG_STEP",
+        "opcode_contract_root": "0000000000000000000000000000001kQE)5bTr3S)O)e)Tsxo8ObOWOHmN39MyNFGAcp8iX",
+        "relation_graph_root": "0000000000000000000000000000002VP+9Q^CpasS6/)sqoHwjC466h(Ubj6yeaGOYRmKxd",
+        "required_relation_ids": [
+          "P080_EQUALITY_A_P2",
+          "P080_EQUALITY_B_P2",
+          "P080_ORDERED_AB_P4",
+          "P080_ORDERED_BA_P4",
+          "P080_RADICAL_AB_P2",
+          "P080_RADICAL_BA_P2",
+          "P080_RECIPROCAL_NORMALIZATION",
+          "P080_NATIVE_POLYNOMIAL_GATE_R1",
+          "P080_NATIVE_POLYNOMIAL_GATE_R2",
+          "P080_UNIT_XY",
+          "P080_CANONICAL_SCALE_POLYNOMIAL",
+          "P080_CANONICAL_SCALE_RATIO",
+          "P080_M_RECURRENCE",
+          "P080_PLASTIC_RECURRENCE",
+          "P080_QGU_RATIONAL_GATE",
+          "P080_WAVE_DENOMINATOR",
+          "P080_LO_SHU_9_CELL",
+          "P080_LO_SHU_ROWS",
+          "P080_LO_SHU_COLUMNS",
+          "P080_LO_SHU_DIAGONALS",
+          "P080_SEVEN_CELL_GATE",
+          "P080_ORIENTATION_U72"
+        ],
+        "resolved_binding_root": "0000000000000000000000000000001kQE)5bTr3S)O)e)Tsxo8ObOWOHmN39MyNFGAcp8iX",
+        "schema": "HHS_NATIVE_TRANSITION_ADMISSION_CONTRACT_V1",
+        "witness_requirements": [
+          "VM81_LANE_BINDING",
+          "CANONICAL_OPERAND_COMMITMENT",
+          "AUTHORITY_RECEIPT"
+        ]
+      },
+      {
+        "admission_contract_root": "0000000000000000000000000000003fu2EL6=I7/Tf2--Uf*Hs>BxAxELT*>nWUEriYn9h5",
+        "authority_requirements": "NATIVE_CAPABILITY_CONTRACT_ONLY",
+        "closure_requirements": [
+          "LOCAL_LO_SHU",
+          "VM81_GLOBAL",
+          "ORIENTATION_U72"
+        ],
+        "exact_domain_checks": "REQUIRED_BEFORE_RESIDUE_EVALUATION",
+        "exact_residue_checks": "ALL_REQUIRED_RELATIONS",
+        "expected_receipt_schema": "HHS_NATIVE_TRANSITION_ADMISSION_RECEIPT_V1",
+        "lease_requirements": [
+          "TASK_BOUND",
+          "SOURCE_SCOPED",
+          "OPERATION_SCOPED",
+          "SEQUENCE_BOUNDED"
+        ],
+        "mutation_bounds": "READ_OR_BOUNDED_NATIVE_OPERATION",
+        "native_execution_permitted_by_contract_only_after_admission": true,
+        "native_opcode": "NATIVE_SRCG_VALIDATE",
+        "opcode_contract_root": "0000000000000000000000000000003uyJ+0uGA8clZ+81NkLI18512vRvoDWu4bJM+A7t0L",
+        "relation_graph_root": "0000000000000000000000000000002VP+9Q^CpasS6/)sqoHwjC466h(Ubj6yeaGOYRmKxd",
+        "required_relation_ids": [
+          "P080_EQUALITY_A_P2",
+          "P080_EQUALITY_B_P2",
+          "P080_ORDERED_AB_P4",
+          "P080_ORDERED_BA_P4",
+          "P080_RADICAL_AB_P2",
+          "P080_RADICAL_BA_P2",
+          "P080_RECIPROCAL_NORMALIZATION",
+          "P080_NATIVE_POLYNOMIAL_GATE_R1",
+          "P080_NATIVE_POLYNOMIAL_GATE_R2",
+          "P080_UNIT_XY",
+          "P080_CANONICAL_SCALE_POLYNOMIAL",
+          "P080_CANONICAL_SCALE_RATIO",
+          "P080_M_RECURRENCE",
+          "P080_PLASTIC_RECURRENCE",
+          "P080_QGU_RATIONAL_GATE",
+          "P080_WAVE_DENOMINATOR",
+          "P080_LO_SHU_9_CELL",
+          "P080_LO_SHU_ROWS",
+          "P080_LO_SHU_COLUMNS",
+          "P080_LO_SHU_DIAGONALS",
+          "P080_SEVEN_CELL_GATE",
+          "P080_ORIENTATION_U72"
+        ],
+        "resolved_binding_root": "0000000000000000000000000000003uyJ+0uGA8clZ+81NkLI18512vRvoDWu4bJM+A7t0L",
+        "schema": "HHS_NATIVE_TRANSITION_ADMISSION_CONTRACT_V1",
+        "witness_requirements": [
+          "VM81_LANE_BINDING",
+          "CANONICAL_OPERAND_COMMITMENT",
+          "AUTHORITY_RECEIPT"
+        ]
+      },
+      {
+        "admission_contract_root": "0000000000000000000000000000003oBUk5Yien+8/2wrPSGuyPX>X0k06mJ*zWu*(kW1cC",
+        "authority_requirements": "NATIVE_CAPABILITY_CONTRACT_ONLY",
+        "closure_requirements": [
+          "LOCAL_LO_SHU",
+          "VM81_GLOBAL",
+          "ORIENTATION_U72"
+        ],
+        "exact_domain_checks": "REQUIRED_BEFORE_RESIDUE_EVALUATION",
+        "exact_residue_checks": "ALL_REQUIRED_RELATIONS",
+        "expected_receipt_schema": "HHS_NATIVE_TRANSITION_ADMISSION_RECEIPT_V1",
+        "lease_requirements": [
+          "TASK_BOUND",
+          "SOURCE_SCOPED",
+          "OPERATION_SCOPED",
+          "SEQUENCE_BOUNDED"
+        ],
+        "mutation_bounds": "MUTATE_TENSOR_STATE",
+        "native_execution_permitted_by_contract_only_after_admission": true,
+        "native_opcode": "NATIVE_TENSOR_APPLY_XY",
+        "opcode_contract_root": "0000000000000000000000000000000FjVMrrBeANBiByXq!)hnQ8-r5?1?^z!LQ>vGGaJTW",
+        "relation_graph_root": "0000000000000000000000000000002VP+9Q^CpasS6/)sqoHwjC466h(Ubj6yeaGOYRmKxd",
+        "required_relation_ids": [
+          "P080_EQUALITY_A_P2",
+          "P080_EQUALITY_B_P2",
+          "P080_ORDERED_AB_P4",
+          "P080_ORDERED_BA_P4",
+          "P080_RADICAL_AB_P2",
+          "P080_RADICAL_BA_P2",
+          "P080_RECIPROCAL_NORMALIZATION",
+          "P080_NATIVE_POLYNOMIAL_GATE_R1",
+          "P080_NATIVE_POLYNOMIAL_GATE_R2",
+          "P080_UNIT_XY",
+          "P080_CANONICAL_SCALE_POLYNOMIAL",
+          "P080_CANONICAL_SCALE_RATIO",
+          "P080_M_RECURRENCE",
+          "P080_PLASTIC_RECURRENCE",
+          "P080_QGU_RATIONAL_GATE",
+          "P080_WAVE_DENOMINATOR",
+          "P080_LO_SHU_9_CELL",
+          "P080_LO_SHU_ROWS",
+          "P080_LO_SHU_COLUMNS",
+          "P080_LO_SHU_DIAGONALS",
+          "P080_SEVEN_CELL_GATE",
+          "P080_ORIENTATION_U72"
+        ],
+        "resolved_binding_root": "0000000000000000000000000000000FjVMrrBeANBiByXq!)hnQ8-r5?1?^z!LQ>vGGaJTW",
+        "schema": "HHS_NATIVE_TRANSITION_ADMISSION_CONTRACT_V1",
+        "witness_requirements": [
+          "VM81_LANE_BINDING",
+          "CANONICAL_OPERAND_COMMITMENT",
+          "AUTHORITY_RECEIPT"
+        ]
+      },
+      {
+        "admission_contract_root": "0000000000000000000000000000002)=CMYHCwhJpfuvfhC7QW6g(HMLfn+Dow)zB9o>PNf",
+        "authority_requirements": "NATIVE_CAPABILITY_CONTRACT_ONLY",
+        "closure_requirements": [
+          "LOCAL_LO_SHU",
+          "VM81_GLOBAL",
+          "ORIENTATION_U72"
+        ],
+        "exact_domain_checks": "REQUIRED_BEFORE_RESIDUE_EVALUATION",
+        "exact_residue_checks": "ALL_REQUIRED_RELATIONS",
+        "expected_receipt_schema": "HHS_NATIVE_TRANSITION_ADMISSION_RECEIPT_V1",
+        "lease_requirements": [
+          "TASK_BOUND",
+          "SOURCE_SCOPED",
+          "OPERATION_SCOPED",
+          "SEQUENCE_BOUNDED"
+        ],
+        "mutation_bounds": "RESET_TENSOR_STATE",
+        "native_execution_permitted_by_contract_only_after_admission": true,
+        "native_opcode": "NATIVE_TENSOR_RESET",
+        "opcode_contract_root": "0000000000000000000000000000001UZlcHANRP(-(M1pYUb9G8jxtIso46LBKB5/w7SymU",
+        "relation_graph_root": "0000000000000000000000000000002VP+9Q^CpasS6/)sqoHwjC466h(Ubj6yeaGOYRmKxd",
+        "required_relation_ids": [
+          "P080_EQUALITY_A_P2",
+          "P080_EQUALITY_B_P2",
+          "P080_ORDERED_AB_P4",
+          "P080_ORDERED_BA_P4",
+          "P080_RADICAL_AB_P2",
+          "P080_RADICAL_BA_P2",
+          "P080_RECIPROCAL_NORMALIZATION",
+          "P080_NATIVE_POLYNOMIAL_GATE_R1",
+          "P080_NATIVE_POLYNOMIAL_GATE_R2",
+          "P080_UNIT_XY",
+          "P080_CANONICAL_SCALE_POLYNOMIAL",
+          "P080_CANONICAL_SCALE_RATIO",
+          "P080_M_RECURRENCE",
+          "P080_PLASTIC_RECURRENCE",
+          "P080_QGU_RATIONAL_GATE",
+          "P080_WAVE_DENOMINATOR",
+          "P080_LO_SHU_9_CELL",
+          "P080_LO_SHU_ROWS",
+          "P080_LO_SHU_COLUMNS",
+          "P080_LO_SHU_DIAGONALS",
+          "P080_SEVEN_CELL_GATE",
+          "P080_ORIENTATION_U72"
+        ],
+        "resolved_binding_root": "0000000000000000000000000000001UZlcHANRP(-(M1pYUb9G8jxtIso46LBKB5/w7SymU",
+        "schema": "HHS_NATIVE_TRANSITION_ADMISSION_CONTRACT_V1",
+        "witness_requirements": [
+          "VM81_LANE_BINDING",
+          "CANONICAL_OPERAND_COMMITMENT",
+          "AUTHORITY_RECEIPT"
+        ]
+      },
+      {
+        "admission_contract_root": "0000000000000000000000000000001SdyPjq+?FMCruFkEwDMOXET4QzT2d-t7d+?DG3^sQ",
+        "authority_requirements": "NATIVE_CAPABILITY_CONTRACT_ONLY",
+        "closure_requirements": [
+          "LOCAL_LO_SHU",
+          "VM81_GLOBAL",
+          "ORIENTATION_U72"
+        ],
+        "exact_domain_checks": "REQUIRED_BEFORE_RESIDUE_EVALUATION",
+        "exact_residue_checks": "ALL_REQUIRED_RELATIONS",
+        "expected_receipt_schema": "HHS_NATIVE_TRANSITION_ADMISSION_RECEIPT_V1",
+        "lease_requirements": [
+          "TASK_BOUND",
+          "SOURCE_SCOPED",
+          "OPERATION_SCOPED",
+          "SEQUENCE_BOUNDED"
+        ],
+        "mutation_bounds": "MUTATE_TRANSPORT_STATE",
+        "native_execution_permitted_by_contract_only_after_admission": true,
+        "native_opcode": "NATIVE_TRANSPORT_APPLY",
+        "opcode_contract_root": "0000000000000000000000000000001uDFfRVxYDGzn-7mmKmEXQ>WVi+88Z6)zK>0cZz>vg",
+        "relation_graph_root": "0000000000000000000000000000002VP+9Q^CpasS6/)sqoHwjC466h(Ubj6yeaGOYRmKxd",
+        "required_relation_ids": [
+          "P080_EQUALITY_A_P2",
+          "P080_EQUALITY_B_P2",
+          "P080_ORDERED_AB_P4",
+          "P080_ORDERED_BA_P4",
+          "P080_RADICAL_AB_P2",
+          "P080_RADICAL_BA_P2",
+          "P080_RECIPROCAL_NORMALIZATION",
+          "P080_NATIVE_POLYNOMIAL_GATE_R1",
+          "P080_NATIVE_POLYNOMIAL_GATE_R2",
+          "P080_UNIT_XY",
+          "P080_CANONICAL_SCALE_POLYNOMIAL",
+          "P080_CANONICAL_SCALE_RATIO",
+          "P080_M_RECURRENCE",
+          "P080_PLASTIC_RECURRENCE",
+          "P080_QGU_RATIONAL_GATE",
+          "P080_WAVE_DENOMINATOR",
+          "P080_LO_SHU_9_CELL",
+          "P080_LO_SHU_ROWS",
+          "P080_LO_SHU_COLUMNS",
+          "P080_LO_SHU_DIAGONALS",
+          "P080_SEVEN_CELL_GATE",
+          "P080_ORIENTATION_U72"
+        ],
+        "resolved_binding_root": "0000000000000000000000000000001uDFfRVxYDGzn-7mmKmEXQ>WVi+88Z6)zK>0cZz>vg",
+        "schema": "HHS_NATIVE_TRANSITION_ADMISSION_CONTRACT_V1",
+        "witness_requirements": [
+          "VM81_LANE_BINDING",
+          "CANONICAL_OPERAND_COMMITMENT",
+          "AUTHORITY_RECEIPT"
+        ]
+      },
+      {
+        "admission_contract_root": "0000000000000000000000000000001S*ruTh?L)3y*MPJ*RGtm5cKC4QtsBI62GlRRGrzT(",
+        "authority_requirements": "NATIVE_CAPABILITY_CONTRACT_ONLY",
+        "closure_requirements": [
+          "LOCAL_LO_SHU",
+          "VM81_GLOBAL",
+          "ORIENTATION_U72"
+        ],
+        "exact_domain_checks": "REQUIRED_BEFORE_RESIDUE_EVALUATION",
+        "exact_residue_checks": "ALL_REQUIRED_RELATIONS",
+        "expected_receipt_schema": "HHS_NATIVE_TRANSITION_ADMISSION_RECEIPT_V1",
+        "lease_requirements": [
+          "TASK_BOUND",
+          "SOURCE_SCOPED",
+          "OPERATION_SCOPED",
+          "SEQUENCE_BOUNDED"
+        ],
+        "mutation_bounds": "READ_OR_BOUNDED_NATIVE_OPERATION",
+        "native_execution_permitted_by_contract_only_after_admission": true,
+        "native_opcode": "NATIVE_VALIDATE_ABI",
+        "opcode_contract_root": "00000000000000000000000000000035fgVbm!+Qr365rexv/LBg4?HU!TIT622xWbRVAi7X",
+        "relation_graph_root": "0000000000000000000000000000002VP+9Q^CpasS6/)sqoHwjC466h(Ubj6yeaGOYRmKxd",
+        "required_relation_ids": [
+          "P080_EQUALITY_A_P2",
+          "P080_EQUALITY_B_P2",
+          "P080_ORDERED_AB_P4",
+          "P080_ORDERED_BA_P4",
+          "P080_RADICAL_AB_P2",
+          "P080_RADICAL_BA_P2",
+          "P080_RECIPROCAL_NORMALIZATION",
+          "P080_NATIVE_POLYNOMIAL_GATE_R1",
+          "P080_NATIVE_POLYNOMIAL_GATE_R2",
+          "P080_UNIT_XY",
+          "P080_CANONICAL_SCALE_POLYNOMIAL",
+          "P080_CANONICAL_SCALE_RATIO",
+          "P080_M_RECURRENCE",
+          "P080_PLASTIC_RECURRENCE",
+          "P080_QGU_RATIONAL_GATE",
+          "P080_WAVE_DENOMINATOR",
+          "P080_LO_SHU_9_CELL",
+          "P080_LO_SHU_ROWS",
+          "P080_LO_SHU_COLUMNS",
+          "P080_LO_SHU_DIAGONALS",
+          "P080_SEVEN_CELL_GATE",
+          "P080_ORIENTATION_U72"
+        ],
+        "resolved_binding_root": "00000000000000000000000000000035fgVbm!+Qr365rexv/LBg4?HU!TIT622xWbRVAi7X",
+        "schema": "HHS_NATIVE_TRANSITION_ADMISSION_CONTRACT_V1",
+        "witness_requirements": [
+          "VM81_LANE_BINDING",
+          "CANONICAL_OPERAND_COMMITMENT",
+          "AUTHORITY_RECEIPT"
+        ]
+      },
+      {
+        "admission_contract_root": "0000000000000000000000000000002uZ*zJ*0I79X8yqAEa0n0gNloQ6MD2Y2=-Jzf3vTOt",
+        "authority_requirements": "NATIVE_CAPABILITY_CONTRACT_ONLY",
+        "closure_requirements": [
+          "LOCAL_LO_SHU",
+          "VM81_GLOBAL",
+          "ORIENTATION_U72"
+        ],
+        "exact_domain_checks": "REQUIRED_BEFORE_RESIDUE_EVALUATION",
+        "exact_residue_checks": "ALL_REQUIRED_RELATIONS",
+        "expected_receipt_schema": "HHS_NATIVE_TRANSITION_ADMISSION_RECEIPT_V1",
+        "lease_requirements": [
+          "TASK_BOUND",
+          "SOURCE_SCOPED",
+          "OPERATION_SCOPED",
+          "SEQUENCE_BOUNDED"
+        ],
+        "mutation_bounds": "READ_OR_BOUNDED_NATIVE_OPERATION",
+        "native_execution_permitted_by_contract_only_after_admission": true,
+        "native_opcode": "NATIVE_VECTORIZE_HASH72",
+        "opcode_contract_root": "0000000000000000000000000000000eQ4THv*YHsCO2upx6Q8R96ZL9YBc1NF=NULsqLFgd",
+        "relation_graph_root": "0000000000000000000000000000002VP+9Q^CpasS6/)sqoHwjC466h(Ubj6yeaGOYRmKxd",
+        "required_relation_ids": [
+          "P080_EQUALITY_A_P2",
+          "P080_EQUALITY_B_P2",
+          "P080_ORDERED_AB_P4",
+          "P080_ORDERED_BA_P4",
+          "P080_RADICAL_AB_P2",
+          "P080_RADICAL_BA_P2",
+          "P080_RECIPROCAL_NORMALIZATION",
+          "P080_NATIVE_POLYNOMIAL_GATE_R1",
+          "P080_NATIVE_POLYNOMIAL_GATE_R2",
+          "P080_UNIT_XY",
+          "P080_CANONICAL_SCALE_POLYNOMIAL",
+          "P080_CANONICAL_SCALE_RATIO",
+          "P080_M_RECURRENCE",
+          "P080_PLASTIC_RECURRENCE",
+          "P080_QGU_RATIONAL_GATE",
+          "P080_WAVE_DENOMINATOR",
+          "P080_LO_SHU_9_CELL",
+          "P080_LO_SHU_ROWS",
+          "P080_LO_SHU_COLUMNS",
+          "P080_LO_SHU_DIAGONALS",
+          "P080_SEVEN_CELL_GATE",
+          "P080_ORIENTATION_U72"
+        ],
+        "resolved_binding_root": "0000000000000000000000000000000eQ4THv*YHsCO2upx6Q8R96ZL9YBc1NF=NULsqLFgd",
+        "schema": "HHS_NATIVE_TRANSITION_ADMISSION_CONTRACT_V1",
+        "witness_requirements": [
+          "VM81_LANE_BINDING",
+          "CANONICAL_OPERAND_COMMITMENT",
+          "AUTHORITY_RECEIPT"
+        ]
+      }
+    ],
+    "opcode_contracts_with_membrane_rules": 29,
+    "opcode_membrane_registry_root_hash72": "0000000000000000000000000000000F/j2zzkXkguhx8Vm*JX>v/p(N8l8vaakHY2V>/r4s",
+    "pass_id": "PASS_080",
+    "registered_native_opcode_contracts": 29,
+    "relation_graph": {
+      "evaluation_policy": "EXACT_TYPED_RELATION_GRAPH_NO_OPAQUE_FORMULA_DISPATCH",
+      "floating_point_authority_paths": 0,
+      "membrane_root_hash72": "0000000000000000000000000000002VP+9Q^CpasS6/)sqoHwjC466h(Ubj6yeaGOYRmKxd",
+      "opaque_formula_dispatch_paths": 0,
+      "pass_id": "PASS_080",
+      "relation_categories": [
+        "EQUALITY",
+        "RECIPROCAL",
+        "ORDERED_PRODUCT",
+        "POLYNOMIAL",
+        "RADICAL",
+        "PHASE",
+        "LO_SHU",
+        "VM81_GLOBAL",
+        "PLASTIC_RECURRENCE",
+        "QGU_KERNEL",
+        "AUTHORITY",
+        "LEASE",
+        "WITNESS"
+      ],
+      "relation_count": 22,
+      "relations": [
+        {
+          "dependency_relations": [],
+          "domain_restrictions": [],
+          "exact_evaluation_type": "INTEGER_OR_BIGINT_RATIONAL_NO_FLOAT_AUTHORITY",
+          "expected_residue": "0",
+          "expression": "A-P^2",
+          "failure_code": "REJECT_A_NOT_P2",
+          "operand_provenance": {
+            "A": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT",
+            "P": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT"
+          },
+          "operands": [
+            "A",
+            "P"
+          ],
+          "provenance": "USER_SUPPLIED_PASS_080_FORMAL_SET",
+          "relation_id": "P080_EQUALITY_A_P2",
+          "relation_root_hash72": "0000000000000000000000000000002uHV?8uyV/EN1KDS94yyArWj-TJY6JU3abolCzgwNV",
+          "relation_type": "POLYNOMIAL_EQUALITY",
+          "schema": "HHS_TYPED_CONSTRAINT_RELATION_V1",
+          "witness_contribution": "RELATION_RESULT_AND_EXACT_RESIDUE"
+        },
+        {
+          "dependency_relations": [],
+          "domain_restrictions": [],
+          "exact_evaluation_type": "INTEGER_OR_BIGINT_RATIONAL_NO_FLOAT_AUTHORITY",
+          "expected_residue": "0",
+          "expression": "B-P^2",
+          "failure_code": "REJECT_B_NOT_P2",
+          "operand_provenance": {
+            "B": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT",
+            "P": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT"
+          },
+          "operands": [
+            "B",
+            "P"
+          ],
+          "provenance": "USER_SUPPLIED_PASS_080_FORMAL_SET",
+          "relation_id": "P080_EQUALITY_B_P2",
+          "relation_root_hash72": "0000000000000000000000000000002C05n)pSuol1L*Hq)zRlyRryYh>tWF7p)PbAp3(AUm",
+          "relation_type": "POLYNOMIAL_EQUALITY",
+          "schema": "HHS_TYPED_CONSTRAINT_RELATION_V1",
+          "witness_contribution": "RELATION_RESULT_AND_EXACT_RESIDUE"
+        },
+        {
+          "dependency_relations": [],
+          "domain_restrictions": [],
+          "exact_evaluation_type": "INTEGER_OR_BIGINT_RATIONAL_NO_FLOAT_AUTHORITY",
+          "expected_residue": "0",
+          "expression": "AB-P^4",
+          "failure_code": "REJECT_ORDERED_AB_NOT_P4",
+          "operand_provenance": {
+            "A": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT",
+            "B": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT",
+            "P": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT"
+          },
+          "operands": [
+            "A",
+            "B",
+            "P"
+          ],
+          "provenance": "USER_SUPPLIED_PASS_080_FORMAL_SET",
+          "relation_id": "P080_ORDERED_AB_P4",
+          "relation_root_hash72": "0000000000000000000000000000001q8KE(SPk5(>ePf/a4-VoP3ut5G9FSAQMvjBd!+0jT",
+          "relation_type": "ORDERED_PRODUCT_EQUALITY",
+          "schema": "HHS_TYPED_CONSTRAINT_RELATION_V1",
+          "witness_contribution": "RELATION_RESULT_AND_EXACT_RESIDUE"
+        },
+        {
+          "dependency_relations": [],
+          "domain_restrictions": [],
+          "exact_evaluation_type": "INTEGER_OR_BIGINT_RATIONAL_NO_FLOAT_AUTHORITY",
+          "expected_residue": "0",
+          "expression": "BA-P^4",
+          "failure_code": "REJECT_ORDERED_BA_NOT_P4",
+          "operand_provenance": {
+            "A": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT",
+            "B": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT",
+            "P": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT"
+          },
+          "operands": [
+            "B",
+            "A",
+            "P"
+          ],
+          "provenance": "USER_SUPPLIED_PASS_080_FORMAL_SET",
+          "relation_id": "P080_ORDERED_BA_P4",
+          "relation_root_hash72": "0000000000000000000000000000003SViVQw63zwU>WPwYPIdoz!)WIz/O(Q?q9nBzj5/ob",
+          "relation_type": "ORDERED_PRODUCT_EQUALITY",
+          "schema": "HHS_TYPED_CONSTRAINT_RELATION_V1",
+          "witness_contribution": "RELATION_RESULT_AND_EXACT_RESIDUE"
+        },
+        {
+          "dependency_relations": [],
+          "domain_restrictions": [
+            "AB>=0"
+          ],
+          "exact_evaluation_type": "INTEGER_OR_BIGINT_RATIONAL_NO_FLOAT_AUTHORITY",
+          "expected_residue": "0",
+          "expression": "AB-(P^2)^2",
+          "failure_code": "REJECT_SQRT_AB_NOT_P2",
+          "operand_provenance": {
+            "A": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT",
+            "B": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT",
+            "P": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT"
+          },
+          "operands": [
+            "A",
+            "B",
+            "P"
+          ],
+          "provenance": "USER_SUPPLIED_PASS_080_FORMAL_SET",
+          "relation_id": "P080_RADICAL_AB_P2",
+          "relation_root_hash72": "0000000000000000000000000000002>sdvYwK7)euJ1kSHaUtekDpA4-rn3zlQ6M6z4M/o3",
+          "relation_type": "EXACT_SQUARE_RELATION",
+          "schema": "HHS_TYPED_CONSTRAINT_RELATION_V1",
+          "witness_contribution": "RELATION_RESULT_AND_EXACT_RESIDUE"
+        },
+        {
+          "dependency_relations": [],
+          "domain_restrictions": [
+            "BA>=0"
+          ],
+          "exact_evaluation_type": "INTEGER_OR_BIGINT_RATIONAL_NO_FLOAT_AUTHORITY",
+          "expected_residue": "0",
+          "expression": "BA-(P^2)^2",
+          "failure_code": "REJECT_SQRT_BA_NOT_P2",
+          "operand_provenance": {
+            "A": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT",
+            "B": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT",
+            "P": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT"
+          },
+          "operands": [
+            "B",
+            "A",
+            "P"
+          ],
+          "provenance": "USER_SUPPLIED_PASS_080_FORMAL_SET",
+          "relation_id": "P080_RADICAL_BA_P2",
+          "relation_root_hash72": "0000000000000000000000000000002)ouUC1dLnxr)Pz5A0MsCDsPGtWMJec-mfy2WrKjGV",
+          "relation_type": "EXACT_SQUARE_RELATION",
+          "schema": "HHS_TYPED_CONSTRAINT_RELATION_V1",
+          "witness_contribution": "RELATION_RESULT_AND_EXACT_RESIDUE"
+        },
+        {
+          "dependency_relations": [],
+          "domain_restrictions": [
+            "A!=0",
+            "B!=0"
+          ],
+          "exact_evaluation_type": "INTEGER_OR_BIGINT_RATIONAL_NO_FLOAT_AUTHORITY",
+          "expected_residue": "0",
+          "expression": "(A/B)(B/A)-1",
+          "failure_code": "REJECT_RECIPROCAL_NORMALIZATION",
+          "operand_provenance": {
+            "A": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT",
+            "B": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT"
+          },
+          "operands": [
+            "A",
+            "B"
+          ],
+          "provenance": "USER_SUPPLIED_PASS_080_FORMAL_SET",
+          "relation_id": "P080_RECIPROCAL_NORMALIZATION",
+          "relation_root_hash72": "0000000000000000000000000000004zS*R)wG)>S/dvd-ZqabRoIBXeMfxpsPlA6C)Ppp+Q",
+          "relation_type": "RATIONAL_EQUALITY",
+          "schema": "HHS_TYPED_CONSTRAINT_RELATION_V1",
+          "witness_contribution": "RELATION_RESULT_AND_EXACT_RESIDUE"
+        },
+        {
+          "dependency_relations": [],
+          "domain_restrictions": [],
+          "exact_evaluation_type": "INTEGER_OR_BIGINT_RATIONAL_NO_FLOAT_AUTHORITY",
+          "expected_residue": "0",
+          "expression": "P^2-pq-n^4",
+          "failure_code": "REJECT_PQ_N4_GATE",
+          "operand_provenance": {
+            "P": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT",
+            "n": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT",
+            "p": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT",
+            "q": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT"
+          },
+          "operands": [
+            "P",
+            "p",
+            "q",
+            "n"
+          ],
+          "provenance": "USER_SUPPLIED_PASS_080_FORMAL_SET",
+          "relation_id": "P080_NATIVE_POLYNOMIAL_GATE_R1",
+          "relation_root_hash72": "0000000000000000000000000000002DYL)^9epHPMf-+!5XqTfW(5IZTShleEX60AUPb-1k",
+          "relation_type": "POLYNOMIAL_EQUALITY",
+          "schema": "HHS_TYPED_CONSTRAINT_RELATION_V1",
+          "witness_contribution": "RELATION_RESULT_AND_EXACT_RESIDUE"
+        },
+        {
+          "dependency_relations": [],
+          "domain_restrictions": [],
+          "exact_evaluation_type": "INTEGER_OR_BIGINT_RATIONAL_NO_FLOAT_AUTHORITY",
+          "expected_residue": "0",
+          "expression": "n^4-xy",
+          "failure_code": "REJECT_N4_XY_GATE",
+          "operand_provenance": {
+            "n": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT",
+            "x": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT",
+            "y": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT"
+          },
+          "operands": [
+            "n",
+            "x",
+            "y"
+          ],
+          "provenance": "USER_SUPPLIED_PASS_080_FORMAL_SET",
+          "relation_id": "P080_NATIVE_POLYNOMIAL_GATE_R2",
+          "relation_root_hash72": "0000000000000000000000000000004pfvoX2rFo/ye*NEMT+f*rHl1*nF1t29rLoOFWYlfR",
+          "relation_type": "POLYNOMIAL_EQUALITY",
+          "schema": "HHS_TYPED_CONSTRAINT_RELATION_V1",
+          "witness_contribution": "RELATION_RESULT_AND_EXACT_RESIDUE"
+        },
+        {
+          "dependency_relations": [],
+          "domain_restrictions": [],
+          "exact_evaluation_type": "INTEGER_OR_BIGINT_RATIONAL_NO_FLOAT_AUTHORITY",
+          "expected_residue": "0",
+          "expression": "xy-1",
+          "failure_code": "REJECT_XY_UNIT",
+          "operand_provenance": {
+            "x": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT",
+            "y": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT"
+          },
+          "operands": [
+            "x",
+            "y"
+          ],
+          "provenance": "USER_SUPPLIED_PASS_080_FORMAL_SET",
+          "relation_id": "P080_UNIT_XY",
+          "relation_root_hash72": "0000000000000000000000000000003bJ0ZfEFJTDS7DAc^aGxuvzCU!w3aeyVMcN3u4h2er",
+          "relation_type": "ORDERED_PRODUCT_EQUALITY",
+          "schema": "HHS_TYPED_CONSTRAINT_RELATION_V1",
+          "witness_contribution": "RELATION_RESULT_AND_EXACT_RESIDUE"
+        },
+        {
+          "dependency_relations": [],
+          "domain_restrictions": [],
+          "exact_evaluation_type": "INTEGER_OR_BIGINT_RATIONAL_NO_FLOAT_AUTHORITY",
+          "expected_residue": "0",
+          "expression": "c2-b2-a2",
+          "failure_code": "REJECT_CANONICAL_SCALE",
+          "operand_provenance": {
+            "a2": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT",
+            "b2": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT",
+            "c2": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT"
+          },
+          "operands": [
+            "a2",
+            "b2",
+            "c2"
+          ],
+          "provenance": "USER_SUPPLIED_PASS_080_FORMAL_SET",
+          "relation_id": "P080_CANONICAL_SCALE_POLYNOMIAL",
+          "relation_root_hash72": "00000000000000000000000000000008siTmGFW?z?Wqy-iijkhRhXbc3Z-30OaEG4X3f6kY",
+          "relation_type": "POLYNOMIAL_EQUALITY",
+          "schema": "HHS_TYPED_CONSTRAINT_RELATION_V1",
+          "witness_contribution": "RELATION_RESULT_AND_EXACT_RESIDUE"
+        },
+        {
+          "dependency_relations": [
+            "P080_CANONICAL_SCALE_POLYNOMIAL"
+          ],
+          "domain_restrictions": [
+            "a2!=0"
+          ],
+          "exact_evaluation_type": "INTEGER_OR_BIGINT_RATIONAL_NO_FLOAT_AUTHORITY",
+          "expected_residue": "0",
+          "expression": "(c2-b2)/a2-1",
+          "failure_code": "REJECT_CANONICAL_SCALE_RATIO",
+          "operand_provenance": {
+            "a2": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT",
+            "b2": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT",
+            "c2": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT"
+          },
+          "operands": [
+            "a2",
+            "b2",
+            "c2"
+          ],
+          "provenance": "USER_SUPPLIED_PASS_080_FORMAL_SET",
+          "relation_id": "P080_CANONICAL_SCALE_RATIO",
+          "relation_root_hash72": "0000000000000000000000000000003cepvMhRGJC=DXBohRmy/AdfEBYSFT7Omx67kc-C?m",
+          "relation_type": "RATIONAL_EQUALITY",
+          "schema": "HHS_TYPED_CONSTRAINT_RELATION_V1",
+          "witness_contribution": "RELATION_RESULT_AND_EXACT_RESIDUE"
+        },
+        {
+          "dependency_relations": [],
+          "domain_restrictions": [],
+          "exact_evaluation_type": "INTEGER_OR_BIGINT_RATIONAL_NO_FLOAT_AUTHORITY",
+          "expected_residue": "0",
+          "expression": "m^2-m-1",
+          "failure_code": "REJECT_M_RECURRENCE",
+          "operand_provenance": {
+            "m": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT"
+          },
+          "operands": [
+            "m"
+          ],
+          "provenance": "USER_SUPPLIED_PASS_080_FORMAL_SET",
+          "relation_id": "P080_M_RECURRENCE",
+          "relation_root_hash72": "0000000000000000000000000000001MqL*vyfsi3xgQmMrrgLyOX-0A9dal*ICQptMfWaC9",
+          "relation_type": "POLYNOMIAL_EQUALITY",
+          "schema": "HHS_TYPED_CONSTRAINT_RELATION_V1",
+          "witness_contribution": "RELATION_RESULT_AND_EXACT_RESIDUE"
+        },
+        {
+          "dependency_relations": [],
+          "domain_restrictions": [],
+          "exact_evaluation_type": "INTEGER_OR_BIGINT_RATIONAL_NO_FLOAT_AUTHORITY",
+          "expected_residue": "0",
+          "expression": "plastic^3-plastic-1",
+          "failure_code": "REJECT_PLASTIC_RECURRENCE",
+          "operand_provenance": {
+            "plastic": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT"
+          },
+          "operands": [
+            "plastic"
+          ],
+          "provenance": "PASS_078_EXTERNAL_GEOMETRY_CONTRACT",
+          "relation_id": "P080_PLASTIC_RECURRENCE",
+          "relation_root_hash72": "0000000000000000000000000000004yyzL/cU/W7KrU)+nJE*)eQ)-QgO=fYQyhX14GI6L7",
+          "relation_type": "POLYNOMIAL_EQUALITY",
+          "schema": "HHS_TYPED_CONSTRAINT_RELATION_V1",
+          "witness_contribution": "RELATION_RESULT_AND_EXACT_RESIDUE"
+        },
+        {
+          "dependency_relations": [],
+          "domain_restrictions": [
+            "m^2-m!=0",
+            "xy+cq2!=0",
+            "m^yx exact"
+          ],
+          "exact_evaluation_type": "INTEGER_OR_BIGINT_RATIONAL_NO_FLOAT_AUTHORITY",
+          "expected_residue": "0",
+          "expression": "(t^3-t)(m-m^yx)RK(xy+cq2)-(m^2-m)(xy+cq2+dq4)",
+          "failure_code": "REJECT_QGU_RATIONAL_GATE",
+          "operand_provenance": {
+            "RK": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT",
+            "cq2": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT",
+            "dq4": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT",
+            "m": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT",
+            "t": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT",
+            "x": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT",
+            "y": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT",
+            "yx": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT"
+          },
+          "operands": [
+            "t",
+            "m",
+            "yx",
+            "RK",
+            "x",
+            "y",
+            "cq2",
+            "dq4"
+          ],
+          "provenance": "USER_SUPPLIED_PASS_080_FORMAL_SET",
+          "relation_id": "P080_QGU_RATIONAL_GATE",
+          "relation_root_hash72": "00000000000000000000000000000028ZtNXh?qgboB=0W4dkT/eT?(MXVLFbP/3IsTz7+4E",
+          "relation_type": "CROSS_MULTIPLIED_RATIONAL_EQUALITY",
+          "schema": "HHS_TYPED_CONSTRAINT_RELATION_V1",
+          "witness_contribution": "RELATION_RESULT_AND_EXACT_RESIDUE"
+        },
+        {
+          "dependency_relations": [],
+          "domain_restrictions": [
+            "y!=0",
+            "w!=0"
+          ],
+          "exact_evaluation_type": "INTEGER_OR_BIGINT_RATIONAL_NO_FLOAT_AUTHORITY",
+          "expected_residue": "NONZERO",
+          "expression": "((xy)zw)+x^s+y^-s-z^v-w^-v",
+          "failure_code": "REJECT_ZERO_WAVE_DENOMINATOR",
+          "operand_provenance": {
+            "s": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT",
+            "v": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT",
+            "w": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT",
+            "x": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT",
+            "y": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT",
+            "z": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT"
+          },
+          "operands": [
+            "x",
+            "y",
+            "z",
+            "w",
+            "s",
+            "v"
+          ],
+          "provenance": "USER_SUPPLIED_PASS_080_FORMAL_SET",
+          "relation_id": "P080_WAVE_DENOMINATOR",
+          "relation_root_hash72": "00000000000000000000000000000039qvH4QQapXi+wmc1fVoPnv-0EBd9-99TRqF1!vj0W",
+          "relation_type": "NONZERO_ORDERED_EXPRESSION",
+          "schema": "HHS_TYPED_CONSTRAINT_RELATION_V1",
+          "witness_contribution": "RELATION_RESULT_AND_EXACT_RESIDUE"
+        },
+        {
+          "dependency_relations": [],
+          "domain_restrictions": [],
+          "exact_evaluation_type": "INTEGER_OR_BIGINT_RATIONAL_NO_FLOAT_AUTHORITY",
+          "expected_residue": "0",
+          "expression": "H[i,j]-L[i,j] for 9 cells",
+          "failure_code": "REJECT_LO_SHU_CELL_RECONSTRUCTION",
+          "operand_provenance": {
+            "lo_shu_cells": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT"
+          },
+          "operands": [
+            "lo_shu_cells"
+          ],
+          "provenance": "USER_SUPPLIED_PASS_080_FORMAL_SET",
+          "relation_id": "P080_LO_SHU_9_CELL",
+          "relation_root_hash72": "0000000000000000000000000000001Us0j7?ceai^hQq2Sv*YPZaVNmB0NAG-jfG*5!I1+Q",
+          "relation_type": "TENSOR_CELL_EQUALITY_SET",
+          "schema": "HHS_TYPED_CONSTRAINT_RELATION_V1",
+          "witness_contribution": "RELATION_RESULT_AND_EXACT_RESIDUE"
+        },
+        {
+          "dependency_relations": [
+            "P080_LO_SHU_9_CELL"
+          ],
+          "domain_restrictions": [],
+          "exact_evaluation_type": "INTEGER_OR_BIGINT_RATIONAL_NO_FLOAT_AUTHORITY",
+          "expected_residue": "0",
+          "expression": "row_sums-15",
+          "failure_code": "REJECT_LO_SHU_ROW_CLOSURE",
+          "operand_provenance": {
+            "lo_shu_cells": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT"
+          },
+          "operands": [
+            "lo_shu_cells"
+          ],
+          "provenance": "USER_SUPPLIED_PASS_080_FORMAL_SET",
+          "relation_id": "P080_LO_SHU_ROWS",
+          "relation_root_hash72": "0000000000000000000000000000003fnNa6cmFyykW7ihUpiWNsBJ(bl^9m2F0e^BU/xO=D",
+          "relation_type": "TENSOR_SUM_CLOSURE",
+          "schema": "HHS_TYPED_CONSTRAINT_RELATION_V1",
+          "witness_contribution": "RELATION_RESULT_AND_EXACT_RESIDUE"
+        },
+        {
+          "dependency_relations": [
+            "P080_LO_SHU_9_CELL"
+          ],
+          "domain_restrictions": [],
+          "exact_evaluation_type": "INTEGER_OR_BIGINT_RATIONAL_NO_FLOAT_AUTHORITY",
+          "expected_residue": "0",
+          "expression": "column_sums-15",
+          "failure_code": "REJECT_LO_SHU_COLUMN_CLOSURE",
+          "operand_provenance": {
+            "lo_shu_cells": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT"
+          },
+          "operands": [
+            "lo_shu_cells"
+          ],
+          "provenance": "USER_SUPPLIED_PASS_080_FORMAL_SET",
+          "relation_id": "P080_LO_SHU_COLUMNS",
+          "relation_root_hash72": "000000000000000000000000000000290H!OHF*J9m-X(QlrRvWc7/0tmTVFzCs-ltgeWXcH",
+          "relation_type": "TENSOR_SUM_CLOSURE",
+          "schema": "HHS_TYPED_CONSTRAINT_RELATION_V1",
+          "witness_contribution": "RELATION_RESULT_AND_EXACT_RESIDUE"
+        },
+        {
+          "dependency_relations": [
+            "P080_LO_SHU_9_CELL"
+          ],
+          "domain_restrictions": [],
+          "exact_evaluation_type": "INTEGER_OR_BIGINT_RATIONAL_NO_FLOAT_AUTHORITY",
+          "expected_residue": "0",
+          "expression": "diagonal_sums-15",
+          "failure_code": "REJECT_LO_SHU_DIAGONAL_CLOSURE",
+          "operand_provenance": {
+            "lo_shu_cells": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT"
+          },
+          "operands": [
+            "lo_shu_cells"
+          ],
+          "provenance": "USER_SUPPLIED_PASS_080_FORMAL_SET",
+          "relation_id": "P080_LO_SHU_DIAGONALS",
+          "relation_root_hash72": "0000000000000000000000000000002o8mFXUZiV/TJyls7=E4YToBs8f3=e/owUhFT2DVIb",
+          "relation_type": "TENSOR_SUM_CLOSURE",
+          "schema": "HHS_TYPED_CONSTRAINT_RELATION_V1",
+          "witness_contribution": "RELATION_RESULT_AND_EXACT_RESIDUE"
+        },
+        {
+          "dependency_relations": [],
+          "domain_restrictions": [],
+          "exact_evaluation_type": "INTEGER_OR_BIGINT_RATIONAL_NO_FLOAT_AUTHORITY",
+          "expected_residue": "0",
+          "expression": "(b6-a2)(d2+b2)-7(c2+b4)",
+          "failure_code": "REJECT_SEVEN_CELL_GATE",
+          "operand_provenance": {
+            "a2": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT",
+            "b2": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT",
+            "b4": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT",
+            "b6": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT",
+            "c2": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT",
+            "d2": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT"
+          },
+          "operands": [
+            "a2",
+            "b2",
+            "b4",
+            "b6",
+            "c2",
+            "d2"
+          ],
+          "provenance": "USER_SUPPLIED_PASS_080_FORMAL_SET",
+          "relation_id": "P080_SEVEN_CELL_GATE",
+          "relation_root_hash72": "0000000000000000000000000000001T0gVfERh8)j7VTeD+lL!Tt-F7CH*(p0g67sry^X>Z",
+          "relation_type": "POLYNOMIAL_EQUALITY",
+          "schema": "HHS_TYPED_CONSTRAINT_RELATION_V1",
+          "witness_contribution": "RELATION_RESULT_AND_EXACT_RESIDUE"
+        },
+        {
+          "dependency_relations": [],
+          "domain_restrictions": [],
+          "exact_evaluation_type": "INTEGER_OR_BIGINT_RATIONAL_NO_FLOAT_AUTHORITY",
+          "expected_residue": "0",
+          "expression": "(x+y-z-w) mod 72",
+          "failure_code": "REJECT_ORIENTATION_NOT_CLOSED",
+          "operand_provenance": {
+            "w": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT",
+            "x": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT",
+            "y": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT",
+            "z": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT"
+          },
+          "operands": [
+            "x",
+            "y",
+            "z",
+            "w"
+          ],
+          "provenance": "USER_SUPPLIED_PASS_080_FORMAL_SET",
+          "relation_id": "P080_ORIENTATION_U72",
+          "relation_root_hash72": "0000000000000000000000000000000s2m(093QXVj/ziYfgd!uZaOdwo*7!zWJ4jRTtme2L",
+          "relation_type": "MODULAR_EQUALITY",
+          "schema": "HHS_TYPED_CONSTRAINT_RELATION_V1",
+          "witness_contribution": "RELATION_RESULT_AND_EXACT_RESIDUE"
+        }
+      ],
+      "schema": "HHS_NATIVE_CONSTRAINT_MEMBRANE_V1"
+    },
+    "schema": "HHS_PASS_080_OPCODE_MEMBRANE_CONTRACT_REGISTRY_V1"
+  },
+  "parent_pass": "PASS_079",
+  "pass080_release_root_hash72": "0000000000000000000000000000003^2=39V1Hj6gZ?y>bC-djikWMqPvxHKeJK2FPDDIv4",
+  "pass_id": "PASS_080",
+  "schema": "HHS_PASS_080_RELEASE_BUNDLE_V1"
+}

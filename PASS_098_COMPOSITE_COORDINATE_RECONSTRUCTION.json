@@ -1,0 +1,83 @@
+{
+  "schema": "HHS_PASS_098_CRT_RESULTS_V1",
+  "checks": [
+    {
+      "exact": true,
+      "expected": 0,
+      "k": 0,
+      "phases": [
+        0,
+        0,
+        6,
+        12,
+        18
+      ],
+      "reconstructed": 0
+    },
+    {
+      "exact": true,
+      "expected": 1,
+      "k": 1,
+      "phases": [
+        1,
+        1,
+        7,
+        13,
+        0
+      ],
+      "reconstructed": 1
+    },
+    {
+      "exact": true,
+      "expected": 71,
+      "k": 71,
+      "phases": [
+        71,
+        5,
+        12,
+        15,
+        13
+      ],
+      "reconstructed": 71
+    },
+    {
+      "exact": true,
+      "expected": 72,
+      "k": 72,
+      "phases": [
+        0,
+        6,
+        0,
+        16,
+        14
+      ],
+      "reconstructed": 72
+    },
+    {
+      "exact": true,
+      "expected": 137,
+      "k": 137,
+      "phases": [
+        65,
+        5,
+        0,
+        13,
+        3
+      ],
+      "reconstructed": 137
+    },
+    {
+      "exact": true,
+      "expected": 3325607,
+      "k": 3325607,
+      "phases": [
+        71,
+        10,
+        5,
+        11,
+        17
+      ],
+      "reconstructed": 3325607
+    }
+  ]
+}

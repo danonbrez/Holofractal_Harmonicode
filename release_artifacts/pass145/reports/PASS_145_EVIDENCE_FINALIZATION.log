@@ -1,0 +1,12 @@
+{
+  "parent": "PARENT_ADMITTED",
+  "tests": {
+    "tests": 42,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "passed": 42
+  },
+  "a2_host": "OBSERVED_WORKING",
+  "terminal_status": "PASS_145_NOT_CLOSED"
+}

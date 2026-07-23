@@ -1,0 +1,31 @@
+{
+  "schema": "HHS_PASS_105_4_RELEASE_MANIFEST_V1",
+  "pass_id": "PASS_105_4",
+  "parent_pass105_3_release_root_hash72": "0000000000000000000000000000002DxQSg)nYRHxQHNSAeR9JRjXagMl8?Fs=KL!AQ6^g9",
+  "repair_scope": "PASS_101_THROUGH_105_STRUCTURAL_NEGATIVE_ATTACK_EVIDENCE",
+  "attack_count": 77,
+  "passed_count": 77,
+  "failed_count": 0,
+  "all_attacks_structurally_executed": true,
+  "parallel_test_computation_count": 0,
+  "mock_component_count": 0,
+  "superseded_synthetic_negative_record_files": [
+    "PASS_101_NEGATIVE_CASES.json",
+    "PASS_102_NEGATIVE_CASES.json",
+    "PASS_103_NEGATIVE_CASES.json",
+    "PASS_104_NEGATIVE_CASES.json",
+    "PASS_105_NEGATIVE_CASES.json"
+  ],
+  "artifacts": [
+    "PASS_105_4_PRODUCTION_NEGATIVE_ATTACK_REGISTRY.json",
+    "PASS_105_4_NEGATIVE_ATTACK_SUMMARY.json",
+    "PASS_105_4_CALIBRATION_REPORT.md",
+    "CHANGELOG_PASS_105_4.md",
+    "PASS_101_NEGATIVE_CASES.json",
+    "PASS_102_NEGATIVE_CASES.json",
+    "PASS_103_NEGATIVE_CASES.json",
+    "PASS_104_NEGATIVE_CASES.json",
+    "PASS_105_NEGATIVE_CASES.json"
+  ],
+  "pass105_4_release_root_hash72": "0000000000000000000000000000003Il1FJYYge(95xmio!m!pQf(V^liS26)c8G?d4d2/X"
+}

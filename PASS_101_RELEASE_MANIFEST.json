@@ -1,0 +1,31 @@
+{
+  "schema": "HHS_PASS_101_RELEASE_MANIFEST_V1",
+  "pass_id": "PASS_101",
+  "parent_pass100_release_root_hash72": "0000000000000000000000000000003sIEE4DDq6!^Q9GrjJC+=Y^nevl9G-T!8vqhMssM5C",
+  "lane_count": 4,
+  "dual_witness_cell_count": 8,
+  "step_count_per_lane": 72,
+  "lane_step_check_count": 288,
+  "all_288_lane_step_residues_zero": true,
+  "all_288_cycle_reconstructions_exact": true,
+  "holographic_reconstruction_coverage": 1.0,
+  "raw_lane_histories_distinct": true,
+  "compensating_errors_detected": true,
+  "correction_preserves_original_evidence": true,
+  "checkpoint_replay_exact": true,
+  "correction_replay_exact": true,
+  "all_negative_cases_passed": true,
+  "artifacts": [
+    "PASS_101_FOUR_LANE_72_STEP_CLOSURE_RECEIPT.json",
+    "PASS_101_288_STEP_RECEIPT_INDEX.json",
+    "PASS_101_SINGLE_ERROR_SYNDROME.json",
+    "PASS_101_CORRECTION_RECEIPT.json",
+    "PASS_101_COMPENSATING_ERROR_DIAGNOSIS.json",
+    "PASS_101_WORKLOAD_REGISTRY.json",
+    "PASS_101_NEGATIVE_CASES.json",
+    "PASS_101_OUTCOME_TAXONOMY.json",
+    "PASS_101_CALIBRATION_REPORT.md",
+    "CHANGELOG_PASS_101.md"
+  ],
+  "pass101_release_root_hash72": "0000000000000000000000000000000DUMIwNl0C8ovL2XXCf-eKbOa0Vi7Y1NfI/E-FVkEA"
+}

@@ -1,0 +1,89 @@
+{
+  "schema": "HHS_PASS_099_NEGATIVE_CASES_V1",
+  "cases": [
+    {
+      "case": "carrier_mutation",
+      "expected": "REJECT_U72_CARRIER_MUTATION",
+      "observed": "REJECT_U72_CARRIER_MUTATION",
+      "passed": true
+    },
+    {
+      "case": "unwitnessed_transition",
+      "expected": "REJECT_UNWITNESSED_CELL_TRANSITION",
+      "observed": "REJECT_UNWITNESSED_CELL_TRANSITION",
+      "passed": true
+    },
+    {
+      "case": "topology_mutation",
+      "expected": "REJECT_UNWITNESSED_TOPOLOGY_MUTATION",
+      "observed": "REJECT_UNWITNESSED_TOPOLOGY_MUTATION",
+      "passed": true
+    },
+    {
+      "case": "layer_collapse",
+      "expected": "REJECT_DYNAMIC_LAYER_IDENTITY_COLLAPSE",
+      "observed": "REJECT_DYNAMIC_LAYER_IDENTITY_COLLAPSE",
+      "passed": true
+    },
+    {
+      "case": "order_mismatch",
+      "expected": "REJECT_DYNAMIC_PROGRAM_ORDER_MISMATCH",
+      "observed": "REJECT_DYNAMIC_PROGRAM_ORDER_MISMATCH",
+      "passed": true
+    },
+    {
+      "case": "unwitnessed_branch",
+      "expected": "REJECT_UNWITNESSED_DYNAMIC_BRANCH",
+      "observed": "REJECT_UNWITNESSED_DYNAMIC_BRANCH",
+      "passed": true
+    },
+    {
+      "case": "outside_lease",
+      "expected": "REJECT_DYNAMIC_OPERATION_OUTSIDE_LEASE",
+      "observed": "REJECT_DYNAMIC_OPERATION_OUTSIDE_LEASE",
+      "passed": true
+    },
+    {
+      "case": "closure_state_collapse",
+      "expected": "REJECT_CARRIER_CLOSURE_STATE_COLLAPSE",
+      "observed": "REJECT_CARRIER_CLOSURE_STATE_COLLAPSE",
+      "passed": true
+    },
+    {
+      "case": "history_erasure",
+      "expected": "REJECT_DYNAMIC_HISTORY_ERASURE",
+      "observed": "REJECT_DYNAMIC_HISTORY_ERASURE",
+      "passed": true
+    },
+    {
+      "case": "unvalidated_universality",
+      "expected": "REJECT_UNVALIDATED_COMPUTATIONAL_UNIVERSALITY",
+      "observed": "REJECT_UNVALIDATED_COMPUTATIONAL_UNIVERSALITY",
+      "passed": true
+    },
+    {
+      "case": "checkpoint_mismatch",
+      "expected": "REJECT_DYNAMIC_CHECKPOINT_REPLAY_MISMATCH",
+      "observed": "REJECT_DYNAMIC_CHECKPOINT_REPLAY_MISMATCH",
+      "passed": true
+    },
+    {
+      "case": "resource_semantic_failure",
+      "expected": "REJECT_RESOURCE_BOUND_AS_COMPUTATIONAL_INVALIDITY",
+      "observed": "REJECT_RESOURCE_BOUND_AS_COMPUTATIONAL_INVALIDITY",
+      "passed": true
+    },
+    {
+      "case": "self_mutation",
+      "expected": "REJECT_UNAUTHORIZED_PROGRAM_SELF_MUTATION",
+      "observed": "REJECT_UNAUTHORIZED_PROGRAM_SELF_MUTATION",
+      "passed": true
+    },
+    {
+      "case": "proposal_as_authority",
+      "expected": "REJECT_PROGRAM_PROPOSAL_AS_EXECUTION_AUTHORITY",
+      "observed": "REJECT_PROGRAM_PROPOSAL_AS_EXECUTION_AUTHORITY",
+      "passed": true
+    }
+  ]
+}

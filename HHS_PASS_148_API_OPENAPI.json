@@ -1,0 +1,582 @@
+{
+  "components": {
+    "schemas": {
+      "Derivation": {
+        "$id": "hhs://schemas/pass148/derivation",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "additionalProperties": true,
+        "properties": {
+          "control_contamination": {
+            "type": "boolean"
+          },
+          "derivation_hash72": {
+            "type": "string"
+          },
+          "derivation_id": {
+            "type": "string"
+          },
+          "input_propositions": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "ordered_steps": {
+            "items": {
+              "required": [
+                "step",
+                "rule_id",
+                "before",
+                "after",
+                "operator_types",
+                "scope",
+                "conditions",
+                "authority"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "output_proposition": {
+            "type": "string"
+          },
+          "promotion_authorized": {
+            "type": "boolean"
+          },
+          "promotion_requested": {
+            "type": "boolean"
+          },
+          "receipt": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "unresolved_dependencies": {
+            "type": "array"
+          }
+        },
+        "required": [
+          "derivation_id",
+          "input_propositions",
+          "output_proposition",
+          "ordered_steps",
+          "unresolved_dependencies",
+          "control_contamination",
+          "promotion_requested",
+          "promotion_authorized",
+          "derivation_hash72",
+          "receipt"
+        ],
+        "title": "HHS Pass 148 Derivation",
+        "type": "object"
+      },
+      "Promotion": {
+        "$id": "hhs://schemas/pass148/promotion",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "additionalProperties": true,
+        "properties": {
+          "dependency_set": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "governing_rule": {
+            "type": "string"
+          },
+          "requested_by_identity": {
+            "type": "string"
+          },
+          "scope": {
+            "type": "object"
+          },
+          "source_class": {
+            "enum": [
+              "CONTROL_PROJECTION",
+              "DECLARED_SYSTEM_LAW",
+              "DERIVABLE_CONSEQUENCE",
+              "UNRESOLVED_EXPRESSION",
+              "NARRATIVE_EXTRAPOLATION"
+            ]
+          },
+          "source_proposition_id": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "REQUESTED",
+              "AUTHORIZED",
+              "REJECTED"
+            ]
+          },
+          "target_class": {
+            "enum": [
+              "CONTROL_PROJECTION",
+              "DECLARED_SYSTEM_LAW",
+              "DERIVABLE_CONSEQUENCE",
+              "UNRESOLVED_EXPRESSION",
+              "NARRATIVE_EXTRAPOLATION"
+            ]
+          }
+        },
+        "required": [
+          "source_proposition_id",
+          "source_class",
+          "target_class",
+          "governing_rule",
+          "dependency_set",
+          "scope",
+          "requested_by_identity",
+          "status"
+        ],
+        "type": "object"
+      },
+      "Proposition": {
+        "$id": "hhs://schemas/pass148/proposition",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "additionalProperties": true,
+        "properties": {
+          "assumptions": {
+            "type": "array"
+          },
+          "authority_level": {
+            "enum": [
+              "A1",
+              "A4",
+              "A2",
+              "A3"
+            ]
+          },
+          "branch_conditions": {
+            "type": "array"
+          },
+          "canonical_ast_hash": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "consequence_class": {
+            "enum": [
+              "EXCLUDED",
+              "UNDETERMINED",
+              "GATE_LOCAL",
+              "INVARIANT",
+              "CONDITIONAL",
+              "LANE_LOCAL",
+              "NORMALIZATION_LOCAL",
+              "NECESSARY"
+            ]
+          },
+          "dependencies": {
+            "type": "array"
+          },
+          "gate_scope": {
+            "type": "array"
+          },
+          "hash72_identity": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "interpretation_hash": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "interpretation_version": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "lane_scope": {
+            "type": "array"
+          },
+          "operator_profile": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "primary_class": {
+            "enum": [
+              "CONTROL_PROJECTION",
+              "DECLARED_SYSTEM_LAW",
+              "DERIVABLE_CONSEQUENCE",
+              "UNRESOLVED_EXPRESSION",
+              "NARRATIVE_EXTRAPOLATION"
+            ]
+          },
+          "prohibited_promotions": {
+            "type": "array"
+          },
+          "proposition_id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "source_expression": {
+            "type": "string"
+          },
+          "source_reference": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "source_type": {
+            "enum": [
+              "control_engine",
+              "contract",
+              "documentation",
+              "user_declaration",
+              "model_output",
+              "fiction",
+              "runtime"
+            ]
+          },
+          "timestamp": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "proposition_id",
+          "source_expression",
+          "canonical_ast_hash",
+          "source_type",
+          "source_reference",
+          "primary_class",
+          "consequence_class",
+          "authority_level",
+          "operator_profile",
+          "lane_scope",
+          "gate_scope",
+          "branch_conditions",
+          "dependencies",
+          "assumptions",
+          "prohibited_promotions",
+          "interpretation_version",
+          "interpretation_hash",
+          "hash72_identity",
+          "timestamp"
+        ],
+        "title": "HHS Pass 148 Proposition",
+        "type": "object"
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "scheme": "bearer",
+        "type": "http"
+      }
+    }
+  },
+  "info": {
+    "title": "HHS Pass 148 Semantic Membrane API",
+    "version": "148.1.0"
+  },
+  "openapi": "3.1.0",
+  "paths": {
+    "/api/v1/semantic-membrane/analyze": {
+      "post": {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Boundary-admitted result"
+          },
+          "400": {
+            "description": "Structured safe rejection"
+          },
+          "401": {
+            "description": "Authentication required"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Parse, classify, diagnose, persist, and receipt an expression"
+      }
+    },
+    "/api/v1/semantic-membrane/audit": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Boundary-admitted result"
+          },
+          "400": {
+            "description": "Structured safe rejection"
+          },
+          "401": {
+            "description": "Authentication required"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Audit authority isolation and registry closure"
+      }
+    },
+    "/api/v1/semantic-membrane/derivations/{id}": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Boundary-admitted result"
+          },
+          "400": {
+            "description": "Structured safe rejection"
+          },
+          "401": {
+            "description": "Authentication required"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Retrieve a derivation graph"
+      }
+    },
+    "/api/v1/semantic-membrane/derive": {
+      "post": {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Boundary-admitted result"
+          },
+          "400": {
+            "description": "Structured safe rejection"
+          },
+          "401": {
+            "description": "Authentication required"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Execute a witnessed authorized derivation"
+      }
+    },
+    "/api/v1/semantic-membrane/documents/analyze": {
+      "post": {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Boundary-admitted result"
+          },
+          "400": {
+            "description": "Structured safe rejection"
+          },
+          "401": {
+            "description": "Authentication required"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Segment and classify mixed semantic and narrative documents"
+      }
+    },
+    "/api/v1/semantic-membrane/project": {
+      "post": {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Boundary-admitted result"
+          },
+          "400": {
+            "description": "Structured safe rejection"
+          },
+          "401": {
+            "description": "Authentication required"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Run an explicitly isolated control projection"
+      }
+    },
+    "/api/v1/semantic-membrane/promotions/evaluate": {
+      "post": {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Boundary-admitted result"
+          },
+          "400": {
+            "description": "Structured safe rejection"
+          },
+          "401": {
+            "description": "Authentication required"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Evaluate promotion using separately authenticated semantic authority"
+      }
+    },
+    "/api/v1/semantic-membrane/promotions/request": {
+      "post": {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Boundary-admitted result"
+          },
+          "400": {
+            "description": "Structured safe rejection"
+          },
+          "401": {
+            "description": "Authentication required"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Request but do not authorize semantic promotion"
+      }
+    },
+    "/api/v1/semantic-membrane/propositions/{id}": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Boundary-admitted result"
+          },
+          "400": {
+            "description": "Structured safe rejection"
+          },
+          "401": {
+            "description": "Authentication required"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Retrieve a proposition record"
+      }
+    },
+    "/api/v1/semantic-membrane/replay": {
+      "post": {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Boundary-admitted result"
+          },
+          "400": {
+            "description": "Structured safe rejection"
+          },
+          "401": {
+            "description": "Authentication required"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Replay a semantic proposition, derivation, or projection"
+      }
+    },
+    "/api/v1/semantic-membrane/rules/{rule_id}": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Boundary-admitted result"
+          },
+          "400": {
+            "description": "Structured safe rejection"
+          },
+          "401": {
+            "description": "Authentication required"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Retrieve public semantic rule documentation"
+      }
+    }
+  },
+  "servers": [
+    {
+      "description": "Authenticated loopback only",
+      "url": "http://127.0.0.1:8878"
+    }
+  ]
+}

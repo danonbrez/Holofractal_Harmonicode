@@ -1,0 +1,882 @@
+{
+  "collapse": {
+    "collapse_receipt": {
+      "collapse_status": "DETERMINISTIC_COLLAPSE_ADMITTED",
+      "collapse_validation_root_hash72": "0000000000000000000000000000004D)ehHEK(X?BQ1A*jZzx?f1)7lmepv?fVqAFsZ9o-E",
+      "constraint_evaluation_root_hash72": "0000000000000000000000000000002wMPMp(wlajLik5KDvhmq4An3gVAU?i?^Iysc?dA5Z",
+      "entropy_receipt_root_hash72": "000000000000000000000000000000496>vpR9anyXkXmcd*b!=yay2Np?nKXM3*iQ6xRaHn",
+      "measurement_contract_root_hash72": "0000000000000000000000000000003+TnbteTlg4CDuDFk7hf-)RVx6ukM3dB6tQu-8k0vY",
+      "ordered_gate_history_root_hash72": "0000000000000000000000000000004dectsg/BC5UL6XeTXpv7D^vJLPR3EpFOSUiOXz1h+",
+      "postcollapse_normalization_valid": true,
+      "postmeasurement_state_root_hash72": "0000000000000000000000000000004qJXE3v2/^jLNg9XSW(fH5nrF?)NjjU>SLz-Kx9fqj",
+      "precollapse_normalization_valid": true,
+      "premeasurement_state_root_hash72": "00000000000000000000000000000030737n+jO)G?Lmu3IwT?d=lw!Qa/nP30E-T2qcrl+6",
+      "probability_weight_root_hash72": "0000000000000000000000000000000v!ugx0XpEB54T>f8pGMwEwS1j28wEjI>yp/9cJ5s0",
+      "rejected_outcome_count": 2,
+      "schema": "HHS_VM81_COLLAPSE_VALIDATION_RECEIPT_V1",
+      "selected_basis_index": 0,
+      "selected_coordinate": [
+        0,
+        0
+      ],
+      "selected_outcome_admissible": true
+    },
+    "collapsed_state": {
+      "aligned_substrate_root_hash72": "0000000000000000000000000000004JBw>c8)bGf6iA*lr?lEGA+j=hsA*k0mnjs+vNH)J?",
+      "amplitude_domain": [
+        "EXACT_COMPLEX_RATIONAL"
+      ],
+      "authority_root_hash72": "0000000000000000000000000000002Eq*xSPrgFn/gP*-3cgh!I!A5cdY?7TT>Fmd64Xahp",
+      "basis_order": "PASS115_MIXED_RADIX_POSITION_ORDER",
+      "basis_size": 4,
+      "gate_history": [],
+      "nonzero_terms": [
+        {
+          "amplitude": {
+            "imag": {
+              "denominator": 1,
+              "numerator": 0
+            },
+            "real": {
+              "denominator": 1,
+              "numerator": 1
+            }
+          },
+          "basis_index": 0,
+          "coordinate": [
+            0,
+            0
+          ],
+          "probability": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "term_root_hash72": "0000000000000000000000000000001s^Ja5hS^icYxt0il/8^jR/^*-Rtw*1RJ-3?)slajY",
+          "vm81_cell_index": 0
+        }
+      ],
+      "normalization": {
+        "denominator": 1,
+        "numerator": 1
+      },
+      "phase_algebra_root_hash72": "Bw9Z22YDm4hQ9Mt=s\u2260V6yV1v",
+      "register_dimensions": [
+        2,
+        2
+      ],
+      "schema": "HHS_VM81_SUPERPOSITION_STATE_V1",
+      "simulation_model": "FINITE_EXACT_COMPLEX_RATIONAL_STATE_VECTOR",
+      "state_root_hash72": "0000000000000000000000000000004qJXE3v2/^jLNg9XSW(fH5nrF?)NjjU>SLz-Kx9fqj"
+    },
+    "constructor": {
+      "admissible_probability_distribution": [
+        {
+          "basis_index": 0,
+          "coordinate": [
+            0,
+            0
+          ],
+          "normalized_probability": {
+            "denominator": 2,
+            "numerator": 1
+          },
+          "probability": {
+            "denominator": 4,
+            "numerator": 1
+          },
+          "probability_root_hash72": "0000000000000000000000000000000rk-vh/XgNUDD>H=54EuvDoR!f/0FjIpaghfFVC^/)"
+        },
+        {
+          "basis_index": 3,
+          "coordinate": [
+            1,
+            1
+          ],
+          "normalized_probability": {
+            "denominator": 2,
+            "numerator": 1
+          },
+          "probability": {
+            "denominator": 4,
+            "numerator": 1
+          },
+          "probability_root_hash72": "0000000000000000000000000000004z2hEtzP^JRW7zm^RDg3Ba/Ja2ncPLK2vPq4rDF2sS"
+        }
+      ],
+      "collapse_receipt_root_hash72": "0000000000000000000000000000001g8Gku-x!)S68vPMuuEQu!qf1t/izg+(6AmyO92BLf",
+      "constraint_contract_root_hash72": "0000000000000000000000000000002wMPMp(wlajLik5KDvhmq4An3gVAU?i?^Iysc?dA5Z",
+      "entropy_source_class": "SEEDED_DETERMINISTIC_HASH72_PRF",
+      "entropy_witness_root_hash72": "000000000000000000000000000000496>vpR9anyXkXmcd*b!=yay2Np?nKXM3*iQ6xRaHn",
+      "measurement_operator_root_hash72": "0000000000000000000000000000003+TnbteTlg4CDuDFk7hf-)RVx6ukM3dB6tQu-8k0vY",
+      "ordered_gate_history_root_hash72": "0000000000000000000000000000004dectsg/BC5UL6XeTXpv7D^vJLPR3EpFOSUiOXz1h+",
+      "postmeasurement_state_root_hash72": "0000000000000000000000000000004qJXE3v2/^jLNg9XSW(fH5nrF?)NjjU>SLz-Kx9fqj",
+      "premeasurement_state_root_hash72": "00000000000000000000000000000030737n+jO)G?Lmu3IwT?d=lw!Qa/nP30E-T2qcrl+6",
+      "raw_probability_distribution": [
+        {
+          "basis_index": 0,
+          "coordinate": [
+            0,
+            0
+          ],
+          "probability": {
+            "denominator": 4,
+            "numerator": 1
+          },
+          "probability_root_hash72": "0000000000000000000000000000000rk-vh/XgNUDD>H=54EuvDoR!f/0FjIpaghfFVC^/)"
+        },
+        {
+          "basis_index": 1,
+          "coordinate": [
+            1,
+            0
+          ],
+          "probability": {
+            "denominator": 4,
+            "numerator": 1
+          },
+          "probability_root_hash72": "0000000000000000000000000000003SwZ0N-=iZ3*IjB889L3+e**TSlmB=GS>Z!fh/9?Bu"
+        },
+        {
+          "basis_index": 2,
+          "coordinate": [
+            0,
+            1
+          ],
+          "probability": {
+            "denominator": 4,
+            "numerator": 1
+          },
+          "probability_root_hash72": "0000000000000000000000000000000>p11st)2/yI5GWLu7j^017gY5L0kr>/)VhicVZ2J7"
+        },
+        {
+          "basis_index": 3,
+          "coordinate": [
+            1,
+            1
+          ],
+          "probability": {
+            "denominator": 4,
+            "numerator": 1
+          },
+          "probability_root_hash72": "0000000000000000000000000000004z2hEtzP^JRW7zm^RDg3Ba/Ja2ncPLK2vPq4rDF2sS"
+        }
+      ],
+      "schema": "HHS_VM81_DETERMINISTIC_COLLAPSE_CONSTRUCTOR_V1",
+      "selected_outcome_index": 0,
+      "selected_outcome_probability": {
+        "denominator": 2,
+        "numerator": 1
+      }
+    }
+  },
+  "exhaustive": {
+    "branches": [
+      {
+        "basis_index": 0,
+        "branch_root_hash72": "0000000000000000000000000000002YFu7)u8zU5Lgfq7nH40)4CxyFnI/nVldEZ5n^)e9H",
+        "coordinate": [
+          0,
+          0
+        ],
+        "state_root_hash72": "0000000000000000000000000000004qJXE3v2/^jLNg9XSW(fH5nrF?)NjjU>SLz-Kx9fqj",
+        "weight": {
+          "denominator": 2,
+          "numerator": 1
+        }
+      },
+      {
+        "basis_index": 3,
+        "branch_root_hash72": "0000000000000000000000000000003-9YR0O+nWi+wB0mk5xl4P(/tvx1nYHfvFSiTbmVeK",
+        "coordinate": [
+          1,
+          1
+        ],
+        "state_root_hash72": "0000000000000000000000000000002mIm!l6S>1P>VgjPeSQOuS7Sb8AZyOF(MvpWEt^908",
+        "weight": {
+          "denominator": 2,
+          "numerator": 1
+        }
+      }
+    ],
+    "constraint_contract_root_hash72": "0000000000000000000000000000002wMPMp(wlajLik5KDvhmq4An3gVAU?i?^Iysc?dA5Z",
+    "ensemble_root_hash72": "0000000000000000000000000000003fFS-9V^420)v9YpAztgDPi6TjWc-Sr2p*F)aWI3z2",
+    "premeasurement_state_root_hash72": "00000000000000000000000000000030737n+jO)G?Lmu3IwT?d=lw!Qa/nP30E-T2qcrl+6",
+    "schema": "HHS_VM81_EXHAUSTIVE_MEASUREMENT_ENSEMBLE_V1",
+    "total_weight": {
+      "denominator": 1,
+      "numerator": 1
+    }
+  },
+  "mock_components": [],
+  "pass117_root_hash72": "0000000000000000000000000000002(IDpAuM3aIHLgqRDiTagrLUQ(T=83kxUH1+ZUPPO9",
+  "pass_id": "PASS_117",
+  "physical_quantum_claim": false,
+  "replay": {
+    "collapse_receipt": {
+      "collapse_status": "DETERMINISTIC_COLLAPSE_ADMITTED",
+      "collapse_validation_root_hash72": "0000000000000000000000000000004D)ehHEK(X?BQ1A*jZzx?f1)7lmepv?fVqAFsZ9o-E",
+      "constraint_evaluation_root_hash72": "0000000000000000000000000000002wMPMp(wlajLik5KDvhmq4An3gVAU?i?^Iysc?dA5Z",
+      "entropy_receipt_root_hash72": "000000000000000000000000000000496>vpR9anyXkXmcd*b!=yay2Np?nKXM3*iQ6xRaHn",
+      "measurement_contract_root_hash72": "0000000000000000000000000000003+TnbteTlg4CDuDFk7hf-)RVx6ukM3dB6tQu-8k0vY",
+      "ordered_gate_history_root_hash72": "0000000000000000000000000000004dectsg/BC5UL6XeTXpv7D^vJLPR3EpFOSUiOXz1h+",
+      "postcollapse_normalization_valid": true,
+      "postmeasurement_state_root_hash72": "0000000000000000000000000000004qJXE3v2/^jLNg9XSW(fH5nrF?)NjjU>SLz-Kx9fqj",
+      "precollapse_normalization_valid": true,
+      "premeasurement_state_root_hash72": "00000000000000000000000000000030737n+jO)G?Lmu3IwT?d=lw!Qa/nP30E-T2qcrl+6",
+      "probability_weight_root_hash72": "0000000000000000000000000000000v!ugx0XpEB54T>f8pGMwEwS1j28wEjI>yp/9cJ5s0",
+      "rejected_outcome_count": 2,
+      "schema": "HHS_VM81_COLLAPSE_VALIDATION_RECEIPT_V1",
+      "selected_basis_index": 0,
+      "selected_coordinate": [
+        0,
+        0
+      ],
+      "selected_outcome_admissible": true
+    },
+    "collapsed_state": {
+      "aligned_substrate_root_hash72": "0000000000000000000000000000004JBw>c8)bGf6iA*lr?lEGA+j=hsA*k0mnjs+vNH)J?",
+      "amplitude_domain": [
+        "EXACT_COMPLEX_RATIONAL"
+      ],
+      "authority_root_hash72": "0000000000000000000000000000002Eq*xSPrgFn/gP*-3cgh!I!A5cdY?7TT>Fmd64Xahp",
+      "basis_order": "PASS115_MIXED_RADIX_POSITION_ORDER",
+      "basis_size": 4,
+      "gate_history": [],
+      "nonzero_terms": [
+        {
+          "amplitude": {
+            "imag": {
+              "denominator": 1,
+              "numerator": 0
+            },
+            "real": {
+              "denominator": 1,
+              "numerator": 1
+            }
+          },
+          "basis_index": 0,
+          "coordinate": [
+            0,
+            0
+          ],
+          "probability": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "term_root_hash72": "0000000000000000000000000000001s^Ja5hS^icYxt0il/8^jR/^*-Rtw*1RJ-3?)slajY",
+          "vm81_cell_index": 0
+        }
+      ],
+      "normalization": {
+        "denominator": 1,
+        "numerator": 1
+      },
+      "phase_algebra_root_hash72": "Bw9Z22YDm4hQ9Mt=s\u2260V6yV1v",
+      "register_dimensions": [
+        2,
+        2
+      ],
+      "schema": "HHS_VM81_SUPERPOSITION_STATE_V1",
+      "simulation_model": "FINITE_EXACT_COMPLEX_RATIONAL_STATE_VECTOR",
+      "state_root_hash72": "0000000000000000000000000000004qJXE3v2/^jLNg9XSW(fH5nrF?)NjjU>SLz-Kx9fqj"
+    },
+    "constructor": {
+      "admissible_probability_distribution": [
+        {
+          "basis_index": 0,
+          "coordinate": [
+            0,
+            0
+          ],
+          "normalized_probability": {
+            "denominator": 2,
+            "numerator": 1
+          },
+          "probability": {
+            "denominator": 4,
+            "numerator": 1
+          },
+          "probability_root_hash72": "0000000000000000000000000000000rk-vh/XgNUDD>H=54EuvDoR!f/0FjIpaghfFVC^/)"
+        },
+        {
+          "basis_index": 3,
+          "coordinate": [
+            1,
+            1
+          ],
+          "normalized_probability": {
+            "denominator": 2,
+            "numerator": 1
+          },
+          "probability": {
+            "denominator": 4,
+            "numerator": 1
+          },
+          "probability_root_hash72": "0000000000000000000000000000004z2hEtzP^JRW7zm^RDg3Ba/Ja2ncPLK2vPq4rDF2sS"
+        }
+      ],
+      "collapse_receipt_root_hash72": "0000000000000000000000000000001g8Gku-x!)S68vPMuuEQu!qf1t/izg+(6AmyO92BLf",
+      "constraint_contract_root_hash72": "0000000000000000000000000000002wMPMp(wlajLik5KDvhmq4An3gVAU?i?^Iysc?dA5Z",
+      "entropy_source_class": "SEEDED_DETERMINISTIC_HASH72_PRF",
+      "entropy_witness_root_hash72": "000000000000000000000000000000496>vpR9anyXkXmcd*b!=yay2Np?nKXM3*iQ6xRaHn",
+      "measurement_operator_root_hash72": "0000000000000000000000000000003+TnbteTlg4CDuDFk7hf-)RVx6ukM3dB6tQu-8k0vY",
+      "ordered_gate_history_root_hash72": "0000000000000000000000000000004dectsg/BC5UL6XeTXpv7D^vJLPR3EpFOSUiOXz1h+",
+      "postmeasurement_state_root_hash72": "0000000000000000000000000000004qJXE3v2/^jLNg9XSW(fH5nrF?)NjjU>SLz-Kx9fqj",
+      "premeasurement_state_root_hash72": "00000000000000000000000000000030737n+jO)G?Lmu3IwT?d=lw!Qa/nP30E-T2qcrl+6",
+      "raw_probability_distribution": [
+        {
+          "basis_index": 0,
+          "coordinate": [
+            0,
+            0
+          ],
+          "probability": {
+            "denominator": 4,
+            "numerator": 1
+          },
+          "probability_root_hash72": "0000000000000000000000000000000rk-vh/XgNUDD>H=54EuvDoR!f/0FjIpaghfFVC^/)"
+        },
+        {
+          "basis_index": 1,
+          "coordinate": [
+            1,
+            0
+          ],
+          "probability": {
+            "denominator": 4,
+            "numerator": 1
+          },
+          "probability_root_hash72": "0000000000000000000000000000003SwZ0N-=iZ3*IjB889L3+e**TSlmB=GS>Z!fh/9?Bu"
+        },
+        {
+          "basis_index": 2,
+          "coordinate": [
+            0,
+            1
+          ],
+          "probability": {
+            "denominator": 4,
+            "numerator": 1
+          },
+          "probability_root_hash72": "0000000000000000000000000000000>p11st)2/yI5GWLu7j^017gY5L0kr>/)VhicVZ2J7"
+        },
+        {
+          "basis_index": 3,
+          "coordinate": [
+            1,
+            1
+          ],
+          "probability": {
+            "denominator": 4,
+            "numerator": 1
+          },
+          "probability_root_hash72": "0000000000000000000000000000004z2hEtzP^JRW7zm^RDg3Ba/Ja2ncPLK2vPq4rDF2sS"
+        }
+      ],
+      "schema": "HHS_VM81_DETERMINISTIC_COLLAPSE_CONSTRUCTOR_V1",
+      "selected_outcome_index": 0,
+      "selected_outcome_probability": {
+        "denominator": 2,
+        "numerator": 1
+      }
+    }
+  },
+  "schema": "HHS_PASS117_SELF_TEST_V1",
+  "state": {
+    "aligned_substrate_root_hash72": "0000000000000000000000000000004JBw>c8)bGf6iA*lr?lEGA+j=hsA*k0mnjs+vNH)J?",
+    "amplitude_domain": [
+      "EXACT_COMPLEX_RATIONAL"
+    ],
+    "authority_root_hash72": "0000000000000000000000000000002Eq*xSPrgFn/gP*-3cgh!I!A5cdY?7TT>Fmd64Xahp",
+    "basis_order": "PASS115_MIXED_RADIX_POSITION_ORDER",
+    "basis_size": 4,
+    "gate_history": [],
+    "nonzero_terms": [
+      {
+        "amplitude": {
+          "imag": {
+            "denominator": 1,
+            "numerator": 0
+          },
+          "real": {
+            "denominator": 2,
+            "numerator": 1
+          }
+        },
+        "basis_index": 0,
+        "coordinate": [
+          0,
+          0
+        ],
+        "probability": {
+          "denominator": 4,
+          "numerator": 1
+        },
+        "term_root_hash72": "0000000000000000000000000000003yT2TPaQ=^9zuMUxB2n!PECz^3i+jT*rYmzrAr9*oL",
+        "vm81_cell_index": 0
+      },
+      {
+        "amplitude": {
+          "imag": {
+            "denominator": 1,
+            "numerator": 0
+          },
+          "real": {
+            "denominator": 2,
+            "numerator": 1
+          }
+        },
+        "basis_index": 1,
+        "coordinate": [
+          1,
+          0
+        ],
+        "probability": {
+          "denominator": 4,
+          "numerator": 1
+        },
+        "term_root_hash72": "00000000000000000000000000000019eDGvqPqjh6G/QiZL3SeRip40PPKhGU2tWpSwV2Fu",
+        "vm81_cell_index": 1
+      },
+      {
+        "amplitude": {
+          "imag": {
+            "denominator": 1,
+            "numerator": 0
+          },
+          "real": {
+            "denominator": 2,
+            "numerator": 1
+          }
+        },
+        "basis_index": 2,
+        "coordinate": [
+          0,
+          1
+        ],
+        "probability": {
+          "denominator": 4,
+          "numerator": 1
+        },
+        "term_root_hash72": "0000000000000000000000000000004aJ3Q>yiefgqX0gfDCEV)?^g(Zf9=b0>SkMZI3)GrP",
+        "vm81_cell_index": 2
+      },
+      {
+        "amplitude": {
+          "imag": {
+            "denominator": 1,
+            "numerator": 0
+          },
+          "real": {
+            "denominator": 2,
+            "numerator": 1
+          }
+        },
+        "basis_index": 3,
+        "coordinate": [
+          1,
+          1
+        ],
+        "probability": {
+          "denominator": 4,
+          "numerator": 1
+        },
+        "term_root_hash72": "0000000000000000000000000000003BNz7RbEbU)33)v86hQ8Mc)Pyw*>NZGeFA(WEp+4(x",
+        "vm81_cell_index": 3
+      }
+    ],
+    "normalization": {
+      "denominator": 1,
+      "numerator": 1
+    },
+    "phase_algebra_root_hash72": "Bw9Z22YDm4hQ9Mt=s\u2260V6yV1v",
+    "register_dimensions": [
+      2,
+      2
+    ],
+    "schema": "HHS_VM81_SUPERPOSITION_STATE_V1",
+    "simulation_model": "FINITE_EXACT_COMPLEX_RATIONAL_STATE_VECTOR",
+    "state_root_hash72": "00000000000000000000000000000030737n+jO)G?Lmu3IwT?d=lw!Qa/nP30E-T2qcrl+6"
+  },
+  "status": "PASS",
+  "symbolic_balanced_state": {
+    "aligned_substrate_root_hash72": "0000000000000000000000000000004JBw>c8)bGf6iA*lr?lEGA+j=hsA*k0mnjs+vNH)J?",
+    "amplitude_domain": [
+      "HARMONICODE_Q_B_I"
+    ],
+    "authority_root_hash72": "0000000000000000000000000000002Eq*xSPrgFn/gP*-3cgh!I!A5cdY?7TT>Fmd64Xahp",
+    "basis_order": "PASS115_MIXED_RADIX_POSITION_ORDER",
+    "basis_size": 2,
+    "gate_history": [],
+    "nonzero_terms": [
+      {
+        "amplitude": {
+          "defining_relations": [
+            "b^2=2",
+            "i^2=-1"
+          ],
+          "imag": {
+            "b_coeff": {
+              "denominator": 1,
+              "numerator": 0
+            },
+            "rational": {
+              "denominator": 1,
+              "numerator": 0
+            },
+            "relation": "b^2=2"
+          },
+          "kind": "HARMONICODE_Q_B_I",
+          "real": {
+            "b_coeff": {
+              "denominator": 2,
+              "numerator": 1
+            },
+            "rational": {
+              "denominator": 1,
+              "numerator": 0
+            },
+            "relation": "b^2=2"
+          }
+        },
+        "basis_index": 0,
+        "coordinate": [
+          0
+        ],
+        "probability": {
+          "denominator": 2,
+          "numerator": 1
+        },
+        "term_root_hash72": "0000000000000000000000000000002ABPN>vOzRcidZOdmZExXUxp/WN+6g5ALJN=Q+/x5Q",
+        "vm81_cell_index": 0
+      },
+      {
+        "amplitude": {
+          "defining_relations": [
+            "b^2=2",
+            "i^2=-1"
+          ],
+          "imag": {
+            "b_coeff": {
+              "denominator": 1,
+              "numerator": 0
+            },
+            "rational": {
+              "denominator": 1,
+              "numerator": 0
+            },
+            "relation": "b^2=2"
+          },
+          "kind": "HARMONICODE_Q_B_I",
+          "real": {
+            "b_coeff": {
+              "denominator": 2,
+              "numerator": 1
+            },
+            "rational": {
+              "denominator": 1,
+              "numerator": 0
+            },
+            "relation": "b^2=2"
+          }
+        },
+        "basis_index": 1,
+        "coordinate": [
+          1
+        ],
+        "probability": {
+          "denominator": 2,
+          "numerator": 1
+        },
+        "term_root_hash72": "0000000000000000000000000000000l/x/mr>g14GB8bDHkG6Mo/l)FTUtrumQTt2Q4q4Rv",
+        "vm81_cell_index": 1
+      }
+    ],
+    "normalization": {
+      "denominator": 1,
+      "numerator": 1
+    },
+    "phase_algebra_root_hash72": "Bw9Z22YDm4hQ9Mt=s\u2260V6yV1v",
+    "register_dimensions": [
+      2
+    ],
+    "schema": "HHS_VM81_SUPERPOSITION_STATE_V1",
+    "simulation_model": "FINITE_NATIVE_SYMBOLIC_TENSOR_STATE_VECTOR",
+    "state_root_hash72": "0000000000000000000000000000000Y!HDKC!9ZfIeHlvZSHr=phx7yk1RlGJTNL/?(W3**"
+  },
+  "symbolic_bell_state": {
+    "aligned_substrate_root_hash72": "0000000000000000000000000000004JBw>c8)bGf6iA*lr?lEGA+j=hsA*k0mnjs+vNH)J?",
+    "amplitude_domain": [
+      "HARMONICODE_Q_B_I"
+    ],
+    "authority_root_hash72": "0000000000000000000000000000002Eq*xSPrgFn/gP*-3cgh!I!A5cdY?7TT>Fmd64Xahp",
+    "basis_order": "PASS115_MIXED_RADIX_POSITION_ORDER",
+    "basis_size": 4,
+    "gate_history": [
+      {
+        "controls": [],
+        "gate": "HADAMARD_SYMBOLIC_B",
+        "gate_receipt_root_hash72": "0000000000000000000000000000001wyPnx*pqfCwx(rv5lZ9)qy2f4*nkW=VjYICE6u!sa",
+        "previous_state_root_hash72": "0000000000000000000000000000004qJXE3v2/^jLNg9XSW(fH5nrF?)NjjU>SLz-Kx9fqj",
+        "sequence_index": 0,
+        "targets": [
+          0
+        ]
+      },
+      {
+        "controls": [
+          0
+        ],
+        "gate": "SHIFT",
+        "gate_receipt_root_hash72": "0000000000000000000000000000000JvL9!sY)9EB)6*RVQis(OGqNrLN!JoW(HgAuYYO?G",
+        "previous_state_root_hash72": "0000000000000000000000000000002(nD)F9=A4(uFDqYLRnEv4ECkhW*Mh=KaP3WoSy9Bi",
+        "sequence_index": 1,
+        "targets": [
+          1
+        ]
+      }
+    ],
+    "nonzero_terms": [
+      {
+        "amplitude": {
+          "defining_relations": [
+            "b^2=2",
+            "i^2=-1"
+          ],
+          "imag": {
+            "b_coeff": {
+              "denominator": 1,
+              "numerator": 0
+            },
+            "rational": {
+              "denominator": 1,
+              "numerator": 0
+            },
+            "relation": "b^2=2"
+          },
+          "kind": "HARMONICODE_Q_B_I",
+          "real": {
+            "b_coeff": {
+              "denominator": 2,
+              "numerator": 1
+            },
+            "rational": {
+              "denominator": 1,
+              "numerator": 0
+            },
+            "relation": "b^2=2"
+          }
+        },
+        "basis_index": 0,
+        "coordinate": [
+          0,
+          0
+        ],
+        "probability": {
+          "denominator": 2,
+          "numerator": 1
+        },
+        "term_root_hash72": "0000000000000000000000000000003KyvOH)E55KcI33M)OhrCxv7=i*5>cJQ1rYGF2226X",
+        "vm81_cell_index": 0
+      },
+      {
+        "amplitude": {
+          "defining_relations": [
+            "b^2=2",
+            "i^2=-1"
+          ],
+          "imag": {
+            "b_coeff": {
+              "denominator": 1,
+              "numerator": 0
+            },
+            "rational": {
+              "denominator": 1,
+              "numerator": 0
+            },
+            "relation": "b^2=2"
+          },
+          "kind": "HARMONICODE_Q_B_I",
+          "real": {
+            "b_coeff": {
+              "denominator": 2,
+              "numerator": 1
+            },
+            "rational": {
+              "denominator": 1,
+              "numerator": 0
+            },
+            "relation": "b^2=2"
+          }
+        },
+        "basis_index": 3,
+        "coordinate": [
+          1,
+          1
+        ],
+        "probability": {
+          "denominator": 2,
+          "numerator": 1
+        },
+        "term_root_hash72": "0000000000000000000000000000000w=s/aVaZlB38t)0j!LvO!8zfKnt?ck41*ecH8P-!M",
+        "vm81_cell_index": 3
+      }
+    ],
+    "normalization": {
+      "denominator": 1,
+      "numerator": 1
+    },
+    "phase_algebra_root_hash72": "Bw9Z22YDm4hQ9Mt=s\u2260V6yV1v",
+    "register_dimensions": [
+      2,
+      2
+    ],
+    "schema": "HHS_VM81_SUPERPOSITION_STATE_V1",
+    "simulation_model": "FINITE_NATIVE_SYMBOLIC_TENSOR_STATE_VECTOR",
+    "state_root_hash72": "0000000000000000000000000000003Vyd1rNgDWcXpA)ju8tcYy*P7vHLY82lEg0vvFx6^E"
+  },
+  "symbolic_hadamard_proof": {
+    "claim": "H_b^dagger H_b = I",
+    "proof_root_hash72": "0000000000000000000000000000004ifMyYjqk)We95BVkra6LxY!3XkckWF+QME?g93O/-",
+    "reduction": "2*b^-2=1",
+    "relations": [
+      "b^2=2",
+      "b^-1=b/2"
+    ],
+    "schema": "HHS_HARMONICODE_TENSOR_PROOF_V1",
+    "valid": true
+  },
+  "tensor_chain_emulation": {
+    "closed_symbolic_state_root_hash72": "0000000000000000000000000000001gys)n0g*d3m?eC?2nuCZix1+5K0-j(5OnYzb?diSY",
+    "constraint_roots": [
+      "b^2=2"
+    ],
+    "emulation_receipt_root_hash72": "0000000000000000000000000000002yu/Vowu?Ak50XcjQS7C7foK2u>wkzlb-j6W2(A*g4",
+    "emulation_status": "EXACT_EMULATION_VALIDATED",
+    "final_state": {
+      "aligned_substrate_root_hash72": "0000000000000000000000000000004JBw>c8)bGf6iA*lr?lEGA+j=hsA*k0mnjs+vNH)J?",
+      "amplitude_domain": [
+        "HARMONICODE_Q_B_I"
+      ],
+      "authority_root_hash72": "0000000000000000000000000000002Eq*xSPrgFn/gP*-3cgh!I!A5cdY?7TT>Fmd64Xahp",
+      "basis_order": "PASS115_MIXED_RADIX_POSITION_ORDER",
+      "basis_size": 2,
+      "gate_history": [
+        {
+          "controls": [],
+          "gate": "HADAMARD_SYMBOLIC_B",
+          "gate_receipt_root_hash72": "0000000000000000000000000000000(E1ZyoiTBw6DEmBk>K)b4!(7sKzQGk8tsrxk?1EN?",
+          "previous_state_root_hash72": "0000000000000000000000000000001X/XgNyA=4u/1+OmAHvNwMtgNl9gWLS?pFwO23mRRT",
+          "sequence_index": 0,
+          "targets": [
+            0
+          ]
+        }
+      ],
+      "nonzero_terms": [
+        {
+          "amplitude": {
+            "defining_relations": [
+              "b^2=2",
+              "i^2=-1"
+            ],
+            "imag": {
+              "b_coeff": {
+                "denominator": 1,
+                "numerator": 0
+              },
+              "rational": {
+                "denominator": 1,
+                "numerator": 0
+              },
+              "relation": "b^2=2"
+            },
+            "kind": "HARMONICODE_Q_B_I",
+            "real": {
+              "b_coeff": {
+                "denominator": 2,
+                "numerator": 1
+              },
+              "rational": {
+                "denominator": 1,
+                "numerator": 0
+              },
+              "relation": "b^2=2"
+            }
+          },
+          "basis_index": 0,
+          "coordinate": [
+            0
+          ],
+          "probability": {
+            "denominator": 2,
+            "numerator": 1
+          },
+          "term_root_hash72": "0000000000000000000000000000002ABPN>vOzRcidZOdmZExXUxp/WN+6g5ALJN=Q+/x5Q",
+          "vm81_cell_index": 0
+        },
+        {
+          "amplitude": {
+            "defining_relations": [
+              "b^2=2",
+              "i^2=-1"
+            ],
+            "imag": {
+              "b_coeff": {
+                "denominator": 1,
+                "numerator": 0
+              },
+              "rational": {
+                "denominator": 1,
+                "numerator": 0
+              },
+              "relation": "b^2=2"
+            },
+            "kind": "HARMONICODE_Q_B_I",
+            "real": {
+              "b_coeff": {
+                "denominator": 2,
+                "numerator": 1
+              },
+              "rational": {
+                "denominator": 1,
+                "numerator": 0
+              },
+              "relation": "b^2=2"
+            }
+          },
+          "basis_index": 1,
+          "coordinate": [
+            1
+          ],
+          "probability": {
+            "denominator": 2,
+            "numerator": 1
+          },
+          "term_root_hash72": "0000000000000000000000000000000l/x/mr>g14GB8bDHkG6Mo/l)FTUtrumQTt2Q4q4Rv",
+          "vm81_cell_index": 1
+        }
+      ],
+      "normalization": {
+        "denominator": 1,
+        "numerator": 1
+      },
+      "phase_algebra_root_hash72": "Bw9Z22YDm4hQ9Mt=s\u2260V6yV1v",
+      "register_dimensions": [
+        2
+      ],
+      "schema": "HHS_VM81_SUPERPOSITION_STATE_V1",
+      "simulation_model": "FINITE_NATIVE_SYMBOLIC_TENSOR_STATE_VECTOR",
+      "state_root_hash72": "0000000000000000000000000000001gys)n0g*d3m?eC?2nuCZix1+5K0-j(5OnYzb?diSY"
+    },
+    "initial_state_root_hash72": "0000000000000000000000000000001X/XgNyA=4u/1+OmAHvNwMtgNl9gWLS?pFwO23mRRT",
+    "intermediate_state_roots": [
+      "0000000000000000000000000000001gys)n0g*d3m?eC?2nuCZix1+5K0-j(5OnYzb?diSY"
+    ],
+    "ordered_operation_roots": [
+      "0000000000000000000000000000000p?DBrcfm=uK(bWBckDhFAgo5=)CaluAiMIcS5K(SA"
+    ],
+    "schema": "HHS_TENSOR_CHAIN_EMULATION_RESULT_V1",
+    "vm81_cell_count": 2
+  }
+}

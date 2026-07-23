@@ -1,0 +1,579 @@
+{
+  "schema": "HHS_PASS_089_WORKLOAD_REGISTRY_V1",
+  "workloads": [
+    {
+      "candidate_range": {
+        "end_exclusive": 32,
+        "start": 11
+      },
+      "genesis": {
+        "canonical_arithmetic": "EXACT_INTEGER",
+        "embedded_prime_basis": [
+          2,
+          3,
+          5,
+          7
+        ],
+        "first_external_prime_candidate": 11,
+        "genesis_root_hash72": "0000000000000000000000000000004g/!c4YourKum!id>v4cLIxtgeoQtMS8?FV1MhQR+f",
+        "highest_consecutive_prime": 7,
+        "lo_shu_layout": [
+          4,
+          9,
+          2,
+          3,
+          5,
+          7,
+          8,
+          1,
+          6
+        ]
+      },
+      "max_candidates": 10000,
+      "parent_pass088_release_root_hash72": "0000000000000000000000000000003Sys=c!lomN-jRzl9A)iDLRh)p7?=nW3UJM06K(FPz",
+      "prime_reasoning_contract": {
+        "cache_not_authority": true,
+        "complete_divisor_coverage_required": true,
+        "composite_factor_witness_required": true,
+        "consecutive_frontier_required": true,
+        "probable_prime_not_authoritative": true
+      },
+      "required_outcome": "PRIME_FRONTIER_CLOSED",
+      "schema": "HHS_DETERMINISTIC_PRIME_REASONING_GENESIS_WORKLOAD_V1",
+      "workload_id": "W145:lo-shu-prime-genesis"
+    },
+    {
+      "candidate_range": {
+        "end_exclusive": 13,
+        "start": 11
+      },
+      "genesis": {
+        "canonical_arithmetic": "EXACT_INTEGER",
+        "embedded_prime_basis": [
+          2,
+          3,
+          5,
+          7
+        ],
+        "first_external_prime_candidate": 11,
+        "genesis_root_hash72": "0000000000000000000000000000004g/!c4YourKum!id>v4cLIxtgeoQtMS8?FV1MhQR+f",
+        "highest_consecutive_prime": 7,
+        "lo_shu_layout": [
+          4,
+          9,
+          2,
+          3,
+          5,
+          7,
+          8,
+          1,
+          6
+        ]
+      },
+      "max_candidates": 10000,
+      "parent_pass088_release_root_hash72": "0000000000000000000000000000003Sys=c!lomN-jRzl9A)iDLRh)p7?=nW3UJM06K(FPz",
+      "prime_reasoning_contract": {
+        "cache_not_authority": true,
+        "complete_divisor_coverage_required": true,
+        "composite_factor_witness_required": true,
+        "consecutive_frontier_required": true,
+        "probable_prime_not_authoritative": true
+      },
+      "required_outcome": "PRIME_FRONTIER_CLOSED",
+      "schema": "HHS_DETERMINISTIC_PRIME_REASONING_GENESIS_WORKLOAD_V1",
+      "workload_id": "W146:first-external-prime-11"
+    },
+    {
+      "candidate_range": {
+        "end_exclusive": 48,
+        "start": 11
+      },
+      "genesis": {
+        "canonical_arithmetic": "EXACT_INTEGER",
+        "embedded_prime_basis": [
+          2,
+          3,
+          5,
+          7
+        ],
+        "first_external_prime_candidate": 11,
+        "genesis_root_hash72": "0000000000000000000000000000004g/!c4YourKum!id>v4cLIxtgeoQtMS8?FV1MhQR+f",
+        "highest_consecutive_prime": 7,
+        "lo_shu_layout": [
+          4,
+          9,
+          2,
+          3,
+          5,
+          7,
+          8,
+          1,
+          6
+        ]
+      },
+      "max_candidates": 10000,
+      "parent_pass088_release_root_hash72": "0000000000000000000000000000003Sys=c!lomN-jRzl9A)iDLRh)p7?=nW3UJM06K(FPz",
+      "prime_reasoning_contract": {
+        "cache_not_authority": true,
+        "complete_divisor_coverage_required": true,
+        "composite_factor_witness_required": true,
+        "consecutive_frontier_required": true,
+        "probable_prime_not_authoritative": true
+      },
+      "required_outcome": "PRIME_FRONTIER_CLOSED",
+      "schema": "HHS_DETERMINISTIC_PRIME_REASONING_GENESIS_WORKLOAD_V1",
+      "workload_id": "W147:frontier-through-47"
+    },
+    {
+      "candidate_range": {
+        "end_exclusive": 98,
+        "start": 11
+      },
+      "genesis": {
+        "canonical_arithmetic": "EXACT_INTEGER",
+        "embedded_prime_basis": [
+          2,
+          3,
+          5,
+          7
+        ],
+        "first_external_prime_candidate": 11,
+        "genesis_root_hash72": "0000000000000000000000000000004g/!c4YourKum!id>v4cLIxtgeoQtMS8?FV1MhQR+f",
+        "highest_consecutive_prime": 7,
+        "lo_shu_layout": [
+          4,
+          9,
+          2,
+          3,
+          5,
+          7,
+          8,
+          1,
+          6
+        ]
+      },
+      "max_candidates": 10000,
+      "parent_pass088_release_root_hash72": "0000000000000000000000000000003Sys=c!lomN-jRzl9A)iDLRh)p7?=nW3UJM06K(FPz",
+      "prime_reasoning_contract": {
+        "cache_not_authority": true,
+        "complete_divisor_coverage_required": true,
+        "composite_factor_witness_required": true,
+        "consecutive_frontier_required": true,
+        "probable_prime_not_authoritative": true
+      },
+      "required_outcome": "PRIME_FRONTIER_CLOSED",
+      "schema": "HHS_DETERMINISTIC_PRIME_REASONING_GENESIS_WORKLOAD_V1",
+      "workload_id": "W148:frontier-through-97"
+    },
+    {
+      "candidate_range": {
+        "end_exclusive": 128,
+        "start": 11
+      },
+      "genesis": {
+        "canonical_arithmetic": "EXACT_INTEGER",
+        "embedded_prime_basis": [
+          2,
+          3,
+          5,
+          7
+        ],
+        "first_external_prime_candidate": 11,
+        "genesis_root_hash72": "0000000000000000000000000000004g/!c4YourKum!id>v4cLIxtgeoQtMS8?FV1MhQR+f",
+        "highest_consecutive_prime": 7,
+        "lo_shu_layout": [
+          4,
+          9,
+          2,
+          3,
+          5,
+          7,
+          8,
+          1,
+          6
+        ]
+      },
+      "max_candidates": 10000,
+      "parent_pass088_release_root_hash72": "0000000000000000000000000000003Sys=c!lomN-jRzl9A)iDLRh)p7?=nW3UJM06K(FPz",
+      "prime_reasoning_contract": {
+        "cache_not_authority": true,
+        "complete_divisor_coverage_required": true,
+        "composite_factor_witness_required": true,
+        "consecutive_frontier_required": true,
+        "probable_prime_not_authoritative": true
+      },
+      "required_outcome": "PRIME_FRONTIER_CLOSED",
+      "schema": "HHS_DETERMINISTIC_PRIME_REASONING_GENESIS_WORKLOAD_V1",
+      "workload_id": "W149:factor-witness-calibration"
+    },
+    {
+      "candidate_range": {
+        "end_exclusive": 256,
+        "start": 11
+      },
+      "genesis": {
+        "canonical_arithmetic": "EXACT_INTEGER",
+        "embedded_prime_basis": [
+          2,
+          3,
+          5,
+          7
+        ],
+        "first_external_prime_candidate": 11,
+        "genesis_root_hash72": "0000000000000000000000000000004g/!c4YourKum!id>v4cLIxtgeoQtMS8?FV1MhQR+f",
+        "highest_consecutive_prime": 7,
+        "lo_shu_layout": [
+          4,
+          9,
+          2,
+          3,
+          5,
+          7,
+          8,
+          1,
+          6
+        ]
+      },
+      "max_candidates": 10000,
+      "parent_pass088_release_root_hash72": "0000000000000000000000000000003Sys=c!lomN-jRzl9A)iDLRh)p7?=nW3UJM06K(FPz",
+      "prime_reasoning_contract": {
+        "cache_not_authority": true,
+        "complete_divisor_coverage_required": true,
+        "composite_factor_witness_required": true,
+        "consecutive_frontier_required": true,
+        "probable_prime_not_authoritative": true
+      },
+      "required_outcome": "PRIME_FRONTIER_CLOSED",
+      "schema": "HHS_DETERMINISTIC_PRIME_REASONING_GENESIS_WORKLOAD_V1",
+      "workload_id": "W150:prime-gap-pattern-cache"
+    },
+    {
+      "candidate_range": {
+        "end_exclusive": 512,
+        "start": 11
+      },
+      "genesis": {
+        "canonical_arithmetic": "EXACT_INTEGER",
+        "embedded_prime_basis": [
+          2,
+          3,
+          5,
+          7
+        ],
+        "first_external_prime_candidate": 11,
+        "genesis_root_hash72": "0000000000000000000000000000004g/!c4YourKum!id>v4cLIxtgeoQtMS8?FV1MhQR+f",
+        "highest_consecutive_prime": 7,
+        "lo_shu_layout": [
+          4,
+          9,
+          2,
+          3,
+          5,
+          7,
+          8,
+          1,
+          6
+        ]
+      },
+      "max_candidates": 10000,
+      "parent_pass088_release_root_hash72": "0000000000000000000000000000003Sys=c!lomN-jRzl9A)iDLRh)p7?=nW3UJM06K(FPz",
+      "prime_reasoning_contract": {
+        "cache_not_authority": true,
+        "complete_divisor_coverage_required": true,
+        "composite_factor_witness_required": true,
+        "consecutive_frontier_required": true,
+        "probable_prime_not_authoritative": true
+      },
+      "required_outcome": "PRIME_FRONTIER_CLOSED",
+      "schema": "HHS_DETERMINISTIC_PRIME_REASONING_GENESIS_WORKLOAD_V1",
+      "workload_id": "W151:residue-pattern-calibration"
+    },
+    {
+      "candidate_range": {
+        "end_exclusive": 1012,
+        "start": 11
+      },
+      "genesis": {
+        "canonical_arithmetic": "EXACT_INTEGER",
+        "embedded_prime_basis": [
+          2,
+          3,
+          5,
+          7
+        ],
+        "first_external_prime_candidate": 11,
+        "genesis_root_hash72": "0000000000000000000000000000004g/!c4YourKum!id>v4cLIxtgeoQtMS8?FV1MhQR+f",
+        "highest_consecutive_prime": 7,
+        "lo_shu_layout": [
+          4,
+          9,
+          2,
+          3,
+          5,
+          7,
+          8,
+          1,
+          6
+        ]
+      },
+      "max_candidates": 10000,
+      "parent_pass088_release_root_hash72": "0000000000000000000000000000003Sys=c!lomN-jRzl9A)iDLRh)p7?=nW3UJM06K(FPz",
+      "prime_reasoning_contract": {
+        "cache_not_authority": true,
+        "complete_divisor_coverage_required": true,
+        "composite_factor_witness_required": true,
+        "consecutive_frontier_required": true,
+        "probable_prime_not_authoritative": true
+      },
+      "required_outcome": "PRIME_FRONTIER_CLOSED",
+      "schema": "HHS_DETERMINISTIC_PRIME_REASONING_GENESIS_WORKLOAD_V1",
+      "workload_id": "W152:one-thousand-candidate-frontier"
+    },
+    {
+      "candidate_range": {
+        "end_exclusive": 2012,
+        "start": 11
+      },
+      "genesis": {
+        "canonical_arithmetic": "EXACT_INTEGER",
+        "embedded_prime_basis": [
+          2,
+          3,
+          5,
+          7
+        ],
+        "first_external_prime_candidate": 11,
+        "genesis_root_hash72": "0000000000000000000000000000004g/!c4YourKum!id>v4cLIxtgeoQtMS8?FV1MhQR+f",
+        "highest_consecutive_prime": 7,
+        "lo_shu_layout": [
+          4,
+          9,
+          2,
+          3,
+          5,
+          7,
+          8,
+          1,
+          6
+        ]
+      },
+      "max_candidates": 10000,
+      "parent_pass088_release_root_hash72": "0000000000000000000000000000003Sys=c!lomN-jRzl9A)iDLRh)p7?=nW3UJM06K(FPz",
+      "prime_reasoning_contract": {
+        "cache_not_authority": true,
+        "complete_divisor_coverage_required": true,
+        "composite_factor_witness_required": true,
+        "consecutive_frontier_required": true,
+        "probable_prime_not_authoritative": true
+      },
+      "required_outcome": "PRIME_FRONTIER_CLOSED",
+      "schema": "HHS_DETERMINISTIC_PRIME_REASONING_GENESIS_WORKLOAD_V1",
+      "workload_id": "W153:two-thousand-candidate-frontier"
+    },
+    {
+      "candidate_range": {
+        "end_exclusive": 4012,
+        "start": 11
+      },
+      "genesis": {
+        "canonical_arithmetic": "EXACT_INTEGER",
+        "embedded_prime_basis": [
+          2,
+          3,
+          5,
+          7
+        ],
+        "first_external_prime_candidate": 11,
+        "genesis_root_hash72": "0000000000000000000000000000004g/!c4YourKum!id>v4cLIxtgeoQtMS8?FV1MhQR+f",
+        "highest_consecutive_prime": 7,
+        "lo_shu_layout": [
+          4,
+          9,
+          2,
+          3,
+          5,
+          7,
+          8,
+          1,
+          6
+        ]
+      },
+      "max_candidates": 10000,
+      "parent_pass088_release_root_hash72": "0000000000000000000000000000003Sys=c!lomN-jRzl9A)iDLRh)p7?=nW3UJM06K(FPz",
+      "prime_reasoning_contract": {
+        "cache_not_authority": true,
+        "complete_divisor_coverage_required": true,
+        "composite_factor_witness_required": true,
+        "consecutive_frontier_required": true,
+        "probable_prime_not_authoritative": true
+      },
+      "required_outcome": "PRIME_FRONTIER_CLOSED",
+      "schema": "HHS_DETERMINISTIC_PRIME_REASONING_GENESIS_WORKLOAD_V1",
+      "workload_id": "W154:four-thousand-candidate-frontier"
+    },
+    {
+      "candidate_range": {
+        "end_exclusive": 10000,
+        "start": 11
+      },
+      "genesis": {
+        "canonical_arithmetic": "EXACT_INTEGER",
+        "embedded_prime_basis": [
+          2,
+          3,
+          5,
+          7
+        ],
+        "first_external_prime_candidate": 11,
+        "genesis_root_hash72": "0000000000000000000000000000004g/!c4YourKum!id>v4cLIxtgeoQtMS8?FV1MhQR+f",
+        "highest_consecutive_prime": 7,
+        "lo_shu_layout": [
+          4,
+          9,
+          2,
+          3,
+          5,
+          7,
+          8,
+          1,
+          6
+        ]
+      },
+      "max_candidates": 64,
+      "parent_pass088_release_root_hash72": "0000000000000000000000000000003Sys=c!lomN-jRzl9A)iDLRh)p7?=nW3UJM06K(FPz",
+      "prime_reasoning_contract": {
+        "cache_not_authority": true,
+        "complete_divisor_coverage_required": true,
+        "composite_factor_witness_required": true,
+        "consecutive_frontier_required": true,
+        "probable_prime_not_authoritative": true
+      },
+      "required_outcome": "PRIME_FRONTIER_STABLE_UNRESOLVED",
+      "schema": "HHS_DETERMINISTIC_PRIME_REASONING_GENESIS_WORKLOAD_V1",
+      "workload_id": "W155:stable-unresolved-budget"
+    },
+    {
+      "candidate_range": {
+        "end_exclusive": 50000,
+        "start": 11
+      },
+      "genesis": {
+        "canonical_arithmetic": "EXACT_INTEGER",
+        "embedded_prime_basis": [
+          2,
+          3,
+          5,
+          7
+        ],
+        "first_external_prime_candidate": 11,
+        "genesis_root_hash72": "0000000000000000000000000000004g/!c4YourKum!id>v4cLIxtgeoQtMS8?FV1MhQR+f",
+        "highest_consecutive_prime": 7,
+        "lo_shu_layout": [
+          4,
+          9,
+          2,
+          3,
+          5,
+          7,
+          8,
+          1,
+          6
+        ]
+      },
+      "max_candidates": 512,
+      "parent_pass088_release_root_hash72": "0000000000000000000000000000003Sys=c!lomN-jRzl9A)iDLRh)p7?=nW3UJM06K(FPz",
+      "prime_reasoning_contract": {
+        "cache_not_authority": true,
+        "complete_divisor_coverage_required": true,
+        "composite_factor_witness_required": true,
+        "consecutive_frontier_required": true,
+        "probable_prime_not_authoritative": true
+      },
+      "required_outcome": "PRIME_FRONTIER_RESOURCE_BOUNDED",
+      "schema": "HHS_DETERMINISTIC_PRIME_REASONING_GENESIS_WORKLOAD_V1",
+      "workload_id": "W156:resource-bounded-frontier"
+    },
+    {
+      "candidate_range": {
+        "end_exclusive": 1024,
+        "start": 11
+      },
+      "genesis": {
+        "canonical_arithmetic": "EXACT_INTEGER",
+        "embedded_prime_basis": [
+          2,
+          3,
+          5,
+          7
+        ],
+        "first_external_prime_candidate": 11,
+        "genesis_root_hash72": "0000000000000000000000000000004g/!c4YourKum!id>v4cLIxtgeoQtMS8?FV1MhQR+f",
+        "highest_consecutive_prime": 7,
+        "lo_shu_layout": [
+          4,
+          9,
+          2,
+          3,
+          5,
+          7,
+          8,
+          1,
+          6
+        ]
+      },
+      "max_candidates": 10000,
+      "parent_pass088_release_root_hash72": "0000000000000000000000000000003Sys=c!lomN-jRzl9A)iDLRh)p7?=nW3UJM06K(FPz",
+      "prime_reasoning_contract": {
+        "cache_not_authority": true,
+        "complete_divisor_coverage_required": true,
+        "composite_factor_witness_required": true,
+        "consecutive_frontier_required": true,
+        "probable_prime_not_authoritative": true
+      },
+      "required_outcome": "PRIME_FRONTIER_CLOSED",
+      "schema": "HHS_DETERMINISTIC_PRIME_REASONING_GENESIS_WORKLOAD_V1",
+      "workload_id": "W157:cache-authority-separation"
+    },
+    {
+      "candidate_range": {
+        "end_exclusive": 2048,
+        "start": 11
+      },
+      "genesis": {
+        "canonical_arithmetic": "EXACT_INTEGER",
+        "embedded_prime_basis": [
+          2,
+          3,
+          5,
+          7
+        ],
+        "first_external_prime_candidate": 11,
+        "genesis_root_hash72": "0000000000000000000000000000004g/!c4YourKum!id>v4cLIxtgeoQtMS8?FV1MhQR+f",
+        "highest_consecutive_prime": 7,
+        "lo_shu_layout": [
+          4,
+          9,
+          2,
+          3,
+          5,
+          7,
+          8,
+          1,
+          6
+        ]
+      },
+      "max_candidates": 10000,
+      "parent_pass088_release_root_hash72": "0000000000000000000000000000003Sys=c!lomN-jRzl9A)iDLRh)p7?=nW3UJM06K(FPz",
+      "prime_reasoning_contract": {
+        "cache_not_authority": true,
+        "complete_divisor_coverage_required": true,
+        "composite_factor_witness_required": true,
+        "consecutive_frontier_required": true,
+        "probable_prime_not_authoritative": true
+      },
+      "required_outcome": "PRIME_FRONTIER_CLOSED",
+      "schema": "HHS_DETERMINISTIC_PRIME_REASONING_GENESIS_WORKLOAD_V1",
+      "workload_id": "W158:prime-receipt-only-replay"
+    }
+  ]
+}

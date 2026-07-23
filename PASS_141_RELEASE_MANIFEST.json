@@ -1,0 +1,20 @@
+{
+  "authority": "A1_EXECUTION_EVIDENCE",
+  "contract": "docs/pass_141/PASS_141_CONTRACT.md",
+  "example": "examples/pass_141/architect_epe_request.json",
+  "execution": {
+    "entropic_imbalance": "0",
+    "equilibrium": true,
+    "phase_index": 1,
+    "release_authorized": true
+  },
+  "pass_id": "PASS_141_ARCHITECT_OUROBOROS_ENTANGLEMENT_ENTROPIC_PHASE_EQUILIBRIUM",
+  "report": "reports/pass_141/PASS_141_EXECUTION_RECEIPT.json",
+  "runtime": "hhs_runtime/harmonicode_architect_entropic_phase_equilibrium_v1.py",
+  "script": "scripts/hhs-pass141",
+  "status": "IMPLEMENTED_CALLABLE_TESTED",
+  "tests": {
+    "dependency_scoped_passed": 37,
+    "failed": 0
+  }
+}

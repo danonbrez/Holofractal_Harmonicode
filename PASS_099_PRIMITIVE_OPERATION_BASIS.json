@@ -1,0 +1,27 @@
+{
+  "schema": "HHS_PASS_099_PRIMITIVES_V1",
+  "primitives": [
+    "READ",
+    "WRITE",
+    "COPY_WITH_LINEAGE",
+    "COMPARE",
+    "BRANCH",
+    "MERGE_WITHOUT_IDENTITY_COLLAPSE",
+    "ROTATE",
+    "SHIFT",
+    "PERMUTE",
+    "INVERT",
+    "ACCUMULATE",
+    "CANCEL",
+    "GATE",
+    "ROUTE",
+    "CALL",
+    "RETURN",
+    "CHECKPOINT",
+    "VALIDATE",
+    "INC",
+    "DEC",
+    "HALT",
+    "NOP"
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "admission_status": "ADMITTED",
+  "authority_validation_root_hash72": "0000000000000000000000000000002!b-AUEX171OR2pkghl1T4SjO4!7/enX?YkdkSueG5",
+  "binding_resolution_root_hash72": "0000000000000000000000000000002lu^jtMV*Y+FbrvKwIC8D5NM2Cx17HD+9v41yAMFWk",
+  "canonical_dictionary_root_hash72": "0000000000000000000000000000000FmZ?DzcWS^AxQ?twymrsm2>Z9fD-/>jjy62cSPedW",
+  "dependency_graph_root_hash72": "0000000000000000000000000000001YY0rkHU()Tz)V-o8PaBu^3hnur!*>+gjj>N(!oSkv",
+  "enforcement_receipt_root_hash72": "0000000000000000000000000000001bvc(T!nc0KkkqHycbK1c1tvMOWoyTHKM+^en3gua)",
+  "import_lock_root_hash72": "0000000000000000000000000000003q3Y=)iY>+yy4*qrMEbg+Ex9w1iFMdW1uHNtN!1jGv",
+  "schema": "HHS_HARMONICODE_DICTIONARY_ENFORCEMENT_RECEIPT_V1_1",
+  "scope_resolution_root_hash72": "0000000000000000000000000000000S+Kl2Ok7IhVSXcdOw*H6HI(>Iv=QJ8?24v*W)1O7x",
+  "syntax_tree_root_hash72": "0000000000000000000000000000002w67WZCGPPauGHDZ8nZ9UtULN/^SVZ4yTS!iUzAR(4",
+  "type_resolution_root_hash72": "0000000000000000000000000000001LPCPNF8+Kc=uaMS6Dr4*2vwdVdB3M7/(uz)aU?Me4"
+}

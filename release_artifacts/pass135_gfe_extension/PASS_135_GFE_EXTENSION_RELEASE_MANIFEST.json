@@ -1,0 +1,34 @@
+{
+  "files": [
+    {
+      "path": "hhs_runtime/hhs_gfe_log_constraint_v1.py",
+      "sha256": "745940a4965d8122b844ebae0d05be209479edbab76cd812d22b07525665aeac",
+      "size_bytes": 8574
+    },
+    {
+      "path": "tests/test_hhs_gfe_log_constraint_v1.py",
+      "sha256": "af3b226119129eea735de7bc54bfdf53068e3d2804bb97de5f5619eb318b08a5",
+      "size_bytes": 2843
+    },
+    {
+      "path": "PASS_135_GFE_LOG_CONSTRAINT_EXTENSION.md",
+      "sha256": "4654ba894ad84b348f23a4e4b832ca8205a398287de0aee77101305b8b949aa3",
+      "size_bytes": 1443
+    },
+    {
+      "path": "release_artifacts/pass135_gfe_extension/PASS_135_GFE_LOG_CONSTRAINT_EXECUTION_REPORT.json",
+      "sha256": "157fdcb6368e868d402f48bb650c775efd5e1e9aec0879c8fd78fcd1614d8acd",
+      "size_bytes": 8552
+    },
+    {
+      "path": "release_artifacts/pass135_gfe_extension/PASS_135_GFE_EXTENSION_TEST_REPORT.json",
+      "sha256": "d3ff6c9f921a79b5fefb703cdbb9f151a02ee61609d61c701703b4449327e06f",
+      "size_bytes": 522
+    }
+  ],
+  "manifest_sha256": "ea4d4dfd572b63e48f1bf2debe339ecc65bfce5bfaa7b0239d79839ee8605cd9",
+  "parent_pass": "PASS_135",
+  "pass_id": "PASS_135_GFE_EXTENSION",
+  "schema": "HHS_PASS135_GFE_EXTENSION_RELEASE_MANIFEST_V1",
+  "status": "IMPLEMENTED_CALLABLE_TESTED"
+}

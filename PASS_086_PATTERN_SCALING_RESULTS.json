@@ -1,0 +1,159 @@
+{
+  "schema": "HHS_PASS_086_SCALING_V1",
+  "results": [
+    {
+      "workload_id": "W103:single-pattern-admission",
+      "admitted_pattern_count": 1,
+      "cache_entry_count": 1,
+      "evidence_count": 36,
+      "knowledge_graph_edge_count": 36,
+      "proposal_count": 1,
+      "receipt_bytes": 15439,
+      "reuse_candidate_count": 1,
+      "unresolved_pattern_count": 0
+    },
+    {
+      "workload_id": "W104:audio-video-pattern",
+      "admitted_pattern_count": 2,
+      "cache_entry_count": 2,
+      "evidence_count": 48,
+      "knowledge_graph_edge_count": 48,
+      "proposal_count": 2,
+      "receipt_bytes": 20991,
+      "reuse_candidate_count": 2,
+      "unresolved_pattern_count": 0
+    },
+    {
+      "workload_id": "W105:spatial-event-pattern",
+      "admitted_pattern_count": 2,
+      "cache_entry_count": 2,
+      "evidence_count": 72,
+      "knowledge_graph_edge_count": 72,
+      "proposal_count": 2,
+      "receipt_bytes": 30353,
+      "reuse_candidate_count": 2,
+      "unresolved_pattern_count": 0
+    },
+    {
+      "workload_id": "W106:cross-instance-reuse",
+      "admitted_pattern_count": 2,
+      "cache_entry_count": 2,
+      "evidence_count": 144,
+      "knowledge_graph_edge_count": 144,
+      "proposal_count": 2,
+      "receipt_bytes": 58360,
+      "reuse_candidate_count": 2,
+      "unresolved_pattern_count": 0
+    },
+    {
+      "workload_id": "W107:four-pattern-family",
+      "admitted_pattern_count": 4,
+      "cache_entry_count": 4,
+      "evidence_count": 384,
+      "knowledge_graph_edge_count": 384,
+      "proposal_count": 4,
+      "receipt_bytes": 153592,
+      "reuse_candidate_count": 4,
+      "unresolved_pattern_count": 0
+    },
+    {
+      "workload_id": "W108:partial-pattern-unresolved",
+      "admitted_pattern_count": 0,
+      "cache_entry_count": 0,
+      "evidence_count": 6,
+      "knowledge_graph_edge_count": 0,
+      "proposal_count": 2,
+      "receipt_bytes": 798,
+      "reuse_candidate_count": 0,
+      "unresolved_pattern_count": 2
+    },
+    {
+      "workload_id": "W109:semantic-cache-dedup",
+      "admitted_pattern_count": 4,
+      "cache_entry_count": 4,
+      "evidence_count": 384,
+      "knowledge_graph_edge_count": 384,
+      "proposal_count": 4,
+      "receipt_bytes": 153561,
+      "reuse_candidate_count": 4,
+      "unresolved_pattern_count": 0
+    },
+    {
+      "workload_id": "W110:knowledge-graph-expansion",
+      "admitted_pattern_count": 3,
+      "cache_entry_count": 3,
+      "evidence_count": 576,
+      "knowledge_graph_edge_count": 576,
+      "proposal_count": 3,
+      "receipt_bytes": 227371,
+      "reuse_candidate_count": 3,
+      "unresolved_pattern_count": 0
+    },
+    {
+      "workload_id": "W111:sixty-four-instance-patterns",
+      "admitted_pattern_count": 4,
+      "cache_entry_count": 4,
+      "evidence_count": 768,
+      "knowledge_graph_edge_count": 768,
+      "proposal_count": 4,
+      "receipt_bytes": 302977,
+      "reuse_candidate_count": 4,
+      "unresolved_pattern_count": 0
+    },
+    {
+      "workload_id": "W112:multimodal-role-composition",
+      "admitted_pattern_count": 4,
+      "cache_entry_count": 4,
+      "evidence_count": 1024,
+      "knowledge_graph_edge_count": 1024,
+      "proposal_count": 4,
+      "receipt_bytes": 402636,
+      "reuse_candidate_count": 4,
+      "unresolved_pattern_count": 0
+    },
+    {
+      "workload_id": "W113:context-bounded-reuse",
+      "admitted_pattern_count": 3,
+      "cache_entry_count": 3,
+      "evidence_count": 216,
+      "knowledge_graph_edge_count": 216,
+      "proposal_count": 3,
+      "receipt_bytes": 87288,
+      "reuse_candidate_count": 3,
+      "unresolved_pattern_count": 0
+    },
+    {
+      "workload_id": "W114:resource-bounded-admission",
+      "admitted_pattern_count": 8,
+      "cache_entry_count": 8,
+      "evidence_count": 3072,
+      "knowledge_graph_edge_count": 3072,
+      "proposal_count": 8,
+      "receipt_bytes": 1202965,
+      "reuse_candidate_count": 8,
+      "unresolved_pattern_count": 0
+    },
+    {
+      "workload_id": "W115:proposal-authority-separation",
+      "admitted_pattern_count": 4,
+      "cache_entry_count": 4,
+      "evidence_count": 192,
+      "knowledge_graph_edge_count": 192,
+      "proposal_count": 4,
+      "receipt_bytes": 78914,
+      "reuse_candidate_count": 4,
+      "unresolved_pattern_count": 0
+    },
+    {
+      "workload_id": "W116:pattern-receipt-only-replay",
+      "admitted_pattern_count": 4,
+      "cache_entry_count": 4,
+      "evidence_count": 384,
+      "knowledge_graph_edge_count": 384,
+      "proposal_count": 4,
+      "receipt_bytes": 153596,
+      "reuse_candidate_count": 4,
+      "unresolved_pattern_count": 0
+    }
+  ]
+}

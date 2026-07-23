@@ -1,0 +1,54 @@
+{
+  "schema": "HHS_PASS_096_PATHS_V1",
+  "operator_order_preserved": true,
+  "ordered_paths": [
+    [
+      "FORMAL_HARMONICODE",
+      "FORMAL_HARMONICODE"
+    ],
+    [
+      "FORMAL_HARMONICODE",
+      "FORMAL_HARMONICODE"
+    ],
+    [
+      "FORMAL_HARMONICODE",
+      "FORMAL_HARMONICODE"
+    ],
+    [
+      "FORMAL_HARMONICODE",
+      "FORMAL_HARMONICODE"
+    ],
+    [
+      "FORMAL_HARMONICODE",
+      "FORMAL_HARMONICODE"
+    ],
+    [
+      "FORMAL_HARMONICODE",
+      "FORMAL_HARMONICODE"
+    ],
+    [
+      "FORMAL_HARMONICODE",
+      "FORMAL_HARMONICODE"
+    ],
+    [
+      "FORMAL_HARMONICODE",
+      "ACADEMIC_STEM"
+    ],
+    [
+      "FORMAL_HARMONICODE",
+      "ACADEMIC_STEM"
+    ],
+    [
+      "FORMAL_HARMONICODE",
+      "ACADEMIC_STEM"
+    ],
+    [
+      "FORMAL_HARMONICODE",
+      "ACADEMIC_STEM"
+    ],
+    [
+      "FORMAL_HARMONICODE",
+      "ACADEMIC_STEM"
+    ]
+  ]
+}

@@ -1,0 +1,482 @@
+{
+  "closure": {
+    "all_declarations_dispositioned": true,
+    "no_fabricated_native_implementations": true,
+    "no_false_callable_claims": true,
+    "no_silent_kernel_semantic_changes": true,
+    "no_unproven_mappings": true
+  },
+  "parent_pass078_capability_root_hash72": "0000000000000000000000000000002Aa3)TbR^(SCu0Qlu)5Fa/Ti49rW(/I0h^X/7AoVS9",
+  "pass078_1_release_root_hash72": "0000000000000000000000000000002?JzViY36oVS9J=WtlxO92FPeg+pX!iu1+?(FacSo>",
+  "pass_id": "PASS_078_1",
+  "reconciliation": {
+    "allowed_dispositions": [
+      "DEPRECATE_AS_UNSUPPORTED_DECLARATION",
+      "IMPLEMENT_AS_FROZEN_ABI",
+      "MAP_TO_EXISTING_NATIVE_PRIMITIVE",
+      "RETAIN_AS_TYPED_UNRESOLVED"
+    ],
+    "declarations": [
+      {
+        "architectural_revision_required": true,
+        "callable_after_reconciliation": false,
+        "candidate_native_primitive": [
+          {
+            "native_visibility": "INTERNAL_STATIC",
+            "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+            "signature": "static void apply_instruction(VM81 *vm, Instruction *ins, uint32_t *witness, double *identity_residual_out, int *identity_has_data_out)",
+            "symbol": "apply_instruction"
+          }
+        ],
+        "declaration_line": 227,
+        "declaration_source": "hhs_runtime/include/HARMONICODE_VM_RUNTIME.h",
+        "declared_signature": "HHSVMCell* hhs_vm_cell(HHSVMState* vm, uint32_t index)",
+        "declared_symbol": "hhs_vm_cell",
+        "disposition": "RETAIN_AS_TYPED_UNRESOLVED",
+        "disposition_root_hash72": "0000000000000000000000000000001iEZXfsh3u6dlF7EpFTW6)AM5rABXMVa065-XS>^r>",
+        "evidence_files": [
+          "hhs_runtime/HARMONICODE_VM_RUNTIME.c",
+          "hhs_runtime/include/HARMONICODE_VM_RUNTIME.h"
+        ],
+        "matching_definition": null,
+        "rationale": "The declaration uses the public HHSVMState/HHSProgram/HHSReceipt representation, while the frozen native implementation uses VM81/Instruction/VMReceipt or a distinct runtime ABI state. Candidate primitives show operational proximity but no proven state-layout, transition, receipt, ownership, or failure-semantic equivalence. Mapping would therefore be a new architectural adapter, not a truthful alias, and cannot be admitted inside Pass 078.1.",
+        "semantic_equivalence_status": "UNPROVEN_REPRESENTATION_AND_CONTRACT_EQUIVALENCE"
+      },
+      {
+        "architectural_revision_required": true,
+        "callable_after_reconciliation": false,
+        "candidate_native_primitive": [
+          {
+            "native_visibility": "INTERNAL_STATIC",
+            "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+            "signature": "static uint8_t constraint_bias_at(VM81 *vm, uint8_t phase)",
+            "symbol": "constraint_bias_at"
+          },
+          {
+            "native_visibility": "INTERNAL_STATIC",
+            "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+            "signature": "static void constraint_compete(VM81 *vm)",
+            "symbol": "constraint_compete"
+          },
+          {
+            "native_visibility": "INTERNAL_STATIC",
+            "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+            "signature": "static void constraint_relax(VM81 *vm, uint8_t amount)",
+            "symbol": "constraint_relax"
+          }
+        ],
+        "declaration_line": 276,
+        "declaration_source": "hhs_runtime/include/HARMONICODE_VM_RUNTIME.h",
+        "declared_signature": "double hhs_vm_constraint_flux(const HHSVMState* vm)",
+        "declared_symbol": "hhs_vm_constraint_flux",
+        "disposition": "RETAIN_AS_TYPED_UNRESOLVED",
+        "disposition_root_hash72": "0000000000000000000000000000000mSycBN(zPqbzG1qzeCqd)y5AMwIsoEw?>5?^8+Ln+",
+        "evidence_files": [
+          "hhs_runtime/HARMONICODE_VM_RUNTIME.c",
+          "hhs_runtime/include/HARMONICODE_VM_RUNTIME.h"
+        ],
+        "matching_definition": null,
+        "rationale": "The declaration uses the public HHSVMState/HHSProgram/HHSReceipt representation, while the frozen native implementation uses VM81/Instruction/VMReceipt or a distinct runtime ABI state. Candidate primitives show operational proximity but no proven state-layout, transition, receipt, ownership, or failure-semantic equivalence. Mapping would therefore be a new architectural adapter, not a truthful alias, and cannot be admitted inside Pass 078.1.",
+        "semantic_equivalence_status": "UNPROVEN_REPRESENTATION_AND_CONTRACT_EQUIVALENCE"
+      },
+      {
+        "architectural_revision_required": true,
+        "callable_after_reconciliation": false,
+        "candidate_native_primitive": [
+          {
+            "native_visibility": "INTERNAL_STATIC",
+            "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+            "signature": "static void project_hash72(VM81 *vm, char out[73])",
+            "symbol": "project_hash72"
+          },
+          {
+            "native_visibility": "EXTERNAL_LINKAGE",
+            "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+            "signature": "void hhs_hash72_project(const uint8_t* cells, HHSHash72 out_hash)",
+            "symbol": "hhs_hash72_project"
+          }
+        ],
+        "declaration_line": 236,
+        "declaration_source": "hhs_runtime/include/HARMONICODE_VM_RUNTIME.h",
+        "declared_signature": "const char* hhs_vm_current_hash72(const HHSVMState* vm)",
+        "declared_symbol": "hhs_vm_current_hash72",
+        "disposition": "RETAIN_AS_TYPED_UNRESOLVED",
+        "disposition_root_hash72": "0000000000000000000000000000002vx6c!/kEGsmPC*0pULH*FQ(+Rt2Nza*uvDwmgTCn2",
+        "evidence_files": [
+          "hhs_runtime/HARMONICODE_VM_RUNTIME.c",
+          "hhs_runtime/c/hhs_runtime_abi.c",
+          "hhs_runtime/include/HARMONICODE_VM_RUNTIME.h"
+        ],
+        "matching_definition": null,
+        "rationale": "The declaration uses the public HHSVMState/HHSProgram/HHSReceipt representation, while the frozen native implementation uses VM81/Instruction/VMReceipt or a distinct runtime ABI state. Candidate primitives show operational proximity but no proven state-layout, transition, receipt, ownership, or failure-semantic equivalence. Mapping would therefore be a new architectural adapter, not a truthful alias, and cannot be admitted inside Pass 078.1.",
+        "semantic_equivalence_status": "UNPROVEN_REPRESENTATION_AND_CONTRACT_EQUIVALENCE"
+      },
+      {
+        "architectural_revision_required": true,
+        "callable_after_reconciliation": false,
+        "candidate_native_primitive": [
+          {
+            "native_visibility": "EXTERNAL_LINKAGE",
+            "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+            "signature": "void hhs_receipt_commit(HHSRuntimeState* state, HHSReceipt* receipt)",
+            "symbol": "hhs_receipt_commit"
+          },
+          {
+            "native_visibility": "INTERNAL_STATIC",
+            "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+            "signature": "static void compose_receipt_hash(const char *prev, uint8_t cg, uint32_t witness, const char *state, char out[73])",
+            "symbol": "compose_receipt_hash"
+          }
+        ],
+        "declaration_line": 214,
+        "declaration_source": "hhs_runtime/include/HARMONICODE_VM_RUNTIME.h",
+        "declared_signature": "void hhs_vm_get_receipt(const HHSVMState* vm, HHSReceipt* receipt)",
+        "declared_symbol": "hhs_vm_get_receipt",
+        "disposition": "RETAIN_AS_TYPED_UNRESOLVED",
+        "disposition_root_hash72": "0000000000000000000000000000002+jp42nxlfMV^MYarxI9Y!W/sLXtU1AeT?lp4-z4sK",
+        "evidence_files": [
+          "hhs_runtime/HARMONICODE_VM_RUNTIME.c",
+          "hhs_runtime/c/hhs_runtime_abi.c",
+          "hhs_runtime/include/HARMONICODE_VM_RUNTIME.h"
+        ],
+        "matching_definition": null,
+        "rationale": "The declaration uses the public HHSVMState/HHSProgram/HHSReceipt representation, while the frozen native implementation uses VM81/Instruction/VMReceipt or a distinct runtime ABI state. Candidate primitives show operational proximity but no proven state-layout, transition, receipt, ownership, or failure-semantic equivalence. Mapping would therefore be a new architectural adapter, not a truthful alias, and cannot be admitted inside Pass 078.1.",
+        "semantic_equivalence_status": "UNPROVEN_REPRESENTATION_AND_CONTRACT_EQUIVALENCE"
+      },
+      {
+        "architectural_revision_required": true,
+        "callable_after_reconciliation": false,
+        "candidate_native_primitive": [
+          {
+            "native_visibility": "INTERNAL_STATIC",
+            "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+            "signature": "static void vm81_init(VM81 *vm, uint64_t seed, SeedMode mode)",
+            "symbol": "vm81_init"
+          },
+          {
+            "native_visibility": "EXTERNAL_LINKAGE",
+            "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+            "signature": "void hhs_runtime_init(HHSRuntimeState* state)",
+            "symbol": "hhs_runtime_init"
+          }
+        ],
+        "declaration_line": 187,
+        "declaration_source": "hhs_runtime/include/HARMONICODE_VM_RUNTIME.h",
+        "declared_signature": "void hhs_vm_init(HHSVMState* vm)",
+        "declared_symbol": "hhs_vm_init",
+        "disposition": "RETAIN_AS_TYPED_UNRESOLVED",
+        "disposition_root_hash72": "0000000000000000000000000000003d=uCH+IEHe-L0d/7C)>R!vViokPi/1=DBW8*B=Woh",
+        "evidence_files": [
+          "hhs_runtime/HARMONICODE_VM_RUNTIME.c",
+          "hhs_runtime/c/hhs_runtime_abi.c",
+          "hhs_runtime/include/HARMONICODE_VM_RUNTIME.h"
+        ],
+        "matching_definition": null,
+        "rationale": "The declaration uses the public HHSVMState/HHSProgram/HHSReceipt representation, while the frozen native implementation uses VM81/Instruction/VMReceipt or a distinct runtime ABI state. Candidate primitives show operational proximity but no proven state-layout, transition, receipt, ownership, or failure-semantic equivalence. Mapping would therefore be a new architectural adapter, not a truthful alias, and cannot be admitted inside Pass 078.1.",
+        "semantic_equivalence_status": "UNPROVEN_REPRESENTATION_AND_CONTRACT_EQUIVALENCE"
+      },
+      {
+        "architectural_revision_required": true,
+        "callable_after_reconciliation": false,
+        "candidate_native_primitive": [
+          {
+            "native_visibility": "INTERNAL_STATIC",
+            "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+            "signature": "static void close81(VM81 *vm)",
+            "symbol": "close81"
+          },
+          {
+            "native_visibility": "INTERNAL_STATIC",
+            "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+            "signature": "static int close_orientation(VM81 *vm)",
+            "symbol": "close_orientation"
+          },
+          {
+            "native_visibility": "INTERNAL_STATIC",
+            "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+            "signature": "static int close_constraint(VM81 *vm)",
+            "symbol": "close_constraint"
+          }
+        ],
+        "declaration_line": 256,
+        "declaration_source": "hhs_runtime/include/HARMONICODE_VM_RUNTIME.h",
+        "declared_signature": "uint8_t hhs_vm_is_converged(const HHSVMState* vm)",
+        "declared_symbol": "hhs_vm_is_converged",
+        "disposition": "RETAIN_AS_TYPED_UNRESOLVED",
+        "disposition_root_hash72": "00000000000000000000000000000038kJXnd495G+ZsXrlRFT?>(hVd0)dhip!>DC7?vo04",
+        "evidence_files": [
+          "hhs_runtime/HARMONICODE_VM_RUNTIME.c",
+          "hhs_runtime/include/HARMONICODE_VM_RUNTIME.h"
+        ],
+        "matching_definition": null,
+        "rationale": "The declaration uses the public HHSVMState/HHSProgram/HHSReceipt representation, while the frozen native implementation uses VM81/Instruction/VMReceipt or a distinct runtime ABI state. Candidate primitives show operational proximity but no proven state-layout, transition, receipt, ownership, or failure-semantic equivalence. Mapping would therefore be a new architectural adapter, not a truthful alias, and cannot be admitted inside Pass 078.1.",
+        "semantic_equivalence_status": "UNPROVEN_REPRESENTATION_AND_CONTRACT_EQUIVALENCE"
+      },
+      {
+        "architectural_revision_required": true,
+        "callable_after_reconciliation": false,
+        "candidate_native_primitive": [
+          {
+            "native_visibility": "INTERNAL_STATIC",
+            "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+            "signature": "static void run_vm(VM81 *vm, Options *opt)",
+            "symbol": "run_vm"
+          },
+          {
+            "native_visibility": "INTERNAL_STATIC",
+            "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+            "signature": "static void vm81_step(VM81 *vm)",
+            "symbol": "vm81_step"
+          }
+        ],
+        "declaration_line": 260,
+        "declaration_source": "hhs_runtime/include/HARMONICODE_VM_RUNTIME.h",
+        "declared_signature": "uint8_t hhs_vm_is_halted(const HHSVMState* vm)",
+        "declared_symbol": "hhs_vm_is_halted",
+        "disposition": "RETAIN_AS_TYPED_UNRESOLVED",
+        "disposition_root_hash72": "0000000000000000000000000000003?JXLP)=zd^8JGFMtHl-UW0-CuM+vQvUh6RMr(YhqJ",
+        "evidence_files": [
+          "hhs_runtime/HARMONICODE_VM_RUNTIME.c",
+          "hhs_runtime/include/HARMONICODE_VM_RUNTIME.h"
+        ],
+        "matching_definition": null,
+        "rationale": "The declaration uses the public HHSVMState/HHSProgram/HHSReceipt representation, while the frozen native implementation uses VM81/Instruction/VMReceipt or a distinct runtime ABI state. Candidate primitives show operational proximity but no proven state-layout, transition, receipt, ownership, or failure-semantic equivalence. Mapping would therefore be a new architectural adapter, not a truthful alias, and cannot be admitted inside Pass 078.1.",
+        "semantic_equivalence_status": "UNPROVEN_REPRESENTATION_AND_CONTRACT_EQUIVALENCE"
+      },
+      {
+        "architectural_revision_required": true,
+        "callable_after_reconciliation": false,
+        "candidate_native_primitive": [
+          {
+            "native_visibility": "INTERNAL_STATIC",
+            "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+            "signature": "static int close_orientation(VM81 *vm)",
+            "symbol": "close_orientation"
+          }
+        ],
+        "declaration_line": 272,
+        "declaration_source": "hhs_runtime/include/HARMONICODE_VM_RUNTIME.h",
+        "declared_signature": "double hhs_vm_orientation_flux(const HHSVMState* vm)",
+        "declared_symbol": "hhs_vm_orientation_flux",
+        "disposition": "RETAIN_AS_TYPED_UNRESOLVED",
+        "disposition_root_hash72": "0000000000000000000000000000002dSDnYF)wKic1uFSFsuXDvC(O)TqWf=NA^jeIi^RQd",
+        "evidence_files": [
+          "hhs_runtime/HARMONICODE_VM_RUNTIME.c",
+          "hhs_runtime/include/HARMONICODE_VM_RUNTIME.h"
+        ],
+        "matching_definition": null,
+        "rationale": "The declaration uses the public HHSVMState/HHSProgram/HHSReceipt representation, while the frozen native implementation uses VM81/Instruction/VMReceipt or a distinct runtime ABI state. Candidate primitives show operational proximity but no proven state-layout, transition, receipt, ownership, or failure-semantic equivalence. Mapping would therefore be a new architectural adapter, not a truthful alias, and cannot be admitted inside Pass 078.1.",
+        "semantic_equivalence_status": "UNPROVEN_REPRESENTATION_AND_CONTRACT_EQUIVALENCE"
+      },
+      {
+        "architectural_revision_required": true,
+        "callable_after_reconciliation": false,
+        "candidate_native_primitive": [
+          {
+            "native_visibility": "INTERNAL_STATIC",
+            "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+            "signature": "static void compose_receipt_hash(const char *prev, uint8_t cg, uint32_t witness, const char *state, char out[73])",
+            "symbol": "compose_receipt_hash"
+          }
+        ],
+        "declaration_line": 240,
+        "declaration_source": "hhs_runtime/include/HARMONICODE_VM_RUNTIME.h",
+        "declared_signature": "const char* hhs_vm_previous_hash72(const HHSVMState* vm)",
+        "declared_symbol": "hhs_vm_previous_hash72",
+        "disposition": "RETAIN_AS_TYPED_UNRESOLVED",
+        "disposition_root_hash72": "0000000000000000000000000000002138L0ppxI9(SV0uZe(VP>Mi=4*ibI0=njBDvB^HEJ",
+        "evidence_files": [
+          "hhs_runtime/HARMONICODE_VM_RUNTIME.c",
+          "hhs_runtime/include/HARMONICODE_VM_RUNTIME.h"
+        ],
+        "matching_definition": null,
+        "rationale": "The declaration uses the public HHSVMState/HHSProgram/HHSReceipt representation, while the frozen native implementation uses VM81/Instruction/VMReceipt or a distinct runtime ABI state. Candidate primitives show operational proximity but no proven state-layout, transition, receipt, ownership, or failure-semantic equivalence. Mapping would therefore be a new architectural adapter, not a truthful alias, and cannot be admitted inside Pass 078.1.",
+        "semantic_equivalence_status": "UNPROVEN_REPRESENTATION_AND_CONTRACT_EQUIVALENCE"
+      },
+      {
+        "architectural_revision_required": true,
+        "callable_after_reconciliation": false,
+        "candidate_native_primitive": [
+          {
+            "native_visibility": "INTERNAL_STATIC",
+            "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+            "signature": "static void vm81_init(VM81 *vm, uint64_t seed, SeedMode mode)",
+            "symbol": "vm81_init"
+          },
+          {
+            "native_visibility": "EXTERNAL_LINKAGE",
+            "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+            "signature": "void hhs_runtime_reset(HHSRuntimeState* state)",
+            "symbol": "hhs_runtime_reset"
+          }
+        ],
+        "declaration_line": 191,
+        "declaration_source": "hhs_runtime/include/HARMONICODE_VM_RUNTIME.h",
+        "declared_signature": "void hhs_vm_reset(HHSVMState* vm)",
+        "declared_symbol": "hhs_vm_reset",
+        "disposition": "RETAIN_AS_TYPED_UNRESOLVED",
+        "disposition_root_hash72": "0000000000000000000000000000002qQ4srwzONRTrUvoijpvE230Y9-TCqEG)=ta18U(2i",
+        "evidence_files": [
+          "hhs_runtime/HARMONICODE_VM_RUNTIME.c",
+          "hhs_runtime/c/hhs_runtime_abi.c",
+          "hhs_runtime/include/HARMONICODE_VM_RUNTIME.h"
+        ],
+        "matching_definition": null,
+        "rationale": "The declaration uses the public HHSVMState/HHSProgram/HHSReceipt representation, while the frozen native implementation uses VM81/Instruction/VMReceipt or a distinct runtime ABI state. Candidate primitives show operational proximity but no proven state-layout, transition, receipt, ownership, or failure-semantic equivalence. Mapping would therefore be a new architectural adapter, not a truthful alias, and cannot be admitted inside Pass 078.1.",
+        "semantic_equivalence_status": "UNPROVEN_REPRESENTATION_AND_CONTRACT_EQUIVALENCE"
+      },
+      {
+        "architectural_revision_required": true,
+        "callable_after_reconciliation": false,
+        "candidate_native_primitive": [
+          {
+            "native_visibility": "INTERNAL_STATIC",
+            "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+            "signature": "static void run_vm(VM81 *vm, Options *opt)",
+            "symbol": "run_vm"
+          }
+        ],
+        "declaration_line": 204,
+        "declaration_source": "hhs_runtime/include/HARMONICODE_VM_RUNTIME.h",
+        "declared_signature": "HHSExecutionStatus hhs_vm_run(HHSVMState* vm, const HHSProgram* program, uint64_t max_steps)",
+        "declared_symbol": "hhs_vm_run",
+        "disposition": "RETAIN_AS_TYPED_UNRESOLVED",
+        "disposition_root_hash72": "0000000000000000000000000000001!mjMixca)SNxq/svDf2IYaj60jO5OFhVTNrOq*g0Y",
+        "evidence_files": [
+          "hhs_runtime/HARMONICODE_VM_RUNTIME.c",
+          "hhs_runtime/include/HARMONICODE_VM_RUNTIME.h"
+        ],
+        "matching_definition": null,
+        "rationale": "The declaration uses the public HHSVMState/HHSProgram/HHSReceipt representation, while the frozen native implementation uses VM81/Instruction/VMReceipt or a distinct runtime ABI state. Candidate primitives show operational proximity but no proven state-layout, transition, receipt, ownership, or failure-semantic equivalence. Mapping would therefore be a new architectural adapter, not a truthful alias, and cannot be admitted inside Pass 078.1.",
+        "semantic_equivalence_status": "UNPROVEN_REPRESENTATION_AND_CONTRACT_EQUIVALENCE"
+      },
+      {
+        "architectural_revision_required": true,
+        "callable_after_reconciliation": false,
+        "candidate_native_primitive": [
+          {
+            "native_visibility": "INTERNAL_STATIC",
+            "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+            "signature": "static void vm81_step(VM81 *vm)",
+            "symbol": "vm81_step"
+          },
+          {
+            "native_visibility": "EXTERNAL_LINKAGE",
+            "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+            "signature": "void hhs_runtime_step(HHSRuntimeState* state, HHSTensorState* tensor)",
+            "symbol": "hhs_runtime_step"
+          }
+        ],
+        "declaration_line": 199,
+        "declaration_source": "hhs_runtime/include/HARMONICODE_VM_RUNTIME.h",
+        "declared_signature": "HHSExecutionStatus hhs_vm_step(HHSVMState* vm, const HHSProgram* program)",
+        "declared_symbol": "hhs_vm_step",
+        "disposition": "RETAIN_AS_TYPED_UNRESOLVED",
+        "disposition_root_hash72": "0000000000000000000000000000002WRAC2ntkGMLtEpmT3Wo+4mY>KQ=YCYH>c*r7a2M=r",
+        "evidence_files": [
+          "hhs_runtime/HARMONICODE_VM_RUNTIME.c",
+          "hhs_runtime/c/hhs_runtime_abi.c",
+          "hhs_runtime/include/HARMONICODE_VM_RUNTIME.h"
+        ],
+        "matching_definition": null,
+        "rationale": "The declaration uses the public HHSVMState/HHSProgram/HHSReceipt representation, while the frozen native implementation uses VM81/Instruction/VMReceipt or a distinct runtime ABI state. Candidate primitives show operational proximity but no proven state-layout, transition, receipt, ownership, or failure-semantic equivalence. Mapping would therefore be a new architectural adapter, not a truthful alias, and cannot be admitted inside Pass 078.1.",
+        "semantic_equivalence_status": "UNPROVEN_REPRESENTATION_AND_CONTRACT_EQUIVALENCE"
+      },
+      {
+        "architectural_revision_required": true,
+        "callable_after_reconciliation": false,
+        "candidate_native_primitive": [
+          {
+            "native_visibility": "EXTERNAL_LINKAGE",
+            "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+            "signature": "void hhs_hash72_tensor_project(const HHSHash72RingState* ring, uint8_t out_tensor81[81])",
+            "symbol": "hhs_hash72_tensor_project"
+          }
+        ],
+        "declaration_line": 223,
+        "declaration_source": "hhs_runtime/include/HARMONICODE_VM_RUNTIME.h",
+        "declared_signature": "const HHSTensor81* hhs_vm_tensor81(const HHSVMState* vm)",
+        "declared_symbol": "hhs_vm_tensor81",
+        "disposition": "RETAIN_AS_TYPED_UNRESOLVED",
+        "disposition_root_hash72": "0000000000000000000000000000001weWh^8Wq3v2zUm+zdVe->hd+A>yPzlUa9vO>azYrF",
+        "evidence_files": [
+          "hhs_runtime/c/hhs_runtime_abi.c",
+          "hhs_runtime/include/HARMONICODE_VM_RUNTIME.h"
+        ],
+        "matching_definition": null,
+        "rationale": "The declaration uses the public HHSVMState/HHSProgram/HHSReceipt representation, while the frozen native implementation uses VM81/Instruction/VMReceipt or a distinct runtime ABI state. Candidate primitives show operational proximity but no proven state-layout, transition, receipt, ownership, or failure-semantic equivalence. Mapping would therefore be a new architectural adapter, not a truthful alias, and cannot be admitted inside Pass 078.1.",
+        "semantic_equivalence_status": "UNPROVEN_REPRESENTATION_AND_CONTRACT_EQUIVALENCE"
+      },
+      {
+        "architectural_revision_required": true,
+        "callable_after_reconciliation": false,
+        "candidate_native_primitive": [
+          {
+            "native_visibility": "INTERNAL_STATIC",
+            "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+            "signature": "static void propagate_phase_transport(VM81 *vm, uint8_t origin, uint8_t energy, uint8_t cg)",
+            "symbol": "propagate_phase_transport"
+          }
+        ],
+        "declaration_line": 268,
+        "declaration_source": "hhs_runtime/include/HARMONICODE_VM_RUNTIME.h",
+        "declared_signature": "double hhs_vm_transport_flux(const HHSVMState* vm)",
+        "declared_symbol": "hhs_vm_transport_flux",
+        "disposition": "RETAIN_AS_TYPED_UNRESOLVED",
+        "disposition_root_hash72": "0000000000000000000000000000000^yCTmjrg6Oo7IplQ=)B))FU6AQ^9?v))j^7Uju8zI",
+        "evidence_files": [
+          "hhs_runtime/HARMONICODE_VM_RUNTIME.c",
+          "hhs_runtime/include/HARMONICODE_VM_RUNTIME.h"
+        ],
+        "matching_definition": null,
+        "rationale": "The declaration uses the public HHSVMState/HHSProgram/HHSReceipt representation, while the frozen native implementation uses VM81/Instruction/VMReceipt or a distinct runtime ABI state. Candidate primitives show operational proximity but no proven state-layout, transition, receipt, ownership, or failure-semantic equivalence. Mapping would therefore be a new architectural adapter, not a truthful alias, and cannot be admitted inside Pass 078.1.",
+        "semantic_equivalence_status": "UNPROVEN_REPRESENTATION_AND_CONTRACT_EQUIVALENCE"
+      },
+      {
+        "architectural_revision_required": true,
+        "callable_after_reconciliation": false,
+        "candidate_native_primitive": [
+          {
+            "native_visibility": "INTERNAL_STATIC",
+            "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+            "signature": "static void vm81_step(VM81 *vm)",
+            "symbol": "vm81_step"
+          },
+          {
+            "native_visibility": "INTERNAL_STATIC",
+            "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+            "signature": "static void apply_instruction(VM81 *vm, Instruction *ins, uint32_t *witness, double *identity_residual_out, int *identity_has_data_out)",
+            "symbol": "apply_instruction"
+          }
+        ],
+        "declaration_line": 248,
+        "declaration_source": "hhs_runtime/include/HARMONICODE_VM_RUNTIME.h",
+        "declared_signature": "uint64_t hhs_vm_witness_flags(const HHSVMState* vm)",
+        "declared_symbol": "hhs_vm_witness_flags",
+        "disposition": "RETAIN_AS_TYPED_UNRESOLVED",
+        "disposition_root_hash72": "0000000000000000000000000000004JtQmcLRrPx>tO)/h^HTHxVMJ!20jKjA3MVYWAczNX",
+        "evidence_files": [
+          "hhs_runtime/HARMONICODE_VM_RUNTIME.c",
+          "hhs_runtime/include/HARMONICODE_VM_RUNTIME.h"
+        ],
+        "matching_definition": null,
+        "rationale": "The declaration uses the public HHSVMState/HHSProgram/HHSReceipt representation, while the frozen native implementation uses VM81/Instruction/VMReceipt or a distinct runtime ABI state. Candidate primitives show operational proximity but no proven state-layout, transition, receipt, ownership, or failure-semantic equivalence. Mapping would therefore be a new architectural adapter, not a truthful alias, and cannot be admitted inside Pass 078.1.",
+        "semantic_equivalence_status": "UNPROVEN_REPRESENTATION_AND_CONTRACT_EQUIVALENCE"
+      }
+    ],
+    "fabricated_native_implementations": 0,
+    "false_callable_claims": 0,
+    "parent_pass": "PASS_078",
+    "pass078_1_native_abi_reconciliation_root_hash72": "0000000000000000000000000000001e9QfT8xN^eBX/SrMNywWTfClD(2lKfjCEuVnEP/vg",
+    "pass_id": "PASS_078_1",
+    "policy": "RECONCILE_DECLARATION_TRUTH_WITHOUT_FABRICATING_NATIVE_SEMANTICS",
+    "record_schema": "HHS_NATIVE_ABI_DECLARATION_DISPOSITION_V1",
+    "remaining_typed_unresolved": 15,
+    "schema": "HHS_NATIVE_ABI_DECLARATION_RECONCILIATION_PASS_078_1_V1",
+    "semantic_equivalence_unproven_mappings": 0,
+    "silent_kernel_semantic_changes": 0,
+    "unresolved_abi_declarations_dispositioned": 15,
+    "unresolved_abi_declarations_total": 15
+  },
+  "schema": "HHS_PASS_078_1_RELEASE_BUNDLE_V1"
+}

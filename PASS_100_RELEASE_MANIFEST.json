@@ -1,0 +1,28 @@
+{
+  "schema": "HHS_PASS_100_RELEASE_MANIFEST_V1",
+  "pass_id": "PASS_100",
+  "parent_pass099_release_root_hash72": "0000000000000000000000000000004oE=B?pc>jpobMm2kh4*B8L9itX0rgw172+aiI3siP",
+  "logical_lane_count": 4,
+  "physical_cell_count": 8,
+  "pairing_involutive": true,
+  "all_single_cell_errors_detected": true,
+  "single_cell_erasure_corrected": true,
+  "common_mode_detected": true,
+  "correction_replay_exact": true,
+  "false_correction_rate": 0,
+  "all_negative_cases_passed": true,
+  "artifacts": [
+    "PASS_100_EIGHT_CELL_CODEWORD.json",
+    "PASS_100_PHASE_GEAR_SYNDROME.json",
+    "PASS_100_CORRECTION_RECEIPT.json",
+    "PASS_100_ERASURE_RECOVERY.json",
+    "PASS_100_COMMON_MODE_DIAGNOSIS.json",
+    "PASS_100_DYNAMIC_GATE_EXECUTION.json",
+    "PASS_100_WORKLOAD_REGISTRY.json",
+    "PASS_100_NEGATIVE_CASES.json",
+    "PASS_100_OUTCOME_TAXONOMY.json",
+    "PASS_100_CALIBRATION_REPORT.md",
+    "CHANGELOG_PASS_100.md"
+  ],
+  "pass100_release_root_hash72": "0000000000000000000000000000003sIEE4DDq6!^Q9GrjJC+=Y^nevl9G-T!8vqhMssM5C"
+}

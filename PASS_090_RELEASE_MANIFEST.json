@@ -1,0 +1,20 @@
+{
+  "schema": "HHS_PASS_090_RELEASE_MANIFEST_V1",
+  "pass_id": "PASS_090",
+  "parent_pass089_release_root_hash72": "0000000000000000000000000000000zNoCUm22A1BoQM7E3Zt*Sz2boe2B=(mEs)V-T7qQi",
+  "workload_count": 12,
+  "negative_case_count": 10,
+  "all_negative_cases_passed": true,
+  "artifacts": [
+    "PASS_090_STRATEGY_WORKLOAD_REGISTRY.json",
+    "PASS_090_DISCOVERED_STRATEGIES.json",
+    "PASS_090_STRATEGY_EVALUATION_RESULTS.json",
+    "PASS_090_TRANSFER_AND_ABLATION_RESULTS.json",
+    "PASS_090_STRATEGY_FAILURE_REGISTRY.json",
+    "PASS_090_STRATEGY_DISCOVERY_RECEIPTS.json",
+    "PASS_090_NEGATIVE_CASES.json",
+    "PASS_090_CALIBRATION_REPORT.md",
+    "CHANGELOG_PASS_090.md"
+  ],
+  "pass090_release_root_hash72": "0000000000000000000000000000002=HsSPk(A8J)PK>VSciPQCbw8pD9H)>lZvX2YEmElO"
+}

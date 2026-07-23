@@ -1,0 +1,65 @@
+{
+  "browser_gpu_rendering": "UNVERIFIED_CHROMIUM_UNAVAILABLE_IN_CONTAINER",
+  "classification": "HHS_PASS_152_UNIVERSAL_ELASTIC_CLOSURE_INVARIANT_VERIFIED",
+  "inherited_regression": {
+    "make_verify_c": "PASSED",
+    "monolithic_1719_test_collection": "ATTEMPTED_RESOURCE_BOUNDED_AFTER_600_SECONDS",
+    "pass150_hash216_contract_matrix": "191_PASSED",
+    "policy": "DEPENDENCY_SCOPED_REGRESSION_IS_AUTHORITATIVE_FOR_CHANGED_SURFACES"
+  },
+  "obligation_ledger": "reports/pass152/PASS_152_OBLIGATION_LEDGER.json",
+  "parent": {
+    "authorized_backward_compatible_modifications": [
+      {
+        "current_sha256": "9139c54e6436d307fb1ee0dd57c5ead164677469ce3b888ac241d9478a36eb90",
+        "current_size": 36454,
+        "parent_sha256": "190f42d52be21bc4842bbff530158e1dc03aba40de498169e76363a168557cce",
+        "parent_size": 36115,
+        "path": "Makefile",
+        "reason": "additive Pass 151/152 validation targets"
+      },
+      {
+        "current_sha256": "0a4a43cbbc4465991b85fffd71802addee63c0284b8357e303e58e4ec2eb4017",
+        "current_size": 26699,
+        "parent_sha256": "c58edc526afabae8fcc38fcc0edcefedae6c8baffa7753826410b032eae8d7e9",
+        "parent_size": 26548,
+        "path": "hhs_backend/server.py",
+        "reason": "additive Pass 152 router composition"
+      }
+    ],
+    "byte_identical_inherited_files": 3273,
+    "classification": "COMPLETE_PARENT_HISTORY_PRESERVED_WITH_ADDITIVE_BACKWARD_COMPATIBLE_UPDATES",
+    "legacy_paths_preserved": true,
+    "missing_inherited_files": [],
+    "parent": "HHS-P150",
+    "parent_archive": "hhs_pass_150_hash216_constraint_genome_full_inherited_pass_history_nucleus-2(1).zip",
+    "parent_archive_sha256": "7021546b1851ee3187fbb179238b9a807495c720c7c7396e2a97ca42bd2253b4",
+    "parent_archive_size": 54776635,
+    "parent_manifest_entries": 3275,
+    "schema": "HHS_PASS152_PARENT_INHERITANCE_REPORT_V1",
+    "unauthorized_inherited_modifications": []
+  },
+  "pass151": {
+    "classification": "PASS_151_INTERNAL_LANGUAGE_PROCESSING_LAYERS_VERIFIED",
+    "failed": 0,
+    "negative_cases": 35,
+    "obligations_verified": 100,
+    "positive_cases": 25
+  },
+  "pass152": {
+    "api_integration_pytest": "5_PASSED",
+    "failed": 0,
+    "hash72_receipt_present": true,
+    "max_parallel_workers_observed": 2,
+    "native_c": "PASSED",
+    "negative_cases": 30,
+    "positive_cases": 30,
+    "recursive_history_valid": true,
+    "replay": "MATCH",
+    "spatial_environment_contracts": "PASSED",
+    "vm81_commit": true
+  },
+  "receipt_index": "reports/pass152/P152_RECEIPT_INDEX.json",
+  "schema": "HHS_PASS152_FULL_VALIDATION_REPORT_V1",
+  "terminal_status": "HHS_PASS_152_UNIVERSAL_ELASTIC_CLOSURE_INVARIANT_VERIFIED"
+}

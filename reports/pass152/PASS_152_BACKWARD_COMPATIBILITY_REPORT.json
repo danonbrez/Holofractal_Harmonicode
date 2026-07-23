@@ -1,0 +1,33 @@
+{
+  "authorized_modified_parent_entries": [
+    {
+      "current_sha256": "9139c54e6436d307fb1ee0dd57c5ead164677469ce3b888ac241d9478a36eb90",
+      "current_size": 36454,
+      "parent_sha256": "190f42d52be21bc4842bbff530158e1dc03aba40de498169e76363a168557cce",
+      "parent_size": 36115,
+      "path": "Makefile",
+      "reason": "additive Pass 151/152 validation targets"
+    },
+    {
+      "current_sha256": "0a4a43cbbc4465991b85fffd71802addee63c0284b8357e303e58e4ec2eb4017",
+      "current_size": 26699,
+      "parent_sha256": "c58edc526afabae8fcc38fcc0edcefedae6c8baffa7753826410b032eae8d7e9",
+      "parent_size": 26548,
+      "path": "hhs_backend/server.py",
+      "reason": "additive Pass 152 router composition"
+    }
+  ],
+  "byte_identical_parent_entries": 3273,
+  "classification": "BACKWARD_COMPATIBLE_ADDITIVE_UPDATE_VERIFIED",
+  "existing_vm81_semantics_modified": false,
+  "hash216_authority_modified": false,
+  "hash72_authority_modified": false,
+  "missing_parent_entries": [],
+  "new_gui_application_is_additive": true,
+  "new_routes_are_additive": true,
+  "parent_manifest_entries": 3275,
+  "removed_public_routes": [],
+  "removed_runtime_commands": [],
+  "schema": "HHS_PASS152_BACKWARD_COMPATIBILITY_REPORT_V1",
+  "stage004_contracts_preserved": true
+}

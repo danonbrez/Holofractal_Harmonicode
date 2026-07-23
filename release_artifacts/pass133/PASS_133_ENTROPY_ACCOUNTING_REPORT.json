@@ -1,0 +1,14 @@
+{
+  "effective_seed_min_entropy_bits": 0,
+  "entropy_attestation": {
+    "asserted_min_entropy_bits": 0,
+    "independently_attested": false,
+    "public_test_seed": true,
+    "seed_bits": 256,
+    "source_id": "PUBLIC_DETERMINISTIC_RELEASE_REPLAY_SEED"
+  },
+  "hash72_not_counted_as_entropy": true,
+  "prime_width_not_counted_as_entropy": true,
+  "status": "ENTROPY_SOURCE_UNATTESTED",
+  "sudoku_structure_not_counted_as_independent_entropy": true
+}

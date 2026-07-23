@@ -35,6 +35,7 @@ from typing import Any, Dict, Iterable, List, Mapping, Optional, Sequence, Set, 
 
 from hhs_runtime.hhs_hash72_kernel_authority_v1 import hash72_kernel_digest, make_hash72_kernel_witness
 from hhs_runtime.hhs_runtime_integration_decisions_v1 import build_integration_decisions, write_integration_decision_artifacts
+from hhs_runtime.hhs_native_project_ownership_v1 import ownership_for, validate_ownership
 
 SCHEMA = "HHS_RUNTIME_REACHABILITY_MANIFEST_V1"
 AUDITOR_VERSION = "PASS_032"
@@ -405,6 +406,11 @@ def build_reachability_manifest(root: Optional[Path | str] = None) -> Dict[str, 
             service_modules=service_modules,
             gui_refs_by_file=gui_refs_by_file,
         )
+        owner = ownership_for(rel) if status == "ORPHAN" else None
+        if owner is not None:
+            validate_ownership(root_path, rel, owner)
+            status = str(owner["status"])
+            reasons = [f"Pass 105.3 native ownership: {owner['owner_module']} via {owner['owner_test']}"]
         decision = integration_decisions.get(rel)
         if status == "ORPHAN" and decision and decision.get("decision") in {"PLUGIN_READY", "DOCUMENTED_ONLY", "DEPRECATED", "WIRED"}:
             status = "SERVICE_REACHABLE" if decision.get("decision") == "WIRED" else str(decision.get("decision"))

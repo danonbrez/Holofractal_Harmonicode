@@ -1,0 +1,63 @@
+{
+  "path_safe_execution_handle": "SHA256 locator only; canonical Hash72 execution_root remains authoritative identity",
+  "report_root_hash72": "sA+Xs9hH2Xj3V)<L?XP5-X7)txgO?Ee*Yi4z7o2KfhNKHoQEsPA78+bbg3PjIoRD7aWb4tg*",
+  "schema": "HHS_PASS132_API_SURFACE_REPORT_V1",
+  "status": "PASS",
+  "surface_count": 9,
+  "surfaces": [
+    {
+      "evidence": "EXECUTABLE_CONSEQUENCE_CLOSURE_VERIFIED",
+      "method": "POST",
+      "observed_status": 200,
+      "path": "/api/runtime/consequences/execute"
+    },
+    {
+      "evidence": "replay_consistent=true",
+      "method": "POST",
+      "observed_status": 200,
+      "path": "/api/runtime/consequences/replay"
+    },
+    {
+      "evidence": "two typed comparisons returned",
+      "method": "POST",
+      "observed_status": 200,
+      "path": "/api/runtime/consequences/compare"
+    },
+    {
+      "evidence": "FOREIGN_MODEL_RESULT",
+      "method": "POST",
+      "observed_status": 200,
+      "path": "/api/runtime/consequences/foreign-model"
+    },
+    {
+      "evidence": "immutable execution returned",
+      "method": "GET",
+      "observed_status": 200,
+      "path": "/api/runtime/consequences/{execution_handle}"
+    },
+    {
+      "evidence": "consequence graph returned",
+      "method": "GET",
+      "observed_status": 200,
+      "path": "/api/runtime/consequences/{execution_handle}/graph"
+    },
+    {
+      "evidence": "logical consequences returned",
+      "method": "GET",
+      "observed_status": 200,
+      "path": "/api/runtime/consequences/{execution_handle}/logical"
+    },
+    {
+      "evidence": "computational consequences returned",
+      "method": "GET",
+      "observed_status": 200,
+      "path": "/api/runtime/consequences/{execution_handle}/computational"
+    },
+    {
+      "evidence": "joint/native/control/replay/CEUAC receipts returned",
+      "method": "GET",
+      "observed_status": 200,
+      "path": "/api/runtime/consequences/{execution_handle}/receipts"
+    }
+  ]
+}

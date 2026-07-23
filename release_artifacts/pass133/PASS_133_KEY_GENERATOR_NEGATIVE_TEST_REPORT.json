@@ -1,0 +1,93 @@
+{
+  "phase": {
+    "cases": [
+      {
+        "case": "altered_operation_order",
+        "detected": true,
+        "outcome": "TRACE_DEFECT_DETECTED"
+      },
+      {
+        "case": "continuous_scalar_coercion",
+        "detected": true,
+        "outcome": "UNAUTHORIZED_SCALAR_COERCION_REJECTED"
+      },
+      {
+        "case": "joint_lane_flattening",
+        "detected": true,
+        "outcome": "LANE_CONTEXT_COLLAPSE_REJECTED"
+      },
+      {
+        "case": "ieee_ingress",
+        "detected": true,
+        "outcome": "CONTROL_CONTAMINATION_DETECTED"
+      },
+      {
+        "case": "duplicate_carrier",
+        "detected": true,
+        "outcome": "DUPLICATE_PRIME_DETECTED"
+      },
+      {
+        "case": "wrong_runtime_root",
+        "detected": true,
+        "outcome": "KEY_GENERATOR_REPLAY_FAILURE"
+      }
+    ],
+    "passed": 6,
+    "schema": "HHS_PASS133_PHASE_NEGATIVE_TEST_REPORT_V1",
+    "status": "PASS",
+    "total": 6
+  },
+  "prime_magic": {
+    "cases": [
+      {
+        "case": "repeated_symbol_row",
+        "detected": true,
+        "outcome": "SUDOKU_CONSTRAINT_FAILURE"
+      },
+      {
+        "case": "repeated_symbol_column",
+        "detected": true,
+        "outcome": "SUDOKU_CONSTRAINT_FAILURE"
+      },
+      {
+        "case": "invalid_diagonal",
+        "detected": true,
+        "outcome": "SUDOKU_CONSTRAINT_FAILURE"
+      },
+      {
+        "case": "duplicate_prime",
+        "detected": true,
+        "outcome": "DUPLICATE_PRIME_DETECTED"
+      },
+      {
+        "case": "composite_symbol",
+        "detected": true,
+        "outcome": "INVALID_PRIME_STATE_REJECTED"
+      },
+      {
+        "case": "factoradic_rank_out_of_range",
+        "detected": true,
+        "outcome": "SERIALIZATION_INTEGRITY_FAILURE"
+      },
+      {
+        "case": "corrupted_bigint_magic",
+        "detected": true,
+        "outcome": "SERIALIZATION_INTEGRITY_FAILURE"
+      },
+      {
+        "case": "floating_point_prime_conversion",
+        "detected": true,
+        "outcome": "CONTROL_CONTAMINATION_DETECTED"
+      },
+      {
+        "case": "public_seed_as_secret_entropy",
+        "detected": true,
+        "outcome": "ENTROPY_SOURCE_UNATTESTED"
+      }
+    ],
+    "passed": 9,
+    "schema": "HHS_PASS133_KEY_GENERATOR_NEGATIVE_TEST_REPORT_V1",
+    "status": "PASS",
+    "total": 9
+  }
+}

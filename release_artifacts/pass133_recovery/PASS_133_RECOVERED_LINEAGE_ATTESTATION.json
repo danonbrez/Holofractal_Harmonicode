@@ -1,0 +1,15 @@
+{
+  "all_parent_noncache_paths_required": true,
+  "checkpoint_chain_physically_repaired": true,
+  "historical_pass133_delta_preserved": true,
+  "historical_pass_id": "PASS_133",
+  "original_pass133_workload_results_preserved": true,
+  "parent_archive_sha256": "d50d92bb0cae3ba80488ac93e5a8bd4238d5a953841a1b6140c4c741b34b55fd",
+  "parent_pass": "PASS_132_RECONSTRUCTED_R1",
+  "parent_tree_root_sha256": "f49d35abff968c05af3e7066098c8bcac4ed9610b633706018dc2ff920b47854",
+  "pass132_source_identity_erratum_inherited": true,
+  "pass_id": "PASS_133_RECOVERED_R1",
+  "schema": "HHS_PASS133_RECOVERED_LINEAGE_ATTESTATION_V1",
+  "source_identity_boundary": "PASS132_ORIGINAL_IMPLEMENTATION_BYTES_NOT_RECOVERED; FUNCTIONAL_RECONSTRUCTION_LINEAGE",
+  "terminal_status": "PASS_133_FULL_ANCESTOR_COPY_VERIFIED_ON_RECONSTRUCTED_PASS132_LINEAGE"
+}

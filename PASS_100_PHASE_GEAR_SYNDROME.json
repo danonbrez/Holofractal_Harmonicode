@@ -1,0 +1,23 @@
+{
+  "candidate_error_cells": [
+    "C"
+  ],
+  "correction_status": "LOCATABLE_AND_CORRECTABLE",
+  "error_class": "SINGLE_CELL_VALUE_MUTATION",
+  "expected_values": {
+    "C": 71
+  },
+  "forward_gear_syndrome": 1,
+  "global_phase_syndrome": 1,
+  "history_syndrome": 1,
+  "pair_syndromes": [
+    0,
+    0,
+    1,
+    0
+  ],
+  "received_codeword_root_hash72": "0000000000000000000000000000000tf(fg+fizaCMBT!kvY?!qSVl?7+>yG(Lhgdda^ktw",
+  "reciprocal_gear_syndrome": 0,
+  "schema": "HHS_EIGHT_CELL_PHASE_GEAR_SYNDROME_V1",
+  "syndrome_root_hash72": "0000000000000000000000000000002c62tDKf17yT3q=B*lXT18QcSw*P^g3IT+/nEH5ibY"
+}

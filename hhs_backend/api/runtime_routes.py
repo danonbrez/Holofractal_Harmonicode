@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from hhs_backend.runtime.hhs_deterministic_manifold_execution_v1 import run_deterministic_manifold_execution
 from hhs_backend.runtime.hhs_global_reciprocal_contract_topology_v1 import run_global_reciprocal_contract_topology
 from hhs_backend.runtime.hhs_federated_transaction_recovery_v1 import run_federated_transaction_recovery
@@ -25,7 +27,6 @@ from hhs_backend.runtime.hhs_bounded_rejection_authority_v1 import run_bounded_r
 #
 # ============================================================================
 
-from __future__ import annotations
 
 import asyncio
 import json
@@ -1311,10 +1312,10 @@ def alignment_admit():
 # Pass 065 — Local closed parallel branch-tree entanglement and A=B phase reintegration
 from hhs_backend.runtime.hhs_local_parallel_branch_tree_v1 import run_local_parallel_branch_tree
 
-@app.get("/api/runtime/branch-tree/status")
+@router.get("/branch-tree/status")
 def runtime_branch_tree_status():
     return _contract_response("/api/runtime/branch-tree/status", "GET", run_local_parallel_branch_tree())
 
-@app.post("/api/runtime/branch-tree/resolve")
+@router.post("/branch-tree/resolve")
 def runtime_branch_tree_resolve():
     return _contract_response("/api/runtime/branch-tree/resolve", "POST", run_local_parallel_branch_tree())

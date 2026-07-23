@@ -1,0 +1,386 @@
+{
+  "closed": true,
+  "compiled_artifact_ref": "artifact:pass077:portable",
+  "compiled_artifact_root_hash72": "0000000000000000000000000000000RVIT*g=?u5ek+PE*4Z2BO+-3e9UFcpV1qZ!A(28f0",
+  "compiled_execution_root_hash72": "0000000000000000000000000000001ozxhTz*DtFz8I>9IU(lQbTz4-p9/hoFQ>V*E-3rS4",
+  "deterministic": true,
+  "exact_arithmetic_only": true,
+  "external_effects_executed": false,
+  "final_state": {
+    "artifact_ref": "artifact:pass077:portable",
+    "artifact_root_hash72": "0000000000000000000000000000000RVIT*g=?u5ek+PE*4Z2BO+-3e9UFcpV1qZ!A(28f0",
+    "bindings": {
+      "x": {
+        "operands": [
+          {
+            "denominator": 1,
+            "numerator": 1,
+            "type": "EXACT_RATIONAL"
+          },
+          {
+            "name": "y",
+            "type": "SYMBOL"
+          }
+        ],
+        "operator": "DIVIDE",
+        "type": "SYMBOLIC_EXPRESSION"
+      },
+      "z": {
+        "operands": [
+          {
+            "denominator": 1,
+            "numerator": 1,
+            "type": "EXACT_RATIONAL"
+          },
+          {
+            "name": "w",
+            "type": "SYMBOL"
+          }
+        ],
+        "operator": "DIVIDE",
+        "type": "SYMBOLIC_EXPRESSION"
+      },
+      "Δe": {
+        "denominator": 1,
+        "numerator": 0,
+        "type": "EXACT_RATIONAL"
+      },
+      "Θ15": {
+        "type": "BOOLEAN",
+        "value": true
+      },
+      "Ψ": {
+        "denominator": 1,
+        "numerator": 0,
+        "type": "EXACT_RATIONAL"
+      },
+      "Ω": {
+        "type": "BOOLEAN",
+        "value": true
+      }
+    },
+    "defined_gates": {
+      "PHASE_GATE": "0000000000000000000000000000004z*T9GQIZR?4r^?o?!waIq30iWpP*)?=3*gnXYVAAv"
+    },
+    "diagnostics": [],
+    "external_effects_executed": false,
+    "foundation_mutated": false,
+    "invariant_status": {
+      "Δe": "SATISFIED",
+      "Θ15": "SATISFIED",
+      "Ψ": "SATISFIED",
+      "Ω": "SATISFIED"
+    },
+    "program_counter": 9,
+    "run_id": "compiled-execution:pass077:portable",
+    "schema": "HHS_PORTABLE_BYTECODE_STATE_V1",
+    "state_root_hash72": "00000000000000000000000000000003v0?yH(m>ToJO6v42e-GZDD-)OiQ>(X!sJ9Z3f0*h",
+    "status": "CLOSED",
+    "step_count": 9
+  },
+  "foundation_mutated": false,
+  "initial_state_root_hash72": "0000000000000000000000000000001pa+grw01?gw3mzc=xELE^7q!WpYXQ(-BA4Ik*o(HA",
+  "run_id": "compiled-execution:pass077:portable",
+  "schema": "HHS_PORTABLE_BYTECODE_EXECUTION_V1",
+  "status": "CLOSED",
+  "step_count": 9,
+  "step_receipts": [
+    {
+      "operation": "GATE_DECLARE",
+      "outcome": {
+        "gate_defined": "PHASE_GATE",
+        "satisfied": true
+      },
+      "previous_state_root_hash72": "0000000000000000000000000000001pa+grw01?gw3mzc=xELE^7q!WpYXQ(-BA4Ik*o(HA",
+      "previous_step_receipt_root_hash72": "GENESIS",
+      "resulting_state_root_hash72": "0000000000000000000000000000002VvZ(vR*=qrwLM=wePSbK+1g-/3>pCnmAO*gNfW6A0",
+      "run_id": "compiled-execution:pass077:portable",
+      "schema": "HHS_PORTABLE_BYTECODE_STEP_RECEIPT_V1",
+      "source_statement_root_hash72": "0000000000000000000000000000004z*T9GQIZR?4r^?o?!waIq30iWpP*)?=3*gnXYVAAv",
+      "status_after": "RUNNING",
+      "step_index": 1,
+      "step_receipt_root_hash72": "00000000000000000000000000000019E7I1^bLoqdIGd25MDruBYAe5Y!1)U7>2WivSY5OU"
+    },
+    {
+      "operation": "GATE_INVOKE",
+      "outcome": {
+        "gate_invoked": "PHASE_GATE",
+        "satisfied": true
+      },
+      "previous_state_root_hash72": "0000000000000000000000000000002VvZ(vR*=qrwLM=wePSbK+1g-/3>pCnmAO*gNfW6A0",
+      "previous_step_receipt_root_hash72": "00000000000000000000000000000019E7I1^bLoqdIGd25MDruBYAe5Y!1)U7>2WivSY5OU",
+      "resulting_state_root_hash72": "0000000000000000000000000000001s9A?>(*HsSZtPa?Q036z0E08lt2tJ?9xg^yK+zh3=",
+      "run_id": "compiled-execution:pass077:portable",
+      "schema": "HHS_PORTABLE_BYTECODE_STEP_RECEIPT_V1",
+      "source_statement_root_hash72": "0000000000000000000000000000001anO31>NJWSAkrGW(ng=X4/l!Ns(QPqUEZWnDEQWk2",
+      "status_after": "RUNNING",
+      "step_index": 2,
+      "step_receipt_root_hash72": "00000000000000000000000000000028AHwQwla5BBa/^gJy(G4vQDV3crr*(8Z/SxQD3H*G"
+    },
+    {
+      "operation": "RELATION_EQUAL",
+      "outcome": {
+        "observations": [
+          {
+            "action": "BOUND_LEFT_SYMBOL",
+            "equal": true,
+            "left_text": "x",
+            "left_value": {
+              "operands": [
+                {
+                  "denominator": 1,
+                  "numerator": 1,
+                  "type": "EXACT_RATIONAL"
+                },
+                {
+                  "name": "y",
+                  "type": "SYMBOL"
+                }
+              ],
+              "operator": "DIVIDE",
+              "type": "SYMBOLIC_EXPRESSION"
+            },
+            "right_text": "1/y",
+            "right_value": {
+              "operands": [
+                {
+                  "denominator": 1,
+                  "numerator": 1,
+                  "type": "EXACT_RATIONAL"
+                },
+                {
+                  "name": "y",
+                  "type": "SYMBOL"
+                }
+              ],
+              "operator": "DIVIDE",
+              "type": "SYMBOLIC_EXPRESSION"
+            }
+          }
+        ],
+        "satisfied": true
+      },
+      "previous_state_root_hash72": "0000000000000000000000000000001s9A?>(*HsSZtPa?Q036z0E08lt2tJ?9xg^yK+zh3=",
+      "previous_step_receipt_root_hash72": "00000000000000000000000000000028AHwQwla5BBa/^gJy(G4vQDV3crr*(8Z/SxQD3H*G",
+      "resulting_state_root_hash72": "00000000000000000000000000000006>y7KaPO>VGL/^VPu+Z=>JjEtea!uyaHY4lym?1Fg",
+      "run_id": "compiled-execution:pass077:portable",
+      "schema": "HHS_PORTABLE_BYTECODE_STEP_RECEIPT_V1",
+      "source_statement_root_hash72": "0000000000000000000000000000001?p8j(Hfdpfh^ecHw+JC61=YjE+!D4bkB1V0yk7qN5",
+      "status_after": "RUNNING",
+      "step_index": 3,
+      "step_receipt_root_hash72": "00000000000000000000000000000012ooNI+HiP52kfef1Z0st7JQbjYQMXuF?2dm)bmDM="
+    },
+    {
+      "operation": "RELATION_EQUAL",
+      "outcome": {
+        "observations": [
+          {
+            "action": "BOUND_LEFT_SYMBOL",
+            "equal": true,
+            "left_text": "z",
+            "left_value": {
+              "operands": [
+                {
+                  "denominator": 1,
+                  "numerator": 1,
+                  "type": "EXACT_RATIONAL"
+                },
+                {
+                  "name": "w",
+                  "type": "SYMBOL"
+                }
+              ],
+              "operator": "DIVIDE",
+              "type": "SYMBOLIC_EXPRESSION"
+            },
+            "right_text": "1/w",
+            "right_value": {
+              "operands": [
+                {
+                  "denominator": 1,
+                  "numerator": 1,
+                  "type": "EXACT_RATIONAL"
+                },
+                {
+                  "name": "w",
+                  "type": "SYMBOL"
+                }
+              ],
+              "operator": "DIVIDE",
+              "type": "SYMBOLIC_EXPRESSION"
+            }
+          }
+        ],
+        "satisfied": true
+      },
+      "previous_state_root_hash72": "00000000000000000000000000000006>y7KaPO>VGL/^VPu+Z=>JjEtea!uyaHY4lym?1Fg",
+      "previous_step_receipt_root_hash72": "00000000000000000000000000000012ooNI+HiP52kfef1Z0st7JQbjYQMXuF?2dm)bmDM=",
+      "resulting_state_root_hash72": "0000000000000000000000000000000se8e3FrzCPN4J(UfEFTJ5hsS0CZc?fXYD5AN9IFEE",
+      "run_id": "compiled-execution:pass077:portable",
+      "schema": "HHS_PORTABLE_BYTECODE_STEP_RECEIPT_V1",
+      "source_statement_root_hash72": "0000000000000000000000000000000a2u(23D3ZdAG-Mg9tG3pqki3Z4jHYkuMLVewCe>2+",
+      "status_after": "RUNNING",
+      "step_index": 4,
+      "step_receipt_root_hash72": "0000000000000000000000000000002keqhOKo2WcfZ8(TsVsk/jLgkSdBYmRV!?*UYUFY0K"
+    },
+    {
+      "operation": "ORDERED_DISTINCT",
+      "outcome": {
+        "observations": [
+          {
+            "distinct": true,
+            "left_text": "xy",
+            "left_value": {
+              "name": "xy",
+              "type": "ORDERED_PRODUCT"
+            },
+            "right_text": "yx",
+            "right_value": {
+              "name": "yx",
+              "type": "ORDERED_PRODUCT"
+            }
+          }
+        ],
+        "satisfied": true
+      },
+      "previous_state_root_hash72": "0000000000000000000000000000000se8e3FrzCPN4J(UfEFTJ5hsS0CZc?fXYD5AN9IFEE",
+      "previous_step_receipt_root_hash72": "0000000000000000000000000000002keqhOKo2WcfZ8(TsVsk/jLgkSdBYmRV!?*UYUFY0K",
+      "resulting_state_root_hash72": "0000000000000000000000000000000hjiLxaCk56!GrKozXWLAg?uoH>rmlCtZIpL!bQjYB",
+      "run_id": "compiled-execution:pass077:portable",
+      "schema": "HHS_PORTABLE_BYTECODE_STEP_RECEIPT_V1",
+      "source_statement_root_hash72": "0000000000000000000000000000001HjYPdGbKn-f*)SXL)U0qzRNH0bvy8!Do2ItUeONc1",
+      "status_after": "RUNNING",
+      "step_index": 5,
+      "step_receipt_root_hash72": "0000000000000000000000000000003jYuH2ycc^IR(+5-g8(JFG1ey2pr=8+!y8pGZki50>"
+    },
+    {
+      "operation": "RELATION_EQUAL",
+      "outcome": {
+        "observations": [
+          {
+            "action": "BOUND_LEFT_SYMBOL",
+            "equal": true,
+            "left_text": "Δe",
+            "left_value": {
+              "denominator": 1,
+              "numerator": 0,
+              "type": "EXACT_RATIONAL"
+            },
+            "right_text": "0",
+            "right_value": {
+              "denominator": 1,
+              "numerator": 0,
+              "type": "EXACT_RATIONAL"
+            }
+          }
+        ],
+        "satisfied": true
+      },
+      "previous_state_root_hash72": "0000000000000000000000000000000hjiLxaCk56!GrKozXWLAg?uoH>rmlCtZIpL!bQjYB",
+      "previous_step_receipt_root_hash72": "0000000000000000000000000000003jYuH2ycc^IR(+5-g8(JFG1ey2pr=8+!y8pGZki50>",
+      "resulting_state_root_hash72": "0000000000000000000000000000000lfs=Im?0lktuqIXMeODvBjxapi6jWrN=l^ClHvb=7",
+      "run_id": "compiled-execution:pass077:portable",
+      "schema": "HHS_PORTABLE_BYTECODE_STEP_RECEIPT_V1",
+      "source_statement_root_hash72": "0000000000000000000000000000001va+hb^LTonB)88UaKa5JAq+>zc/AgHpFJ+vHH!j!0",
+      "status_after": "RUNNING",
+      "step_index": 6,
+      "step_receipt_root_hash72": "000000000000000000000000000000042O1i!kgbY*Wa!Wp5ok>bPUA/Y1fLrYKkA+Npj0BF"
+    },
+    {
+      "operation": "RELATION_EQUAL",
+      "outcome": {
+        "observations": [
+          {
+            "action": "BOUND_LEFT_SYMBOL",
+            "equal": true,
+            "left_text": "Ψ",
+            "left_value": {
+              "denominator": 1,
+              "numerator": 0,
+              "type": "EXACT_RATIONAL"
+            },
+            "right_text": "0",
+            "right_value": {
+              "denominator": 1,
+              "numerator": 0,
+              "type": "EXACT_RATIONAL"
+            }
+          }
+        ],
+        "satisfied": true
+      },
+      "previous_state_root_hash72": "0000000000000000000000000000000lfs=Im?0lktuqIXMeODvBjxapi6jWrN=l^ClHvb=7",
+      "previous_step_receipt_root_hash72": "000000000000000000000000000000042O1i!kgbY*Wa!Wp5ok>bPUA/Y1fLrYKkA+Npj0BF",
+      "resulting_state_root_hash72": "0000000000000000000000000000003Ym!3S3Z?coT2T+DcVj((dwHL2JFCI!QAwsfTKYGOx",
+      "run_id": "compiled-execution:pass077:portable",
+      "schema": "HHS_PORTABLE_BYTECODE_STEP_RECEIPT_V1",
+      "source_statement_root_hash72": "0000000000000000000000000000000i88lP!d8PDugy26vdeo+dXwouXPfapR-b>t=c9M04",
+      "status_after": "RUNNING",
+      "step_index": 7,
+      "step_receipt_root_hash72": "0000000000000000000000000000002R3rjK(v-IVSu/-DW9Xw9md3ubRXbuU!Qn66QicN-9"
+    },
+    {
+      "operation": "RELATION_EQUAL",
+      "outcome": {
+        "observations": [
+          {
+            "action": "BOUND_LEFT_SYMBOL",
+            "equal": true,
+            "left_text": "Θ15",
+            "left_value": {
+              "type": "BOOLEAN",
+              "value": true
+            },
+            "right_text": "true",
+            "right_value": {
+              "type": "BOOLEAN",
+              "value": true
+            }
+          }
+        ],
+        "satisfied": true
+      },
+      "previous_state_root_hash72": "0000000000000000000000000000003Ym!3S3Z?coT2T+DcVj((dwHL2JFCI!QAwsfTKYGOx",
+      "previous_step_receipt_root_hash72": "0000000000000000000000000000002R3rjK(v-IVSu/-DW9Xw9md3ubRXbuU!Qn66QicN-9",
+      "resulting_state_root_hash72": "0000000000000000000000000000004z=PFG*wD7+wGkobQrC(rf7DSWws^kHRoXwNn8JZx2",
+      "run_id": "compiled-execution:pass077:portable",
+      "schema": "HHS_PORTABLE_BYTECODE_STEP_RECEIPT_V1",
+      "source_statement_root_hash72": "0000000000000000000000000000001C+o?5^/=b9padKFNsxoQ+18SpijQKyJH4e)TAIMw0",
+      "status_after": "RUNNING",
+      "step_index": 8,
+      "step_receipt_root_hash72": "0000000000000000000000000000000-YYRHFcX)*4qU/1F=X(Kk=2b+JuX=QQ56mp2y12B/"
+    },
+    {
+      "operation": "RELATION_EQUAL",
+      "outcome": {
+        "observations": [
+          {
+            "action": "BOUND_LEFT_SYMBOL",
+            "equal": true,
+            "left_text": "Ω",
+            "left_value": {
+              "type": "BOOLEAN",
+              "value": true
+            },
+            "right_text": "true",
+            "right_value": {
+              "type": "BOOLEAN",
+              "value": true
+            }
+          }
+        ],
+        "satisfied": true
+      },
+      "previous_state_root_hash72": "0000000000000000000000000000004z=PFG*wD7+wGkobQrC(rf7DSWws^kHRoXwNn8JZx2",
+      "previous_step_receipt_root_hash72": "0000000000000000000000000000000-YYRHFcX)*4qU/1F=X(Kk=2b+JuX=QQ56mp2y12B/",
+      "resulting_state_root_hash72": "00000000000000000000000000000003v0?yH(m>ToJO6v42e-GZDD-)OiQ>(X!sJ9Z3f0*h",
+      "run_id": "compiled-execution:pass077:portable",
+      "schema": "HHS_PORTABLE_BYTECODE_STEP_RECEIPT_V1",
+      "source_statement_root_hash72": "0000000000000000000000000000004sYwEIacQN78zK>bpK7yFk-MQl9ji2Ay-r4/=s-!sR",
+      "status_after": "CLOSED",
+      "step_index": 9,
+      "step_receipt_root_hash72": "0000000000000000000000000000001=CouKFayJO^TzBLwhl)x(M-dn)XCuqQo==WPR7P1T"
+    }
+  ],
+  "version": "HHS_PORTABLE_BYTECODE_VM_PASS_077_V1"
+}

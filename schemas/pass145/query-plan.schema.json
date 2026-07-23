@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:hhs:pass145:query-plan:v1",
+  "title": "HHS Pass 145 Query Plan",
+  "type": "object",
+  "required": ["schema", "question", "plan_type", "read_only", "mutation_authority", "query_plan_hash72"],
+  "properties": {
+    "schema": {"const": "HHS_PASS145_QUERY_PLAN_V1"},
+    "question": {"type": "string"},
+    "plan_type": {"type": "string"},
+    "read_only": {"const": true},
+    "mutation_authority": {"const": false},
+    "query_plan_hash72": {"type": "string"}
+  },
+  "additionalProperties": true
+}

@@ -1,0 +1,346 @@
+{
+  "entries": [
+    {
+      "entry_hash72": "F*8mEtT)cQtm/UoZswV5bxrZ",
+      "kind": "PASS_132_EXECUTION",
+      "parent_hash72": "H72-UNIFIED-GENESIS",
+      "payload": {
+        "audit_root": "4Eu!T/sSh+KjOSnANK53F2YR22uF>8f5O<8rZh1T6Ocvn*3EKb4Ar/YXo6VKIFtFnew7WWY?",
+        "execution_root": "wcObWMwDIDu/AZC/YDWBEi+jlesnv*mVq4OHB<kFnX(L)AlKpfU9qys)lXLWV2Z(+j*BZv!<"
+      },
+      "source": "repeated_decimal_accumulation"
+    },
+    {
+      "entry_hash72": ")AD?JHelfZUb(!ncj)ms?3MG",
+      "kind": "PASS_132_EXECUTION",
+      "parent_hash72": "F*8mEtT)cQtm/UoZswV5bxrZ",
+      "payload": {
+        "audit_root": "qFBYSEXF3Uz<y3j4mlpobo+x)2t5MDd!a+Pc5Z3*fP-i(B*)w1baqXlw(J-C0*DEB!ilr/KB",
+        "execution_root": "hz32OquqK<dqE0O!uJOJ97nU6KBsnuX6qbxLmkyM5rP2f4B2<TwteTtz*ABV4Nvj3G-I)Xj8"
+      },
+      "source": "catastrophic_cancellation"
+    },
+    {
+      "entry_hash72": "g/A6wkBc5Bvu(-2y5YdWaTxv",
+      "kind": "PASS_132_EXECUTION",
+      "parent_hash72": ")AD?JHelfZUb(!ncj)ms?3MG",
+      "payload": {
+        "audit_root": "(2jGiePH3k!b1EVcL(yhnc/vUhFqI-S-EoDg0aJ9xUfwE8JS>-zz9YgB2*VnexLNIa!s!H-Z",
+        "execution_root": "0jX7W2k7zvBECNFgD/Z<(7LCIJ5R7oEKM!Q*W5jlX/n+D<SK/DF9Pc(>M49YTT)Nb?!m0OyT"
+      },
+      "source": "alternating_accumulation"
+    },
+    {
+      "entry_hash72": "/U4sK(3fFIq<DuwC7c6ZT2M-",
+      "kind": "PASS_132_EXECUTION",
+      "parent_hash72": "g/A6wkBc5Bvu(-2y5YdWaTxv",
+      "payload": {
+        "audit_root": "k4e7C1ejCnYdKb>cqP41z4FfGEA8Pm(vCHG6IMn-)quAYwJWjumop16puEr?djl-9TYwkGst",
+        "execution_root": "x-SpOuYRayw3F6bqC>ktd+79YbNDOAj)AoF?m+96mm3sXh*wD+xp/bpp4mSvD0+V!kviAFD9"
+      },
+      "source": "nonassociative_left"
+    },
+    {
+      "entry_hash72": "sMizMX5cumV4Dn8XeHWZD1>q",
+      "kind": "PASS_132_EXECUTION",
+      "parent_hash72": "/U4sK(3fFIq<DuwC7c6ZT2M-",
+      "payload": {
+        "audit_root": "WLrT?<wT4j?1ZcdTqH3KNjD8<4y)POa1j0prVbatXF4g8RW0/4Cbx!QILgbglejxIlrdw9oU",
+        "execution_root": "qF?utnR5+SEscDjUA4z4wXllL4Y?6k2)8odJHl)60qHTa5iczEZtXXc-jIPppo923W(BnVE-"
+      },
+      "source": "nonassociative_right"
+    },
+    {
+      "entry_hash72": "hm/FFlYSa/Snt8gj*Y2bVyEx",
+      "kind": "PASS_132_EXECUTION",
+      "parent_hash72": "sMizMX5cumV4Dn8XeHWZD1>q",
+      "payload": {
+        "audit_root": "r!?yiIlaHIJcjeQB>/Ig-6PxIq45bLUdO+Si1myS(/dx9Fyf1QzD1yBytS4WenOHD9I4L+bC",
+        "execution_root": ")V5ysvINVWN<?9CYo0BvZu!YtMbW/nOR4pT/sQSz91+s35ym9hqo-ecm<sz0873R1BQvp3iz"
+      },
+      "source": "inverse_normalization"
+    },
+    {
+      "entry_hash72": "5G9)93J(676F3ZBMPecXKpX1",
+      "kind": "PASS_132_EXECUTION",
+      "parent_hash72": "hm/FFlYSa/Snt8gj*Y2bVyEx",
+      "payload": {
+        "audit_root": "lmbEV1j8CzDTA5eu9WGW62SXq-EJy*534hZ4KtfWwUMs5Hda*AEgWn3Xx*KfbB!WIasX(7xt",
+        "execution_root": "P-X2zpq26Zf?T5cs!PjwEqKW5G1zv02ey*r<6/2Ff13KHVa*ogQ?Bebm5DD2sdnIrGWg+EqX"
+      },
+      "source": "overflow_boundary"
+    },
+    {
+      "entry_hash72": "m2VU-<Z7(PFJ/Mi3L571cpo8",
+      "kind": "PASS_132_EXECUTION",
+      "parent_hash72": "5G9)93J(676F3ZBMPecXKpX1",
+      "payload": {
+        "audit_root": "YWYcUqqhfcocoOM-vcUN(cFZ!?dU1ToMlQ-o29YrEho!dfP!lH1zOxN7mKMRQ8-Dp3DcjiQ!",
+        "execution_root": "l*7*h(tBqaepE<jMa4LvHPMco+?LjpT4soBo9WwhrEEksypPMWAXTiOvB73(ua<S/20M6JL2"
+      },
+      "source": "underflow_boundary"
+    },
+    {
+      "entry_hash72": "))9KQ8pM>kBIT<FsCP(ZBT29",
+      "kind": "PASS_132_EXECUTION",
+      "parent_hash72": "m2VU-<Z7(PFJ/Mi3L571cpo8",
+      "payload": {
+        "audit_root": "sbRSXVp3ti5haFPC<0D-*n/482D44u>Ld1mBr(1a4vZszLCMG!O9!re0IOyZ2XCQFKFJhmE6",
+        "execution_root": "fiaU(G*6An!de-5<ZO-1/(jT8*707Z?RTjl)p!lv*jFRm54Q3s<HSp-u!(kU6qiyA7ZW8*KY"
+      },
+      "source": "signed_zero_propagation"
+    },
+    {
+      "entry_hash72": "S9)k8Iq+Nh<mV7C8n)5>+OCK",
+      "kind": "PASS_132_EXECUTION",
+      "parent_hash72": "))9KQ8pM>kBIT<FsCP(ZBT29",
+      "payload": {
+        "audit_root": "<oAZzqW<!>Drp4Z5Fd<h<8NV/O0/RW!wUR/Fc*F7QX?Js(1bl/P09a<KP1bD)aPelk-6ozRb",
+        "execution_root": "vIekedUW)LLc?<D3KR(wqd>hI>rLmgxxPPn>qz>R!EgBmD/PYz5u)s!/>MoLMa4s<1k<w2UZ"
+      },
+      "source": "iterative_drift"
+    },
+    {
+      "entry_hash72": "q!gAm!?dsurILSdHP7!hh4BG",
+      "kind": "PASS_132_EXECUTION",
+      "parent_hash72": "S9)k8Iq+Nh<mV7C8n)5>+OCK",
+      "payload": {
+        "audit_root": "hhb+?gYCB(9?4R?JDNbMQOs<m0x4wQATP<ujIp6IPfYLM!dbwn0M7<er+jIu0vdqC)KD*VHz",
+        "execution_root": "x-o)A1vZEW+ono60V8B75(04u98j95Hg)V?sndQZfbOZFwnbWxfe-Qy/KXI4nFnLrts1JEi4"
+      },
+      "source": "long_phase_cycle"
+    },
+    {
+      "entry_hash72": "fHxS<Z1ERq9fF1RPPd97kcx3",
+      "kind": "PASS_132_EXECUTION",
+      "parent_hash72": "q!gAm!?dsurILSdHP7!hh4BG",
+      "payload": {
+        "audit_root": "abkZtnjHwPzFuE5AzZNjyVpeptR*EeZUdU!gR*6/D!NdnLV>f6RxuYGk-Hx/YZNW*>KHsL9Q",
+        "execution_root": "fL5GxqYa4VPc!EiT1GuavYo41x5-tJJREpkvWM9Zh5Yeo9wy8zwKF0sETDQ/evrR9Mje-Gpc"
+      },
+      "source": "repeated_normalization"
+    },
+    {
+      "entry_hash72": "8FJSYL-wNR2J2m*<X3)>C!+x",
+      "kind": "PASS_132_EXECUTION",
+      "parent_hash72": "fHxS<Z1ERq9fF1RPPd97kcx3",
+      "payload": {
+        "audit_root": "+vDRUq7S>S0a+0xLuTiyyS4l4GwNjCxzs6lWtjNvcDmRrfG?H>Tkqn1q2m1p7Xa2nAb/6XHF",
+        "execution_root": "fR4V1Z1z3w)uL?CrAB>ctkcF8I-U(pavs3al*6-/m>wThGc1R4a-1FKXA(I)UKV2y4c9/CIT"
+      },
+      "source": "loshu_cell_sum"
+    },
+    {
+      "entry_hash72": "QQOj-5cKCzMY7g)5b)ZE8?kn",
+      "kind": "PASS_132_EXECUTION",
+      "parent_hash72": "8FJSYL-wNR2J2m*<X3)>C!+x",
+      "payload": {
+        "audit_root": "w1DW212lFJb?eEgLf0Y9v<>/BF6oGdfz+I/cW<MEtYXTbbyqoHuwcQJBy1BoUmmfsehTdC3<",
+        "execution_root": "nVQll4doE8zWLDzF?yW1mPpfpFVj?<TCqX6zQXHlKV2fP6A!iRjW?X8tx4Ke?+-fNWVVr74t"
+      },
+      "source": "dual_t_constraints"
+    },
+    {
+      "entry_hash72": "v6zKjgU>nVb<0UAGC3/gl8i*",
+      "kind": "PASS_132_EXECUTION",
+      "parent_hash72": "QQOj-5cKCzMY7g)5b)ZE8?kn",
+      "payload": {
+        "audit_root": "cwGtlDVSf6gzeVJ95B5!SY7ADYcStqjqVzwjyayZkMU>oY(L7Uh8DgxOP*AicE7Lo94(Sw<<",
+        "execution_root": "ocS?T?V8/bZzl<+lKhnZ?86-Yj!Wx393ryEh)dIA6oVQKyGfSOCwwqP2zRl<ZLT9/HnF(m*O"
+      },
+      "source": "conformal_radius"
+    },
+    {
+      "entry_hash72": "oN85C)LEVEofZ/w7*TztpTFd",
+      "kind": "PASS_132_EXECUTION",
+      "parent_hash72": "v6zKjgU>nVb<0UAGC3/gl8i*",
+      "payload": {
+        "audit_root": "*DSPIn!Ab*RPsvUDw!H>a?GlaHkkFC35pNPqco7jdv(PI?cto?7cNJoIii>nQ-aO<AAA!yDV",
+        "execution_root": "4>wAI(h?F6G/jz+s1w9-gqm9u!E1Xdu<+1ACjh3Rjrqw>V4/eHz(Ht((FaYLq8!ISPHX!2vv"
+      },
+      "source": "master_matrix"
+    },
+    {
+      "entry_hash72": "-uqaiAQk16YOdiAmiBlG50jg",
+      "kind": "PASS_132_EXECUTION",
+      "parent_hash72": "oN85C)LEVEofZ/w7*TztpTFd",
+      "payload": {
+        "audit_root": "6*7kB<-V*xvBx6P<+svho/qo?rULUml<0)EVmrWWsSmrj8i2XVI+jVl(/3QO0gCXfpRonxZA",
+        "execution_root": "Xs4<)mRiUauuYn90nKn8ktG2TGc6t122i7w)AG22kUAsWgj1D/6w)7bCh+cuKc!(Ms0Q-Vc1"
+      },
+      "source": "genesis_kernel"
+    },
+    {
+      "entry_hash72": "1+nPj51BvkvenCPAT*QpR+vS",
+      "kind": "PASS_132_EXECUTION",
+      "parent_hash72": "-uqaiAQk16YOdiAmiBlG50jg",
+      "payload": {
+        "audit_root": "!mrWe3PL5u736(Il<nK6KgPyp+*YyatVh6Gnmo?JVdpCnU>T?F3fj9-p/LjTS!MyUd-/)4qG",
+        "execution_root": "13U5aiNkCDBFc*TWZqhtSAHmHk(8z6!OsDaQFfw0qoLvXn46PZm!fIQb<d*nVcrXEE+YWYe7"
+      },
+      "source": "T1_transport"
+    }
+  ],
+  "entry_count": 18,
+  "hash72_authority": "HHS_HASH72_KERNEL_U72_DIGITAL_DNA_V1",
+  "ledger_hash72": "VeW0EI)+w/QX)GFQ0qi1JY!z",
+  "schema": "HHS_UNIFIED_HASH72_LEDGER_V1",
+  "tip_hash72": "1+nPj51BvkvenCPAT*QpR+vS",
+  "tip_hash72_kernel_witness": {
+    "canonical_payload": "{\"entry_count\":18,\"entry_hashes\":[\"F*8mEtT)cQtm/UoZswV5bxrZ\",\")AD?JHelfZUb(!ncj)ms?3MG\",\"g/A6wkBc5Bvu(-2y5YdWaTxv\",\"/U4sK(3fFIq<DuwC7c6ZT2M-\",\"sMizMX5cumV4Dn8XeHWZD1>q\",\"hm/FFlYSa/Snt8gj*Y2bVyEx\",\"5G9)93J(676F3ZBMPecXKpX1\",\"m2VU-<Z7(PFJ/Mi3L571cpo8\",\"))9KQ8pM>kBIT<FsCP(ZBT29\",\"S9)k8Iq+Nh<mV7C8n)5>+OCK\",\"q!gAm!?dsurILSdHP7!hh4BG\",\"fHxS<Z1ERq9fF1RPPd97kcx3\",\"8FJSYL-wNR2J2m*<X3)>C!+x\",\"QQOj-5cKCzMY7g)5b)ZE8?kn\",\"v6zKjgU>nVb<0UAGC3/gl8i*\",\"oN85C)LEVEofZ/w7*TztpTFd\",\"-uqaiAQk16YOdiAmiBlG50jg\",\"1+nPj51BvkvenCPAT*QpR+vS\"],\"tip_hash72\":\"1+nPj51BvkvenCPAT*QpR+vS\"}",
+    "digest": "VeW0EI)+w/QX)GFQ0qi1JY!z",
+    "dna": "VeW0EI)+w/QX)GFQ0qi1JY!z3QikGl9WkLsLYUhuvug5l/P1(NA6o*UduBNQO)L?uT4H3U!2",
+    "label": "hhs_unified_hash72_ledger_v1",
+    "positions": [
+      57,
+      14,
+      58,
+      0,
+      40,
+      44,
+      67,
+      63,
+      32,
+      65,
+      52,
+      59,
+      67,
+      42,
+      41,
+      52,
+      0,
+      26,
+      18,
+      1,
+      45,
+      60,
+      70,
+      35,
+      3,
+      52,
+      18,
+      20,
+      42,
+      21,
+      9,
+      58,
+      20,
+      47,
+      28,
+      47,
+      60,
+      56,
+      17,
+      30,
+      31,
+      30,
+      16,
+      5,
+      21,
+      65,
+      51,
+      1,
+      66,
+      49,
+      36,
+      6,
+      24,
+      64,
+      56,
+      13,
+      30,
+      37,
+      49,
+      52,
+      50,
+      67,
+      47,
+      71,
+      30,
+      55,
+      4,
+      43,
+      3,
+      56,
+      70,
+      2
+    ],
+    "rotation_profile": [
+      -87,
+      13,
+      56,
+      -3,
+      -108,
+      111,
+      -11,
+      -16,
+      -48,
+      128,
+      -102,
+      -24,
+      127,
+      -43,
+      27,
+      -35,
+      56,
+      -63,
+      -72,
+      54,
+      25,
+      -105,
+      -24,
+      84,
+      -21,
+      -45,
+      -8,
+      65,
+      86,
+      -80,
+      -21,
+      -45,
+      204,
+      -202,
+      138,
+      -204,
+      96,
+      -53,
+      51,
+      -81,
+      -9,
+      61,
+      -26,
+      -38,
+      49,
+      20,
+      5,
+      -46,
+      18,
+      0,
+      -14,
+      27,
+      -28,
+      -61,
+      74,
+      -42,
+      46,
+      52,
+      -9,
+      -7,
+      62,
+      6,
+      -87,
+      8,
+      38,
+      -82,
+      82,
+      -24,
+      7,
+      59,
+      0,
+      39
+    ],
+    "schema": "HHS_HASH72_KERNEL_WITNESS_V1",
+    "trace_count": 592,
+    "zero_sum": true
+  }
+}

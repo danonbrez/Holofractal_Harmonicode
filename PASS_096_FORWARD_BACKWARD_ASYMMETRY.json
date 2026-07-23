@@ -1,0 +1,6 @@
+{
+  "schema": "HHS_PASS_096_DIRECTIONAL_ASYMMETRY_V1",
+  "representation_reversal_is_causal_reversal": false,
+  "reverse_operation": "INFER_CANDIDATE_ANTECEDENTS",
+  "ambiguity_preserved": true
+}

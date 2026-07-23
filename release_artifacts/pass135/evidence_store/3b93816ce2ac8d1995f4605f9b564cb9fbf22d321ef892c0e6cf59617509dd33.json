@@ -1,0 +1,1 @@
+{"interface":"PUBLIC_FASTAPI_RUNTIME_ENTRYPOINT","operation":"alternate_runtime_server_process_start","request":{"command":["/opt/pyvenv/bin/python","-m","uvicorn","hhs_backend.runtime.runtime_server:app","--host","127.0.0.1","--port","44939","--log-level","warning"]},"response":{"base_url":"http://127.0.0.1:44939","log_path":"PASS_135_SUBJECT_SERVER.log","pid":15854}}

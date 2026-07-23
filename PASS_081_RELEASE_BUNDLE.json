@@ -1,0 +1,39 @@
+{
+  "calibration_receipt_root": "0000000000000000000000000000003>Hh?e/gbbYXmh8u3Cd+(Mj7rEdS/fDBmN4G=ZGI>>",
+  "metrics": {
+    "closed_calibration_gates": 0,
+    "conformance_edges_added": "TYPED_UNAVAILABLE_NEVER_ZERO",
+    "files_added": 13,
+    "files_modified": 1,
+    "fixed_points_detected": 0,
+    "float_authority_violations_rejected": 1,
+    "hash72_replay_verification_status": "VERIFIED_DETERMINISTIC",
+    "orphan_module_count": "TYPED_UNAVAILABLE_NEVER_ZERO",
+    "pass080_bypass_attempts_rejected": 1,
+    "periodic_states_detected": 0,
+    "services_added": 1,
+    "surfaces_added": 1,
+    "tests_collected": 32,
+    "tests_failed": 0,
+    "tests_passed": 32,
+    "tests_skipped": 0,
+    "underived_surface_count": "TYPED_UNAVAILABLE_NEVER_ZERO",
+    "unresolved_calibration_gates": 6,
+    "full_repository_suite_status": "COLLECTION_FAILED_PREEXISTING_SYNTAX_ERROR",
+    "full_repository_suite_collection_errors": 2,
+    "full_repository_suite_error_file": "hhs_backend/api/runtime_routes.py"
+  },
+  "parent_pass": "PASS_080",
+  "parent_release_root_hash72": "0000000000000000000000000000003^2=39V1Hj6gZ?y>bC-djikWMqPvxHKeJK2FPDDIv4",
+  "pass_id": "PASS_081",
+  "schema": "HHS_PASS_081_RELEASE_BUNDLE_V1",
+  "specification": "HHS_EXACT_RECURSIVE_SYMBOLIC_CONSTRAINT_RUNTIME_V1",
+  "success_criteria": {
+    "directional_paths_preserved": true,
+    "local_p_per_gate": true,
+    "no_float_canonical_authority": true,
+    "pass080_admission_preserved": true,
+    "source_recoverable": true
+  },
+  "pass081_release_root_hash72": "0000000000000000000000000000001P-P*+vWQa>qnFn1^YcioT-r!Y44qDRqqoF)Xh1ZSx"
+}

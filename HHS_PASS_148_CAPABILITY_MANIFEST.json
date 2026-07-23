@@ -1,0 +1,970 @@
+{
+  "authority_levels": [
+    "A1",
+    "A4",
+    "A2",
+    "A3"
+  ],
+  "consequence_classes": [
+    "EXCLUDED",
+    "UNDETERMINED",
+    "GATE_LOCAL",
+    "INVARIANT",
+    "CONDITIONAL",
+    "LANE_LOCAL",
+    "NORMALIZATION_LOCAL",
+    "NECESSARY"
+  ],
+  "manifest_hash72": "0000000000000000000000000000002s0QrzB^yfp2YenMig?jZnYjQlMs->CRrzQPjhkcUH",
+  "pass_id": "HHS-P148-NSAM",
+  "primary_classes": [
+    "CONTROL_PROJECTION",
+    "DECLARED_SYSTEM_LAW",
+    "DERIVABLE_CONSEQUENCE",
+    "UNRESOLVED_EXPRESSION",
+    "NARRATIVE_EXTRAPOLATION"
+  ],
+  "privileged_internal_access": 0,
+  "privileged_semantic_authority_external": 0,
+  "projection_profiles": [
+    "COMMUTATIVE_FIELD_CONTROL_V1",
+    "EXACT_RATIONAL_CONTROL_V1",
+    "HHS_NATIVE_TYPED_V1",
+    "IEEE754_BINARY64_CONTROL_V1",
+    "NARRATIVE_WORLD_MODEL_V1",
+    "STANDARD_COMPLEX_CONTROL_V1",
+    "STANDARD_REAL_ANALYSIS_CONTROL_V1",
+    "SYMBOLIC_CAS_CONTROL_V1"
+  ],
+  "schema": "HHS_PASS148_CAPABILITY_MANIFEST_V1",
+  "semantic_public_surface_count": 26,
+  "semantic_public_surfaces": [
+    {
+      "capabilities": [
+        "LOCAL_API",
+        "PATH_EXECUTION",
+        "SEMANTIC_READ"
+      ],
+      "capability_hash72": "0000000000000000000000000000000x8st-)W^jtqFaVD3-phFIa6y4Xvonc^/zjzY>y^=E",
+      "capability_id": "PUB-bb35eae8355df6c29c39ea6b",
+      "classification": "PUBLICLY_REQUESTABLE_THROUGH_BOUNDARY",
+      "description": "Parse, classify, diagnose, persist, and receipt an expression",
+      "explicit_semantic_authority_credentials_required": false,
+      "method": "POST",
+      "mutating": true,
+      "parameters": [],
+      "path": "/api/v1/semantic-membrane/analyze",
+      "promotion_request_is_authorization": false,
+      "reversibility_class": "CHECKPOINT_REVERSIBLE",
+      "surface_type": "API"
+    },
+    {
+      "capabilities": [
+        "LOCAL_API",
+        "PATH_EXECUTION",
+        "SEMANTIC_READ"
+      ],
+      "capability_hash72": "0000000000000000000000000000003+jZr8RB(1>j0Gmb3HLG=Q8(MMLp4bsI(A+uVlM8U)",
+      "capability_id": "PUB-8361bd7f26a93015a15ae661",
+      "classification": "PUBLICLY_REQUESTABLE_THROUGH_BOUNDARY",
+      "description": "Audit authority isolation and registry closure",
+      "explicit_semantic_authority_credentials_required": false,
+      "method": "GET",
+      "mutating": false,
+      "parameters": [],
+      "path": "/api/v1/semantic-membrane/audit",
+      "promotion_request_is_authorization": false,
+      "reversibility_class": "APPEND_ONLY_NONDESTRUCTIVE",
+      "surface_type": "API"
+    },
+    {
+      "capabilities": [
+        "LOCAL_API",
+        "PATH_EXECUTION",
+        "SEMANTIC_READ"
+      ],
+      "capability_hash72": "0000000000000000000000000000003ntkZ/uRQv+brsv!EN)88)mlKUmgrm(8qkL+RCi-cp",
+      "capability_id": "PUB-fe44aa10343ab84f9b07cf7b",
+      "classification": "PUBLICLY_REQUESTABLE_THROUGH_BOUNDARY",
+      "description": "Retrieve a derivation graph",
+      "explicit_semantic_authority_credentials_required": false,
+      "method": "GET",
+      "mutating": false,
+      "parameters": [],
+      "path": "/api/v1/semantic-membrane/derivations/{id}",
+      "promotion_request_is_authorization": false,
+      "reversibility_class": "APPEND_ONLY_NONDESTRUCTIVE",
+      "surface_type": "API"
+    },
+    {
+      "capabilities": [
+        "LOCAL_API",
+        "PATH_EXECUTION",
+        "SEMANTIC_READ"
+      ],
+      "capability_hash72": "0000000000000000000000000000003Fvyl45k>2Dh7>Cz34sRKXseQD5?fdiyJce?h=0y^C",
+      "capability_id": "PUB-3c3d00f982e38def276abf0b",
+      "classification": "PUBLICLY_REQUESTABLE_THROUGH_BOUNDARY",
+      "description": "Execute a witnessed authorized derivation",
+      "explicit_semantic_authority_credentials_required": false,
+      "method": "POST",
+      "mutating": true,
+      "parameters": [],
+      "path": "/api/v1/semantic-membrane/derive",
+      "promotion_request_is_authorization": false,
+      "reversibility_class": "CHECKPOINT_REVERSIBLE",
+      "surface_type": "API"
+    },
+    {
+      "capabilities": [
+        "LOCAL_API",
+        "PATH_EXECUTION",
+        "SEMANTIC_READ"
+      ],
+      "capability_hash72": "0000000000000000000000000000000Gf+kmOX4J?jF^3deH?oYzbMFVKX!F9ryVLqvc(vsZ",
+      "capability_id": "PUB-f6fffb479758db146dda4b8b",
+      "classification": "PUBLICLY_REQUESTABLE_THROUGH_BOUNDARY",
+      "description": "Segment and classify mixed semantic and narrative documents",
+      "explicit_semantic_authority_credentials_required": false,
+      "method": "POST",
+      "mutating": true,
+      "parameters": [],
+      "path": "/api/v1/semantic-membrane/documents/analyze",
+      "promotion_request_is_authorization": false,
+      "reversibility_class": "CHECKPOINT_REVERSIBLE",
+      "surface_type": "API"
+    },
+    {
+      "capabilities": [
+        "LOCAL_API",
+        "PATH_EXECUTION",
+        "SEMANTIC_READ"
+      ],
+      "capability_hash72": "0000000000000000000000000000004JjA3N3/Z2nt>bGNllp(>=3W(ojnQ(g3bWDPDmIn7q",
+      "capability_id": "PUB-79b67d5f3ccb12c2e491ef10",
+      "classification": "PUBLICLY_REQUESTABLE_THROUGH_BOUNDARY",
+      "description": "Run an explicitly isolated control projection",
+      "explicit_semantic_authority_credentials_required": false,
+      "method": "POST",
+      "mutating": true,
+      "parameters": [],
+      "path": "/api/v1/semantic-membrane/project",
+      "promotion_request_is_authorization": false,
+      "reversibility_class": "CHECKPOINT_REVERSIBLE",
+      "surface_type": "API"
+    },
+    {
+      "capabilities": [
+        "LOCAL_API",
+        "PATH_EXECUTION",
+        "SEMANTIC_AUTHORITY_ADMIN"
+      ],
+      "capability_hash72": "0000000000000000000000000000003EP9MVo>yAdZFq->eRjbXbsvgh?BtH)3pcMUUsoXla",
+      "capability_id": "PUB-445efbabfed1e0b8dc8e0ec5",
+      "classification": "PUBLICLY_REQUESTABLE_THROUGH_BOUNDARY",
+      "description": "Evaluate promotion using separately authenticated semantic authority",
+      "explicit_semantic_authority_credentials_required": true,
+      "method": "POST",
+      "mutating": true,
+      "parameters": [],
+      "path": "/api/v1/semantic-membrane/promotions/evaluate",
+      "promotion_request_is_authorization": false,
+      "reversibility_class": "CHECKPOINT_REVERSIBLE",
+      "surface_type": "API"
+    },
+    {
+      "capabilities": [
+        "LOCAL_API",
+        "PATH_EXECUTION",
+        "SEMANTIC_READ"
+      ],
+      "capability_hash72": "0000000000000000000000000000003AVWId8xc!xCalT63LXYBu=+/qAGD^laDdcvYQkhYU",
+      "capability_id": "PUB-69efb348bed24bea81c483ff",
+      "classification": "PUBLICLY_REQUESTABLE_THROUGH_BOUNDARY",
+      "description": "Request but do not authorize semantic promotion",
+      "explicit_semantic_authority_credentials_required": false,
+      "method": "POST",
+      "mutating": true,
+      "parameters": [],
+      "path": "/api/v1/semantic-membrane/promotions/request",
+      "promotion_request_is_authorization": false,
+      "reversibility_class": "CHECKPOINT_REVERSIBLE",
+      "surface_type": "API"
+    },
+    {
+      "capabilities": [
+        "LOCAL_API",
+        "PATH_EXECUTION",
+        "SEMANTIC_READ"
+      ],
+      "capability_hash72": "0000000000000000000000000000000?Bp0W!k(L5!3T-tkjU^t(6gUVo7nBNG+m(THZbMZ7",
+      "capability_id": "PUB-8dbe1f72bd88850715225cc9",
+      "classification": "PUBLICLY_REQUESTABLE_THROUGH_BOUNDARY",
+      "description": "Retrieve a proposition record",
+      "explicit_semantic_authority_credentials_required": false,
+      "method": "GET",
+      "mutating": false,
+      "parameters": [],
+      "path": "/api/v1/semantic-membrane/propositions/{id}",
+      "promotion_request_is_authorization": false,
+      "reversibility_class": "APPEND_ONLY_NONDESTRUCTIVE",
+      "surface_type": "API"
+    },
+    {
+      "capabilities": [
+        "LOCAL_API",
+        "PATH_EXECUTION",
+        "SEMANTIC_READ"
+      ],
+      "capability_hash72": "0000000000000000000000000000000Y3Pvd/nec(1lI(mZIo(LzqGBG(wMd3Ay66GSgsRpS",
+      "capability_id": "PUB-b49439c2fd3f5df06120958d",
+      "classification": "PUBLICLY_REQUESTABLE_THROUGH_BOUNDARY",
+      "description": "Replay a semantic proposition, derivation, or projection",
+      "explicit_semantic_authority_credentials_required": false,
+      "method": "POST",
+      "mutating": true,
+      "parameters": [],
+      "path": "/api/v1/semantic-membrane/replay",
+      "promotion_request_is_authorization": false,
+      "reversibility_class": "CHECKPOINT_REVERSIBLE",
+      "surface_type": "API"
+    },
+    {
+      "capabilities": [
+        "LOCAL_API",
+        "PATH_EXECUTION",
+        "SEMANTIC_READ"
+      ],
+      "capability_hash72": "0000000000000000000000000000000ywohS0fkzb!Q2Oa6fVrf//zMs3QVMD/m*e7iGZDg!",
+      "capability_id": "PUB-03c8539b08a27302f1613d76",
+      "classification": "PUBLICLY_REQUESTABLE_THROUGH_BOUNDARY",
+      "description": "Retrieve public semantic rule documentation",
+      "explicit_semantic_authority_credentials_required": false,
+      "method": "GET",
+      "mutating": false,
+      "parameters": [],
+      "path": "/api/v1/semantic-membrane/rules/{rule_id}",
+      "promotion_request_is_authorization": false,
+      "reversibility_class": "APPEND_ONLY_NONDESTRUCTIVE",
+      "surface_type": "API"
+    },
+    {
+      "argv": [
+        "semantic",
+        "analyze"
+      ],
+      "capabilities": [
+        "DATABASE_WRITE",
+        "PATH_EXECUTION",
+        "SEMANTIC_READ"
+      ],
+      "capability_hash72": "0000000000000000000000000000002Y)>*(R+ooVkFq+vAQnYxI(6x(UnU2^YxYorOx?O0b",
+      "capability_id": "PUB-3cb93195fb2ed18129cee0be",
+      "classification": "PUBLICLY_CALLABLE",
+      "description": "Pass 148 semantic operation: semantic analyze",
+      "mutating": true,
+      "parameters": [
+        {
+          "default": null,
+          "flags": [
+            "--expression"
+          ],
+          "name": "expression",
+          "nargs": null,
+          "required": false,
+          "type": "_StoreAction"
+        },
+        {
+          "default": null,
+          "flags": [
+            "--expression-file"
+          ],
+          "name": "expression_file",
+          "nargs": null,
+          "required": false,
+          "type": "_StoreAction"
+        },
+        {
+          "default": false,
+          "flags": [
+            "--stdin"
+          ],
+          "name": "stdin",
+          "nargs": 0,
+          "required": false,
+          "type": "_StoreTrueAction"
+        },
+        {
+          "choices": [
+            "contract",
+            "runtime",
+            "documentation",
+            "user_declaration",
+            "model_output",
+            "fiction",
+            "control_engine"
+          ],
+          "default": "model_output",
+          "flags": [
+            "--source-type"
+          ],
+          "name": "source_type",
+          "nargs": null,
+          "required": false,
+          "type": "_StoreAction"
+        },
+        {
+          "default": "CLI_SUBMISSION",
+          "flags": [
+            "--source-reference"
+          ],
+          "name": "source_reference",
+          "nargs": null,
+          "required": false,
+          "type": "_StoreAction"
+        },
+        {
+          "default": "HHS_NATIVE_TYPED_V1",
+          "flags": [
+            "--profile"
+          ],
+          "name": "profile",
+          "nargs": null,
+          "required": false,
+          "type": "_StoreAction"
+        },
+        {
+          "default": "{}",
+          "flags": [
+            "--scope"
+          ],
+          "name": "scope",
+          "nargs": null,
+          "required": false,
+          "type": "_StoreAction"
+        },
+        {
+          "default": [],
+          "flags": [
+            "--governing-contract"
+          ],
+          "name": "governing_contract",
+          "nargs": null,
+          "required": false,
+          "type": "_AppendAction"
+        }
+      ],
+      "privileged_semantic_authority": 0,
+      "reversibility_class": "CHECKPOINT_REVERSIBLE",
+      "surface_type": "CLI"
+    },
+    {
+      "argv": [
+        "semantic",
+        "analyze-document"
+      ],
+      "capabilities": [
+        "DATABASE_WRITE",
+        "PATH_EXECUTION",
+        "SEMANTIC_READ"
+      ],
+      "capability_hash72": "0000000000000000000000000000003ib>uw>cBy0gmchp96gz2F/G^5kIKkDeiFT?lEul78",
+      "capability_id": "PUB-83fe87733d608e126be3e679",
+      "classification": "PUBLICLY_CALLABLE",
+      "description": "Pass 148 semantic operation: semantic analyze-document",
+      "mutating": true,
+      "parameters": [
+        {
+          "default": null,
+          "name": "path",
+          "nargs": null,
+          "required": true,
+          "type": "_StoreAction"
+        },
+        {
+          "choices": [
+            "contract",
+            "runtime",
+            "documentation",
+            "user_declaration",
+            "model_output",
+            "fiction",
+            "control_engine"
+          ],
+          "default": "documentation",
+          "flags": [
+            "--source-type"
+          ],
+          "name": "source_type",
+          "nargs": null,
+          "required": false,
+          "type": "_StoreAction"
+        },
+        {
+          "default": null,
+          "flags": [
+            "--source-reference"
+          ],
+          "name": "source_reference",
+          "nargs": null,
+          "required": false,
+          "type": "_StoreAction"
+        },
+        {
+          "default": "HHS_NATIVE_TYPED_V1",
+          "flags": [
+            "--profile"
+          ],
+          "name": "profile",
+          "nargs": null,
+          "required": false,
+          "type": "_StoreAction"
+        },
+        {
+          "default": [],
+          "flags": [
+            "--governing-contract"
+          ],
+          "name": "governing_contract",
+          "nargs": null,
+          "required": false,
+          "type": "_AppendAction"
+        }
+      ],
+      "privileged_semantic_authority": 0,
+      "reversibility_class": "CHECKPOINT_REVERSIBLE",
+      "surface_type": "CLI"
+    },
+    {
+      "argv": [
+        "semantic",
+        "audit"
+      ],
+      "capabilities": [
+        "PATH_EXECUTION",
+        "SEMANTIC_READ"
+      ],
+      "capability_hash72": "0000000000000000000000000000002dWFv^7=n0?-N)ohj*rw5UNM4^/7IHVk!P>zzTchnb",
+      "capability_id": "PUB-dc8475dc3d30894256b191a1",
+      "classification": "PUBLICLY_CALLABLE",
+      "description": "Pass 148 semantic operation: semantic audit",
+      "mutating": false,
+      "parameters": [
+        {
+          "default": "pass148",
+          "flags": [
+            "--dependency-scope"
+          ],
+          "name": "dependency_scope",
+          "nargs": null,
+          "required": false,
+          "type": "_StoreAction"
+        }
+      ],
+      "privileged_semantic_authority": 0,
+      "reversibility_class": "APPEND_ONLY_NONDESTRUCTIVE",
+      "surface_type": "CLI"
+    },
+    {
+      "argv": [
+        "semantic",
+        "classify"
+      ],
+      "capabilities": [
+        "PATH_EXECUTION",
+        "SEMANTIC_READ"
+      ],
+      "capability_hash72": "0000000000000000000000000000001RXu!vOo8TBbyuB^)4Y-^GA9p?jW/f4+GTrnMNUSC5",
+      "capability_id": "PUB-3fe8856ceb71b30f0ea0aabb",
+      "classification": "PUBLICLY_CALLABLE",
+      "description": "Pass 148 semantic operation: semantic classify",
+      "mutating": false,
+      "parameters": [
+        {
+          "default": null,
+          "flags": [
+            "--proposition"
+          ],
+          "name": "proposition",
+          "nargs": null,
+          "required": true,
+          "type": "_StoreAction"
+        }
+      ],
+      "privileged_semantic_authority": 0,
+      "reversibility_class": "APPEND_ONLY_NONDESTRUCTIVE",
+      "surface_type": "CLI"
+    },
+    {
+      "argv": [
+        "semantic",
+        "derivation"
+      ],
+      "capabilities": [
+        "PATH_EXECUTION",
+        "SEMANTIC_READ"
+      ],
+      "capability_hash72": "0000000000000000000000000000003!Hg2>L(W^7rFtjqvF6qoZ9+zHR7+wO6+L+ijvPu/-",
+      "capability_id": "PUB-1e382a5296ed2d46a8a44f8b",
+      "classification": "PUBLICLY_CALLABLE",
+      "description": "Pass 148 semantic operation: semantic derivation",
+      "mutating": false,
+      "parameters": [
+        {
+          "default": null,
+          "name": "derivation_id",
+          "nargs": null,
+          "required": true,
+          "type": "_StoreAction"
+        }
+      ],
+      "privileged_semantic_authority": 0,
+      "reversibility_class": "APPEND_ONLY_NONDESTRUCTIVE",
+      "surface_type": "CLI"
+    },
+    {
+      "argv": [
+        "semantic",
+        "derive"
+      ],
+      "capabilities": [
+        "DATABASE_WRITE",
+        "PATH_EXECUTION",
+        "SEMANTIC_READ"
+      ],
+      "capability_hash72": "00000000000000000000000000000030NoOQ*CVOKIAn*zVoJwNIfX5J/VKTzjejYtIO2F*U",
+      "capability_id": "PUB-e8eb79525e6e5fe17ca56747",
+      "classification": "PUBLICLY_CALLABLE",
+      "description": "Pass 148 semantic operation: semantic derive",
+      "mutating": true,
+      "parameters": [
+        {
+          "default": null,
+          "flags": [
+            "--proposition"
+          ],
+          "name": "proposition",
+          "nargs": null,
+          "required": true,
+          "type": "_AppendAction"
+        },
+        {
+          "default": "HHS_DELTA_SELF_NORMALIZATION_SUBSTITUTION_V1",
+          "flags": [
+            "--rule"
+          ],
+          "name": "rule",
+          "nargs": null,
+          "required": false,
+          "type": "_StoreAction"
+        },
+        {
+          "default": "{}",
+          "flags": [
+            "--substitutions"
+          ],
+          "name": "substitutions",
+          "nargs": null,
+          "required": false,
+          "type": "_StoreAction"
+        }
+      ],
+      "privileged_semantic_authority": 0,
+      "reversibility_class": "CHECKPOINT_REVERSIBLE",
+      "surface_type": "CLI"
+    },
+    {
+      "argv": [
+        "semantic",
+        "project"
+      ],
+      "capabilities": [
+        "DATABASE_WRITE",
+        "PATH_EXECUTION",
+        "SEMANTIC_READ"
+      ],
+      "capability_hash72": "0000000000000000000000000000002T*DFSrYZUuZDykOUtMz7GXizl^RoD+M>AeP>asw6w",
+      "capability_id": "PUB-62fdacdf258281fb6773732a",
+      "classification": "PUBLICLY_CALLABLE",
+      "description": "Pass 148 semantic operation: semantic project",
+      "mutating": true,
+      "parameters": [
+        {
+          "default": null,
+          "flags": [
+            "--expression"
+          ],
+          "name": "expression",
+          "nargs": null,
+          "required": false,
+          "type": "_StoreAction"
+        },
+        {
+          "default": null,
+          "flags": [
+            "--expression-file"
+          ],
+          "name": "expression_file",
+          "nargs": null,
+          "required": false,
+          "type": "_StoreAction"
+        },
+        {
+          "default": false,
+          "flags": [
+            "--stdin"
+          ],
+          "name": "stdin",
+          "nargs": 0,
+          "required": false,
+          "type": "_StoreTrueAction"
+        },
+        {
+          "default": null,
+          "flags": [
+            "--profile"
+          ],
+          "name": "profile",
+          "nargs": null,
+          "required": true,
+          "type": "_StoreAction"
+        },
+        {
+          "default": [],
+          "flags": [
+            "--assumption"
+          ],
+          "name": "assumption",
+          "nargs": null,
+          "required": false,
+          "type": "_AppendAction"
+        }
+      ],
+      "privileged_semantic_authority": 0,
+      "reversibility_class": "CHECKPOINT_REVERSIBLE",
+      "surface_type": "CLI"
+    },
+    {
+      "argv": [
+        "semantic",
+        "promotion-evaluate"
+      ],
+      "capabilities": [
+        "DATABASE_WRITE",
+        "PATH_EXECUTION",
+        "SEMANTIC_AUTHORITY_ADMIN",
+        "SEMANTIC_READ"
+      ],
+      "capability_hash72": "0000000000000000000000000000004v5kg4aTVu)l>Nw=HOIWkU88Yav>KGDrcJJi3?Ht(W",
+      "capability_id": "PUB-f019206f15af22672416cae2",
+      "classification": "PUBLICLY_REQUESTABLE_THROUGH_BOUNDARY",
+      "description": "Pass 148 semantic operation: semantic promotion-evaluate",
+      "mutating": true,
+      "parameters": [
+        {
+          "default": null,
+          "name": "promotion_request_id",
+          "nargs": null,
+          "required": true,
+          "type": "_StoreAction"
+        },
+        {
+          "default": false,
+          "flags": [
+            "--authorize"
+          ],
+          "name": "authorize",
+          "nargs": 0,
+          "required": false,
+          "type": "_StoreTrueAction"
+        },
+        {
+          "default": false,
+          "flags": [
+            "--reject"
+          ],
+          "name": "reject",
+          "nargs": 0,
+          "required": false,
+          "type": "_StoreTrueAction"
+        },
+        {
+          "choices": [
+            "A3",
+            "A4"
+          ],
+          "default": "A3",
+          "flags": [
+            "--authority"
+          ],
+          "name": "authority",
+          "nargs": null,
+          "required": false,
+          "type": "_StoreAction"
+        },
+        {
+          "default": null,
+          "flags": [
+            "--rationale"
+          ],
+          "name": "rationale",
+          "nargs": null,
+          "required": true,
+          "type": "_StoreAction"
+        }
+      ],
+      "privileged_semantic_authority": "SEPARATE_AUTHENTICATION_REQUIRED",
+      "reversibility_class": "CHECKPOINT_REVERSIBLE",
+      "surface_type": "CLI"
+    },
+    {
+      "argv": [
+        "semantic",
+        "promotion-request"
+      ],
+      "capabilities": [
+        "DATABASE_WRITE",
+        "PATH_EXECUTION",
+        "SEMANTIC_READ"
+      ],
+      "capability_hash72": "0000000000000000000000000000001agnwDzovL66Eu7zWmjuD>RF*Gbww9eyqsBV4?9EfW",
+      "capability_id": "PUB-a7145cc73c15983549d9e1c0",
+      "classification": "PUBLICLY_CALLABLE",
+      "description": "Pass 148 semantic operation: semantic promotion-request",
+      "mutating": true,
+      "parameters": [
+        {
+          "default": null,
+          "flags": [
+            "--source"
+          ],
+          "name": "source",
+          "nargs": null,
+          "required": true,
+          "type": "_StoreAction"
+        },
+        {
+          "default": null,
+          "flags": [
+            "--target"
+          ],
+          "name": "target",
+          "nargs": null,
+          "required": true,
+          "type": "_StoreAction"
+        },
+        {
+          "default": null,
+          "flags": [
+            "--governing-rule"
+          ],
+          "name": "governing_rule",
+          "nargs": null,
+          "required": true,
+          "type": "_StoreAction"
+        },
+        {
+          "default": [],
+          "flags": [
+            "--dependency"
+          ],
+          "name": "dependency",
+          "nargs": null,
+          "required": false,
+          "type": "_AppendAction"
+        },
+        {
+          "default": "{}",
+          "flags": [
+            "--scope"
+          ],
+          "name": "scope",
+          "nargs": null,
+          "required": false,
+          "type": "_StoreAction"
+        }
+      ],
+      "privileged_semantic_authority": 0,
+      "reversibility_class": "CHECKPOINT_REVERSIBLE",
+      "surface_type": "CLI"
+    },
+    {
+      "argv": [
+        "semantic",
+        "proposition"
+      ],
+      "capabilities": [
+        "PATH_EXECUTION",
+        "SEMANTIC_READ"
+      ],
+      "capability_hash72": "00000000000000000000000000000046c)E=D3ykE?V>izeAd1-YYNJJ>bT9M3Ne6f6W2QuZ",
+      "capability_id": "PUB-3ec5c715f311390fb6c5bb1a",
+      "classification": "PUBLICLY_CALLABLE",
+      "description": "Pass 148 semantic operation: semantic proposition",
+      "mutating": false,
+      "parameters": [
+        {
+          "default": null,
+          "name": "proposition_id",
+          "nargs": null,
+          "required": true,
+          "type": "_StoreAction"
+        }
+      ],
+      "privileged_semantic_authority": 0,
+      "reversibility_class": "APPEND_ONLY_NONDESTRUCTIVE",
+      "surface_type": "CLI"
+    },
+    {
+      "argv": [
+        "semantic",
+        "registry",
+        "audit"
+      ],
+      "capabilities": [
+        "DATABASE_WRITE",
+        "PATH_EXECUTION",
+        "SEMANTIC_AUTHORITY_ADMIN",
+        "SEMANTIC_READ"
+      ],
+      "capability_hash72": "0000000000000000000000000000000yy>H-m3!PXwhZCl5)*j8?y-dv+fgmzhJ^gD(3AIGj",
+      "capability_id": "PUB-38e9f1f1c387af89e4942b51",
+      "classification": "PUBLICLY_REQUESTABLE_THROUGH_BOUNDARY",
+      "description": "Pass 148 semantic operation: semantic registry audit",
+      "mutating": true,
+      "parameters": [],
+      "privileged_semantic_authority": "SEPARATE_AUTHENTICATION_REQUIRED",
+      "reversibility_class": "CHECKPOINT_REVERSIBLE",
+      "surface_type": "CLI"
+    },
+    {
+      "argv": [
+        "semantic",
+        "registry",
+        "sync"
+      ],
+      "capabilities": [
+        "DATABASE_WRITE",
+        "PATH_EXECUTION",
+        "SEMANTIC_AUTHORITY_ADMIN",
+        "SEMANTIC_READ"
+      ],
+      "capability_hash72": "0000000000000000000000000000004ng1=E24U8suz=gsVy0YuuxT>bgAq82Ek*B(r2Zumf",
+      "capability_id": "PUB-ea7db8f1671b3ffacafa8ed2",
+      "classification": "PUBLICLY_REQUESTABLE_THROUGH_BOUNDARY",
+      "description": "Pass 148 semantic operation: semantic registry sync",
+      "mutating": true,
+      "parameters": [],
+      "privileged_semantic_authority": "SEPARATE_AUTHENTICATION_REQUIRED",
+      "reversibility_class": "CHECKPOINT_REVERSIBLE",
+      "surface_type": "CLI"
+    },
+    {
+      "argv": [
+        "semantic",
+        "replay"
+      ],
+      "capabilities": [
+        "DATABASE_WRITE",
+        "PATH_EXECUTION",
+        "SEMANTIC_READ"
+      ],
+      "capability_hash72": "0000000000000000000000000000001bPKKbG!axz8a62u3IvZdI4!peM-S>X>69)IXfQGr/",
+      "capability_id": "PUB-23358f0eb0dada5c13b9ea7a",
+      "classification": "PUBLICLY_CALLABLE",
+      "description": "Pass 148 semantic operation: semantic replay",
+      "mutating": true,
+      "parameters": [
+        {
+          "default": null,
+          "name": "target_id",
+          "nargs": null,
+          "required": true,
+          "type": "_StoreAction"
+        }
+      ],
+      "privileged_semantic_authority": 0,
+      "reversibility_class": "CHECKPOINT_REVERSIBLE",
+      "surface_type": "CLI"
+    },
+    {
+      "argv": [
+        "semantic",
+        "rule",
+        "show"
+      ],
+      "capabilities": [
+        "PATH_EXECUTION",
+        "SEMANTIC_READ"
+      ],
+      "capability_hash72": "0000000000000000000000000000004CPpDVFrEBfbxZohbedGQo9(lYPR2MhnD2s4JYEv3Q",
+      "capability_id": "PUB-77408a53d8b355c3b8926840",
+      "classification": "PUBLICLY_CALLABLE",
+      "description": "Pass 148 semantic operation: semantic rule show",
+      "mutating": false,
+      "parameters": [
+        {
+          "default": null,
+          "name": "rule_id",
+          "nargs": null,
+          "required": true,
+          "type": "_StoreAction"
+        }
+      ],
+      "privileged_semantic_authority": 0,
+      "reversibility_class": "APPEND_ONLY_NONDESTRUCTIVE",
+      "surface_type": "CLI"
+    },
+    {
+      "argv": [
+        "semantic",
+        "serve"
+      ],
+      "capabilities": [
+        "DATABASE_WRITE",
+        "PATH_EXECUTION",
+        "SEMANTIC_READ"
+      ],
+      "capability_hash72": "0000000000000000000000000000002oka)CzZ=k^jwWW=2=--92u1g3^yu8=xvL>hAQYdBS",
+      "capability_id": "PUB-faa51905726b4a4432b54f72",
+      "classification": "PUBLICLY_CALLABLE",
+      "description": "Pass 148 semantic operation: semantic serve",
+      "mutating": true,
+      "parameters": [
+        {
+          "default": "127.0.0.1",
+          "flags": [
+            "--host"
+          ],
+          "name": "host",
+          "nargs": null,
+          "required": false,
+          "type": "_StoreAction"
+        },
+        {
+          "default": 8878,
+          "flags": [
+            "--port"
+          ],
+          "name": "port",
+          "nargs": null,
+          "required": false,
+          "type": "int"
+        },
+        {
+          "default": null,
+          "flags": [
+            "--token"
+          ],
+          "name": "token",
+          "nargs": null,
+          "required": false,
+          "type": "_StoreAction"
+        }
+      ],
+      "privileged_semantic_authority": 0,
+      "reversibility_class": "CHECKPOINT_REVERSIBLE",
+      "surface_type": "CLI"
+    }
+  ]
+}

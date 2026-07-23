@@ -1,0 +1,27 @@
+{
+  "capabilities": [
+    "rooted_read_only_source_snapshot",
+    "python_ast_structural_analysis",
+    "line_span_evidence_binding",
+    "immutable_knowledge_only_admission",
+    "evidence_bound_query",
+    "deterministic_analysis_replay",
+    "authority_escalation_rejection"
+  ],
+  "dependency_scoped_tests": 159,
+  "failures": 0,
+  "pass_id": "PASS_122",
+  "pass_tests": 14,
+  "prohibited": [
+    "source_mutation",
+    "runtime_mutation",
+    "execution_authority_from_knowledge",
+    "mutation_authority_from_knowledge",
+    "unrooted_observation_admission"
+  ],
+  "runtime_module": "hhs_runtime.hhs_pass122_read_only_self_analysis_v1",
+  "schema": "HHS_PASS_122_RELEASE_MANIFEST_V1",
+  "service_name": "runtime.read_only_self_analysis.pass122",
+  "status": "IMPLEMENTED",
+  "test_module": "tests.test_hhs_pass122_read_only_self_analysis_v1"
+}

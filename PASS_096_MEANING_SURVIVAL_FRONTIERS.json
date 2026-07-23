@@ -1,0 +1,7 @@
+{
+  "schema": "HHS_PASS_096_SURVIVAL_FRONTIERS_V1",
+  "smallest_exact_window": 512,
+  "metaphor_reconstruction_temperature_frontier": "0.7",
+  "high_temperature_mutation_risk_begins": "1.0",
+  "recursive_cycles_verified": 10
+}

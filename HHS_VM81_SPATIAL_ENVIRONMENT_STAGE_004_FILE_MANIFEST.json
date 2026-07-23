@@ -1,0 +1,235 @@
+{
+  "schema": "HHS_VM81_SPATIAL_ENVIRONMENT_STAGE_004_FILE_MANIFEST_V1",
+  "stage": "004",
+  "classification": "PROJECT_SCENE_AUTHORING_AND_APPLICATION_RUNTIME",
+  "generated_at": "2026-07-23T03:15:13.185936+00:00",
+  "file_count": 45,
+  "total_bytes": 2677090,
+  "files": [
+    {
+      "path": "APPLY_TO_REPOSITORY.md",
+      "size_bytes": 1153,
+      "sha256": "2c3643c62fe7f5aa1d80e6ae7f24ad1f9fb3e2401a8c9858f55ce911d2f60695"
+    },
+    {
+      "path": "HHS_VM81_SPATIAL_ENVIRONMENT_STAGE_003_FILE_MANIFEST.json",
+      "size_bytes": 6701,
+      "sha256": "9bdbe7fc423364f1822e060095dcbac111924d974f63f8887d189d38028c20d9"
+    },
+    {
+      "path": "hhs_gui/spatial_environment/IMPLEMENTATION_MANIFEST.json",
+      "size_bytes": 3524,
+      "sha256": "8cb3db9b79af31f1da1204c2742dcdd3e1691c6b8460252c51ca57823d602c3c"
+    },
+    {
+      "path": "hhs_gui/spatial_environment/INTEGRATION_CONTRACT.md",
+      "size_bytes": 2782,
+      "sha256": "94f0aca919cc95a7b5605bc5a552248505763e5e40e16f520a8c2799a75df6e5"
+    },
+    {
+      "path": "hhs_gui/spatial_environment/README.md",
+      "size_bytes": 3612,
+      "sha256": "f68434bb6d1942ace3c48883b4c29b0cb5f535144c4c961eab6fe177d39514a1"
+    },
+    {
+      "path": "hhs_gui/spatial_environment/STAGE_002_CHANGELOG.md",
+      "size_bytes": 631,
+      "sha256": "dc91085a43b2b9113884f3f31fb58e397cfc5c40a52f2d8e6b76a998f687cb6c"
+    },
+    {
+      "path": "hhs_gui/spatial_environment/STAGE_003_CHANGELOG.md",
+      "size_bytes": 1321,
+      "sha256": "dc8a8422430270253dc1ee771427490ec00d89f1be52f44083e8f1692585044c"
+    },
+    {
+      "path": "hhs_gui/spatial_environment/STAGE_004_CHANGELOG.md",
+      "size_bytes": 1747,
+      "sha256": "88a424c56a563f960f916f437aa4f767e5961eced8f41109a859708970125e98"
+    },
+    {
+      "path": "hhs_gui/spatial_environment/VALIDATION_REPORT.md",
+      "size_bytes": 7301,
+      "sha256": "7c602487b11b2edb8f60806ff94fa6cb1ee1cb7ff9700c2bc5563400d6a814ae"
+    },
+    {
+      "path": "hhs_gui/spatial_environment/docs/approved_visual_reference.png",
+      "size_bytes": 2392595,
+      "sha256": "7b4417e2547b798beacb6b5af6875abe96ed72e1e6f0d0296da7ca95653306b3"
+    },
+    {
+      "path": "hhs_gui/spatial_environment/index.html",
+      "size_bytes": 10671,
+      "sha256": "cde4300b9d8cefb9a92f61260acfaf88f17b17b61669c881ddc450738e61a165"
+    },
+    {
+      "path": "hhs_gui/spatial_environment/integration/README.md",
+      "size_bytes": 620,
+      "sha256": "ac9099e3ef388fd4d9392b3e15fe209c8d64775c3086a8d565472a2dfe258cd2"
+    },
+    {
+      "path": "hhs_gui/spatial_environment/integration/SpatialEnvironmentPanel.tsx",
+      "size_bytes": 788,
+      "sha256": "2e9cbbb4fe210ecc07c269964278a7b97acfc4fce9bb39b30f8aec565b8109ee"
+    },
+    {
+      "path": "hhs_gui/spatial_environment/run_server.py",
+      "size_bytes": 755,
+      "sha256": "c70af16ce76a472ca689f992bff262779d27af2078f30174f5ccdcb741bb4287"
+    },
+    {
+      "path": "hhs_gui/spatial_environment/src/application-registry.js",
+      "size_bytes": 7321,
+      "sha256": "8c12c336774728910e76e75dc674df14c4337de12f6b077122d6adcb640be6dc"
+    },
+    {
+      "path": "hhs_gui/spatial_environment/src/asset-registry.js",
+      "size_bytes": 4951,
+      "sha256": "adc6b6ad919c729c9a9e7cd983f00baacccccb77a156228a128a6c02d60ce54b"
+    },
+    {
+      "path": "hhs_gui/spatial_environment/src/command-router.js",
+      "size_bytes": 3615,
+      "sha256": "ac862601f936df595f29f089fb90f9e8ca46e8a98142035dfd850836694139cf"
+    },
+    {
+      "path": "hhs_gui/spatial_environment/src/entity-scene-graph.js",
+      "size_bytes": 9019,
+      "sha256": "b324dcc19681c1225b812dcfb1ec726e6a120cde047d892fed3dfa4250bdec1b"
+    },
+    {
+      "path": "hhs_gui/spatial_environment/src/feature-registry.js",
+      "size_bytes": 5705,
+      "sha256": "619a6e487877235c18fe092f7623614dd66fdabc5a53b59e2cb85313f9ce912b"
+    },
+    {
+      "path": "hhs_gui/spatial_environment/src/main.js",
+      "size_bytes": 2858,
+      "sha256": "4672845179f5f63812b811b6284b0ffb5f77a89a14606f17a517d966e0e88354"
+    },
+    {
+      "path": "hhs_gui/spatial_environment/src/project-store.js",
+      "size_bytes": 10168,
+      "sha256": "b0ee5f6f6a2e9e0a253aa7661f72e414ddc0d943bdc2a06d95c63990420c93bc"
+    },
+    {
+      "path": "hhs_gui/spatial_environment/src/projection-journal.js",
+      "size_bytes": 2729,
+      "sha256": "52a4ec2d8decebf06d64eef653824729c30b6f054b5b6ab0a45e7de2e9776368"
+    },
+    {
+      "path": "hhs_gui/spatial_environment/src/replay-controller.js",
+      "size_bytes": 3320,
+      "sha256": "47e231b76a31da37acb36209b9ed39725ec622fd1af20d8c7a5e15cb880ee161"
+    },
+    {
+      "path": "hhs_gui/spatial_environment/src/runtime-bridge.js",
+      "size_bytes": 9164,
+      "sha256": "25fd1629c8f101bc7812eef211e0c54dd81035fcc4184d5ec62220387461c1ee"
+    },
+    {
+      "path": "hhs_gui/spatial_environment/src/session-store.js",
+      "size_bytes": 8192,
+      "sha256": "d367d2a6794a565714a0b5052a20b8b7165a27b9c48b35a385027b591bdc8776"
+    },
+    {
+      "path": "hhs_gui/spatial_environment/src/simulation-engine.js",
+      "size_bytes": 3502,
+      "sha256": "2dd03d8a068df9c4d1e7e296e3e060dfb12bfbb230fbb9c1f2e146158e2f0fb7"
+    },
+    {
+      "path": "hhs_gui/spatial_environment/src/spatial-renderer.js",
+      "size_bytes": 17577,
+      "sha256": "cc191976554dc81a058968fd8cb803013f9bdb3e589df1f8136d6b2400d4bf1a"
+    },
+    {
+      "path": "hhs_gui/spatial_environment/src/spatial-workspace-manager.js",
+      "size_bytes": 10366,
+      "sha256": "627d9cc0b9fde1cfa3cb625ce95bae7c7afd4b7937d00a6b08bfcc1df00235ae"
+    },
+    {
+      "path": "hhs_gui/spatial_environment/src/telemetry-store.js",
+      "size_bytes": 3748,
+      "sha256": "f6557f326667e24ed36ca323e5fe28591527f687321bcaa6c464f32dc7af4a01"
+    },
+    {
+      "path": "hhs_gui/spatial_environment/src/template-registry.js",
+      "size_bytes": 1512,
+      "sha256": "babc6f1cc9506c0179021c64eb728c442a9fcb2c112f3caaafd9d586639c568b"
+    },
+    {
+      "path": "hhs_gui/spatial_environment/src/theme-registry.js",
+      "size_bytes": 1082,
+      "sha256": "0c4be5bb6f32fa3fbc896677d3b59fb59c93119cbc414e67e948dee3a0e79456"
+    },
+    {
+      "path": "hhs_gui/spatial_environment/src/ui-shell.js",
+      "size_bytes": 71285,
+      "sha256": "92799f8b0fcc9739ac93945a16bca29f8374e354d13af3a366d0eda41d1b672f"
+    },
+    {
+      "path": "hhs_gui/spatial_environment/src/world-model.js",
+      "size_bytes": 6194,
+      "sha256": "cbf43cfb47773f2c1b6d1f2956533994de0369ce59d58d252d24069024e5d020"
+    },
+    {
+      "path": "hhs_gui/spatial_environment/src/world-router.js",
+      "size_bytes": 4677,
+      "sha256": "0ee0806c1c087ea66d4d888d9a81c7727e940dc7929d088fba45e9ea1c640ed5"
+    },
+    {
+      "path": "hhs_gui/spatial_environment/styles.css",
+      "size_bytes": 29011,
+      "sha256": "8c84e4c04eb5b7562f854d0278fcbdac261dfd5b9c3553a13928f04c7409fb70"
+    },
+    {
+      "path": "hhs_gui/spatial_environment/tests/browser_smoke.py",
+      "size_bytes": 1494,
+      "sha256": "e350a135366344f19f70baf7cf8149e4ce1ccc970ef7aa795729b654bff25749"
+    },
+    {
+      "path": "hhs_gui/spatial_environment/tests/http_smoke.py",
+      "size_bytes": 1467,
+      "sha256": "5f91c615cdd94c4a0337194405f1a79ea65a88bcf1ab702d979a2a1478109b4a"
+    },
+    {
+      "path": "hhs_gui/spatial_environment/tests/module_contract.mjs",
+      "size_bytes": 5212,
+      "sha256": "d047585c482628e2085a4a3e88b110c1ab31708618b9ba1fca7c81159ed90492"
+    },
+    {
+      "path": "hhs_gui/spatial_environment/tests/negative_contract.mjs",
+      "size_bytes": 2170,
+      "sha256": "11a6c083faaa6a0ce661ab94206f75e8e7dba92997145190a36205984dc7b32a"
+    },
+    {
+      "path": "hhs_gui/spatial_environment/tests/renderer_contract.mjs",
+      "size_bytes": 2004,
+      "sha256": "2827edb64227a0191c4036ee4a3daad4e035d816334ce6277e7c87dac5451fc1"
+    },
+    {
+      "path": "hhs_gui/spatial_environment/tests/run_all.sh",
+      "size_bytes": 361,
+      "sha256": "b158edcede993e12d549bb7d3f757a1a51b3bd2b5db43305fb39161ccdf96570"
+    },
+    {
+      "path": "hhs_gui/spatial_environment/tests/stage004_contract.mjs",
+      "size_bytes": 4345,
+      "sha256": "851fa5207fff47e8dc9ba96d8da89c8e3948a5f4e71adeafe128f7d191f91c91"
+    },
+    {
+      "path": "hhs_gui/spatial_environment/tests/stage004_negative_contract.mjs",
+      "size_bytes": 2766,
+      "sha256": "e987fcd0a6a657d612d01d4e4389cece49a7f0b071e81db19ec86f2b121cd46b"
+    },
+    {
+      "path": "hhs_gui/spatial_environment/tests/ui_surface_contract.mjs",
+      "size_bytes": 1855,
+      "sha256": "24c4ae9d843c783384c2fc0038e23cec3602ac96d039966e924dbc7050cb3e56"
+    },
+    {
+      "path": "hhs_gui/spatial_environment/tests/validate_source.py",
+      "size_bytes": 5219,
+      "sha256": "76f56d86fecd8d36716ec9c1d658a98aab44c29b847636dc0ad284f523716a4a"
+    }
+  ]
+}

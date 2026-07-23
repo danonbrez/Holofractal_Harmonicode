@@ -1,0 +1,1585 @@
+{
+  "schema": "HHS_PASS_084_SHARED_EVENT_GRAPH_V1",
+  "events": [
+    {
+      "edge_root_hash72": "0000000000000000000000000000001rSr7-/BqZCMl/bn3v*EeYryIPcQDYtUMt)c4y/gKP",
+      "event_coordinate": 0,
+      "feature_symbol": "event:0",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000002f4a(RO0/C)AjGcUoBqikAqHe+Gyz1^Qv)=l-Wmn4O"
+    },
+    {
+      "edge_root_hash72": "00000000000000000000000000000000=IrL7VIydkn7Shl2p=XODxAIxG!0Rs!sGoyWzt0D",
+      "event_coordinate": 1,
+      "feature_symbol": "event:1",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000004nCgZZn?70uco>3j>gMY(-/7zX2NBt*Pk-2y50PTFe"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000003DooPCVWO-oulMQhy15pVhHSNjbxxy0EX0W>zh+OyE",
+      "event_coordinate": 2,
+      "feature_symbol": "event:2",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "00000000000000000000000000000017?uo6m1xN3N>m!VLE+7pgs728lDS0v/cR0nvrR+QC"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000003m0as69TY6=vWk7NKsG2S/Dvm?J/xl?xtUhBqDu12u",
+      "event_coordinate": 3,
+      "feature_symbol": "event:3",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000003OdZmWksVhxfz*rUR95jO!leu>WHfiutCctmgc1nfr"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000000qZwpND0yOjnsy^^MLoYB(pOYJ1PF9^3dbo/Xt?b!6",
+      "event_coordinate": 4,
+      "feature_symbol": "event:0",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "00000000000000000000000000000020P8TQtoj2a4Q9Gk(aL14!Yg^Cw8HCgPbw-DSUrQ1l"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000004j3v^QRb?+f^mf>c7WKRFdBEBY9YknO?z+aJzHV>nk",
+      "event_coordinate": 5,
+      "feature_symbol": "event:1",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000001F^yd9NfifNpB9lOOF(IyPe8DoVgqg(/ZqgRRkUDIS"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000003lvAzj4+hSuuCu+?tWNAsFbv+iqBtVocV1?^FR*cqb",
+      "event_coordinate": 6,
+      "feature_symbol": "event:2",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000002k>uIl>Qo9Qnl(rXb3r(GL0rgV56VP2GbH!k7dF?ZR"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000000KI+2q+94^^0)3E>XwuRS(96M=JqaEJftPM2xNz=a8",
+      "event_coordinate": 7,
+      "feature_symbol": "event:3",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000000wL)>4cUIksu*/WQQRjZbCHn-m1IJ1uW5i8lEw)LqH"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000001rSr7-/BqZCMl/bn3v*EeYryIPcQDYtUMt)c4y/gKP",
+      "event_coordinate": 0,
+      "feature_symbol": "event:0",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000002f4a(RO0/C)AjGcUoBqikAqHe+Gyz1^Qv)=l-Wmn4O"
+    },
+    {
+      "edge_root_hash72": "00000000000000000000000000000000=IrL7VIydkn7Shl2p=XODxAIxG!0Rs!sGoyWzt0D",
+      "event_coordinate": 1,
+      "feature_symbol": "event:1",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000004nCgZZn?70uco>3j>gMY(-/7zX2NBt*Pk-2y50PTFe"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000003DooPCVWO-oulMQhy15pVhHSNjbxxy0EX0W>zh+OyE",
+      "event_coordinate": 2,
+      "feature_symbol": "event:2",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "00000000000000000000000000000017?uo6m1xN3N>m!VLE+7pgs728lDS0v/cR0nvrR+QC"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000003m0as69TY6=vWk7NKsG2S/Dvm?J/xl?xtUhBqDu12u",
+      "event_coordinate": 3,
+      "feature_symbol": "event:3",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000003OdZmWksVhxfz*rUR95jO!leu>WHfiutCctmgc1nfr"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000000qZwpND0yOjnsy^^MLoYB(pOYJ1PF9^3dbo/Xt?b!6",
+      "event_coordinate": 4,
+      "feature_symbol": "event:0",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "00000000000000000000000000000020P8TQtoj2a4Q9Gk(aL14!Yg^Cw8HCgPbw-DSUrQ1l"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000004j3v^QRb?+f^mf>c7WKRFdBEBY9YknO?z+aJzHV>nk",
+      "event_coordinate": 5,
+      "feature_symbol": "event:1",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000001F^yd9NfifNpB9lOOF(IyPe8DoVgqg(/ZqgRRkUDIS"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000003lvAzj4+hSuuCu+?tWNAsFbv+iqBtVocV1?^FR*cqb",
+      "event_coordinate": 6,
+      "feature_symbol": "event:2",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000002k>uIl>Qo9Qnl(rXb3r(GL0rgV56VP2GbH!k7dF?ZR"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000000KI+2q+94^^0)3E>XwuRS(96M=JqaEJftPM2xNz=a8",
+      "event_coordinate": 7,
+      "feature_symbol": "event:3",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000000wL)>4cUIksu*/WQQRjZbCHn-m1IJ1uW5i8lEw)LqH"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000003wMwFPnAz5u2FjQHtn=1y^xDL4-+LfW)gPCGk6QPK5",
+      "event_coordinate": 0,
+      "feature_symbol": "event:0",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "00000000000000000000000000000000SF6X1J)9cmUl7DYUcgOV)=f()WJ?NrXlVfg>)Sbx"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000001(=Kfu3ncsy+F(393Rmn+GJ9R3rEYwpT)1SdcoML?8",
+      "event_coordinate": 1,
+      "feature_symbol": "event:1",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "00000000000000000000000000000017AvTDu6Pq6fPnL-g4My2mVnT/I2VYF>sQ>a(fiV(5"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000004qNFAdkO()urE6gxJoAbq?k>C3GZ^YHnEFmt/axsXz",
+      "event_coordinate": 2,
+      "feature_symbol": "event:2",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000002OzuBEOEQpPg8h!rCnPR1obz1oF^=9!v1DlEXFP4Gp"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000001cRcryVDXPS(gtU8-EB8UkT2LCOB-6i8W!wJY7g/Xn",
+      "event_coordinate": 3,
+      "feature_symbol": "event:3",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000004uZP?/IO0VeT>^vP2C=?VUNDflAm+6ORv^VHgDf1FL"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000000Cw=z3q9jUZFsFVP?G*Sw1!mCAI58jddUp7iR2fib+",
+      "event_coordinate": 4,
+      "feature_symbol": "event:0",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000002waExBgFQ4yXn?Q/p>IE)URcuok^qYK(Xn4VwH7)5k"
+    },
+    {
+      "edge_root_hash72": "00000000000000000000000000000029Zmp*BB57s+2budQe22ABPzh=sbs?I1AxAE3mVgUf",
+      "event_coordinate": 5,
+      "feature_symbol": "event:1",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000001?SwgMn1-eDHWzp7gahUtxigiIKbFcHFc(nKv7bC?8"
+    },
+    {
+      "edge_root_hash72": "00000000000000000000000000000018t>O1okQJV7EfIUrFTjheR0)VDTLdKShUev8V0NWQ",
+      "event_coordinate": 6,
+      "feature_symbol": "event:2",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000003N1s06S/Id7KRLsoK*E+RD*XUHcvCFmm(AGes0-qns"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000001Xdpgdl+7X0+r?LNG+FQbzk8UoZFY79oSlHt1djT1Y",
+      "event_coordinate": 7,
+      "feature_symbol": "event:3",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000002Up!2>I7IhELs1NjN6AWgZHUnQ?KklT8Fqd*Sm5gPF"
+    },
+    {
+      "edge_root_hash72": "00000000000000000000000000000024!S(U!gTnc3UGwCU!mn1jazOGndAwffvsUdxK+VnT",
+      "event_coordinate": 8,
+      "feature_symbol": "event:0",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000003mrVLdNj!BdvYJwCUgUgMy6OP276TPo2NqYnjj>(3s"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000002BaZh4dn9FWw+ijYs9VcXsQ906^*0hn3xW=8IPK/cm",
+      "event_coordinate": 9,
+      "feature_symbol": "event:1",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000003i7*>9AA^?xjDna*4)PZlpra=!p>/q4r!lF0RMP0N^"
+    },
+    {
+      "edge_root_hash72": "00000000000000000000000000000008tdfy?vw4YguXiqD^Q1ZP1ueW3il1)QD-wAcYVm^M",
+      "event_coordinate": 10,
+      "feature_symbol": "event:2",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000004EhHgbj(=+R8TJK?B/U*DvHJ+8jvdLQ4j*)GX=MQpG"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000001IFufpPk*(rHXMt(T3KyU/WP9q5y+hxvB=eGOxZH*l",
+      "event_coordinate": 11,
+      "feature_symbol": "event:3",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000003asDAh010Ojc+SgoXK=Zo/2mg-eX)SBAp17lc9dm0I"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000000As4M7lJ)ZcgY>elCeg8cEVTBHX?h+AyL8USMhhMhz",
+      "event_coordinate": 0,
+      "feature_symbol": "event:0",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000001BrqJCQaF0ABhp3st1DfO7svXno+w?RCvxv6VgyHxB"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000004hzQ8*dsJV9/XabYvrVz7(!!y3>H2L=8jbikV3oQ?s",
+      "event_coordinate": 1,
+      "feature_symbol": "event:1",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000001COD0PanevV>vq8vpJXBoXjuIqMbUCsiCX032gYbcr"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000004BYoU8Z)1c(jIinxkD*Az6*-8sSq-^IEpN^f>/y^U^",
+      "event_coordinate": 2,
+      "feature_symbol": "event:2",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000003C^VTCAPgnKKgf9Hd^uEwWIjdptRKCDo-A/PODbp!F"
+    },
+    {
+      "edge_root_hash72": "000000000000000000000000000000497b/Vj=+lVf/yE-+qPPs5^3iFWjWf8yfka2Zl^VMf",
+      "event_coordinate": 3,
+      "feature_symbol": "event:3",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000001O47(-lOQ/LRV*FTckr!0tMI=90st+ozEy(TP9jhlY"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000003UC*PY5t9L5m1leB*abEQN-H^>VEw))iLIlwyx9)(y",
+      "event_coordinate": 4,
+      "feature_symbol": "event:0",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "00000000000000000000000000000040eM0G2levUsLlnKm-h>ZWw-k)dF06oe?puEXVYwo5"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000001tPzTco>KseZw=2Mm7??vuS)aNOyC43LnGfF(?Qa1!",
+      "event_coordinate": 5,
+      "feature_symbol": "event:1",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "00000000000000000000000000000024>s?UI3Tb49zpJ=9y^>KlXb/zv/u>v7ghDA4GO7sr"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000003t4t6>G58K3qMAmDlEf(FsKt3t>HY8w/SMw0cRoON!",
+      "event_coordinate": 6,
+      "feature_symbol": "event:2",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000002x3LCdSKa(j)VX0tbGL/y9u2()6!iLPm*EEsz7pW!*"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000003vQ6x9gucRoyd71bc=9*x/CuXX-C?KXKCTz=b)0fH7",
+      "event_coordinate": 7,
+      "feature_symbol": "event:3",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000000hNa-nDKE3)+B0/XsoJT/aLl/Aj5l8*ockhnxY6Y?y"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000002i91P^85aey7QK2ak1zh4!cdGiC1FScNRU*dCLQkK0",
+      "event_coordinate": 0,
+      "feature_symbol": "event:0",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000003s+WYw6LoDx*h4Tr29(?H?ZKUYQ!B1!ZUQYFgitNje"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000000Yf2vtro3?kLyZi+hL4Wcnf(2GoU^1O/mXC/qb1Fim",
+      "event_coordinate": 1,
+      "feature_symbol": "event:1",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000003)40V+Y*OIYPDkFIBECtsfr9HM(xGaqHrOnfDS3z?3"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000001UW3uq8W63-3bwwVO9D-6SJpE-1hEB/C+Wd+V0/)(B",
+      "event_coordinate": 2,
+      "feature_symbol": "event:2",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000000+u+U)+PknYoSB^IoiSXd9drZ7dDCuTst)pT9cjGkx"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000002OlV313AUWyAWC5Os2kPF5sdjr>vC7lKI03=oYC>pM",
+      "event_coordinate": 3,
+      "feature_symbol": "event:3",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000002vhcERvH)I*6WC8ihbWk/!FQd4UR)-zQZo6x7zTWGY"
+    },
+    {
+      "edge_root_hash72": "00000000000000000000000000000009pFWn/NN73SsKrkkhp=dqftrWs=CY0QYB+4wS0aRs",
+      "event_coordinate": 4,
+      "feature_symbol": "event:0",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000003jdQxCxsRGW^dX!oW91EShHWNW1W/3oxST?ZwAlO4k"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000002QoXyrrDh2e=gQ/fLT9oLdm/!rBGVBXzaxst1RQqt=",
+      "event_coordinate": 5,
+      "feature_symbol": "event:1",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000003bkQ)obh01Jh?lmGA-5rL*zD-vUGui==sX?U(gUG+m"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000004sclij27Lkf4+HL7I2zvfJwlQUxGGJ!G(zT+sSI6lO",
+      "event_coordinate": 6,
+      "feature_symbol": "event:2",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000004845^WFc*mVAqDku>g0GpGWE^NP(rJ41aIQUfsRjZE"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000001SOsTlKOF!=Dl*kPG-C^wU^yrPtfoxkKC*>J0joZ+2",
+      "event_coordinate": 7,
+      "feature_symbol": "event:3",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000002YvugW/-N^Uz2xWnnUQ9=Phxe2)XTFATzd/pRHDbN0"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000001Jj2PAUgGUFIwi!ES*CH?-MbVw2K7FO=YEFyfSoEvc",
+      "event_coordinate": 8,
+      "feature_symbol": "event:0",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000001EhZlZ=vMtFTav=?xCl2Mc9=T-?oGv(T6I9VUR7CTc"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000000yyfwAtTmfbTw0ud96q4mGVpD29Tl(wIfRXy8xk*GX",
+      "event_coordinate": 9,
+      "feature_symbol": "event:1",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000002nJ6ABPcmdVcy=yl=Ycf6t^P/rwsh^u8jsOJ3C0v-!"
+    },
+    {
+      "edge_root_hash72": "00000000000000000000000000000004HUMzUTtJdUE?*9)RSlmyL8qI??ZDWjhpH-D38o^)",
+      "event_coordinate": 10,
+      "feature_symbol": "event:2",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000002VKAHOoxBq!TZNxd)Zq*M/ItWs^2^lPWxpJ9mX>*4V"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000000PT5KbqULMZsLfvP2Gt7!D!j394-+=+LWdOg0f>0zZ",
+      "event_coordinate": 11,
+      "feature_symbol": "event:3",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000002KOVml6r!KQ1N)P!5VXE>MNLNvp8U1qd/on7sRg1wc"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000002X-qzO1XcHb=/VM?H(M6X0hD(>BAFySx3TH=V/^!y^",
+      "event_coordinate": 12,
+      "feature_symbol": "event:0",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "00000000000000000000000000000041s1BGWkGnJRtI5X6N6rWVBrSAeb3/rtq2A8V-2Eb1"
+    },
+    {
+      "edge_root_hash72": "00000000000000000000000000000001kP>^CcW0>mi0ZPtoRk2+TdjG!swKpVAJTFEBBI2>",
+      "event_coordinate": 13,
+      "feature_symbol": "event:1",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000004F^uP+twGZIosCmLO?N?uYkAnA8gpDYvThEi>ArI9B"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000000LOLOC7P!8fk^h/nOM1gr5b+wpF)SqZ690KSractBl",
+      "event_coordinate": 14,
+      "feature_symbol": "event:2",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "000000000000000000000000000000124CXU=Ay)nvcWN!^Bw!AwdTwjXYS^Vs40!h>b?*uM"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000000=XASjRNql?F=)sC=NCTcYktCwbj0hlbsh/34k0+U!",
+      "event_coordinate": 15,
+      "feature_symbol": "event:3",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "00000000000000000000000000000024dW4)v4aHvxh/6OpYr!r4fKHuGd6SI-yofG-uhPJp"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000003wMwFPnAz5u2FjQHtn=1y^xDL4-+LfW)gPCGk6QPK5",
+      "event_coordinate": 0,
+      "feature_symbol": "event:0",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "00000000000000000000000000000000SF6X1J)9cmUl7DYUcgOV)=f()WJ?NrXlVfg>)Sbx"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000001(=Kfu3ncsy+F(393Rmn+GJ9R3rEYwpT)1SdcoML?8",
+      "event_coordinate": 1,
+      "feature_symbol": "event:1",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "00000000000000000000000000000017AvTDu6Pq6fPnL-g4My2mVnT/I2VYF>sQ>a(fiV(5"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000004qNFAdkO()urE6gxJoAbq?k>C3GZ^YHnEFmt/axsXz",
+      "event_coordinate": 2,
+      "feature_symbol": "event:2",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000002OzuBEOEQpPg8h!rCnPR1obz1oF^=9!v1DlEXFP4Gp"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000001cRcryVDXPS(gtU8-EB8UkT2LCOB-6i8W!wJY7g/Xn",
+      "event_coordinate": 3,
+      "feature_symbol": "event:3",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000004uZP?/IO0VeT>^vP2C=?VUNDflAm+6ORv^VHgDf1FL"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000000Cw=z3q9jUZFsFVP?G*Sw1!mCAI58jddUp7iR2fib+",
+      "event_coordinate": 4,
+      "feature_symbol": "event:0",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000002waExBgFQ4yXn?Q/p>IE)URcuok^qYK(Xn4VwH7)5k"
+    },
+    {
+      "edge_root_hash72": "00000000000000000000000000000029Zmp*BB57s+2budQe22ABPzh=sbs?I1AxAE3mVgUf",
+      "event_coordinate": 5,
+      "feature_symbol": "event:1",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000001?SwgMn1-eDHWzp7gahUtxigiIKbFcHFc(nKv7bC?8"
+    },
+    {
+      "edge_root_hash72": "00000000000000000000000000000018t>O1okQJV7EfIUrFTjheR0)VDTLdKShUev8V0NWQ",
+      "event_coordinate": 6,
+      "feature_symbol": "event:2",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000003N1s06S/Id7KRLsoK*E+RD*XUHcvCFmm(AGes0-qns"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000001Xdpgdl+7X0+r?LNG+FQbzk8UoZFY79oSlHt1djT1Y",
+      "event_coordinate": 7,
+      "feature_symbol": "event:3",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000002Up!2>I7IhELs1NjN6AWgZHUnQ?KklT8Fqd*Sm5gPF"
+    },
+    {
+      "edge_root_hash72": "00000000000000000000000000000024!S(U!gTnc3UGwCU!mn1jazOGndAwffvsUdxK+VnT",
+      "event_coordinate": 8,
+      "feature_symbol": "event:0",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000003mrVLdNj!BdvYJwCUgUgMy6OP276TPo2NqYnjj>(3s"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000002BaZh4dn9FWw+ijYs9VcXsQ906^*0hn3xW=8IPK/cm",
+      "event_coordinate": 9,
+      "feature_symbol": "event:1",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000003i7*>9AA^?xjDna*4)PZlpra=!p>/q4r!lF0RMP0N^"
+    },
+    {
+      "edge_root_hash72": "00000000000000000000000000000008tdfy?vw4YguXiqD^Q1ZP1ueW3il1)QD-wAcYVm^M",
+      "event_coordinate": 10,
+      "feature_symbol": "event:2",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000004EhHgbj(=+R8TJK?B/U*DvHJ+8jvdLQ4j*)GX=MQpG"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000001IFufpPk*(rHXMt(T3KyU/WP9q5y+hxvB=eGOxZH*l",
+      "event_coordinate": 11,
+      "feature_symbol": "event:3",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000003asDAh010Ojc+SgoXK=Zo/2mg-eX)SBAp17lc9dm0I"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000002Bfey5j9j-k3bYw1uhm>!8e=+s1z24Kh7iP-v^45gg",
+      "event_coordinate": 0,
+      "feature_symbol": "event:0",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000001vro>0SGIQZwjfZzxHrD+bbQ5/>O5fRk1t^QnCDx)k"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000002NY0lU(bpz2pVwBFvvIcF6I-nA955YMp/jM=N5S?Y?",
+      "event_coordinate": 1,
+      "feature_symbol": "event:1",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000004K1fTPIz0?mqWY/b^VE+23X-Oc)?>^FML+1Q6Qib8)"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000004jOexcU3qU))>mSh69FLcEo7xTlXZH!m(8!fV>d9Ee",
+      "event_coordinate": 2,
+      "feature_symbol": "event:2",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000002*arz9t**rQf!Gff6uX2LVHUsx^SC7pHm17Kdd>jEd"
+    },
+    {
+      "edge_root_hash72": "00000000000000000000000000000039Jw?8AOdf*BNimzRpxMbF-QSq9zzs9x23m(cGONI8",
+      "event_coordinate": 3,
+      "feature_symbol": "event:3",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000000Q-djY*WCRiXANtOoTb=U>uX5QEQKZ0Pu!vms?53Ic"
+    },
+    {
+      "edge_root_hash72": "00000000000000000000000000000031nVkq=HTHB/nt!qYP!I)HpPjOX*npj)Y>Fgp1422^",
+      "event_coordinate": 4,
+      "feature_symbol": "event:0",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "000000000000000000000000000000481ihgGMiFzkvhl+M7HbmyRm(S9V7=VMZlOmQoL^6U"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000003yS)4dPX(ZAyRiz=wmgi+te8g4tAfcj59OJSxK?8vS",
+      "event_coordinate": 5,
+      "feature_symbol": "event:1",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000001D8+utVif9ND-8(y4?Zjw3V/qeUpwjH^eUqT/bg)2r"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000003lS25U9Y=MTiY8+H+gZOX04DE*H?u+U33x0>ucuL7M",
+      "event_coordinate": 6,
+      "feature_symbol": "event:2",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000001ghyazmXMG^IId-FnGhHRtwuLAPPsV9xVS7PKOfmb("
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000002yFpKaW3F+4(?*?jbFDddHAE-A4G3o4uq3e2g9qBU!",
+      "event_coordinate": 7,
+      "feature_symbol": "event:3",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000002I-/Z-!regOptaV=5mBkh(Fi5>P)07vptN9(K1UYSB"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000002Y=43S+QcVad4uISia2ie=DnAib(hh)l8z2x+lY1tU",
+      "event_coordinate": 8,
+      "feature_symbol": "event:0",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000000ffzf6!(+3q^wVecBu+n3owZhBt0Crl6(/cnqzbzi9"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000000BYw9fh(WkO5z=GAkG-sejMz^hSZ4zu!SDnf(WsXyR",
+      "event_coordinate": 9,
+      "feature_symbol": "event:1",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000003jxSi4wSpXMR7N3kzNuevvJTqq(AQfgT)yOi+sU6vW"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000003S+2ZY4YuG/^IkFnRyNMSIDdaA=Xi3lgtHAXkp/W2X",
+      "event_coordinate": 0,
+      "feature_symbol": "event:0",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000004jAv-p211yj/FU/z8xc!Lxnuf7lVJT-4*IkR?A1+zv"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000002SXOKwV*w7SQAegEwKDnTy2!CVq(WhE77JnMAEXBZL",
+      "event_coordinate": 1,
+      "feature_symbol": "event:1",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000000P+mf9MQkG)XitB=Utx13D8pvxJVPhw/g*?gVbd=-V"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000003!tVQnc2WQ*Agm>Z9ihBzAZQxwwwY=-3VGY-AxU!6E",
+      "event_coordinate": 2,
+      "feature_symbol": "event:2",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000000Qm=eP3ymtGYsR*k*6W7wpX*sNN/+)Mx=ESPKPTsSS"
+    },
+    {
+      "edge_root_hash72": "000000000000000000000000000000146t9=X2bUZ54z(M*3pYJzbgOX/CiI70uu2uR5h^Qr",
+      "event_coordinate": 3,
+      "feature_symbol": "event:3",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000001yD3Jz6u3sn^h*P(nIcoZS+Ps)NqGtjP=FsS>Dmst-"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000003MWfn6jagTb!k0+E+RuwM0-Ec^cZM>HGvutDUhS/Kp",
+      "event_coordinate": 4,
+      "feature_symbol": "event:0",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000001+8u6sR+qF!LlIffq=L9f6B+f-H2n=!yYDEsh+G-eq"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000002(9rB-XQb)=C(fH/3GxKgI/aWZ3C(Y(e+LVI*j0yRa",
+      "event_coordinate": 5,
+      "feature_symbol": "event:1",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000003)j/QM!Tht-GD^^v)L!fYYd=wTm7K3>>RLKWbw+74a"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000002WgiW>YXOU/2=oci02F0UdyaxKoM=QcnG6z/cob6Dn",
+      "event_coordinate": 6,
+      "feature_symbol": "event:2",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000000WuiMaA6(cpP2qKVv1!IpZc2vwGFY2-X/cdqAj6*9l"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000002mM1MngD*g)C5MfidKW4eHtkAt*a/0D*2kKQU9J4=3",
+      "event_coordinate": 7,
+      "feature_symbol": "event:3",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000000O)8jlzUDjLALUiWT5+yE7>-zMwRK6S5tDt1i?gCi+"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000004KSi5P!N(IHat=bk7y!X6Od!HLTCYUA37JW=5Ecmzn",
+      "event_coordinate": 0,
+      "feature_symbol": "event:0",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000004FF?4+u(2w^n4QyDGR)RKN04lLNil>HSVmue->F^*A"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000003TWx65BIs48wf9wYHxZ9)4Veq6agFsNXtdsGWZ0oqB",
+      "event_coordinate": 1,
+      "feature_symbol": "event:1",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000000PqoZZWe^*oraq5G3zKQNMKT5Fh96j)K+NWOQnFv7R"
+    },
+    {
+      "edge_root_hash72": "00000000000000000000000000000008qlH6Udyb63*cQj^dHRuFKCkA(7DhUSX*1==bFwsi",
+      "event_coordinate": 2,
+      "feature_symbol": "event:2",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000002Rpimnn/ocuUcmopnAYoo3Gc7CcAWgYWgs1ukhtZRT"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000004dQMWrvu>tTfI/B+(1YSSOiq/bUk8w>sfU9!WWOCV8",
+      "event_coordinate": 3,
+      "feature_symbol": "event:3",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "00000000000000000000000000000001UIYcoEJstjIA4ev0w+e!x2Rz+R!N2pZA/USt/pW6"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000004HeYmFXlP>^80SKL6W51*LrMaitdhwT3)qkcJarj!b",
+      "event_coordinate": 4,
+      "feature_symbol": "event:0",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000000YtUX)3R?X/yIBb76)+(9X/wNIGl3lHF7T43wHSFvf"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000001ju-iaAAil!x)xT7o8lyKK31-xq!7RoNgt/WzEspYG",
+      "event_coordinate": 5,
+      "feature_symbol": "event:1",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000003+gxP?62ljqrowWcbxx0OD-wwDpkXozoYSdME)AgF?"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000003wMwFPnAz5u2FjQHtn=1y^xDL4-+LfW)gPCGk6QPK5",
+      "event_coordinate": 0,
+      "feature_symbol": "event:0",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "00000000000000000000000000000000SF6X1J)9cmUl7DYUcgOV)=f()WJ?NrXlVfg>)Sbx"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000001(=Kfu3ncsy+F(393Rmn+GJ9R3rEYwpT)1SdcoML?8",
+      "event_coordinate": 1,
+      "feature_symbol": "event:1",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "00000000000000000000000000000017AvTDu6Pq6fPnL-g4My2mVnT/I2VYF>sQ>a(fiV(5"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000004qNFAdkO()urE6gxJoAbq?k>C3GZ^YHnEFmt/axsXz",
+      "event_coordinate": 2,
+      "feature_symbol": "event:2",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000002OzuBEOEQpPg8h!rCnPR1obz1oF^=9!v1DlEXFP4Gp"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000001cRcryVDXPS(gtU8-EB8UkT2LCOB-6i8W!wJY7g/Xn",
+      "event_coordinate": 3,
+      "feature_symbol": "event:3",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000004uZP?/IO0VeT>^vP2C=?VUNDflAm+6ORv^VHgDf1FL"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000000Cw=z3q9jUZFsFVP?G*Sw1!mCAI58jddUp7iR2fib+",
+      "event_coordinate": 4,
+      "feature_symbol": "event:0",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000002waExBgFQ4yXn?Q/p>IE)URcuok^qYK(Xn4VwH7)5k"
+    },
+    {
+      "edge_root_hash72": "00000000000000000000000000000029Zmp*BB57s+2budQe22ABPzh=sbs?I1AxAE3mVgUf",
+      "event_coordinate": 5,
+      "feature_symbol": "event:1",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000001?SwgMn1-eDHWzp7gahUtxigiIKbFcHFc(nKv7bC?8"
+    },
+    {
+      "edge_root_hash72": "00000000000000000000000000000018t>O1okQJV7EfIUrFTjheR0)VDTLdKShUev8V0NWQ",
+      "event_coordinate": 6,
+      "feature_symbol": "event:2",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000003N1s06S/Id7KRLsoK*E+RD*XUHcvCFmm(AGes0-qns"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000001Xdpgdl+7X0+r?LNG+FQbzk8UoZFY79oSlHt1djT1Y",
+      "event_coordinate": 7,
+      "feature_symbol": "event:3",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000002Up!2>I7IhELs1NjN6AWgZHUnQ?KklT8Fqd*Sm5gPF"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000003S+2ZY4YuG/^IkFnRyNMSIDdaA=Xi3lgtHAXkp/W2X",
+      "event_coordinate": 0,
+      "feature_symbol": "event:0",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000004jAv-p211yj/FU/z8xc!Lxnuf7lVJT-4*IkR?A1+zv"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000002SXOKwV*w7SQAegEwKDnTy2!CVq(WhE77JnMAEXBZL",
+      "event_coordinate": 1,
+      "feature_symbol": "event:1",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000000P+mf9MQkG)XitB=Utx13D8pvxJVPhw/g*?gVbd=-V"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000003!tVQnc2WQ*Agm>Z9ihBzAZQxwwwY=-3VGY-AxU!6E",
+      "event_coordinate": 2,
+      "feature_symbol": "event:2",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000000Qm=eP3ymtGYsR*k*6W7wpX*sNN/+)Mx=ESPKPTsSS"
+    },
+    {
+      "edge_root_hash72": "000000000000000000000000000000146t9=X2bUZ54z(M*3pYJzbgOX/CiI70uu2uR5h^Qr",
+      "event_coordinate": 3,
+      "feature_symbol": "event:3",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000001yD3Jz6u3sn^h*P(nIcoZS+Ps)NqGtjP=FsS>Dmst-"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000003MWfn6jagTb!k0+E+RuwM0-Ec^cZM>HGvutDUhS/Kp",
+      "event_coordinate": 4,
+      "feature_symbol": "event:0",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000001+8u6sR+qF!LlIffq=L9f6B+f-H2n=!yYDEsh+G-eq"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000002(9rB-XQb)=C(fH/3GxKgI/aWZ3C(Y(e+LVI*j0yRa",
+      "event_coordinate": 5,
+      "feature_symbol": "event:1",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000003)j/QM!Tht-GD^^v)L!fYYd=wTm7K3>>RLKWbw+74a"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000002WgiW>YXOU/2=oci02F0UdyaxKoM=QcnG6z/cob6Dn",
+      "event_coordinate": 6,
+      "feature_symbol": "event:2",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000000WuiMaA6(cpP2qKVv1!IpZc2vwGFY2-X/cdqAj6*9l"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000002mM1MngD*g)C5MfidKW4eHtkAt*a/0D*2kKQU9J4=3",
+      "event_coordinate": 7,
+      "feature_symbol": "event:3",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000000O)8jlzUDjLALUiWT5+yE7>-zMwRK6S5tDt1i?gCi+"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000000yg1>vYGkRh*hc0pr^rjN3/N6HanRjVWnk*2!aEHei",
+      "event_coordinate": 8,
+      "feature_symbol": "event:0",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000000IIAC)X3SI^xShf)(eN+p49onRlLjVX=)vh5ybdWwk"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000003nCZf3Vg4cU>d1^?-LvP*n3ZF+1qW8zICOfBlGOb=E",
+      "event_coordinate": 9,
+      "feature_symbol": "event:1",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000000a4ZLRqv9>N-+4un?xwzeSk-TzYZU?4YEp!h8eEbPd"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000002NIqllzIjpefWUfDcArArjH1GKMC65!=9sNfE=th3O",
+      "event_coordinate": 10,
+      "feature_symbol": "event:2",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "000000000000000000000000000000499S(/G+qx8T6n>d8UcB(I+mx!mhbDAAzN1Anwlm>+"
+    },
+    {
+      "edge_root_hash72": "000000000000000000000000000000241zG5PpUab*+vUOFp))*m3R=B7TC!AFW^Fr>G8hyv",
+      "event_coordinate": 11,
+      "feature_symbol": "event:3",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000002J->6CyvEwzWfS?7Cw/^mvphMe9yLRdKqPejn545G?"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000003cB7^mdV!O+QI+5CKBR!ce/6nS^gPndjpbiHlF8X8u",
+      "event_coordinate": 12,
+      "feature_symbol": "event:0",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000002lq^jYqH?Kb1tRPTqcUi7PQGLtqEGsGgIbc7Q2snyS"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000001G>c8eErdm)fxL4+V(+EAkLMJ8G8Lz?VIDkhagnna(",
+      "event_coordinate": 13,
+      "feature_symbol": "event:1",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000002x0ohD>VZ!4A-pWN)!B)2ex>a(AMEkcahp>Fsx75YJ"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000001xaBysrpZE3NZFix-6?4A8^+nDS)JwQAs!v!wu+r!?",
+      "event_coordinate": 14,
+      "feature_symbol": "event:2",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000001FeQO-Mxrk>2i^3Sho>95-DYYHpjw8e>P)/*ICvAXQ"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000000U2d?CaFzYpdfoUCKcagTIcQs?5!BxrL4jdswweYry",
+      "event_coordinate": 15,
+      "feature_symbol": "event:3",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000004fl>VF=5GVJboqPqEvuUi?-/HnvGVLmJeai3!=R?1-"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000003Zz(HifxJl^Q*3ToNEJ9O218SK6p8)>IR1gSQQmcmM",
+      "event_coordinate": 16,
+      "feature_symbol": "event:0",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000000olDz)=oP^3oJB^mMX9MZmwkZZktnsffr)hWmh3BOa"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000002ZZhO9?TlVjutEmc=xvKpOFpkQpcfp2>glki^7*Gdd",
+      "event_coordinate": 17,
+      "feature_symbol": "event:1",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000000D17N>P7il)NuA8R0WgZ5IH(-p22lRbyD-6Z=VmhtX"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000003-ZOeK*!*bPXYN7B((cXXPq9l/VKI7q(nRYKK/glM1",
+      "event_coordinate": 18,
+      "feature_symbol": "event:2",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000001nyGbe0gDJJeH71*W=3nb5pPuv!4Qh9N57hOicocM0"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000003OL)IJk!Mb6cpdagRT77iQ4fC83y!S^u6zB4^4!0jT",
+      "event_coordinate": 19,
+      "feature_symbol": "event:3",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000004jeQfo(9fke!IWH54HIiO1KE3Lv-n(hvI^=wPQlvYx"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000004E5Wau7BmaxVc^chSr2>00VEd2iTJTfNzyU5IL)L-O",
+      "event_coordinate": 20,
+      "feature_symbol": "event:0",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "00000000000000000000000000000006fX?iK0G>MucC3Zi7VMDRnV3uDztHb8/RsR^w11-G"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000004aW+)^+^l+)2xecl7L0MP8!Tb-3CGsz=Gtga?sLbYs",
+      "event_coordinate": 21,
+      "feature_symbol": "event:1",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000000*+ouuNyTYkm/m^2Z(BrCFz5OiknFvnB+dXXM2q0FG"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000000Mx0EZ=cylGld0Z+8T0?ik4zpyfLOUKLL^To2rwG+B",
+      "event_coordinate": 22,
+      "feature_symbol": "event:2",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000003v*KYtq=kRE+PSzt3GbSbHMUv+K9(1P?wa(SXsLOqD"
+    },
+    {
+      "edge_root_hash72": "00000000000000000000000000000011pAAorroxMF9hCjF^hy58L3JCA7Np*ly!gcDatzLJ",
+      "event_coordinate": 23,
+      "feature_symbol": "event:3",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000002Tjuj1essW>rz=-szv/0XrXg-l4qXKa147h?yH)ZbA"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000003owvs^h)bJHFXjvo(NRKX0auZnO=9G>dUBBkPJAFfH",
+      "event_coordinate": 24,
+      "feature_symbol": "event:0",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000001C7IQmcQX5WXq9Nn>sFeFl)fPWtVpKtW6^FqMiboo>"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000001YMACIJY(54moEG0R6UCk1g-cSZXpbbz*FuA4D0PjH",
+      "event_coordinate": 25,
+      "feature_symbol": "event:1",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000004sI1>K/xa?ngkKa(4BA?jvLjZ8D3X7Z!zue83vs/gu"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000001sTRaOUz!L*gJVwOg^6csD-8inU5+ZDlXVuLwE*0Dp",
+      "event_coordinate": 26,
+      "feature_symbol": "event:2",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000003i*3kddMffa-FtfH7qvWAkZ86yYh58L!Wbqhs7vNkq"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000000k+uCu/eB7k3^k7*bMUm7Wrwylewf-?AGOpjX7kJ/i",
+      "event_coordinate": 27,
+      "feature_symbol": "event:3",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000001FBxs/tmi1eO*W678Qcm?iquO95Bt=S^uKm0M4bJ23"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000004eYuG+djih>W2jgZ^^?MehOj+3UTKRj!C?F^A^jzbU",
+      "event_coordinate": 28,
+      "feature_symbol": "event:0",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000000Gr3?!p/!Tx7V>bRpCBCG6PmcvfMg4UtM>ZvqeO1Np"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000001?Se/O6YY3AEAIntkP2rLYq/R6YbTGWIpDe+Xw0xK=",
+      "event_coordinate": 29,
+      "feature_symbol": "event:1",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000001zSWhwB6dJeU/Ch7cM+G>afP0yhh(>C6FHqy>PJLU-"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000001x4ZX2gmpVRFKdRE>1E3w4+dTlM-VrDbjwRl3h5W*F",
+      "event_coordinate": 30,
+      "feature_symbol": "event:2",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000000gKpFdYUOAKu7yB7gk+UohTfsY4Ob9M/q>(xcib0jG"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000000n4(nFrT0AH0L*XHhETG3E^(^PsJ/HOKvfBQ3(rP^r",
+      "event_coordinate": 31,
+      "feature_symbol": "event:3",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000003W+aFK^P4UujCyVgTARWyMy*XEZG*IEulM=^x?d6x3"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000003wMwFPnAz5u2FjQHtn=1y^xDL4-+LfW)gPCGk6QPK5",
+      "event_coordinate": 0,
+      "feature_symbol": "event:0",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "00000000000000000000000000000000SF6X1J)9cmUl7DYUcgOV)=f()WJ?NrXlVfg>)Sbx"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000001(=Kfu3ncsy+F(393Rmn+GJ9R3rEYwpT)1SdcoML?8",
+      "event_coordinate": 1,
+      "feature_symbol": "event:1",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "00000000000000000000000000000017AvTDu6Pq6fPnL-g4My2mVnT/I2VYF>sQ>a(fiV(5"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000004qNFAdkO()urE6gxJoAbq?k>C3GZ^YHnEFmt/axsXz",
+      "event_coordinate": 2,
+      "feature_symbol": "event:2",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000002OzuBEOEQpPg8h!rCnPR1obz1oF^=9!v1DlEXFP4Gp"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000001cRcryVDXPS(gtU8-EB8UkT2LCOB-6i8W!wJY7g/Xn",
+      "event_coordinate": 3,
+      "feature_symbol": "event:3",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000004uZP?/IO0VeT>^vP2C=?VUNDflAm+6ORv^VHgDf1FL"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000000Cw=z3q9jUZFsFVP?G*Sw1!mCAI58jddUp7iR2fib+",
+      "event_coordinate": 4,
+      "feature_symbol": "event:0",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000002waExBgFQ4yXn?Q/p>IE)URcuok^qYK(Xn4VwH7)5k"
+    },
+    {
+      "edge_root_hash72": "00000000000000000000000000000029Zmp*BB57s+2budQe22ABPzh=sbs?I1AxAE3mVgUf",
+      "event_coordinate": 5,
+      "feature_symbol": "event:1",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000001?SwgMn1-eDHWzp7gahUtxigiIKbFcHFc(nKv7bC?8"
+    },
+    {
+      "edge_root_hash72": "00000000000000000000000000000018t>O1okQJV7EfIUrFTjheR0)VDTLdKShUev8V0NWQ",
+      "event_coordinate": 6,
+      "feature_symbol": "event:2",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000003N1s06S/Id7KRLsoK*E+RD*XUHcvCFmm(AGes0-qns"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000001Xdpgdl+7X0+r?LNG+FQbzk8UoZFY79oSlHt1djT1Y",
+      "event_coordinate": 7,
+      "feature_symbol": "event:3",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000002Up!2>I7IhELs1NjN6AWgZHUnQ?KklT8Fqd*Sm5gPF"
+    },
+    {
+      "edge_root_hash72": "00000000000000000000000000000024!S(U!gTnc3UGwCU!mn1jazOGndAwffvsUdxK+VnT",
+      "event_coordinate": 8,
+      "feature_symbol": "event:0",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000003mrVLdNj!BdvYJwCUgUgMy6OP276TPo2NqYnjj>(3s"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000002BaZh4dn9FWw+ijYs9VcXsQ906^*0hn3xW=8IPK/cm",
+      "event_coordinate": 9,
+      "feature_symbol": "event:1",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000003i7*>9AA^?xjDna*4)PZlpra=!p>/q4r!lF0RMP0N^"
+    },
+    {
+      "edge_root_hash72": "00000000000000000000000000000008tdfy?vw4YguXiqD^Q1ZP1ueW3il1)QD-wAcYVm^M",
+      "event_coordinate": 10,
+      "feature_symbol": "event:2",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000004EhHgbj(=+R8TJK?B/U*DvHJ+8jvdLQ4j*)GX=MQpG"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000001IFufpPk*(rHXMt(T3KyU/WP9q5y+hxvB=eGOxZH*l",
+      "event_coordinate": 11,
+      "feature_symbol": "event:3",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000003asDAh010Ojc+SgoXK=Zo/2mg-eX)SBAp17lc9dm0I"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000002Bfey5j9j-k3bYw1uhm>!8e=+s1z24Kh7iP-v^45gg",
+      "event_coordinate": 0,
+      "feature_symbol": "event:0",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000001vro>0SGIQZwjfZzxHrD+bbQ5/>O5fRk1t^QnCDx)k"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000002NY0lU(bpz2pVwBFvvIcF6I-nA955YMp/jM=N5S?Y?",
+      "event_coordinate": 1,
+      "feature_symbol": "event:1",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000004K1fTPIz0?mqWY/b^VE+23X-Oc)?>^FML+1Q6Qib8)"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000004jOexcU3qU))>mSh69FLcEo7xTlXZH!m(8!fV>d9Ee",
+      "event_coordinate": 2,
+      "feature_symbol": "event:2",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000002*arz9t**rQf!Gff6uX2LVHUsx^SC7pHm17Kdd>jEd"
+    },
+    {
+      "edge_root_hash72": "00000000000000000000000000000039Jw?8AOdf*BNimzRpxMbF-QSq9zzs9x23m(cGONI8",
+      "event_coordinate": 3,
+      "feature_symbol": "event:3",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000000Q-djY*WCRiXANtOoTb=U>uX5QEQKZ0Pu!vms?53Ic"
+    },
+    {
+      "edge_root_hash72": "00000000000000000000000000000031nVkq=HTHB/nt!qYP!I)HpPjOX*npj)Y>Fgp1422^",
+      "event_coordinate": 4,
+      "feature_symbol": "event:0",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "000000000000000000000000000000481ihgGMiFzkvhl+M7HbmyRm(S9V7=VMZlOmQoL^6U"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000003yS)4dPX(ZAyRiz=wmgi+te8g4tAfcj59OJSxK?8vS",
+      "event_coordinate": 5,
+      "feature_symbol": "event:1",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000001D8+utVif9ND-8(y4?Zjw3V/qeUpwjH^eUqT/bg)2r"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000003lS25U9Y=MTiY8+H+gZOX04DE*H?u+U33x0>ucuL7M",
+      "event_coordinate": 6,
+      "feature_symbol": "event:2",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000001ghyazmXMG^IId-FnGhHRtwuLAPPsV9xVS7PKOfmb("
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000002yFpKaW3F+4(?*?jbFDddHAE-A4G3o4uq3e2g9qBU!",
+      "event_coordinate": 7,
+      "feature_symbol": "event:3",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000002I-/Z-!regOptaV=5mBkh(Fi5>P)07vptN9(K1UYSB"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000002Y=43S+QcVad4uISia2ie=DnAib(hh)l8z2x+lY1tU",
+      "event_coordinate": 8,
+      "feature_symbol": "event:0",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000000ffzf6!(+3q^wVecBu+n3owZhBt0Crl6(/cnqzbzi9"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000000BYw9fh(WkO5z=GAkG-sejMz^hSZ4zu!SDnf(WsXyR",
+      "event_coordinate": 9,
+      "feature_symbol": "event:1",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000003jxSi4wSpXMR7N3kzNuevvJTqq(AQfgT)yOi+sU6vW"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000003S+2ZY4YuG/^IkFnRyNMSIDdaA=Xi3lgtHAXkp/W2X",
+      "event_coordinate": 0,
+      "feature_symbol": "event:0",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000004jAv-p211yj/FU/z8xc!Lxnuf7lVJT-4*IkR?A1+zv"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000002SXOKwV*w7SQAegEwKDnTy2!CVq(WhE77JnMAEXBZL",
+      "event_coordinate": 1,
+      "feature_symbol": "event:1",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000000P+mf9MQkG)XitB=Utx13D8pvxJVPhw/g*?gVbd=-V"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000003!tVQnc2WQ*Agm>Z9ihBzAZQxwwwY=-3VGY-AxU!6E",
+      "event_coordinate": 2,
+      "feature_symbol": "event:2",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000000Qm=eP3ymtGYsR*k*6W7wpX*sNN/+)Mx=ESPKPTsSS"
+    },
+    {
+      "edge_root_hash72": "000000000000000000000000000000146t9=X2bUZ54z(M*3pYJzbgOX/CiI70uu2uR5h^Qr",
+      "event_coordinate": 3,
+      "feature_symbol": "event:3",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000001yD3Jz6u3sn^h*P(nIcoZS+Ps)NqGtjP=FsS>Dmst-"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000003MWfn6jagTb!k0+E+RuwM0-Ec^cZM>HGvutDUhS/Kp",
+      "event_coordinate": 4,
+      "feature_symbol": "event:0",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000001+8u6sR+qF!LlIffq=L9f6B+f-H2n=!yYDEsh+G-eq"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000002(9rB-XQb)=C(fH/3GxKgI/aWZ3C(Y(e+LVI*j0yRa",
+      "event_coordinate": 5,
+      "feature_symbol": "event:1",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000003)j/QM!Tht-GD^^v)L!fYYd=wTm7K3>>RLKWbw+74a"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000002WgiW>YXOU/2=oci02F0UdyaxKoM=QcnG6z/cob6Dn",
+      "event_coordinate": 6,
+      "feature_symbol": "event:2",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000000WuiMaA6(cpP2qKVv1!IpZc2vwGFY2-X/cdqAj6*9l"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000002mM1MngD*g)C5MfidKW4eHtkAt*a/0D*2kKQU9J4=3",
+      "event_coordinate": 7,
+      "feature_symbol": "event:3",
+      "modalities": [
+        "AUDIO",
+        "VIDEO"
+      ],
+      "shared_event_root_hash72": "0000000000000000000000000000000O)8jlzUDjLALUiWT5+yE7>-zMwRK6S5tDt1i?gCi+"
+    }
+  ]
+}

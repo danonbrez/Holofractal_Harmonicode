@@ -1,0 +1,89 @@
+{
+  "schema": "HHS_PASS_088_CONSTRAINT_PRUNING_V1",
+  "results": [
+    {
+      "workload_id": "W131:cold-baseline",
+      "baseline_work_units": 576,
+      "constrained_work_units": 208,
+      "work_units_saved": 368
+    },
+    {
+      "workload_id": "W132:warm-cache-recognition",
+      "baseline_work_units": 8448,
+      "constrained_work_units": 320,
+      "work_units_saved": 8128
+    },
+    {
+      "workload_id": "W133:mixed-reuse-and-novelty",
+      "baseline_work_units": 8448,
+      "constrained_work_units": 400,
+      "work_units_saved": 8048
+    },
+    {
+      "workload_id": "W134:provider-error-rejection",
+      "baseline_work_units": 8448,
+      "constrained_work_units": 424,
+      "work_units_saved": 8024
+    },
+    {
+      "workload_id": "W135:constraint-density-scaling",
+      "baseline_work_units": 66560,
+      "constrained_work_units": 1344,
+      "work_units_saved": 65216
+    },
+    {
+      "workload_id": "W136:avoided-global-retraining",
+      "baseline_work_units": 33280,
+      "constrained_work_units": 720,
+      "work_units_saved": 32560
+    },
+    {
+      "workload_id": "W137:hierarchical-pattern-composition",
+      "baseline_work_units": 66048,
+      "constrained_work_units": 736,
+      "work_units_saved": 65312
+    },
+    {
+      "workload_id": "W138:two-hundred-fifty-six-samples",
+      "baseline_work_units": 132096,
+      "constrained_work_units": 1408,
+      "work_units_saved": 130688
+    },
+    {
+      "workload_id": "W139:five-hundred-twelve-samples",
+      "baseline_work_units": 526336,
+      "constrained_work_units": 2776,
+      "work_units_saved": 523560
+    },
+    {
+      "workload_id": "W140:high-cache-low-novelty",
+      "baseline_work_units": 1050624,
+      "constrained_work_units": 2560,
+      "work_units_saved": 1048064
+    },
+    {
+      "workload_id": "W141:high-novelty-stable-unresolved",
+      "baseline_work_units": 16896,
+      "constrained_work_units": 1152,
+      "work_units_saved": 15744
+    },
+    {
+      "workload_id": "W142:resource-bounded-training",
+      "baseline_work_units": 16793600,
+      "constrained_work_units": 18848,
+      "work_units_saved": 16774752
+    },
+    {
+      "workload_id": "W143:authority-separation",
+      "baseline_work_units": 33280,
+      "constrained_work_units": 760,
+      "work_units_saved": 32520
+    },
+    {
+      "workload_id": "W144:training-receipt-only-replay",
+      "baseline_work_units": 132096,
+      "constrained_work_units": 1440,
+      "work_units_saved": 130656
+    }
+  ]
+}

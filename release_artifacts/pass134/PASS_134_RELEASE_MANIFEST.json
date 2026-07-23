@@ -1,0 +1,369 @@
+{
+  "actual_historical_chain_repaired": false,
+  "artifact_class": "RECOVERY_CAPSULE_NOT_CANONICAL_FULL_CHECKPOINT",
+  "capability": "RECURSIVE_FULL_ANCESTRY_CHECKPOINT_COMPILER",
+  "dependency_tests": "22/22",
+  "file_count": 70,
+  "files": [
+    {
+      "path": "PASS_134_README.md",
+      "sha256": "e7f4d5103c81ea75a9e1551ba5c48edc12736e9549d0cd0e9e074c231971c031",
+      "size_bytes": 1135
+    },
+    {
+      "path": "README.md",
+      "sha256": "450648a2a8a015ee2af52122074cd5da2376e52de5183bc486b9cbae48d88ecb",
+      "size_bytes": 1448
+    },
+    {
+      "path": "contracts/pass133/HHS-I133_SCHIC_v1.0.md",
+      "sha256": "79ce272e8a7047d03bf6fb18922a0553319cde5b10ac9add54036caedb4050aa",
+      "size_bytes": 2916
+    },
+    {
+      "path": "contracts/pass133/PASS_133_CONTRACT.json",
+      "sha256": "268d68662052df9d1a22eb9801881b5120cc33873482a2ff796000ed1c70f79f",
+      "size_bytes": 631
+    },
+    {
+      "path": "contracts/pass134/HHS-I134_RFACC_v1.0.md",
+      "sha256": "76cfdc56f06b84807d64b2af5b28e03d62bda2ed281499b53a84c24583f823c3",
+      "size_bytes": 3461
+    },
+    {
+      "path": "contracts/pass134/PASS_134_CONTRACT.json",
+      "sha256": "d5a9c14072b22ac53044dcfe6b1e20ac0a609e54dcadfab058defc7475001855",
+      "size_bytes": 847
+    },
+    {
+      "path": "hhs_runtime/__init__.py",
+      "sha256": "00c5bfd66d9018117508997c269bdf052f7dcace8146f854e792416295da5b7c",
+      "size_bytes": 86
+    },
+    {
+      "path": "hhs_runtime/bigint_envelope.py",
+      "sha256": "5f19657246912a89081e63b534bb3aa4df45fdfbc5b681b6901072a1491b1629",
+      "size_bytes": 3246
+    },
+    {
+      "path": "hhs_runtime/canonical.py",
+      "sha256": "08f62111fafa0bbf5baaaa24e60e2b6f3c851c3d37bc70d116179f8b8d87dca0",
+      "size_bytes": 5918
+    },
+    {
+      "path": "hhs_runtime/checkpoint_ancestry.py",
+      "sha256": "ecd4f8a0fa7f03eeff54cc59f6da419c658112c81e194690d868845a0ed41f8d",
+      "size_bytes": 34661
+    },
+    {
+      "path": "hhs_runtime/hash72_checkpoint.py",
+      "sha256": "c9358913b586c88cc1fe0b16d3633b48a703709443571203cd90863ddf14986d",
+      "size_bytes": 6085
+    },
+    {
+      "path": "hhs_runtime/native/pass133_checkpoint_native.c",
+      "sha256": "6ca62e0995c68df52dedaf99d844c14087ee77c18e930d4c1601b22f190ccd02",
+      "size_bytes": 3893
+    },
+    {
+      "path": "hhs_runtime/palindromic_ecc.py",
+      "sha256": "f1a74b353bf6483ed8c023711a033b326b920c93669136cdaf53fe496dcb365f",
+      "size_bytes": 9268
+    },
+    {
+      "path": "hhs_runtime/pass133_release.py",
+      "sha256": "3fbe0bebad989676c28f4a42a960b31c6da70b393322d7a3f6d8411251b2c89c",
+      "size_bytes": 9397
+    },
+    {
+      "path": "hhs_runtime/phase_tensor.py",
+      "sha256": "c0abeb878258af723a1db6b420bfaa67068365cfc2dcc4e22242d029a3dc2612",
+      "size_bytes": 10650
+    },
+    {
+      "path": "hhs_runtime/prime_generation.py",
+      "sha256": "d95b6f98546123e03aa25dbbae3cdab3b3dfae0f2046634f9ac5811b34f2506a",
+      "size_bytes": 5297
+    },
+    {
+      "path": "hhs_runtime/prime_magic_key_state.py",
+      "sha256": "884f4f0a4ca7d7746d6085960c1107f8811d3533dbe0e1d8e251b9ed9f3ae38c",
+      "size_bytes": 9049
+    },
+    {
+      "path": "hhs_runtime/semantic_continuity.py",
+      "sha256": "86542837bd6a8cad7f62fb73512ba5a8ba340ffc13fe398ad1746963248ab925",
+      "size_bytes": 5930
+    },
+    {
+      "path": "hhs_runtime/sudoku_tensor.py",
+      "sha256": "2a376956ff8a6927299e8059011b05c3454c40021c4f88d55b4ac8e8d4084608",
+      "size_bytes": 4860
+    },
+    {
+      "path": "parent_checkpoint/PASS_132_COMPLETION_ATTESTATION.json",
+      "sha256": "a004f6fecbc8747870e64be4ac9cab6778a57e365b7c70aa9ded07a241ae823f",
+      "size_bytes": 7409
+    },
+    {
+      "path": "parent_checkpoint/PASS_132_CONTINUATION_CHECKPOINT.json",
+      "sha256": "98ca86ab3010b2156d96d2b2d2073b6c02de0387838e2feb302b385f3fa1446a",
+      "size_bytes": 1872
+    },
+    {
+      "path": "parent_checkpoint/PASS_132_RELEASE_EVIDENCE.zip",
+      "sha256": "32e4bc0f6e54d37697634c6101af5670b65f2f470878b981c0f2887db9b332ea",
+      "size_bytes": 2151100
+    },
+    {
+      "path": "parent_checkpoint/PASS_132_RELEASE_EVIDENCE.zip.sha256",
+      "sha256": "b24e6bae1d9bbd084b5b2de781403cf06e9b7f4abee60cd7fa9dab5503fd2926",
+      "size_bytes": 113
+    },
+    {
+      "path": "parent_checkpoint/PASS_132_RELEASE_MANIFEST.json",
+      "sha256": "95c8d29d41ab74f9ab20c2090a07759749e0fd16cda9fc7842b5bda17dc3c893",
+      "size_bytes": 6540
+    },
+    {
+      "path": "pass133_run_output.json",
+      "sha256": "70898097492468997a913c50dd660ca2d1ba122ab995bcc8355425f0a1729039",
+      "size_bytes": 10747
+    },
+    {
+      "path": "pass134_run_output.json",
+      "sha256": "b077c5d5872b2edc207b5d59a2fad24009734965854591bd6f5b54744559e727",
+      "size_bytes": 3516
+    },
+    {
+      "path": "pyproject.toml",
+      "sha256": "f22d03b41d41f6cd7f7ed8f34fa10a29e39b62f462c309da34ddb7981ba27370",
+      "size_bytes": 265
+    },
+    {
+      "path": "release_artifacts/pass133/PASS_133_CHECKPOINT_CHAIN_REPAIR_REPORT.json",
+      "sha256": "38af70565fc5e2c7dc3b2242500e6d82f3b40efc87698fdd7d00168489620895",
+      "size_bytes": 949
+    },
+    {
+      "path": "release_artifacts/pass133/PASS_133_COMPLETION_ATTESTATION.json",
+      "sha256": "2395ccefae7faba310ede5358135a9f172c94e183c5806d63fbdb952f2f2a288",
+      "size_bytes": 3312
+    },
+    {
+      "path": "release_artifacts/pass133/PASS_133_COMPRESSION_METRICS.json",
+      "sha256": "c151ab8806256b9d29cfad34dc32b40db15d50ccc7e8feb46f80585be65898e9",
+      "size_bytes": 493
+    },
+    {
+      "path": "release_artifacts/pass133/PASS_133_ENTROPY_ACCOUNTING_REPORT.json",
+      "sha256": "016c7e3466c87fd55b76a914b701605c5c39ae565c1523f77d44de552fd1facc",
+      "size_bytes": 451
+    },
+    {
+      "path": "release_artifacts/pass133/PASS_133_FACTORADIC_BIGINT_STATE.json",
+      "sha256": "f0322f3215610160b2ffc6e4d945452709722380692ebf2f2c7bea4087b3ccaf",
+      "size_bytes": 1916
+    },
+    {
+      "path": "release_artifacts/pass133/PASS_133_KEY_GENERATOR_NEGATIVE_TEST_REPORT.json",
+      "sha256": "e6cf12d1eb7bc2c3150e50b9a0bc9b330eec71780ee21326d6b58448fb6d1552",
+      "size_bytes": 2325
+    },
+    {
+      "path": "release_artifacts/pass133/PASS_133_KEY_GENERATOR_REPLAY_RECEIPT.json",
+      "sha256": "6562085c09281d2b11bd6b29ae617f6acfccdbe89242f1ab9e066c80193f7171",
+      "size_bytes": 265
+    },
+    {
+      "path": "release_artifacts/pass133/PASS_133_KEY_STATE_SCATTERING_REPORT.json",
+      "sha256": "3e05febd0c1dfb7b0915a9fbed5c307dc002dbea1d8938d943b77eae7a341415",
+      "size_bytes": 1041
+    },
+    {
+      "path": "release_artifacts/pass133/PASS_133_LOSHU_SERIALIZATION_TRACE.jsonl",
+      "sha256": "df2bf4dc3972c83b7c15f2a44acfda20da1e918aaeb30b8607010ab8e95281e6",
+      "size_bytes": 5542
+    },
+    {
+      "path": "release_artifacts/pass133/PASS_133_PALINDROMIC_ECC_BIGINT_STATE.json",
+      "sha256": "ddff3903fd2c46d1296a261afb05f24ddc1eeb0f098dd757c54f52e060ad8b1a",
+      "size_bytes": 58630
+    },
+    {
+      "path": "release_artifacts/pass133/PASS_133_PALINDROMIC_ECC_STRESS_REPORT.json",
+      "sha256": "3f6cc8627c463a099f48ea95f1491693b21a39f15a3436765f7deb7c87724730",
+      "size_bytes": 179
+    },
+    {
+      "path": "release_artifacts/pass133/PASS_133_PHASE_FORWARD_TRACE.jsonl",
+      "sha256": "ed83006ec327e350b06326012de02da11bfeff28d9873f83879d022246ee6e91",
+      "size_bytes": 18511
+    },
+    {
+      "path": "release_artifacts/pass133/PASS_133_PHASE_INVERSE_TRACE.jsonl",
+      "sha256": "6294f79e4dbfb35dac1c1b2b451e9bd1f40ac66ed62b689c6812b10534f59c2a",
+      "size_bytes": 19159
+    },
+    {
+      "path": "release_artifacts/pass133/PASS_133_PHASE_NEGATIVE_TEST_REPORT.json",
+      "sha256": "4fb919a42cdaa59fc7f23e23e033f00f1b3ccba81848c7c9bdeee3a987e25aff",
+      "size_bytes": 863
+    },
+    {
+      "path": "release_artifacts/pass133/PASS_133_PHASE_TENSOR_STATE.json",
+      "sha256": "b80d3bbd514219dfc623dba6e8a3a2831ef68be8cf39a9d8755f0e535328abbf",
+      "size_bytes": 31068
+    },
+    {
+      "path": "release_artifacts/pass133/PASS_133_PRIME_CERTIFICATES.jsonl",
+      "sha256": "ec9588dc23daa15d71b707a916526521019b2dc907788f52c3f1c32bed8a5890",
+      "size_bytes": 41107
+    },
+    {
+      "path": "release_artifacts/pass133/PASS_133_PRIME_KEY_GENERATION_MANIFEST.json",
+      "sha256": "9fee1cdb136e54039ffb6388cd747da6902adeadd87118d83c22fc69df764f77",
+      "size_bytes": 510
+    },
+    {
+      "path": "release_artifacts/pass133/PASS_133_PRIME_MAGIC_CLOSURE.json",
+      "sha256": "11fdba14b647c4abb8bb083bb5ea9d886521320f876e91dc11497da1a9feea62",
+      "size_bytes": 8742
+    },
+    {
+      "path": "release_artifacts/pass133/PASS_133_RECONSTRUCTION_PROOF.json",
+      "sha256": "00e5756faaa46542783d1f93cf32d72c9959a2bc3da8e1cf7b1225b92c2b864f",
+      "size_bytes": 6946
+    },
+    {
+      "path": "release_artifacts/pass133/PASS_133_RELEASE_MANIFEST.json",
+      "sha256": "7021876a92786399486ef91a1bf1998c77af5e2d085b7ba2fe7fef2799e91460",
+      "size_bytes": 11943
+    },
+    {
+      "path": "release_artifacts/pass133/PASS_133_SCHIC_EXECUTION_REPORT.json",
+      "sha256": "8c6854e41f6631ee4c0b0117abc9dce7f15d590285b01d092e2cfb55dedcea47",
+      "size_bytes": 10467
+    },
+    {
+      "path": "release_artifacts/pass133/PASS_133_SOURCE_MANIFEST.json",
+      "sha256": "45d516f9eea92554b5d01b22fe8482a11b7e65199e367cd2e5e872c2f2d25ed6",
+      "size_bytes": 4169
+    },
+    {
+      "path": "release_artifacts/pass133/PASS_133_SUDOKU_TENSOR_STATE.json",
+      "sha256": "019652c909fc74c3927217b1559a20b88bd50e218c929d49bda7d98563fd15ed",
+      "size_bytes": 4004
+    },
+    {
+      "path": "release_artifacts/pass133/PASS_133_TEST_REPORT.json",
+      "sha256": "e3b6b8a43e0aabf243613102fc0e3c2358e4235dd83fd129debf3cf2c869e5ec",
+      "size_bytes": 535
+    },
+    {
+      "path": "release_artifacts/pass133/PASS_133_VM81_CELL_TRACE.jsonl",
+      "sha256": "ecd59a282ec8a37b55aa36825662e81987ab2ff560e52f5624f6b8c6d1198ffd",
+      "size_bytes": 9357
+    },
+    {
+      "path": "release_artifacts/pass133_recovery/PASS_133_ANCESTRY_CORRUPTION_REPORT.json",
+      "sha256": "5b49e63337e80c52cfcd92d358c2d2cfcaee75428e9ad30291cb6f974b6e7f7a",
+      "size_bytes": 8225
+    },
+    {
+      "path": "release_artifacts/pass133_recovery/PASS_133_COMPLETION_ERRATUM.json",
+      "sha256": "cf985cecaddd2969a8c94a3d2486f1330d9a948c7b5a5441bf3fa1daab932b49",
+      "size_bytes": 1592
+    },
+    {
+      "path": "release_artifacts/pass133_recovery/PASS_133_RECOVERY_DELTA_MANIFEST.json",
+      "sha256": "99ab029b03700025063a9b3ba0d05a92896d6e3866157aa9b5638a0799adb77b",
+      "size_bytes": 10950
+    },
+    {
+      "path": "release_artifacts/pass133_recovery/PASS_133_RECOVERY_OPERATION_TEST_REPORT.json",
+      "sha256": "75263ed74c084512c08f7b06ac4f4dd6b10bcaa987ea4c0b67217dcff781681f",
+      "size_bytes": 326
+    },
+    {
+      "path": "release_artifacts/pass134/PASS_134_ACTUAL_CHAIN_INPUT_AUDIT.json",
+      "sha256": "88d0356b301430f90feeafb159097e53ca226dbd0833cd36bb1a0777bae1710d",
+      "size_bytes": 4599
+    },
+    {
+      "path": "release_artifacts/pass134/PASS_134_COMPLETION_ATTESTATION.json",
+      "sha256": "b077c5d5872b2edc207b5d59a2fad24009734965854591bd6f5b54744559e727",
+      "size_bytes": 3516
+    },
+    {
+      "path": "release_artifacts/pass134/PASS_134_HISTORICAL_RECONSTRUCTION_STATUS.json",
+      "sha256": "6251adb7f0eb8ea0cf0ea4dd62a5bebc86512535d010335bd02700b4bd3ca5b5",
+      "size_bytes": 949
+    },
+    {
+      "path": "release_artifacts/pass134/PASS_134_SELF_HOSTED_RECOVERY_RECEIPT.json",
+      "sha256": "d4636d098f0ddd0d0642cdc936bd1c20a08f4c01cc3ff6206fa882b563eee3da",
+      "size_bytes": 30225
+    },
+    {
+      "path": "release_artifacts/pass134/PASS_134_SOURCE_MANIFEST.json",
+      "sha256": "bf55198c7a7a633aa2a9fc193891439e5ee49e8e212b8f645c91eee92cdf2edd",
+      "size_bytes": 13548
+    },
+    {
+      "path": "release_artifacts/pass134/PASS_134_TEST_REPORT.json",
+      "sha256": "487330c89025858e0d0828bc4a4b65bec2f4f79f8f0ded17aea048bce84d1645",
+      "size_bytes": 978
+    },
+    {
+      "path": "tests/test_checkpoint_recovery.py",
+      "sha256": "daf6d77ad2416cad1fc8ae35c5fd7bbf5c6e7ad63933657e0729817609cb5626",
+      "size_bytes": 2508
+    },
+    {
+      "path": "tests/test_pass133.py",
+      "sha256": "fffeacdb63d0259b065a7ab5951c5aadee5391dbba3a7bcdd293a87a9d181ea2",
+      "size_bytes": 4003
+    },
+    {
+      "path": "tests/test_pass134_checkpoint_ancestry.py",
+      "sha256": "d976ecee29f982a47680922fb1f0343c67b760cc9fce061bd222c6f0261884fe",
+      "size_bytes": 7216
+    },
+    {
+      "path": "tools/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "tools/hhs_checkpoint_recovery.py",
+      "sha256": "abfae6c0fa4b22ad9f2ec96f59bfe622d12508da18f2bb325a0f7faa2ebabf5e",
+      "size_bytes": 9150
+    },
+    {
+      "path": "tools/recover_pass133.sh",
+      "sha256": "f0a1c4df7bdad2efd3b716ab997a244baead4bb7d6346e4c59bb8574c06c3f7e",
+      "size_bytes": 306
+    },
+    {
+      "path": "tools/run_pass133.py",
+      "sha256": "32a2e7ec199570ef3c1da2a33256c32231c597950a0ec23c685605e8c54ad2c1",
+      "size_bytes": 388
+    },
+    {
+      "path": "tools/run_pass134.py",
+      "sha256": "6a0f0c927cadbb216500d0403fcaa63980d5086e4d2655ea76b1b5b81c78a238",
+      "size_bytes": 8368
+    }
+  ],
+  "first_corruption_localized": "PASS_133",
+  "historical_ancestry_complete": false,
+  "manifest_exclusion": [
+    "release_artifacts/pass134/PASS_134_RELEASE_MANIFEST.json"
+  ],
+  "pass_id": "PASS_134",
+  "schema": "HHS_PASS134_RELEASE_MANIFEST_V1",
+  "self_hosted_recovery": "VERIFIED",
+  "system_files_preserved_from_available_pass133_tree": true,
+  "terminal_status": "PASS_134_RECOVERY_COMPILER_VERIFIED__HISTORICAL_RECONSTRUCTION_INPUT_REQUIRED"
+}

@@ -1,0 +1,14 @@
+{
+  "foundation_mutation_permitted": false,
+  "post_artifact_ref": "artifact:pass076:source:repaired",
+  "post_artifact_root_hash72": "0000000000000000000000000000003lJE1vAB*mDssQv68yr(^)vCAdpg(15a=Y-!ICA-5V",
+  "pre_artifact_ref": "artifact:pass076:source:failing",
+  "pre_artifact_root_hash72": "0000000000000000000000000000001e=O/kZ9m/eM+Yp(YAPJxBkR/vLrk8d8A>gMN/8GpE",
+  "rollback_content": "PHASE_GATE := {\n  x==1/y;\n  z==1/w;\n  xy≠yx;\n  Δe=0;\n  Ψ=0;\n  Θ15=true;\n  Ω=false\n}\nPHASE_GATE\n",
+  "rollback_creates_new_continuation_not_history_erasure": true,
+  "rollback_id": "rollback:repair:pass076:omega",
+  "rollback_root_hash72": "0000000000000000000000000000004JpwCqDT=Zo/Ic)hKbeHs/i3>xG-vfP(3lS/k=*6K3",
+  "schema": "HHS_PRODUCT_REPAIR_ROLLBACK_CAPSULE_V1",
+  "target_path": "native_projects/hhs_harmonicode_interpreter/demo/main.hhs",
+  "transaction_ref": "repair:pass076:omega"
+}

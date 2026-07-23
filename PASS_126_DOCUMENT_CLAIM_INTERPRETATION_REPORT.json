@@ -1,0 +1,33 @@
+{
+  "authority": {
+    "document_claim_truth_authority": false,
+    "execution_authority": false,
+    "knowledge_admission_performed": false,
+    "mutation_authority": false
+  },
+  "capabilities": [
+    "typed claim extraction",
+    "exact evidence spans",
+    "claim relation receipts",
+    "uncertainty preservation",
+    "contradiction-aware candidate construction",
+    "bounded interpretation corpus",
+    "deterministic replay"
+  ],
+  "pass_id": "PASS_126",
+  "runtime_surface": "runtime.document_claim_interpretation.pass126",
+  "schema": "HHS_PASS_126_DOCUMENT_CLAIM_INTERPRETATION_REPORT_V1",
+  "self_test": {
+    "claim_count": 2,
+    "corpus_root_hash72": "0000000000000000000000000000001U6jIm9Py5999+yCp*4YKt6A2s0jiw4wZwjlrn9i0m",
+    "replay_root_hash72": "0000000000000000000000000000002T+O?=N)i?^vHVN/K^F+ib)QsxCi^+vTY38pjM^(7)",
+    "schema": "HHS_PASS126_SELF_TEST_V1",
+    "status": "PASS"
+  },
+  "status": "IMPLEMENTED_AND_VALIDATED",
+  "validation": {
+    "dependency_scoped_tests_pass117_through_pass126": 148,
+    "failures": 0,
+    "pass126_tests": 13
+  }
+}

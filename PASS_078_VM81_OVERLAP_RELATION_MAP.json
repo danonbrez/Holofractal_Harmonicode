@@ -1,0 +1,827 @@
+{
+  "cell_count": 81,
+  "cells": [
+    {
+      "cell": 0,
+      "column": 0,
+      "lo_shu_slot": 4,
+      "phase": 0,
+      "reciprocal_cell": 80,
+      "rot90_cell": 8,
+      "row": 0,
+      "subgrid": 0
+    },
+    {
+      "cell": 1,
+      "column": 1,
+      "lo_shu_slot": 9,
+      "phase": 1,
+      "reciprocal_cell": 79,
+      "rot90_cell": 17,
+      "row": 0,
+      "subgrid": 0
+    },
+    {
+      "cell": 2,
+      "column": 2,
+      "lo_shu_slot": 2,
+      "phase": 2,
+      "reciprocal_cell": 78,
+      "rot90_cell": 26,
+      "row": 0,
+      "subgrid": 0
+    },
+    {
+      "cell": 3,
+      "column": 3,
+      "lo_shu_slot": 3,
+      "phase": 3,
+      "reciprocal_cell": 77,
+      "rot90_cell": 35,
+      "row": 0,
+      "subgrid": 1
+    },
+    {
+      "cell": 4,
+      "column": 4,
+      "lo_shu_slot": 5,
+      "phase": 4,
+      "reciprocal_cell": 76,
+      "rot90_cell": 44,
+      "row": 0,
+      "subgrid": 1
+    },
+    {
+      "cell": 5,
+      "column": 5,
+      "lo_shu_slot": 7,
+      "phase": 5,
+      "reciprocal_cell": 75,
+      "rot90_cell": 53,
+      "row": 0,
+      "subgrid": 1
+    },
+    {
+      "cell": 6,
+      "column": 6,
+      "lo_shu_slot": 8,
+      "phase": 6,
+      "reciprocal_cell": 74,
+      "rot90_cell": 62,
+      "row": 0,
+      "subgrid": 2
+    },
+    {
+      "cell": 7,
+      "column": 7,
+      "lo_shu_slot": 1,
+      "phase": 7,
+      "reciprocal_cell": 73,
+      "rot90_cell": 71,
+      "row": 0,
+      "subgrid": 2
+    },
+    {
+      "cell": 8,
+      "column": 8,
+      "lo_shu_slot": 6,
+      "phase": 8,
+      "reciprocal_cell": 72,
+      "rot90_cell": 80,
+      "row": 0,
+      "subgrid": 2
+    },
+    {
+      "cell": 9,
+      "column": 0,
+      "lo_shu_slot": 4,
+      "phase": 9,
+      "reciprocal_cell": 71,
+      "rot90_cell": 7,
+      "row": 1,
+      "subgrid": 0
+    },
+    {
+      "cell": 10,
+      "column": 1,
+      "lo_shu_slot": 9,
+      "phase": 10,
+      "reciprocal_cell": 70,
+      "rot90_cell": 16,
+      "row": 1,
+      "subgrid": 0
+    },
+    {
+      "cell": 11,
+      "column": 2,
+      "lo_shu_slot": 2,
+      "phase": 11,
+      "reciprocal_cell": 69,
+      "rot90_cell": 25,
+      "row": 1,
+      "subgrid": 0
+    },
+    {
+      "cell": 12,
+      "column": 3,
+      "lo_shu_slot": 3,
+      "phase": 12,
+      "reciprocal_cell": 68,
+      "rot90_cell": 34,
+      "row": 1,
+      "subgrid": 1
+    },
+    {
+      "cell": 13,
+      "column": 4,
+      "lo_shu_slot": 5,
+      "phase": 13,
+      "reciprocal_cell": 67,
+      "rot90_cell": 43,
+      "row": 1,
+      "subgrid": 1
+    },
+    {
+      "cell": 14,
+      "column": 5,
+      "lo_shu_slot": 7,
+      "phase": 14,
+      "reciprocal_cell": 66,
+      "rot90_cell": 52,
+      "row": 1,
+      "subgrid": 1
+    },
+    {
+      "cell": 15,
+      "column": 6,
+      "lo_shu_slot": 8,
+      "phase": 15,
+      "reciprocal_cell": 65,
+      "rot90_cell": 61,
+      "row": 1,
+      "subgrid": 2
+    },
+    {
+      "cell": 16,
+      "column": 7,
+      "lo_shu_slot": 1,
+      "phase": 16,
+      "reciprocal_cell": 64,
+      "rot90_cell": 70,
+      "row": 1,
+      "subgrid": 2
+    },
+    {
+      "cell": 17,
+      "column": 8,
+      "lo_shu_slot": 6,
+      "phase": 17,
+      "reciprocal_cell": 63,
+      "rot90_cell": 79,
+      "row": 1,
+      "subgrid": 2
+    },
+    {
+      "cell": 18,
+      "column": 0,
+      "lo_shu_slot": 4,
+      "phase": 18,
+      "reciprocal_cell": 62,
+      "rot90_cell": 6,
+      "row": 2,
+      "subgrid": 0
+    },
+    {
+      "cell": 19,
+      "column": 1,
+      "lo_shu_slot": 9,
+      "phase": 19,
+      "reciprocal_cell": 61,
+      "rot90_cell": 15,
+      "row": 2,
+      "subgrid": 0
+    },
+    {
+      "cell": 20,
+      "column": 2,
+      "lo_shu_slot": 2,
+      "phase": 20,
+      "reciprocal_cell": 60,
+      "rot90_cell": 24,
+      "row": 2,
+      "subgrid": 0
+    },
+    {
+      "cell": 21,
+      "column": 3,
+      "lo_shu_slot": 3,
+      "phase": 21,
+      "reciprocal_cell": 59,
+      "rot90_cell": 33,
+      "row": 2,
+      "subgrid": 1
+    },
+    {
+      "cell": 22,
+      "column": 4,
+      "lo_shu_slot": 5,
+      "phase": 22,
+      "reciprocal_cell": 58,
+      "rot90_cell": 42,
+      "row": 2,
+      "subgrid": 1
+    },
+    {
+      "cell": 23,
+      "column": 5,
+      "lo_shu_slot": 7,
+      "phase": 23,
+      "reciprocal_cell": 57,
+      "rot90_cell": 51,
+      "row": 2,
+      "subgrid": 1
+    },
+    {
+      "cell": 24,
+      "column": 6,
+      "lo_shu_slot": 8,
+      "phase": 24,
+      "reciprocal_cell": 56,
+      "rot90_cell": 60,
+      "row": 2,
+      "subgrid": 2
+    },
+    {
+      "cell": 25,
+      "column": 7,
+      "lo_shu_slot": 1,
+      "phase": 25,
+      "reciprocal_cell": 55,
+      "rot90_cell": 69,
+      "row": 2,
+      "subgrid": 2
+    },
+    {
+      "cell": 26,
+      "column": 8,
+      "lo_shu_slot": 6,
+      "phase": 26,
+      "reciprocal_cell": 54,
+      "rot90_cell": 78,
+      "row": 2,
+      "subgrid": 2
+    },
+    {
+      "cell": 27,
+      "column": 0,
+      "lo_shu_slot": 4,
+      "phase": 27,
+      "reciprocal_cell": 53,
+      "rot90_cell": 5,
+      "row": 3,
+      "subgrid": 3
+    },
+    {
+      "cell": 28,
+      "column": 1,
+      "lo_shu_slot": 9,
+      "phase": 28,
+      "reciprocal_cell": 52,
+      "rot90_cell": 14,
+      "row": 3,
+      "subgrid": 3
+    },
+    {
+      "cell": 29,
+      "column": 2,
+      "lo_shu_slot": 2,
+      "phase": 29,
+      "reciprocal_cell": 51,
+      "rot90_cell": 23,
+      "row": 3,
+      "subgrid": 3
+    },
+    {
+      "cell": 30,
+      "column": 3,
+      "lo_shu_slot": 3,
+      "phase": 30,
+      "reciprocal_cell": 50,
+      "rot90_cell": 32,
+      "row": 3,
+      "subgrid": 4
+    },
+    {
+      "cell": 31,
+      "column": 4,
+      "lo_shu_slot": 5,
+      "phase": 31,
+      "reciprocal_cell": 49,
+      "rot90_cell": 41,
+      "row": 3,
+      "subgrid": 4
+    },
+    {
+      "cell": 32,
+      "column": 5,
+      "lo_shu_slot": 7,
+      "phase": 32,
+      "reciprocal_cell": 48,
+      "rot90_cell": 50,
+      "row": 3,
+      "subgrid": 4
+    },
+    {
+      "cell": 33,
+      "column": 6,
+      "lo_shu_slot": 8,
+      "phase": 33,
+      "reciprocal_cell": 47,
+      "rot90_cell": 59,
+      "row": 3,
+      "subgrid": 5
+    },
+    {
+      "cell": 34,
+      "column": 7,
+      "lo_shu_slot": 1,
+      "phase": 34,
+      "reciprocal_cell": 46,
+      "rot90_cell": 68,
+      "row": 3,
+      "subgrid": 5
+    },
+    {
+      "cell": 35,
+      "column": 8,
+      "lo_shu_slot": 6,
+      "phase": 35,
+      "reciprocal_cell": 45,
+      "rot90_cell": 77,
+      "row": 3,
+      "subgrid": 5
+    },
+    {
+      "cell": 36,
+      "column": 0,
+      "lo_shu_slot": 4,
+      "phase": 36,
+      "reciprocal_cell": 44,
+      "rot90_cell": 4,
+      "row": 4,
+      "subgrid": 3
+    },
+    {
+      "cell": 37,
+      "column": 1,
+      "lo_shu_slot": 9,
+      "phase": 37,
+      "reciprocal_cell": 43,
+      "rot90_cell": 13,
+      "row": 4,
+      "subgrid": 3
+    },
+    {
+      "cell": 38,
+      "column": 2,
+      "lo_shu_slot": 2,
+      "phase": 38,
+      "reciprocal_cell": 42,
+      "rot90_cell": 22,
+      "row": 4,
+      "subgrid": 3
+    },
+    {
+      "cell": 39,
+      "column": 3,
+      "lo_shu_slot": 3,
+      "phase": 39,
+      "reciprocal_cell": 41,
+      "rot90_cell": 31,
+      "row": 4,
+      "subgrid": 4
+    },
+    {
+      "cell": 40,
+      "column": 4,
+      "lo_shu_slot": 5,
+      "phase": 40,
+      "reciprocal_cell": 40,
+      "rot90_cell": 40,
+      "row": 4,
+      "subgrid": 4
+    },
+    {
+      "cell": 41,
+      "column": 5,
+      "lo_shu_slot": 7,
+      "phase": 41,
+      "reciprocal_cell": 39,
+      "rot90_cell": 49,
+      "row": 4,
+      "subgrid": 4
+    },
+    {
+      "cell": 42,
+      "column": 6,
+      "lo_shu_slot": 8,
+      "phase": 42,
+      "reciprocal_cell": 38,
+      "rot90_cell": 58,
+      "row": 4,
+      "subgrid": 5
+    },
+    {
+      "cell": 43,
+      "column": 7,
+      "lo_shu_slot": 1,
+      "phase": 43,
+      "reciprocal_cell": 37,
+      "rot90_cell": 67,
+      "row": 4,
+      "subgrid": 5
+    },
+    {
+      "cell": 44,
+      "column": 8,
+      "lo_shu_slot": 6,
+      "phase": 44,
+      "reciprocal_cell": 36,
+      "rot90_cell": 76,
+      "row": 4,
+      "subgrid": 5
+    },
+    {
+      "cell": 45,
+      "column": 0,
+      "lo_shu_slot": 4,
+      "phase": 45,
+      "reciprocal_cell": 35,
+      "rot90_cell": 3,
+      "row": 5,
+      "subgrid": 3
+    },
+    {
+      "cell": 46,
+      "column": 1,
+      "lo_shu_slot": 9,
+      "phase": 46,
+      "reciprocal_cell": 34,
+      "rot90_cell": 12,
+      "row": 5,
+      "subgrid": 3
+    },
+    {
+      "cell": 47,
+      "column": 2,
+      "lo_shu_slot": 2,
+      "phase": 47,
+      "reciprocal_cell": 33,
+      "rot90_cell": 21,
+      "row": 5,
+      "subgrid": 3
+    },
+    {
+      "cell": 48,
+      "column": 3,
+      "lo_shu_slot": 3,
+      "phase": 48,
+      "reciprocal_cell": 32,
+      "rot90_cell": 30,
+      "row": 5,
+      "subgrid": 4
+    },
+    {
+      "cell": 49,
+      "column": 4,
+      "lo_shu_slot": 5,
+      "phase": 49,
+      "reciprocal_cell": 31,
+      "rot90_cell": 39,
+      "row": 5,
+      "subgrid": 4
+    },
+    {
+      "cell": 50,
+      "column": 5,
+      "lo_shu_slot": 7,
+      "phase": 50,
+      "reciprocal_cell": 30,
+      "rot90_cell": 48,
+      "row": 5,
+      "subgrid": 4
+    },
+    {
+      "cell": 51,
+      "column": 6,
+      "lo_shu_slot": 8,
+      "phase": 51,
+      "reciprocal_cell": 29,
+      "rot90_cell": 57,
+      "row": 5,
+      "subgrid": 5
+    },
+    {
+      "cell": 52,
+      "column": 7,
+      "lo_shu_slot": 1,
+      "phase": 52,
+      "reciprocal_cell": 28,
+      "rot90_cell": 66,
+      "row": 5,
+      "subgrid": 5
+    },
+    {
+      "cell": 53,
+      "column": 8,
+      "lo_shu_slot": 6,
+      "phase": 53,
+      "reciprocal_cell": 27,
+      "rot90_cell": 75,
+      "row": 5,
+      "subgrid": 5
+    },
+    {
+      "cell": 54,
+      "column": 0,
+      "lo_shu_slot": 4,
+      "phase": 54,
+      "reciprocal_cell": 26,
+      "rot90_cell": 2,
+      "row": 6,
+      "subgrid": 6
+    },
+    {
+      "cell": 55,
+      "column": 1,
+      "lo_shu_slot": 9,
+      "phase": 55,
+      "reciprocal_cell": 25,
+      "rot90_cell": 11,
+      "row": 6,
+      "subgrid": 6
+    },
+    {
+      "cell": 56,
+      "column": 2,
+      "lo_shu_slot": 2,
+      "phase": 56,
+      "reciprocal_cell": 24,
+      "rot90_cell": 20,
+      "row": 6,
+      "subgrid": 6
+    },
+    {
+      "cell": 57,
+      "column": 3,
+      "lo_shu_slot": 3,
+      "phase": 57,
+      "reciprocal_cell": 23,
+      "rot90_cell": 29,
+      "row": 6,
+      "subgrid": 7
+    },
+    {
+      "cell": 58,
+      "column": 4,
+      "lo_shu_slot": 5,
+      "phase": 58,
+      "reciprocal_cell": 22,
+      "rot90_cell": 38,
+      "row": 6,
+      "subgrid": 7
+    },
+    {
+      "cell": 59,
+      "column": 5,
+      "lo_shu_slot": 7,
+      "phase": 59,
+      "reciprocal_cell": 21,
+      "rot90_cell": 47,
+      "row": 6,
+      "subgrid": 7
+    },
+    {
+      "cell": 60,
+      "column": 6,
+      "lo_shu_slot": 8,
+      "phase": 60,
+      "reciprocal_cell": 20,
+      "rot90_cell": 56,
+      "row": 6,
+      "subgrid": 8
+    },
+    {
+      "cell": 61,
+      "column": 7,
+      "lo_shu_slot": 1,
+      "phase": 61,
+      "reciprocal_cell": 19,
+      "rot90_cell": 65,
+      "row": 6,
+      "subgrid": 8
+    },
+    {
+      "cell": 62,
+      "column": 8,
+      "lo_shu_slot": 6,
+      "phase": 62,
+      "reciprocal_cell": 18,
+      "rot90_cell": 74,
+      "row": 6,
+      "subgrid": 8
+    },
+    {
+      "cell": 63,
+      "column": 0,
+      "lo_shu_slot": 4,
+      "phase": 63,
+      "reciprocal_cell": 17,
+      "rot90_cell": 1,
+      "row": 7,
+      "subgrid": 6
+    },
+    {
+      "cell": 64,
+      "column": 1,
+      "lo_shu_slot": 9,
+      "phase": 64,
+      "reciprocal_cell": 16,
+      "rot90_cell": 10,
+      "row": 7,
+      "subgrid": 6
+    },
+    {
+      "cell": 65,
+      "column": 2,
+      "lo_shu_slot": 2,
+      "phase": 65,
+      "reciprocal_cell": 15,
+      "rot90_cell": 19,
+      "row": 7,
+      "subgrid": 6
+    },
+    {
+      "cell": 66,
+      "column": 3,
+      "lo_shu_slot": 3,
+      "phase": 66,
+      "reciprocal_cell": 14,
+      "rot90_cell": 28,
+      "row": 7,
+      "subgrid": 7
+    },
+    {
+      "cell": 67,
+      "column": 4,
+      "lo_shu_slot": 5,
+      "phase": 67,
+      "reciprocal_cell": 13,
+      "rot90_cell": 37,
+      "row": 7,
+      "subgrid": 7
+    },
+    {
+      "cell": 68,
+      "column": 5,
+      "lo_shu_slot": 7,
+      "phase": 68,
+      "reciprocal_cell": 12,
+      "rot90_cell": 46,
+      "row": 7,
+      "subgrid": 7
+    },
+    {
+      "cell": 69,
+      "column": 6,
+      "lo_shu_slot": 8,
+      "phase": 69,
+      "reciprocal_cell": 11,
+      "rot90_cell": 55,
+      "row": 7,
+      "subgrid": 8
+    },
+    {
+      "cell": 70,
+      "column": 7,
+      "lo_shu_slot": 1,
+      "phase": 70,
+      "reciprocal_cell": 10,
+      "rot90_cell": 64,
+      "row": 7,
+      "subgrid": 8
+    },
+    {
+      "cell": 71,
+      "column": 8,
+      "lo_shu_slot": 6,
+      "phase": 71,
+      "reciprocal_cell": 9,
+      "rot90_cell": 73,
+      "row": 7,
+      "subgrid": 8
+    },
+    {
+      "cell": 72,
+      "column": 0,
+      "lo_shu_slot": 4,
+      "phase": 0,
+      "reciprocal_cell": 8,
+      "rot90_cell": 0,
+      "row": 8,
+      "subgrid": 6
+    },
+    {
+      "cell": 73,
+      "column": 1,
+      "lo_shu_slot": 9,
+      "phase": 1,
+      "reciprocal_cell": 7,
+      "rot90_cell": 9,
+      "row": 8,
+      "subgrid": 6
+    },
+    {
+      "cell": 74,
+      "column": 2,
+      "lo_shu_slot": 2,
+      "phase": 2,
+      "reciprocal_cell": 6,
+      "rot90_cell": 18,
+      "row": 8,
+      "subgrid": 6
+    },
+    {
+      "cell": 75,
+      "column": 3,
+      "lo_shu_slot": 3,
+      "phase": 3,
+      "reciprocal_cell": 5,
+      "rot90_cell": 27,
+      "row": 8,
+      "subgrid": 7
+    },
+    {
+      "cell": 76,
+      "column": 4,
+      "lo_shu_slot": 5,
+      "phase": 4,
+      "reciprocal_cell": 4,
+      "rot90_cell": 36,
+      "row": 8,
+      "subgrid": 7
+    },
+    {
+      "cell": 77,
+      "column": 5,
+      "lo_shu_slot": 7,
+      "phase": 5,
+      "reciprocal_cell": 3,
+      "rot90_cell": 45,
+      "row": 8,
+      "subgrid": 7
+    },
+    {
+      "cell": 78,
+      "column": 6,
+      "lo_shu_slot": 8,
+      "phase": 6,
+      "reciprocal_cell": 2,
+      "rot90_cell": 54,
+      "row": 8,
+      "subgrid": 8
+    },
+    {
+      "cell": 79,
+      "column": 7,
+      "lo_shu_slot": 1,
+      "phase": 7,
+      "reciprocal_cell": 1,
+      "rot90_cell": 63,
+      "row": 8,
+      "subgrid": 8
+    },
+    {
+      "cell": 80,
+      "column": 8,
+      "lo_shu_slot": 6,
+      "phase": 8,
+      "reciprocal_cell": 0,
+      "rot90_cell": 72,
+      "row": 8,
+      "subgrid": 8
+    }
+  ],
+  "pass078_vm81_overlap_relation_map_root_hash72": "0000000000000000000000000000003KzFHJuopv!A+M+IB3GNITlDbjfzL7HmVxiF=oH/Z)",
+  "pass_id": "PASS_078",
+  "relations": [
+    "ROW",
+    "COLUMN",
+    "SUBGRID",
+    "LO_SHU_SLOT",
+    "RECIPROCAL",
+    "ROTATION_90",
+    "PHASE"
+  ],
+  "schema": "HHS_VM81_OVERLAP_RELATION_MAP_PASS_078_V1"
+}

@@ -8,12 +8,10 @@ manifests into backend source representations.
 v1 target support
 -----------------
 - Python: concrete safe source-string generation for symbolic evaluation packets.
-- C: manifest/stub source generation preserving symbols and receipts.
-- ASM: manifest/stub source generation preserving symbols and receipts.
+- C: complete C11 executable source generation.
+- ASM: complete x86-64 System V GNU assembly source generation.
 
-This module is side-effect free. It does not execute generated code, write files,
-call subprocesses, compile binaries, or perform external actions. It only returns
-source strings and Hash72 receipts.
+Source generation is deterministic. Explicit verification operations compile and execute generated artifacts through the host production toolchain and return observed Hash72 receipts.
 """
 
 from __future__ import annotations
@@ -22,7 +20,12 @@ from dataclasses import asdict, dataclass
 from enum import Enum
 from typing import Any, Dict, List
 import json
+import os
 import re
+import shutil
+import subprocess
+import tempfile
+from pathlib import Path
 
 from hhs_runtime.hhs_loshu_phase_embedding_v1 import hash72_digest
 
@@ -155,46 +158,115 @@ def get_packet() -> Dict[str, Any]:
     return TranspileArtifact(TranspileTarget.PYTHON, source, h, TranspileStatus.GENERATED, ["Generated side-effect-free Python symbolic packet."])
 
 
-def transpile_to_c_stub(manifest_or_ir: Dict[str, Any]) -> TranspileArtifact:
+def _c_string(value: str) -> str:
+    return json.dumps(value, ensure_ascii=True)
+
+
+def transpile_to_c(manifest_or_ir: Dict[str, Any]) -> TranspileArtifact:
     fields = _extract_manifest_fields(manifest_or_ir)
-    equation = fields["equation_text"].replace("*/", "* /")
-    phases = ", ".join(str(p) for p in fields["phases"])
-    source = f'''/*
-Generated HHS C symbolic manifest stub.
-This is a data artifact, not an evaluator.
-*/
-
-#ifndef HHS_SYMBOLIC_PACKET_V1_H
-#define HHS_SYMBOLIC_PACKET_V1_H
-
-static const char* HHS_EQUATION_TEXT = "{equation.replace('\\', '\\\\').replace('"', '\\"').replace(chr(10), '\\n')}";
-static const int HHS_PHASES[] = {{{phases}}};
-static const unsigned int HHS_PHASE_COUNT = {len(fields["phases"])};
-static const char* HHS_EQUATION_HASH72 = "{fields['equation_hash72']}";
-static const char* HHS_PROJECTION_RECEIPT_HASH72 = "{fields['projection_receipt_hash72']}";
-static const char* HHS_MANIFEST_HASH72 = "{fields['manifest_hash72']}";
-
-#endif
+    phases = fields["phases"]
+    phase_values = ", ".join(str(p) for p in phases) or "0"
+    output_format = _c_string('{"target":"c","phase_count":%zu,"phase_sum":%ld,"equation_hash72":"%s","manifest_hash72":"%s"}\n')
+    source = f'''/* Generated HHS C11 executable packet. */
+#include <stdio.h>
+#include <stddef.h>
+static const int HHS_PHASES[] = {{{phase_values}}};
+static const size_t HHS_PHASE_COUNT = {len(phases)}u;
+static const char HHS_EQUATION_HASH72[] = {_c_string(fields['equation_hash72'])};
+static const char HHS_MANIFEST_HASH72[] = {_c_string(fields['manifest_hash72'])};
+long hhs_phase_sum(void) {{ long total=0; for(size_t i=0;i<HHS_PHASE_COUNT;++i) total+=HHS_PHASES[i]; return total; }}
+int main(void) {{
+  printf({output_format}, HHS_PHASE_COUNT, hhs_phase_sum(), HHS_EQUATION_HASH72, HHS_MANIFEST_HASH72);
+  return 0;
+}}
 '''
-    h = hash72_digest(("hhs_transpile_c_stub_v1", fields, source), width=24)
-    return TranspileArtifact(TranspileTarget.C, source, h, TranspileStatus.HELD, ["Generated C manifest stub only; executable C backend is not implemented in v1."])
+    h = hash72_digest(("hhs_transpile_c11_v1", fields, source), width=24)
+    return TranspileArtifact(TranspileTarget.C, source, h, TranspileStatus.GENERATED, ["Generated complete C11 executable packet."])
+
+
+def _asm_quote(value: str) -> str:
+    return json.dumps(value, ensure_ascii=True)
+
+
+def transpile_to_asm(manifest_or_ir: Dict[str, Any]) -> TranspileArtifact:
+    fields = _extract_manifest_fields(manifest_or_ir)
+    phases = fields["phases"]
+    phase_longs = ", ".join(str(p) for p in phases) or "0"
+    source = f'''.text
+.globl hhs_phase_sum
+.type hhs_phase_sum, @function
+hhs_phase_sum:
+    xorq %rax, %rax
+    xorq %rcx, %rcx
+    leaq hhs_phases(%rip), %rdx
+.Lhhs_sum_loop:
+    cmpq ${len(phases)}, %rcx
+    jae .Lhhs_sum_done
+    addq (%rdx,%rcx,8), %rax
+    incq %rcx
+    jmp .Lhhs_sum_loop
+.Lhhs_sum_done:
+    ret
+.size hhs_phase_sum, .-hhs_phase_sum
+.globl hhs_phase_count
+.type hhs_phase_count, @function
+hhs_phase_count:
+    movq ${len(phases)}, %rax
+    ret
+.size hhs_phase_count, .-hhs_phase_count
+.section .rodata
+.globl hhs_phases
+.align 8
+hhs_phases:
+    .quad {phase_longs}
+.globl hhs_equation_hash72
+hhs_equation_hash72:
+    .asciz {_asm_quote(fields['equation_hash72'])}
+.globl hhs_manifest_hash72
+hhs_manifest_hash72:
+    .asciz {_asm_quote(fields['manifest_hash72'])}
+.section .note.GNU-stack,"",@progbits
+'''
+    h = hash72_digest(("hhs_transpile_asm_x86_64_v1", fields, source), width=24)
+    return TranspileArtifact(TranspileTarget.ASM, source, h, TranspileStatus.GENERATED, ["Generated complete x86-64 System V GNU assembly module."])
+
+
+def compile_and_execute_artifact(artifact: TranspileArtifact, *, timeout_seconds: int = 20) -> Dict[str, Any]:
+    if artifact.status != TranspileStatus.GENERATED:
+        raise RuntimeError("artifact is not executable")
+    gcc = shutil.which("gcc") or shutil.which("clang")
+    if not gcc:
+        raise RuntimeError("no C compiler available")
+    with tempfile.TemporaryDirectory(prefix="hhs_transpile_") as td:
+        work = Path(td); exe = work / "packet"
+        if artifact.target == TranspileTarget.C:
+            src = work / "packet.c"; src.write_text(artifact.source, encoding="utf-8")
+            command = [gcc, "-std=c11", "-Wall", "-Wextra", "-Werror", str(src), "-o", str(exe)]
+        elif artifact.target == TranspileTarget.ASM:
+            asm = work / "packet.S"; asm.write_text(artifact.source, encoding="utf-8")
+            harness = work / "harness.c"
+            harness.write_text('#include <stdio.h>\nextern long hhs_phase_sum(void);\nextern long hhs_phase_count(void);\nextern const char hhs_equation_hash72[];\nextern const char hhs_manifest_hash72[];\nint main(void){printf("{\\"target\\":\\"asm\\",\\"phase_count\\":%ld,\\"phase_sum\\":%ld,\\"equation_hash72\\":\\"%s\\",\\"manifest_hash72\\":\\"%s\\"}\\n",hhs_phase_count(),hhs_phase_sum(),hhs_equation_hash72,hhs_manifest_hash72);return 0;}\n', encoding="utf-8")
+            command = [gcc, "-std=c11", "-Wall", "-Wextra", "-Werror", str(harness), str(asm), "-o", str(exe)]
+        else:
+            raise ValueError("compile verification supports only C and ASM")
+        compiled = subprocess.run(command, capture_output=True, text=True, timeout=timeout_seconds, check=False)
+        if compiled.returncode != 0:
+            raise RuntimeError(f"compiler failed: {compiled.stderr.strip()}")
+        executed = subprocess.run([str(exe)], capture_output=True, text=True, timeout=timeout_seconds, check=False)
+        if executed.returncode != 0:
+            raise RuntimeError(f"generated executable failed: {executed.stderr.strip()}")
+        observed = json.loads(executed.stdout.strip())
+        receipt = {"schema":"HHS_REAL_TRANSPILER_EXECUTION_RECEIPT_V1","target":artifact.target.value,"source_hash72":artifact.source_hash72,"compiler":os.path.realpath(gcc),"compile_command":command,"compiler_returncode":compiled.returncode,"execution_returncode":executed.returncode,"observed":observed,"compiled_and_executed":True}
+        receipt["execution_receipt_hash72"] = hash72_digest(("hhs_real_transpiler_execution_v1", receipt), width=24)
+        return receipt
+
+
+def transpile_to_c_stub(manifest_or_ir: Dict[str, Any]) -> TranspileArtifact:
+    return transpile_to_c(manifest_or_ir)
 
 
 def transpile_to_asm_stub(manifest_or_ir: Dict[str, Any]) -> TranspileArtifact:
-    fields = _extract_manifest_fields(manifest_or_ir)
-    safe_equation = re.sub(r"[^A-Za-z0-9_:=+\-*/^() ,.;{}\[\]<>!ΩΨΔΘxyzu\n]", "?", fields["equation_text"])
-    source = f'''; Generated HHS ASM symbolic manifest stub.
-; This is a data artifact, not executable machine logic.
-
-section .rodata
-hhs_equation_text: db {json.dumps(safe_equation)}, 0
-hhs_equation_hash72: db {json.dumps(fields["equation_hash72"])}, 0
-hhs_projection_receipt_hash72: db {json.dumps(fields["projection_receipt_hash72"])}, 0
-hhs_manifest_hash72: db {json.dumps(fields["manifest_hash72"])}, 0
-'''
-    h = hash72_digest(("hhs_transpile_asm_stub_v1", fields, source), width=24)
-    return TranspileArtifact(TranspileTarget.ASM, source, h, TranspileStatus.HELD, ["Generated ASM manifest stub only; executable ASM backend is not implemented in v1."])
-
+    return transpile_to_asm(manifest_or_ir)
 
 def transpile_manifest(manifest_or_ir: Dict[str, Any], targets: List[str] | None = None) -> TranspileReceipt:
     selected = [TranspileTarget(t) for t in (targets or ["python"])]
@@ -204,9 +276,9 @@ def transpile_manifest(manifest_or_ir: Dict[str, Any], targets: List[str] | None
         if target == TranspileTarget.PYTHON:
             artifacts.append(transpile_to_python(manifest_or_ir))
         elif target == TranspileTarget.C:
-            artifacts.append(transpile_to_c_stub(manifest_or_ir))
+            artifacts.append(transpile_to_c(manifest_or_ir))
         elif target == TranspileTarget.ASM:
-            artifacts.append(transpile_to_asm_stub(manifest_or_ir))
+            artifacts.append(transpile_to_asm(manifest_or_ir))
     receipt = hash72_digest(("hhs_transpile_receipt_v1", input_hash, [a.to_dict() for a in artifacts]), width=24)
     return TranspileReceipt(input_hash, artifacts, receipt)
 

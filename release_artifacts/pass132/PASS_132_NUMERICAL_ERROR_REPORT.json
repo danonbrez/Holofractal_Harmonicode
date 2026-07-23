@@ -1,0 +1,1891 @@
+{
+  "numerical_measurements": [
+    {
+      "cancellation_events": [],
+      "comparison_cause": "IEEE_REPRESENTATION_ROUNDING_OR_CANCELLATION",
+      "comparison_outcome": "IEEE_ROUNDING_DIVERGENCE",
+      "error": {
+        "absolute_error": "1.1920928955078125E-7",
+        "actual_exact_decimal": "1.00000011920928955078125",
+        "available": true,
+        "exact_reference": "1",
+        "range_divergence": false,
+        "relative_error": "1.1920928955078125E-7",
+        "rounded_reference": {
+          "bits_hex": "3f800000",
+          "classification": "FINITE",
+          "decimal_projection": "1.0",
+          "flags": [],
+          "format": "binary32",
+          "signed_zero": false
+        },
+        "ulp_distance_to_rounded_reference": 1
+      },
+      "exceptional_values": [
+        "FE_INEXACT"
+      ],
+      "format": "binary32",
+      "operation_count": 10,
+      "overflow_events": [],
+      "translation_class": "AUTHORIZED_PROJECTION_MAP",
+      "underflow_events": [],
+      "workload_id": "repeated_decimal_accumulation"
+    },
+    {
+      "cancellation_events": [],
+      "comparison_cause": "IEEE_REPRESENTATION_ROUNDING_OR_CANCELLATION",
+      "comparison_outcome": "IEEE_ROUNDING_DIVERGENCE",
+      "error": {
+        "absolute_error": "1.1102230246251565404236316680908203125E-16",
+        "actual_exact_decimal": "0.99999999999999988897769753748434595763683319091796875",
+        "available": true,
+        "exact_reference": "1",
+        "range_divergence": false,
+        "relative_error": "1.1102230246251565404236316680908203125E-16",
+        "rounded_reference": {
+          "bits_hex": "3ff0000000000000",
+          "classification": "FINITE",
+          "decimal_projection": "1.0",
+          "flags": [],
+          "format": "binary64",
+          "signed_zero": false
+        },
+        "ulp_distance_to_rounded_reference": 1
+      },
+      "exceptional_values": [
+        "FE_INEXACT"
+      ],
+      "format": "binary64",
+      "operation_count": 10,
+      "overflow_events": [],
+      "translation_class": "AUTHORIZED_PROJECTION_MAP",
+      "underflow_events": [],
+      "workload_id": "repeated_decimal_accumulation"
+    },
+    {
+      "cancellation_events": [
+        {
+          "classification": "CANCELLATION_EVENT",
+          "operation_id": "r",
+          "result_to_operand_scale": 0.0
+        }
+      ],
+      "comparison_cause": "IEEE_REPRESENTATION_ROUNDING_OR_CANCELLATION",
+      "comparison_outcome": "IEEE_ROUNDING_DIVERGENCE",
+      "error": {
+        "absolute_error": "1",
+        "actual_exact_decimal": "0",
+        "available": true,
+        "exact_reference": "1",
+        "range_divergence": false,
+        "relative_error": "1",
+        "rounded_reference": {
+          "bits_hex": "3f800000",
+          "classification": "FINITE",
+          "decimal_projection": "1.0",
+          "flags": [],
+          "format": "binary32",
+          "signed_zero": false
+        },
+        "ulp_distance_to_rounded_reference": 1065353216
+      },
+      "exceptional_values": [
+        "FE_INEXACT"
+      ],
+      "format": "binary32",
+      "operation_count": 2,
+      "overflow_events": [],
+      "translation_class": "AUTHORIZED_PROJECTION_MAP",
+      "underflow_events": [],
+      "workload_id": "catastrophic_cancellation"
+    },
+    {
+      "cancellation_events": [
+        {
+          "classification": "CANCELLATION_EVENT",
+          "operation_id": "r",
+          "result_to_operand_scale": 0.0
+        }
+      ],
+      "comparison_cause": "IEEE_REPRESENTATION_ROUNDING_OR_CANCELLATION",
+      "comparison_outcome": "IEEE_ROUNDING_DIVERGENCE",
+      "error": {
+        "absolute_error": "1",
+        "actual_exact_decimal": "0",
+        "available": true,
+        "exact_reference": "1",
+        "range_divergence": false,
+        "relative_error": "1",
+        "rounded_reference": {
+          "bits_hex": "3ff0000000000000",
+          "classification": "FINITE",
+          "decimal_projection": "1.0",
+          "flags": [],
+          "format": "binary64",
+          "signed_zero": false
+        },
+        "ulp_distance_to_rounded_reference": 4607182418800017408
+      },
+      "exceptional_values": [
+        "FE_INEXACT"
+      ],
+      "format": "binary64",
+      "operation_count": 2,
+      "overflow_events": [],
+      "translation_class": "AUTHORIZED_PROJECTION_MAP",
+      "underflow_events": [],
+      "workload_id": "catastrophic_cancellation"
+    },
+    {
+      "cancellation_events": [
+        {
+          "classification": "CANCELLATION_EVENT",
+          "operation_id": "m0",
+          "result_to_operand_scale": 0.0
+        },
+        {
+          "classification": "CANCELLATION_EVENT",
+          "operation_id": "m1",
+          "result_to_operand_scale": 0.0
+        },
+        {
+          "classification": "CANCELLATION_EVENT",
+          "operation_id": "m2",
+          "result_to_operand_scale": 0.0
+        },
+        {
+          "classification": "CANCELLATION_EVENT",
+          "operation_id": "m3",
+          "result_to_operand_scale": 0.0
+        },
+        {
+          "classification": "CANCELLATION_EVENT",
+          "operation_id": "m4",
+          "result_to_operand_scale": 0.0
+        },
+        {
+          "classification": "CANCELLATION_EVENT",
+          "operation_id": "m5",
+          "result_to_operand_scale": 0.0
+        },
+        {
+          "classification": "CANCELLATION_EVENT",
+          "operation_id": "m6",
+          "result_to_operand_scale": 0.0
+        },
+        {
+          "classification": "CANCELLATION_EVENT",
+          "operation_id": "m7",
+          "result_to_operand_scale": 0.0
+        },
+        {
+          "classification": "CANCELLATION_EVENT",
+          "operation_id": "m8",
+          "result_to_operand_scale": 0.0
+        },
+        {
+          "classification": "CANCELLATION_EVENT",
+          "operation_id": "m9",
+          "result_to_operand_scale": 0.0
+        },
+        {
+          "classification": "CANCELLATION_EVENT",
+          "operation_id": "m10",
+          "result_to_operand_scale": 0.0
+        },
+        {
+          "classification": "CANCELLATION_EVENT",
+          "operation_id": "m11",
+          "result_to_operand_scale": 0.0
+        }
+      ],
+      "comparison_cause": "WITNESSED_PROJECTION_EQUALITY",
+      "comparison_outcome": "EXACT_PROJECTED_AGREEMENT",
+      "error": {
+        "absolute_error": "0",
+        "actual_exact_decimal": "0",
+        "available": true,
+        "exact_reference": "0",
+        "range_divergence": false,
+        "relative_error": null,
+        "rounded_reference": {
+          "bits_hex": "00000000",
+          "classification": "POSITIVE_ZERO",
+          "decimal_projection": "0.0",
+          "flags": [],
+          "format": "binary32",
+          "signed_zero": false
+        },
+        "ulp_distance_to_rounded_reference": 0
+      },
+      "exceptional_values": [
+        "FE_INEXACT"
+      ],
+      "format": "binary32",
+      "operation_count": 24,
+      "overflow_events": [],
+      "translation_class": "AUTHORIZED_PROJECTION_MAP",
+      "underflow_events": [],
+      "workload_id": "alternating_accumulation"
+    },
+    {
+      "cancellation_events": [
+        {
+          "classification": "CANCELLATION_EVENT",
+          "operation_id": "m0",
+          "result_to_operand_scale": 0.0
+        },
+        {
+          "classification": "CANCELLATION_EVENT",
+          "operation_id": "m1",
+          "result_to_operand_scale": 0.0
+        },
+        {
+          "classification": "CANCELLATION_EVENT",
+          "operation_id": "m2",
+          "result_to_operand_scale": 0.0
+        },
+        {
+          "classification": "CANCELLATION_EVENT",
+          "operation_id": "m3",
+          "result_to_operand_scale": 0.0
+        },
+        {
+          "classification": "CANCELLATION_EVENT",
+          "operation_id": "m4",
+          "result_to_operand_scale": 0.0
+        },
+        {
+          "classification": "CANCELLATION_EVENT",
+          "operation_id": "m5",
+          "result_to_operand_scale": 0.0
+        },
+        {
+          "classification": "CANCELLATION_EVENT",
+          "operation_id": "m6",
+          "result_to_operand_scale": 0.0
+        },
+        {
+          "classification": "CANCELLATION_EVENT",
+          "operation_id": "m7",
+          "result_to_operand_scale": 0.0
+        },
+        {
+          "classification": "CANCELLATION_EVENT",
+          "operation_id": "m8",
+          "result_to_operand_scale": 0.0
+        },
+        {
+          "classification": "CANCELLATION_EVENT",
+          "operation_id": "m9",
+          "result_to_operand_scale": 0.0
+        },
+        {
+          "classification": "CANCELLATION_EVENT",
+          "operation_id": "m10",
+          "result_to_operand_scale": 0.0
+        },
+        {
+          "classification": "CANCELLATION_EVENT",
+          "operation_id": "m11",
+          "result_to_operand_scale": 0.0
+        }
+      ],
+      "comparison_cause": "WITNESSED_PROJECTION_EQUALITY",
+      "comparison_outcome": "EXACT_PROJECTED_AGREEMENT",
+      "error": {
+        "absolute_error": "0",
+        "actual_exact_decimal": "0",
+        "available": true,
+        "exact_reference": "0",
+        "range_divergence": false,
+        "relative_error": null,
+        "rounded_reference": {
+          "bits_hex": "0000000000000000",
+          "classification": "POSITIVE_ZERO",
+          "decimal_projection": "0.0",
+          "flags": [],
+          "format": "binary64",
+          "signed_zero": false
+        },
+        "ulp_distance_to_rounded_reference": 0
+      },
+      "exceptional_values": [
+        "FE_INEXACT"
+      ],
+      "format": "binary64",
+      "operation_count": 24,
+      "overflow_events": [],
+      "translation_class": "AUTHORIZED_PROJECTION_MAP",
+      "underflow_events": [],
+      "workload_id": "alternating_accumulation"
+    },
+    {
+      "cancellation_events": [
+        {
+          "classification": "CANCELLATION_EVENT",
+          "operation_id": "s",
+          "result_to_operand_scale": 0.0
+        }
+      ],
+      "comparison_cause": "WITNESSED_PROJECTION_EQUALITY",
+      "comparison_outcome": "EXACT_PROJECTED_AGREEMENT",
+      "error": {
+        "absolute_error": "0",
+        "actual_exact_decimal": "3",
+        "available": true,
+        "exact_reference": "3",
+        "range_divergence": false,
+        "relative_error": "0",
+        "rounded_reference": {
+          "bits_hex": "40400000",
+          "classification": "FINITE",
+          "decimal_projection": "3.0",
+          "flags": [],
+          "format": "binary32",
+          "signed_zero": false
+        },
+        "ulp_distance_to_rounded_reference": 0
+      },
+      "exceptional_values": [
+        "FE_INEXACT"
+      ],
+      "format": "binary32",
+      "operation_count": 2,
+      "overflow_events": [],
+      "translation_class": "AUTHORIZED_PROJECTION_MAP",
+      "underflow_events": [],
+      "workload_id": "nonassociative_left"
+    },
+    {
+      "cancellation_events": [
+        {
+          "classification": "CANCELLATION_EVENT",
+          "operation_id": "s",
+          "result_to_operand_scale": 0.0
+        }
+      ],
+      "comparison_cause": "WITNESSED_PROJECTION_EQUALITY",
+      "comparison_outcome": "EXACT_PROJECTED_AGREEMENT",
+      "error": {
+        "absolute_error": "0",
+        "actual_exact_decimal": "3",
+        "available": true,
+        "exact_reference": "3",
+        "range_divergence": false,
+        "relative_error": "0",
+        "rounded_reference": {
+          "bits_hex": "4008000000000000",
+          "classification": "FINITE",
+          "decimal_projection": "3.0",
+          "flags": [],
+          "format": "binary64",
+          "signed_zero": false
+        },
+        "ulp_distance_to_rounded_reference": 0
+      },
+      "exceptional_values": [],
+      "format": "binary64",
+      "operation_count": 2,
+      "overflow_events": [],
+      "translation_class": "AUTHORIZED_PROJECTION_MAP",
+      "underflow_events": [],
+      "workload_id": "nonassociative_left"
+    },
+    {
+      "cancellation_events": [
+        {
+          "classification": "CANCELLATION_EVENT",
+          "operation_id": "r",
+          "result_to_operand_scale": 0.0
+        }
+      ],
+      "comparison_cause": "IEEE_REPRESENTATION_ROUNDING_OR_CANCELLATION",
+      "comparison_outcome": "IEEE_ROUNDING_DIVERGENCE",
+      "error": {
+        "absolute_error": "3",
+        "actual_exact_decimal": "0",
+        "available": true,
+        "exact_reference": "3",
+        "range_divergence": false,
+        "relative_error": "1",
+        "rounded_reference": {
+          "bits_hex": "40400000",
+          "classification": "FINITE",
+          "decimal_projection": "3.0",
+          "flags": [],
+          "format": "binary32",
+          "signed_zero": false
+        },
+        "ulp_distance_to_rounded_reference": 1077936128
+      },
+      "exceptional_values": [
+        "FE_INEXACT"
+      ],
+      "format": "binary32",
+      "operation_count": 2,
+      "overflow_events": [],
+      "translation_class": "AUTHORIZED_PROJECTION_MAP",
+      "underflow_events": [],
+      "workload_id": "nonassociative_right"
+    },
+    {
+      "cancellation_events": [
+        {
+          "classification": "CANCELLATION_EVENT",
+          "operation_id": "r",
+          "result_to_operand_scale": 0.0
+        }
+      ],
+      "comparison_cause": "IEEE_REPRESENTATION_ROUNDING_OR_CANCELLATION",
+      "comparison_outcome": "IEEE_ROUNDING_DIVERGENCE",
+      "error": {
+        "absolute_error": "3",
+        "actual_exact_decimal": "0",
+        "available": true,
+        "exact_reference": "3",
+        "range_divergence": false,
+        "relative_error": "1",
+        "rounded_reference": {
+          "bits_hex": "4008000000000000",
+          "classification": "FINITE",
+          "decimal_projection": "3.0",
+          "flags": [],
+          "format": "binary64",
+          "signed_zero": false
+        },
+        "ulp_distance_to_rounded_reference": 4613937818241073152
+      },
+      "exceptional_values": [
+        "FE_INEXACT"
+      ],
+      "format": "binary64",
+      "operation_count": 2,
+      "overflow_events": [],
+      "translation_class": "AUTHORIZED_PROJECTION_MAP",
+      "underflow_events": [],
+      "workload_id": "nonassociative_right"
+    },
+    {
+      "cancellation_events": [],
+      "comparison_cause": "WITNESSED_PROJECTION_EQUALITY",
+      "comparison_outcome": "EXACT_PROJECTED_AGREEMENT",
+      "error": {
+        "absolute_error": "0",
+        "actual_exact_decimal": "1",
+        "available": true,
+        "exact_reference": "1",
+        "range_divergence": false,
+        "relative_error": "0",
+        "rounded_reference": {
+          "bits_hex": "3f800000",
+          "classification": "FINITE",
+          "decimal_projection": "1.0",
+          "flags": [],
+          "format": "binary32",
+          "signed_zero": false
+        },
+        "ulp_distance_to_rounded_reference": 0
+      },
+      "exceptional_values": [
+        "FE_INEXACT"
+      ],
+      "format": "binary32",
+      "operation_count": 3,
+      "overflow_events": [],
+      "translation_class": "AUTHORIZED_PROJECTION_MAP",
+      "underflow_events": [],
+      "workload_id": "inverse_normalization"
+    },
+    {
+      "cancellation_events": [],
+      "comparison_cause": "WITNESSED_PROJECTION_EQUALITY",
+      "comparison_outcome": "EXACT_PROJECTED_AGREEMENT",
+      "error": {
+        "absolute_error": "0",
+        "actual_exact_decimal": "1",
+        "available": true,
+        "exact_reference": "1",
+        "range_divergence": false,
+        "relative_error": "0",
+        "rounded_reference": {
+          "bits_hex": "3ff0000000000000",
+          "classification": "FINITE",
+          "decimal_projection": "1.0",
+          "flags": [],
+          "format": "binary64",
+          "signed_zero": false
+        },
+        "ulp_distance_to_rounded_reference": 0
+      },
+      "exceptional_values": [
+        "FE_INEXACT"
+      ],
+      "format": "binary64",
+      "operation_count": 3,
+      "overflow_events": [],
+      "translation_class": "AUTHORIZED_PROJECTION_MAP",
+      "underflow_events": [],
+      "workload_id": "inverse_normalization"
+    },
+    {
+      "cancellation_events": [],
+      "comparison_cause": "IEEE_OVERFLOW_UNDERFLOW_OR_EXCEPTIONAL_RANGE",
+      "comparison_outcome": "IEEE_RANGE_DIVERGENCE",
+      "error": {
+        "absolute_error": null,
+        "available": true,
+        "exact_reference": "1E+616",
+        "range_divergence": true,
+        "relative_error": null
+      },
+      "exceptional_values": [
+        "FE_INEXACT",
+        "FE_OVERFLOW"
+      ],
+      "format": "binary32",
+      "operation_count": 1,
+      "overflow_events": [
+        {
+          "event": "CONSTANT_PARSE",
+          "id": "a",
+          "operation_index": 0,
+          "result": {
+            "bits_hex": "7f800000",
+            "classification": "POSITIVE_INFINITY",
+            "decimal_projection": "inf",
+            "flags": [
+              "FE_OVERFLOW",
+              "FE_INEXACT"
+            ],
+            "format": "binary32",
+            "signed_zero": false
+          },
+          "source_text": "1e308"
+        },
+        {
+          "event": "CONSTANT_PARSE",
+          "id": "b",
+          "operation_index": 1,
+          "result": {
+            "bits_hex": "7f800000",
+            "classification": "POSITIVE_INFINITY",
+            "decimal_projection": "inf",
+            "flags": [
+              "FE_OVERFLOW",
+              "FE_INEXACT"
+            ],
+            "format": "binary32",
+            "signed_zero": false
+          },
+          "source_text": "1e308"
+        }
+      ],
+      "translation_class": "AUTHORIZED_PROJECTION_MAP",
+      "underflow_events": [],
+      "workload_id": "overflow_boundary"
+    },
+    {
+      "cancellation_events": [],
+      "comparison_cause": "IEEE_OVERFLOW_UNDERFLOW_OR_EXCEPTIONAL_RANGE",
+      "comparison_outcome": "IEEE_RANGE_DIVERGENCE",
+      "error": {
+        "absolute_error": null,
+        "available": true,
+        "exact_reference": "1E+616",
+        "range_divergence": true,
+        "relative_error": null
+      },
+      "exceptional_values": [
+        "FE_INEXACT",
+        "FE_OVERFLOW"
+      ],
+      "format": "binary64",
+      "operation_count": 1,
+      "overflow_events": [
+        {
+          "arg_values": [
+            {
+              "bits_hex": "7fe1ccf385ebc8a0",
+              "classification": "FINITE",
+              "decimal_projection": "1e+308",
+              "flags": [
+                "FE_INEXACT"
+              ],
+              "format": "binary64",
+              "signed_zero": false
+            },
+            {
+              "bits_hex": "7fe1ccf385ebc8a0",
+              "classification": "FINITE",
+              "decimal_projection": "1e+308",
+              "flags": [
+                "FE_INEXACT"
+              ],
+              "format": "binary64",
+              "signed_zero": false
+            }
+          ],
+          "args": [
+            "a",
+            "b"
+          ],
+          "event": "IEEE_OPERATION",
+          "id": "r",
+          "instruction_index": 0,
+          "op": "mul",
+          "operation_index": 2,
+          "result": {
+            "bits_hex": "7ff0000000000000",
+            "classification": "POSITIVE_INFINITY",
+            "decimal_projection": "inf",
+            "flags": [
+              "FE_OVERFLOW",
+              "FE_INEXACT"
+            ],
+            "format": "binary64",
+            "signed_zero": false
+          }
+        }
+      ],
+      "translation_class": "AUTHORIZED_PROJECTION_MAP",
+      "underflow_events": [],
+      "workload_id": "overflow_boundary"
+    },
+    {
+      "cancellation_events": [],
+      "comparison_cause": "IEEE_OVERFLOW_UNDERFLOW_OR_EXCEPTIONAL_RANGE",
+      "comparison_outcome": "IEEE_RANGE_DIVERGENCE",
+      "error": {
+        "absolute_error": "5E-321",
+        "actual_exact_decimal": "0",
+        "available": true,
+        "exact_reference": "5E-321",
+        "range_divergence": false,
+        "relative_error": "1",
+        "rounded_reference": {
+          "bits_hex": "00000000",
+          "classification": "POSITIVE_ZERO",
+          "decimal_projection": "0.0",
+          "flags": [
+            "FE_UNDERFLOW",
+            "FE_INEXACT"
+          ],
+          "format": "binary32",
+          "signed_zero": false
+        },
+        "ulp_distance_to_rounded_reference": 0
+      },
+      "exceptional_values": [
+        "FE_INEXACT",
+        "FE_UNDERFLOW"
+      ],
+      "format": "binary32",
+      "operation_count": 1,
+      "overflow_events": [],
+      "translation_class": "AUTHORIZED_PROJECTION_MAP",
+      "underflow_events": [
+        {
+          "event": "CONSTANT_PARSE",
+          "id": "a",
+          "operation_index": 0,
+          "result": {
+            "bits_hex": "00000000",
+            "classification": "POSITIVE_ZERO",
+            "decimal_projection": "0.0",
+            "flags": [
+              "FE_UNDERFLOW",
+              "FE_INEXACT"
+            ],
+            "format": "binary32",
+            "signed_zero": false
+          },
+          "source_text": "1e-320"
+        }
+      ],
+      "workload_id": "underflow_boundary"
+    },
+    {
+      "cancellation_events": [],
+      "comparison_cause": "IEEE_OVERFLOW_UNDERFLOW_OR_EXCEPTIONAL_RANGE",
+      "comparison_outcome": "IEEE_RANGE_DIVERGENCE",
+      "error": {
+        "absolute_error": "5.566408658497293312381617359971166559479754303338401307289309316386642548743112316565602024375711645876528208933656302223409119788926044439906437088739336183678E-326",
+        "actual_exact_decimal": "4.9999443359134150270668761838264002883344052024569666159869271069068361335745125688768343439797562428835412347179106634369777659088021107395556009356291126066381632174859514138217996697386316988893298325968968271549172660646405806340776419996022307804044765052171209597002285101575342837826507897845936700940528403503435243112861485059036479325712202293394100989126651953643517328198938156208441905423364344290350152126750147488873642116881139368361157513243927816037722135668903757494824211193254914881798684768272836442438474701152823846461491988798423150275456924383748491519577955421792833359280507821883498501961471684778135210829497946684503170910252579673074384104021815887876604581761710687353625936807551000118365891466964967548847198486328125E-321",
+        "available": true,
+        "exact_reference": "5E-321",
+        "range_divergence": false,
+        "relative_error": "0.00001113281731699458662476323471994233311895950860667680261457861863277328509748622463313120404875142329175305641786731260444681823957785208887981287417747867236736",
+        "rounded_reference": {
+          "bits_hex": "00000000000003f4",
+          "classification": "FINITE",
+          "decimal_projection": "5e-321",
+          "flags": [
+            "FE_UNDERFLOW",
+            "FE_INEXACT"
+          ],
+          "format": "binary64",
+          "signed_zero": false
+        },
+        "ulp_distance_to_rounded_reference": 0
+      },
+      "exceptional_values": [
+        "FE_INEXACT",
+        "FE_UNDERFLOW"
+      ],
+      "format": "binary64",
+      "operation_count": 1,
+      "overflow_events": [],
+      "translation_class": "AUTHORIZED_PROJECTION_MAP",
+      "underflow_events": [
+        {
+          "event": "CONSTANT_PARSE",
+          "id": "a",
+          "operation_index": 0,
+          "result": {
+            "bits_hex": "00000000000007e8",
+            "classification": "FINITE",
+            "decimal_projection": "1e-320",
+            "flags": [
+              "FE_UNDERFLOW",
+              "FE_INEXACT"
+            ],
+            "format": "binary64",
+            "signed_zero": false
+          },
+          "source_text": "1e-320"
+        }
+      ],
+      "workload_id": "underflow_boundary"
+    },
+    {
+      "cancellation_events": [],
+      "comparison_cause": "WITNESSED_PROJECTION_EQUALITY",
+      "comparison_outcome": "EXACT_PROJECTED_AGREEMENT",
+      "error": {
+        "absolute_error": "0",
+        "actual_exact_decimal": "-0",
+        "available": true,
+        "exact_reference": "0",
+        "range_divergence": false,
+        "relative_error": null,
+        "rounded_reference": {
+          "bits_hex": "00000000",
+          "classification": "POSITIVE_ZERO",
+          "decimal_projection": "0.0",
+          "flags": [],
+          "format": "binary32",
+          "signed_zero": false
+        },
+        "ulp_distance_to_rounded_reference": 1
+      },
+      "exceptional_values": [],
+      "format": "binary32",
+      "operation_count": 1,
+      "overflow_events": [],
+      "translation_class": "AUTHORIZED_PROJECTION_MAP",
+      "underflow_events": [],
+      "workload_id": "signed_zero_propagation"
+    },
+    {
+      "cancellation_events": [],
+      "comparison_cause": "WITNESSED_PROJECTION_EQUALITY",
+      "comparison_outcome": "EXACT_PROJECTED_AGREEMENT",
+      "error": {
+        "absolute_error": "0",
+        "actual_exact_decimal": "-0",
+        "available": true,
+        "exact_reference": "0",
+        "range_divergence": false,
+        "relative_error": null,
+        "rounded_reference": {
+          "bits_hex": "0000000000000000",
+          "classification": "POSITIVE_ZERO",
+          "decimal_projection": "0.0",
+          "flags": [],
+          "format": "binary64",
+          "signed_zero": false
+        },
+        "ulp_distance_to_rounded_reference": 1
+      },
+      "exceptional_values": [],
+      "format": "binary64",
+      "operation_count": 1,
+      "overflow_events": [],
+      "translation_class": "AUTHORIZED_PROJECTION_MAP",
+      "underflow_events": [],
+      "workload_id": "signed_zero_propagation"
+    },
+    {
+      "cancellation_events": [],
+      "comparison_cause": "IEEE_REPRESENTATION_ROUNDING_OR_CANCELLATION",
+      "comparison_outcome": "IEEE_ROUNDING_DIVERGENCE",
+      "error": {
+        "absolute_error": "0.0000019073486328125",
+        "actual_exact_decimal": "10.0000019073486328125",
+        "available": true,
+        "exact_reference": "10",
+        "range_divergence": false,
+        "relative_error": "1.9073486328125E-7",
+        "rounded_reference": {
+          "bits_hex": "41200000",
+          "classification": "FINITE",
+          "decimal_projection": "10.0",
+          "flags": [],
+          "format": "binary32",
+          "signed_zero": false
+        },
+        "ulp_distance_to_rounded_reference": 2
+      },
+      "exceptional_values": [
+        "FE_INEXACT"
+      ],
+      "format": "binary32",
+      "operation_count": 100,
+      "overflow_events": [],
+      "translation_class": "AUTHORIZED_PROJECTION_MAP",
+      "underflow_events": [],
+      "workload_id": "iterative_drift"
+    },
+    {
+      "cancellation_events": [],
+      "comparison_cause": "IEEE_REPRESENTATION_ROUNDING_OR_CANCELLATION",
+      "comparison_outcome": "IEEE_ROUNDING_DIVERGENCE",
+      "error": {
+        "absolute_error": "1.95399252334027551114559173583984375E-14",
+        "actual_exact_decimal": "9.9999999999999804600747665972448885440826416015625",
+        "available": true,
+        "exact_reference": "10",
+        "range_divergence": false,
+        "relative_error": "1.95399252334027551114559173583984375E-15",
+        "rounded_reference": {
+          "bits_hex": "4024000000000000",
+          "classification": "FINITE",
+          "decimal_projection": "10.0",
+          "flags": [],
+          "format": "binary64",
+          "signed_zero": false
+        },
+        "ulp_distance_to_rounded_reference": 11
+      },
+      "exceptional_values": [
+        "FE_INEXACT"
+      ],
+      "format": "binary64",
+      "operation_count": 100,
+      "overflow_events": [],
+      "translation_class": "AUTHORIZED_PROJECTION_MAP",
+      "underflow_events": [],
+      "workload_id": "iterative_drift"
+    },
+    {
+      "cancellation_events": [],
+      "comparison_cause": "WITNESSED_PROJECTION_EQUALITY",
+      "comparison_outcome": "EXACT_PROJECTED_AGREEMENT",
+      "error": {
+        "absolute_error": "0",
+        "actual_exact_decimal": "1",
+        "available": true,
+        "exact_reference": "1",
+        "range_divergence": false,
+        "relative_error": "0",
+        "rounded_reference": {
+          "bits_hex": "3f800000",
+          "classification": "FINITE",
+          "decimal_projection": "1.0",
+          "flags": [],
+          "format": "binary32",
+          "signed_zero": false
+        },
+        "ulp_distance_to_rounded_reference": 0
+      },
+      "exceptional_values": [],
+      "format": "binary32",
+      "operation_count": 72,
+      "overflow_events": [],
+      "translation_class": "AUTHORIZED_PROJECTION_MAP",
+      "underflow_events": [],
+      "workload_id": "long_phase_cycle"
+    },
+    {
+      "cancellation_events": [],
+      "comparison_cause": "WITNESSED_PROJECTION_EQUALITY",
+      "comparison_outcome": "EXACT_PROJECTED_AGREEMENT",
+      "error": {
+        "absolute_error": "0",
+        "actual_exact_decimal": "1",
+        "available": true,
+        "exact_reference": "1",
+        "range_divergence": false,
+        "relative_error": "0",
+        "rounded_reference": {
+          "bits_hex": "3ff0000000000000",
+          "classification": "FINITE",
+          "decimal_projection": "1.0",
+          "flags": [],
+          "format": "binary64",
+          "signed_zero": false
+        },
+        "ulp_distance_to_rounded_reference": 0
+      },
+      "exceptional_values": [],
+      "format": "binary64",
+      "operation_count": 72,
+      "overflow_events": [],
+      "translation_class": "AUTHORIZED_PROJECTION_MAP",
+      "underflow_events": [],
+      "workload_id": "long_phase_cycle"
+    },
+    {
+      "cancellation_events": [],
+      "comparison_cause": "WITNESSED_PROJECTION_EQUALITY",
+      "comparison_outcome": "EXACT_PROJECTED_AGREEMENT",
+      "error": {
+        "absolute_error": "0",
+        "actual_exact_decimal": "1",
+        "available": true,
+        "exact_reference": "1",
+        "range_divergence": false,
+        "relative_error": "0",
+        "rounded_reference": {
+          "bits_hex": "3f800000",
+          "classification": "FINITE",
+          "decimal_projection": "1.0",
+          "flags": [],
+          "format": "binary32",
+          "signed_zero": false
+        },
+        "ulp_distance_to_rounded_reference": 0
+      },
+      "exceptional_values": [
+        "FE_INEXACT"
+      ],
+      "format": "binary32",
+      "operation_count": 42,
+      "overflow_events": [],
+      "translation_class": "AUTHORIZED_PROJECTION_MAP",
+      "underflow_events": [],
+      "workload_id": "repeated_normalization"
+    },
+    {
+      "cancellation_events": [],
+      "comparison_cause": "WITNESSED_PROJECTION_EQUALITY",
+      "comparison_outcome": "EXACT_PROJECTED_AGREEMENT",
+      "error": {
+        "absolute_error": "0",
+        "actual_exact_decimal": "1",
+        "available": true,
+        "exact_reference": "1",
+        "range_divergence": false,
+        "relative_error": "0",
+        "rounded_reference": {
+          "bits_hex": "3ff0000000000000",
+          "classification": "FINITE",
+          "decimal_projection": "1.0",
+          "flags": [],
+          "format": "binary64",
+          "signed_zero": false
+        },
+        "ulp_distance_to_rounded_reference": 0
+      },
+      "exceptional_values": [
+        "FE_INEXACT"
+      ],
+      "format": "binary64",
+      "operation_count": 42,
+      "overflow_events": [],
+      "translation_class": "AUTHORIZED_PROJECTION_MAP",
+      "underflow_events": [],
+      "workload_id": "repeated_normalization"
+    },
+    {
+      "cancellation_events": [],
+      "comparison_cause": "WITNESSED_PROJECTION_EQUALITY",
+      "comparison_outcome": "EXACT_PROJECTED_AGREEMENT",
+      "error": {
+        "absolute_error": "0",
+        "actual_exact_decimal": "45",
+        "available": true,
+        "exact_reference": "45",
+        "range_divergence": false,
+        "relative_error": "0",
+        "rounded_reference": {
+          "bits_hex": "42340000",
+          "classification": "FINITE",
+          "decimal_projection": "45.0",
+          "flags": [],
+          "format": "binary32",
+          "signed_zero": false
+        },
+        "ulp_distance_to_rounded_reference": 0
+      },
+      "exceptional_values": [],
+      "format": "binary32",
+      "operation_count": 8,
+      "overflow_events": [],
+      "translation_class": "AUTHORIZED_PROJECTION_MAP",
+      "underflow_events": [],
+      "workload_id": "loshu_cell_sum"
+    },
+    {
+      "cancellation_events": [],
+      "comparison_cause": "WITNESSED_PROJECTION_EQUALITY",
+      "comparison_outcome": "EXACT_PROJECTED_AGREEMENT",
+      "error": {
+        "absolute_error": "0",
+        "actual_exact_decimal": "45",
+        "available": true,
+        "exact_reference": "45",
+        "range_divergence": false,
+        "relative_error": "0",
+        "rounded_reference": {
+          "bits_hex": "4046800000000000",
+          "classification": "FINITE",
+          "decimal_projection": "45.0",
+          "flags": [],
+          "format": "binary64",
+          "signed_zero": false
+        },
+        "ulp_distance_to_rounded_reference": 0
+      },
+      "exceptional_values": [],
+      "format": "binary64",
+      "operation_count": 8,
+      "overflow_events": [],
+      "translation_class": "AUTHORIZED_PROJECTION_MAP",
+      "underflow_events": [],
+      "workload_id": "loshu_cell_sum"
+    },
+    {
+      "cancellation_events": [],
+      "comparison_cause": "HHS_LANE_GATE_OR_CARRIER_CONTEXT_NOT_PRESENT_IN_IEEE_CONTROL",
+      "comparison_outcome": "STATE_CONTEXT_DIVERGENCE",
+      "error": {
+        "available": false,
+        "reason": "STRUCTURAL_SIMULATION_NOT_SCALAR_COMPARISON"
+      },
+      "exceptional_values": [],
+      "format": "binary32",
+      "operation_count": 0,
+      "overflow_events": [],
+      "translation_class": "STRUCTURAL_SIMULATION",
+      "underflow_events": [],
+      "workload_id": "dual_t_constraints"
+    },
+    {
+      "cancellation_events": [],
+      "comparison_cause": "HHS_LANE_GATE_OR_CARRIER_CONTEXT_NOT_PRESENT_IN_IEEE_CONTROL",
+      "comparison_outcome": "STATE_CONTEXT_DIVERGENCE",
+      "error": {
+        "available": false,
+        "reason": "STRUCTURAL_SIMULATION_NOT_SCALAR_COMPARISON"
+      },
+      "exceptional_values": [],
+      "format": "binary64",
+      "operation_count": 0,
+      "overflow_events": [],
+      "translation_class": "STRUCTURAL_SIMULATION",
+      "underflow_events": [],
+      "workload_id": "dual_t_constraints"
+    },
+    {
+      "cancellation_events": [],
+      "comparison_cause": "NO_AUTHORITATIVE_IEEE_TRANSLATION",
+      "comparison_outcome": "NO_AUTHORIZED_COMPARISON_MAP",
+      "error": {
+        "available": false,
+        "reason": "NO_AUTHORIZED_COMPARISON_MAP"
+      },
+      "exceptional_values": [],
+      "format": "binary32",
+      "operation_count": 0,
+      "overflow_events": [],
+      "translation_class": "NO_VALID_IEEE_MAP",
+      "underflow_events": [],
+      "workload_id": "conformal_radius"
+    },
+    {
+      "cancellation_events": [],
+      "comparison_cause": "NO_AUTHORITATIVE_IEEE_TRANSLATION",
+      "comparison_outcome": "NO_AUTHORIZED_COMPARISON_MAP",
+      "error": {
+        "available": false,
+        "reason": "NO_AUTHORIZED_COMPARISON_MAP"
+      },
+      "exceptional_values": [],
+      "format": "binary64",
+      "operation_count": 0,
+      "overflow_events": [],
+      "translation_class": "NO_VALID_IEEE_MAP",
+      "underflow_events": [],
+      "workload_id": "conformal_radius"
+    },
+    {
+      "cancellation_events": [],
+      "comparison_cause": "HHS_LANE_GATE_OR_CARRIER_CONTEXT_NOT_PRESENT_IN_IEEE_CONTROL",
+      "comparison_outcome": "STATE_CONTEXT_DIVERGENCE",
+      "error": {
+        "available": false,
+        "reason": "STRUCTURAL_SIMULATION_NOT_SCALAR_COMPARISON"
+      },
+      "exceptional_values": [],
+      "format": "binary32",
+      "operation_count": 0,
+      "overflow_events": [],
+      "translation_class": "STRUCTURAL_SIMULATION",
+      "underflow_events": [],
+      "workload_id": "master_matrix"
+    },
+    {
+      "cancellation_events": [],
+      "comparison_cause": "HHS_LANE_GATE_OR_CARRIER_CONTEXT_NOT_PRESENT_IN_IEEE_CONTROL",
+      "comparison_outcome": "STATE_CONTEXT_DIVERGENCE",
+      "error": {
+        "available": false,
+        "reason": "STRUCTURAL_SIMULATION_NOT_SCALAR_COMPARISON"
+      },
+      "exceptional_values": [],
+      "format": "binary64",
+      "operation_count": 0,
+      "overflow_events": [],
+      "translation_class": "STRUCTURAL_SIMULATION",
+      "underflow_events": [],
+      "workload_id": "master_matrix"
+    },
+    {
+      "cancellation_events": [],
+      "comparison_cause": "TYPED_PHASE_FILTER",
+      "comparison_outcome": "SEMANTIC_OPERATOR_DIVERGENCE",
+      "error": {
+        "available": false,
+        "reason": "NO_COMMITTED_EXACT_REFERENCE"
+      },
+      "exceptional_values": [
+        "FE_INEXACT"
+      ],
+      "format": "binary32",
+      "operation_count": 3,
+      "overflow_events": [],
+      "translation_class": "APPROXIMATE_CONTROL_MAP",
+      "underflow_events": [],
+      "workload_id": "genesis_kernel"
+    },
+    {
+      "cancellation_events": [],
+      "comparison_cause": "TYPED_PHASE_FILTER",
+      "comparison_outcome": "SEMANTIC_OPERATOR_DIVERGENCE",
+      "error": {
+        "available": false,
+        "reason": "NO_COMMITTED_EXACT_REFERENCE"
+      },
+      "exceptional_values": [
+        "FE_INEXACT"
+      ],
+      "format": "binary64",
+      "operation_count": 3,
+      "overflow_events": [],
+      "translation_class": "APPROXIMATE_CONTROL_MAP",
+      "underflow_events": [],
+      "workload_id": "genesis_kernel"
+    },
+    {
+      "cancellation_events": [],
+      "comparison_cause": "TYPED_NORMALIZATION_INVERSE",
+      "comparison_outcome": "SEMANTIC_OPERATOR_DIVERGENCE",
+      "error": {
+        "absolute_error": "3.97364298502604166666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666667E-8",
+        "actual_exact_decimal": "1.33333337306976318359375",
+        "available": true,
+        "exact_reference": "1.3333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333",
+        "range_divergence": false,
+        "relative_error": "2.980232238769531250000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002500000074505805969E-8",
+        "rounded_reference": {
+          "bits_hex": "3faaaaab",
+          "classification": "FINITE",
+          "decimal_projection": "1.3333333730697632",
+          "flags": [
+            "FE_INEXACT"
+          ],
+          "format": "binary32",
+          "signed_zero": false
+        },
+        "ulp_distance_to_rounded_reference": 0
+      },
+      "exceptional_values": [
+        "FE_INEXACT"
+      ],
+      "format": "binary32",
+      "operation_count": 3,
+      "overflow_events": [],
+      "translation_class": "APPROXIMATE_CONTROL_MAP",
+      "underflow_events": [],
+      "workload_id": "T1_transport"
+    },
+    {
+      "cancellation_events": [],
+      "comparison_cause": "TYPED_NORMALIZATION_INVERSE",
+      "comparison_outcome": "SEMANTIC_OPERATOR_DIVERGENCE",
+      "error": {
+        "absolute_error": "7.40148683083437693615754445393880208333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333E-17",
+        "actual_exact_decimal": "1.3333333333333332593184650249895639717578887939453125",
+        "available": true,
+        "exact_reference": "1.3333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333",
+        "range_divergence": false,
+        "relative_error": "5.551115123125782702118158340454101562499999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999997500000000000000138777878078E-17",
+        "rounded_reference": {
+          "bits_hex": "3ff5555555555555",
+          "classification": "FINITE",
+          "decimal_projection": "1.3333333333333333",
+          "flags": [
+            "FE_INEXACT"
+          ],
+          "format": "binary64",
+          "signed_zero": false
+        },
+        "ulp_distance_to_rounded_reference": 0
+      },
+      "exceptional_values": [
+        "FE_INEXACT"
+      ],
+      "format": "binary64",
+      "operation_count": 3,
+      "overflow_events": [],
+      "translation_class": "APPROXIMATE_CONTROL_MAP",
+      "underflow_events": [],
+      "workload_id": "T1_transport"
+    }
+  ],
+  "performance_measurements": [
+    {
+      "arm_a_execution_cost": {
+        "wall_time_ns": 319849301
+      },
+      "arm_b_execution_costs": [
+        {
+          "format": "binary32",
+          "max_rss_delta_kib": 4,
+          "wall_time_ns": 512184
+        },
+        {
+          "format": "binary64",
+          "max_rss_delta_kib": 0,
+          "wall_time_ns": 181268
+        }
+      ],
+      "not_used_as_semantic_correctness_evidence": true,
+      "workload_id": "repeated_decimal_accumulation"
+    },
+    {
+      "arm_a_execution_cost": {
+        "wall_time_ns": 158686644
+      },
+      "arm_b_execution_costs": [
+        {
+          "format": "binary32",
+          "max_rss_delta_kib": 0,
+          "wall_time_ns": 169455
+        },
+        {
+          "format": "binary64",
+          "max_rss_delta_kib": 0,
+          "wall_time_ns": 72715
+        }
+      ],
+      "not_used_as_semantic_correctness_evidence": true,
+      "workload_id": "catastrophic_cancellation"
+    },
+    {
+      "arm_a_execution_cost": {
+        "wall_time_ns": 497549270
+      },
+      "arm_b_execution_costs": [
+        {
+          "format": "binary32",
+          "max_rss_delta_kib": 0,
+          "wall_time_ns": 312088
+        },
+        {
+          "format": "binary64",
+          "max_rss_delta_kib": 0,
+          "wall_time_ns": 280861
+        }
+      ],
+      "not_used_as_semantic_correctness_evidence": true,
+      "workload_id": "alternating_accumulation"
+    },
+    {
+      "arm_a_execution_cost": {
+        "wall_time_ns": 160733887
+      },
+      "arm_b_execution_costs": [
+        {
+          "format": "binary32",
+          "max_rss_delta_kib": 0,
+          "wall_time_ns": 106917
+        },
+        {
+          "format": "binary64",
+          "max_rss_delta_kib": 0,
+          "wall_time_ns": 89990
+        }
+      ],
+      "not_used_as_semantic_correctness_evidence": true,
+      "workload_id": "nonassociative_left"
+    },
+    {
+      "arm_a_execution_cost": {
+        "wall_time_ns": 286636202
+      },
+      "arm_b_execution_costs": [
+        {
+          "format": "binary32",
+          "max_rss_delta_kib": 0,
+          "wall_time_ns": 108519
+        },
+        {
+          "format": "binary64",
+          "max_rss_delta_kib": 0,
+          "wall_time_ns": 89773
+        }
+      ],
+      "not_used_as_semantic_correctness_evidence": true,
+      "workload_id": "nonassociative_right"
+    },
+    {
+      "arm_a_execution_cost": {
+        "wall_time_ns": 168132278
+      },
+      "arm_b_execution_costs": [
+        {
+          "format": "binary32",
+          "max_rss_delta_kib": 0,
+          "wall_time_ns": 94763
+        },
+        {
+          "format": "binary64",
+          "max_rss_delta_kib": 0,
+          "wall_time_ns": 83241
+        }
+      ],
+      "not_used_as_semantic_correctness_evidence": true,
+      "workload_id": "inverse_normalization"
+    },
+    {
+      "arm_a_execution_cost": {
+        "wall_time_ns": 285988757
+      },
+      "arm_b_execution_costs": [
+        {
+          "format": "binary32",
+          "max_rss_delta_kib": 0,
+          "wall_time_ns": 70025
+        },
+        {
+          "format": "binary64",
+          "max_rss_delta_kib": 0,
+          "wall_time_ns": 65042
+        }
+      ],
+      "not_used_as_semantic_correctness_evidence": true,
+      "workload_id": "overflow_boundary"
+    },
+    {
+      "arm_a_execution_cost": {
+        "wall_time_ns": 173588833
+      },
+      "arm_b_execution_costs": [
+        {
+          "format": "binary32",
+          "max_rss_delta_kib": 0,
+          "wall_time_ns": 83189
+        },
+        {
+          "format": "binary64",
+          "max_rss_delta_kib": 0,
+          "wall_time_ns": 65744
+        }
+      ],
+      "not_used_as_semantic_correctness_evidence": true,
+      "workload_id": "underflow_boundary"
+    },
+    {
+      "arm_a_execution_cost": {
+        "wall_time_ns": 137450606
+      },
+      "arm_b_execution_costs": [
+        {
+          "format": "binary32",
+          "max_rss_delta_kib": 0,
+          "wall_time_ns": 72614
+        },
+        {
+          "format": "binary64",
+          "max_rss_delta_kib": 0,
+          "wall_time_ns": 60146
+        }
+      ],
+      "not_used_as_semantic_correctness_evidence": true,
+      "workload_id": "signed_zero_propagation"
+    },
+    {
+      "arm_a_execution_cost": {
+        "wall_time_ns": 1461641624
+      },
+      "arm_b_execution_costs": [
+        {
+          "format": "binary32",
+          "max_rss_delta_kib": 0,
+          "wall_time_ns": 1041332
+        },
+        {
+          "format": "binary64",
+          "max_rss_delta_kib": 0,
+          "wall_time_ns": 972829
+        }
+      ],
+      "not_used_as_semantic_correctness_evidence": true,
+      "workload_id": "iterative_drift"
+    },
+    {
+      "arm_a_execution_cost": {
+        "wall_time_ns": 1050069810
+      },
+      "arm_b_execution_costs": [
+        {
+          "format": "binary32",
+          "max_rss_delta_kib": 0,
+          "wall_time_ns": 622699
+        },
+        {
+          "format": "binary64",
+          "max_rss_delta_kib": 0,
+          "wall_time_ns": 603103
+        }
+      ],
+      "not_used_as_semantic_correctness_evidence": true,
+      "workload_id": "long_phase_cycle"
+    },
+    {
+      "arm_a_execution_cost": {
+        "wall_time_ns": 707079741
+      },
+      "arm_b_execution_costs": [
+        {
+          "format": "binary32",
+          "max_rss_delta_kib": 0,
+          "wall_time_ns": 469825
+        },
+        {
+          "format": "binary64",
+          "max_rss_delta_kib": 0,
+          "wall_time_ns": 451138
+        }
+      ],
+      "not_used_as_semantic_correctness_evidence": true,
+      "workload_id": "repeated_normalization"
+    },
+    {
+      "arm_a_execution_cost": {
+        "wall_time_ns": 310120631
+      },
+      "arm_b_execution_costs": [
+        {
+          "format": "binary32",
+          "max_rss_delta_kib": 0,
+          "wall_time_ns": 306908
+        },
+        {
+          "format": "binary64",
+          "max_rss_delta_kib": 0,
+          "wall_time_ns": 238095
+        }
+      ],
+      "not_used_as_semantic_correctness_evidence": true,
+      "workload_id": "loshu_cell_sum"
+    },
+    {
+      "arm_a_execution_cost": {
+        "wall_time_ns": 164377741
+      },
+      "arm_b_execution_costs": [
+        {
+          "format": "binary32",
+          "max_rss_delta_kib": 0,
+          "wall_time_ns": 0
+        },
+        {
+          "format": "binary64",
+          "max_rss_delta_kib": 0,
+          "wall_time_ns": 0
+        }
+      ],
+      "not_used_as_semantic_correctness_evidence": true,
+      "workload_id": "dual_t_constraints"
+    },
+    {
+      "arm_a_execution_cost": {
+        "wall_time_ns": 173262224
+      },
+      "arm_b_execution_costs": [
+        {
+          "format": "binary32"
+        },
+        {
+          "format": "binary64"
+        }
+      ],
+      "not_used_as_semantic_correctness_evidence": true,
+      "workload_id": "conformal_radius"
+    },
+    {
+      "arm_a_execution_cost": {
+        "wall_time_ns": 171233911
+      },
+      "arm_b_execution_costs": [
+        {
+          "format": "binary32",
+          "max_rss_delta_kib": 0,
+          "wall_time_ns": 0
+        },
+        {
+          "format": "binary64",
+          "max_rss_delta_kib": 0,
+          "wall_time_ns": 0
+        }
+      ],
+      "not_used_as_semantic_correctness_evidence": true,
+      "workload_id": "master_matrix"
+    },
+    {
+      "arm_a_execution_cost": {
+        "wall_time_ns": 219224348
+      },
+      "arm_b_execution_costs": [
+        {
+          "format": "binary32",
+          "max_rss_delta_kib": 0,
+          "wall_time_ns": 121055
+        },
+        {
+          "format": "binary64",
+          "max_rss_delta_kib": 0,
+          "wall_time_ns": 128240
+        }
+      ],
+      "not_used_as_semantic_correctness_evidence": true,
+      "workload_id": "genesis_kernel"
+    },
+    {
+      "arm_a_execution_cost": {
+        "wall_time_ns": 406929597
+      },
+      "arm_b_execution_costs": [
+        {
+          "format": "binary32",
+          "max_rss_delta_kib": 0,
+          "wall_time_ns": 105350
+        },
+        {
+          "format": "binary64",
+          "max_rss_delta_kib": 0,
+          "wall_time_ns": 133080
+        }
+      ],
+      "not_used_as_semantic_correctness_evidence": true,
+      "workload_id": "T1_transport"
+    }
+  ],
+  "performance_separated_from_semantic_correctness": true,
+  "report_root_hash72": "uiv<izfPzpb!xE>!a1FJJWT*wl4CaxdNHekQXh3+e>xf2qfZQ2f*nmqZks>PFqZiPjmg/y+r",
+  "schema": "HHS_PASS132_NUMERICAL_ERROR_REPORT_V1",
+  "semantic_correctness": [
+    {
+      "comparison_causes": [
+        "IEEE_REPRESENTATION_ROUNDING_OR_CANCELLATION",
+        "IEEE_REPRESENTATION_ROUNDING_OR_CANCELLATION"
+      ],
+      "comparison_outcomes": [
+        "IEEE_ROUNDING_DIVERGENCE",
+        "IEEE_ROUNDING_DIVERGENCE"
+      ],
+      "contamination_free": true,
+      "execution_root": "wcObWMwDIDu/AZC/YDWBEi+jlesnv*mVq4OHB<kFnX(L)AlKpfU9qys)lXLWV2Z(+j*BZv!<",
+      "native_outcome": "EXHAUSTIVE_WITHIN_BOUND",
+      "outcome": "EXECUTABLE_CONSEQUENCE_CLOSURE_VERIFIED",
+      "replay_verified": true,
+      "workload_id": "repeated_decimal_accumulation"
+    },
+    {
+      "comparison_causes": [
+        "IEEE_REPRESENTATION_ROUNDING_OR_CANCELLATION",
+        "IEEE_REPRESENTATION_ROUNDING_OR_CANCELLATION"
+      ],
+      "comparison_outcomes": [
+        "IEEE_ROUNDING_DIVERGENCE",
+        "IEEE_ROUNDING_DIVERGENCE"
+      ],
+      "contamination_free": true,
+      "execution_root": "hz32OquqK<dqE0O!uJOJ97nU6KBsnuX6qbxLmkyM5rP2f4B2<TwteTtz*ABV4Nvj3G-I)Xj8",
+      "native_outcome": "EXHAUSTIVE_WITHIN_BOUND",
+      "outcome": "EXECUTABLE_CONSEQUENCE_CLOSURE_VERIFIED",
+      "replay_verified": true,
+      "workload_id": "catastrophic_cancellation"
+    },
+    {
+      "comparison_causes": [
+        "WITNESSED_PROJECTION_EQUALITY",
+        "WITNESSED_PROJECTION_EQUALITY"
+      ],
+      "comparison_outcomes": [
+        "EXACT_PROJECTED_AGREEMENT",
+        "EXACT_PROJECTED_AGREEMENT"
+      ],
+      "contamination_free": true,
+      "execution_root": "0jX7W2k7zvBECNFgD/Z<(7LCIJ5R7oEKM!Q*W5jlX/n+D<SK/DF9Pc(>M49YTT)Nb?!m0OyT",
+      "native_outcome": "EXHAUSTIVE_WITHIN_BOUND",
+      "outcome": "EXECUTABLE_CONSEQUENCE_CLOSURE_VERIFIED",
+      "replay_verified": true,
+      "workload_id": "alternating_accumulation"
+    },
+    {
+      "comparison_causes": [
+        "WITNESSED_PROJECTION_EQUALITY",
+        "WITNESSED_PROJECTION_EQUALITY"
+      ],
+      "comparison_outcomes": [
+        "EXACT_PROJECTED_AGREEMENT",
+        "EXACT_PROJECTED_AGREEMENT"
+      ],
+      "contamination_free": true,
+      "execution_root": "x-SpOuYRayw3F6bqC>ktd+79YbNDOAj)AoF?m+96mm3sXh*wD+xp/bpp4mSvD0+V!kviAFD9",
+      "native_outcome": "EXHAUSTIVE_WITHIN_BOUND",
+      "outcome": "EXECUTABLE_CONSEQUENCE_CLOSURE_VERIFIED",
+      "replay_verified": true,
+      "workload_id": "nonassociative_left"
+    },
+    {
+      "comparison_causes": [
+        "IEEE_REPRESENTATION_ROUNDING_OR_CANCELLATION",
+        "IEEE_REPRESENTATION_ROUNDING_OR_CANCELLATION"
+      ],
+      "comparison_outcomes": [
+        "IEEE_ROUNDING_DIVERGENCE",
+        "IEEE_ROUNDING_DIVERGENCE"
+      ],
+      "contamination_free": true,
+      "execution_root": "qF?utnR5+SEscDjUA4z4wXllL4Y?6k2)8odJHl)60qHTa5iczEZtXXc-jIPppo923W(BnVE-",
+      "native_outcome": "EXHAUSTIVE_WITHIN_BOUND",
+      "outcome": "EXECUTABLE_CONSEQUENCE_CLOSURE_VERIFIED",
+      "replay_verified": true,
+      "workload_id": "nonassociative_right"
+    },
+    {
+      "comparison_causes": [
+        "WITNESSED_PROJECTION_EQUALITY",
+        "WITNESSED_PROJECTION_EQUALITY"
+      ],
+      "comparison_outcomes": [
+        "EXACT_PROJECTED_AGREEMENT",
+        "EXACT_PROJECTED_AGREEMENT"
+      ],
+      "contamination_free": true,
+      "execution_root": ")V5ysvINVWN<?9CYo0BvZu!YtMbW/nOR4pT/sQSz91+s35ym9hqo-ecm<sz0873R1BQvp3iz",
+      "native_outcome": "EXHAUSTIVE_WITHIN_BOUND",
+      "outcome": "EXECUTABLE_CONSEQUENCE_CLOSURE_VERIFIED",
+      "replay_verified": true,
+      "workload_id": "inverse_normalization"
+    },
+    {
+      "comparison_causes": [
+        "IEEE_OVERFLOW_UNDERFLOW_OR_EXCEPTIONAL_RANGE",
+        "IEEE_OVERFLOW_UNDERFLOW_OR_EXCEPTIONAL_RANGE"
+      ],
+      "comparison_outcomes": [
+        "IEEE_RANGE_DIVERGENCE",
+        "IEEE_RANGE_DIVERGENCE"
+      ],
+      "contamination_free": true,
+      "execution_root": "P-X2zpq26Zf?T5cs!PjwEqKW5G1zv02ey*r<6/2Ff13KHVa*ogQ?Bebm5DD2sdnIrGWg+EqX",
+      "native_outcome": "EXHAUSTIVE_WITHIN_BOUND",
+      "outcome": "EXECUTABLE_CONSEQUENCE_CLOSURE_VERIFIED",
+      "replay_verified": true,
+      "workload_id": "overflow_boundary"
+    },
+    {
+      "comparison_causes": [
+        "IEEE_OVERFLOW_UNDERFLOW_OR_EXCEPTIONAL_RANGE",
+        "IEEE_OVERFLOW_UNDERFLOW_OR_EXCEPTIONAL_RANGE"
+      ],
+      "comparison_outcomes": [
+        "IEEE_RANGE_DIVERGENCE",
+        "IEEE_RANGE_DIVERGENCE"
+      ],
+      "contamination_free": true,
+      "execution_root": "l*7*h(tBqaepE<jMa4LvHPMco+?LjpT4soBo9WwhrEEksypPMWAXTiOvB73(ua<S/20M6JL2",
+      "native_outcome": "EXHAUSTIVE_WITHIN_BOUND",
+      "outcome": "EXECUTABLE_CONSEQUENCE_CLOSURE_VERIFIED",
+      "replay_verified": true,
+      "workload_id": "underflow_boundary"
+    },
+    {
+      "comparison_causes": [
+        "WITNESSED_PROJECTION_EQUALITY",
+        "WITNESSED_PROJECTION_EQUALITY"
+      ],
+      "comparison_outcomes": [
+        "EXACT_PROJECTED_AGREEMENT",
+        "EXACT_PROJECTED_AGREEMENT"
+      ],
+      "contamination_free": true,
+      "execution_root": "fiaU(G*6An!de-5<ZO-1/(jT8*707Z?RTjl)p!lv*jFRm54Q3s<HSp-u!(kU6qiyA7ZW8*KY",
+      "native_outcome": "EXHAUSTIVE_WITHIN_BOUND",
+      "outcome": "EXECUTABLE_CONSEQUENCE_CLOSURE_VERIFIED",
+      "replay_verified": true,
+      "workload_id": "signed_zero_propagation"
+    },
+    {
+      "comparison_causes": [
+        "IEEE_REPRESENTATION_ROUNDING_OR_CANCELLATION",
+        "IEEE_REPRESENTATION_ROUNDING_OR_CANCELLATION"
+      ],
+      "comparison_outcomes": [
+        "IEEE_ROUNDING_DIVERGENCE",
+        "IEEE_ROUNDING_DIVERGENCE"
+      ],
+      "contamination_free": true,
+      "execution_root": "vIekedUW)LLc?<D3KR(wqd>hI>rLmgxxPPn>qz>R!EgBmD/PYz5u)s!/>MoLMa4s<1k<w2UZ",
+      "native_outcome": "EXHAUSTIVE_WITHIN_BOUND",
+      "outcome": "EXECUTABLE_CONSEQUENCE_CLOSURE_VERIFIED",
+      "replay_verified": true,
+      "workload_id": "iterative_drift"
+    },
+    {
+      "comparison_causes": [
+        "WITNESSED_PROJECTION_EQUALITY",
+        "WITNESSED_PROJECTION_EQUALITY"
+      ],
+      "comparison_outcomes": [
+        "EXACT_PROJECTED_AGREEMENT",
+        "EXACT_PROJECTED_AGREEMENT"
+      ],
+      "contamination_free": true,
+      "execution_root": "x-o)A1vZEW+ono60V8B75(04u98j95Hg)V?sndQZfbOZFwnbWxfe-Qy/KXI4nFnLrts1JEi4",
+      "native_outcome": "EXHAUSTIVE_WITHIN_BOUND",
+      "outcome": "EXECUTABLE_CONSEQUENCE_CLOSURE_VERIFIED",
+      "replay_verified": true,
+      "workload_id": "long_phase_cycle"
+    },
+    {
+      "comparison_causes": [
+        "WITNESSED_PROJECTION_EQUALITY",
+        "WITNESSED_PROJECTION_EQUALITY"
+      ],
+      "comparison_outcomes": [
+        "EXACT_PROJECTED_AGREEMENT",
+        "EXACT_PROJECTED_AGREEMENT"
+      ],
+      "contamination_free": true,
+      "execution_root": "fL5GxqYa4VPc!EiT1GuavYo41x5-tJJREpkvWM9Zh5Yeo9wy8zwKF0sETDQ/evrR9Mje-Gpc",
+      "native_outcome": "EXHAUSTIVE_WITHIN_BOUND",
+      "outcome": "EXECUTABLE_CONSEQUENCE_CLOSURE_VERIFIED",
+      "replay_verified": true,
+      "workload_id": "repeated_normalization"
+    },
+    {
+      "comparison_causes": [
+        "WITNESSED_PROJECTION_EQUALITY",
+        "WITNESSED_PROJECTION_EQUALITY"
+      ],
+      "comparison_outcomes": [
+        "EXACT_PROJECTED_AGREEMENT",
+        "EXACT_PROJECTED_AGREEMENT"
+      ],
+      "contamination_free": true,
+      "execution_root": "fR4V1Z1z3w)uL?CrAB>ctkcF8I-U(pavs3al*6-/m>wThGc1R4a-1FKXA(I)UKV2y4c9/CIT",
+      "native_outcome": "EXHAUSTIVE_WITHIN_BOUND",
+      "outcome": "EXECUTABLE_CONSEQUENCE_CLOSURE_VERIFIED",
+      "replay_verified": true,
+      "workload_id": "loshu_cell_sum"
+    },
+    {
+      "comparison_causes": [
+        "HHS_LANE_GATE_OR_CARRIER_CONTEXT_NOT_PRESENT_IN_IEEE_CONTROL",
+        "HHS_LANE_GATE_OR_CARRIER_CONTEXT_NOT_PRESENT_IN_IEEE_CONTROL"
+      ],
+      "comparison_outcomes": [
+        "STATE_CONTEXT_DIVERGENCE",
+        "STATE_CONTEXT_DIVERGENCE"
+      ],
+      "contamination_free": true,
+      "execution_root": "nVQll4doE8zWLDzF?yW1mPpfpFVj?<TCqX6zQXHlKV2fP6A!iRjW?X8tx4Ke?+-fNWVVr74t",
+      "native_outcome": "EXHAUSTIVE_WITHIN_BOUND",
+      "outcome": "EXECUTABLE_CONSEQUENCE_CLOSURE_VERIFIED",
+      "replay_verified": true,
+      "workload_id": "dual_t_constraints"
+    },
+    {
+      "comparison_causes": [
+        "NO_AUTHORITATIVE_IEEE_TRANSLATION",
+        "NO_AUTHORITATIVE_IEEE_TRANSLATION"
+      ],
+      "comparison_outcomes": [
+        "NO_AUTHORIZED_COMPARISON_MAP",
+        "NO_AUTHORIZED_COMPARISON_MAP"
+      ],
+      "contamination_free": true,
+      "execution_root": "ocS?T?V8/bZzl<+lKhnZ?86-Yj!Wx393ryEh)dIA6oVQKyGfSOCwwqP2zRl<ZLT9/HnF(m*O",
+      "native_outcome": "EXHAUSTIVE_WITHIN_BOUND",
+      "outcome": "EXECUTABLE_CONSEQUENCE_CLOSURE_VERIFIED",
+      "replay_verified": true,
+      "workload_id": "conformal_radius"
+    },
+    {
+      "comparison_causes": [
+        "HHS_LANE_GATE_OR_CARRIER_CONTEXT_NOT_PRESENT_IN_IEEE_CONTROL",
+        "HHS_LANE_GATE_OR_CARRIER_CONTEXT_NOT_PRESENT_IN_IEEE_CONTROL"
+      ],
+      "comparison_outcomes": [
+        "STATE_CONTEXT_DIVERGENCE",
+        "STATE_CONTEXT_DIVERGENCE"
+      ],
+      "contamination_free": true,
+      "execution_root": "4>wAI(h?F6G/jz+s1w9-gqm9u!E1Xdu<+1ACjh3Rjrqw>V4/eHz(Ht((FaYLq8!ISPHX!2vv",
+      "native_outcome": "EXHAUSTIVE_WITHIN_BOUND",
+      "outcome": "EXECUTABLE_CONSEQUENCE_CLOSURE_VERIFIED",
+      "replay_verified": true,
+      "workload_id": "master_matrix"
+    },
+    {
+      "comparison_causes": [
+        "TYPED_PHASE_FILTER",
+        "TYPED_PHASE_FILTER"
+      ],
+      "comparison_outcomes": [
+        "SEMANTIC_OPERATOR_DIVERGENCE",
+        "SEMANTIC_OPERATOR_DIVERGENCE"
+      ],
+      "contamination_free": true,
+      "execution_root": "Xs4<)mRiUauuYn90nKn8ktG2TGc6t122i7w)AG22kUAsWgj1D/6w)7bCh+cuKc!(Ms0Q-Vc1",
+      "native_outcome": "EXHAUSTIVE_WITHIN_BOUND",
+      "outcome": "EXECUTABLE_CONSEQUENCE_CLOSURE_VERIFIED",
+      "replay_verified": true,
+      "workload_id": "genesis_kernel"
+    },
+    {
+      "comparison_causes": [
+        "TYPED_NORMALIZATION_INVERSE",
+        "TYPED_NORMALIZATION_INVERSE"
+      ],
+      "comparison_outcomes": [
+        "SEMANTIC_OPERATOR_DIVERGENCE",
+        "SEMANTIC_OPERATOR_DIVERGENCE"
+      ],
+      "contamination_free": true,
+      "execution_root": "13U5aiNkCDBFc*TWZqhtSAHmHk(8z6!OsDaQFfw0qoLvXn46PZm!fIQb<d*nVcrXEE+YWYe7",
+      "native_outcome": "EXHAUSTIVE_WITHIN_BOUND",
+      "outcome": "EXECUTABLE_CONSEQUENCE_CLOSURE_VERIFIED",
+      "replay_verified": true,
+      "workload_id": "T1_transport"
+    }
+  ]
+}

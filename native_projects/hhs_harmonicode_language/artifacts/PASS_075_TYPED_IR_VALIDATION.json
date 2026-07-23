@@ -1,0 +1,14 @@
+{
+  "diagnostics": [],
+  "execution_attempted": false,
+  "invariant_success_not_inferred_from_binding": true,
+  "ir_id": "typed-ir:pass075:main",
+  "ir_root_hash72": "00000000000000000000000000000010(OuA0K7cFZ9MZ/kQzMH9wC!AW>pd3yZFtXElzLze",
+  "observed_ir_root_hash72": "00000000000000000000000000000010(OuA0K7cFZ9MZ/kQzMH9wC!AW>pd3yZFtXElzLze",
+  "schema": "HHS_TYPED_IR_VALIDATION_V1",
+  "status": "VALID",
+  "valid": true,
+  "validation_id": "validation:typed-ir:pass075:main",
+  "validation_is_not_execution_receipt": true,
+  "validation_root_hash72": "0000000000000000000000000000001IjZF>nYwzJol^V)VO5heAHB6qrBz(ojrInq=B)-fr"
+}

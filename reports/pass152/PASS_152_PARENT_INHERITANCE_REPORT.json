@@ -1,0 +1,31 @@
+{
+  "authorized_backward_compatible_modifications": [
+    {
+      "current_sha256": "9139c54e6436d307fb1ee0dd57c5ead164677469ce3b888ac241d9478a36eb90",
+      "current_size": 36454,
+      "parent_sha256": "190f42d52be21bc4842bbff530158e1dc03aba40de498169e76363a168557cce",
+      "parent_size": 36115,
+      "path": "Makefile",
+      "reason": "additive Pass 151/152 validation targets"
+    },
+    {
+      "current_sha256": "0a4a43cbbc4465991b85fffd71802addee63c0284b8357e303e58e4ec2eb4017",
+      "current_size": 26699,
+      "parent_sha256": "c58edc526afabae8fcc38fcc0edcefedae6c8baffa7753826410b032eae8d7e9",
+      "parent_size": 26548,
+      "path": "hhs_backend/server.py",
+      "reason": "additive Pass 152 router composition"
+    }
+  ],
+  "byte_identical_inherited_files": 3273,
+  "classification": "COMPLETE_PARENT_HISTORY_PRESERVED_WITH_ADDITIVE_BACKWARD_COMPATIBLE_UPDATES",
+  "legacy_paths_preserved": true,
+  "missing_inherited_files": [],
+  "parent": "HHS-P150",
+  "parent_archive": "hhs_pass_150_hash216_constraint_genome_full_inherited_pass_history_nucleus-2(1).zip",
+  "parent_archive_sha256": "7021546b1851ee3187fbb179238b9a807495c720c7c7396e2a97ca42bd2253b4",
+  "parent_archive_size": 54776635,
+  "parent_manifest_entries": 3275,
+  "schema": "HHS_PASS152_PARENT_INHERITANCE_REPORT_V1",
+  "unauthorized_inherited_modifications": []
+}

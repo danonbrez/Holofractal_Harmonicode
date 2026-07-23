@@ -1,0 +1,1 @@
+{"interface":"PUBLIC_HTTP_API","operation":"pass132_consequence_route_probe","request":{"method":"GET","path":"/api/runtime/consequences/nonexistent","payload":null},"response":{"body":{"detail":"Not Found"},"headers":{"content-type":"application/json"},"method":"GET","path":"/api/runtime/consequences/nonexistent","status_code":404}}

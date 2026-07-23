@@ -1,0 +1,13 @@
+{
+  "schema": "HHS_PASS_093_ABLATION_V1",
+  "tests": [
+    {
+      "relation": "OPERATION_ORDER",
+      "removal_effect": "NONCOMMUTATIVE_IDENTITY_DESTROYED"
+    },
+    {
+      "relation": "FACTOR_VECTOR",
+      "removal_effect": "SEED_IDENTITY_ERASED"
+    }
+  ]
+}

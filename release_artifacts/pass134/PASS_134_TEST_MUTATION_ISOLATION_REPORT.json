@@ -1,0 +1,11 @@
+{
+  "canonical_archive_mutated": false,
+  "observed_disposable_mutations": [
+    "data/runtime/hhs_filesystem_ledger.json",
+    "data/runtime/hhs_unified_hash72_ledger.json"
+  ],
+  "policy": "Tests execute in a disposable extracted copy. Runtime ledgers may be exercised and mutated there, but those mutations are not written back into the canonical checkpoint ZIP.",
+  "reason": "The mutations are test execution state, not system-source deletion or canonical checkpoint changes.",
+  "schema": "HHS_PASS134_TEST_MUTATION_ISOLATION_REPORT_V1",
+  "status": "TEST_SIDE_EFFECTS_ISOLATED"
+}

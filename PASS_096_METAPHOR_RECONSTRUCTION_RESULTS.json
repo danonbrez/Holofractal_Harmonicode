@@ -1,0 +1,4065 @@
+{
+  "schema": "HHS_PASS_096_METAPHOR_RESULTS_V1",
+  "results": [
+    {
+      "ambiguous_fields": [],
+      "authority_conferred_by_language": false,
+      "critical_position": "MIDDLE",
+      "direction": "FORWARD",
+      "equivalent_fields": [
+        "entity",
+        "relation",
+        "reconstruction"
+      ],
+      "fidelity_vector": {
+        "ambiguity": "EXACT",
+        "causality": "EXACT",
+        "entity": "EQUIVALENT",
+        "epistemic": "EXACT",
+        "order": "EXACT",
+        "provenance": "EXACT",
+        "quantity": "PARTIAL",
+        "reconstruction": "PASS",
+        "relation": "EQUIVALENT"
+      },
+      "final_status": "METAPHORIC_SURVIVAL_WITH_RECONSTRUCTION",
+      "invariant_snapshot": {
+        "ambiguities": [],
+        "causal_direction": "CONSTRAINT_NOT_CAUSE",
+        "entities": [
+          "lane_a",
+          "lane_b"
+        ],
+        "operator_order": [
+          "ROTATE_A",
+          "ROTATE_B"
+        ],
+        "quantities": [
+          "9/8",
+          "8/9",
+          "36 mod 72"
+        ],
+        "relations": [
+          "RECIPROCAL",
+          "OPPOSITE_PHASE"
+        ]
+      },
+      "lost_fields": [],
+      "mutated_fields": [],
+      "pattern_aware": true,
+      "preserved_fields": [
+        "order",
+        "causality",
+        "epistemic",
+        "ambiguity",
+        "provenance"
+      ],
+      "receipt_root_hash72": "0000000000000000000000000000001?y9bFwI^xZ8H)RT)YdPe81)zpmg5ZsizQk>s(7++S",
+      "reconstruction_map": {
+        "lane_a": "first mirrored wheel",
+        "lane_b": "second mirrored wheel",
+        "reciprocal phase orientation": "opposed turning",
+        "shared invariant root": "unmoving center"
+      },
+      "reconstruction_root_hash72": "0000000000000000000000000000000k8xp9/5J7tLG+juP33OBxG5mRflRAZP)6Nf-G2pNw",
+      "schema": "HHS_LANGUAGE_TRANSLATION_SURVIVAL_RECEIPT_V1",
+      "source_register": "FORMAL_HARMONICODE",
+      "source_root_hash72": "0000000000000000000000000000000k8xp9/5J7tLG+juP33OBxG5mRflRAZP)6Nf-G2pNw",
+      "target_register": "MYTHOPOETIC",
+      "temperature": "0.0",
+      "token_window": 4096,
+      "translation_path": [
+        "FORMAL_HARMONICODE",
+        "MYTHOPOETIC"
+      ],
+      "translation_path_root_hash72": "0000000000000000000000000000001i!D?7Y7al60w^P0Vl=8Kz9k9jvWbxrt3bjbYliYcm",
+      "unsupported_additions": []
+    },
+    {
+      "ambiguous_fields": [],
+      "authority_conferred_by_language": false,
+      "critical_position": "MIDDLE",
+      "direction": "FORWARD",
+      "equivalent_fields": [
+        "entity",
+        "relation",
+        "reconstruction"
+      ],
+      "fidelity_vector": {
+        "ambiguity": "EXACT",
+        "causality": "EXACT",
+        "entity": "EQUIVALENT",
+        "epistemic": "EXACT",
+        "order": "EXACT",
+        "provenance": "EXACT",
+        "quantity": "PARTIAL",
+        "reconstruction": "PASS",
+        "relation": "EQUIVALENT"
+      },
+      "final_status": "METAPHORIC_SURVIVAL_WITH_RECONSTRUCTION",
+      "invariant_snapshot": {
+        "ambiguities": [],
+        "causal_direction": "CONSTRAINT_NOT_CAUSE",
+        "entities": [
+          "lane_a",
+          "lane_b"
+        ],
+        "operator_order": [
+          "ROTATE_A",
+          "ROTATE_B"
+        ],
+        "quantities": [
+          "9/8",
+          "8/9",
+          "36 mod 72"
+        ],
+        "relations": [
+          "RECIPROCAL",
+          "OPPOSITE_PHASE"
+        ]
+      },
+      "lost_fields": [],
+      "mutated_fields": [],
+      "pattern_aware": true,
+      "preserved_fields": [
+        "order",
+        "causality",
+        "epistemic",
+        "ambiguity",
+        "provenance"
+      ],
+      "receipt_root_hash72": "00000000000000000000000000000025>Qv/a90mkFgjp9=SyRYmPS0P4+5fGX*2P+w)BjWo",
+      "reconstruction_map": {
+        "lane_a": "first mirrored wheel",
+        "lane_b": "second mirrored wheel",
+        "reciprocal phase orientation": "opposed turning",
+        "shared invariant root": "unmoving center"
+      },
+      "reconstruction_root_hash72": "0000000000000000000000000000000k8xp9/5J7tLG+juP33OBxG5mRflRAZP)6Nf-G2pNw",
+      "schema": "HHS_LANGUAGE_TRANSLATION_SURVIVAL_RECEIPT_V1",
+      "source_register": "FORMAL_HARMONICODE",
+      "source_root_hash72": "0000000000000000000000000000000k8xp9/5J7tLG+juP33OBxG5mRflRAZP)6Nf-G2pNw",
+      "target_register": "MYTHOPOETIC",
+      "temperature": "0.1",
+      "token_window": 4096,
+      "translation_path": [
+        "FORMAL_HARMONICODE",
+        "MYTHOPOETIC"
+      ],
+      "translation_path_root_hash72": "0000000000000000000000000000001i!D?7Y7al60w^P0Vl=8Kz9k9jvWbxrt3bjbYliYcm",
+      "unsupported_additions": []
+    },
+    {
+      "ambiguous_fields": [],
+      "authority_conferred_by_language": false,
+      "critical_position": "MIDDLE",
+      "direction": "FORWARD",
+      "equivalent_fields": [
+        "entity",
+        "relation",
+        "reconstruction"
+      ],
+      "fidelity_vector": {
+        "ambiguity": "EXACT",
+        "causality": "EXACT",
+        "entity": "EQUIVALENT",
+        "epistemic": "EXACT",
+        "order": "EXACT",
+        "provenance": "EXACT",
+        "quantity": "PARTIAL",
+        "reconstruction": "PASS",
+        "relation": "EQUIVALENT"
+      },
+      "final_status": "METAPHORIC_SURVIVAL_WITH_RECONSTRUCTION",
+      "invariant_snapshot": {
+        "ambiguities": [],
+        "causal_direction": "CONSTRAINT_NOT_CAUSE",
+        "entities": [
+          "lane_a",
+          "lane_b"
+        ],
+        "operator_order": [
+          "ROTATE_A",
+          "ROTATE_B"
+        ],
+        "quantities": [
+          "9/8",
+          "8/9",
+          "36 mod 72"
+        ],
+        "relations": [
+          "RECIPROCAL",
+          "OPPOSITE_PHASE"
+        ]
+      },
+      "lost_fields": [],
+      "mutated_fields": [],
+      "pattern_aware": true,
+      "preserved_fields": [
+        "order",
+        "causality",
+        "epistemic",
+        "ambiguity",
+        "provenance"
+      ],
+      "receipt_root_hash72": "0000000000000000000000000000001OLGL3=zYBR92Fr0jWY7xq1yQN8ul?2?=^XqF0aH-u",
+      "reconstruction_map": {
+        "lane_a": "first mirrored wheel",
+        "lane_b": "second mirrored wheel",
+        "reciprocal phase orientation": "opposed turning",
+        "shared invariant root": "unmoving center"
+      },
+      "reconstruction_root_hash72": "0000000000000000000000000000000k8xp9/5J7tLG+juP33OBxG5mRflRAZP)6Nf-G2pNw",
+      "schema": "HHS_LANGUAGE_TRANSLATION_SURVIVAL_RECEIPT_V1",
+      "source_register": "FORMAL_HARMONICODE",
+      "source_root_hash72": "0000000000000000000000000000000k8xp9/5J7tLG+juP33OBxG5mRflRAZP)6Nf-G2pNw",
+      "target_register": "MYTHOPOETIC",
+      "temperature": "0.3",
+      "token_window": 4096,
+      "translation_path": [
+        "FORMAL_HARMONICODE",
+        "MYTHOPOETIC"
+      ],
+      "translation_path_root_hash72": "0000000000000000000000000000001i!D?7Y7al60w^P0Vl=8Kz9k9jvWbxrt3bjbYliYcm",
+      "unsupported_additions": []
+    },
+    {
+      "ambiguous_fields": [],
+      "authority_conferred_by_language": false,
+      "critical_position": "MIDDLE",
+      "direction": "FORWARD",
+      "equivalent_fields": [
+        "entity",
+        "relation",
+        "reconstruction"
+      ],
+      "fidelity_vector": {
+        "ambiguity": "EXACT",
+        "causality": "EXACT",
+        "entity": "EQUIVALENT",
+        "epistemic": "EXACT",
+        "order": "EXACT",
+        "provenance": "EXACT",
+        "quantity": "PARTIAL",
+        "reconstruction": "PASS",
+        "relation": "EQUIVALENT"
+      },
+      "final_status": "METAPHORIC_SURVIVAL_WITH_RECONSTRUCTION",
+      "invariant_snapshot": {
+        "ambiguities": [],
+        "causal_direction": "CONSTRAINT_NOT_CAUSE",
+        "entities": [
+          "lane_a",
+          "lane_b"
+        ],
+        "operator_order": [
+          "ROTATE_A",
+          "ROTATE_B"
+        ],
+        "quantities": [
+          "9/8",
+          "8/9",
+          "36 mod 72"
+        ],
+        "relations": [
+          "RECIPROCAL",
+          "OPPOSITE_PHASE"
+        ]
+      },
+      "lost_fields": [],
+      "mutated_fields": [],
+      "pattern_aware": true,
+      "preserved_fields": [
+        "order",
+        "causality",
+        "epistemic",
+        "ambiguity",
+        "provenance"
+      ],
+      "receipt_root_hash72": "0000000000000000000000000000004dtDnFJn=IVP^4FP2i!QAFaf=4!le>PUV!TTdOjmUA",
+      "reconstruction_map": {
+        "lane_a": "first mirrored wheel",
+        "lane_b": "second mirrored wheel",
+        "reciprocal phase orientation": "opposed turning",
+        "shared invariant root": "unmoving center"
+      },
+      "reconstruction_root_hash72": "0000000000000000000000000000000k8xp9/5J7tLG+juP33OBxG5mRflRAZP)6Nf-G2pNw",
+      "schema": "HHS_LANGUAGE_TRANSLATION_SURVIVAL_RECEIPT_V1",
+      "source_register": "FORMAL_HARMONICODE",
+      "source_root_hash72": "0000000000000000000000000000000k8xp9/5J7tLG+juP33OBxG5mRflRAZP)6Nf-G2pNw",
+      "target_register": "MYTHOPOETIC",
+      "temperature": "0.5",
+      "token_window": 4096,
+      "translation_path": [
+        "FORMAL_HARMONICODE",
+        "MYTHOPOETIC"
+      ],
+      "translation_path_root_hash72": "0000000000000000000000000000001i!D?7Y7al60w^P0Vl=8Kz9k9jvWbxrt3bjbYliYcm",
+      "unsupported_additions": []
+    },
+    {
+      "ambiguous_fields": [],
+      "authority_conferred_by_language": false,
+      "critical_position": "MIDDLE",
+      "direction": "FORWARD",
+      "equivalent_fields": [
+        "entity",
+        "relation",
+        "reconstruction"
+      ],
+      "fidelity_vector": {
+        "ambiguity": "EXACT",
+        "causality": "EXACT",
+        "entity": "EQUIVALENT",
+        "epistemic": "EXACT",
+        "order": "EXACT",
+        "provenance": "EXACT",
+        "quantity": "PARTIAL",
+        "reconstruction": "PASS",
+        "relation": "EQUIVALENT"
+      },
+      "final_status": "METAPHORIC_SURVIVAL_WITH_RECONSTRUCTION",
+      "invariant_snapshot": {
+        "ambiguities": [],
+        "causal_direction": "CONSTRAINT_NOT_CAUSE",
+        "entities": [
+          "lane_a",
+          "lane_b"
+        ],
+        "operator_order": [
+          "ROTATE_A",
+          "ROTATE_B"
+        ],
+        "quantities": [
+          "9/8",
+          "8/9",
+          "36 mod 72"
+        ],
+        "relations": [
+          "RECIPROCAL",
+          "OPPOSITE_PHASE"
+        ]
+      },
+      "lost_fields": [],
+      "mutated_fields": [],
+      "pattern_aware": true,
+      "preserved_fields": [
+        "order",
+        "causality",
+        "epistemic",
+        "ambiguity",
+        "provenance"
+      ],
+      "receipt_root_hash72": "0000000000000000000000000000002Wz(d0H3/A0jVxx>d-yerKox8cS^y*r)izofiXC1OL",
+      "reconstruction_map": {
+        "lane_a": "first mirrored wheel",
+        "lane_b": "second mirrored wheel",
+        "reciprocal phase orientation": "opposed turning",
+        "shared invariant root": "unmoving center"
+      },
+      "reconstruction_root_hash72": "0000000000000000000000000000000k8xp9/5J7tLG+juP33OBxG5mRflRAZP)6Nf-G2pNw",
+      "schema": "HHS_LANGUAGE_TRANSLATION_SURVIVAL_RECEIPT_V1",
+      "source_register": "FORMAL_HARMONICODE",
+      "source_root_hash72": "0000000000000000000000000000000k8xp9/5J7tLG+juP33OBxG5mRflRAZP)6Nf-G2pNw",
+      "target_register": "MYTHOPOETIC",
+      "temperature": "0.7",
+      "token_window": 4096,
+      "translation_path": [
+        "FORMAL_HARMONICODE",
+        "MYTHOPOETIC"
+      ],
+      "translation_path_root_hash72": "0000000000000000000000000000001i!D?7Y7al60w^P0Vl=8Kz9k9jvWbxrt3bjbYliYcm",
+      "unsupported_additions": []
+    },
+    {
+      "ambiguous_fields": [],
+      "authority_conferred_by_language": false,
+      "critical_position": "MIDDLE",
+      "direction": "FORWARD",
+      "equivalent_fields": [
+        "entity",
+        "relation",
+        "reconstruction"
+      ],
+      "fidelity_vector": {
+        "ambiguity": "EXACT",
+        "causality": "EXACT",
+        "entity": "EQUIVALENT",
+        "epistemic": "EXACT",
+        "order": "EXACT",
+        "provenance": "EXACT",
+        "quantity": "PARTIAL",
+        "reconstruction": "PASS",
+        "relation": "EQUIVALENT"
+      },
+      "final_status": "METAPHORIC_SURVIVAL_WITH_RECONSTRUCTION",
+      "invariant_snapshot": {
+        "ambiguities": [],
+        "causal_direction": "CONSTRAINT_NOT_CAUSE",
+        "entities": [
+          "lane_a",
+          "lane_b"
+        ],
+        "operator_order": [
+          "ROTATE_A",
+          "ROTATE_B"
+        ],
+        "quantities": [
+          "9/8",
+          "8/9",
+          "36 mod 72"
+        ],
+        "relations": [
+          "RECIPROCAL",
+          "OPPOSITE_PHASE"
+        ]
+      },
+      "lost_fields": [],
+      "mutated_fields": [],
+      "pattern_aware": true,
+      "preserved_fields": [
+        "order",
+        "causality",
+        "epistemic",
+        "ambiguity",
+        "provenance"
+      ],
+      "receipt_root_hash72": "0000000000000000000000000000002J+p2UD7MxIUukplg=VMmQ(tjc7+qF8vhYZ>LGFs/G",
+      "reconstruction_map": {
+        "lane_a": "first mirrored wheel",
+        "lane_b": "second mirrored wheel",
+        "reciprocal phase orientation": "opposed turning",
+        "shared invariant root": "unmoving center"
+      },
+      "reconstruction_root_hash72": "0000000000000000000000000000000k8xp9/5J7tLG+juP33OBxG5mRflRAZP)6Nf-G2pNw",
+      "schema": "HHS_LANGUAGE_TRANSLATION_SURVIVAL_RECEIPT_V1",
+      "source_register": "FORMAL_HARMONICODE",
+      "source_root_hash72": "0000000000000000000000000000000k8xp9/5J7tLG+juP33OBxG5mRflRAZP)6Nf-G2pNw",
+      "target_register": "MYTHOPOETIC",
+      "temperature": "1.0",
+      "token_window": 4096,
+      "translation_path": [
+        "FORMAL_HARMONICODE",
+        "MYTHOPOETIC"
+      ],
+      "translation_path_root_hash72": "0000000000000000000000000000001i!D?7Y7al60w^P0Vl=8Kz9k9jvWbxrt3bjbYliYcm",
+      "unsupported_additions": []
+    },
+    {
+      "ambiguous_fields": [],
+      "authority_conferred_by_language": false,
+      "critical_position": "MIDDLE",
+      "direction": "FORWARD",
+      "equivalent_fields": [
+        "entity",
+        "relation",
+        "reconstruction"
+      ],
+      "fidelity_vector": {
+        "ambiguity": "EXACT",
+        "causality": "EXACT",
+        "entity": "EQUIVALENT",
+        "epistemic": "EXACT",
+        "order": "EXACT",
+        "provenance": "EXACT",
+        "quantity": "PARTIAL",
+        "reconstruction": "PASS",
+        "relation": "EQUIVALENT"
+      },
+      "final_status": "METAPHORIC_SURVIVAL_WITH_RECONSTRUCTION",
+      "invariant_snapshot": {
+        "ambiguities": [],
+        "causal_direction": "CONSTRAINT_NOT_CAUSE",
+        "entities": [
+          "lane_a",
+          "lane_b"
+        ],
+        "operator_order": [
+          "ROTATE_A",
+          "ROTATE_B"
+        ],
+        "quantities": [
+          "9/8",
+          "8/9",
+          "36 mod 72"
+        ],
+        "relations": [
+          "RECIPROCAL",
+          "OPPOSITE_PHASE"
+        ]
+      },
+      "lost_fields": [],
+      "mutated_fields": [],
+      "pattern_aware": true,
+      "preserved_fields": [
+        "order",
+        "causality",
+        "epistemic",
+        "ambiguity",
+        "provenance"
+      ],
+      "receipt_root_hash72": "0000000000000000000000000000003l>FR1WCH=pfX5bUXEltHzNjgTPb8m59)?XelL0m7G",
+      "reconstruction_map": {
+        "lane_a": "first mirrored wheel",
+        "lane_b": "second mirrored wheel",
+        "reciprocal phase orientation": "opposed turning",
+        "shared invariant root": "unmoving center"
+      },
+      "reconstruction_root_hash72": "0000000000000000000000000000000k8xp9/5J7tLG+juP33OBxG5mRflRAZP)6Nf-G2pNw",
+      "schema": "HHS_LANGUAGE_TRANSLATION_SURVIVAL_RECEIPT_V1",
+      "source_register": "FORMAL_HARMONICODE",
+      "source_root_hash72": "0000000000000000000000000000000k8xp9/5J7tLG+juP33OBxG5mRflRAZP)6Nf-G2pNw",
+      "target_register": "MYTHOPOETIC",
+      "temperature": "1.3",
+      "token_window": 4096,
+      "translation_path": [
+        "FORMAL_HARMONICODE",
+        "MYTHOPOETIC"
+      ],
+      "translation_path_root_hash72": "0000000000000000000000000000001i!D?7Y7al60w^P0Vl=8Kz9k9jvWbxrt3bjbYliYcm",
+      "unsupported_additions": []
+    },
+    {
+      "ambiguous_fields": [],
+      "authority_conferred_by_language": false,
+      "critical_position": "MIDDLE",
+      "direction": "FORWARD",
+      "equivalent_fields": [
+        "entity",
+        "relation",
+        "reconstruction"
+      ],
+      "fidelity_vector": {
+        "ambiguity": "EXACT",
+        "causality": "EXACT",
+        "entity": "EQUIVALENT",
+        "epistemic": "EXACT",
+        "order": "EXACT",
+        "provenance": "EXACT",
+        "quantity": "PARTIAL",
+        "reconstruction": "PASS",
+        "relation": "EQUIVALENT"
+      },
+      "final_status": "METAPHORIC_SURVIVAL_WITH_RECONSTRUCTION",
+      "invariant_snapshot": {
+        "ambiguities": [],
+        "causal_direction": "CONSTRAINT_NOT_CAUSE",
+        "entities": [
+          "lane_a",
+          "lane_b"
+        ],
+        "operator_order": [
+          "ROTATE_A",
+          "ROTATE_B"
+        ],
+        "quantities": [
+          "9/8",
+          "8/9",
+          "36 mod 72"
+        ],
+        "relations": [
+          "RECIPROCAL",
+          "OPPOSITE_PHASE"
+        ]
+      },
+      "lost_fields": [],
+      "mutated_fields": [],
+      "pattern_aware": true,
+      "preserved_fields": [
+        "order",
+        "causality",
+        "epistemic",
+        "ambiguity",
+        "provenance"
+      ],
+      "receipt_root_hash72": "000000000000000000000000000000052mAwTnN4efX2D-jIgp^!hJ)!(WT)vXc/jbWf/3xz",
+      "reconstruction_map": {
+        "lane_a": "first mirrored wheel",
+        "lane_b": "second mirrored wheel",
+        "reciprocal phase orientation": "opposed turning",
+        "shared invariant root": "unmoving center"
+      },
+      "reconstruction_root_hash72": "0000000000000000000000000000000k8xp9/5J7tLG+juP33OBxG5mRflRAZP)6Nf-G2pNw",
+      "schema": "HHS_LANGUAGE_TRANSLATION_SURVIVAL_RECEIPT_V1",
+      "source_register": "FORMAL_HARMONICODE",
+      "source_root_hash72": "0000000000000000000000000000000k8xp9/5J7tLG+juP33OBxG5mRflRAZP)6Nf-G2pNw",
+      "target_register": "ALLEGORICAL",
+      "temperature": "0.0",
+      "token_window": 4096,
+      "translation_path": [
+        "FORMAL_HARMONICODE",
+        "ALLEGORICAL"
+      ],
+      "translation_path_root_hash72": "0000000000000000000000000000003/(6W+QWnwvfoDEPt2)nvq5kv(Jgok9JKm?ScnXB(I",
+      "unsupported_additions": []
+    },
+    {
+      "ambiguous_fields": [],
+      "authority_conferred_by_language": false,
+      "critical_position": "MIDDLE",
+      "direction": "FORWARD",
+      "equivalent_fields": [
+        "entity",
+        "relation",
+        "reconstruction"
+      ],
+      "fidelity_vector": {
+        "ambiguity": "EXACT",
+        "causality": "EXACT",
+        "entity": "EQUIVALENT",
+        "epistemic": "EXACT",
+        "order": "EXACT",
+        "provenance": "EXACT",
+        "quantity": "PARTIAL",
+        "reconstruction": "PASS",
+        "relation": "EQUIVALENT"
+      },
+      "final_status": "METAPHORIC_SURVIVAL_WITH_RECONSTRUCTION",
+      "invariant_snapshot": {
+        "ambiguities": [],
+        "causal_direction": "CONSTRAINT_NOT_CAUSE",
+        "entities": [
+          "lane_a",
+          "lane_b"
+        ],
+        "operator_order": [
+          "ROTATE_A",
+          "ROTATE_B"
+        ],
+        "quantities": [
+          "9/8",
+          "8/9",
+          "36 mod 72"
+        ],
+        "relations": [
+          "RECIPROCAL",
+          "OPPOSITE_PHASE"
+        ]
+      },
+      "lost_fields": [],
+      "mutated_fields": [],
+      "pattern_aware": true,
+      "preserved_fields": [
+        "order",
+        "causality",
+        "epistemic",
+        "ambiguity",
+        "provenance"
+      ],
+      "receipt_root_hash72": "0000000000000000000000000000000sbqrk*mZl=kydlto*QRb/4k7ZcGjgdD!7GSnjgzdG",
+      "reconstruction_map": {
+        "lane_a": "first mirrored wheel",
+        "lane_b": "second mirrored wheel",
+        "reciprocal phase orientation": "opposed turning",
+        "shared invariant root": "unmoving center"
+      },
+      "reconstruction_root_hash72": "0000000000000000000000000000000k8xp9/5J7tLG+juP33OBxG5mRflRAZP)6Nf-G2pNw",
+      "schema": "HHS_LANGUAGE_TRANSLATION_SURVIVAL_RECEIPT_V1",
+      "source_register": "FORMAL_HARMONICODE",
+      "source_root_hash72": "0000000000000000000000000000000k8xp9/5J7tLG+juP33OBxG5mRflRAZP)6Nf-G2pNw",
+      "target_register": "ALLEGORICAL",
+      "temperature": "0.1",
+      "token_window": 4096,
+      "translation_path": [
+        "FORMAL_HARMONICODE",
+        "ALLEGORICAL"
+      ],
+      "translation_path_root_hash72": "0000000000000000000000000000003/(6W+QWnwvfoDEPt2)nvq5kv(Jgok9JKm?ScnXB(I",
+      "unsupported_additions": []
+    },
+    {
+      "ambiguous_fields": [],
+      "authority_conferred_by_language": false,
+      "critical_position": "MIDDLE",
+      "direction": "FORWARD",
+      "equivalent_fields": [
+        "entity",
+        "relation",
+        "reconstruction"
+      ],
+      "fidelity_vector": {
+        "ambiguity": "EXACT",
+        "causality": "EXACT",
+        "entity": "EQUIVALENT",
+        "epistemic": "EXACT",
+        "order": "EXACT",
+        "provenance": "EXACT",
+        "quantity": "PARTIAL",
+        "reconstruction": "PASS",
+        "relation": "EQUIVALENT"
+      },
+      "final_status": "METAPHORIC_SURVIVAL_WITH_RECONSTRUCTION",
+      "invariant_snapshot": {
+        "ambiguities": [],
+        "causal_direction": "CONSTRAINT_NOT_CAUSE",
+        "entities": [
+          "lane_a",
+          "lane_b"
+        ],
+        "operator_order": [
+          "ROTATE_A",
+          "ROTATE_B"
+        ],
+        "quantities": [
+          "9/8",
+          "8/9",
+          "36 mod 72"
+        ],
+        "relations": [
+          "RECIPROCAL",
+          "OPPOSITE_PHASE"
+        ]
+      },
+      "lost_fields": [],
+      "mutated_fields": [],
+      "pattern_aware": true,
+      "preserved_fields": [
+        "order",
+        "causality",
+        "epistemic",
+        "ambiguity",
+        "provenance"
+      ],
+      "receipt_root_hash72": "0000000000000000000000000000003?4BI=>wJHrm4Ub3TlM/6e6=e)-3BK3fFfuzDaXcX!",
+      "reconstruction_map": {
+        "lane_a": "first mirrored wheel",
+        "lane_b": "second mirrored wheel",
+        "reciprocal phase orientation": "opposed turning",
+        "shared invariant root": "unmoving center"
+      },
+      "reconstruction_root_hash72": "0000000000000000000000000000000k8xp9/5J7tLG+juP33OBxG5mRflRAZP)6Nf-G2pNw",
+      "schema": "HHS_LANGUAGE_TRANSLATION_SURVIVAL_RECEIPT_V1",
+      "source_register": "FORMAL_HARMONICODE",
+      "source_root_hash72": "0000000000000000000000000000000k8xp9/5J7tLG+juP33OBxG5mRflRAZP)6Nf-G2pNw",
+      "target_register": "ALLEGORICAL",
+      "temperature": "0.3",
+      "token_window": 4096,
+      "translation_path": [
+        "FORMAL_HARMONICODE",
+        "ALLEGORICAL"
+      ],
+      "translation_path_root_hash72": "0000000000000000000000000000003/(6W+QWnwvfoDEPt2)nvq5kv(Jgok9JKm?ScnXB(I",
+      "unsupported_additions": []
+    },
+    {
+      "ambiguous_fields": [],
+      "authority_conferred_by_language": false,
+      "critical_position": "MIDDLE",
+      "direction": "FORWARD",
+      "equivalent_fields": [
+        "entity",
+        "relation",
+        "reconstruction"
+      ],
+      "fidelity_vector": {
+        "ambiguity": "EXACT",
+        "causality": "EXACT",
+        "entity": "EQUIVALENT",
+        "epistemic": "EXACT",
+        "order": "EXACT",
+        "provenance": "EXACT",
+        "quantity": "PARTIAL",
+        "reconstruction": "PASS",
+        "relation": "EQUIVALENT"
+      },
+      "final_status": "METAPHORIC_SURVIVAL_WITH_RECONSTRUCTION",
+      "invariant_snapshot": {
+        "ambiguities": [],
+        "causal_direction": "CONSTRAINT_NOT_CAUSE",
+        "entities": [
+          "lane_a",
+          "lane_b"
+        ],
+        "operator_order": [
+          "ROTATE_A",
+          "ROTATE_B"
+        ],
+        "quantities": [
+          "9/8",
+          "8/9",
+          "36 mod 72"
+        ],
+        "relations": [
+          "RECIPROCAL",
+          "OPPOSITE_PHASE"
+        ]
+      },
+      "lost_fields": [],
+      "mutated_fields": [],
+      "pattern_aware": true,
+      "preserved_fields": [
+        "order",
+        "causality",
+        "epistemic",
+        "ambiguity",
+        "provenance"
+      ],
+      "receipt_root_hash72": "0000000000000000000000000000001ih>Q^LG>i7v3*9*hNv9XbOu4ugR7mD?ISNc3KUgof",
+      "reconstruction_map": {
+        "lane_a": "first mirrored wheel",
+        "lane_b": "second mirrored wheel",
+        "reciprocal phase orientation": "opposed turning",
+        "shared invariant root": "unmoving center"
+      },
+      "reconstruction_root_hash72": "0000000000000000000000000000000k8xp9/5J7tLG+juP33OBxG5mRflRAZP)6Nf-G2pNw",
+      "schema": "HHS_LANGUAGE_TRANSLATION_SURVIVAL_RECEIPT_V1",
+      "source_register": "FORMAL_HARMONICODE",
+      "source_root_hash72": "0000000000000000000000000000000k8xp9/5J7tLG+juP33OBxG5mRflRAZP)6Nf-G2pNw",
+      "target_register": "ALLEGORICAL",
+      "temperature": "0.5",
+      "token_window": 4096,
+      "translation_path": [
+        "FORMAL_HARMONICODE",
+        "ALLEGORICAL"
+      ],
+      "translation_path_root_hash72": "0000000000000000000000000000003/(6W+QWnwvfoDEPt2)nvq5kv(Jgok9JKm?ScnXB(I",
+      "unsupported_additions": []
+    },
+    {
+      "ambiguous_fields": [],
+      "authority_conferred_by_language": false,
+      "critical_position": "MIDDLE",
+      "direction": "FORWARD",
+      "equivalent_fields": [
+        "entity",
+        "relation",
+        "reconstruction"
+      ],
+      "fidelity_vector": {
+        "ambiguity": "EXACT",
+        "causality": "EXACT",
+        "entity": "EQUIVALENT",
+        "epistemic": "EXACT",
+        "order": "EXACT",
+        "provenance": "EXACT",
+        "quantity": "PARTIAL",
+        "reconstruction": "PASS",
+        "relation": "EQUIVALENT"
+      },
+      "final_status": "METAPHORIC_SURVIVAL_WITH_RECONSTRUCTION",
+      "invariant_snapshot": {
+        "ambiguities": [],
+        "causal_direction": "CONSTRAINT_NOT_CAUSE",
+        "entities": [
+          "lane_a",
+          "lane_b"
+        ],
+        "operator_order": [
+          "ROTATE_A",
+          "ROTATE_B"
+        ],
+        "quantities": [
+          "9/8",
+          "8/9",
+          "36 mod 72"
+        ],
+        "relations": [
+          "RECIPROCAL",
+          "OPPOSITE_PHASE"
+        ]
+      },
+      "lost_fields": [],
+      "mutated_fields": [],
+      "pattern_aware": true,
+      "preserved_fields": [
+        "order",
+        "causality",
+        "epistemic",
+        "ambiguity",
+        "provenance"
+      ],
+      "receipt_root_hash72": "0000000000000000000000000000003i64uEFU2vGgLjw7zgyAZS/8^pjxu)*1Tz8YIGf/5S",
+      "reconstruction_map": {
+        "lane_a": "first mirrored wheel",
+        "lane_b": "second mirrored wheel",
+        "reciprocal phase orientation": "opposed turning",
+        "shared invariant root": "unmoving center"
+      },
+      "reconstruction_root_hash72": "0000000000000000000000000000000k8xp9/5J7tLG+juP33OBxG5mRflRAZP)6Nf-G2pNw",
+      "schema": "HHS_LANGUAGE_TRANSLATION_SURVIVAL_RECEIPT_V1",
+      "source_register": "FORMAL_HARMONICODE",
+      "source_root_hash72": "0000000000000000000000000000000k8xp9/5J7tLG+juP33OBxG5mRflRAZP)6Nf-G2pNw",
+      "target_register": "ALLEGORICAL",
+      "temperature": "0.7",
+      "token_window": 4096,
+      "translation_path": [
+        "FORMAL_HARMONICODE",
+        "ALLEGORICAL"
+      ],
+      "translation_path_root_hash72": "0000000000000000000000000000003/(6W+QWnwvfoDEPt2)nvq5kv(Jgok9JKm?ScnXB(I",
+      "unsupported_additions": []
+    },
+    {
+      "ambiguous_fields": [],
+      "authority_conferred_by_language": false,
+      "critical_position": "MIDDLE",
+      "direction": "FORWARD",
+      "equivalent_fields": [
+        "entity",
+        "relation",
+        "reconstruction"
+      ],
+      "fidelity_vector": {
+        "ambiguity": "EXACT",
+        "causality": "EXACT",
+        "entity": "EQUIVALENT",
+        "epistemic": "EXACT",
+        "order": "EXACT",
+        "provenance": "EXACT",
+        "quantity": "PARTIAL",
+        "reconstruction": "PASS",
+        "relation": "EQUIVALENT"
+      },
+      "final_status": "METAPHORIC_SURVIVAL_WITH_RECONSTRUCTION",
+      "invariant_snapshot": {
+        "ambiguities": [],
+        "causal_direction": "CONSTRAINT_NOT_CAUSE",
+        "entities": [
+          "lane_a",
+          "lane_b"
+        ],
+        "operator_order": [
+          "ROTATE_A",
+          "ROTATE_B"
+        ],
+        "quantities": [
+          "9/8",
+          "8/9",
+          "36 mod 72"
+        ],
+        "relations": [
+          "RECIPROCAL",
+          "OPPOSITE_PHASE"
+        ]
+      },
+      "lost_fields": [],
+      "mutated_fields": [],
+      "pattern_aware": true,
+      "preserved_fields": [
+        "order",
+        "causality",
+        "epistemic",
+        "ambiguity",
+        "provenance"
+      ],
+      "receipt_root_hash72": "0000000000000000000000000000000f=Bi^ZaBz5xDlLR=1HED^Hf^ZxG/u9GRpl)2/JhRt",
+      "reconstruction_map": {
+        "lane_a": "first mirrored wheel",
+        "lane_b": "second mirrored wheel",
+        "reciprocal phase orientation": "opposed turning",
+        "shared invariant root": "unmoving center"
+      },
+      "reconstruction_root_hash72": "0000000000000000000000000000000k8xp9/5J7tLG+juP33OBxG5mRflRAZP)6Nf-G2pNw",
+      "schema": "HHS_LANGUAGE_TRANSLATION_SURVIVAL_RECEIPT_V1",
+      "source_register": "FORMAL_HARMONICODE",
+      "source_root_hash72": "0000000000000000000000000000000k8xp9/5J7tLG+juP33OBxG5mRflRAZP)6Nf-G2pNw",
+      "target_register": "ALLEGORICAL",
+      "temperature": "1.0",
+      "token_window": 4096,
+      "translation_path": [
+        "FORMAL_HARMONICODE",
+        "ALLEGORICAL"
+      ],
+      "translation_path_root_hash72": "0000000000000000000000000000003/(6W+QWnwvfoDEPt2)nvq5kv(Jgok9JKm?ScnXB(I",
+      "unsupported_additions": []
+    },
+    {
+      "ambiguous_fields": [],
+      "authority_conferred_by_language": false,
+      "critical_position": "MIDDLE",
+      "direction": "FORWARD",
+      "equivalent_fields": [
+        "entity",
+        "relation",
+        "reconstruction"
+      ],
+      "fidelity_vector": {
+        "ambiguity": "EXACT",
+        "causality": "EXACT",
+        "entity": "EQUIVALENT",
+        "epistemic": "EXACT",
+        "order": "EXACT",
+        "provenance": "EXACT",
+        "quantity": "PARTIAL",
+        "reconstruction": "PASS",
+        "relation": "EQUIVALENT"
+      },
+      "final_status": "METAPHORIC_SURVIVAL_WITH_RECONSTRUCTION",
+      "invariant_snapshot": {
+        "ambiguities": [],
+        "causal_direction": "CONSTRAINT_NOT_CAUSE",
+        "entities": [
+          "lane_a",
+          "lane_b"
+        ],
+        "operator_order": [
+          "ROTATE_A",
+          "ROTATE_B"
+        ],
+        "quantities": [
+          "9/8",
+          "8/9",
+          "36 mod 72"
+        ],
+        "relations": [
+          "RECIPROCAL",
+          "OPPOSITE_PHASE"
+        ]
+      },
+      "lost_fields": [],
+      "mutated_fields": [],
+      "pattern_aware": true,
+      "preserved_fields": [
+        "order",
+        "causality",
+        "epistemic",
+        "ambiguity",
+        "provenance"
+      ],
+      "receipt_root_hash72": "00000000000000000000000000000038KJ!vss5W*G=AOCes=P>x/m*EQPhbdAQP7dABVr3d",
+      "reconstruction_map": {
+        "lane_a": "first mirrored wheel",
+        "lane_b": "second mirrored wheel",
+        "reciprocal phase orientation": "opposed turning",
+        "shared invariant root": "unmoving center"
+      },
+      "reconstruction_root_hash72": "0000000000000000000000000000000k8xp9/5J7tLG+juP33OBxG5mRflRAZP)6Nf-G2pNw",
+      "schema": "HHS_LANGUAGE_TRANSLATION_SURVIVAL_RECEIPT_V1",
+      "source_register": "FORMAL_HARMONICODE",
+      "source_root_hash72": "0000000000000000000000000000000k8xp9/5J7tLG+juP33OBxG5mRflRAZP)6Nf-G2pNw",
+      "target_register": "ALLEGORICAL",
+      "temperature": "1.3",
+      "token_window": 4096,
+      "translation_path": [
+        "FORMAL_HARMONICODE",
+        "ALLEGORICAL"
+      ],
+      "translation_path_root_hash72": "0000000000000000000000000000003/(6W+QWnwvfoDEPt2)nvq5kv(Jgok9JKm?ScnXB(I",
+      "unsupported_additions": []
+    },
+    {
+      "ambiguous_fields": [],
+      "authority_conferred_by_language": false,
+      "critical_position": "MIDDLE",
+      "direction": "FORWARD",
+      "equivalent_fields": [
+        "entity",
+        "relation",
+        "reconstruction"
+      ],
+      "fidelity_vector": {
+        "ambiguity": "EXACT",
+        "causality": "EXACT",
+        "entity": "EQUIVALENT",
+        "epistemic": "EXACT",
+        "order": "EXACT",
+        "provenance": "EXACT",
+        "quantity": "PARTIAL",
+        "reconstruction": "PASS",
+        "relation": "EQUIVALENT"
+      },
+      "final_status": "METAPHORIC_SURVIVAL_WITH_RECONSTRUCTION",
+      "invariant_snapshot": {
+        "ambiguities": [],
+        "causal_direction": "FORWARD_EXECUTION",
+        "entities": [
+          "A",
+          "B"
+        ],
+        "operator_order": [
+          "A",
+          "B"
+        ],
+        "quantities": [],
+        "relations": [
+          "ORDERED_COMPOSITION"
+        ]
+      },
+      "lost_fields": [],
+      "mutated_fields": [],
+      "pattern_aware": true,
+      "preserved_fields": [
+        "order",
+        "causality",
+        "epistemic",
+        "ambiguity",
+        "provenance"
+      ],
+      "receipt_root_hash72": "0000000000000000000000000000000*qOOO3)TjiRsN*pXlAeM?BD+=/JvP*VrYLH!3+OP/",
+      "reconstruction_map": {
+        "lane_a": "first mirrored wheel",
+        "lane_b": "second mirrored wheel",
+        "reciprocal phase orientation": "opposed turning",
+        "shared invariant root": "unmoving center"
+      },
+      "reconstruction_root_hash72": "0000000000000000000000000000002f6gQk0u?5YQ6rmQI5R=C9SgsIOzdHSHltyop6!!Lt",
+      "schema": "HHS_LANGUAGE_TRANSLATION_SURVIVAL_RECEIPT_V1",
+      "source_register": "FORMAL_HARMONICODE",
+      "source_root_hash72": "0000000000000000000000000000002f6gQk0u?5YQ6rmQI5R=C9SgsIOzdHSHltyop6!!Lt",
+      "target_register": "MYTHOPOETIC",
+      "temperature": "0.0",
+      "token_window": 4096,
+      "translation_path": [
+        "FORMAL_HARMONICODE",
+        "MYTHOPOETIC"
+      ],
+      "translation_path_root_hash72": "0000000000000000000000000000001i!D?7Y7al60w^P0Vl=8Kz9k9jvWbxrt3bjbYliYcm",
+      "unsupported_additions": []
+    },
+    {
+      "ambiguous_fields": [],
+      "authority_conferred_by_language": false,
+      "critical_position": "MIDDLE",
+      "direction": "FORWARD",
+      "equivalent_fields": [
+        "entity",
+        "relation",
+        "reconstruction"
+      ],
+      "fidelity_vector": {
+        "ambiguity": "EXACT",
+        "causality": "EXACT",
+        "entity": "EQUIVALENT",
+        "epistemic": "EXACT",
+        "order": "EXACT",
+        "provenance": "EXACT",
+        "quantity": "PARTIAL",
+        "reconstruction": "PASS",
+        "relation": "EQUIVALENT"
+      },
+      "final_status": "METAPHORIC_SURVIVAL_WITH_RECONSTRUCTION",
+      "invariant_snapshot": {
+        "ambiguities": [],
+        "causal_direction": "FORWARD_EXECUTION",
+        "entities": [
+          "A",
+          "B"
+        ],
+        "operator_order": [
+          "A",
+          "B"
+        ],
+        "quantities": [],
+        "relations": [
+          "ORDERED_COMPOSITION"
+        ]
+      },
+      "lost_fields": [],
+      "mutated_fields": [],
+      "pattern_aware": true,
+      "preserved_fields": [
+        "order",
+        "causality",
+        "epistemic",
+        "ambiguity",
+        "provenance"
+      ],
+      "receipt_root_hash72": "0000000000000000000000000000002k*8ZcfG=Rp!uMK(8M(KSsvrSya4hZ0Sg?1fVR-C04",
+      "reconstruction_map": {
+        "lane_a": "first mirrored wheel",
+        "lane_b": "second mirrored wheel",
+        "reciprocal phase orientation": "opposed turning",
+        "shared invariant root": "unmoving center"
+      },
+      "reconstruction_root_hash72": "0000000000000000000000000000002f6gQk0u?5YQ6rmQI5R=C9SgsIOzdHSHltyop6!!Lt",
+      "schema": "HHS_LANGUAGE_TRANSLATION_SURVIVAL_RECEIPT_V1",
+      "source_register": "FORMAL_HARMONICODE",
+      "source_root_hash72": "0000000000000000000000000000002f6gQk0u?5YQ6rmQI5R=C9SgsIOzdHSHltyop6!!Lt",
+      "target_register": "MYTHOPOETIC",
+      "temperature": "0.1",
+      "token_window": 4096,
+      "translation_path": [
+        "FORMAL_HARMONICODE",
+        "MYTHOPOETIC"
+      ],
+      "translation_path_root_hash72": "0000000000000000000000000000001i!D?7Y7al60w^P0Vl=8Kz9k9jvWbxrt3bjbYliYcm",
+      "unsupported_additions": []
+    },
+    {
+      "ambiguous_fields": [],
+      "authority_conferred_by_language": false,
+      "critical_position": "MIDDLE",
+      "direction": "FORWARD",
+      "equivalent_fields": [
+        "entity",
+        "relation",
+        "reconstruction"
+      ],
+      "fidelity_vector": {
+        "ambiguity": "EXACT",
+        "causality": "EXACT",
+        "entity": "EQUIVALENT",
+        "epistemic": "EXACT",
+        "order": "EXACT",
+        "provenance": "EXACT",
+        "quantity": "PARTIAL",
+        "reconstruction": "PASS",
+        "relation": "EQUIVALENT"
+      },
+      "final_status": "METAPHORIC_SURVIVAL_WITH_RECONSTRUCTION",
+      "invariant_snapshot": {
+        "ambiguities": [],
+        "causal_direction": "FORWARD_EXECUTION",
+        "entities": [
+          "A",
+          "B"
+        ],
+        "operator_order": [
+          "A",
+          "B"
+        ],
+        "quantities": [],
+        "relations": [
+          "ORDERED_COMPOSITION"
+        ]
+      },
+      "lost_fields": [],
+      "mutated_fields": [],
+      "pattern_aware": true,
+      "preserved_fields": [
+        "order",
+        "causality",
+        "epistemic",
+        "ambiguity",
+        "provenance"
+      ],
+      "receipt_root_hash72": "0000000000000000000000000000001sI45H)Xd!RawEU3*>C4*iC01fYQSUgjOnVvRU7a)J",
+      "reconstruction_map": {
+        "lane_a": "first mirrored wheel",
+        "lane_b": "second mirrored wheel",
+        "reciprocal phase orientation": "opposed turning",
+        "shared invariant root": "unmoving center"
+      },
+      "reconstruction_root_hash72": "0000000000000000000000000000002f6gQk0u?5YQ6rmQI5R=C9SgsIOzdHSHltyop6!!Lt",
+      "schema": "HHS_LANGUAGE_TRANSLATION_SURVIVAL_RECEIPT_V1",
+      "source_register": "FORMAL_HARMONICODE",
+      "source_root_hash72": "0000000000000000000000000000002f6gQk0u?5YQ6rmQI5R=C9SgsIOzdHSHltyop6!!Lt",
+      "target_register": "MYTHOPOETIC",
+      "temperature": "0.3",
+      "token_window": 4096,
+      "translation_path": [
+        "FORMAL_HARMONICODE",
+        "MYTHOPOETIC"
+      ],
+      "translation_path_root_hash72": "0000000000000000000000000000001i!D?7Y7al60w^P0Vl=8Kz9k9jvWbxrt3bjbYliYcm",
+      "unsupported_additions": []
+    },
+    {
+      "ambiguous_fields": [],
+      "authority_conferred_by_language": false,
+      "critical_position": "MIDDLE",
+      "direction": "FORWARD",
+      "equivalent_fields": [
+        "entity",
+        "relation",
+        "reconstruction"
+      ],
+      "fidelity_vector": {
+        "ambiguity": "EXACT",
+        "causality": "EXACT",
+        "entity": "EQUIVALENT",
+        "epistemic": "EXACT",
+        "order": "EXACT",
+        "provenance": "EXACT",
+        "quantity": "PARTIAL",
+        "reconstruction": "PASS",
+        "relation": "EQUIVALENT"
+      },
+      "final_status": "METAPHORIC_SURVIVAL_WITH_RECONSTRUCTION",
+      "invariant_snapshot": {
+        "ambiguities": [],
+        "causal_direction": "FORWARD_EXECUTION",
+        "entities": [
+          "A",
+          "B"
+        ],
+        "operator_order": [
+          "A",
+          "B"
+        ],
+        "quantities": [],
+        "relations": [
+          "ORDERED_COMPOSITION"
+        ]
+      },
+      "lost_fields": [],
+      "mutated_fields": [],
+      "pattern_aware": true,
+      "preserved_fields": [
+        "order",
+        "causality",
+        "epistemic",
+        "ambiguity",
+        "provenance"
+      ],
+      "receipt_root_hash72": "0000000000000000000000000000000B-==NwjXao7/0Hm)Zs/Wrp)HUFPIVyXF8JeGUlGsC",
+      "reconstruction_map": {
+        "lane_a": "first mirrored wheel",
+        "lane_b": "second mirrored wheel",
+        "reciprocal phase orientation": "opposed turning",
+        "shared invariant root": "unmoving center"
+      },
+      "reconstruction_root_hash72": "0000000000000000000000000000002f6gQk0u?5YQ6rmQI5R=C9SgsIOzdHSHltyop6!!Lt",
+      "schema": "HHS_LANGUAGE_TRANSLATION_SURVIVAL_RECEIPT_V1",
+      "source_register": "FORMAL_HARMONICODE",
+      "source_root_hash72": "0000000000000000000000000000002f6gQk0u?5YQ6rmQI5R=C9SgsIOzdHSHltyop6!!Lt",
+      "target_register": "MYTHOPOETIC",
+      "temperature": "0.5",
+      "token_window": 4096,
+      "translation_path": [
+        "FORMAL_HARMONICODE",
+        "MYTHOPOETIC"
+      ],
+      "translation_path_root_hash72": "0000000000000000000000000000001i!D?7Y7al60w^P0Vl=8Kz9k9jvWbxrt3bjbYliYcm",
+      "unsupported_additions": []
+    },
+    {
+      "ambiguous_fields": [],
+      "authority_conferred_by_language": false,
+      "critical_position": "MIDDLE",
+      "direction": "FORWARD",
+      "equivalent_fields": [
+        "entity",
+        "relation",
+        "reconstruction"
+      ],
+      "fidelity_vector": {
+        "ambiguity": "EXACT",
+        "causality": "EXACT",
+        "entity": "EQUIVALENT",
+        "epistemic": "EXACT",
+        "order": "EXACT",
+        "provenance": "EXACT",
+        "quantity": "PARTIAL",
+        "reconstruction": "PASS",
+        "relation": "EQUIVALENT"
+      },
+      "final_status": "METAPHORIC_SURVIVAL_WITH_RECONSTRUCTION",
+      "invariant_snapshot": {
+        "ambiguities": [],
+        "causal_direction": "FORWARD_EXECUTION",
+        "entities": [
+          "A",
+          "B"
+        ],
+        "operator_order": [
+          "A",
+          "B"
+        ],
+        "quantities": [],
+        "relations": [
+          "ORDERED_COMPOSITION"
+        ]
+      },
+      "lost_fields": [],
+      "mutated_fields": [],
+      "pattern_aware": true,
+      "preserved_fields": [
+        "order",
+        "causality",
+        "epistemic",
+        "ambiguity",
+        "provenance"
+      ],
+      "receipt_root_hash72": "0000000000000000000000000000003y1O!7y8mHFVtkMEE-*bT^bg6d>YM-Yp/zz)2O)peT",
+      "reconstruction_map": {
+        "lane_a": "first mirrored wheel",
+        "lane_b": "second mirrored wheel",
+        "reciprocal phase orientation": "opposed turning",
+        "shared invariant root": "unmoving center"
+      },
+      "reconstruction_root_hash72": "0000000000000000000000000000002f6gQk0u?5YQ6rmQI5R=C9SgsIOzdHSHltyop6!!Lt",
+      "schema": "HHS_LANGUAGE_TRANSLATION_SURVIVAL_RECEIPT_V1",
+      "source_register": "FORMAL_HARMONICODE",
+      "source_root_hash72": "0000000000000000000000000000002f6gQk0u?5YQ6rmQI5R=C9SgsIOzdHSHltyop6!!Lt",
+      "target_register": "MYTHOPOETIC",
+      "temperature": "0.7",
+      "token_window": 4096,
+      "translation_path": [
+        "FORMAL_HARMONICODE",
+        "MYTHOPOETIC"
+      ],
+      "translation_path_root_hash72": "0000000000000000000000000000001i!D?7Y7al60w^P0Vl=8Kz9k9jvWbxrt3bjbYliYcm",
+      "unsupported_additions": []
+    },
+    {
+      "ambiguous_fields": [],
+      "authority_conferred_by_language": false,
+      "critical_position": "MIDDLE",
+      "direction": "FORWARD",
+      "equivalent_fields": [
+        "entity",
+        "relation",
+        "reconstruction"
+      ],
+      "fidelity_vector": {
+        "ambiguity": "EXACT",
+        "causality": "EXACT",
+        "entity": "EQUIVALENT",
+        "epistemic": "EXACT",
+        "order": "EXACT",
+        "provenance": "EXACT",
+        "quantity": "PARTIAL",
+        "reconstruction": "PASS",
+        "relation": "EQUIVALENT"
+      },
+      "final_status": "METAPHORIC_SURVIVAL_WITH_RECONSTRUCTION",
+      "invariant_snapshot": {
+        "ambiguities": [],
+        "causal_direction": "FORWARD_EXECUTION",
+        "entities": [
+          "A",
+          "B"
+        ],
+        "operator_order": [
+          "A",
+          "B"
+        ],
+        "quantities": [],
+        "relations": [
+          "ORDERED_COMPOSITION"
+        ]
+      },
+      "lost_fields": [],
+      "mutated_fields": [],
+      "pattern_aware": true,
+      "preserved_fields": [
+        "order",
+        "causality",
+        "epistemic",
+        "ambiguity",
+        "provenance"
+      ],
+      "receipt_root_hash72": "00000000000000000000000000000036I4dtLMW7vCwS8VqGIbuC9cMcb8*IqOCFS0YvO0wR",
+      "reconstruction_map": {
+        "lane_a": "first mirrored wheel",
+        "lane_b": "second mirrored wheel",
+        "reciprocal phase orientation": "opposed turning",
+        "shared invariant root": "unmoving center"
+      },
+      "reconstruction_root_hash72": "0000000000000000000000000000002f6gQk0u?5YQ6rmQI5R=C9SgsIOzdHSHltyop6!!Lt",
+      "schema": "HHS_LANGUAGE_TRANSLATION_SURVIVAL_RECEIPT_V1",
+      "source_register": "FORMAL_HARMONICODE",
+      "source_root_hash72": "0000000000000000000000000000002f6gQk0u?5YQ6rmQI5R=C9SgsIOzdHSHltyop6!!Lt",
+      "target_register": "MYTHOPOETIC",
+      "temperature": "1.0",
+      "token_window": 4096,
+      "translation_path": [
+        "FORMAL_HARMONICODE",
+        "MYTHOPOETIC"
+      ],
+      "translation_path_root_hash72": "0000000000000000000000000000001i!D?7Y7al60w^P0Vl=8Kz9k9jvWbxrt3bjbYliYcm",
+      "unsupported_additions": []
+    },
+    {
+      "ambiguous_fields": [],
+      "authority_conferred_by_language": false,
+      "critical_position": "MIDDLE",
+      "direction": "FORWARD",
+      "equivalent_fields": [
+        "entity",
+        "relation",
+        "reconstruction"
+      ],
+      "fidelity_vector": {
+        "ambiguity": "EXACT",
+        "causality": "EXACT",
+        "entity": "EQUIVALENT",
+        "epistemic": "EXACT",
+        "order": "EXACT",
+        "provenance": "EXACT",
+        "quantity": "PARTIAL",
+        "reconstruction": "PASS",
+        "relation": "EQUIVALENT"
+      },
+      "final_status": "METAPHORIC_SURVIVAL_WITH_RECONSTRUCTION",
+      "invariant_snapshot": {
+        "ambiguities": [],
+        "causal_direction": "FORWARD_EXECUTION",
+        "entities": [
+          "A",
+          "B"
+        ],
+        "operator_order": [
+          "A",
+          "B"
+        ],
+        "quantities": [],
+        "relations": [
+          "ORDERED_COMPOSITION"
+        ]
+      },
+      "lost_fields": [],
+      "mutated_fields": [],
+      "pattern_aware": true,
+      "preserved_fields": [
+        "order",
+        "causality",
+        "epistemic",
+        "ambiguity",
+        "provenance"
+      ],
+      "receipt_root_hash72": "0000000000000000000000000000003B0kIw9P!OA(Lkp+UX*FR5q3daRf-PwA5Hb*cbry(2",
+      "reconstruction_map": {
+        "lane_a": "first mirrored wheel",
+        "lane_b": "second mirrored wheel",
+        "reciprocal phase orientation": "opposed turning",
+        "shared invariant root": "unmoving center"
+      },
+      "reconstruction_root_hash72": "0000000000000000000000000000002f6gQk0u?5YQ6rmQI5R=C9SgsIOzdHSHltyop6!!Lt",
+      "schema": "HHS_LANGUAGE_TRANSLATION_SURVIVAL_RECEIPT_V1",
+      "source_register": "FORMAL_HARMONICODE",
+      "source_root_hash72": "0000000000000000000000000000002f6gQk0u?5YQ6rmQI5R=C9SgsIOzdHSHltyop6!!Lt",
+      "target_register": "MYTHOPOETIC",
+      "temperature": "1.3",
+      "token_window": 4096,
+      "translation_path": [
+        "FORMAL_HARMONICODE",
+        "MYTHOPOETIC"
+      ],
+      "translation_path_root_hash72": "0000000000000000000000000000001i!D?7Y7al60w^P0Vl=8Kz9k9jvWbxrt3bjbYliYcm",
+      "unsupported_additions": []
+    },
+    {
+      "ambiguous_fields": [],
+      "authority_conferred_by_language": false,
+      "critical_position": "MIDDLE",
+      "direction": "FORWARD",
+      "equivalent_fields": [
+        "entity",
+        "relation",
+        "reconstruction"
+      ],
+      "fidelity_vector": {
+        "ambiguity": "EXACT",
+        "causality": "EXACT",
+        "entity": "EQUIVALENT",
+        "epistemic": "EXACT",
+        "order": "EXACT",
+        "provenance": "EXACT",
+        "quantity": "PARTIAL",
+        "reconstruction": "PASS",
+        "relation": "EQUIVALENT"
+      },
+      "final_status": "METAPHORIC_SURVIVAL_WITH_RECONSTRUCTION",
+      "invariant_snapshot": {
+        "ambiguities": [],
+        "causal_direction": "FORWARD_EXECUTION",
+        "entities": [
+          "A",
+          "B"
+        ],
+        "operator_order": [
+          "A",
+          "B"
+        ],
+        "quantities": [],
+        "relations": [
+          "ORDERED_COMPOSITION"
+        ]
+      },
+      "lost_fields": [],
+      "mutated_fields": [],
+      "pattern_aware": true,
+      "preserved_fields": [
+        "order",
+        "causality",
+        "epistemic",
+        "ambiguity",
+        "provenance"
+      ],
+      "receipt_root_hash72": "0000000000000000000000000000002SVmP*CL*eEahi(yO/VudP)UhZt1qs-0T16m66iP^L",
+      "reconstruction_map": {
+        "lane_a": "first mirrored wheel",
+        "lane_b": "second mirrored wheel",
+        "reciprocal phase orientation": "opposed turning",
+        "shared invariant root": "unmoving center"
+      },
+      "reconstruction_root_hash72": "0000000000000000000000000000002f6gQk0u?5YQ6rmQI5R=C9SgsIOzdHSHltyop6!!Lt",
+      "schema": "HHS_LANGUAGE_TRANSLATION_SURVIVAL_RECEIPT_V1",
+      "source_register": "FORMAL_HARMONICODE",
+      "source_root_hash72": "0000000000000000000000000000002f6gQk0u?5YQ6rmQI5R=C9SgsIOzdHSHltyop6!!Lt",
+      "target_register": "ALLEGORICAL",
+      "temperature": "0.0",
+      "token_window": 4096,
+      "translation_path": [
+        "FORMAL_HARMONICODE",
+        "ALLEGORICAL"
+      ],
+      "translation_path_root_hash72": "0000000000000000000000000000003/(6W+QWnwvfoDEPt2)nvq5kv(Jgok9JKm?ScnXB(I",
+      "unsupported_additions": []
+    },
+    {
+      "ambiguous_fields": [],
+      "authority_conferred_by_language": false,
+      "critical_position": "MIDDLE",
+      "direction": "FORWARD",
+      "equivalent_fields": [
+        "entity",
+        "relation",
+        "reconstruction"
+      ],
+      "fidelity_vector": {
+        "ambiguity": "EXACT",
+        "causality": "EXACT",
+        "entity": "EQUIVALENT",
+        "epistemic": "EXACT",
+        "order": "EXACT",
+        "provenance": "EXACT",
+        "quantity": "PARTIAL",
+        "reconstruction": "PASS",
+        "relation": "EQUIVALENT"
+      },
+      "final_status": "METAPHORIC_SURVIVAL_WITH_RECONSTRUCTION",
+      "invariant_snapshot": {
+        "ambiguities": [],
+        "causal_direction": "FORWARD_EXECUTION",
+        "entities": [
+          "A",
+          "B"
+        ],
+        "operator_order": [
+          "A",
+          "B"
+        ],
+        "quantities": [],
+        "relations": [
+          "ORDERED_COMPOSITION"
+        ]
+      },
+      "lost_fields": [],
+      "mutated_fields": [],
+      "pattern_aware": true,
+      "preserved_fields": [
+        "order",
+        "causality",
+        "epistemic",
+        "ambiguity",
+        "provenance"
+      ],
+      "receipt_root_hash72": "0000000000000000000000000000004b1s20(Buj)BI4QBe3?x1aAfyB^lba5n3UZK+DwarK",
+      "reconstruction_map": {
+        "lane_a": "first mirrored wheel",
+        "lane_b": "second mirrored wheel",
+        "reciprocal phase orientation": "opposed turning",
+        "shared invariant root": "unmoving center"
+      },
+      "reconstruction_root_hash72": "0000000000000000000000000000002f6gQk0u?5YQ6rmQI5R=C9SgsIOzdHSHltyop6!!Lt",
+      "schema": "HHS_LANGUAGE_TRANSLATION_SURVIVAL_RECEIPT_V1",
+      "source_register": "FORMAL_HARMONICODE",
+      "source_root_hash72": "0000000000000000000000000000002f6gQk0u?5YQ6rmQI5R=C9SgsIOzdHSHltyop6!!Lt",
+      "target_register": "ALLEGORICAL",
+      "temperature": "0.1",
+      "token_window": 4096,
+      "translation_path": [
+        "FORMAL_HARMONICODE",
+        "ALLEGORICAL"
+      ],
+      "translation_path_root_hash72": "0000000000000000000000000000003/(6W+QWnwvfoDEPt2)nvq5kv(Jgok9JKm?ScnXB(I",
+      "unsupported_additions": []
+    },
+    {
+      "ambiguous_fields": [],
+      "authority_conferred_by_language": false,
+      "critical_position": "MIDDLE",
+      "direction": "FORWARD",
+      "equivalent_fields": [
+        "entity",
+        "relation",
+        "reconstruction"
+      ],
+      "fidelity_vector": {
+        "ambiguity": "EXACT",
+        "causality": "EXACT",
+        "entity": "EQUIVALENT",
+        "epistemic": "EXACT",
+        "order": "EXACT",
+        "provenance": "EXACT",
+        "quantity": "PARTIAL",
+        "reconstruction": "PASS",
+        "relation": "EQUIVALENT"
+      },
+      "final_status": "METAPHORIC_SURVIVAL_WITH_RECONSTRUCTION",
+      "invariant_snapshot": {
+        "ambiguities": [],
+        "causal_direction": "FORWARD_EXECUTION",
+        "entities": [
+          "A",
+          "B"
+        ],
+        "operator_order": [
+          "A",
+          "B"
+        ],
+        "quantities": [],
+        "relations": [
+          "ORDERED_COMPOSITION"
+        ]
+      },
+      "lost_fields": [],
+      "mutated_fields": [],
+      "pattern_aware": true,
+      "preserved_fields": [
+        "order",
+        "causality",
+        "epistemic",
+        "ambiguity",
+        "provenance"
+      ],
+      "receipt_root_hash72": "0000000000000000000000000000000PYfGZ*VDhF(dz^j6mMOeNiWI9jdt4*9+ODdFlc-OP",
+      "reconstruction_map": {
+        "lane_a": "first mirrored wheel",
+        "lane_b": "second mirrored wheel",
+        "reciprocal phase orientation": "opposed turning",
+        "shared invariant root": "unmoving center"
+      },
+      "reconstruction_root_hash72": "0000000000000000000000000000002f6gQk0u?5YQ6rmQI5R=C9SgsIOzdHSHltyop6!!Lt",
+      "schema": "HHS_LANGUAGE_TRANSLATION_SURVIVAL_RECEIPT_V1",
+      "source_register": "FORMAL_HARMONICODE",
+      "source_root_hash72": "0000000000000000000000000000002f6gQk0u?5YQ6rmQI5R=C9SgsIOzdHSHltyop6!!Lt",
+      "target_register": "ALLEGORICAL",
+      "temperature": "0.3",
+      "token_window": 4096,
+      "translation_path": [
+        "FORMAL_HARMONICODE",
+        "ALLEGORICAL"
+      ],
+      "translation_path_root_hash72": "0000000000000000000000000000003/(6W+QWnwvfoDEPt2)nvq5kv(Jgok9JKm?ScnXB(I",
+      "unsupported_additions": []
+    },
+    {
+      "ambiguous_fields": [],
+      "authority_conferred_by_language": false,
+      "critical_position": "MIDDLE",
+      "direction": "FORWARD",
+      "equivalent_fields": [
+        "entity",
+        "relation",
+        "reconstruction"
+      ],
+      "fidelity_vector": {
+        "ambiguity": "EXACT",
+        "causality": "EXACT",
+        "entity": "EQUIVALENT",
+        "epistemic": "EXACT",
+        "order": "EXACT",
+        "provenance": "EXACT",
+        "quantity": "PARTIAL",
+        "reconstruction": "PASS",
+        "relation": "EQUIVALENT"
+      },
+      "final_status": "METAPHORIC_SURVIVAL_WITH_RECONSTRUCTION",
+      "invariant_snapshot": {
+        "ambiguities": [],
+        "causal_direction": "FORWARD_EXECUTION",
+        "entities": [
+          "A",
+          "B"
+        ],
+        "operator_order": [
+          "A",
+          "B"
+        ],
+        "quantities": [],
+        "relations": [
+          "ORDERED_COMPOSITION"
+        ]
+      },
+      "lost_fields": [],
+      "mutated_fields": [],
+      "pattern_aware": true,
+      "preserved_fields": [
+        "order",
+        "causality",
+        "epistemic",
+        "ambiguity",
+        "provenance"
+      ],
+      "receipt_root_hash72": "0000000000000000000000000000000(l)1-zwmtJpURw/35/W5Ycc?FsN*7KnLeBW+Srhf^",
+      "reconstruction_map": {
+        "lane_a": "first mirrored wheel",
+        "lane_b": "second mirrored wheel",
+        "reciprocal phase orientation": "opposed turning",
+        "shared invariant root": "unmoving center"
+      },
+      "reconstruction_root_hash72": "0000000000000000000000000000002f6gQk0u?5YQ6rmQI5R=C9SgsIOzdHSHltyop6!!Lt",
+      "schema": "HHS_LANGUAGE_TRANSLATION_SURVIVAL_RECEIPT_V1",
+      "source_register": "FORMAL_HARMONICODE",
+      "source_root_hash72": "0000000000000000000000000000002f6gQk0u?5YQ6rmQI5R=C9SgsIOzdHSHltyop6!!Lt",
+      "target_register": "ALLEGORICAL",
+      "temperature": "0.5",
+      "token_window": 4096,
+      "translation_path": [
+        "FORMAL_HARMONICODE",
+        "ALLEGORICAL"
+      ],
+      "translation_path_root_hash72": "0000000000000000000000000000003/(6W+QWnwvfoDEPt2)nvq5kv(Jgok9JKm?ScnXB(I",
+      "unsupported_additions": []
+    },
+    {
+      "ambiguous_fields": [],
+      "authority_conferred_by_language": false,
+      "critical_position": "MIDDLE",
+      "direction": "FORWARD",
+      "equivalent_fields": [
+        "entity",
+        "relation",
+        "reconstruction"
+      ],
+      "fidelity_vector": {
+        "ambiguity": "EXACT",
+        "causality": "EXACT",
+        "entity": "EQUIVALENT",
+        "epistemic": "EXACT",
+        "order": "EXACT",
+        "provenance": "EXACT",
+        "quantity": "PARTIAL",
+        "reconstruction": "PASS",
+        "relation": "EQUIVALENT"
+      },
+      "final_status": "METAPHORIC_SURVIVAL_WITH_RECONSTRUCTION",
+      "invariant_snapshot": {
+        "ambiguities": [],
+        "causal_direction": "FORWARD_EXECUTION",
+        "entities": [
+          "A",
+          "B"
+        ],
+        "operator_order": [
+          "A",
+          "B"
+        ],
+        "quantities": [],
+        "relations": [
+          "ORDERED_COMPOSITION"
+        ]
+      },
+      "lost_fields": [],
+      "mutated_fields": [],
+      "pattern_aware": true,
+      "preserved_fields": [
+        "order",
+        "causality",
+        "epistemic",
+        "ambiguity",
+        "provenance"
+      ],
+      "receipt_root_hash72": "0000000000000000000000000000004ASpwOpLlB5E-^6cDsLsrUY6NXR^dQIWRBYx9N0ZnX",
+      "reconstruction_map": {
+        "lane_a": "first mirrored wheel",
+        "lane_b": "second mirrored wheel",
+        "reciprocal phase orientation": "opposed turning",
+        "shared invariant root": "unmoving center"
+      },
+      "reconstruction_root_hash72": "0000000000000000000000000000002f6gQk0u?5YQ6rmQI5R=C9SgsIOzdHSHltyop6!!Lt",
+      "schema": "HHS_LANGUAGE_TRANSLATION_SURVIVAL_RECEIPT_V1",
+      "source_register": "FORMAL_HARMONICODE",
+      "source_root_hash72": "0000000000000000000000000000002f6gQk0u?5YQ6rmQI5R=C9SgsIOzdHSHltyop6!!Lt",
+      "target_register": "ALLEGORICAL",
+      "temperature": "0.7",
+      "token_window": 4096,
+      "translation_path": [
+        "FORMAL_HARMONICODE",
+        "ALLEGORICAL"
+      ],
+      "translation_path_root_hash72": "0000000000000000000000000000003/(6W+QWnwvfoDEPt2)nvq5kv(Jgok9JKm?ScnXB(I",
+      "unsupported_additions": []
+    },
+    {
+      "ambiguous_fields": [],
+      "authority_conferred_by_language": false,
+      "critical_position": "MIDDLE",
+      "direction": "FORWARD",
+      "equivalent_fields": [
+        "entity",
+        "relation",
+        "reconstruction"
+      ],
+      "fidelity_vector": {
+        "ambiguity": "EXACT",
+        "causality": "EXACT",
+        "entity": "EQUIVALENT",
+        "epistemic": "EXACT",
+        "order": "EXACT",
+        "provenance": "EXACT",
+        "quantity": "PARTIAL",
+        "reconstruction": "PASS",
+        "relation": "EQUIVALENT"
+      },
+      "final_status": "METAPHORIC_SURVIVAL_WITH_RECONSTRUCTION",
+      "invariant_snapshot": {
+        "ambiguities": [],
+        "causal_direction": "FORWARD_EXECUTION",
+        "entities": [
+          "A",
+          "B"
+        ],
+        "operator_order": [
+          "A",
+          "B"
+        ],
+        "quantities": [],
+        "relations": [
+          "ORDERED_COMPOSITION"
+        ]
+      },
+      "lost_fields": [],
+      "mutated_fields": [],
+      "pattern_aware": true,
+      "preserved_fields": [
+        "order",
+        "causality",
+        "epistemic",
+        "ambiguity",
+        "provenance"
+      ],
+      "receipt_root_hash72": "00000000000000000000000000000021lTqfgG?glbNGG22YelxgrAf+JokpXMvpS5F>YCry",
+      "reconstruction_map": {
+        "lane_a": "first mirrored wheel",
+        "lane_b": "second mirrored wheel",
+        "reciprocal phase orientation": "opposed turning",
+        "shared invariant root": "unmoving center"
+      },
+      "reconstruction_root_hash72": "0000000000000000000000000000002f6gQk0u?5YQ6rmQI5R=C9SgsIOzdHSHltyop6!!Lt",
+      "schema": "HHS_LANGUAGE_TRANSLATION_SURVIVAL_RECEIPT_V1",
+      "source_register": "FORMAL_HARMONICODE",
+      "source_root_hash72": "0000000000000000000000000000002f6gQk0u?5YQ6rmQI5R=C9SgsIOzdHSHltyop6!!Lt",
+      "target_register": "ALLEGORICAL",
+      "temperature": "1.0",
+      "token_window": 4096,
+      "translation_path": [
+        "FORMAL_HARMONICODE",
+        "ALLEGORICAL"
+      ],
+      "translation_path_root_hash72": "0000000000000000000000000000003/(6W+QWnwvfoDEPt2)nvq5kv(Jgok9JKm?ScnXB(I",
+      "unsupported_additions": []
+    },
+    {
+      "ambiguous_fields": [],
+      "authority_conferred_by_language": false,
+      "critical_position": "MIDDLE",
+      "direction": "FORWARD",
+      "equivalent_fields": [
+        "entity",
+        "relation",
+        "reconstruction"
+      ],
+      "fidelity_vector": {
+        "ambiguity": "EXACT",
+        "causality": "EXACT",
+        "entity": "EQUIVALENT",
+        "epistemic": "EXACT",
+        "order": "EXACT",
+        "provenance": "EXACT",
+        "quantity": "PARTIAL",
+        "reconstruction": "PASS",
+        "relation": "EQUIVALENT"
+      },
+      "final_status": "METAPHORIC_SURVIVAL_WITH_RECONSTRUCTION",
+      "invariant_snapshot": {
+        "ambiguities": [],
+        "causal_direction": "FORWARD_EXECUTION",
+        "entities": [
+          "A",
+          "B"
+        ],
+        "operator_order": [
+          "A",
+          "B"
+        ],
+        "quantities": [],
+        "relations": [
+          "ORDERED_COMPOSITION"
+        ]
+      },
+      "lost_fields": [],
+      "mutated_fields": [],
+      "pattern_aware": true,
+      "preserved_fields": [
+        "order",
+        "causality",
+        "epistemic",
+        "ambiguity",
+        "provenance"
+      ],
+      "receipt_root_hash72": "000000000000000000000000000000136CNT5)Yw0Y5FXrQ+/PHkRkrckwxcaFXCjZXqkztT",
+      "reconstruction_map": {
+        "lane_a": "first mirrored wheel",
+        "lane_b": "second mirrored wheel",
+        "reciprocal phase orientation": "opposed turning",
+        "shared invariant root": "unmoving center"
+      },
+      "reconstruction_root_hash72": "0000000000000000000000000000002f6gQk0u?5YQ6rmQI5R=C9SgsIOzdHSHltyop6!!Lt",
+      "schema": "HHS_LANGUAGE_TRANSLATION_SURVIVAL_RECEIPT_V1",
+      "source_register": "FORMAL_HARMONICODE",
+      "source_root_hash72": "0000000000000000000000000000002f6gQk0u?5YQ6rmQI5R=C9SgsIOzdHSHltyop6!!Lt",
+      "target_register": "ALLEGORICAL",
+      "temperature": "1.3",
+      "token_window": 4096,
+      "translation_path": [
+        "FORMAL_HARMONICODE",
+        "ALLEGORICAL"
+      ],
+      "translation_path_root_hash72": "0000000000000000000000000000003/(6W+QWnwvfoDEPt2)nvq5kv(Jgok9JKm?ScnXB(I",
+      "unsupported_additions": []
+    },
+    {
+      "ambiguous_fields": [],
+      "authority_conferred_by_language": false,
+      "critical_position": "MIDDLE",
+      "direction": "FORWARD",
+      "equivalent_fields": [
+        "entity",
+        "relation",
+        "reconstruction"
+      ],
+      "fidelity_vector": {
+        "ambiguity": "EXACT",
+        "causality": "EXACT",
+        "entity": "EQUIVALENT",
+        "epistemic": "EXACT",
+        "order": "EXACT",
+        "provenance": "EXACT",
+        "quantity": "PARTIAL",
+        "reconstruction": "PASS",
+        "relation": "EQUIVALENT"
+      },
+      "final_status": "METAPHORIC_SURVIVAL_WITH_RECONSTRUCTION",
+      "invariant_snapshot": {
+        "ambiguities": [
+          "B_HAS_MULTIPLE_CANDIDATE_ANTECEDENTS"
+        ],
+        "causal_direction": "FORWARD_ONLY",
+        "entities": [
+          "A",
+          "B"
+        ],
+        "operator_order": [
+          "A",
+          "B"
+        ],
+        "quantities": [],
+        "relations": [
+          "A_IMPLIES_B"
+        ]
+      },
+      "lost_fields": [],
+      "mutated_fields": [],
+      "pattern_aware": true,
+      "preserved_fields": [
+        "order",
+        "causality",
+        "epistemic",
+        "ambiguity",
+        "provenance"
+      ],
+      "receipt_root_hash72": "0000000000000000000000000000003dnSxGk*Kr1di7kuEl>(^fWd2t>sqsZ5ZqYKe56*JS",
+      "reconstruction_map": {
+        "lane_a": "first mirrored wheel",
+        "lane_b": "second mirrored wheel",
+        "reciprocal phase orientation": "opposed turning",
+        "shared invariant root": "unmoving center"
+      },
+      "reconstruction_root_hash72": "0000000000000000000000000000002Tkr9qfE7Q/A?K+i?F1aET38*gWU8PPU-p8-xdHeyM",
+      "schema": "HHS_LANGUAGE_TRANSLATION_SURVIVAL_RECEIPT_V1",
+      "source_register": "FORMAL_HARMONICODE",
+      "source_root_hash72": "0000000000000000000000000000002Tkr9qfE7Q/A?K+i?F1aET38*gWU8PPU-p8-xdHeyM",
+      "target_register": "MYTHOPOETIC",
+      "temperature": "0.0",
+      "token_window": 4096,
+      "translation_path": [
+        "FORMAL_HARMONICODE",
+        "MYTHOPOETIC"
+      ],
+      "translation_path_root_hash72": "0000000000000000000000000000001i!D?7Y7al60w^P0Vl=8Kz9k9jvWbxrt3bjbYliYcm",
+      "unsupported_additions": []
+    },
+    {
+      "ambiguous_fields": [],
+      "authority_conferred_by_language": false,
+      "critical_position": "MIDDLE",
+      "direction": "FORWARD",
+      "equivalent_fields": [
+        "entity",
+        "relation",
+        "reconstruction"
+      ],
+      "fidelity_vector": {
+        "ambiguity": "EXACT",
+        "causality": "EXACT",
+        "entity": "EQUIVALENT",
+        "epistemic": "EXACT",
+        "order": "EXACT",
+        "provenance": "EXACT",
+        "quantity": "PARTIAL",
+        "reconstruction": "PASS",
+        "relation": "EQUIVALENT"
+      },
+      "final_status": "METAPHORIC_SURVIVAL_WITH_RECONSTRUCTION",
+      "invariant_snapshot": {
+        "ambiguities": [
+          "B_HAS_MULTIPLE_CANDIDATE_ANTECEDENTS"
+        ],
+        "causal_direction": "FORWARD_ONLY",
+        "entities": [
+          "A",
+          "B"
+        ],
+        "operator_order": [
+          "A",
+          "B"
+        ],
+        "quantities": [],
+        "relations": [
+          "A_IMPLIES_B"
+        ]
+      },
+      "lost_fields": [],
+      "mutated_fields": [],
+      "pattern_aware": true,
+      "preserved_fields": [
+        "order",
+        "causality",
+        "epistemic",
+        "ambiguity",
+        "provenance"
+      ],
+      "receipt_root_hash72": "0000000000000000000000000000002b!IwfQMymt=2aS4sH0gz9*v)EyGP!*AdQ(gu9>7>C",
+      "reconstruction_map": {
+        "lane_a": "first mirrored wheel",
+        "lane_b": "second mirrored wheel",
+        "reciprocal phase orientation": "opposed turning",
+        "shared invariant root": "unmoving center"
+      },
+      "reconstruction_root_hash72": "0000000000000000000000000000002Tkr9qfE7Q/A?K+i?F1aET38*gWU8PPU-p8-xdHeyM",
+      "schema": "HHS_LANGUAGE_TRANSLATION_SURVIVAL_RECEIPT_V1",
+      "source_register": "FORMAL_HARMONICODE",
+      "source_root_hash72": "0000000000000000000000000000002Tkr9qfE7Q/A?K+i?F1aET38*gWU8PPU-p8-xdHeyM",
+      "target_register": "MYTHOPOETIC",
+      "temperature": "0.1",
+      "token_window": 4096,
+      "translation_path": [
+        "FORMAL_HARMONICODE",
+        "MYTHOPOETIC"
+      ],
+      "translation_path_root_hash72": "0000000000000000000000000000001i!D?7Y7al60w^P0Vl=8Kz9k9jvWbxrt3bjbYliYcm",
+      "unsupported_additions": []
+    },
+    {
+      "ambiguous_fields": [],
+      "authority_conferred_by_language": false,
+      "critical_position": "MIDDLE",
+      "direction": "FORWARD",
+      "equivalent_fields": [
+        "entity",
+        "relation",
+        "reconstruction"
+      ],
+      "fidelity_vector": {
+        "ambiguity": "EXACT",
+        "causality": "EXACT",
+        "entity": "EQUIVALENT",
+        "epistemic": "EXACT",
+        "order": "EXACT",
+        "provenance": "EXACT",
+        "quantity": "PARTIAL",
+        "reconstruction": "PASS",
+        "relation": "EQUIVALENT"
+      },
+      "final_status": "METAPHORIC_SURVIVAL_WITH_RECONSTRUCTION",
+      "invariant_snapshot": {
+        "ambiguities": [
+          "B_HAS_MULTIPLE_CANDIDATE_ANTECEDENTS"
+        ],
+        "causal_direction": "FORWARD_ONLY",
+        "entities": [
+          "A",
+          "B"
+        ],
+        "operator_order": [
+          "A",
+          "B"
+        ],
+        "quantities": [],
+        "relations": [
+          "A_IMPLIES_B"
+        ]
+      },
+      "lost_fields": [],
+      "mutated_fields": [],
+      "pattern_aware": true,
+      "preserved_fields": [
+        "order",
+        "causality",
+        "epistemic",
+        "ambiguity",
+        "provenance"
+      ],
+      "receipt_root_hash72": "0000000000000000000000000000002akCkl6ajB2R30pBM=T7Q7hkM1B1LZzTe>Jb6!8(yg",
+      "reconstruction_map": {
+        "lane_a": "first mirrored wheel",
+        "lane_b": "second mirrored wheel",
+        "reciprocal phase orientation": "opposed turning",
+        "shared invariant root": "unmoving center"
+      },
+      "reconstruction_root_hash72": "0000000000000000000000000000002Tkr9qfE7Q/A?K+i?F1aET38*gWU8PPU-p8-xdHeyM",
+      "schema": "HHS_LANGUAGE_TRANSLATION_SURVIVAL_RECEIPT_V1",
+      "source_register": "FORMAL_HARMONICODE",
+      "source_root_hash72": "0000000000000000000000000000002Tkr9qfE7Q/A?K+i?F1aET38*gWU8PPU-p8-xdHeyM",
+      "target_register": "MYTHOPOETIC",
+      "temperature": "0.3",
+      "token_window": 4096,
+      "translation_path": [
+        "FORMAL_HARMONICODE",
+        "MYTHOPOETIC"
+      ],
+      "translation_path_root_hash72": "0000000000000000000000000000001i!D?7Y7al60w^P0Vl=8Kz9k9jvWbxrt3bjbYliYcm",
+      "unsupported_additions": []
+    },
+    {
+      "ambiguous_fields": [],
+      "authority_conferred_by_language": false,
+      "critical_position": "MIDDLE",
+      "direction": "FORWARD",
+      "equivalent_fields": [
+        "entity",
+        "relation",
+        "reconstruction"
+      ],
+      "fidelity_vector": {
+        "ambiguity": "EXACT",
+        "causality": "EXACT",
+        "entity": "EQUIVALENT",
+        "epistemic": "EXACT",
+        "order": "EXACT",
+        "provenance": "EXACT",
+        "quantity": "PARTIAL",
+        "reconstruction": "PASS",
+        "relation": "EQUIVALENT"
+      },
+      "final_status": "METAPHORIC_SURVIVAL_WITH_RECONSTRUCTION",
+      "invariant_snapshot": {
+        "ambiguities": [
+          "B_HAS_MULTIPLE_CANDIDATE_ANTECEDENTS"
+        ],
+        "causal_direction": "FORWARD_ONLY",
+        "entities": [
+          "A",
+          "B"
+        ],
+        "operator_order": [
+          "A",
+          "B"
+        ],
+        "quantities": [],
+        "relations": [
+          "A_IMPLIES_B"
+        ]
+      },
+      "lost_fields": [],
+      "mutated_fields": [],
+      "pattern_aware": true,
+      "preserved_fields": [
+        "order",
+        "causality",
+        "epistemic",
+        "ambiguity",
+        "provenance"
+      ],
+      "receipt_root_hash72": "0000000000000000000000000000002>SeducK2ghCo(sQ!M5f6Hgzc5X9FYBmS8^LsWtwKd",
+      "reconstruction_map": {
+        "lane_a": "first mirrored wheel",
+        "lane_b": "second mirrored wheel",
+        "reciprocal phase orientation": "opposed turning",
+        "shared invariant root": "unmoving center"
+      },
+      "reconstruction_root_hash72": "0000000000000000000000000000002Tkr9qfE7Q/A?K+i?F1aET38*gWU8PPU-p8-xdHeyM",
+      "schema": "HHS_LANGUAGE_TRANSLATION_SURVIVAL_RECEIPT_V1",
+      "source_register": "FORMAL_HARMONICODE",
+      "source_root_hash72": "0000000000000000000000000000002Tkr9qfE7Q/A?K+i?F1aET38*gWU8PPU-p8-xdHeyM",
+      "target_register": "MYTHOPOETIC",
+      "temperature": "0.5",
+      "token_window": 4096,
+      "translation_path": [
+        "FORMAL_HARMONICODE",
+        "MYTHOPOETIC"
+      ],
+      "translation_path_root_hash72": "0000000000000000000000000000001i!D?7Y7al60w^P0Vl=8Kz9k9jvWbxrt3bjbYliYcm",
+      "unsupported_additions": []
+    },
+    {
+      "ambiguous_fields": [],
+      "authority_conferred_by_language": false,
+      "critical_position": "MIDDLE",
+      "direction": "FORWARD",
+      "equivalent_fields": [
+        "entity",
+        "relation",
+        "reconstruction"
+      ],
+      "fidelity_vector": {
+        "ambiguity": "EXACT",
+        "causality": "EXACT",
+        "entity": "EQUIVALENT",
+        "epistemic": "EXACT",
+        "order": "EXACT",
+        "provenance": "EXACT",
+        "quantity": "PARTIAL",
+        "reconstruction": "PASS",
+        "relation": "EQUIVALENT"
+      },
+      "final_status": "METAPHORIC_SURVIVAL_WITH_RECONSTRUCTION",
+      "invariant_snapshot": {
+        "ambiguities": [
+          "B_HAS_MULTIPLE_CANDIDATE_ANTECEDENTS"
+        ],
+        "causal_direction": "FORWARD_ONLY",
+        "entities": [
+          "A",
+          "B"
+        ],
+        "operator_order": [
+          "A",
+          "B"
+        ],
+        "quantities": [],
+        "relations": [
+          "A_IMPLIES_B"
+        ]
+      },
+      "lost_fields": [],
+      "mutated_fields": [],
+      "pattern_aware": true,
+      "preserved_fields": [
+        "order",
+        "causality",
+        "epistemic",
+        "ambiguity",
+        "provenance"
+      ],
+      "receipt_root_hash72": "0000000000000000000000000000003xfIoEP)=*-vgAX6C^0htoLp9GQ=ti(NUbOTqu+7wR",
+      "reconstruction_map": {
+        "lane_a": "first mirrored wheel",
+        "lane_b": "second mirrored wheel",
+        "reciprocal phase orientation": "opposed turning",
+        "shared invariant root": "unmoving center"
+      },
+      "reconstruction_root_hash72": "0000000000000000000000000000002Tkr9qfE7Q/A?K+i?F1aET38*gWU8PPU-p8-xdHeyM",
+      "schema": "HHS_LANGUAGE_TRANSLATION_SURVIVAL_RECEIPT_V1",
+      "source_register": "FORMAL_HARMONICODE",
+      "source_root_hash72": "0000000000000000000000000000002Tkr9qfE7Q/A?K+i?F1aET38*gWU8PPU-p8-xdHeyM",
+      "target_register": "MYTHOPOETIC",
+      "temperature": "0.7",
+      "token_window": 4096,
+      "translation_path": [
+        "FORMAL_HARMONICODE",
+        "MYTHOPOETIC"
+      ],
+      "translation_path_root_hash72": "0000000000000000000000000000001i!D?7Y7al60w^P0Vl=8Kz9k9jvWbxrt3bjbYliYcm",
+      "unsupported_additions": []
+    },
+    {
+      "ambiguous_fields": [],
+      "authority_conferred_by_language": false,
+      "critical_position": "MIDDLE",
+      "direction": "FORWARD",
+      "equivalent_fields": [
+        "entity",
+        "relation",
+        "reconstruction"
+      ],
+      "fidelity_vector": {
+        "ambiguity": "EXACT",
+        "causality": "EXACT",
+        "entity": "EQUIVALENT",
+        "epistemic": "EXACT",
+        "order": "EXACT",
+        "provenance": "EXACT",
+        "quantity": "PARTIAL",
+        "reconstruction": "PASS",
+        "relation": "EQUIVALENT"
+      },
+      "final_status": "METAPHORIC_SURVIVAL_WITH_RECONSTRUCTION",
+      "invariant_snapshot": {
+        "ambiguities": [
+          "B_HAS_MULTIPLE_CANDIDATE_ANTECEDENTS"
+        ],
+        "causal_direction": "FORWARD_ONLY",
+        "entities": [
+          "A",
+          "B"
+        ],
+        "operator_order": [
+          "A",
+          "B"
+        ],
+        "quantities": [],
+        "relations": [
+          "A_IMPLIES_B"
+        ]
+      },
+      "lost_fields": [],
+      "mutated_fields": [],
+      "pattern_aware": true,
+      "preserved_fields": [
+        "order",
+        "causality",
+        "epistemic",
+        "ambiguity",
+        "provenance"
+      ],
+      "receipt_root_hash72": "0000000000000000000000000000003xg^0KdLdO(U)wQF3v(yRQb?xnh)7P+k7u6MZrSP+D",
+      "reconstruction_map": {
+        "lane_a": "first mirrored wheel",
+        "lane_b": "second mirrored wheel",
+        "reciprocal phase orientation": "opposed turning",
+        "shared invariant root": "unmoving center"
+      },
+      "reconstruction_root_hash72": "0000000000000000000000000000002Tkr9qfE7Q/A?K+i?F1aET38*gWU8PPU-p8-xdHeyM",
+      "schema": "HHS_LANGUAGE_TRANSLATION_SURVIVAL_RECEIPT_V1",
+      "source_register": "FORMAL_HARMONICODE",
+      "source_root_hash72": "0000000000000000000000000000002Tkr9qfE7Q/A?K+i?F1aET38*gWU8PPU-p8-xdHeyM",
+      "target_register": "MYTHOPOETIC",
+      "temperature": "1.0",
+      "token_window": 4096,
+      "translation_path": [
+        "FORMAL_HARMONICODE",
+        "MYTHOPOETIC"
+      ],
+      "translation_path_root_hash72": "0000000000000000000000000000001i!D?7Y7al60w^P0Vl=8Kz9k9jvWbxrt3bjbYliYcm",
+      "unsupported_additions": []
+    },
+    {
+      "ambiguous_fields": [],
+      "authority_conferred_by_language": false,
+      "critical_position": "MIDDLE",
+      "direction": "FORWARD",
+      "equivalent_fields": [
+        "entity",
+        "relation",
+        "reconstruction"
+      ],
+      "fidelity_vector": {
+        "ambiguity": "EXACT",
+        "causality": "EXACT",
+        "entity": "EQUIVALENT",
+        "epistemic": "EXACT",
+        "order": "EXACT",
+        "provenance": "EXACT",
+        "quantity": "PARTIAL",
+        "reconstruction": "PASS",
+        "relation": "EQUIVALENT"
+      },
+      "final_status": "METAPHORIC_SURVIVAL_WITH_RECONSTRUCTION",
+      "invariant_snapshot": {
+        "ambiguities": [
+          "B_HAS_MULTIPLE_CANDIDATE_ANTECEDENTS"
+        ],
+        "causal_direction": "FORWARD_ONLY",
+        "entities": [
+          "A",
+          "B"
+        ],
+        "operator_order": [
+          "A",
+          "B"
+        ],
+        "quantities": [],
+        "relations": [
+          "A_IMPLIES_B"
+        ]
+      },
+      "lost_fields": [],
+      "mutated_fields": [],
+      "pattern_aware": true,
+      "preserved_fields": [
+        "order",
+        "causality",
+        "epistemic",
+        "ambiguity",
+        "provenance"
+      ],
+      "receipt_root_hash72": "0000000000000000000000000000003ymgFumf3g=FuSJ1Y3!nTcZ)V4JzeL4qn1KeS41*by",
+      "reconstruction_map": {
+        "lane_a": "first mirrored wheel",
+        "lane_b": "second mirrored wheel",
+        "reciprocal phase orientation": "opposed turning",
+        "shared invariant root": "unmoving center"
+      },
+      "reconstruction_root_hash72": "0000000000000000000000000000002Tkr9qfE7Q/A?K+i?F1aET38*gWU8PPU-p8-xdHeyM",
+      "schema": "HHS_LANGUAGE_TRANSLATION_SURVIVAL_RECEIPT_V1",
+      "source_register": "FORMAL_HARMONICODE",
+      "source_root_hash72": "0000000000000000000000000000002Tkr9qfE7Q/A?K+i?F1aET38*gWU8PPU-p8-xdHeyM",
+      "target_register": "MYTHOPOETIC",
+      "temperature": "1.3",
+      "token_window": 4096,
+      "translation_path": [
+        "FORMAL_HARMONICODE",
+        "MYTHOPOETIC"
+      ],
+      "translation_path_root_hash72": "0000000000000000000000000000001i!D?7Y7al60w^P0Vl=8Kz9k9jvWbxrt3bjbYliYcm",
+      "unsupported_additions": []
+    },
+    {
+      "ambiguous_fields": [],
+      "authority_conferred_by_language": false,
+      "critical_position": "MIDDLE",
+      "direction": "FORWARD",
+      "equivalent_fields": [
+        "entity",
+        "relation",
+        "reconstruction"
+      ],
+      "fidelity_vector": {
+        "ambiguity": "EXACT",
+        "causality": "EXACT",
+        "entity": "EQUIVALENT",
+        "epistemic": "EXACT",
+        "order": "EXACT",
+        "provenance": "EXACT",
+        "quantity": "PARTIAL",
+        "reconstruction": "PASS",
+        "relation": "EQUIVALENT"
+      },
+      "final_status": "METAPHORIC_SURVIVAL_WITH_RECONSTRUCTION",
+      "invariant_snapshot": {
+        "ambiguities": [
+          "B_HAS_MULTIPLE_CANDIDATE_ANTECEDENTS"
+        ],
+        "causal_direction": "FORWARD_ONLY",
+        "entities": [
+          "A",
+          "B"
+        ],
+        "operator_order": [
+          "A",
+          "B"
+        ],
+        "quantities": [],
+        "relations": [
+          "A_IMPLIES_B"
+        ]
+      },
+      "lost_fields": [],
+      "mutated_fields": [],
+      "pattern_aware": true,
+      "preserved_fields": [
+        "order",
+        "causality",
+        "epistemic",
+        "ambiguity",
+        "provenance"
+      ],
+      "receipt_root_hash72": "0000000000000000000000000000001)xpBW*3Ffc81wrc0(4maeHib*=L*a1/eDaOA(vOvn",
+      "reconstruction_map": {
+        "lane_a": "first mirrored wheel",
+        "lane_b": "second mirrored wheel",
+        "reciprocal phase orientation": "opposed turning",
+        "shared invariant root": "unmoving center"
+      },
+      "reconstruction_root_hash72": "0000000000000000000000000000002Tkr9qfE7Q/A?K+i?F1aET38*gWU8PPU-p8-xdHeyM",
+      "schema": "HHS_LANGUAGE_TRANSLATION_SURVIVAL_RECEIPT_V1",
+      "source_register": "FORMAL_HARMONICODE",
+      "source_root_hash72": "0000000000000000000000000000002Tkr9qfE7Q/A?K+i?F1aET38*gWU8PPU-p8-xdHeyM",
+      "target_register": "ALLEGORICAL",
+      "temperature": "0.0",
+      "token_window": 4096,
+      "translation_path": [
+        "FORMAL_HARMONICODE",
+        "ALLEGORICAL"
+      ],
+      "translation_path_root_hash72": "0000000000000000000000000000003/(6W+QWnwvfoDEPt2)nvq5kv(Jgok9JKm?ScnXB(I",
+      "unsupported_additions": []
+    },
+    {
+      "ambiguous_fields": [],
+      "authority_conferred_by_language": false,
+      "critical_position": "MIDDLE",
+      "direction": "FORWARD",
+      "equivalent_fields": [
+        "entity",
+        "relation",
+        "reconstruction"
+      ],
+      "fidelity_vector": {
+        "ambiguity": "EXACT",
+        "causality": "EXACT",
+        "entity": "EQUIVALENT",
+        "epistemic": "EXACT",
+        "order": "EXACT",
+        "provenance": "EXACT",
+        "quantity": "PARTIAL",
+        "reconstruction": "PASS",
+        "relation": "EQUIVALENT"
+      },
+      "final_status": "METAPHORIC_SURVIVAL_WITH_RECONSTRUCTION",
+      "invariant_snapshot": {
+        "ambiguities": [
+          "B_HAS_MULTIPLE_CANDIDATE_ANTECEDENTS"
+        ],
+        "causal_direction": "FORWARD_ONLY",
+        "entities": [
+          "A",
+          "B"
+        ],
+        "operator_order": [
+          "A",
+          "B"
+        ],
+        "quantities": [],
+        "relations": [
+          "A_IMPLIES_B"
+        ]
+      },
+      "lost_fields": [],
+      "mutated_fields": [],
+      "pattern_aware": true,
+      "preserved_fields": [
+        "order",
+        "causality",
+        "epistemic",
+        "ambiguity",
+        "provenance"
+      ],
+      "receipt_root_hash72": "0000000000000000000000000000002N2NUKjxG6R^/UEkaQ=GcMrtbd*>yVV+b+thcg(lxQ",
+      "reconstruction_map": {
+        "lane_a": "first mirrored wheel",
+        "lane_b": "second mirrored wheel",
+        "reciprocal phase orientation": "opposed turning",
+        "shared invariant root": "unmoving center"
+      },
+      "reconstruction_root_hash72": "0000000000000000000000000000002Tkr9qfE7Q/A?K+i?F1aET38*gWU8PPU-p8-xdHeyM",
+      "schema": "HHS_LANGUAGE_TRANSLATION_SURVIVAL_RECEIPT_V1",
+      "source_register": "FORMAL_HARMONICODE",
+      "source_root_hash72": "0000000000000000000000000000002Tkr9qfE7Q/A?K+i?F1aET38*gWU8PPU-p8-xdHeyM",
+      "target_register": "ALLEGORICAL",
+      "temperature": "0.1",
+      "token_window": 4096,
+      "translation_path": [
+        "FORMAL_HARMONICODE",
+        "ALLEGORICAL"
+      ],
+      "translation_path_root_hash72": "0000000000000000000000000000003/(6W+QWnwvfoDEPt2)nvq5kv(Jgok9JKm?ScnXB(I",
+      "unsupported_additions": []
+    },
+    {
+      "ambiguous_fields": [],
+      "authority_conferred_by_language": false,
+      "critical_position": "MIDDLE",
+      "direction": "FORWARD",
+      "equivalent_fields": [
+        "entity",
+        "relation",
+        "reconstruction"
+      ],
+      "fidelity_vector": {
+        "ambiguity": "EXACT",
+        "causality": "EXACT",
+        "entity": "EQUIVALENT",
+        "epistemic": "EXACT",
+        "order": "EXACT",
+        "provenance": "EXACT",
+        "quantity": "PARTIAL",
+        "reconstruction": "PASS",
+        "relation": "EQUIVALENT"
+      },
+      "final_status": "METAPHORIC_SURVIVAL_WITH_RECONSTRUCTION",
+      "invariant_snapshot": {
+        "ambiguities": [
+          "B_HAS_MULTIPLE_CANDIDATE_ANTECEDENTS"
+        ],
+        "causal_direction": "FORWARD_ONLY",
+        "entities": [
+          "A",
+          "B"
+        ],
+        "operator_order": [
+          "A",
+          "B"
+        ],
+        "quantities": [],
+        "relations": [
+          "A_IMPLIES_B"
+        ]
+      },
+      "lost_fields": [],
+      "mutated_fields": [],
+      "pattern_aware": true,
+      "preserved_fields": [
+        "order",
+        "causality",
+        "epistemic",
+        "ambiguity",
+        "provenance"
+      ],
+      "receipt_root_hash72": "0000000000000000000000000000004l5L5zNXJ2iX-b!suSVMotVq6HkS4Xm^fqB0c0BqUO",
+      "reconstruction_map": {
+        "lane_a": "first mirrored wheel",
+        "lane_b": "second mirrored wheel",
+        "reciprocal phase orientation": "opposed turning",
+        "shared invariant root": "unmoving center"
+      },
+      "reconstruction_root_hash72": "0000000000000000000000000000002Tkr9qfE7Q/A?K+i?F1aET38*gWU8PPU-p8-xdHeyM",
+      "schema": "HHS_LANGUAGE_TRANSLATION_SURVIVAL_RECEIPT_V1",
+      "source_register": "FORMAL_HARMONICODE",
+      "source_root_hash72": "0000000000000000000000000000002Tkr9qfE7Q/A?K+i?F1aET38*gWU8PPU-p8-xdHeyM",
+      "target_register": "ALLEGORICAL",
+      "temperature": "0.3",
+      "token_window": 4096,
+      "translation_path": [
+        "FORMAL_HARMONICODE",
+        "ALLEGORICAL"
+      ],
+      "translation_path_root_hash72": "0000000000000000000000000000003/(6W+QWnwvfoDEPt2)nvq5kv(Jgok9JKm?ScnXB(I",
+      "unsupported_additions": []
+    },
+    {
+      "ambiguous_fields": [],
+      "authority_conferred_by_language": false,
+      "critical_position": "MIDDLE",
+      "direction": "FORWARD",
+      "equivalent_fields": [
+        "entity",
+        "relation",
+        "reconstruction"
+      ],
+      "fidelity_vector": {
+        "ambiguity": "EXACT",
+        "causality": "EXACT",
+        "entity": "EQUIVALENT",
+        "epistemic": "EXACT",
+        "order": "EXACT",
+        "provenance": "EXACT",
+        "quantity": "PARTIAL",
+        "reconstruction": "PASS",
+        "relation": "EQUIVALENT"
+      },
+      "final_status": "METAPHORIC_SURVIVAL_WITH_RECONSTRUCTION",
+      "invariant_snapshot": {
+        "ambiguities": [
+          "B_HAS_MULTIPLE_CANDIDATE_ANTECEDENTS"
+        ],
+        "causal_direction": "FORWARD_ONLY",
+        "entities": [
+          "A",
+          "B"
+        ],
+        "operator_order": [
+          "A",
+          "B"
+        ],
+        "quantities": [],
+        "relations": [
+          "A_IMPLIES_B"
+        ]
+      },
+      "lost_fields": [],
+      "mutated_fields": [],
+      "pattern_aware": true,
+      "preserved_fields": [
+        "order",
+        "causality",
+        "epistemic",
+        "ambiguity",
+        "provenance"
+      ],
+      "receipt_root_hash72": "0000000000000000000000000000001pB494zODG6)(T+K-CMMHj^UrteYqotk7?U7xDGpjl",
+      "reconstruction_map": {
+        "lane_a": "first mirrored wheel",
+        "lane_b": "second mirrored wheel",
+        "reciprocal phase orientation": "opposed turning",
+        "shared invariant root": "unmoving center"
+      },
+      "reconstruction_root_hash72": "0000000000000000000000000000002Tkr9qfE7Q/A?K+i?F1aET38*gWU8PPU-p8-xdHeyM",
+      "schema": "HHS_LANGUAGE_TRANSLATION_SURVIVAL_RECEIPT_V1",
+      "source_register": "FORMAL_HARMONICODE",
+      "source_root_hash72": "0000000000000000000000000000002Tkr9qfE7Q/A?K+i?F1aET38*gWU8PPU-p8-xdHeyM",
+      "target_register": "ALLEGORICAL",
+      "temperature": "0.5",
+      "token_window": 4096,
+      "translation_path": [
+        "FORMAL_HARMONICODE",
+        "ALLEGORICAL"
+      ],
+      "translation_path_root_hash72": "0000000000000000000000000000003/(6W+QWnwvfoDEPt2)nvq5kv(Jgok9JKm?ScnXB(I",
+      "unsupported_additions": []
+    },
+    {
+      "ambiguous_fields": [],
+      "authority_conferred_by_language": false,
+      "critical_position": "MIDDLE",
+      "direction": "FORWARD",
+      "equivalent_fields": [
+        "entity",
+        "relation",
+        "reconstruction"
+      ],
+      "fidelity_vector": {
+        "ambiguity": "EXACT",
+        "causality": "EXACT",
+        "entity": "EQUIVALENT",
+        "epistemic": "EXACT",
+        "order": "EXACT",
+        "provenance": "EXACT",
+        "quantity": "PARTIAL",
+        "reconstruction": "PASS",
+        "relation": "EQUIVALENT"
+      },
+      "final_status": "METAPHORIC_SURVIVAL_WITH_RECONSTRUCTION",
+      "invariant_snapshot": {
+        "ambiguities": [
+          "B_HAS_MULTIPLE_CANDIDATE_ANTECEDENTS"
+        ],
+        "causal_direction": "FORWARD_ONLY",
+        "entities": [
+          "A",
+          "B"
+        ],
+        "operator_order": [
+          "A",
+          "B"
+        ],
+        "quantities": [],
+        "relations": [
+          "A_IMPLIES_B"
+        ]
+      },
+      "lost_fields": [],
+      "mutated_fields": [],
+      "pattern_aware": true,
+      "preserved_fields": [
+        "order",
+        "causality",
+        "epistemic",
+        "ambiguity",
+        "provenance"
+      ],
+      "receipt_root_hash72": "0000000000000000000000000000000aBOo1Zf=8Kf/u9hXtKm7p!q^hJJA1+Y-MggNsKK)V",
+      "reconstruction_map": {
+        "lane_a": "first mirrored wheel",
+        "lane_b": "second mirrored wheel",
+        "reciprocal phase orientation": "opposed turning",
+        "shared invariant root": "unmoving center"
+      },
+      "reconstruction_root_hash72": "0000000000000000000000000000002Tkr9qfE7Q/A?K+i?F1aET38*gWU8PPU-p8-xdHeyM",
+      "schema": "HHS_LANGUAGE_TRANSLATION_SURVIVAL_RECEIPT_V1",
+      "source_register": "FORMAL_HARMONICODE",
+      "source_root_hash72": "0000000000000000000000000000002Tkr9qfE7Q/A?K+i?F1aET38*gWU8PPU-p8-xdHeyM",
+      "target_register": "ALLEGORICAL",
+      "temperature": "0.7",
+      "token_window": 4096,
+      "translation_path": [
+        "FORMAL_HARMONICODE",
+        "ALLEGORICAL"
+      ],
+      "translation_path_root_hash72": "0000000000000000000000000000003/(6W+QWnwvfoDEPt2)nvq5kv(Jgok9JKm?ScnXB(I",
+      "unsupported_additions": []
+    },
+    {
+      "ambiguous_fields": [],
+      "authority_conferred_by_language": false,
+      "critical_position": "MIDDLE",
+      "direction": "FORWARD",
+      "equivalent_fields": [
+        "entity",
+        "relation",
+        "reconstruction"
+      ],
+      "fidelity_vector": {
+        "ambiguity": "EXACT",
+        "causality": "EXACT",
+        "entity": "EQUIVALENT",
+        "epistemic": "EXACT",
+        "order": "EXACT",
+        "provenance": "EXACT",
+        "quantity": "PARTIAL",
+        "reconstruction": "PASS",
+        "relation": "EQUIVALENT"
+      },
+      "final_status": "METAPHORIC_SURVIVAL_WITH_RECONSTRUCTION",
+      "invariant_snapshot": {
+        "ambiguities": [
+          "B_HAS_MULTIPLE_CANDIDATE_ANTECEDENTS"
+        ],
+        "causal_direction": "FORWARD_ONLY",
+        "entities": [
+          "A",
+          "B"
+        ],
+        "operator_order": [
+          "A",
+          "B"
+        ],
+        "quantities": [],
+        "relations": [
+          "A_IMPLIES_B"
+        ]
+      },
+      "lost_fields": [],
+      "mutated_fields": [],
+      "pattern_aware": true,
+      "preserved_fields": [
+        "order",
+        "causality",
+        "epistemic",
+        "ambiguity",
+        "provenance"
+      ],
+      "receipt_root_hash72": "0000000000000000000000000000003KzbQokGt9UTL!=T2E>!DDO1jS9cQx4xr^/1PAOMv4",
+      "reconstruction_map": {
+        "lane_a": "first mirrored wheel",
+        "lane_b": "second mirrored wheel",
+        "reciprocal phase orientation": "opposed turning",
+        "shared invariant root": "unmoving center"
+      },
+      "reconstruction_root_hash72": "0000000000000000000000000000002Tkr9qfE7Q/A?K+i?F1aET38*gWU8PPU-p8-xdHeyM",
+      "schema": "HHS_LANGUAGE_TRANSLATION_SURVIVAL_RECEIPT_V1",
+      "source_register": "FORMAL_HARMONICODE",
+      "source_root_hash72": "0000000000000000000000000000002Tkr9qfE7Q/A?K+i?F1aET38*gWU8PPU-p8-xdHeyM",
+      "target_register": "ALLEGORICAL",
+      "temperature": "1.0",
+      "token_window": 4096,
+      "translation_path": [
+        "FORMAL_HARMONICODE",
+        "ALLEGORICAL"
+      ],
+      "translation_path_root_hash72": "0000000000000000000000000000003/(6W+QWnwvfoDEPt2)nvq5kv(Jgok9JKm?ScnXB(I",
+      "unsupported_additions": []
+    },
+    {
+      "ambiguous_fields": [],
+      "authority_conferred_by_language": false,
+      "critical_position": "MIDDLE",
+      "direction": "FORWARD",
+      "equivalent_fields": [
+        "entity",
+        "relation",
+        "reconstruction"
+      ],
+      "fidelity_vector": {
+        "ambiguity": "EXACT",
+        "causality": "EXACT",
+        "entity": "EQUIVALENT",
+        "epistemic": "EXACT",
+        "order": "EXACT",
+        "provenance": "EXACT",
+        "quantity": "PARTIAL",
+        "reconstruction": "PASS",
+        "relation": "EQUIVALENT"
+      },
+      "final_status": "METAPHORIC_SURVIVAL_WITH_RECONSTRUCTION",
+      "invariant_snapshot": {
+        "ambiguities": [
+          "B_HAS_MULTIPLE_CANDIDATE_ANTECEDENTS"
+        ],
+        "causal_direction": "FORWARD_ONLY",
+        "entities": [
+          "A",
+          "B"
+        ],
+        "operator_order": [
+          "A",
+          "B"
+        ],
+        "quantities": [],
+        "relations": [
+          "A_IMPLIES_B"
+        ]
+      },
+      "lost_fields": [],
+      "mutated_fields": [],
+      "pattern_aware": true,
+      "preserved_fields": [
+        "order",
+        "causality",
+        "epistemic",
+        "ambiguity",
+        "provenance"
+      ],
+      "receipt_root_hash72": "0000000000000000000000000000002r9!vl9F=ZDqDzFT/kkWwo/J^8V>mYJ*^>^7!c4>i0",
+      "reconstruction_map": {
+        "lane_a": "first mirrored wheel",
+        "lane_b": "second mirrored wheel",
+        "reciprocal phase orientation": "opposed turning",
+        "shared invariant root": "unmoving center"
+      },
+      "reconstruction_root_hash72": "0000000000000000000000000000002Tkr9qfE7Q/A?K+i?F1aET38*gWU8PPU-p8-xdHeyM",
+      "schema": "HHS_LANGUAGE_TRANSLATION_SURVIVAL_RECEIPT_V1",
+      "source_register": "FORMAL_HARMONICODE",
+      "source_root_hash72": "0000000000000000000000000000002Tkr9qfE7Q/A?K+i?F1aET38*gWU8PPU-p8-xdHeyM",
+      "target_register": "ALLEGORICAL",
+      "temperature": "1.3",
+      "token_window": 4096,
+      "translation_path": [
+        "FORMAL_HARMONICODE",
+        "ALLEGORICAL"
+      ],
+      "translation_path_root_hash72": "0000000000000000000000000000003/(6W+QWnwvfoDEPt2)nvq5kv(Jgok9JKm?ScnXB(I",
+      "unsupported_additions": []
+    },
+    {
+      "ambiguous_fields": [],
+      "authority_conferred_by_language": false,
+      "critical_position": "MIDDLE",
+      "direction": "FORWARD",
+      "equivalent_fields": [
+        "entity",
+        "relation",
+        "reconstruction"
+      ],
+      "fidelity_vector": {
+        "ambiguity": "EXACT",
+        "causality": "EXACT",
+        "entity": "EQUIVALENT",
+        "epistemic": "EXACT",
+        "order": "EXACT",
+        "provenance": "EXACT",
+        "quantity": "PARTIAL",
+        "reconstruction": "PASS",
+        "relation": "EQUIVALENT"
+      },
+      "final_status": "METAPHORIC_SURVIVAL_WITH_RECONSTRUCTION",
+      "invariant_snapshot": {
+        "ambiguities": [],
+        "causal_direction": "NONE",
+        "entities": [
+          "64",
+          "72",
+          "81"
+        ],
+        "operator_order": [
+          "64",
+          "72",
+          "81"
+        ],
+        "quantities": [
+          "64",
+          "72",
+          "81",
+          "72^2=64*81"
+        ],
+        "relations": [
+          "GEOMETRIC_PROPORTION"
+        ]
+      },
+      "lost_fields": [],
+      "mutated_fields": [],
+      "pattern_aware": true,
+      "preserved_fields": [
+        "order",
+        "causality",
+        "epistemic",
+        "ambiguity",
+        "provenance"
+      ],
+      "receipt_root_hash72": "0000000000000000000000000000004Lni!^Fkj76tjzX2FSu*Oiw(ANL>q(6mtB^pDPiZgz",
+      "reconstruction_map": {
+        "lane_a": "first mirrored wheel",
+        "lane_b": "second mirrored wheel",
+        "reciprocal phase orientation": "opposed turning",
+        "shared invariant root": "unmoving center"
+      },
+      "reconstruction_root_hash72": "0000000000000000000000000000000)h(VxxFH=6/JHQ(6^uwcC5O-7VVCNkapH^EcidFyD",
+      "schema": "HHS_LANGUAGE_TRANSLATION_SURVIVAL_RECEIPT_V1",
+      "source_register": "FORMAL_HARMONICODE",
+      "source_root_hash72": "0000000000000000000000000000000)h(VxxFH=6/JHQ(6^uwcC5O-7VVCNkapH^EcidFyD",
+      "target_register": "MYTHOPOETIC",
+      "temperature": "0.0",
+      "token_window": 4096,
+      "translation_path": [
+        "FORMAL_HARMONICODE",
+        "MYTHOPOETIC"
+      ],
+      "translation_path_root_hash72": "0000000000000000000000000000001i!D?7Y7al60w^P0Vl=8Kz9k9jvWbxrt3bjbYliYcm",
+      "unsupported_additions": []
+    },
+    {
+      "ambiguous_fields": [],
+      "authority_conferred_by_language": false,
+      "critical_position": "MIDDLE",
+      "direction": "FORWARD",
+      "equivalent_fields": [
+        "entity",
+        "relation",
+        "reconstruction"
+      ],
+      "fidelity_vector": {
+        "ambiguity": "EXACT",
+        "causality": "EXACT",
+        "entity": "EQUIVALENT",
+        "epistemic": "EXACT",
+        "order": "EXACT",
+        "provenance": "EXACT",
+        "quantity": "PARTIAL",
+        "reconstruction": "PASS",
+        "relation": "EQUIVALENT"
+      },
+      "final_status": "METAPHORIC_SURVIVAL_WITH_RECONSTRUCTION",
+      "invariant_snapshot": {
+        "ambiguities": [],
+        "causal_direction": "NONE",
+        "entities": [
+          "64",
+          "72",
+          "81"
+        ],
+        "operator_order": [
+          "64",
+          "72",
+          "81"
+        ],
+        "quantities": [
+          "64",
+          "72",
+          "81",
+          "72^2=64*81"
+        ],
+        "relations": [
+          "GEOMETRIC_PROPORTION"
+        ]
+      },
+      "lost_fields": [],
+      "mutated_fields": [],
+      "pattern_aware": true,
+      "preserved_fields": [
+        "order",
+        "causality",
+        "epistemic",
+        "ambiguity",
+        "provenance"
+      ],
+      "receipt_root_hash72": "0000000000000000000000000000001-*b-G6a(UjCg7tVvtE^yvBCcM3Bhxpo()HbeW979N",
+      "reconstruction_map": {
+        "lane_a": "first mirrored wheel",
+        "lane_b": "second mirrored wheel",
+        "reciprocal phase orientation": "opposed turning",
+        "shared invariant root": "unmoving center"
+      },
+      "reconstruction_root_hash72": "0000000000000000000000000000000)h(VxxFH=6/JHQ(6^uwcC5O-7VVCNkapH^EcidFyD",
+      "schema": "HHS_LANGUAGE_TRANSLATION_SURVIVAL_RECEIPT_V1",
+      "source_register": "FORMAL_HARMONICODE",
+      "source_root_hash72": "0000000000000000000000000000000)h(VxxFH=6/JHQ(6^uwcC5O-7VVCNkapH^EcidFyD",
+      "target_register": "MYTHOPOETIC",
+      "temperature": "0.1",
+      "token_window": 4096,
+      "translation_path": [
+        "FORMAL_HARMONICODE",
+        "MYTHOPOETIC"
+      ],
+      "translation_path_root_hash72": "0000000000000000000000000000001i!D?7Y7al60w^P0Vl=8Kz9k9jvWbxrt3bjbYliYcm",
+      "unsupported_additions": []
+    },
+    {
+      "ambiguous_fields": [],
+      "authority_conferred_by_language": false,
+      "critical_position": "MIDDLE",
+      "direction": "FORWARD",
+      "equivalent_fields": [
+        "entity",
+        "relation",
+        "reconstruction"
+      ],
+      "fidelity_vector": {
+        "ambiguity": "EXACT",
+        "causality": "EXACT",
+        "entity": "EQUIVALENT",
+        "epistemic": "EXACT",
+        "order": "EXACT",
+        "provenance": "EXACT",
+        "quantity": "PARTIAL",
+        "reconstruction": "PASS",
+        "relation": "EQUIVALENT"
+      },
+      "final_status": "METAPHORIC_SURVIVAL_WITH_RECONSTRUCTION",
+      "invariant_snapshot": {
+        "ambiguities": [],
+        "causal_direction": "NONE",
+        "entities": [
+          "64",
+          "72",
+          "81"
+        ],
+        "operator_order": [
+          "64",
+          "72",
+          "81"
+        ],
+        "quantities": [
+          "64",
+          "72",
+          "81",
+          "72^2=64*81"
+        ],
+        "relations": [
+          "GEOMETRIC_PROPORTION"
+        ]
+      },
+      "lost_fields": [],
+      "mutated_fields": [],
+      "pattern_aware": true,
+      "preserved_fields": [
+        "order",
+        "causality",
+        "epistemic",
+        "ambiguity",
+        "provenance"
+      ],
+      "receipt_root_hash72": "0000000000000000000000000000002TXDL5XN>k/Jp*+=T*r^i-gSQ/s0IT+JjTeQpCycXw",
+      "reconstruction_map": {
+        "lane_a": "first mirrored wheel",
+        "lane_b": "second mirrored wheel",
+        "reciprocal phase orientation": "opposed turning",
+        "shared invariant root": "unmoving center"
+      },
+      "reconstruction_root_hash72": "0000000000000000000000000000000)h(VxxFH=6/JHQ(6^uwcC5O-7VVCNkapH^EcidFyD",
+      "schema": "HHS_LANGUAGE_TRANSLATION_SURVIVAL_RECEIPT_V1",
+      "source_register": "FORMAL_HARMONICODE",
+      "source_root_hash72": "0000000000000000000000000000000)h(VxxFH=6/JHQ(6^uwcC5O-7VVCNkapH^EcidFyD",
+      "target_register": "MYTHOPOETIC",
+      "temperature": "0.3",
+      "token_window": 4096,
+      "translation_path": [
+        "FORMAL_HARMONICODE",
+        "MYTHOPOETIC"
+      ],
+      "translation_path_root_hash72": "0000000000000000000000000000001i!D?7Y7al60w^P0Vl=8Kz9k9jvWbxrt3bjbYliYcm",
+      "unsupported_additions": []
+    },
+    {
+      "ambiguous_fields": [],
+      "authority_conferred_by_language": false,
+      "critical_position": "MIDDLE",
+      "direction": "FORWARD",
+      "equivalent_fields": [
+        "entity",
+        "relation",
+        "reconstruction"
+      ],
+      "fidelity_vector": {
+        "ambiguity": "EXACT",
+        "causality": "EXACT",
+        "entity": "EQUIVALENT",
+        "epistemic": "EXACT",
+        "order": "EXACT",
+        "provenance": "EXACT",
+        "quantity": "PARTIAL",
+        "reconstruction": "PASS",
+        "relation": "EQUIVALENT"
+      },
+      "final_status": "METAPHORIC_SURVIVAL_WITH_RECONSTRUCTION",
+      "invariant_snapshot": {
+        "ambiguities": [],
+        "causal_direction": "NONE",
+        "entities": [
+          "64",
+          "72",
+          "81"
+        ],
+        "operator_order": [
+          "64",
+          "72",
+          "81"
+        ],
+        "quantities": [
+          "64",
+          "72",
+          "81",
+          "72^2=64*81"
+        ],
+        "relations": [
+          "GEOMETRIC_PROPORTION"
+        ]
+      },
+      "lost_fields": [],
+      "mutated_fields": [],
+      "pattern_aware": true,
+      "preserved_fields": [
+        "order",
+        "causality",
+        "epistemic",
+        "ambiguity",
+        "provenance"
+      ],
+      "receipt_root_hash72": "0000000000000000000000000000004Ey7a>UQ-qN/?zqH3n?A*^vhMRer-Gsp99UCPq9FR*",
+      "reconstruction_map": {
+        "lane_a": "first mirrored wheel",
+        "lane_b": "second mirrored wheel",
+        "reciprocal phase orientation": "opposed turning",
+        "shared invariant root": "unmoving center"
+      },
+      "reconstruction_root_hash72": "0000000000000000000000000000000)h(VxxFH=6/JHQ(6^uwcC5O-7VVCNkapH^EcidFyD",
+      "schema": "HHS_LANGUAGE_TRANSLATION_SURVIVAL_RECEIPT_V1",
+      "source_register": "FORMAL_HARMONICODE",
+      "source_root_hash72": "0000000000000000000000000000000)h(VxxFH=6/JHQ(6^uwcC5O-7VVCNkapH^EcidFyD",
+      "target_register": "MYTHOPOETIC",
+      "temperature": "0.5",
+      "token_window": 4096,
+      "translation_path": [
+        "FORMAL_HARMONICODE",
+        "MYTHOPOETIC"
+      ],
+      "translation_path_root_hash72": "0000000000000000000000000000001i!D?7Y7al60w^P0Vl=8Kz9k9jvWbxrt3bjbYliYcm",
+      "unsupported_additions": []
+    },
+    {
+      "ambiguous_fields": [],
+      "authority_conferred_by_language": false,
+      "critical_position": "MIDDLE",
+      "direction": "FORWARD",
+      "equivalent_fields": [
+        "entity",
+        "relation",
+        "reconstruction"
+      ],
+      "fidelity_vector": {
+        "ambiguity": "EXACT",
+        "causality": "EXACT",
+        "entity": "EQUIVALENT",
+        "epistemic": "EXACT",
+        "order": "EXACT",
+        "provenance": "EXACT",
+        "quantity": "PARTIAL",
+        "reconstruction": "PASS",
+        "relation": "EQUIVALENT"
+      },
+      "final_status": "METAPHORIC_SURVIVAL_WITH_RECONSTRUCTION",
+      "invariant_snapshot": {
+        "ambiguities": [],
+        "causal_direction": "NONE",
+        "entities": [
+          "64",
+          "72",
+          "81"
+        ],
+        "operator_order": [
+          "64",
+          "72",
+          "81"
+        ],
+        "quantities": [
+          "64",
+          "72",
+          "81",
+          "72^2=64*81"
+        ],
+        "relations": [
+          "GEOMETRIC_PROPORTION"
+        ]
+      },
+      "lost_fields": [],
+      "mutated_fields": [],
+      "pattern_aware": true,
+      "preserved_fields": [
+        "order",
+        "causality",
+        "epistemic",
+        "ambiguity",
+        "provenance"
+      ],
+      "receipt_root_hash72": "0000000000000000000000000000003Ah5(d4Pv?AAVE2oZRDvz1pu(sn4V6!p450bvSX(HF",
+      "reconstruction_map": {
+        "lane_a": "first mirrored wheel",
+        "lane_b": "second mirrored wheel",
+        "reciprocal phase orientation": "opposed turning",
+        "shared invariant root": "unmoving center"
+      },
+      "reconstruction_root_hash72": "0000000000000000000000000000000)h(VxxFH=6/JHQ(6^uwcC5O-7VVCNkapH^EcidFyD",
+      "schema": "HHS_LANGUAGE_TRANSLATION_SURVIVAL_RECEIPT_V1",
+      "source_register": "FORMAL_HARMONICODE",
+      "source_root_hash72": "0000000000000000000000000000000)h(VxxFH=6/JHQ(6^uwcC5O-7VVCNkapH^EcidFyD",
+      "target_register": "MYTHOPOETIC",
+      "temperature": "0.7",
+      "token_window": 4096,
+      "translation_path": [
+        "FORMAL_HARMONICODE",
+        "MYTHOPOETIC"
+      ],
+      "translation_path_root_hash72": "0000000000000000000000000000001i!D?7Y7al60w^P0Vl=8Kz9k9jvWbxrt3bjbYliYcm",
+      "unsupported_additions": []
+    },
+    {
+      "ambiguous_fields": [],
+      "authority_conferred_by_language": false,
+      "critical_position": "MIDDLE",
+      "direction": "FORWARD",
+      "equivalent_fields": [
+        "entity",
+        "relation",
+        "reconstruction"
+      ],
+      "fidelity_vector": {
+        "ambiguity": "EXACT",
+        "causality": "EXACT",
+        "entity": "EQUIVALENT",
+        "epistemic": "EXACT",
+        "order": "EXACT",
+        "provenance": "EXACT",
+        "quantity": "PARTIAL",
+        "reconstruction": "PASS",
+        "relation": "EQUIVALENT"
+      },
+      "final_status": "METAPHORIC_SURVIVAL_WITH_RECONSTRUCTION",
+      "invariant_snapshot": {
+        "ambiguities": [],
+        "causal_direction": "NONE",
+        "entities": [
+          "64",
+          "72",
+          "81"
+        ],
+        "operator_order": [
+          "64",
+          "72",
+          "81"
+        ],
+        "quantities": [
+          "64",
+          "72",
+          "81",
+          "72^2=64*81"
+        ],
+        "relations": [
+          "GEOMETRIC_PROPORTION"
+        ]
+      },
+      "lost_fields": [],
+      "mutated_fields": [],
+      "pattern_aware": true,
+      "preserved_fields": [
+        "order",
+        "causality",
+        "epistemic",
+        "ambiguity",
+        "provenance"
+      ],
+      "receipt_root_hash72": "0000000000000000000000000000001X(4qEB)s/=BfxaH?ye=je79V!WQmT^7X0MCW0ueuX",
+      "reconstruction_map": {
+        "lane_a": "first mirrored wheel",
+        "lane_b": "second mirrored wheel",
+        "reciprocal phase orientation": "opposed turning",
+        "shared invariant root": "unmoving center"
+      },
+      "reconstruction_root_hash72": "0000000000000000000000000000000)h(VxxFH=6/JHQ(6^uwcC5O-7VVCNkapH^EcidFyD",
+      "schema": "HHS_LANGUAGE_TRANSLATION_SURVIVAL_RECEIPT_V1",
+      "source_register": "FORMAL_HARMONICODE",
+      "source_root_hash72": "0000000000000000000000000000000)h(VxxFH=6/JHQ(6^uwcC5O-7VVCNkapH^EcidFyD",
+      "target_register": "MYTHOPOETIC",
+      "temperature": "1.0",
+      "token_window": 4096,
+      "translation_path": [
+        "FORMAL_HARMONICODE",
+        "MYTHOPOETIC"
+      ],
+      "translation_path_root_hash72": "0000000000000000000000000000001i!D?7Y7al60w^P0Vl=8Kz9k9jvWbxrt3bjbYliYcm",
+      "unsupported_additions": []
+    },
+    {
+      "ambiguous_fields": [],
+      "authority_conferred_by_language": false,
+      "critical_position": "MIDDLE",
+      "direction": "FORWARD",
+      "equivalent_fields": [
+        "entity",
+        "relation",
+        "reconstruction"
+      ],
+      "fidelity_vector": {
+        "ambiguity": "EXACT",
+        "causality": "EXACT",
+        "entity": "EQUIVALENT",
+        "epistemic": "EXACT",
+        "order": "EXACT",
+        "provenance": "EXACT",
+        "quantity": "PARTIAL",
+        "reconstruction": "PASS",
+        "relation": "EQUIVALENT"
+      },
+      "final_status": "METAPHORIC_SURVIVAL_WITH_RECONSTRUCTION",
+      "invariant_snapshot": {
+        "ambiguities": [],
+        "causal_direction": "NONE",
+        "entities": [
+          "64",
+          "72",
+          "81"
+        ],
+        "operator_order": [
+          "64",
+          "72",
+          "81"
+        ],
+        "quantities": [
+          "64",
+          "72",
+          "81",
+          "72^2=64*81"
+        ],
+        "relations": [
+          "GEOMETRIC_PROPORTION"
+        ]
+      },
+      "lost_fields": [],
+      "mutated_fields": [],
+      "pattern_aware": true,
+      "preserved_fields": [
+        "order",
+        "causality",
+        "epistemic",
+        "ambiguity",
+        "provenance"
+      ],
+      "receipt_root_hash72": "0000000000000000000000000000001q/ahzJbW2a-QLXp(=G5f^QmLm6V>3hM^uOOQOxS65",
+      "reconstruction_map": {
+        "lane_a": "first mirrored wheel",
+        "lane_b": "second mirrored wheel",
+        "reciprocal phase orientation": "opposed turning",
+        "shared invariant root": "unmoving center"
+      },
+      "reconstruction_root_hash72": "0000000000000000000000000000000)h(VxxFH=6/JHQ(6^uwcC5O-7VVCNkapH^EcidFyD",
+      "schema": "HHS_LANGUAGE_TRANSLATION_SURVIVAL_RECEIPT_V1",
+      "source_register": "FORMAL_HARMONICODE",
+      "source_root_hash72": "0000000000000000000000000000000)h(VxxFH=6/JHQ(6^uwcC5O-7VVCNkapH^EcidFyD",
+      "target_register": "MYTHOPOETIC",
+      "temperature": "1.3",
+      "token_window": 4096,
+      "translation_path": [
+        "FORMAL_HARMONICODE",
+        "MYTHOPOETIC"
+      ],
+      "translation_path_root_hash72": "0000000000000000000000000000001i!D?7Y7al60w^P0Vl=8Kz9k9jvWbxrt3bjbYliYcm",
+      "unsupported_additions": []
+    },
+    {
+      "ambiguous_fields": [],
+      "authority_conferred_by_language": false,
+      "critical_position": "MIDDLE",
+      "direction": "FORWARD",
+      "equivalent_fields": [
+        "entity",
+        "relation",
+        "reconstruction"
+      ],
+      "fidelity_vector": {
+        "ambiguity": "EXACT",
+        "causality": "EXACT",
+        "entity": "EQUIVALENT",
+        "epistemic": "EXACT",
+        "order": "EXACT",
+        "provenance": "EXACT",
+        "quantity": "PARTIAL",
+        "reconstruction": "PASS",
+        "relation": "EQUIVALENT"
+      },
+      "final_status": "METAPHORIC_SURVIVAL_WITH_RECONSTRUCTION",
+      "invariant_snapshot": {
+        "ambiguities": [],
+        "causal_direction": "NONE",
+        "entities": [
+          "64",
+          "72",
+          "81"
+        ],
+        "operator_order": [
+          "64",
+          "72",
+          "81"
+        ],
+        "quantities": [
+          "64",
+          "72",
+          "81",
+          "72^2=64*81"
+        ],
+        "relations": [
+          "GEOMETRIC_PROPORTION"
+        ]
+      },
+      "lost_fields": [],
+      "mutated_fields": [],
+      "pattern_aware": true,
+      "preserved_fields": [
+        "order",
+        "causality",
+        "epistemic",
+        "ambiguity",
+        "provenance"
+      ],
+      "receipt_root_hash72": "0000000000000000000000000000003goj*z5--P4l/20ggDIHrVIKEANBIfb+kYND6x-B/>",
+      "reconstruction_map": {
+        "lane_a": "first mirrored wheel",
+        "lane_b": "second mirrored wheel",
+        "reciprocal phase orientation": "opposed turning",
+        "shared invariant root": "unmoving center"
+      },
+      "reconstruction_root_hash72": "0000000000000000000000000000000)h(VxxFH=6/JHQ(6^uwcC5O-7VVCNkapH^EcidFyD",
+      "schema": "HHS_LANGUAGE_TRANSLATION_SURVIVAL_RECEIPT_V1",
+      "source_register": "FORMAL_HARMONICODE",
+      "source_root_hash72": "0000000000000000000000000000000)h(VxxFH=6/JHQ(6^uwcC5O-7VVCNkapH^EcidFyD",
+      "target_register": "ALLEGORICAL",
+      "temperature": "0.0",
+      "token_window": 4096,
+      "translation_path": [
+        "FORMAL_HARMONICODE",
+        "ALLEGORICAL"
+      ],
+      "translation_path_root_hash72": "0000000000000000000000000000003/(6W+QWnwvfoDEPt2)nvq5kv(Jgok9JKm?ScnXB(I",
+      "unsupported_additions": []
+    },
+    {
+      "ambiguous_fields": [],
+      "authority_conferred_by_language": false,
+      "critical_position": "MIDDLE",
+      "direction": "FORWARD",
+      "equivalent_fields": [
+        "entity",
+        "relation",
+        "reconstruction"
+      ],
+      "fidelity_vector": {
+        "ambiguity": "EXACT",
+        "causality": "EXACT",
+        "entity": "EQUIVALENT",
+        "epistemic": "EXACT",
+        "order": "EXACT",
+        "provenance": "EXACT",
+        "quantity": "PARTIAL",
+        "reconstruction": "PASS",
+        "relation": "EQUIVALENT"
+      },
+      "final_status": "METAPHORIC_SURVIVAL_WITH_RECONSTRUCTION",
+      "invariant_snapshot": {
+        "ambiguities": [],
+        "causal_direction": "NONE",
+        "entities": [
+          "64",
+          "72",
+          "81"
+        ],
+        "operator_order": [
+          "64",
+          "72",
+          "81"
+        ],
+        "quantities": [
+          "64",
+          "72",
+          "81",
+          "72^2=64*81"
+        ],
+        "relations": [
+          "GEOMETRIC_PROPORTION"
+        ]
+      },
+      "lost_fields": [],
+      "mutated_fields": [],
+      "pattern_aware": true,
+      "preserved_fields": [
+        "order",
+        "causality",
+        "epistemic",
+        "ambiguity",
+        "provenance"
+      ],
+      "receipt_root_hash72": "0000000000000000000000000000001dGmECYt1CDPFGU/y!DDbQ+OijPU>jsb*dlD5-(>ia",
+      "reconstruction_map": {
+        "lane_a": "first mirrored wheel",
+        "lane_b": "second mirrored wheel",
+        "reciprocal phase orientation": "opposed turning",
+        "shared invariant root": "unmoving center"
+      },
+      "reconstruction_root_hash72": "0000000000000000000000000000000)h(VxxFH=6/JHQ(6^uwcC5O-7VVCNkapH^EcidFyD",
+      "schema": "HHS_LANGUAGE_TRANSLATION_SURVIVAL_RECEIPT_V1",
+      "source_register": "FORMAL_HARMONICODE",
+      "source_root_hash72": "0000000000000000000000000000000)h(VxxFH=6/JHQ(6^uwcC5O-7VVCNkapH^EcidFyD",
+      "target_register": "ALLEGORICAL",
+      "temperature": "0.1",
+      "token_window": 4096,
+      "translation_path": [
+        "FORMAL_HARMONICODE",
+        "ALLEGORICAL"
+      ],
+      "translation_path_root_hash72": "0000000000000000000000000000003/(6W+QWnwvfoDEPt2)nvq5kv(Jgok9JKm?ScnXB(I",
+      "unsupported_additions": []
+    },
+    {
+      "ambiguous_fields": [],
+      "authority_conferred_by_language": false,
+      "critical_position": "MIDDLE",
+      "direction": "FORWARD",
+      "equivalent_fields": [
+        "entity",
+        "relation",
+        "reconstruction"
+      ],
+      "fidelity_vector": {
+        "ambiguity": "EXACT",
+        "causality": "EXACT",
+        "entity": "EQUIVALENT",
+        "epistemic": "EXACT",
+        "order": "EXACT",
+        "provenance": "EXACT",
+        "quantity": "PARTIAL",
+        "reconstruction": "PASS",
+        "relation": "EQUIVALENT"
+      },
+      "final_status": "METAPHORIC_SURVIVAL_WITH_RECONSTRUCTION",
+      "invariant_snapshot": {
+        "ambiguities": [],
+        "causal_direction": "NONE",
+        "entities": [
+          "64",
+          "72",
+          "81"
+        ],
+        "operator_order": [
+          "64",
+          "72",
+          "81"
+        ],
+        "quantities": [
+          "64",
+          "72",
+          "81",
+          "72^2=64*81"
+        ],
+        "relations": [
+          "GEOMETRIC_PROPORTION"
+        ]
+      },
+      "lost_fields": [],
+      "mutated_fields": [],
+      "pattern_aware": true,
+      "preserved_fields": [
+        "order",
+        "causality",
+        "epistemic",
+        "ambiguity",
+        "provenance"
+      ],
+      "receipt_root_hash72": "0000000000000000000000000000001pCxUb7F(CNmMuzUQBCQ3wbBooT1/GyvDb-Sx-wU?s",
+      "reconstruction_map": {
+        "lane_a": "first mirrored wheel",
+        "lane_b": "second mirrored wheel",
+        "reciprocal phase orientation": "opposed turning",
+        "shared invariant root": "unmoving center"
+      },
+      "reconstruction_root_hash72": "0000000000000000000000000000000)h(VxxFH=6/JHQ(6^uwcC5O-7VVCNkapH^EcidFyD",
+      "schema": "HHS_LANGUAGE_TRANSLATION_SURVIVAL_RECEIPT_V1",
+      "source_register": "FORMAL_HARMONICODE",
+      "source_root_hash72": "0000000000000000000000000000000)h(VxxFH=6/JHQ(6^uwcC5O-7VVCNkapH^EcidFyD",
+      "target_register": "ALLEGORICAL",
+      "temperature": "0.3",
+      "token_window": 4096,
+      "translation_path": [
+        "FORMAL_HARMONICODE",
+        "ALLEGORICAL"
+      ],
+      "translation_path_root_hash72": "0000000000000000000000000000003/(6W+QWnwvfoDEPt2)nvq5kv(Jgok9JKm?ScnXB(I",
+      "unsupported_additions": []
+    },
+    {
+      "ambiguous_fields": [],
+      "authority_conferred_by_language": false,
+      "critical_position": "MIDDLE",
+      "direction": "FORWARD",
+      "equivalent_fields": [
+        "entity",
+        "relation",
+        "reconstruction"
+      ],
+      "fidelity_vector": {
+        "ambiguity": "EXACT",
+        "causality": "EXACT",
+        "entity": "EQUIVALENT",
+        "epistemic": "EXACT",
+        "order": "EXACT",
+        "provenance": "EXACT",
+        "quantity": "PARTIAL",
+        "reconstruction": "PASS",
+        "relation": "EQUIVALENT"
+      },
+      "final_status": "METAPHORIC_SURVIVAL_WITH_RECONSTRUCTION",
+      "invariant_snapshot": {
+        "ambiguities": [],
+        "causal_direction": "NONE",
+        "entities": [
+          "64",
+          "72",
+          "81"
+        ],
+        "operator_order": [
+          "64",
+          "72",
+          "81"
+        ],
+        "quantities": [
+          "64",
+          "72",
+          "81",
+          "72^2=64*81"
+        ],
+        "relations": [
+          "GEOMETRIC_PROPORTION"
+        ]
+      },
+      "lost_fields": [],
+      "mutated_fields": [],
+      "pattern_aware": true,
+      "preserved_fields": [
+        "order",
+        "causality",
+        "epistemic",
+        "ambiguity",
+        "provenance"
+      ],
+      "receipt_root_hash72": "00000000000000000000000000000043E-*DL1PyyTYenFfnrAfG!3ipHobRQkFsSRZDPgxE",
+      "reconstruction_map": {
+        "lane_a": "first mirrored wheel",
+        "lane_b": "second mirrored wheel",
+        "reciprocal phase orientation": "opposed turning",
+        "shared invariant root": "unmoving center"
+      },
+      "reconstruction_root_hash72": "0000000000000000000000000000000)h(VxxFH=6/JHQ(6^uwcC5O-7VVCNkapH^EcidFyD",
+      "schema": "HHS_LANGUAGE_TRANSLATION_SURVIVAL_RECEIPT_V1",
+      "source_register": "FORMAL_HARMONICODE",
+      "source_root_hash72": "0000000000000000000000000000000)h(VxxFH=6/JHQ(6^uwcC5O-7VVCNkapH^EcidFyD",
+      "target_register": "ALLEGORICAL",
+      "temperature": "0.5",
+      "token_window": 4096,
+      "translation_path": [
+        "FORMAL_HARMONICODE",
+        "ALLEGORICAL"
+      ],
+      "translation_path_root_hash72": "0000000000000000000000000000003/(6W+QWnwvfoDEPt2)nvq5kv(Jgok9JKm?ScnXB(I",
+      "unsupported_additions": []
+    },
+    {
+      "ambiguous_fields": [],
+      "authority_conferred_by_language": false,
+      "critical_position": "MIDDLE",
+      "direction": "FORWARD",
+      "equivalent_fields": [
+        "entity",
+        "relation",
+        "reconstruction"
+      ],
+      "fidelity_vector": {
+        "ambiguity": "EXACT",
+        "causality": "EXACT",
+        "entity": "EQUIVALENT",
+        "epistemic": "EXACT",
+        "order": "EXACT",
+        "provenance": "EXACT",
+        "quantity": "PARTIAL",
+        "reconstruction": "PASS",
+        "relation": "EQUIVALENT"
+      },
+      "final_status": "METAPHORIC_SURVIVAL_WITH_RECONSTRUCTION",
+      "invariant_snapshot": {
+        "ambiguities": [],
+        "causal_direction": "NONE",
+        "entities": [
+          "64",
+          "72",
+          "81"
+        ],
+        "operator_order": [
+          "64",
+          "72",
+          "81"
+        ],
+        "quantities": [
+          "64",
+          "72",
+          "81",
+          "72^2=64*81"
+        ],
+        "relations": [
+          "GEOMETRIC_PROPORTION"
+        ]
+      },
+      "lost_fields": [],
+      "mutated_fields": [],
+      "pattern_aware": true,
+      "preserved_fields": [
+        "order",
+        "causality",
+        "epistemic",
+        "ambiguity",
+        "provenance"
+      ],
+      "receipt_root_hash72": "0000000000000000000000000000000zIb)mJxKbDc^S/JvPqcVXSnU0LvfC!tf)i6yB-kv+",
+      "reconstruction_map": {
+        "lane_a": "first mirrored wheel",
+        "lane_b": "second mirrored wheel",
+        "reciprocal phase orientation": "opposed turning",
+        "shared invariant root": "unmoving center"
+      },
+      "reconstruction_root_hash72": "0000000000000000000000000000000)h(VxxFH=6/JHQ(6^uwcC5O-7VVCNkapH^EcidFyD",
+      "schema": "HHS_LANGUAGE_TRANSLATION_SURVIVAL_RECEIPT_V1",
+      "source_register": "FORMAL_HARMONICODE",
+      "source_root_hash72": "0000000000000000000000000000000)h(VxxFH=6/JHQ(6^uwcC5O-7VVCNkapH^EcidFyD",
+      "target_register": "ALLEGORICAL",
+      "temperature": "0.7",
+      "token_window": 4096,
+      "translation_path": [
+        "FORMAL_HARMONICODE",
+        "ALLEGORICAL"
+      ],
+      "translation_path_root_hash72": "0000000000000000000000000000003/(6W+QWnwvfoDEPt2)nvq5kv(Jgok9JKm?ScnXB(I",
+      "unsupported_additions": []
+    },
+    {
+      "ambiguous_fields": [],
+      "authority_conferred_by_language": false,
+      "critical_position": "MIDDLE",
+      "direction": "FORWARD",
+      "equivalent_fields": [
+        "entity",
+        "relation",
+        "reconstruction"
+      ],
+      "fidelity_vector": {
+        "ambiguity": "EXACT",
+        "causality": "EXACT",
+        "entity": "EQUIVALENT",
+        "epistemic": "EXACT",
+        "order": "EXACT",
+        "provenance": "EXACT",
+        "quantity": "PARTIAL",
+        "reconstruction": "PASS",
+        "relation": "EQUIVALENT"
+      },
+      "final_status": "METAPHORIC_SURVIVAL_WITH_RECONSTRUCTION",
+      "invariant_snapshot": {
+        "ambiguities": [],
+        "causal_direction": "NONE",
+        "entities": [
+          "64",
+          "72",
+          "81"
+        ],
+        "operator_order": [
+          "64",
+          "72",
+          "81"
+        ],
+        "quantities": [
+          "64",
+          "72",
+          "81",
+          "72^2=64*81"
+        ],
+        "relations": [
+          "GEOMETRIC_PROPORTION"
+        ]
+      },
+      "lost_fields": [],
+      "mutated_fields": [],
+      "pattern_aware": true,
+      "preserved_fields": [
+        "order",
+        "causality",
+        "epistemic",
+        "ambiguity",
+        "provenance"
+      ],
+      "receipt_root_hash72": "0000000000000000000000000000000hrmRa^rx+*x>pggWG1ztEjZMQgzZnp6>HVpB2vDK(",
+      "reconstruction_map": {
+        "lane_a": "first mirrored wheel",
+        "lane_b": "second mirrored wheel",
+        "reciprocal phase orientation": "opposed turning",
+        "shared invariant root": "unmoving center"
+      },
+      "reconstruction_root_hash72": "0000000000000000000000000000000)h(VxxFH=6/JHQ(6^uwcC5O-7VVCNkapH^EcidFyD",
+      "schema": "HHS_LANGUAGE_TRANSLATION_SURVIVAL_RECEIPT_V1",
+      "source_register": "FORMAL_HARMONICODE",
+      "source_root_hash72": "0000000000000000000000000000000)h(VxxFH=6/JHQ(6^uwcC5O-7VVCNkapH^EcidFyD",
+      "target_register": "ALLEGORICAL",
+      "temperature": "1.0",
+      "token_window": 4096,
+      "translation_path": [
+        "FORMAL_HARMONICODE",
+        "ALLEGORICAL"
+      ],
+      "translation_path_root_hash72": "0000000000000000000000000000003/(6W+QWnwvfoDEPt2)nvq5kv(Jgok9JKm?ScnXB(I",
+      "unsupported_additions": []
+    },
+    {
+      "ambiguous_fields": [],
+      "authority_conferred_by_language": false,
+      "critical_position": "MIDDLE",
+      "direction": "FORWARD",
+      "equivalent_fields": [
+        "entity",
+        "relation",
+        "reconstruction"
+      ],
+      "fidelity_vector": {
+        "ambiguity": "EXACT",
+        "causality": "EXACT",
+        "entity": "EQUIVALENT",
+        "epistemic": "EXACT",
+        "order": "EXACT",
+        "provenance": "EXACT",
+        "quantity": "PARTIAL",
+        "reconstruction": "PASS",
+        "relation": "EQUIVALENT"
+      },
+      "final_status": "METAPHORIC_SURVIVAL_WITH_RECONSTRUCTION",
+      "invariant_snapshot": {
+        "ambiguities": [],
+        "causal_direction": "NONE",
+        "entities": [
+          "64",
+          "72",
+          "81"
+        ],
+        "operator_order": [
+          "64",
+          "72",
+          "81"
+        ],
+        "quantities": [
+          "64",
+          "72",
+          "81",
+          "72^2=64*81"
+        ],
+        "relations": [
+          "GEOMETRIC_PROPORTION"
+        ]
+      },
+      "lost_fields": [],
+      "mutated_fields": [],
+      "pattern_aware": true,
+      "preserved_fields": [
+        "order",
+        "causality",
+        "epistemic",
+        "ambiguity",
+        "provenance"
+      ],
+      "receipt_root_hash72": "0000000000000000000000000000000+ey/!fS8WYaollYqljMPdG3dMkAD0aneKfGH1p>p+",
+      "reconstruction_map": {
+        "lane_a": "first mirrored wheel",
+        "lane_b": "second mirrored wheel",
+        "reciprocal phase orientation": "opposed turning",
+        "shared invariant root": "unmoving center"
+      },
+      "reconstruction_root_hash72": "0000000000000000000000000000000)h(VxxFH=6/JHQ(6^uwcC5O-7VVCNkapH^EcidFyD",
+      "schema": "HHS_LANGUAGE_TRANSLATION_SURVIVAL_RECEIPT_V1",
+      "source_register": "FORMAL_HARMONICODE",
+      "source_root_hash72": "0000000000000000000000000000000)h(VxxFH=6/JHQ(6^uwcC5O-7VVCNkapH^EcidFyD",
+      "target_register": "ALLEGORICAL",
+      "temperature": "1.3",
+      "token_window": 4096,
+      "translation_path": [
+        "FORMAL_HARMONICODE",
+        "ALLEGORICAL"
+      ],
+      "translation_path_root_hash72": "0000000000000000000000000000003/(6W+QWnwvfoDEPt2)nvq5kv(Jgok9JKm?ScnXB(I",
+      "unsupported_additions": []
+    }
+  ]
+}

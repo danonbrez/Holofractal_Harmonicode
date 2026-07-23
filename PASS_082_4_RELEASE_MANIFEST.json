@@ -1,0 +1,30 @@
+{
+  "schema": "HHS_PASS_082_4_RELEASE_MANIFEST_V1",
+  "pass_id": "PASS_082_4",
+  "parent_pass": "PASS_082_3",
+  "parent_release_root_hash72": "0000000000000000000000000000003keb0PmZ>y2pwLWB1G21FMBXZab9T7DHQwXLRlLcvG",
+  "workloads": [
+    "W47:two-string-phase-overlap",
+    "W48:opposite-phase-pair",
+    "W49:eight-string-coprime-phase",
+    "W50:sixteen-string-dense-overlap",
+    "W51:audio-video-latency-normalization",
+    "W52:four-modality-event-binding",
+    "W53:thirty-two-stream-symbolic-field",
+    "W54:sixty-four-stream-dense-field",
+    "W55:partial-overlap-unresolved",
+    "W56:resource-bounded-reconstruction",
+    "W57:latency-order-comparison",
+    "W58:overlap-provenance-replay",
+    "W59:raw-distinct-normalized-common",
+    "W60:multistring-receipt-only-replay"
+  ],
+  "independent_raw_strings_preserved": true,
+  "phase_offsets_committed": true,
+  "latency_offsets_committed": true,
+  "overlap_relations_witnessed": true,
+  "normalized_event_closure_verified": true,
+  "deterministic_replay_verified": true,
+  "opaque_native_float_non_authoritative": true,
+  "pass082_4_release_root_hash72": "0000000000000000000000000000001QzpEnjqcFnVF8T?S1V7QsFzr?P*OdJP6ly6!SVEOf"
+}

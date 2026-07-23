@@ -1,0 +1,13 @@
+{
+  "entrypoint": "hhs_runtime.hhs_pass105_2_authority_placeholder_closure_v1.pass105_2_self_test",
+  "pass_id": "PASS_105_2",
+  "repaired_production_paths": [
+    "hhs_runtime.core_sandbox.hhs_general_runtime_layer_v1.load_authoritative_kernel",
+    "hhs_backend.runtime.runtime_server.execute_runtime_expression",
+    "gui/hhs-mobile-runtime-console/src/runtimeData.ts",
+    "HARMONICODE_KERNEL_v44_2_lockcore_patched_selfsolving_hash72authority_locked-7.py::PX1"
+  ],
+  "schema": "HHS_PASS105_2_RUNTIME_SURFACE_V1",
+  "service": "runtime.authority_placeholder_closure.pass105_2",
+  "status": "REACHABLE_AND_DERIVED"
+}

@@ -1,0 +1,18 @@
+{
+  "implementation": "hhs_runtime/hhs_pass129_invariant_delta_rational_projection_algebra_v1.py",
+  "manifest_root_hash72": "0000000000000000000000000000003ikqYR7O1hvUkCMaHRD2xUmyXiZdFK/54yW7-u1i-+",
+  "parent_pass": "PASS_128",
+  "pass_id": "PASS_129",
+  "proof_root_hash72": "0000000000000000000000000000001fwnFtVb1N9mGux2RTydriCjlkq>Y2^Z-g6alFEcq5",
+  "replay_root_hash72": "0000000000000000000000000000004lx)bRFl^)lCfPBK^=j+H*YX7c2^3t-E2Ea*(eTmzR",
+  "report_json": "PASS_129_PROOF_TESTING_ANALYSIS_REPORT.json",
+  "report_markdown": "PASS_129_PROOF_TESTING_ANALYSIS_REPORT.md",
+  "report_root_hash72": "00000000000000000000000000000023HxJ3!yby62h+Idy6d->7LMmpXnFruHYj)2X=*xV(",
+  "schema": "HHS_PASS_129_RELEASE_MANIFEST_V1",
+  "status": "RELEASE_READY",
+  "test_counts": {
+    "dependency_scoped_120_129": 147,
+    "pass129": 27
+  },
+  "tests": "tests/test_hhs_pass129_invariant_delta_rational_projection_algebra_v1.py"
+}

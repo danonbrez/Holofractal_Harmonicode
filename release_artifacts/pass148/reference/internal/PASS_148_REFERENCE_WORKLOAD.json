@@ -1,0 +1,25 @@
+{
+  "database_integrity": true,
+  "external_privileged_semantic_authority": 0,
+  "negative_tests": {
+    "passed": 25,
+    "total": 25
+  },
+  "receipt_chain_valid": true,
+  "replay_validated": true,
+  "schema": "HHS_PASS148_REFERENCE_WORKLOAD_V1",
+  "semantic_audit_closed": true,
+  "semantic_registry": {
+    "closed": true,
+    "expected_count": 42,
+    "missing_or_mismatched": [],
+    "observed_count": 42,
+    "registry_hash72": "0000000000000000000000000000001Ea(9Nr(GPFO?)wXbXg5AcJEqjli-loC^fdw-EAu/D",
+    "registry_version": "HHS_NATIVE_SEMANTIC_REGISTRY_148.1.0",
+    "schema": "HHS_PASS148_REGISTRY_AUDIT_V1",
+    "unexpected_active": []
+  },
+  "status": "REFERENCE_WORKLOAD_CLOSED",
+  "transaction_count": 54,
+  "workload_hash72": "00000000000000000000000000000026y2>iqP=-7xHMbSmdljpxxJW!VU7Yqy)d8ysp3mYL"
+}

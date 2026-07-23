@@ -1,0 +1,6 @@
+{
+  "schema": "HHS_PASS_097_CAPABILITY_BOUNDARIES_V1",
+  "minimum_orientation_level": "L4_KERNEL_AUTHORITY_RECONSTRUCTION",
+  "minimum_general_linguistic_level": "L3_MINIMAL_GRAMMAR_RELATIONS",
+  "balanced_level": "L2_MINIMAL_RELATIONS"
+}

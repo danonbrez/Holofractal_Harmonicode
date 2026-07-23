@@ -1,0 +1,1094 @@
+{
+  "schema": "HHS_PASS_095_PATTERN_USE_RECEIPTS_V1",
+  "receipts": [
+    {
+      "authority_conferred_by_pattern": false,
+      "execution_decisions_affected": [
+        "SEARCH_ORDER",
+        "BRANCH_PRUNING"
+      ],
+      "pattern_roots_consulted": [
+        "0000000000000000000000000000000)NH!q7>ECx9JtpvIHWc6Si+ntc)ZcY^b/=P^FkoVL"
+      ],
+      "patterns_applied": [
+        "0000000000000000000000000000000)NH!q7>ECx9JtpvIHWc6Si+ntc)ZcY^b/=P^FkoVL"
+      ],
+      "patterns_rejected_as_irrelevant": [],
+      "receipt_root_hash72": "0000000000000000000000000000003mZfs>ulheCh0zJWz=>y-Q7MBhx6xqxWS5DP+U1hg^",
+      "schema": "HHS_PATTERN_USE_RECEIPT_V1",
+      "trial_id": "W95-01:B_PATTERN_AWARE:r0",
+      "work_saved_claim": {
+        "baseline_work_units": 1200,
+        "observed_work_units": 820,
+        "saved": 380
+      }
+    },
+    {
+      "authority_conferred_by_pattern": false,
+      "execution_decisions_affected": [
+        "SEARCH_ORDER",
+        "BRANCH_PRUNING"
+      ],
+      "pattern_roots_consulted": [
+        "0000000000000000000000000000001fZ>gpKtAtLLjtfEdP2C=yWS-Ta8Me2KhNnsW3-vkm"
+      ],
+      "patterns_applied": [
+        "0000000000000000000000000000001fZ>gpKtAtLLjtfEdP2C=yWS-Ta8Me2KhNnsW3-vkm"
+      ],
+      "patterns_rejected_as_irrelevant": [],
+      "receipt_root_hash72": "0000000000000000000000000000000wr7YX>R6(/Jc^QAChZS1aSL7FNEZ(!pOYHA>10R15",
+      "schema": "HHS_PATTERN_USE_RECEIPT_V1",
+      "trial_id": "W95-02:B_PATTERN_AWARE:r0",
+      "work_saved_claim": {
+        "baseline_work_units": 1800,
+        "observed_work_units": 990,
+        "saved": 810
+      }
+    },
+    {
+      "authority_conferred_by_pattern": false,
+      "execution_decisions_affected": [
+        "SEARCH_ORDER",
+        "BRANCH_PRUNING"
+      ],
+      "pattern_roots_consulted": [
+        "0000000000000000000000000000002Ns2NZwohEgEDGloSEU8c(JIBp1j)jNl3^X+UJ40P)"
+      ],
+      "patterns_applied": [
+        "0000000000000000000000000000002Ns2NZwohEgEDGloSEU8c(JIBp1j)jNl3^X+UJ40P)"
+      ],
+      "patterns_rejected_as_irrelevant": [],
+      "receipt_root_hash72": "0000000000000000000000000000003Q/0p9XBtkcI+sVqin9IlWTwRRwdqwiv7IhJP6jnby",
+      "schema": "HHS_PATTERN_USE_RECEIPT_V1",
+      "trial_id": "W95-03:B_PATTERN_AWARE:r0",
+      "work_saved_claim": {
+        "baseline_work_units": 1400,
+        "observed_work_units": 910,
+        "saved": 490
+      }
+    },
+    {
+      "authority_conferred_by_pattern": false,
+      "execution_decisions_affected": [
+        "SEARCH_ORDER",
+        "BRANCH_PRUNING"
+      ],
+      "pattern_roots_consulted": [
+        "0000000000000000000000000000002Ns2NZwohEgEDGloSEU8c(JIBp1j)jNl3^X+UJ40P)"
+      ],
+      "patterns_applied": [
+        "0000000000000000000000000000002Ns2NZwohEgEDGloSEU8c(JIBp1j)jNl3^X+UJ40P)"
+      ],
+      "patterns_rejected_as_irrelevant": [],
+      "receipt_root_hash72": "0000000000000000000000000000003nEx*?mE(Cx6yxZ52pUG2^82OSRmI4kspZsY(m-WoY",
+      "schema": "HHS_PATTERN_USE_RECEIPT_V1",
+      "trial_id": "W95-04:B_PATTERN_AWARE:r0",
+      "work_saved_claim": {
+        "baseline_work_units": 1600,
+        "observed_work_units": 1040,
+        "saved": 560
+      }
+    },
+    {
+      "authority_conferred_by_pattern": false,
+      "execution_decisions_affected": [
+        "SEARCH_ORDER",
+        "BRANCH_PRUNING"
+      ],
+      "pattern_roots_consulted": [
+        "0000000000000000000000000000002Ns2NZwohEgEDGloSEU8c(JIBp1j)jNl3^X+UJ40P)"
+      ],
+      "patterns_applied": [
+        "0000000000000000000000000000002Ns2NZwohEgEDGloSEU8c(JIBp1j)jNl3^X+UJ40P)"
+      ],
+      "patterns_rejected_as_irrelevant": [],
+      "receipt_root_hash72": "0000000000000000000000000000001(tlS>YHFvDPxOQaTYdaPn17J-PH?nokCgHBTVdkj7",
+      "schema": "HHS_PATTERN_USE_RECEIPT_V1",
+      "trial_id": "W95-05:B_PATTERN_AWARE:r0",
+      "work_saved_claim": {
+        "baseline_work_units": 1500,
+        "observed_work_units": 1020,
+        "saved": 480
+      }
+    },
+    {
+      "authority_conferred_by_pattern": false,
+      "execution_decisions_affected": [
+        "SEARCH_ORDER",
+        "BRANCH_PRUNING"
+      ],
+      "pattern_roots_consulted": [
+        "0000000000000000000000000000000)NH!q7>ECx9JtpvIHWc6Si+ntc)ZcY^b/=P^FkoVL",
+        "0000000000000000000000000000001fZ>gpKtAtLLjtfEdP2C=yWS-Ta8Me2KhNnsW3-vkm"
+      ],
+      "patterns_applied": [
+        "0000000000000000000000000000000)NH!q7>ECx9JtpvIHWc6Si+ntc)ZcY^b/=P^FkoVL",
+        "0000000000000000000000000000001fZ>gpKtAtLLjtfEdP2C=yWS-Ta8Me2KhNnsW3-vkm"
+      ],
+      "patterns_rejected_as_irrelevant": [],
+      "receipt_root_hash72": "0000000000000000000000000000001Kdw!O9vp>bp)Ljbjx4p/n1VJJ5HRctcr+uSy*s44=",
+      "schema": "HHS_PATTERN_USE_RECEIPT_V1",
+      "trial_id": "W95-06:B_PATTERN_AWARE:r0",
+      "work_saved_claim": {
+        "baseline_work_units": 2100,
+        "observed_work_units": 1450,
+        "saved": 650
+      }
+    },
+    {
+      "authority_conferred_by_pattern": false,
+      "execution_decisions_affected": [
+        "SEARCH_ORDER",
+        "BRANCH_PRUNING"
+      ],
+      "pattern_roots_consulted": [
+        "0000000000000000000000000000001fZ>gpKtAtLLjtfEdP2C=yWS-Ta8Me2KhNnsW3-vkm",
+        "0000000000000000000000000000002K?0eEqyvgnMlkqUGD7>Zj07Hao^pL1cH*=gRyqu66"
+      ],
+      "patterns_applied": [
+        "0000000000000000000000000000001fZ>gpKtAtLLjtfEdP2C=yWS-Ta8Me2KhNnsW3-vkm",
+        "0000000000000000000000000000002K?0eEqyvgnMlkqUGD7>Zj07Hao^pL1cH*=gRyqu66"
+      ],
+      "patterns_rejected_as_irrelevant": [],
+      "receipt_root_hash72": "0000000000000000000000000000003THqq+/SCVoEE9MclbS01SrDzWX6Hk-Xl55^Z1GBRJ",
+      "schema": "HHS_PATTERN_USE_RECEIPT_V1",
+      "trial_id": "W95-07:B_PATTERN_AWARE:r0",
+      "work_saved_claim": {
+        "baseline_work_units": 2300,
+        "observed_work_units": 1510,
+        "saved": 790
+      }
+    },
+    {
+      "authority_conferred_by_pattern": false,
+      "execution_decisions_affected": [
+        "SEARCH_ORDER",
+        "BRANCH_PRUNING"
+      ],
+      "pattern_roots_consulted": [
+        "0000000000000000000000000000002Ns2NZwohEgEDGloSEU8c(JIBp1j)jNl3^X+UJ40P)"
+      ],
+      "patterns_applied": [
+        "0000000000000000000000000000002Ns2NZwohEgEDGloSEU8c(JIBp1j)jNl3^X+UJ40P)"
+      ],
+      "patterns_rejected_as_irrelevant": [],
+      "receipt_root_hash72": "0000000000000000000000000000000^oOPP!c1T4M!O)kGtWtrs5FIcuTMG4ooe143lnwiY",
+      "schema": "HHS_PATTERN_USE_RECEIPT_V1",
+      "trial_id": "W95-08:B_PATTERN_AWARE:r0",
+      "work_saved_claim": {
+        "baseline_work_units": 2200,
+        "observed_work_units": 1490,
+        "saved": 710
+      }
+    },
+    {
+      "authority_conferred_by_pattern": false,
+      "execution_decisions_affected": [
+        "SEARCH_ORDER",
+        "BRANCH_PRUNING"
+      ],
+      "pattern_roots_consulted": [
+        "0000000000000000000000000000000)NH!q7>ECx9JtpvIHWc6Si+ntc)ZcY^b/=P^FkoVL",
+        "0000000000000000000000000000002Ns2NZwohEgEDGloSEU8c(JIBp1j)jNl3^X+UJ40P)"
+      ],
+      "patterns_applied": [
+        "0000000000000000000000000000000)NH!q7>ECx9JtpvIHWc6Si+ntc)ZcY^b/=P^FkoVL",
+        "0000000000000000000000000000002Ns2NZwohEgEDGloSEU8c(JIBp1j)jNl3^X+UJ40P)"
+      ],
+      "patterns_rejected_as_irrelevant": [],
+      "receipt_root_hash72": "0000000000000000000000000000004qTM6Y9=Ex^LXfCTJRfnqKy0VQM5gfLctwD74sRF/K",
+      "schema": "HHS_PATTERN_USE_RECEIPT_V1",
+      "trial_id": "W95-09:B_PATTERN_AWARE:r0",
+      "work_saved_claim": {
+        "baseline_work_units": 2600,
+        "observed_work_units": 1840,
+        "saved": 760
+      }
+    },
+    {
+      "authority_conferred_by_pattern": false,
+      "execution_decisions_affected": [
+        "SEARCH_ORDER",
+        "BRANCH_PRUNING"
+      ],
+      "pattern_roots_consulted": [
+        "0000000000000000000000000000000)NH!q7>ECx9JtpvIHWc6Si+ntc)ZcY^b/=P^FkoVL",
+        "0000000000000000000000000000001fZ>gpKtAtLLjtfEdP2C=yWS-Ta8Me2KhNnsW3-vkm"
+      ],
+      "patterns_applied": [
+        "0000000000000000000000000000000)NH!q7>ECx9JtpvIHWc6Si+ntc)ZcY^b/=P^FkoVL",
+        "0000000000000000000000000000001fZ>gpKtAtLLjtfEdP2C=yWS-Ta8Me2KhNnsW3-vkm"
+      ],
+      "patterns_rejected_as_irrelevant": [],
+      "receipt_root_hash72": "0000000000000000000000000000001?4px>(onr>h*CWguF(mAwbelUYz4YcHQYuRmeeTKz",
+      "schema": "HHS_PATTERN_USE_RECEIPT_V1",
+      "trial_id": "W95-10:B_PATTERN_AWARE:r0",
+      "work_saved_claim": {
+        "baseline_work_units": 2700,
+        "observed_work_units": 1910,
+        "saved": 790
+      }
+    },
+    {
+      "authority_conferred_by_pattern": false,
+      "execution_decisions_affected": [
+        "SEARCH_ORDER",
+        "BRANCH_PRUNING"
+      ],
+      "pattern_roots_consulted": [
+        "0000000000000000000000000000000)NH!q7>ECx9JtpvIHWc6Si+ntc)ZcY^b/=P^FkoVL",
+        "0000000000000000000000000000001fZ>gpKtAtLLjtfEdP2C=yWS-Ta8Me2KhNnsW3-vkm",
+        "0000000000000000000000000000002K?0eEqyvgnMlkqUGD7>Zj07Hao^pL1cH*=gRyqu66",
+        "0000000000000000000000000000002Ns2NZwohEgEDGloSEU8c(JIBp1j)jNl3^X+UJ40P)"
+      ],
+      "patterns_applied": [
+        "0000000000000000000000000000000)NH!q7>ECx9JtpvIHWc6Si+ntc)ZcY^b/=P^FkoVL",
+        "0000000000000000000000000000001fZ>gpKtAtLLjtfEdP2C=yWS-Ta8Me2KhNnsW3-vkm",
+        "0000000000000000000000000000002K?0eEqyvgnMlkqUGD7>Zj07Hao^pL1cH*=gRyqu66",
+        "0000000000000000000000000000002Ns2NZwohEgEDGloSEU8c(JIBp1j)jNl3^X+UJ40P)"
+      ],
+      "patterns_rejected_as_irrelevant": [],
+      "receipt_root_hash72": "0000000000000000000000000000000CnstYElgsQxBaV6Kp/4CIhT70=DbXEW8/j++-i-9T",
+      "schema": "HHS_PATTERN_USE_RECEIPT_V1",
+      "trial_id": "W95-11:B_PATTERN_AWARE:r0",
+      "work_saved_claim": {
+        "baseline_work_units": 3000,
+        "observed_work_units": 1980,
+        "saved": 1020
+      }
+    },
+    {
+      "authority_conferred_by_pattern": false,
+      "execution_decisions_affected": [],
+      "pattern_roots_consulted": [],
+      "patterns_applied": [],
+      "patterns_rejected_as_irrelevant": [
+        "tempting_but_irrelevant_pattern"
+      ],
+      "receipt_root_hash72": "0000000000000000000000000000003DJM6G2Uwmc(G>L/3*V/oN2=A7Ydj>14SDWcTPaQr?",
+      "schema": "HHS_PATTERN_USE_RECEIPT_V1",
+      "trial_id": "W95-12:B_PATTERN_AWARE:r0",
+      "work_saved_claim": {
+        "baseline_work_units": 1100,
+        "observed_work_units": 1160,
+        "saved": 0
+      }
+    },
+    {
+      "authority_conferred_by_pattern": false,
+      "execution_decisions_affected": [
+        "SEARCH_ORDER",
+        "BRANCH_PRUNING"
+      ],
+      "pattern_roots_consulted": [
+        "0000000000000000000000000000002Ns2NZwohEgEDGloSEU8c(JIBp1j)jNl3^X+UJ40P)"
+      ],
+      "patterns_applied": [
+        "0000000000000000000000000000002Ns2NZwohEgEDGloSEU8c(JIBp1j)jNl3^X+UJ40P)"
+      ],
+      "patterns_rejected_as_irrelevant": [],
+      "receipt_root_hash72": "0000000000000000000000000000003QfLNMRiDhxNn294IPcAD6^-Z/hGbe(tkMoDmAAVvn",
+      "schema": "HHS_PATTERN_USE_RECEIPT_V1",
+      "trial_id": "W95-13:B_PATTERN_AWARE:r0",
+      "work_saved_claim": {
+        "baseline_work_units": 2400,
+        "observed_work_units": 1760,
+        "saved": 640
+      }
+    },
+    {
+      "authority_conferred_by_pattern": false,
+      "execution_decisions_affected": [
+        "SEARCH_ORDER",
+        "BRANCH_PRUNING"
+      ],
+      "pattern_roots_consulted": [
+        "0000000000000000000000000000000)NH!q7>ECx9JtpvIHWc6Si+ntc)ZcY^b/=P^FkoVL"
+      ],
+      "patterns_applied": [
+        "0000000000000000000000000000000)NH!q7>ECx9JtpvIHWc6Si+ntc)ZcY^b/=P^FkoVL"
+      ],
+      "patterns_rejected_as_irrelevant": [],
+      "receipt_root_hash72": "00000000000000000000000000000005WNvsiy?kQ7y4j83YiMo4CVZQfUQxsREf+>f-*7k+",
+      "schema": "HHS_PATTERN_USE_RECEIPT_V1",
+      "trial_id": "W95-14:B_PATTERN_AWARE:r0",
+      "work_saved_claim": {
+        "baseline_work_units": 1700,
+        "observed_work_units": 1130,
+        "saved": 570
+      }
+    },
+    {
+      "authority_conferred_by_pattern": false,
+      "execution_decisions_affected": [
+        "SEARCH_ORDER",
+        "BRANCH_PRUNING"
+      ],
+      "pattern_roots_consulted": [
+        "0000000000000000000000000000002Ns2NZwohEgEDGloSEU8c(JIBp1j)jNl3^X+UJ40P)"
+      ],
+      "patterns_applied": [
+        "0000000000000000000000000000002Ns2NZwohEgEDGloSEU8c(JIBp1j)jNl3^X+UJ40P)"
+      ],
+      "patterns_rejected_as_irrelevant": [],
+      "receipt_root_hash72": "0000000000000000000000000000000Tpg)o9RHlJ!?kuBPsNSowuwm=B*IWY3^brjWGS4Vn",
+      "schema": "HHS_PATTERN_USE_RECEIPT_V1",
+      "trial_id": "W95-15:B_PATTERN_AWARE:r0",
+      "work_saved_claim": {
+        "baseline_work_units": 1900,
+        "observed_work_units": 1290,
+        "saved": 610
+      }
+    },
+    {
+      "authority_conferred_by_pattern": false,
+      "execution_decisions_affected": [
+        "SEARCH_ORDER",
+        "BRANCH_PRUNING"
+      ],
+      "pattern_roots_consulted": [
+        "0000000000000000000000000000000)NH!q7>ECx9JtpvIHWc6Si+ntc)ZcY^b/=P^FkoVL",
+        "0000000000000000000000000000001fZ>gpKtAtLLjtfEdP2C=yWS-Ta8Me2KhNnsW3-vkm"
+      ],
+      "patterns_applied": [
+        "0000000000000000000000000000000)NH!q7>ECx9JtpvIHWc6Si+ntc)ZcY^b/=P^FkoVL",
+        "0000000000000000000000000000001fZ>gpKtAtLLjtfEdP2C=yWS-Ta8Me2KhNnsW3-vkm"
+      ],
+      "patterns_rejected_as_irrelevant": [],
+      "receipt_root_hash72": "0000000000000000000000000000003CO+pxQo5wIYuSk2>dLzvax5*3TKfm0z23!BxKjxb8",
+      "schema": "HHS_PATTERN_USE_RECEIPT_V1",
+      "trial_id": "W95-16:B_PATTERN_AWARE:r0",
+      "work_saved_claim": {
+        "baseline_work_units": 2000,
+        "observed_work_units": 1340,
+        "saved": 660
+      }
+    },
+    {
+      "authority_conferred_by_pattern": false,
+      "execution_decisions_affected": [
+        "SEARCH_ORDER",
+        "BRANCH_PRUNING"
+      ],
+      "pattern_roots_consulted": [
+        "0000000000000000000000000000000)NH!q7>ECx9JtpvIHWc6Si+ntc)ZcY^b/=P^FkoVL",
+        "0000000000000000000000000000001fZ>gpKtAtLLjtfEdP2C=yWS-Ta8Me2KhNnsW3-vkm"
+      ],
+      "patterns_applied": [
+        "0000000000000000000000000000000)NH!q7>ECx9JtpvIHWc6Si+ntc)ZcY^b/=P^FkoVL",
+        "0000000000000000000000000000001fZ>gpKtAtLLjtfEdP2C=yWS-Ta8Me2KhNnsW3-vkm"
+      ],
+      "patterns_rejected_as_irrelevant": [],
+      "receipt_root_hash72": "0000000000000000000000000000000q+GKb-9Bw?VQZwaoE?DabjWpOmiT1)N*UpxmgEAGP",
+      "schema": "HHS_PATTERN_USE_RECEIPT_V1",
+      "trial_id": "W95-16:B_PATTERN_AWARE:r1",
+      "work_saved_claim": {
+        "baseline_work_units": 2000,
+        "observed_work_units": 1340,
+        "saved": 660
+      }
+    },
+    {
+      "authority_conferred_by_pattern": false,
+      "execution_decisions_affected": [
+        "SEARCH_ORDER",
+        "BRANCH_PRUNING"
+      ],
+      "pattern_roots_consulted": [
+        "0000000000000000000000000000002Ns2NZwohEgEDGloSEU8c(JIBp1j)jNl3^X+UJ40P)"
+      ],
+      "patterns_applied": [
+        "0000000000000000000000000000002Ns2NZwohEgEDGloSEU8c(JIBp1j)jNl3^X+UJ40P)"
+      ],
+      "patterns_rejected_as_irrelevant": [],
+      "receipt_root_hash72": "00000000000000000000000000000021l8a4iNWl!b1f-TOFpgYvv!mmmuoC0ABsfmVF>N9H",
+      "schema": "HHS_PATTERN_USE_RECEIPT_V1",
+      "trial_id": "W95-15:B_PATTERN_AWARE:r1",
+      "work_saved_claim": {
+        "baseline_work_units": 1900,
+        "observed_work_units": 1290,
+        "saved": 610
+      }
+    },
+    {
+      "authority_conferred_by_pattern": false,
+      "execution_decisions_affected": [
+        "SEARCH_ORDER",
+        "BRANCH_PRUNING"
+      ],
+      "pattern_roots_consulted": [
+        "0000000000000000000000000000000)NH!q7>ECx9JtpvIHWc6Si+ntc)ZcY^b/=P^FkoVL"
+      ],
+      "patterns_applied": [
+        "0000000000000000000000000000000)NH!q7>ECx9JtpvIHWc6Si+ntc)ZcY^b/=P^FkoVL"
+      ],
+      "patterns_rejected_as_irrelevant": [],
+      "receipt_root_hash72": "0000000000000000000000000000001FQm5GpMiery?RdEQtGZw4Lk>*eYm1LwE71kSyF!)W",
+      "schema": "HHS_PATTERN_USE_RECEIPT_V1",
+      "trial_id": "W95-14:B_PATTERN_AWARE:r1",
+      "work_saved_claim": {
+        "baseline_work_units": 1700,
+        "observed_work_units": 1130,
+        "saved": 570
+      }
+    },
+    {
+      "authority_conferred_by_pattern": false,
+      "execution_decisions_affected": [
+        "SEARCH_ORDER",
+        "BRANCH_PRUNING"
+      ],
+      "pattern_roots_consulted": [
+        "0000000000000000000000000000002Ns2NZwohEgEDGloSEU8c(JIBp1j)jNl3^X+UJ40P)"
+      ],
+      "patterns_applied": [
+        "0000000000000000000000000000002Ns2NZwohEgEDGloSEU8c(JIBp1j)jNl3^X+UJ40P)"
+      ],
+      "patterns_rejected_as_irrelevant": [],
+      "receipt_root_hash72": "0000000000000000000000000000003K1rN6QrAT5kx9o!DjLAwo*EPw4(D?kKfL+GPP-(ME",
+      "schema": "HHS_PATTERN_USE_RECEIPT_V1",
+      "trial_id": "W95-13:B_PATTERN_AWARE:r1",
+      "work_saved_claim": {
+        "baseline_work_units": 2400,
+        "observed_work_units": 1760,
+        "saved": 640
+      }
+    },
+    {
+      "authority_conferred_by_pattern": false,
+      "execution_decisions_affected": [],
+      "pattern_roots_consulted": [],
+      "patterns_applied": [],
+      "patterns_rejected_as_irrelevant": [
+        "tempting_but_irrelevant_pattern"
+      ],
+      "receipt_root_hash72": "0000000000000000000000000000003fT3jkSDnj/uom=tEDLa0+KMmO/8nveHJgubfzW^em",
+      "schema": "HHS_PATTERN_USE_RECEIPT_V1",
+      "trial_id": "W95-12:B_PATTERN_AWARE:r1",
+      "work_saved_claim": {
+        "baseline_work_units": 1100,
+        "observed_work_units": 1160,
+        "saved": 0
+      }
+    },
+    {
+      "authority_conferred_by_pattern": false,
+      "execution_decisions_affected": [
+        "SEARCH_ORDER",
+        "BRANCH_PRUNING"
+      ],
+      "pattern_roots_consulted": [
+        "0000000000000000000000000000000)NH!q7>ECx9JtpvIHWc6Si+ntc)ZcY^b/=P^FkoVL",
+        "0000000000000000000000000000001fZ>gpKtAtLLjtfEdP2C=yWS-Ta8Me2KhNnsW3-vkm",
+        "0000000000000000000000000000002K?0eEqyvgnMlkqUGD7>Zj07Hao^pL1cH*=gRyqu66",
+        "0000000000000000000000000000002Ns2NZwohEgEDGloSEU8c(JIBp1j)jNl3^X+UJ40P)"
+      ],
+      "patterns_applied": [
+        "0000000000000000000000000000000)NH!q7>ECx9JtpvIHWc6Si+ntc)ZcY^b/=P^FkoVL",
+        "0000000000000000000000000000001fZ>gpKtAtLLjtfEdP2C=yWS-Ta8Me2KhNnsW3-vkm",
+        "0000000000000000000000000000002K?0eEqyvgnMlkqUGD7>Zj07Hao^pL1cH*=gRyqu66",
+        "0000000000000000000000000000002Ns2NZwohEgEDGloSEU8c(JIBp1j)jNl3^X+UJ40P)"
+      ],
+      "patterns_rejected_as_irrelevant": [],
+      "receipt_root_hash72": "0000000000000000000000000000001hVzGy)BWIPYBWc8^AZF5w+8vA4vCMj/bqqTlRv8!C",
+      "schema": "HHS_PATTERN_USE_RECEIPT_V1",
+      "trial_id": "W95-11:B_PATTERN_AWARE:r1",
+      "work_saved_claim": {
+        "baseline_work_units": 3000,
+        "observed_work_units": 1980,
+        "saved": 1020
+      }
+    },
+    {
+      "authority_conferred_by_pattern": false,
+      "execution_decisions_affected": [
+        "SEARCH_ORDER",
+        "BRANCH_PRUNING"
+      ],
+      "pattern_roots_consulted": [
+        "0000000000000000000000000000000)NH!q7>ECx9JtpvIHWc6Si+ntc)ZcY^b/=P^FkoVL",
+        "0000000000000000000000000000001fZ>gpKtAtLLjtfEdP2C=yWS-Ta8Me2KhNnsW3-vkm"
+      ],
+      "patterns_applied": [
+        "0000000000000000000000000000000)NH!q7>ECx9JtpvIHWc6Si+ntc)ZcY^b/=P^FkoVL",
+        "0000000000000000000000000000001fZ>gpKtAtLLjtfEdP2C=yWS-Ta8Me2KhNnsW3-vkm"
+      ],
+      "patterns_rejected_as_irrelevant": [],
+      "receipt_root_hash72": "00000000000000000000000000000048aMey)bKGF0TgKT6XSJNa8tMtbFd?GOtquC5Q^h4W",
+      "schema": "HHS_PATTERN_USE_RECEIPT_V1",
+      "trial_id": "W95-10:B_PATTERN_AWARE:r1",
+      "work_saved_claim": {
+        "baseline_work_units": 2700,
+        "observed_work_units": 1910,
+        "saved": 790
+      }
+    },
+    {
+      "authority_conferred_by_pattern": false,
+      "execution_decisions_affected": [
+        "SEARCH_ORDER",
+        "BRANCH_PRUNING"
+      ],
+      "pattern_roots_consulted": [
+        "0000000000000000000000000000000)NH!q7>ECx9JtpvIHWc6Si+ntc)ZcY^b/=P^FkoVL",
+        "0000000000000000000000000000002Ns2NZwohEgEDGloSEU8c(JIBp1j)jNl3^X+UJ40P)"
+      ],
+      "patterns_applied": [
+        "0000000000000000000000000000000)NH!q7>ECx9JtpvIHWc6Si+ntc)ZcY^b/=P^FkoVL",
+        "0000000000000000000000000000002Ns2NZwohEgEDGloSEU8c(JIBp1j)jNl3^X+UJ40P)"
+      ],
+      "patterns_rejected_as_irrelevant": [],
+      "receipt_root_hash72": "0000000000000000000000000000001Ou3puYF1?05=)J*Trmb1EJ?S-XyQO8(bDp2qgn3QX",
+      "schema": "HHS_PATTERN_USE_RECEIPT_V1",
+      "trial_id": "W95-09:B_PATTERN_AWARE:r1",
+      "work_saved_claim": {
+        "baseline_work_units": 2600,
+        "observed_work_units": 1840,
+        "saved": 760
+      }
+    },
+    {
+      "authority_conferred_by_pattern": false,
+      "execution_decisions_affected": [
+        "SEARCH_ORDER",
+        "BRANCH_PRUNING"
+      ],
+      "pattern_roots_consulted": [
+        "0000000000000000000000000000002Ns2NZwohEgEDGloSEU8c(JIBp1j)jNl3^X+UJ40P)"
+      ],
+      "patterns_applied": [
+        "0000000000000000000000000000002Ns2NZwohEgEDGloSEU8c(JIBp1j)jNl3^X+UJ40P)"
+      ],
+      "patterns_rejected_as_irrelevant": [],
+      "receipt_root_hash72": "00000000000000000000000000000037AwtmZXBOmJx5jAXAcWYgQjLDdmO10PKyE4fQfy0x",
+      "schema": "HHS_PATTERN_USE_RECEIPT_V1",
+      "trial_id": "W95-08:B_PATTERN_AWARE:r1",
+      "work_saved_claim": {
+        "baseline_work_units": 2200,
+        "observed_work_units": 1490,
+        "saved": 710
+      }
+    },
+    {
+      "authority_conferred_by_pattern": false,
+      "execution_decisions_affected": [
+        "SEARCH_ORDER",
+        "BRANCH_PRUNING"
+      ],
+      "pattern_roots_consulted": [
+        "0000000000000000000000000000001fZ>gpKtAtLLjtfEdP2C=yWS-Ta8Me2KhNnsW3-vkm",
+        "0000000000000000000000000000002K?0eEqyvgnMlkqUGD7>Zj07Hao^pL1cH*=gRyqu66"
+      ],
+      "patterns_applied": [
+        "0000000000000000000000000000001fZ>gpKtAtLLjtfEdP2C=yWS-Ta8Me2KhNnsW3-vkm",
+        "0000000000000000000000000000002K?0eEqyvgnMlkqUGD7>Zj07Hao^pL1cH*=gRyqu66"
+      ],
+      "patterns_rejected_as_irrelevant": [],
+      "receipt_root_hash72": "0000000000000000000000000000002llIa/B?pxRhz(Edm+opNxIVQJSx21*CHbgrMvf8me",
+      "schema": "HHS_PATTERN_USE_RECEIPT_V1",
+      "trial_id": "W95-07:B_PATTERN_AWARE:r1",
+      "work_saved_claim": {
+        "baseline_work_units": 2300,
+        "observed_work_units": 1510,
+        "saved": 790
+      }
+    },
+    {
+      "authority_conferred_by_pattern": false,
+      "execution_decisions_affected": [
+        "SEARCH_ORDER",
+        "BRANCH_PRUNING"
+      ],
+      "pattern_roots_consulted": [
+        "0000000000000000000000000000000)NH!q7>ECx9JtpvIHWc6Si+ntc)ZcY^b/=P^FkoVL",
+        "0000000000000000000000000000001fZ>gpKtAtLLjtfEdP2C=yWS-Ta8Me2KhNnsW3-vkm"
+      ],
+      "patterns_applied": [
+        "0000000000000000000000000000000)NH!q7>ECx9JtpvIHWc6Si+ntc)ZcY^b/=P^FkoVL",
+        "0000000000000000000000000000001fZ>gpKtAtLLjtfEdP2C=yWS-Ta8Me2KhNnsW3-vkm"
+      ],
+      "patterns_rejected_as_irrelevant": [],
+      "receipt_root_hash72": "0000000000000000000000000000001qrh/d8meY/Djjjonhxr?VRc0n0LPIg?a!f>KX9JDl",
+      "schema": "HHS_PATTERN_USE_RECEIPT_V1",
+      "trial_id": "W95-06:B_PATTERN_AWARE:r1",
+      "work_saved_claim": {
+        "baseline_work_units": 2100,
+        "observed_work_units": 1450,
+        "saved": 650
+      }
+    },
+    {
+      "authority_conferred_by_pattern": false,
+      "execution_decisions_affected": [
+        "SEARCH_ORDER",
+        "BRANCH_PRUNING"
+      ],
+      "pattern_roots_consulted": [
+        "0000000000000000000000000000002Ns2NZwohEgEDGloSEU8c(JIBp1j)jNl3^X+UJ40P)"
+      ],
+      "patterns_applied": [
+        "0000000000000000000000000000002Ns2NZwohEgEDGloSEU8c(JIBp1j)jNl3^X+UJ40P)"
+      ],
+      "patterns_rejected_as_irrelevant": [],
+      "receipt_root_hash72": "0000000000000000000000000000003^1*o04cF/lVyZ)3^=-I9tEGaT4PheCY3=XB/wgooD",
+      "schema": "HHS_PATTERN_USE_RECEIPT_V1",
+      "trial_id": "W95-05:B_PATTERN_AWARE:r1",
+      "work_saved_claim": {
+        "baseline_work_units": 1500,
+        "observed_work_units": 1020,
+        "saved": 480
+      }
+    },
+    {
+      "authority_conferred_by_pattern": false,
+      "execution_decisions_affected": [
+        "SEARCH_ORDER",
+        "BRANCH_PRUNING"
+      ],
+      "pattern_roots_consulted": [
+        "0000000000000000000000000000002Ns2NZwohEgEDGloSEU8c(JIBp1j)jNl3^X+UJ40P)"
+      ],
+      "patterns_applied": [
+        "0000000000000000000000000000002Ns2NZwohEgEDGloSEU8c(JIBp1j)jNl3^X+UJ40P)"
+      ],
+      "patterns_rejected_as_irrelevant": [],
+      "receipt_root_hash72": "0000000000000000000000000000002!/BTvn1D1O9zmbe(Na6X^/d*?RBraW!b7WJNQJ?zn",
+      "schema": "HHS_PATTERN_USE_RECEIPT_V1",
+      "trial_id": "W95-04:B_PATTERN_AWARE:r1",
+      "work_saved_claim": {
+        "baseline_work_units": 1600,
+        "observed_work_units": 1040,
+        "saved": 560
+      }
+    },
+    {
+      "authority_conferred_by_pattern": false,
+      "execution_decisions_affected": [
+        "SEARCH_ORDER",
+        "BRANCH_PRUNING"
+      ],
+      "pattern_roots_consulted": [
+        "0000000000000000000000000000002Ns2NZwohEgEDGloSEU8c(JIBp1j)jNl3^X+UJ40P)"
+      ],
+      "patterns_applied": [
+        "0000000000000000000000000000002Ns2NZwohEgEDGloSEU8c(JIBp1j)jNl3^X+UJ40P)"
+      ],
+      "patterns_rejected_as_irrelevant": [],
+      "receipt_root_hash72": "0000000000000000000000000000004Fz!-=0vucvzvw9baVuq06yat-KG+y7En+7mB8Zs8r",
+      "schema": "HHS_PATTERN_USE_RECEIPT_V1",
+      "trial_id": "W95-03:B_PATTERN_AWARE:r1",
+      "work_saved_claim": {
+        "baseline_work_units": 1400,
+        "observed_work_units": 910,
+        "saved": 490
+      }
+    },
+    {
+      "authority_conferred_by_pattern": false,
+      "execution_decisions_affected": [
+        "SEARCH_ORDER",
+        "BRANCH_PRUNING"
+      ],
+      "pattern_roots_consulted": [
+        "0000000000000000000000000000001fZ>gpKtAtLLjtfEdP2C=yWS-Ta8Me2KhNnsW3-vkm"
+      ],
+      "patterns_applied": [
+        "0000000000000000000000000000001fZ>gpKtAtLLjtfEdP2C=yWS-Ta8Me2KhNnsW3-vkm"
+      ],
+      "patterns_rejected_as_irrelevant": [],
+      "receipt_root_hash72": "0000000000000000000000000000003kPEtmuCyb7kUZX!cdyJY9CweswKY/DsrV9z+^KY8i",
+      "schema": "HHS_PATTERN_USE_RECEIPT_V1",
+      "trial_id": "W95-02:B_PATTERN_AWARE:r1",
+      "work_saved_claim": {
+        "baseline_work_units": 1800,
+        "observed_work_units": 990,
+        "saved": 810
+      }
+    },
+    {
+      "authority_conferred_by_pattern": false,
+      "execution_decisions_affected": [
+        "SEARCH_ORDER",
+        "BRANCH_PRUNING"
+      ],
+      "pattern_roots_consulted": [
+        "0000000000000000000000000000000)NH!q7>ECx9JtpvIHWc6Si+ntc)ZcY^b/=P^FkoVL"
+      ],
+      "patterns_applied": [
+        "0000000000000000000000000000000)NH!q7>ECx9JtpvIHWc6Si+ntc)ZcY^b/=P^FkoVL"
+      ],
+      "patterns_rejected_as_irrelevant": [],
+      "receipt_root_hash72": "0000000000000000000000000000001VKbskS8?OsGMPxsThOS?vRBkt4Znhih0d)I1h9oP=",
+      "schema": "HHS_PATTERN_USE_RECEIPT_V1",
+      "trial_id": "W95-01:B_PATTERN_AWARE:r1",
+      "work_saved_claim": {
+        "baseline_work_units": 1200,
+        "observed_work_units": 820,
+        "saved": 380
+      }
+    },
+    {
+      "authority_conferred_by_pattern": false,
+      "execution_decisions_affected": [
+        "SEARCH_ORDER",
+        "BRANCH_PRUNING"
+      ],
+      "pattern_roots_consulted": [
+        "0000000000000000000000000000000)NH!q7>ECx9JtpvIHWc6Si+ntc)ZcY^b/=P^FkoVL"
+      ],
+      "patterns_applied": [
+        "0000000000000000000000000000000)NH!q7>ECx9JtpvIHWc6Si+ntc)ZcY^b/=P^FkoVL"
+      ],
+      "patterns_rejected_as_irrelevant": [],
+      "receipt_root_hash72": "0000000000000000000000000000001t4DcfsDTWPK8c+8YqayDgHh=Ig/v)/N5tk!!Chc^r",
+      "schema": "HHS_PATTERN_USE_RECEIPT_V1",
+      "trial_id": "W95-01:B_PATTERN_AWARE:r2",
+      "work_saved_claim": {
+        "baseline_work_units": 1200,
+        "observed_work_units": 820,
+        "saved": 380
+      }
+    },
+    {
+      "authority_conferred_by_pattern": false,
+      "execution_decisions_affected": [
+        "SEARCH_ORDER",
+        "BRANCH_PRUNING"
+      ],
+      "pattern_roots_consulted": [
+        "0000000000000000000000000000001fZ>gpKtAtLLjtfEdP2C=yWS-Ta8Me2KhNnsW3-vkm"
+      ],
+      "patterns_applied": [
+        "0000000000000000000000000000001fZ>gpKtAtLLjtfEdP2C=yWS-Ta8Me2KhNnsW3-vkm"
+      ],
+      "patterns_rejected_as_irrelevant": [],
+      "receipt_root_hash72": "0000000000000000000000000000003Dw7Ke4TqHhNPvKMPHyjuDH?7*=BCcziY(S>(/OIGP",
+      "schema": "HHS_PATTERN_USE_RECEIPT_V1",
+      "trial_id": "W95-02:B_PATTERN_AWARE:r2",
+      "work_saved_claim": {
+        "baseline_work_units": 1800,
+        "observed_work_units": 990,
+        "saved": 810
+      }
+    },
+    {
+      "authority_conferred_by_pattern": false,
+      "execution_decisions_affected": [
+        "SEARCH_ORDER",
+        "BRANCH_PRUNING"
+      ],
+      "pattern_roots_consulted": [
+        "0000000000000000000000000000002Ns2NZwohEgEDGloSEU8c(JIBp1j)jNl3^X+UJ40P)"
+      ],
+      "patterns_applied": [
+        "0000000000000000000000000000002Ns2NZwohEgEDGloSEU8c(JIBp1j)jNl3^X+UJ40P)"
+      ],
+      "patterns_rejected_as_irrelevant": [],
+      "receipt_root_hash72": "0000000000000000000000000000000^W^z^VKGPULr(j+xw8yaTOK8xNNXDJvkxRRPUe?!w",
+      "schema": "HHS_PATTERN_USE_RECEIPT_V1",
+      "trial_id": "W95-03:B_PATTERN_AWARE:r2",
+      "work_saved_claim": {
+        "baseline_work_units": 1400,
+        "observed_work_units": 910,
+        "saved": 490
+      }
+    },
+    {
+      "authority_conferred_by_pattern": false,
+      "execution_decisions_affected": [
+        "SEARCH_ORDER",
+        "BRANCH_PRUNING"
+      ],
+      "pattern_roots_consulted": [
+        "0000000000000000000000000000002Ns2NZwohEgEDGloSEU8c(JIBp1j)jNl3^X+UJ40P)"
+      ],
+      "patterns_applied": [
+        "0000000000000000000000000000002Ns2NZwohEgEDGloSEU8c(JIBp1j)jNl3^X+UJ40P)"
+      ],
+      "patterns_rejected_as_irrelevant": [],
+      "receipt_root_hash72": "0000000000000000000000000000000k-gOTmezOA6z>OrHYF4Y3iJRvFaauHA+y5DzzKnDn",
+      "schema": "HHS_PATTERN_USE_RECEIPT_V1",
+      "trial_id": "W95-04:B_PATTERN_AWARE:r2",
+      "work_saved_claim": {
+        "baseline_work_units": 1600,
+        "observed_work_units": 1040,
+        "saved": 560
+      }
+    },
+    {
+      "authority_conferred_by_pattern": false,
+      "execution_decisions_affected": [
+        "SEARCH_ORDER",
+        "BRANCH_PRUNING"
+      ],
+      "pattern_roots_consulted": [
+        "0000000000000000000000000000002Ns2NZwohEgEDGloSEU8c(JIBp1j)jNl3^X+UJ40P)"
+      ],
+      "patterns_applied": [
+        "0000000000000000000000000000002Ns2NZwohEgEDGloSEU8c(JIBp1j)jNl3^X+UJ40P)"
+      ],
+      "patterns_rejected_as_irrelevant": [],
+      "receipt_root_hash72": "0000000000000000000000000000000r=azt=)hFq0^=0+uqe1t5??((xA2y?e8Rdz+aOO98",
+      "schema": "HHS_PATTERN_USE_RECEIPT_V1",
+      "trial_id": "W95-05:B_PATTERN_AWARE:r2",
+      "work_saved_claim": {
+        "baseline_work_units": 1500,
+        "observed_work_units": 1020,
+        "saved": 480
+      }
+    },
+    {
+      "authority_conferred_by_pattern": false,
+      "execution_decisions_affected": [
+        "SEARCH_ORDER",
+        "BRANCH_PRUNING"
+      ],
+      "pattern_roots_consulted": [
+        "0000000000000000000000000000000)NH!q7>ECx9JtpvIHWc6Si+ntc)ZcY^b/=P^FkoVL",
+        "0000000000000000000000000000001fZ>gpKtAtLLjtfEdP2C=yWS-Ta8Me2KhNnsW3-vkm"
+      ],
+      "patterns_applied": [
+        "0000000000000000000000000000000)NH!q7>ECx9JtpvIHWc6Si+ntc)ZcY^b/=P^FkoVL",
+        "0000000000000000000000000000001fZ>gpKtAtLLjtfEdP2C=yWS-Ta8Me2KhNnsW3-vkm"
+      ],
+      "patterns_rejected_as_irrelevant": [],
+      "receipt_root_hash72": "0000000000000000000000000000001wDauXacf5//9x-!Gmaq3u-/P4s42BLxxoA98UyyX-",
+      "schema": "HHS_PATTERN_USE_RECEIPT_V1",
+      "trial_id": "W95-06:B_PATTERN_AWARE:r2",
+      "work_saved_claim": {
+        "baseline_work_units": 2100,
+        "observed_work_units": 1450,
+        "saved": 650
+      }
+    },
+    {
+      "authority_conferred_by_pattern": false,
+      "execution_decisions_affected": [
+        "SEARCH_ORDER",
+        "BRANCH_PRUNING"
+      ],
+      "pattern_roots_consulted": [
+        "0000000000000000000000000000001fZ>gpKtAtLLjtfEdP2C=yWS-Ta8Me2KhNnsW3-vkm",
+        "0000000000000000000000000000002K?0eEqyvgnMlkqUGD7>Zj07Hao^pL1cH*=gRyqu66"
+      ],
+      "patterns_applied": [
+        "0000000000000000000000000000001fZ>gpKtAtLLjtfEdP2C=yWS-Ta8Me2KhNnsW3-vkm",
+        "0000000000000000000000000000002K?0eEqyvgnMlkqUGD7>Zj07Hao^pL1cH*=gRyqu66"
+      ],
+      "patterns_rejected_as_irrelevant": [],
+      "receipt_root_hash72": "0000000000000000000000000000001ZwXHtQm*1/YDeHQveOe=YDbzMzMfm=Jr!Pp^hxySa",
+      "schema": "HHS_PATTERN_USE_RECEIPT_V1",
+      "trial_id": "W95-07:B_PATTERN_AWARE:r2",
+      "work_saved_claim": {
+        "baseline_work_units": 2300,
+        "observed_work_units": 1510,
+        "saved": 790
+      }
+    },
+    {
+      "authority_conferred_by_pattern": false,
+      "execution_decisions_affected": [
+        "SEARCH_ORDER",
+        "BRANCH_PRUNING"
+      ],
+      "pattern_roots_consulted": [
+        "0000000000000000000000000000002Ns2NZwohEgEDGloSEU8c(JIBp1j)jNl3^X+UJ40P)"
+      ],
+      "patterns_applied": [
+        "0000000000000000000000000000002Ns2NZwohEgEDGloSEU8c(JIBp1j)jNl3^X+UJ40P)"
+      ],
+      "patterns_rejected_as_irrelevant": [],
+      "receipt_root_hash72": "0000000000000000000000000000001ElCL)/(eYb3S4N8f1IkYU2ix?5lMPjdAuaCMmC2Wo",
+      "schema": "HHS_PATTERN_USE_RECEIPT_V1",
+      "trial_id": "W95-08:B_PATTERN_AWARE:r2",
+      "work_saved_claim": {
+        "baseline_work_units": 2200,
+        "observed_work_units": 1490,
+        "saved": 710
+      }
+    },
+    {
+      "authority_conferred_by_pattern": false,
+      "execution_decisions_affected": [
+        "SEARCH_ORDER",
+        "BRANCH_PRUNING"
+      ],
+      "pattern_roots_consulted": [
+        "0000000000000000000000000000000)NH!q7>ECx9JtpvIHWc6Si+ntc)ZcY^b/=P^FkoVL",
+        "0000000000000000000000000000002Ns2NZwohEgEDGloSEU8c(JIBp1j)jNl3^X+UJ40P)"
+      ],
+      "patterns_applied": [
+        "0000000000000000000000000000000)NH!q7>ECx9JtpvIHWc6Si+ntc)ZcY^b/=P^FkoVL",
+        "0000000000000000000000000000002Ns2NZwohEgEDGloSEU8c(JIBp1j)jNl3^X+UJ40P)"
+      ],
+      "patterns_rejected_as_irrelevant": [],
+      "receipt_root_hash72": "0000000000000000000000000000000ocMJqKm0!n1KgIfK+f>=7ZgUYR)Uq7G-uLXR0uH4+",
+      "schema": "HHS_PATTERN_USE_RECEIPT_V1",
+      "trial_id": "W95-09:B_PATTERN_AWARE:r2",
+      "work_saved_claim": {
+        "baseline_work_units": 2600,
+        "observed_work_units": 1840,
+        "saved": 760
+      }
+    },
+    {
+      "authority_conferred_by_pattern": false,
+      "execution_decisions_affected": [
+        "SEARCH_ORDER",
+        "BRANCH_PRUNING"
+      ],
+      "pattern_roots_consulted": [
+        "0000000000000000000000000000000)NH!q7>ECx9JtpvIHWc6Si+ntc)ZcY^b/=P^FkoVL",
+        "0000000000000000000000000000001fZ>gpKtAtLLjtfEdP2C=yWS-Ta8Me2KhNnsW3-vkm"
+      ],
+      "patterns_applied": [
+        "0000000000000000000000000000000)NH!q7>ECx9JtpvIHWc6Si+ntc)ZcY^b/=P^FkoVL",
+        "0000000000000000000000000000001fZ>gpKtAtLLjtfEdP2C=yWS-Ta8Me2KhNnsW3-vkm"
+      ],
+      "patterns_rejected_as_irrelevant": [],
+      "receipt_root_hash72": "0000000000000000000000000000004G?u)3PCaYvh48+fB!OtJm(239VbQ)tv=c7^VUpQ^F",
+      "schema": "HHS_PATTERN_USE_RECEIPT_V1",
+      "trial_id": "W95-10:B_PATTERN_AWARE:r2",
+      "work_saved_claim": {
+        "baseline_work_units": 2700,
+        "observed_work_units": 1910,
+        "saved": 790
+      }
+    },
+    {
+      "authority_conferred_by_pattern": false,
+      "execution_decisions_affected": [
+        "SEARCH_ORDER",
+        "BRANCH_PRUNING"
+      ],
+      "pattern_roots_consulted": [
+        "0000000000000000000000000000000)NH!q7>ECx9JtpvIHWc6Si+ntc)ZcY^b/=P^FkoVL",
+        "0000000000000000000000000000001fZ>gpKtAtLLjtfEdP2C=yWS-Ta8Me2KhNnsW3-vkm",
+        "0000000000000000000000000000002K?0eEqyvgnMlkqUGD7>Zj07Hao^pL1cH*=gRyqu66",
+        "0000000000000000000000000000002Ns2NZwohEgEDGloSEU8c(JIBp1j)jNl3^X+UJ40P)"
+      ],
+      "patterns_applied": [
+        "0000000000000000000000000000000)NH!q7>ECx9JtpvIHWc6Si+ntc)ZcY^b/=P^FkoVL",
+        "0000000000000000000000000000001fZ>gpKtAtLLjtfEdP2C=yWS-Ta8Me2KhNnsW3-vkm",
+        "0000000000000000000000000000002K?0eEqyvgnMlkqUGD7>Zj07Hao^pL1cH*=gRyqu66",
+        "0000000000000000000000000000002Ns2NZwohEgEDGloSEU8c(JIBp1j)jNl3^X+UJ40P)"
+      ],
+      "patterns_rejected_as_irrelevant": [],
+      "receipt_root_hash72": "00000000000000000000000000000044*fhMc?8uUxaD8cN=(h3o>haVDuq>bD4vsrS5MUI6",
+      "schema": "HHS_PATTERN_USE_RECEIPT_V1",
+      "trial_id": "W95-11:B_PATTERN_AWARE:r2",
+      "work_saved_claim": {
+        "baseline_work_units": 3000,
+        "observed_work_units": 1980,
+        "saved": 1020
+      }
+    },
+    {
+      "authority_conferred_by_pattern": false,
+      "execution_decisions_affected": [],
+      "pattern_roots_consulted": [],
+      "patterns_applied": [],
+      "patterns_rejected_as_irrelevant": [
+        "tempting_but_irrelevant_pattern"
+      ],
+      "receipt_root_hash72": "0000000000000000000000000000002o3!Qk=++U8V?I=vMdlkKmqLLh!XpsPG^e/RAO(4/6",
+      "schema": "HHS_PATTERN_USE_RECEIPT_V1",
+      "trial_id": "W95-12:B_PATTERN_AWARE:r2",
+      "work_saved_claim": {
+        "baseline_work_units": 1100,
+        "observed_work_units": 1160,
+        "saved": 0
+      }
+    },
+    {
+      "authority_conferred_by_pattern": false,
+      "execution_decisions_affected": [
+        "SEARCH_ORDER",
+        "BRANCH_PRUNING"
+      ],
+      "pattern_roots_consulted": [
+        "0000000000000000000000000000002Ns2NZwohEgEDGloSEU8c(JIBp1j)jNl3^X+UJ40P)"
+      ],
+      "patterns_applied": [
+        "0000000000000000000000000000002Ns2NZwohEgEDGloSEU8c(JIBp1j)jNl3^X+UJ40P)"
+      ],
+      "patterns_rejected_as_irrelevant": [],
+      "receipt_root_hash72": "0000000000000000000000000000004lthQj9T*yxEKa-WM*-8?QTIS=pmEJ*bXF50n0OV>N",
+      "schema": "HHS_PATTERN_USE_RECEIPT_V1",
+      "trial_id": "W95-13:B_PATTERN_AWARE:r2",
+      "work_saved_claim": {
+        "baseline_work_units": 2400,
+        "observed_work_units": 1760,
+        "saved": 640
+      }
+    },
+    {
+      "authority_conferred_by_pattern": false,
+      "execution_decisions_affected": [
+        "SEARCH_ORDER",
+        "BRANCH_PRUNING"
+      ],
+      "pattern_roots_consulted": [
+        "0000000000000000000000000000000)NH!q7>ECx9JtpvIHWc6Si+ntc)ZcY^b/=P^FkoVL"
+      ],
+      "patterns_applied": [
+        "0000000000000000000000000000000)NH!q7>ECx9JtpvIHWc6Si+ntc)ZcY^b/=P^FkoVL"
+      ],
+      "patterns_rejected_as_irrelevant": [],
+      "receipt_root_hash72": "0000000000000000000000000000003E/dEtGET>as3VTg?m=K*Rf?N8LX?mM6j5XH2lcRlf",
+      "schema": "HHS_PATTERN_USE_RECEIPT_V1",
+      "trial_id": "W95-14:B_PATTERN_AWARE:r2",
+      "work_saved_claim": {
+        "baseline_work_units": 1700,
+        "observed_work_units": 1130,
+        "saved": 570
+      }
+    },
+    {
+      "authority_conferred_by_pattern": false,
+      "execution_decisions_affected": [
+        "SEARCH_ORDER",
+        "BRANCH_PRUNING"
+      ],
+      "pattern_roots_consulted": [
+        "0000000000000000000000000000002Ns2NZwohEgEDGloSEU8c(JIBp1j)jNl3^X+UJ40P)"
+      ],
+      "patterns_applied": [
+        "0000000000000000000000000000002Ns2NZwohEgEDGloSEU8c(JIBp1j)jNl3^X+UJ40P)"
+      ],
+      "patterns_rejected_as_irrelevant": [],
+      "receipt_root_hash72": "00000000000000000000000000000025tvfYEsh9cPgI2=3kRQ(ksKZ0-sHDuSSJ5t6CiiL!",
+      "schema": "HHS_PATTERN_USE_RECEIPT_V1",
+      "trial_id": "W95-15:B_PATTERN_AWARE:r2",
+      "work_saved_claim": {
+        "baseline_work_units": 1900,
+        "observed_work_units": 1290,
+        "saved": 610
+      }
+    },
+    {
+      "authority_conferred_by_pattern": false,
+      "execution_decisions_affected": [
+        "SEARCH_ORDER",
+        "BRANCH_PRUNING"
+      ],
+      "pattern_roots_consulted": [
+        "0000000000000000000000000000000)NH!q7>ECx9JtpvIHWc6Si+ntc)ZcY^b/=P^FkoVL",
+        "0000000000000000000000000000001fZ>gpKtAtLLjtfEdP2C=yWS-Ta8Me2KhNnsW3-vkm"
+      ],
+      "patterns_applied": [
+        "0000000000000000000000000000000)NH!q7>ECx9JtpvIHWc6Si+ntc)ZcY^b/=P^FkoVL",
+        "0000000000000000000000000000001fZ>gpKtAtLLjtfEdP2C=yWS-Ta8Me2KhNnsW3-vkm"
+      ],
+      "patterns_rejected_as_irrelevant": [],
+      "receipt_root_hash72": "0000000000000000000000000000004n*dRjtIVk)E3QlK?OlNjxyde(?CEz/a+9(F7M=8Wk",
+      "schema": "HHS_PATTERN_USE_RECEIPT_V1",
+      "trial_id": "W95-16:B_PATTERN_AWARE:r2",
+      "work_saved_claim": {
+        "baseline_work_units": 2000,
+        "observed_work_units": 1340,
+        "saved": 660
+      }
+    }
+  ]
+}

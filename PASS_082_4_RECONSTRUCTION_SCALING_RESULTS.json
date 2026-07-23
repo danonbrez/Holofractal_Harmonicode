@@ -1,0 +1,103 @@
+{
+  "schema": "HHS_PASS_082_4_SCALING_RESULTS_V1",
+  "results": [
+    {
+      "workload_id": "W47:two-string-phase-overlap",
+      "stream_count": 2,
+      "tokens_ingested": 32,
+      "receipt_bytes": 7362,
+      "replay_cost_units": 33
+    },
+    {
+      "workload_id": "W48:opposite-phase-pair",
+      "stream_count": 2,
+      "tokens_ingested": 32,
+      "receipt_bytes": 7357,
+      "replay_cost_units": 33
+    },
+    {
+      "workload_id": "W49:eight-string-coprime-phase",
+      "stream_count": 8,
+      "tokens_ingested": 192,
+      "receipt_bytes": 30386,
+      "replay_cost_units": 199
+    },
+    {
+      "workload_id": "W50:sixteen-string-dense-overlap",
+      "stream_count": 16,
+      "tokens_ingested": 512,
+      "receipt_bytes": 73699,
+      "replay_cost_units": 527
+    },
+    {
+      "workload_id": "W51:audio-video-latency-normalization",
+      "stream_count": 2,
+      "tokens_ingested": 32,
+      "receipt_bytes": 7371,
+      "replay_cost_units": 33
+    },
+    {
+      "workload_id": "W52:four-modality-event-binding",
+      "stream_count": 4,
+      "tokens_ingested": 64,
+      "receipt_bytes": 12079,
+      "replay_cost_units": 67
+    },
+    {
+      "workload_id": "W53:thirty-two-stream-symbolic-field",
+      "stream_count": 32,
+      "tokens_ingested": 512,
+      "receipt_bytes": 78519,
+      "replay_cost_units": 543
+    },
+    {
+      "workload_id": "W54:sixty-four-stream-dense-field",
+      "stream_count": 64,
+      "tokens_ingested": 768,
+      "receipt_bytes": 123044,
+      "replay_cost_units": 831
+    },
+    {
+      "workload_id": "W55:partial-overlap-unresolved",
+      "stream_count": 4,
+      "tokens_ingested": 32,
+      "receipt_bytes": 7039,
+      "replay_cost_units": 35
+    },
+    {
+      "workload_id": "W56:resource-bounded-reconstruction",
+      "stream_count": 16,
+      "tokens_ingested": 1024,
+      "receipt_bytes": 140130,
+      "replay_cost_units": 1039
+    },
+    {
+      "workload_id": "W57:latency-order-comparison",
+      "stream_count": 4,
+      "tokens_ingested": 64,
+      "receipt_bytes": 12076,
+      "replay_cost_units": 67
+    },
+    {
+      "workload_id": "W58:overlap-provenance-replay",
+      "stream_count": 8,
+      "tokens_ingested": 128,
+      "receipt_bytes": 21505,
+      "replay_cost_units": 135
+    },
+    {
+      "workload_id": "W59:raw-distinct-normalized-common",
+      "stream_count": 8,
+      "tokens_ingested": 128,
+      "receipt_bytes": 21510,
+      "replay_cost_units": 135
+    },
+    {
+      "workload_id": "W60:multistring-receipt-only-replay",
+      "stream_count": 16,
+      "tokens_ingested": 256,
+      "receipt_bytes": 40486,
+      "replay_cost_units": 271
+    }
+  ]
+}

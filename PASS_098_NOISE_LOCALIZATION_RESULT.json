@@ -1,0 +1,96 @@
+{
+  "candidate_count": 1,
+  "candidate_values": [
+    135
+  ],
+  "conflict_witnessed": true,
+  "exact_reconstruction": false,
+  "lane_count": 8,
+  "observations": [
+    {
+      "candidate_count_after": 128,
+      "candidate_count_before": 256,
+      "contradiction": false,
+      "expected_residue": 1,
+      "independent_witness": true,
+      "lane": 0,
+      "modulus": 2,
+      "observed_residue": 1
+    },
+    {
+      "candidate_count_after": 43,
+      "candidate_count_before": 128,
+      "contradiction": false,
+      "expected_residue": 0,
+      "independent_witness": true,
+      "lane": 1,
+      "modulus": 3,
+      "observed_residue": 0
+    },
+    {
+      "candidate_count_after": 9,
+      "candidate_count_before": 43,
+      "contradiction": false,
+      "expected_residue": 0,
+      "independent_witness": true,
+      "lane": 2,
+      "modulus": 5,
+      "observed_residue": 0
+    },
+    {
+      "candidate_count_after": 1,
+      "candidate_count_before": 9,
+      "contradiction": false,
+      "expected_residue": 1,
+      "independent_witness": true,
+      "lane": 3,
+      "modulus": 7,
+      "observed_residue": 2
+    },
+    {
+      "candidate_count_after": 0,
+      "candidate_count_before": 1,
+      "contradiction": true,
+      "expected_residue": 5,
+      "independent_witness": true,
+      "lane": 4,
+      "modulus": 11,
+      "observed_residue": 5
+    },
+    {
+      "candidate_count_after": 0,
+      "candidate_count_before": 1,
+      "contradiction": true,
+      "expected_residue": 4,
+      "independent_witness": true,
+      "lane": 5,
+      "modulus": 13,
+      "observed_residue": 4
+    },
+    {
+      "candidate_count_after": 0,
+      "candidate_count_before": 1,
+      "contradiction": true,
+      "expected_residue": 4,
+      "independent_witness": true,
+      "lane": 6,
+      "modulus": 17,
+      "observed_residue": 4
+    },
+    {
+      "candidate_count_after": 0,
+      "candidate_count_before": 1,
+      "contradiction": true,
+      "expected_residue": 16,
+      "independent_witness": true,
+      "lane": 7,
+      "modulus": 19,
+      "observed_residue": 16
+    }
+  ],
+  "reconstruction_root_hash72": "0000000000000000000000000000000HttoDjwTz>j4J?(Hio^K(KU0ZPt-SYj3tKfNhx7E/",
+  "schema": "HHS_MULTI_OBSERVATION_SOURCE_RECONSTRUCTION_V1",
+  "source_root_hash72": "0000000000000000000000000000001rxFAGCgzhVp4!z10V5CO^=IbTwItzq6*n*RB>gwWF",
+  "source_value": 225,
+  "synthetic_interpolation_used": false
+}

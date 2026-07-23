@@ -1,0 +1,16 @@
+{
+  "alias_roots": [
+    "000000000000000000000000000000144c(OLvZstUvZ3QC/4)H/-e-tGpNgT7^WTQlAiIZ6"
+  ],
+  "alphabet_id": "alphabet:hhs:pass103:pass103",
+  "alphabet_root_hash72": "0000000000000000000000000000000lBoxX6Ja!xz9L1F9ns?NW91i(K1p7^^vcL45RN!Ab",
+  "binding_roots": [
+    "0000000000000000000000000000003vU8uZMiCV-fqf2R2Qpd(s^g478nq1/PHKwVI419Io",
+    "0000000000000000000000000000001wNvMc1(iw9(S?Ok5nn1N(e0(aY>Q--LGAn-WYu!vE"
+  ],
+  "dependency_graph_root_hash72": "00000000000000000000000000000013HUgeEnUt8zIZrH?4(/ArsiLwKX2QxLTaxDx7Waxa",
+  "namespace": "hhs:pass103",
+  "parent_alphabet_root_hash72": null,
+  "schema": "HHS_DYNAMIC_HARMONICODE_ALPHABET_V1",
+  "symbol_count": 2
+}

@@ -1,0 +1,1127 @@
+{
+  "functions": [
+    {
+      "categories": [
+        "NATIVE_EXECUTION_CONTROL"
+      ],
+      "declared_public_abi": false,
+      "exposure_status": "CATALOGUED_NOT_DIRECTLY_EXPORTED",
+      "line": 39,
+      "native_visibility": "INTERNAL_STATIC",
+      "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+      "signature": "static inline uint8_t hhs_wrap72(int64_t v)",
+      "source_path": "hhs_runtime/c/hhs_runtime_abi.c",
+      "symbol": "hhs_wrap72"
+    },
+    {
+      "categories": [
+        "WITNESS_HASH_REPLAY"
+      ],
+      "declared_public_abi": true,
+      "exposure_status": "PUBLIC_ABI",
+      "line": 53,
+      "native_visibility": "EXTERNAL_LINKAGE",
+      "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+      "signature": "void hhs_hash72_project(const uint8_t* cells, HHSHash72 out_hash)",
+      "source_path": "hhs_runtime/c/hhs_runtime_abi.c",
+      "symbol": "hhs_hash72_project"
+    },
+    {
+      "categories": [
+        "WITNESS_HASH_REPLAY"
+      ],
+      "declared_public_abi": true,
+      "exposure_status": "PUBLIC_ABI",
+      "line": 77,
+      "native_visibility": "EXTERNAL_LINKAGE",
+      "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+      "signature": "uint64_t hhs_hash72_compare(const HHSHash72 a, const HHSHash72 b)",
+      "source_path": "hhs_runtime/c/hhs_runtime_abi.c",
+      "symbol": "hhs_hash72_compare"
+    },
+    {
+      "categories": [
+        "VM81_LIFECYCLE"
+      ],
+      "declared_public_abi": true,
+      "exposure_status": "PUBLIC_ABI",
+      "line": 100,
+      "native_visibility": "EXTERNAL_LINKAGE",
+      "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+      "signature": "void hhs_tensor_reset(HHSTensorState* tensor)",
+      "source_path": "hhs_runtime/c/hhs_runtime_abi.c",
+      "symbol": "hhs_tensor_reset"
+    },
+    {
+      "categories": [
+        "NATIVE_EXECUTION_CONTROL"
+      ],
+      "declared_public_abi": true,
+      "exposure_status": "PUBLIC_ABI",
+      "line": 114,
+      "native_visibility": "EXTERNAL_LINKAGE",
+      "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+      "signature": "void hhs_tensor_apply_xy(HHSTensorState* tensor, int64_t x, int64_t y)",
+      "source_path": "hhs_runtime/c/hhs_runtime_abi.c",
+      "symbol": "hhs_tensor_apply_xy"
+    },
+    {
+      "categories": [
+        "VM81_LIFECYCLE"
+      ],
+      "declared_public_abi": true,
+      "exposure_status": "PUBLIC_ABI",
+      "line": 141,
+      "native_visibility": "EXTERNAL_LINKAGE",
+      "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+      "signature": "void hhs_runtime_init(HHSRuntimeState* state)",
+      "source_path": "hhs_runtime/c/hhs_runtime_abi.c",
+      "symbol": "hhs_runtime_init"
+    },
+    {
+      "categories": [
+        "NATIVE_EXECUTION_CONTROL"
+      ],
+      "declared_public_abi": false,
+      "exposure_status": "CATALOGUED_NOT_DIRECTLY_EXPORTED",
+      "line": 170,
+      "native_visibility": "INTERNAL_STATIC",
+      "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+      "signature": "static int op_advances_ledger(Opcode op)",
+      "source_path": "hhs_runtime/HARMONICODE_VM_RUNTIME.c",
+      "symbol": "op_advances_ledger"
+    },
+    {
+      "categories": [
+        "VM81_LIFECYCLE"
+      ],
+      "declared_public_abi": true,
+      "exposure_status": "PUBLIC_ABI",
+      "line": 174,
+      "native_visibility": "EXTERNAL_LINKAGE",
+      "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+      "signature": "void hhs_runtime_reset(HHSRuntimeState* state)",
+      "source_path": "hhs_runtime/c/hhs_runtime_abi.c",
+      "symbol": "hhs_runtime_reset"
+    },
+    {
+      "categories": [
+        "NATIVE_EXECUTION_CONTROL"
+      ],
+      "declared_public_abi": true,
+      "exposure_status": "PUBLIC_ABI",
+      "line": 185,
+      "native_visibility": "EXTERNAL_LINKAGE",
+      "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+      "signature": "void hhs_transport_apply(HHSRuntimeState* state, HHSTransportVector* flux)",
+      "source_path": "hhs_runtime/c/hhs_runtime_abi.c",
+      "symbol": "hhs_transport_apply"
+    },
+    {
+      "categories": [
+        "TRANSITION_MECHANICS"
+      ],
+      "declared_public_abi": true,
+      "exposure_status": "PUBLIC_ABI",
+      "line": 207,
+      "native_visibility": "EXTERNAL_LINKAGE",
+      "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+      "signature": "void hhs_runtime_step(HHSRuntimeState* state, HHSTensorState* tensor)",
+      "source_path": "hhs_runtime/c/hhs_runtime_abi.c",
+      "symbol": "hhs_runtime_step"
+    },
+    {
+      "categories": [
+        "NATIVE_EXECUTION_CONTROL"
+      ],
+      "declared_public_abi": true,
+      "exposure_status": "PUBLIC_ABI",
+      "line": 340,
+      "native_visibility": "EXTERNAL_LINKAGE",
+      "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+      "signature": "void hhs_runtime_halt(HHSRuntimeState* state)",
+      "source_path": "hhs_runtime/c/hhs_runtime_abi.c",
+      "symbol": "hhs_runtime_halt"
+    },
+    {
+      "categories": [
+        "VM81_LIFECYCLE",
+        "WITNESS_HASH_REPLAY"
+      ],
+      "declared_public_abi": true,
+      "exposure_status": "PUBLIC_ABI",
+      "line": 360,
+      "native_visibility": "EXTERNAL_LINKAGE",
+      "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+      "signature": "void hhs_receipt_reset(HHSReceipt* receipt)",
+      "source_path": "hhs_runtime/c/hhs_runtime_abi.c",
+      "symbol": "hhs_receipt_reset"
+    },
+    {
+      "categories": [
+        "NATIVE_EXECUTION_CONTROL"
+      ],
+      "declared_public_abi": false,
+      "exposure_status": "CATALOGUED_NOT_DIRECTLY_EXPORTED",
+      "line": 372,
+      "native_visibility": "INTERNAL_STATIC",
+      "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+      "signature": "static inline uint8_t wrap72(int v)",
+      "source_path": "hhs_runtime/HARMONICODE_VM_RUNTIME.c",
+      "symbol": "wrap72"
+    },
+    {
+      "categories": [
+        "WITNESS_HASH_REPLAY"
+      ],
+      "declared_public_abi": true,
+      "exposure_status": "PUBLIC_ABI",
+      "line": 374,
+      "native_visibility": "EXTERNAL_LINKAGE",
+      "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+      "signature": "void hhs_receipt_commit(HHSRuntimeState* state, HHSReceipt* receipt)",
+      "source_path": "hhs_runtime/c/hhs_runtime_abi.c",
+      "symbol": "hhs_receipt_commit"
+    },
+    {
+      "categories": [
+        "ROTATION_PHASE",
+        "RECIPROCAL_INVERSE"
+      ],
+      "declared_public_abi": false,
+      "exposure_status": "CATALOGUED_NOT_DIRECTLY_EXPORTED",
+      "line": 382,
+      "native_visibility": "INTERNAL_STATIC",
+      "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+      "signature": "static inline uint8_t reciprocal_phase(uint8_t p)",
+      "source_path": "hhs_runtime/HARMONICODE_VM_RUNTIME.c",
+      "symbol": "reciprocal_phase"
+    },
+    {
+      "categories": [
+        "WITNESS_HASH_REPLAY"
+      ],
+      "declared_public_abi": false,
+      "exposure_status": "CATALOGUED_NOT_DIRECTLY_EXPORTED",
+      "line": 386,
+      "native_visibility": "INTERNAL_STATIC",
+      "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+      "signature": "static inline uint8_t hash72_index(char ch)",
+      "source_path": "hhs_runtime/HARMONICODE_VM_RUNTIME.c",
+      "symbol": "hash72_index"
+    },
+    {
+      "categories": [
+        "NATIVE_EXECUTION_CONTROL"
+      ],
+      "declared_public_abi": false,
+      "exposure_status": "CATALOGUED_NOT_DIRECTLY_EXPORTED",
+      "line": 396,
+      "native_visibility": "INTERNAL_STATIC",
+      "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+      "signature": "static inline uint8_t polarity_of(uint8_t p)",
+      "source_path": "hhs_runtime/HARMONICODE_VM_RUNTIME.c",
+      "symbol": "polarity_of"
+    },
+    {
+      "categories": [
+        "VM81_LIFECYCLE",
+        "WITNESS_HASH_REPLAY"
+      ],
+      "declared_public_abi": false,
+      "exposure_status": "CATALOGUED_NOT_DIRECTLY_EXPORTED",
+      "line": 405,
+      "native_visibility": "INTERNAL_STATIC",
+      "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+      "signature": "static void init_hash72(void)",
+      "source_path": "hhs_runtime/HARMONICODE_VM_RUNTIME.c",
+      "symbol": "init_hash72"
+    },
+    {
+      "categories": [
+        "WITNESS_HASH_REPLAY"
+      ],
+      "declared_public_abi": true,
+      "exposure_status": "PUBLIC_ABI",
+      "line": 411,
+      "native_visibility": "EXTERNAL_LINKAGE",
+      "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+      "signature": "void hhs_vectorize_hash72(const HHSHash72 hash72, float out_vector[72])",
+      "source_path": "hhs_runtime/c/hhs_runtime_abi.c",
+      "symbol": "hhs_vectorize_hash72"
+    },
+    {
+      "categories": [
+        "SUDOKU_CONSTRAINT_ENFORCEMENT"
+      ],
+      "declared_public_abi": false,
+      "exposure_status": "CATALOGUED_NOT_DIRECTLY_EXPORTED",
+      "line": 422,
+      "native_visibility": "INTERNAL_STATIC",
+      "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+      "signature": "static uint8_t constraint_bias_at(VM81 *vm, uint8_t phase)",
+      "source_path": "hhs_runtime/HARMONICODE_VM_RUNTIME.c",
+      "symbol": "constraint_bias_at"
+    },
+    {
+      "categories": [
+        "NATIVE_EXECUTION_CONTROL"
+      ],
+      "declared_public_abi": true,
+      "exposure_status": "PUBLIC_ABI",
+      "line": 430,
+      "native_visibility": "EXTERNAL_LINKAGE",
+      "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+      "signature": "uint64_t hhs_graph_node_hash(const HHSGraphNode* node)",
+      "source_path": "hhs_runtime/c/hhs_runtime_abi.c",
+      "symbol": "hhs_graph_node_hash"
+    },
+    {
+      "categories": [
+        "SUDOKU_CONSTRAINT_ENFORCEMENT"
+      ],
+      "declared_public_abi": false,
+      "exposure_status": "CATALOGUED_NOT_DIRECTLY_EXPORTED",
+      "line": 447,
+      "native_visibility": "INTERNAL_STATIC",
+      "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+      "signature": "static void constraint_add(VM81 *vm, uint8_t type, uint8_t phase, uint8_t strength)",
+      "source_path": "hhs_runtime/HARMONICODE_VM_RUNTIME.c",
+      "symbol": "constraint_add"
+    },
+    {
+      "categories": [
+        "NATIVE_EXECUTION_CONTROL"
+      ],
+      "declared_public_abi": true,
+      "exposure_status": "PUBLIC_ABI",
+      "line": 451,
+      "native_visibility": "EXTERNAL_LINKAGE",
+      "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+      "signature": "int hhs_validate_abi(const HHSRuntimeState* state)",
+      "source_path": "hhs_runtime/c/hhs_runtime_abi.c",
+      "symbol": "hhs_validate_abi"
+    },
+    {
+      "categories": [
+        "NATIVE_EXECUTION_CONTROL"
+      ],
+      "declared_public_abi": true,
+      "exposure_status": "PUBLIC_ABI",
+      "line": 471,
+      "native_visibility": "EXTERNAL_LINKAGE",
+      "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+      "signature": "size_t hhs_sizeof_runtime_state(void)",
+      "source_path": "hhs_runtime/c/hhs_runtime_abi.c",
+      "symbol": "hhs_sizeof_runtime_state"
+    },
+    {
+      "categories": [
+        "WITNESS_HASH_REPLAY"
+      ],
+      "declared_public_abi": true,
+      "exposure_status": "PUBLIC_ABI",
+      "line": 476,
+      "native_visibility": "EXTERNAL_LINKAGE",
+      "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+      "signature": "size_t hhs_sizeof_receipt(void)",
+      "source_path": "hhs_runtime/c/hhs_runtime_abi.c",
+      "symbol": "hhs_sizeof_receipt"
+    },
+    {
+      "categories": [
+        "NATIVE_EXECUTION_CONTROL"
+      ],
+      "declared_public_abi": true,
+      "exposure_status": "PUBLIC_ABI",
+      "line": 481,
+      "native_visibility": "EXTERNAL_LINKAGE",
+      "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+      "signature": "size_t hhs_sizeof_tensor_state(void)",
+      "source_path": "hhs_runtime/c/hhs_runtime_abi.c",
+      "symbol": "hhs_sizeof_tensor_state"
+    },
+    {
+      "categories": [
+        "NATIVE_EXECUTION_CONTROL"
+      ],
+      "declared_public_abi": true,
+      "exposure_status": "PUBLIC_ABI",
+      "line": 486,
+      "native_visibility": "EXTERNAL_LINKAGE",
+      "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+      "signature": "size_t hhs_sizeof_graph_node(void)",
+      "source_path": "hhs_runtime/c/hhs_runtime_abi.c",
+      "symbol": "hhs_sizeof_graph_node"
+    },
+    {
+      "categories": [
+        "SUDOKU_CONSTRAINT_ENFORCEMENT"
+      ],
+      "declared_public_abi": false,
+      "exposure_status": "CATALOGUED_NOT_DIRECTLY_EXPORTED",
+      "line": 488,
+      "native_visibility": "INTERNAL_STATIC",
+      "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+      "signature": "static void constraint_relax(VM81 *vm, uint8_t amount)",
+      "source_path": "hhs_runtime/HARMONICODE_VM_RUNTIME.c",
+      "symbol": "constraint_relax"
+    },
+    {
+      "categories": [
+        "NATIVE_EXECUTION_CONTROL"
+      ],
+      "declared_public_abi": true,
+      "exposure_status": "PUBLIC_ABI",
+      "line": 491,
+      "native_visibility": "EXTERNAL_LINKAGE",
+      "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+      "signature": "size_t hhs_sizeof_graph_edge(void)",
+      "source_path": "hhs_runtime/c/hhs_runtime_abi.c",
+      "symbol": "hhs_sizeof_graph_edge"
+    },
+    {
+      "categories": [
+        "WITNESS_HASH_REPLAY"
+      ],
+      "declared_public_abi": false,
+      "exposure_status": "CATALOGUED_NOT_DIRECTLY_EXPORTED",
+      "line": 499,
+      "native_visibility": "INTERNAL_STATIC",
+      "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+      "signature": "static void hhs_hash72_ring_refresh(HHSHash72RingState* ring)",
+      "source_path": "hhs_runtime/c/hhs_runtime_abi.c",
+      "symbol": "hhs_hash72_ring_refresh"
+    },
+    {
+      "categories": [
+        "SUDOKU_CONSTRAINT_ENFORCEMENT"
+      ],
+      "declared_public_abi": false,
+      "exposure_status": "CATALOGUED_NOT_DIRECTLY_EXPORTED",
+      "line": 512,
+      "native_visibility": "INTERNAL_STATIC",
+      "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+      "signature": "static void constraint_compete(VM81 *vm)",
+      "source_path": "hhs_runtime/HARMONICODE_VM_RUNTIME.c",
+      "symbol": "constraint_compete"
+    },
+    {
+      "categories": [
+        "VM81_LIFECYCLE",
+        "WITNESS_HASH_REPLAY"
+      ],
+      "declared_public_abi": true,
+      "exposure_status": "PUBLIC_ABI",
+      "line": 517,
+      "native_visibility": "EXTERNAL_LINKAGE",
+      "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+      "signature": "void hhs_hash72_ring_init(HHSHash72RingState* ring)",
+      "source_path": "hhs_runtime/c/hhs_runtime_abi.c",
+      "symbol": "hhs_hash72_ring_init"
+    },
+    {
+      "categories": [
+        "WITNESS_HASH_REPLAY"
+      ],
+      "declared_public_abi": true,
+      "exposure_status": "PUBLIC_ABI",
+      "line": 538,
+      "native_visibility": "EXTERNAL_LINKAGE",
+      "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+      "signature": "uint8_t hhs_hash72_dna_validate(const HHSHash72RingState* ring)",
+      "source_path": "hhs_runtime/c/hhs_runtime_abi.c",
+      "symbol": "hhs_hash72_dna_validate"
+    },
+    {
+      "categories": [
+        "ROTATION_PHASE",
+        "WITNESS_HASH_REPLAY"
+      ],
+      "declared_public_abi": true,
+      "exposure_status": "PUBLIC_ABI",
+      "line": 552,
+      "native_visibility": "EXTERNAL_LINKAGE",
+      "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+      "signature": "uint8_t hhs_hash72_ring_rotate(HHSHash72RingState* ring, uint8_t index, int64_t delta)",
+      "source_path": "hhs_runtime/c/hhs_runtime_abi.c",
+      "symbol": "hhs_hash72_ring_rotate"
+    },
+    {
+      "categories": [
+        "ROTATION_PHASE"
+      ],
+      "declared_public_abi": false,
+      "exposure_status": "CATALOGUED_NOT_DIRECTLY_EXPORTED",
+      "line": 554,
+      "native_visibility": "INTERNAL_STATIC",
+      "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+      "signature": "static void propagate_phase_transport(VM81 *vm, uint8_t origin, uint8_t energy, uint8_t cg)",
+      "source_path": "hhs_runtime/HARMONICODE_VM_RUNTIME.c",
+      "symbol": "propagate_phase_transport"
+    },
+    {
+      "categories": [
+        "WITNESS_HASH_REPLAY"
+      ],
+      "declared_public_abi": true,
+      "exposure_status": "PUBLIC_ABI",
+      "line": 582,
+      "native_visibility": "EXTERNAL_LINKAGE",
+      "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+      "signature": "void hhs_hash72_tensor_project(const HHSHash72RingState* ring, uint8_t out_tensor81[81])",
+      "source_path": "hhs_runtime/c/hhs_runtime_abi.c",
+      "symbol": "hhs_hash72_tensor_project"
+    },
+    {
+      "categories": [
+        "WITNESS_HASH_REPLAY"
+      ],
+      "declared_public_abi": true,
+      "exposure_status": "PUBLIC_ABI",
+      "line": 621,
+      "native_visibility": "EXTERNAL_LINKAGE",
+      "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+      "signature": "uint8_t hhs_hash72_reverse_state(const HHSHash72RingState* current, HHSHash72RingState* out_original)",
+      "source_path": "hhs_runtime/c/hhs_runtime_abi.c",
+      "symbol": "hhs_hash72_reverse_state"
+    },
+    {
+      "categories": [
+        "NATIVE_EXECUTION_CONTROL"
+      ],
+      "declared_public_abi": false,
+      "exposure_status": "CATALOGUED_NOT_DIRECTLY_EXPORTED",
+      "line": 634,
+      "native_visibility": "INTERNAL_STATIC",
+      "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+      "signature": "static void apply_xyzw_state(VM81 *vm, uint8_t a, uint8_t b, int xy_order)",
+      "source_path": "hhs_runtime/HARMONICODE_VM_RUNTIME.c",
+      "symbol": "apply_xyzw_state"
+    },
+    {
+      "categories": [
+        "WITNESS_HASH_REPLAY"
+      ],
+      "declared_public_abi": true,
+      "exposure_status": "PUBLIC_ABI",
+      "line": 647,
+      "native_visibility": "EXTERNAL_LINKAGE",
+      "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+      "signature": "size_t hhs_sizeof_hash72_ring_state(void)",
+      "source_path": "hhs_runtime/c/hhs_runtime_abi.c",
+      "symbol": "hhs_sizeof_hash72_ring_state"
+    },
+    {
+      "categories": [
+        "NATIVE_EXECUTION_CONTROL"
+      ],
+      "declared_public_abi": false,
+      "exposure_status": "CATALOGUED_NOT_DIRECTLY_EXPORTED",
+      "line": 656,
+      "native_visibility": "INTERNAL_STATIC",
+      "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+      "signature": "static double hhs_srcg_abs(double v)",
+      "source_path": "hhs_runtime/c/hhs_runtime_abi.c",
+      "symbol": "hhs_srcg_abs"
+    },
+    {
+      "categories": [
+        "NATIVE_EXECUTION_CONTROL"
+      ],
+      "declared_public_abi": false,
+      "exposure_status": "CATALOGUED_NOT_DIRECTLY_EXPORTED",
+      "line": 660,
+      "native_visibility": "INTERNAL_STATIC",
+      "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+      "signature": "static uint8_t hhs_srcg_unit_unity_valid(double A, double B, double threshold)",
+      "source_path": "hhs_runtime/c/hhs_runtime_abi.c",
+      "symbol": "hhs_srcg_unit_unity_valid"
+    },
+    {
+      "categories": [
+        "VM81_LIFECYCLE"
+      ],
+      "declared_public_abi": true,
+      "exposure_status": "PUBLIC_ABI",
+      "line": 673,
+      "native_visibility": "EXTERNAL_LINKAGE",
+      "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+      "signature": "void hhs_srcg_init(HHSSRCGState* gate, double A, double B, double learning_rate, double drift_threshold)",
+      "source_path": "hhs_runtime/c/hhs_runtime_abi.c",
+      "symbol": "hhs_srcg_init"
+    },
+    {
+      "categories": [
+        "SUDOKU_CONSTRAINT_ENFORCEMENT"
+      ],
+      "declared_public_abi": false,
+      "exposure_status": "CATALOGUED_NOT_DIRECTLY_EXPORTED",
+      "line": 676,
+      "native_visibility": "INTERNAL_STATIC",
+      "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+      "signature": "static void sweep81(VM81 *vm)",
+      "source_path": "hhs_runtime/HARMONICODE_VM_RUNTIME.c",
+      "symbol": "sweep81"
+    },
+    {
+      "categories": [
+        "NATIVE_EXECUTION_CONTROL"
+      ],
+      "declared_public_abi": true,
+      "exposure_status": "PUBLIC_ABI",
+      "line": 695,
+      "native_visibility": "EXTERNAL_LINKAGE",
+      "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+      "signature": "uint8_t hhs_srcg_validate(const HHSSRCGState* gate)",
+      "source_path": "hhs_runtime/c/hhs_runtime_abi.c",
+      "symbol": "hhs_srcg_validate"
+    },
+    {
+      "categories": [
+        "SUDOKU_CONSTRAINT_ENFORCEMENT",
+        "PATH_CLOSURE"
+      ],
+      "declared_public_abi": false,
+      "exposure_status": "CATALOGUED_NOT_DIRECTLY_EXPORTED",
+      "line": 705,
+      "native_visibility": "INTERNAL_STATIC",
+      "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+      "signature": "static void close81(VM81 *vm)",
+      "source_path": "hhs_runtime/HARMONICODE_VM_RUNTIME.c",
+      "symbol": "close81"
+    },
+    {
+      "categories": [
+        "TRANSITION_MECHANICS"
+      ],
+      "declared_public_abi": true,
+      "exposure_status": "PUBLIC_ABI",
+      "line": 705,
+      "native_visibility": "EXTERNAL_LINKAGE",
+      "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+      "signature": "uint8_t hhs_srcg_step(HHSSRCGState* gate)",
+      "source_path": "hhs_runtime/c/hhs_runtime_abi.c",
+      "symbol": "hhs_srcg_step"
+    },
+    {
+      "categories": [
+        "WITNESS_HASH_REPLAY"
+      ],
+      "declared_public_abi": false,
+      "exposure_status": "CATALOGUED_NOT_DIRECTLY_EXPORTED",
+      "line": 734,
+      "native_visibility": "INTERNAL_STATIC",
+      "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+      "signature": "static void project_hash72(VM81 *vm, char out[73])",
+      "source_path": "hhs_runtime/HARMONICODE_VM_RUNTIME.c",
+      "symbol": "project_hash72"
+    },
+    {
+      "categories": [
+        "NATIVE_EXECUTION_CONTROL"
+      ],
+      "declared_public_abi": true,
+      "exposure_status": "PUBLIC_ABI",
+      "line": 758,
+      "native_visibility": "EXTERNAL_LINKAGE",
+      "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+      "signature": "size_t hhs_sizeof_srcg_state(void)",
+      "source_path": "hhs_runtime/c/hhs_runtime_abi.c",
+      "symbol": "hhs_sizeof_srcg_state"
+    },
+    {
+      "categories": [
+        "WITNESS_HASH_REPLAY"
+      ],
+      "declared_public_abi": false,
+      "exposure_status": "CATALOGUED_NOT_DIRECTLY_EXPORTED",
+      "line": 788,
+      "native_visibility": "INTERNAL_STATIC",
+      "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+      "signature": "static void compose_receipt_hash(const char *prev, uint8_t cg, uint32_t witness, const char *state, char out[73])",
+      "source_path": "hhs_runtime/HARMONICODE_VM_RUNTIME.c",
+      "symbol": "compose_receipt_hash"
+    },
+    {
+      "categories": [
+        "PATH_CLOSURE"
+      ],
+      "declared_public_abi": false,
+      "exposure_status": "CATALOGUED_NOT_DIRECTLY_EXPORTED",
+      "line": 831,
+      "native_visibility": "INTERNAL_STATIC",
+      "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+      "signature": "static uint64_t detect_orbit(VM81 *vm, const char *hash, uint64_t cur)",
+      "source_path": "hhs_runtime/HARMONICODE_VM_RUNTIME.c",
+      "symbol": "detect_orbit"
+    },
+    {
+      "categories": [
+        "ROTATION_PHASE",
+        "PATH_CLOSURE"
+      ],
+      "declared_public_abi": false,
+      "exposure_status": "CATALOGUED_NOT_DIRECTLY_EXPORTED",
+      "line": 863,
+      "native_visibility": "INTERNAL_STATIC",
+      "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+      "signature": "static int close_orientation(VM81 *vm)",
+      "source_path": "hhs_runtime/HARMONICODE_VM_RUNTIME.c",
+      "symbol": "close_orientation"
+    },
+    {
+      "categories": [
+        "SUDOKU_CONSTRAINT_ENFORCEMENT",
+        "PATH_CLOSURE"
+      ],
+      "declared_public_abi": false,
+      "exposure_status": "CATALOGUED_NOT_DIRECTLY_EXPORTED",
+      "line": 876,
+      "native_visibility": "INTERNAL_STATIC",
+      "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+      "signature": "static int close_constraint(VM81 *vm)",
+      "source_path": "hhs_runtime/HARMONICODE_VM_RUNTIME.c",
+      "symbol": "close_constraint"
+    },
+    {
+      "categories": [
+        "NATIVE_EXECUTION_CONTROL"
+      ],
+      "declared_public_abi": false,
+      "exposure_status": "CATALOGUED_NOT_DIRECTLY_EXPORTED",
+      "line": 898,
+      "native_visibility": "INTERNAL_STATIC",
+      "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+      "signature": "static int check_gate_apb(VM81 *vm, uint8_t A, uint8_t P, uint8_t B)",
+      "source_path": "hhs_runtime/HARMONICODE_VM_RUNTIME.c",
+      "symbol": "check_gate_apb"
+    },
+    {
+      "categories": [
+        "PATH_CLOSURE"
+      ],
+      "declared_public_abi": false,
+      "exposure_status": "CATALOGUED_NOT_DIRECTLY_EXPORTED",
+      "line": 910,
+      "native_visibility": "INTERNAL_STATIC",
+      "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+      "signature": "static int check_gate_closure(VM81 *vm, uint8_t Pc, uint8_t pc, uint8_t qc, uint8_t nc, uint8_t xc, uint8_t yc)",
+      "source_path": "hhs_runtime/HARMONICODE_VM_RUNTIME.c",
+      "symbol": "check_gate_closure"
+    },
+    {
+      "categories": [
+        "NATIVE_EXECUTION_CONTROL"
+      ],
+      "declared_public_abi": false,
+      "exposure_status": "CATALOGUED_NOT_DIRECTLY_EXPORTED",
+      "line": 953,
+      "native_visibility": "INTERNAL_STATIC",
+      "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+      "signature": "static int check_gate_identity(VM81 *vm, uint8_t xc, uint8_t yc, uint8_t uc, double *residual_out)",
+      "source_path": "hhs_runtime/HARMONICODE_VM_RUNTIME.c",
+      "symbol": "check_gate_identity"
+    },
+    {
+      "categories": [
+        "NATIVE_EXECUTION_CONTROL"
+      ],
+      "declared_public_abi": false,
+      "exposure_status": "CATALOGUED_NOT_DIRECTLY_EXPORTED",
+      "line": 1041,
+      "native_visibility": "INTERNAL_STATIC",
+      "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+      "signature": "static uint8_t qgu_delta(uint8_t q, uint8_t c, uint8_t d)",
+      "source_path": "hhs_runtime/HARMONICODE_VM_RUNTIME.c",
+      "symbol": "qgu_delta"
+    },
+    {
+      "categories": [
+        "RECIPROCAL_INVERSE"
+      ],
+      "declared_public_abi": false,
+      "exposure_status": "CATALOGUED_NOT_DIRECTLY_EXPORTED",
+      "line": 1064,
+      "native_visibility": "INTERNAL_STATIC",
+      "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+      "signature": "static double hhs_calc_m_reciprocal(uint8_t xy_energy)",
+      "source_path": "hhs_runtime/HARMONICODE_VM_RUNTIME.c",
+      "symbol": "hhs_calc_m_reciprocal"
+    },
+    {
+      "categories": [
+        "RECIPROCAL_INVERSE",
+        "PATH_CLOSURE"
+      ],
+      "declared_public_abi": false,
+      "exposure_status": "CATALOGUED_NOT_DIRECTLY_EXPORTED",
+      "line": 1077,
+      "native_visibility": "INTERNAL_STATIC",
+      "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+      "signature": "static void hhs_apply_ouroboros_closure(VM81 *vm)",
+      "source_path": "hhs_runtime/HARMONICODE_VM_RUNTIME.c",
+      "symbol": "hhs_apply_ouroboros_closure"
+    },
+    {
+      "categories": [
+        "NATIVE_EXECUTION_CONTROL"
+      ],
+      "declared_public_abi": false,
+      "exposure_status": "CATALOGUED_NOT_DIRECTLY_EXPORTED",
+      "line": 1089,
+      "native_visibility": "INTERNAL_STATIC",
+      "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+      "signature": "static void tensor_push(VM81 *vm, double r, double i, uint8_t phase)",
+      "source_path": "hhs_runtime/HARMONICODE_VM_RUNTIME.c",
+      "symbol": "tensor_push"
+    },
+    {
+      "categories": [
+        "RECIPROCAL_INVERSE"
+      ],
+      "declared_public_abi": false,
+      "exposure_status": "CATALOGUED_NOT_DIRECTLY_EXPORTED",
+      "line": 1107,
+      "native_visibility": "INTERNAL_STATIC",
+      "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+      "signature": "static void tensor_reciprocal(HHSTensor *t)",
+      "source_path": "hhs_runtime/HARMONICODE_VM_RUNTIME.c",
+      "symbol": "tensor_reciprocal"
+    },
+    {
+      "categories": [
+        "ROTATION_PHASE"
+      ],
+      "declared_public_abi": false,
+      "exposure_status": "CATALOGUED_NOT_DIRECTLY_EXPORTED",
+      "line": 1123,
+      "native_visibility": "INTERNAL_STATIC",
+      "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+      "signature": "static void tensor_phase_lock(HHSTensor *A, HHSTensor *B)",
+      "source_path": "hhs_runtime/HARMONICODE_VM_RUNTIME.c",
+      "symbol": "tensor_phase_lock"
+    },
+    {
+      "categories": [
+        "MANIFOLD_EXTENSION"
+      ],
+      "declared_public_abi": false,
+      "exposure_status": "CATALOGUED_NOT_DIRECTLY_EXPORTED",
+      "line": 1135,
+      "native_visibility": "INTERNAL_STATIC",
+      "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+      "signature": "static void hhs_tensor_seed_from_xyzw(VM81 *vm)",
+      "source_path": "hhs_runtime/HARMONICODE_VM_RUNTIME.c",
+      "symbol": "hhs_tensor_seed_from_xyzw"
+    },
+    {
+      "categories": [
+        "MANIFOLD_EXTENSION"
+      ],
+      "declared_public_abi": false,
+      "exposure_status": "CATALOGUED_NOT_DIRECTLY_EXPORTED",
+      "line": 1155,
+      "native_visibility": "INTERNAL_STATIC",
+      "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+      "signature": "static void hhs_genomic_map(VM81 *vm)",
+      "source_path": "hhs_runtime/HARMONICODE_VM_RUNTIME.c",
+      "symbol": "hhs_genomic_map"
+    },
+    {
+      "categories": [
+        "TRANSITION_MECHANICS",
+        "MANIFOLD_EXTENSION"
+      ],
+      "declared_public_abi": false,
+      "exposure_status": "CATALOGUED_NOT_DIRECTLY_EXPORTED",
+      "line": 1174,
+      "native_visibility": "INTERNAL_STATIC",
+      "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+      "signature": "static void hhs_manifold_step(VM81 *vm, uint8_t driver)",
+      "source_path": "hhs_runtime/HARMONICODE_VM_RUNTIME.c",
+      "symbol": "hhs_manifold_step"
+    },
+    {
+      "categories": [
+        "VM81_LIFECYCLE"
+      ],
+      "declared_public_abi": false,
+      "exposure_status": "CATALOGUED_NOT_DIRECTLY_EXPORTED",
+      "line": 1190,
+      "native_visibility": "INTERNAL_STATIC",
+      "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+      "signature": "static void vm81_init(VM81 *vm, uint64_t seed, SeedMode mode)",
+      "source_path": "hhs_runtime/HARMONICODE_VM_RUNTIME.c",
+      "symbol": "vm81_init"
+    },
+    {
+      "categories": [
+        "NATIVE_EXECUTION_CONTROL"
+      ],
+      "declared_public_abi": false,
+      "exposure_status": "CATALOGUED_NOT_DIRECTLY_EXPORTED",
+      "line": 1254,
+      "native_visibility": "INTERNAL_STATIC",
+      "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+      "signature": "static void apply_instruction(VM81 *vm, Instruction *ins, uint32_t *witness, double *identity_residual_out, int *identity_has_data_out)",
+      "source_path": "hhs_runtime/HARMONICODE_VM_RUNTIME.c",
+      "symbol": "apply_instruction"
+    },
+    {
+      "categories": [
+        "TRANSITION_MECHANICS"
+      ],
+      "declared_public_abi": false,
+      "exposure_status": "CATALOGUED_NOT_DIRECTLY_EXPORTED",
+      "line": 1648,
+      "native_visibility": "INTERNAL_STATIC",
+      "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+      "signature": "static void vm81_step(VM81 *vm)",
+      "source_path": "hhs_runtime/HARMONICODE_VM_RUNTIME.c",
+      "symbol": "vm81_step"
+    },
+    {
+      "categories": [
+        "WITNESS_HASH_REPLAY",
+        "DIAGNOSTICS"
+      ],
+      "declared_public_abi": false,
+      "exposure_status": "CATALOGUED_NOT_DIRECTLY_EXPORTED",
+      "line": 1779,
+      "native_visibility": "INTERNAL_STATIC",
+      "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+      "signature": "static void print_witness(uint32_t w)",
+      "source_path": "hhs_runtime/HARMONICODE_VM_RUNTIME.c",
+      "symbol": "print_witness"
+    },
+    {
+      "categories": [
+        "DIAGNOSTICS"
+      ],
+      "declared_public_abi": false,
+      "exposure_status": "CATALOGUED_NOT_DIRECTLY_EXPORTED",
+      "line": 1809,
+      "native_visibility": "INTERNAL_STATIC",
+      "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+      "signature": "static void print_vm(VM81 *vm)",
+      "source_path": "hhs_runtime/HARMONICODE_VM_RUNTIME.c",
+      "symbol": "print_vm"
+    },
+    {
+      "categories": [
+        "PATH_CLOSURE",
+        "DIAGNOSTICS"
+      ],
+      "declared_public_abi": false,
+      "exposure_status": "CATALOGUED_NOT_DIRECTLY_EXPORTED",
+      "line": 1867,
+      "native_visibility": "INTERNAL_STATIC",
+      "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+      "signature": "static void print_closure_summary(VM81 *vm)",
+      "source_path": "hhs_runtime/HARMONICODE_VM_RUNTIME.c",
+      "symbol": "print_closure_summary"
+    },
+    {
+      "categories": [
+        "VM81_LIFECYCLE",
+        "CELL_STATE"
+      ],
+      "declared_public_abi": false,
+      "exposure_status": "CATALOGUED_NOT_DIRECTLY_EXPORTED",
+      "line": 1902,
+      "native_visibility": "INTERNAL_STATIC",
+      "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+      "signature": "static void load_demo(VM81 *vm)",
+      "source_path": "hhs_runtime/HARMONICODE_VM_RUNTIME.c",
+      "symbol": "load_demo"
+    },
+    {
+      "categories": [
+        "VM81_LIFECYCLE"
+      ],
+      "declared_public_abi": false,
+      "exposure_status": "CATALOGUED_NOT_DIRECTLY_EXPORTED",
+      "line": 1973,
+      "native_visibility": "INTERNAL_STATIC",
+      "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+      "signature": "static void run_vm(VM81 *vm, Options *opt)",
+      "source_path": "hhs_runtime/HARMONICODE_VM_RUNTIME.c",
+      "symbol": "run_vm"
+    },
+    {
+      "categories": [
+        "NATIVE_EXECUTION_CONTROL"
+      ],
+      "declared_public_abi": false,
+      "exposure_status": "CATALOGUED_NOT_DIRECTLY_EXPORTED",
+      "line": 1996,
+      "native_visibility": "EXTERNAL_LINKAGE",
+      "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+      "signature": "int main(int argc, char **argv)",
+      "source_path": "hhs_runtime/HARMONICODE_VM_RUNTIME.c",
+      "symbol": "main"
+    },
+    {
+      "categories": [
+        "VM81_LIFECYCLE",
+        "MANIFOLD_EXTENSION"
+      ],
+      "declared_public_abi": false,
+      "exposure_status": "CATALOGUED_NOT_DIRECTLY_EXPORTED",
+      "line": 2214,
+      "native_visibility": "INTERNAL_STATIC",
+      "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+      "signature": "static void hhs_frame_init(HHS_VM_Frame *f)",
+      "source_path": "hhs_runtime/HARMONICODE_VM_RUNTIME.c",
+      "symbol": "hhs_frame_init"
+    },
+    {
+      "categories": [
+        "NATIVE_EXECUTION_CONTROL"
+      ],
+      "declared_public_abi": false,
+      "exposure_status": "CATALOGUED_NOT_DIRECTLY_EXPORTED",
+      "line": 2228,
+      "native_visibility": "INTERNAL_STATIC",
+      "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+      "signature": "static int hhs_symbol_find(HHS_IR_Program *p, const char *name)",
+      "source_path": "hhs_runtime/HARMONICODE_VM_RUNTIME.c",
+      "symbol": "hhs_symbol_find"
+    },
+    {
+      "categories": [
+        "NATIVE_EXECUTION_CONTROL"
+      ],
+      "declared_public_abi": false,
+      "exposure_status": "CATALOGUED_NOT_DIRECTLY_EXPORTED",
+      "line": 2240,
+      "native_visibility": "INTERNAL_STATIC",
+      "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+      "signature": "static uint32_t hhs_symbol_register(HHS_IR_Program *p, const char *name)",
+      "source_path": "hhs_runtime/HARMONICODE_VM_RUNTIME.c",
+      "symbol": "hhs_symbol_register"
+    },
+    {
+      "categories": [
+        "WITNESS_HASH_REPLAY"
+      ],
+      "declared_public_abi": false,
+      "exposure_status": "CATALOGUED_NOT_DIRECTLY_EXPORTED",
+      "line": 2270,
+      "native_visibility": "INTERNAL_STATIC",
+      "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+      "signature": "static void hhs_ir_project_hash72(VM81 *vm, char out[73])",
+      "source_path": "hhs_runtime/HARMONICODE_VM_RUNTIME.c",
+      "symbol": "hhs_ir_project_hash72"
+    },
+    {
+      "categories": [
+        "NATIVE_EXECUTION_CONTROL"
+      ],
+      "declared_public_abi": false,
+      "exposure_status": "CATALOGUED_NOT_DIRECTLY_EXPORTED",
+      "line": 2281,
+      "native_visibility": "INTERNAL_STATIC",
+      "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+      "signature": "static void hhs_vm_native_add(VM81 *vm, uint64_t a, uint64_t b, uint64_t *out)",
+      "source_path": "hhs_runtime/HARMONICODE_VM_RUNTIME.c",
+      "symbol": "hhs_vm_native_add"
+    },
+    {
+      "categories": [
+        "NATIVE_EXECUTION_CONTROL"
+      ],
+      "declared_public_abi": false,
+      "exposure_status": "CATALOGUED_NOT_DIRECTLY_EXPORTED",
+      "line": 2313,
+      "native_visibility": "INTERNAL_STATIC",
+      "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+      "signature": "static void hhs_vm_native_mul(VM81 *vm, uint64_t a, uint64_t b, uint64_t *out)",
+      "source_path": "hhs_runtime/HARMONICODE_VM_RUNTIME.c",
+      "symbol": "hhs_vm_native_mul"
+    },
+    {
+      "categories": [
+        "TRANSITION_MECHANICS"
+      ],
+      "declared_public_abi": false,
+      "exposure_status": "CATALOGUED_NOT_DIRECTLY_EXPORTED",
+      "line": 2349,
+      "native_visibility": "INTERNAL_STATIC",
+      "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+      "signature": "static int hhs_execute_ir_node(VM81 *vm, HHS_VM_Frame *frame, HHS_IR_Node *node)",
+      "source_path": "hhs_runtime/HARMONICODE_VM_RUNTIME.c",
+      "symbol": "hhs_execute_ir_node"
+    },
+    {
+      "categories": [
+        "TRANSITION_MECHANICS"
+      ],
+      "declared_public_abi": false,
+      "exposure_status": "CATALOGUED_NOT_DIRECTLY_EXPORTED",
+      "line": 2560,
+      "native_visibility": "INTERNAL_STATIC",
+      "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+      "signature": "static int hhs_execute_ir_block(VM81 *vm, HHS_IR_Program *prog, HHS_VM_Frame *frame)",
+      "source_path": "hhs_runtime/HARMONICODE_VM_RUNTIME.c",
+      "symbol": "hhs_execute_ir_block"
+    },
+    {
+      "categories": [
+        "TRANSITION_MECHANICS"
+      ],
+      "declared_public_abi": false,
+      "exposure_status": "CATALOGUED_NOT_DIRECTLY_EXPORTED",
+      "line": 2600,
+      "native_visibility": "INTERNAL_STATIC",
+      "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+      "signature": "static int hhs_execute_ir(VM81 *vm, HHS_IR_Program *prog, HHS_VM_Frame *frame)",
+      "source_path": "hhs_runtime/HARMONICODE_VM_RUNTIME.c",
+      "symbol": "hhs_execute_ir"
+    },
+    {
+      "categories": [
+        "NATIVE_EXECUTION_CONTROL"
+      ],
+      "declared_public_abi": false,
+      "exposure_status": "CATALOGUED_NOT_DIRECTLY_EXPORTED",
+      "line": 2671,
+      "native_visibility": "INTERNAL_STATIC",
+      "semantic_authority": "FROZEN_NATIVE_IMPLEMENTATION",
+      "signature": "static void hhs_run_bridge_demo(VM81 *vm)",
+      "source_path": "hhs_runtime/HARMONICODE_VM_RUNTIME.c",
+      "symbol": "hhs_run_bridge_demo"
+    }
+  ],
+  "header_sha256": {
+    "hhs_runtime/c/hhs_runtime_abi.h": "196e190ba5ca472d8929418cbe743ddca5393e33d8ab56a9d267e81f337f5e44",
+    "hhs_runtime/include/HARMONICODE_VM_RUNTIME.h": "31a3873bf3afaa3acdcf5225d1b78f820219361ec5051b6830529902b1326c6f"
+  },
+  "native_function_count": 83,
+  "pass078_native_capability_manifest_root_hash72": "0000000000000000000000000000002Aa3)TbR^(SCu0Qlu)5Fa/Ti49rW(/I0h^X/7AoVS9",
+  "pass_id": "PASS_078",
+  "public_abi_declaration_count": 44,
+  "public_declarations_without_same_translation_unit_definition": [
+    "hhs_vm_cell",
+    "hhs_vm_constraint_flux",
+    "hhs_vm_current_hash72",
+    "hhs_vm_get_receipt",
+    "hhs_vm_init",
+    "hhs_vm_is_converged",
+    "hhs_vm_is_halted",
+    "hhs_vm_orientation_flux",
+    "hhs_vm_previous_hash72",
+    "hhs_vm_reset",
+    "hhs_vm_run",
+    "hhs_vm_step",
+    "hhs_vm_tensor81",
+    "hhs_vm_transport_flux",
+    "hhs_vm_witness_flags"
+  ],
+  "schema": "HHS_NATIVE_CAPABILITY_MANIFEST_PASS_078_V1",
+  "source_sha256": {
+    "hhs_runtime/HARMONICODE_VM_RUNTIME.c": "d77a455747e7740114ea346ad136a1d03ed57cc12685d7ba047d526be119b884",
+    "hhs_runtime/c/hhs_runtime_abi.c": "354b713650919712575910b8041bf456c3e9475119b22c9b06836923705f33cf"
+  }
+}

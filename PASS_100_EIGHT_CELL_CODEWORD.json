@@ -1,0 +1,65 @@
+{
+  "carrier_modulus": 72,
+  "cell_values": {
+    "A": 1,
+    "B": 0,
+    "C": 71,
+    "D": 1,
+    "E": 18,
+    "F": 71,
+    "G": 53,
+    "H": 37
+  },
+  "codeword_root_hash72": "0000000000000000000000000000003KvlMCZ8fE>db=wlbygjlYaQ>c3vyo6oN3+DLAk-yY",
+  "forward_cells": [
+    "A",
+    "B",
+    "C",
+    "D"
+  ],
+  "forward_gear_root_hash72": "00000000000000000000000000000027wvtJz9D3qtI*pZdxMl3Nj-4pT?O()g22+lU77IDd",
+  "forward_history_root_hash72": "0000000000000000000000000000001P2fw8RCo8nGfGfhALFJ^xfeTtcAYEHC)hgrE*rs1C",
+  "global_closure_root_hash72": "0000000000000000000000000000003MjqjI6YEQiV)h(Mf5Q/8cO2-OD8DR)l^HK!351WXI",
+  "lane_phase_offsets": [
+    0,
+    18,
+    36,
+    54
+  ],
+  "logical_lane_count": 4,
+  "logical_states": [
+    1,
+    0,
+    -1,
+    1
+  ],
+  "pair_relation": "FIXED_RELATIVE_RECIPROCAL_RESIDUE",
+  "physical_cell_count": 8,
+  "reciprocal_cells": [
+    "F",
+    "E",
+    "H",
+    "G"
+  ],
+  "reciprocal_gear_root_hash72": "0000000000000000000000000000002Rd*89Ve(2bxB8wU?KDa3G>Ri-LP0cMAc49CV5-V40",
+  "reciprocal_history_root_hash72": "0000000000000000000000000000002!w/EJlIrQlRLPEcBH>k^vALOm4mTD0U!b5j/fk(Eu",
+  "reciprocal_pairing": [
+    [
+      "A",
+      "F"
+    ],
+    [
+      "B",
+      "E"
+    ],
+    [
+      "C",
+      "H"
+    ],
+    [
+      "D",
+      "G"
+    ]
+  ],
+  "schema": "HHS_EIGHT_CELL_DUAL_WITNESS_CODEWORD_V1"
+}

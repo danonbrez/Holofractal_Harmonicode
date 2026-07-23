@@ -1,0 +1,3745 @@
+{
+  "schema": "HHS_PASS_087_REVALIDATION_PROFILE_V1",
+  "records": [
+    {
+      "node_id": "pattern:0:0",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001eoVuk*m38ve-**UTPsy06EZ))Uvwn=PLY6cg^emaW"
+    },
+    {
+      "node_id": "pattern:0:4",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001eoVuk*m38ve-**UTPsy06EZ))Uvwn=PLY6cg^emaW"
+    },
+    {
+      "node_id": "pattern:1:1",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001eoVuk*m38ve-**UTPsy06EZ))Uvwn=PLY6cg^emaW"
+    },
+    {
+      "node_id": "pattern:1:5",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001eoVuk*m38ve-**UTPsy06EZ))Uvwn=PLY6cg^emaW"
+    },
+    {
+      "node_id": "pattern:0:0",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002M56zcWBa1DgH6E8!t+)^vWs!2d8aCO0fawcGIxJOr"
+    },
+    {
+      "node_id": "pattern:0:4",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002M56zcWBa1DgH6E8!t+)^vWs!2d8aCO0fawcGIxJOr"
+    },
+    {
+      "node_id": "pattern:2:2",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002M56zcWBa1DgH6E8!t+)^vWs!2d8aCO0fawcGIxJOr"
+    },
+    {
+      "node_id": "pattern:2:6",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002M56zcWBa1DgH6E8!t+)^vWs!2d8aCO0fawcGIxJOr"
+    },
+    {
+      "node_id": "pattern:1:1",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004rp>uw?BVgn!bFZmDR/Fz8H>v8)n!Xdji3i!QfhaI4"
+    },
+    {
+      "node_id": "pattern:1:5",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004rp>uw?BVgn!bFZmDR/Fz8H>v8)n!Xdji3i!QfhaI4"
+    },
+    {
+      "node_id": "pattern:3:3",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004rp>uw?BVgn!bFZmDR/Fz8H>v8)n!Xdji3i!QfhaI4"
+    },
+    {
+      "node_id": "pattern:3:7",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004rp>uw?BVgn!bFZmDR/Fz8H>v8)n!Xdji3i!QfhaI4"
+    },
+    {
+      "node_id": "pattern:0:0",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002QxsG0a15RuB*Dc2Fwbs3?5QCAPWHIyJTu2Rm=Wr)Z"
+    },
+    {
+      "node_id": "pattern:0:12",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002QxsG0a15RuB*Dc2Fwbs3?5QCAPWHIyJTu2Rm=Wr)Z"
+    },
+    {
+      "node_id": "pattern:0:4",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002QxsG0a15RuB*Dc2Fwbs3?5QCAPWHIyJTu2Rm=Wr)Z"
+    },
+    {
+      "node_id": "pattern:0:8",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002QxsG0a15RuB*Dc2Fwbs3?5QCAPWHIyJTu2Rm=Wr)Z"
+    },
+    {
+      "node_id": "pattern:2:10",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002QxsG0a15RuB*Dc2Fwbs3?5QCAPWHIyJTu2Rm=Wr)Z"
+    },
+    {
+      "node_id": "pattern:2:14",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002QxsG0a15RuB*Dc2Fwbs3?5QCAPWHIyJTu2Rm=Wr)Z"
+    },
+    {
+      "node_id": "pattern:2:2",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002QxsG0a15RuB*Dc2Fwbs3?5QCAPWHIyJTu2Rm=Wr)Z"
+    },
+    {
+      "node_id": "pattern:2:6",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002QxsG0a15RuB*Dc2Fwbs3?5QCAPWHIyJTu2Rm=Wr)Z"
+    },
+    {
+      "node_id": "pattern:1:1",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000Mj>M)mi>Y=hThwVU^(++L2osce8(P/2ir31eVkEve"
+    },
+    {
+      "node_id": "pattern:1:13",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000Mj>M)mi>Y=hThwVU^(++L2osce8(P/2ir31eVkEve"
+    },
+    {
+      "node_id": "pattern:1:5",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000Mj>M)mi>Y=hThwVU^(++L2osce8(P/2ir31eVkEve"
+    },
+    {
+      "node_id": "pattern:1:9",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000Mj>M)mi>Y=hThwVU^(++L2osce8(P/2ir31eVkEve"
+    },
+    {
+      "node_id": "pattern:3:11",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000Mj>M)mi>Y=hThwVU^(++L2osce8(P/2ir31eVkEve"
+    },
+    {
+      "node_id": "pattern:3:15",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000Mj>M)mi>Y=hThwVU^(++L2osce8(P/2ir31eVkEve"
+    },
+    {
+      "node_id": "pattern:3:3",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000Mj>M)mi>Y=hThwVU^(++L2osce8(P/2ir31eVkEve"
+    },
+    {
+      "node_id": "pattern:3:7",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000Mj>M)mi>Y=hThwVU^(++L2osce8(P/2ir31eVkEve"
+    },
+    {
+      "node_id": "pattern:0:0",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001DR2kqRoqcJ3mhPPq--6nREMk/lRvZIU/)efNU836v"
+    },
+    {
+      "node_id": "pattern:0:12",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001DR2kqRoqcJ3mhPPq--6nREMk/lRvZIU/)efNU836v"
+    },
+    {
+      "node_id": "pattern:0:4",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001DR2kqRoqcJ3mhPPq--6nREMk/lRvZIU/)efNU836v"
+    },
+    {
+      "node_id": "pattern:0:8",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001DR2kqRoqcJ3mhPPq--6nREMk/lRvZIU/)efNU836v"
+    },
+    {
+      "node_id": "pattern:2:10",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001DR2kqRoqcJ3mhPPq--6nREMk/lRvZIU/)efNU836v"
+    },
+    {
+      "node_id": "pattern:2:14",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001DR2kqRoqcJ3mhPPq--6nREMk/lRvZIU/)efNU836v"
+    },
+    {
+      "node_id": "pattern:2:2",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001DR2kqRoqcJ3mhPPq--6nREMk/lRvZIU/)efNU836v"
+    },
+    {
+      "node_id": "pattern:2:6",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001DR2kqRoqcJ3mhPPq--6nREMk/lRvZIU/)efNU836v"
+    },
+    {
+      "node_id": "pattern:1:1",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "00000000000000000000000000000009-9d931cCL-BM7-(+Lie^X-ueBZs7wdGBxPa5-H7J"
+    },
+    {
+      "node_id": "pattern:1:13",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "00000000000000000000000000000009-9d931cCL-BM7-(+Lie^X-ueBZs7wdGBxPa5-H7J"
+    },
+    {
+      "node_id": "pattern:1:5",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "00000000000000000000000000000009-9d931cCL-BM7-(+Lie^X-ueBZs7wdGBxPa5-H7J"
+    },
+    {
+      "node_id": "pattern:1:9",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "00000000000000000000000000000009-9d931cCL-BM7-(+Lie^X-ueBZs7wdGBxPa5-H7J"
+    },
+    {
+      "node_id": "pattern:3:11",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "00000000000000000000000000000009-9d931cCL-BM7-(+Lie^X-ueBZs7wdGBxPa5-H7J"
+    },
+    {
+      "node_id": "pattern:3:15",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "00000000000000000000000000000009-9d931cCL-BM7-(+Lie^X-ueBZs7wdGBxPa5-H7J"
+    },
+    {
+      "node_id": "pattern:3:3",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "00000000000000000000000000000009-9d931cCL-BM7-(+Lie^X-ueBZs7wdGBxPa5-H7J"
+    },
+    {
+      "node_id": "pattern:3:7",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "00000000000000000000000000000009-9d931cCL-BM7-(+Lie^X-ueBZs7wdGBxPa5-H7J"
+    },
+    {
+      "node_id": "pattern:0:0",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004uj0bVL3IxrDyI-X02>Tkyf*)mk7IKkVNOzGBG9fJ5"
+    },
+    {
+      "node_id": "pattern:0:12",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004uj0bVL3IxrDyI-X02>Tkyf*)mk7IKkVNOzGBG9fJ5"
+    },
+    {
+      "node_id": "pattern:0:16",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004uj0bVL3IxrDyI-X02>Tkyf*)mk7IKkVNOzGBG9fJ5"
+    },
+    {
+      "node_id": "pattern:0:20",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004uj0bVL3IxrDyI-X02>Tkyf*)mk7IKkVNOzGBG9fJ5"
+    },
+    {
+      "node_id": "pattern:0:24",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004uj0bVL3IxrDyI-X02>Tkyf*)mk7IKkVNOzGBG9fJ5"
+    },
+    {
+      "node_id": "pattern:0:28",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004uj0bVL3IxrDyI-X02>Tkyf*)mk7IKkVNOzGBG9fJ5"
+    },
+    {
+      "node_id": "pattern:0:4",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004uj0bVL3IxrDyI-X02>Tkyf*)mk7IKkVNOzGBG9fJ5"
+    },
+    {
+      "node_id": "pattern:0:8",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004uj0bVL3IxrDyI-X02>Tkyf*)mk7IKkVNOzGBG9fJ5"
+    },
+    {
+      "node_id": "pattern:2:10",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004uj0bVL3IxrDyI-X02>Tkyf*)mk7IKkVNOzGBG9fJ5"
+    },
+    {
+      "node_id": "pattern:2:14",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004uj0bVL3IxrDyI-X02>Tkyf*)mk7IKkVNOzGBG9fJ5"
+    },
+    {
+      "node_id": "pattern:2:18",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004uj0bVL3IxrDyI-X02>Tkyf*)mk7IKkVNOzGBG9fJ5"
+    },
+    {
+      "node_id": "pattern:2:2",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004uj0bVL3IxrDyI-X02>Tkyf*)mk7IKkVNOzGBG9fJ5"
+    },
+    {
+      "node_id": "pattern:2:22",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004uj0bVL3IxrDyI-X02>Tkyf*)mk7IKkVNOzGBG9fJ5"
+    },
+    {
+      "node_id": "pattern:2:26",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004uj0bVL3IxrDyI-X02>Tkyf*)mk7IKkVNOzGBG9fJ5"
+    },
+    {
+      "node_id": "pattern:2:30",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004uj0bVL3IxrDyI-X02>Tkyf*)mk7IKkVNOzGBG9fJ5"
+    },
+    {
+      "node_id": "pattern:2:6",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004uj0bVL3IxrDyI-X02>Tkyf*)mk7IKkVNOzGBG9fJ5"
+    },
+    {
+      "node_id": "pattern:1:1",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003YEPEh9?vJc*!9^))ro13?CiejnV+jQpVi5G))o-S^"
+    },
+    {
+      "node_id": "pattern:1:13",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003YEPEh9?vJc*!9^))ro13?CiejnV+jQpVi5G))o-S^"
+    },
+    {
+      "node_id": "pattern:1:17",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003YEPEh9?vJc*!9^))ro13?CiejnV+jQpVi5G))o-S^"
+    },
+    {
+      "node_id": "pattern:1:21",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003YEPEh9?vJc*!9^))ro13?CiejnV+jQpVi5G))o-S^"
+    },
+    {
+      "node_id": "pattern:1:25",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003YEPEh9?vJc*!9^))ro13?CiejnV+jQpVi5G))o-S^"
+    },
+    {
+      "node_id": "pattern:1:29",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003YEPEh9?vJc*!9^))ro13?CiejnV+jQpVi5G))o-S^"
+    },
+    {
+      "node_id": "pattern:1:5",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003YEPEh9?vJc*!9^))ro13?CiejnV+jQpVi5G))o-S^"
+    },
+    {
+      "node_id": "pattern:1:9",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003YEPEh9?vJc*!9^))ro13?CiejnV+jQpVi5G))o-S^"
+    },
+    {
+      "node_id": "pattern:3:11",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003YEPEh9?vJc*!9^))ro13?CiejnV+jQpVi5G))o-S^"
+    },
+    {
+      "node_id": "pattern:3:15",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003YEPEh9?vJc*!9^))ro13?CiejnV+jQpVi5G))o-S^"
+    },
+    {
+      "node_id": "pattern:3:19",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003YEPEh9?vJc*!9^))ro13?CiejnV+jQpVi5G))o-S^"
+    },
+    {
+      "node_id": "pattern:3:23",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003YEPEh9?vJc*!9^))ro13?CiejnV+jQpVi5G))o-S^"
+    },
+    {
+      "node_id": "pattern:3:27",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003YEPEh9?vJc*!9^))ro13?CiejnV+jQpVi5G))o-S^"
+    },
+    {
+      "node_id": "pattern:3:3",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003YEPEh9?vJc*!9^))ro13?CiejnV+jQpVi5G))o-S^"
+    },
+    {
+      "node_id": "pattern:3:31",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003YEPEh9?vJc*!9^))ro13?CiejnV+jQpVi5G))o-S^"
+    },
+    {
+      "node_id": "pattern:3:7",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003YEPEh9?vJc*!9^))ro13?CiejnV+jQpVi5G))o-S^"
+    },
+    {
+      "node_id": "pattern:0:0",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003XaGY09*2(A?Wr=MzZXuyLQfTmf4g=y3fFCYfa2Rn)"
+    },
+    {
+      "node_id": "pattern:0:16",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003XaGY09*2(A?Wr=MzZXuyLQfTmf4g=y3fFCYfa2Rn)"
+    },
+    {
+      "node_id": "pattern:0:24",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003XaGY09*2(A?Wr=MzZXuyLQfTmf4g=y3fFCYfa2Rn)"
+    },
+    {
+      "node_id": "pattern:0:8",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003XaGY09*2(A?Wr=MzZXuyLQfTmf4g=y3fFCYfa2Rn)"
+    },
+    {
+      "node_id": "pattern:2:10",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003XaGY09*2(A?Wr=MzZXuyLQfTmf4g=y3fFCYfa2Rn)"
+    },
+    {
+      "node_id": "pattern:2:18",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003XaGY09*2(A?Wr=MzZXuyLQfTmf4g=y3fFCYfa2Rn)"
+    },
+    {
+      "node_id": "pattern:2:2",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003XaGY09*2(A?Wr=MzZXuyLQfTmf4g=y3fFCYfa2Rn)"
+    },
+    {
+      "node_id": "pattern:2:26",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003XaGY09*2(A?Wr=MzZXuyLQfTmf4g=y3fFCYfa2Rn)"
+    },
+    {
+      "node_id": "pattern:4:12",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003XaGY09*2(A?Wr=MzZXuyLQfTmf4g=y3fFCYfa2Rn)"
+    },
+    {
+      "node_id": "pattern:4:20",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003XaGY09*2(A?Wr=MzZXuyLQfTmf4g=y3fFCYfa2Rn)"
+    },
+    {
+      "node_id": "pattern:4:28",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003XaGY09*2(A?Wr=MzZXuyLQfTmf4g=y3fFCYfa2Rn)"
+    },
+    {
+      "node_id": "pattern:4:4",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003XaGY09*2(A?Wr=MzZXuyLQfTmf4g=y3fFCYfa2Rn)"
+    },
+    {
+      "node_id": "pattern:6:14",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003XaGY09*2(A?Wr=MzZXuyLQfTmf4g=y3fFCYfa2Rn)"
+    },
+    {
+      "node_id": "pattern:6:22",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003XaGY09*2(A?Wr=MzZXuyLQfTmf4g=y3fFCYfa2Rn)"
+    },
+    {
+      "node_id": "pattern:6:30",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003XaGY09*2(A?Wr=MzZXuyLQfTmf4g=y3fFCYfa2Rn)"
+    },
+    {
+      "node_id": "pattern:6:6",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003XaGY09*2(A?Wr=MzZXuyLQfTmf4g=y3fFCYfa2Rn)"
+    },
+    {
+      "node_id": "pattern:1:1",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002WRENDYQbC0RC-iNZZ*NJCqqO^!Q?S(gULcUfvW1d-"
+    },
+    {
+      "node_id": "pattern:1:17",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002WRENDYQbC0RC-iNZZ*NJCqqO^!Q?S(gULcUfvW1d-"
+    },
+    {
+      "node_id": "pattern:1:25",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002WRENDYQbC0RC-iNZZ*NJCqqO^!Q?S(gULcUfvW1d-"
+    },
+    {
+      "node_id": "pattern:1:9",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002WRENDYQbC0RC-iNZZ*NJCqqO^!Q?S(gULcUfvW1d-"
+    },
+    {
+      "node_id": "pattern:3:11",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002WRENDYQbC0RC-iNZZ*NJCqqO^!Q?S(gULcUfvW1d-"
+    },
+    {
+      "node_id": "pattern:3:19",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002WRENDYQbC0RC-iNZZ*NJCqqO^!Q?S(gULcUfvW1d-"
+    },
+    {
+      "node_id": "pattern:3:27",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002WRENDYQbC0RC-iNZZ*NJCqqO^!Q?S(gULcUfvW1d-"
+    },
+    {
+      "node_id": "pattern:3:3",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002WRENDYQbC0RC-iNZZ*NJCqqO^!Q?S(gULcUfvW1d-"
+    },
+    {
+      "node_id": "pattern:5:13",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002WRENDYQbC0RC-iNZZ*NJCqqO^!Q?S(gULcUfvW1d-"
+    },
+    {
+      "node_id": "pattern:5:21",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002WRENDYQbC0RC-iNZZ*NJCqqO^!Q?S(gULcUfvW1d-"
+    },
+    {
+      "node_id": "pattern:5:29",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002WRENDYQbC0RC-iNZZ*NJCqqO^!Q?S(gULcUfvW1d-"
+    },
+    {
+      "node_id": "pattern:5:5",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002WRENDYQbC0RC-iNZZ*NJCqqO^!Q?S(gULcUfvW1d-"
+    },
+    {
+      "node_id": "pattern:7:15",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002WRENDYQbC0RC-iNZZ*NJCqqO^!Q?S(gULcUfvW1d-"
+    },
+    {
+      "node_id": "pattern:7:23",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002WRENDYQbC0RC-iNZZ*NJCqqO^!Q?S(gULcUfvW1d-"
+    },
+    {
+      "node_id": "pattern:7:31",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002WRENDYQbC0RC-iNZZ*NJCqqO^!Q?S(gULcUfvW1d-"
+    },
+    {
+      "node_id": "pattern:7:7",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002WRENDYQbC0RC-iNZZ*NJCqqO^!Q?S(gULcUfvW1d-"
+    },
+    {
+      "node_id": "pattern:0:0",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002j>NiLdt2tM7m(XWm>wXZHIk58o>hw^h+rIeX^o-wS"
+    },
+    {
+      "node_id": "pattern:0:16",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002j>NiLdt2tM7m(XWm>wXZHIk58o>hw^h+rIeX^o-wS"
+    },
+    {
+      "node_id": "pattern:0:24",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002j>NiLdt2tM7m(XWm>wXZHIk58o>hw^h+rIeX^o-wS"
+    },
+    {
+      "node_id": "pattern:0:32",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002j>NiLdt2tM7m(XWm>wXZHIk58o>hw^h+rIeX^o-wS"
+    },
+    {
+      "node_id": "pattern:0:40",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002j>NiLdt2tM7m(XWm>wXZHIk58o>hw^h+rIeX^o-wS"
+    },
+    {
+      "node_id": "pattern:0:48",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002j>NiLdt2tM7m(XWm>wXZHIk58o>hw^h+rIeX^o-wS"
+    },
+    {
+      "node_id": "pattern:0:56",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002j>NiLdt2tM7m(XWm>wXZHIk58o>hw^h+rIeX^o-wS"
+    },
+    {
+      "node_id": "pattern:0:8",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002j>NiLdt2tM7m(XWm>wXZHIk58o>hw^h+rIeX^o-wS"
+    },
+    {
+      "node_id": "pattern:2:10",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002j>NiLdt2tM7m(XWm>wXZHIk58o>hw^h+rIeX^o-wS"
+    },
+    {
+      "node_id": "pattern:2:18",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002j>NiLdt2tM7m(XWm>wXZHIk58o>hw^h+rIeX^o-wS"
+    },
+    {
+      "node_id": "pattern:2:2",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002j>NiLdt2tM7m(XWm>wXZHIk58o>hw^h+rIeX^o-wS"
+    },
+    {
+      "node_id": "pattern:2:26",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002j>NiLdt2tM7m(XWm>wXZHIk58o>hw^h+rIeX^o-wS"
+    },
+    {
+      "node_id": "pattern:2:34",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002j>NiLdt2tM7m(XWm>wXZHIk58o>hw^h+rIeX^o-wS"
+    },
+    {
+      "node_id": "pattern:2:42",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002j>NiLdt2tM7m(XWm>wXZHIk58o>hw^h+rIeX^o-wS"
+    },
+    {
+      "node_id": "pattern:2:50",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002j>NiLdt2tM7m(XWm>wXZHIk58o>hw^h+rIeX^o-wS"
+    },
+    {
+      "node_id": "pattern:2:58",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002j>NiLdt2tM7m(XWm>wXZHIk58o>hw^h+rIeX^o-wS"
+    },
+    {
+      "node_id": "pattern:4:12",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002j>NiLdt2tM7m(XWm>wXZHIk58o>hw^h+rIeX^o-wS"
+    },
+    {
+      "node_id": "pattern:4:20",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002j>NiLdt2tM7m(XWm>wXZHIk58o>hw^h+rIeX^o-wS"
+    },
+    {
+      "node_id": "pattern:4:28",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002j>NiLdt2tM7m(XWm>wXZHIk58o>hw^h+rIeX^o-wS"
+    },
+    {
+      "node_id": "pattern:4:36",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002j>NiLdt2tM7m(XWm>wXZHIk58o>hw^h+rIeX^o-wS"
+    },
+    {
+      "node_id": "pattern:4:4",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002j>NiLdt2tM7m(XWm>wXZHIk58o>hw^h+rIeX^o-wS"
+    },
+    {
+      "node_id": "pattern:4:44",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002j>NiLdt2tM7m(XWm>wXZHIk58o>hw^h+rIeX^o-wS"
+    },
+    {
+      "node_id": "pattern:4:52",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002j>NiLdt2tM7m(XWm>wXZHIk58o>hw^h+rIeX^o-wS"
+    },
+    {
+      "node_id": "pattern:4:60",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002j>NiLdt2tM7m(XWm>wXZHIk58o>hw^h+rIeX^o-wS"
+    },
+    {
+      "node_id": "pattern:6:14",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002j>NiLdt2tM7m(XWm>wXZHIk58o>hw^h+rIeX^o-wS"
+    },
+    {
+      "node_id": "pattern:6:22",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002j>NiLdt2tM7m(XWm>wXZHIk58o>hw^h+rIeX^o-wS"
+    },
+    {
+      "node_id": "pattern:6:30",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002j>NiLdt2tM7m(XWm>wXZHIk58o>hw^h+rIeX^o-wS"
+    },
+    {
+      "node_id": "pattern:6:38",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002j>NiLdt2tM7m(XWm>wXZHIk58o>hw^h+rIeX^o-wS"
+    },
+    {
+      "node_id": "pattern:6:46",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002j>NiLdt2tM7m(XWm>wXZHIk58o>hw^h+rIeX^o-wS"
+    },
+    {
+      "node_id": "pattern:6:54",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002j>NiLdt2tM7m(XWm>wXZHIk58o>hw^h+rIeX^o-wS"
+    },
+    {
+      "node_id": "pattern:6:6",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002j>NiLdt2tM7m(XWm>wXZHIk58o>hw^h+rIeX^o-wS"
+    },
+    {
+      "node_id": "pattern:6:62",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002j>NiLdt2tM7m(XWm>wXZHIk58o>hw^h+rIeX^o-wS"
+    },
+    {
+      "node_id": "pattern:1:1",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001fHF3etGH/LcZXWji8S)fXoR>WsR*Vff^hIzjhE!OC"
+    },
+    {
+      "node_id": "pattern:1:17",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001fHF3etGH/LcZXWji8S)fXoR>WsR*Vff^hIzjhE!OC"
+    },
+    {
+      "node_id": "pattern:1:25",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001fHF3etGH/LcZXWji8S)fXoR>WsR*Vff^hIzjhE!OC"
+    },
+    {
+      "node_id": "pattern:1:33",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001fHF3etGH/LcZXWji8S)fXoR>WsR*Vff^hIzjhE!OC"
+    },
+    {
+      "node_id": "pattern:1:41",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001fHF3etGH/LcZXWji8S)fXoR>WsR*Vff^hIzjhE!OC"
+    },
+    {
+      "node_id": "pattern:1:49",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001fHF3etGH/LcZXWji8S)fXoR>WsR*Vff^hIzjhE!OC"
+    },
+    {
+      "node_id": "pattern:1:57",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001fHF3etGH/LcZXWji8S)fXoR>WsR*Vff^hIzjhE!OC"
+    },
+    {
+      "node_id": "pattern:1:9",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001fHF3etGH/LcZXWji8S)fXoR>WsR*Vff^hIzjhE!OC"
+    },
+    {
+      "node_id": "pattern:3:11",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001fHF3etGH/LcZXWji8S)fXoR>WsR*Vff^hIzjhE!OC"
+    },
+    {
+      "node_id": "pattern:3:19",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001fHF3etGH/LcZXWji8S)fXoR>WsR*Vff^hIzjhE!OC"
+    },
+    {
+      "node_id": "pattern:3:27",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001fHF3etGH/LcZXWji8S)fXoR>WsR*Vff^hIzjhE!OC"
+    },
+    {
+      "node_id": "pattern:3:3",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001fHF3etGH/LcZXWji8S)fXoR>WsR*Vff^hIzjhE!OC"
+    },
+    {
+      "node_id": "pattern:3:35",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001fHF3etGH/LcZXWji8S)fXoR>WsR*Vff^hIzjhE!OC"
+    },
+    {
+      "node_id": "pattern:3:43",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001fHF3etGH/LcZXWji8S)fXoR>WsR*Vff^hIzjhE!OC"
+    },
+    {
+      "node_id": "pattern:3:51",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001fHF3etGH/LcZXWji8S)fXoR>WsR*Vff^hIzjhE!OC"
+    },
+    {
+      "node_id": "pattern:3:59",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001fHF3etGH/LcZXWji8S)fXoR>WsR*Vff^hIzjhE!OC"
+    },
+    {
+      "node_id": "pattern:5:13",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001fHF3etGH/LcZXWji8S)fXoR>WsR*Vff^hIzjhE!OC"
+    },
+    {
+      "node_id": "pattern:5:21",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001fHF3etGH/LcZXWji8S)fXoR>WsR*Vff^hIzjhE!OC"
+    },
+    {
+      "node_id": "pattern:5:29",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001fHF3etGH/LcZXWji8S)fXoR>WsR*Vff^hIzjhE!OC"
+    },
+    {
+      "node_id": "pattern:5:37",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001fHF3etGH/LcZXWji8S)fXoR>WsR*Vff^hIzjhE!OC"
+    },
+    {
+      "node_id": "pattern:5:45",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001fHF3etGH/LcZXWji8S)fXoR>WsR*Vff^hIzjhE!OC"
+    },
+    {
+      "node_id": "pattern:5:5",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001fHF3etGH/LcZXWji8S)fXoR>WsR*Vff^hIzjhE!OC"
+    },
+    {
+      "node_id": "pattern:5:53",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001fHF3etGH/LcZXWji8S)fXoR>WsR*Vff^hIzjhE!OC"
+    },
+    {
+      "node_id": "pattern:5:61",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001fHF3etGH/LcZXWji8S)fXoR>WsR*Vff^hIzjhE!OC"
+    },
+    {
+      "node_id": "pattern:7:15",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001fHF3etGH/LcZXWji8S)fXoR>WsR*Vff^hIzjhE!OC"
+    },
+    {
+      "node_id": "pattern:7:23",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001fHF3etGH/LcZXWji8S)fXoR>WsR*Vff^hIzjhE!OC"
+    },
+    {
+      "node_id": "pattern:7:31",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001fHF3etGH/LcZXWji8S)fXoR>WsR*Vff^hIzjhE!OC"
+    },
+    {
+      "node_id": "pattern:7:39",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001fHF3etGH/LcZXWji8S)fXoR>WsR*Vff^hIzjhE!OC"
+    },
+    {
+      "node_id": "pattern:7:47",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001fHF3etGH/LcZXWji8S)fXoR>WsR*Vff^hIzjhE!OC"
+    },
+    {
+      "node_id": "pattern:7:55",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001fHF3etGH/LcZXWji8S)fXoR>WsR*Vff^hIzjhE!OC"
+    },
+    {
+      "node_id": "pattern:7:63",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001fHF3etGH/LcZXWji8S)fXoR>WsR*Vff^hIzjhE!OC"
+    },
+    {
+      "node_id": "pattern:7:7",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001fHF3etGH/LcZXWji8S)fXoR>WsR*Vff^hIzjhE!OC"
+    },
+    {
+      "node_id": "pattern:0:0",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001WDsPPD/E/)75^eMBZSitafcSct5BhNTYArV-Pr>JV"
+    },
+    {
+      "node_id": "pattern:0:104",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001WDsPPD/E/)75^eMBZSitafcSct5BhNTYArV-Pr>JV"
+    },
+    {
+      "node_id": "pattern:0:112",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001WDsPPD/E/)75^eMBZSitafcSct5BhNTYArV-Pr>JV"
+    },
+    {
+      "node_id": "pattern:0:120",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001WDsPPD/E/)75^eMBZSitafcSct5BhNTYArV-Pr>JV"
+    },
+    {
+      "node_id": "pattern:0:16",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001WDsPPD/E/)75^eMBZSitafcSct5BhNTYArV-Pr>JV"
+    },
+    {
+      "node_id": "pattern:0:24",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001WDsPPD/E/)75^eMBZSitafcSct5BhNTYArV-Pr>JV"
+    },
+    {
+      "node_id": "pattern:0:32",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001WDsPPD/E/)75^eMBZSitafcSct5BhNTYArV-Pr>JV"
+    },
+    {
+      "node_id": "pattern:0:40",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001WDsPPD/E/)75^eMBZSitafcSct5BhNTYArV-Pr>JV"
+    },
+    {
+      "node_id": "pattern:0:48",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001WDsPPD/E/)75^eMBZSitafcSct5BhNTYArV-Pr>JV"
+    },
+    {
+      "node_id": "pattern:0:56",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001WDsPPD/E/)75^eMBZSitafcSct5BhNTYArV-Pr>JV"
+    },
+    {
+      "node_id": "pattern:0:64",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001WDsPPD/E/)75^eMBZSitafcSct5BhNTYArV-Pr>JV"
+    },
+    {
+      "node_id": "pattern:0:72",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001WDsPPD/E/)75^eMBZSitafcSct5BhNTYArV-Pr>JV"
+    },
+    {
+      "node_id": "pattern:0:8",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001WDsPPD/E/)75^eMBZSitafcSct5BhNTYArV-Pr>JV"
+    },
+    {
+      "node_id": "pattern:0:80",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001WDsPPD/E/)75^eMBZSitafcSct5BhNTYArV-Pr>JV"
+    },
+    {
+      "node_id": "pattern:0:88",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001WDsPPD/E/)75^eMBZSitafcSct5BhNTYArV-Pr>JV"
+    },
+    {
+      "node_id": "pattern:0:96",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001WDsPPD/E/)75^eMBZSitafcSct5BhNTYArV-Pr>JV"
+    },
+    {
+      "node_id": "pattern:2:10",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001WDsPPD/E/)75^eMBZSitafcSct5BhNTYArV-Pr>JV"
+    },
+    {
+      "node_id": "pattern:2:106",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001WDsPPD/E/)75^eMBZSitafcSct5BhNTYArV-Pr>JV"
+    },
+    {
+      "node_id": "pattern:2:114",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001WDsPPD/E/)75^eMBZSitafcSct5BhNTYArV-Pr>JV"
+    },
+    {
+      "node_id": "pattern:2:122",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001WDsPPD/E/)75^eMBZSitafcSct5BhNTYArV-Pr>JV"
+    },
+    {
+      "node_id": "pattern:2:18",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001WDsPPD/E/)75^eMBZSitafcSct5BhNTYArV-Pr>JV"
+    },
+    {
+      "node_id": "pattern:2:2",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001WDsPPD/E/)75^eMBZSitafcSct5BhNTYArV-Pr>JV"
+    },
+    {
+      "node_id": "pattern:2:26",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001WDsPPD/E/)75^eMBZSitafcSct5BhNTYArV-Pr>JV"
+    },
+    {
+      "node_id": "pattern:2:34",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001WDsPPD/E/)75^eMBZSitafcSct5BhNTYArV-Pr>JV"
+    },
+    {
+      "node_id": "pattern:2:42",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001WDsPPD/E/)75^eMBZSitafcSct5BhNTYArV-Pr>JV"
+    },
+    {
+      "node_id": "pattern:2:50",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001WDsPPD/E/)75^eMBZSitafcSct5BhNTYArV-Pr>JV"
+    },
+    {
+      "node_id": "pattern:2:58",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001WDsPPD/E/)75^eMBZSitafcSct5BhNTYArV-Pr>JV"
+    },
+    {
+      "node_id": "pattern:2:66",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001WDsPPD/E/)75^eMBZSitafcSct5BhNTYArV-Pr>JV"
+    },
+    {
+      "node_id": "pattern:2:74",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001WDsPPD/E/)75^eMBZSitafcSct5BhNTYArV-Pr>JV"
+    },
+    {
+      "node_id": "pattern:2:82",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001WDsPPD/E/)75^eMBZSitafcSct5BhNTYArV-Pr>JV"
+    },
+    {
+      "node_id": "pattern:2:90",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001WDsPPD/E/)75^eMBZSitafcSct5BhNTYArV-Pr>JV"
+    },
+    {
+      "node_id": "pattern:2:98",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001WDsPPD/E/)75^eMBZSitafcSct5BhNTYArV-Pr>JV"
+    },
+    {
+      "node_id": "pattern:4:100",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001WDsPPD/E/)75^eMBZSitafcSct5BhNTYArV-Pr>JV"
+    },
+    {
+      "node_id": "pattern:4:108",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001WDsPPD/E/)75^eMBZSitafcSct5BhNTYArV-Pr>JV"
+    },
+    {
+      "node_id": "pattern:4:116",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001WDsPPD/E/)75^eMBZSitafcSct5BhNTYArV-Pr>JV"
+    },
+    {
+      "node_id": "pattern:4:12",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001WDsPPD/E/)75^eMBZSitafcSct5BhNTYArV-Pr>JV"
+    },
+    {
+      "node_id": "pattern:4:124",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001WDsPPD/E/)75^eMBZSitafcSct5BhNTYArV-Pr>JV"
+    },
+    {
+      "node_id": "pattern:4:20",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001WDsPPD/E/)75^eMBZSitafcSct5BhNTYArV-Pr>JV"
+    },
+    {
+      "node_id": "pattern:4:28",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001WDsPPD/E/)75^eMBZSitafcSct5BhNTYArV-Pr>JV"
+    },
+    {
+      "node_id": "pattern:4:36",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001WDsPPD/E/)75^eMBZSitafcSct5BhNTYArV-Pr>JV"
+    },
+    {
+      "node_id": "pattern:4:4",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001WDsPPD/E/)75^eMBZSitafcSct5BhNTYArV-Pr>JV"
+    },
+    {
+      "node_id": "pattern:4:44",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001WDsPPD/E/)75^eMBZSitafcSct5BhNTYArV-Pr>JV"
+    },
+    {
+      "node_id": "pattern:4:52",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001WDsPPD/E/)75^eMBZSitafcSct5BhNTYArV-Pr>JV"
+    },
+    {
+      "node_id": "pattern:4:60",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001WDsPPD/E/)75^eMBZSitafcSct5BhNTYArV-Pr>JV"
+    },
+    {
+      "node_id": "pattern:4:68",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001WDsPPD/E/)75^eMBZSitafcSct5BhNTYArV-Pr>JV"
+    },
+    {
+      "node_id": "pattern:4:76",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001WDsPPD/E/)75^eMBZSitafcSct5BhNTYArV-Pr>JV"
+    },
+    {
+      "node_id": "pattern:4:84",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001WDsPPD/E/)75^eMBZSitafcSct5BhNTYArV-Pr>JV"
+    },
+    {
+      "node_id": "pattern:4:92",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001WDsPPD/E/)75^eMBZSitafcSct5BhNTYArV-Pr>JV"
+    },
+    {
+      "node_id": "pattern:6:102",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001WDsPPD/E/)75^eMBZSitafcSct5BhNTYArV-Pr>JV"
+    },
+    {
+      "node_id": "pattern:6:110",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001WDsPPD/E/)75^eMBZSitafcSct5BhNTYArV-Pr>JV"
+    },
+    {
+      "node_id": "pattern:6:118",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001WDsPPD/E/)75^eMBZSitafcSct5BhNTYArV-Pr>JV"
+    },
+    {
+      "node_id": "pattern:6:126",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001WDsPPD/E/)75^eMBZSitafcSct5BhNTYArV-Pr>JV"
+    },
+    {
+      "node_id": "pattern:6:14",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001WDsPPD/E/)75^eMBZSitafcSct5BhNTYArV-Pr>JV"
+    },
+    {
+      "node_id": "pattern:6:22",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001WDsPPD/E/)75^eMBZSitafcSct5BhNTYArV-Pr>JV"
+    },
+    {
+      "node_id": "pattern:6:30",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001WDsPPD/E/)75^eMBZSitafcSct5BhNTYArV-Pr>JV"
+    },
+    {
+      "node_id": "pattern:6:38",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001WDsPPD/E/)75^eMBZSitafcSct5BhNTYArV-Pr>JV"
+    },
+    {
+      "node_id": "pattern:6:46",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001WDsPPD/E/)75^eMBZSitafcSct5BhNTYArV-Pr>JV"
+    },
+    {
+      "node_id": "pattern:6:54",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001WDsPPD/E/)75^eMBZSitafcSct5BhNTYArV-Pr>JV"
+    },
+    {
+      "node_id": "pattern:6:6",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001WDsPPD/E/)75^eMBZSitafcSct5BhNTYArV-Pr>JV"
+    },
+    {
+      "node_id": "pattern:6:62",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001WDsPPD/E/)75^eMBZSitafcSct5BhNTYArV-Pr>JV"
+    },
+    {
+      "node_id": "pattern:6:70",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001WDsPPD/E/)75^eMBZSitafcSct5BhNTYArV-Pr>JV"
+    },
+    {
+      "node_id": "pattern:6:78",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001WDsPPD/E/)75^eMBZSitafcSct5BhNTYArV-Pr>JV"
+    },
+    {
+      "node_id": "pattern:6:86",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001WDsPPD/E/)75^eMBZSitafcSct5BhNTYArV-Pr>JV"
+    },
+    {
+      "node_id": "pattern:6:94",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001WDsPPD/E/)75^eMBZSitafcSct5BhNTYArV-Pr>JV"
+    },
+    {
+      "node_id": "pattern:1:1",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002cw1-O1u2rojejHK>EtYa1!dV0=rSq?D=iwIy4rtni"
+    },
+    {
+      "node_id": "pattern:1:105",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002cw1-O1u2rojejHK>EtYa1!dV0=rSq?D=iwIy4rtni"
+    },
+    {
+      "node_id": "pattern:1:113",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002cw1-O1u2rojejHK>EtYa1!dV0=rSq?D=iwIy4rtni"
+    },
+    {
+      "node_id": "pattern:1:121",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002cw1-O1u2rojejHK>EtYa1!dV0=rSq?D=iwIy4rtni"
+    },
+    {
+      "node_id": "pattern:1:17",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002cw1-O1u2rojejHK>EtYa1!dV0=rSq?D=iwIy4rtni"
+    },
+    {
+      "node_id": "pattern:1:25",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002cw1-O1u2rojejHK>EtYa1!dV0=rSq?D=iwIy4rtni"
+    },
+    {
+      "node_id": "pattern:1:33",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002cw1-O1u2rojejHK>EtYa1!dV0=rSq?D=iwIy4rtni"
+    },
+    {
+      "node_id": "pattern:1:41",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002cw1-O1u2rojejHK>EtYa1!dV0=rSq?D=iwIy4rtni"
+    },
+    {
+      "node_id": "pattern:1:49",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002cw1-O1u2rojejHK>EtYa1!dV0=rSq?D=iwIy4rtni"
+    },
+    {
+      "node_id": "pattern:1:57",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002cw1-O1u2rojejHK>EtYa1!dV0=rSq?D=iwIy4rtni"
+    },
+    {
+      "node_id": "pattern:1:65",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002cw1-O1u2rojejHK>EtYa1!dV0=rSq?D=iwIy4rtni"
+    },
+    {
+      "node_id": "pattern:1:73",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002cw1-O1u2rojejHK>EtYa1!dV0=rSq?D=iwIy4rtni"
+    },
+    {
+      "node_id": "pattern:1:81",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002cw1-O1u2rojejHK>EtYa1!dV0=rSq?D=iwIy4rtni"
+    },
+    {
+      "node_id": "pattern:1:89",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002cw1-O1u2rojejHK>EtYa1!dV0=rSq?D=iwIy4rtni"
+    },
+    {
+      "node_id": "pattern:1:9",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002cw1-O1u2rojejHK>EtYa1!dV0=rSq?D=iwIy4rtni"
+    },
+    {
+      "node_id": "pattern:1:97",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002cw1-O1u2rojejHK>EtYa1!dV0=rSq?D=iwIy4rtni"
+    },
+    {
+      "node_id": "pattern:3:107",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002cw1-O1u2rojejHK>EtYa1!dV0=rSq?D=iwIy4rtni"
+    },
+    {
+      "node_id": "pattern:3:11",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002cw1-O1u2rojejHK>EtYa1!dV0=rSq?D=iwIy4rtni"
+    },
+    {
+      "node_id": "pattern:3:115",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002cw1-O1u2rojejHK>EtYa1!dV0=rSq?D=iwIy4rtni"
+    },
+    {
+      "node_id": "pattern:3:123",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002cw1-O1u2rojejHK>EtYa1!dV0=rSq?D=iwIy4rtni"
+    },
+    {
+      "node_id": "pattern:3:19",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002cw1-O1u2rojejHK>EtYa1!dV0=rSq?D=iwIy4rtni"
+    },
+    {
+      "node_id": "pattern:3:27",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002cw1-O1u2rojejHK>EtYa1!dV0=rSq?D=iwIy4rtni"
+    },
+    {
+      "node_id": "pattern:3:3",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002cw1-O1u2rojejHK>EtYa1!dV0=rSq?D=iwIy4rtni"
+    },
+    {
+      "node_id": "pattern:3:35",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002cw1-O1u2rojejHK>EtYa1!dV0=rSq?D=iwIy4rtni"
+    },
+    {
+      "node_id": "pattern:3:43",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002cw1-O1u2rojejHK>EtYa1!dV0=rSq?D=iwIy4rtni"
+    },
+    {
+      "node_id": "pattern:3:51",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002cw1-O1u2rojejHK>EtYa1!dV0=rSq?D=iwIy4rtni"
+    },
+    {
+      "node_id": "pattern:3:59",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002cw1-O1u2rojejHK>EtYa1!dV0=rSq?D=iwIy4rtni"
+    },
+    {
+      "node_id": "pattern:3:67",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002cw1-O1u2rojejHK>EtYa1!dV0=rSq?D=iwIy4rtni"
+    },
+    {
+      "node_id": "pattern:3:75",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002cw1-O1u2rojejHK>EtYa1!dV0=rSq?D=iwIy4rtni"
+    },
+    {
+      "node_id": "pattern:3:83",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002cw1-O1u2rojejHK>EtYa1!dV0=rSq?D=iwIy4rtni"
+    },
+    {
+      "node_id": "pattern:3:91",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002cw1-O1u2rojejHK>EtYa1!dV0=rSq?D=iwIy4rtni"
+    },
+    {
+      "node_id": "pattern:3:99",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002cw1-O1u2rojejHK>EtYa1!dV0=rSq?D=iwIy4rtni"
+    },
+    {
+      "node_id": "pattern:5:101",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002cw1-O1u2rojejHK>EtYa1!dV0=rSq?D=iwIy4rtni"
+    },
+    {
+      "node_id": "pattern:5:109",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002cw1-O1u2rojejHK>EtYa1!dV0=rSq?D=iwIy4rtni"
+    },
+    {
+      "node_id": "pattern:5:117",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002cw1-O1u2rojejHK>EtYa1!dV0=rSq?D=iwIy4rtni"
+    },
+    {
+      "node_id": "pattern:5:125",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002cw1-O1u2rojejHK>EtYa1!dV0=rSq?D=iwIy4rtni"
+    },
+    {
+      "node_id": "pattern:5:13",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002cw1-O1u2rojejHK>EtYa1!dV0=rSq?D=iwIy4rtni"
+    },
+    {
+      "node_id": "pattern:5:21",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002cw1-O1u2rojejHK>EtYa1!dV0=rSq?D=iwIy4rtni"
+    },
+    {
+      "node_id": "pattern:5:29",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002cw1-O1u2rojejHK>EtYa1!dV0=rSq?D=iwIy4rtni"
+    },
+    {
+      "node_id": "pattern:5:37",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002cw1-O1u2rojejHK>EtYa1!dV0=rSq?D=iwIy4rtni"
+    },
+    {
+      "node_id": "pattern:5:45",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002cw1-O1u2rojejHK>EtYa1!dV0=rSq?D=iwIy4rtni"
+    },
+    {
+      "node_id": "pattern:5:5",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002cw1-O1u2rojejHK>EtYa1!dV0=rSq?D=iwIy4rtni"
+    },
+    {
+      "node_id": "pattern:5:53",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002cw1-O1u2rojejHK>EtYa1!dV0=rSq?D=iwIy4rtni"
+    },
+    {
+      "node_id": "pattern:5:61",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002cw1-O1u2rojejHK>EtYa1!dV0=rSq?D=iwIy4rtni"
+    },
+    {
+      "node_id": "pattern:5:69",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002cw1-O1u2rojejHK>EtYa1!dV0=rSq?D=iwIy4rtni"
+    },
+    {
+      "node_id": "pattern:5:77",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002cw1-O1u2rojejHK>EtYa1!dV0=rSq?D=iwIy4rtni"
+    },
+    {
+      "node_id": "pattern:5:85",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002cw1-O1u2rojejHK>EtYa1!dV0=rSq?D=iwIy4rtni"
+    },
+    {
+      "node_id": "pattern:5:93",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002cw1-O1u2rojejHK>EtYa1!dV0=rSq?D=iwIy4rtni"
+    },
+    {
+      "node_id": "pattern:7:103",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002cw1-O1u2rojejHK>EtYa1!dV0=rSq?D=iwIy4rtni"
+    },
+    {
+      "node_id": "pattern:7:111",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002cw1-O1u2rojejHK>EtYa1!dV0=rSq?D=iwIy4rtni"
+    },
+    {
+      "node_id": "pattern:7:119",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002cw1-O1u2rojejHK>EtYa1!dV0=rSq?D=iwIy4rtni"
+    },
+    {
+      "node_id": "pattern:7:127",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002cw1-O1u2rojejHK>EtYa1!dV0=rSq?D=iwIy4rtni"
+    },
+    {
+      "node_id": "pattern:7:15",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002cw1-O1u2rojejHK>EtYa1!dV0=rSq?D=iwIy4rtni"
+    },
+    {
+      "node_id": "pattern:7:23",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002cw1-O1u2rojejHK>EtYa1!dV0=rSq?D=iwIy4rtni"
+    },
+    {
+      "node_id": "pattern:7:31",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002cw1-O1u2rojejHK>EtYa1!dV0=rSq?D=iwIy4rtni"
+    },
+    {
+      "node_id": "pattern:7:39",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002cw1-O1u2rojejHK>EtYa1!dV0=rSq?D=iwIy4rtni"
+    },
+    {
+      "node_id": "pattern:7:47",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002cw1-O1u2rojejHK>EtYa1!dV0=rSq?D=iwIy4rtni"
+    },
+    {
+      "node_id": "pattern:7:55",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002cw1-O1u2rojejHK>EtYa1!dV0=rSq?D=iwIy4rtni"
+    },
+    {
+      "node_id": "pattern:7:63",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002cw1-O1u2rojejHK>EtYa1!dV0=rSq?D=iwIy4rtni"
+    },
+    {
+      "node_id": "pattern:7:7",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002cw1-O1u2rojejHK>EtYa1!dV0=rSq?D=iwIy4rtni"
+    },
+    {
+      "node_id": "pattern:7:71",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002cw1-O1u2rojejHK>EtYa1!dV0=rSq?D=iwIy4rtni"
+    },
+    {
+      "node_id": "pattern:7:79",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002cw1-O1u2rojejHK>EtYa1!dV0=rSq?D=iwIy4rtni"
+    },
+    {
+      "node_id": "pattern:7:87",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002cw1-O1u2rojejHK>EtYa1!dV0=rSq?D=iwIy4rtni"
+    },
+    {
+      "node_id": "pattern:7:95",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002cw1-O1u2rojejHK>EtYa1!dV0=rSq?D=iwIy4rtni"
+    },
+    {
+      "node_id": "pattern:0:0",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004i=K=g3uGE8XBdg/Di4?PNzEcYzROZu294E0PDb0IL"
+    },
+    {
+      "node_id": "pattern:0:16",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004i=K=g3uGE8XBdg/Di4?PNzEcYzROZu294E0PDb0IL"
+    },
+    {
+      "node_id": "pattern:0:24",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004i=K=g3uGE8XBdg/Di4?PNzEcYzROZu294E0PDb0IL"
+    },
+    {
+      "node_id": "pattern:0:32",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004i=K=g3uGE8XBdg/Di4?PNzEcYzROZu294E0PDb0IL"
+    },
+    {
+      "node_id": "pattern:0:40",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004i=K=g3uGE8XBdg/Di4?PNzEcYzROZu294E0PDb0IL"
+    },
+    {
+      "node_id": "pattern:0:48",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004i=K=g3uGE8XBdg/Di4?PNzEcYzROZu294E0PDb0IL"
+    },
+    {
+      "node_id": "pattern:0:56",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004i=K=g3uGE8XBdg/Di4?PNzEcYzROZu294E0PDb0IL"
+    },
+    {
+      "node_id": "pattern:0:8",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004i=K=g3uGE8XBdg/Di4?PNzEcYzROZu294E0PDb0IL"
+    },
+    {
+      "node_id": "pattern:4:12",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004i=K=g3uGE8XBdg/Di4?PNzEcYzROZu294E0PDb0IL"
+    },
+    {
+      "node_id": "pattern:4:20",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004i=K=g3uGE8XBdg/Di4?PNzEcYzROZu294E0PDb0IL"
+    },
+    {
+      "node_id": "pattern:4:28",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004i=K=g3uGE8XBdg/Di4?PNzEcYzROZu294E0PDb0IL"
+    },
+    {
+      "node_id": "pattern:4:36",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004i=K=g3uGE8XBdg/Di4?PNzEcYzROZu294E0PDb0IL"
+    },
+    {
+      "node_id": "pattern:4:4",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004i=K=g3uGE8XBdg/Di4?PNzEcYzROZu294E0PDb0IL"
+    },
+    {
+      "node_id": "pattern:4:44",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004i=K=g3uGE8XBdg/Di4?PNzEcYzROZu294E0PDb0IL"
+    },
+    {
+      "node_id": "pattern:4:52",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004i=K=g3uGE8XBdg/Di4?PNzEcYzROZu294E0PDb0IL"
+    },
+    {
+      "node_id": "pattern:4:60",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004i=K=g3uGE8XBdg/Di4?PNzEcYzROZu294E0PDb0IL"
+    },
+    {
+      "node_id": "pattern:1:1",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "00000000000000000000000000000015MWoL4en8^jD/DP5nt)8AzNbZUoDpc1o-wpMElfOQ"
+    },
+    {
+      "node_id": "pattern:1:17",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "00000000000000000000000000000015MWoL4en8^jD/DP5nt)8AzNbZUoDpc1o-wpMElfOQ"
+    },
+    {
+      "node_id": "pattern:1:25",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "00000000000000000000000000000015MWoL4en8^jD/DP5nt)8AzNbZUoDpc1o-wpMElfOQ"
+    },
+    {
+      "node_id": "pattern:1:33",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "00000000000000000000000000000015MWoL4en8^jD/DP5nt)8AzNbZUoDpc1o-wpMElfOQ"
+    },
+    {
+      "node_id": "pattern:1:41",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "00000000000000000000000000000015MWoL4en8^jD/DP5nt)8AzNbZUoDpc1o-wpMElfOQ"
+    },
+    {
+      "node_id": "pattern:1:49",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "00000000000000000000000000000015MWoL4en8^jD/DP5nt)8AzNbZUoDpc1o-wpMElfOQ"
+    },
+    {
+      "node_id": "pattern:1:57",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "00000000000000000000000000000015MWoL4en8^jD/DP5nt)8AzNbZUoDpc1o-wpMElfOQ"
+    },
+    {
+      "node_id": "pattern:1:9",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "00000000000000000000000000000015MWoL4en8^jD/DP5nt)8AzNbZUoDpc1o-wpMElfOQ"
+    },
+    {
+      "node_id": "pattern:5:13",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "00000000000000000000000000000015MWoL4en8^jD/DP5nt)8AzNbZUoDpc1o-wpMElfOQ"
+    },
+    {
+      "node_id": "pattern:5:21",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "00000000000000000000000000000015MWoL4en8^jD/DP5nt)8AzNbZUoDpc1o-wpMElfOQ"
+    },
+    {
+      "node_id": "pattern:5:29",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "00000000000000000000000000000015MWoL4en8^jD/DP5nt)8AzNbZUoDpc1o-wpMElfOQ"
+    },
+    {
+      "node_id": "pattern:5:37",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "00000000000000000000000000000015MWoL4en8^jD/DP5nt)8AzNbZUoDpc1o-wpMElfOQ"
+    },
+    {
+      "node_id": "pattern:5:45",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "00000000000000000000000000000015MWoL4en8^jD/DP5nt)8AzNbZUoDpc1o-wpMElfOQ"
+    },
+    {
+      "node_id": "pattern:5:5",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "00000000000000000000000000000015MWoL4en8^jD/DP5nt)8AzNbZUoDpc1o-wpMElfOQ"
+    },
+    {
+      "node_id": "pattern:5:53",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "00000000000000000000000000000015MWoL4en8^jD/DP5nt)8AzNbZUoDpc1o-wpMElfOQ"
+    },
+    {
+      "node_id": "pattern:5:61",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "00000000000000000000000000000015MWoL4en8^jD/DP5nt)8AzNbZUoDpc1o-wpMElfOQ"
+    },
+    {
+      "node_id": "pattern:2:10",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002Vtpbp>WJz2*5XTvt494E*htRZ8h0?LPy4q80X+^AM"
+    },
+    {
+      "node_id": "pattern:2:18",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002Vtpbp>WJz2*5XTvt494E*htRZ8h0?LPy4q80X+^AM"
+    },
+    {
+      "node_id": "pattern:2:2",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002Vtpbp>WJz2*5XTvt494E*htRZ8h0?LPy4q80X+^AM"
+    },
+    {
+      "node_id": "pattern:2:26",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002Vtpbp>WJz2*5XTvt494E*htRZ8h0?LPy4q80X+^AM"
+    },
+    {
+      "node_id": "pattern:2:34",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002Vtpbp>WJz2*5XTvt494E*htRZ8h0?LPy4q80X+^AM"
+    },
+    {
+      "node_id": "pattern:2:42",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002Vtpbp>WJz2*5XTvt494E*htRZ8h0?LPy4q80X+^AM"
+    },
+    {
+      "node_id": "pattern:2:50",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002Vtpbp>WJz2*5XTvt494E*htRZ8h0?LPy4q80X+^AM"
+    },
+    {
+      "node_id": "pattern:2:58",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002Vtpbp>WJz2*5XTvt494E*htRZ8h0?LPy4q80X+^AM"
+    },
+    {
+      "node_id": "pattern:6:14",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002Vtpbp>WJz2*5XTvt494E*htRZ8h0?LPy4q80X+^AM"
+    },
+    {
+      "node_id": "pattern:6:22",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002Vtpbp>WJz2*5XTvt494E*htRZ8h0?LPy4q80X+^AM"
+    },
+    {
+      "node_id": "pattern:6:30",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002Vtpbp>WJz2*5XTvt494E*htRZ8h0?LPy4q80X+^AM"
+    },
+    {
+      "node_id": "pattern:6:38",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002Vtpbp>WJz2*5XTvt494E*htRZ8h0?LPy4q80X+^AM"
+    },
+    {
+      "node_id": "pattern:6:46",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002Vtpbp>WJz2*5XTvt494E*htRZ8h0?LPy4q80X+^AM"
+    },
+    {
+      "node_id": "pattern:6:54",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002Vtpbp>WJz2*5XTvt494E*htRZ8h0?LPy4q80X+^AM"
+    },
+    {
+      "node_id": "pattern:6:6",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002Vtpbp>WJz2*5XTvt494E*htRZ8h0?LPy4q80X+^AM"
+    },
+    {
+      "node_id": "pattern:6:62",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002Vtpbp>WJz2*5XTvt494E*htRZ8h0?LPy4q80X+^AM"
+    },
+    {
+      "node_id": "pattern:3:11",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000hOZqnhs(nN3wunzmskvQ=GQfgWzVNatapSwomO+iK"
+    },
+    {
+      "node_id": "pattern:3:19",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000hOZqnhs(nN3wunzmskvQ=GQfgWzVNatapSwomO+iK"
+    },
+    {
+      "node_id": "pattern:3:27",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000hOZqnhs(nN3wunzmskvQ=GQfgWzVNatapSwomO+iK"
+    },
+    {
+      "node_id": "pattern:3:3",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000hOZqnhs(nN3wunzmskvQ=GQfgWzVNatapSwomO+iK"
+    },
+    {
+      "node_id": "pattern:3:35",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000hOZqnhs(nN3wunzmskvQ=GQfgWzVNatapSwomO+iK"
+    },
+    {
+      "node_id": "pattern:3:43",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000hOZqnhs(nN3wunzmskvQ=GQfgWzVNatapSwomO+iK"
+    },
+    {
+      "node_id": "pattern:3:51",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000hOZqnhs(nN3wunzmskvQ=GQfgWzVNatapSwomO+iK"
+    },
+    {
+      "node_id": "pattern:3:59",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000hOZqnhs(nN3wunzmskvQ=GQfgWzVNatapSwomO+iK"
+    },
+    {
+      "node_id": "pattern:7:15",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000hOZqnhs(nN3wunzmskvQ=GQfgWzVNatapSwomO+iK"
+    },
+    {
+      "node_id": "pattern:7:23",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000hOZqnhs(nN3wunzmskvQ=GQfgWzVNatapSwomO+iK"
+    },
+    {
+      "node_id": "pattern:7:31",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000hOZqnhs(nN3wunzmskvQ=GQfgWzVNatapSwomO+iK"
+    },
+    {
+      "node_id": "pattern:7:39",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000hOZqnhs(nN3wunzmskvQ=GQfgWzVNatapSwomO+iK"
+    },
+    {
+      "node_id": "pattern:7:47",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000hOZqnhs(nN3wunzmskvQ=GQfgWzVNatapSwomO+iK"
+    },
+    {
+      "node_id": "pattern:7:55",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000hOZqnhs(nN3wunzmskvQ=GQfgWzVNatapSwomO+iK"
+    },
+    {
+      "node_id": "pattern:7:63",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000hOZqnhs(nN3wunzmskvQ=GQfgWzVNatapSwomO+iK"
+    },
+    {
+      "node_id": "pattern:7:7",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000hOZqnhs(nN3wunzmskvQ=GQfgWzVNatapSwomO+iK"
+    },
+    {
+      "node_id": "pattern:0:0",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002J3kU!*DryjQCU05FZ+eCP1KX5SG!>x9oOYbh=vMft"
+    },
+    {
+      "node_id": "pattern:0:12",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002J3kU!*DryjQCU05FZ+eCP1KX5SG!>x9oOYbh=vMft"
+    },
+    {
+      "node_id": "pattern:0:16",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002J3kU!*DryjQCU05FZ+eCP1KX5SG!>x9oOYbh=vMft"
+    },
+    {
+      "node_id": "pattern:0:20",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002J3kU!*DryjQCU05FZ+eCP1KX5SG!>x9oOYbh=vMft"
+    },
+    {
+      "node_id": "pattern:0:24",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002J3kU!*DryjQCU05FZ+eCP1KX5SG!>x9oOYbh=vMft"
+    },
+    {
+      "node_id": "pattern:0:28",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002J3kU!*DryjQCU05FZ+eCP1KX5SG!>x9oOYbh=vMft"
+    },
+    {
+      "node_id": "pattern:0:4",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002J3kU!*DryjQCU05FZ+eCP1KX5SG!>x9oOYbh=vMft"
+    },
+    {
+      "node_id": "pattern:0:8",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002J3kU!*DryjQCU05FZ+eCP1KX5SG!>x9oOYbh=vMft"
+    },
+    {
+      "node_id": "pattern:2:10",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002J3kU!*DryjQCU05FZ+eCP1KX5SG!>x9oOYbh=vMft"
+    },
+    {
+      "node_id": "pattern:2:14",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002J3kU!*DryjQCU05FZ+eCP1KX5SG!>x9oOYbh=vMft"
+    },
+    {
+      "node_id": "pattern:2:18",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002J3kU!*DryjQCU05FZ+eCP1KX5SG!>x9oOYbh=vMft"
+    },
+    {
+      "node_id": "pattern:2:2",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002J3kU!*DryjQCU05FZ+eCP1KX5SG!>x9oOYbh=vMft"
+    },
+    {
+      "node_id": "pattern:2:22",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002J3kU!*DryjQCU05FZ+eCP1KX5SG!>x9oOYbh=vMft"
+    },
+    {
+      "node_id": "pattern:2:26",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002J3kU!*DryjQCU05FZ+eCP1KX5SG!>x9oOYbh=vMft"
+    },
+    {
+      "node_id": "pattern:2:30",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002J3kU!*DryjQCU05FZ+eCP1KX5SG!>x9oOYbh=vMft"
+    },
+    {
+      "node_id": "pattern:2:6",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002J3kU!*DryjQCU05FZ+eCP1KX5SG!>x9oOYbh=vMft"
+    },
+    {
+      "node_id": "pattern:1:1",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000qrr-lBcIH/iBkB54N?gZ7Jvh)4CPHNp^IyX/NkL7K"
+    },
+    {
+      "node_id": "pattern:1:13",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000qrr-lBcIH/iBkB54N?gZ7Jvh)4CPHNp^IyX/NkL7K"
+    },
+    {
+      "node_id": "pattern:1:17",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000qrr-lBcIH/iBkB54N?gZ7Jvh)4CPHNp^IyX/NkL7K"
+    },
+    {
+      "node_id": "pattern:1:21",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000qrr-lBcIH/iBkB54N?gZ7Jvh)4CPHNp^IyX/NkL7K"
+    },
+    {
+      "node_id": "pattern:1:25",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000qrr-lBcIH/iBkB54N?gZ7Jvh)4CPHNp^IyX/NkL7K"
+    },
+    {
+      "node_id": "pattern:1:29",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000qrr-lBcIH/iBkB54N?gZ7Jvh)4CPHNp^IyX/NkL7K"
+    },
+    {
+      "node_id": "pattern:1:5",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000qrr-lBcIH/iBkB54N?gZ7Jvh)4CPHNp^IyX/NkL7K"
+    },
+    {
+      "node_id": "pattern:1:9",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000qrr-lBcIH/iBkB54N?gZ7Jvh)4CPHNp^IyX/NkL7K"
+    },
+    {
+      "node_id": "pattern:3:11",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000qrr-lBcIH/iBkB54N?gZ7Jvh)4CPHNp^IyX/NkL7K"
+    },
+    {
+      "node_id": "pattern:3:15",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000qrr-lBcIH/iBkB54N?gZ7Jvh)4CPHNp^IyX/NkL7K"
+    },
+    {
+      "node_id": "pattern:3:19",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000qrr-lBcIH/iBkB54N?gZ7Jvh)4CPHNp^IyX/NkL7K"
+    },
+    {
+      "node_id": "pattern:3:23",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000qrr-lBcIH/iBkB54N?gZ7Jvh)4CPHNp^IyX/NkL7K"
+    },
+    {
+      "node_id": "pattern:3:27",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000qrr-lBcIH/iBkB54N?gZ7Jvh)4CPHNp^IyX/NkL7K"
+    },
+    {
+      "node_id": "pattern:3:3",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000qrr-lBcIH/iBkB54N?gZ7Jvh)4CPHNp^IyX/NkL7K"
+    },
+    {
+      "node_id": "pattern:3:31",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000qrr-lBcIH/iBkB54N?gZ7Jvh)4CPHNp^IyX/NkL7K"
+    },
+    {
+      "node_id": "pattern:3:7",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000qrr-lBcIH/iBkB54N?gZ7Jvh)4CPHNp^IyX/NkL7K"
+    },
+    {
+      "node_id": "pattern:0:0",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001dUJBL>nIFmb(roeC^!Nvv6pAHI/jB74vkLLRgxdHd"
+    },
+    {
+      "node_id": "pattern:0:112",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001dUJBL>nIFmb(roeC^!Nvv6pAHI/jB74vkLLRgxdHd"
+    },
+    {
+      "node_id": "pattern:0:128",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001dUJBL>nIFmb(roeC^!Nvv6pAHI/jB74vkLLRgxdHd"
+    },
+    {
+      "node_id": "pattern:0:144",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001dUJBL>nIFmb(roeC^!Nvv6pAHI/jB74vkLLRgxdHd"
+    },
+    {
+      "node_id": "pattern:0:16",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001dUJBL>nIFmb(roeC^!Nvv6pAHI/jB74vkLLRgxdHd"
+    },
+    {
+      "node_id": "pattern:0:160",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001dUJBL>nIFmb(roeC^!Nvv6pAHI/jB74vkLLRgxdHd"
+    },
+    {
+      "node_id": "pattern:0:176",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001dUJBL>nIFmb(roeC^!Nvv6pAHI/jB74vkLLRgxdHd"
+    },
+    {
+      "node_id": "pattern:0:192",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001dUJBL>nIFmb(roeC^!Nvv6pAHI/jB74vkLLRgxdHd"
+    },
+    {
+      "node_id": "pattern:0:208",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001dUJBL>nIFmb(roeC^!Nvv6pAHI/jB74vkLLRgxdHd"
+    },
+    {
+      "node_id": "pattern:0:224",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001dUJBL>nIFmb(roeC^!Nvv6pAHI/jB74vkLLRgxdHd"
+    },
+    {
+      "node_id": "pattern:0:240",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001dUJBL>nIFmb(roeC^!Nvv6pAHI/jB74vkLLRgxdHd"
+    },
+    {
+      "node_id": "pattern:0:32",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001dUJBL>nIFmb(roeC^!Nvv6pAHI/jB74vkLLRgxdHd"
+    },
+    {
+      "node_id": "pattern:0:48",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001dUJBL>nIFmb(roeC^!Nvv6pAHI/jB74vkLLRgxdHd"
+    },
+    {
+      "node_id": "pattern:0:64",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001dUJBL>nIFmb(roeC^!Nvv6pAHI/jB74vkLLRgxdHd"
+    },
+    {
+      "node_id": "pattern:0:80",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001dUJBL>nIFmb(roeC^!Nvv6pAHI/jB74vkLLRgxdHd"
+    },
+    {
+      "node_id": "pattern:0:96",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001dUJBL>nIFmb(roeC^!Nvv6pAHI/jB74vkLLRgxdHd"
+    },
+    {
+      "node_id": "pattern:8:104",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001dUJBL>nIFmb(roeC^!Nvv6pAHI/jB74vkLLRgxdHd"
+    },
+    {
+      "node_id": "pattern:8:120",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001dUJBL>nIFmb(roeC^!Nvv6pAHI/jB74vkLLRgxdHd"
+    },
+    {
+      "node_id": "pattern:8:136",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001dUJBL>nIFmb(roeC^!Nvv6pAHI/jB74vkLLRgxdHd"
+    },
+    {
+      "node_id": "pattern:8:152",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001dUJBL>nIFmb(roeC^!Nvv6pAHI/jB74vkLLRgxdHd"
+    },
+    {
+      "node_id": "pattern:8:168",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001dUJBL>nIFmb(roeC^!Nvv6pAHI/jB74vkLLRgxdHd"
+    },
+    {
+      "node_id": "pattern:8:184",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001dUJBL>nIFmb(roeC^!Nvv6pAHI/jB74vkLLRgxdHd"
+    },
+    {
+      "node_id": "pattern:8:200",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001dUJBL>nIFmb(roeC^!Nvv6pAHI/jB74vkLLRgxdHd"
+    },
+    {
+      "node_id": "pattern:8:216",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001dUJBL>nIFmb(roeC^!Nvv6pAHI/jB74vkLLRgxdHd"
+    },
+    {
+      "node_id": "pattern:8:232",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001dUJBL>nIFmb(roeC^!Nvv6pAHI/jB74vkLLRgxdHd"
+    },
+    {
+      "node_id": "pattern:8:24",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001dUJBL>nIFmb(roeC^!Nvv6pAHI/jB74vkLLRgxdHd"
+    },
+    {
+      "node_id": "pattern:8:248",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001dUJBL>nIFmb(roeC^!Nvv6pAHI/jB74vkLLRgxdHd"
+    },
+    {
+      "node_id": "pattern:8:40",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001dUJBL>nIFmb(roeC^!Nvv6pAHI/jB74vkLLRgxdHd"
+    },
+    {
+      "node_id": "pattern:8:56",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001dUJBL>nIFmb(roeC^!Nvv6pAHI/jB74vkLLRgxdHd"
+    },
+    {
+      "node_id": "pattern:8:72",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001dUJBL>nIFmb(roeC^!Nvv6pAHI/jB74vkLLRgxdHd"
+    },
+    {
+      "node_id": "pattern:8:8",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001dUJBL>nIFmb(roeC^!Nvv6pAHI/jB74vkLLRgxdHd"
+    },
+    {
+      "node_id": "pattern:8:88",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001dUJBL>nIFmb(roeC^!Nvv6pAHI/jB74vkLLRgxdHd"
+    },
+    {
+      "node_id": "pattern:1:1",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003tAfV5L05U*p2O0UJOWELdBYJ0+XViu>>czaGV/WAT"
+    },
+    {
+      "node_id": "pattern:1:113",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003tAfV5L05U*p2O0UJOWELdBYJ0+XViu>>czaGV/WAT"
+    },
+    {
+      "node_id": "pattern:1:129",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003tAfV5L05U*p2O0UJOWELdBYJ0+XViu>>czaGV/WAT"
+    },
+    {
+      "node_id": "pattern:1:145",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003tAfV5L05U*p2O0UJOWELdBYJ0+XViu>>czaGV/WAT"
+    },
+    {
+      "node_id": "pattern:1:161",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003tAfV5L05U*p2O0UJOWELdBYJ0+XViu>>czaGV/WAT"
+    },
+    {
+      "node_id": "pattern:1:17",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003tAfV5L05U*p2O0UJOWELdBYJ0+XViu>>czaGV/WAT"
+    },
+    {
+      "node_id": "pattern:1:177",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003tAfV5L05U*p2O0UJOWELdBYJ0+XViu>>czaGV/WAT"
+    },
+    {
+      "node_id": "pattern:1:193",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003tAfV5L05U*p2O0UJOWELdBYJ0+XViu>>czaGV/WAT"
+    },
+    {
+      "node_id": "pattern:1:209",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003tAfV5L05U*p2O0UJOWELdBYJ0+XViu>>czaGV/WAT"
+    },
+    {
+      "node_id": "pattern:1:225",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003tAfV5L05U*p2O0UJOWELdBYJ0+XViu>>czaGV/WAT"
+    },
+    {
+      "node_id": "pattern:1:241",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003tAfV5L05U*p2O0UJOWELdBYJ0+XViu>>czaGV/WAT"
+    },
+    {
+      "node_id": "pattern:1:33",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003tAfV5L05U*p2O0UJOWELdBYJ0+XViu>>czaGV/WAT"
+    },
+    {
+      "node_id": "pattern:1:49",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003tAfV5L05U*p2O0UJOWELdBYJ0+XViu>>czaGV/WAT"
+    },
+    {
+      "node_id": "pattern:1:65",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003tAfV5L05U*p2O0UJOWELdBYJ0+XViu>>czaGV/WAT"
+    },
+    {
+      "node_id": "pattern:1:81",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003tAfV5L05U*p2O0UJOWELdBYJ0+XViu>>czaGV/WAT"
+    },
+    {
+      "node_id": "pattern:1:97",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003tAfV5L05U*p2O0UJOWELdBYJ0+XViu>>czaGV/WAT"
+    },
+    {
+      "node_id": "pattern:9:105",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003tAfV5L05U*p2O0UJOWELdBYJ0+XViu>>czaGV/WAT"
+    },
+    {
+      "node_id": "pattern:9:121",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003tAfV5L05U*p2O0UJOWELdBYJ0+XViu>>czaGV/WAT"
+    },
+    {
+      "node_id": "pattern:9:137",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003tAfV5L05U*p2O0UJOWELdBYJ0+XViu>>czaGV/WAT"
+    },
+    {
+      "node_id": "pattern:9:153",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003tAfV5L05U*p2O0UJOWELdBYJ0+XViu>>czaGV/WAT"
+    },
+    {
+      "node_id": "pattern:9:169",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003tAfV5L05U*p2O0UJOWELdBYJ0+XViu>>czaGV/WAT"
+    },
+    {
+      "node_id": "pattern:9:185",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003tAfV5L05U*p2O0UJOWELdBYJ0+XViu>>czaGV/WAT"
+    },
+    {
+      "node_id": "pattern:9:201",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003tAfV5L05U*p2O0UJOWELdBYJ0+XViu>>czaGV/WAT"
+    },
+    {
+      "node_id": "pattern:9:217",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003tAfV5L05U*p2O0UJOWELdBYJ0+XViu>>czaGV/WAT"
+    },
+    {
+      "node_id": "pattern:9:233",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003tAfV5L05U*p2O0UJOWELdBYJ0+XViu>>czaGV/WAT"
+    },
+    {
+      "node_id": "pattern:9:249",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003tAfV5L05U*p2O0UJOWELdBYJ0+XViu>>czaGV/WAT"
+    },
+    {
+      "node_id": "pattern:9:25",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003tAfV5L05U*p2O0UJOWELdBYJ0+XViu>>czaGV/WAT"
+    },
+    {
+      "node_id": "pattern:9:41",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003tAfV5L05U*p2O0UJOWELdBYJ0+XViu>>czaGV/WAT"
+    },
+    {
+      "node_id": "pattern:9:57",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003tAfV5L05U*p2O0UJOWELdBYJ0+XViu>>czaGV/WAT"
+    },
+    {
+      "node_id": "pattern:9:73",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003tAfV5L05U*p2O0UJOWELdBYJ0+XViu>>czaGV/WAT"
+    },
+    {
+      "node_id": "pattern:9:89",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003tAfV5L05U*p2O0UJOWELdBYJ0+XViu>>czaGV/WAT"
+    },
+    {
+      "node_id": "pattern:9:9",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003tAfV5L05U*p2O0UJOWELdBYJ0+XViu>>czaGV/WAT"
+    },
+    {
+      "node_id": "pattern:10:10",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "00000000000000000000000000000021VGr-92SiD2hwD+uiMUaBt>XbVhoclk*7!PPcyO97"
+    },
+    {
+      "node_id": "pattern:10:106",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "00000000000000000000000000000021VGr-92SiD2hwD+uiMUaBt>XbVhoclk*7!PPcyO97"
+    },
+    {
+      "node_id": "pattern:10:122",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "00000000000000000000000000000021VGr-92SiD2hwD+uiMUaBt>XbVhoclk*7!PPcyO97"
+    },
+    {
+      "node_id": "pattern:10:138",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "00000000000000000000000000000021VGr-92SiD2hwD+uiMUaBt>XbVhoclk*7!PPcyO97"
+    },
+    {
+      "node_id": "pattern:10:154",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "00000000000000000000000000000021VGr-92SiD2hwD+uiMUaBt>XbVhoclk*7!PPcyO97"
+    },
+    {
+      "node_id": "pattern:10:170",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "00000000000000000000000000000021VGr-92SiD2hwD+uiMUaBt>XbVhoclk*7!PPcyO97"
+    },
+    {
+      "node_id": "pattern:10:186",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "00000000000000000000000000000021VGr-92SiD2hwD+uiMUaBt>XbVhoclk*7!PPcyO97"
+    },
+    {
+      "node_id": "pattern:10:202",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "00000000000000000000000000000021VGr-92SiD2hwD+uiMUaBt>XbVhoclk*7!PPcyO97"
+    },
+    {
+      "node_id": "pattern:10:218",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "00000000000000000000000000000021VGr-92SiD2hwD+uiMUaBt>XbVhoclk*7!PPcyO97"
+    },
+    {
+      "node_id": "pattern:10:234",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "00000000000000000000000000000021VGr-92SiD2hwD+uiMUaBt>XbVhoclk*7!PPcyO97"
+    },
+    {
+      "node_id": "pattern:10:250",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "00000000000000000000000000000021VGr-92SiD2hwD+uiMUaBt>XbVhoclk*7!PPcyO97"
+    },
+    {
+      "node_id": "pattern:10:26",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "00000000000000000000000000000021VGr-92SiD2hwD+uiMUaBt>XbVhoclk*7!PPcyO97"
+    },
+    {
+      "node_id": "pattern:10:42",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "00000000000000000000000000000021VGr-92SiD2hwD+uiMUaBt>XbVhoclk*7!PPcyO97"
+    },
+    {
+      "node_id": "pattern:10:58",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "00000000000000000000000000000021VGr-92SiD2hwD+uiMUaBt>XbVhoclk*7!PPcyO97"
+    },
+    {
+      "node_id": "pattern:10:74",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "00000000000000000000000000000021VGr-92SiD2hwD+uiMUaBt>XbVhoclk*7!PPcyO97"
+    },
+    {
+      "node_id": "pattern:10:90",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "00000000000000000000000000000021VGr-92SiD2hwD+uiMUaBt>XbVhoclk*7!PPcyO97"
+    },
+    {
+      "node_id": "pattern:2:114",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "00000000000000000000000000000021VGr-92SiD2hwD+uiMUaBt>XbVhoclk*7!PPcyO97"
+    },
+    {
+      "node_id": "pattern:2:130",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "00000000000000000000000000000021VGr-92SiD2hwD+uiMUaBt>XbVhoclk*7!PPcyO97"
+    },
+    {
+      "node_id": "pattern:2:146",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "00000000000000000000000000000021VGr-92SiD2hwD+uiMUaBt>XbVhoclk*7!PPcyO97"
+    },
+    {
+      "node_id": "pattern:2:162",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "00000000000000000000000000000021VGr-92SiD2hwD+uiMUaBt>XbVhoclk*7!PPcyO97"
+    },
+    {
+      "node_id": "pattern:2:178",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "00000000000000000000000000000021VGr-92SiD2hwD+uiMUaBt>XbVhoclk*7!PPcyO97"
+    },
+    {
+      "node_id": "pattern:2:18",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "00000000000000000000000000000021VGr-92SiD2hwD+uiMUaBt>XbVhoclk*7!PPcyO97"
+    },
+    {
+      "node_id": "pattern:2:194",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "00000000000000000000000000000021VGr-92SiD2hwD+uiMUaBt>XbVhoclk*7!PPcyO97"
+    },
+    {
+      "node_id": "pattern:2:2",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "00000000000000000000000000000021VGr-92SiD2hwD+uiMUaBt>XbVhoclk*7!PPcyO97"
+    },
+    {
+      "node_id": "pattern:2:210",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "00000000000000000000000000000021VGr-92SiD2hwD+uiMUaBt>XbVhoclk*7!PPcyO97"
+    },
+    {
+      "node_id": "pattern:2:226",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "00000000000000000000000000000021VGr-92SiD2hwD+uiMUaBt>XbVhoclk*7!PPcyO97"
+    },
+    {
+      "node_id": "pattern:2:242",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "00000000000000000000000000000021VGr-92SiD2hwD+uiMUaBt>XbVhoclk*7!PPcyO97"
+    },
+    {
+      "node_id": "pattern:2:34",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "00000000000000000000000000000021VGr-92SiD2hwD+uiMUaBt>XbVhoclk*7!PPcyO97"
+    },
+    {
+      "node_id": "pattern:2:50",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "00000000000000000000000000000021VGr-92SiD2hwD+uiMUaBt>XbVhoclk*7!PPcyO97"
+    },
+    {
+      "node_id": "pattern:2:66",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "00000000000000000000000000000021VGr-92SiD2hwD+uiMUaBt>XbVhoclk*7!PPcyO97"
+    },
+    {
+      "node_id": "pattern:2:82",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "00000000000000000000000000000021VGr-92SiD2hwD+uiMUaBt>XbVhoclk*7!PPcyO97"
+    },
+    {
+      "node_id": "pattern:2:98",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "00000000000000000000000000000021VGr-92SiD2hwD+uiMUaBt>XbVhoclk*7!PPcyO97"
+    },
+    {
+      "node_id": "pattern:11:107",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004f2RX)cSILY5Gn>Pse/FcWB?6cBj5yW18i=ow4ewvT"
+    },
+    {
+      "node_id": "pattern:11:11",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004f2RX)cSILY5Gn>Pse/FcWB?6cBj5yW18i=ow4ewvT"
+    },
+    {
+      "node_id": "pattern:11:123",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004f2RX)cSILY5Gn>Pse/FcWB?6cBj5yW18i=ow4ewvT"
+    },
+    {
+      "node_id": "pattern:11:139",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004f2RX)cSILY5Gn>Pse/FcWB?6cBj5yW18i=ow4ewvT"
+    },
+    {
+      "node_id": "pattern:11:155",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004f2RX)cSILY5Gn>Pse/FcWB?6cBj5yW18i=ow4ewvT"
+    },
+    {
+      "node_id": "pattern:11:171",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004f2RX)cSILY5Gn>Pse/FcWB?6cBj5yW18i=ow4ewvT"
+    },
+    {
+      "node_id": "pattern:11:187",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004f2RX)cSILY5Gn>Pse/FcWB?6cBj5yW18i=ow4ewvT"
+    },
+    {
+      "node_id": "pattern:11:203",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004f2RX)cSILY5Gn>Pse/FcWB?6cBj5yW18i=ow4ewvT"
+    },
+    {
+      "node_id": "pattern:11:219",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004f2RX)cSILY5Gn>Pse/FcWB?6cBj5yW18i=ow4ewvT"
+    },
+    {
+      "node_id": "pattern:11:235",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004f2RX)cSILY5Gn>Pse/FcWB?6cBj5yW18i=ow4ewvT"
+    },
+    {
+      "node_id": "pattern:11:251",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004f2RX)cSILY5Gn>Pse/FcWB?6cBj5yW18i=ow4ewvT"
+    },
+    {
+      "node_id": "pattern:11:27",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004f2RX)cSILY5Gn>Pse/FcWB?6cBj5yW18i=ow4ewvT"
+    },
+    {
+      "node_id": "pattern:11:43",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004f2RX)cSILY5Gn>Pse/FcWB?6cBj5yW18i=ow4ewvT"
+    },
+    {
+      "node_id": "pattern:11:59",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004f2RX)cSILY5Gn>Pse/FcWB?6cBj5yW18i=ow4ewvT"
+    },
+    {
+      "node_id": "pattern:11:75",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004f2RX)cSILY5Gn>Pse/FcWB?6cBj5yW18i=ow4ewvT"
+    },
+    {
+      "node_id": "pattern:11:91",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004f2RX)cSILY5Gn>Pse/FcWB?6cBj5yW18i=ow4ewvT"
+    },
+    {
+      "node_id": "pattern:3:115",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004f2RX)cSILY5Gn>Pse/FcWB?6cBj5yW18i=ow4ewvT"
+    },
+    {
+      "node_id": "pattern:3:131",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004f2RX)cSILY5Gn>Pse/FcWB?6cBj5yW18i=ow4ewvT"
+    },
+    {
+      "node_id": "pattern:3:147",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004f2RX)cSILY5Gn>Pse/FcWB?6cBj5yW18i=ow4ewvT"
+    },
+    {
+      "node_id": "pattern:3:163",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004f2RX)cSILY5Gn>Pse/FcWB?6cBj5yW18i=ow4ewvT"
+    },
+    {
+      "node_id": "pattern:3:179",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004f2RX)cSILY5Gn>Pse/FcWB?6cBj5yW18i=ow4ewvT"
+    },
+    {
+      "node_id": "pattern:3:19",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004f2RX)cSILY5Gn>Pse/FcWB?6cBj5yW18i=ow4ewvT"
+    },
+    {
+      "node_id": "pattern:3:195",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004f2RX)cSILY5Gn>Pse/FcWB?6cBj5yW18i=ow4ewvT"
+    },
+    {
+      "node_id": "pattern:3:211",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004f2RX)cSILY5Gn>Pse/FcWB?6cBj5yW18i=ow4ewvT"
+    },
+    {
+      "node_id": "pattern:3:227",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004f2RX)cSILY5Gn>Pse/FcWB?6cBj5yW18i=ow4ewvT"
+    },
+    {
+      "node_id": "pattern:3:243",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004f2RX)cSILY5Gn>Pse/FcWB?6cBj5yW18i=ow4ewvT"
+    },
+    {
+      "node_id": "pattern:3:3",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004f2RX)cSILY5Gn>Pse/FcWB?6cBj5yW18i=ow4ewvT"
+    },
+    {
+      "node_id": "pattern:3:35",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004f2RX)cSILY5Gn>Pse/FcWB?6cBj5yW18i=ow4ewvT"
+    },
+    {
+      "node_id": "pattern:3:51",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004f2RX)cSILY5Gn>Pse/FcWB?6cBj5yW18i=ow4ewvT"
+    },
+    {
+      "node_id": "pattern:3:67",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004f2RX)cSILY5Gn>Pse/FcWB?6cBj5yW18i=ow4ewvT"
+    },
+    {
+      "node_id": "pattern:3:83",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004f2RX)cSILY5Gn>Pse/FcWB?6cBj5yW18i=ow4ewvT"
+    },
+    {
+      "node_id": "pattern:3:99",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004f2RX)cSILY5Gn>Pse/FcWB?6cBj5yW18i=ow4ewvT"
+    },
+    {
+      "node_id": "pattern:12:108",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001hNHTu)syvgqhk(R1Gv*DUjGpb2N-fYDNcgJSn)LHo"
+    },
+    {
+      "node_id": "pattern:12:12",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001hNHTu)syvgqhk(R1Gv*DUjGpb2N-fYDNcgJSn)LHo"
+    },
+    {
+      "node_id": "pattern:12:124",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001hNHTu)syvgqhk(R1Gv*DUjGpb2N-fYDNcgJSn)LHo"
+    },
+    {
+      "node_id": "pattern:12:140",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001hNHTu)syvgqhk(R1Gv*DUjGpb2N-fYDNcgJSn)LHo"
+    },
+    {
+      "node_id": "pattern:12:156",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001hNHTu)syvgqhk(R1Gv*DUjGpb2N-fYDNcgJSn)LHo"
+    },
+    {
+      "node_id": "pattern:12:172",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001hNHTu)syvgqhk(R1Gv*DUjGpb2N-fYDNcgJSn)LHo"
+    },
+    {
+      "node_id": "pattern:12:188",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001hNHTu)syvgqhk(R1Gv*DUjGpb2N-fYDNcgJSn)LHo"
+    },
+    {
+      "node_id": "pattern:12:204",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001hNHTu)syvgqhk(R1Gv*DUjGpb2N-fYDNcgJSn)LHo"
+    },
+    {
+      "node_id": "pattern:12:220",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001hNHTu)syvgqhk(R1Gv*DUjGpb2N-fYDNcgJSn)LHo"
+    },
+    {
+      "node_id": "pattern:12:236",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001hNHTu)syvgqhk(R1Gv*DUjGpb2N-fYDNcgJSn)LHo"
+    },
+    {
+      "node_id": "pattern:12:252",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001hNHTu)syvgqhk(R1Gv*DUjGpb2N-fYDNcgJSn)LHo"
+    },
+    {
+      "node_id": "pattern:12:28",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001hNHTu)syvgqhk(R1Gv*DUjGpb2N-fYDNcgJSn)LHo"
+    },
+    {
+      "node_id": "pattern:12:44",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001hNHTu)syvgqhk(R1Gv*DUjGpb2N-fYDNcgJSn)LHo"
+    },
+    {
+      "node_id": "pattern:12:60",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001hNHTu)syvgqhk(R1Gv*DUjGpb2N-fYDNcgJSn)LHo"
+    },
+    {
+      "node_id": "pattern:12:76",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001hNHTu)syvgqhk(R1Gv*DUjGpb2N-fYDNcgJSn)LHo"
+    },
+    {
+      "node_id": "pattern:12:92",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001hNHTu)syvgqhk(R1Gv*DUjGpb2N-fYDNcgJSn)LHo"
+    },
+    {
+      "node_id": "pattern:4:100",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001hNHTu)syvgqhk(R1Gv*DUjGpb2N-fYDNcgJSn)LHo"
+    },
+    {
+      "node_id": "pattern:4:116",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001hNHTu)syvgqhk(R1Gv*DUjGpb2N-fYDNcgJSn)LHo"
+    },
+    {
+      "node_id": "pattern:4:132",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001hNHTu)syvgqhk(R1Gv*DUjGpb2N-fYDNcgJSn)LHo"
+    },
+    {
+      "node_id": "pattern:4:148",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001hNHTu)syvgqhk(R1Gv*DUjGpb2N-fYDNcgJSn)LHo"
+    },
+    {
+      "node_id": "pattern:4:164",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001hNHTu)syvgqhk(R1Gv*DUjGpb2N-fYDNcgJSn)LHo"
+    },
+    {
+      "node_id": "pattern:4:180",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001hNHTu)syvgqhk(R1Gv*DUjGpb2N-fYDNcgJSn)LHo"
+    },
+    {
+      "node_id": "pattern:4:196",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001hNHTu)syvgqhk(R1Gv*DUjGpb2N-fYDNcgJSn)LHo"
+    },
+    {
+      "node_id": "pattern:4:20",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001hNHTu)syvgqhk(R1Gv*DUjGpb2N-fYDNcgJSn)LHo"
+    },
+    {
+      "node_id": "pattern:4:212",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001hNHTu)syvgqhk(R1Gv*DUjGpb2N-fYDNcgJSn)LHo"
+    },
+    {
+      "node_id": "pattern:4:228",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001hNHTu)syvgqhk(R1Gv*DUjGpb2N-fYDNcgJSn)LHo"
+    },
+    {
+      "node_id": "pattern:4:244",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001hNHTu)syvgqhk(R1Gv*DUjGpb2N-fYDNcgJSn)LHo"
+    },
+    {
+      "node_id": "pattern:4:36",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001hNHTu)syvgqhk(R1Gv*DUjGpb2N-fYDNcgJSn)LHo"
+    },
+    {
+      "node_id": "pattern:4:4",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001hNHTu)syvgqhk(R1Gv*DUjGpb2N-fYDNcgJSn)LHo"
+    },
+    {
+      "node_id": "pattern:4:52",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001hNHTu)syvgqhk(R1Gv*DUjGpb2N-fYDNcgJSn)LHo"
+    },
+    {
+      "node_id": "pattern:4:68",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001hNHTu)syvgqhk(R1Gv*DUjGpb2N-fYDNcgJSn)LHo"
+    },
+    {
+      "node_id": "pattern:4:84",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000001hNHTu)syvgqhk(R1Gv*DUjGpb2N-fYDNcgJSn)LHo"
+    },
+    {
+      "node_id": "pattern:13:109",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000fU*bwVWw(F?CBPF+cj7Tl8Vj5gQvZ-UgmctdwnBWa"
+    },
+    {
+      "node_id": "pattern:13:125",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000fU*bwVWw(F?CBPF+cj7Tl8Vj5gQvZ-UgmctdwnBWa"
+    },
+    {
+      "node_id": "pattern:13:13",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000fU*bwVWw(F?CBPF+cj7Tl8Vj5gQvZ-UgmctdwnBWa"
+    },
+    {
+      "node_id": "pattern:13:141",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000fU*bwVWw(F?CBPF+cj7Tl8Vj5gQvZ-UgmctdwnBWa"
+    },
+    {
+      "node_id": "pattern:13:157",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000fU*bwVWw(F?CBPF+cj7Tl8Vj5gQvZ-UgmctdwnBWa"
+    },
+    {
+      "node_id": "pattern:13:173",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000fU*bwVWw(F?CBPF+cj7Tl8Vj5gQvZ-UgmctdwnBWa"
+    },
+    {
+      "node_id": "pattern:13:189",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000fU*bwVWw(F?CBPF+cj7Tl8Vj5gQvZ-UgmctdwnBWa"
+    },
+    {
+      "node_id": "pattern:13:205",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000fU*bwVWw(F?CBPF+cj7Tl8Vj5gQvZ-UgmctdwnBWa"
+    },
+    {
+      "node_id": "pattern:13:221",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000fU*bwVWw(F?CBPF+cj7Tl8Vj5gQvZ-UgmctdwnBWa"
+    },
+    {
+      "node_id": "pattern:13:237",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000fU*bwVWw(F?CBPF+cj7Tl8Vj5gQvZ-UgmctdwnBWa"
+    },
+    {
+      "node_id": "pattern:13:253",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000fU*bwVWw(F?CBPF+cj7Tl8Vj5gQvZ-UgmctdwnBWa"
+    },
+    {
+      "node_id": "pattern:13:29",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000fU*bwVWw(F?CBPF+cj7Tl8Vj5gQvZ-UgmctdwnBWa"
+    },
+    {
+      "node_id": "pattern:13:45",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000fU*bwVWw(F?CBPF+cj7Tl8Vj5gQvZ-UgmctdwnBWa"
+    },
+    {
+      "node_id": "pattern:13:61",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000fU*bwVWw(F?CBPF+cj7Tl8Vj5gQvZ-UgmctdwnBWa"
+    },
+    {
+      "node_id": "pattern:13:77",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000fU*bwVWw(F?CBPF+cj7Tl8Vj5gQvZ-UgmctdwnBWa"
+    },
+    {
+      "node_id": "pattern:13:93",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000fU*bwVWw(F?CBPF+cj7Tl8Vj5gQvZ-UgmctdwnBWa"
+    },
+    {
+      "node_id": "pattern:5:101",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000fU*bwVWw(F?CBPF+cj7Tl8Vj5gQvZ-UgmctdwnBWa"
+    },
+    {
+      "node_id": "pattern:5:117",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000fU*bwVWw(F?CBPF+cj7Tl8Vj5gQvZ-UgmctdwnBWa"
+    },
+    {
+      "node_id": "pattern:5:133",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000fU*bwVWw(F?CBPF+cj7Tl8Vj5gQvZ-UgmctdwnBWa"
+    },
+    {
+      "node_id": "pattern:5:149",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000fU*bwVWw(F?CBPF+cj7Tl8Vj5gQvZ-UgmctdwnBWa"
+    },
+    {
+      "node_id": "pattern:5:165",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000fU*bwVWw(F?CBPF+cj7Tl8Vj5gQvZ-UgmctdwnBWa"
+    },
+    {
+      "node_id": "pattern:5:181",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000fU*bwVWw(F?CBPF+cj7Tl8Vj5gQvZ-UgmctdwnBWa"
+    },
+    {
+      "node_id": "pattern:5:197",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000fU*bwVWw(F?CBPF+cj7Tl8Vj5gQvZ-UgmctdwnBWa"
+    },
+    {
+      "node_id": "pattern:5:21",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000fU*bwVWw(F?CBPF+cj7Tl8Vj5gQvZ-UgmctdwnBWa"
+    },
+    {
+      "node_id": "pattern:5:213",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000fU*bwVWw(F?CBPF+cj7Tl8Vj5gQvZ-UgmctdwnBWa"
+    },
+    {
+      "node_id": "pattern:5:229",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000fU*bwVWw(F?CBPF+cj7Tl8Vj5gQvZ-UgmctdwnBWa"
+    },
+    {
+      "node_id": "pattern:5:245",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000fU*bwVWw(F?CBPF+cj7Tl8Vj5gQvZ-UgmctdwnBWa"
+    },
+    {
+      "node_id": "pattern:5:37",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000fU*bwVWw(F?CBPF+cj7Tl8Vj5gQvZ-UgmctdwnBWa"
+    },
+    {
+      "node_id": "pattern:5:5",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000fU*bwVWw(F?CBPF+cj7Tl8Vj5gQvZ-UgmctdwnBWa"
+    },
+    {
+      "node_id": "pattern:5:53",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000fU*bwVWw(F?CBPF+cj7Tl8Vj5gQvZ-UgmctdwnBWa"
+    },
+    {
+      "node_id": "pattern:5:69",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000fU*bwVWw(F?CBPF+cj7Tl8Vj5gQvZ-UgmctdwnBWa"
+    },
+    {
+      "node_id": "pattern:5:85",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000fU*bwVWw(F?CBPF+cj7Tl8Vj5gQvZ-UgmctdwnBWa"
+    },
+    {
+      "node_id": "pattern:14:110",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002=3zaQc5*?V1Lh**fk1W5?^=v=56I4B?tNsXWXU/2k"
+    },
+    {
+      "node_id": "pattern:14:126",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002=3zaQc5*?V1Lh**fk1W5?^=v=56I4B?tNsXWXU/2k"
+    },
+    {
+      "node_id": "pattern:14:14",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002=3zaQc5*?V1Lh**fk1W5?^=v=56I4B?tNsXWXU/2k"
+    },
+    {
+      "node_id": "pattern:14:142",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002=3zaQc5*?V1Lh**fk1W5?^=v=56I4B?tNsXWXU/2k"
+    },
+    {
+      "node_id": "pattern:14:158",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002=3zaQc5*?V1Lh**fk1W5?^=v=56I4B?tNsXWXU/2k"
+    },
+    {
+      "node_id": "pattern:14:174",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002=3zaQc5*?V1Lh**fk1W5?^=v=56I4B?tNsXWXU/2k"
+    },
+    {
+      "node_id": "pattern:14:190",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002=3zaQc5*?V1Lh**fk1W5?^=v=56I4B?tNsXWXU/2k"
+    },
+    {
+      "node_id": "pattern:14:206",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002=3zaQc5*?V1Lh**fk1W5?^=v=56I4B?tNsXWXU/2k"
+    },
+    {
+      "node_id": "pattern:14:222",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002=3zaQc5*?V1Lh**fk1W5?^=v=56I4B?tNsXWXU/2k"
+    },
+    {
+      "node_id": "pattern:14:238",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002=3zaQc5*?V1Lh**fk1W5?^=v=56I4B?tNsXWXU/2k"
+    },
+    {
+      "node_id": "pattern:14:254",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002=3zaQc5*?V1Lh**fk1W5?^=v=56I4B?tNsXWXU/2k"
+    },
+    {
+      "node_id": "pattern:14:30",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002=3zaQc5*?V1Lh**fk1W5?^=v=56I4B?tNsXWXU/2k"
+    },
+    {
+      "node_id": "pattern:14:46",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002=3zaQc5*?V1Lh**fk1W5?^=v=56I4B?tNsXWXU/2k"
+    },
+    {
+      "node_id": "pattern:14:62",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002=3zaQc5*?V1Lh**fk1W5?^=v=56I4B?tNsXWXU/2k"
+    },
+    {
+      "node_id": "pattern:14:78",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002=3zaQc5*?V1Lh**fk1W5?^=v=56I4B?tNsXWXU/2k"
+    },
+    {
+      "node_id": "pattern:14:94",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002=3zaQc5*?V1Lh**fk1W5?^=v=56I4B?tNsXWXU/2k"
+    },
+    {
+      "node_id": "pattern:6:102",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002=3zaQc5*?V1Lh**fk1W5?^=v=56I4B?tNsXWXU/2k"
+    },
+    {
+      "node_id": "pattern:6:118",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002=3zaQc5*?V1Lh**fk1W5?^=v=56I4B?tNsXWXU/2k"
+    },
+    {
+      "node_id": "pattern:6:134",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002=3zaQc5*?V1Lh**fk1W5?^=v=56I4B?tNsXWXU/2k"
+    },
+    {
+      "node_id": "pattern:6:150",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002=3zaQc5*?V1Lh**fk1W5?^=v=56I4B?tNsXWXU/2k"
+    },
+    {
+      "node_id": "pattern:6:166",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002=3zaQc5*?V1Lh**fk1W5?^=v=56I4B?tNsXWXU/2k"
+    },
+    {
+      "node_id": "pattern:6:182",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002=3zaQc5*?V1Lh**fk1W5?^=v=56I4B?tNsXWXU/2k"
+    },
+    {
+      "node_id": "pattern:6:198",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002=3zaQc5*?V1Lh**fk1W5?^=v=56I4B?tNsXWXU/2k"
+    },
+    {
+      "node_id": "pattern:6:214",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002=3zaQc5*?V1Lh**fk1W5?^=v=56I4B?tNsXWXU/2k"
+    },
+    {
+      "node_id": "pattern:6:22",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002=3zaQc5*?V1Lh**fk1W5?^=v=56I4B?tNsXWXU/2k"
+    },
+    {
+      "node_id": "pattern:6:230",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002=3zaQc5*?V1Lh**fk1W5?^=v=56I4B?tNsXWXU/2k"
+    },
+    {
+      "node_id": "pattern:6:246",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002=3zaQc5*?V1Lh**fk1W5?^=v=56I4B?tNsXWXU/2k"
+    },
+    {
+      "node_id": "pattern:6:38",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002=3zaQc5*?V1Lh**fk1W5?^=v=56I4B?tNsXWXU/2k"
+    },
+    {
+      "node_id": "pattern:6:54",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002=3zaQc5*?V1Lh**fk1W5?^=v=56I4B?tNsXWXU/2k"
+    },
+    {
+      "node_id": "pattern:6:6",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002=3zaQc5*?V1Lh**fk1W5?^=v=56I4B?tNsXWXU/2k"
+    },
+    {
+      "node_id": "pattern:6:70",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002=3zaQc5*?V1Lh**fk1W5?^=v=56I4B?tNsXWXU/2k"
+    },
+    {
+      "node_id": "pattern:6:86",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000002=3zaQc5*?V1Lh**fk1W5?^=v=56I4B?tNsXWXU/2k"
+    },
+    {
+      "node_id": "pattern:15:111",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003v7kPmi7rIKFyY>X91FXMwpxXEKLv68qc4BSei?Q)("
+    },
+    {
+      "node_id": "pattern:15:127",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003v7kPmi7rIKFyY>X91FXMwpxXEKLv68qc4BSei?Q)("
+    },
+    {
+      "node_id": "pattern:15:143",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003v7kPmi7rIKFyY>X91FXMwpxXEKLv68qc4BSei?Q)("
+    },
+    {
+      "node_id": "pattern:15:15",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003v7kPmi7rIKFyY>X91FXMwpxXEKLv68qc4BSei?Q)("
+    },
+    {
+      "node_id": "pattern:15:159",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003v7kPmi7rIKFyY>X91FXMwpxXEKLv68qc4BSei?Q)("
+    },
+    {
+      "node_id": "pattern:15:175",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003v7kPmi7rIKFyY>X91FXMwpxXEKLv68qc4BSei?Q)("
+    },
+    {
+      "node_id": "pattern:15:191",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003v7kPmi7rIKFyY>X91FXMwpxXEKLv68qc4BSei?Q)("
+    },
+    {
+      "node_id": "pattern:15:207",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003v7kPmi7rIKFyY>X91FXMwpxXEKLv68qc4BSei?Q)("
+    },
+    {
+      "node_id": "pattern:15:223",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003v7kPmi7rIKFyY>X91FXMwpxXEKLv68qc4BSei?Q)("
+    },
+    {
+      "node_id": "pattern:15:239",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003v7kPmi7rIKFyY>X91FXMwpxXEKLv68qc4BSei?Q)("
+    },
+    {
+      "node_id": "pattern:15:255",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003v7kPmi7rIKFyY>X91FXMwpxXEKLv68qc4BSei?Q)("
+    },
+    {
+      "node_id": "pattern:15:31",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003v7kPmi7rIKFyY>X91FXMwpxXEKLv68qc4BSei?Q)("
+    },
+    {
+      "node_id": "pattern:15:47",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003v7kPmi7rIKFyY>X91FXMwpxXEKLv68qc4BSei?Q)("
+    },
+    {
+      "node_id": "pattern:15:63",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003v7kPmi7rIKFyY>X91FXMwpxXEKLv68qc4BSei?Q)("
+    },
+    {
+      "node_id": "pattern:15:79",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003v7kPmi7rIKFyY>X91FXMwpxXEKLv68qc4BSei?Q)("
+    },
+    {
+      "node_id": "pattern:15:95",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003v7kPmi7rIKFyY>X91FXMwpxXEKLv68qc4BSei?Q)("
+    },
+    {
+      "node_id": "pattern:7:103",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003v7kPmi7rIKFyY>X91FXMwpxXEKLv68qc4BSei?Q)("
+    },
+    {
+      "node_id": "pattern:7:119",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003v7kPmi7rIKFyY>X91FXMwpxXEKLv68qc4BSei?Q)("
+    },
+    {
+      "node_id": "pattern:7:135",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003v7kPmi7rIKFyY>X91FXMwpxXEKLv68qc4BSei?Q)("
+    },
+    {
+      "node_id": "pattern:7:151",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003v7kPmi7rIKFyY>X91FXMwpxXEKLv68qc4BSei?Q)("
+    },
+    {
+      "node_id": "pattern:7:167",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003v7kPmi7rIKFyY>X91FXMwpxXEKLv68qc4BSei?Q)("
+    },
+    {
+      "node_id": "pattern:7:183",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003v7kPmi7rIKFyY>X91FXMwpxXEKLv68qc4BSei?Q)("
+    },
+    {
+      "node_id": "pattern:7:199",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003v7kPmi7rIKFyY>X91FXMwpxXEKLv68qc4BSei?Q)("
+    },
+    {
+      "node_id": "pattern:7:215",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003v7kPmi7rIKFyY>X91FXMwpxXEKLv68qc4BSei?Q)("
+    },
+    {
+      "node_id": "pattern:7:23",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003v7kPmi7rIKFyY>X91FXMwpxXEKLv68qc4BSei?Q)("
+    },
+    {
+      "node_id": "pattern:7:231",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003v7kPmi7rIKFyY>X91FXMwpxXEKLv68qc4BSei?Q)("
+    },
+    {
+      "node_id": "pattern:7:247",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003v7kPmi7rIKFyY>X91FXMwpxXEKLv68qc4BSei?Q)("
+    },
+    {
+      "node_id": "pattern:7:39",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003v7kPmi7rIKFyY>X91FXMwpxXEKLv68qc4BSei?Q)("
+    },
+    {
+      "node_id": "pattern:7:55",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003v7kPmi7rIKFyY>X91FXMwpxXEKLv68qc4BSei?Q)("
+    },
+    {
+      "node_id": "pattern:7:7",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003v7kPmi7rIKFyY>X91FXMwpxXEKLv68qc4BSei?Q)("
+    },
+    {
+      "node_id": "pattern:7:71",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003v7kPmi7rIKFyY>X91FXMwpxXEKLv68qc4BSei?Q)("
+    },
+    {
+      "node_id": "pattern:7:87",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000003v7kPmi7rIKFyY>X91FXMwpxXEKLv68qc4BSei?Q)("
+    },
+    {
+      "node_id": "pattern:0:0",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004lCZZj-7S)/yuFUmM?si=(Hq53ns0PCq6J(pH7iS(m"
+    },
+    {
+      "node_id": "pattern:0:12",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004lCZZj-7S)/yuFUmM?si=(Hq53ns0PCq6J(pH7iS(m"
+    },
+    {
+      "node_id": "pattern:0:16",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004lCZZj-7S)/yuFUmM?si=(Hq53ns0PCq6J(pH7iS(m"
+    },
+    {
+      "node_id": "pattern:0:20",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004lCZZj-7S)/yuFUmM?si=(Hq53ns0PCq6J(pH7iS(m"
+    },
+    {
+      "node_id": "pattern:0:24",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004lCZZj-7S)/yuFUmM?si=(Hq53ns0PCq6J(pH7iS(m"
+    },
+    {
+      "node_id": "pattern:0:28",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004lCZZj-7S)/yuFUmM?si=(Hq53ns0PCq6J(pH7iS(m"
+    },
+    {
+      "node_id": "pattern:0:4",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004lCZZj-7S)/yuFUmM?si=(Hq53ns0PCq6J(pH7iS(m"
+    },
+    {
+      "node_id": "pattern:0:8",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004lCZZj-7S)/yuFUmM?si=(Hq53ns0PCq6J(pH7iS(m"
+    },
+    {
+      "node_id": "pattern:2:10",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004lCZZj-7S)/yuFUmM?si=(Hq53ns0PCq6J(pH7iS(m"
+    },
+    {
+      "node_id": "pattern:2:14",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004lCZZj-7S)/yuFUmM?si=(Hq53ns0PCq6J(pH7iS(m"
+    },
+    {
+      "node_id": "pattern:2:18",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004lCZZj-7S)/yuFUmM?si=(Hq53ns0PCq6J(pH7iS(m"
+    },
+    {
+      "node_id": "pattern:2:2",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004lCZZj-7S)/yuFUmM?si=(Hq53ns0PCq6J(pH7iS(m"
+    },
+    {
+      "node_id": "pattern:2:22",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004lCZZj-7S)/yuFUmM?si=(Hq53ns0PCq6J(pH7iS(m"
+    },
+    {
+      "node_id": "pattern:2:26",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004lCZZj-7S)/yuFUmM?si=(Hq53ns0PCq6J(pH7iS(m"
+    },
+    {
+      "node_id": "pattern:2:30",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004lCZZj-7S)/yuFUmM?si=(Hq53ns0PCq6J(pH7iS(m"
+    },
+    {
+      "node_id": "pattern:2:6",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004lCZZj-7S)/yuFUmM?si=(Hq53ns0PCq6J(pH7iS(m"
+    },
+    {
+      "node_id": "pattern:1:1",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004H(x9Brb>Go-qXArm=t6n?yVXdwAFYM3eX>C^0SP9X"
+    },
+    {
+      "node_id": "pattern:1:13",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004H(x9Brb>Go-qXArm=t6n?yVXdwAFYM3eX>C^0SP9X"
+    },
+    {
+      "node_id": "pattern:1:17",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004H(x9Brb>Go-qXArm=t6n?yVXdwAFYM3eX>C^0SP9X"
+    },
+    {
+      "node_id": "pattern:1:21",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004H(x9Brb>Go-qXArm=t6n?yVXdwAFYM3eX>C^0SP9X"
+    },
+    {
+      "node_id": "pattern:1:25",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004H(x9Brb>Go-qXArm=t6n?yVXdwAFYM3eX>C^0SP9X"
+    },
+    {
+      "node_id": "pattern:1:29",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004H(x9Brb>Go-qXArm=t6n?yVXdwAFYM3eX>C^0SP9X"
+    },
+    {
+      "node_id": "pattern:1:5",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004H(x9Brb>Go-qXArm=t6n?yVXdwAFYM3eX>C^0SP9X"
+    },
+    {
+      "node_id": "pattern:1:9",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004H(x9Brb>Go-qXArm=t6n?yVXdwAFYM3eX>C^0SP9X"
+    },
+    {
+      "node_id": "pattern:3:11",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004H(x9Brb>Go-qXArm=t6n?yVXdwAFYM3eX>C^0SP9X"
+    },
+    {
+      "node_id": "pattern:3:15",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004H(x9Brb>Go-qXArm=t6n?yVXdwAFYM3eX>C^0SP9X"
+    },
+    {
+      "node_id": "pattern:3:19",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004H(x9Brb>Go-qXArm=t6n?yVXdwAFYM3eX>C^0SP9X"
+    },
+    {
+      "node_id": "pattern:3:23",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004H(x9Brb>Go-qXArm=t6n?yVXdwAFYM3eX>C^0SP9X"
+    },
+    {
+      "node_id": "pattern:3:27",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004H(x9Brb>Go-qXArm=t6n?yVXdwAFYM3eX>C^0SP9X"
+    },
+    {
+      "node_id": "pattern:3:3",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004H(x9Brb>Go-qXArm=t6n?yVXdwAFYM3eX>C^0SP9X"
+    },
+    {
+      "node_id": "pattern:3:31",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004H(x9Brb>Go-qXArm=t6n?yVXdwAFYM3eX>C^0SP9X"
+    },
+    {
+      "node_id": "pattern:3:7",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004H(x9Brb>Go-qXArm=t6n?yVXdwAFYM3eX>C^0SP9X"
+    },
+    {
+      "node_id": "pattern:0:0",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004InLvq4=mNhTBAO^1z8?pkt->jV>932?gRAog*2HPF"
+    },
+    {
+      "node_id": "pattern:0:16",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004InLvq4=mNhTBAO^1z8?pkt->jV>932?gRAog*2HPF"
+    },
+    {
+      "node_id": "pattern:0:24",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004InLvq4=mNhTBAO^1z8?pkt->jV>932?gRAog*2HPF"
+    },
+    {
+      "node_id": "pattern:0:32",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004InLvq4=mNhTBAO^1z8?pkt->jV>932?gRAog*2HPF"
+    },
+    {
+      "node_id": "pattern:0:40",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004InLvq4=mNhTBAO^1z8?pkt->jV>932?gRAog*2HPF"
+    },
+    {
+      "node_id": "pattern:0:48",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004InLvq4=mNhTBAO^1z8?pkt->jV>932?gRAog*2HPF"
+    },
+    {
+      "node_id": "pattern:0:56",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004InLvq4=mNhTBAO^1z8?pkt->jV>932?gRAog*2HPF"
+    },
+    {
+      "node_id": "pattern:0:8",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004InLvq4=mNhTBAO^1z8?pkt->jV>932?gRAog*2HPF"
+    },
+    {
+      "node_id": "pattern:2:10",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004InLvq4=mNhTBAO^1z8?pkt->jV>932?gRAog*2HPF"
+    },
+    {
+      "node_id": "pattern:2:18",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004InLvq4=mNhTBAO^1z8?pkt->jV>932?gRAog*2HPF"
+    },
+    {
+      "node_id": "pattern:2:2",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004InLvq4=mNhTBAO^1z8?pkt->jV>932?gRAog*2HPF"
+    },
+    {
+      "node_id": "pattern:2:26",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004InLvq4=mNhTBAO^1z8?pkt->jV>932?gRAog*2HPF"
+    },
+    {
+      "node_id": "pattern:2:34",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004InLvq4=mNhTBAO^1z8?pkt->jV>932?gRAog*2HPF"
+    },
+    {
+      "node_id": "pattern:2:42",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004InLvq4=mNhTBAO^1z8?pkt->jV>932?gRAog*2HPF"
+    },
+    {
+      "node_id": "pattern:2:50",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004InLvq4=mNhTBAO^1z8?pkt->jV>932?gRAog*2HPF"
+    },
+    {
+      "node_id": "pattern:2:58",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004InLvq4=mNhTBAO^1z8?pkt->jV>932?gRAog*2HPF"
+    },
+    {
+      "node_id": "pattern:4:12",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004InLvq4=mNhTBAO^1z8?pkt->jV>932?gRAog*2HPF"
+    },
+    {
+      "node_id": "pattern:4:20",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004InLvq4=mNhTBAO^1z8?pkt->jV>932?gRAog*2HPF"
+    },
+    {
+      "node_id": "pattern:4:28",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004InLvq4=mNhTBAO^1z8?pkt->jV>932?gRAog*2HPF"
+    },
+    {
+      "node_id": "pattern:4:36",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004InLvq4=mNhTBAO^1z8?pkt->jV>932?gRAog*2HPF"
+    },
+    {
+      "node_id": "pattern:4:4",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004InLvq4=mNhTBAO^1z8?pkt->jV>932?gRAog*2HPF"
+    },
+    {
+      "node_id": "pattern:4:44",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004InLvq4=mNhTBAO^1z8?pkt->jV>932?gRAog*2HPF"
+    },
+    {
+      "node_id": "pattern:4:52",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004InLvq4=mNhTBAO^1z8?pkt->jV>932?gRAog*2HPF"
+    },
+    {
+      "node_id": "pattern:4:60",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004InLvq4=mNhTBAO^1z8?pkt->jV>932?gRAog*2HPF"
+    },
+    {
+      "node_id": "pattern:6:14",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004InLvq4=mNhTBAO^1z8?pkt->jV>932?gRAog*2HPF"
+    },
+    {
+      "node_id": "pattern:6:22",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004InLvq4=mNhTBAO^1z8?pkt->jV>932?gRAog*2HPF"
+    },
+    {
+      "node_id": "pattern:6:30",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004InLvq4=mNhTBAO^1z8?pkt->jV>932?gRAog*2HPF"
+    },
+    {
+      "node_id": "pattern:6:38",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004InLvq4=mNhTBAO^1z8?pkt->jV>932?gRAog*2HPF"
+    },
+    {
+      "node_id": "pattern:6:46",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004InLvq4=mNhTBAO^1z8?pkt->jV>932?gRAog*2HPF"
+    },
+    {
+      "node_id": "pattern:6:54",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004InLvq4=mNhTBAO^1z8?pkt->jV>932?gRAog*2HPF"
+    },
+    {
+      "node_id": "pattern:6:6",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004InLvq4=mNhTBAO^1z8?pkt->jV>932?gRAog*2HPF"
+    },
+    {
+      "node_id": "pattern:6:62",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000004InLvq4=mNhTBAO^1z8?pkt->jV>932?gRAog*2HPF"
+    },
+    {
+      "node_id": "pattern:1:1",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000rk5W1dYo6uCu^FNfc?LIAWoq>)zI34hfH3-5Z7wqq"
+    },
+    {
+      "node_id": "pattern:1:17",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000rk5W1dYo6uCu^FNfc?LIAWoq>)zI34hfH3-5Z7wqq"
+    },
+    {
+      "node_id": "pattern:1:25",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000rk5W1dYo6uCu^FNfc?LIAWoq>)zI34hfH3-5Z7wqq"
+    },
+    {
+      "node_id": "pattern:1:33",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000rk5W1dYo6uCu^FNfc?LIAWoq>)zI34hfH3-5Z7wqq"
+    },
+    {
+      "node_id": "pattern:1:41",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000rk5W1dYo6uCu^FNfc?LIAWoq>)zI34hfH3-5Z7wqq"
+    },
+    {
+      "node_id": "pattern:1:49",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000rk5W1dYo6uCu^FNfc?LIAWoq>)zI34hfH3-5Z7wqq"
+    },
+    {
+      "node_id": "pattern:1:57",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000rk5W1dYo6uCu^FNfc?LIAWoq>)zI34hfH3-5Z7wqq"
+    },
+    {
+      "node_id": "pattern:1:9",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000rk5W1dYo6uCu^FNfc?LIAWoq>)zI34hfH3-5Z7wqq"
+    },
+    {
+      "node_id": "pattern:3:11",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000rk5W1dYo6uCu^FNfc?LIAWoq>)zI34hfH3-5Z7wqq"
+    },
+    {
+      "node_id": "pattern:3:19",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000rk5W1dYo6uCu^FNfc?LIAWoq>)zI34hfH3-5Z7wqq"
+    },
+    {
+      "node_id": "pattern:3:27",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000rk5W1dYo6uCu^FNfc?LIAWoq>)zI34hfH3-5Z7wqq"
+    },
+    {
+      "node_id": "pattern:3:3",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000rk5W1dYo6uCu^FNfc?LIAWoq>)zI34hfH3-5Z7wqq"
+    },
+    {
+      "node_id": "pattern:3:35",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000rk5W1dYo6uCu^FNfc?LIAWoq>)zI34hfH3-5Z7wqq"
+    },
+    {
+      "node_id": "pattern:3:43",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000rk5W1dYo6uCu^FNfc?LIAWoq>)zI34hfH3-5Z7wqq"
+    },
+    {
+      "node_id": "pattern:3:51",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000rk5W1dYo6uCu^FNfc?LIAWoq>)zI34hfH3-5Z7wqq"
+    },
+    {
+      "node_id": "pattern:3:59",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000rk5W1dYo6uCu^FNfc?LIAWoq>)zI34hfH3-5Z7wqq"
+    },
+    {
+      "node_id": "pattern:5:13",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000rk5W1dYo6uCu^FNfc?LIAWoq>)zI34hfH3-5Z7wqq"
+    },
+    {
+      "node_id": "pattern:5:21",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000rk5W1dYo6uCu^FNfc?LIAWoq>)zI34hfH3-5Z7wqq"
+    },
+    {
+      "node_id": "pattern:5:29",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000rk5W1dYo6uCu^FNfc?LIAWoq>)zI34hfH3-5Z7wqq"
+    },
+    {
+      "node_id": "pattern:5:37",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000rk5W1dYo6uCu^FNfc?LIAWoq>)zI34hfH3-5Z7wqq"
+    },
+    {
+      "node_id": "pattern:5:45",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000rk5W1dYo6uCu^FNfc?LIAWoq>)zI34hfH3-5Z7wqq"
+    },
+    {
+      "node_id": "pattern:5:5",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000rk5W1dYo6uCu^FNfc?LIAWoq>)zI34hfH3-5Z7wqq"
+    },
+    {
+      "node_id": "pattern:5:53",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000rk5W1dYo6uCu^FNfc?LIAWoq>)zI34hfH3-5Z7wqq"
+    },
+    {
+      "node_id": "pattern:5:61",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000rk5W1dYo6uCu^FNfc?LIAWoq>)zI34hfH3-5Z7wqq"
+    },
+    {
+      "node_id": "pattern:7:15",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000rk5W1dYo6uCu^FNfc?LIAWoq>)zI34hfH3-5Z7wqq"
+    },
+    {
+      "node_id": "pattern:7:23",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000rk5W1dYo6uCu^FNfc?LIAWoq>)zI34hfH3-5Z7wqq"
+    },
+    {
+      "node_id": "pattern:7:31",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000rk5W1dYo6uCu^FNfc?LIAWoq>)zI34hfH3-5Z7wqq"
+    },
+    {
+      "node_id": "pattern:7:39",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000rk5W1dYo6uCu^FNfc?LIAWoq>)zI34hfH3-5Z7wqq"
+    },
+    {
+      "node_id": "pattern:7:47",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000rk5W1dYo6uCu^FNfc?LIAWoq>)zI34hfH3-5Z7wqq"
+    },
+    {
+      "node_id": "pattern:7:55",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000rk5W1dYo6uCu^FNfc?LIAWoq>)zI34hfH3-5Z7wqq"
+    },
+    {
+      "node_id": "pattern:7:63",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000rk5W1dYo6uCu^FNfc?LIAWoq>)zI34hfH3-5Z7wqq"
+    },
+    {
+      "node_id": "pattern:7:7",
+      "status": "REVALIDATED_IN_SCOPE",
+      "update_root_hash72": "0000000000000000000000000000000rk5W1dYo6uCu^FNfc?LIAWoq>)zI34hfH3-5Z7wqq"
+    }
+  ]
+}

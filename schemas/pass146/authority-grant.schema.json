@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "hhs://schemas/pass146/authority-grant.schema.json",
+  "title": "HHS Pass 146 Authority Grant",
+  "type": "object",
+  "required": ["identity_id", "capabilities", "operations", "sources", "destinations", "resource_policy", "disclosure_policy"],
+  "properties": {
+    "identity_id": {"type": "string"},
+    "capabilities": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "operations": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "sources": {"type": "array", "items": {"type": "string"}},
+    "destinations": {"type": "array", "items": {"type": "string"}},
+    "resource_policy": {"type": "object"},
+    "disclosure_policy": {"type": "object"},
+    "parent_grant_id": {"type": ["string", "null"]}
+  },
+  "additionalProperties": false
+}

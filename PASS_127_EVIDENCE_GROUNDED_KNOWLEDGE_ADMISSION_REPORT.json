@@ -1,0 +1,33 @@
+{
+  "authority_boundary": {
+    "executable": false,
+    "execution_authority": false,
+    "knowledge_authority_after_admission": true,
+    "mutation_authority": false
+  },
+  "capabilities": [
+    "rooted evidence attestations",
+    "independent support enforcement",
+    "source quality thresholds",
+    "temporal validity",
+    "contradiction rejection",
+    "optional formal proof gate",
+    "optional runtime receipt gate",
+    "immutable knowledge admission",
+    "non-executable knowledge boundary",
+    "deterministic replay"
+  ],
+  "dependency_scoped_tests": 163,
+  "failures": 0,
+  "pass127_tests": 15,
+  "pass_id": "PASS_127",
+  "runtime_surface": "runtime.evidence_grounded_knowledge_admission.pass127",
+  "schema": "HHS_PASS127_IMPLEMENTATION_REPORT_V1",
+  "self_test": {
+    "record_root_hash72": "0000000000000000000000000000002IH!Q^zX*3pwm+FOgzV37U1U?tlFd-eCSljwY0wcZv",
+    "replay_root_hash72": "0000000000000000000000000000002a0KsCy0Xh)Z>3Ifc>uhYE^aCRyX41TBunO7aut)jn",
+    "schema": "HHS_PASS127_SELF_TEST_V1",
+    "status": "PASS"
+  },
+  "status": "IMPLEMENTED_AND_VALIDATED"
+}

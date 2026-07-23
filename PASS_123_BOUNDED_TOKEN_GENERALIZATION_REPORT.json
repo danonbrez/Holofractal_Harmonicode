@@ -1,0 +1,21 @@
+{
+  "dependency_scoped_tests": {
+    "failed": 0,
+    "passed": 111,
+    "scope": "PASS_117_THROUGH_PASS_123"
+  },
+  "entropy_growth_bits": 0,
+  "model_root_hash72": "0000000000000000000000000000003O(Sixi6/sngiA(i=>TEfb*t3f!ZP0S+QPM-BVgD^^",
+  "monolithic_test_status": "TIMED_OUT_NOT_CLAIMED",
+  "ok": true,
+  "pass123_tests": {
+    "failed": 0,
+    "passed": 15
+  },
+  "pass_id": "PASS_123",
+  "runtime_surface": "runtime.bounded_token_generalization.pass123",
+  "schema": "HHS_PASS_123_IMPLEMENTATION_REPORT_V1",
+  "semantic_drift_count": 0,
+  "token_class_count": 10,
+  "validation_receipt_root_hash72": "0000000000000000000000000000003dJ=>i43BnIW(o5Jn6XSF(q/Q+uUubk)5UDt5w8!e*"
+}

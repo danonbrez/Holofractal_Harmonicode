@@ -1,0 +1,20 @@
+{
+  "schema": "HHS_PASS_086_RELEASE_MANIFEST_V1",
+  "pass_id": "PASS_086",
+  "parent_pass085_release_root_hash72": "0000000000000000000000000000000DpV=yybs0SVi3J>lIO!7Ppo=x2weYb=vERbZ=o=zW",
+  "workload_count": 14,
+  "negative_case_count": 10,
+  "all_negative_cases_passed": true,
+  "artifacts": [
+    "PASS_086_PATTERN_WORKLOAD_REGISTRY.json",
+    "PASS_086_PATTERN_ADMISSION_RESULTS.json",
+    "PASS_086_REUSABLE_PATTERN_CACHE.json",
+    "PASS_086_MULTIMODAL_PATTERN_GRAPH.json",
+    "PASS_086_PATTERN_ADMISSION_RECEIPTS.json",
+    "PASS_086_PATTERN_SCALING_RESULTS.json",
+    "PASS_086_NEGATIVE_CASES.json",
+    "PASS_086_CALIBRATION_REPORT.md",
+    "CHANGELOG_PASS_086.md"
+  ],
+  "pass086_release_root_hash72": "0000000000000000000000000000000EQX3tuPfbu=7lwkGUqHIThMtAy/>*n!dRwEw1)GeK"
+}

@@ -1,0 +1,17 @@
+{
+  "equivalence_obligation": "EXACT_TARGET_IR_ROOT_IDENTITY",
+  "equivalence_test_passed": true,
+  "input_region": "WHOLE_TARGET_IR",
+  "input_target_ir_root_hash72": "0000000000000000000000000000003ZNAJZfEpKSYHea91DEQ=ku(1jt89*g*H2bxrTvXAE",
+  "instruction_order_unchanged": true,
+  "optimization": "IDENTITY_CANONICALIZATION",
+  "optimization_id": "optimization:pass077:identity",
+  "optimization_proof_root_hash72": "0000000000000000000000000000003YmCMZuQ8J0Oo-1iOlntTvhluJe0BiXlz0igjrKKA(",
+  "output_region": "WHOLE_TARGET_IR",
+  "output_target_ir_root_hash72": "0000000000000000000000000000003ZNAJZfEpKSYHea91DEQ=ku(1jt89*g*H2bxrTvXAE",
+  "preserved_effects": true,
+  "preserved_invariants": true,
+  "preserved_ordering": true,
+  "preserved_semantics": true,
+  "schema": "HHS_OPTIMIZATION_PROOF_V1"
+}

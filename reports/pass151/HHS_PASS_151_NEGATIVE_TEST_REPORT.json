@@ -1,0 +1,253 @@
+{
+  "cases": [
+    {
+      "case_id": "P151-NEG-001",
+      "duration_ns": 12790,
+      "error": null,
+      "kind": "negative",
+      "status": "PASS"
+    },
+    {
+      "case_id": "P151-NEG-002",
+      "duration_ns": 7400,
+      "error": null,
+      "kind": "negative",
+      "status": "PASS"
+    },
+    {
+      "case_id": "P151-NEG-003",
+      "duration_ns": 6207,
+      "error": null,
+      "kind": "negative",
+      "status": "PASS"
+    },
+    {
+      "case_id": "P151-NEG-004",
+      "duration_ns": 74228,
+      "error": null,
+      "kind": "negative",
+      "status": "PASS"
+    },
+    {
+      "case_id": "P151-NEG-005",
+      "duration_ns": 9028,
+      "error": null,
+      "kind": "negative",
+      "status": "PASS"
+    },
+    {
+      "case_id": "P151-NEG-006",
+      "duration_ns": 24851,
+      "error": null,
+      "kind": "negative",
+      "status": "PASS"
+    },
+    {
+      "case_id": "P151-NEG-007",
+      "duration_ns": 484,
+      "error": null,
+      "kind": "negative",
+      "status": "PASS"
+    },
+    {
+      "case_id": "P151-NEG-008",
+      "duration_ns": 5280,
+      "error": null,
+      "kind": "negative",
+      "status": "PASS"
+    },
+    {
+      "case_id": "P151-NEG-009",
+      "duration_ns": 3017,
+      "error": null,
+      "kind": "negative",
+      "status": "PASS"
+    },
+    {
+      "case_id": "P151-NEG-010",
+      "duration_ns": 2549,
+      "error": null,
+      "kind": "negative",
+      "status": "PASS"
+    },
+    {
+      "case_id": "P151-NEG-011",
+      "duration_ns": 39277,
+      "error": null,
+      "kind": "negative",
+      "status": "PASS"
+    },
+    {
+      "case_id": "P151-NEG-012",
+      "duration_ns": 133422,
+      "error": null,
+      "kind": "negative",
+      "status": "PASS"
+    },
+    {
+      "case_id": "P151-NEG-013",
+      "duration_ns": 3198,
+      "error": null,
+      "kind": "negative",
+      "status": "PASS"
+    },
+    {
+      "case_id": "P151-NEG-014",
+      "duration_ns": 76589,
+      "error": null,
+      "kind": "negative",
+      "status": "PASS"
+    },
+    {
+      "case_id": "P151-NEG-015",
+      "duration_ns": 69998,
+      "error": null,
+      "kind": "negative",
+      "status": "PASS"
+    },
+    {
+      "case_id": "P151-NEG-016",
+      "duration_ns": 5820,
+      "error": null,
+      "kind": "negative",
+      "status": "PASS"
+    },
+    {
+      "case_id": "P151-NEG-017",
+      "duration_ns": 26416,
+      "error": null,
+      "kind": "negative",
+      "status": "PASS"
+    },
+    {
+      "case_id": "P151-NEG-018",
+      "duration_ns": 3903,
+      "error": null,
+      "kind": "negative",
+      "status": "PASS"
+    },
+    {
+      "case_id": "P151-NEG-019",
+      "duration_ns": 1908,
+      "error": null,
+      "kind": "negative",
+      "status": "PASS"
+    },
+    {
+      "case_id": "P151-NEG-020",
+      "duration_ns": 1131,
+      "error": null,
+      "kind": "negative",
+      "status": "PASS"
+    },
+    {
+      "case_id": "P151-NEG-021",
+      "duration_ns": 5237,
+      "error": null,
+      "kind": "negative",
+      "status": "PASS"
+    },
+    {
+      "case_id": "P151-NEG-022",
+      "duration_ns": 11569,
+      "error": null,
+      "kind": "negative",
+      "status": "PASS"
+    },
+    {
+      "case_id": "P151-NEG-023",
+      "duration_ns": 2952,
+      "error": null,
+      "kind": "negative",
+      "status": "PASS"
+    },
+    {
+      "case_id": "P151-NEG-024",
+      "duration_ns": 2143,
+      "error": null,
+      "kind": "negative",
+      "status": "PASS"
+    },
+    {
+      "case_id": "P151-NEG-025",
+      "duration_ns": 303,
+      "error": null,
+      "kind": "negative",
+      "status": "PASS"
+    },
+    {
+      "case_id": "P151-NEG-026",
+      "duration_ns": 413,
+      "error": null,
+      "kind": "negative",
+      "status": "PASS"
+    },
+    {
+      "case_id": "P151-NEG-027",
+      "duration_ns": 3357,
+      "error": null,
+      "kind": "negative",
+      "status": "PASS"
+    },
+    {
+      "case_id": "P151-NEG-028",
+      "duration_ns": 3182,
+      "error": null,
+      "kind": "negative",
+      "status": "PASS"
+    },
+    {
+      "case_id": "P151-NEG-029",
+      "duration_ns": 445,
+      "error": null,
+      "kind": "negative",
+      "status": "PASS"
+    },
+    {
+      "case_id": "P151-NEG-030",
+      "duration_ns": 64482,
+      "error": null,
+      "kind": "negative",
+      "status": "PASS"
+    },
+    {
+      "case_id": "P151-NEG-031",
+      "duration_ns": 67123,
+      "error": null,
+      "kind": "negative",
+      "status": "PASS"
+    },
+    {
+      "case_id": "P151-NEG-032",
+      "duration_ns": 8513,
+      "error": null,
+      "kind": "negative",
+      "status": "PASS"
+    },
+    {
+      "case_id": "P151-NEG-033",
+      "duration_ns": 2391,
+      "error": null,
+      "kind": "negative",
+      "status": "PASS"
+    },
+    {
+      "case_id": "P151-NEG-034",
+      "duration_ns": 88667,
+      "error": null,
+      "kind": "negative",
+      "status": "PASS"
+    },
+    {
+      "case_id": "P151-NEG-035",
+      "duration_ns": 170701,
+      "error": null,
+      "kind": "negative",
+      "status": "PASS"
+    }
+  ],
+  "executed": 35,
+  "failed": 0,
+  "required": 35,
+  "schema": "HHS_PASS151_NEGATIVE_TEST_REPORT_V1"
+}

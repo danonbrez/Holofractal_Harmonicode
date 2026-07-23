@@ -1,0 +1,13 @@
+{
+  "schema": "HHS_PASS_096_ENTROPY_PROFILE_V1",
+  "dimensions": [
+    "LEXICAL",
+    "SYNTACTIC",
+    "SEMANTIC",
+    "METAPHORIC",
+    "CAUSAL",
+    "MODAL",
+    "CONTEXTUAL"
+  ],
+  "canonical_authority": false
+}

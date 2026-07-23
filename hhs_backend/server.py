@@ -40,6 +40,9 @@ import uvicorn
 # ROUTES
 # ============================================================================
 
+from hhs_backend.api.pass135_audit_routes import router as pass135_audit_router
+from hhs_backend.api.pass152_elastic_closure_routes import router as pass152_elastic_closure_router
+
 from hhs_backend.api.runtime_routes import (
     router as runtime_router,
 
@@ -365,6 +368,8 @@ app.add_middleware(
 
 app.include_router(runtime_router)
 app.include_router(runtime_ws_router)
+app.include_router(pass135_audit_router)
+app.include_router(pass152_elastic_closure_router)
 
 # ============================================================================
 # HEALTH ROUTES

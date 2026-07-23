@@ -1,0 +1,61 @@
+{
+  "schema": "HHS_PASS_082_3_NEGATIVE_CASES_V1",
+  "required_rejection_codes": [
+    "REJECT_LOSSY_NOISE_FILTERING",
+    "REJECT_BRANCH_COMPRESSION_INFORMATION_LOSS",
+    "REJECT_CONFLICT_COLLAPSED_SILENTLY",
+    "REJECT_NONDETERMINISTIC_RESOLUTION",
+    "REJECT_SIGNAL_RECOVERY_FAILURE",
+    "REJECT_LOSSLESS_RECONSTRUCTION_FAILURE",
+    "REJECT_RESOURCE_BOUND_AS_LOGICAL_FAILURE",
+    "REJECT_OPAQUE_NATIVE_FLOAT_AS_CANONICAL_ARITHMETIC",
+    "REJECT_UNWITNESSED_NOISE_TRANSFORM"
+  ],
+  "results": [
+    {
+      "expected": "REJECT_LOSSY_NOISE_FILTERING",
+      "observed": "REJECT_LOSSY_NOISE_FILTERING",
+      "status": "PASS"
+    },
+    {
+      "expected": "REJECT_BRANCH_COMPRESSION_INFORMATION_LOSS",
+      "observed": "REJECT_BRANCH_COMPRESSION_INFORMATION_LOSS",
+      "status": "PASS"
+    },
+    {
+      "expected": "REJECT_CONFLICT_COLLAPSED_SILENTLY",
+      "observed": "REJECT_CONFLICT_COLLAPSED_SILENTLY",
+      "status": "PASS"
+    },
+    {
+      "expected": "REJECT_RESOURCE_BOUND_AS_LOGICAL_FAILURE",
+      "observed": "REJECT_RESOURCE_BOUND_AS_LOGICAL_FAILURE",
+      "status": "PASS"
+    },
+    {
+      "expected": "REJECT_OPAQUE_NATIVE_FLOAT_AS_CANONICAL_ARITHMETIC",
+      "observed": "REJECT_OPAQUE_NATIVE_FLOAT_AS_CANONICAL_ARITHMETIC",
+      "status": "PASS"
+    },
+    {
+      "expected": "REJECT_LOSSLESS_RECONSTRUCTION_FAILURE",
+      "observed": "REJECT_LOSSLESS_RECONSTRUCTION_FAILURE",
+      "status": "PASS"
+    },
+    {
+      "expected": "REJECT_SIGNAL_RECOVERY_FAILURE",
+      "observed": "REJECT_SIGNAL_RECOVERY_FAILURE",
+      "status": "PASS"
+    },
+    {
+      "expected": "REJECT_UNWITNESSED_NOISE_TRANSFORM",
+      "observed": "REJECT_UNWITNESSED_NOISE_TRANSFORM",
+      "status": "PASS"
+    },
+    {
+      "expected": "REJECT_NONDETERMINISTIC_RESOLUTION",
+      "observed": "REJECT_NONDETERMINISTIC_RESOLUTION",
+      "status": "PASS"
+    }
+  ]
+}

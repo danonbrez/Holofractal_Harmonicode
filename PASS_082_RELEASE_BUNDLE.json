@@ -1,0 +1,22 @@
+{
+  "schema": "HHS_PASS_082_RELEASE_BUNDLE_V1",
+  "pass_id": "PASS_082",
+  "parent_pass": "PASS_081",
+  "parent_release_root_hash72": "0000000000000000000000000000001P-P*+vWQa>qnFn1^YcioT-r!Y44qDRqqoF)Xh1ZSx",
+  "benchmark_receipt_root_hash72": "0000000000000000000000000000000-=Y+zkl-m4Mu1llrJOvWhdK0zQbnsdaflxXtcP?xg",
+  "targeted_tests": 41,
+  "targeted_tests_passed": 41,
+  "native_binding_root_hash72": "0000000000000000000000000000000eQ4THv*YHsCO2upx6Q8R96ZL9YBc1NF=NULsqLFgd",
+  "genesis_state_root_hash72": "0000000000000000000000000000001UJS7fZATZm-mxt5BQCm8U4LkTjNkj2=7R24Q/+EeF",
+  "lane_roots_distinct": true,
+  "deterministic_replay_verified": true,
+  "scaling_branch_counts": [
+    2,
+    4,
+    8,
+    16,
+    32,
+    64
+  ],
+  "pass082_release_root_hash72": "0000000000000000000000000000001F5+-RFz-+Jdp(PK4aY+65kNW914Kn5OqvC6NHIaDv"
+}

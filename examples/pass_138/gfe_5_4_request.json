@@ -1,0 +1,12 @@
+{
+  "request_id": "gfe-5-4-calibration",
+  "agent": "HARMONICODE_GARU",
+  "assignments": {"g": "5/4", "h": "4/5", "rho": "1/20", "xy": 1},
+  "constraints": [
+    {"id": "reciprocal", "lhs": "g*h", "rhs": "xy"},
+    {"id": "gfe_residual", "lhs": "rho", "rhs": "g+h-2*xy"}
+  ],
+  "goals": [
+    {"id": "polynomialized_closure", "lhs": "rho*g", "rhs": "(g-xy)**2"}
+  ]
+}

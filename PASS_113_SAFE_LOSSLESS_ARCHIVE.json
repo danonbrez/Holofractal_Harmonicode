@@ -1,0 +1,875 @@
+{
+  "completed_archive": {
+    "archive": {
+      "archive_root_hash72": "0000000000000000000000000000003wtADTUy?IcP6zyI5X!0g^1ls0O=(U)5L92A=16Cz8",
+      "chunks": [
+        {
+          "chunk_index": 0,
+          "chunk_root_hash72": "0000000000000000000000000000000jhhBMdwRviz-!HCFOr7y-7BQ>>NFjhKB^?lz97Fvj",
+          "compressed_offset": 0,
+          "compressed_size_bytes": 512,
+          "payload_hex": "78dadd596973a25a1afe2b6d3eb95c4b5985ae520b05143710c4edd695424441d96413bc95ff3e074dd2e974d2b6b9333d35932f5138becb73dee579cff9fb41533543573666e0b981199aaef3f0f5eff71e3e88cc8413195aa1d809232a6d7e280cc0137ef4f0c78fcb15df7543c55003a306839f567ffa8770346ecf9b98d0daa70914ef122e95cc862433526546ea54c59822a54d718a9246a6ca7542d389d48b16350a0dd737c35451b5d08cf587af5bd50af437abaed6dd6311742e4681b5220f499b0ba7463f7029a399a25dad6e92a1d6f45695ed61ba4cab7e0b58a42766a8000ddac1734d27bc4f512a1c97b559303b71e34eae5e666b4267eb98f3ed4970f071791f2eaadbc9ceb5e81350649841e8faa9e2f97aa0fbb1be79f81afa11f03600da6d1528eb7625b031a3093792a96c6b9436d5ee320acd49022f71972722d3663861a24ca187478093a5ab4ee429beaee9a617665bff8ca99a01aab8ebbdae85c16b9d7fbe5972f13f005f7460e3cbba6791ca3a723696fef0d737659ea5de172068a7d09391315d1e4f2cdbdcd3ed354acc5d121ff5a30615974742bb695559f7d4ce3f7cd39259140540767bc050235950a6d480a3a90943bf5a14ab96b951ef8e58148abaf07e990655d18c1218f166dc9cd3f2621e824afbe4980aacd0aca0a3f95efe9df1a127a1ee3baa05846790078a66b9c175c7fc08e4",
+          "security_domain": "HHS_AUTHORITATIVE_EXIT_STATE"
+        },
+        {
+          "chunk_index": 1,
+          "chunk_root_hash72": "0000000000000000000000000000003>tNU!D2+yQyfyVdB8dDF>WiTmIxOz3CAfi)^rmAfP",
+          "compressed_offset": 512,
+          "compressed_size_bytes": 512,
+          "payload_hex": "83ad2b5bd3d29f5e673b02d21598f68485addb5974dd635e35c5f2eed2daf10cb62a6e985da01eaa1d7541047d02c6eda48aacbb587ddc27a5e13534fe892e4895d47846d34bcadb42b40ed77d62c0a1928572c13257ec37e41544f4a893bc4c802e5f074196be44afaf03bd4f5084aa69294fefd7d176abfb1912206cddc8d7be2b622078fefcfbe18722487123500567dca4ab50f2a4cb8bdc64715179d1a1e8b10e36597301e20f5fabaf246b961a64f1f8fc2390a1534691c07f461932435ebc4a795a6d02637f96682f0befaab49d423e8687b3e668dfc87757c32ae6f33a17316ddb6d57474132c09770bd9036ecab2921f0e4921ac0b18bf7be7e8c4c5fdf7cd9bafe1790e000235081b40b36a00c99675d59a7a10ebc44ab24fef8c77f17bd0f6bd127d183f4103de5f61bb44cab5cec99152c7f429d54e80b1b47f4cc733a34c8f93821c5fc47e85dacf8f254c7bfd851107e09223f069bfbe52933dec0484024fc238ced012f5dcad8bba841efa0c6cc41cf1e510350fe255e16db8cd2a546f480f901b3f70ac527e14229d3dfcee948703409a79d0083ce283d0f86563b6e36fbaa576dd407b3898827d577e17222cbfa1e8c87c94200b1238fa829c50da81630ffbd1003e5fe4e74444618500b65c68b7d6ed4f9289cde291c9f4406cea51b9d58ecf67d89cc4fa2625e6e5a06c237052710d1b67a9a239355d3",
+          "security_domain": "HHS_AUTHORITATIVE_EXIT_STATE"
+        },
+        {
+          "chunk_index": 2,
+          "chunk_root_hash72": "0000000000000000000000000000001EN5iM=KI+biWq^sym(WbD9z)s0g0YjTGczpsE3mNl",
+          "compressed_offset": 1024,
+          "compressed_size_bytes": 512,
+          "payload_hex": "8ced53f1179181ab28f1ef8162c20c055ea4c485c2cc99b67ca10c1fe1a1db9eebaba08c6b204eb236aaff435c204e3f753b68536c2201b54a871559a861f95da5759ad61a36369779765af1c92dcdff222e5015461fff7a4390aeee286f68c11b6ef4c72bf7deed221f3bffd7e30f3dff35af4aaf25fcbe54823b445fb4b71193b805a24a0c7bc56358e164afdc25ced08a3a6931b79197e7fa1818bef6554733ae5ab2169631af6fece3851631736ea20076d8ee0b3c379a282c07ea03b7bcd2a3df489f37baa73b1bddd13e030cbca89539f508fa12c48ef3b2b6c36bdb91b9a9ed07d2e0b88b0b3a0e9dc7228b25c5df4bc432455946995b53539fd2f10af8756cbaa00c16845706fa59abe0a3694da7eb543d949a8187733b6ee3efdcba0cd58d718dd860d332a1c215b60785dfabbb92882c28352db2234b05fd08640b8690d92ce7a96bd3ba0c551bdb043edc4b8eef09d657bbff1fdb77d7d3fd6b285fea9661045f3db03710047ffd2ed04fae7fb05c7593715535bd7cfafa20509204562aacc80f95eb17489198cb060282119b6e147c227011b57be2030a735d2da84c9a61c393b48e448df98d3737f26cdb90ea636bab32e9ece167f35dd6b2063c453f11a14be1fa4416dd134641a87b8a09f62c011103bacea7e0fd81993dcfb677e564dfedb9ad73d29e197dbcdf3b8dba1647b5c7d8ccc1da0ea211bd2d5d",
+          "security_domain": "HHS_AUTHORITATIVE_EXIT_STATE"
+        },
+        {
+          "chunk_index": 3,
+          "chunk_root_hash72": "0000000000000000000000000000000bPjZOaiEZwYVgGW3+FM!GtUj(^rBB2AWISqh)>tZN",
+          "compressed_offset": 1536,
+          "compressed_size_bytes": 512,
+          "payload_hex": "3c5a450337df5599a9caeae3ad19a750207b63d6b610d428ce7afd9ca04d866e79e40744df5f6bd82111ab788b19c715a0e5df58176f885ab7c8f1aec510530c0d17e4f14055120adfa853042e0f2a69872ac44154f0a055785354b55b3fe4e7f0f1786eec488f714663d83019df236368418fdcaadccad3920ce393c22f38186e0cc1e98495d2b8c3e244d834ac9dd520a5b16db5d4553e55978562125526bddba2c84300e9397ecbd66921974a9c653008531d98ecb984c58d6970b4dd7dafa411bb9ba2600b2f51f560402df9d20093f4ca98e38b2abd5fae4a05afd1e49aabf0e4b9e30587ddc6aad42b23e4822128391c13bab85b048255a67d398fb5e636a43b396bd43ecc10cdbb290ab1b7dda53d6d60bb9de9ee18ddab1d69a88777294116d561523a743b46544c4514ba2d0aed770d7d3a8d2981161276586fccbb9e336617c658944769c950497d8bf573c3f56dd8116ad11229c48f2495edf1446d089fddb3d6c557cd14cbed85e160c9b396c9578a3745a156acb241d1de49d1a49b88cd242cf66b5cb719b84c9533647d32ab57b8d420bdc56daba6fa0066a94a23915473ee36ce36bad749797d9ae19d66bba5f6779b8a4fcdd9f2ec7630d064b3ef55ebcd28bfb0e69324398b72657f1c60e36abe2b928185b3fb62912e556f270e1ca56418cfa01eda43cdaacc8e02f24ca688b08dab9d6899ebe6361ddd",
+          "security_domain": "HHS_AUTHORITATIVE_EXIT_STATE"
+        },
+        {
+          "chunk_index": 4,
+          "chunk_root_hash72": "0000000000000000000000000000003U^la0>y/QrYG3aS51BlHB3wf-myCCMG(f?HXAei(5",
+          "compressed_offset": 2048,
+          "compressed_size_bytes": 512,
+          "payload_hex": "3fd19e14df7670e00ee6f1703e5f4e5bf14a9b1ff7f543cc78671ae2bb93089f248485e239c91eef9e0e2b2230a3a961c642ef640cf7d8fc71df794b1e2f8de7e9300d94d8ad9f157ec085b3a364d7f62c3d7b9a758eac6764ed35eb0fd537eb5ef58abbda40a585f335b38fcf477d73dd99355606ae72bdd3a2cf14d4c5d9751656ab89421ad1cd986de4fbd908b4f3d50d60404846d6742dcaccbb3c4214d0cdec28549f0e80aaaf1658aeebfd6ad74062add0450404d58f354dc019aa1b978232d713188a1ef84352e61761ca1ecf3bed76767728552f1fa9d93cbfdc1df161480405f608a9fb43b139e94d136c7cc8d9ecbe1f946ea7242e38b3538091095c3fcbb5662a0521b2a505cd55cb16c1bb6b072522d25dd8c92f44ac441f080b19449b5cef7c8cb5ba0c3b2b68df38c7d678dd9b1bfd75c9b6e55cc1b99d474eaed4b660fb40d60643ae38b78f811822f86cb8df15db3d27c54a487ccc174fd1edfa8c86467f819e109e5be59613a1761e32539f6a221b5d6389a879f28e392a49ed8dac6579e4e849f87abf9f690dd8f48c959aceeefda0c05fcdb72f545ab7540f0c874ab6002660a486e130890151b69a9876646763aaa5bc224b4eec6acf12a1cb51d7cfde3fbe4947966a4f7891a3060a3392878c78cd4bc052419632e2d308eb8640e4fb2e3c7ef3f1c2e8c0e7e709fabbe7c03f3fbcbe013f79e670ca",
+          "security_domain": "HHS_AUTHORITATIVE_EXIT_STATE"
+        },
+        {
+          "chunk_index": 5,
+          "chunk_root_hash72": "0000000000000000000000000000004e)TUFFKBWCMnnWSAwa9(cEl^mLTRRc)QmX4MGfv>K",
+          "compressed_offset": 2560,
+          "compressed_size_bytes": 140,
+          "payload_hex": "4b565fef209e47de57f708bff34ee8379ee6ff5fde2cfde2c0fa7a8befeb3acbaa702461b7146f18a8b96fbb5e9b43f3b0636090e85a874da971c8b12b403ea2672d2fc714d9c8a54814cb5c7bceeb4b9cdf3c3fff6fcc39beeea9a6af3c9fd4bfdc883e7186ac0a9861f8eac57755e51bda3fb6fb0f4ec7be9d6bf97a785579bd95fcb0563cfe0bbd3c5cc0",
+          "security_domain": "HHS_AUTHORITATIVE_EXIT_STATE"
+        }
+      ],
+      "context_bindings": {
+        "authority_root_hash72": "0000000000000000000000000000002F1a^v3j*J)h(i*20r1lJJ64gg?3!roPPB7vs>sDJ?",
+        "dependency_root_hash72": "00000000000000000000000000000032WC/bD3wx(-W>ydAD124wZ5QSX?Z3bN-sc*KKSjt/",
+        "provenance_root_hash72": "00000000000000000000000000000026FKe+9w4w+M9td9qU^RW-Vt>fI8X0UTBvGWSlG5R3",
+        "security_policy_root_hash72": "0000000000000000000000000000003MsETEAE4qkKz5ZVim*K-tCi3=BsE)OxL0I++LrU*l"
+      },
+      "manifest": {
+        "algorithm_version": 1,
+        "archive_policy_root_hash72": "0000000000000000000000000000004LmeP>r!t19QRGHxgNPBMm+(F8(XJebmGiTWJ2JdM*",
+        "authority_root_hash72": "0000000000000000000000000000002F1a^v3j*J)h(i*20r1lJJ64gg?3!roPPB7vs>sDJ?",
+        "canonicalization_root_hash72": "0000000000000000000000000000001CUd8pXR6)N4cwwQUr--1aE8iraS=ZkJm+t(zM*6KL",
+        "chunk_map_root_hash72": "0000000000000000000000000000002BsCN7oP!nB1m>tJ))0Dpo0+sgn^CXAE-40KF)8h6P",
+        "codec_observations": [
+          {
+            "codec": "zlib",
+            "compressed_size_bytes": 2700,
+            "decoder_root_hash72": "0000000000000000000000000000003xkLa9jGGEg8-pGb)vlVZL1C^io/671DFM6^KahJsE",
+            "lifecycle_cost_units": 10561
+          },
+          {
+            "codec": "lzma",
+            "compressed_size_bytes": 2780,
+            "decoder_root_hash72": "00000000000000000000000000000019pqf>ziI(gjYpzorOqWRb05jD(+Sz-xMcQy73fv82",
+            "lifecycle_cost_units": 10833
+          },
+          {
+            "codec": "raw",
+            "compressed_size_bytes": 7797,
+            "decoder_root_hash72": "0000000000000000000000000000001A3Ci8=Wh-B80B>ukUbDlseft>I5HtqxMG?TZh1bTL",
+            "lifecycle_cost_units": 15594
+          }
+        ],
+        "compressed_size_bytes": 2700,
+        "compressed_stream_root_hash72": "0000000000000000000000000000003RV^Zh+MOSBo)lL(2T)czjr-)HZdRcgKRC=zx31=GK",
+        "compression_algorithm": "zlib",
+        "compression_algorithm_root_hash72": "0000000000000000000000000000003xkLa9jGGEg8-pGb)vlVZL1C^io/671DFM6^KahJsE",
+        "compression_class": "VIRTUAL_MACHINE_ARCHIVE_COMPRESSION",
+        "compression_manifest_root_hash72": "0000000000000000000000000000003wGaSg67=+Sz7SoJB*t=)EFZdE*BWmyOo961+XCA)K",
+        "dependency_root_hash72": "00000000000000000000000000000032WC/bD3wx(-W>ydAD124wZ5QSX?Z3bN-sc*KKSjt/",
+        "dictionary_roots": [],
+        "maximum_dependency_depth": 1,
+        "maximum_recovery_memory_bytes": 8309,
+        "maximum_recovery_work": 10503,
+        "provenance_root_hash72": "00000000000000000000000000000026FKe+9w4w+M9td9qU^RW-Vt>fI8X0UTBvGWSlG5R3",
+        "random_access_granularity": 512,
+        "recovery_contract_root_hash72": "0000000000000000000000000000004nF)(93RsHscOmV*u1h63HYioqNi7c)r8/66=MjMhq",
+        "schema": "HHS_SAFE_LOSSLESS_COMPRESSION_MANIFEST_V1",
+        "security_policy_root_hash72": "0000000000000000000000000000003MsETEAE4qkKz5ZVim*K-tCi3=BsE)OxL0I++LrU*l",
+        "source_class": "VM_PASS112_COMPLETED_EXIT",
+        "source_state_root_hash72": "0000000000000000000000000000002LZ)!sfjFaH92ZeCXXK^)sAmpMNQqTJHUzeH8MdFG7",
+        "uncompressed_size_bytes": 7797
+      },
+      "recovery_contract": {
+        "cold_boot_recovery_supported": true,
+        "maximum_chunk_count": 4096,
+        "maximum_expansion_ratio_denominator": 1,
+        "maximum_expansion_ratio_numerator": 100,
+        "maximum_recovery_memory_bytes": 2000000,
+        "maximum_recovery_work_units": 5000000,
+        "maximum_reference_fanout": 1,
+        "partial_recovery_supported": true,
+        "recovery_contract_root_hash72": "0000000000000000000000000000004nF)(93RsHscOmV*u1h63HYioqNi7c)r8/66=MjMhq",
+        "schema": "HHS_ARCHIVE_RECOVERY_CONTRACT_V1",
+        "streaming_recovery_supported": true
+      },
+      "schema": "HHS_SAFE_LOSSLESS_ARCHIVE_V1"
+    },
+    "compression_receipt": {
+      "archive_root_hash72": "0000000000000000000000000000003wtADTUy?IcP6zyI5X!0g^1ls0O=(U)5L92A=16Cz8",
+      "canonical_source_root_hash72": "0000000000000000000000000000002LZ)!sfjFaH92ZeCXXK^)sAmpMNQqTJHUzeH8MdFG7",
+      "compressed_size_bytes": 2700,
+      "compression_manifest_root_hash72": "0000000000000000000000000000003wGaSg67=+Sz7SoJB*t=)EFZdE*BWmyOo961+XCA)K",
+      "compression_ratio": {
+        "denominator": 2700,
+        "numerator": 7797
+      },
+      "compression_receipt_root_hash72": "0000000000000000000000000000000nh(QhMHhJg6QudVjV?oLa=Gqk28MIoh4VebemS3r?",
+      "compression_status": "LOSSLESS_ARCHIVE_ADMITTED",
+      "deduplicated_bytes": 0,
+      "maximum_recovery_memory_bytes": 8309,
+      "maximum_recovery_work_units": 10503,
+      "preservation_vector_root_hash72": "0000000000000000000000000000003IElLLwZjccmLeDbcpMSH?8?Pfm?UMtMp5fu^*2czN",
+      "schema": "HHS_SAFE_LOSSLESS_COMPRESSION_RECEIPT_V1",
+      "security_policy_root_hash72": "0000000000000000000000000000003MsETEAE4qkKz5ZVim*K-tCi3=BsE)OxL0I++LrU*l",
+      "source_state_root_hash72": "0000000000000000000000000000002LZ)!sfjFaH92ZeCXXK^)sAmpMNQqTJHUzeH8MdFG7",
+      "uncompressed_size_bytes": 7797
+    }
+  },
+  "completed_exit_reconstruction": {
+    "checks": {
+      "cache_disposition_root": true,
+      "checkpoint_root": true,
+      "cleanup_root": true,
+      "exit_receipt_root": true,
+      "history_binding": true,
+      "state_binding": true
+    },
+    "last_valid_state": {
+      "accumulator": 1539,
+      "capability_admission_root_hash72": "00000000000000000000000000000042G8KRmfuExo)808MJ*qt/IUp-H8z1^AwcvIdUZz=Q",
+      "dependency_root_hash72": "0000000000000000000000000000002Y7-Iaqreq1FQ(Ucg67fNid7jLSLqgv)e61zQRF5x*",
+      "operation_id": "hhs:pass112:continuation_workload",
+      "payload": "PASS112_FROM_PASS111_SEED",
+      "previous_state_root_hash72": "0000000000000000000000000000003aHwOsA5oocs/T?t>pScGSAQOdpXh(FChS=QlfaEyW",
+      "schema": "HHS_CONTINUATION_WORKLOAD_STATE_V1",
+      "state_root_hash72": "0000000000000000000000000000002qilVVbyak+?sp6IgIdrgo=U1=hQ78d5V-8a2/FJ1t",
+      "step_index": 18
+    },
+    "reconstruction_root_hash72": "0000000000000000000000000000003xE!8fgel=9i)rV1aXlRw1JYHN>YcyX=65VsEF?TsI",
+    "reconstruction_status": "RECONSTRUCTED",
+    "schema": "HHS_PASS_SAFE_EXIT_RECONSTRUCTION_V1"
+  },
+  "completed_recovery": {
+    "recovered_state": {
+      "cache_disposition": {
+        "cache_disposition": "RETIRED_AFTER_COMPLETION",
+        "cache_disposition_root_hash72": "0000000000000000000000000000003ID6mX?5PBjyx1vgxIySi>SUES/W9eA/hV3+d*V49h",
+        "continuation_authority_active": false,
+        "continuation_cache_root_hash72": "0000000000000000000000000000001z*usl^9kxCItVhKsoAh?y4Hc=i9tc?p^/fkVZy0rB",
+        "exit_checkpoint_root_hash72": "0000000000000000000000000000001yPqZ7WsWwIQG!=-F7PGfniXfwPn6Q-jtY0fTgolDw",
+        "history_preserved": true,
+        "schema": "HHS_CONTINUATION_CACHE_DISPOSITION_RECEIPT_V1"
+      },
+      "cleanup_receipt": {
+        "authoritative_objects_preserved": [
+          "authoritative_exit_state",
+          "preserved_receipt_bundle"
+        ],
+        "cleanup_plan_root_hash72": "0000000000000000000000000000004G)JU3QD-QTlmijDCb48Xo96NKu>Av-NPC?l0FowC(",
+        "cleanup_status": "CLEANUP_VALIDATED",
+        "cleanup_validation_root_hash72": "00000000000000000000000000000041uH2jZys0Riux23pWIXIc(R(11+jxqyPFP?/4NXjU",
+        "exit_checkpoint_root_hash72": "0000000000000000000000000000001yPqZ7WsWwIQG!=-F7PGfniXfwPn6Q-jtY0fTgolDw",
+        "external_handles_closed": [
+          "runtime_file_handle"
+        ],
+        "post_cleanup_memory_root_hash72": "0000000000000000000000000000000y5(oZlgOE5^*dEgsak0GaY8sK826mx03bH5=QK9SM",
+        "pre_cleanup_memory_root_hash72": "0000000000000000000000000000001aSavWDDZApf1De2=r8LI4Sl4IsZ!*K>U^18JAwUZx",
+        "replay_objects_released": [
+          "tail_replay_buffer"
+        ],
+        "resource_dispositions": [
+          {
+            "disposition": "RETAINED_WITH_AUTHORITY",
+            "release_event_count": 0,
+            "resource_class": "AUTHORITATIVE_STATE_MEMORY",
+            "resource_id": "authoritative_exit_state",
+            "resource_root_hash72": "0000000000000000000000000000003G)(v2MW?Nj>(H^M05rOeIuECmoC0NsxL6Z2=)y>mY",
+            "retention_reason": "required for reconstruction",
+            "size_bytes": 4096
+          },
+          {
+            "disposition": "RETAINED_WITH_AUTHORITY",
+            "release_event_count": 0,
+            "resource_class": "AUTHORITATIVE_STATE_MEMORY",
+            "resource_id": "preserved_receipt_bundle",
+            "resource_root_hash72": "0000000000000000000000000000001et4w!jd4-DaIvpi/5(w4nyPKPdnRpizyMh9XQx9R(",
+            "retention_reason": "receipt history must survive cleanup",
+            "size_bytes": 8192
+          },
+          {
+            "disposition": "CLOSED",
+            "release_event_count": 1,
+            "resource_class": "EXTERNAL_RESOURCE_HANDLE",
+            "resource_id": "runtime_file_handle",
+            "resource_root_hash72": "0000000000000000000000000000004AirfXDuPncS6Dns51z4DXsMlCv??Kap0>=LWTR6x0",
+            "retention_reason": null,
+            "size_bytes": "TYPED_UNAVAILABLE"
+          },
+          {
+            "disposition": "RELEASED",
+            "release_event_count": 1,
+            "resource_class": "REPLAY_WORKING_MEMORY",
+            "resource_id": "tail_replay_buffer",
+            "resource_root_hash72": "0000000000000000000000000000002!yde8YgjKS9(Tu*(U?lh3O?PnsR4CawX3T^?ivmw*",
+            "retention_reason": null,
+            "size_bytes": 2048
+          },
+          {
+            "disposition": "RELEASED",
+            "release_event_count": 1,
+            "resource_class": "TEMPORARY_EXECUTION_MEMORY",
+            "resource_id": "temporary_candidate_buffer",
+            "resource_root_hash72": "0000000000000000000000000000001IewHG4?R?3sA^yM/UP75(g/BwV7>m5XUOFV/r9fDO",
+            "retention_reason": null,
+            "size_bytes": 1024
+          }
+        ],
+        "schema": "HHS_MEMORY_CLEANUP_VALIDATION_RECEIPT_V1",
+        "temporary_objects_released": [
+          "temporary_candidate_buffer"
+        ]
+      },
+      "exit_checkpoint": {
+        "authority_state_root_hash72": "00000000000000000000000000000042G8KRmfuExo)808MJ*qt/IUp-H8z1^AwcvIdUZz=Q",
+        "branch_states": [],
+        "checkpoint_status": "EXIT_CHECKPOINT_FINALIZED",
+        "continuation_cache_root_hash72": "0000000000000000000000000000001z*usl^9kxCItVhKsoAh?y4Hc=i9tc?p^/fkVZy0rB",
+        "dependency_state_root_hash72": "0000000000000000000000000000002Y7-Iaqreq1FQ(Ucg67fNid7jLSLqgv)e61zQRF5x*",
+        "exit_checkpoint_root_hash72": "0000000000000000000000000000001yPqZ7WsWwIQG!=-F7PGfniXfwPn6Q-jtY0fTgolDw",
+        "exit_classification": "EXIT_COMPLETED",
+        "last_valid_checkpoint_root_hash72": "0000000000000000000000000000002qilVVbyak+?sp6IgIdrgo=U1=hQ78d5V-8a2/FJ1t",
+        "last_valid_state": {
+          "accumulator": 1539,
+          "capability_admission_root_hash72": "00000000000000000000000000000042G8KRmfuExo)808MJ*qt/IUp-H8z1^AwcvIdUZz=Q",
+          "dependency_root_hash72": "0000000000000000000000000000002Y7-Iaqreq1FQ(Ucg67fNid7jLSLqgv)e61zQRF5x*",
+          "operation_id": "hhs:pass112:continuation_workload",
+          "payload": "PASS112_FROM_PASS111_SEED",
+          "previous_state_root_hash72": "0000000000000000000000000000003aHwOsA5oocs/T?t>pScGSAQOdpXh(FChS=QlfaEyW",
+          "schema": "HHS_CONTINUATION_WORKLOAD_STATE_V1",
+          "state_root_hash72": "0000000000000000000000000000002qilVVbyak+?sp6IgIdrgo=U1=hQ78d5V-8a2/FJ1t",
+          "step_index": 18
+        },
+        "operation_id": "hhs:pass112:continuation_workload",
+        "preserved_receipt_history_root_hash72": "0000000000000000000000000000001KoJoBzxCWhK6KJwNHlIACQ5Wn5Cn3c8JfD*ql*h6i",
+        "preserved_receipt_roots": [
+          "0000000000000000000000000000000))9JQFml34h*WJK!PcTMo-Nrs8Krbc5kxR06BEQv/",
+          "0000000000000000000000000000001z*usl^9kxCItVhKsoAh?y4Hc=i9tc?p^/fkVZy0rB",
+          "0000000000000000000000000000001bB9QgBE8V54tY9qkA/xA6daV32-L/yGA)vsu)p1^t",
+          "0000000000000000000000000000000H=k(X2qqz>g9pEnNQ2hiErp9v1YDNo0UB(DSU26T)",
+          "0000000000000000000000000000001ztdhPnGt/+QGF68t?hlgl>9SQmlBa^(yaZ)*xu/TJ",
+          "00000000000000000000000000000019ks1e!OfF=DP!ySIlhE3E0LiFz+5v>VsqmojJ+c8g",
+          "0000000000000000000000000000002l6+A=sLAZO+L5Se/QIO*aDjZ^+)p>?I?^twpoQYI5",
+          "0000000000000000000000000000000+J-39YE8AUtQ8eRgYsPl-DrU(5BXm1en!lNCkW3cp",
+          "0000000000000000000000000000003mfHZmV>5ggiogEep7qD1J6HAPURaMx+kHGhu*yR41",
+          "00000000000000000000000000000034KHheVVvAPDPxFM=>XHpnQFYhQRUNy+ha9ef5K!Mb",
+          "00000000000000000000000000000013AYBRA3ruSaFJO87M2zozcH6^?y5!jPMLZOFliO/*",
+          "0000000000000000000000000000004lvaFs*mgSuTHxR?xt*K7IH?soE0IhUeTW=/Iyh9pY",
+          "0000000000000000000000000000001VeL2FA/>xSaiXo>zm4je9UbwW6G?CBaKgd/rAXF-W",
+          "0000000000000000000000000000002D9?Kp0=?u(YlXTxxzRU/jqL5Q0(HR9sl6Fj**D+0t",
+          "0000000000000000000000000000002uy9tvW1J4J4i0UFNs9z9y3Pfv0GuZ!H!dGerwDpSv",
+          "0000000000000000000000000000001LoLXvMXXZVBv^cXqj=kvEpzD1OHTu6Tx8l46!SmQg"
+        ],
+        "resume_attempt_root_hash72": "0000000000000000000000000000002uy9tvW1J4J4i0UFNs9z9y3Pfv0GuZ!H!dGerwDpSv",
+        "schema": "HHS_CONTINUATION_EXIT_CHECKPOINT_V1",
+        "validated_frontier": {
+          "completed_step": 18,
+          "pass110_frontier": {
+            "continuation_root_hash72": "0000000000000000000000000000001/B6O7iK6XNKibGW>^h6aIJwYKE)aYzonYlB?41c8H",
+            "current_grade": 3,
+            "executed_grade3_permutations": 0,
+            "executed_loop_roots": [
+              "0000000000000000000000000000003vc)H3P34eq7cP6EAHv+s-IJPEADLrM9UOYtyFqzgc",
+              "0000000000000000000000000000003GAae-qAWX(Zgq6Mt8s)Fq1ajk*?TJVx5Qk!mFjKs+",
+              "00000000000000000000000000000046PnWws59x2=zU7?ySst3fDPcoa-l8Oobn48u9oYmx",
+              "0000000000000000000000000000001LSDk8l3Lud!Jzqvc=U2n^1j>zvlQbJXhKb+mmU!)n",
+              "0000000000000000000000000000002n!+Cl2mk97LMI*XmqsRt36WMjg*CJny5+3vq(*wu5",
+              "0000000000000000000000000000004thKY4w3OI^!ZTP7zMEVrA?3decF8u?wpq!AxymdUc"
+            ],
+            "next_permutation_index": 0,
+            "pending_grade3_permutations": 6,
+            "resource_state": {
+              "elapsed_ns": 28237562950,
+              "maximum_real_operation_invocations": 10,
+              "real_operation_invocations": 10
+            },
+            "schema": "HHS_FACTORIAL_ENUMERATION_FRONTIER_V1",
+            "total_grade3_permutations": 6
+          },
+          "pending_step_end": null,
+          "pending_step_start": null
+        },
+        "workload_completed": true
+      },
+      "exit_receipt": {
+        "cache_disposition_root_hash72": "0000000000000000000000000000003ID6mX?5PBjyx1vgxIySi>SUES/W9eA/hV3+d*V49h",
+        "cleanup_validation_root_hash72": "00000000000000000000000000000041uH2jZys0Riux23pWIXIc(R(11+jxqyPFP?/4NXjU",
+        "continuation_cache_root_hash72": "0000000000000000000000000000001z*usl^9kxCItVhKsoAh?y4Hc=i9tc?p^/fkVZy0rB",
+        "exit_checkpoint_root_hash72": "0000000000000000000000000000001yPqZ7WsWwIQG!=-F7PGfniXfwPn6Q-jtY0fTgolDw",
+        "exit_classification": "EXIT_COMPLETED",
+        "exit_receipt_root_hash72": "0000000000000000000000000000002Z0Pq92o+vdE1?jCopCI4(2nh51Rolkd+>k!F^013u",
+        "exit_status": "PASS_SAFE_EXIT_VALIDATED",
+        "last_valid_checkpoint_root_hash72": "0000000000000000000000000000002qilVVbyak+?sp6IgIdrgo=U1=hQ78d5V-8a2/FJ1t",
+        "operation_id": "hhs:pass112:continuation_workload",
+        "preserved_receipt_history_root_hash72": "0000000000000000000000000000001KoJoBzxCWhK6KJwNHlIACQ5Wn5Cn3c8JfD*ql*h6i",
+        "repair_required": false,
+        "resume_permitted": false,
+        "schema": "HHS_PASS_SAFE_CONTINUATION_EXIT_RECEIPT_V1",
+        "temporary_authority_retired": true,
+        "workload_completed": true
+      }
+    },
+    "recovery_receipt": {
+      "archive_root_hash72": "0000000000000000000000000000003wtADTUy?IcP6zyI5X!0g^1ls0O=(U)5L92A=16Cz8",
+      "corrupted_chunk_roots": [],
+      "decoder_root_hash72": "0000000000000000000000000000003xkLa9jGGEg8-pGb)vlVZL1C^io/671DFM6^KahJsE",
+      "peak_recovery_memory_bytes": 8309,
+      "preservation_vector": {
+        "authority": true,
+        "branch": true,
+        "dependency": true,
+        "execution_semantics": true,
+        "frontier": true,
+        "grammar": true,
+        "operation_order": true,
+        "payload": true,
+        "phase": true,
+        "provenance": true,
+        "receipt": true,
+        "scope": true,
+        "security": true,
+        "type": true,
+        "value": true
+      },
+      "recovered_chunk_roots": [
+        "0000000000000000000000000000000jhhBMdwRviz-!HCFOr7y-7BQ>>NFjhKB^?lz97Fvj",
+        "0000000000000000000000000000003>tNU!D2+yQyfyVdB8dDF>WiTmIxOz3CAfi)^rmAfP",
+        "0000000000000000000000000000001EN5iM=KI+biWq^sym(WbD9z)s0g0YjTGczpsE3mNl",
+        "0000000000000000000000000000000bPjZOaiEZwYVgGW3+FM!GtUj(^rBB2AWISqh)>tZN",
+        "0000000000000000000000000000003U^la0>y/QrYG3aS51BlHB3wf-myCCMG(f?HXAei(5",
+        "0000000000000000000000000000004e)TUFFKBWCMnnWSAwa9(cEl^mLTRRc)QmX4MGfv>K"
+      ],
+      "recovered_state_root_hash72": "0000000000000000000000000000002LZ)!sfjFaH92ZeCXXK^)sAmpMNQqTJHUzeH8MdFG7",
+      "recovery_environment_root_hash72": "0000000000000000000000000000000=4oJ*UEobTMn>tT+AyROrU9CyiX1VuAT*D(jg=Z+U",
+      "recovery_status": "RECOVERY_VALIDATED",
+      "recovery_validation_root_hash72": "00000000000000000000000000000012OH0==cD-R>ErILYrNGVps+-dT5PXVpZ^fxq7yjcd",
+      "recovery_work_units": 10503,
+      "schema": "HHS_LOSSLESS_RECOVERY_VALIDATION_RECEIPT_V1",
+      "source_state_root_hash72": "0000000000000000000000000000002LZ)!sfjFaH92ZeCXXK^)sAmpMNQqTJHUzeH8MdFG7"
+    }
+  },
+  "corrupted_state_admitted": 0,
+  "deferred_archive": {
+    "archive": {
+      "archive_root_hash72": "0000000000000000000000000000004t82-H9g=QJdh^(!W*k(f5mwOWb)5Eltwn*W4HY?s0",
+      "chunks": [
+        {
+          "chunk_index": 0,
+          "chunk_root_hash72": "0000000000000000000000000000004rXlIXf/i6t!S>zokx)-NWV9gJ*nhgas?bSaH1cNeO",
+          "compressed_offset": 0,
+          "compressed_size_bytes": 512,
+          "payload_hex": "78dadd596993a24a16fd2bad9f5c5e852c8a50116aa082e00682b8bd781288a9a06cb228f8a2fffb246a55575757b55df5667a62a6be94627a9793f79e3c37fd3bab6bba01d4b519786e6086a6eb641fff7eeb615662c6343f64da2a2b48aac44ce83edfa6c7bc30542fef6565c064fff8f19baaefbaa16a688151c5a015e4a77f6594b4d77b82ae1736149e6868ec353ab3a124d7a6a31a9b2b2c8ae75e678c1c3a552375e53aa1e944dac58b168586eb9b61a26a7a681e41f631f423f06ad135b88f04849e0b51602da97ddce2c389d10b5cda6824654eaf9954a837bc6569b39f2c12c46fc280406c862af4a0ef3dd774c28f654eb4cbd3c05e7206dad8e63dced6cff1431d04a6a76df768d3b50514b087bc7f4e3337cc2074fd44f57c1000ff08d64fd906d0bbad41671c27ab2d6138e687ca758f5a748b63d4362f8b82cc5f9e484c8be1c5b13a41b35f214e16d09cc8537da003d30bd3227882544bf154ddd50ee861f0d2e79faf965cf20fe01b00637c5ef764525d45ceda02d9bfbe39f32ced63f581d6644a9ad5b048580e2c163f145b6b9cf4575a4e5a9e7ce2b447268eedcbd4596a64bf7949238a0268bbd567e8a122aab7d265da2f161d35cb5c6b1f2e5864d1a9784a7066c5d9506ef1f2a6ca08b3e6ba34de0a93714d9e4c8d0cb2ae9e8c31f89df501e210f88e6641e329e481aa5b6e70dd313f82fd6003",
+          "security_domain": "HHS_AUTHORITATIVE_EXIT_STATE"
+        },
+        {
+          "chunk_index": 1,
+          "chunk_root_hash72": "0000000000000000000000000000001?+-whJcfj*uFFqBfzq9ZlO5p-MF)aK1yYsFdjIP-^",
+          "compressed_offset": 512,
+          "compressed_size_bytes": 512,
+          "payload_hex": "75635ae0f671ba23b05b6168372c6c60a7d5f5211c924ace5d585b81a92c0b6b661b687ba4a3cdc9a04762841d23f88aabd4463d4a1e5c4be39ff84235593b4edbed05ed6dd036c06a3ed9e7cbb255e68345a6d0ab2b4b94ecd2276511435f3e8045963c57af0fa0df1b14a1665aeaedf355b4d9003f450296ad1bf9fa771c068be7cfbfb3efd0e1941f732aad8c3941e2c7f38bcb8b0f151c01dc64dd8588671f911796754b0bd27a7cfa12ecd009a3caf03fa30e9881205daddc569b30d89f35daf3c28f608877f2b92336983686bb7a8e5b0e908a2f003e625ab6db428641dc2716582d9fd4ed6b2821cce4d21a30b14bf63e3844a60fd65f36aeff053638c40832907ec106d2907906ea2a0901ccb28c50c4d73ffebbe8bdcb459f440f0561f994d9adcb0f6d8d3f7a66a9923b959d44ec896b47f2cc733230a8d928a6a4dc7be85da2f872e3f12f7614845f82c83fc2cdfd72eb8c5730922885fd0863ab2fc8171a7b1335f40dd498d9989186743f3db105456a312a470fdb7de607ccde228a4fc255a64d7f336b47a2a3cb44db092ae8b9dc9e0503ab756c347a9a87d46bfde9582262e44db89cc8b2be07233b9e8bb07694213da1f93edd84e1bf556290ee3f888ec4887d7aae4e05a9c70f3bef95d31bc4f14964b04cb206e47cbbebc9546e1c15724ac33270a1213a81546e69a7193e5e36cca37d2afc2232185226",
+          "security_domain": "HHS_AUTHORITATIVE_EXIT_STATE"
+        },
+        {
+          "chunk_index": 2,
+          "chunk_root_hash72": "00000000000000000000000000000037Ry0nmtnSUbAg>ZRvKq9Dw)a7ATfeo9Lo*QF/44Kp",
+          "compressed_offset": 1024,
+          "compressed_size_bytes": 512,
+          "payload_hex": "ff3d508c99812848b434579919d3522e92e13d3c80edb9be06695c8775921ea3e01fe282f2e0c475ca0da98107f432199414b15ac96d4bcdd3a45ab72b33456027259fdab4855fc40545b0f2d7bf5e09a46b3aea2b59f04a1bfdf122bd374f91f793ffebeb0f67fe4b5d955c29fc63ad8475c89e646f222676f324420eba854358e215ef8123cfe8923ee9477ead2cceb5110c7ce56b8e6e5cbda44758aabcbea98f6759c4ccf8b10ad561ab270afc70acb23ce4077e719547bf513eaf81079c3570f4cf0083cdab0fbc7680e712ca8e728abe25aa9ba1b9aeeefa72ffb03de601819e47125b890bbf5788a58ed28e3237a6aedddaf102f833ff36056598420d57855719fad9d0504ed1bb083aaf13c3a07b2c522ca9adcda4eb078de5c62096ee6a14105c7183edd1efdd5d95445a99ba1ed991a5c14329fb5845b0749cf3b495695de6aab56dc23c3e3ad17da4605f54c07f6cef5d0ff8d772be709761048f1edc1f14c51ebf2bf693ebef2d575ba77a554b2eaf1eb3222dcb70a5ca4ac240bdbe415599b9b40a141947d38d824f142f6a3ac3d6b4e6a29d66e65cc172681dd94c5a2393288d72ee72bb9bc47abe7adeb15a90fdd98c971e5b7d816edfc4d085bc3e11cc47aa280881a79a70cf62c8b150a07c0ade1fd4d9d37cfba1227024a432e1e572586e1a0b9721e3d159c68bc982eb6c8795355e8fc4e2a0208901fb",
+          "security_domain": "HHS_AUTHORITATIVE_EXIT_STATE"
+        },
+        {
+          "chunk_index": 3,
+          "chunk_root_hash72": "0000000000000000000000000000002u6I>u+K+OO4zpjLYwMpdHq5dFyziEk-1zNK*Ym?ym",
+          "compressed_offset": 1536,
+          "compressed_size_bytes": 512,
+          "payload_hex": "a6cbd455ca91f7e69c7c9eea8e58dbc2cb4661daed65447d3c701f867e40f6fc955ed9c712423499d1b104bdfc1bb9f18ea955931a6d9b0c39a994c33975d8d3a59826d6da04c71efaa5a443e78f4194f7d06578d714c2d5f6b91976389ceb5bca639ce108334cc6f7a8233a6f0f5d4469e6dab28211e3fc2f2418ae0dd1e984a5e2a8c31264d830acad55a7e4916d35b5652ed116f9421c95c6ddfba6a87d80828cb0616b6d3193c8bc65303883f44df65cac1ceb93e060bbbb6e5127b7774d611651a46b419f5e08c57e4506a5112f14b4f66eb12ce6bd7a836f2cc393e78ee67ce53e56c5ee034ecd199256c21109a4ed3c10ad87b6afe42acd998d0227630d5bfb29ae7b774de1f6865bd8937a65bb35dd2d03bceaa18d76098e1615491bc4c53dd731a2422295d1fba6ca3dce0093c99116db62cc0e6af519e73923766e8c246598140d8d029b4a2f3358dd871da7e74d89c6fd48d6d8ae405607d8d93deb1cb16c2495cc4e1cf417026b9942a970d754d93a6a6c50b0b77234e662a91187855e95e71a81cb20bca180f1b456e21383f2e6f7a39a803ec6d2a57a2c6be6ccad9fedf20e50caea34253a8d5653eb6dd7259f9eb10fd3fbc5d0a61a3d0fa935a2dcdc9a8de3f82c29a5dda15f1921394ea2028b60778542bb8884b7ab81084e445a986abe5747f34d72becbcdaf45d6859c6f974e9086367e4a8e5033a697",
+          "security_domain": "HHS_AUTHORITATIVE_EXIT_STATE"
+        },
+        {
+          "chunk_index": 4,
+          "chunk_root_hash72": "0000000000000000000000000000000ATD!R*w9la>5VnQ/cZ-zOcTc>HtXN!xTEt=EbHoC6",
+          "compressed_offset": 2048,
+          "compressed_size_bytes": 512,
+          "payload_hex": "afaeed59207d9ab26bcaabe911947228f26add0b3efd10c3979a8450357bc46cd833579d697d69101adf3dcd7b4c5e9b9f5d676e351b655427b9540146be9f8e0a5b5f5b439180a7a206e8511adee511ae42c6b7a350bb5d94202f1658aeebfd2ab3e2473dcfe1225e0687aa2e120ccd1d8bc103df1519baddf7079422ccc3843d9cb7fafd0ee8d01a7838d0d3596eb13d1083900cf2ec01d576fb4263dc9dc495d13e63b3bb5e50bc5fb684e84c4f41858ab1da59a936123908f14d5bd45dedc1220577e594c98872e7767cbf6cfb727b4f5a783f5a67bae7c351af2998b34477f5f3d11aadba33a3b72adab692c93bf7cbd6c9145b1666efa96a7fc01766f62190429c980e76db42abeb2495227e3ce40aa7e83e879543a3372f9f70815f661663b17a1e30139f6ee06ba0b364d43879870c1d27f65ad1d30e70401cbedcefa7a31f6e7aaadc4c67fb7651102fe6c067b5092ccd8343949a2ec0480caf56088caa4053b6169b7664a7e39ca5be1014ced1d59f2ca2972ba19f7dfef5553bb2746b2c483cdd5799a13260a46b5f422507bb94916ea39e1b42936fa7f0f55b8e17d5035f4337e4aba7303b3f9da871b8fc49e3a8cf1d9d7ddc6856009ee6c21797edbff37793df78e5fd7ff9f3cb47a6ba97fbfcb11bda76924c3b11d97166dcb0a9890b2c3124ddaf5883d01980fa76e5ee3bd5b2db3b149fbc3c0ff4e960a2",
+          "security_domain": "HHS_AUTHORITATIVE_EXIT_STATE"
+        },
+        {
+          "chunk_index": 5,
+          "chunk_root_hash72": "0000000000000000000000000000003UE8g4aIci5Zq!BdB!z4rcl(1vC3V3TN)-Bo(Xxgfz",
+          "compressed_offset": 2560,
+          "compressed_size_bytes": 64,
+          "payload_hex": "ca34cb5c4f9d973f77fce621f37f631af081a799befa74a77d6bd2e7f33ee501330cdff995ed1bd83f9ef7ef5c237dbb00f241f89dc7f719e3ebbf00b6cf273a",
+          "security_domain": "HHS_AUTHORITATIVE_EXIT_STATE"
+        }
+      ],
+      "context_bindings": {
+        "authority_root_hash72": "0000000000000000000000000000002F1a^v3j*J)h(i*20r1lJJ64gg?3!roPPB7vs>sDJ?",
+        "dependency_root_hash72": "00000000000000000000000000000032WC/bD3wx(-W>ydAD124wZ5QSX?Z3bN-sc*KKSjt/",
+        "provenance_root_hash72": "00000000000000000000000000000026FKe+9w4w+M9td9qU^RW-Vt>fI8X0UTBvGWSlG5R3",
+        "security_policy_root_hash72": "0000000000000000000000000000003MsETEAE4qkKz5ZVim*K-tCi3=BsE)OxL0I++LrU*l"
+      },
+      "manifest": {
+        "algorithm_version": 1,
+        "archive_policy_root_hash72": "0000000000000000000000000000004LmeP>r!t19QRGHxgNPBMm+(F8(XJebmGiTWJ2JdM*",
+        "authority_root_hash72": "0000000000000000000000000000002F1a^v3j*J)h(i*20r1lJJ64gg?3!roPPB7vs>sDJ?",
+        "canonicalization_root_hash72": "0000000000000000000000000000001CUd8pXR6)N4cwwQUr--1aE8iraS=ZkJm+t(zM*6KL",
+        "chunk_map_root_hash72": "0000000000000000000000000000002^f/5ofT5H5sRTNXNwXoO43lm3sG?>Ih!IH3wMXAT-",
+        "codec_observations": [
+          {
+            "codec": "zlib",
+            "compressed_size_bytes": 2624,
+            "decoder_root_hash72": "0000000000000000000000000000003xkLa9jGGEg8-pGb)vlVZL1C^io/671DFM6^KahJsE",
+            "lifecycle_cost_units": 10282
+          },
+          {
+            "codec": "lzma",
+            "compressed_size_bytes": 2700,
+            "decoder_root_hash72": "00000000000000000000000000000019pqf>ziI(gjYpzorOqWRb05jD(+Sz-xMcQy73fv82",
+            "lifecycle_cost_units": 10550
+          },
+          {
+            "codec": "raw",
+            "compressed_size_bytes": 7594,
+            "decoder_root_hash72": "0000000000000000000000000000001A3Ci8=Wh-B80B>ukUbDlseft>I5HtqxMG?TZh1bTL",
+            "lifecycle_cost_units": 15188
+          }
+        ],
+        "compressed_size_bytes": 2624,
+        "compressed_stream_root_hash72": "0000000000000000000000000000003cD/h5=i==HbhkjT>vkot6dzDDu4ofxHBDd9hPx55H",
+        "compression_algorithm": "zlib",
+        "compression_algorithm_root_hash72": "0000000000000000000000000000003xkLa9jGGEg8-pGb)vlVZL1C^io/671DFM6^KahJsE",
+        "compression_class": "VIRTUAL_MACHINE_ARCHIVE_COMPRESSION",
+        "compression_manifest_root_hash72": "0000000000000000000000000000000?B)ku6bLaG5C7ME/G1dPL=HWJ4N52KZ(scVq^nIIi",
+        "dependency_root_hash72": "00000000000000000000000000000032WC/bD3wx(-W>ydAD124wZ5QSX?Z3bN-sc*KKSjt/",
+        "dictionary_roots": [],
+        "maximum_dependency_depth": 1,
+        "maximum_recovery_memory_bytes": 8106,
+        "maximum_recovery_work": 10224,
+        "provenance_root_hash72": "00000000000000000000000000000026FKe+9w4w+M9td9qU^RW-Vt>fI8X0UTBvGWSlG5R3",
+        "random_access_granularity": 512,
+        "recovery_contract_root_hash72": "0000000000000000000000000000004nF)(93RsHscOmV*u1h63HYioqNi7c)r8/66=MjMhq",
+        "schema": "HHS_SAFE_LOSSLESS_COMPRESSION_MANIFEST_V1",
+        "security_policy_root_hash72": "0000000000000000000000000000003MsETEAE4qkKz5ZVim*K-tCi3=BsE)OxL0I++LrU*l",
+        "source_class": "VM_PASS112_DEFERRED_EXIT",
+        "source_state_root_hash72": "0000000000000000000000000000003VTstwawYEF!7GIMz5T08apIBnpAMs6GdqYN-Zw0Zo",
+        "uncompressed_size_bytes": 7594
+      },
+      "recovery_contract": {
+        "cold_boot_recovery_supported": true,
+        "maximum_chunk_count": 4096,
+        "maximum_expansion_ratio_denominator": 1,
+        "maximum_expansion_ratio_numerator": 100,
+        "maximum_recovery_memory_bytes": 2000000,
+        "maximum_recovery_work_units": 5000000,
+        "maximum_reference_fanout": 1,
+        "partial_recovery_supported": true,
+        "recovery_contract_root_hash72": "0000000000000000000000000000004nF)(93RsHscOmV*u1h63HYioqNi7c)r8/66=MjMhq",
+        "schema": "HHS_ARCHIVE_RECOVERY_CONTRACT_V1",
+        "streaming_recovery_supported": true
+      },
+      "schema": "HHS_SAFE_LOSSLESS_ARCHIVE_V1"
+    },
+    "compression_receipt": {
+      "archive_root_hash72": "0000000000000000000000000000004t82-H9g=QJdh^(!W*k(f5mwOWb)5Eltwn*W4HY?s0",
+      "canonical_source_root_hash72": "0000000000000000000000000000003VTstwawYEF!7GIMz5T08apIBnpAMs6GdqYN-Zw0Zo",
+      "compressed_size_bytes": 2624,
+      "compression_manifest_root_hash72": "0000000000000000000000000000000?B)ku6bLaG5C7ME/G1dPL=HWJ4N52KZ(scVq^nIIi",
+      "compression_ratio": {
+        "denominator": 2624,
+        "numerator": 7594
+      },
+      "compression_receipt_root_hash72": "00000000000000000000000000000006d2Ekp1h+Mf5N75sz>^RKInq=kpRXBtC)C+-hAO)Y",
+      "compression_status": "LOSSLESS_ARCHIVE_ADMITTED",
+      "deduplicated_bytes": 0,
+      "maximum_recovery_memory_bytes": 8106,
+      "maximum_recovery_work_units": 10224,
+      "preservation_vector_root_hash72": "0000000000000000000000000000003IElLLwZjccmLeDbcpMSH?8?Pfm?UMtMp5fu^*2czN",
+      "schema": "HHS_SAFE_LOSSLESS_COMPRESSION_RECEIPT_V1",
+      "security_policy_root_hash72": "0000000000000000000000000000003MsETEAE4qkKz5ZVim*K-tCi3=BsE)OxL0I++LrU*l",
+      "source_state_root_hash72": "0000000000000000000000000000003VTstwawYEF!7GIMz5T08apIBnpAMs6GdqYN-Zw0Zo",
+      "uncompressed_size_bytes": 7594
+    }
+  },
+  "deferred_exit_reconstruction": {
+    "checks": {
+      "cache_disposition_root": true,
+      "checkpoint_root": true,
+      "cleanup_root": true,
+      "exit_receipt_root": true,
+      "history_binding": true,
+      "state_binding": true
+    },
+    "last_valid_state": {
+      "accumulator": 702,
+      "capability_admission_root_hash72": "00000000000000000000000000000042G8KRmfuExo)808MJ*qt/IUp-H8z1^AwcvIdUZz=Q",
+      "dependency_root_hash72": "0000000000000000000000000000002Y7-Iaqreq1FQ(Ucg67fNid7jLSLqgv)e61zQRF5x*",
+      "operation_id": "hhs:pass112:continuation_workload",
+      "payload": "PASS112_FROM_PASS111_SEED",
+      "previous_state_root_hash72": "0000000000000000000000000000001inNCW=o1GB!z52(1>0fVCQi6/Q(o^gjVxc)7zjFas",
+      "schema": "HHS_CONTINUATION_WORKLOAD_STATE_V1",
+      "state_root_hash72": "0000000000000000000000000000001HUcJ01Y>6NsJv+9F8adiyJrs?^fh6^obQs6H+f2k1",
+      "step_index": 12
+    },
+    "reconstruction_root_hash72": "0000000000000000000000000000002zzB^VTMJFKwosnX>3/PKdontOFE8SVj2)q0IpUk^N",
+    "reconstruction_status": "RECONSTRUCTED",
+    "schema": "HHS_PASS_SAFE_EXIT_RECONSTRUCTION_V1"
+  },
+  "deferred_recovery": {
+    "recovered_state": {
+      "cache_disposition": {
+        "cache_disposition": "RETAINED_FOR_REVALIDATION_OR_RESUME",
+        "cache_disposition_root_hash72": "000000000000000000000000000000418mdk6A>*f93ya1xp?GXNRS=WQ=F(*Z+zKGT0qG7h",
+        "continuation_authority_active": true,
+        "continuation_cache_root_hash72": "0000000000000000000000000000001z*usl^9kxCItVhKsoAh?y4Hc=i9tc?p^/fkVZy0rB",
+        "exit_checkpoint_root_hash72": "00000000000000000000000000000046D4Wsm^Hh1?g)pHmczx->esipagk1BomO1eFq)rzh",
+        "history_preserved": true,
+        "schema": "HHS_CONTINUATION_CACHE_DISPOSITION_RECEIPT_V1"
+      },
+      "cleanup_receipt": {
+        "authoritative_objects_preserved": [
+          "authoritative_exit_state",
+          "preserved_receipt_bundle"
+        ],
+        "cleanup_plan_root_hash72": "0000000000000000000000000000001=S9RX=2uO^MlF3q+Cd38rba(R^wr6wk0VnmrS9zR?",
+        "cleanup_status": "CLEANUP_VALIDATED",
+        "cleanup_validation_root_hash72": "0000000000000000000000000000000ZG5pUszFPXNSCISf7EOXBd/TgOVT=SVWh!0d7whTe",
+        "exit_checkpoint_root_hash72": "00000000000000000000000000000046D4Wsm^Hh1?g)pHmczx->esipagk1BomO1eFq)rzh",
+        "external_handles_closed": [
+          "runtime_file_handle"
+        ],
+        "post_cleanup_memory_root_hash72": "0000000000000000000000000000000y5(oZlgOE5^*dEgsak0GaY8sK826mx03bH5=QK9SM",
+        "pre_cleanup_memory_root_hash72": "0000000000000000000000000000001aSavWDDZApf1De2=r8LI4Sl4IsZ!*K>U^18JAwUZx",
+        "replay_objects_released": [
+          "tail_replay_buffer"
+        ],
+        "resource_dispositions": [
+          {
+            "disposition": "RETAINED_WITH_AUTHORITY",
+            "release_event_count": 0,
+            "resource_class": "AUTHORITATIVE_STATE_MEMORY",
+            "resource_id": "authoritative_exit_state",
+            "resource_root_hash72": "0000000000000000000000000000003G)(v2MW?Nj>(H^M05rOeIuECmoC0NsxL6Z2=)y>mY",
+            "retention_reason": "required for reconstruction",
+            "size_bytes": 4096
+          },
+          {
+            "disposition": "RETAINED_WITH_AUTHORITY",
+            "release_event_count": 0,
+            "resource_class": "AUTHORITATIVE_STATE_MEMORY",
+            "resource_id": "preserved_receipt_bundle",
+            "resource_root_hash72": "0000000000000000000000000000001et4w!jd4-DaIvpi/5(w4nyPKPdnRpizyMh9XQx9R(",
+            "retention_reason": "receipt history must survive cleanup",
+            "size_bytes": 8192
+          },
+          {
+            "disposition": "CLOSED",
+            "release_event_count": 1,
+            "resource_class": "EXTERNAL_RESOURCE_HANDLE",
+            "resource_id": "runtime_file_handle",
+            "resource_root_hash72": "0000000000000000000000000000004AirfXDuPncS6Dns51z4DXsMlCv??Kap0>=LWTR6x0",
+            "retention_reason": null,
+            "size_bytes": "TYPED_UNAVAILABLE"
+          },
+          {
+            "disposition": "RELEASED",
+            "release_event_count": 1,
+            "resource_class": "REPLAY_WORKING_MEMORY",
+            "resource_id": "tail_replay_buffer",
+            "resource_root_hash72": "0000000000000000000000000000002!yde8YgjKS9(Tu*(U?lh3O?PnsR4CawX3T^?ivmw*",
+            "retention_reason": null,
+            "size_bytes": 2048
+          },
+          {
+            "disposition": "RELEASED",
+            "release_event_count": 1,
+            "resource_class": "TEMPORARY_EXECUTION_MEMORY",
+            "resource_id": "temporary_candidate_buffer",
+            "resource_root_hash72": "0000000000000000000000000000001IewHG4?R?3sA^yM/UP75(g/BwV7>m5XUOFV/r9fDO",
+            "retention_reason": null,
+            "size_bytes": 1024
+          }
+        ],
+        "schema": "HHS_MEMORY_CLEANUP_VALIDATION_RECEIPT_V1",
+        "temporary_objects_released": [
+          "temporary_candidate_buffer"
+        ]
+      },
+      "exit_checkpoint": {
+        "authority_state_root_hash72": "00000000000000000000000000000042G8KRmfuExo)808MJ*qt/IUp-H8z1^AwcvIdUZz=Q",
+        "branch_states": [],
+        "checkpoint_status": "EXIT_CHECKPOINT_FINALIZED",
+        "continuation_cache_root_hash72": "0000000000000000000000000000001z*usl^9kxCItVhKsoAh?y4Hc=i9tc?p^/fkVZy0rB",
+        "dependency_state_root_hash72": "0000000000000000000000000000002Y7-Iaqreq1FQ(Ucg67fNid7jLSLqgv)e61zQRF5x*",
+        "exit_checkpoint_root_hash72": "00000000000000000000000000000046D4Wsm^Hh1?g)pHmczx->esipagk1BomO1eFq)rzh",
+        "exit_classification": "EXIT_RESOURCE_BOUND",
+        "last_valid_checkpoint_root_hash72": "0000000000000000000000000000001HUcJ01Y>6NsJv+9F8adiyJrs?^fh6^obQs6H+f2k1",
+        "last_valid_state": {
+          "accumulator": 702,
+          "capability_admission_root_hash72": "00000000000000000000000000000042G8KRmfuExo)808MJ*qt/IUp-H8z1^AwcvIdUZz=Q",
+          "dependency_root_hash72": "0000000000000000000000000000002Y7-Iaqreq1FQ(Ucg67fNid7jLSLqgv)e61zQRF5x*",
+          "operation_id": "hhs:pass112:continuation_workload",
+          "payload": "PASS112_FROM_PASS111_SEED",
+          "previous_state_root_hash72": "0000000000000000000000000000001inNCW=o1GB!z52(1>0fVCQi6/Q(o^gjVxc)7zjFas",
+          "schema": "HHS_CONTINUATION_WORKLOAD_STATE_V1",
+          "state_root_hash72": "0000000000000000000000000000001HUcJ01Y>6NsJv+9F8adiyJrs?^fh6^obQs6H+f2k1",
+          "step_index": 12
+        },
+        "operation_id": "hhs:pass112:continuation_workload",
+        "preserved_receipt_history_root_hash72": "0000000000000000000000000000002nR05VIS4t4BhZoE8xQzS3+yZHGgN5d3>uP+M*RPsF",
+        "preserved_receipt_roots": [
+          "0000000000000000000000000000000))9JQFml34h*WJK!PcTMo-Nrs8Krbc5kxR06BEQv/",
+          "0000000000000000000000000000001z*usl^9kxCItVhKsoAh?y4Hc=i9tc?p^/fkVZy0rB",
+          "0000000000000000000000000000001bB9QgBE8V54tY9qkA/xA6daV32-L/yGA)vsu)p1^t",
+          "0000000000000000000000000000000H=k(X2qqz>g9pEnNQ2hiErp9v1YDNo0UB(DSU26T)",
+          "0000000000000000000000000000001ztdhPnGt/+QGF68t?hlgl>9SQmlBa^(yaZ)*xu/TJ",
+          "00000000000000000000000000000019ks1e!OfF=DP!ySIlhE3E0LiFz+5v>VsqmojJ+c8g",
+          "0000000000000000000000000000002l6+A=sLAZO+L5Se/QIO*aDjZ^+)p>?I?^twpoQYI5",
+          "0000000000000000000000000000000+J-39YE8AUtQ8eRgYsPl-DrU(5BXm1en!lNCkW3cp",
+          "0000000000000000000000000000003mfHZmV>5ggiogEep7qD1J6HAPURaMx+kHGhu*yR41",
+          "00000000000000000000000000000034KHheVVvAPDPxFM=>XHpnQFYhQRUNy+ha9ef5K!Mb",
+          "00000000000000000000000000000013AYBRA3ruSaFJO87M2zozcH6^?y5!jPMLZOFliO/*",
+          "0000000000000000000000000000004lvaFs*mgSuTHxR?xt*K7IH?soE0IhUeTW=/Iyh9pY",
+          "0000000000000000000000000000001VeL2FA/>xSaiXo>zm4je9UbwW6G?CBaKgd/rAXF-W",
+          "0000000000000000000000000000002D9?Kp0=?u(YlXTxxzRU/jqL5Q0(HR9sl6Fj**D+0t"
+        ],
+        "resume_attempt_root_hash72": null,
+        "schema": "HHS_CONTINUATION_EXIT_CHECKPOINT_V1",
+        "validated_frontier": {
+          "completed_step": 12,
+          "pass110_frontier": {
+            "continuation_root_hash72": "0000000000000000000000000000001/B6O7iK6XNKibGW>^h6aIJwYKE)aYzonYlB?41c8H",
+            "current_grade": 3,
+            "executed_grade3_permutations": 0,
+            "executed_loop_roots": [
+              "0000000000000000000000000000003vc)H3P34eq7cP6EAHv+s-IJPEADLrM9UOYtyFqzgc",
+              "0000000000000000000000000000003GAae-qAWX(Zgq6Mt8s)Fq1ajk*?TJVx5Qk!mFjKs+",
+              "00000000000000000000000000000046PnWws59x2=zU7?ySst3fDPcoa-l8Oobn48u9oYmx",
+              "0000000000000000000000000000001LSDk8l3Lud!Jzqvc=U2n^1j>zvlQbJXhKb+mmU!)n",
+              "0000000000000000000000000000002n!+Cl2mk97LMI*XmqsRt36WMjg*CJny5+3vq(*wu5",
+              "0000000000000000000000000000004thKY4w3OI^!ZTP7zMEVrA?3decF8u?wpq!AxymdUc"
+            ],
+            "next_permutation_index": 0,
+            "pending_grade3_permutations": 6,
+            "resource_state": {
+              "elapsed_ns": 28237562950,
+              "maximum_real_operation_invocations": 10,
+              "real_operation_invocations": 10
+            },
+            "schema": "HHS_FACTORIAL_ENUMERATION_FRONTIER_V1",
+            "total_grade3_permutations": 6
+          },
+          "pending_step_end": 18,
+          "pending_step_start": 13
+        },
+        "workload_completed": false
+      },
+      "exit_receipt": {
+        "cache_disposition_root_hash72": "000000000000000000000000000000418mdk6A>*f93ya1xp?GXNRS=WQ=F(*Z+zKGT0qG7h",
+        "cleanup_validation_root_hash72": "0000000000000000000000000000000ZG5pUszFPXNSCISf7EOXBd/TgOVT=SVWh!0d7whTe",
+        "continuation_cache_root_hash72": "0000000000000000000000000000001z*usl^9kxCItVhKsoAh?y4Hc=i9tc?p^/fkVZy0rB",
+        "exit_checkpoint_root_hash72": "00000000000000000000000000000046D4Wsm^Hh1?g)pHmczx->esipagk1BomO1eFq)rzh",
+        "exit_classification": "EXIT_RESOURCE_BOUND",
+        "exit_receipt_root_hash72": "0000000000000000000000000000003DyyWGu8GnXHNBaPZ2yhRcr5lMtnMe>gbokG74oKq+",
+        "exit_status": "PASS_SAFE_EXIT_VALIDATED",
+        "last_valid_checkpoint_root_hash72": "0000000000000000000000000000001HUcJ01Y>6NsJv+9F8adiyJrs?^fh6^obQs6H+f2k1",
+        "operation_id": "hhs:pass112:continuation_workload",
+        "preserved_receipt_history_root_hash72": "0000000000000000000000000000002nR05VIS4t4BhZoE8xQzS3+yZHGgN5d3>uP+M*RPsF",
+        "repair_required": false,
+        "resume_permitted": true,
+        "schema": "HHS_PASS_SAFE_CONTINUATION_EXIT_RECEIPT_V1",
+        "temporary_authority_retired": false,
+        "workload_completed": false
+      }
+    },
+    "recovery_receipt": {
+      "archive_root_hash72": "0000000000000000000000000000004t82-H9g=QJdh^(!W*k(f5mwOWb)5Eltwn*W4HY?s0",
+      "corrupted_chunk_roots": [],
+      "decoder_root_hash72": "0000000000000000000000000000003xkLa9jGGEg8-pGb)vlVZL1C^io/671DFM6^KahJsE",
+      "peak_recovery_memory_bytes": 8106,
+      "preservation_vector": {
+        "authority": true,
+        "branch": true,
+        "dependency": true,
+        "execution_semantics": true,
+        "frontier": true,
+        "grammar": true,
+        "operation_order": true,
+        "payload": true,
+        "phase": true,
+        "provenance": true,
+        "receipt": true,
+        "scope": true,
+        "security": true,
+        "type": true,
+        "value": true
+      },
+      "recovered_chunk_roots": [
+        "0000000000000000000000000000004rXlIXf/i6t!S>zokx)-NWV9gJ*nhgas?bSaH1cNeO",
+        "0000000000000000000000000000001?+-whJcfj*uFFqBfzq9ZlO5p-MF)aK1yYsFdjIP-^",
+        "00000000000000000000000000000037Ry0nmtnSUbAg>ZRvKq9Dw)a7ATfeo9Lo*QF/44Kp",
+        "0000000000000000000000000000002u6I>u+K+OO4zpjLYwMpdHq5dFyziEk-1zNK*Ym?ym",
+        "0000000000000000000000000000000ATD!R*w9la>5VnQ/cZ-zOcTc>HtXN!xTEt=EbHoC6",
+        "0000000000000000000000000000003UE8g4aIci5Zq!BdB!z4rcl(1vC3V3TN)-Bo(Xxgfz"
+      ],
+      "recovered_state_root_hash72": "0000000000000000000000000000003VTstwawYEF!7GIMz5T08apIBnpAMs6GdqYN-Zw0Zo",
+      "recovery_environment_root_hash72": "0000000000000000000000000000000=4oJ*UEobTMn>tT+AyROrU9CyiX1VuAT*D(jg=Z+U",
+      "recovery_status": "RECOVERY_VALIDATED",
+      "recovery_validation_root_hash72": "0000000000000000000000000000001=RDEZtj6AQ4z*IiWaAuOjqjrG^H*XYkO3Yja)V3m^",
+      "recovery_work_units": 10224,
+      "schema": "HHS_LOSSLESS_RECOVERY_VALIDATION_RECEIPT_V1",
+      "source_state_root_hash72": "0000000000000000000000000000003VTstwawYEF!7GIMz5T08apIBnpAMs6GdqYN-Zw0Zo"
+    }
+  },
+  "execution_equivalence_failures": 0,
+  "migration": {
+    "archive": {
+      "archive_root_hash72": "0000000000000000000000000000000fPbdvNr8y*N9k0KkUozY91Qa(43en(=!FNipO!REW",
+      "chunks": [
+        {
+          "chunk_index": 0,
+          "chunk_root_hash72": "0000000000000000000000000000001Ws8?2V9SEaH4?FnBjKJ0cLK>fIw9mrrXBbaOgV3Ms",
+          "compressed_offset": 0,
+          "compressed_size_bytes": 1024,
+          "payload_hex": "78dadd596973a25a1afe2b6d3eb95c4b5985ae520b05143710c4edd695424441d96413bc95ff3e074dd2e974d2b6b9333d35932f5138becb73dee579cff9fb41533543573666e0b981199aaef3f0f5eff71e3e88cc8413195aa1d809232a6d7e280cc0137ef4f0c78fcb15df7543c55003a306839f567ffa8770346ecf9b98d0daa70914ef122e95cc862433526546ea54c59822a54d718a9246a6ca7542d389d48b16350a0dd737c35451b5d08cf587af5bd50af437abaed6dd6311742e4681b5220f499b0ba7463f7029a399a25dad6e92a1d6f45695ed61ba4cab7e0b58a42766a8000ddac1734d27bc4f512a1c97b559303b71e34eae5e666b4267eb98f3ed4970f071791f2eaadbc9ceb5e81350649841e8faa9e2f97aa0fbb1be79f81afa11f03600da6d1528eb7625b031a3093792a96c6b9436d5ee320acd49022f71972722d3663861a24ca187478093a5ab4ee429beaee9a617665bff8ca99a01aab8ebbdae85c16b9d7fbe5972f13f005f7460e3cbba6791ca3a723696fef0d737659ea5de172068a7d09391315d1e4f2cdbdcd3ed354acc5d121ff5a30615974742bb695559f7d4ce3f7cd39259140540767bc050235950a6d480a3a90943bf5a14ab96b951ef8e58148abaf07e990655d18c1218f166dc9cd3f2621e824afbe4980aacd0aca0a3f95efe9df1a127a1ee3baa05846790078a66b9c175c7fc08e483ad2b5bd3d29f5e673b02d21598f68485addb5974dd635e35c5f2eed2daf10cb62a6e985da01eaa1d7541047d02c6eda48aacbb587ddc27a5e13534fe892e4895d47846d34bcadb42b40ed77d62c0a1928572c13257ec37e41544f4a893bc4c802e5f074196be44afaf03bd4f5084aa69294fefd7d176abfb1912206cddc8d7be2b622078fefcfbe18722487123500567dca4ab50f2a4cb8bdc64715179d1a1e8b10e36597301e20f5fabaf246b961a64f1f8fc2390a1534691c07f461932435ebc4a795a6d02637f96682f0befaab49d423e8687b3e668dfc87757c32ae6f33a17316ddb6d57474132c09770bd9036ecab2921f0e4921ac0b18bf7be7e8c4c5fdf7cd9bafe1790e000235081b40b36a00c99675d59a7a10ebc44ab24fef8c77f17bd0f6bd127d183f4103de5f61bb44cab5cec99152c7f429d54e80b1b47f4cc733a34c8f93821c5fc47e85dacf8f254c7bfd851107e09223f069bfbe52933dec0484024fc238ced012f5dcad8bba841efa0c6cc41cf1e510350fe255e16db8cd2a546f480f901b3f70ac527e14229d3dfcee948703409a79d0083ce283d0f86563b6e36fbaa576dd407b3898827d577e17222cbfa1e8c87c94200b1238fa829c50da81630ffbd1003e5fe4e74444618500b65c68b7d6ed4f9289cde291c9f4406cea51b9d58ecf67d89cc4fa2625e6e5a06c237052710d1b67a9a239355d3",
+          "security_domain": "HHS_AUTHORITATIVE_EXIT_STATE"
+        },
+        {
+          "chunk_index": 1,
+          "chunk_root_hash72": "0000000000000000000000000000000CVf+cfKSc-nQYJUmtv4j?F3KvKtfs=Vg?!2TeVDeR",
+          "compressed_offset": 1024,
+          "compressed_size_bytes": 1024,
+          "payload_hex": "8ced53f1179181ab28f1ef8162c20c055ea4c485c2cc99b67ca10c1fe1a1db9eebaba08c6b204eb236aaff435c204e3f753b68536c2201b54a871559a861f95da5759ad61a36369779765af1c92dcdff222e5015461fff7a4390aeee286f68c11b6ef4c72bf7deed221f3bffd7e30f3dff35af4aaf25fcbe54823b445fb4b71193b805a24a0c7bc56358e164afdc25ced08a3a6931b79197e7fa1818bef6554733ae5ab2169631af6fece3851631736ea20076d8ee0b3c379a282c07ea03b7bcd2a3df489f37baa73b1bddd13e030cbca89539f508fa12c48ef3b2b6c36bdb91b9a9ed07d2e0b88b0b3a0e9dc7228b25c5df4bc432455946995b53539fd2f10af8756cbaa00c16845706fa59abe0a3694da7eb543d949a8187733b6ee3efdcba0cd58d718dd860d332a1c215b60785dfabbb92882c28352db2234b05fd08640b8690d92ce7a96bd3ba0c551bdb043edc4b8eef09d657bbff1fdb77d7d3fd6b285fea9661045f3db03710047ffd2ed04fae7fb05c7593715535bd7cfafa20509204562aacc80f95eb17489198cb060282119b6e147c227011b57be2030a735d2da84c9a61c393b48e448df98d3737f26cdb90ea636bab32e9ece167f35dd6b2063c453f11a14be1fa4416dd134641a87b8a09f62c011103bacea7e0fd81993dcfb677e564dfedb9ad73d29e197dbcdf3b8dba1647b5c7d8ccc1da0ea211bd2d5d3c5a450337df5599a9caeae3ad19a750207b63d6b610d428ce7afd9ca04d866e79e40744df5f6bd82111ab788b19c715a0e5df58176f885ab7c8f1aec510530c0d17e4f14055120adfa853042e0f2a69872ac44154f0a055785354b55b3fe4e7f0f1786eec488f714663d83019df236368418fdcaadccad3920ce393c22f38186e0cc1e98495d2b8c3e244d834ac9dd520a5b16db5d4553e55978562125526bddba2c84300e9397ecbd66921974a9c653008531d98ecb984c58d6970b4dd7dafa411bb9ba2600b2f51f560402df9d20093f4ca98e38b2abd5fae4a05afd1e49aabf0e4b9e30587ddc6aad42b23e4822128391c13bab85b048255a67d398fb5e636a43b396bd43ecc10cdbb290ab1b7dda53d6d60bb9de9ee18ddab1d69a88777294116d561523a743b46544c4514ba2d0aed770d7d3a8d2981161276586fccbb9e336617c658944769c950497d8bf573c3f56dd8116ad11229c48f2495edf1446d089fddb3d6c557cd14cbed85e160c9b396c9578a3745a156acb241d1de49d1a49b88cd242cf66b5cb719b84c9533647d32ab57b8d420bdc56daba6fa0066a94a23915473ee36ce36bad749797d9ae19d66bba5f6779b8a4fcdd9f2ec7630d064b3ef55ebcd28bfb0e69324398b72657f1c60e36abe2b928185b3fb62912e556f270e1ca56418cfa01eda43cdaacc8e02f24ca688b08dab9d6899ebe6361ddd",
+          "security_domain": "HHS_AUTHORITATIVE_EXIT_STATE"
+        },
+        {
+          "chunk_index": 2,
+          "chunk_root_hash72": "0000000000000000000000000000004J!+g!=CiK7?ZZGqNBeOJU>!WCy39*IlY89nE^dr7Z",
+          "compressed_offset": 2048,
+          "compressed_size_bytes": 652,
+          "payload_hex": "3fd19e14df7670e00ee6f1703e5f4e5bf14a9b1ff7f543cc78671ae2bb93089f248485e239c91eef9e0e2b2230a3a961c642ef640cf7d8fc71df794b1e2f8de7e9300d94d8ad9f157ec085b3a364d7f62c3d7b9a758eac6764ed35eb0fd537eb5ef58abbda40a585f335b38fcf477d73dd99355606ae72bdd3a2cf14d4c5d9751656ab89421ad1cd986de4fbd908b4f3d50d60404846d6742dcaccbb3c4214d0cdec28549f0e80aaaf1658aeebfd6ad74062add0450404d58f354dc019aa1b978232d713188a1ef84352e61761ca1ecf3bed76767728552f1fa9d93cbfdc1df161480405f608a9fb43b139e94d136c7cc8d9ecbe1f946ea7242e38b3538091095c3fcbb5662a0521b2a505cd55cb16c1bb6b072522d25dd8c92f44ac441f080b19449b5cef7c8cb5ba0c3b2b68df38c7d678dd9b1bfd75c9b6e55cc1b99d474eaed4b660fb40d60643ae38b78f811822f86cb8df15db3d27c54a487ccc174fd1edfa8c86467f819e109e5be59613a1761e32539f6a221b5d6389a879f28e392a49ed8dac6579e4e849f87abf9f690dd8f48c959aceeefda0c05fcdb72f545ab7540f0c874ab6002660a486e130890151b69a9876646763aaa5bc224b4eec6acf12a1cb51d7cfde3fbe4947966a4f7891a3060a3392878c78cd4bc052419632e2d308eb8640e4fb2e3c7ef3f1c2e8c0e7e709fabbe7c03f3fbcbe013f79e670ca4b565fef209e47de57f708bff34ee8379ee6ff5fde2cfde2c0fa7a8befeb3acbaa702461b7146f18a8b96fbb5e9b43f3b0636090e85a874da971c8b12b403ea2672d2fc714d9c8a54814cb5c7bceeb4b9cdf3c3fff6fcc39beeea9a6af3c9fd4bfdc883e7186ac0a9861f8eac57755e51bda3fb6fb0f4ec7be9d6bf97a785579bd95fcb0563cfe0bbd3c5cc0",
+          "security_domain": "HHS_AUTHORITATIVE_EXIT_STATE"
+        }
+      ],
+      "context_bindings": {
+        "authority_root_hash72": "0000000000000000000000000000002F1a^v3j*J)h(i*20r1lJJ64gg?3!roPPB7vs>sDJ?",
+        "dependency_root_hash72": "00000000000000000000000000000032WC/bD3wx(-W>ydAD124wZ5QSX?Z3bN-sc*KKSjt/",
+        "provenance_root_hash72": "00000000000000000000000000000026FKe+9w4w+M9td9qU^RW-Vt>fI8X0UTBvGWSlG5R3",
+        "security_policy_root_hash72": "0000000000000000000000000000003MsETEAE4qkKz5ZVim*K-tCi3=BsE)OxL0I++LrU*l"
+      },
+      "manifest": {
+        "algorithm_version": 1,
+        "archive_policy_root_hash72": "0000000000000000000000000000001OvMe+aGhKIXh*Iu>xu=l9hXvN?0xGx1XtA-TvuSfu",
+        "authority_root_hash72": "0000000000000000000000000000002F1a^v3j*J)h(i*20r1lJJ64gg?3!roPPB7vs>sDJ?",
+        "canonicalization_root_hash72": "0000000000000000000000000000001CUd8pXR6)N4cwwQUr--1aE8iraS=ZkJm+t(zM*6KL",
+        "chunk_map_root_hash72": "0000000000000000000000000000003^a?wKSIq-g1f=SLDg*aggqJ>0l8REPnW2sJ5zgUFr",
+        "codec_observations": [
+          {
+            "codec": "zlib",
+            "compressed_size_bytes": 2700,
+            "decoder_root_hash72": "0000000000000000000000000000003xkLa9jGGEg8-pGb)vlVZL1C^io/671DFM6^KahJsE",
+            "lifecycle_cost_units": 10561
+          },
+          {
+            "codec": "raw",
+            "compressed_size_bytes": 7797,
+            "decoder_root_hash72": "0000000000000000000000000000001A3Ci8=Wh-B80B>ukUbDlseft>I5HtqxMG?TZh1bTL",
+            "lifecycle_cost_units": 15594
+          }
+        ],
+        "compressed_size_bytes": 2700,
+        "compressed_stream_root_hash72": "0000000000000000000000000000004CNj9ezat11c/^5QppCth?n=coow/KsBmbxREqLY8=",
+        "compression_algorithm": "zlib",
+        "compression_algorithm_root_hash72": "0000000000000000000000000000003xkLa9jGGEg8-pGb)vlVZL1C^io/671DFM6^KahJsE",
+        "compression_class": "VIRTUAL_MACHINE_ARCHIVE_COMPRESSION",
+        "compression_manifest_root_hash72": "0000000000000000000000000000003f4/u-oJ4Zqa9iwnn/8)jilA2yJjy!rK/Xgh>VQe>k",
+        "dependency_root_hash72": "00000000000000000000000000000032WC/bD3wx(-W>ydAD124wZ5QSX?Z3bN-sc*KKSjt/",
+        "dictionary_roots": [],
+        "maximum_dependency_depth": 1,
+        "maximum_recovery_memory_bytes": 8821,
+        "maximum_recovery_work": 10500,
+        "provenance_root_hash72": "00000000000000000000000000000026FKe+9w4w+M9td9qU^RW-Vt>fI8X0UTBvGWSlG5R3",
+        "random_access_granularity": 1024,
+        "recovery_contract_root_hash72": "0000000000000000000000000000004nF)(93RsHscOmV*u1h63HYioqNi7c)r8/66=MjMhq",
+        "schema": "HHS_SAFE_LOSSLESS_COMPRESSION_MANIFEST_V1",
+        "security_policy_root_hash72": "0000000000000000000000000000003MsETEAE4qkKz5ZVim*K-tCi3=BsE)OxL0I++LrU*l",
+        "source_class": "VM_PASS112_COMPLETED_EXIT",
+        "source_state_root_hash72": "0000000000000000000000000000002LZ)!sfjFaH92ZeCXXK^)sAmpMNQqTJHUzeH8MdFG7",
+        "uncompressed_size_bytes": 7797
+      },
+      "recovery_contract": {
+        "cold_boot_recovery_supported": true,
+        "maximum_chunk_count": 4096,
+        "maximum_expansion_ratio_denominator": 1,
+        "maximum_expansion_ratio_numerator": 100,
+        "maximum_recovery_memory_bytes": 2000000,
+        "maximum_recovery_work_units": 5000000,
+        "maximum_reference_fanout": 1,
+        "partial_recovery_supported": true,
+        "recovery_contract_root_hash72": "0000000000000000000000000000004nF)(93RsHscOmV*u1h63HYioqNi7c)r8/66=MjMhq",
+        "schema": "HHS_ARCHIVE_RECOVERY_CONTRACT_V1",
+        "streaming_recovery_supported": true
+      },
+      "schema": "HHS_SAFE_LOSSLESS_ARCHIVE_V1"
+    },
+    "compression_receipt": {
+      "archive_root_hash72": "0000000000000000000000000000000fPbdvNr8y*N9k0KkUozY91Qa(43en(=!FNipO!REW",
+      "canonical_source_root_hash72": "0000000000000000000000000000002LZ)!sfjFaH92ZeCXXK^)sAmpMNQqTJHUzeH8MdFG7",
+      "compressed_size_bytes": 2700,
+      "compression_manifest_root_hash72": "0000000000000000000000000000003f4/u-oJ4Zqa9iwnn/8)jilA2yJjy!rK/Xgh>VQe>k",
+      "compression_ratio": {
+        "denominator": 2700,
+        "numerator": 7797
+      },
+      "compression_receipt_root_hash72": "0000000000000000000000000000001MOBiEwmij!5M>Czu!dh8))9IaF=85mVJD7PueRJ(+",
+      "compression_status": "LOSSLESS_ARCHIVE_ADMITTED",
+      "deduplicated_bytes": 0,
+      "maximum_recovery_memory_bytes": 8821,
+      "maximum_recovery_work_units": 10500,
+      "preservation_vector_root_hash72": "0000000000000000000000000000003IElLLwZjccmLeDbcpMSH?8?Pfm?UMtMp5fu^*2czN",
+      "schema": "HHS_SAFE_LOSSLESS_COMPRESSION_RECEIPT_V1",
+      "security_policy_root_hash72": "0000000000000000000000000000003MsETEAE4qkKz5ZVim*K-tCi3=BsE)OxL0I++LrU*l",
+      "source_state_root_hash72": "0000000000000000000000000000002LZ)!sfjFaH92ZeCXXK^)sAmpMNQqTJHUzeH8MdFG7",
+      "uncompressed_size_bytes": 7797
+    },
+    "migration_relation": {
+      "equivalence_valid": true,
+      "migration_relation_root_hash72": "0000000000000000000000000000004v8K4M6+?xuwi5?PFNG9w1S8isTp=Z!-KdETeBbd3I",
+      "new_archive_root_hash72": "0000000000000000000000000000000fPbdvNr8y*N9k0KkUozY91Qa(43en(=!FNipO!REW",
+      "old_archive_retained": true,
+      "old_archive_root_hash72": "0000000000000000000000000000003wtADTUy?IcP6zyI5X!0g^1ls0O=(U)5L92A=16Cz8",
+      "schema": "HHS_ARCHIVE_MIGRATION_RELATION_V1",
+      "source_state_root_hash72": "0000000000000000000000000000002LZ)!sfjFaH92ZeCXXK^)sAmpMNQqTJHUzeH8MdFG7"
+    }
+  },
+  "mock_components": [],
+  "pass113_root_hash72": "00000000000000000000000000000013tow*y5q=ObLWPzXnhwGpTxDLinG1s3MH206UTLgw",
+  "pass_id": "PASS_113",
+  "schema": "HHS_PASS113_SAFE_LOSSLESS_ARCHIVE_SELF_TEST_V1",
+  "status": "PASS",
+  "unbounded_recovery_contracts": 0,
+  "undeclared_external_dependencies": 0
+}

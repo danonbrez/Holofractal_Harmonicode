@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:hhs:pass145:lvm:v1",
+  "title": "HHS Pass 145 Logical Virtual Machine",
+  "type": "object",
+  "required": ["name", "components"],
+  "properties": {
+    "name": {"type": "string", "minLength": 1},
+    "version": {"type": "integer", "minimum": 1},
+    "components": {"type": "array", "minItems": 1, "maxItems": 4096},
+    "edges": {"type": "array"},
+    "outputs": {"type": "object"},
+    "resource_policy": {"type": "object"},
+    "failure_policy": {"type": "string"},
+    "replay_policy": {"type": "string"}
+  },
+  "additionalProperties": true
+}

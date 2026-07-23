@@ -1,0 +1,965 @@
+{
+  "schema": "HHS_PASS_093_NOISE_RESULTS_V1",
+  "results": [
+    {
+      "candidate_id": "invariant:operation-motif-EEE",
+      "curve": [
+        {
+          "authority": false,
+          "noise_percent": 0,
+          "survival_percent": 100
+        },
+        {
+          "authority": false,
+          "noise_percent": 1,
+          "survival_percent": 99
+        },
+        {
+          "authority": false,
+          "noise_percent": 2,
+          "survival_percent": 98
+        },
+        {
+          "authority": false,
+          "noise_percent": 5,
+          "survival_percent": 95
+        },
+        {
+          "authority": false,
+          "noise_percent": 10,
+          "survival_percent": 90
+        },
+        {
+          "authority": false,
+          "noise_percent": 20,
+          "survival_percent": 80
+        },
+        {
+          "authority": false,
+          "noise_percent": 30,
+          "survival_percent": 70
+        },
+        {
+          "authority": false,
+          "noise_percent": 50,
+          "survival_percent": 50
+        }
+      ],
+      "lineage_preserved": true,
+      "noise_class": "OPERATION_SUBSTITUTION",
+      "noise_result_root_hash72": "00000000000000000000000000000022!DfQHvxCl7n8KeYejnWrXPZM7rLzw6D-w/kqG?z/"
+    },
+    {
+      "candidate_id": "invariant:operation-motif-EEE",
+      "curve": [
+        {
+          "authority": false,
+          "noise_percent": 0,
+          "survival_percent": 100
+        },
+        {
+          "authority": false,
+          "noise_percent": 1,
+          "survival_percent": 99
+        },
+        {
+          "authority": false,
+          "noise_percent": 2,
+          "survival_percent": 98
+        },
+        {
+          "authority": false,
+          "noise_percent": 5,
+          "survival_percent": 95
+        },
+        {
+          "authority": false,
+          "noise_percent": 10,
+          "survival_percent": 90
+        },
+        {
+          "authority": false,
+          "noise_percent": 20,
+          "survival_percent": 80
+        },
+        {
+          "authority": false,
+          "noise_percent": 30,
+          "survival_percent": 70
+        },
+        {
+          "authority": false,
+          "noise_percent": 50,
+          "survival_percent": 50
+        }
+      ],
+      "lineage_preserved": true,
+      "noise_class": "FACTOR_VECTOR_PERTURBATION",
+      "noise_result_root_hash72": "0000000000000000000000000000003-Wq1XY^+psFWRYmxjXUjxQFC60/uWu1CTvU4ozuXr"
+    },
+    {
+      "candidate_id": "invariant:operation-motif-EEE",
+      "curve": [
+        {
+          "authority": false,
+          "noise_percent": 0,
+          "survival_percent": 100
+        },
+        {
+          "authority": false,
+          "noise_percent": 1,
+          "survival_percent": 99
+        },
+        {
+          "authority": false,
+          "noise_percent": 2,
+          "survival_percent": 98
+        },
+        {
+          "authority": false,
+          "noise_percent": 5,
+          "survival_percent": 95
+        },
+        {
+          "authority": false,
+          "noise_percent": 10,
+          "survival_percent": 90
+        },
+        {
+          "authority": false,
+          "noise_percent": 20,
+          "survival_percent": 80
+        },
+        {
+          "authority": false,
+          "noise_percent": 30,
+          "survival_percent": 70
+        },
+        {
+          "authority": false,
+          "noise_percent": 50,
+          "survival_percent": 50
+        }
+      ],
+      "lineage_preserved": true,
+      "noise_class": "PHASE_OFFSET_CHANGE",
+      "noise_result_root_hash72": "0000000000000000000000000000003WA0OejbK76-C+kt7cxFVbaY2(-G+/ilvsh9lU*eeI"
+    },
+    {
+      "candidate_id": "invariant:operation-motif-EEE",
+      "curve": [
+        {
+          "authority": false,
+          "noise_percent": 0,
+          "survival_percent": 100
+        },
+        {
+          "authority": false,
+          "noise_percent": 1,
+          "survival_percent": 99
+        },
+        {
+          "authority": false,
+          "noise_percent": 2,
+          "survival_percent": 98
+        },
+        {
+          "authority": false,
+          "noise_percent": 5,
+          "survival_percent": 95
+        },
+        {
+          "authority": false,
+          "noise_percent": 10,
+          "survival_percent": 90
+        },
+        {
+          "authority": false,
+          "noise_percent": 20,
+          "survival_percent": 80
+        },
+        {
+          "authority": false,
+          "noise_percent": 30,
+          "survival_percent": 70
+        },
+        {
+          "authority": false,
+          "noise_percent": 50,
+          "survival_percent": 50
+        }
+      ],
+      "lineage_preserved": true,
+      "noise_class": "TRAJECTORY_TRUNCATION",
+      "noise_result_root_hash72": "0000000000000000000000000000004cf-u2lTt0TA7N1>eO!izTOuDzB5BIfl(V9hvNv)Fg"
+    },
+    {
+      "candidate_id": "invariant:factor-support-cycle",
+      "curve": [
+        {
+          "authority": false,
+          "noise_percent": 0,
+          "survival_percent": 100
+        },
+        {
+          "authority": false,
+          "noise_percent": 1,
+          "survival_percent": 99
+        },
+        {
+          "authority": false,
+          "noise_percent": 2,
+          "survival_percent": 98
+        },
+        {
+          "authority": false,
+          "noise_percent": 5,
+          "survival_percent": 95
+        },
+        {
+          "authority": false,
+          "noise_percent": 10,
+          "survival_percent": 90
+        },
+        {
+          "authority": false,
+          "noise_percent": 20,
+          "survival_percent": 80
+        },
+        {
+          "authority": false,
+          "noise_percent": 30,
+          "survival_percent": 70
+        },
+        {
+          "authority": false,
+          "noise_percent": 50,
+          "survival_percent": 50
+        }
+      ],
+      "lineage_preserved": true,
+      "noise_class": "OPERATION_SUBSTITUTION",
+      "noise_result_root_hash72": "0000000000000000000000000000000hXtk(IOre^k^5oY7nDr=rbXk)uEIoAiuxs+-ZI65v"
+    },
+    {
+      "candidate_id": "invariant:factor-support-cycle",
+      "curve": [
+        {
+          "authority": false,
+          "noise_percent": 0,
+          "survival_percent": 100
+        },
+        {
+          "authority": false,
+          "noise_percent": 1,
+          "survival_percent": 99
+        },
+        {
+          "authority": false,
+          "noise_percent": 2,
+          "survival_percent": 98
+        },
+        {
+          "authority": false,
+          "noise_percent": 5,
+          "survival_percent": 95
+        },
+        {
+          "authority": false,
+          "noise_percent": 10,
+          "survival_percent": 90
+        },
+        {
+          "authority": false,
+          "noise_percent": 20,
+          "survival_percent": 80
+        },
+        {
+          "authority": false,
+          "noise_percent": 30,
+          "survival_percent": 70
+        },
+        {
+          "authority": false,
+          "noise_percent": 50,
+          "survival_percent": 50
+        }
+      ],
+      "lineage_preserved": true,
+      "noise_class": "FACTOR_VECTOR_PERTURBATION",
+      "noise_result_root_hash72": "0000000000000000000000000000002OApPwO/(>b65cv-8?30cb2Z67^sDSL7uA-uflyzL7"
+    },
+    {
+      "candidate_id": "invariant:factor-support-cycle",
+      "curve": [
+        {
+          "authority": false,
+          "noise_percent": 0,
+          "survival_percent": 100
+        },
+        {
+          "authority": false,
+          "noise_percent": 1,
+          "survival_percent": 99
+        },
+        {
+          "authority": false,
+          "noise_percent": 2,
+          "survival_percent": 98
+        },
+        {
+          "authority": false,
+          "noise_percent": 5,
+          "survival_percent": 95
+        },
+        {
+          "authority": false,
+          "noise_percent": 10,
+          "survival_percent": 90
+        },
+        {
+          "authority": false,
+          "noise_percent": 20,
+          "survival_percent": 80
+        },
+        {
+          "authority": false,
+          "noise_percent": 30,
+          "survival_percent": 70
+        },
+        {
+          "authority": false,
+          "noise_percent": 50,
+          "survival_percent": 50
+        }
+      ],
+      "lineage_preserved": true,
+      "noise_class": "PHASE_OFFSET_CHANGE",
+      "noise_result_root_hash72": "0000000000000000000000000000000wymj+4^nAsFeSpSr6>3buaq^gd3ssgqEzVRH-P5Ww"
+    },
+    {
+      "candidate_id": "invariant:factor-support-cycle",
+      "curve": [
+        {
+          "authority": false,
+          "noise_percent": 0,
+          "survival_percent": 100
+        },
+        {
+          "authority": false,
+          "noise_percent": 1,
+          "survival_percent": 99
+        },
+        {
+          "authority": false,
+          "noise_percent": 2,
+          "survival_percent": 98
+        },
+        {
+          "authority": false,
+          "noise_percent": 5,
+          "survival_percent": 95
+        },
+        {
+          "authority": false,
+          "noise_percent": 10,
+          "survival_percent": 90
+        },
+        {
+          "authority": false,
+          "noise_percent": 20,
+          "survival_percent": 80
+        },
+        {
+          "authority": false,
+          "noise_percent": 30,
+          "survival_percent": 70
+        },
+        {
+          "authority": false,
+          "noise_percent": 50,
+          "survival_percent": 50
+        }
+      ],
+      "lineage_preserved": true,
+      "noise_class": "TRAJECTORY_TRUNCATION",
+      "noise_result_root_hash72": "00000000000000000000000000000049qHKd!ew?Y-l-*1opA/y7QyHgD5nA2ihnX>wn1G4H"
+    },
+    {
+      "candidate_id": "invariant:operator-cycle-class",
+      "curve": [
+        {
+          "authority": false,
+          "noise_percent": 0,
+          "survival_percent": 100
+        },
+        {
+          "authority": false,
+          "noise_percent": 1,
+          "survival_percent": 99
+        },
+        {
+          "authority": false,
+          "noise_percent": 2,
+          "survival_percent": 98
+        },
+        {
+          "authority": false,
+          "noise_percent": 5,
+          "survival_percent": 95
+        },
+        {
+          "authority": false,
+          "noise_percent": 10,
+          "survival_percent": 90
+        },
+        {
+          "authority": false,
+          "noise_percent": 20,
+          "survival_percent": 80
+        },
+        {
+          "authority": false,
+          "noise_percent": 30,
+          "survival_percent": 70
+        },
+        {
+          "authority": false,
+          "noise_percent": 50,
+          "survival_percent": 50
+        }
+      ],
+      "lineage_preserved": true,
+      "noise_class": "OPERATION_SUBSTITUTION",
+      "noise_result_root_hash72": "0000000000000000000000000000004vidb1-JxReAiSJ8e-i?6FVefiL69xp2+jRgr=W^o2"
+    },
+    {
+      "candidate_id": "invariant:operator-cycle-class",
+      "curve": [
+        {
+          "authority": false,
+          "noise_percent": 0,
+          "survival_percent": 100
+        },
+        {
+          "authority": false,
+          "noise_percent": 1,
+          "survival_percent": 99
+        },
+        {
+          "authority": false,
+          "noise_percent": 2,
+          "survival_percent": 98
+        },
+        {
+          "authority": false,
+          "noise_percent": 5,
+          "survival_percent": 95
+        },
+        {
+          "authority": false,
+          "noise_percent": 10,
+          "survival_percent": 90
+        },
+        {
+          "authority": false,
+          "noise_percent": 20,
+          "survival_percent": 80
+        },
+        {
+          "authority": false,
+          "noise_percent": 30,
+          "survival_percent": 70
+        },
+        {
+          "authority": false,
+          "noise_percent": 50,
+          "survival_percent": 50
+        }
+      ],
+      "lineage_preserved": true,
+      "noise_class": "FACTOR_VECTOR_PERTURBATION",
+      "noise_result_root_hash72": "0000000000000000000000000000002NZ5)V9obIsfYZkc?YQeZ1>J98Z/x*rs/1acocOUJW"
+    },
+    {
+      "candidate_id": "invariant:operator-cycle-class",
+      "curve": [
+        {
+          "authority": false,
+          "noise_percent": 0,
+          "survival_percent": 100
+        },
+        {
+          "authority": false,
+          "noise_percent": 1,
+          "survival_percent": 99
+        },
+        {
+          "authority": false,
+          "noise_percent": 2,
+          "survival_percent": 98
+        },
+        {
+          "authority": false,
+          "noise_percent": 5,
+          "survival_percent": 95
+        },
+        {
+          "authority": false,
+          "noise_percent": 10,
+          "survival_percent": 90
+        },
+        {
+          "authority": false,
+          "noise_percent": 20,
+          "survival_percent": 80
+        },
+        {
+          "authority": false,
+          "noise_percent": 30,
+          "survival_percent": 70
+        },
+        {
+          "authority": false,
+          "noise_percent": 50,
+          "survival_percent": 50
+        }
+      ],
+      "lineage_preserved": true,
+      "noise_class": "PHASE_OFFSET_CHANGE",
+      "noise_result_root_hash72": "0000000000000000000000000000003)PROXTgt=Y2b>a0RjpH+4)nUuDdl^/JLkj>I-T^5e"
+    },
+    {
+      "candidate_id": "invariant:operator-cycle-class",
+      "curve": [
+        {
+          "authority": false,
+          "noise_percent": 0,
+          "survival_percent": 100
+        },
+        {
+          "authority": false,
+          "noise_percent": 1,
+          "survival_percent": 99
+        },
+        {
+          "authority": false,
+          "noise_percent": 2,
+          "survival_percent": 98
+        },
+        {
+          "authority": false,
+          "noise_percent": 5,
+          "survival_percent": 95
+        },
+        {
+          "authority": false,
+          "noise_percent": 10,
+          "survival_percent": 90
+        },
+        {
+          "authority": false,
+          "noise_percent": 20,
+          "survival_percent": 80
+        },
+        {
+          "authority": false,
+          "noise_percent": 30,
+          "survival_percent": 70
+        },
+        {
+          "authority": false,
+          "noise_percent": 50,
+          "survival_percent": 50
+        }
+      ],
+      "lineage_preserved": true,
+      "noise_class": "TRAJECTORY_TRUNCATION",
+      "noise_result_root_hash72": "00000000000000000000000000000010vyErTug=lckJgPx?FiqNRtA>ll9zz2Q!)AhEl(ph"
+    },
+    {
+      "candidate_id": "invariant:intersection-family-separation",
+      "curve": [
+        {
+          "authority": false,
+          "noise_percent": 0,
+          "survival_percent": 100
+        },
+        {
+          "authority": false,
+          "noise_percent": 1,
+          "survival_percent": 99
+        },
+        {
+          "authority": false,
+          "noise_percent": 2,
+          "survival_percent": 98
+        },
+        {
+          "authority": false,
+          "noise_percent": 5,
+          "survival_percent": 95
+        },
+        {
+          "authority": false,
+          "noise_percent": 10,
+          "survival_percent": 90
+        },
+        {
+          "authority": false,
+          "noise_percent": 20,
+          "survival_percent": 80
+        },
+        {
+          "authority": false,
+          "noise_percent": 30,
+          "survival_percent": 70
+        },
+        {
+          "authority": false,
+          "noise_percent": 50,
+          "survival_percent": 50
+        }
+      ],
+      "lineage_preserved": true,
+      "noise_class": "OPERATION_SUBSTITUTION",
+      "noise_result_root_hash72": "0000000000000000000000000000000bY25tfFDXyy>HGA5ETweGR7^s3qn9(GAG+doy^NTr"
+    },
+    {
+      "candidate_id": "invariant:intersection-family-separation",
+      "curve": [
+        {
+          "authority": false,
+          "noise_percent": 0,
+          "survival_percent": 100
+        },
+        {
+          "authority": false,
+          "noise_percent": 1,
+          "survival_percent": 99
+        },
+        {
+          "authority": false,
+          "noise_percent": 2,
+          "survival_percent": 98
+        },
+        {
+          "authority": false,
+          "noise_percent": 5,
+          "survival_percent": 95
+        },
+        {
+          "authority": false,
+          "noise_percent": 10,
+          "survival_percent": 90
+        },
+        {
+          "authority": false,
+          "noise_percent": 20,
+          "survival_percent": 80
+        },
+        {
+          "authority": false,
+          "noise_percent": 30,
+          "survival_percent": 70
+        },
+        {
+          "authority": false,
+          "noise_percent": 50,
+          "survival_percent": 50
+        }
+      ],
+      "lineage_preserved": true,
+      "noise_class": "FACTOR_VECTOR_PERTURBATION",
+      "noise_result_root_hash72": "0000000000000000000000000000003n5Pf4cPao1FiVex0fawiMwohtz*fR?+usex0bPqQQ"
+    },
+    {
+      "candidate_id": "invariant:intersection-family-separation",
+      "curve": [
+        {
+          "authority": false,
+          "noise_percent": 0,
+          "survival_percent": 100
+        },
+        {
+          "authority": false,
+          "noise_percent": 1,
+          "survival_percent": 99
+        },
+        {
+          "authority": false,
+          "noise_percent": 2,
+          "survival_percent": 98
+        },
+        {
+          "authority": false,
+          "noise_percent": 5,
+          "survival_percent": 95
+        },
+        {
+          "authority": false,
+          "noise_percent": 10,
+          "survival_percent": 90
+        },
+        {
+          "authority": false,
+          "noise_percent": 20,
+          "survival_percent": 80
+        },
+        {
+          "authority": false,
+          "noise_percent": 30,
+          "survival_percent": 70
+        },
+        {
+          "authority": false,
+          "noise_percent": 50,
+          "survival_percent": 50
+        }
+      ],
+      "lineage_preserved": true,
+      "noise_class": "PHASE_OFFSET_CHANGE",
+      "noise_result_root_hash72": "0000000000000000000000000000000oSd/)R6r-k5+UIKClO=noBhxpbITK6eM8Bln0tmJ7"
+    },
+    {
+      "candidate_id": "invariant:intersection-family-separation",
+      "curve": [
+        {
+          "authority": false,
+          "noise_percent": 0,
+          "survival_percent": 100
+        },
+        {
+          "authority": false,
+          "noise_percent": 1,
+          "survival_percent": 99
+        },
+        {
+          "authority": false,
+          "noise_percent": 2,
+          "survival_percent": 98
+        },
+        {
+          "authority": false,
+          "noise_percent": 5,
+          "survival_percent": 95
+        },
+        {
+          "authority": false,
+          "noise_percent": 10,
+          "survival_percent": 90
+        },
+        {
+          "authority": false,
+          "noise_percent": 20,
+          "survival_percent": 80
+        },
+        {
+          "authority": false,
+          "noise_percent": 30,
+          "survival_percent": 70
+        },
+        {
+          "authority": false,
+          "noise_percent": 50,
+          "survival_percent": 50
+        }
+      ],
+      "lineage_preserved": true,
+      "noise_class": "TRAJECTORY_TRUNCATION",
+      "noise_result_root_hash72": "0000000000000000000000000000004c-t=/+VsJtjicZbT1Q49?TKrAOESIQz6DW-FqrkOj"
+    },
+    {
+      "candidate_id": "invariant:ordered-history",
+      "curve": [
+        {
+          "authority": false,
+          "noise_percent": 0,
+          "survival_percent": 100
+        },
+        {
+          "authority": false,
+          "noise_percent": 1,
+          "survival_percent": 99
+        },
+        {
+          "authority": false,
+          "noise_percent": 2,
+          "survival_percent": 98
+        },
+        {
+          "authority": false,
+          "noise_percent": 5,
+          "survival_percent": 95
+        },
+        {
+          "authority": false,
+          "noise_percent": 10,
+          "survival_percent": 90
+        },
+        {
+          "authority": false,
+          "noise_percent": 20,
+          "survival_percent": 80
+        },
+        {
+          "authority": false,
+          "noise_percent": 30,
+          "survival_percent": 70
+        },
+        {
+          "authority": false,
+          "noise_percent": 50,
+          "survival_percent": 50
+        }
+      ],
+      "lineage_preserved": true,
+      "noise_class": "OPERATION_SUBSTITUTION",
+      "noise_result_root_hash72": "00000000000000000000000000000047de/m4VdMAm9td?4b3rJmye+e1hScMVgha=^K?6Q1"
+    },
+    {
+      "candidate_id": "invariant:ordered-history",
+      "curve": [
+        {
+          "authority": false,
+          "noise_percent": 0,
+          "survival_percent": 100
+        },
+        {
+          "authority": false,
+          "noise_percent": 1,
+          "survival_percent": 99
+        },
+        {
+          "authority": false,
+          "noise_percent": 2,
+          "survival_percent": 98
+        },
+        {
+          "authority": false,
+          "noise_percent": 5,
+          "survival_percent": 95
+        },
+        {
+          "authority": false,
+          "noise_percent": 10,
+          "survival_percent": 90
+        },
+        {
+          "authority": false,
+          "noise_percent": 20,
+          "survival_percent": 80
+        },
+        {
+          "authority": false,
+          "noise_percent": 30,
+          "survival_percent": 70
+        },
+        {
+          "authority": false,
+          "noise_percent": 50,
+          "survival_percent": 50
+        }
+      ],
+      "lineage_preserved": true,
+      "noise_class": "FACTOR_VECTOR_PERTURBATION",
+      "noise_result_root_hash72": "000000000000000000000000000000197crIivKRp>9f(fZr1NvEXFQpt)/=g4w6GS-Y?EVL"
+    },
+    {
+      "candidate_id": "invariant:ordered-history",
+      "curve": [
+        {
+          "authority": false,
+          "noise_percent": 0,
+          "survival_percent": 100
+        },
+        {
+          "authority": false,
+          "noise_percent": 1,
+          "survival_percent": 99
+        },
+        {
+          "authority": false,
+          "noise_percent": 2,
+          "survival_percent": 98
+        },
+        {
+          "authority": false,
+          "noise_percent": 5,
+          "survival_percent": 95
+        },
+        {
+          "authority": false,
+          "noise_percent": 10,
+          "survival_percent": 90
+        },
+        {
+          "authority": false,
+          "noise_percent": 20,
+          "survival_percent": 80
+        },
+        {
+          "authority": false,
+          "noise_percent": 30,
+          "survival_percent": 70
+        },
+        {
+          "authority": false,
+          "noise_percent": 50,
+          "survival_percent": 50
+        }
+      ],
+      "lineage_preserved": true,
+      "noise_class": "PHASE_OFFSET_CHANGE",
+      "noise_result_root_hash72": "0000000000000000000000000000001(aaVhPbJOuF+*pMBjlGT/9VSuEF?a6ZJaW9hvcVGc"
+    },
+    {
+      "candidate_id": "invariant:ordered-history",
+      "curve": [
+        {
+          "authority": false,
+          "noise_percent": 0,
+          "survival_percent": 100
+        },
+        {
+          "authority": false,
+          "noise_percent": 1,
+          "survival_percent": 99
+        },
+        {
+          "authority": false,
+          "noise_percent": 2,
+          "survival_percent": 98
+        },
+        {
+          "authority": false,
+          "noise_percent": 5,
+          "survival_percent": 95
+        },
+        {
+          "authority": false,
+          "noise_percent": 10,
+          "survival_percent": 90
+        },
+        {
+          "authority": false,
+          "noise_percent": 20,
+          "survival_percent": 80
+        },
+        {
+          "authority": false,
+          "noise_percent": 30,
+          "survival_percent": 70
+        },
+        {
+          "authority": false,
+          "noise_percent": 50,
+          "survival_percent": 50
+        }
+      ],
+      "lineage_preserved": true,
+      "noise_class": "TRAJECTORY_TRUNCATION",
+      "noise_result_root_hash72": "000000000000000000000000000000337kCHm)FYI+Zd9k=/+*iaNVKjIMcwp8=nD5huHfjl"
+    }
+  ]
+}

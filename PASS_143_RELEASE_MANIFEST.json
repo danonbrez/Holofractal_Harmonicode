@@ -1,0 +1,23 @@
+{
+  "cli": "scripts/hhs-pass143",
+  "contract": "docs/pass_143/PASS_143_CONTRACT.md",
+  "example": "examples/pass_143/conflict_gradient_request.json",
+  "execution_receipt": "reports/pass_143/PASS_143_EXECUTION_RECEIPT.json",
+  "manifest_root": "766f447eb78aaba97db584a8d6832d8dbeaf8b9f7a1149ca508ca208c1888ce6",
+  "pass_id": "PASS_143_CONTINUOUS_CONSTRAINT_CONFLICT_GRADIENTS",
+  "reference_result": {
+    "classification": "CONFLICT_SMOOTHED",
+    "final_conflict_energy": "34521088/645700815",
+    "initial_conflict_energy": "2107/60",
+    "orthogonality_closed": true,
+    "receipt_root": "ca0b399c321ed314fe1913ff6d1639e3207c265a6b5faad4900aa16921a0a6ba"
+  },
+  "runtime": "hhs_runtime/harmonicode_constraint_conflict_gradient_simulation_v1.py",
+  "status": "IMPLEMENTED_AND_DEPENDENCY_SCOPED_TESTED",
+  "test_result": {
+    "failed": 0,
+    "passed": 61
+  },
+  "tests": "tests/test_pass_143_constraint_conflict_gradients.py",
+  "title": "Continuous constraint parameter conflict gradients through quantum and audio visual physics simulation API \u2014 Temperature Orthogonality"
+}

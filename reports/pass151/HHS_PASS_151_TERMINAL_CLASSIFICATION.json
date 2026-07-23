@@ -1,0 +1,10 @@
+{
+  "inherited_blockers": [],
+  "ledger_chain_valid": true,
+  "obligation_count": 100,
+  "overall_inherited_nucleus_classification": "PASS_151_INTERNAL_LANGUAGE_PROCESSING_LAYERS_VERIFIED",
+  "pass151_subsystem_classification": "PASS_151_INTERNAL_LANGUAGE_PROCESSING_LAYERS_VERIFIED",
+  "schema": "HHS_PASS151_TERMINAL_CLASSIFICATION_V1",
+  "unresolved_obligation_ids": [],
+  "verified_count": 100
+}

@@ -1,0 +1,22 @@
+[HHS] 2026-07-19 08:41:07,136 INFO Running server self-test...
+[HHS] 2026-07-19 08:41:07,136 INFO Runtime self-test complete
+[HHS] 2026-07-19 08:41:07,136 INFO {'nodes': 6, 'edges': 5, 'sandboxes': 0, 'indexed_hashes': 5}
+INFO:     Started server process [15762]
+INFO:     Waiting for application startup.
+[HHS] 2026-07-19 08:41:07,188 INFO Starting HHS backend...
+[HHS] 2026-07-19 08:41:07,188 INFO Initializing guarded deterministic runtime emulator...
+[HHS] 2026-07-19 08:41:07,495 INFO Guarded runtime emulator initialized
+[HHS] 2026-07-19 08:41:07,497 INFO Initializing graph substrate...
+[HHS] 2026-07-19 08:41:07,497 INFO Graph substrate initialized
+[HHS] 2026-07-19 08:41:07,497 INFO Initializing websocket layer...
+[HHS] 2026-07-19 08:41:07,497 INFO Websocket layer initialized with live FastAPI kernel workflow
+[HHS] 2026-07-19 08:41:07,497 INFO HHS backend startup complete
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:     127.0.0.1:57220 - "GET /health HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+[HHS] 2026-07-19 08:41:21,921 INFO Beginning shutdown sequence...
+[HHS] 2026-07-19 08:41:21,921 INFO Runtime halted
+INFO:     Application shutdown complete.
+INFO:     Finished server process [15762]

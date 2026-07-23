@@ -1,0 +1,45 @@
+{
+  "schema": "HHS_PASS_082_2_NEGATIVE_CASES_V1",
+  "results": [
+    {
+      "expected": "REJECT_UNWITNESSED_ENTANGLEMENT",
+      "observed": "REJECT_UNWITNESSED_ENTANGLEMENT",
+      "status": "PASS"
+    },
+    {
+      "expected": "REJECT_GROUP_IDENTITY_ERASURE",
+      "observed": "REJECT_GROUP_IDENTITY_ERASURE",
+      "status": "PASS"
+    },
+    {
+      "expected": "REJECT_DERIVATION_CYCLE",
+      "observed": "REJECT_DERIVATION_CYCLE",
+      "status": "PASS"
+    },
+    {
+      "expected": "REJECT_UNAUTHORIZED_BRANCH_COMPRESSION",
+      "observed": "REJECT_UNAUTHORIZED_BRANCH_COMPRESSION",
+      "status": "PASS"
+    },
+    {
+      "expected": "REJECT_NONDETERMINISTIC_CANONICAL_INPUT",
+      "observed": "REJECT_NONDETERMINISTIC_CANONICAL_INPUT",
+      "status": "PASS"
+    },
+    {
+      "expected": "REJECT_RESOURCE_BOUND_AS_LOGICAL_FAILURE",
+      "observed": "REJECT_RESOURCE_BOUND_AS_LOGICAL_FAILURE",
+      "status": "PASS"
+    }
+  ],
+  "required_rejection_codes": [
+    "REJECT_UNWITNESSED_ENTANGLEMENT",
+    "REJECT_GROUP_IDENTITY_ERASURE",
+    "REJECT_ENTANGLEMENT_REPLAY_MISMATCH",
+    "REJECT_DERIVATION_CYCLE",
+    "REJECT_UNAUTHORIZED_BRANCH_COMPRESSION",
+    "REJECT_NONCOMMUTATIVE_RELATION_ORDER_COLLAPSE",
+    "REJECT_NONDETERMINISTIC_CANONICAL_INPUT",
+    "REJECT_RESOURCE_BOUND_AS_LOGICAL_FAILURE"
+  ]
+}

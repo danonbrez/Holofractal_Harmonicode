@@ -1,0 +1,344 @@
+{
+  "measurements": [
+    {
+      "arm_a_execution_cost": {
+        "wall_time_ns": 319849301
+      },
+      "arm_b_execution_costs": [
+        {
+          "format": "binary32",
+          "max_rss_delta_kib": 4,
+          "wall_time_ns": 512184
+        },
+        {
+          "format": "binary64",
+          "max_rss_delta_kib": 0,
+          "wall_time_ns": 181268
+        }
+      ],
+      "not_used_as_semantic_correctness_evidence": true,
+      "workload_id": "repeated_decimal_accumulation"
+    },
+    {
+      "arm_a_execution_cost": {
+        "wall_time_ns": 158686644
+      },
+      "arm_b_execution_costs": [
+        {
+          "format": "binary32",
+          "max_rss_delta_kib": 0,
+          "wall_time_ns": 169455
+        },
+        {
+          "format": "binary64",
+          "max_rss_delta_kib": 0,
+          "wall_time_ns": 72715
+        }
+      ],
+      "not_used_as_semantic_correctness_evidence": true,
+      "workload_id": "catastrophic_cancellation"
+    },
+    {
+      "arm_a_execution_cost": {
+        "wall_time_ns": 497549270
+      },
+      "arm_b_execution_costs": [
+        {
+          "format": "binary32",
+          "max_rss_delta_kib": 0,
+          "wall_time_ns": 312088
+        },
+        {
+          "format": "binary64",
+          "max_rss_delta_kib": 0,
+          "wall_time_ns": 280861
+        }
+      ],
+      "not_used_as_semantic_correctness_evidence": true,
+      "workload_id": "alternating_accumulation"
+    },
+    {
+      "arm_a_execution_cost": {
+        "wall_time_ns": 160733887
+      },
+      "arm_b_execution_costs": [
+        {
+          "format": "binary32",
+          "max_rss_delta_kib": 0,
+          "wall_time_ns": 106917
+        },
+        {
+          "format": "binary64",
+          "max_rss_delta_kib": 0,
+          "wall_time_ns": 89990
+        }
+      ],
+      "not_used_as_semantic_correctness_evidence": true,
+      "workload_id": "nonassociative_left"
+    },
+    {
+      "arm_a_execution_cost": {
+        "wall_time_ns": 286636202
+      },
+      "arm_b_execution_costs": [
+        {
+          "format": "binary32",
+          "max_rss_delta_kib": 0,
+          "wall_time_ns": 108519
+        },
+        {
+          "format": "binary64",
+          "max_rss_delta_kib": 0,
+          "wall_time_ns": 89773
+        }
+      ],
+      "not_used_as_semantic_correctness_evidence": true,
+      "workload_id": "nonassociative_right"
+    },
+    {
+      "arm_a_execution_cost": {
+        "wall_time_ns": 168132278
+      },
+      "arm_b_execution_costs": [
+        {
+          "format": "binary32",
+          "max_rss_delta_kib": 0,
+          "wall_time_ns": 94763
+        },
+        {
+          "format": "binary64",
+          "max_rss_delta_kib": 0,
+          "wall_time_ns": 83241
+        }
+      ],
+      "not_used_as_semantic_correctness_evidence": true,
+      "workload_id": "inverse_normalization"
+    },
+    {
+      "arm_a_execution_cost": {
+        "wall_time_ns": 285988757
+      },
+      "arm_b_execution_costs": [
+        {
+          "format": "binary32",
+          "max_rss_delta_kib": 0,
+          "wall_time_ns": 70025
+        },
+        {
+          "format": "binary64",
+          "max_rss_delta_kib": 0,
+          "wall_time_ns": 65042
+        }
+      ],
+      "not_used_as_semantic_correctness_evidence": true,
+      "workload_id": "overflow_boundary"
+    },
+    {
+      "arm_a_execution_cost": {
+        "wall_time_ns": 173588833
+      },
+      "arm_b_execution_costs": [
+        {
+          "format": "binary32",
+          "max_rss_delta_kib": 0,
+          "wall_time_ns": 83189
+        },
+        {
+          "format": "binary64",
+          "max_rss_delta_kib": 0,
+          "wall_time_ns": 65744
+        }
+      ],
+      "not_used_as_semantic_correctness_evidence": true,
+      "workload_id": "underflow_boundary"
+    },
+    {
+      "arm_a_execution_cost": {
+        "wall_time_ns": 137450606
+      },
+      "arm_b_execution_costs": [
+        {
+          "format": "binary32",
+          "max_rss_delta_kib": 0,
+          "wall_time_ns": 72614
+        },
+        {
+          "format": "binary64",
+          "max_rss_delta_kib": 0,
+          "wall_time_ns": 60146
+        }
+      ],
+      "not_used_as_semantic_correctness_evidence": true,
+      "workload_id": "signed_zero_propagation"
+    },
+    {
+      "arm_a_execution_cost": {
+        "wall_time_ns": 1461641624
+      },
+      "arm_b_execution_costs": [
+        {
+          "format": "binary32",
+          "max_rss_delta_kib": 0,
+          "wall_time_ns": 1041332
+        },
+        {
+          "format": "binary64",
+          "max_rss_delta_kib": 0,
+          "wall_time_ns": 972829
+        }
+      ],
+      "not_used_as_semantic_correctness_evidence": true,
+      "workload_id": "iterative_drift"
+    },
+    {
+      "arm_a_execution_cost": {
+        "wall_time_ns": 1050069810
+      },
+      "arm_b_execution_costs": [
+        {
+          "format": "binary32",
+          "max_rss_delta_kib": 0,
+          "wall_time_ns": 622699
+        },
+        {
+          "format": "binary64",
+          "max_rss_delta_kib": 0,
+          "wall_time_ns": 603103
+        }
+      ],
+      "not_used_as_semantic_correctness_evidence": true,
+      "workload_id": "long_phase_cycle"
+    },
+    {
+      "arm_a_execution_cost": {
+        "wall_time_ns": 707079741
+      },
+      "arm_b_execution_costs": [
+        {
+          "format": "binary32",
+          "max_rss_delta_kib": 0,
+          "wall_time_ns": 469825
+        },
+        {
+          "format": "binary64",
+          "max_rss_delta_kib": 0,
+          "wall_time_ns": 451138
+        }
+      ],
+      "not_used_as_semantic_correctness_evidence": true,
+      "workload_id": "repeated_normalization"
+    },
+    {
+      "arm_a_execution_cost": {
+        "wall_time_ns": 310120631
+      },
+      "arm_b_execution_costs": [
+        {
+          "format": "binary32",
+          "max_rss_delta_kib": 0,
+          "wall_time_ns": 306908
+        },
+        {
+          "format": "binary64",
+          "max_rss_delta_kib": 0,
+          "wall_time_ns": 238095
+        }
+      ],
+      "not_used_as_semantic_correctness_evidence": true,
+      "workload_id": "loshu_cell_sum"
+    },
+    {
+      "arm_a_execution_cost": {
+        "wall_time_ns": 164377741
+      },
+      "arm_b_execution_costs": [
+        {
+          "format": "binary32",
+          "max_rss_delta_kib": 0,
+          "wall_time_ns": 0
+        },
+        {
+          "format": "binary64",
+          "max_rss_delta_kib": 0,
+          "wall_time_ns": 0
+        }
+      ],
+      "not_used_as_semantic_correctness_evidence": true,
+      "workload_id": "dual_t_constraints"
+    },
+    {
+      "arm_a_execution_cost": {
+        "wall_time_ns": 173262224
+      },
+      "arm_b_execution_costs": [
+        {
+          "format": "binary32"
+        },
+        {
+          "format": "binary64"
+        }
+      ],
+      "not_used_as_semantic_correctness_evidence": true,
+      "workload_id": "conformal_radius"
+    },
+    {
+      "arm_a_execution_cost": {
+        "wall_time_ns": 171233911
+      },
+      "arm_b_execution_costs": [
+        {
+          "format": "binary32",
+          "max_rss_delta_kib": 0,
+          "wall_time_ns": 0
+        },
+        {
+          "format": "binary64",
+          "max_rss_delta_kib": 0,
+          "wall_time_ns": 0
+        }
+      ],
+      "not_used_as_semantic_correctness_evidence": true,
+      "workload_id": "master_matrix"
+    },
+    {
+      "arm_a_execution_cost": {
+        "wall_time_ns": 219224348
+      },
+      "arm_b_execution_costs": [
+        {
+          "format": "binary32",
+          "max_rss_delta_kib": 0,
+          "wall_time_ns": 121055
+        },
+        {
+          "format": "binary64",
+          "max_rss_delta_kib": 0,
+          "wall_time_ns": 128240
+        }
+      ],
+      "not_used_as_semantic_correctness_evidence": true,
+      "workload_id": "genesis_kernel"
+    },
+    {
+      "arm_a_execution_cost": {
+        "wall_time_ns": 406929597
+      },
+      "arm_b_execution_costs": [
+        {
+          "format": "binary32",
+          "max_rss_delta_kib": 0,
+          "wall_time_ns": 105350
+        },
+        {
+          "format": "binary64",
+          "max_rss_delta_kib": 0,
+          "wall_time_ns": 133080
+        }
+      ],
+      "not_used_as_semantic_correctness_evidence": true,
+      "workload_id": "T1_transport"
+    }
+  ],
+  "schema": "HHS_PASS132_PERFORMANCE_MEASUREMENTS_V1",
+  "semantic_authority": false
+}

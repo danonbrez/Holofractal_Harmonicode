@@ -1,0 +1,320 @@
+{
+  "schema": "HHS_PASS_086_PATTERN_CACHE_V1",
+  "entries": [
+    {
+      "cache_authority": false,
+      "cache_entry_root_hash72": "000000000000000000000000000000195EEakB=jBMZQd-BDBPCjsxRKT(FiPgwz7wPJ3cb7",
+      "cache_key_root_hash72": "0000000000000000000000000000004A!XH^LOsbX4bn?0O0bukwM9nLnsQ5(A!zxoNMH4*=",
+      "pattern_root_hash72": "0000000000000000000000000000004A!XH^LOsbX4bn?0O0bukwM9nLnsQ5(A!zxoNMH4*=",
+      "replay_verified": true
+    },
+    {
+      "cache_authority": false,
+      "cache_entry_root_hash72": "0000000000000000000000000000003R8NqlmZy-RcjCjO(5^Lja3Pp!LDt*GzYIbc7XuutT",
+      "cache_key_root_hash72": "0000000000000000000000000000000cASe7BW2A9qzIDe>!DEdEwPoc4Nv2keW>ty-WIW)j",
+      "pattern_root_hash72": "0000000000000000000000000000000cASe7BW2A9qzIDe>!DEdEwPoc4Nv2keW>ty-WIW)j",
+      "replay_verified": true
+    },
+    {
+      "cache_authority": false,
+      "cache_entry_root_hash72": "0000000000000000000000000000001o-QtIYa=DVMENtS^nyPjiGl+iHDqk=pVG^CHbuELl",
+      "cache_key_root_hash72": "0000000000000000000000000000003Q==Bi?FVvX+TqcaV/mNizW75-T/ZTPxZx>b*NbcO!",
+      "pattern_root_hash72": "0000000000000000000000000000003Q==Bi?FVvX+TqcaV/mNizW75-T/ZTPxZx>b*NbcO!",
+      "replay_verified": true
+    },
+    {
+      "cache_authority": false,
+      "cache_entry_root_hash72": "0000000000000000000000000000000V7LJ-KWNliK*zOdB>TXB>SaY>TrVsKrNatwL*w8TX",
+      "cache_key_root_hash72": "0000000000000000000000000000001iOVH*hKoK215RDw8x8nnzvyLPV5vuAUWDR2I3m9V!",
+      "pattern_root_hash72": "0000000000000000000000000000001iOVH*hKoK215RDw8x8nnzvyLPV5vuAUWDR2I3m9V!",
+      "replay_verified": true
+    },
+    {
+      "cache_authority": false,
+      "cache_entry_root_hash72": "0000000000000000000000000000003V301HM(oZcfR/UjSIAKVe-6-N=JxZKcc!?^?*PMEV",
+      "cache_key_root_hash72": "0000000000000000000000000000003gR((m2CVSGf-H2ca9gPOVRlzlDV?uS4*!*!Rprd1a",
+      "pattern_root_hash72": "0000000000000000000000000000003gR((m2CVSGf-H2ca9gPOVRlzlDV?uS4*!*!Rprd1a",
+      "replay_verified": true
+    },
+    {
+      "cache_authority": false,
+      "cache_entry_root_hash72": "0000000000000000000000000000004unuRcEA0Xf2i1wLDXuh4km3Co1kCj-1T)qd=J9f!O",
+      "cache_key_root_hash72": "00000000000000000000000000000021y-+4TM)awAZLWH0HbnU2o=qWkdWoGrew56/wgmL!",
+      "pattern_root_hash72": "00000000000000000000000000000021y-+4TM)awAZLWH0HbnU2o=qWkdWoGrew56/wgmL!",
+      "replay_verified": true
+    },
+    {
+      "cache_authority": false,
+      "cache_entry_root_hash72": "0000000000000000000000000000003gsC48uFKPIh94GYV8K7O?asjIWpQ6wqWZk/kKt7+N",
+      "cache_key_root_hash72": "0000000000000000000000000000000JNNpDdyt8K1JrArJ*VUjyK5*S!DnRCJv0gJovPKoV",
+      "pattern_root_hash72": "0000000000000000000000000000000JNNpDdyt8K1JrArJ*VUjyK5*S!DnRCJv0gJovPKoV",
+      "replay_verified": true
+    },
+    {
+      "cache_authority": false,
+      "cache_entry_root_hash72": "0000000000000000000000000000003*m?ma(=agnMG4LH3+Q1o>CxPt8C>bxMpVBQK2KAg/",
+      "cache_key_root_hash72": "0000000000000000000000000000004CQ*M2nwVhi-m3lfp)JN!2J63X-6ve(WxyE+z*Znqz",
+      "pattern_root_hash72": "0000000000000000000000000000004CQ*M2nwVhi-m3lfp)JN!2J63X-6ve(WxyE+z*Znqz",
+      "replay_verified": true
+    },
+    {
+      "cache_authority": false,
+      "cache_entry_root_hash72": "0000000000000000000000000000001yN(AzI501(GQ2dJHpSg66EEoCV-7Sr>PVRN6SlC>C",
+      "cache_key_root_hash72": "0000000000000000000000000000000t08cTb?OjY?eJSc7ZFaj/idVcdPtjil-Of3qCAKfz",
+      "pattern_root_hash72": "0000000000000000000000000000000t08cTb?OjY?eJSc7ZFaj/idVcdPtjil-Of3qCAKfz",
+      "replay_verified": true
+    },
+    {
+      "cache_authority": false,
+      "cache_entry_root_hash72": "0000000000000000000000000000002>/XlBG/jRtBTqWTZgW^whKv4PGYmjw4-nFTv6+p2*",
+      "cache_key_root_hash72": "0000000000000000000000000000001S>V5m9/y2Vkmb!(pN5rm?u)VfgTMNv8R9Iio2Esks",
+      "pattern_root_hash72": "0000000000000000000000000000001S>V5m9/y2Vkmb!(pN5rm?u)VfgTMNv8R9Iio2Esks",
+      "replay_verified": true
+    },
+    {
+      "cache_authority": false,
+      "cache_entry_root_hash72": "00000000000000000000000000000043J7Z-mSxeDxs0khU5op1EGw9TSJ**PahhPQpVm=Ee",
+      "cache_key_root_hash72": "00000000000000000000000000000034LsYFIlPWV4GHOSKt?81dBMTjEB5*qGeW/NYvUif4",
+      "pattern_root_hash72": "00000000000000000000000000000034LsYFIlPWV4GHOSKt?81dBMTjEB5*qGeW/NYvUif4",
+      "replay_verified": true
+    },
+    {
+      "cache_authority": false,
+      "cache_entry_root_hash72": "0000000000000000000000000000000qZCJ-taohfoM8ox!g(Ij^Wp!ca6d=*UYVN=sdmkKr",
+      "cache_key_root_hash72": "0000000000000000000000000000001qioiSMmYxYr=/D8aSWc1MBuMF70)-cEyM3XqM889u",
+      "pattern_root_hash72": "0000000000000000000000000000001qioiSMmYxYr=/D8aSWc1MBuMF70)-cEyM3XqM889u",
+      "replay_verified": true
+    },
+    {
+      "cache_authority": false,
+      "cache_entry_root_hash72": "0000000000000000000000000000000Mv(1=LbY*gk)rOd!eEpNOJrdMJc7ER*EakNlk4OXz",
+      "cache_key_root_hash72": "0000000000000000000000000000002y263Zmj=uCKs4kkbmlkU^Nu4X+F5u5xZ0eAP26S-U",
+      "pattern_root_hash72": "0000000000000000000000000000002y263Zmj=uCKs4kkbmlkU^Nu4X+F5u5xZ0eAP26S-U",
+      "replay_verified": true
+    },
+    {
+      "cache_authority": false,
+      "cache_entry_root_hash72": "00000000000000000000000000000003Om-GvUH^FFqaH>sIbOZ=LrlX?lg1DoEKQlQKSq^x",
+      "cache_key_root_hash72": "0000000000000000000000000000002NAcDga^xIOXd8cgrC+XbebgktC6jjRD+SwkU/=!z?",
+      "pattern_root_hash72": "0000000000000000000000000000002NAcDga^xIOXd8cgrC+XbebgktC6jjRD+SwkU/=!z?",
+      "replay_verified": true
+    },
+    {
+      "cache_authority": false,
+      "cache_entry_root_hash72": "0000000000000000000000000000003IZJYMLB5O=se3G(NpyU25X>CT^S9hyHW)PdkmlfDy",
+      "cache_key_root_hash72": "0000000000000000000000000000004r>nM5XH+0>Dqqo/XtB+>+irJ*7FL3j4Cv>s-(dJqm",
+      "pattern_root_hash72": "0000000000000000000000000000004r>nM5XH+0>Dqqo/XtB+>+irJ*7FL3j4Cv>s-(dJqm",
+      "replay_verified": true
+    },
+    {
+      "cache_authority": false,
+      "cache_entry_root_hash72": "0000000000000000000000000000002Iamg1U7U04U*P!mId7QlVdkF0w(+IvazH91h!(^I9",
+      "cache_key_root_hash72": "0000000000000000000000000000003*SPvolCyqtEICr8r8uvMck^zUq99m(sqno!m6zbf/",
+      "pattern_root_hash72": "0000000000000000000000000000003*SPvolCyqtEICr8r8uvMck^zUq99m(sqno!m6zbf/",
+      "replay_verified": true
+    },
+    {
+      "cache_authority": false,
+      "cache_entry_root_hash72": "0000000000000000000000000000003Y-/1Gt/*?^M*PGktWJp/oQ9LAq^HG5ge*NZRH1dTg",
+      "cache_key_root_hash72": "0000000000000000000000000000004tOu=k(n-ZR=r>yN3?mH5bxvzjTapN4a>E3xi2CFFt",
+      "pattern_root_hash72": "0000000000000000000000000000004tOu=k(n-ZR=r>yN3?mH5bxvzjTapN4a>E3xi2CFFt",
+      "replay_verified": true
+    },
+    {
+      "cache_authority": false,
+      "cache_entry_root_hash72": "0000000000000000000000000000001ooDB?ZtXOW5?+z+FYfajvEV7>34/KeBG4R2Ocisa!",
+      "cache_key_root_hash72": "00000000000000000000000000000007T^7zQth8G!PFqv*Mh1sXBXhlLusC(1VpjzfaPwN6",
+      "pattern_root_hash72": "00000000000000000000000000000007T^7zQth8G!PFqv*Mh1sXBXhlLusC(1VpjzfaPwN6",
+      "replay_verified": true
+    },
+    {
+      "cache_authority": false,
+      "cache_entry_root_hash72": "0000000000000000000000000000000tT*gHnZdNCJSCtWrm0GEuv?QmZ25g57*7WmoX!act",
+      "cache_key_root_hash72": "00000000000000000000000000000017>R!YFfeyc(b+0LtV2+/Aa*2Erqa3?YdKkkfLy?mj",
+      "pattern_root_hash72": "00000000000000000000000000000017>R!YFfeyc(b+0LtV2+/Aa*2Erqa3?YdKkkfLy?mj",
+      "replay_verified": true
+    },
+    {
+      "cache_authority": false,
+      "cache_entry_root_hash72": "0000000000000000000000000000001fw*Lci5R9=lvD>XtT^*9E+4rZSKG6b4GEkxWKEfB1",
+      "cache_key_root_hash72": "0000000000000000000000000000003F2FiIX5wURMrOpEroVnbP*T(CnVc7D!gb)uYS8^2T",
+      "pattern_root_hash72": "0000000000000000000000000000003F2FiIX5wURMrOpEroVnbP*T(CnVc7D!gb)uYS8^2T",
+      "replay_verified": true
+    },
+    {
+      "cache_authority": false,
+      "cache_entry_root_hash72": "0000000000000000000000000000002nDl=a*L!nww*ZH0x1^d8PeqWaLI5tOozdH6W6tKhv",
+      "cache_key_root_hash72": "0000000000000000000000000000001S6g-U+s)>20iJeC(URM=-z/lykB4MFR79pa^L(p!(",
+      "pattern_root_hash72": "0000000000000000000000000000001S6g-U+s)>20iJeC(URM=-z/lykB4MFR79pa^L(p!(",
+      "replay_verified": true
+    },
+    {
+      "cache_authority": false,
+      "cache_entry_root_hash72": "0000000000000000000000000000002xS3SP+HqX-O121rzycvbPJFoxfe3thFd4X!sSr8Qg",
+      "cache_key_root_hash72": "0000000000000000000000000000003POKSz!mCwBaB9P!ofaCiSGNytO4dS^TXn29GZ9tK7",
+      "pattern_root_hash72": "0000000000000000000000000000003POKSz!mCwBaB9P!ofaCiSGNytO4dS^TXn29GZ9tK7",
+      "replay_verified": true
+    },
+    {
+      "cache_authority": false,
+      "cache_entry_root_hash72": "00000000000000000000000000000022MmCNbC?t(mEo(8Bytno0eNPIQ!dVx*jHZ3ENQuyY",
+      "cache_key_root_hash72": "0000000000000000000000000000003Le*khM2NozTuARH38J+UL^6LnL!m/!UY?-AB)CE=1",
+      "pattern_root_hash72": "0000000000000000000000000000003Le*khM2NozTuARH38J+UL^6LnL!m/!UY?-AB)CE=1",
+      "replay_verified": true
+    },
+    {
+      "cache_authority": false,
+      "cache_entry_root_hash72": "0000000000000000000000000000001MSmGLnCJco=is!?WBCwpOu>OB5=sDT(joDhRlQ-vm",
+      "cache_key_root_hash72": "0000000000000000000000000000003xIiS>VWUsQlQ)AU>(AbJuBLUCn)hcgL87l(qK(IWk",
+      "pattern_root_hash72": "0000000000000000000000000000003xIiS>VWUsQlQ)AU>(AbJuBLUCn)hcgL87l(qK(IWk",
+      "replay_verified": true
+    },
+    {
+      "cache_authority": false,
+      "cache_entry_root_hash72": "0000000000000000000000000000002SM)HnBvzPGy^eE-ZfO8c2qydz+HWE5hESQ3^3Fo*W",
+      "cache_key_root_hash72": "0000000000000000000000000000001/l-CD03IB!Ww4bhzj7xuyK*8X>u9fiE0q5A7=XdKp",
+      "pattern_root_hash72": "0000000000000000000000000000001/l-CD03IB!Ww4bhzj7xuyK*8X>u9fiE0q5A7=XdKp",
+      "replay_verified": true
+    },
+    {
+      "cache_authority": false,
+      "cache_entry_root_hash72": "0000000000000000000000000000002EdspFOhUo0ypzzb*/yf^Ol?(^YIr(T!bflDubPk*b",
+      "cache_key_root_hash72": "0000000000000000000000000000001PLzlDeWv!2B^Cb)+Z/QRiJQ5rE4mXmwBRUZ5uET8B",
+      "pattern_root_hash72": "0000000000000000000000000000001PLzlDeWv!2B^Cb)+Z/QRiJQ5rE4mXmwBRUZ5uET8B",
+      "replay_verified": true
+    },
+    {
+      "cache_authority": false,
+      "cache_entry_root_hash72": "0000000000000000000000000000003HefN7E00vCXoU72HFraDu)IDqnZPu5ScRF6>t+sMn",
+      "cache_key_root_hash72": "00000000000000000000000000000040t1zv+EPkK+wLlXsy4jHD(tpBdV=bUs(/1w4WO>nq",
+      "pattern_root_hash72": "00000000000000000000000000000040t1zv+EPkK+wLlXsy4jHD(tpBdV=bUs(/1w4WO>nq",
+      "replay_verified": true
+    },
+    {
+      "cache_authority": false,
+      "cache_entry_root_hash72": "00000000000000000000000000000035pz/zPU(AyO25V1d5XQ+EWHcp*>IBcP0(G1JJcQce",
+      "cache_key_root_hash72": "00000000000000000000000000000027f0O2Mjr1?csj((V(qQ?hy(fLiGhK8IPcpP>q0vWa",
+      "pattern_root_hash72": "00000000000000000000000000000027f0O2Mjr1?csj((V(qQ?hy(fLiGhK8IPcpP>q0vWa",
+      "replay_verified": true
+    },
+    {
+      "cache_authority": false,
+      "cache_entry_root_hash72": "000000000000000000000000000000019S!bWW-38mcKQlYe9Df+6s3V-/gDMlLY09+PVlPu",
+      "cache_key_root_hash72": "00000000000000000000000000000007*^oPxAUv+jnFMCPn97NtF6GvqO4V4TFrG>xTvrax",
+      "pattern_root_hash72": "00000000000000000000000000000007*^oPxAUv+jnFMCPn97NtF6GvqO4V4TFrG>xTvrax",
+      "replay_verified": true
+    },
+    {
+      "cache_authority": false,
+      "cache_entry_root_hash72": "0000000000000000000000000000003ivkfzz0qT3NHf5Gw(3/kd23C()i1R4cRmdoyIFIec",
+      "cache_key_root_hash72": "0000000000000000000000000000003Ce=W(9kpssxe47WfBayqriHXpU3h4b-vmeXjHnEov",
+      "pattern_root_hash72": "0000000000000000000000000000003Ce=W(9kpssxe47WfBayqriHXpU3h4b-vmeXjHnEov",
+      "replay_verified": true
+    },
+    {
+      "cache_authority": false,
+      "cache_entry_root_hash72": "0000000000000000000000000000000Y-F!pm(/lqrztI*>>a+X0jhk/-BRzQ!fFrp2?dKWv",
+      "cache_key_root_hash72": "0000000000000000000000000000003m4TLYqn!YQr3cFxCl/r47SFg?>M)G5SSCUPMq9)^k",
+      "pattern_root_hash72": "0000000000000000000000000000003m4TLYqn!YQr3cFxCl/r47SFg?>M)G5SSCUPMq9)^k",
+      "replay_verified": true
+    },
+    {
+      "cache_authority": false,
+      "cache_entry_root_hash72": "0000000000000000000000000000004xR*)He314hOrbKq0>ctPFbuyruahnw/dhh>BnmB/z",
+      "cache_key_root_hash72": "0000000000000000000000000000001j*Zce-tmLWIPVcvNP6h8tLjtF(hFW3t!BpG/Negwm",
+      "pattern_root_hash72": "0000000000000000000000000000001j*Zce-tmLWIPVcvNP6h8tLjtF(hFW3t!BpG/Negwm",
+      "replay_verified": true
+    },
+    {
+      "cache_authority": false,
+      "cache_entry_root_hash72": "0000000000000000000000000000002kv6/f6EIJq4TgbhTxgecV/eHfAvh*0KbyH/^ZLZSc",
+      "cache_key_root_hash72": "0000000000000000000000000000002bmsc1qBx9KElv0gjKjkvk*La6d88v00muZF*EhQUL",
+      "pattern_root_hash72": "0000000000000000000000000000002bmsc1qBx9KElv0gjKjkvk*La6d88v00muZF*EhQUL",
+      "replay_verified": true
+    },
+    {
+      "cache_authority": false,
+      "cache_entry_root_hash72": "0000000000000000000000000000004nN6yKUUxAwgu7Q/Xpq0+Lodjg5ql65x2pOkCpID)7",
+      "cache_key_root_hash72": "0000000000000000000000000000001RwjC/3X9/rU1JP6TVky1uFGSHw2RxZJIYIsjFvE^h",
+      "pattern_root_hash72": "0000000000000000000000000000001RwjC/3X9/rU1JP6TVky1uFGSHw2RxZJIYIsjFvE^h",
+      "replay_verified": true
+    },
+    {
+      "cache_authority": false,
+      "cache_entry_root_hash72": "00000000000000000000000000000024P4)GK9Yzg>)zsYBMV9->/3oLzkvZbH2g)isWxQC3",
+      "cache_key_root_hash72": "0000000000000000000000000000000Jrp0>Kvh7qnX-HA>YD/+zcBs2/9?diD8YYK>7c>mf",
+      "pattern_root_hash72": "0000000000000000000000000000000Jrp0>Kvh7qnX-HA>YD/+zcBs2/9?diD8YYK>7c>mf",
+      "replay_verified": true
+    },
+    {
+      "cache_authority": false,
+      "cache_entry_root_hash72": "0000000000000000000000000000004x3v^WbQocqEB++(^ZcD2D9PknpjCpotpVsdfF^=PQ",
+      "cache_key_root_hash72": "0000000000000000000000000000003xI+oJrDwms9iF^nd!)*B?-YOJj?ZFDX2d+Mp/Ji7T",
+      "pattern_root_hash72": "0000000000000000000000000000003xI+oJrDwms9iF^nd!)*B?-YOJj?ZFDX2d+Mp/Ji7T",
+      "replay_verified": true
+    },
+    {
+      "cache_authority": false,
+      "cache_entry_root_hash72": "0000000000000000000000000000002uZct/a2(sWIEM>MHb?y/?!V(Bu^Oq19?3Hb0X6Az!",
+      "cache_key_root_hash72": "0000000000000000000000000000001>?Xv44k3hz^^(kd3F-8AGMI?Q5n0ee)!ETl)+oMP0",
+      "pattern_root_hash72": "0000000000000000000000000000001>?Xv44k3hz^^(kd3F-8AGMI?Q5n0ee)!ETl)+oMP0",
+      "replay_verified": true
+    },
+    {
+      "cache_authority": false,
+      "cache_entry_root_hash72": "00000000000000000000000000000020I4KBjqQ8gzaTeD!gLjOiE(89(X2G(buFB0QOEjb=",
+      "cache_key_root_hash72": "0000000000000000000000000000004mz3KanQz1rNLpMlEt9hMbMQ!TSWV=qtIhYkz2lka>",
+      "pattern_root_hash72": "0000000000000000000000000000004mz3KanQz1rNLpMlEt9hMbMQ!TSWV=qtIhYkz2lka>",
+      "replay_verified": true
+    },
+    {
+      "cache_authority": false,
+      "cache_entry_root_hash72": "0000000000000000000000000000001yQazhTrkjt+saiIuqSOwh4P!Q9AJ)-Sz2Alr9ZfHc",
+      "cache_key_root_hash72": "0000000000000000000000000000003VlX?q7NUuGpk6rOJKR^deWyVYUB?xMgCu3jLP8?1^",
+      "pattern_root_hash72": "0000000000000000000000000000003VlX?q7NUuGpk6rOJKR^deWyVYUB?xMgCu3jLP8?1^",
+      "replay_verified": true
+    },
+    {
+      "cache_authority": false,
+      "cache_entry_root_hash72": "0000000000000000000000000000000fAy?HU8JiWzYT3QV7J9WMDdscDG2yqCGB!-FgTBOp",
+      "cache_key_root_hash72": "0000000000000000000000000000001((2Dx=Bxi4)*uh+1S2z2)PAKP*mG5aZi01ZfcmPep",
+      "pattern_root_hash72": "0000000000000000000000000000001((2Dx=Bxi4)*uh+1S2z2)PAKP*mG5aZi01ZfcmPep",
+      "replay_verified": true
+    },
+    {
+      "cache_authority": false,
+      "cache_entry_root_hash72": "0000000000000000000000000000000k4/ecS89*nUpYjuV03rFtMmk)a-SESwS+7IaWC!7F",
+      "cache_key_root_hash72": "00000000000000000000000000000009aKpUzjqCc>pklgFneF8bX4UYiLuL?+0G3ZUVKV!k",
+      "pattern_root_hash72": "00000000000000000000000000000009aKpUzjqCc>pklgFneF8bX4UYiLuL?+0G3ZUVKV!k",
+      "replay_verified": true
+    },
+    {
+      "cache_authority": false,
+      "cache_entry_root_hash72": "00000000000000000000000000000033DfWj=-!76t^n/*yUsJH*XqpTuxPP1X9kPbA-Ipnz",
+      "cache_key_root_hash72": "0000000000000000000000000000001vuyNWp9Izfhe81cOXbK4GBHsCZnxotl(V0+qe!1jb",
+      "pattern_root_hash72": "0000000000000000000000000000001vuyNWp9Izfhe81cOXbK4GBHsCZnxotl(V0+qe!1jb",
+      "replay_verified": true
+    },
+    {
+      "cache_authority": false,
+      "cache_entry_root_hash72": "0000000000000000000000000000003P>Y+S1-JUlyvhCcr^)GDN2g6AICeRJvbAW3-l3gK-",
+      "cache_key_root_hash72": "0000000000000000000000000000001CEr03HKK)u?/wzBOu*rIY5xlA3+RCANPE1d(CKGYj",
+      "pattern_root_hash72": "0000000000000000000000000000001CEr03HKK)u?/wzBOu*rIY5xlA3+RCANPE1d(CKGYj",
+      "replay_verified": true
+    },
+    {
+      "cache_authority": false,
+      "cache_entry_root_hash72": "00000000000000000000000000000045g^UQ^VW2=9ITaZUzLLwr-k7DQJWc^mIVMI3L?FzB",
+      "cache_key_root_hash72": "0000000000000000000000000000003?DqC*t!ppwh90?Lf/YDRii(kt!sXInA94(M+C8+sF",
+      "pattern_root_hash72": "0000000000000000000000000000003?DqC*t!ppwh90?Lf/YDRii(kt!sXInA94(M+C8+sF",
+      "replay_verified": true
+    },
+    {
+      "cache_authority": false,
+      "cache_entry_root_hash72": "0000000000000000000000000000003YEzmtxj(2+IBAme>HCp9k*^JI)!Sie35zwaUAr-(x",
+      "cache_key_root_hash72": "00000000000000000000000000000006bPFQdoJ3!z+wGrBnwU6/K3uh*8ngDGQb-G+ST3OS",
+      "pattern_root_hash72": "00000000000000000000000000000006bPFQdoJ3!z+wGrBnwU6/K3uh*8ngDGQb-G+ST3OS",
+      "replay_verified": true
+    }
+  ]
+}

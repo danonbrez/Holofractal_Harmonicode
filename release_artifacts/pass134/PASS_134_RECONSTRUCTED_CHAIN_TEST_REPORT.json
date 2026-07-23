@@ -1,0 +1,29 @@
+{
+  "canonical_archive_mutated_by_tests": false,
+  "full_historical_monolithic_suite_run": false,
+  "pass_id": "PASS_134_FULL_R1",
+  "schema": "HHS_PASS134_RECONSTRUCTED_CHAIN_DEPENDENCY_TEST_REPORT_V1",
+  "scopes": {
+    "PASS_132_RECONSTRUCTED_R1": 7,
+    "PASS_133_RECOVERED_R1": 9,
+    "PASS_134_RFACC_AND_LEGACY_RECOVERY": 14
+  },
+  "status": "PASS",
+  "terminal_status": "DEPENDENCY_SCOPED_RECONSTRUCTED_CHAIN_VERIFIED",
+  "test_execution_environment": "DISPOSABLE_EXTRACTED_CHECKPOINT_COPY",
+  "tests_failed": 0,
+  "tests_passed": 30,
+  "validated": [
+    "18 immutable Pass 132 workload executions and receipt replays",
+    "native Pass 132 release-manifest Hash72 witness exact reproduction",
+    "nine guarded Pass 132 API surfaces",
+    "Hash72 roots containing reserved URL characters",
+    "Pass 133 prime/Sudoku/BigInt/phase/ECC/SCHIC workloads",
+    "full-parent inheritance and cache exclusion",
+    "system deletion rejection",
+    "manifest tamper detection",
+    "deterministic checkpoint rebuild",
+    "corruption localization",
+    "POSIX executable-mode ZIP round trip"
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "schema": "HHS_PASS_130_RELEASE_MANIFEST_V1",
+  "pass_id": "PASS_130",
+  "parent_pass": "PASS_129",
+  "parent_release_root_hash72": "0000000000000000000000000000003ikqYR7O1hvUkCMaHRD2xUmyXiZdFK/54yW7-u1i-+",
+  "module": "hhs_runtime.hhs_pass130_default_delta_constraint_envelope_v1",
+  "test_module": "tests.test_hhs_pass130_default_delta_constraint_envelope_v1",
+  "service": "runtime.default_delta_constraint_envelope.pass130",
+  "focused_tests_passed": 12,
+  "dependency_scoped_tests_passed": 71,
+  "default_constraints_safe_for_quantum_and_high_entropy_layers": true,
+  "defaults_are_admission_only": true,
+  "entropy_preserved": true,
+  "deterministic_replay_verified": true,
+  "report_root_hash72": "0000000000000000000000000000001?7*Rggc=YQdwKVlzUW=4FAgX/hIBKTtWQtmv=QsDo",
+  "pass130_release_root_hash72": "0000000000000000000000000000001^1mfHoV7R6XWUUF?)^kgf?YjKJ=6Qht8ci94RYXJc"
+}

@@ -1,0 +1,25 @@
+{
+  "schema": "HHS_PASS148_REFERENCE_WORKLOAD_V1",
+  "status": "REFERENCE_WORKLOAD_CLOSED",
+  "semantic_registry": {
+    "schema": "HHS_PASS148_REGISTRY_AUDIT_V1",
+    "closed": true,
+    "expected_count": 42,
+    "observed_count": 42,
+    "missing_or_mismatched": [],
+    "unexpected_active": [],
+    "registry_version": "HHS_NATIVE_SEMANTIC_REGISTRY_148.1.0",
+    "registry_hash72": "0000000000000000000000000000001Ea(9Nr(GPFO?)wXbXg5AcJEqjli-loC^fdw-EAu/D"
+  },
+  "negative_tests": {
+    "passed": 25,
+    "total": 25
+  },
+  "replay_validated": true,
+  "semantic_audit_closed": true,
+  "database_integrity": true,
+  "receipt_chain_valid": true,
+  "transaction_count": 54,
+  "external_privileged_semantic_authority": 0,
+  "workload_hash72": "00000000000000000000000000000026y2>iqP=-7xHMbSmdljpxxJW!VU7Yqy)d8ysp3mYL"
+}

@@ -1,0 +1,418 @@
+{
+  "checkpoint_model": "FULL_PARENT_COPY_PLUS_PASS135_DELTA",
+  "file_count": 50,
+  "files": [
+    {
+      "path": "Makefile",
+      "sha256": "97dd0a48d8e9f79154857b6a10647a950642c5c9d21211d922d8f978f12c0166",
+      "size_bytes": 35683
+    },
+    {
+      "path": "PASS_135_README.md",
+      "sha256": "1db04d27bf83502bc0533c73dd341d3bb719cfd1b04aa99bf550dde48889f3a7",
+      "size_bytes": 638
+    },
+    {
+      "path": "contracts/pass135/HHS-I135_CCEUAA_v1.0.md",
+      "sha256": "cdf771e618eb41fed0156ad70d0a9adf1c1ed97186c206ecf25da4f76ed3c231",
+      "size_bytes": 2094
+    },
+    {
+      "path": "contracts/pass135/PASS_135_CONTRACT.json",
+      "sha256": "70dcc6d54d2d0d8c56b9e82b8c83cb8ccc3e32e1b08a3e1fabd3ecebd488838e",
+      "size_bytes": 783
+    },
+    {
+      "path": "hhs_backend/api/pass135_audit_routes.py",
+      "sha256": "db6661233e2b728c1b847fe091052d5e4d87f70801a0fd59bb0ef15e704012ee",
+      "size_bytes": 1093
+    },
+    {
+      "path": "hhs_backend/server.py",
+      "sha256": "c58edc526afabae8fcc38fcc0edcefedae6c8baffa7753826410b032eae8d7e9",
+      "size_bytes": 26548
+    },
+    {
+      "path": "hhs_runtime/hhs_pass135_ceuac_audit_v1.py",
+      "sha256": "7033dc02d537257aaf6b8c76ef38925eaf3fb8a3f1a101cdad803577a17a3d6e",
+      "size_bytes": 39080
+    },
+    {
+      "path": "release_artifacts/pass135/PASS_135_CANONICAL_CEUAC_AUDIT_RECORD.json",
+      "sha256": "8f727b4519f3581d56f36e2f16d683c713f20a267e536c7b46971525b02fa763",
+      "size_bytes": 5453
+    },
+    {
+      "path": "release_artifacts/pass135/PASS_135_CANONICAL_SERVER.log",
+      "sha256": "eaaa1485c55496a90fdbb234e0adacb6b8355fb01fc91215743571c1c25fb09d",
+      "size_bytes": 1322
+    },
+    {
+      "path": "release_artifacts/pass135/PASS_135_CEUAC_CONCLUSIONS.jsonl",
+      "sha256": "dfc6357ad21f71a67d9153dd8eec00b9c2b9625103e0011e80014854fa738f87",
+      "size_bytes": 4690
+    },
+    {
+      "path": "release_artifacts/pass135/PASS_135_CEUAC_EVIDENCE.jsonl",
+      "sha256": "dd8ce89d171c648117d9048705671e490fd1742fc4de2eade822cca948ec927c",
+      "size_bytes": 49785
+    },
+    {
+      "path": "release_artifacts/pass135/PASS_135_CEUAC_INTERPRETATIONS.jsonl",
+      "sha256": "d7ee57d91b57ea113d480e9516c888e05164429c25f15f1149f21e8d2cae30d9",
+      "size_bytes": 5105
+    },
+    {
+      "path": "release_artifacts/pass135/PASS_135_CEUAC_SCHEMA_VALIDATION.json",
+      "sha256": "c22e9cff9093b9ea7ace4ef85662f007d538d0eea433430b52fbeef4373a55e5",
+      "size_bytes": 229
+    },
+    {
+      "path": "release_artifacts/pass135/PASS_135_COMPLETION_ATTESTATION.json",
+      "sha256": "05643e789073078149c5896ffd6e04f8997be21aaebc32cecd75d34cc778ec6d",
+      "size_bytes": 805
+    },
+    {
+      "path": "release_artifacts/pass135/PASS_135_COMPLETION_ERRATUM_001.json",
+      "sha256": "1bed227b4103c0a9f26c9b5ece0fb2b81b9213d042cb58ee2dc54fed19c75f20",
+      "size_bytes": 818
+    },
+    {
+      "path": "release_artifacts/pass135/PASS_135_EFFECTIVE_COMPLETION_VIEW.json",
+      "sha256": "9bdc2f7f4a0b034f1680388a9553377dd46ad3eeadc4c1def51a44670baea264",
+      "size_bytes": 999
+    },
+    {
+      "path": "release_artifacts/pass135/PASS_135_ENVIRONMENT_FINGERPRINT.json",
+      "sha256": "b13dfde4498cf3c0d99db2002d8e8dac45fb8f7c85433bd2dceea7c9826e6dd8",
+      "size_bytes": 863
+    },
+    {
+      "path": "release_artifacts/pass135/PASS_135_IMPLEMENTATION_REPORT.md",
+      "sha256": "5c38e4bb2ea7043df44a16ed4b9ec01e8f0e121a35fb7a6ee6f17cdbf04594e0",
+      "size_bytes": 1222
+    },
+    {
+      "path": "release_artifacts/pass135/PASS_135_PUBLIC_SURFACE_INVENTORY.json",
+      "sha256": "e6141f55b11682813b1de1b234bdc20f6a8116e7f1620ae2eac3dd4ede43a9db",
+      "size_bytes": 332
+    },
+    {
+      "path": "release_artifacts/pass135/PASS_135_RELEASE_MANIFEST.json",
+      "sha256": "2baed36dbc583733656550a9c50347fb232863e12cf76aff753698137d4a9100",
+      "size_bytes": 4073
+    },
+    {
+      "path": "release_artifacts/pass135/PASS_135_SCENARIO_REPORT.json",
+      "sha256": "185f4f38bff2e65119a7e36f4bfdab21f0036a79c98bd5db38fedc66143df558",
+      "size_bytes": 1754
+    },
+    {
+      "path": "release_artifacts/pass135/PASS_135_SUBJECT_SERVER.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "release_artifacts/pass135/PASS_135_TEST_REPORT.json",
+      "sha256": "6586b3db61c952a7d004ed9750173237707b59286a418f985e17b28da9f412a3",
+      "size_bytes": 3415
+    },
+    {
+      "path": "release_artifacts/pass135/evidence_store/1a259c822b6de1e3917f82240dd2be4fa749697f6b351fc7dfabe4570aee4149.json",
+      "sha256": "1a259c822b6de1e3917f82240dd2be4fa749697f6b351fc7dfabe4570aee4149",
+      "size_bytes": 410
+    },
+    {
+      "path": "release_artifacts/pass135/evidence_store/2c9ef3c716058e630c82e53a08f57e16bc8766a9007628b78b830ab276edd17c.json",
+      "sha256": "2c9ef3c716058e630c82e53a08f57e16bc8766a9007628b78b830ab276edd17c",
+      "size_bytes": 2548
+    },
+    {
+      "path": "release_artifacts/pass135/evidence_store/2e944810eaf646aa626d049e7ca596adefc01a58de68c1fe039f4817b7f76147.json",
+      "sha256": "2e944810eaf646aa626d049e7ca596adefc01a58de68c1fe039f4817b7f76147",
+      "size_bytes": 2549
+    },
+    {
+      "path": "release_artifacts/pass135/evidence_store/32ccf194494f5766a55d2d6d5a0967772fdcd16a497101395ca1641d57d65c8a.json",
+      "sha256": "32ccf194494f5766a55d2d6d5a0967772fdcd16a497101395ca1641d57d65c8a",
+      "size_bytes": 583
+    },
+    {
+      "path": "release_artifacts/pass135/evidence_store/37764f3e1df9f9b09e1ae689be6a356a86236e17c1729a43cfe2951d2d610a05.json",
+      "sha256": "37764f3e1df9f9b09e1ae689be6a356a86236e17c1729a43cfe2951d2d610a05",
+      "size_bytes": 7777
+    },
+    {
+      "path": "release_artifacts/pass135/evidence_store/3b93816ce2ac8d1995f4605f9b564cb9fbf22d321ef892c0e6cf59617509dd33.json",
+      "sha256": "3b93816ce2ac8d1995f4605f9b564cb9fbf22d321ef892c0e6cf59617509dd33",
+      "size_bytes": 372
+    },
+    {
+      "path": "release_artifacts/pass135/evidence_store/44a5ce075daa481d40c19dd9cc77fb523871b3bfcce5cdc609cb8d1dccf615b6.json",
+      "sha256": "44a5ce075daa481d40c19dd9cc77fb523871b3bfcce5cdc609cb8d1dccf615b6",
+      "size_bytes": 1180
+    },
+    {
+      "path": "release_artifacts/pass135/evidence_store/49d2c0d3819380262eea6b52ba66540c8d2349e719f65670bf0d115fe12582c6.json",
+      "sha256": "49d2c0d3819380262eea6b52ba66540c8d2349e719f65670bf0d115fe12582c6",
+      "size_bytes": 1473
+    },
+    {
+      "path": "release_artifacts/pass135/evidence_store/52ff55a66391cdb6d1768d2d1bcc5f692a4dce332c1a8db914e829094f360623.json",
+      "sha256": "52ff55a66391cdb6d1768d2d1bcc5f692a4dce332c1a8db914e829094f360623",
+      "size_bytes": 311
+    },
+    {
+      "path": "release_artifacts/pass135/evidence_store/615a261ef14379687645191a41dfcdbc19c3e188b3b21ec343e219ef753f1789.json",
+      "sha256": "615a261ef14379687645191a41dfcdbc19c3e188b3b21ec343e219ef753f1789",
+      "size_bytes": 336
+    },
+    {
+      "path": "release_artifacts/pass135/evidence_store/736524ef4554da62f5b1061fa8e03f87d610e5528425d4047c7eca02486ce7f7.json",
+      "sha256": "736524ef4554da62f5b1061fa8e03f87d610e5528425d4047c7eca02486ce7f7",
+      "size_bytes": 200
+    },
+    {
+      "path": "release_artifacts/pass135/evidence_store/7c61622e2707e75ec361656376c9dc50aa71c7b577aa79e554efada7bc501436.json",
+      "sha256": "7c61622e2707e75ec361656376c9dc50aa71c7b577aa79e554efada7bc501436",
+      "size_bytes": 320
+    },
+    {
+      "path": "release_artifacts/pass135/evidence_store/7d2f168622da6a3b1f11ad79dccf357e49b87dda97865cf3b002da68ab41848b.json",
+      "sha256": "7d2f168622da6a3b1f11ad79dccf357e49b87dda97865cf3b002da68ab41848b",
+      "size_bytes": 766
+    },
+    {
+      "path": "release_artifacts/pass135/evidence_store/8f965c169e5175d571df029a470ac5c52eda81a6b6faf19580a7619ecb66efc8.json",
+      "sha256": "8f965c169e5175d571df029a470ac5c52eda81a6b6faf19580a7619ecb66efc8",
+      "size_bytes": 583
+    },
+    {
+      "path": "release_artifacts/pass135/evidence_store/94779fa43c263d43a38ac52d48119c1c4f62f4ef0cdc2ff5c219621db93afa18.json",
+      "sha256": "94779fa43c263d43a38ac52d48119c1c4f62f4ef0cdc2ff5c219621db93afa18",
+      "size_bytes": 308
+    },
+    {
+      "path": "release_artifacts/pass135/evidence_store/c79791741488e8f1244b1263567ef21ac2ded2fa5e0dd95db03834f10551a7d9.json",
+      "sha256": "c79791741488e8f1244b1263567ef21ac2ded2fa5e0dd95db03834f10551a7d9",
+      "size_bytes": 444
+    },
+    {
+      "path": "release_artifacts/pass135/evidence_store/c7b947ce3fcca37060ffb7df5c3cda334c1297d724f984e475f11be3bc6a71f9.json",
+      "sha256": "c7b947ce3fcca37060ffb7df5c3cda334c1297d724f984e475f11be3bc6a71f9",
+      "size_bytes": 305
+    },
+    {
+      "path": "release_artifacts/pass135/evidence_store/d15cf240f9eef67dd41fe19c1a46270c9e78e36982e70bd6c7c7255f749ffdc5.json",
+      "sha256": "d15cf240f9eef67dd41fe19c1a46270c9e78e36982e70bd6c7c7255f749ffdc5",
+      "size_bytes": 256
+    },
+    {
+      "path": "release_artifacts/pass135/evidence_store/e9943ad2cfa13fc949c08f762c94ae71b1fb00ddf46895394ddde340c4984019.json",
+      "sha256": "e9943ad2cfa13fc949c08f762c94ae71b1fb00ddf46895394ddde340c4984019",
+      "size_bytes": 206
+    },
+    {
+      "path": "release_artifacts/pass135/evidence_store/ec752fed053974139ae033134a3009fb59e19a0c7ef86b97f7a177b6e4ce09bc.json",
+      "sha256": "ec752fed053974139ae033134a3009fb59e19a0c7ef86b97f7a177b6e4ce09bc",
+      "size_bytes": 304
+    },
+    {
+      "path": "release_artifacts/pass135/evidence_store/fab8ae5dc83ec60dd986b96a0d2df46fbfc37b150f33127f7ff84c09fffde80f.json",
+      "sha256": "fab8ae5dc83ec60dd986b96a0d2df46fbfc37b150f33127f7ff84c09fffde80f",
+      "size_bytes": 400
+    },
+    {
+      "path": "release_artifacts/pass135/evidence_store/fc983fe4dfcde1926a7bbb2721326be2cc392b884e899da4d7092ab10093fa0f.json",
+      "sha256": "fc983fe4dfcde1926a7bbb2721326be2cc392b884e899da4d7092ab10093fa0f",
+      "size_bytes": 16286
+    },
+    {
+      "path": "release_artifacts/pass135/evidence_store/fe5e8efdf340e092fff8bc20659e3ac41d4636bf5c5fc5bcf2a3ff799091d1e0.json",
+      "sha256": "fe5e8efdf340e092fff8bc20659e3ac41d4636bf5c5fc5bcf2a3ff799091d1e0",
+      "size_bytes": 3270
+    },
+    {
+      "path": "tests/__pycache__/test_hhs_pass135_ceuac_audit_v1.cpython-313-pytest-9.0.2.pyc",
+      "sha256": "e739692a34ae668c01b16498bc3ede65731a901d6eb9c7efd83a7470bef38e78",
+      "size_bytes": 6753
+    },
+    {
+      "path": "tests/test_hhs_pass135_audit_routes_v1.py",
+      "sha256": "5b5dd1b724f4196a42d6152938c944e6c3ecdfde6dacb12b593b0fc6743231ad",
+      "size_bytes": 1203
+    },
+    {
+      "path": "tests/test_hhs_pass135_ceuac_audit_v1.py",
+      "sha256": "2cb1eaba66642d472acc1b48bdbdaff081d4ced18e363d98cceb0235262437eb",
+      "size_bytes": 2224
+    },
+    {
+      "path": "tools/run_pass135.py",
+      "sha256": "ee43eedf6e881a3b51f89e93c320f821ccc944da1b1b94e555d3f1815a5e5314",
+      "size_bytes": 351
+    }
+  ],
+  "parent_pass": "PASS_134_FULL_R1",
+  "pass_id": "PASS_135",
+  "schema": "HHS_PASS135_SOURCE_MANIFEST_V1",
+  "source_manifest_hash72_witness": {
+    "authority": "CHECKPOINT_REPAIRED_NATIVE_U72",
+    "canonical_payload": "{\"checkpoint_model\":\"FULL_PARENT_COPY_PLUS_PASS135_DELTA\",\"file_count\":50,\"files\":[{\"path\":\"Makefile\",\"sha256\":\"97dd0a48d8e9f79154857b6a10647a950642c5c9d21211d922d8f978f12c0166\",\"size_bytes\":35683},{\"path\":\"PASS_135_README.md\",\"sha256\":\"1db04d27bf83502bc0533c73dd341d3bb719cfd1b04aa99bf550dde48889f3a7\",\"size_bytes\":638},{\"path\":\"contracts/pass135/HHS-I135_CCEUAA_v1.0.md\",\"sha256\":\"cdf771e618eb41fed0156ad70d0a9adf1c1ed97186c206ecf25da4f76ed3c231\",\"size_bytes\":2094},{\"path\":\"contracts/pass135/PASS_135_CONTRACT.json\",\"sha256\":\"70dcc6d54d2d0d8c56b9e82b8c83cb8ccc3e32e1b08a3e1fabd3ecebd488838e\",\"size_bytes\":783},{\"path\":\"hhs_backend/api/pass135_audit_routes.py\",\"sha256\":\"db6661233e2b728c1b847fe091052d5e4d87f70801a0fd59bb0ef15e704012ee\",\"size_bytes\":1093},{\"path\":\"hhs_backend/server.py\",\"sha256\":\"c58edc526afabae8fcc38fcc0edcefedae6c8baffa7753826410b032eae8d7e9\",\"size_bytes\":26548},{\"path\":\"hhs_runtime/hhs_pass135_ceuac_audit_v1.py\",\"sha256\":\"7033dc02d537257aaf6b8c76ef38925eaf3fb8a3f1a101cdad803577a17a3d6e\",\"size_bytes\":39080},{\"path\":\"release_artifacts/pass135/PASS_135_CANONICAL_CEUAC_AUDIT_RECORD.json\",\"sha256\":\"8f727b4519f3581d56f36e2f16d683c713f20a267e536c7b46971525b02fa763\",\"size_bytes\":5453},{\"path\":\"release_artifacts/pass135/PASS_135_CANONICAL_SERVER.log\",\"sha256\":\"eaaa1485c55496a90fdbb234e0adacb6b8355fb01fc91215743571c1c25fb09d\",\"size_bytes\":1322},{\"path\":\"release_artifacts/pass135/PASS_135_CEUAC_CONCLUSIONS.jsonl\",\"sha256\":\"dfc6357ad21f71a67d9153dd8eec00b9c2b9625103e0011e80014854fa738f87\",\"size_bytes\":4690},{\"path\":\"release_artifacts/pass135/PASS_135_CEUAC_EVIDENCE.jsonl\",\"sha256\":\"dd8ce89d171c648117d9048705671e490fd1742fc4de2eade822cca948ec927c\",\"size_bytes\":49785},{\"path\":\"release_artifacts/pass135/PASS_135_CEUAC_INTERPRETATIONS.jsonl\",\"sha256\":\"d7ee57d91b57ea113d480e9516c888e05164429c25f15f1149f21e8d2cae30d9\",\"size_bytes\":5105},{\"path\":\"release_artifacts/pass135/PASS_135_CEUAC_SCHEMA_VALIDATION.json\",\"sha256\":\"c22e9cff9093b9ea7ace4ef85662f007d538d0eea433430b52fbeef4373a55e5\",\"size_bytes\":229},{\"path\":\"release_artifacts/pass135/PASS_135_COMPLETION_ATTESTATION.json\",\"sha256\":\"05643e789073078149c5896ffd6e04f8997be21aaebc32cecd75d34cc778ec6d\",\"size_bytes\":805},{\"path\":\"release_artifacts/pass135/PASS_135_COMPLETION_ERRATUM_001.json\",\"sha256\":\"1bed227b4103c0a9f26c9b5ece0fb2b81b9213d042cb58ee2dc54fed19c75f20\",\"size_bytes\":818},{\"path\":\"release_artifacts/pass135/PASS_135_EFFECTIVE_COMPLETION_VIEW.json\",\"sha256\":\"9bdc2f7f4a0b034f1680388a9553377dd46ad3eeadc4c1def51a44670baea264\",\"size_bytes\":999},{\"path\":\"release_artifacts/pass135/PASS_135_ENVIRONMENT_FINGERPRINT.json\",\"sha256\":\"b13dfde4498cf3c0d99db2002d8e8dac45fb8f7c85433bd2dceea7c9826e6dd8\",\"size_bytes\":863},{\"path\":\"release_artifacts/pass135/PASS_135_IMPLEMENTATION_REPORT.md\",\"sha256\":\"5c38e4bb2ea7043df44a16ed4b9ec01e8f0e121a35fb7a6ee6f17cdbf04594e0\",\"size_bytes\":1222},{\"path\":\"release_artifacts/pass135/PASS_135_PUBLIC_SURFACE_INVENTORY.json\",\"sha256\":\"e6141f55b11682813b1de1b234bdc20f6a8116e7f1620ae2eac3dd4ede43a9db\",\"size_bytes\":332},{\"path\":\"release_artifacts/pass135/PASS_135_RELEASE_MANIFEST.json\",\"sha256\":\"2baed36dbc583733656550a9c50347fb232863e12cf76aff753698137d4a9100\",\"size_bytes\":4073},{\"path\":\"release_artifacts/pass135/PASS_135_SCENARIO_REPORT.json\",\"sha256\":\"185f4f38bff2e65119a7e36f4bfdab21f0036a79c98bd5db38fedc66143df558\",\"size_bytes\":1754},{\"path\":\"release_artifacts/pass135/PASS_135_SUBJECT_SERVER.log\",\"sha256\":\"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855\",\"size_bytes\":0},{\"path\":\"release_artifacts/pass135/PASS_135_TEST_REPORT.json\",\"sha256\":\"6586b3db61c952a7d004ed9750173237707b59286a418f985e17b28da9f412a3\",\"size_bytes\":3415},{\"path\":\"release_artifacts/pass135/evidence_store/1a259c822b6de1e3917f82240dd2be4fa749697f6b351fc7dfabe4570aee4149.json\",\"sha256\":\"1a259c822b6de1e3917f82240dd2be4fa749697f6b351fc7dfabe4570aee4149\",\"size_bytes\":410},{\"path\":\"release_artifacts/pass135/evidence_store/2c9ef3c716058e630c82e53a08f57e16bc8766a9007628b78b830ab276edd17c.json\",\"sha256\":\"2c9ef3c716058e630c82e53a08f57e16bc8766a9007628b78b830ab276edd17c\",\"size_bytes\":2548},{\"path\":\"release_artifacts/pass135/evidence_store/2e944810eaf646aa626d049e7ca596adefc01a58de68c1fe039f4817b7f76147.json\",\"sha256\":\"2e944810eaf646aa626d049e7ca596adefc01a58de68c1fe039f4817b7f76147\",\"size_bytes\":2549},{\"path\":\"release_artifacts/pass135/evidence_store/32ccf194494f5766a55d2d6d5a0967772fdcd16a497101395ca1641d57d65c8a.json\",\"sha256\":\"32ccf194494f5766a55d2d6d5a0967772fdcd16a497101395ca1641d57d65c8a\",\"size_bytes\":583},{\"path\":\"release_artifacts/pass135/evidence_store/37764f3e1df9f9b09e1ae689be6a356a86236e17c1729a43cfe2951d2d610a05.json\",\"sha256\":\"37764f3e1df9f9b09e1ae689be6a356a86236e17c1729a43cfe2951d2d610a05\",\"size_bytes\":7777},{\"path\":\"release_artifacts/pass135/evidence_store/3b93816ce2ac8d1995f4605f9b564cb9fbf22d321ef892c0e6cf59617509dd33.json\",\"sha256\":\"3b93816ce2ac8d1995f4605f9b564cb9fbf22d321ef892c0e6cf59617509dd33\",\"size_bytes\":372},{\"path\":\"release_artifacts/pass135/evidence_store/44a5ce075daa481d40c19dd9cc77fb523871b3bfcce5cdc609cb8d1dccf615b6.json\",\"sha256\":\"44a5ce075daa481d40c19dd9cc77fb523871b3bfcce5cdc609cb8d1dccf615b6\",\"size_bytes\":1180},{\"path\":\"release_artifacts/pass135/evidence_store/49d2c0d3819380262eea6b52ba66540c8d2349e719f65670bf0d115fe12582c6.json\",\"sha256\":\"49d2c0d3819380262eea6b52ba66540c8d2349e719f65670bf0d115fe12582c6\",\"size_bytes\":1473},{\"path\":\"release_artifacts/pass135/evidence_store/52ff55a66391cdb6d1768d2d1bcc5f692a4dce332c1a8db914e829094f360623.json\",\"sha256\":\"52ff55a66391cdb6d1768d2d1bcc5f692a4dce332c1a8db914e829094f360623\",\"size_bytes\":311},{\"path\":\"release_artifacts/pass135/evidence_store/615a261ef14379687645191a41dfcdbc19c3e188b3b21ec343e219ef753f1789.json\",\"sha256\":\"615a261ef14379687645191a41dfcdbc19c3e188b3b21ec343e219ef753f1789\",\"size_bytes\":336},{\"path\":\"release_artifacts/pass135/evidence_store/736524ef4554da62f5b1061fa8e03f87d610e5528425d4047c7eca02486ce7f7.json\",\"sha256\":\"736524ef4554da62f5b1061fa8e03f87d610e5528425d4047c7eca02486ce7f7\",\"size_bytes\":200},{\"path\":\"release_artifacts/pass135/evidence_store/7c61622e2707e75ec361656376c9dc50aa71c7b577aa79e554efada7bc501436.json\",\"sha256\":\"7c61622e2707e75ec361656376c9dc50aa71c7b577aa79e554efada7bc501436\",\"size_bytes\":320},{\"path\":\"release_artifacts/pass135/evidence_store/7d2f168622da6a3b1f11ad79dccf357e49b87dda97865cf3b002da68ab41848b.json\",\"sha256\":\"7d2f168622da6a3b1f11ad79dccf357e49b87dda97865cf3b002da68ab41848b\",\"size_bytes\":766},{\"path\":\"release_artifacts/pass135/evidence_store/8f965c169e5175d571df029a470ac5c52eda81a6b6faf19580a7619ecb66efc8.json\",\"sha256\":\"8f965c169e5175d571df029a470ac5c52eda81a6b6faf19580a7619ecb66efc8\",\"size_bytes\":583},{\"path\":\"release_artifacts/pass135/evidence_store/94779fa43c263d43a38ac52d48119c1c4f62f4ef0cdc2ff5c219621db93afa18.json\",\"sha256\":\"94779fa43c263d43a38ac52d48119c1c4f62f4ef0cdc2ff5c219621db93afa18\",\"size_bytes\":308},{\"path\":\"release_artifacts/pass135/evidence_store/c79791741488e8f1244b1263567ef21ac2ded2fa5e0dd95db03834f10551a7d9.json\",\"sha256\":\"c79791741488e8f1244b1263567ef21ac2ded2fa5e0dd95db03834f10551a7d9\",\"size_bytes\":444},{\"path\":\"release_artifacts/pass135/evidence_store/c7b947ce3fcca37060ffb7df5c3cda334c1297d724f984e475f11be3bc6a71f9.json\",\"sha256\":\"c7b947ce3fcca37060ffb7df5c3cda334c1297d724f984e475f11be3bc6a71f9\",\"size_bytes\":305},{\"path\":\"release_artifacts/pass135/evidence_store/d15cf240f9eef67dd41fe19c1a46270c9e78e36982e70bd6c7c7255f749ffdc5.json\",\"sha256\":\"d15cf240f9eef67dd41fe19c1a46270c9e78e36982e70bd6c7c7255f749ffdc5\",\"size_bytes\":256},{\"path\":\"release_artifacts/pass135/evidence_store/e9943ad2cfa13fc949c08f762c94ae71b1fb00ddf46895394ddde340c4984019.json\",\"sha256\":\"e9943ad2cfa13fc949c08f762c94ae71b1fb00ddf46895394ddde340c4984019\",\"size_bytes\":206},{\"path\":\"release_artifacts/pass135/evidence_store/ec752fed053974139ae033134a3009fb59e19a0c7ef86b97f7a177b6e4ce09bc.json\",\"sha256\":\"ec752fed053974139ae033134a3009fb59e19a0c7ef86b97f7a177b6e4ce09bc\",\"size_bytes\":304},{\"path\":\"release_artifacts/pass135/evidence_store/fab8ae5dc83ec60dd986b96a0d2df46fbfc37b150f33127f7ff84c09fffde80f.json\",\"sha256\":\"fab8ae5dc83ec60dd986b96a0d2df46fbfc37b150f33127f7ff84c09fffde80f\",\"size_bytes\":400},{\"path\":\"release_artifacts/pass135/evidence_store/fc983fe4dfcde1926a7bbb2721326be2cc392b884e899da4d7092ab10093fa0f.json\",\"sha256\":\"fc983fe4dfcde1926a7bbb2721326be2cc392b884e899da4d7092ab10093fa0f\",\"size_bytes\":16286},{\"path\":\"release_artifacts/pass135/evidence_store/fe5e8efdf340e092fff8bc20659e3ac41d4636bf5c5fc5bcf2a3ff799091d1e0.json\",\"sha256\":\"fe5e8efdf340e092fff8bc20659e3ac41d4636bf5c5fc5bcf2a3ff799091d1e0\",\"size_bytes\":3270},{\"path\":\"tests/__pycache__/test_hhs_pass135_ceuac_audit_v1.cpython-313-pytest-9.0.2.pyc\",\"sha256\":\"e739692a34ae668c01b16498bc3ede65731a901d6eb9c7efd83a7470bef38e78\",\"size_bytes\":6753},{\"path\":\"tests/test_hhs_pass135_audit_routes_v1.py\",\"sha256\":\"5b5dd1b724f4196a42d6152938c944e6c3ecdfde6dacb12b593b0fc6743231ad\",\"size_bytes\":1203},{\"path\":\"tests/test_hhs_pass135_ceuac_audit_v1.py\",\"sha256\":\"2cb1eaba66642d472acc1b48bdbdaff081d4ced18e363d98cceb0235262437eb\",\"size_bytes\":2224},{\"path\":\"tools/run_pass135.py\",\"sha256\":\"ee43eedf6e881a3b51f89e93c320f821ccc944da1b1b94e555d3f1815a5e5314\",\"size_bytes\":351}],\"parent_pass\":\"PASS_134_FULL_R1\",\"pass_id\":\"PASS_135\",\"schema\":\"HHS_PASS135_SOURCE_MANIFEST_V1\",\"system_deletion_rule\":\"PROHIBITED\"}",
+    "digest": "/SG4vHXF(RbpqZLaWCQOiIFIPT3dMN?ptKyKiK8i22v6Umt2Bb!0<0aaw/)g9olmn+C46Waj",
+    "dna": "/SG4vHXF(RbpqZLaWCQOiIFIPT3dMN?ptKyKiK8i22v6Umt2Bb!0<0aaw/)g9olmn+C46Waj",
+    "label": "hhs_pass135_source_manifest_v1",
+    "positions": [
+      65,
+      54,
+      42,
+      4,
+      31,
+      43,
+      59,
+      41,
+      66,
+      53,
+      11,
+      25,
+      26,
+      61,
+      47,
+      10,
+      58,
+      38,
+      52,
+      50,
+      18,
+      44,
+      41,
+      44,
+      51,
+      55,
+      3,
+      13,
+      48,
+      49,
+      71,
+      25,
+      29,
+      46,
+      34,
+      46,
+      18,
+      46,
+      8,
+      18,
+      2,
+      2,
+      31,
+      6,
+      56,
+      22,
+      29,
+      2,
+      37,
+      11,
+      70,
+      0,
+      68,
+      0,
+      10,
+      10,
+      32,
+      65,
+      67,
+      16,
+      9,
+      24,
+      21,
+      22,
+      23,
+      63,
+      38,
+      4,
+      6,
+      58,
+      10,
+      19
+    ],
+    "rotation_profile": [
+      425,
+      53,
+      112,
+      73,
+      171,
+      326,
+      53,
+      178,
+      -14,
+      116,
+      361,
+      -346,
+      374,
+      -24,
+      393,
+      -5,
+      -102,
+      -339,
+      322,
+      -689,
+      -2,
+      -769,
+      -557,
+      21,
+      -189,
+      -546,
+      -23,
+      -302,
+      236,
+      -52,
+      185,
+      -6,
+      -147,
+      373,
+      504,
+      -277,
+      54,
+      297,
+      42,
+      51,
+      -830,
+      321,
+      205,
+      35,
+      -852,
+      -383,
+      -593,
+      387,
+      -875,
+      250,
+      -268,
+      165,
+      448,
+      -125,
+      388,
+      171,
+      -24,
+      152,
+      9,
+      317,
+      -195,
+      467,
+      31,
+      31,
+      -185,
+      430,
+      44,
+      9,
+      298,
+      -299,
+      300,
+      -160
+    ],
+    "schema": "HHS_HASH72_KERNEL_WITNESS_V1",
+    "trace_count": 9394,
+    "zero_sum": true
+  },
+  "system_deletion_rule": "PROHIBITED"
+}

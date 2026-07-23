@@ -1,0 +1,65 @@
+{
+  "schema": "HHS_PASS_092_NEGATIVE_CASES_V1",
+  "cases": [
+    {
+      "case": "invalid-seed",
+      "expected": "REJECT_INVALID_PRIME_PRODUCT_SEED",
+      "observed": "REJECT_INVALID_PRIME_PRODUCT_SEED",
+      "passed": true
+    },
+    {
+      "case": "unwitnessed-operator",
+      "expected": "REJECT_UNWITNESSED_OPERATOR_PRIME",
+      "observed": "REJECT_UNWITNESSED_OPERATOR_PRIME",
+      "passed": true
+    },
+    {
+      "case": "parity",
+      "expected": "REJECT_GENERALIZED_COLLATZ_PARITY_VIOLATION",
+      "observed": "REJECT_GENERALIZED_COLLATZ_PARITY_VIOLATION",
+      "passed": true
+    },
+    {
+      "case": "operator-order",
+      "expected": "REJECT_PRIME_OPERATOR_ORDER_MISMATCH",
+      "observed": "REJECT_PRIME_OPERATOR_ORDER_MISMATCH",
+      "passed": true
+    },
+    {
+      "case": "cross-operator-merge",
+      "expected": "REJECT_INVALID_CROSS_OPERATOR_SUFFIX_MERGE",
+      "observed": "REJECT_INVALID_CROSS_OPERATOR_SUFFIX_MERGE",
+      "passed": true
+    },
+    {
+      "case": "unwitnessed-cycle",
+      "expected": "REJECT_UNWITNESSED_CYCLE",
+      "observed": "REJECT_UNWITNESSED_CYCLE",
+      "passed": true
+    },
+    {
+      "case": "bound-as-asymptotic",
+      "expected": "REJECT_BOUND_AS_ASYMPTOTIC_RESULT",
+      "observed": "REJECT_BOUND_AS_ASYMPTOTIC_RESULT",
+      "passed": true
+    },
+    {
+      "case": "seed-identity-erasure",
+      "expected": "REJECT_COMPOSITE_SEED_IDENTITY_ERASURE",
+      "observed": "REJECT_COMPOSITE_SEED_IDENTITY_ERASURE",
+      "passed": true
+    },
+    {
+      "case": "cache-as-proof",
+      "expected": "REJECT_CACHE_AS_TRAJECTORY_PROOF",
+      "observed": "REJECT_CACHE_AS_TRAJECTORY_PROOF",
+      "passed": true
+    },
+    {
+      "case": "float-authority",
+      "expected": "REJECT_FLOAT_AS_INTEGER_MANIFOLD_AUTHORITY",
+      "observed": "REJECT_FLOAT_AS_INTEGER_MANIFOLD_AUTHORITY",
+      "passed": true
+    }
+  ]
+}

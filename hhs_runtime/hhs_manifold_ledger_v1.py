@@ -111,7 +111,7 @@ class ManifoldLedger:
 # ASCII Waterfall
 # -------------------------
 
-GLYPHS = ["◈", "/ \", "| |", "\\ /", "⌁"]
+GLYPHS = ["◈", "/ \\", "| |", "\\ /", "⌁"]
 
 
 def render_waterfall(chain: List[ManifoldBlock], depth: int = 20) -> str:

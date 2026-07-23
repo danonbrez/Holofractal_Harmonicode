@@ -1,0 +1,85 @@
+{
+  "api_surface_smoke": {
+    "passed": 9,
+    "total": 9
+  },
+  "arm_replays_verified": 54,
+  "executed_workloads": 18,
+  "full_historical_monolithic_suite_run": false,
+  "groups": [
+    {
+      "duration_seconds": 6.33,
+      "failed": 0,
+      "passed": 55,
+      "scope": [
+        "PASS_080",
+        "PASS_081",
+        "PASS_118",
+        "PASS_121"
+      ]
+    },
+    {
+      "duration_seconds": 29.45,
+      "failed": 0,
+      "passed": 41,
+      "scope": [
+        "PASS_130",
+        "PASS_131",
+        "PASS_132"
+      ]
+    },
+    {
+      "duration_seconds": 0.25,
+      "failed": 0,
+      "passed": 3,
+      "scope": [
+        "HASH72_KERNEL_AUTHORITY"
+      ]
+    },
+    {
+      "duration_seconds": 1.05,
+      "failed": 0,
+      "passed": 12,
+      "scope": [
+        "PASS_078_VM81_NATIVE_EXPOSURE"
+      ]
+    },
+    {
+      "deselected": 1,
+      "duration_seconds": 20.49,
+      "failed": 0,
+      "passed": 6,
+      "scope": [
+        "PASS_036_ZERO_BYPASS_DIRECT_CASES"
+      ]
+    },
+    {
+      "duration_seconds": 28.74,
+      "failed": 0,
+      "passed": 1,
+      "scope": [
+        "PASS_036_ZERO_BYPASS_SUMMARY"
+      ]
+    },
+    {
+      "duration_seconds": 3.49,
+      "failed": 0,
+      "passed": 4,
+      "scope": [
+        "BOUNDED_CLOSURE_HARNESS"
+      ]
+    }
+  ],
+  "ieee_control_executions": 36,
+  "native_arm_executions": 18,
+  "pass132_negative_cases": {
+    "passed": 21,
+    "synthetic_rejections_used": false,
+    "total": 21
+  },
+  "schema": "HHS_PASS132_DEPENDENCY_SCOPED_TEST_REPORT_V1",
+  "status": "PASS",
+  "test_policy": "DEPENDENCY_SCOPED_REGRESSION_AND_BOUNDED_SENTINELS",
+  "test_report_root_hash72": "FfJtbd2BNgCc2QW2c2Kp9YCa6xHyD?ZDbGkD2vN!zCg8<MXp/0fM+dVJZ*D/Qb9s<*wwOv+y",
+  "unique_test_count": 122
+}

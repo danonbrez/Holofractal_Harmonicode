@@ -1,0 +1,12 @@
+{
+  "command": "pytest -q tests/test_checkpoint_recovery.py",
+  "schema": "HHS_PASS133_RECOVERY_OPERATION_TEST_REPORT_V1",
+  "status": "PASS",
+  "tests_failed": 0,
+  "tests_passed": 3,
+  "validated": [
+    "evidence-only parent rejection",
+    "full-parent copy with cache exclusion",
+    "missing-system-file detection"
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "capability_ledger_root_hash72": "0000000000000000000000000000004r7KCDH?T/wb>26ml6+r/KxPJfwz-8j)FE-b1+dwHH",
+  "derived_capability_admission_count": 1,
+  "focused_tests": {
+    "pass105_4": 5,
+    "pass105_6": 4,
+    "pass106": 7,
+    "passed": 18,
+    "service_registry_derivation": 2,
+    "total": 18
+  },
+  "implementation_module": "hhs_runtime/hhs_pass106_hash72_capability_truth_v1.py",
+  "mock_evidence_admitted": 0,
+  "native_capability_admission_count": 2,
+  "parent_pass": "PASS_105_6",
+  "parent_release_file": "hhs_pass_105_6_real_c_asm_backend_closure.zip",
+  "pass_id": "PASS_106",
+  "placeholder_capabilities_admitted": 0,
+  "release_root_hash72": "0000000000000000000000000000003sQUh3VtPpar7D!XHIxtOmb>xuRCF2VZQX)WEfJEk8",
+  "schema": "HHS_PASS_106_RELEASE_MANIFEST_V1",
+  "service_name": "runtime.capability_truth_admission.pass106",
+  "test_module": "tests/test_hhs_pass106_hash72_capability_truth_v1.py"
+}

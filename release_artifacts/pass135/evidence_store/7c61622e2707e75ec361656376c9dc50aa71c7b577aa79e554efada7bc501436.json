@@ -1,0 +1,1 @@
+{"interface":"PUBLIC_HTTP_API","operation":"runtime_transport_status","request":{"method":"GET","path":"/api/runtime/transport","payload":null},"response":{"body":{"status":"online","transport":"available"},"headers":{"content-type":"application/json"},"method":"GET","path":"/api/runtime/transport","status_code":200}}

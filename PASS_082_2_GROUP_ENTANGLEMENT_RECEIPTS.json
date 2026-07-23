@@ -1,0 +1,2475 @@
+{
+  "schema": "HHS_PASS_082_2_GROUP_RECEIPTS_V1",
+  "receipts": [
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000001psO>65g6!N)iE>pOOv91acNGfHpisB0pgl7A-vZbf"
+      ],
+      "group_id": "group:0",
+      "group_identity_root_hash72": "0000000000000000000000000000003l3lq+*4?MgFPRco295WAZP)oQ+79mVGj)/CmWpuvG",
+      "group_state_root_hash72": "0000000000000000000000000000004yq^5Z^r*tZ2SQihBBI+G)Fc18noD+J3kcKEZ*TrtD",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000001dkZK=QPwRfnB+Ji*?G*i2TREzmGK=lJr+8zk1fsP9",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000001psO>65g6!N)iE>pOOv91acNGfHpisB0pgl7A-vZbf"
+      ],
+      "group_id": "group:1",
+      "group_identity_root_hash72": "000000000000000000000000000000173LxeXgvAcHW46VeRfBD==H*lWPmMh8REfOu3Q^q?",
+      "group_state_root_hash72": "0000000000000000000000000000004HLUMwo7mVrgOGesHCA^p*UKPQG(CPL4y)02Ekb0e-",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000003V=rWj>)+2k^oJIq9XODZ!(+5XYnXZIGTgrD/MCLwI",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000001psO>65g6!N)iE>pOOv91acNGfHpisB0pgl7A-vZbf",
+        "0000000000000000000000000000001Dbib4!+oQg1jSolN=JgH*jv9fi7wmn^-TuBQZeZbj",
+        "0000000000000000000000000000002PQg+zpBXS7ml/YtyeL43PCqdv8^jVPrx=1=U3v^-r"
+      ],
+      "group_id": "group:0",
+      "group_identity_root_hash72": "0000000000000000000000000000000irCuU^H-OjdSZN0YDDF1on8wKV-3L/ZAUAyoVL43q",
+      "group_state_root_hash72": "0000000000000000000000000000000I>AkIW40=a)o>U*Roqq6rWGWNNd7RcsDmcQF(kJQY",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000003tejjN!MfVeC(3MfuPl4mtFpPD7p(U)HIUrTysFpM2"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000004v5-DTM?DYoDf=BCRk1Nz6pji8N+NPDBrwZ)u0BmNf",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000001psO>65g6!N)iE>pOOv91acNGfHpisB0pgl7A-vZbf",
+        "0000000000000000000000000000001Dbib4!+oQg1jSolN=JgH*jv9fi7wmn^-TuBQZeZbj",
+        "0000000000000000000000000000002PQg+zpBXS7ml/YtyeL43PCqdv8^jVPrx=1=U3v^-r"
+      ],
+      "group_id": "group:1",
+      "group_identity_root_hash72": "00000000000000000000000000000000yHAUZsPZO)=xhM0WHQ*B8XnwS1DIQX?ej+H/GyQF",
+      "group_state_root_hash72": "0000000000000000000000000000003WufkQ>>*H)Kywy3kX?HpOscnu9Hz0Z3FCxf)>7>Wj",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000003tejjN!MfVeC(3MfuPl4mtFpPD7p(U)HIUrTysFpM2"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "00000000000000000000000000000027NQBW7vRW)y0j3H6lXESgbi4J2lfOZ7o(hcnqAD^P",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000001psO>65g6!N)iE>pOOv91acNGfHpisB0pgl7A-vZbf",
+        "0000000000000000000000000000001Dbib4!+oQg1jSolN=JgH*jv9fi7wmn^-TuBQZeZbj",
+        "0000000000000000000000000000002PQg+zpBXS7ml/YtyeL43PCqdv8^jVPrx=1=U3v^-r"
+      ],
+      "group_id": "group:0",
+      "group_identity_root_hash72": "0000000000000000000000000000000JNke?C29X>oza(Xsw25u0(S8-)urZbxmb?0*xacY?",
+      "group_state_root_hash72": "0000000000000000000000000000002iM6lHZl7NmxWv08k97-6C*B(yzvMR++r+fNJ8f/pY",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000003tejjN!MfVeC(3MfuPl4mtFpPD7p(U)HIUrTysFpM2"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000000hvp>gBdR1JebnAbGkzYh2+yHF4oDad7Qq8D6pBbQu",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000001psO>65g6!N)iE>pOOv91acNGfHpisB0pgl7A-vZbf",
+        "0000000000000000000000000000001Dbib4!+oQg1jSolN=JgH*jv9fi7wmn^-TuBQZeZbj",
+        "0000000000000000000000000000002PQg+zpBXS7ml/YtyeL43PCqdv8^jVPrx=1=U3v^-r"
+      ],
+      "group_id": "group:1",
+      "group_identity_root_hash72": "0000000000000000000000000000004l7rRhWh4?Y94xJVqs>hNrRKLg)ARfuDlHt5yg5pXv",
+      "group_state_root_hash72": "0000000000000000000000000000004C!gnveoC^EKlvRVXN1JOzvH)^whMFGT2^tZC^JtiR",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000003tejjN!MfVeC(3MfuPl4mtFpPD7p(U)HIUrTysFpM2",
+        "0000000000000000000000000000002gJS4>H!DNvkUZC1Po^q3O>njh?o>o/S)uw5UsDH^5"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000001YYYZb4/mo)HbaipADWdMaBg*t*o0l2XHnx9lXqGv1",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000001psO>65g6!N)iE>pOOv91acNGfHpisB0pgl7A-vZbf",
+        "0000000000000000000000000000001Dbib4!+oQg1jSolN=JgH*jv9fi7wmn^-TuBQZeZbj",
+        "0000000000000000000000000000002PQg+zpBXS7ml/YtyeL43PCqdv8^jVPrx=1=U3v^-r"
+      ],
+      "group_id": "group:2",
+      "group_identity_root_hash72": "0000000000000000000000000000001EFBR>Vuz>CUQv^qp!q^bSgEaCIyqylfQozsW28inC",
+      "group_state_root_hash72": "0000000000000000000000000000000/vDvLsj3ACO(69AcUT7Le)Jogttp>UaAKid(z!K-D",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000002gJS4>H!DNvkUZC1Po^q3O>njh?o>o/S)uw5UsDH^5",
+        "0000000000000000000000000000002xmf)dis(>FSKphQihHnTF07qJjHJ2DXITU2?Gip9N"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000000)Y8ynN7J/g5pL?6T=M^5+=ASi*rm1rX45THfgCyGd",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000001psO>65g6!N)iE>pOOv91acNGfHpisB0pgl7A-vZbf",
+        "0000000000000000000000000000001Dbib4!+oQg1jSolN=JgH*jv9fi7wmn^-TuBQZeZbj",
+        "0000000000000000000000000000002PQg+zpBXS7ml/YtyeL43PCqdv8^jVPrx=1=U3v^-r"
+      ],
+      "group_id": "group:3",
+      "group_identity_root_hash72": "0000000000000000000000000000004qEF6e+JpW7U9^i43bM7F5ygZ*G>9LRrya!*l88ODN",
+      "group_state_root_hash72": "0000000000000000000000000000004t6FqzHzq^vUE3a9Kvw5p8S/aPu05r>X(8TvlCY*Qt",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000002xmf)dis(>FSKphQihHnTF07qJjHJ2DXITU2?Gip9N"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000003lNS(0KKrgXOc(jdqLv8H!HYf(/W^QhW8EiUMKa-xC",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000003qls8i(IRAee/iIsw52)6Q5kV7j?p5PiIq=s01uiH?",
+        "0000000000000000000000000000001W3Tg+iTEKW-4>/*m8R(yR*xcu=HKY288qEq9jTqjq",
+        "0000000000000000000000000000002/*LmM!C3u63sH/1dRaYrCgLUI9!5t)qZt8pLjg(W+",
+        "0000000000000000000000000000003P(9uswmlUk+wl3JNar5vFaryPho9+U8)-ts5GCyTC",
+        "0000000000000000000000000000000x4nEh2qg49OJtQnNVrjSgPGPU9T0+j5JI4BY)s+jI",
+        "0000000000000000000000000000002oFtL0jmTuEp4Ix?T0xOgJWrI?IeU18*^Ga2blC5GJ",
+        "0000000000000000000000000000003wvlCyCnhDtOS+cg4)0MNlR6+Xz7r(TvjD(>ap66>T"
+      ],
+      "group_id": "group:0",
+      "group_identity_root_hash72": "0000000000000000000000000000004nPGRKeKt1BDFWVPiU=AGqWhMxsZIZ(Y>OcLpAJ3r0",
+      "group_state_root_hash72": "00000000000000000000000000000025Y0-zz0s)l^BmAv=De(Lh*H3G)?VjGDIaRdt+2L7d",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000003tejjN!MfVeC(3MfuPl4mtFpPD7p(U)HIUrTysFpM2",
+        "0000000000000000000000000000000PX9oTraEK0?D3FmXo7e3)P--DKh!3J4s?pmSMht>D"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000004A6AaVP=jLLQQ/B0IVmnkor3mS1dNUX5WetsE53fBJ",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000003qls8i(IRAee/iIsw52)6Q5kV7j?p5PiIq=s01uiH?",
+        "0000000000000000000000000000001W3Tg+iTEKW-4>/*m8R(yR*xcu=HKY288qEq9jTqjq",
+        "0000000000000000000000000000002/*LmM!C3u63sH/1dRaYrCgLUI9!5t)qZt8pLjg(W+",
+        "0000000000000000000000000000003P(9uswmlUk+wl3JNar5vFaryPho9+U8)-ts5GCyTC",
+        "0000000000000000000000000000000x4nEh2qg49OJtQnNVrjSgPGPU9T0+j5JI4BY)s+jI",
+        "0000000000000000000000000000002oFtL0jmTuEp4Ix?T0xOgJWrI?IeU18*^Ga2blC5GJ",
+        "0000000000000000000000000000003wvlCyCnhDtOS+cg4)0MNlR6+Xz7r(TvjD(>ap66>T"
+      ],
+      "group_id": "group:1",
+      "group_identity_root_hash72": "00000000000000000000000000000023+HYrdP736D8d0ui/l8smJxPqg/F8yk62xos04bG+",
+      "group_state_root_hash72": "0000000000000000000000000000001HF?V//f4BqZF!DqXaZfq^AT>a9np^2EZ^)sbpACV?",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000003tejjN!MfVeC(3MfuPl4mtFpPD7p(U)HIUrTysFpM2",
+        "0000000000000000000000000000002gJS4>H!DNvkUZC1Po^q3O>njh?o>o/S)uw5UsDH^5"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000000S87EYb^O9PC?DBywzC*93AQuyO/vTxqD7AtgjSWJl",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000003qls8i(IRAee/iIsw52)6Q5kV7j?p5PiIq=s01uiH?",
+        "0000000000000000000000000000001W3Tg+iTEKW-4>/*m8R(yR*xcu=HKY288qEq9jTqjq",
+        "0000000000000000000000000000002/*LmM!C3u63sH/1dRaYrCgLUI9!5t)qZt8pLjg(W+",
+        "0000000000000000000000000000003P(9uswmlUk+wl3JNar5vFaryPho9+U8)-ts5GCyTC",
+        "0000000000000000000000000000000x4nEh2qg49OJtQnNVrjSgPGPU9T0+j5JI4BY)s+jI",
+        "0000000000000000000000000000002oFtL0jmTuEp4Ix?T0xOgJWrI?IeU18*^Ga2blC5GJ",
+        "0000000000000000000000000000003wvlCyCnhDtOS+cg4)0MNlR6+Xz7r(TvjD(>ap66>T"
+      ],
+      "group_id": "group:2",
+      "group_identity_root_hash72": "0000000000000000000000000000002n(0FIKVUYe8-eUyeYtS+jxJ66fu7ibxYfV=sYTBR!",
+      "group_state_root_hash72": "0000000000000000000000000000000U52Klc*A3o8g=tGng!PzhC6i5hwTa!WtNRb4K0t1-",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000002gJS4>H!DNvkUZC1Po^q3O>njh?o>o/S)uw5UsDH^5",
+        "0000000000000000000000000000002xmf)dis(>FSKphQihHnTF07qJjHJ2DXITU2?Gip9N"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000001GA7*ldNTgeTtLB6YdVV(W6/W88-W(L!VHxcjRubf/",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000003qls8i(IRAee/iIsw52)6Q5kV7j?p5PiIq=s01uiH?",
+        "0000000000000000000000000000001W3Tg+iTEKW-4>/*m8R(yR*xcu=HKY288qEq9jTqjq",
+        "0000000000000000000000000000002/*LmM!C3u63sH/1dRaYrCgLUI9!5t)qZt8pLjg(W+",
+        "0000000000000000000000000000003P(9uswmlUk+wl3JNar5vFaryPho9+U8)-ts5GCyTC",
+        "0000000000000000000000000000000x4nEh2qg49OJtQnNVrjSgPGPU9T0+j5JI4BY)s+jI",
+        "0000000000000000000000000000002oFtL0jmTuEp4Ix?T0xOgJWrI?IeU18*^Ga2blC5GJ",
+        "0000000000000000000000000000003wvlCyCnhDtOS+cg4)0MNlR6+Xz7r(TvjD(>ap66>T"
+      ],
+      "group_id": "group:3",
+      "group_identity_root_hash72": "0000000000000000000000000000001o=rYmn8M>9nEQc4dHggKRghj8ic?GHSgrQC?X4U!9",
+      "group_state_root_hash72": "00000000000000000000000000000034a-o?fO-9w8yc5CdgKUyuKP0iwRgL/AP^0M?p)862",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000002xmf)dis(>FSKphQihHnTF07qJjHJ2DXITU2?Gip9N",
+        "0000000000000000000000000000000PX9oTraEK0?D3FmXo7e3)P--DKh!3J4s?pmSMht>D"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000002oaNFk*dK5KbiuD>LUXJs?3r>h?rl55kH^L06(nq>h",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000003qls8i(IRAee/iIsw52)6Q5kV7j?p5PiIq=s01uiH?",
+        "0000000000000000000000000000001W3Tg+iTEKW-4>/*m8R(yR*xcu=HKY288qEq9jTqjq",
+        "0000000000000000000000000000002/*LmM!C3u63sH/1dRaYrCgLUI9!5t)qZt8pLjg(W+",
+        "0000000000000000000000000000003P(9uswmlUk+wl3JNar5vFaryPho9+U8)-ts5GCyTC",
+        "0000000000000000000000000000000x4nEh2qg49OJtQnNVrjSgPGPU9T0+j5JI4BY)s+jI",
+        "0000000000000000000000000000002oFtL0jmTuEp4Ix?T0xOgJWrI?IeU18*^Ga2blC5GJ",
+        "0000000000000000000000000000003wvlCyCnhDtOS+cg4)0MNlR6+Xz7r(TvjD(>ap66>T"
+      ],
+      "group_id": "group:0",
+      "group_identity_root_hash72": "0000000000000000000000000000002s4tqsh8)55dW=DiNrA+HPM*UN/HD0qM)liLc9LyQ8",
+      "group_state_root_hash72": "0000000000000000000000000000003usCaK=yszFgWj325KG8xJ14zkg-VI=6nfoTN/h5CB",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000003tejjN!MfVeC(3MfuPl4mtFpPD7p(U)HIUrTysFpM2",
+        "0000000000000000000000000000003>dFo=gdEH-=lQAUMujiXUL*rmVoB1L=>JCLd>-yzm"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000003cFaF^Wa+z/NzO9qJkda6qeVwV+latDE3v3lSef!it",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000003qls8i(IRAee/iIsw52)6Q5kV7j?p5PiIq=s01uiH?",
+        "0000000000000000000000000000001W3Tg+iTEKW-4>/*m8R(yR*xcu=HKY288qEq9jTqjq",
+        "0000000000000000000000000000002/*LmM!C3u63sH/1dRaYrCgLUI9!5t)qZt8pLjg(W+",
+        "0000000000000000000000000000003P(9uswmlUk+wl3JNar5vFaryPho9+U8)-ts5GCyTC",
+        "0000000000000000000000000000000x4nEh2qg49OJtQnNVrjSgPGPU9T0+j5JI4BY)s+jI",
+        "0000000000000000000000000000002oFtL0jmTuEp4Ix?T0xOgJWrI?IeU18*^Ga2blC5GJ",
+        "0000000000000000000000000000003wvlCyCnhDtOS+cg4)0MNlR6+Xz7r(TvjD(>ap66>T"
+      ],
+      "group_id": "group:1",
+      "group_identity_root_hash72": "0000000000000000000000000000002>Yjoom3LVq8zItXkrGywYg?TO?qOgWP0QLCuu=)WC",
+      "group_state_root_hash72": "0000000000000000000000000000000RC7gKOxT(CCDEWJ6JDKWbfELKo0?)X?5B*W36fpMz",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000003tejjN!MfVeC(3MfuPl4mtFpPD7p(U)HIUrTysFpM2",
+        "0000000000000000000000000000002uYvDqf6nH2?+8!Q2EwG2NJbuABUd9V-TNs2w2luLv",
+        "0000000000000000000000000000000e-5w/cg3YPFY!F-AXdq8BVSe9=>!3kRI+^84iJWKT"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000000Kf*Z^iVFmc22/iAH-08D=qUw1T>0Kt>ycxLQHhxJN",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000003qls8i(IRAee/iIsw52)6Q5kV7j?p5PiIq=s01uiH?",
+        "0000000000000000000000000000001W3Tg+iTEKW-4>/*m8R(yR*xcu=HKY288qEq9jTqjq",
+        "0000000000000000000000000000002/*LmM!C3u63sH/1dRaYrCgLUI9!5t)qZt8pLjg(W+",
+        "0000000000000000000000000000003P(9uswmlUk+wl3JNar5vFaryPho9+U8)-ts5GCyTC",
+        "0000000000000000000000000000000x4nEh2qg49OJtQnNVrjSgPGPU9T0+j5JI4BY)s+jI",
+        "0000000000000000000000000000002oFtL0jmTuEp4Ix?T0xOgJWrI?IeU18*^Ga2blC5GJ",
+        "0000000000000000000000000000003wvlCyCnhDtOS+cg4)0MNlR6+Xz7r(TvjD(>ap66>T"
+      ],
+      "group_id": "group:2",
+      "group_identity_root_hash72": "0000000000000000000000000000002wFN8>)VOfAgW!Jkqc(KmoD0R7a+svFvfFpjL92xDX",
+      "group_state_root_hash72": "0000000000000000000000000000002pUbMNFJbeWPrdmfL+llLuDW1(7O4JA-s4hve3WqQ8",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000003>dFo=gdEH-=lQAUMujiXUL*rmVoB1L=>JCLd>-yzm",
+        "0000000000000000000000000000004sWyFYwBAHazLF25D>DwnjttQWdek>qFd>Ua+-xP2H",
+        "00000000000000000000000000000000tNwnzT+b7IPj51=fCE/Wo>i4jk?uuKCMHz3gKj/e"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000002SBrsf(Nuu!/1AG*OdIqwhtnaJ4csi2i8aN)thNG9f",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000003qls8i(IRAee/iIsw52)6Q5kV7j?p5PiIq=s01uiH?",
+        "0000000000000000000000000000001W3Tg+iTEKW-4>/*m8R(yR*xcu=HKY288qEq9jTqjq",
+        "0000000000000000000000000000002/*LmM!C3u63sH/1dRaYrCgLUI9!5t)qZt8pLjg(W+",
+        "0000000000000000000000000000003P(9uswmlUk+wl3JNar5vFaryPho9+U8)-ts5GCyTC",
+        "0000000000000000000000000000000x4nEh2qg49OJtQnNVrjSgPGPU9T0+j5JI4BY)s+jI",
+        "0000000000000000000000000000002oFtL0jmTuEp4Ix?T0xOgJWrI?IeU18*^Ga2blC5GJ",
+        "0000000000000000000000000000003wvlCyCnhDtOS+cg4)0MNlR6+Xz7r(TvjD(>ap66>T"
+      ],
+      "group_id": "group:3",
+      "group_identity_root_hash72": "0000000000000000000000000000003AYm>Re19*Jb!fKcOhCSwFW3Cpu528LthJvnJ6Q!uw",
+      "group_state_root_hash72": "0000000000000000000000000000000S1yL)e4*Xq89PuJxAR=64Wmf6bRrzXNG9MUa6KN)5",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000002uYvDqf6nH2?+8!Q2EwG2NJbuABUd9V-TNs2w2luLv",
+        "0000000000000000000000000000004baB/jb4NC?SQCBOYqR1z>lMVvPm1cv4-r1F4oL3Qm"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000000iOTK2B8kaIF(B=ZMlHQVW*?ufzrDxE/>Nj^QMucrI",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000003qls8i(IRAee/iIsw52)6Q5kV7j?p5PiIq=s01uiH?",
+        "0000000000000000000000000000001W3Tg+iTEKW-4>/*m8R(yR*xcu=HKY288qEq9jTqjq",
+        "0000000000000000000000000000002/*LmM!C3u63sH/1dRaYrCgLUI9!5t)qZt8pLjg(W+",
+        "0000000000000000000000000000003P(9uswmlUk+wl3JNar5vFaryPho9+U8)-ts5GCyTC",
+        "0000000000000000000000000000000x4nEh2qg49OJtQnNVrjSgPGPU9T0+j5JI4BY)s+jI",
+        "0000000000000000000000000000002oFtL0jmTuEp4Ix?T0xOgJWrI?IeU18*^Ga2blC5GJ",
+        "0000000000000000000000000000003wvlCyCnhDtOS+cg4)0MNlR6+Xz7r(TvjD(>ap66>T"
+      ],
+      "group_id": "group:4",
+      "group_identity_root_hash72": "0000000000000000000000000000003ppHrtFHF)FW)vNjNkia!y2lyRo=b>yVn*-IIA)L*C",
+      "group_state_root_hash72": "0000000000000000000000000000003wvHW)^JZqifowjCz=M(l4heD(ICtHFr>Ll/^N1z7U",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000000e-5w/cg3YPFY!F-AXdq8BVSe9=>!3kRI+^84iJWKT"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "00000000000000000000000000000020klJR8-55/rE?ZiUK(D=Z1SlyraHixNC2*)wl-J!Z",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000003qls8i(IRAee/iIsw52)6Q5kV7j?p5PiIq=s01uiH?",
+        "0000000000000000000000000000001W3Tg+iTEKW-4>/*m8R(yR*xcu=HKY288qEq9jTqjq",
+        "0000000000000000000000000000002/*LmM!C3u63sH/1dRaYrCgLUI9!5t)qZt8pLjg(W+",
+        "0000000000000000000000000000003P(9uswmlUk+wl3JNar5vFaryPho9+U8)-ts5GCyTC",
+        "0000000000000000000000000000000x4nEh2qg49OJtQnNVrjSgPGPU9T0+j5JI4BY)s+jI",
+        "0000000000000000000000000000002oFtL0jmTuEp4Ix?T0xOgJWrI?IeU18*^Ga2blC5GJ",
+        "0000000000000000000000000000003wvlCyCnhDtOS+cg4)0MNlR6+Xz7r(TvjD(>ap66>T"
+      ],
+      "group_id": "group:5",
+      "group_identity_root_hash72": "0000000000000000000000000000001PKi(6)uIb-2(MAi0W3*qmC-MCwPXU)42!5aQzZr3B",
+      "group_state_root_hash72": "0000000000000000000000000000001pwwaH3xUW8AnfEQIgD>zloI?3c2V17Ou6s*+/9>PZ",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000004sWyFYwBAHazLF25D>DwnjttQWdek>qFd>Ua+-xP2H"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "00000000000000000000000000000036=eYuNG8wz8=i!zgJ7drzYVsRE3IsqWindkXE6C)p",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000003qls8i(IRAee/iIsw52)6Q5kV7j?p5PiIq=s01uiH?",
+        "0000000000000000000000000000001W3Tg+iTEKW-4>/*m8R(yR*xcu=HKY288qEq9jTqjq",
+        "0000000000000000000000000000002/*LmM!C3u63sH/1dRaYrCgLUI9!5t)qZt8pLjg(W+",
+        "0000000000000000000000000000003P(9uswmlUk+wl3JNar5vFaryPho9+U8)-ts5GCyTC",
+        "0000000000000000000000000000000x4nEh2qg49OJtQnNVrjSgPGPU9T0+j5JI4BY)s+jI",
+        "0000000000000000000000000000002oFtL0jmTuEp4Ix?T0xOgJWrI?IeU18*^Ga2blC5GJ",
+        "0000000000000000000000000000003wvlCyCnhDtOS+cg4)0MNlR6+Xz7r(TvjD(>ap66>T"
+      ],
+      "group_id": "group:6",
+      "group_identity_root_hash72": "0000000000000000000000000000001G)k*rkKgrTs/=jf/RDbJ>ds!ywwoCsq/92/wD>lwD",
+      "group_state_root_hash72": "0000000000000000000000000000002)FBXwItVxmr*eOa>m7PE6G5Zh79M!zrCajpVtKcR3",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "00000000000000000000000000000000tNwnzT+b7IPj51=fCE/Wo>i4jk?uuKCMHz3gKj/e"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000004E/ceRG2b*?W^8-U+CRmB1q9yWMs9lT=iLd?W7IU+A",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000003qls8i(IRAee/iIsw52)6Q5kV7j?p5PiIq=s01uiH?",
+        "0000000000000000000000000000001W3Tg+iTEKW-4>/*m8R(yR*xcu=HKY288qEq9jTqjq",
+        "0000000000000000000000000000002/*LmM!C3u63sH/1dRaYrCgLUI9!5t)qZt8pLjg(W+",
+        "0000000000000000000000000000003P(9uswmlUk+wl3JNar5vFaryPho9+U8)-ts5GCyTC",
+        "0000000000000000000000000000000x4nEh2qg49OJtQnNVrjSgPGPU9T0+j5JI4BY)s+jI",
+        "0000000000000000000000000000002oFtL0jmTuEp4Ix?T0xOgJWrI?IeU18*^Ga2blC5GJ",
+        "0000000000000000000000000000003wvlCyCnhDtOS+cg4)0MNlR6+Xz7r(TvjD(>ap66>T"
+      ],
+      "group_id": "group:7",
+      "group_identity_root_hash72": "0000000000000000000000000000001)mGt3J18uA5afMz+mYis!BX^bNUyj9h?eL(ZHogoe",
+      "group_state_root_hash72": "0000000000000000000000000000003KZwFoM8sUQ)SibtmEdPDm^dPNIbp3vVb-msDiOQcP",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000004baB/jb4NC?SQCBOYqR1z>lMVvPm1cv4-r1F4oL3Qm"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000004uS^3IvnLO6Bw5xH^5yHX=mbznkdGxDbRCDkD8^uD-",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000003qls8i(IRAee/iIsw52)6Q5kV7j?p5PiIq=s01uiH?",
+        "0000000000000000000000000000001W3Tg+iTEKW-4>/*m8R(yR*xcu=HKY288qEq9jTqjq",
+        "0000000000000000000000000000002/*LmM!C3u63sH/1dRaYrCgLUI9!5t)qZt8pLjg(W+",
+        "0000000000000000000000000000003P(9uswmlUk+wl3JNar5vFaryPho9+U8)-ts5GCyTC",
+        "0000000000000000000000000000000x4nEh2qg49OJtQnNVrjSgPGPU9T0+j5JI4BY)s+jI",
+        "0000000000000000000000000000002oFtL0jmTuEp4Ix?T0xOgJWrI?IeU18*^Ga2blC5GJ",
+        "0000000000000000000000000000003wvlCyCnhDtOS+cg4)0MNlR6+Xz7r(TvjD(>ap66>T"
+      ],
+      "group_id": "group:0",
+      "group_identity_root_hash72": "0000000000000000000000000000004hdgM?Jmp497B>^mZjE=6e/CBxlnuzmbMvA!ldffe>",
+      "group_state_root_hash72": "0000000000000000000000000000001UF>m7luptqqwOYVseJ(Lu(J8w-b5fzFMZdvOMlzSx",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000003tejjN!MfVeC(3MfuPl4mtFpPD7p(U)HIUrTysFpM2",
+        "0000000000000000000000000000003>dFo=gdEH-=lQAUMujiXUL*rmVoB1L=>JCLd>-yzm",
+        "00000000000000000000000000000006S7qYNmp)g>zfL5OyI1tGy(-n^pr7-I7oc+SDBWw(",
+        "0000000000000000000000000000000X5E=8^183l^hy7C0S6(UE9tD(+fGkJlA>F95*pc8k",
+        "0000000000000000000000000000004ux?pYfb2e345VW(0Kdm074jsvN!Y>IN-dBFKscDJU",
+        "0000000000000000000000000000000AqHWMGhn2aEOz)QNpvUG1AdL1ni5vZ28DG!ZcjG-8",
+        "0000000000000000000000000000000ZII/3O9i=yyiO0movME5oPstdvmQDSMjG2sF?3tXv"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000003-8h5E=4bQfFLbtsc)2LTX?=QcX377jMoOK)!N2P*(",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000003qls8i(IRAee/iIsw52)6Q5kV7j?p5PiIq=s01uiH?",
+        "0000000000000000000000000000001W3Tg+iTEKW-4>/*m8R(yR*xcu=HKY288qEq9jTqjq",
+        "0000000000000000000000000000002/*LmM!C3u63sH/1dRaYrCgLUI9!5t)qZt8pLjg(W+",
+        "0000000000000000000000000000003P(9uswmlUk+wl3JNar5vFaryPho9+U8)-ts5GCyTC",
+        "0000000000000000000000000000000x4nEh2qg49OJtQnNVrjSgPGPU9T0+j5JI4BY)s+jI",
+        "0000000000000000000000000000002oFtL0jmTuEp4Ix?T0xOgJWrI?IeU18*^Ga2blC5GJ",
+        "0000000000000000000000000000003wvlCyCnhDtOS+cg4)0MNlR6+Xz7r(TvjD(>ap66>T"
+      ],
+      "group_id": "group:1",
+      "group_identity_root_hash72": "0000000000000000000000000000004joHD6luiT2e-jYT5/z4xCl2JpTjK9AxS8sXnYWWik",
+      "group_state_root_hash72": "0000000000000000000000000000000SvGxCzqVvD9lJKK=64dxopon?xKzTJ634?=Us=68D",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000003tejjN!MfVeC(3MfuPl4mtFpPD7p(U)HIUrTysFpM2"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000002(CsRpRHp6-SNBLnXc)un4Lw8A=hvlGlDoK7v+AP79",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000003qls8i(IRAee/iIsw52)6Q5kV7j?p5PiIq=s01uiH?",
+        "0000000000000000000000000000001W3Tg+iTEKW-4>/*m8R(yR*xcu=HKY288qEq9jTqjq",
+        "0000000000000000000000000000002/*LmM!C3u63sH/1dRaYrCgLUI9!5t)qZt8pLjg(W+",
+        "0000000000000000000000000000003P(9uswmlUk+wl3JNar5vFaryPho9+U8)-ts5GCyTC",
+        "0000000000000000000000000000000x4nEh2qg49OJtQnNVrjSgPGPU9T0+j5JI4BY)s+jI",
+        "0000000000000000000000000000002oFtL0jmTuEp4Ix?T0xOgJWrI?IeU18*^Ga2blC5GJ",
+        "0000000000000000000000000000003wvlCyCnhDtOS+cg4)0MNlR6+Xz7r(TvjD(>ap66>T"
+      ],
+      "group_id": "group:2",
+      "group_identity_root_hash72": "00000000000000000000000000000008vo8NGEukYXMEXx3d7W?rVL0CGIsK*7?3^Y8I(2/p",
+      "group_state_root_hash72": "00000000000000000000000000000021tTjL2rS38XTznL8bPeWbbCWv91aMVxdps9wb8z-w",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000003>dFo=gdEH-=lQAUMujiXUL*rmVoB1L=>JCLd>-yzm"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000004y1IwC+yvjpTwW6bKFC!7elKIecYq?Ilh*!GN8L1rM",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000003qls8i(IRAee/iIsw52)6Q5kV7j?p5PiIq=s01uiH?",
+        "0000000000000000000000000000001W3Tg+iTEKW-4>/*m8R(yR*xcu=HKY288qEq9jTqjq",
+        "0000000000000000000000000000002/*LmM!C3u63sH/1dRaYrCgLUI9!5t)qZt8pLjg(W+",
+        "0000000000000000000000000000003P(9uswmlUk+wl3JNar5vFaryPho9+U8)-ts5GCyTC",
+        "0000000000000000000000000000000x4nEh2qg49OJtQnNVrjSgPGPU9T0+j5JI4BY)s+jI",
+        "0000000000000000000000000000002oFtL0jmTuEp4Ix?T0xOgJWrI?IeU18*^Ga2blC5GJ",
+        "0000000000000000000000000000003wvlCyCnhDtOS+cg4)0MNlR6+Xz7r(TvjD(>ap66>T"
+      ],
+      "group_id": "group:3",
+      "group_identity_root_hash72": "0000000000000000000000000000002WwlTZGNQMNiWVPImMbnlW1IZ1Aq4w!oBT!dp+Ul^d",
+      "group_state_root_hash72": "00000000000000000000000000000030e+(2*8b^zpo(8+DDk4bC7u2xWSOesR*^>BDi8wDN",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "00000000000000000000000000000006S7qYNmp)g>zfL5OyI1tGy(-n^pr7-I7oc+SDBWw("
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000001n(-?KBD5MHWQ>XN?3/d*8hZEyH*AHL7iJH9?^wmcv",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000003qls8i(IRAee/iIsw52)6Q5kV7j?p5PiIq=s01uiH?",
+        "0000000000000000000000000000001W3Tg+iTEKW-4>/*m8R(yR*xcu=HKY288qEq9jTqjq",
+        "0000000000000000000000000000002/*LmM!C3u63sH/1dRaYrCgLUI9!5t)qZt8pLjg(W+",
+        "0000000000000000000000000000003P(9uswmlUk+wl3JNar5vFaryPho9+U8)-ts5GCyTC",
+        "0000000000000000000000000000000x4nEh2qg49OJtQnNVrjSgPGPU9T0+j5JI4BY)s+jI",
+        "0000000000000000000000000000002oFtL0jmTuEp4Ix?T0xOgJWrI?IeU18*^Ga2blC5GJ",
+        "0000000000000000000000000000003wvlCyCnhDtOS+cg4)0MNlR6+Xz7r(TvjD(>ap66>T"
+      ],
+      "group_id": "group:4",
+      "group_identity_root_hash72": "0000000000000000000000000000002)Jt2XmuvtqPO0DEwFGuyJkS5pq33yZ6Ruheeh!(db",
+      "group_state_root_hash72": "0000000000000000000000000000000yvW+IAPj0UpcR3eUOyl2S/nLq=pM+spn*+q)rjC/k",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000000X5E=8^183l^hy7C0S6(UE9tD(+fGkJlA>F95*pc8k"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000002)tmwBkRzhxaT!UL5uNX4Sc9aUUabvMG>(T)Jv)NeE",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000003qls8i(IRAee/iIsw52)6Q5kV7j?p5PiIq=s01uiH?",
+        "0000000000000000000000000000001W3Tg+iTEKW-4>/*m8R(yR*xcu=HKY288qEq9jTqjq",
+        "0000000000000000000000000000002/*LmM!C3u63sH/1dRaYrCgLUI9!5t)qZt8pLjg(W+",
+        "0000000000000000000000000000003P(9uswmlUk+wl3JNar5vFaryPho9+U8)-ts5GCyTC",
+        "0000000000000000000000000000000x4nEh2qg49OJtQnNVrjSgPGPU9T0+j5JI4BY)s+jI",
+        "0000000000000000000000000000002oFtL0jmTuEp4Ix?T0xOgJWrI?IeU18*^Ga2blC5GJ",
+        "0000000000000000000000000000003wvlCyCnhDtOS+cg4)0MNlR6+Xz7r(TvjD(>ap66>T"
+      ],
+      "group_id": "group:5",
+      "group_identity_root_hash72": "0000000000000000000000000000002IsWuqGzWJ/hj(cFYLp?kk*5ZldZ50w^3)u0QuXTzC",
+      "group_state_root_hash72": "0000000000000000000000000000001VvI+W1F1r>M)^hJyOK3pwtklz^w=(e*mEj!3E*oI1",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000004ux?pYfb2e345VW(0Kdm074jsvN!Y>IN-dBFKscDJU"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "00000000000000000000000000000031Sc>J3BR0^c(8uoSN)pFn1XM^bP2*(NYaHowIVJu=",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000003qls8i(IRAee/iIsw52)6Q5kV7j?p5PiIq=s01uiH?",
+        "0000000000000000000000000000001W3Tg+iTEKW-4>/*m8R(yR*xcu=HKY288qEq9jTqjq",
+        "0000000000000000000000000000002/*LmM!C3u63sH/1dRaYrCgLUI9!5t)qZt8pLjg(W+",
+        "0000000000000000000000000000003P(9uswmlUk+wl3JNar5vFaryPho9+U8)-ts5GCyTC",
+        "0000000000000000000000000000000x4nEh2qg49OJtQnNVrjSgPGPU9T0+j5JI4BY)s+jI",
+        "0000000000000000000000000000002oFtL0jmTuEp4Ix?T0xOgJWrI?IeU18*^Ga2blC5GJ",
+        "0000000000000000000000000000003wvlCyCnhDtOS+cg4)0MNlR6+Xz7r(TvjD(>ap66>T"
+      ],
+      "group_id": "group:6",
+      "group_identity_root_hash72": "00000000000000000000000000000001J=RS3>CxewIwhXZf+S0M4JaN5d!jx4fZo9eYw>7f",
+      "group_state_root_hash72": "00000000000000000000000000000004+2dEcGET!ZgIpPVAdiv=mUpzAqm*KYi-rhIwkKFS",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000000AqHWMGhn2aEOz)QNpvUG1AdL1ni5vZ28DG!ZcjG-8"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "00000000000000000000000000000023DO??6--fsVJ*Bn2J(i*h28A9-Wedd(9afCgRA>>l",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000003qls8i(IRAee/iIsw52)6Q5kV7j?p5PiIq=s01uiH?",
+        "0000000000000000000000000000001W3Tg+iTEKW-4>/*m8R(yR*xcu=HKY288qEq9jTqjq",
+        "0000000000000000000000000000002/*LmM!C3u63sH/1dRaYrCgLUI9!5t)qZt8pLjg(W+",
+        "0000000000000000000000000000003P(9uswmlUk+wl3JNar5vFaryPho9+U8)-ts5GCyTC",
+        "0000000000000000000000000000000x4nEh2qg49OJtQnNVrjSgPGPU9T0+j5JI4BY)s+jI",
+        "0000000000000000000000000000002oFtL0jmTuEp4Ix?T0xOgJWrI?IeU18*^Ga2blC5GJ",
+        "0000000000000000000000000000003wvlCyCnhDtOS+cg4)0MNlR6+Xz7r(TvjD(>ap66>T"
+      ],
+      "group_id": "group:7",
+      "group_identity_root_hash72": "0000000000000000000000000000003)HuEjYQ?orlTmaBiZfee*Etq/iLU5!ECZ=qS)wtTq",
+      "group_state_root_hash72": "0000000000000000000000000000002/?Y+9u+eQ*5tTAswFLl)!XXYT309FREXnnV9rWreK",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000000ZII/3O9i=yyiO0movME5oPstdvmQDSMjG2sF?3tXv"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000003I5D7SzVDq!9OwT2C8lk9PvcOZul(aU1B0g2K)qkZ?",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000001psO>65g6!N)iE>pOOv91acNGfHpisB0pgl7A-vZbf",
+        "0000000000000000000000000000001Dbib4!+oQg1jSolN=JgH*jv9fi7wmn^-TuBQZeZbj",
+        "0000000000000000000000000000002PQg+zpBXS7ml/YtyeL43PCqdv8^jVPrx=1=U3v^-r"
+      ],
+      "group_id": "group:0",
+      "group_identity_root_hash72": "0000000000000000000000000000001F*YTsGz>0HTP(Da91*EGeRv^EFNL4oDi+a1!sCMJO",
+      "group_state_root_hash72": "0000000000000000000000000000000(0PvsMb5M^=+Q-du=Ef+b>0O=Tpoi44wyFhaHEWq+",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000003tejjN!MfVeC(3MfuPl4mtFpPD7p(U)HIUrTysFpM2",
+        "0000000000000000000000000000002IMVivJRVA^qoAISu>Myb7ftyzN7AvH4yikT9F31J(",
+        "0000000000000000000000000000003zVuw*j50SjS3A6CER6wWljWn3KJHn6XXq1jFFFuIz"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000001!V^ENoAFHr99j4MPDVsME)*h=637j35HOoX7*stpE",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000001psO>65g6!N)iE>pOOv91acNGfHpisB0pgl7A-vZbf",
+        "0000000000000000000000000000001Dbib4!+oQg1jSolN=JgH*jv9fi7wmn^-TuBQZeZbj",
+        "0000000000000000000000000000002PQg+zpBXS7ml/YtyeL43PCqdv8^jVPrx=1=U3v^-r"
+      ],
+      "group_id": "group:1",
+      "group_identity_root_hash72": "000000000000000000000000000000117FgBH?B(LD2S6rrd^pw^zZ=*?pWif-I1JN1^?psa",
+      "group_state_root_hash72": "0000000000000000000000000000004s^vjzQWhPVecn!>BzUJsQvU16zBkqtrMY+m22qT*D",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000003tejjN!MfVeC(3MfuPl4mtFpPD7p(U)HIUrTysFpM2",
+        "0000000000000000000000000000001YPpl/OFlbgq)yy06RBysC9ZVZr?QM>fE2iJ?r?N>A",
+        "0000000000000000000000000000000uHnhs9WPmb/qfJ^G?x-d(l=ehQ1AiHkFk5HuzShks"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000001IqQN-V^hX5DHwDC0fk^jKhSEorfr9yTo6wHXqAig9",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000001psO>65g6!N)iE>pOOv91acNGfHpisB0pgl7A-vZbf",
+        "0000000000000000000000000000001Dbib4!+oQg1jSolN=JgH*jv9fi7wmn^-TuBQZeZbj",
+        "0000000000000000000000000000002PQg+zpBXS7ml/YtyeL43PCqdv8^jVPrx=1=U3v^-r"
+      ],
+      "group_id": "group:2",
+      "group_identity_root_hash72": "0000000000000000000000000000002utZHw?NGgN7TrMtfm+DMgtp/BgTN!WW+h0ZenPVZc",
+      "group_state_root_hash72": "0000000000000000000000000000001)KnPjx0(9vydfrB3d>xKXy9mQo)M=?Fvo?ztAlv2F",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000001YPpl/OFlbgq)yy06RBysC9ZVZr?QM>fE2iJ?r?N>A",
+        "0000000000000000000000000000004xKfSkrvg+JB1V(mp5s+iD2Ri)Cqca-yPLvr)a*1Ph",
+        "0000000000000000000000000000004sWyFYwBAHazLF25D>DwnjttQWdek>qFd>Ua+-xP2H"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000001Y?gRKpJt++4gCnj1BaC/R--d)hzKzcSout4wQ+Mxe",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000001psO>65g6!N)iE>pOOv91acNGfHpisB0pgl7A-vZbf",
+        "0000000000000000000000000000001Dbib4!+oQg1jSolN=JgH*jv9fi7wmn^-TuBQZeZbj",
+        "0000000000000000000000000000002PQg+zpBXS7ml/YtyeL43PCqdv8^jVPrx=1=U3v^-r"
+      ],
+      "group_id": "group:3",
+      "group_identity_root_hash72": "0000000000000000000000000000001iBSXwZf91E9eaI7^sy*vwl/?2NXon7g**L+zoJiQU",
+      "group_state_root_hash72": "0000000000000000000000000000003/cknF^x=FlVzcOZqWwTAIkFS)Gk0X^9-SPkHn(+F)",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000002IMVivJRVA^qoAISu>Myb7ftyzN7AvH4yikT9F31J(",
+        "0000000000000000000000000000004xKfSkrvg+JB1V(mp5s+iD2Ri)Cqca-yPLvr)a*1Ph",
+        "0000000000000000000000000000002n/d+=*H0SO0bQ8kbcirW4nV2j*ocY=XnXMX4W3bfH"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000002CNNMEYCQ7dUX=oN6)MCsh)fYQ-KmC5lU6Rs7*McP6",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000001psO>65g6!N)iE>pOOv91acNGfHpisB0pgl7A-vZbf",
+        "0000000000000000000000000000001Dbib4!+oQg1jSolN=JgH*jv9fi7wmn^-TuBQZeZbj",
+        "0000000000000000000000000000002PQg+zpBXS7ml/YtyeL43PCqdv8^jVPrx=1=U3v^-r"
+      ],
+      "group_id": "group:4",
+      "group_identity_root_hash72": "00000000000000000000000000000038Z?eUOkvJ)12)BzeIWn+(C3hlE//ywmbdPs6*0eyr",
+      "group_state_root_hash72": "0000000000000000000000000000001655a2RQ-t6Xk1OL!t9-NY4KswR+p*bGCDkIjNkq)G",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000002n/d+=*H0SO0bQ8kbcirW4nV2j*ocY=XnXMX4W3bfH",
+        "0000000000000000000000000000003Qe1*f4sBRzlXaCzj4L=vcrqnFTjmBJTyxJV6zymxC",
+        "0000000000000000000000000000003Y7jvMZVAG0Yq=xtTcTQxZGN8U=W51GU*2mViPL4wg"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000001Fzvrma1SizgyLgG>Cq15ssaWwo?MI)=fJrSc6(G)Q",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000001psO>65g6!N)iE>pOOv91acNGfHpisB0pgl7A-vZbf",
+        "0000000000000000000000000000001Dbib4!+oQg1jSolN=JgH*jv9fi7wmn^-TuBQZeZbj",
+        "0000000000000000000000000000002PQg+zpBXS7ml/YtyeL43PCqdv8^jVPrx=1=U3v^-r"
+      ],
+      "group_id": "group:5",
+      "group_identity_root_hash72": "0000000000000000000000000000004o-11K-d1nU?-mvFX3eE*adikDL2xs+yz6pG/ocZ*G",
+      "group_state_root_hash72": "0000000000000000000000000000002c2u/7+zNC3Eg/kvfL?u5tgb1lQ9w80v3t*)wB!j0h",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000004sWyFYwBAHazLF25D>DwnjttQWdek>qFd>Ua+-xP2H",
+        "0000000000000000000000000000003Qe1*f4sBRzlXaCzj4L=vcrqnFTjmBJTyxJV6zymxC",
+        "0000000000000000000000000000003dSu8/z8QUayYmbFz3+3-nhjW!RhHsnIDQB*nc?SDz"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000001e4nUkZida-yHHK>lB*a=W0/i(cpH?2ALouNl4uazI",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000001psO>65g6!N)iE>pOOv91acNGfHpisB0pgl7A-vZbf",
+        "0000000000000000000000000000001Dbib4!+oQg1jSolN=JgH*jv9fi7wmn^-TuBQZeZbj",
+        "0000000000000000000000000000002PQg+zpBXS7ml/YtyeL43PCqdv8^jVPrx=1=U3v^-r"
+      ],
+      "group_id": "group:6",
+      "group_identity_root_hash72": "0000000000000000000000000000002(WOkBHcG/3)?5nuA-CoV1AXk??1L2eGbzjvy34XNi",
+      "group_state_root_hash72": "0000000000000000000000000000002gjrLmx7FGfr-JgxYW7jjXFjFbAaJ6FDHLHf1uwS3m",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000003dSu8/z8QUayYmbFz3+3-nhjW!RhHsnIDQB*nc?SDz",
+        "0000000000000000000000000000003RTpZODL=^AaPIa>vq*EcmIRSji1osubt?tlt^QORg",
+        "0000000000000000000000000000002W=i^ZG?dlMzHZ5ZD>wVIWbDN9D6XqRUSB/do8>A!Q"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000003eQThlU9bFY!Rd(E(VZUdW/aQ-xO>j(HHkoeE)FB)c",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000001psO>65g6!N)iE>pOOv91acNGfHpisB0pgl7A-vZbf",
+        "0000000000000000000000000000001Dbib4!+oQg1jSolN=JgH*jv9fi7wmn^-TuBQZeZbj",
+        "0000000000000000000000000000002PQg+zpBXS7ml/YtyeL43PCqdv8^jVPrx=1=U3v^-r"
+      ],
+      "group_id": "group:7",
+      "group_identity_root_hash72": "0000000000000000000000000000004j=KFT-WWSf1Uf)NU!f4E4VD0/s2vMcY0=zjG6u4w!",
+      "group_state_root_hash72": "0000000000000000000000000000004wNKl-od-tiz>-D!rL/J?Ye+XR>=bWOgV*I/vS7(D(",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000003Y7jvMZVAG0Yq=xtTcTQxZGN8U=W51GU*2mViPL4wg",
+        "0000000000000000000000000000003RTpZODL=^AaPIa>vq*EcmIRSji1osubt?tlt^QORg",
+        "00000000000000000000000000000006CH!a>Nv+3TCq8LDgt6gvE=JA7?HHKV0eZ7t3ujIu"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000001QFn5g/VOG(X26Gs0MrmA(aItoFY/HqY/DT>XaS)xl",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000001psO>65g6!N)iE>pOOv91acNGfHpisB0pgl7A-vZbf",
+        "0000000000000000000000000000001Dbib4!+oQg1jSolN=JgH*jv9fi7wmn^-TuBQZeZbj",
+        "0000000000000000000000000000002PQg+zpBXS7ml/YtyeL43PCqdv8^jVPrx=1=U3v^-r"
+      ],
+      "group_id": "group:8",
+      "group_identity_root_hash72": "0000000000000000000000000000003mPaIs+5ZhBSHZQj-Zz>W(5QmyKPbT(CALQ5t!e-FM",
+      "group_state_root_hash72": "0000000000000000000000000000003+mGoEYO-YM*xrxFMi^Gj*DJ0nSjnH/yT1!-kKnS5n",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "00000000000000000000000000000006CH!a>Nv+3TCq8LDgt6gvE=JA7?HHKV0eZ7t3ujIu",
+        "0000000000000000000000000000001Nqa*SLBlBBw^A^bMbvfL(mv)NgCSc2=msViV+6V0z",
+        "0000000000000000000000000000000Fg4^sdSu?z6(Fjo>7yQdI4^L9)^yh5=ljcBl1!pFs"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000002ns?kUzckI/z2skv=+6a9pG0TFh!sQl6b5MU26MEUa",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000001psO>65g6!N)iE>pOOv91acNGfHpisB0pgl7A-vZbf",
+        "0000000000000000000000000000001Dbib4!+oQg1jSolN=JgH*jv9fi7wmn^-TuBQZeZbj",
+        "0000000000000000000000000000002PQg+zpBXS7ml/YtyeL43PCqdv8^jVPrx=1=U3v^-r"
+      ],
+      "group_id": "group:9",
+      "group_identity_root_hash72": "00000000000000000000000000000043boJVj?wGW9d0yJ^Q3Pery))039bM0t-y52!?/IYM",
+      "group_state_root_hash72": "0000000000000000000000000000002X3B+0j)?s!RRC*xJhw9U/PB*g7Dyr+?qlSbTEKo8s",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000002W=i^ZG?dlMzHZ5ZD>wVIWbDN9D6XqRUSB/do8>A!Q",
+        "0000000000000000000000000000001Nqa*SLBlBBw^A^bMbvfL(mv)NgCSc2=msViV+6V0z",
+        "0000000000000000000000000000002MD3K+nXc!-I9caWUxaas>d5FDPi9j+lh?TZHQvvPb"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000000sx-BdGr5^rQee8-m/W=dwKrip2pi5*kamxX+ZD1Ar",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000001psO>65g6!N)iE>pOOv91acNGfHpisB0pgl7A-vZbf",
+        "0000000000000000000000000000001Dbib4!+oQg1jSolN=JgH*jv9fi7wmn^-TuBQZeZbj",
+        "0000000000000000000000000000002PQg+zpBXS7ml/YtyeL43PCqdv8^jVPrx=1=U3v^-r"
+      ],
+      "group_id": "group:10",
+      "group_identity_root_hash72": "0000000000000000000000000000001HWX3++W2TdlHI9l5H(25)d2eJtkypK+6hh!7(Wu96",
+      "group_state_root_hash72": "0000000000000000000000000000000sG6WGFU?I+rX2c2-exTnPstoBiEq?4EWXUi!)GPYk",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000002MD3K+nXc!-I9caWUxaas>d5FDPi9j+lh?TZHQvvPb",
+        "00000000000000000000000000000016k>rg0EB1a(95bbFXNyEsKwZIDdm)sA3IyHsaGBTs",
+        "0000000000000000000000000000000JckhAX1YzKv>V?)v34-F7qsg*U(?TjoH>6YDoII3m"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000004K?tSGtJ(Sq3i*^sg=SNfuN0jElIaKBmyz*-JzFHft",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000001psO>65g6!N)iE>pOOv91acNGfHpisB0pgl7A-vZbf",
+        "0000000000000000000000000000001Dbib4!+oQg1jSolN=JgH*jv9fi7wmn^-TuBQZeZbj",
+        "0000000000000000000000000000002PQg+zpBXS7ml/YtyeL43PCqdv8^jVPrx=1=U3v^-r"
+      ],
+      "group_id": "group:11",
+      "group_identity_root_hash72": "0000000000000000000000000000000f3d*?fWaDe!qq3IXk25Hx^ldp++s2=uPAfrfSc3ga",
+      "group_state_root_hash72": "0000000000000000000000000000001j!KORKfxmcPH7J0EG?VUrFweC5uJfcKF!6TvwYsZg",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000000Fg4^sdSu?z6(Fjo>7yQdI4^L9)^yh5=ljcBl1!pFs",
+        "00000000000000000000000000000016k>rg0EB1a(95bbFXNyEsKwZIDdm)sA3IyHsaGBTs",
+        "0000000000000000000000000000004cPa)GkaA9yGd1D8QRlUEIvqwN7^foaG9xpG1YbzEB"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000003=G+jQrvF7^0my5LD!AXY=QYYPfI0=P*wN5LQOE/)V",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000001psO>65g6!N)iE>pOOv91acNGfHpisB0pgl7A-vZbf",
+        "0000000000000000000000000000001Dbib4!+oQg1jSolN=JgH*jv9fi7wmn^-TuBQZeZbj",
+        "0000000000000000000000000000002PQg+zpBXS7ml/YtyeL43PCqdv8^jVPrx=1=U3v^-r"
+      ],
+      "group_id": "group:12",
+      "group_identity_root_hash72": "0000000000000000000000000000001U>tKCZkhD^emAV4tynk1vAp!k>nPAXrGjZIcOPiR8",
+      "group_state_root_hash72": "0000000000000000000000000000004v6Bw1WC6GeT!+2pBxg!uduJ3!)QG/)J6wgT0ezK9-",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000004cPa)GkaA9yGd1D8QRlUEIvqwN7^foaG9xpG1YbzEB",
+        "0000000000000000000000000000004KfLRGr87(7OqDkUOV2!)Nk6wp6*NnTK5T!sReuLoL",
+        "0000000000000000000000000000001z940q*=Otbqrpo3=/NBQWNBQDW6mx2vp//Tsgc+YE"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000002m*-phVFnq^Bv8Da4n27cG!IlMb>m01vz73Nu)2Kvd",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000001psO>65g6!N)iE>pOOv91acNGfHpisB0pgl7A-vZbf",
+        "0000000000000000000000000000001Dbib4!+oQg1jSolN=JgH*jv9fi7wmn^-TuBQZeZbj",
+        "0000000000000000000000000000002PQg+zpBXS7ml/YtyeL43PCqdv8^jVPrx=1=U3v^-r"
+      ],
+      "group_id": "group:13",
+      "group_identity_root_hash72": "0000000000000000000000000000001j!6n2o=eSKGEt4=tV8rr2g>RYG5+HvTJ3>UCQNzZ-",
+      "group_state_root_hash72": "0000000000000000000000000000003WKZiFSAJi(bf^USERA/06YF?h8scShUr=Y2EWPE7t",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000000JckhAX1YzKv>V?)v34-F7qsg*U(?TjoH>6YDoII3m",
+        "0000000000000000000000000000004KfLRGr87(7OqDkUOV2!)Nk6wp6*NnTK5T!sReuLoL",
+        "000000000000000000000000000000271QBPjOG!piBQvZfmam^/MjXinO12gW5thd=6J0b1"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "000000000000000000000000000000477NLkvGkPOcTU*l)M+zZoEi1Z!IU=Sh=>P+?BQqR9",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000001psO>65g6!N)iE>pOOv91acNGfHpisB0pgl7A-vZbf",
+        "0000000000000000000000000000001Dbib4!+oQg1jSolN=JgH*jv9fi7wmn^-TuBQZeZbj",
+        "0000000000000000000000000000002PQg+zpBXS7ml/YtyeL43PCqdv8^jVPrx=1=U3v^-r"
+      ],
+      "group_id": "group:14",
+      "group_identity_root_hash72": "0000000000000000000000000000003SGc4e)puyA2q*PBoR24ri)D!azhHqBDFOH6dzR09Y",
+      "group_state_root_hash72": "0000000000000000000000000000000U!dV=zsyd^*z/TcC?zS0DYp>Aait5GM6pLoSP!h2t",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "000000000000000000000000000000271QBPjOG!piBQvZfmam^/MjXinO12gW5thd=6J0b1",
+        "0000000000000000000000000000000uHnhs9WPmb/qfJ^G?x-d(l=ehQ1AiHkFk5HuzShks",
+        "0000000000000000000000000000002y-4?(Z3+cPGVjDG-YM/GJSBfcPcZrT)tPM*4cVI+0"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000000oc*EJwGrQ13!nlz)z6TQj6ajsLBDukbmKUrjSwbch",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000001psO>65g6!N)iE>pOOv91acNGfHpisB0pgl7A-vZbf",
+        "0000000000000000000000000000001Dbib4!+oQg1jSolN=JgH*jv9fi7wmn^-TuBQZeZbj",
+        "0000000000000000000000000000002PQg+zpBXS7ml/YtyeL43PCqdv8^jVPrx=1=U3v^-r"
+      ],
+      "group_id": "group:15",
+      "group_identity_root_hash72": "0000000000000000000000000000003Qa^!sgNEu(dvr/Qb)X3VQv5sI^hmWEBt(Hcvid1gF",
+      "group_state_root_hash72": "0000000000000000000000000000004xm0zwjXskg>+mcReqohEHqJQ!aPcF-E=IQ+*lQ7)S",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000001z940q*=Otbqrpo3=/NBQWNBQDW6mx2vp//Tsgc+YE",
+        "0000000000000000000000000000002y-4?(Z3+cPGVjDG-YM/GJSBfcPcZrT)tPM*4cVI+0",
+        "0000000000000000000000000000003zVuw*j50SjS3A6CER6wWljWn3KJHn6XXq1jFFFuIz"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000002oe?w(QHZpakRBw20Ag8Gz)i7*1pVrF=EUz/fFZhn3",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000003qls8i(IRAee/iIsw52)6Q5kV7j?p5PiIq=s01uiH?",
+        "0000000000000000000000000000001W3Tg+iTEKW-4>/*m8R(yR*xcu=HKY288qEq9jTqjq",
+        "0000000000000000000000000000002/*LmM!C3u63sH/1dRaYrCgLUI9!5t)qZt8pLjg(W+",
+        "0000000000000000000000000000003P(9uswmlUk+wl3JNar5vFaryPho9+U8)-ts5GCyTC",
+        "0000000000000000000000000000000x4nEh2qg49OJtQnNVrjSgPGPU9T0+j5JI4BY)s+jI",
+        "0000000000000000000000000000002oFtL0jmTuEp4Ix?T0xOgJWrI?IeU18*^Ga2blC5GJ",
+        "0000000000000000000000000000003wvlCyCnhDtOS+cg4)0MNlR6+Xz7r(TvjD(>ap66>T"
+      ],
+      "group_id": "group:0",
+      "group_identity_root_hash72": "0000000000000000000000000000001fjP+kR6izAff*4YDZ8ybY9dADrVa/Vad5hpYpdDKx",
+      "group_state_root_hash72": "0000000000000000000000000000000=1jqHe33aHxFSDK9DbcuGNgYlMx>2JJK)VCR/D(?o",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000003tejjN!MfVeC(3MfuPl4mtFpPD7p(U)HIUrTysFpM2",
+        "0000000000000000000000000000003I0bj7yjTtQkUS-(s9O!)J>)-Vy!dPs2!vOndhP9pa",
+        "00000000000000000000000000000018+DtK6(4r-b0-F!o-Cs8oIh(tFq+KqG?/YQBG1=J1",
+        "00000000000000000000000000000040BjPMi+xGHgGe6Y!y?TTLj*y8qVuOE6tYM/RBWKP8",
+        "00000000000000000000000000000014DSR)z3-iMJenx0(!PN6E-NO4>N8bI!0NImNT?XFe",
+        "0000000000000000000000000000000aJ6vxApX8QafP*^1lws2L1jW(jUWaZQUq6V^4lAMr",
+        "0000000000000000000000000000003XD00ypIYtkvG)BHPe(W/*aRKn++a*z=ZN>d?lzE(n",
+        "0000000000000000000000000000001W-B7sJrENwin0x1dCkzqImPu5=+62F2Rf9ZeaZALm",
+        "00000000000000000000000000000040eltOt5ifEwy3VOK9eFE!Ilm8uf=Ovq)E=pp7L-Hi",
+        "0000000000000000000000000000001l!!F!2wr^f/dll7j=OtKlf*J(9D(p9b1sl^UxInP6"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000003k3X+P+rxTq^w+IIf4VUJQ2AFayzTnAvD?VTlGWKLc",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000003qls8i(IRAee/iIsw52)6Q5kV7j?p5PiIq=s01uiH?",
+        "0000000000000000000000000000001W3Tg+iTEKW-4>/*m8R(yR*xcu=HKY288qEq9jTqjq",
+        "0000000000000000000000000000002/*LmM!C3u63sH/1dRaYrCgLUI9!5t)qZt8pLjg(W+",
+        "0000000000000000000000000000003P(9uswmlUk+wl3JNar5vFaryPho9+U8)-ts5GCyTC",
+        "0000000000000000000000000000000x4nEh2qg49OJtQnNVrjSgPGPU9T0+j5JI4BY)s+jI",
+        "0000000000000000000000000000002oFtL0jmTuEp4Ix?T0xOgJWrI?IeU18*^Ga2blC5GJ",
+        "0000000000000000000000000000003wvlCyCnhDtOS+cg4)0MNlR6+Xz7r(TvjD(>ap66>T"
+      ],
+      "group_id": "group:1",
+      "group_identity_root_hash72": "0000000000000000000000000000002j6SNlN0RQ>SaanSzlRmDS1cEp9dFR^c2Rz4sDohcr",
+      "group_state_root_hash72": "00000000000000000000000000000038tZcduk6woW/^+!p!JMhW->jCDp2i(zHxVOwduGSB",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000003tejjN!MfVeC(3MfuPl4mtFpPD7p(U)HIUrTysFpM2",
+        "0000000000000000000000000000001F7k!*x!eXaglMqUUy2O4^*FTxXRwfOtYvN/Ut*hRF",
+        "0000000000000000000000000000001e5WaToM6dFBetRX2Ug4GU*F5TnLke3?gRbYdVa8h3",
+        "0000000000000000000000000000002PkUnLdr8)4p1HcpC+>TKPeh7Oq^VsIBE4U6bo^Tt3",
+        "0000000000000000000000000000001?)bl=V>9Dxer9OUM=z0^xbM5VYbd4(7Ow0Qklv2-7",
+        "0000000000000000000000000000002NviX+0s0u7pgh1x4m96eE?qG=-6Di(Tkg+ThNGNc0",
+        "0000000000000000000000000000000F6N!w+QmQcjwF3zND1zzRVuZ>AuouT3OOv8gE=Fn(",
+        "0000000000000000000000000000002>cHA42nmiq7E!HQQ?j>oK9a6Y!GJw0?UGkcwdcchd",
+        "0000000000000000000000000000001)S?DxMN+mHHZADuxH1wh34ps*SAPaJ7gd/+^89e+P",
+        "00000000000000000000000000000004yX!aigHV0L5kFy7gNxCeat8!OhGztFu0yM0b2wGK"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000001AZZdq^gVoo(kLNgw-mrY/jwo>?ZJ5-jRo3Rwy!w7X",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000003qls8i(IRAee/iIsw52)6Q5kV7j?p5PiIq=s01uiH?",
+        "0000000000000000000000000000001W3Tg+iTEKW-4>/*m8R(yR*xcu=HKY288qEq9jTqjq",
+        "0000000000000000000000000000002/*LmM!C3u63sH/1dRaYrCgLUI9!5t)qZt8pLjg(W+",
+        "0000000000000000000000000000003P(9uswmlUk+wl3JNar5vFaryPho9+U8)-ts5GCyTC",
+        "0000000000000000000000000000000x4nEh2qg49OJtQnNVrjSgPGPU9T0+j5JI4BY)s+jI",
+        "0000000000000000000000000000002oFtL0jmTuEp4Ix?T0xOgJWrI?IeU18*^Ga2blC5GJ",
+        "0000000000000000000000000000003wvlCyCnhDtOS+cg4)0MNlR6+Xz7r(TvjD(>ap66>T"
+      ],
+      "group_id": "group:2",
+      "group_identity_root_hash72": "00000000000000000000000000000033ealKA)gCnpFb(*T3aGTV8gJo?7CG=(cCmd5/XL2G",
+      "group_state_root_hash72": "0000000000000000000000000000003luKGMNXRh+G=5lFUb=/mr37G4mNjHF=+KXWLFy*>t",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000003I0bj7yjTtQkUS-(s9O!)J>)-Vy!dPs2!vOndhP9pa",
+        "0000000000000000000000000000001EFi*ZJtb/N-qnovRfoEnt^vtAOH-PD2B64i5h(XfT",
+        "000000000000000000000000000000366EwjIwN+OBs*0JOde*CP)EMASd?9K)/xSW-(331)",
+        "0000000000000000000000000000003nraI4XKA6ZbFU?b8gaX9WIS3f=6k/wWCSNgB23*g0",
+        "0000000000000000000000000000002w64-h5H3SbZYpJ5SfVhm=KRrvXN=H0rlaVx2(-v-y",
+        "0000000000000000000000000000002zEjQQgc6D1uVPvbdSLDagj7f=9v6tFEevBLJ4CbwM",
+        "0000000000000000000000000000001Fz4wy/4R7eSGOx0a!YvEzy0XmTgCGotBD3p6-Rl>U",
+        "00000000000000000000000000000006!XeBik0+jhgKcI+YU!mFCP*!MaJ!FZM6ENlru)1T",
+        "0000000000000000000000000000000Vu^q/tTWaZ1Wj2aO0!i2BT0ry37qAQ39O!KQ7G4j>",
+        "00000000000000000000000000000031?e2eywn!pSprz^FES1IVINe5>767=lNE8JD*FO0B"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000002w=dKnPHWeFKdTufQn4EXGXskp+lH>KY?6mmTy)Q+!",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000003qls8i(IRAee/iIsw52)6Q5kV7j?p5PiIq=s01uiH?",
+        "0000000000000000000000000000001W3Tg+iTEKW-4>/*m8R(yR*xcu=HKY288qEq9jTqjq",
+        "0000000000000000000000000000002/*LmM!C3u63sH/1dRaYrCgLUI9!5t)qZt8pLjg(W+",
+        "0000000000000000000000000000003P(9uswmlUk+wl3JNar5vFaryPho9+U8)-ts5GCyTC",
+        "0000000000000000000000000000000x4nEh2qg49OJtQnNVrjSgPGPU9T0+j5JI4BY)s+jI",
+        "0000000000000000000000000000002oFtL0jmTuEp4Ix?T0xOgJWrI?IeU18*^Ga2blC5GJ",
+        "0000000000000000000000000000003wvlCyCnhDtOS+cg4)0MNlR6+Xz7r(TvjD(>ap66>T"
+      ],
+      "group_id": "group:3",
+      "group_identity_root_hash72": "0000000000000000000000000000002Tb1T-SqJZ-GhSM43R5w8ymFG+BpwLy?PY2qom+1Cw",
+      "group_state_root_hash72": "0000000000000000000000000000001fM5>/>snuGd?ZjCX8w099GWnelJP7Iw^AEsjeQcBe",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000001F7k!*x!eXaglMqUUy2O4^*FTxXRwfOtYvN/Ut*hRF",
+        "0000000000000000000000000000001EFi*ZJtb/N-qnovRfoEnt^vtAOH-PD2B64i5h(XfT",
+        "0000000000000000000000000000001kmPUVMJ/r7-lk8AB0h2LLlPr)3t1b>No4bMS(iQGw",
+        "0000000000000000000000000000002)XBmpWpb7KPRN8+vMJj89zJvI7D0b-kLRCz>X3Li8",
+        "0000000000000000000000000000004vYubUrkEH23FtoK7Axi5>3y1ofS(yZOW5)VBr1QiE",
+        "00000000000000000000000000000040=7A*==PK^bv6UrCrVS2H(*FC!!eIXWxC/F(i!qKc",
+        "0000000000000000000000000000003ws)UiYWvV=WdN7K=RL8uG8NNADDn?O4Y3dzcjw5MI",
+        "0000000000000000000000000000001GqSceZ17hh5x1EjG!Q?zjxqO*g7!X5V>LX^gLsQoK",
+        "0000000000000000000000000000004mzTyo=a()oBc60BRLTi)WX4XdJMCHBB2UBU/-uf+6",
+        "0000000000000000000000000000002J>I6lRI?aGQ9IMR)=h3glpdfncMeS7vHYkqAgREK+"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000001BHQx*qldW9b1l!h3L/t8mL0nIKoCZzWofmVhCKaJ!",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000003qls8i(IRAee/iIsw52)6Q5kV7j?p5PiIq=s01uiH?",
+        "0000000000000000000000000000001W3Tg+iTEKW-4>/*m8R(yR*xcu=HKY288qEq9jTqjq",
+        "0000000000000000000000000000002/*LmM!C3u63sH/1dRaYrCgLUI9!5t)qZt8pLjg(W+",
+        "0000000000000000000000000000003P(9uswmlUk+wl3JNar5vFaryPho9+U8)-ts5GCyTC",
+        "0000000000000000000000000000000x4nEh2qg49OJtQnNVrjSgPGPU9T0+j5JI4BY)s+jI",
+        "0000000000000000000000000000002oFtL0jmTuEp4Ix?T0xOgJWrI?IeU18*^Ga2blC5GJ",
+        "0000000000000000000000000000003wvlCyCnhDtOS+cg4)0MNlR6+Xz7r(TvjD(>ap66>T"
+      ],
+      "group_id": "group:4",
+      "group_identity_root_hash72": "00000000000000000000000000000025XcKFbQT3txlJBetCA83iPO+A5>o7MP-kVqRDLrE>",
+      "group_state_root_hash72": "0000000000000000000000000000001>w0HSQcF3YUzpewXAfu/QWn2-BLCA7C?KCowq2^=m",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "00000000000000000000000000000018+DtK6(4r-b0-F!o-Cs8oIh(tFq+KqG?/YQBG1=J1",
+        "0000000000000000000000000000001e5WaToM6dFBetRX2Ug4GU*F5TnLke3?gRbYdVa8h3",
+        "0000000000000000000000000000001kmPUVMJ/r7-lk8AB0h2LLlPr)3t1b>No4bMS(iQGw",
+        "0000000000000000000000000000003Au!kqz4v)zy7T8AEPO8aa9cl3Q6g2d9FHoecMXb=>",
+        "0000000000000000000000000000004zYR6*)^WgHIIi3D/yzLpBGe47bksdd*8JNBCDiJ3Z",
+        "00000000000000000000000000000037cT1Pq56*IFZcVO2yku(G9Jdn8!dGSuw=daVilcQz",
+        "0000000000000000000000000000000FpvNo2pNAYcZg)qKQA*ml4GGuOD7uKkoD(LQz!KED",
+        "0000000000000000000000000000001ECAsYrBBnbgUAbj(FInPNJMi==D)YQ(7i+MIFNBCB",
+        "0000000000000000000000000000002/xAT4/9=U6Az138*1>0PAZ9VH(K**^lUh>rE!xAR7",
+        "0000000000000000000000000000000?rVH>-56qal8F2-/!n>Jsi95DAiW+M14L4N72ldfW"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "00000000000000000000000000000045RzxVNPZAMeQ!+HF3i/0gzkrJeG8Gk1?GeM5-et>I",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000003qls8i(IRAee/iIsw52)6Q5kV7j?p5PiIq=s01uiH?",
+        "0000000000000000000000000000001W3Tg+iTEKW-4>/*m8R(yR*xcu=HKY288qEq9jTqjq",
+        "0000000000000000000000000000002/*LmM!C3u63sH/1dRaYrCgLUI9!5t)qZt8pLjg(W+",
+        "0000000000000000000000000000003P(9uswmlUk+wl3JNar5vFaryPho9+U8)-ts5GCyTC",
+        "0000000000000000000000000000000x4nEh2qg49OJtQnNVrjSgPGPU9T0+j5JI4BY)s+jI",
+        "0000000000000000000000000000002oFtL0jmTuEp4Ix?T0xOgJWrI?IeU18*^Ga2blC5GJ",
+        "0000000000000000000000000000003wvlCyCnhDtOS+cg4)0MNlR6+Xz7r(TvjD(>ap66>T"
+      ],
+      "group_id": "group:5",
+      "group_identity_root_hash72": "0000000000000000000000000000001VEC9Y1KADhGxmwL(KXy0X(NV8l=W1?cp?I)EjPR?3",
+      "group_state_root_hash72": "0000000000000000000000000000000iJn/J(TTP-vqT=EMWC=yIF5i0mm3c2q1iMpZerb3S",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "00000000000000000000000000000040BjPMi+xGHgGe6Y!y?TTLj*y8qVuOE6tYM/RBWKP8",
+        "000000000000000000000000000000366EwjIwN+OBs*0JOde*CP)EMASd?9K)/xSW-(331)",
+        "0000000000000000000000000000002)XBmpWpb7KPRN8+vMJj89zJvI7D0b-kLRCz>X3Li8",
+        "0000000000000000000000000000004oz6XH+RKBo^ZW^TNt8hUON+MaJL!0RvQFK*79XWxB",
+        "0000000000000000000000000000003pwHMl^dNSCQMh8Zph7fEtvuTjQoM=c>okr+SKx*SP",
+        "0000000000000000000000000000002JzEW3L=XM2g1Mdw5QRuFO90E2gMhzeyJ2eQfEX?Eo",
+        "0000000000000000000000000000003>U>zcGK0Er7q1t*Lc4A+j1X-dxxqEePaE5/bVbtWm",
+        "0000000000000000000000000000001ud2t0jf()Ia+-sgWy=8+R+kITNf9FkT0l4U7aEaed",
+        "0000000000000000000000000000004hrSyfg4+R8LzHt=5)!^(>pR*7pXxGg(anRUOLB^q9",
+        "0000000000000000000000000000002R+L!S+2^Uq3DM+T5gNhmDWS>lKyA6)p77BFTr/olI"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000003IS^cTJMG8eJm*IGCQN^dONeupj9ZRtStY!j+qFKTQ",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000003qls8i(IRAee/iIsw52)6Q5kV7j?p5PiIq=s01uiH?",
+        "0000000000000000000000000000001W3Tg+iTEKW-4>/*m8R(yR*xcu=HKY288qEq9jTqjq",
+        "0000000000000000000000000000002/*LmM!C3u63sH/1dRaYrCgLUI9!5t)qZt8pLjg(W+",
+        "0000000000000000000000000000003P(9uswmlUk+wl3JNar5vFaryPho9+U8)-ts5GCyTC",
+        "0000000000000000000000000000000x4nEh2qg49OJtQnNVrjSgPGPU9T0+j5JI4BY)s+jI",
+        "0000000000000000000000000000002oFtL0jmTuEp4Ix?T0xOgJWrI?IeU18*^Ga2blC5GJ",
+        "0000000000000000000000000000003wvlCyCnhDtOS+cg4)0MNlR6+Xz7r(TvjD(>ap66>T"
+      ],
+      "group_id": "group:6",
+      "group_identity_root_hash72": "0000000000000000000000000000003D-lfJBQtsjC8G+sm7e=^0e31nk/-lCk!VCBv89oOv",
+      "group_state_root_hash72": "0000000000000000000000000000002TBkhuDqemo*m9C7UXPJ(^RWYrviD2xXO5fnAX2vlN",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000002PkUnLdr8)4p1HcpC+>TKPeh7Oq^VsIBE4U6bo^Tt3",
+        "0000000000000000000000000000003nraI4XKA6ZbFU?b8gaX9WIS3f=6k/wWCSNgB23*g0",
+        "0000000000000000000000000000003Au!kqz4v)zy7T8AEPO8aa9cl3Q6g2d9FHoecMXb=>",
+        "0000000000000000000000000000004oz6XH+RKBo^ZW^TNt8hUON+MaJL!0RvQFK*79XWxB",
+        "0000000000000000000000000000002kj-xe0*ojG(>>VW6g3SNP11O11jWXd=mVZnep)xSy",
+        "0000000000000000000000000000004GYqO3(u1oiXQSiN2USZ)UU!2!gzj^X24I2F2kNy91",
+        "0000000000000000000000000000002SbF5nAB7f5z8k3a2sfjlsrVN+K5?c>s8wyTdiDrq+",
+        "0000000000000000000000000000003X-ry?UQ24an8K=PhFmJgueOOgTjHc5s4/Vv*y=Z8O",
+        "0000000000000000000000000000002UhtQE7Ig-I+7=+bW*4kQLEyxk9t)2qgLePd>VWNjv",
+        "0000000000000000000000000000000j4b768W?H58qQrGaP(n=j-NFv0UaQQl*RuJyZ>xGo"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000001Tr8Z206eBGOf096ll=b+>=?97yU3^8uRwNpi5=KiQ",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000003qls8i(IRAee/iIsw52)6Q5kV7j?p5PiIq=s01uiH?",
+        "0000000000000000000000000000001W3Tg+iTEKW-4>/*m8R(yR*xcu=HKY288qEq9jTqjq",
+        "0000000000000000000000000000002/*LmM!C3u63sH/1dRaYrCgLUI9!5t)qZt8pLjg(W+",
+        "0000000000000000000000000000003P(9uswmlUk+wl3JNar5vFaryPho9+U8)-ts5GCyTC",
+        "0000000000000000000000000000000x4nEh2qg49OJtQnNVrjSgPGPU9T0+j5JI4BY)s+jI",
+        "0000000000000000000000000000002oFtL0jmTuEp4Ix?T0xOgJWrI?IeU18*^Ga2blC5GJ",
+        "0000000000000000000000000000003wvlCyCnhDtOS+cg4)0MNlR6+Xz7r(TvjD(>ap66>T"
+      ],
+      "group_id": "group:7",
+      "group_identity_root_hash72": "0000000000000000000000000000001vklycj+5Jei!qM8N5y058yicu?mileqMkC6LS8JOc",
+      "group_state_root_hash72": "0000000000000000000000000000002PAYQ*/t21>O2!qa0tS12I=S!R8hkTuKd4oQe4>l^Q",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "00000000000000000000000000000014DSR)z3-iMJenx0(!PN6E-NO4>N8bI!0NImNT?XFe",
+        "0000000000000000000000000000001?)bl=V>9Dxer9OUM=z0^xbM5VYbd4(7Ow0Qklv2-7",
+        "0000000000000000000000000000004vYubUrkEH23FtoK7Axi5>3y1ofS(yZOW5)VBr1QiE",
+        "0000000000000000000000000000004zYR6*)^WgHIIi3D/yzLpBGe47bksdd*8JNBCDiJ3Z",
+        "0000000000000000000000000000002kj-xe0*ojG(>>VW6g3SNP11O11jWXd=mVZnep)xSy",
+        "0000000000000000000000000000001+F4ZTe4!gdmbodqZK=1Bfau!h9ew/oHdpR/xhYT2R",
+        "0000000000000000000000000000000mCp)LYt-LBkq)akW)U0rng86f(MW!*?KyYh95by5-",
+        "0000000000000000000000000000000rcIMO7g2pzJy!WcI4*IpIeGxAkwNtqR^7fw(jzZXM",
+        "0000000000000000000000000000000yibnUDhhxEK590AuJc*n5KgI1qlCoUsf3k/?(wt!N",
+        "0000000000000000000000000000000nAXLwA1!OzTrogIXb4dc0SkKWqz+lDx=Si?LZu+NX"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000004dfyB4>B)Bt^JpNi-+?nBdHmMsr6NrVqyKg1zr!OHq",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000003qls8i(IRAee/iIsw52)6Q5kV7j?p5PiIq=s01uiH?",
+        "0000000000000000000000000000001W3Tg+iTEKW-4>/*m8R(yR*xcu=HKY288qEq9jTqjq",
+        "0000000000000000000000000000002/*LmM!C3u63sH/1dRaYrCgLUI9!5t)qZt8pLjg(W+",
+        "0000000000000000000000000000003P(9uswmlUk+wl3JNar5vFaryPho9+U8)-ts5GCyTC",
+        "0000000000000000000000000000000x4nEh2qg49OJtQnNVrjSgPGPU9T0+j5JI4BY)s+jI",
+        "0000000000000000000000000000002oFtL0jmTuEp4Ix?T0xOgJWrI?IeU18*^Ga2blC5GJ",
+        "0000000000000000000000000000003wvlCyCnhDtOS+cg4)0MNlR6+Xz7r(TvjD(>ap66>T"
+      ],
+      "group_id": "group:8",
+      "group_identity_root_hash72": "0000000000000000000000000000003u^l39fbhnFioygS51jeB5DGwNmQ6MvOTX0MC-DRH8",
+      "group_state_root_hash72": "0000000000000000000000000000000hE9j8e=GBm-tY586L8+nG7xbUX!M0cb8-DCWiC?D)",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000000aJ6vxApX8QafP*^1lws2L1jW(jUWaZQUq6V^4lAMr",
+        "0000000000000000000000000000002w64-h5H3SbZYpJ5SfVhm=KRrvXN=H0rlaVx2(-v-y",
+        "00000000000000000000000000000040=7A*==PK^bv6UrCrVS2H(*FC!!eIXWxC/F(i!qKc",
+        "0000000000000000000000000000003pwHMl^dNSCQMh8Zph7fEtvuTjQoM=c>okr+SKx*SP",
+        "0000000000000000000000000000004GYqO3(u1oiXQSiN2USZ)UU!2!gzj^X24I2F2kNy91",
+        "00000000000000000000000000000034lvA2k4jn=pguq+BJwEOu+tq9a(T*VI/pwDDd)LLs",
+        "0000000000000000000000000000002Eif!74(7O3OHn+kQ*?bxt64Jff!xD9QNV=k!sXZnH",
+        "0000000000000000000000000000004IpGjxgULxOhJC(Oblj3lC?zwt/M8(MUDWaVlEfzgN",
+        "0000000000000000000000000000003O>K+/56C6ic56or6CdeNy6Q)UL8zXb3vwUFQFHvAX",
+        "0000000000000000000000000000002^ALtUGUloaU=MajZGh>IlfiIZA3Rbs0^8u-BcWZGM"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000000VJyB*fuZfM-DIhvn88lKKn3djJ=?If)Z-iWX!yewg",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000003qls8i(IRAee/iIsw52)6Q5kV7j?p5PiIq=s01uiH?",
+        "0000000000000000000000000000001W3Tg+iTEKW-4>/*m8R(yR*xcu=HKY288qEq9jTqjq",
+        "0000000000000000000000000000002/*LmM!C3u63sH/1dRaYrCgLUI9!5t)qZt8pLjg(W+",
+        "0000000000000000000000000000003P(9uswmlUk+wl3JNar5vFaryPho9+U8)-ts5GCyTC",
+        "0000000000000000000000000000000x4nEh2qg49OJtQnNVrjSgPGPU9T0+j5JI4BY)s+jI",
+        "0000000000000000000000000000002oFtL0jmTuEp4Ix?T0xOgJWrI?IeU18*^Ga2blC5GJ",
+        "0000000000000000000000000000003wvlCyCnhDtOS+cg4)0MNlR6+Xz7r(TvjD(>ap66>T"
+      ],
+      "group_id": "group:9",
+      "group_identity_root_hash72": "00000000000000000000000000000008KGyic/8h?JWd6iOFFjGQLXd^hj*bL7LFAye-JsfI",
+      "group_state_root_hash72": "0000000000000000000000000000000Nou*2*UogFaT)zzlzXvSaFJIc=yxTpQ?3lE4hFQ^+",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000002NviX+0s0u7pgh1x4m96eE?qG=-6Di(Tkg+ThNGNc0",
+        "0000000000000000000000000000002zEjQQgc6D1uVPvbdSLDagj7f=9v6tFEevBLJ4CbwM",
+        "00000000000000000000000000000037cT1Pq56*IFZcVO2yku(G9Jdn8!dGSuw=daVilcQz",
+        "0000000000000000000000000000002JzEW3L=XM2g1Mdw5QRuFO90E2gMhzeyJ2eQfEX?Eo",
+        "0000000000000000000000000000001+F4ZTe4!gdmbodqZK=1Bfau!h9ew/oHdpR/xhYT2R",
+        "00000000000000000000000000000034lvA2k4jn=pguq+BJwEOu+tq9a(T*VI/pwDDd)LLs",
+        "00000000000000000000000000000005FUq9)CrJ)nC35+XGzJOr0pygaFsRgI6EUu*wz)S!",
+        "0000000000000000000000000000002gVOOAAKnBQL!Vrr(!0GzPIaN=aq0j/3SxCtJ46rIR",
+        "0000000000000000000000000000002=>a/0k-q)uVodA+Rwgn>q)Z9YT3?L?vVRRI-F=8n1",
+        "0000000000000000000000000000003tEc+EcpQpgWbu!k7WhaoiqJKDWr86x5fmctnuLhH1"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000003ZmPnS9v)c)*Ry)YLeYf-BYJHAmzFXdtiS!rVckI*Q",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000003qls8i(IRAee/iIsw52)6Q5kV7j?p5PiIq=s01uiH?",
+        "0000000000000000000000000000001W3Tg+iTEKW-4>/*m8R(yR*xcu=HKY288qEq9jTqjq",
+        "0000000000000000000000000000002/*LmM!C3u63sH/1dRaYrCgLUI9!5t)qZt8pLjg(W+",
+        "0000000000000000000000000000003P(9uswmlUk+wl3JNar5vFaryPho9+U8)-ts5GCyTC",
+        "0000000000000000000000000000000x4nEh2qg49OJtQnNVrjSgPGPU9T0+j5JI4BY)s+jI",
+        "0000000000000000000000000000002oFtL0jmTuEp4Ix?T0xOgJWrI?IeU18*^Ga2blC5GJ",
+        "0000000000000000000000000000003wvlCyCnhDtOS+cg4)0MNlR6+Xz7r(TvjD(>ap66>T"
+      ],
+      "group_id": "group:10",
+      "group_identity_root_hash72": "0000000000000000000000000000000f25t>->UhsIUAdlPjS=pxMH5cTg=vDcGCvj^e4aW*",
+      "group_state_root_hash72": "0000000000000000000000000000003*xMFw0/jc=hnyVE-f(x?55l0DYYwJjemGL6^3pfAj",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000003XD00ypIYtkvG)BHPe(W/*aRKn++a*z=ZN>d?lzE(n",
+        "0000000000000000000000000000000F6N!w+QmQcjwF3zND1zzRVuZ>AuouT3OOv8gE=Fn(",
+        "0000000000000000000000000000003ws)UiYWvV=WdN7K=RL8uG8NNADDn?O4Y3dzcjw5MI",
+        "0000000000000000000000000000000FpvNo2pNAYcZg)qKQA*ml4GGuOD7uKkoD(LQz!KED",
+        "0000000000000000000000000000002SbF5nAB7f5z8k3a2sfjlsrVN+K5?c>s8wyTdiDrq+",
+        "0000000000000000000000000000000mCp)LYt-LBkq)akW)U0rng86f(MW!*?KyYh95by5-",
+        "00000000000000000000000000000005FUq9)CrJ)nC35+XGzJOr0pygaFsRgI6EUu*wz)S!",
+        "0000000000000000000000000000000O0p0oP0yVBgTlak(AaSe02nDfPC!JLiQyfu5nxPhu",
+        "0000000000000000000000000000001EyCHJS+02PLk00cVfHxOMdKutNMtVhwg8!d/^MmBE",
+        "00000000000000000000000000000019*em7GS3ZmoBFAm?E7+qzkE=U+?K6=?C=Zx*wg2r/"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000003dRzUeLA(3qYMtW0uYdpurfuJvSAe9P8xJz5Kx)B)(",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000003qls8i(IRAee/iIsw52)6Q5kV7j?p5PiIq=s01uiH?",
+        "0000000000000000000000000000001W3Tg+iTEKW-4>/*m8R(yR*xcu=HKY288qEq9jTqjq",
+        "0000000000000000000000000000002/*LmM!C3u63sH/1dRaYrCgLUI9!5t)qZt8pLjg(W+",
+        "0000000000000000000000000000003P(9uswmlUk+wl3JNar5vFaryPho9+U8)-ts5GCyTC",
+        "0000000000000000000000000000000x4nEh2qg49OJtQnNVrjSgPGPU9T0+j5JI4BY)s+jI",
+        "0000000000000000000000000000002oFtL0jmTuEp4Ix?T0xOgJWrI?IeU18*^Ga2blC5GJ",
+        "0000000000000000000000000000003wvlCyCnhDtOS+cg4)0MNlR6+Xz7r(TvjD(>ap66>T"
+      ],
+      "group_id": "group:11",
+      "group_identity_root_hash72": "0000000000000000000000000000001AE+67v4Mg0!FoIUTQgfVCa7R6-2C>osO3Q5T?-G6=",
+      "group_state_root_hash72": "0000000000000000000000000000000Jiv?e>^iXyS9LfYp)!m8-UjK+9jV?PYEGQ*a-7s-G",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000001W-B7sJrENwin0x1dCkzqImPu5=+62F2Rf9ZeaZALm",
+        "0000000000000000000000000000001Fz4wy/4R7eSGOx0a!YvEzy0XmTgCGotBD3p6-Rl>U",
+        "0000000000000000000000000000001GqSceZ17hh5x1EjG!Q?zjxqO*g7!X5V>LX^gLsQoK",
+        "0000000000000000000000000000003>U>zcGK0Er7q1t*Lc4A+j1X-dxxqEePaE5/bVbtWm",
+        "0000000000000000000000000000003X-ry?UQ24an8K=PhFmJgueOOgTjHc5s4/Vv*y=Z8O",
+        "0000000000000000000000000000002Eif!74(7O3OHn+kQ*?bxt64Jff!xD9QNV=k!sXZnH",
+        "0000000000000000000000000000002gVOOAAKnBQL!Vrr(!0GzPIaN=aq0j/3SxCtJ46rIR",
+        "00000000000000000000000000000019JE4r=gOWHL/i(qd^O7W^4QB98^>hJ0nzX9JGS4e!",
+        "0000000000000000000000000000002N6*5^s9RYT/++2V(=xXJoQmYsC!jNr>Sw8*?P^ced",
+        "000000000000000000000000000000141)2LlyQM9mPVNhhs5=K-5ur4*CMOEpVI1aEVlTaS"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000002gORJb1dW2m3eWFGNvar/rbhXM1?VK?Meb(Ctdo3fn",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000003qls8i(IRAee/iIsw52)6Q5kV7j?p5PiIq=s01uiH?",
+        "0000000000000000000000000000001W3Tg+iTEKW-4>/*m8R(yR*xcu=HKY288qEq9jTqjq",
+        "0000000000000000000000000000002/*LmM!C3u63sH/1dRaYrCgLUI9!5t)qZt8pLjg(W+",
+        "0000000000000000000000000000003P(9uswmlUk+wl3JNar5vFaryPho9+U8)-ts5GCyTC",
+        "0000000000000000000000000000000x4nEh2qg49OJtQnNVrjSgPGPU9T0+j5JI4BY)s+jI",
+        "0000000000000000000000000000002oFtL0jmTuEp4Ix?T0xOgJWrI?IeU18*^Ga2blC5GJ",
+        "0000000000000000000000000000003wvlCyCnhDtOS+cg4)0MNlR6+Xz7r(TvjD(>ap66>T"
+      ],
+      "group_id": "group:12",
+      "group_identity_root_hash72": "0000000000000000000000000000001HhYU+AN2ty+3hV33/U8*J*DDnLxMODbOwAGzI5s03",
+      "group_state_root_hash72": "00000000000000000000000000000012cOoBuJY-CIfSn(z+!WI8OHBwYjT0OG^nTF)O2fV)",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000002>cHA42nmiq7E!HQQ?j>oK9a6Y!GJw0?UGkcwdcchd",
+        "00000000000000000000000000000006!XeBik0+jhgKcI+YU!mFCP*!MaJ!FZM6ENlru)1T",
+        "0000000000000000000000000000001ECAsYrBBnbgUAbj(FInPNJMi==D)YQ(7i+MIFNBCB",
+        "0000000000000000000000000000001ud2t0jf()Ia+-sgWy=8+R+kITNf9FkT0l4U7aEaed",
+        "0000000000000000000000000000000rcIMO7g2pzJy!WcI4*IpIeGxAkwNtqR^7fw(jzZXM",
+        "0000000000000000000000000000004IpGjxgULxOhJC(Oblj3lC?zwt/M8(MUDWaVlEfzgN",
+        "0000000000000000000000000000000O0p0oP0yVBgTlak(AaSe02nDfPC!JLiQyfu5nxPhu",
+        "00000000000000000000000000000019JE4r=gOWHL/i(qd^O7W^4QB98^>hJ0nzX9JGS4e!",
+        "0000000000000000000000000000003kZ+XQAau2x>Py9yEDTlncFB>*=3rcCVkz/^ho>a11",
+        "0000000000000000000000000000002cYm^D>o9yNwN7o7U^!VNvJuJ=9XfDZ-Fwuk9(g-*K"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000000-4Un7qVIdQc/SkplMf+7AdFcSn6AX9S=?U)2iGfpv",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000003qls8i(IRAee/iIsw52)6Q5kV7j?p5PiIq=s01uiH?",
+        "0000000000000000000000000000001W3Tg+iTEKW-4>/*m8R(yR*xcu=HKY288qEq9jTqjq",
+        "0000000000000000000000000000002/*LmM!C3u63sH/1dRaYrCgLUI9!5t)qZt8pLjg(W+",
+        "0000000000000000000000000000003P(9uswmlUk+wl3JNar5vFaryPho9+U8)-ts5GCyTC",
+        "0000000000000000000000000000000x4nEh2qg49OJtQnNVrjSgPGPU9T0+j5JI4BY)s+jI",
+        "0000000000000000000000000000002oFtL0jmTuEp4Ix?T0xOgJWrI?IeU18*^Ga2blC5GJ",
+        "0000000000000000000000000000003wvlCyCnhDtOS+cg4)0MNlR6+Xz7r(TvjD(>ap66>T"
+      ],
+      "group_id": "group:13",
+      "group_identity_root_hash72": "0000000000000000000000000000003jmV7Vjhr/wsCL(^sM0UTt(tC*u7NjWSh1GoCl?tPp",
+      "group_state_root_hash72": "00000000000000000000000000000013zYJE)xC(e/t^qvRIFoy3)VdxC-lmy^Hi++ykmqn)",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "00000000000000000000000000000040eltOt5ifEwy3VOK9eFE!Ilm8uf=Ovq)E=pp7L-Hi",
+        "0000000000000000000000000000001)S?DxMN+mHHZADuxH1wh34ps*SAPaJ7gd/+^89e+P",
+        "0000000000000000000000000000004mzTyo=a()oBc60BRLTi)WX4XdJMCHBB2UBU/-uf+6",
+        "0000000000000000000000000000002/xAT4/9=U6Az138*1>0PAZ9VH(K**^lUh>rE!xAR7",
+        "0000000000000000000000000000002UhtQE7Ig-I+7=+bW*4kQLEyxk9t)2qgLePd>VWNjv",
+        "0000000000000000000000000000000yibnUDhhxEK590AuJc*n5KgI1qlCoUsf3k/?(wt!N",
+        "0000000000000000000000000000002=>a/0k-q)uVodA+Rwgn>q)Z9YT3?L?vVRRI-F=8n1",
+        "0000000000000000000000000000001EyCHJS+02PLk00cVfHxOMdKutNMtVhwg8!d/^MmBE",
+        "0000000000000000000000000000003kZ+XQAau2x>Py9yEDTlncFB>*=3rcCVkz/^ho>a11",
+        "0000000000000000000000000000001wf/q>pwnaBDcOCHhP9nDl*a*HsRwPLmmGQ^1TovaY"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000000gowwx?0?QW0?aT7mTpQV^Rf119vZlbb6l?O2wO20G",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000003qls8i(IRAee/iIsw52)6Q5kV7j?p5PiIq=s01uiH?",
+        "0000000000000000000000000000001W3Tg+iTEKW-4>/*m8R(yR*xcu=HKY288qEq9jTqjq",
+        "0000000000000000000000000000002/*LmM!C3u63sH/1dRaYrCgLUI9!5t)qZt8pLjg(W+",
+        "0000000000000000000000000000003P(9uswmlUk+wl3JNar5vFaryPho9+U8)-ts5GCyTC",
+        "0000000000000000000000000000000x4nEh2qg49OJtQnNVrjSgPGPU9T0+j5JI4BY)s+jI",
+        "0000000000000000000000000000002oFtL0jmTuEp4Ix?T0xOgJWrI?IeU18*^Ga2blC5GJ",
+        "0000000000000000000000000000003wvlCyCnhDtOS+cg4)0MNlR6+Xz7r(TvjD(>ap66>T"
+      ],
+      "group_id": "group:14",
+      "group_identity_root_hash72": "0000000000000000000000000000000SaTc>-Bx9KC)7d=Hy)3n9N!QHHIWTNHFkHkBmgSOo",
+      "group_state_root_hash72": "0000000000000000000000000000000QzoHh*El!rM6exyZ(AFBt712>D05lM>8GoJcxFcZs",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000001l!!F!2wr^f/dll7j=OtKlf*J(9D(p9b1sl^UxInP6",
+        "0000000000000000000000000000000Vu^q/tTWaZ1Wj2aO0!i2BT0ry37qAQ39O!KQ7G4j>",
+        "0000000000000000000000000000002J>I6lRI?aGQ9IMR)=h3glpdfncMeS7vHYkqAgREK+",
+        "0000000000000000000000000000004hrSyfg4+R8LzHt=5)!^(>pR*7pXxGg(anRUOLB^q9",
+        "0000000000000000000000000000000j4b768W?H58qQrGaP(n=j-NFv0UaQQl*RuJyZ>xGo",
+        "0000000000000000000000000000003O>K+/56C6ic56or6CdeNy6Q)UL8zXb3vwUFQFHvAX",
+        "0000000000000000000000000000003tEc+EcpQpgWbu!k7WhaoiqJKDWr86x5fmctnuLhH1",
+        "0000000000000000000000000000002N6*5^s9RYT/++2V(=xXJoQmYsC!jNr>Sw8*?P^ced",
+        "0000000000000000000000000000002cYm^D>o9yNwN7o7U^!VNvJuJ=9XfDZ-Fwuk9(g-*K",
+        "0000000000000000000000000000000Cb)BhdkyBxafPDlekm^lp+poYUUSJ78flE5vtVo1-"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000001zR9P+J*oPSJWRVA1^mXkoe6tYQE>pofk-+xm?G3aa",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000003qls8i(IRAee/iIsw52)6Q5kV7j?p5PiIq=s01uiH?",
+        "0000000000000000000000000000001W3Tg+iTEKW-4>/*m8R(yR*xcu=HKY288qEq9jTqjq",
+        "0000000000000000000000000000002/*LmM!C3u63sH/1dRaYrCgLUI9!5t)qZt8pLjg(W+",
+        "0000000000000000000000000000003P(9uswmlUk+wl3JNar5vFaryPho9+U8)-ts5GCyTC",
+        "0000000000000000000000000000000x4nEh2qg49OJtQnNVrjSgPGPU9T0+j5JI4BY)s+jI",
+        "0000000000000000000000000000002oFtL0jmTuEp4Ix?T0xOgJWrI?IeU18*^Ga2blC5GJ",
+        "0000000000000000000000000000003wvlCyCnhDtOS+cg4)0MNlR6+Xz7r(TvjD(>ap66>T"
+      ],
+      "group_id": "group:15",
+      "group_identity_root_hash72": "00000000000000000000000000000016?r/f7jT)xnjnWNoh>F9QeqgN*0F/paQY0*j)Bv=N",
+      "group_state_root_hash72": "0000000000000000000000000000003BovdLcPkMMO)U3k/JI38z+5F1pS7FBexq5N(m>vB8",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "00000000000000000000000000000004yX!aigHV0L5kFy7gNxCeat8!OhGztFu0yM0b2wGK",
+        "00000000000000000000000000000031?e2eywn!pSprz^FES1IVINe5>767=lNE8JD*FO0B",
+        "0000000000000000000000000000000?rVH>-56qal8F2-/!n>Jsi95DAiW+M14L4N72ldfW",
+        "0000000000000000000000000000002R+L!S+2^Uq3DM+T5gNhmDWS>lKyA6)p77BFTr/olI",
+        "0000000000000000000000000000000nAXLwA1!OzTrogIXb4dc0SkKWqz+lDx=Si?LZu+NX",
+        "0000000000000000000000000000002^ALtUGUloaU=MajZGh>IlfiIZA3Rbs0^8u-BcWZGM",
+        "00000000000000000000000000000019*em7GS3ZmoBFAm?E7+qzkE=U+?K6=?C=Zx*wg2r/",
+        "000000000000000000000000000000141)2LlyQM9mPVNhhs5=K-5ur4*CMOEpVI1aEVlTaS",
+        "0000000000000000000000000000001wf/q>pwnaBDcOCHhP9nDl*a*HsRwPLmmGQ^1TovaY",
+        "0000000000000000000000000000000Cb)BhdkyBxafPDlekm^lp+poYUUSJ78flE5vtVo1-"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000001wr5p-!A8(Tw=>Tyd5RvL-g(=7/ZPiiP>n4a1E6vXV",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000001psO>65g6!N)iE>pOOv91acNGfHpisB0pgl7A-vZbf",
+        "0000000000000000000000000000001Dbib4!+oQg1jSolN=JgH*jv9fi7wmn^-TuBQZeZbj",
+        "0000000000000000000000000000002PQg+zpBXS7ml/YtyeL43PCqdv8^jVPrx=1=U3v^-r"
+      ],
+      "group_id": "group:0",
+      "group_identity_root_hash72": "0000000000000000000000000000000-1h+X0L3gJdf5MxW8V2dSo?pTjuhryF-wrFqF-(ZA",
+      "group_state_root_hash72": "0000000000000000000000000000000LagQqKc!On=8vPOXQz*-JYC8nT+KIU>FgD7KaqA/1",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000003tejjN!MfVeC(3MfuPl4mtFpPD7p(U)HIUrTysFpM2",
+        "0000000000000000000000000000002IMVivJRVA^qoAISu>Myb7ftyzN7AvH4yikT9F31J(",
+        "00000000000000000000000000000009b-CzN)thX44NGMz=afQnfHMucM+gbaDA!Mf1)UHD"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000000ckyAwbvQ+e?KmzW51FPM*?ge)Cx3iddfe+>1SYIn6",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000001psO>65g6!N)iE>pOOv91acNGfHpisB0pgl7A-vZbf",
+        "0000000000000000000000000000001Dbib4!+oQg1jSolN=JgH*jv9fi7wmn^-TuBQZeZbj",
+        "0000000000000000000000000000002PQg+zpBXS7ml/YtyeL43PCqdv8^jVPrx=1=U3v^-r"
+      ],
+      "group_id": "group:1",
+      "group_identity_root_hash72": "0000000000000000000000000000001)(MP8rKoYr9aP=iH5i!(5cIFx*lWL8wACyCMNh8Su",
+      "group_state_root_hash72": "0000000000000000000000000000004y!=PQeMXpF6i!sPBaee6ia2Y582V2?Yw+y+TT3l4q",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000003tejjN!MfVeC(3MfuPl4mtFpPD7p(U)HIUrTysFpM2",
+        "0000000000000000000000000000003Wn596NJ6Uxs(6X6CbLcQl/IQuVPQ084I/Dn-kbkTQ",
+        "00000000000000000000000000000032Z7bk(Cas!1JnvMNqZM*cv4+bxo(hCG+6CYaf!m^7"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000000A94mMQpW/Zg4XnFyb0Y7r+?6jRXU4Dy21?/0c4ink",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000001psO>65g6!N)iE>pOOv91acNGfHpisB0pgl7A-vZbf",
+        "0000000000000000000000000000001Dbib4!+oQg1jSolN=JgH*jv9fi7wmn^-TuBQZeZbj",
+        "0000000000000000000000000000002PQg+zpBXS7ml/YtyeL43PCqdv8^jVPrx=1=U3v^-r"
+      ],
+      "group_id": "group:2",
+      "group_identity_root_hash72": "00000000000000000000000000000010qrZV-9VNA=oUqW9vqhdNF=dr5?ofsbAKR6n^qCMm",
+      "group_state_root_hash72": "0000000000000000000000000000002(pnr^IaRG/H!29zup4(EufCk0xBuBky9H!OjTxSB>",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000003Wn596NJ6Uxs(6X6CbLcQl/IQuVPQ084I/Dn-kbkTQ",
+        "00000000000000000000000000000015=-mZ=XFn1LJzP7L6ZGwq/ER)ym-cx1hmxSTPX=!V",
+        "00000000000000000000000000000001fdMfsPGRTP9Vjdq>U5IkA+-kUkoxik>eUR+MOo9P"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000000iqSN/gvQFdsZ!Yv>T8lxqR75WHQO^Lakud?-xQV^z",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000001psO>65g6!N)iE>pOOv91acNGfHpisB0pgl7A-vZbf",
+        "0000000000000000000000000000001Dbib4!+oQg1jSolN=JgH*jv9fi7wmn^-TuBQZeZbj",
+        "0000000000000000000000000000002PQg+zpBXS7ml/YtyeL43PCqdv8^jVPrx=1=U3v^-r"
+      ],
+      "group_id": "group:3",
+      "group_identity_root_hash72": "0000000000000000000000000000001wetXR/?ibaglqP4LYdt8hBd0gwBi9VhX38xG*XmV^",
+      "group_state_root_hash72": "00000000000000000000000000000024V(koK/6U^T-pG6z9?G3reM-wh3-SgnGt8H?Zd1tz",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000002IMVivJRVA^qoAISu>Myb7ftyzN7AvH4yikT9F31J(",
+        "00000000000000000000000000000015=-mZ=XFn1LJzP7L6ZGwq/ER)ym-cx1hmxSTPX=!V",
+        "0000000000000000000000000000001qq1ULmoseZnIujVL+pwhhp4jAfX05>oFl4ZlfU2l>"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000004vg>J(XBFWcH8y0qbjpk?4g-A^og+AYC>G(?Otn23M",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000001psO>65g6!N)iE>pOOv91acNGfHpisB0pgl7A-vZbf",
+        "0000000000000000000000000000001Dbib4!+oQg1jSolN=JgH*jv9fi7wmn^-TuBQZeZbj",
+        "0000000000000000000000000000002PQg+zpBXS7ml/YtyeL43PCqdv8^jVPrx=1=U3v^-r"
+      ],
+      "group_id": "group:4",
+      "group_identity_root_hash72": "0000000000000000000000000000001a^vs)DvTNKCt3LbdRoI63JYEMDxQmZC(h3B2Q(8/!",
+      "group_state_root_hash72": "0000000000000000000000000000001/9SqKvYxVp^4p+XJ2BgM8rweQ/Yrt^p-of=>7fOOn",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000001qq1ULmoseZnIujVL+pwhhp4jAfX05>oFl4ZlfU2l>",
+        "00000000000000000000000000000046tZ-9*/pw-fEIUE8Bl=F0w+xNTr?zlpjWqu/8SijT",
+        "0000000000000000000000000000004IG2H9Vc3VihT2BaMkp?Bl=4REnLf0MulFNXeZ+IHt"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000004Cq>1Nduo-dHd3TTA>roP>1(LmA8U9he/Dk>dpwx4r",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000001psO>65g6!N)iE>pOOv91acNGfHpisB0pgl7A-vZbf",
+        "0000000000000000000000000000001Dbib4!+oQg1jSolN=JgH*jv9fi7wmn^-TuBQZeZbj",
+        "0000000000000000000000000000002PQg+zpBXS7ml/YtyeL43PCqdv8^jVPrx=1=U3v^-r"
+      ],
+      "group_id": "group:5",
+      "group_identity_root_hash72": "0000000000000000000000000000003V3?pr6Ev(+jB9lxKR(w0qc?!Agc5xV-8tfhjbw!Vm",
+      "group_state_root_hash72": "0000000000000000000000000000001ic6hoY=MRg>p4FKsMguJMLh?WnkHUQzZbfHpHjzqA",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "00000000000000000000000000000001fdMfsPGRTP9Vjdq>U5IkA+-kUkoxik>eUR+MOo9P",
+        "00000000000000000000000000000046tZ-9*/pw-fEIUE8Bl=F0w+xNTr?zlpjWqu/8SijT",
+        "0000000000000000000000000000003rgyN2Z4YxG-d0dLE!Z)ofbr=8zS=UgLS)RX!35xVQ"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000001fz*Af=5zsQ?avc+8/*8VbE5nAkxD4G-^qAmY4PgEp",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000001psO>65g6!N)iE>pOOv91acNGfHpisB0pgl7A-vZbf",
+        "0000000000000000000000000000001Dbib4!+oQg1jSolN=JgH*jv9fi7wmn^-TuBQZeZbj",
+        "0000000000000000000000000000002PQg+zpBXS7ml/YtyeL43PCqdv8^jVPrx=1=U3v^-r"
+      ],
+      "group_id": "group:6",
+      "group_identity_root_hash72": "0000000000000000000000000000003N4RInd3ZyDtM3OM/Wi=b3PXPVsUThTq)8x=mwrr=1",
+      "group_state_root_hash72": "0000000000000000000000000000002GuaReT8/d2iNj?UdwiB1kpp-btg8D5wUd)3ntBHGs",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000003rgyN2Z4YxG-d0dLE!Z)ofbr=8zS=UgLS)RX!35xVQ",
+        "0000000000000000000000000000000)otiO0WB2eP^QhgC60gy=hl*+Qc!Lr>58e9pzB!kP",
+        "0000000000000000000000000000002W=i^ZG?dlMzHZ5ZD>wVIWbDN9D6XqRUSB/do8>A!Q"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000002?/4qsr*PTs2PS8kmLxhkx162(m-T^v0DT>Ko-z(d(",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000001psO>65g6!N)iE>pOOv91acNGfHpisB0pgl7A-vZbf",
+        "0000000000000000000000000000001Dbib4!+oQg1jSolN=JgH*jv9fi7wmn^-TuBQZeZbj",
+        "0000000000000000000000000000002PQg+zpBXS7ml/YtyeL43PCqdv8^jVPrx=1=U3v^-r"
+      ],
+      "group_id": "group:7",
+      "group_identity_root_hash72": "0000000000000000000000000000001CqYZO34g+Ni7Yn4/Xqv0(bpuAjF7Rxn-f2wxJOPPU",
+      "group_state_root_hash72": "0000000000000000000000000000002g??z)MNuvkfeXDv=(HtSDzEFdYFnr+46x994-8eUV",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000004IG2H9Vc3VihT2BaMkp?Bl=4REnLf0MulFNXeZ+IHt",
+        "0000000000000000000000000000000)otiO0WB2eP^QhgC60gy=hl*+Qc!Lr>58e9pzB!kP",
+        "00000000000000000000000000000006CH!a>Nv+3TCq8LDgt6gvE=JA7?HHKV0eZ7t3ujIu"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000002uvI3WbyeAX8GA(FsKYVARO60Rl+8vXlz935nhRIbh",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000001psO>65g6!N)iE>pOOv91acNGfHpisB0pgl7A-vZbf",
+        "0000000000000000000000000000001Dbib4!+oQg1jSolN=JgH*jv9fi7wmn^-TuBQZeZbj",
+        "0000000000000000000000000000002PQg+zpBXS7ml/YtyeL43PCqdv8^jVPrx=1=U3v^-r"
+      ],
+      "group_id": "group:8",
+      "group_identity_root_hash72": "0000000000000000000000000000000g^0cQPV*=Wrm*n4t)-T3+MOSkU2qN>qL0M4Cl+!i(",
+      "group_state_root_hash72": "0000000000000000000000000000001eSg-+AP79n4RsSe=p>xcc+z=f0n-pQhaQBnt6/Iz2",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "00000000000000000000000000000006CH!a>Nv+3TCq8LDgt6gvE=JA7?HHKV0eZ7t3ujIu",
+        "0000000000000000000000000000002NGck5y6Xt+=wJwjpQFw=g4GEesH?XL3SHpE-W8OrL",
+        "0000000000000000000000000000000cyV!YbN/2QmVmWZ+4*zmtMgBsR6rSU-cNwmCFFrbA"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000000d7=1+s3hN2x0-M-C6qa4Gy+RA59mxzw9zbG!k8fSH",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000001psO>65g6!N)iE>pOOv91acNGfHpisB0pgl7A-vZbf",
+        "0000000000000000000000000000001Dbib4!+oQg1jSolN=JgH*jv9fi7wmn^-TuBQZeZbj",
+        "0000000000000000000000000000002PQg+zpBXS7ml/YtyeL43PCqdv8^jVPrx=1=U3v^-r"
+      ],
+      "group_id": "group:9",
+      "group_identity_root_hash72": "00000000000000000000000000000036lleNg+SV(FsSwTQu(IhJ9Wk*!m0-M^w*Ke8Y/HL1",
+      "group_state_root_hash72": "0000000000000000000000000000003gdjhwfnsZSnV*Exq4GR*i1YxTQYA/YoMau8Q4PjS9",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000002W=i^ZG?dlMzHZ5ZD>wVIWbDN9D6XqRUSB/do8>A!Q",
+        "0000000000000000000000000000002NGck5y6Xt+=wJwjpQFw=g4GEesH?XL3SHpE-W8OrL",
+        "0000000000000000000000000000000/Lz0M/df370J5ZkBHy5Ijl(FrELYu?YJ0hxMadu!>"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000000u-Ctmphqbn4EbNsh+kvgpb+RZEcG*b)lKhQA7BeJr",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000001psO>65g6!N)iE>pOOv91acNGfHpisB0pgl7A-vZbf",
+        "0000000000000000000000000000001Dbib4!+oQg1jSolN=JgH*jv9fi7wmn^-TuBQZeZbj",
+        "0000000000000000000000000000002PQg+zpBXS7ml/YtyeL43PCqdv8^jVPrx=1=U3v^-r"
+      ],
+      "group_id": "group:10",
+      "group_identity_root_hash72": "0000000000000000000000000000004yAEPbDg*(Z5ifXaAt=XfYq-+2zJZdl45Wss4prfiF",
+      "group_state_root_hash72": "00000000000000000000000000000023SBhgr2wtk!*aQ48wL)CcCG?G>w(PW!8X74t/b4Mi",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000000/Lz0M/df370J5ZkBHy5Ijl(FrELYu?YJ0hxMadu!>",
+        "0000000000000000000000000000003+^+8rbHfwZG9WAF3P^71hjbL-3RKqWX3EeADW+w/X",
+        "0000000000000000000000000000004y(WjAbPV(V+!U-lT(YirBN4ZYjqroWb65qQdMG*vh"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000001z/x3?U?Lvsmz/+(3>9^SxnbY>9s!F0^sCPuj*Hj8K",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000001psO>65g6!N)iE>pOOv91acNGfHpisB0pgl7A-vZbf",
+        "0000000000000000000000000000001Dbib4!+oQg1jSolN=JgH*jv9fi7wmn^-TuBQZeZbj",
+        "0000000000000000000000000000002PQg+zpBXS7ml/YtyeL43PCqdv8^jVPrx=1=U3v^-r"
+      ],
+      "group_id": "group:11",
+      "group_identity_root_hash72": "0000000000000000000000000000000kszZ/n5obC>aai4(r2K-8PC5VPJwMi>Q!-EQ9kHYs",
+      "group_state_root_hash72": "0000000000000000000000000000001wO6ZMp?3wxOmyhL-u6Hlpl58Aeu4hrT=/k5S)E2ea",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000000cyV!YbN/2QmVmWZ+4*zmtMgBsR6rSU-cNwmCFFrbA",
+        "0000000000000000000000000000003+^+8rbHfwZG9WAF3P^71hjbL-3RKqWX3EeADW+w/X",
+        "0000000000000000000000000000003nFrd8d3S2-irPvyOM87jYs!8dIgGuYZyB*Wssjl1S"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000001?9U3iXeq9vOIud!y=Regmt^Wyd*qAZxmQRGnIk0oO",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000001psO>65g6!N)iE>pOOv91acNGfHpisB0pgl7A-vZbf",
+        "0000000000000000000000000000001Dbib4!+oQg1jSolN=JgH*jv9fi7wmn^-TuBQZeZbj",
+        "0000000000000000000000000000002PQg+zpBXS7ml/YtyeL43PCqdv8^jVPrx=1=U3v^-r"
+      ],
+      "group_id": "group:12",
+      "group_identity_root_hash72": "0000000000000000000000000000001z)51swq9Y^h56XUw45/uQ*WOxqo*N8Mks>C+s!roO",
+      "group_state_root_hash72": "0000000000000000000000000000003uKuuJ5(pexywY4(km)bgofkExtmBB8+5ZMYRir/M/",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000003nFrd8d3S2-irPvyOM87jYs!8dIgGuYZyB*Wssjl1S",
+        "0000000000000000000000000000001zcVWk1*3ZH)o2OOaO-)xFqGnlBYc1Dkg2!DbO72mm",
+        "0000000000000000000000000000001S>q2uE+6DRd=A15>ZGD!H6Q^xHf!XJVtzgQ>4cR)j"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000001e-kNsbm>1h8cXp^JSh)j65^bpVL1(I7gbxXA?77U9",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000001psO>65g6!N)iE>pOOv91acNGfHpisB0pgl7A-vZbf",
+        "0000000000000000000000000000001Dbib4!+oQg1jSolN=JgH*jv9fi7wmn^-TuBQZeZbj",
+        "0000000000000000000000000000002PQg+zpBXS7ml/YtyeL43PCqdv8^jVPrx=1=U3v^-r"
+      ],
+      "group_id": "group:13",
+      "group_identity_root_hash72": "00000000000000000000000000000028wxu!4!OHbDEASr>kXPm3I8y>+qkr-tFi)-Gyt((e",
+      "group_state_root_hash72": "0000000000000000000000000000004rYZmt!Fd06)gB)5!>u191ycw?z3ZVyyh*XG=4J+XK",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000004y(WjAbPV(V+!U-lT(YirBN4ZYjqroWb65qQdMG*vh",
+        "0000000000000000000000000000001zcVWk1*3ZH)o2OOaO-)xFqGnlBYc1Dkg2!DbO72mm",
+        "000000000000000000000000000000271QBPjOG!piBQvZfmam^/MjXinO12gW5thd=6J0b1"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000002)jxwDey27x*?d4N(XGJuXVDmaWQ/u+E*HQpoYfND1",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000001psO>65g6!N)iE>pOOv91acNGfHpisB0pgl7A-vZbf",
+        "0000000000000000000000000000001Dbib4!+oQg1jSolN=JgH*jv9fi7wmn^-TuBQZeZbj",
+        "0000000000000000000000000000002PQg+zpBXS7ml/YtyeL43PCqdv8^jVPrx=1=U3v^-r"
+      ],
+      "group_id": "group:14",
+      "group_identity_root_hash72": "0000000000000000000000000000001gB6fZ-b?gTcjsR=*yVJ*ZQ^gPb61J+LSRZiAnVyY5",
+      "group_state_root_hash72": "0000000000000000000000000000002pV8WBhfh?+ZfJhZ=i/lq/gi)Z7-2oXl3uOJLIwg5B",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "000000000000000000000000000000271QBPjOG!piBQvZfmam^/MjXinO12gW5thd=6J0b1",
+        "0000000000000000000000000000002y97n389>xdfWE?eEk2XYyF>BWmtUn^17VJ=z-1BaR",
+        "0000000000000000000000000000001qNrV)?2)r))txeZTB?>70xu^l1/9or1)Q1eM4XfCj"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "00000000000000000000000000000017wYhVeMj^*0io+PGj3kmqLBo6+VU^PrX1H3)2-yha",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000001psO>65g6!N)iE>pOOv91acNGfHpisB0pgl7A-vZbf",
+        "0000000000000000000000000000001Dbib4!+oQg1jSolN=JgH*jv9fi7wmn^-TuBQZeZbj",
+        "0000000000000000000000000000002PQg+zpBXS7ml/YtyeL43PCqdv8^jVPrx=1=U3v^-r"
+      ],
+      "group_id": "group:15",
+      "group_identity_root_hash72": "0000000000000000000000000000003(/=lqyw?l9cbL07Wv9Y2b5fe+z7++UW2eqJpJSMF6",
+      "group_state_root_hash72": "0000000000000000000000000000001f1qt1VQMXSU!Q4^teWtr?YS3j^>pXM>jdWzI8ssO2",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000001S>q2uE+6DRd=A15>ZGD!H6Q^xHf!XJVtzgQ>4cR)j",
+        "0000000000000000000000000000002y97n389>xdfWE?eEk2XYyF>BWmtUn^17VJ=z-1BaR",
+        "0000000000000000000000000000001RNJ4MB?i7GJfS8D^O0n+e-9x!+wRaB-Sf>Z+xZOt*"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000000-hcjo7!G1ZwUy8uVAFC^+g3*kCfqVQUVo-(qQUe-i",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000001psO>65g6!N)iE>pOOv91acNGfHpisB0pgl7A-vZbf",
+        "0000000000000000000000000000001Dbib4!+oQg1jSolN=JgH*jv9fi7wmn^-TuBQZeZbj",
+        "0000000000000000000000000000002PQg+zpBXS7ml/YtyeL43PCqdv8^jVPrx=1=U3v^-r"
+      ],
+      "group_id": "group:16",
+      "group_identity_root_hash72": "0000000000000000000000000000002DQYOc1GwmPew3-7RCEH+trmumOK/y=q85U47OrZUb",
+      "group_state_root_hash72": "0000000000000000000000000000000XJ)rdjaGpasJv9(FAjHmyeGJqVfdfke24ECfx?(m(",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000001RNJ4MB?i7GJfS8D^O0n+e-9x!+wRaB-Sf>Z+xZOt*",
+        "0000000000000000000000000000003OmhyFL/g^X*I51*axy7xIYS3uI4RW?=+Qz8F7qv36",
+        "0000000000000000000000000000002YrTic6/gUblz2vv*b5U3KtbTNc1+r2GWf5d>IDhfW"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000003mVTwsbNvcSi?5piHxSMEsw(vleK??KGZeUFON1Lbf",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000001psO>65g6!N)iE>pOOv91acNGfHpisB0pgl7A-vZbf",
+        "0000000000000000000000000000001Dbib4!+oQg1jSolN=JgH*jv9fi7wmn^-TuBQZeZbj",
+        "0000000000000000000000000000002PQg+zpBXS7ml/YtyeL43PCqdv8^jVPrx=1=U3v^-r"
+      ],
+      "group_id": "group:17",
+      "group_identity_root_hash72": "00000000000000000000000000000038wf2*y3XpFU1Jw6u>ZzA8GixMv*8Xn92GNKF9rCIM",
+      "group_state_root_hash72": "0000000000000000000000000000002^n(5>mWn+)>SfyPq3Tfy7zBs7I6h7o-N/)Vzn(La/",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000001qNrV)?2)r))txeZTB?>70xu^l1/9or1)Q1eM4XfCj",
+        "0000000000000000000000000000003OmhyFL/g^X*I51*axy7xIYS3uI4RW?=+Qz8F7qv36",
+        "0000000000000000000000000000002nl3Rf2ti*>giA^wnz1EW2vQHsCgwI)7A?x=>Ha?c^"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000002E8Xx^l2=QkDa90te*)JQMgVo*qtPKPat7ODQsW3K0",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000001psO>65g6!N)iE>pOOv91acNGfHpisB0pgl7A-vZbf",
+        "0000000000000000000000000000001Dbib4!+oQg1jSolN=JgH*jv9fi7wmn^-TuBQZeZbj",
+        "0000000000000000000000000000002PQg+zpBXS7ml/YtyeL43PCqdv8^jVPrx=1=U3v^-r"
+      ],
+      "group_id": "group:18",
+      "group_identity_root_hash72": "0000000000000000000000000000001Oe7z*v=3?wP3X4R/2esEuqtXYxg!87Bp8N*RnoSJX",
+      "group_state_root_hash72": "0000000000000000000000000000001HobApYQjZURFCSAKtgQ>(fISF/=Vu7nDpV)ruLIQm",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000002nl3Rf2ti*>giA^wnz1EW2vQHsCgwI)7A?x=>Ha?c^",
+        "00000000000000000000000000000016FaQK?NCFR10>GAletFOmr37FD0S7RO*3OWN4IOzF",
+        "0000000000000000000000000000001!Mumb96Pww-k?fxpsXjs)KX!Oo7O9Yf=UzGWcaII!"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000002lsCbtU9QeHO93lD2b09fRkB=oQjCYoMFQLHE^pOyp",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000001psO>65g6!N)iE>pOOv91acNGfHpisB0pgl7A-vZbf",
+        "0000000000000000000000000000001Dbib4!+oQg1jSolN=JgH*jv9fi7wmn^-TuBQZeZbj",
+        "0000000000000000000000000000002PQg+zpBXS7ml/YtyeL43PCqdv8^jVPrx=1=U3v^-r"
+      ],
+      "group_id": "group:19",
+      "group_identity_root_hash72": "0000000000000000000000000000002)u?!!Laca/CbwyaSD/r!7Cyz5Cj!=Woe*4W3vpe5w",
+      "group_state_root_hash72": "0000000000000000000000000000003j*grqOYXR7lv?w1>qA19CsQAJwXnbwcCraG2*hkrq",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000002YrTic6/gUblz2vv*b5U3KtbTNc1+r2GWf5d>IDhfW",
+        "00000000000000000000000000000016FaQK?NCFR10>GAletFOmr37FD0S7RO*3OWN4IOzF",
+        "0000000000000000000000000000003r6M9c(0qa!I+nFK7piWq7hz>b^T?9=sAFlEiy=3sp"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000000*2NcFgC?Y^n3Y>^*p^F>WPQMf1WdZ?m9I0mqQ?eI8",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000001psO>65g6!N)iE>pOOv91acNGfHpisB0pgl7A-vZbf",
+        "0000000000000000000000000000001Dbib4!+oQg1jSolN=JgH*jv9fi7wmn^-TuBQZeZbj",
+        "0000000000000000000000000000002PQg+zpBXS7ml/YtyeL43PCqdv8^jVPrx=1=U3v^-r"
+      ],
+      "group_id": "group:20",
+      "group_identity_root_hash72": "0000000000000000000000000000003OX08xTo/-fRZdij!5^TOPC0SY5zmJfka-KDZFj6g6",
+      "group_state_root_hash72": "0000000000000000000000000000002giLhDlfg9V0j/espF+EP7KD6p3vccjTvLFUCJ-F4E",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000003r6M9c(0qa!I+nFK7piWq7hz>b^T?9=sAFlEiy=3sp",
+        "0000000000000000000000000000000aPY9VXcEZ0^Ts^DJwm44jqgCYs+BLWX=(SUQvDew3",
+        "0000000000000000000000000000004C^3yi?j7?h0s!s?HkfxEzWxMyVCYhlh-h0bwLe*m/"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000000v/3R?G2(1?e=DM!yO>9SxJCJ4ux78PV90!87->vQi",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000001psO>65g6!N)iE>pOOv91acNGfHpisB0pgl7A-vZbf",
+        "0000000000000000000000000000001Dbib4!+oQg1jSolN=JgH*jv9fi7wmn^-TuBQZeZbj",
+        "0000000000000000000000000000002PQg+zpBXS7ml/YtyeL43PCqdv8^jVPrx=1=U3v^-r"
+      ],
+      "group_id": "group:21",
+      "group_identity_root_hash72": "0000000000000000000000000000002jSs7H=UpGbrU++0sIcV-Hx!VgESkvlhqboK3HQft5",
+      "group_state_root_hash72": "0000000000000000000000000000000u8EdPbzo3b/FdoMdwVp(-vOypsK1DLfpMVV!FKSs-",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000001!Mumb96Pww-k?fxpsXjs)KX!Oo7O9Yf=UzGWcaII!",
+        "0000000000000000000000000000000aPY9VXcEZ0^Ts^DJwm44jqgCYs+BLWX=(SUQvDew3",
+        "000000000000000000000000000000036GVQCcis/*?2TbJLh5931d*tA)vZr8wa26GMab>W"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000000mhDR-RCIN6A0c1kV!3ZXaXn7pc)96eGgw+r?h!6p)",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000001psO>65g6!N)iE>pOOv91acNGfHpisB0pgl7A-vZbf",
+        "0000000000000000000000000000001Dbib4!+oQg1jSolN=JgH*jv9fi7wmn^-TuBQZeZbj",
+        "0000000000000000000000000000002PQg+zpBXS7ml/YtyeL43PCqdv8^jVPrx=1=U3v^-r"
+      ],
+      "group_id": "group:22",
+      "group_identity_root_hash72": "0000000000000000000000000000003MH/u1NkiNrxrn?CW0oGAm+)aJ!mtoH(Dr*cQE?EDT",
+      "group_state_root_hash72": "00000000000000000000000000000021V?AZnyU>UvCjnI!-pomMNO/!j7od>WIj+P>xLP?H",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "000000000000000000000000000000036GVQCcis/*?2TbJLh5931d*tA)vZr8wa26GMab>W",
+        "0000000000000000000000000000002G/fDdiNvT8XT-HlpS>IP/J6vFIz?GdsQ=y!/=jnF7",
+        "0000000000000000000000000000001iz97uOPPV8hFv)N8(od?H+5DjB(U*MYxHm(^syI^O"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000002(U5vw8-e3rQd*1PSkRv)RNSFYdI8PecHD438vqlsu",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000001psO>65g6!N)iE>pOOv91acNGfHpisB0pgl7A-vZbf",
+        "0000000000000000000000000000001Dbib4!+oQg1jSolN=JgH*jv9fi7wmn^-TuBQZeZbj",
+        "0000000000000000000000000000002PQg+zpBXS7ml/YtyeL43PCqdv8^jVPrx=1=U3v^-r"
+      ],
+      "group_id": "group:23",
+      "group_identity_root_hash72": "0000000000000000000000000000002hpV3-*b9Z0=EaJ^JbT)pyo8bb3!nf-M91fUzLvOkS",
+      "group_state_root_hash72": "00000000000000000000000000000011osVyhXVcPz-=7^4F>crH>9cyF>1D8ghQ>CAWja/i",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000004C^3yi?j7?h0s!s?HkfxEzWxMyVCYhlh-h0bwLe*m/",
+        "0000000000000000000000000000002G/fDdiNvT8XT-HlpS>IP/J6vFIz?GdsQ=y!/=jnF7",
+        "0000000000000000000000000000004vHTeAq?pT^a9yyfIA8^P!u!TeIpeR+P^AwyRf+*ub"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000000DCVJufseIp2Zg-k>vf=of*6jbIaWE-!EVRJqH-Z(^",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000001psO>65g6!N)iE>pOOv91acNGfHpisB0pgl7A-vZbf",
+        "0000000000000000000000000000001Dbib4!+oQg1jSolN=JgH*jv9fi7wmn^-TuBQZeZbj",
+        "0000000000000000000000000000002PQg+zpBXS7ml/YtyeL43PCqdv8^jVPrx=1=U3v^-r"
+      ],
+      "group_id": "group:24",
+      "group_identity_root_hash72": "0000000000000000000000000000003ly5AZ-hX?poy^PEKMCp^1Sis!SVumr+Y*Xm!vN=4)",
+      "group_state_root_hash72": "0000000000000000000000000000004JrwJ(GCQ+x(c)ou6mR3V5J0Hl6*1UG/WXzoV69g+c",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000004vHTeAq?pT^a9yyfIA8^P!u!TeIpeR+P^AwyRf+*ub",
+        "0000000000000000000000000000000t4RbgfAn58XoWsISxx>CLX)Y1ugl*p!Ti7cMl/zs(",
+        "00000000000000000000000000000019E8*VEw^AHU!z+9uW6Z2W1QAkAY1+srQMdmnSu4gV"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000002?b+BYeSuLyxGsyjxz2u4tMPyzI(jVtwD4^44YX4LS",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000001psO>65g6!N)iE>pOOv91acNGfHpisB0pgl7A-vZbf",
+        "0000000000000000000000000000001Dbib4!+oQg1jSolN=JgH*jv9fi7wmn^-TuBQZeZbj",
+        "0000000000000000000000000000002PQg+zpBXS7ml/YtyeL43PCqdv8^jVPrx=1=U3v^-r"
+      ],
+      "group_id": "group:25",
+      "group_identity_root_hash72": "0000000000000000000000000000002huwqxW!!UGF2rASGSboyjt^v5GpIIjew!Ibn2s13Q",
+      "group_state_root_hash72": "00000000000000000000000000000002DoWCho=1?0G!zM5e0zm5Z>QjNd6dMl=o=S5AcVEE",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000001iz97uOPPV8hFv)N8(od?H+5DjB(U*MYxHm(^syI^O",
+        "0000000000000000000000000000000t4RbgfAn58XoWsISxx>CLX)Y1ugl*p!Ti7cMl/zs(",
+        "0000000000000000000000000000001ayM5r^vT8jWfuQKyMkZb)078jgq0sJXiic86n(U01"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000001nvX2FXD>*4KBhqxyjZ!yX=7sAR-bDpWc+5jH07JIT",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000001psO>65g6!N)iE>pOOv91acNGfHpisB0pgl7A-vZbf",
+        "0000000000000000000000000000001Dbib4!+oQg1jSolN=JgH*jv9fi7wmn^-TuBQZeZbj",
+        "0000000000000000000000000000002PQg+zpBXS7ml/YtyeL43PCqdv8^jVPrx=1=U3v^-r"
+      ],
+      "group_id": "group:26",
+      "group_identity_root_hash72": "0000000000000000000000000000003-j1z4BaQ9dI3PcNog-hC=iGrn0NOpSV+Rjk8JwFy1",
+      "group_state_root_hash72": "0000000000000000000000000000002bUISkSD!ovHe>R5izd!sYRtklg-+BeHgRJWb6lbm-",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000001ayM5r^vT8jWfuQKyMkZb)078jgq0sJXiic86n(U01",
+        "0000000000000000000000000000003GKncHhcxc8-6hhc^?0*eaFxIdUr-oxsA3+G->s6Q5",
+        "0000000000000000000000000000004K1/3Rc0G4AdxF6roE1kRNj=a!>xT/pZ5E^Ltrk5vH"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000004nLxVmNaxM*hXgrF6yxkjPz!wx8Bd)UCb(kZQIj7>E",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000001psO>65g6!N)iE>pOOv91acNGfHpisB0pgl7A-vZbf",
+        "0000000000000000000000000000001Dbib4!+oQg1jSolN=JgH*jv9fi7wmn^-TuBQZeZbj",
+        "0000000000000000000000000000002PQg+zpBXS7ml/YtyeL43PCqdv8^jVPrx=1=U3v^-r"
+      ],
+      "group_id": "group:27",
+      "group_identity_root_hash72": "0000000000000000000000000000002WUVzapRtA)8MPxJr0+GVN0yURDZJEsk(ezgBxNzga",
+      "group_state_root_hash72": "0000000000000000000000000000001XPsjTOcBU0QOtO^Q43X1Odj//b*CdIdeBat6Hi2+Q",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "00000000000000000000000000000019E8*VEw^AHU!z+9uW6Z2W1QAkAY1+srQMdmnSu4gV",
+        "0000000000000000000000000000003GKncHhcxc8-6hhc^?0*eaFxIdUr-oxsA3+G->s6Q5",
+        "0000000000000000000000000000002/hKq1r0smT+Uznuh>(js>fLs5v0UIWBtcmfK/KzK?"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000002^Li8ZuLGoBg7NDN?a36yGCo(5H+2l?SR*Lnrj5Kkz",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000001psO>65g6!N)iE>pOOv91acNGfHpisB0pgl7A-vZbf",
+        "0000000000000000000000000000001Dbib4!+oQg1jSolN=JgH*jv9fi7wmn^-TuBQZeZbj",
+        "0000000000000000000000000000002PQg+zpBXS7ml/YtyeL43PCqdv8^jVPrx=1=U3v^-r"
+      ],
+      "group_id": "group:28",
+      "group_identity_root_hash72": "0000000000000000000000000000002R>ii+R=Fe=Ngzv1Av1kaD5EhXZCn+hhxn03roC9OA",
+      "group_state_root_hash72": "0000000000000000000000000000003jhzL0iilg>E-YE1z>+8q?WGvMOx55-jh+40sMO9Bt",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000002/hKq1r0smT+Uznuh>(js>fLs5v0UIWBtcmfK/KzK?",
+        "0000000000000000000000000000000hMYL^zaYI8DNqYn9^eyaUey6rb+Z7p/=hZjxrd9eE",
+        "0000000000000000000000000000002s5t/55I7WWeS-^oFC*Hw=c6DL/cmstOJ4Y6eq!^Xc"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000001>A)i4G>f=07UhjJmgSToVvFEigl3NQFf1We-jdVmJ",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000001psO>65g6!N)iE>pOOv91acNGfHpisB0pgl7A-vZbf",
+        "0000000000000000000000000000001Dbib4!+oQg1jSolN=JgH*jv9fi7wmn^-TuBQZeZbj",
+        "0000000000000000000000000000002PQg+zpBXS7ml/YtyeL43PCqdv8^jVPrx=1=U3v^-r"
+      ],
+      "group_id": "group:29",
+      "group_identity_root_hash72": "0000000000000000000000000000002/LrHKFudRGjGfcmpQD3x8^C*ggyu^1yO*wvQ)ofrb",
+      "group_state_root_hash72": "0000000000000000000000000000003tfG!(7y>OxB=Q9HfxasH-84tx4wUz9onREVEqy>n(",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000004K1/3Rc0G4AdxF6roE1kRNj=a!>xT/pZ5E^Ltrk5vH",
+        "0000000000000000000000000000000hMYL^zaYI8DNqYn9^eyaUey6rb+Z7p/=hZjxrd9eE",
+        "0000000000000000000000000000001cwuw(4Cq47Kxpi2>>Gijl^VAP68W>-=wXU*JXAxxR"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "00000000000000000000000000000048i(NBx?vVy=AznGcMe5OO1EgfDXo^mL=S6=ohQlrN",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000001psO>65g6!N)iE>pOOv91acNGfHpisB0pgl7A-vZbf",
+        "0000000000000000000000000000001Dbib4!+oQg1jSolN=JgH*jv9fi7wmn^-TuBQZeZbj",
+        "0000000000000000000000000000002PQg+zpBXS7ml/YtyeL43PCqdv8^jVPrx=1=U3v^-r"
+      ],
+      "group_id": "group:30",
+      "group_identity_root_hash72": "0000000000000000000000000000002!eV+UYeSIaRa^Vt9zLhXcuR*/hI?wn+Acjud-e>pb",
+      "group_state_root_hash72": "0000000000000000000000000000000vSF7DHi)j^vqhwhg*2?GOPHLoC--KdUlSRUmo8!8S",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000001cwuw(4Cq47Kxpi2>>Gijl^VAP68W>-=wXU*JXAxxR",
+        "00000000000000000000000000000032Z7bk(Cas!1JnvMNqZM*cv4+bxo(hCG+6CYaf!m^7",
+        "0000000000000000000000000000003iHM98N80s*jnUHmagLriXVdfqywO!NzAN32>bU(yy"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000000FQliOHi-^RI)MTtjdF>iR7YBAkoLQjKR*W/cyVoNB",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000001psO>65g6!N)iE>pOOv91acNGfHpisB0pgl7A-vZbf",
+        "0000000000000000000000000000001Dbib4!+oQg1jSolN=JgH*jv9fi7wmn^-TuBQZeZbj",
+        "0000000000000000000000000000002PQg+zpBXS7ml/YtyeL43PCqdv8^jVPrx=1=U3v^-r"
+      ],
+      "group_id": "group:31",
+      "group_identity_root_hash72": "0000000000000000000000000000002+I!hC/UoaE-O*jat2kG(b^9aAUk2tPfjN20Qd*Jly",
+      "group_state_root_hash72": "0000000000000000000000000000004sjnvQ3KO!8WJkx=+6Z2+wL>uFPN5fRJSzg36QNBqH",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000002s5t/55I7WWeS-^oFC*Hw=c6DL/cmstOJ4Y6eq!^Xc",
+        "0000000000000000000000000000003iHM98N80s*jnUHmagLriXVdfqywO!NzAN32>bU(yy",
+        "00000000000000000000000000000009b-CzN)thX44NGMz=afQnfHMucM+gbaDA!Mf1)UHD"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "00000000000000000000000000000026VeKRdUnz)-+=2dS2NzUCm*rMSausPZ7zW3D^d!f!",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000001psO>65g6!N)iE>pOOv91acNGfHpisB0pgl7A-vZbf",
+        "0000000000000000000000000000001Dbib4!+oQg1jSolN=JgH*jv9fi7wmn^-TuBQZeZbj",
+        "0000000000000000000000000000002PQg+zpBXS7ml/YtyeL43PCqdv8^jVPrx=1=U3v^-r"
+      ],
+      "group_id": "group:0",
+      "group_identity_root_hash72": "0000000000000000000000000000002CjGJ)ETsR=AgsV^IYs1=yCWG(/SWs0X1Go/*2bzoE",
+      "group_state_root_hash72": "0000000000000000000000000000003M?N(s0fk/uHN?av!bT-d(QKq^QNTC=c?h0=k29Jqx",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000003>^ltuhnP)QGOyOB0po8Yg!7IUB72Vtfn62kZGz)*i",
+        "0000000000000000000000000000003>dFo=gdEH-=lQAUMujiXUL*rmVoB1L=>JCLd>-yzm",
+        "0000000000000000000000000000000z=NLH-lFVvamwG^d!pldBTQYP4+y^nOs0LblC78fu",
+        "0000000000000000000000000000000X5E=8^183l^hy7C0S6(UE9tD(+fGkJlA>F95*pc8k",
+        "0000000000000000000000000000001GfCCC6YM2=3Lr(4zgENDwA^exHJcjQY-?D(Etm9WW"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000001HLKiRa84FZQVhWM?sPKOCz8oshgDgMc!3!X+JUeAk",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000001psO>65g6!N)iE>pOOv91acNGfHpisB0pgl7A-vZbf",
+        "0000000000000000000000000000001Dbib4!+oQg1jSolN=JgH*jv9fi7wmn^-TuBQZeZbj",
+        "0000000000000000000000000000002PQg+zpBXS7ml/YtyeL43PCqdv8^jVPrx=1=U3v^-r"
+      ],
+      "group_id": "group:1",
+      "group_identity_root_hash72": "0000000000000000000000000000003JRN>TFHaxeqzWUBrsQ5>HK4YRr8thzKCNOewJFi2q",
+      "group_state_root_hash72": "0000000000000000000000000000003b)eX6RJY=-B+9-b)KK1LSVqD0/BvAs/jYvyhpZV3m",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000003>^ltuhnP)QGOyOB0po8Yg!7IUB72Vtfn62kZGz)*i",
+        "0000000000000000000000000000004efswg5zP8ojW80+Of3oBmqM4c9=hSJVF*GFXiQyBR",
+        "0000000000000000000000000000000eZFQ()A2Ih1THhUKWfU3DuBGAOQdRVOc(qOwF6QdL",
+        "0000000000000000000000000000003)ubM?f1Pox>=??KeR-5VLh!GyR^P^T/))O4=mr=9q",
+        "0000000000000000000000000000003/zvvtwPc8mzGQM/DmIpIlSrbq*AQYgJHWdCGzcL!r"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000001POQ6CX/Ow57tUieSKlzmiqG-I1>m(Y+aIovBj+6OE",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000001psO>65g6!N)iE>pOOv91acNGfHpisB0pgl7A-vZbf",
+        "0000000000000000000000000000001Dbib4!+oQg1jSolN=JgH*jv9fi7wmn^-TuBQZeZbj",
+        "0000000000000000000000000000002PQg+zpBXS7ml/YtyeL43PCqdv8^jVPrx=1=U3v^-r"
+      ],
+      "group_id": "group:2",
+      "group_identity_root_hash72": "00000000000000000000000000000014p>hSkqhJj0BpwhCudzP6-RIngn7vTWqqR-^1CkNM",
+      "group_state_root_hash72": "00000000000000000000000000000032a2K)lFk5+nDFaXbHzmk!R58mXk2t^wNJd1hHIIzq",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000003>dFo=gdEH-=lQAUMujiXUL*rmVoB1L=>JCLd>-yzm",
+        "0000000000000000000000000000004efswg5zP8ojW80+Of3oBmqM4c9=hSJVF*GFXiQyBR",
+        "00000000000000000000000000000029S!BW>2Z5!7TOa6afQDmOqG!ZeXl>RVEqA7wbZyYY",
+        "0000000000000000000000000000001Z^kHsA(dZ(Uj07AC4yC)I7Y=yn(7iaO0z8WpMSzFB",
+        "0000000000000000000000000000001dHFFvQp=gnH/0O4dhuhCMyTopu3tn83HB?6nEqphx"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000002B!!8A+J1GPplBA7WNCeilHCcQeNY+7j3AbP2P)>N(",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000001psO>65g6!N)iE>pOOv91acNGfHpisB0pgl7A-vZbf",
+        "0000000000000000000000000000001Dbib4!+oQg1jSolN=JgH*jv9fi7wmn^-TuBQZeZbj",
+        "0000000000000000000000000000002PQg+zpBXS7ml/YtyeL43PCqdv8^jVPrx=1=U3v^-r"
+      ],
+      "group_id": "group:3",
+      "group_identity_root_hash72": "00000000000000000000000000000049>G7glflRgrTnh-6oFyr8WK18ZaWGniHpC^GDoi0x",
+      "group_state_root_hash72": "0000000000000000000000000000003A!4?)zI57zv(fSlva?orR3iw-uVKWlKR)fGqAZ-?8",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000000z=NLH-lFVvamwG^d!pldBTQYP4+y^nOs0LblC78fu",
+        "0000000000000000000000000000000eZFQ()A2Ih1THhUKWfU3DuBGAOQdRVOc(qOwF6QdL",
+        "00000000000000000000000000000029S!BW>2Z5!7TOa6afQDmOqG!ZeXl>RVEqA7wbZyYY",
+        "0000000000000000000000000000001CHF!f=rINEWanjceZYF2SWeajkrO84(xvsq08CPC!",
+        "0000000000000000000000000000003/o-g*U5DGxRKiNLV^a+UdUO*5(NnuDFzeJxOl?-+d"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000002YrDzL0Md?sE2Ifclkt*f=O-5UJkFA/PiG0NE7/ikX",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000001psO>65g6!N)iE>pOOv91acNGfHpisB0pgl7A-vZbf",
+        "0000000000000000000000000000001Dbib4!+oQg1jSolN=JgH*jv9fi7wmn^-TuBQZeZbj",
+        "0000000000000000000000000000002PQg+zpBXS7ml/YtyeL43PCqdv8^jVPrx=1=U3v^-r"
+      ],
+      "group_id": "group:4",
+      "group_identity_root_hash72": "0000000000000000000000000000002>bPrRkbbO4i36>ciEeJ3F3xoTPrb/FWIOP8b>P2h>",
+      "group_state_root_hash72": "0000000000000000000000000000001vpCS>ellqFtQr5oLD22Z>Bcq8acLxLZt?9fpjXuhh",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000000X5E=8^183l^hy7C0S6(UE9tD(+fGkJlA>F95*pc8k",
+        "0000000000000000000000000000003)ubM?f1Pox>=??KeR-5VLh!GyR^P^T/))O4=mr=9q",
+        "0000000000000000000000000000001Z^kHsA(dZ(Uj07AC4yC)I7Y=yn(7iaO0z8WpMSzFB",
+        "0000000000000000000000000000001CHF!f=rINEWanjceZYF2SWeajkrO84(xvsq08CPC!",
+        "0000000000000000000000000000002z--S+?/Rex0mFHUI6i1xn5EkPaGJho8/pr^rxXQN7"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000003oA08!RqTWM=ct0ffWCzA9L1SAP5OPEe!YW*4aMNa3",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000001psO>65g6!N)iE>pOOv91acNGfHpisB0pgl7A-vZbf",
+        "0000000000000000000000000000001Dbib4!+oQg1jSolN=JgH*jv9fi7wmn^-TuBQZeZbj",
+        "0000000000000000000000000000002PQg+zpBXS7ml/YtyeL43PCqdv8^jVPrx=1=U3v^-r"
+      ],
+      "group_id": "group:5",
+      "group_identity_root_hash72": "0000000000000000000000000000002F?*YMjAN(JDK847(6mEk(qAa!7H=2sEaHb6GVkuYs",
+      "group_state_root_hash72": "00000000000000000000000000000024>fP8PFJ=pQrA9jSwmE?Bjwt7u-3QBHLX0CACUbLC",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000001GfCCC6YM2=3Lr(4zgENDwA^exHJcjQY-?D(Etm9WW",
+        "0000000000000000000000000000003/zvvtwPc8mzGQM/DmIpIlSrbq*AQYgJHWdCGzcL!r",
+        "0000000000000000000000000000001dHFFvQp=gnH/0O4dhuhCMyTopu3tn83HB?6nEqphx",
+        "0000000000000000000000000000003/o-g*U5DGxRKiNLV^a+UdUO*5(NnuDFzeJxOl?-+d",
+        "0000000000000000000000000000002z--S+?/Rex0mFHUI6i1xn5EkPaGJho8/pr^rxXQN7"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000002TLCq?go7*cZIM3wrANyWIkK*J305uHu7!VRq40+JS",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000001psO>65g6!N)iE>pOOv91acNGfHpisB0pgl7A-vZbf",
+        "0000000000000000000000000000001Dbib4!+oQg1jSolN=JgH*jv9fi7wmn^-TuBQZeZbj",
+        "0000000000000000000000000000002PQg+zpBXS7ml/YtyeL43PCqdv8^jVPrx=1=U3v^-r"
+      ],
+      "group_id": "group:0",
+      "group_identity_root_hash72": "00000000000000000000000000000031m0T9Z)GFiVx8(OK)-Nw*AwkK!fZQ++evhfiji/6c",
+      "group_state_root_hash72": "0000000000000000000000000000004p38ccvm8nIfXv7z?WcB^D2cShYF8lE*v?N3iDCgpZ",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000001Ek5OBZnuT30td0pt)7Q!lv04+Z/MisRfnYzt+bDpA",
+        "0000000000000000000000000000003YWFlIAGk(3ip2Gs6>eX=gSk=n=eT4Tb?gHp9t3Axo"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000001/L)UG(Z^C0Vb7Hqq5u6yhoyPlNd>!-fETQLJ25L(0",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000001psO>65g6!N)iE>pOOv91acNGfHpisB0pgl7A-vZbf",
+        "0000000000000000000000000000001Dbib4!+oQg1jSolN=JgH*jv9fi7wmn^-TuBQZeZbj",
+        "0000000000000000000000000000002PQg+zpBXS7ml/YtyeL43PCqdv8^jVPrx=1=U3v^-r"
+      ],
+      "group_id": "group:1",
+      "group_identity_root_hash72": "0000000000000000000000000000003m8-bQD2yPSDWgX2>fp(fA25Ikrd30hxETF(Uvr>)/",
+      "group_state_root_hash72": "0000000000000000000000000000002B0?nTNHJJa8l=yw*IjbCBXi8hCQq3VQ5m7LEQexZE",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000001Ek5OBZnuT30td0pt)7Q!lv04+Z/MisRfnYzt+bDpA",
+        "00000000000000000000000000000026KD5GBYbzD^wE)w/fPUGaqgGteL=u7EU5uv2U)dFv"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000001swvtRkTMi3+QTrM+kpZP5H56wPsRqwswYngP8G0K>",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000001psO>65g6!N)iE>pOOv91acNGfHpisB0pgl7A-vZbf",
+        "0000000000000000000000000000001Dbib4!+oQg1jSolN=JgH*jv9fi7wmn^-TuBQZeZbj",
+        "0000000000000000000000000000002PQg+zpBXS7ml/YtyeL43PCqdv8^jVPrx=1=U3v^-r"
+      ],
+      "group_id": "group:2",
+      "group_identity_root_hash72": "0000000000000000000000000000001!wCOe*ehOtppn5/UU+qlapYowgH5!j0X/P6Hgzd*a",
+      "group_state_root_hash72": "00000000000000000000000000000037XtKh+q4I?zxFD>rF761gfg-)mFoo9egQmo*Hqa4F",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "00000000000000000000000000000026KD5GBYbzD^wE)w/fPUGaqgGteL=u7EU5uv2U)dFv",
+        "0000000000000000000000000000003y2Wux-mng(NSEe-tHz0bPK94F?338*1M^EH3xAMMZ"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000001spC!Y6U6^-ARPTxBPYe>IM-kDwSHrrOne/e9!4RdH",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000001psO>65g6!N)iE>pOOv91acNGfHpisB0pgl7A-vZbf",
+        "0000000000000000000000000000001Dbib4!+oQg1jSolN=JgH*jv9fi7wmn^-TuBQZeZbj",
+        "0000000000000000000000000000002PQg+zpBXS7ml/YtyeL43PCqdv8^jVPrx=1=U3v^-r"
+      ],
+      "group_id": "group:3",
+      "group_identity_root_hash72": "0000000000000000000000000000000S4^1V!C0sr=5PoQOV1^TWCe*DBTb-apA=D9*sPHN-",
+      "group_state_root_hash72": "0000000000000000000000000000002hBxfPBul!nC+mC+gcZ*Lpus8jkfevXo5+ZY0iut8X",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000003y2Wux-mng(NSEe-tHz0bPK94F?338*1M^EH3xAMMZ",
+        "00000000000000000000000000000028sDgcDSm5(F^l0>Xbz1TaVv^L>XLIpVZhLwf^G!5("
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000000CC78U8zHM*IX+!qVh5DEQKZVC^(0LY1iq/?ZO(Yns",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000001psO>65g6!N)iE>pOOv91acNGfHpisB0pgl7A-vZbf",
+        "0000000000000000000000000000001Dbib4!+oQg1jSolN=JgH*jv9fi7wmn^-TuBQZeZbj",
+        "0000000000000000000000000000002PQg+zpBXS7ml/YtyeL43PCqdv8^jVPrx=1=U3v^-r"
+      ],
+      "group_id": "group:4",
+      "group_identity_root_hash72": "0000000000000000000000000000001It3m35Yg>+2yfF4PuX2N1Xtu0vL^DM^7WB3YM7N*h",
+      "group_state_root_hash72": "0000000000000000000000000000001Ad4wg(CP0E=FQT88VGmOxIJrwi1QOQeqJKsPWSfTt",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "00000000000000000000000000000028sDgcDSm5(F^l0>Xbz1TaVv^L>XLIpVZhLwf^G!5(",
+        "00000000000000000000000000000011f/l!)6^CbAwoQ*J+!dLhLPbJB4vpGgqwerkxZ4+a"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "00000000000000000000000000000027RpB(jOJQf?xJ7m/v>f68?(P8tFSOGWQtDloq8SrF",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000001psO>65g6!N)iE>pOOv91acNGfHpisB0pgl7A-vZbf",
+        "0000000000000000000000000000001Dbib4!+oQg1jSolN=JgH*jv9fi7wmn^-TuBQZeZbj",
+        "0000000000000000000000000000002PQg+zpBXS7ml/YtyeL43PCqdv8^jVPrx=1=U3v^-r"
+      ],
+      "group_id": "group:5",
+      "group_identity_root_hash72": "0000000000000000000000000000000bhiZI0dI+fg)zs^iz1qCq^D?pTkngA4FV1Z4QR*iy",
+      "group_state_root_hash72": "0000000000000000000000000000001iaFXbu?jG*jtfKAzu*XgJZ4RLYVSy!yQcJwfAnali",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "00000000000000000000000000000011f/l!)6^CbAwoQ*J+!dLhLPbJB4vpGgqwerkxZ4+a",
+        "0000000000000000000000000000003YWFlIAGk(3ip2Gs6>eX=gSk=n=eT4Tb?gHp9t3Axo"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000001iJ)0bM3s=NQ)r+f2VfIJ-D6+vZ/ZfGiwRjdm/SYnd",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000001psO>65g6!N)iE>pOOv91acNGfHpisB0pgl7A-vZbf",
+        "0000000000000000000000000000001Dbib4!+oQg1jSolN=JgH*jv9fi7wmn^-TuBQZeZbj",
+        "0000000000000000000000000000002PQg+zpBXS7ml/YtyeL43PCqdv8^jVPrx=1=U3v^-r"
+      ],
+      "group_id": "group:0",
+      "group_identity_root_hash72": "00000000000000000000000000000016gs35m=6Xlg/?ov4^>97u4dKHn)8aFdZf(ccP>2z1",
+      "group_state_root_hash72": "0000000000000000000000000000003AINiT4(ilwPScu1iKts1o0b8qM3Byky!c74O>TFbO",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000002uPg2OSS9MLut)NKC2e+(S(-haWYvqSI8ejuZPXaG*",
+        "0000000000000000000000000000002qCcLFuR!4Me-N+0PYw*b20rM7w4/43g(FO2?5OQAm",
+        "0000000000000000000000000000000A6nfFRhAdszLa^VjDD?wtP^N)QJtijtxGtLc5R>IN",
+        "0000000000000000000000000000000-JDx8myFp3997*dxbXM+Z*wurCYC-ACXlPcpcWVDG",
+        "0000000000000000000000000000000Mifncwb4J0dqkbo!I/ip*R6>n?^/KL!=YeVUBPYxo"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000002>K7ggFMO2!grZBFBaED+AE74VQv(CV1WfU1dTs9LS",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000001psO>65g6!N)iE>pOOv91acNGfHpisB0pgl7A-vZbf",
+        "0000000000000000000000000000001Dbib4!+oQg1jSolN=JgH*jv9fi7wmn^-TuBQZeZbj",
+        "0000000000000000000000000000002PQg+zpBXS7ml/YtyeL43PCqdv8^jVPrx=1=U3v^-r"
+      ],
+      "group_id": "group:1",
+      "group_identity_root_hash72": "0000000000000000000000000000001(j2Zs>XmjhrEA^sinJZgJ=O2(s4Ov0y2CCwf714AL",
+      "group_state_root_hash72": "0000000000000000000000000000002Wxf0iLwt?vxoJ)>GYjXsni)m>NbCg/RMFE6lplH?p",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000002uPg2OSS9MLut)NKC2e+(S(-haWYvqSI8ejuZPXaG*",
+        "0000000000000000000000000000000CryLg!n7/o>3/AksEDLxGIJ71Z=awaX1EnzcxxDM+",
+        "000000000000000000000000000000034>S?>+uCaAf6LJ2yh+kdFpD9aYRX/Fa8=A0*k=TA",
+        "0000000000000000000000000000000dlfl0xO?p4xZg2WvbVtHjpT0zuJFJ=)EgyoMeZt)q",
+        "0000000000000000000000000000001p?kqGrtNJQk3zhLqsTe=!O1xhpoIPYSnmdU!WuEvB"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000002IXn(gYAxOXy5vO(+9Ly*Vr5zdW3dr>qU*r^QvoV*3",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000001psO>65g6!N)iE>pOOv91acNGfHpisB0pgl7A-vZbf",
+        "0000000000000000000000000000001Dbib4!+oQg1jSolN=JgH*jv9fi7wmn^-TuBQZeZbj",
+        "0000000000000000000000000000002PQg+zpBXS7ml/YtyeL43PCqdv8^jVPrx=1=U3v^-r"
+      ],
+      "group_id": "group:2",
+      "group_identity_root_hash72": "0000000000000000000000000000002tJ7mNiThX+3CD69Kg2O+5NQc3YYesFHT4>deNnk(+",
+      "group_state_root_hash72": "0000000000000000000000000000002nBEMijn0HeCRBZdR*NeTNePZ8wnS(6zP6*)kpb3^R",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000002qCcLFuR!4Me-N+0PYw*b20rM7w4/43g(FO2?5OQAm",
+        "0000000000000000000000000000003C*/t=!JCS7??MQ62ybkSiRJ*)pdXJl0*PRd=Q7XYc",
+        "0000000000000000000000000000004lgOsLnCBrJXn6H63PfknEwz^7CPZ6GPY4hYhFf7H>",
+        "0000000000000000000000000000000DJgqci1eUAf34HzDiCanc4l-lbz3+rc=keqmD=k43"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "000000000000000000000000000000377Ps=K9BZo1(fmYgW3+*aaMS*(j9YvV*Sg)jfN!Rs",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000001psO>65g6!N)iE>pOOv91acNGfHpisB0pgl7A-vZbf",
+        "0000000000000000000000000000001Dbib4!+oQg1jSolN=JgH*jv9fi7wmn^-TuBQZeZbj",
+        "0000000000000000000000000000002PQg+zpBXS7ml/YtyeL43PCqdv8^jVPrx=1=U3v^-r"
+      ],
+      "group_id": "group:3",
+      "group_identity_root_hash72": "0000000000000000000000000000003vpiYX2n0)YgYPf9lrOwrPXs8Llt!Rvdt=^o0KILCV",
+      "group_state_root_hash72": "0000000000000000000000000000003szyMFwbhHXEZL01)pkm^/Vsg/2>7NGTXU4Xk/KD!p",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000000CryLg!n7/o>3/AksEDLxGIJ71Z=awaX1EnzcxxDM+",
+        "0000000000000000000000000000003C*/t=!JCS7??MQ62ybkSiRJ*)pdXJl0*PRd=Q7XYc",
+        "0000000000000000000000000000003RNk9eYcVns5!hCk/bKb?QsiTswOeIscWzWk!OL3X4",
+        "0000000000000000000000000000003HztooHQIzduq0SYP6eqTqW=XYW0N5tZLzw7>VY5tU",
+        "0000000000000000000000000000003StewPl8k6jxXgi5bZ5l*0P7lYz=KAa7V8Ma^O5=4)"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000002TtT+sBCyV528v?5GqDLsgtH60O2X2oIwnFvdWx5WW",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000001psO>65g6!N)iE>pOOv91acNGfHpisB0pgl7A-vZbf",
+        "0000000000000000000000000000001Dbib4!+oQg1jSolN=JgH*jv9fi7wmn^-TuBQZeZbj",
+        "0000000000000000000000000000002PQg+zpBXS7ml/YtyeL43PCqdv8^jVPrx=1=U3v^-r"
+      ],
+      "group_id": "group:4",
+      "group_identity_root_hash72": "0000000000000000000000000000003bS6DqU-QTrFrf-!GLPHrQ1pj=?9I(j95ZYP1Pr2w4",
+      "group_state_root_hash72": "0000000000000000000000000000000YP9?BF)dPREKq/ePYHx+(QZPK3!Ya!2JSvMCA^G0c",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000000A6nfFRhAdszLa^VjDD?wtP^N)QJtijtxGtLc5R>IN",
+        "000000000000000000000000000000034>S?>+uCaAf6LJ2yh+kdFpD9aYRX/Fa8=A0*k=TA",
+        "0000000000000000000000000000003RNk9eYcVns5!hCk/bKb?QsiTswOeIscWzWk!OL3X4",
+        "0000000000000000000000000000003tLVa4qNGJmDG!bPm92=FGcxC*eNU=bYbaDEvm/KYS",
+        "0000000000000000000000000000000KCd23o!f0^>m!6go8aFkPZB-Kr(9-mTGCVbC=c=7>"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000000Vk+AYCc6svorKnYiVipVp0^q(C^x?ilquZ)299Uam",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000001psO>65g6!N)iE>pOOv91acNGfHpisB0pgl7A-vZbf",
+        "0000000000000000000000000000001Dbib4!+oQg1jSolN=JgH*jv9fi7wmn^-TuBQZeZbj",
+        "0000000000000000000000000000002PQg+zpBXS7ml/YtyeL43PCqdv8^jVPrx=1=U3v^-r"
+      ],
+      "group_id": "group:5",
+      "group_identity_root_hash72": "0000000000000000000000000000002dVn^sGHvvs>xsZCvq!+ZA^CD3uQ9VvF=>v=6AGD4C",
+      "group_state_root_hash72": "0000000000000000000000000000002gZzf0GQC7o65-BTJBjwTt)3rKGO>5p48V2KQOrCcK",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000000-JDx8myFp3997*dxbXM+Z*wurCYC-ACXlPcpcWVDG",
+        "0000000000000000000000000000004lgOsLnCBrJXn6H63PfknEwz^7CPZ6GPY4hYhFf7H>",
+        "0000000000000000000000000000003HztooHQIzduq0SYP6eqTqW=XYW0N5tZLzw7>VY5tU",
+        "0000000000000000000000000000000MkkCiS>8m5XB9?i+3fYiZ69qkp>^q>6S?HI4QHLLT"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000000ui6oq)ITqkc5qvmoZ)s4Jaw(84EkR)6VCg-Q=9!V!",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000001psO>65g6!N)iE>pOOv91acNGfHpisB0pgl7A-vZbf",
+        "0000000000000000000000000000001Dbib4!+oQg1jSolN=JgH*jv9fi7wmn^-TuBQZeZbj",
+        "0000000000000000000000000000002PQg+zpBXS7ml/YtyeL43PCqdv8^jVPrx=1=U3v^-r"
+      ],
+      "group_id": "group:6",
+      "group_identity_root_hash72": "0000000000000000000000000000002)M(Hb1MzPRik8^c7mkXKXAasraNTeaETnsPGk5gTh",
+      "group_state_root_hash72": "0000000000000000000000000000004HuZyow3(!)*qhrHl341gX?z4Ih^?vrCLfKp5Gy99j",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000000dlfl0xO?p4xZg2WvbVtHjpT0zuJFJ=)EgyoMeZt)q",
+        "0000000000000000000000000000000DJgqci1eUAf34HzDiCanc4l-lbz3+rc=keqmD=k43",
+        "0000000000000000000000000000003tLVa4qNGJmDG!bPm92=FGcxC*eNU=bYbaDEvm/KYS",
+        "0000000000000000000000000000000MkkCiS>8m5XB9?i+3fYiZ69qkp>^q>6S?HI4QHLLT",
+        "0000000000000000000000000000003E(c2UYuuUr/eW!VUmJCCD>uGle4yLdaxB)a-I>lZq"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000002M!vRbKFI728Q>*^j7cfnu+dmP=o7el=zr72=/n=5S",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    },
+    {
+      "branch_receipt_roots": [
+        "0000000000000000000000000000001JX3zClVvpKci6gcmCUhpG>aWH)K*?r1IootRBn48c",
+        "0000000000000000000000000000001psO>65g6!N)iE>pOOv91acNGfHpisB0pgl7A-vZbf",
+        "0000000000000000000000000000001Dbib4!+oQg1jSolN=JgH*jv9fi7wmn^-TuBQZeZbj",
+        "0000000000000000000000000000002PQg+zpBXS7ml/YtyeL43PCqdv8^jVPrx=1=U3v^-r"
+      ],
+      "group_id": "group:7",
+      "group_identity_root_hash72": "0000000000000000000000000000000a!4O4mQR=iA5YEo0YekZ>hs)NyH6zoEP+y?V!R3NM",
+      "group_state_root_hash72": "0000000000000000000000000000000QzHon>>W8!a4-0ttidyHQJPFenf=T(+7X0^0-p6-/",
+      "inherited_offset_contract": "PASS_082_1_VERIFIED",
+      "inter_group_edge_roots": [
+        "0000000000000000000000000000000Mifncwb4J0dqkbo!I/ip*R6>n?^/KL!=YeVUBPYxo",
+        "0000000000000000000000000000001p?kqGrtNJQk3zhLqsTe=!O1xhpoIPYSnmdU!WuEvB",
+        "0000000000000000000000000000003StewPl8k6jxXgi5bZ5l*0P7lYz=KAa7V8Ma^O5=4)",
+        "0000000000000000000000000000000KCd23o!f0^>m!6go8aFkPZB-Kr(9-mTGCVbC=c=7>",
+        "0000000000000000000000000000003E(c2UYuuUr/eW!VUmJCCD>uGle4yLdaxB)a-I>lZq"
+      ],
+      "local_closure_state": "DETERMINISTIC_CLOSED",
+      "local_genesis_root_hash72": "0000000000000000000000000000001-T9jLckeA)P5Z=Y0+46Fh31E>Lk-Xfh=7yu5L>I1)",
+      "schema": "HHS_GROUP_ENTANGLEMENT_RECEIPT_V1"
+    }
+  ]
+}

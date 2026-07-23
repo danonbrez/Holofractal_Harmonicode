@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:hhs:pass145:claim:v1",
+  "title": "HHS Pass 145 Claim",
+  "type": "object",
+  "required": ["schema", "claim_text", "canonical_form", "source_evidence_ids", "authority_level", "validation_state", "interpretation_version", "interpretation_hash", "object_hash72"],
+  "properties": {
+    "schema": {"const": "HHS_PASS145_CLAIM_V1"},
+    "claim_text": {"type": "string"},
+    "canonical_form": {"type": "string"},
+    "source_evidence_ids": {"type": "array", "items": {"type": "string"}},
+    "authority_level": {"enum": ["A1", "A2", "A3", "A4"]},
+    "validation_state": {"type": "string"},
+    "interpretation_version": {"type": "string"},
+    "interpretation_hash": {"type": "string"},
+    "object_hash72": {"type": "string"}
+  },
+  "additionalProperties": true
+}

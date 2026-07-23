@@ -1,0 +1,40 @@
+{
+  "corrected_interpretation": {
+    "all_parent_system_files_present": false,
+    "cause": "WRONG_PARENT_ARTIFACT_CLASS",
+    "first_corrupt_checkpoint": "PASS_133",
+    "pass133_is_complete_checkpoint": false,
+    "pass133_is_recoverable_delta": true
+  },
+  "erratum_type": "ANCESTRY_COMPLETENESS_CORRECTION",
+  "pass_id": "PASS_133",
+  "preserved_observations": {
+    "dependency_scoped_tests": "9/9 from original workload; 3/3 recovery-operation tests",
+    "palindromic_ecc_delta": "OBSERVED_WORKING",
+    "phase_cancellation_delta": "OBSERVED_WORKING",
+    "prime_magic_delta": "OBSERVED_WORKING",
+    "schic_delta": "OBSERVED_WORKING"
+  },
+  "required_repair": {
+    "acceptance": "FULL_ANCESTOR_COPY_VERIFIED and missing_parent_paths=0",
+    "operation": "tools/recover_pass133.sh FULL_PASS132_RUNTIME.zip OUTPUT_PASS133_FULL_CHECKPOINT.zip",
+    "parent_archive": "hhs_pass_132_executable_consequence_ab_control_runtime.zip",
+    "parent_sha256": "4edfa7975be435318dace65a9ea614c433df011f35055f7ba2a30e7ded062338"
+  },
+  "schema": "HHS_PASS133_COMPLETION_ERRATUM_V1",
+  "superseded_claims": [
+    {
+      "artifact": "release_artifacts/pass133/PASS_133_COMPLETION_ATTESTATION.json",
+      "field": "checkpoint_chain_repaired",
+      "new_value": false,
+      "old_value": true
+    },
+    {
+      "artifact": "release_artifacts/pass133/PASS_133_RELEASE_MANIFEST.json",
+      "field": "terminal_status",
+      "new_value": "ANCESTRY_RECOVERY_REQUIRED",
+      "old_value": "PASS_133_CHECKPOINT_KEY_STATE_WORKLOAD_VERIFIED"
+    }
+  ],
+  "terminal_status": "ANCESTRY_RECOVERY_REQUIRED"
+}

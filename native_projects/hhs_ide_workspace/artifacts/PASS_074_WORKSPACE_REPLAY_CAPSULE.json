@@ -1,0 +1,605 @@
+{
+  "expected_development_protocol_root_hash72": "00000000000000000000000000000040lP63bY?5m/9JeWp7KJa=Giu)ypvR5FYZqyWAnoN3",
+  "expected_product_root_hash72": "0000000000000000000000000000001aRWoMwzgpOiLU->Ryv?2>v?x)H(jxAm24wQR4XI/P",
+  "expected_workspace_state_root_hash72": "0000000000000000000000000000003jeBCH*ILLMw(ZoYkbL7FjNSjZPE(T+2KjSYsn>PIz",
+  "foundation_modified": false,
+  "host_path_required": false,
+  "llm_context_window_required": false,
+  "native_parent_pass": "PASS_073",
+  "pass_id": "PASS_074",
+  "platform_parent_pass": "PASS_072",
+  "project_id": "HHS_NATIVE_IDE_WORKSPACE",
+  "release_bundle_relative_path": "native_projects/hhs_ide_workspace/artifacts/HHS_PASS_074_UNIFIED_WORKSPACE_RELEASE_BUNDLE.json",
+  "repository_state_authoritative": true,
+  "restart_safe": true,
+  "resume_contract": {
+    "callable": "replay_workspace",
+    "python_module": "native_projects.hhs_ide_workspace.hhs_workspace_replay_runner_v1",
+    "verification_command": "python -m pytest -q tests/test_hhs_pass074_unified_ide_workspace_v1.py"
+  },
+  "schema": "HHS_WORKSPACE_REPLAY_CAPSULE_V1",
+  "source_bindings": [
+    {
+      "relative_path": "native_projects/hhs_ide_workspace/__init__.py",
+      "sha256": "224ef52ebb63479a003d6b58c25644b042fb56bf06aefa2677583efdbcc722bb"
+    },
+    {
+      "relative_path": "native_projects/hhs_ide_workspace/hhs_workspace_contracts_v1.py",
+      "sha256": "c6b18ec40d7e4cbb65995bcbbc1e072cfa6d989b8367c727d9b4c2e74551f905"
+    },
+    {
+      "relative_path": "native_projects/hhs_ide_workspace/hhs_development_network_protocol_v1.py",
+      "sha256": "9fc32618f2e7c8c82513da86fd2bf4bc9d37d81332dcd4214a0160e5e4a19130"
+    },
+    {
+      "relative_path": "native_projects/hhs_ide_workspace/hhs_native_workspace_project_v1.py",
+      "sha256": "980ce74551f6a626bf2f532daec49acf94ca2dbddedcc6e2d4db1aaa30a54702"
+    },
+    {
+      "relative_path": "native_projects/hhs_ide_workspace/hhs_unified_runtime_api_v1.py",
+      "sha256": "5671ab316359a62738624135039ba81f5673d2a016ec53582df05af4927a7f4c"
+    },
+    {
+      "relative_path": "native_projects/hhs_ide_workspace/hhs_workspace_cli_v1.py",
+      "sha256": "72c4eefa562051f59ec6dbbdf6952aa150895546ddf26a43489f8d450a4a3ac6"
+    },
+    {
+      "relative_path": "native_projects/hhs_ide_workspace/hhs_workspace_replay_runner_v1.py",
+      "sha256": "4c0c409f1d87366a829849f9e1ff2b6e8aeaf87b4f00a48c2a34e8d7e9e17057"
+    },
+    {
+      "relative_path": "native_projects/hhs_ide_workspace/workspace_ui/index.html",
+      "sha256": "77e98d6d746fa196245f939cd7bb26a177b1a641817079214aa84056a1e9fa7e"
+    },
+    {
+      "relative_path": "native_projects/hhs_ide_workspace/workspace_ui/app.js",
+      "sha256": "5d9cf968508f759509c6a1f6a8db9946a6279fe53c2ea3b5ac031c60f2657dd4"
+    },
+    {
+      "relative_path": "native_projects/hhs_ide_workspace/workspace_ui/styles.css",
+      "sha256": "3b0dac571d7c2c6fa537af2b1cd06f4dd062d59aba137d60abf47670f8cb97d3"
+    },
+    {
+      "relative_path": "tests/test_hhs_pass074_unified_ide_workspace_v1.py",
+      "sha256": "2621d5749c9806b6041b507efacaf91b644caec7c94c4379370a377b42946593"
+    },
+    {
+      "relative_path": "native_projects/hhs_ide_workspace/artifacts/HHS_PASS_074_UNIFIED_WORKSPACE_RELEASE_BUNDLE.json",
+      "sha256": "7c6da442cff4c87e7323294a7311e8cec933a0aed8a26b0b39e5602aac775413"
+    },
+    {
+      "relative_path": "native_projects/hhs_ide_workspace/artifacts/PASS_074_WORKSPACE_STATE_SNAPSHOT.json",
+      "sha256": "a00a0de8bc9c6b066015ed561e19e762dcea603b52754cb380f161156c3d5707"
+    },
+    {
+      "relative_path": "native_projects/hhs_ide_workspace/artifacts/PASS_074_API_OPERATION_REGISTRY.json",
+      "sha256": "3fe768cc9170c2fa78a1c240d01912a9d54832dca1771efd9760924a809986ca"
+    },
+    {
+      "relative_path": "native_projects/hhs_ide_workspace/artifacts/PASS_074_DEVELOPMENT_NETWORK_PROTOCOL.json",
+      "sha256": "1af6b308845f7d8de1b4766451351d325b05af4384d1ed691161621a30218be2"
+    },
+    {
+      "relative_path": "native_projects/hhs_ide_workspace/artifacts/PASS_074_NATIVE_PROGRAM_GRAPH.json",
+      "sha256": "466fd857dacd68fc699cda04ce5d6dc3841a38970d161393c8098ac700a57bd6"
+    }
+  ],
+  "thread_context_required": false,
+  "workspace_replay_capsule_root_hash72": "0000000000000000000000000000002Bq1d((RD)l+zzj1RxoEvgVmY+/Pvim3EzK/niS+uf",
+  "workspace_state": {
+    "agents": {
+      "agent:human:developer": {
+        "agent_id": "agent:human:developer",
+        "agent_identity_root_hash72": "0000000000000000000000000000004wh4772OE!sN1Nk/mNLmKW9d^6gnNOf9d4((ImlG8y",
+        "agent_kind": "HUMAN",
+        "authority_is_external_and_must_be_validated_per_operation": true,
+        "capabilities": [
+          "authority.request",
+          "requirements",
+          "review"
+        ],
+        "display_name": "Human Developer",
+        "project_id": "project:pass074-demo",
+        "provider_or_owner": "UNSPECIFIED",
+        "registration_confers_no_platform_authority": true,
+        "schema": "HHS_DEVELOPMENT_AGENT_IDENTITY_V1",
+        "transport": "REPOSITORY_CAPSULE"
+      },
+      "agent:llm:builder": {
+        "agent_id": "agent:llm:builder",
+        "agent_identity_root_hash72": "0000000000000000000000000000004tozRUjL=EG*NliDZk6VPS08oXkCKXlWUCL!DUxNQT",
+        "agent_kind": "LLM",
+        "authority_is_external_and_must_be_validated_per_operation": true,
+        "capabilities": [
+          "code.proposal",
+          "repair.plan",
+          "test.analysis"
+        ],
+        "display_name": "LLM Builder",
+        "project_id": "project:pass074-demo",
+        "provider_or_owner": "UNSPECIFIED",
+        "registration_confers_no_platform_authority": true,
+        "schema": "HHS_DEVELOPMENT_AGENT_IDENTITY_V1",
+        "transport": "REPOSITORY_CAPSULE"
+      }
+    },
+    "alignment_decisions": {
+      "alignment:req:commit": {
+        "admitted": true,
+        "alignment_decision_id": "alignment:req:commit",
+        "alignment_decision_root_hash72": "0000000000000000000000000000003*(8lH2leXAiuQ4BVV4NSR=Xqm=8b=(MGh^M^G7Vxq",
+        "decision": "ADMIT_PRODUCT_LOCAL_EFFECT",
+        "foundation_mutation_permitted": false,
+        "operation_id": "workspace.source.commit",
+        "platform_root_checked": "ZF9bto?tV>P(KcFPL5L+csyy!jxdrAaadua1a!w-uwug8/MeMSqSS3*R>lXIefi)nyjXpc+)",
+        "project_id": "project:pass074-demo",
+        "request_id": "req:commit",
+        "reversible_alignment_patch_required_for_foundation_change": true,
+        "schema": "HHS_POST_FREEZE_ALIGNMENT_DECISION_V1",
+        "target_scope": "NATIVE_PRODUCT"
+      },
+      "alignment:req:handoff": {
+        "admitted": true,
+        "alignment_decision_id": "alignment:req:handoff",
+        "alignment_decision_root_hash72": "0000000000000000000000000000004kI?0CTjzLXVxRp!-Q3bpo)Ju(XWzyWUNV6A(d5u6W",
+        "decision": "ADMIT_PRODUCT_LOCAL_EFFECT",
+        "foundation_mutation_permitted": false,
+        "operation_id": "workspace.handoff.create",
+        "platform_root_checked": "ZF9bto?tV>P(KcFPL5L+csyy!jxdrAaadua1a!w-uwug8/MeMSqSS3*R>lXIefi)nyjXpc+)",
+        "project_id": "project:pass074-demo",
+        "request_id": "req:handoff",
+        "reversible_alignment_patch_required_for_foundation_change": true,
+        "schema": "HHS_POST_FREEZE_ALIGNMENT_DECISION_V1",
+        "target_scope": "NATIVE_PRODUCT"
+      },
+      "proposal-alignment:proposal:demo:1": {
+        "admitted": true,
+        "alignment_decision_id": "proposal-alignment:proposal:demo:1",
+        "alignment_decision_root_hash72": "0000000000000000000000000000000?IBNA4pOiooXhF*fyYa^F1dmuE6O3ZjBB(8^-9Kk=",
+        "capability_constraint_satisfied": true,
+        "decision": "ADMIT_PROPOSAL_TO_TEST",
+        "foundation_constraint_satisfied": true,
+        "platform_root_checked": "ZF9bto?tV>P(KcFPL5L+csyy!jxdrAaadua1a!w-uwug8/MeMSqSS3*R>lXIefi)nyjXpc+)",
+        "project_id": "project:pass074-demo",
+        "proposal_id": "proposal:demo:1",
+        "reasons": [],
+        "schema": "HHS_POST_FREEZE_ALIGNMENT_DECISION_V1"
+      }
+    },
+    "artifacts": {
+      "artifact:main:0": {
+        "artifact_id": "artifact:main:0",
+        "artifact_root_hash72": "0000000000000000000000000000003R+rB+AY?3ORYS)>K8XxO39dc>ExgQhYUz?EmeI8qo",
+        "compiled_artifact_self_authorizes": false,
+        "content": "project pass074_demo {\n  source main\n}\n",
+        "lineage": {
+          "parent_artifact_ref": "GENESIS"
+        },
+        "name": "main.hhs",
+        "project_id": "project:pass074-demo",
+        "schema": "HHS_COMMITTED_SOURCE_ARTIFACT_V1",
+        "source_buffer_ref": "buffer:main",
+        "source_buffer_revision": 0
+      }
+    },
+    "buffers": {
+      "buffer:main": {
+        "buffer_id": "buffer:main",
+        "buffer_root_hash72": "0000000000000000000000000000003TYg=biCIjb*n=5!GIZYkaHgqXfA6Btyj+3f*KmTyg",
+        "committed_artifact_ref": "artifact:main:0",
+        "editor_buffer_is_not_canonical_source": true,
+        "name": "main.hhs",
+        "project_id": "project:pass074-demo",
+        "revision": 0,
+        "schema": "HHS_EDITOR_BUFFER_V1",
+        "text": "project pass074_demo {\n  source main\n}\n"
+      }
+    },
+    "development_protocol_root_hash72": "00000000000000000000000000000040lP63bY?5m/9JeWp7KJa=Giu)ypvR5FYZqyWAnoN3",
+    "events": [
+      {
+        "event_root_hash72": "0000000000000000000000000000003sywt!^JU!)chAAj+6Wfiax/LFaAV>be=/J*pr0TpK",
+        "object_refs": [
+          "project:pass074-demo",
+          "receipt:req:project"
+        ],
+        "operation_class": "INGRESS",
+        "operation_id": "workspace.project.create",
+        "previous_event_root_hash72": "GENESIS",
+        "project_id": "project:pass074-demo",
+        "request_id": "req:project",
+        "schema": "HHS_RUNTIME_EVENT_STREAM_EVENT_V1",
+        "sequence": 1,
+        "session_id": "session:pass074-demo",
+        "status": "ADMITTED"
+      },
+      {
+        "event_root_hash72": "0000000000000000000000000000003JQYrUC??sA19M1SayFx!XV=4So5cVrSGgeeTUUq1n",
+        "object_refs": [
+          "session:pass074-demo",
+          "receipt:req:session"
+        ],
+        "operation_class": "INGRESS",
+        "operation_id": "workspace.session.open",
+        "previous_event_root_hash72": "0000000000000000000000000000003sywt!^JU!)chAAj+6Wfiax/LFaAV>be=/J*pr0TpK",
+        "project_id": "project:pass074-demo",
+        "request_id": "req:session",
+        "schema": "HHS_RUNTIME_EVENT_STREAM_EVENT_V1",
+        "sequence": 2,
+        "session_id": "session:pass074-demo",
+        "status": "ADMITTED"
+      },
+      {
+        "event_root_hash72": "0000000000000000000000000000004eLV+fo3aJtMxwL-X^kbNvT?4L7QkLxG-tYAo8nVSK",
+        "object_refs": [
+          "agent:human:developer",
+          "receipt:req:agent:human"
+        ],
+        "operation_class": "INGRESS",
+        "operation_id": "workspace.agent.register",
+        "previous_event_root_hash72": "0000000000000000000000000000003JQYrUC??sA19M1SayFx!XV=4So5cVrSGgeeTUUq1n",
+        "project_id": "project:pass074-demo",
+        "request_id": "req:agent:human",
+        "schema": "HHS_RUNTIME_EVENT_STREAM_EVENT_V1",
+        "sequence": 3,
+        "session_id": "session:pass074-demo",
+        "status": "ADMITTED"
+      },
+      {
+        "event_root_hash72": "0000000000000000000000000000002DXhdOS0qKLOIi*AoLhx3EE569TY7s1x+1TtZO8*ok",
+        "object_refs": [
+          "agent:llm:builder",
+          "receipt:req:agent:llm"
+        ],
+        "operation_class": "INGRESS",
+        "operation_id": "workspace.agent.register",
+        "previous_event_root_hash72": "0000000000000000000000000000004eLV+fo3aJtMxwL-X^kbNvT?4L7QkLxG-tYAo8nVSK",
+        "project_id": "project:pass074-demo",
+        "request_id": "req:agent:llm",
+        "schema": "HHS_RUNTIME_EVENT_STREAM_EVENT_V1",
+        "sequence": 4,
+        "session_id": "session:pass074-demo",
+        "status": "ADMITTED"
+      },
+      {
+        "event_root_hash72": "0000000000000000000000000000002SQaMPHisL!tF)smUE6V6g1MT^HUw4dakHQJw9Lu)*",
+        "object_refs": [
+          "buffer:main",
+          "receipt:req:buffer"
+        ],
+        "operation_class": "INGRESS",
+        "operation_id": "workspace.buffer.open",
+        "previous_event_root_hash72": "0000000000000000000000000000002DXhdOS0qKLOIi*AoLhx3EE569TY7s1x+1TtZO8*ok",
+        "project_id": "project:pass074-demo",
+        "request_id": "req:buffer",
+        "schema": "HHS_RUNTIME_EVENT_STREAM_EVENT_V1",
+        "sequence": 5,
+        "session_id": "session:pass074-demo",
+        "status": "ADMITTED"
+      },
+      {
+        "event_root_hash72": "0000000000000000000000000000001ykAJdgZl^LIkkhoJ7H6MgAm7xW(CqHwoN=O)gh6nA",
+        "object_refs": [
+          "buffer:main",
+          "alignment:req:commit",
+          "artifact:main:0",
+          "receipt:req:commit"
+        ],
+        "operation_class": "MUTATE",
+        "operation_id": "workspace.source.commit",
+        "previous_event_root_hash72": "0000000000000000000000000000002SQaMPHisL!tF)smUE6V6g1MT^HUw4dakHQJw9Lu)*",
+        "project_id": "project:pass074-demo",
+        "request_id": "req:commit",
+        "schema": "HHS_RUNTIME_EVENT_STREAM_EVENT_V1",
+        "sequence": 6,
+        "session_id": "session:pass074-demo",
+        "status": "ADMITTED"
+      },
+      {
+        "event_root_hash72": "0000000000000000000000000000001y4NZ>833-qUyc=KgXN!?A?hHEXa41>l+ah4e?1lKe",
+        "object_refs": [
+          "proposal:demo:1",
+          "receipt:req:proposal"
+        ],
+        "operation_class": "INGRESS",
+        "operation_id": "workspace.change.propose",
+        "previous_event_root_hash72": "0000000000000000000000000000001ykAJdgZl^LIkkhoJ7H6MgAm7xW(CqHwoN=O)gh6nA",
+        "project_id": "project:pass074-demo",
+        "request_id": "req:proposal",
+        "schema": "HHS_RUNTIME_EVENT_STREAM_EVENT_V1",
+        "sequence": 7,
+        "session_id": "session:pass074-demo",
+        "status": "ADMITTED"
+      },
+      {
+        "event_root_hash72": "0000000000000000000000000000002ovDUSpz?CSyQB>5gjy8yU(*2!Jq>z3*w+8pc2DG/y",
+        "object_refs": [
+          "proposal-alignment:proposal:demo:1",
+          "proposal:demo:1",
+          "receipt:req:alignment"
+        ],
+        "operation_class": "EXECUTE",
+        "operation_id": "workspace.alignment.evaluate",
+        "previous_event_root_hash72": "0000000000000000000000000000001y4NZ>833-qUyc=KgXN!?A?hHEXa41>l+ah4e?1lKe",
+        "project_id": "project:pass074-demo",
+        "request_id": "req:alignment",
+        "schema": "HHS_RUNTIME_EVENT_STREAM_EVENT_V1",
+        "sequence": 8,
+        "session_id": "session:pass074-demo",
+        "status": "ADMITTED"
+      },
+      {
+        "event_root_hash72": "0000000000000000000000000000001NQ95A+owul(MV3gJb^i+X7CXVB/OHqmmR)Pscshm2",
+        "object_refs": [
+          "artifact:main:0",
+          "receipt:req:inspect"
+        ],
+        "operation_class": "EXECUTE",
+        "operation_id": "workspace.source.inspect",
+        "previous_event_root_hash72": "0000000000000000000000000000002ovDUSpz?CSyQB>5gjy8yU(*2!Jq>z3*w+8pc2DG/y",
+        "project_id": "project:pass074-demo",
+        "request_id": "req:inspect",
+        "schema": "HHS_RUNTIME_EVENT_STREAM_EVENT_V1",
+        "sequence": 9,
+        "session_id": "session:pass074-demo",
+        "status": "ADMITTED"
+      },
+      {
+        "event_root_hash72": "00000000000000000000000000000036MDQ4MXhrsfUDv47(yR9gEbSEN>ew0wg?00ex+Dxb",
+        "object_refs": [
+          "handoff:demo:1",
+          "alignment:req:handoff",
+          "receipt:req:handoff"
+        ],
+        "operation_class": "MUTATE",
+        "operation_id": "workspace.handoff.create",
+        "previous_event_root_hash72": "0000000000000000000000000000001NQ95A+owul(MV3gJb^i+X7CXVB/OHqmmR)Pscshm2",
+        "project_id": "project:pass074-demo",
+        "request_id": "req:handoff",
+        "schema": "HHS_RUNTIME_EVENT_STREAM_EVENT_V1",
+        "sequence": 10,
+        "session_id": "session:pass074-demo",
+        "status": "ADMITTED"
+      }
+    ],
+    "frozen_platform_root_hash72": "ZF9bto?tV>P(KcFPL5L+csyy!jxdrAaadua1a!w-uwug8/MeMSqSS3*R>lXIefi)nyjXpc+)",
+    "handoffs": {
+      "handoff:demo:1": {
+        "from_agent_ref": "agent:llm:builder",
+        "handoff_confers_no_authority": true,
+        "handoff_id": "handoff:demo:1",
+        "handoff_root_hash72": "0000000000000000000000000000002Sg+3NkYcv15vEd/wd!WDjSGVRJte8Z5I>crL!BH-c",
+        "llm_context_window_required": false,
+        "project_id": "project:pass074-demo",
+        "proposal_refs": [
+          "proposal:demo:1"
+        ],
+        "repository_state_authoritative": true,
+        "required_actions": [
+          "REVIEW_ALIGNMENT_DECISION",
+          "RUN_TESTS"
+        ],
+        "schema": "HHS_AGENT_HANDOFF_CAPSULE_V1",
+        "test_record_refs": [],
+        "thread_context_required": false,
+        "to_agent_ref": "agent:human:developer",
+        "workspace_state_root_hash72": "0000000000000000000000000000001Y9Kvs?dSn>s+q0Qeyhwp?s=Oj^ukN4jlfu)I-3>u("
+      }
+    },
+    "healing_plans": {},
+    "operation_registry_root_hash72": "0000000000000000000000000000001shM^RJmUhaP=QdhZs>GRPRVtsQ4OPrVDGwlZq3!Jk",
+    "pass_id": "PASS_074",
+    "projects": {
+      "project:pass074-demo": {
+        "artifact_ids": [
+          "artifact:main:0"
+        ],
+        "development_protocol_root_hash72": "00000000000000000000000000000040lP63bY?5m/9JeWp7KJa=Giu)ypvR5FYZqyWAnoN3",
+        "name": "Pass 074 IDE Workspace",
+        "object_ids": [
+          "agent:human:developer",
+          "agent:llm:builder",
+          "buffer:main",
+          "alignment:req:commit",
+          "proposal:demo:1",
+          "proposal-alignment:proposal:demo:1",
+          "alignment:req:handoff",
+          "handoff:demo:1"
+        ],
+        "platform_dependency_root_hash72": "ZF9bto?tV>P(KcFPL5L+csyy!jxdrAaadua1a!w-uwug8/MeMSqSS3*R>lXIefi)nyjXpc+)",
+        "project_id": "project:pass074-demo",
+        "project_root_hash72": "0000000000000000000000000000001bkuFciIk3qOSQT)YNag>R73IjcR2a6BQl>NCxQY+h",
+        "schema": "HHS_NATIVE_WORKSPACE_PROJECT_V1",
+        "workspace_is_projection_over_runtime_state": true
+      }
+    },
+    "proposals": {
+      "proposal:demo:1": {
+        "affected_foundation_paths": [],
+        "affected_product_paths": [
+          "native_projects/hhs_ide_workspace"
+        ],
+        "base_platform_root_hash72": "ZF9bto?tV>P(KcFPL5L+csyy!jxdrAaadua1a!w-uwug8/MeMSqSS3*R>lXIefi)nyjXpc+)",
+        "base_workspace_state_root_hash72": "0000000000000000000000000000001GA^Y/hRUqWfW-bZgsywzyg??2l4RY!XPesOfORLzD",
+        "new_capability_statement": "Inspect committed sources through the unified Runtime API",
+        "patch_artifact_refs": [],
+        "program_id": "program:pass074-demo",
+        "project_id": "project:pass074-demo",
+        "proposal_does_not_self_authorize": true,
+        "proposal_id": "proposal:demo:1",
+        "proposal_root_hash72": "0000000000000000000000000000003K35qf-gnWMS(R(+^MTSx*mFa)i/+2E)9t4q7zMLtZ",
+        "proposer_agent_ref": "agent:llm:builder",
+        "reachable_entrypoint": "workspace.source.inspect",
+        "requested_tests": [
+          "tests/test_hhs_pass074_unified_ide_workspace_v1.py"
+        ],
+        "reusable_capabilities": [
+          "source.inspection"
+        ],
+        "reversible_alignment_patch_ref": "",
+        "schema": "HHS_REPOSITORY_CHANGE_PROPOSAL_V1",
+        "summary": "Add reusable bounded source inspection"
+      }
+    },
+    "receipts": {
+      "receipt:req:agent:human": {
+        "alignment_decision_ref": "",
+        "console_output_is_not_receipt": true,
+        "operation_class": "INGRESS",
+        "operation_id": "workspace.agent.register",
+        "project_id": "project:pass074-demo",
+        "receipt_id": "receipt:req:agent:human",
+        "receipt_root_hash72": "0000000000000000000000000000004pdYiiL?CqZCW>1^9Gzd4BV2+MeHI5?0G+D)MHbE3U",
+        "request_id": "req:agent:human",
+        "request_root_hash72": "0000000000000000000000000000004mXX=WrYmP5FlydJbdYltONz(O3TB)nLIGxnLiQPc!",
+        "result_commitment_root_hash72": "00000000000000000000000000000026KgKzCMDtlsED4*HR4bwEuGn^Mv*3qOnPTuSY=VM-",
+        "schema": "HHS_WORKSPACE_OPERATION_RECEIPT_V1",
+        "status": "ADMITTED"
+      },
+      "receipt:req:agent:llm": {
+        "alignment_decision_ref": "",
+        "console_output_is_not_receipt": true,
+        "operation_class": "INGRESS",
+        "operation_id": "workspace.agent.register",
+        "project_id": "project:pass074-demo",
+        "receipt_id": "receipt:req:agent:llm",
+        "receipt_root_hash72": "0000000000000000000000000000001b=iue8d^wEY^332/^Y=B!f38IXZF6lKPZm!M7gB8l",
+        "request_id": "req:agent:llm",
+        "request_root_hash72": "0000000000000000000000000000004j*EI9RcE3/bfcuVCGi0S(xsCH7agP5/sa?S)*4Pv(",
+        "result_commitment_root_hash72": "0000000000000000000000000000000c?QNcEZlu5+r^5uOxOE+rrF0^oUTsvQlw40dFuD4a",
+        "schema": "HHS_WORKSPACE_OPERATION_RECEIPT_V1",
+        "status": "ADMITTED"
+      },
+      "receipt:req:alignment": {
+        "alignment_decision_ref": "",
+        "console_output_is_not_receipt": true,
+        "operation_class": "EXECUTE",
+        "operation_id": "workspace.alignment.evaluate",
+        "project_id": "project:pass074-demo",
+        "receipt_id": "receipt:req:alignment",
+        "receipt_root_hash72": "0000000000000000000000000000003ysG99HPc?w(!UtaT6sHrS1szv>zBVXGkAb6-oD9lf",
+        "request_id": "req:alignment",
+        "request_root_hash72": "00000000000000000000000000000016dIbuAR!cipXegVcF5tS/)Tg?-ltaRG0gg8KAAwNp",
+        "result_commitment_root_hash72": "0000000000000000000000000000002>^kFqNFOn))3==4Am7j61U?l6+o57SQHW)*6fMBhk",
+        "schema": "HHS_WORKSPACE_OPERATION_RECEIPT_V1",
+        "status": "ADMITTED"
+      },
+      "receipt:req:buffer": {
+        "alignment_decision_ref": "",
+        "console_output_is_not_receipt": true,
+        "operation_class": "INGRESS",
+        "operation_id": "workspace.buffer.open",
+        "project_id": "project:pass074-demo",
+        "receipt_id": "receipt:req:buffer",
+        "receipt_root_hash72": "0000000000000000000000000000003f-)dx)r/lzc59KpcCM4>uNMJ3+mmPv*>qeEhDE5A7",
+        "request_id": "req:buffer",
+        "request_root_hash72": "0000000000000000000000000000001^Fw^ZflC6UjEwpnA3e>!B)Stu8)DlOBMBCMJ>d29w",
+        "result_commitment_root_hash72": "0000000000000000000000000000004e6OXk8kOkkz4q2wKUeWiGuwZrL2+b?ZXo^qnbj1>+",
+        "schema": "HHS_WORKSPACE_OPERATION_RECEIPT_V1",
+        "status": "ADMITTED"
+      },
+      "receipt:req:commit": {
+        "alignment_decision_ref": "alignment:req:commit",
+        "console_output_is_not_receipt": true,
+        "operation_class": "MUTATE",
+        "operation_id": "workspace.source.commit",
+        "project_id": "project:pass074-demo",
+        "receipt_id": "receipt:req:commit",
+        "receipt_root_hash72": "0000000000000000000000000000001VDWGDn7JbHsv>f!A7Ri/8RDYlb>!R+aV=SR>ibLtI",
+        "request_id": "req:commit",
+        "request_root_hash72": "0000000000000000000000000000001VvbyI=6?BEiBaHiSpEubWORiA+3ktlv+^gU)Hg!mv",
+        "result_commitment_root_hash72": "0000000000000000000000000000004AZoKCo=+*f2?yei-^FzhAiOm^cifBxJ^Mul9pRPzE",
+        "schema": "HHS_WORKSPACE_OPERATION_RECEIPT_V1",
+        "status": "ADMITTED"
+      },
+      "receipt:req:handoff": {
+        "alignment_decision_ref": "alignment:req:handoff",
+        "console_output_is_not_receipt": true,
+        "operation_class": "MUTATE",
+        "operation_id": "workspace.handoff.create",
+        "project_id": "project:pass074-demo",
+        "receipt_id": "receipt:req:handoff",
+        "receipt_root_hash72": "0000000000000000000000000000003I*je5yMk4YBqN^7ZYKlubB-^gH=ZIC9coUqfdF02r",
+        "request_id": "req:handoff",
+        "request_root_hash72": "0000000000000000000000000000002fc!Ph5!Rxns9lx)2ph-vJkHWf)RMAs)Ojsia+9t>D",
+        "result_commitment_root_hash72": "0000000000000000000000000000003-GxpKA69)2IMVU4Vlb=0?jrHlLVD(/8rO7q)Diwxs",
+        "schema": "HHS_WORKSPACE_OPERATION_RECEIPT_V1",
+        "status": "ADMITTED"
+      },
+      "receipt:req:inspect": {
+        "alignment_decision_ref": "",
+        "console_output_is_not_receipt": true,
+        "operation_class": "EXECUTE",
+        "operation_id": "workspace.source.inspect",
+        "project_id": "project:pass074-demo",
+        "receipt_id": "receipt:req:inspect",
+        "receipt_root_hash72": "0000000000000000000000000000002g?valTTo187hKwts(2>vFUM+bNnzqyJLf6Z)ZN?d)",
+        "request_id": "req:inspect",
+        "request_root_hash72": "0000000000000000000000000000001lPuj2ako4XlI7+>l*me(ZAJUxDYvkOyM2bG!PL3WB",
+        "result_commitment_root_hash72": "0000000000000000000000000000002yi=hu3!dAyGHTe/H224>Y)P*>3r3VZqgdX/lqV5Uq",
+        "schema": "HHS_WORKSPACE_OPERATION_RECEIPT_V1",
+        "status": "ADMITTED"
+      },
+      "receipt:req:project": {
+        "alignment_decision_ref": "",
+        "console_output_is_not_receipt": true,
+        "operation_class": "INGRESS",
+        "operation_id": "workspace.project.create",
+        "project_id": "project:pass074-demo",
+        "receipt_id": "receipt:req:project",
+        "receipt_root_hash72": "0000000000000000000000000000000RF2-Rr?pBu?LND3kcmQa9Xn2rSvmBgsOtU^b!C*4u",
+        "request_id": "req:project",
+        "request_root_hash72": "0000000000000000000000000000003KjU1IleqJpy*kwKLSZH1(U2wfP2Zjm!0XL=aTLqUA",
+        "result_commitment_root_hash72": "0000000000000000000000000000001FdodloVdYp3+EuGY1+Msv1*4DMibI=O68FC3TK443",
+        "schema": "HHS_WORKSPACE_OPERATION_RECEIPT_V1",
+        "status": "ADMITTED"
+      },
+      "receipt:req:proposal": {
+        "alignment_decision_ref": "",
+        "console_output_is_not_receipt": true,
+        "operation_class": "INGRESS",
+        "operation_id": "workspace.change.propose",
+        "project_id": "project:pass074-demo",
+        "receipt_id": "receipt:req:proposal",
+        "receipt_root_hash72": "000000000000000000000000000000255!L)YsRcafX^>KBHqcMtwAy*K+vxW0A37=XZ0krY",
+        "request_id": "req:proposal",
+        "request_root_hash72": "0000000000000000000000000000003Sj6YBvk*wkoZjptoA1tPkdx+--Qb67W-zjuEm-jN>",
+        "result_commitment_root_hash72": "0000000000000000000000000000001BmahCObZ4m6i^NGs0Q0z>5tfEYe+sWJfE3H*5f/(5",
+        "schema": "HHS_WORKSPACE_OPERATION_RECEIPT_V1",
+        "status": "ADMITTED"
+      },
+      "receipt:req:session": {
+        "alignment_decision_ref": "",
+        "console_output_is_not_receipt": true,
+        "operation_class": "INGRESS",
+        "operation_id": "workspace.session.open",
+        "project_id": "project:pass074-demo",
+        "receipt_id": "receipt:req:session",
+        "receipt_root_hash72": "0000000000000000000000000000003rfl9JYdb-/NZQZDwLPR(sTsvc/?>qZaPxTZ*8uXGB",
+        "request_id": "req:session",
+        "request_root_hash72": "0000000000000000000000000000004obbp0)Ah3a)TSntg^t(pBd0t*K>wG^vGf59^DRR-4",
+        "result_commitment_root_hash72": "0000000000000000000000000000000il6lvbWk=Kj!pi!+IJEG5T>bcQUml3IwLyft3bbv*",
+        "schema": "HHS_WORKSPACE_OPERATION_RECEIPT_V1",
+        "status": "ADMITTED"
+      }
+    },
+    "repository_state_authoritative_over_conversation_state": true,
+    "schema": "HHS_NATIVE_WORKSPACE_RUNTIME_STATE_V1",
+    "sequence": 10,
+    "sessions": {
+      "session:pass074-demo": {
+        "client_surface": "REPLAY",
+        "opened_at_sequence": 2,
+        "project_id": "project:pass074-demo",
+        "runtime_state_is_authoritative": true,
+        "schema": "HHS_WORKSPACE_SESSION_V1",
+        "session_id": "session:pass074-demo",
+        "session_root_hash72": "0000000000000000000000000000001)VAaA9K(yG^)ioAefw5jaUvw^K5MZI743phDAW5(i"
+      }
+    },
+    "test_records": {},
+    "version": "PASS_074_UNIFIED_HHS_IDE_WORKSPACE_V1",
+    "workspace_state_is_product_state_not_platform_state": true,
+    "workspace_state_root_hash72": "0000000000000000000000000000003jeBCH*ILLMw(ZoYkbL7FjNSjZPE(T+2KjSYsn>PIz"
+  }
+}

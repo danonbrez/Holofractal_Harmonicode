@@ -1,0 +1,170 @@
+{
+  "all_replay_validated": true,
+  "authority_level": "A1",
+  "report_hash72": "0000000000000000000000000000001d4V+dC1MD?/g>3*KBs8/JU1NteM85)Fm+qJ45+B(>",
+  "results": [
+    {
+      "comparison": {
+        "ast": true,
+        "classification": true,
+        "proposition_hash": true
+      },
+      "ok": true,
+      "original_hash72": "0000000000000000000000000000001*I*-HP0K=Gs>Awul1xZvD>XKdUBk3wS0AgpwtF46c",
+      "persistence": {
+        "ok": true,
+        "post_state_root_hash72": "0000000000000000000000000000001pNyr(-Zbi4!WOWy9tQK!PMh6c11anmyG>Aov1LmFN",
+        "pre_state_root_hash72": "0000000000000000000000000000001wW^DTGPFtY9egODVqQX/kn?K4hsxv^aZLooJ*rr>F",
+        "receipt_hash72": "0000000000000000000000000000000e(q10?D>2wOIaq=Q+obYjRX>5ijj+(9=A^t(?MYvv",
+        "receipt_id": "RCP-72e2240c1384712738e62241",
+        "result": {
+          "comparison": {
+            "ast": true,
+            "classification": true,
+            "proposition_hash": true
+          },
+          "original_hash72": "0000000000000000000000000000001*I*-HP0K=Gs>Awul1xZvD>XKdUBk3wS0AgpwtF46c",
+          "registry_version": "HHS_NATIVE_SEMANTIC_REGISTRY_148.1.0",
+          "replay_hash72": "0000000000000000000000000000001*I*-HP0K=Gs>Awul1xZvD>XKdUBk3wS0AgpwtF46c",
+          "replay_id": "SRP-45546e8d56506f0596fa9457",
+          "status": "REPLAY_VALIDATED",
+          "target_id": "PROP-51c75dbea811c8082ce9f1c4",
+          "target_type": "PROPOSITION"
+        },
+        "sequence": 51,
+        "status": "TRANSACTION_COMMITTED",
+        "transaction_id": "TX-fdee5c3bed5cef4210799dc5"
+      },
+      "receipt": "RCP-72e2240c1384712738e62241",
+      "registry_version": "HHS_NATIVE_SEMANTIC_REGISTRY_148.1.0",
+      "replay_hash72": "0000000000000000000000000000001*I*-HP0K=Gs>Awul1xZvD>XKdUBk3wS0AgpwtF46c",
+      "replay_id": "SRP-45546e8d56506f0596fa9457",
+      "schema": "HHS_PASS148_REPLAY_V1",
+      "status": "REPLAY_VALIDATED",
+      "target_id": "PROP-51c75dbea811c8082ce9f1c4",
+      "target_type": "PROPOSITION"
+    },
+    {
+      "comparison": {
+        "ast": true,
+        "classification": true,
+        "proposition_hash": true
+      },
+      "ok": true,
+      "original_hash72": "00000000000000000000000000000001Agh^-ZKR/tP8sX8wiSdzsiZxN+nuLX-BrUqLGT=B",
+      "persistence": {
+        "ok": true,
+        "post_state_root_hash72": "0000000000000000000000000000001dXWo=*KZmE7kzKTD/HZxfIeB20Rx>IKLkxwI3J4n8",
+        "pre_state_root_hash72": "0000000000000000000000000000001pNyr(-Zbi4!WOWy9tQK!PMh6c11anmyG>Aov1LmFN",
+        "receipt_hash72": "00000000000000000000000000000016jAN5zvezJ3)J>Va6RQAzKeDpUfZNTLV+3CMV76Xt",
+        "receipt_id": "RCP-4954c0ff0869c3a8adf489c8",
+        "result": {
+          "comparison": {
+            "ast": true,
+            "classification": true,
+            "proposition_hash": true
+          },
+          "original_hash72": "00000000000000000000000000000001Agh^-ZKR/tP8sX8wiSdzsiZxN+nuLX-BrUqLGT=B",
+          "registry_version": "HHS_NATIVE_SEMANTIC_REGISTRY_148.1.0",
+          "replay_hash72": "00000000000000000000000000000001Agh^-ZKR/tP8sX8wiSdzsiZxN+nuLX-BrUqLGT=B",
+          "replay_id": "SRP-26d9493dbe0003f2c815e71e",
+          "status": "REPLAY_VALIDATED",
+          "target_id": "PROP-2f70c45cd223c69c314bdd20",
+          "target_type": "PROPOSITION"
+        },
+        "sequence": 52,
+        "status": "TRANSACTION_COMMITTED",
+        "transaction_id": "TX-ca380914eec0c40bd8f9aafb"
+      },
+      "receipt": "RCP-4954c0ff0869c3a8adf489c8",
+      "registry_version": "HHS_NATIVE_SEMANTIC_REGISTRY_148.1.0",
+      "replay_hash72": "00000000000000000000000000000001Agh^-ZKR/tP8sX8wiSdzsiZxN+nuLX-BrUqLGT=B",
+      "replay_id": "SRP-26d9493dbe0003f2c815e71e",
+      "schema": "HHS_PASS148_REPLAY_V1",
+      "status": "REPLAY_VALIDATED",
+      "target_id": "PROP-2f70c45cd223c69c314bdd20",
+      "target_type": "PROPOSITION"
+    },
+    {
+      "comparison": {
+        "derivation_hash": true
+      },
+      "ok": true,
+      "original_hash72": "0000000000000000000000000000003^g?FWP2oJRKS7zLxmWmw/8Q1KrL(4b+u2eJqK!2*c",
+      "persistence": {
+        "ok": true,
+        "post_state_root_hash72": "0000000000000000000000000000003j*HWW00ag463I!xn)rEaLQ>1-1mjbVqUBHMw-fRB=",
+        "pre_state_root_hash72": "0000000000000000000000000000001dXWo=*KZmE7kzKTD/HZxfIeB20Rx>IKLkxwI3J4n8",
+        "receipt_hash72": "00000000000000000000000000000034XuIA+F0NxXWXZto=4=BnZ9)!1=sYIM0BTxOp-CO0",
+        "receipt_id": "RCP-11657854d582301746579614",
+        "result": {
+          "comparison": {
+            "derivation_hash": true
+          },
+          "original_hash72": "0000000000000000000000000000003^g?FWP2oJRKS7zLxmWmw/8Q1KrL(4b+u2eJqK!2*c",
+          "registry_version": "HHS_NATIVE_SEMANTIC_REGISTRY_148.1.0",
+          "replay_hash72": "0000000000000000000000000000003^g?FWP2oJRKS7zLxmWmw/8Q1KrL(4b+u2eJqK!2*c",
+          "replay_id": "SRP-972f85a3ed3d6f0b6b1e8d3f",
+          "status": "REPLAY_VALIDATED",
+          "target_id": "DRV-c45a9c1b3ce4e7f35ef299fb",
+          "target_type": "DERIVATION"
+        },
+        "sequence": 53,
+        "status": "TRANSACTION_COMMITTED",
+        "transaction_id": "TX-1a41e4ccf0e3a2a6caca818e"
+      },
+      "receipt": "RCP-11657854d582301746579614",
+      "registry_version": "HHS_NATIVE_SEMANTIC_REGISTRY_148.1.0",
+      "replay_hash72": "0000000000000000000000000000003^g?FWP2oJRKS7zLxmWmw/8Q1KrL(4b+u2eJqK!2*c",
+      "replay_id": "SRP-972f85a3ed3d6f0b6b1e8d3f",
+      "schema": "HHS_PASS148_REPLAY_V1",
+      "status": "REPLAY_VALIDATED",
+      "target_id": "DRV-c45a9c1b3ce4e7f35ef299fb",
+      "target_type": "DERIVATION"
+    },
+    {
+      "comparison": {
+        "projection_hash": true
+      },
+      "ok": true,
+      "original_hash72": "00000000000000000000000000000003f1BKgH3H(j?Nm8ZDBrGPC2S8s*Xbano2N+*QTmb!",
+      "persistence": {
+        "ok": true,
+        "post_state_root_hash72": "00000000000000000000000000000001ebV4xn4/(eE3x*nb1*InRe!UMoP>P*lds+2*3dVa",
+        "pre_state_root_hash72": "0000000000000000000000000000003j*HWW00ag463I!xn)rEaLQ>1-1mjbVqUBHMw-fRB=",
+        "receipt_hash72": "0000000000000000000000000000004mrE3aN45Cs7jHA9u=9p=g?gBZ88XJas+)C3r1pE/d",
+        "receipt_id": "RCP-d5f888dadfaae714fd51284a",
+        "result": {
+          "comparison": {
+            "projection_hash": true
+          },
+          "original_hash72": "00000000000000000000000000000003f1BKgH3H(j?Nm8ZDBrGPC2S8s*Xbano2N+*QTmb!",
+          "registry_version": "HHS_NATIVE_SEMANTIC_REGISTRY_148.1.0",
+          "replay_hash72": "00000000000000000000000000000003f1BKgH3H(j?Nm8ZDBrGPC2S8s*Xbano2N+*QTmb!",
+          "replay_id": "SRP-5054d68fb982ac4c74a7090b",
+          "status": "REPLAY_VALIDATED",
+          "target_id": "PROJ-f801def6b49a4c50347565bb",
+          "target_type": "PROJECTION"
+        },
+        "sequence": 54,
+        "status": "TRANSACTION_COMMITTED",
+        "transaction_id": "TX-1177b106bc5cc3b12886b06e"
+      },
+      "receipt": "RCP-d5f888dadfaae714fd51284a",
+      "registry_version": "HHS_NATIVE_SEMANTIC_REGISTRY_148.1.0",
+      "replay_hash72": "00000000000000000000000000000003f1BKgH3H(j?Nm8ZDBrGPC2S8s*Xbano2N+*QTmb!",
+      "replay_id": "SRP-5054d68fb982ac4c74a7090b",
+      "schema": "HHS_PASS148_REPLAY_V1",
+      "status": "REPLAY_VALIDATED",
+      "target_id": "PROJ-f801def6b49a4c50347565bb",
+      "target_type": "PROJECTION"
+    }
+  ],
+  "schema": "HHS_PASS148_REPLAY_REPORT_V1",
+  "targets": [
+    "PROP-51c75dbea811c8082ce9f1c4",
+    "PROP-2f70c45cd223c69c314bdd20",
+    "DRV-c45a9c1b3ce4e7f35ef299fb",
+    "PROJ-f801def6b49a4c50347565bb"
+  ]
+}

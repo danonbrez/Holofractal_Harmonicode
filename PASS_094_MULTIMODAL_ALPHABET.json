@@ -1,0 +1,80 @@
+{
+  "alphabet_root_hash72": "0000000000000000000000000000002Ns2NZwohEgEDGloSEU8c(JIBp1j)jNl3^X+UJ40P)",
+  "invariant_mappings": {
+    "invariant:golden-triplet-64-72-81": [
+      "PAIR",
+      "OPPOSITE",
+      "RECIPROCAL",
+      "ORDER",
+      "RATIO",
+      "CLOSURE",
+      "ROTATE"
+    ],
+    "invariant:noncommutative-A-B": [
+      "PAIR",
+      "OPPOSITE",
+      "RECIPROCAL",
+      "ORDER",
+      "RATIO",
+      "CLOSURE",
+      "ROTATE"
+    ],
+    "invariant:opposite-phase-u72": [
+      "PAIR",
+      "OPPOSITE",
+      "RECIPROCAL",
+      "ORDER",
+      "RATIO",
+      "CLOSURE",
+      "ROTATE"
+    ],
+    "invariant:pythagorean-3-4-5": [
+      "PAIR",
+      "OPPOSITE",
+      "RECIPROCAL",
+      "ORDER",
+      "RATIO",
+      "CLOSURE",
+      "ROTATE"
+    ],
+    "invariant:ratio-8-9": [
+      "PAIR",
+      "OPPOSITE",
+      "RECIPROCAL",
+      "ORDER",
+      "RATIO",
+      "CLOSURE",
+      "ROTATE"
+    ],
+    "invariant:reciprocal-9-8": [
+      "PAIR",
+      "OPPOSITE",
+      "RECIPROCAL",
+      "ORDER",
+      "RATIO",
+      "CLOSURE",
+      "ROTATE"
+    ]
+  },
+  "loss_classification": "LOSSLESS_FOR_DECLARED_INVARIANTS",
+  "reconstruction_contract": {
+    "ambiguity_preserved": true,
+    "canonical_fields_required": true,
+    "exact": true
+  },
+  "schema": "HHS_MULTIMODAL_RELATION_ALPHABET_V1",
+  "symbols": [
+    "UNIT",
+    "PAIR",
+    "OPPOSITE",
+    "RECIPROCAL",
+    "ORDER",
+    "CYCLE",
+    "RATIO",
+    "CLOSURE",
+    "BRANCH",
+    "MERGE",
+    "ROTATE",
+    "SCALE"
+  ]
+}

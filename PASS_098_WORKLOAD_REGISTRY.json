@@ -1,0 +1,103 @@
+{
+  "schema": "HHS_PASS_098_WORKLOAD_REGISTRY_V1",
+  "workloads": [
+    {
+      "held_out": false,
+      "name": "Two-layer baseline",
+      "schema": "HHS_PASS_098_WORKLOAD_V1",
+      "workload_id": "W98-01",
+      "workload_root_hash72": "0000000000000000000000000000000mxf59(b9!yHlvGalmkyPDWH6TWZM-3x+gJIHBNY23"
+    },
+    {
+      "held_out": false,
+      "name": "Opposite U72 phase pair",
+      "schema": "HHS_PASS_098_WORKLOAD_V1",
+      "workload_id": "W98-02",
+      "workload_root_hash72": "0000000000000000000000000000000/q=kxgaoa*aXNgqaP0F7y=f+8OK^cAkHv+4IWSXiR"
+    },
+    {
+      "held_out": false,
+      "name": "Four-prime multiplex",
+      "schema": "HHS_PASS_098_WORKLOAD_V1",
+      "workload_id": "W98-03",
+      "workload_root_hash72": "0000000000000000000000000000000uaVQ*tv>Hce9CmlBxjR)Ngr^pvGf*/NM!yu>ik356"
+    },
+    {
+      "held_out": false,
+      "name": "Same primes reordered operations",
+      "schema": "HHS_PASS_098_WORKLOAD_V1",
+      "workload_id": "W98-04",
+      "workload_root_hash72": "0000000000000000000000000000002ucjGWR!Hue4t^g^Hz!9ZU4+9W+>ucNZO6EIBG/VZI"
+    },
+    {
+      "held_out": false,
+      "name": "Reciprocal pair interference",
+      "schema": "HHS_PASS_098_WORKLOAD_V1",
+      "workload_id": "W98-05",
+      "workload_root_hash72": "00000000000000000000000000000011CfsRQzox3m?9wQA4K7)rXQCnsuLU)Rq3ZA*tp!o3"
+    },
+    {
+      "held_out": false,
+      "name": "Dense phase-offset field",
+      "schema": "HHS_PASS_098_WORKLOAD_V1",
+      "workload_id": "W98-06",
+      "workload_root_hash72": "00000000000000000000000000000014sn9CUonvT=3cWdgZB9Py0o>ZkmZUl--8z>7kq!S="
+    },
+    {
+      "held_out": false,
+      "name": "Multi-observation source reconstruction",
+      "schema": "HHS_PASS_098_WORKLOAD_V1",
+      "workload_id": "W98-07",
+      "workload_root_hash72": "0000000000000000000000000000003st9T^7VD*ReZ2-C87S>aDXew/VkR8Tokdj78?sGnR"
+    },
+    {
+      "held_out": false,
+      "name": "Noise-localization experiment",
+      "schema": "HHS_PASS_098_WORKLOAD_V1",
+      "workload_id": "W98-08",
+      "workload_root_hash72": "0000000000000000000000000000004b56v8tnP65eOBl0jvi=!qFZ?f0ezhjKO3?7jgfJeD"
+    },
+    {
+      "held_out": false,
+      "name": "Latency normalization",
+      "schema": "HHS_PASS_098_WORKLOAD_V1",
+      "workload_id": "W98-09",
+      "workload_root_hash72": "0000000000000000000000000000004b7=bvBvaI=1fXbIwYg>aDoMl/)nY7u5ri>ZrVs7j2"
+    },
+    {
+      "held_out": false,
+      "name": "Cross-modal phase field",
+      "schema": "HHS_PASS_098_WORKLOAD_V1",
+      "workload_id": "W98-10",
+      "workload_root_hash72": "0000000000000000000000000000001^kaF+hk1i!NFIP0M^1zLirZ^Y=O5dyBGINfQT3GZ>"
+    },
+    {
+      "held_out": false,
+      "name": "Prime-periodic operation specialization",
+      "schema": "HHS_PASS_098_WORKLOAD_V1",
+      "workload_id": "W98-11",
+      "workload_root_hash72": "0000000000000000000000000000004IIj6aY9L>EWbexWYz3uU/yr=HuT^Y=1^(WOQmmCN4"
+    },
+    {
+      "held_out": false,
+      "name": "Composite recurrence reconstruction",
+      "schema": "HHS_PASS_098_WORKLOAD_V1",
+      "workload_id": "W98-12",
+      "workload_root_hash72": "0000000000000000000000000000002+otm3qHwzlBbvu1G9mcpdGpCl/*Y1nvGR08ZEA/tZ"
+    },
+    {
+      "held_out": false,
+      "name": "Checkpoint interruption",
+      "schema": "HHS_PASS_098_WORKLOAD_V1",
+      "workload_id": "W98-13",
+      "workload_root_hash72": "00000000000000000000000000000024QBb7Gng5-d3-v9PkD)t73Weg1qcS>V(LxgR?6Zn*"
+    },
+    {
+      "held_out": true,
+      "name": "Held-out prime periodicity",
+      "schema": "HHS_PASS_098_WORKLOAD_V1",
+      "workload_id": "W98-14",
+      "workload_root_hash72": "0000000000000000000000000000004mh8LfCj/dR7j>Lti-^tmY(zK>UjrVtxIBShdF>0tz"
+    }
+  ]
+}

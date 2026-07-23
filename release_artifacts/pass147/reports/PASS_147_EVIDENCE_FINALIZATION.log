@@ -1,0 +1,13 @@
+{
+  "parent": "PARENT_ADMITTED",
+  "tests": {
+    "errors": 0,
+    "failures": 0,
+    "skipped": 0,
+    "tests": 83
+  },
+  "external_actor": "EXTERNAL_ACTOR_WORKFLOW_COMPLETED",
+  "public_capabilities": 132,
+  "privileged_internal_access": 0,
+  "terminal_status": "PASS_147_NOT_CLOSED"
+}

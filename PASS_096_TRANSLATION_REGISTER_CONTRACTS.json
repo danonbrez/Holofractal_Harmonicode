@@ -1,0 +1,260 @@
+{
+  "schema": "HHS_PASS_096_REGISTER_CONTRACTS_V1",
+  "contracts": [
+    {
+      "contract_root_hash72": "0000000000000000000000000000002k!v)nk8eav^8X7f!ATWIX=^y0iZInFB/iBpupE/XB",
+      "language_projection_is_authority": false,
+      "loss_classification": "EXACT",
+      "may_strengthen_epistemic_status": false,
+      "register": "FORMAL_HARMONICODE",
+      "required_fields": [
+        "entities",
+        "relations",
+        "operator_order",
+        "quantities",
+        "causal_direction",
+        "ambiguities"
+      ],
+      "requires_reconstruction_map": false,
+      "schema": "HHS_LANGUAGE_REGISTER_CONTRACT_V1"
+    },
+    {
+      "contract_root_hash72": "0000000000000000000000000000004BA2nDG-2+Mgc>E4kx2sNa=!mQYkXiWji5t+RTRu9T",
+      "language_projection_is_authority": false,
+      "loss_classification": "EQUIVALENT",
+      "may_strengthen_epistemic_status": false,
+      "register": "ACADEMIC_STEM",
+      "required_fields": [
+        "entities",
+        "relations",
+        "operator_order",
+        "quantities",
+        "causal_direction",
+        "ambiguities"
+      ],
+      "requires_reconstruction_map": false,
+      "schema": "HHS_LANGUAGE_REGISTER_CONTRACT_V1"
+    },
+    {
+      "contract_root_hash72": "0000000000000000000000000000003NixBobtgAm9Fu/DEaZxd=jf(s/q3+zW^BZ+1AvX8=",
+      "language_projection_is_authority": false,
+      "loss_classification": "EQUIVALENT",
+      "may_strengthen_epistemic_status": false,
+      "register": "TECHNICAL_ENGINEERING",
+      "required_fields": [
+        "entities",
+        "relations",
+        "operator_order",
+        "quantities",
+        "causal_direction",
+        "ambiguities"
+      ],
+      "requires_reconstruction_map": false,
+      "schema": "HHS_LANGUAGE_REGISTER_CONTRACT_V1"
+    },
+    {
+      "contract_root_hash72": "00000000000000000000000000000021t?VmAp2=O/Cx(>mLw00T?3F0xT(e*auAvI>NZzuz",
+      "language_projection_is_authority": false,
+      "loss_classification": "EQUIVALENT",
+      "may_strengthen_epistemic_status": false,
+      "register": "COMMON_USE",
+      "required_fields": [
+        "entities",
+        "relations",
+        "operator_order",
+        "causal_direction",
+        "ambiguities"
+      ],
+      "requires_reconstruction_map": false,
+      "schema": "HHS_LANGUAGE_REGISTER_CONTRACT_V1"
+    },
+    {
+      "contract_root_hash72": "00000000000000000000000000000027U6H067)xVAYr)azbvvw^ljp)!ew5Z1BXw7^2H4TW",
+      "language_projection_is_authority": false,
+      "loss_classification": "METAPHORIC",
+      "may_strengthen_epistemic_status": false,
+      "register": "MYTHOPOETIC",
+      "required_fields": [
+        "entities",
+        "relations",
+        "operator_order",
+        "causal_direction",
+        "ambiguities"
+      ],
+      "requires_reconstruction_map": true,
+      "schema": "HHS_LANGUAGE_REGISTER_CONTRACT_V1"
+    },
+    {
+      "contract_root_hash72": "0000000000000000000000000000003qxZGZQQ?1irJ)0tO^Z!mvwLfW+f5A=YTyACy^bpz^",
+      "language_projection_is_authority": false,
+      "loss_classification": "METAPHORIC",
+      "may_strengthen_epistemic_status": false,
+      "register": "ALLEGORICAL",
+      "required_fields": [
+        "entities",
+        "relations",
+        "operator_order",
+        "causal_direction",
+        "ambiguities"
+      ],
+      "requires_reconstruction_map": true,
+      "schema": "HHS_LANGUAGE_REGISTER_CONTRACT_V1"
+    }
+  ],
+  "translation_matrix": [
+    {
+      "preserves_ambiguity": true,
+      "preserves_operator_order": true,
+      "preserves_provenance": true,
+      "requires_runtime_validation": true,
+      "schema": "HHS_LANGUAGE_TRANSLATION_CONTRACT_V1",
+      "source_register": "FORMAL_HARMONICODE",
+      "target_register": "ACADEMIC_STEM",
+      "translation_is_authority": false,
+      "translation_root_hash72": "0000000000000000000000000000003Y(LknUPmNWtOjzs8-N2kO3zV)>Co/bL2kk8mgQmxf"
+    },
+    {
+      "preserves_ambiguity": true,
+      "preserves_operator_order": true,
+      "preserves_provenance": true,
+      "requires_runtime_validation": true,
+      "schema": "HHS_LANGUAGE_TRANSLATION_CONTRACT_V1",
+      "source_register": "ACADEMIC_STEM",
+      "target_register": "FORMAL_HARMONICODE",
+      "translation_is_authority": false,
+      "translation_root_hash72": "0000000000000000000000000000003xydT1DHwX-1gnHwbEEAG8=YDeNoa8rrpYtH=R*7K8"
+    },
+    {
+      "preserves_ambiguity": true,
+      "preserves_operator_order": true,
+      "preserves_provenance": true,
+      "requires_runtime_validation": true,
+      "schema": "HHS_LANGUAGE_TRANSLATION_CONTRACT_V1",
+      "source_register": "FORMAL_HARMONICODE",
+      "target_register": "COMMON_USE",
+      "translation_is_authority": false,
+      "translation_root_hash72": "0000000000000000000000000000001q^g?EfIQL3k>?wMHN7hlY2KAfsy13G0CeS1ncB?rL"
+    },
+    {
+      "preserves_ambiguity": true,
+      "preserves_operator_order": true,
+      "preserves_provenance": true,
+      "requires_runtime_validation": true,
+      "schema": "HHS_LANGUAGE_TRANSLATION_CONTRACT_V1",
+      "source_register": "COMMON_USE",
+      "target_register": "FORMAL_HARMONICODE",
+      "translation_is_authority": false,
+      "translation_root_hash72": "0000000000000000000000000000001wGKdaLj1sMMcIUx7-YlM=yGe7)K)EtSO1h)M>BOfv"
+    },
+    {
+      "preserves_ambiguity": true,
+      "preserves_operator_order": true,
+      "preserves_provenance": true,
+      "requires_runtime_validation": true,
+      "schema": "HHS_LANGUAGE_TRANSLATION_CONTRACT_V1",
+      "source_register": "FORMAL_HARMONICODE",
+      "target_register": "MYTHOPOETIC",
+      "translation_is_authority": false,
+      "translation_root_hash72": "00000000000000000000000000000043^Awo9woNbJpZvzotRuaonw7LOwc2G3COSHyivvw!"
+    },
+    {
+      "preserves_ambiguity": true,
+      "preserves_operator_order": true,
+      "preserves_provenance": true,
+      "requires_runtime_validation": true,
+      "schema": "HHS_LANGUAGE_TRANSLATION_CONTRACT_V1",
+      "source_register": "MYTHOPOETIC",
+      "target_register": "FORMAL_HARMONICODE",
+      "translation_is_authority": false,
+      "translation_root_hash72": "0000000000000000000000000000003)YtenNaBUo=-+mAnCuTLBM^Rl7jnRExVCy0xObFjQ"
+    },
+    {
+      "preserves_ambiguity": true,
+      "preserves_operator_order": true,
+      "preserves_provenance": true,
+      "requires_runtime_validation": true,
+      "schema": "HHS_LANGUAGE_TRANSLATION_CONTRACT_V1",
+      "source_register": "FORMAL_HARMONICODE",
+      "target_register": "ALLEGORICAL",
+      "translation_is_authority": false,
+      "translation_root_hash72": "0000000000000000000000000000002!^fAsSVAB(?LFs+WbKZ>!!-FfIRCOcUSS+9XtKaCK"
+    },
+    {
+      "preserves_ambiguity": true,
+      "preserves_operator_order": true,
+      "preserves_provenance": true,
+      "requires_runtime_validation": true,
+      "schema": "HHS_LANGUAGE_TRANSLATION_CONTRACT_V1",
+      "source_register": "ALLEGORICAL",
+      "target_register": "FORMAL_HARMONICODE",
+      "translation_is_authority": false,
+      "translation_root_hash72": "00000000000000000000000000000000z9Utv5tv92=OmV)K*9YPinpI-^cHvHHFR6rEJARM"
+    },
+    {
+      "preserves_ambiguity": true,
+      "preserves_operator_order": true,
+      "preserves_provenance": true,
+      "requires_runtime_validation": true,
+      "schema": "HHS_LANGUAGE_TRANSLATION_CONTRACT_V1",
+      "source_register": "ACADEMIC_STEM",
+      "target_register": "COMMON_USE",
+      "translation_is_authority": false,
+      "translation_root_hash72": "0000000000000000000000000000004iJ+OGDl4hucFdE2hHI4Xn*6dod38ZWM032BLOLLsG"
+    },
+    {
+      "preserves_ambiguity": true,
+      "preserves_operator_order": true,
+      "preserves_provenance": true,
+      "requires_runtime_validation": true,
+      "schema": "HHS_LANGUAGE_TRANSLATION_CONTRACT_V1",
+      "source_register": "COMMON_USE",
+      "target_register": "ACADEMIC_STEM",
+      "translation_is_authority": false,
+      "translation_root_hash72": "0000000000000000000000000000003fV1yrN+=P9VvEx0D1Ku7!2yGpQfh55(nKZ^YeulkJ"
+    },
+    {
+      "preserves_ambiguity": true,
+      "preserves_operator_order": true,
+      "preserves_provenance": true,
+      "requires_runtime_validation": true,
+      "schema": "HHS_LANGUAGE_TRANSLATION_CONTRACT_V1",
+      "source_register": "ACADEMIC_STEM",
+      "target_register": "ALLEGORICAL",
+      "translation_is_authority": false,
+      "translation_root_hash72": "0000000000000000000000000000003QZRdo94ZyMQAIsmjNM5Htj3pyKunNOP!uF4ETiTc0"
+    },
+    {
+      "preserves_ambiguity": true,
+      "preserves_operator_order": true,
+      "preserves_provenance": true,
+      "requires_runtime_validation": true,
+      "schema": "HHS_LANGUAGE_TRANSLATION_CONTRACT_V1",
+      "source_register": "ALLEGORICAL",
+      "target_register": "ACADEMIC_STEM",
+      "translation_is_authority": false,
+      "translation_root_hash72": "00000000000000000000000000000039?s7Qfelbq)4*OOdbFIh=5Qo2uDxegNG/h3G8M3Qi"
+    },
+    {
+      "preserves_ambiguity": true,
+      "preserves_operator_order": true,
+      "preserves_provenance": true,
+      "requires_runtime_validation": true,
+      "schema": "HHS_LANGUAGE_TRANSLATION_CONTRACT_V1",
+      "source_register": "COMMON_USE",
+      "target_register": "MYTHOPOETIC",
+      "translation_is_authority": false,
+      "translation_root_hash72": "0000000000000000000000000000000F69dRI/deF4XNq/z4M1cXNhHAaU6Ukh+r9Ks+7sxS"
+    },
+    {
+      "preserves_ambiguity": true,
+      "preserves_operator_order": true,
+      "preserves_provenance": true,
+      "requires_runtime_validation": true,
+      "schema": "HHS_LANGUAGE_TRANSLATION_CONTRACT_V1",
+      "source_register": "MYTHOPOETIC",
+      "target_register": "COMMON_USE",
+      "translation_is_authority": false,
+      "translation_root_hash72": "0000000000000000000000000000000V)F>dykeZzXm8R8U5dPa7Gl2Bxc^R5AnWH2au6vcL"
+    }
+  ]
+}

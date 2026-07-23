@@ -1,0 +1,376 @@
+{
+  "all_new_modules_reusable": true,
+  "edges": [
+    {
+      "edge_root_hash72": "0000000000000000000000000000003a+r6VRYa3qGQfX)7SgEQ(7u)NFa660AHQ6v=gg1/c",
+      "from_node": "pass077.package",
+      "relationship": "IMPORTS_OR_CONSUMES",
+      "to_node": "pass077.runtime"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000002Ublr-0+ovDJ)D/^fE9vjtXNpW(bQ3O5KQjmLkf(o7",
+      "from_node": "pass077.semantic_projection",
+      "relationship": "IMPORTS_OR_CONSUMES",
+      "to_node": "pass077.contracts"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000002/NGGvH5k*kx?oV7rNhp!/KGIE>-0tqiU^FTXI4bM^",
+      "from_node": "pass077.bytecode",
+      "relationship": "IMPORTS_OR_CONSUMES",
+      "to_node": "pass077.contracts"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000000iw7dQyw^qX0TQyW6qHx0mx0M2bj1g9Zvh/gxAT0Is",
+      "from_node": "pass077.bytecode",
+      "relationship": "IMPORTS_OR_CONSUMES",
+      "to_node": "pass076.interpreter"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000001cVuxs486S(*X2XKU^nl+BoW6-46LAUAZN+VLZ4svo",
+      "from_node": "pass077.equivalence",
+      "relationship": "IMPORTS_OR_CONSUMES",
+      "to_node": "pass077.semantic_projection"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000004c+Jt*O-Gfw2uzTDWBLr6P6lhXG-7HW>txkcRWT?2u",
+      "from_node": "pass077.equivalence",
+      "relationship": "IMPORTS_OR_CONSUMES",
+      "to_node": "pass077.contracts"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000000)uNK?CXi^Y7D79=3b+(RmQjLKWsJdFYJGgFC1nK!o",
+      "from_node": "pass077.lineage",
+      "relationship": "IMPORTS_OR_CONSUMES",
+      "to_node": "pass077.bytecode"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000000S7Itj?o9Om/Oa4)har1D7fI8Irvf!OczV(cS8r*0X",
+      "from_node": "pass077.lineage",
+      "relationship": "IMPORTS_OR_CONSUMES",
+      "to_node": "pass077.contracts"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000000AmC>YGc*>ntz7pYTZSI7?(dIh*?Fy>0rK1R0R+23c",
+      "from_node": "pass077.delta",
+      "relationship": "IMPORTS_OR_CONSUMES",
+      "to_node": "pass077.lineage"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000004unK7wL1vAlQ=YquHCOa*UU3QtY2/U4eF2yXU(2gS=",
+      "from_node": "pass077.verifier_adapter",
+      "relationship": "IMPORTS_OR_CONSUMES",
+      "to_node": "pass077.lineage"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000004hQLj-rG8tIkC6f^MgcMnoCK1TaOIquYnjQ?cwI05e",
+      "from_node": "pass077.verifier_adapter",
+      "relationship": "IMPORTS_OR_CONSUMES",
+      "to_node": "pass077.standalone_verifier"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000003Ci8RuKMUZ1hx8rqpWQnjlK1ZAcKOWRQ4-CbDjiVg4",
+      "from_node": "pass077.runtime",
+      "relationship": "IMPORTS_OR_CONSUMES",
+      "to_node": "pass077.bytecode"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000004r^ho7tPz+u2wXIz2!!t2t?LlxeI07SXN(vLhR?LOv",
+      "from_node": "pass077.runtime",
+      "relationship": "IMPORTS_OR_CONSUMES",
+      "to_node": "pass077.equivalence"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000003fcqRVR7nmMy9Y!6sIpUJaRWEUsZEHh^RtKJIL9gxV",
+      "from_node": "pass077.runtime",
+      "relationship": "IMPORTS_OR_CONSUMES",
+      "to_node": "pass077.lineage"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000000PZ/fxV7IW^/zj=)2iyKo>hdouzN7=Z96>n+B>ku/w",
+      "from_node": "pass077.runtime",
+      "relationship": "IMPORTS_OR_CONSUMES",
+      "to_node": "pass077.delta"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000001oF4b>eSUuNe1U*MOrwlbo/ukJAYdR?1CDUUxBiKsA",
+      "from_node": "pass077.runtime",
+      "relationship": "IMPORTS_OR_CONSUMES",
+      "to_node": "pass077.verifier_adapter"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000000>d/>R>2pik(b-YPdLqC!DeSN31fp=/10U/7=JrFsd",
+      "from_node": "pass077.runtime",
+      "relationship": "IMPORTS_OR_CONSUMES",
+      "to_node": "pass076.runtime"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000002HAcHf5YQI4dHVW3ZCx>9T)odyJEtnqDAJbsADvgHo",
+      "from_node": "pass077.api",
+      "relationship": "IMPORTS_OR_CONSUMES",
+      "to_node": "pass077.runtime"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000001lkVTrf0?1DmAp!tbX=Sc1LHv9S?=/OWcE+?3JEWhU",
+      "from_node": "pass077.api",
+      "relationship": "IMPORTS_OR_CONSUMES",
+      "to_node": "pass074.api"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000001XPM4TtrlN5h0Yct!xOy4sOChxG7SjQp9l7P(wMwuh",
+      "from_node": "pass077.cli",
+      "relationship": "IMPORTS_OR_CONSUMES",
+      "to_node": "pass077.runtime"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000000fIfSClnC0enrG/tby!2920xQsv1sW3s^9b/D6(guV",
+      "from_node": "pass077.cli",
+      "relationship": "IMPORTS_OR_CONSUMES",
+      "to_node": "pass077.replay"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000001RaO96tvDHA7(Zq+PTy)d3Yg=3)S(nX+5DpBxkY2^N",
+      "from_node": "pass077.cli",
+      "relationship": "IMPORTS_OR_CONSUMES",
+      "to_node": "pass077.verifier_adapter"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000001>8!l6g+I5p!qCH)0eflJNs6*zgAEs5Js5HU)P4kb*",
+      "from_node": "pass077.replay",
+      "relationship": "IMPORTS_OR_CONSUMES",
+      "to_node": "pass077.runtime"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000001CuktEs^(elg9Y=zJy2jeiH1-^>iJdODO-kG7b+U!A",
+      "from_node": "pass077.replay",
+      "relationship": "IMPORTS_OR_CONSUMES",
+      "to_node": "pass077.program_graph"
+    },
+    {
+      "edge_root_hash72": "0000000000000000000000000000003B6WV*sf=XQ46P(EtR51vxBILyHNveRwW/*a?+gPH1",
+      "from_node": "pass077.program_graph",
+      "relationship": "IMPORTS_OR_CONSUMES",
+      "to_node": "pass077.contracts"
+    }
+  ],
+  "entrypoints": [
+    "pass077.api",
+    "pass077.cli",
+    "pass077.replay",
+    "pass077.package",
+    "pass077.standalone_verifier"
+  ],
+  "inherited_dependency_count": 3,
+  "native_module_count": 14,
+  "new_capabilities": [
+    "compiler.plan",
+    "compiler.lower",
+    "compiler.optimize",
+    "compiler.emit",
+    "compiler.validate",
+    "compiler.replay",
+    "lineage.record",
+    "artifact.package",
+    "artifact.verify",
+    "artifact.export",
+    "artifact.delta.create",
+    "artifact.delta.apply"
+  ],
+  "nodes": [
+    {
+      "dependencies": [
+        "pass077.runtime"
+      ],
+      "kind": "PASS077_NATIVE_MODULE",
+      "node_id": "pass077.package",
+      "node_root_hash72": "0000000000000000000000000000003+RjCbi1s9rAAdiBZNqEXmJ59TfWUrBdt9*SLbntUq",
+      "reachable": true,
+      "relative_path": "native_projects/hhs_compiler_artifact_pipeline/__init__.py",
+      "reusable_capability": true
+    },
+    {
+      "dependencies": [],
+      "kind": "PASS077_NATIVE_MODULE",
+      "node_id": "pass077.contracts",
+      "node_root_hash72": "0000000000000000000000000000002PIr8IlY^MHpZ/TfyOp7-+fENeKEAN5B6g(ss2-kbu",
+      "reachable": true,
+      "relative_path": "native_projects/hhs_compiler_artifact_pipeline/hhs_pass077_contracts_v1.py",
+      "reusable_capability": true
+    },
+    {
+      "dependencies": [
+        "pass077.contracts"
+      ],
+      "kind": "PASS077_NATIVE_MODULE",
+      "node_id": "pass077.semantic_projection",
+      "node_root_hash72": "0000000000000000000000000000002qiovu9Q*n/WZ^NP0(p-Q+JNsnQdrRy-Qb8bQgBlpx",
+      "reachable": true,
+      "relative_path": "native_projects/hhs_compiler_artifact_pipeline/hhs_canonical_semantic_projection_v1.py",
+      "reusable_capability": true
+    },
+    {
+      "dependencies": [
+        "pass077.contracts",
+        "pass076.interpreter"
+      ],
+      "kind": "PASS077_NATIVE_MODULE",
+      "node_id": "pass077.bytecode",
+      "node_root_hash72": "0000000000000000000000000000000di+kRG/iGVTHPo1UoDCZ4/+n8YF0n^fD^n7uZp)PJ",
+      "reachable": true,
+      "relative_path": "native_projects/hhs_compiler_artifact_pipeline/hhs_portable_bytecode_v1.py",
+      "reusable_capability": true
+    },
+    {
+      "dependencies": [
+        "pass077.semantic_projection",
+        "pass077.contracts"
+      ],
+      "kind": "PASS077_NATIVE_MODULE",
+      "node_id": "pass077.equivalence",
+      "node_root_hash72": "00000000000000000000000000000032fc835jg^NnIF+?5D^0Kvvk+Ys4*1pA)rfkSYX5O^",
+      "reachable": true,
+      "relative_path": "native_projects/hhs_compiler_artifact_pipeline/hhs_interpreter_compiler_equivalence_gate_v1.py",
+      "reusable_capability": true
+    },
+    {
+      "dependencies": [
+        "pass077.bytecode",
+        "pass077.contracts"
+      ],
+      "kind": "PASS077_NATIVE_MODULE",
+      "node_id": "pass077.lineage",
+      "node_root_hash72": "0000000000000000000000000000001rRWfqgZiWV4Q!E=cN8vbcOec7BqTpqDTVjZGI0(4+",
+      "reachable": true,
+      "relative_path": "native_projects/hhs_compiler_artifact_pipeline/hhs_artifact_lineage_pipeline_v1.py",
+      "reusable_capability": true
+    },
+    {
+      "dependencies": [
+        "pass077.lineage"
+      ],
+      "kind": "PASS077_NATIVE_MODULE",
+      "node_id": "pass077.delta",
+      "node_root_hash72": "0000000000000000000000000000001>vO>1q364Zxrojgtfo-Flx4N2ujyDSpG0rtUS(SH>",
+      "reachable": true,
+      "relative_path": "native_projects/hhs_compiler_artifact_pipeline/hhs_exact_artifact_delta_v1.py",
+      "reusable_capability": true
+    },
+    {
+      "dependencies": [
+        "pass077.lineage",
+        "pass077.standalone_verifier"
+      ],
+      "kind": "PASS077_NATIVE_MODULE",
+      "node_id": "pass077.verifier_adapter",
+      "node_root_hash72": "0000000000000000000000000000002AsqDkwbJfKB2yx>VoL5ia4+axgGV+31IpN?GgPMv7",
+      "reachable": true,
+      "relative_path": "native_projects/hhs_compiler_artifact_pipeline/hhs_independent_artifact_verifier_v1.py",
+      "reusable_capability": true
+    },
+    {
+      "dependencies": [
+        "pass077.bytecode",
+        "pass077.equivalence",
+        "pass077.lineage",
+        "pass077.delta",
+        "pass077.verifier_adapter",
+        "pass076.runtime"
+      ],
+      "kind": "PASS077_NATIVE_MODULE",
+      "node_id": "pass077.runtime",
+      "node_root_hash72": "00000000000000000000000000000015>t^l(PV*Mz7IY-e(zK82WA^yn/p/oiTvUgsdeGfl",
+      "reachable": true,
+      "relative_path": "native_projects/hhs_compiler_artifact_pipeline/hhs_pass077_workspace_runtime_v1.py",
+      "reusable_capability": true
+    },
+    {
+      "dependencies": [
+        "pass077.runtime",
+        "pass074.api"
+      ],
+      "kind": "PASS077_NATIVE_MODULE",
+      "node_id": "pass077.api",
+      "node_root_hash72": "0000000000000000000000000000001v5F2md+f7Mit=Ns0QMO(2*z)EVEP>op00^S-EKmHY",
+      "reachable": true,
+      "relative_path": "native_projects/hhs_compiler_artifact_pipeline/hhs_pass077_api_v1.py",
+      "reusable_capability": true
+    },
+    {
+      "dependencies": [
+        "pass077.runtime",
+        "pass077.replay",
+        "pass077.verifier_adapter"
+      ],
+      "kind": "PASS077_NATIVE_MODULE",
+      "node_id": "pass077.cli",
+      "node_root_hash72": "00000000000000000000000000000034CRy2Dyk0O60qCq)dBeAOmbRPoU95ooHWJ68/gw(k",
+      "reachable": true,
+      "relative_path": "native_projects/hhs_compiler_artifact_pipeline/hhs_pass077_cli_v1.py",
+      "reusable_capability": true
+    },
+    {
+      "dependencies": [
+        "pass077.runtime",
+        "pass077.program_graph"
+      ],
+      "kind": "PASS077_NATIVE_MODULE",
+      "node_id": "pass077.replay",
+      "node_root_hash72": "0000000000000000000000000000001>0!ku*cXr5wra?JN2TTa^qOCW/J-1f!gj5)(YJeC0",
+      "reachable": true,
+      "relative_path": "native_projects/hhs_compiler_artifact_pipeline/hhs_pass077_replay_runner_v1.py",
+      "reusable_capability": true
+    },
+    {
+      "dependencies": [
+        "pass077.contracts"
+      ],
+      "kind": "PASS077_NATIVE_MODULE",
+      "node_id": "pass077.program_graph",
+      "node_root_hash72": "0000000000000000000000000000004K+CJf*f0tJPMR=>0lUs!JbW(U*1njnF7bc)=Lbus6",
+      "reachable": true,
+      "relative_path": "native_projects/hhs_compiler_artifact_pipeline/hhs_pass077_program_graph_v1.py",
+      "reusable_capability": true
+    },
+    {
+      "dependencies": [],
+      "kind": "PASS077_NATIVE_MODULE",
+      "node_id": "pass077.standalone_verifier",
+      "node_root_hash72": "0000000000000000000000000000004k/8we*bUkC11=7!TGIhSi0aM/+a-y/9=tV8znrO7g",
+      "reachable": true,
+      "relative_path": "native_projects/hhs_compiler_artifact_pipeline/verifier/verify_artifact.py",
+      "reusable_capability": true
+    },
+    {
+      "dependencies": [],
+      "kind": "INHERITED_REUSABLE_DEPENDENCY",
+      "node_id": "pass076.runtime",
+      "node_root_hash72": "0000000000000000000000000000004mW6EaLazQEZA6rlKnH/*p*XyElvp-PbTJhW2ylbYj",
+      "reachable": true,
+      "relative_path": "native_projects/hhs_harmonicode_interpreter/hhs_pass076_workspace_runtime_v1.py",
+      "reusable_capability": true
+    },
+    {
+      "dependencies": [],
+      "kind": "INHERITED_REUSABLE_DEPENDENCY",
+      "node_id": "pass076.interpreter",
+      "node_root_hash72": "0000000000000000000000000000003U3n3)v=nh)e?!w-j9!9wP6WMkQ9F=lzgHar7q?TEk",
+      "reachable": true,
+      "relative_path": "native_projects/hhs_harmonicode_interpreter/hhs_exact_symbolic_interpreter_v1.py",
+      "reusable_capability": true
+    },
+    {
+      "dependencies": [],
+      "kind": "INHERITED_REUSABLE_DEPENDENCY",
+      "node_id": "pass074.api",
+      "node_root_hash72": "0000000000000000000000000000000DjUOt1Fx)>n4+GldQGFWJc!Qv-VY5w3b9R91O=eW/",
+      "reachable": true,
+      "relative_path": "native_projects/hhs_ide_workspace/hhs_unified_runtime_api_v1.py",
+      "reusable_capability": true
+    }
+  ],
+  "orphan_native_module_count": 0,
+  "pass_id": "PASS_077",
+  "program_graph_root_hash72": "0000000000000000000000000000004aP-dbiLU77d8Kg9UK?9Kfa5l(soI*(SJNT8sAu2^+",
+  "program_id": "program:hhs-verified-semantic-projection-and-artifact-lineage",
+  "reachable_native_module_count": 14,
+  "schema": "HHS_NATIVE_PROGRAM_REACHABILITY_GRAPH_V1"
+}

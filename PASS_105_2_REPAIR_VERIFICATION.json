@@ -1,0 +1,31 @@
+{
+  "all_repairs_verified": true,
+  "authoritative_kernel": {
+    "kernel_file": "/mnt/data/pass105_2_work/pass105_1/HARMONICODE_KERNEL_v44_2_lockcore_patched_selfsolving_hash72authority_locked-7.py",
+    "kernel_hash72_probe": "H72N-db30158c5996b9cee0",
+    "kernel_loaded": true,
+    "kernel_module": "HARMONICODE_KERNEL_v44_2_lockcore_patched_selfsolving_hash72authority_locked-7",
+    "local_substitute_authority_used": false
+  },
+  "mobile_failure_integrity": {
+    "canonical_mock_fallback_absent": true,
+    "forbidden_hits": [],
+    "typed_unavailable_snapshot_present": true
+  },
+  "pass_id": "PASS_105_2",
+  "px1_face": {
+    "equation_implemented": true,
+    "placeholder_class_absent": true,
+    "real_face_registered": true
+  },
+  "runtime_execution": {
+    "echo_executor": false,
+    "execution_performed": true,
+    "full_receipt_hash72": "eC4itzt(aBRrQ8*WTRr(s11r",
+    "solver_receipt_hash72": "FrTbU*Z)k7yK/2(7UJ7Ba√sM",
+    "status": "SOLVED",
+    "transport": "harmonicode_interpreter_solver"
+  },
+  "schema": "HHS_PASS105_2_AUTHORITY_PLACEHOLDER_CLOSURE_V1",
+  "status": "PASS"
+}

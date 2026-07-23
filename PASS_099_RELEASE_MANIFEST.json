@@ -1,0 +1,32 @@
+{
+  "schema": "HHS_PASS_099_RELEASE_MANIFEST_V1",
+  "pass_id": "PASS_099",
+  "parent_pass098_release_root_hash72": "0000000000000000000000000000000R*=E->u/U(IMA7kn50v/FHpR5r*Foosa>^0I8iQ*)",
+  "carrier_modulus": 72,
+  "primitive_count": 22,
+  "workload_count": 14,
+  "negative_case_count": 14,
+  "all_negative_cases_passed": true,
+  "carrier_closure_distinct_from_state_reset": true,
+  "state_persisted_across_cycles": true,
+  "checkpoint_replay_exact": true,
+  "noncommutative_order_distinguished": true,
+  "bounded_synthesis_validated": true,
+  "held_out_synthesis_evaluated": true,
+  "all_replays_verified": true,
+  "artifacts": [
+    "PASS_099_DYNAMIC_PROGRAM.json",
+    "PASS_099_EXECUTION_RECEIPT.json",
+    "PASS_099_TRANSITION_HISTORY.json",
+    "PASS_099_CHECKPOINT_REPLAY.json",
+    "PASS_099_PROGRAM_SYNTHESIS.json",
+    "PASS_099_PRIMITIVE_OPERATION_BASIS.json",
+    "PASS_099_WORKLOAD_REGISTRY.json",
+    "PASS_099_NEGATIVE_CASES.json",
+    "PASS_099_OUTCOME_TAXONOMY.json",
+    "PASS_099_REPLAY_RESULT.json",
+    "PASS_099_CALIBRATION_REPORT.md",
+    "CHANGELOG_PASS_099.md"
+  ],
+  "pass099_release_root_hash72": "0000000000000000000000000000004oE=B?pc>jpobMm2kh4*B8L9itX0rgw172+aiI3siP"
+}

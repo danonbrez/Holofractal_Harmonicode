@@ -1,0 +1,28 @@
+{
+  "schema": "HHS_PASS_108_RELEASE_MANIFEST_V1",
+  "pass_id": "PASS_108",
+  "parent_pass": "PASS_107",
+  "parent_release_root_hash72": "0000000000000000000000000000002Xd0i*!df62Rg=b5gy??ArZvRHz)GTVQQEjFzZysa(",
+  "implementation_module": "hhs_runtime/hhs_pass108_coherence_preserving_self_optimization_v1.py",
+  "test_module": "tests/test_hhs_pass108_coherence_preserving_self_optimization_v1.py",
+  "service_name": "runtime.coherence_preserving_self_optimization.pass108",
+  "baseline_root_hash72": "0000000000000000000000000000004z1bCFbd)7qM=-it/=aHYR)pNn+Q4HzjFOJDllHPmG",
+  "coherence_vector_root_hash72": "0000000000000000000000000000002u?O5As5KT8h5jMVorT2=2q)>5y2ZDMPViNPwY0JIu",
+  "optimization_receipt_root_hash72": "0000000000000000000000000000001YABdMqBCU0!Yl+O(qqW8UKeoFZ76WGSGRwW17r-l+",
+  "admitted_capability_count": 3,
+  "real_backend_compilations_executed": 3,
+  "negative_boundary_preservation_ratio": "77/77",
+  "observed_efficiency_gain_ratio": "1/2",
+  "focused_tests": {
+    "pass108": 7,
+    "pass107": 8,
+    "pass106": 7,
+    "pass105_6": 4,
+    "total": 26,
+    "passed": 26
+  },
+  "mock_components": 0,
+  "parallel_test_computation_used": false,
+  "status": "OPTIMIZATION_ADMITTED_WITHOUT_CAPABILITY_DEVOLUTION",
+  "release_root_hash72": "0000000000000000000000000000003>1uOM(2V6GryWsJmb3DBf(C1l4)Zrp764lrpi!c3i"
+}

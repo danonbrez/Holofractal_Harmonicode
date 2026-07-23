@@ -1,0 +1,268 @@
+{
+  "schema": "HHS_PASS_082_3_CAPACITY_FRONTIERS_V1",
+  "frontiers": {
+    "lossless_closed": [
+      {
+        "workload_id": "W33:clean-baseline",
+        "signal_elements": 64,
+        "noise_admitted": 0,
+        "branch_count": 2
+      },
+      {
+        "workload_id": "W34:10pct-redundant-symbolic",
+        "signal_elements": 90,
+        "noise_admitted": 10,
+        "branch_count": 2
+      },
+      {
+        "workload_id": "W35:25pct-irrelevant-branch",
+        "signal_elements": 75,
+        "noise_admitted": 25,
+        "branch_count": 4
+      },
+      {
+        "workload_id": "W36:reciprocal-mismatch",
+        "signal_elements": 64,
+        "noise_admitted": 8,
+        "branch_count": 2
+      },
+      {
+        "workload_id": "W37:ordered-product-perturbation",
+        "signal_elements": 64,
+        "noise_admitted": 12,
+        "branch_count": 2
+      },
+      {
+        "workload_id": "W39:dense-topological-noise",
+        "signal_elements": 128,
+        "noise_admitted": 64,
+        "branch_count": 8
+      },
+      {
+        "workload_id": "W40:temporal-duplication-reordering",
+        "signal_elements": 128,
+        "noise_admitted": 32,
+        "branch_count": 2
+      },
+      {
+        "workload_id": "W42:50pct-sparse",
+        "signal_elements": 128,
+        "noise_admitted": 128,
+        "branch_count": 8
+      },
+      {
+        "workload_id": "W44:near-valid-fracture",
+        "signal_elements": 256,
+        "noise_admitted": 1,
+        "branch_count": 2
+      },
+      {
+        "workload_id": "W46:replay-from-noisy-receipts",
+        "signal_elements": 256,
+        "noise_admitted": 64,
+        "branch_count": 2
+      }
+    ],
+    "lossless_stable_unresolved": [
+      {
+        "workload_id": "W38:contradictory-propositions",
+        "signal_elements": 64,
+        "noise_admitted": 16,
+        "branch_count": 2
+      },
+      {
+        "workload_id": "W41:mixed-semantic-algebraic",
+        "signal_elements": 128,
+        "noise_admitted": 64,
+        "branch_count": 2
+      },
+      {
+        "workload_id": "W43:75pct-dense",
+        "signal_elements": 64,
+        "noise_admitted": 192,
+        "branch_count": 8
+      }
+    ],
+    "lossless_cyclic": [],
+    "lossless_resource_bounded": [
+      {
+        "workload_id": "W45:resource-bounded-unresolved",
+        "signal_elements": 256,
+        "noise_admitted": 256,
+        "branch_count": 2
+      }
+    ],
+    "full_signal_recovery": [
+      {
+        "workload_id": "W33:clean-baseline",
+        "signal_elements": 64,
+        "noise_admitted": 0,
+        "branch_count": 2
+      },
+      {
+        "workload_id": "W34:10pct-redundant-symbolic",
+        "signal_elements": 90,
+        "noise_admitted": 10,
+        "branch_count": 2
+      },
+      {
+        "workload_id": "W35:25pct-irrelevant-branch",
+        "signal_elements": 75,
+        "noise_admitted": 25,
+        "branch_count": 4
+      },
+      {
+        "workload_id": "W36:reciprocal-mismatch",
+        "signal_elements": 64,
+        "noise_admitted": 8,
+        "branch_count": 2
+      },
+      {
+        "workload_id": "W37:ordered-product-perturbation",
+        "signal_elements": 64,
+        "noise_admitted": 12,
+        "branch_count": 2
+      },
+      {
+        "workload_id": "W38:contradictory-propositions",
+        "signal_elements": 64,
+        "noise_admitted": 16,
+        "branch_count": 2
+      },
+      {
+        "workload_id": "W39:dense-topological-noise",
+        "signal_elements": 128,
+        "noise_admitted": 64,
+        "branch_count": 8
+      },
+      {
+        "workload_id": "W40:temporal-duplication-reordering",
+        "signal_elements": 128,
+        "noise_admitted": 32,
+        "branch_count": 2
+      },
+      {
+        "workload_id": "W41:mixed-semantic-algebraic",
+        "signal_elements": 128,
+        "noise_admitted": 64,
+        "branch_count": 2
+      },
+      {
+        "workload_id": "W42:50pct-sparse",
+        "signal_elements": 128,
+        "noise_admitted": 128,
+        "branch_count": 8
+      },
+      {
+        "workload_id": "W43:75pct-dense",
+        "signal_elements": 64,
+        "noise_admitted": 192,
+        "branch_count": 8
+      },
+      {
+        "workload_id": "W44:near-valid-fracture",
+        "signal_elements": 256,
+        "noise_admitted": 1,
+        "branch_count": 2
+      },
+      {
+        "workload_id": "W45:resource-bounded-unresolved",
+        "signal_elements": 256,
+        "noise_admitted": 256,
+        "branch_count": 2
+      },
+      {
+        "workload_id": "W46:replay-from-noisy-receipts",
+        "signal_elements": 256,
+        "noise_admitted": 64,
+        "branch_count": 2
+      }
+    ],
+    "lossless_preservation": [
+      {
+        "workload_id": "W33:clean-baseline",
+        "signal_elements": 64,
+        "noise_admitted": 0,
+        "branch_count": 2
+      },
+      {
+        "workload_id": "W34:10pct-redundant-symbolic",
+        "signal_elements": 90,
+        "noise_admitted": 10,
+        "branch_count": 2
+      },
+      {
+        "workload_id": "W35:25pct-irrelevant-branch",
+        "signal_elements": 75,
+        "noise_admitted": 25,
+        "branch_count": 4
+      },
+      {
+        "workload_id": "W36:reciprocal-mismatch",
+        "signal_elements": 64,
+        "noise_admitted": 8,
+        "branch_count": 2
+      },
+      {
+        "workload_id": "W37:ordered-product-perturbation",
+        "signal_elements": 64,
+        "noise_admitted": 12,
+        "branch_count": 2
+      },
+      {
+        "workload_id": "W38:contradictory-propositions",
+        "signal_elements": 64,
+        "noise_admitted": 16,
+        "branch_count": 2
+      },
+      {
+        "workload_id": "W39:dense-topological-noise",
+        "signal_elements": 128,
+        "noise_admitted": 64,
+        "branch_count": 8
+      },
+      {
+        "workload_id": "W40:temporal-duplication-reordering",
+        "signal_elements": 128,
+        "noise_admitted": 32,
+        "branch_count": 2
+      },
+      {
+        "workload_id": "W41:mixed-semantic-algebraic",
+        "signal_elements": 128,
+        "noise_admitted": 64,
+        "branch_count": 2
+      },
+      {
+        "workload_id": "W42:50pct-sparse",
+        "signal_elements": 128,
+        "noise_admitted": 128,
+        "branch_count": 8
+      },
+      {
+        "workload_id": "W43:75pct-dense",
+        "signal_elements": 64,
+        "noise_admitted": 192,
+        "branch_count": 8
+      },
+      {
+        "workload_id": "W44:near-valid-fracture",
+        "signal_elements": 256,
+        "noise_admitted": 1,
+        "branch_count": 2
+      },
+      {
+        "workload_id": "W45:resource-bounded-unresolved",
+        "signal_elements": 256,
+        "noise_admitted": 256,
+        "branch_count": 2
+      },
+      {
+        "workload_id": "W46:replay-from-noisy-receipts",
+        "signal_elements": 256,
+        "noise_admitted": 64,
+        "branch_count": 2
+      }
+    ]
+  }
+}

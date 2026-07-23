@@ -1,0 +1,201 @@
+{
+  "all_admitted_capabilities_exercised": true,
+  "campaigns": [
+    {
+      "behavioral_coverage_ratio": "3/3",
+      "branch_result_roots": [
+        "0000000000000000000000000000001opUv67i0vo>M1s8TkmQFH75E8/xb!X(0Q?q?N>bIA",
+        "0000000000000000000000000000000ciGiNvjOoi8qUSd!*7dZ^7(qvcjvN3GC/DSRQ!/ym"
+      ],
+      "campaign_id": "pass109:BALANCED_DEFAULT",
+      "campaign_root_hash72": "0000000000000000000000000000001)l!EyYTI4AHYfGFiM7Rsw*QvYBYTEzpF1GUl6rupw",
+      "coherence_status": "PRESERVED",
+      "elapsed_ns": 2952592257,
+      "execution_schedule": "SERIAL_BACKEND_THEN_ATTACKS",
+      "genesis_configuration_root_hash72": "0000000000000000000000000000002OY-*j?Mj4q(lGkeC)SdNG1=0V^9RwNhrTsevOz4!K",
+      "mock_components": [],
+      "parallel_test_computation_used": false,
+      "projection_roots": [
+        "0000000000000000000000000000001)6Gm58adiNnlMgaG!9*sNx/H7woQ+Zoc-ZGt)L3/P",
+        "0000000000000000000000000000003CzOu2)CkH?wg7ga0cMGJ56WUSae53jxZ(u>bezb-5"
+      ],
+      "real_backend_execution": true,
+      "real_negative_attack_execution": true,
+      "real_ordered_composition_execution": true,
+      "reconciliation_root_hash72": "0000000000000000000000000000000O+0ajLqBodagZ(tzSXRhDloNHz4NIsk=S1GY=--Xq",
+      "required_capability_count": 3,
+      "schema": "HHS_GAMIFIED_CAPABILITY_PATH_RECEIPT_V1",
+      "seed_root_hash72": "0000000000000000000000000000002tvv-Egm186oYa6GEqkt8r4AISoutsnl3LnSB9e7s)",
+      "unresolved_drift_events": [],
+      "visited_capability_count": 3,
+      "visited_capability_ids": [
+        "hhs:pass105_6:real_c_asm_backend",
+        "hhs:pass105_4:production_negative_attacks",
+        "hhs:pass106:verified_backend_and_attack_composition"
+      ]
+    },
+    {
+      "behavioral_coverage_ratio": "3/3",
+      "branch_result_roots": [
+        "0000000000000000000000000000001opUv67i0vo>M1s8TkmQFH75E8/xb!X(0Q?q?N>bIA",
+        "0000000000000000000000000000000ciGiNvjOoi8qUSd!*7dZ^7(qvcjvN3GC/DSRQ!/ym"
+      ],
+      "campaign_id": "pass109:PARALLEL_THROUGHPUT",
+      "campaign_root_hash72": "0000000000000000000000000000001wX4NnplUl?kcJ^N6*vIhFOtWh3/U2ssXkCHlTzV()",
+      "coherence_status": "PRESERVED",
+      "elapsed_ns": 2935556201,
+      "execution_schedule": "PARALLEL_TWO_BRANCH",
+      "genesis_configuration_root_hash72": "0000000000000000000000000000001m?q(Kj4BUCl1?yR/4bIRT=koA/6PL*A8G^6TDU?GT",
+      "mock_components": [],
+      "parallel_test_computation_used": false,
+      "projection_roots": [
+        "0000000000000000000000000000001)6Gm58adiNnlMgaG!9*sNx/H7woQ+Zoc-ZGt)L3/P",
+        "0000000000000000000000000000003CzOu2)CkH?wg7ga0cMGJ56WUSae53jxZ(u>bezb-5"
+      ],
+      "real_backend_execution": true,
+      "real_negative_attack_execution": true,
+      "real_ordered_composition_execution": true,
+      "reconciliation_root_hash72": "0000000000000000000000000000000O+0ajLqBodagZ(tzSXRhDloNHz4NIsk=S1GY=--Xq",
+      "required_capability_count": 3,
+      "schema": "HHS_GAMIFIED_CAPABILITY_PATH_RECEIPT_V1",
+      "seed_root_hash72": "0000000000000000000000000000002tvv-Egm186oYa6GEqkt8r4AISoutsnl3LnSB9e7s)",
+      "unresolved_drift_events": [],
+      "visited_capability_count": 3,
+      "visited_capability_ids": [
+        "hhs:pass105_6:real_c_asm_backend",
+        "hhs:pass105_4:production_negative_attacks",
+        "hhs:pass106:verified_backend_and_attack_composition"
+      ]
+    }
+  ],
+  "capability_graph": {
+    "admitted_capability_count": 3,
+    "all_nodes_canonical_executable": true,
+    "capability_graph_root_hash72": "00000000000000000000000000000046^3Oi8T^uYQ8>51U46kAhhvR1SGg45EX>26P>TlT3",
+    "edges": [
+      {
+        "relation": "COMPOSES_BEFORE",
+        "source": "hhs:pass105_6:real_c_asm_backend",
+        "target": "hhs:pass105_4:production_negative_attacks"
+      },
+      {
+        "relation": "DERIVES",
+        "source": "hhs:pass105_6:real_c_asm_backend",
+        "target": "hhs:pass106:verified_backend_and_attack_composition"
+      },
+      {
+        "relation": "DERIVES",
+        "source": "hhs:pass105_4:production_negative_attacks",
+        "target": "hhs:pass106:verified_backend_and_attack_composition"
+      },
+      {
+        "relation": "CAN_RUN_IN_PARALLEL_WITH",
+        "source": "hhs:pass105_6:real_c_asm_backend",
+        "target": "hhs:pass105_4:production_negative_attacks"
+      }
+    ],
+    "nodes": [
+      {
+        "capability_id": "hhs:pass105_4:production_negative_attacks",
+        "capability_root_hash72": "0000000000000000000000000000000C*3/DENeux!0w)a7Aa-Ub-qstuTryTTS*jRcRx/)D",
+        "dependency_capability_roots": [],
+        "entrypoint": "hhs_runtime.hhs_pass105_4_production_negative_attack_closure_v1.pass105_4_self_test",
+        "implementation_class": "NATIVE_VERIFIED",
+        "status": "CANONICAL_EXECUTABLE"
+      },
+      {
+        "capability_id": "hhs:pass105_6:real_c_asm_backend",
+        "capability_root_hash72": "0000000000000000000000000000003RLodG5kXms5!EiIZ!cJX722D=*FcKKY88It3OwSdU",
+        "dependency_capability_roots": [],
+        "entrypoint": "hhs_runtime.hhs_pass105_6_real_c_asm_backend_closure_v1.pass105_6_self_test",
+        "implementation_class": "NATIVE_VERIFIED",
+        "status": "CANONICAL_EXECUTABLE"
+      },
+      {
+        "capability_id": "hhs:pass106:verified_backend_and_attack_composition",
+        "capability_root_hash72": "0000000000000000000000000000001JW/I58OXhU*ymH9U1r>4BE^=tU7QkPgL?aiuUVPIh",
+        "dependency_capability_roots": [
+          "0000000000000000000000000000003RLodG5kXms5!EiIZ!cJX722D=*FcKKY88It3OwSdU",
+          "0000000000000000000000000000000C*3/DENeux!0w)a7Aa-Ub-qstuTryTTS*jRcRx/)D"
+        ],
+        "entrypoint": "compose:hhs:pass105_6:real_c_asm_backend>>hhs:pass105_4:production_negative_attacks",
+        "implementation_class": "CANONICAL_COMPOSITION",
+        "status": "CANONICAL_EXECUTABLE"
+      }
+    ],
+    "observed_execution_domains": [
+      "NATIVE_COMPILER_EXECUTION",
+      "PRODUCTION_NEGATIVE_VALIDATION",
+      "ORDERED_COMPOSITION"
+    ],
+    "pass_id": "PASS_109",
+    "schema": "HHS_GAMIFIED_CAPABILITY_GRAPH_V1"
+  },
+  "cross_domain_branch_reconciliation_preserved": true,
+  "genesis_selection": {
+    "all_profiles_coherence_equal": true,
+    "campaign_roots": [
+      "0000000000000000000000000000001)l!EyYTI4AHYfGFiM7Rsw*QvYBYTEzpF1GUl6rupw",
+      "0000000000000000000000000000001wX4NnplUl?kcJ^N6*vIhFOtWh3/U2ssXkCHlTzV()"
+    ],
+    "candidate_profile_roots": [
+      "0000000000000000000000000000002OY-*j?Mj4q(lGkeC)SdNG1=0V^9RwNhrTsevOz4!K",
+      "0000000000000000000000000000001m?q(Kj4BUCl1?yR/4bIRT=koA/6PL*A8G^6TDU?GT"
+    ],
+    "genesis_configuration_root_hash72": "0000000000000000000000000000004fm(?3rtB8pDxZYidF8wOrh)Hut=s(UNaP9V!FKJ^X",
+    "immutable_invariants": {
+      "exact_arithmetic_required": true,
+      "failure_must_remain_failure": true,
+      "mocks_prohibited": true,
+      "production_execution_required": true,
+      "zero_bypass_required": true
+    },
+    "schema": "HHS_GENESIS_EXECUTION_CONFIGURATION_V1",
+    "selected_profile_id": "PARALLEL_THROUGHPUT",
+    "selected_profile_root_hash72": "0000000000000000000000000000001m?q(Kj4BUCl1?yR/4bIRT=koA/6PL*A8G^6TDU?GT",
+    "selection_basis": "LOWEST_OBSERVED_ELAPSED_NS_AMONG_COHERENCE_EQUAL_PROFILES",
+    "universal_optimum_claimed": false,
+    "workload_specific_adaptation_allowed": true
+  },
+  "mock_components": [],
+  "one_canonical_seed_preserved": true,
+  "parallel_and_serial_paths_executed": true,
+  "parallel_test_computation_used": false,
+  "pass109_root_hash72": "0000000000000000000000000000003Us5o+=q=iEx?W=H3Z2LTQG^58PYpUpQOiF?c0/6X4",
+  "pass_id": "PASS_109",
+  "replay_contract_roots": [
+    "00000000000000000000000000000034N3x7Zt+!Qsqg7Nc1)e5WxYc>c^OI7oYJV)l/L6MU",
+    "00000000000000000000000000000019G7cDIR!qutLT+GDAFFlvJnbKp6op/8zGA?H7G2cj"
+  ],
+  "safe_genesis_configuration_selected": true,
+  "schema": "HHS_PASS109_SELF_TEST_V1",
+  "score_has_authority": false,
+  "seed": {
+    "canonical_information_bundle": {
+      "backend_workload": "compile_and_execute_real_c11_and_x86_64_artifacts",
+      "composition_order": [
+        "hhs:pass105_6:real_c_asm_backend",
+        "hhs:pass105_4:production_negative_attacks"
+      ],
+      "validation_workload": "execute_all_77_malformed_production_attacks"
+    },
+    "capability_graph_root_hash72": "00000000000000000000000000000046^3Oi8T^uYQ8>51U46kAhhvR1SGg45EX>26P>TlT3",
+    "permitted_projection_types": [
+      "BACKEND_WORKLOAD_REFERENCE",
+      "NEGATIVE_ATTACK_WORKLOAD_REFERENCE"
+    ],
+    "reconstruction_contract": "ALL_SEED_COMPONENTS_EXECUTED_AND_ORDERED_COMPOSITION_WITNESSED",
+    "schema": "HHS_CANONICAL_MULTIMODAL_INFORMATION_SEED_V1",
+    "seed_id": "pass109:canonical-capability-campaign:001",
+    "seed_root_hash72": "0000000000000000000000000000002tvv-Egm186oYa6GEqkt8r4AISoutsnl3LnSB9e7s)",
+    "semantic_invariants": [
+      "REAL_PRODUCTION_EXECUTION",
+      "NO_MOCKS",
+      "NO_PARALLEL_TEST_IMPLEMENTATION",
+      "FAILURE_REMAINS_FAILURE",
+      "ORDERED_COMPOSITION_PRESERVED"
+    ]
+  },
+  "status": "PASS",
+  "unresolved_drift_count": 0
+}

@@ -1,0 +1,1 @@
+{"interface":"PUBLIC_HTTP_API","operation":"runtime_replay_status","request":{"method":"GET","path":"/api/runtime/replay","payload":null},"response":{"body":{"replay":"available","status":"online"},"headers":{"content-type":"application/json"},"method":"GET","path":"/api/runtime/replay","status_code":200}}

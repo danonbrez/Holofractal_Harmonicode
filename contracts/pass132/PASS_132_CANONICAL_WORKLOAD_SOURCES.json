@@ -1,0 +1,8 @@
+{
+  "schema": "HHS_PASS132_RECONSTRUCTED_CANONICAL_WORKLOAD_SOURCES_V1",
+  "authority": "IMMUTABLE_PASS132_EXECUTION_RECORD_REQUEST_PAYLOADS",
+  "source_location": "release_artifacts/pass132/evidence_store/executions/*.json::request_payload",
+  "workload_count": 18,
+  "identity_boundary": "Original canonical source bodies are preserved inside execution records; original implementation module bytes are unavailable.",
+  "O_not_pi": true
+}

@@ -1,0 +1,53 @@
+{
+  "schema": "HHS_PASS_091_NEGATIVE_CASES_V1",
+  "cases": [
+    {
+      "case": "history-order",
+      "expected": "REJECT_COLLATZ_HISTORY_ORDER_MISMATCH",
+      "observed": "REJECT_COLLATZ_HISTORY_ORDER_MISMATCH",
+      "passed": true
+    },
+    {
+      "case": "odd-even-rule",
+      "expected": "REJECT_COLLATZ_PARITY_RULE_VIOLATION",
+      "observed": "REJECT_COLLATZ_PARITY_RULE_VIOLATION",
+      "passed": true
+    },
+    {
+      "case": "ancestry-erasure",
+      "expected": "REJECT_COLLATZ_ANCESTRY_ERASURE",
+      "observed": "REJECT_COLLATZ_ANCESTRY_ERASURE",
+      "passed": true
+    },
+    {
+      "case": "missing-source-witness",
+      "expected": "REJECT_COLLATZ_PRIME_WITHOUT_SOURCE_WITNESS",
+      "observed": "REJECT_COLLATZ_PRIME_WITHOUT_SOURCE_WITNESS",
+      "passed": true
+    },
+    {
+      "case": "float-authority",
+      "expected": "REJECT_FLOAT_COLLATZ_AUTHORITY",
+      "observed": "REJECT_FLOAT_COLLATZ_AUTHORITY",
+      "passed": true
+    },
+    {
+      "case": "bound-as-theorem",
+      "expected": "REJECT_BOUND_AS_CONJECTURE_RESULT",
+      "observed": "REJECT_BOUND_AS_CONJECTURE_RESULT",
+      "passed": true
+    },
+    {
+      "case": "history-alias",
+      "expected": "REJECT_COLLATZ_HISTORY_ALIAS",
+      "observed": "REJECT_COLLATZ_HISTORY_ALIAS",
+      "passed": true
+    },
+    {
+      "case": "entanglement-replay",
+      "expected": "REJECT_COLLATZ_ENTANGLEMENT_REPLAY_MISMATCH",
+      "observed": "REJECT_COLLATZ_ENTANGLEMENT_REPLAY_MISMATCH",
+      "passed": true
+    }
+  ]
+}

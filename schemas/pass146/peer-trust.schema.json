@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "hhs://schemas/pass146/peer-trust.schema.json",
+  "title": "HHS Pass 146 Peer Trust",
+  "type": "object",
+  "required": ["peer_id", "public_key_b64", "classifications", "destinations"],
+  "properties": {
+    "peer_id": {"type": "string", "minLength": 1},
+    "public_key_b64": {"type": "string"},
+    "classifications": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "destinations": {"type": "array", "items": {"type": "string"}, "uniqueItems": true}
+  },
+  "additionalProperties": false
+}

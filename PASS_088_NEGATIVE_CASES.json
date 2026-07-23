@@ -1,0 +1,65 @@
+{
+  "schema": "HHS_PASS_088_NEGATIVE_CASES_V1",
+  "cases": [
+    {
+      "case": "missing-ground-truth",
+      "expected": "REJECT_BASELINE_WITHOUT_GROUND_TRUTH",
+      "observed": "REJECT_BASELINE_WITHOUT_GROUND_TRUTH",
+      "passed": true
+    },
+    {
+      "case": "provider-authority",
+      "expected": "REJECT_PROVIDER_PROPOSAL_AS_AUTHORITY",
+      "observed": "REJECT_PROVIDER_PROPOSAL_AS_AUTHORITY",
+      "passed": true
+    },
+    {
+      "case": "constraint-bypass",
+      "expected": "REJECT_CONSTRAINT_BYPASS_FOR_SPEED",
+      "observed": "REJECT_CONSTRAINT_BYPASS_FOR_SPEED",
+      "passed": true
+    },
+    {
+      "case": "cache-no-verification",
+      "expected": "REJECT_CACHE_HIT_WITHOUT_VERIFICATION",
+      "observed": "REJECT_CACHE_HIT_WITHOUT_VERIFICATION",
+      "passed": true
+    },
+    {
+      "case": "avoid-retraining-no-proof",
+      "expected": "REJECT_RETRAINING_AVOIDANCE_WITHOUT_DEPENDENCY_PROOF",
+      "observed": "REJECT_RETRAINING_AVOIDANCE_WITHOUT_DEPENDENCY_PROOF",
+      "passed": true
+    },
+    {
+      "case": "false-accounting",
+      "expected": "REJECT_FALSE_ACCELERATION_ACCOUNTING",
+      "observed": "REJECT_FALSE_ACCELERATION_ACCOUNTING",
+      "passed": true
+    },
+    {
+      "case": "identity-collapse",
+      "expected": "REJECT_TRAINING_STATE_IDENTITY_COLLAPSE",
+      "observed": "REJECT_TRAINING_STATE_IDENTITY_COLLAPSE",
+      "passed": true
+    },
+    {
+      "case": "nondeterministic-provider",
+      "expected": "REJECT_NONDETERMINISTIC_PROVIDER_INPUT",
+      "observed": "REJECT_NONDETERMINISTIC_PROVIDER_INPUT",
+      "passed": true
+    },
+    {
+      "case": "closure-failure",
+      "expected": "REJECT_TRAINING_ACCELERATION_CLOSURE_FAILURE",
+      "observed": "REJECT_TRAINING_ACCELERATION_CLOSURE_FAILURE",
+      "passed": true
+    },
+    {
+      "case": "replay-mismatch",
+      "expected": "REJECT_TRAINING_REPLAY_MISMATCH",
+      "observed": "REJECT_TRAINING_REPLAY_MISMATCH",
+      "passed": true
+    }
+  ]
+}

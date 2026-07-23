@@ -1,0 +1,65 @@
+{
+  "agent_repository_network_protocol": true,
+  "bounded_product_self_healing": true,
+  "client_surfaces": [
+    "GUI",
+    "CLI",
+    "EXTERNAL_API",
+    "REPLAY_RUNNER",
+    "HUMAN_AGENT",
+    "LLM_AGENT",
+    "CI_AGENT"
+  ],
+  "dedicated_tests": {
+    "failed": 0,
+    "passed": 31
+  },
+  "development_protocol_root_hash72": "00000000000000000000000000000040lP63bY?5m/9JeWp7KJa=Giu)ypvR5FYZqyWAnoN3",
+  "focused_chain_tests": {
+    "failed": 0,
+    "passed": 92
+  },
+  "foundation_change_requires_reversible_alignment_patch": true,
+  "host_path_required": false,
+  "implemented_operation_count": 14,
+  "new_orphan_modules": 0,
+  "open_ended_development_above_frozen_foundation": true,
+  "operation_registry_root_hash72": "0000000000000000000000000000001shM^RJmUhaP=QdhZs>GRPRVtsQ4OPrVDGwlZq3!Jk",
+  "parent_native_pass": "PASS_073",
+  "pass072_files_changed": 0,
+  "pass072_foundation_file_count": 1899,
+  "pass073_parent_file_count": 1913,
+  "pass073_parent_files_changed": 0,
+  "pass074_native_files_added": 24,
+  "pass074_total_file_count": 1937,
+  "pass_id": "PASS_074",
+  "platform_dependency": {
+    "foundation_modified": false,
+    "pass_id": "PASS_072",
+    "root_hash72": "ZF9bto?tV>P(KcFPL5L+csyy!jxdrAaadua1a!w-uwug8/MeMSqSS3*R>lXIefi)nyjXpc+)"
+  },
+  "product_id": "HHS_NATIVE_IDE_WORKSPACE",
+  "product_root_hash72": "0000000000000000000000000000001aRWoMwzgpOiLU->Ryv?2>v?x)H(jxAm24wQR4XI/P",
+  "program_graph_root_hash72": "0000000000000000000000000000000xzrnlKGlIOwU2k3?A0Fb92=GuxL^L+S/uFCY3FYr(",
+  "release_manifest_root_hash72": "0000000000000000000000000000002-zyA8nvn0Q^KBp2AXHudP)>XyM=xz3ge2DQOnqr3N",
+  "reserved_operation_count": 3,
+  "schema": "HHS_PRODUCT_RELEASE_MANIFEST_PASS_074_V1",
+  "status": "EXECUTABLE_AND_COMMITTED",
+  "thread_context_required": false,
+  "ui_surfaces": [
+    "WorkspaceShell",
+    "ProjectExplorer",
+    "EditorPanel",
+    "RuntimeConsole",
+    "ArtifactPanel",
+    "ReceiptPanel",
+    "ExecutionPanel",
+    "AgentNetworkPanel",
+    "AlignmentPanel",
+    "IterationPanel",
+    "StatusBar"
+  ],
+  "version": "PASS_074_UNIFIED_HHS_IDE_WORKSPACE_V1",
+  "workspace_replay_capsule_root_hash72": "0000000000000000000000000000002Bq1d((RD)l+zzj1RxoEvgVmY+/Pvim3EzK/niS+uf",
+  "workspace_state_root_hash72": "0000000000000000000000000000003jeBCH*ILLMw(ZoYkbL7FjNSjZPE(T+2KjSYsn>PIz"
+}

@@ -1,0 +1,130 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "artifact_schema": {
+      "const": "HHS_COMPILED_ARTIFACT_V1"
+    },
+    "deterministic": {
+      "const": true
+    },
+    "differential_validation_required": {
+      "const": true
+    },
+    "effect_model": {
+      "const": "DECLARED_ONLY"
+    },
+    "embedded_validator_self_authorizes": {
+      "const": false
+    },
+    "forbidden_semantic_changes": {
+      "type": "array"
+    },
+    "independent_verification_required": {
+      "const": true
+    },
+    "numeric_model": {
+      "required": [
+        "integer",
+        "rational",
+        "float",
+        "foreign_numeric_boundary_schema"
+      ],
+      "type": "object"
+    },
+    "permitted_representation_changes": {
+      "type": "array"
+    },
+    "reference_interpreter_required": {
+      "const": true
+    },
+    "required_compilation_request_fields": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 5,
+      "type": "array",
+      "uniqueItems": true
+    },
+    "required_export_evidence": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
+    "schema": {
+      "const": "HHS_COMPILER_TARGET_CONTRACT_V1"
+    },
+    "semantic_identity_gate": {
+      "required": [
+        "rejection_code",
+        "receipt_schema",
+        "fallback",
+        "artifact_status_on_failure"
+      ],
+      "type": "object"
+    },
+    "semantic_preservation_invariant": {
+      "const": "COMPILATION_CHANGES_REPRESENTATION_NOT_ADMITTED_MEANING"
+    },
+    "semantic_projection": {
+      "required": [
+        "schema",
+        "required_fields",
+        "comparison"
+      ],
+      "type": "object"
+    },
+    "source_ir_schema": {
+      "const": "HHS_EXECUTABLE_IR_V1"
+    },
+    "supported_operations": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
+    "target_id": {
+      "const": "HHS_PORTABLE_BYTECODE_V1"
+    },
+    "target_ir_schema": {
+      "const": "HHS_TARGET_IR_V1"
+    },
+    "target_version": {
+      "type": "string"
+    },
+    "unsupported_operations": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array",
+      "uniqueItems": true
+    }
+  },
+  "required": [
+    "schema",
+    "target_id",
+    "target_version",
+    "source_ir_schema",
+    "target_ir_schema",
+    "artifact_schema",
+    "semantic_preservation_invariant",
+    "required_compilation_request_fields",
+    "semantic_projection",
+    "semantic_identity_gate",
+    "numeric_model",
+    "effect_model",
+    "deterministic",
+    "reference_interpreter_required",
+    "differential_validation_required",
+    "supported_operations",
+    "unsupported_operations",
+    "required_export_evidence",
+    "independent_verification_required",
+    "embedded_validator_self_authorizes"
+  ],
+  "title": "HHS_COMPILER_TARGET_CONTRACT_V1",
+  "type": "object"
+}

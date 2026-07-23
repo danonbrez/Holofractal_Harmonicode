@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'none'; img-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>HHS Pass 145</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <div>
+      <h1>HHS Pass 145</h1>
+      <p>Local knowledge runtime · governed CLI · sandbox and LVM workbench</p>
+    </div>
+    <div id="nativeState" class="status-chip">Native runtime: checking</div>
+  </header>
+  <main>
+    <nav aria-label="Primary">
+      <button data-panel="connection" class="active">Connection</button>
+      <button data-panel="ingest">Ingest</button>
+      <button data-panel="query">Query</button>
+      <button data-panel="terminal">Command</button>
+      <button data-panel="receipts">Receipts</button>
+    </nav>
+    <section id="connection" class="panel active">
+      <h2>Governed loopback connection</h2>
+      <label>Endpoint<input id="endpoint" value="http://127.0.0.1:8765" autocomplete="off"></label>
+      <label>Session capability token<input id="token" type="password" autocomplete="off"></label>
+      <div class="actions"><button id="connect">Connect</button><button id="refreshStatus">Refresh status</button></div>
+      <pre id="statusOutput" aria-live="polite"></pre>
+    </section>
+    <section id="ingest" class="panel">
+      <h2>Source-preserving ingestion</h2>
+      <div class="grid2">
+        <label>Name<input id="sourceName" value="note.txt"></label>
+        <label>Namespace<input id="namespace" value="default"></label>
+      </div>
+      <label>MIME type<select id="mimeType"><option>text/plain</option><option>text/markdown</option><option>text/html</option><option>application/json</option><option>text/javascript</option></select></label>
+      <label>Exact source text<textarea id="sourceText" rows="12" spellcheck="false"></textarea></label>
+      <div class="actions"><button id="ingestSource">Admit source</button></div>
+      <pre id="ingestOutput" aria-live="polite"></pre>
+    </section>
+    <section id="query" class="panel">
+      <h2>Inspectable natural-language query</h2>
+      <label>Question<input id="question" value="Show every definition of the symbol O"></label>
+      <div class="actions"><button id="runQuery">Run query</button><button id="searchSymbol">Exact symbol search</button></div>
+      <pre id="queryOutput" aria-live="polite"></pre>
+    </section>
+    <section id="terminal" class="panel">
+      <h2>Embedded command client</h2>
+      <p class="hint">Commands are translated to governed API calls; this is not simulated terminal output.</p>
+      <label>Command<input id="command" value="status" spellcheck="false"></label>
+      <div class="actions"><button id="runCommand">Execute</button></div>
+      <pre id="commandOutput" aria-live="polite"></pre>
+    </section>
+    <section id="receipts" class="panel">
+      <h2>Receipt and database integrity</h2>
+      <div class="actions"><button id="databaseStatus">Database status</button><button id="receiptChain">Verify receipt chain</button></div>
+      <pre id="receiptOutput" aria-live="polite"></pre>
+    </section>
+  </main>
+  <footer>Evidence ≠ interpretation · Query ≠ mutation · O ≠ π</footer>
+  <script src="app.js"></script>
+</body>
+</html>

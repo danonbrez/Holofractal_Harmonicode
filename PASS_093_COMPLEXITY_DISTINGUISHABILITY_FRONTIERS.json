@@ -1,0 +1,10 @@
+{
+  "schema": "HHS_PASS_093_FRONTIERS_V1",
+  "frontiers": {
+    "distinguishability": "MATCHED_NULL_MODELS_REQUIRED",
+    "holofractal": "MULTISCALE_CANDIDATE_ONLY_UNTIL_FURTHER_VALIDATION",
+    "prediction": "NON_AUTHORITATIVE_PROPOSAL_ONLY",
+    "reconstruction": "LOSSLESS_ON_HELD_OUT_PARTITION",
+    "transfer": "VM81_ROUTING_ATTEMPT_DECLARED"
+  }
+}

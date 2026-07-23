@@ -1,0 +1,572 @@
+{
+  "evaluation_policy": "EXACT_TYPED_RELATION_GRAPH_NO_OPAQUE_FORMULA_DISPATCH",
+  "floating_point_authority_paths": 0,
+  "membrane_root_hash72": "0000000000000000000000000000002VP+9Q^CpasS6/)sqoHwjC466h(Ubj6yeaGOYRmKxd",
+  "opaque_formula_dispatch_paths": 0,
+  "pass_id": "PASS_080",
+  "relation_categories": [
+    "EQUALITY",
+    "RECIPROCAL",
+    "ORDERED_PRODUCT",
+    "POLYNOMIAL",
+    "RADICAL",
+    "PHASE",
+    "LO_SHU",
+    "VM81_GLOBAL",
+    "PLASTIC_RECURRENCE",
+    "QGU_KERNEL",
+    "AUTHORITY",
+    "LEASE",
+    "WITNESS"
+  ],
+  "relation_count": 22,
+  "relations": [
+    {
+      "dependency_relations": [],
+      "domain_restrictions": [],
+      "exact_evaluation_type": "INTEGER_OR_BIGINT_RATIONAL_NO_FLOAT_AUTHORITY",
+      "expected_residue": "0",
+      "expression": "A-P^2",
+      "failure_code": "REJECT_A_NOT_P2",
+      "operand_provenance": {
+        "A": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT",
+        "P": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT"
+      },
+      "operands": [
+        "A",
+        "P"
+      ],
+      "provenance": "USER_SUPPLIED_PASS_080_FORMAL_SET",
+      "relation_id": "P080_EQUALITY_A_P2",
+      "relation_root_hash72": "0000000000000000000000000000002uHV?8uyV/EN1KDS94yyArWj-TJY6JU3abolCzgwNV",
+      "relation_type": "POLYNOMIAL_EQUALITY",
+      "schema": "HHS_TYPED_CONSTRAINT_RELATION_V1",
+      "witness_contribution": "RELATION_RESULT_AND_EXACT_RESIDUE"
+    },
+    {
+      "dependency_relations": [],
+      "domain_restrictions": [],
+      "exact_evaluation_type": "INTEGER_OR_BIGINT_RATIONAL_NO_FLOAT_AUTHORITY",
+      "expected_residue": "0",
+      "expression": "B-P^2",
+      "failure_code": "REJECT_B_NOT_P2",
+      "operand_provenance": {
+        "B": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT",
+        "P": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT"
+      },
+      "operands": [
+        "B",
+        "P"
+      ],
+      "provenance": "USER_SUPPLIED_PASS_080_FORMAL_SET",
+      "relation_id": "P080_EQUALITY_B_P2",
+      "relation_root_hash72": "0000000000000000000000000000002C05n)pSuol1L*Hq)zRlyRryYh>tWF7p)PbAp3(AUm",
+      "relation_type": "POLYNOMIAL_EQUALITY",
+      "schema": "HHS_TYPED_CONSTRAINT_RELATION_V1",
+      "witness_contribution": "RELATION_RESULT_AND_EXACT_RESIDUE"
+    },
+    {
+      "dependency_relations": [],
+      "domain_restrictions": [],
+      "exact_evaluation_type": "INTEGER_OR_BIGINT_RATIONAL_NO_FLOAT_AUTHORITY",
+      "expected_residue": "0",
+      "expression": "AB-P^4",
+      "failure_code": "REJECT_ORDERED_AB_NOT_P4",
+      "operand_provenance": {
+        "A": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT",
+        "B": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT",
+        "P": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT"
+      },
+      "operands": [
+        "A",
+        "B",
+        "P"
+      ],
+      "provenance": "USER_SUPPLIED_PASS_080_FORMAL_SET",
+      "relation_id": "P080_ORDERED_AB_P4",
+      "relation_root_hash72": "0000000000000000000000000000001q8KE(SPk5(>ePf/a4-VoP3ut5G9FSAQMvjBd!+0jT",
+      "relation_type": "ORDERED_PRODUCT_EQUALITY",
+      "schema": "HHS_TYPED_CONSTRAINT_RELATION_V1",
+      "witness_contribution": "RELATION_RESULT_AND_EXACT_RESIDUE"
+    },
+    {
+      "dependency_relations": [],
+      "domain_restrictions": [],
+      "exact_evaluation_type": "INTEGER_OR_BIGINT_RATIONAL_NO_FLOAT_AUTHORITY",
+      "expected_residue": "0",
+      "expression": "BA-P^4",
+      "failure_code": "REJECT_ORDERED_BA_NOT_P4",
+      "operand_provenance": {
+        "A": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT",
+        "B": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT",
+        "P": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT"
+      },
+      "operands": [
+        "B",
+        "A",
+        "P"
+      ],
+      "provenance": "USER_SUPPLIED_PASS_080_FORMAL_SET",
+      "relation_id": "P080_ORDERED_BA_P4",
+      "relation_root_hash72": "0000000000000000000000000000003SViVQw63zwU>WPwYPIdoz!)WIz/O(Q?q9nBzj5/ob",
+      "relation_type": "ORDERED_PRODUCT_EQUALITY",
+      "schema": "HHS_TYPED_CONSTRAINT_RELATION_V1",
+      "witness_contribution": "RELATION_RESULT_AND_EXACT_RESIDUE"
+    },
+    {
+      "dependency_relations": [],
+      "domain_restrictions": [
+        "AB>=0"
+      ],
+      "exact_evaluation_type": "INTEGER_OR_BIGINT_RATIONAL_NO_FLOAT_AUTHORITY",
+      "expected_residue": "0",
+      "expression": "AB-(P^2)^2",
+      "failure_code": "REJECT_SQRT_AB_NOT_P2",
+      "operand_provenance": {
+        "A": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT",
+        "B": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT",
+        "P": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT"
+      },
+      "operands": [
+        "A",
+        "B",
+        "P"
+      ],
+      "provenance": "USER_SUPPLIED_PASS_080_FORMAL_SET",
+      "relation_id": "P080_RADICAL_AB_P2",
+      "relation_root_hash72": "0000000000000000000000000000002>sdvYwK7)euJ1kSHaUtekDpA4-rn3zlQ6M6z4M/o3",
+      "relation_type": "EXACT_SQUARE_RELATION",
+      "schema": "HHS_TYPED_CONSTRAINT_RELATION_V1",
+      "witness_contribution": "RELATION_RESULT_AND_EXACT_RESIDUE"
+    },
+    {
+      "dependency_relations": [],
+      "domain_restrictions": [
+        "BA>=0"
+      ],
+      "exact_evaluation_type": "INTEGER_OR_BIGINT_RATIONAL_NO_FLOAT_AUTHORITY",
+      "expected_residue": "0",
+      "expression": "BA-(P^2)^2",
+      "failure_code": "REJECT_SQRT_BA_NOT_P2",
+      "operand_provenance": {
+        "A": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT",
+        "B": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT",
+        "P": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT"
+      },
+      "operands": [
+        "B",
+        "A",
+        "P"
+      ],
+      "provenance": "USER_SUPPLIED_PASS_080_FORMAL_SET",
+      "relation_id": "P080_RADICAL_BA_P2",
+      "relation_root_hash72": "0000000000000000000000000000002)ouUC1dLnxr)Pz5A0MsCDsPGtWMJec-mfy2WrKjGV",
+      "relation_type": "EXACT_SQUARE_RELATION",
+      "schema": "HHS_TYPED_CONSTRAINT_RELATION_V1",
+      "witness_contribution": "RELATION_RESULT_AND_EXACT_RESIDUE"
+    },
+    {
+      "dependency_relations": [],
+      "domain_restrictions": [
+        "A!=0",
+        "B!=0"
+      ],
+      "exact_evaluation_type": "INTEGER_OR_BIGINT_RATIONAL_NO_FLOAT_AUTHORITY",
+      "expected_residue": "0",
+      "expression": "(A/B)(B/A)-1",
+      "failure_code": "REJECT_RECIPROCAL_NORMALIZATION",
+      "operand_provenance": {
+        "A": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT",
+        "B": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT"
+      },
+      "operands": [
+        "A",
+        "B"
+      ],
+      "provenance": "USER_SUPPLIED_PASS_080_FORMAL_SET",
+      "relation_id": "P080_RECIPROCAL_NORMALIZATION",
+      "relation_root_hash72": "0000000000000000000000000000004zS*R)wG)>S/dvd-ZqabRoIBXeMfxpsPlA6C)Ppp+Q",
+      "relation_type": "RATIONAL_EQUALITY",
+      "schema": "HHS_TYPED_CONSTRAINT_RELATION_V1",
+      "witness_contribution": "RELATION_RESULT_AND_EXACT_RESIDUE"
+    },
+    {
+      "dependency_relations": [],
+      "domain_restrictions": [],
+      "exact_evaluation_type": "INTEGER_OR_BIGINT_RATIONAL_NO_FLOAT_AUTHORITY",
+      "expected_residue": "0",
+      "expression": "P^2-pq-n^4",
+      "failure_code": "REJECT_PQ_N4_GATE",
+      "operand_provenance": {
+        "P": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT",
+        "n": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT",
+        "p": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT",
+        "q": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT"
+      },
+      "operands": [
+        "P",
+        "p",
+        "q",
+        "n"
+      ],
+      "provenance": "USER_SUPPLIED_PASS_080_FORMAL_SET",
+      "relation_id": "P080_NATIVE_POLYNOMIAL_GATE_R1",
+      "relation_root_hash72": "0000000000000000000000000000002DYL)^9epHPMf-+!5XqTfW(5IZTShleEX60AUPb-1k",
+      "relation_type": "POLYNOMIAL_EQUALITY",
+      "schema": "HHS_TYPED_CONSTRAINT_RELATION_V1",
+      "witness_contribution": "RELATION_RESULT_AND_EXACT_RESIDUE"
+    },
+    {
+      "dependency_relations": [],
+      "domain_restrictions": [],
+      "exact_evaluation_type": "INTEGER_OR_BIGINT_RATIONAL_NO_FLOAT_AUTHORITY",
+      "expected_residue": "0",
+      "expression": "n^4-xy",
+      "failure_code": "REJECT_N4_XY_GATE",
+      "operand_provenance": {
+        "n": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT",
+        "x": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT",
+        "y": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT"
+      },
+      "operands": [
+        "n",
+        "x",
+        "y"
+      ],
+      "provenance": "USER_SUPPLIED_PASS_080_FORMAL_SET",
+      "relation_id": "P080_NATIVE_POLYNOMIAL_GATE_R2",
+      "relation_root_hash72": "0000000000000000000000000000004pfvoX2rFo/ye*NEMT+f*rHl1*nF1t29rLoOFWYlfR",
+      "relation_type": "POLYNOMIAL_EQUALITY",
+      "schema": "HHS_TYPED_CONSTRAINT_RELATION_V1",
+      "witness_contribution": "RELATION_RESULT_AND_EXACT_RESIDUE"
+    },
+    {
+      "dependency_relations": [],
+      "domain_restrictions": [],
+      "exact_evaluation_type": "INTEGER_OR_BIGINT_RATIONAL_NO_FLOAT_AUTHORITY",
+      "expected_residue": "0",
+      "expression": "xy-1",
+      "failure_code": "REJECT_XY_UNIT",
+      "operand_provenance": {
+        "x": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT",
+        "y": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT"
+      },
+      "operands": [
+        "x",
+        "y"
+      ],
+      "provenance": "USER_SUPPLIED_PASS_080_FORMAL_SET",
+      "relation_id": "P080_UNIT_XY",
+      "relation_root_hash72": "0000000000000000000000000000003bJ0ZfEFJTDS7DAc^aGxuvzCU!w3aeyVMcN3u4h2er",
+      "relation_type": "ORDERED_PRODUCT_EQUALITY",
+      "schema": "HHS_TYPED_CONSTRAINT_RELATION_V1",
+      "witness_contribution": "RELATION_RESULT_AND_EXACT_RESIDUE"
+    },
+    {
+      "dependency_relations": [],
+      "domain_restrictions": [],
+      "exact_evaluation_type": "INTEGER_OR_BIGINT_RATIONAL_NO_FLOAT_AUTHORITY",
+      "expected_residue": "0",
+      "expression": "c2-b2-a2",
+      "failure_code": "REJECT_CANONICAL_SCALE",
+      "operand_provenance": {
+        "a2": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT",
+        "b2": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT",
+        "c2": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT"
+      },
+      "operands": [
+        "a2",
+        "b2",
+        "c2"
+      ],
+      "provenance": "USER_SUPPLIED_PASS_080_FORMAL_SET",
+      "relation_id": "P080_CANONICAL_SCALE_POLYNOMIAL",
+      "relation_root_hash72": "00000000000000000000000000000008siTmGFW?z?Wqy-iijkhRhXbc3Z-30OaEG4X3f6kY",
+      "relation_type": "POLYNOMIAL_EQUALITY",
+      "schema": "HHS_TYPED_CONSTRAINT_RELATION_V1",
+      "witness_contribution": "RELATION_RESULT_AND_EXACT_RESIDUE"
+    },
+    {
+      "dependency_relations": [
+        "P080_CANONICAL_SCALE_POLYNOMIAL"
+      ],
+      "domain_restrictions": [
+        "a2!=0"
+      ],
+      "exact_evaluation_type": "INTEGER_OR_BIGINT_RATIONAL_NO_FLOAT_AUTHORITY",
+      "expected_residue": "0",
+      "expression": "(c2-b2)/a2-1",
+      "failure_code": "REJECT_CANONICAL_SCALE_RATIO",
+      "operand_provenance": {
+        "a2": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT",
+        "b2": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT",
+        "c2": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT"
+      },
+      "operands": [
+        "a2",
+        "b2",
+        "c2"
+      ],
+      "provenance": "USER_SUPPLIED_PASS_080_FORMAL_SET",
+      "relation_id": "P080_CANONICAL_SCALE_RATIO",
+      "relation_root_hash72": "0000000000000000000000000000003cepvMhRGJC=DXBohRmy/AdfEBYSFT7Omx67kc-C?m",
+      "relation_type": "RATIONAL_EQUALITY",
+      "schema": "HHS_TYPED_CONSTRAINT_RELATION_V1",
+      "witness_contribution": "RELATION_RESULT_AND_EXACT_RESIDUE"
+    },
+    {
+      "dependency_relations": [],
+      "domain_restrictions": [],
+      "exact_evaluation_type": "INTEGER_OR_BIGINT_RATIONAL_NO_FLOAT_AUTHORITY",
+      "expected_residue": "0",
+      "expression": "m^2-m-1",
+      "failure_code": "REJECT_M_RECURRENCE",
+      "operand_provenance": {
+        "m": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT"
+      },
+      "operands": [
+        "m"
+      ],
+      "provenance": "USER_SUPPLIED_PASS_080_FORMAL_SET",
+      "relation_id": "P080_M_RECURRENCE",
+      "relation_root_hash72": "0000000000000000000000000000001MqL*vyfsi3xgQmMrrgLyOX-0A9dal*ICQptMfWaC9",
+      "relation_type": "POLYNOMIAL_EQUALITY",
+      "schema": "HHS_TYPED_CONSTRAINT_RELATION_V1",
+      "witness_contribution": "RELATION_RESULT_AND_EXACT_RESIDUE"
+    },
+    {
+      "dependency_relations": [],
+      "domain_restrictions": [],
+      "exact_evaluation_type": "INTEGER_OR_BIGINT_RATIONAL_NO_FLOAT_AUTHORITY",
+      "expected_residue": "0",
+      "expression": "plastic^3-plastic-1",
+      "failure_code": "REJECT_PLASTIC_RECURRENCE",
+      "operand_provenance": {
+        "plastic": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT"
+      },
+      "operands": [
+        "plastic"
+      ],
+      "provenance": "PASS_078_EXTERNAL_GEOMETRY_CONTRACT",
+      "relation_id": "P080_PLASTIC_RECURRENCE",
+      "relation_root_hash72": "0000000000000000000000000000004yyzL/cU/W7KrU)+nJE*)eQ)-QgO=fYQyhX14GI6L7",
+      "relation_type": "POLYNOMIAL_EQUALITY",
+      "schema": "HHS_TYPED_CONSTRAINT_RELATION_V1",
+      "witness_contribution": "RELATION_RESULT_AND_EXACT_RESIDUE"
+    },
+    {
+      "dependency_relations": [],
+      "domain_restrictions": [
+        "m^2-m!=0",
+        "xy+cq2!=0",
+        "m^yx exact"
+      ],
+      "exact_evaluation_type": "INTEGER_OR_BIGINT_RATIONAL_NO_FLOAT_AUTHORITY",
+      "expected_residue": "0",
+      "expression": "(t^3-t)(m-m^yx)RK(xy+cq2)-(m^2-m)(xy+cq2+dq4)",
+      "failure_code": "REJECT_QGU_RATIONAL_GATE",
+      "operand_provenance": {
+        "RK": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT",
+        "cq2": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT",
+        "dq4": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT",
+        "m": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT",
+        "t": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT",
+        "x": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT",
+        "y": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT",
+        "yx": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT"
+      },
+      "operands": [
+        "t",
+        "m",
+        "yx",
+        "RK",
+        "x",
+        "y",
+        "cq2",
+        "dq4"
+      ],
+      "provenance": "USER_SUPPLIED_PASS_080_FORMAL_SET",
+      "relation_id": "P080_QGU_RATIONAL_GATE",
+      "relation_root_hash72": "00000000000000000000000000000028ZtNXh?qgboB=0W4dkT/eT?(MXVLFbP/3IsTz7+4E",
+      "relation_type": "CROSS_MULTIPLIED_RATIONAL_EQUALITY",
+      "schema": "HHS_TYPED_CONSTRAINT_RELATION_V1",
+      "witness_contribution": "RELATION_RESULT_AND_EXACT_RESIDUE"
+    },
+    {
+      "dependency_relations": [],
+      "domain_restrictions": [
+        "y!=0",
+        "w!=0"
+      ],
+      "exact_evaluation_type": "INTEGER_OR_BIGINT_RATIONAL_NO_FLOAT_AUTHORITY",
+      "expected_residue": "NONZERO",
+      "expression": "((xy)zw)+x^s+y^-s-z^v-w^-v",
+      "failure_code": "REJECT_ZERO_WAVE_DENOMINATOR",
+      "operand_provenance": {
+        "s": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT",
+        "v": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT",
+        "w": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT",
+        "x": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT",
+        "y": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT",
+        "z": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT"
+      },
+      "operands": [
+        "x",
+        "y",
+        "z",
+        "w",
+        "s",
+        "v"
+      ],
+      "provenance": "USER_SUPPLIED_PASS_080_FORMAL_SET",
+      "relation_id": "P080_WAVE_DENOMINATOR",
+      "relation_root_hash72": "00000000000000000000000000000039qvH4QQapXi+wmc1fVoPnv-0EBd9-99TRqF1!vj0W",
+      "relation_type": "NONZERO_ORDERED_EXPRESSION",
+      "schema": "HHS_TYPED_CONSTRAINT_RELATION_V1",
+      "witness_contribution": "RELATION_RESULT_AND_EXACT_RESIDUE"
+    },
+    {
+      "dependency_relations": [],
+      "domain_restrictions": [],
+      "exact_evaluation_type": "INTEGER_OR_BIGINT_RATIONAL_NO_FLOAT_AUTHORITY",
+      "expected_residue": "0",
+      "expression": "H[i,j]-L[i,j] for 9 cells",
+      "failure_code": "REJECT_LO_SHU_CELL_RECONSTRUCTION",
+      "operand_provenance": {
+        "lo_shu_cells": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT"
+      },
+      "operands": [
+        "lo_shu_cells"
+      ],
+      "provenance": "USER_SUPPLIED_PASS_080_FORMAL_SET",
+      "relation_id": "P080_LO_SHU_9_CELL",
+      "relation_root_hash72": "0000000000000000000000000000001Us0j7?ceai^hQq2Sv*YPZaVNmB0NAG-jfG*5!I1+Q",
+      "relation_type": "TENSOR_CELL_EQUALITY_SET",
+      "schema": "HHS_TYPED_CONSTRAINT_RELATION_V1",
+      "witness_contribution": "RELATION_RESULT_AND_EXACT_RESIDUE"
+    },
+    {
+      "dependency_relations": [
+        "P080_LO_SHU_9_CELL"
+      ],
+      "domain_restrictions": [],
+      "exact_evaluation_type": "INTEGER_OR_BIGINT_RATIONAL_NO_FLOAT_AUTHORITY",
+      "expected_residue": "0",
+      "expression": "row_sums-15",
+      "failure_code": "REJECT_LO_SHU_ROW_CLOSURE",
+      "operand_provenance": {
+        "lo_shu_cells": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT"
+      },
+      "operands": [
+        "lo_shu_cells"
+      ],
+      "provenance": "USER_SUPPLIED_PASS_080_FORMAL_SET",
+      "relation_id": "P080_LO_SHU_ROWS",
+      "relation_root_hash72": "0000000000000000000000000000003fnNa6cmFyykW7ihUpiWNsBJ(bl^9m2F0e^BU/xO=D",
+      "relation_type": "TENSOR_SUM_CLOSURE",
+      "schema": "HHS_TYPED_CONSTRAINT_RELATION_V1",
+      "witness_contribution": "RELATION_RESULT_AND_EXACT_RESIDUE"
+    },
+    {
+      "dependency_relations": [
+        "P080_LO_SHU_9_CELL"
+      ],
+      "domain_restrictions": [],
+      "exact_evaluation_type": "INTEGER_OR_BIGINT_RATIONAL_NO_FLOAT_AUTHORITY",
+      "expected_residue": "0",
+      "expression": "column_sums-15",
+      "failure_code": "REJECT_LO_SHU_COLUMN_CLOSURE",
+      "operand_provenance": {
+        "lo_shu_cells": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT"
+      },
+      "operands": [
+        "lo_shu_cells"
+      ],
+      "provenance": "USER_SUPPLIED_PASS_080_FORMAL_SET",
+      "relation_id": "P080_LO_SHU_COLUMNS",
+      "relation_root_hash72": "000000000000000000000000000000290H!OHF*J9m-X(QlrRvWc7/0tmTVFzCs-ltgeWXcH",
+      "relation_type": "TENSOR_SUM_CLOSURE",
+      "schema": "HHS_TYPED_CONSTRAINT_RELATION_V1",
+      "witness_contribution": "RELATION_RESULT_AND_EXACT_RESIDUE"
+    },
+    {
+      "dependency_relations": [
+        "P080_LO_SHU_9_CELL"
+      ],
+      "domain_restrictions": [],
+      "exact_evaluation_type": "INTEGER_OR_BIGINT_RATIONAL_NO_FLOAT_AUTHORITY",
+      "expected_residue": "0",
+      "expression": "diagonal_sums-15",
+      "failure_code": "REJECT_LO_SHU_DIAGONAL_CLOSURE",
+      "operand_provenance": {
+        "lo_shu_cells": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT"
+      },
+      "operands": [
+        "lo_shu_cells"
+      ],
+      "provenance": "USER_SUPPLIED_PASS_080_FORMAL_SET",
+      "relation_id": "P080_LO_SHU_DIAGONALS",
+      "relation_root_hash72": "0000000000000000000000000000002o8mFXUZiV/TJyls7=E4YToBs8f3=e/owUhFT2DVIb",
+      "relation_type": "TENSOR_SUM_CLOSURE",
+      "schema": "HHS_TYPED_CONSTRAINT_RELATION_V1",
+      "witness_contribution": "RELATION_RESULT_AND_EXACT_RESIDUE"
+    },
+    {
+      "dependency_relations": [],
+      "domain_restrictions": [],
+      "exact_evaluation_type": "INTEGER_OR_BIGINT_RATIONAL_NO_FLOAT_AUTHORITY",
+      "expected_residue": "0",
+      "expression": "(b6-a2)(d2+b2)-7(c2+b4)",
+      "failure_code": "REJECT_SEVEN_CELL_GATE",
+      "operand_provenance": {
+        "a2": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT",
+        "b2": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT",
+        "b4": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT",
+        "b6": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT",
+        "c2": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT",
+        "d2": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT"
+      },
+      "operands": [
+        "a2",
+        "b2",
+        "b4",
+        "b6",
+        "c2",
+        "d2"
+      ],
+      "provenance": "USER_SUPPLIED_PASS_080_FORMAL_SET",
+      "relation_id": "P080_SEVEN_CELL_GATE",
+      "relation_root_hash72": "0000000000000000000000000000001T0gVfERh8)j7VTeD+lL!Tt-F7CH*(p0g67sry^X>Z",
+      "relation_type": "POLYNOMIAL_EQUALITY",
+      "schema": "HHS_TYPED_CONSTRAINT_RELATION_V1",
+      "witness_contribution": "RELATION_RESULT_AND_EXACT_RESIDUE"
+    },
+    {
+      "dependency_relations": [],
+      "domain_restrictions": [],
+      "exact_evaluation_type": "INTEGER_OR_BIGINT_RATIONAL_NO_FLOAT_AUTHORITY",
+      "expected_residue": "0",
+      "expression": "(x+y-z-w) mod 72",
+      "failure_code": "REJECT_ORIENTATION_NOT_CLOSED",
+      "operand_provenance": {
+        "w": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT",
+        "x": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT",
+        "y": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT",
+        "z": "CANONICAL_PRE_STATE_OR_OPERAND_COMMITMENT"
+      },
+      "operands": [
+        "x",
+        "y",
+        "z",
+        "w"
+      ],
+      "provenance": "USER_SUPPLIED_PASS_080_FORMAL_SET",
+      "relation_id": "P080_ORIENTATION_U72",
+      "relation_root_hash72": "0000000000000000000000000000000s2m(093QXVj/ziYfgd!uZaOdwo*7!zWJ4jRTtme2L",
+      "relation_type": "MODULAR_EQUALITY",
+      "schema": "HHS_TYPED_CONSTRAINT_RELATION_V1",
+      "witness_contribution": "RELATION_RESULT_AND_EXACT_RESIDUE"
+    }
+  ],
+  "schema": "HHS_NATIVE_CONSTRAINT_MEMBRANE_V1"
+}

@@ -1,0 +1,38 @@
+{
+  "schema": "HHS_PASS_098_RELEASE_MANIFEST_V1",
+  "pass_id": "PASS_098",
+  "parent_pass097_release_root_hash72": "0000000000000000000000000000004F+na(JLwP*v9uN8ikoZqXP05LlWzV?e^l0pnZuo1z",
+  "carrier_modulus": 72,
+  "prime_layer_count": 4,
+  "prime_periodicities": [
+    11,
+    13,
+    17,
+    19
+  ],
+  "joint_recurrence_period": 3325608,
+  "workload_count": 14,
+  "negative_case_count": 14,
+  "all_negative_cases_passed": true,
+  "all_composite_coordinates_exact": true,
+  "noise_conflict_preserved": true,
+  "held_out_prime_generalization": true,
+  "all_replays_verified": true,
+  "artifacts": [
+    "PASS_098_PRIME_PERIODIC_LAYER_REGISTRY.json",
+    "PASS_098_POLYPERIODIC_OPERATION_FIELD.json",
+    "PASS_098_COMPOSITE_COORDINATE_RECONSTRUCTION.json",
+    "PASS_098_NORMALIZATION_ENTANGLEMENT_TRANSFORM.json",
+    "PASS_098_MULTI_OBSERVATION_RECONSTRUCTION.json",
+    "PASS_098_NOISE_LOCALIZATION_RESULT.json",
+    "PASS_098_EXECUTION_RECEIPTS.json",
+    "PASS_098_INTERFERENCE_RELATION_TYPES.json",
+    "PASS_098_OUTCOME_TAXONOMY.json",
+    "PASS_098_WORKLOAD_REGISTRY.json",
+    "PASS_098_NEGATIVE_CASES.json",
+    "PASS_098_REPLAY_RESULT.json",
+    "PASS_098_CALIBRATION_REPORT.md",
+    "CHANGELOG_PASS_098.md"
+  ],
+  "pass098_release_root_hash72": "0000000000000000000000000000000R*=E->u/U(IMA7kn50v/FHpR5r*Foosa>^0I8iQ*)"
+}

@@ -1,0 +1,13 @@
+{
+  "dependency_graph_root_hash72": "00000000000000000000000000000038KKiOoPTWD+tkzFo(=QrfIuFdD=^287ZvCc>zVd(I",
+  "dictionary_id": "dictionary:hhs:pass104:pass104",
+  "dictionary_root_hash72": "0000000000000000000000000000000xam!+AMRjFYG*ThzZikZdw4=O0K5jBfm5^(=o0R45",
+  "entry_count": 2,
+  "entry_roots": [
+    "0000000000000000000000000000002SG-RWAxKS(erTsN-50ncN)+-?n+WF61JF5s)Satk4",
+    "0000000000000000000000000000000CfQJscO4g9OWF1rF6eG>bNIgFJGA*A1MsSR?Zk+3m"
+  ],
+  "namespace": "hhs:pass104",
+  "schema": "HHS_HARMONICODE_VARIABLE_STRING_DICTIONARY_V1",
+  "version": 1
+}

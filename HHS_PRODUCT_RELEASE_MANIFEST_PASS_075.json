@@ -1,0 +1,61 @@
+{
+  "capabilities": [
+    "SPAN_PRESERVING_HARMONICODE_PARSER",
+    "HHS_TYPED_IR_V1",
+    "COMMITTED_SOURCE_TO_TYPED_IR_LINEAGE",
+    "ORDERED_PRODUCT_COMMUTATION_REJECTION",
+    "AGENT_COORDINATED_TEST_SELECTION_AND_SHARDING",
+    "CONTEXT_INDEPENDENT_LANGUAGE_WORKSPACE_REPLAY"
+  ],
+  "compiler_execution_available": false,
+  "dedicated_tests": {
+    "failed": 0,
+    "passed": 27
+  },
+  "emulator_execution_available": false,
+  "exhaustive_repository_suite": {
+    "reason": "NOT_RUN; BOUNDED PASS-SPECIFIC AND INHERITED CHAINS USED",
+    "status": "TYPED_UNRESOLVED_NEVER_ZERO"
+  },
+  "focused_chain_tests": {
+    "failed": 0,
+    "passed": 119
+  },
+  "host_path_required": false,
+  "implemented_operation_count": 20,
+  "interpreter_execution_available": false,
+  "language_replay_capsule_root_hash72": "0000000000000000000000000000002sNXT?ZpdGozIzFVBB0en2c4ckIjH^3)lzeb/KstF/",
+  "llm_context_window_required": false,
+  "native_continuation_root_hash72": "0000000000000000000000000000000Hv9Y-*ZdplqxG>2)>+KrzzBL5!b*3-4DYtNCd+IXQ",
+  "new_orphan_modules": 0,
+  "operation_registry_root_hash72": "0000000000000000000000000000002q3BHFAYH2^CJeKR1nJ+kgL5AON(Q?bB99ZYpsItn1",
+  "parent_native_pass": "PASS_074",
+  "pass072_files_changed": 0,
+  "pass072_files_missing": 0,
+  "pass072_foundation_file_count": 1899,
+  "pass074_parent_file_count": 1937,
+  "pass074_parent_files_changed": 0,
+  "pass074_parent_files_missing": 0,
+  "pass075_native_files_added": 32,
+  "pass075_total_file_count": 1969,
+  "pass_id": "PASS_075",
+  "platform_dependency": {
+    "foundation_modified": false,
+    "pass_id": "PASS_072",
+    "root_hash72": "ZF9bto?tV>P(KcFPL5L+csyy!jxdrAaadua1a!w-uwug8/MeMSqSS3*R>lXIefi)nyjXpc+)"
+  },
+  "product_id": "HHS_HARMONICODE_LANGUAGE_SERVICE",
+  "product_root_hash72": "00000000000000000000000000000031GsBD6wMdJDvXqjTyKPXZX+g2qPi9G8WFUTyNmsNo",
+  "program_graph_root_hash72": "0000000000000000000000000000001Llnx=ojr4DXIMaGVXY=nNT*N4lE+>LAleYA(s^*h3",
+  "reachable_native_program_nodes": 10,
+  "release_manifest_root_hash72": "0000000000000000000000000000002nv1q16bu^vuNBF06ta=?xrU+j8k!giRgg6)ujT?Li",
+  "reserved_operation_count": 3,
+  "schema": "HHS_PRODUCT_RELEASE_MANIFEST_PASS_075_V1",
+  "status": "EXECUTABLE_AND_COMMITTED",
+  "test_acceleration_plan_root_hash72": "0000000000000000000000000000000o*VyepN^T0(uvTYZnGRHVVDZPwSy>PWTjxQi1+WAh",
+  "thread_context_required": false,
+  "typed_ir_root_hash72": "00000000000000000000000000000010(OuA0K7cFZ9MZ/kQzMH9wC!AW>pd3yZFtXElzLze",
+  "typed_ir_validation_root_hash72": "0000000000000000000000000000001IjZF>nYwzJol^V)VO5heAHB6qrBz(ojrInq=B)-fr",
+  "version": "PASS_075_HARMONICODE_TYPED_IR_AND_TEST_ACCELERATION_V1",
+  "workspace_state_root_hash72": "00000000000000000000000000000023+YejH7FvjXrFLWXN?Lp92S+BQ*u!BQ8(6VCp^WKQ"
+}

@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "hhs://schemas/pass146/boundary-contract.schema.json",
+  "title": "HHS Pass 146 Boundary Contract",
+  "type": "object",
+  "required": ["schema", "identity_id", "grant_id", "operation", "source_scope", "destination", "request", "temporal_context", "capabilities", "resource_budget", "disclosure_scope", "reversibility_class", "path_blueprint", "relevant_state_root_hash72", "recursive_depth"],
+  "properties": {
+    "schema": {"const": "HHS_PASS146_BOUNDARY_CONTRACT_V1"},
+    "identity_id": {"type": "string"},
+    "grant_id": {"type": "string"},
+    "parent_contract_id": {"type": ["string", "null"]},
+    "operation": {"type": "string"},
+    "source_scope": {"type": "object"},
+    "destination": {"type": "object"},
+    "request": {"type": "object"},
+    "temporal_context": {"type": "object"},
+    "capabilities": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "resource_budget": {"type": "object"},
+    "disclosure_scope": {"type": "object"},
+    "reversibility_class": {"type": "string"},
+    "path_blueprint": {"type": "array"},
+    "relevant_state_root_hash72": {"type": "string"},
+    "recursive_depth": {"type": "integer", "minimum": 0}
+  },
+  "additionalProperties": false
+}

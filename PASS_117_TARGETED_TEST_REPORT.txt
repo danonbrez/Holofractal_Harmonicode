@@ -1,0 +1,8 @@
+Pass 117 native symbolic tensor emulation repair
+
+Pass 117 tests: 24 passed, 0 failed
+Dependency-scoped Pass 112–117 tests: 78 passed, 0 failed
+
+Validated exact b^-1 amplitudes, symbolic Hadamard unitarity, double-H recovery,
+Bell-state construction, tensor-chain receipt determinism, exact symbolic
+probability/collapse replay, invalid relation rejection, and unclosed chain rejection.

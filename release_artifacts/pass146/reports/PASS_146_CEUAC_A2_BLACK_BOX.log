@@ -1,0 +1,14 @@
+{
+  "actor_boundary": "PUBLIC_HHS_CLI_ONLY",
+  "boundary_contract_id": "BND-1b137d5281f057838ef92b8c",
+  "boundary_status": "BOUNDARY_CLOSED",
+  "commands_executed": 7,
+  "passed": true,
+  "query_evidence_count": 2,
+  "raw_source_preserved": true,
+  "replay_status": "REPLAY_VALIDATED",
+  "restart_integrity": true,
+  "schema": "HHS_PASS146_CEUAC_A2_BLACK_BOX_V1",
+  "source_id": "SRC-4477a44a67a14e51e6b36621",
+  "temporary_capabilities_expired": true
+}

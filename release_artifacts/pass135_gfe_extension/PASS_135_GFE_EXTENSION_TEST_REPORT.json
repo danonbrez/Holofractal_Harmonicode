@@ -1,0 +1,12 @@
+{
+  "dependency_scoped_tests": 27,
+  "dependency_scoped_tests_passed": 27,
+  "float_authority_paths": 0,
+  "log_definition": "E_H^sigma==g; E_H^Cancel(sigma)==Inverse_unit(g); product==unit",
+  "pass_id": "PASS_135_GFE_EXTENSION",
+  "result": "PASS",
+  "schema": "HHS_PASS135_GFE_EXTENSION_TEST_REPORT_V1",
+  "targeted_tests": 8,
+  "targeted_tests_passed": 8,
+  "test_command": "pytest -q tests/test_hhs_pass080_constraint_membrane_v1.py tests/test_hhs_pass135_ceuac_audit_v1.py tests/test_hhs_gfe_log_constraint_v1.py"
+}

@@ -1,0 +1,62 @@
+[
+  {
+    "branch_count": 2,
+    "elapsed_ns": 155223109,
+    "branches_admitted_per_second": 16.344121823919334,
+    "determinism_mismatch_count": 0,
+    "native_invocation_ns": 0,
+    "receipt_bytes": 2571,
+    "total_execution_ns": 122368153,
+    "receipt_root_hash72": "0000000000000000000000000000000M?lC(4XWMtoiBfz+X?IE3?D60CGy?kgoqIwCgLzbt"
+  },
+  {
+    "branch_count": 4,
+    "elapsed_ns": 261596027,
+    "branches_admitted_per_second": 17.31414349096418,
+    "determinism_mismatch_count": 0,
+    "native_invocation_ns": 0,
+    "receipt_bytes": 5141,
+    "total_execution_ns": 231025000,
+    "receipt_root_hash72": "00000000000000000000000000000020(1MFDsLABD*^kd)f*0fbM)Sk6*o2Zh1/KPM2Xh6X"
+  },
+  {
+    "branch_count": 8,
+    "elapsed_ns": 484585887,
+    "branches_admitted_per_second": 17.679201731181024,
+    "determinism_mismatch_count": 0,
+    "native_invocation_ns": 0,
+    "receipt_bytes": 10281,
+    "total_execution_ns": 452509119,
+    "receipt_root_hash72": "0000000000000000000000000000002Cl=y9zlxNmuc7*6Nq=AOO2cx!^Pq70TY(T6T(jtWw"
+  },
+  {
+    "branch_count": 16,
+    "elapsed_ns": 950667373,
+    "branches_admitted_per_second": 17.407904980134404,
+    "determinism_mismatch_count": 0,
+    "native_invocation_ns": 0,
+    "receipt_bytes": 20561,
+    "total_execution_ns": 919122664,
+    "receipt_root_hash72": "0000000000000000000000000000002xSJoxKaAYe(=TeNaBBIcE5Di1*>2iRb/a)bnltHd("
+  },
+  {
+    "branch_count": 32,
+    "elapsed_ns": 1863650500,
+    "branches_admitted_per_second": 17.51101903856214,
+    "determinism_mismatch_count": 0,
+    "native_invocation_ns": 0,
+    "receipt_bytes": 41121,
+    "total_execution_ns": 1827420776,
+    "receipt_root_hash72": "0000000000000000000000000000001IH1Q0sCo>+R6/jqEyNTwjuOULH47r-oMLOooYW/f1"
+  },
+  {
+    "branch_count": 64,
+    "elapsed_ns": 3606650440,
+    "branches_admitted_per_second": 17.910149258149488,
+    "determinism_mismatch_count": 0,
+    "native_invocation_ns": 0,
+    "receipt_bytes": 82241,
+    "total_execution_ns": 3573392889,
+    "receipt_root_hash72": "0000000000000000000000000000003J5eyrL)EnWhB1D3q1u+WC2IxXBj=4be5zNXKVypSO"
+  }
+]

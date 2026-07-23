@@ -1,0 +1,63 @@
+{
+  "amplitude_domains": [
+    "EXACT_COMPLEX_RATIONAL",
+    "HARMONICODE_Q_B_I"
+  ],
+  "defining_relations": [
+    "b^2=2",
+    "b^-1=b/2",
+    "i^2=-1"
+  ],
+  "files": [
+    {
+      "bytes": 27527,
+      "path": "hhs_runtime/hhs_pass117_vm81_deterministic_quantum_simulation_v1.py",
+      "sha256": "95b3fd3c45ecbcc303ea57776162fd5022f09de61945c7089b36afec28de0915"
+    },
+    {
+      "bytes": 7500,
+      "path": "tests/test_hhs_pass117_vm81_deterministic_quantum_simulation_v1.py",
+      "sha256": "e47bb686bab4e1cf0ac533be7899c51f8164000494f935637d7284d55f06f0a4"
+    },
+    {
+      "bytes": 28163,
+      "path": "PASS_117_SELF_TEST.json",
+      "sha256": "66c872a806def95fb09fec8b14d08223d78162f1e8ac46fb21077a858d6a5912"
+    },
+    {
+      "bytes": 2205,
+      "path": "PASS_117_IMPLEMENTATION_REPORT.md",
+      "sha256": "a776d65086a098f2d09d2ff2f89006890a0ea82f9e349abb11c759a476bf853f"
+    },
+    {
+      "bytes": 387,
+      "path": "CHANGELOG_PASS_117.md",
+      "sha256": "cb614ac11684b4485ac3a28906a6dd2a92d92fda8a24e97cceb96b0ce96bb5f9"
+    },
+    {
+      "bytes": 389,
+      "path": "PASS_117_TARGETED_TEST_REPORT.txt",
+      "sha256": "d613d683346af6e02c1cb2e2027e9a6aba8dd9529183195fefa85dd81f02cd06"
+    },
+    {
+      "bytes": 227410,
+      "path": "hhs_runtime/hhs_service_registry_v1.py",
+      "sha256": "8808cea60cd4055583641e62211f31ed31aa998636aa5337e8ff1eaafa3f6ea9"
+    }
+  ],
+  "manifest_sha256": "dee40a899130181592f1d0c9e4abed29ddfa324e7841de006b5a86e4767d85c1",
+  "mock_components": [],
+  "parent_pass": "PASS_116",
+  "pass117_tests": {
+    "failed": 0,
+    "passed": 24
+  },
+  "pass_id": "PASS_117",
+  "repair": "NATIVE_HARMONICODE_SYMBOLIC_TENSOR_EMULATION",
+  "runtime_service": "runtime.vm81_deterministic_quantum_simulation.pass117",
+  "schema": "HHS_PASS_117_RELEASE_MANIFEST_V2",
+  "scoped_tests": {
+    "failed": 0,
+    "passed": 78
+  }
+}

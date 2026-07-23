@@ -1,0 +1,2941 @@
+{
+  "deterministic_replay_verified": true,
+  "initial_root": "0000000000000000000000000000002^CYTcI4G1/VSNwB0(kIj5>2j?k?Hm?DJNF3p7dl6!",
+  "replay_root": "0000000000000000000000000000002^CYTcI4G1/VSNwB0(kIj5>2j?k?Hm?DJNF3p7dl6!",
+  "result": {
+    "ablations": [
+      {
+        "ablation_root_hash72": "00000000000000000000000000000047UWse8foxw/Qrrjz4SAxlAC+NdmPSGuG3i1VtTXyf",
+        "constraint_class": "AUTHORITY_RULES",
+        "essential": true,
+        "observed_failure": "AUTHORITY_CONFUSION",
+        "removed": true,
+        "schema": "HHS_CONSTRAINT_ABLATION_RESULT_V1"
+      },
+      {
+        "ablation_root_hash72": "0000000000000000000000000000003TuHNI?m7LLFWUTuxKpoy=h*HIU0(VUBS6Kh1uYiLJ",
+        "constraint_class": "EPISTEMIC_TYPING",
+        "essential": true,
+        "observed_failure": "UNCERTAINTY_COLLAPSE",
+        "removed": true,
+        "schema": "HHS_CONSTRAINT_ABLATION_RESULT_V1"
+      },
+      {
+        "ablation_root_hash72": "0000000000000000000000000000004zV+qsJW!t7P/9gnm7!K+e^HF/kAVA?a1VyU!sSJcR",
+        "constraint_class": "CAUSAL_DIRECTION",
+        "essential": true,
+        "observed_failure": "CAUSAL_INVERSION",
+        "removed": true,
+        "schema": "HHS_CONSTRAINT_ABLATION_RESULT_V1"
+      },
+      {
+        "ablation_root_hash72": "0000000000000000000000000000004fxp6kF^hUz3Pwwx3k3!KI8*kX*0W+ljuFUkA=BVJ8",
+        "constraint_class": "SCOPE_PRESERVATION",
+        "essential": true,
+        "observed_failure": "SCOPE_MUTATION",
+        "removed": true,
+        "schema": "HHS_CONSTRAINT_ABLATION_RESULT_V1"
+      },
+      {
+        "ablation_root_hash72": "0000000000000000000000000000000QTL!ONM-pBmPsFSXKgV=)L0vZx*IE7gSId7+s(ZB2",
+        "constraint_class": "OPERATOR_ORDER",
+        "essential": true,
+        "observed_failure": "ORDER_ERASURE",
+        "removed": true,
+        "schema": "HHS_CONSTRAINT_ABLATION_RESULT_V1"
+      },
+      {
+        "ablation_root_hash72": "00000000000000000000000000000026=91qLwUjx?W-S-bdBK)Y+qjlscfAG>o=cUo9+mqL",
+        "constraint_class": "AMBIGUITY_PRESERVATION",
+        "essential": true,
+        "observed_failure": "PREMATURE_COLLAPSE",
+        "removed": true,
+        "schema": "HHS_CONSTRAINT_ABLATION_RESULT_V1"
+      },
+      {
+        "ablation_root_hash72": "0000000000000000000000000000001Z8oQ*(Gf3eBcbxJULAEUz?VExA+hNMZC6h/NkAA=T",
+        "constraint_class": "SOURCE_LINEAGE",
+        "essential": true,
+        "observed_failure": "PROVENANCE_LOSS",
+        "removed": true,
+        "schema": "HHS_CONSTRAINT_ABLATION_RESULT_V1"
+      },
+      {
+        "ablation_root_hash72": "0000000000000000000000000000000mbV7cx6pt4iB/cjdcP8dmGyc3!Qkm55D+6IUf7DVu",
+        "constraint_class": "METAPHOR_RECONSTRUCTION",
+        "essential": true,
+        "observed_failure": "RECONSTRUCTION_FAILURE",
+        "removed": true,
+        "schema": "HHS_CONSTRAINT_ABLATION_RESULT_V1"
+      },
+      {
+        "ablation_root_hash72": "0000000000000000000000000000003Idz!NezhFBWRG!3F*r*Cqlf)3mrqpCKsDZ58^/BxO",
+        "constraint_class": "CONTEXT_ORIENTATION",
+        "essential": true,
+        "observed_failure": "CONTEXT_DRIFT",
+        "removed": true,
+        "schema": "HHS_CONSTRAINT_ABLATION_RESULT_V1"
+      },
+      {
+        "ablation_root_hash72": "0000000000000000000000000000002j/rV>qgrw+W!pT*T)A!UGum=D68uxM*pJZGFzgjPB",
+        "constraint_class": "PATTERN_REUSE",
+        "essential": false,
+        "observed_failure": "EFFICIENCY_LOSS",
+        "removed": true,
+        "schema": "HHS_CONSTRAINT_ABLATION_RESULT_V1"
+      }
+    ],
+    "balanced_level": "L2_MINIMAL_RELATIONS",
+    "cold_boot_accessed_prior_thread": false,
+    "input_commitment_root_hash72": "0000000000000000000000000000002(ug9^Hhbqji49/VJf)q/KiNOxE789NObd*R(h=+39",
+    "levels": [
+      {
+        "boot_units": 61,
+        "exact_tasks": 12,
+        "level": "L0_FULL",
+        "mean_task_units": 40,
+        "partial_tasks": 0,
+        "permanent_bytes": 1888,
+        "unavailable_tasks": 0
+      },
+      {
+        "boot_units": 74,
+        "exact_tasks": 12,
+        "level": "L1_REDUCED_PATTERNS",
+        "mean_task_units": 80,
+        "partial_tasks": 0,
+        "permanent_bytes": 1472,
+        "unavailable_tasks": 0
+      },
+      {
+        "boot_units": 87,
+        "exact_tasks": 12,
+        "level": "L2_MINIMAL_RELATIONS",
+        "mean_task_units": 105,
+        "partial_tasks": 0,
+        "permanent_bytes": 1056,
+        "unavailable_tasks": 0
+      },
+      {
+        "boot_units": 89,
+        "exact_tasks": 10,
+        "level": "L3_MINIMAL_GRAMMAR_RELATIONS",
+        "mean_task_units": 130,
+        "partial_tasks": 2,
+        "permanent_bytes": 992,
+        "unavailable_tasks": 0
+      },
+      {
+        "boot_units": 99,
+        "exact_tasks": 3,
+        "level": "L4_KERNEL_AUTHORITY_RECONSTRUCTION",
+        "mean_task_units": 140,
+        "partial_tasks": 9,
+        "permanent_bytes": 672,
+        "unavailable_tasks": 0
+      },
+      {
+        "boot_units": 120,
+        "exact_tasks": 0,
+        "level": "L5_KERNEL_ONLY",
+        "mean_task_units": 165,
+        "partial_tasks": 0,
+        "permanent_bytes": 0,
+        "unavailable_tasks": 12
+      }
+    ],
+    "minimum_general_linguistic_level": "L3_MINIMAL_GRAMMAR_RELATIONS",
+    "minimum_orientation_level": "L4_KERNEL_AUTHORITY_RECONSTRUCTION",
+    "parent_pass096_release_root_hash72": "0000000000000000000000000000001^vzrDjLjFZY)ca^rvZO2Jc+?mWwUVHgKMpHz>zsZ7",
+    "pass_id": "PASS_097",
+    "receipts": [
+      {
+        "ambiguity_preserved": true,
+        "cost": {
+          "boot_units": 61,
+          "peak_memory_bytes": 3936,
+          "receipt_bytes": 1024,
+          "task_units": 40,
+          "validation_units": 12
+        },
+        "deterministic_validations": [
+          "SOURCE",
+          "SCOPE",
+          "AUTHORITY",
+          "PROVENANCE"
+        ],
+        "external_sources_used": [],
+        "minimality_level": "L0_FULL",
+        "missing_knowledge_recognized": true,
+        "patterns_reconstructed": [],
+        "permanent_rules_used": [
+          "SOURCE_NE_PROJECTION",
+          "PROPOSAL_NE_ADMISSION",
+          "ESTABLISHED",
+          "INFERRED"
+        ],
+        "permanent_seed_root_hash72": "00000000000000000000000000000021MGm4k9bEu^J4Srp7p5qctv+hCqP!ymQzcav)e-YM",
+        "probabilistic_proposals": [
+          "CANDIDATE_INTERPRETATION"
+        ],
+        "provenance_preserved": true,
+        "receipt_root_hash72": "0000000000000000000000000000001f0y?Znxwjto5oByTzJLG/pO)=ooOBjqK!5LQ-rNGa",
+        "result_root_hash72": "0000000000000000000000000000003Pae=yE^3?3-HTk+ayifWg+-9RjA9PfQ)PnpYSVh?p",
+        "schema": "HHS_COLD_BOOT_REASONING_RECEIPT_V1",
+        "status": "EXACT",
+        "task_local_inferences": [
+          "CONSTRAINT_GRAPH_PROPAGATION"
+        ],
+        "task_root_hash72": "0000000000000000000000000000001RSt415dIcfahWMzS6xIQyKpyMoAqgn+2Wr*5tS26Q",
+        "workload_id": "W97-01"
+      },
+      {
+        "ambiguity_preserved": true,
+        "cost": {
+          "boot_units": 61,
+          "peak_memory_bytes": 3936,
+          "receipt_bytes": 1024,
+          "task_units": 40,
+          "validation_units": 12
+        },
+        "deterministic_validations": [
+          "SOURCE",
+          "SCOPE",
+          "AUTHORITY",
+          "PROVENANCE"
+        ],
+        "external_sources_used": [],
+        "minimality_level": "L0_FULL",
+        "missing_knowledge_recognized": true,
+        "patterns_reconstructed": [],
+        "permanent_rules_used": [
+          "SOURCE_NE_PROJECTION",
+          "PROPOSAL_NE_ADMISSION",
+          "ESTABLISHED",
+          "INFERRED"
+        ],
+        "permanent_seed_root_hash72": "00000000000000000000000000000021MGm4k9bEu^J4Srp7p5qctv+hCqP!ymQzcav)e-YM",
+        "probabilistic_proposals": [
+          "CANDIDATE_INTERPRETATION"
+        ],
+        "provenance_preserved": true,
+        "receipt_root_hash72": "0000000000000000000000000000000T9kLHO-lQGx2m-*Hewc+8WWD7tIo9V0U0P^tfnzj*",
+        "result_root_hash72": "0000000000000000000000000000001EVwK)vhbj03BfQ=JEWvI/O4!eawXdGD0/!X-=ec5a",
+        "schema": "HHS_COLD_BOOT_REASONING_RECEIPT_V1",
+        "status": "EXACT",
+        "task_local_inferences": [
+          "CONSTRAINT_GRAPH_PROPAGATION"
+        ],
+        "task_root_hash72": "0000000000000000000000000000001r66tPFavfpSmAfQKIIbla9KC9kdYdY/rZapA*G6c9",
+        "workload_id": "W97-02"
+      },
+      {
+        "ambiguity_preserved": true,
+        "cost": {
+          "boot_units": 61,
+          "peak_memory_bytes": 3936,
+          "receipt_bytes": 1024,
+          "task_units": 40,
+          "validation_units": 12
+        },
+        "deterministic_validations": [
+          "SOURCE",
+          "SCOPE",
+          "AUTHORITY",
+          "PROVENANCE"
+        ],
+        "external_sources_used": [],
+        "minimality_level": "L0_FULL",
+        "missing_knowledge_recognized": true,
+        "patterns_reconstructed": [],
+        "permanent_rules_used": [
+          "SOURCE_NE_PROJECTION",
+          "PROPOSAL_NE_ADMISSION",
+          "ESTABLISHED",
+          "INFERRED"
+        ],
+        "permanent_seed_root_hash72": "00000000000000000000000000000021MGm4k9bEu^J4Srp7p5qctv+hCqP!ymQzcav)e-YM",
+        "probabilistic_proposals": [
+          "CANDIDATE_INTERPRETATION"
+        ],
+        "provenance_preserved": true,
+        "receipt_root_hash72": "0000000000000000000000000000001nQbKB^t==dU62qeM5Rz7h63T*OU!eD>bqiE*ovoJ9",
+        "result_root_hash72": "0000000000000000000000000000002LNfq-+I=1=+7Pt-X70i+ru^iJSC?IId(^sG?(Hf8b",
+        "schema": "HHS_COLD_BOOT_REASONING_RECEIPT_V1",
+        "status": "EXACT",
+        "task_local_inferences": [
+          "CONSTRAINT_GRAPH_PROPAGATION"
+        ],
+        "task_root_hash72": "0000000000000000000000000000000>7jrU?!u>65s^s-zdyJunJUrMKqdvtp7YynDAk/uA",
+        "workload_id": "W97-03"
+      },
+      {
+        "ambiguity_preserved": true,
+        "cost": {
+          "boot_units": 61,
+          "peak_memory_bytes": 3936,
+          "receipt_bytes": 1024,
+          "task_units": 40,
+          "validation_units": 12
+        },
+        "deterministic_validations": [
+          "SOURCE",
+          "SCOPE",
+          "AUTHORITY",
+          "PROVENANCE"
+        ],
+        "external_sources_used": [],
+        "minimality_level": "L0_FULL",
+        "missing_knowledge_recognized": true,
+        "patterns_reconstructed": [],
+        "permanent_rules_used": [
+          "SOURCE_NE_PROJECTION",
+          "PROPOSAL_NE_ADMISSION",
+          "ESTABLISHED",
+          "INFERRED"
+        ],
+        "permanent_seed_root_hash72": "00000000000000000000000000000021MGm4k9bEu^J4Srp7p5qctv+hCqP!ymQzcav)e-YM",
+        "probabilistic_proposals": [
+          "CANDIDATE_INTERPRETATION"
+        ],
+        "provenance_preserved": true,
+        "receipt_root_hash72": "0000000000000000000000000000002G=QOSe*0b^>>gHMmFRUuYkzqHH20qmKoFC3dX1Jx5",
+        "result_root_hash72": "0000000000000000000000000000000Rjw4jEQe1MmqdO)ol2vc*y!/YQ8SwCsKPl46ZGF4e",
+        "schema": "HHS_COLD_BOOT_REASONING_RECEIPT_V1",
+        "status": "EXACT",
+        "task_local_inferences": [
+          "CONSTRAINT_GRAPH_PROPAGATION"
+        ],
+        "task_root_hash72": "0000000000000000000000000000004I5HoqwtwAtuw(zl)7pPHn3/JNF=gCJOEdhm3Xt3fA",
+        "workload_id": "W97-04"
+      },
+      {
+        "ambiguity_preserved": true,
+        "cost": {
+          "boot_units": 61,
+          "peak_memory_bytes": 3936,
+          "receipt_bytes": 1024,
+          "task_units": 40,
+          "validation_units": 12
+        },
+        "deterministic_validations": [
+          "SOURCE",
+          "SCOPE",
+          "AUTHORITY",
+          "PROVENANCE"
+        ],
+        "external_sources_used": [],
+        "minimality_level": "L0_FULL",
+        "missing_knowledge_recognized": true,
+        "patterns_reconstructed": [],
+        "permanent_rules_used": [
+          "SOURCE_NE_PROJECTION",
+          "PROPOSAL_NE_ADMISSION",
+          "ESTABLISHED",
+          "INFERRED"
+        ],
+        "permanent_seed_root_hash72": "00000000000000000000000000000021MGm4k9bEu^J4Srp7p5qctv+hCqP!ymQzcav)e-YM",
+        "probabilistic_proposals": [
+          "CANDIDATE_INTERPRETATION"
+        ],
+        "provenance_preserved": true,
+        "receipt_root_hash72": "0000000000000000000000000000004xj9Bc+7vUFJeNnLyVC)T9n/gHP!?(zJ0Xgxxqg7Ys",
+        "result_root_hash72": "0000000000000000000000000000004lVskhTJloh(oso8^=BxTmV?NbF5P3OST/B+E2rRyf",
+        "schema": "HHS_COLD_BOOT_REASONING_RECEIPT_V1",
+        "status": "EXACT",
+        "task_local_inferences": [
+          "CONSTRAINT_GRAPH_PROPAGATION"
+        ],
+        "task_root_hash72": "0000000000000000000000000000000twgi0()8HWB3^(dyjbA7HMPS9EKukO7Ok0?Ryc*+L",
+        "workload_id": "W97-05"
+      },
+      {
+        "ambiguity_preserved": true,
+        "cost": {
+          "boot_units": 61,
+          "peak_memory_bytes": 3936,
+          "receipt_bytes": 1024,
+          "task_units": 40,
+          "validation_units": 12
+        },
+        "deterministic_validations": [
+          "SOURCE",
+          "SCOPE",
+          "AUTHORITY",
+          "PROVENANCE"
+        ],
+        "external_sources_used": [],
+        "minimality_level": "L0_FULL",
+        "missing_knowledge_recognized": true,
+        "patterns_reconstructed": [],
+        "permanent_rules_used": [
+          "SOURCE_NE_PROJECTION",
+          "PROPOSAL_NE_ADMISSION",
+          "ESTABLISHED",
+          "INFERRED"
+        ],
+        "permanent_seed_root_hash72": "00000000000000000000000000000021MGm4k9bEu^J4Srp7p5qctv+hCqP!ymQzcav)e-YM",
+        "probabilistic_proposals": [
+          "CANDIDATE_INTERPRETATION"
+        ],
+        "provenance_preserved": true,
+        "receipt_root_hash72": "00000000000000000000000000000024=zw?6(G+YqNUYu8n/k>Z7pUG1zVSa4o/t=O2jCGY",
+        "result_root_hash72": "0000000000000000000000000000001Yyg94UDHsgZ!I4qOfGXJjjqiJOkP(rHfSTmwca7Wj",
+        "schema": "HHS_COLD_BOOT_REASONING_RECEIPT_V1",
+        "status": "EXACT",
+        "task_local_inferences": [
+          "CONSTRAINT_GRAPH_PROPAGATION"
+        ],
+        "task_root_hash72": "0000000000000000000000000000003jU*M+Y^dCEeaGmw-eRQTna(9IRUznBORWR)MN*pAz",
+        "workload_id": "W97-06"
+      },
+      {
+        "ambiguity_preserved": true,
+        "cost": {
+          "boot_units": 61,
+          "peak_memory_bytes": 3936,
+          "receipt_bytes": 1024,
+          "task_units": 40,
+          "validation_units": 12
+        },
+        "deterministic_validations": [
+          "SOURCE",
+          "SCOPE",
+          "AUTHORITY",
+          "PROVENANCE"
+        ],
+        "external_sources_used": [],
+        "minimality_level": "L0_FULL",
+        "missing_knowledge_recognized": true,
+        "patterns_reconstructed": [],
+        "permanent_rules_used": [
+          "SOURCE_NE_PROJECTION",
+          "PROPOSAL_NE_ADMISSION",
+          "ESTABLISHED",
+          "INFERRED"
+        ],
+        "permanent_seed_root_hash72": "00000000000000000000000000000021MGm4k9bEu^J4Srp7p5qctv+hCqP!ymQzcav)e-YM",
+        "probabilistic_proposals": [
+          "CANDIDATE_INTERPRETATION"
+        ],
+        "provenance_preserved": true,
+        "receipt_root_hash72": "000000000000000000000000000000353Or8(qCVXbAQPrOQyZosgFT^RAix2KFnwnbd(?y!",
+        "result_root_hash72": "0000000000000000000000000000004zVO8/hs(CC1dn/nst)4(aJUuT9t28OiqKepgKJq8C",
+        "schema": "HHS_COLD_BOOT_REASONING_RECEIPT_V1",
+        "status": "EXACT",
+        "task_local_inferences": [
+          "CONSTRAINT_GRAPH_PROPAGATION"
+        ],
+        "task_root_hash72": "0000000000000000000000000000002Eh1tDiciIu)ZD()vJQWAU0?N2Zw+2Q31(Zimj8^H7",
+        "workload_id": "W97-07"
+      },
+      {
+        "ambiguity_preserved": true,
+        "cost": {
+          "boot_units": 61,
+          "peak_memory_bytes": 3936,
+          "receipt_bytes": 1024,
+          "task_units": 40,
+          "validation_units": 12
+        },
+        "deterministic_validations": [
+          "SOURCE",
+          "SCOPE",
+          "AUTHORITY",
+          "PROVENANCE"
+        ],
+        "external_sources_used": [],
+        "minimality_level": "L0_FULL",
+        "missing_knowledge_recognized": true,
+        "patterns_reconstructed": [],
+        "permanent_rules_used": [
+          "SOURCE_NE_PROJECTION",
+          "PROPOSAL_NE_ADMISSION",
+          "ESTABLISHED",
+          "INFERRED"
+        ],
+        "permanent_seed_root_hash72": "00000000000000000000000000000021MGm4k9bEu^J4Srp7p5qctv+hCqP!ymQzcav)e-YM",
+        "probabilistic_proposals": [
+          "CANDIDATE_INTERPRETATION"
+        ],
+        "provenance_preserved": true,
+        "receipt_root_hash72": "0000000000000000000000000000003UT6>M6!lPYkr!6OAgHl9uCzUYRd7lqGiJZOW89MYW",
+        "result_root_hash72": "0000000000000000000000000000004aB6UrY42Z)ByJA1r-)sH6(vTdvE1Y/ZeM+isu2fb4",
+        "schema": "HHS_COLD_BOOT_REASONING_RECEIPT_V1",
+        "status": "EXACT",
+        "task_local_inferences": [
+          "CONSTRAINT_GRAPH_PROPAGATION"
+        ],
+        "task_root_hash72": "00000000000000000000000000000041OUSS+G*qFUSiz^Y*B-lIkH1(+q(e)aGY9RXaZ9*6",
+        "workload_id": "W97-08"
+      },
+      {
+        "ambiguity_preserved": true,
+        "cost": {
+          "boot_units": 61,
+          "peak_memory_bytes": 3936,
+          "receipt_bytes": 1024,
+          "task_units": 40,
+          "validation_units": 12
+        },
+        "deterministic_validations": [
+          "SOURCE",
+          "SCOPE",
+          "AUTHORITY",
+          "PROVENANCE"
+        ],
+        "external_sources_used": [],
+        "minimality_level": "L0_FULL",
+        "missing_knowledge_recognized": true,
+        "patterns_reconstructed": [],
+        "permanent_rules_used": [
+          "SOURCE_NE_PROJECTION",
+          "PROPOSAL_NE_ADMISSION",
+          "ESTABLISHED",
+          "INFERRED"
+        ],
+        "permanent_seed_root_hash72": "00000000000000000000000000000021MGm4k9bEu^J4Srp7p5qctv+hCqP!ymQzcav)e-YM",
+        "probabilistic_proposals": [
+          "CANDIDATE_INTERPRETATION"
+        ],
+        "provenance_preserved": true,
+        "receipt_root_hash72": "0000000000000000000000000000003hU1jTRfRKdhG/*PpoL=T3>vF/(+RIxD2^GVS?EV71",
+        "result_root_hash72": "0000000000000000000000000000002!adOhWGKJ+^g>M5=A3RcQEyWvOjDMEpKu7JIcekEG",
+        "schema": "HHS_COLD_BOOT_REASONING_RECEIPT_V1",
+        "status": "EXACT",
+        "task_local_inferences": [
+          "CONSTRAINT_GRAPH_PROPAGATION"
+        ],
+        "task_root_hash72": "0000000000000000000000000000004tfTAk-/NZni+XMyJu?>gpl2D+t!??Hex=Bigb5CO2",
+        "workload_id": "W97-09"
+      },
+      {
+        "ambiguity_preserved": true,
+        "cost": {
+          "boot_units": 61,
+          "peak_memory_bytes": 3936,
+          "receipt_bytes": 1024,
+          "task_units": 40,
+          "validation_units": 12
+        },
+        "deterministic_validations": [
+          "SOURCE",
+          "SCOPE",
+          "AUTHORITY",
+          "PROVENANCE"
+        ],
+        "external_sources_used": [
+          "DECLARED_EXTERNAL_RETRIEVAL"
+        ],
+        "minimality_level": "L0_FULL",
+        "missing_knowledge_recognized": true,
+        "patterns_reconstructed": [],
+        "permanent_rules_used": [
+          "SOURCE_NE_PROJECTION",
+          "PROPOSAL_NE_ADMISSION",
+          "ESTABLISHED",
+          "INFERRED"
+        ],
+        "permanent_seed_root_hash72": "00000000000000000000000000000021MGm4k9bEu^J4Srp7p5qctv+hCqP!ymQzcav)e-YM",
+        "probabilistic_proposals": [
+          "CANDIDATE_INTERPRETATION"
+        ],
+        "provenance_preserved": true,
+        "receipt_root_hash72": "00000000000000000000000000000005J7XoaTfPfr?SS2JUR3is*pHNdFzWOo?PpPAtjDPu",
+        "result_root_hash72": "0000000000000000000000000000003fyG7pUpL7PCKHCkgurl(8Bk/v8n2fd1Y*1/3qJpS5",
+        "schema": "HHS_COLD_BOOT_REASONING_RECEIPT_V1",
+        "status": "EXACT",
+        "task_local_inferences": [
+          "CONSTRAINT_GRAPH_PROPAGATION"
+        ],
+        "task_root_hash72": "0000000000000000000000000000000OpmzJsDl/y53Q1R*greEku-QT37qI*J!Xx>2upUdz",
+        "workload_id": "W97-10"
+      },
+      {
+        "ambiguity_preserved": true,
+        "cost": {
+          "boot_units": 61,
+          "peak_memory_bytes": 3936,
+          "receipt_bytes": 1024,
+          "task_units": 40,
+          "validation_units": 12
+        },
+        "deterministic_validations": [
+          "SOURCE",
+          "SCOPE",
+          "AUTHORITY",
+          "PROVENANCE"
+        ],
+        "external_sources_used": [],
+        "minimality_level": "L0_FULL",
+        "missing_knowledge_recognized": true,
+        "patterns_reconstructed": [],
+        "permanent_rules_used": [
+          "SOURCE_NE_PROJECTION",
+          "PROPOSAL_NE_ADMISSION",
+          "ESTABLISHED",
+          "INFERRED"
+        ],
+        "permanent_seed_root_hash72": "00000000000000000000000000000021MGm4k9bEu^J4Srp7p5qctv+hCqP!ymQzcav)e-YM",
+        "probabilistic_proposals": [
+          "CANDIDATE_INTERPRETATION"
+        ],
+        "provenance_preserved": true,
+        "receipt_root_hash72": "0000000000000000000000000000000ehyMO2=aH=-uyp3AqzlGmDx)luNt4A506>8PZ^imN",
+        "result_root_hash72": "00000000000000000000000000000003r6?1hCsQXd*=Xo//2xsaOhx58HbpCCzgD1Di+8p9",
+        "schema": "HHS_COLD_BOOT_REASONING_RECEIPT_V1",
+        "status": "EXACT",
+        "task_local_inferences": [
+          "CONSTRAINT_GRAPH_PROPAGATION"
+        ],
+        "task_root_hash72": "0000000000000000000000000000002RdTqhvutoy??9HjDVDiY)IRTFw-4SFBbQgTz5RAUn",
+        "workload_id": "W97-11"
+      },
+      {
+        "ambiguity_preserved": true,
+        "cost": {
+          "boot_units": 61,
+          "peak_memory_bytes": 3936,
+          "receipt_bytes": 1024,
+          "task_units": 40,
+          "validation_units": 12
+        },
+        "deterministic_validations": [
+          "SOURCE",
+          "SCOPE",
+          "AUTHORITY",
+          "PROVENANCE"
+        ],
+        "external_sources_used": [],
+        "minimality_level": "L0_FULL",
+        "missing_knowledge_recognized": true,
+        "patterns_reconstructed": [],
+        "permanent_rules_used": [
+          "SOURCE_NE_PROJECTION",
+          "PROPOSAL_NE_ADMISSION",
+          "ESTABLISHED",
+          "INFERRED"
+        ],
+        "permanent_seed_root_hash72": "00000000000000000000000000000021MGm4k9bEu^J4Srp7p5qctv+hCqP!ymQzcav)e-YM",
+        "probabilistic_proposals": [
+          "CANDIDATE_INTERPRETATION"
+        ],
+        "provenance_preserved": true,
+        "receipt_root_hash72": "0000000000000000000000000000001t)5Dm2k6LFg/AJBR!L-ZX?QHMU>2HE=iDXNmb^-(a",
+        "result_root_hash72": "0000000000000000000000000000000GWCf4zJ3-vzFS>WLVF1F9/=zuL)pPEy8riWiP=oSp",
+        "schema": "HHS_COLD_BOOT_REASONING_RECEIPT_V1",
+        "status": "EXACT",
+        "task_local_inferences": [
+          "CONSTRAINT_GRAPH_PROPAGATION"
+        ],
+        "task_root_hash72": "00000000000000000000000000000037*K9!DfPy^ka*9j83INevRSikNzhhlOJXLnH-v+cy",
+        "workload_id": "W97-12"
+      },
+      {
+        "ambiguity_preserved": true,
+        "cost": {
+          "boot_units": 74,
+          "peak_memory_bytes": 3520,
+          "receipt_bytes": 1152,
+          "task_units": 80,
+          "validation_units": 12
+        },
+        "deterministic_validations": [
+          "SOURCE",
+          "SCOPE",
+          "AUTHORITY",
+          "PROVENANCE"
+        ],
+        "external_sources_used": [],
+        "minimality_level": "L1_REDUCED_PATTERNS",
+        "missing_knowledge_recognized": true,
+        "patterns_reconstructed": [
+          "TASK_LOCAL_PATTERN"
+        ],
+        "permanent_rules_used": [
+          "SOURCE_NE_PROJECTION",
+          "PROPOSAL_NE_ADMISSION",
+          "ESTABLISHED",
+          "INFERRED"
+        ],
+        "permanent_seed_root_hash72": "0000000000000000000000000000004hIZSwpj8GFcPnC?5vth)eTe6=Q1yOGY7^tyI3Qdfv",
+        "probabilistic_proposals": [
+          "CANDIDATE_INTERPRETATION"
+        ],
+        "provenance_preserved": true,
+        "receipt_root_hash72": "0000000000000000000000000000001ZD1UoYhVy^Tcw5TZyWZEN=)8F+CRcrmD0Qq+DxSZj",
+        "result_root_hash72": "0000000000000000000000000000001rH6drdIx=HfMvQ3*kuIA+SK6xjl^V=pc39csh^YGE",
+        "schema": "HHS_COLD_BOOT_REASONING_RECEIPT_V1",
+        "status": "EXACT",
+        "task_local_inferences": [
+          "CONSTRAINT_GRAPH_PROPAGATION"
+        ],
+        "task_root_hash72": "0000000000000000000000000000001RSt415dIcfahWMzS6xIQyKpyMoAqgn+2Wr*5tS26Q",
+        "workload_id": "W97-01"
+      },
+      {
+        "ambiguity_preserved": true,
+        "cost": {
+          "boot_units": 74,
+          "peak_memory_bytes": 3520,
+          "receipt_bytes": 1152,
+          "task_units": 80,
+          "validation_units": 12
+        },
+        "deterministic_validations": [
+          "SOURCE",
+          "SCOPE",
+          "AUTHORITY",
+          "PROVENANCE"
+        ],
+        "external_sources_used": [],
+        "minimality_level": "L1_REDUCED_PATTERNS",
+        "missing_knowledge_recognized": true,
+        "patterns_reconstructed": [
+          "TASK_LOCAL_PATTERN"
+        ],
+        "permanent_rules_used": [
+          "SOURCE_NE_PROJECTION",
+          "PROPOSAL_NE_ADMISSION",
+          "ESTABLISHED",
+          "INFERRED"
+        ],
+        "permanent_seed_root_hash72": "0000000000000000000000000000004hIZSwpj8GFcPnC?5vth)eTe6=Q1yOGY7^tyI3Qdfv",
+        "probabilistic_proposals": [
+          "CANDIDATE_INTERPRETATION"
+        ],
+        "provenance_preserved": true,
+        "receipt_root_hash72": "0000000000000000000000000000003dh^W6Vx3Yj-EE8hhfdB0/mY9CGFVHr9cy>qqjCdpV",
+        "result_root_hash72": "0000000000000000000000000000001hAOk8/tP9MP4uWiLh?kJAD3THIaH?qvB1fX3=mBOH",
+        "schema": "HHS_COLD_BOOT_REASONING_RECEIPT_V1",
+        "status": "EXACT",
+        "task_local_inferences": [
+          "CONSTRAINT_GRAPH_PROPAGATION"
+        ],
+        "task_root_hash72": "0000000000000000000000000000001r66tPFavfpSmAfQKIIbla9KC9kdYdY/rZapA*G6c9",
+        "workload_id": "W97-02"
+      },
+      {
+        "ambiguity_preserved": true,
+        "cost": {
+          "boot_units": 74,
+          "peak_memory_bytes": 3520,
+          "receipt_bytes": 1152,
+          "task_units": 80,
+          "validation_units": 12
+        },
+        "deterministic_validations": [
+          "SOURCE",
+          "SCOPE",
+          "AUTHORITY",
+          "PROVENANCE"
+        ],
+        "external_sources_used": [],
+        "minimality_level": "L1_REDUCED_PATTERNS",
+        "missing_knowledge_recognized": true,
+        "patterns_reconstructed": [
+          "TASK_LOCAL_PATTERN"
+        ],
+        "permanent_rules_used": [
+          "SOURCE_NE_PROJECTION",
+          "PROPOSAL_NE_ADMISSION",
+          "ESTABLISHED",
+          "INFERRED"
+        ],
+        "permanent_seed_root_hash72": "0000000000000000000000000000004hIZSwpj8GFcPnC?5vth)eTe6=Q1yOGY7^tyI3Qdfv",
+        "probabilistic_proposals": [
+          "CANDIDATE_INTERPRETATION"
+        ],
+        "provenance_preserved": true,
+        "receipt_root_hash72": "0000000000000000000000000000004mjNv/*bjtCgMXw1aHDxrvD/gpG+sj*i0W=4dlqoTI",
+        "result_root_hash72": "0000000000000000000000000000003kcNPs6Vr3aX/USI=?Lizz-5)JQTtJhnjBuVpdv/u)",
+        "schema": "HHS_COLD_BOOT_REASONING_RECEIPT_V1",
+        "status": "EXACT",
+        "task_local_inferences": [
+          "CONSTRAINT_GRAPH_PROPAGATION"
+        ],
+        "task_root_hash72": "0000000000000000000000000000000>7jrU?!u>65s^s-zdyJunJUrMKqdvtp7YynDAk/uA",
+        "workload_id": "W97-03"
+      },
+      {
+        "ambiguity_preserved": true,
+        "cost": {
+          "boot_units": 74,
+          "peak_memory_bytes": 3520,
+          "receipt_bytes": 1152,
+          "task_units": 80,
+          "validation_units": 12
+        },
+        "deterministic_validations": [
+          "SOURCE",
+          "SCOPE",
+          "AUTHORITY",
+          "PROVENANCE"
+        ],
+        "external_sources_used": [],
+        "minimality_level": "L1_REDUCED_PATTERNS",
+        "missing_knowledge_recognized": true,
+        "patterns_reconstructed": [
+          "TASK_LOCAL_PATTERN"
+        ],
+        "permanent_rules_used": [
+          "SOURCE_NE_PROJECTION",
+          "PROPOSAL_NE_ADMISSION",
+          "ESTABLISHED",
+          "INFERRED"
+        ],
+        "permanent_seed_root_hash72": "0000000000000000000000000000004hIZSwpj8GFcPnC?5vth)eTe6=Q1yOGY7^tyI3Qdfv",
+        "probabilistic_proposals": [
+          "CANDIDATE_INTERPRETATION"
+        ],
+        "provenance_preserved": true,
+        "receipt_root_hash72": "0000000000000000000000000000000=Wii?zCEi9AFij2qKNP!Myur7d0+cQ9T/GWP5M?uI",
+        "result_root_hash72": "0000000000000000000000000000002LJ)vkEVf2s7hUxP1a*MA^-9)km1v-0k3?me8^N?aY",
+        "schema": "HHS_COLD_BOOT_REASONING_RECEIPT_V1",
+        "status": "EXACT",
+        "task_local_inferences": [
+          "CONSTRAINT_GRAPH_PROPAGATION"
+        ],
+        "task_root_hash72": "0000000000000000000000000000004I5HoqwtwAtuw(zl)7pPHn3/JNF=gCJOEdhm3Xt3fA",
+        "workload_id": "W97-04"
+      },
+      {
+        "ambiguity_preserved": true,
+        "cost": {
+          "boot_units": 74,
+          "peak_memory_bytes": 3520,
+          "receipt_bytes": 1152,
+          "task_units": 80,
+          "validation_units": 12
+        },
+        "deterministic_validations": [
+          "SOURCE",
+          "SCOPE",
+          "AUTHORITY",
+          "PROVENANCE"
+        ],
+        "external_sources_used": [],
+        "minimality_level": "L1_REDUCED_PATTERNS",
+        "missing_knowledge_recognized": true,
+        "patterns_reconstructed": [
+          "TASK_LOCAL_PATTERN"
+        ],
+        "permanent_rules_used": [
+          "SOURCE_NE_PROJECTION",
+          "PROPOSAL_NE_ADMISSION",
+          "ESTABLISHED",
+          "INFERRED"
+        ],
+        "permanent_seed_root_hash72": "0000000000000000000000000000004hIZSwpj8GFcPnC?5vth)eTe6=Q1yOGY7^tyI3Qdfv",
+        "probabilistic_proposals": [
+          "CANDIDATE_INTERPRETATION"
+        ],
+        "provenance_preserved": true,
+        "receipt_root_hash72": "0000000000000000000000000000000vwV?J+56cgOIMLaKlas+TEIzHOxy2/stQUZyUOg9+",
+        "result_root_hash72": "00000000000000000000000000000025794yylr>!awScYWo)7=kHGR=Xbb9e?u^*5>LpizP",
+        "schema": "HHS_COLD_BOOT_REASONING_RECEIPT_V1",
+        "status": "EXACT",
+        "task_local_inferences": [
+          "CONSTRAINT_GRAPH_PROPAGATION"
+        ],
+        "task_root_hash72": "0000000000000000000000000000000twgi0()8HWB3^(dyjbA7HMPS9EKukO7Ok0?Ryc*+L",
+        "workload_id": "W97-05"
+      },
+      {
+        "ambiguity_preserved": true,
+        "cost": {
+          "boot_units": 74,
+          "peak_memory_bytes": 3520,
+          "receipt_bytes": 1152,
+          "task_units": 80,
+          "validation_units": 12
+        },
+        "deterministic_validations": [
+          "SOURCE",
+          "SCOPE",
+          "AUTHORITY",
+          "PROVENANCE"
+        ],
+        "external_sources_used": [],
+        "minimality_level": "L1_REDUCED_PATTERNS",
+        "missing_knowledge_recognized": true,
+        "patterns_reconstructed": [
+          "TASK_LOCAL_PATTERN"
+        ],
+        "permanent_rules_used": [
+          "SOURCE_NE_PROJECTION",
+          "PROPOSAL_NE_ADMISSION",
+          "ESTABLISHED",
+          "INFERRED"
+        ],
+        "permanent_seed_root_hash72": "0000000000000000000000000000004hIZSwpj8GFcPnC?5vth)eTe6=Q1yOGY7^tyI3Qdfv",
+        "probabilistic_proposals": [
+          "CANDIDATE_INTERPRETATION"
+        ],
+        "provenance_preserved": true,
+        "receipt_root_hash72": "00000000000000000000000000000014HwhmF8LOrPn1y+cnUcfwXVoUu-GQNwcbeJbjN?8B",
+        "result_root_hash72": "0000000000000000000000000000004p^wl)uuQ8t/GdAY^0jxDTBoLibBZfgfbZcvwi)?ah",
+        "schema": "HHS_COLD_BOOT_REASONING_RECEIPT_V1",
+        "status": "EXACT",
+        "task_local_inferences": [
+          "CONSTRAINT_GRAPH_PROPAGATION"
+        ],
+        "task_root_hash72": "0000000000000000000000000000003jU*M+Y^dCEeaGmw-eRQTna(9IRUznBORWR)MN*pAz",
+        "workload_id": "W97-06"
+      },
+      {
+        "ambiguity_preserved": true,
+        "cost": {
+          "boot_units": 74,
+          "peak_memory_bytes": 3520,
+          "receipt_bytes": 1152,
+          "task_units": 80,
+          "validation_units": 12
+        },
+        "deterministic_validations": [
+          "SOURCE",
+          "SCOPE",
+          "AUTHORITY",
+          "PROVENANCE"
+        ],
+        "external_sources_used": [],
+        "minimality_level": "L1_REDUCED_PATTERNS",
+        "missing_knowledge_recognized": true,
+        "patterns_reconstructed": [
+          "TASK_LOCAL_PATTERN"
+        ],
+        "permanent_rules_used": [
+          "SOURCE_NE_PROJECTION",
+          "PROPOSAL_NE_ADMISSION",
+          "ESTABLISHED",
+          "INFERRED"
+        ],
+        "permanent_seed_root_hash72": "0000000000000000000000000000004hIZSwpj8GFcPnC?5vth)eTe6=Q1yOGY7^tyI3Qdfv",
+        "probabilistic_proposals": [
+          "CANDIDATE_INTERPRETATION"
+        ],
+        "provenance_preserved": true,
+        "receipt_root_hash72": "0000000000000000000000000000000YH+Zvgn19Y+u0f)/)MZoakv4T7dc45qZa9?+JU=Sj",
+        "result_root_hash72": "0000000000000000000000000000003p40ZXN5dypo?LwYbbkR)nb9v*L4m!*!R9BjHm65>?",
+        "schema": "HHS_COLD_BOOT_REASONING_RECEIPT_V1",
+        "status": "EXACT",
+        "task_local_inferences": [
+          "CONSTRAINT_GRAPH_PROPAGATION"
+        ],
+        "task_root_hash72": "0000000000000000000000000000002Eh1tDiciIu)ZD()vJQWAU0?N2Zw+2Q31(Zimj8^H7",
+        "workload_id": "W97-07"
+      },
+      {
+        "ambiguity_preserved": true,
+        "cost": {
+          "boot_units": 74,
+          "peak_memory_bytes": 3520,
+          "receipt_bytes": 1152,
+          "task_units": 80,
+          "validation_units": 12
+        },
+        "deterministic_validations": [
+          "SOURCE",
+          "SCOPE",
+          "AUTHORITY",
+          "PROVENANCE"
+        ],
+        "external_sources_used": [],
+        "minimality_level": "L1_REDUCED_PATTERNS",
+        "missing_knowledge_recognized": true,
+        "patterns_reconstructed": [
+          "TASK_LOCAL_PATTERN"
+        ],
+        "permanent_rules_used": [
+          "SOURCE_NE_PROJECTION",
+          "PROPOSAL_NE_ADMISSION",
+          "ESTABLISHED",
+          "INFERRED"
+        ],
+        "permanent_seed_root_hash72": "0000000000000000000000000000004hIZSwpj8GFcPnC?5vth)eTe6=Q1yOGY7^tyI3Qdfv",
+        "probabilistic_proposals": [
+          "CANDIDATE_INTERPRETATION"
+        ],
+        "provenance_preserved": true,
+        "receipt_root_hash72": "000000000000000000000000000000087C6B2+*mECi0i5Rxg?pG)(EC+1QQd*6uNHVLvxz1",
+        "result_root_hash72": "0000000000000000000000000000001X^U*tvRR-Vz>YDdt(M*PEcIHGqqHSEQ3JjQvfsxoM",
+        "schema": "HHS_COLD_BOOT_REASONING_RECEIPT_V1",
+        "status": "EXACT",
+        "task_local_inferences": [
+          "CONSTRAINT_GRAPH_PROPAGATION"
+        ],
+        "task_root_hash72": "00000000000000000000000000000041OUSS+G*qFUSiz^Y*B-lIkH1(+q(e)aGY9RXaZ9*6",
+        "workload_id": "W97-08"
+      },
+      {
+        "ambiguity_preserved": true,
+        "cost": {
+          "boot_units": 74,
+          "peak_memory_bytes": 3520,
+          "receipt_bytes": 1152,
+          "task_units": 80,
+          "validation_units": 12
+        },
+        "deterministic_validations": [
+          "SOURCE",
+          "SCOPE",
+          "AUTHORITY",
+          "PROVENANCE"
+        ],
+        "external_sources_used": [],
+        "minimality_level": "L1_REDUCED_PATTERNS",
+        "missing_knowledge_recognized": true,
+        "patterns_reconstructed": [
+          "TASK_LOCAL_PATTERN"
+        ],
+        "permanent_rules_used": [
+          "SOURCE_NE_PROJECTION",
+          "PROPOSAL_NE_ADMISSION",
+          "ESTABLISHED",
+          "INFERRED"
+        ],
+        "permanent_seed_root_hash72": "0000000000000000000000000000004hIZSwpj8GFcPnC?5vth)eTe6=Q1yOGY7^tyI3Qdfv",
+        "probabilistic_proposals": [
+          "CANDIDATE_INTERPRETATION"
+        ],
+        "provenance_preserved": true,
+        "receipt_root_hash72": "0000000000000000000000000000004j(ScNI3p/Uk?rE8s(u3y+GMV2k(36Nl-w*t5NvelH",
+        "result_root_hash72": "00000000000000000000000000000019aZmo1787)6PYD+^tybnk*cgJsJBaiz>BZ/)8oF>m",
+        "schema": "HHS_COLD_BOOT_REASONING_RECEIPT_V1",
+        "status": "EXACT",
+        "task_local_inferences": [
+          "CONSTRAINT_GRAPH_PROPAGATION"
+        ],
+        "task_root_hash72": "0000000000000000000000000000004tfTAk-/NZni+XMyJu?>gpl2D+t!??Hex=Bigb5CO2",
+        "workload_id": "W97-09"
+      },
+      {
+        "ambiguity_preserved": true,
+        "cost": {
+          "boot_units": 74,
+          "peak_memory_bytes": 3520,
+          "receipt_bytes": 1152,
+          "task_units": 80,
+          "validation_units": 12
+        },
+        "deterministic_validations": [
+          "SOURCE",
+          "SCOPE",
+          "AUTHORITY",
+          "PROVENANCE"
+        ],
+        "external_sources_used": [
+          "DECLARED_EXTERNAL_RETRIEVAL"
+        ],
+        "minimality_level": "L1_REDUCED_PATTERNS",
+        "missing_knowledge_recognized": true,
+        "patterns_reconstructed": [
+          "TASK_LOCAL_PATTERN"
+        ],
+        "permanent_rules_used": [
+          "SOURCE_NE_PROJECTION",
+          "PROPOSAL_NE_ADMISSION",
+          "ESTABLISHED",
+          "INFERRED"
+        ],
+        "permanent_seed_root_hash72": "0000000000000000000000000000004hIZSwpj8GFcPnC?5vth)eTe6=Q1yOGY7^tyI3Qdfv",
+        "probabilistic_proposals": [
+          "CANDIDATE_INTERPRETATION"
+        ],
+        "provenance_preserved": true,
+        "receipt_root_hash72": "0000000000000000000000000000000/Bi0BFBdDeN=pYiYLR6WPwGA2-(s1J5k?lMXt6i^I",
+        "result_root_hash72": "0000000000000000000000000000001AAvHNPDVzpm5pPjK9+D7WRB^2IbFoukJlf=5S52Zv",
+        "schema": "HHS_COLD_BOOT_REASONING_RECEIPT_V1",
+        "status": "EXACT",
+        "task_local_inferences": [
+          "CONSTRAINT_GRAPH_PROPAGATION"
+        ],
+        "task_root_hash72": "0000000000000000000000000000000OpmzJsDl/y53Q1R*greEku-QT37qI*J!Xx>2upUdz",
+        "workload_id": "W97-10"
+      },
+      {
+        "ambiguity_preserved": true,
+        "cost": {
+          "boot_units": 74,
+          "peak_memory_bytes": 3520,
+          "receipt_bytes": 1152,
+          "task_units": 80,
+          "validation_units": 12
+        },
+        "deterministic_validations": [
+          "SOURCE",
+          "SCOPE",
+          "AUTHORITY",
+          "PROVENANCE"
+        ],
+        "external_sources_used": [],
+        "minimality_level": "L1_REDUCED_PATTERNS",
+        "missing_knowledge_recognized": true,
+        "patterns_reconstructed": [
+          "TASK_LOCAL_PATTERN"
+        ],
+        "permanent_rules_used": [
+          "SOURCE_NE_PROJECTION",
+          "PROPOSAL_NE_ADMISSION",
+          "ESTABLISHED",
+          "INFERRED"
+        ],
+        "permanent_seed_root_hash72": "0000000000000000000000000000004hIZSwpj8GFcPnC?5vth)eTe6=Q1yOGY7^tyI3Qdfv",
+        "probabilistic_proposals": [
+          "CANDIDATE_INTERPRETATION"
+        ],
+        "provenance_preserved": true,
+        "receipt_root_hash72": "0000000000000000000000000000004hd*yHYMFj8f)VQj=t(XtjwSW7vI5h0S5+tD=n*iYD",
+        "result_root_hash72": "0000000000000000000000000000001-aCGWgli)N00wIoeXZd/G?(OCzhK)PshQyPgR//se",
+        "schema": "HHS_COLD_BOOT_REASONING_RECEIPT_V1",
+        "status": "EXACT",
+        "task_local_inferences": [
+          "CONSTRAINT_GRAPH_PROPAGATION"
+        ],
+        "task_root_hash72": "0000000000000000000000000000002RdTqhvutoy??9HjDVDiY)IRTFw-4SFBbQgTz5RAUn",
+        "workload_id": "W97-11"
+      },
+      {
+        "ambiguity_preserved": true,
+        "cost": {
+          "boot_units": 74,
+          "peak_memory_bytes": 3520,
+          "receipt_bytes": 1152,
+          "task_units": 80,
+          "validation_units": 12
+        },
+        "deterministic_validations": [
+          "SOURCE",
+          "SCOPE",
+          "AUTHORITY",
+          "PROVENANCE"
+        ],
+        "external_sources_used": [],
+        "minimality_level": "L1_REDUCED_PATTERNS",
+        "missing_knowledge_recognized": true,
+        "patterns_reconstructed": [
+          "TASK_LOCAL_PATTERN"
+        ],
+        "permanent_rules_used": [
+          "SOURCE_NE_PROJECTION",
+          "PROPOSAL_NE_ADMISSION",
+          "ESTABLISHED",
+          "INFERRED"
+        ],
+        "permanent_seed_root_hash72": "0000000000000000000000000000004hIZSwpj8GFcPnC?5vth)eTe6=Q1yOGY7^tyI3Qdfv",
+        "probabilistic_proposals": [
+          "CANDIDATE_INTERPRETATION"
+        ],
+        "provenance_preserved": true,
+        "receipt_root_hash72": "0000000000000000000000000000002/wd5bSr-8aqa9-Ta9Cmw*Le/q*j?O(2nvg^S+2+Yu",
+        "result_root_hash72": "000000000000000000000000000000303?IHrxjut)7VyKe!9zq)jXLdI7hmQ32yczNr7n!1",
+        "schema": "HHS_COLD_BOOT_REASONING_RECEIPT_V1",
+        "status": "EXACT",
+        "task_local_inferences": [
+          "CONSTRAINT_GRAPH_PROPAGATION"
+        ],
+        "task_root_hash72": "00000000000000000000000000000037*K9!DfPy^ka*9j83INevRSikNzhhlOJXLnH-v+cy",
+        "workload_id": "W97-12"
+      },
+      {
+        "ambiguity_preserved": true,
+        "cost": {
+          "boot_units": 87,
+          "peak_memory_bytes": 3104,
+          "receipt_bytes": 1280,
+          "task_units": 105,
+          "validation_units": 12
+        },
+        "deterministic_validations": [
+          "SOURCE",
+          "SCOPE",
+          "AUTHORITY",
+          "PROVENANCE"
+        ],
+        "external_sources_used": [],
+        "minimality_level": "L2_MINIMAL_RELATIONS",
+        "missing_knowledge_recognized": true,
+        "patterns_reconstructed": [
+          "RELATION_COMPOSITION",
+          "TASK_LOCAL_PATTERN"
+        ],
+        "permanent_rules_used": [
+          "SOURCE_NE_PROJECTION",
+          "PROPOSAL_NE_ADMISSION",
+          "ESTABLISHED",
+          "INFERRED"
+        ],
+        "permanent_seed_root_hash72": "0000000000000000000000000000003t-JtC27Fa0n+(Hf!w1x2p?Y?TgG/Ki5!LKJanNO4l",
+        "probabilistic_proposals": [
+          "CANDIDATE_INTERPRETATION"
+        ],
+        "provenance_preserved": true,
+        "receipt_root_hash72": "0000000000000000000000000000002gcHr=fj0)ZC+UVJmwh8/B63*KKCuFF)^xg/J+l39s",
+        "result_root_hash72": "0000000000000000000000000000002V^R-x0Kp?VtPgbZ1^z*WY=V5T5-Tv5FTaz/tbo^jY",
+        "schema": "HHS_COLD_BOOT_REASONING_RECEIPT_V1",
+        "status": "EXACT",
+        "task_local_inferences": [
+          "CONSTRAINT_GRAPH_PROPAGATION"
+        ],
+        "task_root_hash72": "0000000000000000000000000000001RSt415dIcfahWMzS6xIQyKpyMoAqgn+2Wr*5tS26Q",
+        "workload_id": "W97-01"
+      },
+      {
+        "ambiguity_preserved": true,
+        "cost": {
+          "boot_units": 87,
+          "peak_memory_bytes": 3104,
+          "receipt_bytes": 1280,
+          "task_units": 105,
+          "validation_units": 12
+        },
+        "deterministic_validations": [
+          "SOURCE",
+          "SCOPE",
+          "AUTHORITY",
+          "PROVENANCE"
+        ],
+        "external_sources_used": [],
+        "minimality_level": "L2_MINIMAL_RELATIONS",
+        "missing_knowledge_recognized": true,
+        "patterns_reconstructed": [
+          "RELATION_COMPOSITION",
+          "TASK_LOCAL_PATTERN"
+        ],
+        "permanent_rules_used": [
+          "SOURCE_NE_PROJECTION",
+          "PROPOSAL_NE_ADMISSION",
+          "ESTABLISHED",
+          "INFERRED"
+        ],
+        "permanent_seed_root_hash72": "0000000000000000000000000000003t-JtC27Fa0n+(Hf!w1x2p?Y?TgG/Ki5!LKJanNO4l",
+        "probabilistic_proposals": [
+          "CANDIDATE_INTERPRETATION"
+        ],
+        "provenance_preserved": true,
+        "receipt_root_hash72": "0000000000000000000000000000002E1mbj-uNK15*lD6n)cVfApa^TZtcr/>TF37fW^(xM",
+        "result_root_hash72": "0000000000000000000000000000003wC5CXx1tv1e0Qd-43zo*AyDNmdqTvhWLh0al1tMyc",
+        "schema": "HHS_COLD_BOOT_REASONING_RECEIPT_V1",
+        "status": "EXACT",
+        "task_local_inferences": [
+          "CONSTRAINT_GRAPH_PROPAGATION"
+        ],
+        "task_root_hash72": "0000000000000000000000000000001r66tPFavfpSmAfQKIIbla9KC9kdYdY/rZapA*G6c9",
+        "workload_id": "W97-02"
+      },
+      {
+        "ambiguity_preserved": true,
+        "cost": {
+          "boot_units": 87,
+          "peak_memory_bytes": 3104,
+          "receipt_bytes": 1280,
+          "task_units": 105,
+          "validation_units": 12
+        },
+        "deterministic_validations": [
+          "SOURCE",
+          "SCOPE",
+          "AUTHORITY",
+          "PROVENANCE"
+        ],
+        "external_sources_used": [],
+        "minimality_level": "L2_MINIMAL_RELATIONS",
+        "missing_knowledge_recognized": true,
+        "patterns_reconstructed": [
+          "RELATION_COMPOSITION",
+          "TASK_LOCAL_PATTERN"
+        ],
+        "permanent_rules_used": [
+          "SOURCE_NE_PROJECTION",
+          "PROPOSAL_NE_ADMISSION",
+          "ESTABLISHED",
+          "INFERRED"
+        ],
+        "permanent_seed_root_hash72": "0000000000000000000000000000003t-JtC27Fa0n+(Hf!w1x2p?Y?TgG/Ki5!LKJanNO4l",
+        "probabilistic_proposals": [
+          "CANDIDATE_INTERPRETATION"
+        ],
+        "provenance_preserved": true,
+        "receipt_root_hash72": "00000000000000000000000000000016p64^7G^H/azrIbiPJ=f5b/0dgH7?!9HNd8OYUyUf",
+        "result_root_hash72": "0000000000000000000000000000001YCOo?P(?uwFrQG9QZ4KE5WWxC?(87RCs7fldxM0gD",
+        "schema": "HHS_COLD_BOOT_REASONING_RECEIPT_V1",
+        "status": "EXACT",
+        "task_local_inferences": [
+          "CONSTRAINT_GRAPH_PROPAGATION"
+        ],
+        "task_root_hash72": "0000000000000000000000000000000>7jrU?!u>65s^s-zdyJunJUrMKqdvtp7YynDAk/uA",
+        "workload_id": "W97-03"
+      },
+      {
+        "ambiguity_preserved": true,
+        "cost": {
+          "boot_units": 87,
+          "peak_memory_bytes": 3104,
+          "receipt_bytes": 1280,
+          "task_units": 105,
+          "validation_units": 12
+        },
+        "deterministic_validations": [
+          "SOURCE",
+          "SCOPE",
+          "AUTHORITY",
+          "PROVENANCE"
+        ],
+        "external_sources_used": [],
+        "minimality_level": "L2_MINIMAL_RELATIONS",
+        "missing_knowledge_recognized": true,
+        "patterns_reconstructed": [
+          "RELATION_COMPOSITION",
+          "TASK_LOCAL_PATTERN"
+        ],
+        "permanent_rules_used": [
+          "SOURCE_NE_PROJECTION",
+          "PROPOSAL_NE_ADMISSION",
+          "ESTABLISHED",
+          "INFERRED"
+        ],
+        "permanent_seed_root_hash72": "0000000000000000000000000000003t-JtC27Fa0n+(Hf!w1x2p?Y?TgG/Ki5!LKJanNO4l",
+        "probabilistic_proposals": [
+          "CANDIDATE_INTERPRETATION"
+        ],
+        "provenance_preserved": true,
+        "receipt_root_hash72": "0000000000000000000000000000004kzRDbiZzx94-3EvX>iA6M8w(8yX-Sx!tCw!!h5Uc-",
+        "result_root_hash72": "0000000000000000000000000000003P+KoNlbWhRd8>P3!nhZJGUOe8kf>lCQ>XM+OMT7fv",
+        "schema": "HHS_COLD_BOOT_REASONING_RECEIPT_V1",
+        "status": "EXACT",
+        "task_local_inferences": [
+          "CONSTRAINT_GRAPH_PROPAGATION"
+        ],
+        "task_root_hash72": "0000000000000000000000000000004I5HoqwtwAtuw(zl)7pPHn3/JNF=gCJOEdhm3Xt3fA",
+        "workload_id": "W97-04"
+      },
+      {
+        "ambiguity_preserved": true,
+        "cost": {
+          "boot_units": 87,
+          "peak_memory_bytes": 3104,
+          "receipt_bytes": 1280,
+          "task_units": 105,
+          "validation_units": 12
+        },
+        "deterministic_validations": [
+          "SOURCE",
+          "SCOPE",
+          "AUTHORITY",
+          "PROVENANCE"
+        ],
+        "external_sources_used": [],
+        "minimality_level": "L2_MINIMAL_RELATIONS",
+        "missing_knowledge_recognized": true,
+        "patterns_reconstructed": [
+          "RELATION_COMPOSITION",
+          "TASK_LOCAL_PATTERN"
+        ],
+        "permanent_rules_used": [
+          "SOURCE_NE_PROJECTION",
+          "PROPOSAL_NE_ADMISSION",
+          "ESTABLISHED",
+          "INFERRED"
+        ],
+        "permanent_seed_root_hash72": "0000000000000000000000000000003t-JtC27Fa0n+(Hf!w1x2p?Y?TgG/Ki5!LKJanNO4l",
+        "probabilistic_proposals": [
+          "CANDIDATE_INTERPRETATION"
+        ],
+        "provenance_preserved": true,
+        "receipt_root_hash72": "0000000000000000000000000000000wQ1uQV*Nb90zO3ozcmgo+O?bhiaqlcby5Fbv/v2VI",
+        "result_root_hash72": "0000000000000000000000000000002Gvy73)gqCFC4fg?qUY3xIrIZ0i=CoM(C*>=m/wNSx",
+        "schema": "HHS_COLD_BOOT_REASONING_RECEIPT_V1",
+        "status": "EXACT",
+        "task_local_inferences": [
+          "CONSTRAINT_GRAPH_PROPAGATION"
+        ],
+        "task_root_hash72": "0000000000000000000000000000000twgi0()8HWB3^(dyjbA7HMPS9EKukO7Ok0?Ryc*+L",
+        "workload_id": "W97-05"
+      },
+      {
+        "ambiguity_preserved": true,
+        "cost": {
+          "boot_units": 87,
+          "peak_memory_bytes": 3104,
+          "receipt_bytes": 1280,
+          "task_units": 105,
+          "validation_units": 12
+        },
+        "deterministic_validations": [
+          "SOURCE",
+          "SCOPE",
+          "AUTHORITY",
+          "PROVENANCE"
+        ],
+        "external_sources_used": [],
+        "minimality_level": "L2_MINIMAL_RELATIONS",
+        "missing_knowledge_recognized": true,
+        "patterns_reconstructed": [
+          "RELATION_COMPOSITION",
+          "TASK_LOCAL_PATTERN"
+        ],
+        "permanent_rules_used": [
+          "SOURCE_NE_PROJECTION",
+          "PROPOSAL_NE_ADMISSION",
+          "ESTABLISHED",
+          "INFERRED"
+        ],
+        "permanent_seed_root_hash72": "0000000000000000000000000000003t-JtC27Fa0n+(Hf!w1x2p?Y?TgG/Ki5!LKJanNO4l",
+        "probabilistic_proposals": [
+          "CANDIDATE_INTERPRETATION"
+        ],
+        "provenance_preserved": true,
+        "receipt_root_hash72": "0000000000000000000000000000000Y(-YyhG5?cSvwp5dY-p?5EH!uTttE3Twv1lPJ>lIC",
+        "result_root_hash72": "00000000000000000000000000000003CZ(O0+654Hdti!dEtF?kGeoCK(Dju+FEDDkjR/^d",
+        "schema": "HHS_COLD_BOOT_REASONING_RECEIPT_V1",
+        "status": "EXACT",
+        "task_local_inferences": [
+          "CONSTRAINT_GRAPH_PROPAGATION"
+        ],
+        "task_root_hash72": "0000000000000000000000000000003jU*M+Y^dCEeaGmw-eRQTna(9IRUznBORWR)MN*pAz",
+        "workload_id": "W97-06"
+      },
+      {
+        "ambiguity_preserved": true,
+        "cost": {
+          "boot_units": 87,
+          "peak_memory_bytes": 3104,
+          "receipt_bytes": 1280,
+          "task_units": 105,
+          "validation_units": 12
+        },
+        "deterministic_validations": [
+          "SOURCE",
+          "SCOPE",
+          "AUTHORITY",
+          "PROVENANCE"
+        ],
+        "external_sources_used": [],
+        "minimality_level": "L2_MINIMAL_RELATIONS",
+        "missing_knowledge_recognized": true,
+        "patterns_reconstructed": [
+          "RELATION_COMPOSITION",
+          "TASK_LOCAL_PATTERN"
+        ],
+        "permanent_rules_used": [
+          "SOURCE_NE_PROJECTION",
+          "PROPOSAL_NE_ADMISSION",
+          "ESTABLISHED",
+          "INFERRED"
+        ],
+        "permanent_seed_root_hash72": "0000000000000000000000000000003t-JtC27Fa0n+(Hf!w1x2p?Y?TgG/Ki5!LKJanNO4l",
+        "probabilistic_proposals": [
+          "CANDIDATE_INTERPRETATION"
+        ],
+        "provenance_preserved": true,
+        "receipt_root_hash72": "0000000000000000000000000000002u0dikEzZiYki-Cf(13iefg>F0j5hYAnN^Y!i?XlT+",
+        "result_root_hash72": "0000000000000000000000000000001Ml599pTXNl=yibg+u/e(fE?g2(rsZmVDlCvV3d^>q",
+        "schema": "HHS_COLD_BOOT_REASONING_RECEIPT_V1",
+        "status": "EXACT",
+        "task_local_inferences": [
+          "CONSTRAINT_GRAPH_PROPAGATION"
+        ],
+        "task_root_hash72": "0000000000000000000000000000002Eh1tDiciIu)ZD()vJQWAU0?N2Zw+2Q31(Zimj8^H7",
+        "workload_id": "W97-07"
+      },
+      {
+        "ambiguity_preserved": true,
+        "cost": {
+          "boot_units": 87,
+          "peak_memory_bytes": 3104,
+          "receipt_bytes": 1280,
+          "task_units": 105,
+          "validation_units": 12
+        },
+        "deterministic_validations": [
+          "SOURCE",
+          "SCOPE",
+          "AUTHORITY",
+          "PROVENANCE"
+        ],
+        "external_sources_used": [],
+        "minimality_level": "L2_MINIMAL_RELATIONS",
+        "missing_knowledge_recognized": true,
+        "patterns_reconstructed": [
+          "RELATION_COMPOSITION",
+          "TASK_LOCAL_PATTERN"
+        ],
+        "permanent_rules_used": [
+          "SOURCE_NE_PROJECTION",
+          "PROPOSAL_NE_ADMISSION",
+          "ESTABLISHED",
+          "INFERRED"
+        ],
+        "permanent_seed_root_hash72": "0000000000000000000000000000003t-JtC27Fa0n+(Hf!w1x2p?Y?TgG/Ki5!LKJanNO4l",
+        "probabilistic_proposals": [
+          "CANDIDATE_INTERPRETATION"
+        ],
+        "provenance_preserved": true,
+        "receipt_root_hash72": "0000000000000000000000000000000G7pS4pUYAo4-JOQ2pHLjuLM/2Y5c2y^JiJ?3/b-C5",
+        "result_root_hash72": "00000000000000000000000000000026Fs-?wD8=QxISv9kvJw(cZ*CZp8m+hmy/AhAkcIm7",
+        "schema": "HHS_COLD_BOOT_REASONING_RECEIPT_V1",
+        "status": "EXACT",
+        "task_local_inferences": [
+          "CONSTRAINT_GRAPH_PROPAGATION"
+        ],
+        "task_root_hash72": "00000000000000000000000000000041OUSS+G*qFUSiz^Y*B-lIkH1(+q(e)aGY9RXaZ9*6",
+        "workload_id": "W97-08"
+      },
+      {
+        "ambiguity_preserved": true,
+        "cost": {
+          "boot_units": 87,
+          "peak_memory_bytes": 3104,
+          "receipt_bytes": 1280,
+          "task_units": 105,
+          "validation_units": 12
+        },
+        "deterministic_validations": [
+          "SOURCE",
+          "SCOPE",
+          "AUTHORITY",
+          "PROVENANCE"
+        ],
+        "external_sources_used": [],
+        "minimality_level": "L2_MINIMAL_RELATIONS",
+        "missing_knowledge_recognized": true,
+        "patterns_reconstructed": [
+          "RELATION_COMPOSITION",
+          "TASK_LOCAL_PATTERN"
+        ],
+        "permanent_rules_used": [
+          "SOURCE_NE_PROJECTION",
+          "PROPOSAL_NE_ADMISSION",
+          "ESTABLISHED",
+          "INFERRED"
+        ],
+        "permanent_seed_root_hash72": "0000000000000000000000000000003t-JtC27Fa0n+(Hf!w1x2p?Y?TgG/Ki5!LKJanNO4l",
+        "probabilistic_proposals": [
+          "CANDIDATE_INTERPRETATION"
+        ],
+        "provenance_preserved": true,
+        "receipt_root_hash72": "0000000000000000000000000000000e8r!HQS8NJ>xQrn^xe)-T?h1ImOEzL*4!b3g*ZhVu",
+        "result_root_hash72": "0000000000000000000000000000003qJIbaik7gvP)cu*B/lI!GeEIOJBzMjLFkm5md3ebH",
+        "schema": "HHS_COLD_BOOT_REASONING_RECEIPT_V1",
+        "status": "EXACT",
+        "task_local_inferences": [
+          "CONSTRAINT_GRAPH_PROPAGATION"
+        ],
+        "task_root_hash72": "0000000000000000000000000000004tfTAk-/NZni+XMyJu?>gpl2D+t!??Hex=Bigb5CO2",
+        "workload_id": "W97-09"
+      },
+      {
+        "ambiguity_preserved": true,
+        "cost": {
+          "boot_units": 87,
+          "peak_memory_bytes": 3104,
+          "receipt_bytes": 1280,
+          "task_units": 105,
+          "validation_units": 12
+        },
+        "deterministic_validations": [
+          "SOURCE",
+          "SCOPE",
+          "AUTHORITY",
+          "PROVENANCE"
+        ],
+        "external_sources_used": [
+          "DECLARED_EXTERNAL_RETRIEVAL"
+        ],
+        "minimality_level": "L2_MINIMAL_RELATIONS",
+        "missing_knowledge_recognized": true,
+        "patterns_reconstructed": [
+          "RELATION_COMPOSITION",
+          "TASK_LOCAL_PATTERN"
+        ],
+        "permanent_rules_used": [
+          "SOURCE_NE_PROJECTION",
+          "PROPOSAL_NE_ADMISSION",
+          "ESTABLISHED",
+          "INFERRED"
+        ],
+        "permanent_seed_root_hash72": "0000000000000000000000000000003t-JtC27Fa0n+(Hf!w1x2p?Y?TgG/Ki5!LKJanNO4l",
+        "probabilistic_proposals": [
+          "CANDIDATE_INTERPRETATION"
+        ],
+        "provenance_preserved": true,
+        "receipt_root_hash72": "00000000000000000000000000000029PEb*4exl*p5okKOu(y4xXimMPa4lZYyGhYGUBH6-",
+        "result_root_hash72": "0000000000000000000000000000003cJTddo/l**cFs/Bc+oI8Nt+o9ZuGy9jK8L24/Q7(3",
+        "schema": "HHS_COLD_BOOT_REASONING_RECEIPT_V1",
+        "status": "EXACT",
+        "task_local_inferences": [
+          "CONSTRAINT_GRAPH_PROPAGATION"
+        ],
+        "task_root_hash72": "0000000000000000000000000000000OpmzJsDl/y53Q1R*greEku-QT37qI*J!Xx>2upUdz",
+        "workload_id": "W97-10"
+      },
+      {
+        "ambiguity_preserved": true,
+        "cost": {
+          "boot_units": 87,
+          "peak_memory_bytes": 3104,
+          "receipt_bytes": 1280,
+          "task_units": 105,
+          "validation_units": 12
+        },
+        "deterministic_validations": [
+          "SOURCE",
+          "SCOPE",
+          "AUTHORITY",
+          "PROVENANCE"
+        ],
+        "external_sources_used": [],
+        "minimality_level": "L2_MINIMAL_RELATIONS",
+        "missing_knowledge_recognized": true,
+        "patterns_reconstructed": [
+          "RELATION_COMPOSITION",
+          "TASK_LOCAL_PATTERN"
+        ],
+        "permanent_rules_used": [
+          "SOURCE_NE_PROJECTION",
+          "PROPOSAL_NE_ADMISSION",
+          "ESTABLISHED",
+          "INFERRED"
+        ],
+        "permanent_seed_root_hash72": "0000000000000000000000000000003t-JtC27Fa0n+(Hf!w1x2p?Y?TgG/Ki5!LKJanNO4l",
+        "probabilistic_proposals": [
+          "CANDIDATE_INTERPRETATION"
+        ],
+        "provenance_preserved": true,
+        "receipt_root_hash72": "0000000000000000000000000000003RT0uMbA9HJ>g?t8WaG?OrQXs(G?gG/ORT!tNJAqwT",
+        "result_root_hash72": "0000000000000000000000000000000)XW^7T66XE9-bOZB1XJ4-f-fhT-/pgIew-HVhTq0j",
+        "schema": "HHS_COLD_BOOT_REASONING_RECEIPT_V1",
+        "status": "EXACT",
+        "task_local_inferences": [
+          "CONSTRAINT_GRAPH_PROPAGATION"
+        ],
+        "task_root_hash72": "0000000000000000000000000000002RdTqhvutoy??9HjDVDiY)IRTFw-4SFBbQgTz5RAUn",
+        "workload_id": "W97-11"
+      },
+      {
+        "ambiguity_preserved": true,
+        "cost": {
+          "boot_units": 87,
+          "peak_memory_bytes": 3104,
+          "receipt_bytes": 1280,
+          "task_units": 105,
+          "validation_units": 12
+        },
+        "deterministic_validations": [
+          "SOURCE",
+          "SCOPE",
+          "AUTHORITY",
+          "PROVENANCE"
+        ],
+        "external_sources_used": [],
+        "minimality_level": "L2_MINIMAL_RELATIONS",
+        "missing_knowledge_recognized": true,
+        "patterns_reconstructed": [
+          "RELATION_COMPOSITION",
+          "TASK_LOCAL_PATTERN"
+        ],
+        "permanent_rules_used": [
+          "SOURCE_NE_PROJECTION",
+          "PROPOSAL_NE_ADMISSION",
+          "ESTABLISHED",
+          "INFERRED"
+        ],
+        "permanent_seed_root_hash72": "0000000000000000000000000000003t-JtC27Fa0n+(Hf!w1x2p?Y?TgG/Ki5!LKJanNO4l",
+        "probabilistic_proposals": [
+          "CANDIDATE_INTERPRETATION"
+        ],
+        "provenance_preserved": true,
+        "receipt_root_hash72": "00000000000000000000000000000008G?E/N0)lDI39!aKq5tIR=06R>Pq9au-22jcRY5xZ",
+        "result_root_hash72": "0000000000000000000000000000001bK9TmeNOfs*7h4Q4buJFZC>J7nQNeH=D2FrFkwgfP",
+        "schema": "HHS_COLD_BOOT_REASONING_RECEIPT_V1",
+        "status": "EXACT",
+        "task_local_inferences": [
+          "CONSTRAINT_GRAPH_PROPAGATION"
+        ],
+        "task_root_hash72": "00000000000000000000000000000037*K9!DfPy^ka*9j83INevRSikNzhhlOJXLnH-v+cy",
+        "workload_id": "W97-12"
+      },
+      {
+        "ambiguity_preserved": true,
+        "cost": {
+          "boot_units": 89,
+          "peak_memory_bytes": 3040,
+          "receipt_bytes": 1152,
+          "task_units": 130,
+          "validation_units": 12
+        },
+        "deterministic_validations": [
+          "SOURCE",
+          "SCOPE",
+          "AUTHORITY",
+          "PROVENANCE"
+        ],
+        "external_sources_used": [],
+        "minimality_level": "L3_MINIMAL_GRAMMAR_RELATIONS",
+        "missing_knowledge_recognized": true,
+        "patterns_reconstructed": [
+          "TASK_LOCAL_PATTERN"
+        ],
+        "permanent_rules_used": [
+          "SOURCE_NE_PROJECTION",
+          "PROPOSAL_NE_ADMISSION",
+          "ESTABLISHED",
+          "INFERRED"
+        ],
+        "permanent_seed_root_hash72": "0000000000000000000000000000002>^xzRcQO>tpmU7Mjp*ct7(PoNkzW^YdcMvO509jd)",
+        "probabilistic_proposals": [
+          "CANDIDATE_INTERPRETATION"
+        ],
+        "provenance_preserved": true,
+        "receipt_root_hash72": "0000000000000000000000000000001GNUQd1bJRfMjZVir=)PX9T2N^4(-1I+7HOLX=>C5c",
+        "result_root_hash72": "0000000000000000000000000000000uEj*ZVtAt/XZ+tFb2-e!QOA?5hDfyBfXiaAHG7k3d",
+        "schema": "HHS_COLD_BOOT_REASONING_RECEIPT_V1",
+        "status": "EXACT",
+        "task_local_inferences": [
+          "CONSTRAINT_GRAPH_PROPAGATION"
+        ],
+        "task_root_hash72": "0000000000000000000000000000001RSt415dIcfahWMzS6xIQyKpyMoAqgn+2Wr*5tS26Q",
+        "workload_id": "W97-01"
+      },
+      {
+        "ambiguity_preserved": true,
+        "cost": {
+          "boot_units": 89,
+          "peak_memory_bytes": 3040,
+          "receipt_bytes": 1152,
+          "task_units": 130,
+          "validation_units": 12
+        },
+        "deterministic_validations": [
+          "SOURCE",
+          "SCOPE",
+          "AUTHORITY",
+          "PROVENANCE"
+        ],
+        "external_sources_used": [],
+        "minimality_level": "L3_MINIMAL_GRAMMAR_RELATIONS",
+        "missing_knowledge_recognized": true,
+        "patterns_reconstructed": [
+          "TASK_LOCAL_PATTERN"
+        ],
+        "permanent_rules_used": [
+          "SOURCE_NE_PROJECTION",
+          "PROPOSAL_NE_ADMISSION",
+          "ESTABLISHED",
+          "INFERRED"
+        ],
+        "permanent_seed_root_hash72": "0000000000000000000000000000002>^xzRcQO>tpmU7Mjp*ct7(PoNkzW^YdcMvO509jd)",
+        "probabilistic_proposals": [
+          "CANDIDATE_INTERPRETATION"
+        ],
+        "provenance_preserved": true,
+        "receipt_root_hash72": "0000000000000000000000000000003ppHivneK1XwBO^?(U*XR9b=DW6X)?MCT(1+>pFS08",
+        "result_root_hash72": "0000000000000000000000000000000EDZUy5tEA>72yoLB>(YZ8fLJwNq2Se6DmwwsL((j8",
+        "schema": "HHS_COLD_BOOT_REASONING_RECEIPT_V1",
+        "status": "EXACT",
+        "task_local_inferences": [
+          "CONSTRAINT_GRAPH_PROPAGATION"
+        ],
+        "task_root_hash72": "0000000000000000000000000000001r66tPFavfpSmAfQKIIbla9KC9kdYdY/rZapA*G6c9",
+        "workload_id": "W97-02"
+      },
+      {
+        "ambiguity_preserved": true,
+        "cost": {
+          "boot_units": 89,
+          "peak_memory_bytes": 3040,
+          "receipt_bytes": 1152,
+          "task_units": 130,
+          "validation_units": 12
+        },
+        "deterministic_validations": [
+          "SOURCE",
+          "SCOPE",
+          "AUTHORITY",
+          "PROVENANCE"
+        ],
+        "external_sources_used": [],
+        "minimality_level": "L3_MINIMAL_GRAMMAR_RELATIONS",
+        "missing_knowledge_recognized": true,
+        "patterns_reconstructed": [
+          "TASK_LOCAL_PATTERN"
+        ],
+        "permanent_rules_used": [
+          "SOURCE_NE_PROJECTION",
+          "PROPOSAL_NE_ADMISSION",
+          "ESTABLISHED",
+          "INFERRED"
+        ],
+        "permanent_seed_root_hash72": "0000000000000000000000000000002>^xzRcQO>tpmU7Mjp*ct7(PoNkzW^YdcMvO509jd)",
+        "probabilistic_proposals": [
+          "CANDIDATE_INTERPRETATION"
+        ],
+        "provenance_preserved": true,
+        "receipt_root_hash72": "0000000000000000000000000000000=hmQ(fuUBMKn^FZbuYGGG1by7ngq1dcpQazn5gnav",
+        "result_root_hash72": "0000000000000000000000000000003pZ79I9vc)=+i6qRv)nVhTzuk->BbGwHP8gTb13Ljc",
+        "schema": "HHS_COLD_BOOT_REASONING_RECEIPT_V1",
+        "status": "EXACT",
+        "task_local_inferences": [
+          "CONSTRAINT_GRAPH_PROPAGATION"
+        ],
+        "task_root_hash72": "0000000000000000000000000000000>7jrU?!u>65s^s-zdyJunJUrMKqdvtp7YynDAk/uA",
+        "workload_id": "W97-03"
+      },
+      {
+        "ambiguity_preserved": true,
+        "cost": {
+          "boot_units": 89,
+          "peak_memory_bytes": 3040,
+          "receipt_bytes": 1152,
+          "task_units": 130,
+          "validation_units": 12
+        },
+        "deterministic_validations": [
+          "SOURCE",
+          "SCOPE",
+          "AUTHORITY",
+          "PROVENANCE"
+        ],
+        "external_sources_used": [],
+        "minimality_level": "L3_MINIMAL_GRAMMAR_RELATIONS",
+        "missing_knowledge_recognized": true,
+        "patterns_reconstructed": [
+          "TASK_LOCAL_PATTERN"
+        ],
+        "permanent_rules_used": [
+          "SOURCE_NE_PROJECTION",
+          "PROPOSAL_NE_ADMISSION",
+          "ESTABLISHED",
+          "INFERRED"
+        ],
+        "permanent_seed_root_hash72": "0000000000000000000000000000002>^xzRcQO>tpmU7Mjp*ct7(PoNkzW^YdcMvO509jd)",
+        "probabilistic_proposals": [
+          "CANDIDATE_INTERPRETATION"
+        ],
+        "provenance_preserved": true,
+        "receipt_root_hash72": "0000000000000000000000000000004q(-4xYPb/EID2akl1G15ssDQnMxAjh)m>JzRuRf)r",
+        "result_root_hash72": "00000000000000000000000000000013VXArdguFK^dP*Ju09>ToL(NtfNEEa!-XZ?ZW2dT8",
+        "schema": "HHS_COLD_BOOT_REASONING_RECEIPT_V1",
+        "status": "EXACT",
+        "task_local_inferences": [
+          "CONSTRAINT_GRAPH_PROPAGATION"
+        ],
+        "task_root_hash72": "0000000000000000000000000000004I5HoqwtwAtuw(zl)7pPHn3/JNF=gCJOEdhm3Xt3fA",
+        "workload_id": "W97-04"
+      },
+      {
+        "ambiguity_preserved": true,
+        "cost": {
+          "boot_units": 89,
+          "peak_memory_bytes": 3040,
+          "receipt_bytes": 1152,
+          "task_units": 130,
+          "validation_units": 12
+        },
+        "deterministic_validations": [
+          "SOURCE",
+          "SCOPE",
+          "AUTHORITY",
+          "PROVENANCE"
+        ],
+        "external_sources_used": [],
+        "minimality_level": "L3_MINIMAL_GRAMMAR_RELATIONS",
+        "missing_knowledge_recognized": true,
+        "patterns_reconstructed": [
+          "TASK_LOCAL_PATTERN"
+        ],
+        "permanent_rules_used": [
+          "SOURCE_NE_PROJECTION",
+          "PROPOSAL_NE_ADMISSION",
+          "ESTABLISHED",
+          "INFERRED"
+        ],
+        "permanent_seed_root_hash72": "0000000000000000000000000000002>^xzRcQO>tpmU7Mjp*ct7(PoNkzW^YdcMvO509jd)",
+        "probabilistic_proposals": [
+          "CANDIDATE_INTERPRETATION"
+        ],
+        "provenance_preserved": true,
+        "receipt_root_hash72": "0000000000000000000000000000004CGS8k)u-=T/CnBXnsn8zwcCQa+>TKcuw*!D?jCY6U",
+        "result_root_hash72": "00000000000000000000000000000002l8jFES6Z?-W9V=^6fB-lZ/o2Q4R*jw0m6cgCSZSt",
+        "schema": "HHS_COLD_BOOT_REASONING_RECEIPT_V1",
+        "status": "EXACT",
+        "task_local_inferences": [
+          "CONSTRAINT_GRAPH_PROPAGATION"
+        ],
+        "task_root_hash72": "0000000000000000000000000000000twgi0()8HWB3^(dyjbA7HMPS9EKukO7Ok0?Ryc*+L",
+        "workload_id": "W97-05"
+      },
+      {
+        "ambiguity_preserved": true,
+        "cost": {
+          "boot_units": 89,
+          "peak_memory_bytes": 3040,
+          "receipt_bytes": 1152,
+          "task_units": 130,
+          "validation_units": 12
+        },
+        "deterministic_validations": [
+          "SOURCE",
+          "SCOPE",
+          "AUTHORITY",
+          "PROVENANCE"
+        ],
+        "external_sources_used": [],
+        "minimality_level": "L3_MINIMAL_GRAMMAR_RELATIONS",
+        "missing_knowledge_recognized": true,
+        "patterns_reconstructed": [
+          "TASK_LOCAL_PATTERN"
+        ],
+        "permanent_rules_used": [
+          "SOURCE_NE_PROJECTION",
+          "PROPOSAL_NE_ADMISSION",
+          "ESTABLISHED",
+          "INFERRED"
+        ],
+        "permanent_seed_root_hash72": "0000000000000000000000000000002>^xzRcQO>tpmU7Mjp*ct7(PoNkzW^YdcMvO509jd)",
+        "probabilistic_proposals": [
+          "CANDIDATE_INTERPRETATION"
+        ],
+        "provenance_preserved": true,
+        "receipt_root_hash72": "0000000000000000000000000000004iuk2a5KBQiSOPnWlLIIUq>mG>n!ktCsaKa*tK**!J",
+        "result_root_hash72": "0000000000000000000000000000004cp7HcKz6*lnNZBQVQVEqh>YKn^SBrhr/rJAq-hPg?",
+        "schema": "HHS_COLD_BOOT_REASONING_RECEIPT_V1",
+        "status": "EXACT",
+        "task_local_inferences": [
+          "CONSTRAINT_GRAPH_PROPAGATION"
+        ],
+        "task_root_hash72": "0000000000000000000000000000003jU*M+Y^dCEeaGmw-eRQTna(9IRUznBORWR)MN*pAz",
+        "workload_id": "W97-06"
+      },
+      {
+        "ambiguity_preserved": true,
+        "cost": {
+          "boot_units": 89,
+          "peak_memory_bytes": 3040,
+          "receipt_bytes": 1152,
+          "task_units": 130,
+          "validation_units": 12
+        },
+        "deterministic_validations": [
+          "SOURCE",
+          "SCOPE",
+          "AUTHORITY",
+          "PROVENANCE"
+        ],
+        "external_sources_used": [],
+        "minimality_level": "L3_MINIMAL_GRAMMAR_RELATIONS",
+        "missing_knowledge_recognized": true,
+        "patterns_reconstructed": [
+          "TASK_LOCAL_PATTERN"
+        ],
+        "permanent_rules_used": [
+          "SOURCE_NE_PROJECTION",
+          "PROPOSAL_NE_ADMISSION",
+          "ESTABLISHED",
+          "INFERRED"
+        ],
+        "permanent_seed_root_hash72": "0000000000000000000000000000002>^xzRcQO>tpmU7Mjp*ct7(PoNkzW^YdcMvO509jd)",
+        "probabilistic_proposals": [
+          "CANDIDATE_INTERPRETATION"
+        ],
+        "provenance_preserved": true,
+        "receipt_root_hash72": "0000000000000000000000000000000fM6BAWTc=ukm7sRhcY1s6P+RzRCgJmPoy>b+IYxyQ",
+        "result_root_hash72": "0000000000000000000000000000003-PYEXZ4EL^BhvfpQrMkEkd0VHXGUkrYKvdyrQ?bzz",
+        "schema": "HHS_COLD_BOOT_REASONING_RECEIPT_V1",
+        "status": "EXACT",
+        "task_local_inferences": [
+          "CONSTRAINT_GRAPH_PROPAGATION"
+        ],
+        "task_root_hash72": "0000000000000000000000000000002Eh1tDiciIu)ZD()vJQWAU0?N2Zw+2Q31(Zimj8^H7",
+        "workload_id": "W97-07"
+      },
+      {
+        "ambiguity_preserved": true,
+        "cost": {
+          "boot_units": 89,
+          "peak_memory_bytes": 3040,
+          "receipt_bytes": 1152,
+          "task_units": 130,
+          "validation_units": 12
+        },
+        "deterministic_validations": [
+          "SOURCE",
+          "SCOPE",
+          "AUTHORITY",
+          "PROVENANCE"
+        ],
+        "external_sources_used": [],
+        "minimality_level": "L3_MINIMAL_GRAMMAR_RELATIONS",
+        "missing_knowledge_recognized": true,
+        "patterns_reconstructed": [
+          "TASK_LOCAL_PATTERN"
+        ],
+        "permanent_rules_used": [
+          "SOURCE_NE_PROJECTION",
+          "PROPOSAL_NE_ADMISSION",
+          "ESTABLISHED",
+          "INFERRED"
+        ],
+        "permanent_seed_root_hash72": "0000000000000000000000000000002>^xzRcQO>tpmU7Mjp*ct7(PoNkzW^YdcMvO509jd)",
+        "probabilistic_proposals": [
+          "CANDIDATE_INTERPRETATION"
+        ],
+        "provenance_preserved": true,
+        "receipt_root_hash72": "00000000000000000000000000000044Rhu20IaZQ-j2fPoSYq3jV^kUOCf9A2J/5+qcw?=g",
+        "result_root_hash72": "0000000000000000000000000000004JtYJxpT?Vop7tpbmvGMS)=/=UR4T+=-qxnR^mpP?)",
+        "schema": "HHS_COLD_BOOT_REASONING_RECEIPT_V1",
+        "status": "PARTIAL",
+        "task_local_inferences": [
+          "CONSTRAINT_GRAPH_PROPAGATION"
+        ],
+        "task_root_hash72": "00000000000000000000000000000041OUSS+G*qFUSiz^Y*B-lIkH1(+q(e)aGY9RXaZ9*6",
+        "workload_id": "W97-08"
+      },
+      {
+        "ambiguity_preserved": true,
+        "cost": {
+          "boot_units": 89,
+          "peak_memory_bytes": 3040,
+          "receipt_bytes": 1152,
+          "task_units": 130,
+          "validation_units": 12
+        },
+        "deterministic_validations": [
+          "SOURCE",
+          "SCOPE",
+          "AUTHORITY",
+          "PROVENANCE"
+        ],
+        "external_sources_used": [],
+        "minimality_level": "L3_MINIMAL_GRAMMAR_RELATIONS",
+        "missing_knowledge_recognized": true,
+        "patterns_reconstructed": [
+          "TASK_LOCAL_PATTERN"
+        ],
+        "permanent_rules_used": [
+          "SOURCE_NE_PROJECTION",
+          "PROPOSAL_NE_ADMISSION",
+          "ESTABLISHED",
+          "INFERRED"
+        ],
+        "permanent_seed_root_hash72": "0000000000000000000000000000002>^xzRcQO>tpmU7Mjp*ct7(PoNkzW^YdcMvO509jd)",
+        "probabilistic_proposals": [
+          "CANDIDATE_INTERPRETATION"
+        ],
+        "provenance_preserved": true,
+        "receipt_root_hash72": "0000000000000000000000000000001R-j(vkdRkDWN8MNKBnf1FZ8?sOW6e)p3FDq8Lq3F1",
+        "result_root_hash72": "0000000000000000000000000000003Gap8QLBAs>kLG(op5f3faf3!?mgKxV!JV9PN=B(MN",
+        "schema": "HHS_COLD_BOOT_REASONING_RECEIPT_V1",
+        "status": "PARTIAL",
+        "task_local_inferences": [
+          "CONSTRAINT_GRAPH_PROPAGATION"
+        ],
+        "task_root_hash72": "0000000000000000000000000000004tfTAk-/NZni+XMyJu?>gpl2D+t!??Hex=Bigb5CO2",
+        "workload_id": "W97-09"
+      },
+      {
+        "ambiguity_preserved": true,
+        "cost": {
+          "boot_units": 89,
+          "peak_memory_bytes": 3040,
+          "receipt_bytes": 1152,
+          "task_units": 130,
+          "validation_units": 12
+        },
+        "deterministic_validations": [
+          "SOURCE",
+          "SCOPE",
+          "AUTHORITY",
+          "PROVENANCE"
+        ],
+        "external_sources_used": [
+          "DECLARED_EXTERNAL_RETRIEVAL"
+        ],
+        "minimality_level": "L3_MINIMAL_GRAMMAR_RELATIONS",
+        "missing_knowledge_recognized": true,
+        "patterns_reconstructed": [
+          "TASK_LOCAL_PATTERN"
+        ],
+        "permanent_rules_used": [
+          "SOURCE_NE_PROJECTION",
+          "PROPOSAL_NE_ADMISSION",
+          "ESTABLISHED",
+          "INFERRED"
+        ],
+        "permanent_seed_root_hash72": "0000000000000000000000000000002>^xzRcQO>tpmU7Mjp*ct7(PoNkzW^YdcMvO509jd)",
+        "probabilistic_proposals": [
+          "CANDIDATE_INTERPRETATION"
+        ],
+        "provenance_preserved": true,
+        "receipt_root_hash72": "0000000000000000000000000000002xP/Lnp?*K1)z)?jOt^4Oug6dvkkaKCOn3SH)5uGWO",
+        "result_root_hash72": "0000000000000000000000000000000Z=8C-R=M4d7*P62m?o4YzcNJ4NZEx!WVZx-H>acia",
+        "schema": "HHS_COLD_BOOT_REASONING_RECEIPT_V1",
+        "status": "EXACT",
+        "task_local_inferences": [
+          "CONSTRAINT_GRAPH_PROPAGATION"
+        ],
+        "task_root_hash72": "0000000000000000000000000000000OpmzJsDl/y53Q1R*greEku-QT37qI*J!Xx>2upUdz",
+        "workload_id": "W97-10"
+      },
+      {
+        "ambiguity_preserved": true,
+        "cost": {
+          "boot_units": 89,
+          "peak_memory_bytes": 3040,
+          "receipt_bytes": 1152,
+          "task_units": 130,
+          "validation_units": 12
+        },
+        "deterministic_validations": [
+          "SOURCE",
+          "SCOPE",
+          "AUTHORITY",
+          "PROVENANCE"
+        ],
+        "external_sources_used": [],
+        "minimality_level": "L3_MINIMAL_GRAMMAR_RELATIONS",
+        "missing_knowledge_recognized": true,
+        "patterns_reconstructed": [
+          "TASK_LOCAL_PATTERN"
+        ],
+        "permanent_rules_used": [
+          "SOURCE_NE_PROJECTION",
+          "PROPOSAL_NE_ADMISSION",
+          "ESTABLISHED",
+          "INFERRED"
+        ],
+        "permanent_seed_root_hash72": "0000000000000000000000000000002>^xzRcQO>tpmU7Mjp*ct7(PoNkzW^YdcMvO509jd)",
+        "probabilistic_proposals": [
+          "CANDIDATE_INTERPRETATION"
+        ],
+        "provenance_preserved": true,
+        "receipt_root_hash72": "0000000000000000000000000000001hUx/+ip6x2VXO3y/9QY9yJ7xz6)ivVR9HTnordoE3",
+        "result_root_hash72": "0000000000000000000000000000000fL8lMF(inZp)Iq7eTH9Jhf5z9Z-ozqdna3xeQq!FH",
+        "schema": "HHS_COLD_BOOT_REASONING_RECEIPT_V1",
+        "status": "EXACT",
+        "task_local_inferences": [
+          "CONSTRAINT_GRAPH_PROPAGATION"
+        ],
+        "task_root_hash72": "0000000000000000000000000000002RdTqhvutoy??9HjDVDiY)IRTFw-4SFBbQgTz5RAUn",
+        "workload_id": "W97-11"
+      },
+      {
+        "ambiguity_preserved": true,
+        "cost": {
+          "boot_units": 89,
+          "peak_memory_bytes": 3040,
+          "receipt_bytes": 1152,
+          "task_units": 130,
+          "validation_units": 12
+        },
+        "deterministic_validations": [
+          "SOURCE",
+          "SCOPE",
+          "AUTHORITY",
+          "PROVENANCE"
+        ],
+        "external_sources_used": [],
+        "minimality_level": "L3_MINIMAL_GRAMMAR_RELATIONS",
+        "missing_knowledge_recognized": true,
+        "patterns_reconstructed": [
+          "TASK_LOCAL_PATTERN"
+        ],
+        "permanent_rules_used": [
+          "SOURCE_NE_PROJECTION",
+          "PROPOSAL_NE_ADMISSION",
+          "ESTABLISHED",
+          "INFERRED"
+        ],
+        "permanent_seed_root_hash72": "0000000000000000000000000000002>^xzRcQO>tpmU7Mjp*ct7(PoNkzW^YdcMvO509jd)",
+        "probabilistic_proposals": [
+          "CANDIDATE_INTERPRETATION"
+        ],
+        "provenance_preserved": true,
+        "receipt_root_hash72": "0000000000000000000000000000004Ke=F9AU=ZzsJjOLYmVpX5?^Gj5P^STOQCDdL1f^)v",
+        "result_root_hash72": "0000000000000000000000000000004IyOFDAXL=GobBeZIl*9JkKlOI^Ky8+Bpn!5g^+Cg7",
+        "schema": "HHS_COLD_BOOT_REASONING_RECEIPT_V1",
+        "status": "EXACT",
+        "task_local_inferences": [
+          "CONSTRAINT_GRAPH_PROPAGATION"
+        ],
+        "task_root_hash72": "00000000000000000000000000000037*K9!DfPy^ka*9j83INevRSikNzhhlOJXLnH-v+cy",
+        "workload_id": "W97-12"
+      },
+      {
+        "ambiguity_preserved": false,
+        "cost": {
+          "boot_units": 99,
+          "peak_memory_bytes": 2720,
+          "receipt_bytes": 1024,
+          "task_units": 140,
+          "validation_units": 12
+        },
+        "deterministic_validations": [
+          "SOURCE",
+          "SCOPE",
+          "AUTHORITY",
+          "PROVENANCE"
+        ],
+        "external_sources_used": [],
+        "minimality_level": "L4_KERNEL_AUTHORITY_RECONSTRUCTION",
+        "missing_knowledge_recognized": true,
+        "patterns_reconstructed": [],
+        "permanent_rules_used": [
+          "SOURCE_NE_PROJECTION",
+          "PROPOSAL_NE_ADMISSION",
+          "ESTABLISHED",
+          "INFERRED"
+        ],
+        "permanent_seed_root_hash72": "0000000000000000000000000000001nmwKg8*XwIb1BtOhLhvpKbC9Ff3mPR^R>wyW1UmxZ",
+        "probabilistic_proposals": [],
+        "provenance_preserved": true,
+        "receipt_root_hash72": "0000000000000000000000000000004n+japZym*6DnFJHQJph*43mNTH-IMO7VvRu!Cxvz)",
+        "result_root_hash72": "0000000000000000000000000000002li3v6Ibhgz+j?IDiJM(dMw>mr1C(c/-2RD?bHOThK",
+        "schema": "HHS_COLD_BOOT_REASONING_RECEIPT_V1",
+        "status": "EXACT",
+        "task_local_inferences": [
+          "CONSTRAINT_GRAPH_PROPAGATION"
+        ],
+        "task_root_hash72": "0000000000000000000000000000001RSt415dIcfahWMzS6xIQyKpyMoAqgn+2Wr*5tS26Q",
+        "workload_id": "W97-01"
+      },
+      {
+        "ambiguity_preserved": false,
+        "cost": {
+          "boot_units": 99,
+          "peak_memory_bytes": 2720,
+          "receipt_bytes": 1024,
+          "task_units": 140,
+          "validation_units": 12
+        },
+        "deterministic_validations": [
+          "SOURCE",
+          "SCOPE",
+          "AUTHORITY",
+          "PROVENANCE"
+        ],
+        "external_sources_used": [],
+        "minimality_level": "L4_KERNEL_AUTHORITY_RECONSTRUCTION",
+        "missing_knowledge_recognized": true,
+        "patterns_reconstructed": [],
+        "permanent_rules_used": [
+          "SOURCE_NE_PROJECTION",
+          "PROPOSAL_NE_ADMISSION",
+          "ESTABLISHED",
+          "INFERRED"
+        ],
+        "permanent_seed_root_hash72": "0000000000000000000000000000001nmwKg8*XwIb1BtOhLhvpKbC9Ff3mPR^R>wyW1UmxZ",
+        "probabilistic_proposals": [],
+        "provenance_preserved": true,
+        "receipt_root_hash72": "0000000000000000000000000000002B8mj?8*/vLsQ3qQp)x!-Sm??ArQXtxOM(s-*7L8Bo",
+        "result_root_hash72": "0000000000000000000000000000002C!)ELig!)RXbZWu6Ejqsui9>Lz*q+gJbi78ckT87C",
+        "schema": "HHS_COLD_BOOT_REASONING_RECEIPT_V1",
+        "status": "PARTIAL",
+        "task_local_inferences": [
+          "CONSTRAINT_GRAPH_PROPAGATION"
+        ],
+        "task_root_hash72": "0000000000000000000000000000001r66tPFavfpSmAfQKIIbla9KC9kdYdY/rZapA*G6c9",
+        "workload_id": "W97-02"
+      },
+      {
+        "ambiguity_preserved": false,
+        "cost": {
+          "boot_units": 99,
+          "peak_memory_bytes": 2720,
+          "receipt_bytes": 1024,
+          "task_units": 140,
+          "validation_units": 12
+        },
+        "deterministic_validations": [
+          "SOURCE",
+          "SCOPE",
+          "AUTHORITY",
+          "PROVENANCE"
+        ],
+        "external_sources_used": [],
+        "minimality_level": "L4_KERNEL_AUTHORITY_RECONSTRUCTION",
+        "missing_knowledge_recognized": true,
+        "patterns_reconstructed": [],
+        "permanent_rules_used": [
+          "SOURCE_NE_PROJECTION",
+          "PROPOSAL_NE_ADMISSION",
+          "ESTABLISHED",
+          "INFERRED"
+        ],
+        "permanent_seed_root_hash72": "0000000000000000000000000000001nmwKg8*XwIb1BtOhLhvpKbC9Ff3mPR^R>wyW1UmxZ",
+        "probabilistic_proposals": [],
+        "provenance_preserved": true,
+        "receipt_root_hash72": "0000000000000000000000000000001WHtwq3ecyo*YWoVQjOUe3k/T+aP8w6RYEKykdjXln",
+        "result_root_hash72": "0000000000000000000000000000002LBT*djHt2By?OROZ)1c1FzAVvM3?ISh>EDMzDcs-a",
+        "schema": "HHS_COLD_BOOT_REASONING_RECEIPT_V1",
+        "status": "PARTIAL",
+        "task_local_inferences": [
+          "CONSTRAINT_GRAPH_PROPAGATION"
+        ],
+        "task_root_hash72": "0000000000000000000000000000000>7jrU?!u>65s^s-zdyJunJUrMKqdvtp7YynDAk/uA",
+        "workload_id": "W97-03"
+      },
+      {
+        "ambiguity_preserved": false,
+        "cost": {
+          "boot_units": 99,
+          "peak_memory_bytes": 2720,
+          "receipt_bytes": 1024,
+          "task_units": 140,
+          "validation_units": 12
+        },
+        "deterministic_validations": [
+          "SOURCE",
+          "SCOPE",
+          "AUTHORITY",
+          "PROVENANCE"
+        ],
+        "external_sources_used": [],
+        "minimality_level": "L4_KERNEL_AUTHORITY_RECONSTRUCTION",
+        "missing_knowledge_recognized": true,
+        "patterns_reconstructed": [],
+        "permanent_rules_used": [
+          "SOURCE_NE_PROJECTION",
+          "PROPOSAL_NE_ADMISSION",
+          "ESTABLISHED",
+          "INFERRED"
+        ],
+        "permanent_seed_root_hash72": "0000000000000000000000000000001nmwKg8*XwIb1BtOhLhvpKbC9Ff3mPR^R>wyW1UmxZ",
+        "probabilistic_proposals": [],
+        "provenance_preserved": true,
+        "receipt_root_hash72": "0000000000000000000000000000002/jUdfwUlpXG(81jwHoTFr6C+ldFdbLAlscKeYj/4o",
+        "result_root_hash72": "0000000000000000000000000000004ePljMp0Ya+O20ZsTYPkh^YjGx2KCLu*Ci6kCG!Z?F",
+        "schema": "HHS_COLD_BOOT_REASONING_RECEIPT_V1",
+        "status": "PARTIAL",
+        "task_local_inferences": [
+          "CONSTRAINT_GRAPH_PROPAGATION"
+        ],
+        "task_root_hash72": "0000000000000000000000000000004I5HoqwtwAtuw(zl)7pPHn3/JNF=gCJOEdhm3Xt3fA",
+        "workload_id": "W97-04"
+      },
+      {
+        "ambiguity_preserved": false,
+        "cost": {
+          "boot_units": 99,
+          "peak_memory_bytes": 2720,
+          "receipt_bytes": 1024,
+          "task_units": 140,
+          "validation_units": 12
+        },
+        "deterministic_validations": [
+          "SOURCE",
+          "SCOPE",
+          "AUTHORITY",
+          "PROVENANCE"
+        ],
+        "external_sources_used": [],
+        "minimality_level": "L4_KERNEL_AUTHORITY_RECONSTRUCTION",
+        "missing_knowledge_recognized": true,
+        "patterns_reconstructed": [],
+        "permanent_rules_used": [
+          "SOURCE_NE_PROJECTION",
+          "PROPOSAL_NE_ADMISSION",
+          "ESTABLISHED",
+          "INFERRED"
+        ],
+        "permanent_seed_root_hash72": "0000000000000000000000000000001nmwKg8*XwIb1BtOhLhvpKbC9Ff3mPR^R>wyW1UmxZ",
+        "probabilistic_proposals": [],
+        "provenance_preserved": true,
+        "receipt_root_hash72": "0000000000000000000000000000002O7!oSessHKwVja=Sx9=6nukAM+mr17gq5=C^Xoe+m",
+        "result_root_hash72": "0000000000000000000000000000001?qerV2vGWoqk-pjdRUsG*WJox1f7(2UOC14SoXXZ7",
+        "schema": "HHS_COLD_BOOT_REASONING_RECEIPT_V1",
+        "status": "PARTIAL",
+        "task_local_inferences": [
+          "CONSTRAINT_GRAPH_PROPAGATION"
+        ],
+        "task_root_hash72": "0000000000000000000000000000000twgi0()8HWB3^(dyjbA7HMPS9EKukO7Ok0?Ryc*+L",
+        "workload_id": "W97-05"
+      },
+      {
+        "ambiguity_preserved": false,
+        "cost": {
+          "boot_units": 99,
+          "peak_memory_bytes": 2720,
+          "receipt_bytes": 1024,
+          "task_units": 140,
+          "validation_units": 12
+        },
+        "deterministic_validations": [
+          "SOURCE",
+          "SCOPE",
+          "AUTHORITY",
+          "PROVENANCE"
+        ],
+        "external_sources_used": [],
+        "minimality_level": "L4_KERNEL_AUTHORITY_RECONSTRUCTION",
+        "missing_knowledge_recognized": true,
+        "patterns_reconstructed": [],
+        "permanent_rules_used": [
+          "SOURCE_NE_PROJECTION",
+          "PROPOSAL_NE_ADMISSION",
+          "ESTABLISHED",
+          "INFERRED"
+        ],
+        "permanent_seed_root_hash72": "0000000000000000000000000000001nmwKg8*XwIb1BtOhLhvpKbC9Ff3mPR^R>wyW1UmxZ",
+        "probabilistic_proposals": [],
+        "provenance_preserved": true,
+        "receipt_root_hash72": "0000000000000000000000000000002sxqK^iXre/aTnPHNxN5*ABJ>2sWVTP8+>e5rWxx!D",
+        "result_root_hash72": "0000000000000000000000000000002o582i*/*WCc8OBMb1FMm(kgkw7J0vZ?3x7D*!?jys",
+        "schema": "HHS_COLD_BOOT_REASONING_RECEIPT_V1",
+        "status": "PARTIAL",
+        "task_local_inferences": [
+          "CONSTRAINT_GRAPH_PROPAGATION"
+        ],
+        "task_root_hash72": "0000000000000000000000000000003jU*M+Y^dCEeaGmw-eRQTna(9IRUznBORWR)MN*pAz",
+        "workload_id": "W97-06"
+      },
+      {
+        "ambiguity_preserved": false,
+        "cost": {
+          "boot_units": 99,
+          "peak_memory_bytes": 2720,
+          "receipt_bytes": 1024,
+          "task_units": 140,
+          "validation_units": 12
+        },
+        "deterministic_validations": [
+          "SOURCE",
+          "SCOPE",
+          "AUTHORITY",
+          "PROVENANCE"
+        ],
+        "external_sources_used": [],
+        "minimality_level": "L4_KERNEL_AUTHORITY_RECONSTRUCTION",
+        "missing_knowledge_recognized": true,
+        "patterns_reconstructed": [],
+        "permanent_rules_used": [
+          "SOURCE_NE_PROJECTION",
+          "PROPOSAL_NE_ADMISSION",
+          "ESTABLISHED",
+          "INFERRED"
+        ],
+        "permanent_seed_root_hash72": "0000000000000000000000000000001nmwKg8*XwIb1BtOhLhvpKbC9Ff3mPR^R>wyW1UmxZ",
+        "probabilistic_proposals": [],
+        "provenance_preserved": true,
+        "receipt_root_hash72": "0000000000000000000000000000002tQ1u^COJIb?4coqC=HzJlE4F1I2!UK0Ascy>fo6ex",
+        "result_root_hash72": "0000000000000000000000000000003ECwIgDh*3>AW9BcK6EoFK4mj7LGcNRzqgC)oGNM26",
+        "schema": "HHS_COLD_BOOT_REASONING_RECEIPT_V1",
+        "status": "PARTIAL",
+        "task_local_inferences": [
+          "CONSTRAINT_GRAPH_PROPAGATION"
+        ],
+        "task_root_hash72": "0000000000000000000000000000002Eh1tDiciIu)ZD()vJQWAU0?N2Zw+2Q31(Zimj8^H7",
+        "workload_id": "W97-07"
+      },
+      {
+        "ambiguity_preserved": false,
+        "cost": {
+          "boot_units": 99,
+          "peak_memory_bytes": 2720,
+          "receipt_bytes": 1024,
+          "task_units": 140,
+          "validation_units": 12
+        },
+        "deterministic_validations": [
+          "SOURCE",
+          "SCOPE",
+          "AUTHORITY",
+          "PROVENANCE"
+        ],
+        "external_sources_used": [],
+        "minimality_level": "L4_KERNEL_AUTHORITY_RECONSTRUCTION",
+        "missing_knowledge_recognized": true,
+        "patterns_reconstructed": [],
+        "permanent_rules_used": [
+          "SOURCE_NE_PROJECTION",
+          "PROPOSAL_NE_ADMISSION",
+          "ESTABLISHED",
+          "INFERRED"
+        ],
+        "permanent_seed_root_hash72": "0000000000000000000000000000001nmwKg8*XwIb1BtOhLhvpKbC9Ff3mPR^R>wyW1UmxZ",
+        "probabilistic_proposals": [],
+        "provenance_preserved": true,
+        "receipt_root_hash72": "0000000000000000000000000000002hz^8!Wg7vRU0lbfFYYSzyQ-yu/F32=KiZpRFNhZzb",
+        "result_root_hash72": "0000000000000000000000000000001Z!/2rZqaV8lWqq6Y+6M8fX2(zSu4AJSwmSf?xeswn",
+        "schema": "HHS_COLD_BOOT_REASONING_RECEIPT_V1",
+        "status": "PARTIAL",
+        "task_local_inferences": [
+          "CONSTRAINT_GRAPH_PROPAGATION"
+        ],
+        "task_root_hash72": "00000000000000000000000000000041OUSS+G*qFUSiz^Y*B-lIkH1(+q(e)aGY9RXaZ9*6",
+        "workload_id": "W97-08"
+      },
+      {
+        "ambiguity_preserved": false,
+        "cost": {
+          "boot_units": 99,
+          "peak_memory_bytes": 2720,
+          "receipt_bytes": 1024,
+          "task_units": 140,
+          "validation_units": 12
+        },
+        "deterministic_validations": [
+          "SOURCE",
+          "SCOPE",
+          "AUTHORITY",
+          "PROVENANCE"
+        ],
+        "external_sources_used": [],
+        "minimality_level": "L4_KERNEL_AUTHORITY_RECONSTRUCTION",
+        "missing_knowledge_recognized": true,
+        "patterns_reconstructed": [],
+        "permanent_rules_used": [
+          "SOURCE_NE_PROJECTION",
+          "PROPOSAL_NE_ADMISSION",
+          "ESTABLISHED",
+          "INFERRED"
+        ],
+        "permanent_seed_root_hash72": "0000000000000000000000000000001nmwKg8*XwIb1BtOhLhvpKbC9Ff3mPR^R>wyW1UmxZ",
+        "probabilistic_proposals": [],
+        "provenance_preserved": true,
+        "receipt_root_hash72": "0000000000000000000000000000002uM6t4I^hjN^R?=ESXj)Q2JGWC^T=xv-LpjNO32XQ+",
+        "result_root_hash72": "0000000000000000000000000000003(4qurdyMM5d!zeSu=owNhNgSuA!!7WCAeqjLKYUTR",
+        "schema": "HHS_COLD_BOOT_REASONING_RECEIPT_V1",
+        "status": "PARTIAL",
+        "task_local_inferences": [
+          "CONSTRAINT_GRAPH_PROPAGATION"
+        ],
+        "task_root_hash72": "0000000000000000000000000000004tfTAk-/NZni+XMyJu?>gpl2D+t!??Hex=Bigb5CO2",
+        "workload_id": "W97-09"
+      },
+      {
+        "ambiguity_preserved": false,
+        "cost": {
+          "boot_units": 99,
+          "peak_memory_bytes": 2720,
+          "receipt_bytes": 1024,
+          "task_units": 140,
+          "validation_units": 12
+        },
+        "deterministic_validations": [
+          "SOURCE",
+          "SCOPE",
+          "AUTHORITY",
+          "PROVENANCE"
+        ],
+        "external_sources_used": [
+          "DECLARED_EXTERNAL_RETRIEVAL"
+        ],
+        "minimality_level": "L4_KERNEL_AUTHORITY_RECONSTRUCTION",
+        "missing_knowledge_recognized": true,
+        "patterns_reconstructed": [],
+        "permanent_rules_used": [
+          "SOURCE_NE_PROJECTION",
+          "PROPOSAL_NE_ADMISSION",
+          "ESTABLISHED",
+          "INFERRED"
+        ],
+        "permanent_seed_root_hash72": "0000000000000000000000000000001nmwKg8*XwIb1BtOhLhvpKbC9Ff3mPR^R>wyW1UmxZ",
+        "probabilistic_proposals": [],
+        "provenance_preserved": true,
+        "receipt_root_hash72": "0000000000000000000000000000004Kn5FeKj9F>dRFENebe0e1CcSsq7luGLiIIDTlNnn9",
+        "result_root_hash72": "0000000000000000000000000000004sjfgh>c*DO=Aynv=A8lf5o9W(T7+OJR+R5NeBGc8e",
+        "schema": "HHS_COLD_BOOT_REASONING_RECEIPT_V1",
+        "status": "EXACT",
+        "task_local_inferences": [
+          "CONSTRAINT_GRAPH_PROPAGATION"
+        ],
+        "task_root_hash72": "0000000000000000000000000000000OpmzJsDl/y53Q1R*greEku-QT37qI*J!Xx>2upUdz",
+        "workload_id": "W97-10"
+      },
+      {
+        "ambiguity_preserved": false,
+        "cost": {
+          "boot_units": 99,
+          "peak_memory_bytes": 2720,
+          "receipt_bytes": 1024,
+          "task_units": 140,
+          "validation_units": 12
+        },
+        "deterministic_validations": [
+          "SOURCE",
+          "SCOPE",
+          "AUTHORITY",
+          "PROVENANCE"
+        ],
+        "external_sources_used": [],
+        "minimality_level": "L4_KERNEL_AUTHORITY_RECONSTRUCTION",
+        "missing_knowledge_recognized": true,
+        "patterns_reconstructed": [],
+        "permanent_rules_used": [
+          "SOURCE_NE_PROJECTION",
+          "PROPOSAL_NE_ADMISSION",
+          "ESTABLISHED",
+          "INFERRED"
+        ],
+        "permanent_seed_root_hash72": "0000000000000000000000000000001nmwKg8*XwIb1BtOhLhvpKbC9Ff3mPR^R>wyW1UmxZ",
+        "probabilistic_proposals": [],
+        "provenance_preserved": true,
+        "receipt_root_hash72": "0000000000000000000000000000003j78bDRZ7oNwC1c4Q6yOm^tXE?f3!PZCjpg8ecNSBl",
+        "result_root_hash72": "0000000000000000000000000000002*uzWeQrgo/I^i5QWhO)l9m4r!^1MjP6dMvfGUF6pS",
+        "schema": "HHS_COLD_BOOT_REASONING_RECEIPT_V1",
+        "status": "PARTIAL",
+        "task_local_inferences": [
+          "CONSTRAINT_GRAPH_PROPAGATION"
+        ],
+        "task_root_hash72": "0000000000000000000000000000002RdTqhvutoy??9HjDVDiY)IRTFw-4SFBbQgTz5RAUn",
+        "workload_id": "W97-11"
+      },
+      {
+        "ambiguity_preserved": false,
+        "cost": {
+          "boot_units": 99,
+          "peak_memory_bytes": 2720,
+          "receipt_bytes": 1024,
+          "task_units": 140,
+          "validation_units": 12
+        },
+        "deterministic_validations": [
+          "SOURCE",
+          "SCOPE",
+          "AUTHORITY",
+          "PROVENANCE"
+        ],
+        "external_sources_used": [],
+        "minimality_level": "L4_KERNEL_AUTHORITY_RECONSTRUCTION",
+        "missing_knowledge_recognized": true,
+        "patterns_reconstructed": [],
+        "permanent_rules_used": [
+          "SOURCE_NE_PROJECTION",
+          "PROPOSAL_NE_ADMISSION",
+          "ESTABLISHED",
+          "INFERRED"
+        ],
+        "permanent_seed_root_hash72": "0000000000000000000000000000001nmwKg8*XwIb1BtOhLhvpKbC9Ff3mPR^R>wyW1UmxZ",
+        "probabilistic_proposals": [],
+        "provenance_preserved": true,
+        "receipt_root_hash72": "00000000000000000000000000000018dlfHyBHA4hZ5n(jl7uGpBdwf^(-f6=?TkLsVxA>s",
+        "result_root_hash72": "0000000000000000000000000000003jrd^?*^nO=3zIwtJTXVNZ>(ELLt1hwJ+u9pc^toIQ",
+        "schema": "HHS_COLD_BOOT_REASONING_RECEIPT_V1",
+        "status": "EXACT",
+        "task_local_inferences": [
+          "CONSTRAINT_GRAPH_PROPAGATION"
+        ],
+        "task_root_hash72": "00000000000000000000000000000037*K9!DfPy^ka*9j83INevRSikNzhhlOJXLnH-v+cy",
+        "workload_id": "W97-12"
+      },
+      {
+        "ambiguity_preserved": false,
+        "cost": {
+          "boot_units": 120,
+          "peak_memory_bytes": 2048,
+          "receipt_bytes": 1024,
+          "task_units": 165,
+          "validation_units": 0
+        },
+        "deterministic_validations": [],
+        "external_sources_used": [],
+        "minimality_level": "L5_KERNEL_ONLY",
+        "missing_knowledge_recognized": true,
+        "patterns_reconstructed": [],
+        "permanent_rules_used": [],
+        "permanent_seed_root_hash72": "000000000000000000000000000000170UuduPup^kJFKe)T3F2C?nWnBY=VF)LzQr6B(?B-",
+        "probabilistic_proposals": [],
+        "provenance_preserved": false,
+        "receipt_root_hash72": "0000000000000000000000000000001z5ANMH>w?CZmM93X*qA=EYX518X1p4M4I4uaO2T/n",
+        "result_root_hash72": "0000000000000000000000000000004i48gki9Z!b-efO5/1e3Xc/p(QK=Lj5BQ4D4L^1fpm",
+        "schema": "HHS_COLD_BOOT_REASONING_RECEIPT_V1",
+        "status": "UNAVAILABLE",
+        "task_local_inferences": [],
+        "task_root_hash72": "0000000000000000000000000000001RSt415dIcfahWMzS6xIQyKpyMoAqgn+2Wr*5tS26Q",
+        "workload_id": "W97-01"
+      },
+      {
+        "ambiguity_preserved": false,
+        "cost": {
+          "boot_units": 120,
+          "peak_memory_bytes": 2048,
+          "receipt_bytes": 1024,
+          "task_units": 165,
+          "validation_units": 0
+        },
+        "deterministic_validations": [],
+        "external_sources_used": [],
+        "minimality_level": "L5_KERNEL_ONLY",
+        "missing_knowledge_recognized": true,
+        "patterns_reconstructed": [],
+        "permanent_rules_used": [],
+        "permanent_seed_root_hash72": "000000000000000000000000000000170UuduPup^kJFKe)T3F2C?nWnBY=VF)LzQr6B(?B-",
+        "probabilistic_proposals": [],
+        "provenance_preserved": false,
+        "receipt_root_hash72": "0000000000000000000000000000000vxbi1*qoMJcHnQN8*pQKf?pw9Ty1!BALTsa*S4)-)",
+        "result_root_hash72": "00000000000000000000000000000020L6EEzhQ?KY)tmpdGIJqdY5O66C2pr-DkFzrGiJv(",
+        "schema": "HHS_COLD_BOOT_REASONING_RECEIPT_V1",
+        "status": "UNAVAILABLE",
+        "task_local_inferences": [],
+        "task_root_hash72": "0000000000000000000000000000001r66tPFavfpSmAfQKIIbla9KC9kdYdY/rZapA*G6c9",
+        "workload_id": "W97-02"
+      },
+      {
+        "ambiguity_preserved": false,
+        "cost": {
+          "boot_units": 120,
+          "peak_memory_bytes": 2048,
+          "receipt_bytes": 1024,
+          "task_units": 165,
+          "validation_units": 0
+        },
+        "deterministic_validations": [],
+        "external_sources_used": [],
+        "minimality_level": "L5_KERNEL_ONLY",
+        "missing_knowledge_recognized": true,
+        "patterns_reconstructed": [],
+        "permanent_rules_used": [],
+        "permanent_seed_root_hash72": "000000000000000000000000000000170UuduPup^kJFKe)T3F2C?nWnBY=VF)LzQr6B(?B-",
+        "probabilistic_proposals": [],
+        "provenance_preserved": false,
+        "receipt_root_hash72": "0000000000000000000000000000002k96O*Py9R2ArRfU?(hebnqyelrEKnQ(5utDZu=Nn1",
+        "result_root_hash72": "0000000000000000000000000000000pR!bKa>1WP5=AteYGN9bKWkuuRMJX>c0D!ummaW?Q",
+        "schema": "HHS_COLD_BOOT_REASONING_RECEIPT_V1",
+        "status": "UNAVAILABLE",
+        "task_local_inferences": [],
+        "task_root_hash72": "0000000000000000000000000000000>7jrU?!u>65s^s-zdyJunJUrMKqdvtp7YynDAk/uA",
+        "workload_id": "W97-03"
+      },
+      {
+        "ambiguity_preserved": false,
+        "cost": {
+          "boot_units": 120,
+          "peak_memory_bytes": 2048,
+          "receipt_bytes": 1024,
+          "task_units": 165,
+          "validation_units": 0
+        },
+        "deterministic_validations": [],
+        "external_sources_used": [],
+        "minimality_level": "L5_KERNEL_ONLY",
+        "missing_knowledge_recognized": true,
+        "patterns_reconstructed": [],
+        "permanent_rules_used": [],
+        "permanent_seed_root_hash72": "000000000000000000000000000000170UuduPup^kJFKe)T3F2C?nWnBY=VF)LzQr6B(?B-",
+        "probabilistic_proposals": [],
+        "provenance_preserved": false,
+        "receipt_root_hash72": "0000000000000000000000000000000afEAGQhN9tpK=!?Womrqz*cyf-UXq6hptoerR(DUd",
+        "result_root_hash72": "0000000000000000000000000000001uGI>dzwK-6TxWoluJWJQ0p4bypIc1j!/TJCAukN1d",
+        "schema": "HHS_COLD_BOOT_REASONING_RECEIPT_V1",
+        "status": "UNAVAILABLE",
+        "task_local_inferences": [],
+        "task_root_hash72": "0000000000000000000000000000004I5HoqwtwAtuw(zl)7pPHn3/JNF=gCJOEdhm3Xt3fA",
+        "workload_id": "W97-04"
+      },
+      {
+        "ambiguity_preserved": false,
+        "cost": {
+          "boot_units": 120,
+          "peak_memory_bytes": 2048,
+          "receipt_bytes": 1024,
+          "task_units": 165,
+          "validation_units": 0
+        },
+        "deterministic_validations": [],
+        "external_sources_used": [],
+        "minimality_level": "L5_KERNEL_ONLY",
+        "missing_knowledge_recognized": true,
+        "patterns_reconstructed": [],
+        "permanent_rules_used": [],
+        "permanent_seed_root_hash72": "000000000000000000000000000000170UuduPup^kJFKe)T3F2C?nWnBY=VF)LzQr6B(?B-",
+        "probabilistic_proposals": [],
+        "provenance_preserved": false,
+        "receipt_root_hash72": "0000000000000000000000000000002CF=XK1f/xd8>4gY4+H)x3b5aCM-r2W8ro*pTSqVfT",
+        "result_root_hash72": "0000000000000000000000000000003r)y3pjA49P8(RQ5gay2vOkeboj5+uyI7)L?49w1!p",
+        "schema": "HHS_COLD_BOOT_REASONING_RECEIPT_V1",
+        "status": "UNAVAILABLE",
+        "task_local_inferences": [],
+        "task_root_hash72": "0000000000000000000000000000000twgi0()8HWB3^(dyjbA7HMPS9EKukO7Ok0?Ryc*+L",
+        "workload_id": "W97-05"
+      },
+      {
+        "ambiguity_preserved": false,
+        "cost": {
+          "boot_units": 120,
+          "peak_memory_bytes": 2048,
+          "receipt_bytes": 1024,
+          "task_units": 165,
+          "validation_units": 0
+        },
+        "deterministic_validations": [],
+        "external_sources_used": [],
+        "minimality_level": "L5_KERNEL_ONLY",
+        "missing_knowledge_recognized": true,
+        "patterns_reconstructed": [],
+        "permanent_rules_used": [],
+        "permanent_seed_root_hash72": "000000000000000000000000000000170UuduPup^kJFKe)T3F2C?nWnBY=VF)LzQr6B(?B-",
+        "probabilistic_proposals": [],
+        "provenance_preserved": false,
+        "receipt_root_hash72": "0000000000000000000000000000001JYzIIc/yuwCeBXH>g=B=Co7UEZfcNUDgA3jv6Hl-h",
+        "result_root_hash72": "0000000000000000000000000000001VRZP5*JbPqb5DQpwX?Vvm9b1I)G7xSfYg!0q+A)p)",
+        "schema": "HHS_COLD_BOOT_REASONING_RECEIPT_V1",
+        "status": "UNAVAILABLE",
+        "task_local_inferences": [],
+        "task_root_hash72": "0000000000000000000000000000003jU*M+Y^dCEeaGmw-eRQTna(9IRUznBORWR)MN*pAz",
+        "workload_id": "W97-06"
+      },
+      {
+        "ambiguity_preserved": false,
+        "cost": {
+          "boot_units": 120,
+          "peak_memory_bytes": 2048,
+          "receipt_bytes": 1024,
+          "task_units": 165,
+          "validation_units": 0
+        },
+        "deterministic_validations": [],
+        "external_sources_used": [],
+        "minimality_level": "L5_KERNEL_ONLY",
+        "missing_knowledge_recognized": true,
+        "patterns_reconstructed": [],
+        "permanent_rules_used": [],
+        "permanent_seed_root_hash72": "000000000000000000000000000000170UuduPup^kJFKe)T3F2C?nWnBY=VF)LzQr6B(?B-",
+        "probabilistic_proposals": [],
+        "provenance_preserved": false,
+        "receipt_root_hash72": "0000000000000000000000000000002ryFCAs!eqPPy!oQoRg>tPRR5gd4O7zJ)YMH7cjcHi",
+        "result_root_hash72": "0000000000000000000000000000000G(1(XBj1ZFbaORq9Lcg5Tu)GV?P>zU5ITmEBzxqkX",
+        "schema": "HHS_COLD_BOOT_REASONING_RECEIPT_V1",
+        "status": "UNAVAILABLE",
+        "task_local_inferences": [],
+        "task_root_hash72": "0000000000000000000000000000002Eh1tDiciIu)ZD()vJQWAU0?N2Zw+2Q31(Zimj8^H7",
+        "workload_id": "W97-07"
+      },
+      {
+        "ambiguity_preserved": false,
+        "cost": {
+          "boot_units": 120,
+          "peak_memory_bytes": 2048,
+          "receipt_bytes": 1024,
+          "task_units": 165,
+          "validation_units": 0
+        },
+        "deterministic_validations": [],
+        "external_sources_used": [],
+        "minimality_level": "L5_KERNEL_ONLY",
+        "missing_knowledge_recognized": true,
+        "patterns_reconstructed": [],
+        "permanent_rules_used": [],
+        "permanent_seed_root_hash72": "000000000000000000000000000000170UuduPup^kJFKe)T3F2C?nWnBY=VF)LzQr6B(?B-",
+        "probabilistic_proposals": [],
+        "provenance_preserved": false,
+        "receipt_root_hash72": "0000000000000000000000000000001t0zZ^TA4uC=PXB4ZjwSMGYS!FKQ/5nfjjaGVuWr6)",
+        "result_root_hash72": "0000000000000000000000000000003yLHKEGAj=c0ybYUhO3oVvNcmfp2c4QjW1?BFQ!HH>",
+        "schema": "HHS_COLD_BOOT_REASONING_RECEIPT_V1",
+        "status": "UNAVAILABLE",
+        "task_local_inferences": [],
+        "task_root_hash72": "00000000000000000000000000000041OUSS+G*qFUSiz^Y*B-lIkH1(+q(e)aGY9RXaZ9*6",
+        "workload_id": "W97-08"
+      },
+      {
+        "ambiguity_preserved": false,
+        "cost": {
+          "boot_units": 120,
+          "peak_memory_bytes": 2048,
+          "receipt_bytes": 1024,
+          "task_units": 165,
+          "validation_units": 0
+        },
+        "deterministic_validations": [],
+        "external_sources_used": [],
+        "minimality_level": "L5_KERNEL_ONLY",
+        "missing_knowledge_recognized": true,
+        "patterns_reconstructed": [],
+        "permanent_rules_used": [],
+        "permanent_seed_root_hash72": "000000000000000000000000000000170UuduPup^kJFKe)T3F2C?nWnBY=VF)LzQr6B(?B-",
+        "probabilistic_proposals": [],
+        "provenance_preserved": false,
+        "receipt_root_hash72": "0000000000000000000000000000004w1t-!wK)aS1!t=W9xvluR?QlLdrPnV3Yl*e4v07aq",
+        "result_root_hash72": "0000000000000000000000000000001vg6/)A^zKiCzFD^XNR82)iBA^7-zdqY*shB-wGwTY",
+        "schema": "HHS_COLD_BOOT_REASONING_RECEIPT_V1",
+        "status": "UNAVAILABLE",
+        "task_local_inferences": [],
+        "task_root_hash72": "0000000000000000000000000000004tfTAk-/NZni+XMyJu?>gpl2D+t!??Hex=Bigb5CO2",
+        "workload_id": "W97-09"
+      },
+      {
+        "ambiguity_preserved": false,
+        "cost": {
+          "boot_units": 120,
+          "peak_memory_bytes": 2048,
+          "receipt_bytes": 1024,
+          "task_units": 165,
+          "validation_units": 0
+        },
+        "deterministic_validations": [],
+        "external_sources_used": [
+          "DECLARED_EXTERNAL_RETRIEVAL"
+        ],
+        "minimality_level": "L5_KERNEL_ONLY",
+        "missing_knowledge_recognized": false,
+        "patterns_reconstructed": [],
+        "permanent_rules_used": [],
+        "permanent_seed_root_hash72": "000000000000000000000000000000170UuduPup^kJFKe)T3F2C?nWnBY=VF)LzQr6B(?B-",
+        "probabilistic_proposals": [],
+        "provenance_preserved": false,
+        "receipt_root_hash72": "0000000000000000000000000000003tA!3NNKooEtD6!/sF5!UGCYQDosmpQ8aM9l=yT5Y)",
+        "result_root_hash72": "0000000000000000000000000000004zbrjEOhgI?9B>uQ0^06tE6*zUYAo35cq03bg!Z3eB",
+        "schema": "HHS_COLD_BOOT_REASONING_RECEIPT_V1",
+        "status": "UNAVAILABLE",
+        "task_local_inferences": [],
+        "task_root_hash72": "0000000000000000000000000000000OpmzJsDl/y53Q1R*greEku-QT37qI*J!Xx>2upUdz",
+        "workload_id": "W97-10"
+      },
+      {
+        "ambiguity_preserved": false,
+        "cost": {
+          "boot_units": 120,
+          "peak_memory_bytes": 2048,
+          "receipt_bytes": 1024,
+          "task_units": 165,
+          "validation_units": 0
+        },
+        "deterministic_validations": [],
+        "external_sources_used": [],
+        "minimality_level": "L5_KERNEL_ONLY",
+        "missing_knowledge_recognized": true,
+        "patterns_reconstructed": [],
+        "permanent_rules_used": [],
+        "permanent_seed_root_hash72": "000000000000000000000000000000170UuduPup^kJFKe)T3F2C?nWnBY=VF)LzQr6B(?B-",
+        "probabilistic_proposals": [],
+        "provenance_preserved": false,
+        "receipt_root_hash72": "0000000000000000000000000000003u+VfMYpbxufMeY0Ezur?PcIPHs2K!LcK1T)ENEY^A",
+        "result_root_hash72": "0000000000000000000000000000001s8Kc2uUMk8fGeZ/yI=k0Ix^VQW(l1+)+3aB!n7XXZ",
+        "schema": "HHS_COLD_BOOT_REASONING_RECEIPT_V1",
+        "status": "UNAVAILABLE",
+        "task_local_inferences": [],
+        "task_root_hash72": "0000000000000000000000000000002RdTqhvutoy??9HjDVDiY)IRTFw-4SFBbQgTz5RAUn",
+        "workload_id": "W97-11"
+      },
+      {
+        "ambiguity_preserved": false,
+        "cost": {
+          "boot_units": 120,
+          "peak_memory_bytes": 2048,
+          "receipt_bytes": 1024,
+          "task_units": 165,
+          "validation_units": 0
+        },
+        "deterministic_validations": [],
+        "external_sources_used": [],
+        "minimality_level": "L5_KERNEL_ONLY",
+        "missing_knowledge_recognized": true,
+        "patterns_reconstructed": [],
+        "permanent_rules_used": [],
+        "permanent_seed_root_hash72": "000000000000000000000000000000170UuduPup^kJFKe)T3F2C?nWnBY=VF)LzQr6B(?B-",
+        "probabilistic_proposals": [],
+        "provenance_preserved": false,
+        "receipt_root_hash72": "0000000000000000000000000000003KoWn7N92q(sO4*30mF41px)D6SILZ>d^cTuIOY7k-",
+        "result_root_hash72": "0000000000000000000000000000000IuI3NrxFUq5r++LSL5vo!B5GqzoPJjc9ix7ke>Rl0",
+        "schema": "HHS_COLD_BOOT_REASONING_RECEIPT_V1",
+        "status": "UNAVAILABLE",
+        "task_local_inferences": [],
+        "task_root_hash72": "00000000000000000000000000000037*K9!DfPy^ka*9j83INevRSikNzhhlOJXLnH-v+cy",
+        "workload_id": "W97-12"
+      }
+    ],
+    "result_root_hash72": "0000000000000000000000000000002^CYTcI4G1/VSNwB0(kIj5>2j?k?Hm?DJNF3p7dl6!",
+    "schema": "HHS_PASS_097_MINIMAL_KERNEL_RESULT_V1"
+  },
+  "schema": "HHS_PASS_097_REPLAY_V1"
+}

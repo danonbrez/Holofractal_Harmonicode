@@ -1,0 +1,36 @@
+{
+  "schema": "HHS_PASS_082_1_RELEASE_MANIFEST_V1",
+  "pass_id": "PASS_082_1",
+  "parent_pass": "PASS_082",
+  "parent_release_root_hash72": "0000000000000000000000000000001F5+-RFz-+Jdp(PK4aY+65kNW914Kn5OqvC6NHIaDv",
+  "workloads": [
+    "W11:offsets-0-1",
+    "W12:offsets-0-36",
+    "W13:eight-consecutive",
+    "W14:eight-stride-5",
+    "W15:sixteen-evenly-spaced",
+    "W16:phase-vm81",
+    "W17:sixty-four-dense",
+    "W18:duplicate-offset-rejection",
+    "W19:inverse-normalization-failure",
+    "W20:phase-then-cell",
+    "W20:cell-then-phase"
+  ],
+  "positive_workloads_verified": 9,
+  "negative_workloads_verified": 2,
+  "scaling_branch_counts": [
+    2,
+    4,
+    8,
+    16,
+    32,
+    64
+  ],
+  "raw_branch_roots_distinct": true,
+  "normalized_closure_roots_identical": true,
+  "offset_inverses_verified": true,
+  "noncommutative_order_distinct": true,
+  "native_floating_output_non_authoritative": true,
+  "deterministic_replay_verified": true,
+  "pass082_1_release_root_hash72": "0000000000000000000000000000003HBLg4OyD9pwYdrbv2fV3ExsFHfyD5osuIhJ7qNBN!"
+}

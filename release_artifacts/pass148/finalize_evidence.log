@@ -1,0 +1,14 @@
+{
+  "dependency_tests": {
+    "tests": 130,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "negative_tests": 25,
+  "external_actor_steps": 24,
+  "registry_entries": 42,
+  "reference_transactions": 54,
+  "terminal_status": "PASS_148_INCOMPLETE",
+  "ceuac_evidence_records": 43
+}

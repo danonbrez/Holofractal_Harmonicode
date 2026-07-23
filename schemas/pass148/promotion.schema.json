@@ -1,0 +1,61 @@
+{
+  "$id": "hhs://schemas/pass148/promotion",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "dependency_set": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "governing_rule": {
+      "type": "string"
+    },
+    "requested_by_identity": {
+      "type": "string"
+    },
+    "scope": {
+      "type": "object"
+    },
+    "source_class": {
+      "enum": [
+        "CONTROL_PROJECTION",
+        "DECLARED_SYSTEM_LAW",
+        "DERIVABLE_CONSEQUENCE",
+        "UNRESOLVED_EXPRESSION",
+        "NARRATIVE_EXTRAPOLATION"
+      ]
+    },
+    "source_proposition_id": {
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "REQUESTED",
+        "AUTHORIZED",
+        "REJECTED"
+      ]
+    },
+    "target_class": {
+      "enum": [
+        "CONTROL_PROJECTION",
+        "DECLARED_SYSTEM_LAW",
+        "DERIVABLE_CONSEQUENCE",
+        "UNRESOLVED_EXPRESSION",
+        "NARRATIVE_EXTRAPOLATION"
+      ]
+    }
+  },
+  "required": [
+    "source_proposition_id",
+    "source_class",
+    "target_class",
+    "governing_rule",
+    "dependency_set",
+    "scope",
+    "requested_by_identity",
+    "status"
+  ],
+  "type": "object"
+}

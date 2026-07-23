@@ -1,0 +1,22 @@
+{
+  "children": [
+    "release"
+  ],
+  "graph_root": "8ec77e140e3b537bc7207fb1c9ef708f14c2570d52ce64d655719387b4ac458a",
+  "node": {
+    "parent_offsets": [
+      2,
+      3
+    ],
+    "receipt_id": "pass-142-reference:merge",
+    "receipt_root": "3e584e08c1b991f379c85970570bd56ee6ea8ca3bedd1a7a237d53262fa1ea20",
+    "snapshot_offset_slot": 4,
+    "topological_offset": 4
+  },
+  "operation_id": "merge",
+  "parents": [
+    "lane-a",
+    "lane-b"
+  ],
+  "snapshot_root": "3813d15c10b6defe40c3c74cfe4fe8c4ca9bde5fe18aead1df3878a8ec29cab1"
+}

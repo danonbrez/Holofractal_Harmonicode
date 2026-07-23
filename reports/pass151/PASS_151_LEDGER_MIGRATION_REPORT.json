@@ -1,0 +1,28 @@
+{
+  "canonical_ledger": {
+    "chain_valid": true,
+    "identity_formula": "HHS-P151-CGILP|SOURCE_SECTION|VERBATIM_TEXT",
+    "obligation_count": 100,
+    "path": "data/pass151/obligation_ledger_v2.sqlite3",
+    "verified_count": 100
+  },
+  "classification": "APPEND_ONLY_HISTORICAL_LEDGER_PRESERVED_CANONICAL_V2_LEDGER_CREATED",
+  "history_erased": false,
+  "legacy_ledger": {
+    "obligation_count": 200,
+    "path": "data/pass151/obligation_ledger.sqlite3",
+    "preserved": true,
+    "source_paths": {
+      "/mnt/data/p151_work/hhs_pass_151_contract_governed_internal_language_processing_integration_candidate/contracts/pass151/HHS_PASS_151_FINAL_CONTRACT.md": 100,
+      "/mnt/data/pass151_full_work/contracts/pass151/HHS_PASS_151_FINAL_CONTRACT.md": 100
+    }
+  },
+  "legacy_rows_rewritten": false,
+  "schema": "HHS_PASS151_LEDGER_PATH_IDENTITY_MIGRATION_V2",
+  "terminal": {
+    "inherited_blockers": [],
+    "overall_inherited_nucleus_classification": "PASS_151_INTERNAL_LANGUAGE_PROCESSING_LAYERS_VERIFIED",
+    "pass151_subsystem_classification": "PASS_151_INTERNAL_LANGUAGE_PROCESSING_LAYERS_VERIFIED",
+    "unresolved_obligation_ids": []
+  }
+}

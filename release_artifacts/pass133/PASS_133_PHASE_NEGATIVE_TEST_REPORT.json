@@ -1,0 +1,38 @@
+{
+  "cases": [
+    {
+      "case": "altered_operation_order",
+      "detected": true,
+      "outcome": "TRACE_DEFECT_DETECTED"
+    },
+    {
+      "case": "continuous_scalar_coercion",
+      "detected": true,
+      "outcome": "UNAUTHORIZED_SCALAR_COERCION_REJECTED"
+    },
+    {
+      "case": "joint_lane_flattening",
+      "detected": true,
+      "outcome": "LANE_CONTEXT_COLLAPSE_REJECTED"
+    },
+    {
+      "case": "ieee_ingress",
+      "detected": true,
+      "outcome": "CONTROL_CONTAMINATION_DETECTED"
+    },
+    {
+      "case": "duplicate_carrier",
+      "detected": true,
+      "outcome": "DUPLICATE_PRIME_DETECTED"
+    },
+    {
+      "case": "wrong_runtime_root",
+      "detected": true,
+      "outcome": "KEY_GENERATOR_REPLAY_FAILURE"
+    }
+  ],
+  "passed": 6,
+  "schema": "HHS_PASS133_PHASE_NEGATIVE_TEST_REPORT_V1",
+  "status": "PASS",
+  "total": 6
+}

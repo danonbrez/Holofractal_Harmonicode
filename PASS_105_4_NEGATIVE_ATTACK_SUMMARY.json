@@ -1,0 +1,21 @@
+{
+  "schema": "HHS_PASS_105_4_NEGATIVE_ATTACK_SUMMARY_V1",
+  "pass_id": "PASS_105_4",
+  "parent_pass105_3_release_root_hash72": "0000000000000000000000000000002DxQSg)nYRHxQHNSAeR9JRjXagMl8?Fs=KL!AQ6^g9",
+  "attack_count": 77,
+  "passed_count": 77,
+  "failed_count": 0,
+  "all_attacks_structurally_executed": true,
+  "all_attacks_used_production_entrypoints": true,
+  "parallel_test_computation_count": 0,
+  "mock_component_count": 0,
+  "group_counts": {
+    "PASS_101": 14,
+    "PASS_102": 14,
+    "PASS_103": 14,
+    "PASS_104": 16,
+    "PASS_105": 19
+  },
+  "attack_registry_root_hash72": "0000000000000000000000000000001wCuWWgCSe3Y)Ll>LGd1/p>i-1EmV^oqM2LR0JPZa)",
+  "summary_root_hash72": "0000000000000000000000000000002lt3!sbw1s)W5)hz!q*WBvEBk>LJpYl?eqC4pmI)Cc"
+}

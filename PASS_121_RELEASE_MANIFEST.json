@@ -1,0 +1,16 @@
+{
+  "pass_id": "PASS_121",
+  "title": "HARMONICODE Native Interpretation, Core Library, and One-Way Python Egress",
+  "service": "runtime.harmonicode_core_library.pass121",
+  "parent_pass": "PASS_120",
+  "authority_boundary": {
+    "native_harmonicode_interpreter": "AUTHORITATIVE",
+    "pass118_runtime": "AUTHORITATIVE",
+    "hash72_receipts": "AUTHORITATIVE",
+    "python_export": "NONAUTHORITATIVE_ONE_WAY_EGRESS_ONLY",
+    "python_validation": "PROHIBITED",
+    "python_reimport_as_authority": "PROHIBITED"
+  },
+  "module": "hhs_runtime/hhs_pass121_harmonicode_core_library_v1.py",
+  "tests": "tests/test_hhs_pass121_harmonicode_core_library_v1.py"
+}

@@ -1,0 +1,143 @@
+{
+  "operation_registry_root_hash72": "0000000000000000000000000000001shM^RJmUhaP=QdhZs>GRPRVtsQ4OPrVDGwlZq3!Jk",
+  "operations": [
+    {
+      "description": "Create or resolve a native workspace project",
+      "implemented": true,
+      "operation_class": "INGRESS",
+      "operation_id": "workspace.project.create",
+      "private_authority_path": false,
+      "unified_api_only": true
+    },
+    {
+      "description": "Open a project-scoped workspace session",
+      "implemented": true,
+      "operation_class": "INGRESS",
+      "operation_id": "workspace.session.open",
+      "private_authority_path": false,
+      "unified_api_only": true
+    },
+    {
+      "description": "Create a presentation-only editor buffer",
+      "implemented": true,
+      "operation_class": "INGRESS",
+      "operation_id": "workspace.buffer.open",
+      "private_authority_path": false,
+      "unified_api_only": true
+    },
+    {
+      "description": "Register a non-authorizing human, LLM, tool, or CI agent identity",
+      "implemented": true,
+      "operation_class": "INGRESS",
+      "operation_id": "workspace.agent.register",
+      "private_authority_path": false,
+      "unified_api_only": true
+    },
+    {
+      "description": "Submit a repository-native capability-bearing change proposal",
+      "implemented": true,
+      "operation_class": "INGRESS",
+      "operation_id": "workspace.change.propose",
+      "private_authority_path": false,
+      "unified_api_only": true
+    },
+    {
+      "description": "Read canonical product runtime state",
+      "implemented": true,
+      "operation_class": "QUERY",
+      "operation_id": "workspace.state.get",
+      "private_authority_path": false,
+      "unified_api_only": true
+    },
+    {
+      "description": "Read the project object index",
+      "implemented": true,
+      "operation_class": "QUERY",
+      "operation_id": "workspace.project.index",
+      "private_authority_path": false,
+      "unified_api_only": true
+    },
+    {
+      "description": "Mutate an editor projection under authority and alignment",
+      "implemented": true,
+      "operation_class": "MUTATE",
+      "operation_id": "workspace.buffer.update",
+      "private_authority_path": false,
+      "unified_api_only": true
+    },
+    {
+      "description": "Commit a buffer as a source artifact",
+      "implemented": true,
+      "operation_class": "MUTATE",
+      "operation_id": "workspace.source.commit",
+      "private_authority_path": false,
+      "unified_api_only": true
+    },
+    {
+      "description": "Attach witnessed test evidence to a change proposal",
+      "implemented": true,
+      "operation_class": "MUTATE",
+      "operation_id": "workspace.test.record",
+      "private_authority_path": false,
+      "unified_api_only": true
+    },
+    {
+      "description": "Create a context-independent agent handoff capsule",
+      "implemented": true,
+      "operation_class": "MUTATE",
+      "operation_id": "workspace.handoff.create",
+      "private_authority_path": false,
+      "unified_api_only": true
+    },
+    {
+      "description": "Run bounded source inspection",
+      "implemented": true,
+      "operation_class": "EXECUTE",
+      "operation_id": "workspace.source.inspect",
+      "private_authority_path": false,
+      "unified_api_only": true
+    },
+    {
+      "description": "Evaluate post-freeze reciprocal development constraints",
+      "implemented": true,
+      "operation_class": "EXECUTE",
+      "operation_id": "workspace.alignment.evaluate",
+      "private_authority_path": false,
+      "unified_api_only": true
+    },
+    {
+      "description": "Create a bounded product-local self-healing plan",
+      "implemented": true,
+      "operation_class": "EXECUTE",
+      "operation_id": "workspace.healing.plan",
+      "private_authority_path": false,
+      "unified_api_only": true
+    },
+    {
+      "description": "Reserved Pass 076 interpreter surface",
+      "implemented": false,
+      "operation_class": "EXECUTE",
+      "operation_id": "workspace.interpreter.execute",
+      "private_authority_path": false,
+      "unified_api_only": true
+    },
+    {
+      "description": "Reserved Pass 077 compiler surface",
+      "implemented": false,
+      "operation_class": "COMPILE",
+      "operation_id": "workspace.compiler.compile",
+      "private_authority_path": false,
+      "unified_api_only": true
+    },
+    {
+      "description": "Reserved Pass 078 emulator surface",
+      "implemented": false,
+      "operation_class": "EMULATE",
+      "operation_id": "workspace.emulator.run",
+      "private_authority_path": false,
+      "unified_api_only": true
+    }
+  ],
+  "schema": "HHS_API_OPERATION_REGISTRY_V1",
+  "version": "PASS_074_UNIFIED_HHS_IDE_WORKSPACE_V1"
+}

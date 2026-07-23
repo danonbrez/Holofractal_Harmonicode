@@ -1,0 +1,12 @@
+{
+  "schema": "HHS_PASS132_RECONSTRUCTED_SOURCE_IDENTITY_ERRATUM_V1",
+  "pass_id": "PASS_132_RECONSTRUCTED_R1",
+  "historical_pass_id": "PASS_132",
+  "parent": "PASS_131_MIGRATED_R1",
+  "exact_original_source_bytes_recovered": false,
+  "historical_evidence_preserved_immutably": true,
+  "reconstruction_authority": "COMPLETE_PASS131_TREE_PLUS_PASS132_RELEASE_EVIDENCE_AND_NATIVE_HASH72_WITNESSES",
+  "prohibited_claim": "BYTE_IDENTICAL_ORIGINAL_PASS132_SOURCE_RECOVERY",
+  "authorized_claim": "FUNCTIONAL_EVIDENCE_VERIFIED_PASS132_REPLAY_SURFACE_RECONSTRUCTED",
+  "terminal_status": "PASS_132_FUNCTIONAL_RECONSTRUCTION_VERIFIED_WITH_SOURCE_IDENTITY_ERRATUM"
+}

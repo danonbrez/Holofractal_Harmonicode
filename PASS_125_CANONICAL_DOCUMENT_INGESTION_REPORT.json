@@ -1,0 +1,31 @@
+{
+  "schema": "HHS_PASS_125_IMPLEMENTATION_REPORT_V1",
+  "pass_id": "PASS_125",
+  "title": "Canonical Text and Google Drive Document Ingestion Foundation",
+  "status": "IMPLEMENTED_AND_DEPENDENCY_SCOPED_VALIDATED",
+  "runtime_surface": "runtime.canonical_document_ingestion.pass125",
+  "module": "hhs_runtime.hhs_pass125_canonical_document_ingestion_v1.py",
+  "capabilities": [
+    "bounded local text-file ingestion",
+    "provenance-complete Google Drive export ingestion",
+    "strict UTF-8 decoding",
+    "Unicode NFC and LF canonicalization",
+    "lossless bounded segmentation",
+    "source, segment, manifest, and replay Hash72 commitments",
+    "source and segment tamper detection",
+    "deterministic reconstruction and replay",
+    "knowledge-admission separation",
+    "execution- and mutation-authority prohibition"
+  ],
+  "validation": {
+    "pass_125_tests_passed": 12,
+    "pass_117_through_125_tests_passed": 135,
+    "failures": 0
+  },
+  "authority_boundary": {
+    "knowledge_admission_performed": false,
+    "execution_authority_granted": false,
+    "mutation_authority_granted": false,
+    "source_files_modified_by_ingestion": false
+  }
+}

@@ -1,0 +1,2 @@
+#!/usr/bin/env sh
+exec python -m hhs_runtime.harmonicode_architect_entropic_phase_equilibrium_v1 "$@"

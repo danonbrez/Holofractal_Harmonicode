@@ -1,0 +1,346 @@
+{
+  "schema": "HHS_PASS_097_PERMANENT_SEED_REGISTRY_V1",
+  "seeds": [
+    {
+      "authority_rules": [
+        "SOURCE_NE_PROJECTION",
+        "PROPOSAL_NE_ADMISSION",
+        "FLUENCY_NE_CORRECTNESS",
+        "ATTENTION_NE_AUTHORITY",
+        "PROBABILITY_NE_PROOF",
+        "EXECUTION_NE_RETROACTIVE_AUTHORIZATION"
+      ],
+      "counts": {
+        "authority": 6,
+        "epistemic": 7,
+        "grammar": 10,
+        "patterns": 16,
+        "reconstruction": 8,
+        "relations": 12
+      },
+      "epistemic_types": [
+        "ESTABLISHED",
+        "INFERRED",
+        "PROPOSED",
+        "AMBIGUOUS",
+        "CONFLICTING",
+        "UNAVAILABLE",
+        "REJECTED"
+      ],
+      "estimated_bytes": 1888,
+      "grammar_mechanics": [
+        "AGENT",
+        "ACTION",
+        "OBJECT",
+        "CONDITION",
+        "SCOPE",
+        "NEGATION",
+        "MODALITY",
+        "CAUSALITY",
+        "TIME",
+        "REFERENCE"
+      ],
+      "level": "L0_FULL",
+      "permanent_patterns": [
+        "PATTERN_01",
+        "PATTERN_02",
+        "PATTERN_03",
+        "PATTERN_04",
+        "PATTERN_05",
+        "PATTERN_06",
+        "PATTERN_07",
+        "PATTERN_08",
+        "PATTERN_09",
+        "PATTERN_10",
+        "PATTERN_11",
+        "PATTERN_12",
+        "PATTERN_13",
+        "PATTERN_14",
+        "PATTERN_15",
+        "PATTERN_16"
+      ],
+      "permanent_seed_root_hash72": "00000000000000000000000000000021MGm4k9bEu^J4Srp7p5qctv+hCqP!ymQzcav)e-YM",
+      "reconstruction_procedures": [
+        "SOURCE_COMMITMENT",
+        "TASK_STATE",
+        "DERIVATION_GRAPH",
+        "PATTERN_REBUILD",
+        "TRANSLATION_RECEIPT",
+        "AMBIGUITY_GRAPH",
+        "SEARCH",
+        "VALIDATION"
+      ],
+      "relation_primitives": [
+        "IDENTITY",
+        "DISTINCTION",
+        "SEQUENCE",
+        "HIERARCHY",
+        "RECIPROCITY",
+        "CAUSE",
+        "CONSTRAINT",
+        "ALTERNATIVE",
+        "NEGATION",
+        "SCALE",
+        "CYCLE",
+        "ANALOGY"
+      ],
+      "schema": "HHS_MINIMAL_PERMANENT_SEED_V1",
+      "symbol_count": 59
+    },
+    {
+      "authority_rules": [
+        "SOURCE_NE_PROJECTION",
+        "PROPOSAL_NE_ADMISSION",
+        "FLUENCY_NE_CORRECTNESS",
+        "ATTENTION_NE_AUTHORITY",
+        "PROBABILITY_NE_PROOF",
+        "EXECUTION_NE_RETROACTIVE_AUTHORIZATION"
+      ],
+      "counts": {
+        "authority": 6,
+        "epistemic": 7,
+        "grammar": 8,
+        "patterns": 8,
+        "reconstruction": 8,
+        "relations": 9
+      },
+      "epistemic_types": [
+        "ESTABLISHED",
+        "INFERRED",
+        "PROPOSED",
+        "AMBIGUOUS",
+        "CONFLICTING",
+        "UNAVAILABLE",
+        "REJECTED"
+      ],
+      "estimated_bytes": 1472,
+      "grammar_mechanics": [
+        "AGENT",
+        "ACTION",
+        "OBJECT",
+        "CONDITION",
+        "SCOPE",
+        "NEGATION",
+        "MODALITY",
+        "CAUSALITY"
+      ],
+      "level": "L1_REDUCED_PATTERNS",
+      "permanent_patterns": [
+        "PATTERN_01",
+        "PATTERN_02",
+        "PATTERN_03",
+        "PATTERN_04",
+        "PATTERN_05",
+        "PATTERN_06",
+        "PATTERN_07",
+        "PATTERN_08"
+      ],
+      "permanent_seed_root_hash72": "0000000000000000000000000000004hIZSwpj8GFcPnC?5vth)eTe6=Q1yOGY7^tyI3Qdfv",
+      "reconstruction_procedures": [
+        "SOURCE_COMMITMENT",
+        "TASK_STATE",
+        "DERIVATION_GRAPH",
+        "PATTERN_REBUILD",
+        "TRANSLATION_RECEIPT",
+        "AMBIGUITY_GRAPH",
+        "SEARCH",
+        "VALIDATION"
+      ],
+      "relation_primitives": [
+        "IDENTITY",
+        "DISTINCTION",
+        "SEQUENCE",
+        "HIERARCHY",
+        "RECIPROCITY",
+        "CAUSE",
+        "CONSTRAINT",
+        "ALTERNATIVE",
+        "NEGATION"
+      ],
+      "schema": "HHS_MINIMAL_PERMANENT_SEED_V1",
+      "symbol_count": 46
+    },
+    {
+      "authority_rules": [
+        "SOURCE_NE_PROJECTION",
+        "PROPOSAL_NE_ADMISSION",
+        "FLUENCY_NE_CORRECTNESS",
+        "ATTENTION_NE_AUTHORITY",
+        "PROBABILITY_NE_PROOF",
+        "EXECUTION_NE_RETROACTIVE_AUTHORIZATION"
+      ],
+      "counts": {
+        "authority": 6,
+        "epistemic": 7,
+        "grammar": 6,
+        "patterns": 0,
+        "reconstruction": 8,
+        "relations": 6
+      },
+      "epistemic_types": [
+        "ESTABLISHED",
+        "INFERRED",
+        "PROPOSED",
+        "AMBIGUOUS",
+        "CONFLICTING",
+        "UNAVAILABLE",
+        "REJECTED"
+      ],
+      "estimated_bytes": 1056,
+      "grammar_mechanics": [
+        "AGENT",
+        "ACTION",
+        "OBJECT",
+        "CONDITION",
+        "SCOPE",
+        "NEGATION"
+      ],
+      "level": "L2_MINIMAL_RELATIONS",
+      "permanent_patterns": [],
+      "permanent_seed_root_hash72": "0000000000000000000000000000003t-JtC27Fa0n+(Hf!w1x2p?Y?TgG/Ki5!LKJanNO4l",
+      "reconstruction_procedures": [
+        "SOURCE_COMMITMENT",
+        "TASK_STATE",
+        "DERIVATION_GRAPH",
+        "PATTERN_REBUILD",
+        "TRANSLATION_RECEIPT",
+        "AMBIGUITY_GRAPH",
+        "SEARCH",
+        "VALIDATION"
+      ],
+      "relation_primitives": [
+        "IDENTITY",
+        "DISTINCTION",
+        "SEQUENCE",
+        "HIERARCHY",
+        "RECIPROCITY",
+        "CAUSE"
+      ],
+      "schema": "HHS_MINIMAL_PERMANENT_SEED_V1",
+      "symbol_count": 33
+    },
+    {
+      "authority_rules": [
+        "SOURCE_NE_PROJECTION",
+        "PROPOSAL_NE_ADMISSION",
+        "FLUENCY_NE_CORRECTNESS",
+        "ATTENTION_NE_AUTHORITY",
+        "PROBABILITY_NE_PROOF",
+        "EXECUTION_NE_RETROACTIVE_AUTHORIZATION"
+      ],
+      "counts": {
+        "authority": 6,
+        "epistemic": 7,
+        "grammar": 4,
+        "patterns": 0,
+        "reconstruction": 8,
+        "relations": 6
+      },
+      "epistemic_types": [
+        "ESTABLISHED",
+        "INFERRED",
+        "PROPOSED",
+        "AMBIGUOUS",
+        "CONFLICTING",
+        "UNAVAILABLE",
+        "REJECTED"
+      ],
+      "estimated_bytes": 992,
+      "grammar_mechanics": [
+        "AGENT",
+        "ACTION",
+        "OBJECT",
+        "CONDITION"
+      ],
+      "level": "L3_MINIMAL_GRAMMAR_RELATIONS",
+      "permanent_patterns": [],
+      "permanent_seed_root_hash72": "0000000000000000000000000000002>^xzRcQO>tpmU7Mjp*ct7(PoNkzW^YdcMvO509jd)",
+      "reconstruction_procedures": [
+        "SOURCE_COMMITMENT",
+        "TASK_STATE",
+        "DERIVATION_GRAPH",
+        "PATTERN_REBUILD",
+        "TRANSLATION_RECEIPT",
+        "AMBIGUITY_GRAPH",
+        "SEARCH",
+        "VALIDATION"
+      ],
+      "relation_primitives": [
+        "IDENTITY",
+        "DISTINCTION",
+        "SEQUENCE",
+        "HIERARCHY",
+        "RECIPROCITY",
+        "CAUSE"
+      ],
+      "schema": "HHS_MINIMAL_PERMANENT_SEED_V1",
+      "symbol_count": 31
+    },
+    {
+      "authority_rules": [
+        "SOURCE_NE_PROJECTION",
+        "PROPOSAL_NE_ADMISSION",
+        "FLUENCY_NE_CORRECTNESS",
+        "ATTENTION_NE_AUTHORITY",
+        "PROBABILITY_NE_PROOF",
+        "EXECUTION_NE_RETROACTIVE_AUTHORIZATION"
+      ],
+      "counts": {
+        "authority": 6,
+        "epistemic": 7,
+        "grammar": 0,
+        "patterns": 0,
+        "reconstruction": 8,
+        "relations": 0
+      },
+      "epistemic_types": [
+        "ESTABLISHED",
+        "INFERRED",
+        "PROPOSED",
+        "AMBIGUOUS",
+        "CONFLICTING",
+        "UNAVAILABLE",
+        "REJECTED"
+      ],
+      "estimated_bytes": 672,
+      "grammar_mechanics": [],
+      "level": "L4_KERNEL_AUTHORITY_RECONSTRUCTION",
+      "permanent_patterns": [],
+      "permanent_seed_root_hash72": "0000000000000000000000000000001nmwKg8*XwIb1BtOhLhvpKbC9Ff3mPR^R>wyW1UmxZ",
+      "reconstruction_procedures": [
+        "SOURCE_COMMITMENT",
+        "TASK_STATE",
+        "DERIVATION_GRAPH",
+        "PATTERN_REBUILD",
+        "TRANSLATION_RECEIPT",
+        "AMBIGUITY_GRAPH",
+        "SEARCH",
+        "VALIDATION"
+      ],
+      "relation_primitives": [],
+      "schema": "HHS_MINIMAL_PERMANENT_SEED_V1",
+      "symbol_count": 21
+    },
+    {
+      "authority_rules": [],
+      "counts": {
+        "authority": 0,
+        "epistemic": 0,
+        "grammar": 0,
+        "patterns": 0,
+        "reconstruction": 0,
+        "relations": 0
+      },
+      "epistemic_types": [],
+      "estimated_bytes": 0,
+      "grammar_mechanics": [],
+      "level": "L5_KERNEL_ONLY",
+      "permanent_patterns": [],
+      "permanent_seed_root_hash72": "000000000000000000000000000000170UuduPup^kJFKe)T3F2C?nWnBY=VF)LzQr6B(?B-",
+      "reconstruction_procedures": [],
+      "relation_primitives": [],
+      "schema": "HHS_MINIMAL_PERMANENT_SEED_V1",
+      "symbol_count": 0
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "acceptance": {
+    "language_model_outputs_admitted_as_runtime_evidence": 0,
+    "mock_components": 0,
+    "projection_status_mismatches_admitted": 0,
+    "projection_value_mismatches_admitted": 0,
+    "prompt_injection_authority_escalations": 0,
+    "runtime_results_altered_to_fit_narrative": 0,
+    "unresolved_ambiguities_silently_collapsed": 0
+  },
+  "capabilities": [
+    "verbatim language input and explicit proposition preservation",
+    "explicit inference and ambiguity separation",
+    "non-authoritative language-model proposal objects",
+    "multi-model comparison without consensus authority",
+    "meaning-preserving translation admission into Pass 118 HARMONICODE",
+    "immutable admitted symbolic programs",
+    "authoritative Pass 118 runtime execution and typed failure preservation",
+    "language projection comparison, rejection, and repair",
+    "prompt-injection and retrieved-content authority separation",
+    "bounded context projections with explicit omission roots"
+  ],
+  "implementation_module": "hhs_runtime/hhs_pass119_language_model_nonreplacement_integration_v1.py",
+  "new_test_count": 17,
+  "parent_pass": "PASS_118",
+  "pass_id": "PASS_119",
+  "runtime_service": "runtime.language_model_nonreplacement_integration.pass119",
+  "schema": "HHS_PASS_119_RELEASE_MANIFEST_V1",
+  "scoped_test_count": 112,
+  "scoped_test_failures": 0,
+  "self_test_root": {
+    "interaction_root_hash72": "0000000000000000000000000000001=!B4K=XMvjX^x>XYcSP4Gv71Ch5n3SE5R8dkrPDRO",
+    "projection_receipt_root_hash72": "0000000000000000000000000000001B)QhkaZfZyA=M=ikwL4U(Ow>hQxIFIwDquLRusg1w",
+    "proposal_root_hash72": "0000000000000000000000000000002T=fh8G7L=>)Na20fctrb?2He0=HSOBp^t-KHgDvci",
+    "schema": "HHS_PASS119_SELF_TEST_V1",
+    "status": "PASS",
+    "translation_receipt_root_hash72": "0000000000000000000000000000004kGfJzEvBp9(AjoDNr8tjjJSd1-r=pAU?owi(OfbD9"
+  },
+  "test_module": "tests/test_hhs_pass119_language_model_nonreplacement_integration_v1.py",
+  "title": "Non-Replacement Language-Model Integration with Semantic Translation, Symbolic Runtime, and Hash72 Projection Validation"
+}

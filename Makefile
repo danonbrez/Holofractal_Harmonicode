@@ -794,3 +794,96 @@ dynamic-lo-shu-agent-tensor-pass067-full:
 	$(MAKE) service-registry
 	$(MAKE) runtime-reachability
 	$(MAKE) kernel-conformance-surface-map
+
+.PHONY: vm81-native-exposure-pass078 vm81-native-exposure-pass078-tests vm81-native-exposure-pass078-full
+vm81-native-exposure-pass078:
+	python -m native_projects.hhs_vm81_native_exposure.build_pass078_release
+
+vm81-native-exposure-pass078-tests:
+	PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest -q tests/test_hhs_pass078_vm81_native_exposure_v1.py
+
+vm81-native-exposure-pass078-full:
+	$(MAKE) vm81-native-exposure-pass078
+	$(MAKE) vm81-native-exposure-pass078-tests
+
+.PHONY: pass-safe-resume-exit-pass112 pass-safe-resume-exit-pass112-tests pass-safe-resume-exit-pass112-full
+pass-safe-resume-exit-pass112:
+	python -m hhs_runtime.hhs_pass112_pass_safe_resume_exit_v1
+
+pass-safe-resume-exit-pass112-tests:
+	PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest -q tests/test_hhs_pass111_predictive_continuation_cache_v1.py tests/test_hhs_pass112_pass_safe_resume_exit_v1.py
+
+pass-safe-resume-exit-pass112-full:
+	$(MAKE) pass-safe-resume-exit-pass112-tests
+	$(MAKE) service-registry
+	$(MAKE) runtime-reachability
+	$(MAKE) kernel-conformance-surface-map
+
+.PHONY: pass113-safe-lossless-archive
+pass113-safe-lossless-archive:
+	PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest -q tests/test_hhs_pass112_pass_safe_resume_exit_v1.py tests/test_hhs_pass113_safe_lossless_archive_v1.py
+
+.PHONY: pass122-read-only-self-analysis pass122-read-only-self-analysis-tests
+pass122-read-only-self-analysis:
+	python -m hhs_runtime.hhs_pass122_read_only_self_analysis_v1
+
+pass122-read-only-self-analysis-tests:
+	PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest -q tests/test_hhs_pass122_read_only_self_analysis_v1.py
+
+.PHONY: pass123-bounded-token-generalization pass123-bounded-token-generalization-tests
+pass123-bounded-token-generalization:
+	python -m hhs_runtime.hhs_pass123_bounded_token_generalization_v1
+
+pass123-bounded-token-generalization-tests:
+	PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest -q tests/test_hhs_pass123_bounded_token_generalization_v1.py
+
+.PHONY: pass124-parallel-deterministic-generalization pass124-parallel-deterministic-generalization-tests
+pass124-parallel-deterministic-generalization:
+	python -m hhs_runtime.hhs_pass124_parallel_deterministic_generalization_v1
+
+pass124-parallel-deterministic-generalization-tests:
+	PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest -q tests/test_hhs_pass124_parallel_deterministic_generalization_v1.py
+
+.PHONY: test-pass125
+test-pass125:
+	python -m pytest -q tests/test_hhs_pass125_canonical_document_ingestion_v1.py
+
+.PHONY: test-pass126
+test-pass126:
+	python -m pytest -q tests/test_hhs_pass126_document_claim_interpretation_v1.py
+
+.PHONY: test-pass128
+test-pass128:
+	python -m pytest -q tests/test_hhs_pass128_canonical_knowledge_graph_retrieval_v1.py
+
+
+.PHONY: pass135-ceuac-audit pass135-tests
+pass135-ceuac-audit:
+	python -m hhs_runtime.hhs_pass135_ceuac_audit_v1 run $(SUBJECT_ARCHIVE) release_artifacts/pass135
+
+pass135-tests:
+	python -m pytest -q tests/test_hhs_pass135_ceuac_audit_v1.py
+
+.PHONY: test-pass145
+test-pass145:
+	python -m pytest -q tests/test_hhs_pass145_android_knowledge_enterprise_platform_v1.py
+
+.PHONY: pass149 pass150 pass150-contract-matrix
+pass149:
+	python -m pytest -q tests/test_pass149_contract_executor.py
+pass150:
+	python -m pytest -q tests/test_pass150_hash216_genome.py tests/test_pass150_contract_matrix.py
+pass150-contract-matrix:
+	python -m pytest -q tests/test_pass150_contract_matrix.py
+
+.PHONY: pass151-contract-governed-language pass152-universal-elastic-closure pass152-full
+pass151-contract-governed-language:
+	./tests/pass151/run_all.sh
+
+pass152-universal-elastic-closure:
+	./tests/pass152/run_all.sh
+
+pass152-full:
+	$(MAKE) pass151-contract-governed-language
+	$(MAKE) pass152-universal-elastic-closure
+	$(MAKE) verify-c

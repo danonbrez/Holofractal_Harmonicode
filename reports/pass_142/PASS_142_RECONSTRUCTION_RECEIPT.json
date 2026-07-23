@@ -1,0 +1,106 @@
+{
+  "dependency_graph_root": "8ec77e140e3b537bc7207fb1c9ef708f14c2570d52ce64d655719387b4ac458a",
+  "global_state_snapshot": {
+    "dependency_order": [
+      "ingress",
+      "parse",
+      "lane-a",
+      "lane-b",
+      "merge",
+      "release"
+    ],
+    "modalities": [
+      {
+        "byte_length": 33,
+        "data_base64": "SEFSTU9OSUNPREUgZ2xvYmFsIHN0YXRlIHNuYXBzaG90",
+        "encoding": "base64",
+        "hash72": "c7511b3deaad3060f997711f72446bcafcd924f5ff1563c75ea161d38c8a6330317f445a",
+        "id": "text",
+        "mime_type": "text/plain",
+        "sha256": "ab09398f05eaf7c86c836b2dffd11f63404d4a7ee8e0acdd59ba516fa540fbea"
+      },
+      {
+        "byte_length": 40,
+        "data_base64": "eyJjbG9zZWQiOnRydWUsImdvYWwiOiJyaG8qZz09KGcteHkpXjIifQ==",
+        "encoding": "base64",
+        "hash72": "96bd1fe3fab6aa7379c93215046006552ba937afddd51247755dc5280e588a947b0f9f30",
+        "id": "proof",
+        "mime_type": "application/json",
+        "sha256": "a3cd7580835d16037a3760b0092a2730bce17160a785b40bed5b12287fb66952"
+      },
+      {
+        "byte_length": 15,
+        "data_base64": "iVBORw0Kc3ludGhldGlj",
+        "encoding": "base64",
+        "hash72": "1052bb13cb85d9d2d0990f311519e38f73353d51dc45aff5f88c188dd87954dab91719d1",
+        "id": "image",
+        "mime_type": "image/png",
+        "sha256": "6f7c0eb253b075264fc9ff8491b376b43ad7609327598d6c9ff59ecf4b188467"
+      }
+    ],
+    "operation_metadata": [
+      {
+        "depends_on": [],
+        "id": "ingress",
+        "operation": {
+          "kind": "INGRESS"
+        }
+      },
+      {
+        "depends_on": [
+          "parse"
+        ],
+        "id": "lane-a",
+        "operation": {
+          "kind": "FORK"
+        }
+      },
+      {
+        "depends_on": [
+          "parse"
+        ],
+        "id": "lane-b",
+        "operation": {
+          "kind": "FORK"
+        }
+      },
+      {
+        "depends_on": [
+          "lane-a",
+          "lane-b"
+        ],
+        "id": "merge",
+        "operation": {
+          "kind": "MERGE"
+        }
+      },
+      {
+        "depends_on": [
+          "ingress"
+        ],
+        "id": "parse",
+        "operation": {
+          "kind": "PARSE"
+        }
+      },
+      {
+        "depends_on": [
+          "merge"
+        ],
+        "id": "release",
+        "operation": {
+          "kind": "RELEASE"
+        }
+      }
+    ],
+    "request_id": "pass-142-reference",
+    "state": {
+      "phase": 17,
+      "status": "PROVED",
+      "unit": "xy"
+    }
+  },
+  "recovered_offset_slots": [],
+  "snapshot_root": "3813d15c10b6defe40c3c74cfe4fe8c4ca9bde5fe18aead1df3878a8ec29cab1",
+  "status": "SNAPSHOT_REPLAYED"
+}

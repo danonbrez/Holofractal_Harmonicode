@@ -1,0 +1,20 @@
+{
+  "schema": "HHS_PASS134_RECURSIVE_FULL_ANCESTRY_CHECKPOINT_CONTRACT_V1",
+  "pass_id": "PASS_134",
+  "contract_id": "HHS-I134",
+  "contract_name": "Recursive Full-Ancestry Checkpoint Contract",
+  "parent_contracts": ["HHS-I132", "HHS-I133"],
+  "required_capabilities": [
+    "authoritative full-checkpoint manifest generation and validation",
+    "evidence-only parent rejection",
+    "full parent tree copy before child overlay",
+    "system-file deletion prohibition",
+    "transient cache exclusion",
+    "deterministic archive serialization",
+    "unified-patch replay without deletion",
+    "ordered operation-chain reconstruction",
+    "first-corruption localization",
+    "self-hosted recovery execution"
+  ],
+  "completion_rule": "CAPABILITY_IMPLEMENTED_AND_TESTED; HISTORICAL_CHAIN_REPAIR_CLAIM_REQUIRES_AUTHORITATIVE_ANCESTOR_BYTES"
+}

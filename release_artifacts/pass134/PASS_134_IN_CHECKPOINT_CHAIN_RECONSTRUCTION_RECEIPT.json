@@ -1,0 +1,19 @@
+{
+  "all_system_files_from_complete_pass131_ancestor_required": true,
+  "current_transition_required_missing_parent_paths": 0,
+  "functional_pass132_reconstruction_verified": true,
+  "original_pass132_source_bytes_recovered": false,
+  "parent_archive_sha256": "fb8c73fe850fa0ef1eab52aee4015e179d38479740b961583aa4205bf2e7dd17",
+  "parent_pass": "PASS_133_RECOVERED_R1",
+  "parent_tree_root_sha256": "10f20d0c63ab86241cbf943358f886822c1e3b099a433cc2482eae254b14829f",
+  "pass_id": "PASS_134_FULL_R1",
+  "prior_transition_missing_parent_paths": {
+    "PASS_131_MIGRATION_BUILD_RECEIPT.json": 0,
+    "PASS_132_RECONSTRUCTION_BUILD_RECEIPT.json": 0,
+    "PASS_133_RECOVERY_BUILD_RECEIPT.json": 0
+  },
+  "repaired_lineage": "PASS_131_MIGRATED_R1 -> PASS_132_RECONSTRUCTED_R1 -> PASS_133_RECOVERED_R1 -> PASS_134_FULL_R1",
+  "schema": "HHS_PASS134_IN_CHECKPOINT_CHAIN_RECONSTRUCTION_RECEIPT_V1",
+  "system_file_deletion_prohibited": true,
+  "terminal_status": "FULL_CHECKPOINT_CHAIN_RECONSTRUCTED_WITH_PASS132_SOURCE_IDENTITY_ERRATUM"
+}

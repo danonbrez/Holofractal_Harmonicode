@@ -1,0 +1,29 @@
+{
+  "c_abi_vm81_verified": true,
+  "complete_parent_files_preserved": true,
+  "file_count_before_release_manifest": 3276,
+  "inheritance_note": "Pass 149 and Pass 150 constructed directly on the complete uploaded Pass 148 nucleus.",
+  "negative_contract_cases": 120,
+  "new_python_tests": 195,
+  "operational_surfaces": [
+    "inspect",
+    "spool",
+    "hard_bound",
+    "flush",
+    "recover",
+    "reverse",
+    "signal",
+    "worker",
+    "key_epoch_rotation",
+    "three_replicas",
+    "validate_chain",
+    "vm81_echo",
+    "base20_bigint"
+  ],
+  "parent": "HHS-P148",
+  "pass_id": "HHS-P150",
+  "positive_contract_cases": 54,
+  "release_scope": "FULL_INHERITED_HHS_PASS_HISTORY_NUCLEUS",
+  "schema": "HHS_PASS150_RELEASE_MANIFEST_V1",
+  "terminal_status": "PASS_150_IMPLEMENTED_AND_VALIDATED"
+}

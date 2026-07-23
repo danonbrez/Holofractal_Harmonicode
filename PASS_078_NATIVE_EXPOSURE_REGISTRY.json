@@ -1,0 +1,1022 @@
+{
+  "capability_manifest_root_hash72": "0000000000000000000000000000002Aa3)TbR^(SCu0Qlu)5Fa/Ti49rW(/I0h^X/7AoVS9",
+  "complete_catalogue": true,
+  "descriptor_only_count": 54,
+  "direct_abi_count": 29,
+  "entries": [
+    {
+      "binding_mode": "WITNESSED_CAPABILITY_DESCRIPTOR",
+      "callable_from_higher_level": false,
+      "categories": [
+        "NATIVE_EXECUTION_CONTROL"
+      ],
+      "native_semantics_reimplemented": false,
+      "native_symbol": "hhs_wrap72",
+      "operation_id": "vm81.native.hhs_wrap72",
+      "requires_vm81_lane_binding": true,
+      "result_policy": "PRESERVE_NATIVE_RESULT_IDENTITY"
+    },
+    {
+      "binding_mode": "DIRECT_ABI",
+      "callable_from_higher_level": true,
+      "categories": [
+        "WITNESS_HASH_REPLAY"
+      ],
+      "native_semantics_reimplemented": false,
+      "native_symbol": "hhs_hash72_project",
+      "operation_id": "vm81.native.hhs_hash72_project",
+      "requires_vm81_lane_binding": true,
+      "result_policy": "PRESERVE_NATIVE_RESULT_IDENTITY"
+    },
+    {
+      "binding_mode": "DIRECT_ABI",
+      "callable_from_higher_level": true,
+      "categories": [
+        "WITNESS_HASH_REPLAY"
+      ],
+      "native_semantics_reimplemented": false,
+      "native_symbol": "hhs_hash72_compare",
+      "operation_id": "vm81.native.hhs_hash72_compare",
+      "requires_vm81_lane_binding": true,
+      "result_policy": "PRESERVE_NATIVE_RESULT_IDENTITY"
+    },
+    {
+      "binding_mode": "DIRECT_ABI",
+      "callable_from_higher_level": true,
+      "categories": [
+        "VM81_LIFECYCLE"
+      ],
+      "native_semantics_reimplemented": false,
+      "native_symbol": "hhs_tensor_reset",
+      "operation_id": "vm81.native.hhs_tensor_reset",
+      "requires_vm81_lane_binding": true,
+      "result_policy": "PRESERVE_NATIVE_RESULT_IDENTITY"
+    },
+    {
+      "binding_mode": "DIRECT_ABI",
+      "callable_from_higher_level": true,
+      "categories": [
+        "NATIVE_EXECUTION_CONTROL"
+      ],
+      "native_semantics_reimplemented": false,
+      "native_symbol": "hhs_tensor_apply_xy",
+      "operation_id": "vm81.native.hhs_tensor_apply_xy",
+      "requires_vm81_lane_binding": true,
+      "result_policy": "PRESERVE_NATIVE_RESULT_IDENTITY"
+    },
+    {
+      "binding_mode": "DIRECT_ABI",
+      "callable_from_higher_level": true,
+      "categories": [
+        "VM81_LIFECYCLE"
+      ],
+      "native_semantics_reimplemented": false,
+      "native_symbol": "hhs_runtime_init",
+      "operation_id": "vm81.native.hhs_runtime_init",
+      "requires_vm81_lane_binding": true,
+      "result_policy": "PRESERVE_NATIVE_RESULT_IDENTITY"
+    },
+    {
+      "binding_mode": "WITNESSED_CAPABILITY_DESCRIPTOR",
+      "callable_from_higher_level": false,
+      "categories": [
+        "NATIVE_EXECUTION_CONTROL"
+      ],
+      "native_semantics_reimplemented": false,
+      "native_symbol": "op_advances_ledger",
+      "operation_id": "vm81.native.op_advances_ledger",
+      "requires_vm81_lane_binding": true,
+      "result_policy": "PRESERVE_NATIVE_RESULT_IDENTITY"
+    },
+    {
+      "binding_mode": "DIRECT_ABI",
+      "callable_from_higher_level": true,
+      "categories": [
+        "VM81_LIFECYCLE"
+      ],
+      "native_semantics_reimplemented": false,
+      "native_symbol": "hhs_runtime_reset",
+      "operation_id": "vm81.native.hhs_runtime_reset",
+      "requires_vm81_lane_binding": true,
+      "result_policy": "PRESERVE_NATIVE_RESULT_IDENTITY"
+    },
+    {
+      "binding_mode": "DIRECT_ABI",
+      "callable_from_higher_level": true,
+      "categories": [
+        "NATIVE_EXECUTION_CONTROL"
+      ],
+      "native_semantics_reimplemented": false,
+      "native_symbol": "hhs_transport_apply",
+      "operation_id": "vm81.native.hhs_transport_apply",
+      "requires_vm81_lane_binding": true,
+      "result_policy": "PRESERVE_NATIVE_RESULT_IDENTITY"
+    },
+    {
+      "binding_mode": "DIRECT_ABI",
+      "callable_from_higher_level": true,
+      "categories": [
+        "TRANSITION_MECHANICS"
+      ],
+      "native_semantics_reimplemented": false,
+      "native_symbol": "hhs_runtime_step",
+      "operation_id": "vm81.native.hhs_runtime_step",
+      "requires_vm81_lane_binding": true,
+      "result_policy": "PRESERVE_NATIVE_RESULT_IDENTITY"
+    },
+    {
+      "binding_mode": "DIRECT_ABI",
+      "callable_from_higher_level": true,
+      "categories": [
+        "NATIVE_EXECUTION_CONTROL"
+      ],
+      "native_semantics_reimplemented": false,
+      "native_symbol": "hhs_runtime_halt",
+      "operation_id": "vm81.native.hhs_runtime_halt",
+      "requires_vm81_lane_binding": true,
+      "result_policy": "PRESERVE_NATIVE_RESULT_IDENTITY"
+    },
+    {
+      "binding_mode": "DIRECT_ABI",
+      "callable_from_higher_level": true,
+      "categories": [
+        "VM81_LIFECYCLE",
+        "WITNESS_HASH_REPLAY"
+      ],
+      "native_semantics_reimplemented": false,
+      "native_symbol": "hhs_receipt_reset",
+      "operation_id": "vm81.native.hhs_receipt_reset",
+      "requires_vm81_lane_binding": true,
+      "result_policy": "PRESERVE_NATIVE_RESULT_IDENTITY"
+    },
+    {
+      "binding_mode": "WITNESSED_CAPABILITY_DESCRIPTOR",
+      "callable_from_higher_level": false,
+      "categories": [
+        "NATIVE_EXECUTION_CONTROL"
+      ],
+      "native_semantics_reimplemented": false,
+      "native_symbol": "wrap72",
+      "operation_id": "vm81.native.wrap72",
+      "requires_vm81_lane_binding": true,
+      "result_policy": "PRESERVE_NATIVE_RESULT_IDENTITY"
+    },
+    {
+      "binding_mode": "DIRECT_ABI",
+      "callable_from_higher_level": true,
+      "categories": [
+        "WITNESS_HASH_REPLAY"
+      ],
+      "native_semantics_reimplemented": false,
+      "native_symbol": "hhs_receipt_commit",
+      "operation_id": "vm81.native.hhs_receipt_commit",
+      "requires_vm81_lane_binding": true,
+      "result_policy": "PRESERVE_NATIVE_RESULT_IDENTITY"
+    },
+    {
+      "binding_mode": "WITNESSED_CAPABILITY_DESCRIPTOR",
+      "callable_from_higher_level": false,
+      "categories": [
+        "ROTATION_PHASE",
+        "RECIPROCAL_INVERSE"
+      ],
+      "native_semantics_reimplemented": false,
+      "native_symbol": "reciprocal_phase",
+      "operation_id": "vm81.native.reciprocal_phase",
+      "requires_vm81_lane_binding": true,
+      "result_policy": "PRESERVE_NATIVE_RESULT_IDENTITY"
+    },
+    {
+      "binding_mode": "WITNESSED_CAPABILITY_DESCRIPTOR",
+      "callable_from_higher_level": false,
+      "categories": [
+        "WITNESS_HASH_REPLAY"
+      ],
+      "native_semantics_reimplemented": false,
+      "native_symbol": "hash72_index",
+      "operation_id": "vm81.native.hash72_index",
+      "requires_vm81_lane_binding": true,
+      "result_policy": "PRESERVE_NATIVE_RESULT_IDENTITY"
+    },
+    {
+      "binding_mode": "WITNESSED_CAPABILITY_DESCRIPTOR",
+      "callable_from_higher_level": false,
+      "categories": [
+        "NATIVE_EXECUTION_CONTROL"
+      ],
+      "native_semantics_reimplemented": false,
+      "native_symbol": "polarity_of",
+      "operation_id": "vm81.native.polarity_of",
+      "requires_vm81_lane_binding": true,
+      "result_policy": "PRESERVE_NATIVE_RESULT_IDENTITY"
+    },
+    {
+      "binding_mode": "WITNESSED_CAPABILITY_DESCRIPTOR",
+      "callable_from_higher_level": false,
+      "categories": [
+        "VM81_LIFECYCLE",
+        "WITNESS_HASH_REPLAY"
+      ],
+      "native_semantics_reimplemented": false,
+      "native_symbol": "init_hash72",
+      "operation_id": "vm81.native.init_hash72",
+      "requires_vm81_lane_binding": true,
+      "result_policy": "PRESERVE_NATIVE_RESULT_IDENTITY"
+    },
+    {
+      "binding_mode": "DIRECT_ABI",
+      "callable_from_higher_level": true,
+      "categories": [
+        "WITNESS_HASH_REPLAY"
+      ],
+      "native_semantics_reimplemented": false,
+      "native_symbol": "hhs_vectorize_hash72",
+      "operation_id": "vm81.native.hhs_vectorize_hash72",
+      "requires_vm81_lane_binding": true,
+      "result_policy": "PRESERVE_NATIVE_RESULT_IDENTITY"
+    },
+    {
+      "binding_mode": "WITNESSED_CAPABILITY_DESCRIPTOR",
+      "callable_from_higher_level": false,
+      "categories": [
+        "SUDOKU_CONSTRAINT_ENFORCEMENT"
+      ],
+      "native_semantics_reimplemented": false,
+      "native_symbol": "constraint_bias_at",
+      "operation_id": "vm81.native.constraint_bias_at",
+      "requires_vm81_lane_binding": true,
+      "result_policy": "PRESERVE_NATIVE_RESULT_IDENTITY"
+    },
+    {
+      "binding_mode": "DIRECT_ABI",
+      "callable_from_higher_level": true,
+      "categories": [
+        "NATIVE_EXECUTION_CONTROL"
+      ],
+      "native_semantics_reimplemented": false,
+      "native_symbol": "hhs_graph_node_hash",
+      "operation_id": "vm81.native.hhs_graph_node_hash",
+      "requires_vm81_lane_binding": true,
+      "result_policy": "PRESERVE_NATIVE_RESULT_IDENTITY"
+    },
+    {
+      "binding_mode": "WITNESSED_CAPABILITY_DESCRIPTOR",
+      "callable_from_higher_level": false,
+      "categories": [
+        "SUDOKU_CONSTRAINT_ENFORCEMENT"
+      ],
+      "native_semantics_reimplemented": false,
+      "native_symbol": "constraint_add",
+      "operation_id": "vm81.native.constraint_add",
+      "requires_vm81_lane_binding": true,
+      "result_policy": "PRESERVE_NATIVE_RESULT_IDENTITY"
+    },
+    {
+      "binding_mode": "DIRECT_ABI",
+      "callable_from_higher_level": true,
+      "categories": [
+        "NATIVE_EXECUTION_CONTROL"
+      ],
+      "native_semantics_reimplemented": false,
+      "native_symbol": "hhs_validate_abi",
+      "operation_id": "vm81.native.hhs_validate_abi",
+      "requires_vm81_lane_binding": true,
+      "result_policy": "PRESERVE_NATIVE_RESULT_IDENTITY"
+    },
+    {
+      "binding_mode": "DIRECT_ABI",
+      "callable_from_higher_level": true,
+      "categories": [
+        "NATIVE_EXECUTION_CONTROL"
+      ],
+      "native_semantics_reimplemented": false,
+      "native_symbol": "hhs_sizeof_runtime_state",
+      "operation_id": "vm81.native.hhs_sizeof_runtime_state",
+      "requires_vm81_lane_binding": true,
+      "result_policy": "PRESERVE_NATIVE_RESULT_IDENTITY"
+    },
+    {
+      "binding_mode": "DIRECT_ABI",
+      "callable_from_higher_level": true,
+      "categories": [
+        "WITNESS_HASH_REPLAY"
+      ],
+      "native_semantics_reimplemented": false,
+      "native_symbol": "hhs_sizeof_receipt",
+      "operation_id": "vm81.native.hhs_sizeof_receipt",
+      "requires_vm81_lane_binding": true,
+      "result_policy": "PRESERVE_NATIVE_RESULT_IDENTITY"
+    },
+    {
+      "binding_mode": "DIRECT_ABI",
+      "callable_from_higher_level": true,
+      "categories": [
+        "NATIVE_EXECUTION_CONTROL"
+      ],
+      "native_semantics_reimplemented": false,
+      "native_symbol": "hhs_sizeof_tensor_state",
+      "operation_id": "vm81.native.hhs_sizeof_tensor_state",
+      "requires_vm81_lane_binding": true,
+      "result_policy": "PRESERVE_NATIVE_RESULT_IDENTITY"
+    },
+    {
+      "binding_mode": "DIRECT_ABI",
+      "callable_from_higher_level": true,
+      "categories": [
+        "NATIVE_EXECUTION_CONTROL"
+      ],
+      "native_semantics_reimplemented": false,
+      "native_symbol": "hhs_sizeof_graph_node",
+      "operation_id": "vm81.native.hhs_sizeof_graph_node",
+      "requires_vm81_lane_binding": true,
+      "result_policy": "PRESERVE_NATIVE_RESULT_IDENTITY"
+    },
+    {
+      "binding_mode": "WITNESSED_CAPABILITY_DESCRIPTOR",
+      "callable_from_higher_level": false,
+      "categories": [
+        "SUDOKU_CONSTRAINT_ENFORCEMENT"
+      ],
+      "native_semantics_reimplemented": false,
+      "native_symbol": "constraint_relax",
+      "operation_id": "vm81.native.constraint_relax",
+      "requires_vm81_lane_binding": true,
+      "result_policy": "PRESERVE_NATIVE_RESULT_IDENTITY"
+    },
+    {
+      "binding_mode": "DIRECT_ABI",
+      "callable_from_higher_level": true,
+      "categories": [
+        "NATIVE_EXECUTION_CONTROL"
+      ],
+      "native_semantics_reimplemented": false,
+      "native_symbol": "hhs_sizeof_graph_edge",
+      "operation_id": "vm81.native.hhs_sizeof_graph_edge",
+      "requires_vm81_lane_binding": true,
+      "result_policy": "PRESERVE_NATIVE_RESULT_IDENTITY"
+    },
+    {
+      "binding_mode": "WITNESSED_CAPABILITY_DESCRIPTOR",
+      "callable_from_higher_level": false,
+      "categories": [
+        "WITNESS_HASH_REPLAY"
+      ],
+      "native_semantics_reimplemented": false,
+      "native_symbol": "hhs_hash72_ring_refresh",
+      "operation_id": "vm81.native.hhs_hash72_ring_refresh",
+      "requires_vm81_lane_binding": true,
+      "result_policy": "PRESERVE_NATIVE_RESULT_IDENTITY"
+    },
+    {
+      "binding_mode": "WITNESSED_CAPABILITY_DESCRIPTOR",
+      "callable_from_higher_level": false,
+      "categories": [
+        "SUDOKU_CONSTRAINT_ENFORCEMENT"
+      ],
+      "native_semantics_reimplemented": false,
+      "native_symbol": "constraint_compete",
+      "operation_id": "vm81.native.constraint_compete",
+      "requires_vm81_lane_binding": true,
+      "result_policy": "PRESERVE_NATIVE_RESULT_IDENTITY"
+    },
+    {
+      "binding_mode": "DIRECT_ABI",
+      "callable_from_higher_level": true,
+      "categories": [
+        "VM81_LIFECYCLE",
+        "WITNESS_HASH_REPLAY"
+      ],
+      "native_semantics_reimplemented": false,
+      "native_symbol": "hhs_hash72_ring_init",
+      "operation_id": "vm81.native.hhs_hash72_ring_init",
+      "requires_vm81_lane_binding": true,
+      "result_policy": "PRESERVE_NATIVE_RESULT_IDENTITY"
+    },
+    {
+      "binding_mode": "DIRECT_ABI",
+      "callable_from_higher_level": true,
+      "categories": [
+        "WITNESS_HASH_REPLAY"
+      ],
+      "native_semantics_reimplemented": false,
+      "native_symbol": "hhs_hash72_dna_validate",
+      "operation_id": "vm81.native.hhs_hash72_dna_validate",
+      "requires_vm81_lane_binding": true,
+      "result_policy": "PRESERVE_NATIVE_RESULT_IDENTITY"
+    },
+    {
+      "binding_mode": "DIRECT_ABI",
+      "callable_from_higher_level": true,
+      "categories": [
+        "ROTATION_PHASE",
+        "WITNESS_HASH_REPLAY"
+      ],
+      "native_semantics_reimplemented": false,
+      "native_symbol": "hhs_hash72_ring_rotate",
+      "operation_id": "vm81.native.hhs_hash72_ring_rotate",
+      "requires_vm81_lane_binding": true,
+      "result_policy": "PRESERVE_NATIVE_RESULT_IDENTITY"
+    },
+    {
+      "binding_mode": "WITNESSED_CAPABILITY_DESCRIPTOR",
+      "callable_from_higher_level": false,
+      "categories": [
+        "ROTATION_PHASE"
+      ],
+      "native_semantics_reimplemented": false,
+      "native_symbol": "propagate_phase_transport",
+      "operation_id": "vm81.native.propagate_phase_transport",
+      "requires_vm81_lane_binding": true,
+      "result_policy": "PRESERVE_NATIVE_RESULT_IDENTITY"
+    },
+    {
+      "binding_mode": "DIRECT_ABI",
+      "callable_from_higher_level": true,
+      "categories": [
+        "WITNESS_HASH_REPLAY"
+      ],
+      "native_semantics_reimplemented": false,
+      "native_symbol": "hhs_hash72_tensor_project",
+      "operation_id": "vm81.native.hhs_hash72_tensor_project",
+      "requires_vm81_lane_binding": true,
+      "result_policy": "PRESERVE_NATIVE_RESULT_IDENTITY"
+    },
+    {
+      "binding_mode": "DIRECT_ABI",
+      "callable_from_higher_level": true,
+      "categories": [
+        "WITNESS_HASH_REPLAY"
+      ],
+      "native_semantics_reimplemented": false,
+      "native_symbol": "hhs_hash72_reverse_state",
+      "operation_id": "vm81.native.hhs_hash72_reverse_state",
+      "requires_vm81_lane_binding": true,
+      "result_policy": "PRESERVE_NATIVE_RESULT_IDENTITY"
+    },
+    {
+      "binding_mode": "WITNESSED_CAPABILITY_DESCRIPTOR",
+      "callable_from_higher_level": false,
+      "categories": [
+        "NATIVE_EXECUTION_CONTROL"
+      ],
+      "native_semantics_reimplemented": false,
+      "native_symbol": "apply_xyzw_state",
+      "operation_id": "vm81.native.apply_xyzw_state",
+      "requires_vm81_lane_binding": true,
+      "result_policy": "PRESERVE_NATIVE_RESULT_IDENTITY"
+    },
+    {
+      "binding_mode": "DIRECT_ABI",
+      "callable_from_higher_level": true,
+      "categories": [
+        "WITNESS_HASH_REPLAY"
+      ],
+      "native_semantics_reimplemented": false,
+      "native_symbol": "hhs_sizeof_hash72_ring_state",
+      "operation_id": "vm81.native.hhs_sizeof_hash72_ring_state",
+      "requires_vm81_lane_binding": true,
+      "result_policy": "PRESERVE_NATIVE_RESULT_IDENTITY"
+    },
+    {
+      "binding_mode": "WITNESSED_CAPABILITY_DESCRIPTOR",
+      "callable_from_higher_level": false,
+      "categories": [
+        "NATIVE_EXECUTION_CONTROL"
+      ],
+      "native_semantics_reimplemented": false,
+      "native_symbol": "hhs_srcg_abs",
+      "operation_id": "vm81.native.hhs_srcg_abs",
+      "requires_vm81_lane_binding": true,
+      "result_policy": "PRESERVE_NATIVE_RESULT_IDENTITY"
+    },
+    {
+      "binding_mode": "WITNESSED_CAPABILITY_DESCRIPTOR",
+      "callable_from_higher_level": false,
+      "categories": [
+        "NATIVE_EXECUTION_CONTROL"
+      ],
+      "native_semantics_reimplemented": false,
+      "native_symbol": "hhs_srcg_unit_unity_valid",
+      "operation_id": "vm81.native.hhs_srcg_unit_unity_valid",
+      "requires_vm81_lane_binding": true,
+      "result_policy": "PRESERVE_NATIVE_RESULT_IDENTITY"
+    },
+    {
+      "binding_mode": "DIRECT_ABI",
+      "callable_from_higher_level": true,
+      "categories": [
+        "VM81_LIFECYCLE"
+      ],
+      "native_semantics_reimplemented": false,
+      "native_symbol": "hhs_srcg_init",
+      "operation_id": "vm81.native.hhs_srcg_init",
+      "requires_vm81_lane_binding": true,
+      "result_policy": "PRESERVE_NATIVE_RESULT_IDENTITY"
+    },
+    {
+      "binding_mode": "WITNESSED_CAPABILITY_DESCRIPTOR",
+      "callable_from_higher_level": false,
+      "categories": [
+        "SUDOKU_CONSTRAINT_ENFORCEMENT"
+      ],
+      "native_semantics_reimplemented": false,
+      "native_symbol": "sweep81",
+      "operation_id": "vm81.native.sweep81",
+      "requires_vm81_lane_binding": true,
+      "result_policy": "PRESERVE_NATIVE_RESULT_IDENTITY"
+    },
+    {
+      "binding_mode": "DIRECT_ABI",
+      "callable_from_higher_level": true,
+      "categories": [
+        "NATIVE_EXECUTION_CONTROL"
+      ],
+      "native_semantics_reimplemented": false,
+      "native_symbol": "hhs_srcg_validate",
+      "operation_id": "vm81.native.hhs_srcg_validate",
+      "requires_vm81_lane_binding": true,
+      "result_policy": "PRESERVE_NATIVE_RESULT_IDENTITY"
+    },
+    {
+      "binding_mode": "WITNESSED_CAPABILITY_DESCRIPTOR",
+      "callable_from_higher_level": false,
+      "categories": [
+        "SUDOKU_CONSTRAINT_ENFORCEMENT",
+        "PATH_CLOSURE"
+      ],
+      "native_semantics_reimplemented": false,
+      "native_symbol": "close81",
+      "operation_id": "vm81.native.close81",
+      "requires_vm81_lane_binding": true,
+      "result_policy": "PRESERVE_NATIVE_RESULT_IDENTITY"
+    },
+    {
+      "binding_mode": "DIRECT_ABI",
+      "callable_from_higher_level": true,
+      "categories": [
+        "TRANSITION_MECHANICS"
+      ],
+      "native_semantics_reimplemented": false,
+      "native_symbol": "hhs_srcg_step",
+      "operation_id": "vm81.native.hhs_srcg_step",
+      "requires_vm81_lane_binding": true,
+      "result_policy": "PRESERVE_NATIVE_RESULT_IDENTITY"
+    },
+    {
+      "binding_mode": "WITNESSED_CAPABILITY_DESCRIPTOR",
+      "callable_from_higher_level": false,
+      "categories": [
+        "WITNESS_HASH_REPLAY"
+      ],
+      "native_semantics_reimplemented": false,
+      "native_symbol": "project_hash72",
+      "operation_id": "vm81.native.project_hash72",
+      "requires_vm81_lane_binding": true,
+      "result_policy": "PRESERVE_NATIVE_RESULT_IDENTITY"
+    },
+    {
+      "binding_mode": "DIRECT_ABI",
+      "callable_from_higher_level": true,
+      "categories": [
+        "NATIVE_EXECUTION_CONTROL"
+      ],
+      "native_semantics_reimplemented": false,
+      "native_symbol": "hhs_sizeof_srcg_state",
+      "operation_id": "vm81.native.hhs_sizeof_srcg_state",
+      "requires_vm81_lane_binding": true,
+      "result_policy": "PRESERVE_NATIVE_RESULT_IDENTITY"
+    },
+    {
+      "binding_mode": "WITNESSED_CAPABILITY_DESCRIPTOR",
+      "callable_from_higher_level": false,
+      "categories": [
+        "WITNESS_HASH_REPLAY"
+      ],
+      "native_semantics_reimplemented": false,
+      "native_symbol": "compose_receipt_hash",
+      "operation_id": "vm81.native.compose_receipt_hash",
+      "requires_vm81_lane_binding": true,
+      "result_policy": "PRESERVE_NATIVE_RESULT_IDENTITY"
+    },
+    {
+      "binding_mode": "WITNESSED_CAPABILITY_DESCRIPTOR",
+      "callable_from_higher_level": false,
+      "categories": [
+        "PATH_CLOSURE"
+      ],
+      "native_semantics_reimplemented": false,
+      "native_symbol": "detect_orbit",
+      "operation_id": "vm81.native.detect_orbit",
+      "requires_vm81_lane_binding": true,
+      "result_policy": "PRESERVE_NATIVE_RESULT_IDENTITY"
+    },
+    {
+      "binding_mode": "WITNESSED_CAPABILITY_DESCRIPTOR",
+      "callable_from_higher_level": false,
+      "categories": [
+        "ROTATION_PHASE",
+        "PATH_CLOSURE"
+      ],
+      "native_semantics_reimplemented": false,
+      "native_symbol": "close_orientation",
+      "operation_id": "vm81.native.close_orientation",
+      "requires_vm81_lane_binding": true,
+      "result_policy": "PRESERVE_NATIVE_RESULT_IDENTITY"
+    },
+    {
+      "binding_mode": "WITNESSED_CAPABILITY_DESCRIPTOR",
+      "callable_from_higher_level": false,
+      "categories": [
+        "SUDOKU_CONSTRAINT_ENFORCEMENT",
+        "PATH_CLOSURE"
+      ],
+      "native_semantics_reimplemented": false,
+      "native_symbol": "close_constraint",
+      "operation_id": "vm81.native.close_constraint",
+      "requires_vm81_lane_binding": true,
+      "result_policy": "PRESERVE_NATIVE_RESULT_IDENTITY"
+    },
+    {
+      "binding_mode": "WITNESSED_CAPABILITY_DESCRIPTOR",
+      "callable_from_higher_level": false,
+      "categories": [
+        "NATIVE_EXECUTION_CONTROL"
+      ],
+      "native_semantics_reimplemented": false,
+      "native_symbol": "check_gate_apb",
+      "operation_id": "vm81.native.check_gate_apb",
+      "requires_vm81_lane_binding": true,
+      "result_policy": "PRESERVE_NATIVE_RESULT_IDENTITY"
+    },
+    {
+      "binding_mode": "WITNESSED_CAPABILITY_DESCRIPTOR",
+      "callable_from_higher_level": false,
+      "categories": [
+        "PATH_CLOSURE"
+      ],
+      "native_semantics_reimplemented": false,
+      "native_symbol": "check_gate_closure",
+      "operation_id": "vm81.native.check_gate_closure",
+      "requires_vm81_lane_binding": true,
+      "result_policy": "PRESERVE_NATIVE_RESULT_IDENTITY"
+    },
+    {
+      "binding_mode": "WITNESSED_CAPABILITY_DESCRIPTOR",
+      "callable_from_higher_level": false,
+      "categories": [
+        "NATIVE_EXECUTION_CONTROL"
+      ],
+      "native_semantics_reimplemented": false,
+      "native_symbol": "check_gate_identity",
+      "operation_id": "vm81.native.check_gate_identity",
+      "requires_vm81_lane_binding": true,
+      "result_policy": "PRESERVE_NATIVE_RESULT_IDENTITY"
+    },
+    {
+      "binding_mode": "WITNESSED_CAPABILITY_DESCRIPTOR",
+      "callable_from_higher_level": false,
+      "categories": [
+        "NATIVE_EXECUTION_CONTROL"
+      ],
+      "native_semantics_reimplemented": false,
+      "native_symbol": "qgu_delta",
+      "operation_id": "vm81.native.qgu_delta",
+      "requires_vm81_lane_binding": true,
+      "result_policy": "PRESERVE_NATIVE_RESULT_IDENTITY"
+    },
+    {
+      "binding_mode": "WITNESSED_CAPABILITY_DESCRIPTOR",
+      "callable_from_higher_level": false,
+      "categories": [
+        "RECIPROCAL_INVERSE"
+      ],
+      "native_semantics_reimplemented": false,
+      "native_symbol": "hhs_calc_m_reciprocal",
+      "operation_id": "vm81.native.hhs_calc_m_reciprocal",
+      "requires_vm81_lane_binding": true,
+      "result_policy": "PRESERVE_NATIVE_RESULT_IDENTITY"
+    },
+    {
+      "binding_mode": "WITNESSED_CAPABILITY_DESCRIPTOR",
+      "callable_from_higher_level": false,
+      "categories": [
+        "RECIPROCAL_INVERSE",
+        "PATH_CLOSURE"
+      ],
+      "native_semantics_reimplemented": false,
+      "native_symbol": "hhs_apply_ouroboros_closure",
+      "operation_id": "vm81.native.hhs_apply_ouroboros_closure",
+      "requires_vm81_lane_binding": true,
+      "result_policy": "PRESERVE_NATIVE_RESULT_IDENTITY"
+    },
+    {
+      "binding_mode": "WITNESSED_CAPABILITY_DESCRIPTOR",
+      "callable_from_higher_level": false,
+      "categories": [
+        "NATIVE_EXECUTION_CONTROL"
+      ],
+      "native_semantics_reimplemented": false,
+      "native_symbol": "tensor_push",
+      "operation_id": "vm81.native.tensor_push",
+      "requires_vm81_lane_binding": true,
+      "result_policy": "PRESERVE_NATIVE_RESULT_IDENTITY"
+    },
+    {
+      "binding_mode": "WITNESSED_CAPABILITY_DESCRIPTOR",
+      "callable_from_higher_level": false,
+      "categories": [
+        "RECIPROCAL_INVERSE"
+      ],
+      "native_semantics_reimplemented": false,
+      "native_symbol": "tensor_reciprocal",
+      "operation_id": "vm81.native.tensor_reciprocal",
+      "requires_vm81_lane_binding": true,
+      "result_policy": "PRESERVE_NATIVE_RESULT_IDENTITY"
+    },
+    {
+      "binding_mode": "WITNESSED_CAPABILITY_DESCRIPTOR",
+      "callable_from_higher_level": false,
+      "categories": [
+        "ROTATION_PHASE"
+      ],
+      "native_semantics_reimplemented": false,
+      "native_symbol": "tensor_phase_lock",
+      "operation_id": "vm81.native.tensor_phase_lock",
+      "requires_vm81_lane_binding": true,
+      "result_policy": "PRESERVE_NATIVE_RESULT_IDENTITY"
+    },
+    {
+      "binding_mode": "WITNESSED_CAPABILITY_DESCRIPTOR",
+      "callable_from_higher_level": false,
+      "categories": [
+        "MANIFOLD_EXTENSION"
+      ],
+      "native_semantics_reimplemented": false,
+      "native_symbol": "hhs_tensor_seed_from_xyzw",
+      "operation_id": "vm81.native.hhs_tensor_seed_from_xyzw",
+      "requires_vm81_lane_binding": true,
+      "result_policy": "PRESERVE_NATIVE_RESULT_IDENTITY"
+    },
+    {
+      "binding_mode": "WITNESSED_CAPABILITY_DESCRIPTOR",
+      "callable_from_higher_level": false,
+      "categories": [
+        "MANIFOLD_EXTENSION"
+      ],
+      "native_semantics_reimplemented": false,
+      "native_symbol": "hhs_genomic_map",
+      "operation_id": "vm81.native.hhs_genomic_map",
+      "requires_vm81_lane_binding": true,
+      "result_policy": "PRESERVE_NATIVE_RESULT_IDENTITY"
+    },
+    {
+      "binding_mode": "WITNESSED_CAPABILITY_DESCRIPTOR",
+      "callable_from_higher_level": false,
+      "categories": [
+        "TRANSITION_MECHANICS",
+        "MANIFOLD_EXTENSION"
+      ],
+      "native_semantics_reimplemented": false,
+      "native_symbol": "hhs_manifold_step",
+      "operation_id": "vm81.native.hhs_manifold_step",
+      "requires_vm81_lane_binding": true,
+      "result_policy": "PRESERVE_NATIVE_RESULT_IDENTITY"
+    },
+    {
+      "binding_mode": "WITNESSED_CAPABILITY_DESCRIPTOR",
+      "callable_from_higher_level": false,
+      "categories": [
+        "VM81_LIFECYCLE"
+      ],
+      "native_semantics_reimplemented": false,
+      "native_symbol": "vm81_init",
+      "operation_id": "vm81.native.vm81_init",
+      "requires_vm81_lane_binding": true,
+      "result_policy": "PRESERVE_NATIVE_RESULT_IDENTITY"
+    },
+    {
+      "binding_mode": "WITNESSED_CAPABILITY_DESCRIPTOR",
+      "callable_from_higher_level": false,
+      "categories": [
+        "NATIVE_EXECUTION_CONTROL"
+      ],
+      "native_semantics_reimplemented": false,
+      "native_symbol": "apply_instruction",
+      "operation_id": "vm81.native.apply_instruction",
+      "requires_vm81_lane_binding": true,
+      "result_policy": "PRESERVE_NATIVE_RESULT_IDENTITY"
+    },
+    {
+      "binding_mode": "WITNESSED_CAPABILITY_DESCRIPTOR",
+      "callable_from_higher_level": false,
+      "categories": [
+        "TRANSITION_MECHANICS"
+      ],
+      "native_semantics_reimplemented": false,
+      "native_symbol": "vm81_step",
+      "operation_id": "vm81.native.vm81_step",
+      "requires_vm81_lane_binding": true,
+      "result_policy": "PRESERVE_NATIVE_RESULT_IDENTITY"
+    },
+    {
+      "binding_mode": "WITNESSED_CAPABILITY_DESCRIPTOR",
+      "callable_from_higher_level": false,
+      "categories": [
+        "WITNESS_HASH_REPLAY",
+        "DIAGNOSTICS"
+      ],
+      "native_semantics_reimplemented": false,
+      "native_symbol": "print_witness",
+      "operation_id": "vm81.native.print_witness",
+      "requires_vm81_lane_binding": true,
+      "result_policy": "PRESERVE_NATIVE_RESULT_IDENTITY"
+    },
+    {
+      "binding_mode": "WITNESSED_CAPABILITY_DESCRIPTOR",
+      "callable_from_higher_level": false,
+      "categories": [
+        "DIAGNOSTICS"
+      ],
+      "native_semantics_reimplemented": false,
+      "native_symbol": "print_vm",
+      "operation_id": "vm81.native.print_vm",
+      "requires_vm81_lane_binding": true,
+      "result_policy": "PRESERVE_NATIVE_RESULT_IDENTITY"
+    },
+    {
+      "binding_mode": "WITNESSED_CAPABILITY_DESCRIPTOR",
+      "callable_from_higher_level": false,
+      "categories": [
+        "PATH_CLOSURE",
+        "DIAGNOSTICS"
+      ],
+      "native_semantics_reimplemented": false,
+      "native_symbol": "print_closure_summary",
+      "operation_id": "vm81.native.print_closure_summary",
+      "requires_vm81_lane_binding": true,
+      "result_policy": "PRESERVE_NATIVE_RESULT_IDENTITY"
+    },
+    {
+      "binding_mode": "WITNESSED_CAPABILITY_DESCRIPTOR",
+      "callable_from_higher_level": false,
+      "categories": [
+        "VM81_LIFECYCLE",
+        "CELL_STATE"
+      ],
+      "native_semantics_reimplemented": false,
+      "native_symbol": "load_demo",
+      "operation_id": "vm81.native.load_demo",
+      "requires_vm81_lane_binding": true,
+      "result_policy": "PRESERVE_NATIVE_RESULT_IDENTITY"
+    },
+    {
+      "binding_mode": "WITNESSED_CAPABILITY_DESCRIPTOR",
+      "callable_from_higher_level": false,
+      "categories": [
+        "VM81_LIFECYCLE"
+      ],
+      "native_semantics_reimplemented": false,
+      "native_symbol": "run_vm",
+      "operation_id": "vm81.native.run_vm",
+      "requires_vm81_lane_binding": true,
+      "result_policy": "PRESERVE_NATIVE_RESULT_IDENTITY"
+    },
+    {
+      "binding_mode": "WITNESSED_CAPABILITY_DESCRIPTOR",
+      "callable_from_higher_level": false,
+      "categories": [
+        "NATIVE_EXECUTION_CONTROL"
+      ],
+      "native_semantics_reimplemented": false,
+      "native_symbol": "main",
+      "operation_id": "vm81.native.main",
+      "requires_vm81_lane_binding": true,
+      "result_policy": "PRESERVE_NATIVE_RESULT_IDENTITY"
+    },
+    {
+      "binding_mode": "WITNESSED_CAPABILITY_DESCRIPTOR",
+      "callable_from_higher_level": false,
+      "categories": [
+        "VM81_LIFECYCLE",
+        "MANIFOLD_EXTENSION"
+      ],
+      "native_semantics_reimplemented": false,
+      "native_symbol": "hhs_frame_init",
+      "operation_id": "vm81.native.hhs_frame_init",
+      "requires_vm81_lane_binding": true,
+      "result_policy": "PRESERVE_NATIVE_RESULT_IDENTITY"
+    },
+    {
+      "binding_mode": "WITNESSED_CAPABILITY_DESCRIPTOR",
+      "callable_from_higher_level": false,
+      "categories": [
+        "NATIVE_EXECUTION_CONTROL"
+      ],
+      "native_semantics_reimplemented": false,
+      "native_symbol": "hhs_symbol_find",
+      "operation_id": "vm81.native.hhs_symbol_find",
+      "requires_vm81_lane_binding": true,
+      "result_policy": "PRESERVE_NATIVE_RESULT_IDENTITY"
+    },
+    {
+      "binding_mode": "WITNESSED_CAPABILITY_DESCRIPTOR",
+      "callable_from_higher_level": false,
+      "categories": [
+        "NATIVE_EXECUTION_CONTROL"
+      ],
+      "native_semantics_reimplemented": false,
+      "native_symbol": "hhs_symbol_register",
+      "operation_id": "vm81.native.hhs_symbol_register",
+      "requires_vm81_lane_binding": true,
+      "result_policy": "PRESERVE_NATIVE_RESULT_IDENTITY"
+    },
+    {
+      "binding_mode": "WITNESSED_CAPABILITY_DESCRIPTOR",
+      "callable_from_higher_level": false,
+      "categories": [
+        "WITNESS_HASH_REPLAY"
+      ],
+      "native_semantics_reimplemented": false,
+      "native_symbol": "hhs_ir_project_hash72",
+      "operation_id": "vm81.native.hhs_ir_project_hash72",
+      "requires_vm81_lane_binding": true,
+      "result_policy": "PRESERVE_NATIVE_RESULT_IDENTITY"
+    },
+    {
+      "binding_mode": "WITNESSED_CAPABILITY_DESCRIPTOR",
+      "callable_from_higher_level": false,
+      "categories": [
+        "NATIVE_EXECUTION_CONTROL"
+      ],
+      "native_semantics_reimplemented": false,
+      "native_symbol": "hhs_vm_native_add",
+      "operation_id": "vm81.native.hhs_vm_native_add",
+      "requires_vm81_lane_binding": true,
+      "result_policy": "PRESERVE_NATIVE_RESULT_IDENTITY"
+    },
+    {
+      "binding_mode": "WITNESSED_CAPABILITY_DESCRIPTOR",
+      "callable_from_higher_level": false,
+      "categories": [
+        "NATIVE_EXECUTION_CONTROL"
+      ],
+      "native_semantics_reimplemented": false,
+      "native_symbol": "hhs_vm_native_mul",
+      "operation_id": "vm81.native.hhs_vm_native_mul",
+      "requires_vm81_lane_binding": true,
+      "result_policy": "PRESERVE_NATIVE_RESULT_IDENTITY"
+    },
+    {
+      "binding_mode": "WITNESSED_CAPABILITY_DESCRIPTOR",
+      "callable_from_higher_level": false,
+      "categories": [
+        "TRANSITION_MECHANICS"
+      ],
+      "native_semantics_reimplemented": false,
+      "native_symbol": "hhs_execute_ir_node",
+      "operation_id": "vm81.native.hhs_execute_ir_node",
+      "requires_vm81_lane_binding": true,
+      "result_policy": "PRESERVE_NATIVE_RESULT_IDENTITY"
+    },
+    {
+      "binding_mode": "WITNESSED_CAPABILITY_DESCRIPTOR",
+      "callable_from_higher_level": false,
+      "categories": [
+        "TRANSITION_MECHANICS"
+      ],
+      "native_semantics_reimplemented": false,
+      "native_symbol": "hhs_execute_ir_block",
+      "operation_id": "vm81.native.hhs_execute_ir_block",
+      "requires_vm81_lane_binding": true,
+      "result_policy": "PRESERVE_NATIVE_RESULT_IDENTITY"
+    },
+    {
+      "binding_mode": "WITNESSED_CAPABILITY_DESCRIPTOR",
+      "callable_from_higher_level": false,
+      "categories": [
+        "TRANSITION_MECHANICS"
+      ],
+      "native_semantics_reimplemented": false,
+      "native_symbol": "hhs_execute_ir",
+      "operation_id": "vm81.native.hhs_execute_ir",
+      "requires_vm81_lane_binding": true,
+      "result_policy": "PRESERVE_NATIVE_RESULT_IDENTITY"
+    },
+    {
+      "binding_mode": "WITNESSED_CAPABILITY_DESCRIPTOR",
+      "callable_from_higher_level": false,
+      "categories": [
+        "NATIVE_EXECUTION_CONTROL"
+      ],
+      "native_semantics_reimplemented": false,
+      "native_symbol": "hhs_run_bridge_demo",
+      "operation_id": "vm81.native.hhs_run_bridge_demo",
+      "requires_vm81_lane_binding": true,
+      "result_policy": "PRESERVE_NATIVE_RESULT_IDENTITY"
+    }
+  ],
+  "entry_count": 83,
+  "pass078_native_exposure_registry_root_hash72": "0000000000000000000000000000000MsHMbHZ?ZIVpAIvS!=R3ahsQk1?Fv?zCf9VeHKkVa",
+  "pass_id": "PASS_078",
+  "schema": "HHS_NATIVE_EXPOSURE_REGISTRY_PASS_078_V1"
+}

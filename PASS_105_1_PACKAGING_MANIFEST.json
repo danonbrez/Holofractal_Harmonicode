@@ -1,0 +1,8 @@
+{
+  "schema": "HHS_PASS_105_1_PACKAGING_MANIFEST_V1",
+  "release_mode": "SOURCE_ONLY_CLEAN_ARCHIVE",
+  "excluded_patterns": ["__pycache__/", "*.pyc", ".pytest_cache/", "*.so"],
+  "excluded_inherited_binary": "hhs_runtime/builds/libhhs_runtime.so",
+  "binary_exclusion_reason": "Inherited compiled binary was not required by Pass 105.1 and was not accompanied by a Pass 105.1 ABI/reproducibility manifest.",
+  "source_tree_preserved": true
+}

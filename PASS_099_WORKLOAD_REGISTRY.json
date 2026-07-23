@@ -1,0 +1,103 @@
+{
+  "schema": "HHS_PASS_099_WORKLOAD_REGISTRY_V1",
+  "workloads": [
+    {
+      "held_out": false,
+      "name": "Ring identity and state persistence",
+      "schema": "HHS_PASS_099_WORKLOAD_V1",
+      "workload_id": "W99-01",
+      "workload_root_hash72": "0000000000000000000000000000004z/Pg>/NBEtRRZnNk>Qc98D4SK+(E/Tx5AaW>gA3(N"
+    },
+    {
+      "held_out": false,
+      "name": "Cell-to-cell propagation",
+      "schema": "HHS_PASS_099_WORKLOAD_V1",
+      "workload_id": "W99-02",
+      "workload_root_hash72": "0000000000000000000000000000001K>y(Ev/2v-ZCfC2fAc)YH?/eQ>iIV/>3g==d5NHGF"
+    },
+    {
+      "held_out": false,
+      "name": "Reciprocal pair computation",
+      "schema": "HHS_PASS_099_WORKLOAD_V1",
+      "workload_id": "W99-03",
+      "workload_root_hash72": "0000000000000000000000000000004qJ6-2jMfknJR=ddwHM2Il9ZyrqO2l!DC!(=HNAjr7"
+    },
+    {
+      "held_out": false,
+      "name": "Conditional branching",
+      "schema": "HHS_PASS_099_WORKLOAD_V1",
+      "workload_id": "W99-04",
+      "workload_root_hash72": "00000000000000000000000000000014y1>k1EY^?Az^Rul^gSY)Za?PlTuPTHp(BW1)ozAW"
+    },
+    {
+      "held_out": false,
+      "name": "Memory across cycles",
+      "schema": "HHS_PASS_099_WORKLOAD_V1",
+      "workload_id": "W99-05",
+      "workload_root_hash72": "0000000000000000000000000000002U6/i0j(wq=>bwAJE73*cUKgCKV?b5zTG2Gt)Lex4C"
+    },
+    {
+      "held_out": false,
+      "name": "Noncommutative operation order",
+      "schema": "HHS_PASS_099_WORKLOAD_V1",
+      "workload_id": "W99-06",
+      "workload_root_hash72": "0000000000000000000000000000000?tOsBxACeU(ZnjwqIBrHt8enymR4oANstInvL+ceA"
+    },
+    {
+      "held_out": false,
+      "name": "Parallel operation layers",
+      "schema": "HHS_PASS_099_WORKLOAD_V1",
+      "workload_id": "W99-07",
+      "workload_root_hash72": "0000000000000000000000000000004f3Hd^6ApJy=K?FDtl-122P)(1XTi9Vh3WbWNIKw7a"
+    },
+    {
+      "held_out": false,
+      "name": "Prime-periodic activation",
+      "schema": "HHS_PASS_099_WORKLOAD_V1",
+      "workload_id": "W99-08",
+      "workload_root_hash72": "0000000000000000000000000000002q7vkKG2n/V7coID)A-ccN^DpURpQs)/?qD6Zf1(12"
+    },
+    {
+      "held_out": false,
+      "name": "Dynamic routing",
+      "schema": "HHS_PASS_099_WORKLOAD_V1",
+      "workload_id": "W99-09",
+      "workload_root_hash72": "0000000000000000000000000000004AniM(Uo2U0-FSX9RrsXj)(9k*D2EO>/R?s)Z4t5xW"
+    },
+    {
+      "held_out": false,
+      "name": "Program synthesis",
+      "schema": "HHS_PASS_099_WORKLOAD_V1",
+      "workload_id": "W99-10",
+      "workload_root_hash72": "0000000000000000000000000000004eM9j4!G9Io?w5RzMXSN>1svOP^lzTXlKc3nZVlRR^"
+    },
+    {
+      "held_out": false,
+      "name": "Recurrent graph rewrite",
+      "schema": "HHS_PASS_099_WORKLOAD_V1",
+      "workload_id": "W99-11",
+      "workload_root_hash72": "0000000000000000000000000000000>t3fJv--UzVrQPrWvj(5SK0syx3M>S7ZIc>zt)AZR"
+    },
+    {
+      "held_out": false,
+      "name": "Stack or register-machine emulation",
+      "schema": "HHS_PASS_099_WORKLOAD_V1",
+      "workload_id": "W99-12",
+      "workload_root_hash72": "0000000000000000000000000000001BIE>K9PF8VBoootftHxk=6e0rcqU3MS!tZojpwJ?V"
+    },
+    {
+      "held_out": false,
+      "name": "Interrupted execution",
+      "schema": "HHS_PASS_099_WORKLOAD_V1",
+      "workload_id": "W99-13",
+      "workload_root_hash72": "00000000000000000000000000000010X+uZLz7irgkC0t87sA8-Po6>VOCUoCGqe=K9ZILA"
+    },
+    {
+      "held_out": true,
+      "name": "Held-out operation synthesis",
+      "schema": "HHS_PASS_099_WORKLOAD_V1",
+      "workload_id": "W99-14",
+      "workload_root_hash72": "0000000000000000000000000000002YU+GLs=!fshHws!6WTZBnMiUQkRnTp1d2LP+pmGvv"
+    }
+  ]
+}

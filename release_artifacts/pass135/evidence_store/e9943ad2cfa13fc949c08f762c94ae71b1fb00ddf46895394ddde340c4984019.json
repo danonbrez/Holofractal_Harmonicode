@@ -1,0 +1,1 @@
+{"interface":"PUBLIC_HTTP_API","operation":"canonical_server_health_probe","request":{"method":"GET","path":"/health"},"response":{"error":"ReadTimeout('timed out')","responsive":false,"status_code":null}}

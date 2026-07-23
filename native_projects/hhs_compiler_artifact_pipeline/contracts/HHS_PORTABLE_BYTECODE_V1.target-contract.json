@@ -1,0 +1,103 @@
+{
+  "contract": {
+    "artifact_schema": "HHS_COMPILED_ARTIFACT_V1",
+    "deterministic": true,
+    "differential_validation_required": true,
+    "effect_model": "DECLARED_ONLY",
+    "embedded_validator_self_authorizes": false,
+    "forbidden_semantic_changes": [
+      "ORDERED_PRODUCT_REORDERING",
+      "RECIPROCAL_RELATION_REMOVAL",
+      "GATE_SEMANTIC_MUTATION",
+      "EXACT_NUMERIC_MUTATION",
+      "AUTHORITY_SCOPE_MUTATION",
+      "SOURCE_IDENTITY_SUBSTITUTION",
+      "PROVENANCE_OBFUSCATION"
+    ],
+    "independent_verification_required": true,
+    "numeric_model": {
+      "float": "FORBIDDEN",
+      "foreign_numeric_boundary_schema": "HHS_FOREIGN_NUMERIC_BOUNDARY_V1",
+      "integer": "EXACT",
+      "rational": "EXACT"
+    },
+    "permitted_representation_changes": [
+      "INSTRUCTION_ENCODING",
+      "REGISTER_ASSIGNMENT",
+      "CONTROL_FLOW_LAYOUT",
+      "CONSTANT_FOLDING_WITH_EQUIVALENCE_WITNESS",
+      "DEAD_CODE_ELIMINATION_WITH_EFFECT_AND_REACHABILITY_PROOF"
+    ],
+    "reference_interpreter_required": true,
+    "required_compilation_request_fields": [
+      "requirement_root_hash72",
+      "source_artifact_root_hash72",
+      "typed_ir_root_hash72",
+      "executable_ir_root_hash72",
+      "compilation_plan_root_hash72"
+    ],
+    "required_export_evidence": [
+      "HHS_COMPILATION_RECEIPT_V1",
+      "HHS_TEST_EVIDENCE_RECORD_V1",
+      "HHS_INTERPRETER_COMPILER_EQUIVALENCE_RECEIPT_V1",
+      "HHS_ARTIFACT_LINEAGE_CERTIFICATE_V1"
+    ],
+    "schema": "HHS_COMPILER_TARGET_CONTRACT_V1",
+    "semantic_identity_gate": {
+      "artifact_status_on_failure": "REJECTED",
+      "canonical_continuation_on_failure": false,
+      "fallback": "NONE",
+      "receipt_schema": "HHS_INTERPRETER_COMPILER_EQUIVALENCE_RECEIPT_V1",
+      "rejection_code": "REJECT_INTERPRETER_COMPILER_SEMANTIC_DIVERGENCE"
+    },
+    "semantic_preservation_invariant": "COMPILATION_CHANGES_REPRESENTATION_NOT_ADMITTED_MEANING",
+    "semantic_projection": {
+      "comparison": "EXACT_CANONICAL_PROJECTION_ROOT_EQUALITY",
+      "required_fields": [
+        "output_values",
+        "symbolic_relations",
+        "ordered_products",
+        "reciprocal_bindings",
+        "gate_results",
+        "zero_sum_closure",
+        "required_invariants",
+        "declared_effects",
+        "authority_scope",
+        "source_identity"
+      ],
+      "schema": "HHS_CANONICAL_PROGRAM_SEMANTIC_PROJECTION_V1"
+    },
+    "source_ir_schema": "HHS_EXECUTABLE_IR_V1",
+    "supported_operations": [
+      "GATE_DECLARE",
+      "GATE_INVOKE",
+      "RELATION_EQUAL",
+      "ORDERED_DISTINCT",
+      "EXPRESSION_EVAL"
+    ],
+    "target_id": "HHS_PORTABLE_BYTECODE_V1",
+    "target_ir_schema": "HHS_TARGET_IR_V1",
+    "target_version": "0.1.0",
+    "unsupported_operations": [
+      "UNDECLARED_SYSCALL",
+      "RANDOM",
+      "FLOAT_OPERATION",
+      "WALL_CLOCK_TIME",
+      "FILESYSTEM",
+      "NETWORK",
+      "UNDECLARED_FOREIGN_CALL"
+    ]
+  },
+  "contract_root_hash72": "0000000000000000000000000000000HAWphs>PD8Sr?Yv*OJTIyWspEUHK4l*RHfx)whw!b",
+  "foundation_modified": false,
+  "registration_authority": "PASS_077_NATIVE_PRODUCT_CONTRACT_REGISTRY",
+  "schema": "HHS_REGISTERED_COMPILER_TARGET_CONTRACT_V1",
+  "witness": {
+    "authority": "PRODUCT_LOCAL_COMMITMENT_NOT_FOUNDATION_HASH72_AUTHORITY",
+    "digest72": "0000000000000000000000000000000HAWphs>PD8Sr?Yv*OJTIyWspEUHK4l*RHfx)whw!b",
+    "label": "pass077_compiler_target_contract",
+    "product_local_commitment_not_foundation_authority": true,
+    "schema": "HHS_NATIVE_PRODUCT_COMMITMENT_WITNESS_V1",
+    "sha256": "20cf59597b4c1d6acab8ec799b0409296508ef317f36b20168b21f7e3089ba26"
+  }
+}

@@ -1,0 +1,438 @@
+{
+  "matrix_root_hash72": "DWvlukb<dEZX<RF5x>*J/SDHKQ4cWU+DvGPsfW>C*(KAncvAUs)yw/Y(F0s9vEMKepKQfvE0",
+  "rows": [
+    {
+      "authority": "HHS_AND_IEEE_RESULTS_ISOLATED",
+      "cause": [
+        "IEEE_REPRESENTATION_ROUNDING_OR_CANCELLATION"
+      ],
+      "comparison_class": [
+        "IEEE_ROUNDING_DIVERGENCE"
+      ],
+      "execution_root": "wcObWMwDIDu/AZC/YDWBEi+jlesnv*mVq4OHB<kFnX(L)AlKpfU9qys)lXLWV2Z(+j*BZv!<",
+      "hhs_outcome": "EXHAUSTIVE_WITHIN_BOUND",
+      "ieee_outcomes": [
+        {
+          "control_result": "IEEE_CONTROL_EXECUTED",
+          "format": "binary32",
+          "outcome": "IEEE_ROUNDING_DIVERGENCE"
+        },
+        {
+          "control_result": "IEEE_CONTROL_EXECUTED",
+          "format": "binary64",
+          "outcome": "IEEE_ROUNDING_DIVERGENCE"
+        }
+      ],
+      "workload": "repeated_decimal_accumulation"
+    },
+    {
+      "authority": "HHS_AND_IEEE_RESULTS_ISOLATED",
+      "cause": [
+        "IEEE_REPRESENTATION_ROUNDING_OR_CANCELLATION"
+      ],
+      "comparison_class": [
+        "IEEE_ROUNDING_DIVERGENCE"
+      ],
+      "execution_root": "hz32OquqK<dqE0O!uJOJ97nU6KBsnuX6qbxLmkyM5rP2f4B2<TwteTtz*ABV4Nvj3G-I)Xj8",
+      "hhs_outcome": "EXHAUSTIVE_WITHIN_BOUND",
+      "ieee_outcomes": [
+        {
+          "control_result": "IEEE_CONTROL_EXECUTED",
+          "format": "binary32",
+          "outcome": "IEEE_ROUNDING_DIVERGENCE"
+        },
+        {
+          "control_result": "IEEE_CONTROL_EXECUTED",
+          "format": "binary64",
+          "outcome": "IEEE_ROUNDING_DIVERGENCE"
+        }
+      ],
+      "workload": "catastrophic_cancellation"
+    },
+    {
+      "authority": "HHS_AND_IEEE_RESULTS_ISOLATED",
+      "cause": [
+        "WITNESSED_PROJECTION_EQUALITY"
+      ],
+      "comparison_class": [
+        "EXACT_PROJECTED_AGREEMENT"
+      ],
+      "execution_root": "0jX7W2k7zvBECNFgD/Z<(7LCIJ5R7oEKM!Q*W5jlX/n+D<SK/DF9Pc(>M49YTT)Nb?!m0OyT",
+      "hhs_outcome": "EXHAUSTIVE_WITHIN_BOUND",
+      "ieee_outcomes": [
+        {
+          "control_result": "IEEE_CONTROL_EXECUTED",
+          "format": "binary32",
+          "outcome": "EXACT_PROJECTED_AGREEMENT"
+        },
+        {
+          "control_result": "IEEE_CONTROL_EXECUTED",
+          "format": "binary64",
+          "outcome": "EXACT_PROJECTED_AGREEMENT"
+        }
+      ],
+      "workload": "alternating_accumulation"
+    },
+    {
+      "authority": "HHS_AND_IEEE_RESULTS_ISOLATED",
+      "cause": [
+        "WITNESSED_PROJECTION_EQUALITY"
+      ],
+      "comparison_class": [
+        "EXACT_PROJECTED_AGREEMENT"
+      ],
+      "execution_root": "x-SpOuYRayw3F6bqC>ktd+79YbNDOAj)AoF?m+96mm3sXh*wD+xp/bpp4mSvD0+V!kviAFD9",
+      "hhs_outcome": "EXHAUSTIVE_WITHIN_BOUND",
+      "ieee_outcomes": [
+        {
+          "control_result": "IEEE_CONTROL_EXECUTED",
+          "format": "binary32",
+          "outcome": "EXACT_PROJECTED_AGREEMENT"
+        },
+        {
+          "control_result": "IEEE_CONTROL_EXECUTED",
+          "format": "binary64",
+          "outcome": "EXACT_PROJECTED_AGREEMENT"
+        }
+      ],
+      "workload": "nonassociative_left"
+    },
+    {
+      "authority": "HHS_AND_IEEE_RESULTS_ISOLATED",
+      "cause": [
+        "IEEE_REPRESENTATION_ROUNDING_OR_CANCELLATION"
+      ],
+      "comparison_class": [
+        "IEEE_ROUNDING_DIVERGENCE"
+      ],
+      "execution_root": "qF?utnR5+SEscDjUA4z4wXllL4Y?6k2)8odJHl)60qHTa5iczEZtXXc-jIPppo923W(BnVE-",
+      "hhs_outcome": "EXHAUSTIVE_WITHIN_BOUND",
+      "ieee_outcomes": [
+        {
+          "control_result": "IEEE_CONTROL_EXECUTED",
+          "format": "binary32",
+          "outcome": "IEEE_ROUNDING_DIVERGENCE"
+        },
+        {
+          "control_result": "IEEE_CONTROL_EXECUTED",
+          "format": "binary64",
+          "outcome": "IEEE_ROUNDING_DIVERGENCE"
+        }
+      ],
+      "workload": "nonassociative_right"
+    },
+    {
+      "authority": "HHS_AND_IEEE_RESULTS_ISOLATED",
+      "cause": [
+        "WITNESSED_PROJECTION_EQUALITY"
+      ],
+      "comparison_class": [
+        "EXACT_PROJECTED_AGREEMENT"
+      ],
+      "execution_root": ")V5ysvINVWN<?9CYo0BvZu!YtMbW/nOR4pT/sQSz91+s35ym9hqo-ecm<sz0873R1BQvp3iz",
+      "hhs_outcome": "EXHAUSTIVE_WITHIN_BOUND",
+      "ieee_outcomes": [
+        {
+          "control_result": "IEEE_CONTROL_EXECUTED",
+          "format": "binary32",
+          "outcome": "EXACT_PROJECTED_AGREEMENT"
+        },
+        {
+          "control_result": "IEEE_CONTROL_EXECUTED",
+          "format": "binary64",
+          "outcome": "EXACT_PROJECTED_AGREEMENT"
+        }
+      ],
+      "workload": "inverse_normalization"
+    },
+    {
+      "authority": "HHS_AND_IEEE_RESULTS_ISOLATED",
+      "cause": [
+        "IEEE_OVERFLOW_UNDERFLOW_OR_EXCEPTIONAL_RANGE"
+      ],
+      "comparison_class": [
+        "IEEE_RANGE_DIVERGENCE"
+      ],
+      "execution_root": "P-X2zpq26Zf?T5cs!PjwEqKW5G1zv02ey*r<6/2Ff13KHVa*ogQ?Bebm5DD2sdnIrGWg+EqX",
+      "hhs_outcome": "EXHAUSTIVE_WITHIN_BOUND",
+      "ieee_outcomes": [
+        {
+          "control_result": "IEEE_CONTROL_EXECUTED",
+          "format": "binary32",
+          "outcome": "IEEE_RANGE_DIVERGENCE"
+        },
+        {
+          "control_result": "IEEE_CONTROL_EXECUTED",
+          "format": "binary64",
+          "outcome": "IEEE_RANGE_DIVERGENCE"
+        }
+      ],
+      "workload": "overflow_boundary"
+    },
+    {
+      "authority": "HHS_AND_IEEE_RESULTS_ISOLATED",
+      "cause": [
+        "IEEE_OVERFLOW_UNDERFLOW_OR_EXCEPTIONAL_RANGE"
+      ],
+      "comparison_class": [
+        "IEEE_RANGE_DIVERGENCE"
+      ],
+      "execution_root": "l*7*h(tBqaepE<jMa4LvHPMco+?LjpT4soBo9WwhrEEksypPMWAXTiOvB73(ua<S/20M6JL2",
+      "hhs_outcome": "EXHAUSTIVE_WITHIN_BOUND",
+      "ieee_outcomes": [
+        {
+          "control_result": "IEEE_CONTROL_EXECUTED",
+          "format": "binary32",
+          "outcome": "IEEE_RANGE_DIVERGENCE"
+        },
+        {
+          "control_result": "IEEE_CONTROL_EXECUTED",
+          "format": "binary64",
+          "outcome": "IEEE_RANGE_DIVERGENCE"
+        }
+      ],
+      "workload": "underflow_boundary"
+    },
+    {
+      "authority": "HHS_AND_IEEE_RESULTS_ISOLATED",
+      "cause": [
+        "WITNESSED_PROJECTION_EQUALITY"
+      ],
+      "comparison_class": [
+        "EXACT_PROJECTED_AGREEMENT"
+      ],
+      "execution_root": "fiaU(G*6An!de-5<ZO-1/(jT8*707Z?RTjl)p!lv*jFRm54Q3s<HSp-u!(kU6qiyA7ZW8*KY",
+      "hhs_outcome": "EXHAUSTIVE_WITHIN_BOUND",
+      "ieee_outcomes": [
+        {
+          "control_result": "IEEE_CONTROL_EXECUTED",
+          "format": "binary32",
+          "outcome": "EXACT_PROJECTED_AGREEMENT"
+        },
+        {
+          "control_result": "IEEE_CONTROL_EXECUTED",
+          "format": "binary64",
+          "outcome": "EXACT_PROJECTED_AGREEMENT"
+        }
+      ],
+      "workload": "signed_zero_propagation"
+    },
+    {
+      "authority": "HHS_AND_IEEE_RESULTS_ISOLATED",
+      "cause": [
+        "IEEE_REPRESENTATION_ROUNDING_OR_CANCELLATION"
+      ],
+      "comparison_class": [
+        "IEEE_ROUNDING_DIVERGENCE"
+      ],
+      "execution_root": "vIekedUW)LLc?<D3KR(wqd>hI>rLmgxxPPn>qz>R!EgBmD/PYz5u)s!/>MoLMa4s<1k<w2UZ",
+      "hhs_outcome": "EXHAUSTIVE_WITHIN_BOUND",
+      "ieee_outcomes": [
+        {
+          "control_result": "IEEE_CONTROL_EXECUTED",
+          "format": "binary32",
+          "outcome": "IEEE_ROUNDING_DIVERGENCE"
+        },
+        {
+          "control_result": "IEEE_CONTROL_EXECUTED",
+          "format": "binary64",
+          "outcome": "IEEE_ROUNDING_DIVERGENCE"
+        }
+      ],
+      "workload": "iterative_drift"
+    },
+    {
+      "authority": "HHS_AND_IEEE_RESULTS_ISOLATED",
+      "cause": [
+        "WITNESSED_PROJECTION_EQUALITY"
+      ],
+      "comparison_class": [
+        "EXACT_PROJECTED_AGREEMENT"
+      ],
+      "execution_root": "x-o)A1vZEW+ono60V8B75(04u98j95Hg)V?sndQZfbOZFwnbWxfe-Qy/KXI4nFnLrts1JEi4",
+      "hhs_outcome": "EXHAUSTIVE_WITHIN_BOUND",
+      "ieee_outcomes": [
+        {
+          "control_result": "IEEE_CONTROL_EXECUTED",
+          "format": "binary32",
+          "outcome": "EXACT_PROJECTED_AGREEMENT"
+        },
+        {
+          "control_result": "IEEE_CONTROL_EXECUTED",
+          "format": "binary64",
+          "outcome": "EXACT_PROJECTED_AGREEMENT"
+        }
+      ],
+      "workload": "long_phase_cycle"
+    },
+    {
+      "authority": "HHS_AND_IEEE_RESULTS_ISOLATED",
+      "cause": [
+        "WITNESSED_PROJECTION_EQUALITY"
+      ],
+      "comparison_class": [
+        "EXACT_PROJECTED_AGREEMENT"
+      ],
+      "execution_root": "fL5GxqYa4VPc!EiT1GuavYo41x5-tJJREpkvWM9Zh5Yeo9wy8zwKF0sETDQ/evrR9Mje-Gpc",
+      "hhs_outcome": "EXHAUSTIVE_WITHIN_BOUND",
+      "ieee_outcomes": [
+        {
+          "control_result": "IEEE_CONTROL_EXECUTED",
+          "format": "binary32",
+          "outcome": "EXACT_PROJECTED_AGREEMENT"
+        },
+        {
+          "control_result": "IEEE_CONTROL_EXECUTED",
+          "format": "binary64",
+          "outcome": "EXACT_PROJECTED_AGREEMENT"
+        }
+      ],
+      "workload": "repeated_normalization"
+    },
+    {
+      "authority": "HHS_AND_IEEE_RESULTS_ISOLATED",
+      "cause": [
+        "WITNESSED_PROJECTION_EQUALITY"
+      ],
+      "comparison_class": [
+        "EXACT_PROJECTED_AGREEMENT"
+      ],
+      "execution_root": "fR4V1Z1z3w)uL?CrAB>ctkcF8I-U(pavs3al*6-/m>wThGc1R4a-1FKXA(I)UKV2y4c9/CIT",
+      "hhs_outcome": "EXHAUSTIVE_WITHIN_BOUND",
+      "ieee_outcomes": [
+        {
+          "control_result": "IEEE_CONTROL_EXECUTED",
+          "format": "binary32",
+          "outcome": "EXACT_PROJECTED_AGREEMENT"
+        },
+        {
+          "control_result": "IEEE_CONTROL_EXECUTED",
+          "format": "binary64",
+          "outcome": "EXACT_PROJECTED_AGREEMENT"
+        }
+      ],
+      "workload": "loshu_cell_sum"
+    },
+    {
+      "authority": "HHS_AND_IEEE_RESULTS_ISOLATED",
+      "cause": [
+        "HHS_LANE_GATE_OR_CARRIER_CONTEXT_NOT_PRESENT_IN_IEEE_CONTROL"
+      ],
+      "comparison_class": [
+        "STATE_CONTEXT_DIVERGENCE"
+      ],
+      "execution_root": "nVQll4doE8zWLDzF?yW1mPpfpFVj?<TCqX6zQXHlKV2fP6A!iRjW?X8tx4Ke?+-fNWVVr74t",
+      "hhs_outcome": "EXHAUSTIVE_WITHIN_BOUND",
+      "ieee_outcomes": [
+        {
+          "control_result": "STRUCTURAL_SIMULATION_EXECUTED",
+          "format": "binary32",
+          "outcome": "STATE_CONTEXT_DIVERGENCE"
+        },
+        {
+          "control_result": "STRUCTURAL_SIMULATION_EXECUTED",
+          "format": "binary64",
+          "outcome": "STATE_CONTEXT_DIVERGENCE"
+        }
+      ],
+      "workload": "dual_t_constraints"
+    },
+    {
+      "authority": "HHS_AND_IEEE_RESULTS_ISOLATED",
+      "cause": [
+        "NO_AUTHORITATIVE_IEEE_TRANSLATION"
+      ],
+      "comparison_class": [
+        "NO_AUTHORIZED_COMPARISON_MAP"
+      ],
+      "execution_root": "ocS?T?V8/bZzl<+lKhnZ?86-Yj!Wx393ryEh)dIA6oVQKyGfSOCwwqP2zRl<ZLT9/HnF(m*O",
+      "hhs_outcome": "EXHAUSTIVE_WITHIN_BOUND",
+      "ieee_outcomes": [
+        {
+          "control_result": "NO_AUTHORIZED_COMPARISON_MAP",
+          "format": "binary32",
+          "outcome": "NO_AUTHORIZED_COMPARISON_MAP"
+        },
+        {
+          "control_result": "NO_AUTHORIZED_COMPARISON_MAP",
+          "format": "binary64",
+          "outcome": "NO_AUTHORIZED_COMPARISON_MAP"
+        }
+      ],
+      "workload": "conformal_radius"
+    },
+    {
+      "authority": "HHS_AND_IEEE_RESULTS_ISOLATED",
+      "cause": [
+        "HHS_LANE_GATE_OR_CARRIER_CONTEXT_NOT_PRESENT_IN_IEEE_CONTROL"
+      ],
+      "comparison_class": [
+        "STATE_CONTEXT_DIVERGENCE"
+      ],
+      "execution_root": "4>wAI(h?F6G/jz+s1w9-gqm9u!E1Xdu<+1ACjh3Rjrqw>V4/eHz(Ht((FaYLq8!ISPHX!2vv",
+      "hhs_outcome": "EXHAUSTIVE_WITHIN_BOUND",
+      "ieee_outcomes": [
+        {
+          "control_result": "STRUCTURAL_SIMULATION_EXECUTED",
+          "format": "binary32",
+          "outcome": "STATE_CONTEXT_DIVERGENCE"
+        },
+        {
+          "control_result": "STRUCTURAL_SIMULATION_EXECUTED",
+          "format": "binary64",
+          "outcome": "STATE_CONTEXT_DIVERGENCE"
+        }
+      ],
+      "workload": "master_matrix"
+    },
+    {
+      "authority": "HHS_AND_IEEE_RESULTS_ISOLATED",
+      "cause": [
+        "TYPED_PHASE_FILTER"
+      ],
+      "comparison_class": [
+        "SEMANTIC_OPERATOR_DIVERGENCE"
+      ],
+      "execution_root": "Xs4<)mRiUauuYn90nKn8ktG2TGc6t122i7w)AG22kUAsWgj1D/6w)7bCh+cuKc!(Ms0Q-Vc1",
+      "hhs_outcome": "EXHAUSTIVE_WITHIN_BOUND",
+      "ieee_outcomes": [
+        {
+          "control_result": "IEEE_CONTROL_EXECUTED",
+          "format": "binary32",
+          "outcome": "SEMANTIC_OPERATOR_DIVERGENCE"
+        },
+        {
+          "control_result": "IEEE_CONTROL_EXECUTED",
+          "format": "binary64",
+          "outcome": "SEMANTIC_OPERATOR_DIVERGENCE"
+        }
+      ],
+      "workload": "genesis_kernel"
+    },
+    {
+      "authority": "HHS_AND_IEEE_RESULTS_ISOLATED",
+      "cause": [
+        "TYPED_NORMALIZATION_INVERSE"
+      ],
+      "comparison_class": [
+        "SEMANTIC_OPERATOR_DIVERGENCE"
+      ],
+      "execution_root": "13U5aiNkCDBFc*TWZqhtSAHmHk(8z6!OsDaQFfw0qoLvXn46PZm!fIQb<d*nVcrXEE+YWYe7",
+      "hhs_outcome": "EXHAUSTIVE_WITHIN_BOUND",
+      "ieee_outcomes": [
+        {
+          "control_result": "IEEE_CONTROL_EXECUTED",
+          "format": "binary32",
+          "outcome": "SEMANTIC_OPERATOR_DIVERGENCE"
+        },
+        {
+          "control_result": "IEEE_CONTROL_EXECUTED",
+          "format": "binary64",
+          "outcome": "SEMANTIC_OPERATOR_DIVERGENCE"
+        }
+      ],
+      "workload": "T1_transport"
+    }
+  ],
+  "schema": "HHS_PASS132_CONSEQUENCE_COMPARISON_MATRIX_V1"
+}

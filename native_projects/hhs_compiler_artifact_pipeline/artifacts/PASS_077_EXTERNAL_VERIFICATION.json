@@ -1,0 +1,20 @@
+{
+  "artifact_content_sha256": "d4d8b4f572faffbd3b6c3efcdaa9493dae316317500bac37ab439a7f62ac243a",
+  "compiled_execution_replayed": true,
+  "compiled_semantic_projection_root_hash72": "0000000000000000000000000000001lI2v?htlS)E!4sq>JgARMt2lQ)tmYIHx=XMpOc2d9",
+  "deployment_authority_conferred": false,
+  "development_agent_required": false,
+  "expected_semantic_projection_matches": true,
+  "interpreter_execution_replayed": true,
+  "interpreter_semantic_projection_root_hash72": "0000000000000000000000000000001lI2v?htlS)E!4sq>JgARMt2lQ)tmYIHx=XMpOc2d9",
+  "lineage_root_hash72": "0000000000000000000000000000004IR>l/vq-stkD6YHSvg+PEBr13q2NQgei(qYQbi?BX",
+  "originating_conversation_required": false,
+  "originating_repository_required": false,
+  "package_contents_only": true,
+  "schema": "HHS_INDEPENDENT_ARTIFACT_VERIFICATION_V1",
+  "self_authorization_accepted": false,
+  "semantic_projection_roots_match": true,
+  "status": "REEXECUTED_SEMANTIC_EQUIVALENCE",
+  "target_contract_root_hash72": "0000000000000000000000000000000HAWphs>PD8Sr?Yv*OJTIyWspEUHK4l*RHfx)whw!b",
+  "verification_root_hash72": "0000000000000000000000000000001(2f1VBhcqbwlXVy^iqW5ee-q551=iw2rp2xpyam6R"
+}

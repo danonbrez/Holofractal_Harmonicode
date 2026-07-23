@@ -1,0 +1,379 @@
+{
+  "authoritative_scope": {
+    "base_symbols_solved": false,
+    "external_projections_in_equation": false,
+    "float_authority": false,
+    "native_values": "rational projection values over one shared nonzero invariant denominator delta"
+  },
+  "canonical_example": {
+    "P_squared_minus_pq": 1,
+    "center_P": 4,
+    "delta": 1,
+    "magic_sum": 34,
+    "p": 3,
+    "phase_normalized_product": 1,
+    "q": 5
+  },
+  "limitations_explicitly_not_claimed": [
+    "No conventional scalar solution for t,m,x,y,z,w,r is asserted inside the native equation.",
+    "No claim that p or q are prime is made for an even-composite center P.",
+    "No unnormalized ordinary-arithmetic reading of the four-phase product is admitted.",
+    "The appended source expression is not treated as authority for an ambiguous host-language precedence parse; the user's declared relations are the binding constraints."
+  ],
+  "pass_id": "PASS_129",
+  "proof": {
+    "base_symbols_solved": false,
+    "derived": {
+      "P": {
+        "denominator": 1,
+        "numerator": 4
+      },
+      "P_squared_minus_pq": {
+        "denominator": 1,
+        "numerator": 1
+      },
+      "delta": {
+        "denominator": 1,
+        "numerator": 1
+      },
+      "four_phase_normalized_product": {
+        "denominator": 1,
+        "numerator": 1
+      },
+      "magic_sum": 34,
+      "membrane_residue": {
+        "denominator": 1,
+        "numerator": 1
+      },
+      "p": {
+        "denominator": 1,
+        "numerator": 3
+      },
+      "q": {
+        "denominator": 1,
+        "numerator": 5
+      }
+    },
+    "external_projection_authority_used": false,
+    "native_domain": "RATIONAL_PROJECTION_NUMERATORS_OVER_SHARED_NONZERO_DELTA",
+    "pass_id": "PASS_129",
+    "proof_root_hash72": "0000000000000000000000000000001fwnFtVb1N9mGux2RTydriCjlkq>Y2^Z-g6alFEcq5",
+    "request_root_hash72": "0000000000000000000000000000000hK!46u0iJDGrworwjuFyABu4TJ59Q9Ztr?pz8C8qB",
+    "schema": "HHS_INVARIANT_DELTA_PROOF_V1",
+    "spec_root_hash72": "0000000000000000000000000000001JItpWRS37s7Y7gTHBE4hBYPRk*VmzBb)R8NXYhRlH",
+    "status": "INVARIANT_DELTA_RATIONAL_PROJECTION_ALGEBRA_PROVED",
+    "steps": [
+      {
+        "inputs": {
+          "M_QUADRATIC_DIFFERENCE": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "P_MINUS_p": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "P_SQUARE_MINUS_PQ": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "Q_MINUS_P": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "T_CUBIC_DIFFERENCE": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "XY_PRODUCT": {
+            "denominator": 1,
+            "numerator": 1
+          }
+        },
+        "output": {
+          "delta": {
+            "denominator": 1,
+            "numerator": 1
+          }
+        },
+        "rule": "COMMON_RESIDUE_BINDING",
+        "step_index": 1,
+        "step_root_hash72": "0000000000000000000000000000001TN^H3O+uEkCzEP3n5ELacudMk>d^+jUod-)Ook2F0"
+      },
+      {
+        "inputs": {
+          "P": {
+            "denominator": 1,
+            "numerator": 4
+          },
+          "delta": {
+            "denominator": 1,
+            "numerator": 1
+          }
+        },
+        "output": {
+          "p": {
+            "denominator": 1,
+            "numerator": 3
+          },
+          "q": {
+            "denominator": 1,
+            "numerator": 5
+          }
+        },
+        "rule": "SYMMETRIC_CENTER_RECONSTRUCTION",
+        "step_index": 2,
+        "step_root_hash72": "0000000000000000000000000000003rLqquz!v^/sEA1A15wpcktix7voDoItc6zEAI6r/o"
+      },
+      {
+        "inputs": {
+          "P": {
+            "denominator": 1,
+            "numerator": 4
+          },
+          "p": {
+            "denominator": 1,
+            "numerator": 3
+          },
+          "q": {
+            "denominator": 1,
+            "numerator": 5
+          }
+        },
+        "output": {
+          "P2_minus_pq": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "delta_squared": {
+            "denominator": 1,
+            "numerator": 1
+          }
+        },
+        "rule": "DIFFERENCE_OF_SQUARES",
+        "step_index": 3,
+        "step_root_hash72": "0000000000000000000000000000004C1w!9m-IEy(87Eosgi0Jc>1^wkQ=(J>>y=v(vxr?8"
+      },
+      {
+        "inputs": {
+          "delta": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "delta_squared": {
+            "denominator": 1,
+            "numerator": 1
+          }
+        },
+        "output": {
+          "delta": {
+            "denominator": 1,
+            "numerator": 1
+          }
+        },
+        "rule": "NONZERO_RATIONAL_IDEMPOTENT_CLOSURE",
+        "step_index": 4,
+        "step_root_hash72": "0000000000000000000000000000003hUv4mzfaDINvlg5!TqF3>I/-+w5>VZvbJ^Qh>5KPQ"
+      },
+      {
+        "inputs": {
+          "left": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "middle": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "right": {
+            "denominator": 1,
+            "numerator": 1
+          }
+        },
+        "output": {
+          "closed_residue": {
+            "denominator": 1,
+            "numerator": 1
+          }
+        },
+        "rule": "THREE_WAY_MEMBRANE_CLOSURE",
+        "step_index": 5,
+        "step_root_hash72": "0000000000000000000000000000002)r>3JEVVCHDKqQDEn^Z=+M9O?*ccO7(>k=D1(klH9"
+      },
+      {
+        "inputs": {
+          "phase_cardinality": 4,
+          "raw_product": {
+            "denominator": 1,
+            "numerator": 4
+          }
+        },
+        "output": {
+          "normalized_product": {
+            "denominator": 1,
+            "numerator": 1
+          }
+        },
+        "rule": "FOUR_PHASE_CARDINALITY_NORMALIZATION",
+        "step_index": 6,
+        "step_root_hash72": "0000000000000000000000000000004xSqnwb>!Dhq!nVUw6lpgAd5DhVA1X?zG=2BuOo^>)"
+      },
+      {
+        "inputs": {
+          "xy": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "zw": {
+            "denominator": 1,
+            "numerator": 1
+          }
+        },
+        "output": {
+          "magic_sum": 34,
+          "matrix": [
+            [
+              16,
+              2,
+              3,
+              13
+            ],
+            [
+              5,
+              11,
+              10,
+              8
+            ],
+            [
+              9,
+              7,
+              6,
+              12
+            ],
+            [
+              4,
+              14,
+              15,
+              1
+            ]
+          ]
+        },
+        "rule": "DYNAMIC_MAGIC_TENSOR_WITNESS",
+        "step_index": 7,
+        "step_root_hash72": "0000000000000000000000000000003SiPXG6)nK/Zm)bulWIDRjadyGrJzK>gBts=lHmv=y"
+      },
+      {
+        "inputs": {
+          "phase_coefficients": [
+            [
+              0,
+              1
+            ],
+            [
+              -1,
+              0
+            ],
+            [
+              0,
+              -1
+            ],
+            [
+              1,
+              0
+            ]
+          ]
+        },
+        "output": {
+          "sum": [
+            0,
+            0
+          ]
+        },
+        "rule": "FOUR_PHASE_CARRIER_ZERO_SUM",
+        "step_index": 8,
+        "step_root_hash72": "0000000000000000000000000000003wAM(XMZmu+n4W/hZyohF0u0dwIP+lB>Yg!)hzgAIR"
+      },
+      {
+        "inputs": {
+          "relations": [
+            [
+              "b^2",
+              "a^2+b^2"
+            ],
+            [
+              "c^2",
+              "b^2+c^2"
+            ]
+          ]
+        },
+        "output": {
+          "validated": true
+        },
+        "rule": "TYPED_M_SUCCESSOR_ACTIONS",
+        "step_index": 9,
+        "step_root_hash72": "0000000000000000000000000000003^R?-MX/CPX93I03SrChiLiGznxyFVFfBqr!*^z8=y"
+      }
+    ]
+  },
+  "proved_claims": [
+    "q-P=P-p=delta reconstructs p=P-delta and q=P+delta",
+    "P^2-pq=delta together with symmetric reconstruction yields delta^2=delta",
+    "nonzero rational delta therefore closes uniquely to 1",
+    "the result holds independently of P primality and includes all even composite P",
+    "the three-way membrane closes at residue 1 when xy=zw=1 and x+y+z+w=0",
+    "the dynamic 4x4 tensor closes to Duerer magic sum 34",
+    "the four phase carrier I,I^2,I^3,I^4 closes exactly to zero",
+    "the typed (p+q)/P(q-p) operation requires four-phase cardinality normalization; ordinary scalar multiplication evaluates to 4 and is not silently equated to 1",
+    "m b^2 and m c^2 are validated as typed successor relations, not scalar multiplication",
+    "plastic, golden, Euler, circular, or complex interpretations remain external non-authoritative projection receipts"
+  ],
+  "replay": {
+    "pass_id": "PASS_129",
+    "proof_root_hash72": "0000000000000000000000000000001fwnFtVb1N9mGux2RTydriCjlkq>Y2^Z-g6alFEcq5",
+    "replay_root_hash72": "0000000000000000000000000000004lx)bRFl^)lCfPBK^=j+H*YX7c2^3t-E2Ea*(eTmzR",
+    "request_root_hash72": "0000000000000000000000000000000hK!46u0iJDGrworwjuFyABu4TJ59Q9Ztr?pz8C8qB",
+    "schema": "HHS_INVARIANT_DELTA_PROOF_REPLAY_V1",
+    "status": "PASS_129_DETERMINISTIC_REPLAY_VALIDATED",
+    "validation_root_hash72": "0000000000000000000000000000002MvCoX(1*GoH-U-9hRptcUsRrMHLQE^BoLgbumhDxo"
+  },
+  "report_root_hash72": "00000000000000000000000000000023HxJ3!yby62h+Idy6d->7LMmpXnFruHYj)2X=*xV(",
+  "schema": "HHS_PASS_129_PROOF_TESTING_ANALYSIS_REPORT_V1",
+  "self_test": {
+    "base_symbols_solved": false,
+    "center_class": "EVEN_COMPOSITE",
+    "delta": {
+      "denominator": 1,
+      "numerator": 1
+    },
+    "pass_id": "PASS_129",
+    "projection_root_hash72": "0000000000000000000000000000001H67pc4ADU8lUnbndDd9yR?!^qs1E))FJPjz9(gSh+",
+    "proof_root_hash72": "0000000000000000000000000000001fwnFtVb1N9mGux2RTydriCjlkq>Y2^Z-g6alFEcq5",
+    "replay_root_hash72": "0000000000000000000000000000004lx)bRFl^)lCfPBK^=j+H*YX7c2^3t-E2Ea*(eTmzR",
+    "self_test_root_hash72": "0000000000000000000000000000004E(3WwlIUq(vc+1WoJq-*A8Rk0ZtExC-aqSr(/eA8b",
+    "status": "PASS",
+    "validation_root_hash72": "0000000000000000000000000000002MvCoX(1*GoH-U-9hRptcUsRrMHLQE^BoLgbumhDxo"
+  },
+  "status": "IMPLEMENTED_AND_DEPENDENCY_SCOPED_VALIDATED",
+  "tests": {
+    "dependency_scoped_pass120_through_pass129": {
+      "failed": 0,
+      "passed": 147
+    },
+    "pass129": {
+      "failed": 0,
+      "passed": 27
+    }
+  },
+  "title": "Invariant-Delta Rational Projection Constraint Enforcement Algebra",
+  "validation": {
+    "base_symbol_solution_claimed": false,
+    "external_projection_used_as_native_authority": false,
+    "native_rational_projection_proof": true,
+    "pass_id": "PASS_129",
+    "proof_root_hash72": "0000000000000000000000000000001fwnFtVb1N9mGux2RTydriCjlkq>Y2^Z-g6alFEcq5",
+    "request_root_hash72": "0000000000000000000000000000000hK!46u0iJDGrworwjuFyABu4TJ59Q9Ztr?pz8C8qB",
+    "schema": "HHS_INVARIANT_DELTA_PROOF_VALIDATION_V1",
+    "status": "PASS_129_PROOF_VALIDATED",
+    "validation_root_hash72": "0000000000000000000000000000002MvCoX(1*GoH-U-9hRptcUsRrMHLQE^BoLgbumhDxo"
+  }
+}

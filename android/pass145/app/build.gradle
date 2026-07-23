@@ -1,0 +1,39 @@
+plugins { id "com.android.application" }
+
+def compileSdkValue = (project.findProperty("HHS_COMPILE_SDK") ?: "35") as Integer
+def targetSdkValue = (project.findProperty("HHS_TARGET_SDK") ?: "35") as Integer
+def minSdkValue = (project.findProperty("HHS_MIN_SDK") ?: "26") as Integer
+
+android {
+    namespace "org.hhs.pass145"
+    compileSdk compileSdkValue
+
+    defaultConfig {
+        applicationId "org.hhs.pass145"
+        minSdk minSdkValue
+        targetSdk targetSdkValue
+        versionCode 14501
+        versionName "145.1.0"
+        ndk { abiFilters "arm64-v8a", "x86_64" }
+        externalNativeBuild { cmake { cFlags "-std=c11" } }
+    }
+
+    buildTypes {
+        debug {
+            debuggable true
+            minifyEnabled false
+        }
+        release {
+            debuggable false
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
+        }
+    }
+
+    externalNativeBuild {
+        cmake { path file("src/main/cpp/CMakeLists.txt"); version "3.22.1" }
+    }
+
+    packaging { jniLibs { useLegacyPackaging false } }
+}

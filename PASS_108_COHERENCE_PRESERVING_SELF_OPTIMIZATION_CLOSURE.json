@@ -1,0 +1,136 @@
+{
+  "schema": "HHS_PASS108_SELF_TEST_V1",
+  "pass_id": "PASS_108",
+  "status": "PASS",
+  "baseline": {
+    "schema": "HHS_FULL_CAPABILITY_BASELINE_V1",
+    "pass_id": "PASS_108",
+    "capability_roots": [
+      "0000000000000000000000000000000DsiqkF^oah3ymLKcBfnKXjkGiDpSSaVzrsY8+2Q7f",
+      "0000000000000000000000000000001*Bd3y3smqYICl38hC>YbyIvXI8-Qir^rtr=D9RJyh",
+      "0000000000000000000000000000003340M25VZwpT07UIwXN66-(D6IjIj6fM07/KzU9dj+"
+    ],
+    "capability_count": 3,
+    "backend_coherence": {
+      "status": "PASS",
+      "targets": [
+        "c",
+        "asm"
+      ],
+      "executions": [
+        {
+          "target": "c",
+          "source_hash72": "i+fOFd3R9D≠w6ZUbFk+h+gC7",
+          "compiler_returncode": 0,
+          "execution_returncode": 0,
+          "observed": {
+            "target": "c",
+            "phase_count": 4,
+            "phase_sum": 72,
+            "equation_hash72": "H72-PASS1056-EQ",
+            "manifest_hash72": "H72-PASS1056-MANIFEST"
+          },
+          "compiled_and_executed": true
+        },
+        {
+          "target": "asm",
+          "source_hash72": "7QsNFkYpoAiYdQdgYKHqF≠g√",
+          "compiler_returncode": 0,
+          "execution_returncode": 0,
+          "observed": {
+            "target": "asm",
+            "phase_count": 4,
+            "phase_sum": 72,
+            "equation_hash72": "H72-PASS1056-EQ",
+            "manifest_hash72": "H72-PASS1056-MANIFEST"
+          },
+          "compiled_and_executed": true
+        }
+      ],
+      "real_compilation_executed": true,
+      "real_generated_binaries_executed": true,
+      "parallel_test_computation_used": false,
+      "all_repairs_verified": true
+    },
+    "negative_boundary_coherence": {
+      "status": "PASS",
+      "attack_count": 77,
+      "passed_count": 77,
+      "failed_count": 0,
+      "all_attacks_structurally_executed": true,
+      "all_attacks_used_production_entrypoints": true,
+      "parallel_test_computation_count": 0,
+      "mock_component_count": 0,
+      "attack_registry_root_hash72": "0000000000000000000000000000001wCuWWgCSe3Y)Ll>LGd1/p>i-1EmV^oqM2LR0JPZa)"
+    },
+    "production_workloads_executed": true,
+    "mock_components": [],
+    "parallel_computation_used": false,
+    "coherence_vector_root_hash72": "0000000000000000000000000000002u?O5As5KT8h5jMVorT2=2q)>5y2ZDMPViNPwY0JIu",
+    "baseline_root_hash72": "0000000000000000000000000000004z1bCFbd)7qM=-it/=aHYR)pNn+Q4HzjFOJDllHPmG"
+  },
+  "optimization": {
+    "schema": "HHS_COHERENCE_PRESERVING_OPTIMIZATION_RECEIPT_V1",
+    "pass_id": "PASS_108",
+    "baseline_root_hash72": "0000000000000000000000000000004z1bCFbd)7qM=-it/=aHYR)pNn+Q4HzjFOJDllHPmG",
+    "candidate_root_hash72": "0000000000000000000000000000000F0+Rf(c=DDTk/eTqm/(7i-VR*p)WCVUDOK-gzuF5k",
+    "mutation_receipt_root_hash72": "0000000000000000000000000000001n/RhBZErJgiugqEdh)-CDm1?RO-jMS6r296J-UHZ)",
+    "baseline_profile": {
+      "schema": "HHS_CAPABILITY_EFFICIENCY_PROFILE_V1",
+      "capability_id": "hhs:pass105_6:real_c_asm_backend",
+      "workload_class": "REAL_C_ASM_COMPILE_AND_EXECUTE",
+      "repetitions": 2,
+      "real_execution_count": 2,
+      "cache_hit_count": 0,
+      "elapsed_ns": 418485085,
+      "deterministic_work_units": 2,
+      "coherence_roots": [
+        "00000000000000000000000000000038c4iB6jFuAWrb-dB/9!HmroWDSyfUyz*r3gV6/=S!",
+        "00000000000000000000000000000038c4iB6jFuAWrb-dB/9!HmroWDSyfUyz*r3gV6/=S!"
+      ],
+      "all_coherence_roots_equal": true,
+      "profile_root_hash72": "0000000000000000000000000000004Cf?043Ezp7nvyB9K6vzjQRxm2aWQ)ImUArR49D5>l"
+    },
+    "optimized_profile": {
+      "schema": "HHS_CAPABILITY_EFFICIENCY_PROFILE_V1",
+      "capability_id": "hhs:pass105_6:real_c_asm_backend",
+      "workload_class": "REAL_C_ASM_COMPILE_EXECUTE_WITH_EXACT_REUSE",
+      "repetitions": 2,
+      "real_execution_count": 1,
+      "cache_hit_count": 1,
+      "elapsed_ns": 187146235,
+      "deterministic_work_units": 1,
+      "coherence_roots": [
+        "00000000000000000000000000000038c4iB6jFuAWrb-dB/9!HmroWDSyfUyz*r3gV6/=S!",
+        "00000000000000000000000000000038c4iB6jFuAWrb-dB/9!HmroWDSyfUyz*r3gV6/=S!"
+      ],
+      "all_coherence_roots_equal": true,
+      "profile_root_hash72": "0000000000000000000000000000000ZFaEUhkwnepGkTkUcyitZWnLJMPyYIhAD-?Uv9aC6"
+    },
+    "capability_preservation_ratio": "1/1",
+    "negative_boundary_preservation_ratio": "77/77",
+    "coherence_vector_preserved": true,
+    "exactness_preserved": true,
+    "authority_path_preserved": true,
+    "provenance_preserved": true,
+    "historical_replay_preserved": true,
+    "observed_work_unit_reduction": 1,
+    "observed_efficiency_gain_ratio": "1/2",
+    "stale_dependency_rejection": "REJECT_STALE_CACHE_RESULT",
+    "production_workloads_executed": true,
+    "mock_components": [],
+    "parallel_computation_used": false,
+    "status": "OPTIMIZATION_ADMITTED",
+    "optimization_receipt_root_hash72": "0000000000000000000000000000001YABdMqBCU0!Yl+O(qqW8UKeoFZ76WGSGRwW17r-l+"
+  },
+  "admitted_capability_count": 3,
+  "full_admitted_capability_set_audited": true,
+  "real_backend_compilations_executed": 3,
+  "real_negative_attacks_executed_after_optimization": true,
+  "coherence_preserved": true,
+  "capability_devolution_detected": false,
+  "safe_self_optimization_established": true,
+  "mock_components": [],
+  "parallel_test_computation_used": false,
+  "pass108_root_hash72": "0000000000000000000000000000004uF^^zR(61^iVtzCdE8wKBYw)PsJkIYH/Y?l!rA9NL"
+}

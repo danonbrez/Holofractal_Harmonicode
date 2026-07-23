@@ -1,0 +1,307 @@
+{
+  "checkpoint_chain_repaired": true,
+  "cryptographic_claim_boundary": "POST_QUANTUM_ENCRYPTION_NOT_VERIFIED",
+  "dependency_tests": "9/9",
+  "entropy_authority": "ENTROPY_SOURCE_UNATTESTED",
+  "file_count": 24,
+  "files": [
+    {
+      "path": "PASS_133_CHECKPOINT_CHAIN_REPAIR_REPORT.json",
+      "sha256": "38af70565fc5e2c7dc3b2242500e6d82f3b40efc87698fdd7d00168489620895",
+      "size_bytes": 949
+    },
+    {
+      "path": "PASS_133_COMPLETION_ATTESTATION.json",
+      "sha256": "2395ccefae7faba310ede5358135a9f172c94e183c5806d63fbdb952f2f2a288",
+      "size_bytes": 3312
+    },
+    {
+      "path": "PASS_133_COMPRESSION_METRICS.json",
+      "sha256": "c151ab8806256b9d29cfad34dc32b40db15d50ccc7e8feb46f80585be65898e9",
+      "size_bytes": 493
+    },
+    {
+      "path": "PASS_133_ENTROPY_ACCOUNTING_REPORT.json",
+      "sha256": "016c7e3466c87fd55b76a914b701605c5c39ae565c1523f77d44de552fd1facc",
+      "size_bytes": 451
+    },
+    {
+      "path": "PASS_133_FACTORADIC_BIGINT_STATE.json",
+      "sha256": "f0322f3215610160b2ffc6e4d945452709722380692ebf2f2c7bea4087b3ccaf",
+      "size_bytes": 1916
+    },
+    {
+      "path": "PASS_133_KEY_GENERATOR_NEGATIVE_TEST_REPORT.json",
+      "sha256": "e6cf12d1eb7bc2c3150e50b9a0bc9b330eec71780ee21326d6b58448fb6d1552",
+      "size_bytes": 2325
+    },
+    {
+      "path": "PASS_133_KEY_GENERATOR_REPLAY_RECEIPT.json",
+      "sha256": "6562085c09281d2b11bd6b29ae617f6acfccdbe89242f1ab9e066c80193f7171",
+      "size_bytes": 265
+    },
+    {
+      "path": "PASS_133_KEY_STATE_SCATTERING_REPORT.json",
+      "sha256": "3e05febd0c1dfb7b0915a9fbed5c307dc002dbea1d8938d943b77eae7a341415",
+      "size_bytes": 1041
+    },
+    {
+      "path": "PASS_133_LOSHU_SERIALIZATION_TRACE.jsonl",
+      "sha256": "df2bf4dc3972c83b7c15f2a44acfda20da1e918aaeb30b8607010ab8e95281e6",
+      "size_bytes": 5542
+    },
+    {
+      "path": "PASS_133_PALINDROMIC_ECC_BIGINT_STATE.json",
+      "sha256": "ddff3903fd2c46d1296a261afb05f24ddc1eeb0f098dd757c54f52e060ad8b1a",
+      "size_bytes": 58630
+    },
+    {
+      "path": "PASS_133_PALINDROMIC_ECC_STRESS_REPORT.json",
+      "sha256": "3f6cc8627c463a099f48ea95f1491693b21a39f15a3436765f7deb7c87724730",
+      "size_bytes": 179
+    },
+    {
+      "path": "PASS_133_PHASE_FORWARD_TRACE.jsonl",
+      "sha256": "ed83006ec327e350b06326012de02da11bfeff28d9873f83879d022246ee6e91",
+      "size_bytes": 18511
+    },
+    {
+      "path": "PASS_133_PHASE_INVERSE_TRACE.jsonl",
+      "sha256": "6294f79e4dbfb35dac1c1b2b451e9bd1f40ac66ed62b689c6812b10534f59c2a",
+      "size_bytes": 19159
+    },
+    {
+      "path": "PASS_133_PHASE_NEGATIVE_TEST_REPORT.json",
+      "sha256": "4fb919a42cdaa59fc7f23e23e033f00f1b3ccba81848c7c9bdeee3a987e25aff",
+      "size_bytes": 863
+    },
+    {
+      "path": "PASS_133_PHASE_TENSOR_STATE.json",
+      "sha256": "b80d3bbd514219dfc623dba6e8a3a2831ef68be8cf39a9d8755f0e535328abbf",
+      "size_bytes": 31068
+    },
+    {
+      "path": "PASS_133_PRIME_CERTIFICATES.jsonl",
+      "sha256": "ec9588dc23daa15d71b707a916526521019b2dc907788f52c3f1c32bed8a5890",
+      "size_bytes": 41107
+    },
+    {
+      "path": "PASS_133_PRIME_KEY_GENERATION_MANIFEST.json",
+      "sha256": "9fee1cdb136e54039ffb6388cd747da6902adeadd87118d83c22fc69df764f77",
+      "size_bytes": 510
+    },
+    {
+      "path": "PASS_133_PRIME_MAGIC_CLOSURE.json",
+      "sha256": "11fdba14b647c4abb8bb083bb5ea9d886521320f876e91dc11497da1a9feea62",
+      "size_bytes": 8742
+    },
+    {
+      "path": "PASS_133_RECONSTRUCTION_PROOF.json",
+      "sha256": "00e5756faaa46542783d1f93cf32d72c9959a2bc3da8e1cf7b1225b92c2b864f",
+      "size_bytes": 6946
+    },
+    {
+      "path": "PASS_133_SCHIC_EXECUTION_REPORT.json",
+      "sha256": "8c6854e41f6631ee4c0b0117abc9dce7f15d590285b01d092e2cfb55dedcea47",
+      "size_bytes": 10467
+    },
+    {
+      "path": "PASS_133_SOURCE_MANIFEST.json",
+      "sha256": "45d516f9eea92554b5d01b22fe8482a11b7e65199e367cd2e5e872c2f2d25ed6",
+      "size_bytes": 4169
+    },
+    {
+      "path": "PASS_133_SUDOKU_TENSOR_STATE.json",
+      "sha256": "019652c909fc74c3927217b1559a20b88bd50e218c929d49bda7d98563fd15ed",
+      "size_bytes": 4004
+    },
+    {
+      "path": "PASS_133_TEST_REPORT.json",
+      "sha256": "e3b6b8a43e0aabf243613102fc0e3c2358e4235dd83fd129debf3cf2c869e5ec",
+      "size_bytes": 535
+    },
+    {
+      "path": "PASS_133_VM81_CELL_TRACE.jsonl",
+      "sha256": "ecd59a282ec8a37b55aa36825662e81987ab2ff560e52f5624f6b8c6d1198ffd",
+      "size_bytes": 9357
+    }
+  ],
+  "generated_at": "2026-07-19T05:32:50.181699+00:00",
+  "manifest_hash72_witness": {
+    "authority": "CHECKPOINT_REPAIRED_NATIVE_U72",
+    "canonical_payload": "{\"checkpoint_chain_repaired\":true,\"cryptographic_claim_boundary\":\"POST_QUANTUM_ENCRYPTION_NOT_VERIFIED\",\"dependency_tests\":\"9/9\",\"entropy_authority\":\"ENTROPY_SOURCE_UNATTESTED\",\"file_count\":24,\"files\":[{\"path\":\"PASS_133_CHECKPOINT_CHAIN_REPAIR_REPORT.json\",\"sha256\":\"38af70565fc5e2c7dc3b2242500e6d82f3b40efc87698fdd7d00168489620895\",\"size_bytes\":949},{\"path\":\"PASS_133_COMPLETION_ATTESTATION.json\",\"sha256\":\"2395ccefae7faba310ede5358135a9f172c94e183c5806d63fbdb952f2f2a288\",\"size_bytes\":3312},{\"path\":\"PASS_133_COMPRESSION_METRICS.json\",\"sha256\":\"c151ab8806256b9d29cfad34dc32b40db15d50ccc7e8feb46f80585be65898e9\",\"size_bytes\":493},{\"path\":\"PASS_133_ENTROPY_ACCOUNTING_REPORT.json\",\"sha256\":\"016c7e3466c87fd55b76a914b701605c5c39ae565c1523f77d44de552fd1facc\",\"size_bytes\":451},{\"path\":\"PASS_133_FACTORADIC_BIGINT_STATE.json\",\"sha256\":\"f0322f3215610160b2ffc6e4d945452709722380692ebf2f2c7bea4087b3ccaf\",\"size_bytes\":1916},{\"path\":\"PASS_133_KEY_GENERATOR_NEGATIVE_TEST_REPORT.json\",\"sha256\":\"e6cf12d1eb7bc2c3150e50b9a0bc9b330eec71780ee21326d6b58448fb6d1552\",\"size_bytes\":2325},{\"path\":\"PASS_133_KEY_GENERATOR_REPLAY_RECEIPT.json\",\"sha256\":\"6562085c09281d2b11bd6b29ae617f6acfccdbe89242f1ab9e066c80193f7171\",\"size_bytes\":265},{\"path\":\"PASS_133_KEY_STATE_SCATTERING_REPORT.json\",\"sha256\":\"3e05febd0c1dfb7b0915a9fbed5c307dc002dbea1d8938d943b77eae7a341415\",\"size_bytes\":1041},{\"path\":\"PASS_133_LOSHU_SERIALIZATION_TRACE.jsonl\",\"sha256\":\"df2bf4dc3972c83b7c15f2a44acfda20da1e918aaeb30b8607010ab8e95281e6\",\"size_bytes\":5542},{\"path\":\"PASS_133_PALINDROMIC_ECC_BIGINT_STATE.json\",\"sha256\":\"ddff3903fd2c46d1296a261afb05f24ddc1eeb0f098dd757c54f52e060ad8b1a\",\"size_bytes\":58630},{\"path\":\"PASS_133_PALINDROMIC_ECC_STRESS_REPORT.json\",\"sha256\":\"3f6cc8627c463a099f48ea95f1491693b21a39f15a3436765f7deb7c87724730\",\"size_bytes\":179},{\"path\":\"PASS_133_PHASE_FORWARD_TRACE.jsonl\",\"sha256\":\"ed83006ec327e350b06326012de02da11bfeff28d9873f83879d022246ee6e91\",\"size_bytes\":18511},{\"path\":\"PASS_133_PHASE_INVERSE_TRACE.jsonl\",\"sha256\":\"6294f79e4dbfb35dac1c1b2b451e9bd1f40ac66ed62b689c6812b10534f59c2a\",\"size_bytes\":19159},{\"path\":\"PASS_133_PHASE_NEGATIVE_TEST_REPORT.json\",\"sha256\":\"4fb919a42cdaa59fc7f23e23e033f00f1b3ccba81848c7c9bdeee3a987e25aff\",\"size_bytes\":863},{\"path\":\"PASS_133_PHASE_TENSOR_STATE.json\",\"sha256\":\"b80d3bbd514219dfc623dba6e8a3a2831ef68be8cf39a9d8755f0e535328abbf\",\"size_bytes\":31068},{\"path\":\"PASS_133_PRIME_CERTIFICATES.jsonl\",\"sha256\":\"ec9588dc23daa15d71b707a916526521019b2dc907788f52c3f1c32bed8a5890\",\"size_bytes\":41107},{\"path\":\"PASS_133_PRIME_KEY_GENERATION_MANIFEST.json\",\"sha256\":\"9fee1cdb136e54039ffb6388cd747da6902adeadd87118d83c22fc69df764f77\",\"size_bytes\":510},{\"path\":\"PASS_133_PRIME_MAGIC_CLOSURE.json\",\"sha256\":\"11fdba14b647c4abb8bb083bb5ea9d886521320f876e91dc11497da1a9feea62\",\"size_bytes\":8742},{\"path\":\"PASS_133_RECONSTRUCTION_PROOF.json\",\"sha256\":\"00e5756faaa46542783d1f93cf32d72c9959a2bc3da8e1cf7b1225b92c2b864f\",\"size_bytes\":6946},{\"path\":\"PASS_133_SCHIC_EXECUTION_REPORT.json\",\"sha256\":\"8c6854e41f6631ee4c0b0117abc9dce7f15d590285b01d092e2cfb55dedcea47\",\"size_bytes\":10467},{\"path\":\"PASS_133_SOURCE_MANIFEST.json\",\"sha256\":\"45d516f9eea92554b5d01b22fe8482a11b7e65199e367cd2e5e872c2f2d25ed6\",\"size_bytes\":4169},{\"path\":\"PASS_133_SUDOKU_TENSOR_STATE.json\",\"sha256\":\"019652c909fc74c3927217b1559a20b88bd50e218c929d49bda7d98563fd15ed\",\"size_bytes\":4004},{\"path\":\"PASS_133_TEST_REPORT.json\",\"sha256\":\"e3b6b8a43e0aabf243613102fc0e3c2358e4235dd83fd129debf3cf2c869e5ec\",\"size_bytes\":535},{\"path\":\"PASS_133_VM81_CELL_TRACE.jsonl\",\"sha256\":\"ecd59a282ec8a37b55aa36825662e81987ab2ff560e52f5624f6b8c6d1198ffd\",\"size_bytes\":9357}],\"generated_at\":\"2026-07-19T05:32:50.181699+00:00\",\"negative_tests\":{\"ecc\":\"PASS\",\"phase\":\"PASS\",\"prime_magic\":\"PASS\"},\"parent_checkpoint_root_hash72\":\"dO6p3HqQTU9U<zh8qkbIy>)CqwZo8JNL(1nL9?6xJ7FlAF4KIpgTtng9pu6cWlKLBT!WLplR\",\"pass_id\":\"PASS_133\",\"prime_bits\":64,\"runtime_parent\":\"PASS_132\",\"schema\":\"HHS_PASS133_RELEASE_MANIFEST_V1\",\"source_manifest_sha256\":\"45d516f9eea92554b5d01b22fe8482a11b7e65199e367cd2e5e872c2f2d25ed6\",\"terminal_status\":\"PASS_133_CHECKPOINT_KEY_STATE_WORKLOAD_VERIFIED\",\"version\":\"1.0.0\",\"workloads\":{\"133.1\":\"PRIME_MAGIC_SUDOKU_BIGINT_KEY_STATE_VERIFIED\",\"133.2\":\"PRIME_QUDIT_PHASE_CANCELLATION_KEY_STATE_VERIFIED\",\"133.3\":\"PALINDROMIC_ECC_BIGINT_RECONSTRUCTION_VERIFIED\",\"HHS-I133\":\"PASS\"}}",
+    "digest": "wKN36Qslgdvms6USGcDNFGHniAldnl0vhWWzP/RoVMRF!i(+WqQThr?G8(>)sB4aAEs)L!XW",
+    "dna": "wKN36Qslgdvms6USGcDNFGHniAldnl0vhWWzP/RoVMRF!i(+WqQThr?G8(>)sB4aAEs)L!XW",
+    "label": "hhs_pass133_release_manifest_v1",
+    "positions": [
+      32,
+      46,
+      49,
+      3,
+      6,
+      52,
+      28,
+      21,
+      16,
+      13,
+      31,
+      22,
+      28,
+      6,
+      56,
+      54,
+      42,
+      12,
+      39,
+      49,
+      41,
+      42,
+      43,
+      23,
+      18,
+      36,
+      21,
+      13,
+      23,
+      21,
+      0,
+      31,
+      17,
+      58,
+      58,
+      35,
+      51,
+      65,
+      53,
+      24,
+      57,
+      48,
+      53,
+      41,
+      70,
+      18,
+      66,
+      63,
+      58,
+      26,
+      52,
+      55,
+      17,
+      27,
+      71,
+      42,
+      8,
+      66,
+      69,
+      67,
+      28,
+      37,
+      4,
+      10,
+      36,
+      40,
+      28,
+      67,
+      47,
+      70,
+      59,
+      58
+    ],
+    "rotation_profile": [
+      -112,
+      117,
+      -97,
+      -72,
+      146,
+      263,
+      -50,
+      86,
+      -64,
+      148,
+      93,
+      83,
+      -56,
+      137,
+      42,
+      -105,
+      -46,
+      67,
+      21,
+      -546,
+      21,
+      -339,
+      453,
+      -576,
+      -222,
+      227,
+      -149,
+      130,
+      -5,
+      -296,
+      42,
+      0,
+      -15,
+      97,
+      384,
+      -432,
+      375,
+      -116,
+      303,
+      -375,
+      17,
+      223,
+      227,
+      -578,
+      242,
+      -171,
+      164,
+      -200,
+      -206,
+      193,
+      -142,
+      -68,
+      109,
+      190,
+      17,
+      59,
+      -192,
+      225,
+      155,
+      80,
+      -176,
+      -168,
+      230,
+      -197,
+      476,
+      -313,
+      -254,
+      0,
+      -21,
+      289,
+      -83,
+      311
+    ],
+    "schema": "HHS_HASH72_KERNEL_WITNESS_V1",
+    "trace_count": 4375,
+    "zero_sum": true
+  },
+  "negative_tests": {
+    "ecc": "PASS",
+    "phase": "PASS",
+    "prime_magic": "PASS"
+  },
+  "parent_checkpoint_root_hash72": "dO6p3HqQTU9U<zh8qkbIy>)CqwZo8JNL(1nL9?6xJ7FlAF4KIpgTtng9pu6cWlKLBT!WLplR",
+  "pass_id": "PASS_133",
+  "prime_bits": 64,
+  "runtime_parent": "PASS_132",
+  "schema": "HHS_PASS133_RELEASE_MANIFEST_V1",
+  "source_manifest_sha256": "45d516f9eea92554b5d01b22fe8482a11b7e65199e367cd2e5e872c2f2d25ed6",
+  "terminal_status": "PASS_133_CHECKPOINT_KEY_STATE_WORKLOAD_VERIFIED",
+  "version": "1.0.0",
+  "workloads": {
+    "133.1": "PRIME_MAGIC_SUDOKU_BIGINT_KEY_STATE_VERIFIED",
+    "133.2": "PRIME_QUDIT_PHASE_CANCELLATION_KEY_STATE_VERIFIED",
+    "133.3": "PALINDROMIC_ECC_BIGINT_RECONSTRUCTION_VERIFIED",
+    "HHS-I133": "PASS"
+  }
+}

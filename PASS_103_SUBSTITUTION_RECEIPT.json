@@ -1,0 +1,12 @@
+{
+  "capture_avoiding": true,
+  "max_depth": 72,
+  "ordered_target_roots": [
+    "0000000000000000000000000000002X631>BmC8gXeCy3?NLeocY)gr6vpsxGOiD9oczu5>",
+    "0000000000000000000000000000002-G-XZ*J^O0?^)X=oXnHxii8>1QW)Q(c/0/l87yDXr"
+  ],
+  "receipt_root_hash72": "0000000000000000000000000000001(lTi>m>s54S0?sWKX7RZfXuQ57>iqNuMHt=N-h5-!",
+  "schema": "HHS_SYMBOLIC_SUBSTITUTION_RECEIPT_V1",
+  "source_symbol": "γ",
+  "type_checks_passed": true
+}

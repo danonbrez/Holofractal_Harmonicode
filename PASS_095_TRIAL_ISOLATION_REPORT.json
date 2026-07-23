@@ -1,0 +1,19 @@
+{
+  "schema": "HHS_PASS_095_TRIAL_ISOLATION_REPORT_V1",
+  "verified": true,
+  "config": {
+    "counterbalanced_order": true,
+    "evaluation_id": "PASS095:canonical",
+    "held_out_committed_before_evaluation": true,
+    "input_commitment_root_hash72": "0000000000000000000000000000002WiV+KWBK5jBt4NB)hYv^c7shdBcMmwcZ!Myg?s8^2",
+    "parent_pass094_release_root_hash72": "0000000000000000000000000000003/EHi(>pX4X6mJCnO(^V(resH57g-P9nOyOjaD66VJ",
+    "pattern_registry_read_only": true,
+    "replications": 3,
+    "same_budget": true,
+    "same_hardware_envelope": true,
+    "same_provider_class": true,
+    "same_validator": true,
+    "schema": "HHS_PASS_095_AB_EVALUATION_CONFIG_V1",
+    "separate_caches": true
+  }
+}

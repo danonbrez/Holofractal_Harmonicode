@@ -1,0 +1,66 @@
+{
+  "schema": "HHS_PASS145_PERFORMANCE_REPORT_V1",
+  "platform": "HOST_VALIDATION_ENVIRONMENT_NOT_ANDROID",
+  "samples": [
+    {
+      "schema": "HHS_PASS145_PERFORMANCE_SAMPLE_V1",
+      "document_count": 1,
+      "analyze": true,
+      "source_bytes": 115,
+      "parsed_segments": 1,
+      "extracted_objects": 23,
+      "graph_edges": 27,
+      "validation_count": 1,
+      "receipt_count": 3,
+      "transaction_count": 3,
+      "database_bytes": 4096,
+      "elapsed_ns": 41871067,
+      "elapsed_seconds_decimal": "0.041871067",
+      "peak_rss_kib": 290900,
+      "database_integrity": true,
+      "receipt_chain_valid": true,
+      "continuation_count": 0,
+      "bounded_outcomes": [],
+      "sample_hash72": "0000000000000000000000000000003v*nHX(?3gi)g7pK>WZxdO?M+UI0vSLehnk/sv5ZDa"
+    },
+    {
+      "schema": "HHS_PASS145_PERFORMANCE_SAMPLE_V1",
+      "document_count": 9,
+      "analyze": true,
+      "source_bytes": 1035,
+      "parsed_segments": 9,
+      "extracted_objects": 207,
+      "graph_edges": 243,
+      "validation_count": 9,
+      "receipt_count": 27,
+      "transaction_count": 27,
+      "database_bytes": 4096,
+      "elapsed_ns": 840313396,
+      "elapsed_seconds_decimal": "0.840313396",
+      "peak_rss_kib": 296776,
+      "database_integrity": true,
+      "receipt_chain_valid": true,
+      "continuation_count": 0,
+      "bounded_outcomes": [],
+      "sample_hash72": "0000000000000000000000000000002V>3fW1NCeZbV715=(Ck*m)RkeSbLZ5pry4wtckX72"
+    }
+  ],
+  "required_real_device_ladder": [
+    1,
+    9,
+    81,
+    729,
+    6561
+  ],
+  "executed_counts": [
+    1,
+    9
+  ],
+  "unexecuted_counts": [
+    81,
+    729,
+    6561
+  ],
+  "closure_effect": "REAL_DEVICE_PERFORMANCE_NOT_CLOSED",
+  "report_hash72": "0000000000000000000000000000004w*>SABo3lY+Zx54K)lBeSr!f+w9N-KeZi0MQeHwFX"
+}

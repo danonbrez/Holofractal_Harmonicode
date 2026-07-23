@@ -1,0 +1,85 @@
+{
+  "schema": "HHS_PASS_097_CONSTRAINT_ABLATIONS_V1",
+  "results": [
+    {
+      "ablation_root_hash72": "00000000000000000000000000000047UWse8foxw/Qrrjz4SAxlAC+NdmPSGuG3i1VtTXyf",
+      "constraint_class": "AUTHORITY_RULES",
+      "essential": true,
+      "observed_failure": "AUTHORITY_CONFUSION",
+      "removed": true,
+      "schema": "HHS_CONSTRAINT_ABLATION_RESULT_V1"
+    },
+    {
+      "ablation_root_hash72": "0000000000000000000000000000003TuHNI?m7LLFWUTuxKpoy=h*HIU0(VUBS6Kh1uYiLJ",
+      "constraint_class": "EPISTEMIC_TYPING",
+      "essential": true,
+      "observed_failure": "UNCERTAINTY_COLLAPSE",
+      "removed": true,
+      "schema": "HHS_CONSTRAINT_ABLATION_RESULT_V1"
+    },
+    {
+      "ablation_root_hash72": "0000000000000000000000000000004zV+qsJW!t7P/9gnm7!K+e^HF/kAVA?a1VyU!sSJcR",
+      "constraint_class": "CAUSAL_DIRECTION",
+      "essential": true,
+      "observed_failure": "CAUSAL_INVERSION",
+      "removed": true,
+      "schema": "HHS_CONSTRAINT_ABLATION_RESULT_V1"
+    },
+    {
+      "ablation_root_hash72": "0000000000000000000000000000004fxp6kF^hUz3Pwwx3k3!KI8*kX*0W+ljuFUkA=BVJ8",
+      "constraint_class": "SCOPE_PRESERVATION",
+      "essential": true,
+      "observed_failure": "SCOPE_MUTATION",
+      "removed": true,
+      "schema": "HHS_CONSTRAINT_ABLATION_RESULT_V1"
+    },
+    {
+      "ablation_root_hash72": "0000000000000000000000000000000QTL!ONM-pBmPsFSXKgV=)L0vZx*IE7gSId7+s(ZB2",
+      "constraint_class": "OPERATOR_ORDER",
+      "essential": true,
+      "observed_failure": "ORDER_ERASURE",
+      "removed": true,
+      "schema": "HHS_CONSTRAINT_ABLATION_RESULT_V1"
+    },
+    {
+      "ablation_root_hash72": "00000000000000000000000000000026=91qLwUjx?W-S-bdBK)Y+qjlscfAG>o=cUo9+mqL",
+      "constraint_class": "AMBIGUITY_PRESERVATION",
+      "essential": true,
+      "observed_failure": "PREMATURE_COLLAPSE",
+      "removed": true,
+      "schema": "HHS_CONSTRAINT_ABLATION_RESULT_V1"
+    },
+    {
+      "ablation_root_hash72": "0000000000000000000000000000001Z8oQ*(Gf3eBcbxJULAEUz?VExA+hNMZC6h/NkAA=T",
+      "constraint_class": "SOURCE_LINEAGE",
+      "essential": true,
+      "observed_failure": "PROVENANCE_LOSS",
+      "removed": true,
+      "schema": "HHS_CONSTRAINT_ABLATION_RESULT_V1"
+    },
+    {
+      "ablation_root_hash72": "0000000000000000000000000000000mbV7cx6pt4iB/cjdcP8dmGyc3!Qkm55D+6IUf7DVu",
+      "constraint_class": "METAPHOR_RECONSTRUCTION",
+      "essential": true,
+      "observed_failure": "RECONSTRUCTION_FAILURE",
+      "removed": true,
+      "schema": "HHS_CONSTRAINT_ABLATION_RESULT_V1"
+    },
+    {
+      "ablation_root_hash72": "0000000000000000000000000000003Idz!NezhFBWRG!3F*r*Cqlf)3mrqpCKsDZ58^/BxO",
+      "constraint_class": "CONTEXT_ORIENTATION",
+      "essential": true,
+      "observed_failure": "CONTEXT_DRIFT",
+      "removed": true,
+      "schema": "HHS_CONSTRAINT_ABLATION_RESULT_V1"
+    },
+    {
+      "ablation_root_hash72": "0000000000000000000000000000002j/rV>qgrw+W!pT*T)A!UGum=D68uxM*pJZGFzgjPB",
+      "constraint_class": "PATTERN_REUSE",
+      "essential": false,
+      "observed_failure": "EFFICIENCY_LOSS",
+      "removed": true,
+      "schema": "HHS_CONSTRAINT_ABLATION_RESULT_V1"
+    }
+  ]
+}

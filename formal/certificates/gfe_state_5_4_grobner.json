@@ -1,0 +1,61 @@
+{
+  "all_remainders_zero": true,
+  "alpha": "5/4",
+  "alpha_inverse": "4/5",
+  "coefficient_field": "Q",
+  "contract": "HHS-GFE-FORMAL-136",
+  "generic_constraint_remainders": [
+    "0",
+    "0"
+  ],
+  "generic_constraints": [
+    "g*h - 1",
+    "-g - h + rho + 2"
+  ],
+  "order": "lex(g>h>rho)",
+  "quotient_field": "Q",
+  "quotient_normal_form": "constant rational",
+  "reduced_grobner_basis": [
+    "g - 5/4",
+    "h - 4/5",
+    "rho - 1/20"
+  ],
+  "rho_alpha": "1/20",
+  "s_polynomial_reductions": [
+    {
+      "pair": [
+        0,
+        1
+      ],
+      "remainder": "0",
+      "s_polynomial": "4*g/5 - 5*h/4"
+    },
+    {
+      "pair": [
+        0,
+        2
+      ],
+      "remainder": "0",
+      "s_polynomial": "g/20 - 5*rho/4"
+    },
+    {
+      "pair": [
+        1,
+        2
+      ],
+      "remainder": "0",
+      "s_polynomial": "h/20 - 4*rho/5"
+    }
+  ],
+  "sha256": "41cab527545fcfd8538ee77b3f523ec63aac207b71f33d6ec10087b416667a71",
+  "state_ideal_generators": [
+    "g - 5/4",
+    "h - 4/5",
+    "rho - 1/20"
+  ],
+  "variables": [
+    "g",
+    "h",
+    "rho"
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "double_error_fail_closed": true,
+  "schema": "HHS_PASS133_PALINDROMIC_ECC_STRESS_REPORT_V1",
+  "single_bit_corrected": 256,
+  "single_bit_samples": 256,
+  "status": "PASS"
+}

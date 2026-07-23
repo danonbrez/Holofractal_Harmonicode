@@ -1,0 +1,13 @@
+{
+  "artifact_status": "REJECTED",
+  "canonical_continuation": false,
+  "category": "SEMANTIC_IDENTITY_VIOLATION",
+  "execution_roots_expected_to_match": false,
+  "fallback": "NONE",
+  "receipt_schema": "HHS_INTERPRETER_COMPILER_EQUIVALENCE_RECEIPT_V1",
+  "rejection_code": "REJECT_INTERPRETER_COMPILER_SEMANTIC_DIVERGENCE",
+  "rejection_primitive_root_hash72": "0000000000000000000000000000002E9APMiXWW/BosQ(AbI2q=n>K?fyB-G3*jmXlag7BG",
+  "schema": "HHS_REJECTION_PRIMITIVE_V1",
+  "semantic_projection_roots_required_to_match": true,
+  "trigger": "INTERPRETER_AND_COMPILED_CANONICAL_SEMANTIC_PROJECTION_ROOTS_DIFFER"
+}

@@ -1,0 +1,10 @@
+{
+  "compiled_replay_root_hash72": "0000000000000000000000000000004GbVH0px0*ipyAeo9y71NbyGhdEzBLp*bGyZhaBzZ(",
+  "expected_compiled_execution_root_hash72": "0000000000000000000000000000001ozxhTz*DtFz8I>9IU(lQbTz4-p9/hoFQ>V*E-3rS4",
+  "host_path_used_as_identity": false,
+  "llm_context_window_used": false,
+  "matches": true,
+  "observed_compiled_execution_root_hash72": "0000000000000000000000000000001ozxhTz*DtFz8I>9IU(lQbTz4-p9/hoFQ>V*E-3rS4",
+  "schema": "HHS_COMPILED_EXECUTION_REPLAY_V1",
+  "thread_context_used": false
+}

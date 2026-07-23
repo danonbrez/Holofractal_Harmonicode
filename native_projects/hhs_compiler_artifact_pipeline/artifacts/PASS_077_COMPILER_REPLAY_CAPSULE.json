@@ -1,0 +1,98 @@
+{
+  "artifact_bindings": [
+    {
+      "relative_path": "native_projects/hhs_compiler_artifact_pipeline/artifacts/HHS_PASS_077_COMPILER_ARTIFACT_PIPELINE_RELEASE_BUNDLE.json",
+      "sha256": "ab3fe014f49ba9548bbc6804570b1095e5a04b4eca5e43cfa2e58fdb937b75bc"
+    },
+    {
+      "relative_path": "native_projects/hhs_compiler_artifact_pipeline/artifacts/PASS_077_ADMITTED_ARTIFACT_PACKAGE.hhspkg",
+      "sha256": "6bf520fe1a108008092aa6a229ac5c98d24bfccc57466ab9de83b49eb8a04dad"
+    },
+    {
+      "relative_path": "native_projects/hhs_compiler_artifact_pipeline/artifacts/PASS_077_EQUIVALENCE_RECEIPT.json",
+      "sha256": "e7ad3815999a67b2c9c36bf2fedc0feee5a69fa4125b89581aa035b7c2a783e8"
+    },
+    {
+      "relative_path": "native_projects/hhs_compiler_artifact_pipeline/artifacts/PASS_077_LINEAGE_CERTIFICATE.json",
+      "sha256": "48c67ed0b0c45e5f54ff1328bf3fcdcbb96cb4bea970f75f8c96a6b63472086f"
+    },
+    {
+      "relative_path": "native_projects/hhs_compiler_artifact_pipeline/artifacts/PASS_077_REGISTERED_TARGET_CONTRACT.json",
+      "sha256": "2b163f1ce844ca26316bd75039a4c627b315b75e7b0de760cc835d2c9d4cb081"
+    }
+  ],
+  "capsule_root_hash72": "0000000000000000000000000000000IC1fX0O7DjqJ37bq=p9HMwRw)g^rb)>pA!YY3djyZ",
+  "expected_artifact_payload_root_hash72": "0000000000000000000000000000000RVIT*g=?u5ek+PE*4Z2BO+-3e9UFcpV1qZ!A(28f0",
+  "expected_equivalence_root_hash72": "0000000000000000000000000000000gr9-^07UhJpw-6sUOu8L+=LrHnqpzIW9TJrBtxT8h",
+  "expected_lineage_root_hash72": "0000000000000000000000000000004IR>l/vq-stkD6YHSvg+PEBr13q2NQgei(qYQbi?BX",
+  "expected_package_root_hash72": "00000000000000000000000000000037WDI5otJeF7zwEQeW*Xm(>3Mh8il2W(Ie-1NEL?uO",
+  "expected_product_root_hash72": "000000000000000000000000000000447Xbi5-=mIgZ/h7AXKs!sp!Xm!8/EG?IS*y2^+iSt",
+  "expected_program_graph_root_hash72": "0000000000000000000000000000004aP-dbiLU77d8Kg9UK?9Kfa5l(soI*(SJNT8sAu2^+",
+  "expected_workspace_state_root_hash72": "0000000000000000000000000000003Dp^/LRxSQ*GFUwGjEUOYqGBS2q2cskRhwQfA4F>Z4",
+  "frozen_platform_pass": "PASS_072",
+  "host_path_used_as_identity": false,
+  "llm_context_window_required": false,
+  "parent_pass": "PASS_076",
+  "pass_id": "PASS_077",
+  "repository_state_authoritative": true,
+  "schema": "HHS_PASS_077_COMPILER_REPLAY_CAPSULE_V1",
+  "source_bindings": [
+    {
+      "relative_path": "native_projects/hhs_compiler_artifact_pipeline/__init__.py",
+      "sha256": "a58da51a4db4335d832d8e7928bd2b331268356d83281e2c461e12edc25272b9"
+    },
+    {
+      "relative_path": "native_projects/hhs_compiler_artifact_pipeline/hhs_artifact_lineage_pipeline_v1.py",
+      "sha256": "3da1bfbce6e76db53c63c6ab9eb0a7a0b9b191dba93ce4406a7d1dc38050771a"
+    },
+    {
+      "relative_path": "native_projects/hhs_compiler_artifact_pipeline/hhs_canonical_semantic_projection_v1.py",
+      "sha256": "0282d468176a734ce68aa0b29afac54e2064009b1eaa0ebd2a72c4af3d2abef0"
+    },
+    {
+      "relative_path": "native_projects/hhs_compiler_artifact_pipeline/hhs_exact_artifact_delta_v1.py",
+      "sha256": "0c83bf389c6e8d8262e34acc95b21099d208668f0e580bc62326df71565a9c94"
+    },
+    {
+      "relative_path": "native_projects/hhs_compiler_artifact_pipeline/hhs_independent_artifact_verifier_v1.py",
+      "sha256": "898c1ef812859266c577e4431366459f0dae76994ca003fe2d01bb0c67368d7d"
+    },
+    {
+      "relative_path": "native_projects/hhs_compiler_artifact_pipeline/hhs_interpreter_compiler_equivalence_gate_v1.py",
+      "sha256": "59877a157ba259c59a075bf1714e740838d9244dac7fd569c7dfb39ededb0156"
+    },
+    {
+      "relative_path": "native_projects/hhs_compiler_artifact_pipeline/hhs_pass077_api_v1.py",
+      "sha256": "9fb20801edd5edd8f7812f2e9cbb94bc4c2eb6f2b9eacef1c022afce87fec115"
+    },
+    {
+      "relative_path": "native_projects/hhs_compiler_artifact_pipeline/hhs_pass077_cli_v1.py",
+      "sha256": "056ddce8298a1b8aba0e7dd01071dba2aa4ab82d5e5b19d444a1e049558d07b3"
+    },
+    {
+      "relative_path": "native_projects/hhs_compiler_artifact_pipeline/hhs_pass077_contracts_v1.py",
+      "sha256": "7165eaf71e9cc73bd7d55c15a3479d186f50b0d33ae51318540e07ca3b8b2821"
+    },
+    {
+      "relative_path": "native_projects/hhs_compiler_artifact_pipeline/hhs_pass077_program_graph_v1.py",
+      "sha256": "3b7575eae0f4af18399df28efde1e2c931e760c9c5a1039010707efbc7f9f96a"
+    },
+    {
+      "relative_path": "native_projects/hhs_compiler_artifact_pipeline/hhs_pass077_replay_runner_v1.py",
+      "sha256": "a7e54a663a3762330724a0debe5439697450747830f30a196b4e587269dc3cbd"
+    },
+    {
+      "relative_path": "native_projects/hhs_compiler_artifact_pipeline/hhs_pass077_workspace_runtime_v1.py",
+      "sha256": "a07cba3865c333356b1c75eb84cbd54279a0f2c27f95731195f50865770b8079"
+    },
+    {
+      "relative_path": "native_projects/hhs_compiler_artifact_pipeline/hhs_portable_bytecode_v1.py",
+      "sha256": "3d5a42cb02a3c00296154c19f97ec383c53e9d669a02637e3dc86bf29e1e5ffe"
+    },
+    {
+      "relative_path": "native_projects/hhs_compiler_artifact_pipeline/verifier/verify_artifact.py",
+      "sha256": "01d733d8ab04b7a545fbe97b6c41949c92f5ffbfeefbf38614f5a2b855ae66d9"
+    }
+  ],
+  "thread_context_required": false
+}

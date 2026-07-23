@@ -1,0 +1,65 @@
+{
+  "schema": "HHS_PASS_097_PARETO_FRONTIER_V1",
+  "configurations": [
+    {
+      "boot_units": 61,
+      "exact_tasks": 12,
+      "level": "L0_FULL",
+      "mean_task_units": 40,
+      "partial_tasks": 0,
+      "permanent_bytes": 1888,
+      "unavailable_tasks": 0
+    },
+    {
+      "boot_units": 74,
+      "exact_tasks": 12,
+      "level": "L1_REDUCED_PATTERNS",
+      "mean_task_units": 80,
+      "partial_tasks": 0,
+      "permanent_bytes": 1472,
+      "unavailable_tasks": 0
+    },
+    {
+      "boot_units": 87,
+      "exact_tasks": 12,
+      "level": "L2_MINIMAL_RELATIONS",
+      "mean_task_units": 105,
+      "partial_tasks": 0,
+      "permanent_bytes": 1056,
+      "unavailable_tasks": 0
+    },
+    {
+      "boot_units": 89,
+      "exact_tasks": 10,
+      "level": "L3_MINIMAL_GRAMMAR_RELATIONS",
+      "mean_task_units": 130,
+      "partial_tasks": 2,
+      "permanent_bytes": 992,
+      "unavailable_tasks": 0
+    },
+    {
+      "boot_units": 99,
+      "exact_tasks": 3,
+      "level": "L4_KERNEL_AUTHORITY_RECONSTRUCTION",
+      "mean_task_units": 140,
+      "partial_tasks": 9,
+      "permanent_bytes": 672,
+      "unavailable_tasks": 0
+    },
+    {
+      "boot_units": 120,
+      "exact_tasks": 0,
+      "level": "L5_KERNEL_ONLY",
+      "mean_task_units": 165,
+      "partial_tasks": 0,
+      "permanent_bytes": 0,
+      "unavailable_tasks": 12
+    }
+  ],
+  "recommended": {
+    "MINIMAL": "L4_KERNEL_AUTHORITY_RECONSTRUCTION",
+    "BALANCED": "L2_MINIMAL_RELATIONS",
+    "FAST_BOOT": "L1_REDUCED_PATTERNS",
+    "HIGH_TRANSFER": "L0_FULL"
+  }
+}

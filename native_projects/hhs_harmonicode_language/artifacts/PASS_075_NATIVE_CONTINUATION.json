@@ -1,0 +1,17 @@
+{
+  "canonical_continuation": true,
+  "completed_stage": "HARMONICODE_TYPED_IR_AND_AGENT_COORDINATED_TEST_ACCELERATION",
+  "continuation_root_hash72": "0000000000000000000000000000000Hv9Y-*ZdplqxG>2)>+KrzzBL5!b*3-4DYtNCd+IXQ",
+  "current_native_pass": "PASS_075",
+  "foundation_modified": false,
+  "llm_context_window_required": false,
+  "next_native_pass": "PASS_076",
+  "next_stage": "HARMONICODE_INTERPRETER_AND_BOUNDED_REPAIR_EXECUTION",
+  "parent_native_pass": "PASS_074",
+  "platform_foundation_pass": "PASS_072",
+  "platform_foundation_root_hash72": "ZF9bto?tV>P(KcFPL5L+csyy!jxdrAaadua1a!w-uwug8/MeMSqSS3*R>lXIefi)nyjXpc+)",
+  "repository_state_authoritative": true,
+  "restart_safe": true,
+  "schema": "HHS_NATIVE_PRODUCT_CONTINUATION_V1",
+  "thread_context_required": false
+}

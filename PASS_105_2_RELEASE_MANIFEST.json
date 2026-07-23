@@ -1,0 +1,93 @@
+{
+  "dedicated_test_result": "9 passed",
+  "files": [
+    {
+      "bytes": 15237,
+      "path": "hhs_runtime/core_sandbox/hhs_general_runtime_layer_v1.py",
+      "sha256": "9d55224600e29edee2b33e412e7331fbff581800a762efe63d1e8499c8b377d8"
+    },
+    {
+      "bytes": 9584,
+      "path": "hhs_backend/runtime/runtime_server.py",
+      "sha256": "262ee38c29f04316c1e4672b170fd26563fa86b6732c248f79af679f90d1e619"
+    },
+    {
+      "bytes": 12976,
+      "path": "gui/hhs-mobile-runtime-console/src/runtimeData.ts",
+      "sha256": "6921169445e4ebbf3257d6a7e8100855e82938843f250c76458dd60382beb7f5"
+    },
+    {
+      "bytes": 437518,
+      "path": "HARMONICODE_KERNEL_v44_2_lockcore_patched_selfsolving_hash72authority_locked-7.py",
+      "sha256": "eea1101e23ef6d140732fcd17bcabbd57b7b0b349c838c25d29d5be150b326cf"
+    },
+    {
+      "bytes": 3783,
+      "path": "hhs_runtime/hhs_pass105_2_authority_placeholder_closure_v1.py",
+      "sha256": "c0fd8e984d28cae26f63e08541cdd81e03aff8c195f4cab45e5b31672925bc78"
+    },
+    {
+      "bytes": 192668,
+      "path": "hhs_runtime/hhs_service_registry_v1.py",
+      "sha256": "a3169787aee91b699f9f984bbcc12229f8876eff83688c04af007c0a32f7ece7"
+    },
+    {
+      "bytes": 2843,
+      "path": "tests/test_hhs_pass105_2_authority_placeholder_closure_v1.py",
+      "sha256": "e8b4bc53fa5213047229ace63811a401e764fab79c253ba4b9e5b37a5269e95e"
+    },
+    {
+      "bytes": 1104,
+      "path": "PASS_105_2_REPAIR_VERIFICATION.json",
+      "sha256": "1f3b041852cc43ed0dbe0fd4a12b75bc34e9eca8374507e2fc918706ff396f71"
+    },
+    {
+      "bytes": 621,
+      "path": "PASS_105_2_RUNTIME_SURFACE.json",
+      "sha256": "0ce08e6ebcb83e9898800459cdc9eee6604a6951efc46ce322eb8aef98d0a560"
+    },
+    {
+      "bytes": 646,
+      "path": "CHANGELOG_PASS_105_2.md",
+      "sha256": "d0f202834e8b63ec34ee751a373d13ddb0f0605dd91e3f248c629b1d48eb832f"
+    }
+  ],
+  "focused_test_result": "46 passed",
+  "parent_pass_id": "PASS_105_1",
+  "parent_release_root_hash72": null,
+  "pass_id": "PASS_105_2",
+  "release_root_hash72": "H72N-5a36dfb0c3349d6e89",
+  "repairs": {
+    "all_repairs_verified": true,
+    "authoritative_kernel": {
+      "kernel_file": "/mnt/data/pass105_2_work/pass105_1/HARMONICODE_KERNEL_v44_2_lockcore_patched_selfsolving_hash72authority_locked-7.py",
+      "kernel_hash72_probe": "H72N-db30158c5996b9cee0",
+      "kernel_loaded": true,
+      "kernel_module": "HARMONICODE_KERNEL_v44_2_lockcore_patched_selfsolving_hash72authority_locked-7",
+      "local_substitute_authority_used": false
+    },
+    "mobile_failure_integrity": {
+      "canonical_mock_fallback_absent": true,
+      "forbidden_hits": [],
+      "typed_unavailable_snapshot_present": true
+    },
+    "pass_id": "PASS_105_2",
+    "px1_face": {
+      "equation_implemented": true,
+      "placeholder_class_absent": true,
+      "real_face_registered": true
+    },
+    "runtime_execution": {
+      "echo_executor": false,
+      "execution_performed": true,
+      "full_receipt_hash72": "eC4itzt(aBRrQ8*WTRr(s11r",
+      "solver_receipt_hash72": "FrTbU*Z)k7yK/2(7UJ7Ba√sM",
+      "status": "SOLVED",
+      "transport": "harmonicode_interpreter_solver"
+    },
+    "schema": "HHS_PASS105_2_AUTHORITY_PLACEHOLDER_CLOSURE_V1",
+    "status": "PASS"
+  },
+  "schema": "HHS_PASS_105_2_RELEASE_MANIFEST_V1",
+  "status": "COMPLETE"
+}

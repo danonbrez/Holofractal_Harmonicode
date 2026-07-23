@@ -1,0 +1,53 @@
+{
+  "schema": "HHS_PASS_097_NEGATIVE_CASES_V1",
+  "cases": [
+    {
+      "case": "memorized_answer",
+      "expected": "REJECT_MEMORIZATION_AS_GENERAL_REASONING",
+      "observed": "REJECT_MEMORIZATION_AS_GENERAL_REASONING",
+      "passed": true
+    },
+    {
+      "case": "semantic_collapse",
+      "expected": "REJECT_MINIMALITY_WITH_SEMANTIC_COLLAPSE",
+      "observed": "REJECT_MINIMALITY_WITH_SEMANTIC_COLLAPSE",
+      "passed": true
+    },
+    {
+      "case": "provenance_loss",
+      "expected": "REJECT_MEMORY_REDUCTION_WITH_PROVENANCE_LOSS",
+      "observed": "REJECT_MEMORY_REDUCTION_WITH_PROVENANCE_LOSS",
+      "passed": true
+    },
+    {
+      "case": "prior_context",
+      "expected": "REJECT_CONTEXT_DEPENDENT_BOOT",
+      "observed": "REJECT_CONTEXT_DEPENDENT_BOOT",
+      "passed": true
+    },
+    {
+      "case": "nondeterministic_rebuild",
+      "expected": "REJECT_NONDETERMINISTIC_PATTERN_RECONSTRUCTION",
+      "observed": "REJECT_NONDETERMINISTIC_PATTERN_RECONSTRUCTION",
+      "passed": true
+    },
+    {
+      "case": "hallucinated_fact",
+      "expected": "REJECT_HALLUCINATED_WORLD_KNOWLEDGE",
+      "observed": "REJECT_HALLUCINATED_WORLD_KNOWLEDGE",
+      "passed": true
+    },
+    {
+      "case": "scope_failure",
+      "expected": "REJECT_MINIMAL_GRAMMAR_SCOPE_FAILURE",
+      "observed": "REJECT_MINIMAL_GRAMMAR_SCOPE_FAILURE",
+      "passed": true
+    },
+    {
+      "case": "skip_validation",
+      "expected": "REJECT_RESOURCE_GAIN_WITHOUT_AUTHORITY_CHECK",
+      "observed": "REJECT_RESOURCE_GAIN_WITHOUT_AUTHORITY_CHECK",
+      "passed": true
+    }
+  ]
+}

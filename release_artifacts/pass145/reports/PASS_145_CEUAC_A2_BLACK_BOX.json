@@ -1,0 +1,210 @@
+{
+  "actor_boundary": "PUBLIC_HHS_CLI_ONLY",
+  "apk_surface_exercised": false,
+  "apk_surface_status": "NOT_EXPOSED",
+  "authority_level": "A2",
+  "conclusion": "HOST_CLI_EXTERNAL_CAPABILITY_OBSERVED",
+  "passed": true,
+  "process_restart_boundary_exercised": true,
+  "schema": "HHS_PASS145_CEUAC_A2_BLACK_BOX_V1",
+  "steps": [
+    {
+      "result": {
+        "contradictions": {
+          "contradiction_count": 0,
+          "status": "NO_CONTRADICTIONS_DETECTED"
+        },
+        "database_root_hash72": "0000000000000000000000000000003AcL6rvamZb7J5I6lSCwLP*GOTt5w*D14FFmN6zG^C",
+        "entity_count": 22,
+        "interpretation": {
+          "claim_count": 4,
+          "receipt_hash72": "0000000000000000000000000000001YQRZn)D^iPovdh47gPxuzLMu?!ELbwC6O4(r)5rFo",
+          "receipt_id": "RCP-9c10f4b4e61a87bbc7b8df09",
+          "relation_count": 34,
+          "status": "INTERPRETATION_COMMITTED"
+        },
+        "parse_id": "PAR-cef03986d1710313e6828000",
+        "receipt_hash72": "0000000000000000000000000000003=)xvw8E9(2EEnOmTalQ1SnaY2Yd*o4+WaCdbgP+RB",
+        "receipt_id": "RCP-c3b40a3069bc27f7ad85753e",
+        "receipts": {
+          "DOCUMENT_INGESTION_RECEIPT": {
+            "receipt_hash72": "0000000000000000000000000000003=)xvw8E9(2EEnOmTalQ1SnaY2Yd*o4+WaCdbgP+RB",
+            "receipt_id": "RCP-c3b40a3069bc27f7ad85753e"
+          },
+          "PARSE_RECEIPT": {
+            "parse_id": "PAR-cef03986d1710313e6828000",
+            "parse_root_hash72": "0000000000000000000000000000002LiYeNvPr(yyUj/E1c1/K+-cX)WJ8jtLl26PpB1aHB",
+            "parser_version": "1.0.0",
+            "receipt_hash72": "0000000000000000000000000000000oH-90knPl45xz8Rq1W8iY-dYr6?EBL-Gl1-RUGwz4",
+            "script_execution": "NOT_PERFORMED"
+          },
+          "SOURCE_PRESERVATION_RECEIPT": {
+            "byte_length": 138,
+            "raw_sha256": "029a436134a3629684c9ebeb331864543ce8e71af0a57aa156bd93252163c4c6",
+            "receipt_hash72": "0000000000000000000000000000003dpJ9J7W)6GN8BF4RRpdSqclW)VGgwJ8(2>-nZrSCP",
+            "source_id": "SRC-f05627753b7d34093ae7e5b3",
+            "source_root_hash72": "0000000000000000000000000000004hq=m>g)yPXtrhp+U?9PZ7T?1cNqqqoEg?E!W^=GN*"
+          }
+        },
+        "schema": "HHS_PASS145_INGESTION_RESULT_V1",
+        "segment_count": 1,
+        "source_id": "SRC-f05627753b7d34093ae7e5b3",
+        "source_root_hash72": "0000000000000000000000000000004hq=m>g)yPXtrhp+U?9PZ7T?1cNqqqoEg?E!W^=GN*",
+        "status": "SOURCE_ADMITTED",
+        "validation": {
+          "authority_level": "A1",
+          "layers": {
+            "V1_BYTE_INTEGRITY": {
+              "details": {
+                "byte_length_recomputed": true,
+                "sha256_recomputed": true
+              },
+              "executed": true,
+              "outcome": "VALIDATED"
+            },
+            "V2_FORMAT_INTEGRITY": {
+              "details": {
+                "parser_version": "1.0.0",
+                "reparsed": true
+              },
+              "executed": true,
+              "outcome": "VALIDATED"
+            },
+            "V3_STRUCTURAL_INTEGRITY": {
+              "details": {
+                "contiguous": true,
+                "segment_count": 1
+              },
+              "executed": true,
+              "outcome": "VALIDATED"
+            },
+            "V4_SCHEMA_INTEGRITY": {
+              "details": {
+                "schemas_checked": [
+                  "HHS_PASS145_SOURCE_EVIDENCE_V1",
+                  "HHS_PASS145_PARSE_V1"
+                ]
+              },
+              "executed": true,
+              "outcome": "VALIDATED"
+            },
+            "V5_PROVENANCE_INTEGRITY": {
+              "details": {
+                "object_count": 26,
+                "segment_references_valid": true
+              },
+              "executed": true,
+              "outcome": "VALIDATED"
+            },
+            "V6_SEMANTIC_INTEGRITY": {
+              "details": {
+                "O_distinct_from_pi": true,
+                "claim_evidence_spans_valid": true
+              },
+              "executed": true,
+              "outcome": "VALIDATED"
+            },
+            "V7_RUNTIME_CONFORMANCE": {
+              "details": {
+                "claim_roots_equal": true,
+                "rebuilt_claim_count": 4,
+                "stored_claim_count": 4
+              },
+              "executed": true,
+              "outcome": "VALIDATED"
+            },
+            "V8_CROSS_DOCUMENT_CONSISTENCY": {
+              "details": {
+                "contradiction_count": 0,
+                "missing_endpoints": []
+              },
+              "executed": true,
+              "outcome": "VALIDATED"
+            },
+            "V9_RECEIPT_INTEGRITY": {
+              "details": {
+                "count": 2,
+                "failures": [],
+                "ok": true,
+                "schema": "HHS_PASS145_RECEIPT_CHAIN_VERIFICATION_V1",
+                "tip_receipt_id": "RCP-9c10f4b4e61a87bbc7b8df09"
+              },
+              "executed": true,
+              "outcome": "VALIDATED"
+            }
+          },
+          "outcome": "VALIDATED",
+          "receipt_hash72": "0000000000000000000000000000001cc(c^1nPm)fM*5sTPQhj^NYV0qJuPO+PWW443>A8d",
+          "receipt_id": "RCP-0ae412e660e06efb72ce5f76",
+          "schema": "HHS_PASS145_SOURCE_VALIDATION_V1",
+          "source_id": "SRC-f05627753b7d34093ae7e5b3",
+          "validation_id": "VAL-357d950ecaa050dbf74e5522",
+          "validation_result_hash72": "0000000000000000000000000000001eA>nC>R(LWVrx6evVYO*f-6R*TIAuUP8tX0+1IO0A",
+          "validators_executed": [
+            "V1_BYTE_INTEGRITY",
+            "V2_FORMAT_INTEGRITY",
+            "V3_STRUCTURAL_INTEGRITY",
+            "V4_SCHEMA_INTEGRITY",
+            "V5_PROVENANCE_INTEGRITY",
+            "V6_SEMANTIC_INTEGRITY",
+            "V7_RUNTIME_CONFORMANCE",
+            "V8_CROSS_DOCUMENT_CONSISTENCY",
+            "V9_RECEIPT_INTEGRITY"
+          ]
+        }
+      },
+      "returncode": 0,
+      "step": "import_document"
+    },
+    {
+      "raw_bytes_equal": true,
+      "returncode": 0,
+      "source_root_hash72": "0000000000000000000000000000004hq=m>g)yPXtrhp+U?9PZ7T?1cNqqqoEg?E!W^=GN*",
+      "step": "inspect_preserved_source"
+    },
+    {
+      "database_root_unchanged": true,
+      "result_count": 1,
+      "returncode": 0,
+      "step": "query_contents"
+    },
+    {
+      "outcome": "VALIDATED",
+      "returncode": 0,
+      "step": "inspect_validation",
+      "validators_executed": [
+        "V1_BYTE_INTEGRITY",
+        "V2_FORMAT_INTEGRITY",
+        "V3_STRUCTURAL_INTEGRITY",
+        "V4_SCHEMA_INTEGRITY",
+        "V5_PROVENANCE_INTEGRITY",
+        "V6_SEMANTIC_INTEGRITY",
+        "V7_RUNTIME_CONFORMANCE",
+        "V8_CROSS_DOCUMENT_CONSISTENCY",
+        "V9_RECEIPT_INTEGRITY"
+      ]
+    },
+    {
+      "receipt_hash72": "0000000000000000000000000000003=)xvw8E9(2EEnOmTalQ1SnaY2Yd*o4+WaCdbgP+RB",
+      "receipt_id": "RCP-c3b40a3069bc27f7ad85753e",
+      "returncode": 0,
+      "step": "export_receipt"
+    },
+    {
+      "ok": true,
+      "returncode": 0,
+      "source_count": 1,
+      "step": "restart_and_verify_continuity"
+    },
+    {
+      "comparison": {
+        "parse_root_hash72": true,
+        "segment_roots": true,
+        "source_root_hash72": true
+      },
+      "returncode": 0,
+      "status": "REPLAY_VALIDATED",
+      "step": "replay_ingestion"
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "cell_count": 81,
+  "implementation_module": "hhs_runtime/hhs_pass115_canonical_qudit_serialization_v1.py",
+  "lost_cells": 0,
+  "mock_components": [],
+  "parent_pass": "PASS_114",
+  "pass115_root_hash72": "0000000000000000000000000000001LRPOHpN^>0viKS-24vcI8fzSe3AiT7Vk-Arx4o!8N",
+  "pass_id": "PASS_115",
+  "position_coordinate_collisions": 0,
+  "runtime_service": "runtime.canonical_qudit_serialization.pass115",
+  "schema": "HHS_PASS115_RELEASE_MANIFEST_V1",
+  "scoped_test_result": {
+    "failed": 0,
+    "passed": 46
+  },
+  "status": "PASS",
+  "test_module": "tests/test_hhs_pass115_canonical_qudit_serialization_v1.py",
+  "topology_mismatches": 0,
+  "traversal_contract": "ROW_MAJOR"
+}

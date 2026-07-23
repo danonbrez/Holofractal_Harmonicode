@@ -1,0 +1,18 @@
+{
+  "artifact_payload_root_hash72": "0000000000000000000000000000000RVIT*g=?u5ek+PE*4Z2BO+-3e9UFcpV1qZ!A(28f0",
+  "compiler_is_semantic_projection_not_authority": true,
+  "continuation_root_hash72": "0000000000000000000000000000002Ejny!v^X=hOOfc*b1kp?Typauwd4d4/aoL)>NGYf*",
+  "current_pass": "PASS_077",
+  "foundation_modified": false,
+  "frozen_platform_pass": "PASS_072",
+  "frozen_platform_root_hash72": "ZF9bto?tV>P(KcFPL5L+csyy!jxdrAaadua1a!w-uwug8/MeMSqSS3*R>lXIefi)nyjXpc+)",
+  "llm_context_window_required": false,
+  "next_pass": "PASS_078",
+  "package_root_hash72": "00000000000000000000000000000037WDI5otJeF7zwEQeW*Xm(>3Mh8il2W(Ie-1NEL?uO",
+  "parent_pass": "PASS_076",
+  "product_root_hash72": "000000000000000000000000000000447Xbi5-=mIgZ/h7AXKs!sp!Xm!8/EG?IS*y2^+iSt",
+  "program_graph_root_hash72": "0000000000000000000000000000004aP-dbiLU77d8Kg9UK?9Kfa5l(soI*(SJNT8sAu2^+",
+  "schema": "HHS_NATIVE_PRODUCT_CONTINUATION_V1",
+  "thread_context_required": false,
+  "workspace_state_root_hash72": "0000000000000000000000000000003Dp^/LRxSQ*GFUwGjEUOYqGBS2q2cskRhwQfA4F>Z4"
+}

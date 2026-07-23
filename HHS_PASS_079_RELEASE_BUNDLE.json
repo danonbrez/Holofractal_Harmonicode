@@ -1,0 +1,1554 @@
+{
+  "closure": {
+    "all_direct_abi_capabilities_registered": true,
+    "no_compiler_native_synthesis": true,
+    "no_shortcut_bindings": true,
+    "typed_unresolved_excluded": true
+  },
+  "kernel_freeze_root_hash72": "0000000000000000000000000000002mMnvePZY>kj-Q3cUqFoqh4F-GJ2v7pWx>vPQ(AhG5",
+  "pass079_release_root_hash72": "0000000000000000000000000000004xE3rjN/AN?)FIuEwX!XaiL+ZfcPooR*F*yHgkydy4",
+  "pass_id": "PASS_079",
+  "registry": {
+    "binding_schema": "HHS_NATIVE_OPCODE_BINDING_V1",
+    "compiler_created_native_operations": 0,
+    "direct_abi_capabilities_total": 29,
+    "entries": [
+      {
+        "abi_disposition": "ADMITTED_EXISTING_DIRECT_ABI",
+        "abi_symbol": "hhs_graph_node_hash",
+        "authority_scope": "NATIVE_CAPABILITY_CONTRACT_ONLY",
+        "binding_root_hash72": "0000000000000000000000000000000JVWIGKZkFpQaaK?93smmIw-Jx7^0iAiiqWAZC*(sB",
+        "buffer_bounds": "EXACT_SCHEMA_AND_NATIVE_ABI_BOUNDS_REQUIRED",
+        "callable": true,
+        "compiler_may_synthesize": false,
+        "failure_semantics": [
+          "REJECT_UNBOUND_OPCODE",
+          "REJECT_SCHEMA_MISMATCH",
+          "REJECT_AUTHORITY_FAILURE",
+          "REJECT_LEASE_FAILURE",
+          "TYPED_UNAVAILABLE"
+        ],
+        "input_schema": {
+          "additionalProperties": false,
+          "required": [
+            "canonical_operands"
+          ],
+          "type": "object"
+        },
+        "ir_schema": "HHS_EXECUTABLE_IR_V1",
+        "lease_requirements": [
+          "TASK_BOUND",
+          "SOURCE_SCOPED",
+          "OPERATION_SCOPED",
+          "SEQUENCE_BOUNDED"
+        ],
+        "memory_ownership": "CALLER_OWNS_INPUT_NATIVE_RUNTIME_OWNS_INTERNAL_STATE",
+        "mutation_class": "READ_OR_BOUNDED_NATIVE_OPERATION",
+        "native_opcode": "NATIVE_GRAPH_NODE_HASH",
+        "output_schema": {
+          "required": [
+            "native_status",
+            "receipt_root_hash72"
+          ],
+          "type": "object"
+        },
+        "post_state_witness_requirements": [
+          "NATIVE_RESULT_IDENTITY",
+          "POST_STATE_ROOT",
+          "EXECUTION_LINEAGE"
+        ],
+        "pre_state_witness_requirements": [
+          "VM81_LANE_BINDING",
+          "CANONICAL_OPERAND_COMMITMENT",
+          "AUTHORITY_RECEIPT"
+        ],
+        "receipt_schema": "HHS_NATIVE_INVOCATION_RECEIPT_V1",
+        "schema": "HHS_NATIVE_OPCODE_BINDING_V1",
+        "semantic_operation_identity": "vm81.native.hhs_graph_node_hash"
+      },
+      {
+        "abi_disposition": "ADMITTED_EXISTING_DIRECT_ABI",
+        "abi_symbol": "hhs_hash72_compare",
+        "authority_scope": "NATIVE_CAPABILITY_CONTRACT_ONLY",
+        "binding_root_hash72": "00000000000000000000000000000014GOKUO9=cSX^71!/!TuR+UF6dSCSf3r>kR4YcnM-q",
+        "buffer_bounds": "EXACT_SCHEMA_AND_NATIVE_ABI_BOUNDS_REQUIRED",
+        "callable": true,
+        "compiler_may_synthesize": false,
+        "failure_semantics": [
+          "REJECT_UNBOUND_OPCODE",
+          "REJECT_SCHEMA_MISMATCH",
+          "REJECT_AUTHORITY_FAILURE",
+          "REJECT_LEASE_FAILURE",
+          "TYPED_UNAVAILABLE"
+        ],
+        "input_schema": {
+          "additionalProperties": false,
+          "required": [
+            "left",
+            "right"
+          ],
+          "type": "object"
+        },
+        "ir_schema": "HHS_EXECUTABLE_IR_V1",
+        "lease_requirements": [
+          "TASK_BOUND",
+          "SOURCE_SCOPED",
+          "OPERATION_SCOPED",
+          "SEQUENCE_BOUNDED"
+        ],
+        "memory_ownership": "CALLER_OWNS_INPUT_NATIVE_RUNTIME_OWNS_INTERNAL_STATE",
+        "mutation_class": "READ_OR_BOUNDED_NATIVE_OPERATION",
+        "native_opcode": "NATIVE_HASH72_COMPARE",
+        "output_schema": {
+          "enum": [
+            -1,
+            0,
+            1
+          ],
+          "type": "integer"
+        },
+        "post_state_witness_requirements": [
+          "NATIVE_RESULT_IDENTITY",
+          "POST_STATE_ROOT",
+          "EXECUTION_LINEAGE"
+        ],
+        "pre_state_witness_requirements": [
+          "VM81_LANE_BINDING",
+          "CANONICAL_OPERAND_COMMITMENT",
+          "AUTHORITY_RECEIPT"
+        ],
+        "receipt_schema": "HHS_NATIVE_INVOCATION_RECEIPT_V1",
+        "schema": "HHS_NATIVE_OPCODE_BINDING_V1",
+        "semantic_operation_identity": "vm81.native.hhs_hash72_compare"
+      },
+      {
+        "abi_disposition": "ADMITTED_EXISTING_DIRECT_ABI",
+        "abi_symbol": "hhs_hash72_dna_validate",
+        "authority_scope": "NATIVE_CAPABILITY_CONTRACT_ONLY",
+        "binding_root_hash72": "0000000000000000000000000000003CluKl5dxr=9lbWitRRsmuq0dK(*G^U-apaQ(Lnnw*",
+        "buffer_bounds": "EXACT_SCHEMA_AND_NATIVE_ABI_BOUNDS_REQUIRED",
+        "callable": true,
+        "compiler_may_synthesize": false,
+        "failure_semantics": [
+          "REJECT_UNBOUND_OPCODE",
+          "REJECT_SCHEMA_MISMATCH",
+          "REJECT_AUTHORITY_FAILURE",
+          "REJECT_LEASE_FAILURE",
+          "TYPED_UNAVAILABLE"
+        ],
+        "input_schema": {
+          "additionalProperties": false,
+          "required": [
+            "canonical_operands"
+          ],
+          "type": "object"
+        },
+        "ir_schema": "HHS_EXECUTABLE_IR_V1",
+        "lease_requirements": [
+          "TASK_BOUND",
+          "SOURCE_SCOPED",
+          "OPERATION_SCOPED",
+          "SEQUENCE_BOUNDED"
+        ],
+        "memory_ownership": "CALLER_OWNS_INPUT_NATIVE_RUNTIME_OWNS_INTERNAL_STATE",
+        "mutation_class": "READ_OR_BOUNDED_NATIVE_OPERATION",
+        "native_opcode": "NATIVE_HASH72_DNA_VALIDATE",
+        "output_schema": {
+          "required": [
+            "native_status",
+            "receipt_root_hash72"
+          ],
+          "type": "object"
+        },
+        "post_state_witness_requirements": [
+          "NATIVE_RESULT_IDENTITY",
+          "POST_STATE_ROOT",
+          "EXECUTION_LINEAGE"
+        ],
+        "pre_state_witness_requirements": [
+          "VM81_LANE_BINDING",
+          "CANONICAL_OPERAND_COMMITMENT",
+          "AUTHORITY_RECEIPT"
+        ],
+        "receipt_schema": "HHS_NATIVE_INVOCATION_RECEIPT_V1",
+        "schema": "HHS_NATIVE_OPCODE_BINDING_V1",
+        "semantic_operation_identity": "vm81.native.hhs_hash72_dna_validate"
+      },
+      {
+        "abi_disposition": "ADMITTED_EXISTING_DIRECT_ABI",
+        "abi_symbol": "hhs_hash72_project",
+        "authority_scope": "NATIVE_CAPABILITY_CONTRACT_ONLY",
+        "binding_root_hash72": "0000000000000000000000000000001g2qb>ILOvZ!b3RN^!+eS1w/Tdzm4Qwp=hsa?ySIa2",
+        "buffer_bounds": "EXACT_SCHEMA_AND_NATIVE_ABI_BOUNDS_REQUIRED",
+        "callable": true,
+        "compiler_may_synthesize": false,
+        "failure_semantics": [
+          "REJECT_UNBOUND_OPCODE",
+          "REJECT_SCHEMA_MISMATCH",
+          "REJECT_AUTHORITY_FAILURE",
+          "REJECT_LEASE_FAILURE",
+          "TYPED_UNAVAILABLE"
+        ],
+        "input_schema": {
+          "additionalProperties": false,
+          "required": [
+            "canonical_operands"
+          ],
+          "type": "object"
+        },
+        "ir_schema": "HHS_EXECUTABLE_IR_V1",
+        "lease_requirements": [
+          "TASK_BOUND",
+          "SOURCE_SCOPED",
+          "OPERATION_SCOPED",
+          "SEQUENCE_BOUNDED"
+        ],
+        "memory_ownership": "CALLER_OWNS_INPUT_NATIVE_RUNTIME_OWNS_INTERNAL_STATE",
+        "mutation_class": "READ_OR_BOUNDED_NATIVE_OPERATION",
+        "native_opcode": "NATIVE_HASH72_PROJECT",
+        "output_schema": {
+          "required": [
+            "native_status",
+            "receipt_root_hash72"
+          ],
+          "type": "object"
+        },
+        "post_state_witness_requirements": [
+          "NATIVE_RESULT_IDENTITY",
+          "POST_STATE_ROOT",
+          "EXECUTION_LINEAGE"
+        ],
+        "pre_state_witness_requirements": [
+          "VM81_LANE_BINDING",
+          "CANONICAL_OPERAND_COMMITMENT",
+          "AUTHORITY_RECEIPT"
+        ],
+        "receipt_schema": "HHS_NATIVE_INVOCATION_RECEIPT_V1",
+        "schema": "HHS_NATIVE_OPCODE_BINDING_V1",
+        "semantic_operation_identity": "vm81.native.hhs_hash72_project"
+      },
+      {
+        "abi_disposition": "ADMITTED_EXISTING_DIRECT_ABI",
+        "abi_symbol": "hhs_hash72_reverse_state",
+        "authority_scope": "NATIVE_CAPABILITY_CONTRACT_ONLY",
+        "binding_root_hash72": "0000000000000000000000000000003v)tV8-)K9uT3LebSzMiWEI!jqR>Ly/!F+ORu6li/h",
+        "buffer_bounds": "EXACT_SCHEMA_AND_NATIVE_ABI_BOUNDS_REQUIRED",
+        "callable": true,
+        "compiler_may_synthesize": false,
+        "failure_semantics": [
+          "REJECT_UNBOUND_OPCODE",
+          "REJECT_SCHEMA_MISMATCH",
+          "REJECT_AUTHORITY_FAILURE",
+          "REJECT_LEASE_FAILURE",
+          "TYPED_UNAVAILABLE"
+        ],
+        "input_schema": {
+          "additionalProperties": false,
+          "required": [
+            "canonical_operands"
+          ],
+          "type": "object"
+        },
+        "ir_schema": "HHS_EXECUTABLE_IR_V1",
+        "lease_requirements": [
+          "TASK_BOUND",
+          "SOURCE_SCOPED",
+          "OPERATION_SCOPED",
+          "SEQUENCE_BOUNDED"
+        ],
+        "memory_ownership": "CALLER_OWNS_INPUT_NATIVE_RUNTIME_OWNS_INTERNAL_STATE",
+        "mutation_class": "READ_OR_BOUNDED_NATIVE_OPERATION",
+        "native_opcode": "NATIVE_HASH72_REVERSE_STATE",
+        "output_schema": {
+          "required": [
+            "native_status",
+            "receipt_root_hash72"
+          ],
+          "type": "object"
+        },
+        "post_state_witness_requirements": [
+          "NATIVE_RESULT_IDENTITY",
+          "POST_STATE_ROOT",
+          "EXECUTION_LINEAGE"
+        ],
+        "pre_state_witness_requirements": [
+          "VM81_LANE_BINDING",
+          "CANONICAL_OPERAND_COMMITMENT",
+          "AUTHORITY_RECEIPT"
+        ],
+        "receipt_schema": "HHS_NATIVE_INVOCATION_RECEIPT_V1",
+        "schema": "HHS_NATIVE_OPCODE_BINDING_V1",
+        "semantic_operation_identity": "vm81.native.hhs_hash72_reverse_state"
+      },
+      {
+        "abi_disposition": "ADMITTED_EXISTING_DIRECT_ABI",
+        "abi_symbol": "hhs_hash72_ring_init",
+        "authority_scope": "NATIVE_CAPABILITY_CONTRACT_ONLY",
+        "binding_root_hash72": "0000000000000000000000000000000AUq?4qa-TMU^SmIK)u00rf(bwz!z7U>(el^bZ5pGr",
+        "buffer_bounds": "EXACT_SCHEMA_AND_NATIVE_ABI_BOUNDS_REQUIRED",
+        "callable": true,
+        "compiler_may_synthesize": false,
+        "failure_semantics": [
+          "REJECT_UNBOUND_OPCODE",
+          "REJECT_SCHEMA_MISMATCH",
+          "REJECT_AUTHORITY_FAILURE",
+          "REJECT_LEASE_FAILURE",
+          "TYPED_UNAVAILABLE"
+        ],
+        "input_schema": {
+          "additionalProperties": false,
+          "required": [
+            "canonical_operands"
+          ],
+          "type": "object"
+        },
+        "ir_schema": "HHS_EXECUTABLE_IR_V1",
+        "lease_requirements": [
+          "TASK_BOUND",
+          "SOURCE_SCOPED",
+          "OPERATION_SCOPED",
+          "SEQUENCE_BOUNDED"
+        ],
+        "memory_ownership": "CALLER_OWNS_INPUT_NATIVE_RUNTIME_OWNS_INTERNAL_STATE",
+        "mutation_class": "READ_OR_BOUNDED_NATIVE_OPERATION",
+        "native_opcode": "NATIVE_HASH72_RING_INIT",
+        "output_schema": {
+          "required": [
+            "native_status",
+            "receipt_root_hash72"
+          ],
+          "type": "object"
+        },
+        "post_state_witness_requirements": [
+          "NATIVE_RESULT_IDENTITY",
+          "POST_STATE_ROOT",
+          "EXECUTION_LINEAGE"
+        ],
+        "pre_state_witness_requirements": [
+          "VM81_LANE_BINDING",
+          "CANONICAL_OPERAND_COMMITMENT",
+          "AUTHORITY_RECEIPT"
+        ],
+        "receipt_schema": "HHS_NATIVE_INVOCATION_RECEIPT_V1",
+        "schema": "HHS_NATIVE_OPCODE_BINDING_V1",
+        "semantic_operation_identity": "vm81.native.hhs_hash72_ring_init"
+      },
+      {
+        "abi_disposition": "ADMITTED_EXISTING_DIRECT_ABI",
+        "abi_symbol": "hhs_hash72_ring_rotate",
+        "authority_scope": "NATIVE_CAPABILITY_CONTRACT_ONLY",
+        "binding_root_hash72": "0000000000000000000000000000001/T=6!kx14sak5HaVYjbdMBcVB8H?QA)tnONZ7KB26",
+        "buffer_bounds": "EXACT_SCHEMA_AND_NATIVE_ABI_BOUNDS_REQUIRED",
+        "callable": true,
+        "compiler_may_synthesize": false,
+        "failure_semantics": [
+          "REJECT_UNBOUND_OPCODE",
+          "REJECT_SCHEMA_MISMATCH",
+          "REJECT_AUTHORITY_FAILURE",
+          "REJECT_LEASE_FAILURE",
+          "TYPED_UNAVAILABLE"
+        ],
+        "input_schema": {
+          "additionalProperties": false,
+          "required": [
+            "canonical_operands"
+          ],
+          "type": "object"
+        },
+        "ir_schema": "HHS_EXECUTABLE_IR_V1",
+        "lease_requirements": [
+          "TASK_BOUND",
+          "SOURCE_SCOPED",
+          "OPERATION_SCOPED",
+          "SEQUENCE_BOUNDED"
+        ],
+        "memory_ownership": "CALLER_OWNS_INPUT_NATIVE_RUNTIME_OWNS_INTERNAL_STATE",
+        "mutation_class": "READ_OR_BOUNDED_NATIVE_OPERATION",
+        "native_opcode": "NATIVE_HASH72_RING_ROTATE",
+        "output_schema": {
+          "required": [
+            "native_status",
+            "receipt_root_hash72"
+          ],
+          "type": "object"
+        },
+        "post_state_witness_requirements": [
+          "NATIVE_RESULT_IDENTITY",
+          "POST_STATE_ROOT",
+          "EXECUTION_LINEAGE"
+        ],
+        "pre_state_witness_requirements": [
+          "VM81_LANE_BINDING",
+          "CANONICAL_OPERAND_COMMITMENT",
+          "AUTHORITY_RECEIPT"
+        ],
+        "receipt_schema": "HHS_NATIVE_INVOCATION_RECEIPT_V1",
+        "schema": "HHS_NATIVE_OPCODE_BINDING_V1",
+        "semantic_operation_identity": "vm81.native.hhs_hash72_ring_rotate"
+      },
+      {
+        "abi_disposition": "ADMITTED_EXISTING_DIRECT_ABI",
+        "abi_symbol": "hhs_hash72_tensor_project",
+        "authority_scope": "NATIVE_CAPABILITY_CONTRACT_ONLY",
+        "binding_root_hash72": "0000000000000000000000000000000HjCTOp^+gVD+UDr48FfzCHq9-0625IpObRUvB6LYI",
+        "buffer_bounds": "EXACT_SCHEMA_AND_NATIVE_ABI_BOUNDS_REQUIRED",
+        "callable": true,
+        "compiler_may_synthesize": false,
+        "failure_semantics": [
+          "REJECT_UNBOUND_OPCODE",
+          "REJECT_SCHEMA_MISMATCH",
+          "REJECT_AUTHORITY_FAILURE",
+          "REJECT_LEASE_FAILURE",
+          "TYPED_UNAVAILABLE"
+        ],
+        "input_schema": {
+          "additionalProperties": false,
+          "required": [
+            "canonical_operands"
+          ],
+          "type": "object"
+        },
+        "ir_schema": "HHS_EXECUTABLE_IR_V1",
+        "lease_requirements": [
+          "TASK_BOUND",
+          "SOURCE_SCOPED",
+          "OPERATION_SCOPED",
+          "SEQUENCE_BOUNDED"
+        ],
+        "memory_ownership": "CALLER_OWNS_INPUT_NATIVE_RUNTIME_OWNS_INTERNAL_STATE",
+        "mutation_class": "READ_OR_BOUNDED_NATIVE_OPERATION",
+        "native_opcode": "NATIVE_HASH72_TENSOR_PROJECT",
+        "output_schema": {
+          "required": [
+            "native_status",
+            "receipt_root_hash72"
+          ],
+          "type": "object"
+        },
+        "post_state_witness_requirements": [
+          "NATIVE_RESULT_IDENTITY",
+          "POST_STATE_ROOT",
+          "EXECUTION_LINEAGE"
+        ],
+        "pre_state_witness_requirements": [
+          "VM81_LANE_BINDING",
+          "CANONICAL_OPERAND_COMMITMENT",
+          "AUTHORITY_RECEIPT"
+        ],
+        "receipt_schema": "HHS_NATIVE_INVOCATION_RECEIPT_V1",
+        "schema": "HHS_NATIVE_OPCODE_BINDING_V1",
+        "semantic_operation_identity": "vm81.native.hhs_hash72_tensor_project"
+      },
+      {
+        "abi_disposition": "ADMITTED_EXISTING_DIRECT_ABI",
+        "abi_symbol": "hhs_receipt_commit",
+        "authority_scope": "NATIVE_CAPABILITY_CONTRACT_ONLY",
+        "binding_root_hash72": "0000000000000000000000000000003>lvYofL0MKA>(NBmoGWFpTn4cllvcMSMm0C(Lmu6+",
+        "buffer_bounds": "EXACT_SCHEMA_AND_NATIVE_ABI_BOUNDS_REQUIRED",
+        "callable": true,
+        "compiler_may_synthesize": false,
+        "failure_semantics": [
+          "REJECT_UNBOUND_OPCODE",
+          "REJECT_SCHEMA_MISMATCH",
+          "REJECT_AUTHORITY_FAILURE",
+          "REJECT_LEASE_FAILURE",
+          "TYPED_UNAVAILABLE"
+        ],
+        "input_schema": {
+          "additionalProperties": false,
+          "required": [
+            "canonical_operands"
+          ],
+          "type": "object"
+        },
+        "ir_schema": "HHS_EXECUTABLE_IR_V1",
+        "lease_requirements": [
+          "TASK_BOUND",
+          "SOURCE_SCOPED",
+          "OPERATION_SCOPED",
+          "SEQUENCE_BOUNDED"
+        ],
+        "memory_ownership": "CALLER_OWNS_INPUT_NATIVE_RUNTIME_OWNS_INTERNAL_STATE",
+        "mutation_class": "MUTATE_RECEIPT_STATE",
+        "native_opcode": "NATIVE_RECEIPT_COMMIT",
+        "output_schema": {
+          "required": [
+            "native_status",
+            "receipt_root_hash72"
+          ],
+          "type": "object"
+        },
+        "post_state_witness_requirements": [
+          "NATIVE_RESULT_IDENTITY",
+          "POST_STATE_ROOT",
+          "EXECUTION_LINEAGE"
+        ],
+        "pre_state_witness_requirements": [
+          "VM81_LANE_BINDING",
+          "CANONICAL_OPERAND_COMMITMENT",
+          "AUTHORITY_RECEIPT"
+        ],
+        "receipt_schema": "HHS_NATIVE_INVOCATION_RECEIPT_V1",
+        "schema": "HHS_NATIVE_OPCODE_BINDING_V1",
+        "semantic_operation_identity": "vm81.native.hhs_receipt_commit"
+      },
+      {
+        "abi_disposition": "ADMITTED_EXISTING_DIRECT_ABI",
+        "abi_symbol": "hhs_receipt_reset",
+        "authority_scope": "NATIVE_CAPABILITY_CONTRACT_ONLY",
+        "binding_root_hash72": "0000000000000000000000000000003lkMO+KvX?UvkvQ=b!dr>byRXvi(*!eP76zbiIr(Xj",
+        "buffer_bounds": "EXACT_SCHEMA_AND_NATIVE_ABI_BOUNDS_REQUIRED",
+        "callable": true,
+        "compiler_may_synthesize": false,
+        "failure_semantics": [
+          "REJECT_UNBOUND_OPCODE",
+          "REJECT_SCHEMA_MISMATCH",
+          "REJECT_AUTHORITY_FAILURE",
+          "REJECT_LEASE_FAILURE",
+          "TYPED_UNAVAILABLE"
+        ],
+        "input_schema": {
+          "maxProperties": 0,
+          "type": "object"
+        },
+        "ir_schema": "HHS_EXECUTABLE_IR_V1",
+        "lease_requirements": [
+          "TASK_BOUND",
+          "SOURCE_SCOPED",
+          "OPERATION_SCOPED",
+          "SEQUENCE_BOUNDED"
+        ],
+        "memory_ownership": "CALLER_OWNS_INPUT_NATIVE_RUNTIME_OWNS_INTERNAL_STATE",
+        "mutation_class": "RESET_RECEIPT_STATE",
+        "native_opcode": "NATIVE_RECEIPT_RESET",
+        "output_schema": {
+          "required": [
+            "native_status",
+            "receipt_root_hash72"
+          ],
+          "type": "object"
+        },
+        "post_state_witness_requirements": [
+          "NATIVE_RESULT_IDENTITY",
+          "POST_STATE_ROOT",
+          "EXECUTION_LINEAGE"
+        ],
+        "pre_state_witness_requirements": [
+          "VM81_LANE_BINDING",
+          "CANONICAL_OPERAND_COMMITMENT",
+          "AUTHORITY_RECEIPT"
+        ],
+        "receipt_schema": "HHS_NATIVE_INVOCATION_RECEIPT_V1",
+        "schema": "HHS_NATIVE_OPCODE_BINDING_V1",
+        "semantic_operation_identity": "vm81.native.hhs_receipt_reset"
+      },
+      {
+        "abi_disposition": "ADMITTED_EXISTING_DIRECT_ABI",
+        "abi_symbol": "hhs_runtime_halt",
+        "authority_scope": "NATIVE_CAPABILITY_CONTRACT_ONLY",
+        "binding_root_hash72": "0000000000000000000000000000000Cw7D32o^wAo2eHBPSeRGD^uH>jw33J-3?jIYuBxoC",
+        "buffer_bounds": "EXACT_SCHEMA_AND_NATIVE_ABI_BOUNDS_REQUIRED",
+        "callable": true,
+        "compiler_may_synthesize": false,
+        "failure_semantics": [
+          "REJECT_UNBOUND_OPCODE",
+          "REJECT_SCHEMA_MISMATCH",
+          "REJECT_AUTHORITY_FAILURE",
+          "REJECT_LEASE_FAILURE",
+          "TYPED_UNAVAILABLE"
+        ],
+        "input_schema": {
+          "maxProperties": 0,
+          "type": "object"
+        },
+        "ir_schema": "HHS_EXECUTABLE_IR_V1",
+        "lease_requirements": [
+          "TASK_BOUND",
+          "SOURCE_SCOPED",
+          "OPERATION_SCOPED",
+          "SEQUENCE_BOUNDED"
+        ],
+        "memory_ownership": "CALLER_OWNS_INPUT_NATIVE_RUNTIME_OWNS_INTERNAL_STATE",
+        "mutation_class": "MUTATE_CONTROL_STATE",
+        "native_opcode": "NATIVE_RUNTIME_HALT",
+        "output_schema": {
+          "required": [
+            "native_status",
+            "receipt_root_hash72"
+          ],
+          "type": "object"
+        },
+        "post_state_witness_requirements": [
+          "NATIVE_RESULT_IDENTITY",
+          "POST_STATE_ROOT",
+          "EXECUTION_LINEAGE"
+        ],
+        "pre_state_witness_requirements": [
+          "VM81_LANE_BINDING",
+          "CANONICAL_OPERAND_COMMITMENT",
+          "AUTHORITY_RECEIPT"
+        ],
+        "receipt_schema": "HHS_NATIVE_INVOCATION_RECEIPT_V1",
+        "schema": "HHS_NATIVE_OPCODE_BINDING_V1",
+        "semantic_operation_identity": "vm81.native.hhs_runtime_halt"
+      },
+      {
+        "abi_disposition": "ADMITTED_EXISTING_DIRECT_ABI",
+        "abi_symbol": "hhs_runtime_init",
+        "authority_scope": "NATIVE_CAPABILITY_CONTRACT_ONLY",
+        "binding_root_hash72": "0000000000000000000000000000004ETE411fdzbv2h5DiVDEBG3Bdr8eYBpCwm^W-fsS5L",
+        "buffer_bounds": "EXACT_SCHEMA_AND_NATIVE_ABI_BOUNDS_REQUIRED",
+        "callable": true,
+        "compiler_may_synthesize": false,
+        "failure_semantics": [
+          "REJECT_UNBOUND_OPCODE",
+          "REJECT_SCHEMA_MISMATCH",
+          "REJECT_AUTHORITY_FAILURE",
+          "REJECT_LEASE_FAILURE",
+          "TYPED_UNAVAILABLE"
+        ],
+        "input_schema": {
+          "maxProperties": 0,
+          "type": "object"
+        },
+        "ir_schema": "HHS_EXECUTABLE_IR_V1",
+        "lease_requirements": [
+          "TASK_BOUND",
+          "SOURCE_SCOPED",
+          "OPERATION_SCOPED",
+          "SEQUENCE_BOUNDED"
+        ],
+        "memory_ownership": "CALLER_OWNS_INPUT_NATIVE_RUNTIME_OWNS_INTERNAL_STATE",
+        "mutation_class": "INITIALIZE_NATIVE_STATE",
+        "native_opcode": "NATIVE_RUNTIME_INIT",
+        "output_schema": {
+          "required": [
+            "native_status",
+            "receipt_root_hash72"
+          ],
+          "type": "object"
+        },
+        "post_state_witness_requirements": [
+          "NATIVE_RESULT_IDENTITY",
+          "POST_STATE_ROOT",
+          "EXECUTION_LINEAGE"
+        ],
+        "pre_state_witness_requirements": [
+          "VM81_LANE_BINDING",
+          "CANONICAL_OPERAND_COMMITMENT",
+          "AUTHORITY_RECEIPT"
+        ],
+        "receipt_schema": "HHS_NATIVE_INVOCATION_RECEIPT_V1",
+        "schema": "HHS_NATIVE_OPCODE_BINDING_V1",
+        "semantic_operation_identity": "vm81.native.hhs_runtime_init"
+      },
+      {
+        "abi_disposition": "ADMITTED_EXISTING_DIRECT_ABI",
+        "abi_symbol": "hhs_runtime_reset",
+        "authority_scope": "NATIVE_CAPABILITY_CONTRACT_ONLY",
+        "binding_root_hash72": "0000000000000000000000000000001y0w3?xbys^=bLujKw8+k(DqARjHQMW0/1j/ZOTMFO",
+        "buffer_bounds": "EXACT_SCHEMA_AND_NATIVE_ABI_BOUNDS_REQUIRED",
+        "callable": true,
+        "compiler_may_synthesize": false,
+        "failure_semantics": [
+          "REJECT_UNBOUND_OPCODE",
+          "REJECT_SCHEMA_MISMATCH",
+          "REJECT_AUTHORITY_FAILURE",
+          "REJECT_LEASE_FAILURE",
+          "TYPED_UNAVAILABLE"
+        ],
+        "input_schema": {
+          "maxProperties": 0,
+          "type": "object"
+        },
+        "ir_schema": "HHS_EXECUTABLE_IR_V1",
+        "lease_requirements": [
+          "TASK_BOUND",
+          "SOURCE_SCOPED",
+          "OPERATION_SCOPED",
+          "SEQUENCE_BOUNDED"
+        ],
+        "memory_ownership": "CALLER_OWNS_INPUT_NATIVE_RUNTIME_OWNS_INTERNAL_STATE",
+        "mutation_class": "RESET_NATIVE_STATE",
+        "native_opcode": "NATIVE_RUNTIME_RESET",
+        "output_schema": {
+          "required": [
+            "native_status",
+            "receipt_root_hash72"
+          ],
+          "type": "object"
+        },
+        "post_state_witness_requirements": [
+          "NATIVE_RESULT_IDENTITY",
+          "POST_STATE_ROOT",
+          "EXECUTION_LINEAGE"
+        ],
+        "pre_state_witness_requirements": [
+          "VM81_LANE_BINDING",
+          "CANONICAL_OPERAND_COMMITMENT",
+          "AUTHORITY_RECEIPT"
+        ],
+        "receipt_schema": "HHS_NATIVE_INVOCATION_RECEIPT_V1",
+        "schema": "HHS_NATIVE_OPCODE_BINDING_V1",
+        "semantic_operation_identity": "vm81.native.hhs_runtime_reset"
+      },
+      {
+        "abi_disposition": "ADMITTED_EXISTING_DIRECT_ABI",
+        "abi_symbol": "hhs_runtime_step",
+        "authority_scope": "NATIVE_CAPABILITY_CONTRACT_ONLY",
+        "binding_root_hash72": "0000000000000000000000000000004hn4rYZQ?Ty/7yeh-)!uoz7ugetdLs6fMWxHhEG+?w",
+        "buffer_bounds": "EXACT_SCHEMA_AND_NATIVE_ABI_BOUNDS_REQUIRED",
+        "callable": true,
+        "compiler_may_synthesize": false,
+        "failure_semantics": [
+          "REJECT_UNBOUND_OPCODE",
+          "REJECT_SCHEMA_MISMATCH",
+          "REJECT_AUTHORITY_FAILURE",
+          "REJECT_LEASE_FAILURE",
+          "TYPED_UNAVAILABLE"
+        ],
+        "input_schema": {
+          "additionalProperties": false,
+          "required": [
+            "canonical_operands"
+          ],
+          "type": "object"
+        },
+        "ir_schema": "HHS_EXECUTABLE_IR_V1",
+        "lease_requirements": [
+          "TASK_BOUND",
+          "SOURCE_SCOPED",
+          "OPERATION_SCOPED",
+          "SEQUENCE_BOUNDED"
+        ],
+        "memory_ownership": "CALLER_OWNS_INPUT_NATIVE_RUNTIME_OWNS_INTERNAL_STATE",
+        "mutation_class": "MUTATE_NATIVE_STATE",
+        "native_opcode": "NATIVE_RUNTIME_STEP",
+        "output_schema": {
+          "required": [
+            "native_status",
+            "receipt_root_hash72"
+          ],
+          "type": "object"
+        },
+        "post_state_witness_requirements": [
+          "NATIVE_RESULT_IDENTITY",
+          "POST_STATE_ROOT",
+          "EXECUTION_LINEAGE"
+        ],
+        "pre_state_witness_requirements": [
+          "VM81_LANE_BINDING",
+          "CANONICAL_OPERAND_COMMITMENT",
+          "AUTHORITY_RECEIPT"
+        ],
+        "receipt_schema": "HHS_NATIVE_INVOCATION_RECEIPT_V1",
+        "schema": "HHS_NATIVE_OPCODE_BINDING_V1",
+        "semantic_operation_identity": "vm81.native.hhs_runtime_step"
+      },
+      {
+        "abi_disposition": "ADMITTED_EXISTING_DIRECT_ABI",
+        "abi_symbol": "hhs_sizeof_graph_edge",
+        "authority_scope": "NATIVE_CAPABILITY_CONTRACT_ONLY",
+        "binding_root_hash72": "0000000000000000000000000000003ghV7ULpf>52H(Dkz43v8+C!cu)p6p?X?LEqJ-tZA2",
+        "buffer_bounds": "EXACT_SCHEMA_AND_NATIVE_ABI_BOUNDS_REQUIRED",
+        "callable": true,
+        "compiler_may_synthesize": false,
+        "failure_semantics": [
+          "REJECT_UNBOUND_OPCODE",
+          "REJECT_SCHEMA_MISMATCH",
+          "REJECT_AUTHORITY_FAILURE",
+          "REJECT_LEASE_FAILURE",
+          "TYPED_UNAVAILABLE"
+        ],
+        "input_schema": {
+          "additionalProperties": false,
+          "required": [
+            "canonical_operands"
+          ],
+          "type": "object"
+        },
+        "ir_schema": "HHS_EXECUTABLE_IR_V1",
+        "lease_requirements": [
+          "TASK_BOUND",
+          "SOURCE_SCOPED",
+          "OPERATION_SCOPED",
+          "SEQUENCE_BOUNDED"
+        ],
+        "memory_ownership": "CALLER_OWNS_INPUT_NATIVE_RUNTIME_OWNS_INTERNAL_STATE",
+        "mutation_class": "READ_OR_BOUNDED_NATIVE_OPERATION",
+        "native_opcode": "NATIVE_SIZEOF_GRAPH_EDGE",
+        "output_schema": {
+          "required": [
+            "native_status",
+            "receipt_root_hash72"
+          ],
+          "type": "object"
+        },
+        "post_state_witness_requirements": [
+          "NATIVE_RESULT_IDENTITY",
+          "POST_STATE_ROOT",
+          "EXECUTION_LINEAGE"
+        ],
+        "pre_state_witness_requirements": [
+          "VM81_LANE_BINDING",
+          "CANONICAL_OPERAND_COMMITMENT",
+          "AUTHORITY_RECEIPT"
+        ],
+        "receipt_schema": "HHS_NATIVE_INVOCATION_RECEIPT_V1",
+        "schema": "HHS_NATIVE_OPCODE_BINDING_V1",
+        "semantic_operation_identity": "vm81.native.hhs_sizeof_graph_edge"
+      },
+      {
+        "abi_disposition": "ADMITTED_EXISTING_DIRECT_ABI",
+        "abi_symbol": "hhs_sizeof_graph_node",
+        "authority_scope": "NATIVE_CAPABILITY_CONTRACT_ONLY",
+        "binding_root_hash72": "0000000000000000000000000000002ygah>GUOt)N0Vg)K?nYDI>lF*xrJU9lyndfXPpLSR",
+        "buffer_bounds": "EXACT_SCHEMA_AND_NATIVE_ABI_BOUNDS_REQUIRED",
+        "callable": true,
+        "compiler_may_synthesize": false,
+        "failure_semantics": [
+          "REJECT_UNBOUND_OPCODE",
+          "REJECT_SCHEMA_MISMATCH",
+          "REJECT_AUTHORITY_FAILURE",
+          "REJECT_LEASE_FAILURE",
+          "TYPED_UNAVAILABLE"
+        ],
+        "input_schema": {
+          "additionalProperties": false,
+          "required": [
+            "canonical_operands"
+          ],
+          "type": "object"
+        },
+        "ir_schema": "HHS_EXECUTABLE_IR_V1",
+        "lease_requirements": [
+          "TASK_BOUND",
+          "SOURCE_SCOPED",
+          "OPERATION_SCOPED",
+          "SEQUENCE_BOUNDED"
+        ],
+        "memory_ownership": "CALLER_OWNS_INPUT_NATIVE_RUNTIME_OWNS_INTERNAL_STATE",
+        "mutation_class": "READ_OR_BOUNDED_NATIVE_OPERATION",
+        "native_opcode": "NATIVE_SIZEOF_GRAPH_NODE",
+        "output_schema": {
+          "required": [
+            "native_status",
+            "receipt_root_hash72"
+          ],
+          "type": "object"
+        },
+        "post_state_witness_requirements": [
+          "NATIVE_RESULT_IDENTITY",
+          "POST_STATE_ROOT",
+          "EXECUTION_LINEAGE"
+        ],
+        "pre_state_witness_requirements": [
+          "VM81_LANE_BINDING",
+          "CANONICAL_OPERAND_COMMITMENT",
+          "AUTHORITY_RECEIPT"
+        ],
+        "receipt_schema": "HHS_NATIVE_INVOCATION_RECEIPT_V1",
+        "schema": "HHS_NATIVE_OPCODE_BINDING_V1",
+        "semantic_operation_identity": "vm81.native.hhs_sizeof_graph_node"
+      },
+      {
+        "abi_disposition": "ADMITTED_EXISTING_DIRECT_ABI",
+        "abi_symbol": "hhs_sizeof_hash72_ring_state",
+        "authority_scope": "NATIVE_CAPABILITY_CONTRACT_ONLY",
+        "binding_root_hash72": "0000000000000000000000000000001zs)1je*5-I0J=nAYeforH2AKTtjByQll42E-mOpNp",
+        "buffer_bounds": "EXACT_SCHEMA_AND_NATIVE_ABI_BOUNDS_REQUIRED",
+        "callable": true,
+        "compiler_may_synthesize": false,
+        "failure_semantics": [
+          "REJECT_UNBOUND_OPCODE",
+          "REJECT_SCHEMA_MISMATCH",
+          "REJECT_AUTHORITY_FAILURE",
+          "REJECT_LEASE_FAILURE",
+          "TYPED_UNAVAILABLE"
+        ],
+        "input_schema": {
+          "additionalProperties": false,
+          "required": [
+            "canonical_operands"
+          ],
+          "type": "object"
+        },
+        "ir_schema": "HHS_EXECUTABLE_IR_V1",
+        "lease_requirements": [
+          "TASK_BOUND",
+          "SOURCE_SCOPED",
+          "OPERATION_SCOPED",
+          "SEQUENCE_BOUNDED"
+        ],
+        "memory_ownership": "CALLER_OWNS_INPUT_NATIVE_RUNTIME_OWNS_INTERNAL_STATE",
+        "mutation_class": "READ_OR_BOUNDED_NATIVE_OPERATION",
+        "native_opcode": "NATIVE_SIZEOF_HASH72_RING_STATE",
+        "output_schema": {
+          "required": [
+            "native_status",
+            "receipt_root_hash72"
+          ],
+          "type": "object"
+        },
+        "post_state_witness_requirements": [
+          "NATIVE_RESULT_IDENTITY",
+          "POST_STATE_ROOT",
+          "EXECUTION_LINEAGE"
+        ],
+        "pre_state_witness_requirements": [
+          "VM81_LANE_BINDING",
+          "CANONICAL_OPERAND_COMMITMENT",
+          "AUTHORITY_RECEIPT"
+        ],
+        "receipt_schema": "HHS_NATIVE_INVOCATION_RECEIPT_V1",
+        "schema": "HHS_NATIVE_OPCODE_BINDING_V1",
+        "semantic_operation_identity": "vm81.native.hhs_sizeof_hash72_ring_state"
+      },
+      {
+        "abi_disposition": "ADMITTED_EXISTING_DIRECT_ABI",
+        "abi_symbol": "hhs_sizeof_receipt",
+        "authority_scope": "NATIVE_CAPABILITY_CONTRACT_ONLY",
+        "binding_root_hash72": "0000000000000000000000000000003zZTg95IKjSb66nK-cIrPo0qqK3q7Nq*WGt8QR1p1M",
+        "buffer_bounds": "EXACT_SCHEMA_AND_NATIVE_ABI_BOUNDS_REQUIRED",
+        "callable": true,
+        "compiler_may_synthesize": false,
+        "failure_semantics": [
+          "REJECT_UNBOUND_OPCODE",
+          "REJECT_SCHEMA_MISMATCH",
+          "REJECT_AUTHORITY_FAILURE",
+          "REJECT_LEASE_FAILURE",
+          "TYPED_UNAVAILABLE"
+        ],
+        "input_schema": {
+          "additionalProperties": false,
+          "required": [
+            "canonical_operands"
+          ],
+          "type": "object"
+        },
+        "ir_schema": "HHS_EXECUTABLE_IR_V1",
+        "lease_requirements": [
+          "TASK_BOUND",
+          "SOURCE_SCOPED",
+          "OPERATION_SCOPED",
+          "SEQUENCE_BOUNDED"
+        ],
+        "memory_ownership": "CALLER_OWNS_INPUT_NATIVE_RUNTIME_OWNS_INTERNAL_STATE",
+        "mutation_class": "READ_OR_BOUNDED_NATIVE_OPERATION",
+        "native_opcode": "NATIVE_SIZEOF_RECEIPT",
+        "output_schema": {
+          "required": [
+            "native_status",
+            "receipt_root_hash72"
+          ],
+          "type": "object"
+        },
+        "post_state_witness_requirements": [
+          "NATIVE_RESULT_IDENTITY",
+          "POST_STATE_ROOT",
+          "EXECUTION_LINEAGE"
+        ],
+        "pre_state_witness_requirements": [
+          "VM81_LANE_BINDING",
+          "CANONICAL_OPERAND_COMMITMENT",
+          "AUTHORITY_RECEIPT"
+        ],
+        "receipt_schema": "HHS_NATIVE_INVOCATION_RECEIPT_V1",
+        "schema": "HHS_NATIVE_OPCODE_BINDING_V1",
+        "semantic_operation_identity": "vm81.native.hhs_sizeof_receipt"
+      },
+      {
+        "abi_disposition": "ADMITTED_EXISTING_DIRECT_ABI",
+        "abi_symbol": "hhs_sizeof_runtime_state",
+        "authority_scope": "NATIVE_CAPABILITY_CONTRACT_ONLY",
+        "binding_root_hash72": "0000000000000000000000000000001BUlTA6j(rOsIbK>x2UXOuMBFY-p6P831)u)d93ELx",
+        "buffer_bounds": "EXACT_SCHEMA_AND_NATIVE_ABI_BOUNDS_REQUIRED",
+        "callable": true,
+        "compiler_may_synthesize": false,
+        "failure_semantics": [
+          "REJECT_UNBOUND_OPCODE",
+          "REJECT_SCHEMA_MISMATCH",
+          "REJECT_AUTHORITY_FAILURE",
+          "REJECT_LEASE_FAILURE",
+          "TYPED_UNAVAILABLE"
+        ],
+        "input_schema": {
+          "additionalProperties": false,
+          "required": [
+            "canonical_operands"
+          ],
+          "type": "object"
+        },
+        "ir_schema": "HHS_EXECUTABLE_IR_V1",
+        "lease_requirements": [
+          "TASK_BOUND",
+          "SOURCE_SCOPED",
+          "OPERATION_SCOPED",
+          "SEQUENCE_BOUNDED"
+        ],
+        "memory_ownership": "CALLER_OWNS_INPUT_NATIVE_RUNTIME_OWNS_INTERNAL_STATE",
+        "mutation_class": "READ_OR_BOUNDED_NATIVE_OPERATION",
+        "native_opcode": "NATIVE_SIZEOF_RUNTIME_STATE",
+        "output_schema": {
+          "required": [
+            "native_status",
+            "receipt_root_hash72"
+          ],
+          "type": "object"
+        },
+        "post_state_witness_requirements": [
+          "NATIVE_RESULT_IDENTITY",
+          "POST_STATE_ROOT",
+          "EXECUTION_LINEAGE"
+        ],
+        "pre_state_witness_requirements": [
+          "VM81_LANE_BINDING",
+          "CANONICAL_OPERAND_COMMITMENT",
+          "AUTHORITY_RECEIPT"
+        ],
+        "receipt_schema": "HHS_NATIVE_INVOCATION_RECEIPT_V1",
+        "schema": "HHS_NATIVE_OPCODE_BINDING_V1",
+        "semantic_operation_identity": "vm81.native.hhs_sizeof_runtime_state"
+      },
+      {
+        "abi_disposition": "ADMITTED_EXISTING_DIRECT_ABI",
+        "abi_symbol": "hhs_sizeof_srcg_state",
+        "authority_scope": "NATIVE_CAPABILITY_CONTRACT_ONLY",
+        "binding_root_hash72": "0000000000000000000000000000003ZwAiNOTSV?Mk714XiBfem/oX=br8pKVuBo/+BW95(",
+        "buffer_bounds": "EXACT_SCHEMA_AND_NATIVE_ABI_BOUNDS_REQUIRED",
+        "callable": true,
+        "compiler_may_synthesize": false,
+        "failure_semantics": [
+          "REJECT_UNBOUND_OPCODE",
+          "REJECT_SCHEMA_MISMATCH",
+          "REJECT_AUTHORITY_FAILURE",
+          "REJECT_LEASE_FAILURE",
+          "TYPED_UNAVAILABLE"
+        ],
+        "input_schema": {
+          "additionalProperties": false,
+          "required": [
+            "canonical_operands"
+          ],
+          "type": "object"
+        },
+        "ir_schema": "HHS_EXECUTABLE_IR_V1",
+        "lease_requirements": [
+          "TASK_BOUND",
+          "SOURCE_SCOPED",
+          "OPERATION_SCOPED",
+          "SEQUENCE_BOUNDED"
+        ],
+        "memory_ownership": "CALLER_OWNS_INPUT_NATIVE_RUNTIME_OWNS_INTERNAL_STATE",
+        "mutation_class": "READ_OR_BOUNDED_NATIVE_OPERATION",
+        "native_opcode": "NATIVE_SIZEOF_SRCG_STATE",
+        "output_schema": {
+          "required": [
+            "native_status",
+            "receipt_root_hash72"
+          ],
+          "type": "object"
+        },
+        "post_state_witness_requirements": [
+          "NATIVE_RESULT_IDENTITY",
+          "POST_STATE_ROOT",
+          "EXECUTION_LINEAGE"
+        ],
+        "pre_state_witness_requirements": [
+          "VM81_LANE_BINDING",
+          "CANONICAL_OPERAND_COMMITMENT",
+          "AUTHORITY_RECEIPT"
+        ],
+        "receipt_schema": "HHS_NATIVE_INVOCATION_RECEIPT_V1",
+        "schema": "HHS_NATIVE_OPCODE_BINDING_V1",
+        "semantic_operation_identity": "vm81.native.hhs_sizeof_srcg_state"
+      },
+      {
+        "abi_disposition": "ADMITTED_EXISTING_DIRECT_ABI",
+        "abi_symbol": "hhs_sizeof_tensor_state",
+        "authority_scope": "NATIVE_CAPABILITY_CONTRACT_ONLY",
+        "binding_root_hash72": "00000000000000000000000000000015Ja?O8xWs>HjFsektDUw75B-!hoE4-WZEkPSLvZhH",
+        "buffer_bounds": "EXACT_SCHEMA_AND_NATIVE_ABI_BOUNDS_REQUIRED",
+        "callable": true,
+        "compiler_may_synthesize": false,
+        "failure_semantics": [
+          "REJECT_UNBOUND_OPCODE",
+          "REJECT_SCHEMA_MISMATCH",
+          "REJECT_AUTHORITY_FAILURE",
+          "REJECT_LEASE_FAILURE",
+          "TYPED_UNAVAILABLE"
+        ],
+        "input_schema": {
+          "additionalProperties": false,
+          "required": [
+            "canonical_operands"
+          ],
+          "type": "object"
+        },
+        "ir_schema": "HHS_EXECUTABLE_IR_V1",
+        "lease_requirements": [
+          "TASK_BOUND",
+          "SOURCE_SCOPED",
+          "OPERATION_SCOPED",
+          "SEQUENCE_BOUNDED"
+        ],
+        "memory_ownership": "CALLER_OWNS_INPUT_NATIVE_RUNTIME_OWNS_INTERNAL_STATE",
+        "mutation_class": "READ_OR_BOUNDED_NATIVE_OPERATION",
+        "native_opcode": "NATIVE_SIZEOF_TENSOR_STATE",
+        "output_schema": {
+          "required": [
+            "native_status",
+            "receipt_root_hash72"
+          ],
+          "type": "object"
+        },
+        "post_state_witness_requirements": [
+          "NATIVE_RESULT_IDENTITY",
+          "POST_STATE_ROOT",
+          "EXECUTION_LINEAGE"
+        ],
+        "pre_state_witness_requirements": [
+          "VM81_LANE_BINDING",
+          "CANONICAL_OPERAND_COMMITMENT",
+          "AUTHORITY_RECEIPT"
+        ],
+        "receipt_schema": "HHS_NATIVE_INVOCATION_RECEIPT_V1",
+        "schema": "HHS_NATIVE_OPCODE_BINDING_V1",
+        "semantic_operation_identity": "vm81.native.hhs_sizeof_tensor_state"
+      },
+      {
+        "abi_disposition": "ADMITTED_EXISTING_DIRECT_ABI",
+        "abi_symbol": "hhs_srcg_init",
+        "authority_scope": "NATIVE_CAPABILITY_CONTRACT_ONLY",
+        "binding_root_hash72": "0000000000000000000000000000003/vJDeDpJHzp1=sXd(g24yyEiRltDQ6lf5ST/81q5d",
+        "buffer_bounds": "EXACT_SCHEMA_AND_NATIVE_ABI_BOUNDS_REQUIRED",
+        "callable": true,
+        "compiler_may_synthesize": false,
+        "failure_semantics": [
+          "REJECT_UNBOUND_OPCODE",
+          "REJECT_SCHEMA_MISMATCH",
+          "REJECT_AUTHORITY_FAILURE",
+          "REJECT_LEASE_FAILURE",
+          "TYPED_UNAVAILABLE"
+        ],
+        "input_schema": {
+          "additionalProperties": false,
+          "required": [
+            "canonical_operands"
+          ],
+          "type": "object"
+        },
+        "ir_schema": "HHS_EXECUTABLE_IR_V1",
+        "lease_requirements": [
+          "TASK_BOUND",
+          "SOURCE_SCOPED",
+          "OPERATION_SCOPED",
+          "SEQUENCE_BOUNDED"
+        ],
+        "memory_ownership": "CALLER_OWNS_INPUT_NATIVE_RUNTIME_OWNS_INTERNAL_STATE",
+        "mutation_class": "READ_OR_BOUNDED_NATIVE_OPERATION",
+        "native_opcode": "NATIVE_SRCG_INIT",
+        "output_schema": {
+          "required": [
+            "native_status",
+            "receipt_root_hash72"
+          ],
+          "type": "object"
+        },
+        "post_state_witness_requirements": [
+          "NATIVE_RESULT_IDENTITY",
+          "POST_STATE_ROOT",
+          "EXECUTION_LINEAGE"
+        ],
+        "pre_state_witness_requirements": [
+          "VM81_LANE_BINDING",
+          "CANONICAL_OPERAND_COMMITMENT",
+          "AUTHORITY_RECEIPT"
+        ],
+        "receipt_schema": "HHS_NATIVE_INVOCATION_RECEIPT_V1",
+        "schema": "HHS_NATIVE_OPCODE_BINDING_V1",
+        "semantic_operation_identity": "vm81.native.hhs_srcg_init"
+      },
+      {
+        "abi_disposition": "ADMITTED_EXISTING_DIRECT_ABI",
+        "abi_symbol": "hhs_srcg_step",
+        "authority_scope": "NATIVE_CAPABILITY_CONTRACT_ONLY",
+        "binding_root_hash72": "0000000000000000000000000000001kQE)5bTr3S)O)e)Tsxo8ObOWOHmN39MyNFGAcp8iX",
+        "buffer_bounds": "EXACT_SCHEMA_AND_NATIVE_ABI_BOUNDS_REQUIRED",
+        "callable": true,
+        "compiler_may_synthesize": false,
+        "failure_semantics": [
+          "REJECT_UNBOUND_OPCODE",
+          "REJECT_SCHEMA_MISMATCH",
+          "REJECT_AUTHORITY_FAILURE",
+          "REJECT_LEASE_FAILURE",
+          "TYPED_UNAVAILABLE"
+        ],
+        "input_schema": {
+          "additionalProperties": false,
+          "required": [
+            "canonical_operands"
+          ],
+          "type": "object"
+        },
+        "ir_schema": "HHS_EXECUTABLE_IR_V1",
+        "lease_requirements": [
+          "TASK_BOUND",
+          "SOURCE_SCOPED",
+          "OPERATION_SCOPED",
+          "SEQUENCE_BOUNDED"
+        ],
+        "memory_ownership": "CALLER_OWNS_INPUT_NATIVE_RUNTIME_OWNS_INTERNAL_STATE",
+        "mutation_class": "READ_OR_BOUNDED_NATIVE_OPERATION",
+        "native_opcode": "NATIVE_SRCG_STEP",
+        "output_schema": {
+          "required": [
+            "native_status",
+            "receipt_root_hash72"
+          ],
+          "type": "object"
+        },
+        "post_state_witness_requirements": [
+          "NATIVE_RESULT_IDENTITY",
+          "POST_STATE_ROOT",
+          "EXECUTION_LINEAGE"
+        ],
+        "pre_state_witness_requirements": [
+          "VM81_LANE_BINDING",
+          "CANONICAL_OPERAND_COMMITMENT",
+          "AUTHORITY_RECEIPT"
+        ],
+        "receipt_schema": "HHS_NATIVE_INVOCATION_RECEIPT_V1",
+        "schema": "HHS_NATIVE_OPCODE_BINDING_V1",
+        "semantic_operation_identity": "vm81.native.hhs_srcg_step"
+      },
+      {
+        "abi_disposition": "ADMITTED_EXISTING_DIRECT_ABI",
+        "abi_symbol": "hhs_srcg_validate",
+        "authority_scope": "NATIVE_CAPABILITY_CONTRACT_ONLY",
+        "binding_root_hash72": "0000000000000000000000000000003uyJ+0uGA8clZ+81NkLI18512vRvoDWu4bJM+A7t0L",
+        "buffer_bounds": "EXACT_SCHEMA_AND_NATIVE_ABI_BOUNDS_REQUIRED",
+        "callable": true,
+        "compiler_may_synthesize": false,
+        "failure_semantics": [
+          "REJECT_UNBOUND_OPCODE",
+          "REJECT_SCHEMA_MISMATCH",
+          "REJECT_AUTHORITY_FAILURE",
+          "REJECT_LEASE_FAILURE",
+          "TYPED_UNAVAILABLE"
+        ],
+        "input_schema": {
+          "additionalProperties": false,
+          "required": [
+            "canonical_operands"
+          ],
+          "type": "object"
+        },
+        "ir_schema": "HHS_EXECUTABLE_IR_V1",
+        "lease_requirements": [
+          "TASK_BOUND",
+          "SOURCE_SCOPED",
+          "OPERATION_SCOPED",
+          "SEQUENCE_BOUNDED"
+        ],
+        "memory_ownership": "CALLER_OWNS_INPUT_NATIVE_RUNTIME_OWNS_INTERNAL_STATE",
+        "mutation_class": "READ_OR_BOUNDED_NATIVE_OPERATION",
+        "native_opcode": "NATIVE_SRCG_VALIDATE",
+        "output_schema": {
+          "required": [
+            "native_status",
+            "receipt_root_hash72"
+          ],
+          "type": "object"
+        },
+        "post_state_witness_requirements": [
+          "NATIVE_RESULT_IDENTITY",
+          "POST_STATE_ROOT",
+          "EXECUTION_LINEAGE"
+        ],
+        "pre_state_witness_requirements": [
+          "VM81_LANE_BINDING",
+          "CANONICAL_OPERAND_COMMITMENT",
+          "AUTHORITY_RECEIPT"
+        ],
+        "receipt_schema": "HHS_NATIVE_INVOCATION_RECEIPT_V1",
+        "schema": "HHS_NATIVE_OPCODE_BINDING_V1",
+        "semantic_operation_identity": "vm81.native.hhs_srcg_validate"
+      },
+      {
+        "abi_disposition": "ADMITTED_EXISTING_DIRECT_ABI",
+        "abi_symbol": "hhs_tensor_apply_xy",
+        "authority_scope": "NATIVE_CAPABILITY_CONTRACT_ONLY",
+        "binding_root_hash72": "0000000000000000000000000000000FjVMrrBeANBiByXq!)hnQ8-r5?1?^z!LQ>vGGaJTW",
+        "buffer_bounds": "EXACT_SCHEMA_AND_NATIVE_ABI_BOUNDS_REQUIRED",
+        "callable": true,
+        "compiler_may_synthesize": false,
+        "failure_semantics": [
+          "REJECT_UNBOUND_OPCODE",
+          "REJECT_SCHEMA_MISMATCH",
+          "REJECT_AUTHORITY_FAILURE",
+          "REJECT_LEASE_FAILURE",
+          "TYPED_UNAVAILABLE"
+        ],
+        "input_schema": {
+          "additionalProperties": false,
+          "required": [
+            "canonical_operands"
+          ],
+          "type": "object"
+        },
+        "ir_schema": "HHS_EXECUTABLE_IR_V1",
+        "lease_requirements": [
+          "TASK_BOUND",
+          "SOURCE_SCOPED",
+          "OPERATION_SCOPED",
+          "SEQUENCE_BOUNDED"
+        ],
+        "memory_ownership": "CALLER_OWNS_INPUT_NATIVE_RUNTIME_OWNS_INTERNAL_STATE",
+        "mutation_class": "MUTATE_TENSOR_STATE",
+        "native_opcode": "NATIVE_TENSOR_APPLY_XY",
+        "output_schema": {
+          "required": [
+            "native_status",
+            "receipt_root_hash72"
+          ],
+          "type": "object"
+        },
+        "post_state_witness_requirements": [
+          "NATIVE_RESULT_IDENTITY",
+          "POST_STATE_ROOT",
+          "EXECUTION_LINEAGE"
+        ],
+        "pre_state_witness_requirements": [
+          "VM81_LANE_BINDING",
+          "CANONICAL_OPERAND_COMMITMENT",
+          "AUTHORITY_RECEIPT"
+        ],
+        "receipt_schema": "HHS_NATIVE_INVOCATION_RECEIPT_V1",
+        "schema": "HHS_NATIVE_OPCODE_BINDING_V1",
+        "semantic_operation_identity": "vm81.native.hhs_tensor_apply_xy"
+      },
+      {
+        "abi_disposition": "ADMITTED_EXISTING_DIRECT_ABI",
+        "abi_symbol": "hhs_tensor_reset",
+        "authority_scope": "NATIVE_CAPABILITY_CONTRACT_ONLY",
+        "binding_root_hash72": "0000000000000000000000000000001UZlcHANRP(-(M1pYUb9G8jxtIso46LBKB5/w7SymU",
+        "buffer_bounds": "EXACT_SCHEMA_AND_NATIVE_ABI_BOUNDS_REQUIRED",
+        "callable": true,
+        "compiler_may_synthesize": false,
+        "failure_semantics": [
+          "REJECT_UNBOUND_OPCODE",
+          "REJECT_SCHEMA_MISMATCH",
+          "REJECT_AUTHORITY_FAILURE",
+          "REJECT_LEASE_FAILURE",
+          "TYPED_UNAVAILABLE"
+        ],
+        "input_schema": {
+          "maxProperties": 0,
+          "type": "object"
+        },
+        "ir_schema": "HHS_EXECUTABLE_IR_V1",
+        "lease_requirements": [
+          "TASK_BOUND",
+          "SOURCE_SCOPED",
+          "OPERATION_SCOPED",
+          "SEQUENCE_BOUNDED"
+        ],
+        "memory_ownership": "CALLER_OWNS_INPUT_NATIVE_RUNTIME_OWNS_INTERNAL_STATE",
+        "mutation_class": "RESET_TENSOR_STATE",
+        "native_opcode": "NATIVE_TENSOR_RESET",
+        "output_schema": {
+          "required": [
+            "native_status",
+            "receipt_root_hash72"
+          ],
+          "type": "object"
+        },
+        "post_state_witness_requirements": [
+          "NATIVE_RESULT_IDENTITY",
+          "POST_STATE_ROOT",
+          "EXECUTION_LINEAGE"
+        ],
+        "pre_state_witness_requirements": [
+          "VM81_LANE_BINDING",
+          "CANONICAL_OPERAND_COMMITMENT",
+          "AUTHORITY_RECEIPT"
+        ],
+        "receipt_schema": "HHS_NATIVE_INVOCATION_RECEIPT_V1",
+        "schema": "HHS_NATIVE_OPCODE_BINDING_V1",
+        "semantic_operation_identity": "vm81.native.hhs_tensor_reset"
+      },
+      {
+        "abi_disposition": "ADMITTED_EXISTING_DIRECT_ABI",
+        "abi_symbol": "hhs_transport_apply",
+        "authority_scope": "NATIVE_CAPABILITY_CONTRACT_ONLY",
+        "binding_root_hash72": "0000000000000000000000000000001uDFfRVxYDGzn-7mmKmEXQ>WVi+88Z6)zK>0cZz>vg",
+        "buffer_bounds": "EXACT_SCHEMA_AND_NATIVE_ABI_BOUNDS_REQUIRED",
+        "callable": true,
+        "compiler_may_synthesize": false,
+        "failure_semantics": [
+          "REJECT_UNBOUND_OPCODE",
+          "REJECT_SCHEMA_MISMATCH",
+          "REJECT_AUTHORITY_FAILURE",
+          "REJECT_LEASE_FAILURE",
+          "TYPED_UNAVAILABLE"
+        ],
+        "input_schema": {
+          "additionalProperties": false,
+          "required": [
+            "canonical_operands"
+          ],
+          "type": "object"
+        },
+        "ir_schema": "HHS_EXECUTABLE_IR_V1",
+        "lease_requirements": [
+          "TASK_BOUND",
+          "SOURCE_SCOPED",
+          "OPERATION_SCOPED",
+          "SEQUENCE_BOUNDED"
+        ],
+        "memory_ownership": "CALLER_OWNS_INPUT_NATIVE_RUNTIME_OWNS_INTERNAL_STATE",
+        "mutation_class": "MUTATE_TRANSPORT_STATE",
+        "native_opcode": "NATIVE_TRANSPORT_APPLY",
+        "output_schema": {
+          "required": [
+            "native_status",
+            "receipt_root_hash72"
+          ],
+          "type": "object"
+        },
+        "post_state_witness_requirements": [
+          "NATIVE_RESULT_IDENTITY",
+          "POST_STATE_ROOT",
+          "EXECUTION_LINEAGE"
+        ],
+        "pre_state_witness_requirements": [
+          "VM81_LANE_BINDING",
+          "CANONICAL_OPERAND_COMMITMENT",
+          "AUTHORITY_RECEIPT"
+        ],
+        "receipt_schema": "HHS_NATIVE_INVOCATION_RECEIPT_V1",
+        "schema": "HHS_NATIVE_OPCODE_BINDING_V1",
+        "semantic_operation_identity": "vm81.native.hhs_transport_apply"
+      },
+      {
+        "abi_disposition": "ADMITTED_EXISTING_DIRECT_ABI",
+        "abi_symbol": "hhs_validate_abi",
+        "authority_scope": "NATIVE_CAPABILITY_CONTRACT_ONLY",
+        "binding_root_hash72": "00000000000000000000000000000035fgVbm!+Qr365rexv/LBg4?HU!TIT622xWbRVAi7X",
+        "buffer_bounds": "EXACT_SCHEMA_AND_NATIVE_ABI_BOUNDS_REQUIRED",
+        "callable": true,
+        "compiler_may_synthesize": false,
+        "failure_semantics": [
+          "REJECT_UNBOUND_OPCODE",
+          "REJECT_SCHEMA_MISMATCH",
+          "REJECT_AUTHORITY_FAILURE",
+          "REJECT_LEASE_FAILURE",
+          "TYPED_UNAVAILABLE"
+        ],
+        "input_schema": {
+          "additionalProperties": false,
+          "required": [
+            "canonical_operands"
+          ],
+          "type": "object"
+        },
+        "ir_schema": "HHS_EXECUTABLE_IR_V1",
+        "lease_requirements": [
+          "TASK_BOUND",
+          "SOURCE_SCOPED",
+          "OPERATION_SCOPED",
+          "SEQUENCE_BOUNDED"
+        ],
+        "memory_ownership": "CALLER_OWNS_INPUT_NATIVE_RUNTIME_OWNS_INTERNAL_STATE",
+        "mutation_class": "READ_OR_BOUNDED_NATIVE_OPERATION",
+        "native_opcode": "NATIVE_VALIDATE_ABI",
+        "output_schema": {
+          "required": [
+            "native_status",
+            "receipt_root_hash72"
+          ],
+          "type": "object"
+        },
+        "post_state_witness_requirements": [
+          "NATIVE_RESULT_IDENTITY",
+          "POST_STATE_ROOT",
+          "EXECUTION_LINEAGE"
+        ],
+        "pre_state_witness_requirements": [
+          "VM81_LANE_BINDING",
+          "CANONICAL_OPERAND_COMMITMENT",
+          "AUTHORITY_RECEIPT"
+        ],
+        "receipt_schema": "HHS_NATIVE_INVOCATION_RECEIPT_V1",
+        "schema": "HHS_NATIVE_OPCODE_BINDING_V1",
+        "semantic_operation_identity": "vm81.native.hhs_validate_abi"
+      },
+      {
+        "abi_disposition": "ADMITTED_EXISTING_DIRECT_ABI",
+        "abi_symbol": "hhs_vectorize_hash72",
+        "authority_scope": "NATIVE_CAPABILITY_CONTRACT_ONLY",
+        "binding_root_hash72": "0000000000000000000000000000000eQ4THv*YHsCO2upx6Q8R96ZL9YBc1NF=NULsqLFgd",
+        "buffer_bounds": "EXACT_SCHEMA_AND_NATIVE_ABI_BOUNDS_REQUIRED",
+        "callable": true,
+        "compiler_may_synthesize": false,
+        "failure_semantics": [
+          "REJECT_UNBOUND_OPCODE",
+          "REJECT_SCHEMA_MISMATCH",
+          "REJECT_AUTHORITY_FAILURE",
+          "REJECT_LEASE_FAILURE",
+          "TYPED_UNAVAILABLE"
+        ],
+        "input_schema": {
+          "additionalProperties": false,
+          "required": [
+            "canonical_operands"
+          ],
+          "type": "object"
+        },
+        "ir_schema": "HHS_EXECUTABLE_IR_V1",
+        "lease_requirements": [
+          "TASK_BOUND",
+          "SOURCE_SCOPED",
+          "OPERATION_SCOPED",
+          "SEQUENCE_BOUNDED"
+        ],
+        "memory_ownership": "CALLER_OWNS_INPUT_NATIVE_RUNTIME_OWNS_INTERNAL_STATE",
+        "mutation_class": "READ_OR_BOUNDED_NATIVE_OPERATION",
+        "native_opcode": "NATIVE_VECTORIZE_HASH72",
+        "output_schema": {
+          "required": [
+            "native_status",
+            "receipt_root_hash72"
+          ],
+          "type": "object"
+        },
+        "post_state_witness_requirements": [
+          "NATIVE_RESULT_IDENTITY",
+          "POST_STATE_ROOT",
+          "EXECUTION_LINEAGE"
+        ],
+        "pre_state_witness_requirements": [
+          "VM81_LANE_BINDING",
+          "CANONICAL_OPERAND_COMMITMENT",
+          "AUTHORITY_RECEIPT"
+        ],
+        "receipt_schema": "HHS_NATIVE_INVOCATION_RECEIPT_V1",
+        "schema": "HHS_NATIVE_OPCODE_BINDING_V1",
+        "semantic_operation_identity": "vm81.native.hhs_vectorize_hash72"
+      }
+    ],
+    "name_only_bindings": 0,
+    "parent_pass": "PASS_078_1",
+    "pass079_native_opcode_registry_root_hash72": "0000000000000000000000000000003tNkS)j=sQgSkBmHM8rQGXJTi4RcNyQDjiBTjhoWF=",
+    "pass_id": "PASS_079",
+    "policy": "IR_REQUESTS_REGISTRY_RESOLVES_NO_NAME_OR_SIGNATURE_AUTHORITY",
+    "registered_native_opcodes": 29,
+    "schema": "HHS_NATIVE_OPCODE_REGISTRY_PASS_079_V1",
+    "signature_only_bindings": 0,
+    "source_ir_schema": "HHS_EXECUTABLE_IR_V1",
+    "typed_unresolved_declarations_excluded": 15,
+    "unproven_semantic_bindings": 0
+  },
+  "schema": "HHS_PASS_079_RELEASE_BUNDLE_V1"
+}

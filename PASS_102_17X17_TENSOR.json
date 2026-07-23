@@ -1,0 +1,74 @@
+{
+  "all_cells_reconstruct_manifold": true,
+  "center": {
+    "center_zero_hub_root_hash72": "0000000000000000000000000000001*Rn^pDOl0UA8u80By7h2yOJDm8wGkYKMH?xfs1Aao",
+    "coordinate": [
+      0,
+      0
+    ],
+    "cycle_root_hash72": "0000000000000000000000000000002uc**9ww/oweF0p8niw2>HwTD-B!Y)>eppMNKTJ90D",
+    "lane_count": 4,
+    "manifold_root_hash72": "0000000000000000000000000000003*rJdu0B7Plyf3=tsc9vt2>+x>fgL9qojlewZ>DZY?",
+    "normalization_role": "COMMON_INVARIANT_ORIGIN",
+    "schema": "HHS_17X17_GLOBAL_ZERO_HUB_V1",
+    "step_count_per_lane": 72,
+    "trinary_state": 0
+  },
+  "center_coordinate": [
+    0,
+    0
+  ],
+  "center_state": 0,
+  "column_closure_verified": true,
+  "coordinate_range": [
+    -8,
+    8
+  ],
+  "diagonal_closure_verified": true,
+  "dimensions": [
+    17,
+    17
+  ],
+  "global_zero_sum_verified": true,
+  "individual_lane_closure_verified": true,
+  "lane_cells_per_ring": [
+    2,
+    4,
+    6,
+    8,
+    10,
+    12,
+    14,
+    16
+  ],
+  "lane_ids": [
+    "X",
+    "Y",
+    "Z",
+    "W"
+  ],
+  "lane_step_bijection_verified": true,
+  "mapped_lane_step_count": 288,
+  "orientation": {
+    "direction": "CLOCKWISE",
+    "root_hash72": "0000000000000000000000000000002q5l=po7H/>^9Pl0J6j03cUT8>?0S1J/DI75es)UJO",
+    "start": "TOP_LEFT"
+  },
+  "physical_cell_count": 289,
+  "ring_cell_counts": [
+    8,
+    16,
+    24,
+    32,
+    40,
+    48,
+    56,
+    64
+  ],
+  "ring_closure_verified": true,
+  "ring_count": 8,
+  "row_closure_verified": true,
+  "schema": "HHS_17X17_XYZW_TRINARY_PHASE_GEAR_MAGIC_TENSOR_V1",
+  "steps_per_lane": 72,
+  "tensor_root_hash72": "0000000000000000000000000000001g5nui9PYKT-Pm7QsR((vEyRLv^1*r0(OKPvw)zhtT"
+}

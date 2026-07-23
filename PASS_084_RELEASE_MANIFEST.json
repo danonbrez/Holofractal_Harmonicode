@@ -1,0 +1,19 @@
+{
+  "schema": "HHS_PASS_084_RELEASE_MANIFEST_V1",
+  "pass_id": "PASS_084",
+  "parent_pass083_release_root_hash72": "0000000000000000000000000000000FbqOm+fstFM=nY*oY/7!1nWVkm*Y0D(e(S!YXhK2U",
+  "workload_count": 14,
+  "negative_case_count": 10,
+  "all_negative_cases_passed": true,
+  "artifacts": [
+    "PASS_084_AUDIOVISUAL_WORKLOAD_REGISTRY.json",
+    "PASS_084_LATENCY_NORMALIZATION_RESULTS.json",
+    "PASS_084_AUDIOVISUAL_SYNCHRONIZATION_RECEIPTS.json",
+    "PASS_084_SHARED_EVENT_GRAPH.json",
+    "PASS_084_AUDIOVISUAL_SCALING_RESULTS.json",
+    "PASS_084_NEGATIVE_CASES.json",
+    "PASS_084_CALIBRATION_REPORT.md",
+    "CHANGELOG_PASS_084.md"
+  ],
+  "pass084_release_root_hash72": "0000000000000000000000000000003*8)YEGe>V2onOQ0jqPr42l1?C+x9lRjR)/EnbRgu?"
+}

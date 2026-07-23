@@ -1,0 +1,10 @@
+{
+  "conclusion_count": 6,
+  "evidence_count": 23,
+  "failures": [],
+  "interpretation_count": 5,
+  "ok": true,
+  "schema": "HHS_PASS135_CEUAC_INDEPENDENT_VERIFICATION_V1",
+  "status": "VERIFIED",
+  "verifier_role": "VERIFIER"
+}

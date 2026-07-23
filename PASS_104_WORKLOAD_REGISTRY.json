@@ -1,0 +1,94 @@
+{
+  "workloads": [
+    {
+      "name": "Literal string variable",
+      "root_hash72": "0000000000000000000000000000003tPaCcCG8MxIIj384K=6o5HWXLpS6ClczaHvCP1Qu1",
+      "workload_id": "W104-01"
+    },
+    {
+      "name": "Symbolic string variable",
+      "root_hash72": "0000000000000000000000000000000O5?BAncaw3K2ejHBGrO(!Z7ynzJWq*4YIDp)U0(JE",
+      "workload_id": "W104-02"
+    },
+    {
+      "name": "Typed template interpolation",
+      "root_hash72": "0000000000000000000000000000000yLF(Pl-Z40OMBnIqp>xJ2coNno3p+RVleobn11zg4",
+      "workload_id": "W104-03"
+    },
+    {
+      "name": "Partial template expansion",
+      "root_hash72": "00000000000000000000000000000043=OH*M/BB=BRHMx^FjV42hVccMPYV+yuEW2S9A+0(",
+      "workload_id": "W104-04"
+    },
+    {
+      "name": "String-to-AST compilation",
+      "root_hash72": "0000000000000000000000000000001q)u9Ft493Az7=((nkvGzQVaEfrZWaWzj6Ol>Rp^tV",
+      "workload_id": "W104-05"
+    },
+    {
+      "name": "Phrase dictionary",
+      "root_hash72": "0000000000000000000000000000001YV*2vVuGlSSSHjj=PR(jU2nciRAj9X1rk^h8ypCgc",
+      "workload_id": "W104-06"
+    },
+    {
+      "name": "Parameterized macro dictionary",
+      "root_hash72": "00000000000000000000000000000006d3)Shac)hIm(F?nN+eNZZn=7g5+e!Ytg=fi?JF*Q",
+      "workload_id": "W104-07"
+    },
+    {
+      "name": "Recursive dictionary expansion",
+      "root_hash72": "0000000000000000000000000000003?Hn4A2*BDpdo8laXMd6HtyNX+GS4bT8Zvm6abzt3o",
+      "workload_id": "W104-08"
+    },
+    {
+      "name": "Cycle detection",
+      "root_hash72": "0000000000000000000000000000000bmSyxaXnS=r2n!dHCk1o)JO0/rPtR7F?HBkNgnWPr",
+      "workload_id": "W104-09"
+    },
+    {
+      "name": "Scope and shadowing",
+      "root_hash72": "0000000000000000000000000000002VK2R7e4)SNkP3rSm-hb08a22R35R(yc=C=ORfS+X(",
+      "workload_id": "W104-10"
+    },
+    {
+      "name": "Empty/null/missing distinction",
+      "root_hash72": "0000000000000000000000000000003F7Wh5x)Wz>)29m=EQeXRlvSw)wAf49e(BTsFxxZA7",
+      "workload_id": "W104-11"
+    },
+    {
+      "name": "Unicode and locale comparison",
+      "root_hash72": "0000000000000000000000000000002/0=wLMWfwUlSALw+Ys+L4^7NZDVessim7X3DS!qT=",
+      "workload_id": "W104-12"
+    },
+    {
+      "name": "Noncommutative phrase order",
+      "root_hash72": "0000000000000000000000000000000*q=J*sVymF2DdlabBQ-BNvp-(uIgRPRWU?BKa0e=M",
+      "workload_id": "W104-13"
+    },
+    {
+      "name": "Multilingual projection dictionary",
+      "root_hash72": "0000000000000000000000000000002NbB4lZmCIikHdJUrBNiChz4)>vDFPeZTe*M/)-PBf",
+      "workload_id": "W104-14"
+    },
+    {
+      "name": "Versioned string editing",
+      "root_hash72": "0000000000000000000000000000003fy91sY(>4KXmoaqGCNJL6LXJ(Cr?y8uV6gP?v/Q/9",
+      "workload_id": "W104-15"
+    },
+    {
+      "name": "Incremental dependency revalidation",
+      "root_hash72": "0000000000000000000000000000002vYn8?ZP-Kp*!faZK87s=nRSfukWvuk8!1brwPQ2JE",
+      "workload_id": "W104-16"
+    },
+    {
+      "name": "Cross-modal label resolution",
+      "root_hash72": "0000000000000000000000000000001j0lzPvTSWxbhCsMSQZT4?SEyi7ZBjrB908X^KS)R1",
+      "workload_id": "W104-17"
+    },
+    {
+      "name": "Cold-boot dictionary reconstruction",
+      "root_hash72": "00000000000000000000000000000012491(049?G?rSGsIQXv22UQjsrWmYXvfWVUEK*r7G",
+      "workload_id": "W104-18"
+    }
+  ]
+}

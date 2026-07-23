@@ -1,0 +1,27 @@
+{
+  "corrected_cell_id": "C",
+  "correction_authority": "EXACT_UNIQUE_SOLUTION",
+  "correction_receipt_root_hash72": "00000000000000000000000000000035g(F297?XyhFOHG/f4>6)eUP?CmrRcxq1gQu5)0Dc",
+  "corrupted_codeword_root_hash72": "0000000000000000000000000000000tf(fg+fizaCMBT!kvY?!qSVl?7+>yG(Lhgdda^ktw",
+  "original_corrupted_value": 0,
+  "post_correction_codeword_root_hash72": "0000000000000000000000000000004sQ)uP8WTeTV9d*f!AZsSmlU)TNn7fC-R9B3Y8KIwu",
+  "post_correction_values": {
+    "A": 1,
+    "B": 0,
+    "C": 71,
+    "D": 1,
+    "E": 18,
+    "F": 71,
+    "G": 53,
+    "H": 37
+  },
+  "replacement_derived_from": [
+    "RECIPROCAL_PAIR_RELATION",
+    "GEAR_HISTORY_WITNESS",
+    "GLOBAL_U72_CLOSURE"
+  ],
+  "replacement_value": 71,
+  "replay_verified": true,
+  "schema": "HHS_DUAL_WITNESS_CORRECTION_RECEIPT_V1",
+  "syndrome_root_hash72": "0000000000000000000000000000002c62tDKf17yT3q=B*lXT18QcSw*P^g3IT+/nEH5ibY"
+}

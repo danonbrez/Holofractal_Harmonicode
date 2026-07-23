@@ -1,0 +1,42 @@
+{
+  "conclusion": "RECOVERY_CLOSED",
+  "failures": [],
+  "pass_id": "PASS_140_HOLOGRAPHIC_ENTANGLEMENT_TRACKING",
+  "receipt_root": "99af53dcf34cb9089a2c1ceaf8ff471e41a2e53916593118ad1265dae6edbe73",
+  "recovered": [
+    {
+      "artifact_id": "source",
+      "content_b64": "ZypoID09IHh5CnJobyA9PSBnK2gtMip4eQo=",
+      "content_root": "b4a92740eab2db5b7334e51383c283fe7c99153d56219dae3de6946f723a1234",
+      "dependencies_verified": true,
+      "path": "formal/source.eq",
+      "recovered_shard": null,
+      "status": "INTACT_REVALIDATED"
+    },
+    {
+      "artifact_id": "proof",
+      "content_b64": "eyJnb2FsIjoicmhvKmc9PShnLXh5KV4yIiwicHJvdmVkIjp0cnVlfQ==",
+      "content_root": "d199ad558baf28c24e227d23b634ff9f4c378d501a194eb8e61aa42e784c9e37",
+      "dependencies_verified": true,
+      "path": "formal/proof.json",
+      "recovered_shard": 1,
+      "status": "BYTE_EXACT_RECOVERED"
+    },
+    {
+      "artifact_id": "release",
+      "content_b64": "UkVMRUFTRV9QUk9WRUQK",
+      "content_root": "1454cf9dda54302ab95ce65af417bf53868ecaae4679b6e48cbdf54451fa4f42",
+      "dependencies_verified": true,
+      "path": "release/receipt.txt",
+      "recovered_shard": null,
+      "status": "INTACT_REVALIDATED"
+    }
+  ],
+  "recovery_order": [
+    "source",
+    "proof",
+    "release"
+  ],
+  "schema": "HHS_HOLOGRAPHIC_RECOVERY_RESULT_V1",
+  "source_receipt_root": "21459166c4eddaf9f229f0413d8af4746ad6a0a4885143a7801b191facd16998"
+}

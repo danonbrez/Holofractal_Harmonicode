@@ -1,0 +1,145 @@
+{
+  "all_system_files_recovered": false,
+  "answer": false,
+  "canonical_full_parent_record": {
+    "archive_name": "hhs_pass_132_executable_consequence_ab_control_runtime.zip",
+    "authority": "HISTORICAL_RELEASE_RECORD; NOT LOCALLY REHASHED",
+    "availability_in_current_sandbox": false,
+    "sha256": "4edfa7975be435318dace65a9ea614c433df011f35055f7ba2a30e7ded062338"
+  },
+  "cause": "Pass 133 forked from PASS_132 release evidence rather than the full Pass 132 runtime checkpoint.",
+  "corruption_type": "WRONG_PARENT_ARTIFACT_CLASS",
+  "direct_archive_comparison": {
+    "added_paths": 49,
+    "ancestry_complete": false,
+    "changed_paths": 0,
+    "child_noncache_files": 49,
+    "inherited_paths": 0,
+    "missing_parent_paths": 51,
+    "missing_parent_sample": [
+      "PASS_132_RELEASE_EVIDENCE/PASS_132_AB_COMPARISON_RECEIPT.json",
+      "PASS_132_RELEASE_EVIDENCE/PASS_132_AB_CONTROL_MANIFEST.json",
+      "PASS_132_RELEASE_EVIDENCE/PASS_132_AB_REPLAY_REPORT.json",
+      "PASS_132_RELEASE_EVIDENCE/PASS_132_API_SURFACE_REPORT.json",
+      "PASS_132_RELEASE_EVIDENCE/PASS_132_AST_DISPATCH_GRAPH.json",
+      "PASS_132_RELEASE_EVIDENCE/PASS_132_CANONICAL_INPUT_ROOT.json",
+      "PASS_132_RELEASE_EVIDENCE/PASS_132_CEUAC_AUDIT_ARTIFACTS.jsonl",
+      "PASS_132_RELEASE_EVIDENCE/PASS_132_CEUAC_SCHEMA_VALIDATION.json",
+      "PASS_132_RELEASE_EVIDENCE/PASS_132_COMPLETION_ATTESTATION.json",
+      "PASS_132_RELEASE_EVIDENCE/PASS_132_COMPUTATIONAL_CONSEQUENCES.jsonl",
+      "PASS_132_RELEASE_EVIDENCE/PASS_132_CONSEQUENCE_COMPARISON_MATRIX.json",
+      "PASS_132_RELEASE_EVIDENCE/PASS_132_CONTINUATION_CHECKPOINT.json",
+      "PASS_132_RELEASE_EVIDENCE/PASS_132_CONTRADICTION_AUDIT.json",
+      "PASS_132_RELEASE_EVIDENCE/PASS_132_EXECUTION_MANIFEST.json",
+      "PASS_132_RELEASE_EVIDENCE/PASS_132_FOREIGN_MODEL_COMPARISON.json",
+      "PASS_132_RELEASE_EVIDENCE/PASS_132_HHS_EXECUTION_TRACE.jsonl",
+      "PASS_132_RELEASE_EVIDENCE/PASS_132_IEEE_BINARY32_TRACE.jsonl",
+      "PASS_132_RELEASE_EVIDENCE/PASS_132_IEEE_BINARY64_TRACE.jsonl",
+      "PASS_132_RELEASE_EVIDENCE/PASS_132_IMPLEMENTATION_REPORT.md",
+      "PASS_132_RELEASE_EVIDENCE/PASS_132_LOGICAL_CONSEQUENCES.jsonl",
+      "PASS_132_RELEASE_EVIDENCE/PASS_132_NEGATIVE_TEST_REPORT.json",
+      "PASS_132_RELEASE_EVIDENCE/PASS_132_NORMALIZATION_PROOF.json",
+      "PASS_132_RELEASE_EVIDENCE/PASS_132_NUMERICAL_ERROR_REPORT.json",
+      "PASS_132_RELEASE_EVIDENCE/PASS_132_ORDERED_LANE_TRACE.jsonl",
+      "PASS_132_RELEASE_EVIDENCE/PASS_132_ORDER_SENSITIVITY_REPORT.json",
+      "PASS_132_RELEASE_EVIDENCE/PASS_132_PERFORMANCE_MEASUREMENTS.json",
+      "PASS_132_RELEASE_EVIDENCE/PASS_132_RELEASE_FILE_MANIFEST.json",
+      "PASS_132_RELEASE_EVIDENCE/PASS_132_RELEASE_MANIFEST.json",
+      "PASS_132_RELEASE_EVIDENCE/PASS_132_REPLAY_RECEIPT.json",
+      "PASS_132_RELEASE_EVIDENCE/PASS_132_SEMANTIC_DIVERGENCE_REPORT.json",
+      "PASS_132_RELEASE_EVIDENCE/PASS_132_TEST_REPORT.json",
+      "PASS_132_RELEASE_EVIDENCE/PASS_132_TRANSLATION_CLASSIFICATION.json",
+      "PASS_132_RELEASE_EVIDENCE/evidence_store/PASS_132_UNIFIED_HASH72_LEDGER.json",
+      "PASS_132_RELEASE_EVIDENCE/evidence_store/executions/15f9fb6ec7dfa48e9b29892f452b378868015065c49a286a30de824a48874f83.json",
+      "PASS_132_RELEASE_EVIDENCE/evidence_store/executions/25aced17fca73ccbeb2b0940644084d449f121cb6c0c41efd0a2630526528c2e.json",
+      "PASS_132_RELEASE_EVIDENCE/evidence_store/executions/2c78317dd871f4faf7f16800b01a3f38c9de3474db034fe86f194a71d24093d8.json",
+      "PASS_132_RELEASE_EVIDENCE/evidence_store/executions/3ee850cabeaf916ee5be911d28d318efa0c342bb305fc699fbece9f88300ca1e.json",
+      "PASS_132_RELEASE_EVIDENCE/evidence_store/executions/46f30881cc6d4ad95c8ca318279bdd6086808a006e92d4bccf4b0ab4941892e2.json",
+      "PASS_132_RELEASE_EVIDENCE/evidence_store/executions/5cdd34f6d55baea5454560d8f23311e3f2f84347be30cdb38cc694d604f0942d.json",
+      "PASS_132_RELEASE_EVIDENCE/evidence_store/executions/6a7e1d4d0fca2537a6baf4a4a884ded4c99c00fa68a614e8103e72d97f0abecc.json",
+      "PASS_132_RELEASE_EVIDENCE/evidence_store/executions/74aba3c2ed8c60a8d5a29cf4f715b3e77aa9ca07e05cb5f127df4109a5cbcdfc.json",
+      "PASS_132_RELEASE_EVIDENCE/evidence_store/executions/845a6c7ce4589774b458755c7dd97a7fa2e8ce4d4326552f9e9e502ed57cba16.json",
+      "PASS_132_RELEASE_EVIDENCE/evidence_store/executions/84605045768ef1a289517e89b0c9c2a9eafc735adaeaf1f2d37037d67858d290.json",
+      "PASS_132_RELEASE_EVIDENCE/evidence_store/executions/871057656a2fb07a99f471fc95cf8a490da940a70c484ad1168f96788c17dd22.json",
+      "PASS_132_RELEASE_EVIDENCE/evidence_store/executions/917ed3ef89d19f23dedb239400d9f9793bcb9113669f05e87f61507f8d0f9c2a.json",
+      "PASS_132_RELEASE_EVIDENCE/evidence_store/executions/ade41e0f559fd34510caa8c9fe79942cc4bb24ea51390800e8ed2b3561c90985.json",
+      "PASS_132_RELEASE_EVIDENCE/evidence_store/executions/aeb16b55057a0f051d2b5f951ca2000d8779007bbfb8dee969fe435196e05258.json",
+      "PASS_132_RELEASE_EVIDENCE/evidence_store/executions/d1e83d9d16037f8543e35b7cce0b16aa7cbbf3c99389129f696967964e70e199.json",
+      "PASS_132_RELEASE_EVIDENCE/evidence_store/executions/d6f6b5e6c1d861c14c1dba7f0b99a920c724590814a53776356f8d4dd6793862.json",
+      "PASS_132_RELEASE_EVIDENCE/evidence_store/executions/db87de85d556ec8e5f2b384a5c8c92fdbce7d97554d0c0f082bc7bd2457fae47.json",
+      "PASS_132_RELEASE_EVIDENCE/evidence_store/executions/f9f22db723ba1b27d845db618a708c0a0d0fc4fc3bcbebb128e875f58c710791.json"
+    ],
+    "parent_noncache_files": 51,
+    "schema": "HHS_CHECKPOINT_ANCESTRY_COMPARISON_V1",
+    "unchanged_paths": 0
+  },
+  "evidence_bundle_record": {
+    "archive_name": "hhs_pass_132_release_evidence.zip",
+    "role": "EVIDENCE_BUNDLE_NOT_FILESYSTEM_PARENT",
+    "sha256": "32e4bc0f6e54d37697634c6101af5670b65f2f470878b981c0f2887db9b332ea"
+  },
+  "first_corrupt_checkpoint": "PASS_133",
+  "invalidated_prior_claims": [
+    "checkpoint_chain_repaired=true",
+    "parent_evidence_embedded as sufficient ancestry",
+    "complete Pass 133 checkpoint closure"
+  ],
+  "pass132_evidence_archive": {
+    "archive": "/mnt/data/hhs_pass_132_release_evidence(1).zip",
+    "archive_class": "EVIDENCE_ONLY_OR_NONCHECKPOINT",
+    "cache_files": 0,
+    "evidence_files": 51,
+    "reasons": [
+      "evidence/report population dominates system source population"
+    ],
+    "sha256": "32e4bc0f6e54d37697634c6101af5670b65f2f470878b981c0f2887db9b332ea",
+    "system_bytes": 0,
+    "system_files": 0,
+    "top_level_entries": [
+      "PASS_132_RELEASE_EVIDENCE"
+    ],
+    "total_files": 51,
+    "total_uncompressed_bytes": 13897657
+  },
+  "pass133_archive": {
+    "archive": "/mnt/data/hhs_pass_133_prime_qudit_checkpoint.zip",
+    "archive_class": "EVIDENCE_ONLY_OR_NONCHECKPOINT",
+    "cache_files": 0,
+    "evidence_files": 31,
+    "reasons": [
+      "system directories present: contracts, hhs_runtime, tests, tools",
+      "evidence/report population dominates system source population"
+    ],
+    "sha256": "182ade8e7d8a893a844177cb2e26272651f02e57add8c2903391cbeeb0635bb7",
+    "system_bytes": 93446,
+    "system_files": 18,
+    "top_level_entries": [
+      "README.md",
+      "contracts",
+      "hhs_runtime",
+      "parent_checkpoint",
+      "pass133_run_output.json",
+      "pyproject.toml",
+      "release_artifacts",
+      "tests",
+      "tools"
+    ],
+    "total_files": 49,
+    "total_uncompressed_bytes": 2503595
+  },
+  "pass_id": "PASS_133",
+  "preserved_valid_results": [
+    "Pass 133 implementation remains a recoverable delta",
+    "Prime/Sudoku/BigInt/phase/ECC/SCHIC results remain preserved",
+    "Results do not substitute for inherited files"
+  ],
+  "recovery_operation": {
+    "algorithm": "copy complete non-cache parent tree, overlay Pass 133 delta, validate zero missing parent paths, package new full checkpoint",
+    "cache_rule": "TRANSIENT CACHES MAY BE OMITTED; SYSTEM FILES AND CANONICAL OUTPUTS MUST BE PRESERVED",
+    "current_state": "BLOCKED_ON_FULL_PASS132_RUNTIME_ARCHIVE_BYTES",
+    "implementation": "tools/hhs_checkpoint_recovery.py",
+    "required_parent_class": "FULL_SYSTEM_CHECKPOINT"
+  },
+  "schema": "HHS_PASS133_ANCESTRY_CORRUPTION_AND_RECOVERY_REPORT_V1",
+  "terminal_status": "ANCESTRY_RECOVERY_REQUIRED"
+}

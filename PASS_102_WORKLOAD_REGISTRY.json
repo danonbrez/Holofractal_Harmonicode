@@ -1,0 +1,88 @@
+{
+  "workloads": [
+    {
+      "name": "Exact 17x17 mapping",
+      "schema": "HHS_PASS_102_WORKLOAD_V1",
+      "workload_id": "W102-01",
+      "workload_root_hash72": "0000000000000000000000000000002Vx+l=vYYpB7N+pswHhFQT^xDbgp=QHbOcMazLdX18"
+    },
+    {
+      "name": "Eight-ring decomposition",
+      "schema": "HHS_PASS_102_WORKLOAD_V1",
+      "workload_id": "W102-02",
+      "workload_root_hash72": "0000000000000000000000000000001*bRrDLBmq(9Y!+wV>iTtAMozIsnScaY?i+LXv+5U)"
+    },
+    {
+      "name": "Four sectors per ring",
+      "schema": "HHS_PASS_102_WORKLOAD_V1",
+      "workload_id": "W102-03",
+      "workload_root_hash72": "0000000000000000000000000000004fBV3wL52b9)AIzq4>)nW^Ph+yd7HK/NwemJWtOBVT"
+    },
+    {
+      "name": "Lane reconstruction",
+      "schema": "HHS_PASS_102_WORKLOAD_V1",
+      "workload_id": "W102-04",
+      "workload_root_hash72": "0000000000000000000000000000001>n/MNPd-V-f/(p0E(?kjwxddP1QiCd9T4Hty66E3z"
+    },
+    {
+      "name": "Center-zero normalization",
+      "schema": "HHS_PASS_102_WORKLOAD_V1",
+      "workload_id": "W102-05",
+      "workload_root_hash72": "0000000000000000000000000000001EgKxpg(MKaRVfwi!U0x6ZISiRcw52K8fa>JwRur!D"
+    },
+    {
+      "name": "Trinary magic-line closure",
+      "schema": "HHS_PASS_102_WORKLOAD_V1",
+      "workload_id": "W102-06",
+      "workload_root_hash72": "0000000000000000000000000000004Kxgxwu>Ym=GrTloKqbXWClQGtILyB)^n-BB9itFb+"
+    },
+    {
+      "name": "Reciprocal lane permutation",
+      "schema": "HHS_PASS_102_WORKLOAD_V1",
+      "workload_id": "W102-07",
+      "workload_root_hash72": "00000000000000000000000000000028zZqzQ3ctJd?9NMczgz^f1=g9O>thHbzW/-lq!Ypj"
+    },
+    {
+      "name": "Tensor rotation",
+      "schema": "HHS_PASS_102_WORKLOAD_V1",
+      "workload_id": "W102-08",
+      "workload_root_hash72": "0000000000000000000000000000001?+6jGmDIszz>wCt=OQbG)O*47ks1p9oB*rP1(o291"
+    },
+    {
+      "name": "Tensor reflection",
+      "schema": "HHS_PASS_102_WORKLOAD_V1",
+      "workload_id": "W102-09",
+      "workload_root_hash72": "0000000000000000000000000000000GdHc/WELfunrSk8oGYK^p01Rol=/iyvUV?>-sblzE"
+    },
+    {
+      "name": "Single-cell corruption",
+      "schema": "HHS_PASS_102_WORKLOAD_V1",
+      "workload_id": "W102-10",
+      "workload_root_hash72": "00000000000000000000000000000044Vzri>O*ij805qaeop)0=Ba-=2XCY0-Ds3?ZlBZw="
+    },
+    {
+      "name": "Compensating errors",
+      "schema": "HHS_PASS_102_WORKLOAD_V1",
+      "workload_id": "W102-11",
+      "workload_root_hash72": "0000000000000000000000000000003CaaNfu2qJ-kkOc4l1ocY>pOIrvuTCxxc9IL6F1T7w"
+    },
+    {
+      "name": "Ring-sector erasure",
+      "schema": "HHS_PASS_102_WORKLOAD_V1",
+      "workload_id": "W102-12",
+      "workload_root_hash72": "0000000000000000000000000000001NU(LtBo+Ew!^+-1+QOjYR4bjhlcg2P6)ZuV2?YtGD"
+    },
+    {
+      "name": "Arbitrary-cell checkpoint",
+      "schema": "HHS_PASS_102_WORKLOAD_V1",
+      "workload_id": "W102-13",
+      "workload_root_hash72": "00000000000000000000000000000004mEPLEW0QVEGqODNAqh6UQck71kLcyiAk2K9lpLvl"
+    },
+    {
+      "name": "Dynamic trinary phase gear",
+      "schema": "HHS_PASS_102_WORKLOAD_V1",
+      "workload_id": "W102-14",
+      "workload_root_hash72": "0000000000000000000000000000004dMZoiedBwyCbfGwiEh>A/vlx8x873!wL-H4KTdFFT"
+    }
+  ]
+}

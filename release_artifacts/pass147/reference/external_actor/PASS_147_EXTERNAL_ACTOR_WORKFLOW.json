@@ -1,0 +1,2113 @@
+{
+  "actor_used_public_cli_only": true,
+  "direct_database_access": false,
+  "direct_repository_imports": false,
+  "environment_id": "ENV-75e78da23d45b6be8d90a9e5",
+  "lvm_execution_id": "EXE-f06f4b21d8776115e164d986",
+  "lvm_id": "LVM-d9b7dfdcc2c616e13d2c603e",
+  "potential_capability_complete": true,
+  "privileged_internal_access": 0,
+  "project_export": "/mnt/data/hhs147_actor_final_redacted/external_actor_project.json",
+  "project_export_exists": true,
+  "public_surface_closed": true,
+  "receipt_chain_valid": true,
+  "schema": "HHS_PASS147_CEUAC_EXTERNAL_ACTOR_WORKFLOW_V1",
+  "script_execution_id": "EXE-3aa437121378ba9a22772abf",
+  "script_id": "SCR-dafc6925527d80cb155e595a",
+  "source_id": "SRC-495e1ad529563b6d2a7fd329",
+  "status": "EXTERNAL_ACTOR_WORKFLOW_COMPLETED",
+  "trace": [
+    {
+      "ordinal": 0,
+      "result": {
+        "parent": {
+          "architectural_identity": [
+            "RECURSIVE",
+            "HOLOGRAPHIC",
+            "FRACTAL",
+            "HARMONIC",
+            "EVOLUTIONARY",
+            "SYMBOLIC",
+            "TEMPORAL",
+            "INTERACTIVE"
+          ],
+          "parent": {
+            "database_schema": {
+              "id": "HHS_PASS145_KNOWLEDGE_DATABASE",
+              "version": "1.3.0"
+            },
+            "parent": "HHS-P144",
+            "parser_version": "1.0.0",
+            "pass_id": "HHS-P145",
+            "schema": "HHS_PASS145_VERSION_V1",
+            "version": "145.1.0"
+          },
+          "pass_id": "HHS-P146",
+          "schema": "HHS_PASS146_VERSION_V1",
+          "version": "146.1.0"
+        },
+        "pass_id": "HHS-P147",
+        "rule": {
+          "potential_lawful_capability": "COMPLETE",
+          "privileged_internal_access": 0,
+          "procedural_model": "EXPERT_EXTERNAL_DEVELOPER"
+        },
+        "schema": "HHS_PASS147_VERSION_V1",
+        "version": "147.1.0"
+      },
+      "step": "VERSION"
+    },
+    {
+      "ordinal": 1,
+      "result": {
+        "count": 3,
+        "documents": [
+          {
+            "name": "PASS_147_EXTERNAL_AGENT_OPACITY.md",
+            "source_id": "SRC-a480b94ca57939f985b609e1",
+            "source_root_hash72": "0000000000000000000000000000002/jJh*C6+3-Jom-B3Ef(nBfuF9RO1DDoKXk>MU^-mE"
+          },
+          {
+            "name": "PUBLIC_SURFACE_QUICKSTART.md",
+            "source_id": "SRC-8239028d5b74c6018060e60f",
+            "source_root_hash72": "0000000000000000000000000000003utsFEIOgSlna5RnG)^)ax>MoW>)k8hlGtk2>-uyDj"
+          },
+          {
+            "name": "PUBLIC_SECURITY_MODEL.md",
+            "source_id": "SRC-50ab6a9d1728bb5f72ec504e",
+            "source_root_hash72": "0000000000000000000000000000001PwxVUdd+2tlU9H1/x3PL)cV^ANy9sjECwIpzX+7st"
+          }
+        ],
+        "schema": "HHS_PASS147_PUBLIC_DOC_INSTALL_V1",
+        "status": "PUBLIC_DOCUMENTATION_INSTALLED"
+      },
+      "step": "PUBLIC_DOCUMENTATION_INSTALL"
+    },
+    {
+      "ordinal": 2,
+      "result": {
+        "authentication_token": "[REDACTED]",
+        "profile": {
+          "capabilities": [
+            "DATABASE_READ",
+            "DATABASE_WRITE",
+            "DOCUMENTATION_READ",
+            "EXTERNAL_AGENT",
+            "FILESYSTEM_READ",
+            "FILESYSTEM_WRITE",
+            "INGEST",
+            "INTER_SANDBOX",
+            "LOCAL_API",
+            "NATIVE_RUNTIME",
+            "PATH_EXECUTION",
+            "PUBLIC_DISCOVERY",
+            "QUERY",
+            "SEARCH",
+            "VALIDATE"
+          ],
+          "grant_id": "GRT-7a846001fd0435ea0fb45482",
+          "identity_id": "IDN-039d690556e9ed3807e3b777",
+          "name": "CEUAC External Actor",
+          "operations": [
+            "RUN_CLI_COMMAND",
+            "PUBLIC_DISCOVER",
+            "PUBLIC_DOC_QUERY"
+          ],
+          "privileged_internal_access": 0,
+          "procedural_external": true,
+          "profile_hash72": "00000000000000000000000000000018C=j(XoT/0Qa9x)1x6JcF3w)Da>8KRkS1Izu3(j2Q",
+          "profile_id": "AGT-3b5a544e096c84a09483568b",
+          "status": "EXTERNAL_AGENT_PROFILE_CREATED"
+        },
+        "schema": "HHS_PASS147_EXTERNAL_AGENT_BOOTSTRAP_V1",
+        "token_displayed_once": true
+      },
+      "step": "EXTERNAL_AGENT_BOOTSTRAP"
+    },
+    {
+      "ordinal": 3,
+      "result": {
+        "construction": {
+          "contract_hash72": "00000000000000000000000000000022LSB6vZXeV7b2kEj2F?9WquFOLWcsvIlKN*MFbC1U",
+          "contract_id": "BND-1ca28516859f6c976abeda16",
+          "minimum_capabilities": [
+            "DATABASE_READ",
+            "PATH_EXECUTION",
+            "PUBLIC_DISCOVERY"
+          ],
+          "path_hash72": "00000000000000000000000000000031X8a0ya!+zL2b3hW3sYvLzI*uSpKhGq)eA1T7X=Bi",
+          "path_id": "PTH-329e196cabd55ce39d4f8682",
+          "recursive_depth": 0,
+          "reversibility_class": "APPEND_ONLY_NONDESTRUCTIVE",
+          "status": "BOUNDARY_PATH_CONSTRUCTED"
+        },
+        "execution": {
+          "contract_id": "BND-1ca28516859f6c976abeda16",
+          "path_id": "PTH-329e196cabd55ce39d4f8682",
+          "result": {
+            "audit_hash72": "0000000000000000000000000000000eInN=*FM-J6+BiYs-a84cpFz-?QEy26^(QY6=)vds",
+            "closed": true,
+            "documentation_gaps": [],
+            "invalid_classifications": [],
+            "lawfully_reachable": 132,
+            "potential_capability_complete": true,
+            "privileged_bypass_surfaces": [],
+            "privileged_internal_access": 0,
+            "schema": "HHS_PASS147_PUBLIC_SURFACE_AUDIT_V1",
+            "total": 132
+          },
+          "result_hash72": "0000000000000000000000000000000qJ0bl9pMZEiA752aw*FJuTI8TOPzeGh8-Z!wLUw>>",
+          "reversibility_class": "APPEND_ONLY_NONDESTRUCTIVE",
+          "status": "BOUNDARY_PATH_CLOSED",
+          "step_count": 9,
+          "temporary_capabilities_expired": true
+        },
+        "operation": "PUBLIC_DISCOVER",
+        "privileged_internal_access": 0,
+        "public_primitives_only": true,
+        "schema": "HHS_PASS147_EXTERNAL_AGENT_EXECUTION_V1"
+      },
+      "step": "CAPABILITY_DISCOVERY"
+    },
+    {
+      "ordinal": 4,
+      "result": {
+        "construction": {
+          "contract_hash72": "0000000000000000000000000000004n8lpS8u!cm8XyLPgcw=3wpE2C+Ev-^i2+Tj^gQNBM",
+          "contract_id": "BND-c3f081dd2e08b2aa98fb833b",
+          "minimum_capabilities": [
+            "DATABASE_READ",
+            "PATH_EXECUTION",
+            "PUBLIC_DISCOVERY"
+          ],
+          "path_hash72": "0000000000000000000000000000003VXZHw4sT*iC=PuakOQH*CXUnCS3wB6czSPqmbxYF-",
+          "path_id": "PTH-4797aa609e175399b08a6b97",
+          "recursive_depth": 0,
+          "reversibility_class": "APPEND_ONLY_NONDESTRUCTIVE",
+          "status": "BOUNDARY_PATH_CONSTRUCTED"
+        },
+        "execution": {
+          "contract_id": "BND-c3f081dd2e08b2aa98fb833b",
+          "path_id": "PTH-4797aa609e175399b08a6b97",
+          "result": {
+            "capability": {
+              "argv": [
+                "script",
+                "import"
+              ],
+              "capabilities": [
+                "DATABASE_WRITE",
+                "FILESYSTEM_READ",
+                "NATIVE_RUNTIME",
+                "PATH_EXECUTION"
+              ],
+              "capability_hash72": "0000000000000000000000000000000/PEpficgtMtirHVz=1zJZ)sdjBEW2kFoxHyLa3J7O",
+              "capability_id": "PUB-ea2640032a685b57c37d34f2",
+              "classification": "PUBLICLY_REQUESTABLE_THROUGH_BOUNDARY",
+              "description": "Public CLI operation: script import",
+              "mutating": true,
+              "parameters": [
+                {
+                  "default": null,
+                  "name": "path",
+                  "nargs": null,
+                  "required": true,
+                  "type": "_StoreAction"
+                },
+                {
+                  "default": null,
+                  "flags": [
+                    "--name"
+                  ],
+                  "name": "name",
+                  "nargs": null,
+                  "required": false,
+                  "type": "_StoreAction"
+                },
+                {
+                  "default": null,
+                  "flags": [
+                    "--language"
+                  ],
+                  "name": "language",
+                  "nargs": null,
+                  "required": true,
+                  "type": "_StoreAction"
+                },
+                {
+                  "default": null,
+                  "flags": [
+                    "--environment"
+                  ],
+                  "name": "environment",
+                  "nargs": null,
+                  "required": false,
+                  "type": "_StoreAction"
+                },
+                {
+                  "default": [],
+                  "flags": [
+                    "--capability"
+                  ],
+                  "name": "capability",
+                  "nargs": null,
+                  "required": false,
+                  "type": "_AppendAction"
+                }
+              ],
+              "reversibility_class": "CHECKPOINT_REVERSIBLE",
+              "surface_type": "CLI"
+            },
+            "execution_requires_boundary": true,
+            "privileged_internal_access": false,
+            "schema": "HHS_PASS147_PUBLIC_CAPABILITY_DESCRIPTION_V1"
+          },
+          "result_hash72": "0000000000000000000000000000002FGk)oV2GuAtjQ)3wamEGKEGig+=?v1uekqL!mjwul",
+          "reversibility_class": "APPEND_ONLY_NONDESTRUCTIVE",
+          "status": "BOUNDARY_PATH_CLOSED",
+          "step_count": 9,
+          "temporary_capabilities_expired": true
+        },
+        "operation": "PUBLIC_DISCOVER",
+        "privileged_internal_access": 0,
+        "public_primitives_only": true,
+        "schema": "HHS_PASS147_EXTERNAL_AGENT_EXECUTION_V1"
+      },
+      "step": "COMMAND_SCHEMA_INSPECTION"
+    },
+    {
+      "ordinal": 5,
+      "result": {
+        "construction": {
+          "contract_hash72": "0000000000000000000000000000001VK9Zg--uXvp^!gGX36SNb)fJdc-FT88QF0QVwG8fv",
+          "contract_id": "BND-a2bac4e33d1668ae667d8bdc",
+          "minimum_capabilities": [
+            "DATABASE_READ",
+            "PATH_EXECUTION",
+            "PUBLIC_DISCOVERY"
+          ],
+          "path_hash72": "0000000000000000000000000000000onnuJupMSkRxFI2u)jOqnsS5z=mX8/JU+wBBa=86+",
+          "path_id": "PTH-d68441bcd3b94a2d9be564be",
+          "recursive_depth": 0,
+          "reversibility_class": "APPEND_ONLY_NONDESTRUCTIVE",
+          "status": "BOUNDARY_PATH_CONSTRUCTED"
+        },
+        "execution": {
+          "contract_id": "BND-a2bac4e33d1668ae667d8bdc",
+          "path_id": "PTH-d68441bcd3b94a2d9be564be",
+          "result": {
+            "boundary_required": true,
+            "count": 1,
+            "direct_sql": false,
+            "operations": [
+              {
+                "capabilities": [
+                  "LOCAL_API",
+                  "PATH_EXECUTION"
+                ],
+                "capability_hash72": "0000000000000000000000000000000RmiA!rvPNhYg4J^J?aj-6(*Rrcte-KjkQ*rTagM5l",
+                "capability_id": "PUB-1689bbc702e09a344a15fffc",
+                "classification": "PUBLICLY_REQUESTABLE_THROUGH_BOUNDARY",
+                "description": "Compile and execute a read-only natural-language query",
+                "method": "POST",
+                "mutating": false,
+                "parameters": [],
+                "path": "/api/v1/query",
+                "reversibility_class": "APPEND_ONLY_NONDESTRUCTIVE",
+                "surface_type": "API"
+              }
+            ],
+            "schema": "HHS_PASS147_PUBLIC_API_DESCRIPTION_V1"
+          },
+          "result_hash72": "0000000000000000000000000000002n(igDt+sPiu8!UQSPK5Ox0uokWdPivP)VEXL4t0QT",
+          "reversibility_class": "APPEND_ONLY_NONDESTRUCTIVE",
+          "status": "BOUNDARY_PATH_CLOSED",
+          "step_count": 9,
+          "temporary_capabilities_expired": true
+        },
+        "operation": "PUBLIC_DISCOVER",
+        "privileged_internal_access": 0,
+        "public_primitives_only": true,
+        "schema": "HHS_PASS147_EXTERNAL_AGENT_EXECUTION_V1"
+      },
+      "step": "API_SCHEMA_INSPECTION"
+    },
+    {
+      "ordinal": 6,
+      "result": {
+        "construction": {
+          "contract_hash72": "0000000000000000000000000000000!i*9l9uWSh/JXErYzE39/5r=2nPNP1Eku4oD(fW3d",
+          "contract_id": "BND-f6cb3aba2b620d6b775a933d",
+          "minimum_capabilities": [
+            "DATABASE_READ",
+            "DOCUMENTATION_READ",
+            "PATH_EXECUTION",
+            "QUERY"
+          ],
+          "path_hash72": "0000000000000000000000000000001G2goevpBg5>(DwyHPw=?B9qlznhrzDN+uE>1m9lBY",
+          "path_id": "PTH-467c2b0cd0133e6a32e1254e",
+          "recursive_depth": 0,
+          "reversibility_class": "APPEND_ONLY_NONDESTRUCTIVE",
+          "status": "BOUNDARY_PATH_CONSTRUCTED"
+        },
+        "execution": {
+          "contract_id": "BND-f6cb3aba2b620d6b775a933d",
+          "path_id": "PTH-467c2b0cd0133e6a32e1254e",
+          "result": {
+            "answer": {
+              "database_derived_relationships": [],
+              "deterministic_calculations": {
+                "result_count": 6
+              },
+              "directly_retrieved_evidence": [
+                {
+                  "authority_level": "A1",
+                  "exact_text": "Canonical equation: COMPLETE FUNCTIONAL POTENTIAL + ZERO PRIVILEGED ACCESS + PUBLIC PROCEDURAL CONSTRUCTION = HHS EXTERNAL-AGENT OPACITY.",
+                  "namespace": "hhs-public-docs-v147",
+                  "normalized_text": "canonical equation: complete functional potential + zero privileged access + public procedural construction = hhs external-agent opacity",
+                  "object_hash72": "0000000000000000000000000000003epNbxD)hFa!BjsuEbe1=1?SiVdssND2EWKh4JYwST",
+                  "object_id": "CLM-903e2979a93f50a97aecbc7c",
+                  "object_type": "EQUATION",
+                  "segment_id": null,
+                  "source_id": "SRC-a480b94ca57939f985b609e1",
+                  "validation_state": "UNVALIDATED"
+                },
+                {
+                  "authority_level": "A1",
+                  "exact_text": "# HHS Pass 147 External-Agent Opacity",
+                  "namespace": "hhs-public-docs-v147",
+                  "normalized_text": "# hhs pass 147 external-agent opacity",
+                  "object_hash72": "0000000000000000000000000000004aW!4zBPZXj^p^xIHkMr=d6^tMNVvFgWynV65K2LVp",
+                  "object_id": "CLM-efe9b3583f432b188041957c",
+                  "object_type": "FRAGMENT",
+                  "segment_id": null,
+                  "source_id": "SRC-a480b94ca57939f985b609e1",
+                  "validation_state": "UNVALIDATED"
+                },
+                {
+                  "authority_level": "A1",
+                  "exact_text": "Opacity",
+                  "namespace": "hhs-public-docs-v147",
+                  "normalized_text": "Opacity",
+                  "object_hash72": "00000000000000000000000000000035I!EhzyCvc*Q0ku6CY-xOGdQzVV90W->5Ws+fTq0D",
+                  "object_id": "ENT-3b2198bca9463beb61a1dcc6",
+                  "object_type": "SYMBOL",
+                  "segment_id": null,
+                  "source_id": "SRC-a480b94ca57939f985b609e1",
+                  "validation_state": "UNVALIDATED"
+                },
+                {
+                  "authority_level": "A1",
+                  "exact_text": "OPACITY",
+                  "namespace": "hhs-public-docs-v147",
+                  "normalized_text": "OPACITY",
+                  "object_hash72": "00000000000000000000000000000003W5pYa5nHNw?70d2BrVZ6v(-1oSF7swvjo()jUk=J",
+                  "object_id": "ENT-5330d86460f9e1b908cfa792",
+                  "object_type": "IDENTIFIER",
+                  "segment_id": null,
+                  "source_id": "SRC-a480b94ca57939f985b609e1",
+                  "validation_state": "UNVALIDATED"
+                },
+                {
+                  "authority_level": "A1",
+                  "exact_text": "OPACITY",
+                  "namespace": "hhs-public-docs-v147",
+                  "normalized_text": "OPACITY",
+                  "object_hash72": "0000000000000000000000000000003tEhXY0H7Jw-rn4AozU?S8ydeM1QX8B(k?Tb?vKRXo",
+                  "object_id": "ENT-e06a76d3a96df55409f49a58",
+                  "object_type": "SYMBOL",
+                  "segment_id": null,
+                  "source_id": "SRC-a480b94ca57939f985b609e1",
+                  "validation_state": "UNVALIDATED"
+                },
+                {
+                  "authority_level": "A1",
+                  "exact_text": "Opacity",
+                  "namespace": "hhs-public-docs-v147",
+                  "normalized_text": "Opacity",
+                  "object_hash72": "0000000000000000000000000000003t(p/7G?9Z!S5tm2Nge=VO(*Un)EHd!)>j?PdmhVl(",
+                  "object_id": "ENT-e4bfde99180affcbf3076907",
+                  "object_type": "IDENTIFIER",
+                  "segment_id": null,
+                  "source_id": "SRC-a480b94ca57939f985b609e1",
+                  "validation_state": "UNVALIDATED"
+                }
+              ],
+              "model_generated_explanation": null,
+              "unresolved_ambiguity": []
+            },
+            "authority_level": "A1",
+            "database_root_unchanged": true,
+            "documentation_namespace": "hhs-public-docs-v147",
+            "query_plan": {
+              "exact_symbol": null,
+              "mutation_authority": false,
+              "namespace": "hhs-public-docs-v147",
+              "object_type": null,
+              "plan_type": "GENERIC_SEARCH",
+              "query_plan_hash72": "00000000000000000000000000000032nbrWKvewWQOz0oydaobX^p(5VVJqbrtc4=SdI*4U",
+              "question": "external-agent opacity",
+              "read_only": true,
+              "schema": "HHS_PASS145_QUERY_PLAN_V1",
+              "search_terms": [
+                "external-agent",
+                "opacity"
+              ],
+              "tokens": [
+                "external-agent",
+                "opacity"
+              ]
+            },
+            "query_plan_receipt": {
+              "database_root_hash72": "0000000000000000000000000000004CxDzDCYG4-GX*WtP3sYOc?A/yAeEbzffXa*?3F-MU",
+              "mutation_authority": false,
+              "query_plan_hash72": "00000000000000000000000000000032nbrWKvewWQOz0oydaobX^p(5VVJqbrtc4=SdI*4U",
+              "receipt_hash72": "0000000000000000000000000000001n!AcljcDK*9gz+Y860^42C2fMJZZaOM3(sGCUNZkz",
+              "schema": "HHS_PASS145_QUERY_PLAN_RECEIPT_V1"
+            },
+            "query_result_hash72": "0000000000000000000000000000003TNiVdbH5VA>tgyGc=/uNvTIvaFgDbz2/wHMy0BTZw",
+            "query_result_receipt": {
+              "database_root_hash72": "0000000000000000000000000000004CxDzDCYG4-GX*WtP3sYOc?A/yAeEbzffXa*?3F-MU",
+              "database_root_unchanged": true,
+              "query_plan_hash72": "00000000000000000000000000000032nbrWKvewWQOz0oydaobX^p(5VVJqbrtc4=SdI*4U",
+              "query_result_hash72": "0000000000000000000000000000003TNiVdbH5VA>tgyGc=/uNvTIvaFgDbz2/wHMy0BTZw",
+              "receipt_hash72": "0000000000000000000000000000003zqHAGMr>U07ozE)Aj(-0!o9p4gJ(9qPXrbQ2/romS",
+              "schema": "HHS_PASS145_QUERY_RESULT_RECEIPT_V1"
+            },
+            "schema": "HHS_PASS147_PUBLIC_DOCUMENTATION_QUERY_V1",
+            "source_authority": "VERSIONED_LOCAL_CORPUS"
+          },
+          "result_hash72": "0000000000000000000000000000002mEN1p1bXjKOG9z)CTU)d+drDsSPoenO2gqr+>sHKy",
+          "reversibility_class": "APPEND_ONLY_NONDESTRUCTIVE",
+          "status": "BOUNDARY_PATH_CLOSED",
+          "step_count": 10,
+          "temporary_capabilities_expired": true
+        },
+        "operation": "PUBLIC_DOC_QUERY",
+        "privileged_internal_access": 0,
+        "public_primitives_only": true,
+        "schema": "HHS_PASS147_EXTERNAL_AGENT_EXECUTION_V1"
+      },
+      "step": "DOCUMENTATION_QUERY"
+    },
+    {
+      "ordinal": 7,
+      "result": {
+        "construction": {
+          "contract_hash72": "0000000000000000000000000000003G7A>Fm=0?mNRGs7NDSF-EQ1eVeIF4C9E2r!(MJgvF",
+          "contract_id": "BND-b115055cfe330301827f1fb3",
+          "minimum_capabilities": [
+            "DATABASE_WRITE",
+            "INTER_SANDBOX",
+            "PATH_EXECUTION"
+          ],
+          "path_hash72": "0000000000000000000000000000002MkwK>L/p=AEg6t9RN+F8O30!(JaOje2DOB(vUiaoQ",
+          "path_id": "PTH-f9a3b5ffe40c66d0905c55a7",
+          "recursive_depth": 0,
+          "reversibility_class": "TRANSACTIONALLY_REVERSIBLE",
+          "status": "BOUNDARY_PATH_CONSTRUCTED"
+        },
+        "execution": {
+          "contract_id": "BND-b115055cfe330301827f1fb3",
+          "path_id": "PTH-f9a3b5ffe40c66d0905c55a7",
+          "result": {
+            "ok": true,
+            "post_state_root_hash72": "0000000000000000000000000000001X(dK>7aB/LVEdQyKr+276AhW=DjT(!?Qgx)AF7RIy",
+            "pre_state_root_hash72": "0000000000000000000000000000001xOw3A7iEbDbG4e-/cS7vpi3bIW*piVs7z2y+qHEvU",
+            "receipt_hash72": "0000000000000000000000000000001/P^mW6k!lyNMa+xWj5aSL)-0n)8pnTwphETU>c0?s",
+            "receipt_id": "RCP-fc7c173f3e9640bd303b1c61",
+            "result": {
+              "environment_hash72": "0000000000000000000000000000001uXB>izxvWrsDbia6C7q)v9lJxYf=rlofd4q1Bn9Zg",
+              "environment_id": "ENV-75e78da23d45b6be8d90a9e5",
+              "namespace": "actor-lab",
+              "status": "ENVIRONMENT_CREATED"
+            },
+            "sequence": 34,
+            "status": "TRANSACTION_COMMITTED",
+            "transaction_id": "TX-792b610fb1da494b5ea47f0f"
+          },
+          "result_hash72": "0000000000000000000000000000001-t)2XXdwIpzVYFFW0t0-ZhmV5VzZjpgOX1DjmAovc",
+          "reversibility_class": "TRANSACTIONALLY_REVERSIBLE",
+          "status": "BOUNDARY_PATH_CLOSED",
+          "step_count": 10,
+          "temporary_capabilities_expired": true
+        },
+        "operation": "RUN_CLI_COMMAND",
+        "privileged_internal_access": 0,
+        "public_primitives_only": true,
+        "schema": "HHS_PASS147_EXTERNAL_AGENT_EXECUTION_V1"
+      },
+      "step": "KNOWLEDGE_ENVIRONMENT_CREATE"
+    },
+    {
+      "ordinal": 8,
+      "result": {
+        "construction": {
+          "contract_hash72": "00000000000000000000000000000016>6O0nH>P*GEJn=nF=-y0Nj5UZ5rDYTQV2g2jdbj2",
+          "contract_id": "BND-2cc8070cd98ecd350f474510",
+          "minimum_capabilities": [
+            "DATABASE_WRITE",
+            "FILESYSTEM_READ",
+            "INGEST",
+            "PATH_EXECUTION"
+          ],
+          "path_hash72": "00000000000000000000000000000037PJ1Vpi5bLSqIp-9q35gTSHnsB?4RjYrwuP=*hvWm",
+          "path_id": "PTH-ece646d364c527daae8458a6",
+          "recursive_depth": 0,
+          "reversibility_class": "CHECKPOINT_REVERSIBLE",
+          "status": "BOUNDARY_PATH_CONSTRUCTED"
+        },
+        "execution": {
+          "contract_id": "BND-2cc8070cd98ecd350f474510",
+          "path_id": "PTH-ece646d364c527daae8458a6",
+          "result": {
+            "contradictions": {
+              "contradiction_count": 0,
+              "status": "NO_CONTRADICTIONS_DETECTED"
+            },
+            "database_root_hash72": "0000000000000000000000000000003fsefKsioYhGEAK5d-P45yw4tY1WBKEPG^m(/Drq*r",
+            "entity_count": 25,
+            "interpretation": {
+              "claim_count": 6,
+              "receipt_hash72": "0000000000000000000000000000003cM5j1hIwl8uYXR8dkFXsCP5Q*)xKSg+h)U!(ds54p",
+              "receipt_id": "RCP-866a3bb90943c9b038d67a1f",
+              "relation_count": 29,
+              "status": "INTERPRETATION_COMMITTED"
+            },
+            "parse_id": "PAR-375cf1b5b1c28fcf7e2e3578",
+            "receipt_hash72": "00000000000000000000000000000027bEY/^UE/0xKMX2DV8hUK0tV/lDbm6+>gZbGD6?W0",
+            "receipt_id": "RCP-07e3e2f9f3ee0aa2c167f060",
+            "receipts": {
+              "DOCUMENT_INGESTION_RECEIPT": {
+                "receipt_hash72": "00000000000000000000000000000027bEY/^UE/0xKMX2DV8hUK0tV/lDbm6+>gZbGD6?W0",
+                "receipt_id": "RCP-07e3e2f9f3ee0aa2c167f060"
+              },
+              "PARSE_RECEIPT": {
+                "parse_id": "PAR-375cf1b5b1c28fcf7e2e3578",
+                "parse_root_hash72": "0000000000000000000000000000001-1Dwd8ljOgu6Z5)8aDigcDW1Gd92=oa6v9ynkJ=*3",
+                "parser_version": "1.0.0",
+                "receipt_hash72": "0000000000000000000000000000004FUtNZWuLjN6jRQT-uCvB)z^dyKtm3q/QCM2n+zaf9",
+                "script_execution": "NOT_PERFORMED"
+              },
+              "SOURCE_PRESERVATION_RECEIPT": {
+                "byte_length": 167,
+                "raw_sha256": "f8e17090ccec05016f2a1cc03fb059b954bb16cf017f6ed26bff685c11d916ef",
+                "receipt_hash72": "0000000000000000000000000000000sPBxg=gm2sInavZ77zq0fdi2uy^)gjgrSth6/!BZ!",
+                "source_id": "SRC-495e1ad529563b6d2a7fd329",
+                "source_root_hash72": "0000000000000000000000000000000lo0?1WwYKuwEP2)BEKqY5Pg!Hn?g>-JGx7p/v3hdh"
+              }
+            },
+            "schema": "HHS_PASS145_INGESTION_RESULT_V1",
+            "segment_count": 1,
+            "source_id": "SRC-495e1ad529563b6d2a7fd329",
+            "source_root_hash72": "0000000000000000000000000000000lo0?1WwYKuwEP2)BEKqY5Pg!Hn?g>-JGx7p/v3hdh",
+            "status": "SOURCE_ADMITTED",
+            "validation": {
+              "authority_level": "A1",
+              "layers": {
+                "V1_BYTE_INTEGRITY": {
+                  "details": {
+                    "byte_length_recomputed": true,
+                    "sha256_recomputed": true
+                  },
+                  "executed": true,
+                  "outcome": "VALIDATED"
+                },
+                "V2_FORMAT_INTEGRITY": {
+                  "details": {
+                    "parser_version": "1.0.0",
+                    "reparsed": true
+                  },
+                  "executed": true,
+                  "outcome": "VALIDATED"
+                },
+                "V3_STRUCTURAL_INTEGRITY": {
+                  "details": {
+                    "contiguous": true,
+                    "segment_count": 1
+                  },
+                  "executed": true,
+                  "outcome": "VALIDATED"
+                },
+                "V4_SCHEMA_INTEGRITY": {
+                  "details": {
+                    "schemas_checked": [
+                      "HHS_PASS145_SOURCE_EVIDENCE_V1",
+                      "HHS_PASS145_PARSE_V1"
+                    ]
+                  },
+                  "executed": true,
+                  "outcome": "VALIDATED"
+                },
+                "V5_PROVENANCE_INTEGRITY": {
+                  "details": {
+                    "object_count": 31,
+                    "segment_references_valid": true
+                  },
+                  "executed": true,
+                  "outcome": "VALIDATED"
+                },
+                "V6_SEMANTIC_INTEGRITY": {
+                  "details": {
+                    "O_distinct_from_pi": true,
+                    "claim_evidence_spans_valid": true
+                  },
+                  "executed": true,
+                  "outcome": "VALIDATED"
+                },
+                "V7_RUNTIME_CONFORMANCE": {
+                  "details": {
+                    "claim_roots_equal": true,
+                    "rebuilt_claim_count": 6,
+                    "stored_claim_count": 6
+                  },
+                  "executed": true,
+                  "outcome": "VALIDATED"
+                },
+                "V8_CROSS_DOCUMENT_CONSISTENCY": {
+                  "details": {
+                    "contradiction_count": 0,
+                    "missing_endpoints": []
+                  },
+                  "executed": true,
+                  "outcome": "VALIDATED"
+                },
+                "V9_RECEIPT_INTEGRITY": {
+                  "details": {
+                    "count": 39,
+                    "failures": [],
+                    "ok": true,
+                    "schema": "HHS_PASS145_RECEIPT_CHAIN_VERIFICATION_V1",
+                    "tip_receipt_id": "RCP-866a3bb90943c9b038d67a1f"
+                  },
+                  "executed": true,
+                  "outcome": "VALIDATED"
+                }
+              },
+              "outcome": "VALIDATED",
+              "receipt_hash72": "0000000000000000000000000000002ZAb!Ly0JZ3^?EGAXjpOg2*MNshbs4+IT?Lm7CAjKB",
+              "receipt_id": "RCP-e85441601a866e80a9ba9bc0",
+              "schema": "HHS_PASS145_SOURCE_VALIDATION_V1",
+              "source_id": "SRC-495e1ad529563b6d2a7fd329",
+              "validation_id": "VAL-687dc2631804d089eb87df57",
+              "validation_result_hash72": "00000000000000000000000000000021=a)Z)0jwE!fy8-rYQUFINPJIr?DkKXsJQ/dY5-TV",
+              "validators_executed": [
+                "V1_BYTE_INTEGRITY",
+                "V2_FORMAT_INTEGRITY",
+                "V3_STRUCTURAL_INTEGRITY",
+                "V4_SCHEMA_INTEGRITY",
+                "V5_PROVENANCE_INTEGRITY",
+                "V6_SEMANTIC_INTEGRITY",
+                "V7_RUNTIME_CONFORMANCE",
+                "V8_CROSS_DOCUMENT_CONSISTENCY",
+                "V9_RECEIPT_INTEGRITY"
+              ]
+            }
+          },
+          "result_hash72": "0000000000000000000000000000001F-m8Hnr0bW8B6INNuFN/r5CT!bWeq?nwOJe09JiQS",
+          "reversibility_class": "CHECKPOINT_REVERSIBLE",
+          "status": "BOUNDARY_PATH_CLOSED",
+          "step_count": 10,
+          "temporary_capabilities_expired": true
+        },
+        "operation": "RUN_CLI_COMMAND",
+        "privileged_internal_access": 0,
+        "public_primitives_only": true,
+        "schema": "HHS_PASS147_EXTERNAL_AGENT_EXECUTION_V1"
+      },
+      "step": "DOCUMENT_INGESTION"
+    },
+    {
+      "ordinal": 9,
+      "result": {
+        "construction": {
+          "contract_hash72": "00000000000000000000000000000003F*(bS=1ZofD?TlW2=qk*(oOuuQ?rpR2!V88Mbw/D",
+          "contract_id": "BND-25e23e1649710abaa98b5257",
+          "minimum_capabilities": [
+            "DATABASE_READ",
+            "PATH_EXECUTION",
+            "QUERY"
+          ],
+          "path_hash72": "0000000000000000000000000000002=JrCXYPqv+kafmTFcbQdkTOV8W+wceyBJ1P5+k7rd",
+          "path_id": "PTH-9220f7ca0a012b80c5a7099e",
+          "recursive_depth": 0,
+          "reversibility_class": "APPEND_ONLY_NONDESTRUCTIVE",
+          "status": "BOUNDARY_PATH_CONSTRUCTED"
+        },
+        "execution": {
+          "contract_id": "BND-25e23e1649710abaa98b5257",
+          "path_id": "PTH-9220f7ca0a012b80c5a7099e",
+          "result": {
+            "answer": {
+              "database_derived_relationships": [],
+              "deterministic_calculations": {
+                "result_count": 2
+              },
+              "directly_retrieved_evidence": [
+                {
+                  "authority_level": "A1",
+                  "exact_text": "O is a distinct HHS operator.",
+                  "namespace": "actor-lab",
+                  "normalized_text": "o is a distinct hhs operator",
+                  "object_hash72": "0000000000000000000000000000001N7!V7hr(Y2UJzx?Lk3Ce)2INk*7zC(r*FJnnwAlPW",
+                  "object_id": "CLM-467a61d7476536892e850bbb",
+                  "object_type": "DEFINITION",
+                  "segment_id": null,
+                  "source_id": "SRC-495e1ad529563b6d2a7fd329",
+                  "validation_state": "UNVALIDATED"
+                },
+                {
+                  "authority_level": "A1",
+                  "exact_text": "distinct",
+                  "namespace": "actor-lab",
+                  "normalized_text": "distinct",
+                  "object_hash72": "0000000000000000000000000000000R2gU?WsJ3l7ZNv>(WUtqE0XI*^S-YG^H/fXII9*um",
+                  "object_id": "ENT-c96d028a70a36294d02f7b9b",
+                  "object_type": "IDENTIFIER",
+                  "segment_id": null,
+                  "source_id": "SRC-495e1ad529563b6d2a7fd329",
+                  "validation_state": "UNVALIDATED"
+                }
+              ],
+              "model_generated_explanation": null,
+              "unresolved_ambiguity": []
+            },
+            "authority_level": "A1",
+            "database_root_unchanged": true,
+            "query_plan": {
+              "exact_symbol": null,
+              "mutation_authority": false,
+              "namespace": "actor-lab",
+              "object_type": null,
+              "plan_type": "GENERIC_SEARCH",
+              "query_plan_hash72": "0000000000000000000000000000001+tOJ1zcxqrcSqH7GVWvZ=QlU+oY!l*q+5)Xa=XNZ^",
+              "question": "What is distinct from pi?",
+              "read_only": true,
+              "schema": "HHS_PASS145_QUERY_PLAN_V1",
+              "search_terms": [
+                "distinct",
+                "from",
+                "pi"
+              ],
+              "tokens": [
+                "What",
+                "is",
+                "distinct",
+                "from",
+                "pi"
+              ]
+            },
+            "query_plan_receipt": {
+              "database_root_hash72": "0000000000000000000000000000004j?y/k77abq77-(k!LsHuYoqZXzLzN*CswrTGRX?yL",
+              "mutation_authority": false,
+              "query_plan_hash72": "0000000000000000000000000000001+tOJ1zcxqrcSqH7GVWvZ=QlU+oY!l*q+5)Xa=XNZ^",
+              "receipt_hash72": "00000000000000000000000000000046tUbU5Ct-0Ko-pAZvwsTAay9pRVdlWS5EXUUgYpS*",
+              "schema": "HHS_PASS145_QUERY_PLAN_RECEIPT_V1"
+            },
+            "query_result_hash72": "0000000000000000000000000000002GtPo7Mp1I9sVKLsH(aHfyblWibH)V)VPDrsiH+6Cw",
+            "query_result_receipt": {
+              "database_root_hash72": "0000000000000000000000000000004j?y/k77abq77-(k!LsHuYoqZXzLzN*CswrTGRX?yL",
+              "database_root_unchanged": true,
+              "query_plan_hash72": "0000000000000000000000000000001+tOJ1zcxqrcSqH7GVWvZ=QlU+oY!l*q+5)Xa=XNZ^",
+              "query_result_hash72": "0000000000000000000000000000002GtPo7Mp1I9sVKLsH(aHfyblWibH)V)VPDrsiH+6Cw",
+              "receipt_hash72": "00000000000000000000000000000030FVE-U/DjFcJssnlrb01umPt(YAT(Y/0+AA3=G!cB",
+              "schema": "HHS_PASS145_QUERY_RESULT_RECEIPT_V1"
+            },
+            "schema": "HHS_PASS145_QUERY_RESULT_V1"
+          },
+          "result_hash72": "00000000000000000000000000000049P=*+oDy4w)oGi9O)Q1FKbt>KfT>s6nq26Ys^jS4P",
+          "reversibility_class": "APPEND_ONLY_NONDESTRUCTIVE",
+          "status": "BOUNDARY_PATH_CLOSED",
+          "step_count": 10,
+          "temporary_capabilities_expired": true
+        },
+        "operation": "RUN_CLI_COMMAND",
+        "privileged_internal_access": 0,
+        "public_primitives_only": true,
+        "schema": "HHS_PASS147_EXTERNAL_AGENT_EXECUTION_V1"
+      },
+      "step": "KNOWLEDGE_QUERY"
+    },
+    {
+      "ordinal": 10,
+      "result": {
+        "construction": {
+          "contract_hash72": "0000000000000000000000000000003R=wYpoUUVRqY5omj?H24A(NxhH?4^kbq79tEeeG0n",
+          "contract_id": "BND-52e7f585cfb06af820e6b92a",
+          "minimum_capabilities": [
+            "DATABASE_WRITE",
+            "FILESYSTEM_READ",
+            "NATIVE_RUNTIME",
+            "PATH_EXECUTION"
+          ],
+          "path_hash72": "0000000000000000000000000000000idAYX*ouI3C+o*ltW1MdetM+HXT=vXfEBt79*qQzu",
+          "path_id": "PTH-d294dd558b459a2bab7fb966",
+          "recursive_depth": 0,
+          "reversibility_class": "CHECKPOINT_REVERSIBLE",
+          "status": "BOUNDARY_PATH_CONSTRUCTED"
+        },
+        "execution": {
+          "contract_id": "BND-52e7f585cfb06af820e6b92a",
+          "path_id": "PTH-d294dd558b459a2bab7fb966",
+          "result": {
+            "ok": true,
+            "post_state_root_hash72": "0000000000000000000000000000001GFLSz(3J9i!eIpL6!G=VTPxSTNdzoM3bU2E-ChmrG",
+            "pre_state_root_hash72": "00000000000000000000000000000004-agNXbKOB-s9Esht7vVLfc7esA9Fha253x=X-?Cl",
+            "receipt_hash72": "000000000000000000000000000000378xwA?Ep!noh3QRXrV-R20cK/7RJeMx8Xj)l64o11",
+            "receipt_id": "RCP-1f0003f6a854dfd6076ce040",
+            "result": {
+              "normalized_hash72": "0000000000000000000000000000004zfGI7b=S0xga1)sj7Maogt4x=F/mBeU3?bnHqVazk",
+              "script_id": "SCR-0d059ce61328e62cf38ae419",
+              "source_hash72": "0000000000000000000000000000003^NShcQ?lyGQ-n8mXw6RsY1B6egk>LhgOj-*dm5=5(",
+              "status": "SCRIPT_IMPORTED",
+              "version": 1
+            },
+            "sequence": 47,
+            "status": "TRANSACTION_COMMITTED",
+            "transaction_id": "TX-e14ace5b700fdab676a70a0d"
+          },
+          "result_hash72": "0000000000000000000000000000003+EgSn5!sHHE6I>NKX1Wb64vJpzK9aQMgP3d9dwOpv",
+          "reversibility_class": "CHECKPOINT_REVERSIBLE",
+          "status": "BOUNDARY_PATH_CLOSED",
+          "step_count": 10,
+          "temporary_capabilities_expired": true
+        },
+        "operation": "RUN_CLI_COMMAND",
+        "privileged_internal_access": 0,
+        "public_primitives_only": true,
+        "schema": "HHS_PASS147_EXTERNAL_AGENT_EXECUTION_V1"
+      },
+      "step": "BAD_SCRIPT_IMPORT"
+    },
+    {
+      "ordinal": 11,
+      "result": {
+        "construction": {
+          "contract_hash72": "0000000000000000000000000000003j9xd-q27Pp-/K5n3Fg5>buxL!dmtOIij1w6MhZ(yC",
+          "contract_id": "BND-f3599b3c86402883cfefc6a0",
+          "minimum_capabilities": [
+            "DATABASE_WRITE",
+            "NATIVE_RUNTIME",
+            "PATH_EXECUTION"
+          ],
+          "path_hash72": "0000000000000000000000000000002Rel/>M649PtQO)TrS6nwdF*yC(NqhCp8kho1lnltF",
+          "path_id": "PTH-089080c7a778f8c5ed2097b1",
+          "recursive_depth": 0,
+          "reversibility_class": "CHECKPOINT_REVERSIBLE",
+          "status": "BOUNDARY_PATH_CONSTRUCTED"
+        },
+        "execution": {
+          "contract_id": "BND-f3599b3c86402883cfefc6a0",
+          "path_id": "PTH-089080c7a778f8c5ed2097b1",
+          "result": {
+            "ok": true,
+            "post_state_root_hash72": "0000000000000000000000000000000s6LUjMwe9d?BserPqhUZw?f)Y=2MoRa5VyIC!XY?+",
+            "pre_state_root_hash72": "0000000000000000000000000000002joxsW=?o+KGyTu+oE^=NZZ7VaPVTT+z^/0Iy0io+r",
+            "receipt_hash72": "0000000000000000000000000000002QPYdmq*ESWO0ROIdKZD3F*4M)qnH2WipS8g*AMhu8",
+            "receipt_id": "RCP-d1c7f62f3ff322fa8175c7cb",
+            "result": {
+              "declared_capabilities": [
+                "DATABASE_READ"
+              ],
+              "diagnostics": [
+                {
+                  "code": "SCRIPT_COMMAND_REJECTED",
+                  "line": 1,
+                  "message": "unsupported command: kernel",
+                  "severity": "ERROR"
+                }
+              ],
+              "inferred_capabilities": [
+                "DATABASE_READ"
+              ],
+              "resolved_dependencies": [],
+              "script_id": "SCR-0d059ce61328e62cf38ae419",
+              "validation_state": "RUNTIME_REJECTED"
+            },
+            "sequence": 52,
+            "status": "TRANSACTION_COMMITTED",
+            "transaction_id": "TX-e0a6a72f9cd604179110b4a4"
+          },
+          "result_hash72": "000000000000000000000000000000098+Ctt!ivSGE7eHCB*npiJE?PgamwWA-LjRa)>skd",
+          "reversibility_class": "CHECKPOINT_REVERSIBLE",
+          "status": "BOUNDARY_PATH_CLOSED",
+          "step_count": 10,
+          "temporary_capabilities_expired": true
+        },
+        "operation": "RUN_CLI_COMMAND",
+        "privileged_internal_access": 0,
+        "public_primitives_only": true,
+        "schema": "HHS_PASS147_EXTERNAL_AGENT_EXECUTION_V1"
+      },
+      "step": "DELIBERATE_FAILURE"
+    },
+    {
+      "ordinal": 12,
+      "result": {
+        "construction": {
+          "contract_hash72": "00000000000000000000000000000011nFhW/R(s3WyZm>>I!TmVsf3V)^DodmGSwe4vJZlm",
+          "contract_id": "BND-3c8b7011a5a63d9d652c20a5",
+          "minimum_capabilities": [
+            "DATABASE_READ",
+            "PATH_EXECUTION",
+            "PUBLIC_DISCOVERY"
+          ],
+          "path_hash72": "0000000000000000000000000000001SS>ctY+T+LIiHBMHkvdF9/vMFa5v?kH2KN4^RX6u>",
+          "path_id": "PTH-63aa1d719218296339524eab",
+          "recursive_depth": 0,
+          "reversibility_class": "APPEND_ONLY_NONDESTRUCTIVE",
+          "status": "BOUNDARY_PATH_CONSTRUCTED"
+        },
+        "execution": {
+          "contract_id": "BND-3c8b7011a5a63d9d652c20a5",
+          "path_id": "PTH-63aa1d719218296339524eab",
+          "result": {
+            "code": "SCRIPT_COMMAND_REJECTED",
+            "known": true,
+            "meaning": "A script contains a command outside the documented HHS script command set.",
+            "recovery": "Replace it with a command exposed by the script contract and validate the repaired version.",
+            "schema": "HHS_PASS147_ERROR_EXPLANATION_V1"
+          },
+          "result_hash72": "0000000000000000000000000000000P-XZIrqGNELCwWX=>r4Zwc6Ay==z3SRu)(29WH8(I",
+          "reversibility_class": "APPEND_ONLY_NONDESTRUCTIVE",
+          "status": "BOUNDARY_PATH_CLOSED",
+          "step_count": 9,
+          "temporary_capabilities_expired": true
+        },
+        "operation": "PUBLIC_DISCOVER",
+        "privileged_internal_access": 0,
+        "public_primitives_only": true,
+        "schema": "HHS_PASS147_EXTERNAL_AGENT_EXECUTION_V1"
+      },
+      "step": "FAILURE_DIAGNOSIS"
+    },
+    {
+      "ordinal": 13,
+      "result": {
+        "construction": {
+          "contract_hash72": "0000000000000000000000000000004lmI7=lyU)P!YkfMTe+lcq?TEJsstM7mRrXxC*oXb*",
+          "contract_id": "BND-481a6078118692a9330df32d",
+          "minimum_capabilities": [
+            "DATABASE_WRITE",
+            "FILESYSTEM_READ",
+            "NATIVE_RUNTIME",
+            "PATH_EXECUTION"
+          ],
+          "path_hash72": "0000000000000000000000000000004vK4RrmndR63FxYAgbS4wYpQ2R2OWt7dLtC9zzy?b=",
+          "path_id": "PTH-4530ba29f9ea905159aae031",
+          "recursive_depth": 0,
+          "reversibility_class": "CHECKPOINT_REVERSIBLE",
+          "status": "BOUNDARY_PATH_CONSTRUCTED"
+        },
+        "execution": {
+          "contract_id": "BND-481a6078118692a9330df32d",
+          "path_id": "PTH-4530ba29f9ea905159aae031",
+          "result": {
+            "ok": true,
+            "post_state_root_hash72": "0000000000000000000000000000003+L3w?3iKEx-3cWLWD9yR>(AsUTT3Gcc8kaZKj/b+)",
+            "pre_state_root_hash72": "0000000000000000000000000000003BIMUEAmi9jbZ5D=7l9>Ub=7G/oKxXNAu8Z9epQCA>",
+            "receipt_hash72": "0000000000000000000000000000003XBQO!rk3z*yBC/jnXJv*sgMrZclQWSPK8dcOWNY!o",
+            "receipt_id": "RCP-383c799ecd4716978ebe2898",
+            "result": {
+              "normalized_hash72": "0000000000000000000000000000000KBg8t=pR!1wrB=qv2kwZS(61hzZdaGgRAMnK2623z",
+              "script_id": "SCR-dafc6925527d80cb155e595a",
+              "source_hash72": "0000000000000000000000000000001DyHhzydj>bZ6=EsM)kX^g4Dh7-tphW(yfZLPfDcbi",
+              "status": "SCRIPT_IMPORTED",
+              "version": 1
+            },
+            "sequence": 59,
+            "status": "TRANSACTION_COMMITTED",
+            "transaction_id": "TX-c473ef35ece88372c2a38e7f"
+          },
+          "result_hash72": "0000000000000000000000000000000c/xQ0(wRXyu9i96qfNemp02br135ra5^Ah*qQYeVd",
+          "reversibility_class": "CHECKPOINT_REVERSIBLE",
+          "status": "BOUNDARY_PATH_CLOSED",
+          "step_count": 10,
+          "temporary_capabilities_expired": true
+        },
+        "operation": "RUN_CLI_COMMAND",
+        "privileged_internal_access": 0,
+        "public_primitives_only": true,
+        "schema": "HHS_PASS147_EXTERNAL_AGENT_EXECUTION_V1"
+      },
+      "step": "REPAIRED_SCRIPT_IMPORT"
+    },
+    {
+      "ordinal": 14,
+      "result": {
+        "construction": {
+          "contract_hash72": "0000000000000000000000000000001YH5KZj)NU2WW^EZVr=EMDX3k6a86VG^yt2T2U--Zt",
+          "contract_id": "BND-85338a358d836db786210784",
+          "minimum_capabilities": [
+            "DATABASE_WRITE",
+            "NATIVE_RUNTIME",
+            "PATH_EXECUTION"
+          ],
+          "path_hash72": "0000000000000000000000000000000fsNOSXIEmI-a/GfK*LCKQTsT^Ev0jSE-JA>Ia1fqF",
+          "path_id": "PTH-5d83a3904c6f726209864326",
+          "recursive_depth": 0,
+          "reversibility_class": "CHECKPOINT_REVERSIBLE",
+          "status": "BOUNDARY_PATH_CONSTRUCTED"
+        },
+        "execution": {
+          "contract_id": "BND-85338a358d836db786210784",
+          "path_id": "PTH-5d83a3904c6f726209864326",
+          "result": {
+            "ok": true,
+            "post_state_root_hash72": "00000000000000000000000000000039hjcHw3?Exk7wcSrUDI4biJl!-P6)BPSiaaUX2W/r",
+            "pre_state_root_hash72": "0000000000000000000000000000001szfA==JoJg9P*m>jrOBPWQnx5ua^n9vX-(J8a)crc",
+            "receipt_hash72": "0000000000000000000000000000002HIB2fnbCbn)k+Q-lBNPMonhdx)Pptu^mfQvOojCaD",
+            "receipt_id": "RCP-83cb8dc5b0f4ad760fbf6481",
+            "result": {
+              "declared_capabilities": [
+                "DATABASE_READ"
+              ],
+              "diagnostics": [],
+              "inferred_capabilities": [
+                "DATABASE_READ"
+              ],
+              "resolved_dependencies": [],
+              "script_id": "SCR-dafc6925527d80cb155e595a",
+              "validation_state": "VALIDATED"
+            },
+            "sequence": 64,
+            "status": "TRANSACTION_COMMITTED",
+            "transaction_id": "TX-a7218bc432eee2ec1b5c0f4e"
+          },
+          "result_hash72": "0000000000000000000000000000004EcZO?AyZGFc0R!hZ4onCjVs6geC/=P5QjRXlZtBkN",
+          "reversibility_class": "CHECKPOINT_REVERSIBLE",
+          "status": "BOUNDARY_PATH_CLOSED",
+          "step_count": 10,
+          "temporary_capabilities_expired": true
+        },
+        "operation": "RUN_CLI_COMMAND",
+        "privileged_internal_access": 0,
+        "public_primitives_only": true,
+        "schema": "HHS_PASS147_EXTERNAL_AGENT_EXECUTION_V1"
+      },
+      "step": "REPAIRED_SCRIPT_VALIDATE"
+    },
+    {
+      "ordinal": 15,
+      "result": {
+        "construction": {
+          "contract_hash72": "0000000000000000000000000000000h?C8XR1Bpae?gSJodtZ!dBdiKI/ZpgG-wYU0N(eHa",
+          "contract_id": "BND-53a5ba212f28de8c0c469600",
+          "minimum_capabilities": [
+            "DATABASE_READ",
+            "DATABASE_WRITE",
+            "NATIVE_RUNTIME",
+            "PATH_EXECUTION"
+          ],
+          "path_hash72": "0000000000000000000000000000001WM6M^W7(7Y)hClvbCS*YgPWyD948f(D3wLKGIMv>z",
+          "path_id": "PTH-b73ee55ffcbc1dfaf99d169a",
+          "recursive_depth": 0,
+          "reversibility_class": "CHECKPOINT_REVERSIBLE",
+          "status": "BOUNDARY_PATH_CONSTRUCTED"
+        },
+        "execution": {
+          "contract_id": "BND-53a5ba212f28de8c0c469600",
+          "path_id": "PTH-b73ee55ffcbc1dfaf99d169a",
+          "result": {
+            "ok": true,
+            "post_state_root_hash72": "0000000000000000000000000000003(6gk!NlMcVYR68zefqzvLvpYt!jlOz/BW35J4Mjc!",
+            "pre_state_root_hash72": "0000000000000000000000000000003cXuDDgQv-oGIrW*blY/x0p1LS*D46O+Twyx8uqQ*W",
+            "receipt_hash72": "0000000000000000000000000000003Mw^9xj+N?pJaMJmMTSMB=k*9Ka)5n/X?gP)5R0BYp",
+            "receipt_id": "RCP-1bc0c0683575d67ecce11863",
+            "result": {
+              "execution_hash72": "0000000000000000000000000000002*GGf=VRK2*aq>qo^xdfXjd*aEWo14gT-pNuz7po8v",
+              "execution_id": "EXE-3aa437121378ba9a22772abf",
+              "output": [
+                {
+                  "command": "query",
+                  "line": 1,
+                  "result": {
+                    "answer": {
+                      "database_derived_relationships": [],
+                      "deterministic_calculations": {
+                        "result_count": 6
+                      },
+                      "directly_retrieved_evidence": [
+                        {
+                          "authority_level": "A1",
+                          "exact_text": "Canonical equation: COMPLETE FUNCTIONAL POTENTIAL + ZERO PRIVILEGED ACCESS + PUBLIC PROCEDURAL CONSTRUCTION = HHS EXTERNAL-AGENT OPACITY.",
+                          "namespace": "hhs-public-docs-v147",
+                          "normalized_text": "canonical equation: complete functional potential + zero privileged access + public procedural construction = hhs external-agent opacity",
+                          "object_hash72": "0000000000000000000000000000003epNbxD)hFa!BjsuEbe1=1?SiVdssND2EWKh4JYwST",
+                          "object_id": "CLM-903e2979a93f50a97aecbc7c",
+                          "object_type": "EQUATION",
+                          "segment_id": null,
+                          "source_id": "SRC-a480b94ca57939f985b609e1",
+                          "validation_state": "UNVALIDATED"
+                        },
+                        {
+                          "authority_level": "A1",
+                          "exact_text": "# HHS Pass 147 External-Agent Opacity",
+                          "namespace": "hhs-public-docs-v147",
+                          "normalized_text": "# hhs pass 147 external-agent opacity",
+                          "object_hash72": "0000000000000000000000000000004aW!4zBPZXj^p^xIHkMr=d6^tMNVvFgWynV65K2LVp",
+                          "object_id": "CLM-efe9b3583f432b188041957c",
+                          "object_type": "FRAGMENT",
+                          "segment_id": null,
+                          "source_id": "SRC-a480b94ca57939f985b609e1",
+                          "validation_state": "UNVALIDATED"
+                        },
+                        {
+                          "authority_level": "A1",
+                          "exact_text": "Opacity",
+                          "namespace": "hhs-public-docs-v147",
+                          "normalized_text": "Opacity",
+                          "object_hash72": "00000000000000000000000000000035I!EhzyCvc*Q0ku6CY-xOGdQzVV90W->5Ws+fTq0D",
+                          "object_id": "ENT-3b2198bca9463beb61a1dcc6",
+                          "object_type": "SYMBOL",
+                          "segment_id": null,
+                          "source_id": "SRC-a480b94ca57939f985b609e1",
+                          "validation_state": "UNVALIDATED"
+                        },
+                        {
+                          "authority_level": "A1",
+                          "exact_text": "OPACITY",
+                          "namespace": "hhs-public-docs-v147",
+                          "normalized_text": "OPACITY",
+                          "object_hash72": "00000000000000000000000000000003W5pYa5nHNw?70d2BrVZ6v(-1oSF7swvjo()jUk=J",
+                          "object_id": "ENT-5330d86460f9e1b908cfa792",
+                          "object_type": "IDENTIFIER",
+                          "segment_id": null,
+                          "source_id": "SRC-a480b94ca57939f985b609e1",
+                          "validation_state": "UNVALIDATED"
+                        },
+                        {
+                          "authority_level": "A1",
+                          "exact_text": "OPACITY",
+                          "namespace": "hhs-public-docs-v147",
+                          "normalized_text": "OPACITY",
+                          "object_hash72": "0000000000000000000000000000003tEhXY0H7Jw-rn4AozU?S8ydeM1QX8B(k?Tb?vKRXo",
+                          "object_id": "ENT-e06a76d3a96df55409f49a58",
+                          "object_type": "SYMBOL",
+                          "segment_id": null,
+                          "source_id": "SRC-a480b94ca57939f985b609e1",
+                          "validation_state": "UNVALIDATED"
+                        },
+                        {
+                          "authority_level": "A1",
+                          "exact_text": "Opacity",
+                          "namespace": "hhs-public-docs-v147",
+                          "normalized_text": "Opacity",
+                          "object_hash72": "0000000000000000000000000000003t(p/7G?9Z!S5tm2Nge=VO(*Un)EHd!)>j?PdmhVl(",
+                          "object_id": "ENT-e4bfde99180affcbf3076907",
+                          "object_type": "IDENTIFIER",
+                          "segment_id": null,
+                          "source_id": "SRC-a480b94ca57939f985b609e1",
+                          "validation_state": "UNVALIDATED"
+                        }
+                      ],
+                      "model_generated_explanation": null,
+                      "unresolved_ambiguity": []
+                    },
+                    "authority_level": "A1",
+                    "database_root_unchanged": true,
+                    "query_plan": {
+                      "exact_symbol": null,
+                      "mutation_authority": false,
+                      "namespace": null,
+                      "object_type": null,
+                      "plan_type": "GENERIC_SEARCH",
+                      "query_plan_hash72": "0000000000000000000000000000002Pg85xf9BGSx5LWfyh=1G7HaB^kPht8K+OrVaE/(q>",
+                      "question": "What is external-agent opacity?",
+                      "read_only": true,
+                      "schema": "HHS_PASS145_QUERY_PLAN_V1",
+                      "search_terms": [
+                        "external-agent",
+                        "opacity"
+                      ],
+                      "tokens": [
+                        "What",
+                        "is",
+                        "external-agent",
+                        "opacity"
+                      ]
+                    },
+                    "query_plan_receipt": {
+                      "database_root_hash72": "0000000000000000000000000000003cXuDDgQv-oGIrW*blY/x0p1LS*D46O+Twyx8uqQ*W",
+                      "mutation_authority": false,
+                      "query_plan_hash72": "0000000000000000000000000000002Pg85xf9BGSx5LWfyh=1G7HaB^kPht8K+OrVaE/(q>",
+                      "receipt_hash72": "0000000000000000000000000000003MRI6)Tfu*mSs^g9B7neTh4X=o3HlahAymZGkev6?3",
+                      "schema": "HHS_PASS145_QUERY_PLAN_RECEIPT_V1"
+                    },
+                    "query_result_hash72": "0000000000000000000000000000002NUb=C3U^b!LpNkexaOy7NM?u^AJ*T/n7>W!wRrjVr",
+                    "query_result_receipt": {
+                      "database_root_hash72": "0000000000000000000000000000003cXuDDgQv-oGIrW*blY/x0p1LS*D46O+Twyx8uqQ*W",
+                      "database_root_unchanged": true,
+                      "query_plan_hash72": "0000000000000000000000000000002Pg85xf9BGSx5LWfyh=1G7HaB^kPht8K+OrVaE/(q>",
+                      "query_result_hash72": "0000000000000000000000000000002NUb=C3U^b!LpNkexaOy7NM?u^AJ*T/n7>W!wRrjVr",
+                      "receipt_hash72": "0000000000000000000000000000001RdTdrb0HJ*X3*shA*QCw?oTw3vdfSbcrV+2n8?!^+",
+                      "schema": "HHS_PASS145_QUERY_RESULT_RECEIPT_V1"
+                    },
+                    "schema": "HHS_PASS145_QUERY_RESULT_V1"
+                  }
+                }
+              ],
+              "status": "SCRIPT_EXECUTED"
+            },
+            "sequence": 68,
+            "status": "TRANSACTION_COMMITTED",
+            "transaction_id": "TX-a4feea320ba04ead53d0b476"
+          },
+          "result_hash72": "0000000000000000000000000000001-tzS?mEUBdVMnC4S!kOlfNsA7?nf>D(YMe7u90siZ",
+          "reversibility_class": "CHECKPOINT_REVERSIBLE",
+          "status": "BOUNDARY_PATH_CLOSED",
+          "step_count": 10,
+          "temporary_capabilities_expired": true
+        },
+        "operation": "RUN_CLI_COMMAND",
+        "privileged_internal_access": 0,
+        "public_primitives_only": true,
+        "schema": "HHS_PASS147_EXTERNAL_AGENT_EXECUTION_V1"
+      },
+      "step": "SCRIPT_EXECUTE"
+    },
+    {
+      "ordinal": 16,
+      "result": {
+        "construction": {
+          "contract_hash72": "0000000000000000000000000000002oK+TRD=eID0o4ul1F^-hagHv)rLTgI4knXO4RUKp-",
+          "contract_id": "BND-37219868f99f133b3850c6ff",
+          "minimum_capabilities": [
+            "DATABASE_READ",
+            "PATH_EXECUTION"
+          ],
+          "path_hash72": "0000000000000000000000000000004bGUDlVc5PNOK(G112U?H4+owxuqdz86lngzkO3U)s",
+          "path_id": "PTH-397ad721a793b2ff513103c1",
+          "recursive_depth": 0,
+          "reversibility_class": "APPEND_ONLY_NONDESTRUCTIVE",
+          "status": "BOUNDARY_PATH_CONSTRUCTED"
+        },
+        "execution": {
+          "contract_id": "BND-37219868f99f133b3850c6ff",
+          "path_id": "PTH-397ad721a793b2ff513103c1",
+          "result": {
+            "created_at": "2026-07-20T04:34:02.242253Z",
+            "declared_capabilities": [
+              "DATABASE_READ"
+            ],
+            "entrypoints": [],
+            "environment_id": "ENV-75e78da23d45b6be8d90a9e5",
+            "execution_policy": "DENY_BY_DEFAULT",
+            "language": "HHS_COMMAND",
+            "name": "Opacity Query",
+            "normalized_hash72": "0000000000000000000000000000000KBg8t=pR!1wrB=qv2kwZS(61hzZdaGgRAMnK2623z",
+            "parent_script_id": null,
+            "receipt_root": null,
+            "resolved_dependencies": [],
+            "script_id": "SCR-dafc6925527d80cb155e595a",
+            "source_hash72": "0000000000000000000000000000001DyHhzydj>bZ6=EsM)kX^g4Dh7-tphW(yfZLPfDcbi",
+            "source_text": "query What is external-agent opacity?\n",
+            "test_state": "EXECUTED",
+            "validation_state": "VALIDATED",
+            "version": 1
+          },
+          "result_hash72": "0000000000000000000000000000003DzD^urBV^)QQCJhU1+WSqgyfcHhw?k1E3S=f1+6ci",
+          "reversibility_class": "APPEND_ONLY_NONDESTRUCTIVE",
+          "status": "BOUNDARY_PATH_CLOSED",
+          "step_count": 10,
+          "temporary_capabilities_expired": true
+        },
+        "operation": "RUN_CLI_COMMAND",
+        "privileged_internal_access": 0,
+        "public_primitives_only": true,
+        "schema": "HHS_PASS147_EXTERNAL_AGENT_EXECUTION_V1"
+      },
+      "step": "SCRIPT_STATE_INSPECT"
+    },
+    {
+      "ordinal": 17,
+      "result": {
+        "construction": {
+          "contract_hash72": "0000000000000000000000000000001X*0w?l>NknV8pe9vyNufTeF6tXdzRtA3?*BA5?Nid",
+          "contract_id": "BND-0a60f0a9209ad34443c30f54",
+          "minimum_capabilities": [
+            "DATABASE_READ",
+            "DATABASE_WRITE",
+            "FILESYSTEM_READ",
+            "NATIVE_RUNTIME",
+            "PATH_EXECUTION"
+          ],
+          "path_hash72": "0000000000000000000000000000004qxk)O1CylRN-d80J)/p2b?a^fWDO+gierzpJSWoaN",
+          "path_id": "PTH-aeb72f80b54c66e743116b23",
+          "recursive_depth": 0,
+          "reversibility_class": "CHECKPOINT_REVERSIBLE",
+          "status": "BOUNDARY_PATH_CONSTRUCTED"
+        },
+        "execution": {
+          "contract_id": "BND-0a60f0a9209ad34443c30f54",
+          "path_id": "PTH-aeb72f80b54c66e743116b23",
+          "result": {
+            "ok": true,
+            "post_state_root_hash72": "0000000000000000000000000000004z-r/*7+2SEAdR4E*vHd1PPieNIXrzw-ZbDUfI+XL8",
+            "pre_state_root_hash72": "0000000000000000000000000000003iayl8ZAyU-j+aDi(yku(w1!JLLd7u2qP+>8zcNKYQ",
+            "receipt_hash72": "00000000000000000000000000000040MFUy-=wGpkOo(4oaWERY5M1zpORqgaUBYws!8E5r",
+            "receipt_id": "RCP-a6de8f77b43c7f44e9d8550a",
+            "result": {
+              "lvm_id": "LVM-d9b7dfdcc2c616e13d2c603e",
+              "manifest_hash72": "000000000000000000000000000000200W4xrGPBQzAkK(73pSVczy?flb0ETA8-0zB!O)tU",
+              "status": "LVM_CREATED"
+            },
+            "sequence": 75,
+            "status": "TRANSACTION_COMMITTED",
+            "transaction_id": "TX-0de4491588919a235e398c9e"
+          },
+          "result_hash72": "00000000000000000000000000000045YN2C1(D2mLCMHiKSgs>z(L4>pw74=CirxdM4ZRc?",
+          "reversibility_class": "CHECKPOINT_REVERSIBLE",
+          "status": "BOUNDARY_PATH_CLOSED",
+          "step_count": 10,
+          "temporary_capabilities_expired": true
+        },
+        "operation": "RUN_CLI_COMMAND",
+        "privileged_internal_access": 0,
+        "public_primitives_only": true,
+        "schema": "HHS_PASS147_EXTERNAL_AGENT_EXECUTION_V1"
+      },
+      "step": "LVM_CREATE"
+    },
+    {
+      "ordinal": 18,
+      "result": {
+        "construction": {
+          "contract_hash72": "0000000000000000000000000000001rW8mlN1KUc^QTNDh+hAJU8ZE4?e28rTp-Vvj5Y>HV",
+          "contract_id": "BND-87f56eb448a58c01e4849a0f",
+          "minimum_capabilities": [
+            "DATABASE_READ",
+            "DATABASE_WRITE",
+            "NATIVE_RUNTIME",
+            "PATH_EXECUTION"
+          ],
+          "path_hash72": "000000000000000000000000000000412l=x)1Ig4t4IZlFCzLGL=S91YvsF8!ZH06CmksHS",
+          "path_id": "PTH-606bc574c11682629ca1ac14",
+          "recursive_depth": 0,
+          "reversibility_class": "CHECKPOINT_REVERSIBLE",
+          "status": "BOUNDARY_PATH_CONSTRUCTED"
+        },
+        "execution": {
+          "contract_id": "BND-87f56eb448a58c01e4849a0f",
+          "path_id": "PTH-606bc574c11682629ca1ac14",
+          "result": {
+            "ok": true,
+            "post_state_root_hash72": "0000000000000000000000000000001ZKuGrDdRtuF9jHUo8l*7e/-5v9kKX6pKG5IpE/jOD",
+            "pre_state_root_hash72": "0000000000000000000000000000001ZKuGrDdRtuF9jHUo8l*7e/-5v9kKX6pKG5IpE/jOD",
+            "receipt_hash72": "0000000000000000000000000000001ve90aD+y7DgxTGXZplor5sF0cm>G/xD43AAc2fsDk",
+            "receipt_id": "RCP-d37c55f3e338023919fadf4d",
+            "result": {
+              "execution_hash72": "0000000000000000000000000000000>v)q-i*3e=-l2M0Pec^w3YA0j**Z8fGi-HZmM/-jb",
+              "execution_id": "EXE-f06f4b21d8776115e164d986",
+              "outputs": {
+                "result": {
+                  "ok": true,
+                  "post_state_root_hash72": "0000000000000000000000000000001ZKuGrDdRtuF9jHUo8l*7e/-5v9kKX6pKG5IpE/jOD",
+                  "pre_state_root_hash72": "0000000000000000000000000000001ZKuGrDdRtuF9jHUo8l*7e/-5v9kKX6pKG5IpE/jOD",
+                  "receipt_hash72": "0000000000000000000000000000002ClCq(?1H?Vf)m91sFmapQ?AjCOati2(nJn9gHZV34",
+                  "receipt_id": "RCP-59edabc0cd4b8526031c1da1",
+                  "result": {
+                    "execution_hash72": "0000000000000000000000000000001z-sgM3XY2S63D)WAvzIy-Ry3=m4Nd5OPJcVvnCKE*",
+                    "execution_id": "EXE-cf30a14a2f9023dc9a8f92a8",
+                    "output": [
+                      {
+                        "command": "query",
+                        "line": 1,
+                        "result": {
+                          "answer": {
+                            "database_derived_relationships": [],
+                            "deterministic_calculations": {
+                              "result_count": 6
+                            },
+                            "directly_retrieved_evidence": [
+                              {
+                                "authority_level": "A1",
+                                "exact_text": "Canonical equation: COMPLETE FUNCTIONAL POTENTIAL + ZERO PRIVILEGED ACCESS + PUBLIC PROCEDURAL CONSTRUCTION = HHS EXTERNAL-AGENT OPACITY.",
+                                "namespace": "hhs-public-docs-v147",
+                                "normalized_text": "canonical equation: complete functional potential + zero privileged access + public procedural construction = hhs external-agent opacity",
+                                "object_hash72": "0000000000000000000000000000003epNbxD)hFa!BjsuEbe1=1?SiVdssND2EWKh4JYwST",
+                                "object_id": "CLM-903e2979a93f50a97aecbc7c",
+                                "object_type": "EQUATION",
+                                "segment_id": null,
+                                "source_id": "SRC-a480b94ca57939f985b609e1",
+                                "validation_state": "UNVALIDATED"
+                              },
+                              {
+                                "authority_level": "A1",
+                                "exact_text": "# HHS Pass 147 External-Agent Opacity",
+                                "namespace": "hhs-public-docs-v147",
+                                "normalized_text": "# hhs pass 147 external-agent opacity",
+                                "object_hash72": "0000000000000000000000000000004aW!4zBPZXj^p^xIHkMr=d6^tMNVvFgWynV65K2LVp",
+                                "object_id": "CLM-efe9b3583f432b188041957c",
+                                "object_type": "FRAGMENT",
+                                "segment_id": null,
+                                "source_id": "SRC-a480b94ca57939f985b609e1",
+                                "validation_state": "UNVALIDATED"
+                              },
+                              {
+                                "authority_level": "A1",
+                                "exact_text": "Opacity",
+                                "namespace": "hhs-public-docs-v147",
+                                "normalized_text": "Opacity",
+                                "object_hash72": "00000000000000000000000000000035I!EhzyCvc*Q0ku6CY-xOGdQzVV90W->5Ws+fTq0D",
+                                "object_id": "ENT-3b2198bca9463beb61a1dcc6",
+                                "object_type": "SYMBOL",
+                                "segment_id": null,
+                                "source_id": "SRC-a480b94ca57939f985b609e1",
+                                "validation_state": "UNVALIDATED"
+                              },
+                              {
+                                "authority_level": "A1",
+                                "exact_text": "OPACITY",
+                                "namespace": "hhs-public-docs-v147",
+                                "normalized_text": "OPACITY",
+                                "object_hash72": "00000000000000000000000000000003W5pYa5nHNw?70d2BrVZ6v(-1oSF7swvjo()jUk=J",
+                                "object_id": "ENT-5330d86460f9e1b908cfa792",
+                                "object_type": "IDENTIFIER",
+                                "segment_id": null,
+                                "source_id": "SRC-a480b94ca57939f985b609e1",
+                                "validation_state": "UNVALIDATED"
+                              },
+                              {
+                                "authority_level": "A1",
+                                "exact_text": "OPACITY",
+                                "namespace": "hhs-public-docs-v147",
+                                "normalized_text": "OPACITY",
+                                "object_hash72": "0000000000000000000000000000003tEhXY0H7Jw-rn4AozU?S8ydeM1QX8B(k?Tb?vKRXo",
+                                "object_id": "ENT-e06a76d3a96df55409f49a58",
+                                "object_type": "SYMBOL",
+                                "segment_id": null,
+                                "source_id": "SRC-a480b94ca57939f985b609e1",
+                                "validation_state": "UNVALIDATED"
+                              },
+                              {
+                                "authority_level": "A1",
+                                "exact_text": "Opacity",
+                                "namespace": "hhs-public-docs-v147",
+                                "normalized_text": "Opacity",
+                                "object_hash72": "0000000000000000000000000000003t(p/7G?9Z!S5tm2Nge=VO(*Un)EHd!)>j?PdmhVl(",
+                                "object_id": "ENT-e4bfde99180affcbf3076907",
+                                "object_type": "IDENTIFIER",
+                                "segment_id": null,
+                                "source_id": "SRC-a480b94ca57939f985b609e1",
+                                "validation_state": "UNVALIDATED"
+                              }
+                            ],
+                            "model_generated_explanation": null,
+                            "unresolved_ambiguity": []
+                          },
+                          "authority_level": "A1",
+                          "database_root_unchanged": true,
+                          "query_plan": {
+                            "exact_symbol": null,
+                            "mutation_authority": false,
+                            "namespace": null,
+                            "object_type": null,
+                            "plan_type": "GENERIC_SEARCH",
+                            "query_plan_hash72": "0000000000000000000000000000002Pg85xf9BGSx5LWfyh=1G7HaB^kPht8K+OrVaE/(q>",
+                            "question": "What is external-agent opacity?",
+                            "read_only": true,
+                            "schema": "HHS_PASS145_QUERY_PLAN_V1",
+                            "search_terms": [
+                              "external-agent",
+                              "opacity"
+                            ],
+                            "tokens": [
+                              "What",
+                              "is",
+                              "external-agent",
+                              "opacity"
+                            ]
+                          },
+                          "query_plan_receipt": {
+                            "database_root_hash72": "0000000000000000000000000000001ZKuGrDdRtuF9jHUo8l*7e/-5v9kKX6pKG5IpE/jOD",
+                            "mutation_authority": false,
+                            "query_plan_hash72": "0000000000000000000000000000002Pg85xf9BGSx5LWfyh=1G7HaB^kPht8K+OrVaE/(q>",
+                            "receipt_hash72": "0000000000000000000000000000002iLmos1gN3L2Ql>u/5Et46L240PXqWmWG*BOUi-nH/",
+                            "schema": "HHS_PASS145_QUERY_PLAN_RECEIPT_V1"
+                          },
+                          "query_result_hash72": "0000000000000000000000000000002NUb=C3U^b!LpNkexaOy7NM?u^AJ*T/n7>W!wRrjVr",
+                          "query_result_receipt": {
+                            "database_root_hash72": "0000000000000000000000000000001ZKuGrDdRtuF9jHUo8l*7e/-5v9kKX6pKG5IpE/jOD",
+                            "database_root_unchanged": true,
+                            "query_plan_hash72": "0000000000000000000000000000002Pg85xf9BGSx5LWfyh=1G7HaB^kPht8K+OrVaE/(q>",
+                            "query_result_hash72": "0000000000000000000000000000002NUb=C3U^b!LpNkexaOy7NM?u^AJ*T/n7>W!wRrjVr",
+                            "receipt_hash72": "0000000000000000000000000000002iOwrSvHwQA9+SUouS2ubdo9Kb?j)J=lpS*BebR9Q6",
+                            "schema": "HHS_PASS145_QUERY_RESULT_RECEIPT_V1"
+                          },
+                          "schema": "HHS_PASS145_QUERY_RESULT_V1"
+                        }
+                      }
+                    ],
+                    "status": "SCRIPT_EXECUTED"
+                  },
+                  "sequence": 80,
+                  "status": "TRANSACTION_COMMITTED",
+                  "transaction_id": "TX-b93dbc2448a329f409bc8e6a"
+                }
+              },
+              "status": "LVM_EXECUTION_COMPLETED",
+              "trace": [
+                {
+                  "component_id": "query_script",
+                  "component_type": "SCRIPT",
+                  "index": 0,
+                  "input": {},
+                  "output": {
+                    "ok": true,
+                    "post_state_root_hash72": "0000000000000000000000000000001ZKuGrDdRtuF9jHUo8l*7e/-5v9kKX6pKG5IpE/jOD",
+                    "pre_state_root_hash72": "0000000000000000000000000000001ZKuGrDdRtuF9jHUo8l*7e/-5v9kKX6pKG5IpE/jOD",
+                    "receipt_hash72": "0000000000000000000000000000002ClCq(?1H?Vf)m91sFmapQ?AjCOati2(nJn9gHZV34",
+                    "receipt_id": "RCP-59edabc0cd4b8526031c1da1",
+                    "result": {
+                      "execution_hash72": "0000000000000000000000000000001z-sgM3XY2S63D)WAvzIy-Ry3=m4Nd5OPJcVvnCKE*",
+                      "execution_id": "EXE-cf30a14a2f9023dc9a8f92a8",
+                      "output": [
+                        {
+                          "command": "query",
+                          "line": 1,
+                          "result": {
+                            "answer": {
+                              "database_derived_relationships": [],
+                              "deterministic_calculations": {
+                                "result_count": 6
+                              },
+                              "directly_retrieved_evidence": [
+                                {
+                                  "authority_level": "A1",
+                                  "exact_text": "Canonical equation: COMPLETE FUNCTIONAL POTENTIAL + ZERO PRIVILEGED ACCESS + PUBLIC PROCEDURAL CONSTRUCTION = HHS EXTERNAL-AGENT OPACITY.",
+                                  "namespace": "hhs-public-docs-v147",
+                                  "normalized_text": "canonical equation: complete functional potential + zero privileged access + public procedural construction = hhs external-agent opacity",
+                                  "object_hash72": "0000000000000000000000000000003epNbxD)hFa!BjsuEbe1=1?SiVdssND2EWKh4JYwST",
+                                  "object_id": "CLM-903e2979a93f50a97aecbc7c",
+                                  "object_type": "EQUATION",
+                                  "segment_id": null,
+                                  "source_id": "SRC-a480b94ca57939f985b609e1",
+                                  "validation_state": "UNVALIDATED"
+                                },
+                                {
+                                  "authority_level": "A1",
+                                  "exact_text": "# HHS Pass 147 External-Agent Opacity",
+                                  "namespace": "hhs-public-docs-v147",
+                                  "normalized_text": "# hhs pass 147 external-agent opacity",
+                                  "object_hash72": "0000000000000000000000000000004aW!4zBPZXj^p^xIHkMr=d6^tMNVvFgWynV65K2LVp",
+                                  "object_id": "CLM-efe9b3583f432b188041957c",
+                                  "object_type": "FRAGMENT",
+                                  "segment_id": null,
+                                  "source_id": "SRC-a480b94ca57939f985b609e1",
+                                  "validation_state": "UNVALIDATED"
+                                },
+                                {
+                                  "authority_level": "A1",
+                                  "exact_text": "Opacity",
+                                  "namespace": "hhs-public-docs-v147",
+                                  "normalized_text": "Opacity",
+                                  "object_hash72": "00000000000000000000000000000035I!EhzyCvc*Q0ku6CY-xOGdQzVV90W->5Ws+fTq0D",
+                                  "object_id": "ENT-3b2198bca9463beb61a1dcc6",
+                                  "object_type": "SYMBOL",
+                                  "segment_id": null,
+                                  "source_id": "SRC-a480b94ca57939f985b609e1",
+                                  "validation_state": "UNVALIDATED"
+                                },
+                                {
+                                  "authority_level": "A1",
+                                  "exact_text": "OPACITY",
+                                  "namespace": "hhs-public-docs-v147",
+                                  "normalized_text": "OPACITY",
+                                  "object_hash72": "00000000000000000000000000000003W5pYa5nHNw?70d2BrVZ6v(-1oSF7swvjo()jUk=J",
+                                  "object_id": "ENT-5330d86460f9e1b908cfa792",
+                                  "object_type": "IDENTIFIER",
+                                  "segment_id": null,
+                                  "source_id": "SRC-a480b94ca57939f985b609e1",
+                                  "validation_state": "UNVALIDATED"
+                                },
+                                {
+                                  "authority_level": "A1",
+                                  "exact_text": "OPACITY",
+                                  "namespace": "hhs-public-docs-v147",
+                                  "normalized_text": "OPACITY",
+                                  "object_hash72": "0000000000000000000000000000003tEhXY0H7Jw-rn4AozU?S8ydeM1QX8B(k?Tb?vKRXo",
+                                  "object_id": "ENT-e06a76d3a96df55409f49a58",
+                                  "object_type": "SYMBOL",
+                                  "segment_id": null,
+                                  "source_id": "SRC-a480b94ca57939f985b609e1",
+                                  "validation_state": "UNVALIDATED"
+                                },
+                                {
+                                  "authority_level": "A1",
+                                  "exact_text": "Opacity",
+                                  "namespace": "hhs-public-docs-v147",
+                                  "normalized_text": "Opacity",
+                                  "object_hash72": "0000000000000000000000000000003t(p/7G?9Z!S5tm2Nge=VO(*Un)EHd!)>j?PdmhVl(",
+                                  "object_id": "ENT-e4bfde99180affcbf3076907",
+                                  "object_type": "IDENTIFIER",
+                                  "segment_id": null,
+                                  "source_id": "SRC-a480b94ca57939f985b609e1",
+                                  "validation_state": "UNVALIDATED"
+                                }
+                              ],
+                              "model_generated_explanation": null,
+                              "unresolved_ambiguity": []
+                            },
+                            "authority_level": "A1",
+                            "database_root_unchanged": true,
+                            "query_plan": {
+                              "exact_symbol": null,
+                              "mutation_authority": false,
+                              "namespace": null,
+                              "object_type": null,
+                              "plan_type": "GENERIC_SEARCH",
+                              "query_plan_hash72": "0000000000000000000000000000002Pg85xf9BGSx5LWfyh=1G7HaB^kPht8K+OrVaE/(q>",
+                              "question": "What is external-agent opacity?",
+                              "read_only": true,
+                              "schema": "HHS_PASS145_QUERY_PLAN_V1",
+                              "search_terms": [
+                                "external-agent",
+                                "opacity"
+                              ],
+                              "tokens": [
+                                "What",
+                                "is",
+                                "external-agent",
+                                "opacity"
+                              ]
+                            },
+                            "query_plan_receipt": {
+                              "database_root_hash72": "0000000000000000000000000000001ZKuGrDdRtuF9jHUo8l*7e/-5v9kKX6pKG5IpE/jOD",
+                              "mutation_authority": false,
+                              "query_plan_hash72": "0000000000000000000000000000002Pg85xf9BGSx5LWfyh=1G7HaB^kPht8K+OrVaE/(q>",
+                              "receipt_hash72": "0000000000000000000000000000002iLmos1gN3L2Ql>u/5Et46L240PXqWmWG*BOUi-nH/",
+                              "schema": "HHS_PASS145_QUERY_PLAN_RECEIPT_V1"
+                            },
+                            "query_result_hash72": "0000000000000000000000000000002NUb=C3U^b!LpNkexaOy7NM?u^AJ*T/n7>W!wRrjVr",
+                            "query_result_receipt": {
+                              "database_root_hash72": "0000000000000000000000000000001ZKuGrDdRtuF9jHUo8l*7e/-5v9kKX6pKG5IpE/jOD",
+                              "database_root_unchanged": true,
+                              "query_plan_hash72": "0000000000000000000000000000002Pg85xf9BGSx5LWfyh=1G7HaB^kPht8K+OrVaE/(q>",
+                              "query_result_hash72": "0000000000000000000000000000002NUb=C3U^b!LpNkexaOy7NM?u^AJ*T/n7>W!wRrjVr",
+                              "receipt_hash72": "0000000000000000000000000000002iOwrSvHwQA9+SUouS2ubdo9Kb?j)J=lpS*BebR9Q6",
+                              "schema": "HHS_PASS145_QUERY_RESULT_RECEIPT_V1"
+                            },
+                            "schema": "HHS_PASS145_QUERY_RESULT_V1"
+                          }
+                        }
+                      ],
+                      "status": "SCRIPT_EXECUTED"
+                    },
+                    "sequence": 80,
+                    "status": "TRANSACTION_COMMITTED",
+                    "transaction_id": "TX-b93dbc2448a329f409bc8e6a"
+                  },
+                  "status": "COMPONENT_COMPLETED"
+                }
+              ]
+            },
+            "sequence": 81,
+            "status": "TRANSACTION_COMMITTED",
+            "transaction_id": "TX-8b607b6ddb0256b3d91ada60"
+          },
+          "result_hash72": "0000000000000000000000000000000/BbWXs=59Ona==xSltx*6?^iRJ2dXt8B4b4!Tlg-=",
+          "reversibility_class": "CHECKPOINT_REVERSIBLE",
+          "status": "BOUNDARY_PATH_CLOSED",
+          "step_count": 10,
+          "temporary_capabilities_expired": true
+        },
+        "operation": "RUN_CLI_COMMAND",
+        "privileged_internal_access": 0,
+        "public_primitives_only": true,
+        "schema": "HHS_PASS147_EXTERNAL_AGENT_EXECUTION_V1"
+      },
+      "step": "LVM_EXECUTE"
+    },
+    {
+      "ordinal": 19,
+      "result": {
+        "construction": {
+          "contract_hash72": "0000000000000000000000000000001Y5QnN3Nl>k6Vb^mlXLX3)BFyBVJgtWgLNdjc7G8qq",
+          "contract_id": "BND-63fb9841eca7d721d9b613c6",
+          "minimum_capabilities": [
+            "DATABASE_READ",
+            "NATIVE_RUNTIME",
+            "PATH_EXECUTION"
+          ],
+          "path_hash72": "0000000000000000000000000000004z13E)Pi/t/e^*0!P58(15ZB/coZbKzm0u7agbqswr",
+          "path_id": "PTH-5ec4f57679d7bd9e5076c39b",
+          "recursive_depth": 0,
+          "reversibility_class": "CHECKPOINT_REVERSIBLE",
+          "status": "BOUNDARY_PATH_CONSTRUCTED"
+        },
+        "execution": {
+          "contract_id": "BND-63fb9841eca7d721d9b613c6",
+          "path_id": "PTH-5ec4f57679d7bd9e5076c39b",
+          "result": {
+            "created_at": "2026-07-20T04:34:12.593535Z",
+            "environment_id": "ENV-75e78da23d45b6be8d90a9e5",
+            "lvm_id": "LVM-d9b7dfdcc2c616e13d2c603e",
+            "manifest": {
+              "capabilities": [
+                "NATIVE_RUNTIME",
+                "DATABASE_READ",
+                "DATABASE_WRITE"
+              ],
+              "components": [
+                {
+                  "id": "query_script",
+                  "input": "$input",
+                  "script_id": "SCR-dafc6925527d80cb155e595a",
+                  "type": "SCRIPT"
+                }
+              ],
+              "edges": [],
+              "environment_id": "ENV-75e78da23d45b6be8d90a9e5",
+              "execution_order": [
+                "query_script"
+              ],
+              "failure_policy": "HALT_AND_RECEIPT",
+              "lvm_id": "LVM-d9b7dfdcc2c616e13d2c603e",
+              "name": "Opacity Query LVM",
+              "outputs": {
+                "result": "$query_script"
+              },
+              "replay_policy": "DETERMINISTIC",
+              "resource_policy": {
+                "max_components": 4096,
+                "max_recursive_depth": 8
+              },
+              "topology": "ACYCLIC_COMPOSITION",
+              "version": 1
+            },
+            "manifest_hash72": "000000000000000000000000000000200W4xrGPBQzAkK(73pSVczy?flb0ETA8-0zB!O)tU",
+            "name": "Opacity Query LVM",
+            "receipt_root": null,
+            "version": 1
+          },
+          "result_hash72": "0000000000000000000000000000001WfM^NqbOyOo+-uFc2ap3k56v?2K^ylI!MrQ013x6x",
+          "reversibility_class": "CHECKPOINT_REVERSIBLE",
+          "status": "BOUNDARY_PATH_CLOSED",
+          "step_count": 10,
+          "temporary_capabilities_expired": true
+        },
+        "operation": "RUN_CLI_COMMAND",
+        "privileged_internal_access": 0,
+        "public_primitives_only": true,
+        "schema": "HHS_PASS147_EXTERNAL_AGENT_EXECUTION_V1"
+      },
+      "step": "LVM_INSPECT"
+    },
+    {
+      "ordinal": 20,
+      "result": {
+        "construction": {
+          "contract_hash72": "0000000000000000000000000000003zoHyxC0nYXyz3A(lXKLV*b/Fi)S9CwkynD?/K+G/a",
+          "contract_id": "BND-c30a2b7bd20c78f3e259596c",
+          "minimum_capabilities": [
+            "DATABASE_READ",
+            "DATABASE_WRITE",
+            "NATIVE_RUNTIME",
+            "PATH_EXECUTION"
+          ],
+          "path_hash72": "0000000000000000000000000000000d-dyCDUusqG16N)n?(2qpHQt0RTwLNB-9DPCBVfs>",
+          "path_id": "PTH-4d328d514b8c4d194b41736e",
+          "recursive_depth": 0,
+          "reversibility_class": "CHECKPOINT_REVERSIBLE",
+          "status": "BOUNDARY_PATH_CONSTRUCTED"
+        },
+        "execution": {
+          "contract_id": "BND-c30a2b7bd20c78f3e259596c",
+          "path_id": "PTH-4d328d514b8c4d194b41736e",
+          "result": {
+            "execution_hash_equal": true,
+            "original_execution_id": "EXE-f06f4b21d8776115e164d986",
+            "replay_execution_id": "EXE-c9a8fe857f1b26d4f9ea4181",
+            "schema": "HHS_PASS145_LVM_REPLAY_V1",
+            "status": "REPLAY_VALIDATED"
+          },
+          "result_hash72": "00000000000000000000000000000049*4zI2H+XJI-EADOq^NYClQ/EDHj1POwYn^lVoWnK",
+          "reversibility_class": "CHECKPOINT_REVERSIBLE",
+          "status": "BOUNDARY_PATH_CLOSED",
+          "step_count": 10,
+          "temporary_capabilities_expired": true
+        },
+        "operation": "RUN_CLI_COMMAND",
+        "privileged_internal_access": 0,
+        "public_primitives_only": true,
+        "schema": "HHS_PASS147_EXTERNAL_AGENT_EXECUTION_V1"
+      },
+      "step": "LVM_REPLAY"
+    },
+    {
+      "ordinal": 21,
+      "result": {
+        "construction": {
+          "contract_hash72": "00000000000000000000000000000002EN+cLP+-DXu9Ct(3hpuB87KC(2ZDquXVRopmFSCC",
+          "contract_id": "BND-90c2b12367b7219a0279c910",
+          "minimum_capabilities": [
+            "DATABASE_WRITE",
+            "INTER_SANDBOX",
+            "PATH_EXECUTION"
+          ],
+          "path_hash72": "00000000000000000000000000000034xRkg?vKXc7CAeBXjifkotnA4*IL>OAEczCMVfX2P",
+          "path_id": "PTH-9f2b8f88c7141beffcbe2aa4",
+          "recursive_depth": 0,
+          "reversibility_class": "TRANSACTIONALLY_REVERSIBLE",
+          "status": "BOUNDARY_PATH_CONSTRUCTED"
+        },
+        "execution": {
+          "contract_id": "BND-90c2b12367b7219a0279c910",
+          "path_id": "PTH-9f2b8f88c7141beffcbe2aa4",
+          "result": {
+            "ok": true,
+            "post_state_root_hash72": "0000000000000000000000000000004ApoEl7w)vWeVuBlr12=^9*1bH?HVJYa*F>RJbPrO=",
+            "pre_state_root_hash72": "0000000000000000000000000000002f3*va9mqsqTF+4hPAnLBM2HpN25i**/5(t=zw2RnC",
+            "receipt_hash72": "0000000000000000000000000000002T0Qfdgt(TcaPLv1LA6PZ4h?(8-?4EgcYn-0T+7XsF",
+            "receipt_id": "RCP-26d03bce94b84e13dd788b0a",
+            "result": {
+              "status": "WORKSPACE_CREATED",
+              "workspace_hash72": "00000000000000000000000000000041!XJT(IZjq8DjNqxBJLovbnU1=9IEzZt?uFH-U-9R",
+              "workspace_id": "WSP-509b0e0af236af08a4eaf8dc"
+            },
+            "sequence": 93,
+            "status": "TRANSACTION_COMMITTED",
+            "transaction_id": "TX-c1bcdf414fe82ecd9180d0fd"
+          },
+          "result_hash72": "0000000000000000000000000000003HVx43mJo3K0(MBHOv3tpcmEs)hREHNqP+iYv)RhQQ",
+          "reversibility_class": "TRANSACTIONALLY_REVERSIBLE",
+          "status": "BOUNDARY_PATH_CLOSED",
+          "step_count": 10,
+          "temporary_capabilities_expired": true
+        },
+        "operation": "RUN_CLI_COMMAND",
+        "privileged_internal_access": 0,
+        "public_primitives_only": true,
+        "schema": "HHS_PASS147_EXTERNAL_AGENT_EXECUTION_V1"
+      },
+      "step": "WORKSPACE_CREATE"
+    },
+    {
+      "ordinal": 22,
+      "result": {
+        "construction": {
+          "contract_hash72": "0000000000000000000000000000002YDXPF1-0I9h/=0GYm!e6QC3rc7x?yhw40j=sld(GO",
+          "contract_id": "BND-2dd5514b8c53e12829899de6",
+          "minimum_capabilities": [
+            "DATABASE_WRITE",
+            "INTER_SANDBOX",
+            "PATH_EXECUTION"
+          ],
+          "path_hash72": "0000000000000000000000000000002YI!q/g2kDxv0mb2lFzgIKaD(+85JKl4oxtK!G(byB",
+          "path_id": "PTH-92e1d2ae0358b56841874207",
+          "recursive_depth": 0,
+          "reversibility_class": "TRANSACTIONALLY_REVERSIBLE",
+          "status": "BOUNDARY_PATH_CONSTRUCTED"
+        },
+        "execution": {
+          "contract_id": "BND-2dd5514b8c53e12829899de6",
+          "path_id": "PTH-92e1d2ae0358b56841874207",
+          "result": {
+            "ok": true,
+            "post_state_root_hash72": "0000000000000000000000000000001AIl0rjTBz9=FrUK*9rLz*uhZdn9*m(km=sw090uP=",
+            "pre_state_root_hash72": "0000000000000000000000000000002*6+jN7kN7?-l^HHnO5=bNe2pLWlKu9^doHkiEM5U*",
+            "receipt_hash72": "0000000000000000000000000000004eIE+bJciroMz6JXlcdjhuPi1PvCWeDkxKsAGk5)(k",
+            "receipt_id": "RCP-0a1ae176ad827d127a45db90",
+            "result": {
+              "member_hash72": "0000000000000000000000000000000>kxVE2(2VnZ*/5hIPDoXb2-?4EhH9eMmQ9kU!uB4N",
+              "member_id": "SCR-dafc6925527d80cb155e595a",
+              "member_type": "SCRIPT",
+              "status": "WORKSPACE_MEMBER_ADDED",
+              "workspace_id": "WSP-509b0e0af236af08a4eaf8dc"
+            },
+            "sequence": 97,
+            "status": "TRANSACTION_COMMITTED",
+            "transaction_id": "TX-d5d76d570832b0cf5d749d44"
+          },
+          "result_hash72": "0000000000000000000000000000000RJhtSw>mo2oIEk8Fs3cnqV?GvyPmUGu*nW?Ue31^X",
+          "reversibility_class": "TRANSACTIONALLY_REVERSIBLE",
+          "status": "BOUNDARY_PATH_CLOSED",
+          "step_count": 10,
+          "temporary_capabilities_expired": true
+        },
+        "operation": "RUN_CLI_COMMAND",
+        "privileged_internal_access": 0,
+        "public_primitives_only": true,
+        "schema": "HHS_PASS147_EXTERNAL_AGENT_EXECUTION_V1"
+      },
+      "step": "WORKSPACE_ADD_SCRIPT"
+    },
+    {
+      "ordinal": 23,
+      "result": {
+        "construction": {
+          "contract_hash72": "00000000000000000000000000000019p/w/qQ*SCk)/cXDlIjux^Y6x26/pL)rT(xAiTgL1",
+          "contract_id": "BND-f7f943e5c914b299c25ac59b",
+          "minimum_capabilities": [
+            "DATABASE_WRITE",
+            "INTER_SANDBOX",
+            "PATH_EXECUTION"
+          ],
+          "path_hash72": "0000000000000000000000000000000wqjGC*CefE?YMA=y9(Vlz)+HI+LshV1EXaMRBM++*",
+          "path_id": "PTH-535e69a7b891906ae2358b22",
+          "recursive_depth": 0,
+          "reversibility_class": "TRANSACTIONALLY_REVERSIBLE",
+          "status": "BOUNDARY_PATH_CONSTRUCTED"
+        },
+        "execution": {
+          "contract_id": "BND-f7f943e5c914b299c25ac59b",
+          "path_id": "PTH-535e69a7b891906ae2358b22",
+          "result": {
+            "ok": true,
+            "post_state_root_hash72": "00000000000000000000000000000048hf9YnYllkPG+xDw)0CkYXIPD0v^(be)oK?bJKL06",
+            "pre_state_root_hash72": "0000000000000000000000000000000cMt-=llpOaQH-Zdfig-Ry8em*bgcSXXZefd42oHd1",
+            "receipt_hash72": "0000000000000000000000000000002UXDY=QIgif)*B/Vmrs3Q1PlCHS2YrScEJKDQ^3ia>",
+            "receipt_id": "RCP-97967101d9aa455c070b0041",
+            "result": {
+              "member_hash72": "00000000000000000000000000000017J-FA7*AOvw^+l7elOQcorO9=IgVcJEt!/hBAFioE",
+              "member_id": "LVM-d9b7dfdcc2c616e13d2c603e",
+              "member_type": "LVM",
+              "status": "WORKSPACE_MEMBER_ADDED",
+              "workspace_id": "WSP-509b0e0af236af08a4eaf8dc"
+            },
+            "sequence": 101,
+            "status": "TRANSACTION_COMMITTED",
+            "transaction_id": "TX-5db6927df61c0039d0775685"
+          },
+          "result_hash72": "0000000000000000000000000000003NSRMppSnXjEZ4?SzMU9wD1YH+yRcM+)a+ZmOJ2jz7",
+          "reversibility_class": "TRANSACTIONALLY_REVERSIBLE",
+          "status": "BOUNDARY_PATH_CLOSED",
+          "step_count": 10,
+          "temporary_capabilities_expired": true
+        },
+        "operation": "RUN_CLI_COMMAND",
+        "privileged_internal_access": 0,
+        "public_primitives_only": true,
+        "schema": "HHS_PASS147_EXTERNAL_AGENT_EXECUTION_V1"
+      },
+      "step": "WORKSPACE_ADD_LVM"
+    },
+    {
+      "ordinal": 24,
+      "result": {
+        "construction": {
+          "contract_hash72": "00000000000000000000000000000001CY*ahmygyF0z*QjAT+4OME1AuhEXYpgQVsv784>K",
+          "contract_id": "BND-d71d05b078e4ae1d9030fe39",
+          "minimum_capabilities": [
+            "DATABASE_READ",
+            "PATH_EXECUTION",
+            "VALIDATE"
+          ],
+          "path_hash72": "0000000000000000000000000000000HP1rS8vEiP2V7lc0tfKe9rdq7z-6ie0Hz>D^NkKvC",
+          "path_id": "PTH-ce531fdeab7c686e83e4822c",
+          "recursive_depth": 0,
+          "reversibility_class": "APPEND_ONLY_NONDESTRUCTIVE",
+          "status": "BOUNDARY_PATH_CONSTRUCTED"
+        },
+        "execution": {
+          "contract_id": "BND-d71d05b078e4ae1d9030fe39",
+          "path_id": "PTH-ce531fdeab7c686e83e4822c",
+          "result": {
+            "count": 104,
+            "failures": [],
+            "ok": true,
+            "schema": "HHS_PASS145_RECEIPT_CHAIN_VERIFICATION_V1",
+            "tip_receipt_id": "RCP-38a52b865802e7215efa945d"
+          },
+          "result_hash72": "0000000000000000000000000000001NT7kqAwZAe(g)QD+s4Tu?XUxLTWQ!q2B5*VOR=gqf",
+          "reversibility_class": "APPEND_ONLY_NONDESTRUCTIVE",
+          "status": "BOUNDARY_PATH_CLOSED",
+          "step_count": 10,
+          "temporary_capabilities_expired": true
+        },
+        "operation": "RUN_CLI_COMMAND",
+        "privileged_internal_access": 0,
+        "public_primitives_only": true,
+        "schema": "HHS_PASS147_EXTERNAL_AGENT_EXECUTION_V1"
+      },
+      "step": "RECEIPT_CHAIN_VERIFY"
+    },
+    {
+      "ordinal": 25,
+      "result": {
+        "construction": {
+          "contract_hash72": "0000000000000000000000000000002IesXTPoCZYnNKz(JjNPlTrVc)kv7vy128?o5>UJJL",
+          "contract_id": "BND-9a6a37490140113dc861c98b",
+          "minimum_capabilities": [
+            "DATABASE_READ",
+            "PATH_EXECUTION",
+            "VALIDATE"
+          ],
+          "path_hash72": "0000000000000000000000000000001JNLR!ECbGU9N^tJQUHW)5jNc=XE/KA1-6MQ1/?5na",
+          "path_id": "PTH-c2ca5441dcfb134e5517d647",
+          "recursive_depth": 0,
+          "reversibility_class": "APPEND_ONLY_NONDESTRUCTIVE",
+          "status": "BOUNDARY_PATH_CONSTRUCTED"
+        },
+        "execution": {
+          "contract_id": "BND-9a6a37490140113dc861c98b",
+          "path_id": "PTH-c2ca5441dcfb134e5517d647",
+          "result": {
+            "comparison": {
+              "parse_root_hash72": true,
+              "segment_roots": true,
+              "source_root_hash72": true
+            },
+            "replay_receipt_hash72": "0000000000000000000000000000003h!w*2MVtsWATNAur7pu0CcmA8TJa8q+Q7f^=/>9y1",
+            "schema": "HHS_PASS145_REPLAY_RESULT_V1",
+            "source_id": "SRC-495e1ad529563b6d2a7fd329",
+            "status": "REPLAY_VALIDATED",
+            "would_mutate": false
+          },
+          "result_hash72": "0000000000000000000000000000002J6i^J6=clhorf7c(I>yOIk-*wJLl4y?FQJ?yGN5?L",
+          "reversibility_class": "APPEND_ONLY_NONDESTRUCTIVE",
+          "status": "BOUNDARY_PATH_CLOSED",
+          "step_count": 10,
+          "temporary_capabilities_expired": true
+        },
+        "operation": "RUN_CLI_COMMAND",
+        "privileged_internal_access": 0,
+        "public_primitives_only": true,
+        "schema": "HHS_PASS147_EXTERNAL_AGENT_EXECUTION_V1"
+      },
+      "step": "SOURCE_REPLAY"
+    },
+    {
+      "ordinal": 26,
+      "result": {
+        "construction": {
+          "contract_hash72": "0000000000000000000000000000001ypzd^DYN71QB/OG3/7h0C?27bT=^onNxc4>kk/wV0",
+          "contract_id": "BND-b2a3ed0286f2b5df4bd7f3f4",
+          "minimum_capabilities": [
+            "DATABASE_READ",
+            "FILESYSTEM_WRITE",
+            "PATH_EXECUTION"
+          ],
+          "path_hash72": "0000000000000000000000000000001up+0zY/7K(dtS1fCuq=Sa3*j^102lGh=zQBa+)6(f",
+          "path_id": "PTH-ffcbdbcd3110ee07a775bbc0",
+          "recursive_depth": 0,
+          "reversibility_class": "APPEND_ONLY_NONDESTRUCTIVE",
+          "status": "BOUNDARY_PATH_CONSTRUCTED"
+        },
+        "execution": {
+          "contract_id": "BND-b2a3ed0286f2b5df4bd7f3f4",
+          "path_id": "PTH-ffcbdbcd3110ee07a775bbc0",
+          "result": {
+            "package_hash72": "0000000000000000000000000000002jRs+kLW5pDenrT0LFHJ+c/Fvf4gKKin8E/0*n+4nX",
+            "path": "/mnt/data/hhs147_actor_final_redacted/external_actor_project.json",
+            "sha256": "ad00e1615e3660837d7bd635fc443bdcdc196fdb6771b63a0cdc452a3f277263",
+            "status": "WORKSPACE_EXPORTED"
+          },
+          "result_hash72": "00000000000000000000000000000006Xfe-JYmo/3ca82MIHI)4V(^/YM/LLLj702P(005o",
+          "reversibility_class": "APPEND_ONLY_NONDESTRUCTIVE",
+          "status": "BOUNDARY_PATH_CLOSED",
+          "step_count": 10,
+          "temporary_capabilities_expired": true
+        },
+        "operation": "RUN_CLI_COMMAND",
+        "privileged_internal_access": 0,
+        "public_primitives_only": true,
+        "schema": "HHS_PASS147_EXTERNAL_AGENT_EXECUTION_V1"
+      },
+      "step": "PROJECT_EXPORT"
+    }
+  ],
+  "trace_count": 27,
+  "workspace_id": "WSP-509b0e0af236af08a4eaf8dc"
+}

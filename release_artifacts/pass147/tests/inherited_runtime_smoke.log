@@ -1,0 +1,18 @@
+[PASS] runtime_bootstrap
+[PASS] kernel_authority_loaded
+[PASS] receipt_replay_verifier
+[PASS] runtime_gate_integrity
+[PASS] database_bridge_available
+[PASS] regression_suite_importable
+[PASS] no_mnt_data_dependency
+[PASS] runtime_package_topology
+
+
+============================================================
+HHS RUNTIME SMOKE SUMMARY
+============================================================
+{
+  "passed": 8,
+  "failed": 0,
+  "all_ok": true
+}

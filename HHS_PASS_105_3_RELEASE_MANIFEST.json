@@ -1,0 +1,45 @@
+{
+  "files": [
+    {
+      "bytes": 3447,
+      "path": "hhs_runtime/hhs_native_project_ownership_v1.py",
+      "sha256": "7516aef75241df838e7a12d554c01aa467be7bc778d33ee0714765cb4ef022cf"
+    },
+    {
+      "bytes": 26232,
+      "path": "hhs_runtime/hhs_runtime_reachability_audit_v1.py",
+      "sha256": "10cb9e2f1409db198c1492fe2876854cacd11d94d1a865baf928138812becb94"
+    },
+    {
+      "bytes": 927,
+      "path": "hhs_runtime/hhs_pass105_3_reachability_orphan_closure_v1.py",
+      "sha256": "73848403b702e3fb89a214ded75ae1d2d3da99f37b3ac963a606b42ac9366458"
+    },
+    {
+      "bytes": 193614,
+      "path": "hhs_runtime/hhs_service_registry_v1.py",
+      "sha256": "ae0ab74f89e3f55cebfe89be420ca9f9e7447982a65eea44cec367a7dbbf53cd"
+    },
+    {
+      "bytes": 1505,
+      "path": "tests/test_hhs_pass105_3_native_project_reachability_closure_v1.py",
+      "sha256": "a6b78e91b0363002ea3029c653b99e90a9b2875ed7e53c22b86c6a3361c836c5"
+    },
+    {
+      "bytes": 8483229,
+      "path": "RUNTIME_REACHABILITY_MANIFEST.json",
+      "sha256": "e1a6a9e8f9c0161dbbf410bc196b49f8a7213e3a9d75e402541c98be13bf1656"
+    },
+    {
+      "bytes": 420,
+      "path": "PASS_105_3_REACHABILITY_ORPHAN_CLOSURE_REPORT.json",
+      "sha256": "19b306c29e5158355ac3343be589034748eab1cceaf0c1455ec8b659c647b68e"
+    }
+  ],
+  "orphan_count": 0,
+  "parent": "PASS_105_2",
+  "pass_id": "PASS_105_3",
+  "release_sha256": "0c2c24a6a898e6fea204d6357e20997f815ff6955b758595200a5be701352e62",
+  "schema": "HHS_PASS_105_3_RELEASE_MANIFEST_V1",
+  "status": "PASS"
+}

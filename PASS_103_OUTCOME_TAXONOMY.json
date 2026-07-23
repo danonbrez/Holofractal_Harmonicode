@@ -1,0 +1,12 @@
+{
+  "outcomes": [
+    "SYMBOL_BOUND",
+    "SYMBOL_RESOLVED",
+    "SYMBOL_EXPANDED",
+    "SYMBOL_REBOUND",
+    "ALPHABET_FORKED",
+    "ALPHABET_MERGED",
+    "ALPHABET_CONFLICT",
+    "SYMBOL_REPLAYED"
+  ]
+}
