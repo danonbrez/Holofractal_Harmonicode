@@ -10,8 +10,14 @@ import zipfile
 from pathlib import Path
 from typing import Iterable
 
+from hhs_runtime.hhs_repo_paths_v1 import runtime_output_dir
+
 ROOT = Path(__file__).resolve().parents[2]
-OUT = Path(os.environ.get("HHS_PASS148_OUTPUT_DIR", "/mnt/data")).resolve()
+OUT = (
+    Path(os.environ["HHS_PASS148_OUTPUT_DIR"]).expanduser().resolve()
+    if "HHS_PASS148_OUTPUT_DIR" in os.environ
+    else runtime_output_dir("pass148")
+)
 FULL_ZIP = OUT / "hhs_pass_148_native_semantic_authority_membrane_full_inherited_pass_history_nucleus.zip"
 FULL_SHA = OUT / (FULL_ZIP.name + ".sha256")
 EVIDENCE_ZIP = OUT / "hhs_pass_148_implementation_evidence_package.zip"
