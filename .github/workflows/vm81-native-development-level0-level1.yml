@@ -75,6 +75,9 @@ jobs:
       - name: Execute Hash216 immutable vector resolver smoke program
         run: python -m pytest -q tests/test_hhs_hash216_vector_resolver_v1.py::test_native_hash216_immutable_vector_resolver_smoke
 
+      - name: Validate reproducible local native build surface
+        run: make -C native_projects/hhs_vm81_native_development clean verify-native
+
       - name: Generate deterministic Level 0-1 evidence
         run: |
           python -m native_projects.hhs_vm81_native_development.hhs_vm81_native_development_v1 > "$RUNNER_TEMP/VM81_ARCHITECTURE_SURFACE_LEVEL_0_1.json"
