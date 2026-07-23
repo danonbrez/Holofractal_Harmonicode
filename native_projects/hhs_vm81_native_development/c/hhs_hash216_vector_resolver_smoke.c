@@ -71,6 +71,7 @@ int main(void) {
     HHSHash216Address frame_address;
     HHSHash216Address stale_address;
     HHSHash216Address noncanonical_address;
+    HHSHash216AddressFields stale_fields;
     uint8_t output[8];
     uint8_t sentinel[8];
     HHSHash216VectorStatus status;
@@ -152,9 +153,9 @@ int main(void) {
         return reject("bounded frame read failed");
     }
 
-    stale_address = frame_address;
-    stale_address.fields.version += 1U;
-    status = hhs_hash216_address_build(&stale_address.fields, &stale_address);
+    stale_fields = frame_address.fields;
+    stale_fields.version += 1U;
+    status = hhs_hash216_address_build(&stale_fields, &stale_address);
     if (status != HHS_HASH216_VECTOR_STATUS_OK ||
         hhs_hash216_vector_resolve(
             &resolver_a, &stale_address, &unused_descriptor) !=
@@ -162,9 +163,9 @@ int main(void) {
         return reject("stale version was not rejected explicitly");
     }
 
-    stale_address = frame_address;
-    stale_address.fields.generation += 1U;
-    status = hhs_hash216_address_build(&stale_address.fields, &stale_address);
+    stale_fields = frame_address.fields;
+    stale_fields.generation += 1U;
+    status = hhs_hash216_address_build(&stale_fields, &stale_address);
     if (status != HHS_HASH216_VECTOR_STATUS_OK ||
         hhs_hash216_vector_resolve(
             &resolver_a, &stale_address, &unused_descriptor) !=
