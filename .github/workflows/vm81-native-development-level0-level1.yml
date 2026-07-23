@@ -33,8 +33,22 @@ jobs:
       - name: Install test dependency
         run: python -m pip install pytest
 
-      - name: Validate deterministic architecture surface
-        run: python -m pytest -q tests/test_hhs_vm81_native_development_v1.py::test_architecture_surface_is_deterministic
+      - name: Capture deterministic architecture diagnostic
+        id: architecture_diagnostic
+        continue-on-error: true
+        run: |
+          python -m pytest -vv tests/test_hhs_vm81_native_development_v1.py::test_architecture_surface_is_deterministic > "$RUNNER_TEMP/architecture-diagnostic.txt" 2>&1
+
+      - name: Upload architecture diagnostic
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: vm81-architecture-diagnostic
+          path: ${{ runner.temp }}/architecture-diagnostic.txt
+          if-no-files-found: error
+
+      - name: Require deterministic architecture surface
+        run: test "${{ steps.architecture_diagnostic.outcome }}" = "success"
 
       - name: Validate VM81 and Hash216 dimensions
         run: python -m pytest -q tests/test_hhs_vm81_native_development_v1.py::test_architecture_dimensions_are_exact
