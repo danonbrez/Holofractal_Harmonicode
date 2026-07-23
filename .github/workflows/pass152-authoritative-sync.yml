@@ -1,15 +1,14 @@
 name: Pass 152 Authoritative Repository Sync
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - .github/workflows/pass152-authoritative-sync.yml
   workflow_dispatch:
+  issues:
+    types: [opened]
 
 permissions:
   contents: write
   pull-requests: write
+  issues: write
 
 concurrency:
   group: pass152-authoritative-sync
@@ -17,6 +16,7 @@ concurrency:
 
 jobs:
   synchronize:
+    if: github.event_name == 'workflow_dispatch' || github.event.issue.title == '[HHS-P152] Execute authoritative sync 20260723T150000Z'
     runs-on: ubuntu-latest
     timeout-minutes: 90
     env:
@@ -103,7 +103,7 @@ jobs:
           expected_count = int(os.environ["MANIFEST_COUNT"])
           if manifest.get("count") != expected_count or len(files) != expected_count:
               raise SystemExit(f"manifest count mismatch: declared={manifest.get('count')} actual={len(files)}")
-          for index, entry in enumerate(files, 1):
+          for entry in files:
               relative = pathlib.PurePosixPath(entry["path"])
               if relative.is_absolute() or ".." in relative.parts:
                   raise SystemExit(f"unsafe manifest path: {entry['path']}")
@@ -275,6 +275,13 @@ jobs:
               while IFS= read -r line; do echo "- $line"; done < "$RUNNER_TEMP/pass152-publish.txt"
             fi
           } | tee -a "$GITHUB_STEP_SUMMARY"
+
+      - name: Close trigger issue
+        if: always() && github.event_name == 'issues'
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh issue close "${{ github.event.issue.number }}" --repo "$GITHUB_REPOSITORY" --comment "Pass 152 authoritative synchronization workflow completed with conclusion: ${{ job.status }}."
 
       - name: Upload validation evidence
         if: always()
