@@ -49,8 +49,9 @@ jobs:
           git fetch origin main --prune
           git checkout -B main "$GITHUB_SHA"
           remote_main="$(git ls-remote origin refs/heads/main | awk '{print $1}')"
+          rollback_remote="$(git ls-remote origin "refs/heads/$ROLLBACK_BRANCH" | awk '{print $1}')"
           test "$remote_main" = "$GITHUB_SHA"
-          test "$(git rev-parse "$ROLLBACK_BRANCH")" = "$ROLLBACK_SHA"
+          test "$rollback_remote" = "$ROLLBACK_SHA"
           printf 'workflow_start_sha=%s\nrollback_branch=%s\nrollback_sha=%s\n' \
             "$GITHUB_SHA" "$ROLLBACK_BRANCH" "$ROLLBACK_SHA" | tee "$RUNNER_TEMP/pass152-start.txt"
 
