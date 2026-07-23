@@ -44173,10 +44173,49 @@
       "recorded_at_ns": 1784495634717280013,
       "relative_path": "data/runtime/hhs_v1_bundle_certification.sqlite3",
       "size_bytes": 405504
+    },
+    {
+      "content_hash72": null,
+      "entry_hash72": "sW7tnuNyskG√mS6d(B≠/pet/",
+      "event": "DATA_DIR_RESOLVED",
+      "exists": true,
+      "is_dir": true,
+      "is_file": false,
+      "parent_hash72": "H72-FS-GENESIS",
+      "path": "/home/runner/work/Holofractal_Harmonicode/Holofractal_Harmonicode/data/runtime",
+      "recorded_at_ns": 1784849161846076193,
+      "relative_path": "data/runtime",
+      "size_bytes": null
+    },
+    {
+      "content_hash72": null,
+      "entry_hash72": "32ko0VS(Zz/8gjby8jJDwVzB",
+      "event": "RUNTIME_OUTPUT_DIR_RESOLVED",
+      "exists": true,
+      "is_dir": false,
+      "is_file": true,
+      "parent_hash72": "H72-FS-GENESIS",
+      "path": "/home/runner/work/Holofractal_Harmonicode/Holofractal_Harmonicode/data/runtime/hhs_unified_hash72_ledger.json",
+      "recorded_at_ns": 1784849162334449301,
+      "relative_path": "data/runtime/hhs_unified_hash72_ledger.json",
+      "size_bytes": 9301002
+    },
+    {
+      "content_hash72": null,
+      "entry_hash72": "Jjo6sO/fMAzduKv≠TBNR1jHH",
+      "event": "RUNTIME_ARTIFACT_PATH",
+      "exists": true,
+      "is_dir": false,
+      "is_file": true,
+      "parent_hash72": "H72-FS-GENESIS",
+      "path": "/home/runner/work/Holofractal_Harmonicode/Holofractal_Harmonicode/data/runtime/hhs_unified_hash72_ledger.json",
+      "recorded_at_ns": 1784849162830728115,
+      "relative_path": "data/runtime/hhs_unified_hash72_ledger.json",
+      "size_bytes": 9301002
     }
   ],
-  "entry_count": 3398,
-  "ledger_hash72": "gNWgXQ9iuVovxf35√YlLAKY3",
+  "entry_count": 3401,
+  "ledger_hash72": "pXGdc-Kku^+KeeP4drREF8Bk",
   "schema": "HHS_FILESYSTEM_HASH72_LEDGER_V1",
-  "tip_hash72": "04Z+20kSEXjP)i√ONMRAPj-6"
+  "tip_hash72": "Jjo6sO/fMAzduKv≠TBNR1jHH"
 }
