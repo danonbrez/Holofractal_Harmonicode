@@ -9,6 +9,7 @@ on:
       - native_projects/hhs_vm81_native_development/**
       - tests/test_hhs_vm81_native_development_v1.py
       - tests/test_hhs_vm81_typed_status_and_hash_bindings_v1.py
+      - tests/test_hhs_hash216_vector_resolver_v1.py
       - hhs_runtime/c/hhs_runtime_abi.c
       - hhs_runtime/c/hhs_runtime_abi.h
       - hhs_runtime/src/hhs_hash216.c
@@ -50,9 +51,17 @@ jobs:
           python -m pytest -q \
             tests/test_hhs_vm81_native_development_v1.py::test_hash72_compare_schema_erratum_preserves_frozen_c_semantics \
             tests/test_hhs_vm81_native_development_v1.py::test_float_surfaces_are_explicitly_non_authoritative \
-            tests/test_hhs_vm81_native_development_v1.py::test_missing_capabilities_remain_explicit_and_unclaimed \
+            tests/test_hhs_vm81_native_development_v1.py::test_resolver_is_closed_while_mutation_gaps_remain_explicit \
             tests/test_hhs_vm81_typed_status_and_hash_bindings_v1.py::test_typed_execution_result_abi_declares_required_statuses_and_guards \
             tests/test_hhs_vm81_typed_status_and_hash_bindings_v1.py::test_completed_gaps_are_removed_without_claiming_single_use_capability
+
+      - name: Validate resolver contract and source evidence
+        run: |
+          python -m pytest -q \
+            tests/test_hhs_hash216_vector_resolver_v1.py::test_resolver_manifest_is_deterministic_and_source_backed \
+            tests/test_hhs_hash216_vector_resolver_v1.py::test_resolver_contract_freezes_exact_bounds_and_authority_partition \
+            tests/test_hhs_hash216_vector_resolver_v1.py::test_resolver_closure_is_integrated_without_mutation_promotion \
+            tests/test_hhs_hash216_vector_resolver_v1.py::test_no_write_append_resize_or_release_api_is_exposed
 
       - name: Execute exact VM81 public C ABI smoke program
         run: python -m pytest -q tests/test_hhs_vm81_native_development_v1.py::test_direct_c_abi_exact_foundation_smoke
@@ -63,6 +72,9 @@ jobs:
       - name: Execute typed status and rejection state preservation smoke program
         run: python -m pytest -q tests/test_hhs_vm81_typed_status_and_hash_bindings_v1.py::test_typed_status_and_rejection_state_preservation_native_smoke
 
+      - name: Execute Hash216 immutable vector resolver smoke program
+        run: python -m pytest -q tests/test_hhs_hash216_vector_resolver_v1.py::test_native_hash216_immutable_vector_resolver_smoke
+
       - name: Generate deterministic Level 0-1 evidence
         run: |
           python -m native_projects.hhs_vm81_native_development.hhs_vm81_native_development_v1 > "$RUNNER_TEMP/VM81_ARCHITECTURE_SURFACE_LEVEL_0_1.json"
@@ -71,28 +83,53 @@ jobs:
           import json
           import os
           from pathlib import Path
+          from native_projects.hhs_vm81_native_development.hhs_hash216_vector_resolver_manifest_v1 import build_manifest
 
           root = Path(os.environ["RUNNER_TEMP"])
-          architecture = json.loads((root / "VM81_ARCHITECTURE_SURFACE_LEVEL_0_1.json").read_text(encoding="utf-8"))
-          registry = json.loads((root / "HASH72_HASH216_NATIVE_BINDING_REGISTRY.json").read_text(encoding="utf-8"))
+          manifest = build_manifest(Path.cwd())
+          (root / "HASH216_IMMUTABLE_VECTOR_RESOLVER_MANIFEST.json").write_text(
+              json.dumps(manifest, indent=2) + "\n", encoding="utf-8"
+          )
+          architecture = json.loads(
+              (root / "VM81_ARCHITECTURE_SURFACE_LEVEL_0_1.json").read_text(
+                  encoding="utf-8"
+              )
+          )
+          registry = json.loads(
+              (root / "HASH72_HASH216_NATIVE_BINDING_REGISTRY.json").read_text(
+                  encoding="utf-8"
+              )
+          )
           assert architecture["vm81_cell_count"] == 81
           assert architecture["hash216_position_count"] == 216
           assert architecture["capability_counts"]["total_public_c_abi_callable"] == 37
           assert architecture["closure"]["all_current_linked_direct_abi_capabilities_bound"] is True
-          assert architecture["implementation_status"] == "LEVEL_0_1_TYPED_ABI_AND_HASH_BINDING_IMPLEMENTED_TERMINAL_VERIFICATION_NOT_YET_CLAIMED"
+          assert architecture["closure"]["hash216_logical_address_resolver_implemented"] is True
+          assert architecture["closure"]["bounded_immutable_vector_descriptor_implemented"] is True
+          assert architecture["closure"]["bounded_vresolve_implemented"] is True
+          assert architecture["closure"]["bounded_vread_implemented"] is True
+          assert architecture["closure"]["vector_mutation_capability_implemented"] is False
+          assert architecture["implementation_status"] == (
+              "LEVEL_0_1_HASH216_IMMUTABLE_VECTOR_RESOLVER_IMPLEMENTED_"
+              "TERMINAL_VERIFICATION_NOT_YET_CLAIMED"
+          )
           assert architecture["closure"]["level0_terminal_classification_emitted"] is False
           assert architecture["closure"]["level1_terminal_classification_emitted"] is False
           assert registry["registered_bindings"] == 8
           assert registry["all_expected_bindings_present"] is True
+          assert manifest["closure"]["immutable_resolver_snapshot_implemented"] is True
+          assert manifest["closure"]["vector_mutation_implemented"] is False
           print(architecture["architecture_surface_root_hash72"])
           print(registry["registry_root_hash72"])
+          print(manifest["resolver_manifest_root_hash72"])
           PY
 
       - name: Upload Level 0-1 evidence
         uses: actions/upload-artifact@v4
         with:
-          name: vm81-level0-level1-typed-abi-and-hash-bindings
+          name: vm81-level0-level1-hash216-immutable-vector-resolver
           path: |
             ${{ runner.temp }}/VM81_ARCHITECTURE_SURFACE_LEVEL_0_1.json
             ${{ runner.temp }}/HASH72_HASH216_NATIVE_BINDING_REGISTRY.json
+            ${{ runner.temp }}/HASH216_IMMUTABLE_VECTOR_RESOLVER_MANIFEST.json
           if-no-files-found: error
