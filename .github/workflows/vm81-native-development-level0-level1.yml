@@ -33,13 +33,17 @@ jobs:
       - name: Install test dependency
         run: python -m pip install pytest
 
-      - name: Validate architecture discovery and authority classifications
-        run: |
-          python -m pytest -q \
-            tests/test_hhs_vm81_native_development_v1.py::test_architecture_surface_is_deterministic_and_truth_preserving \
-            tests/test_hhs_vm81_native_development_v1.py::test_hash72_compare_schema_erratum_preserves_frozen_c_semantics \
-            tests/test_hhs_vm81_native_development_v1.py::test_float_surfaces_are_explicitly_non_authoritative \
-            tests/test_hhs_vm81_native_development_v1.py::test_missing_capabilities_remain_explicit_and_unclaimed
+      - name: Validate deterministic architecture counts
+        run: python -m pytest -q tests/test_hhs_vm81_native_development_v1.py::test_architecture_surface_is_deterministic_and_truth_preserving
+
+      - name: Validate Hash72 compare erratum
+        run: python -m pytest -q tests/test_hhs_vm81_native_development_v1.py::test_hash72_compare_schema_erratum_preserves_frozen_c_semantics
+
+      - name: Validate non-authoritative float classification
+        run: python -m pytest -q tests/test_hhs_vm81_native_development_v1.py::test_float_surfaces_are_explicitly_non_authoritative
+
+      - name: Validate explicit missing capability ledger
+        run: python -m pytest -q tests/test_hhs_vm81_native_development_v1.py::test_missing_capabilities_remain_explicit_and_unclaimed
 
       - name: Execute exact VM81 public C ABI smoke program
         run: python -m pytest -q tests/test_hhs_vm81_native_development_v1.py::test_direct_c_abi_exact_foundation_smoke
