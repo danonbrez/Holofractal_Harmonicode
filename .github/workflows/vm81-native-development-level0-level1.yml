@@ -1,0 +1,55 @@
+name: VM81 Native Development Level 0-1
+
+on:
+  push:
+    branches:
+      - agent/vm81-native-dev-level0-level1
+  pull_request:
+    paths:
+      - native_projects/hhs_vm81_native_development/**
+      - tests/test_hhs_vm81_native_development_v1.py
+      - hhs_runtime/c/hhs_runtime_abi.c
+      - hhs_runtime/c/hhs_runtime_abi.h
+      - hhs_runtime/src/hhs_hash216.c
+      - hhs_runtime/include/hhs_hash216.h
+      - .github/workflows/vm81-native-development-level0-level1.yml
+
+permissions:
+  contents: read
+
+jobs:
+  level0-level1-foundation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install test dependency
+        run: python -m pip install pytest
+
+      - name: Run architecture and native smoke validation
+        run: python -m pytest -q tests/test_hhs_vm81_native_development_v1.py
+
+      - name: Generate deterministic architecture surface
+        run: |
+          python -m native_projects.hhs_vm81_native_development.hhs_vm81_native_development_v1 > "$RUNNER_TEMP/VM81_ARCHITECTURE_SURFACE_LEVEL_0_1.json"
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          path = Path(os.environ["RUNNER_TEMP"]) / "VM81_ARCHITECTURE_SURFACE_LEVEL_0_1.json"
+          data = json.loads(path.read_text(encoding="utf-8"))
+          assert data["vm81_cell_count"] == 81
+          assert data["hash216_position_count"] == 216
+          assert data["implementation_status"] == "FOUNDATION_IMPLEMENTED_TERMINAL_VERIFICATION_NOT_YET_CLAIMED"
+          assert data["closure"]["level0_terminal_classification_emitted"] is False
+          assert data["closure"]["level1_terminal_classification_emitted"] is False
+          print(data["architecture_surface_root_hash72"])
+          PY
