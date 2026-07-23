@@ -43,9 +43,19 @@ def test_hash72_hash216_linked_abi_is_bound():
 
 def test_hash72_compare_schema_erratum_preserves_frozen_c_semantics():
     surface = build_architecture_surface(ROOT)
-    compare = next(entry for entry in surface["entries"] if entry["symbol"] == "hhs_hash72_compare")
-    assert compare["declared_output_schema"] == {"type": "integer", "enum": [-1, 0, 1]}
-    assert compare["effective_output_schema"] == {"type": "integer", "minimum": 0, "maximum": 72}
+    compare = next(
+        entry for entry in surface["entries"]
+        if entry["symbol"] == "hhs_hash72_compare"
+    )
+    assert compare["declared_output_schema"] == {
+        "type": "integer",
+        "enum": [-1, 0, 1],
+    }
+    assert compare["effective_output_schema"] == {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 72,
+    }
     erratum = surface["contract_errata"][0]
     assert erratum["native_semantics_modified"] is False
     assert erratum["frozen_c_semantics"] == "UINT64_POSITIONAL_MATCH_SCORE_0_TO_72"
@@ -61,19 +71,48 @@ def test_float_surfaces_are_explicitly_non_authoritative():
         "hhs_sizeof_srcg_state",
         "hhs_vectorize_hash72",
     ):
-        assert by_symbol[symbol]["numeric_authority"] == "NON_AUTHORITATIVE_FLOAT_CONTROL_ONLY"
+        assert by_symbol[symbol]["numeric_authority"] == (
+            "NON_AUTHORITATIVE_FLOAT_CONTROL_ONLY"
+        )
 
 
-def test_missing_capabilities_remain_explicit_and_unclaimed():
+def test_resolver_is_closed_while_mutation_gaps_remain_explicit():
     surface = build_architecture_surface(ROOT)
-    assert set(LEVEL_0_EXPLICIT_GAPS) == set(surface["explicit_missing_capabilities"])
-    assert set(LEVEL_1_INITIAL_EXECUTION_SYMBOLS) <= {entry["symbol"] for entry in surface["entries"]}
-    assert surface["implementation_status"] == "LEVEL_0_1_TYPED_ABI_AND_HASH_BINDING_IMPLEMENTED_TERMINAL_VERIFICATION_NOT_YET_CLAIMED"
+    assert set(LEVEL_0_EXPLICIT_GAPS) == set(
+        surface["explicit_missing_capabilities"]
+    )
+    assert "hash216_logical_address_resolver" not in (
+        surface["explicit_missing_capabilities"]
+    )
+    assert "vector_write_append_resize_release_operations" in (
+        surface["explicit_missing_capabilities"]
+    )
+    assert "single_use_vm81_mutation_capability" in (
+        surface["explicit_missing_capabilities"]
+    )
+    assert set(LEVEL_1_INITIAL_EXECUTION_SYMBOLS) <= {
+        entry["symbol"] for entry in surface["entries"]
+    }
+    assert surface["closure"]["hash216_logical_address_resolver_implemented"] is True
+    assert surface["closure"]["bounded_immutable_vector_descriptor_implemented"] is True
+    assert surface["closure"]["bounded_vresolve_implemented"] is True
+    assert surface["closure"]["bounded_vread_implemented"] is True
+    assert surface["closure"]["vector_mutation_capability_implemented"] is False
+    assert surface["implementation_status"] == (
+        "LEVEL_0_1_HASH216_IMMUTABLE_VECTOR_RESOLVER_IMPLEMENTED_"
+        "TERMINAL_VERIFICATION_NOT_YET_CLAIMED"
+    )
     assert surface["closure"]["level0_terminal_classification_emitted"] is False
     assert surface["closure"]["level1_terminal_classification_emitted"] is False
 
 
-def _compile_and_run(tmp_path: Path, source: Path, implementation: Path, include_dir: Path, expected: str) -> None:
+def _compile_and_run(
+    tmp_path: Path,
+    source: Path,
+    implementation: Path,
+    include_dir: Path,
+    expected: str,
+) -> None:
     compiler = shutil.which("cc") or shutil.which("gcc")
     if compiler is None:
         pytest.skip("C compiler unavailable")
