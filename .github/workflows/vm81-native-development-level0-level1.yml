@@ -60,7 +60,7 @@ jobs:
           python -m pytest -q \
             tests/test_hhs_hash216_vector_resolver_v1.py::test_resolver_manifest_is_deterministic_and_source_backed \
             tests/test_hhs_hash216_vector_resolver_v1.py::test_resolver_contract_freezes_exact_bounds_and_authority_partition \
-            tests/test_hhs_hash216_vector_resolver_v1.py::test_resolver_closure_is_integrated_without_mutation_promotion \
+            tests/test_hhs_hash216_vector_resolver_v1.py::test_resolver_closure_is_integrated_without_mutation_or_publication_promotion \
             tests/test_hhs_hash216_vector_resolver_v1.py::test_no_write_append_resize_or_release_api_is_exposed
 
       - name: Execute exact VM81 public C ABI smoke program
@@ -117,8 +117,11 @@ jobs:
           assert architecture["closure"]["level1_terminal_classification_emitted"] is False
           assert registry["registered_bindings"] == 8
           assert registry["all_expected_bindings_present"] is True
-          assert manifest["closure"]["immutable_resolver_snapshot_implemented"] is True
+          assert manifest["closure"]["immutable_resolver_candidate_snapshot_implemented"] is True
+          assert manifest["closure"]["vm81_authorized_resolver_publication_implemented"] is False
           assert manifest["closure"]["vector_mutation_implemented"] is False
+          assert manifest["resolver"]["candidate_snapshot_only"] is True
+          assert manifest["resolver"]["authoritative_publication_performed"] is False
           print(architecture["architecture_surface_root_hash72"])
           print(registry["registry_root_hash72"])
           print(manifest["resolver_manifest_root_hash72"])
