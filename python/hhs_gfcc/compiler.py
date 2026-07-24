@@ -3,9 +3,9 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any, Sequence
 import hashlib
-import json
 import os
 import platform
+import re
 import shutil
 import subprocess
 
@@ -31,7 +31,8 @@ def _sha256(path: Path) -> str:
 
 def _tool_identity(path: str, cwd: Path) -> dict[str, Any]:
     first = _run([path, "--version"], cwd=cwd)
-    return {"path": path, "version": (first.stdout or first.stderr).splitlines()[0]}
+    lines = (first.stdout or first.stderr).splitlines()
+    return {"name": Path(path).name, "version": lines[0] if lines else "UNKNOWN"}
 
 
 def compile_native(repo: Path) -> dict[str, Any]:
@@ -71,17 +72,19 @@ def compile_native(repo: Path) -> dict[str, Any]:
     test_run = _run([str(test_binary)], cwd=repo)
     cli_run = _run([str(cli_binary)], cwd=repo)
     target = _run([cc, "-dumpmachine"], cwd=repo).stdout.strip()
-    artifacts = []
-    for path in (static_library, shared_library, cli_binary, test_binary):
-        artifacts.append({"path": path.relative_to(repo).as_posix(), "size": path.stat().st_size, "sha256": _sha256(path)})
+    artifacts = [
+        {"path": path.relative_to(repo).as_posix(), "size": path.stat().st_size, "sha256": _sha256(path)}
+        for path in (static_library, shared_library, cli_binary, test_binary)
+    ]
     manifest = {
         "schema": "HHS_GFCC_NATIVE_BUILD_MANIFEST_V1",
         "compiler": _tool_identity(cc, repo),
         "archiver": _tool_identity(ar, repo),
         "target_triple": target,
         "architecture": platform.machine(),
-        "optimization_flags": flags,
-        "include_paths": [str(include), str(inherited_include)],
+        "optimization_flags": ["-std=c11", "-O2", "-fPIC", "-Wall", "-Wextra", "-Werror"],
+        "include_paths": [include.relative_to(repo).as_posix(), inherited_include.relative_to(repo).as_posix()],
+        "macro_definitions": [],
         "source_files": [path.relative_to(repo).as_posix() for path in (core_source, hash_source, cli_source, test_source)],
         "linked_libraries": [],
         "artifacts": artifacts,
@@ -94,14 +97,75 @@ def compile_native(repo: Path) -> dict[str, Any]:
     return manifest
 
 
+_EXPECTED_MEMBERS = [
+    "phi_projection", "inverse_sqrt2_projection", "scale_projection", "time_projection",
+    "fibonacci_n", "nonary_phase", "vm81_cell", "hash72_index", "hash216_index",
+    "shell_depth", "orientation", "constraint_flags",
+]
+_EXPECTED_OFFSETS = [index * 4 for index in range(len(_EXPECTED_MEMBERS))]
+
+
+def _reflect_spirv(disassembler: str, artifact: Path, output: Path, repo: Path) -> dict[str, Any]:
+    _run([disassembler, str(artifact), "-o", str(output)], cwd=repo)
+    text = output.read_text(encoding="utf-8")
+    member_names: dict[int, str] = {}
+    offsets: dict[int, int] = {}
+    for line in text.splitlines():
+        name_match = re.search(r'OpMemberName\s+%HHS_GFCC_Uniforms\s+(\d+)\s+"([^"]+)"', line)
+        if name_match:
+            member_names[int(name_match.group(1))] = name_match.group(2)
+        offset_match = re.search(r'OpMemberDecorate\s+%HHS_GFCC_Uniforms\s+(\d+)\s+Offset\s+(\d+)', line)
+        if offset_match:
+            offsets[int(offset_match.group(1))] = int(offset_match.group(2))
+    ordered_names = [member_names.get(index) for index in range(len(_EXPECTED_MEMBERS))]
+    ordered_offsets = [offsets.get(index) for index in range(len(_EXPECTED_OFFSETS))]
+    valid = (
+        ordered_names == _EXPECTED_MEMBERS
+        and ordered_offsets == _EXPECTED_OFFSETS
+        and "OpDecorate %HHS_GFCC_Uniforms Block" in text
+        and "DescriptorSet 0" in text
+        and "Binding 0" in text
+    )
+    if not valid:
+        raise GFCCError(
+            "HHS_GFCC_SHADER_COMPILATION_ERROR",
+            "shader",
+            "reflect",
+            "compiled shader reflection layout mismatch",
+            {"members": ordered_names, "offsets": ordered_offsets},
+        )
+    return {
+        "block": "HHS_GFCC_Uniforms",
+        "layout": "std140",
+        "descriptor_set": 0,
+        "binding": 0,
+        "size_bytes": 48,
+        "members": [
+            {"index": index, "name": name, "offset": offset}
+            for index, (name, offset) in enumerate(zip(ordered_names, ordered_offsets))
+        ],
+        "disassembly_sha256": _sha256(output),
+    }
+
+
 def compile_shaders(repo: Path) -> dict[str, Any]:
     compiler = shutil.which("glslangValidator")
-    if not compiler:
-        raise GFCCError("HHS_GFCC_SHADER_COMPILATION_ERROR", "shader", "compile", "glslangValidator unavailable")
+    disassembler = shutil.which("spirv-dis")
+    validator = shutil.which("spirv-val")
+    if not compiler or not disassembler or not validator:
+        raise GFCCError(
+            "HHS_GFCC_SHADER_COMPILATION_ERROR",
+            "shader",
+            "compile",
+            "required GLSL/SPIR-V tool unavailable",
+            {"glslangValidator": compiler, "spirv-dis": disassembler, "spirv-val": validator},
+        )
     subsystem = repo / "native_projects" / "hhs_gfcc_pass152"
     generated = subsystem / "generated" / "shaders"
     dist = subsystem / "dist"
+    build = subsystem / "build" / "shader"
     dist.mkdir(parents=True, exist_ok=True)
+    build.mkdir(parents=True, exist_ok=True)
     shaders = [
         (generated / "hhs_gfcc_fragment.glsl", "frag", dist / "hhs_gfcc_shader.spv"),
         (generated / "hhs_gfcc_collision_field.glsl", "comp", dist / "hhs_gfcc_collision_field.spv"),
@@ -111,38 +175,35 @@ def compile_shaders(repo: Path) -> dict[str, Any]:
         if not source.is_file():
             raise GFCCError("HHS_GFCC_SHADER_GENERATION_ERROR", "shader", "compile", "generated shader source missing", {"source": source.as_posix()})
         completed = _run([compiler, "-V", "--target-env", "vulkan1.1", "-S", stage, str(source), "-o", str(output)], cwd=repo)
-        if output.stat().st_size < 20:
-            raise GFCCError("HHS_GFCC_SHADER_COMPILATION_ERROR", "shader", "compile", "compiled SPIR-V artifact too small", {"output": output.as_posix()})
-        records.append({
-            "stage": stage,
-            "source": source.relative_to(repo).as_posix(),
-            "source_sha256": _sha256(source),
-            "artifact": output.relative_to(repo).as_posix(),
-            "artifact_size": output.stat().st_size,
-            "artifact_sha256": _sha256(output),
-            "compiler_output": (completed.stdout + completed.stderr).strip(),
-        })
+        _run([validator, str(output)], cwd=repo)
+        if output.stat().st_size < 20 or output.read_bytes()[:4] != bytes.fromhex("03022307"):
+            raise GFCCError("HHS_GFCC_SHADER_COMPILATION_ERROR", "shader", "compile", "invalid SPIR-V artifact", {"output": output.as_posix()})
+        disassembly = build / f"{output.name}.spvasm"
+        reflection = _reflect_spirv(disassembler, output, disassembly, repo)
+        records.append(
+            {
+                "stage": stage,
+                "source": source.relative_to(repo).as_posix(),
+                "source_sha256": _sha256(source),
+                "artifact": output.relative_to(repo).as_posix(),
+                "artifact_size": output.stat().st_size,
+                "artifact_sha256": _sha256(output),
+                "compiler_output": (completed.stdout + completed.stderr).strip(),
+                "reflection": reflection,
+            }
+        )
     manifest = {
         "schema": "HHS_GFCC_SHADER_BUILD_MANIFEST_V1",
         "compiler": _tool_identity(compiler, repo),
+        "validator": _tool_identity(validator, repo),
+        "disassembler": _tool_identity(disassembler, repo),
         "target_environment": "vulkan1.1",
         "optimization_flags": [],
-        "uniform_layout": {
-            "phi_projection": "float32 exact-source-bound",
-            "inverse_sqrt2_projection": "float32 exact-source-bound",
-            "scale_projection": "float32 exact-source-bound",
-            "fibonacci_n": "uint32",
-            "nonary_phase": "uint32",
-            "vm81_cell": "uint32",
-            "hash72_index": "uint32",
-            "hash216_index": "uint32",
-            "shell_depth": "uint32",
-            "orientation": "uint32",
-            "constraint_flags": "uint32",
-        },
-        "descriptor_bindings": [],
+        "uniform_layout": records[0]["reflection"],
+        "descriptor_bindings": [{"set": 0, "binding": 0, "block": "HHS_GFCC_Uniforms"}],
         "records": records,
         "shader_authority": "PROJECTED_RENDERING_ONLY",
+        "reflection_validated": all(record["reflection"]["size_bytes"] == 48 for record in records),
     }
     manifest["build_identity"] = digest256(manifest)
     write_json(subsystem / "manifest" / "shader_manifest.json", manifest)
