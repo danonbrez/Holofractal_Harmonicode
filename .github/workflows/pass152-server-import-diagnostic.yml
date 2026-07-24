@@ -1,0 +1,55 @@
+name: Pass 152 Server Import Diagnostic
+
+on:
+  push:
+    branches:
+      - agent/pass152-gfcc-constructor
+
+permissions:
+  contents: read
+
+jobs:
+  capture-server-import:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install declared Python environment
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+      - name: Capture direct canonical server import
+        id: capture
+        continue-on-error: true
+        run: |
+          python - <<'PY'
+          import json
+          import traceback
+          from pathlib import Path
+          target = Path("server-import-diagnostic.json")
+          try:
+              from hhs_backend.server import app
+              payload = {"ok": True, "paths": sorted({route.path for route in app.routes})}
+          except Exception as exc:
+              payload = {
+                  "ok": False,
+                  "exception_type": type(exc).__name__,
+                  "message": str(exc),
+                  "traceback": traceback.format_exc(),
+              }
+          target.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+          print(json.dumps(payload, indent=2))
+          raise SystemExit(0 if payload["ok"] else 1)
+          PY
+      - name: Upload server import diagnostic
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass152-server-import-diagnostic
+          path: server-import-diagnostic.json
+          if-no-files-found: error
+      - name: Require canonical server import
+        run: test "${{ steps.capture.outcome }}" = "success"
