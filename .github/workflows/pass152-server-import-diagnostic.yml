@@ -4,6 +4,11 @@ on:
   push:
     branches:
       - agent/pass152-gfcc-constructor
+  pull_request:
+    paths:
+      - hhs_backend/api/pass152_elastic_closure_routes.py
+      - hhs_backend/server.py
+      - .github/workflows/pass152-server-import-diagnostic.yml
 
 permissions:
   contents: read
