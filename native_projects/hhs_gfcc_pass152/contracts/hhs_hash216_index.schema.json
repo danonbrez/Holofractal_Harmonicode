@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:hhs:p152:gfcc:hash216:v1",
+  "title": "GFCC Hash216 Index",
+  "type": "object",
+  "required": ["positions", "value", "payload", "index_digest"],
+  "properties": {
+    "positions": {"const": 216},
+    "value": {"type": "string", "minLength": 216, "maxLength": 216},
+    "payload": {
+      "type": "object",
+      "required": [
+        "contract_id", "authority_root", "vm81_digest", "hash72",
+        "delta_digest", "stage_ratio", "mapping_version"
+      ],
+      "properties": {
+        "contract_id": {"const": "HHS-P152-GFCC"},
+        "authority_root": {"type": "string", "minLength": 1},
+        "vm81_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "hash72": {"type": "string", "minLength": 72, "maxLength": 72},
+        "delta_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "mapping_version": {"const": 1}
+      }
+    },
+    "index_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}
