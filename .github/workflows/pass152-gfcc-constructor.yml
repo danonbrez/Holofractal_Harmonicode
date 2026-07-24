@@ -21,28 +21,22 @@ jobs:
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
-
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-
       - name: Install native and shader toolchain
         run: |
           sudo apt-get update
           sudo apt-get install -y glslang-tools spirv-tools
           python -m pip install --upgrade pip
           python -m pip install pytest
-
       - name: Validate canonical specification and exact parameter construction
-        env:
-          PYTHONPATH: ${{ github.workspace }}/python
+        env: {PYTHONPATH: "${{ github.workspace }}/python"}
         run: |
           python -m hhs_gfcc.cli validate-spec --repo . --output json
           python -m hhs_gfcc.cli build-parameters --repo . --output json
-
       - name: Generate deterministic C tables and GLSL sources
-        env:
-          PYTHONPATH: ${{ github.workspace }}/python
+        env: {PYTHONPATH: "${{ github.workspace }}/python"}
         run: |
           python -m hhs_gfcc.cli generate-c --repo . --output json > "$RUNNER_TEMP/gfcc-c-codegen.json"
           cp -R native_projects/hhs_gfcc_pass152/generated "$RUNNER_TEMP/generated-first"
@@ -52,53 +46,52 @@ jobs:
           cp -R native_projects/hhs_gfcc_pass152/generated/shaders "$RUNNER_TEMP/shaders-first"
           python -m hhs_gfcc.cli generate-shaders --repo . --output json > "$RUNNER_TEMP/gfcc-shader-codegen-replay.json"
           diff -ru "$RUNNER_TEMP/shaders-first" native_projects/hhs_gfcc_pass152/generated/shaders
-
       - name: Compile and execute native GFCC library and CLI
-        env:
-          PYTHONPATH: ${{ github.workspace }}/python
+        env: {PYTHONPATH: "${{ github.workspace }}/python"}
         run: python -m hhs_gfcc.cli compile-native --repo . --output json | tee "$RUNNER_TEMP/gfcc-native-build.json"
-
       - name: Compile and validate real SPIR-V artifacts
-        env:
-          PYTHONPATH: ${{ github.workspace }}/python
+        env: {PYTHONPATH: "${{ github.workspace }}/python"}
         run: |
           python -m hhs_gfcc.cli compile-shaders --repo . --output json | tee "$RUNNER_TEMP/gfcc-shader-build.json"
           spirv-val native_projects/hhs_gfcc_pass152/dist/hhs_gfcc_shader.spv
           spirv-val native_projects/hhs_gfcc_pass152/dist/hhs_gfcc_collision_field.spv
           spirv-dis native_projects/hhs_gfcc_pass152/dist/hhs_gfcc_shader.spv -o "$RUNNER_TEMP/hhs_gfcc_shader.spvasm"
           test -s "$RUNNER_TEMP/hhs_gfcc_shader.spvasm"
-
-      - name: Execute Python exact construction and reachability tests
-        env:
-          PYTHONPATH: ${{ github.workspace }}/python
-        run: |
-          python -m pytest -q \
-            tests/test_hhs_gfcc_pass152.py::test_gfcc_core_positive_symbol_shell_delta_vm81_hash_collision \
-            tests/test_hhs_gfcc_pass152.py::test_gfcc_dependency_ancestry_and_shell_first_order \
-            tests/test_hhs_gfcc_pass152.py::test_gfcc_vm81_forward_inverse_exhaustive \
-            tests/test_hhs_gfcc_pass152.py::test_gfcc_codegen_is_byte_deterministic \
-            tests/test_hhs_gfcc_pass152.py::test_gfcc_native_reachability_compiles_and_executes \
-            tests/test_hhs_gfcc_pass152.py::test_gfcc_shader_reachability_compiles_real_spirv \
-            tests/test_hhs_gfcc_pass152.py::test_gfcc_cli_machine_readable_reachability \
-            tests/test_hhs_gfcc_pass152.py::test_gfcc_required_python_modules_and_native_api_are_concrete
-
+      - name: Test exact symbolic core
+        env: {PYTHONPATH: "${{ github.workspace }}/python"}
+        run: python -m pytest -q tests/test_hhs_gfcc_pass152.py::test_gfcc_core_positive_symbol_shell_delta_vm81_hash_collision
+      - name: Test shell-first ancestry
+        env: {PYTHONPATH: "${{ github.workspace }}/python"}
+        run: python -m pytest -q tests/test_hhs_gfcc_pass152.py::test_gfcc_dependency_ancestry_and_shell_first_order
+      - name: Test exhaustive VM81 reversibility
+        env: {PYTHONPATH: "${{ github.workspace }}/python"}
+        run: python -m pytest -q tests/test_hhs_gfcc_pass152.py::test_gfcc_vm81_forward_inverse_exhaustive
+      - name: Test workspace-independent deterministic code generation
+        env: {PYTHONPATH: "${{ github.workspace }}/python"}
+        run: python -m pytest -q tests/test_hhs_gfcc_pass152.py::test_gfcc_codegen_is_byte_deterministic
+      - name: Test native compilation reachability
+        env: {PYTHONPATH: "${{ github.workspace }}/python"}
+        run: python -m pytest -q tests/test_hhs_gfcc_pass152.py::test_gfcc_native_reachability_compiles_and_executes
+      - name: Test SPIR-V compilation reachability
+        env: {PYTHONPATH: "${{ github.workspace }}/python"}
+        run: python -m pytest -q tests/test_hhs_gfcc_pass152.py::test_gfcc_shader_reachability_compiles_real_spirv
+      - name: Test machine-readable CLI reachability
+        env: {PYTHONPATH: "${{ github.workspace }}/python"}
+        run: python -m pytest -q tests/test_hhs_gfcc_pass152.py::test_gfcc_cli_machine_readable_reachability
+      - name: Test concrete module and native API reachability
+        env: {PYTHONPATH: "${{ github.workspace }}/python"}
+        run: python -m pytest -q tests/test_hhs_gfcc_pass152.py::test_gfcc_required_python_modules_and_native_api_are_concrete
       - name: Execute Python negative matrix
-        env:
-          PYTHONPATH: ${{ github.workspace }}/python
+        env: {PYTHONPATH: "${{ github.workspace }}/python"}
         run: python -m pytest -q tests/test_hhs_gfcc_pass152.py::test_gfcc_negative_matrix
-
       - name: Execute Python replay matrix
-        env:
-          PYTHONPATH: ${{ github.workspace }}/python
+        env: {PYTHONPATH: "${{ github.workspace }}/python"}
         run: python -m pytest -q tests/test_hhs_gfcc_pass152.py::test_gfcc_replay_byte_identical_canonical_result
-
       - name: Execute CLI validation and replay surfaces
-        env:
-          PYTHONPATH: ${{ github.workspace }}/python
+        env: {PYTHONPATH: "${{ github.workspace }}/python"}
         run: |
           python -m hhs_gfcc.cli test --repo . --output json | tee "$RUNNER_TEMP/gfcc-test-report.json"
           python -m hhs_gfcc.cli replay --repo . --output json | tee "$RUNNER_TEMP/gfcc-replay-report.json"
-
       - name: Assert required concrete artifacts and authority boundaries
         run: |
           test -s native_projects/hhs_gfcc_pass152/dist/libhhs_gfcc.a
@@ -109,7 +102,6 @@ jobs:
           test "$(wc -c < native_projects/hhs_gfcc_pass152/generated/maps/hhs_gfcc_hash72_projection_map.bin)" -eq 72
           test "$(wc -c < native_projects/hhs_gfcc_pass152/generated/maps/hhs_gfcc_hash216_index_map.bin)" -eq 216
           ! grep -R "GOLDEN_FRACTAL_CORRESPONDENCE_CONSTRUCTOR_VERIFIED" native_projects/hhs_gfcc_pass152/reports 2>/dev/null
-
       - name: Upload GFCC core execution evidence
         uses: actions/upload-artifact@v4
         with:
