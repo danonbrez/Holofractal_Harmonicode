@@ -112,8 +112,12 @@ jobs:
           sudo apt-get install -y glslang-tools spirv-tools unzip
           python -m pip install --upgrade pip
           python -m pip install pytest pytest-asyncio fastapi==0.128.2 starlette==0.50.0
-      - name: Revalidate inherited Pass 152 nucleus
-        run: make pass152-full
+      - name: Revalidate inherited Pass 151 language layers
+        run: make pass151-contract-governed-language
+      - name: Revalidate inherited Pass 152 elastic closure
+        run: make pass152-universal-elastic-closure
+      - name: Revalidate inherited native C runtime
+        run: make verify-c
       - name: Execute GFCC completion and package transaction
         env: {PYTHONPATH: "${{ github.workspace }}/python"}
         run: python -m hhs_gfcc.cli package --repo . --output json | tee "$RUNNER_TEMP/gfcc-package-report.json"
