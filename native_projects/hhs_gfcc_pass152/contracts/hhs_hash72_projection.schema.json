@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:hhs:p152:gfcc:hash72:v1",
+  "title": "GFCC Hash72 Projection",
+  "type": "object",
+  "required": ["positions", "value", "payload", "projection_digest"],
+  "properties": {
+    "positions": {"const": 72},
+    "value": {"type": "string", "minLength": 72, "maxLength": 72},
+    "payload": {
+      "type": "object",
+      "required": [
+        "contract_id", "authority_root", "vm81_digest", "cell_count",
+        "stage_ratio", "shell_ancestry", "terminal_residual", "projection_mode"
+      ],
+      "properties": {
+        "contract_id": {"const": "HHS-P152-GFCC"},
+        "authority_root": {"type": "string", "minLength": 1},
+        "vm81_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "cell_count": {"const": 81},
+        "projection_mode": {"const": "GFCC_SYMBOLIC_VM81_PROJECTION"}
+      }
+    },
+    "projection_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}

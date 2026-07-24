@@ -1,0 +1,2 @@
+# GFCC runtime uses only the Python 3.11 standard library.
+pytest==8.4.1

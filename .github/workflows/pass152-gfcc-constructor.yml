@@ -1,0 +1,230 @@
+name: Pass 152 Golden Fractal Correspondence Constructor
+
+on:
+  push:
+    branches:
+      - agent/pass152-gfcc-constructor
+  pull_request:
+    paths:
+      - python/hhs_gfcc/**
+      - native_projects/hhs_gfcc_pass152/**
+      - tests/test_hhs_gfcc_pass152.py
+      - tests/test_hhs_gfcc_cross_lane.py
+      - GNUmakefile
+      - .github/workflows/pass152-gfcc-constructor.yml
+
+permissions:
+  contents: read
+
+jobs:
+  gfcc-constructor-core:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install native, shader, and Python toolchain
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y glslang-tools spirv-tools
+          python -m pip install --upgrade pip
+          python -m pip install pytest pytest-asyncio fastapi==0.128.2 starlette==0.50.0
+      - name: Validate file-ingested canonical specification
+        env: {PYTHONPATH: "${{ github.workspace }}/python"}
+        run: |
+          python -m hhs_gfcc.cli validate-spec --repo . --output json
+          python -m hhs_gfcc.cli build-parameters --repo . --output json
+      - name: Generate deterministic C and GLSL
+        env: {PYTHONPATH: "${{ github.workspace }}/python"}
+        run: |
+          python -m hhs_gfcc.cli generate-c --repo . --output json > "$RUNNER_TEMP/gfcc-c-codegen.json"
+          cp -R native_projects/hhs_gfcc_pass152/generated "$RUNNER_TEMP/generated-first"
+          python -m hhs_gfcc.cli generate-c --repo . --output json > "$RUNNER_TEMP/gfcc-c-codegen-replay.json"
+          diff -ru "$RUNNER_TEMP/generated-first/c" native_projects/hhs_gfcc_pass152/generated/c
+          python -m hhs_gfcc.cli generate-shaders --repo . --output json > "$RUNNER_TEMP/gfcc-shader-codegen.json"
+          cp -R native_projects/hhs_gfcc_pass152/generated/shaders "$RUNNER_TEMP/shaders-first"
+          python -m hhs_gfcc.cli generate-shaders --repo . --output json > "$RUNNER_TEMP/gfcc-shader-codegen-replay.json"
+          diff -ru "$RUNNER_TEMP/shaders-first" native_projects/hhs_gfcc_pass152/generated/shaders
+      - name: Compile and execute native GFCC
+        env: {PYTHONPATH: "${{ github.workspace }}/python"}
+        run: python -m hhs_gfcc.cli compile-native --repo . --output json | tee "$RUNNER_TEMP/gfcc-native-build.json"
+      - name: Execute ASAN and UBSAN native workload
+        env:
+          ASAN_OPTIONS: detect_leaks=1:halt_on_error=1
+          UBSAN_OPTIONS: halt_on_error=1:print_stacktrace=1
+        run: |
+          cc -std=c11 -O1 -g -Wall -Wextra -Werror \
+            -fsanitize=address,undefined -fno-omit-frame-pointer \
+            -Inative_projects/hhs_gfcc_pass152/include \
+            -Ihhs_runtime/include \
+            native_projects/hhs_gfcc_pass152/tests/test_hhs_gfcc.c \
+            native_projects/hhs_gfcc_pass152/src/hhs_gfcc.c \
+            hhs_runtime/src/hhs_hash216.c \
+            -o "$RUNNER_TEMP/test_hhs_gfcc_sanitized"
+          "$RUNNER_TEMP/test_hhs_gfcc_sanitized"
+      - name: Compile, validate, and reflect SPIR-V
+        env: {PYTHONPATH: "${{ github.workspace }}/python"}
+        run: python -m hhs_gfcc.cli compile-shaders --repo . --output json | tee "$RUNNER_TEMP/gfcc-shader-build.json"
+      - name: Execute GFCC Python and cross-language matrices
+        env: {PYTHONPATH: "${{ github.workspace }}/python"}
+        run: |
+          python -m pytest -q tests/test_hhs_gfcc_pass152.py tests/test_hhs_gfcc_cross_lane.py
+          python -m hhs_gfcc.cli test --repo . --output json | tee "$RUNNER_TEMP/gfcc-test-report.json"
+          python -m hhs_gfcc.cli replay --repo . --output json | tee "$RUNNER_TEMP/gfcc-replay-report.json"
+      - name: Assert concrete core artifacts
+        run: |
+          test -s native_projects/hhs_gfcc_pass152/dist/libhhs_gfcc.a
+          test -s native_projects/hhs_gfcc_pass152/dist/libhhs_gfcc.so
+          test -x native_projects/hhs_gfcc_pass152/dist/hhs-gfcc
+          test -x native_projects/hhs_gfcc_pass152/dist/test_hhs_gfcc
+          test "$(wc -c < native_projects/hhs_gfcc_pass152/generated/maps/hhs_gfcc_vm81_map.bin)" -eq 81
+          test "$(wc -c < native_projects/hhs_gfcc_pass152/generated/maps/hhs_gfcc_hash72_projection_map.bin)" -eq 72
+          test "$(wc -c < native_projects/hhs_gfcc_pass152/generated/maps/hhs_gfcc_hash216_index_map.bin)" -eq 216
+      - name: Upload GFCC core evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass152-gfcc-constructor-core-evidence
+          path: |
+            native_projects/hhs_gfcc_pass152/generated/
+            native_projects/hhs_gfcc_pass152/manifest/
+            native_projects/hhs_gfcc_pass152/dist/libhhs_gfcc.a
+            native_projects/hhs_gfcc_pass152/dist/libhhs_gfcc.so
+            native_projects/hhs_gfcc_pass152/dist/hhs-gfcc
+            native_projects/hhs_gfcc_pass152/dist/test_hhs_gfcc
+            native_projects/hhs_gfcc_pass152/dist/*.spv
+            ${{ runner.temp }}/gfcc-*.json
+          if-no-files-found: error
+
+  gfcc-complete-inherited-release:
+    needs: gfcc-constructor-core
+    runs-on: ubuntu-24.04
+    timeout-minutes: 55
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install complete verification toolchain
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y glslang-tools spirv-tools unzip
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+      - name: Revalidate inherited Pass 151 language layers
+        run: make pass151-contract-governed-language
+      - name: Compile inherited Pass 152 Python surfaces
+        run: python3 -m py_compile hhs_runtime/pass152/*.py hhs_backend/api/pass152_elastic_closure_routes.py hhs_backend/server.py tools/hhs152.py
+      - name: Compile and execute inherited Pass 152 native C
+        run: |
+          cc -std=c11 -Wall -Wextra -Werror -pedantic hhs_runtime/pass152/hhs152_native.c tests/pass152/test_native.c -o "$RUNNER_TEMP/hhs152_native_test"
+          "$RUNNER_TEMP/hhs152_native_test"
+      - name: Execute inherited Pass 152 positive and negative matrices
+        run: python3 tests/pass152/run_pass152_tests.py
+      - name: Capture inherited delayed-closure result
+        run: |
+          python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          from hhs_runtime.pass152 import DeterministicVM81TestAuthority, delayed_closure_workload
+          result = delayed_closure_workload(Path(os.environ["RUNNER_TEMP"]) / "pass152-delayed-receipts", DeterministicVM81TestAuthority().admit, delay_seconds=0.001, workers=4)
+          payload = {
+              "omega_closure": result["proof"]["omega_closure"],
+              "history_valid": result["proof"]["recursive_control"]["history_valid"],
+              "history_extended_not_rewritten": result["commit"]["history_extended_not_rewritten"],
+              "replay_status": result["replay"]["replay_status"],
+              "max_concurrent_workers_observed": result["metrics"]["max_concurrent_workers_observed"],
+          }
+          path = Path(os.environ["RUNNER_TEMP"]) / "pass152-delayed-result.json"
+          path.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+          print(json.dumps(payload, indent=2))
+          PY
+      - name: Require inherited omega closure
+        run: python3 -c 'import json,os; assert json.load(open(os.path.join(os.environ["RUNNER_TEMP"],"pass152-delayed-result.json")))["omega_closure"] is True'
+      - name: Require inherited recursive history validity
+        run: python3 -c 'import json,os; assert json.load(open(os.path.join(os.environ["RUNNER_TEMP"],"pass152-delayed-result.json")))["history_valid"] is True'
+      - name: Require inherited append-only commit history
+        run: python3 -c 'import json,os; assert json.load(open(os.path.join(os.environ["RUNNER_TEMP"],"pass152-delayed-result.json")))["history_extended_not_rewritten"] is True'
+      - name: Require inherited replay match
+        run: python3 -c 'import json,os; assert json.load(open(os.path.join(os.environ["RUNNER_TEMP"],"pass152-delayed-result.json")))["replay_status"] == "MATCH"'
+      - name: Require inherited concurrent lane evidence
+        run: python3 -c 'import json,os; assert json.load(open(os.path.join(os.environ["RUNNER_TEMP"],"pass152-delayed-result.json")))["max_concurrent_workers_observed"] >= 2'
+      - name: Execute original inherited delayed-closure pytest
+        run: PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 -m pytest -q tests/test_hhs_pass152_universal_elastic_closure_v1.py::test_pass152_delayed_closure_and_recursive_control
+      - name: Validate inherited status and capability surfaces
+        run: PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 -m pytest -q tests/test_hhs_pass152_universal_elastic_closure_v1.py::test_pass152_status_and_capability_surfaces
+      - name: Validate inherited guarded API execution
+        run: PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 -m pytest -q tests/test_hhs_pass152_universal_elastic_closure_v1.py::test_pass152_guarded_api_execution
+      - name: Capture canonical server route composition
+        run: |
+          python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          from hhs_backend.server import app
+          paths = sorted({route.path for route in app.routes})
+          target = Path(os.environ["RUNNER_TEMP"]) / "pass152-server-routes.json"
+          target.write_text(json.dumps(paths, indent=2) + "\n", encoding="utf-8")
+          print(json.dumps(paths, indent=2))
+          PY
+      - name: Require canonical Pass 152 status route
+        run: python3 -c 'import json,os; assert "/api/runtime/pass152/status" in json.load(open(os.path.join(os.environ["RUNNER_TEMP"],"pass152-server-routes.json")))'
+      - name: Require canonical Pass 152 capabilities route
+        run: python3 -c 'import json,os; assert "/api/runtime/pass152/capabilities" in json.load(open(os.path.join(os.environ["RUNNER_TEMP"],"pass152-server-routes.json")))'
+      - name: Require canonical Pass 152 latest route
+        run: python3 -c 'import json,os; assert "/api/runtime/pass152/latest" in json.load(open(os.path.join(os.environ["RUNNER_TEMP"],"pass152-server-routes.json")))'
+      - name: Require canonical Pass 152 execute route
+        run: python3 -c 'import json,os; assert "/api/runtime/pass152/execute" in json.load(open(os.path.join(os.environ["RUNNER_TEMP"],"pass152-server-routes.json")))'
+      - name: Execute original inherited canonical route pytest
+        run: PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 -m pytest -q tests/test_hhs_pass152_universal_elastic_closure_v1.py::test_pass152_routes_are_reachable_from_canonical_server
+      - name: Validate inherited spatial environment surface
+        run: PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 -m pytest -q tests/test_hhs_pass152_universal_elastic_closure_v1.py::test_spatial_environment_exposes_pass152_surface
+      - name: Validate inherited Pass 152 runtime bridge JavaScript
+        run: node --check hhs_gui/spatial_environment/src/runtime-bridge.js
+      - name: Validate inherited Pass 152 application registry JavaScript
+        run: node --check hhs_gui/spatial_environment/src/application-registry.js
+      - name: Validate inherited Pass 152 UI shell JavaScript
+        run: node --check hhs_gui/spatial_environment/src/ui-shell.js
+      - name: Revalidate inherited native C runtime
+        run: make verify-c
+      - name: Execute GFCC completion and package transaction
+        env: {PYTHONPATH: "${{ github.workspace }}/python"}
+        run: python -m hhs_gfcc.cli package --repo . --output json | tee "$RUNNER_TEMP/gfcc-package-report.json"
+      - name: Assert terminal report, receipts, and archive
+        env:
+          REPORT_PATH: ${{ runner.temp }}/gfcc-package-report.json
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          payload = json.loads(Path(os.environ["REPORT_PATH"]).read_text())
+          assert payload["ok"] is True, payload
+          result = payload["result"]
+          report = result["report"]
+          assert report["terminal_classification"] == "GOLDEN_FRACTAL_CORRESPONDENCE_CONSTRUCTOR_VERIFIED", report
+          assert report["incomplete_obligations"] == [], report
+          assert report["positive_tests"] == {"passed": 23, "total": 23}, report
+          assert report["negative_tests"] == {"passed": 25, "total": 25}, report
+          assert result["receipt_audit"]["valid"] is True, result["receipt_audit"]
+          assert result["receipt_audit"]["observed_count"] == 18, result["receipt_audit"]
+          assert result["artifact_manifest"]["valid"] is True, result["artifact_manifest"]
+          assert result["inheritance"]["valid"] is True, result["inheritance"]
+          assert result["archive"]["valid"] is True, result["archive"]
+          PY
+          ARCHIVE=native_projects/hhs_gfcc_pass152/dist/hhs_pass_152_golden_fractal_correspondence_constructor_full_inherited_pass_history_nucleus.zip
+          test -s "$ARCHIVE"
+          unzip -t "$ARCHIVE"
+      - name: Upload complete Pass 152 GFCC archive
+        uses: actions/upload-artifact@v4
+        with:
+          name: hhs-pass-152-gfcc-full-inherited-nucleus
+          path: |
+            native_projects/hhs_gfcc_pass152/dist/hhs_pass_152_golden_fractal_correspondence_constructor_full_inherited_pass_history_nucleus.zip
+            native_projects/hhs_gfcc_pass152/manifest/archive_manifest.json
+            native_projects/hhs_gfcc_pass152/HHS_PASS_152_ARTIFACT_MANIFEST.json
+            native_projects/hhs_gfcc_pass152/reports/HHS_PASS_152_VALIDATION_REPORT.*
+            native_projects/hhs_gfcc_pass152/receipts/
+            ${{ runner.temp }}/gfcc-package-report.json
+            ${{ runner.temp }}/pass152-delayed-result.json
+            ${{ runner.temp }}/pass152-server-routes.json
+          if-no-files-found: error

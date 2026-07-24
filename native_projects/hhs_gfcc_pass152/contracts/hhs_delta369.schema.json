@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:hhs:p152:gfcc:delta369:v1",
+  "title": "HHS Delta369 State",
+  "type": "object",
+  "required": [
+    "active_indexing",
+    "zero_indexed_partition",
+    "one_indexed_partition"
+  ],
+  "properties": {
+    "active_indexing": {"enum": ["zero_indexed", "one_indexed"]},
+    "zero_indexed_partition": {
+      "const": [[0, 3, 6], [1, 4, 7], [2, 5, 8]]
+    },
+    "one_indexed_partition": {
+      "const": [[3, 6, 9], [1, 4, 7], [2, 5, 8]]
+    },
+    "ring_modulus": {"const": 9},
+    "matrix_shape": {"const": [3, 3]},
+    "geometry_coordinates": {"const": ["x", "y", "phase", "scale_depth"]},
+    "decimal_projection": {"const": "EXTERNAL_DECIMAL_GLYPH_PROJECTION"}
+  },
+  "additionalProperties": true
+}
