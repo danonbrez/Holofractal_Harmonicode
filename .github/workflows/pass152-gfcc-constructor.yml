@@ -128,12 +128,7 @@ jobs:
           import json, os
           from pathlib import Path
           from hhs_runtime.pass152 import DeterministicVM81TestAuthority, delayed_closure_workload
-          result = delayed_closure_workload(
-              Path(os.environ["RUNNER_TEMP"]) / "pass152-delayed-receipts",
-              DeterministicVM81TestAuthority().admit,
-              delay_seconds=0.001,
-              workers=4,
-          )
+          result = delayed_closure_workload(Path(os.environ["RUNNER_TEMP"]) / "pass152-delayed-receipts", DeterministicVM81TestAuthority().admit, delay_seconds=0.001, workers=4)
           payload = {
               "omega_closure": result["proof"]["omega_closure"],
               "history_valid": result["proof"]["recursive_control"]["history_valid"],
@@ -161,7 +156,26 @@ jobs:
         run: PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 -m pytest -q tests/test_hhs_pass152_universal_elastic_closure_v1.py::test_pass152_status_and_capability_surfaces
       - name: Validate inherited guarded API execution
         run: PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 -m pytest -q tests/test_hhs_pass152_universal_elastic_closure_v1.py::test_pass152_guarded_api_execution
-      - name: Validate inherited canonical server routes
+      - name: Capture canonical server route composition
+        run: |
+          python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          from hhs_backend.server import app
+          paths = sorted({route.path for route in app.routes})
+          target = Path(os.environ["RUNNER_TEMP"]) / "pass152-server-routes.json"
+          target.write_text(json.dumps(paths, indent=2) + "\n", encoding="utf-8")
+          print(json.dumps(paths, indent=2))
+          PY
+      - name: Require canonical Pass 152 status route
+        run: python3 -c 'import json,os; assert "/api/runtime/pass152/status" in json.load(open(os.path.join(os.environ["RUNNER_TEMP"],"pass152-server-routes.json")))'
+      - name: Require canonical Pass 152 capabilities route
+        run: python3 -c 'import json,os; assert "/api/runtime/pass152/capabilities" in json.load(open(os.path.join(os.environ["RUNNER_TEMP"],"pass152-server-routes.json")))'
+      - name: Require canonical Pass 152 latest route
+        run: python3 -c 'import json,os; assert "/api/runtime/pass152/latest" in json.load(open(os.path.join(os.environ["RUNNER_TEMP"],"pass152-server-routes.json")))'
+      - name: Require canonical Pass 152 execute route
+        run: python3 -c 'import json,os; assert "/api/runtime/pass152/execute" in json.load(open(os.path.join(os.environ["RUNNER_TEMP"],"pass152-server-routes.json")))'
+      - name: Execute original inherited canonical route pytest
         run: PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 -m pytest -q tests/test_hhs_pass152_universal_elastic_closure_v1.py::test_pass152_routes_are_reachable_from_canonical_server
       - name: Validate inherited spatial environment surface
         run: PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 -m pytest -q tests/test_hhs_pass152_universal_elastic_closure_v1.py::test_spatial_environment_exposes_pass152_surface
@@ -212,4 +226,5 @@ jobs:
             native_projects/hhs_gfcc_pass152/receipts/
             ${{ runner.temp }}/gfcc-package-report.json
             ${{ runner.temp }}/pass152-delayed-result.json
+            ${{ runner.temp }}/pass152-server-routes.json
           if-no-files-found: error
