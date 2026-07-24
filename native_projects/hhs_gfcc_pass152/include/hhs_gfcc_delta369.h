@@ -1,0 +1,9 @@
+#ifndef HHS_GFCC_DELTA369_H
+#define HHS_GFCC_DELTA369_H
+#include "hhs_gfcc.h"
+
+#define HHS_GFCC_NONARY_MODULUS 9u
+#define HHS_GFCC_DELTA369_PHASE_LANES 3u
+#define HHS_GFCC_DELTA369_COORDINATES 4u
+
+#endif
