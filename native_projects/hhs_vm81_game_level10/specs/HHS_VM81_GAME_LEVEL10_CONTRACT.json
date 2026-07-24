@@ -1,0 +1,53 @@
+{
+  "contract_id": "HHS-VM81-GAME-L10-V1",
+  "terminal_classification": "VM81_C_ABI_19_OPCODE_2D_PLATFORM_DEMO_VERIFIED",
+  "authority": {
+    "execution": "VM81_C_ABI",
+    "receipt": "HASH72",
+    "identity": "HASH216",
+    "host_mutation": "FORBIDDEN"
+  },
+  "display": {
+    "logical_pixels": [160, 144],
+    "tile_pixels": [8, 8],
+    "viewport_tiles": [20, 18],
+    "level_tiles": [64, 18],
+    "player_pixels": [16, 16],
+    "ticks_per_second": 60
+  },
+  "numeric_semantics": "INTEGER_FIXED_SUBPIXEL_ONLY",
+  "vm81": {
+    "cells": 81,
+    "visible_projection_cells": 72,
+    "hidden_loshu_cells": 9,
+    "structured_state": "xyzw_plus_phase",
+    "closure": "x+y-z-w == 0 mod 72"
+  },
+  "base20": {
+    "radix": 20,
+    "executable_digits": [0, 18],
+    "terminal_framing_digit": 19
+  },
+  "required_gameplay": [
+    "horizontal_movement",
+    "jumping",
+    "gravity",
+    "walls_and_platforms",
+    "idle_walk_jump_fall_animation",
+    "camera_scrolling",
+    "reset",
+    "input_replay",
+    "frame_commitments"
+  ],
+  "negative_gates": [
+    "invalid_opcode",
+    "invalid_operand",
+    "authority_rejection",
+    "stale_generation",
+    "stale_step",
+    "program_bounds",
+    "arithmetic_overflow",
+    "replay_mismatch",
+    "state_rollback_on_rejection"
+  ]
+}
