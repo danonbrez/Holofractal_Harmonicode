@@ -124,15 +124,46 @@ extern const hhs_gfcc_generated_correction HHS_GFCC_REPRESENTATIVE_CORRECTION;
     return [_write(out_dir / "hhs_gfcc_collision_table.h", header), _write(out_dir / "hhs_gfcc_collision_table.c", source)]
 
 
+def generate_contract_aliases(workload: Mapping[str, Any], root_generated: Path, c_dir: Path) -> list[dict[str, Any]]:
+    records: list[dict[str, Any]] = []
+    for name in ("hhs_gfcc_parameters.h", "hhs_gfcc_parameters.c"):
+        records.append(_write(root_generated / name, (c_dir / name).read_text(encoding="utf-8")))
+    correction = workload["collision"]["correction"]
+    constraints_header = """#ifndef HHS_GFCC_GENERATED_CONSTRAINTS_H
+#define HHS_GFCC_GENERATED_CONSTRAINTS_H
+#include <stdint.h>
+#define HHS_GFCC_CONSTRAINT_NONARY 0x01u
+#define HHS_GFCC_CONSTRAINT_PHASE 0x02u
+#define HHS_GFCC_CONSTRAINT_SCALE 0x04u
+#define HHS_GFCC_CONSTRAINT_ANCESTRY 0x08u
+extern const uint32_t HHS_GFCC_PROTECTED_CONSTRAINT_FLAGS;
+extern const int64_t HHS_GFCC_COLLISION_CORRECTION_X_Q16;
+extern const int64_t HHS_GFCC_COLLISION_CORRECTION_Y_Q16;
+#endif
+"""
+    constraints_source = f"""#include \"hhs_gfcc_constraints.h\"
+const uint32_t HHS_GFCC_PROTECTED_CONSTRAINT_FLAGS = HHS_GFCC_CONSTRAINT_NONARY | HHS_GFCC_CONSTRAINT_PHASE | HHS_GFCC_CONSTRAINT_SCALE | HHS_GFCC_CONSTRAINT_ANCESTRY;
+const int64_t HHS_GFCC_COLLISION_CORRECTION_X_Q16 = {int(correction['x_q16'])};
+const int64_t HHS_GFCC_COLLISION_CORRECTION_Y_Q16 = {int(correction['y_q16'])};
+"""
+    records.extend([
+        _write(root_generated / "hhs_gfcc_constraints.h", constraints_header),
+        _write(root_generated / "hhs_gfcc_constraints.c", constraints_source),
+    ])
+    return records
+
+
 def generate_all(workload: Mapping[str, Any], root: Path) -> dict[str, Any]:
     root = root.resolve()
-    out_dir = root / "generated" / "c"
+    root_generated = root / "generated"
+    out_dir = root_generated / "c"
     records: list[dict[str, Any]] = []
     records.extend(generate_parameters(workload, out_dir))
     records.extend(generate_tables(workload, out_dir))
     records.extend(generate_vm81_map(workload, out_dir))
     records.extend(generate_hash_maps(workload, out_dir))
     records.extend(generate_collision_table(workload, out_dir))
+    records.extend(generate_contract_aliases(workload, root_generated, out_dir))
     for record in records:
         record["path"] = Path(record["path"]).relative_to(root).as_posix()
     manifest = {
