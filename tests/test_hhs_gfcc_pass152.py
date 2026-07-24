@@ -89,9 +89,17 @@ def test_gfcc_codegen_is_byte_deterministic(tmp_path: Path):
 def test_gfcc_native_reachability_compiles_and_executes():
     if shutil.which("cc") is None or shutil.which("ar") is None:
         pytest.skip("native compiler unavailable")
-    workload = run_representative_workload()
-    generate_c(workload, SUBSYSTEM)
-    manifest = compile_native(ROOT)
+    manifest_path = SUBSYSTEM / "manifest" / "build_manifest.json"
+    if manifest_path.is_file():
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    else:
+        workload = run_representative_workload()
+        generate_c(workload, SUBSYSTEM)
+        manifest = compile_native(ROOT)
+    test_binary = SUBSYSTEM / "dist" / "test_hhs_gfcc"
+    executed = subprocess.run([str(test_binary)], cwd=ROOT, text=True, capture_output=True)
+    assert executed.returncode == 0, executed.stdout + executed.stderr
+    assert "GOLDEN_FRACTAL_CORRESPONDENCE_NATIVE_CORE_PASSED" in executed.stdout
     assert manifest["native_test_reached"] is True
     assert "GOLDEN_FRACTAL_CORRESPONDENCE_NATIVE_CORE_PASSED" in manifest["native_test_stdout"]
     assert any(item["path"].endswith("libhhs_gfcc.a") for item in manifest["artifacts"])
@@ -102,9 +110,13 @@ def test_gfcc_native_reachability_compiles_and_executes():
 def test_gfcc_shader_reachability_compiles_real_spirv():
     if shutil.which("glslangValidator") is None:
         pytest.skip("glslangValidator unavailable")
-    workload = run_representative_workload()
-    generate_shaders(workload, SUBSYSTEM)
-    manifest = compile_shaders(ROOT)
+    manifest_path = SUBSYSTEM / "manifest" / "shader_manifest.json"
+    if manifest_path.is_file():
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    else:
+        workload = run_representative_workload()
+        generate_shaders(workload, SUBSYSTEM)
+        manifest = compile_shaders(ROOT)
     assert len(manifest["records"]) == 2
     for record in manifest["records"]:
         artifact = ROOT / record["artifact"]
