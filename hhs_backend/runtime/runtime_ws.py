@@ -45,9 +45,26 @@ from typing import List
 from typing import Optional
 from typing import Set
 
-from fastapi import APIRouter
-from fastapi import WebSocket
-from fastapi import WebSocketDisconnect
+try:
+    from fastapi import APIRouter
+    from fastapi import WebSocket
+    from fastapi import WebSocketDisconnect
+except ModuleNotFoundError:  # pragma: no cover - optional runtime dependency
+    class APIRouter:  # type: ignore[override]
+        def __init__(self, *args, **kwargs):
+            pass
+
+        def websocket(self, *args, **kwargs):
+            def decorator(fn):
+                return fn
+
+            return decorator
+
+    class WebSocket:  # type: ignore[override]
+        pass
+
+    class WebSocketDisconnect(Exception):
+        pass
 
 from hhs_backend.runtime.runtime_event_schema import (
     HHSRuntimeEventEnvelope,

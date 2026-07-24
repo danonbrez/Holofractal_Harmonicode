@@ -10,6 +10,8 @@ from typing import List
 from typing import Optional
 
 import copy
+import hashlib
+import json
 import time
 
 from hhs_runtime.runtime_event_schema import (
@@ -419,6 +421,41 @@ class HHSRuntimeState:
             return None
 
         return self.receipts[-1]
+
+    # -----------------------------------------------------
+
+    @property
+    def receipt_hash72(self) -> str:
+        latest = self.latest_receipt()
+        if latest is None:
+            return "H72N-GENESIS"
+        return latest.receipt_hash72
+
+    # -----------------------------------------------------
+
+    @property
+    def prev_receipt_hash72(self) -> str:
+        if len(self.receipts) < 2:
+            return "H72N-GENESIS"
+        return self.receipts[-2].receipt_hash72
+
+    # -----------------------------------------------------
+
+    @property
+    def state_hash72(self) -> str:
+        material = self.serialize_deterministic().encode("utf-8")
+        return "H72N-" + hashlib.sha256(material).hexdigest()[:18]
+
+    # -----------------------------------------------------
+
+    def serialize_deterministic(self) -> str:
+        return json.dumps(
+            self.to_dict(),
+            sort_keys=True,
+            ensure_ascii=False,
+            separators=(",", ":"),
+            default=str,
+        )
 
     # -----------------------------------------------------
 

@@ -31,7 +31,10 @@ import uuid
 from dataclasses import dataclass, field
 from typing import Dict, List, Set, Optional, Any
 
-from fastapi import WebSocket
+try:
+    from fastapi import WebSocket
+except ModuleNotFoundError:  # pragma: no cover - optional runtime dependency
+    WebSocket = Any
 
 from hhs_runtime.hhs_runtime_dataflow_guard_v1 import attach_egress_record
 
