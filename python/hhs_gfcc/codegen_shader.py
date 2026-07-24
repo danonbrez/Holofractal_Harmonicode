@@ -7,6 +7,7 @@ from .core import ExactRational, digest256, generate_shader_source, shader_proje
 
 
 def generate_all(workload: Mapping[str, Any], root: Path) -> dict[str, Any]:
+    root = root.resolve()
     ratio = ExactRational(
         int(workload["stage_ratio"]["numerator"]),
         int(workload["stage_ratio"]["denominator"]),
@@ -38,7 +39,11 @@ def generate_all(workload: Mapping[str, Any], root: Path) -> dict[str, Any]:
     )
     records = []
     for path in (common, fragment, collision):
-        records.append({"path": path.as_posix(), "size": path.stat().st_size, "sha256": digest256({"bytes_hex": path.read_bytes().hex()})})
+        records.append({
+            "path": path.relative_to(root).as_posix(),
+            "size": path.stat().st_size,
+            "sha256": digest256({"bytes_hex": path.read_bytes().hex()}),
+        })
     manifest = {
         "schema": "HHS_GFCC_SHADER_CODEGEN_MANIFEST_V1",
         "target": "GLSL_450",
