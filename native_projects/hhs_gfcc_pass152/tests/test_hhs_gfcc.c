@@ -1,5 +1,6 @@
 #include "hhs_gfcc.h"
 
+#include <limits.h>
 #include <stdio.h>
 #include <string.h>
 
@@ -48,8 +49,10 @@ int main(void) {
     hhs_transform_result transform_result;
     hhs_collision_pair pair;
     hhs_collision_pair phase_pair;
+    hhs_collision_pair overflow_pair;
     hhs_collision_constraint constraint;
     hhs_collision_constraint phase_constraint;
+    hhs_collision_constraint rejected_constraint;
     hhs_collision_result collision_result;
     hhs_gfcc_step_input step_input;
     hhs_gfcc_step_result step_result;
@@ -113,6 +116,9 @@ int main(void) {
     transform_request.vm81_cell = 40u;
     REQUIRE(hhs_gfcc_build_transform(&ctx, &transform_request, &transform_result) == HHS_GFCC_OK, "transform construction failed");
     REQUIRE(transform_result.exact_source_bound == 1u && transform_result.stage_ratio.numerator == 34, "transform lost exact source binding");
+    transform_request.phase = 72u;
+    memset(&transform_result, 0x5a, sizeof(transform_result));
+    REQUIRE(hhs_gfcc_build_transform(&ctx, &transform_request, &transform_result) == HHS_GFCC_COLLISION_CONSTRAINT_ERROR, "invalid transform phase was accepted");
 
     pair = make_pair(&parameters, &hash72_a, &hash216_a);
     REQUIRE(hhs_gfcc_build_collision_constraint(&ctx, &pair, &constraint) == HHS_GFCC_OK, "collision constraint construction failed");
@@ -125,6 +131,12 @@ int main(void) {
     phase_pair.b.phase = 10u;
     REQUIRE(hhs_gfcc_build_collision_constraint(&ctx, &phase_pair, &phase_constraint) == HHS_GFCC_OK, "phase conflict construction failed");
     REQUIRE(phase_constraint.outcome == HHS_GFCC_PHASE_CONFLICT, "phase conflict was not classified");
+
+    overflow_pair = pair;
+    overflow_pair.a.x_q16 = INT64_MIN;
+    overflow_pair.b.x_q16 = INT64_MAX;
+    memset(&rejected_constraint, 0x5a, sizeof(rejected_constraint));
+    REQUIRE(hhs_gfcc_build_collision_constraint(&ctx, &overflow_pair, &rejected_constraint) == HHS_GFCC_RESOURCE_BOUNDED, "collision subtraction overflow was not rejected");
 
     memset(&step_input, 0, sizeof(step_input));
     step_input.input_event = 1u;
