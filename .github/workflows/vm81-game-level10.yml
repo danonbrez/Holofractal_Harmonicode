@@ -1,0 +1,46 @@
+name: VM81 19-Opcode 2D Platform Demo
+
+on:
+  push:
+    branches:
+      - main
+      - agent/vm81-game-level10
+    paths:
+      - native_projects/hhs_vm81_game_level10/**
+      - hhs_runtime/include/hhs_hash216.h
+      - hhs_runtime/src/hhs_hash216.c
+      - .github/workflows/vm81-game-level10.yml
+  pull_request:
+    paths:
+      - native_projects/hhs_vm81_game_level10/**
+      - .github/workflows/vm81-game-level10.yml
+
+permissions:
+  contents: read
+
+jobs:
+  vm81-game-level10:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile and execute native game verification
+        run: make -C native_projects/hhs_vm81_game_level10 test
+      - name: Execute ASAN and UBSAN verification
+        run: make -C native_projects/hhs_vm81_game_level10 sanitize
+      - name: Assert verification evidence
+        run: |
+          test -x native_projects/hhs_vm81_game_level10/dist/hhs-vm81-game
+          test -x native_projects/hhs_vm81_game_level10/dist/test-hhs-vm81-game
+          test -s native_projects/hhs_vm81_game_level10/dist/verification.json
+          grep -q '"opcode_coverage": "19/19"' native_projects/hhs_vm81_game_level10/dist/verification.json
+          grep -q '"replay": "MATCH"' native_projects/hhs_vm81_game_level10/dist/verification.json
+          grep -q 'VM81_C_ABI_19_OPCODE_2D_PLATFORM_DEMO_VERIFIED' native_projects/hhs_vm81_game_level10/dist/verification.json
+      - name: Upload native game evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: vm81-game-level10-evidence
+          path: |
+            native_projects/hhs_vm81_game_level10/dist/verification.json
+            native_projects/hhs_vm81_game_level10/specs/HHS_VM81_GAME_LEVEL10_CONTRACT.json
+          if-no-files-found: error
