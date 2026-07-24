@@ -1,0 +1,32 @@
+{
+  "contract_id": "HHS-P152-GFCC",
+  "schema_version": 1,
+  "target": "GLSL_450",
+  "compiled_target": "SPIR-V Vulkan 1.1",
+  "authority": "PROJECTED_RENDERING_ONLY",
+  "exact_sources": {
+    "phi_projection": "Root_+(x^2-x-1)",
+    "inverse_sqrt2_projection": "Root_+(2x^2-1)",
+    "scale_projection": "F_(n+1)/F_n"
+  },
+  "projection_policy": {
+    "precision": "float32",
+    "rounding": "IEEE754_ROUND_TO_NEAREST_TIES_TO_EVEN",
+    "source_bit_binding_required": true,
+    "canonical_state_mutation": false
+  },
+  "uniform_fields": [
+    "phi_projection",
+    "inverse_sqrt2_projection",
+    "scale_projection",
+    "time_projection",
+    "fibonacci_n",
+    "nonary_phase",
+    "vm81_cell",
+    "hash72_index",
+    "hash216_index",
+    "shell_depth",
+    "orientation",
+    "constraint_flags"
+  ]
+}
