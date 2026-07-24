@@ -49,6 +49,20 @@ jobs:
       - name: Compile and execute native GFCC library and CLI
         env: {PYTHONPATH: "${{ github.workspace }}/python"}
         run: python -m hhs_gfcc.cli compile-native --repo . --output json | tee "$RUNNER_TEMP/gfcc-native-build.json"
+      - name: Execute sanitized native GFCC workload
+        env:
+          ASAN_OPTIONS: detect_leaks=1:halt_on_error=1
+          UBSAN_OPTIONS: halt_on_error=1:print_stacktrace=1
+        run: |
+          cc -std=c11 -O1 -g -Wall -Wextra -Werror \
+            -fsanitize=address,undefined -fno-omit-frame-pointer \
+            -Inative_projects/hhs_gfcc_pass152/include \
+            -Ihhs_runtime/include \
+            native_projects/hhs_gfcc_pass152/tests/test_hhs_gfcc.c \
+            native_projects/hhs_gfcc_pass152/src/hhs_gfcc.c \
+            hhs_runtime/src/hhs_hash216.c \
+            -o "$RUNNER_TEMP/test_hhs_gfcc_sanitized"
+          "$RUNNER_TEMP/test_hhs_gfcc_sanitized"
       - name: Compile and validate real SPIR-V artifacts
         env: {PYTHONPATH: "${{ github.workspace }}/python"}
         run: |
