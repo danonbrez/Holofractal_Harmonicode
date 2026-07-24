@@ -39,6 +39,14 @@ def _uniform_block() -> str:
 """
 
 
+def _record(path: Path, root: Path) -> dict[str, Any]:
+    return {
+        "path": path.relative_to(root).as_posix(),
+        "size": path.stat().st_size,
+        "sha256": digest256({"bytes_hex": path.read_bytes().hex()}),
+    }
+
+
 def generate_all(workload: Mapping[str, Any], root: Path) -> dict[str, Any]:
     root = root.resolve()
     ratio = ExactRational(
@@ -46,7 +54,8 @@ def generate_all(workload: Mapping[str, Any], root: Path) -> dict[str, Any]:
         int(workload["stage_ratio"]["denominator"]),
     )
     projection = shader_projection(ratio)
-    shader_dir = root / "generated" / "shaders"
+    generated_root = root / "generated"
+    shader_dir = generated_root / "shaders"
     shader_dir.mkdir(parents=True, exist_ok=True)
 
     common = shader_dir / "hhs_gfcc_common.glsl"
@@ -61,8 +70,7 @@ def generate_all(workload: Mapping[str, Any], root: Path) -> dict[str, Any]:
         newline="\n",
     )
 
-    fragment = shader_dir / "hhs_gfcc_fragment.glsl"
-    fragment.write_text(
+    fragment_source = (
         "#version 450\n"
         "// Projected rendering only; native C owns canonical state and admissibility.\n"
         f"// phi exact source: {projection['phi']['exact_source']}\n"
@@ -76,10 +84,12 @@ def generate_all(workload: Mapping[str, Any], root: Path) -> dict[str, Any]:
         "  float shell = fract(length(p) / max(gfcc.scale_projection, 0.0001));\n"
         "  float indexMix = float((gfcc.vm81_cell + gfcc.hash72_index + gfcc.hash216_index + gfcc.shell_depth + gfcc.orientation + gfcc.constraint_flags + gfcc.fibonacci_n) & 255u) / 255.0;\n"
         "  outColor = vec4(phase, shell, fract(phase * gfcc.phi_projection + gfcc.time_projection), indexMix);\n"
-        "}\n",
-        encoding="utf-8",
-        newline="\n",
+        "}\n"
     )
+    fragment = shader_dir / "hhs_gfcc_fragment.glsl"
+    fragment.write_text(fragment_source, encoding="utf-8", newline="\n")
+    canonical_shader = generated_root / "hhs_gfcc_shader.glsl"
+    canonical_shader.write_text(fragment_source, encoding="utf-8", newline="\n")
 
     collision = shader_dir / "hhs_gfcc_collision_field.glsl"
     collision.write_text(
@@ -97,15 +107,7 @@ def generate_all(workload: Mapping[str, Any], root: Path) -> dict[str, Any]:
         newline="\n",
     )
 
-    records = []
-    for path in (common, fragment, collision):
-        records.append(
-            {
-                "path": path.relative_to(root).as_posix(),
-                "size": path.stat().st_size,
-                "sha256": digest256({"bytes_hex": path.read_bytes().hex()}),
-            }
-        )
+    records = [_record(path, root) for path in (common, fragment, collision, canonical_shader)]
     manifest = {
         "schema": "HHS_GFCC_SHADER_CODEGEN_MANIFEST_V1",
         "target": "GLSL_450_VULKAN_1_1",
@@ -119,6 +121,7 @@ def generate_all(workload: Mapping[str, Any], root: Path) -> dict[str, Any]:
             "expected_size_bytes": 48,
             "members": list(_UNIFORM_MEMBERS),
         },
+        "canonical_shader_artifact": canonical_shader.relative_to(root).as_posix(),
         "records": records,
     }
     manifest["manifest_digest"] = digest256(manifest)
