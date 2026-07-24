@@ -89,22 +89,30 @@ def test_gfcc_codegen_is_byte_deterministic(tmp_path: Path):
 def test_gfcc_native_reachability_compiles_and_executes():
     if shutil.which("cc") is None or shutil.which("ar") is None:
         pytest.skip("native compiler unavailable")
-    manifest_path = SUBSYSTEM / "manifest" / "build_manifest.json"
-    if manifest_path.is_file():
-        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
-    else:
+    test_binary = SUBSYSTEM / "dist" / "test_hhs_gfcc"
+    cli_binary = SUBSYSTEM / "dist" / "hhs-gfcc"
+    if not test_binary.is_file() or not cli_binary.is_file():
         workload = run_representative_workload()
         generate_c(workload, SUBSYSTEM)
-        manifest = compile_native(ROOT)
-    test_binary = SUBSYSTEM / "dist" / "test_hhs_gfcc"
+        compile_native(ROOT)
+    required = [
+        SUBSYSTEM / "dist" / "libhhs_gfcc.a",
+        SUBSYSTEM / "dist" / "libhhs_gfcc.so",
+        test_binary,
+        cli_binary,
+    ]
+    assert all(path.is_file() and path.stat().st_size > 0 for path in required)
     executed = subprocess.run([str(test_binary)], cwd=ROOT, text=True, capture_output=True)
     assert executed.returncode == 0, executed.stdout + executed.stderr
     assert "GOLDEN_FRACTAL_CORRESPONDENCE_NATIVE_CORE_PASSED" in executed.stdout
-    assert manifest["native_test_reached"] is True
-    assert "GOLDEN_FRACTAL_CORRESPONDENCE_NATIVE_CORE_PASSED" in manifest["native_test_stdout"]
-    assert any(item["path"].endswith("libhhs_gfcc.a") for item in manifest["artifacts"])
-    assert any(item["path"].endswith("libhhs_gfcc.so") for item in manifest["artifacts"])
-    assert any(item["path"].endswith("hhs-gfcc") for item in manifest["artifacts"])
+    cli = subprocess.run([str(cli_binary)], cwd=ROOT, text=True, capture_output=True)
+    assert cli.returncode == 0, cli.stdout + cli.stderr
+    payload = json.loads(cli.stdout)
+    assert payload["contract_id"] == "HHS-P152-GFCC"
+    assert payload["validation"] == 1
+    assert payload["vm81_cells"] == 81
+    assert len(payload["hash72"]) == 72
+    assert len(payload["hash216"]) == 216
 
 
 def test_gfcc_shader_reachability_compiles_real_spirv():
