@@ -122,7 +122,40 @@ jobs:
           "$RUNNER_TEMP/hhs152_native_test"
       - name: Execute inherited Pass 152 positive and negative matrices
         run: python3 tests/pass152/run_pass152_tests.py
-      - name: Validate inherited delayed closure and recursive control
+      - name: Capture inherited delayed-closure result
+        run: |
+          python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          from hhs_runtime.pass152 import DeterministicVM81TestAuthority, delayed_closure_workload
+          result = delayed_closure_workload(
+              Path(os.environ["RUNNER_TEMP"]) / "pass152-delayed-receipts",
+              DeterministicVM81TestAuthority().admit,
+              delay_seconds=0.001,
+              workers=4,
+          )
+          payload = {
+              "omega_closure": result["proof"]["omega_closure"],
+              "history_valid": result["proof"]["recursive_control"]["history_valid"],
+              "history_extended_not_rewritten": result["commit"]["history_extended_not_rewritten"],
+              "replay_status": result["replay"]["replay_status"],
+              "max_concurrent_workers_observed": result["metrics"]["max_concurrent_workers_observed"],
+          }
+          path = Path(os.environ["RUNNER_TEMP"]) / "pass152-delayed-result.json"
+          path.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+          print(json.dumps(payload, indent=2))
+          PY
+      - name: Require inherited omega closure
+        run: python3 -c 'import json,os; assert json.load(open(os.path.join(os.environ["RUNNER_TEMP"],"pass152-delayed-result.json")))["omega_closure"] is True'
+      - name: Require inherited recursive history validity
+        run: python3 -c 'import json,os; assert json.load(open(os.path.join(os.environ["RUNNER_TEMP"],"pass152-delayed-result.json")))["history_valid"] is True'
+      - name: Require inherited append-only commit history
+        run: python3 -c 'import json,os; assert json.load(open(os.path.join(os.environ["RUNNER_TEMP"],"pass152-delayed-result.json")))["history_extended_not_rewritten"] is True'
+      - name: Require inherited replay match
+        run: python3 -c 'import json,os; assert json.load(open(os.path.join(os.environ["RUNNER_TEMP"],"pass152-delayed-result.json")))["replay_status"] == "MATCH"'
+      - name: Require inherited concurrent lane evidence
+        run: python3 -c 'import json,os; assert json.load(open(os.path.join(os.environ["RUNNER_TEMP"],"pass152-delayed-result.json")))["max_concurrent_workers_observed"] >= 2'
+      - name: Execute original inherited delayed-closure pytest
         run: PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 -m pytest -q tests/test_hhs_pass152_universal_elastic_closure_v1.py::test_pass152_delayed_closure_and_recursive_control
       - name: Validate inherited status and capability surfaces
         run: PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 -m pytest -q tests/test_hhs_pass152_universal_elastic_closure_v1.py::test_pass152_status_and_capability_surfaces
@@ -178,4 +211,5 @@ jobs:
             native_projects/hhs_gfcc_pass152/reports/HHS_PASS_152_VALIDATION_REPORT.*
             native_projects/hhs_gfcc_pass152/receipts/
             ${{ runner.temp }}/gfcc-package-report.json
+            ${{ runner.temp }}/pass152-delayed-result.json
           if-no-files-found: error
