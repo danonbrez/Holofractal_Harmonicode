@@ -13,6 +13,7 @@
 #define HHS_GFCC_CONSTRAINT_PHASE 0x02u
 #define HHS_GFCC_CONSTRAINT_SCALE 0x04u
 #define HHS_GFCC_CONSTRAINT_ANCESTRY 0x08u
+#define HHS_GFCC_HASH216_INDEX_SERIALIZED_SIZE ((2u * HHS_HASH72_LEN) + (2u * HHS_HASH216_LEN))
 
 static hhs_gfcc_exact hhs_exact(int64_t numerator, int64_t denominator) {
     hhs_gfcc_exact out;
@@ -67,10 +68,6 @@ static uint64_t hhs_abs_i64_to_u64(int64_t value) {
     return (uint64_t)(-(value + 1)) + 1u;
 }
 
-static int64_t hhs_min_i64(int64_t a, int64_t b) {
-    return a < b ? a : b;
-}
-
 static int64_t hhs_max_i64(int64_t a, int64_t b) {
     return a > b ? a : b;
 }
@@ -114,6 +111,13 @@ static int hhs_checked_add_i64(int64_t a, int64_t b, int64_t *out) {
     if (!out) return 0;
     if ((b > 0 && a > INT64_MAX - b) || (b < 0 && a < INT64_MIN - b)) return 0;
     *out = a + b;
+    return 1;
+}
+
+static int hhs_checked_sub_i64(int64_t a, int64_t b, int64_t *out) {
+    if (!out) return 0;
+    if ((b > 0 && a < INT64_MIN + b) || (b < 0 && a > INT64_MAX + b)) return 0;
+    *out = a - b;
     return 1;
 }
 
@@ -338,7 +342,7 @@ hhs_gfcc_status hhs_gfcc_project_hash72(hhs_gfcc_context *ctx, const hhs_vm81_st
 }
 
 hhs_gfcc_status hhs_gfcc_index_hash216(hhs_gfcc_context *ctx, const hhs_vm81_state *vm81, const hhs_hash72_projection *hash72, hhs_hash216_index *out) {
-    unsigned char serialized[512];
+    unsigned char serialized[HHS_GFCC_HASH216_INDEX_SERIALIZED_SIZE];
     size_t offset = 0u;
     if (!ctx || !ctx->initialized || !ctx->parameters_loaded || !vm81 || !hash72 || !out) return hhs_set_status(ctx, HHS_GFCC_INVALID_ARGUMENT);
     if (!hhs_hash72_is_set(&hash72->value) || !hhs_hash216_is_set(&vm81->state_hash216)) return hhs_set_status(ctx, HHS_GFCC_HASH72_ERROR);
@@ -347,6 +351,7 @@ hhs_gfcc_status hhs_gfcc_index_hash216(hhs_gfcc_context *ctx, const hhs_vm81_sta
     hhs_put_bytes(serialized, &offset, hash72->value.value, HHS_HASH72_LEN);
     hhs_put_bytes(serialized, &offset, vm81->state_hash216.value, HHS_HASH216_LEN);
     hhs_put_bytes(serialized, &offset, ctx->parameters.parameter_digest.value, HHS_HASH216_LEN);
+    if (offset != sizeof(serialized)) return hhs_set_status(ctx, HHS_GFCC_INTERNAL_ERROR);
     hhs_hash216_compute(serialized, offset, &out->value);
     out->position_count = HHS_GFCC_HASH216_POSITIONS;
     out->mapping_version = 1u;
@@ -357,7 +362,7 @@ hhs_gfcc_status hhs_gfcc_index_hash216(hhs_gfcc_context *ctx, const hhs_vm81_sta
 
 hhs_gfcc_status hhs_gfcc_build_transform(hhs_gfcc_context *ctx, const hhs_transform_request *request, hhs_transform_result *out) {
     if (!ctx || !ctx->initialized || !ctx->parameters_loaded || !request || !out) return hhs_set_status(ctx, HHS_GFCC_INVALID_ARGUMENT);
-    if (!hhs_ratio_valid(request->stage_ratio) || request->phase >= 72u || request->vm81_cell >= 81u) return hhs_set_status(ctx, HHS_GFCC_INVALID_GEOMETRY);
+    if (!hhs_ratio_valid(request->stage_ratio) || request->phase >= 72u || request->vm81_cell >= 81u) return hhs_set_status(ctx, HHS_GFCC_COLLISION_CONSTRAINT_ERROR);
     memset(out, 0, sizeof(*out));
     out->x_q16 = request->x_q16;
     out->y_q16 = request->y_q16;
@@ -385,9 +390,9 @@ hhs_gfcc_status hhs_gfcc_build_collision_constraint(hhs_gfcc_context *ctx, const
     int64_t overlap_y;
     if (!ctx || !ctx->initialized || !ctx->parameters_loaded || !pair || !out) return hhs_set_status(ctx, HHS_GFCC_INVALID_ARGUMENT);
     memset(out, 0, sizeof(*out));
-    if (!hhs_collision_identity_valid(&pair->a) || !hhs_collision_identity_valid(&pair->b)) return hhs_set_status(ctx, HHS_GFCC_INVALID_GEOMETRY);
+    if (!hhs_collision_identity_valid(&pair->a) || !hhs_collision_identity_valid(&pair->b)) return hhs_set_status(ctx, HHS_GFCC_COLLISION_CONSTRAINT_ERROR);
     if (!hhs_checked_add_i64(pair->a.half_width_q16, pair->b.half_width_q16, &sum_half_x) || !hhs_checked_add_i64(pair->a.half_height_q16, pair->b.half_height_q16, &sum_half_y)) return hhs_set_status(ctx, HHS_GFCC_RESOURCE_BOUNDED);
-    if (!hhs_checked_add_i64(pair->b.x_q16, -pair->a.x_q16, &dx) || !hhs_checked_add_i64(pair->b.y_q16, -pair->a.y_q16, &dy)) return hhs_set_status(ctx, HHS_GFCC_RESOURCE_BOUNDED);
+    if (!hhs_checked_sub_i64(pair->b.x_q16, pair->a.x_q16, &dx) || !hhs_checked_sub_i64(pair->b.y_q16, pair->a.y_q16, &dy)) return hhs_set_status(ctx, HHS_GFCC_RESOURCE_BOUNDED);
     abs_dx = hhs_abs_i64_to_u64(dx);
     abs_dy = hhs_abs_i64_to_u64(dy);
     if (abs_dx > (uint64_t)INT64_MAX || abs_dy > (uint64_t)INT64_MAX) return hhs_set_status(ctx, HHS_GFCC_RESOURCE_BOUNDED);
