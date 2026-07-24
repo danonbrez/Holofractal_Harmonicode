@@ -3,11 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any, Mapping
 
-from .core import ExactRational, canonical_bytes, digest256, write_json
-
-
-def _header_guard(name: str) -> str:
-    return name.upper().replace(".", "_").replace("/", "_").replace("-", "_")
+from .core import digest256, write_json
 
 
 def _write(path: Path, content: str) -> dict[str, Any]:
@@ -50,11 +46,7 @@ const int64_t HHS_GFCC_DENOMINATOR_SHELL = {values['b4']['numerator']};
 const int64_t HHS_GFCC_TERMINAL_RESIDUAL = {values['terminal_residual']['numerator']};
 const hhs_gfcc_generated_ratio HHS_GFCC_STAGE_RATIO = {{ {ratio['numerator']}, {ratio['denominator']} }};
 """
-    records = [
-        _write(out_dir / "hhs_gfcc_parameters.h", header),
-        _write(out_dir / "hhs_gfcc_parameters.c", source),
-    ]
-    return records
+    return [_write(out_dir / "hhs_gfcc_parameters.h", header), _write(out_dir / "hhs_gfcc_parameters.c", source)]
 
 
 def generate_tables(workload: Mapping[str, Any], out_dir: Path) -> list[dict[str, Any]]:
@@ -80,13 +72,11 @@ const uint8_t HHS_GFCC_VM81_RESIDUES[81] = {{{residues}}};
 const uint8_t HHS_GFCC_VM81_PHASE_LANES[81] = {{{phases}}};
 const uint8_t HHS_GFCC_DELTA369_ZERO_INDEXED[9] = {{0,3,6,1,4,7,2,5,8}};
 """
-    return [
-        _write(out_dir / "hhs_gfcc_tables.h", header),
-        _write(out_dir / "hhs_gfcc_tables.c", source),
-    ]
+    return [_write(out_dir / "hhs_gfcc_tables.h", header), _write(out_dir / "hhs_gfcc_tables.c", source)]
 
 
 def generate_vm81_map(workload: Mapping[str, Any], out_dir: Path) -> list[dict[str, Any]]:
+    del workload
     header = """#ifndef HHS_GFCC_GENERATED_VM81_MAP_H
 #define HHS_GFCC_GENERATED_VM81_MAP_H
 #include <stdint.h>
@@ -103,17 +93,12 @@ int hhs_gfcc_generated_vm81_inverse(uint32_t index, uint32_t *row, uint32_t *col
     *row = index / 9u; *column = index % 9u; return 1;
 }
 """
-    return [
-        _write(out_dir / "hhs_gfcc_vm81_map.h", header),
-        _write(out_dir / "hhs_gfcc_vm81_map.c", source),
-    ]
+    return [_write(out_dir / "hhs_gfcc_vm81_map.h", header), _write(out_dir / "hhs_gfcc_vm81_map.c", source)]
 
 
 def generate_hash_maps(workload: Mapping[str, Any], out_dir: Path) -> list[dict[str, Any]]:
-    hash72 = workload["hash72"]["value"]
-    hash216 = workload["hash216"]["value"]
     records: list[dict[str, Any]] = []
-    for name, length, value in (("hash72", 72, hash72), ("hash216", 216, hash216)):
+    for name, length, value in (("hash72", 72, workload["hash72"]["value"]), ("hash216", 216, workload["hash216"]["value"])):
         upper = name.upper()
         header = f"""#ifndef HHS_GFCC_GENERATED_{upper}_MAP_H
 #define HHS_GFCC_GENERATED_{upper}_MAP_H
@@ -122,10 +107,7 @@ extern const char HHS_GFCC_GENERATED_{upper}[{length + 1}];
 #endif
 """
         source = f"#include \"hhs_gfcc_{name}_map.h\"\nconst char HHS_GFCC_GENERATED_{upper}[{length + 1}] = \"{value}\";\n"
-        records.extend([
-            _write(out_dir / f"hhs_gfcc_{name}_map.h", header),
-            _write(out_dir / f"hhs_gfcc_{name}_map.c", source),
-        ])
+        records.extend([_write(out_dir / f"hhs_gfcc_{name}_map.h", header), _write(out_dir / f"hhs_gfcc_{name}_map.c", source)])
     return records
 
 
@@ -139,13 +121,11 @@ extern const hhs_gfcc_generated_correction HHS_GFCC_REPRESENTATIVE_CORRECTION;
 #endif
 """
     source = f"#include \"hhs_gfcc_collision_table.h\"\nconst hhs_gfcc_generated_correction HHS_GFCC_REPRESENTATIVE_CORRECTION = {{ {correction['x_q16']}, {correction['y_q16']} }};\n"
-    return [
-        _write(out_dir / "hhs_gfcc_collision_table.h", header),
-        _write(out_dir / "hhs_gfcc_collision_table.c", source),
-    ]
+    return [_write(out_dir / "hhs_gfcc_collision_table.h", header), _write(out_dir / "hhs_gfcc_collision_table.c", source)]
 
 
 def generate_all(workload: Mapping[str, Any], root: Path) -> dict[str, Any]:
+    root = root.resolve()
     out_dir = root / "generated" / "c"
     records: list[dict[str, Any]] = []
     records.extend(generate_parameters(workload, out_dir))
@@ -153,6 +133,8 @@ def generate_all(workload: Mapping[str, Any], root: Path) -> dict[str, Any]:
     records.extend(generate_vm81_map(workload, out_dir))
     records.extend(generate_hash_maps(workload, out_dir))
     records.extend(generate_collision_table(workload, out_dir))
+    for record in records:
+        record["path"] = Path(record["path"]).relative_to(root).as_posix()
     manifest = {
         "schema": "HHS_GFCC_GENERATED_C_MANIFEST_V1",
         "source_spec_digest": digest256(workload["spec"]),
