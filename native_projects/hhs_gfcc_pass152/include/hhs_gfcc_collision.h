@@ -1,0 +1,8 @@
+#ifndef HHS_GFCC_COLLISION_H
+#define HHS_GFCC_COLLISION_H
+#include "hhs_gfcc.h"
+
+#define HHS_GFCC_COLLISION_NATIVE_AUTHORITY 1u
+#define HHS_GFCC_COLLISION_SHADER_AUTHORITY 0u
+
+#endif
