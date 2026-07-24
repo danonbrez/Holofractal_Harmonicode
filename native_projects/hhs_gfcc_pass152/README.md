@@ -17,19 +17,13 @@ GFCC constructs one exact, dependency-preserving correspondence graph and projec
 
 ## Exact symbolic core
 
-The canonical graph preserves:
-
 ```text
 a² = 1
 b² = 2
 c² = b² + a² = 3
 d² = c² + b² = 5
 e² = d² + c² = 8
-```
 
-The numerator and denominator shells close independently:
-
-```text
 numerator   = e² = 8
 denominator = a² + a² + (c² - a²) = 4
 residual    = numerator / denominator - b² = 0
@@ -59,8 +53,6 @@ All 81 assignments are validated exhaustively.
 
 ## Build commands
 
-From the repository root:
-
 ```bash
 make test-gfcc
 make test-gfcc-negative
@@ -70,37 +62,38 @@ make verify-pass-152
 make package-pass-152
 ```
 
-Direct Python commands use:
+Direct Python commands use `PYTHONPATH=python python -m hhs_gfcc.cli <command> --repo . --output json`. Output modes are `json`, `jsonl`, `text`, and `markdown`.
 
-```bash
-PYTHONPATH=python python -m hhs_gfcc.cli validate-spec --repo . --output json
-PYTHONPATH=python python -m hhs_gfcc.cli build-parameters --repo . --output json
-PYTHONPATH=python python -m hhs_gfcc.cli generate-c --repo . --output json
-PYTHONPATH=python python -m hhs_gfcc.cli generate-shaders --repo . --output json
-PYTHONPATH=python python -m hhs_gfcc.cli generate-collisions --repo . --output json
-PYTHONPATH=python python -m hhs_gfcc.cli compile-native --repo . --output json
-PYTHONPATH=python python -m hhs_gfcc.cli compile-shaders --repo . --output json
-PYTHONPATH=python python -m hhs_gfcc.cli test --repo . --output json
-PYTHONPATH=python python -m hhs_gfcc.cli replay --repo . --output json
-PYTHONPATH=python python -m hhs_gfcc.cli verify --repo . --output json
-PYTHONPATH=python python -m hhs_gfcc.cli package --repo . --output json
-```
-
-Output modes are `json`, `jsonl`, `text`, and `markdown`.
-
-## Native outputs
-
-The native compiler produces:
+## Native and shader outputs
 
 - `dist/libhhs_gfcc.a`
 - `dist/libhhs_gfcc.so`
 - `dist/hhs-gfcc`
 - `dist/test_hhs_gfcc`
+- `dist/hhs_gfcc_shader.spv`
+- `dist/hhs_gfcc_collision_field.spv`
 
-The shader compiler produces validated SPIR-V artifacts for the fragment projection and collision-field visualization.
+## Verified release
 
-## Completion boundary
+- GFCC positive matrix: `23 / 23`
+- GFCC negative matrix: `25 / 25`
+- Continuous receipt ledger: `18 / 18`
+- Source manifest: `74 / 74`
+- Inherited Pass 151 and Pass 152 gates: passed
+- Native C and ASAN/UBSAN: passed
+- GLSL/SPIR-V compilation, validation, disassembly, and reflection: passed
+- Python/C VM81, Hash72, and Hash216 projection: matched
+- Deterministic replay: `MATCH`
+- Incomplete obligations: none
 
-The successful terminal classification may be emitted only after all inherited, exactness, shell, Delta369, VM81, Hash72, Hash216, native C, shader, collision, receipt, replay, manifest, and archive obligations are execution-verified.
+Final archive:
 
-Until that complete gate passes, the subsystem must report a non-success classification and must not emit `GOLDEN_FRACTAL_CORRESPONDENCE_CONSTRUCTOR_VERIFIED`.
+```text
+hhs_pass_152_golden_fractal_correspondence_constructor_full_inherited_pass_history_nucleus.zip
+```
+
+Terminal classification:
+
+```text
+GOLDEN_FRACTAL_CORRESPONDENCE_CONSTRUCTOR_VERIFIED
+```
