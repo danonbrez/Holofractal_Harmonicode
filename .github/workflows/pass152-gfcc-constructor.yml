@@ -111,7 +111,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y glslang-tools spirv-tools unzip
           python -m pip install --upgrade pip
-          python -m pip install pytest pytest-asyncio fastapi==0.128.2 starlette==0.50.0
+          python -m pip install -r requirements.txt
       - name: Revalidate inherited Pass 151 language layers
         run: make pass151-contract-governed-language
       - name: Compile inherited Pass 152 Python surfaces
