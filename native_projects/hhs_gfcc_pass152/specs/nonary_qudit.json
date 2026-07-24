@@ -1,0 +1,23 @@
+{
+  "contract_id": "HHS-P152-GFCC",
+  "schema_version": 1,
+  "shape": [3, 3],
+  "cell_count": 9,
+  "cell_fields": [
+    "cell_index",
+    "symbol",
+    "value",
+    "phase",
+    "orientation",
+    "scale_depth",
+    "dependency_reference",
+    "constraint_class",
+    "coordinates"
+  ],
+  "lo_shu_traversal_zero_indexed": [3, 8, 1, 2, 4, 6, 7, 0, 5],
+  "lo_shu_traversal_one_indexed": [4, 9, 2, 3, 5, 7, 8, 1, 6],
+  "row_sets": [[0, 1, 2], [3, 4, 5], [6, 7, 8]],
+  "column_sets": [[0, 3, 6], [1, 4, 7], [2, 5, 8]],
+  "diagonal_sets": [[0, 4, 8], [2, 4, 6]],
+  "authoritative_coordinates": ["x", "y", "phase", "scale_depth"]
+}
