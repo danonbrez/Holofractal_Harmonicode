@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from copy import deepcopy
-from pathlib import Path
 from typing import Any, Callable
 
 from .core import (
@@ -12,6 +11,7 @@ from .core import (
     build_qudit9,
     build_vm81,
     canonical_spec,
+    digest256,
     evaluate_dependency_graph,
     fibonacci_ratio,
     replay_workload,
@@ -50,7 +50,7 @@ def positive_matrix() -> list[dict[str, Any]]:
         _check("exact_fibonacci_ratio", ratio == ExactRational(34, 21), ratio.to_dict()),
         _check("symbolic_phi_identity", spec["golden_limit"]["polynomial"] == [1, -1, -1]),
         _check("symbolic_eta_identity", spec["inverse_diagonal_scale"]["polynomial"] == [2, 0, -1]),
-        _check("delta369_noncollapse", delta["ring_modulus"] == 9 and delta["coordinate_dimensions"] == 4),
+        _check("delta369_noncollapse", delta["ring_modulus"] == 9 and delta["geometry_coordinates"] == ["x", "y", "phase", "scale_depth"]),
         _check("nonary_matrix_reversible", all(vm81_inverse(vm81_index(r, c)) == (r, c) for r in range(9) for c in range(9))),
         _check("vm81_81_cells", vm81["cell_count"] == 81 and len(cells) == 81),
         _check("vm81_unique_assignments", sorted(cell["cell_index"] for cell in cells) == list(range(81))),
@@ -120,7 +120,8 @@ def negative_matrix() -> list[dict[str, Any]]:
 
     tampered = deepcopy(original)
     tampered["receipts"][3]["output_digest"] = "0" * 64
-    results.append(_check("altered_receipt_chain_detected", tampered["receipts"][3]["receipt_digest"] != __import__("hhs_gfcc.core", fromlist=["digest256"]).digest256({k: v for k, v in tampered["receipts"][3].items() if k != "receipt_digest"})))
+    receipt_without_digest = {key: value for key, value in tampered["receipts"][3].items() if key != "receipt_digest"}
+    results.append(_check("altered_receipt_chain_detected", tampered["receipts"][3]["receipt_digest"] != digest256(receipt_without_digest)))
 
     results.append(_check("hash216_index_outside_range_rejected", not (0 <= 216 <= 215)))
     results.append(_check("shader_constant_has_exact_source_binding", "exact source" in original["shader"]["source"]))
