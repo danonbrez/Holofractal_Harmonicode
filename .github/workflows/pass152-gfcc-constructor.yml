@@ -1,0 +1,105 @@
+name: Pass 152 Golden Fractal Correspondence Constructor
+
+on:
+  push:
+    branches:
+      - agent/pass152-gfcc-constructor
+  pull_request:
+    paths:
+      - python/hhs_gfcc/**
+      - native_projects/hhs_gfcc_pass152/**
+      - tests/test_hhs_gfcc_pass152.py
+      - GNUmakefile
+      - .github/workflows/pass152-gfcc-constructor.yml
+
+permissions:
+  contents: read
+
+jobs:
+  gfcc-constructor-core:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install native and shader toolchain
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y glslang-tools spirv-tools
+          python -m pip install --upgrade pip
+          python -m pip install pytest
+
+      - name: Validate canonical specification and exact parameter construction
+        env:
+          PYTHONPATH: ${{ github.workspace }}/python
+        run: |
+          python -m hhs_gfcc.cli validate-spec --repo . --output json
+          python -m hhs_gfcc.cli build-parameters --repo . --output json
+
+      - name: Generate deterministic C tables and GLSL sources
+        env:
+          PYTHONPATH: ${{ github.workspace }}/python
+        run: |
+          python -m hhs_gfcc.cli generate-c --repo . --output json > "$RUNNER_TEMP/gfcc-c-codegen.json"
+          cp -R native_projects/hhs_gfcc_pass152/generated "$RUNNER_TEMP/generated-first"
+          python -m hhs_gfcc.cli generate-c --repo . --output json > "$RUNNER_TEMP/gfcc-c-codegen-replay.json"
+          diff -ru "$RUNNER_TEMP/generated-first/c" native_projects/hhs_gfcc_pass152/generated/c
+          python -m hhs_gfcc.cli generate-shaders --repo . --output json > "$RUNNER_TEMP/gfcc-shader-codegen.json"
+          cp -R native_projects/hhs_gfcc_pass152/generated/shaders "$RUNNER_TEMP/shaders-first"
+          python -m hhs_gfcc.cli generate-shaders --repo . --output json > "$RUNNER_TEMP/gfcc-shader-codegen-replay.json"
+          diff -ru "$RUNNER_TEMP/shaders-first" native_projects/hhs_gfcc_pass152/generated/shaders
+
+      - name: Compile and execute native GFCC library and CLI
+        env:
+          PYTHONPATH: ${{ github.workspace }}/python
+        run: python -m hhs_gfcc.cli compile-native --repo . --output json | tee "$RUNNER_TEMP/gfcc-native-build.json"
+
+      - name: Compile and validate real SPIR-V artifacts
+        env:
+          PYTHONPATH: ${{ github.workspace }}/python
+        run: |
+          python -m hhs_gfcc.cli compile-shaders --repo . --output json | tee "$RUNNER_TEMP/gfcc-shader-build.json"
+          spirv-val native_projects/hhs_gfcc_pass152/dist/hhs_gfcc_shader.spv
+          spirv-val native_projects/hhs_gfcc_pass152/dist/hhs_gfcc_collision_field.spv
+          spirv-dis native_projects/hhs_gfcc_pass152/dist/hhs_gfcc_shader.spv -o "$RUNNER_TEMP/hhs_gfcc_shader.spvasm"
+          test -s "$RUNNER_TEMP/hhs_gfcc_shader.spvasm"
+
+      - name: Execute Python positive negative and replay matrices
+        env:
+          PYTHONPATH: ${{ github.workspace }}/python
+        run: |
+          python -m pytest -q tests/test_hhs_gfcc_pass152.py
+          python -m hhs_gfcc.cli test --repo . --output json | tee "$RUNNER_TEMP/gfcc-test-report.json"
+          python -m hhs_gfcc.cli replay --repo . --output json | tee "$RUNNER_TEMP/gfcc-replay-report.json"
+
+      - name: Assert required concrete artifacts and authority boundaries
+        run: |
+          test -s native_projects/hhs_gfcc_pass152/dist/libhhs_gfcc.a
+          test -s native_projects/hhs_gfcc_pass152/dist/libhhs_gfcc.so
+          test -x native_projects/hhs_gfcc_pass152/dist/hhs-gfcc
+          test -x native_projects/hhs_gfcc_pass152/dist/test_hhs_gfcc
+          test "$(wc -c < native_projects/hhs_gfcc_pass152/generated/maps/hhs_gfcc_vm81_map.bin)" -eq 81
+          test "$(wc -c < native_projects/hhs_gfcc_pass152/generated/maps/hhs_gfcc_hash72_projection_map.bin)" -eq 72
+          test "$(wc -c < native_projects/hhs_gfcc_pass152/generated/maps/hhs_gfcc_hash216_index_map.bin)" -eq 216
+          ! grep -R "GOLDEN_FRACTAL_CORRESPONDENCE_CONSTRUCTOR_VERIFIED" native_projects/hhs_gfcc_pass152/reports 2>/dev/null
+
+      - name: Upload GFCC core execution evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass152-gfcc-constructor-core-evidence
+          path: |
+            native_projects/hhs_gfcc_pass152/generated/
+            native_projects/hhs_gfcc_pass152/manifest/
+            native_projects/hhs_gfcc_pass152/receipts/
+            native_projects/hhs_gfcc_pass152/dist/libhhs_gfcc.a
+            native_projects/hhs_gfcc_pass152/dist/libhhs_gfcc.so
+            native_projects/hhs_gfcc_pass152/dist/hhs-gfcc
+            native_projects/hhs_gfcc_pass152/dist/test_hhs_gfcc
+            native_projects/hhs_gfcc_pass152/dist/*.spv
+            ${{ runner.temp }}/gfcc-*.json
+            ${{ runner.temp }}/hhs_gfcc_shader.spvasm
+          if-no-files-found: error
