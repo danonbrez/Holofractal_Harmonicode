@@ -10,7 +10,6 @@ from typing import Any, Dict, Optional
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
 
-from hhs_backend.api.runtime_routes import runtime_controller
 from hhs_runtime.pass152 import HHSRuntimeControllerAuthority, delayed_closure_workload
 
 
@@ -135,6 +134,11 @@ def pass152_latest() -> Dict[str, Any]:
 
 @router.post("/execute")
 def pass152_execute(request: Pass152ExecuteRequest) -> Dict[str, Any]:
+    # Resolve the canonical controller lazily so importing this router cannot
+    # recursively force runtime_routes while hhs_backend.server is composing
+    # its router graph. Execution still uses the single canonical controller.
+    from hhs_backend.api.runtime_routes import runtime_controller
+
     run_id = "p152-" + uuid.uuid4().hex
     receipt_dir = _RECEIPT_ROOT / run_id
     try:
