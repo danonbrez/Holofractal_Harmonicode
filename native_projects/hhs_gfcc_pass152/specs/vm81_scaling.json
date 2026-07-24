@@ -1,0 +1,25 @@
+{
+  "contract_id": "HHS-P152-GFCC",
+  "schema_version": 1,
+  "cell_count": 81,
+  "row_domain": [0, 8],
+  "column_domain": [0, 8],
+  "forward_index": "i=9r+c",
+  "inverse_index": "(r,c)=divmod(i,9)",
+  "scale_source": "F_(n+1)/F_n",
+  "representative_stage": 8,
+  "representative_ratio": {"numerator": 34, "denominator": 21},
+  "phase_source": "Delta369.zero_indexed_partition",
+  "cell_serialization": [
+    "u32be(cell_index)",
+    "u8(row)",
+    "u8(column)",
+    "u8(nonary_residue)",
+    "u8(phase_lane)",
+    "u32be(scale_depth)",
+    "i64be(stage_ratio.numerator)",
+    "i64be(stage_ratio.denominator)"
+  ],
+  "serialized_bytes_per_cell": 28,
+  "serialized_total_bytes": 2268
+}

@@ -1,0 +1,54 @@
+{
+  "contract_id": "HHS-P152-GFCC",
+  "pass_number": "152",
+  "schema_version": 1,
+  "interpretation_version": 1,
+  "symbols": {
+    "a2": {"display": "a^2", "type": "exact_integer", "value": 1},
+    "b2": {"display": "b^2", "type": "exact_integer", "value": 2},
+    "c2": {"display": "c^2", "type": "exact_integer", "value": 3},
+    "d2": {"display": "d^2", "type": "exact_integer", "value": 5},
+    "e2": {"display": "e^2", "type": "exact_integer", "value": 8}
+  },
+  "dependencies": [
+    {"node_id": "c2", "operation": "add", "inputs": ["b2", "a2"], "expected": 3},
+    {"node_id": "d2", "operation": "add", "inputs": ["c2", "b2"], "expected": 5},
+    {"node_id": "e2", "operation": "add", "inputs": ["d2", "c2"], "expected": 8, "shell": "numerator"},
+    {"node_id": "c2_minus_a2", "operation": "sub", "inputs": ["c2", "a2"], "expected": 2, "shell": "denominator"},
+    {"node_id": "b4", "operation": "sum", "inputs": ["a2", "a2", "c2_minus_a2"], "expected": 4, "shell": "denominator"},
+    {"node_id": "outer_quotient", "operation": "div", "inputs": ["e2", "b4"], "expected": 2},
+    {"node_id": "terminal_residual", "operation": "sub", "inputs": ["outer_quotient", "b2"], "expected": 0}
+  ],
+  "shells": {
+    "numerator": {"root": "e2", "must_close_before": "outer_quotient"},
+    "denominator": {"root": "b4", "must_close_before": "outer_quotient"}
+  },
+  "fibonacci_stage": 8,
+  "golden_limit": {
+    "symbol": "PHI",
+    "polynomial": [1, -1, -1],
+    "root": "positive"
+  },
+  "inverse_diagonal_scale": {
+    "symbol": "ETA",
+    "polynomial": [2, 0, -1],
+    "root": "positive"
+  },
+  "delta369": {
+    "active_indexing": "zero_indexed",
+    "zero_indexed_partition": [[0, 3, 6], [1, 4, 7], [2, 5, 8]],
+    "one_indexed_partition": [[3, 6, 9], [1, 4, 7], [2, 5, 8]]
+  },
+  "nonary_qudit": {
+    "shape": [3, 3],
+    "lo_shu_traversal_zero_indexed": [3, 8, 1, 2, 4, 6, 7, 0, 5],
+    "lo_shu_traversal_one_indexed": [4, 9, 2, 3, 5, 7, 8, 1, 6]
+  },
+  "projection_policy": {
+    "hash72": "INHERITED-HHS-HASH72-V1",
+    "hash216": "INHERITED-HHS-HASH216-V1",
+    "decimal": "EXTERNAL_DISPLAY_ONLY"
+  },
+  "shader_target": "GLSL_450",
+  "numeric_authority": "EXACT_INTEGER_RATIONAL_SYMBOLIC_IRRATIONAL"
+}

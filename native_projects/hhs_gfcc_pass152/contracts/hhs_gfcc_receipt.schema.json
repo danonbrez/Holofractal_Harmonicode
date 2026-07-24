@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:hhs:p152:gfcc:receipt:v1",
+  "title": "GFCC Receipt",
+  "type": "object",
+  "required": [
+    "contract_id", "pass_number", "operation_id", "deterministic_sequence",
+    "authority_level", "input_digest", "output_digest",
+    "predecessor_receipt_digest", "result_classification",
+    "implementation_version", "interpretation_version", "receipt_digest"
+  ],
+  "properties": {
+    "contract_id": {"const": "HHS-P152-GFCC"},
+    "pass_number": {"const": "152"},
+    "operation_id": {"type": "string", "minLength": 1},
+    "deterministic_sequence": {"type": "integer", "minimum": 1},
+    "authority_level": {"enum": ["A1", "A2", "A3", "A4"]},
+    "input_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "output_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "predecessor_receipt_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "result_classification": {
+      "enum": [
+        "IMPLEMENTED_AND_EXECUTION_VERIFIED", "IMPLEMENTED_NOT_REACHED",
+        "IMPLEMENTED_VALIDATION_FAILED", "PARTIALLY_IMPLEMENTED",
+        "DECLARED_ONLY", "STUB_DETECTED", "NOT_IMPLEMENTED",
+        "RESOURCE_BOUNDED", "REPLAY_MISMATCH", "NOT_APPLICABLE"
+      ]
+    },
+    "error_classification": {"type": ["string", "null"]},
+    "implementation_version": {"type": "string"},
+    "interpretation_version": {"type": "integer", "minimum": 1},
+    "build_identity": {"type": ["string", "null"]},
+    "replay_identity": {"type": ["string", "null"]},
+    "receipt_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  },
+  "additionalProperties": true
+}

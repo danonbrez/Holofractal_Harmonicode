@@ -1,0 +1,9 @@
+#ifndef HHS_GFCC_HASH216_H
+#define HHS_GFCC_HASH216_H
+#include "hhs_gfcc.h"
+
+#define HHS_GFCC_HASH216_MAPPING_VERSION 1u
+#define HHS_GFCC_HASH216_POSITION_MIN 0u
+#define HHS_GFCC_HASH216_POSITION_MAX 215u
+
+#endif

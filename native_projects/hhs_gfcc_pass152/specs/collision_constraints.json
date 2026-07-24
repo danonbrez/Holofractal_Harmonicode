@@ -1,0 +1,34 @@
+{
+  "contract_id": "HHS-P152-GFCC",
+  "schema_version": 1,
+  "numeric_profile": "SIGNED_Q16_16_FIXED_POINT",
+  "authority": "NATIVE_C",
+  "shared_correspondence_graph_required": true,
+  "protected_invariants": [
+    "spatial_separation",
+    "scale_correspondence",
+    "phase_admissibility",
+    "VM81_identity_continuity",
+    "Hash72_projection_continuity",
+    "Hash216_index_continuity",
+    "replay_determinism"
+  ],
+  "outcomes": [
+    "NO_COLLISION",
+    "CONTACT_ADMISSIBLE",
+    "CONTACT_CONSTRAINED",
+    "CORRECTION_APPLIED",
+    "PHASE_CONFLICT",
+    "SCALE_CONFLICT",
+    "VM81_STATE_CONFLICT",
+    "HASH72_PROJECTION_CONFLICT",
+    "HASH216_INDEX_CONFLICT",
+    "DEPENDENCY_UNRESOLVED",
+    "RESOURCE_BOUNDED",
+    "INVALID_GEOMETRY",
+    "REPLAY_MISMATCH"
+  ],
+  "deterministic_axis_policy": "MINIMUM_PENETRATION_X_ON_TIE",
+  "gpu_collision_authority": false,
+  "native_validation_required": true
+}

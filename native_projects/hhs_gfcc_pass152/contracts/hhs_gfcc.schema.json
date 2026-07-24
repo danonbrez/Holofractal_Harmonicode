@@ -1,0 +1,112 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:hhs:p152:gfcc:spec:v1",
+  "title": "HHS Golden Fractal Correspondence Constructor Specification",
+  "type": "object",
+  "required": [
+    "contract_id",
+    "pass_number",
+    "schema_version",
+    "interpretation_version",
+    "symbols",
+    "dependencies",
+    "shells",
+    "fibonacci_stage",
+    "golden_limit",
+    "inverse_diagonal_scale",
+    "delta369",
+    "projection_policy",
+    "numeric_authority"
+  ],
+  "properties": {
+    "contract_id": {"const": "HHS-P152-GFCC"},
+    "pass_number": {"const": "152"},
+    "schema_version": {"const": 1},
+    "interpretation_version": {"type": "integer", "minimum": 1},
+    "symbols": {
+      "type": "object",
+      "required": ["a2", "b2", "c2", "d2", "e2"],
+      "properties": {
+        "a2": {"$ref": "#/$defs/exactSymbol"},
+        "b2": {"$ref": "#/$defs/exactSymbol"},
+        "c2": {"$ref": "#/$defs/exactSymbol"},
+        "d2": {"$ref": "#/$defs/exactSymbol"},
+        "e2": {"$ref": "#/$defs/exactSymbol"}
+      },
+      "additionalProperties": false
+    },
+    "dependencies": {
+      "type": "array",
+      "minItems": 7,
+      "items": {"$ref": "#/$defs/dependency"}
+    },
+    "shells": {
+      "type": "object",
+      "required": ["numerator", "denominator"],
+      "properties": {
+        "numerator": {"$ref": "#/$defs/shell"},
+        "denominator": {"$ref": "#/$defs/shell"}
+      },
+      "additionalProperties": false
+    },
+    "fibonacci_stage": {"type": "integer", "minimum": 2, "maximum": 92},
+    "golden_limit": {"$ref": "#/$defs/symbolicRoot"},
+    "inverse_diagonal_scale": {"$ref": "#/$defs/symbolicRoot"},
+    "delta369": {"$ref": "hhs_delta369.schema.json"},
+    "projection_policy": {
+      "type": "object",
+      "required": ["hash72", "hash216", "decimal"],
+      "properties": {
+        "hash72": {"type": "string"},
+        "hash216": {"type": "string"},
+        "decimal": {"const": "EXTERNAL_DISPLAY_ONLY"}
+      }
+    },
+    "numeric_authority": {"const": "EXACT_INTEGER_RATIONAL_SYMBOLIC_IRRATIONAL"}
+  },
+  "$defs": {
+    "exactSymbol": {
+      "type": "object",
+      "required": ["display", "type", "value"],
+      "properties": {
+        "display": {"type": "string"},
+        "type": {"const": "exact_integer"},
+        "value": {"type": "integer"}
+      }
+    },
+    "dependency": {
+      "type": "object",
+      "required": ["node_id", "operation", "inputs", "expected"],
+      "properties": {
+        "node_id": {"type": "string", "minLength": 1},
+        "operation": {"enum": ["add", "sum", "sub", "div"]},
+        "inputs": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+        "expected": {"type": "integer"},
+        "shell": {"enum": ["numerator", "denominator"]}
+      }
+    },
+    "shell": {
+      "type": "object",
+      "required": ["root", "must_close_before"],
+      "properties": {
+        "root": {"type": "string"},
+        "must_close_before": {"const": "outer_quotient"}
+      }
+    },
+    "symbolicRoot": {
+      "type": "object",
+      "required": ["symbol", "polynomial", "root"],
+      "properties": {
+        "symbol": {"type": "string"},
+        "polynomial": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "items": {"type": "integer"}
+        },
+        "root": {"const": "positive"}
+      }
+    }
+  },
+  "additionalProperties": true
+}

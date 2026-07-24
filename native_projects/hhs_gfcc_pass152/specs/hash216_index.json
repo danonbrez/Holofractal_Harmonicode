@@ -1,0 +1,30 @@
+{
+  "contract_id": "HHS-P152-GFCC",
+  "schema_version": 1,
+  "mapping_version": 1,
+  "runtime_implementation": "hhs_runtime/src/hhs_hash216.c:hhs_hash216_compute",
+  "alphabet": "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-+*/()<>!?",
+  "position_min": 0,
+  "position_max": 215,
+  "position_count": 216,
+  "canonical_payload": [
+    "authority_root_hash72[72]",
+    "GFCC_hash72_projection[72]",
+    "vm81_state_hash216[216]",
+    "parameter_hash216[216]"
+  ],
+  "canonical_payload_bytes": 576,
+  "binds": [
+    "VM81_state",
+    "Hash72_projection",
+    "Delta369",
+    "exact_stage_ratio",
+    "dependency_ancestry",
+    "collision_state",
+    "shader_projection",
+    "constraint_decision",
+    "replay_linkage"
+  ],
+  "execution_authority": false,
+  "undocumented_modulo_address_reduction_prohibited": true
+}

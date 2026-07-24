@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hhs-gfcc"
+version = "1.0.0"
+description = "HHS Pass 152 Golden Fractal Correspondence Constructor"
+requires-python = ">=3.11"
+dependencies = []
+
+[project.scripts]
+hhs-gfcc-python = "hhs_gfcc.cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "../../python"}
+
+[tool.setuptools.packages.find]
+where = ["../../python"]
+include = ["hhs_gfcc*"]
+
+[tool.pytest.ini_options]
+addopts = "-ra"
+testpaths = ["../../tests"]

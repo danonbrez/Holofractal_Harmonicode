@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import copy
 import os
+import sys
 import uuid
 from pathlib import Path
 from threading import RLock
@@ -10,8 +11,16 @@ from typing import Any, Dict, Optional
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
 
-from hhs_backend.api.runtime_routes import runtime_controller
 from hhs_runtime.pass152 import HHSRuntimeControllerAuthority, delayed_closure_workload
+
+
+# Preserve the historical route-first binding used by the inherited public
+# surface while avoiding a recursive runtime_routes import when the canonical
+# server itself is currently composing this router.
+if "hhs_backend.server" not in sys.modules:
+    from hhs_backend.api.runtime_routes import runtime_controller as _BOUND_RUNTIME_CONTROLLER
+else:
+    _BOUND_RUNTIME_CONTROLLER = None
 
 
 router = APIRouter(
@@ -27,6 +36,14 @@ _LATEST: Optional[dict[str, Any]] = None
 class Pass152ExecuteRequest(BaseModel):
     delay_ms: int = Field(default=5, ge=0, le=250)
     workers: int = Field(default=4, ge=1, le=8)
+
+
+def _runtime_controller():
+    global _BOUND_RUNTIME_CONTROLLER
+    if _BOUND_RUNTIME_CONTROLLER is None:
+        from hhs_backend.api.runtime_routes import runtime_controller
+        _BOUND_RUNTIME_CONTROLLER = runtime_controller
+    return _BOUND_RUNTIME_CONTROLLER
 
 
 def _summary(result: dict[str, Any], run_id: str, receipt_dir: Path) -> dict[str, Any]:
@@ -140,7 +157,7 @@ def pass152_execute(request: Pass152ExecuteRequest) -> Dict[str, Any]:
     try:
         result = delayed_closure_workload(
             receipt_dir,
-            HHSRuntimeControllerAuthority(runtime_controller).admit,
+            HHSRuntimeControllerAuthority(_runtime_controller()).admit,
             delay_seconds=request.delay_ms / 1000.0,
             workers=request.workers,
         )

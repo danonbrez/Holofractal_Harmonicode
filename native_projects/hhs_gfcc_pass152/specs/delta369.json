@@ -1,0 +1,13 @@
+{
+  "contract_id": "HHS-P152-GFCC",
+  "schema_version": 1,
+  "ring_modulus": 9,
+  "active_indexing": "zero_indexed",
+  "zero_indexed_partition": [[0, 3, 6], [1, 4, 7], [2, 5, 8]],
+  "one_indexed_partition": [[3, 6, 9], [1, 4, 7], [2, 5, 8]],
+  "matrix_shape": [3, 3],
+  "decimal_projection": "EXTERNAL_DECIMAL_GLYPH_PROJECTION",
+  "geometry_coordinates": ["x", "y", "phase", "scale_depth"],
+  "golden_correspondence": "EXACT_STAGE_RATIO_PLUS_SYMBOLIC_PHI_LIMIT",
+  "phase_structure": "ORDERED_THREE_LANE_PARTITION"
+}

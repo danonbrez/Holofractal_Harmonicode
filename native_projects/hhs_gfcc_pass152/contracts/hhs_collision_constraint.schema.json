@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:hhs:p152:gfcc:collision:v1",
+  "title": "GFCC Collision Constraint",
+  "type": "object",
+  "required": [
+    "object_a", "object_b", "outcome", "signed_separation", "penetration",
+    "correction", "phase_admissible", "scale_admissible", "vm81_continuity",
+    "hash72_inputs", "hash216_inputs"
+  ],
+  "properties": {
+    "object_a": {"type": "string"},
+    "object_b": {"type": "string"},
+    "outcome": {
+      "enum": [
+        "NO_COLLISION", "CONTACT_ADMISSIBLE", "CONTACT_CONSTRAINED",
+        "CORRECTION_APPLIED", "PHASE_CONFLICT", "SCALE_CONFLICT",
+        "VM81_STATE_CONFLICT", "HASH72_PROJECTION_CONFLICT",
+        "HASH216_INDEX_CONFLICT", "DEPENDENCY_UNRESOLVED",
+        "RESOURCE_BOUNDED", "INVALID_GEOMETRY", "REPLAY_MISMATCH"
+      ]
+    },
+    "signed_separation": {"$ref": "#/$defs/vectorQ16"},
+    "penetration": {"$ref": "#/$defs/vectorQ16"},
+    "correction": {"$ref": "#/$defs/vectorQ16"},
+    "phase_admissible": {"type": "boolean"},
+    "scale_admissible": {"type": "boolean"},
+    "vm81_continuity": {"type": "boolean"},
+    "hash72_inputs": {
+      "type": "array", "minItems": 2, "maxItems": 2,
+      "items": {"type": "string", "minLength": 72, "maxLength": 72}
+    },
+    "hash216_inputs": {
+      "type": "array", "minItems": 2, "maxItems": 2,
+      "items": {"type": "string", "minLength": 216, "maxLength": 216}
+    }
+  },
+  "$defs": {
+    "vectorQ16": {
+      "type": "object",
+      "required": ["x_q16", "y_q16"],
+      "properties": {
+        "x_q16": {"type": "integer"},
+        "y_q16": {"type": "integer"}
+      },
+      "additionalProperties": false
+    }
+  }
+}

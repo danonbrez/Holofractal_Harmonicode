@@ -1,0 +1,26 @@
+{
+  "contract_id": "HHS-P152-GFCC",
+  "schema_version": 1,
+  "mapping_version": 1,
+  "runtime_implementation": "hhs_runtime/src/hhs_hash216.c:hhs_hash72_compute",
+  "alphabet": "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-+*/()<>!?",
+  "position_count": 72,
+  "canonical_payload": [
+    "authority_root_hash72[72]",
+    "vm81_state_hash72[72]",
+    "vm81_state_hash216[216]",
+    "stage_ratio_numerator_i64be",
+    "stage_ratio_denominator_i64be",
+    "terminal_residual_numerator_i64be"
+  ],
+  "canonical_payload_bytes": 384,
+  "binds": [
+    "authority_root",
+    "VM81_state",
+    "exact_stage_ratio",
+    "shell_closure",
+    "projection_mode"
+  ],
+  "role": "SYMBOLIC_PROJECTION_AND_WITNESS",
+  "generic_cryptographic_hash_substitution_prohibited": true
+}
