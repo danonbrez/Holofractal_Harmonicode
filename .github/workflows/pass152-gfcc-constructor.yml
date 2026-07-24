@@ -57,9 +57,33 @@ jobs:
           spirv-val native_projects/hhs_gfcc_pass152/dist/hhs_gfcc_collision_field.spv
           spirv-dis native_projects/hhs_gfcc_pass152/dist/hhs_gfcc_shader.spv -o "$RUNNER_TEMP/hhs_gfcc_shader.spvasm"
           test -s "$RUNNER_TEMP/hhs_gfcc_shader.spvasm"
-      - name: Test exact symbolic core
+      - name: Capture exact symbolic core matrix
+        id: exact_core_matrix
+        continue-on-error: true
         env: {PYTHONPATH: "${{ github.workspace }}/python"}
-        run: python -m pytest -q tests/test_hhs_gfcc_pass152.py::test_gfcc_core_positive_symbol_shell_delta_vm81_hash_collision
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          from hhs_gfcc.validator import positive_matrix
+
+          matrix = positive_matrix()
+          path = Path(os.environ["RUNNER_TEMP"]) / "gfcc-positive-matrix.json"
+          path.write_text(json.dumps(matrix, indent=2) + "\n", encoding="utf-8")
+          failed = [item for item in matrix if not item["passed"]]
+          print(json.dumps({"passed": len(matrix) - len(failed), "total": len(matrix), "failed": failed}, indent=2))
+          raise SystemExit(1 if failed else 0)
+          PY
+      - name: Upload exact symbolic core diagnostic
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gfcc-positive-matrix-diagnostic
+          path: ${{ runner.temp }}/gfcc-positive-matrix.json
+          if-no-files-found: error
+      - name: Require exact symbolic core matrix
+        run: test "${{ steps.exact_core_matrix.outcome }}" = "success"
       - name: Test shell-first ancestry
         env: {PYTHONPATH: "${{ github.workspace }}/python"}
         run: python -m pytest -q tests/test_hhs_gfcc_pass152.py::test_gfcc_dependency_ancestry_and_shell_first_order
