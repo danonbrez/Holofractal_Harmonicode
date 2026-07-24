@@ -17,16 +17,11 @@ from hhs_gfcc.codegen_c import generate_all as generate_c
 from hhs_gfcc.codegen_shader import generate_all as generate_shaders
 from hhs_gfcc.compiler import compile_native, compile_shaders
 from hhs_gfcc.core import (
-    ExactRational,
-    build_delta369,
     build_dependency_graph,
-    build_qudit9,
-    build_vm81,
     canonical_spec,
     evaluate_dependency_graph,
     replay_workload,
     run_representative_workload,
-    validate_spec,
     vm81_index,
     vm81_inverse,
 )
@@ -45,7 +40,7 @@ def test_gfcc_core_positive_symbol_shell_delta_vm81_hash_collision():
     assert workload["shell"]["terminal_residual"] == {"numerator": 0, "denominator": 1}
     assert workload["stage_ratio"] == {"numerator": 34, "denominator": 21}
     assert workload["delta369"]["ring_modulus"] == 9
-    assert workload["delta369"]["coordinate_dimensions"] == 4
+    assert workload["delta369"]["geometry_coordinates"] == ["x", "y", "phase", "scale_depth"]
     assert workload["vm81"]["cell_count"] == 81
     assert len(workload["hash72"]["value"]) == 72
     assert len(workload["hash216"]["value"]) == 216
