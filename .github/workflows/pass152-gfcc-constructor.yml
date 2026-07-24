@@ -122,8 +122,16 @@ jobs:
           "$RUNNER_TEMP/hhs152_native_test"
       - name: Execute inherited Pass 152 positive and negative matrices
         run: python3 tests/pass152/run_pass152_tests.py
-      - name: Execute inherited Pass 152 dedicated pytest
-        run: PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 -m pytest -q tests/test_hhs_pass152_universal_elastic_closure_v1.py
+      - name: Validate inherited delayed closure and recursive control
+        run: PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 -m pytest -q tests/test_hhs_pass152_universal_elastic_closure_v1.py::test_pass152_delayed_closure_and_recursive_control
+      - name: Validate inherited status and capability surfaces
+        run: PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 -m pytest -q tests/test_hhs_pass152_universal_elastic_closure_v1.py::test_pass152_status_and_capability_surfaces
+      - name: Validate inherited guarded API execution
+        run: PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 -m pytest -q tests/test_hhs_pass152_universal_elastic_closure_v1.py::test_pass152_guarded_api_execution
+      - name: Validate inherited canonical server routes
+        run: PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 -m pytest -q tests/test_hhs_pass152_universal_elastic_closure_v1.py::test_pass152_routes_are_reachable_from_canonical_server
+      - name: Validate inherited spatial environment surface
+        run: PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 -m pytest -q tests/test_hhs_pass152_universal_elastic_closure_v1.py::test_spatial_environment_exposes_pass152_surface
       - name: Validate inherited Pass 152 runtime bridge JavaScript
         run: node --check hhs_gui/spatial_environment/src/runtime-bridge.js
       - name: Validate inherited Pass 152 application registry JavaScript
