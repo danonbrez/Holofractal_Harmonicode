@@ -1,4 +1,4 @@
-name: VM81 19-Opcode 2D Platform Demo
+name: VM81 Playable 19-Opcode Platform Game
 
 on:
   push:
@@ -19,28 +19,41 @@ permissions:
   contents: read
 
 jobs:
-  vm81-game-level10:
+  vm81-playable-game:
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
-      - name: Compile and execute native game verification
+      - name: Compile and execute core and playable release verification
         run: make -C native_projects/hhs_vm81_game_level10 test
       - name: Execute ASAN and UBSAN verification
         run: make -C native_projects/hhs_vm81_game_level10 sanitize
-      - name: Assert verification evidence
+      - name: Assert core and release evidence
         run: |
           test -x native_projects/hhs_vm81_game_level10/dist/hhs-vm81-game
           test -x native_projects/hhs_vm81_game_level10/dist/test-hhs-vm81-game
+          test -x native_projects/hhs_vm81_game_level10/dist/hhs-vm81-platformer
+          test -x native_projects/hhs_vm81_game_level10/dist/test-hhs-vm81-game-release
+          native_projects/hhs_vm81_game_level10/dist/hhs-vm81-platformer --help
           test -s native_projects/hhs_vm81_game_level10/dist/verification.json
+          test -s native_projects/hhs_vm81_game_level10/dist/playable-verification.json
           grep -q '"opcode_coverage": "19/19"' native_projects/hhs_vm81_game_level10/dist/verification.json
           grep -q '"replay": "MATCH"' native_projects/hhs_vm81_game_level10/dist/verification.json
           grep -q 'VM81_C_ABI_19_OPCODE_2D_PLATFORM_DEMO_VERIFIED' native_projects/hhs_vm81_game_level10/dist/verification.json
-      - name: Upload native game evidence
+          grep -q '"phase": "VICTORY"' native_projects/hhs_vm81_game_level10/dist/playable-verification.json
+          grep -q '"opcode_coverage": "19/19"' native_projects/hhs_vm81_game_level10/dist/playable-verification.json
+          grep -q '"checkpoints_reached": 2' native_projects/hhs_vm81_game_level10/dist/playable-verification.json
+          grep -q '"replay": "MATCH"' native_projects/hhs_vm81_game_level10/dist/playable-verification.json
+          grep -q 'VM81_PLAYABLE_GAME_RELEASE_VERIFIED' native_projects/hhs_vm81_game_level10/dist/playable-verification.json
+      - name: Upload playable game and verification evidence
         uses: actions/upload-artifact@v4
         with:
-          name: vm81-game-level10-evidence
+          name: vm81-playable-game-release
           path: |
+            native_projects/hhs_vm81_game_level10/dist/hhs-vm81-platformer
+            native_projects/hhs_vm81_game_level10/dist/hhs-vm81-game
             native_projects/hhs_vm81_game_level10/dist/verification.json
+            native_projects/hhs_vm81_game_level10/dist/playable-verification.json
             native_projects/hhs_vm81_game_level10/specs/HHS_VM81_GAME_LEVEL10_CONTRACT.json
+            native_projects/hhs_vm81_game_level10/specs/HHS_VM81_PLAYABLE_GAME_RELEASE_CONTRACT.json
           if-no-files-found: error
