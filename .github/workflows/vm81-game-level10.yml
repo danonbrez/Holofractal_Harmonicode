@@ -24,10 +24,25 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
+        with:
+          show-progress: false
       - name: Compile and execute core and playable release verification
-        run: make -C native_projects/hhs_vm81_game_level10 test
+        shell: bash
+        run: |
+          mkdir -p native_projects/hhs_vm81_game_level10/dist
+          set +e
+          make -C native_projects/hhs_vm81_game_level10 test > native_projects/hhs_vm81_game_level10/dist/hosted-test.log 2>&1
+          code=$?
+          cat native_projects/hhs_vm81_game_level10/dist/hosted-test.log
+          exit "$code"
       - name: Execute ASAN and UBSAN verification
-        run: make -C native_projects/hhs_vm81_game_level10 sanitize
+        shell: bash
+        run: |
+          set +e
+          make -C native_projects/hhs_vm81_game_level10 sanitize > native_projects/hhs_vm81_game_level10/dist/hosted-sanitize.log 2>&1
+          code=$?
+          cat native_projects/hhs_vm81_game_level10/dist/hosted-sanitize.log
+          exit "$code"
       - name: Assert core and release evidence
         run: |
           test -x native_projects/hhs_vm81_game_level10/dist/hhs-vm81-game
@@ -46,6 +61,7 @@ jobs:
           grep -q '"replay": "MATCH"' native_projects/hhs_vm81_game_level10/dist/playable-verification.json
           grep -q 'VM81_PLAYABLE_GAME_RELEASE_VERIFIED' native_projects/hhs_vm81_game_level10/dist/playable-verification.json
       - name: Upload playable game and verification evidence
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: vm81-playable-game-release
@@ -54,6 +70,8 @@ jobs:
             native_projects/hhs_vm81_game_level10/dist/hhs-vm81-game
             native_projects/hhs_vm81_game_level10/dist/verification.json
             native_projects/hhs_vm81_game_level10/dist/playable-verification.json
+            native_projects/hhs_vm81_game_level10/dist/hosted-test.log
+            native_projects/hhs_vm81_game_level10/dist/hosted-sanitize.log
             native_projects/hhs_vm81_game_level10/specs/HHS_VM81_GAME_LEVEL10_CONTRACT.json
             native_projects/hhs_vm81_game_level10/specs/HHS_VM81_PLAYABLE_GAME_RELEASE_CONTRACT.json
-          if-no-files-found: error
+          if-no-files-found: warn
