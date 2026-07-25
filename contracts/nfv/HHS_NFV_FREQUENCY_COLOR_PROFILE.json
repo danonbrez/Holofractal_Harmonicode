@@ -1,0 +1,20 @@
+{
+  "schema": "HHS_NFV_FREQUENCY_COLOR_PROFILE_V1",
+  "contract_id": "HHS-NFV-CEN-V1",
+  "pass_number": 154,
+  "authoritative_source": "EXACT_POSITIVE_RATIONAL_FREQUENCY_RATIO",
+  "register_decomposition": "ratio = 2^octave_carry * normalized_ratio",
+  "normalized_interval": "1 <= normalized_ratio < 2",
+  "octave_carry": "EXACT_RETAINED_INTEGER",
+  "implemented_core": "EXACT_REGISTER_DECOMPOSITION_AND_RECONSTRUCTION",
+  "render_hue": {
+    "authority": "PROJECTION_ONLY",
+    "implemented": false
+  },
+  "required_invariants": [
+    "FULL_RATIO_RECONSTRUCTABLE",
+    "EQUAL_HUE_DOES_NOT_IMPLY_EQUAL_FREQUENCY",
+    "REGISTER_NOT_DISCARDED",
+    "NONPOSITIVE_RATIO_REJECTED"
+  ]
+}
