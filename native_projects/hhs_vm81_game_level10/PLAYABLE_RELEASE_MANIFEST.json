@@ -1,0 +1,21 @@
+{
+  "release_id": "HHS-VM81-PLAYABLE-GAME-RELEASE-V1",
+  "source_baseline": "6332a96b2a42022d76946b6c4bde1f96e9659546",
+  "branch": "agent/vm81-playable-release-validation",
+  "terminal_classification": "VM81_PLAYABLE_GAME_RELEASE_VERIFIED",
+  "required_build_outputs": [
+    "dist/hhs-vm81-game",
+    "dist/test-hhs-vm81-game",
+    "dist/hhs-vm81-platformer",
+    "dist/test-hhs-vm81-game-release",
+    "dist/verification.json",
+    "dist/playable-verification.json"
+  ],
+  "required_release_closure": {
+    "phase": "VICTORY",
+    "opcode_coverage": "19/19",
+    "checkpoints_reached": 2,
+    "replay": "MATCH",
+    "sanitizers": ["ASAN", "UBSAN"]
+  }
+}
