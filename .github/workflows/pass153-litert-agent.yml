@@ -43,20 +43,35 @@ jobs:
       - name: Build Pass 153 full inherited release packages
         run: python tools/pass153/build_release.py
       - name: Validate deployment image
+        shell: bash
         run: |
+          set -euo pipefail
           docker build -f deployment/pass153/Dockerfile -t hhs-pass153 .
           docker run -d --rm --name hhs-pass153-test -p 18000:8000 hhs-pass153
-          for i in $(seq 1 30); do
-            if curl -fsS http://127.0.0.1:18000/api/pass153/status > /tmp/pass153-status.json; then break; fi
+          cleanup() {
+            docker logs hhs-pass153-test 2>&1 || true
+            docker rm -f hhs-pass153-test >/dev/null 2>&1 || true
+          }
+          trap cleanup EXIT
+          ready=0
+          for i in $(seq 1 60); do
+            if curl -fsS http://127.0.0.1:18000/api/pass153/status > /tmp/pass153-status.json; then
+              ready=1
+              break
+            fi
+            if ! docker inspect -f '{{.State.Running}}' hhs-pass153-test 2>/dev/null | grep -qx true; then
+              echo 'Pass 153 container exited before becoming ready' >&2
+              exit 1
+            fi
             sleep 2
           done
+          test "$ready" -eq 1
           python - <<'PY'
           import json
           data=json.load(open('/tmp/pass153-status.json'))
           assert data['contract_id']=='HHS-P153-LITERT-OPEN-MODEL-AGENT'
           assert data['authority']['runtime_state']=='VM81_ONLY'
           PY
-          docker stop hhs-pass153-test
       - name: Upload Pass 153 evidence and release artifacts
         if: always()
         uses: actions/upload-artifact@v4
