@@ -66,6 +66,10 @@ jobs:
         with:
           name: vm81-playable-game-release
           path: |
+            native_projects/hhs_vm81_game_level10/Makefile
+            native_projects/hhs_vm81_game_level10/include/
+            native_projects/hhs_vm81_game_level10/src/
+            native_projects/hhs_vm81_game_level10/tests/
             native_projects/hhs_vm81_game_level10/dist/hhs-vm81-platformer
             native_projects/hhs_vm81_game_level10/dist/hhs-vm81-game
             native_projects/hhs_vm81_game_level10/dist/verification.json
@@ -74,4 +78,6 @@ jobs:
             native_projects/hhs_vm81_game_level10/dist/hosted-sanitize.log
             native_projects/hhs_vm81_game_level10/specs/HHS_VM81_GAME_LEVEL10_CONTRACT.json
             native_projects/hhs_vm81_game_level10/specs/HHS_VM81_PLAYABLE_GAME_RELEASE_CONTRACT.json
+            hhs_runtime/include/hhs_hash216.h
+            hhs_runtime/src/hhs_hash216.c
           if-no-files-found: warn
