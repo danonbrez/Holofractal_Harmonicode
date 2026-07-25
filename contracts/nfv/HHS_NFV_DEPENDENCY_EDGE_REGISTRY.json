@@ -1,0 +1,39 @@
+{
+  "schema": "HHS_NFV_DEPENDENCY_EDGE_REGISTRY_V1",
+  "contract_id": "HHS-NFV-CEN-V1",
+  "pass_number": 154,
+  "default_topology": "DAG",
+  "edge_types": [
+    "VALUE_DEPENDS_ON",
+    "CONSTRAINT_DEPENDS_ON",
+    "AUTHORITY_DEPENDS_ON",
+    "PROVENANCE_DEPENDS_ON",
+    "RECEIPT_DEPENDS_ON",
+    "RESOURCE_DEPENDS_ON",
+    "CLOSURE_DEPENDS_ON",
+    "ALGORITHM_DEPENDS_ON",
+    "SCHEMA_DEPENDS_ON",
+    "VERSION_DEPENDS_ON",
+    "PROJECTION_DEPENDS_ON",
+    "REVERSAL_DEPENDS_ON",
+    "PARENT_DEPENDS_ON",
+    "CHILD_DEPENDS_ON",
+    "MODULUS_DEPENDS_ON",
+    "CARRY_DEPENDS_ON",
+    "LOSHU_ORIENTATION_DEPENDS_ON",
+    "AUDIO_LANE_DEPENDS_ON",
+    "FOURIER_BASIS_DEPENDS_ON",
+    "CONVOLUTION_KERNEL_DEPENDS_ON",
+    "INTERACTION_FIELD_DEPENDS_ON"
+  ],
+  "recurrent_cycle_requirements": [
+    "cycle_type",
+    "convergence_predicate",
+    "maximum_iterations",
+    "termination_state",
+    "resource_bound"
+  ],
+  "ordering": "target, order, source, edge_type",
+  "duplicate_edge_policy": "IDEMPOTENT_CANONICAL_IDENTITY",
+  "undeclared_cycle_policy": "REJECT"
+}
