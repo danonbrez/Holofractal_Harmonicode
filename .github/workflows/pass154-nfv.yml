@@ -1,0 +1,38 @@
+name: Pass 154 NFV Core Tranche
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'contracts/nfv/**'
+      - 'hhs_runtime/nfv/**'
+      - 'tests/nfv/**'
+      - '.github/workflows/pass154-nfv.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  nfv-core:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - name: Install test dependency
+        run: python -m pip install --upgrade pytest
+      - name: Compile NFV Python surfaces
+        run: python -m compileall -q hhs_runtime/nfv tests/nfv
+      - name: Execute NFV core tranche
+        run: python tests/nfv/run_nfv_tests.py
+      - name: Upload NFV execution report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass154-nfv-core-report
+          path: reports/nfv/HHS_NFV_CORE_TRANCHE_TEST_REPORT.json
+          if-no-files-found: error
