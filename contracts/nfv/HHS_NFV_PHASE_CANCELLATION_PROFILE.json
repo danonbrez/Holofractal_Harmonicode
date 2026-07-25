@@ -1,0 +1,30 @@
+{
+  "schema": "HHS_NFV_PHASE_CANCELLATION_PROFILE_V1",
+  "contract_id": "HHS-NFV-CEN-V1",
+  "pass_number": 154,
+  "exact_domain": "GAUSSIAN_RATIONAL",
+  "classifications": [
+    "CONSTRUCTIVE_RESONANCE",
+    "DESTRUCTIVE_CANCELLATION",
+    "ZERO_SUM_CROSSING",
+    "ORTHOGONAL_PHASE_LOCK",
+    "PHASE_CONFLICT",
+    "SCALE_CONFLICT",
+    "MODULUS_CHART_CONFLICT",
+    "CONSTRAINT_REJECTED"
+  ],
+  "implemented_classifications": [
+    "CONSTRUCTIVE_RESONANCE",
+    "DESTRUCTIVE_CANCELLATION",
+    "ZERO_SUM_CROSSING",
+    "ORTHOGONAL_PHASE_LOCK",
+    "PHASE_CONFLICT"
+  ],
+  "authority": "EXACT_CPU_CORE",
+  "projection_authority": "NONE",
+  "remaining_closure": [
+    "CONSTRAINT_WEIGHT_MATRIX",
+    "MULTISCALE_DESCENT",
+    "RECEIPT_BOUND_INTERACTION_FIELD"
+  ]
+}
