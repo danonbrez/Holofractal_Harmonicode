@@ -12,6 +12,17 @@ from .core import (
     hash72,
     hash216,
 )
+from .graph import EDGE_TYPES, DependencyEdge, DependencyGraph
+from .serialization import (
+    DEFAULT_MAX_PAYLOAD,
+    deserialize_graph,
+    deserialize_object,
+    deserialize_package,
+    serialize_graph,
+    serialize_object,
+    serialize_package,
+)
+from .store import NFVStore, ObjectRef, ReplayResult, replay_packages
 
 __all__ = [
     "CONTRACT_ID",
@@ -26,4 +37,18 @@ __all__ = [
     "TransitionPackage",
     "hash72",
     "hash216",
+    "EDGE_TYPES",
+    "DependencyEdge",
+    "DependencyGraph",
+    "DEFAULT_MAX_PAYLOAD",
+    "serialize_object",
+    "deserialize_object",
+    "serialize_package",
+    "deserialize_package",
+    "serialize_graph",
+    "deserialize_graph",
+    "NFVStore",
+    "ObjectRef",
+    "ReplayResult",
+    "replay_packages",
 ]
