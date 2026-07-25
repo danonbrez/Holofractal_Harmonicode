@@ -64,13 +64,19 @@ jobs:
 
       - name: Run cognition and route regressions
         run: |
-          python -m pytest -q \
+          mkdir -p .test-results
+          python -m pytest -vv --tb=short \
+            --junitxml=.test-results/cognition-regressions.xml \
             tests/test_hhs_live_cognition_runtime_v1.py \
             tests/test_hhs_cognition_routes_v1.py \
             tests/test_hhs_live_fastapi_runtime_pass045_v1.py
 
       - name: Run canonical server lifespan smoke test
-        run: python -m pytest -q tests/test_hhs_server_cognition_boot_v1.py
+        run: |
+          mkdir -p .test-results
+          python -m pytest -vv --tb=short \
+            --junitxml=.test-results/server-lifespan.xml \
+            tests/test_hhs_server_cognition_boot_v1.py
 
       - name: Verify server route composition
         run: |
@@ -91,3 +97,11 @@ jobs:
               raise SystemExit(f"missing cognition routes: {missing}")
           print({"cognition_routes": len(required), "status": "VERIFIED"})
           PY
+
+      - name: Upload test diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hhs-agi-runtime-test-results
+          path: .test-results
+          if-no-files-found: warn
