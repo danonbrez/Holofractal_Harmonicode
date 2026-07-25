@@ -4,9 +4,15 @@ from __future__ import annotations
 
 import argparse
 import statistics
+import sys
 import tempfile
 import time
 from pathlib import Path
+
+# Keep direct invocation (`python tools/...py`) equivalent to module invocation.
+REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
+if str(REPOSITORY_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPOSITORY_ROOT))
 
 from hhs_runtime.hhs_unified_hash72_ledger_v1 import append_payload, verify_unified_ledger
 
