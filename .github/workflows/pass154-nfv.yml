@@ -6,6 +6,8 @@ on:
     paths:
       - 'contracts/nfv/**'
       - 'hhs_runtime/nfv/**'
+      - 'hhs_runtime/include/hhs_nfv_*.h'
+      - 'hhs_runtime/src/hhs_nfv_*.c'
       - 'tests/nfv/**'
       - '.github/workflows/pass154-nfv.yml'
   workflow_dispatch:
@@ -27,12 +29,26 @@ jobs:
         run: python -m pip install --upgrade pytest
       - name: Compile NFV Python surfaces
         run: python -m compileall -q hhs_runtime/nfv tests/nfv
-      - name: Execute NFV core tranche
+      - name: Execute NFV Python core tranche
         run: python tests/nfv/run_nfv_tests.py
-      - name: Upload NFV execution report
+      - name: Compile and execute NFV C11 core ABI
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p reports/nfv
+          gcc -std=c11 -Wall -Wextra -Werror \
+            -Ihhs_runtime/include \
+            hhs_runtime/src/hhs_hash216.c \
+            hhs_runtime/src/hhs_nfv_contract.c \
+            tests/nfv/test_nfv_native.c \
+            -o "$RUNNER_TEMP/test_nfv_native"
+          "$RUNNER_TEMP/test_nfv_native" | tee reports/nfv/HHS_NFV_NATIVE_CORE_TEST.log
+      - name: Upload NFV execution reports
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: pass154-nfv-core-report
-          path: reports/nfv/HHS_NFV_CORE_TRANCHE_TEST_REPORT.json
+          path: |
+            reports/nfv/HHS_NFV_CORE_TRANCHE_TEST_REPORT.json
+            reports/nfv/HHS_NFV_NATIVE_CORE_TEST.log
           if-no-files-found: error
