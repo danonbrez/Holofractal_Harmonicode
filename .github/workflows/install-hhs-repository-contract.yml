@@ -1,0 +1,31 @@
+name: Install HHS Repository Contract
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/install-hhs-repository-contract.yml
+
+permissions:
+  contents: write
+
+jobs:
+  install-contract:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Reconstruct, verify, commit, and self-remove
+        shell: bash
+        run: |
+          cat .hhs_contract_payload_0.b64 .hhs_contract_payload_1.b64 | base64 -d | gzip -d > HHS_REPOSITORY_CONTRACT_AND_INSTRUCTION_MANUAL_v1.0.0.md
+          echo "a768cd8e0d7068a4343e6f47f4c1385cff03e0fafdfd05180e3eb33a711d1076  HHS_REPOSITORY_CONTRACT_AND_INSTRUCTION_MANUAL_v1.0.0.md" | sha256sum -c -
+          test "$(wc -c < HHS_REPOSITORY_CONTRACT_AND_INSTRUCTION_MANUAL_v1.0.0.md)" -eq 57770
+          rm .hhs_contract_payload_0.b64 .hhs_contract_payload_1.b64 .github/workflows/install-hhs-repository-contract.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Add HHS repository contract and instruction manual"
+          git push origin HEAD:main
