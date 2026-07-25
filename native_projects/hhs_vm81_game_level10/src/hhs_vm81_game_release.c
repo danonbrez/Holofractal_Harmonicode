@@ -26,9 +26,9 @@ static int hhs_release_x_overlap(int32_t player_x_px, int32_t left_px, int32_t r
 
 static int hhs_release_is_hazard(const HHSVM81GameRelease* release) {
     static const int32_t hazard_ranges[][2] = {
-        {13 * HHS_VM81_GAME_TILE_SIZE, 14 * HHS_VM81_GAME_TILE_SIZE},
-        {27 * HHS_VM81_GAME_TILE_SIZE, 28 * HHS_VM81_GAME_TILE_SIZE},
-        {41 * HHS_VM81_GAME_TILE_SIZE, 42 * HHS_VM81_GAME_TILE_SIZE}
+        {17 * HHS_VM81_GAME_TILE_SIZE, 18 * HHS_VM81_GAME_TILE_SIZE},
+        {44 * HHS_VM81_GAME_TILE_SIZE, 45 * HHS_VM81_GAME_TILE_SIZE},
+        {58 * HHS_VM81_GAME_TILE_SIZE, 59 * HHS_VM81_GAME_TILE_SIZE}
     };
     int32_t player_x_px;
     int32_t player_bottom_px;
@@ -45,9 +45,9 @@ static int hhs_release_is_hazard(const HHSVM81GameRelease* release) {
 
 static int hhs_release_tile_is_hazard(int tile_x, int tile_y) {
     if (tile_y != 15) return 0;
-    return (tile_x >= 13 && tile_x < 14) ||
-           (tile_x >= 27 && tile_x < 28) ||
-           (tile_x >= 41 && tile_x < 42);
+    return (tile_x >= 17 && tile_x < 18) ||
+           (tile_x >= 44 && tile_x < 45) ||
+           (tile_x >= 58 && tile_x < 59);
 }
 
 static HHSVM81GameStatus hhs_release_execute_current_instruction(HHSVM81GameRelease* release) {
