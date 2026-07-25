@@ -9,6 +9,7 @@ on:
       - "tests/test_hhs_io_gateway_receipt_reuse_v1.py"
       - "tests/test_hhs_io_gateway_v1.py"
       - "tools/benchmark_hhs_ledger_append_v1.py"
+      - "GNUmakefile"
       - "init.sh"
       - "start.sh"
       - ".github/workflows/hhs-ledger-latency-repairs.yml"
@@ -22,6 +23,7 @@ on:
       - "tests/test_hhs_io_gateway_receipt_reuse_v1.py"
       - "tests/test_hhs_io_gateway_v1.py"
       - "tools/benchmark_hhs_ledger_append_v1.py"
+      - "GNUmakefile"
       - "init.sh"
       - "start.sh"
       - ".github/workflows/hhs-ledger-latency-repairs.yml"
@@ -54,8 +56,13 @@ jobs:
       - name: Build and verify native kernel
         run: make verify-c
 
-      - name: Validate scripts
-        run: bash -n init.sh start.sh
+      - name: Validate one-command entrypoints
+        run: |
+          bash -n init.sh start.sh
+          make -n setup
+          make -n start
+          make -n setup-start
+          make -n benchmark-ledger
 
       - name: Compile repaired Python surfaces
         run: |
