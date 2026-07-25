@@ -1,0 +1,76 @@
+name: HHS Ledger Latency Repairs
+
+on:
+  pull_request:
+    paths:
+      - "hhs_runtime/hhs_unified_hash72_ledger_v1.py"
+      - "hhs_runtime/hhs_io_gateway_v1.py"
+      - "tests/test_hhs_unified_hash72_ledger_incremental_v1.py"
+      - "tests/test_hhs_io_gateway_receipt_reuse_v1.py"
+      - "tests/test_hhs_io_gateway_v1.py"
+      - "tools/benchmark_hhs_ledger_append_v1.py"
+      - "init.sh"
+      - "start.sh"
+      - ".github/workflows/hhs-ledger-latency-repairs.yml"
+  push:
+    branches:
+      - main
+    paths:
+      - "hhs_runtime/hhs_unified_hash72_ledger_v1.py"
+      - "hhs_runtime/hhs_io_gateway_v1.py"
+      - "tests/test_hhs_unified_hash72_ledger_incremental_v1.py"
+      - "tests/test_hhs_io_gateway_receipt_reuse_v1.py"
+      - "tests/test_hhs_io_gateway_v1.py"
+      - "tools/benchmark_hhs_ledger_append_v1.py"
+      - "init.sh"
+      - "start.sh"
+      - ".github/workflows/hhs-ledger-latency-repairs.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-ledger-and-io:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      PYTHONUNBUFFERED: "1"
+      HHS_LEDGER_FSYNC: "0"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: python -m pip install --upgrade pip && python -m pip install -r requirements.txt
+
+      - name: Build and verify native kernel
+        run: make verify-c
+
+      - name: Validate scripts
+        run: bash -n init.sh start.sh
+
+      - name: Compile repaired Python surfaces
+        run: |
+          python -m py_compile \
+            hhs_runtime/hhs_unified_hash72_ledger_v1.py \
+            hhs_runtime/hhs_io_gateway_v1.py \
+            tools/benchmark_hhs_ledger_append_v1.py
+
+      - name: Run dependency-scoped regression tests
+        run: |
+          python -m pytest -q \
+            tests/test_hhs_unified_hash72_ledger_incremental_v1.py \
+            tests/test_hhs_io_gateway_receipt_reuse_v1.py \
+            tests/test_hhs_io_gateway_v1.py \
+            tests/test_hhs_hash72_kernel_authority_v1.py
+
+      - name: Run ledger latency benchmark
+        run: python tools/benchmark_hhs_ledger_append_v1.py --entries 300
