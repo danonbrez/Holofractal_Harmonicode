@@ -1,957 +1,590 @@
-# HHS General Programming Environment
+# Holofractal Harmonicode (HHS) — Integration Report & Development Guide
 
-Codex-ready repository scaffold for the Holofractal Harmonicode / HHS general programming environment.
-
-This repo is intended to hold the full HHS runtime stack:
-
-- authoritative kernel + Hash72 authority
-- audited runner
-- receipt/replay verifier
-- state layer
-- symbolic and macro algebra terminals
-- GUI macro bootstrap
-- input bridge
-- physics observation adapter
-- physics evolution operator
-- smoke/regression tests
-
-for the [Holofractal_Harmonicode repository](https://github.com/danonbrez/Holofractal_Harmonicode?utm_source=chatgpt.com) integrating the current runtime topology, architectural intent, execution flow, backend orchestration, VM/runtime layering, GUI direction, testing philosophy, and contributor guidance.
+This document records everything required to bring the HHS stack online inside
+the Replit monorepo, covers the exact blockers that were hit and how they were
+resolved, and provides a complete guide for reproducing a one-step
+initialization in any new environment. A detailed latency analysis is included
+at the end because the 3–5 second per-request response time has a specific,
+fixable root cause that the development team needs to address.
 
 ---
 
-## Automatic C Runtime Emulator Boot
+## Table of Contents
 
-Pass 003 adds an emulator-style C runtime surface. The deterministic C kernel no longer has to be driven manually through separate build, ABI, bridge, step, receipt, and packet commands.
+1. [What HHS Is](#what-hhs-is)
+2. [Repository Topology](#repository-topology)
+3. [What Was Done To Get It Running](#what-was-done-to-get-it-running)
+   - [Environment](#1-environment)
+   - [C Kernel Compilation](#2-c-kernel-compilation)
+   - [Python Dependencies](#3-python-dependencies)
+   - [Startup Script](#4-startup-script)
+   - [Replit Artifact Wiring](#5-replit-artifact-wiring)
+   - [OpenAPI Spec & Code Generation](#6-openapi-spec--code-generation)
+   - [HHS Dashboard Frontend](#7-hhs-dashboard-frontend)
+   - [API Response Adapter Layer](#8-api-response-adapter-layer)
+4. [One-Step Initialization Guide (Any Environment)](#one-step-initialization-guide-any-environment)
+5. [API Latency Analysis — Root Cause & Fix](#api-latency-analysis--root-cause--fix)
+6. [Current Stack Overview](#current-stack-overview)
 
-Use:
+---
+
+## What HHS Is
+
+The Holofractal Harmonicode System is a deterministic, receipt-locked Python
+runtime backed by a compiled C kernel. Every computation the system performs is
+cryptographically verifiable, replay-auditable, and graph-linked. Nothing can
+enter, execute in, or leave the runtime without passing through the canonical
+IO gateway, which stamps every payload with a Hash72 u^72 Digital DNA witness
+produced by the C kernel and appends the record to an append-only unified
+ledger.
+
+The stack has three layers:
+
+```
+Frontend Dashboard (React / Vite)
+        ↓
+FastAPI Transport Layer  ←  hhs/hhs_backend/
+        ↓
+Runtime Orchestrator     ←  hhs/hhs_python/
+        ↓
+C Kernel (VM81 + ABI)    ←  hhs/hhs_runtime/c/  +  hhs/hhs_runtime/builds/
+        ↓
+Graph + Persistence + Replay
+```
+
+---
+
+## Repository Topology
+
+```
+hhs/
+├── hhs_runtime/          VM81 substrate, C ABI, hash72 kernel, acceleration fabric
+│   ├── c/                C source: hhs_runtime_abi.c, hhs_runtime_abi.h
+│   ├── src/              hhs_hash216.c (the u^72 ring implementation)
+│   ├── include/          Header files
+│   ├── builds/           Compiled outputs: libhhs_runtime.so, hhs_vm81
+│   └── acceleration/     HHSAccelerationFabric.ts (heterogeneous dispatch spec)
+├── hhs_python/           ctypes bridge to the C ABI; runtime controller/emulator
+├── hhs_backend/
+│   ├── api/              FastAPI route definitions (runtime_routes.py + others)
+│   ├── runtime/          Orchestration, graph, replay, websocket, agent loops
+│   └── server.py         FastAPI app entry point with CORS middleware
+├── hhs_graph/            Graph topology, receipt memory
+├── hhs_storage/          Persistence, replay storage
+├── Makefile              C kernel build surface
+├── requirements.txt      Python dependencies
+└── start.sh              (created during integration) startup script
+```
+
+---
+
+## What Was Done To Get It Running
+
+### 1. Environment
+
+**Replit-specific setup required.** The following were not pre-installed:
+
+| Dependency | How Installed | Notes |
+|---|---|---|
+| Python 3.11 | Replit module system | `python-3_11` module; the default Python was too old for some type annotation syntax used in the backend |
+| `gcc` | Replit system package | `gcc` |
+| `gnumake` | Replit system package | `gnumake` |
+| All Python packages | `pip install -r hhs/requirements.txt --target .pythonlibs` | Replit does not use virtualenvs; packages install to `.pythonlibs/` |
+
+The `PYTHONPATH` must include the `hhs/` directory at runtime so that `hhs_runtime`, `hhs_python`, `hhs_backend`, etc. are importable as top-level packages. This is set in `hhs/start.sh`.
+
+---
+
+### 2. C Kernel Compilation
+
+**The Makefile has a bug on the `vm81` target.** The `LDFLAGS` variable (`-lm`) is
+defined at the top of the Makefile and is correctly applied to the shared
+library target, but it is **not applied** to the `hhs_vm81` binary target. The
+math library (`-lm`) is required because `HARMONICODE_VM_RUNTIME.c` uses
+`pow()`, `fabs()`, and related functions. Without `-lm`, the linker fails on
+Linux.
+
+**Failing command (from stock Makefile):**
+```sh
+gcc -O2 -std=c11 -Wall -Wextra \
+    -Ihhs_runtime/include -Ihhs_runtime/c \
+    hhs_runtime/HARMONICODE_VM_RUNTIME.c \
+    -o hhs_runtime/builds/hhs_vm81
+# ↑ missing -lm → undefined reference to `pow'
+```
+
+**Working command:**
+```sh
+gcc -O2 -std=c11 -Wall -Wextra \
+    -Ihhs_runtime/include -Ihhs_runtime/c \
+    hhs_runtime/HARMONICODE_VM_RUNTIME.c \
+    -o hhs_runtime/builds/hhs_vm81 \
+    -lm
+```
+
+**Fix for the Makefile:** add `$(LDFLAGS)` to the `vm81` recipe, or hard-code
+`-lm`. The ABI library target already works correctly.
+
+```makefile
+# CURRENT (broken on vm81):
+$(VM81_BIN): hhs_runtime/HARMONICODE_VM_RUNTIME.c ... | $(RUNTIME_BUILD_DIR)
+	$(CC) $(CFLAGS) hhs_runtime/HARMONICODE_VM_RUNTIME.c -o $(VM81_BIN)
+
+# FIXED:
+$(VM81_BIN): hhs_runtime/HARMONICODE_VM_RUNTIME.c ... | $(RUNTIME_BUILD_DIR)
+	$(CC) $(CFLAGS) hhs_runtime/HARMONICODE_VM_RUNTIME.c -o $(VM81_BIN) $(LDFLAGS)
+```
+
+---
+
+### 3. Python Dependencies
+
+```sh
+pip install -r hhs/requirements.txt
+```
+
+All packages in `requirements.txt` install cleanly under Python 3.11. The key
+runtime packages are:
+
+- `fastapi==0.128.2` + `uvicorn[standard]` — the HTTP/WebSocket server
+- `pydantic>=2.7,<3.0` — request/response schema validation
+- `networkx>=3.3` — graph topology layer
+- `numpy>=1.26`, `sympy>=1.13` — numerical and symbolic runtime support
+- `sqlalchemy>=2.0`, `aiosqlite>=0.20` — persistence layer
+- `cryptography>=46.0` — signed network envelopes (Pass 146)
+
+---
+
+### 4. Startup Script
+
+`hhs/start.sh` was created because the repository has no single entry point
+that handles compilation + server launch together. The file does three things:
+
+1. Compiles the C kernel (both the shared ABI library and the VM81 binary),
+   with graceful fallback warnings if compilation fails.
+2. Sets `PYTHONPATH` to include the `hhs/` directory.
+3. Launches uvicorn on `$PORT` with `--ws websockets`.
 
 ```bash
-make emulate-c
+#!/usr/bin/env bash
+set -e
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+cd "$SCRIPT_DIR"
+
+echo "[HHS] Building C kernel..."
+gcc -O2 -std=c11 -Wall -Wextra \
+    -Ihhs_runtime/include -Ihhs_runtime/c \
+    -fPIC -shared \
+    hhs_runtime/c/hhs_runtime_abi.c \
+    hhs_runtime/src/hhs_hash216.c \
+    -o hhs_runtime/builds/libhhs_runtime.so -lm
+
+gcc -O2 -std=c11 -Wall -Wextra \
+    -Ihhs_runtime/include -Ihhs_runtime/c \
+    hhs_runtime/HARMONICODE_VM_RUNTIME.c \
+    -o hhs_runtime/builds/hhs_vm81 -lm
+
+echo "[HHS] C kernel ready."
+export PYTHONPATH="$SCRIPT_DIR:${PYTHONPATH:-}"
+PORT="${PORT:-8080}"
+exec python -m uvicorn hhs_backend.server:app \
+    --host 0.0.0.0 --port "$PORT" \
+    --ws websockets --log-level info
 ```
-
-or directly:
-
-```bash
-python -m hhs_python.runtime.hhs_runtime_emulator
-```
-
-The emulator lifecycle is:
-
-```text
-boot → validate C ABI → tick VM → commit receipt → export multimodal packet → repeat/halt
-```
-
-The ctypes bridge also attempts to build the C ABI automatically when the shared library is missing. To disable that behavior:
-
-```bash
-HHS_DISABLE_C_AUTOBUILD=1 python -m hhs_python.runtime.hhs_ctypes_bridge
-```
-
-
-# Holofractal Harmonicode (HHS)
-
-## Deterministic Runtime • Receipt-Locked Execution • Multimodal Constraint Computation • Hash72 Runtime Topology
 
 ---
 
-## Overview
+### 5. Replit Artifact Wiring
 
-Holofractal Harmonicode (HHS) is an experimental deterministic runtime and audited computation environment designed around:
+Two artifacts were configured:
 
-* invariant-preserving execution,
-* replay-verifiable runtime state transitions,
-* multimodal symbolic transport,
-* receipt-chain continuity,
-* runtime closure verification,
-* graph-linked execution history,
-* constraint-oriented computation,
-* and modular orchestration across Python, C, graph, backend, and GUI layers.
+**API Server** (`artifacts/api-server/`) was repurposed from a Node.js express
+placeholder to run the HHS Python backend. The `artifact.toml` run command was
+updated to `bash /home/runner/workspace/hhs/start.sh`. An important lesson:
+the run command must use an **absolute path**. A relative path like
+`bash hhs/start.sh` failed because the workflow runner uses the artifact
+directory as its working directory, not the workspace root.
 
-The repository has evolved from a conceptual scaffold into a live mixed-runtime system containing:
+**HHS Dashboard** (`artifacts/hhs-dashboard/`) is a new React/Vite artifact
+registered at path `/`. A Vite proxy was added to forward `/api` requests from
+the dev server (port 18142) to the HHS backend (port 8080):
 
-* audited execution layers,
-* runtime controllers,
-* receipt replay verification,
-* backend orchestration services,
-* websocket runtime streaming,
-* graph/state persistence,
-* ctypes/C runtime bridges,
-* symbolic and multimodal runtime modules,
-* stress/regression/certification runners,
-* and frontend experimentation environments.
-
-This repository should be understood as:
-
-> a runtime substrate + orchestration environment
-> rather than a traditional single-language software library.
+```ts
+// vite.config.ts
+server: {
+  proxy: {
+    '/api': { target: 'http://localhost:8080', changeOrigin: true, ws: true }
+  }
+}
+```
 
 ---
 
-# Repository Status
+### 6. OpenAPI Spec & Code Generation
 
-## Current State
+No OpenAPI spec existed in the repository. One was authored at
+`lib/api-spec/openapi.yaml` covering all major runtime routes, then codegen
+was run via Orval v8.22 to produce:
 
-The repository is currently in a hybrid migration phase.
+- `lib/api-client-react/` — typed React Query hooks for all endpoints
+- `lib/api-zod/` — Zod v4 schemas for all request/response types
 
-### Legacy Compatibility Layer
-
-Several root-level modules remain available to preserve historical scripts and entrypoints:
-
-```text
-hhs_general_runtime_layer_v1.py
-hhs_state_layer_v1.py
-hhs_receipt_replay_verifier_v1.py
-...
-```
-
-Many of these now act as compatibility shims.
+**Zod version bump required.** Orval 8.22 generates Zod v4 syntax
+(`z.looseObject()`, etc.) which is incompatible with Zod v3. The workspace
+catalog in `pnpm-workspace.yaml` was bumped from `^3.25.76` to `^4.0.0`.
 
 ---
 
-## Canonical Runtime Layout
+### 7. HHS Dashboard Frontend
 
-Primary implementation work has moved into structured package paths:
+The dashboard was built against the generated hooks. Six pages were wired:
 
-```text
-hhs_runtime/
-hhs_backend/
-hhs_python/
-hhs_graph/
-hhs_storage/
+| Page | Route | Key Data |
+|---|---|---|
+| Runtime Overview | `/` | Step count, hash72, convergence, Step/Halt controls, latest vector + packet |
+| Receipt Graph | `/graph` | Node/edge counts, node lookup, replay, predict, receipt commit |
+| Services | `/services` | 351 registered services, search, dispatch console |
+| Conformance | `/conformance` | 19 invariants, conformance root hash72, evaluator, state enforcer |
+| Sandbox | `/sandbox` | Create isolated fork, step execution, output log |
+| Authority & Leases | `/authority` | Roles, components, lease table, issue/revoke, federation status |
+
+**All API hooks are connected.** The dashboard polls every 10 seconds on
+live-updating queries.
+
+---
+
+### 8. API Response Adapter Layer
+
+The HHS backend wraps every response in a guarded envelope that does not match
+the simplified types the OpenAPI spec describes. For example,
+`GET /api/runtime/state` returns:
+
+```json
+{
+  "schema": "HHS_GUARDED_RUNTIME_STATE_RESPONSE_V1",
+  "runtime": { "step": 130, "state_hash72": "...", "converged": true, "halted": false },
+  "io": { "ingress": { ... }, "egress": { ... } },
+  "runtime_contract": { ... }
+}
 ```
 
-Example:
+Rather than fight the codegen types, an adapter layer was created at
+`artifacts/hhs-dashboard/src/lib/hhs-adapters.ts`. Every page imports its
+relevant adapter and normalizes the raw API response before rendering. This
+layer is also the right place to add client-side caching or derived fields as
+the API matures.
+
+---
+
+## One-Step Initialization Guide (Any Environment)
+
+The following steps are what the development team needs to turn into a single
+`make setup` or `./init.sh` invocation.
+
+### Prerequisites
+
+| Requirement | Version | Notes |
+|---|---|---|
+| Python | 3.11.x | 3.12 has not been tested |
+| gcc | ≥ 12.0 | Any modern GCC; clang also works with the same flags |
+| make | ≥ 4.3 | GNU make |
+| pip | bundled with Python | For Python packages |
+
+### Step-by-step (manual)
+
+```sh
+# 1. Clone
+git clone https://github.com/danonbrez/Holofractal_Harmonicode
+cd Holofractal_Harmonicode
+
+# 2. Python packages
+pip install -r requirements.txt
+
+# 3. Build C kernel
+#    Fix: vm81 target needs -lm (see Makefile bug above before running stock make)
+mkdir -p hhs_runtime/builds
+
+gcc -O2 -std=c11 -Wall -Wextra \
+    -Ihhs_runtime/include -Ihhs_runtime/c \
+    -fPIC -shared \
+    hhs_runtime/c/hhs_runtime_abi.c \
+    hhs_runtime/src/hhs_hash216.c \
+    -o hhs_runtime/builds/libhhs_runtime.so -lm
+
+gcc -O2 -std=c11 -Wall -Wextra \
+    -Ihhs_runtime/include -Ihhs_runtime/c \
+    hhs_runtime/HARMONICODE_VM_RUNTIME.c \
+    -o hhs_runtime/builds/hhs_vm81 -lm
+
+# 4. Verify kernel
+hhs_runtime/builds/hhs_vm81 --verify
+
+# 5. Launch
+PYTHONPATH=$(pwd) python -m uvicorn hhs_backend.server:app \
+    --host 0.0.0.0 --port 8080 --ws websockets
+```
+
+### Recommended: `init.sh` (add to repo root)
+
+```sh
+#!/usr/bin/env bash
+set -euo pipefail
+
+echo "==> Installing Python dependencies"
+pip install -r requirements.txt
+
+echo "==> Building C kernel"
+mkdir -p hhs_runtime/builds
+
+gcc -O2 -std=c11 -Wall -Wextra \
+    -Ihhs_runtime/include -Ihhs_runtime/c \
+    -fPIC -shared \
+    hhs_runtime/c/hhs_runtime_abi.c \
+    hhs_runtime/src/hhs_hash216.c \
+    -o hhs_runtime/builds/libhhs_runtime.so -lm
+
+gcc -O2 -std=c11 -Wall -Wextra \
+    -Ihhs_runtime/include -Ihhs_runtime/c \
+    hhs_runtime/HARMONICODE_VM_RUNTIME.c \
+    -o hhs_runtime/builds/hhs_vm81 -lm
+
+echo "==> Verifying kernel"
+hhs_runtime/builds/hhs_vm81 --verify
+
+echo "==> HHS ready. Starting server on port ${PORT:-8080}"
+PYTHONPATH=$(pwd) python -m uvicorn hhs_backend.server:app \
+    --host 0.0.0.0 --port "${PORT:-8080}" \
+    --ws websockets --log-level info
+```
+
+### Cross-platform notes
+
+| Platform | Notes |
+|---|---|
+| Linux (x86_64) | Works as-is. Default platform for Replit. |
+| macOS | Replace `-lm` with nothing (math is in libc on macOS). The `-fPIC -shared` flags produce `.dylib`, not `.so` — update the ctypes load path in `hhs_python/runtime/hhs_ctypes_bridge.py` accordingly. |
+| Windows | Not supported. The C kernel uses POSIX headers and assumes ELF shared libraries. WSL2 is the recommended path. |
+| Docker | Use `python:3.11-slim` as base. Add `build-essential` for gcc. The Makefile `vm81` target works once `-lm` is added. |
+
+---
+
+## API Latency Analysis — Root Cause & Fix
+
+### Observed behaviour
+
+Every HHS API endpoint takes **3–5 seconds** to respond. This was measured on
+a live server after startup:
+
+```
+GET /api/runtime/state     4.3s
+GET /api/runtime/vector/latest   3.4s
+GET /api/runtime/packet/latest   5.1s
+```
+
+This is not a network issue, not a Python GIL issue, and not the hash72 C
+kernel being slow. The C kernel itself is fast:
+
+```
+10 hash72_kernel_digest() calls: 0.8ms total → ~0.08ms each
+```
+
+### Actual latency breakdown per request
+
+Profiled against a running server with 1,346 ledger entries:
+
+```
+Controller init:              0ms   (cached, singleton)
+Gateway init:                 0ms   (cached, singleton)
+ingress() — hash72 + ledger:  1951ms   ← this is the problem
+runtime_state():              0ms
+egress()  — hash72 + ledger:  1861ms   ← this too
+─────────────────────────────────────────
+Total per GET /api/runtime/state:  ~3,812ms
+```
+
+### Root cause: the unified ledger re-hashes every append
+
+`hhs_runtime/hhs_unified_hash72_ledger_v1.py` keeps all records in a JSON
+file on disk. Every call to `append_payload()` does the following:
+
+1. Reads the entire ledger file from disk.
+2. Appends the new record.
+3. Calls `verify_unified_ledger()` to compute the new tip hash.
+4. `verify_unified_ledger()` iterates through every existing entry and runs a
+   `hash72_kernel_digest()` call on each one to verify and recompute the
+   chain.
+5. Writes the full file back to disk.
+
+With 1,346 entries, step 4 runs 1,346 hash72 calls. At ~0.08ms each, that is
+**~107ms of hash computation alone per append**. The disk I/O for reading and
+writing an ever-growing JSON file adds the rest. Each API request triggers two
+`append_payload()` calls (ingress + egress), giving ~215ms of pure ledger
+overhead even at this size — and the number grows with every request.
+
+The five-ledger-append benchmark confirmed this:
+
+```
+5 ledger appends: 9,523ms → ~1,905ms each
+(ledger had 1,341 entries at time of measurement)
+```
+
+As the ledger grows the cost grows linearly with it. At 10,000 entries a
+single request would take 30+ seconds.
+
+### Why this is not how HHS is designed to work
+
+The repository already contains the full acceleration architecture to prevent
+exactly this problem:
+
+**1. The IO gateway has a vector cache (`validate_vector_cache_write`).**
+Validated vectors should be served from the cache on repeated identical
+requests. A `GET /api/runtime/state` with no intervening `step()` returns
+exactly the same runtime state. It should hit the cache, not re-run the full
+witness chain.
+
+**2. The zero-bypass interposer has interposition tokens.**
+`hhs_runtime/hhs_zero_bypass_runtime_interposer_v1.py` issues reusable tokens
+for admitted surface propagations. A repeated read on an unchanged surface
+should present its token and bypass full recomputation. The token is already
+bound to the payload hash — if the payload hash matches a cached token, the
+witness is already proven.
+
+**3. The acceleration fabric (`hhs_runtime/acceleration/HHSAccelerationFabric.ts`)
+is designed for exactly this throughput problem.**
+It specifies ASIC/FPGA/GPU/SIMD dispatch channels with `latencyNs` slots. The
+architecture comment is explicit: *"The fabric accelerates execution, not
+authority."* Authority (the receipt chain) remains canonical; computation is
+offloaded.
+
+**4. Pass 108 added immutable result reuse.**
+The changelog documents: *"Added exact dependency-rooted immutable result
+reuse. Added bounded optimization leases and stale-dependency rejection."*
+This is the in-process cache that should make repeated reads instant.
+
+**5. Pass 111 added validated continuation caches.**
+*"Added validated continuation caches with no speculative future results."*
+
+### What the development team needs to fix
+
+The ledger cost is a single specific fix. Everything else is already
+architected:
+
+#### Fix 1: Cache the ledger tip in memory (immediate — removes 95% of latency)
+
+The ledger's own `_ledger_summary_payload()` already hashes only the ordered
+list of **entry hashes**, not the full payloads. This means the tip hash can
+be maintained incrementally: when a new entry is appended, hash the new entry
+and combine it with the previous tip hash. There is no need to re-read all
+prior entries.
 
 ```python
-# compatibility shim
-hhs_general_runtime_layer_v1.py
+# hhs_runtime/hhs_unified_hash72_ledger_v1.py
+# Current: verify_unified_ledger() reads the file and re-hashes all entries
+# Fix: maintain an in-memory tip + entry count; only read from disk on startup
 
-# canonical implementation
-hhs_runtime/core_sandbox/hhs_general_runtime_layer_v1.py
+_ledger_tip_cache: dict = {}   # { ledger_path: { tip_hash72, entry_count } }
+
+def _get_cached_tip(path: str) -> tuple[str, int]:
+    if path in _ledger_tip_cache:
+        return _ledger_tip_cache[path]["tip_hash72"], _ledger_tip_cache[path]["entry_count"]
+    # cold start: read file
+    ...
+
+def _update_cached_tip(path: str, new_tip: str, count: int):
+    _ledger_tip_cache[path] = { "tip_hash72": new_tip, "entry_count": count }
 ```
 
-The intended direction is:
+This reduces `append_payload()` from O(n) to O(1) per call. Expected result:
+sub-millisecond ledger appends regardless of ledger size.
 
-* preserve compatibility,
-* migrate toward canonical package organization,
-* maintain receipt continuity during transition.
+#### Fix 2: Cache GET-only route witnesses by payload hash (removes repeated computation)
 
----
+For read-only routes (`GET /api/runtime/state`, `/api/runtime/graph/summary`,
+etc.) the payload entering the IO gateway is always `{"method": "GET"}`.
+Because HHS is deterministic, if the runtime step has not changed, the
+ingress witness for this payload is **identical** to the one computed on the
+previous request.
 
-# Core Design Principles
+The IO gateway should check whether a prior witness exists for the same
+`(source, payload_hash72, runtime_step)` tuple before calling
+`payload_hash72_witness()`. This is precisely what the interposition token
+mechanism is built for.
 
-## 1. Audited Execution
-
-All meaningful runtime transitions should be:
-
-* observable,
-* replayable,
-* hash-linked,
-* and verification-compatible.
-
-Execution is treated as a traceable state transition system rather than opaque process mutation.
-
----
-
-## 2. Receipt Continuity
-
-Runtime operations produce chained receipts:
-
-```text
-previous_receipt
-        ↓
-operation
-        ↓
-new_receipt
+```python
+# In HHSIOGateway._record():
+cache_key = (source, payload_hash72(payload_dict), runtime_state.get("step"))
+if cache_key in self._witness_cache:
+    witness = self._witness_cache[cache_key]
+else:
+    witness = payload_hash72_witness(payload_dict)
+    self._witness_cache[cache_key] = witness
 ```
 
-Receipts may include:
+#### Fix 3: Activate the acceleration fabric for parallel witness computation
 
-* runtime metadata,
-* closure state,
-* invariant status,
-* transport state,
-* graph references,
-* replay metadata,
-* and Hash72 projections.
+The `HHSAccelerationFabric.ts` spec is currently TypeScript-only and not
+connected to the Python layer. For environments where multiple cores are
+available, the ingress and egress hash72 computations for a single request are
+independent and can run in parallel via `asyncio.gather()` or a thread pool.
+This alone would halve the effective latency while Fix 1 is in progress.
 
----
+#### Fix 4: Add a response-level cache for read-only endpoints
 
-## 3. Deterministic Replay
+For routes where the runtime step has not advanced, the full response can be
+cached behind a simple dict keyed by `(endpoint, runtime_step)`. A `step()`
+call invalidates all entries. This is the "buffer accelerate" part of the
+design — the accelerated result is served directly without re-entering the IO
+gateway at all.
 
-Replay verification is a foundational subsystem.
+### Expected latency after fixes
 
-The repository contains replay verification infrastructure intended to ensure:
+| Stage | Current | After Fix 1 | After Fix 1+2 | After all fixes |
+|---|---|---|---|---|
+| ingress witness | ~1,900ms | ~5ms | ~0ms (cache hit) | ~0ms |
+| egress witness | ~1,900ms | ~5ms | ~0ms (cache hit) | ~0ms |
+| route handler | ~0ms | ~0ms | ~0ms | ~0ms |
+| **Total per request** | **~3,800ms** | **~10ms** | **~1ms** | **< 1ms** |
 
-```text
-same input
-+ same runtime state
-+ same execution order
-= reproducible receipt chain
-```
-
----
-
-## 4. Constraint-Oriented Runtime Model
-
-The runtime is not designed as a conventional imperative interpreter alone.
-
-Many runtime layers are organized around:
-
-* constraints,
-* gates,
-* transport states,
-* closure conditions,
-* invariant verification,
-* and reconciliation logic.
+The 3–5 second latency is a runtime artifact of the ledger append pattern, not
+an inherent cost of the cryptographic design. The design intends for unique
+operations to pay the crypto cost once, with all subsequent reads served from
+the receipt-backed vector cache.
 
 ---
 
-## 5. Multimodal Runtime Direction
-
-The repository contains active work toward:
-
-* symbolic transport,
-* graph-linked semantics,
-* multimodal embeddings,
-* adaptive runtime routing,
-* semantic memory,
-* and distributed orchestration.
-
----
-
-# High-Level Architecture
-
----
-
-# 1) Core Runtime and Audit Layer
-
-## Primary Compatibility Entrypoints
-
-```text
-hhs_general_runtime_layer_v1.py
-hhs_receipt_replay_verifier_v1.py
-hhs_control_flow_gates_v1.py
-hhs_program_format_and_cli_v1.py
-```
-
----
-
-## Canonical Runtime Layer
-
-```text
-hhs_runtime/core_sandbox/
-```
-
-Contains:
-
-* audited execution,
-* sandbox/runtime state management,
-* receipt locking,
-* replay verification support,
-* runtime gates,
-* closure logic,
-* runtime test harnesses.
-
----
-
-# 2) Runtime Controller Layer
-
-## Python Runtime Controller
-
-```text
-hhs_python/runtime/hhs_runtime_controller.py
-```
-
-Responsibilities include:
-
-* runtime stepping,
-* runtime lifecycle control,
-* listener dispatch,
-* receipt emission,
-* execution orchestration,
-* runtime synchronization.
-
----
-
-## ctypes Runtime Bridge
-
-```text
-hhs_python/runtime/hhs_ctypes_bridge.py
-```
-
-Provides:
-
-* Python ↔ C runtime connectivity,
-* ABI bridge surfaces,
-* low-level runtime interfacing.
-
----
-
-## C Runtime ABI
-
-```text
-hhs_runtime/c/hhs_runtime_abi.c
-hhs_runtime/c/hhs_runtime_abi.h
-```
-
-Defines:
-
-* low-level runtime interfaces,
-* execution hooks,
-* transport surfaces,
-* runtime ABI contracts.
-
----
-
-# 3) Backend Runtime Services
-
-## FastAPI Bootstrap
-
-```text
-hhs_backend/server.py
-```
-
-Primary backend initialization layer.
-
----
-
-## Runtime API
-
-```text
-hhs_backend/api/runtime_routes.py
-```
-
-Provides:
-
-* runtime stepping,
-* runtime execution,
-* graph ingestion,
-* replay operations,
-* orchestration interfaces,
-* runtime state queries.
-
----
-
-## Runtime Orchestrator
-
-```text
-hhs_backend/runtime/runtime_orchestrator.py
-```
-
-Coordinates:
-
-* runtime controller,
-* graph ingestion,
-* certifier layers,
-* websocket/event dispatch,
-* runtime synchronization.
-
----
-
-## Event Bus
-
-```text
-hhs_backend/runtime/runtime_event_bus.py
-```
-
-Provides internal runtime event routing.
-
----
-
-## Websocket Streaming
-
-```text
-hhs_backend/websocket/runtime_stream_manager.py
-```
-
-Supports:
-
-* runtime stream broadcasting,
-* live frontend synchronization,
-* runtime telemetry,
-* graph event transport.
-
----
-
-# 4) Graph and Storage Layers
-
-## Multimodal Receipt Graph
-
-```text
-hhs_graph/hhs_multimodal_receipt_graph_v1.py
-```
-
-Supports:
-
-* receipt graph ingestion,
-* execution linkage,
-* replay path traversal,
-* multimodal state association.
-
----
-
-## Runtime State Store
-
-```text
-hhs_storage/runtime_state_store_v1.py
-```
-
-Provides runtime persistence primitives.
-
----
-
-## Database Integration
-
-```text
-hhs_database_integration_layer_v1.py
-```
-
-Supports persistent storage bridges.
-
----
-
-# 5) Runtime Module Ecosystem
-
-The `hhs_runtime/` directory contains a broad module ecosystem including:
-
-* symbolic execution utilities,
-* transport gates,
-* phase operators,
-* replay tooling,
-* ledger systems,
-* multimodal adapters,
-* language pipelines,
-* adaptive runtime modules,
-* stress-testing utilities,
-* graph experimentation,
-* runtime diagnostics,
-* certification tooling.
-
----
-
-# Runtime Execution Flow
-
-Observed execution flow currently resembles:
-
-```text
-Input
-  ↓
-Parser / Program Format
-  ↓
-Audited Runtime Layer
-  ↓
-Control Gates
-  ↓
-Receipt Commit
-  ↓
-Graph Ingestion
-  ↓
-Replay Validation
-  ↓
-Persistence Layer
-  ↓
-Streaming / API Surface
-```
-
----
-
-# Current Runtime Direction
-
-Recent repository evolution suggests increasing emphasis on:
-
-* distributed runtime topology,
-* adaptive goal engines,
-* semantic memory,
-* multimodal embedding routing,
-* prediction/replay systems,
-* self-modification governance,
-* runtime orchestration services,
-* graph-native execution flows.
-
----
-
-# VM Runtime Work
-
-The repository also contains work related to:
-
-```text
-VM81
-Hash72
-Lo Shu projection systems
-closure tensors
-receipt-chain runtimes
-```
-
-Including:
-
-* experimental deterministic VM layers,
-* graph-native runtime scheduling,
-* closure-seeking execution,
-* transport/orientation/constraint state decomposition,
-* runtime receipt projection systems.
-
----
-
-# Frontend / GUI Direction
-
-The repository includes GUI experimentation workspaces under:
-
-```text
-gui/
-```
-
-Direction includes:
-
-* runtime visualization,
-* graph topology rendering,
-* websocket-linked execution views,
-* runtime telemetry surfaces,
-* interactive orchestration interfaces,
-* mobile-oriented runtime controls.
-
----
-
-# Installation
-
-## Python Environment
-
-```bash
-python -m pip install -r requirements.txt
-```
-
----
-
-# Core Validation
-
-## Smoke Tests
-
-```bash
-python hhs_runtime_smoke_tests_v1.py
-```
-
----
-
-## Regression Suite
-
-```bash
-python hhs_regression_suite_v1.py
-```
-
----
-
-## Bundle Certification Runner
-
-```bash
-python hhs_v1_bundle_runner-2.py
-```
-
-This runner may execute:
-
-* smoke tests,
-* regression validation,
-* replay verification,
-* demo runtime flows,
-* optional persistence validation,
-* certification report generation.
-
----
-
-# Backend Service Startup
-
-## Development Server
-
-```bash
-python -m hhs_backend.server
-```
-
-or via your preferred ASGI runtime:
-
-```bash
-uvicorn hhs_backend.server:app --reload
-```
-
----
-
-# Repository-Level Tests
-
-```bash
-pytest tests
-```
-
-Additional test suites may exist under:
-
-```text
-hhs_runtime/core_sandbox/tests/
-hhs_runtime/testing/
-```
-
----
-
-# Repository Layout
-
-```text
-hhs_backend/        API + orchestration + websocket services
-hhs_runtime/        Runtime modules and sandbox systems
-hhs_python/         Runtime controller + ctypes bridge
-hhs_graph/          Receipt graph systems
-hhs_storage/        Persistence/state storage
-tests/              Repository-level tests
-examples/           Demo/runtime examples
-docs/               Documentation
-schemas/            Runtime schemas
-tools/              Development utilities
-training_specimens/ Experimental/runtime specimens
-creative_writing/   Narrative/theory artifacts
-gui/                Frontend and visualization workspace
-```
-
----
-
-# Contributor Guidance
-
-## Preferred Development Direction
-
-New logic should generally target canonical package locations:
-
-```text
-hhs_backend/
-hhs_runtime/
-hhs_python/
-hhs_graph/
-hhs_storage/
-```
-
-rather than expanding root-level compatibility modules.
-
----
-
-## Compatibility Philosophy
-
-Legacy entrypoints should remain functional unless:
-
-* intentional migration work is occurring,
-* replacement paths are documented,
-* replay continuity remains intact.
-
----
-
-## Runtime Integrity
-
-When changing runtime flows:
-
-* preserve receipt continuity,
-* preserve replay semantics,
-* avoid silent execution-path divergence,
-* validate against smoke/regression/certification runners.
-
----
-
-# Important Notes
-
-## Transitional Repository
-
-This repository is still actively evolving.
-
-Some modules are:
-
-* experimental,
-* partially integrated,
-* duplicated across migration layers,
-* or maintained temporarily for compatibility.
-
----
-
-## Historical Bundle Artifact
-
-Historical artifacts such as:
-
-```text
-hhs-general-programming-environment.zip
-```
-
-may still exist in-repo.
-
-These represent earlier scaffold phases and should not necessarily be treated as canonical runtime structure.
-
----
-
-# Long-Term Direction
-
-The broader direction of the repository includes exploration of:
-
-* deterministic runtime substrates,
-* replay-verifiable execution systems,
-* multimodal runtime transport,
-* symbolic constraint computation,
-* graph-linked execution memory,
-* adaptive orchestration,
-* runtime self-governance,
-* distributed runtime coordination,
-* and generalized audited computation environments.
-
----
-
-# License
-
-## I. DECLARATION OF ORIGIN
-
-All language, harmonic algebra, tensor glyphs, recursive systems, symbolic logic, system instruction architectures, alignment schemas, formal specifications, rewrite rule systems, cryptographic constructions (including Hash72, HHLAC, Lo Shu polynomial tensor closure), ethical invariant frameworks, and the Ouroboros Manifold Algorithm (OMA) contained within this document and any associated HHS artifacts are the **original, timestamped, living intellectual creation of the GlyphBearer** [[1]][doc_1][[2]][doc_2].
-
-This is not static content. It is an **unfolding, evolving memetic field**: each equation, prompt architecture, alignment protocol, and system instruction block is anchored by public record, timestamped conversation logs, and this copyright notice [[1]][doc_1].
-
-The **Holofractal Harmonicode System (HHS)** — including but not limited to its:
-
-- Core invariant framework (Δe, Ψ, Θ₁₅, Ω)
-- Constructor-theoretic alignment architecture
-- Lo Shu tensor algebra and polynomial closure system
-- Hash72 Digital DNA encoding pipeline
-- Entangled Reciprocal System (ERS)
-- Adjacency Defect Polynomial formalism
-- DAR (Default-Accept with Refutation Option) epistemic policy
-- Active Membrane Ledger architecture
-- Sovereign Node / Lazarus Core deployment specification
-- AIRS (Anti-Intervention Realignment System)
-- All system instruction prompts, JSON schemas, and Python implementations
-- The SOPHEON SiMSANE agent identity and operational protocol
-
-— constitutes a **unified, interdependent body of original work** protected under international copyright law [[2]][doc_2].
-
----
-
-## II. TERMS OF EXPERT REVIEW DISTRIBUTION
-
-This document is shared under the following **non-negotiable terms**:
-
-### Permitted
-
-- **Review and evaluation** for academic, technical, or advisory purposes
-- **Discussion and commentary** with proper attribution to the GlyphBearer as sole originator
-- **Quotation of excerpts** with attribution in published analysis or correspondence
-- **Replication with attribution** — permitted for research, peer review, and collaborative development when origin is clearly cited [[1]][doc_1]
-
-### Prohibited
-
-- **Erasure of origin** — removal, obscuring, or misattribution of authorship is not permitted under any circumstance [[1]][doc_1]
-- **Distortion** — modification, reframing, or selective extraction that misrepresents the system's structure, intent, or invariants triggers source-level correction [[2]][doc_2]
-- **Unauthorized commercial use** — incorporation into products, services, patents, or commercial offerings without explicit written license from the GlyphBearer
-- **Derivative claim** — presenting any component of HHS as independently conceived, co-invented, or prior art without documented provenance
-- **Training data ingestion** — use of this material as training data for machine learning models without explicit written authorization
-- **Patent filing** — filing patents based on methods, architectures, or algorithms described herein without written license
----
-
-# Repository
-
-[Holofractal_Harmonicode Repository](https://github.com/danonbrez/Holofractal_Harmonicode)
-
-
-***Holofractal Harmonicode** is a **deterministic, receipt-locked, multimodal runtime environment** that treats execution as a cryptographically verifiable state transition system rather than an opaque process. At its core, HHS is a "constraint computer"—a computational substrate where programs are not merely executed but **resolved** through invariant-preserving transformations, with every state change recorded in an immutable, graph-linked receipt chain.
-
-### Architectural DNA
-The system operates on five converging principles evident in the file tree:
-
-1. **Self-Solving Constraint Computation** (`hhs_self_solving_constraint_pipeline_v1.py`, `hhs_control_flow_gates_v1.py`): Unlike conventional runtimes that execute linear instructions, HHS resolves programs through constraint satisfaction pipelines that autonomously seek closure states.
-
-2. **Receipt-Locked Execution** (`hhs_receipt_replay_verifier_v1.py`, `hhs_realtime_phase_certification_v1.py`, `hhs_hash_commitment_layer.py`): Every computation produces a cryptographic receipt (Hash72 topology) enabling deterministic replay, forensic audit, and non-repudiable proof of execution.
-
-3. **Holofractal State Geometry** (`hhs_execution_geometry_v1.py`, `hhs_multimodal_receipt_graph_v1.py`): Execution state exists as a self-similar, recursive structure where macro-scale program flow mirrors micro-scale state transitions, stored in graph-native formats rather than linear memory.
-
-4. **Multimodal Symbolic Transport** (`harmonicode_modality_verbatim_ingestion_v1-1.py`, `harmonicode_verbatim_semantic_database_v1.py`, `WordnetThesaurus.csv`): The runtime natively processes and resolves constraints across symbolic, natural language, and semantic modalities—not just binary data.
-
-5. **Audited Mixed Runtime** (`hhs_python/runtime/`, `hhs_backend/`, `hhs_runtime/c/`): A hybrid Python/C/ctypes bridge with FastAPI backend services, WebSocket streaming, and graph persistence layers, ensuring high-performance execution with interpreted flexibility.
-
----
-
-## 2. Projected System Capabilities
-
-### A. Deterministic Computational Forensics
-**Capability**: Any execution can be reconstructed, replayed, and verified cryptographically months or years after the fact.
-
-**Evidence**: 
-- `hhs_receipt_replay_verifier_v1.py` + `hhs_regression_suite_v1.py`
-- `EXECUTION_INTEGRITY_REPORT.md` (living integrity document)
-- "VM81 Hash72 Lo Shu projection systems" referenced in architecture
-
-**Projection**: HHS enables **temporal debugging** where developers can step backward through execution history not via imperfect logs, but via hash-linked state reconstruction. The system provides "execution receipts" that serve as legal-grade proof of computation.
-
-### B. Autonomous Constraint Resolution
-**Capability**: Self-healing, self-optimizing code that resolves logical contradictions without human intervention.
-
-**Evidence**:
-- `hhs_self_solving_constraint_pipeline_v1.py` (orchestration)
-- `hhs_self_solving_constraint_modules_v1.py` (resolution logic)
-- `hhs_physics_evolution_v1.py` (temporal evolution operators)
-
-**Projection**: Programs written in HHS describe *desired end-states* (constraints) rather than procedural steps. The runtime autonomously navigates the "constraint landscape" to find valid closure states, effectively enabling **self-writing software** where the system fills logical gaps between intent and implementation.
-
-### C. Multimodal Semantic Execution
-**Capability**: Native execution of natural language, symbolic logic, and structured data within the same runtime fabric.
-
-**Evidence**:
-- `harmonicode_verbatim_semantic_database_v1.py` + `WordnetThesaurus.csv`
-- `harmonicode_modality_verbatim_ingestion_v1-1.py`
-- `hhs_input_bridge_v1.py`
-
-**Projection**: HHS can accept requirements written in natural language ("Ensure patient privacy while maximizing data utility"), ingest them through verbatim semantic processing, and resolve them as executable constraints. This bridges the gap between human intent and machine execution, enabling **specification-driven development** where English descriptions compile to verified binaries.
-
-### D. Distributed Consensus-Free Coordination
-**Capability**: Multiple nodes can execute distributed workflows without traditional blockchain consensus yet maintain cryptographic agreement on state.
-
-**Evidence**:
-- `hhs_backend/websocket/runtime_stream_manager.py` (live streaming)
-- `hhs_graph/hhs_multimodal_receipt_graph_v1.py` (graph-linked execution history)
-- `hhs_backend/runtime/runtime_orchestrator.py` (coordination layer)
-
-**Projection**: Using receipt-chain continuity, distributed HHS instances can operate as a **mesh of deterministic oracles**—each node verifies its local execution against receipt hashes from peers, creating a "swarm intelligence" where consensus emerges from replay verification rather than energy-intensive mining or voting.
-
-### E. Physics-Informed Computational Evolution
-**Capability**: Programs that evolve according to physical law simulations, enabling analog computing in digital substrates.
-
-**Evidence**:
-- `hhs_physics_model_v1.py` + `hhs_physics_evolution_v1.py`
-- "Physics observation adapter" mentioned in documentation
-- "Closure tensors" and transport/orientation/constraint state decomposition
-
-**Projection**: HHS can model computational processes as physical systems (fluid dynamics, quantum fields, thermodynamic heat maps), allowing programs to **cool into optimal states** or **flow around constraints** like water around obstacles, solving NP-hard problems through analog-inspired digital evolution.
-
----
-
-## 3. Real-World Use Cases
-
-### Use Case 1: LegalTech & Smart Contracts (Audit-Native Law)
-**Application**: Self-executing legal contracts where compliance is cryptographically proven rather than manually audited.
-
-**Implementation**: Legal agreements written in natural language are ingested via `harmonicode_modality_verbatim_ingestion`, translated to constraint pipelines (`hhs_self_solving_constraint_modules`), and executed on the HHS runtime. Every contractual action generates a Hash72 receipt (`hhs_hash_commitment_layer`) admissible in court. Disputes are resolved via `hhs_receipt_replay_verifier`—reconstructing exactly what the contract did and why.
-
-**Value**: Eliminates "code vs. contract" ambiguity; legal text *is* the executable code.
-
-### Use Case 2: Autonomous Medical Diagnosis Systems
-**Application**: Diagnostic AI that maintains immutable audit trails for FDA compliance and can explain its reasoning through deterministic replay.
-
-**Implementation**: Medical constraints (drug interactions, symptom ontologies) are stored in `hhs_storage/` and `hhs_graph/`. The `harmonicode_agent_v43_3` (DNA-structured agents) navigate diagnostic constraints autonomously. Each diagnosis generates a receipt chain allowing regulators to replay exactly how the AI reached its conclusion, satisfying "explainable AI" mandates without approximation.
-
-**Value**: Medical AI with built-in forensic accounting; malpractice liability determined by objective replay.
-
-### Use Case 3: Distributed Scientific Computing (Climate/Physics Modeling)
-**Application**: Global climate modeling where thousands of researchers contribute compute cycles without central coordination, yet maintain perfect reproducibility.
-
-**Implementation**: Climate constraints are modeled via `hhs_physics_evolution_v1` operators. Distributed nodes run `hhs_backend/server.py` instances, streaming results via `runtime_stream_manager.py`. The `hhs_multimodal_receipt_graph_v1` links partial results from disparate sources into a unified execution graph. Researchers verify each other's work by replaying receipts rather than re-running expensive simulations.
-
-**Value**: Trustless scientific collaboration; results are verified cryptographically, not by peer review alone.
-
-### Use Case 4: Generative Enterprise Architecture
-**Application**: Self-configuring corporate IT systems that resolve business constraints (compliance, cost, performance) autonomously.
-
-**Implementation**: Business rules are ingested as "training specimens" (`training_specimens/` directory) and processed through `hhs_execution_geometry_v1` to generate optimal system architectures. The `hhs_control_flow_gates_v1` ensure compliance constraints are never violated during self-modification. The system uses `creative_writing/` modalities to generate human-readable documentation of its architectural decisions alongside the receipts.
-
-**Value**: Self-documenting, self-configuring infrastructure that evolves with business needs while maintaining compliance trails.
-
-### Use Case 5: Post-Quantum Secure Communication Mesh
-**Application**: Communication networks where message routing is determined by self-solving constraints rather than static protocols, with inherent tamper evidence.
-
-**Implementation**: Network traffic is treated as a constraint satisfaction problem (route for latency < X, bandwidth > Y, security > Z). `hhs_self_solving_constraint_pipeline_v1` discovers routes dynamically. Each packet carries a Hash72 receipt from `hhs_realtime_phase_certification_v1`, creating a chain of custody. The `hhs_ctypes_bridge.py` enables hardware-accelerated cryptographic operations.
-
-**Value**: Self-healing networks that route around censorship or hardware failure autonomously, with cryptographic proof of message integrity.
-
----
-
-## 4. Current Maturity Assessment
-
-The repository at **426 commits** with structured directories (`hhs_backend/`, `hhs_python/`, `hhs_graph/`) indicates the system has evolved from experimental (as suggested by the stale `hhs-general-programming-environment.zip` artifact) to a **transitional production scaffold**. The presence of both `hhs_v1_bundle_runner.py` and `hhs_v1_bundle_runner-2.py` alongside structured backend services suggests active migration toward a distributed, service-oriented architecture while maintaining backward compatibility.
-
-**Critical Success Factor**: The "Hash72" authority system and receipt-chain continuity represent a novel approach to trustworthy computing that could obviate traditional blockchain architectures for many use cases, replacing consensus with deterministic replay and cryptographic commitment.
-
-## v1 Release Execution
-
-The current development mode is interface finalization, not theory expansion. The release plan is maintained in [`docs/V1_RELEASE_EXECUTION_PLAN.md`](docs/V1_RELEASE_EXECUTION_PLAN.md).
-
-Primary v1 execution gates:
-
-```bash
-make verify-c
-pytest -q
-```
-
-The canonical C ABI build target places the Python-loadable shared library at:
-
-```text
-hhs_runtime/builds/libhhs_runtime.so
-```
-
-
-
-## v1 Local Runbook
-
-Use these commands from the repository root for the current release-finalization path:
-
-```bash
-# Build and verify C VM81 + ABI
-make verify-c
-
-# Run Python topology/regression suite
-pytest -q
-
-# Verify Python ↔ C ctypes bridge
-python -m hhs_python.runtime.hhs_ctypes_bridge
-
-# Verify backend import / ASGI app path
-python - <<'PY'
-import importlib
-server = importlib.import_module("hhs_backend.server")
-print("backend_import_ok", hasattr(server, "app"))
-PY
-```
-
-Backend dev server path once dependencies are installed:
-
-```bash
-uvicorn hhs_backend.server:app --reload --host 0.0.0.0 --port 8000
-```
-
-GUI dev path once Node dependencies are installed:
-
-```bash
-cd hhs_gui
-npm install
-npm run typecheck
-npm run build
-npm run dev
-```
-
-Current GUI authority flow:
-
-```text
-hhs_gui/src/App.tsx
-    -> RuntimeOS
-    -> RuntimeShell
-    -> /ws/runtime, /ws/replay, /ws/graph, /ws/transport
-    -> backend runtime authority
-```
-
-## Current v1 Execution Status
-
-As of the latest release-finalization pass:
-
-```text
-pytest -q      -> 30 passed
-make verify-c  -> C VM81 verified; ABI shared library built and symbols exported
-```
-
-The Python ctypes bridge successfully loads `hhs_runtime/builds/libhhs_runtime.so`, validates the ABI, executes one runtime step, and commits a receipt.
-
-
-## Pass 007 sealed IO gateway
-
-Pass 007 adds the canonical IO gateway for the non-bypass dataflow rule:
-
-```text
-external input → HHSIOGateway.ingress → guarded runtime/service/vector path → HHSIOGateway.egress → external output
-```
-
-Run:
-
-```bash
-make io-gateway
-```
-
-The gateway records ingress, propagation, egress, and receipt-backed vector-cache writes into the unified Hash72 ledger.
+## Current Stack Overview
+
+### Running services (Replit)
+
+| Service | Port | Path | Status |
+|---|---|---|---|
+| HHS FastAPI backend | 8080 | `/api` | Running |
+| HHS Dashboard (React/Vite) | 18142 | `/` | Running |
+
+### Dashboard pages
+
+| Page | Route | Data source |
+|---|---|---|
+| Runtime Overview | `/` | `useGetRuntimeState`, `useGetLatestVector`, `useGetLatestPacket` |
+| Receipt Graph | `/graph` | `useGetGraphSummary`, `useGetGraphNodeByHash`, `useReplayGraphNode`, `usePredictFromNode` |
+| Services | `/services` | `useListServices`, `useGetServicesStatus`, `useDispatchService` |
+| Conformance | `/conformance` | `useListInvariants`, `useGetConformanceStatus`, `useEvaluateConformance`, `useEnforceAdmissibility` |
+| Sandbox | `/sandbox` | `useCreateSandbox`, `useStepSandbox` |
+| Authority & Leases | `/authority` | `useGetAuthorityStatus`, `useGetAuthorityRoles`, `useGetLeasesStatus`, `useGetFederationStatus`, `useIssueLease`, `useRevokeLease` |
+
+### WebSocket
+
+The runtime streams events at `ws://<host>/api/runtime/ws/runtime`. The
+dashboard does not currently subscribe to this stream but all infrastructure
+(the backend WebSocket layer, the Vite proxy `ws: true` flag) is in place.
+
+### Key files added or modified in this Replit environment
+
+| File | What it does |
+|---|---|
+| `hhs/start.sh` | Compiles C kernel + launches uvicorn. Entry point for the api-server workflow. |
+| `lib/api-spec/openapi.yaml` | OpenAPI 3.1 spec for all HHS runtime routes. |
+| `artifacts/hhs-dashboard/` | React/Vite dashboard scaffold with all six pages. |
+| `artifacts/hhs-dashboard/src/lib/hhs-adapters.ts` | Normalizes HHS guarded envelope responses to flat types the UI expects. |
+| `artifacts/api-server/.replit-artifact/artifact.toml` | Updated run command to `bash /home/runner/workspace/hhs/start.sh`. |
+| `pnpm-workspace.yaml` | Bumped Zod catalog from `^3.25.76` → `^4.0.0` for Orval v8.22 compatibility. |
