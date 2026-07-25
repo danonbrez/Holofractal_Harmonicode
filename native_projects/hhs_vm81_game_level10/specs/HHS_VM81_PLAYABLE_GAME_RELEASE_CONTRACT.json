@@ -1,0 +1,70 @@
+{
+  "contract_id": "HHS-VM81-PLAYABLE-GAME-RELEASE-V1",
+  "version": "1.0.0",
+  "inherits": "HHS-VM81-GAME-L10-V1",
+  "terminal_classification": "VM81_PLAYABLE_GAME_RELEASE_VERIFIED",
+  "purpose": "Close the Level 10 native VM81 demonstration as an independently playable deterministic platform game without duplicating the authoritative VM81 physics or instruction path.",
+  "authority": {
+    "physics_and_vm_mutation": "hhs_vm81_game_execute",
+    "reset_boundary": "hhs_vm81_game_reset",
+    "frontend_role": "Input collection, lifecycle orchestration, terminal rendering, and evidence export only",
+    "forbidden": [
+      "Parallel frontend physics",
+      "Floating-point gameplay state",
+      "Receipt bypass",
+      "Unreceipted opcode execution"
+    ]
+  },
+  "runtime": {
+    "display_pixels": [160, 144],
+    "viewport_tiles": [20, 18],
+    "level_tiles": [64, 18],
+    "tile_size_pixels": 8,
+    "ticks_per_second": 60,
+    "arithmetic": "signed integer and fixed subpixel",
+    "program_opcodes": 19,
+    "input_capacity_frames": 1024
+  },
+  "lifecycle": [
+    "TITLE",
+    "RUNNING",
+    "PAUSED",
+    "VICTORY",
+    "GAME_OVER",
+    "QUIT"
+  ],
+  "controls": {
+    "left": ["A", "a"],
+    "right": ["D", "d"],
+    "jump": ["SPACE", "W", "w"],
+    "pause": ["P", "p"],
+    "restart": ["R", "r"],
+    "quit": ["Q", "q"],
+    "start_or_restart_after_terminal_state": "ENTER"
+  },
+  "gameplay": {
+    "initial_lives": 3,
+    "checkpoint_x_pixels": [160, 320],
+    "goal_x_pixels": 480,
+    "hazard_tile_ranges": [[13, 14], [27, 28], [41, 42]],
+    "checkpoint_restore": "Reset the VM81 nucleus and deterministically advance through admitted VM81 instructions to the active checkpoint.",
+    "victory_closure": "After the goal is reached, execute the remaining deterministic zero-input tail and terminal HALT so all 19 opcodes are covered and the final receipt is closed."
+  },
+  "required_evidence": {
+    "interactive_executable": "dist/hhs-vm81-platformer",
+    "headless_verification": "dist/playable-verification.json",
+    "core_verification": "dist/verification.json",
+    "release_test_executable": "dist/test-hhs-vm81-game-release",
+    "required_assertions": [
+      "Complete-level playthrough reaches VICTORY",
+      "Both checkpoints are reached",
+      "Opcode coverage is 19/19",
+      "Replay is MATCH",
+      "Hash72 final receipt matches replay",
+      "Hash216 final identity matches replay",
+      "Pause performs no VM mutation",
+      "Hazards decrement lives and invoke deterministic respawn",
+      "ASAN and UBSAN verification pass"
+    ]
+  }
+}
