@@ -12,6 +12,7 @@ REPORT_PATH = REPORT_DIR / "HHS_NFV_CORE_TRANCHE_TEST_REPORT.json"
 TESTS = [
     "tests/nfv/test_nfv_core.py",
     "tests/nfv/test_nfv_graph_store_serialization.py",
+    "tests/nfv/test_nfv_harmonic_convolution_fourier.py",
 ]
 
 
