@@ -46,8 +46,27 @@ static void test_complete_playthrough_and_replay(void) {
     HHSVM81GameRelease release;
     HHSVM81GameReleaseReport report;
     HHSVM81GameReleaseReport replay;
+    HHSVM81GameStatus status;
     assert(hhs_vm81_game_release_init(&release) == HHS_GAME_STATUS_OK);
-    assert(hhs_vm81_game_release_run_headless(&release, &report) == HHS_GAME_STATUS_OK);
+    status = hhs_vm81_game_release_run_headless(&release, &report);
+    if (status != HHS_GAME_STATUS_OK) {
+        fprintf(stderr,
+            "PLAYTHROUGH_STOP status=%u phase=%u frame=%u vm_frame=%llu x_px=%d y_px=%d vx=%d vy=%d lives=%u deaths=%u checkpoint=%u coverage=0x%08x receipts=%u\n",
+            (unsigned)status,
+            release.phase,
+            release.player_frames,
+            (unsigned long long)release.vm.frame,
+            release.vm.player.x_subpx / HHS_VM81_GAME_SUBPIXELS,
+            release.vm.player.y_subpx / HHS_VM81_GAME_SUBPIXELS,
+            release.vm.player.vx_subpx,
+            release.vm.player.vy_subpx,
+            release.lives,
+            release.deaths,
+            release.checkpoint,
+            release.vm.opcode_coverage,
+            release.vm.receipt_count);
+    }
+    assert(status == HHS_GAME_STATUS_OK);
     assert(release.phase == HHS_GAME_RELEASE_VICTORY);
     assert(report.phase == HHS_GAME_RELEASE_VICTORY);
     assert(report.checkpoint == HHS_VM81_GAME_RELEASE_CHECKPOINTS);
