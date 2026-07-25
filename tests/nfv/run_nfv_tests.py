@@ -13,6 +13,8 @@ TESTS = [
     "tests/nfv/test_nfv_core.py",
     "tests/nfv/test_nfv_graph_store_serialization.py",
     "tests/nfv/test_nfv_harmonic_convolution_fourier.py",
+    "tests/nfv/test_nfv_composition.py",
+    "tests/nfv/test_nfv_interaction.py",
 ]
 
 
@@ -21,7 +23,7 @@ def main() -> int:
     completed = subprocess.run(command, cwd=ROOT, text=True, capture_output=True, check=False)
     REPORT_DIR.mkdir(parents=True, exist_ok=True)
     report = {
-        "schema": "HHS_NFV_CORE_TRANCHE_TEST_REPORT_V1",
+        "schema": "HHS_NFV_CORE_TRANCHE_TEST_REPORT_V2",
         "contract_id": "HHS-NFV-CEN-V1",
         "pass_number": 154,
         "classification": "PARTIALLY_IMPLEMENTED",
