@@ -23,6 +23,30 @@ from .serialization import (
     serialize_package,
 )
 from .store import NFVStore, ObjectRef, ReplayResult, replay_packages
+from .audio import (
+    ALL_LANES,
+    CROSS_LINKS,
+    RING_EDGES,
+    SURROUND_LANES,
+    ExactScalar,
+    HarmonicField,
+    HarmonicLane,
+    RationalCenterChannel,
+)
+from .convolution import (
+    ConvolutionKernel,
+    ConvolutionKernelBank,
+    refresh_kernel_bank,
+    render_convolution_chamber,
+)
+from .fourier import (
+    FrequencyRegister,
+    GaussianRational,
+    classify_phase_interaction,
+    decompose_frequency_register,
+    dft4,
+    inverse_dft4,
+)
 
 __all__ = [
     "CONTRACT_ID",
@@ -51,4 +75,22 @@ __all__ = [
     "ObjectRef",
     "ReplayResult",
     "replay_packages",
+    "ALL_LANES",
+    "CROSS_LINKS",
+    "RING_EDGES",
+    "SURROUND_LANES",
+    "ExactScalar",
+    "HarmonicField",
+    "HarmonicLane",
+    "RationalCenterChannel",
+    "ConvolutionKernel",
+    "ConvolutionKernelBank",
+    "refresh_kernel_bank",
+    "render_convolution_chamber",
+    "FrequencyRegister",
+    "GaussianRational",
+    "classify_phase_interaction",
+    "decompose_frequency_register",
+    "dft4",
+    "inverse_dft4",
 ]
