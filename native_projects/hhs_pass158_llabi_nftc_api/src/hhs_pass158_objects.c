@@ -487,6 +487,7 @@ HHS158Status hhs158_instance_validate_dynamic(HHS158Instance *instance, const HH
     HHS158ValidationReport static_report;
     size_t i;
     if (!inputs || !hhs158_header_valid(&inputs->header, sizeof(*inputs))) return HHS158_STRUCT_SIZE_INVALID;
+    if (inputs->value_count && !inputs->values) return HHS158_INVALID_ARGUMENT;
     status = hhs158_instance_validate_static(instance, policy, &static_report);
     if (status != HHS158_OK) { if (out_report) *out_report = static_report; return status; }
     if ((hhs158_span_equal_text(inputs->parser_profile, "C_EXPRESSION") || hhs158_span_equal_text(inputs->parser_profile, "JAVASCRIPT_EXPRESSION") ||
@@ -509,24 +510,29 @@ HHS158Status hhs158_instance_retire(HHS158Instance *instance, HHS158Capability *
     if (!instance_valid(instance)) return HHS158_HANDLE_RELEASED;
     status = hhs158_capability_check(capability, instance, HHS158_CAP_COMMIT, HHS158_MUTATION_INSTANCE);
     if (status != HHS158_OK) return status;
-    instance->lifecycle = HHS158_LIFECYCLE_RETIRED;
-    return hhs158_make_receipt(instance->context, HHS158_OK, "HHS_P158_NFT_INSTANCE_RETIRED", instance->definition, instance,
+    status = hhs158_make_receipt(instance->context, HHS158_OK, "HHS_P158_NFT_INSTANCE_RETIRED", instance->definition, instance,
         NULL, instance->current_state_root, instance->current_state_root, NULL, "RETIRE", 6u, 0u, 0u,
         HHS158_LIFECYCLE_RETIRED, 1u, out_receipt);
+    if (status != HHS158_OK) return status;
+    instance->lifecycle = HHS158_LIFECYCLE_RETIRED;
+    return HHS158_OK;
 }
 
 HHS158Status hhs158_instance_quarantine(HHS158Instance *instance, uint32_t reason_code, HHS158Receipt **out_receipt) {
     char material[64];
     int written;
+    HHS158Status status;
     if (!out_receipt) return HHS158_INVALID_ARGUMENT;
     *out_receipt = NULL;
     if (!instance_valid(instance)) return HHS158_HANDLE_RELEASED;
-    instance->lifecycle = HHS158_LIFECYCLE_QUARANTINED;
     written = snprintf(material, sizeof(material), "QUARANTINE:%u", reason_code);
     if (written < 0 || (size_t)written >= sizeof(material)) return HHS158_OUTPUT_BOUND;
-    return hhs158_make_receipt(instance->context, HHS158_REJECTED, "HHS_P158_NFT_INTEGRATION_REQUEST_REJECTED", instance->definition, instance,
+    status = hhs158_make_receipt(instance->context, HHS158_REJECTED, "HHS_P158_NFT_INTEGRATION_REQUEST_REJECTED", instance->definition, instance,
         NULL, instance->current_state_root, instance->current_state_root, NULL, material, (size_t)written, 0u, 0u,
         HHS158_LIFECYCLE_QUARANTINED, 0u, out_receipt);
+    if (status != HHS158_OK) return status;
+    instance->lifecycle = HHS158_LIFECYCLE_QUARANTINED;
+    return HHS158_OK;
 }
 
 void hhs158_instance_release(HHS158Instance *instance) {

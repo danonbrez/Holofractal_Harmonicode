@@ -97,7 +97,7 @@ class ServiceConformance(unittest.TestCase):
                 "POST", f"{BASE}/nft/instances/{instance_id}/transitions",
                 {
                     "capability_id": capability_id,
-                    "operations": [{"opcode": "BIND_EQ", "operands": [root]}],
+                    "operations": [{"opcode": "BIND_EQ", "operands": [root, root]}],
                     "commit_policy": "EXECUTE_THEN_COMMIT",
                 },
             )

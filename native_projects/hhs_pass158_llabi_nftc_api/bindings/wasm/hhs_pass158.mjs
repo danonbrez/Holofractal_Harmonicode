@@ -1,29 +1,11 @@
-import { createHash } from "node:crypto";
-
 export const CONTRACT_ID = "HHS-P158-LLABI-NFTC-API";
-const ALPHABET = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-+*/()<>!?";
+const HASH72_ALPHABET = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-+*/()<>!?";
 
-function stable(value) {
-  if (Array.isArray(value)) return `[${value.map(stable).join(",")}]`;
-  if (value && typeof value === "object") {
-    return `{${Object.keys(value).sort().map((key) => `${JSON.stringify(key)}:${stable(value[key])}`).join(",")}}`;
-  }
-  if (typeof value === "bigint") return JSON.stringify(`${value}n`);
-  return JSON.stringify(value);
+function requireCanonicalGlyphs(value, length, label) {
+  if (typeof value !== "string" || value.length !== length) throw new Error(`${label}_LENGTH_INVALID`);
+  for (const symbol of value) if (!HASH72_ALPHABET.includes(symbol)) throw new Error(`${label}_ALPHABET_INVALID`);
+  return value;
 }
-
-function glyphHash(text, length, domain) {
-  let seed = Buffer.from(`${domain}|${text}`, "utf8");
-  const output = [];
-  for (let index = 0; index < length; index += 1) {
-    seed = createHash("sha256").update(seed).update(Buffer.from(String(index))).digest();
-    output.push(ALPHABET[seed[index % seed.length] % ALPHABET.length]);
-  }
-  return output.join("");
-}
-
-function hash216(text) { return glyphHash(text, 216, "HHS158_HASH216"); }
-function hash72(text) { return glyphHash(text, 72, "HHS158_HASH72"); }
 
 export function bigintToCanonicalBytes(value) {
   if (typeof value !== "bigint") throw new TypeError("BigInt required");
@@ -59,10 +41,47 @@ export class ExactRational {
   valueOf() { throw new TypeError("authoritative rational cannot coerce to Number"); }
 }
 
+export class KernelAuthorityAdapter {
+  constructor({ identify, project }) {
+    if (typeof identify !== "function" || typeof project !== "function") throw new TypeError("kernel authority adapter required");
+    this._identify = identify;
+    this._project = project;
+    Object.freeze(this);
+  }
+  identify(definition) { return this._identify(structuredClone(definition)); }
+  project(request) { return this._project(structuredClone(request)); }
+}
+
+function verifyKernelResponse(response, definitionId) {
+  if (!response || response.kernelAuthority !== "HHS_PASS158_NATIVE_ABI" || response.replayVerified !== true || response.replay?.matched !== true) {
+    throw new Error("KERNEL_RECEIPT_REPLAY_REQUIRED");
+  }
+  if (response.definitionId !== definitionId) throw new Error("HASH216_DEFINITION_ID_MISMATCH");
+  const receipt = response.receipt;
+  requireCanonicalGlyphs(receipt?.receipt_id, 72, "HASH72_RECEIPT");
+  requireCanonicalGlyphs(receipt?.object_root, 216, "HASH216_OBJECT_ROOT");
+  if (receipt.classification !== "HHS_P158_PROJECTION_NON_MUTATING") throw new Error("KERNEL_RECEIPT_CLASSIFICATION_INVALID");
+  return Object.freeze({
+    projection: Object.freeze(response.projection),
+    receipt: Object.freeze({
+      receiptId: receipt.receipt_id,
+      objectRoot: receipt.object_root,
+      classification: receipt.classification,
+      replayVerified: true,
+    }),
+  });
+}
+
 export class ReadOnlyNFT {
-  constructor(definition) {
+  constructor(definition, authority) {
+    if (!(authority instanceof KernelAuthorityAdapter)) throw new TypeError("kernel authority adapter required");
     this.definition = structuredClone(definition);
-    this.definitionId = `hash216:${hash216(stable(this.definition))}`;
+    this.authority = authority;
+    const identity = authority.identify(this.definition);
+    if (!identity || identity.kernelAuthority !== "HHS_PASS158_NATIVE_ABI" || identity.definitionReplay?.matched !== true) {
+      throw new Error("KERNEL_DEFINITION_RECEIPT_REQUIRED");
+    }
+    this.definitionId = requireCanonicalGlyphs(identity.definitionId, 216, "HASH216_DEFINITION_ID");
     this.bindings = new Map();
   }
   bind(symbol, value) {
@@ -75,24 +94,12 @@ export class ReadOnlyNFT {
     return Object.freeze({ status: "VALIDATED", definitionId: this.definitionId, bindingCount: this.bindings.size });
   }
   project(profile = "IEEE754_BINARY64_CONTROL") {
-    const rational = [...this.bindings.values()].find((value) => value instanceof ExactRational);
-    if (!rational) throw new Error("TYPE_MISMATCH");
-    const approximate = Number(rational.numerator) / Number(rational.denominator);
-    if (!Number.isFinite(approximate)) throw new Error("NONFINITE_PROJECTION");
-    const projection = Object.freeze({ profile, approximate, authority: "PROJECTION_ONLY" });
-    const delta = Object.freeze({
-      ratio: new ExactRational(BigInt(Math.round(approximate * 1_000_000)), 1_000_000n),
-      reference: rational,
-    });
-    const receiptPayload = stable({ definitionId: this.definitionId, profile, approximate, reference: rational.canonical() });
-    return Object.freeze({
-      projection,
-      delta,
-      receipt: Object.freeze({
-        receiptId: `hash72:${hash72(receiptPayload)}`,
-        objectRoot: `hash216:${hash216(receiptPayload)}`,
-        classification: "HHS_P158_WASM_READ_ONLY_PROJECTION_VERIFIED",
-      }),
-    });
+    const bindings = {};
+    for (const [symbol, value] of this.bindings.entries()) {
+      if (!(value instanceof ExactRational)) throw new Error("TYPE_MISMATCH");
+      bindings[symbol] = { kind: "RATIONAL", value: value.canonical() };
+    }
+    const response = this.authority.project({ definition: this.definition, definitionId: this.definitionId, bindings, profile });
+    return verifyKernelResponse(response, this.definitionId);
   }
 }
