@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#070a12">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; worker-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'">
+  <title>HHS Pass 157 Unified GUI</title>
+  <link rel="stylesheet" href="/styles/app.css">
+</head>
+<body>
+  <div id="hhs-app" class="app-shell" data-boot-state="UNINITIALIZED">
+    <header class="app-header">
+      <div>
+        <p class="eyebrow">HHS PASS 157</p>
+        <h1>Unified Holofractal Application</h1>
+      </div>
+      <div class="status-strip" aria-live="polite">
+        <span id="boot-status" class="status-pill">UNINITIALIZED</span>
+        <span id="profile-status" class="status-pill">PROFILE: UNRESOLVED</span>
+        <span id="step-status" class="status-pill">STEP: 0</span>
+      </div>
+    </header>
+
+    <nav class="workspace-nav" aria-label="HHS workspaces">
+      <button type="button" data-workspace="Swarm" aria-current="page">Swarm</button>
+      <button type="button" data-workspace="Constructor Bridge">Constructor Bridge</button>
+      <button type="button" data-workspace="Torus72">Torus72</button>
+      <button type="button" data-workspace="Calculator">Calculator</button>
+      <button type="button" data-workspace="Symbolic">Symbolic</button>
+      <button type="button" data-workspace="Equality Registry">Equality Registry</button>
+      <button type="button" data-workspace="Particle Physics">Particle Physics</button>
+      <button type="button" data-workspace="Trace and Receipts">Trace and Receipts</button>
+      <button type="button" data-workspace="System">System</button>
+    </nav>
+
+    <main class="workspace-grid">
+      <section class="visual-stage" aria-label="Particle visualization">
+        <canvas id="swarm-canvas" tabindex="0" aria-label="5,184-state Hash72 particle visualization"></canvas>
+        <div class="canvas-controls">
+          <button type="button" id="physics-toggle">Pause</button>
+          <button type="button" id="physics-step">Step</button>
+          <button type="button" id="physics-reset">Reset</button>
+          <label>Profile
+            <select id="profile-select">
+              <option>MOBILE_SAFE</option>
+              <option>BALANCED</option>
+              <option>DESKTOP_HIGH</option>
+              <option>DIAGNOSTIC</option>
+            </select>
+          </label>
+        </div>
+      </section>
+
+      <section class="workspace-panel" aria-live="polite">
+        <article data-panel="Swarm">
+          <h2>Swarm</h2>
+          <p>Every visible state is bound to one ordered Hash72 pair, one 8×8 sector pair, and one VM81 local cell.</p>
+          <dl id="particle-summary" class="data-grid">
+            <dt>Selection</dt><dd>None</dd>
+            <dt>Population</dt><dd>5,184</dd>
+            <dt>Authority</dt><dd>Exact identity; projected motion</dd>
+          </dl>
+        </article>
+
+        <article data-panel="Constructor Bridge" hidden>
+          <h2>Constructor Bridge</h2>
+          <textarea id="constructor-source" rows="7">u==0==1-1==-1+1; u^72==1; P^2(MOD)(pq)</textarea>
+          <button type="button" id="constructor-parse">Construct typed AST</button>
+          <pre id="constructor-output"></pre>
+        </article>
+
+        <article data-panel="Torus72" hidden>
+          <h2>Torus72</h2>
+          <p>Phase72, phase64, and the 576-state refresh address remain explicit in every particle record.</p>
+          <button type="button" id="focus-zero">Focus H72:0:0</button>
+          <pre id="torus-output"></pre>
+        </article>
+
+        <article data-panel="Calculator" hidden>
+          <h2>Exact Calculator</h2>
+          <div class="inline-form">
+            <input id="calc-left" value="1/3" aria-label="Left exact ratio">
+            <select id="calc-op" aria-label="Operator"><option>+</option><option>*</option></select>
+            <input id="calc-right" value="2/3" aria-label="Right exact ratio">
+            <button type="button" id="calc-run">Evaluate</button>
+          </div>
+          <pre id="calc-output"></pre>
+        </article>
+
+        <article data-panel="Symbolic" hidden>
+          <h2>Symbolic</h2>
+          <textarea id="symbolic-source" rows="7">x+y&lt;zw&lt;x&lt;z&lt;yx&lt;wz&lt;y&lt;w&lt;xy&lt;b^2&lt;c^2</textarea>
+          <button type="button" id="symbolic-parse">Parse without eval</button>
+          <pre id="symbolic-output"></pre>
+        </article>
+
+        <article data-panel="Equality Registry" hidden>
+          <h2>Equality Registry</h2>
+          <div class="stack-form">
+            <input id="equality-id" value="golden" aria-label="Equality identifier">
+            <input id="equality-left" value="Phi^2" aria-label="Equality left side">
+            <input id="equality-right" value="Phi+1" aria-label="Equality right side">
+            <button type="button" id="equality-register">Register guarded equality</button>
+          </div>
+          <pre id="equality-output"></pre>
+        </article>
+
+        <article data-panel="Particle Physics" hidden>
+          <h2>Particle Physics</h2>
+          <dl id="physics-diagnostics" class="data-grid"></dl>
+        </article>
+
+        <article data-panel="Trace and Receipts" hidden>
+          <h2>Trace and Receipts</h2>
+          <button type="button" id="trace-seal">Seal trace bundle</button>
+          <button type="button" id="replay-run">Replay physics receipt</button>
+          <pre id="trace-output"></pre>
+        </article>
+
+        <article data-panel="System" hidden>
+          <h2>System</h2>
+          <button type="button" id="system-refresh">Refresh diagnostics</button>
+          <pre id="system-output"></pre>
+        </article>
+      </section>
+    </main>
+
+    <footer class="app-footer">
+      <span>Exact symbolic authority is isolated from the graphics float projection.</span>
+      <span id="trace-head">TRACE: EMPTY</span>
+    </footer>
+  </div>
+  <script type="module" src="/src/app/boot.js"></script>
+</body>
+</html>
