@@ -123,7 +123,7 @@ size_t hhs158_hex_encode(const uint8_t *data, size_t size, char *output, size_t 
         output[i * 2u + 1u] = HEX[data[i] & 0x0fu];
     }
     output[size * 2u] = '\0';
-    return size * 2u;
+    return size ? size * 2u : 1u;
 }
 
 static int hhs158_hex_value(char c) {
