@@ -45,7 +45,14 @@ jobs:
           else
             export HHS_PASS157_MAIN_MERGED=0
           fi
-          make -C native_projects/hhs_pass157_ppf_mptc verify
+          mkdir -p native_projects/hhs_pass157_ppf_mptc/dist
+          set +e
+          make -C native_projects/hhs_pass157_ppf_mptc verify \
+            > native_projects/hhs_pass157_ppf_mptc/dist/hosted-verification.log 2>&1
+          code=$?
+          set -e
+          cat native_projects/hhs_pass157_ppf_mptc/dist/hosted-verification.log
+          exit "$code"
 
       - name: Build complete tracked-repository release package
         shell: bash
