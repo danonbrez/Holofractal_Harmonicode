@@ -4,6 +4,7 @@ from hhs_backend.runtime.live_kernel_event_bridge_v1 import (
     live_kernel_event_bridge_self_test,
 )
 from hhs_python.runtime.hhs_runtime_emulator import HHSCEmulator
+from hhs_runtime.hhs_authority_gate_v1 import audit_runtime_authority
 
 
 def _emulator_tick():
@@ -16,6 +17,38 @@ def _bridge_and_tick():
     bridge = LiveKernelEventBridge(runtime_emulator=emulator)
     tick = bridge.tick_kernel({"source": "boundary_test"})
     return bridge, tick
+
+
+def test_hhs_emulator_construction_contract():
+    emulator = HHSCEmulator()
+    assert emulator.controller is not None
+    assert emulator.service_registry is not None
+
+
+def test_hhs_emulator_native_abi_contract():
+    emulator = HHSCEmulator()
+    assert emulator.controller.runtime.validate_abi() is True
+
+
+def test_hhs_emulator_initial_authority_contract():
+    emulator = HHSCEmulator()
+    state = emulator.controller.latest_runtime_state()
+    audit = audit_runtime_authority(
+        state,
+        source="test_hhs_emulator_initial_authority_contract",
+        require_receipt=False,
+    ).to_dict()
+    assert audit["delta_e"] == 0
+    assert audit["psi"] == 0
+    assert audit["theta15"] is True
+    assert audit["algebraic_closure"] is True
+    assert audit["ok"] is True
+
+
+def test_hhs_emulator_boot_completes():
+    emulator = HHSCEmulator()
+    boot = emulator.boot()
+    assert isinstance(boot, dict)
 
 
 def test_hhs_emulator_boot_contract():
