@@ -11,6 +11,7 @@ Stage 004 extends the Stage 003 multi-workspace platform into a project, world, 
 - A local asset vault that computes SHA-256 on ingestion, detects duplicates, classifies common media types, and holds scripts and shaders as inert text until separately validated.
 - A world router with validated endpoints, bidirectional portals, shortest-path resolution, unreachable-route errors, and current-world navigation.
 - A fixed-step deterministic presentation simulation engine for authored scene entities.
+- A bounded agentic self-play harness with fixed prompt contracts for runtime API usability evaluation.
 - Five new spatial applications: Project Manager, Entity Inspector, Asset Vault, World Router, and Simulation Console.
 - Twenty-one total launchable applications.
 - Project and entity selection persisted with workspace sessions.
@@ -27,6 +28,7 @@ The frontend remains **PROJECTION_AND_ORCHESTRATION_ONLY**.
 - The local simulation engine cannot replace VM81 execution or produce VM81 receipts.
 - Imported code and shader files are inert until an independent validation and admission path explicitly authorizes them.
 - Guarded runtime requests continue to use the inherited relative HTTP and WebSocket routes.
+- Self-play prompt execution is non-authoritative and only exercises existing guarded runtime routes.
 
 ## Run
 
@@ -59,6 +61,7 @@ node tests/negative_contract.mjs
 node tests/stage004_contract.mjs
 node tests/stage004_negative_contract.mjs
 node tests/ui_surface_contract.mjs
+node tests/self_play_contract.mjs
 python3 tests/http_smoke.py
 python3 tests/browser_smoke.py
 ```

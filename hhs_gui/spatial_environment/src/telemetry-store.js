@@ -19,7 +19,19 @@ export class TelemetryStore extends EventTarget {
       runtimeEvents: 0,
       commandResults: 0,
       commandErrors: 0,
-      channelTransitions: 0
+      channelTransitions: 0,
+      promptContracts: 0,
+      promptPasses: 0,
+      promptFailures: 0,
+      selfPlayRuns: 0,
+      capabilityLoops: 0
+    };
+    this.selfPlay = {
+      lastSuite: null,
+      lastLoop: null,
+      promptContracts: [],
+      callTrace: [],
+      apiCoverage: {}
     };
   }
 
@@ -83,6 +95,58 @@ export class TelemetryStore extends EventTarget {
     this.record(`command.${command}.status`, ok ? "ok" : "error", { classification });
   }
 
+  recordSelfPlayCall(contractId, call) {
+    this.callTracePush({
+      contractId,
+      command: call.command,
+      ok: call.ok,
+      attempt: call.attempt,
+      durationMs: call.durationMs,
+      errorClass: call.error?.class ?? null,
+      completedAt: call.completedAt
+    });
+  }
+
+  recordPromptContract(contract) {
+    this.counters.promptContracts += 1;
+    if (contract.passed) {
+      this.counters.promptPasses += 1;
+    } else {
+      this.counters.promptFailures += 1;
+    }
+    this.selfPlay.promptContracts.unshift(clone({
+      id: contract.id,
+      passed: contract.passed,
+      promptClarity: contract.promptClarity,
+      retries: contract.summary?.retries ?? 0,
+      meanDurationMs: contract.summary?.meanDurationMs ?? 0,
+      signalsSatisfied: contract.signalsSatisfied
+    }));
+    this.selfPlay.promptContracts = this.selfPlay.promptContracts.slice(0, 120);
+    this.record("selfplay.prompt.pass", contract.passed ? 1 : 0, { contractId: contract.id });
+    this.record("selfplay.prompt.clarity", contract.promptClarity ?? null, { contractId: contract.id });
+  }
+
+  recordSelfPlaySuite(suiteReport) {
+    this.counters.selfPlayRuns += 1;
+    this.selfPlay.lastSuite = clone(suiteReport);
+    this.selfPlay.apiCoverage = clone(suiteReport.apiCoverage ?? {});
+    this.record("selfplay.completionRate", suiteReport.summary?.completionRate ?? 0);
+    this.record("selfplay.meanDurationMs", suiteReport.summary?.meanDurationMs ?? 0);
+  }
+
+  recordCapabilityLoop(loopReport) {
+    this.counters.capabilityLoops += 1;
+    this.selfPlay.lastLoop = clone(loopReport);
+    this.record("selfplay.loop.completionDelta", loopReport.delta?.completionDelta ?? 0);
+    this.record("selfplay.loop.meanLatencyDeltaMs", loopReport.delta?.meanLatencyDeltaMs ?? 0);
+  }
+
+  callTracePush(sample) {
+    this.selfPlay.callTrace.unshift(clone(sample));
+    this.selfPlay.callTrace = this.selfPlay.callTrace.slice(0, this.limit);
+  }
+
   getSeries(name, limit = this.limit) {
     const values = this.series.get(name) ?? [];
     return clone(values.slice(-limit));
@@ -111,7 +175,8 @@ export class TelemetryStore extends EventTarget {
       generatedAt: now(),
       counters: { ...this.counters },
       latest: clone(this.latest),
-      series: Object.fromEntries([...this.series.entries()].map(([name, values]) => [name, clone(values)]))
+      series: Object.fromEntries([...this.series.entries()].map(([name, values]) => [name, clone(values)])),
+      selfPlay: clone(this.selfPlay)
     };
   }
 
@@ -123,7 +188,19 @@ export class TelemetryStore extends EventTarget {
       runtimeEvents: 0,
       commandResults: 0,
       commandErrors: 0,
-      channelTransitions: 0
+      channelTransitions: 0,
+      promptContracts: 0,
+      promptPasses: 0,
+      promptFailures: 0,
+      selfPlayRuns: 0,
+      capabilityLoops: 0
+    };
+    this.selfPlay = {
+      lastSuite: null,
+      lastLoop: null,
+      promptContracts: [],
+      callTrace: [],
+      apiCoverage: {}
     };
     this.dispatchEvent(new CustomEvent("cleared"));
   }

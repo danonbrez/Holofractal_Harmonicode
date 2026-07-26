@@ -3,6 +3,8 @@ import { TEMPLATES, templateById } from "./template-registry.js";
 import { FEATURES, featureById, MODES } from "./feature-registry.js";
 import { APPLICATIONS, applicationById, applicationsForFeature } from "./application-registry.js";
 import { extractRuntimeSummary, RUNTIME_COMMANDS } from "./runtime-bridge.js";
+import { AgenticSelfPlayHarness } from "./self-play-harness.js";
+import { V1_SCOPE } from "./prompt-contracts.js";
 
 const escapeHTML = (value) => String(value ?? "").replace(/[&<>'"]/g, (character) => ({
   "&": "&amp;",
@@ -22,6 +24,50 @@ function downloadJSON(name, data) {
   anchor.download = name;
   anchor.click();
   setTimeout(() => URL.revokeObjectURL(url), 0);
+}
+
+createSelfPlayHarness() {
+  return new AgenticSelfPlayHarness({
+    executeRuntimeCommand: (commandName, args = {}) => this.commands.execute(`runtime.${commandName}`, args, { ui: this, source: "self-play" }),
+    extractRuntimeSummary,
+    telemetry: this.telemetry
+  });
+}
+
+async runSelfPlaySuite() {
+  try {
+    const report = await this.createSelfPlayHarness().runSuite();
+    this.journal.append("SELF_PLAY_SUITE_REPORT", {
+      completionRate: report.summary.completionRate,
+      failures: report.summary.failures,
+      apiCoverage: Object.keys(report.apiCoverage)
+    }, "NON_AUTHORITATIVE_USABILITY_EVALUATION");
+    this.renderTelemetry();
+    this.refreshSurfacesByApplication("telemetry");
+    this.toast(`Self-play suite complete (${Math.round(report.summary.completionRate * 100)}%).`, report.summary.failures ? "error" : "success");
+    return report;
+  } catch (error) {
+    this.toast(String(error.message ?? error), "error");
+    return null;
+  }
+}
+
+async runCapabilityLoop() {
+  try {
+    const report = await this.createSelfPlayHarness().runCapabilityLoop();
+    this.journal.append("SELF_PLAY_LOOP_REPORT", {
+      completionDelta: report.delta.completionDelta,
+      meanLatencyDeltaMs: report.delta.meanLatencyDeltaMs,
+      errorDelta: report.delta.errorDelta
+    }, "NON_AUTHORITATIVE_USABILITY_EVALUATION");
+    this.renderTelemetry();
+    this.refreshSurfacesByApplication("telemetry");
+    this.toast(`Capability loop complete (Δcompletion ${report.delta.completionDelta.toFixed(2)}).`, report.delta.errorDelta > 0 ? "error" : "success");
+    return report;
+  } catch (error) {
+    this.toast(String(error.message ?? error), "error");
+    return null;
+  }
 }
 
 function hexToRgb(hex) {
@@ -158,6 +204,18 @@ export class UIShell {
         label: "Advance presentation simulation",
         authority: "NON_AUTHORITATIVE_PRESENTATION_SIMULATION",
         handler: ({ steps = 1 } = {}) => this.simulation.step(steps)
+      })
+      .register({
+        id: "local.self-play-suite",
+        label: "Run agentic self-play suite",
+        authority: "NON_AUTHORITATIVE_USABILITY_EVALUATION",
+        handler: () => this.runSelfPlaySuite()
+      })
+      .register({
+        id: "local.self-play-loop",
+        label: "Run capability-maximization loop",
+        authority: "NON_AUTHORITATIVE_USABILITY_EVALUATION",
+        handler: () => this.runCapabilityLoop()
       });
   }
 
@@ -862,7 +920,11 @@ export class UIShell {
         <section><small>FPS mean</small><strong>${fps.mean === null ? "—" : fps.mean.toFixed(1)}</strong></section>
         <section><small>Runtime events</small><strong>${this.telemetry.counters.runtimeEvents}</strong></section>
         <section><small>Command errors</small><strong>${this.telemetry.counters.commandErrors}</strong></section>
+        <section><small>Self-play runs</small><strong>${this.telemetry.counters.selfPlayRuns}</strong></section>
+        <section><small>Prompt passes</small><strong>${this.telemetry.counters.promptPasses}</strong></section>
       </div>
+      <p class="surface-description">Scope: ${escapeHTML(V1_SCOPE.journey)} · ${escapeHTML(V1_SCOPE.authorityBoundary)}</p>
+      <p class="surface-description">API coverage: ${escapeHTML(Object.keys(this.telemetry.selfPlay.apiCoverage || {}).join(", ") || "none")}</p>
       <div class="telemetry-bars">${values.map((value) => `<i style="height:${Math.max(2, value / max * 100)}%"></i>`).join("")}</div>
       <button data-export-telemetry>EXPORT TELEMETRY</button>
     `;
@@ -1418,6 +1480,8 @@ export class UIShell {
       <span><b>${fps.latest ?? 0}</b> FPS</span>
       <span><b>${this.telemetry.counters.runtimeEvents}</b> runtime events</span>
       <span><b>${this.telemetry.counters.commandErrors}</b> command errors</span>
+      <span><b>${this.telemetry.counters.promptPasses}</b> prompt passes</span>
+      <span><b>${this.telemetry.counters.selfPlayRuns}</b> self-play runs</span>
     `;
   }
 
