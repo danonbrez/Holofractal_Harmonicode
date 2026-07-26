@@ -9,7 +9,7 @@ RELEASE_SRC := src/hhs_vm81_game_release.c
 SRC_PARTS := src/hhs_vm81_game_part_00.inc src/hhs_vm81_game_part_01.inc src/hhs_vm81_game_part_02.inc
 DIST := dist
 
-.PHONY: all play test sanitize capture modality clean verify
+.PHONY: all play test sanitize terminal-io capture modality clean verify
 
 all: $(DIST)/hhs-vm81-game $(DIST)/test-hhs-vm81-game \
 	$(DIST)/hhs-vm81-platformer $(DIST)/test-hhs-vm81-game-release
@@ -54,6 +54,15 @@ sanitize: | $(DIST)
 		$(CORE_SRC) $(RELEASE_SRC) tests/test_hhs_vm81_game_release.c $(HASH_SRC) -o $(DIST)/test-hhs-vm81-game-release-sanitized
 	ASAN_OPTIONS=detect_leaks=1:halt_on_error=1 UBSAN_OPTIONS=halt_on_error=1 $(DIST)/test-hhs-vm81-game-release-sanitized
 
+terminal-io: $(DIST)/hhs-vm81-platformer
+	rm -rf $(DIST)/terminal-io
+	$(PYTHON) tools/verify_terminal_io.py --binary $(DIST)/hhs-vm81-platformer --output $(DIST)/terminal-io > $(DIST)/terminal-io-evidence.log
+	test -s $(DIST)/terminal-io/terminal-session.ansi
+	test -s $(DIST)/terminal-io/terminal-session.txt
+	test -s $(DIST)/terminal-io/terminal-io-evidence.json
+	grep -q 'VM81_TERMINAL_IO_MODALITY_VERIFIED' $(DIST)/terminal-io/terminal-io-evidence.json
+	grep -q '"terminal_restored": "VERIFIED"' $(DIST)/terminal-io/terminal-io-evidence.json
+
 capture: $(DIST)/hhs-vm81-platformer
 	command -v ffmpeg >/dev/null
 	command -v ffprobe >/dev/null
@@ -63,7 +72,7 @@ capture: $(DIST)/hhs-vm81-platformer
 	$(DIST)/hhs-vm81-platformer --capture-frames $(DIST)/capture > $(DIST)/capture-command.json
 	$(PYTHON) tools/render_terminal_capture.py --input $(DIST)/capture --output $(DIST)/media > $(DIST)/modality-evidence.log
 
-modality: capture
+modality: terminal-io capture
 	test -s $(DIST)/capture/capture-trace.json
 	test -s $(DIST)/media/screenshots/00-overview.png
 	test -s $(DIST)/media/screenshots/01-title.png
