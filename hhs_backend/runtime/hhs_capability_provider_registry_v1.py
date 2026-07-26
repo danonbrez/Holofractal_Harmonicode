@@ -1,7 +1,6 @@
 """HHS Capability Provider Registry v1."""
 from __future__ import annotations
 
-import sys
 from typing import Any, Dict, Iterable, List, Mapping
 
 from hhs_backend.runtime.runtime_workspace_object_v1 import hash72
@@ -181,44 +180,6 @@ def capability_provider_registry_self_test() -> Dict[str, Any]:
         "doctrine":
             "provider output returns through Runtime ingress before canonical identity",
     }
-
-
-def _mount_litert_lm_assistant_routes_for_canonical_server() -> None:
-    """Mount the assistant router without changing the inherited server bootstrap.
-
-    During `hhs_backend.server` import, Pass 152's router object already exists
-    and is included later in startup. Extending its route list preserves each
-    assistant route's own `/api/assistant` path and avoids a nested Pass 152
-    prefix. The guard prevents side effects when this registry is imported by
-    standalone tests or tools.
-    """
-    if "hhs_backend.server" not in sys.modules:
-        return
-    try:
-        from hhs_backend.api.pass152_elastic_closure_routes import (
-            router as canonical_server_mount_router,
-        )
-        from hhs_backend.api.litert_lm_assistant_routes import (
-            router as assistant_router,
-        )
-    except ImportError:
-        return
-
-    existing = {
-        (getattr(route, "path", None), tuple(sorted(getattr(route, "methods", []) or [])))
-        for route in canonical_server_mount_router.routes
-    }
-    for route in assistant_router.routes:
-        identity = (
-            getattr(route, "path", None),
-            tuple(sorted(getattr(route, "methods", []) or [])),
-        )
-        if identity not in existing:
-            canonical_server_mount_router.routes.append(route)
-            existing.add(identity)
-
-
-_mount_litert_lm_assistant_routes_for_canonical_server()
 
 
 if __name__ == "__main__":
