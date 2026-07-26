@@ -23,6 +23,8 @@ if [[ "${HHS_SKIP_C_BUILD:-0}" != "1" ]]; then
 fi
 
 export PYTHONPATH="$ROOT_DIR${PYTHONPATH:+:$PYTHONPATH}"
+export HHS_LITERT_LM_BASE_URL="${HHS_LITERT_LM_BASE_URL:-http://127.0.0.1:9379/v1}"
+export HHS_LITERT_LM_MODEL="${HHS_LITERT_LM_MODEL:-gemma4-12b}"
 
 echo "[HHS] Starting FastAPI runtime on 0.0.0.0:${PORT}"
 exec "$PYTHON_BIN" -m uvicorn hhs_backend.server:app \

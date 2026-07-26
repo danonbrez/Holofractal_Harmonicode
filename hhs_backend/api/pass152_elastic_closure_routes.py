@@ -176,3 +176,25 @@ def pass152_execute(request: Pass152ExecuteRequest) -> Dict[str, Any]:
         global _LATEST
         _LATEST = copy.deepcopy(response)
     return response
+
+
+# The inherited canonical server already mounts this router. Extend the same
+# route collection with the assistant API while retaining each assistant
+# route's absolute `/api/assistant` path and method identity.
+from hhs_backend.api.litert_lm_assistant_routes import router as _ASSISTANT_ROUTER
+
+_existing_route_keys = {
+    (
+        getattr(route, "path", None),
+        tuple(sorted(getattr(route, "methods", []) or [])),
+    )
+    for route in router.routes
+}
+for _route in _ASSISTANT_ROUTER.routes:
+    _route_key = (
+        getattr(_route, "path", None),
+        tuple(sorted(getattr(_route, "methods", []) or [])),
+    )
+    if _route_key not in _existing_route_keys:
+        router.routes.append(_route)
+        _existing_route_keys.add(_route_key)

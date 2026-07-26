@@ -1,0 +1,83 @@
+name: LiteRT-LM Gemma 4 Assistant
+
+on:
+  push:
+    branches:
+      - agent/litert-lm-gemma4-ai-thread
+  pull_request:
+    paths:
+      - 'hhs_backend/runtime/hhs_litert_lm_assistant_v1.py'
+      - 'hhs_backend/runtime/hhs_litert_lm_hhs_api_assistant_v1.py'
+      - 'hhs_backend/runtime/hhs_assistant_api_tool_gateway_v1.py'
+      - 'hhs_backend/runtime/hhs_capability_provider_registry_v1.py'
+      - 'hhs_backend/api/litert_lm_assistant_routes.py'
+      - 'hhs_backend/api/pass152_elastic_closure_routes.py'
+      - 'gui/hhs-mobile-runtime-console/**'
+      - 'tests/test_hhs_litert_lm_assistant_v1.py'
+      - 'tests/test_hhs_litert_lm_hhs_api_tools_v1.py'
+      - 'tools/start_hhs_gemma4_assistant.sh'
+      - '.github/workflows/litert-lm-assistant.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  governed-assistant-backend:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - name: Install Python dependencies
+        run: python -m pip install --upgrade pip && python -m pip install -r requirements.txt
+      - name: Build HHS native kernel surfaces
+        run: make c-kernel
+      - name: Compile assistant Python surfaces
+        run: |
+          python -m py_compile \
+            hhs_backend/runtime/hhs_litert_lm_assistant_v1.py \
+            hhs_backend/runtime/hhs_litert_lm_hhs_api_assistant_v1.py \
+            hhs_backend/runtime/hhs_assistant_api_tool_gateway_v1.py \
+            hhs_backend/runtime/hhs_capability_provider_registry_v1.py \
+            hhs_backend/api/litert_lm_assistant_routes.py \
+            hhs_backend/api/pass152_elastic_closure_routes.py \
+            tests/test_hhs_litert_lm_assistant_v1.py \
+            tests/test_hhs_litert_lm_hhs_api_tools_v1.py
+      - name: Validate launcher syntax
+        run: bash -n tools/start_hhs_gemma4_assistant.sh start.sh
+      - name: Run dependency-scoped assistant tests
+        run: |
+          python -m pytest -q \
+            tests/test_hhs_litert_lm_assistant_v1.py \
+            tests/test_hhs_litert_lm_hhs_api_tools_v1.py
+
+  ai-thread-interface:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: gui/hhs-mobile-runtime-console
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: gui/hhs-mobile-runtime-console/package.json
+      - name: Install interface dependencies
+        run: npm install --no-audit --no-fund
+      - name: Build mobile HHS AI thread interface
+        shell: bash
+        run: |
+          set -o pipefail
+          npm run build 2>&1 | tee vite-build.log
+      - name: Upload Vite build log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hhs-ai-thread-vite-build-log
+          path: gui/hhs-mobile-runtime-console/vite-build.log
+          if-no-files-found: error
