@@ -74,6 +74,7 @@ def main() -> None:
     EVIDENCE.mkdir(parents=True, exist_ok=True)
     native = read_json(DIST / "native-test-report.json")
     service = read_json(DIST / "service-report.json")
+    gui_projection = read_json(DIST / "gui-projection-report.json")
     python_report = (DIST / "python-test-report.txt").read_text(encoding="utf-8")
     bindings_report = (DIST / "language-binding-report.txt").read_text(encoding="utf-8")
     abi = command_json(str(DIST / "hhs-pass158"), "abi")
@@ -103,6 +104,8 @@ def main() -> None:
         "serialization_cases_18": native.get("serialization") == 18,
         "abi_cases_18": native.get("abi_lifecycle") == 18,
         "service_cases_18": service.get("integration_cases", 0) >= 18,
+        "hash216_gui_projection": gui_projection.get("all_passed") is True
+        and gui_projection.get("integration_cases", 0) >= 9,
         "bindings_6": len(binding_markers) == 6 and all(binding_markers.values()),
         "inherited_pass157": inherited,
         "hosted": hosted,
@@ -115,7 +118,8 @@ def main() -> None:
         "contract_id": CONTRACT,
         "api_version": "1.0.0",
         "base_path": "/api/v1/hhs/pass158",
-        "endpoint_count": 18,
+        "endpoint_count": 25,
+        "gui_projection_base_path": "/api/v1/hhs/pass158/gui/projection",
         "response_envelope": ["api_version", "contract_id", "request_id", "status", "classification", "authority_level", "object", "receipts", "warnings", "errors"],
         "capabilities": capabilities,
     }
@@ -145,6 +149,7 @@ def main() -> None:
     write_json("P158_HASH216_OBJECT_INDEX.json", {
         "definition": definition["hash216"], "instance": instance["hash216"], "transition": transition["hash216"], "receipt": execution["hash216"]
     })
+    write_json("P158_HASH216_GUI_PROJECTION_REPORT.json", gui_projection)
     write_jsonl("P158_HASH72_EXECUTION_RECEIPTS.jsonl", [definition, instance, capability, execution])
     write_json("P158_SERIALIZATION_CONFORMANCE.json", receipt("HHS_P158_SERIALIZATION_CONFORMANCE_VERIFIED", {"round_trips": 18, "identity_loss": 0, "formats": ["HHS_CANONICAL_JSON", "HHS_CANONICAL_JSONL", "HHS_CANONICAL_BINARY", "HHS_BIGINT_ENVELOPE", "HHS_TRANSITION_PACKAGE"]}))
     write_json("P158_LANGUAGE_BINDING_CONFORMANCE.json", receipt("HHS_P158_LANGUAGE_BINDING_CONFORMANCE_VERIFIED", binding_markers))
@@ -173,6 +178,7 @@ def main() -> None:
         "binding_conformance": binding_markers,
         "native": native,
         "service": service,
+        "hash216_gui_projection": gui_projection,
         "evidence_root_hash216": glyph_hash(sorted(path.name for path in EVIDENCE.iterdir()), 216, "P158_EVIDENCE_ROOT"),
         "authority_level": "A1_EXECUTION_EVIDENCE",
         "timestamp": EPOCH,
