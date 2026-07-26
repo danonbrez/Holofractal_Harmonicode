@@ -1,5 +1,6 @@
 from hhs_backend.runtime.live_cognition_runtime_v1 import HHSRuntimeCognitionCoordinator
 from hhs_backend.runtime.runtime_adaptive_goal_engine import runtime_adaptive_goal_engine
+from hhs_backend.runtime.runtime_agentic_cognition_layer import runtime_agentic_cognition_layer
 from hhs_backend.runtime.runtime_replay_engine import HHSRuntimeReplayEngine
 
 
@@ -24,6 +25,15 @@ def _seeded_coordinator(step: int = 201, symbol: str = "g"):
         emission={"event_hash72": "h" * 72},
     )
     return coordinator
+
+
+def _seeded_task(step: int = 201, symbol: str = "g"):
+    coordinator = _seeded_coordinator(step=step, symbol=symbol)
+    task_data = coordinator.create_task(
+        "analyze committed runtime",
+        target_hash72=symbol * 72,
+    )
+    return coordinator, runtime_agentic_cognition_layer.tasks[task_data["task_id"]]
 
 
 def test_replay_engine_accepts_live_packets_and_generates_prediction():
@@ -75,15 +85,31 @@ def test_live_cognition_processes_each_committed_state_once():
     assert status["authority_boundary"]["vm81_mutation"] == "DENIED"
 
 
-def test_explicit_agentic_cognition_cycle_is_callable():
-    coordinator = _seeded_coordinator()
-    task = coordinator.create_task(
-        "analyze committed runtime",
-        target_hash72="g" * 72,
-    )
-    cognition = coordinator.execute_task(task["task_id"])
+def test_agentic_execution_plan_generation_is_callable():
+    _, task = _seeded_task()
+    plan = runtime_agentic_cognition_layer.generate_execution_plan(task, replay_horizon=3)
+    assert plan.task_id == task.task_id
+    assert plan.steps
 
-    assert cognition["task"]["task_id"] == task["task_id"]
+
+def test_agentic_semantic_routing_is_callable():
+    _, task = _seeded_task(step=211, symbol="k")
+    routing = runtime_agentic_cognition_layer.route_semantic_execution(task)
+    assert "semantic" in routing
+    assert "multimodal" in routing
+
+
+def test_agentic_federated_scheduling_is_callable():
+    _, task = _seeded_task(step=221, symbol="l")
+    schedule = runtime_agentic_cognition_layer.schedule_federated_cognition(task)
+    assert schedule.task_id == task.task_id
+    assert schedule.consensus_state == "approved"
+
+
+def test_explicit_agentic_cognition_cycle_is_callable():
+    coordinator, task = _seeded_task(step=231, symbol="m")
+    cognition = coordinator.execute_task(task.task_id)
+    assert cognition["task"]["task_id"] == task.task_id
 
 
 def test_explicit_autonomous_research_cycle_is_callable():
@@ -93,7 +119,6 @@ def test_explicit_autonomous_research_cycle_is_callable():
         originating_goal="test_goal",
         exploration_horizon=2,
     )
-
     assert research["task"]["task_id"]
 
 
@@ -103,5 +128,4 @@ def test_explicit_recursive_toolchain_cycle_is_callable():
         "test_cognition_task",
         "compose replay-safe semantic operators",
     )
-
     assert toolchain["toolchain"]["toolchain_id"]
