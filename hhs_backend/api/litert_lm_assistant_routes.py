@@ -70,7 +70,7 @@ async def assistant_create_thread(request: CreateThreadRequest) -> Dict[str, Any
     }
 
 
-@router.get("/threads/{thread_id:path}")
+@router.get("/threads/{thread_id}")
 async def assistant_get_thread(thread_id: str) -> Dict[str, Any]:
     thread = _service().threads.get(thread_id)
     if not thread:
@@ -89,7 +89,7 @@ async def assistant_get_thread(thread_id: str) -> Dict[str, Any]:
     }
 
 
-@router.post("/threads/{thread_id:path}/messages")
+@router.post("/threads/{thread_id}/messages")
 async def assistant_send_message(
     thread_id: str,
     request: SendMessageRequest,
