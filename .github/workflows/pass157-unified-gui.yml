@@ -1,0 +1,113 @@
+name: Pass 157 Unified GUI
+
+on:
+  push:
+    branches:
+      - main
+      - agent/pass157-unified-phase-gui
+    paths:
+      - apps/unified_gui/**
+      - native_projects/hhs_pass157_ppf_mptc/python/hhs_pass157/**
+      - native_projects/hhs_pass157_ppf_mptc/tests/test_pass157_contract_extension.py
+      - .github/workflows/pass157-unified-gui.yml
+      - HHS_PASS_157_UNIFIED_RELEASE_BUNDLE.json
+  pull_request:
+    paths:
+      - apps/unified_gui/**
+      - native_projects/hhs_pass157_ppf_mptc/python/hhs_pass157/**
+      - native_projects/hhs_pass157_ppf_mptc/tests/test_pass157_contract_extension.py
+      - .github/workflows/pass157-unified-gui.yml
+      - HHS_PASS_157_UNIFIED_RELEASE_BUNDLE.json
+
+permissions:
+  contents: read
+
+jobs:
+  unified-gui-verification:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Verify Pass 157 exact phase-tensor extension
+        shell: bash
+        run: |
+          set -euo pipefail
+          PYTHONPATH=native_projects/hhs_pass157_ppf_mptc/python \
+            python3 -m unittest \
+            native_projects/hhs_pass157_ppf_mptc/tests/test_pass157_contract_extension.py \
+            -v
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: apps/unified_gui/package.json
+
+      - name: Install pinned application dependencies
+        working-directory: apps/unified_gui
+        run: npm install --ignore-scripts --no-audit --no-fund
+
+      - name: Install Chromium validation runtime
+        working-directory: apps/unified_gui
+        run: npx playwright install --with-deps chromium
+
+      - name: Run core, build, and browser acceptance
+        working-directory: apps/unified_gui
+        run: npm run verify
+
+      - name: Generate governed evidence receipts
+        working-directory: apps/unified_gui
+        shell: bash
+        run: |
+          set -euo pipefail
+          export HHS_PASS157_HOSTED_VALIDATED=1
+          if [[ "$GITHUB_REF" == "refs/heads/main" ]]; then
+            export HHS_PASS157_MAIN_MERGED=1
+          else
+            export HHS_PASS157_MAIN_MERGED=0
+          fi
+          node tools/verify.mjs | tee dist/PASS_157_VERIFICATION_SUMMARY.json
+
+      - name: Assert closure classification
+        working-directory: apps/unified_gui
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          receipt = json.loads(Path("dist/evidence/PASS_157_TERMINAL_RECEIPT.json").read_text())
+          terminal = "HHS_PASS_157_UNIFIED_PARTICLE_GUI_CLOSURE_VERIFIED"
+          pending = "HHS_PASS_157_UNIFIED_PARTICLE_GUI_CORE_VERIFIED_PENDING_HOSTED_MAIN_CLOSURE"
+          expected = terminal if os.environ.get("GITHUB_REF") == "refs/heads/main" else pending
+          assert receipt["classification"] == expected, receipt
+          assert receipt["hosted_validated"] is True, receipt
+          assert receipt["main_merged"] is (expected == terminal), receipt
+          assert receipt["terminal_emitted"] is (expected == terminal), receipt
+          assert len(receipt["source_root_hash72"]) == 72, receipt
+          assert len(receipt["particle_state_hash72"]) == 72, receipt
+          print(json.dumps({"classification": expected, "receipt": receipt}, sort_keys=True))
+          PY
+
+      - name: Upload Pass 157 unified evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hhs-pass157-unified-gui-evidence
+          path: |
+            apps/unified_gui/dist/
+            apps/unified_gui/contracts/
+            apps/unified_gui/README.md
+            HHS_PASS_157_UNIFIED_RELEASE_BUNDLE.json
+          if-no-files-found: error
