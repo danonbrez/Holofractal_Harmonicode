@@ -1,0 +1,26 @@
+{
+  "schema": "HHS_PASS_158_RELEASE_BUNDLE_V1",
+  "pass_number": "158",
+  "contract_id": "HHS-P158-LLABI-NFTC-API",
+  "contract_version": "1.0.0",
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "inheritance_parent": {
+    "classification": "HHS_PASS_157_UNIFIED_CLOSURE_VERIFIED",
+    "main_commit": "c1126ae86208ba405e78e5c7b7c7d64488d13288"
+  },
+  "implementation": "native_projects/hhs_pass158_llabi_nftc_api",
+  "authorities": {
+    "state_machine": "VM81",
+    "object_identity": "Hash216",
+    "execution_witness": "Hash72",
+    "numeric": "EXACT_SYMBOLIC",
+    "compatibility_lane": "EXPLICIT_IEEE_PROJECTION"
+  },
+  "bindings": ["C", "C++", "Rust", "Python", "Java/Kotlin JNI", "JavaScript/WASM"],
+  "local_service_base": "/api/v1/hhs/pass158",
+  "positive_matrix_required": 272,
+  "negative_matrix_required": 81,
+  "terminal_classification": "HHS_PASS_158_LOW_LEVEL_ABI_NFT_CONSTRAINT_INTEGRATION_API_VERIFIED",
+  "pre_merge_classification": "HHS_PASS_158_IMPLEMENTATION_VERIFIED_PENDING_AUTHORITATIVE_MAIN_CLOSURE",
+  "terminal_gate": "HOSTED_VALIDATION_AND_INHERITED_PASS157_REGRESSION_AND_AUTHORITATIVE_MAIN"
+}
