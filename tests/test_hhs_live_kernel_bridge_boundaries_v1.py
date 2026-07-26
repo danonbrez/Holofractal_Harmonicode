@@ -6,10 +6,11 @@ from hhs_backend.runtime.live_kernel_event_bridge_v1 import (
 from hhs_python.runtime.hhs_runtime_controller import HHSRuntimeController
 from hhs_python.runtime.hhs_runtime_emulator import HHSCEmulator
 from hhs_runtime.hhs_authority_gate_v1 import audit_runtime_authority
-from hhs_runtime.hhs_service_registry_v1 import (
-    HHSServiceRegistry,
-    make_default_service_registry,
+from hhs_runtime.hhs_lazy_service_registry_v1 import (
+    VERSION as LAZY_REGISTRY_VERSION,
+    make_lazy_default_service_registry,
 )
+from hhs_runtime.hhs_service_registry_v1 import HHSServiceRegistry
 
 
 def _emulator_tick():
@@ -37,14 +38,18 @@ def test_hhs_empty_service_registry_construction_contract():
 
 def test_hhs_default_service_registry_construction_contract():
     controller = HHSRuntimeController()
-    registry = make_default_service_registry(controller)
-    assert registry.services()
+    registry = make_lazy_default_service_registry(controller)
+    services = registry.services()
+    assert services
+    assert getattr(registry, "population_mode") == LAZY_REGISTRY_VERSION
+    assert any(service["name"] == "authority_gate.self_test" for service in services)
 
 
 def test_hhs_emulator_construction_contract():
     emulator = HHSCEmulator()
     assert emulator.controller is not None
     assert emulator.service_registry is not None
+    assert getattr(emulator.service_registry, "population_mode") == LAZY_REGISTRY_VERSION
 
 
 def test_hhs_emulator_native_abi_contract():
@@ -78,6 +83,7 @@ def test_hhs_emulator_boot_contract():
     boot = emulator.boot()
     assert boot["booted"] is True
     assert boot["authority_audit"]["ok"] is True
+    assert boot["service_population_mode"] == LAZY_REGISTRY_VERSION
 
 
 def test_hhs_emulator_authorized_tick_completes():
