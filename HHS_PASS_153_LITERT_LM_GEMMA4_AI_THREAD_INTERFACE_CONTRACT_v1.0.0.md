@@ -10,7 +10,7 @@
 | Repository | `danonbrez/Holofractal_Harmonicode` |
 | Inheritance | Complete authoritative Pass 158 inherited nucleus, with Pass 153 assistant-interface requirements completed additively |
 | Provider | Google AI Edge LiteRT-LM local runtime |
-| Model family | Gemma 4 `.litertlm` instruction model |
+| Default model | Gemma 4 12B instruction model imported as `gemma4-12b` |
 | Transport | Local OpenAI-compatible HTTP API |
 | HHS authority role | Natural-language request and projection interface only |
 | Canonical mutation authority | VM81 admission surfaces only |
@@ -103,17 +103,48 @@ provider_is_canonical_authority = false
 provider_self_authorizes = false
 ```
 
+### 4.4 AI thread user interface
+
+`gui/hhs-mobile-runtime-console/src/components/AssistantWorkspace.tsx` is the
+user-facing conversational projection. It shall:
+
+- send create-or-continue turns to `/api/assistant/chat`;
+- preserve the returned `thread_id` for subsequent messages;
+- display LiteRT-LM model health and transport state;
+- display assistant text, provider receipt roots, and HHS ingress state;
+- expose the complete turn envelope for inspection;
+- preserve an explicit visible distinction between model output, HHS ingress,
+  and VM81 mutation authority;
+- open a fresh Hash72-linked chain when the user selects `new thread`;
+- never fabricate an assistant message when transport or ingress fails.
+
+### 4.5 Combined launcher
+
+`tools/start_hhs_gemma4_assistant.sh` starts the local LiteRT-LM server, waits
+for `/v1/models`, exports the HHS assistant endpoint and model alias, and starts
+the canonical HHS backend. It is an orchestration convenience only and does not
+change the authority hierarchy.
+
 ## 5. LiteRT-LM deployment contract
 
 The local model server shall be started through LiteRT-LM's OpenAI-compatible
 server command and shall expose port `9379` unless explicitly configured
 otherwise.
 
+The normative model import is:
+
+```bash
+litert-lm import \
+  --from-huggingface-repo=litert-community/gemma-4-12B-it-litert-lm \
+  gemma-4-12B-it.litertlm \
+  gemma4-12b
+```
+
 Default HHS values:
 
 ```bash
 export HHS_LITERT_LM_BASE_URL=http://127.0.0.1:9379/v1
-export HHS_LITERT_LM_MODEL=gemma-4-E2B-it
+export HHS_LITERT_LM_MODEL=gemma4-12b
 export HHS_LITERT_LM_TIMEOUT_SECONDS=120
 export HHS_LITERT_LM_MAX_THREADS=128
 export HHS_LITERT_LM_MAX_MESSAGES_PER_THREAD=64
@@ -177,30 +208,34 @@ failure, but no assistant message or runtime mutation shall be fabricated.
 The layer is complete only when:
 
 1. Python syntax compilation passes for the service, router, and tests.
-2. A fake-transport positive turn produces a user-message Hash72 root, an assistant-message Hash72 root, a provider invocation receipt root, and a provider-result ingress root.
-3. The selected `TEXT_GENERATION` provider is `provider:hhs.litert_lm.gemma4`.
-4. Three conversation turns with a four-message retention limit preserve `message_count = 6`, `len(messages) = 4`, and terminal sequence `6`.
-5. Health succeeds against a fake `/v1/models` response.
-6. Offline transport returns `LITERT_LM_OFFLINE` or `LITERT_LM_TRANSPORT_ERROR` without a direct runtime mutation.
-7. Existing provider-registry negative tests continue rejecting self-authorizing providers.
-8. The canonical backend exposes the REST and WebSocket routes.
-9. A live LiteRT-LM Gemma 4 workload is executed before terminal release classification.
-10. Release evidence records the model alias, LiteRT-LM version, backend, device, context limit, latency, and receipt roots.
+2. TypeScript/Vite compilation passes for the AI thread workspace.
+3. A fake-transport positive turn produces a user-message Hash72 root, an assistant-message Hash72 root, a provider invocation receipt root, and a provider-result ingress root.
+4. The selected `TEXT_GENERATION` provider is `provider:hhs.litert_lm.gemma4`.
+5. Three conversation turns with a four-message retention limit preserve `message_count = 6`, `len(messages) = 4`, and terminal sequence `6`.
+6. Health succeeds against a fake `/v1/models` response.
+7. Offline transport returns `LITERT_LM_OFFLINE` or `LITERT_LM_TRANSPORT_ERROR` without a direct runtime mutation.
+8. Existing provider-registry negative tests continue rejecting self-authorizing providers.
+9. The canonical backend exposes the REST and WebSocket routes.
+10. The mobile runtime console sends, continues, resets, and visibly receipts an AI thread.
+11. A live LiteRT-LM Gemma 4 workload is executed before terminal release classification.
+12. Release evidence records the model alias, LiteRT-LM version, backend, device, context limit, latency, and receipt roots.
 
 ## 10. Current implementation classification
 
-The committed code constitutes the complete governed API/thread integration
-surface and a deterministic fake-transport verification harness.
+The committed code constitutes the governed backend API, REST/WebSocket thread
+surface, provider registration, launcher, mobile AI thread projection, and a
+deterministic fake-transport verification harness.
 
 A terminal live-model classification remains conditional on executing the
-repository against an installed Gemma 4 `.litertlm` model and recording the
-resulting HHS receipts:
+repository against an installed Gemma 4 12B `.litertlm` model, compiling the
+mobile runtime console, and recording the resulting HHS receipts:
 
 ```text
 HHS_PASS_153_LITERT_LM_GEMMA4_AI_THREAD_INTERFACE_LIVE_VERIFIED
 ```
 
-Until that live workload is recorded, the accurate classification is:
+Until those live acceptance surfaces are recorded, the accurate classification
+is:
 
 ```text
 HHS_PASS_153_LITERT_LM_GEMMA4_AI_THREAD_INTERFACE_IMPLEMENTED_PENDING_LIVE_MODEL
