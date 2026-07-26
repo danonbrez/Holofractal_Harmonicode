@@ -13,11 +13,14 @@ Implemented surfaces:
 - public VM81 opcode descriptors;
 - atomic execute, commit, abort, hold, and replay;
 - Hash216 identities and Hash72 receipts;
+- automatic Hash216 GUI state-delta indexing and frame-budget scheduling;
+- lossless authoritative projection queues with transient-event coalescing;
+- VM81-admitted GUI projection packages bound to replay-verified Hash72 receipts;
 - projection and Delta offset normalization;
 - canonical serialization and composition;
 - C++, Rust, Python, Java/Kotlin JNI, and JavaScript/WASM bindings;
 - versioned local service API;
-- positive, negative, replay, binding, service, and inheritance validation.
+- positive, negative, replay, binding, service, scheduler, security, and inheritance validation.
 
 The successful terminal classification is:
 
