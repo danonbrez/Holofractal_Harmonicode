@@ -11,7 +11,7 @@ TEXTURE_SRC := src/hhs_vm81_game_texture.c
 SRC_PARTS := src/hhs_vm81_game_part_00.inc src/hhs_vm81_game_part_01.inc src/hhs_vm81_game_part_02.inc
 DIST := dist
 
-.PHONY: all play test sanitize terminal-io capture modality sprite-capture sprite-modality texture-capture texture-modality clean verify
+.PHONY: all play test sanitize terminal-io capture modality sprite-capture sprite-modality texture-capture texture-modality holographic-playback holographic-modality clean verify
 
 all: $(DIST)/hhs-vm81-game $(DIST)/test-hhs-vm81-game \
 	$(DIST)/hhs-vm81-platformer $(DIST)/test-hhs-vm81-game-release \
@@ -172,7 +172,33 @@ texture-modality: texture-capture
 	grep -q '"replay": "MATCH"' $(DIST)/texture-media/texture-modality-evidence.json
 	grep -q '"opcode_coverage": "19/19"' $(DIST)/texture-media/texture-modality-evidence.json
 
-verify: test sanitize modality sprite-modality texture-modality
+holographic-playback:
+	command -v ffmpeg >/dev/null
+	command -v ffprobe >/dev/null
+	$(PYTHON) -c 'import PIL'
+	@if ! test -s $(DIST)/texture-capture/texture-capture-trace.json || ! ls $(DIST)/texture-capture/frame_*.ppm >/dev/null 2>&1; then \
+		$(MAKE) texture-modality; \
+	fi
+	rm -rf $(DIST)/holographic-media
+	$(PYTHON) tools/render_holographic_playback.py --input $(DIST)/texture-capture --output $(DIST)/holographic-media > $(DIST)/holographic-modality.log
+
+holographic-modality: holographic-playback
+	test -s $(DIST)/holographic-media/vm81-holographic-overlay.mp4
+	test -s $(DIST)/holographic-media/vm81-platformer-holographic-playback.mp4
+	test -s $(DIST)/holographic-media/screenshots/00-holographic-playback-overview.png
+	test -s $(DIST)/holographic-media/screenshots/05-mp4-holographic-overlay-stages.png
+	test -s $(DIST)/holographic-media/screenshots/06-holographic-depth-lighting-details.png
+	test -s $(DIST)/holographic-media/holographic-playback-evidence.json
+	grep -q 'VM81_MP4_HOLOGRAPHIC_OVERLAY_GENERATED' $(DIST)/holographic-media/holographic-playback-evidence.json
+	grep -q 'VM81_MP4_HOLOGRAPHIC_PLAYBACK_ROUNDTRIP_VERIFIED' $(DIST)/holographic-media/holographic-playback-evidence.json
+	grep -q 'VM81_HOLOGRAPHIC_DEPTH_LIGHTING_COMPOSITE_VERIFIED' $(DIST)/holographic-media/holographic-playback-evidence.json
+	grep -q '"mp4_playback_pixel_exact": "VERIFIED"' $(DIST)/holographic-media/holographic-playback-evidence.json
+	grep -q '"base_texture_frames_unchanged": "VERIFIED"' $(DIST)/holographic-media/holographic-playback-evidence.json
+	grep -q '"vm81_state_mutation": "NONE"' $(DIST)/holographic-media/holographic-playback-evidence.json
+	grep -q '"opcode_coverage": "19/19"' $(DIST)/holographic-media/holographic-playback-evidence.json
+	grep -q '"replay": "MATCH"' $(DIST)/holographic-media/holographic-playback-evidence.json
+
+verify: test sanitize modality sprite-modality texture-modality holographic-modality
 
 clean:
 	rm -rf $(DIST)
