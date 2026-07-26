@@ -32,8 +32,9 @@ jobs:
         with:
           show-progress: false
           fetch-depth: 0
+          ref: ${{ github.head_ref || github.ref_name }}
       - name: Materialize staged shared-shader repair
-        if: ${{ github.event_name == 'push' && hashFiles('.github/vm81-shared-shader-repair/*.b64') != '' }}
+        if: ${{ hashFiles('.github/vm81-shared-shader-repair/*.b64') != '' }}
         shell: bash
         run: |
           set -euo pipefail
@@ -49,7 +50,8 @@ jobs:
             exit 1
           fi
           git commit -m "Repair VM81 shared shader and libavfilter blending"
-          git push origin "HEAD:${GITHUB_REF_NAME}"
+          target_ref="${GITHUB_HEAD_REF:-${GITHUB_REF_NAME}}"
+          git push origin "HEAD:${target_ref}"
       - name: Ensure terminal sprite texture shader and holographic dependencies
         shell: bash
         run: |
