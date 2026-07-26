@@ -6,6 +6,7 @@ export const RENDER_PROFILES = Object.freeze({
   MOBILE_SAFE: { mode: "points", pixelRatio: 1, detail: 0 },
   BALANCED: { mode: "instances", pixelRatio: 1.25, detail: 0 },
   DESKTOP_HIGH: { mode: "instances", pixelRatio: 1.75, detail: 1 },
+  HIGH_REFRESH: { mode: "instances", pixelRatio: 4, detail: 1 },
   DIAGNOSTIC: { mode: "points", pixelRatio: 1, detail: 0 },
 });
 
@@ -180,6 +181,13 @@ export class HHSRenderProjection {
   }
 
   diagnostics() {
+    const effectivePixelRatio = this.renderer
+      ? this.renderer.getPixelRatio()
+      : Math.min(window.devicePixelRatio || 1, this.profile.pixelRatio);
+    const logicalWidth = this.canvas.clientWidth || this.canvas.width || 0;
+    const logicalHeight = this.canvas.clientHeight || this.canvas.height || 0;
+    const effectiveWidth = Math.round(logicalWidth * effectivePixelRatio);
+    const effectiveHeight = Math.round(logicalHeight * effectivePixelRatio);
     return Object.freeze({
       profile: this.profileName,
       mode: this.profile.mode,
@@ -187,6 +195,11 @@ export class HHSRenderProjection {
       frame: this.frame,
       webgl2: Boolean(this.renderer?.capabilities?.isWebGL2),
       draw_object: this.object?.isInstancedMesh ? "THREE.InstancedMesh" : "THREE.Points",
+      effective_pixel_ratio: effectivePixelRatio,
+      effective_width: effectiveWidth,
+      effective_height: effectiveHeight,
+      effective_pixels: effectiveWidth * effectiveHeight,
+      color_depth_bits: (window.screen?.colorDepth ?? 0),
     });
   }
 

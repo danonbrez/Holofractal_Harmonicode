@@ -14,12 +14,27 @@ function detectCapabilities() {
   const webgl2 = Boolean(probe.getContext("webgl2"));
   const mobile = matchMedia("(max-width: 900px)").matches || /Android|iPhone|iPad/i.test(navigator.userAgent);
   const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const profile = !webgl2 || mobile ? "MOBILE_SAFE" : "BALANCED";
+  const dpr = window.devicePixelRatio || 1;
+  const screenPixels = Math.round((window.screen?.width ?? 0) * dpr * (window.screen?.height ?? 0) * dpr);
+  const colorDepthBits = window.screen?.colorDepth ?? 0;
+  const highRefreshCapable = webgl2 && !mobile && screenPixels >= 8_000_000;
+  let profile;
+  if (!webgl2 || mobile) {
+    profile = "MOBILE_SAFE";
+  } else if (highRefreshCapable) {
+    profile = "HIGH_REFRESH";
+  } else {
+    profile = "BALANCED";
+  }
   return Object.freeze({
     webgl2,
     workers: typeof Worker !== "undefined",
     indexeddb: typeof indexedDB !== "undefined",
     reduced_motion: reducedMotion,
+    device_pixel_ratio: dpr,
+    screen_pixels: screenPixels,
+    color_depth_bits: colorDepthBits,
+    high_refresh_capable: highRefreshCapable,
     profile,
   });
 }
