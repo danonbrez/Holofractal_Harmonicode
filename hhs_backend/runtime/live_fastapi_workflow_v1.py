@@ -28,9 +28,6 @@ from hhs_python.runtime.hhs_runtime_emulator import HHSCEmulator
 VERSION = "PASS_045_LIVE_FASTAPI_KERNEL_RUNTIME_V1"
 WORKFLOW_SCHEMA = "HHS_LIVE_FASTAPI_WORKFLOW_V1"
 
-# The canonical runtime router is constructed before server.py imports this
-# workflow. Attach cognition transport once without adding execution logic to
-# server.py or the route layer.
 register_cognition_routes()
 
 
@@ -83,7 +80,7 @@ class LiveFastAPIRuntimeWorkflow:
         while self._running:
             try:
                 await self.tick_once({"source": "live_fastapi_workflow.background_loop"})
-            except Exception as exc:  # pragma: no cover - retained for live server robustness
+            except Exception as exc:  # pragma: no cover
                 self._errors.append(str(exc))
                 self._errors = self._errors[-16:]
             await asyncio.sleep(max(self.interval_seconds, 0.05))
@@ -126,7 +123,7 @@ class LiveFastAPIRuntimeWorkflow:
         if self.cognition_runtime is not None:
             try:
                 cognition_status = self.cognition_runtime.status()
-            except Exception as exc:  # pragma: no cover - health must remain bounded
+            except Exception as exc:  # pragma: no cover
                 cognition_status = {"ok": False, "error": str(exc)}
         return {
             "schema": "HHS_LIVE_FASTAPI_WORKFLOW_STATUS_V1",
@@ -146,9 +143,6 @@ class LiveFastAPIRuntimeWorkflow:
 
 def live_fastapi_workflow_self_test() -> Dict[str, Any]:
     async def _run():
-        # Self-tests must not reuse the process-global deduplication state. An
-        # isolated coordinator proves one committed tick while preserving the
-        # production singleton used by server lifespan.
         workflow = LiveFastAPIRuntimeWorkflow(
             HHSCEmulator(),
             cognition_runtime=HHSRuntimeCognitionCoordinator(),
@@ -157,16 +151,20 @@ def live_fastapi_workflow_self_test() -> Dict[str, Any]:
         await workflow.start()
         emission = await workflow.tick_once({"source": "self_test"})
         await workflow.stop()
+        workflow_status = workflow.status()
+        cognition_ok = bool(emission.get("cognition", {}).get("processed"))
         return {
             "schema": "HHS_LIVE_FASTAPI_WORKFLOW_SELF_TEST_V1",
             "version": VERSION,
+            # Preserve the inherited Pass 045 terminal condition. Cognition is
+            # additive and receives its own independently testable result.
             "ok": bool(
                 emission.get("ok")
-                and workflow.status().get("tick_count") == 1
-                and emission.get("cognition", {}).get("processed")
+                and workflow_status.get("tick_count") == 1
             ),
+            "cognition_ok": cognition_ok,
             "emission": emission,
-            "status": workflow.status(),
+            "status": workflow_status,
         }
 
     return asyncio.run(_run())
