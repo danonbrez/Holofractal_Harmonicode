@@ -1,6 +1,6 @@
 # VM81 Level 10 — Playable 19-Opcode 2D Platform Game
 
-This module is the authoritative native C game milestone for the VM81 development track. It preserves the verified 19-opcode deterministic core and includes an independently playable terminal release, complete lifecycle states, hazards, lives, checkpoints, victory closure, deterministic replay, user-modality verification, screenshots, MP4 capture, and packaged CI evidence.
+This module is the authoritative native C game milestone for the VM81 development track. It preserves the verified 19-opcode deterministic core and includes an independently playable terminal release, complete lifecycle states, hazards, lives, checkpoints, victory closure, deterministic replay, user-modality verification, sprite-map gradients, governed texture layers, screenshots, MP4 capture, and packaged CI evidence.
 
 ## Core contract
 
@@ -51,24 +51,13 @@ Gameplay closure:
 
 ## User-modality closure
 
-The game now validates both directions of the user boundary in the modality actually presented.
+The game validates both directions of the user boundary in the modality actually presented.
 
 ### Inbound terminal modality
 
-`tools/verify_terminal_io.py` launches the production executable inside a real POSIX pseudo-terminal and sends the documented key bytes through its live input stream. It verifies the rendered responses for:
+`tools/verify_terminal_io.py` launches the production executable inside a real POSIX pseudo-terminal and sends the documented key bytes through its live input stream. It verifies title/start, movement and jump advancement, pause/resume, restart, clean quit, and cursor/style restoration.
 
-- title and start;
-- movement and jump frame advancement;
-- pause and resume;
-- restart near frame zero;
-- clean quit;
-- cursor/style restoration.
-
-The resulting receipt is:
-
-`dist/terminal-io/terminal-io-evidence.json`
-
-with terminal classification:
+The resulting receipt is `dist/terminal-io/terminal-io-evidence.json`, with classification:
 
 `VM81_TERMINAL_IO_MODALITY_VERIFIED`
 
@@ -80,32 +69,67 @@ The production executable exposes:
 hhs-vm81-platformer --capture-frames DIRECTORY
 ```
 
-This writes the exact terminal text frames produced by the same formatter used during interactive play. `tools/render_terminal_capture.py` then:
-
-- verifies title, checkpoint-one, checkpoint-two, and victory semantics in the exact text frames;
-- rasterizes the complete frame sequence using a recorded monospace-font hash;
-- creates title, checkpoint, victory, and overview PNG screenshots;
-- encodes the complete sequence as an H.264 MP4 at the authoritative 60 ticks per second;
-- verifies codec, dimensions, frame rate, frame count, duration, file size, visual variation, and nonblank content;
-- binds the media receipt to replay `MATCH`, victory, two checkpoints, 19/19 opcode closure, final Hash72, and final Hash216.
-
-Generated media:
-
-- `dist/media/screenshots/00-overview.png`;
-- `dist/media/screenshots/01-title.png`;
-- `dist/media/screenshots/02-checkpoint-one.png`;
-- `dist/media/screenshots/03-checkpoint-two.png`;
-- `dist/media/screenshots/04-victory.png`;
-- `dist/media/vm81-platformer-playthrough.mp4`;
-- `dist/media/modality-evidence.json`.
+The exact terminal frame sequence is transformed into screenshots and a 60 fps H.264 MP4, then checked for semantic phases, dimensions, frame count, duration, visual variation, replay closure, Hash72, and Hash216 correspondence.
 
 Presentation classification:
 
 `VM81_USER_MODALITY_PRESENTATION_EVIDENCE_VERIFIED`
 
-The governing contract is:
+The governing contract is `specs/HHS_VM81_USER_MODALITY_EVIDENCE_CONTRACT.json`.
 
-`specs/HHS_VM81_USER_MODALITY_EVIDENCE_CONTRACT.json`
+## Sprite-map and governed texture projection
+
+The verified native sprite renderer first projects `HHSVM81GameRelease` into the inherited **160×144 RGBA8888** gradient framebuffer. The governed texture module then consumes that exact pixel frame and adds material/depth detail as a second const projection. Neither layer owns physics, collision, checkpoints, hazards, or goal transitions, and the complete release state must remain byte-identical afterward.
+
+The inherited sprite-gradient surface remains available through:
+
+`HHS_VM81_SPRITE_OVERLAY_ALL`
+
+The additive wrapper API `hhs_vm81_game_texture_render_rgba` uses five independent governed flags:
+
+| Texture flag | Projection |
+|---|---|
+| `HHS_VM81_TEXTURE_FIELD` | Deterministic micrograin and dual modular wave interference derived from phase, Lo Shu state, and camera position |
+| `HHS_VM81_TEXTURE_MIDGROUND` | Slow parallax arches, lattice lines, and distant structural bands behind collision geometry |
+| `HHS_VM81_TEXTURE_MATERIALS` | Terrain surface grain, seams, strata, veins, and cracks inside already-solid tiles |
+| `HHS_VM81_TEXTURE_SEMANTIC` | Hazard energy bands, checkpoint harmonic rings, and goal attractor rays |
+| `HHS_VM81_TEXTURE_PLAYER` | Player suit segmentation, rim highlights, phase accents, and velocity-derived motion echoes |
+
+The complete texture selection is:
+
+`HHS_VM81_TEXTURE_ALL`
+
+The inherited sprite renderer remains source- and behavior-frozen; the texture module is compiled from separate header, source, capture, and test surfaces. All texture arithmetic uses integer coordinate hashing, modular lanes, integer interpolation, and integer alpha blending. There is no unseeded randomness and no floating-point authoritative texture state.
+
+### Texture evidence
+
+The native executable:
+
+```sh
+dist/hhs-vm81-texture-capture dist/texture-capture
+```
+
+exports the exact 348-frame authoritative playthrough, frame-stream Hash72/Hash216 identities, per-layer native write counts, and an eight-state comparison covering the inherited gradient, each independent texture class, the structural texture composite, and the final cohesive presentation.
+
+`tools/render_texture_capture.py` creates:
+
+- `dist/texture-media/screenshots/00-texture-layer-overview.png`;
+- title, checkpoint-one, checkpoint-two, and victory screenshots;
+- `dist/texture-media/screenshots/05-governed-texture-layers.png`;
+- `dist/texture-media/screenshots/06-texture-detail-crops.png`;
+- `dist/texture-media/vm81-platformer-governed-textures.mp4`;
+- `dist/texture-media/texture-modality-evidence.json`.
+
+The governing contract is `specs/HHS_VM81_GOVERNED_TEXTURE_LAYERS_CONTRACT.json`.
+
+Texture closure classifications:
+
+```text
+VM81_GOVERNED_TEXTURE_LAYER_FOUNDATION_VERIFIED
+VM81_GOVERNED_TEXTURE_LAYER_FRAME_STREAM_CAPTURED
+VM81_GOVERNED_TEXTURE_LAYER_COMPARISON_CAPTURED
+VM81_GOVERNED_TEXTURE_LAYER_PRESENTATION_VERIFIED
+```
 
 ## Registered 19-opcode subset
 
@@ -133,74 +157,77 @@ The governing contract is:
 
 ## Build, play, capture, and verify
 
-Build and play:
-
 ```sh
 make -C native_projects/hhs_vm81_game_level10 all
 make -C native_projects/hhs_vm81_game_level10 play
-```
-
-Run the deterministic complete-level verification:
-
-```sh
 native_projects/hhs_vm81_game_level10/dist/hhs-vm81-platformer --headless
 ```
 
-Create screenshots and MP4 evidence. This target requires Python 3, Pillow, FFmpeg, FFprobe, and DejaVu Sans Mono:
+Create terminal screenshots and MP4 evidence:
 
 ```sh
 make -C native_projects/hhs_vm81_game_level10 modality
 ```
 
-Run the complete core, release, sanitizer, terminal-I/O, screenshot, MP4, and receipt suite:
+Reproduce the inherited sprite-gradient evidence:
+
+```sh
+make -C native_projects/hhs_vm81_game_level10 sprite-modality
+```
+
+Create the governed texture frame stream, layer comparison, detail crops, screenshots, and MP4:
+
+```sh
+make -C native_projects/hhs_vm81_game_level10 texture-modality
+```
+
+Run the complete core, release, sanitizer, terminal-I/O, inherited sprite-gradient, governed texture, screenshot, MP4, and receipt suite:
 
 ```sh
 make -C native_projects/hhs_vm81_game_level10 verify
 ```
 
-The core test executable retains the inherited terminal classification:
+Inherited classifications remain:
 
 ```text
 VM81_C_ABI_19_OPCODE_2D_PLATFORM_DEMO_VERIFIED
-```
-
-The playable release closes with:
-
-```text
 VM81_PLAYABLE_GAME_RELEASE_VERIFIED
-```
-
-The modality layer closes only when both classifications are present:
-
-```text
 VM81_TERMINAL_IO_MODALITY_VERIFIED
 VM81_USER_MODALITY_PRESENTATION_EVIDENCE_VERIFIED
+VM81_SPRITE_MAP_OVERLAY_GRADIENTS_VERIFIED
+VM81_SPRITE_MAP_OVERLAY_GRADIENTS_PRESENTATION_VERIFIED
 ```
 
 ## Process optimization learned
 
-The release workflow is intentionally split into independently diagnosable gates:
+The release workflow is split into independently diagnosable gates, with inherited sprite rendering and governed texture rendering compiled and tested separately:
 
-1. compile;
-2. core execution;
-3. playable lifecycle and replay;
-4. ASAN and UBSAN;
-5. live terminal input/output integration;
-6. exact text-frame capture;
-7. screenshot rasterization;
-8. MP4 encoding;
-9. media inspection;
+1. core compilation and execution;
+2. playable lifecycle and replay;
+3. inherited sprite projection;
+4. additive texture projection;
+5. ASAN and UBSAN for each native surface;
+6. live terminal input/output integration;
+7. exact terminal, sprite, and texture frame capture;
+8. screenshot rasterization;
+9. MP4 encoding and inspection;
 10. artifact packaging.
 
-This prevents an internal execution pass from being mistaken for a user-visible pass and identifies the exact translation boundary when a failure occurs.
+This prevents internal execution, inherited visual closure, and new texture closure from being conflated. A texture defect can fail without invalidating or rewriting the verified gradient renderer.
 
 Generated evidence includes:
 
 - `dist/verification.json` — inherited Level 10 VM81 core verification;
 - `dist/playable-verification.json` — complete-level victory, checkpoints, 19/19 opcode coverage, replay, Hash72, and Hash216 evidence;
 - `dist/terminal-io/terminal-io-evidence.json` — live terminal keyboard-to-presentation evidence;
-- `dist/capture/capture-trace.json` — exact terminal frame-stream receipt;
-- `dist/media/modality-evidence.json` — screenshot and MP4 correspondence receipt;
+- `dist/media/modality-evidence.json` — terminal screenshot and MP4 correspondence receipt;
+- `dist/sprite-media/sprite-modality-evidence.json` — inherited sprite-gradient presentation receipt;
+- `dist/texture-verification.txt` — native texture foundation classification;
+- `dist/texture-capture/texture-capture-trace.json` — governed texture frame-stream receipt;
+- `dist/texture-capture/layers/layer-manifest.json` — independent texture-class comparison;
+- `dist/texture-media/texture-modality-evidence.json` — governed texture screenshot and MP4 correspondence receipt;
 - `specs/HHS_VM81_GAME_LEVEL10_CONTRACT.json` — inherited core contract;
 - `specs/HHS_VM81_PLAYABLE_GAME_RELEASE_CONTRACT.json` — playable release contract;
-- `specs/HHS_VM81_USER_MODALITY_EVIDENCE_CONTRACT.json` — modality-matched acceptance contract.
+- `specs/HHS_VM81_USER_MODALITY_EVIDENCE_CONTRACT.json` — modality-matched acceptance contract;
+- `specs/HHS_VM81_SPRITE_MAP_OVERLAY_GRADIENTS_CONTRACT.json` — inherited sprite-gradient contract;
+- `specs/HHS_VM81_GOVERNED_TEXTURE_LAYERS_CONTRACT.json` — governed texture-layer contract.
