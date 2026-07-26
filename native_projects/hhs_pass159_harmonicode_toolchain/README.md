@@ -19,6 +19,16 @@ This additive native C11 implementation establishes the executable Pass 159 foun
 - replay, reverse-transition receipts, and reverse lifting;
 - a versioned public C ABI and native CLI.
 
+## Source materialization
+
+The authoritative C sources and native test are retained as deterministic gzip source capsules. `make materialize` recreates:
+
+- `src/hhs159_core.c` — 53,022 bytes;
+- `src/hhs159_cli.c` — 6,946 bytes;
+- `tests/test_pass159.c` — 8,675 bytes.
+
+`make`, `make verify`, and CMake materialize these sources without network access before compilation.
+
 ## Current classification
 
 `HHS_PASS_159_FOUNDATION_IMPLEMENTED_PENDING_FULL_CLOSURE`

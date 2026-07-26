@@ -5,11 +5,24 @@ ROOT := ../..
 INCLUDES := -Iinclude -Isrc -I$(ROOT)/hhs_runtime/include
 HASH_SRC := $(ROOT)/hhs_runtime/src/hhs_hash216.c
 CORE_SRC := src/hhs159_core.c
+CLI_SRC := src/hhs159_cli.c
+TEST_SRC := tests/test_pass159.c
 DIST := dist
+GENERATED_SRC := $(CORE_SRC) $(CLI_SRC) $(TEST_SRC)
 
-.PHONY: all test verify evidence clean
+.PHONY: all materialize test verify evidence clean
 
-all: $(DIST)/libhhs_pass159.so $(DIST)/libhhs_pass159.a $(DIST)/harmonicode $(DIST)/harmonicodec $(DIST)/vm81-as $(DIST)/vm81-ld $(DIST)/hhs-pass159-verify
+all: materialize $(DIST)/libhhs_pass159.so $(DIST)/libhhs_pass159.a $(DIST)/harmonicode $(DIST)/harmonicodec $(DIST)/vm81-as $(DIST)/vm81-ld $(DIST)/hhs-pass159-verify
+
+materialize: $(GENERATED_SRC)
+
+src/%.c: src/%.c.gz
+	gzip -dc $< > $@.tmp
+	mv $@.tmp $@
+
+tests/%.c: tests/%.c.gz
+	gzip -dc $< > $@.tmp
+	mv $@.tmp $@
 
 $(DIST):
 	mkdir -p $(DIST)
@@ -26,8 +39,8 @@ $(DIST)/libhhs_pass159.so: $(DIST)/hhs159_core.o $(DIST)/hhs_hash216.o
 $(DIST)/libhhs_pass159.a: $(DIST)/hhs159_core.o $(DIST)/hhs_hash216.o
 	$(AR) rcs $@ $^
 
-$(DIST)/harmonicode: src/hhs159_cli.c $(DIST)/libhhs_pass159.a
-	$(CC) $(CFLAGS) $(INCLUDES) src/hhs159_cli.c $(DIST)/libhhs_pass159.a -o $@
+$(DIST)/harmonicode: $(CLI_SRC) $(DIST)/libhhs_pass159.a
+	$(CC) $(CFLAGS) $(INCLUDES) $(CLI_SRC) $(DIST)/libhhs_pass159.a -o $@
 
 $(DIST)/harmonicodec: $(DIST)/harmonicode
 	cp $< $@
@@ -38,8 +51,8 @@ $(DIST)/vm81-as: $(DIST)/harmonicode
 $(DIST)/vm81-ld: $(DIST)/harmonicode
 	cp $< $@
 
-$(DIST)/hhs-pass159-verify: tests/test_pass159.c $(DIST)/libhhs_pass159.a
-	$(CC) $(CFLAGS) $(INCLUDES) tests/test_pass159.c $(DIST)/libhhs_pass159.a -o $@
+$(DIST)/hhs-pass159-verify: $(TEST_SRC) $(DIST)/libhhs_pass159.a
+	$(CC) $(CFLAGS) $(INCLUDES) $(TEST_SRC) $(DIST)/libhhs_pass159.a -o $@
 
 test: all
 	$(DIST)/hhs-pass159-verify | tee $(DIST)/P159_FOUNDATION_VALIDATION_REPORT.json
@@ -56,3 +69,4 @@ evidence: verify
 
 clean:
 	rm -rf $(DIST)
+	rm -f $(GENERATED_SRC)
