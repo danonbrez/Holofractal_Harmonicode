@@ -68,8 +68,14 @@ jobs:
       - name: Validate automatic cognition cascade
         run: python -m pytest -vv --tb=short tests/test_hhs_live_cognition_runtime_v1.py::test_live_cognition_processes_each_committed_state_once
 
-      - name: Validate explicit agentic research and toolchain cycles
-        run: python -m pytest -vv --tb=short tests/test_hhs_live_cognition_runtime_v1.py::test_explicit_cognition_research_and_toolchain_cycles_are_callable
+      - name: Validate explicit agentic cognition cycle
+        run: python -m pytest -vv --tb=short tests/test_hhs_live_cognition_runtime_v1.py::test_explicit_agentic_cognition_cycle_is_callable
+
+      - name: Validate explicit autonomous research cycle
+        run: python -m pytest -vv --tb=short tests/test_hhs_live_cognition_runtime_v1.py::test_explicit_autonomous_research_cycle_is_callable
+
+      - name: Validate explicit recursive toolchain cycle
+        run: python -m pytest -vv --tb=short tests/test_hhs_live_cognition_runtime_v1.py::test_explicit_recursive_toolchain_cycle_is_callable
 
       - name: Validate guarded cognition routes
         run: python -m pytest -vv --tb=short tests/test_hhs_cognition_routes_v1.py
