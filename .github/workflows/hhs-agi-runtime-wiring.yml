@@ -3,6 +3,7 @@ name: HHS AGI Runtime Wiring
 on:
   pull_request:
     paths:
+      - "hhs_python/runtime/__init__.py"
       - "hhs_backend/runtime/runtime_replay_engine.py"
       - "hhs_backend/runtime/live_cognition_runtime_v1.py"
       - "hhs_backend/runtime/live_fastapi_workflow_v1.py"
@@ -15,6 +16,7 @@ on:
     branches:
       - main
     paths:
+      - "hhs_python/runtime/__init__.py"
       - "hhs_backend/runtime/runtime_replay_engine.py"
       - "hhs_backend/runtime/live_cognition_runtime_v1.py"
       - "hhs_backend/runtime/live_fastapi_workflow_v1.py"
@@ -57,6 +59,7 @@ jobs:
       - name: Compile cognition surfaces
         run: |
           python -m py_compile \
+            hhs_python/runtime/__init__.py \
             hhs_backend/runtime/runtime_replay_engine.py \
             hhs_backend/runtime/live_cognition_runtime_v1.py \
             hhs_backend/runtime/live_fastapi_workflow_v1.py \
@@ -89,8 +92,11 @@ jobs:
       - name: Validate guarded cognition routes
         run: python -m pytest -q tests/test_hhs_cognition_routes_v1.py
 
-      - name: Revalidate inherited Pass 045 workflow
-        run: python -m pytest -q tests/test_hhs_live_fastapi_runtime_pass045_v1.py
+      - name: Revalidate inherited Pass 045 kernel bridge
+        run: python -m pytest -q tests/test_hhs_live_fastapi_runtime_pass045_v1.py::test_live_kernel_event_bridge_emits_real_kernel_state
+
+      - name: Revalidate inherited Pass 045 workflow tick
+        run: python -m pytest -q tests/test_hhs_live_fastapi_runtime_pass045_v1.py::test_live_fastapi_workflow_manual_tick
 
       - name: Run canonical server lifespan smoke test
         run: python -m pytest -q tests/test_hhs_server_cognition_boot_v1.py
