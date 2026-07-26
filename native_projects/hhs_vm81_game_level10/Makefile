@@ -7,14 +7,16 @@ HASH_SRC := $(ROOT)/hhs_runtime/src/hhs_hash216.c
 CORE_SRC := src/hhs_vm81_game.c
 RELEASE_SRC := src/hhs_vm81_game_release.c
 SPRITE_SRC := src/hhs_vm81_game_sprite.c
+TEXTURE_SRC := src/hhs_vm81_game_texture.c
 SRC_PARTS := src/hhs_vm81_game_part_00.inc src/hhs_vm81_game_part_01.inc src/hhs_vm81_game_part_02.inc
 DIST := dist
 
-.PHONY: all play test sanitize terminal-io capture modality sprite-capture sprite-modality clean verify
+.PHONY: all play test sanitize terminal-io capture modality sprite-capture sprite-modality texture-capture texture-modality clean verify
 
 all: $(DIST)/hhs-vm81-game $(DIST)/test-hhs-vm81-game \
 	$(DIST)/hhs-vm81-platformer $(DIST)/test-hhs-vm81-game-release \
-	$(DIST)/hhs-vm81-sprite-capture $(DIST)/test-hhs-vm81-game-sprite
+	$(DIST)/hhs-vm81-sprite-capture $(DIST)/test-hhs-vm81-game-sprite \
+	$(DIST)/hhs-vm81-texture-capture $(DIST)/test-hhs-vm81-game-texture
 
 $(DIST):
 	mkdir -p $(DIST)
@@ -37,6 +39,12 @@ $(DIST)/hhs-vm81-sprite-capture: $(CORE_SRC) $(SRC_PARTS) $(RELEASE_SRC) $(SPRIT
 $(DIST)/test-hhs-vm81-game-sprite: $(CORE_SRC) $(SRC_PARTS) $(RELEASE_SRC) $(SPRITE_SRC) tests/test_hhs_vm81_game_sprite.c include/hhs_vm81_game.h include/hhs_vm81_game_release.h include/hhs_vm81_game_sprite.h $(HASH_SRC) | $(DIST)
 	$(CC) $(CFLAGS) $(INCLUDES) $(CORE_SRC) $(RELEASE_SRC) $(SPRITE_SRC) tests/test_hhs_vm81_game_sprite.c $(HASH_SRC) -o $@
 
+$(DIST)/hhs-vm81-texture-capture: $(CORE_SRC) $(SRC_PARTS) $(RELEASE_SRC) $(SPRITE_SRC) $(TEXTURE_SRC) src/hhs_vm81_game_texture_capture_cli.c include/hhs_vm81_game.h include/hhs_vm81_game_release.h include/hhs_vm81_game_sprite.h include/hhs_vm81_game_texture.h $(HASH_SRC) | $(DIST)
+	$(CC) $(CFLAGS) $(INCLUDES) $(CORE_SRC) $(RELEASE_SRC) $(SPRITE_SRC) $(TEXTURE_SRC) src/hhs_vm81_game_texture_capture_cli.c $(HASH_SRC) -o $@
+
+$(DIST)/test-hhs-vm81-game-texture: $(CORE_SRC) $(SRC_PARTS) $(RELEASE_SRC) $(SPRITE_SRC) $(TEXTURE_SRC) tests/test_hhs_vm81_game_texture.c include/hhs_vm81_game.h include/hhs_vm81_game_release.h include/hhs_vm81_game_sprite.h include/hhs_vm81_game_texture.h $(HASH_SRC) | $(DIST)
+	$(CC) $(CFLAGS) $(INCLUDES) $(CORE_SRC) $(RELEASE_SRC) $(SPRITE_SRC) $(TEXTURE_SRC) tests/test_hhs_vm81_game_texture.c $(HASH_SRC) -o $@
+
 play: $(DIST)/hhs-vm81-platformer
 	$(DIST)/hhs-vm81-platformer
 
@@ -44,11 +52,13 @@ test: all
 	$(DIST)/test-hhs-vm81-game
 	$(DIST)/test-hhs-vm81-game-release
 	$(DIST)/test-hhs-vm81-game-sprite > $(DIST)/sprite-verification.txt
+	$(DIST)/test-hhs-vm81-game-texture > $(DIST)/texture-verification.txt
 	$(DIST)/hhs-vm81-game > $(DIST)/verification.json
 	$(DIST)/hhs-vm81-platformer --headless > $(DIST)/playable-verification.json
 	grep -q 'VM81_C_ABI_19_OPCODE_2D_PLATFORM_DEMO_VERIFIED' $(DIST)/verification.json
 	grep -q 'VM81_PLAYABLE_GAME_RELEASE_VERIFIED' $(DIST)/playable-verification.json
 	grep -q 'VM81_SPRITE_MAP_OVERLAY_GRADIENTS_VERIFIED' $(DIST)/sprite-verification.txt
+	grep -q 'VM81_GOVERNED_TEXTURE_LAYER_FOUNDATION_VERIFIED' $(DIST)/texture-verification.txt
 	grep -q '"phase": "VICTORY"' $(DIST)/playable-verification.json
 	grep -q '"opcode_coverage": "19/19"' $(DIST)/playable-verification.json
 	grep -q '"checkpoints_reached": 2' $(DIST)/playable-verification.json
@@ -67,6 +77,10 @@ sanitize: | $(DIST)
 		-fsanitize=address,undefined -fno-omit-frame-pointer $(INCLUDES) \
 		$(CORE_SRC) $(RELEASE_SRC) $(SPRITE_SRC) tests/test_hhs_vm81_game_sprite.c $(HASH_SRC) -o $(DIST)/test-hhs-vm81-game-sprite-sanitized
 	ASAN_OPTIONS=detect_leaks=1:halt_on_error=1 UBSAN_OPTIONS=halt_on_error=1 $(DIST)/test-hhs-vm81-game-sprite-sanitized
+	$(CC) -std=c11 -O1 -g -Wall -Wextra -Werror -pedantic \
+		-fsanitize=address,undefined -fno-omit-frame-pointer $(INCLUDES) \
+		$(CORE_SRC) $(RELEASE_SRC) $(SPRITE_SRC) $(TEXTURE_SRC) tests/test_hhs_vm81_game_texture.c $(HASH_SRC) -o $(DIST)/test-hhs-vm81-game-texture-sanitized
+	ASAN_OPTIONS=detect_leaks=1:halt_on_error=1 UBSAN_OPTIONS=halt_on_error=1 $(DIST)/test-hhs-vm81-game-texture-sanitized
 
 terminal-io: $(DIST)/hhs-vm81-platformer
 	rm -rf $(DIST)/terminal-io
@@ -129,7 +143,36 @@ sprite-modality: sprite-capture
 	grep -q '"replay": "MATCH"' $(DIST)/sprite-media/sprite-modality-evidence.json
 	grep -q '"opcode_coverage": "19/19"' $(DIST)/sprite-media/sprite-modality-evidence.json
 
-verify: test sanitize modality sprite-modality
+texture-capture: $(DIST)/hhs-vm81-texture-capture
+	command -v ffmpeg >/dev/null
+	command -v ffprobe >/dev/null
+	$(PYTHON) -c 'import PIL'
+	rm -rf $(DIST)/texture-capture $(DIST)/texture-media
+	mkdir -p $(DIST)/texture-capture
+	$(DIST)/hhs-vm81-texture-capture $(DIST)/texture-capture > $(DIST)/texture-capture-command.json
+	$(PYTHON) tools/render_texture_capture.py --input $(DIST)/texture-capture --output $(DIST)/texture-media > $(DIST)/texture-modality.log
+
+texture-modality: texture-capture
+	test -s $(DIST)/texture-capture/texture-capture-trace.json
+	test -s $(DIST)/texture-capture/layers/layer-manifest.json
+	test -s $(DIST)/texture-media/screenshots/00-texture-layer-overview.png
+	test -s $(DIST)/texture-media/screenshots/01-title.png
+	test -s $(DIST)/texture-media/screenshots/02-checkpoint-one.png
+	test -s $(DIST)/texture-media/screenshots/03-checkpoint-two.png
+	test -s $(DIST)/texture-media/screenshots/04-victory.png
+	test -s $(DIST)/texture-media/screenshots/05-governed-texture-layers.png
+	test -s $(DIST)/texture-media/screenshots/06-texture-detail-crops.png
+	test -s $(DIST)/texture-media/vm81-platformer-governed-textures.mp4
+	test -s $(DIST)/texture-media/texture-modality-evidence.json
+	grep -q 'VM81_GOVERNED_TEXTURE_LAYER_FRAME_STREAM_CAPTURED' $(DIST)/texture-capture/texture-capture-trace.json
+	grep -q 'VM81_GOVERNED_TEXTURE_LAYER_COMPARISON_CAPTURED' $(DIST)/texture-capture/layers/layer-manifest.json
+	grep -q 'VM81_GOVERNED_TEXTURE_LAYER_PRESENTATION_VERIFIED' $(DIST)/texture-media/texture-modality-evidence.json
+	grep -q '"state_projection_non_mutating": "VERIFIED"' $(DIST)/texture-media/texture-modality-evidence.json
+	grep -q '"inherited_sprite_projection": "UNCHANGED"' $(DIST)/texture-media/texture-modality-evidence.json
+	grep -q '"replay": "MATCH"' $(DIST)/texture-media/texture-modality-evidence.json
+	grep -q '"opcode_coverage": "19/19"' $(DIST)/texture-media/texture-modality-evidence.json
+
+verify: test sanitize modality sprite-modality texture-modality
 
 clean:
 	rm -rf $(DIST)
