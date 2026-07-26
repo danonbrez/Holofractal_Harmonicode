@@ -10,6 +10,13 @@ from typing import Any
 HASH72_ALPHABET = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-+*/()<>!?"
 MASK64 = (1 << 64) - 1
 
+PHASE_RECIPROCAL_SOURCE_FORMS = {"1/0", "0^-1"}
+ORDERED_GEAR_WORDS = {"xy", "yx", "zw", "wz"}
+CENTER_LINE_CANONICAL = (
+    "x+y", "zw", "x", "z", "yx", "wz", "y", "w", "xy",
+    "b^2", "c^2", "d^2", "e^2",
+)
+
 
 def _mix64(x: int) -> int:
     x &= MASK64
@@ -31,6 +38,11 @@ def hash216(data: bytes) -> str:
         state = _mix64(state + 0x517CC1B727220A95 * (i + 1))
         chars.append(HASH72_ALPHABET[state % 72])
     return "".join(chars)
+
+
+def hash72(data: bytes) -> str:
+    """Return one typed Hash72 lane from the repository-compatible mixer."""
+    return hash216(data)[:72]
 
 
 @dataclass(frozen=True)
@@ -68,7 +80,7 @@ class ParseProduct:
 
 
 _MULTI = ("==", "!=", "<=", ">=", "::", "->", "=>")
-_SINGLE = set("+-*/^%=<>()[]{}:,;") | {"×", "·", "÷", "√", "≠", "≤", "≥", "∆", "Δ", "π"}
+_SINGLE = set("+-*/^%=<>()[]{}:,;") | {"×", "·", "÷", "√", "≠", "≤", "≥", "∆", "Δ", "π", "."}
 _OPEN = {"(": ")", "[": "]", "{": "}"}
 _CLOSE = {value: key for key, value in _OPEN.items()}
 _NUMBER = re.compile(r"(?:\d+/\d+|\d+(?:\.\d+)?(?:[eE][+-]?\d+)?)")
@@ -128,7 +140,10 @@ def parse_source(source: str) -> ParseProduct:
             continue
         matched = next((operator for operator in _MULTI if source.startswith(operator, i)), None)
         if matched:
-            tokens.append(Token("RELATION" if matched in {"==", "!=", "<=", ">="} else "OPERATOR", matched, i, i + len(matched), depth))
+            tokens.append(Token(
+                "RELATION" if matched in {"==", "!=", "<=", ">="} else "OPERATOR",
+                matched, i, i + len(matched), depth,
+            ))
             i += len(matched)
             continue
         number_match = _NUMBER.match(source, i)
@@ -139,16 +154,24 @@ def parse_source(source: str) -> ParseProduct:
                 exact_numbers.append(f"{value.numerator}/{value.denominator}")
                 tokens.append(Token("NUMBER", text, i, number_match.end(), depth))
             except ZeroDivisionError:
-                diagnostics.append(f"ZERO_DENOMINATOR@{i}")
-                tokens.append(Token("INVALID_NUMBER", text, i, number_match.end(), depth))
+                if text == "1/0":
+                    tokens.append(Token("PHASE_RECIPROCAL", text, i, number_match.end(), depth))
+                    boundary.append("LOCAL_ZERO_PIVOT")
+                else:
+                    diagnostics.append(f"ZERO_DENOMINATOR@{i}")
+                    tokens.append(Token("INVALID_NUMBER", text, i, number_match.end(), depth))
             i = number_match.end()
             continue
         ident_match = _IDENT.match(source, i)
         if ident_match:
             text = ident_match.group(0)
-            kind = "BOUNDARY_CARRIER" if text == "ComplexInfinity" else "IDENTIFIER"
-            if kind == "BOUNDARY_CARRIER":
+            if text == "ComplexInfinity":
+                kind = "BOUNDARY_CARRIER"
                 boundary.append(text)
+            elif text in ORDERED_GEAR_WORDS:
+                kind = "ORDERED_GEAR_WORD"
+            else:
+                kind = "IDENTIFIER"
             tokens.append(Token(kind, text, i, ident_match.end(), depth))
             i = ident_match.end()
             continue
@@ -229,6 +252,70 @@ def parse_source(source: str) -> ParseProduct:
     )
 
 
+def _compact(source: str) -> str:
+    return re.sub(r"\s+", "", source)
+
+
+def _semantic_nodes(parsed: ParseProduct) -> list[dict[str, Any]]:
+    source = parsed.original_text
+    compact = _compact(source)
+    nodes: list[dict[str, Any]] = []
+
+    for token in parsed.tokens:
+        node = token.kind
+        if token.kind == "RELATION" and token.text in {"=", "=="}:
+            node = "EQUALITY_MEMBRANE"
+        elif token.kind == "RELATION" and token.text == "<":
+            node = "CENTER_LINE_PRECEDENCE" if "x+y<zw<x<z<yx<wz<y<w<xy" in compact else "RELATION"
+        elif token.kind == "ORDERED_GEAR_WORD":
+            node = "ORDERED_GEAR_WORD"
+        elif token.kind == "PHASE_RECIPROCAL":
+            node = "PHASE_RECIPROCAL"
+        elif token.text in {"Sqrt", "√"}:
+            node = "EXACT_RADICAL"
+        elif token.text == "MOD":
+            node = "HHS_MODULAR_NORMALIZATION"
+        nodes.append({"node": node, "value": token.text, "depth": token.depth})
+
+    if "u^72" in compact:
+        nodes.append({"node": "PHASE_POWER", "base": "u", "exponent": "72", "authority": "u^72"})
+    if "0^-1" in compact:
+        nodes.append({
+            "node": "PHASE_RECIPROCAL",
+            "source": "0^-1",
+            "dispatch": "PhaseRotate_M_TO_I",
+            "pivot": "0_L",
+        })
+    if "1/0" in compact:
+        nodes.append({
+            "node": "PHASE_RECIPROCAL",
+            "source": "1/0",
+            "dispatch": "PhaseRotate_M_TO_I",
+            "pivot": "0_L",
+        })
+    if "P^2(MOD)(pq)" in compact or "P^2MODpq" in compact:
+        nodes.append({
+            "node": "HHS_MODULAR_NORMALIZATION",
+            "authority": "P^2",
+            "state": "pq",
+        })
+    if any(marker in source for marker in ("{{", "[[", "{", "[")):
+        nodes.append({"node": "TENSOR_LITERAL", "source_preserved": True})
+    if re.search(r"a\^2\+b\^2(?:==|=)c\^2", compact):
+        nodes.append({"node": "PYTHAGOREAN_CONSTRAINT", "lanes": ["a^2", "b^2", "c^2"]})
+    if re.search(r"t\^3-t-1(?:==|=)0", compact):
+        nodes.append({"node": "PLASTIC_CONSTRAINT", "polynomial": "t^3-t-1"})
+    if "Phi^2-Phi-1" in compact or "Φ^2-Φ-1" in compact:
+        nodes.append({"node": "GOLDEN_CONSTRAINT", "polynomial": "Phi^2-Phi-1"})
+    if "x+y<zw<x<z<yx<wz<y<w<xy" in compact:
+        nodes.append({
+            "node": "CENTER_LINE_PRECEDENCE",
+            "operator": "CENTER_LINE_PHASE_PRECEDES",
+            "path": list(CENTER_LINE_CANONICAL),
+        })
+    return nodes
+
+
 def compile_membrane(source: str, mode: str = "COMPILE_ONLY") -> dict[str, Any]:
     allowed = {
         "SOLVE_TARGET_EXPLICIT",
@@ -243,13 +330,9 @@ def compile_membrane(source: str, mode: str = "COMPILE_ONLY") -> dict[str, Any]:
     parsed = parse_source(source)
     lane_hashes = [hash216(lane.encode("utf-8")) for lane in parsed.equality_lanes]
     payload = "|".join(lane_hashes + [mode, parsed.outcome]).encode("utf-8")
-    typed_ast = [
-        {"node": token.kind, "value": token.text, "depth": token.depth}
-        for token in parsed.tokens
-        if token.kind != "TRIVIA"
-    ]
+    typed_ast = _semantic_nodes(parsed)
     return {
-        "schema": "HHS_PASS_156_MEMBRANE_V1",
+        "schema": "HHS_PASS_157_TYPED_MEMBRANE_V2",
         "mode": mode,
         "parse": parsed.to_dict(),
         "typed_ast": typed_ast,
@@ -259,5 +342,17 @@ def compile_membrane(source: str, mode: str = "COMPILE_ONLY") -> dict[str, Any]:
         "membrane_hash216": hash216(payload),
         "global_simultaneous_constraint": True,
         "arbitrary_solve_target": False,
-        "symbols_distinct": {"O_ne_pi": True, "Delta_variants_preserved": True},
+        "phase_reciprocal_dispatch": any(node["node"] == "PHASE_RECIPROCAL" for node in typed_ast),
+        "centerline_operator": (
+            "CENTER_LINE_PHASE_PRECEDES"
+            if any(node["node"] == "CENTER_LINE_PRECEDENCE" for node in typed_ast)
+            else None
+        ),
+        "symbols_distinct": {
+            "O_ne_pi": True,
+            "Delta_variants_preserved": True,
+            "xy_ne_yx": True,
+            "zw_ne_wz": True,
+            "scalar_zero_ne_phase_pivot": True,
+        },
     }
