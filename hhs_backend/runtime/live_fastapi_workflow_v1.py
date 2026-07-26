@@ -18,7 +18,10 @@ from dataclasses import dataclass, field
 from typing import Any, Dict, Mapping, Optional
 
 from hhs_backend.api.cognition_routes import register_cognition_routes
-from hhs_backend.runtime.live_cognition_runtime_v1 import live_cognition_runtime
+from hhs_backend.runtime.live_cognition_runtime_v1 import (
+    HHSRuntimeCognitionCoordinator,
+    live_cognition_runtime,
+)
 from hhs_backend.runtime.live_kernel_event_bridge_v1 import LiveKernelEventBridge
 from hhs_python.runtime.hhs_runtime_emulator import HHSCEmulator
 
@@ -143,7 +146,14 @@ class LiveFastAPIRuntimeWorkflow:
 
 def live_fastapi_workflow_self_test() -> Dict[str, Any]:
     async def _run():
-        workflow = LiveFastAPIRuntimeWorkflow(HHSCEmulator(), auto_start=False)
+        # Self-tests must not reuse the process-global deduplication state. An
+        # isolated coordinator proves one committed tick while preserving the
+        # production singleton used by server lifespan.
+        workflow = LiveFastAPIRuntimeWorkflow(
+            HHSCEmulator(),
+            cognition_runtime=HHSRuntimeCognitionCoordinator(),
+            auto_start=False,
+        )
         await workflow.start()
         emission = await workflow.tick_once({"source": "self_test"})
         await workflow.stop()
