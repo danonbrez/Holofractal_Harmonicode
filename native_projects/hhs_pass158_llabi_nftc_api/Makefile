@@ -10,8 +10,9 @@ SRC := src/hhs_pass158_helpers.c src/hhs_pass158_descriptors.c src/hhs_pass158_o
 DIST := dist
 JAVA_HOME ?= $(shell dirname $$(dirname $$(readlink -f $$(command -v javac 2>/dev/null))))
 JNI_INCLUDES := -I$(JAVA_HOME)/include -I$(JAVA_HOME)/include/linux
+PYTHONPATH158 := $(ROOT):bindings/python:api
 
-.PHONY: all native-test python-test bindings service evidence verify package clean
+.PHONY: all native-test python-test bindings service gui-projection evidence verify package clean
 
 all: $(DIST)/libhhs_pass158.so $(DIST)/hhs-pass158 $(DIST)/test-pass158
 
@@ -38,7 +39,7 @@ native-test: all
 	grep -q '"negative_total":81' $(DIST)/native-test-report.json
 
 python-test: all
-	HHS_PASS158_LIBRARY=$(abspath $(DIST)/libhhs_pass158.so) PYTHONPATH=bindings/python:api python3 -m unittest discover -s tests -p 'test_*.py' -v 2>&1 | tee $(DIST)/python-test-report.txt
+	HHS_PASS158_LIBRARY=$(abspath $(DIST)/libhhs_pass158.so) PYTHONPATH=$(PYTHONPATH158) python3 -m unittest discover -s tests -p 'test_*.py' -v 2>&1 | tee $(DIST)/python-test-report.txt
 
 bindings: all
 	@set -e; { \
@@ -54,11 +55,15 @@ bindings: all
 	grep -q 'HHS_PASS_158_WASM_SANDBOX_BINDING_VERIFIED' $(DIST)/language-binding-report.txt
 
 service: python-test
-	HHS_PASS158_LIBRARY=$(abspath $(DIST)/libhhs_pass158.so) PYTHONPATH=bindings/python:api python3 api/pass158_service.py self-test | tee $(DIST)/service-report.json
+	HHS_PASS158_LIBRARY=$(abspath $(DIST)/libhhs_pass158.so) PYTHONPATH=$(PYTHONPATH158) python3 api/pass158_service.py self-test | tee $(DIST)/service-report.json
 	grep -q 'HHS_PASS_158_LOCAL_SERVICE_API_VERIFIED' $(DIST)/service-report.json
 
-evidence: native-test python-test bindings service
-	HHS_PASS158_LIBRARY=$(abspath $(DIST)/libhhs_pass158.so) PYTHONPATH=bindings/python:api python3 tools/generate_evidence.py
+gui-projection: python-test
+	HHS_PASS158_LIBRARY=$(abspath $(DIST)/libhhs_pass158.so) PYTHONPATH=$(PYTHONPATH158) python3 api/pass158_gui_projection_runtime.py self-test | tee $(DIST)/gui-projection-report.json
+	grep -q 'HHS_PASS_158_HASH216_GUI_PROJECTION_SCHEDULER_VERIFIED' $(DIST)/gui-projection-report.json
+
+evidence: native-test python-test bindings service gui-projection
+	HHS_PASS158_LIBRARY=$(abspath $(DIST)/libhhs_pass158.so) PYTHONPATH=$(PYTHONPATH158) python3 tools/generate_evidence.py
 
 verify: evidence
 
