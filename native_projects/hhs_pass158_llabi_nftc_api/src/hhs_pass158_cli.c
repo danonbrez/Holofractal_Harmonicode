@@ -37,7 +37,7 @@ static int run_demo(void) {
     HHS158Value rational = {0};
     HHS158ValidationPolicy validation_policy = {0};
     HHS158ValidationReport validation_report = {0};
-    HHS158Operation operations[2] = {{0}};
+    HHS158Operation operations[2] = {0};
     HHS158TransitionDescriptor transition_descriptor = {0};
     HHS158Transition *transition = NULL;
     HHS158ExecutionOptions execution_options = {0};
