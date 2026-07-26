@@ -321,6 +321,7 @@ HHS158Status hhs158_instance_compose(HHS158Context *context, HHS158Instance *con
     status = hhs158_append_text(constraints, sizeof(constraints), &length, "COMPOSE[");
     for (i = 0; status == HHS158_OK && i < instance_count; ++i) {
         if (!instance_valid(instances[i])) return HHS158_HANDLE_RELEASED;
+        if (instances[i]->context != context) return HHS158_CAPABILITY_SCOPE_VIOLATION;
         for (j = i + 1u; j < instance_count; ++j) {
             if (instances[i] == instances[j] && !policy->allow_declared_cycles) return HHS158_DEPENDENCY_CYCLE_UNBOUNDED;
         }
@@ -400,6 +401,7 @@ HHS158Status hhs158_receipt_replay(HHS158Context *context, HHS158Receipt *receip
     int match = 1;
     if (!out_result) return HHS158_INVALID_ARGUMENT;
     if (!context_valid(context) || !receipt_valid(receipt)) return HHS158_HANDLE_RELEASED;
+    if (receipt->context != context) return HHS158_CAPABILITY_SCOPE_VIOLATION;
     if (!options || !hhs158_header_valid(&options->header, sizeof(*options))) return HHS158_STRUCT_SIZE_INVALID;
     if (!hhs158_hex_encode((const uint8_t *)receipt->replay_material, receipt->replay_material_size, replay_hex, sizeof(replay_hex))) return HHS158_OUTPUT_BOUND;
     written = snprintf(canonical, sizeof(canonical),

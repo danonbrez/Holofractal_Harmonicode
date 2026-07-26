@@ -166,6 +166,17 @@ class SchedulerTests(unittest.TestCase):
         self.assertEqual(package["authoritative_event_count"], 2)
         self.assertEqual(len(package["changed_chunks"]), 3)
 
+    def test_snapshot_recovery_recomputes_chunk_identity(self):
+        scheduler = self.make()
+        scheduler.observe_runtime_state("positions", "PHYSICS_POSITION_OBJECT", [1, 2, 3])
+        snapshot = json.loads(json.dumps(scheduler.snapshot()))
+        root = snapshot["objects"]["positions"]["hash216_root"]
+        snapshot["objects"]["positions"]["payload"] = [9, 9, 9]
+        snapshot["chunk_history"][root]["payload"] = [9, 9, 9]
+        recovered = self.make()
+        with self.assertRaisesRegex(ValueError, "HASH216_SNAPSHOT_IDENTITY_MISMATCH"):
+            recovered.recover(snapshot)
+
     def test_invalid_telemetry_is_rejected(self):
         with self.assertRaisesRegex(ValueError, "INVALID_FRAME_TELEMETRY"):
             FrameTelemetry(1, 0)
