@@ -3,7 +3,8 @@ name: HHS AGI Runtime Wiring
 on:
   pull_request:
     paths:
-      - "hhs_python/runtime/__init__.py"
+      - "hhs_storage/__init__.py"
+      - "hhs_storage/runtime_state_compatibility_v1.py"
       - "hhs_backend/runtime/runtime_replay_engine.py"
       - "hhs_backend/runtime/live_cognition_runtime_v1.py"
       - "hhs_backend/runtime/live_fastapi_workflow_v1.py"
@@ -17,7 +18,8 @@ on:
     branches:
       - main
     paths:
-      - "hhs_python/runtime/__init__.py"
+      - "hhs_storage/__init__.py"
+      - "hhs_storage/runtime_state_compatibility_v1.py"
       - "hhs_backend/runtime/runtime_replay_engine.py"
       - "hhs_backend/runtime/live_cognition_runtime_v1.py"
       - "hhs_backend/runtime/live_fastapi_workflow_v1.py"
@@ -61,7 +63,8 @@ jobs:
       - name: Compile cognition surfaces
         run: |
           python -m py_compile \
-            hhs_python/runtime/__init__.py \
+            hhs_storage/__init__.py \
+            hhs_storage/runtime_state_compatibility_v1.py \
             hhs_backend/runtime/runtime_replay_engine.py \
             hhs_backend/runtime/live_cognition_runtime_v1.py \
             hhs_backend/runtime/live_fastapi_workflow_v1.py \
