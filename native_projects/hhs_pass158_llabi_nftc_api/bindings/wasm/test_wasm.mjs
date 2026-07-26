@@ -27,7 +27,7 @@ const result = nft.project();
 assert.equal(result.projection.authority, "PROJECTION_ONLY");
 assert.equal(result.receipt.classification, "HHS_P158_WASM_READ_ONLY_PROJECTION_VERIFIED");
 assert.equal(result.receipt.receiptId.length, "hash72:".length + 72);
-assert.equal(result.receipt.objectRoot.length, "hash216:".length + 54);
+assert.equal(result.receipt.objectRoot.length, "hash216:".length + 216);
 assert.throws(() => nft.bind("x", rational), /DUPLICATE_CONFLICTING_BINDING/);
 
 console.log("HHS_PASS_158_WASM_SANDBOX_BINDING_VERIFIED");
