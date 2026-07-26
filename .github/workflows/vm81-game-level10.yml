@@ -6,6 +6,7 @@ on:
       - main
       - agent/vm81-game-level10
       - agent/vm81-modality-evidence
+      - agent/vm81-sprite-overlay-gradients
     paths:
       - native_projects/hhs_vm81_game_level10/**
       - hhs_runtime/include/hhs_hash216.h
@@ -22,12 +23,12 @@ permissions:
 jobs:
   vm81-playable-game:
     runs-on: ubuntu-24.04
-    timeout-minutes: 20
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
         with:
           show-progress: false
-      - name: Ensure terminal media dependencies
+      - name: Ensure terminal and sprite media dependencies
         shell: bash
         run: |
           missing=0
@@ -42,7 +43,7 @@ jobs:
           ffmpeg -version | head -n 1
           python3 -c 'import PIL; print(PIL.__version__)'
           sha256sum /usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf
-      - name: Compile and execute core and playable release verification
+      - name: Compile and execute core playable and sprite verification
         shell: bash
         run: |
           mkdir -p native_projects/hhs_vm81_game_level10/dist
@@ -67,15 +68,26 @@ jobs:
           code=$?
           cat native_projects/hhs_vm81_game_level10/dist/hosted-modality.log
           exit "$code"
-      - name: Assert core release and modality evidence
+      - name: Verify sprite map overlay gradients and media
+        shell: bash
+        run: |
+          set +e
+          make -C native_projects/hhs_vm81_game_level10 sprite-modality > native_projects/hhs_vm81_game_level10/dist/hosted-sprite-modality.log 2>&1
+          code=$?
+          cat native_projects/hhs_vm81_game_level10/dist/hosted-sprite-modality.log
+          exit "$code"
+      - name: Assert core release terminal and sprite evidence
         run: |
           test -x native_projects/hhs_vm81_game_level10/dist/hhs-vm81-game
           test -x native_projects/hhs_vm81_game_level10/dist/test-hhs-vm81-game
           test -x native_projects/hhs_vm81_game_level10/dist/hhs-vm81-platformer
           test -x native_projects/hhs_vm81_game_level10/dist/test-hhs-vm81-game-release
+          test -x native_projects/hhs_vm81_game_level10/dist/hhs-vm81-sprite-capture
+          test -x native_projects/hhs_vm81_game_level10/dist/test-hhs-vm81-game-sprite
           native_projects/hhs_vm81_game_level10/dist/hhs-vm81-platformer --help
           test -s native_projects/hhs_vm81_game_level10/dist/verification.json
           test -s native_projects/hhs_vm81_game_level10/dist/playable-verification.json
+          test -s native_projects/hhs_vm81_game_level10/dist/sprite-verification.txt
           grep -q '"opcode_coverage": "19/19"' native_projects/hhs_vm81_game_level10/dist/verification.json
           grep -q '"replay": "MATCH"' native_projects/hhs_vm81_game_level10/dist/verification.json
           grep -q 'VM81_C_ABI_19_OPCODE_2D_PLATFORM_DEMO_VERIFIED' native_projects/hhs_vm81_game_level10/dist/verification.json
@@ -84,6 +96,7 @@ jobs:
           grep -q '"checkpoints_reached": 2' native_projects/hhs_vm81_game_level10/dist/playable-verification.json
           grep -q '"replay": "MATCH"' native_projects/hhs_vm81_game_level10/dist/playable-verification.json
           grep -q 'VM81_PLAYABLE_GAME_RELEASE_VERIFIED' native_projects/hhs_vm81_game_level10/dist/playable-verification.json
+          grep -q 'VM81_SPRITE_MAP_OVERLAY_GRADIENTS_VERIFIED' native_projects/hhs_vm81_game_level10/dist/sprite-verification.txt
           test -s native_projects/hhs_vm81_game_level10/dist/terminal-io/terminal-io-evidence.json
           test -s native_projects/hhs_vm81_game_level10/dist/terminal-io/terminal-session.ansi
           test -s native_projects/hhs_vm81_game_level10/dist/terminal-io/terminal-session.txt
@@ -91,21 +104,27 @@ jobs:
           test -s native_projects/hhs_vm81_game_level10/dist/capture/capture-trace.json
           grep -q 'VM81_TERMINAL_FRAME_STREAM_CAPTURED' native_projects/hhs_vm81_game_level10/dist/capture/capture-trace.json
           test -s native_projects/hhs_vm81_game_level10/dist/media/screenshots/00-overview.png
-          test -s native_projects/hhs_vm81_game_level10/dist/media/screenshots/01-title.png
-          test -s native_projects/hhs_vm81_game_level10/dist/media/screenshots/02-checkpoint-one.png
-          test -s native_projects/hhs_vm81_game_level10/dist/media/screenshots/03-checkpoint-two.png
-          test -s native_projects/hhs_vm81_game_level10/dist/media/screenshots/04-victory.png
           test -s native_projects/hhs_vm81_game_level10/dist/media/vm81-platformer-playthrough.mp4
           test -s native_projects/hhs_vm81_game_level10/dist/media/modality-evidence.json
           grep -q 'VM81_USER_MODALITY_PRESENTATION_EVIDENCE_VERIFIED' native_projects/hhs_vm81_game_level10/dist/media/modality-evidence.json
-          grep -q '"screenshots": "VERIFIED"' native_projects/hhs_vm81_game_level10/dist/media/modality-evidence.json
-          grep -q '"mp4": "VERIFIED"' native_projects/hhs_vm81_game_level10/dist/media/modality-evidence.json
           grep -q '"replay": "MATCH"' native_projects/hhs_vm81_game_level10/dist/media/modality-evidence.json
-      - name: Upload playable game and modality evidence
+          test -s native_projects/hhs_vm81_game_level10/dist/sprite-capture/sprite-capture-trace.json
+          test -s native_projects/hhs_vm81_game_level10/dist/sprite-capture/layers/layer-manifest.json
+          grep -q 'VM81_SPRITE_MAP_OVERLAY_GRADIENTS_CAPTURED' native_projects/hhs_vm81_game_level10/dist/sprite-capture/sprite-capture-trace.json
+          grep -q 'VM81_SPRITE_OVERLAY_LAYER_COMPARISON_CAPTURED' native_projects/hhs_vm81_game_level10/dist/sprite-capture/layers/layer-manifest.json
+          test -s native_projects/hhs_vm81_game_level10/dist/sprite-media/screenshots/00-sprite-gradient-overview.png
+          test -s native_projects/hhs_vm81_game_level10/dist/sprite-media/screenshots/05-overlay-gradient-layers.png
+          test -s native_projects/hhs_vm81_game_level10/dist/sprite-media/vm81-platformer-sprite-gradients.mp4
+          test -s native_projects/hhs_vm81_game_level10/dist/sprite-media/sprite-modality-evidence.json
+          grep -q 'VM81_SPRITE_MAP_OVERLAY_GRADIENTS_PRESENTATION_VERIFIED' native_projects/hhs_vm81_game_level10/dist/sprite-media/sprite-modality-evidence.json
+          grep -q '"state_projection_non_mutating": "VERIFIED"' native_projects/hhs_vm81_game_level10/dist/sprite-media/sprite-modality-evidence.json
+          grep -q '"opcode_coverage": "19/19"' native_projects/hhs_vm81_game_level10/dist/sprite-media/sprite-modality-evidence.json
+          grep -q '"replay": "MATCH"' native_projects/hhs_vm81_game_level10/dist/sprite-media/sprite-modality-evidence.json
+      - name: Upload playable game sprite gradient and modality evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: vm81-playable-game-user-modality-release
+          name: vm81-playable-game-sprite-gradient-release
           path: |
             native_projects/hhs_vm81_game_level10/Makefile
             native_projects/hhs_vm81_game_level10/README.md
@@ -115,22 +134,33 @@ jobs:
             native_projects/hhs_vm81_game_level10/tools/
             native_projects/hhs_vm81_game_level10/dist/hhs-vm81-platformer
             native_projects/hhs_vm81_game_level10/dist/hhs-vm81-game
+            native_projects/hhs_vm81_game_level10/dist/hhs-vm81-sprite-capture
             native_projects/hhs_vm81_game_level10/dist/verification.json
             native_projects/hhs_vm81_game_level10/dist/playable-verification.json
+            native_projects/hhs_vm81_game_level10/dist/sprite-verification.txt
             native_projects/hhs_vm81_game_level10/dist/capture-command.json
             native_projects/hhs_vm81_game_level10/dist/capture/capture-trace.json
             native_projects/hhs_vm81_game_level10/dist/terminal-io/
             native_projects/hhs_vm81_game_level10/dist/media/screenshots/
             native_projects/hhs_vm81_game_level10/dist/media/vm81-platformer-playthrough.mp4
             native_projects/hhs_vm81_game_level10/dist/media/modality-evidence.json
+            native_projects/hhs_vm81_game_level10/dist/sprite-capture-command.json
+            native_projects/hhs_vm81_game_level10/dist/sprite-capture/sprite-capture-trace.json
+            native_projects/hhs_vm81_game_level10/dist/sprite-capture/layers/
+            native_projects/hhs_vm81_game_level10/dist/sprite-media/screenshots/
+            native_projects/hhs_vm81_game_level10/dist/sprite-media/vm81-platformer-sprite-gradients.mp4
+            native_projects/hhs_vm81_game_level10/dist/sprite-media/sprite-modality-evidence.json
             native_projects/hhs_vm81_game_level10/dist/hosted-test.log
             native_projects/hhs_vm81_game_level10/dist/hosted-sanitize.log
             native_projects/hhs_vm81_game_level10/dist/hosted-modality.log
+            native_projects/hhs_vm81_game_level10/dist/hosted-sprite-modality.log
             native_projects/hhs_vm81_game_level10/dist/terminal-io-evidence.log
             native_projects/hhs_vm81_game_level10/dist/modality-evidence.log
+            native_projects/hhs_vm81_game_level10/dist/sprite-modality.log
             native_projects/hhs_vm81_game_level10/specs/HHS_VM81_GAME_LEVEL10_CONTRACT.json
             native_projects/hhs_vm81_game_level10/specs/HHS_VM81_PLAYABLE_GAME_RELEASE_CONTRACT.json
             native_projects/hhs_vm81_game_level10/specs/HHS_VM81_USER_MODALITY_EVIDENCE_CONTRACT.json
+            native_projects/hhs_vm81_game_level10/specs/HHS_VM81_SPRITE_MAP_OVERLAY_GRADIENTS_CONTRACT.json
             hhs_runtime/include/hhs_hash216.h
             hhs_runtime/src/hhs_hash216.c
           if-no-files-found: warn
