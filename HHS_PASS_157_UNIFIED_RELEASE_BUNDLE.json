@@ -1,0 +1,50 @@
+{
+  "schema": "HHS_PASS_157_UNIFIED_RELEASE_BUNDLE_V1",
+  "pass_number": "157",
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "inheritance_parent_required": "HHS-P156.1-LSHPVS",
+  "preserved_ancestry": [
+    "HHS-P154",
+    "HHS-P155-RHFQFTCG-MCM-DPF-TAU",
+    "HHS-P156-LLAPU",
+    "HHS-P156.1-LSHPVS",
+    "HHS-NFV-CEN-V1"
+  ],
+  "subsystems": [
+    {
+      "contract_id": "HHS-P157-PPF-MPTC",
+      "canonical_name": "PYTHAGOREAN_PLASTIC_FIBONACCI_MODULAR_PHASE_TENSOR_CONSTRUCTOR",
+      "implementation": "native_projects/hhs_pass157_ppf_mptc",
+      "existing_contract_version": "1.1.0",
+      "extension": "PASS157_PHASE_TENSOR_TYPED_ENVELOPE_V2",
+      "inheritance_binding": "HHS-P156.1-LSHPVS",
+      "terminal_classification": "HHS_PASS_157_PYTHAGOREAN_PLASTIC_FIBONACCI_MODULAR_PHASE_TENSOR_CONSTRUCTOR_VERIFIED"
+    },
+    {
+      "contract_id": "HHS-P157-UHAG-PSME",
+      "canonical_name": "UNIFIED_HOLOFRACTAL_APPLICATION_GUI",
+      "implementation": "apps/unified_gui",
+      "contract_version": "1.0.0",
+      "terminal_classification": "HHS_PASS_157_UNIFIED_PARTICLE_GUI_CLOSURE_VERIFIED"
+    }
+  ],
+  "migration_rule": {
+    "old_release_record": "HHS_PASS_157_RELEASE_BUNDLE.json",
+    "old_parent_binding": "HHS-P156-LLAPU",
+    "new_parent_binding": "HHS-P156.1-LSHPVS",
+    "method": "ADDITIVE_APPEND_ONLY_PARENT_BINDING",
+    "prohibition": "DO_NOT_REWRITE_OR_DELETE_EXISTING_EXECUTION_EVIDENCE",
+    "required_revalidation": [
+      "phase_tensor_extension_tests",
+      "pass156_1_dependency_gate",
+      "native_pass157_verification",
+      "unified_gui_core_tests",
+      "unified_gui_browser_tests",
+      "deterministic_replay",
+      "authoritative_main_workflow"
+    ]
+  },
+  "aggregate_pre_merge_classification": "HHS_PASS_157_UNIFIED_IMPLEMENTATION_PENDING_HOSTED_MAIN_CLOSURE",
+  "aggregate_terminal_gate": "BOTH_SUBSYSTEM_WORKFLOWS_SUCCESSFUL_ON_AUTHORITATIVE_MAIN",
+  "terminal_classifications_are_independent": true
+}
