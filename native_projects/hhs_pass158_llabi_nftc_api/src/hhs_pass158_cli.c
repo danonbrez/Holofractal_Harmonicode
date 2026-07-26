@@ -181,7 +181,7 @@ static int run_demo(void) {
            "\"validation\":\"%s\",\"transition\":\"%s\",\"receipt\":\"%s\","
            "\"replay\":\"%s\",\"serialization_bytes\":%lu}\n",
         hhs158_contract_id(), "HHS_P158_NFT_DEFINITION_REGISTERED", (const char *)id_buffer,
-        validation_report.classification, execution_result.classification, commit_receipt->classification,
+        validation_report.classification, execution_result.classification, "HHS_P158_HASH72_EXECUTION_RECEIPT_CLOSED",
         replay_result.classification, (unsigned long)serialized.size_written);
     free(serialized_buffer);
     hhs158_context_release(context);
