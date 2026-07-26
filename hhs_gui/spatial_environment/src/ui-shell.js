@@ -26,50 +26,6 @@ function downloadJSON(name, data) {
   setTimeout(() => URL.revokeObjectURL(url), 0);
 }
 
-createSelfPlayHarness() {
-  return new AgenticSelfPlayHarness({
-    executeRuntimeCommand: (commandName, args = {}) => this.commands.execute(`runtime.${commandName}`, args, { ui: this, source: "self-play" }),
-    extractRuntimeSummary,
-    telemetry: this.telemetry
-  });
-}
-
-async runSelfPlaySuite() {
-  try {
-    const report = await this.createSelfPlayHarness().runSuite();
-    this.journal.append("SELF_PLAY_SUITE_REPORT", {
-      completionRate: report.summary.completionRate,
-      failures: report.summary.failures,
-      apiCoverage: Object.keys(report.apiCoverage)
-    }, "NON_AUTHORITATIVE_USABILITY_EVALUATION");
-    this.renderTelemetry();
-    this.refreshSurfacesByApplication("telemetry");
-    this.toast(`Self-play suite complete (${Math.round(report.summary.completionRate * 100)}%).`, report.summary.failures ? "error" : "success");
-    return report;
-  } catch (error) {
-    this.toast(String(error.message ?? error), "error");
-    return null;
-  }
-}
-
-async runCapabilityLoop() {
-  try {
-    const report = await this.createSelfPlayHarness().runCapabilityLoop();
-    this.journal.append("SELF_PLAY_LOOP_REPORT", {
-      completionDelta: report.delta.completionDelta,
-      meanLatencyDeltaMs: report.delta.meanLatencyDeltaMs,
-      errorDelta: report.delta.errorDelta
-    }, "NON_AUTHORITATIVE_USABILITY_EVALUATION");
-    this.renderTelemetry();
-    this.refreshSurfacesByApplication("telemetry");
-    this.toast(`Capability loop complete (Δcompletion ${report.delta.completionDelta.toFixed(2)}).`, report.delta.errorDelta > 0 ? "error" : "success");
-    return report;
-  } catch (error) {
-    this.toast(String(error.message ?? error), "error");
-    return null;
-  }
-}
-
 function hexToRgb(hex) {
   const value = hex.replace("#", "");
   return [0, 2, 4].map((offset) => parseInt(value.slice(offset, offset + 2), 16));
@@ -1527,6 +1483,50 @@ export class UIShell {
       return null;
     } finally {
       if (button) button.classList.remove("busy");
+    }
+  }
+
+  createSelfPlayHarness() {
+    return new AgenticSelfPlayHarness({
+      executeRuntimeCommand: (commandName, args = {}) => this.commands.execute(`runtime.${commandName}`, args, { ui: this, source: "self-play" }),
+      extractRuntimeSummary,
+      telemetry: this.telemetry
+    });
+  }
+
+  async runSelfPlaySuite() {
+    try {
+      const report = await this.createSelfPlayHarness().runSuite();
+      this.journal.append("SELF_PLAY_SUITE_REPORT", {
+        completionRate: report.summary.completionRate,
+        failures: report.summary.failures,
+        apiCoverage: Object.keys(report.apiCoverage)
+      }, "NON_AUTHORITATIVE_USABILITY_EVALUATION");
+      this.renderTelemetry();
+      this.refreshSurfacesByApplication("telemetry");
+      this.toast(`Self-play suite complete (${Math.round(report.summary.completionRate * 100)}%).`, report.summary.failures ? "error" : "success");
+      return report;
+    } catch (error) {
+      this.toast(String(error.message ?? error), "error");
+      return null;
+    }
+  }
+
+  async runCapabilityLoop() {
+    try {
+      const report = await this.createSelfPlayHarness().runCapabilityLoop();
+      this.journal.append("SELF_PLAY_LOOP_REPORT", {
+        completionDelta: report.delta.completionDelta,
+        meanLatencyDeltaMs: report.delta.meanLatencyDeltaMs,
+        errorDelta: report.delta.errorDelta
+      }, "NON_AUTHORITATIVE_USABILITY_EVALUATION");
+      this.renderTelemetry();
+      this.refreshSurfacesByApplication("telemetry");
+      this.toast(`Capability loop complete (Δcompletion ${report.delta.completionDelta.toFixed(2)}).`, report.delta.errorDelta > 0 ? "error" : "success");
+      return report;
+    } catch (error) {
+      this.toast(String(error.message ?? error), "error");
+      return null;
     }
   }
 
