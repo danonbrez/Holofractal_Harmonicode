@@ -1,0 +1,49 @@
+name: Pass 156.1 LSHPVS
+
+on:
+  push:
+    branches:
+      - main
+      - agent/pass156-1-lshpvs
+    paths:
+      - native_projects/hhs_pass156_1_lshpvs/**
+      - hhs_runtime/c/hhs_runtime_abi.*
+      - hhs_runtime/include/hhs_hash216.h
+      - hhs_runtime/src/hhs_hash216.c
+      - .github/workflows/pass156-1-lshpvs.yml
+  pull_request:
+    paths:
+      - native_projects/hhs_pass156_1_lshpvs/**
+      - hhs_runtime/c/hhs_runtime_abi.*
+      - hhs_runtime/include/hhs_hash216.h
+      - hhs_runtime/src/hhs_hash216.c
+      - .github/workflows/pass156-1-lshpvs.yml
+
+permissions:
+  contents: read
+
+jobs:
+  native-pass156-1:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build, test, bind, and sanitize
+        run: make -C native_projects/hhs_pass156_1_lshpvs verify
+      - name: Verify evidence classification
+        run: python3 native_projects/hhs_pass156_1_lshpvs/tools/verify_evidence.py
+      - name: Assert local closure without inherited promotion
+        run: |
+          grep -q 'HHS_PASS_156_1_LOCAL_CORE_VERIFIED' native_projects/hhs_pass156_1_lshpvs/dist/test-report.txt
+          grep -q '"complete_nucleus_status":"HHS_PASS_156_1_INCOMPLETE"' native_projects/hhs_pass156_1_lshpvs/dist/verification.json
+          grep -q '"replay":"MATCH"' native_projects/hhs_pass156_1_lshpvs/dist/verification.json
+      - name: Upload Pass 156.1 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hhs-pass156-1-lshpvs-evidence
+          path: |
+            native_projects/hhs_pass156_1_lshpvs/dist/
+            native_projects/hhs_pass156_1_lshpvs/specs/
+            native_projects/hhs_pass156_1_lshpvs/docs/
+          if-no-files-found: error
