@@ -1,0 +1,21 @@
+{
+  "schema": "HHS_PASS_IMPLEMENTATION_CONTRACT_V1",
+  "contract_id": "HHS-P156.1-LSHPVS",
+  "pass": "156.1",
+  "implementation_scope": "native exact localized Hamiltonian parameter-vector store core",
+  "domain_separators": {
+    "entry": "HHS-P156.1-LSHPVS-ENTRY-V1",
+    "state": "HHS-P156.1-LSHPVS-STATE-V1",
+    "transition": "HHS-P156.1-LSHPVS-TRANSITION-V1",
+    "chain": "HHS-P156.1-LSHPVS-CHAIN-V1"
+  },
+  "authorities": {
+    "semantic_admission": "VM81 via hhs_runtime_step",
+    "receipt": "Hash72 via hhs_receipt_commit",
+    "identity": "Hash216 via hhs_hash216_compute",
+    "floating_point_authority": "NONE"
+  },
+  "local_success": "HHS_PASS_156_1_LOCAL_CORE_VERIFIED",
+  "complete_nucleus_status": "HHS_PASS_156_1_INCOMPLETE",
+  "inherited_blockers": ["PASS_154", "PASS_155", "PASS_156"]
+}
