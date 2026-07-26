@@ -1,0 +1,105 @@
+{
+  "contract_id": "HHS-VM81-MP4-HOLOGRAPHIC-PLAYBACK-OVERLAY-V1",
+  "version": "1.0.0",
+  "status": "NORMATIVE_PRESENTATION_EXTENSION",
+  "inherits": [
+    "HHS-VM81-GAME-L10-V1",
+    "HHS-VM81-PLAYABLE-GAME-RELEASE-V1",
+    "HHS-VM81-USER-MODALITY-EVIDENCE-V1",
+    "HHS-VM81-SPRITE-MAP-OVERLAY-GRADIENTS-V1",
+    "HHS-VM81-GOVERNED-TEXTURE-LAYERS-V1"
+  ],
+  "purpose": "Add an MP4-transported holographic playback overlay for advanced depth and lighting while preserving the complete VM81, sprite-gradient, and governed-texture authority chain.",
+  "governing_rule": "The holographic effect is a presentation-only transport and composition layer. The canonical overlay frames must be encoded into MP4, decoded through the playback path, and only the decoded playback frames may be composited over the authoritative texture frames.",
+  "authority": {
+    "gameplay_mutation": "hhs_vm81_game_execute",
+    "authoritative_state": "HHSVM81GameRelease",
+    "base_projection": "hhs_vm81_game_texture_render_rgba",
+    "holographic_generator": "tools/render_holographic_playback.py",
+    "playback_transport": "H.264 RGB MP4",
+    "composition": "integer per-channel screen blend",
+    "forbidden": [
+      "MP4-controlled gameplay or collision",
+      "overlay mutation of VM81 or release state",
+      "composition from canonical overlay frames without exercising MP4 playback",
+      "frame interpolation that changes the authoritative 60-tick sequence",
+      "unseeded randomness",
+      "replacement of the governed texture framebuffer",
+      "media generated from a different state sequence than the source texture trace"
+    ]
+  },
+  "pipeline": [
+    "authoritative governed texture frame stream",
+    "deterministic holographic overlay frame generation",
+    "lossless H.264 RGB MP4 encoding",
+    "MP4 decoding into playback frames",
+    "pixel-exact canonical-versus-playback verification",
+    "integer screen-light composition over the authoritative texture frames",
+    "640x576 H.264 user playback encoding",
+    "screenshots, stage comparison, detail crops, and evidence receipt"
+  ],
+  "holographic_effects": [
+    {"name":"PHASE_INTERFERENCE_SCAN_FIELD","inputs":["authoritative frame index","base texture pixels"],"purpose":"Reinforce phase rotation curvature through deterministic modular scan lanes."},
+    {"name":"SEMANTIC_LUMINANCE_BLOOM","inputs":["saturated player, checkpoint, hazard, and goal pixels"],"purpose":"Produce bounded light fields around semantically important visual structures."},
+    {"name":"CHROMATIC_EDGE_PHASE_ECHO","inputs":["base-frame luminance edges"],"purpose":"Create cyan and magenta phase separation without changing geometry."},
+    {"name":"ELLIPTICAL_HOLOGRAM_RINGS","inputs":["semantic-light centroid","authoritative frame index"],"purpose":"Project depth-oriented rotating light rings around active scene regions."},
+    {"name":"VOLUMETRIC_LIGHT_CONE","inputs":["semantic-light centroid","authoritative frame index"],"purpose":"Create a presentation-only light volume between the upper plane and active geometry."},
+    {"name":"PERSPECTIVE_GUIDE_VOLUME","inputs":["authoritative frame index"],"purpose":"Add a stable holographic floor and perspective volume for visible depth."}
+  ],
+  "transport": {
+    "canonical_overlay_resolution": [160,144],
+    "canonical_overlay_rate_fps": 60,
+    "overlay_codec": "H.264 via libx264rgb",
+    "overlay_pixel_format": "RGB / gbrp",
+    "overlay_encoding": "lossless CRF 0",
+    "decoded_playback_requirement": "Every decoded playback frame must be pixel-identical to its canonical overlay frame.",
+    "black_pixel_semantics": "identity under screen blend",
+    "composite_video_resolution": [640,576],
+    "composite_codec": "H.264 yuv420p",
+    "composite_rate_fps": 60
+  },
+  "required_invariants": [
+    "the source governed texture frame sequence remains unchanged",
+    "the source trace closes with victory, two checkpoints, 19/19 opcode coverage, replay MATCH, and non-mutating projection",
+    "the canonical hologram sequence contains nonblack visual content",
+    "the overlay MP4 contains exactly 348 ordered frames at 60 fps and 160x144",
+    "decoded MP4 playback frames are pixel-exact with canonical overlay frames",
+    "the decoded playback sequence, not the canonical source sequence, is used for composition",
+    "screen composition leaves black overlay pixels unchanged",
+    "the final composite contains exactly 348 ordered frames at 60 fps and 640x576",
+    "all screenshots and the final MP4 derive from the same decoded playback sequence",
+    "the overlay and composite artifacts are SHA-256 identified",
+    "the complete pipeline performs no VM81 state mutation"
+  ],
+  "evidence": {
+    "overlay_mp4": "dist/holographic-media/vm81-holographic-overlay.mp4",
+    "composite_mp4": "dist/holographic-media/vm81-platformer-holographic-playback.mp4",
+    "receipt": "dist/holographic-media/holographic-playback-evidence.json",
+    "screenshots": [
+      "dist/holographic-media/screenshots/00-holographic-playback-overview.png",
+      "dist/holographic-media/screenshots/01-title.png",
+      "dist/holographic-media/screenshots/02-checkpoint-one.png",
+      "dist/holographic-media/screenshots/03-checkpoint-two.png",
+      "dist/holographic-media/screenshots/04-victory.png",
+      "dist/holographic-media/screenshots/05-mp4-holographic-overlay-stages.png",
+      "dist/holographic-media/screenshots/06-holographic-depth-lighting-details.png"
+    ]
+  },
+  "negative_tests": [
+    "missing source texture trace",
+    "noncanonical source frame ordering",
+    "blank holographic overlay",
+    "overlay MP4 codec, resolution, frame-count, frame-rate, or duration mismatch",
+    "decoded MP4 frame mismatch",
+    "playback pixel-chain mismatch",
+    "composite MP4 codec, resolution, frame-count, frame-rate, or duration mismatch",
+    "source replay or opcode closure mismatch",
+    "VM81 state mutation",
+    "missing modality evidence"
+  ],
+  "terminal_classifications": [
+    "VM81_MP4_HOLOGRAPHIC_OVERLAY_GENERATED",
+    "VM81_MP4_HOLOGRAPHIC_PLAYBACK_ROUNDTRIP_VERIFIED",
+    "VM81_HOLOGRAPHIC_DEPTH_LIGHTING_COMPOSITE_VERIFIED"
+  ]
+}
