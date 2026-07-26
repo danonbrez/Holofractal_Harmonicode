@@ -36,8 +36,8 @@ pre { white-space: pre-wrap; overflow-wrap: anywhere; color: #c9d7f4; }
   gap: 1rem;
   padding: 1rem 1.25rem;
   border-bottom: 1px solid var(--border);
-  background: rgba(5, 7, 13, 0.8);
-  backdrop-filter: blur(18px);
+  background: rgba(5, 7, 13, 0.92);
+  backdrop-filter: blur(6px);
 }
 .app-footer { border-top: 1px solid var(--border); border-bottom: 0; color: var(--muted); font-size: 0.86rem; }
 h1, h2, p { margin-top: 0; }

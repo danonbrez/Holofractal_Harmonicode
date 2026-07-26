@@ -25,6 +25,9 @@ export class HHSRenderProjection {
     this.material = null;
     this.animationFrame = null;
     this.frame = 0;
+    this._dirty = false;
+    this._reuseColor = null;
+    this._reuseMatrixObject = null;
     this.onContextLost = options.onContextLost ?? (() => {});
     this.onContextRestored = options.onContextRestored ?? (() => {});
     this._contextLostHandler = (event) => {
@@ -65,12 +68,14 @@ export class HHSRenderProjection {
   }
 
   _createPersistentPool() {
+    this._reuseColor = new THREE.Color();
     if (this.profile.mode === "instances") {
       this.geometry = new THREE.IcosahedronGeometry(0.075, this.profile.detail);
       this.material = new THREE.MeshStandardMaterial({ roughness: 0.45, metalness: 0.15, vertexColors: true });
       this.object = new THREE.InstancedMesh(this.geometry, this.material, PARTICLE_COUNT);
       this.object.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
       this.object.frustumCulled = false;
+      this._reuseMatrixObject = new THREE.Object3D();
       this.scene.add(this.object);
     } else {
       this.geometry = new THREE.BufferGeometry();
@@ -79,6 +84,7 @@ export class HHSRenderProjection {
       this.material = new THREE.PointsMaterial({ size: this.profileName === "DIAGNOSTIC" ? 0.065 : 0.045, vertexColors: true });
       this.object = new THREE.Points(this.geometry, this.material);
       this.object.frustumCulled = false;
+      this._reuseMatrixObject = null;
       this.scene.add(this.object);
     }
   }
@@ -95,9 +101,9 @@ export class HHSRenderProjection {
   updateBuffers() {
     if (!this.object) return;
     const positions = this.engine.positions;
-    const color = new THREE.Color();
+    const color = this._reuseColor;
     if (this.object.isInstancedMesh) {
-      const matrixObject = new THREE.Object3D();
+      const matrixObject = this._reuseMatrixObject;
       for (let index = 0; index < PARTICLE_COUNT; index += 1) {
         const base = index * 3;
         matrixObject.position.set(positions[base], positions[base + 1], positions[base + 2]);
@@ -125,14 +131,20 @@ export class HHSRenderProjection {
       }
       positionAttribute.needsUpdate = true;
       colorAttribute.needsUpdate = true;
-      this.geometry.computeBoundingSphere();
     }
+  }
+
+  markDirty() {
+    this._dirty = true;
   }
 
   renderFrame = () => {
     if (!this.renderer) return;
     this.controls?.update();
-    this.updateBuffers();
+    if (this._dirty) {
+      this.updateBuffers();
+      this._dirty = false;
+    }
     this.renderer.render(this.scene, this.camera);
     this.frame += 1;
     this.animationFrame = requestAnimationFrame(this.renderFrame);
@@ -189,6 +201,9 @@ export class HHSRenderProjection {
     this.material = null;
     this.controls = null;
     this.renderer = null;
+    this._reuseColor = null;
+    this._reuseMatrixObject = null;
+    this._dirty = false;
   }
 
   dispose() {

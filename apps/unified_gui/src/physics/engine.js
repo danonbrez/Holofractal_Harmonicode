@@ -51,6 +51,7 @@ export class HHSParticleEngine {
     this.running = false;
     this.stepCount = 0;
     this.seed = 0;
+    this._addressRootHash72 = hash72String(this.addresses.map((particle) => particle.state_hash72).join(""));
     this.reset(0);
   }
 
@@ -205,10 +206,17 @@ export class HHSParticleEngine {
       step_count: this.stepCount,
       fixed_step: this.config.fixedStep,
       particle_count: PARTICLE_COUNT,
-      address_root_hash72: hash72String(this.addresses.map((particle) => particle.state_hash72).join("")),
+      address_root_hash72: this._addressRootHash72,
       projection_sample: sample,
     };
     return Object.freeze({ ...payload, state_hash72: hash72String(JSON.stringify(payload)) });
+  }
+
+  stepSilent(count = 1) {
+    if (!Number.isInteger(count) || count < 0 || count > 4096) {
+      throw new RangeError("RESOURCE_BOUNDED:invalid_step_count");
+    }
+    for (let step = 0; step < count; step += 1) this._integrateOneStep();
   }
 
   replay(receipt) {

@@ -67,9 +67,11 @@ export class HHSUnifiedApplication {
     this.physics.start();
     this.physicsTimer = window.setInterval(() => {
       if (document.hidden || !this.physics.running) return;
-      const receipt = this.physics.step(1);
-      this.lastPhysicsReceipt = receipt;
-      if (receipt.step_count % 15 === 0) {
+      this.physics.stepSilent(1);
+      this.render?.markDirty();
+      if (this.physics.stepCount % 15 === 0) {
+        const receipt = this.physics.serialize();
+        this.lastPhysicsReceipt = receipt;
         this._dispatch({ type: ACTIONS.PARTICLE_FIELD_ADVANCED, payload: receipt });
         this.refreshDiagnostics();
       }
