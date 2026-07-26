@@ -2,6 +2,8 @@
 from __future__ import annotations
 
 import json
+import os
+from dataclasses import replace
 from typing import Any, Dict, Iterable, List, Mapping, Optional
 
 from hhs_backend.runtime.runtime_workspace_object_v1 import hash72
@@ -20,6 +22,17 @@ from hhs_backend.runtime.hhs_litert_lm_assistant_v1 import (
 VERSION = "HHS_LITERT_LM_GEMMA4_HHS_API_ASSISTANT_V1"
 TOOL_LOOP_SCHEMA = "HHS_LITERT_LM_HHS_API_TOOL_LOOP_V1"
 MAX_TOOL_ROUNDS = 4
+DEFAULT_GEMMA4_MODEL_ALIAS = "gemma4-12b"
+HHS_API_SYSTEM_INSTRUCTION = """You are the natural-language AI thread
+interface to the Holofractal Harmonicode System (HHS). Preserve explicit user
+propositions and HARMONICODE source notation. Use the supplied read-only HHS
+API tools whenever current runtime state, services, invariants, conformance, or
+Pass 152 status is required. Read-only tool results are governed HHS evidence.
+Never claim that a VM81 mutation, repository change, receipt commit, or
+canonical state transition occurred unless a separate HHS API result explicitly
+contains admitted evidence. Model-generated mutating operations are proposals
+only and cannot self-authorize. Return concise natural-language answers grounded
+in the available HHS tool receipts."""
 
 
 def _merge_tools(
@@ -66,6 +79,7 @@ class GovernedHHSToolLoopTransport:
         tools: Optional[List[Mapping[str, Any]]] = None,
         response_format: Optional[Mapping[str, Any]] = None,
     ) -> Dict[str, Any]:
+        self.last_tool_trace = []
         working_messages = [dict(message) for message in messages]
         available_tools = _merge_tools(DEFAULT_HHS_ASSISTANT_TOOLS, tools)
         trace: List[Dict[str, Any]] = []
@@ -143,6 +157,14 @@ class HHSAPIAssistantService(HHSAssistantService):
         max_tool_rounds: int = MAX_TOOL_ROUNDS,
     ):
         resolved_config = config or LiteRTLMConfig.from_env()
+        if config is None:
+            replacements: Dict[str, Any] = {}
+            if "HHS_LITERT_LM_MODEL" not in os.environ:
+                replacements["model_id"] = DEFAULT_GEMMA4_MODEL_ALIAS
+            if "HHS_LITERT_LM_SYSTEM_INSTRUCTION" not in os.environ:
+                replacements["system_instruction"] = HHS_API_SYSTEM_INSTRUCTION
+            if replacements:
+                resolved_config = replace(resolved_config, **replacements)
         inner = transport or LiteRTLMTransport(resolved_config)
         governed = (
             inner
