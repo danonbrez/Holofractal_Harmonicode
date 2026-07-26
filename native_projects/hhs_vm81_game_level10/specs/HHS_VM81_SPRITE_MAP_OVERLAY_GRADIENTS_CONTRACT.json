@@ -1,0 +1,140 @@
+{
+  "contract_id": "HHS-VM81-SPRITE-MAP-OVERLAY-GRADIENTS-V1",
+  "version": "1.0.0",
+  "status": "NORMATIVE_PRESENTATION_EXTENSION",
+  "inherits": [
+    "HHS-VM81-GAME-L10-V1",
+    "HHS-VM81-PLAYABLE-GAME-RELEASE-V1",
+    "HHS-VM81-USER-MODALITY-EVIDENCE-V1"
+  ],
+  "purpose": "Add a deterministic sprite-map presentation with integer overlay gradients while preserving the inherited VM81 runtime as the only gameplay mutation authority.",
+  "authority": {
+    "gameplay_mutation": "hhs_vm81_game_execute",
+    "release_orchestration": "HHSVM81GameRelease",
+    "sprite_projection": "hhs_vm81_game_sprite_render_rgba",
+    "projection_rule": "The sprite renderer receives const authoritative state, returns pixels and hashes, and must leave the complete release state byte-identical.",
+    "forbidden": [
+      "frontend or renderer physics",
+      "sprite-layer mutation of VM81 state",
+      "floating-point authoritative rendering arithmetic",
+      "unreceipted state transitions",
+      "media generated from a different playthrough than the captured sprite stream"
+    ]
+  },
+  "framebuffer": {
+    "logical_resolution": [160, 144],
+    "pixel_format": "RGBA8888",
+    "channels": 4,
+    "tile_size": [8, 8],
+    "viewport_tiles": [20, 18],
+    "level_tiles": [64, 18],
+    "player_sprite_size": [16, 16],
+    "authoritative_rate_fps": 60,
+    "arithmetic": "integer interpolation and integer alpha blending only"
+  },
+  "sprite_map": {
+    "implementation": "built-in deterministic indexed/procedural atlas",
+    "classes": [
+      "atmospheric background",
+      "solid terrain tile",
+      "hazard tile",
+      "checkpoint inactive and active",
+      "goal flag",
+      "player idle",
+      "player walk",
+      "player jump",
+      "player fall",
+      "HUD life, checkpoint, and progress indicators"
+    ],
+    "camera_projection": "world pixels are translated only by the authoritative camera_x_px field",
+    "animation_projection": "player sprite frame is selected only from authoritative animation_state and animation_frame"
+  },
+  "overlay_order": [
+    {
+      "index": 1,
+      "name": "ATMOSPHERE_GRADIENT",
+      "description": "vertical sky gradient plus deterministic cloud and star texture"
+    },
+    {
+      "index": 2,
+      "name": "PHASE_OVERLAY",
+      "description": "diagonal gradient lanes derived from VM81 phase and Lo Shu state"
+    },
+    {
+      "index": 3,
+      "name": "SPRITE_MAP",
+      "description": "terrain, hazards, checkpoints, goal, and player sprite projection"
+    },
+    {
+      "index": 4,
+      "name": "CHECKPOINT_GOAL_GLOWS",
+      "description": "integer radial glow fields around checkpoint and goal coordinates"
+    },
+    {
+      "index": 5,
+      "name": "HUD",
+      "description": "lives, checkpoint state, and goal progress"
+    },
+    {
+      "index": 6,
+      "name": "VIGNETTE",
+      "description": "edge-distance darkening applied after the readable gameplay layers"
+    }
+  ],
+  "required_invariants": [
+    "same authoritative state plus same overlay flags yields byte-identical RGBA output",
+    "same RGBA output yields identical Hash72 and Hash216 frame identities",
+    "rendering preserves the complete HHSVM81GameRelease state byte-for-byte",
+    "invalid overlay flags fail without state mutation",
+    "insufficient output capacity fails without state mutation",
+    "an admitted VM81 gameplay transition changes the projected sprite frame",
+    "base, atmosphere, phase, glow, and full-composite layer hashes are distinct",
+    "the complete sprite frame sequence is ordered and chained by Hash72 and Hash216",
+    "sprite screenshots and MP4 are generated from that exact captured sequence",
+    "presentation evidence remains bound to victory, two checkpoints, 19/19 opcode coverage, replay MATCH, final Hash72, and final Hash216"
+  ],
+  "capture": {
+    "native_executable": "dist/hhs-vm81-sprite-capture",
+    "native_frame_format": "binary PPM P6",
+    "frame_trace": "dist/sprite-capture/sprite-capture-trace.json",
+    "layer_manifest": "dist/sprite-capture/layers/layer-manifest.json",
+    "frame_count_expected": 348,
+    "selected_states": [
+      "title",
+      "checkpoint one",
+      "checkpoint two",
+      "victory"
+    ]
+  },
+  "presentation_evidence": {
+    "screenshots": [
+      "dist/sprite-media/screenshots/00-sprite-gradient-overview.png",
+      "dist/sprite-media/screenshots/01-title.png",
+      "dist/sprite-media/screenshots/02-checkpoint-one.png",
+      "dist/sprite-media/screenshots/03-checkpoint-two.png",
+      "dist/sprite-media/screenshots/04-victory.png",
+      "dist/sprite-media/screenshots/05-overlay-gradient-layers.png"
+    ],
+    "video": "dist/sprite-media/vm81-platformer-sprite-gradients.mp4",
+    "video_codec": "H.264",
+    "video_resolution": [640, 576],
+    "video_scaling": "4x nearest-neighbor from the exact 160x144 sprite frames",
+    "receipt": "dist/sprite-media/sprite-modality-evidence.json",
+    "required_checks": [
+      "frame dimensions and sequence",
+      "nonblank content",
+      "sprite color diversity",
+      "frame variation",
+      "visible vertical gradient",
+      "five distinct overlay layer outputs",
+      "video codec, resolution, frame rate, frame count, duration, and nonempty size",
+      "artifact SHA-256"
+    ]
+  },
+  "terminal_classifications": [
+    "VM81_SPRITE_MAP_OVERLAY_GRADIENTS_VERIFIED",
+    "VM81_SPRITE_MAP_OVERLAY_GRADIENTS_CAPTURED",
+    "VM81_SPRITE_OVERLAY_LAYER_COMPARISON_CAPTURED",
+    "VM81_SPRITE_MAP_OVERLAY_GRADIENTS_PRESENTATION_VERIFIED"
+  ]
+}
