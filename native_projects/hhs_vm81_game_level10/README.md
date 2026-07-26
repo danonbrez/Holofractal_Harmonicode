@@ -1,6 +1,6 @@
 # VM81 Level 10 — Playable 19-Opcode 2D Platform Game
 
-This module is the authoritative native C game milestone for the VM81 development track. It preserves the verified 19-opcode deterministic core and includes an independently playable terminal release, complete lifecycle states, hazards, lives, checkpoints, victory closure, deterministic replay, user-modality verification, sprite-map gradients, governed texture layers, screenshots, MP4 capture, and packaged CI evidence.
+This module is the authoritative native C game milestone for the VM81 development track. It preserves the verified 19-opcode deterministic core and includes an independently playable terminal release, complete lifecycle states, hazards, lives, checkpoints, victory closure, deterministic replay, user-modality verification, sprite-map gradients, governed texture layers, an MP4-transported holographic playback overlay, screenshots, MP4 capture, and packaged CI evidence.
 
 ## Core contract
 
@@ -131,6 +131,42 @@ VM81_GOVERNED_TEXTURE_LAYER_COMPARISON_CAPTURED
 VM81_GOVERNED_TEXTURE_LAYER_PRESENTATION_VERIFIED
 ```
 
+## MP4 holographic playback overlay
+
+The holographic layer is a presentation-only transport and composition stage above the governed texture framebuffer. `tools/render_holographic_playback.py` generates a canonical 160×144 hologram frame sequence with phase-interference scan fields, semantic light bloom, chromatic edge echoes, elliptical rings, a volumetric light cone, and a perspective guide volume.
+
+The canonical frames are encoded into a lossless H.264 RGB MP4. That MP4 is then decoded back into playback frames, and only those decoded playback frames are composited over the authoritative texture stream using integer per-channel screen blending. Black overlay pixels are the identity element. This proves that MP4 playback is an actual layer in the presentation path rather than a duplicate export.
+
+The playback gate verifies:
+
+- 348 ordered overlay frames at 60 fps and 160×144;
+- H.264 RGB transport and exact MP4 decode roundtrip;
+- pixel-identical canonical and decoded playback chains;
+- 348 ordered composite frames at 60 fps and 640×576;
+- unchanged governed texture frames;
+- no VM81 state mutation;
+- victory, two checkpoints, 19/19 opcode coverage, and replay `MATCH`;
+- screenshot, stage-comparison, detail-crop, overlay-MP4, and composite-MP4 identities.
+
+Generated evidence:
+
+- `dist/holographic-media/vm81-holographic-overlay.mp4`;
+- `dist/holographic-media/vm81-platformer-holographic-playback.mp4`;
+- `dist/holographic-media/screenshots/00-holographic-playback-overview.png`;
+- `dist/holographic-media/screenshots/05-mp4-holographic-overlay-stages.png`;
+- `dist/holographic-media/screenshots/06-holographic-depth-lighting-details.png`;
+- `dist/holographic-media/holographic-playback-evidence.json`.
+
+The governing contract is `specs/HHS_VM81_MP4_HOLOGRAPHIC_PLAYBACK_OVERLAY_CONTRACT.json`.
+
+Holographic closure classifications:
+
+```text
+VM81_MP4_HOLOGRAPHIC_OVERLAY_GENERATED
+VM81_MP4_HOLOGRAPHIC_PLAYBACK_ROUNDTRIP_VERIFIED
+VM81_HOLOGRAPHIC_DEPTH_LIGHTING_COMPOSITE_VERIFIED
+```
+
 ## Registered 19-opcode subset
 
 | Base-20 digit | VM81 opcode | Native registry ID |
@@ -181,7 +217,13 @@ Create the governed texture frame stream, layer comparison, detail crops, screen
 make -C native_projects/hhs_vm81_game_level10 texture-modality
 ```
 
-Run the complete core, release, sanitizer, terminal-I/O, inherited sprite-gradient, governed texture, screenshot, MP4, and receipt suite:
+Generate, encode, decode, verify, and composite the MP4 holographic playback overlay:
+
+```sh
+make -C native_projects/hhs_vm81_game_level10 holographic-modality
+```
+
+Run the complete core, release, sanitizer, terminal-I/O, inherited sprite-gradient, governed texture, MP4 holographic playback, screenshot, video, and receipt suite:
 
 ```sh
 make -C native_projects/hhs_vm81_game_level10 verify
@@ -211,7 +253,9 @@ The release workflow is split into independently diagnosable gates, with inherit
 7. exact terminal, sprite, and texture frame capture;
 8. screenshot rasterization;
 9. MP4 encoding and inspection;
-10. artifact packaging.
+10. MP4 holographic encode/decode roundtrip;
+11. decoded-overlay composition and evidence;
+12. artifact packaging.
 
 This prevents internal execution, inherited visual closure, and new texture closure from being conflated. A texture defect can fail without invalidating or rewriting the verified gradient renderer.
 
@@ -226,8 +270,10 @@ Generated evidence includes:
 - `dist/texture-capture/texture-capture-trace.json` — governed texture frame-stream receipt;
 - `dist/texture-capture/layers/layer-manifest.json` — independent texture-class comparison;
 - `dist/texture-media/texture-modality-evidence.json` — governed texture screenshot and MP4 correspondence receipt;
+- `dist/holographic-media/holographic-playback-evidence.json` — MP4 transport, playback roundtrip, depth-lighting composition, screenshot, and dual-video receipt;
 - `specs/HHS_VM81_GAME_LEVEL10_CONTRACT.json` — inherited core contract;
 - `specs/HHS_VM81_PLAYABLE_GAME_RELEASE_CONTRACT.json` — playable release contract;
 - `specs/HHS_VM81_USER_MODALITY_EVIDENCE_CONTRACT.json` — modality-matched acceptance contract;
 - `specs/HHS_VM81_SPRITE_MAP_OVERLAY_GRADIENTS_CONTRACT.json` — inherited sprite-gradient contract;
-- `specs/HHS_VM81_GOVERNED_TEXTURE_LAYERS_CONTRACT.json` — governed texture-layer contract.
+- `specs/HHS_VM81_GOVERNED_TEXTURE_LAYERS_CONTRACT.json` — governed texture-layer contract;
+- `specs/HHS_VM81_MP4_HOLOGRAPHIC_PLAYBACK_OVERLAY_CONTRACT.json` — MP4 holographic playback-overlay contract.
