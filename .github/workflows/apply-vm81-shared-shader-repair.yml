@@ -1,0 +1,43 @@
+name: Apply VM81 shared shader repair
+
+on:
+  push:
+    branches:
+      - agent/vm81-shared-shader-libavfilter-repair
+    paths:
+      - .github/workflows/apply-vm81-shared-shader-repair.yml
+
+permissions:
+  contents: write
+
+jobs:
+  apply-repair:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/vm81-shared-shader-libavfilter-repair
+          fetch-depth: 0
+      - name: Apply exact validated native repair archive
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat .github/vm81-shared-shader-repair/*.b64 > /tmp/vm81-shared-shader-repair.b64
+          base64 --decode /tmp/vm81-shared-shader-repair.b64 > /tmp/vm81-shared-shader-repair.tar.gz
+          tar -xzf /tmp/vm81-shared-shader-repair.tar.gz -C .
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add \
+            native_projects/hhs_vm81_game_level10/Makefile \
+            native_projects/hhs_vm81_game_level10/README.md \
+            native_projects/hhs_vm81_game_level10/include/hhs_vm81_game_shader.h \
+            native_projects/hhs_vm81_game_level10/src/hhs_vm81_game_shader.c \
+            native_projects/hhs_vm81_game_level10/src/hhs_vm81_game_sprite.c \
+            native_projects/hhs_vm81_game_level10/src/hhs_vm81_game_texture.c \
+            native_projects/hhs_vm81_game_level10/src/hhs_vm81_game_texture_capture_cli.c \
+            native_projects/hhs_vm81_game_level10/tests/test_hhs_vm81_game_shader.c \
+            native_projects/hhs_vm81_game_level10/tools/render_holographic_playback.py \
+            native_projects/hhs_vm81_game_level10/specs/HHS_VM81_SHARED_SHADER_LIBAVFILTER_COMPOSITING_CONTRACT.json
+          git diff --cached --quiet && { echo "repair archive produced no changes"; exit 1; }
+          git commit -m "Repair VM81 shared shader and libavfilter blending"
+          git push origin HEAD:agent/vm81-shared-shader-libavfilter-repair
