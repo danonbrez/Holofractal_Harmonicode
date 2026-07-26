@@ -1,3 +1,4 @@
+# Branch materialization trigger: immutable-agent-sql-index-v1
 name: HHS Immutable Agent SQL Index
 
 on:
