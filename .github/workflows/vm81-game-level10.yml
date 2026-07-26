@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - agent/vm81-game-level10
+      - agent/vm81-modality-evidence
     paths:
       - native_projects/hhs_vm81_game_level10/**
       - hhs_runtime/include/hhs_hash216.h
@@ -21,11 +22,26 @@ permissions:
 jobs:
   vm81-playable-game:
     runs-on: ubuntu-24.04
-    timeout-minutes: 15
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
         with:
           show-progress: false
+      - name: Ensure terminal media dependencies
+        shell: bash
+        run: |
+          missing=0
+          command -v ffmpeg >/dev/null || missing=1
+          command -v ffprobe >/dev/null || missing=1
+          python3 -c 'import PIL' >/dev/null 2>&1 || missing=1
+          test -f /usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf || missing=1
+          if [ "$missing" -ne 0 ]; then
+            sudo apt-get update
+            sudo apt-get install -y ffmpeg python3-pil fonts-dejavu-core
+          fi
+          ffmpeg -version | head -n 1
+          python3 -c 'import PIL; print(PIL.__version__)'
+          sha256sum /usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf
       - name: Compile and execute core and playable release verification
         shell: bash
         run: |
@@ -43,7 +59,15 @@ jobs:
           code=$?
           cat native_projects/hhs_vm81_game_level10/dist/hosted-sanitize.log
           exit "$code"
-      - name: Assert core and release evidence
+      - name: Verify terminal input output and presentation media
+        shell: bash
+        run: |
+          set +e
+          make -C native_projects/hhs_vm81_game_level10 modality > native_projects/hhs_vm81_game_level10/dist/hosted-modality.log 2>&1
+          code=$?
+          cat native_projects/hhs_vm81_game_level10/dist/hosted-modality.log
+          exit "$code"
+      - name: Assert core release and modality evidence
         run: |
           test -x native_projects/hhs_vm81_game_level10/dist/hhs-vm81-game
           test -x native_projects/hhs_vm81_game_level10/dist/test-hhs-vm81-game
@@ -60,24 +84,53 @@ jobs:
           grep -q '"checkpoints_reached": 2' native_projects/hhs_vm81_game_level10/dist/playable-verification.json
           grep -q '"replay": "MATCH"' native_projects/hhs_vm81_game_level10/dist/playable-verification.json
           grep -q 'VM81_PLAYABLE_GAME_RELEASE_VERIFIED' native_projects/hhs_vm81_game_level10/dist/playable-verification.json
-      - name: Upload playable game and verification evidence
+          test -s native_projects/hhs_vm81_game_level10/dist/terminal-io/terminal-io-evidence.json
+          test -s native_projects/hhs_vm81_game_level10/dist/terminal-io/terminal-session.ansi
+          test -s native_projects/hhs_vm81_game_level10/dist/terminal-io/terminal-session.txt
+          grep -q 'VM81_TERMINAL_IO_MODALITY_VERIFIED' native_projects/hhs_vm81_game_level10/dist/terminal-io/terminal-io-evidence.json
+          test -s native_projects/hhs_vm81_game_level10/dist/capture/capture-trace.json
+          grep -q 'VM81_TERMINAL_FRAME_STREAM_CAPTURED' native_projects/hhs_vm81_game_level10/dist/capture/capture-trace.json
+          test -s native_projects/hhs_vm81_game_level10/dist/media/screenshots/00-overview.png
+          test -s native_projects/hhs_vm81_game_level10/dist/media/screenshots/01-title.png
+          test -s native_projects/hhs_vm81_game_level10/dist/media/screenshots/02-checkpoint-one.png
+          test -s native_projects/hhs_vm81_game_level10/dist/media/screenshots/03-checkpoint-two.png
+          test -s native_projects/hhs_vm81_game_level10/dist/media/screenshots/04-victory.png
+          test -s native_projects/hhs_vm81_game_level10/dist/media/vm81-platformer-playthrough.mp4
+          test -s native_projects/hhs_vm81_game_level10/dist/media/modality-evidence.json
+          grep -q 'VM81_USER_MODALITY_PRESENTATION_EVIDENCE_VERIFIED' native_projects/hhs_vm81_game_level10/dist/media/modality-evidence.json
+          grep -q '"screenshots": "VERIFIED"' native_projects/hhs_vm81_game_level10/dist/media/modality-evidence.json
+          grep -q '"mp4": "VERIFIED"' native_projects/hhs_vm81_game_level10/dist/media/modality-evidence.json
+          grep -q '"replay": "MATCH"' native_projects/hhs_vm81_game_level10/dist/media/modality-evidence.json
+      - name: Upload playable game and modality evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: vm81-playable-game-release
+          name: vm81-playable-game-user-modality-release
           path: |
             native_projects/hhs_vm81_game_level10/Makefile
+            native_projects/hhs_vm81_game_level10/README.md
             native_projects/hhs_vm81_game_level10/include/
             native_projects/hhs_vm81_game_level10/src/
             native_projects/hhs_vm81_game_level10/tests/
+            native_projects/hhs_vm81_game_level10/tools/
             native_projects/hhs_vm81_game_level10/dist/hhs-vm81-platformer
             native_projects/hhs_vm81_game_level10/dist/hhs-vm81-game
             native_projects/hhs_vm81_game_level10/dist/verification.json
             native_projects/hhs_vm81_game_level10/dist/playable-verification.json
+            native_projects/hhs_vm81_game_level10/dist/capture-command.json
+            native_projects/hhs_vm81_game_level10/dist/capture/capture-trace.json
+            native_projects/hhs_vm81_game_level10/dist/terminal-io/
+            native_projects/hhs_vm81_game_level10/dist/media/screenshots/
+            native_projects/hhs_vm81_game_level10/dist/media/vm81-platformer-playthrough.mp4
+            native_projects/hhs_vm81_game_level10/dist/media/modality-evidence.json
             native_projects/hhs_vm81_game_level10/dist/hosted-test.log
             native_projects/hhs_vm81_game_level10/dist/hosted-sanitize.log
+            native_projects/hhs_vm81_game_level10/dist/hosted-modality.log
+            native_projects/hhs_vm81_game_level10/dist/terminal-io-evidence.log
+            native_projects/hhs_vm81_game_level10/dist/modality-evidence.log
             native_projects/hhs_vm81_game_level10/specs/HHS_VM81_GAME_LEVEL10_CONTRACT.json
             native_projects/hhs_vm81_game_level10/specs/HHS_VM81_PLAYABLE_GAME_RELEASE_CONTRACT.json
+            native_projects/hhs_vm81_game_level10/specs/HHS_VM81_USER_MODALITY_EVIDENCE_CONTRACT.json
             hhs_runtime/include/hhs_hash216.h
             hhs_runtime/src/hhs_hash216.c
           if-no-files-found: warn
