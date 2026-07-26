@@ -1,0 +1,125 @@
+name: Pass 158 Low-Level ABI NFT API
+
+on:
+  push:
+    branches:
+      - main
+      - agent/pass158-llabi-nftc-api
+    paths:
+      - native_projects/hhs_pass158_llabi_nftc_api/**
+      - native_projects/hhs_pass157_ppf_mptc/**
+      - hhs_runtime/c/hhs_runtime_abi.*
+      - hhs_runtime/include/hhs_hash216.h
+      - hhs_runtime/src/hhs_hash216.c
+      - .github/workflows/pass158-llabi-nftc-api.yml
+      - HHS_PASS_158_RELEASE_BUNDLE.json
+  pull_request:
+    paths:
+      - native_projects/hhs_pass158_llabi_nftc_api/**
+      - native_projects/hhs_pass157_ppf_mptc/**
+      - hhs_runtime/c/hhs_runtime_abi.*
+      - hhs_runtime/include/hhs_hash216.h
+      - hhs_runtime/src/hhs_hash216.c
+      - .github/workflows/pass158-llabi-nftc-api.yml
+      - HHS_PASS_158_RELEASE_BUNDLE.json
+
+permissions:
+  contents: read
+
+jobs:
+  pass158-completion-gate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - uses: dtolnay/rust-toolchain@stable
+
+      - name: Verify inherited Pass 157 nucleus
+        shell: bash
+        run: |
+          set -euo pipefail
+          export HHS_PASS157_REQUIRE_DEPENDENCY=1
+          export HHS_PASS157_MAIN_MERGED=0
+          make -C native_projects/hhs_pass157_ppf_mptc verify
+
+      - name: Execute complete Pass 158 public integration gate
+        shell: bash
+        run: |
+          set -uo pipefail
+          mkdir -p native_projects/hhs_pass158_llabi_nftc_api/dist
+          export HHS_PASS157_INHERITED_VERIFIED=1
+          export HHS_PASS158_HOSTED_VALIDATED=1
+          if [[ "$GITHUB_REF" == "refs/heads/main" ]]; then
+            export HHS_PASS158_MAIN_MERGED=1
+          else
+            export HHS_PASS158_MAIN_MERGED=0
+          fi
+          set +e
+          make -C native_projects/hhs_pass158_llabi_nftc_api verify \
+            > native_projects/hhs_pass158_llabi_nftc_api/dist/hosted-verification.log 2>&1
+          code=$?
+          set -e
+          cat native_projects/hhs_pass158_llabi_nftc_api/dist/hosted-verification.log
+          exit "$code"
+
+      - name: Build complete inherited-nucleus package
+        run: python3 native_projects/hhs_pass158_llabi_nftc_api/tools/package_release.py
+
+      - name: Assert completion evidence and authority classification
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          root = Path("native_projects/hhs_pass158_llabi_nftc_api/dist")
+          receipt = json.loads((root / "evidence/P158_COMPLETION_RECEIPT.json").read_text())
+          native = json.loads((root / "native-test-report.json").read_text())
+          service = json.loads((root / "service-report.json").read_text())
+          package = json.loads((root / "release-package.json").read_text())
+          terminal = "HHS_PASS_158_LOW_LEVEL_ABI_NFT_CONSTRAINT_INTEGRATION_API_VERIFIED"
+          pending = "HHS_PASS_158_IMPLEMENTATION_VERIFIED_PENDING_AUTHORITATIVE_MAIN_CLOSURE"
+          expected = terminal if os.environ.get("GITHUB_REF") == "refs/heads/main" else pending
+          assert receipt["classification"] == expected, receipt
+          assert receipt["terminal_emitted"] is (expected == terminal), receipt
+          assert receipt["inherited_pass157_verified"] is True, receipt
+          assert native["positive_total"] == 272 and native["negative_total"] == 81, native
+          assert service["integration_cases"] >= 18, service
+          assert all(receipt["binding_conformance"].values()), receipt
+          assert len(receipt["evidence_root_hash216"]) == 216, receipt
+          assert package["classification"] == "HHS_PASS_158_COMPLETE_INHERITED_PACKAGE_BUILT", package
+          print(json.dumps({"classification": expected, "native": native, "service": service, "archive": package}, sort_keys=True))
+          PY
+
+      - name: Upload Pass 158 evidence and complete inherited package
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hhs-pass158-complete-release
+          path: |
+            native_projects/hhs_pass158_llabi_nftc_api/dist/
+            native_projects/hhs_pass158_llabi_nftc_api/include/
+            native_projects/hhs_pass158_llabi_nftc_api/contracts/
+            native_projects/hhs_pass158_llabi_nftc_api/manifests/
+            native_projects/hhs_pass158_llabi_nftc_api/schemas/
+            native_projects/hhs_pass158_llabi_nftc_api/examples/
+            HHS_PASS_158_RELEASE_BUNDLE.json
+          if-no-files-found: error

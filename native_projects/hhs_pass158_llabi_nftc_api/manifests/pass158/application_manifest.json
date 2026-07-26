@@ -1,0 +1,28 @@
+{
+  "manifest_version": "1.0.0",
+  "application_id": "org.hhs.pass158.reference",
+  "application_version": "1.0.0",
+  "contract_id": "HHS-P158-LLABI-NFTC-API",
+  "required_abi_version": "1.0",
+  "required_object_classes": ["NON_FUNGIBLE_TENSOR_CONSTRAINT"],
+  "required_capabilities": [
+    "NFT_DEFINITION_REGISTER",
+    "NFT_INSTANCE_CREATE",
+    "NFT_VALIDATE",
+    "NFT_EXECUTE"
+  ],
+  "allowed_mutation_classes": ["INSTANCE_STATE_TRANSITION"],
+  "numeric_policy": {
+    "authoritative": "EXACT_SYMBOLIC",
+    "control": ["IEEE754_BINARY64_CONTROL"]
+  },
+  "resource_bounds": {
+    "max_vm81_steps": 100000,
+    "max_recursion_depth": 72,
+    "max_memory_bytes": 16777216,
+    "max_state_bytes": 16777216,
+    "max_receipt_bytes": 1048576
+  },
+  "receipt_policy": "FULL",
+  "replay_required": true
+}
