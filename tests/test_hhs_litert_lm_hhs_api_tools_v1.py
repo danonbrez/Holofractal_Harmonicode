@@ -74,6 +74,32 @@ class ToolCallingFakeTransport:
         }
 
 
+class DelayedEchoTransport:
+    async def list_models(self):
+        return {"object": "list", "data": [{"id": "gemma4-12b"}]}
+
+    async def chat_completion(self, **kwargs):
+        messages = list(kwargs["messages"])
+        user_content = [
+            message["content"]
+            for message in messages
+            if message.get("role") == "user"
+        ][-1]
+        await asyncio.sleep(0.02)
+        return {
+            "id": f"chatcmpl-{user_content}",
+            "model": "gemma4-12b",
+            "choices": [{
+                "message": {
+                    "role": "assistant",
+                    "content": f"answer:{user_content}",
+                },
+                "finish_reason": "stop",
+            }],
+            "usage": {"prompt_tokens": 4, "completion_tokens": 2, "total_tokens": 6},
+        }
+
+
 def test_default_hhs_api_tools_execute_inside_gemma4_turn():
     transport = ToolCallingFakeTransport()
     service = HHSAPIAssistantService(
@@ -95,8 +121,38 @@ def test_default_hhs_api_tools_execute_inside_gemma4_turn():
     assert turn["hhs_api_tool_call_count"] == 1
     assert turn["hhs_api_tool_trace"][0]["receipt"]["ok"] is True
     assert turn["hhs_api_tool_trace"][0]["receipt"]["tool_receipt_root_hash72"]
+    assert turn["hhs_api_tool_trace_root_hash72"]
+    assert turn["per_thread_request_serialization"] is True
     assert turn["mutating_model_tool_execution_allowed"] is False
     assert turn["runtime_mutation_admitted"] is False
+
+
+def test_same_thread_concurrent_turns_are_serialized():
+    async def scenario():
+        service = HHSAPIAssistantService(
+            config=LiteRTLMConfig(model_id="gemma4-12b"),
+            transport=DelayedEchoTransport(),
+        )
+        thread = service.create_thread(project_id="project:serialized-thread")
+        first = asyncio.create_task(
+            service.send_message(thread["thread_id"], content="first")
+        )
+        await asyncio.sleep(0)
+        second = asyncio.create_task(
+            service.send_message(thread["thread_id"], content="second")
+        )
+        turns = await asyncio.gather(first, second)
+        return service.threads.get(thread["thread_id"]), turns
+
+    stored, turns = asyncio.run(scenario())
+    assert stored is not None
+    assert [message["role"] for message in stored["messages"]] == [
+        "user", "assistant", "user", "assistant"
+    ]
+    assert [message["sequence"] for message in stored["messages"]] == [1, 2, 3, 4]
+    assert stored["messages"][1]["content"] == "answer:first"
+    assert stored["messages"][3]["content"] == "answer:second"
+    assert all(turn["per_thread_request_serialization"] for turn in turns)
 
 
 def test_unregistered_mutating_tool_is_closed_rejection():
