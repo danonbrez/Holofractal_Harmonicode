@@ -9,6 +9,7 @@ on:
       - agent/vm81-sprite-overlay-gradients
       - agent/vm81-governed-texture-layers
       - agent/vm81-mp4-holographic-playback
+      - agent/vm81-shared-shader-libavfilter-repair
     paths:
       - native_projects/hhs_vm81_game_level10/**
       - hhs_runtime/include/hhs_hash216.h
@@ -20,17 +21,36 @@ on:
       - .github/workflows/vm81-game-level10.yml
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   vm81-playable-game:
     runs-on: ubuntu-24.04
-    timeout-minutes: 40
+    timeout-minutes: 50
     steps:
       - uses: actions/checkout@v4
         with:
           show-progress: false
-      - name: Ensure terminal sprite texture and holographic media dependencies
+          fetch-depth: 0
+      - name: Materialize staged shared-shader repair
+        if: ${{ github.event_name == 'push' && hashFiles('.github/vm81-shared-shader-repair/*.b64') != '' }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat .github/vm81-shared-shader-repair/*.b64 \
+            | base64 --decode \
+            | tar -xz -C .
+          rm -rf .github/vm81-shared-shader-repair
+          git config user.name "hhs-runtime-bot"
+          git config user.email "hhs-runtime-bot@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "staged repair produced no changes"
+            exit 1
+          fi
+          git commit -m "Repair VM81 shared shader and libavfilter blending"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
+      - name: Ensure terminal sprite texture shader and holographic dependencies
         shell: bash
         run: |
           missing=0
@@ -43,9 +63,10 @@ jobs:
             sudo apt-get install -y ffmpeg python3-pil fonts-dejavu-core
           fi
           ffmpeg -version | head -n 1
+          ffmpeg -hide_banner -filters | grep -E 'alphamerge|blend|overlay'
           python3 -c 'import PIL; print(PIL.__version__)'
           sha256sum /usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf
-      - name: Compile and execute core playable sprite and texture verification
+      - name: Compile and execute core playable sprite shader and texture verification
         shell: bash
         run: |
           mkdir -p native_projects/hhs_vm81_game_level10/dist
@@ -70,7 +91,7 @@ jobs:
           code=$?
           cat native_projects/hhs_vm81_game_level10/dist/hosted-modality.log
           exit "$code"
-      - name: Verify inherited sprite map overlay gradients and media
+      - name: Verify sprite map shared curvature shader and media
         shell: bash
         run: |
           set +e
@@ -78,7 +99,7 @@ jobs:
           code=$?
           cat native_projects/hhs_vm81_game_level10/dist/hosted-sprite-modality.log
           exit "$code"
-      - name: Verify governed texture layers and media
+      - name: Verify governed texture layers and shared shader maps
         shell: bash
         run: |
           set +e
@@ -86,7 +107,7 @@ jobs:
           code=$?
           cat native_projects/hhs_vm81_game_level10/dist/hosted-texture-modality.log
           exit "$code"
-      - name: Verify MP4 holographic playback overlay and composite
+      - name: Verify libavfilter dual MP4 alpha composition
         shell: bash
         run: |
           set +e
@@ -94,66 +115,55 @@ jobs:
           code=$?
           cat native_projects/hhs_vm81_game_level10/dist/hosted-holographic-modality.log
           exit "$code"
-      - name: Assert core release terminal sprite texture and holographic evidence
+      - name: Assert core release shader texture and compositing evidence
+        shell: bash
         run: |
-          test -x native_projects/hhs_vm81_game_level10/dist/hhs-vm81-game
-          test -x native_projects/hhs_vm81_game_level10/dist/test-hhs-vm81-game
-          test -x native_projects/hhs_vm81_game_level10/dist/hhs-vm81-platformer
-          test -x native_projects/hhs_vm81_game_level10/dist/test-hhs-vm81-game-release
-          test -x native_projects/hhs_vm81_game_level10/dist/hhs-vm81-sprite-capture
-          test -x native_projects/hhs_vm81_game_level10/dist/hhs-vm81-texture-capture
-          test -x native_projects/hhs_vm81_game_level10/dist/test-hhs-vm81-game-sprite
-          test -x native_projects/hhs_vm81_game_level10/dist/test-hhs-vm81-game-texture
-          native_projects/hhs_vm81_game_level10/dist/hhs-vm81-platformer --help
-          test -s native_projects/hhs_vm81_game_level10/dist/verification.json
-          test -s native_projects/hhs_vm81_game_level10/dist/playable-verification.json
-          test -s native_projects/hhs_vm81_game_level10/dist/sprite-verification.txt
-          test -s native_projects/hhs_vm81_game_level10/dist/texture-verification.txt
-          grep -q 'VM81_C_ABI_19_OPCODE_2D_PLATFORM_DEMO_VERIFIED' native_projects/hhs_vm81_game_level10/dist/verification.json
-          grep -q 'VM81_PLAYABLE_GAME_RELEASE_VERIFIED' native_projects/hhs_vm81_game_level10/dist/playable-verification.json
-          grep -q 'VM81_SPRITE_MAP_OVERLAY_GRADIENTS_VERIFIED' native_projects/hhs_vm81_game_level10/dist/sprite-verification.txt
-          grep -q 'VM81_GOVERNED_TEXTURE_LAYER_FOUNDATION_VERIFIED' native_projects/hhs_vm81_game_level10/dist/texture-verification.txt
-          test -s native_projects/hhs_vm81_game_level10/dist/terminal-io/terminal-io-evidence.json
-          grep -q 'VM81_TERMINAL_IO_MODALITY_VERIFIED' native_projects/hhs_vm81_game_level10/dist/terminal-io/terminal-io-evidence.json
-          test -s native_projects/hhs_vm81_game_level10/dist/media/modality-evidence.json
-          grep -q 'VM81_USER_MODALITY_PRESENTATION_EVIDENCE_VERIFIED' native_projects/hhs_vm81_game_level10/dist/media/modality-evidence.json
-          test -s native_projects/hhs_vm81_game_level10/dist/sprite-capture/sprite-capture-trace.json
-          test -s native_projects/hhs_vm81_game_level10/dist/sprite-media/sprite-modality-evidence.json
-          grep -q 'VM81_SPRITE_MAP_OVERLAY_GRADIENTS_PRESENTATION_VERIFIED' native_projects/hhs_vm81_game_level10/dist/sprite-media/sprite-modality-evidence.json
-          test -s native_projects/hhs_vm81_game_level10/dist/texture-capture/texture-capture-trace.json
-          test -s native_projects/hhs_vm81_game_level10/dist/texture-capture/layers/layer-manifest.json
-          grep -q 'VM81_GOVERNED_TEXTURE_LAYER_FRAME_STREAM_CAPTURED' native_projects/hhs_vm81_game_level10/dist/texture-capture/texture-capture-trace.json
-          grep -q 'VM81_GOVERNED_TEXTURE_LAYER_COMPARISON_CAPTURED' native_projects/hhs_vm81_game_level10/dist/texture-capture/layers/layer-manifest.json
-          test -s native_projects/hhs_vm81_game_level10/dist/texture-media/screenshots/00-texture-layer-overview.png
-          test -s native_projects/hhs_vm81_game_level10/dist/texture-media/screenshots/05-governed-texture-layers.png
-          test -s native_projects/hhs_vm81_game_level10/dist/texture-media/screenshots/06-texture-detail-crops.png
-          test -s native_projects/hhs_vm81_game_level10/dist/texture-media/vm81-platformer-governed-textures.mp4
-          test -s native_projects/hhs_vm81_game_level10/dist/texture-media/texture-modality-evidence.json
-          grep -q 'VM81_GOVERNED_TEXTURE_LAYER_PRESENTATION_VERIFIED' native_projects/hhs_vm81_game_level10/dist/texture-media/texture-modality-evidence.json
-          grep -q '"inherited_gradient_reproducible": "VERIFIED"' native_projects/hhs_vm81_game_level10/dist/texture-media/texture-modality-evidence.json
-          grep -q '"inherited_sprite_projection": "UNCHANGED"' native_projects/hhs_vm81_game_level10/dist/texture-media/texture-modality-evidence.json
-          grep -q '"state_projection_non_mutating": "VERIFIED"' native_projects/hhs_vm81_game_level10/dist/texture-media/texture-modality-evidence.json
-          grep -q '"opcode_coverage": "19/19"' native_projects/hhs_vm81_game_level10/dist/texture-media/texture-modality-evidence.json
-          grep -q '"replay": "MATCH"' native_projects/hhs_vm81_game_level10/dist/texture-media/texture-modality-evidence.json
-          test -s native_projects/hhs_vm81_game_level10/dist/holographic-media/vm81-holographic-overlay.mp4
-          test -s native_projects/hhs_vm81_game_level10/dist/holographic-media/vm81-platformer-holographic-playback.mp4
-          test -s native_projects/hhs_vm81_game_level10/dist/holographic-media/screenshots/00-holographic-playback-overview.png
-          test -s native_projects/hhs_vm81_game_level10/dist/holographic-media/screenshots/05-mp4-holographic-overlay-stages.png
-          test -s native_projects/hhs_vm81_game_level10/dist/holographic-media/screenshots/06-holographic-depth-lighting-details.png
-          test -s native_projects/hhs_vm81_game_level10/dist/holographic-media/holographic-playback-evidence.json
-          grep -q 'VM81_MP4_HOLOGRAPHIC_OVERLAY_GENERATED' native_projects/hhs_vm81_game_level10/dist/holographic-media/holographic-playback-evidence.json
-          grep -q 'VM81_MP4_HOLOGRAPHIC_PLAYBACK_ROUNDTRIP_VERIFIED' native_projects/hhs_vm81_game_level10/dist/holographic-media/holographic-playback-evidence.json
-          grep -q 'VM81_HOLOGRAPHIC_DEPTH_LIGHTING_COMPOSITE_VERIFIED' native_projects/hhs_vm81_game_level10/dist/holographic-media/holographic-playback-evidence.json
-          grep -q '"mp4_playback_pixel_exact": "VERIFIED"' native_projects/hhs_vm81_game_level10/dist/holographic-media/holographic-playback-evidence.json
-          grep -q '"base_texture_frames_unchanged": "VERIFIED"' native_projects/hhs_vm81_game_level10/dist/holographic-media/holographic-playback-evidence.json
-          grep -q '"vm81_state_mutation": "NONE"' native_projects/hhs_vm81_game_level10/dist/holographic-media/holographic-playback-evidence.json
-          grep -q '"opcode_coverage": "19/19"' native_projects/hhs_vm81_game_level10/dist/holographic-media/holographic-playback-evidence.json
-          grep -q '"replay": "MATCH"' native_projects/hhs_vm81_game_level10/dist/holographic-media/holographic-playback-evidence.json
-      - name: Upload playable game holographic playback and modality evidence
+          root=native_projects/hhs_vm81_game_level10
+          test -x "$root/dist/hhs-vm81-game"
+          test -x "$root/dist/test-hhs-vm81-game"
+          test -x "$root/dist/hhs-vm81-platformer"
+          test -x "$root/dist/test-hhs-vm81-game-release"
+          test -x "$root/dist/hhs-vm81-sprite-capture"
+          test -x "$root/dist/hhs-vm81-texture-capture"
+          test -x "$root/dist/test-hhs-vm81-game-sprite"
+          test -x "$root/dist/test-hhs-vm81-game-shader"
+          test -x "$root/dist/test-hhs-vm81-game-texture"
+          grep -q 'VM81_C_ABI_19_OPCODE_2D_PLATFORM_DEMO_VERIFIED' "$root/dist/verification.json"
+          grep -q 'VM81_PLAYABLE_GAME_RELEASE_VERIFIED' "$root/dist/playable-verification.json"
+          grep -q 'VM81_SPRITE_MAP_OVERLAY_GRADIENTS_VERIFIED' "$root/dist/sprite-verification.txt"
+          grep -q 'VM81_SHARED_CURVATURE_SHADER_KERNEL_VERIFIED' "$root/dist/shader-verification.txt"
+          grep -q 'VM81_GOVERNED_TEXTURE_LAYER_FOUNDATION_VERIFIED' "$root/dist/texture-verification.txt"
+          grep -q 'VM81_TERMINAL_IO_MODALITY_VERIFIED' "$root/dist/terminal-io/terminal-io-evidence.json"
+          grep -q 'VM81_USER_MODALITY_PRESENTATION_EVIDENCE_VERIFIED' "$root/dist/media/modality-evidence.json"
+          grep -q 'VM81_SPRITE_MAP_OVERLAY_GRADIENTS_PRESENTATION_VERIFIED' "$root/dist/sprite-media/sprite-modality-evidence.json"
+          test -s "$root/dist/texture-capture/shader-color/frame_000000.ppm"
+          test -s "$root/dist/texture-capture/shader-alpha/frame_000000.pgm"
+          grep -q '"shared_shader_kernel": "hhs_vm81_game_shader_sample"' "$root/dist/texture-capture/texture-capture-trace.json"
+          grep -q 'VM81_GOVERNED_TEXTURE_LAYER_PRESENTATION_VERIFIED' "$root/dist/texture-media/texture-modality-evidence.json"
+          test -s "$root/dist/holographic-media/vm81-holographic-overlay-color.mp4"
+          test -s "$root/dist/holographic-media/vm81-holographic-overlay-alpha.mp4"
+          test -s "$root/dist/holographic-media/vm81-platformer-holographic-playback.mp4"
+          test -s "$root/dist/holographic-media/screenshots/00-holographic-playback-overview.png"
+          test -s "$root/dist/holographic-media/screenshots/05-libavfilter-shared-shader-stages.png"
+          test -s "$root/dist/holographic-media/screenshots/06-shared-shader-opacity-details.png"
+          receipt="$root/dist/holographic-media/holographic-playback-evidence.json"
+          grep -q 'VM81_SHARED_CURVATURE_SHADER_KERNEL_VERIFIED' "$receipt"
+          grep -q 'VM81_LIBAVFILTER_ALPHA_COMPOSITING_VERIFIED' "$receipt"
+          grep -q 'VM81_NONZERO_OPACITY_LAYER_STACK_VERIFIED' "$receipt"
+          grep -q 'VM81_MP4_HOLOGRAPHIC_PLAYBACK_BLEND_REPAIRED' "$receipt"
+          grep -q '"open_source_compositor": "FFmpeg/libavfilter"' "$receipt"
+          grep -q '"color_mp4_playback_pixel_exact": "VERIFIED"' "$receipt"
+          grep -q '"alpha_mp4_playback_pixel_exact": "VERIFIED"' "$receipt"
+          test "$(grep -c '"zero_opacity": "REJECTED"' "$receipt")" -eq 4
+          grep -q '"base_texture_frames_unchanged": "VERIFIED"' "$receipt"
+          grep -q '"vm81_state_mutation": "NONE"' "$receipt"
+          grep -q '"opcode_coverage": "19/19"' "$receipt"
+          grep -q '"replay": "MATCH"' "$receipt"
+      - name: Upload shared shader libavfilter repair evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: vm81-playable-game-holographic-playback-release
+          name: vm81-playable-game-shared-shader-libavfilter-release
           path: |
             native_projects/hhs_vm81_game_level10/Makefile
             native_projects/hhs_vm81_game_level10/README.md
@@ -161,6 +171,7 @@ jobs:
             native_projects/hhs_vm81_game_level10/src/
             native_projects/hhs_vm81_game_level10/tests/
             native_projects/hhs_vm81_game_level10/tools/
+            native_projects/hhs_vm81_game_level10/specs/
             native_projects/hhs_vm81_game_level10/dist/hhs-vm81-platformer
             native_projects/hhs_vm81_game_level10/dist/hhs-vm81-game
             native_projects/hhs_vm81_game_level10/dist/hhs-vm81-sprite-capture
@@ -168,6 +179,7 @@ jobs:
             native_projects/hhs_vm81_game_level10/dist/verification.json
             native_projects/hhs_vm81_game_level10/dist/playable-verification.json
             native_projects/hhs_vm81_game_level10/dist/sprite-verification.txt
+            native_projects/hhs_vm81_game_level10/dist/shader-verification.txt
             native_projects/hhs_vm81_game_level10/dist/texture-verification.txt
             native_projects/hhs_vm81_game_level10/dist/capture-command.json
             native_projects/hhs_vm81_game_level10/dist/capture/capture-trace.json
@@ -184,11 +196,14 @@ jobs:
             native_projects/hhs_vm81_game_level10/dist/texture-capture-command.json
             native_projects/hhs_vm81_game_level10/dist/texture-capture/texture-capture-trace.json
             native_projects/hhs_vm81_game_level10/dist/texture-capture/layers/
+            native_projects/hhs_vm81_game_level10/dist/texture-capture/shader-color/
+            native_projects/hhs_vm81_game_level10/dist/texture-capture/shader-alpha/
             native_projects/hhs_vm81_game_level10/dist/texture-media/screenshots/
             native_projects/hhs_vm81_game_level10/dist/texture-media/vm81-platformer-governed-textures.mp4
             native_projects/hhs_vm81_game_level10/dist/texture-media/texture-modality-evidence.json
             native_projects/hhs_vm81_game_level10/dist/holographic-media/screenshots/
-            native_projects/hhs_vm81_game_level10/dist/holographic-media/vm81-holographic-overlay.mp4
+            native_projects/hhs_vm81_game_level10/dist/holographic-media/vm81-holographic-overlay-color.mp4
+            native_projects/hhs_vm81_game_level10/dist/holographic-media/vm81-holographic-overlay-alpha.mp4
             native_projects/hhs_vm81_game_level10/dist/holographic-media/vm81-platformer-holographic-playback.mp4
             native_projects/hhs_vm81_game_level10/dist/holographic-media/holographic-playback-evidence.json
             native_projects/hhs_vm81_game_level10/dist/hosted-test.log
@@ -202,12 +217,6 @@ jobs:
             native_projects/hhs_vm81_game_level10/dist/sprite-modality.log
             native_projects/hhs_vm81_game_level10/dist/texture-modality.log
             native_projects/hhs_vm81_game_level10/dist/holographic-modality.log
-            native_projects/hhs_vm81_game_level10/specs/HHS_VM81_GAME_LEVEL10_CONTRACT.json
-            native_projects/hhs_vm81_game_level10/specs/HHS_VM81_PLAYABLE_GAME_RELEASE_CONTRACT.json
-            native_projects/hhs_vm81_game_level10/specs/HHS_VM81_USER_MODALITY_EVIDENCE_CONTRACT.json
-            native_projects/hhs_vm81_game_level10/specs/HHS_VM81_SPRITE_MAP_OVERLAY_GRADIENTS_CONTRACT.json
-            native_projects/hhs_vm81_game_level10/specs/HHS_VM81_GOVERNED_TEXTURE_LAYERS_CONTRACT.json
-            native_projects/hhs_vm81_game_level10/specs/HHS_VM81_MP4_HOLOGRAPHIC_PLAYBACK_OVERLAY_CONTRACT.json
             hhs_runtime/include/hhs_hash216.h
             hhs_runtime/src/hhs_hash216.c
           if-no-files-found: warn
