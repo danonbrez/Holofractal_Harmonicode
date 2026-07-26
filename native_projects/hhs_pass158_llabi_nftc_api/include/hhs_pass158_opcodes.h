@@ -1,0 +1,80 @@
+#ifndef HHS_PASS158_OPCODES_H
+#define HHS_PASS158_OPCODES_H
+
+#include <stdint.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+typedef enum {
+    HHS158_OP_NFT_DEF_BEGIN = 0x5800,
+    HHS158_OP_NFT_DEF_FIELD = 0x5801,
+    HHS158_OP_NFT_DEF_CLOSE = 0x5802,
+    HHS158_OP_NFT_INSTANCE_NEW = 0x5803,
+    HHS158_OP_NFT_INSTANCE_BIND = 0x5804,
+    HHS158_OP_NFT_INSTANCE_SEAL = 0x5805,
+    HHS158_OP_NFT_INSTANCE_RETIRE = 0x5806,
+
+    HHS158_OP_BIND_EQ = 0x5810,
+    HHS158_OP_BIND_NEQ = 0x5811,
+    HHS158_OP_CHAIN_APPEND = 0x5812,
+    HHS158_OP_CHAIN_CLOSE = 0x5813,
+    HHS158_OP_DOMAIN_GUARD = 0x5814,
+    HHS158_OP_PHASE_GUARD = 0x5815,
+    HHS158_OP_LIST_ORDERED = 0x5816,
+    HHS158_OP_TENSOR_PACK = 0x5817,
+    HHS158_OP_CONSTRAINT_PACK = 0x5818,
+
+    HHS158_OP_TRANSITION_BEGIN = 0x5820,
+    HHS158_OP_TRANSITION_APPLY = 0x5821,
+    HHS158_OP_TRANSITION_VALIDATE = 0x5822,
+    HHS158_OP_TRANSITION_HOLD = 0x5823,
+    HHS158_OP_TRANSITION_COMMIT = 0x5824,
+    HHS158_OP_TRANSITION_ABORT = 0x5825,
+
+    HHS158_OP_PROJECT_REFERENCE = 0x5830,
+    HHS158_OP_PROJECT_CONTROL = 0x5831,
+    HHS158_OP_DELTA_RATIO = 0x5832,
+    HHS158_OP_DELTA_ADD = 0x5833,
+    HHS158_OP_DELTA_REL = 0x5834,
+    HHS158_OP_DELTA_PACK = 0x5835,
+    HHS158_OP_DELTA_NORMALIZE = 0x5836,
+    HHS158_OP_DELTA_VERIFY = 0x5837,
+
+    HHS158_OP_HASH216_INDEX = 0x5840,
+    HHS158_OP_HASH72_WITNESS = 0x5841,
+    HHS158_OP_RECEIPT_PACK = 0x5842,
+    HHS158_OP_RECEIPT_VERIFY = 0x5843,
+    HHS158_OP_REPLAY_BEGIN = 0x5844,
+    HHS158_OP_REPLAY_CLOSE = 0x5845
+} HHS158PublicOpcode;
+
+typedef enum {
+    HHS158_OPCODE_MUTATION_NONE = 0,
+    HHS158_OPCODE_MUTATION_PROVISIONAL = 1,
+    HHS158_OPCODE_MUTATION_CANDIDATE = 2,
+    HHS158_OPCODE_MUTATION_COMMIT = 3,
+    HHS158_OPCODE_MUTATION_RETIRE = 4
+} HHS158OpcodeMutationClass;
+
+typedef struct {
+    uint32_t opcode;
+    const char *mnemonic;
+    const char *operand_types;
+    int32_t stack_delta;
+    uint32_t mutation_class;
+    uint64_t required_capability;
+    uint8_t vm81_cell_start;
+    uint8_t vm81_cell_end;
+    uint16_t reserved;
+} HHS158OpcodeDescriptor;
+
+const HHS158OpcodeDescriptor *hhs158_public_opcode_registry(size_t *out_count);
+int hhs158_opcode_is_public(uint32_t opcode);
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif
