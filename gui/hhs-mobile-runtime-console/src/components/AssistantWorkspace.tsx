@@ -31,6 +31,11 @@ type AssistantTurn = {
     status?: string;
     provider_result_ingress_root_hash72?: string;
   };
+  hhs_api_tools_enabled?: boolean;
+  hhs_api_tool_call_count?: number;
+  hhs_api_tool_trace?: any[];
+  mutating_model_tool_execution_allowed?: boolean;
+  runtime_mutation_admitted?: boolean;
   thread?: { message_count?: number; message_tip_hash72?: string };
   turn_root_hash72?: string;
 };
@@ -39,6 +44,8 @@ type AssistantHealth = {
   status?: string;
   model_id?: string;
   provider_id?: string;
+  hhs_api_tools_enabled?: boolean;
+  default_hhs_api_tool_count?: number;
   error?: string;
 };
 
@@ -47,7 +54,7 @@ function previewFor(input: string): string {
   if (!s) return 'Start typing to open an HHS AI thread.';
   if (/==|≠|:=|xy|yx|zw|wz|u\^?72|rho|ρ|PLASTIC|CLOSURE|GATE/i.test(s)) return 'HARMONICODE structure detected for the Gemma 4 thread.';
   if (/[+\-*/^()]/.test(s)) return 'Mathematical request detected for the governed assistant.';
-  return 'Natural-language request ready for LiteRT-LM and HHS ingress.';
+  return 'Natural-language request ready for Gemma 4 and governed HHS API tools.';
 }
 
 function StepList({ steps }: { steps: { label: string; status: StepStatus }[] }) {
@@ -69,6 +76,7 @@ function summarizeTurn(turn: AssistantTurn): AssistantMessage {
   const model = turn.provider_invocation_receipt?.raw_provider_result?.model_id
     ?? turn.provider_invocation_receipt?.raw_provider_result?.model
     ?? 'Gemma 4';
+  const toolCount = turn.hhs_api_tool_call_count ?? 0;
 
   if (!content) {
     return {
@@ -83,7 +91,7 @@ function summarizeTurn(turn: AssistantTurn): AssistantMessage {
   return {
     role: 'assistant',
     text: content,
-    hint: `${model} · ingress ${turn.provider_result_ingress?.ok ? 'admitted' : 'projected'} · receipt ${shortHash(receipt ?? ingress)}`
+    hint: `${model} · ${toolCount} HHS API tool${toolCount === 1 ? '' : 's'} · ingress ${turn.provider_result_ingress?.ok ? 'admitted' : 'projected'} · receipt ${shortHash(receipt ?? ingress)}`
   };
 }
 
@@ -98,13 +106,14 @@ export default function AssistantWorkspace({ data, activePhase, onActivePhase, o
   const [steps, setSteps] = useState<{ label: string; status: StepStatus }[]>([
     { label: 'Capture thread message', status: 'idle' },
     { label: 'LiteRT-LM · Gemma 4', status: 'idle' },
+    { label: 'Governed HHS API tools', status: 'idle' },
     { label: 'HHS provider-result ingress', status: 'idle' }
   ]);
   const [messages, setMessages] = useState<AssistantMessage[]>([
     {
       role: 'assistant',
-      text: 'This is the HHS AI thread interface. Messages are processed by local Gemma 4 through LiteRT-LM, then returned through HHS receipt and ingress controls.',
-      hint: 'Model output is a governed provider result, never direct VM81 authority.'
+      text: 'This is the HHS AI thread interface. Local Gemma 4 can read current HHS runtime evidence through allowlisted API tools, then its final answer returns through HHS receipt and ingress controls.',
+      hint: 'Read-only HHS tools may execute automatically; model-generated mutation remains prohibited.'
     }
   ]);
 
@@ -146,6 +155,7 @@ export default function AssistantWorkspace({ data, activePhase, onActivePhase, o
     setSteps(prev => prev.map(s => ({ ...s, status: 'idle' })));
     setStep('Capture thread message', 'done');
     setStep('LiteRT-LM · Gemma 4', 'running');
+    setStep('Governed HHS API tools', 'running');
     setMessages(prev => [...prev, { role: 'user', text: message }]);
 
     try {
@@ -163,14 +173,16 @@ export default function AssistantWorkspace({ data, activePhase, onActivePhase, o
       if (!res.ok) throw new Error(JSON.stringify((turn as any)?.detail ?? turn));
 
       setStep('LiteRT-LM · Gemma 4', turn.assistant_message ? 'done' : 'deferred');
+      setStep('Governed HHS API tools', (turn.hhs_api_tool_call_count ?? 0) > 0 ? 'done' : 'deferred');
       setStep('HHS provider-result ingress', turn.provider_result_ingress ? 'done' : 'deferred');
       setThreadId(turn.thread_id ?? threadId);
       setLastTurn(turn);
       setCommitted(message);
       setMessages(prev => [...prev, summarizeTurn(turn)]);
-      setDepth(turn.assistant_message?.tool_calls?.length ? 'structure' : 'answer');
+      setDepth('answer');
     } catch (err: any) {
       setStep('LiteRT-LM · Gemma 4', 'deferred');
+      setStep('Governed HHS API tools', 'deferred');
       setStep('HHS provider-result ingress', 'deferred');
       setMessages(prev => [...prev, {
         role: 'assistant',
@@ -193,14 +205,14 @@ export default function AssistantWorkspace({ data, activePhase, onActivePhase, o
     ?? lastTurn?.turn_root_hash72
     ?? data.transpileReceipt?.receipt_hash72;
   const healthLabel = health?.online
-    ? `${health.model_id ?? 'Gemma 4'} online`
+    ? `${health.model_id ?? 'Gemma 4'} online · ${health.default_hhs_api_tool_count ?? 0} HHS tools`
     : health?.status ?? 'checking model';
 
   return (
     <div className="hhs-assistant-shell">
       <section className="hhs-hero-input">
-        <div className="hhs-eyebrow">LiteRT-LM · Gemma 4 · HHS</div>
-        <h1>Converse with HHS through a receipted AI thread.</h1>
+        <div className="hhs-eyebrow">LiteRT-LM · Gemma 4 · HHS API</div>
+        <h1>Converse directly with HHS through a receipted AI thread.</h1>
         <form onSubmit={onSubmit} className="hhs-command-form">
           <textarea value={input} onChange={(e) => setInput(e.target.value)} placeholder="Ask HHS about runtime state, HARMONICODE, proofs, tools, or repository operations" rows={3} />
           <button type="submit" disabled={busy}>{busy ? 'Thinking…' : 'Send'}</button>
@@ -209,8 +221,8 @@ export default function AssistantWorkspace({ data, activePhase, onActivePhase, o
         <StepList steps={steps} />
         <div className="hhs-suggestions">
           <Suggestion onClick={() => setInput('Explain the current HHS runtime state.')}>runtime state</Suggestion>
-          <Suggestion onClick={() => setInput('Analyze xy≠yx under the active HARMONICODE constraints.')}>xy≠yx</Suggestion>
-          <Suggestion onClick={() => setInput('Describe the active VM81, Hash72, and Hash216 authority boundaries.')}>authority map</Suggestion>
+          <Suggestion onClick={() => setInput('List the active HHS kernel invariants and summarize their authority.')}>kernel invariants</Suggestion>
+          <Suggestion onClick={() => setInput('What is the current Pass 152 status and capability boundary?')}>Pass 152</Suggestion>
           <Suggestion onClick={startNewThread}>new thread</Suggestion>
         </div>
       </section>
@@ -218,14 +230,14 @@ export default function AssistantWorkspace({ data, activePhase, onActivePhase, o
       <section className="hhs-chat-card">
         {messages.slice(-12).map((m, i) => <div key={i} className={`hhs-message ${m.role}`}><div>{m.text}</div>{m.hint ? <small>{m.hint}</small> : null}</div>)}
         <div className="hhs-action-row">
-          <Suggestion onClick={() => setDepth('structure')}>Show turn envelope</Suggestion>
+          <Suggestion onClick={() => setDepth('structure')}>Show tool and turn receipts</Suggestion>
           <Suggestion onClick={() => setDepth('proof')}>Show HHS proof surfaces</Suggestion>
         </div>
       </section>
 
       <section className="hhs-result-card">
         <div className="hhs-section-head"><div><div className="hhs-eyebrow">Thread Result</div><h2>{committed}</h2></div><div className="hhs-receipt-pill">{receipt ? shortHash(String(receipt)) : 'no receipt yet'}</div></div>
-        <div className="hhs-depth-switch"><button className={depth === 'answer' ? 'active' : ''} onClick={() => setDepth('answer')}>Runtime</button><button className={depth === 'structure' ? 'active' : ''} onClick={() => setDepth('structure')}>Turn</button><button className={depth === 'proof' ? 'active' : ''} onClick={() => setDepth('proof')}>Proof</button></div>
+        <div className="hhs-depth-switch"><button className={depth === 'answer' ? 'active' : ''} onClick={() => setDepth('answer')}>Runtime</button><button className={depth === 'structure' ? 'active' : ''} onClick={() => setDepth('structure')}>Tool Trace</button><button className={depth === 'proof' ? 'active' : ''} onClick={() => setDepth('proof')}>Proof</button></div>
         {depth === 'answer' && <CalculatorPanelV2 equationManifest={data.equationManifest} transpileReceipt={data.transpileReceipt} activePhase={activePhase} onActivePhase={onActivePhase} onPhaseMapChange={onPhaseMapChange} />}
         {depth === 'structure' && <div className="hhs-ide-grid"><OperatorPanel loop={data.operatorLoop} /><ExecutionPanel />{lastTurn ? <pre style={{ whiteSpace: 'pre-wrap', opacity: .78 }}>{JSON.stringify(lastTurn, null, 2)}</pre> : <div>No assistant turn has completed.</div>}</div>}
         {depth === 'proof' && <div className="hhs-ide-grid"><LedgerPanel /><CertificationPanel /><AlertPanel anomalies={data.anomalies} /></div>}
