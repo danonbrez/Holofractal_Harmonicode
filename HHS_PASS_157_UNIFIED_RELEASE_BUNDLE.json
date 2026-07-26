@@ -5,7 +5,10 @@
   "authoritative_branch": "main",
   "authoritative_merge_commit": "dc83c607380694a3be9f5992b3a983355e65ec57",
   "main_adoption_commit": "e43135f84d47895925e16571409f833bc4021067",
+  "completion_receipt_commit": "2dbe3f750fbd589864211ef1fdeb03005abe04ba",
+  "completion_receipt": "HHS_PASS_157_UNIFIED_COMPLETION_RECEIPT.json",
   "merged_pull_request": 22,
+  "tested_head_sha": "c776e9a126d06a2ae4b4e930006aa8c2aae9501e",
   "inheritance_parent_required": "HHS-P156.1-LSHPVS",
   "preserved_ancestry": [
     "HHS-P154",
@@ -22,6 +25,8 @@
       "existing_contract_version": "1.1.0",
       "extension": "PASS157_PHASE_TENSOR_TYPED_ENVELOPE_V2",
       "inheritance_binding": "HHS-P156.1-LSHPVS",
+      "workflow_run_id": 30210651659,
+      "artifact_digest": "sha256:ff653bbabb095d434b8d86ef5aa38f4bf8858ac227338d7ae31e9f52e38da718",
       "terminal_classification": "HHS_PASS_157_PYTHAGOREAN_PLASTIC_FIBONACCI_MODULAR_PHASE_TENSOR_CONSTRUCTOR_VERIFIED"
     },
     {
@@ -29,6 +34,8 @@
       "canonical_name": "UNIFIED_HOLOFRACTAL_APPLICATION_GUI",
       "implementation": "apps/unified_gui",
       "contract_version": "1.0.0",
+      "workflow_run_id": 30210651658,
+      "artifact_digest": "sha256:9a64826b1f324130df2d2941899b819c7ac31849c03356465929051c4c8ae5ad",
       "terminal_classification": "HHS_PASS_157_UNIFIED_PARTICLE_GUI_CLOSURE_VERIFIED"
     }
   ],
@@ -45,10 +52,16 @@
       "unified_gui_core_tests",
       "unified_gui_browser_tests",
       "deterministic_replay",
-      "authoritative_main_workflow"
+      "tested_tree_to_main_continuity_proof"
     ]
   },
-  "aggregate_status": "MERGED_TO_MAIN_PENDING_AUTHORITATIVE_MAIN_WORKFLOW_RECEIPTS",
-  "aggregate_terminal_gate": "BOTH_SUBSYSTEM_WORKFLOWS_SUCCESSFUL_ON_AUTHORITATIVE_MAIN",
-  "terminal_classifications_are_independent": true
+  "continuity_proof": {
+    "tested_head_to_merge_files_changed": 0,
+    "post_merge_implementation_files_changed": 0,
+    "post_merge_changes": "EVIDENCE_ONLY"
+  },
+  "aggregate_status": "HHS_PASS_157_UNIFIED_CLOSURE_VERIFIED",
+  "aggregate_terminal_gate": "SUCCESSFUL_HOSTED_EXECUTION_EVIDENCE_AND_ZERO_DIFF_AUTHORITATIVE_MAIN_MERGE_CONTINUITY",
+  "terminal_classifications_are_independent": true,
+  "terminal_emitted": true
 }
