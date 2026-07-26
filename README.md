@@ -1,11 +1,225 @@
-# Holofractal Harmonicode (HHS) — Integration Report & Development Guide
+# Holofractal Harmonicode (HHS)
 
-This document records everything required to bring the HHS stack online inside
-the Replit monorepo, covers the exact blockers that were hit and how they were
-resolved, and provides a complete guide for reproducing a one-step
-initialization in any new environment. A detailed latency analysis is included
-at the end because the 3–5 second per-request response time has a specific,
-fixable root cause that the development team needs to address.
+The Holofractal Harmonicode System is a deterministic, receipt-locked runtime backed by a compiled C kernel. Every computation is cryptographically verifiable, replay-auditable, and graph-linked. Nothing can enter, execute in, or leave the runtime without passing through the canonical IO gateway, which stamps every payload with a Hash72 u^72 Digital DNA witness and appends the record to an append-only unified ledger.
+
+For the full developer walkthrough see [`docs/DEVELOPER_WALKTHROUGH.md`](docs/DEVELOPER_WALKTHROUGH.md).  
+For AI-agent navigation rules see [`docs/AI_AGENT_WALKTHROUGH.md`](docs/AI_AGENT_WALKTHROUGH.md).  
+For the architecture specification see [`ARCHITECTURE.md`](ARCHITECTURE.md).
+
+---
+
+## Quick Start
+
+### Prerequisites
+
+| Requirement | Version | Notes |
+|---|---|---|
+| Python | 3.11.x | 3.12+ not guaranteed |
+| gcc | ≥ 12.0 | or clang with equivalent flags |
+| GNU make | ≥ 4.3 | for the C kernel build |
+| Node.js | ≥ 20 | for the unified GUI only |
+
+### Python runtime tests
+
+```sh
+# From the repository root — no build step needed for the Python layer
+python hhs_runtime_smoke_tests_v1.py   # infrastructure + kernel bootstrap
+python hhs_regression_suite_v1.py      # full invariant regression
+python hhs_v1_bundle_runner.py         # end-to-end certification bundle
+```
+
+### Unified GUI (Pass 157)
+
+```sh
+cd apps/unified_gui
+npm install
+npx playwright install chromium
+npm run verify
+```
+
+### Build and start the backend server
+
+```sh
+# 1. Install Python packages
+pip install -r requirements.txt
+
+# 2. Build the C kernel
+mkdir -p hhs_runtime/builds
+
+gcc -O2 -std=c11 -Wall -Wextra \
+    -Ihhs_runtime/include -Ihhs_runtime/c \
+    -fPIC -shared \
+    hhs_runtime/c/hhs_runtime_abi.c \
+    hhs_runtime/src/hhs_hash216.c \
+    -o hhs_runtime/builds/libhhs_runtime.so -lm
+
+gcc -O2 -std=c11 -Wall -Wextra \
+    -Ihhs_runtime/include -Ihhs_runtime/c \
+    hhs_runtime/HARMONICODE_VM_RUNTIME.c \
+    -o hhs_runtime/builds/hhs_vm81 -lm
+
+# 3. Launch the FastAPI server
+PYTHONPATH=$(pwd) python -m uvicorn hhs_backend.server:app \
+    --host 0.0.0.0 --port 8080 --ws websockets
+```
+
+> **macOS note:** drop `-lm` (math is in libc). The shared library extension is `.dylib`; update the ctypes load path in `hhs_python/runtime/hhs_ctypes_bridge.py`.  
+> **Windows:** not supported natively. Use WSL2 with a Linux environment.
+
+---
+
+## Repository Topology
+
+```
+Holofractal_Harmonicode/
+├── apps/
+│   └── unified_gui/          Pass 157 — Three.js HTML/JS particle GUI
+│       ├── index.html
+│       ├── src/
+│       │   ├── app/          boot.js (lifecycle), state.js (reducer)
+│       │   ├── kernel/       exact_bridge.js (BigInt ratio, symbolic AST)
+│       │   ├── physics/      engine.js (5,184-particle fixed-step torus),
+│       │   │                 address_map.js (Hash72 address table)
+│       │   ├── render/       scene.js (Three.js WebGL), lod.js (LOD hysteresis)
+│       │   ├── trace/        chain.js (append-only Hash72 trace)
+│       │   └── persistence/  indexeddb.js, global.js
+│       └── tests/            Playwright + Node test suites
+│
+├── hhs_runtime/              Canonical Python runtime (~200 modules)
+│   ├── kernel_resolution.py  Bootstrap resolver — single authority surface
+│   ├── core_sandbox/         Canonical sandbox layer (physics model, state,
+│   │                         general runtime, Hash72 encoder)
+│   └── *.py                  Acceleration fabric, agents, passes 081–135+
+│
+├── hhs_backend/              FastAPI transport layer
+│   ├── api/                  Route definitions (runtime, audit, cognition)
+│   ├── runtime/              Orchestration, distributed consensus, agents
+│   └── server.py             Application entry point
+│
+├── hhs_python/               ctypes bridge to the C ABI; runtime controller
+├── hhs_graph/                Graph topology and receipt memory
+├── hhs_storage/              Persistence and replay storage
+├── hhs_gui/                  GUI runtime OS and spatial environment
+├── docs/                     Architecture specs, walkthroughs, API reference
+├── formal/                   Coq and Lean proofs
+├── native_projects/          C native projects (VM81, compiler, IDE, PPF-MPTC)
+│
+├── HARMONICODE_KERNEL_v44_2_*.py  Authoritative kernel (do not redefine)
+│
+├── hhs_general_runtime_layer_v1.py  ← compatibility shim only
+├── hhs_state_layer_v1.py            ← compatibility shim only
+├── hhs_physics_model_v1.py          ← compatibility shim only
+├── hhs_physics_evolution_v1.py      ← compatibility shim only
+├── hhs_runtime_smoke_tests_v1.py
+├── hhs_regression_suite_v1.py
+└── hhs_v1_bundle_runner.py
+```
+
+> **Root-level `.py` files are compatibility shims.** Canonical implementations live in `hhs_runtime/core_sandbox/`. See [ARCHITECTURE.md Root Module Policy](ARCHITECTURE.md#root-module-policy).
+
+---
+
+## Kernel Invariants
+
+All computation must pass these invariants on every step:
+
+| Invariant | Meaning |
+|---|---|
+| Δe = 0 | No energy accumulation across a closed operation |
+| Ψ = 0 | Phase residue zero — no symbolic drift |
+| Θ15 = true | 15-step closure gate passes |
+| Ω = true | Global integrity witness verified |
+
+No float arithmetic inside the kernel. Use rational (`Fraction`) representations.
+
+---
+
+## Execution Pattern
+
+Every operation follows this pipeline — no exceptions:
+
+```text
+Input
+  → Symbolic / Macro Expansion
+  → State Patch
+  → Kernel Audit  (Δe, Ψ, Θ15, Ω verified)
+  → Receipt Commit  (Hash72 appended to ledger)
+```
+
+Skipping any stage is a quarantine trigger, not a valid shortcut.
+
+---
+
+## Kernel Authority
+
+The single authoritative kernel is:
+
+```
+HARMONICODE_KERNEL_v44_2_lockcore_patched_selfsolving_hash72authority_locked-7.py
+```
+
+Required symbols: `AUTHORITATIVE_TRUST_POLICY_V44`, `security_hash72_v44`, `NativeHash72Codec`, `Manifold9`, `Tensor`.
+
+The `hhs_runtime/kernel_resolution.py` module is the **only** surface allowed to load and verify the kernel. Do not import it directly from other paths.
+
+---
+
+## Prohibited Changes
+
+| Prohibited | Reason |
+|---|---|
+| Redefine `Hash72` | Breaks all receipt continuity |
+| Bypass `Manifold9` or `drift_gate` | Removes the only integrity gate |
+| Create alternate integrity paths | Produces irreconcilable ledger forks |
+| Replace rational arithmetic with floats | Violates Δe = 0 |
+| Silently collapse `xy` and `yx` | Ordered products are not commutative in this algebra |
+| Mutate state without a state patch and receipt | Bypasses audit |
+
+---
+
+## Unified GUI — Pass 157
+
+The primary visual interface is a pure browser application in `apps/unified_gui/`. It does not require the Python backend to run.
+
+**Browser globals exposed at runtime:**
+
+| Global | Purpose |
+|---|---|
+| `HHSApp` | Full application lifecycle |
+| `HHSPhysics` | Step, reset, serialize, replay the 5,184-particle engine |
+| `HHSRender` | Set render profile, focus particle, diagnostics |
+| `HHSSymbolic` | Parse source, register equalities, substitute |
+| `HHSTrace` | Inspect and seal the Hash72 trace chain |
+
+**Render profiles:**
+
+| Profile | Mode | Pixel Ratio | Notes |
+|---|---|---|---|
+| `MOBILE_SAFE` | points | 1.0 | Auto-selected on mobile or without WebGL2 |
+| `BALANCED` | instances | 1.25 | Default for WebGL2 desktop |
+| `DESKTOP_HIGH` | instances | 1.75 | High-density desktop |
+| `HIGH_REFRESH` | instances | 4.0 | Auto-selected on ≥ 8 M-pixel displays; targets 120 Hz |
+| `DIAGNOSTIC` | points | 1.0 | Debug overlay |
+
+---
+
+## API Latency — Known Issue and Fix Path
+
+> This section is preserved from the original integration report because the root cause and fix are still relevant.
+
+**Observed:** every API endpoint responds in 3–5 seconds.
+
+**Root cause:** `hhs_runtime/hhs_unified_hash72_ledger_v1.py` re-hashes every prior ledger entry on each `append_payload()` call — O(n) per append. With 1,346 entries this is ~107 ms of hash computation per call, plus full file read/write. Each API request triggers two appends (ingress + egress).
+
+**Fix:** maintain an in-memory tip hash and entry count; update it incrementally on each append. Cold-start reads the file once. This reduces append cost from O(n) to O(1). Expected result: sub-millisecond appends regardless of ledger size.
+
+Secondary fixes: cache IO gateway witnesses by `(source, payload_hash72, runtime_step)`; activate the acceleration fabric for parallel ingress/egress witness computation; add a response-level cache keyed on `(endpoint, runtime_step)`.
+
+---
+
+## Historical Reference
+
+The earlier sections of this README described the initial Replit integration work (C kernel Makefile fix, React/Vite dashboard scaffold, OpenAPI spec generation, Zod version bump). That integration record is preserved in `git` history. The current primary interface is `apps/unified_gui/` (Pass 157). The React dashboard described in the original README was a prototype integration surface and is not the canonical GUI.
 
 ---
 
