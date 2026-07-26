@@ -33,7 +33,17 @@ jobs:
         with:
           fetch-depth: 0
       - name: Compile and execute Pass 158 native ABI matrix
-        run: make -C native_projects/hhs_pass158_llabi_nftc_api native-test
+        shell: bash
+        run: |
+          set -uo pipefail
+          mkdir -p native_projects/hhs_pass158_llabi_nftc_api/dist
+          set +e
+          make -C native_projects/hhs_pass158_llabi_nftc_api native-test \
+            > native_projects/hhs_pass158_llabi_nftc_api/dist/hosted-native.log 2>&1
+          code=$?
+          set -e
+          cat native_projects/hhs_pass158_llabi_nftc_api/dist/hosted-native.log
+          exit "$code"
       - name: Upload native diagnostic evidence
         if: always()
         uses: actions/upload-artifact@v4
