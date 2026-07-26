@@ -62,6 +62,7 @@ test("phase reciprocal and center-line operators remain typed", async ({ page })
 });
 
 test("pause and single-step advance exactly once", async ({ page }) => {
+  await page.evaluate(() => globalThis.HHSPhysics.pause());
   const before = await page.evaluate(() => globalThis.HHSPhysics.serialize());
   await page.locator("#physics-step").click();
   const after = await page.evaluate(() => globalThis.HHSPhysics.serialize());
@@ -99,11 +100,10 @@ test("trace bundle seals and verifies", async ({ page }) => {
 
 test("workspace persistence stores and reloads a versioned bundle", async ({ page }) => {
   const result = await page.evaluate(async () => {
-    const persistence = await import("/src/persistence/indexeddb.js");
     const bundle = globalThis.HHSApp.exportWorkspace();
-    await persistence.saveWorkspace("browser-test", bundle);
-    const loaded = await persistence.loadWorkspace("browser-test");
-    await persistence.deleteWorkspace("browser-test");
+    await globalThis.HHSPersistence.saveWorkspace("browser-test", bundle);
+    const loaded = await globalThis.HHSPersistence.loadWorkspace("browser-test");
+    await globalThis.HHSPersistence.deleteWorkspace("browser-test");
     return {
       schema: loaded.bundle.schema,
       contract: loaded.contract_version,
