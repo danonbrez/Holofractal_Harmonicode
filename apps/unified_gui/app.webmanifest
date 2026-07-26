@@ -1,0 +1,10 @@
+{
+  "name": "HHS Pass 157 Unified Holofractal Application",
+  "short_name": "HHS P157",
+  "description": "Exact-state HHS application shell with a 5,184-state Hash72 particle projection.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#05070d",
+  "theme_color": "#070a12",
+  "orientation": "any"
+}
