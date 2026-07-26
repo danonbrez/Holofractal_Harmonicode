@@ -1,6 +1,7 @@
 import { createHash } from "node:crypto";
 
 export const CONTRACT_ID = "HHS-P158-LLABI-NFTC-API";
+const ALPHABET = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-+*/()<>!?";
 
 function stable(value) {
   if (Array.isArray(value)) return `[${value.map(stable).join(",")}]`;
@@ -11,21 +12,18 @@ function stable(value) {
   return JSON.stringify(value);
 }
 
-function hash216(text) {
-  const bytes = [];
-  let seed = Buffer.from(text, "utf8");
-  for (let lane = 0; lane < 4; lane += 1) {
-    seed = createHash("sha256").update(seed).update(Buffer.from([lane])).digest();
-    bytes.push(seed);
+function glyphHash(text, length, domain) {
+  let seed = Buffer.from(`${domain}|${text}`, "utf8");
+  const output = [];
+  for (let index = 0; index < length; index += 1) {
+    seed = createHash("sha256").update(seed).update(Buffer.from(String(index))).digest();
+    output.push(ALPHABET[seed[index % seed.length] % ALPHABET.length]);
   }
-  return Buffer.concat(bytes).subarray(0, 27).toString("hex");
+  return output.join("");
 }
 
-function hash72(text) {
-  const digest = createHash("sha256").update(text).digest();
-  const alphabet = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-+*/()<>!?";
-  return Array.from({ length: 72 }, (_, index) => alphabet[digest[index % digest.length] % 72]).join("");
-}
+function hash216(text) { return glyphHash(text, 216, "HHS158_HASH216"); }
+function hash72(text) { return glyphHash(text, 72, "HHS158_HASH72"); }
 
 export function bigintToCanonicalBytes(value) {
   if (typeof value !== "bigint") throw new TypeError("BigInt required");
