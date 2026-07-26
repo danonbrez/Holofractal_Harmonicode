@@ -1,0 +1,109 @@
+name: Pass 157 PPF-MPTC
+
+on:
+  push:
+    branches:
+      - main
+      - agent/pass157-ppf-mptc
+    paths:
+      - native_projects/hhs_pass157_ppf_mptc/**
+      - native_projects/hhs_pass156_1_lshpvs/**
+      - hhs_runtime/c/hhs_runtime_abi.*
+      - hhs_runtime/include/hhs_hash216.h
+      - hhs_runtime/src/hhs_hash216.c
+      - .github/workflows/pass157-ppf-mptc.yml
+      - HHS_PASS_157_RELEASE_BUNDLE.json
+  pull_request:
+    paths:
+      - native_projects/hhs_pass157_ppf_mptc/**
+      - native_projects/hhs_pass156_1_lshpvs/**
+      - hhs_runtime/c/hhs_runtime_abi.*
+      - hhs_runtime/include/hhs_hash216.h
+      - hhs_runtime/src/hhs_hash216.c
+      - .github/workflows/pass157-ppf-mptc.yml
+      - HHS_PASS_157_RELEASE_BUNDLE.json
+
+permissions:
+  contents: read
+
+jobs:
+  pass157-verification:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify exact constructor and inherited dependency gates
+        shell: bash
+        run: |
+          set -euo pipefail
+          export HHS_PASS157_REQUIRE_DEPENDENCY=1
+          if [[ "$GITHUB_REF" == "refs/heads/main" ]]; then
+            export HHS_PASS157_MAIN_MERGED=1
+          else
+            export HHS_PASS157_MAIN_MERGED=0
+          fi
+          make -C native_projects/hhs_pass157_ppf_mptc verify
+
+      - name: Build complete tracked-repository release package
+        shell: bash
+        run: |
+          set -euo pipefail
+          make -C native_projects/hhs_pass157_ppf_mptc package
+
+      - name: Assert evidence, ancestry, dependency, and merge classifications
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          root = Path("native_projects/hhs_pass157_ppf_mptc/dist")
+          evidence = json.loads((root / "evidence-summary.json").read_text())
+          dependency = json.loads((root / "dependency-gate.json").read_text())
+          package = json.loads((root / "release-package.json").read_text())
+          manifest = json.loads((root / "PASS_157_COMPLETE_INHERITED_MANIFEST.json").read_text())
+
+          terminal = "HHS_PASS_157_PYTHAGOREAN_PLASTIC_FIBONACCI_MODULAR_PHASE_TENSOR_CONSTRUCTOR_VERIFIED"
+          pending = "HHS_PASS_157_VERIFIED_PENDING_MAIN_MERGE"
+          expected = terminal if os.environ.get("GITHUB_REF") == "refs/heads/main" else pending
+
+          assert evidence["classification"] == expected, evidence
+          assert evidence["obligations"] == {"total": 86, "closed": 86, "open": 0}
+          assert evidence["replay"] == "MATCH"
+          assert dependency["standalone_status"] == "HHS_PASS_156_1_INCOMPLETE"
+          assert dependency["integration_status"] == "PASS156_1_CONSUMED_THROUGH_PASS157_HARDENED_RECEIPT_GATE"
+          assert dependency["replay"] == "MATCH"
+          assert package["mode"] == "COMPLETE_TRACKED_REPOSITORY"
+          assert manifest["mode"] == "COMPLETE_TRACKED_REPOSITORY"
+          assert manifest["file_count"] > 3000
+          assert (root / package["archive"]).is_file()
+          assert (root / package["archive"]).stat().st_size == package["archive_size"]
+          print(json.dumps({
+              "classification": expected,
+              "dependency": dependency["integration_status"],
+              "files": manifest["file_count"],
+              "archive_sha256": package["archive_sha256"],
+          }, sort_keys=True))
+          PY
+
+      - name: Upload Pass 157 evidence and complete inherited nucleus
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hhs-pass157-ppf-mptc-release
+          path: |
+            native_projects/hhs_pass157_ppf_mptc/dist/
+            native_projects/hhs_pass157_ppf_mptc/contracts/
+            native_projects/hhs_pass157_ppf_mptc/specs/
+            native_projects/hhs_pass157_ppf_mptc/docs/
+            native_projects/hhs_pass157_ppf_mptc/include/
+            native_projects/hhs_pass157_ppf_mptc/src/
+            native_projects/hhs_pass157_ppf_mptc/python/
+            native_projects/hhs_pass157_ppf_mptc/bindings/
+            HHS_PASS_157_RELEASE_BUNDLE.json
+          if-no-files-found: error
