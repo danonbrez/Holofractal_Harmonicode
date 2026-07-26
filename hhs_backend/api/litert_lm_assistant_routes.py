@@ -13,10 +13,10 @@ _SERVICE: Any = None
 def _service() -> Any:
     global _SERVICE
     if _SERVICE is None:
-        from hhs_backend.runtime.hhs_litert_lm_assistant_v1 import (
-            DEFAULT_ASSISTANT_SERVICE,
+        from hhs_backend.runtime.hhs_litert_lm_hhs_api_assistant_v1 import (
+            DEFAULT_HHS_API_ASSISTANT_SERVICE,
         )
-        _SERVICE = DEFAULT_ASSISTANT_SERVICE
+        _SERVICE = DEFAULT_HHS_API_ASSISTANT_SERVICE
     return _SERVICE
 
 
@@ -44,6 +44,14 @@ async def assistant_status() -> Dict[str, Any]:
 @router.get("/health")
 async def assistant_health() -> Dict[str, Any]:
     return await _service().health()
+
+
+@router.get("/tools")
+async def assistant_tools() -> Dict[str, Any]:
+    from hhs_backend.runtime.hhs_assistant_api_tool_gateway_v1 import (
+        assistant_api_tool_registry,
+    )
+    return assistant_api_tool_registry()
 
 
 @router.get("/threads")
