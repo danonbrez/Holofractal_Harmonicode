@@ -1,0 +1,44 @@
+name: Apply Pass 158 authority closure
+
+on:
+  push:
+    branches:
+      - agent/pass158-authority-closure
+    paths:
+      - .github/workflows/pass158-authority-closure.yml
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: agent/pass158-authority-closure
+
+      - name: Reconstruct and verify patch
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/pass158-authority-closure
+          : > /tmp/pass158-authority-closure/patch
+          for part in .hhs_staging/pass158_authority_closure/part*.b64; do
+            base64 --decode "$part" >> /tmp/pass158-authority-closure/patch
+          done
+          echo "d19494a9399006ccaa8d6beffb838f05f06394ae7422fab89abb316c35153836  /tmp/pass158-authority-closure/patch" | sha256sum -c -
+
+      - name: Apply validated patch
+        shell: bash
+        run: |
+          set -euo pipefail
+          git apply --index --whitespace=error-all /tmp/pass158-authority-closure/patch
+          rm -rf .hhs_staging/pass158_authority_closure
+          rm -f .github/workflows/pass158-authority-closure.yml
+          git add -A
+          git config user.name "chatgpt-codex-connector[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Close remaining Pass 158 authority review gaps"
+          git push origin HEAD:agent/pass158-authority-closure
