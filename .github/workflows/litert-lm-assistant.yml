@@ -61,4 +61,14 @@ jobs:
       - name: Install interface dependencies
         run: npm install --no-audit --no-fund
       - name: Build mobile HHS AI thread interface
-        run: npm run build
+        shell: bash
+        run: |
+          set -o pipefail
+          npm run build 2>&1 | tee vite-build.log
+      - name: Upload Vite build log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hhs-ai-thread-vite-build-log
+          path: gui/hhs-mobile-runtime-console/vite-build.log
+          if-no-files-found: error
