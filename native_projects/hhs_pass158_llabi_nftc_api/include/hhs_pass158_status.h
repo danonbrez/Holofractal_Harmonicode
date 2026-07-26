@@ -3,6 +3,10 @@
 
 #include <stdint.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef int32_t HHS158Status;
 
 #define HHS158_OK                              ((HHS158Status)0)
@@ -62,5 +66,9 @@ typedef int32_t HHS158Status;
 #define HHS158_CANCELLED                       ((HHS158Status)-8004)
 
 const char *hhs158_status_classification(HHS158Status status);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
