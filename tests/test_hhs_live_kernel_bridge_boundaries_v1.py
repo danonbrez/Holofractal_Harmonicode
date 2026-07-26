@@ -3,8 +3,13 @@ from hhs_backend.runtime.live_kernel_event_bridge_v1 import (
     LiveKernelEventBridge,
     live_kernel_event_bridge_self_test,
 )
+from hhs_python.runtime.hhs_runtime_controller import HHSRuntimeController
 from hhs_python.runtime.hhs_runtime_emulator import HHSCEmulator
 from hhs_runtime.hhs_authority_gate_v1 import audit_runtime_authority
+from hhs_runtime.hhs_service_registry_v1 import (
+    HHSServiceRegistry,
+    make_default_service_registry,
+)
 
 
 def _emulator_tick():
@@ -17,6 +22,23 @@ def _bridge_and_tick():
     bridge = LiveKernelEventBridge(runtime_emulator=emulator)
     tick = bridge.tick_kernel({"source": "boundary_test"})
     return bridge, tick
+
+
+def test_hhs_runtime_controller_construction_contract():
+    controller = HHSRuntimeController()
+    assert controller.runtime is not None
+
+
+def test_hhs_empty_service_registry_construction_contract():
+    controller = HHSRuntimeController()
+    registry = HHSServiceRegistry(controller=controller)
+    assert registry.controller is controller
+
+
+def test_hhs_default_service_registry_construction_contract():
+    controller = HHSRuntimeController()
+    registry = make_default_service_registry(controller)
+    assert registry.services()
 
 
 def test_hhs_emulator_construction_contract():
