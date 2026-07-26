@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from dataclasses import asdict
 import json
+import os
 from typing import Any
 
 from .model import (
@@ -188,16 +189,25 @@ def verify_pass157(state: Any | None = None) -> dict[str, Any]:
         "hash72_lanes": all(len(lane) == 72 for lane in exact.hash72_lanes),
         "hash216": len(exact.hash216_commitment) == 216,
     }
+    verified = all(checks.values())
+    hosted = os.environ.get("HHS_PASS157_HOSTED_VALIDATED") == "1"
+    main_merged = os.environ.get("HHS_PASS157_MAIN_MERGED") == "1"
+    terminal = verified and hosted and main_merged
     return {
         "contract_id": "HHS-P157-PPF-MPTC",
         "inheritance_parent": "HHS-P156.1-LSHPVS",
         "checks": checks,
-        "verified": all(checks.values()),
+        "verified": verified,
         "hash216": exact.hash216_commitment,
         "classification": (
             "HHS_PASS_157_PYTHAGOREAN_PLASTIC_FIBONACCI_MODULAR_PHASE_TENSOR_CONSTRUCTOR_VERIFIED"
-            if all(checks.values())
+            if terminal
+            else "PASS157_PHASE_TENSOR_EXTENSION_VERIFIED_PENDING_HOSTED_MAIN_CLOSURE"
+            if verified
             else "PASS157_INCOMPLETE"
         ),
+        "hosted_validated": hosted,
+        "main_merged": main_merged,
+        "terminal_emitted": terminal,
         "input_state_bound": state is not None,
     }
