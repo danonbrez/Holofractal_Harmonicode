@@ -11,7 +11,7 @@ from hhs_backend.runtime.hhs_litert_lm_assistant_v1 import (
 
 class FakeTransport:
     async def list_models(self):
-        return {"object": "list", "data": [{"id": "gemma-4-E2B-it"}]}
+        return {"object": "list", "data": [{"id": "gemma4-12b"}]}
 
     async def chat_completion(self, **kwargs):
         messages = kwargs["messages"]
@@ -19,7 +19,7 @@ class FakeTransport:
         assert messages[-1]["role"] == "user"
         return {
             "id": "chatcmpl-test",
-            "model": "gemma-4-E2B-it",
+            "model": "gemma4-12b",
             "choices": [{
                 "message": {
                     "role": "assistant",
@@ -37,7 +37,7 @@ class FakeTransport:
 
 def make_service(max_messages: int = 8) -> HHSAssistantService:
     config = LiteRTLMConfig(
-        model_id="gemma-4-E2B-it",
+        model_id="gemma4-12b",
         max_threads=4,
         max_messages_per_thread=max_messages,
     )
@@ -85,4 +85,21 @@ def test_health_reports_litert_models():
     service = make_service()
     health = asyncio.run(service.health())
     assert health["online"] is True
-    assert health["models"]["data"][0]["id"] == "gemma-4-E2B-it"
+    assert health["models"]["data"][0]["id"] == "gemma4-12b"
+
+
+def test_assistant_routes_are_mounted_in_canonical_backend_router():
+    from hhs_backend.api.pass152_elastic_closure_routes import router
+
+    route_keys = {
+        (
+            getattr(route, "path", None),
+            tuple(sorted(getattr(route, "methods", []) or [])),
+        )
+        for route in router.routes
+    }
+    assert ("/api/assistant/status", ("GET",)) in route_keys
+    assert ("/api/assistant/threads", ("GET",)) in route_keys
+    assert ("/api/assistant/threads", ("POST",)) in route_keys
+    assert ("/api/assistant/chat", ("POST",)) in route_keys
+    assert ("/api/assistant/ws/{thread_id}", ()) in route_keys
