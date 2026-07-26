@@ -17,6 +17,15 @@ def _packet(step: int, symbol: str):
     }
 
 
+def _seeded_coordinator(step: int = 201, symbol: str = "g"):
+    coordinator = HHSRuntimeCognitionCoordinator()
+    coordinator.process_packet(
+        _packet(step, symbol),
+        emission={"event_hash72": "h" * 72},
+    )
+    return coordinator
+
+
 def test_replay_engine_accepts_live_packets_and_generates_prediction():
     engine = HHSRuntimeReplayEngine()
     first = engine.ingest_live_packet(_packet(1, "a"))
@@ -66,28 +75,33 @@ def test_live_cognition_processes_each_committed_state_once():
     assert status["authority_boundary"]["vm81_mutation"] == "DENIED"
 
 
-def test_explicit_cognition_research_and_toolchain_cycles_are_callable():
-    coordinator = HHSRuntimeCognitionCoordinator()
-    coordinator.process_packet(
-        _packet(201, "g"),
-        emission={"event_hash72": "h" * 72},
-    )
-
+def test_explicit_agentic_cognition_cycle_is_callable():
+    coordinator = _seeded_coordinator()
     task = coordinator.create_task(
         "analyze committed runtime",
         target_hash72="g" * 72,
     )
     cognition = coordinator.execute_task(task["task_id"])
+
+    assert cognition["task"]["task_id"] == task["task_id"]
+
+
+def test_explicit_autonomous_research_cycle_is_callable():
+    coordinator = _seeded_coordinator(step=301, symbol="i")
     research = coordinator.execute_research(
         "map committed replay attractors",
         originating_goal="test_goal",
         exploration_horizon=2,
     )
+
+    assert research["task"]["task_id"]
+
+
+def test_explicit_recursive_toolchain_cycle_is_callable():
+    coordinator = _seeded_coordinator(step=401, symbol="j")
     toolchain = coordinator.execute_toolchain(
         "test_cognition_task",
         "compose replay-safe semantic operators",
     )
 
-    assert cognition["task"]["task_id"] == task["task_id"]
-    assert research["task"]["task_id"]
     assert toolchain["toolchain"]["toolchain_id"]
