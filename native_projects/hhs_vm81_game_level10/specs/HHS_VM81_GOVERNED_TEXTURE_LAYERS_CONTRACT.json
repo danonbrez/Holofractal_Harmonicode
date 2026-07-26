@@ -1,0 +1,150 @@
+{
+  "contract_id": "HHS-VM81-GOVERNED-TEXTURE-LAYERS-V1",
+  "version": "1.0.0",
+  "status": "NORMATIVE_PRESENTATION_EXTENSION",
+  "inherits": [
+    "HHS-VM81-GAME-L10-V1",
+    "HHS-VM81-PLAYABLE-GAME-RELEASE-V1",
+    "HHS-VM81-USER-MODALITY-EVIDENCE-V1",
+    "HHS-VM81-SPRITE-MAP-OVERLAY-GRADIENTS-V1"
+  ],
+  "purpose": "Add governed texture classes as a separate deterministic projection over the verified VM81 sprite-gradient framebuffer while preserving the inherited renderer and VM81 execution authority.",
+  "governing_rule": "Texture may enrich the user-visible projection but may not create hidden gameplay state, mutate authoritative state, obscure collision semantics, or replace modality-matched evidence.",
+  "authority": {
+    "gameplay_mutation": "hhs_vm81_game_execute",
+    "release_state": "HHSVM81GameRelease",
+    "texture_projection": "hhs_vm81_game_texture_render_rgba",
+    "input_state": "const HHSVM81GameRelease",
+    "output": "160x144 RGBA8888 plus Hash72 and Hash216 frame identities",
+    "projection_invariant": "The texture module first receives the exact inherited HHS_VM81_SPRITE_OVERLAY_ALL frame, then applies additive texture pixels while the complete release state remains byte-identical.",
+    "forbidden": [
+      "texture-controlled physics or collision",
+      "renderer-owned checkpoint or goal state",
+      "floating-point authoritative texture arithmetic",
+      "unseeded or nondeterministic noise",
+      "external texture assets without identity and provenance",
+      "media rendered from a different state sequence than the receipt-bound capture"
+    ]
+  },
+  "compatibility": {
+    "inherited_renderer": "hhs_vm81_game_sprite_render_rgba",
+    "inherited_flags": "HHS_VM81_SPRITE_OVERLAY_ALL",
+    "inherited_behavior": "The original atmosphere, phase, glow, HUD, vignette, hashes, and tests remain source- and behavior-frozen.",
+    "texture_renderer": "hhs_vm81_game_texture_render_rgba",
+    "texture_flags": "HHS_VM81_TEXTURE_ALL",
+    "additive_rule": "Texture is a second projection over the inherited RGBA frame and never reinterprets inherited overlay flags."
+  },
+  "texture_classes": [
+    {
+      "name": "INTERFERENCE_FIELD",
+      "flag": "HHS_VM81_TEXTURE_FIELD",
+      "authoritative_inputs": ["phase", "lo_shu_set", "camera_x_px"],
+      "projection": "Deterministic micrograin and dual modular wave interference reinforce the visible phase-rotation curvature without changing the base atmosphere gradient.",
+      "readability_constraint": "Low-alpha, low-frequency background treatment only."
+    },
+    {
+      "name": "PARALLAX_MIDGROUND",
+      "flag": "HHS_VM81_TEXTURE_MIDGROUND",
+      "authoritative_inputs": ["camera_x_px", "phase", "lo_shu_set"],
+      "projection": "Slow camera-divided arches, lattice lines, and distant structural bands form a non-collidable depth plane behind the level geometry.",
+      "readability_constraint": "Must remain lower contrast than solid terrain and hazards."
+    },
+    {
+      "name": "TERRAIN_MATERIALS",
+      "flag": "HHS_VM81_TEXTURE_MATERIALS",
+      "authoritative_inputs": ["level tile identity", "world tile coordinates", "phase"],
+      "projection": "Surface grain, edge seams, strata, veins, and cracks are applied inside already-solid tiles.",
+      "readability_constraint": "Textures reinforce tile boundaries and may not alter the collision silhouette."
+    },
+    {
+      "name": "SEMANTIC_ENERGY",
+      "flag": "HHS_VM81_TEXTURE_SEMANTIC",
+      "authoritative_inputs": ["player_frames", "phase", "checkpoint", "camera_x_px"],
+      "projection": "Hazard interference bands, checkpoint harmonic rings, and goal attractor rays communicate danger, activation, and terminal direction.",
+      "readability_constraint": "Hazards remain immediately dangerous-looking; checkpoint intensity reflects activation; goal intensity exceeds checkpoint intensity."
+    },
+    {
+      "name": "PLAYER_MATERIAL",
+      "flag": "HHS_VM81_TEXTURE_PLAYER",
+      "authoritative_inputs": ["player position", "velocity", "facing_right", "animation_state", "animation_frame", "phase"],
+      "projection": "Suit panel segmentation, phase accents, rim highlights, and motion echoes enrich the player while preserving its 16x16 silhouette.",
+      "readability_constraint": "Player silhouette and facing direction remain dominant over ornament."
+    }
+  ],
+  "render_order": [
+    "verified inherited HHS_VM81_SPRITE_OVERLAY_ALL RGBA frame",
+    "interference texture field",
+    "non-collidable parallax midground on unoccupied pixels",
+    "terrain and hazard material detail inside inherited geometry",
+    "checkpoint and goal semantic signatures",
+    "player material segmentation and motion echoes"
+  ],
+  "arithmetic": {
+    "gameplay": "unchanged exact integer and fixed-subpixel VM81 state",
+    "texture": "integer coordinate hashing, modular lanes, integer interpolation, and integer alpha blending only",
+    "randomness": "none",
+    "determinism": "Same release state and flags produce byte-identical RGBA output and identical Hash72/Hash216 identities."
+  },
+  "required_invariants": [
+    "the inherited gradient composite remains independently reproducible",
+    "the inherited sprite renderer source, output hashes, tests, and presentation evidence remain unchanged",
+    "each texture class can be enabled independently",
+    "each texture class produces a distinct frame identity",
+    "all five texture classes emit nonzero native write counts",
+    "rendering never mutates HHSVM81GameRelease",
+    "invalid flags and insufficient capacity fail without state mutation",
+    "authoritative movement changes the texture projection",
+    "texture layers never alter level occupancy or collision geometry",
+    "the full frame stream remains ordered and Hash72/Hash216 chained",
+    "screenshots and MP4 derive from the exact native texture frame sequence",
+    "presentation evidence binds to victory, two checkpoints, 19/19 opcode coverage, replay MATCH, final Hash72, and final Hash216"
+  ],
+  "native_surfaces": {
+    "inherited_renderer_header": "include/hhs_vm81_game_sprite.h",
+    "inherited_renderer_source": "src/hhs_vm81_game_sprite.c",
+    "texture_renderer_header": "include/hhs_vm81_game_texture.h",
+    "texture_renderer_source": "src/hhs_vm81_game_texture.c",
+    "capture_executable": "dist/hhs-vm81-texture-capture",
+    "capture_source": "src/hhs_vm81_game_texture_capture_cli.c",
+    "native_tests": "tests/test_hhs_vm81_game_texture.c",
+    "media_verifier": "tools/render_texture_capture.py"
+  },
+  "evidence": {
+    "frame_trace": "dist/texture-capture/texture-capture-trace.json",
+    "layer_manifest": "dist/texture-capture/layers/layer-manifest.json",
+    "frame_count": 348,
+    "selected_frames": ["title", "checkpoint one", "checkpoint two", "victory"],
+    "screenshots": [
+      "dist/texture-media/screenshots/00-texture-layer-overview.png",
+      "dist/texture-media/screenshots/01-title.png",
+      "dist/texture-media/screenshots/02-checkpoint-one.png",
+      "dist/texture-media/screenshots/03-checkpoint-two.png",
+      "dist/texture-media/screenshots/04-victory.png",
+      "dist/texture-media/screenshots/05-governed-texture-layers.png",
+      "dist/texture-media/screenshots/06-texture-detail-crops.png"
+    ],
+    "video": "dist/texture-media/vm81-platformer-governed-textures.mp4",
+    "video_codec": "H.264",
+    "video_resolution": [640, 576],
+    "receipt": "dist/texture-media/texture-modality-evidence.json"
+  },
+  "negative_tests": [
+    "invalid texture flag",
+    "insufficient RGBA output capacity",
+    "renderer state mutation",
+    "identical independent texture-class outputs",
+    "zero native write count for an enabled texture class",
+    "missing or noncanonical frame sequence",
+    "flat or blank texture frames",
+    "missing inherited gradient reproducibility attestation",
+    "layer comparison hash collision",
+    "video frame-count, frame-rate, resolution, duration, or codec mismatch",
+    "replay or opcode closure mismatch"
+  ],
+  "terminal_classifications": [
+    "VM81_GOVERNED_TEXTURE_LAYER_FOUNDATION_VERIFIED",
+    "VM81_GOVERNED_TEXTURE_LAYER_FRAME_STREAM_CAPTURED",
+    "VM81_GOVERNED_TEXTURE_LAYER_COMPARISON_CAPTURED",
+    "VM81_GOVERNED_TEXTURE_LAYER_PRESENTATION_VERIFIED"
+  ]
+}
