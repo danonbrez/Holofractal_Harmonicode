@@ -150,6 +150,11 @@ static int test_context_isolation(void) {
     HHS158Instance *foreign_instance = NULL;
     HHS158Receipt *receipt = NULL;
     HHS158Value value;
+    HHS158CompositionPolicy composition;
+    HHS158Instance *composition_inputs[2];
+    HHS158Instance *composite = NULL;
+    HHS158ReplayOptions replay_options;
+    HHS158ReplayResult replay_result;
     REQUIRE(make_fixture(&left, "context-left", 64u, HHS158_CAP_BIND | HHS158_CAP_EXECUTE) == HHS158_OK);
     REQUIRE(make_fixture(&right, "context-right", 64u, HHS158_CAP_BIND | HHS158_CAP_EXECUTE) == HHS158_OK);
     INIT(config);
@@ -166,13 +171,26 @@ static int test_context_isolation(void) {
     value.canonical_payload = SPAN("1/3");
     REQUIRE(hhs158_instance_bind_authorized(right.instance, left.capability, SPAN("x"), &value, &receipt) ==
         HHS158_CAPABILITY_SCOPE_VIOLATION);
+    composition_inputs[0] = left.instance;
+    composition_inputs[1] = right.instance;
+    INIT(composition);
+    composition.max_dependency_depth = 72u;
+    REQUIRE(hhs158_instance_compose(left.context, composition_inputs, 2u, &composition, &composite, &receipt) ==
+        HHS158_CAPABILITY_SCOPE_VIOLATION);
+    INIT(replay_options);
+    replay_options.verify_hash72 = 1u;
+    replay_options.verify_hash216 = 1u;
+    replay_options.verify_semantic_root = 1u;
+    REQUIRE(hhs158_receipt_replay(right.context, left.instance_receipt, &replay_options, &replay_result) ==
+        HHS158_CAPABILITY_SCOPE_VIOLATION);
     release_fixture(&right);
     release_fixture(&left);
     return 1;
 }
 
 static int test_kernel_audit_and_atomic_commit_failure(void) {
-    SecurityFixture fixture;
+    SecurityFixture audit_fixture;
+    SecurityFixture capacity_fixture;
     HHS158Receipt *binding_receipt = NULL;
     HHS158Operation operation;
     HHS158TransitionDescriptor descriptor;
@@ -183,10 +201,10 @@ static int test_kernel_audit_and_atomic_commit_failure(void) {
     char pre_root[HHS158_HASH216_LENGTH + 1u];
     char post_attempt[HHS158_HASH216_LENGTH + 1u];
     uint32_t lifecycle = UINT32_MAX;
-    REQUIRE(make_fixture(&fixture, "receipt-exhaustion", 4u,
-        HHS158_CAP_BIND | HHS158_CAP_EXECUTE | HHS158_CAP_COMMIT) == HHS158_OK);
-    REQUIRE(bind_rational(&fixture, "x", "1/3", &binding_receipt) == HHS158_OK);
-    REQUIRE(fixed_value(hhs158_instance_state_root, fixture.instance, pre_root));
+
+    REQUIRE(make_fixture(&audit_fixture, "kernel-audit", 64u,
+        HHS158_CAP_EXECUTE | HHS158_CAP_COMMIT) == HHS158_OK);
+    REQUIRE(fixed_value(hhs158_instance_state_root, audit_fixture.instance, pre_root));
     INIT(operation);
     operation.opcode = HHS158_OP_BIND_EQ;
     operation.operands = SPAN("A,B");
@@ -197,20 +215,41 @@ static int test_kernel_audit_and_atomic_commit_failure(void) {
     descriptor.max_vm81_steps = 1000u;
     descriptor.max_recursion_depth = 72u;
     descriptor.max_output_bytes = 1048576u;
-    REQUIRE(hhs158_transition_create(fixture.instance, fixture.capability, &descriptor, &transition) == HHS158_OK);
+    REQUIRE(hhs158_transition_create(audit_fixture.instance, audit_fixture.capability, &descriptor, &transition) == HHS158_OK);
     INIT(options);
-    options.atomic_execute_and_commit = 1u;
     options.max_vm81_steps = 1000u;
-    REQUIRE(hhs158_transition_execute(transition, &options, &result, &receipt) == HHS158_MEMORY_BOUND);
+    INIT(result);
+    REQUIRE(hhs158_transition_execute(transition, &options, &result, &receipt) == HHS158_OK);
+    REQUIRE(receipt != NULL);
     REQUIRE(result.vm81_steps >= 72u);
     REQUIRE((result.witness_flags & (W_TRANSPORT_CLOSED | W_ORIENTATION_CLOSED | W_CONSTRAINT_CLOSED | W_CONVERGED)) ==
         (W_TRANSPORT_CLOSED | W_ORIENTATION_CLOSED | W_CONSTRAINT_CLOSED | W_CONVERGED));
-    REQUIRE(fixed_value(hhs158_instance_state_root, fixture.instance, post_attempt));
-    REQUIRE(strcmp(pre_root, post_attempt) == 0);
-    REQUIRE(hhs158_instance_lifecycle(fixture.instance, &lifecycle) == HHS158_OK);
-    REQUIRE(lifecycle != HHS158_LIFECYCLE_COMMITTED);
+    REQUIRE(transition->executed == 1u);
+    release_fixture(&audit_fixture);
+
+    transition = NULL;
+    receipt = NULL;
+    binding_receipt = NULL;
+    REQUIRE(make_fixture(&capacity_fixture, "receipt-exhaustion", 4u,
+        HHS158_CAP_BIND | HHS158_CAP_EXECUTE | HHS158_CAP_COMMIT) == HHS158_OK);
+    REQUIRE(bind_rational(&capacity_fixture, "x", "1/3", &binding_receipt) == HHS158_OK);
+    REQUIRE(fixed_value(hhs158_instance_state_root, capacity_fixture.instance, pre_root));
+    descriptor.expected_pre_state_root = SPAN(pre_root);
+    REQUIRE(hhs158_transition_create(capacity_fixture.instance, capacity_fixture.capability, &descriptor, &transition) == HHS158_OK);
+    INIT(options);
+    options.atomic_execute_and_commit = 1u;
+    options.max_vm81_steps = 1000u;
+    INIT(result);
+    REQUIRE(hhs158_transition_execute(transition, &options, &result, &receipt) == HHS158_MEMORY_BOUND);
+    REQUIRE(receipt == NULL);
+    REQUIRE(result.vm81_steps == 0u);
+    REQUIRE(transition->executed == 0u);
     REQUIRE(transition->committed == 0u);
-    release_fixture(&fixture);
+    REQUIRE(fixed_value(hhs158_instance_state_root, capacity_fixture.instance, post_attempt));
+    REQUIRE(strcmp(pre_root, post_attempt) == 0);
+    REQUIRE(hhs158_instance_lifecycle(capacity_fixture.instance, &lifecycle) == HHS158_OK);
+    REQUIRE(lifecycle != HHS158_LIFECYCLE_COMMITTED);
+    release_fixture(&capacity_fixture);
     return 1;
 }
 
@@ -365,6 +404,131 @@ static int test_deserialization_receipt_failure_is_atomic(void) {
 }
 
 
+
+static int test_terminal_mutations_require_receipts(void) {
+    SecurityFixture fixture;
+    HHS158Operation operation;
+    HHS158TransitionDescriptor descriptor;
+    HHS158Transition *transition = NULL;
+    HHS158Receipt *receipt = NULL;
+    uint32_t lifecycle = UINT32_MAX;
+    char state_root[HHS158_HASH216_LENGTH + 1u];
+
+    REQUIRE(make_fixture(&fixture, "terminal-abort", 2u,
+        HHS158_CAP_EXECUTE | HHS158_CAP_COMMIT) == HHS158_OK);
+    REQUIRE(fixed_value(hhs158_instance_state_root, fixture.instance, state_root));
+    INIT(operation);
+    operation.opcode = HHS158_OP_BIND_EQ;
+    operation.operands = SPAN("A,B");
+    INIT(descriptor);
+    descriptor.operations = &operation;
+    descriptor.operation_count = 1u;
+    descriptor.expected_pre_state_root = SPAN(state_root);
+    descriptor.max_vm81_steps = 1000u;
+    descriptor.max_recursion_depth = 72u;
+    descriptor.max_output_bytes = 1048576u;
+    REQUIRE(hhs158_transition_create(fixture.instance, fixture.capability, &descriptor, &transition) == HHS158_OK);
+    REQUIRE(hhs158_transition_abort(transition, 7u, &receipt) == HHS158_MEMORY_BOUND);
+    REQUIRE(receipt == NULL);
+    REQUIRE(transition->aborted == 0u);
+    REQUIRE(hhs158_instance_retire(fixture.instance, fixture.capability, &receipt) == HHS158_MEMORY_BOUND);
+    REQUIRE(receipt == NULL);
+    REQUIRE(hhs158_instance_lifecycle(fixture.instance, &lifecycle) == HHS158_OK);
+    REQUIRE(lifecycle != HHS158_LIFECYCLE_RETIRED);
+    REQUIRE(hhs158_instance_quarantine(fixture.instance, 9u, &receipt) == HHS158_MEMORY_BOUND);
+    REQUIRE(receipt == NULL);
+    REQUIRE(hhs158_instance_lifecycle(fixture.instance, &lifecycle) == HHS158_OK);
+    REQUIRE(lifecycle != HHS158_LIFECYCLE_QUARANTINED);
+    release_fixture(&fixture);
+    return 1;
+}
+
+static int test_opcode_capabilities_are_enforced(void) {
+    SecurityFixture fixture;
+    HHS158Operation operation;
+    HHS158TransitionDescriptor descriptor;
+    HHS158Transition *transition = NULL;
+    char state_root[HHS158_HASH216_LENGTH + 1u];
+    REQUIRE(make_fixture(&fixture, "opcode-capability", 64u, HHS158_CAP_EXECUTE) == HHS158_OK);
+    REQUIRE(fixed_value(hhs158_instance_state_root, fixture.instance, state_root));
+    INIT(operation);
+    operation.opcode = HHS158_OP_PROJECT_CONTROL;
+    operation.operands = SPAN("IEEE754_BINARY64_CONTROL");
+    INIT(descriptor);
+    descriptor.operations = &operation;
+    descriptor.operation_count = 1u;
+    descriptor.expected_pre_state_root = SPAN(state_root);
+    descriptor.max_vm81_steps = 1000u;
+    descriptor.max_recursion_depth = 72u;
+    descriptor.max_output_bytes = 1048576u;
+    REQUIRE(hhs158_transition_create(fixture.instance, fixture.capability, &descriptor, &transition) ==
+        HHS158_CAPABILITY_SCOPE_VIOLATION);
+    release_fixture(&fixture);
+    return 1;
+}
+
+static int test_operand_values_reach_admission_gate(void) {
+    SecurityFixture fixture;
+    HHS158Operation operation;
+    HHS158TransitionDescriptor descriptor;
+    HHS158Transition *transition = NULL;
+    HHS158ExecutionOptions options;
+    HHS158ExecutionResult result;
+    HHS158Receipt *receipt = NULL;
+    HHS158Receipt *binding_receipt = NULL;
+    char state_root[HHS158_HASH216_LENGTH + 1u];
+    REQUIRE(make_fixture(&fixture, "operand-audit", 64u,
+        HHS158_CAP_BIND | HHS158_CAP_EXECUTE | HHS158_CAP_COMMIT) == HHS158_OK);
+    REQUIRE(fixed_value(hhs158_instance_state_root, fixture.instance, state_root));
+    INIT(operation);
+    operation.opcode = HHS158_OP_BIND_EQ;
+    operation.operands = SPAN("1,2");
+    INIT(descriptor);
+    descriptor.operations = &operation;
+    descriptor.operation_count = 1u;
+    descriptor.expected_pre_state_root = SPAN(state_root);
+    descriptor.max_vm81_steps = 1000u;
+    descriptor.max_recursion_depth = 72u;
+    descriptor.max_output_bytes = 1048576u;
+    REQUIRE(hhs158_transition_create(fixture.instance, fixture.capability, &descriptor, &transition) ==
+        HHS158_VM81_ADMISSION_REJECTED);
+    operation.operands = SPAN("1,1");
+    REQUIRE(hhs158_transition_create(fixture.instance, fixture.capability, &descriptor, &transition) == HHS158_OK);
+    INIT(options);
+    options.max_vm81_steps = 1000u;
+    REQUIRE(hhs158_transition_execute(transition, &options, &result, &receipt) == HHS158_OK);
+    REQUIRE(receipt != NULL && result.vm81_steps >= 72u);
+    REQUIRE(bind_rational(&fixture, "left", "1/3", &binding_receipt) == HHS158_OK);
+    REQUIRE(bind_rational(&fixture, "right", "1/2", &binding_receipt) == HHS158_OK);
+    REQUIRE(fixed_value(hhs158_instance_state_root, fixture.instance, state_root));
+    descriptor.expected_pre_state_root = SPAN(state_root);
+    operation.operands = SPAN("left,right");
+    transition = NULL;
+    REQUIRE(hhs158_transition_create(fixture.instance, fixture.capability, &descriptor, &transition) ==
+        HHS158_VM81_ADMISSION_REJECTED);
+    release_fixture(&fixture);
+    return 1;
+}
+
+static int test_dynamic_values_null_array_is_rejected(void) {
+    SecurityFixture fixture;
+    HHS158ExecutionInputs inputs;
+    HHS158ValidationPolicy policy;
+    HHS158ValidationReport report;
+    REQUIRE(make_fixture(&fixture, "null-values", 64u, HHS158_CAP_VALIDATE) == HHS158_OK);
+    INIT(inputs);
+    inputs.values = NULL;
+    inputs.value_count = 1u;
+    inputs.parser_profile = SPAN("HARMONICODE");
+    inputs.source_text = SPAN("x");
+    INIT(policy);
+    policy.max_recursion_depth = 72u;
+    REQUIRE(hhs158_instance_validate_dynamic(fixture.instance, &inputs, &policy, &report) ==
+        HHS158_INVALID_ARGUMENT);
+    release_fixture(&fixture);
+    return 1;
+}
+
 static int test_delta_null_payload_is_rejected(void) {
     HHS158Value projected;
     HHS158Value delta;
@@ -390,7 +554,11 @@ int main(void) {
     REQUIRE(test_large_binding_serialization());
     REQUIRE(test_deserialization_requires_audited_history());
     REQUIRE(test_deserialization_receipt_failure_is_atomic());
+    REQUIRE(test_terminal_mutations_require_receipts());
+    REQUIRE(test_opcode_capabilities_are_enforced());
+    REQUIRE(test_operand_values_reach_admission_gate());
+    REQUIRE(test_dynamic_values_null_array_is_rejected());
     REQUIRE(test_delta_null_payload_is_rejected());
-    puts("{\"classification\":\"HHS_PASS_158_SECURITY_REGRESSIONS_VERIFIED\",\"cases\":7}");
+    puts("{\"classification\":\"HHS_PASS_158_SECURITY_REGRESSIONS_VERIFIED\",\"cases\":11}");
     return 0;
 }

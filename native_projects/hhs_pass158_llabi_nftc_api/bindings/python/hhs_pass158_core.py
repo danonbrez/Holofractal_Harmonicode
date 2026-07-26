@@ -18,6 +18,11 @@ HHS158_VALUE_EXPRESSION = 9
 HHS158_FLAG_AUTHORITATIVE = 1
 HHS158_FLAG_ORDERED = 4
 HHS158_FLAG_IMMUTABLE = 8
+HHS158_FLAG_PROJECTION = 16
+HHS158_FLAG_APPROXIMATE = 32
+HHS158_PROJECTION_EXACT_REFERENCE = 1
+HHS158_PROJECTION_IEEE754_BINARY64_CONTROL = 2
+HHS158_PROJECTION_RENDER_FLOAT32 = 3
 HHS158_CAP_VALIDATE = 1 << 0
 HHS158_CAP_EXECUTE = 1 << 1
 HHS158_CAP_COMMIT = 1 << 2
@@ -135,6 +140,17 @@ class ValidationPolicy(C.Structure):
         ("max_recursion_depth", C.c_uint64),
         ("max_dependency_depth", C.c_uint64),
         ("max_tensor_elements", C.c_uint64),
+    ]
+
+
+class ProjectionProfile(C.Structure):
+    _fields_ = [
+        ("header", Header),
+        ("kind", C.c_uint32),
+        ("flags", C.c_uint32),
+        ("profile_name", ByteSpan),
+        ("decimal_digits", C.c_uint32),
+        ("reserved", C.c_uint32),
     ]
 
 
@@ -305,6 +321,8 @@ class NativeLibrary:
         l.hhs158_context_release.argtypes = [C.c_void_p]
         l.hhs158_definition_register.argtypes = [C.c_void_p, C.POINTER(DefinitionDescriptor), C.POINTER(C.c_void_p), C.POINTER(C.c_void_p)]
         l.hhs158_definition_register.restype = C.c_int32
+        l.hhs158_definition_id.argtypes = [C.c_void_p, C.POINTER(MutableByteSpan)]
+        l.hhs158_definition_id.restype = C.c_int32
         l.hhs158_instance_create.argtypes = [C.c_void_p, C.c_void_p, C.POINTER(InstanceConfig), C.POINTER(C.c_void_p), C.POINTER(C.c_void_p)]
         l.hhs158_instance_create.restype = C.c_int32
         l.hhs158_instance_id.argtypes = [C.c_void_p, C.POINTER(MutableByteSpan)]
@@ -321,6 +339,10 @@ class NativeLibrary:
         l.hhs158_instance_bind_authorized.restype = C.c_int32
         l.hhs158_instance_validate_static.argtypes = [C.c_void_p, C.POINTER(ValidationPolicy), C.POINTER(ValidationReport)]
         l.hhs158_instance_validate_static.restype = C.c_int32
+        l.hhs158_instance_project.argtypes = [C.c_void_p, C.POINTER(ProjectionProfile), C.POINTER(Value), C.POINTER(C.c_void_p)]
+        l.hhs158_instance_project.restype = C.c_int32
+        l.hhs158_value_release.argtypes = [C.POINTER(Value)]
+        l.hhs158_value_release.restype = None
         l.hhs158_transition_create.argtypes = [C.c_void_p, C.c_void_p, C.POINTER(TransitionDescriptor), C.POINTER(C.c_void_p)]
         l.hhs158_transition_create.restype = C.c_int32
         l.hhs158_transition_execute.argtypes = [C.c_void_p, C.POINTER(ExecutionOptions), C.POINTER(ExecutionResult), C.POINTER(C.c_void_p)]
@@ -437,6 +459,13 @@ class Definition:
     def __init__(self, context: Context, handle: C.c_void_p):
         self.context = context
         self.handle = handle
+
+    @property
+    def definition_id(self) -> str:
+        buffer = (C.c_uint8 * 216)()
+        span = MutableByteSpan(C.cast(buffer, C.POINTER(C.c_uint8)), 216, 0)
+        self.context.native.check(self.context.native.lib.hhs158_definition_id(self.handle, C.byref(span)))
+        return bytes(buffer).decode("ascii")
 
     def instantiate(self, nonce: bytes) -> tuple["Instance", Receipt]:
         pinned = _PinnedSpan(nonce)
@@ -571,6 +600,41 @@ class Instance:
             "state_root": bytes(report.state_root).split(b"\0", 1)[0].decode(),
             "checked_constraints": report.checked_constraints,
         }
+
+    def project(self, profile: str = "IEEE754_BINARY64_CONTROL") -> tuple[dict, Receipt]:
+        kinds = {
+            "EXACT_REFERENCE": HHS158_PROJECTION_EXACT_REFERENCE,
+            "IEEE754_BINARY64_CONTROL": HHS158_PROJECTION_IEEE754_BINARY64_CONTROL,
+            "RENDER_FLOAT32": HHS158_PROJECTION_RENDER_FLOAT32,
+        }
+        try:
+            kind = kinds[profile]
+        except KeyError as exc:
+            raise ValueError("TYPE_MISMATCH") from exc
+        profile_pin = _PinnedSpan(profile)
+        native_profile = ProjectionProfile()
+        _header(native_profile)
+        native_profile.kind = kind
+        native_profile.profile_name = profile_pin.span
+        native_profile.decimal_digits = 17 if kind == HHS158_PROJECTION_IEEE754_BINARY64_CONTROL else 9
+        value = Value()
+        receipt_handle = C.c_void_p()
+        self.context.native.check(self.context.native.lib.hhs158_instance_project(
+            self.handle, C.byref(native_profile), C.byref(value), C.byref(receipt_handle)
+        ))
+        try:
+            payload = bytes(C.string_at(value.canonical_payload.data, value.canonical_payload.size)).decode("utf-8")
+            result = {
+                "profile": profile,
+                "kind": int(value.kind),
+                "flags": int(value.flags),
+                "payload": payload,
+                "approximate": bool(value.flags & HHS158_FLAG_APPROXIMATE),
+                "authority": "PROJECTION_ONLY" if value.flags & HHS158_FLAG_PROJECTION else "EXACT_REFERENCE",
+            }
+        finally:
+            self.context.native.lib.hhs158_value_release(C.byref(value))
+        return result, Receipt(self.context, receipt_handle)
 
     def execute(self, capability: Capability, operations: Sequence[tuple[int, str]], *, commit: bool = True) -> tuple[ExecutionSummary, Receipt]:
         pins = [_PinnedSpan(operands) for _, operands in operations]

@@ -601,23 +601,54 @@ class Hash216ProjectionScheduler:
             }
 
     def _record_from_snapshot(self, object_id: str, raw: Mapping[str, Any]) -> ChunkRecord:
-        record = ChunkRecord(
-            object_id=object_id,
-            object_class=str(raw["object_class"]),
-            version=int(raw["version"]),
-            previous_root=str(raw.get("previous_root_hash216", ZERO_ROOT)),
-            content_sha256=str(raw["content_sha256"]),
-            payload=raw.get("payload"),
-            dependency_roots=tuple(
-                (str(a), str(b)) for a, b in raw.get("dependency_roots", [])
-            ),
-            positions=tuple(str(item) for item in raw["hash216_positions"]),
-            genome_root=str(raw["hash216_root"]),
-            static=bool(raw["static"]),
+        object_class = str(raw["object_class"])
+        version = int(raw["version"])
+        previous_root = str(raw.get("previous_root_hash216", ZERO_ROOT))
+        payload = json.loads(canonical_bytes(raw.get("payload")))
+        dependency_roots = tuple(
+            sorted((str(a), str(b)) for a, b in raw.get("dependency_roots", []))
         )
-        if len(record.positions) != 216 or self._authority.root(record.positions) != record.genome_root:
+        static = bool(raw["static"])
+        fingerprint_payload = {
+            "object_id": object_id,
+            "object_class": object_class,
+            "payload": payload,
+            "dependency_roots": dependency_roots,
+            "static": static,
+        }
+        canonical_payload = canonical_bytes(fingerprint_payload)
+        expected_content_hash = sha256(canonical_payload).hexdigest()
+        expected_positions = tuple(
+            self._authority.positions(
+                canonical_payload,
+                previous_root=previous_root,
+                sequence=version,
+            )
+        )
+        if len(expected_positions) != 216:
+            raise ValueError("HASH216_POSITION_COUNT_MISMATCH")
+        expected_root = self._authority.root(expected_positions)
+        supplied_positions = tuple(str(item) for item in raw["hash216_positions"])
+        supplied_root = str(raw["hash216_root"])
+        supplied_content_hash = str(raw["content_sha256"])
+        if (
+            supplied_content_hash != expected_content_hash
+            or supplied_positions != expected_positions
+            or supplied_root != expected_root
+        ):
             raise ValueError("HASH216_SNAPSHOT_IDENTITY_MISMATCH")
-        return record
+        return ChunkRecord(
+            object_id=object_id,
+            object_class=object_class,
+            version=version,
+            previous_root=previous_root,
+            content_sha256=expected_content_hash,
+            payload=payload,
+            dependency_roots=dependency_roots,
+            positions=expected_positions,
+            genome_root=expected_root,
+            static=static,
+        )
 
     def recover(self, snapshot: Mapping[str, Any]) -> dict[str, Any]:
         if snapshot.get("schema") != SNAPSHOT_SCHEMA:

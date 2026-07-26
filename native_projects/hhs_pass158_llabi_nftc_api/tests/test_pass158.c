@@ -127,8 +127,9 @@ static int vm81_and_replay(size_t *vm81, size_t *replay) {
     const HHS158OpcodeDescriptor *registry;
     size_t registry_count = 0u, i;
     HHS158Receipt *last = NULL;
-    CHECK(fixture_create(&f, "vm81", HHS158_CAP_BIND|HHS158_CAP_VALIDATE|HHS158_CAP_EXECUTE|HHS158_CAP_PROJECT|
-        HHS158_CAP_SERIALIZE|HHS158_CAP_REPLAY, HHS158_MUTATION_INSTANCE, UINT64_C(1799719999), NULL) == HHS158_OK);
+    CHECK(fixture_create(&f, "vm81", HHS158_CAP_BIND|HHS158_CAP_VALIDATE|HHS158_CAP_EXECUTE|HHS158_CAP_COMMIT|
+        HHS158_CAP_PROJECT|HHS158_CAP_SERIALIZE|HHS158_CAP_REPLAY|HHS158_CAP_REGISTER|HHS158_CAP_INSTANTIATE,
+        HHS158_MUTATION_INSTANCE, UINT64_C(1799719999), NULL) == HHS158_OK);
     CHECK(bind_value(&f,"x",HHS158_VALUE_RATIONAL,HHS158_FLAG_AUTHORITATIVE|HHS158_FLAG_IMMUTABLE,"1/3") == HHS158_OK);
     registry = hhs158_public_opcode_registry(&registry_count);
     CHECK(registry && registry_count > 0u);
