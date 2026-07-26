@@ -1,0 +1,34 @@
+name: Pass 159 HARMONICODE Toolchain
+
+on:
+  pull_request:
+    paths:
+      - 'native_projects/hhs_pass159_harmonicode_toolchain/**'
+      - '.github/workflows/pass159-harmonicode-toolchain.yml'
+  push:
+    branches:
+      - agent/pass159-harmonicode-toolchain
+
+permissions:
+  contents: read
+
+jobs:
+  native-c11-foundation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build and verify Pass 159 foundation
+        working-directory: native_projects/hhs_pass159_harmonicode_toolchain
+        run: make verify
+      - name: Generate executed evidence
+        working-directory: native_projects/hhs_pass159_harmonicode_toolchain
+        run: make evidence
+      - name: Upload Pass 159 evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: hhs-pass159-foundation-evidence
+          path: |
+            native_projects/hhs_pass159_harmonicode_toolchain/dist/*.json
+            native_projects/hhs_pass159_harmonicode_toolchain/evidence/*.json
+          if-no-files-found: error
