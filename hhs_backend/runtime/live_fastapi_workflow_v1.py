@@ -18,6 +18,7 @@ from dataclasses import dataclass, field
 from typing import Any, Dict, Mapping, Optional
 
 from hhs_backend.api.cognition_routes import register_cognition_routes
+from hhs_backend.runtime.immutable_agent_index_hooks_v1 import install_agent_index_hooks
 from hhs_backend.runtime.live_cognition_runtime_v1 import (
     HHSRuntimeCognitionCoordinator,
     live_cognition_runtime,
@@ -29,6 +30,7 @@ VERSION = "PASS_045_LIVE_FASTAPI_KERNEL_RUNTIME_V1"
 WORKFLOW_SCHEMA = "HHS_LIVE_FASTAPI_WORKFLOW_V1"
 
 register_cognition_routes()
+install_agent_index_hooks(live_cognition_runtime)
 
 
 @dataclass
@@ -49,6 +51,8 @@ class LiveFastAPIRuntimeWorkflow:
         self.bridge = LiveKernelEventBridge(self.runtime_emulator)
         if self.cognition_runtime is None:
             self.cognition_runtime = live_cognition_runtime
+        if self.cognition_runtime is not None:
+            install_agent_index_hooks(self.cognition_runtime)
 
     async def start(self) -> Dict[str, Any]:
         if self._running:
