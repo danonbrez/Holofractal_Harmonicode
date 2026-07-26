@@ -19,13 +19,17 @@ class Pass158Service(_core.Pass158Service):
         return unquote(identity)
 
     def _transport_path(self, path: str) -> str:
-        identities = set(self.instances) | set(self.receipts) | set(self.graphs)
+        identities = set(self.instances) | set(self.receipts) | set(self.graphs) | set(self.bindings)
         for identity in sorted(identities, key=len, reverse=True):
             path = path.replace(identity, self.encode_path_identity(identity))
         return path
 
     def _instance(self, instance_id: str):
-        return super()._instance(self.decode_path_identity(instance_id))
+        decoded = self.decode_path_identity(instance_id)
+        try:
+            return super()._instance(decoded)
+        except KeyError:
+            return super()._instance(instance_id)
 
     def _store_receipt(self, receipt):
         serialized = super()._store_receipt(receipt)
@@ -34,6 +38,12 @@ class Pass158Service(_core.Pass158Service):
         return serialized
 
     def _synchronize_path_aliases(self) -> None:
+        for instance_id, instance in list(self.instances.items()):
+            if "%" not in instance_id:
+                self.instances[self.encode_path_identity(instance_id)] = instance
+        for instance_id, bindings in list(self.bindings.items()):
+            if "%" not in instance_id:
+                self.bindings[self.encode_path_identity(instance_id)] = bindings
         for instance_id, graph in list(self.graphs.items()):
             if "%" not in instance_id:
                 self.graphs[self.encode_path_identity(instance_id)] = graph
