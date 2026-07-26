@@ -8,6 +8,7 @@ on:
       - agent/vm81-modality-evidence
       - agent/vm81-sprite-overlay-gradients
       - agent/vm81-governed-texture-layers
+      - agent/vm81-mp4-holographic-playback
     paths:
       - native_projects/hhs_vm81_game_level10/**
       - hhs_runtime/include/hhs_hash216.h
@@ -24,12 +25,12 @@ permissions:
 jobs:
   vm81-playable-game:
     runs-on: ubuntu-24.04
-    timeout-minutes: 30
+    timeout-minutes: 40
     steps:
       - uses: actions/checkout@v4
         with:
           show-progress: false
-      - name: Ensure terminal sprite and texture media dependencies
+      - name: Ensure terminal sprite texture and holographic media dependencies
         shell: bash
         run: |
           missing=0
@@ -85,7 +86,15 @@ jobs:
           code=$?
           cat native_projects/hhs_vm81_game_level10/dist/hosted-texture-modality.log
           exit "$code"
-      - name: Assert core release terminal sprite and texture evidence
+      - name: Verify MP4 holographic playback overlay and composite
+        shell: bash
+        run: |
+          set +e
+          make -C native_projects/hhs_vm81_game_level10 holographic-modality > native_projects/hhs_vm81_game_level10/dist/hosted-holographic-modality.log 2>&1
+          code=$?
+          cat native_projects/hhs_vm81_game_level10/dist/hosted-holographic-modality.log
+          exit "$code"
+      - name: Assert core release terminal sprite texture and holographic evidence
         run: |
           test -x native_projects/hhs_vm81_game_level10/dist/hhs-vm81-game
           test -x native_projects/hhs_vm81_game_level10/dist/test-hhs-vm81-game
@@ -126,11 +135,25 @@ jobs:
           grep -q '"state_projection_non_mutating": "VERIFIED"' native_projects/hhs_vm81_game_level10/dist/texture-media/texture-modality-evidence.json
           grep -q '"opcode_coverage": "19/19"' native_projects/hhs_vm81_game_level10/dist/texture-media/texture-modality-evidence.json
           grep -q '"replay": "MATCH"' native_projects/hhs_vm81_game_level10/dist/texture-media/texture-modality-evidence.json
-      - name: Upload playable game sprite texture and modality evidence
+          test -s native_projects/hhs_vm81_game_level10/dist/holographic-media/vm81-holographic-overlay.mp4
+          test -s native_projects/hhs_vm81_game_level10/dist/holographic-media/vm81-platformer-holographic-playback.mp4
+          test -s native_projects/hhs_vm81_game_level10/dist/holographic-media/screenshots/00-holographic-playback-overview.png
+          test -s native_projects/hhs_vm81_game_level10/dist/holographic-media/screenshots/05-mp4-holographic-overlay-stages.png
+          test -s native_projects/hhs_vm81_game_level10/dist/holographic-media/screenshots/06-holographic-depth-lighting-details.png
+          test -s native_projects/hhs_vm81_game_level10/dist/holographic-media/holographic-playback-evidence.json
+          grep -q 'VM81_MP4_HOLOGRAPHIC_OVERLAY_GENERATED' native_projects/hhs_vm81_game_level10/dist/holographic-media/holographic-playback-evidence.json
+          grep -q 'VM81_MP4_HOLOGRAPHIC_PLAYBACK_ROUNDTRIP_VERIFIED' native_projects/hhs_vm81_game_level10/dist/holographic-media/holographic-playback-evidence.json
+          grep -q 'VM81_HOLOGRAPHIC_DEPTH_LIGHTING_COMPOSITE_VERIFIED' native_projects/hhs_vm81_game_level10/dist/holographic-media/holographic-playback-evidence.json
+          grep -q '"mp4_playback_pixel_exact": "VERIFIED"' native_projects/hhs_vm81_game_level10/dist/holographic-media/holographic-playback-evidence.json
+          grep -q '"base_texture_frames_unchanged": "VERIFIED"' native_projects/hhs_vm81_game_level10/dist/holographic-media/holographic-playback-evidence.json
+          grep -q '"vm81_state_mutation": "NONE"' native_projects/hhs_vm81_game_level10/dist/holographic-media/holographic-playback-evidence.json
+          grep -q '"opcode_coverage": "19/19"' native_projects/hhs_vm81_game_level10/dist/holographic-media/holographic-playback-evidence.json
+          grep -q '"replay": "MATCH"' native_projects/hhs_vm81_game_level10/dist/holographic-media/holographic-playback-evidence.json
+      - name: Upload playable game holographic playback and modality evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: vm81-playable-game-governed-texture-release
+          name: vm81-playable-game-holographic-playback-release
           path: |
             native_projects/hhs_vm81_game_level10/Makefile
             native_projects/hhs_vm81_game_level10/README.md
@@ -164,20 +187,27 @@ jobs:
             native_projects/hhs_vm81_game_level10/dist/texture-media/screenshots/
             native_projects/hhs_vm81_game_level10/dist/texture-media/vm81-platformer-governed-textures.mp4
             native_projects/hhs_vm81_game_level10/dist/texture-media/texture-modality-evidence.json
+            native_projects/hhs_vm81_game_level10/dist/holographic-media/screenshots/
+            native_projects/hhs_vm81_game_level10/dist/holographic-media/vm81-holographic-overlay.mp4
+            native_projects/hhs_vm81_game_level10/dist/holographic-media/vm81-platformer-holographic-playback.mp4
+            native_projects/hhs_vm81_game_level10/dist/holographic-media/holographic-playback-evidence.json
             native_projects/hhs_vm81_game_level10/dist/hosted-test.log
             native_projects/hhs_vm81_game_level10/dist/hosted-sanitize.log
             native_projects/hhs_vm81_game_level10/dist/hosted-modality.log
             native_projects/hhs_vm81_game_level10/dist/hosted-sprite-modality.log
             native_projects/hhs_vm81_game_level10/dist/hosted-texture-modality.log
+            native_projects/hhs_vm81_game_level10/dist/hosted-holographic-modality.log
             native_projects/hhs_vm81_game_level10/dist/terminal-io-evidence.log
             native_projects/hhs_vm81_game_level10/dist/modality-evidence.log
             native_projects/hhs_vm81_game_level10/dist/sprite-modality.log
             native_projects/hhs_vm81_game_level10/dist/texture-modality.log
+            native_projects/hhs_vm81_game_level10/dist/holographic-modality.log
             native_projects/hhs_vm81_game_level10/specs/HHS_VM81_GAME_LEVEL10_CONTRACT.json
             native_projects/hhs_vm81_game_level10/specs/HHS_VM81_PLAYABLE_GAME_RELEASE_CONTRACT.json
             native_projects/hhs_vm81_game_level10/specs/HHS_VM81_USER_MODALITY_EVIDENCE_CONTRACT.json
             native_projects/hhs_vm81_game_level10/specs/HHS_VM81_SPRITE_MAP_OVERLAY_GRADIENTS_CONTRACT.json
             native_projects/hhs_vm81_game_level10/specs/HHS_VM81_GOVERNED_TEXTURE_LAYERS_CONTRACT.json
+            native_projects/hhs_vm81_game_level10/specs/HHS_VM81_MP4_HOLOGRAPHIC_PLAYBACK_OVERLAY_CONTRACT.json
             hhs_runtime/include/hhs_hash216.h
             hhs_runtime/src/hhs_hash216.c
           if-no-files-found: warn
