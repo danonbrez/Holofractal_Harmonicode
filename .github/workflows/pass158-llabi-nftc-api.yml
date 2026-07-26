@@ -1,0 +1,43 @@
+name: Pass 158 Low-Level ABI NFT API
+
+on:
+  push:
+    branches:
+      - main
+      - agent/pass158-llabi-nftc-api
+    paths:
+      - native_projects/hhs_pass158_llabi_nftc_api/**
+      - hhs_runtime/c/hhs_runtime_abi.*
+      - hhs_runtime/include/hhs_hash216.h
+      - hhs_runtime/src/hhs_hash216.c
+      - .github/workflows/pass158-llabi-nftc-api.yml
+      - HHS_PASS_158_RELEASE_BUNDLE.json
+  pull_request:
+    paths:
+      - native_projects/hhs_pass158_llabi_nftc_api/**
+      - hhs_runtime/c/hhs_runtime_abi.*
+      - hhs_runtime/include/hhs_hash216.h
+      - hhs_runtime/src/hhs_hash216.c
+      - .github/workflows/pass158-llabi-nftc-api.yml
+      - HHS_PASS_158_RELEASE_BUNDLE.json
+
+permissions:
+  contents: read
+
+jobs:
+  pass158-native-gate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compile and execute Pass 158 native ABI matrix
+        run: make -C native_projects/hhs_pass158_llabi_nftc_api native-test
+      - name: Upload native diagnostic evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hhs-pass158-native-diagnostics
+          path: native_projects/hhs_pass158_llabi_nftc_api/dist/
+          if-no-files-found: warn
