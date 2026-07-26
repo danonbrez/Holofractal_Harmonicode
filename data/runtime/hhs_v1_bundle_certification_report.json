@@ -1,37 +1,40 @@
 {
   "certification": "HHS_GENERAL_PROGRAMMING_ENVIRONMENT_V1",
-  "all_ok": true,
-  "status": "CERTIFIED_LOCKED",
-  "failure_reasons": [],
+  "all_ok": false,
+  "status": "CERTIFICATION_FAILED",
+  "failure_reasons": [
+    "smoke_tests reported failures",
+    "database_persistence_check raised ModuleNotFoundError: No module named 'fastapi'"
+  ],
   "artifacts": {
-    "demo_program": "/mnt/data/hhs145_work/hhs144_work/data/runtime/hhs_v1_demo_program.hhsprog",
-    "demo_run": "/mnt/data/hhs145_work/hhs144_work/data/runtime/hhs_v1_demo_run.hhsrun",
-    "database": "/mnt/data/hhs145_work/hhs144_work/data/runtime/hhs_v1_bundle_certification.sqlite3",
-    "report": "/mnt/data/hhs145_work/hhs144_work/data/runtime/hhs_v1_bundle_certification_report.json"
+    "demo_program": "/home/runner/work/Holofractal_Harmonicode/Holofractal_Harmonicode/data/runtime/hhs_v1_demo_program.hhsprog",
+    "demo_run": "/home/runner/work/Holofractal_Harmonicode/Holofractal_Harmonicode/data/runtime/hhs_v1_demo_run.hhsrun",
+    "database": "/home/runner/work/Holofractal_Harmonicode/Holofractal_Harmonicode/data/runtime/hhs_v1_bundle_certification.sqlite3",
+    "report": "/home/runner/work/Holofractal_Harmonicode/Holofractal_Harmonicode/data/runtime/hhs_v1_bundle_certification_report.json"
   },
   "checks": [
     {
       "name": "smoke_tests",
       "ok": true,
       "result": {
-        "all_ok": true,
-        "passed": 8,
-        "failed": 0,
+        "all_ok": false,
+        "passed": 7,
+        "failed": 1,
         "report": {
           "summary": {
-            "passed": 8,
-            "failed": 0,
-            "all_ok": true
+            "passed": 7,
+            "failed": 1,
+            "all_ok": false
           },
           "results": [
             {
               "name": "runtime_bootstrap",
               "ok": true,
               "details": {
-                "repo_root": "/mnt/data/hhs145_work/hhs144_work",
-                "kernel_path": "/mnt/data/hhs145_work/hhs144_work/HARMONICODE_KERNEL_v44_2_lockcore_patched_selfsolving_hash72authority_locked-7.py",
+                "repo_root": "/home/runner/work/Holofractal_Harmonicode/Holofractal_Harmonicode",
+                "kernel_path": "/home/runner/work/Holofractal_Harmonicode/Holofractal_Harmonicode/HARMONICODE_KERNEL_v44_2_lockcore_patched_selfsolving_hash72authority_locked-7.py",
                 "module_name": "HARMONICODE_KERNEL_v44_2_lockcore_patched_selfsolving_hash72authority_locked-7",
-                "python": "/opt/pyvenv/bin/python"
+                "python": "/usr/bin/python"
               }
             },
             {
@@ -52,40 +55,44 @@
               "name": "receipt_replay_verifier",
               "ok": true,
               "details": {
-                "module": "<module 'hhs_receipt_replay_verifier_v1' from '/mnt/data/hhs145_work/hhs144_work/hhs_receipt_replay_verifier_v1.py'>"
+                "module": "<module 'hhs_receipt_replay_verifier_v1' from '/home/runner/work/Holofractal_Harmonicode/Holofractal_Harmonicode/hhs_receipt_replay_verifier_v1.py'>"
               }
             },
             {
               "name": "runtime_gate_integrity",
               "ok": true,
               "details": {
-                "module": "<module 'hhs_control_flow_gates_v1' from '/mnt/data/hhs145_work/hhs144_work/hhs_control_flow_gates_v1.py'>"
+                "module": "<module 'hhs_control_flow_gates_v1' from '/home/runner/work/Holofractal_Harmonicode/Holofractal_Harmonicode/hhs_control_flow_gates_v1.py'>"
               }
             },
             {
               "name": "database_bridge_available",
               "ok": true,
               "details": {
-                "module": "<module 'hhs_database_integration_layer_v1' from '/mnt/data/hhs145_work/hhs144_work/hhs_database_integration_layer_v1.py'>"
+                "module": "<module 'hhs_database_integration_layer_v1' from '/home/runner/work/Holofractal_Harmonicode/Holofractal_Harmonicode/hhs_database_integration_layer_v1.py'>"
               }
             },
             {
               "name": "regression_suite_importable",
               "ok": true,
               "details": {
-                "module": "<module 'hhs_regression_suite_v1' from '/mnt/data/hhs145_work/hhs144_work/hhs_regression_suite_v1.py'>"
+                "module": "<module 'hhs_regression_suite_v1' from '/home/runner/work/Holofractal_Harmonicode/Holofractal_Harmonicode/hhs_regression_suite_v1.py'>"
               }
             },
             {
               "name": "no_mnt_data_dependency",
-              "ok": true,
-              "details": {}
+              "ok": false,
+              "details": {
+                "stale_refs": [
+                  "tools/pass148/package_release.py"
+                ]
+              }
             },
             {
               "name": "runtime_package_topology",
               "ok": true,
               "details": {
-                "runtime_path": "/mnt/data/hhs145_work/hhs144_work/hhs_runtime/__init__.py"
+                "runtime_path": "/home/runner/work/Holofractal_Harmonicode/Holofractal_Harmonicode/hhs_runtime/__init__.py"
               }
             }
           ]
@@ -224,14 +231,14 @@
               "control_receipt": {
                 "phase": 1,
                 "operation": "IF_GATE",
-                "parent_receipt_hash72": "H72N-9d1d16f099c2912364",
+                "parent_receipt_hash72": "H72N-b67211feb4859ee7ae",
                 "input_hash72": "H72N-6c4686c3370d57ea7c",
-                "pre_state_hash72": "H72N-f4f4722b8580ce0555",
-                "operation_hash72": "H72N-ad46661fc96018eae6",
-                "post_state_hash72": "H72N-90c7d1749808cd399f",
-                "witness_hash72": "H72N-53ae33814efe774adb",
-                "receipt_hash72": "H72N-7d6d6b5d0314324b53",
-                "integrity_hash72": "H72N-ea486a79d81be94650",
+                "pre_state_hash72": "H72N-a9760826c8b3e78d4b",
+                "operation_hash72": "H72N-0c9b9d456c13e1572f",
+                "post_state_hash72": "H72N-fb77948ec5816e1fe7",
+                "witness_hash72": "H72N-34cc85c99f6d0ab74c",
+                "receipt_hash72": "H72N-74d909589a2f131e5f",
+                "integrity_hash72": "H72N-bfd1079946b9bde28d",
                 "gate_status": "LOCKED",
                 "locked": true,
                 "quarantine": false,
@@ -245,9 +252,9 @@
                 "pre_state_hash72": "H72N-ca5bf27da4aebab2af",
                 "operation_hash72": "H72N-f1796515b251c5d81d",
                 "post_state_hash72": "H72N-070d1ecfed3d05346a",
-                "witness_hash72": "H72N-f258243082623ce94d",
-                "receipt_hash72": "H72N-9d1d16f099c2912364",
-                "integrity_hash72": "H72N-2d5289c0ee42251fb3",
+                "witness_hash72": "H72N-d19104629193039b70",
+                "receipt_hash72": "H72N-b67211feb4859ee7ae",
+                "integrity_hash72": "H72N-870ef1926481bccf08",
                 "gate_status": "LOCKED",
                 "locked": true,
                 "quarantine": false,
@@ -664,8 +671,8 @@
                     ],
                     "schema": "HHS_VALIDATION_RESIDUE_STATE_CHAIN_V1",
                     "unified_ledger": {
-                      "entry_count": 281,
-                      "ledger_hash72": "w)zQ(>z?qzRPAtJApg49p!m)",
+                      "entry_count": 329,
+                      "ledger_hash72": "9gN2Y3J5Mun8>cHSeR/0F<y7",
                       "tip_hash72": "9Z36a4Pm>GBarzWNOUQYDwgg",
                       "verified": true
                     },
@@ -840,8 +847,8 @@
                       "state_machine": "u^72_hash72_multimodal_state_machine",
                       "status": "ADMIT_VALIDATION_RESIDUE_STATE_CHAIN",
                       "unified_ledger": {
-                        "entry_count": 282,
-                        "ledger_hash72": "yPYBxNASGodv8X<4Jj49MBYb",
+                        "entry_count": 330,
+                        "ledger_hash72": "7Zj5>)x!fYBhOqsV-Hb*85q)",
                         "tip_hash72": ">XePyywOq*a1iGz2h/kB-XuC",
                         "verified": true
                       }
@@ -1034,14 +1041,14 @@
               "control_receipt": {
                 "phase": 4,
                 "operation": "LOOP_GATE",
-                "parent_receipt_hash72": "H72N-9fb78e9b0b4851e54f",
+                "parent_receipt_hash72": "H72N-b967f483aefe7555b7",
                 "input_hash72": "H72N-6aba8ff8f51a493ae2",
-                "pre_state_hash72": "H72N-15899825be08b04d03",
-                "operation_hash72": "H72N-d13932972d45a7e00d",
+                "pre_state_hash72": "H72N-582adf665634f6e607",
+                "operation_hash72": "H72N-85169a0a94e987a713",
                 "post_state_hash72": "H72N-8f9f50fccdc85b9347",
-                "witness_hash72": "H72N-e5ad13e3935efebf56",
-                "receipt_hash72": "H72N-3c9a476bc1debf166f",
-                "integrity_hash72": "H72N-0706a6402d6f102e78",
+                "witness_hash72": "H72N-97080e71b53bb62892",
+                "receipt_hash72": "H72N-26390fa927b3e2472c",
+                "integrity_hash72": "H72N-8ef83ba66461a13a0c",
                 "gate_status": "LOCKED",
                 "locked": true,
                 "quarantine": false,
@@ -1056,9 +1063,9 @@
                   "pre_state_hash72": "H72N-88f77f388b771e5537",
                   "operation_hash72": "H72N-1afcc8744a47c074aa",
                   "post_state_hash72": "H72N-048dae82ab9820edc6",
-                  "witness_hash72": "H72N-c841f4a11b2c3aba2b",
-                  "receipt_hash72": "H72N-fd60296f6fd435d050",
-                  "integrity_hash72": "H72N-2e10cc9d532473d3b5",
+                  "witness_hash72": "H72N-8ce6abef5a5696c51a",
+                  "receipt_hash72": "H72N-42b6ab0787424f8f84",
+                  "integrity_hash72": "H72N-bc27ad7f10ea99da33",
                   "gate_status": "LOCKED",
                   "locked": true,
                   "quarantine": false,
@@ -1067,14 +1074,14 @@
                 {
                   "phase": 1,
                   "operation": "LOOP_ITERATION_FULL_TRANSITION",
-                  "parent_receipt_hash72": "H72N-fd60296f6fd435d050",
+                  "parent_receipt_hash72": "H72N-42b6ab0787424f8f84",
                   "input_hash72": "H72N-7e67f403d2ee6ef97f",
-                  "pre_state_hash72": "H72N-3abc09369d3e1d0d57",
-                  "operation_hash72": "H72N-96d7859aa415b02306",
+                  "pre_state_hash72": "H72N-774adf049928818de7",
+                  "operation_hash72": "H72N-77568f901b5917e491",
                   "post_state_hash72": "H72N-0681ae14f636400538",
-                  "witness_hash72": "H72N-562c324152dda06582",
-                  "receipt_hash72": "H72N-8d425bfab26904e8b8",
-                  "integrity_hash72": "H72N-061935fae60a91befc",
+                  "witness_hash72": "H72N-39b8716e14646a7235",
+                  "receipt_hash72": "H72N-0ec8f12504a0283758",
+                  "integrity_hash72": "H72N-760251b56a8b1421fc",
                   "gate_status": "LOCKED",
                   "locked": true,
                   "quarantine": false,
@@ -1083,14 +1090,14 @@
                 {
                   "phase": 2,
                   "operation": "LOOP_ITERATION_FULL_TRANSITION",
-                  "parent_receipt_hash72": "H72N-8d425bfab26904e8b8",
+                  "parent_receipt_hash72": "H72N-0ec8f12504a0283758",
                   "input_hash72": "H72N-028dfbfcbe49f43dc0",
-                  "pre_state_hash72": "H72N-4b72c28c0a0d213fdc",
-                  "operation_hash72": "H72N-36b8c44e9b54963897",
+                  "pre_state_hash72": "H72N-1547ffceef991fbd58",
+                  "operation_hash72": "H72N-1c9b04e46c631d10d8",
                   "post_state_hash72": "H72N-5909975b8863ce5a07",
-                  "witness_hash72": "H72N-3e5b3af4029e9dd413",
-                  "receipt_hash72": "H72N-ebf1d8b9c523a42238",
-                  "integrity_hash72": "H72N-62d0009a21c688c8b4",
+                  "witness_hash72": "H72N-f34ba99888788d0782",
+                  "receipt_hash72": "H72N-56582e3695a115423e",
+                  "integrity_hash72": "H72N-358cb97780713c94af",
                   "gate_status": "LOCKED",
                   "locked": true,
                   "quarantine": false,
@@ -1099,14 +1106,14 @@
                 {
                   "phase": 3,
                   "operation": "LOOP_ITERATION_FULL_TRANSITION",
-                  "parent_receipt_hash72": "H72N-ebf1d8b9c523a42238",
+                  "parent_receipt_hash72": "H72N-56582e3695a115423e",
                   "input_hash72": "H72N-0992d75938ad6ede33",
-                  "pre_state_hash72": "H72N-54c32d4e8914917a0b",
-                  "operation_hash72": "H72N-e930b93551742166fb",
+                  "pre_state_hash72": "H72N-79ddbdbf03af4af59c",
+                  "operation_hash72": "H72N-afe1b404cb83882d41",
                   "post_state_hash72": "H72N-a4235348752d6394b3",
-                  "witness_hash72": "H72N-2f976c9d6c031a8d41",
-                  "receipt_hash72": "H72N-9fb78e9b0b4851e54f",
-                  "integrity_hash72": "H72N-358005b63d8b45f272",
+                  "witness_hash72": "H72N-c5f77acd3e284334ba",
+                  "receipt_hash72": "H72N-b967f483aefe7555b7",
+                  "integrity_hash72": "H72N-947211398445bcd0b7",
                   "gate_status": "LOCKED",
                   "locked": true,
                   "quarantine": false,
@@ -1135,7 +1142,7 @@
                     "iteration_receipt": {
                       "gate_status": "LOCKED",
                       "input_hash72": "H72N-d83b02ef621fcbbce6",
-                      "integrity_hash72": "H72N-2e10cc9d532473d3b5",
+                      "integrity_hash72": "H72N-bc27ad7f10ea99da33",
                       "locked": true,
                       "operation": "LOOP_ITERATION_FULL_TRANSITION",
                       "operation_hash72": "H72N-1afcc8744a47c074aa",
@@ -1145,8 +1152,8 @@
                       "pre_state_hash72": "H72N-88f77f388b771e5537",
                       "quarantine": false,
                       "reason": "full loop step transition audited",
-                      "receipt_hash72": "H72N-fd60296f6fd435d050",
-                      "witness_hash72": "H72N-c841f4a11b2c3aba2b"
+                      "receipt_hash72": "H72N-42b6ab0787424f8f84",
+                      "witness_hash72": "H72N-8ce6abef5a5696c51a"
                     },
                     "label": "REGRESSION_COUNTDOWN",
                     "next_state": 3,
@@ -1554,8 +1561,8 @@
                         ],
                         "schema": "HHS_VALIDATION_RESIDUE_STATE_CHAIN_V1",
                         "unified_ledger": {
-                          "entry_count": 285,
-                          "ledger_hash72": "r-RyKjRz)+h3yL7W-+Vp3m0<",
+                          "entry_count": 333,
+                          "ledger_hash72": "YTosxkeA/BzdLxEx/l!?cFPM",
                           "tip_hash72": "Mgmcysvec5YOq8!ePWWeH(>V",
                           "verified": true
                         },
@@ -1730,8 +1737,8 @@
                           "state_machine": "u^72_hash72_multimodal_state_machine",
                           "status": "ADMIT_VALIDATION_RESIDUE_STATE_CHAIN",
                           "unified_ledger": {
-                            "entry_count": 286,
-                            "ledger_hash72": "WKaNhqpv4xM0nmEPiD(4OH1D",
+                            "entry_count": 334,
+                            "ledger_hash72": "-af)vRYc7UYrv?H5dyayqDcm",
                             "tip_hash72": "-QHNf3-C?z<bJlnxSXQR9lso",
                             "verified": true
                           }
@@ -1926,18 +1933,18 @@
                     "iteration_receipt": {
                       "gate_status": "LOCKED",
                       "input_hash72": "H72N-7e67f403d2ee6ef97f",
-                      "integrity_hash72": "H72N-061935fae60a91befc",
+                      "integrity_hash72": "H72N-760251b56a8b1421fc",
                       "locked": true,
                       "operation": "LOOP_ITERATION_FULL_TRANSITION",
-                      "operation_hash72": "H72N-96d7859aa415b02306",
-                      "parent_receipt_hash72": "H72N-fd60296f6fd435d050",
+                      "operation_hash72": "H72N-77568f901b5917e491",
+                      "parent_receipt_hash72": "H72N-42b6ab0787424f8f84",
                       "phase": 1,
                       "post_state_hash72": "H72N-0681ae14f636400538",
-                      "pre_state_hash72": "H72N-3abc09369d3e1d0d57",
+                      "pre_state_hash72": "H72N-774adf049928818de7",
                       "quarantine": false,
                       "reason": "full loop step transition audited",
-                      "receipt_hash72": "H72N-8d425bfab26904e8b8",
-                      "witness_hash72": "H72N-562c324152dda06582"
+                      "receipt_hash72": "H72N-0ec8f12504a0283758",
+                      "witness_hash72": "H72N-39b8716e14646a7235"
                     },
                     "label": "REGRESSION_COUNTDOWN",
                     "next_state": 2,
@@ -2345,8 +2352,8 @@
                         ],
                         "schema": "HHS_VALIDATION_RESIDUE_STATE_CHAIN_V1",
                         "unified_ledger": {
-                          "entry_count": 289,
-                          "ledger_hash72": "x70nMvH4HySI>uQMv?JzG2s/",
+                          "entry_count": 337,
+                          "ledger_hash72": "gzRy8oS+3YWmg<7(fmiGrgTg",
                           "tip_hash72": ")0tiS9YN3QUfJpp-AG9*lyoM",
                           "verified": true
                         },
@@ -2521,8 +2528,8 @@
                           "state_machine": "u^72_hash72_multimodal_state_machine",
                           "status": "ADMIT_VALIDATION_RESIDUE_STATE_CHAIN",
                           "unified_ledger": {
-                            "entry_count": 290,
-                            "ledger_hash72": "*xk5f2cAa6TpWfS9P2Jz/F?A",
+                            "entry_count": 338,
+                            "ledger_hash72": "p6H4Io3/cYsVrSCfi6T)0QTB",
                             "tip_hash72": "Cxz8s<R)2P!4!GqQ(Ny1eYIJ",
                             "verified": true
                           }
@@ -2717,18 +2724,18 @@
                     "iteration_receipt": {
                       "gate_status": "LOCKED",
                       "input_hash72": "H72N-028dfbfcbe49f43dc0",
-                      "integrity_hash72": "H72N-62d0009a21c688c8b4",
+                      "integrity_hash72": "H72N-358cb97780713c94af",
                       "locked": true,
                       "operation": "LOOP_ITERATION_FULL_TRANSITION",
-                      "operation_hash72": "H72N-36b8c44e9b54963897",
-                      "parent_receipt_hash72": "H72N-8d425bfab26904e8b8",
+                      "operation_hash72": "H72N-1c9b04e46c631d10d8",
+                      "parent_receipt_hash72": "H72N-0ec8f12504a0283758",
                       "phase": 2,
                       "post_state_hash72": "H72N-5909975b8863ce5a07",
-                      "pre_state_hash72": "H72N-4b72c28c0a0d213fdc",
+                      "pre_state_hash72": "H72N-1547ffceef991fbd58",
                       "quarantine": false,
                       "reason": "full loop step transition audited",
-                      "receipt_hash72": "H72N-ebf1d8b9c523a42238",
-                      "witness_hash72": "H72N-3e5b3af4029e9dd413"
+                      "receipt_hash72": "H72N-56582e3695a115423e",
+                      "witness_hash72": "H72N-f34ba99888788d0782"
                     },
                     "label": "REGRESSION_COUNTDOWN",
                     "next_state": 1,
@@ -3136,8 +3143,8 @@
                         ],
                         "schema": "HHS_VALIDATION_RESIDUE_STATE_CHAIN_V1",
                         "unified_ledger": {
-                          "entry_count": 293,
-                          "ledger_hash72": "fgu9fD8OSHQA9J5bMMv/uDoR",
+                          "entry_count": 341,
+                          "ledger_hash72": "GeSbVUo5w5UvuH3ju/XkC/fW",
                           "tip_hash72": "U<NHLe>d2pV-vecqKTbVZxds",
                           "verified": true
                         },
@@ -3312,8 +3319,8 @@
                           "state_machine": "u^72_hash72_multimodal_state_machine",
                           "status": "ADMIT_VALIDATION_RESIDUE_STATE_CHAIN",
                           "unified_ledger": {
-                            "entry_count": 294,
-                            "ledger_hash72": "!Bt(mGK<Mj5*vQhWlmq!I!)x",
+                            "entry_count": 342,
+                            "ledger_hash72": "juhO?-N8wVkddz<f4<D6d7lb",
                             "tip_hash72": "kN4aN/+xTPO)*Mok4g*FE5Ek",
                             "verified": true
                           }
@@ -3508,18 +3515,18 @@
                     "iteration_receipt": {
                       "gate_status": "LOCKED",
                       "input_hash72": "H72N-0992d75938ad6ede33",
-                      "integrity_hash72": "H72N-358005b63d8b45f272",
+                      "integrity_hash72": "H72N-947211398445bcd0b7",
                       "locked": true,
                       "operation": "LOOP_ITERATION_FULL_TRANSITION",
-                      "operation_hash72": "H72N-e930b93551742166fb",
-                      "parent_receipt_hash72": "H72N-ebf1d8b9c523a42238",
+                      "operation_hash72": "H72N-afe1b404cb83882d41",
+                      "parent_receipt_hash72": "H72N-56582e3695a115423e",
                       "phase": 3,
                       "post_state_hash72": "H72N-a4235348752d6394b3",
-                      "pre_state_hash72": "H72N-54c32d4e8914917a0b",
+                      "pre_state_hash72": "H72N-79ddbdbf03af4af59c",
                       "quarantine": false,
                       "reason": "full loop step transition audited",
-                      "receipt_hash72": "H72N-9fb78e9b0b4851e54f",
-                      "witness_hash72": "H72N-2f976c9d6c031a8d41"
+                      "receipt_hash72": "H72N-b967f483aefe7555b7",
+                      "witness_hash72": "H72N-c5f77acd3e284334ba"
                     },
                     "label": "REGRESSION_COUNTDOWN",
                     "next_state": 0,
@@ -3927,8 +3934,8 @@
                         ],
                         "schema": "HHS_VALIDATION_RESIDUE_STATE_CHAIN_V1",
                         "unified_ledger": {
-                          "entry_count": 297,
-                          "ledger_hash72": "DFi?XacvPTkJMI2+H3oRj>vM",
+                          "entry_count": 345,
+                          "ledger_hash72": "1toxDuhb/olvpH+DQN4cMLZP",
                           "tip_hash72": "u*-vQ14(tPwTvxSa6gSj5lZ7",
                           "verified": true
                         },
@@ -4103,8 +4110,8 @@
                           "state_machine": "u^72_hash72_multimodal_state_machine",
                           "status": "ADMIT_VALIDATION_RESIDUE_STATE_CHAIN",
                           "unified_ledger": {
-                            "entry_count": 298,
-                            "ledger_hash72": "KaKz!HI0NiAH9qgV+6oRGA6c",
+                            "entry_count": 346,
+                            "ledger_hash72": "Ccx!90i1(wiMAhmq++W>rhvQ",
                             "tip_hash72": "GusMMdpAouU(KU-Lt)KZW/dq",
                             "verified": true
                           }
@@ -4325,14 +4332,14 @@
               "control_receipt": {
                 "phase": 1,
                 "operation": "LOOP_GATE",
-                "parent_receipt_hash72": "H72N-520c4d3a05ce8b633e",
+                "parent_receipt_hash72": "H72N-ad563665f9164452c0",
                 "input_hash72": "H72N-9655b5638579f00952",
-                "pre_state_hash72": "H72N-80744176ccbc1d79eb",
-                "operation_hash72": "H72N-664c5eda103ce3343c",
+                "pre_state_hash72": "H72N-fef8eab85dc204faf0",
+                "operation_hash72": "H72N-dceff5084f9438e305",
                 "post_state_hash72": "H72N-88fa3aaba6e97bbd6b",
-                "witness_hash72": "H72N-df899dc5a35e69347d",
-                "receipt_hash72": "H72N-811e10155f840a1e69",
-                "integrity_hash72": "H72N-d3dc2479070fd6227c",
+                "witness_hash72": "H72N-e638b7e265d5ec9fa8",
+                "receipt_hash72": "H72N-2b847c90f20db65589",
+                "integrity_hash72": "H72N-bfffa364275d4b52e6",
                 "gate_status": "QUARANTINED",
                 "locked": false,
                 "quarantine": true,
@@ -4347,9 +4354,9 @@
                   "pre_state_hash72": "H72N-cc15f70e6f3ade6450",
                   "operation_hash72": "H72N-8323cd0f45b5f075fb",
                   "post_state_hash72": "H72N-048dae82ab9820edc6",
-                  "witness_hash72": "H72N-c9263b58ab5a0ceeed",
-                  "receipt_hash72": "H72N-520c4d3a05ce8b633e",
-                  "integrity_hash72": "H72N-8a3d815faf2f8bfc3f",
+                  "witness_hash72": "H72N-aacce93f82e0dbc8d7",
+                  "receipt_hash72": "H72N-ad563665f9164452c0",
+                  "integrity_hash72": "H72N-a42968d1422a80b7d9",
                   "gate_status": "LOCKED",
                   "locked": true,
                   "quarantine": false,
@@ -4378,7 +4385,7 @@
                     "iteration_receipt": {
                       "gate_status": "LOCKED",
                       "input_hash72": "H72N-e6b39d0aa488645efa",
-                      "integrity_hash72": "H72N-8a3d815faf2f8bfc3f",
+                      "integrity_hash72": "H72N-a42968d1422a80b7d9",
                       "locked": true,
                       "operation": "LOOP_ITERATION_FULL_TRANSITION",
                       "operation_hash72": "H72N-8323cd0f45b5f075fb",
@@ -4388,8 +4395,8 @@
                       "pre_state_hash72": "H72N-cc15f70e6f3ade6450",
                       "quarantine": false,
                       "reason": "full loop step transition audited",
-                      "receipt_hash72": "H72N-520c4d3a05ce8b633e",
-                      "witness_hash72": "H72N-c9263b58ab5a0ceeed"
+                      "receipt_hash72": "H72N-ad563665f9164452c0",
+                      "witness_hash72": "H72N-aacce93f82e0dbc8d7"
                     },
                     "label": "REGRESSION_STUTTER",
                     "next_state": 3,
@@ -4797,8 +4804,8 @@
                         ],
                         "schema": "HHS_VALIDATION_RESIDUE_STATE_CHAIN_V1",
                         "unified_ledger": {
-                          "entry_count": 301,
-                          "ledger_hash72": "Q!3rMca>Q(4FfD!eFOW?cVzs",
+                          "entry_count": 349,
+                          "ledger_hash72": "YfjLyQkfm9cbtgMH<31F5GbS",
                           "tip_hash72": "hBoKa313zlN/na3uNqqbbx)(",
                           "verified": true
                         },
@@ -4973,8 +4980,8 @@
                           "state_machine": "u^72_hash72_multimodal_state_machine",
                           "status": "ADMIT_VALIDATION_RESIDUE_STATE_CHAIN",
                           "unified_ledger": {
-                            "entry_count": 302,
-                            "ledger_hash72": "S)KHoSWxJesXLGS9f!)7uo/o",
+                            "entry_count": 350,
+                            "ledger_hash72": "VihMCj-Go>WMc+-jWg3K6KOo",
                             "tip_hash72": ">pzfyNJMPi-qjQQp8ljfL*j(",
                             "verified": true
                           }
@@ -5202,7 +5209,7 @@
             "passed": true,
             "detail": ".hhsrun file verified.",
             "payload": {
-              "file": "/tmp/tmp6n7u7sf6/regression.hhsrun",
+              "file": "/tmp/tmphahne3gy/regression.hhsrun",
               "program_name": "REGRESSION_HHSRUN_FILE",
               "verification": {
                 "ok": true,
@@ -5223,8 +5230,8 @@
       "name": "demo_program",
       "ok": true,
       "result": {
-        "program_path": "/mnt/data/hhs145_work/hhs144_work/data/runtime/hhs_v1_demo_program.hhsprog",
-        "run_path": "/mnt/data/hhs145_work/hhs144_work/data/runtime/hhs_v1_demo_run.hhsrun",
+        "program_path": "/home/runner/work/Holofractal_Harmonicode/Holofractal_Harmonicode/data/runtime/hhs_v1_demo_program.hhsprog",
+        "run_path": "/home/runner/work/Holofractal_Harmonicode/Holofractal_Harmonicode/data/runtime/hhs_v1_demo_run.hhsrun",
         "run_result": {
           "format": "HHS_RUN_RESULT_V1",
           "program_name": "HHS_DEMO_PROGRAM_V1",
@@ -5580,7 +5587,7 @@
       "name": "demo_replay_verify",
       "ok": true,
       "result": {
-        "file": "/mnt/data/hhs145_work/hhs144_work/data/runtime/hhs_v1_demo_run.hhsrun",
+        "file": "/home/runner/work/Holofractal_Harmonicode/Holofractal_Harmonicode/data/runtime/hhs_v1_demo_run.hhsrun",
         "program_name": "HHS_DEMO_PROGRAM_V1",
         "verification": {
           "ok": true,
@@ -5596,118 +5603,10 @@
     },
     {
       "name": "database_persistence_check",
-      "ok": true,
-      "result": {
-        "ok": true,
-        "db_path": "/mnt/data/hhs145_work/hhs144_work/data/runtime/hhs_v1_bundle_certification.sqlite3",
-        "trace": {
-          "schema": "HHS_RUNTIME_TRACE_RECORD_V1",
-          "trace_hash72": "0000000000000000000000000000000aG1cUUaY9BxZ^9vOwxsqjTXXDuFZuScRn9gM36v7W",
-          "source_id": "SRC-02dba11c251583a333086606",
-          "source_root_hash72": "0000000000000000000000000000003OzDSlhVQ>c47>AqUREs=BhdgnnN6U2m?ZN?b7tg6+",
-          "program_name": "HHS_V1_BUNDLE_CERTIFICATION_DEMO",
-          "receipt_count": 4,
-          "database_root_hash72": "0000000000000000000000000000003NdjRj1AR-l9S^57!^jRbLl/3^aRuJE7wonyNb/?Rk",
-          "transaction_receipt_id": "RCP-32284818ce0645b70f819d13",
-          "transaction_receipt_hash72": "00000000000000000000000000000038Xx=mbioNQIhHC8TqG3?qLtdeqxoKttr!XozgeLQ/"
-        },
-        "loaded_trace": {
-          "schema": "HHS_RUNTIME_TRACE_LOAD_V1",
-          "trace_hash72": "0000000000000000000000000000000aG1cUUaY9BxZ^9vOwxsqjTXXDuFZuScRn9gM36v7W",
-          "source_id": "SRC-02dba11c251583a333086606",
-          "source_root_hash72": "0000000000000000000000000000003OzDSlhVQ>c47>AqUREs=BhdgnnN6U2m?ZN?b7tg6+",
-          "program_name": "HHS_V1_BUNDLE_CERTIFICATION_DEMO",
-          "metadata": {
-            "program_hash72": "H72N-8a2dd1708cc4e6d455",
-            "source": "hhs_v1_bundle_runner"
-          },
-          "receipts": [
-            {
-              "gate_status": "LOCKED",
-              "input_hash72": "H72N-fec6b17f09c45380f2",
-              "integrity_hash72": "H72N-ba55e7e42f08512ed0",
-              "locked": true,
-              "operation": "ADD",
-              "operation_hash72": "H72N-1731c515e4fecd3271",
-              "parent_receipt_hash72": "H72N-GENESIS",
-              "phase": 0,
-              "post_state_hash72": "H72N-31e07b97d9fbaca5a0",
-              "pre_state_hash72": "H72N-a94444750f4424e699",
-              "quarantine": false,
-              "reason": "",
-              "receipt_hash72": "H72N-811d19ef059a4ff636",
-              "witness_hash72": "H72N-f4568b53822cdb3fcb"
-            },
-            {
-              "gate_status": "LOCKED",
-              "input_hash72": "H72N-e0888f40d6049d282d",
-              "integrity_hash72": "H72N-6841a843ccb5f00240",
-              "locked": true,
-              "operation": "MUL",
-              "operation_hash72": "H72N-1681e4cf1f64cf5269",
-              "parent_receipt_hash72": "H72N-811d19ef059a4ff636",
-              "phase": 1,
-              "post_state_hash72": "H72N-5e3ae8de24292f5fca",
-              "pre_state_hash72": "H72N-c69a37201559babd46",
-              "quarantine": false,
-              "reason": "",
-              "receipt_hash72": "H72N-0e7d48d06fc170cb1d",
-              "witness_hash72": "H72N-770bb0e1971445a0eb"
-            },
-            {
-              "gate_status": "LOCKED",
-              "input_hash72": "H72N-c9636c3a557b455a83",
-              "integrity_hash72": "H72N-16ed7830f640a0352e",
-              "locked": true,
-              "operation": "SORT",
-              "operation_hash72": "H72N-787d5a5f9ced2943cd",
-              "parent_receipt_hash72": "H72N-0e7d48d06fc170cb1d",
-              "phase": 2,
-              "post_state_hash72": "H72N-b88341e510c023793d",
-              "pre_state_hash72": "H72N-e5c87b20388bd01b55",
-              "quarantine": false,
-              "reason": "",
-              "receipt_hash72": "H72N-b7ed55bbaf5af41000",
-              "witness_hash72": "H72N-149cd754e5bf9a893e"
-            },
-            {
-              "gate_status": "LOCKED",
-              "input_hash72": "H72N-5abe252c0565208956",
-              "integrity_hash72": "H72N-f1ccf1a4adac526693",
-              "locked": true,
-              "operation": "BINARY_SEARCH",
-              "operation_hash72": "H72N-ba545da8ea12830b37",
-              "parent_receipt_hash72": "H72N-b7ed55bbaf5af41000",
-              "phase": 3,
-              "post_state_hash72": "H72N-aa8d03236c3757fb26",
-              "pre_state_hash72": "H72N-3763f496da93b6360e",
-              "quarantine": false,
-              "reason": "",
-              "receipt_hash72": "H72N-091491ab5b71642ae9",
-              "witness_hash72": "H72N-3744bda6c7f80f2437"
-            }
-          ],
-          "receipt_count": 4
-        },
-        "quarantine_report": {
-          "schema": "HHS_RUNTIME_DATABASE_QUARANTINE_REPORT_V1",
-          "quarantined_sources": 0,
-          "quarantined_objects": 0,
-          "database_integrity": {
-            "schema": "HHS_PASS145_DATABASE_INTEGRITY_V1",
-            "ok": true,
-            "quick_check": [
-              "ok"
-            ],
-            "foreign_key_violations": [],
-            "database_root_hash72": "0000000000000000000000000000003NdjRj1AR-l9S^57!^jRbLl/3^aRuJE7wonyNb/?Rk",
-            "schema_id": "HHS_PASS145_KNOWLEDGE_DATABASE",
-            "schema_version": "1.0.0",
-            "transaction_sequence": 4,
-            "receipt_tip": "RCP-32284818ce0645b70f819d13"
-          }
-        }
-      }
+      "ok": false,
+      "error": "ModuleNotFoundError",
+      "message": "No module named 'fastapi'",
+      "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/Holofractal_Harmonicode/Holofractal_Harmonicode/hhs_v1_bundle_runner.py\", line 62, in safe_run\n    \"result\": fn(),\n              ^^^^\n  File \"/home/runner/work/Holofractal_Harmonicode/Holofractal_Harmonicode/hhs_v1_bundle_runner.py\", line 119, in run_database_persistence_check\n    bridge = HHSRuntimeDatabaseBridgeV1(db_path=DB_PATH)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/Holofractal_Harmonicode/Holofractal_Harmonicode/hhs_runtime/core_sandbox/hhs_database_integration_layer_v1.py\", line 71, in __init__\n    from hhs_runtime.pass145.service import HHS145Service\n  File \"/home/runner/work/Holofractal_Harmonicode/Holofractal_Harmonicode/hhs_runtime/pass145/__init__.py\", line 7, in <module>\n    from .service import HHS145Service, Pass145Error\n  File \"/home/runner/work/Holofractal_Harmonicode/Holofractal_Harmonicode/hhs_runtime/pass145/service.py\", line 9, in <module>\n    from hhs_runtime.hhs_pass125_canonical_document_ingestion_v1 import (\n  File \"/home/runner/work/Holofractal_Harmonicode/Holofractal_Harmonicode/hhs_runtime/hhs_pass125_canonical_document_ingestion_v1.py\", line 9, in <module>\n    from hhs_runtime.hhs_pass111_predictive_continuation_cache_v1 import _hash\n  File \"/home/runner/work/Holofractal_Harmonicode/Holofractal_Harmonicode/hhs_runtime/hhs_pass111_predictive_continuation_cache_v1.py\", line 9, in <module>\n    from native_projects.hhs_bifurcation_calibration.hhs_pass082_1_offset_entangled_calibration_v1 import root\n  File \"/home/runner/work/Holofractal_Harmonicode/Holofractal_Harmonicode/native_projects/hhs_bifurcation_calibration/hhs_pass082_1_offset_entangled_calibration_v1.py\", line 10, in <module>\n    from native_projects.hhs_ide_workspace.hhs_workspace_contracts_v1 import ContractError, product_root, stable\n  File \"/home/runner/work/Holofractal_Harmonicode/Holofractal_Harmonicode/native_projects/hhs_ide_workspace/__init__.py\", line 4, in <module>\n    from .hhs_unified_runtime_api_v1 import create_workspace_app\n  File \"/home/runner/work/Holofractal_Harmonicode/Holofractal_Harmonicode/native_projects/hhs_ide_workspace/hhs_unified_runtime_api_v1.py\", line 5, in <module>\n    from fastapi import FastAPI, HTTPException, WebSocket, WebSocketDisconnect\nModuleNotFoundError: No module named 'fastapi'\n"
     }
   ]
 }
