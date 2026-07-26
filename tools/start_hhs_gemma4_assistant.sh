@@ -6,7 +6,7 @@ PYTHON_BIN="${PYTHON_BIN:-python3}"
 LITERT_LM_HOST="${HHS_LITERT_LM_HOST:-127.0.0.1}"
 LITERT_LM_PORT="${HHS_LITERT_LM_PORT:-9379}"
 export HHS_LITERT_LM_BASE_URL="${HHS_LITERT_LM_BASE_URL:-http://${LITERT_LM_HOST}:${LITERT_LM_PORT}/v1}"
-export HHS_LITERT_LM_MODEL="${HHS_LITERT_LM_MODEL:-gemma-4-E2B-it}"
+export HHS_LITERT_LM_MODEL="${HHS_LITERT_LM_MODEL:-gemma4-12b}"
 LOG_DIR="${HHS_ASSISTANT_LOG_DIR:-${ROOT_DIR}/logs/litert-lm}"
 mkdir -p "$LOG_DIR"
 
@@ -39,20 +39,29 @@ litert-lm serve \
   >"${LOG_DIR}/litert-lm.log" 2>&1 &
 LITERT_PID=$!
 
-"$PYTHON_BIN" - "$HHS_LITERT_LM_BASE_URL" <<'PY'
+"$PYTHON_BIN" - "$HHS_LITERT_LM_BASE_URL" "$HHS_LITERT_LM_MODEL" <<'PY'
 import json
 import sys
 import time
-import urllib.error
 import urllib.request
 
 base = sys.argv[1].rstrip("/")
+requested_model = sys.argv[2]
 last_error = ""
 for _ in range(60):
     try:
         with urllib.request.urlopen(f"{base}/models", timeout=2.0) as response:
             payload = json.loads(response.read().decode("utf-8"))
-        print(f"[HHS] LiteRT-LM ready with {len(payload.get('data') or [])} imported model(s)")
+        model_ids = {
+            str(item.get("id"))
+            for item in (payload.get("data") or [])
+            if isinstance(item, dict) and item.get("id")
+        }
+        if requested_model not in model_ids:
+            raise RuntimeError(
+                f"requested model {requested_model!r} is not imported; available={sorted(model_ids)}"
+            )
+        print(f"[HHS] LiteRT-LM ready with model {requested_model}")
         break
     except Exception as exc:  # bounded startup probe
         last_error = str(exc)
