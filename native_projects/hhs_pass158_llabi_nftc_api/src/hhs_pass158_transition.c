@@ -198,14 +198,37 @@ HHS158Status hhs158_transition_execute(HHS158Transition *transition, const HHS15
         tensor.constraint = (int64_t)(transition->operations[i].opcode % 3u);
         hhs_runtime_step(&runtime, &tensor);
     }
+    while (!runtime.converged && runtime.step < limit) {
+        HHSTensorState audit_tensor;
+        memset(&audit_tensor, 0, sizeof(audit_tensor));
+        audit_tensor.constraint = -runtime.flux.constraint_flux;
+        audit_tensor.orientation = -runtime.flux.orientation_flux;
+        hhs_runtime_step(&runtime, &audit_tensor);
+    }
+    if (!runtime.converged || (runtime.witness_flags & (W_TRANSPORT_CLOSED | W_ORIENTATION_CLOSED | W_CONSTRAINT_CLOSED | W_CONVERGED)) !=
+        (W_TRANSPORT_CLOSED | W_ORIENTATION_CLOSED | W_CONSTRAINT_CLOSED | W_CONVERGED)) {
+        fill_execution_result(out_result, HHS158_VM81_ADMISSION_REJECTED, HHS158_LIFECYCLE_HELD,
+            runtime.step, runtime.witness_flags, "VM81_ADMISSION_REJECTED", transition);
+        status = hhs158_make_receipt(transition->context, HHS158_VM81_ADMISSION_REJECTED, "VM81_ADMISSION_REJECTED",
+            transition->instance->definition, transition->instance, transition->transition_id,
+            transition->pre_state_root, transition->pre_state_root, transition->opcode_trace_root,
+            transition->replay_material, transition->replay_material_size, runtime.step, runtime.witness_flags,
+            HHS158_LIFECYCLE_HELD, 0u, out_receipt);
+        return status == HHS158_OK ? HHS158_VM81_ADMISSION_REJECTED : status;
+    }
     hhs_receipt_commit(&runtime, &runtime_receipt);
-    transition->executed = 1u;
+    if (runtime_receipt.closure_delta != 1 || strcmp(runtime_receipt.current_receipt, runtime.receipt_hash72) != 0) {
+        return HHS158_HASH72_RECEIPT_MISMATCH;
+    }
     status = hhs158_make_receipt(transition->context, HHS158_OK, "HHS_P158_VM81_NFT_TRANSITION_AUTHORIZED",
         transition->instance->definition, transition->instance, transition->transition_id,
         transition->pre_state_root, transition->candidate_state_root, transition->opcode_trace_root,
         transition->replay_material, transition->replay_material_size, runtime.step, runtime.witness_flags,
         HHS158_LIFECYCLE_AUTHORIZED, 0u, &execution_receipt);
     if (status != HHS158_OK) return status;
+    transition->audit_vm81_steps = runtime.step;
+    transition->audit_witness_flags = runtime.witness_flags;
+    transition->executed = 1u;
     fill_execution_result(out_result, HHS158_OK, HHS158_LIFECYCLE_AUTHORIZED, runtime.step, runtime.witness_flags,
         "HHS_P158_VM81_NFT_TRANSITION_AUTHORIZED", transition);
     *out_receipt = execution_receipt;
@@ -229,18 +252,19 @@ HHS158Status hhs158_transition_commit(HHS158Transition *transition, HHS158Receip
     status = hhs158_capability_check(transition->capability, transition->instance, HHS158_CAP_COMMIT, HHS158_MUTATION_INSTANCE);
     if (status != HHS158_OK) return status;
     if (strcmp(transition->instance->current_state_root, transition->pre_state_root) != 0) return HHS158_STATE_ROOT_CONFLICT;
+    status = hhs158_make_receipt(transition->context, HHS158_OK, "HHS_P158_HASH72_EXECUTION_RECEIPT_CLOSED",
+        transition->instance->definition, transition->instance, transition->transition_id,
+        transition->pre_state_root, transition->candidate_state_root, transition->opcode_trace_root,
+        transition->replay_material, transition->replay_material_size, transition->audit_vm81_steps,
+        transition->audit_witness_flags, HHS158_LIFECYCLE_COMMITTED, 1u, out_commit_receipt);
+    if (status != HHS158_OK) return status;
     snprintf(transition->instance->current_state_root, sizeof(transition->instance->current_state_root), "%s", transition->candidate_state_root);
     transition->instance->lifecycle = HHS158_LIFECYCLE_COMMITTED;
     transition->instance->version++;
     transition->committed = 1u;
-    status = hhs158_make_receipt(transition->context, HHS158_OK, "HHS_P158_HASH72_EXECUTION_RECEIPT_CLOSED",
-        transition->instance->definition, transition->instance, transition->transition_id,
-        transition->pre_state_root, transition->candidate_state_root, transition->opcode_trace_root,
-        transition->replay_material, transition->replay_material_size, transition->operation_count,
-        W_IDENTITY_GATE_PASS | W_CONSTRAINT_FIRED, HHS158_LIFECYCLE_COMMITTED, 1u, out_commit_receipt);
-    if (status == HHS158_OK) snprintf(transition->instance->last_transition_receipt,
+    snprintf(transition->instance->last_transition_receipt,
         sizeof(transition->instance->last_transition_receipt), "%s", (*out_commit_receipt)->receipt_id);
-    return status;
+    return HHS158_OK;
 }
 
 HHS158Status hhs158_transition_abort(HHS158Transition *transition, uint32_t reason_code, HHS158Receipt **out_abort_receipt) {

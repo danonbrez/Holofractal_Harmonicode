@@ -49,7 +49,7 @@ int main() {
     capability_request.subject = span("cpp-binding");
     capability_request.application_id = span("org.hhs.pass158.cpp");
     capability_request.object_scope = span(instance_id);
-    capability_request.operation_scope = HHS158_CAP_VALIDATE | HHS158_CAP_EXECUTE | HHS158_CAP_COMMIT | HHS158_CAP_REPLAY;
+    capability_request.operation_scope = HHS158_CAP_BIND | HHS158_CAP_VALIDATE | HHS158_CAP_EXECUTE | HHS158_CAP_COMMIT | HHS158_CAP_REPLAY;
     capability_request.mutation_scope = HHS158_MUTATION_INSTANCE;
     capability_request.max_vm81_steps = 100000;
     capability_request.issued_at = 1799711700;
@@ -62,7 +62,7 @@ int main() {
     value.kind = HHS158_VALUE_RATIONAL;
     value.flags = HHS158_FLAG_AUTHORITATIVE | HHS158_FLAG_IMMUTABLE;
     value.canonical_payload = span("1/3");
-    check(hhs158_instance_bind(instance, span("x"), &value));
+    { HHS158Receipt *binding_receipt = nullptr; check(hhs158_instance_bind_authorized(instance, capability, span("x"), &value, &binding_receipt)); }
 
     HHS158ValidationPolicy validation{};
     initialize(validation);

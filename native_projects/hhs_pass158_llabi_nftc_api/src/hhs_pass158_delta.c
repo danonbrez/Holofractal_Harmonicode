@@ -211,6 +211,7 @@ HHS158Status hhs158_delta_normalize(const HHS158Value *projected_state, const HH
     if (!hhs158_header_valid(&projected_state->header, sizeof(*projected_state)) ||
         !hhs158_header_valid(&delta_vector->header, sizeof(*delta_vector))) return HHS158_STRUCT_SIZE_INVALID;
     if (delta_vector->kind != HHS158_VALUE_DELTA_VECTOR || delta_vector->canonical_payload.size >= sizeof(delta)) return HHS158_TYPE_MISMATCH;
+    if (delta_vector->canonical_payload.size && !delta_vector->canonical_payload.data) return HHS158_INVALID_ARGUMENT;
     status = parse_fraction_span(projected_state->canonical_payload, &projected);
     if (status != HHS158_OK) return status;
     memcpy(delta, delta_vector->canonical_payload.data, delta_vector->canonical_payload.size);

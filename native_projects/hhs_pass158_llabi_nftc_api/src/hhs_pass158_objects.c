@@ -254,12 +254,12 @@ HHS158Status hhs158_definition_register(HHS158Context *context, const HHS158Defi
             return HHS158_OK;
         }
     }
-    context->definitions[context->definition_count++] = definition;
     status = hhs158_make_receipt(context, HHS158_OK, "HHS_P158_NFT_DEFINITION_REGISTERED", definition, NULL,
         NULL, NULL, definition->definition_id, NULL, definition->canonical, definition->canonical_size, 0u, 0u,
         HHS158_LIFECYCLE_REGISTERED, 1u, &receipt);
-    if (status != HHS158_OK) return status;
+    if (status != HHS158_OK) { free(definition); return status; }
     snprintf(definition->origin_receipt, sizeof(definition->origin_receipt), "%s", receipt->receipt_id);
+    context->definitions[context->definition_count++] = definition;
     *out_definition = definition; *out_receipt = receipt;
     return HHS158_OK;
 }
@@ -300,6 +300,7 @@ HHS158Status hhs158_instance_create(HHS158Context *context, HHS158Definition *de
     if (!out_instance || !out_receipt) return HHS158_INVALID_ARGUMENT;
     *out_instance = NULL; *out_receipt = NULL;
     if (!context_valid(context) || !definition_valid(definition)) return HHS158_HANDLE_RELEASED;
+    if (definition->context != context) return HHS158_CAPABILITY_SCOPE_VIOLATION;
     if (!config || !hhs158_header_valid(&config->header, sizeof(*config))) return HHS158_STRUCT_SIZE_INVALID;
     if (!config->instance_nonce.size || config->instance_nonce.size > sizeof(instance->nonce) || !config->instance_nonce.data) return HHS158_INVALID_ARGUMENT;
     if (context->instance_count >= context->config.max_instances) return HHS158_MEMORY_BOUND;
@@ -323,12 +324,12 @@ HHS158Status hhs158_instance_create(HHS158Context *context, HHS158Definition *de
     written = snprintf(identity, sizeof(identity), "HHS158_STATE_ROOT|%s|EMPTY", instance->instance_id);
     if (written < 0 || (size_t)written >= sizeof(identity)) { free(instance); return HHS158_OUTPUT_BOUND; }
     hhs158_hash216_bytes(identity, (size_t)written, instance->current_state_root);
-    context->instances[context->instance_count++] = instance;
     status = hhs158_make_receipt(context, HHS158_OK, "HHS_P158_NFT_INSTANCE_CONSTRUCTED", definition, instance,
         NULL, NULL, instance->current_state_root, NULL, identity, (size_t)written, 0u, 0u,
         HHS158_LIFECYCLE_INSTANTIATED, 1u, &receipt);
-    if (status != HHS158_OK) return status;
+    if (status != HHS158_OK) { free(instance); return status; }
     snprintf(instance->origin_receipt, sizeof(instance->origin_receipt), "%s", receipt->receipt_id);
+    context->instances[context->instance_count++] = instance;
     *out_instance = instance; *out_receipt = receipt;
     return HHS158_OK;
 }
@@ -351,11 +352,32 @@ HHS158Status hhs158_instance_lifecycle(const HHS158Instance *instance, uint32_t 
 }
 
 HHS158Status hhs158_instance_bind(HHS158Instance *instance, HHS158ByteSpan symbol_name, const HHS158Value *value) {
+    (void)instance;
+    (void)symbol_name;
+    (void)value;
+    return HHS158_CAPABILITY_REQUIRED;
+}
+
+HHS158Status hhs158_instance_bind_authorized(HHS158Instance *instance, HHS158Capability *capability,
+    HHS158ByteSpan symbol_name, const HHS158Value *value, HHS158Receipt **out_receipt) {
     HHS158Status status;
+    HHS158Receipt *receipt = NULL;
+    HHSRuntimeState runtime;
+    HHSReceipt runtime_receipt;
+    HHSTensorState tensor;
     char symbol[HHS158_MAX_SYMBOL_BYTES];
+    char payload_hex[HHS158_MAX_OPERAND_BYTES * 2u + 1u];
+    char material[HHS158_MAX_CANONICAL_BYTES];
+    char candidate_root[HHS158_HASH216_LENGTH + 1u];
+    char transition_id[HHS158_HASH216_LENGTH + 1u];
+    int written;
     size_t i;
+    if (!out_receipt) return HHS158_INVALID_ARGUMENT;
+    *out_receipt = NULL;
     if (!instance_valid(instance)) return HHS158_HANDLE_RELEASED;
     if (instance->lifecycle == HHS158_LIFECYCLE_RETIRED || instance->lifecycle == HHS158_LIFECYCLE_QUARANTINED) return HHS158_INVALID_STATE;
+    status = hhs158_capability_check(capability, instance, HHS158_CAP_BIND, HHS158_MUTATION_INSTANCE);
+    if (status != HHS158_OK) return status;
     status = copy_span_text(symbol_name, symbol, sizeof(symbol), 1);
     if (status != HHS158_OK) return status;
     if (!symbol[0]) return HHS158_INVALID_ARGUMENT;
@@ -366,11 +388,49 @@ HHS158Status hhs158_instance_bind(HHS158Instance *instance, HHS158ByteSpan symbo
         if (strcmp(binding->symbol, symbol) == 0) {
             if (binding->kind == value->kind && binding->flags == (value->flags & ~HHS158_INTERNAL_OWNED_VALUE) &&
                 binding->payload_size == value->canonical_payload.size &&
-                memcmp(binding->payload, value->canonical_payload.data, binding->payload_size) == 0) return HHS158_OK;
+                memcmp(binding->payload, value->canonical_payload.data, binding->payload_size) == 0) {
+                return hhs158_make_receipt(instance->context, HHS158_OK, "HHS_P158_NFT_BINDING_ALREADY_PRESENT",
+                    instance->definition, instance, NULL, instance->current_state_root, instance->current_state_root,
+                    NULL, symbol, strlen(symbol), 0u, W_IDENTITY_GATE_PASS, instance->lifecycle, 0u, out_receipt);
+            }
             return HHS158_DUPLICATE_CONFLICTING_BINDING;
         }
     }
     if (instance->binding_count >= HHS158_MAX_BINDINGS) return HHS158_MEMORY_BOUND;
+    if (!hhs158_hex_encode(value->canonical_payload.data, value->canonical_payload.size, payload_hex, sizeof(payload_hex))) return HHS158_OUTPUT_BOUND;
+    written = snprintf(material, sizeof(material), "HHS158_BIND|%s|%s|%s|%u|%u|%s",
+        instance->instance_id, instance->current_state_root, symbol, value->kind,
+        value->flags & ~HHS158_INTERNAL_OWNED_VALUE, payload_hex);
+    if (written < 0 || (size_t)written >= sizeof(material)) return HHS158_OUTPUT_BOUND;
+    hhs158_hash216_bytes(material, (size_t)written, candidate_root);
+    {
+        char transition_material[HHS158_MAX_CANONICAL_BYTES];
+        int transition_written = snprintf(transition_material, sizeof(transition_material), "HHS158_BIND_TRANSITION|%s|%s",
+            instance->current_state_root, candidate_root);
+        if (transition_written < 0 || (size_t)transition_written >= sizeof(transition_material)) return HHS158_OUTPUT_BOUND;
+        hhs158_hash216_bytes(transition_material, (size_t)transition_written, transition_id);
+    }
+    runtime = instance->context->runtime_template;
+    hhs_receipt_reset(&runtime_receipt);
+    memset(&tensor, 0, sizeof(tensor));
+    tensor.xy = (int64_t)HHS158_OP_NFT_INSTANCE_BIND;
+    tensor.yx = (int64_t)HHS158_OP_NFT_INSTANCE_BIND;
+    tensor.transport = (int64_t)(value->canonical_payload.size + 1u);
+    hhs_runtime_step(&runtime, &tensor);
+    while (!runtime.converged && runtime.step < capability->max_vm81_steps && runtime.step < instance->max_vm81_steps) {
+        memset(&tensor, 0, sizeof(tensor));
+        tensor.constraint = -runtime.flux.constraint_flux;
+        tensor.orientation = -runtime.flux.orientation_flux;
+        hhs_runtime_step(&runtime, &tensor);
+    }
+    if (!runtime.converged || (runtime.witness_flags & (W_TRANSPORT_CLOSED | W_ORIENTATION_CLOSED | W_CONSTRAINT_CLOSED | W_CONVERGED)) !=
+        (W_TRANSPORT_CLOSED | W_ORIENTATION_CLOSED | W_CONSTRAINT_CLOSED | W_CONVERGED)) return HHS158_VM81_ADMISSION_REJECTED;
+    hhs_receipt_commit(&runtime, &runtime_receipt);
+    status = hhs158_make_receipt(instance->context, HHS158_OK, "HHS_P158_NFT_BINDING_COMMITTED",
+        instance->definition, instance, transition_id, instance->current_state_root, candidate_root,
+        candidate_root, material, (size_t)written, runtime.step, runtime.witness_flags,
+        HHS158_LIFECYCLE_BOUND, 1u, &receipt);
+    if (status != HHS158_OK) return status;
     {
         HHS158BindingRecord *binding = &instance->bindings[instance->binding_count++];
         snprintf(binding->symbol, sizeof(binding->symbol), "%s", symbol);
@@ -379,7 +439,11 @@ HHS158Status hhs158_instance_bind(HHS158Instance *instance, HHS158ByteSpan symbo
         binding->payload_size = value->canonical_payload.size;
         if (binding->payload_size) memcpy(binding->payload, value->canonical_payload.data, binding->payload_size);
     }
+    snprintf(instance->current_state_root, sizeof(instance->current_state_root), "%s", candidate_root);
     instance->lifecycle = HHS158_LIFECYCLE_BOUND;
+    instance->version++;
+    snprintf(instance->last_transition_receipt, sizeof(instance->last_transition_receipt), "%s", receipt->receipt_id);
+    *out_receipt = receipt;
     return HHS158_OK;
 }
 

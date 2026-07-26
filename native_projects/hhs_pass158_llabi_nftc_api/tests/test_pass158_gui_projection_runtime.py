@@ -18,7 +18,11 @@ class FakeAuthority:
 
 class RuntimeTests(unittest.TestCase):
     def setUp(self):
-        scheduler = Hash216ProjectionScheduler(authority=FakeAuthority())
+        self.receipts: dict[str, str] = {}
+        scheduler = Hash216ProjectionScheduler(
+            authority=FakeAuthority(),
+            receipt_verifier=lambda receipt, root: self.receipts.get(receipt) == root,
+        )
         self.runtime = Pass158GuiProjectionRuntime(scheduler)
 
     def test_complete_projection_lifecycle(self):
@@ -39,27 +43,34 @@ class RuntimeTests(unittest.TestCase):
         _, next_package = self.runtime.dispatch("POST", f"{BASE}/packages/next", {"frame_sequence": 1})
         package = next_package["object"]
         self.assertEqual(package["changed_chunk_count"], 2)
+        receipt = "0" * 72
+        self.receipts[receipt] = package["projection_root_hash216"]
         _, admitted = self.runtime.dispatch("POST", f"{BASE}/packages/{package['projection_root_hash216']}/admit", {
-            "admitted": True, "receipt_hash72": "0" * 72,
+            "admitted": True, "receipt_hash72": receipt,
         })
         self.assertEqual(admitted["status"], "ADMITTED")
 
-    def test_invalid_admission_is_rejected(self):
+    def test_unverified_admission_is_rejected(self):
         self.runtime.dispatch("POST", f"{BASE}/runtime/observe", {
             "object_id": "positions", "object_class": "PHYSICS_POSITION_OBJECT", "state": [1],
         })
         _, built = self.runtime.dispatch("POST", f"{BASE}/packages/next", {"frame_sequence": 1})
         root = built["object"]["projection_root_hash216"]
-        _, rejected = self.runtime.dispatch("POST", f"{BASE}/packages/{root}/admit", {"admitted": True})
-        self.assertEqual(rejected["status"], "REJECTED")
-        self.assertEqual(rejected["classification"], "HASH72_RECEIPT_REQUIRED_FOR_ADMISSION")
+        _, missing = self.runtime.dispatch("POST", f"{BASE}/packages/{root}/admit", {"admitted": True})
+        self.assertEqual(missing["classification"], "HASH72_RECEIPT_REQUIRED_FOR_ADMISSION")
+        _, forged = self.runtime.dispatch("POST", f"{BASE}/packages/{root}/admit", {
+            "admitted": True, "receipt_hash72": "1" * 72,
+        })
+        self.assertEqual(forged["classification"], "HASH72_RECEIPT_MISMATCH")
 
     def test_snapshot_recovery_endpoint(self):
         self.runtime.dispatch("POST", f"{BASE}/runtime/observe", {
             "object_id": "positions", "object_class": "PHYSICS_POSITION_OBJECT", "state": [1],
         })
         _, snapshot = self.runtime.dispatch("GET", f"{BASE}/snapshot", {})
-        new_runtime = Pass158GuiProjectionRuntime(Hash216ProjectionScheduler(authority=FakeAuthority()))
+        new_runtime = Pass158GuiProjectionRuntime(
+            Hash216ProjectionScheduler(authority=FakeAuthority())
+        )
         _, recovered = new_runtime.dispatch("POST", f"{BASE}/recover", {"snapshot": snapshot["object"]})
         self.assertEqual(recovered["status"], "RECOVERED")
         self.assertEqual(recovered["object"]["objects"], 1)

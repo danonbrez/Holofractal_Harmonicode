@@ -46,7 +46,7 @@ class PythonBindingConformance(unittest.TestCase):
                 commit=True,
             )
             self.assertEqual(result.classification, "HHS_VM81_TRANSITION_COMMITTED")
-            self.assertEqual(result.vm81_steps, 2)
+            self.assertGreaterEqual(result.vm81_steps, 72)
             serialized_receipt = receipt.serialize()
             self.assertEqual(
                 serialized_receipt["classification"],

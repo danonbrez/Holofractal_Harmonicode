@@ -313,8 +313,12 @@ class NativeLibrary:
         l.hhs158_instance_state_root.restype = C.c_int32
         l.hhs158_capability_open.argtypes = [C.c_void_p, C.POINTER(CapabilityRequest), C.POINTER(C.c_void_p)]
         l.hhs158_capability_open.restype = C.c_int32
+        l.hhs158_capability_release.argtypes = [C.c_void_p]
+        l.hhs158_capability_release.restype = None
         l.hhs158_instance_bind.argtypes = [C.c_void_p, ByteSpan, C.POINTER(Value)]
         l.hhs158_instance_bind.restype = C.c_int32
+        l.hhs158_instance_bind_authorized.argtypes = [C.c_void_p, C.c_void_p, ByteSpan, C.POINTER(Value), C.POINTER(C.c_void_p)]
+        l.hhs158_instance_bind_authorized.restype = C.c_int32
         l.hhs158_instance_validate_static.argtypes = [C.c_void_p, C.POINTER(ValidationPolicy), C.POINTER(ValidationReport)]
         l.hhs158_instance_validate_static.restype = C.c_int32
         l.hhs158_transition_create.argtypes = [C.c_void_p, C.c_void_p, C.POINTER(TransitionDescriptor), C.POINTER(C.c_void_p)]
@@ -456,6 +460,18 @@ class Capability:
     def __init__(self, context: Context, handle: C.c_void_p):
         self.context = context
         self.handle = handle
+        self.closed = False
+
+    def close(self) -> None:
+        if not self.closed:
+            self.context.native.lib.hhs158_capability_release(self.handle)
+            self.closed = True
+
+    def __enter__(self) -> "Capability":
+        return self
+
+    def __exit__(self, *_: object) -> None:
+        self.close()
 
 
 class Instance:
@@ -485,7 +501,7 @@ class Instance:
         request = CapabilityRequest()
         _header(request)
         request.issuer, request.subject, request.application_id, request.object_scope = [p.span for p in values]
-        request.operation_scope = HHS158_CAP_VALIDATE | HHS158_CAP_EXECUTE | HHS158_CAP_PROJECT | HHS158_CAP_SERIALIZE | HHS158_CAP_REPLAY
+        request.operation_scope = HHS158_CAP_BIND | HHS158_CAP_VALIDATE | HHS158_CAP_EXECUTE | HHS158_CAP_PROJECT | HHS158_CAP_SERIALIZE | HHS158_CAP_REPLAY
         if commit:
             request.operation_scope |= HHS158_CAP_COMMIT
         request.mutation_scope = HHS158_MUTATION_INSTANCE
@@ -498,7 +514,9 @@ class Instance:
         ))
         return Capability(self.context, handle)
 
-    def bind_rational(self, symbol: str, value: ExactRational) -> None:
+    def bind_rational(self, symbol: str, value: ExactRational, capability: Capability | None = None) -> Receipt:
+        owned_capability = capability is None
+        active_capability = capability or self.capability(commit=True)
         symbol_pin = _PinnedSpan(symbol)
         payload_pin = _PinnedSpan(value.canonical())
         native_value = Value()
@@ -506,11 +524,19 @@ class Instance:
         native_value.kind = HHS158_VALUE_RATIONAL
         native_value.flags = HHS158_FLAG_AUTHORITATIVE | HHS158_FLAG_IMMUTABLE
         native_value.canonical_payload = payload_pin.span
-        self.context.native.check(self.context.native.lib.hhs158_instance_bind(
-            self.handle, symbol_pin.span, C.byref(native_value)
-        ))
+        receipt_handle = C.c_void_p()
+        try:
+            self.context.native.check(self.context.native.lib.hhs158_instance_bind_authorized(
+                self.handle, active_capability.handle, symbol_pin.span, C.byref(native_value), C.byref(receipt_handle)
+            ))
+            return Receipt(self.context, receipt_handle)
+        finally:
+            if owned_capability:
+                active_capability.close()
 
-    def bind_ordered_list(self, symbol: str, values: Iterable[str]) -> None:
+    def bind_ordered_list(self, symbol: str, values: Iterable[str], capability: Capability | None = None) -> Receipt:
+        owned_capability = capability is None
+        active_capability = capability or self.capability(commit=True)
         symbol_pin = _PinnedSpan(symbol)
         payload_pin = _PinnedSpan(json.dumps(list(values), separators=(",", ":")))
         native_value = Value()
@@ -518,9 +544,15 @@ class Instance:
         native_value.kind = HHS158_VALUE_LIST
         native_value.flags = HHS158_FLAG_AUTHORITATIVE | HHS158_FLAG_ORDERED | HHS158_FLAG_IMMUTABLE
         native_value.canonical_payload = payload_pin.span
-        self.context.native.check(self.context.native.lib.hhs158_instance_bind(
-            self.handle, symbol_pin.span, C.byref(native_value)
-        ))
+        receipt_handle = C.c_void_p()
+        try:
+            self.context.native.check(self.context.native.lib.hhs158_instance_bind_authorized(
+                self.handle, active_capability.handle, symbol_pin.span, C.byref(native_value), C.byref(receipt_handle)
+            ))
+            return Receipt(self.context, receipt_handle)
+        finally:
+            if owned_capability:
+                active_capability.close()
 
     def validate(self) -> dict:
         policy = ValidationPolicy()

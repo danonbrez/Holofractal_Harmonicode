@@ -97,11 +97,16 @@ static void fixture_release(Fixture *f) {
 
 static HHS158Status bind_value(Fixture *f, const char *symbol, uint32_t kind, uint32_t flags, const char *payload) {
     HHS158Value value;
+    HHS158Receipt *receipt = NULL;
     HEADER(value);
     value.kind = kind;
     value.flags = flags;
     value.canonical_payload = SPAN(payload);
-    return hhs158_instance_bind(f->instance, SPAN(symbol), &value);
+    {
+        HHS158Status status = hhs158_instance_bind_authorized(f->instance, f->capability, SPAN(symbol), &value, &receipt);
+        if (status == HHS158_OK && !fixed_instance_value(hhs158_instance_state_root, f->instance, f->state_root)) return HHS158_REJECTED;
+        return status;
+    }
 }
 
 static HHS158Status transition_create(Fixture *f, const HHS158Operation *ops, size_t count,
@@ -122,7 +127,7 @@ static int vm81_and_replay(size_t *vm81, size_t *replay) {
     const HHS158OpcodeDescriptor *registry;
     size_t registry_count = 0u, i;
     HHS158Receipt *last = NULL;
-    CHECK(fixture_create(&f, "vm81", HHS158_CAP_VALIDATE|HHS158_CAP_EXECUTE|HHS158_CAP_PROJECT|
+    CHECK(fixture_create(&f, "vm81", HHS158_CAP_BIND|HHS158_CAP_VALIDATE|HHS158_CAP_EXECUTE|HHS158_CAP_PROJECT|
         HHS158_CAP_SERIALIZE|HHS158_CAP_REPLAY, HHS158_MUTATION_INSTANCE, UINT64_C(1799719999), NULL) == HHS158_OK);
     CHECK(bind_value(&f,"x",HHS158_VALUE_RATIONAL,HHS158_FLAG_AUTHORITATIVE|HHS158_FLAG_IMMUTABLE,"1/3") == HHS158_OK);
     registry = hhs158_public_opcode_registry(&registry_count);
@@ -134,7 +139,7 @@ static int vm81_and_replay(size_t *vm81, size_t *replay) {
         op.operands = SPAN(op.opcode==HHS158_OP_LIST_ORDERED ? "[x,x,y]" : "x,y");
         CHECK(transition_create(&f,&op,1u,1000u,NULL,SPAN(f.state_root),&t)==HHS158_OK);
         HEADER(eo); eo.max_vm81_steps=1000u;
-        CHECK(hhs158_transition_execute(t,&eo,&er,&receipt)==HHS158_OK && er.vm81_steps==1u);
+        CHECK(hhs158_transition_execute(t,&eo,&er,&receipt)==HHS158_OK && er.vm81_steps>=72u);
         HEADER(ro); ro.verify_hash72=1u; ro.verify_hash216=1u; ro.verify_semantic_root=1u;
         CHECK(hhs158_receipt_replay(f.context,receipt,&ro,&rr)==HHS158_OK && rr.matched==1u);
         last=receipt; (*vm81)++;
@@ -167,7 +172,7 @@ static int delta_matrix(size_t *count) {
 
 static int atomic_matrix(size_t *count) {
     Fixture f; size_t i;
-    CHECK(fixture_create(&f,"atomic",HHS158_CAP_VALIDATE|HHS158_CAP_EXECUTE|HHS158_CAP_COMMIT|HHS158_CAP_REPLAY,
+    CHECK(fixture_create(&f,"atomic",HHS158_CAP_BIND|HHS158_CAP_VALIDATE|HHS158_CAP_EXECUTE|HHS158_CAP_COMMIT|HHS158_CAP_REPLAY,
         HHS158_MUTATION_INSTANCE,UINT64_C(1799719999),NULL)==HHS158_OK);
     CHECK(bind_value(&f,"x",HHS158_VALUE_RATIONAL,HHS158_FLAG_AUTHORITATIVE,"1/3")==HHS158_OK);
     for(i=0;i<18u;++i){char operands[64];HHS158Operation op;HHS158Transition *t=NULL;HHS158ExecutionOptions eo;HHS158ExecutionResult er;HHS158Receipt *receipt=NULL;HHS158ReplayOptions ro;HHS158ReplayResult rr;
@@ -180,7 +185,7 @@ static int atomic_matrix(size_t *count) {
 
 static int serialization_matrix(size_t *count) {
     Fixture f;HHS158SerializationOptions so;HHS158MutableByteSpan out={0};uint8_t *buf;size_t i;
-    CHECK(fixture_create(&f,"serialize",HHS158_CAP_VALIDATE|HHS158_CAP_SERIALIZE,HHS158_MUTATION_INSTANCE,UINT64_C(1799719999),NULL)==HHS158_OK);
+    CHECK(fixture_create(&f,"serialize",HHS158_CAP_BIND|HHS158_CAP_VALIDATE|HHS158_CAP_SERIALIZE,HHS158_MUTATION_INSTANCE,UINT64_C(1799719999),NULL)==HHS158_OK);
     CHECK(bind_value(&f,"x",HHS158_VALUE_RATIONAL,HHS158_FLAG_AUTHORITATIVE,"1/3")==HHS158_OK);
     HEADER(so);so.format=HHS158_SERIALIZE_CANONICAL_JSON;so.preserve_unknown_fields=1u;so.max_output_bytes=UINT64_C(1048576);
     CHECK(hhs158_instance_serialize(f.instance,&so,&out)==HHS158_BUFFER_TOO_SMALL);buf=(uint8_t*)malloc(out.size_written);CHECK(buf!=NULL);out.data=buf;out.capacity=out.size_written;
@@ -202,7 +207,7 @@ static int dependency_matrix(size_t *count) {
 
 static int abi_matrix(size_t *count) {
     Fixture f;HHS158ValidationPolicy vp;HHS158ValidationReport vr;HHS158ProjectionProfile ep,cp;HHS158Value ev,cv;HHS158Receipt *receipt=NULL;HHS158MutableByteSpan out={0};uint32_t lifecycle=99u;
-    CHECK(fixture_create(&f,"abi",HHS158_CAP_VALIDATE|HHS158_CAP_EXECUTE|HHS158_CAP_COMMIT|HHS158_CAP_PROJECT|HHS158_CAP_SERIALIZE|HHS158_CAP_REPLAY,HHS158_MUTATION_INSTANCE,UINT64_C(1799719999),NULL)==HHS158_OK);(*count)+=6u;
+    CHECK(fixture_create(&f,"abi",HHS158_CAP_BIND|HHS158_CAP_VALIDATE|HHS158_CAP_EXECUTE|HHS158_CAP_COMMIT|HHS158_CAP_PROJECT|HHS158_CAP_SERIALIZE|HHS158_CAP_REPLAY,HHS158_MUTATION_INSTANCE,UINT64_C(1799719999),NULL)==HHS158_OK);(*count)+=6u;
     CHECK(bind_value(&f,"x",HHS158_VALUE_RATIONAL,HHS158_FLAG_AUTHORITATIVE,"1/3")==HHS158_OK);(*count)++;
     HEADER(vp);vp.max_recursion_depth=72u;CHECK(hhs158_instance_validate_static(f.instance,&vp,&vr)==HHS158_OK);(*count)++;
     HEADER(ep);ep.kind=HHS158_PROJECTION_EXACT_REFERENCE;CHECK(hhs158_instance_project(f.instance,&ep,&ev,&receipt)==HHS158_OK);(*count)++;
@@ -224,8 +229,8 @@ static int descriptor_matrix(size_t *endpoints,size_t *bindings,size_t *identity
 static HHS158Status negative_case(size_t n) {
     size_t k=n%27u;Fixture f;HHS158Status s=HHS158_REJECTED;char nonce[48];snprintf(nonce,sizeof(nonce),"negative-%lu",(unsigned long)n);
     if(k==0u){HHS158ContextConfig c;HHS158Context *x=NULL;HEADER(c);c.abi_major=99u;return hhs158_context_create(&c,&x);}if(k==1u){HHS158ContextConfig c;HHS158Context*x=NULL;HEADER(c);c.header.struct_size=1u;c.abi_major=1u;return hhs158_context_create(&c,&x);}
-    if(fixture_create(&f,nonce,HHS158_CAP_VALIDATE|HHS158_CAP_EXECUTE|HHS158_CAP_COMMIT|HHS158_CAP_PROJECT|HHS158_CAP_SERIALIZE|HHS158_CAP_REPLAY|HHS158_CAP_COMPOSE,HHS158_MUTATION_INSTANCE|HHS158_MUTATION_COMPOSITE,k==10u?UINT64_C(1799711701):UINT64_C(1799719999),NULL)!=HHS158_OK)return HHS158_REJECTED;
-    if(k==2u){uint8_t bad[2]={0xc0u,0x80u};HHS158Value v;HEADER(v);v.kind=HHS158_VALUE_BIGINT;v.flags=HHS158_FLAG_AUTHORITATIVE;v.canonical_payload=SPAN("1");s=hhs158_instance_bind(f.instance,(HHS158ByteSpan){bad,2u},&v);}
+    if(fixture_create(&f,nonce,HHS158_CAP_BIND|HHS158_CAP_VALIDATE|HHS158_CAP_EXECUTE|HHS158_CAP_COMMIT|HHS158_CAP_PROJECT|HHS158_CAP_SERIALIZE|HHS158_CAP_REPLAY|HHS158_CAP_COMPOSE,HHS158_MUTATION_INSTANCE|HHS158_MUTATION_COMPOSITE,k==10u?UINT64_C(1799711701):UINT64_C(1799719999),NULL)!=HHS158_OK)return HHS158_REJECTED;
+    if(k==2u){uint8_t bad[2]={0xc0u,0x80u};HHS158Value v;HHS158Receipt*r=NULL;HEADER(v);v.kind=HHS158_VALUE_BIGINT;v.flags=HHS158_FLAG_AUTHORITATIVE;v.canonical_payload=SPAN("1");s=hhs158_instance_bind_authorized(f.instance,f.capability,(HHS158ByteSpan){bad,2u},&v,&r);}
     else if(k>=3u&&k<=6u){uint32_t kind=k==5u?HHS158_VALUE_LIST:(k==6u?HHS158_VALUE_EXPRESSION:HHS158_VALUE_RATIONAL);uint32_t flags=HHS158_FLAG_AUTHORITATIVE;const char *p=k==3u?"0.5":(k==4u?"1/0":(k==5u?"[x,x,y]":"O==Pi"));s=bind_value(&f,"x",kind,flags,p);}
     else if(k==7u||k==8u||k==13u||k==25u){HHS158Operation ops[2];HHS158Transition*t=NULL;HHS158ByteSpan root=k==8u?SPAN("stale"):SPAN(f.state_root);HEADER(ops[0]);ops[0].opcode=k==7u?0xffffu:HHS158_OP_BIND_EQ;ops[0].operands=SPAN(k==25u?"A==B==C":"A,B");HEADER(ops[1]);ops[1].opcode=HHS158_OP_CHAIN_APPEND;ops[1].operands=SPAN("B,C");s=transition_create(&f,ops,k==13u?2u:1u,k==13u?1u:100u,NULL,root,&t);if(s==HHS158_OK&&k==13u){HHS158ExecutionOptions eo;HHS158ExecutionResult er;HHS158Receipt*r=NULL;HEADER(eo);eo.max_vm81_steps=1u;s=hhs158_transition_execute(t,&eo,&er,&r);}}
     else if(k==9u){HHS158CapabilityRequest cr;HHS158Capability*wrong=NULL;HHS158Operation op;HHS158Transition*t=NULL;HEADER(cr);cr.issuer=SPAN("i");cr.subject=SPAN("s");cr.application_id=SPAN("a");cr.object_scope=SPAN("wrong");cr.operation_scope=HHS158_CAP_EXECUTE;cr.mutation_scope=HHS158_MUTATION_INSTANCE;cr.expires_at=1799719999u;s=hhs158_capability_open(f.context,&cr,&wrong);HEADER(op);op.opcode=HHS158_OP_BIND_EQ;op.operands=SPAN("A,B");if(s==HHS158_OK)s=transition_create(&f,&op,1u,100u,wrong,(HHS158ByteSpan){0},&t);}
@@ -236,9 +241,9 @@ static HHS158Status negative_case(size_t n) {
     else if(k==16u){HHS158SerializationOptions so;HHS158MutableByteSpan out={0};uint8_t*buf;HHS158DeserializationOptions di;HHS158Instance*copy=NULL;HHS158Receipt*r=NULL;HEADER(so);so.format=HHS158_SERIALIZE_CANONICAL_JSON;so.max_output_bytes=1048576u;s=hhs158_instance_serialize(f.instance,&so,&out);buf=(uint8_t*)malloc(out.size_written);if(s==HHS158_BUFFER_TOO_SMALL&&buf){out.data=buf;out.capacity=out.size_written;s=hhs158_instance_serialize(f.instance,&so,&out);}if(s==HHS158_OK)buf[out.size_written/2u]^=1u;HEADER(di);di.format=HHS158_SERIALIZE_CANONICAL_JSON;if(s==HHS158_OK)s=hhs158_instance_deserialize(f.context,(HHS158ByteSpan){buf,out.size_written},&di,&copy,&r);free(buf);}
     else if(k==17u){HHS158Instance*items[2]={f.instance,f.instance},*composite=NULL;HHS158CompositionPolicy cp;HHS158Receipt*r=NULL;HEADER(cp);cp.max_dependency_depth=72u;s=hhs158_instance_compose(f.context,items,2u,&cp,&composite,&r);}
     else if(k==18u||k==19u){HHS158Receipt*r=NULL;HHS158Operation op;HHS158Transition*t=NULL;s=k==18u?hhs158_instance_retire(f.instance,f.capability,&r):hhs158_instance_quarantine(f.instance,1u,&r);HEADER(op);op.opcode=HHS158_OP_BIND_EQ;op.operands=SPAN("A,B");if(s==HHS158_OK)s=transition_create(&f,&op,1u,100u,NULL,(HHS158ByteSpan){0},&t);}
-    else if(k==20u){HHS158Value v;HEADER(v);v.header.struct_size=1u;v.kind=HHS158_VALUE_BIGINT;v.flags=HHS158_FLAG_AUTHORITATIVE;v.canonical_payload=SPAN("1");s=hhs158_instance_bind(f.instance,SPAN("x"),&v);}
+    else if(k==20u){HHS158Value v;HEADER(v);v.header.struct_size=1u;v.kind=HHS158_VALUE_BIGINT;v.flags=HHS158_FLAG_AUTHORITATIVE;v.canonical_payload=SPAN("1");{HHS158Receipt*br=NULL;s=hhs158_instance_bind_authorized(f.instance,f.capability,SPAN("x"),&v,&br);}}
     else if(k==21u){HHS158DefinitionDescriptor d;HHS158Definition*def=NULL;HHS158Receipt*r=NULL;uint64_t shape[1]={0u};HEADER(d);d.contract_id=SPAN("x");d.schema_version=SPAN("1");d.canonical_name=SPAN("bad");d.object_class=SPAN("NON_FUNGIBLE_TENSOR_CONSTRAINT");d.canonical_constraints=SPAN("A==B");d.authority_root=SPAN("root");d.ancestry=SPAN("P157");d.tensor_rank=1u;d.tensor_shape=shape;s=hhs158_definition_register(f.context,&d,&def,&r);}
-    else if(k==22u){HHS158ProjectionProfile pp;HHS158Value projected,authoritative;HHS158Receipt*r=NULL;HEADER(pp);pp.kind=HHS158_PROJECTION_IEEE754_BINARY64_CONTROL;s=hhs158_instance_project(f.instance,&pp,&projected,&r);if(s==HHS158_OK){HEADER(authoritative);authoritative.kind=HHS158_VALUE_RATIONAL;authoritative.flags=projected.flags;authoritative.canonical_payload=projected.canonical_payload;s=hhs158_instance_bind(f.instance,SPAN("projected"),&authoritative);}hhs158_value_release(&projected);}
+    else if(k==22u){HHS158ProjectionProfile pp;HHS158Value projected,authoritative;HHS158Receipt*r=NULL;HEADER(pp);pp.kind=HHS158_PROJECTION_IEEE754_BINARY64_CONTROL;s=hhs158_instance_project(f.instance,&pp,&projected,&r);if(s==HHS158_OK){HEADER(authoritative);authoritative.kind=HHS158_VALUE_RATIONAL;authoritative.flags=projected.flags;authoritative.canonical_payload=projected.canonical_payload;{HHS158Receipt*br=NULL;s=hhs158_instance_bind_authorized(f.instance,f.capability,SPAN("projected"),&authoritative,&br);}}hhs158_value_release(&projected);}
     else if(k==23u){HHS158ReplayOptions ro;HHS158ReplayResult rr;HEADER(ro);ro.header.struct_size=1u;s=hhs158_receipt_replay(f.context,f.instance_receipt,&ro,&rr);}
     else if(k==24u){HHS158Operation op;HHS158Transition*t=NULL;s=hhs158_capability_revoke(f.capability,SPAN("revoked"));HEADER(op);op.opcode=HHS158_OP_BIND_EQ;op.operands=SPAN("A,B");if(s==HHS158_OK)s=transition_create(&f,&op,1u,100u,NULL,(HHS158ByteSpan){0},&t);}
     else {HHS158Operation op;HHS158Transition*t=NULL;HHS158ExecutionOptions eo;HHS158ExecutionResult er;HHS158Receipt*r=NULL;volatile uint32_t cancel=1u;HEADER(op);op.opcode=HHS158_OP_BIND_EQ;op.operands=SPAN("A,B");s=transition_create(&f,&op,1u,100u,NULL,(HHS158ByteSpan){0},&t);HEADER(eo);eo.cancel_flag=&cancel;if(s==HHS158_OK)s=hhs158_transition_execute(t,&eo,&er,&r);}

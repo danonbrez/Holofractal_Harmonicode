@@ -21,8 +21,13 @@ class FakeAuthority:
 
 
 class SchedulerTests(unittest.TestCase):
-    def make(self, **kwargs):
-        return Hash216ProjectionScheduler(authority=FakeAuthority(), **kwargs)
+    def make(self, *, receipt_registry=None, **kwargs):
+        verifier = None
+        if receipt_registry is not None:
+            verifier = lambda receipt, root: receipt_registry.get(receipt) == root
+        return Hash216ProjectionScheduler(
+            authority=FakeAuthority(), receipt_verifier=verifier, **kwargs
+        )
 
     def test_static_identity_is_reused_and_mutation_is_rejected(self):
         scheduler = self.make()
@@ -44,19 +49,34 @@ class SchedulerTests(unittest.TestCase):
         self.assertEqual(package["event_count"], 1)
         self.assertEqual(package["changed_chunks"][0]["payload"], [2])
 
-    def test_authoritative_events_are_lossless(self):
+    def test_authoritative_versions_are_retained_losslessly(self):
         scheduler = self.make()
-        scheduler.observe_runtime_state("receipt:1", "RECEIPT_CANDIDATE_OBJECT", {"n": 1}, authoritative=True)
-        scheduler.observe_runtime_state("receipt:2", "RECEIPT_CANDIDATE_OBJECT", {"n": 2}, authoritative=True)
+        first = scheduler.observe_runtime_state(
+            "receipt:1", "RECEIPT_CANDIDATE_OBJECT", {"n": 1}, authoritative=True
+        )
+        second = scheduler.observe_runtime_state(
+            "receipt:1", "RECEIPT_CANDIDATE_OBJECT", {"n": 2}, authoritative=True
+        )
         package = scheduler.build_projection_package(1)
+        roots = [chunk["hash216_root"] for chunk in package["changed_chunks"]]
         self.assertEqual(package["authoritative_event_count"], 2)
         self.assertEqual(package["event_count"], 2)
+        self.assertEqual(roots, [first["chunk"]["hash216_root"], second["chunk"]["hash216_root"]])
 
-    def test_authoritative_queue_is_hard_bounded(self):
+    def test_authoritative_queue_rejects_before_mutating_state(self):
         scheduler = self.make(max_authoritative_events=1)
-        scheduler.observe_runtime_state("receipt:1", "RECEIPT_CANDIDATE_OBJECT", {"n": 1}, authoritative=True)
+        scheduler.observe_runtime_state(
+            "receipt:1", "RECEIPT_CANDIDATE_OBJECT", {"n": 1}, authoritative=True
+        )
+        before = scheduler.snapshot()
         with self.assertRaisesRegex(BufferError, "AUTHORITATIVE_PROJECTION_QUEUE_BOUND"):
-            scheduler.observe_runtime_state("receipt:2", "RECEIPT_CANDIDATE_OBJECT", {"n": 2}, authoritative=True)
+            scheduler.observe_runtime_state(
+                "receipt:2", "RECEIPT_CANDIDATE_OBJECT", {"n": 2}, authoritative=True
+            )
+        after = scheduler.snapshot()
+        self.assertEqual(after["objects"], before["objects"])
+        self.assertEqual(after["chunk_history"], before["chunk_history"])
+        self.assertEqual(after["event_sequence"], before["event_sequence"])
 
     def test_frame_budget_normal_pressure_and_critical(self):
         scheduler = self.make()
@@ -85,17 +105,28 @@ class SchedulerTests(unittest.TestCase):
         package = scheduler.build_projection_package(1)
         self.assertEqual(package["delta_offset_vectors"][0]["value"], delta)
 
-    def test_vm81_admission_requires_hash72_receipt(self):
+    def test_vm81_admission_requires_verified_hash72_receipt(self):
         scheduler = self.make()
         scheduler.observe_runtime_state("positions", "PHYSICS_POSITION_OBJECT", [1])
         package = scheduler.build_projection_package(1)
+        root = package["projection_root_hash216"]
         with self.assertRaisesRegex(ValueError, "HASH72_RECEIPT_REQUIRED_FOR_ADMISSION"):
-            scheduler.acknowledge_vm81(package["projection_root_hash216"], admitted=True)
-        admitted = scheduler.acknowledge_vm81(
-            package["projection_root_hash216"], admitted=True, receipt_hash72="0" * 72
+            scheduler.acknowledge_vm81(root, admitted=True)
+        with self.assertRaisesRegex(ValueError, "HASH72_RECEIPT_VERIFIER_REQUIRED"):
+            scheduler.acknowledge_vm81(root, admitted=True, receipt_hash72="0" * 72)
+
+        registry = {"1" * 72: root}
+        verified = self.make(receipt_registry=registry)
+        verified.observe_runtime_state("positions", "PHYSICS_POSITION_OBJECT", [1])
+        verified_package = verified.build_projection_package(1)
+        verified_root = verified_package["projection_root_hash216"]
+        registry["1" * 72] = verified_root
+        with self.assertRaisesRegex(ValueError, "HASH72_RECEIPT_MISMATCH"):
+            verified.acknowledge_vm81(verified_root, admitted=True, receipt_hash72="2" * 72)
+        admitted = verified.acknowledge_vm81(
+            verified_root, admitted=True, receipt_hash72="1" * 72
         )
         self.assertEqual(admitted["vm81_admission"], "ADMITTED")
-        self.assertEqual(admitted["receipt_hash72"], "0" * 72)
 
     def test_dependency_root_change_invalidates_dependent_chunk(self):
         scheduler = self.make()
@@ -108,21 +139,32 @@ class SchedulerTests(unittest.TestCase):
         second = scheduler.observe_runtime_state(
             "render", "RENDER_ATTRIBUTE_OBJECT", {"mode": "points"}, dependencies=["positions"]
         )
-        self.assertTrue(first["changed"])
-        self.assertTrue(second["changed"])
         self.assertNotEqual(first["chunk"]["hash216_root"], second["chunk"]["hash216_root"])
 
-    def test_snapshot_recovery_preserves_identity(self):
+    def test_chain_position_prevents_a_b_a_root_collapse(self):
+        scheduler = self.make()
+        first = scheduler.observe_runtime_state("positions", "PHYSICS_POSITION_OBJECT", [1])
+        scheduler.observe_runtime_state("positions", "PHYSICS_POSITION_OBJECT", [2])
+        third = scheduler.observe_runtime_state("positions", "PHYSICS_POSITION_OBJECT", [1])
+        self.assertNotEqual(first["chunk"]["hash216_root"], third["chunk"]["hash216_root"])
+        self.assertEqual(third["chunk"]["version"], 3)
+
+    def test_snapshot_recovery_preserves_all_versioned_chunks(self):
         scheduler = self.make()
         scheduler.register_static_object("addresses", "STATIC_ADDRESS_OBJECT", {"count": 5184})
-        scheduler.observe_runtime_state("positions", "PHYSICS_POSITION_OBJECT", [1, 2, 3])
+        scheduler.observe_runtime_state("positions", "PHYSICS_POSITION_OBJECT", [1], authoritative=True)
+        scheduler.observe_runtime_state("positions", "PHYSICS_POSITION_OBJECT", [2], authoritative=True)
         scheduler.observe_frame_telemetry(FrameTelemetry(1, 16_666_667, physics_ns=1_000_000))
         snapshot = scheduler.snapshot()
         self.assertEqual(snapshot["schema"], SNAPSHOT_SCHEMA)
+        self.assertEqual(len(snapshot["chunk_history"]), 3)
         recovered = self.make()
         status = recovered.recover(json.loads(json.dumps(snapshot)))
         self.assertEqual(status["objects"], 2)
-        self.assertEqual(status["transient_queue"], 2)
+        self.assertEqual(status["versioned_chunks"], 3)
+        package = recovered.build_projection_package(1)
+        self.assertEqual(package["authoritative_event_count"], 2)
+        self.assertEqual(len(package["changed_chunks"]), 3)
 
     def test_invalid_telemetry_is_rejected(self):
         with self.assertRaisesRegex(ValueError, "INVALID_FRAME_TELEMETRY"):

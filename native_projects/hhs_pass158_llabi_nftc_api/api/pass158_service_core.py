@@ -6,6 +6,7 @@ import hashlib
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import json
 import re
+from threading import RLock
 from typing import Any
 
 from hhs_pass158 import (
@@ -97,10 +98,12 @@ class Pass158Service:
         self.receipts: dict[str, Receipt] = {}
         self.graphs: dict[str, dict[str, Any]] = {}
         self.bindings: dict[str, dict[str, Any]] = {}
+        self._dispatch_lock = RLock()
         self._declare_extra()
 
     def close(self) -> None:
-        self.context.close()
+        with self._dispatch_lock:
+            self.context.close()
 
     def _declare_extra(self) -> None:
         lib = self.native.lib
@@ -141,12 +144,13 @@ class Pass158Service:
 
     def dispatch(self, method: str, path: str, body: dict[str, Any] | None = None) -> tuple[int, dict[str, Any]]:
         body = body or {}
-        try:
-            return 200, self._dispatch(method.upper(), path, body)
-        except Exception as error:
-            classification = getattr(error, "classification", None) or str(error).strip("'") or error.__class__.__name__
-            return 200, _envelope(method, path, body, status="REJECTED", classification=classification,
-                                  errors=[{"type": error.__class__.__name__, "message": str(error)}])
+        with self._dispatch_lock:
+            try:
+                return 200, self._dispatch(method.upper(), path, body)
+            except Exception as error:
+                classification = getattr(error, "classification", None) or str(error).strip("'") or error.__class__.__name__
+                return 200, _envelope(method, path, body, status="REJECTED", classification=classification,
+                                      errors=[{"type": error.__class__.__name__, "message": str(error)}])
 
     def _dispatch(self, method: str, path: str, body: dict[str, Any]) -> dict[str, Any]:
         if method == "GET" and path == f"{BASE}/capabilities":
@@ -194,21 +198,27 @@ class Pass158Service:
         match = re.fullmatch(re.escape(BASE) + r"/nft/instances/([^/]+)/bindings", path)
         if method == "POST" and match:
             instance_id = match.group(1); instance = self._instance(instance_id)
+            capability = self.capabilities[body["capability_id"]]
+            evidences: list[dict[str, Any]] = []
             for binding in body.get("bindings", []):
                 kind = binding["kind"]
                 if kind == "RATIONAL":
                     value = binding["value"]
                     exact = ExactRational(int(value["numerator"]), int(value["denominator"]))
-                    instance.bind_rational(binding["symbol"], exact)
+                    binding_receipt = instance.bind_rational(binding["symbol"], exact, capability)
                     stored: Any = {"kind": kind, "value": {"numerator": str(exact.numerator), "denominator": str(exact.denominator)}}
                 elif kind == "LIST":
-                    instance.bind_ordered_list(binding["symbol"], binding["value"])
+                    binding_receipt = instance.bind_ordered_list(binding["symbol"], binding["value"], capability)
                     stored = {"kind": kind, "value": list(binding["value"])}
                 else:
                     raise ValueError("TYPE_MISMATCH")
                 self.bindings[instance_id][binding["symbol"]] = stored
+                evidences.append(self._store_receipt(binding_receipt))
+            if not evidences:
+                raise ValueError("BINDINGS_REQUIRED")
             return _envelope(method, path, body, status="BOUND", classification="HHS_P158_ABI_APPLICATION_BINDING_VALIDATED",
-                             obj={"instance_id": instance_id, "bindings": self.bindings[instance_id]})
+                             obj={"instance_id": instance_id, "state_root": instance.state_root,
+                                  "bindings": self.bindings[instance_id]}, receipts=evidences)
 
         match = re.fullmatch(re.escape(BASE) + r"/nft/instances/([^/]+)/validate", path)
         if method == "POST" and match:
@@ -227,7 +237,17 @@ class Pass158Service:
         if method == "POST" and match:
             instance = self._instance(match.group(1)); capability = self.capabilities[body["capability_id"]]
             operation_map = {"BIND_EQ": HHS158_OP_BIND_EQ, "CHAIN_APPEND": HHS158_OP_CHAIN_APPEND}
-            operations = [(operation_map[item["opcode"]], ",".join(item.get("operands", []))) for item in body["operations"]]
+            operations = [
+                (
+                    operation_map[item["opcode"]],
+                    json.dumps(
+                        [str(operand) for operand in item.get("operands", [])],
+                        ensure_ascii=False,
+                        separators=(",", ":"),
+                    ),
+                )
+                for item in body["operations"]
+            ]
             summary, receipt = instance.execute(capability, operations, commit=body.get("commit_policy", "EXECUTE_THEN_COMMIT") != "EXECUTE_ONLY")
             evidence = self._store_receipt(receipt)
             return _envelope(method, path, body, status="COMMITTED" if "COMMITTED" in summary.classification else "AUTHORIZED",
@@ -314,15 +334,16 @@ def self_test() -> dict[str, Any]:
         definition_id = response["object"]["definition_id"]; cases.append(("POST", f"{BASE}/nft/definitions", definition_request))
         instance_request = {"definition_id": definition_id, "instance_nonce": "service-test-instance"}
         _, response = service.dispatch("POST", f"{BASE}/nft/instances", instance_request); instance_id = response["object"]["instance_id"]; cases.append(("POST", f"{BASE}/nft/instances", instance_request))
-        binding_request = {"bindings": [{"symbol": "x", "kind": "RATIONAL", "value": {"numerator": "1", "denominator": "3"}}, {"symbol": "ordered", "kind": "LIST", "value": ["x", "x", "y"]}]}
+        capability_request = {"commit": True}
+        _, capability_response = service.dispatch("POST", f"{BASE}/nft/instances/{instance_id}/capabilities", capability_request)
+        capability_id = capability_response["object"]["capability_id"]
+        binding_request = {"capability_id": capability_id, "bindings": [{"symbol": "x", "kind": "RATIONAL", "value": {"numerator": "1", "denominator": "3"}}, {"symbol": "ordered", "kind": "LIST", "value": ["x", "x", "y"]}]}
         cases.extend([
             ("POST", f"{BASE}/nft/instances/{instance_id}/bindings", binding_request),
             ("POST", f"{BASE}/nft/instances/{instance_id}/validate", {"mode": "FULL"}),
-            ("POST", f"{BASE}/nft/instances/{instance_id}/capabilities", {"commit": True}),
         ])
         for method, path, body in cases:
             _, result = service.dispatch(method, path, body); assert result["status"] != "REJECTED", result
-        capability_id = list(service.capabilities)[-1]
         transition_request = {"capability_id": capability_id, "operations": [{"opcode": "BIND_EQ", "operands": ["A", "B"]}, {"opcode": "CHAIN_APPEND", "operands": ["B", "C"]}], "commit_policy": "EXECUTE_THEN_COMMIT"}
         _, transition = service.dispatch("POST", f"{BASE}/nft/instances/{instance_id}/transitions", transition_request); assert transition["status"] == "COMMITTED"
         receipt_id = transition["receipts"][0]["receipt_id"]
@@ -338,7 +359,7 @@ def self_test() -> dict[str, Any]:
         integration.append(("POST", f"{BASE}/nft/deserialize", {"serialized": serialized_response["object"]["serialized"]}))
         for method, path, body in integration:
             _, result = service.dispatch(method, path, body); assert result["status"] != "REJECTED", result
-        rejected = service.dispatch("POST", f"{BASE}/nft/instances/{instance_id}/bindings", {"bindings": [{"symbol": "bad", "kind": "RATIONAL", "value": {"numerator": "1", "denominator": "0"}}]})[1]
+        rejected = service.dispatch("POST", f"{BASE}/nft/instances/{instance_id}/bindings", {"capability_id": capability_id, "bindings": [{"symbol": "bad", "kind": "RATIONAL", "value": {"numerator": "1", "denominator": "0"}}]})[1]
         assert rejected["status"] == "REJECTED"
         total = len(cases) + len(integration) + 2
         assert total >= 18

@@ -134,6 +134,8 @@ struct HHS158Transition {
     uint64_t max_vm81_steps;
     uint64_t max_recursion_depth;
     uint64_t max_output_bytes;
+    uint64_t audit_vm81_steps;
+    uint64_t audit_witness_flags;
     uint32_t commit_policy;
     uint32_t flags;
 };

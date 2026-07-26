@@ -27,7 +27,7 @@ static HHS158Definition *find_definition(HHS158Context *context, const char *def
 static HHS158Status append_binding_body(char *body, size_t capacity, size_t *length, const HHS158BindingRecord *binding) {
     char symbol_hex[HHS158_MAX_SYMBOL_BYTES * 2u + 1u];
     char payload_hex[HHS158_MAX_OPERAND_BYTES * 2u + 1u];
-    char header[128];
+    char header[HHS158_MAX_OPERAND_BYTES * 2u + HHS158_MAX_SYMBOL_BYTES * 2u + 128u];
     int written;
     HHS158Status status;
     if (!hhs158_hex_encode((const uint8_t *)binding->symbol, strlen(binding->symbol), symbol_hex, sizeof(symbol_hex))) return HHS158_OUTPUT_BOUND;
@@ -150,6 +150,55 @@ static HHS158Status parse_bindings(char *text, HHS158Instance *instance, size_t 
     return HHS158_OK;
 }
 
+static int binding_receipt_matches(const HHS158Receipt *receipt, const HHS158Instance *instance,
+    const HHS158BindingRecord *binding, const char *pre_state_root) {
+    char payload_hex[HHS158_MAX_OPERAND_BYTES * 2u + 1u];
+    char expected[HHS158_MAX_CANONICAL_BYTES];
+    int written;
+    if (!receipt || !instance || !binding || !pre_state_root) return 0;
+    if (!hhs158_hex_encode(binding->payload, binding->payload_size, payload_hex, sizeof(payload_hex))) return 0;
+    written = snprintf(expected, sizeof(expected), "HHS158_BIND|%s|%s|%s|%u|%u|%s",
+        instance->instance_id, pre_state_root, binding->symbol, binding->kind, binding->flags, payload_hex);
+    if (written < 0 || (size_t)written >= sizeof(expected)) return 0;
+    return receipt->replay_material_size == (size_t)written &&
+        memcmp(receipt->replay_material, expected, (size_t)written) == 0;
+}
+
+static int audited_history_reaches(HHS158Context *context, HHS158Instance *instance, const char *target_root) {
+    char current_root[HHS158_HASH216_LENGTH + 1u];
+    char material[HHS158_HASH216_LENGTH + 64u];
+    size_t binding_index = 0u;
+    size_t receipt_index;
+    int written;
+    written = snprintf(material, sizeof(material), "HHS158_STATE_ROOT|%s|EMPTY", instance->instance_id);
+    if (written < 0 || (size_t)written >= sizeof(material)) return 0;
+    hhs158_hash216_bytes(material, (size_t)written, current_root);
+    if (strcmp(current_root, target_root) == 0 && instance->binding_count == 0u) return 1;
+    for (receipt_index = 0; receipt_index < context->receipt_count; ++receipt_index) {
+        HHS158Receipt *receipt = context->receipts[receipt_index];
+        HHS158ReplayOptions options;
+        HHS158ReplayResult replay;
+        if (!receipt || receipt->released || !receipt->committed) continue;
+        if (strcmp(receipt->instance_id, instance->instance_id) != 0) continue;
+        if (strcmp(receipt->pre_state_root, current_root) != 0) continue;
+        memset(&options, 0, sizeof(options));
+        options.header.struct_size = (uint32_t)sizeof(options);
+        options.header.struct_version = HHS158_STRUCT_VERSION_1;
+        options.verify_hash72 = 1u;
+        options.verify_hash216 = 1u;
+        options.verify_semantic_root = 1u;
+        if (hhs158_receipt_replay(context, receipt, &options, &replay) != HHS158_OK || !replay.matched) return 0;
+        if (strcmp(receipt->classification, "HHS_P158_NFT_BINDING_COMMITTED") == 0) {
+            if (binding_index >= instance->binding_count ||
+                !binding_receipt_matches(receipt, instance, &instance->bindings[binding_index], current_root)) return 0;
+            binding_index++;
+        }
+        snprintf(current_root, sizeof(current_root), "%s", receipt->post_state_root);
+        if (strcmp(current_root, target_root) == 0 && binding_index == instance->binding_count) return 1;
+    }
+    return 0;
+}
+
 HHS158Status hhs158_instance_deserialize(HHS158Context *context, HHS158ByteSpan serialized_object,
     const HHS158DeserializationOptions *options, HHS158Instance **out_instance, HHS158Receipt **out_receipt) {
     char *json;
@@ -219,23 +268,26 @@ HHS158Status hhs158_instance_deserialize(HHS158Context *context, HHS158ByteSpan 
     hhs158_hash216_bytes(identity, (size_t)written, actual_hash);
     if (strcmp(actual_hash, instance_id) != 0) { free(instance); free(json); return HHS158_HASH216_IDENTITY_MISMATCH; }
     snprintf(instance->instance_id, sizeof(instance->instance_id), "%s", instance_id);
-    snprintf(instance->current_state_root, sizeof(instance->current_state_root), "%s", state_root);
     binding_count = (size_t)strtoul(binding_count_text, NULL, 10);
     if (binding_count > HHS158_MAX_BINDINGS) { free(instance); free(json); return HHS158_SERIALIZATION_INVALID; }
     status = parse_bindings(cursor, instance, binding_count);
     if (status != HHS158_OK) { free(instance); free(json); return status; }
+    if (!audited_history_reaches(context, instance, state_root)) {
+        free(instance); free(json); return HHS158_HASH72_RECEIPT_MISMATCH;
+    }
+    snprintf(instance->current_state_root, sizeof(instance->current_state_root), "%s", state_root);
     instance->version = strtoull(version_text, NULL, 10);
     instance->lifecycle = binding_count ? HHS158_LIFECYCLE_BOUND : HHS158_LIFECYCLE_INSTANTIATED;
     instance->max_vm81_steps = UINT64_C(100000);
     instance->max_recursion_depth = 72u;
     instance->max_state_bytes = UINT64_C(16777216);
     instance->max_receipt_bytes = UINT64_C(1048576);
-    context->instances[context->instance_count++] = instance;
     status = hhs158_make_receipt(context, HHS158_OK, "HHS_P158_NFT_INSTANCE_DESERIALIZED_UNPRIVILEGED",
         definition, instance, NULL, state_root, state_root, NULL, body, body_size, 0u, 0u,
         instance->lifecycle, 0u, out_receipt);
+    if (status != HHS158_OK) { free(instance); free(json); return status; }
+    context->instances[context->instance_count++] = instance;
     free(json);
-    if (status != HHS158_OK) return status;
     *out_instance = instance;
     return HHS158_OK;
 }

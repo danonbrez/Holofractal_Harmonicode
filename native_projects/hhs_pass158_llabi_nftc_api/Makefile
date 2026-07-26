@@ -28,15 +28,20 @@ $(DIST)/hhs-pass158: $(SRC) src/hhs_pass158_cli.c include/hhs_pass158_api.h $(HA
 $(DIST)/test-pass158: $(SRC) tests/test_pass158.c include/hhs_pass158_api.h $(HASH_SRC) $(RUNTIME_SRC) | $(DIST)
 	$(CC) $(CFLAGS) $(INCLUDES) $(SRC) tests/test_pass158.c $(HASH_SRC) $(RUNTIME_SRC) -lm -o $@
 
+$(DIST)/test-pass158-security: $(SRC) tests/test_pass158_security.c include/hhs_pass158_api.h $(HASH_SRC) $(RUNTIME_SRC) | $(DIST)
+	$(CC) $(CFLAGS) $(INCLUDES) $(SRC) tests/test_pass158_security.c $(HASH_SRC) $(RUNTIME_SRC) -lm -o $@
+
 $(DIST)/libhhs_pass158_jni.so: bindings/java/hhs_pass158_jni.c $(DIST)/libhhs_pass158.so | $(DIST)
 	$(CC) $(CFLAGS) -fPIC -shared $(INCLUDES) $(JNI_INCLUDES) bindings/java/hhs_pass158_jni.c -L$(DIST) -lhhs_pass158 -Wl,-rpath,$(abspath $(DIST)) -o $@
 
-native-test: all
+native-test: all $(DIST)/test-pass158-security
 	$(DIST)/test-pass158 | tee $(DIST)/native-test-report.json
+	$(DIST)/test-pass158-security | tee $(DIST)/security-regression-report.json
 	$(DIST)/hhs-pass158 verify | tee $(DIST)/native-verification.jsonl
 	grep -q 'HHS_PASS_158_NATIVE_CORE_VERIFIED' $(DIST)/native-verification.jsonl
 	grep -q '"positive_total":272' $(DIST)/native-test-report.json
 	grep -q '"negative_total":81' $(DIST)/native-test-report.json
+	grep -q 'HHS_PASS_158_SECURITY_REGRESSIONS_VERIFIED' $(DIST)/security-regression-report.json
 
 python-test: all
 	HHS_PASS158_LIBRARY=$(abspath $(DIST)/libhhs_pass158.so) PYTHONPATH=$(PYTHONPATH158) python3 -m unittest discover -s tests -p 'test_*.py' -v 2>&1 | tee $(DIST)/python-test-report.txt

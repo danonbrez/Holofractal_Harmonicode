@@ -168,7 +168,11 @@ class Handler(BaseHTTPRequestHandler):
 
 
 def run_self_test() -> dict[str, Any]:
-    runtime = Pass158GuiProjectionRuntime()
+    receipt_registry: dict[str, str] = {}
+    scheduler = Hash216ProjectionScheduler(
+        receipt_verifier=lambda receipt, root: receipt_registry.get(receipt) == root
+    )
+    runtime = Pass158GuiProjectionRuntime(scheduler)
     checks: list[bool] = []
 
     _, registered = runtime.dispatch(
@@ -224,10 +228,12 @@ def run_self_test() -> dict[str, Any]:
         ]
     )
 
+    receipt_hash72 = "0" * 72
+    receipt_registry[receipt_hash72] = package["projection_root_hash216"]
     _, admitted = runtime.dispatch(
         "POST",
         f"{BASE}/packages/{package['projection_root_hash216']}/admit",
-        {"admitted": True, "receipt_hash72": "0" * 72},
+        {"admitted": True, "receipt_hash72": receipt_hash72},
     )
     checks.append(admitted["status"] == "ADMITTED")
 

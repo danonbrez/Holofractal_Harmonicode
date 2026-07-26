@@ -60,13 +60,13 @@ JNIEXPORT jstring JNICALL Java_org_hhs_pass158_HHS158_nativeLifecycleSmoke(JNIEn
 
     INIT(cr); cr.issuer=LIT("HHS_PASS158_AUTHORITY"); cr.subject=LIT("jni-binding");
     cr.application_id=LIT("org.hhs.pass158.jni"); cr.object_scope.data=id; cr.object_scope.size=HHS158_HASH216_LENGTH;
-    cr.operation_scope=HHS158_CAP_VALIDATE|HHS158_CAP_EXECUTE|HHS158_CAP_COMMIT|HHS158_CAP_REPLAY;
+    cr.operation_scope=HHS158_CAP_BIND|HHS158_CAP_VALIDATE|HHS158_CAP_EXECUTE|HHS158_CAP_COMMIT|HHS158_CAP_REPLAY;
     cr.mutation_scope=HHS158_MUTATION_INSTANCE; cr.max_vm81_steps=100000u;
     cr.issued_at=UINT64_C(1799711700); cr.expires_at=UINT64_C(1799719999);
     status=hhs158_capability_open(context,&cr,&capability); if(status!=HHS158_OK) goto done;
 
     INIT(value); value.kind=HHS158_VALUE_RATIONAL; value.flags=HHS158_FLAG_AUTHORITATIVE|HHS158_FLAG_IMMUTABLE;
-    value.canonical_payload=LIT("1/3"); status=hhs158_instance_bind(instance,LIT("x"),&value); if(status!=HHS158_OK) goto done;
+    value.canonical_payload=LIT("1/3"); { HHS158Receipt *binding_receipt=NULL; status=hhs158_instance_bind_authorized(instance,capability,LIT("x"),&value,&binding_receipt); } if(status!=HHS158_OK) goto done;
     INIT(vp); vp.max_vm81_steps=100000u; vp.max_recursion_depth=72u;
     status=hhs158_instance_validate_static(instance,&vp,&vr); if(status!=HHS158_OK) goto done;
 

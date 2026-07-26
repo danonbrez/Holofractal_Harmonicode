@@ -106,7 +106,7 @@ static int run_demo(void) {
     capability_request.application_id = SPAN_TEXT("org.hhs.pass158.native-demo");
     capability_request.object_scope.data = id_buffer;
     capability_request.object_scope.size = HHS158_HASH216_LENGTH;
-    capability_request.operation_scope = HHS158_CAP_VALIDATE | HHS158_CAP_EXECUTE | HHS158_CAP_COMMIT |
+    capability_request.operation_scope = HHS158_CAP_BIND | HHS158_CAP_VALIDATE | HHS158_CAP_EXECUTE | HHS158_CAP_COMMIT |
         HHS158_CAP_PROJECT | HHS158_CAP_SERIALIZE | HHS158_CAP_REPLAY;
     capability_request.mutation_scope = HHS158_MUTATION_INSTANCE;
     capability_request.max_vm81_steps = UINT64_C(100000);
@@ -120,7 +120,7 @@ static int run_demo(void) {
     rational.flags = HHS158_FLAG_AUTHORITATIVE | HHS158_FLAG_IMMUTABLE;
     rational.canonical_payload.data = RATIONAL;
     rational.canonical_payload.size = sizeof(RATIONAL) - 1u;
-    status = hhs158_instance_bind(instance, SPAN_TEXT("x"), &rational);
+    { HHS158Receipt *binding_receipt = NULL; status = hhs158_instance_bind_authorized(instance, capability, SPAN_TEXT("x"), &rational, &binding_receipt); }
     if (status != HHS158_OK) goto fail;
 
     HEADER(validation_policy);

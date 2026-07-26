@@ -83,6 +83,13 @@ HHS158_API HHS158Status hhs158_instance_bind(
     HHS158ByteSpan symbol_name,
     const HHS158Value *value
 );
+HHS158_API HHS158Status hhs158_instance_bind_authorized(
+    HHS158Instance *instance,
+    HHS158Capability *capability,
+    HHS158ByteSpan symbol_name,
+    const HHS158Value *value,
+    HHS158Receipt **out_receipt
+);
 HHS158_API HHS158Status hhs158_instance_validate_static(
     HHS158Instance *instance,
     const HHS158ValidationPolicy *policy,

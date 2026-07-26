@@ -103,15 +103,15 @@ void hhs158_hash216_bytes(const void *data, size_t size, char output[HHS158_HASH
 }
 
 void hhs158_hash72_bytes(const void *data, size_t size, char output[HHS158_HASH72_LENGTH + 1u]) {
-    uint8_t cells[HHS158_HASH72_LENGTH];
+    HHSHash72RingState ring;
     const uint8_t *bytes = (const uint8_t *)data;
     size_t i;
-    memset(cells, 0, sizeof(cells));
+    hhs_hash72_ring_init(&ring);
     for (i = 0; i < size; ++i) {
-        size_t slot = i % HHS158_HASH72_LENGTH;
-        cells[slot] = (uint8_t)((cells[slot] + bytes[i] + (uint8_t)(i % 72u)) % 72u);
+        int64_t delta = (int64_t)bytes[i] + (int64_t)(i % HHS158_HASH72_LENGTH) + 1;
+        (void)hhs_hash72_ring_rotate(&ring, (uint8_t)(i % HHS158_HASH72_LENGTH), delta);
     }
-    hhs_hash72_project(cells, output);
+    memcpy(output, ring.dna, HHS158_HASH72_LENGTH + 1u);
 }
 
 size_t hhs158_hex_encode(const uint8_t *data, size_t size, char *output, size_t capacity) {
@@ -266,6 +266,7 @@ HHS158Status hhs158_capability_check(
     uint64_t now;
     if (!capability) return HHS158_CAPABILITY_REQUIRED;
     if (capability->magic != HHS158_CAPABILITY_MAGIC || capability->released) return HHS158_HANDLE_RELEASED;
+    if (!instance || capability->context != instance->context) return HHS158_CAPABILITY_SCOPE_VIOLATION;
     if (capability->revoked) return HHS158_CAPABILITY_REVOKED;
     if (!capability->context || capability->context->released) return HHS158_HANDLE_RELEASED;
     now = capability->context->config.deterministic_epoch_seconds;
