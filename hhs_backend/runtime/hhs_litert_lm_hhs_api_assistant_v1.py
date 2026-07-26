@@ -1,8 +1,11 @@
 """LiteRT-LM Gemma 4 assistant with a governed HHS API tool loop."""
 from __future__ import annotations
 
+import asyncio
 import json
 import os
+import threading
+from contextvars import ContextVar
 from dataclasses import replace
 from typing import Any, Dict, Iterable, List, Mapping, Optional
 
@@ -67,7 +70,10 @@ class GovernedHHSToolLoopTransport:
     def __init__(self, inner: Any, max_tool_rounds: int = MAX_TOOL_ROUNDS):
         self.inner = inner
         self.max_tool_rounds = max(1, int(max_tool_rounds))
-        self.last_tool_trace: List[Dict[str, Any]] = []
+        self._tool_trace: ContextVar[tuple[Dict[str, Any], ...]] = ContextVar(
+            "hhs_litert_lm_tool_trace",
+            default=(),
+        )
 
     async def list_models(self) -> Dict[str, Any]:
         return await self.inner.list_models()
@@ -79,7 +85,7 @@ class GovernedHHSToolLoopTransport:
         tools: Optional[List[Mapping[str, Any]]] = None,
         response_format: Optional[Mapping[str, Any]] = None,
     ) -> Dict[str, Any]:
-        self.last_tool_trace = []
+        self._tool_trace.set(())
         working_messages = [dict(message) for message in messages]
         available_tools = _merge_tools(DEFAULT_HHS_ASSISTANT_TOOLS, tools)
         trace: List[Dict[str, Any]] = []
@@ -133,7 +139,7 @@ class GovernedHHSToolLoopTransport:
                     "content": json.dumps(receipt, ensure_ascii=False, default=str),
                 })
 
-        self.last_tool_trace = trace
+        self._tool_trace.set(tuple(trace))
         final_response = dict(final_response)
         final_response["hhs_api_tool_trace"] = trace
         final_response["hhs_api_tool_round_count"] = len({
@@ -142,8 +148,8 @@ class GovernedHHSToolLoopTransport:
         return final_response
 
     def consume_tool_trace(self) -> List[Dict[str, Any]]:
-        trace = self.last_tool_trace
-        self.last_tool_trace = []
+        trace = [dict(item) for item in self._tool_trace.get()]
+        self._tool_trace.set(())
         return trace
 
 
@@ -172,6 +178,16 @@ class HHSAPIAssistantService(HHSAssistantService):
             else GovernedHHSToolLoopTransport(inner, max_tool_rounds=max_tool_rounds)
         )
         super().__init__(config=resolved_config, transport=governed)
+        self._thread_locks: Dict[str, asyncio.Lock] = {}
+        self._thread_locks_guard = threading.RLock()
+
+    def _thread_lock(self, thread_id: str) -> asyncio.Lock:
+        with self._thread_locks_guard:
+            lock = self._thread_locks.get(thread_id)
+            if lock is None:
+                lock = asyncio.Lock()
+                self._thread_locks[thread_id] = lock
+            return lock
 
     async def send_message(
         self,
@@ -181,28 +197,41 @@ class HHSAPIAssistantService(HHSAssistantService):
         tools: Optional[List[Mapping[str, Any]]] = None,
         response_format: Optional[Mapping[str, Any]] = None,
     ) -> Dict[str, Any]:
-        result = await super().send_message(
-            thread_id,
-            content=content,
-            tools=tools,
-            response_format=response_format,
-        )
-        transport = self.transport
-        trace = (
-            transport.consume_tool_trace()
-            if isinstance(transport, GovernedHHSToolLoopTransport)
-            else []
-        )
-        result["hhs_api_tool_trace"] = trace
-        result["hhs_api_tool_call_count"] = len(trace)
-        result["hhs_api_tools_enabled"] = True
-        result["mutating_model_tool_execution_allowed"] = False
-        result["version"] = VERSION
-        result["turn_root_hash72"] = hash72(
-            TURN_SCHEMA,
-            {key: value for key, value in result.items() if key != "turn_root_hash72"},
-        )
-        return result
+        if not self.threads.get(thread_id):
+            raise KeyError(thread_id)
+        async with self._thread_lock(thread_id):
+            result = await super().send_message(
+                thread_id,
+                content=content,
+                tools=tools,
+                response_format=response_format,
+            )
+            transport = self.transport
+            trace = (
+                transport.consume_tool_trace()
+                if isinstance(transport, GovernedHHSToolLoopTransport)
+                else []
+            )
+            trace_root = hash72(
+                TOOL_LOOP_SCHEMA,
+                {
+                    "thread_id": thread_id,
+                    "tool_trace": trace,
+                    "runtime_mutation_admitted": False,
+                },
+            )
+            result["hhs_api_tool_trace"] = trace
+            result["hhs_api_tool_trace_root_hash72"] = trace_root
+            result["hhs_api_tool_call_count"] = len(trace)
+            result["hhs_api_tools_enabled"] = True
+            result["mutating_model_tool_execution_allowed"] = False
+            result["per_thread_request_serialization"] = True
+            result["version"] = VERSION
+            result["turn_root_hash72"] = hash72(
+                TURN_SCHEMA,
+                {key: value for key, value in result.items() if key != "turn_root_hash72"},
+            )
+            return result
 
     def status(self) -> Dict[str, Any]:
         status = super().status()
@@ -211,6 +240,8 @@ class HHSAPIAssistantService(HHSAssistantService):
             "hhs_api_tools_enabled": True,
             "default_hhs_api_tool_count": len(DEFAULT_HHS_ASSISTANT_TOOLS),
             "mutating_model_tool_execution_allowed": False,
+            "per_thread_request_serialization": True,
+            "task_local_tool_traces": True,
             "max_tool_rounds": getattr(self.transport, "max_tool_rounds", 0),
             "authority": AUTHORITY,
         })
