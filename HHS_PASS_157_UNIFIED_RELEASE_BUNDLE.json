@@ -2,6 +2,10 @@
   "schema": "HHS_PASS_157_UNIFIED_RELEASE_BUNDLE_V1",
   "pass_number": "157",
   "repository": "danonbrez/Holofractal_Harmonicode",
+  "authoritative_branch": "main",
+  "authoritative_merge_commit": "dc83c607380694a3be9f5992b3a983355e65ec57",
+  "main_adoption_commit": "e43135f84d47895925e16571409f833bc4021067",
+  "merged_pull_request": 22,
   "inheritance_parent_required": "HHS-P156.1-LSHPVS",
   "preserved_ancestry": [
     "HHS-P154",
@@ -44,7 +48,7 @@
       "authoritative_main_workflow"
     ]
   },
-  "aggregate_pre_merge_classification": "HHS_PASS_157_UNIFIED_IMPLEMENTATION_PENDING_HOSTED_MAIN_CLOSURE",
+  "aggregate_status": "MERGED_TO_MAIN_PENDING_AUTHORITATIVE_MAIN_WORKFLOW_RECEIPTS",
   "aggregate_terminal_gate": "BOTH_SUBSYSTEM_WORKFLOWS_SUCCESSFUL_ON_AUTHORITATIVE_MAIN",
   "terminal_classifications_are_independent": true
 }
