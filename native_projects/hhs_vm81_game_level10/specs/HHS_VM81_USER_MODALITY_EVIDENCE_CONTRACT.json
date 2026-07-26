@@ -1,0 +1,80 @@
+{
+  "contract_id": "HHS-VM81-USER-MODALITY-EVIDENCE-V1",
+  "version": "1.0.0",
+  "status": "NORMATIVE_RELEASE_EXTENSION",
+  "purpose": "Require direct, modality-matched evidence for every user-facing input and output boundary of the VM81 playable game.",
+  "governing_invariant": "Never infer user-visible success from internal execution alone, and never infer correct internal interpretation from a plausible presentation alone.",
+  "authoritative_runtime": "All gameplay mutation remains exclusively governed by hhs_vm81_game_execute through the inherited HHSVM81GameRelease surface.",
+  "modalities": {
+    "inbound": {
+      "presented_modality": "POSIX terminal keyboard bytes",
+      "documented_controls": {
+        "A": "move left",
+        "D": "move right",
+        "SPACE_OR_W": "jump",
+        "P": "pause or resume",
+        "R": "restart",
+        "Q": "quit",
+        "ENTER": "start or restart after terminal lifecycle state"
+      },
+      "required_evidence": [
+        "pseudo-terminal transport of actual documented key bytes",
+        "observed lifecycle response in the rendered terminal stream",
+        "running-frame advancement after movement and jump input",
+        "pause and resume reachability",
+        "reset reachability",
+        "clean quit and terminal restoration"
+      ],
+      "terminal_classification": "VM81_TERMINAL_IO_MODALITY_VERIFIED"
+    },
+    "outbound": {
+      "presented_modality": "ANSI terminal text with a scrolling 20x18 tile viewport",
+      "required_evidence": [
+        "exact UTF-8 terminal text frames emitted by the playable executable",
+        "title screenshot",
+        "checkpoint-one screenshot",
+        "checkpoint-two screenshot",
+        "victory screenshot",
+        "overview contact sheet",
+        "H.264 MP4 encoded from the complete deterministic frame sequence",
+        "video frame-count, frame-rate, dimensions, duration, and nonempty-content verification"
+      ],
+      "terminal_classification": "VM81_USER_MODALITY_PRESENTATION_EVIDENCE_VERIFIED"
+    }
+  },
+  "correspondence_requirements": {
+    "single_presentation_formatter": "Interactive play and deterministic capture shall use the same terminal-frame formatting function.",
+    "frame_sequence": "Every captured raster frame shall derive from one exact terminal text frame in canonical index order.",
+    "replay_binding": "The capture trace shall close with replay MATCH, VICTORY, two checkpoints, and 19/19 opcode coverage.",
+    "state_binding": "The evidence receipt shall preserve the final Hash72 receipt and Hash216 state identity from the authoritative run.",
+    "environment_binding": "The rasterizer, font path, font SHA-256, video codec, dimensions, frame count, frame rate, and duration shall be recorded.",
+    "negative_rule": "Missing, blank, malformed, semantically incomplete, temporally inconsistent, or unbound media shall fail release closure."
+  },
+  "acceptance_matrix": {
+    "source_modality_evidence": "REQUIRED",
+    "translation_evidence": "REQUIRED",
+    "execution_evidence": "REQUIRED",
+    "presentation_modality_evidence": "REQUIRED",
+    "screenshots": "REQUIRED",
+    "mp4": "REQUIRED",
+    "terminal_io_integration": "REQUIRED",
+    "deterministic_replay": "REQUIRED"
+  },
+  "process_optimization": {
+    "contract_before_implementation": "Declare every claimed modality and required artifact before coding.",
+    "single_source_projection": "Reuse the production presentation path for capture instead of building a parallel mock renderer.",
+    "layered_gates": [
+      "compile",
+      "core execution",
+      "release lifecycle",
+      "sanitizers",
+      "terminal input/output integration",
+      "exact frame capture",
+      "media encoding",
+      "media inspection",
+      "artifact packaging"
+    ],
+    "failure_localization": "Each gate shall emit its own evidence so failures identify the broken translation boundary rather than only reporting an aggregate release failure.",
+    "terminal_release_classification": "VM81_GAME_USER_MODALITY_RELEASE_VERIFIED"
+  }
+}
