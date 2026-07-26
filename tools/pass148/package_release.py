@@ -11,7 +11,7 @@ from pathlib import Path
 from typing import Iterable
 
 ROOT = Path(__file__).resolve().parents[2]
-OUT = Path(os.environ.get("HHS_PASS148_OUTPUT_DIR", "/mnt/data")).resolve()
+OUT = Path(os.environ.get("HHS_PASS148_OUTPUT_DIR", str(ROOT / "release_artifacts" / "pass148" / "dist"))).resolve()
 FULL_ZIP = OUT / "hhs_pass_148_native_semantic_authority_membrane_full_inherited_pass_history_nucleus.zip"
 FULL_SHA = OUT / (FULL_ZIP.name + ".sha256")
 EVIDENCE_ZIP = OUT / "hhs_pass_148_implementation_evidence_package.zip"
