@@ -41,16 +41,15 @@ jobs:
         run: |
           set -euo pipefail
           PYTHONPATH=native_projects/hhs_pass157_ppf_mptc/python \
-            python3 -m unittest \
-            native_projects/hhs_pass157_ppf_mptc/tests/test_pass157_contract_extension.py \
+            python3 -m unittest discover \
+            -s native_projects/hhs_pass157_ppf_mptc/tests \
+            -p 'test_pass157_contract_extension.py' \
             -v
 
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
           node-version: "22"
-          cache: npm
-          cache-dependency-path: apps/unified_gui/package.json
 
       - name: Install pinned application dependencies
         working-directory: apps/unified_gui
