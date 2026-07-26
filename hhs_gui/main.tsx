@@ -11,7 +11,7 @@ import {
 // Styles
 // =========================================================
 
-import "./index.css"
+import "./src/styles/global.css"
 
 // =========================================================
 // RuntimeOS
@@ -37,7 +37,7 @@ const runtimeOS =
 // Bootstrap
 // =========================================================
 
-async function bootstrap():
+async function bootstrap(): Promise<void> {
 
     try {
 
