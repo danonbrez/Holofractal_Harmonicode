@@ -69,8 +69,10 @@ export class HHSUnifiedApplication {
       if (document.hidden || !this.physics.running) return;
       const receipt = this.physics.step(1);
       this.lastPhysicsReceipt = receipt;
-      this._dispatch({ type: ACTIONS.PARTICLE_FIELD_ADVANCED, payload: receipt });
-      this.refreshDiagnostics();
+      if (receipt.step_count % 15 === 0) {
+        this._dispatch({ type: ACTIONS.PARTICLE_FIELD_ADVANCED, payload: receipt });
+        this.refreshDiagnostics();
+      }
     }, 1000 / 60);
   }
 
@@ -178,7 +180,10 @@ export class HHSUnifiedApplication {
     this._listen(document.querySelector("#trace-seal"), "click", () => {
       try {
         const bundle = this.trace.seal();
-        this._dispatch({ type: ACTIONS.TRACE_SEALED, payload: bundle });
+        const state = this.store.dispatch({ type: ACTIONS.TRACE_SEALED, payload: bundle });
+        this._updateStatus(state);
+        this.trace = new HHSTraceChain("HHS.gui");
+        this.trace.append("TRACE_CONTINUATION", { previous_bundle_hash72: bundle.bundle_hash72 });
         document.querySelector("#trace-output").textContent = json(bundle);
       } catch (error) {
         document.querySelector("#trace-output").textContent = json({ classification: error.message });
