@@ -22,7 +22,7 @@ from typing import Any, Dict, List, Optional
 
 from hhs_python.runtime.hhs_runtime_controller import HHSRuntimeController
 from hhs_runtime.hhs_authority_gate_v1 import assert_runtime_authorized
-from hhs_runtime.hhs_service_registry_v1 import make_default_service_registry
+from hhs_runtime.hhs_lazy_service_registry_v1 import make_lazy_default_service_registry
 
 
 @dataclass
@@ -42,6 +42,10 @@ class HHSCEmulator:
     This is intentionally small and deterministic. It does not replace the
     kernel, controller, graph, or backend. It coordinates the already-existing
     controller into an emulator-style lifecycle suitable for GUI/API use.
+
+    Service descriptors are populated without eagerly importing every optional
+    service module. A service callable resolves only when that service is
+    dispatched, so optional service availability cannot prevent kernel boot.
     """
 
     def __init__(
@@ -55,7 +59,7 @@ class HHSCEmulator:
         self.booted_at: Optional[float] = None
         self.tick_history: List[Dict[str, Any]] = []
         self.last_packet: Optional[Dict[str, Any]] = None
-        self.service_registry = make_default_service_registry(self.controller)
+        self.service_registry = make_lazy_default_service_registry(self.controller)
 
     def boot(self) -> Dict[str, Any]:
         """Initialize and validate the C ABI, returning the initial state."""
@@ -80,6 +84,11 @@ class HHSCEmulator:
             "authority_audit": authority_audit,
             "metadata": self.config.metadata,
             "services": self.service_registry.services(),
+            "service_population_mode": getattr(
+                self.service_registry,
+                "population_mode",
+                "EAGER_SERVICE_IMPORTS",
+            ),
         }
 
     def tick(self, instruction: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
@@ -138,7 +147,6 @@ class HHSCEmulator:
         for _ in range(bounded_steps):
             result = self.tick(instruction=instruction)
             results.append(result)
-
             if until_halt and result["runtime"].get("halted"):
                 break
 
@@ -180,6 +188,11 @@ class HHSCEmulator:
             "ticks": len(self.tick_history),
             "runtime": self.controller.latest_runtime_state(),
             "has_packet": self.last_packet is not None,
+            "service_population_mode": getattr(
+                self.service_registry,
+                "population_mode",
+                "EAGER_SERVICE_IMPORTS",
+            ),
             "service_registry": self.service_registry.status(),
         }
 
@@ -199,10 +212,17 @@ class HHSCEmulator:
             interposition = self.service_registry.interpose_dispatch(
                 service_name,
                 payload_dict,
-                request_class=str(payload_dict.get("request_class") or "canonical_full_witness_chain"),
-                brute_force_claim=bool(payload_dict.get("brute_force_claim", False)),
+                request_class=str(
+                    payload_dict.get("request_class")
+                    or "canonical_full_witness_chain"
+                ),
+                brute_force_claim=bool(
+                    payload_dict.get("brute_force_claim", False)
+                ),
             )
-            payload_dict["zero_bypass_interposition_token"] = interposition.get("interposition_token")
+            payload_dict["zero_bypass_interposition_token"] = (
+                interposition.get("interposition_token")
+            )
 
         return self.service_registry.dispatch(service_name, payload_dict)
 

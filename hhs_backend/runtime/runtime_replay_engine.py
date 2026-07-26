@@ -2,564 +2,318 @@
 # hhs_backend/runtime/runtime_replay_engine.py
 # HARMONICODE / HHS
 # CANONICAL RUNTIME REPLAY ENGINE
-#
-# PURPOSE
-# -------
-# Deterministic replay execution subsystem for:
-#
-#   - runtime reconstruction
-#   - receipt-chain replay
-#   - branch replay
-#   - predictive trajectory simulation
-#   - replay equivalence verification
-#   - sandboxed historical execution
-#   - replay-safe multimodal routing
-#
-# Replay MUST remain isolated from live side effects.
-#
 # ============================================================================
 
 from __future__ import annotations
 
 import copy
+import json
 import logging
+import threading
 import time
 import uuid
+from dataclasses import dataclass, field, is_dataclass
+from typing import Any, Dict, List, Mapping, Optional
 
-from dataclasses import dataclass, field
-from typing import Dict, List, Optional, Any
-
-from hhs_storage.runtime_state_store_v1 import (
-    runtime_state_store
-)
-
-# ============================================================================
-# LOGGING
-# ============================================================================
+from hhs_storage.runtime_state_store_v1 import runtime_state_store
 
 logger = logging.getLogger("HHS_REPLAY")
 
-# ============================================================================
-# REPLAY MODES
-# ============================================================================
-
 MODE_RECONSTRUCT = "reconstruct"
-
 MODE_BRANCH_SIMULATION = "branch-simulation"
-
 MODE_PREDICTIVE = "predictive"
-
 MODE_SANDBOX = "sandbox"
+MODE_LIVE_WINDOW = "live-window"
 
-# ============================================================================
-# REPLAY FRAME
-# ============================================================================
 
 @dataclass
 class HHSReplayFrame:
-
     replay_id: str
-
     frame_index: int
-
     created_at: float
-
     runtime_packet: Dict[str, Any]
-
     mode: str
 
-# ============================================================================
-# REPLAY RESULT
-# ============================================================================
 
 @dataclass
 class HHSReplayResult:
-
     replay_id: str
-
     mode: str
-
     started_at: float
-
     completed_at: float
-
     total_frames: int
-
     replay_equivalent: bool
+    frames: List[HHSReplayFrame] = field(default_factory=list)
 
-    frames: List[HHSReplayFrame] = field(
-        default_factory=list
-    )
-
-# ============================================================================
-# REPLAY ENGINE
-# ============================================================================
 
 class HHSRuntimeReplayEngine:
-
-    """
-    Canonical deterministic replay execution subsystem.
-    """
+    """Canonical deterministic replay subsystem with a bounded live window."""
 
     def __init__(self):
-
-        self.active_replays: Dict[
-            str,
-            HHSReplayResult
-        ] = {}
-
-        self.completed_replays: Dict[
-            str,
-            HHSReplayResult
-        ] = {}
-
+        self.lock = threading.RLock()
+        self.active_replays: Dict[str, HHSReplayResult] = {}
+        self.completed_replays: Dict[str, HHSReplayResult] = {}
         self.total_replays = 0
-
         self.total_frames_processed = 0
+        self.live_packets: List[Dict[str, Any]] = []
+        self.live_packet_limit = 256
 
-    # =====================================================================
-    # REPLAY CONSTRUCTION
-    # =====================================================================
-
-    def _create_replay_result(
-        self,
-        mode: str
-    ) -> HHSReplayResult:
-
+    def _create_replay_result(self, mode: str) -> HHSReplayResult:
         replay_id = str(uuid.uuid4())
-
         result = HHSReplayResult(
-
             replay_id=replay_id,
-
             mode=mode,
-
             started_at=time.time(),
-
             completed_at=0.0,
-
             total_frames=0,
-
-            replay_equivalent=True
+            replay_equivalent=True,
         )
-
-        self.active_replays[
-            replay_id
-        ] = result
-
-        self.total_replays += 1
-
+        with self.lock:
+            self.active_replays[replay_id] = result
+            self.total_replays += 1
         return result
 
-    # =====================================================================
-    # RECONSTRUCTION
-    # =====================================================================
-
-    def reconstruct_runtime(
-        self,
-        limit: int = 100
-    ) -> HHSReplayResult:
-
-        result = self._create_replay_result(
-            MODE_RECONSTRUCT
-        )
-
-        records = runtime_state_store.replay_chain(
-            limit=limit
-        )
-
-        for index, row in enumerate(records):
-
-            payload = row["payload"]
-
-            if isinstance(payload, str):
-
-                import json
-
-                payload = json.loads(payload)
-
-            frame = HHSReplayFrame(
-
-                replay_id=result.replay_id,
-
-                frame_index=index,
-
-                created_at=time.time(),
-
-                runtime_packet=payload,
-
-                mode=MODE_RECONSTRUCT
-            )
-
-            result.frames.append(frame)
-
-            self.total_frames_processed += 1
-
-        result.total_frames = len(
-            result.frames
-        )
-
+    def _complete(self, result: HHSReplayResult) -> HHSReplayResult:
+        result.total_frames = len(result.frames)
         result.completed_at = time.time()
-
-        self.completed_replays[
-            result.replay_id
-        ] = result
-
-        del self.active_replays[
-            result.replay_id
-        ]
-
-        logger.info(
-            f"Replay reconstruction complete: "
-            f"{result.replay_id}"
-        )
-
+        with self.lock:
+            self.completed_replays[result.replay_id] = result
+            self.active_replays.pop(result.replay_id, None)
         return result
 
-    # =====================================================================
-    # BRANCH SIMULATION
-    # =====================================================================
+    @staticmethod
+    def _decode_payload(value: Any) -> Dict[str, Any]:
+        if value is None:
+            return {}
+        if isinstance(value, str):
+            decoded = json.loads(value)
+            return dict(decoded) if isinstance(decoded, Mapping) else {}
+        if isinstance(value, Mapping):
+            return copy.deepcopy(dict(value))
+        if is_dataclass(value):
+            if hasattr(value, "runtime_state"):
+                runtime_state = copy.deepcopy(getattr(value, "runtime_state"))
+                if isinstance(runtime_state, Mapping):
+                    runtime_state = dict(runtime_state)
+                    if "runtime" in runtime_state:
+                        return runtime_state
+                    return {"runtime": runtime_state}
+            return copy.deepcopy(vars(value))
+        return {}
+
+    @classmethod
+    def _row_payload(cls, row: Any) -> Dict[str, Any]:
+        if isinstance(row, Mapping):
+            if "payload" in row:
+                return cls._decode_payload(row.get("payload"))
+            if "runtime_packet" in row:
+                return cls._decode_payload(row.get("runtime_packet"))
+            return cls._decode_payload(row)
+        if hasattr(row, "payload"):
+            return cls._decode_payload(getattr(row, "payload"))
+        return cls._decode_payload(row)
+
+    def ingest_live_packet(
+        self,
+        packet: Mapping[str, Any],
+        *,
+        history_limit: Optional[int] = None,
+    ) -> Dict[str, Any]:
+        packet_dict = copy.deepcopy(dict(packet))
+        runtime = dict(packet_dict.get("runtime") or {})
+        if not runtime.get("state_hash72"):
+            raise ValueError("live replay packet requires runtime.state_hash72")
+        limit = max(1, int(history_limit or self.live_packet_limit))
+        with self.lock:
+            identity = (
+                runtime.get("step"),
+                runtime.get("state_hash72"),
+                runtime.get("receipt_hash72"),
+            )
+            if self.live_packets:
+                previous = dict(self.live_packets[-1].get("runtime") or {})
+                previous_identity = (
+                    previous.get("step"),
+                    previous.get("state_hash72"),
+                    previous.get("receipt_hash72"),
+                )
+                if identity == previous_identity:
+                    return {
+                        "ingested": False,
+                        "duplicate": True,
+                        "live_packets": len(self.live_packets),
+                    }
+            self.live_packets.append(packet_dict)
+            overflow = len(self.live_packets) - limit
+            if overflow > 0:
+                del self.live_packets[:overflow]
+            return {
+                "ingested": True,
+                "duplicate": False,
+                "live_packets": len(self.live_packets),
+            }
+
+    def live_replay_window(self, limit: int = 10) -> HHSReplayResult:
+        result = self._create_replay_result(MODE_LIVE_WINDOW)
+        with self.lock:
+            packets = copy.deepcopy(self.live_packets[-max(1, int(limit)):])
+        for index, packet in enumerate(packets):
+            result.frames.append(HHSReplayFrame(
+                replay_id=result.replay_id,
+                frame_index=index,
+                created_at=time.time(),
+                runtime_packet=packet,
+                mode=MODE_LIVE_WINDOW,
+            ))
+            self.total_frames_processed += 1
+        if not result.frames:
+            result.replay_equivalent = False
+        return self._complete(result)
+
+    def reconstruct_runtime(self, limit: int = 100) -> HHSReplayResult:
+        result = self._create_replay_result(MODE_RECONSTRUCT)
+        records = runtime_state_store.replay_chain(limit=limit)
+        for index, row in enumerate(records):
+            payload = self._row_payload(row)
+            result.frames.append(HHSReplayFrame(
+                replay_id=result.replay_id,
+                frame_index=index,
+                created_at=time.time(),
+                runtime_packet=payload,
+                mode=MODE_RECONSTRUCT,
+            ))
+            self.total_frames_processed += 1
+        if not result.frames:
+            result.replay_equivalent = False
+        logger.info("Replay reconstruction complete: %s", result.replay_id)
+        return self._complete(result)
 
     def simulate_branch(
         self,
         mutation: Optional[Dict] = None,
-        limit: int = 25
+        limit: int = 25,
     ) -> HHSReplayResult:
-
-        result = self._create_replay_result(
-            MODE_BRANCH_SIMULATION
-        )
-
-        records = runtime_state_store.replay_chain(
-            limit=limit
-        )
-
+        result = self._create_replay_result(MODE_BRANCH_SIMULATION)
+        records = runtime_state_store.replay_chain(limit=limit)
         for index, row in enumerate(records):
-
-            payload = row["payload"]
-
-            if isinstance(payload, str):
-
-                import json
-
-                payload = json.loads(payload)
-
-            cloned = copy.deepcopy(payload)
-
+            cloned = self._row_payload(row)
             if mutation:
-
-                runtime = cloned.get(
-                    "runtime",
-                    {}
-                )
-
-                runtime.update(mutation)
-
-            frame = HHSReplayFrame(
-
+                cloned.setdefault("runtime", {}).update(mutation)
+            result.frames.append(HHSReplayFrame(
                 replay_id=result.replay_id,
-
                 frame_index=index,
-
                 created_at=time.time(),
-
                 runtime_packet=cloned,
-
-                mode=MODE_BRANCH_SIMULATION
-            )
-
-            result.frames.append(frame)
-
+                mode=MODE_BRANCH_SIMULATION,
+            ))
             self.total_frames_processed += 1
+        if not result.frames:
+            result.replay_equivalent = False
+        logger.info("Branch simulation complete: %s", result.replay_id)
+        return self._complete(result)
 
-        result.total_frames = len(
-            result.frames
-        )
-
-        result.completed_at = time.time()
-
-        self.completed_replays[
-            result.replay_id
-        ] = result
-
-        del self.active_replays[
-            result.replay_id
-        ]
-
-        logger.info(
-            f"Branch simulation complete: "
-            f"{result.replay_id}"
-        )
-
-        return result
-
-    # =====================================================================
-    # PREDICTIVE TRAJECTORY
-    # =====================================================================
-
-    def predictive_replay(
-        self,
-        horizon: int = 10
-    ) -> HHSReplayResult:
-
-        result = self._create_replay_result(
-            MODE_PREDICTIVE
-        )
+    def _latest_predictive_base(self) -> Dict[str, Any]:
+        with self.lock:
+            if self.live_packets:
+                return copy.deepcopy(self.live_packets[-1])
 
         latest = runtime_state_store.latest_snapshot()
+        payload = self._decode_payload(latest)
+        if payload:
+            return payload
 
-        if latest is None:
+        replay_records = getattr(runtime_state_store, "replay_records", None) or []
+        if replay_records:
+            return self._row_payload(replay_records[-1])
+        return {}
 
+    def predictive_replay(self, horizon: int = 10) -> HHSReplayResult:
+        result = self._create_replay_result(MODE_PREDICTIVE)
+        payload = self._latest_predictive_base()
+        runtime = dict(payload.get("runtime") or {})
+        if not runtime:
             result.replay_equivalent = False
+            return self._complete(result)
 
-            result.completed_at = time.time()
-
-            return result
-
-        import json
-
-        payload = json.loads(
-            latest["payload"]
-        )
-
-        runtime = payload.get(
-            "runtime",
-            {}
-        )
-
-        current_step = runtime.get(
-            "step",
-            0
-        )
-
-        for i in range(horizon):
-
+        current_step = int(runtime.get("step") or 0)
+        for index in range(max(0, int(horizon))):
             synthetic = copy.deepcopy(payload)
-
-            synthetic_runtime = synthetic[
-                "runtime"
-            ]
-
-            synthetic_runtime["step"] = (
-                current_step + i + 1
-            )
-
-            synthetic_runtime[
-                "predicted"
-            ] = True
-
-            frame = HHSReplayFrame(
-
+            synthetic_runtime = synthetic.setdefault("runtime", {})
+            synthetic_runtime["step"] = current_step + index + 1
+            synthetic_runtime["predicted"] = True
+            result.frames.append(HHSReplayFrame(
                 replay_id=result.replay_id,
-
-                frame_index=i,
-
+                frame_index=index,
                 created_at=time.time(),
-
                 runtime_packet=synthetic,
-
-                mode=MODE_PREDICTIVE
-            )
-
-            result.frames.append(frame)
-
+                mode=MODE_PREDICTIVE,
+            ))
             self.total_frames_processed += 1
+        if not result.frames:
+            result.replay_equivalent = False
+        logger.info("Predictive replay complete: %s", result.replay_id)
+        return self._complete(result)
 
-        result.total_frames = len(
-            result.frames
-        )
-
-        result.completed_at = time.time()
-
-        self.completed_replays[
-            result.replay_id
-        ] = result
-
-        del self.active_replays[
-            result.replay_id
-        ]
-
-        logger.info(
-            f"Predictive replay complete: "
-            f"{result.replay_id}"
-        )
-
-        return result
-
-    # =====================================================================
-    # EQUIVALENCE VERIFICATION
-    # =====================================================================
-
-    def verify_replay_equivalence(
-        self,
-        replay: HHSReplayResult
-    ) -> bool:
-
+    def verify_replay_equivalence(self, replay: HHSReplayResult) -> bool:
         if replay.total_frames == 0:
+            replay.replay_equivalent = False
             return False
-
-        hashes = []
-
-        for frame in replay.frames:
-
-            runtime = frame.runtime_packet.get(
-                "runtime",
-                {}
-            )
-
-            hashes.append(
-                runtime.get(
-                    "state_hash72",
-                    ""
-                )
-            )
-
-        replay.replay_equivalent = (
-            len(hashes) == len(set(hashes))
-            or len(hashes) > 0
-        )
-
+        hashes = [
+            str((frame.runtime_packet.get("runtime") or {}).get("state_hash72") or "")
+            for frame in replay.frames
+        ]
+        replay.replay_equivalent = bool(hashes and all(hashes))
         return replay.replay_equivalent
 
-    # =====================================================================
-    # EXPORT
-    # =====================================================================
-
-    def export_replay(
-        self,
-        replay_id: str
-    ):
-
-        replay = self.completed_replays.get(
-            replay_id
-        )
-
+    def export_replay(self, replay_id: str):
+        replay = self.completed_replays.get(replay_id)
         if replay is None:
             return None
-
         return {
-
-            "replay_id":
-                replay.replay_id,
-
-            "mode":
-                replay.mode,
-
-            "started_at":
-                replay.started_at,
-
-            "completed_at":
-                replay.completed_at,
-
-            "total_frames":
-                replay.total_frames,
-
-            "replay_equivalent":
-                replay.replay_equivalent,
-
+            "replay_id": replay.replay_id,
+            "mode": replay.mode,
+            "started_at": replay.started_at,
+            "completed_at": replay.completed_at,
+            "total_frames": replay.total_frames,
+            "replay_equivalent": replay.replay_equivalent,
             "frames": [
-
                 {
-                    "frame_index":
-                        frame.frame_index,
-
-                    "runtime_packet":
-                        frame.runtime_packet
+                    "frame_index": frame.frame_index,
+                    "runtime_packet": frame.runtime_packet,
                 }
-
                 for frame in replay.frames
-            ]
+            ],
         }
-
-    # =====================================================================
-    # METRICS
-    # =====================================================================
 
     def metrics(self):
+        with self.lock:
+            return {
+                "active_replays": len(self.active_replays),
+                "completed_replays": len(self.completed_replays),
+                "total_replays": self.total_replays,
+                "total_frames_processed": self.total_frames_processed,
+                "live_packets": len(self.live_packets),
+                "live_packet_limit": self.live_packet_limit,
+            }
 
-        return {
 
-            "active_replays":
-                len(self.active_replays),
+runtime_replay_engine = HHSRuntimeReplayEngine()
 
-            "completed_replays":
-                len(self.completed_replays),
-
-            "total_replays":
-                self.total_replays,
-
-            "total_frames_processed":
-                self.total_frames_processed
-        }
-
-# ============================================================================
-# GLOBAL ENGINE
-# ============================================================================
-
-runtime_replay_engine = (
-    HHSRuntimeReplayEngine()
-)
-
-# ============================================================================
-# SELF TEST
-# ============================================================================
 
 def replay_engine_self_test():
-
     packet = {
-
         "runtime": {
-
             "step": 1,
-
-            "state_hash72":
-                "abc123",
-
-            "receipt_hash72":
-                "xyz789"
+            "state_hash72": "abc123",
+            "receipt_hash72": "xyz789",
         }
     }
+    runtime_state_store.store_replay_record(packet)
+    runtime_replay_engine.ingest_live_packet(packet)
+    replay = runtime_replay_engine.live_replay_window()
+    runtime_replay_engine.verify_replay_equivalence(replay)
+    print(runtime_replay_engine.export_replay(replay.replay_id))
 
-    runtime_state_store.store_snapshot(
-        packet
-    )
-
-    runtime_state_store.store_replay_record(
-        packet
-    )
-
-    replay = (
-        runtime_replay_engine
-        .reconstruct_runtime()
-    )
-
-    runtime_replay_engine.verify_replay_equivalence(
-        replay
-    )
-
-    print()
-
-    print("REPLAY METRICS")
-
-    print(
-        runtime_replay_engine.metrics()
-    )
-
-    print()
-
-    print("REPLAY RESULT")
-
-    print(
-
-        runtime_replay_engine.export_replay(
-            replay.replay_id
-        )
-    )
-
-# ============================================================================
-# MAIN
-# ============================================================================
 
 if __name__ == "__main__":
-
     replay_engine_self_test()
