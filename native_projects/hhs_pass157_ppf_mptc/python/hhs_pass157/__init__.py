@@ -1,5 +1,58 @@
 from .executor import verify
-from .model import construct_exact, phase_decompose, plastic_power, pythagorean
+from .model import (
+    construct_exact,
+    construct_exact_radius,
+    construct_factorial_ratio_matrix,
+    construct_loshu,
+    construct_phase_nucleus,
+    fibonacci_square_value,
+    phase_decompose,
+    plastic_power,
+    pythagorean,
+    validate_loshu,
+    validate_sudoku_x,
+)
 from .parser import compile_membrane, parse_source
+from .public_api import (
+    bind_local_hamiltonians,
+    bind_vm81,
+    commit_hash216,
+    construct_radical_carrier,
+    expand_fibonacci_square,
+    expand_sudoku_denomination,
+    normalize_u72,
+    parse_phase_tensor,
+    project_loshu,
+    replay_pass157,
+    validate_centerline,
+    verify_pass157,
+)
 
-__all__ = ["verify", "construct_exact", "phase_decompose", "plastic_power", "pythagorean", "compile_membrane", "parse_source"]
+__all__ = [
+    "verify",
+    "construct_exact",
+    "construct_exact_radius",
+    "construct_factorial_ratio_matrix",
+    "construct_loshu",
+    "construct_phase_nucleus",
+    "fibonacci_square_value",
+    "phase_decompose",
+    "plastic_power",
+    "pythagorean",
+    "validate_loshu",
+    "validate_sudoku_x",
+    "compile_membrane",
+    "parse_source",
+    "bind_local_hamiltonians",
+    "bind_vm81",
+    "commit_hash216",
+    "construct_radical_carrier",
+    "expand_fibonacci_square",
+    "expand_sudoku_denomination",
+    "normalize_u72",
+    "parse_phase_tensor",
+    "project_loshu",
+    "replay_pass157",
+    "validate_centerline",
+    "verify_pass157",
+]
