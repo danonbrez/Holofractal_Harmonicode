@@ -67,7 +67,19 @@ jobs:
             hhs_backend/runtime/live_fastapi_workflow_v1.py \
             hhs_backend/api/cognition_routes.py
 
-      - name: Validate emulator boot
+      - name: Validate emulator construction
+        run: python -m pytest -q tests/test_hhs_live_kernel_bridge_boundaries_v1.py::test_hhs_emulator_construction_contract
+
+      - name: Validate emulator native ABI
+        run: python -m pytest -q tests/test_hhs_live_kernel_bridge_boundaries_v1.py::test_hhs_emulator_native_abi_contract
+
+      - name: Validate emulator initial authority
+        run: python -m pytest -q tests/test_hhs_live_kernel_bridge_boundaries_v1.py::test_hhs_emulator_initial_authority_contract
+
+      - name: Validate emulator boot completion
+        run: python -m pytest -q tests/test_hhs_live_kernel_bridge_boundaries_v1.py::test_hhs_emulator_boot_completes
+
+      - name: Validate emulator boot projection
         run: python -m pytest -q tests/test_hhs_live_kernel_bridge_boundaries_v1.py::test_hhs_emulator_boot_contract
 
       - name: Validate emulator authorized tick completion
