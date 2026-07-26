@@ -1,0 +1,19 @@
+{
+  "name": "hhs-pass157-unified-gui",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test tests/*.test.mjs",
+    "test:browser": "playwright test",
+    "build": "vite build",
+    "verify": "npm test && npm run build && npm run test:browser"
+  },
+  "dependencies": {
+    "three": "0.170.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.49.1",
+    "vite": "5.4.14"
+  }
+}
