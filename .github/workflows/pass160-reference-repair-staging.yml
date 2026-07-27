@@ -1,0 +1,62 @@
+name: Pass 160 Reference Repair Staging
+
+on:
+  push:
+    branches:
+      - agent/pass160-validated-transition-runtime
+    paths:
+      - 'native_projects/hhs_pass160_validated_transition_runtime/staging/pass160-reference-repair.part-*'
+
+permissions:
+  contents: write
+
+jobs:
+  apply-reference-repair:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/pass160-validated-transition-runtime
+          fetch-depth: 2
+          show-progress: false
+      - name: Verify and materialize tested repair payload
+        run: |
+          set -euo pipefail
+          stage='native_projects/hhs_pass160_validated_transition_runtime/staging'
+          test "$(sha256sum "$stage/pass160-reference-repair.part-00" | awk '{print $1}')" = a99ea3f874d46b65e05a6d8fa48e10615b160b5f63d94705d814dcfbd4ca9cbe
+          test "$(sha256sum "$stage/pass160-reference-repair.part-01" | awk '{print $1}')" = 6363523429fd91862c0e0b2b10774d87df745d2fe884f84e45aba7afd268c708
+          test "$(sha256sum "$stage/pass160-reference-repair.part-02" | awk '{print $1}')" = 681d341e8f36e1660dff549776942723649217c00fa297d521d9f45aff74cacc
+          cat "$stage"/pass160-reference-repair.part-* | base64 -d > /tmp/pass160-reference-repair.tar.gz
+          test "$(sha256sum /tmp/pass160-reference-repair.tar.gz | awk '{print $1}')" = ed7c3415963203377f6dbd609170d78582a23b18f73a51f1ce65f4b867ebdf1d
+          gzip -t /tmp/pass160-reference-repair.tar.gz
+          tar -tzf /tmp/pass160-reference-repair.tar.gz >/dev/null
+          tar -xzf /tmp/pass160-reference-repair.tar.gz -C .
+
+          project='native_projects/hhs_pass160_validated_transition_runtime'
+          rm -f \
+            "$project/assets/source_capsule/pass160_native_source.tar.gz" \
+            "$project/assets/source_capsule/pass160_reference_source.tar.gz" \
+            "$project/assets/source_capsule/chunks/pass160_reference_source.tar.gz.part-00" \
+            "$project/assets/source_capsule/chunks/pass160_reference_source.tar.gz.part-01" \
+            "$project/assets/source_capsule/chunks/pass160_reference_source.tar.gz.part-02" \
+            "$project/assets/source_capsule/SOURCE_CAPSULE_MANIFEST.json" \
+            "$project/assets/source_capsule/SOURCE_CAPSULE_TRANSPORT_V2.json"
+          rm -rf "$stage"
+          rm -f .github/workflows/pass160-reference-repair-staging.yml
+
+          make -C "$project" verify-transport
+          python3 -m py_compile \
+            "$project/python/hhs_pass160/core.py" \
+            "$project/tools/pass160_suite.py" \
+            "$project/api/pass160_routes.py"
+
+      - name: Commit exact repair-forward source set
+        run: |
+          set -euo pipefail
+          git config user.name 'chatgpt-pass160-agent'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git diff --cached --check
+          git commit -m 'Repair Pass 160 reference source transport'
+          git push origin HEAD:agent/pass160-validated-transition-runtime
