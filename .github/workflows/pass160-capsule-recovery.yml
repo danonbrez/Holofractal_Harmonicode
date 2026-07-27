@@ -1,6 +1,10 @@
 name: Pass 160 Capsule Recovery
 
 on:
+  pull_request:
+    paths:
+      - 'native_projects/hhs_pass160_validated_transition_runtime/assets/source_capsule/**'
+      - '.github/workflows/pass160-capsule-recovery.yml'
   push:
     branches:
       - agent/pass160-validated-transition-runtime
