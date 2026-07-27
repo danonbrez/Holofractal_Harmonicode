@@ -24,6 +24,11 @@
       "source": "assets/source_overrides/compare_cross_host.py",
       "target": "tools/compare_cross_host.py",
       "purpose": "serialize matched=true only after two distinct host architectures produce one canonical source root"
+    },
+    {
+      "source": "assets/source_overrides/generate_evidence.py",
+      "target": "tools/generate_evidence.py",
+      "purpose": "parse canonical multi-line JSON reports before evaluating the typed completion predicate"
     }
   ],
   "source_authority": "decoded archive after SHA-256 verification plus declared deterministic overrides",
