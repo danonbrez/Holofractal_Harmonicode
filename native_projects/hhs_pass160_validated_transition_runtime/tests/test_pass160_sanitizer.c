@@ -150,5 +150,3 @@ int main(void) {
     printf("{\"classification\":\"HHS_PASS_160_SANITIZER_AUTHORITY_PATHS_VERIFIED\",\"positive_total\":%llu,\"negative_total\":%llu,\"failures\":%llu}\n", positive_total, negative_total, failures);
     return failures ? EXIT_FAILURE : EXIT_SUCCESS;
 }
-
-/* Repair-forward scope marker: executable semantics unchanged; targeted sanitizer receipt required. */
