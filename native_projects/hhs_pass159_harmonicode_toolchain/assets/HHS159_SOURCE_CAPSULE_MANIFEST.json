@@ -1,11 +1,31 @@
 {
   "schema": "HHS159_SOURCE_CAPSULE_MANIFEST_V1",
   "contract": "HHS-P159-VM81-H216-HCI-C11C",
-  "encoding": "ordered base64 chunks of deterministic gzip tar",
+  "encoding": "ordered base64 chunks of deterministic gzip tar plus deterministic source overrides",
   "archive_sha256": "48b2a82be1e1e8e41eb1013de83a498f262c2d7fdb710c44c8b41d832058d145",
   "archive_bytes": 40011,
-  "decoded_tree": ["CMakeLists.txt", "Makefile", "README.md", "contracts", "examples", "include", "manifests", "schemas", "src", "standard_library", "tests", "tools"],
+  "decoded_tree": [
+    "CMakeLists.txt",
+    "Makefile",
+    "README.md",
+    "contracts",
+    "examples",
+    "include",
+    "manifests",
+    "schemas",
+    "src",
+    "standard_library",
+    "tests",
+    "tools"
+  ],
   "part_count": 9,
-  "source_authority": "decoded archive after SHA-256 verification",
+  "overrides": [
+    {
+      "source": "assets/source_overrides/compare_cross_host.py",
+      "target": "tools/compare_cross_host.py",
+      "purpose": "serialize matched=true only after two distinct host architectures produce one canonical source root"
+    }
+  ],
+  "source_authority": "decoded archive after SHA-256 verification plus declared deterministic overrides",
   "network_required": false
 }
