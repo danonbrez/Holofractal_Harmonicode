@@ -31,6 +31,11 @@
       "purpose": "parse canonical multi-line JSON reports before evaluating the typed completion predicate"
     }
   ],
+  "main_closure_tool": {
+    "path": "assets/source_overrides/close_main.py",
+    "execution_boundary": "GitHub Actions push on refs/heads/main after evidence-closure success",
+    "terminal_classification": "HHS_PASS_159_VM81_HASH216_HARMONICODE_INTERPRETER_AND_C11_NATIVE_COMPILER_VERIFIED"
+  },
   "source_authority": "decoded archive after SHA-256 verification plus declared deterministic overrides",
   "network_required": false
 }

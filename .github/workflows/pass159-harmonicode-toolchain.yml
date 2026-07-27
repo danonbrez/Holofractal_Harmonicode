@@ -94,3 +94,40 @@ jobs:
             native_projects/hhs_pass159_harmonicode_toolchain/evidence/*
             native_projects/hhs_pass159_harmonicode_toolchain/dist/P159_CROSS_ARCHITECTURE_INPUT.json
           if-no-files-found: error
+
+  authoritative-main-closure:
+    needs: [evidence-closure]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Materialize main-closure tooling
+        working-directory: native_projects/hhs_pass159_harmonicode_toolchain
+        run: make materialize
+      - uses: actions/download-artifact@v4
+        with:
+          name: pass159-validation-state
+          path: native_projects
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: pass159-root-*
+          path: native_projects/hhs_pass159_harmonicode_toolchain/dist/cross-host
+      - uses: actions/download-artifact@v4
+        with:
+          name: hhs-pass159-complete-evidence
+          path: native_projects/hhs_pass159_harmonicode_toolchain
+      - name: Revalidate canonical cross-host identity
+        working-directory: native_projects/hhs_pass159_harmonicode_toolchain
+        run: python3 tools/compare_cross_host.py
+      - name: Emit authoritative main completion receipt
+        working-directory: native_projects/hhs_pass159_harmonicode_toolchain
+        run: python3 assets/source_overrides/close_main.py
+      - name: Upload terminal Pass 159 closure
+        uses: actions/upload-artifact@v4
+        with:
+          name: hhs-pass159-authoritative-main-closure
+          path: |
+            native_projects/hhs_pass159_harmonicode_toolchain/evidence/P159_COMPLETION_RECEIPT.json
+            native_projects/hhs_pass159_harmonicode_toolchain/evidence/P159_AUTHORITATIVE_MAIN_CLOSURE.json
+          if-no-files-found: error
