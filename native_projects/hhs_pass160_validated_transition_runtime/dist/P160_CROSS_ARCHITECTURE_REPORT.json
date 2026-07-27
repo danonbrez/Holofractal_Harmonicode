@@ -1,0 +1,30 @@
+{
+  "failures": 0,
+  "machine_count": 2,
+  "machines": [
+    "aarch64",
+    "x86_64"
+  ],
+  "matched": true,
+  "records": [
+    {
+      "canonical_root": "0b1fc8acc935539c68272ada161cbf3e66fe48908e0ffcd16076161438883545",
+      "machine": "x86_64",
+      "matched": true,
+      "path": "dist/P160_CANONICAL_ROOT_x86_64.json",
+      "schema": "P160_CANONICAL_ROOT_V1"
+    },
+    {
+      "canonical_root": "0b1fc8acc935539c68272ada161cbf3e66fe48908e0ffcd16076161438883545",
+      "machine": "aarch64",
+      "matched": true,
+      "path": "dist/cross-host/aarch64/P160_CANONICAL_ROOT_aarch64.json",
+      "schema": "P160_CANONICAL_ROOT_V1"
+    }
+  ],
+  "root_count": 1,
+  "roots": [
+    "0b1fc8acc935539c68272ada161cbf3e66fe48908e0ffcd16076161438883545"
+  ],
+  "schema": "P160_CROSS_ARCHITECTURE_REPORT_V1"
+}

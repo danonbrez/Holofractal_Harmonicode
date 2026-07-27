@@ -1,0 +1,14 @@
+{
+  "aarch64_canonical_replay": "success",
+  "bounded_final_gate": "success",
+  "computational_validation_complete": true,
+  "original_evidence_closure": "failure",
+  "original_failure_scope": "artifact path installation only",
+  "repair_forward": true,
+  "repair_forward_evidence_closure": "success",
+  "schema": "P160_GITHUB_FINAL_GATE_RUN_V2",
+  "target_final_gate_commit": "2da4ac4f98653dda83a02d8b3501130029f0681f",
+  "terminal_artifact_installed": true,
+  "workflow_run_id": 30314852968,
+  "workflow_run_url": "https://github.com/danonbrez/Holofractal_Harmonicode/actions/runs/30314852968"
+}
