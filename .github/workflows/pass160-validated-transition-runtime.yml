@@ -20,13 +20,32 @@ jobs:
   capsule-integrity:
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    env:
+      SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
     steps:
-      - uses: actions/checkout@v4
-        with:
-          show-progress: false
-      - name: Verify chunks and reconstruct source capsules
-        working-directory: native_projects/hhs_pass160_validated_transition_runtime
-        run: make materialize
+      - name: Download, verify, and reconstruct immutable chunks
+        run: |
+          set -eu
+          base="https://raw.githubusercontent.com/danonbrez/Holofractal_Harmonicode/${SOURCE_SHA}/native_projects/hhs_pass160_validated_transition_runtime/assets/source_capsule/chunks"
+          fetch_check() { name="$1"; expected="$2"; curl --fail --location --silent --show-error "$base/$name" -o "$name"; actual=$(sha256sum "$name" | awk '{print $1}'); echo "PASS160_CHUNK file=$name bytes=$(wc -c < "$name") expected=$expected actual=$actual"; test "$actual" = "$expected"; }
+          fetch_check pass160_native_source.tar.gz.part-00 68017ec7746df4341593013a473000cfd3bbdbcc1ab40b109ebcf02fc7030d6f
+          fetch_check pass160_native_source.tar.gz.part-01 cc499cea47e2e3b80684fe29b8130b135a8be9c45528fdf606cfa5e01e15ed05
+          fetch_check pass160_native_source.tar.gz.part-02 1f53377d0f54e3c484ca880b81573c663e55f261d0244ab86ba6e3fd51f0c682
+          fetch_check pass160_reference_source.tar.gz.part-00 a816840263b5a9e4bdd498528f7552d52af92bb2776334d9297f7a96af38ed8f
+          fetch_check pass160_reference_source.tar.gz.part-01 0e4cc4ea0ee0962f7c0e00cdf6429f52bfe4fce214ac582833e75d1354917405
+          fetch_check pass160_reference_source.tar.gz.part-02 8d7997a3710740a080286ad6ee60a4fb7c8c8eded6ae41180b944904b3131c49
+          cat pass160_native_source.tar.gz.part-* > pass160_native_source.tar.gz
+          cat pass160_reference_source.tar.gz.part-* > pass160_reference_source.tar.gz
+          native=$(sha256sum pass160_native_source.tar.gz | awk '{print $1}')
+          reference=$(sha256sum pass160_reference_source.tar.gz | awk '{print $1}')
+          echo "PASS160_NATIVE_ARCHIVE bytes=$(wc -c < pass160_native_source.tar.gz) actual=$native"
+          echo "PASS160_REFERENCE_ARCHIVE bytes=$(wc -c < pass160_reference_source.tar.gz) actual=$reference"
+          test "$native" = f14c0f49cd6cd0c627d546279c38066968140debcc3911c95af0b42f95a22270
+          test "$reference" = 7cf178736677024b0b3e00ba65d8bd08f5297b69db9993baf39c85b909096141
+          gzip -t pass160_native_source.tar.gz
+          gzip -t pass160_reference_source.tar.gz
+          tar -tzf pass160_native_source.tar.gz >/dev/null
+          tar -tzf pass160_reference_source.tar.gz >/dev/null
 
   full-validation:
     needs: [capsule-integrity]
