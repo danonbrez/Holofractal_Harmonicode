@@ -1,0 +1,138 @@
+name: Pass 160 Final Gate Status Collector
+
+on:
+  push:
+    branches:
+      - agent/pass160-validated-transition-runtime
+    paths:
+      - 'HHS_PASS_160_FINAL_STATUS_REQUEST.json'
+
+permissions:
+  actions: read
+  contents: write
+
+jobs:
+  collect-final-status:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/pass160-validated-transition-runtime
+          fetch-depth: 2
+          show-progress: false
+      - name: Resolve exact final workflow run
+        id: resolve
+        run: |
+          set -euo pipefail
+          target=$(python3 -c "import json; print(json.load(open('HHS_PASS_160_FINAL_STATUS_REQUEST.json'))['target_final_gate_commit'])")
+          repo="$GITHUB_REPOSITORY"
+          found=false
+          for attempt in $(seq 1 120); do
+            gh api --method GET "repos/$repo/actions/workflows/pass160-final-delivery.yml/runs" -f branch=agent/pass160-validated-transition-runtime -f event=push -f per_page=30 > /tmp/runs.json
+            python3 - "$target" <<'PY' > /tmp/selected.json
+          import json,sys
+          target=sys.argv[1]
+          data=json.load(open('/tmp/runs.json'))
+          matches=[r for r in data.get('workflow_runs',[]) if r.get('head_sha')==target and r.get('name')=='Pass 160 One Bounded Final Delivery Gate']
+          print(json.dumps(matches[0] if matches else {}))
+          PY
+            run_id=$(python3 -c "import json; print(json.load(open('/tmp/selected.json')).get('id',''))")
+            if test -n "$run_id"; then
+              found=true
+              status=$(python3 -c "import json; print(json.load(open('/tmp/selected.json')).get('status',''))")
+              echo "PASS160_FINAL_RUN id=$run_id status=$status attempt=$attempt"
+              if test "$status" = completed; then break; fi
+            fi
+            sleep 10
+          done
+          test "$found" = true
+          run_id=$(python3 -c "import json; print(json.load(open('/tmp/selected.json'))['id'])")
+          conclusion=$(python3 -c "import json; print(json.load(open('/tmp/selected.json')).get('conclusion') or '')")
+          html_url=$(python3 -c "import json; print(json.load(open('/tmp/selected.json'))['html_url'])")
+          status=$(python3 -c "import json; print(json.load(open('/tmp/selected.json'))['status'])")
+          test "$status" = completed
+          echo "target=$target" >> "$GITHUB_OUTPUT"
+          echo "run_id=$run_id" >> "$GITHUB_OUTPUT"
+          echo "conclusion=$conclusion" >> "$GITHUB_OUTPUT"
+          echo "html_url=$html_url" >> "$GITHUB_OUTPUT"
+      - name: Download terminal artifact on success
+        if: steps.resolve.outputs.conclusion == 'success'
+        run: |
+          set -euo pipefail
+          run_id='${{ steps.resolve.outputs.run_id }}'
+          expected="hhs-pass160-terminal-${{ steps.resolve.outputs.target }}"
+          gh api "repos/$GITHUB_REPOSITORY/actions/runs/$run_id/artifacts" > /tmp/artifacts.json
+          artifact_id=$(python3 - "$expected" <<'PY'
+          import json,sys
+          expected=sys.argv[1]
+          data=json.load(open('/tmp/artifacts.json'))
+          matches=[a for a in data.get('artifacts',[]) if a.get('name')==expected and not a.get('expired')]
+          if not matches: raise SystemExit(1)
+          print(matches[0]['id'])
+          PY
+          )
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/$artifact_id/zip" > /tmp/pass160-terminal.zip
+          mkdir -p /tmp/pass160-terminal
+          unzip -q /tmp/pass160-terminal.zip -d /tmp/pass160-terminal
+      - name: Record workflow status and terminal evidence
+        run: |
+          set -euo pipefail
+          project='native_projects/hhs_pass160_validated_transition_runtime'
+          mkdir -p "$project/evidence/pass160" "$project/dist"
+          if test '${{ steps.resolve.outputs.conclusion }}' = success; then
+            test -d /tmp/pass160-terminal/evidence/pass160
+            cp -a /tmp/pass160-terminal/evidence/pass160/. "$project/evidence/pass160/"
+            cp -a /tmp/pass160-terminal/dist/P160_CROSS_ARCHITECTURE_REPORT.json "$project/dist/"
+            cp -a /tmp/pass160-terminal/dist/P160_TERMINAL_EVIDENCE.tar.gz "$project/dist/"
+            cp -a /tmp/pass160-terminal/dist/P160_TERMINAL_EVIDENCE_PACKAGE.json "$project/dist/"
+            cp -a /tmp/pass160-terminal/HHS_PASS_160_RELEASE_BUNDLE.json "$project/"
+            cp -a /tmp/pass160-terminal/HHS_PASS_160_FILE_MANIFEST.json "$project/"
+            cp -a /tmp/pass160-terminal/HHS_PASS_160_RECEIPT_INDEX.json "$project/"
+          fi
+          python3 - <<'PY'
+          import json,os
+          from pathlib import Path
+          payload={
+            'schema':'P160_GITHUB_FINAL_GATE_RUN_V1',
+            'target_final_gate_commit':os.environ['TARGET'],
+            'workflow_run_id':int(os.environ['RUN_ID']),
+            'workflow_run_url':os.environ['RUN_URL'],
+            'status':'completed',
+            'conclusion':os.environ['CONCLUSION'],
+            'terminal_artifact_installed':os.environ['CONCLUSION']=='success',
+            'repair_forward':True,
+          }
+          Path('native_projects/hhs_pass160_validated_transition_runtime/evidence/pass160/P160_GITHUB_FINAL_GATE_RUN.json').write_text(json.dumps(payload,indent=2,sort_keys=True)+'\n')
+          PY
+        env:
+          TARGET: ${{ steps.resolve.outputs.target }}
+          RUN_ID: ${{ steps.resolve.outputs.run_id }}
+          RUN_URL: ${{ steps.resolve.outputs.html_url }}
+          CONCLUSION: ${{ steps.resolve.outputs.conclusion }}
+      - name: Commit collected final state
+        run: |
+          set -euo pipefail
+          git config user.name 'hhs-pass160-final-collector'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git pull --rebase origin agent/pass160-validated-transition-runtime
+          git add -f native_projects/hhs_pass160_validated_transition_runtime/evidence/pass160/P160_GITHUB_FINAL_GATE_RUN.json
+          if test '${{ steps.resolve.outputs.conclusion }}' = success; then
+            git add -f \
+              native_projects/hhs_pass160_validated_transition_runtime/evidence/pass160 \
+              native_projects/hhs_pass160_validated_transition_runtime/dist/P160_CROSS_ARCHITECTURE_REPORT.json \
+              native_projects/hhs_pass160_validated_transition_runtime/dist/P160_TERMINAL_EVIDENCE.tar.gz \
+              native_projects/hhs_pass160_validated_transition_runtime/dist/P160_TERMINAL_EVIDENCE_PACKAGE.json \
+              native_projects/hhs_pass160_validated_transition_runtime/HHS_PASS_160_RELEASE_BUNDLE.json \
+              native_projects/hhs_pass160_validated_transition_runtime/HHS_PASS_160_FILE_MANIFEST.json \
+              native_projects/hhs_pass160_validated_transition_runtime/HHS_PASS_160_RECEIPT_INDEX.json
+            message='Record Pass 160 terminal GitHub evidence'
+          else
+            message='Record Pass 160 final-gate failure status'
+          fi
+          git diff --cached --check
+          git commit -m "$message"
+          git push origin HEAD:agent/pass160-validated-transition-runtime
+          test '${{ steps.resolve.outputs.conclusion }}' = success
