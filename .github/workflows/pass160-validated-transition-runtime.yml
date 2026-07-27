@@ -17,11 +17,34 @@ permissions:
   contents: read
 
 jobs:
+  capsule-integrity:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          show-progress: false
+      - name: Report and verify source capsules
+        working-directory: native_projects/hhs_pass160_validated_transition_runtime
+        run: |
+          set -eu
+          sha256sum assets/source_capsule/pass160_native_source.tar.gz
+          sha256sum assets/source_capsule/pass160_reference_source.tar.gz
+          wc -c assets/source_capsule/pass160_native_source.tar.gz assets/source_capsule/pass160_reference_source.tar.gz
+          gzip -t assets/source_capsule/pass160_native_source.tar.gz
+          gzip -t assets/source_capsule/pass160_reference_source.tar.gz
+          tar -tzf assets/source_capsule/pass160_native_source.tar.gz >/dev/null
+          tar -tzf assets/source_capsule/pass160_reference_source.tar.gz >/dev/null
+          make materialize
+
   full-validation:
+    needs: [capsule-integrity]
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
+        with:
+          show-progress: false
       - name: Materialize SHA-256 committed source
         working-directory: native_projects/hhs_pass160_validated_transition_runtime
         run: make materialize
@@ -44,6 +67,7 @@ jobs:
           if-no-files-found: error
 
   cross-architecture:
+    needs: [capsule-integrity]
     strategy:
       fail-fast: false
       matrix:
@@ -58,6 +82,8 @@ jobs:
     timeout-minutes: 35
     steps:
       - uses: actions/checkout@v4
+        with:
+          show-progress: false
       - name: Materialize source and execute host replay gates
         working-directory: native_projects/hhs_pass160_validated_transition_runtime
         env:
@@ -79,6 +105,8 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
+        with:
+          show-progress: false
       - name: Materialize evidence tooling
         working-directory: native_projects/hhs_pass160_validated_transition_runtime
         run: make materialize
