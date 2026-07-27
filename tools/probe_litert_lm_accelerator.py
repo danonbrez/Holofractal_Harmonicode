@@ -16,7 +16,12 @@ import platform
 import shutil
 import subprocess
 import sys
+from pathlib import Path
 from typing import Any, Dict
+
+ROOT_DIR = Path(__file__).resolve().parents[1]
+if str(ROOT_DIR) not in sys.path:
+    sys.path.insert(0, str(ROOT_DIR))
 
 from hhs_backend.runtime.hhs_vulkan_loader_runtime_v1 import inspect_vulkan_loader
 
