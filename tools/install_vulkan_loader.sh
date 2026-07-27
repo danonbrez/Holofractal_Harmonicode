@@ -46,46 +46,57 @@ loader_ready() {
 }
 
 install_packages() {
-  local loader_packages=()
-  local tools_packages=()
+  local manager="$1"
+  shift
+  local packages=("$@")
+  case "$manager" in
+    apt)
+      if [[ "${HHS_VULKAN_SKIP_PACKAGE_INDEX_UPDATE:-0}" != "1" ]]; then
+        run_privileged apt-get update
+      fi
+      run_privileged env DEBIAN_FRONTEND=noninteractive \
+        apt-get install -y --no-install-recommends "${packages[@]}"
+      ;;
+    dnf) run_privileged dnf install -y "${packages[@]}" ;;
+    yum) run_privileged yum install -y "${packages[@]}" ;;
+    pacman) run_privileged pacman -Sy --noconfirm --needed "${packages[@]}" ;;
+    apk) run_privileged apk add --no-cache "${packages[@]}" ;;
+    zypper) run_privileged zypper --non-interactive install "${packages[@]}" ;;
+    *) echo "[HHS] Unsupported Vulkan package manager adapter: $manager" >&2; return 69 ;;
+  esac
+}
+
+install_distribution_loader() {
+  local manager=""
+  local packages=()
 
   if command -v apt-get >/dev/null 2>&1; then
-    loader_packages=(libvulkan1)
-    tools_packages=(vulkan-tools)
-    if [[ "${HHS_VULKAN_SKIP_PACKAGE_INDEX_UPDATE:-0}" != "1" ]]; then
-      run_privileged apt-get update
-    fi
-    run_privileged env DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-      "${loader_packages[@]}" $([[ "$INSTALL_TOOLS" == "1" ]] && printf '%s ' "${tools_packages[@]}")
+    manager="apt"
+    packages=(libvulkan1)
   elif command -v dnf >/dev/null 2>&1; then
-    loader_packages=(vulkan-loader)
-    tools_packages=(vulkan-tools)
-    run_privileged dnf install -y "${loader_packages[@]}" \
-      $([[ "$INSTALL_TOOLS" == "1" ]] && printf '%s ' "${tools_packages[@]}")
+    manager="dnf"
+    packages=(vulkan-loader)
   elif command -v yum >/dev/null 2>&1; then
-    loader_packages=(vulkan-loader)
-    tools_packages=(vulkan-tools)
-    run_privileged yum install -y "${loader_packages[@]}" \
-      $([[ "$INSTALL_TOOLS" == "1" ]] && printf '%s ' "${tools_packages[@]}")
+    manager="yum"
+    packages=(vulkan-loader)
   elif command -v pacman >/dev/null 2>&1; then
-    loader_packages=(vulkan-icd-loader)
-    tools_packages=(vulkan-tools)
-    run_privileged pacman -Sy --noconfirm --needed "${loader_packages[@]}" \
-      $([[ "$INSTALL_TOOLS" == "1" ]] && printf '%s ' "${tools_packages[@]}")
+    manager="pacman"
+    packages=(vulkan-icd-loader)
   elif command -v apk >/dev/null 2>&1; then
-    loader_packages=(vulkan-loader)
-    tools_packages=(vulkan-tools)
-    run_privileged apk add --no-cache "${loader_packages[@]}" \
-      $([[ "$INSTALL_TOOLS" == "1" ]] && printf '%s ' "${tools_packages[@]}")
+    manager="apk"
+    packages=(vulkan-loader)
   elif command -v zypper >/dev/null 2>&1; then
-    loader_packages=(libvulkan1)
-    tools_packages=(vulkan-tools)
-    run_privileged zypper --non-interactive install "${loader_packages[@]}" \
-      $([[ "$INSTALL_TOOLS" == "1" ]] && printf '%s ' "${tools_packages[@]}")
+    manager="zypper"
+    packages=(libvulkan1)
   else
     echo "[HHS] No supported Linux package manager found for Vulkan loader installation" >&2
     return 69
   fi
+
+  if [[ "$INSTALL_TOOLS" == "1" ]]; then
+    packages+=(vulkan-tools)
+  fi
+  install_packages "$manager" "${packages[@]}"
 
   if command -v ldconfig >/dev/null 2>&1; then
     run_privileged ldconfig || true
@@ -116,7 +127,7 @@ elif [[ "$INSTALL_MODE" == "verify-only" ]]; then
   exit 1
 else
   echo "[HHS] Installing Vulkan loader packages for the native graphics runtime"
-  install_packages
+  install_distribution_loader
 fi
 
 mkdir -p "$RUNTIME_ROOT"
