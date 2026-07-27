@@ -1,0 +1,76 @@
+{
+  "authoritative_main_commit": "c51c2ed6be2043ea5c1152c8bbf4d8f3e5242bce",
+  "checks": {
+    "authoritative_main": true,
+    "cross_architecture": true,
+    "equivalence_programs": true,
+    "full_failures_zero": true,
+    "hash216_coverage": true,
+    "inherited_negative": true,
+    "inherited_positive": true,
+    "negative_matrix": true,
+    "no_fallback": true,
+    "positive_matrix": true,
+    "pre_main_omega": true,
+    "vm81_coverage": true
+  },
+  "classification": "HHS_PASS_159_VM81_HASH216_HARMONICODE_INTERPRETER_AND_C11_NATIVE_COMPILER_VERIFIED",
+  "cross_architecture": {
+    "classification": "HHS159_CROSS_ARCHITECTURE_CANONICAL_ROOT_VERIFIED",
+    "machine_count": 2,
+    "matched": true,
+    "reports": [
+      {
+        "canonical_source_root": "4152f4482c8d61e558cfa44bdb50794fd104ca9fed17078dda7a7eaca46f4e00",
+        "compiler": "gcc",
+        "files": 54,
+        "machine": "aarch64",
+        "schema": "P159_CANONICAL_HOST_ROOT_V1",
+        "system": "Linux"
+      },
+      {
+        "canonical_source_root": "4152f4482c8d61e558cfa44bdb50794fd104ca9fed17078dda7a7eaca46f4e00",
+        "compiler": "gcc",
+        "files": 54,
+        "machine": "x86_64",
+        "schema": "P159_CANONICAL_HOST_ROOT_V1",
+        "system": "Linux"
+      }
+    ],
+    "root_count": 1
+  },
+  "full_validation": {
+    "abi_calls": 45,
+    "callable_opcode_coverage": 45,
+    "classification": "HHS_PASS_159_IMPLEMENTATION_VERIFIED_PENDING_AUTHORITATIVE_MAIN_CLOSURE",
+    "equivalence_programs": 72,
+    "failures": 0,
+    "fallback_used": false,
+    "hash216_position_coverage": 216,
+    "language_features": 50,
+    "negative_total": 159,
+    "positive_total": 487,
+    "terminal_claimed": false,
+    "vm81_cell_coverage": 81
+  },
+  "inherited_pass158": {
+    "abi_lifecycle": 18,
+    "api_descriptors": 18,
+    "atomic": 18,
+    "binding_surfaces": 6,
+    "classification": "HHS_PASS_158_NATIVE_MATRIX_VERIFIED",
+    "delta": 18,
+    "dependency": 12,
+    "hash72_replay": 72,
+    "identity": 2,
+    "loshu": 9,
+    "negative_total": 81,
+    "positive_total": 272,
+    "serialization": 18,
+    "vm81": 81
+  },
+  "main_closure_root": "6b23e6c9f1c293146e1a17361aea8e79559fbc04cdce1b59c01a9512f46dc3ae",
+  "omega_159": true,
+  "pre_main_evidence_root": "8e3468d7b5b0a8c43402bb19d156caad8df06cd2d49e3b625211182262cb3aa5",
+  "schema": "P159_AUTHORITATIVE_MAIN_CLOSURE_V1"
+}
