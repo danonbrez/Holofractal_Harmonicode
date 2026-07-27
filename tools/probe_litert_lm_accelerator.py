@@ -1,16 +1,13 @@
 #!/usr/bin/env python3
 """Probe the accelerator substrate required by the HHS LiteRT-LM provider.
 
-This probe does not install GPU drivers. It verifies that the host exposes the
-minimum local execution substrate before HHS attempts to start LiteRT-LM in GPU
-mode. Linux and Windows GPU execution require a Vulkan loader and a visible GPU
-or accelerator device. macOS GPU execution uses Metal.
+The shared runtime graphics service owns Vulkan loader discovery and receipts.
+This probe adds GPU device exposure and vulkaninfo enumeration checks. It never
+installs or substitutes a vendor driver.
 """
 from __future__ import annotations
 
 import argparse
-import ctypes
-import ctypes.util
 import glob
 import hashlib
 import json
@@ -19,22 +16,12 @@ import platform
 import shutil
 import subprocess
 import sys
-from typing import Any, Dict, Iterable
+from typing import Any, Dict
 
-SCHEMA = "HHS_LITERT_LM_ACCELERATOR_PROBE_V1"
+from hhs_backend.runtime.hhs_vulkan_loader_runtime_v1 import inspect_vulkan_loader
+
+SCHEMA = "HHS_LITERT_LM_ACCELERATOR_PROBE_V2"
 VALID_BACKENDS = {"auto", "cpu", "gpu", "npu"}
-
-
-def _load_first(candidates: Iterable[str]) -> tuple[object | None, str | None, str | None]:
-    errors = []
-    for candidate in candidates:
-        if not candidate:
-            continue
-        try:
-            return ctypes.CDLL(candidate), candidate, None
-        except OSError as exc:
-            errors.append(f"{candidate}: {exc}")
-    return None, None, "; ".join(errors) or "no loader candidate found"
 
 
 def _linux_gpu_nodes() -> list[str]:
@@ -64,11 +51,10 @@ def _vulkan_summary() -> Dict[str, Any]:
         timeout=20,
         check=False,
     )
-    summary = completed.stdout[-12000:]
     return {
         "vulkaninfo_present": True,
         "vulkaninfo_ok": completed.returncode == 0,
-        "vulkaninfo_summary": summary,
+        "vulkaninfo_summary": completed.stdout[-12000:],
     }
 
 
@@ -78,6 +64,7 @@ def _probe_gpu() -> Dict[str, Any]:
         "platform": system,
         "accelerator_api": None,
         "loader": None,
+        "loader_receipt_hash72": None,
         "device_nodes": [],
         "ready": False,
         "reason": "",
@@ -92,28 +79,30 @@ def _probe_gpu() -> Dict[str, Any]:
         return result
 
     if system == "Linux":
-        candidates = [
-            ctypes.util.find_library("vulkan") or "",
-            "libvulkan.so.1",
-            "libvulkan.so",
-        ]
-        loader, loader_name, error = _load_first(candidates)
+        loader = inspect_vulkan_loader()
         nodes = _linux_gpu_nodes()
         summary = _vulkan_summary()
         result.update(summary)
         result.update({
             "accelerator_api": "vulkan",
-            "loader": loader_name,
+            "loader": loader.get("loader_path"),
+            "loader_source": loader.get("loader_source"),
+            "loader_ready": bool(loader.get("loader_ready")),
+            "loader_receipt_hash72": loader.get("vulkan_loader_receipt_hash72"),
+            "icd_manifest_count": loader.get("icd_manifest_count", 0),
+            "driver_manifest_ready": bool(loader.get("driver_ready")),
             "device_nodes": nodes,
         })
-        del loader
-        if loader_name is None:
-            result["reason"] = f"Vulkan loader unavailable: {error}"
+        if not loader.get("loader_ready"):
+            result["reason"] = "Vulkan loader unavailable or missing required entry points"
+            return result
+        if not loader.get("driver_ready"):
+            result["reason"] = "Vulkan loader is present, but no usable ICD manifest was discovered"
             return result
         if not nodes:
             result["reason"] = (
-                "Vulkan loader is present, but no render, NVIDIA, or WSL GPU "
-                "device is exposed to this process"
+                "Vulkan loader and ICD manifest are present, but no render, NVIDIA, "
+                "or WSL GPU device is exposed to this process"
             )
             return result
         if summary["vulkaninfo_present"] and not summary["vulkaninfo_ok"]:
@@ -121,28 +110,15 @@ def _probe_gpu() -> Dict[str, Any]:
             return result
         result.update({
             "ready": True,
-            "reason": "Vulkan loader and GPU device exposure verified",
+            "reason": "HHS graphics Vulkan loader, ICD manifest, and GPU device exposure verified",
         })
         return result
 
     if system == "Windows":
-        loader, loader_name, error = _load_first(["vulkan-1.dll"])
-        summary = _vulkan_summary()
-        result.update(summary)
         result.update({
             "accelerator_api": "vulkan",
-            "loader": loader_name,
-        })
-        del loader
-        if loader_name is None:
-            result["reason"] = f"Vulkan loader unavailable: {error}"
-            return result
-        if summary["vulkaninfo_present"] and not summary["vulkaninfo_ok"]:
-            result["reason"] = "vulkaninfo could not enumerate a usable Vulkan device"
-            return result
-        result.update({
-            "ready": True,
-            "reason": "Windows Vulkan loader is available",
+            "ready": False,
+            "reason": "Windows Vulkan probing requires the native HHS Windows adapter",
         })
         return result
 
