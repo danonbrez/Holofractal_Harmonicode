@@ -16,16 +16,15 @@ if "$LITERT_LM_BIN" list 2>/dev/null | awk 'NR > 1 {print $1}' | grep -Fxq "$MOD
   exit 0
 fi
 
-ARGS=(
-  import
+ARGS=(import)
+if [[ -n "${HUGGING_FACE_HUB_TOKEN:-}" ]]; then
+  ARGS+=(--huggingface-token "$HUGGING_FACE_HUB_TOKEN")
+fi
+ARGS+=(
   --from-huggingface-repo "$MODEL_REPOSITORY"
   "$MODEL_FILENAME"
   "$MODEL_ID"
 )
-
-if [[ -n "${HUGGING_FACE_HUB_TOKEN:-}" ]]; then
-  ARGS+=(--huggingface-token "$HUGGING_FACE_HUB_TOKEN")
-fi
 
 echo "[HHS] Importing LiteRT-LM model $MODEL_ID from $MODEL_REPOSITORY"
 exec "$LITERT_LM_BIN" "${ARGS[@]}"
