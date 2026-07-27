@@ -1,0 +1,35 @@
+{
+  "schema": "HHS160_SOURCE_CAPSULE_TRANSPORT_V2",
+  "contract": "HHS-P160-FPPORT-VTR",
+  "mode": "ordered_sha256_verified_chunks",
+  "supersedes_truncated_whole_blob_transport": true,
+  "legacy_whole_blob_files_are_not_used": true,
+  "capsules": {
+    "native": {
+      "bytes": 24549,
+      "sha256": "f14c0f49cd6cd0c627d546279c38066968140debcc3911c95af0b42f95a22270",
+      "chunks": [
+        {"file":"chunks/pass160_native_source.tar.gz.part-00","bytes":8192,"sha256":"68017ec7746df4341593013a473000cfd3bbdbcc1ab40b109ebcf02fc7030d6f"},
+        {"file":"chunks/pass160_native_source.tar.gz.part-01","bytes":8192,"sha256":"cc499cea47e2e3b80684fe29b8130b135a8be9c45528fdf606cfa5e01e15ed05"},
+        {"file":"chunks/pass160_native_source.tar.gz.part-02","bytes":8165,"sha256":"1f53377d0f54e3c484ca880b81573c663e55f261d0244ab86ba6e3fd51f0c682"}
+      ]
+    },
+    "reference": {
+      "bytes": 23559,
+      "sha256": "7cf178736677024b0b3e00ba65d8bd08f5297b69db9993baf39c85b909096141",
+      "chunks": [
+        {"file":"chunks/pass160_reference_source.tar.gz.part-00","bytes":8192,"sha256":"a816840263b5a9e4bdd498528f7552d52af92bb2776334d9297f7a96af38ed8f"},
+        {"file":"chunks/pass160_reference_source.tar.gz.part-01","bytes":8192,"sha256":"0e4cc4ea0ee0962f7c0e00cdf6429f52bfe4fce214ac582833e75d1354917405"},
+        {"file":"chunks/pass160_reference_source.tar.gz.part-02","bytes":7175,"sha256":"8d7997a3710740a080286ad6ee60a4fb7c8c8eded6ae41180b944904b3131c49"}
+      ]
+    }
+  },
+  "verification_order": [
+    "verify each chunk SHA-256",
+    "concatenate chunks in listed order",
+    "verify reconstructed whole-archive SHA-256",
+    "verify gzip and tar structure",
+    "extract source",
+    "execute build and tests"
+  ]
+}

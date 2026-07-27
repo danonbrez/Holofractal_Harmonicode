@@ -20,27 +20,13 @@ jobs:
   capsule-integrity:
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    env:
-      SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
-      NATIVE_SHA256: f14c0f49cd6cd0c627d546279c38066968140debcc3911c95af0b42f95a22270
-      REFERENCE_SHA256: 7cf178736677024b0b3e00ba65d8bd08f5297b69db9993baf39c85b909096141
     steps:
-      - name: Download and verify immutable source capsules
-        run: |
-          set -eu
-          base="https://raw.githubusercontent.com/danonbrez/Holofractal_Harmonicode/${SOURCE_SHA}/native_projects/hhs_pass160_validated_transition_runtime/assets/source_capsule"
-          curl --fail --location --silent --show-error "$base/pass160_native_source.tar.gz" --output pass160_native_source.tar.gz
-          curl --fail --location --silent --show-error "$base/pass160_reference_source.tar.gz" --output pass160_reference_source.tar.gz
-          native_actual=$(sha256sum pass160_native_source.tar.gz | awk '{print $1}')
-          reference_actual=$(sha256sum pass160_reference_source.tar.gz | awk '{print $1}')
-          echo "PASS160_NATIVE_ARCHIVE bytes=$(wc -c < pass160_native_source.tar.gz) expected=$NATIVE_SHA256 actual=$native_actual"
-          echo "PASS160_REFERENCE_ARCHIVE bytes=$(wc -c < pass160_reference_source.tar.gz) expected=$REFERENCE_SHA256 actual=$reference_actual"
-          test "$native_actual" = "$NATIVE_SHA256"
-          test "$reference_actual" = "$REFERENCE_SHA256"
-          gzip -t pass160_native_source.tar.gz
-          gzip -t pass160_reference_source.tar.gz
-          tar -tzf pass160_native_source.tar.gz >/dev/null
-          tar -tzf pass160_reference_source.tar.gz >/dev/null
+      - uses: actions/checkout@v4
+        with:
+          show-progress: false
+      - name: Verify chunks and reconstruct source capsules
+        working-directory: native_projects/hhs_pass160_validated_transition_runtime
+        run: make materialize
 
   full-validation:
     needs: [capsule-integrity]
@@ -50,9 +36,6 @@ jobs:
       - uses: actions/checkout@v4
         with:
           show-progress: false
-      - name: Materialize SHA-256 committed source
-        working-directory: native_projects/hhs_pass160_validated_transition_runtime
-        run: make materialize
       - name: Execute complete Pass 160 validation
         working-directory: native_projects/hhs_pass160_validated_transition_runtime
         run: make verify
@@ -89,12 +72,11 @@ jobs:
       - uses: actions/checkout@v4
         with:
           show-progress: false
-      - name: Materialize source and execute host replay gates
+      - name: Execute host replay gates
         working-directory: native_projects/hhs_pass160_validated_transition_runtime
         env:
           CC: ${{ matrix.compiler }}
         run: |
-          make materialize
           make native-test python-test differential fuzz
           python3 tools/canonical_root.py
       - name: Upload canonical host root
