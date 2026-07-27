@@ -1,0 +1,14 @@
+{
+  "schema": "HHS_PASS_160_EVIDENCE_REPAIR_REQUEST_V1",
+  "contract": "HHS-P160-FPPORT-VTR",
+  "final_workflow_run_id": 30314852968,
+  "final_gate_commit": "2da4ac4f98653dda83a02d8b3501130029f0681f",
+  "x86_artifact_id": 8671768765,
+  "x86_artifact_sha256": "9edd4c3bc0009be2317ff1a58857555ee2264d6738aa7601afb7a956f477394c",
+  "aarch64_artifact_id": 8671766892,
+  "aarch64_artifact_sha256": "6180a82f49f32543c63249d0b0ec306cca4057d7094b4a7bd8784765448d6d78",
+  "failed_scope": "evidence artifact path mapping only",
+  "validation_reexecution_allowed": false,
+  "repair_forward": true,
+  "terminal_classification_reserved": "HHS_PASS_160_FIBONACCI_PRIME_PSEUDORANDOM_OVERLAP_RECEIPT_TIP_VALIDATED_TRANSITION_RUNTIME_VERIFIED"
+}
