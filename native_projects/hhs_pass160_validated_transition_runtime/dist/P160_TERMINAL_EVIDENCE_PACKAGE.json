@@ -1,0 +1,15 @@
+{
+  "archive": "dist/P160_TERMINAL_EVIDENCE.tar.gz",
+  "archive_bytes": 4789,
+  "archive_sha256": "7a91fd1a656e7d791f3f51b4a8582f508697ef7de712c59166d8a165d3290c17",
+  "bounded_final_gate_count": 1,
+  "classification": "HHS_PASS_160_FIBONACCI_PRIME_PSEUDORANDOM_OVERLAP_RECEIPT_TIP_VALIDATED_TRANSITION_RUNTIME_VERIFIED",
+  "completion_receipt_sha256": "a8b1811650d2694566c00be0bf72ff16ff8d2588d51324ae8f825fb938622c3f",
+  "contract": "HHS-P160-FPPORT-VTR",
+  "integrity_verified": true,
+  "release_bundle_sha256": "c0ec91278176c9321288cc67a03310408d69ba23fd5e14ec5746476245ac2d2c",
+  "repair_closure_sha256": "cef35f1139ec9c0d61a5202e8843e8bd9390f9b32f802adf6a1b5627a8519f20",
+  "schema": "P160_TERMINAL_EVIDENCE_PACKAGE_V1",
+  "terminal_closure_sha256": "a3b8323a9f237b6f1e3cbf2d3dcd61a53e17a56b8de6653c5776a881d354415e",
+  "validation_reexecuted": false
+}

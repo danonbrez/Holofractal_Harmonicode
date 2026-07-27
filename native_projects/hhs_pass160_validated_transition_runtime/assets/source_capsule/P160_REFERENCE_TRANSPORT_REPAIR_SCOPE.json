@@ -1,0 +1,9 @@
+{
+  "schema": "P160_REFERENCE_TRANSPORT_REPAIR_SCOPE_V1",
+  "repair_commit": "6383ceaa0e84c9710a9849805eadfdb0c02d70e4",
+  "changed_scope": "source transport and materialization",
+  "required_gate": "verify-transport plus materialization smoke",
+  "native_capsule_changed": false,
+  "repair_forward": true,
+  "terminal_claimed": false
+}

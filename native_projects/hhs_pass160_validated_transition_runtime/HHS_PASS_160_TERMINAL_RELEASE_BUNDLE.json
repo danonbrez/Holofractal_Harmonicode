@@ -1,0 +1,18 @@
+{
+  "schema": "HHS_PASS_160_TERMINAL_RELEASE_BUNDLE_V1",
+  "contract": "HHS-P160-FPPORT-VTR",
+  "classification": "HHS_PASS_160_FIBONACCI_PRIME_PSEUDORANDOM_OVERLAP_RECEIPT_TIP_VALIDATED_TRANSITION_RUNTIME_VERIFIED",
+  "release_archive": "dist/HHS_PASS_160_RELEASE_BUNDLE.zip",
+  "release_archive_bytes": 349333,
+  "release_archive_sha256": "c0ec91278176c9321288cc67a03310408d69ba23fd5e14ec5746476245ac2d2c",
+  "release_file_count": 42,
+  "final_workflow_run_id": 30314852968,
+  "x86_artifact_id": 8671768765,
+  "x86_artifact_sha256": "9edd4c3bc0009be2317ff1a58857555ee2264d6738aa7601afb7a956f477394c",
+  "terminal_evidence_archive": "dist/P160_TERMINAL_EVIDENCE.tar.gz",
+  "terminal_evidence_archive_sha256": "7a91fd1a656e7d791f3f51b4a8582f508697ef7de712c59166d8a165d3290c17",
+  "integrity_verified": true,
+  "omega_160": true,
+  "terminal_claimed": true,
+  "repair_forward": true
+}

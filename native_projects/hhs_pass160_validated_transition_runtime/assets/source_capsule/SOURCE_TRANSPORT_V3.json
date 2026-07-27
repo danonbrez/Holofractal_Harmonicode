@@ -1,0 +1,77 @@
+{
+  "contract": "HHS-P160-FPPORT-VTR",
+  "native": {
+    "archive_bytes": 24549,
+    "archive_sha256": "f14c0f49cd6cd0c627d546279c38066968140debcc3911c95af0b42f95a22270",
+    "chunks": [
+      {
+        "bytes": 8192,
+        "file": "chunks/pass160_native_source.tar.gz.part-00",
+        "sha256": "68017ec7746df4341593013a473000cfd3bbdbcc1ab40b109ebcf02fc7030d6f"
+      },
+      {
+        "bytes": 8192,
+        "file": "chunks/pass160_native_source.tar.gz.part-01",
+        "sha256": "cc499cea47e2e3b80684fe29b8130b135a8be9c45528fdf606cfa5e01e15ed05"
+      },
+      {
+        "bytes": 8165,
+        "file": "chunks/pass160_native_source.tar.gz.part-02",
+        "sha256": "1f53377d0f54e3c484ca880b81573c663e55f261d0244ab86ba6e3fd51f0c682"
+      }
+    ],
+    "mode": "ordered_sha256_verified_chunks"
+  },
+  "reference": {
+    "damaged_reference_capsule_removed_from_build_authority": true,
+    "file_count": 6,
+    "files": [
+      {
+        "bytes": 26846,
+        "path": "python/hhs_pass160/core.py",
+        "sha256": "2b8a77d4bcc3f50e8b82dee70dc910396433c47c7ce0dffa8500078950da20cd"
+      },
+      {
+        "bytes": 20,
+        "path": "python/hhs_pass160/__init__.py",
+        "sha256": "2b490dcb6e959ba03ed55e65493de2972eb256c34b51b8aa93a0190c59b69c92"
+      },
+      {
+        "bytes": 22323,
+        "path": "tools/pass160_suite.py",
+        "sha256": "a2bfec748b89c480f8cc957bf2bd21cb0d99c4cc70a776e3a318aab83207ec68"
+      },
+      {
+        "bytes": 241,
+        "path": "api/pass160_routes.py",
+        "sha256": "b460792b7a9413929723a95d99adaa084a271e2c3d28398ade1b84fddd79713f"
+      },
+      {
+        "bytes": 7859,
+        "path": "tests/test_pass160_sanitizer.c",
+        "sha256": "67c748bbbe816c5641e18210cb58415f0ef4d43095a60adbe1b1cd099193d3c5"
+      },
+      {
+        "bytes": 2955,
+        "path": "assets/source_capsule/Makefile.materialized.repair-forward",
+        "sha256": "452b0902528ccf64ddaa5bc9ff95d306a0aed9d4c98b24cb04e51a7c4ffde508"
+      }
+    ],
+    "mode": "inspectable_utf8_repository_files",
+    "sha256_manifest": "REFERENCE_SOURCE_SHA256SUMS.txt",
+    "sha256_manifest_sha256": "dd352e0cf922a481843f082de0d603c4ee621bc0bfaee6b01e0b7431851a9839",
+    "supersedes_damaged_reference_capsule": true
+  },
+  "repair_forward": true,
+  "schema": "HHS160_SOURCE_TRANSPORT_V3",
+  "verification_order": [
+    "verify native chunk SHA-256",
+    "reconstruct and verify native archive SHA-256",
+    "verify native gzip and tar structure",
+    "verify every inspectable reference source file SHA-256",
+    "extract native source",
+    "install repair-forward materialized build",
+    "execute dependency-scoped validation",
+    "execute one bounded final gate only when requested"
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "architecture": "x86_64",
+  "bounded_final_gate_count": 1,
+  "commit": "2da4ac4f98653dda83a02d8b3501130029f0681f",
+  "deterministic_replay": true,
+  "essential_runtime_matrix": true,
+  "full_build": true,
+  "release_bundle_integrity_pending_closure": true,
+  "report_count": 12,
+  "report_set_root": "53436649bd4e3772ba10e3b407c29e5d683f176de7e84e34cc19baef5c064c12",
+  "schema": "P160_BOUNDED_FINAL_GATE_RECEIPT_V1",
+  "terminal_claimed": false
+}

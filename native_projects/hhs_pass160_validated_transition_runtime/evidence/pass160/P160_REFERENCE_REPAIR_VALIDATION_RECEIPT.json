@@ -1,0 +1,62 @@
+{
+  "changed_scope": [
+    "Python reference implementation",
+    "local HTTP API",
+    "compact reference validation/evidence/release suite",
+    "sanitizer authority-path harness",
+    "reference source transport",
+    "validation workflow orchestration"
+  ],
+  "contract": "HHS-P160-FPPORT-VTR",
+  "native_source_capsule_changed": false,
+  "native_source_capsule_sha256": "f14c0f49cd6cd0c627d546279c38066968140debcc3911c95af0b42f95a22270",
+  "reference_source_manifest_sha256": "dd352e0cf922a481843f082de0d603c4ee621bc0bfaee6b01e0b7431851a9839",
+  "repair_forward": true,
+  "schema": "P160_REFERENCE_REPAIR_VALIDATION_RECEIPT_V1",
+  "terminal_claimed": false,
+  "unchanged_native_evidence_reexecuted": false,
+  "validation": {
+    "api": {
+      "failures": 0,
+      "model_self_authorization_rejected": true,
+      "routes": 10
+    },
+    "cli": {
+      "commands": 24,
+      "failures": 0
+    },
+    "concurrency": {
+      "admitted_commits": 1,
+      "conflicting_proposals": 2,
+      "stale_rejections": 1
+    },
+    "exact_lookup_workload": {
+      "lookups": 1000000,
+      "matched": 1000000
+    },
+    "fault_injection": {
+      "partial_authoritative_states": 0,
+      "points": 22
+    },
+    "native_python_vectors": {
+      "matched": 7,
+      "total": 7
+    },
+    "property_fuzz": {
+      "controlled_rejections": 512,
+      "failures": 0,
+      "valid_checks": 2048
+    },
+    "python_compile": true,
+    "python_tests": {
+      "failed": 0,
+      "passed": 6
+    },
+    "sanitizer": {
+      "address": true,
+      "failures": 0,
+      "leak_detection": true,
+      "undefined_behavior": true
+    }
+  }
+}

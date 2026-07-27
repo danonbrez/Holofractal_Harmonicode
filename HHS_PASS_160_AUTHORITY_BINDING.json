@@ -1,0 +1,32 @@
+{
+  "schema": "HHS_PASS_160_AUTHORITY_BINDING_V1_4",
+  "contract": "HHS-P160-FPPORT-VTR",
+  "contract_historical_commit": "94578f4af64a702ad5af2049cb9f3a5cae9c8c6b",
+  "contract_original_version": "1.1.0",
+  "amendment_version": "1.4.0",
+  "append_only": true,
+  "implementation_branch": "agent/pass160-validated-transition-runtime",
+  "implementation_parent": "ef954fcfccdf95477a79fc5fd328d14cb6e2ddb8",
+  "immediate_inheritance_parent": {
+    "pass": 159,
+    "contract": "HHS-P159-VM81-H216-HCI-C11C",
+    "classification": "HHS_PASS_159_VM81_HASH216_HARMONICODE_INTERPRETER_AND_C11_NATIVE_COMPILER_VERIFIED",
+    "completion_receipt": "native_projects/hhs_pass159_harmonicode_toolchain/evidence/P159_COMPLETION_RECEIPT.json",
+    "authoritative_main_commit": "aa31de1dffd39331342fa84eeb155fbce1865958",
+    "main_closure_root": "d7bd4866142bbeee8fd0f5b913e29097eef17ab2d0e39655ae559fae98d03a94",
+    "omega_159": true,
+    "terminal_claimed": true
+  },
+  "historical_contract_preserved": true,
+  "repair_forward_validation_policy": "HHS_PASS_160_REPAIR_FORWARD_VALIDATION_POLICY.md",
+  "validation_mode": "ONE_BOUNDED_FINAL_INTEGRATION_AND_REPLAY_GATE",
+  "unchanged_evidence_reuse": true,
+  "final_workflow_run_id": 30314852968,
+  "final_gate_commit": "2da4ac4f98653dda83a02d8b3501130029f0681f",
+  "cross_architecture_root": "0b1fc8acc935539c68272ada161cbf3e66fe48908e0ffcd16076161438883545",
+  "completion_receipt": "native_projects/hhs_pass160_validated_transition_runtime/evidence/pass160/P160_COMPLETION_RECEIPT.json",
+  "terminal_evidence_package": "native_projects/hhs_pass160_validated_transition_runtime/dist/P160_TERMINAL_EVIDENCE.tar.gz",
+  "terminal_classification": "HHS_PASS_160_FIBONACCI_PRIME_PSEUDORANDOM_OVERLAP_RECEIPT_TIP_VALIDATED_TRANSITION_RUNTIME_VERIFIED",
+  "omega_160": true,
+  "terminal_claimed": true
+}

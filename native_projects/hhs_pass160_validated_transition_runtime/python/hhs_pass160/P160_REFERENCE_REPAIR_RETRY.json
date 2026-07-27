@@ -1,0 +1,8 @@
+{
+  "schema": "P160_REFERENCE_IMPLEMENTATION_REPAIR_RETRY_V1",
+  "repair_commit": "6383ceaa0e84c9710a9849805eadfdb0c02d70e4",
+  "required_gates": ["python-test", "differential", "fuzz", "fault", "concurrency", "performance"],
+  "native_runtime_evidence_reused": true,
+  "repair_forward": true,
+  "terminal_claimed": false
+}

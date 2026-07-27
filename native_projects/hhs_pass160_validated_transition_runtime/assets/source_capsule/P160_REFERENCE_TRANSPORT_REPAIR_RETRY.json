@@ -1,0 +1,9 @@
+{
+  "schema": "P160_REFERENCE_TRANSPORT_REPAIR_RETRY_V1",
+  "supersedes_failed_scope_commit": "f2c8a5d06d79b3193376b21bd15fbc999dbd0c94",
+  "failure_class": "validation marker changed a manifest-bound test file",
+  "corrective_action": "restore previously hashed sanitizer source",
+  "required_gate": "verify-transport and materialize",
+  "repair_forward": true,
+  "terminal_claimed": false
+}

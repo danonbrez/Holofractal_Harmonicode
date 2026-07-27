@@ -1,0 +1,34 @@
+name: Pass 160 Sanitizer Change Surface
+
+on:
+  push:
+    branches:
+      - agent/pass160-validated-transition-runtime
+    paths:
+      - 'native_projects/hhs_pass160_validated_transition_runtime/tests/test_pass160_sanitizer.c'
+      - 'native_projects/hhs_pass160_validated_transition_runtime/assets/source_capsule/Makefile.materialized.repair-forward'
+
+permissions:
+  contents: read
+
+jobs:
+  sanitizer-authority-paths:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          show-progress: false
+      - name: Materialize direct native dependencies
+        working-directory: native_projects/hhs_pass160_validated_transition_runtime
+        run: make materialize
+      - name: Execute changed sanitizer authority paths only
+        working-directory: native_projects/hhs_pass160_validated_transition_runtime
+        run: make sanitizer
+      - name: Upload sanitizer receipt
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass160-sanitizer-${{ github.sha }}
+          path: native_projects/hhs_pass160_validated_transition_runtime/dist/P160_SANITIZER_REPORT.json
+          if-no-files-found: error

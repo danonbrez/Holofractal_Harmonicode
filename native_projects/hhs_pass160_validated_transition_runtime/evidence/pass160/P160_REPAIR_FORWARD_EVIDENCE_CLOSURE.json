@@ -1,0 +1,25 @@
+{
+  "aarch64_artifact": {
+    "computational_job": "success",
+    "id": 8671766892,
+    "sha256": "6180a82f49f32543c63249d0b0ec306cca4057d7094b4a7bd8784765448d6d78"
+  },
+  "bounded_final_gate_count": 1,
+  "contract": "HHS-P160-FPPORT-VTR",
+  "corrective_action": "map root-level aarch64 artifact files into canonical dist/cross-host/aarch64 path",
+  "cross_architecture_root": "0b1fc8acc935539c68272ada161cbf3e66fe48908e0ffcd16076161438883545",
+  "final_gate_commit": "2da4ac4f98653dda83a02d8b3501130029f0681f",
+  "final_workflow_run_id": 30314852968,
+  "omega_160": true,
+  "original_failure_scope": "evidence artifact path mapping only",
+  "repair_forward": true,
+  "schema": "P160_REPAIR_FORWARD_EVIDENCE_CLOSURE_V1",
+  "terminal_claimed": true,
+  "terminal_classification": "HHS_PASS_160_FIBONACCI_PRIME_PSEUDORANDOM_OVERLAP_RECEIPT_TIP_VALIDATED_TRANSITION_RUNTIME_VERIFIED",
+  "validation_reexecuted": false,
+  "x86_artifact": {
+    "computational_job": "success",
+    "id": 8671768765,
+    "sha256": "9edd4c3bc0009be2317ff1a58857555ee2264d6738aa7601afb7a956f477394c"
+  }
+}

@@ -1,0 +1,270 @@
+name: Pass 160 Validated Transition Runtime
+
+on:
+  pull_request:
+    paths:
+      - 'HHS_PASS_160_CONTRACT.md'
+      - 'HHS_PASS_160_INHERITANCE_AMENDMENT_V1_2.md'
+      - 'HHS_PASS_160_AUTHORITY_BINDING.json'
+      - 'HHS_PASS_160_REPAIR_FORWARD_VALIDATION_POLICY.md'
+      - 'native_projects/hhs_pass160_validated_transition_runtime/**'
+      - '.github/workflows/pass160-validated-transition-runtime.yml'
+  push:
+    branches:
+      - agent/pass160-validated-transition-runtime
+  workflow_dispatch:
+    inputs:
+      final_delivery:
+        description: Execute the one bounded Pass 160 final-delivery gate
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+
+jobs:
+  dependency-scoped-validation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 2
+          show-progress: false
+
+      - name: Resolve changed validation scope
+        id: scope
+        shell: bash
+        run: |
+          set -euo pipefail
+          if git rev-parse HEAD^ >/dev/null 2>&1; then
+            git diff --name-only HEAD^ HEAD
+          else
+            git ls-tree -r --name-only HEAD
+          fi | tee PASS160_CHANGED_FILES.txt
+
+          native=false
+          reference=false
+          transport=false
+          api_cli=false
+          evidence=false
+          workflow_only=true
+
+          while IFS= read -r path; do
+            case "$path" in
+              native_projects/hhs_pass160_validated_transition_runtime/assets/source_capsule/*|native_projects/hhs_pass160_validated_transition_runtime/Makefile)
+                transport=true; workflow_only=false ;;
+              native_projects/hhs_pass160_validated_transition_runtime/include/*|native_projects/hhs_pass160_validated_transition_runtime/src/*|native_projects/hhs_pass160_validated_transition_runtime/tests/test_pass160.c|native_projects/hhs_pass160_validated_transition_runtime/tests/performance_pass160.c|hhs_runtime/include/hhs_hash216.h|hhs_runtime/src/hhs_hash216.c)
+                native=true; workflow_only=false ;;
+              native_projects/hhs_pass160_validated_transition_runtime/python/*|native_projects/hhs_pass160_validated_transition_runtime/tests/test_reference.py|native_projects/hhs_pass160_validated_transition_runtime/tools/differential_vectors.py|native_projects/hhs_pass160_validated_transition_runtime/tools/property_fuzz.py|native_projects/hhs_pass160_validated_transition_runtime/tools/fault_injection.py|native_projects/hhs_pass160_validated_transition_runtime/tools/concurrency_replay.py|native_projects/hhs_pass160_validated_transition_runtime/tools/performance_workload.py)
+                reference=true; workflow_only=false ;;
+              native_projects/hhs_pass160_validated_transition_runtime/api/*|native_projects/hhs_pass160_validated_transition_runtime/src/hhs160_cli.c|native_projects/hhs_pass160_validated_transition_runtime/tools/test_api.py|native_projects/hhs_pass160_validated_transition_runtime/tools/test_cli.py)
+                api_cli=true; workflow_only=false ;;
+              native_projects/hhs_pass160_validated_transition_runtime/tools/generate_evidence.py|native_projects/hhs_pass160_validated_transition_runtime/tools/package_release.py|native_projects/hhs_pass160_validated_transition_runtime/tools/close_terminal.py|native_projects/hhs_pass160_validated_transition_runtime/tools/canonical_root.py|native_projects/hhs_pass160_validated_transition_runtime/tools/compare_cross_host.py|native_projects/hhs_pass160_validated_transition_runtime/schemas/*|native_projects/hhs_pass160_validated_transition_runtime/manifests/*)
+                evidence=true; workflow_only=false ;;
+              HHS_PASS_160_CONTRACT.md|HHS_PASS_160_INHERITANCE_AMENDMENT_V1_2.md|HHS_PASS_160_AUTHORITY_BINDING.json|HHS_PASS_160_REPAIR_FORWARD_VALIDATION_POLICY.md|.github/workflows/pass160-validated-transition-runtime.yml)
+                ;;
+              native_projects/hhs_pass160_validated_transition_runtime/*)
+                reference=true; workflow_only=false ;;
+            esac
+          done < PASS160_CHANGED_FILES.txt
+
+          {
+            echo "native=$native"
+            echo "reference=$reference"
+            echo "transport=$transport"
+            echo "api_cli=$api_cli"
+            echo "evidence=$evidence"
+            echo "workflow_only=$workflow_only"
+          } | tee -a "$GITHUB_OUTPUT"
+
+      - name: Validate source transport change surface
+        if: steps.scope.outputs.transport == 'true'
+        working-directory: native_projects/hhs_pass160_validated_transition_runtime
+        run: |
+          set -euo pipefail
+          make verify-transport
+          make materialize
+          test -f .pass160-source-materialized
+          test -f Makefile.materialized
+          test -f src/hhs160_runtime.c
+          test -f python/hhs_pass160/core.py
+
+      - name: Materialize direct dependencies
+        if: steps.scope.outputs.native == 'true' || steps.scope.outputs.reference == 'true' || steps.scope.outputs.api_cli == 'true' || steps.scope.outputs.evidence == 'true'
+        working-directory: native_projects/hhs_pass160_validated_transition_runtime
+        run: make materialize
+
+      - name: Validate changed native authority paths
+        if: steps.scope.outputs.native == 'true'
+        working-directory: native_projects/hhs_pass160_validated_transition_runtime
+        run: |
+          set -euo pipefail
+          make native-test sanitizer
+          make differential
+
+      - name: Validate changed Python/reference paths
+        if: steps.scope.outputs.reference == 'true'
+        working-directory: native_projects/hhs_pass160_validated_transition_runtime
+        run: |
+          set -euo pipefail
+          make python-test differential fuzz fault concurrency performance
+
+      - name: Validate changed CLI and API paths
+        if: steps.scope.outputs.api_cli == 'true'
+        working-directory: native_projects/hhs_pass160_validated_transition_runtime
+        run: make cli-test api-test
+
+      - name: Validate changed evidence and release tooling
+        if: steps.scope.outputs.evidence == 'true'
+        working-directory: native_projects/hhs_pass160_validated_transition_runtime
+        run: |
+          set -euo pipefail
+          python3 -m py_compile tools/generate_evidence.py tools/package_release.py tools/close_terminal.py tools/canonical_root.py tools/compare_cross_host.py
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          for path in sorted(Path('schemas').rglob('*.json')) + sorted(Path('manifests').rglob('*.json')):
+              json.loads(path.read_text(encoding='utf-8'))
+          print('PASS160_EVIDENCE_SCHEMA_PARSE_VERIFIED')
+          PY
+
+      - name: Record policy/workflow-only validation
+        if: steps.scope.outputs.workflow_only == 'true'
+        run: |
+          set -euo pipefail
+          test -f HHS_PASS_160_REPAIR_FORWARD_VALIDATION_POLICY.md
+          grep -q 'UNCHANGED_CODE + UNCHANGED_INPUT + PREVIOUSLY_VALID_RECEIPT' HHS_PASS_160_REPAIR_FORWARD_VALIDATION_POLICY.md
+          echo PASS160_REPAIR_FORWARD_ORCHESTRATION_VERIFIED
+
+      - name: Create dependency-scoped receipt
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import hashlib, json, pathlib, subprocess
+          changed = pathlib.Path('PASS160_CHANGED_FILES.txt').read_text(encoding='utf-8').splitlines()
+          payload = {
+              'schema': 'P160_DEPENDENCY_SCOPED_VALIDATION_RECEIPT_V1',
+              'commit': subprocess.check_output(['git','rev-parse','HEAD'], text=True).strip(),
+              'changed_files': changed,
+              'changed_files_sha256': hashlib.sha256(('\n'.join(changed)+'\n').encode()).hexdigest(),
+              'repair_forward': True,
+              'full_suite_reexecuted': False,
+              'terminal_claimed': False,
+          }
+          pathlib.Path('P160_DEPENDENCY_SCOPED_VALIDATION_RECEIPT.json').write_text(json.dumps(payload, indent=2, sort_keys=True)+'\n', encoding='utf-8')
+          PY
+
+      - name: Upload scoped validation receipt
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass160-dependency-scoped-${{ github.sha }}
+          path: |
+            PASS160_CHANGED_FILES.txt
+            P160_DEPENDENCY_SCOPED_VALIDATION_RECEIPT.json
+            native_projects/hhs_pass160_validated_transition_runtime/dist/P160_*REPORT.json
+            native_projects/hhs_pass160_validated_transition_runtime/dist/P160_*LOG.txt
+          if-no-files-found: warn
+
+  bounded-final-gate:
+    if: github.event_name == 'workflow_dispatch' && inputs.final_delivery || github.event_name == 'push' && contains(github.event.head_commit.message, '[pass160-final-gate]')
+    needs: [dependency-scoped-validation]
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          show-progress: false
+      - name: Execute one bounded integration and replay gate
+        working-directory: native_projects/hhs_pass160_validated_transition_runtime
+        run: |
+          set -euo pipefail
+          make verify-transport
+          make materialize
+          make verify
+          python3 tools/canonical_root.py
+          python3 tools/package_release.py
+      - name: Upload frozen final-gate reports and release state
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass160-bounded-final-gate
+          path: |
+            native_projects/hhs_pass160_validated_transition_runtime/dist/**
+            native_projects/hhs_pass160_validated_transition_runtime/evidence/pass160/**
+            native_projects/hhs_pass160_validated_transition_runtime/HHS_PASS_160_RELEASE_BUNDLE.json
+            native_projects/hhs_pass160_validated_transition_runtime/HHS_PASS_160_FILE_MANIFEST.json
+            native_projects/hhs_pass160_validated_transition_runtime/HHS_PASS_160_RECEIPT_INDEX.json
+          if-no-files-found: error
+
+  aarch64-canonical-replay:
+    if: github.event_name == 'workflow_dispatch' && inputs.final_delivery || github.event_name == 'push' && contains(github.event.head_commit.message, '[pass160-final-gate]')
+    needs: [dependency-scoped-validation]
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          show-progress: false
+      - name: Execute one native aarch64 replay
+        working-directory: native_projects/hhs_pass160_validated_transition_runtime
+        run: |
+          set -euo pipefail
+          make materialize
+          make native-test
+          python3 tools/canonical_root.py
+      - name: Upload aarch64 canonical replay root
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass160-aarch64-root
+          path: native_projects/hhs_pass160_validated_transition_runtime/dist/P160_CANONICAL_ROOT_*.json
+          if-no-files-found: error
+
+  evidence-closure:
+    if: github.event_name == 'workflow_dispatch' && inputs.final_delivery || github.event_name == 'push' && contains(github.event.head_commit.message, '[pass160-final-gate]')
+    needs: [bounded-final-gate, aarch64-canonical-replay]
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          show-progress: false
+      - name: Materialize evidence tooling only
+        working-directory: native_projects/hhs_pass160_validated_transition_runtime
+        run: make materialize
+      - uses: actions/download-artifact@v4
+        with:
+          name: pass160-bounded-final-gate
+          path: native_projects/hhs_pass160_validated_transition_runtime
+      - uses: actions/download-artifact@v4
+        with:
+          name: pass160-aarch64-root
+          path: native_projects/hhs_pass160_validated_transition_runtime/dist/cross-host/aarch64
+      - name: Compare canonical replay roots without rerunning validation
+        working-directory: native_projects/hhs_pass160_validated_transition_runtime
+        run: python3 tools/compare_cross_host.py
+      - name: Generate terminal evidence from frozen reports
+        working-directory: native_projects/hhs_pass160_validated_transition_runtime
+        run: |
+          set -euo pipefail
+          python3 tools/generate_evidence.py
+          python3 tools/close_terminal.py
+      - name: Verify terminal completion predicate
+        working-directory: native_projects/hhs_pass160_validated_transition_runtime
+        run: |
+          set -euo pipefail
+          grep -R -q 'HHS_PASS_160_FIBONACCI_PRIME_PSEUDORANDOM_OVERLAP_RECEIPT_TIP_VALIDATED_TRANSITION_RUNTIME_VERIFIED' evidence/pass160
+          grep -R -q '"omega_160"[[:space:]]*:[[:space:]]*true' evidence/pass160
+          grep -R -q '"terminal_claimed"[[:space:]]*:[[:space:]]*true' evidence/pass160
+      - name: Upload terminal Pass 160 evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: hhs-pass160-terminal-evidence
+          path: |
+            native_projects/hhs_pass160_validated_transition_runtime/evidence/pass160/**
+            native_projects/hhs_pass160_validated_transition_runtime/dist/P160_CROSS_ARCHITECTURE*.json
+          if-no-files-found: error
