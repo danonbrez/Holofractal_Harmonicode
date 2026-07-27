@@ -11,12 +11,17 @@ LITERT_LM_PORT="${HHS_LITERT_LM_PORT:-9379}"
 export HHS_LITERT_LM_BASE_URL="${HHS_LITERT_LM_BASE_URL:-http://${LITERT_LM_HOST}:${LITERT_LM_PORT}/v1}"
 export HHS_LITERT_LM_MODEL="${HHS_LITERT_LM_MODEL:-gemma4-12b}"
 export HHS_LITERT_LM_BACKEND="${HHS_LITERT_LM_BACKEND:-gpu}"
+export HHS_VULKAN_RUNTIME_ROOT="${HHS_VULKAN_RUNTIME_ROOT:-${ROOT_DIR}/.hhs/runtime/graphics/vulkan}"
+export PYTHONPATH="$ROOT_DIR${PYTHONPATH:+:$PYTHONPATH}"
 LITERT_LM_PROVIDER_MODE="${HHS_LITERT_LM_PROVIDER_MODE:-auto}"
 LITERT_LM_STRICT_STARTUP="${HHS_LITERT_LM_STRICT_STARTUP:-0}"
 LITERT_LM_LOG_DIR="${HHS_ASSISTANT_LOG_DIR:-${ROOT_DIR}/logs/litert-lm}"
+VULKAN_AUTO_INSTALL="${HHS_VULKAN_AUTO_INSTALL:-1}"
+VULKAN_ENV_FILE="${HHS_VULKAN_RUNTIME_ROOT}/env.sh"
 LITERT_LM_PID=""
 HHS_PID=""
 export HHS_LITERT_LM_PROVIDER_READY=0
+export HHS_VULKAN_LOADER_READY=0
 
 if [[ "${HHS_START_LITERT_LM:-1}" == "0" ]]; then
   LITERT_LM_PROVIDER_MODE="disabled"
@@ -50,6 +55,33 @@ import sys
 if sys.version_info < (3, 11):
     raise SystemExit(f"HHS requires Python 3.11 or newer; found {sys.version.split()[0]}")
 PY
+
+load_vulkan_environment() {
+  if [[ -f "$VULKAN_ENV_FILE" ]]; then
+    # Generated only by the repository-owned Vulkan installer.
+    # shellcheck disable=SC1090
+    source "$VULKAN_ENV_FILE"
+  fi
+}
+
+ensure_vulkan_loader() {
+  if [[ "$HHS_LITERT_LM_BACKEND" != "gpu" ]]; then
+    return 0
+  fi
+  if [[ "$(uname -s 2>/dev/null || true)" != "Linux" ]]; then
+    return 0
+  fi
+
+  load_vulkan_environment
+  if [[ "$VULKAN_AUTO_INSTALL" == "1" ]]; then
+    bash "${ROOT_DIR}/tools/install_vulkan_loader.sh"
+  else
+    bash "${ROOT_DIR}/tools/install_vulkan_loader.sh" --verify-only
+  fi
+  load_vulkan_environment
+  "$PYTHON_BIN" -m hhs_backend.runtime.hhs_vulkan_loader_runtime_v1 --require-loader
+  export HHS_VULKAN_LOADER_READY=1
+}
 
 probe_litert_server() {
   "$PYTHON_BIN" - "$HHS_LITERT_LM_BASE_URL" <<'PY'
@@ -119,6 +151,7 @@ PY
 }
 
 probe_local_accelerator() {
+  ensure_vulkan_loader
   echo "[HHS] Probing local LiteRT-LM backend: ${HHS_LITERT_LM_BACKEND}"
   "$PYTHON_BIN" "${ROOT_DIR}/tools/probe_litert_lm_accelerator.py" \
     --backend "$HHS_LITERT_LM_BACKEND" \
@@ -229,8 +262,6 @@ if [[ "${HHS_SKIP_C_BUILD:-0}" != "1" ]]; then
     make verify-c
   fi
 fi
-
-export PYTHONPATH="$ROOT_DIR${PYTHONPATH:+:$PYTHONPATH}"
 
 echo "[HHS] Starting FastAPI runtime on 0.0.0.0:${PORT}"
 "$PYTHON_BIN" -m uvicorn hhs_backend.server:app \
