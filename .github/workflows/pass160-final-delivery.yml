@@ -1,0 +1,163 @@
+name: Pass 160 One Bounded Final Delivery Gate
+
+on:
+  push:
+    branches:
+      - agent/pass160-validated-transition-runtime
+    paths:
+      - 'native_projects/hhs_pass160_validated_transition_runtime/evidence/pass160/P160_FINAL_GATE_REQUEST.json'
+
+permissions:
+  contents: read
+
+jobs:
+  bounded-final-gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          show-progress: false
+      - name: Execute one bounded integration and replay gate
+        working-directory: native_projects/hhs_pass160_validated_transition_runtime
+        run: |
+          set -euo pipefail
+          make verify-transport
+          make materialize
+          make verify
+          python3 tools/pass160_suite.py canonical-root
+          python3 tools/pass160_suite.py package
+      - name: Record bounded final-gate receipt
+        working-directory: native_projects/hhs_pass160_validated_transition_runtime
+        run: |
+          python3 - <<'PY'
+          import hashlib, json, os
+          from pathlib import Path
+          dist=Path('dist')
+          reports=sorted(p for p in dist.glob('P160_*REPORT.json') if p.is_file())
+          payload={
+            'schema':'P160_BOUNDED_FINAL_GATE_RECEIPT_V1',
+            'commit':os.environ['GITHUB_SHA'],
+            'architecture':'x86_64',
+            'bounded_final_gate_count':1,
+            'report_count':len(reports),
+            'report_set_root':hashlib.sha256(''.join(f'{p.name}:{hashlib.sha256(p.read_bytes()).hexdigest()}\n' for p in reports).encode()).hexdigest(),
+            'full_build':True,
+            'essential_runtime_matrix':True,
+            'deterministic_replay':True,
+            'release_bundle_integrity_pending_closure':True,
+            'terminal_claimed':False,
+          }
+          (dist/'P160_BOUNDED_FINAL_GATE_RECEIPT.json').write_text(json.dumps(payload,indent=2,sort_keys=True)+'\n')
+          PY
+      - name: Upload frozen x86 final-gate state
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass160-bounded-final-${{ github.sha }}
+          path: |
+            native_projects/hhs_pass160_validated_transition_runtime/dist/**
+            native_projects/hhs_pass160_validated_transition_runtime/evidence/pass160/**
+            native_projects/hhs_pass160_validated_transition_runtime/HHS_PASS_160_RELEASE_BUNDLE.json
+            native_projects/hhs_pass160_validated_transition_runtime/HHS_PASS_160_FILE_MANIFEST.json
+            native_projects/hhs_pass160_validated_transition_runtime/HHS_PASS_160_RECEIPT_INDEX.json
+          if-no-files-found: error
+
+  aarch64-canonical-replay:
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          show-progress: false
+      - name: Execute one bounded aarch64 native replay
+        working-directory: native_projects/hhs_pass160_validated_transition_runtime
+        run: |
+          set -euo pipefail
+          make materialize
+          make native-test
+          python3 tools/pass160_suite.py canonical-root
+      - name: Upload aarch64 canonical root
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass160-aarch64-${{ github.sha }}
+          path: |
+            native_projects/hhs_pass160_validated_transition_runtime/dist/P160_CANONICAL_ROOT_*.json
+            native_projects/hhs_pass160_validated_transition_runtime/dist/P160_NATIVE_VALIDATION_REPORT.json
+          if-no-files-found: error
+
+  evidence-closure:
+    needs: [bounded-final-gate, aarch64-canonical-replay]
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          show-progress: false
+      - name: Materialize evidence tooling only
+        working-directory: native_projects/hhs_pass160_validated_transition_runtime
+        run: make materialize
+      - uses: actions/download-artifact@v4
+        with:
+          name: pass160-bounded-final-${{ github.sha }}
+          path: /tmp/pass160-x86
+      - uses: actions/download-artifact@v4
+        with:
+          name: pass160-aarch64-${{ github.sha }}
+          path: /tmp/pass160-arm
+      - name: Install frozen reports
+        working-directory: native_projects/hhs_pass160_validated_transition_runtime
+        run: |
+          set -euo pipefail
+          mkdir -p dist evidence/pass160 dist/cross-host/aarch64
+          cp -a /tmp/pass160-x86/dist/. dist/
+          if test -d /tmp/pass160-x86/evidence/pass160; then cp -a /tmp/pass160-x86/evidence/pass160/. evidence/pass160/; fi
+          cp -a /tmp/pass160-x86/HHS_PASS_160_RELEASE_BUNDLE.json .
+          cp -a /tmp/pass160-x86/HHS_PASS_160_FILE_MANIFEST.json .
+          cp -a /tmp/pass160-x86/HHS_PASS_160_RECEIPT_INDEX.json .
+          cp /tmp/pass160-arm/dist/P160_CANONICAL_ROOT_*.json dist/cross-host/aarch64/
+      - name: Close cross-host and terminal evidence without re-execution
+        working-directory: native_projects/hhs_pass160_validated_transition_runtime
+        run: |
+          set -euo pipefail
+          python3 tools/pass160_suite.py compare-cross-host
+          python3 tools/pass160_suite.py generate-evidence
+          python3 tools/pass160_suite.py close-terminal
+      - name: Validate release and terminal evidence package integrity
+        working-directory: native_projects/hhs_pass160_validated_transition_runtime
+        run: |
+          set -euo pipefail
+          unzip -t dist/HHS_PASS_160_RELEASE_BUNDLE.zip
+          python3 - <<'PY'
+          import hashlib, json, tarfile
+          from pathlib import Path
+          receipt=Path('evidence/pass160/P160_COMPLETION_RECEIPT.json')
+          closure=Path('evidence/pass160/P160_TERMINAL_CLOSURE.json')
+          data=json.loads(receipt.read_text())
+          assert data['omega_160'] is True
+          assert data['terminal_claimed'] is True
+          assert data['classification']=='HHS_PASS_160_FIBONACCI_PRIME_PSEUDORANDOM_OVERLAP_RECEIPT_TIP_VALIDATED_TRANSITION_RUNTIME_VERIFIED'
+          archive=Path('dist/HHS_PASS_160_TERMINAL_EVIDENCE.tar.gz')
+          with tarfile.open(archive,'w:gz',format=tarfile.PAX_FORMAT) as tf:
+              for path in sorted(Path('evidence/pass160').glob('*')):
+                  tf.add(path,arcname=str(path))
+              tf.add('dist/P160_CROSS_ARCHITECTURE_REPORT.json',arcname='dist/P160_CROSS_ARCHITECTURE_REPORT.json')
+          report={'schema':'P160_TERMINAL_EVIDENCE_PACKAGE_V1','archive':str(archive),'bytes':archive.stat().st_size,'sha256':hashlib.sha256(archive.read_bytes()).hexdigest(),'completion_receipt_sha256':hashlib.sha256(receipt.read_bytes()).hexdigest(),'terminal_closure_sha256':hashlib.sha256(closure.read_bytes()).hexdigest(),'integrity_verified':True}
+          Path('dist/P160_TERMINAL_EVIDENCE_PACKAGE.json').write_text(json.dumps(report,indent=2,sort_keys=True)+'\n')
+          PY
+          grep -q 'HHS_PASS_160_FIBONACCI_PRIME_PSEUDORANDOM_OVERLAP_RECEIPT_TIP_VALIDATED_TRANSITION_RUNTIME_VERIFIED' evidence/pass160/P160_TERMINAL_CLASSIFICATION.txt
+      - name: Upload terminal completion evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: hhs-pass160-terminal-${{ github.sha }}
+          path: |
+            native_projects/hhs_pass160_validated_transition_runtime/evidence/pass160/**
+            native_projects/hhs_pass160_validated_transition_runtime/dist/P160_CROSS_ARCHITECTURE_REPORT.json
+            native_projects/hhs_pass160_validated_transition_runtime/dist/P160_TERMINAL_EVIDENCE.tar.gz
+            native_projects/hhs_pass160_validated_transition_runtime/dist/P160_TERMINAL_EVIDENCE_PACKAGE.json
+            native_projects/hhs_pass160_validated_transition_runtime/HHS_PASS_160_RELEASE_BUNDLE.json
+            native_projects/hhs_pass160_validated_transition_runtime/HHS_PASS_160_FILE_MANIFEST.json
+            native_projects/hhs_pass160_validated_transition_runtime/HHS_PASS_160_RECEIPT_INDEX.json
+          if-no-files-found: error

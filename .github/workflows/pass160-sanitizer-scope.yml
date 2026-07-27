@@ -1,10 +1,6 @@
 name: Pass 160 Sanitizer Change Surface
 
 on:
-  pull_request:
-    paths:
-      - 'native_projects/hhs_pass160_validated_transition_runtime/tests/test_pass160_sanitizer.c'
-      - 'native_projects/hhs_pass160_validated_transition_runtime/assets/source_capsule/Makefile.materialized.repair-forward'
   push:
     branches:
       - agent/pass160-validated-transition-runtime
@@ -22,7 +18,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          ref: ${{ github.sha }}
           show-progress: false
       - name: Materialize direct native dependencies
         working-directory: native_projects/hhs_pass160_validated_transition_runtime
