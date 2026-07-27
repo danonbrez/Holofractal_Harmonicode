@@ -1,0 +1,111 @@
+name: Pass 160 Validated Transition Runtime
+
+on:
+  pull_request:
+    paths:
+      - 'HHS_PASS_160_CONTRACT.md'
+      - 'HHS_PASS_160_INHERITANCE_AMENDMENT_V1_2.md'
+      - 'HHS_PASS_160_AUTHORITY_BINDING.json'
+      - 'native_projects/hhs_pass160_validated_transition_runtime/**'
+      - '.github/workflows/pass160-validated-transition-runtime.yml'
+  push:
+    branches:
+      - agent/pass160-validated-transition-runtime
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  full-validation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - name: Materialize SHA-256 committed source
+        working-directory: native_projects/hhs_pass160_validated_transition_runtime
+        run: make materialize
+      - name: Execute complete Pass 160 validation
+        working-directory: native_projects/hhs_pass160_validated_transition_runtime
+        run: make verify
+      - name: Build deterministic release bundle
+        working-directory: native_projects/hhs_pass160_validated_transition_runtime
+        run: make package
+      - name: Upload executed validation and release state
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass160-validation-state
+          path: |
+            native_projects/hhs_pass160_validated_transition_runtime/dist/**
+            native_projects/hhs_pass160_validated_transition_runtime/evidence/pass160/**
+            native_projects/hhs_pass160_validated_transition_runtime/HHS_PASS_160_RELEASE_BUNDLE.json
+            native_projects/hhs_pass160_validated_transition_runtime/HHS_PASS_160_FILE_MANIFEST.json
+            native_projects/hhs_pass160_validated_transition_runtime/HHS_PASS_160_RECEIPT_INDEX.json
+          if-no-files-found: error
+
+  cross-architecture:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: ubuntu-latest
+            architecture: x86_64
+            compiler: gcc
+          - runner: ubuntu-24.04-arm
+            architecture: aarch64
+            compiler: gcc
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - name: Materialize source and execute host replay gates
+        working-directory: native_projects/hhs_pass160_validated_transition_runtime
+        env:
+          CC: ${{ matrix.compiler }}
+        run: |
+          make materialize
+          make native-test python-test differential fuzz
+          python3 tools/canonical_root.py
+      - name: Upload canonical host root
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass160-root-${{ matrix.architecture }}
+          path: native_projects/hhs_pass160_validated_transition_runtime/dist/P160_CANONICAL_ROOT_*.json
+          if-no-files-found: error
+
+  evidence-closure:
+    needs: [full-validation, cross-architecture]
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - name: Materialize evidence tooling
+        working-directory: native_projects/hhs_pass160_validated_transition_runtime
+        run: make materialize
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: pass160-root-*
+          path: native_projects/hhs_pass160_validated_transition_runtime/dist/cross-host
+      - name: Verify x86_64 and aarch64 canonical identity
+        working-directory: native_projects/hhs_pass160_validated_transition_runtime
+        run: python3 tools/compare_cross_host.py
+      - name: Re-execute validation for evidence provenance
+        working-directory: native_projects/hhs_pass160_validated_transition_runtime
+        run: make verify
+      - name: Generate terminal completion evidence
+        working-directory: native_projects/hhs_pass160_validated_transition_runtime
+        run: make evidence
+      - name: Verify reserved terminal classification
+        working-directory: native_projects/hhs_pass160_validated_transition_runtime
+        run: |
+          grep -R -q 'HHS_PASS_160_FIBONACCI_PRIME_PSEUDORANDOM_OVERLAP_RECEIPT_TIP_VALIDATED_TRANSITION_RUNTIME_VERIFIED' evidence/pass160
+          grep -R -q '"omega_160"[[:space:]]*:[[:space:]]*true' evidence/pass160
+          grep -R -q '"terminal_claimed"[[:space:]]*:[[:space:]]*true' evidence/pass160
+      - name: Upload terminal Pass 160 evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: hhs-pass160-terminal-evidence
+          path: |
+            native_projects/hhs_pass160_validated_transition_runtime/evidence/pass160/**
+            native_projects/hhs_pass160_validated_transition_runtime/dist/P160_CROSS_ARCHITECTURE*.json
+          if-no-files-found: error
