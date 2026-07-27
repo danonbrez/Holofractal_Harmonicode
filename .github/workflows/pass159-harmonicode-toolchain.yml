@@ -13,7 +13,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   full-validation:
@@ -123,6 +123,19 @@ jobs:
       - name: Emit authoritative main completion receipt
         working-directory: native_projects/hhs_pass159_harmonicode_toolchain
         run: python3 assets/source_overrides/close_main.py
+      - name: Commit terminal receipt to authoritative main
+        run: |
+          git config user.name 'hhs-pass159-closure'
+          git config user.email 'hhs-pass159-closure@users.noreply.github.com'
+          git add -f \
+            native_projects/hhs_pass159_harmonicode_toolchain/evidence/P159_COMPLETION_RECEIPT.json \
+            native_projects/hhs_pass159_harmonicode_toolchain/evidence/P159_AUTHORITATIVE_MAIN_CLOSURE.json
+          if git diff --cached --quiet; then
+            echo 'Terminal receipt already committed.'
+          else
+            git commit -m 'Record Pass 159 authoritative main closure'
+            git push origin HEAD:main
+          fi
       - name: Upload terminal Pass 159 closure
         uses: actions/upload-artifact@v4
         with:
