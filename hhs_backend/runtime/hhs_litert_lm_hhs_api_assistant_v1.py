@@ -16,10 +16,15 @@ from hhs_backend.runtime.hhs_assistant_api_tool_gateway_v1 import (
 )
 from hhs_backend.runtime.hhs_litert_lm_assistant_v1 import (
     AUTHORITY,
+    STATUS_SCHEMA,
     TURN_SCHEMA,
     HHSAssistantService,
     LiteRTLMConfig,
-    LiteRTLMTransport,
+)
+from hhs_backend.runtime.hhs_litert_lm_accelerated_transport_v1 import (
+    LiteRTLMAcceleratedTransport,
+    backend_from_env,
+    compose_request_model_id,
 )
 
 VERSION = "HHS_LITERT_LM_GEMMA4_HHS_API_ASSISTANT_V1"
@@ -171,7 +176,22 @@ class HHSAPIAssistantService(HHSAssistantService):
                 replacements["system_instruction"] = HHS_API_SYSTEM_INSTRUCTION
             if replacements:
                 resolved_config = replace(resolved_config, **replacements)
-        inner = transport or LiteRTLMTransport(resolved_config)
+
+        requested_backend = str(
+            getattr(transport, "backend", None) or backend_from_env()
+        )
+        inner = transport or LiteRTLMAcceleratedTransport(
+            resolved_config,
+            backend=requested_backend,
+        )
+        self.execution_backend = requested_backend
+        self.request_model_id = str(
+            getattr(
+                inner,
+                "request_model_id",
+                compose_request_model_id(resolved_config.model_id, requested_backend),
+            )
+        )
         governed = (
             inner
             if isinstance(inner, GovernedHHSToolLoopTransport)
@@ -180,6 +200,18 @@ class HHSAPIAssistantService(HHSAssistantService):
         super().__init__(config=resolved_config, transport=governed)
         self._thread_locks: Dict[str, asyncio.Lock] = {}
         self._thread_locks_guard = threading.RLock()
+
+    def status(self) -> Dict[str, Any]:
+        status = super().status()
+        status.pop("status_root_hash72", None)
+        status.update({
+            "execution_backend": self.execution_backend,
+            "request_model_id": self.request_model_id,
+            "gpu_accelerator_required": self.execution_backend == "gpu",
+            "local_gpu_preflight_required": self.execution_backend == "gpu",
+        })
+        status["status_root_hash72"] = hash72(STATUS_SCHEMA, status)
+        return status
 
     def _thread_lock(self, thread_id: str) -> asyncio.Lock:
         with self._thread_locks_guard:
@@ -197,8 +229,6 @@ class HHSAPIAssistantService(HHSAssistantService):
         tools: Optional[List[Mapping[str, Any]]] = None,
         response_format: Optional[Mapping[str, Any]] = None,
     ) -> Dict[str, Any]:
-        if not self.threads.get(thread_id):
-            raise KeyError(thread_id)
         async with self._thread_lock(thread_id):
             result = await super().send_message(
                 thread_id,
@@ -206,50 +236,27 @@ class HHSAPIAssistantService(HHSAssistantService):
                 tools=tools,
                 response_format=response_format,
             )
-            transport = self.transport
-            trace = (
-                transport.consume_tool_trace()
-                if isinstance(transport, GovernedHHSToolLoopTransport)
-                else []
-            )
-            trace_root = hash72(
+            trace = []
+            if isinstance(self.transport, GovernedHHSToolLoopTransport):
+                trace = self.transport.consume_tool_trace()
+            result = dict(result)
+            result["hhs_api_tool_trace"] = trace
+            result["hhs_api_tool_count"] = len(trace)
+            result["execution_backend"] = self.execution_backend
+            result["request_model_id"] = self.request_model_id
+            result["same_thread_turns_are_serialized"] = True
+            result["mutating_tool_execution_allowed"] = False
+            result["hhs_api_tool_trace_root_hash72"] = hash72(
                 TOOL_LOOP_SCHEMA,
                 {
                     "thread_id": thread_id,
-                    "tool_trace": trace,
-                    "runtime_mutation_admitted": False,
+                    "execution_backend": self.execution_backend,
+                    "request_model_id": self.request_model_id,
+                    "trace": trace,
+                    "mutating_tool_execution_allowed": False,
                 },
             )
-            result["hhs_api_tool_trace"] = trace
-            result["hhs_api_tool_trace_root_hash72"] = trace_root
-            result["hhs_api_tool_call_count"] = len(trace)
-            result["hhs_api_tools_enabled"] = True
-            result["mutating_model_tool_execution_allowed"] = False
-            result["per_thread_request_serialization"] = True
-            result["version"] = VERSION
-            result["turn_root_hash72"] = hash72(
-                TURN_SCHEMA,
-                {key: value for key, value in result.items() if key != "turn_root_hash72"},
-            )
+            result["turn_root_hash72"] = hash72(TURN_SCHEMA, {
+                key: value for key, value in result.items() if key != "turn_root_hash72"
+            })
             return result
-
-    def status(self) -> Dict[str, Any]:
-        status = super().status()
-        status.update({
-            "version": VERSION,
-            "hhs_api_tools_enabled": True,
-            "default_hhs_api_tool_count": len(DEFAULT_HHS_ASSISTANT_TOOLS),
-            "mutating_model_tool_execution_allowed": False,
-            "per_thread_request_serialization": True,
-            "task_local_tool_traces": True,
-            "max_tool_rounds": getattr(self.transport, "max_tool_rounds", 0),
-            "authority": AUTHORITY,
-        })
-        status["status_root_hash72"] = hash72(
-            str(status.get("schema") or "HHS_LITERT_LM_ASSISTANT_STATUS_V1"),
-            {key: value for key, value in status.items() if key != "status_root_hash72"},
-        )
-        return status
-
-
-DEFAULT_HHS_API_ASSISTANT_SERVICE = HHSAPIAssistantService()
