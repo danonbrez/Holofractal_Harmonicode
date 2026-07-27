@@ -5,10 +5,12 @@ on:
     branches:
       - agent/litert-lm-gemma4-ai-thread
       - agent/repository-owned-litert-lm-runtime
+      - agent/litert-lm-vulkan-gpu-runtime
   pull_request:
     paths:
       - 'hhs_backend/runtime/hhs_litert_lm_assistant_v1.py'
       - 'hhs_backend/runtime/hhs_litert_lm_hhs_api_assistant_v1.py'
+      - 'hhs_backend/runtime/hhs_litert_lm_accelerated_transport_v1.py'
       - 'hhs_backend/runtime/hhs_assistant_api_tool_gateway_v1.py'
       - 'hhs_backend/runtime/hhs_capability_provider_registry_v1.py'
       - 'hhs_backend/api/litert_lm_assistant_routes.py'
@@ -17,11 +19,14 @@ on:
       - 'requirements.txt'
       - 'requirements-litert-lm.txt'
       - 'start.sh'
+      - 'docs/HHS_LITERT_LM_GPU_DEPLOYMENT.md'
       - 'tests/test_hhs_litert_lm_assistant_v1.py'
       - 'tests/test_hhs_litert_lm_hhs_api_tools_v1.py'
       - 'tests/test_hhs_litert_lm_repo_bootstrap_v1.py'
+      - 'tests/test_hhs_litert_lm_gpu_runtime_v1.py'
       - 'tools/bootstrap_litert_lm.sh'
       - 'tools/import_hhs_gemma4_model.sh'
+      - 'tools/probe_litert_lm_accelerator.py'
       - 'tools/start_hhs_gemma4_assistant.sh'
       - '.github/workflows/litert-lm-assistant.yml'
 
@@ -44,6 +49,8 @@ jobs:
         run: |
           litert-lm --version
           litert-lm serve --help
+      - name: Validate accelerator probe control path
+        run: python tools/probe_litert_lm_accelerator.py --backend cpu --require
       - name: Build HHS native kernel surfaces
         run: make c-kernel
       - name: Compile assistant Python surfaces
@@ -51,13 +58,16 @@ jobs:
           python -m py_compile \
             hhs_backend/runtime/hhs_litert_lm_assistant_v1.py \
             hhs_backend/runtime/hhs_litert_lm_hhs_api_assistant_v1.py \
+            hhs_backend/runtime/hhs_litert_lm_accelerated_transport_v1.py \
             hhs_backend/runtime/hhs_assistant_api_tool_gateway_v1.py \
             hhs_backend/runtime/hhs_capability_provider_registry_v1.py \
             hhs_backend/api/litert_lm_assistant_routes.py \
             hhs_backend/api/pass152_elastic_closure_routes.py \
+            tools/probe_litert_lm_accelerator.py \
             tests/test_hhs_litert_lm_assistant_v1.py \
             tests/test_hhs_litert_lm_hhs_api_tools_v1.py \
-            tests/test_hhs_litert_lm_repo_bootstrap_v1.py
+            tests/test_hhs_litert_lm_repo_bootstrap_v1.py \
+            tests/test_hhs_litert_lm_gpu_runtime_v1.py
       - name: Validate launcher syntax
         run: |
           bash -n \
@@ -70,7 +80,8 @@ jobs:
           python -m pytest -q \
             tests/test_hhs_litert_lm_assistant_v1.py \
             tests/test_hhs_litert_lm_hhs_api_tools_v1.py \
-            tests/test_hhs_litert_lm_repo_bootstrap_v1.py
+            tests/test_hhs_litert_lm_repo_bootstrap_v1.py \
+            tests/test_hhs_litert_lm_gpu_runtime_v1.py
 
   ai-thread-interface:
     runs-on: ubuntu-latest

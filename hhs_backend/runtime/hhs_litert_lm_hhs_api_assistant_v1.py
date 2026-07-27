@@ -19,7 +19,11 @@ from hhs_backend.runtime.hhs_litert_lm_assistant_v1 import (
     TURN_SCHEMA,
     HHSAssistantService,
     LiteRTLMConfig,
-    LiteRTLMTransport,
+)
+from hhs_backend.runtime.hhs_litert_lm_accelerated_transport_v1 import (
+    LiteRTLMAcceleratedTransport,
+    backend_from_env,
+    compose_request_model_id,
 )
 
 VERSION = "HHS_LITERT_LM_GEMMA4_HHS_API_ASSISTANT_V1"
@@ -171,7 +175,22 @@ class HHSAPIAssistantService(HHSAssistantService):
                 replacements["system_instruction"] = HHS_API_SYSTEM_INSTRUCTION
             if replacements:
                 resolved_config = replace(resolved_config, **replacements)
-        inner = transport or LiteRTLMTransport(resolved_config)
+
+        requested_backend = str(
+            getattr(transport, "backend", None) or backend_from_env()
+        )
+        inner = transport or LiteRTLMAcceleratedTransport(
+            resolved_config,
+            backend=requested_backend,
+        )
+        self.execution_backend = requested_backend
+        self.request_model_id = str(
+            getattr(
+                inner,
+                "request_model_id",
+                compose_request_model_id(resolved_config.model_id, requested_backend),
+            )
+        )
         governed = (
             inner
             if isinstance(inner, GovernedHHSToolLoopTransport)
@@ -217,6 +236,8 @@ class HHSAPIAssistantService(HHSAssistantService):
                 {
                     "thread_id": thread_id,
                     "tool_trace": trace,
+                    "execution_backend": self.execution_backend,
+                    "request_model_id": self.request_model_id,
                     "runtime_mutation_admitted": False,
                 },
             )
@@ -226,6 +247,8 @@ class HHSAPIAssistantService(HHSAssistantService):
             result["hhs_api_tools_enabled"] = True
             result["mutating_model_tool_execution_allowed"] = False
             result["per_thread_request_serialization"] = True
+            result["execution_backend"] = self.execution_backend
+            result["request_model_id"] = self.request_model_id
             result["version"] = VERSION
             result["turn_root_hash72"] = hash72(
                 TURN_SCHEMA,
@@ -243,6 +266,13 @@ class HHSAPIAssistantService(HHSAssistantService):
             "per_thread_request_serialization": True,
             "task_local_tool_traces": True,
             "max_tool_rounds": getattr(self.transport, "max_tool_rounds", 0),
+            "execution_backend": self.execution_backend,
+            "request_model_id": self.request_model_id,
+            "gpu_accelerator_required": self.execution_backend == "gpu",
+            "local_gpu_preflight_required": self.execution_backend == "gpu",
+            "provider_ready_at_startup": os.getenv(
+                "HHS_LITERT_LM_PROVIDER_READY", "0"
+            ) == "1",
             "authority": AUTHORITY,
         })
         status["status_root_hash72"] = hash72(

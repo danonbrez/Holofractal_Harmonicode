@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import subprocess
+import sys
 from pathlib import Path
 
 
@@ -25,14 +26,31 @@ def test_repository_launchers_are_shell_valid() -> None:
     subprocess.run(["bash", "-n", *map(str, scripts)], check=True)
 
 
-def test_primary_start_path_supervises_port_9379_provider() -> None:
+def test_primary_start_path_models_gpu_provider_topologies() -> None:
     launcher = (ROOT / "start.sh").read_text(encoding="utf-8")
 
     assert 'HHS_LITERT_LM_PORT:-9379' in launcher
-    assert 'HHS_START_LITERT_LM:-1' in launcher
+    assert 'HHS_LITERT_LM_BACKEND:-gpu' in launcher
+    assert 'HHS_LITERT_LM_PROVIDER_MODE:-auto' in launcher
+    assert 'HHS_LITERT_LM_STRICT_STARTUP:-0' in launcher
+    assert 'probe_litert_lm_accelerator.py' in launcher
     assert 'bootstrap_litert_lm.sh" --print-bin' in launcher
     assert '"$litert_bin" serve' in launcher
     assert "verify_requested_model" in launcher
+    assert "assistant-degraded mode" in launcher
+
+
+def test_accelerator_probe_cpu_control_path() -> None:
+    subprocess.run(
+        [
+            sys.executable,
+            str(ROOT / "tools" / "probe_litert_lm_accelerator.py"),
+            "--backend",
+            "cpu",
+            "--require",
+        ],
+        check=True,
+    )
 
 
 def test_model_import_contract_matches_hhs_provider_alias() -> None:
