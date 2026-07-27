@@ -1,0 +1,20 @@
+{
+  "schema": "P160_AUTHORITATIVE_MAIN_CLOSURE_V1",
+  "contract": "HHS-P160-FPPORT-VTR",
+  "authoritative_branch": "main",
+  "implementation_merge_commit": "cd89c75afaaa9d9178ac102815dc7b0a75215bad",
+  "classification": "HHS_PASS_160_FIBONACCI_PRIME_PSEUDORANDOM_OVERLAP_RECEIPT_TIP_VALIDATED_TRANSITION_RUNTIME_VERIFIED",
+  "completion_receipt": "native_projects/hhs_pass160_validated_transition_runtime/evidence/pass160/P160_COMPLETION_RECEIPT.json",
+  "completion_receipt_sha256": "a8b1811650d2694566c00be0bf72ff16ff8d2588d51324ae8f825fb938622c3f",
+  "terminal_evidence_archive": "native_projects/hhs_pass160_validated_transition_runtime/dist/P160_TERMINAL_EVIDENCE.tar.gz",
+  "terminal_evidence_archive_sha256": "7a91fd1a656e7d791f3f51b4a8582f508697ef7de712c59166d8a165d3290c17",
+  "release_bundle_sha256": "c0ec91278176c9321288cc67a03310408d69ba23fd5e14ec5746476245ac2d2c",
+  "cross_architecture_root": "0b1fc8acc935539c68272ada161cbf3e66fe48908e0ffcd16076161438883545",
+  "final_workflow_run_id": 30314852968,
+  "bounded_final_gate_count": 1,
+  "validation_reexecuted_during_repair": false,
+  "main_closure_root": "bd27cb36c7d3c70301f9edde7d5384d652f78da81206c21a7d46dd0c90eac774",
+  "omega_160": true,
+  "terminal_claimed": true,
+  "main_closure_required": false
+}
