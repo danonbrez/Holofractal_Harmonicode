@@ -9,10 +9,18 @@ MATERIALIZED := .pass160-source-materialized
 materialize: $(MATERIALIZED)
 
 $(MATERIALIZED): $(NATIVE_ARCHIVE) $(REFERENCE_ARCHIVE)
-	@printf '%s  %s\n' '$(NATIVE_SHA256)' '$(NATIVE_ARCHIVE)' | sha256sum -c -
-	@printf '%s  %s\n' '$(REFERENCE_SHA256)' '$(REFERENCE_ARCHIVE)' | sha256sum -c -
-	@tar -xzf $(NATIVE_ARCHIVE) -C .
-	@tar -xzf $(REFERENCE_ARCHIVE) -C .
+	@native_actual=$$(sha256sum '$(NATIVE_ARCHIVE)' | awk '{print $$1}'); \
+	 echo "PASS160_NATIVE_ARCHIVE bytes=$$(wc -c < '$(NATIVE_ARCHIVE)') expected=$(NATIVE_SHA256) actual=$$native_actual"; \
+	 test "$$native_actual" = '$(NATIVE_SHA256)'
+	@reference_actual=$$(sha256sum '$(REFERENCE_ARCHIVE)' | awk '{print $$1}'); \
+	 echo "PASS160_REFERENCE_ARCHIVE bytes=$$(wc -c < '$(REFERENCE_ARCHIVE)') expected=$(REFERENCE_SHA256) actual=$$reference_actual"; \
+	 test "$$reference_actual" = '$(REFERENCE_SHA256)'
+	@gzip -t '$(NATIVE_ARCHIVE)'
+	@gzip -t '$(REFERENCE_ARCHIVE)'
+	@tar -tzf '$(NATIVE_ARCHIVE)' >/dev/null
+	@tar -tzf '$(REFERENCE_ARCHIVE)' >/dev/null
+	@tar -xzf '$(NATIVE_ARCHIVE)' -C .
+	@tar -xzf '$(REFERENCE_ARCHIVE)' -C .
 	@printf '%s\n%s\n' '$(NATIVE_SHA256)' '$(REFERENCE_SHA256)' > $@
 
 all native-test cli-test python-test differential fuzz fault concurrency performance api-test inherited sanitizer verify evidence package: materialize
