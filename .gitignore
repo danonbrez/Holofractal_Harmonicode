@@ -21,4 +21,5 @@ dist/
 .venv/
 venv/
 .hhs/litert-lm/
+.hhs/runtime/graphics/vulkan/
 logs/litert-lm/
