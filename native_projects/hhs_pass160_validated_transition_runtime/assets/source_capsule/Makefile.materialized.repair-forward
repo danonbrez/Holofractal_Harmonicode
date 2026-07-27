@@ -1,0 +1,64 @@
+CC ?= cc
+AR ?= ar
+CFLAGS ?= -std=c11 -O2 -Wall -Wextra -Werror -pedantic
+ROOT := ../..
+INCLUDES := -Iinclude -Isrc -I$(ROOT)/hhs_runtime/include
+HASH_SRC := $(ROOT)/hhs_runtime/src/hhs_hash216.c
+SRC := src/hhs160_crypto.c src/hhs160_runtime.c
+DIST := dist
+SUITE := PYTHONPATH=python:. python3 tools/pass160_suite.py
+
+.PHONY: all native-test cli-test python-test differential fuzz fault concurrency performance api-test inherited sanitizer verify evidence package clean
+all: $(DIST)/libhhs_pass160.so $(DIST)/libhhs_pass160.a $(DIST)/hhs-pass160 $(DIST)/hhs-pass160-verify
+$(DIST):
+	mkdir -p $(DIST)
+$(DIST)/hhs160_crypto.o: src/hhs160_crypto.c src/hhs160_internal.h include/hhs_pass160_runtime.h | $(DIST)
+	$(CC) $(CFLAGS) -fPIC $(INCLUDES) -c $< -o $@
+$(DIST)/hhs160_runtime.o: src/hhs160_runtime.c src/hhs160_internal.h include/hhs_pass160_runtime.h | $(DIST)
+	$(CC) $(CFLAGS) -fPIC $(INCLUDES) -c $< -o $@
+$(DIST)/hhs_hash216.o: $(HASH_SRC) $(ROOT)/hhs_runtime/include/hhs_hash216.h | $(DIST)
+	$(CC) $(CFLAGS) -fPIC $(INCLUDES) -c $< -o $@
+$(DIST)/libhhs_pass160.so: $(DIST)/hhs160_crypto.o $(DIST)/hhs160_runtime.o $(DIST)/hhs_hash216.o
+	$(CC) -shared $^ -o $@
+$(DIST)/libhhs_pass160.a: $(DIST)/hhs160_crypto.o $(DIST)/hhs160_runtime.o $(DIST)/hhs_hash216.o
+	$(AR) rcs $@ $^
+$(DIST)/hhs-pass160: src/hhs160_cli.c $(DIST)/libhhs_pass160.a
+	$(CC) $(CFLAGS) $(INCLUDES) $< $(DIST)/libhhs_pass160.a -o $@
+$(DIST)/hhs-pass160-verify: tests/test_pass160.c $(DIST)/libhhs_pass160.a
+	$(CC) $(CFLAGS) $(INCLUDES) $< $(DIST)/libhhs_pass160.a -o $@
+$(DIST)/hhs-pass160-performance: tests/performance_pass160.c $(DIST)/libhhs_pass160.a
+	$(CC) $(CFLAGS) $(INCLUDES) $< $(DIST)/libhhs_pass160.a -o $@
+native-test: all
+	$(DIST)/hhs-pass160-verify | tee $(DIST)/P160_NATIVE_VALIDATION_REPORT.json
+	grep -q '"failures":0' $(DIST)/P160_NATIVE_VALIDATION_REPORT.json
+	grep -q '"negative_total":160' $(DIST)/P160_NATIVE_VALIDATION_REPORT.json
+cli-test: all
+	$(SUITE) cli-test
+python-test: | $(DIST)
+	$(SUITE) python-test
+differential: all
+	$(SUITE) differential
+fuzz: all
+	$(SUITE) fuzz
+fault: | $(DIST)
+	$(SUITE) fault
+concurrency: | $(DIST)
+	$(SUITE) concurrency
+performance: all $(DIST)/hhs-pass160-performance
+	$(DIST)/hhs-pass160-performance | tee $(DIST)/P160_NATIVE_PERFORMANCE_REPORT.json
+	$(SUITE) performance
+api-test: | $(DIST)
+	$(SUITE) api-test
+inherited: | $(DIST)
+	$(SUITE) inherited
+sanitizer: | $(DIST)
+	$(CC) -std=c11 -O1 -g -Wall -Wextra -Werror -pedantic -fsanitize=address,undefined -fno-omit-frame-pointer $(INCLUDES) $(SRC) $(HASH_SRC) tests/test_pass160_sanitizer.c -o $(DIST)/hhs-pass160-sanitize
+	ASAN_OPTIONS=detect_leaks=1 $(DIST)/hhs-pass160-sanitize > $(DIST)/P160_SANITIZER_REPORT.json
+verify: native-test cli-test python-test differential fuzz fault concurrency performance api-test inherited sanitizer
+	$(SUITE) materialize-static
+evidence:
+	$(SUITE) generate-evidence
+package:
+	$(SUITE) package
+clean:
+	rm -rf $(DIST) evidence/pass160/*
