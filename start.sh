@@ -10,9 +10,25 @@ LITERT_LM_HOST="${HHS_LITERT_LM_HOST:-127.0.0.1}"
 LITERT_LM_PORT="${HHS_LITERT_LM_PORT:-9379}"
 export HHS_LITERT_LM_BASE_URL="${HHS_LITERT_LM_BASE_URL:-http://${LITERT_LM_HOST}:${LITERT_LM_PORT}/v1}"
 export HHS_LITERT_LM_MODEL="${HHS_LITERT_LM_MODEL:-gemma4-12b}"
+export HHS_LITERT_LM_BACKEND="${HHS_LITERT_LM_BACKEND:-gpu}"
+LITERT_LM_PROVIDER_MODE="${HHS_LITERT_LM_PROVIDER_MODE:-auto}"
+LITERT_LM_STRICT_STARTUP="${HHS_LITERT_LM_STRICT_STARTUP:-0}"
 LITERT_LM_LOG_DIR="${HHS_ASSISTANT_LOG_DIR:-${ROOT_DIR}/logs/litert-lm}"
 LITERT_LM_PID=""
 HHS_PID=""
+export HHS_LITERT_LM_PROVIDER_READY=0
+
+if [[ "${HHS_START_LITERT_LM:-1}" == "0" ]]; then
+  LITERT_LM_PROVIDER_MODE="disabled"
+fi
+
+case "$LITERT_LM_PROVIDER_MODE" in
+  auto|local|external|disabled) ;;
+  *)
+    echo "[HHS] Invalid HHS_LITERT_LM_PROVIDER_MODE=${LITERT_LM_PROVIDER_MODE}" >&2
+    exit 64
+    ;;
+esac
 
 cleanup() {
   local status=$?
@@ -44,6 +60,21 @@ try:
     with urllib.request.urlopen(f"{base}/models", timeout=1.5) as response:
         raise SystemExit(0 if 200 <= response.status < 300 else 1)
 except Exception:
+    raise SystemExit(1)
+PY
+}
+
+is_local_litert_url() {
+  "$PYTHON_BIN" - "$HHS_LITERT_LM_BASE_URL" <<'PY'
+import ipaddress
+import sys
+from urllib.parse import urlparse
+host = (urlparse(sys.argv[1]).hostname or "").lower()
+if host == "localhost":
+    raise SystemExit(0)
+try:
+    raise SystemExit(0 if ipaddress.ip_address(host).is_loopback else 1)
+except ValueError:
     raise SystemExit(1)
 PY
 }
@@ -83,22 +114,37 @@ if requested not in models:
     raise SystemExit(
         f"requested LiteRT-LM model {requested!r} is not imported; available={sorted(models)}"
     )
-print(f"[HHS] LiteRT-LM ready with model {requested}")
+print(f"[HHS] LiteRT-LM registry ready with model {requested}")
 PY
 }
 
-start_litert_server() {
-  local litert_bin
+probe_local_accelerator() {
+  echo "[HHS] Probing local LiteRT-LM backend: ${HHS_LITERT_LM_BACKEND}"
+  "$PYTHON_BIN" "${ROOT_DIR}/tools/probe_litert_lm_accelerator.py" \
+    --backend "$HHS_LITERT_LM_BACKEND" \
+    --require
+}
+
+resolve_litert_binary() {
   if [[ -n "${HHS_LITERT_LM_BIN:-}" ]]; then
-    litert_bin="$HHS_LITERT_LM_BIN"
+    printf '%s\n' "$HHS_LITERT_LM_BIN"
   elif command -v litert-lm >/dev/null 2>&1; then
-    litert_bin="$(command -v litert-lm)"
+    command -v litert-lm
   elif [[ "${HHS_LITERT_LM_AUTO_BOOTSTRAP:-1}" == "1" ]]; then
-    litert_bin="$(bash "${ROOT_DIR}/tools/bootstrap_litert_lm.sh" --print-bin)"
+    bash "${ROOT_DIR}/tools/bootstrap_litert_lm.sh" --print-bin
   else
-    echo "[HHS] litert-lm is unavailable and automatic bootstrap is disabled" >&2
     return 127
   fi
+}
+
+start_local_litert_server() {
+  local litert_bin
+
+  probe_local_accelerator || return $?
+  litert_bin="$(resolve_litert_binary)" || {
+    echo "[HHS] litert-lm is unavailable and automatic bootstrap is disabled" >&2
+    return 127
+  }
 
   if [[ ! -x "$litert_bin" ]]; then
     echo "[HHS] LiteRT-LM executable is not runnable: $litert_bin" >&2
@@ -110,7 +156,8 @@ start_litert_server() {
   fi
 
   mkdir -p "$LITERT_LM_LOG_DIR"
-  echo "[HHS] Starting repository-provisioned LiteRT-LM on ${LITERT_LM_HOST}:${LITERT_LM_PORT}"
+  echo "[HHS] Starting local LiteRT-LM on ${LITERT_LM_HOST}:${LITERT_LM_PORT}"
+  echo "[HHS] Inference requests will select backend ${HHS_LITERT_LM_BACKEND}"
   "$litert_bin" serve \
     --host "$LITERT_LM_HOST" \
     --port "$LITERT_LM_PORT" \
@@ -120,16 +167,59 @@ start_litert_server() {
   verify_requested_model
 }
 
-if [[ "${HHS_START_LITERT_LM:-1}" == "1" ]]; then
-  if probe_litert_server; then
-    echo "[HHS] Using existing LiteRT-LM service at ${HHS_LITERT_LM_BASE_URL}"
-    verify_requested_model
-  else
-    start_litert_server
+provider_unavailable() {
+  local reason="$1"
+  export HHS_LITERT_LM_PROVIDER_READY=0
+  echo "[HHS] LiteRT-LM provider unavailable: ${reason}" >&2
+  if [[ "$LITERT_LM_STRICT_STARTUP" == "1" ]]; then
+    echo "[HHS] Strict provider startup is enabled; refusing degraded startup" >&2
+    return 1
   fi
-else
-  echo "[HHS] LiteRT-LM supervision disabled by HHS_START_LITERT_LM=0"
-fi
+  echo "[HHS] Continuing with the HHS API and UI in assistant-degraded mode" >&2
+  return 0
+}
+
+use_reachable_provider() {
+  verify_requested_model
+  export HHS_LITERT_LM_PROVIDER_READY=1
+  echo "[HHS] LiteRT-LM provider ready at ${HHS_LITERT_LM_BASE_URL}"
+  echo "[HHS] Requested inference backend: ${HHS_LITERT_LM_BACKEND}"
+}
+
+case "$LITERT_LM_PROVIDER_MODE" in
+  disabled)
+    echo "[HHS] LiteRT-LM provider supervision disabled"
+    ;;
+  external)
+    if probe_litert_server; then
+      use_reachable_provider
+    else
+      provider_unavailable "external endpoint ${HHS_LITERT_LM_BASE_URL} did not respond"
+    fi
+    ;;
+  local)
+    if probe_litert_server; then
+      use_reachable_provider
+    elif start_local_litert_server; then
+      export HHS_LITERT_LM_PROVIDER_READY=1
+    else
+      provider_unavailable "local GPU/Vulkan provider could not start"
+    fi
+    ;;
+  auto)
+    if probe_litert_server; then
+      use_reachable_provider
+    elif is_local_litert_url; then
+      if start_local_litert_server; then
+        export HHS_LITERT_LM_PROVIDER_READY=1
+      else
+        provider_unavailable "no reachable provider and local accelerator preflight failed"
+      fi
+    else
+      provider_unavailable "configured remote endpoint ${HHS_LITERT_LM_BASE_URL} did not respond"
+    fi
+    ;;
+esac
 
 if [[ "${HHS_SKIP_C_BUILD:-0}" != "1" ]]; then
   echo "[HHS] Building and verifying the C kernel"
