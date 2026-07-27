@@ -1,0 +1,4 @@
+# Official Google AI Edge LiteRT-LM CLI.
+# Provides the `litert-lm import`, `litert-lm list`, and `litert-lm serve`
+# commands used by the HHS Gemma 4 AI-thread provider on port 9379.
+litert-lm==0.14.0
