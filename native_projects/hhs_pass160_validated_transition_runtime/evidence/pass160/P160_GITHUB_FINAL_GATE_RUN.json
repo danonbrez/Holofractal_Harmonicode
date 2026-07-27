@@ -1,0 +1,10 @@
+{
+  "conclusion": "failure",
+  "repair_forward": true,
+  "schema": "P160_GITHUB_FINAL_GATE_RUN_V1",
+  "status": "completed",
+  "target_final_gate_commit": "2da4ac4f98653dda83a02d8b3501130029f0681f",
+  "terminal_artifact_installed": false,
+  "workflow_run_id": 30314852968,
+  "workflow_run_url": "https://github.com/danonbrez/Holofractal_Harmonicode/actions/runs/30314852968"
+}
