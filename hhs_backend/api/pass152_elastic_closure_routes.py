@@ -12,6 +12,7 @@ from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
 
 from hhs_runtime.pass152 import HHSRuntimeControllerAuthority, delayed_closure_workload
+from hhs_runtime.hhs_runtime_contract_v1 import envelope_api_response
 
 
 # Preserve the historical route-first binding used by the inherited public
@@ -79,7 +80,7 @@ def _summary(result: dict[str, Any], run_id: str, receipt_dir: Path) -> dict[str
 def pass152_status() -> Dict[str, Any]:
     with _LATEST_LOCK:
         latest = copy.deepcopy(_LATEST)
-    return {
+    payload = {
         "schema": "HHS_PASS152_STATUS_V2",
         "pass": 152,
         "contract_id": "HHS-P152-UECI",
@@ -95,11 +96,12 @@ def pass152_status() -> Dict[str, Any]:
         },
         "latest_execution": latest,
     }
+    return envelope_api_response("/api/runtime/pass152/status", "GET", payload)
 
 
 @router.get("/capabilities")
 def pass152_capabilities() -> Dict[str, Any]:
-    return {
+    payload = {
         "schema": "HHS_PASS152_CAPABILITIES_V1",
         "candidate_lifecycle": [
             "UNSEEN", "BLOCKED", "PARTIAL", "READY", "EVALUATING",
@@ -132,22 +134,25 @@ def pass152_capabilities() -> Dict[str, Any]:
             "POST /api/runtime/pass152/execute",
         ],
     }
+    return envelope_api_response("/api/runtime/pass152/capabilities", "GET", payload)
 
 
 @router.get("/latest")
 def pass152_latest() -> Dict[str, Any]:
     with _LATEST_LOCK:
         if _LATEST is None:
-            return {
+            payload = {
                 "schema": "HHS_PASS152_LATEST_RESPONSE_V1",
                 "available": False,
                 "classification": "NO_EXECUTION_RECORDED",
             }
-        return {
-            "schema": "HHS_PASS152_LATEST_RESPONSE_V1",
-            "available": True,
-            "execution": copy.deepcopy(_LATEST),
-        }
+        else:
+            payload = {
+                "schema": "HHS_PASS152_LATEST_RESPONSE_V1",
+                "available": True,
+                "execution": copy.deepcopy(_LATEST),
+            }
+    return envelope_api_response("/api/runtime/pass152/latest", "GET", payload)
 
 
 @router.post("/execute")
@@ -175,4 +180,4 @@ def pass152_execute(request: Pass152ExecuteRequest) -> Dict[str, Any]:
     with _LATEST_LOCK:
         global _LATEST
         _LATEST = copy.deepcopy(response)
-    return response
+    return envelope_api_response("/api/runtime/pass152/execute", "POST", response)

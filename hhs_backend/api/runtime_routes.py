@@ -813,6 +813,8 @@ async def graph_lookup_hash(
     hash72: str
 ):
 
+    ingress = io_gateway.ingress("api.runtime.graph.hash", {"hash72": hash72})
+
     node = runtime_graph.get_by_hash72(hash72)
 
     if node is None:
@@ -822,7 +824,17 @@ async def graph_lookup_hash(
             detail="Hash72 node not found"
         )
 
-    return node
+    egress = io_gateway.egress("api.runtime.graph.hash", {"found": True})
+    return _contract_response(
+        f"/api/runtime/graph/hash/{hash72}",
+        "GET",
+        {
+            "schema": "HHS_GRAPH_NODE_RESPONSE_V1",
+            "hash72": hash72,
+            "node": node,
+            "io": {"ingress": ingress, "egress": egress},
+        },
+    )
 
 # ----------------------------------------------------------------------------
 
@@ -838,11 +850,26 @@ async def graph_replay(
             detail="Node not found"
         )
 
+    ingress = io_gateway.ingress("api.runtime.graph.replay", {"node_id": node_id})
+
     replay = runtime_graph.replay_chain(
         node_id
     )
 
-    return replay
+    egress = io_gateway.egress(
+        "api.runtime.graph.replay",
+        {"node_id": node_id, "replay_count": len(replay) if isinstance(replay, list) else 1},
+    )
+    return _contract_response(
+        f"/api/runtime/graph/replay/{node_id}",
+        "GET",
+        {
+            "schema": "HHS_GRAPH_REPLAY_RESPONSE_V1",
+            "node_id": node_id,
+            "replay": replay,
+            "io": {"ingress": ingress, "egress": egress},
+        },
+    )
 
 # ============================================================================
 # PREDICTION ROUTES
@@ -860,6 +887,8 @@ async def predict_next_states(
             status_code=404,
             detail="Node not found"
         )
+
+    ingress = io_gateway.ingress("api.runtime.predict", {"node_id": node_id, "top_k": top_k})
 
     predictions = (
         runtime_graph.predict_next_states(
@@ -890,7 +919,18 @@ async def predict_next_states(
                 node.step
         })
 
-    return results
+    egress = io_gateway.egress("api.runtime.predict", {"node_id": node_id, "prediction_count": len(results)})
+    return _contract_response(
+        f"/api/runtime/predict/{node_id}",
+        "GET",
+        {
+            "schema": "HHS_PREDICT_STATES_RESPONSE_V1",
+            "node_id": node_id,
+            "top_k": top_k,
+            "predictions": results,
+            "io": {"ingress": ingress, "egress": egress},
+        },
+    )
 
 # ============================================================================
 # SANDBOX ROUTES
@@ -905,14 +945,15 @@ async def create_sandbox(
         metadata=request.metadata
     )
 
-    return {
-
-        "sandbox_id":
-            sandbox.sandbox_id,
-
-        "created_at":
-            sandbox.created_at
-    }
+    return _contract_response(
+        "/api/runtime/sandbox/create",
+        "POST",
+        {
+            "schema": "HHS_SANDBOX_CREATE_RESPONSE_V1",
+            "sandbox_id": sandbox.sandbox_id,
+            "created_at": sandbox.created_at,
+        },
+    )
 
 # ----------------------------------------------------------------------------
 
@@ -932,7 +973,13 @@ async def sandbox_step(
         sandbox_id
     )
 
-    return result
+    payload = {"schema": "HHS_SANDBOX_STEP_RESPONSE_V1", "sandbox_id": sandbox_id}
+    payload.update(result)
+    return _contract_response(
+        f"/api/runtime/sandbox/{sandbox_id}/step",
+        "POST",
+        payload,
+    )
 
 # ============================================================================
 # VECTOR ROUTES

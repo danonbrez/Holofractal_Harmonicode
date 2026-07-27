@@ -5,6 +5,7 @@ from typing import Any, Dict
 from fastapi import APIRouter, HTTPException
 
 from hhs_runtime.hhs_zero_bypass_runtime_interposer_v1 import interpose_runtime_surface
+from hhs_runtime.hhs_runtime_contract_v1 import envelope_api_response
 
 from hhs_runtime.hhs_pass132_reconstructed_replay_v1 import (
     Pass132ReconstructionError,
@@ -41,7 +42,10 @@ def _call(method: str, payload: Dict[str, Any]) -> Dict[str, Any]:
         if isinstance(result, dict):
             result = dict(result)
             result["zero_bypass_interposition"] = interposition
-        return result
+        else:
+            result = {"result": result, "zero_bypass_interposition": interposition}
+        result.setdefault("schema", f"HHS_PASS132_{method.upper()}_RESPONSE_V1")
+        return envelope_api_response(f"/api/runtime/consequences/{method}", "POST", result)
     except Pass132ReconstructionError as exc:
         raise HTTPException(status_code=409, detail={"code": exc.code, "message": str(exc)}) from exc
 
@@ -74,7 +78,12 @@ def _get(method: str, execution_root: str):
         if isinstance(result, dict):
             result = dict(result)
             result["zero_bypass_interposition"] = interposition
-        return result
+        else:
+            result = {"result": result, "zero_bypass_interposition": interposition}
+        result.setdefault("schema", f"HHS_PASS132_{method.upper()}_RESPONSE_V1")
+        return envelope_api_response(
+            f"/api/runtime/consequences/{execution_root}/{method}", "GET", result
+        )
     except Pass132ReconstructionError as exc:
         raise HTTPException(status_code=404, detail={"code": exc.code, "message": str(exc)}) from exc
 
