@@ -1,21 +1,26 @@
 {
-  "schema": "HHS_PASS_160_AUTHORITY_BINDING_V1_2",
+  "schema": "HHS_PASS_160_AUTHORITY_BINDING_V1_3",
   "contract": "HHS-P160-FPPORT-VTR",
   "contract_historical_commit": "94578f4af64a702ad5af2049cb9f3a5cae9c8c6b",
   "contract_original_version": "1.1.0",
-  "amendment_version": "1.2.0",
+  "amendment_version": "1.3.0",
   "append_only": true,
   "implementation_branch": "agent/pass160-validated-transition-runtime",
-  "implementation_parent": "current authoritative main at branch creation",
+  "implementation_parent": "ef954fcfccdf95477a79fc5fd328d14cb6e2ddb8",
   "immediate_inheritance_parent": {
     "pass": 159,
     "contract": "HHS-P159-VM81-H216-HCI-C11C",
     "classification": "HHS_PASS_159_VM81_HASH216_HARMONICODE_INTERPRETER_AND_C11_NATIVE_COMPILER_VERIFIED",
     "completion_receipt": "native_projects/hhs_pass159_harmonicode_toolchain/evidence/P159_COMPLETION_RECEIPT.json",
+    "authoritative_main_commit": "aa31de1dffd39331342fa84eeb155fbce1865958",
+    "main_closure_root": "d7bd4866142bbeee8fd0f5b913e29097eef17ab2d0e39655ae559fae98d03a94",
     "omega_159": true,
     "terminal_claimed": true
   },
   "historical_contract_preserved": true,
+  "repair_forward_validation_policy": "HHS_PASS_160_REPAIR_FORWARD_VALIDATION_POLICY.md",
+  "validation_mode": "ONE_BOUNDED_FINAL_INTEGRATION_AND_REPLAY_GATE",
+  "unchanged_evidence_reuse": true,
   "terminal_classification_reserved": "HHS_PASS_160_FIBONACCI_PRIME_PSEUDORANDOM_OVERLAP_RECEIPT_TIP_VALIDATED_TRANSITION_RUNTIME_VERIFIED",
   "terminal_claimed": false
 }
