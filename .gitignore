@@ -20,3 +20,5 @@ dist/
 .env
 .venv/
 venv/
+.hhs/litert-lm/
+logs/litert-lm/
