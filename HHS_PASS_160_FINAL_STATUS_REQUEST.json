@@ -1,0 +1,8 @@
+{
+  "schema": "HHS_PASS_160_FINAL_STATUS_REQUEST_V1",
+  "target_final_gate_commit": "2da4ac4f98653dda83a02d8b3501130029f0681f",
+  "target_workflow": "pass160-final-delivery.yml",
+  "expected_terminal_artifact": "hhs-pass160-terminal-2da4ac4f98653dda83a02d8b3501130029f0681f",
+  "validation_reexecution_allowed": false,
+  "collect_terminal_evidence": true
+}
