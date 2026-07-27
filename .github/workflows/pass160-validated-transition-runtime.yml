@@ -23,6 +23,27 @@ jobs:
     env:
       SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
     steps:
+      - uses: actions/checkout@v4
+        with:
+          show-progress: false
+      - name: Verify repository capsule blobs
+        working-directory: native_projects/hhs_pass160_validated_transition_runtime/assets/source_capsule
+        run: |
+          set -eu
+          echo "PASS160_REPOSITORY_NATIVE bytes=$(wc -c < pass160_native_source.tar.gz) sha256=$(sha256sum pass160_native_source.tar.gz | awk '{print $1}')"
+          echo "PASS160_REPOSITORY_REFERENCE bytes=$(wc -c < pass160_reference_source.tar.gz) sha256=$(sha256sum pass160_reference_source.tar.gz | awk '{print $1}')"
+          gzip -t pass160_native_source.tar.gz
+          gzip -t pass160_reference_source.tar.gz
+          tar -tzf pass160_native_source.tar.gz >/dev/null
+          tar -tzf pass160_reference_source.tar.gz >/dev/null
+      - name: Upload repository capsule diagnostics
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass160-repository-capsules
+          path: |
+            native_projects/hhs_pass160_validated_transition_runtime/assets/source_capsule/pass160_native_source.tar.gz
+            native_projects/hhs_pass160_validated_transition_runtime/assets/source_capsule/pass160_reference_source.tar.gz
+          if-no-files-found: error
       - name: Download, verify, and reconstruct immutable chunks
         run: |
           set -eu
