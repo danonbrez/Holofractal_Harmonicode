@@ -1,0 +1,34 @@
+name: Pass 160 Capsule Recovery
+
+on:
+  push:
+    branches:
+      - agent/pass160-validated-transition-runtime
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  export-chunks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          show-progress: false
+      - name: Record source transport bytes
+        working-directory: native_projects/hhs_pass160_validated_transition_runtime/assets/source_capsule
+        run: |
+          set -eu
+          sha256sum chunks/* | tee PASS160_REPOSITORY_CHUNK_HASHES.txt
+          wc -c chunks/* | tee PASS160_REPOSITORY_CHUNK_SIZES.txt
+      - name: Upload source transport chunks
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass160-source-transport-chunks
+          path: |
+            native_projects/hhs_pass160_validated_transition_runtime/assets/source_capsule/chunks/*
+            native_projects/hhs_pass160_validated_transition_runtime/assets/source_capsule/PASS160_REPOSITORY_CHUNK_HASHES.txt
+            native_projects/hhs_pass160_validated_transition_runtime/assets/source_capsule/PASS160_REPOSITORY_CHUNK_SIZES.txt
+          if-no-files-found: error
