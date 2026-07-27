@@ -5,7 +5,7 @@ on:
     branches:
       - agent/pass160-validated-transition-runtime
     paths:
-      - 'native_projects/hhs_pass160_validated_transition_runtime/evidence/pass160/P160_FINAL_GATE_REQUEST.json'
+      - 'HHS_PASS_160_FINAL_GATE_REQUEST.json'
 
 permissions:
   contents: read
