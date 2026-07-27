@@ -75,7 +75,7 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: pass159-validation-state
-          path: .
+          path: native_projects
       - uses: actions/download-artifact@v4
         with:
           pattern: pass159-root-*
