@@ -3,7 +3,7 @@
     "CPU_REFERENCE",
     "DETERMINISTIC_SIMULATED_GPU"
   ],
-  "classification": "HHS_PASS_164_REFERENCE_MULTI_BACKEND_EQUIVALENCE_OBSERVED",
+  "classification": "HHS_PASS_164_MULTI_BACKEND_REPLAY_VERIFIED",
   "comparison": {
     "cpu_physical_order": [
       "f4f1c110692e75e9ca94d1c2c110805b08d9e1cf4e3c3818219ebf64e0ddc147",
@@ -22,7 +22,6 @@
   },
   "outgoing_hash72": "PA-iHeWK>)M2l<2L-nMc8ST?DBWs/lNxEXnb4uFddqRRJ1/V+-PXeXvNLgEHS6+XOs(hFk2(",
   "physical_gpu_executed": false,
-  "promotion_candidate": "HHS_PASS_164_MULTI_BACKEND_REPLAY_VERIFIED",
   "reduction_hash216": "8e918d79a647c75a2e4e261d105b06ad55b7a052ca0776dc7fedee494d9a2f13",
   "replay": {
     "classification": "P164_REPLAY_RECEIPT",
@@ -36,6 +35,10 @@
     "records": 9,
     "state_hash72": "PA-iHeWK>)M2l<2L-nMc8ST?DBWs/lNxEXnb4uFddqRRJ1/V+-PXeXvNLgEHS6+XOs(hFk2("
   },
-  "repository_pass163_integration_ci": "PENDING",
+  "repository_pass163_integration_ci": {
+    "workflow_run_id": 30403109623,
+    "job_id": 90422333120,
+    "conclusion": "success"
+  },
   "schema": "HHS_PASS_164_CROSS_BACKEND_EQUIVALENCE_V1"
 }
