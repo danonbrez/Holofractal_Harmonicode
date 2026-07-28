@@ -36,6 +36,7 @@ jobs:
           tar -xzf /tmp/hhs-visual-ide-ab.tar.gz -C .
           rm -rf .hhs-bootstrap
           rm -f .github/workflows/bootstrap-visual-ide-ab.yml
+          rm -f .github/workflows/visual-ide-ab-usability.yml
       - name: Validate materialized sources
         shell: bash
         run: |
