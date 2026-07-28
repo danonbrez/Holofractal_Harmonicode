@@ -7,12 +7,16 @@ from hashlib import sha256
 import importlib.util
 import json
 from pathlib import Path
+import sys
 import tempfile
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 
 from hhs_runtime.pass165.durability import DurableMultimodalLearningService, SimulatedInterruption
 from hhs_runtime.pass165.ingestion import MultimodalLearningService, canonical_bytes
 
-ROOT = Path(__file__).resolve().parents[1]
 HELPER = ROOT / "tests" / "pass165_real_fixture_corpus.py"
 SPEC = importlib.util.spec_from_file_location("pass165_real_fixture_corpus", HELPER)
 assert SPEC and SPEC.loader
