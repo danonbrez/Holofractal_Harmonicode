@@ -7,6 +7,10 @@ on:
     paths:
       - 'staging/pass161-source/**'
       - '.github/workflows/pass161-source-materialization.yml'
+  pull_request:
+    paths:
+      - 'staging/pass161-source/**'
+      - '.github/workflows/pass161-source-materialization.yml'
 
 permissions:
   contents: write
@@ -15,10 +19,12 @@ jobs:
   materialize-source:
     runs-on: ubuntu-latest
     timeout-minutes: 25
+    env:
+      TARGET_BRANCH: ${{ github.head_ref || github.ref_name }}
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: agent/pass161-finalized-clean
+          ref: ${{ github.head_ref || github.ref_name }}
           fetch-depth: 2
           show-progress: false
       - uses: actions/setup-node@v4
@@ -67,4 +73,4 @@ jobs:
           git add -A
           git diff --cached --check
           git commit -m 'Implement complete Pass 161 Harmonizer source'
-          git push origin HEAD:agent/pass161-finalized-clean
+          git push origin HEAD:"$TARGET_BRANCH"
