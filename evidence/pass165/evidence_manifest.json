@@ -21,7 +21,17 @@
   "executed_evidence": [
     {"path": "evidence/pass165/python_test_output.txt", "result": "22 passed"},
     {"path": "evidence/pass165/c11_test_output.txt", "result": "strict C11 compile and native execution passed"},
-    {"path": "evidence/pass165/P165_COMPLETION_RECEIPT.json", "result": "bounded nonterminal receipt"}
+    {"path": "evidence/pass165/github_actions_validation.json", "result": "actual Pass 163/164/165 repository integration workflow passed"},
+    {"path": "evidence/pass165/P165_COMPLETION_RECEIPT.json", "result": "bounded nonterminal validated receipt"}
   ],
+  "validation_scope": {
+    "local_python": true,
+    "local_native_c11": true,
+    "actual_pass163_pass164_integration": true,
+    "current_repository_workflow": true,
+    "independent_real_format_fixture_corpus": false,
+    "durable_crash_interruption": false,
+    "terminal_verification": false
+  },
   "integrity_note": "GitHub blob and commit identities are authoritative for connector-published files."
 }
