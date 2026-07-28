@@ -1,0 +1,154 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:hhs:p163:vmrc:v1",
+  "title": "HHS Pass 163 VMRC governed transition schemas",
+  "type": "object",
+  "$defs": {
+    "hash72": {
+      "type": "string",
+      "minLength": 72,
+      "maxLength": 72,
+      "pattern": "^[0-9A-Za-z+*/()<>!?-]{72}$"
+    },
+    "hash216Root": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "snapshot": {
+      "type": "object",
+      "required": [
+        "schema",
+        "version",
+        "encoding",
+        "data",
+        "expanded_bytes",
+        "base64_symbols"
+      ],
+      "properties": {
+        "schema": {"const": "HHS_P163_VMRC_SNAPSHOT_V1"},
+        "version": {"const": 1},
+        "encoding": {
+          "enum": ["RAW_BASE64", "SPARSE_ZERO", "SPARSE_ONE"]
+        },
+        "data": {},
+        "expanded_bytes": {"const": 648},
+        "base64_symbols": {"const": 864},
+        "snapshot_hash72": {"$ref": "#/$defs/hash72"},
+        "state_hash72": {"$ref": "#/$defs/hash72"}
+      },
+      "additionalProperties": false
+    },
+    "candidate": {
+      "type": "object",
+      "required": [
+        "candidate_id",
+        "epoch",
+        "thread",
+        "operation",
+        "writes",
+        "expected_input_hash72",
+        "dependency_root",
+        "capability_scope",
+        "parameter_root",
+        "phase_gear_root",
+        "source_architecture",
+        "target_architecture"
+      ],
+      "properties": {
+        "candidate_id": {"$ref": "#/$defs/hash216Root"},
+        "epoch": {"type": "integer", "minimum": 0},
+        "thread": {"type": "integer", "minimum": 0, "maximum": 63},
+        "operation": {
+          "type": "string",
+          "pattern": "^VMRC_[A-Z0-9_]+$"
+        },
+        "writes": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "prefixItems": [
+              {"type": "integer", "minimum": 0, "maximum": 80},
+              {"type": "integer", "enum": [-1, 0, 1]}
+            ],
+            "minItems": 2,
+            "maxItems": 2
+          }
+        },
+        "expected_input_hash72": {"$ref": "#/$defs/hash72"},
+        "expected_output_hash72": {
+          "anyOf": [
+            {"$ref": "#/$defs/hash72"},
+            {"type": "null"}
+          ]
+        },
+        "dependency_root": {"$ref": "#/$defs/hash216Root"},
+        "capability_scope": {"type": "string", "minLength": 1},
+        "parameter_root": {"$ref": "#/$defs/hash216Root"},
+        "phase_gear_root": {"$ref": "#/$defs/hash216Root"},
+        "source_architecture": {"type": "string", "minLength": 1},
+        "target_architecture": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "receipt": {
+      "type": "object",
+      "required": ["schema", "version", "runtime_epoch", "receipt_hash72"],
+      "properties": {
+        "schema": {
+          "type": "string",
+          "pattern": "^P163_[A-Z0-9_]+_RECEIPT$"
+        },
+        "version": {"const": 1},
+        "runtime_epoch": {"type": "integer", "minimum": 0},
+        "receipt_hash72": {"$ref": "#/$defs/hash72"}
+      },
+      "additionalProperties": true
+    },
+    "abiEnvelope": {
+      "type": "object",
+      "required": [
+        "magic",
+        "version",
+        "operation_class",
+        "source_architecture",
+        "target_architecture",
+        "runtime_epoch",
+        "incoming_hash72",
+        "thread_mask",
+        "port_mask",
+        "read_set_root",
+        "write_set_root",
+        "dependency_root",
+        "parameter_root",
+        "phase_gear_graph_root",
+        "payload_encoding",
+        "payload_length",
+        "payload_b64",
+        "expected_expanded_state_root",
+        "hash216_operation_identity",
+        "integrity_sha256",
+        "receipt_nonce"
+      ],
+      "properties": {
+        "magic": {"const": "HHS-P163-VMRC"},
+        "version": {"const": 1},
+        "operation_class": {
+          "type": "string",
+          "pattern": "^VMRC_[A-Z0-9_]+$"
+        },
+        "runtime_epoch": {"type": "integer", "minimum": 0},
+        "incoming_hash72": {"$ref": "#/$defs/hash72"},
+        "expected_expanded_state_root": {"$ref": "#/$defs/hash72"},
+        "hash216_operation_identity": {"$ref": "#/$defs/hash216Root"},
+        "integrity_sha256": {"$ref": "#/$defs/hash216Root"}
+      },
+      "additionalProperties": true
+    }
+  },
+  "oneOf": [
+    {"$ref": "#/$defs/snapshot"},
+    {"$ref": "#/$defs/candidate"},
+    {"$ref": "#/$defs/receipt"},
+    {"$ref": "#/$defs/abiEnvelope"}
+  ]
+}
