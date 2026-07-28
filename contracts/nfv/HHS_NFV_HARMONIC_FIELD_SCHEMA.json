@@ -1,0 +1,24 @@
+{
+  "schema": "HHS_NFV_HARMONIC_FIELD_SCHEMA_V1",
+  "contract_id": "HHS-NFV-CEN-V1",
+  "pass_number": 154,
+  "surround_lane_order": ["x", "y", "z", "w"],
+  "center_lane": "c",
+  "ring_edges": [["x", "y"], ["y", "z"], ["z", "w"], ["w", "x"]],
+  "cross_links": [["x", "z"], ["y", "w"]],
+  "required_invariants": [
+    "ORDERED_LANE_IDENTITY",
+    "EQUAL_FRAME_LENGTH",
+    "SHARED_PHASE_LOCK_ID",
+    "LOSHU_ORIENTATION_VALID",
+    "EXACT_RATIONAL_SAMPLES",
+    "CENTER_INDEPENDENT_FROM_SURROUND_DOWNMIX",
+    "SOURCE_RECEIPT_REQUIRED"
+  ],
+  "vm81_encoding": {
+    "classification": "PROVISIONAL_CANDIDATE",
+    "authoritative": false,
+    "requires_vm81_admission": true
+  },
+  "projection_authority": "NONE"
+}

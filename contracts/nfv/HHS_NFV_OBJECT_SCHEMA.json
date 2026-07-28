@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "HHS_NFV_OBJECT_SCHEMA_V1",
+  "title": "HHS NFV Object",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "domain",
+    "contract_id",
+    "object_type",
+    "state",
+    "constraints",
+    "dependencies",
+    "authority_root",
+    "version",
+    "generation",
+    "receipt_head",
+    "lifecycle",
+    "object_index"
+  ],
+  "properties": {
+    "domain": {"const": "HHS-NFV-OBJECT-V1"},
+    "contract_id": {"const": "HHS-NFV-CEN-V1"},
+    "object_type": {"type": "string", "minLength": 1},
+    "state": {"type": "object"},
+    "constraints": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "dependencies": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "authority_root": {"type": "string", "minLength": 1},
+    "version": {"type": "integer", "minimum": 0},
+    "generation": {"type": "integer", "minimum": 0},
+    "receipt_head": {"type": "string", "minLength": 1},
+    "lifecycle": {
+      "enum": [
+        "UNMATERIALIZED",
+        "CONSTRUCTING",
+        "PARTIAL",
+        "READY",
+        "EVALUATING",
+        "PROVISIONAL",
+        "VERIFIED",
+        "COMMITTED",
+        "SUSPENDED",
+        "FORKED",
+        "MERGING",
+        "ARCHIVED",
+        "RECLAIMABLE",
+        "INVALIDATED",
+        "CONFLICT",
+        "RESOURCE_BOUNDED"
+      ]
+    },
+    "object_index": {"type": "string", "minLength": 216, "maxLength": 216}
+  },
+  "authoritative_float_policy": "FORBIDDEN_IN_STATE",
+  "identity_authority": "Hash216",
+  "commit_authority": "VM81",
+  "receipt_authority": "Hash72"
+}

@@ -1,0 +1,36 @@
+{
+  "schema": "HHS_NFV_SERIALIZATION_PROFILE_V1",
+  "contract_id": "HHS-NFV-CEN-V1",
+  "pass_number": 154,
+  "magic_ascii": "HNFV",
+  "serialization_version": 1,
+  "header": {
+    "byte_order": "big-endian",
+    "fields": [
+      {"name": "magic", "size_bytes": 4},
+      {"name": "version", "size_bytes": 1},
+      {"name": "kind", "size_bytes": 1},
+      {"name": "payload_size", "size_bytes": 8}
+    ]
+  },
+  "record_kinds": {
+    "1": "NFV_OBJECT",
+    "2": "NFV_TRANSITION_PACKAGE",
+    "3": "NFV_DEPENDENCY_GRAPH"
+  },
+  "payload": {
+    "encoding": "UTF-8 canonical JSON",
+    "field_order": "lexicographic",
+    "duplicate_fields": "REJECT",
+    "trailing_data": "REJECT",
+    "floating_point": "REJECT_AUTHORITATIVE",
+    "nonminimal_encoding": "REJECT_BY_CANONICAL_REENCODE",
+    "default_max_payload_bytes": 16777216,
+    "default_max_recursion_depth": 64
+  },
+  "authority": {
+    "semantic": "VM81",
+    "runtime_receipt": "Hash72",
+    "identity_index": "Hash216"
+  }
+}

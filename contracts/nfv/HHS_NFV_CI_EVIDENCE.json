@@ -1,0 +1,41 @@
+{
+  "schema": "HHS_NFV_CI_EVIDENCE_V1",
+  "contract_id": "HHS-NFV-CEN-V1",
+  "pass_number": 154,
+  "classification": "PARTIALLY_IMPLEMENTED",
+  "workflow": {
+    "name": "Pass 154 NFV Core Tranche",
+    "run_id": 30155889827,
+    "run_number": 19,
+    "head_sha": "f76e081a7c2a5e63736e0388b52547172ebae1ae",
+    "conclusion": "success"
+  },
+  "python": {
+    "version": "3.11.15",
+    "tests_passed": 34,
+    "tests_failed": 0,
+    "status": "PASSED"
+  },
+  "native_c11": {
+    "compiler_flags": ["-std=c11", "-Wall", "-Wextra", "-Werror"],
+    "marker": "HHS_NFV_NATIVE_CORE_VERIFIED",
+    "status": "PASSED"
+  },
+  "artifact": {
+    "artifact_id": 8618972542,
+    "name": "pass154-nfv-core-report",
+    "sha256": "300df9eb1173450c7d585202915e189659daaa2e02ad209304ccf54defe90a96"
+  },
+  "terminal_classification_claimed": false,
+  "remaining_closure": [
+    "complete native ABI",
+    "chunked computation and recursive object closure",
+    "fork and merge",
+    "module encapsulation",
+    "general exact Fourier and multiscale descent",
+    "live audio and receipt-rate validation",
+    "shader compilation and execution",
+    "collision projection and VM81 return path",
+    "full evidence matrix and inherited regression"
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "schema": "HHS_NFV_CONVOLUTION_CHAMBER_SCHEMA_V1",
+  "contract_id": "HHS-NFV-CEN-V1",
+  "pass_number": 154,
+  "lane_order": ["x", "y", "z", "w", "c"],
+  "coefficient_authority": "EXACT_RATIONAL",
+  "kernel_identity_authority": "Hash216",
+  "kernel_refresh_authority": "VM81_WITH_HASH72_SOURCE_RECEIPT",
+  "required_invariants": [
+    "ALL_KERNELS_SHARE_BANK_RECEIPT",
+    "FIELD_AND_BANK_RECEIPTS_MATCH",
+    "STALE_RECEIPT_REJECTED",
+    "UNAUTHORIZED_REFRESH_REJECTED",
+    "RENDER_OUTPUT_NONAUTHORITATIVE",
+    "AUDIO_SAMPLES_DO_NOT_CREATE_VM81_TRANSITIONS"
+  ],
+  "implemented_core": "EXACT_FINITE_DISCRETE_CONVOLUTION",
+  "unverified_surfaces": [
+    "LIVE_AUDIO_DRIVER",
+    "REALTIME_3D_IMPULSE_RESPONSE",
+    "KERNEL_INTERPOLATION_PLAYBACK",
+    "GPU_OR_DSP_ACCELERATION"
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "schema": "HHS_NFV_FOURIER_PROFILE_V1",
+  "contract_id": "HHS-NFV-CEN-V1",
+  "pass_number": 154,
+  "implemented_transform": {
+    "length": 4,
+    "domain": "GAUSSIAN_RATIONAL_CYCLOTOMIC_4",
+    "primitive_root": "i",
+    "coefficient_authority": "EXACT",
+    "inverse_round_trip": "REQUIRED"
+  },
+  "unsupported_authoritative_lengths": "REJECT",
+  "gpu_fft": {
+    "authority": "PROJECTION_ONLY",
+    "implemented": false
+  },
+  "required_invariants": [
+    "NO_FLOAT_AUTHORITATIVE_COEFFICIENTS",
+    "EXACT_FORWARD_TRANSFORM",
+    "EXACT_INVERSE_RECONSTRUCTION",
+    "COMPLEX_RESIDUAL_REJECTED_FOR_REAL_SOURCE"
+  ]
+}
