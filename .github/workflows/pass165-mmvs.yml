@@ -7,6 +7,8 @@ on:
       - 'hhs_backend/pass165_server.py'
       - 'native_projects/hhs_pass165_mmvs/**'
       - 'tests/test_hhs_pass165_multimodal_ingress_v1.py'
+      - 'tests/test_hhs_pass165_terminal_v1.py'
+      - 'tests/pass165_real_fixture_corpus.py'
       - 'HHS_PASS_165_AUTHORITY_BINDING.json'
       - 'HHS_PASS_165_IMPLEMENTATION_STATUS.md'
       - 'docs/HHS_PASS_165_MULTIMODAL_INGRESS_RUNTIME.md'
@@ -16,20 +18,26 @@ on:
 jobs:
   dependency-scoped-validation:
     runs-on: ubuntu-latest
+    env:
+      PYTHONHASHSEED: '0'
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Install bounded dependencies
-        run: python -m pip install pytest fastapi pydantic
-      - name: Python Hash72 + Pass 163 + Pass 164 + Pass 165
+      - name: Install real-format and bounded dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
+          python -m pip install pytest fastapi pydantic httpx
+      - name: Python Hash72 + Pass 163 + Pass 164 + Pass 165 terminal matrix
         run: |
           python -m pytest -q \
             tests/test_hash72_digest_v1.py \
             tests/test_hhs_pass163_vmrc_v1.py \
             tests/test_hhs_pass164_gcmsl_v1.py \
-            tests/test_hhs_pass165_multimodal_ingress_v1.py
+            tests/test_hhs_pass165_multimodal_ingress_v1.py \
+            tests/test_hhs_pass165_terminal_v1.py
       - name: Strict C11 Pass 163
         run: make -C native_projects/hhs_pass163_vmrc clean test
       - name: Strict C11 Pass 164
