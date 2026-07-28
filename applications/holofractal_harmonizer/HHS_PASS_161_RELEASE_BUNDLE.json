@@ -1,0 +1,9 @@
+{
+  "schema": "HHS_PASS_161_RELEASE_BUNDLE_V1",
+  "contract": "HHS-P161-HHUMOCE",
+  "archive": "dist/HHS_PASS_161_RELEASE_BUNDLE.tar.gz",
+  "archive_bytes": 22579,
+  "archive_sha256": "e13cd4bc08768bb141362ba021324586e138c292bd74a499d590d72a5093a25b",
+  "file_count": 19,
+  "deterministic": true
+}

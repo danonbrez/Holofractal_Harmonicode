@@ -1,0 +1,14 @@
+{
+  "name": "hhs-pass161-holofractal-harmonizer",
+  "version": "1.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test tests/*.test.mjs",
+    "verify": "node tools/verify.mjs",
+    "audit:browser": "node tools/browser_audit.mjs",
+    "finalize": "node tools/finalize.mjs",
+    "package": "node tools/package.mjs"
+  },
+  "engines": { "node": ">=22" }
+}

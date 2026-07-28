@@ -1,0 +1,12 @@
+{
+  "schema": "HHS_PASS_161_TERMINAL_RELEASE_V1",
+  "contract": "HHS-P161-HHUMOCE",
+  "classification": "HHS_PASS_161_HOLOFRACTAL_HARMONIZER_UNIFIED_MULTIMODAL_OBJECT_CONTROL_ENVIRONMENT_VERIFIED",
+  "omega_161": true,
+  "terminal_claimed": true,
+  "completion_receipt_sha256": "715c2beb64eec7f42300fec34cedeb65918bdbf778b1b89a2e75d1bfc4ee9e77",
+  "release_bundle_sha256": "e13cd4bc08768bb141362ba021324586e138c292bd74a499d590d72a5093a25b",
+  "release_bundle_bytes": 22579,
+  "replay_root": "9fe59c605d17c4bc8fd9a16cb624288253aec680f0e3a1bf02a0322faa9876d3",
+  "pass160_main_closure_root": "bd27cb36c7d3c70301f9edde7d5384d652f78da81206c21a7d46dd0c90eac774"
+}
