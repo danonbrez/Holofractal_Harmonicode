@@ -1,0 +1,111 @@
+{
+  "interpretation": {
+    "dense_capacity_scales_quadratically": true,
+    "physical_gpu_executed": false,
+    "physical_single_cycle_claimed": false,
+    "resident_edges_are_measured_not_assumed": true
+  },
+  "rows": [
+    {
+      "active_edge_count": 1,
+      "base64_compilation_ns": 28485,
+      "benchmark_sha256": "7ee78e842c53db88778af6b9ad401d386178c93c90241c673a68cd6849304984",
+      "coordinate_mapping_ns": 18301849,
+      "coordinate_proof_sha256": "69f7d153717a6b471aa20166b6b7c4bf5fbaa68015bcb2dec859fd81e9856e07",
+      "dense_address_capacity": 15841,
+      "deterministic_replay": true,
+      "homogeneous_geometry": {
+        "P_c": 72,
+        "P_c_squared": 5184,
+        "dense_capacity": 15841,
+        "p_c": 64,
+        "p_c_q_c": 5184,
+        "q_c": 81
+      },
+      "physical_single_cycle_claimed": false,
+      "recursive_geometry": {
+        "P_r": 5184,
+        "P_r_squared": 26873856,
+        "p_r": 4096,
+        "p_r_q_r": 26873856,
+        "q_r": 6561
+      },
+      "replay_ns": 149448,
+      "resident_edge_records": 0,
+      "scale": 1,
+      "schema": "P164_BENCHMARK_RECEIPT",
+      "snapshot_base64_symbols": 864,
+      "sparse_address_compression_factor": 15841.0,
+      "state_hash72": "rZ2GAPrQyXK2bYct2/*1EaAJeqDPDI/6?NMaRRXcgtmi748z0vYl?hgYECQQO4m/nDkftGF/",
+      "theoretical_capacity_distinct_from_residency": true
+    },
+    {
+      "active_edge_count": 8,
+      "base64_compilation_ns": 23446,
+      "benchmark_sha256": "64221db3126b2d51cb33426c805de04e80facd8d1e53039293cc907f15de1e8a",
+      "coordinate_mapping_ns": 14165459,
+      "coordinate_proof_sha256": "69f7d153717a6b471aa20166b6b7c4bf5fbaa68015bcb2dec859fd81e9856e07",
+      "dense_address_capacity": 63364,
+      "deterministic_replay": true,
+      "homogeneous_geometry": {
+        "P_c": 144,
+        "P_c_squared": 20736,
+        "dense_capacity": 63364,
+        "p_c": 128,
+        "p_c_q_c": 20736,
+        "q_c": 162
+      },
+      "physical_single_cycle_claimed": false,
+      "recursive_geometry": {
+        "P_r": 5184,
+        "P_r_squared": 26873856,
+        "p_r": 4096,
+        "p_r_q_r": 26873856,
+        "q_r": 6561
+      },
+      "replay_ns": 127806,
+      "resident_edge_records": 0,
+      "scale": 2,
+      "schema": "P164_BENCHMARK_RECEIPT",
+      "snapshot_base64_symbols": 864,
+      "sparse_address_compression_factor": 7920.5,
+      "state_hash72": "rZ2GAPrQyXK2bYct2/*1EaAJeqDPDI/6?NMaRRXcgtmi748z0vYl?hgYECQQO4m/nDkftGF/",
+      "theoretical_capacity_distinct_from_residency": true
+    },
+    {
+      "active_edge_count": 64,
+      "base64_compilation_ns": 18968,
+      "benchmark_sha256": "e4ed10dd5b8b7d683269c36118b27963292026b5864412e02c5760dcd1627f4f",
+      "coordinate_mapping_ns": 10896942,
+      "coordinate_proof_sha256": "69f7d153717a6b471aa20166b6b7c4bf5fbaa68015bcb2dec859fd81e9856e07",
+      "dense_address_capacity": 253456,
+      "deterministic_replay": true,
+      "homogeneous_geometry": {
+        "P_c": 288,
+        "P_c_squared": 82944,
+        "dense_capacity": 253456,
+        "p_c": 256,
+        "p_c_q_c": 82944,
+        "q_c": 324
+      },
+      "physical_single_cycle_claimed": false,
+      "recursive_geometry": {
+        "P_r": 5184,
+        "P_r_squared": 26873856,
+        "p_r": 4096,
+        "p_r_q_r": 26873856,
+        "q_r": 6561
+      },
+      "replay_ns": 131109,
+      "resident_edge_records": 0,
+      "scale": 4,
+      "schema": "P164_BENCHMARK_RECEIPT",
+      "snapshot_base64_symbols": 864,
+      "sparse_address_compression_factor": 3960.25,
+      "state_hash72": "rZ2GAPrQyXK2bYct2/*1EaAJeqDPDI/6?NMaRRXcgtmi748z0vYl?hgYECQQO4m/nDkftGF/",
+      "theoretical_capacity_distinct_from_residency": true
+    }
+  ],
+  "runtime": "reference-python-with-pass163-compatible-stub",
+  "schema": "HHS_PASS_164_SCALING_BENCHMARK_MATRIX_V1"
+}

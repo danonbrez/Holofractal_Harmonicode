@@ -1,0 +1,33 @@
+{
+  "active_edge_count": 8,
+  "base64_compilation_ns": 19780,
+  "benchmark_sha256": "fa9da87f2fde87cf65fc28f513b9c2ae775ac4dd3c15c03dec6a7711e4f2d78b",
+  "coordinate_mapping_ns": 12181225,
+  "coordinate_proof_sha256": "69f7d153717a6b471aa20166b6b7c4bf5fbaa68015bcb2dec859fd81e9856e07",
+  "dense_address_capacity": 63364,
+  "deterministic_replay": true,
+  "homogeneous_geometry": {
+    "P_c": 144,
+    "P_c_squared": 20736,
+    "dense_capacity": 63364,
+    "p_c": 128,
+    "p_c_q_c": 20736,
+    "q_c": 162
+  },
+  "physical_single_cycle_claimed": false,
+  "recursive_geometry": {
+    "P_r": 5184,
+    "P_r_squared": 26873856,
+    "p_r": 4096,
+    "p_r_q_r": 26873856,
+    "q_r": 6561
+  },
+  "replay_ns": 255299,
+  "resident_edge_records": 0,
+  "scale": 2,
+  "schema": "P164_BENCHMARK_RECEIPT",
+  "snapshot_base64_symbols": 864,
+  "sparse_address_compression_factor": 7920.5,
+  "state_hash72": "PA-iHeWK>)M2l<2L-nMc8ST?DBWs/lNxEXnb4uFddqRRJ1/V+-PXeXvNLgEHS6+XOs(hFk2(",
+  "theoretical_capacity_distinct_from_residency": true
+}

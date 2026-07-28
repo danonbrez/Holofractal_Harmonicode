@@ -1,0 +1,112 @@
+{
+  "authority": {
+    "vm81_commit_authority": true,
+    "worker_commit_authority": false
+  },
+  "classification": "HHS_PASS_165_LIGHTWEIGHT_5184BIT_MULTIMODAL_VECTOR_STORE_INGESTION_TOKENIZATION_INVARIANT_EXTRACTION_AND_GOVERNED_BACKPROPAGATION_VERIFIED",
+  "contract_id": "HHS-P165-L5184-MMVS-ITIBP",
+  "durability": {
+    "frontier_sha256": "fccad7fd516e3d5a47b4fd1b258e6a2e1b4d1d9446c6364a8d890b00cd083d00",
+    "interruption_observed": true,
+    "journal_sha256": "cfa49c30636a363b3c9bbe929da93df42468e97211e8105d555bfcd1d1b402d1",
+    "recovery": {
+      "classification": "P165_DURABLE_RECOVERY_RECEIPT",
+      "deterministic_recovery": true,
+      "records": 3,
+      "vm81_state_hash72": "WBO9!cShu4PL)kMT<IFlLkc/s4PUShel4WSP2cO0x*>Qxd-FA83Gus>glnsCfX9w75>YU>od",
+      "weight_root": "cc5a8aac6107997bb540a6f93ad760f2bfaf24ed1c7c2be64ed08cc31f066087"
+    },
+    "replay": {
+      "classification": "P165_REPLAY_RECEIPT",
+      "deterministic_replay": true,
+      "records": 3,
+      "vm81_state_hash72": "WBO9!cShu4PL)kMT<IFlLkc/s4PUShel4WSP2cO0x*>Qxd-FA83Gus>glnsCfX9w75>YU>od",
+      "weight_root": "cc5a8aac6107997bb540a6f93ad760f2bfaf24ed1c7c2be64ed08cc31f066087"
+    }
+  },
+  "evidence_sha256": "096880950a8778b681b17c6524655603b26df00eadfab6633a3877352852ccee",
+  "ingestions": [
+    {
+      "chunk_count": 2,
+      "ingestion_operation_hash216": "f20b885fa29d0be5e5a386dfd44705077391aeb161e7156b834dd284d1ab32ed",
+      "modality": "PDF",
+      "projection_hash72": "a234*SbATn5X3FCU/?ZbG?)!5Ei!uW6TFZq+(U>*PRqu8)FBQRhUktvvAPmOjF9XJLjLCZmp",
+      "receipt_hash72": "*SewjaPs<WMyN)okK3ghrsE7g38nvcza0DPhfxPH9j0?EloIIocK92nrQVE6qgi7MUvbWue0",
+      "source_hash": "29ed72c544bd5a81063df7d66f27aec1ab1935e642d06da8a6014f0832133730",
+      "source_preserved": true,
+      "token_count": 38
+    },
+    {
+      "chunk_count": 2,
+      "ingestion_operation_hash216": "1f457c9adc4284ec88e8bf9511f41906bdeabe025fd179d76c41c396dc463560",
+      "modality": "IMAGE",
+      "projection_hash72": "ZwZ(EDzUoWj)u?*l(CHe<01n6E2jzOyiTJrGW3F)qc9cD8p(Yof)2jAm>FST0PirTr)skMz1",
+      "receipt_hash72": "CJGo?QuhiW4VzET5QMXI<99EH-hECxC(PnE-Mzr>Qb-6n3>BmS7PDSlGLG?If(Xs<QE<pdx<",
+      "source_hash": "38f80304b9d794edfa94b91a2f4da95272c0e3fedf3bafca5b21ed0c440d932c",
+      "source_preserved": true,
+      "token_count": 63
+    },
+    {
+      "chunk_count": 2,
+      "ingestion_operation_hash216": "63fa212f683c2df891bf982cebb0876ee7fa29345caf2067ffc7ff95e33d18bc",
+      "modality": "AUDIO",
+      "projection_hash72": "Sq1VcYlXHa6<1sqnTjOPaD>I/Faro3COLwzj5c1ZC!(k711VY-yn+5QmGyKM-KWTEz+l7bAA",
+      "receipt_hash72": "uiXv6C)c8O2SWue50tRw)TQ3mTqQCE6hrsOyQX6HTLq)dsRK>tegLSUau+oa6Xpxb+Laq0B5",
+      "source_hash": "1c4671077afe219db4c0f57b9065a4fbd304f609daa23db20f915a54381bfec9",
+      "source_preserved": true,
+      "token_count": 64
+    },
+    {
+      "chunk_count": 6,
+      "ingestion_operation_hash216": "fdb707e7e3ee516a3f5cabff37aded1134d376f79e824d93e73db2b8f87ded57",
+      "modality": "VIDEO",
+      "projection_hash72": "z-TKmjxzyQgtQFVG9uistX2I<rio1>JiDSrXRQQbLuI35QcULSKK1>np*S<e)QXN0q*r?<(S",
+      "receipt_hash72": "S7*8W4sW8yBzXYeTLiKJ5Ja)hrp7<LfYVVM7JZFFxFRoyydmbCSn/Xtkj8Aik+i649QU+O8z",
+      "source_hash": "4a8707e50e9bff591197e6cd28854cf1d1969a7d17d127f15f7707b5dba88ca8",
+      "source_preserved": true,
+      "token_count": 163
+    }
+  ],
+  "multimodal_replay": {
+    "classification": "P165_REPLAY_RECEIPT",
+    "deterministic_replay": true,
+    "records": 4,
+    "vm81_state_hash72": "4NOTiJzYn3frRxWlOlXJkv(kr7)87qbSt6TMCO9vLND0YKoZd72w5m?4(hoCv*U4t?Bp>kQh",
+    "weight_root": "c39e307f959db84693b58baed4759f592c18c572ebd5a1ba2edf4cdaf51c9e66"
+  },
+  "real_format_validators": {
+    "AUDIO": {
+      "bytes": 16044,
+      "format": "WAV",
+      "sha256": "1c4671077afe219db4c0f57b9065a4fbd304f609daa23db20f915a54381bfec9"
+    },
+    "IMAGE": {
+      "bytes": 15692,
+      "format": "PNG",
+      "sha256": "38f80304b9d794edfa94b91a2f4da95272c0e3fedf3bafca5b21ed0c440d932c"
+    },
+    "PDF": {
+      "bytes": 777,
+      "format": "PDF",
+      "sha256": "29ed72c544bd5a81063df7d66f27aec1ab1935e642d06da8a6014f0832133730"
+    },
+    "VIDEO": {
+      "bytes": 41393,
+      "codec": "mpeg4",
+      "format": "MP4",
+      "sha256": "4a8707e50e9bff591197e6cd28854cf1d1969a7d17d127f15f7707b5dba88ca8"
+    }
+  },
+  "repository_source": {
+    "byte_length": 38127,
+    "paths": [
+      "HHS_PASS_164_IMPLEMENTATION_STATUS.md",
+      "HHS_PASS_165_IMPLEMENTATION_STATUS.md",
+      "HHS_PASS_165_AUTHORITY_BINDING.json",
+      "hhs_runtime/pass165/ingestion.py"
+    ],
+    "sha256": "f4b38b4a72ffc73424213390227b464e6175945e8256dc1683f1b8b590b18277"
+  },
+  "schema": "HHS_PASS_165_TERMINAL_EXECUTION_EVIDENCE_V1",
+  "terminal": true
+}

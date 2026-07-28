@@ -1,0 +1,37 @@
+{
+  "schema": "HHS_PASS_165_EVIDENCE_MANIFEST_V1",
+  "contract_id": "HHS-P165-L5184-MMVS-ITIBP",
+  "classification": "HHS_PASS_165_MULTIMODAL_INGESTION_AND_GOVERNED_LEARNING_VALIDATED",
+  "terminal": false,
+  "source_artifacts": [
+    "HHS_PASS_165_AUTHORITY_BINDING.json",
+    "HHS_PASS_165_IMPLEMENTATION_STATUS.md",
+    "docs/HHS_PASS_165_MULTIMODAL_INGRESS_RUNTIME.md",
+    "hhs_runtime/pass165/__init__.py",
+    "hhs_runtime/pass165/ingestion.py",
+    "hhs_backend/api/pass165_multimodal_ingress_routes.py",
+    "hhs_backend/pass165_server.py",
+    "native_projects/hhs_pass165_mmvs/include/hhs_p165_mmvs.h",
+    "native_projects/hhs_pass165_mmvs/src/hhs_p165_mmvs.c",
+    "native_projects/hhs_pass165_mmvs/tests/test_hhs_p165_mmvs.c",
+    "native_projects/hhs_pass165_mmvs/schemas/hhs_p165_mmvs.schema.json",
+    "tests/test_hhs_pass165_multimodal_ingress_v1.py",
+    ".github/workflows/pass165-mmvs.yml"
+  ],
+  "executed_evidence": [
+    {"path": "evidence/pass165/python_test_output.txt", "result": "22 passed"},
+    {"path": "evidence/pass165/c11_test_output.txt", "result": "strict C11 compile and native execution passed"},
+    {"path": "evidence/pass165/github_actions_validation.json", "result": "actual Pass 163/164/165 repository integration workflow passed"},
+    {"path": "evidence/pass165/P165_COMPLETION_RECEIPT.json", "result": "bounded nonterminal validated receipt"}
+  ],
+  "validation_scope": {
+    "local_python": true,
+    "local_native_c11": true,
+    "actual_pass163_pass164_integration": true,
+    "current_repository_workflow": true,
+    "independent_real_format_fixture_corpus": false,
+    "durable_crash_interruption": false,
+    "terminal_verification": false
+  },
+  "integrity_note": "GitHub blob and commit identities are authoritative for connector-published files."
+}

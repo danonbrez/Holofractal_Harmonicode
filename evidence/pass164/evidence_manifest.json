@@ -1,0 +1,81 @@
+{
+  "schema": "HHS_PASS_164_EVIDENCE_MANIFEST_V1",
+  "contract_id": "HHS-P164-U817264-GCMSL",
+  "classification": "HHS_PASS_164_MULTI_BACKEND_REPLAY_VERIFIED",
+  "terminal": false,
+  "source_artifacts": [
+    ".github/workflows/pass164-gcmsl.yml",
+    "HHS_PASS_164_AUTHORITY_BINDING.json",
+    "HHS_PASS_164_IMPLEMENTATION_STATUS.md",
+    "docs/HHS_PASS_164_GCMSL_RUNTIME.md",
+    "hhs_runtime/pass164/__init__.py",
+    "hhs_runtime/pass164/common.py",
+    "hhs_runtime/pass164/geometry.py",
+    "hhs_runtime/pass164/models.py",
+    "hhs_runtime/pass164/backends.py",
+    "hhs_runtime/pass164/runtime_base.py",
+    "hhs_runtime/pass164/runtime_reduce.py",
+    "hhs_runtime/pass164/runtime_commit.py",
+    "hhs_runtime/pass164/runtime.py",
+    "hhs_runtime/pass164/gcmsl.py",
+    "hhs_backend/api/pass164_gcmsl_routes.py",
+    "hhs_backend/pass164_server.py",
+    "native_projects/hhs_pass164_gcmsl/Makefile",
+    "native_projects/hhs_pass164_gcmsl/README.md",
+    "native_projects/hhs_pass164_gcmsl/include/hhs_p164_gcmsl.h",
+    "native_projects/hhs_pass164_gcmsl/src/hhs_p164_gcmsl.c",
+    "native_projects/hhs_pass164_gcmsl/tests/test_hhs_p164_gcmsl.c",
+    "native_projects/hhs_pass164_gcmsl/schemas/hhs_p164_gcmsl.schema.json",
+    "tests/test_hhs_pass164_gcmsl_v1.py"
+  ],
+  "executed_evidence": [
+    {
+      "path": "evidence/pass164/python_test_output.txt",
+      "result": "24 passed in 1.04s",
+      "scope": "local reference matrix using a Pass 163-compatible stub"
+    },
+    {
+      "path": "evidence/pass164/c11_test_output.txt",
+      "result": "strict C11 compile and native execution passed"
+    },
+    {
+      "path": "evidence/pass164/coordinate_bijection_proof.json",
+      "result": "5184 forward and 5184 inverse mappings; zero collisions and omissions"
+    },
+    {
+      "path": "evidence/pass164/cross_backend_equivalence.json",
+      "result": "CPU reference and deterministic simulated-GPU normalization matched despite reverse physical completion"
+    },
+    {
+      "path": "evidence/pass164/scaling_benchmark.json",
+      "result": "measured reference benchmark at homogeneous scale 2"
+    },
+    {
+      "path": "evidence/pass164/scaling_benchmark_matrix.json",
+      "result": "reference scale matrix for c=1,2,4"
+    },
+    {
+      "path": "evidence/pass164/github_actions_validation.json",
+      "result": "actual stacked Hash72, Pass 163, Pass 164, and strict C11 workflow succeeded"
+    },
+    {
+      "path": "evidence/pass164/P164_COMPLETION_RECEIPT.json",
+      "result": "bounded multi-backend replay verification receipt"
+    }
+  ],
+  "validation_scope": {
+    "coordinate_bijection": true,
+    "deterministic_reduction": true,
+    "cpu_reference_backend": true,
+    "deterministic_simulated_gpu_backend": true,
+    "native_c11_reference": true,
+    "pass163_interface_local_stub": true,
+    "actual_pass163_branch_integration": "PASS",
+    "github_actions_workflow_run_id": 30403109623,
+    "physical_gpu_execution": false,
+    "independent_physical_architecture_execution": false,
+    "durable_crash_interruption": false,
+    "terminal_verification": false
+  },
+  "integrity_note": "GitHub blob and commit identities are authoritative for connector-published files. This manifest does not invent file digests after connector publication."
+}
