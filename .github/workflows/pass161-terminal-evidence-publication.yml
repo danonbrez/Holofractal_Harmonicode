@@ -75,9 +75,9 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add \
             applications/holofractal_harmonizer/evidence/pass161 \
-            applications/holofractal_harmonizer/dist \
             applications/holofractal_harmonizer/HHS_PASS_161_RELEASE_BUNDLE.json \
             applications/holofractal_harmonizer/HHS_PASS_161_TERMINAL_RELEASE.json
+          git add -f applications/holofractal_harmonizer/dist
           git diff --cached --check
           git commit -m 'Publish executed Pass 161 terminal evidence'
           git push origin HEAD:"$TARGET_BRANCH"
