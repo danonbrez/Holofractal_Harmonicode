@@ -1,12 +1,6 @@
 name: Pass 161 Source Materialization
 
 on:
-  push:
-    branches:
-      - agent/pass161-finalized-clean
-    paths:
-      - 'staging/pass161-source/**'
-      - '.github/workflows/pass161-source-materialization.yml'
   pull_request:
     paths:
       - 'staging/pass161-source/**'
@@ -20,11 +14,11 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 25
     env:
-      TARGET_BRANCH: ${{ github.head_ref || github.ref_name }}
+      TARGET_BRANCH: ${{ github.head_ref }}
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ github.head_ref || github.ref_name }}
+          ref: ${{ github.head_ref }}
           fetch-depth: 2
           show-progress: false
       - uses: actions/setup-node@v4
@@ -47,10 +41,10 @@ jobs:
         run: |
           set -euo pipefail
           tar -xzf /tmp/pass161-source.tar.gz -C .
+          rm -f .github/workflows/pass161-harmonizer.yml
           test -f applications/holofractal_harmonizer/src/core.mjs
           test -f applications/holofractal_harmonizer/src/finalization.mjs
           test -f applications/holofractal_harmonizer/tools/close.mjs
-          test -f .github/workflows/pass161-harmonizer.yml
       - name: Execute source-scoped Pass 161 validation
         working-directory: applications/holofractal_harmonizer
         run: |
@@ -63,14 +57,13 @@ jobs:
           node --check tools/package.mjs
           node --check tools/close.mjs
           node --test tests/*.test.mjs
-      - name: Commit materialized Pass 161 source
+      - name: Commit ordinary Pass 161 source
         run: |
           set -euo pipefail
           rm -rf staging/pass161-source
-          rm -f .github/workflows/pass161-source-materialization.yml
           git config user.name 'chatgpt-pass161-agent'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add -A
+          git add HHS_PASS_161_INHERITANCE_AMENDMENT_V1_1.md applications/holofractal_harmonizer staging/pass161-source
           git diff --cached --check
           git commit -m 'Implement complete Pass 161 Harmonizer source'
           git push origin HEAD:"$TARGET_BRANCH"
