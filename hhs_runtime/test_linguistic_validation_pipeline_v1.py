@@ -2,7 +2,12 @@ import json
 import tempfile
 from pathlib import Path
 
-from hhs_runtime.hhs_linguistic_validation_pipeline_v1 import run_linguistic_validation_pipeline
+from hhs_runtime.hhs_linguistic_validation_pipeline_v1 import (
+    DEFAULT_NLG_OPTIMAL_PROFILE,
+    optimize_nlg_workload_profile,
+    run_default_nlg_workload_validation,
+    run_linguistic_validation_pipeline,
+)
 
 
 def _write_csv(path: Path, header: list[str], rows: list[list[str]]) -> None:
@@ -66,3 +71,30 @@ def test_pipeline_smoke_with_temp_csvs():
 
         # Ensure JSON serializable
         json.dumps(data)
+
+
+def test_nlg_optimizer_sweep_selects_zero_rejection_profile():
+    receipt = optimize_nlg_workload_profile(
+        prompts=["No token is false.", "Every relation remains in scope."],
+        require_grammar_options=(False,),
+        require_wordnet_options=(True,),
+        min_wordnet_known_ratio_options=(0.0, 0.8),
+        max_steps_options=(9,),
+        max_propositions_options=(64,),
+        max_candidates_options=(8,),
+        target_min_acceptance=0.5,
+    )
+    data = receipt.to_dict()
+    assert data["status"] in {"LOCKED_OPTIMAL_PROFILE", "DEGRADED_PROFILE_FALLBACK"}
+    assert data["selected_profile"]["require_wordnet"] is True
+    assert data["selected_profile"]["max_propositions"] == 64
+    assert data["selected_profile"]["max_candidates"] == 8
+    assert len(data["evaluations"]) == 2
+    assert all(item["rejection_code_incidence"] == 0 for item in data["evaluations"])
+
+
+def test_default_nlg_workload_profile_runs_gate():
+    receipt = run_default_nlg_workload_validation("No token is false.", profile=DEFAULT_NLG_OPTIMAL_PROFILE)
+    data = receipt.to_dict()
+    assert data["runtime_gate"]["status"] in {"ACCEPTED", "REJECTED"}
+    assert data["runtime_gate"]["wordnet_required"] is True

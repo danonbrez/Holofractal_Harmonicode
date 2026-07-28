@@ -28,6 +28,11 @@ from pathlib import Path
 from typing import Any, Dict, List, Sequence
 import json
 
+from hhs_runtime.hhs_pass118_symbolic_harmonicode_runtime_v1 import PROGRAM_SCHEMA
+from hhs_runtime.hhs_pass119_language_model_nonreplacement_integration_v1 import (
+    LanguageModelIntegrationEngine,
+    Pass119Error,
+)
 from hhs_runtime.hhs_grammar_rule_enforcer_v1 import (
     GrammarEnforcementReceipt,
     enforce_grammar_rules,
@@ -103,6 +108,58 @@ class LinguisticValidationPipelineReceipt:
 
     def to_dict(self) -> Dict[str, Any]:
         return asdict(self)
+
+
+@dataclass(frozen=True)
+class NLGOptimizationProfile:
+    require_grammar: bool
+    require_wordnet: bool
+    min_wordnet_known_ratio: float
+    max_steps: int
+    max_propositions: int
+    max_candidates: int
+
+    def to_dict(self) -> Dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass(frozen=True)
+class NLGOptimizationEvaluation:
+    profile: Dict[str, Any]
+    runtime_gate_acceptance_rate: float
+    average_wordnet_known_ratio: float
+    projection_admission_rate: float
+    rejection_code_incidence: int
+    overall_acceptance_rate: float
+    evaluation_hash72: str
+
+    def to_dict(self) -> Dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass(frozen=True)
+class NLGOptimizationSweepReceipt:
+    workload_class: str
+    target_min_acceptance: float
+    prompt_count: int
+    evaluations: List[Dict[str, Any]]
+    selected_profile: Dict[str, Any]
+    status: str
+    receipt_hash72: str
+
+    def to_dict(self) -> Dict[str, Any]:
+        return asdict(self)
+
+
+DEFAULT_NLG_WORKLOAD_CLASS = "NLG_BALANCED_STRICT_V1"
+DEFAULT_NLG_OPTIMAL_PROFILE = NLGOptimizationProfile(
+    require_grammar=False,
+    require_wordnet=True,
+    min_wordnet_known_ratio=0.8,
+    max_steps=9,
+    max_propositions=64,
+    max_candidates=8,
+)
 
 
 def discover_csv_inputs(
@@ -356,6 +413,234 @@ def run_linguistic_validation_pipeline(
     )
 
 
+def _pass119_program_for_nlg() -> Dict[str, Any]:
+    return {
+        "schema": PROGRAM_SCHEMA,
+        "program_id": "pass119:nlg-opt",
+        "scope": "nlg-optimization",
+        "symbols": [
+            {"name": "x", "type": "RATIONAL", "value": {"node": "literal", "kind": "RATIONAL", "value": "9/8"}},
+            {"name": "y", "type": "RATIONAL", "value": {"node": "literal", "kind": "RATIONAL", "value": "8/9"}},
+        ],
+        "operations": [
+            {"kind": "bind", "name": "product", "expression": {"node": "call", "op": "multiply", "args": [{"node": "symbol", "name": "x"}, {"node": "symbol", "name": "y"}]}},
+            {"kind": "assert", "expression": {"node": "call", "op": "equal", "args": [{"node": "symbol", "name": "product"}, {"node": "literal", "kind": "INTEGER", "value": 1}]}},
+        ],
+    }
+
+
+def _pass119_stress_cases() -> List[Dict[str, Any]]:
+    return [
+        {"text": "No token is false.", "ambiguities": []},
+        {"text": "Every relation remains in scope.", "ambiguities": []},
+        {"text": "The outcome may be uncertain.", "ambiguities": []},
+        {"text": "bank", "ambiguities": [{"source_span": [0, 4], "candidate_meanings": ["financial institution", "river edge"]}]},
+    ]
+
+
+def _evaluate_pass119_profile(*, max_propositions: int, max_candidates: int) -> Dict[str, Any]:
+    engine = LanguageModelIntegrationEngine(max_propositions=max_propositions, max_candidates=max_candidates)
+    vector = {k: True for k in ("reference_identity", "predicate_identity", "negation", "scope", "modality", "temporality", "uncertainty", "authority")}
+    admitted = 0
+    rejections = 0
+    total = 0
+    for case in _pass119_stress_cases():
+        total += 1
+        try:
+            text = case["text"]
+            preserved = engine.preserve_input(text)
+            propositions = engine.extract_propositions(
+                preserved,
+                [{"start": 0, "end": len(preserved["verbatim_text"])}],
+                ambiguities=case.get("ambiguities", []),
+            )
+            resolved = [item["ambiguity_root_hash72"] for item in propositions.get("ambiguities", [])]
+            proposal = engine.create_model_proposal(
+                source_input_root_hash72=preserved["input_root_hash72"],
+                model_identity="nlg-optimizer-model",
+                candidate_interpretations=[{"meaning": "preserve explicit linguistic meaning"}],
+                candidate_programs=[_pass119_program_for_nlg()],
+                uncertainty={"known": ["translation contract"], "unknown": []},
+            )
+            translation = engine.admit_translation(
+                proposition_set=propositions,
+                proposal=proposal,
+                selected_program_index=0,
+                meaning_preservation_vector=vector,
+                resolved_ambiguity_roots=resolved,
+            )
+            interaction = engine.execute_admitted_translation(
+                translation,
+                authority_root_hash72="hhs_nlg_optimizer_authority_v1",
+            )
+            authoritative = engine.authoritative_result_object(interaction)
+            candidate = engine.generate_projection_candidate(
+                interaction=interaction,
+                model_proposal_root_hash72=proposal["proposal_root_hash72"],
+                text="Authoritative runtime-aligned projection.",
+                represented_status=authoritative["status"],
+                represented_outputs=authoritative["outputs"],
+                uncertainty={"known": ["runtime result"], "unknown": []},
+            )
+            projection = engine.validate_projection(interaction, candidate)
+            if projection["projection_status"] == "LANGUAGE_PROJECTION_ADMITTED":
+                admitted += 1
+        except Pass119Error:
+            rejections += 1
+    return {
+        "projection_admission_rate": (admitted / total) if total else 0.0,
+        "rejection_code_incidence": rejections,
+        "pass119_prompt_count": total,
+    }
+
+
+def optimize_nlg_workload_profile(
+    *,
+    workload_class: str = DEFAULT_NLG_WORKLOAD_CLASS,
+    prompts: Sequence[str] | None = None,
+    require_grammar_options: Sequence[bool] = (False, True),
+    require_wordnet_options: Sequence[bool] = (True, False),
+    min_wordnet_known_ratio_options: Sequence[float] = (0.0, 0.5, 0.8, 0.95),
+    max_steps_options: Sequence[int] = (9, 18, 36, 72),
+    max_propositions_options: Sequence[int] = (64, 128, 512),
+    max_candidates_options: Sequence[int] = (8, 16, 64),
+    target_min_acceptance: float = 0.95,
+) -> NLGOptimizationSweepReceipt:
+    prompt_set = list(prompts) if prompts is not None else [
+        "No token is false.",
+        "Every relation remains in scope.",
+        "The outcome may be uncertain.",
+        "The valid meaning remains preserved.",
+    ]
+
+    evaluations: List[NLGOptimizationEvaluation] = []
+    for require_grammar in require_grammar_options:
+        for require_wordnet in require_wordnet_options:
+            for min_known in min_wordnet_known_ratio_options:
+                for max_steps in max_steps_options:
+                    for max_propositions in max_propositions_options:
+                        for max_candidates in max_candidates_options:
+                            accepted = 0
+                            known_ratios: List[float] = []
+                            for prompt in prompt_set:
+                                receipt = run_linguistic_validation_pipeline(
+                                    prompt,
+                                    require_grammar=require_grammar,
+                                    require_wordnet=require_wordnet,
+                                    enforce_runtime_gate=True,
+                                    min_wordnet_known_ratio=min_known,
+                                    max_steps=max_steps,
+                                )
+                                gate = receipt.runtime_gate
+                                if gate["status"] == "ACCEPTED":
+                                    accepted += 1
+                                known_ratios.append(float(gate["wordnet_known_ratio"]))
+                            pipeline_rate = accepted / len(prompt_set) if prompt_set else 0.0
+                            avg_known = sum(known_ratios) / len(known_ratios) if known_ratios else 0.0
+                            pass119_eval = _evaluate_pass119_profile(
+                                max_propositions=max_propositions,
+                                max_candidates=max_candidates,
+                            )
+                            projection_rate = pass119_eval["projection_admission_rate"]
+                            rejection_count = pass119_eval["rejection_code_incidence"]
+                            overall_rate = min(pipeline_rate, projection_rate)
+                            profile = NLGOptimizationProfile(
+                                require_grammar=require_grammar,
+                                require_wordnet=require_wordnet,
+                                min_wordnet_known_ratio=min_known,
+                                max_steps=max_steps,
+                                max_propositions=max_propositions,
+                                max_candidates=max_candidates,
+                            )
+                            evaluation_payload = {
+                                "profile": profile.to_dict(),
+                                "runtime_gate_acceptance_rate": pipeline_rate,
+                                "average_wordnet_known_ratio": avg_known,
+                                "projection_admission_rate": projection_rate,
+                                "rejection_code_incidence": rejection_count,
+                                "overall_acceptance_rate": overall_rate,
+                            }
+                            evaluation_hash = hash72_digest(("hhs_nlg_optimization_evaluation_v1", evaluation_payload), width=24)
+                            evaluations.append(
+                                NLGOptimizationEvaluation(
+                                    profile=profile.to_dict(),
+                                    runtime_gate_acceptance_rate=pipeline_rate,
+                                    average_wordnet_known_ratio=avg_known,
+                                    projection_admission_rate=projection_rate,
+                                    rejection_code_incidence=rejection_count,
+                                    overall_acceptance_rate=overall_rate,
+                                    evaluation_hash72=evaluation_hash,
+                                )
+                            )
+
+    strict_candidates = [
+        e
+        for e in evaluations
+        if e.rejection_code_incidence == 0 and e.overall_acceptance_rate >= target_min_acceptance
+    ]
+
+    def _strictness_key(item: NLGOptimizationEvaluation) -> tuple[float, ...]:
+        profile = item.profile
+        return (
+            float(bool(profile["require_grammar"])),
+            float(bool(profile["require_wordnet"])),
+            float(profile["min_wordnet_known_ratio"]),
+            float(-int(profile["max_steps"])),
+            float(-int(profile["max_propositions"])),
+            float(-int(profile["max_candidates"])),
+        )
+
+    if strict_candidates:
+        selected_eval = max(strict_candidates, key=_strictness_key)
+        status = "LOCKED_OPTIMAL_PROFILE"
+    else:
+        selected_eval = max(
+            evaluations,
+            key=lambda item: (
+                float(item.rejection_code_incidence == 0),
+                item.overall_acceptance_rate,
+                item.runtime_gate_acceptance_rate,
+                item.projection_admission_rate,
+                *_strictness_key(item),
+            ),
+        )
+        status = "DEGRADED_PROFILE_FALLBACK"
+
+    receipt_payload = {
+        "workload_class": workload_class,
+        "target_min_acceptance": target_min_acceptance,
+        "prompt_count": len(prompt_set),
+        "status": status,
+        "selected_profile": selected_eval.profile,
+        "evaluation_hashes": [e.evaluation_hash72 for e in evaluations],
+    }
+    receipt_hash = hash72_digest(("hhs_nlg_optimization_sweep_receipt_v1", receipt_payload), width=24)
+    return NLGOptimizationSweepReceipt(
+        workload_class=workload_class,
+        target_min_acceptance=target_min_acceptance,
+        prompt_count=len(prompt_set),
+        evaluations=[e.to_dict() for e in evaluations],
+        selected_profile=selected_eval.profile,
+        status=status,
+        receipt_hash72=receipt_hash,
+    )
+
+
+def run_default_nlg_workload_validation(
+    text: str,
+    *,
+    profile: NLGOptimizationProfile = DEFAULT_NLG_OPTIMAL_PROFILE,
+) -> LinguisticValidationPipelineReceipt:
+    return run_linguistic_validation_pipeline(
+        text,
+        require_grammar=profile.require_grammar,
+        require_wordnet=profile.require_wordnet,
+        enforce_runtime_gate=True,
+        min_wordnet_known_ratio=profile.min_wordnet_known_ratio,
+        max_steps=profile.max_steps,
+    )
+
+
 def validate_repo_language_runtime(
     *,
     require_grammar: bool = False,
@@ -389,7 +674,7 @@ def validate_repo_language_runtime(
 
 def main() -> None:
     sample = "The symbolic system preserves valid meaning while HARMONICODE keeps xy≠yx."
-    receipt = run_linguistic_validation_pipeline(sample, max_steps=9)
+    receipt = run_default_nlg_workload_validation(sample)
     print(json.dumps(receipt.to_dict(), indent=2, sort_keys=True, ensure_ascii=False))
 
 
