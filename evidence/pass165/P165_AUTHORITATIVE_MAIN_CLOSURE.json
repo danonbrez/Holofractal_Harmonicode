@@ -1,0 +1,54 @@
+{
+  "schema": "P165_AUTHORITATIVE_MAIN_CLOSURE_V1",
+  "contract_id": "HHS-P165-L5184-MMVS-ITIBP",
+  "classification": "HHS_PASS_165_LIGHTWEIGHT_5184BIT_MULTIMODAL_VECTOR_STORE_INGESTION_TOKENIZATION_INVARIANT_EXTRACTION_AND_GOVERNED_BACKPROPAGATION_VERIFIED",
+  "authoritative_branch": "main",
+  "integrated_main_commit": "7584b4feead017c7020950ed700b707ac7aeb919",
+  "integration_pull_request": 42,
+  "implementation_pull_request": 41,
+  "omega_165": true,
+  "terminal": true,
+  "checks": {
+    "pass164_inheritance_integrated": true,
+    "pass165_runtime_integrated": true,
+    "source_bytes_immutable": true,
+    "projection_5184_exact": true,
+    "hash72_receipts": true,
+    "hash216_ingestion_identity": true,
+    "worker_commit_authority_zero": true,
+    "singleton_vm81_admission": true,
+    "repository_derived_pdf": true,
+    "repository_derived_png": true,
+    "repository_derived_wav": true,
+    "repository_derived_mp4": true,
+    "deterministic_multimodal_replay": true,
+    "durable_interruption_recovery": true,
+    "incomplete_tail_quarantine": true,
+    "complete_record_tamper_rejection": true,
+    "strict_c11_pass163": true,
+    "strict_c11_pass164": true,
+    "strict_c11_pass165": true
+  },
+  "counts": {
+    "terminal_python_tests_passed": 67,
+    "terminal_python_tests_failed": 0,
+    "real_modalities": 4,
+    "multimodal_replay_records": 4,
+    "durable_recovery_records": 3,
+    "validation_failures": 0
+  },
+  "evidence": {
+    "terminal_execution_sha256": "096880950a8778b681b17c6524655603b26df00eadfab6633a3877352852ccee",
+    "artifact_id": 8707131679,
+    "artifact_archive_sha256": "f60cb4b073955cad0ffd81ce344089d9693fddfa8762ac05fd03442f3e66d505",
+    "terminal_workflow_run": 30407553946,
+    "evidence_head_workflow_run": 30407658379,
+    "main_integration_pass165_workflow_run": 30407792780,
+    "main_integration_pass164_workflow_run": 30407792833
+  },
+  "repository_policy": {
+    "incremental_source_oriented": true,
+    "legacy_archive_recommitted": false,
+    "generated_media_committed": false
+  }
+}
