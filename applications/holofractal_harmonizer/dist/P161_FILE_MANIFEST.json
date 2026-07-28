@@ -1,0 +1,100 @@
+{
+  "schema": "P161_FILE_MANIFEST_V1",
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 897,
+      "sha256": "f2f8996266e57ea9adbf576fce3d23034a20b64c40cbb13f058b8ef584574753"
+    },
+    {
+      "path": "index.html",
+      "bytes": 3346,
+      "sha256": "ed59c0812ff7ea31d7c6e07a5e54e60298ce66226ac9f215eabe30daa9e1e4fb"
+    },
+    {
+      "path": "package.json",
+      "bytes": 384,
+      "sha256": "bb7beb49634c1cc8fac8b1a0b7ce5b1579d9db5c4c942d0d9b297ebfd1431afe"
+    },
+    {
+      "path": "src/browser.mjs",
+      "bytes": 3930,
+      "sha256": "46aac2229db0652c627090fd68366bf018ac9637d098335d23034fd974222a88"
+    },
+    {
+      "path": "src/core.mjs",
+      "bytes": 18901,
+      "sha256": "6e367294bdefcaf57648d8b48b11e5a40611c590685836aaeda5e0689a414f2a"
+    },
+    {
+      "path": "src/finalization.mjs",
+      "bytes": 13058,
+      "sha256": "7f70c0aba80f891217dcaa813db715afc3b5d2b800f272fed60fdc7ded686658"
+    },
+    {
+      "path": "src/styles.css",
+      "bytes": 4732,
+      "sha256": "fecda7cbd21de2814365bc6ed966107bf1be1951a1770998d0dc94712ac7dbf2"
+    },
+    {
+      "path": "schemas/pass161.schemas.json",
+      "bytes": 796,
+      "sha256": "60fbb54c59e504561e7e85f8289b39d9fda71c770db998165acd6b42149866fa"
+    },
+    {
+      "path": "tests/pass161.core.test.mjs",
+      "bytes": 4381,
+      "sha256": "2117a543c2054b1646fb74643c6490904158af0ae3672f7309a4c98cee00bd31"
+    },
+    {
+      "path": "tests/pass161.finalization.test.mjs",
+      "bytes": 9303,
+      "sha256": "fe418c4c1733c65df9b3e4cf8b6503b5a649aa9e58cebd915b9a9d2910359295"
+    },
+    {
+      "path": "tools/browser_audit.mjs",
+      "bytes": 700,
+      "sha256": "37cfd06aed3ee7e087105b6cb76ac73cd89a53c559f66675b58be5086b520443"
+    },
+    {
+      "path": "tools/close.mjs",
+      "bytes": 3067,
+      "sha256": "5425eadda72c762f5a0bf5ac6ba4dcca15eec2e88a8e2290b82948b873fa8f0e"
+    },
+    {
+      "path": "tools/finalize.mjs",
+      "bytes": 3251,
+      "sha256": "c2dd6641263d31ff3f554eb8caa05b156b182bfdb7e1cbfc305af16de250885a"
+    },
+    {
+      "path": "tools/package.mjs",
+      "bytes": 1660,
+      "sha256": "0273df8e5528311ae96845b3683719cf29f160c03786386f9fa2f46f439462f8"
+    },
+    {
+      "path": "evidence/pass161/P161_BROWSER_AUDIT.json",
+      "bytes": 386,
+      "sha256": "3e4108828045451d63a57405066dc58329cbb4869304331c469798e9d91330b8"
+    },
+    {
+      "path": "evidence/pass161/P161_INTEGRATION_REPORT.json",
+      "bytes": 2989,
+      "sha256": "450c63ad19d7223cc58acc706f406596b23e3c2c55db5a47bac07e0da88f1bf3"
+    },
+    {
+      "path": "evidence/pass161/P161_PRETERMINAL_RECEIPT.json",
+      "bytes": 698,
+      "sha256": "4543d1a04ae4a1f9cbd62c26d0961ac95f7c4567471a31142f106c05bad81aeb"
+    },
+    {
+      "path": "evidence/pass161/P161_REPLAY_REPORT.json",
+      "bytes": 320,
+      "sha256": "15239ee8ebc4740de9ab7c71686695dcba00d4dcea5928953a5f9882ced598ca"
+    },
+    {
+      "path": "evidence/pass161/P161_VALIDATION_SUMMARY.json",
+      "bytes": 698,
+      "sha256": "4543d1a04ae4a1f9cbd62c26d0961ac95f7c4567471a31142f106c05bad81aeb"
+    }
+  ]
+}
