@@ -1,6 +1,132 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#050912"><title>Holofractal Harmonizer</title><link rel="stylesheet" href="./src/styles.css"></head><body>
-<div id="harmonizer" class="shell" data-profile="BALANCED"><header class="system-bar"><button id="nav-toggle" class="icon-button mobile-only" aria-label="Open registered object navigator">☰</button><div class="identity"><strong>Holofractal Harmonizer</strong><span>Pass 161 Unified Object Control Environment</span></div><label class="search"><span class="sr-only">Search registered objects</span><input id="object-search" type="search" placeholder="Search objects, services, APIs…" autocomplete="off"></label><div class="system-state"><span class="status verified">VM81 READY</span><span class="status authority">VALIDATED PROJECTION</span><select id="profile-select" aria-label="Performance profile"><option>MOBILE_SAFE</option><option selected>BALANCED</option><option>DESKTOP_HIGH</option><option>HIGH_REFRESH</option><option>DIAGNOSTIC</option></select></div><button id="inspect-toggle" class="icon-button mobile-only" aria-label="Open object inspector">◎</button></header>
-<nav id="registry-nav" class="registry" aria-label="Registered objects"><div class="panel-heading"><strong>Registry</strong><span id="object-count">0 objects</span></div><div id="registry-tree"></div></nav>
-<main class="workspace" aria-label="Active workspace"><section class="workspace-header"><div><span class="eyebrow">ACTIVE WORKSPACE</span><h1>Unified Multimodal Object Control</h1></div><div class="workspace-actions"><button id="open-3d">Object Space</button><button id="open-api">API Controller</button></div></section><section id="object-grid" class="object-grid" aria-live="polite"></section><section id="spatial-view" class="spatial-view" hidden><div class="spatial-field" role="img" aria-label="Equivalent spatial projection of registered objects"><div class="orbit orbit-a"></div><div class="orbit orbit-b"></div><button class="spatial-node core" data-object-id="hhs:application:harmonizer">H</button><button class="spatial-node node-a" data-object-id="hhs:runtime:vm81">81</button><button class="spatial-node node-b" data-object-id="hhs:service:hash72">72</button><button class="spatial-node node-c" data-object-id="hhs:index:hash216">216</button></div></section><section id="api-view" class="api-view" hidden><h2>Registered Object Search API</h2><form id="api-form"><input name="query" aria-label="Object search query"><button>Invoke</button></form><pre id="api-output">No invocation yet.</pre></section></main>
-<aside id="inspector" class="inspector" aria-label="Nested object inspector"><div class="panel-heading"><strong>Inspector</strong><button id="inspector-back" aria-label="Back in inspector lineage">Back</button></div><div id="lineage" class="lineage"></div><div id="inspector-content"><p>Select a registered object.</p></div></aside>
-<footer class="operation-strip"><span id="selected-object">No object selected</span><span>Receipt <code id="receipt-tip">—</code></span><span id="validation-state">P161 AUTHORITY BOUND</span><span id="latency-state">LOCAL</span></footer></div><script type="module" src="./src/browser.mjs"></script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#050912">
+  <meta name="description" content="HHS LiteRT-LM visual development environment and governed natural-language assistant">
+  <title>HHS LiteRT-LM Development Assistant</title>
+  <link rel="stylesheet" href="./src/styles.css">
+</head>
+<body>
+  <div id="harmonizer" class="shell" data-profile="BALANCED">
+    <header class="system-bar">
+      <button id="nav-toggle" class="icon-button mobile-only" aria-label="Open registered object navigator">☰</button>
+      <div class="identity">
+        <strong>HHS Development Assistant</strong>
+        <span>LiteRT-LM · Gemma 4 · Pass 161 visual environment</span>
+      </div>
+      <label class="search">
+        <span class="sr-only">Search registered objects</span>
+        <input id="object-search" type="search" placeholder="Search objects, services, APIs…" autocomplete="off">
+      </label>
+      <div class="system-state">
+        <span id="provider-status" class="status pending">PROVIDER CHECK</span>
+        <span class="status authority">GOVERNED TOOLS</span>
+        <select id="profile-select" aria-label="Performance profile">
+          <option>MOBILE_SAFE</option>
+          <option selected>BALANCED</option>
+          <option>DESKTOP_HIGH</option>
+          <option>HIGH_REFRESH</option>
+          <option>DIAGNOSTIC</option>
+        </select>
+      </div>
+      <button id="inspect-toggle" class="icon-button mobile-only" aria-label="Open object inspector">◎</button>
+    </header>
+
+    <nav id="registry-nav" class="registry" aria-label="Registered objects">
+      <div class="panel-heading"><strong>Registry</strong><span id="object-count">0 objects</span></div>
+      <div class="home-actions">
+        <button id="assistant-home" class="active">Assistant</button>
+        <button id="object-workspace">Object Workspace</button>
+      </div>
+      <div id="registry-tree"></div>
+    </nav>
+
+    <main class="workspace" aria-label="Active workspace">
+      <section id="assistant-view" class="assistant-view">
+        <div class="assistant-heading">
+          <div>
+            <span class="eyebrow">DEFAULT HOME INTERFACE</span>
+            <h1>Natural-Language Visual Development Environment</h1>
+            <p>Develop, inspect, and reason over registered HHS objects through the repository-native LiteRT-LM model. Model operations remain proposals until admitted by HHS runtime authority.</p>
+          </div>
+          <div class="workspace-actions">
+            <button id="new-thread">New Thread</button>
+            <button id="open-3d">Object Space</button>
+            <button id="open-api">API Controller</button>
+          </div>
+        </div>
+
+        <div class="assistant-status-grid" aria-label="Assistant runtime status">
+          <article><span>MODEL</span><strong id="model-id">gemma4-12b</strong><small id="backend-id">backend pending</small></article>
+          <article><span>THREAD</span><strong id="thread-label">initializing</strong><small id="message-count">0 messages</small></article>
+          <article><span>HHS TOOLS</span><strong id="tool-count">—</strong><small>read-only governed API tools</small></article>
+          <article><span>AUTHORITY</span><strong>PROPOSAL ONLY</strong><small>no direct VM81 mutation</small></article>
+        </div>
+
+        <section class="conversation-shell" aria-label="LiteRT-LM conversation">
+          <div id="conversation" class="conversation" aria-live="polite" aria-busy="false">
+            <article class="message assistant-message">
+              <div class="message-role">HHS ASSISTANT</div>
+              <div class="message-content">The visual development assistant is initializing the native LiteRT-LM provider and governed HHS tool surface.</div>
+            </article>
+          </div>
+          <form id="prompt-form" class="prompt-form">
+            <label for="prompt-input" class="sr-only">Message the HHS development assistant</label>
+            <textarea id="prompt-input" name="content" rows="3" placeholder="Describe what to build, inspect, test, or explain…" required></textarea>
+            <div class="prompt-controls">
+              <div class="quick-prompts" aria-label="Suggested prompts">
+                <button type="button" data-prompt="Inspect the current HHS runtime status and summarize what needs attention.">Runtime status</button>
+                <button type="button" data-prompt="List the registered services relevant to visual application development.">Visual services</button>
+                <button type="button" data-prompt="Explain the active conformance and authority constraints for this workspace.">Authority constraints</button>
+              </div>
+              <button id="send-prompt" type="submit" class="primary-action">Send</button>
+            </div>
+          </form>
+        </section>
+      </section>
+
+      <section id="workspace-view" hidden>
+        <div class="workspace-header">
+          <div><span class="eyebrow">REGISTERED OBJECT WORKSPACE</span><h1>Unified Multimodal Object Control</h1></div>
+          <button id="return-assistant">Return to Assistant</button>
+        </div>
+        <section id="object-grid" class="object-grid" aria-live="polite"></section>
+      </section>
+
+      <section id="spatial-view" class="spatial-view" hidden>
+        <div class="view-toolbar"><h2>Registered Object Space</h2><button data-close-view>Close</button></div>
+        <div class="spatial-field" role="img" aria-label="Equivalent spatial projection of registered objects">
+          <div class="orbit orbit-a"></div><div class="orbit orbit-b"></div>
+          <button class="spatial-node core" data-object-id="hhs:application:harmonizer">H</button>
+          <button class="spatial-node node-a" data-object-id="hhs:runtime:vm81">81</button>
+          <button class="spatial-node node-b" data-object-id="hhs:service:hash72">72</button>
+          <button class="spatial-node node-c" data-object-id="hhs:model:litert-lm:gemma4">LM</button>
+        </div>
+      </section>
+
+      <section id="api-view" class="api-view" hidden>
+        <div class="view-toolbar"><h2>Registered Object Search API</h2><button data-close-view>Close</button></div>
+        <form id="api-form"><input name="query" aria-label="Object search query"><button>Invoke</button></form>
+        <pre id="api-output">No invocation yet.</pre>
+      </section>
+    </main>
+
+    <aside id="inspector" class="inspector" aria-label="Nested object inspector">
+      <div class="panel-heading"><strong>Inspector</strong><button id="inspector-back" aria-label="Back in inspector lineage">Back</button></div>
+      <div id="lineage" class="lineage"></div>
+      <div id="inspector-content"><p>Select a registered object.</p></div>
+    </aside>
+
+    <footer class="operation-strip">
+      <span id="selected-object">AGENT · hhs:agent:visual-development-assistant</span>
+      <span>Thread <code id="active-thread">—</code></span>
+      <span>Receipt <code id="receipt-tip">—</code></span>
+      <span id="validation-state">P161 AUTHORITY BOUND</span>
+      <span id="latency-state">BALANCED · LOCAL</span>
+    </footer>
+  </div>
+  <script type="module" src="./src/browser.mjs"></script>
+</body>
+</html>
