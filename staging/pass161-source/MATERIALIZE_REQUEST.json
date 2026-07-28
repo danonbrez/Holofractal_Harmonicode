@@ -1,6 +1,0 @@
-{
-  "schema": "P161_SOURCE_MATERIALIZATION_REQUEST_V1",
-  "archive_sha256": "eaa5e8af7531f1c23a97a0acfd6ed40e35674d7a35f270d15633dc9cf9d92473",
-  "expected_node_tests": 68,
-  "source_oriented_commit_required": true
-}
