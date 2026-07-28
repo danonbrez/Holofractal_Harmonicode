@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hhs.local/schemas/hhs_p165_mmvs.schema.json",
+  "title": "HHS Pass 165 Multimodal Vector Store",
+  "type": "object",
+  "required": ["schema", "source", "token_stream_root", "chunk_graph_root", "projection_hash72", "ingestion_operation_hash216"],
+  "properties": {
+    "schema": {"const": "HHS_PASS_165_MULTIMODAL_VECTOR_STORE_V1"},
+    "source": {
+      "type": "object",
+      "required": ["source_id", "source_hash", "detected_media_type", "byte_length", "provenance", "authorization_scope"],
+      "properties": {
+        "source_id": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "source_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "detected_media_type": {"type": "string"},
+        "byte_length": {"type": "integer", "minimum": 1, "maximum": 16777216},
+        "provenance": {"type": "string", "minLength": 1},
+        "authorization_scope": {"type": "string", "minLength": 1}
+      }
+    },
+    "token_stream_root": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "chunk_graph_root": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "projection_hash72": {"type": "string", "minLength": 72, "maxLength": 72},
+    "ingestion_operation_hash216": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "weight_deltas": {"type": "array", "items": {"type": "object"}},
+    "receipt_hash72": {"type": "string", "minLength": 72, "maxLength": 72}
+  }
+}
