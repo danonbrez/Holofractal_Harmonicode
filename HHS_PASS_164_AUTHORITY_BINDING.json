@@ -1,0 +1,51 @@
+{
+  "schema": "HHS_PASS_164_AUTHORITY_BINDING_V1",
+  "contract_id": "HHS-P164-U817264-GCMSL",
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "implementation_branch": "agent/pass164-gpu-cluster-scaling",
+  "inheritance_parent": "agent/pass163-vmrc-implementation",
+  "equation": "(P^2 - p*q) - Delta_VM81 = 0",
+  "dimensions": {
+    "P": 72,
+    "p": 64,
+    "q": 81,
+    "P_squared": 5184,
+    "p_times_q": 5184,
+    "vm81_pair_capacity": 6561,
+    "phase_pair_capacity": 5184,
+    "thread_pair_capacity": 4096,
+    "dense_second_order_capacity_per_tile": 15841
+  },
+  "authority": {
+    "vm81_runtime_kernel_cardinality": 1,
+    "permanent_validation_index_cardinality": 1,
+    "cluster_commit_authority": false,
+    "gpu_commit_authority": false,
+    "canonical_commit_surface": "inherited Pass 163 VMRCRuntime"
+  },
+  "backends": {
+    "cpu_reference": true,
+    "deterministic_simulated_gpu": true,
+    "physical_gpu_executed": false
+  },
+  "ordering": {
+    "stable_key": [
+      "epoch",
+      "level",
+      "phase",
+      "cluster",
+      "explicit_noncommutative_order",
+      "vm81_position",
+      "thread",
+      "operation_hash216"
+    ],
+    "physical_completion_order_authoritative": false
+  },
+  "identity": {
+    "canonical_state": "inherited Hash72(D||S)",
+    "operation": "Pass-164-domain-separated inherited Hash216Genome",
+    "reduction": "Pass-164-domain-separated inherited Hash216Genome",
+    "transport": "inherited Pass 163 Base64 ABI envelope"
+  },
+  "validation_policy": "dependency-scoped bounded stage-gate repair-forward"
+}
