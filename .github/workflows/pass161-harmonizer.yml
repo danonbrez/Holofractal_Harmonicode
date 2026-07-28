@@ -1,0 +1,114 @@
+name: Pass 161 Finalization
+
+on:
+  push:
+    branches: [agent/pass161-harmonizer-object-environment]
+    paths:
+      - 'HHS_PASS_161_*'
+      - 'applications/holofractal_harmonizer/**'
+      - '.github/workflows/pass161-harmonizer.yml'
+  pull_request:
+    paths:
+      - 'HHS_PASS_161_*'
+      - 'applications/holofractal_harmonizer/**'
+      - '.github/workflows/pass161-harmonizer.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  x86-final-gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '22' }
+      - name: Materialize native Pass 160 binding
+        run: make -C native_projects/hhs_pass160_validated_transition_runtime all
+      - name: Execute foundation and finalization matrices
+        working-directory: applications/holofractal_harmonizer
+        run: npm test
+      - name: Audit browser, mobile and accessibility contracts
+        working-directory: applications/holofractal_harmonizer
+        run: npm run audit:browser
+      - name: Execute integrated native/repository replay
+        working-directory: applications/holofractal_harmonizer
+        env:
+          HHS_PASS160_CLI: ${{ github.workspace }}/native_projects/hhs_pass160_validated_transition_runtime/dist/hhs-pass160
+        run: npm run finalize
+      - name: Build deterministic release package
+        working-directory: applications/holofractal_harmonizer
+        run: npm run package
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pass161-x86-final-${{ github.sha }}
+          path: |
+            applications/holofractal_harmonizer/evidence/pass161/**
+            applications/holofractal_harmonizer/dist/**
+            applications/holofractal_harmonizer/HHS_PASS_161_RELEASE_BUNDLE.json
+          if-no-files-found: error
+
+  aarch64-replay:
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '22' }
+      - name: Materialize native Pass 160 binding
+        run: make -C native_projects/hhs_pass160_validated_transition_runtime all
+      - name: Execute bounded aarch64 replay
+        working-directory: applications/holofractal_harmonizer
+        env:
+          HHS_PASS160_CLI: ${{ github.workspace }}/native_projects/hhs_pass160_validated_transition_runtime/dist/hhs-pass160
+        run: |
+          npm run audit:browser
+          npm run finalize
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pass161-aarch64-replay-${{ github.sha }}
+          path: applications/holofractal_harmonizer/evidence/pass161/**
+          if-no-files-found: error
+
+  terminal-closure:
+    needs: [x86-final-gate, aarch64-replay]
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '22' }
+      - uses: actions/download-artifact@v4
+        with:
+          name: pass161-x86-final-${{ github.sha }}
+          path: /tmp/pass161-x86
+      - uses: actions/download-artifact@v4
+        with:
+          name: pass161-aarch64-replay-${{ github.sha }}
+          path: /tmp/pass161-arm
+      - name: Install frozen release package metadata
+        run: |
+          cp /tmp/pass161-x86/HHS_PASS_161_RELEASE_BUNDLE.json applications/holofractal_harmonizer/
+          cp -R /tmp/pass161-x86/dist applications/holofractal_harmonizer/
+      - name: Close terminal evidence without re-executing validation
+        working-directory: applications/holofractal_harmonizer
+        env:
+          P161_X86_REPORT: /tmp/pass161-x86/evidence/pass161/P161_VALIDATION_SUMMARY.json
+          P161_ARM_REPORT: /tmp/pass161-arm/P161_VALIDATION_SUMMARY.json
+        run: node tools/close.mjs
+      - name: Verify terminal predicate
+        working-directory: applications/holofractal_harmonizer
+        run: |
+          grep -q 'HHS_PASS_161_HOLOFRACTAL_HARMONIZER_UNIFIED_MULTIMODAL_OBJECT_CONTROL_ENVIRONMENT_VERIFIED' evidence/pass161/P161_TERMINAL_CLASSIFICATION.txt
+          grep -q '"omega_161": true' evidence/pass161/P161_COMPLETION_RECEIPT.json
+          grep -q '"terminal_claimed": true' evidence/pass161/P161_COMPLETION_RECEIPT.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: hhs-pass161-terminal-evidence-${{ github.sha }}
+          path: |
+            applications/holofractal_harmonizer/evidence/pass161/**
+            applications/holofractal_harmonizer/dist/**
+            applications/holofractal_harmonizer/HHS_PASS_161_RELEASE_BUNDLE.json
+            applications/holofractal_harmonizer/HHS_PASS_161_TERMINAL_RELEASE.json
+          if-no-files-found: error
