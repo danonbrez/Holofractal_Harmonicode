@@ -22,9 +22,12 @@ jobs:
           node-version: '22'
       - name: Install usability-lab dependencies
         run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
           python -m pip install --upgrade pip
           python -m pip install fastapi uvicorn playwright pillow
           python -m playwright install --with-deps chromium
+          ffmpeg -version | head -n 1
       - name: Validate workflow templates and global default
         run: |
           node --test applications/holofractal_harmonizer/tests/ux_workflow_default.test.mjs
