@@ -1,0 +1,58 @@
+{
+  "authority": {
+    "cluster_commit_authority": false,
+    "gpu_commit_authority": false,
+    "permanent_validation_index_cardinality": 1,
+    "vm81_runtime_kernel_cardinality": 1
+  },
+  "classification": "HHS_PASS_164_UNIVERSAL_81_72_64_SCALING_LAW_IMPLEMENTED",
+  "contract_id": "HHS-P164-U817264-GCMSL",
+  "implemented": {
+    "cluster_capability_zero": true,
+    "completion_order_independent_reducer": true,
+    "coordinate_bijection": true,
+    "cpu_reference_backend": true,
+    "dependency_scoped_github_workflow": true,
+    "deterministic_replay": true,
+    "deterministic_simulated_gpu_backend": true,
+    "global_invariant_algebra": true,
+    "homogeneous_and_recursive_scaling": true,
+    "native_c11_abi": true,
+    "pass163_base64_transport_integration": true,
+    "pass163_singleton_commit_routing": true,
+    "rank_one_tensor": true,
+    "runtime_api": true,
+    "sparse_cluster_edges": true,
+    "stable_hash216_operation_identity": true
+  },
+  "local_reference_validation": {
+    "backend_equivalence_root": "0b87306746573b95e2f4317103045589e10c4eb9c343a2ce58bd5921beeb6890",
+    "benchmark_sha256": "fa9da87f2fde87cf65fc28f513b9c2ae775ac4dd3c15c03dec6a7711e4f2d78b",
+    "c11_compile": "PASS",
+    "c11_runtime_test": "PASS",
+    "coordinate_collisions": 0,
+    "coordinate_forward_count": 5184,
+    "coordinate_inverse_count": 5184,
+    "coordinate_omissions": 0,
+    "coordinate_proof_sha256": "69f7d153717a6b471aa20166b6b7c4bf5fbaa68015bcb2dec859fd81e9856e07",
+    "pass163_interface_mode": "compatible local stub because repository checkout was unavailable in the execution container",
+    "python_tests_failed": 0,
+    "python_tests_passed": 24,
+    "reduction_hash216": "8e918d79a647c75a2e4e261d105b06ad55b7a052ca0776dc7fedee494d9a2f13"
+  },
+  "not_yet_verified": [
+    "dependency-scoped tests against the actual Pass 163 branch in GitHub Actions",
+    "physical GPU or accelerator execution",
+    "independent architecture execution outside the deterministic simulated backend",
+    "durable crash-interruption recovery",
+    "full repository integration CI",
+    "terminal Pass 164 verification"
+  ],
+  "promotion_candidates_after_repository_ci": [
+    "HHS_PASS_164_GPU_CLUSTER_MULTITHREAD_VALIDATED",
+    "HHS_PASS_164_MULTI_BACKEND_REPLAY_VERIFIED"
+  ],
+  "schema": "P164_COMPLETION_RECEIPT",
+  "terminal": false,
+  "version": 1
+}
