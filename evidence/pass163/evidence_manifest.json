@@ -1,0 +1,50 @@
+{
+  "schema": "HHS_PASS_163_EVIDENCE_MANIFEST_V1",
+  "contract_id": "HHS-P163-LLABI-B64-VMRC",
+  "classification": "HHS_PASS_163_LOW_LEVEL_VIRTUAL_MEMRISTOR_RAM_CACHE_VALIDATED",
+  "terminal": false,
+  "source_artifacts": [
+    "HHS_PASS_163_AUTHORITY_BINDING.json",
+    "HHS_PASS_163_IMPLEMENTATION_STATUS.md",
+    "hhs_runtime/core/hash72_validator_v1.py",
+    "hhs_runtime/core/hash72_digest_v1.py",
+    "hhs_runtime/pass163/__init__.py",
+    "hhs_runtime/pass163/vmrc.py",
+    "hhs_backend/api/pass163_vmrc_routes.py",
+    "hhs_backend/pass163_server.py",
+    "native_projects/hhs_pass163_vmrc/include/hhs_p163_vmrc.h",
+    "native_projects/hhs_pass163_vmrc/src/hhs_p163_vmrc.c",
+    "native_projects/hhs_pass163_vmrc/tests/test_hhs_p163_vmrc.c",
+    "native_projects/hhs_pass163_vmrc/Makefile",
+    "native_projects/hhs_pass163_vmrc/README.md",
+    "native_projects/hhs_pass163_vmrc/schemas/hhs_p163_vmrc.schema.json",
+    "tests/test_hash72_digest_v1.py",
+    "tests/test_hhs_pass163_vmrc_v1.py"
+  ],
+  "executed_evidence": [
+    {
+      "path": "evidence/pass163/python_test_output.txt",
+      "result": "18 passed in 0.33s"
+    },
+    {
+      "path": "evidence/pass163/c11_test_output.txt",
+      "result": "strict C11 compile and native execution passed"
+    },
+    {
+      "path": "evidence/pass163/P163_COMPLETION_RECEIPT.json",
+      "result": "bounded nonterminal completion receipt"
+    }
+  ],
+  "validation_scope": {
+    "dependency_scoped": true,
+    "hash72_repair": true,
+    "python_reference_runtime": true,
+    "native_c11_reference": true,
+    "deterministic_replay": true,
+    "cross_architecture": false,
+    "gpu_equivalence": false,
+    "durable_crash_interruption": false,
+    "full_repository_ci": false
+  },
+  "integrity_note": "Repository blob and commit identities are supplied by GitHub history. This manifest does not invent local file digests for connector-published content."
+}
