@@ -68,16 +68,38 @@ jobs:
             "validation_failures": 0
           }
           JSON
-      - name: Commit executed terminal evidence
+      - name: Publish executed terminal evidence atomically
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          git config user.name 'chatgpt-pass161-agent'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add \
-            applications/holofractal_harmonizer/evidence/pass161 \
-            applications/holofractal_harmonizer/HHS_PASS_161_RELEASE_BUNDLE.json \
-            applications/holofractal_harmonizer/HHS_PASS_161_TERMINAL_RELEASE.json
-          git add -f applications/holofractal_harmonizer/dist
-          git diff --cached --check
-          git commit -m 'Publish executed Pass 161 terminal evidence'
-          git push origin HEAD:"$TARGET_BRANCH"
+          parent=$(git rev-parse HEAD)
+          base_tree=$(gh api "repos/$GITHUB_REPOSITORY/git/commits/$parent" --jq .tree.sha)
+          entries='[]'
+          add_blob() {
+            path="$1"
+            file="$2"
+            encoded=$(base64 -w0 "$file")
+            blob=$(jq -n --arg content "$encoded" '{content:$content,encoding:"base64"}' | \
+              gh api --method POST "repos/$GITHUB_REPOSITORY/git/blobs" --input - --jq .sha)
+            entries=$(jq -c --arg path "$path" --arg sha "$blob" \
+              '. + [{path:$path,mode:"100644",type:"blob",sha:$sha}]' <<<"$entries")
+          }
+          project=applications/holofractal_harmonizer
+          add_blob "$project/evidence/pass161/P161_COMPLETION_RECEIPT.json" "$project/evidence/pass161/P161_COMPLETION_RECEIPT.json"
+          add_blob "$project/evidence/pass161/P161_TERMINAL_CLASSIFICATION.txt" "$project/evidence/pass161/P161_TERMINAL_CLASSIFICATION.txt"
+          add_blob "$project/evidence/pass161/P161_TERMINAL_CLOSURE.json" "$project/evidence/pass161/P161_TERMINAL_CLOSURE.json"
+          add_blob "$project/evidence/pass161/P161_GITHUB_FINAL_GATE_RUN.json" "$project/evidence/pass161/P161_GITHUB_FINAL_GATE_RUN.json"
+          add_blob "$project/dist/HHS_PASS_161_RELEASE_BUNDLE.tar.gz" "$project/dist/HHS_PASS_161_RELEASE_BUNDLE.tar.gz"
+          add_blob "$project/dist/P161_FILE_MANIFEST.json" "$project/dist/P161_FILE_MANIFEST.json"
+          add_blob "$project/HHS_PASS_161_RELEASE_BUNDLE.json" "$project/HHS_PASS_161_RELEASE_BUNDLE.json"
+          add_blob "$project/HHS_PASS_161_TERMINAL_RELEASE.json" "$project/HHS_PASS_161_TERMINAL_RELEASE.json"
+          tree=$(jq -n --arg base_tree "$base_tree" --argjson tree "$entries" \
+            '{base_tree:$base_tree,tree:$tree}' | \
+            gh api --method POST "repos/$GITHUB_REPOSITORY/git/trees" --input - --jq .sha)
+          commit=$(jq -n --arg message 'Publish executed Pass 161 terminal evidence' --arg tree "$tree" --arg parent "$parent" \
+            '{message:$message,tree:$tree,parents:[$parent]}' | \
+            gh api --method POST "repos/$GITHUB_REPOSITORY/git/commits" --input - --jq .sha)
+          jq -n --arg sha "$commit" '{sha:$sha,force:false}' | \
+            gh api --method PATCH "repos/$GITHUB_REPOSITORY/git/refs/heads/$TARGET_BRANCH" --input - >/dev/null
+          echo "P161_TERMINAL_EVIDENCE_COMMIT=$commit"
