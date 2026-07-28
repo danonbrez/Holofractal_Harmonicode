@@ -1,590 +1,461 @@
-# Holofractal Harmonicode (HHS) — Integration Report & Development Guide
+# Holofractal Harmonicode (HHS)
 
-This document records everything required to bring the HHS stack online inside
-the Replit monorepo, covers the exact blockers that were hit and how they were
-resolved, and provides a complete guide for reproducing a one-step
-initialization in any new environment. A detailed latency analysis is included
-at the end because the 3–5 second per-request response time has a specific,
-fixable root cause that the development team needs to address.
+Deterministic VM81 execution, HARMONICODE source semantics, Hash72 receipt authority, Hash216 historical identity, governed multimodal tooling, a repository-native LiteRT-LM natural-language development interface, and VM81-governed creative-artifact generation.
 
----
+## Current main interface
 
-## Table of Contents
+The default page at `/` is the **HHS LiteRT-LM Visual Development Assistant** implemented through the Pass 161 Holofractal Harmonizer.
 
-1. [What HHS Is](#what-hhs-is)
-2. [Repository Topology](#repository-topology)
-3. [What Was Done To Get It Running](#what-was-done-to-get-it-running)
-   - [Environment](#1-environment)
-   - [C Kernel Compilation](#2-c-kernel-compilation)
-   - [Python Dependencies](#3-python-dependencies)
-   - [Startup Script](#4-startup-script)
-   - [Replit Artifact Wiring](#5-replit-artifact-wiring)
-   - [OpenAPI Spec & Code Generation](#6-openapi-spec--code-generation)
-   - [HHS Dashboard Frontend](#7-hhs-dashboard-frontend)
-   - [API Response Adapter Layer](#8-api-response-adapter-layer)
-4. [One-Step Initialization Guide (Any Environment)](#one-step-initialization-guide-any-environment)
-5. [API Latency Analysis — Root Cause & Fix](#api-latency-analysis--root-cause--fix)
-6. [Current Stack Overview](#current-stack-overview)
+It provides:
 
----
+- bounded conversation threads backed by the repository-native LiteRT-LM provider;
+- the `gemma4-12b` model as the default registered inference model;
+- governed read-only HHS API tools for runtime, service, invariant, conformance, and closure inspection;
+- registered-object navigation, nested inspectors, object-workspace cards, spatial projection, and API-controller views;
+- provider health, tool-count, thread, model, backend, receipt, and authority diagnostics;
+- degraded-mode startup when the model provider is unavailable, unless strict startup is enabled.
 
-## What HHS Is
+The former JSON root response is preserved at `/api/system/status`.
 
-The Holofractal Harmonicode System is a deterministic, receipt-locked Python
-runtime backed by a compiled C kernel. Every computation the system performs is
-cryptographically verifiable, replay-auditable, and graph-linked. Nothing can
-enter, execute in, or leave the runtime without passing through the canonical
-IO gateway, which stamps every payload with a Hash72 u^72 Digital DNA witness
-produced by the C kernel and appends the record to an append-only unified
-ledger.
+### Pass 162 creative-writing runtime
 
-The stack has three layers:
+`main` also contains the additive Pass 162 VM81 creative-novel runtime.
 
-```
-Frontend Dashboard (React / Vite)
-        ↓
-FastAPI Transport Layer  ←  hhs/hhs_backend/
-        ↓
-Runtime Orchestrator     ←  hhs/hhs_python/
-        ↓
-C Kernel (VM81 + ABI)    ←  hhs/hhs_runtime/c/  +  hhs/hhs_runtime/builds/
-        ↓
-Graph + Persistence + Replay
+Its sole external generation surface is:
+
+```text
+POST /api/runtime/creative/novel
 ```
 
----
+The runtime accepts a bounded novel contract, authorizes the operation through VM81, invokes the configured language-model provider through the HHS proposal/policy/receipt/ingress path, assembles Hash72-rooted chapters, and persists admitted Markdown artifacts beneath `creative_writing/novels/` through the HHS persistence guard.
 
-## Repository Topology
+External callers must not call LiteRT-LM `/v1/chat/completions` directly for this workflow and cannot choose an arbitrary output directory.
 
-```
-hhs/
-├── hhs_runtime/          VM81 substrate, C ABI, hash72 kernel, acceleration fabric
-│   ├── c/                C source: hhs_runtime_abi.c, hhs_runtime_abi.h
-│   ├── src/              hhs_hash216.c (the u^72 ring implementation)
-│   ├── include/          Header files
-│   ├── builds/           Compiled outputs: libhhs_runtime.so, hhs_vm81
-│   └── acceleration/     HHSAccelerationFabric.ts (heterogeneous dispatch spec)
-├── hhs_python/           ctypes bridge to the C ABI; runtime controller/emulator
-├── hhs_backend/
-│   ├── api/              FastAPI route definitions (runtime_routes.py + others)
-│   ├── runtime/          Orchestration, graph, replay, websocket, agent loops
-│   └── server.py         FastAPI app entry point with CORS middleware
-├── hhs_graph/            Graph topology, receipt memory
-├── hhs_storage/          Persistence, replay storage
-├── Makefile              C kernel build surface
-├── requirements.txt      Python dependencies
-└── start.sh              (created during integration) startup script
-```
+The current repository exposes the visual assistant and creative-writing API through separate server compositions:
 
----
+- `bash start.sh` launches `hhs_backend.visual_server:app`, the default visual development environment;
+- `python -m uvicorn hhs_backend.pass162_server:app ...` launches the specialized Pass 162 creative runtime surface.
 
-## What Was Done To Get It Running
+The committed reference manuscript `creative_writing/novels/THE_NINTH_ARCHIVE.md` is explicitly classified as a seed artifact with `runtime_execution_receipt: null`. Live Pass 162 execution verification requires a reachable provider and an admitted VM81 response; no receipt is fabricated when that evidence is unavailable.
 
-### 1. Environment
+## Authority model
 
-**Replit-specific setup required.** The following were not pre-installed:
+The language model is a capability provider and projection layer. It does not own canonical HHS state.
 
-| Dependency | How Installed | Notes |
-|---|---|---|
-| Python 3.11 | Replit module system | `python-3_11` module; the default Python was too old for some type annotation syntax used in the backend |
-| `gcc` | Replit system package | `gcc` |
-| `gnumake` | Replit system package | `gnumake` |
-| All Python packages | `pip install -r hhs/requirements.txt --target .pythonlibs` | Replit does not use virtualenvs; packages install to `.pythonlibs/` |
-
-The `PYTHONPATH` must include the `hhs/` directory at runtime so that `hhs_runtime`, `hhs_python`, `hhs_backend`, etc. are importable as top-level packages. This is set in `hhs/start.sh`.
-
----
-
-### 2. C Kernel Compilation
-
-**The Makefile has a bug on the `vm81` target.** The `LDFLAGS` variable (`-lm`) is
-defined at the top of the Makefile and is correctly applied to the shared
-library target, but it is **not applied** to the `hhs_vm81` binary target. The
-math library (`-lm`) is required because `HARMONICODE_VM_RUNTIME.c` uses
-`pow()`, `fabs()`, and related functions. Without `-lm`, the linker fails on
-Linux.
-
-**Failing command (from stock Makefile):**
-```sh
-gcc -O2 -std=c11 -Wall -Wextra \
-    -Ihhs_runtime/include -Ihhs_runtime/c \
-    hhs_runtime/HARMONICODE_VM_RUNTIME.c \
-    -o hhs_runtime/builds/hhs_vm81
-# ↑ missing -lm → undefined reference to `pow'
+```text
+Human request
+    ↓
+Pass 161 visual assistant
+    ↓
+/api/assistant
+    ↓
+Provider execution proposal
+    ↓
+Capability policy gate
+    ↓
+LiteRT-LM / Gemma 4 completion
+    ↓
+Provider invocation receipt
+    ↓
+HHS provider-result ingress
+    ↓
+Bounded assistant-thread projection
 ```
 
-**Working command:**
-```sh
-gcc -O2 -std=c11 -Wall -Wextra \
-    -Ihhs_runtime/include -Ihhs_runtime/c \
-    hhs_runtime/HARMONICODE_VM_RUNTIME.c \
-    -o hhs_runtime/builds/hhs_vm81 \
-    -lm
+The following rules remain binding:
+
+- VM81 and the HHS runtime remain the execution authority.
+- Model output is not canonical merely because inference completed.
+- Model-generated mutations are proposals only.
+- No assistant route permits direct VM81 mutation.
+- Read-only assistant tools return governed HHS evidence.
+- State transitions require admission, audit, and receipt closure.
+- Hash72, Hash216, ordered products, exact rational authority, and inherited pass invariants may not be silently replaced by alternate truth paths.
+
+See [`AGENTS.md`](AGENTS.md) for the repository navigation and invariant contract.
+
+## Architecture
+
+```text
+Browser
+└── applications/holofractal_harmonizer/
+    ├── Default LiteRT-LM assistant
+    ├── Registered-object workspace
+    ├── Nested object inspector
+    ├── Spatial object projection
+    └── Governed API controller
+            ↓
+hhs_backend/visual_server.py
+├── mounts the Pass 161 application at /
+├── composes /api/assistant
+└── preserves canonical API-route precedence
+            ↓
+hhs_backend/server.py
+├── FastAPI lifecycle
+├── VM81/runtime initialization
+├── graph and replay services
+├── WebSocket orchestration
+└── runtime/workspace/capability/document routes
+            ↓
+hhs_backend/runtime/hhs_litert_lm_hhs_api_assistant_v1.py
+├── bounded thread store
+├── per-thread request serialization
+├── allowlisted read-only HHS tool loop
+├── provider proposal and policy gate
+├── invocation receipt
+└── provider-result ingress
+            ↓
+LiteRT-LM service on port 9379
+└── registered model: gemma4-12b
+            ↓
+VM81 + HARMONICODE + Hash72 + Hash216 + persistence/replay
+
+Optional Pass 162 composition
+hhs_backend/pass162_server.py
+└── /api/runtime/creative/novel
+    ├── VM81 authorized tick
+    ├── bounded creative provider transport
+    ├── Hash72 outline/chapter/manuscript roots
+    └── guarded creative_writing/novels persistence
 ```
 
-**Fix for the Makefile:** add `$(LDFLAGS)` to the `vm81` recipe, or hard-code
-`-lm`. The ABI library target already works correctly.
-
-```makefile
-# CURRENT (broken on vm81):
-$(VM81_BIN): hhs_runtime/HARMONICODE_VM_RUNTIME.c ... | $(RUNTIME_BUILD_DIR)
-	$(CC) $(CFLAGS) hhs_runtime/HARMONICODE_VM_RUNTIME.c -o $(VM81_BIN)
-
-# FIXED:
-$(VM81_BIN): hhs_runtime/HARMONICODE_VM_RUNTIME.c ... | $(RUNTIME_BUILD_DIR)
-	$(CC) $(CFLAGS) hhs_runtime/HARMONICODE_VM_RUNTIME.c -o $(VM81_BIN) $(LDFLAGS)
-```
-
----
-
-### 3. Python Dependencies
-
-```sh
-pip install -r hhs/requirements.txt
-```
-
-All packages in `requirements.txt` install cleanly under Python 3.11. The key
-runtime packages are:
-
-- `fastapi==0.128.2` + `uvicorn[standard]` — the HTTP/WebSocket server
-- `pydantic>=2.7,<3.0` — request/response schema validation
-- `networkx>=3.3` — graph topology layer
-- `numpy>=1.26`, `sympy>=1.13` — numerical and symbolic runtime support
-- `sqlalchemy>=2.0`, `aiosqlite>=0.20` — persistence layer
-- `cryptography>=46.0` — signed network envelopes (Pass 146)
-
----
-
-### 4. Startup Script
-
-`hhs/start.sh` was created because the repository has no single entry point
-that handles compilation + server launch together. The file does three things:
-
-1. Compiles the C kernel (both the shared ABI library and the VM81 binary),
-   with graceful fallback warnings if compilation fails.
-2. Sets `PYTHONPATH` to include the `hhs/` directory.
-3. Launches uvicorn on `$PORT` with `--ws websockets`.
-
-```bash
-#!/usr/bin/env bash
-set -e
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-cd "$SCRIPT_DIR"
-
-echo "[HHS] Building C kernel..."
-gcc -O2 -std=c11 -Wall -Wextra \
-    -Ihhs_runtime/include -Ihhs_runtime/c \
-    -fPIC -shared \
-    hhs_runtime/c/hhs_runtime_abi.c \
-    hhs_runtime/src/hhs_hash216.c \
-    -o hhs_runtime/builds/libhhs_runtime.so -lm
-
-gcc -O2 -std=c11 -Wall -Wextra \
-    -Ihhs_runtime/include -Ihhs_runtime/c \
-    hhs_runtime/HARMONICODE_VM_RUNTIME.c \
-    -o hhs_runtime/builds/hhs_vm81 -lm
-
-echo "[HHS] C kernel ready."
-export PYTHONPATH="$SCRIPT_DIR:${PYTHONPATH:-}"
-PORT="${PORT:-8080}"
-exec python -m uvicorn hhs_backend.server:app \
-    --host 0.0.0.0 --port "$PORT" \
-    --ws websockets --log-level info
-```
-
----
-
-### 5. Replit Artifact Wiring
-
-Two artifacts were configured:
-
-**API Server** (`artifacts/api-server/`) was repurposed from a Node.js express
-placeholder to run the HHS Python backend. The `artifact.toml` run command was
-updated to `bash /home/runner/workspace/hhs/start.sh`. An important lesson:
-the run command must use an **absolute path**. A relative path like
-`bash hhs/start.sh` failed because the workflow runner uses the artifact
-directory as its working directory, not the workspace root.
-
-**HHS Dashboard** (`artifacts/hhs-dashboard/`) is a new React/Vite artifact
-registered at path `/`. A Vite proxy was added to forward `/api` requests from
-the dev server (port 18142) to the HHS backend (port 8080):
-
-```ts
-// vite.config.ts
-server: {
-  proxy: {
-    '/api': { target: 'http://localhost:8080', changeOrigin: true, ws: true }
-  }
-}
-```
-
----
-
-### 6. OpenAPI Spec & Code Generation
-
-No OpenAPI spec existed in the repository. One was authored at
-`lib/api-spec/openapi.yaml` covering all major runtime routes, then codegen
-was run via Orval v8.22 to produce:
-
-- `lib/api-client-react/` — typed React Query hooks for all endpoints
-- `lib/api-zod/` — Zod v4 schemas for all request/response types
-
-**Zod version bump required.** Orval 8.22 generates Zod v4 syntax
-(`z.looseObject()`, etc.) which is incompatible with Zod v3. The workspace
-catalog in `pnpm-workspace.yaml` was bumped from `^3.25.76` to `^4.0.0`.
-
----
-
-### 7. HHS Dashboard Frontend
-
-The dashboard was built against the generated hooks. Six pages were wired:
-
-| Page | Route | Key Data |
-|---|---|---|
-| Runtime Overview | `/` | Step count, hash72, convergence, Step/Halt controls, latest vector + packet |
-| Receipt Graph | `/graph` | Node/edge counts, node lookup, replay, predict, receipt commit |
-| Services | `/services` | 351 registered services, search, dispatch console |
-| Conformance | `/conformance` | 19 invariants, conformance root hash72, evaluator, state enforcer |
-| Sandbox | `/sandbox` | Create isolated fork, step execution, output log |
-| Authority & Leases | `/authority` | Roles, components, lease table, issue/revoke, federation status |
-
-**All API hooks are connected.** The dashboard polls every 10 seconds on
-live-updating queries.
-
----
-
-### 8. API Response Adapter Layer
-
-The HHS backend wraps every response in a guarded envelope that does not match
-the simplified types the OpenAPI spec describes. For example,
-`GET /api/runtime/state` returns:
-
-```json
-{
-  "schema": "HHS_GUARDED_RUNTIME_STATE_RESPONSE_V1",
-  "runtime": { "step": 130, "state_hash72": "...", "converged": true, "halted": false },
-  "io": { "ingress": { ... }, "egress": { ... } },
-  "runtime_contract": { ... }
-}
-```
-
-Rather than fight the codegen types, an adapter layer was created at
-`artifacts/hhs-dashboard/src/lib/hhs-adapters.ts`. Every page imports its
-relevant adapter and normalizes the raw API response before rendering. This
-layer is also the right place to add client-side caching or derived fields as
-the API matures.
-
----
-
-## One-Step Initialization Guide (Any Environment)
-
-The following steps are what the development team needs to turn into a single
-`make setup` or `./init.sh` invocation.
+## Quick start
 
 ### Prerequisites
 
-| Requirement | Version | Notes |
-|---|---|---|
-| Python | 3.11.x | 3.12 has not been tested |
-| gcc | ≥ 12.0 | Any modern GCC; clang also works with the same flags |
-| make | ≥ 4.3 | GNU make |
-| pip | bundled with Python | For Python packages |
+| Requirement | Purpose |
+|---|---|
+| Python 3.11 or newer | HHS backend, tests, and bootstrap tooling |
+| GCC or Clang | Native runtime and VM81 build |
+| GNU Make | Canonical C build and verification targets |
+| Node.js 22 or newer | Pass 161 tests, browser audit, finalization, and packaging |
+| GPU driver and accelerator access | Required for the default production `gpu` inference profile |
+| Vulkan loader/device access on Linux or Windows | Required by the default local GPU profile |
+| Metal-capable host on macOS | Native macOS GPU execution path |
 
-### Step-by-step (manual)
+### Start the integrated environment
 
-```sh
-# 1. Clone
-git clone https://github.com/danonbrez/Holofractal_Harmonicode
+```bash
+git clone https://github.com/danonbrez/Holofractal_Harmonicode.git
 cd Holofractal_Harmonicode
 
-# 2. Python packages
-pip install -r requirements.txt
-
-# 3. Build C kernel
-#    Fix: vm81 target needs -lm (see Makefile bug above before running stock make)
-mkdir -p hhs_runtime/builds
-
-gcc -O2 -std=c11 -Wall -Wextra \
-    -Ihhs_runtime/include -Ihhs_runtime/c \
-    -fPIC -shared \
-    hhs_runtime/c/hhs_runtime_abi.c \
-    hhs_runtime/src/hhs_hash216.c \
-    -o hhs_runtime/builds/libhhs_runtime.so -lm
-
-gcc -O2 -std=c11 -Wall -Wextra \
-    -Ihhs_runtime/include -Ihhs_runtime/c \
-    hhs_runtime/HARMONICODE_VM_RUNTIME.c \
-    -o hhs_runtime/builds/hhs_vm81 -lm
-
-# 4. Verify kernel
-hhs_runtime/builds/hhs_vm81 --verify
-
-# 5. Launch
-PYTHONPATH=$(pwd) python -m uvicorn hhs_backend.server:app \
-    --host 0.0.0.0 --port 8080 --ws websockets
+python -m pip install -r requirements.txt
+bash start.sh
 ```
 
-### Recommended: `init.sh` (add to repo root)
+Open:
 
-```sh
-#!/usr/bin/env bash
-set -euo pipefail
-
-echo "==> Installing Python dependencies"
-pip install -r requirements.txt
-
-echo "==> Building C kernel"
-mkdir -p hhs_runtime/builds
-
-gcc -O2 -std=c11 -Wall -Wextra \
-    -Ihhs_runtime/include -Ihhs_runtime/c \
-    -fPIC -shared \
-    hhs_runtime/c/hhs_runtime_abi.c \
-    hhs_runtime/src/hhs_hash216.c \
-    -o hhs_runtime/builds/libhhs_runtime.so -lm
-
-gcc -O2 -std=c11 -Wall -Wextra \
-    -Ihhs_runtime/include -Ihhs_runtime/c \
-    hhs_runtime/HARMONICODE_VM_RUNTIME.c \
-    -o hhs_runtime/builds/hhs_vm81 -lm
-
-echo "==> Verifying kernel"
-hhs_runtime/builds/hhs_vm81 --verify
-
-echo "==> HHS ready. Starting server on port ${PORT:-8080}"
-PYTHONPATH=$(pwd) python -m uvicorn hhs_backend.server:app \
-    --host 0.0.0.0 --port "${PORT:-8080}" \
-    --ws websockets --log-level info
+```text
+http://localhost:8080/
 ```
 
-### Cross-platform notes
+`start.sh` performs the integrated startup sequence:
 
-| Platform | Notes |
-|---|---|
-| Linux (x86_64) | Works as-is. Default platform for Replit. |
-| macOS | Replace `-lm` with nothing (math is in libc on macOS). The `-fPIC -shared` flags produce `.dylib`, not `.so` — update the ctypes load path in `hhs_python/runtime/hhs_ctypes_bridge.py` accordingly. |
-| Windows | Not supported. The C kernel uses POSIX headers and assumes ELF shared libraries. WSL2 is the recommended path. |
-| Docker | Use `python:3.11-slim` as base. Add `build-essential` for gcc. The Makefile `vm81` target works once `-lm` is added. |
+1. validates Python compatibility;
+2. resolves or installs the repository-local LiteRT-LM CLI;
+3. stages and verifies the Vulkan loader when the GPU profile requires it;
+4. imports the configured Gemma 4 `.litertlm` model when it is not already registered;
+5. starts or reuses the LiteRT-LM provider on port `9379`;
+6. verifies the requested model through `/v1/models`;
+7. builds and verifies the native HHS C surfaces;
+8. launches `hhs_backend.visual_server:app` on port `8080`.
 
----
+Model weights are runtime assets and are not committed to Git. A first local startup may download and import the configured model.
 
-## API Latency Analysis — Root Cause & Fix
+### Start the Pass 162 creative runtime
 
-### Observed behaviour
+With the LiteRT-LM provider available:
 
-Every HHS API endpoint takes **3–5 seconds** to respond. This was measured on
-a live server after startup:
-
-```
-GET /api/runtime/state     4.3s
-GET /api/runtime/vector/latest   3.4s
-GET /api/runtime/packet/latest   5.1s
-```
-
-This is not a network issue, not a Python GIL issue, and not the hash72 C
-kernel being slow. The C kernel itself is fast:
-
-```
-10 hash72_kernel_digest() calls: 0.8ms total → ~0.08ms each
+```bash
+python -m uvicorn hhs_backend.pass162_server:app \
+  --host 0.0.0.0 \
+  --port 8080 \
+  --ws websockets
 ```
 
-### Actual latency breakdown per request
+Generate a novel only through the VM81 client:
 
-Profiled against a running server with 1,346 ledger entries:
-
-```
-Controller init:              0ms   (cached, singleton)
-Gateway init:                 0ms   (cached, singleton)
-ingress() — hash72 + ledger:  1951ms   ← this is the problem
-runtime_state():              0ms
-egress()  — hash72 + ledger:  1861ms   ← this too
-─────────────────────────────────────────
-Total per GET /api/runtime/state:  ~3,812ms
+```bash
+python tools/vm81_generate_novel.py \
+  --runtime-url http://127.0.0.1:8080 \
+  --title "The Ninth Archive" \
+  --chapters 9 \
+  --target-words 9000 \
+  --filename THE_NINTH_ARCHIVE.md
 ```
 
-### Root cause: the unified ledger re-hashes every append
+The response includes VM81 authorization, runtime I/O records, provider evidence, outline and chapter roots, manuscript and result roots, persistence evidence, word count, elapsed time, and optimization metadata.
 
-`hhs_runtime/hhs_unified_hash72_ledger_v1.py` keeps all records in a JSON
-file on disk. Every call to `append_payload()` does the following:
+## LiteRT-LM configuration
 
-1. Reads the entire ledger file from disk.
-2. Appends the new record.
-3. Calls `verify_unified_ledger()` to compute the new tip hash.
-4. `verify_unified_ledger()` iterates through every existing entry and runs a
-   `hash72_kernel_digest()` call on each one to verify and recompute the
-   chain.
-5. Writes the full file back to disk.
-
-With 1,346 entries, step 4 runs 1,346 hash72 calls. At ~0.08ms each, that is
-**~107ms of hash computation alone per append**. The disk I/O for reading and
-writing an ever-growing JSON file adds the rest. Each API request triggers two
-`append_payload()` calls (ingress + egress), giving ~215ms of pure ledger
-overhead even at this size — and the number grows with every request.
-
-The five-ledger-append benchmark confirmed this:
-
-```
-5 ledger appends: 9,523ms → ~1,905ms each
-(ledger had 1,341 entries at time of measurement)
-```
-
-As the ledger grows the cost grows linearly with it. At 10,000 entries a
-single request would take 30+ seconds.
-
-### Why this is not how HHS is designed to work
-
-The repository already contains the full acceleration architecture to prevent
-exactly this problem:
-
-**1. The IO gateway has a vector cache (`validate_vector_cache_write`).**
-Validated vectors should be served from the cache on repeated identical
-requests. A `GET /api/runtime/state` with no intervening `step()` returns
-exactly the same runtime state. It should hit the cache, not re-run the full
-witness chain.
-
-**2. The zero-bypass interposer has interposition tokens.**
-`hhs_runtime/hhs_zero_bypass_runtime_interposer_v1.py` issues reusable tokens
-for admitted surface propagations. A repeated read on an unchanged surface
-should present its token and bypass full recomputation. The token is already
-bound to the payload hash — if the payload hash matches a cached token, the
-witness is already proven.
-
-**3. The acceleration fabric (`hhs_runtime/acceleration/HHSAccelerationFabric.ts`)
-is designed for exactly this throughput problem.**
-It specifies ASIC/FPGA/GPU/SIMD dispatch channels with `latencyNs` slots. The
-architecture comment is explicit: *"The fabric accelerates execution, not
-authority."* Authority (the receipt chain) remains canonical; computation is
-offloaded.
-
-**4. Pass 108 added immutable result reuse.**
-The changelog documents: *"Added exact dependency-rooted immutable result
-reuse. Added bounded optimization leases and stale-dependency rejection."*
-This is the in-process cache that should make repeated reads instant.
-
-**5. Pass 111 added validated continuation caches.**
-*"Added validated continuation caches with no speculative future results."*
-
-### What the development team needs to fix
-
-The ledger cost is a single specific fix. Everything else is already
-architected:
-
-#### Fix 1: Cache the ledger tip in memory (immediate — removes 95% of latency)
-
-The ledger's own `_ledger_summary_payload()` already hashes only the ordered
-list of **entry hashes**, not the full payloads. This means the tip hash can
-be maintained incrementally: when a new entry is appended, hash the new entry
-and combine it with the previous tip hash. There is no need to re-read all
-prior entries.
-
-```python
-# hhs_runtime/hhs_unified_hash72_ledger_v1.py
-# Current: verify_unified_ledger() reads the file and re-hashes all entries
-# Fix: maintain an in-memory tip + entry count; only read from disk on startup
-
-_ledger_tip_cache: dict = {}   # { ledger_path: { tip_hash72, entry_count } }
-
-def _get_cached_tip(path: str) -> tuple[str, int]:
-    if path in _ledger_tip_cache:
-        return _ledger_tip_cache[path]["tip_hash72"], _ledger_tip_cache[path]["entry_count"]
-    # cold start: read file
-    ...
-
-def _update_cached_tip(path: str, new_tip: str, count: int):
-    _ledger_tip_cache[path] = { "tip_hash72": new_tip, "entry_count": count }
-```
-
-This reduces `append_payload()` from O(n) to O(1) per call. Expected result:
-sub-millisecond ledger appends regardless of ledger size.
-
-#### Fix 2: Cache GET-only route witnesses by payload hash (removes repeated computation)
-
-For read-only routes (`GET /api/runtime/state`, `/api/runtime/graph/summary`,
-etc.) the payload entering the IO gateway is always `{"method": "GET"}`.
-Because HHS is deterministic, if the runtime step has not changed, the
-ingress witness for this payload is **identical** to the one computed on the
-previous request.
-
-The IO gateway should check whether a prior witness exists for the same
-`(source, payload_hash72, runtime_step)` tuple before calling
-`payload_hash72_witness()`. This is precisely what the interposition token
-mechanism is built for.
-
-```python
-# In HHSIOGateway._record():
-cache_key = (source, payload_hash72(payload_dict), runtime_state.get("step"))
-if cache_key in self._witness_cache:
-    witness = self._witness_cache[cache_key]
-else:
-    witness = payload_hash72_witness(payload_dict)
-    self._witness_cache[cache_key] = witness
-```
-
-#### Fix 3: Activate the acceleration fabric for parallel witness computation
-
-The `HHSAccelerationFabric.ts` spec is currently TypeScript-only and not
-connected to the Python layer. For environments where multiple cores are
-available, the ingress and egress hash72 computations for a single request are
-independent and can run in parallel via `asyncio.gather()` or a thread pool.
-This alone would halve the effective latency while Fix 1 is in progress.
-
-#### Fix 4: Add a response-level cache for read-only endpoints
-
-For routes where the runtime step has not advanced, the full response can be
-cached behind a simple dict keyed by `(endpoint, runtime_step)`. A `step()`
-call invalidates all entries. This is the "buffer accelerate" part of the
-design — the accelerated result is served directly without re-entering the IO
-gateway at all.
-
-### Expected latency after fixes
-
-| Stage | Current | After Fix 1 | After Fix 1+2 | After all fixes |
-|---|---|---|---|---|
-| ingress witness | ~1,900ms | ~5ms | ~0ms (cache hit) | ~0ms |
-| egress witness | ~1,900ms | ~5ms | ~0ms (cache hit) | ~0ms |
-| route handler | ~0ms | ~0ms | ~0ms | ~0ms |
-| **Total per request** | **~3,800ms** | **~10ms** | **~1ms** | **< 1ms** |
-
-The 3–5 second latency is a runtime artifact of the ledger append pattern, not
-an inherent cost of the cryptographic design. The design intends for unique
-operations to pay the crypto cost once, with all subsequent reads served from
-the receipt-backed vector cache.
-
----
-
-## Current Stack Overview
-
-### Running services (Replit)
-
-| Service | Port | Path | Status |
-|---|---|---|---|
-| HHS FastAPI backend | 8080 | `/api` | Running |
-| HHS Dashboard (React/Vite) | 18142 | `/` | Running |
-
-### Dashboard pages
-
-| Page | Route | Data source |
+| Variable | Default | Meaning |
 |---|---|---|
-| Runtime Overview | `/` | `useGetRuntimeState`, `useGetLatestVector`, `useGetLatestPacket` |
-| Receipt Graph | `/graph` | `useGetGraphSummary`, `useGetGraphNodeByHash`, `useReplayGraphNode`, `usePredictFromNode` |
-| Services | `/services` | `useListServices`, `useGetServicesStatus`, `useDispatchService` |
-| Conformance | `/conformance` | `useListInvariants`, `useGetConformanceStatus`, `useEvaluateConformance`, `useEnforceAdmissibility` |
-| Sandbox | `/sandbox` | `useCreateSandbox`, `useStepSandbox` |
-| Authority & Leases | `/authority` | `useGetAuthorityStatus`, `useGetAuthorityRoles`, `useGetLeasesStatus`, `useGetFederationStatus`, `useIssueLease`, `useRevokeLease` |
+| `HHS_LITERT_LM_PROVIDER_MODE` | `auto` | Reuse a reachable provider or start a validated local provider |
+| `HHS_LITERT_LM_BASE_URL` | `http://127.0.0.1:9379/v1` | OpenAI-compatible LiteRT-LM endpoint |
+| `HHS_LITERT_LM_MODEL` | `gemma4-12b` | HHS model registry ID |
+| `HHS_LITERT_LM_BACKEND` | `gpu` | Requested LiteRT-LM execution backend |
+| `HHS_LITERT_LM_AUTO_BOOTSTRAP` | `1` | Install the repository-local LiteRT-LM CLI when absent |
+| `HHS_LITERT_LM_AUTO_IMPORT` | `1` | Import the configured model when absent |
+| `HHS_LITERT_LM_STRICT_STARTUP` | `0` | Permit assistant-degraded HHS startup when the provider is unavailable |
+| `HHS_START_LITERT_LM` | `1` | Enable provider supervision |
+| `HHS_VULKAN_AUTO_INSTALL` | `1` | Stage the repository-owned Vulkan loader when required |
+| `HHS_SKIP_C_BUILD` | `0` | Skip native build only when explicitly requested |
+| `PORT` | `8080` | HHS API and visual-interface port |
 
-### WebSocket
+Supported provider modes:
 
-The runtime streams events at `ws://<host>/api/runtime/ws/runtime`. The
-dashboard does not currently subscribe to this stream but all infrastructure
-(the backend WebSocket layer, the Vite proxy `ws: true` flag) is in place.
-
-### Key files added or modified in this Replit environment
-
-| File | What it does |
+| Mode | Behavior |
 |---|---|
-| `hhs/start.sh` | Compiles C kernel + launches uvicorn. Entry point for the api-server workflow. |
-| `lib/api-spec/openapi.yaml` | OpenAPI 3.1 spec for all HHS runtime routes. |
-| `artifacts/hhs-dashboard/` | React/Vite dashboard scaffold with all six pages. |
-| `artifacts/hhs-dashboard/src/lib/hhs-adapters.ts` | Normalizes HHS guarded envelope responses to flat types the UI expects. |
-| `artifacts/api-server/.replit-artifact/artifact.toml` | Updated run command to `bash /home/runner/workspace/hhs/start.sh`. |
-| `pnpm-workspace.yaml` | Bumped Zod catalog from `^3.25.76` → `^4.0.0` for Orval v8.22 compatibility. |
+| `auto` | Reuse a reachable provider; otherwise start locally only for a loopback endpoint after accelerator validation |
+| `local` | Require or start a local provider |
+| `external` | Use only the configured external provider |
+| `disabled` | Start the HHS API and visual environment without provider supervision |
+
+### Local GPU provider
+
+```bash
+HHS_LITERT_LM_PROVIDER_MODE=local \
+HHS_LITERT_LM_BACKEND=gpu \
+bash start.sh
+```
+
+### External GPU provider
+
+On the GPU host:
+
+```bash
+python -m pip install -r requirements-litert-lm.txt
+bash tools/import_hhs_gemma4_model.sh
+litert-lm serve --host 0.0.0.0 --port 9379
+```
+
+On the HHS API/UI host:
+
+```bash
+HHS_LITERT_LM_PROVIDER_MODE=external \
+HHS_LITERT_LM_BASE_URL=http://GPU_HOST:9379/v1 \
+HHS_LITERT_LM_MODEL=gemma4-12b \
+HHS_LITERT_LM_BACKEND=gpu \
+bash start.sh
+```
+
+Do not expose an unauthenticated LiteRT-LM endpoint directly to the public internet. Use a private network, authenticated reverse proxy, VPN, or service mesh.
+
+### CPU diagnostic profile
+
+```bash
+HHS_LITERT_LM_PROVIDER_MODE=local \
+HHS_LITERT_LM_BACKEND=cpu \
+bash start.sh
+```
+
+CPU execution is a diagnostic or compatibility profile, not the default HHS production profile.
+
+See [`docs/HHS_LITERT_LM_GPU_DEPLOYMENT.md`](docs/HHS_LITERT_LM_GPU_DEPLOYMENT.md) for deployment details.
+
+## Default routes
+
+| Route | Purpose |
+|---|---|
+| `/` | LiteRT-LM visual development assistant and Pass 161 object environment |
+| `/api/system/status` | Preserved machine-readable HARMONICODE system status |
+| `/api/assistant/status` | Assistant configuration and authority projection |
+| `/api/assistant/health` | Live LiteRT-LM provider and model health |
+| `/api/assistant/tools` | Governed assistant-tool registry |
+| `/api/assistant/threads` | List or create bounded assistant threads |
+| `/api/assistant/threads/{thread_id}` | Read a bounded thread projection |
+| `/api/assistant/threads/{thread_id}/messages` | Execute a governed assistant turn |
+| `/api/assistant/chat` | Create or continue a thread and execute one turn |
+| `/api/assistant/ws/{thread_id}` | Assistant WebSocket transport |
+| `/health` | Integrated HHS runtime, graph, emulator, and WebSocket health |
+| `/docs` | FastAPI interactive API documentation |
+| `/api/runtime/*` | Canonical runtime, graph, conformance, workspace, capability, and document surfaces |
+| `/api/runtime/creative/novel/status` | Pass 162 creative runtime status; available through `hhs_backend.pass162_server:app` |
+| `/api/runtime/creative/novel` | VM81-governed novel generation; available through `hhs_backend.pass162_server:app` |
+
+## Visual development environment
+
+The Pass 161 home interface contains two coordinated work modes.
+
+### Assistant home
+
+The assistant home is loaded by default and exposes:
+
+- model and backend identity;
+- provider online/degraded state;
+- thread identity and bounded message count;
+- governed HHS tool availability;
+- user, assistant, error, and tool-trace message projections;
+- provider receipt and ingress metadata;
+- new-thread and quick-prompt controls;
+- direct access to object space and the API controller.
+
+### Registered-object workspace
+
+The object workspace preserves the Pass 161 unified object-control environment:
+
+- typed registered-object navigation;
+- search across object metadata;
+- nested inspector lineage;
+- capability, relationship, authority, receipt, visual-face, diagnostic, and raw-schema panels;
+- equivalent 2D and spatial object identities;
+- responsive mobile navigation;
+- shader and sprite fallbacks;
+- bounded panel recursion and deterministic receipt tracking.
+
+The LiteRT-LM model, assistant agent, and assistant API are registered as first-class Pass 161 objects rather than being embedded as an untracked external overlay.
+
+## Assistant execution contract
+
+A completed assistant turn follows this sequence:
+
+1. create or resolve a bounded conversation thread;
+2. append a Hash72-linked user message;
+3. build and validate a provider execution proposal;
+4. evaluate the capability policy gate;
+5. invoke LiteRT-LM through the configured accelerated transport;
+6. resolve allowlisted read-only HHS tool calls within a bounded tool loop;
+7. create a provider invocation receipt;
+8. pass the result through universal provider-result ingress;
+9. append the assistant projection with receipt and ingress references.
+
+Default bounds include:
+
+- 128 in-memory threads;
+- 64 retained messages per thread;
+- four governed tool rounds;
+- per-thread request serialization;
+- no mutating model-tool execution.
+
+These are projection-store bounds, not canonical VM81-state limits.
+
+## Repository topology
+
+```text
+applications/holofractal_harmonizer/
+├── index.html                         Default visual assistant and workspace shell
+├── src/browser.mjs                   Assistant, thread, registry, inspector, and API UI
+├── src/core.mjs                      Pass 161 object-control runtime
+├── src/styles.css                    Responsive dark visual system
+├── src/finalization.mjs              Browser, repository, native, replay, and package gates
+├── tests/                            Pass 161 JavaScript tests
+└── tools/                            Audit, finalization, verification, and package tools
+
+hhs_backend/
+├── visual_server.py                  Default visual assistant HTTP entrypoint
+├── pass162_server.py                 Specialized VM81 creative-writing composition
+├── server.py                         Canonical FastAPI runtime authority
+├── api/litert_lm_assistant_routes.py Assistant REST and WebSocket routes
+├── api/vm81_creative_writing_routes.py
+└── runtime/
+    ├── hhs_litert_lm_assistant_v1.py
+    ├── hhs_litert_lm_hhs_api_assistant_v1.py
+    ├── hhs_litert_lm_accelerated_transport_v1.py
+    ├── hhs_assistant_api_tool_gateway_v1.py
+    ├── hhs_provider_execution_proposal_v1.py
+    ├── hhs_capability_policy_gate_v1.py
+    ├── hhs_provider_invocation_receipt_v1.py
+    ├── hhs_provider_result_ingress_v1.py
+    └── hhs_vm81_creative_novel_v1.py
+
+creative_writing/
+├── README.md
+└── novels/THE_NINTH_ARCHIVE.md       Seed/reference manuscript; no fabricated live receipt
+
+tools/
+├── bootstrap_litert_lm.sh
+├── import_hhs_gemma4_model.sh
+├── probe_litert_lm_accelerator.py
+├── install_vulkan_loader.sh
+└── vm81_generate_novel.py
+
+requirements-litert-lm.txt             Pinned LiteRT-LM CLI/runtime dependency
+start.sh                               Integrated provider, native runtime, API, and UI launcher
+native_projects/                       Versioned native pass implementations and evidence
+tests/                                 Python regression and integration tests
+docs/                                  Deployment and implementation documentation
+```
+
+## Validation
+
+Run dependency-scoped checks for the surfaces changed.
+
+### Native runtime
+
+```bash
+make verify-c
+```
+
+### LiteRT-LM assistant and default home
+
+```bash
+python -m pytest -q \
+  tests/test_hhs_litert_lm_visual_home_v1.py \
+  tests/test_hhs_litert_lm_assistant_v1.py \
+  tests/test_hhs_litert_lm_gpu_runtime_v1.py \
+  tests/test_hhs_litert_lm_hhs_api_tools_v1.py \
+  tests/test_hhs_litert_lm_repo_bootstrap_v1.py
+```
+
+### Pass 162 creative runtime
+
+```bash
+python -m pytest -q tests/test_hhs_vm81_creative_novel_v1.py
+```
+
+### Static launcher and interface checks
+
+```bash
+python -m py_compile hhs_backend/visual_server.py
+bash -n start.sh
+node --check applications/holofractal_harmonizer/src/browser.mjs
+```
+
+### Pass 161 application gates
+
+```bash
+cd applications/holofractal_harmonizer
+npm test
+npm run audit:browser
+HHS_PASS160_CLI=../../native_projects/hhs_pass160_validated_transition_runtime/dist/hhs-pass160 npm run finalize
+npm run package
+```
+
+Terminal Pass 161 classification is emitted only through the cross-architecture closure workflow. Local checks produce validation evidence but do not independently redefine terminal authority.
+
+Relevant CI workflows:
+
+- `.github/workflows/litert-lm-assistant.yml`
+- `.github/workflows/pass161-harmonizer.yml`
+- `.github/workflows/hhs-ledger-latency-repairs.yml`
+
+## Development and repository policy
+
+- Commit only new and modified files relevant to the active pass or repair.
+- Do not recommit the inherited legacy package as a duplicate monolithic archive.
+- Preserve previously verified evidence unless affected code or dependencies changed.
+- Prefer dependency-scoped regression, targeted integration, calibration workloads, and one bounded final replay.
+- Follow repair-forward operation if later breakage is discovered.
+- Do not weaken authority, replay, or receipt checks to make path or environment failures disappear.
+- Preserve source text and HARMONICODE operand order.
+- Additive adapters must not create alternate canonical state paths.
+
+## Documentation index
+
+- [`HHS_PASS_153_LITERT_LM_GEMMA4_AI_THREAD_INTERFACE_CONTRACT_v1.0.0.md`](HHS_PASS_153_LITERT_LM_GEMMA4_AI_THREAD_INTERFACE_CONTRACT_v1.0.0.md)
+- [`docs/HHS_LITERT_LM_GPU_DEPLOYMENT.md`](docs/HHS_LITERT_LM_GPU_DEPLOYMENT.md)
+- [`applications/holofractal_harmonizer/README.md`](applications/holofractal_harmonizer/README.md)
+- [`HHS_PASS_161_INHERITANCE_AMENDMENT_V1_1.md`](HHS_PASS_161_INHERITANCE_AMENDMENT_V1_1.md)
+- [`HHS_PASS_161_AUTHORITY_BINDING.json`](HHS_PASS_161_AUTHORITY_BINDING.json)
+- [`HHS_PASS_162_VM81_CREATIVE_NOVEL_LANGUAGE_MODEL_OPTIMIZATION.md`](HHS_PASS_162_VM81_CREATIVE_NOVEL_LANGUAGE_MODEL_OPTIMIZATION.md)
+- [`docs/HHS_VM81_CREATIVE_WRITING_RUNTIME.md`](docs/HHS_VM81_CREATIVE_WRITING_RUNTIME.md)
+- [`creative_writing/README.md`](creative_writing/README.md)
+- [`AGENTS.md`](AGENTS.md)
+
+## Current integrated status
+
+The `main` branch uses the governed repository-native LiteRT-LM Gemma 4 assistant as the default visual development interface while preserving the canonical HHS server, VM81 authority, existing API routes, WebSocket surfaces, deterministic receipts, and Pass 161 object environment.
+
+Pass 162 is merged as an additive VM81 creative-novel runtime with targeted tests, operator documentation, a CLI client, guarded creative-artifact persistence, and a complete reference manuscript. Its implementation classification does not substitute for live execution verification: terminal live-provider status requires an admitted runtime result and persistence receipt from a reachable LiteRT-LM provider.
+
+The previous README was a Replit-specific integration and latency investigation. That material described an earlier launch path and interface arrangement and is superseded by this operational guide.
