@@ -184,7 +184,7 @@ start_local_litert_server() {
     return 126
   fi
 
-  if [[ "${HHS_LITERT_LM_AUTO_IMPORT:-0}" == "1" ]]; then
+  if [[ "${HHS_LITERT_LM_AUTO_IMPORT:-1}" == "1" ]]; then
     HHS_LITERT_LM_BIN="$litert_bin" bash "${ROOT_DIR}/tools/import_hhs_gemma4_model.sh"
   fi
 
@@ -263,8 +263,8 @@ if [[ "${HHS_SKIP_C_BUILD:-0}" != "1" ]]; then
   fi
 fi
 
-echo "[HHS] Starting FastAPI runtime on 0.0.0.0:${PORT}"
-"$PYTHON_BIN" -m uvicorn hhs_backend.server:app \
+echo "[HHS] Starting visual development environment on 0.0.0.0:${PORT}"
+"$PYTHON_BIN" -m uvicorn hhs_backend.visual_server:app \
   --host 0.0.0.0 \
   --port "$PORT" \
   --ws websockets \
