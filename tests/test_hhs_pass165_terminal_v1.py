@@ -95,7 +95,7 @@ def test_repository_derived_real_format_corpus(tmp_path: Path) -> None:
 
 def _ingest_text(service: DurableMultimodalLearningService, index: int) -> dict:
     return service.ingest_source(
-        f"pass165 durable source {index}\nalpha = {index}\nalpha alpha".encode("utf-8"),
+        f"pass165 durable source {index}\nalpha_{index} = {index}\nalpha alpha".encode("utf-8"),
         declared_media_type="TEXT",
         provenance=f"repository-durable-fixture:{index}",
         authorization_scope="P165_DURABLE_RECOVERY_TEST",
