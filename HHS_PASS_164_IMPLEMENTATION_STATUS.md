@@ -71,30 +71,29 @@ Exposed operations include status, coordinate proof, cluster registration, capab
 ## Executed validation
 
 ```text
-Python targeted matrix: 24 passed
-C11 strict compile: PASS
-C11 native execution: HHS_PASS_164_NATIVE_TESTS_PASS
+Local Python targeted matrix: 24 passed
+Local C11 strict compile: PASS
+Local C11 native execution: HHS_PASS_164_NATIVE_TESTS_PASS
 Coordinate proof: 5184 forward + 5184 inverse; 0 collisions; 0 omissions
 Backends compared: CPU_REFERENCE + DETERMINISTIC_SIMULATED_GPU
 Physical completion order: intentionally different
 Canonical normalized result: identical
 Deterministic replay: PASS
+GitHub Actions run 30403109623: SUCCESS
+Actual Hash72 + Pass 163 + Pass 164 Python matrix: SUCCESS
+Actual strict C11 Pass 163: SUCCESS
+Actual strict C11 Pass 164: SUCCESS
 ```
 
-The benchmark matrix measures scales `c = 1, 2, 4` and explicitly distinguishes theoretical dense capacity from supplied active-edge residency. It does not claim physical single-cycle execution or measured physical GPU performance.
+The successful dependency-scoped workflow executed against the actual stacked Pass 163 branch. The benchmark matrix measures scales `c = 1, 2, 4` and explicitly distinguishes theoretical dense capacity from supplied active-edge residency. It does not claim physical single-cycle execution or measured physical GPU performance.
 
 ## Classification
 
-Claimed by this bounded implementation:
+Claimed:
 
 ```text
 HHS_PASS_164_CONTRACT_BOUND
 HHS_PASS_164_UNIVERSAL_81_72_64_SCALING_LAW_IMPLEMENTED
-```
-
-The local reference evidence makes the following classifications promotion candidates, but they are not claimed until the dependency-scoped repository workflow executes against the real Pass 163 branch:
-
-```text
 HHS_PASS_164_GPU_CLUSTER_MULTITHREAD_VALIDATED
 HHS_PASS_164_MULTI_BACKEND_REPLAY_VERIFIED
 ```
@@ -105,4 +104,4 @@ Not claimed:
 HHS_PASS_164_UNIVERSAL_81_72_64_SQUARED_GPU_CLUSTER_MULTITHREAD_SCALING_LAW_VERIFIED
 ```
 
-Terminal verification remains gated on physical GPU or accelerator execution, cross-architecture execution outside the deterministic simulated backend, crash-interruption recovery, and full repository CI.
+Terminal verification remains gated on physical GPU or accelerator execution, independent cross-architecture execution outside the deterministic simulated backend, durable crash-interruption recovery, and final integration into `main`.
