@@ -1,0 +1,41 @@
+{
+  "backends": [
+    "CPU_REFERENCE",
+    "DETERMINISTIC_SIMULATED_GPU"
+  ],
+  "classification": "HHS_PASS_164_REFERENCE_MULTI_BACKEND_EQUIVALENCE_OBSERVED",
+  "comparison": {
+    "cpu_physical_order": [
+      "f4f1c110692e75e9ca94d1c2c110805b08d9e1cf4e3c3818219ebf64e0ddc147",
+      "85ae5808de3621d9efc575c04fbe3411eecf17adeba779e02a77ee0bcec05bd3"
+    ],
+    "equivalence_root": "0b87306746573b95e2f4317103045589e10c4eb9c343a2ce58bd5921beeb6890",
+    "equivalent": true,
+    "gpu_physical_order": [
+      "85ae5808de3621d9efc575c04fbe3411eecf17adeba779e02a77ee0bcec05bd3",
+      "f4f1c110692e75e9ca94d1c2c110805b08d9e1cf4e3c3818219ebf64e0ddc147"
+    ],
+    "normalized_order": [
+      "85ae5808de3621d9efc575c04fbe3411eecf17adeba779e02a77ee0bcec05bd3",
+      "f4f1c110692e75e9ca94d1c2c110805b08d9e1cf4e3c3818219ebf64e0ddc147"
+    ]
+  },
+  "outgoing_hash72": "PA-iHeWK>)M2l<2L-nMc8ST?DBWs/lNxEXnb4uFddqRRJ1/V+-PXeXvNLgEHS6+XOs(hFk2(",
+  "physical_gpu_executed": false,
+  "promotion_candidate": "HHS_PASS_164_MULTI_BACKEND_REPLAY_VERIFIED",
+  "reduction_hash216": "8e918d79a647c75a2e4e261d105b06ad55b7a052ca0776dc7fedee494d9a2f13",
+  "replay": {
+    "classification": "P164_REPLAY_RECEIPT",
+    "commits": 1,
+    "deterministic_replay": true,
+    "journal_head": "2068abbfd69004f0c0cd6ecf0f96d5bb5dbf19d3d47c48059f03d25386bf5371",
+    "pass163_replay": {
+      "deterministic_replay": true,
+      "state_hash72": "PA-iHeWK>)M2l<2L-nMc8ST?DBWs/lNxEXnb4uFddqRRJ1/V+-PXeXvNLgEHS6+XOs(hFk2("
+    },
+    "records": 9,
+    "state_hash72": "PA-iHeWK>)M2l<2L-nMc8ST?DBWs/lNxEXnb4uFddqRRJ1/V+-PXeXvNLgEHS6+XOs(hFk2("
+  },
+  "repository_pass163_integration_ci": "PENDING",
+  "schema": "HHS_PASS_164_CROSS_BACKEND_EQUIVALENCE_V1"
+}
