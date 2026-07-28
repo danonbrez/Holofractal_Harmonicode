@@ -7,6 +7,10 @@ on:
       - 'hhs_backend/pass165_server.py'
       - 'native_projects/hhs_pass165_mmvs/**'
       - 'tests/test_hhs_pass165_multimodal_ingress_v1.py'
+      - 'HHS_PASS_165_AUTHORITY_BINDING.json'
+      - 'HHS_PASS_165_IMPLEMENTATION_STATUS.md'
+      - 'docs/HHS_PASS_165_MULTIMODAL_INGRESS_RUNTIME.md'
+      - 'evidence/pass165/**'
       - '.github/workflows/pass165-mmvs.yml'
   workflow_dispatch:
 jobs:
