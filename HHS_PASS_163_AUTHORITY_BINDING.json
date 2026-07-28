@@ -1,0 +1,35 @@
+{
+  "schema": "HHS_PASS_163_AUTHORITY_BINDING_V1",
+  "contract_id": "HHS-P163-LLABI-B64-VMRC",
+  "implementation_branch": "agent/pass163-vmrc-implementation",
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "inheritance_ref": "main",
+  "authority": {
+    "vm81_runtime_kernel_cardinality": 1,
+    "permanent_validation_index_cardinality": 1,
+    "peer_commit_authority": false,
+    "gpu_commit_authority": false,
+    "canonical_mutation_path": [
+      "candidate",
+      "vm81_validation",
+      "atomic_commit",
+      "permanent_index_admission"
+    ]
+  },
+  "geometry": {
+    "vm81_positions": 81,
+    "logical_threads": 64,
+    "coordinates": 5184,
+    "authority_positions": 9,
+    "parameter_positions": 72,
+    "snapshot_bytes": 648,
+    "base64_symbols": 864
+  },
+  "identity": {
+    "state": "Hash72(D||S) via HHS-HASH72-DIGEST-V1",
+    "operation": "Inherited Pass 150 Hash216Genome",
+    "journal": "SHA-256 domain-separated append-only chain",
+    "index": "Inherited Hash216Genome append-only head"
+  },
+  "validation_policy": "dependency-scoped bounded stage-gate repair-forward"
+}
