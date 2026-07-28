@@ -2,18 +2,25 @@
 from __future__ import annotations
 
 from base64 import b64decode
+import os
 from typing import Any, Dict, Optional
 
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
 
+from hhs_runtime.pass165.durability import DurableMultimodalLearningService
 from hhs_runtime.pass165.ingestion import DEFAULT_MULTIMODAL_LEARNING_SERVICE, IngestionError
 
 router = APIRouter(
     prefix="/api/runtime/multimodal-ingress",
     tags=["runtime", "vm81", "pass165", "multimodal", "vector-store"],
 )
-SERVICE = DEFAULT_MULTIMODAL_LEARNING_SERVICE
+_STORAGE_DIR = os.environ.get("HHS_PASS165_STORAGE_DIR", "").strip()
+SERVICE = (
+    DurableMultimodalLearningService(_STORAGE_DIR)
+    if _STORAGE_DIR
+    else DEFAULT_MULTIMODAL_LEARNING_SERVICE
+)
 
 
 class IngestRequest(BaseModel):
@@ -63,3 +70,13 @@ def replay() -> Dict[str, Any]:
         return SERVICE.replay_ingestion()
     except IngestionError as exc:
         raise HTTPException(status_code=409, detail={"classification": exc.classification}) from exc
+
+
+@router.post("/recover")
+def recover() -> Dict[str, Any]:
+    if not isinstance(SERVICE, DurableMultimodalLearningService):
+        raise HTTPException(status_code=409, detail={"classification": "P165_DURABLE_STORAGE_DISABLED"})
+    try:
+        return SERVICE.recover_durable_state()
+    except IngestionError as exc:
+        raise HTTPException(status_code=409, detail={"classification": exc.classification, "detail": exc.detail}) from exc
