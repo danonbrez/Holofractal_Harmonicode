@@ -1,0 +1,21 @@
+{
+  "schema": "P161_AUTHORITATIVE_MAIN_CLOSURE_V1",
+  "contract": "HHS-P161-HHUMOCE",
+  "authoritative_branch": "main",
+  "implementation_merge_commit": "58a93f303bb8ff927f70d05c4b1c63a400027926",
+  "validated_head": "aaa5c0eea095c51a6ac9d095765c44a2b92093f4",
+  "classification": "HHS_PASS_161_HOLOFRACTAL_HARMONIZER_UNIFIED_MULTIMODAL_OBJECT_CONTROL_ENVIRONMENT_VERIFIED",
+  "completion_receipt": "applications/holofractal_harmonizer/evidence/pass161/P161_COMPLETION_RECEIPT.json",
+  "completion_receipt_sha256": "715c2beb64eec7f42300fec34cedeb65918bdbf778b1b89a2e75d1bfc4ee9e77",
+  "release_bundle": "applications/holofractal_harmonizer/dist/HHS_PASS_161_RELEASE_BUNDLE.tar.gz",
+  "release_bundle_sha256": "e13cd4bc08768bb141362ba021324586e138c292bd74a499d590d72a5093a25b",
+  "replay_root": "9fe59c605d17c4bc8fd9a16cb624288253aec680f0e3a1bf02a0322faa9876d3",
+  "pass160_main_closure_root": "bd27cb36c7d3c70301f9edde7d5384d652f78da81206c21a7d46dd0c90eac774",
+  "final_workflow_run_id": 30321790517,
+  "bounded_final_gate_count": 1,
+  "validation_failures": 0,
+  "main_closure_root": "087b20073180c04d03003042c169062b573a2224578339f2592204ed8ef1a81e",
+  "omega_161": true,
+  "terminal_claimed": true,
+  "main_closure_required": false
+}
