@@ -1,0 +1,48 @@
+name: Bootstrap Visual IDE A-B Sources
+
+on:
+  push:
+    branches:
+      - agent/visual-ide-ab-workflow-default
+    paths:
+      - '.hhs-bootstrap/**'
+      - '.github/workflows/bootstrap-visual-ide-ab.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  materialize-source-patch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/visual-ide-ab-workflow-default
+          fetch-depth: 0
+      - name: Reconstruct and verify source bundle
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat .hhs-bootstrap/visual-ide-ab.part* | base64 --decode > /tmp/hhs-visual-ide-ab.tar.gz
+          echo 'cb4bbfdd75b02cd8f83667abb2f8776300d852352d3afa43608c27c8e7e358cb  /tmp/hhs-visual-ide-ab.tar.gz' | sha256sum --check --strict
+          tar -xzf /tmp/hhs-visual-ide-ab.tar.gz -C .
+          rm -rf .hhs-bootstrap
+          rm -f .github/workflows/bootstrap-visual-ide-ab.yml
+      - name: Validate materialized sources
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --test applications/holofractal_harmonizer/tests/ux_workflow_default.test.mjs
+          node --check applications/holofractal_harmonizer/src/ux-default.mjs
+          node --check applications/holofractal_harmonizer/ux_lab/static/app.js
+          python -m py_compile applications/holofractal_harmonizer/ux_lab/server.py applications/holofractal_harmonizer/ux_lab/capture_parallel.py
+      - name: Replace bootstrap with source-oriented implementation
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'hhs-visual-ide-bootstrap'
+          git config user.email 'hhs-visual-ide-bootstrap@users.noreply.github.com'
+          git add -A
+          git commit -m 'Implement workflow-first visual IDE default and A-B lab'
+          git push origin HEAD:agent/visual-ide-ab-workflow-default
