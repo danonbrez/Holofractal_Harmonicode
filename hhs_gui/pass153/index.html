@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>HHS Pass 153 Agent Environment</title>
+  <link rel="stylesheet" href="/api/pass153/gui/styles.css">
+</head>
+<body>
+<header><h1>HHS Open Model Agent Environment</h1><span id="system-status">Connecting…</span></header>
+<nav>
+  <button data-panel="dashboard">Dashboard</button>
+  <button data-panel="models">Model Manager</button>
+  <button data-panel="agent">Agent Workspace</button>
+  <button data-panel="sessions">Session Manager</button>
+  <button data-panel="tools">Tool Registry</button>
+  <button data-panel="receipts">Receipt & Replay</button>
+  <button data-panel="deployment">Deployment</button>
+</nav>
+<main>
+<section id="dashboard" class="panel active"><h2>Dashboard</h2><pre id="dashboard-data"></pre></section>
+<section id="models" class="panel"><h2>Model Manager</h2><div id="model-list"></div></section>
+<section id="agent" class="panel"><h2>Agent Workspace</h2><label>Session <select id="agent-session"></select></label><textarea id="prompt" placeholder="Enter a governed request"></textarea><button id="send">Send</button><pre id="chat-output"></pre></section>
+<section id="sessions" class="panel"><h2>Session Manager</h2><button id="create-session">Create Session</button><pre id="session-list"></pre></section>
+<section id="tools" class="panel"><h2>Tool Registry</h2><div id="tool-list"></div></section>
+<section id="receipts" class="panel"><h2>Receipt & Replay</h2><button id="replay">Replay Selected Session</button><pre id="replay-output"></pre></section>
+<section id="deployment" class="panel"><h2>Deployment</h2><p>Server, Docker, GitHub, and Hugging Face packages carry the same Pass 153 release commitment.</p></section>
+</main>
+<script src="/api/pass153/gui/app.js"></script>
+</body>
+</html>

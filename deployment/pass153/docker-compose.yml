@@ -1,0 +1,11 @@
+services:
+  hhs-pass153:
+    build:
+      context: ../..
+      dockerfile: deployment/pass153/Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      HHS_PASS153_MODEL_DIR: /models
+    volumes:
+      - ./models:/models:ro

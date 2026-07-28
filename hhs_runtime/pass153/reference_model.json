@@ -1,0 +1,14 @@
+{
+  "license": "CC0-1.0",
+  "model_id": "hhs-reference-open-model-v1",
+  "seed_phrase": "hhs",
+  "transitions": {
+    "*": ["HHS", "preserves", "state", "through", "validated", "receipts."],
+    "hhs": ["preserves"],
+    "preserves": ["causal"],
+    "causal": ["authority"],
+    "authority": ["through"],
+    "through": ["validated"],
+    "validated": ["receipts."]
+  }
+}

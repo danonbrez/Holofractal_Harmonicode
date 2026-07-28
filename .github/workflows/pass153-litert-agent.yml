@@ -1,0 +1,85 @@
+name: Pass 153 LiteRT Open Model Agent Environment
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'contracts/pass153/**'
+      - 'hhs_runtime/pass153/**'
+      - 'hhs_backend/pass153_server.py'
+      - 'hhs_gui/pass153/**'
+      - 'sdk/python/hhs_pass153_client.py'
+      - 'deployment/pass153/**'
+      - 'tools/pass153/**'
+      - 'tests/pass153/**'
+      - '.github/workflows/pass153-litert-agent.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  pass153:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - name: Install inherited and Pass 153 dependencies
+        run: python -m pip install -r requirements.txt -r deployment/pass153/requirements.txt
+      - name: Compile Pass 153 surfaces
+        run: python -m compileall -q hhs_runtime/pass153 hhs_backend/pass153_server.py sdk/python/hhs_pass153_client.py tests/pass153 tools/pass153
+      - name: Validate browser bundle syntax
+        run: node --check hhs_gui/pass153/app.js
+      - name: Execute Pass 153 matrix
+        run: python tests/pass153/run_pass153_tests.py
+      - name: Verify canonical server route binding
+        run: python -c "from hhs_backend.pass153_server import app; paths={getattr(r,'path','') for r in app.routes}; assert '/api/pass153/status' in paths and '/api/pass153/gui' in paths"
+      - name: Validate inherited Pass 152 nucleus
+        run: make pass152-full
+      - name: Build Pass 153 full inherited release packages
+        run: python tools/pass153/build_release.py
+      - name: Validate deployment image
+        shell: bash
+        run: |
+          set -euo pipefail
+          docker build -f deployment/pass153/Dockerfile -t hhs-pass153 .
+          docker run -d --rm --name hhs-pass153-test -p 18000:8000 hhs-pass153
+          cleanup() {
+            docker logs hhs-pass153-test 2>&1 || true
+            docker rm -f hhs-pass153-test >/dev/null 2>&1 || true
+          }
+          trap cleanup EXIT
+          ready=0
+          for i in $(seq 1 60); do
+            if curl -fsS http://127.0.0.1:18000/api/pass153/status > /tmp/pass153-status.json; then
+              ready=1
+              break
+            fi
+            if ! docker inspect -f '{{.State.Running}}' hhs-pass153-test 2>/dev/null | grep -qx true; then
+              echo 'Pass 153 container exited before becoming ready' >&2
+              exit 1
+            fi
+            sleep 2
+          done
+          test "$ready" -eq 1
+          python - <<'PY'
+          import json
+          data=json.load(open('/tmp/pass153-status.json'))
+          assert data['contract_id']=='HHS-P153-LITERT-OPEN-MODEL-AGENT'
+          assert data['authority']['runtime_state']=='VM81_ONLY'
+          PY
+      - name: Upload Pass 153 evidence and release artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass153-litert-open-model-agent-release
+          path: |
+            reports/pass153/HHS_PASS_153_VALIDATION_REPORT.json
+            dist/pass153/HHS_PASS_153_RELEASE_MANIFEST.json
+            dist/pass153/hhs_pass_153_litert_open_model_agent_environment_full_inherited_nucleus.zip
+            dist/pass153/hhs_pass_153_huggingface_space_full_repo.zip
+          if-no-files-found: error

@@ -1,0 +1,47 @@
+{
+  "schema": "HHS_PASS_153_MODEL_TOOL_DEPLOYMENT_MANIFEST_V1",
+  "contract_id": "HHS-P153-LITERT-OPEN-MODEL-AGENT",
+  "pass_number": 153,
+  "models": [
+    {
+      "model_id": "hhs-reference-open-model-v1",
+      "backend": "reference-ngram",
+      "source": "hhs_runtime/pass153/reference_model.json",
+      "license": "CC0-1.0",
+      "role": "OFFLINE_BOOT_AND_VALIDATION",
+      "authoritative": false
+    },
+    {
+      "model_id": "replaceable-litert-model",
+      "backend": "LiteRT",
+      "source": "operator-supplied .tflite plus typed encoder/decoder",
+      "runtime_packages": ["ai-edge-litert", "tflite_runtime compatibility fallback"],
+      "role": "PLUG_AND_PLAY_OPEN_MODEL",
+      "authoritative": false
+    }
+  ],
+  "tools": [
+    {"name": "status", "capability": "read", "mutating": false},
+    {"name": "echo", "capability": "read", "mutating": false}
+  ],
+  "surfaces": {
+    "api": "/api/pass153",
+    "gui": "/api/pass153/gui",
+    "cli": "python -m hhs_runtime.pass153.cli",
+    "sdk": "sdk/python/hhs_pass153_client.py",
+    "server": "hhs_backend.pass153_server:app"
+  },
+  "deployment": {
+    "dockerfile": "deployment/pass153/Dockerfile",
+    "compose": "deployment/pass153/docker-compose.yml",
+    "huggingface": "deployment/pass153/huggingface",
+    "port": 8000,
+    "huggingface_port": 7860
+  },
+  "authority": {
+    "model_output": "ADVISORY_ONLY",
+    "semantic_execution": "VM81",
+    "runtime_receipt": "Hash72",
+    "identity_index": "Hash216"
+  }
+}
