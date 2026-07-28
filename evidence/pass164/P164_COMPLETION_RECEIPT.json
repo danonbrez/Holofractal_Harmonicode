@@ -5,7 +5,7 @@
     "permanent_validation_index_cardinality": 1,
     "vm81_runtime_kernel_cardinality": 1
   },
-  "classification": "HHS_PASS_164_UNIVERSAL_81_72_64_SCALING_LAW_IMPLEMENTED",
+  "classification": "HHS_PASS_164_MULTI_BACKEND_REPLAY_VERIFIED",
   "contract_id": "HHS-P164-U817264-GCMSL",
   "implemented": {
     "cluster_capability_zero": true,
@@ -40,17 +40,25 @@
     "python_tests_passed": 24,
     "reduction_hash216": "8e918d79a647c75a2e4e261d105b06ad55b7a052ca0776dc7fedee494d9a2f13"
   },
+  "repository_validation": {
+    "pull_request": 39,
+    "workflow_run_id": 30403109623,
+    "job_id": 90422333120,
+    "conclusion": "success",
+    "actual_hash72_pass163_pass164_python_matrix": "PASS",
+    "actual_strict_c11_pass163": "PASS",
+    "actual_strict_c11_pass164": "PASS"
+  },
+  "promoted_classifications": [
+    "HHS_PASS_164_GPU_CLUSTER_MULTITHREAD_VALIDATED",
+    "HHS_PASS_164_MULTI_BACKEND_REPLAY_VERIFIED"
+  ],
   "not_yet_verified": [
-    "dependency-scoped tests against the actual Pass 163 branch in GitHub Actions",
     "physical GPU or accelerator execution",
     "independent architecture execution outside the deterministic simulated backend",
     "durable crash-interruption recovery",
-    "full repository integration CI",
+    "final integration into main",
     "terminal Pass 164 verification"
-  ],
-  "promotion_candidates_after_repository_ci": [
-    "HHS_PASS_164_GPU_CLUSTER_MULTITHREAD_VALIDATED",
-    "HHS_PASS_164_MULTI_BACKEND_REPLAY_VERIFIED"
   ],
   "schema": "P164_COMPLETION_RECEIPT",
   "terminal": false,
