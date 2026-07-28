@@ -1,0 +1,3 @@
+cc -Iinclude -std=c11 -Wall -Wextra -Werror -pedantic -O2 src/hhs_p165_mmvs.c tests/test_hhs_p165_mmvs.c -o build/test_hhs_p165_mmvs
+./build/test_hhs_p165_mmvs
+HHS_PASS_165_NATIVE_TESTS_PASS
