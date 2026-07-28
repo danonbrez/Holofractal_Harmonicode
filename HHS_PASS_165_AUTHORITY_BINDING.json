@@ -1,0 +1,27 @@
+{
+  "schema": "HHS_PASS_165_AUTHORITY_BINDING_V1",
+  "contract_id": "HHS-P165-L5184-MMVS-ITIBP",
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "inheritance_parent": "HHS-P164-U817264-GCMSL",
+  "authority": {
+    "vm81_runtime_kernel_cardinality": 1,
+    "worker_commit_authority": false,
+    "tokenizer_commit_authority": false,
+    "adapter_commit_authority": false,
+    "backpropagation_worker_commit_authority": false,
+    "canonical_learning_path": [
+      "immutable_source_capture",
+      "deterministic_tokenization",
+      "sparse_5184_projection",
+      "invariant_candidate_extraction",
+      "bounded_weight_proposal",
+      "dependency_scoped_validation",
+      "vm81_admission",
+      "atomic_vector_store_commit",
+      "hash72_hash216_receipt"
+    ]
+  },
+  "geometry": {"positions": 81, "lanes": 64, "coordinates": 5184, "frame_bytes": 648},
+  "numeric_authority": "exact rational weights; advisory floats prohibited at canonical boundary",
+  "source_policy": "immutable source bytes; evidence and interpretation remain distinct"
+}
