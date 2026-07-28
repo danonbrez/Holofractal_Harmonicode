@@ -1,0 +1,5 @@
+rm -rf build
+mkdir -p build
+cc -Iinclude -std=c11 -Wall -Wextra -Werror -pedantic -O2 src/hhs_p164_gcmsl.c tests/test_hhs_p164_gcmsl.c -o build/test_hhs_p164_gcmsl
+./build/test_hhs_p164_gcmsl
+HHS_PASS_164_NATIVE_TESTS_PASS

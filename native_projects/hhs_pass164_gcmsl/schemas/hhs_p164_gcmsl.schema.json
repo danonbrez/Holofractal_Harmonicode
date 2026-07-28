@@ -1,0 +1,299 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hhs.local/schemas/hhs_p164_gcmsl.schema.json",
+  "title": "HHS Pass 164 GCMSL schemas",
+  "type": "object",
+  "$defs": {
+    "hash72": {
+      "type": "string",
+      "minLength": 72,
+      "maxLength": 72
+    },
+    "hash216Root": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "backend": {
+      "type": "object",
+      "required": [
+        "backend_id",
+        "architecture",
+        "subgroup_width",
+        "max_workgroup_size",
+        "memory_limit_bytes",
+        "deterministic",
+        "supported_operations",
+        "canonical_representation"
+      ],
+      "properties": {
+        "backend_id": {"type": "string", "minLength": 1},
+        "architecture": {"type": "string", "minLength": 1},
+        "subgroup_width": {"type": "integer", "minimum": 1},
+        "max_workgroup_size": {"type": "integer", "minimum": 1},
+        "memory_limit_bytes": {"type": "integer", "minimum": 1},
+        "deterministic": {"type": "boolean"},
+        "supported_operations": {
+          "type": "array",
+          "items": {"type": "string"},
+          "uniqueItems": true
+        },
+        "canonical_representation": {"const": "PASS163_BASE64_ABI"}
+      },
+      "additionalProperties": false
+    },
+    "cluster": {
+      "type": "object",
+      "required": [
+        "cluster_id",
+        "level",
+        "tile_index",
+        "backend",
+        "capability_scope",
+        "required_participant"
+      ],
+      "properties": {
+        "cluster_id": {"type": "string", "minLength": 1},
+        "level": {"type": "integer", "minimum": 1, "maximum": 16},
+        "tile_index": {"type": "integer", "minimum": 0},
+        "backend": {"$ref": "#/$defs/backend"},
+        "capability_scope": {"type": "string"},
+        "required_participant": {"type": "boolean"}
+      },
+      "additionalProperties": false
+    },
+    "vmThreadCoordinate": {
+      "type": "object",
+      "required": ["vm81_position", "thread"],
+      "properties": {
+        "vm81_position": {"type": "integer", "minimum": 0, "maximum": 80},
+        "thread": {"type": "integer", "minimum": 0, "maximum": 63}
+      },
+      "additionalProperties": false
+    },
+    "phaseCoordinate": {
+      "type": "object",
+      "required": ["phase_a", "phase_b"],
+      "properties": {
+        "phase_a": {"type": "integer", "minimum": 0, "maximum": 71},
+        "phase_b": {"type": "integer", "minimum": 0, "maximum": 71}
+      },
+      "additionalProperties": false
+    },
+    "coordinateMap": {
+      "type": "object",
+      "required": ["linear_index", "vm_thread", "phase"],
+      "properties": {
+        "linear_index": {"type": "integer", "minimum": 0, "maximum": 5183},
+        "vm_thread": {"$ref": "#/$defs/vmThreadCoordinate"},
+        "phase": {"$ref": "#/$defs/phaseCoordinate"}
+      },
+      "additionalProperties": false
+    },
+    "operation": {
+      "type": "object",
+      "required": [
+        "operation_id",
+        "epoch",
+        "level",
+        "cluster_id",
+        "vm81_position",
+        "thread",
+        "phase",
+        "trit",
+        "operation_class",
+        "incoming_hash72",
+        "read_set_root",
+        "write_set_root",
+        "dependency_root",
+        "parameter_root",
+        "capability_scope",
+        "architecture_backend",
+        "resource_bound"
+      ],
+      "properties": {
+        "operation_id": {"$ref": "#/$defs/hash216Root"},
+        "epoch": {"type": "integer", "minimum": 0},
+        "level": {"type": "integer", "minimum": 1, "maximum": 16},
+        "cluster_id": {"type": "string", "minLength": 1},
+        "vm81_position": {"type": "integer", "minimum": 0, "maximum": 80},
+        "thread": {"type": "integer", "minimum": 0, "maximum": 63},
+        "phase": {"type": "integer", "minimum": 0, "maximum": 71},
+        "trit": {"type": "integer", "enum": [-1, 0, 1]},
+        "operation_class": {"type": "string", "minLength": 1},
+        "incoming_hash72": {"$ref": "#/$defs/hash72"},
+        "read_set_root": {"$ref": "#/$defs/hash216Root"},
+        "write_set_root": {"$ref": "#/$defs/hash216Root"},
+        "dependency_root": {"$ref": "#/$defs/hash216Root"},
+        "parameter_root": {"$ref": "#/$defs/hash216Root"},
+        "capability_scope": {"type": "string", "minLength": 1},
+        "architecture_backend": {"type": "string", "minLength": 1},
+        "expected_output_root": {
+          "oneOf": [{"$ref": "#/$defs/hash72"}, {"type": "null"}]
+        },
+        "resource_bound": {"type": "integer", "minimum": 1, "maximum": 5184},
+        "reciprocal_pair_id": {"type": ["string", "null"]},
+        "noncommutative_order": {"type": ["integer", "null"], "minimum": 0}
+      },
+      "additionalProperties": false
+    },
+    "clusterEdge": {
+      "type": "object",
+      "required": [
+        "edge_id",
+        "level",
+        "source_cluster",
+        "destination_cluster",
+        "domain",
+        "source",
+        "destination",
+        "epoch",
+        "exact_weight",
+        "polarity",
+        "u72_offset",
+        "xyzw_weights",
+        "hash216_vector",
+        "admitted_history"
+      ],
+      "properties": {
+        "edge_id": {"$ref": "#/$defs/hash216Root"},
+        "level": {"type": "integer", "minimum": 1},
+        "source_cluster": {"type": "string"},
+        "destination_cluster": {"type": "string"},
+        "domain": {
+          "enum": [
+            "AUTHORITY_VM81",
+            "RECIPROCAL_PHASE",
+            "LOGICAL_THREAD",
+            "VM_THREAD_BRIDGE",
+            "PARAMETER",
+            "CONTINUATION",
+            "INTERCONNECT_ROUTE"
+          ]
+        },
+        "source": {"type": "string"},
+        "destination": {"type": "string"},
+        "epoch": {"type": "integer", "minimum": 0},
+        "exact_weight": {"type": "string"},
+        "polarity": {"type": "integer", "enum": [-1, 1]},
+        "u72_offset": {"type": "integer", "minimum": 0, "maximum": 71},
+        "xyzw_weights": {
+          "type": "array",
+          "minItems": 4,
+          "maxItems": 4,
+          "items": {"type": "string"}
+        },
+        "hash216_vector": {"$ref": "#/$defs/hash216Root"},
+        "admitted_history": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/hash216Root"}
+        }
+      },
+      "additionalProperties": false
+    },
+    "invariantAlgebra": {
+      "type": "object",
+      "required": [
+        "authority",
+        "geometry",
+        "thread",
+        "phase",
+        "memristor",
+        "capability_conflict",
+        "hash_identity",
+        "replay_reduction",
+        "egress",
+        "witnesses",
+        "residual_norm",
+        "omega164",
+        "equation_lhs",
+        "closed",
+        "root"
+      ],
+      "properties": {
+        "authority": {"type": "integer"},
+        "geometry": {"type": "integer"},
+        "thread": {"type": "integer"},
+        "phase": {"type": "integer"},
+        "memristor": {"type": "integer"},
+        "capability_conflict": {"type": "integer"},
+        "hash_identity": {"type": "integer"},
+        "replay_reduction": {"type": "integer"},
+        "egress": {"type": "integer"},
+        "witnesses": {"type": "array", "items": {"type": "string"}},
+        "residual_norm": {"type": "integer", "minimum": 0},
+        "omega164": {"type": "integer", "enum": [-1, 0, 1]},
+        "equation_lhs": {"type": "integer"},
+        "closed": {"type": "boolean"},
+        "root": {"$ref": "#/$defs/hash216Root"}
+      },
+      "additionalProperties": false
+    },
+    "reduction": {
+      "type": "object",
+      "required": [
+        "batch_id",
+        "incoming_hash72",
+        "stable_order",
+        "operations",
+        "backend_equivalence_root",
+        "reduction_hash216",
+        "reduction_positions_hash216",
+        "invariant",
+        "required_clusters",
+        "participating_clusters"
+      ],
+      "properties": {
+        "batch_id": {"$ref": "#/$defs/hash216Root"},
+        "incoming_hash72": {"$ref": "#/$defs/hash72"},
+        "stable_order": {"type": "array", "items": {"$ref": "#/$defs/hash216Root"}},
+        "operations": {"type": "array", "items": {"$ref": "#/$defs/operation"}},
+        "backend_equivalence_root": {"$ref": "#/$defs/hash216Root"},
+        "reduction_hash216": {"$ref": "#/$defs/hash216Root"},
+        "reduction_positions_hash216": {
+          "type": "array",
+          "minItems": 216,
+          "maxItems": 216,
+          "items": {"$ref": "#/$defs/hash216Root"}
+        },
+        "invariant": {"$ref": "#/$defs/invariantAlgebra"},
+        "required_clusters": {"type": "array", "items": {"type": "string"}},
+        "participating_clusters": {"type": "array", "items": {"type": "string"}}
+      },
+      "additionalProperties": false
+    },
+    "benchmark": {
+      "type": "object",
+      "required": [
+        "schema",
+        "scale",
+        "dense_address_capacity",
+        "active_edge_count",
+        "sparse_address_compression_factor",
+        "snapshot_base64_symbols",
+        "deterministic_replay",
+        "physical_single_cycle_claimed",
+        "benchmark_sha256"
+      ],
+      "properties": {
+        "schema": {"const": "P164_BENCHMARK_RECEIPT"},
+        "scale": {"type": "integer", "minimum": 1},
+        "dense_address_capacity": {"type": "integer", "minimum": 15841},
+        "active_edge_count": {"type": "integer", "minimum": 0},
+        "sparse_address_compression_factor": {"type": "number", "minimum": 0},
+        "snapshot_base64_symbols": {"const": 864},
+        "deterministic_replay": {"type": "boolean"},
+        "physical_single_cycle_claimed": {"const": false},
+        "benchmark_sha256": {"$ref": "#/$defs/hash216Root"}
+      }
+    }
+  },
+  "oneOf": [
+    {"$ref": "#/$defs/cluster"},
+    {"$ref": "#/$defs/coordinateMap"},
+    {"$ref": "#/$defs/operation"},
+    {"$ref": "#/$defs/clusterEdge"},
+    {"$ref": "#/$defs/invariantAlgebra"},
+    {"$ref": "#/$defs/reduction"},
+    {"$ref": "#/$defs/benchmark"}
+  ]
+}
