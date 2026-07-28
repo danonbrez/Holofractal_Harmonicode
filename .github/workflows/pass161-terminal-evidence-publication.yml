@@ -1,11 +1,9 @@
 name: Pass 161 Terminal Evidence Publication
 
 on:
-  push:
-    branches:
-      - agent/pass161-harmonizer-object-environment
+  pull_request:
     paths:
-      - 'HHS_PASS_161_EVIDENCE_PUBLICATION_REQUEST.json'
+      - 'staging/pass161-terminal/PUBLISH_REQUEST.json'
 
 permissions:
   contents: write
@@ -15,10 +13,12 @@ jobs:
   publish-terminal-evidence:
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    env:
+      TARGET_BRANCH: ${{ github.head_ref }}
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: agent/pass161-harmonizer-object-environment
+          ref: ${{ github.head_ref }}
           fetch-depth: 2
           show-progress: false
       - name: Download frozen successful terminal artifact
@@ -80,4 +80,4 @@ jobs:
             applications/holofractal_harmonizer/HHS_PASS_161_TERMINAL_RELEASE.json
           git diff --cached --check
           git commit -m 'Publish executed Pass 161 terminal evidence'
-          git push origin HEAD:agent/pass161-harmonizer-object-environment
+          git push origin HEAD:"$TARGET_BRANCH"
