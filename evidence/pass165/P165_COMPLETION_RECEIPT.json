@@ -1,0 +1,35 @@
+{
+  "schema": "P165_COMPLETION_RECEIPT",
+  "version": 1,
+  "contract_id": "HHS-P165-L5184-MMVS-ITIBP",
+  "classification": "HHS_PASS_165_MULTIMODAL_INGESTION_AND_GOVERNED_LEARNING_VALIDATED",
+  "terminal": false,
+  "implemented": {
+    "immutable_source_capture": true,
+    "multimodal_detection": true,
+    "deterministic_tokenization": true,
+    "exact_source_spans": true,
+    "chunk_graph": true,
+    "projection_5184": true,
+    "invariant_candidates": true,
+    "novelty_contradiction_separation": true,
+    "bounded_exact_weight_updates": true,
+    "vm81_learning_admission": true,
+    "hash72_hash216_receipts": true,
+    "deterministic_replay": true,
+    "runtime_api": true,
+    "native_c11_projection_abi": true
+  },
+  "local_validation": {
+    "python_tests_passed": 22,
+    "python_tests_failed": 0,
+    "c11_compile": "PASS",
+    "c11_runtime_test": "PASS"
+  },
+  "not_yet_verified": [
+    "current-head GitHub Actions",
+    "independent real-format multimodal fixture corpus",
+    "durable crash-interruption recovery",
+    "terminal Pass 165 verification"
+  ]
+}
