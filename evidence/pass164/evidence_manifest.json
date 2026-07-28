@@ -1,7 +1,7 @@
 {
   "schema": "HHS_PASS_164_EVIDENCE_MANIFEST_V1",
   "contract_id": "HHS-P164-U817264-GCMSL",
-  "classification": "HHS_PASS_164_UNIVERSAL_81_72_64_SCALING_LAW_IMPLEMENTED",
+  "classification": "HHS_PASS_164_MULTI_BACKEND_REPLAY_VERIFIED",
   "terminal": false,
   "source_artifacts": [
     ".github/workflows/pass164-gcmsl.yml",
@@ -55,8 +55,12 @@
       "result": "reference scale matrix for c=1,2,4"
     },
     {
+      "path": "evidence/pass164/github_actions_validation.json",
+      "result": "actual stacked Hash72, Pass 163, Pass 164, and strict C11 workflow succeeded"
+    },
+    {
       "path": "evidence/pass164/P164_COMPLETION_RECEIPT.json",
-      "result": "bounded nonterminal implementation receipt"
+      "result": "bounded multi-backend replay verification receipt"
     }
   ],
   "validation_scope": {
@@ -66,8 +70,10 @@
     "deterministic_simulated_gpu_backend": true,
     "native_c11_reference": true,
     "pass163_interface_local_stub": true,
-    "actual_pass163_branch_integration": "PENDING_GITHUB_ACTIONS",
+    "actual_pass163_branch_integration": "PASS",
+    "github_actions_workflow_run_id": 30403109623,
     "physical_gpu_execution": false,
+    "independent_physical_architecture_execution": false,
     "durable_crash_interruption": false,
     "terminal_verification": false
   },
