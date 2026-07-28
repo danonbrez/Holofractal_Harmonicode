@@ -9,6 +9,7 @@ on:
       - 'tests/test_hhs_pass165_multimodal_ingress_v1.py'
       - 'tests/test_hhs_pass165_terminal_v1.py'
       - 'tests/pass165_real_fixture_corpus.py'
+      - 'tools/pass165_terminal_evidence.py'
       - 'HHS_PASS_165_AUTHORITY_BINDING.json'
       - 'HHS_PASS_165_IMPLEMENTATION_STATUS.md'
       - 'docs/HHS_PASS_165_MULTIMODAL_INGRESS_RUNTIME.md'
@@ -38,9 +39,20 @@ jobs:
             tests/test_hhs_pass164_gcmsl_v1.py \
             tests/test_hhs_pass165_multimodal_ingress_v1.py \
             tests/test_hhs_pass165_terminal_v1.py
+      - name: Execute terminal evidence harness
+        run: |
+          python tools/pass165_terminal_evidence.py \
+            --output "$RUNNER_TEMP/pass165-terminal/P165_TERMINAL_EXECUTION.json"
       - name: Strict C11 Pass 163
         run: make -C native_projects/hhs_pass163_vmrc clean test
       - name: Strict C11 Pass 164
         run: make -C native_projects/hhs_pass164_gcmsl clean test
       - name: Strict C11 Pass 165
         run: make -C native_projects/hhs_pass165_mmvs clean test
+      - name: Upload terminal evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass165-terminal-evidence
+          path: ${{ runner.temp }}/pass165-terminal/P165_TERMINAL_EXECUTION.json
+          if-no-files-found: error
+          retention-days: 30
