@@ -1,0 +1,56 @@
+{
+  "schema": "HHS_VISUAL_IDE_AB_EVIDENCE_MANIFEST_V1",
+  "method": "PARALLEL_SCRIPTED_TASK_TRIALS",
+  "recommended_global_default": "WORKFLOW_FIRST_PROGRESSIVE_DISCLOSURE",
+  "file_count": 9,
+  "files": [
+    {
+      "path": "metrics.json",
+      "bytes": 2705,
+      "sha256": "cfffd17fd50a49c9e608f030b6ef788db671565f33674e0fc7c8a7276815cb0a"
+    },
+    {
+      "path": "screenshots/code_api-AB-success.png",
+      "bytes": 682783,
+      "sha256": "87a2b3650920d9c8605b8df8d46c14abba8b082ca15f5060e7407e9c7dc03f61"
+    },
+    {
+      "path": "screenshots/data_dashboard-AB-success.png",
+      "bytes": 701993,
+      "sha256": "1890b3b17302d23683e2b3a8309786e6fb907b6f9477c5907fa422c9357c8214"
+    },
+    {
+      "path": "screenshots/document_knowledge-AB-success.png",
+      "bytes": 787046,
+      "sha256": "7e6d4d1ae528586353d0e4d8ee7c453b1da64cd07ab1a7fb3b07302ebc1f5291"
+    },
+    {
+      "path": "screenshots/image_spatial-AB-success.png",
+      "bytes": 784497,
+      "sha256": "3aa40ccbc130597e03b01119887b0c92ee52f249e1adaad4d9db4ab45c06cde2"
+    },
+    {
+      "path": "videos/code_api-AB.mp4",
+      "bytes": 566059,
+      "sha256": "032fbc8edde012bb6b3dc8647045e585252e93af2057f4c5d9e4b577636c2194"
+    },
+    {
+      "path": "videos/data_dashboard-AB.mp4",
+      "bytes": 584199,
+      "sha256": "11b5f0fbbe33242f7f3386655a20bbea1ba681c5f9b83902a15e433a554ee6f5"
+    },
+    {
+      "path": "videos/document_knowledge-AB.mp4",
+      "bytes": 493422,
+      "sha256": "bbf2155d5281ed4767df3dbc3b2253c2ed8599685e65d740d19bba1164af557c"
+    },
+    {
+      "path": "videos/image_spatial-AB.mp4",
+      "bytes": 490696,
+      "sha256": "7bbf0f89d6a9d95affe47cebe150e39c8bd19d336ac7999cda75c5dc2f1d3995"
+    }
+  ],
+  "storage_policy": "BINARY_CAPTURES_GENERATED_BY_UX_LAB_AND_PUBLISHED_AS_CI_ARTIFACT",
+  "repository_tracks_binary_captures": false,
+  "ci_artifact_name": "visual-ide-ab-evidence"
+}
