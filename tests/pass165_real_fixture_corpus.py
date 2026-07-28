@@ -184,6 +184,7 @@ def validate_mp4(raw: bytes, directory: Path) -> dict[str, object]:
     ffprobe = shutil.which("ffprobe")
     if not ffprobe:
         raise AssertionError("ffprobe is required for MP4 validation")
+    directory.mkdir(parents=True, exist_ok=True)
     path = directory / "validated.mp4"
     path.write_bytes(raw)
     completed = subprocess.run(
