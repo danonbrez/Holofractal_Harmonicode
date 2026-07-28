@@ -26,10 +26,20 @@
     "c11_compile": "PASS",
     "c11_runtime_test": "PASS"
   },
+  "repository_validation": {
+    "pull_request": 41,
+    "validated_head": "0d1a2e4d84d636a600d428a244434512f63817d8",
+    "workflow_run_id": 30405988092,
+    "conclusion": "success",
+    "python_hash72_pass163_pass164_pass165": "PASS",
+    "strict_c11_pass163": "PASS",
+    "strict_c11_pass164": "PASS",
+    "strict_c11_pass165": "PASS"
+  },
   "not_yet_verified": [
-    "current-head GitHub Actions",
     "independent real-format multimodal fixture corpus",
     "durable crash-interruption recovery",
+    "final integration into main",
     "terminal Pass 165 verification"
   ]
 }
