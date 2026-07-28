@@ -1,0 +1,28 @@
+{
+  "collisions": 0,
+  "first": {
+    "phase": [
+      0,
+      0
+    ],
+    "vm_thread": [
+      0,
+      0
+    ]
+  },
+  "forward_count": 5184,
+  "inverse_count": 5184,
+  "last": {
+    "phase": [
+      71,
+      71
+    ],
+    "vm_thread": [
+      80,
+      63
+    ]
+  },
+  "omissions": 0,
+  "proof_sha256": "69f7d153717a6b471aa20166b6b7c4bf5fbaa68015bcb2dec859fd81e9856e07",
+  "schema": "HHS_PASS_164_COORDINATE_BIJECTION_PROOF_V1"
+}
