@@ -1,8 +1,0 @@
-{
-  "schema": "P161_TERMINAL_EVIDENCE_PUBLICATION_REQUEST_V4",
-  "workflow_run_id": 30321790517,
-  "artifact_id": 8674270082,
-  "artifact_digest_sha256": "84da05fdbf5da2b2906f13eb5f21c3cf892b8e842bccf415f16678e66a246c82",
-  "validation_reexecution_permitted": false,
-  "publication_mode": "atomic_git_data"
-}
