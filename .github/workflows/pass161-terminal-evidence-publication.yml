@@ -1,0 +1,83 @@
+name: Pass 161 Terminal Evidence Publication
+
+on:
+  push:
+    branches:
+      - agent/pass161-harmonizer-object-environment
+    paths:
+      - 'HHS_PASS_161_EVIDENCE_PUBLICATION_REQUEST.json'
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  publish-terminal-evidence:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/pass161-harmonizer-object-environment
+          fetch-depth: 2
+          show-progress: false
+      - name: Download frozen successful terminal artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/pass161-terminal
+          gh run download 30321790517 \
+            --name hhs-pass161-terminal-evidence-47ec9e08f5e09c448884ca0ae0a461088d250ed5 \
+            --dir /tmp/pass161-terminal
+      - name: Verify executed evidence identities
+        run: |
+          set -euo pipefail
+          root=/tmp/pass161-terminal
+          test "$(sha256sum "$root/evidence/pass161/P161_COMPLETION_RECEIPT.json" | awk '{print $1}')" = 715c2beb64eec7f42300fec34cedeb65918bdbf778b1b89a2e75d1bfc4ee9e77
+          test "$(sha256sum "$root/dist/HHS_PASS_161_RELEASE_BUNDLE.tar.gz" | awk '{print $1}')" = e13cd4bc08768bb141362ba021324586e138c292bd74a499d590d72a5093a25b
+          test "$(sha256sum "$root/evidence/pass161/P161_TERMINAL_CLASSIFICATION.txt" | awk '{print $1}')" = 3de41dce3513d809f89842213850d150c2f846adb9195930f8802eeaadb4715f
+          test "$(sha256sum "$root/evidence/pass161/P161_TERMINAL_CLOSURE.json" | awk '{print $1}')" = f55c95f2c4652f506e4f6ebd00d7ab557706be1276023e66f1edc7ebb1c3e116
+          test "$(sha256sum "$root/HHS_PASS_161_RELEASE_BUNDLE.json" | awk '{print $1}')" = ab58efdad620d9d1ae194dbb2f6cf6201025b624177a141c383967e48f739279
+          test "$(sha256sum "$root/HHS_PASS_161_TERMINAL_RELEASE.json" | awk '{print $1}')" = f18943fe940d02a9509cfe982200c66fd26d552947d373a0cbd24c45d1c4336d
+          test "$(sha256sum "$root/dist/P161_FILE_MANIFEST.json" | awk '{print $1}')" = 31a11a4e764a38d4658cbc5e4bd0b3edf9b36c33ab1b6cf3ecfcea361f06fc78
+          tar -tzf "$root/dist/HHS_PASS_161_RELEASE_BUNDLE.tar.gz" >/dev/null
+          grep -q 'HHS_PASS_161_HOLOFRACTAL_HARMONIZER_UNIFIED_MULTIMODAL_OBJECT_CONTROL_ENVIRONMENT_VERIFIED' "$root/evidence/pass161/P161_TERMINAL_CLASSIFICATION.txt"
+          grep -q '"omega_161": true' "$root/evidence/pass161/P161_COMPLETION_RECEIPT.json"
+          grep -q '"terminal_claimed": true' "$root/evidence/pass161/P161_COMPLETION_RECEIPT.json"
+      - name: Install exact terminal artifact and provenance
+        run: |
+          set -euo pipefail
+          project=applications/holofractal_harmonizer
+          mkdir -p "$project/evidence/pass161" "$project/dist"
+          cp /tmp/pass161-terminal/evidence/pass161/* "$project/evidence/pass161/"
+          cp /tmp/pass161-terminal/dist/* "$project/dist/"
+          cp /tmp/pass161-terminal/HHS_PASS_161_RELEASE_BUNDLE.json "$project/"
+          cp /tmp/pass161-terminal/HHS_PASS_161_TERMINAL_RELEASE.json "$project/"
+          cat > "$project/evidence/pass161/P161_GITHUB_FINAL_GATE_RUN.json" <<'JSON'
+          {
+            "schema": "P161_GITHUB_FINAL_GATE_RUN_V1",
+            "workflow_run_id": 30321790517,
+            "validated_head": "84b6f4962628867a86f3f34a8b6bc62b945461af",
+            "artifact_id": 8674270082,
+            "artifact_digest_sha256": "84da05fdbf5da2b2906f13eb5f21c3cf892b8e842bccf415f16678e66a246c82",
+            "x86_final_gate": "success",
+            "aarch64_replay": "success",
+            "terminal_closure": "success",
+            "bounded_final_gate_count": 1,
+            "validation_failures": 0
+          }
+          JSON
+      - name: Commit executed terminal evidence
+        run: |
+          set -euo pipefail
+          git config user.name 'chatgpt-pass161-agent'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add \
+            applications/holofractal_harmonizer/evidence/pass161 \
+            applications/holofractal_harmonizer/dist \
+            applications/holofractal_harmonizer/HHS_PASS_161_RELEASE_BUNDLE.json \
+            applications/holofractal_harmonizer/HHS_PASS_161_TERMINAL_RELEASE.json
+          git diff --cached --check
+          git commit -m 'Publish executed Pass 161 terminal evidence'
+          git push origin HEAD:agent/pass161-harmonizer-object-environment
