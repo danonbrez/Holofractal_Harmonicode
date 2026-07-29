@@ -1,0 +1,110 @@
+{
+  "schema": "HHS_PASS_172_DEPENDENCY_MANIFEST_V1",
+  "contract_id": "HHS-P172-UCEOCI-DRVBRAS",
+  "lock_status": "LOCK_GENERATION_REQUIRED_BEFORE_TERMINAL_CLOSURE",
+  "dependencies": [
+    {
+      "dependency_id": "python-runtime",
+      "dependency_class": "PYTHON_RUNTIME",
+      "version_constraint": ">=3.11",
+      "source": "host capability or authorized platform adapter",
+      "license": "Python Software Foundation License",
+      "identity": "capability:python>=3.11",
+      "required_profiles": ["all"],
+      "rollback_policy": "do not remove preexisting host runtime",
+      "security_classification": "CORE_AUTHORITY_HOST_TOOL"
+    },
+    {
+      "dependency_id": "c11-compiler",
+      "dependency_class": "NATIVE_COMPILER",
+      "version_constraint": "strict ISO C11 capable",
+      "source": "host capability or authorized platform adapter",
+      "license": "implementation specific",
+      "identity": "capability:portable-c11-compiler",
+      "required_profiles": ["all"],
+      "fallback_dependency": "verified prebuilt native artifact",
+      "rollback_policy": "do not remove preexisting host compiler",
+      "security_classification": "CORE_BUILD_HOST_TOOL"
+    },
+    {
+      "dependency_id": "core-python-packages",
+      "dependency_class": "PYTHON_PACKAGE",
+      "version_constraint": "requirements-core.txt",
+      "source": "declared Python index or verified offline wheel set",
+      "license": "per-package inventory required",
+      "identity": "requirements-file:requirements-core.txt",
+      "required_profiles": ["core", "runtime", "assistant-external", "assistant-local-cpu", "assistant-local-gpu", "developer", "android-build", "container", "offline"],
+      "rollback_policy": "delete staged virtual environment",
+      "security_classification": "CORE_RUNTIME"
+    },
+    {
+      "dependency_id": "runtime-python-packages",
+      "dependency_class": "PYTHON_PACKAGE",
+      "version_constraint": "requirements-runtime.txt",
+      "source": "declared Python index or verified offline wheel set",
+      "license": "per-package inventory required",
+      "identity": "requirements-file:requirements-runtime.txt",
+      "required_profiles": ["runtime", "assistant-external", "assistant-local-cpu", "assistant-local-gpu", "developer", "container"],
+      "rollback_policy": "delete staged virtual environment",
+      "security_classification": "NETWORK_RUNTIME"
+    },
+    {
+      "dependency_id": "litert-lm-provider",
+      "dependency_class": "INFERENCE_PROVIDER",
+      "version_constraint": "litert-lm==0.14.0",
+      "source": "requirements-provider-litert-lm.txt",
+      "license": "upstream provider license",
+      "identity": "requirements-file:requirements-provider-litert-lm.txt",
+      "required_profiles": ["assistant-local-cpu", "assistant-local-gpu"],
+      "optional": false,
+      "rollback_policy": "delete staged provider environment",
+      "security_classification": "MODEL_PROVIDER"
+    },
+    {
+      "dependency_id": "node-runtime",
+      "dependency_class": "NODE_RUNTIME",
+      "version_constraint": ">=22",
+      "source": "host capability or authorized platform adapter",
+      "license": "Node.js license",
+      "identity": "capability:node>=22",
+      "required_profiles": ["developer"],
+      "rollback_policy": "do not remove preexisting host runtime",
+      "security_classification": "DEVELOPER_TOOL"
+    },
+    {
+      "dependency_id": "vulkan-or-metal",
+      "dependency_class": "GPU_LOADER",
+      "version_constraint": "platform compatible",
+      "source": "operating system or authorized adapter",
+      "license": "platform specific",
+      "identity": "capability:vulkan-or-metal",
+      "required_profiles": ["assistant-local-gpu"],
+      "required_platforms": ["Linux", "Windows", "Darwin"],
+      "fallback_dependency": "assistant-external",
+      "rollback_policy": "record host-package rollback limitations",
+      "security_classification": "DEVICE_SUBSTRATE"
+    },
+    {
+      "dependency_id": "android-toolchain",
+      "dependency_class": "ANDROID_TOOLCHAIN",
+      "version_constraint": "project-declared SDK/NDK/CMake/Gradle versions",
+      "source": "Android SDK manager and project wrapper",
+      "license": "Android tool licenses",
+      "identity": "capability:android-build-toolchain",
+      "required_profiles": ["android-build"],
+      "rollback_policy": "preserve preexisting SDK; remove HHS staged output",
+      "security_classification": "MOBILE_BUILD_TOOL"
+    },
+    {
+      "dependency_id": "container-runtime",
+      "dependency_class": "CONTAINER_RUNTIME",
+      "version_constraint": "Docker or Podman with OCI support",
+      "source": "host capability",
+      "license": "implementation specific",
+      "identity": "capability:oci-runtime",
+      "required_profiles": ["container"],
+      "rollback_policy": "remove staged HHS image only",
+      "security_classification": "CONTAINER_HOST_TOOL"
+    }
+  ]
+}
