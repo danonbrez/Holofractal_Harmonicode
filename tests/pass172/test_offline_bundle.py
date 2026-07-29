@@ -64,8 +64,8 @@ def test_network_fallback_declaration_rejected(tmp_path: Path) -> None:
     assert raised.value.code == "P172_OFFLINE_NETWORK_FALLBACK_DECLARED"
 
 
-def test_wrong_bundle_digest_rejected(tmp_path: Path) -> None:
+def test_wrong_bundle_digest_rejected_with_offline_classification(tmp_path: Path) -> None:
     bundle = _bundle(tmp_path)
     with pytest.raises(OfflineBundleError) as raised:
         OfflineBundleVerifier().verify(bundle, expected_sha256="0" * 64)
-    assert raised.value.code == "P172_OFFLINE_FILE_VERIFICATION_FAILED"
+    assert raised.value.code == "P172_OFFLINE_BUNDLE_DIGEST_MISMATCH"
