@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hhs.local/schemas/pass173/coverage_matrix.schema.json",
+  "title": "HHS Pass 173 Coverage Matrix",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "records", "terminal_complete", "incomplete", "matrix_identity"],
+  "properties": {
+    "schema": {"const": "HHS_PASS_173_COVERAGE_MATRIX_V1"},
+    "records": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["requirement_id", "requirement_text_hash", "implementation_paths", "test_paths", "profiles", "platforms", "architectures", "positive_evidence", "negative_evidence", "calibration_evidence", "repair_evidence", "terminal_status", "justification"],
+        "properties": {
+          "requirement_id": {"type": "string", "minLength": 1},
+          "requirement_text_hash": {"type": "string", "minLength": 1},
+          "implementation_paths": {"type": "array", "items": {"type": "string"}},
+          "test_paths": {"type": "array", "items": {"type": "string"}},
+          "profiles": {"type": "array", "items": {"type": "string"}},
+          "platforms": {"type": "array", "items": {"type": "string"}},
+          "architectures": {"type": "array", "items": {"type": "string"}},
+          "positive_evidence": {"type": "array", "items": {"type": "string"}},
+          "negative_evidence": {"type": "array", "items": {"type": "string"}},
+          "calibration_evidence": {"type": "array", "items": {"type": "string"}},
+          "repair_evidence": {"type": "array", "items": {"type": "string"}},
+          "terminal_status": {"enum": ["NOT_STARTED", "STATICALLY_MAPPED", "EXECUTED_POSITIVE", "EXECUTED_NEGATIVE", "CALIBRATED", "REPAIRED", "REVALIDATED", "NOT_APPLICABLE_WITH_JUSTIFICATION", "BLOCKED_BY_EXTERNAL_DEPENDENCY", "VERIFIED"]},
+          "justification": {"type": ["string", "null"]}
+        }
+      }
+    },
+    "terminal_complete": {"type": "boolean"},
+    "incomplete": {"type": "array", "items": {"type": "string"}},
+    "matrix_identity": {"type": "string", "minLength": 1}
+  }
+}
