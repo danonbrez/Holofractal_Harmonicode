@@ -1,7 +1,14 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$ROOT_DIR"
+
 echo "Building HHS native Hash72 runtime authority..."
 make c-abi
 test -s hhs_runtime/builds/libhhs_runtime.so
 echo "HHS native Hash72 runtime authority ready."
+
+echo "Verifying production LiteRT-LM and Pass 166 language assets..."
+python tools/install_production_language_assets.py --install-if-configured
+echo "Production language asset verification complete."
