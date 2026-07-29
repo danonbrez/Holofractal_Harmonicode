@@ -2,12 +2,11 @@ from __future__ import annotations
 
 from pathlib import Path
 import hashlib
-import json
 import subprocess
 
 import pytest
 
-from hhs_installer.acquisition import AcquisitionError, SourceAcquirer
+from hhs_installer.acquisition import AcquisitionError, DownloadPolicy, SourceAcquirer
 from hhs_installer.execution import CompleteInstallationTransaction
 from hhs_installer.model_assets import ModelAssetError, ModelAssetRequest
 from hhs_installer.native_builder import NativeBuilder, NativeToolchain
@@ -92,6 +91,61 @@ def test_local_digest_mismatch_is_acquisition_error(tmp_path: Path) -> None:
             network_policy=NetworkPolicy.OFFLINE,
         )
     assert raised.value.code == "P172_SOURCE_IDENTITY_MISMATCH"
+
+
+def test_release_download_requires_trusted_expected_identity(tmp_path: Path) -> None:
+    with pytest.raises(AcquisitionError) as raised:
+        SourceAcquirer(tmp_path / "cache").acquire(
+            SourceSpec(SourceKind.RELEASE, "https://example.invalid/hhs.zip"),
+            network_policy=NetworkPolicy.ONLINE,
+        )
+    assert raised.value.code == "P172_RELEASE_TRUST_ANCHOR_REQUIRED"
+
+
+def test_release_download_applies_distinct_connect_and_read_timeouts(tmp_path: Path, monkeypatch) -> None:
+    payload = b"trust-anchored-release"
+    expected = hashlib.sha256(payload).hexdigest()
+
+    class FakeResponse:
+        status = 200
+
+        def __init__(self) -> None:
+            self.read_timeout: int | None = None
+            self.remaining = payload
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, exc_type, exc, traceback):
+            return False
+
+        def settimeout(self, value: int) -> None:
+            self.read_timeout = value
+
+        def read(self, size: int) -> bytes:
+            result, self.remaining = self.remaining, b""
+            return result
+
+    response = FakeResponse()
+    observed: dict[str, int] = {}
+
+    def fake_urlopen(request, *, timeout, context):
+        observed["connect_timeout"] = timeout
+        return response
+
+    monkeypatch.setattr("hhs_installer.acquisition.urllib.request.urlopen", fake_urlopen)
+    acquirer = SourceAcquirer(
+        tmp_path / "cache",
+        policy=DownloadPolicy(connect_timeout_seconds=7, read_timeout_seconds=31, maximum_attempts=1),
+    )
+    result = acquirer.acquire(
+        SourceSpec(SourceKind.RELEASE, "https://example.invalid/hhs.zip", expected),
+        network_policy=NetworkPolicy.ONLINE,
+    )
+    assert observed["connect_timeout"] == 7
+    assert response.read_timeout == 31
+    assert result.verified is True
+    assert result.sha256 == expected
 
 
 def test_layout_stages_runtime_source_and_launcher(tmp_path: Path) -> None:
