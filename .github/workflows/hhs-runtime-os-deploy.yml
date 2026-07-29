@@ -63,6 +63,7 @@ jobs:
             fastapi==0.128.2 \
             starlette==0.50.0 \
             'httpx>=0.27,<1.0' \
+            'uvicorn[standard]>=0.30,<1.0' \
             pytest
 
       - name: Build native Hash72 runtime receipt authority
