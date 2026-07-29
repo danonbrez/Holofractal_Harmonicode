@@ -2,9 +2,9 @@
 
 The public assistant first uses the configured LiteRT-LM/OpenAI-compatible
 provider with the governed HHS tool loop. When that provider is unavailable,
-it remains operational through a deterministic natural-language capability
-assistant backed by the same read-only HHS API tool receipts. The fallback does
-not impersonate a model and does not fabricate runtime mutation.
+it remains operational through a deterministic natural-language capability and
+repository-retrieval assistant backed by read-only HHS API tool receipts. The
+fallback does not impersonate a model and does not fabricate runtime mutation.
 """
 from __future__ import annotations
 
@@ -72,6 +72,7 @@ class ProductionAssistantService:
             "model_provider_id": model_status.get("provider_id"),
             "deterministic_provider_id": DETERMINISTIC_PROVIDER_ID,
             "deterministic_fallback_enabled": True,
+            "repository_retrieval_enabled": True,
             "same_template_response_enabled": False,
             "public_interface_mode": "PRODUCTION",
             "runtime_mutation_admitted": False,
@@ -141,6 +142,7 @@ class ProductionAssistantService:
                 "Pass 152 status",
                 "Pass 152 capabilities",
                 "assistant tool registry",
+                "bounded repository knowledge search",
             ],
         })
         result["status_root_hash72"] = hash72(
@@ -172,7 +174,7 @@ class ProductionAssistantService:
         if not selected and any(token in text for token in ("capability", "tool", "what can", "help")):
             return []
         if not selected:
-            add("hhs_runtime_state")
+            add("hhs_repository_search")
         return selected
 
     @staticmethod
@@ -226,8 +228,9 @@ class ProductionAssistantService:
             return (
                 "The production assistant is online. I can execute these governed "
                 f"read-only HHS tools now: {', '.join(map(str, names))}. "
-                "A configured model provider expands this to general natural-language "
-                "reasoning; runtime mutation still requires separate admission."
+                "A configured model provider expands this to generative reasoning; "
+                "repository retrieval remains available without it, and runtime "
+                "mutation still requires separate admission."
             )
 
         sections: List[str] = []
@@ -240,6 +243,24 @@ class ProductionAssistantService:
                 )
                 continue
             response = receipt.get("response")
+            if tool_name == "hhs_repository_search" and isinstance(response, Mapping):
+                results = response.get("results") or []
+                if results:
+                    evidence = []
+                    for result in results:
+                        if not isinstance(result, Mapping):
+                            continue
+                        evidence.append(
+                            f"- {result.get('path')}: {result.get('snippet')}"
+                        )
+                    sections.append(
+                        "Repository evidence\n" + "\n".join(evidence)
+                    )
+                else:
+                    sections.append(
+                        f"Repository search found no bounded source match for: {content}"
+                    )
+                continue
             summary = self._top_level_summary(response)
             sections.append(
                 f"{tool_name}\n" + "\n".join(f"- {line}" for line in summary)
@@ -251,9 +272,9 @@ class ProductionAssistantService:
             )
         provider_note = (
             f"\n\nThe configured model provider was unavailable ({model_error}); "
-            "this answer was generated from governed HHS tool results."
+            "this answer was generated from governed HHS tool and repository evidence."
             if model_error
-            else "\n\nThis answer was generated from governed HHS tool results."
+            else "\n\nThis answer was generated from governed HHS tool and repository evidence."
         )
         return "\n\n".join(sections) + provider_note
 
@@ -275,10 +296,15 @@ class ProductionAssistantService:
         )
         trace: List[Dict[str, Any]] = []
         for tool_name in self._select_tools(content):
-            receipt = await execute_hhs_assistant_api_tool(tool_name, {})
+            arguments: Dict[str, Any] = (
+                {"query": content, "limit": 5}
+                if tool_name == "hhs_repository_search"
+                else {}
+            )
+            receipt = await execute_hhs_assistant_api_tool(tool_name, arguments)
             trace.append({
                 "tool_name": tool_name,
-                "arguments": {},
+                "arguments": arguments,
                 "receipt": receipt,
             })
         answer = self._compose_answer(content, trace, model_error=model_error)
