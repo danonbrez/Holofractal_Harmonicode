@@ -3,7 +3,6 @@ from __future__ import annotations
 from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any, Mapping, Sequence
-import json
 import os
 import shutil
 import subprocess
@@ -53,6 +52,8 @@ class CleanInstallResult:
 
 
 class CleanInstallRunner:
+    RESERVED_ENVIRONMENT = frozenset({"HHS_HOME", "PYTHONPATH"})
+
     @staticmethod
     def _tree_identity(root: Path) -> str:
         records: list[dict[str, Any]] = []
@@ -97,11 +98,13 @@ class CleanInstallRunner:
         hhs_home = workspace / "hhs-home"
         logs = workspace / "logs"
         logs.mkdir(parents=True)
+        requested_environment = {str(key): str(value) for key, value in dict(request.environment or {}).items()}
+        ignored_reserved_environment = sorted(self.RESERVED_ENVIRONMENT & requested_environment.keys())
         environment = {
             **os.environ,
+            **requested_environment,
             "HHS_HOME": str(hhs_home),
             "PYTHONPATH": str(isolated_source),
-            **dict(request.environment or {}),
         }
         command = self._isolated_command(request.command, repository_root, isolated_source)
         started = time.monotonic_ns()
@@ -152,6 +155,9 @@ class CleanInstallRunner:
             "latest_commit": "repository-visible caller head",
             "caller_worktree_untouched": True,
             "execution_source": str(isolated_source),
+            "isolated_hhs_home": str(hhs_home),
+            "isolated_pythonpath": str(isolated_source),
+            "ignored_reserved_environment": ignored_reserved_environment,
             "isolated_source_changed": source_identity_before != source_identity_after,
             "isolated_source_identity_before": source_identity_before,
             "isolated_source_identity_after": source_identity_after,
