@@ -29,11 +29,26 @@ def _exit_for(classification: str) -> int:
 
 def _normalize_argv(argv: Sequence[str]) -> list[str]:
     values = list(argv)
-    if values[:5] == ["modality", "language", "model", "install", "word2vec"]:
-        return ["model", "word2vec", "install", *values[5:]]
-    if values[:3] == ["model", "install", "word2vec"]:
-        return ["model", "word2vec", "install", *values[3:]]
-    return values
+    global_options: list[str] = []
+    command: list[str] = []
+    index = 0
+    while index < len(values):
+        value = values[index]
+        if value in ("--output", "--storage-root"):
+            if index + 1 >= len(values):
+                command.append(value)
+                index += 1
+                continue
+            global_options.extend((value, values[index + 1]))
+            index += 2
+            continue
+        command.append(value)
+        index += 1
+    if command[:5] == ["modality", "language", "model", "install", "word2vec"]:
+        command = ["model", "word2vec", "install", *command[5:]]
+    elif command[:3] == ["model", "install", "word2vec"]:
+        command = ["model", "word2vec", "install", *command[3:]]
+    return [*global_options, *command]
 
 
 def _parser() -> argparse.ArgumentParser:
