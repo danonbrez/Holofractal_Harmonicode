@@ -5,7 +5,6 @@ from pathlib import Path
 from typing import Any, Mapping
 import hashlib
 import os
-import shutil
 import ssl
 import time
 import urllib.error
@@ -72,6 +71,17 @@ class SourceAcquirer:
         self.cache_root.mkdir(parents=True, exist_ok=True, mode=0o700)
         self.policy = policy or DownloadPolicy()
 
+    @staticmethod
+    def _verify_or_raise(path: Path, expected: str, *, maximum_bytes: int, code: str) -> None:
+        try:
+            verify_sha256(path, expected, maximum_bytes=maximum_bytes)
+        except VerificationError as exc:
+            raise AcquisitionError(
+                code,
+                "source identity does not match the declared SHA-256",
+                exc.to_dict(),
+            ) from exc
+
     def acquire(self, source: SourceSpec, *, network_policy: NetworkPolicy) -> AcquisitionResult:
         if source.kind is SourceKind.LOCAL:
             return self._local(source)
@@ -134,7 +144,12 @@ class SourceAcquirer:
             )
         observed = sha256_file(path, maximum_bytes=self.policy.maximum_bytes)
         if source.expected_identity:
-            verify_sha256(path, source.expected_identity, maximum_bytes=self.policy.maximum_bytes)
+            self._verify_or_raise(
+                path,
+                source.expected_identity,
+                maximum_bytes=self.policy.maximum_bytes,
+                code="P172_SOURCE_IDENTITY_MISMATCH",
+            )
         payload = {
             "source_kind": source.kind.value,
             "reference": source.reference,
@@ -166,7 +181,12 @@ class SourceAcquirer:
                 "offline bundle requires an expected SHA-256 identity",
                 {"observed": observed.sha256},
             )
-        verify_sha256(path, source.expected_identity, maximum_bytes=self.policy.maximum_bytes)
+        self._verify_or_raise(
+            path,
+            source.expected_identity,
+            maximum_bytes=self.policy.maximum_bytes,
+            code="P172_OFFLINE_BUNDLE_IDENTITY_MISMATCH",
+        )
         payload = {
             "source_kind": source.kind.value,
             "reference": source.reference,
@@ -192,7 +212,12 @@ class SourceAcquirer:
             raise AcquisitionError("P172_CACHED_SOURCE_UNAVAILABLE", "source is not present in verified cache", {"cache_path": str(path)})
         observed = sha256_file(path, maximum_bytes=self.policy.maximum_bytes)
         if source.expected_identity:
-            verify_sha256(path, source.expected_identity, maximum_bytes=self.policy.maximum_bytes)
+            self._verify_or_raise(
+                path,
+                source.expected_identity,
+                maximum_bytes=self.policy.maximum_bytes,
+                code="P172_CACHED_SOURCE_IDENTITY_MISMATCH",
+            )
         payload = {"cache_path": str(path), "sha256": observed.sha256, "bytes": observed.size}
         return AcquisitionResult(
             source_kind=source.kind.value,
@@ -314,8 +339,14 @@ class SourceAcquirer:
                     },
                 )
                 if isinstance(exc, VerificationError):
-                    partial.rename(destination.with_suffix(destination.suffix + ".quarantine"))
-                    raise AcquisitionError("P172_DOWNLOADED_SOURCE_DIGEST_MISMATCH", "downloaded source failed digest verification", {"error": last_error}) from exc
+                    quarantine = destination.with_suffix(destination.suffix + ".quarantine")
+                    if partial.exists():
+                        os.replace(partial, quarantine)
+                    raise AcquisitionError(
+                        "P172_DOWNLOADED_SOURCE_DIGEST_MISMATCH",
+                        "downloaded source failed digest verification",
+                        {"error": last_error, "quarantine": str(quarantine)},
+                    ) from exc
                 if attempts >= self.policy.maximum_attempts:
                     break
                 time.sleep(min(attempts, 3))
