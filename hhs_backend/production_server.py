@@ -8,7 +8,7 @@ responses.
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Any
+from typing import Any, Mapping
 
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
@@ -22,7 +22,7 @@ RUNTIME_OS_ROOT = ROOT_DIR / "hhs_gui" / "dist"
 
 app = canonical.app
 app.title = "HHS Visual Runtime OS"
-app.version = "3.0.0"
+app.version = "3.1.0"
 app.description = (
     "Canonical HHS runtime, workspace, graph, replay, receipt, multimodal, "
     "capability, document, language-memory, and assistant server."
@@ -48,6 +48,91 @@ app.router.routes = [
         and "GET" in (getattr(route, "methods", None) or set())
     )
 ]
+
+
+def _object_summary(obj: Mapping[str, Any]) -> dict[str, Any]:
+    return {
+        "object_id": obj.get("object_id"),
+        "name": obj.get("name"),
+        "object_type": obj.get("object_type"),
+        "modality": obj.get("modality"),
+        "lifecycle_state": obj.get("lifecycle_state"),
+        "root_hash72": obj.get("current_root_hash72") or obj.get("object_root_hash72"),
+        "receipt_tip_hash72": obj.get("receipt_tip_hash72"),
+        "source_uri": (obj.get("source_provenance") or {}).get("source_uri") or obj.get("canonical_payload_ref"),
+    }
+
+
+def _workspace_session_snapshot(project_id: str | None = None) -> dict[str, Any]:
+    loop = canonical.WORKSPACE_AUTHORITY_LOOP
+    projects = list(loop.projects.values())
+    projects.sort(key=lambda item: int(item.get("updated_at_unix_ms") or item.get("created_at_unix_ms") or 0), reverse=True)
+    active = loop.projects.get(project_id or "") if project_id else None
+    if active is None and projects:
+        active = projects[0]
+
+    objects: list[dict[str, Any]] = []
+    if active:
+        registry = dict(active.get("object_registry") or {})
+        order = list(active.get("object_order") or registry.keys())
+        objects = [_object_summary(registry[object_id]) for object_id in order if object_id in registry]
+
+    history = []
+    for decision in loop.command_history[-24:]:
+        result = dict(decision.get("result") or {})
+        command = dict(decision.get("command") or {})
+        history.append({
+            "command_id": command.get("command_id"),
+            "operation": command.get("operation"),
+            "ok": bool(decision.get("ok")),
+            "status": decision.get("status"),
+            "receipt_hash72": decision.get("receipt_hash72"),
+            "result_schema": result.get("schema"),
+        })
+
+    return {
+        "schema": "HHS_INTEGRATED_WORKSPACE_SESSION_V1",
+        "ok": True,
+        "status": "WORKSPACE_LIVE" if active else "WORKSPACE_EMPTY",
+        "project": active,
+        "project_summaries": [
+            {
+                "project_id": project.get("project_id"),
+                "name": project.get("name"),
+                "status": project.get("status"),
+                "object_count": len(project.get("object_registry") or {}),
+                "receipt_tip_hash72": project.get("receipt_tip_hash72"),
+                "updated_at_unix_ms": project.get("updated_at_unix_ms"),
+            }
+            for project in projects
+        ],
+        "objects": objects,
+        "history": history,
+        "runtime": {
+            "canonical_runtime_attached": bool(canonical.SERVER_STATE.get("runtime_initialized")),
+            "graph_initialized": bool(canonical.SERVER_STATE.get("graph_initialized")),
+            "websocket_ready": bool(canonical.SERVER_STATE.get("websocket_ready")),
+        },
+        "self_tests_executed": False,
+    }
+
+
+@app.get("/api/runtime/workspace/session")
+async def production_workspace_session(project_id: str | None = None) -> dict[str, Any]:
+    """Return one inexpensive, coherent workspace projection without running self-tests."""
+    return _workspace_session_snapshot(project_id)
+
+
+@app.post("/api/runtime/workspace/session")
+async def production_workspace_session_ensure(payload: dict[str, Any]) -> dict[str, Any]:
+    """Resume an existing project or create the requested project through workspace authority."""
+    requested_id = str(payload.get("project_id") or "")
+    if requested_id and requested_id in canonical.WORKSPACE_AUTHORITY_LOOP.projects:
+        return _workspace_session_snapshot(requested_id)
+
+    project = canonical.create_workspace_project(str(payload.get("name") or "HHS Workspace"))
+    canonical.WORKSPACE_AUTHORITY_LOOP.projects[project["project_id"]] = project
+    return _workspace_session_snapshot(project["project_id"])
 
 
 @app.get("/healthz")
@@ -92,6 +177,7 @@ async def production_system_status() -> dict[str, Any]:
         "canonical_runtime_attached": bool(canonical.SERVER_STATE.get("runtime_initialized")),
         "graph_initialized": bool(canonical.SERVER_STATE.get("graph_initialized")),
         "websocket_ready": bool(canonical.SERVER_STATE.get("websocket_ready")),
+        "workspace_session_api": "/api/runtime/workspace/session",
         "workspace_api": "/api/runtime/workspace",
         "runtime_api": "/api/runtime",
         "capability_api": "/api/runtime/capability",
