@@ -13,7 +13,7 @@ import uuid
 from pathlib import Path
 from typing import Any
 
-from fastapi import FastAPI, HTTPException, WebSocket, WebSocketDisconnect
+from fastapi import FastAPI, HTTPException, Request, WebSocket, WebSocketDisconnect
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 
@@ -26,7 +26,7 @@ SWARM_DEMO_ROOT = ROOT_DIR / "apps" / "unified_gui"
 
 app = FastAPI(
     title="HHS Heroku Deployment Gateway",
-    version="1.2.0",
+    version="1.2.1",
     description="Runtime OS gateway with bounded detached-runtime projections.",
 )
 
@@ -51,6 +51,29 @@ def _thread_snapshot(thread: dict[str, Any]) -> dict[str, Any]:
     snapshot["messages"] = [dict(message) for message in thread["messages"]]
     snapshot["message_count"] = len(snapshot["messages"])
     return snapshot
+
+
+def _detached_rejection(
+    *,
+    endpoint: str,
+    envelope: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    return {
+        "schema": "HHS_DETACHED_RUNTIME_REJECTION_V1",
+        "ok": False,
+        "status": "REJECT_RUNTIME_AUTHORITY_UNAVAILABLE",
+        "endpoint": endpoint,
+        "deployment_mode": "DETACHED_PROJECTION",
+        "canonical_runtime_attached": False,
+        "canonical_runtime_mutated": False,
+        "gui_mutated_runtime_truth": False,
+        "receipt_hash72": None,
+        "websocket_feedback": {
+            "available": False,
+            "reason": "Canonical runtime is not attached to this Heroku gateway.",
+        },
+        "envelope": envelope or {},
+    }
 
 
 @app.get("/healthz")
@@ -113,6 +136,57 @@ async def graph_socket(websocket: WebSocket) -> None:
 @app.websocket("/ws/transport")
 async def transport_socket(websocket: WebSocket) -> None:
     await _hold_projection_socket(websocket)
+
+
+@app.get("/api/runtime/graph")
+async def detached_runtime_graph() -> dict[str, Any]:
+    return {
+        "schema": "HHS_DETACHED_RUNTIME_GRAPH_PROJECTION_V1",
+        "ok": True,
+        "status": "DETACHED_NO_LIVE_KERNEL_SOURCE",
+        "nodes": [],
+        "edges": [],
+        "canonical_runtime_attached": False,
+        "projection_authority": "PRESENTATION_ONLY",
+    }
+
+
+@app.post("/api/runtime/gui/command")
+async def detached_gui_command(payload: dict[str, Any]) -> dict[str, Any]:
+    return _detached_rejection(
+        endpoint="/api/runtime/gui/command",
+        envelope=payload,
+    )
+
+
+@app.post("/api/runtime/workspace/command")
+async def detached_workspace_command(payload: dict[str, Any]) -> dict[str, Any]:
+    return _detached_rejection(
+        endpoint="/api/runtime/workspace/command",
+        envelope=payload,
+    )
+
+
+@app.api_route(
+    "/api/runtime/{runtime_path:path}",
+    methods=["GET", "POST", "PUT", "PATCH", "DELETE"],
+)
+async def detached_runtime_fallback(
+    runtime_path: str,
+    request: Request,
+) -> dict[str, Any]:
+    envelope: dict[str, Any] = {}
+    if request.method != "GET":
+        try:
+            candidate = await request.json()
+            if isinstance(candidate, dict):
+                envelope = candidate
+        except Exception:
+            envelope = {}
+    return _detached_rejection(
+        endpoint=f"/api/runtime/{runtime_path}",
+        envelope=envelope,
+    )
 
 
 @app.get("/api/assistant/status")
