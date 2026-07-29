@@ -1,4 +1,4 @@
-import{r as s,j as n}from"./index-37jiYqeX.js";import"./react-D3F3s8fL.js";const v=()=>{const[e,l]=s.useState([]),[m,i]=s.useState(!0),[o,c]=s.useState(null),d=s.useMemo(()=>`${window.location.origin}/api/runtime/graph`,[]);return s.useEffect(()=>{let r=!0,a;const x=async()=>{try{const t=await fetch(d);if(!t.ok)throw new Error(`Graph request failed (${t.status})`);const p=await t.json();if(!r)return;const u=Array.isArray(p.nodes)?p.nodes:[];l(u),i(!1),c(null)}catch(t){if(console.error("[HHSCalculatorGraphProjection] graph projection failure",t),!r)return;i(!1),c(t instanceof Error?t.message:"Graph projection failure")}};return x(),a=window.setInterval(x,2e3),()=>{r=!1,a&&window.clearInterval(a)}},[d]),n.jsxs("div",{className:`
+import{r as i,j as n}from"./main-BzENKgnW.js";import"./index-w4d0Ryph.js";const v=()=>{const[e,c]=i.useState([]),[o,s]=i.useState(!0),[d,x]=i.useState(null),p=i.useMemo(()=>`${window.location.origin}/api/runtime/graph`,[]);return i.useEffect(()=>{let r=!0,a;const l=async()=>{try{const t=await fetch(p);if(!t.ok)throw new Error(`Graph request failed (${t.status})`);const m=await t.json();if(!r)return;const u=Array.isArray(m.nodes)?m.nodes:[];c(u),s(!1),x(null)}catch(t){if(console.error("[HHSCalculatorGraphProjection] graph projection failure",t),!r)return;s(!1),x(t instanceof Error?t.message:"Graph projection failure")}};return l(),a=window.setInterval(l,2e3),()=>{r=!1,a&&window.clearInterval(a)}},[p]),n.jsxs("div",{className:`
                 w-full
                 h-full
                 bg-black
@@ -31,7 +31,7 @@ import{r as s,j as n}from"./index-37jiYqeX.js";import"./react-D3F3s8fL.js";const
                         text-[10px]
                         font-mono
                         text-cyan-700
-                    `,children:m?"loading":"online"})]}),o&&n.jsx("div",{className:`
+                    `,children:o?"loading":"online"})]}),d&&n.jsx("div",{className:`
                             m-4
                             rounded-xl
                             border
@@ -41,7 +41,7 @@ import{r as s,j as n}from"./index-37jiYqeX.js";import"./react-D3F3s8fL.js";const
                             text-red-300
                             text-sm
                             font-mono
-                        `,children:o}),n.jsxs("div",{className:`
+                        `,children:d}),n.jsxs("div",{className:`
                     flex-1
                     relative
                     overflow-hidden
@@ -78,7 +78,7 @@ import{r as s,j as n}from"./index-37jiYqeX.js";import"./react-D3F3s8fL.js";const
                                         flex
                                         flex-wrap
                                         gap-4
-                                    `,children:e.map((r,a)=>n.jsx(f,{node:r,active:a===e.length-1},r.id??a))})})]})]})},f=({node:e,active:l})=>n.jsxs("div",{className:`
+                                    `,children:e.map((r,a)=>{var l;return n.jsx(f,{node:r,active:a===e.length-1},(l=r.id)!=null?l:a)})})})]})]})},f=({node:e,active:c})=>{var o,s;return n.jsxs("div",{className:`
                 w-56
                 rounded-2xl
                 border
@@ -88,7 +88,7 @@ import{r as s,j as n}from"./index-37jiYqeX.js";import"./react-D3F3s8fL.js";const
                 flex-col
                 gap-2
                 transition-all
-                ${l?`
+                ${c?`
                             border-cyan-500/50
                             bg-cyan-500/10
                             shadow-[0_0_40px_rgba(34,211,238,0.15)]
@@ -104,7 +104,7 @@ import{r as s,j as n}from"./index-37jiYqeX.js";import"./react-D3F3s8fL.js";const
                         text-cyan-300
                         text-xs
                         font-semibold
-                    `,children:e.event_type??"runtime"}),n.jsx("div",{className:`
+                    `,children:(o=e.event_type)!=null?o:"runtime"}),n.jsx("div",{className:`
                         text-[10px]
                         font-mono
                         text-neutral-500
@@ -122,7 +122,7 @@ import{r as s,j as n}from"./index-37jiYqeX.js";import"./react-D3F3s8fL.js";const
                         font-mono
                         break-all
                         text-cyan-400
-                    `,children:e.id??"pending"})]}),e.parent&&n.jsxs("div",{className:`
+                    `,children:(s=e.id)!=null?s:"pending"})]}),e.parent&&n.jsxs("div",{className:`
                             flex
                             flex-col
                             gap-1
@@ -150,5 +150,5 @@ import{r as s,j as n}from"./index-37jiYqeX.js";import"./react-D3F3s8fL.js";const
                                 font-mono
                                 break-all
                                 text-emerald-400
-                            `,children:e.receipt_hash72})]})]});export{v as HHSCalculatorGraphProjection,v as default};
-//# sourceMappingURL=HHSCalculatorGraphProjection-DKj-3RqL.js.map
+                            `,children:e.receipt_hash72})]})]})};export{v as HHSCalculatorGraphProjection,v as default};
+//# sourceMappingURL=HHSCalculatorGraphProjection-B9sDxA8l.js.map

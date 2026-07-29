@@ -17,6 +17,7 @@ def test_production_server_composes_canonical_backend_and_visual_ide():
         "/api/runtime/live/status",
         "/api/runtime/gui/command",
         "/api/runtime/workspace/status",
+        "/api/runtime/workspace/session",
         "/api/runtime/workspace/command",
         "/api/runtime/capability/status",
         "/api/runtime/capability/resolve",
@@ -28,8 +29,21 @@ def test_production_server_composes_canonical_backend_and_visual_ide():
         "/ws/runtime",
     }
     assert required.issubset(paths)
-    # Starlette represents a StaticFiles mount at the public root with path "".
     assert "" in paths or "/" in paths
+
+
+def test_integrated_workspace_session_is_lightweight_and_real():
+    from hhs_backend import production_server
+
+    snapshot = production_server._workspace_session_snapshot()
+    assert snapshot["schema"] == "HHS_INTEGRATED_WORKSPACE_SESSION_V1"
+    assert snapshot["ok"] is True
+    assert snapshot["self_tests_executed"] is False
+    assert set(snapshot["runtime"]) == {
+        "canonical_runtime_attached",
+        "graph_initialized",
+        "websocket_ready",
+    }
 
 
 def test_procfile_boots_canonical_production_server():
@@ -46,15 +60,37 @@ def test_frontend_entrypoint_is_canonical_runtime_ide_not_replacement_app():
     assert "global.css" in source
 
 
-def test_canonical_workspace_exposes_only_integrated_callable_surfaces():
+def test_canonical_workspace_is_one_shared_transaction_surface():
     source = Path("hhs_gui/runtime_os/workspace/HHSWorkspaceShell.tsx").read_text(
         encoding="utf-8"
     )
+
     for token in [
-        "RuntimeAssistantPanel",
-        "LiveBackendCapabilityPanel",
+        "projectId",
+        "selectedObjectId",
+        "artifactId",
+        "sessionId",
+        "ensureProject",
+        "ensureSource",
+        "applyFeedback",
+        'tab === "workbench"',
+        'tab === "assistant"',
+        'tab === "runtime"',
+        'tab === "receipts"',
+        "project.create",
+        "ingress.register",
+        "interpret.execute",
+        "compile.execute",
+        "emulator.create",
+        "emulator.step",
+        "Only operations that actually returned from the backend appear here",
+    ]:
+        assert token in source
+
+    for token in [
         "RuntimeProjectTree",
         "MultimodalIngressPanel",
+        "LiveBackendCapabilityPanel",
         "HHSSymbolicEditor",
         "InterpreterConsole",
         "CompilerWorkbench",
@@ -63,14 +99,8 @@ def test_canonical_workspace_exposes_only_integrated_callable_surfaces():
         "SemanticMemoryPanel",
         "ReceiptLedgerInspector",
         "MutationHistoryPanel",
-    ]:
-        assert token in source
-
-    for token in [
-        "CapabilityRegistryPanel",
-        "ProviderInspector",
-        "DocumentPerceptionPanel",
-        "OCRProjectionViewer",
+        "RuntimeCommandPanel",
+        "RuntimeMutationPanel",
         "runtime_application_missing",
     ]:
         assert token not in source
@@ -84,31 +114,27 @@ def test_public_html_keeps_boot_failure_visible():
     assert "overlay.remove()" not in source
 
 
-def test_assistant_is_real_api_client_without_suggestion_autosubmit():
+def test_assistant_is_bound_to_workspace_without_suggestion_autosubmit():
     source = Path(
         "hhs_gui/runtime_os/assistant/RuntimeAssistantPanel.tsx"
     ).read_text(encoding="utf-8")
     assert 'requestJson("/api/assistant/health")' in source
     assert 'requestJson("/api/assistant/chat"' in source
-    assert "No assistant response or runtime mutation was fabricated" in source
+    assert "workspace_surface" in source
+    assert "source_object_id" in source
+    assert "artifact_id" in source
+    assert "No response or runtime mutation was fabricated" in source
     assert "Suggestion" not in source
-    assert "setInput(\"Explain" not in source
+    assert 'setInput("Explain' not in source
 
 
-def test_live_capability_panel_calls_canonical_backend():
+def test_runtime_projection_is_deferred_and_bounded():
     source = Path(
-        "hhs_gui/runtime_os/capability/LiveBackendCapabilityPanel.tsx"
+        "hhs_gui/runtime_os/core/LiveRuntimeProjectionPanel.tsx"
     ).read_text(encoding="utf-8")
-    for endpoint in [
-        "/api/runtime/canonical-observer/status",
-        "/api/runtime/capability/status",
-        "/api/runtime/capability/contracts",
-        "/api/runtime/capability/providers",
-        "/api/runtime/capability/resolve",
-        "/api/runtime/document/perception/status",
-        "/v1/modalities/language/models/word2vec/status",
-    ]:
-        assert endpoint in source
+    assert "1500" in source
+    assert "Loaded only while the Runtime tab is active" in source
+    assert "250" not in source
 
 
 def test_provider_hierarchy_uses_gemma_then_native_hhs_without_canned_demo():

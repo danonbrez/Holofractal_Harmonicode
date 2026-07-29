@@ -1,192 +1,63 @@
-import {
-    defineConfig
-} from "vite"
-
+import { defineConfig } from "vite"
 import react from "@vitejs/plugin-react"
 
-// =========================================================
-// HHS Runtime Vite Config
-// =========================================================
-//
-// IMPORTANT
-// ---------------------------------------------------------
-// Runtime applications may be:
-//
-//   - optional
-//   - experimental
-//   - dynamically discovered
-//
-// DO NOT aggressively pre-bundle
-// runtime application surfaces.
-//
-// Runtime authority belongs to:
-//
-//   backend runtime
-//   websocket runtime transport
-//   runtime_event_schema.py
-//
-// =========================================================
-
 export default defineConfig({
+  plugins: [react()],
 
-    plugins: [
-
-        react()
-    ],
-
-    // =====================================================
-    // Dev Server
-    // =====================================================
-
-    server: {
-
-        host: "0.0.0.0",
-
-        port: 5173,
-
-        strictPort: false,
-
-        cors: true,
-
-        proxy: {
-
-            // -------------------------------------------------
-            // Runtime API
-            // -------------------------------------------------
-
-            "/api": {
-
-                target:
-                    "http://127.0.0.1:8000",
-
-                changeOrigin: true,
-
-                secure: false
-            },
-
-            // -------------------------------------------------
-            // Runtime WS
-            // -------------------------------------------------
-
-            "/ws": {
-
-                target:
-                    "ws://127.0.0.1:8000",
-
-                ws: true,
-
-                changeOrigin: true,
-
-                secure: false
-            }
-        }
+  server: {
+    host: "0.0.0.0",
+    port: 5173,
+    strictPort: false,
+    cors: true,
+    proxy: {
+      "/api": {
+        target: "http://127.0.0.1:8000",
+        changeOrigin: true,
+        secure: false,
+      },
+      "/v1": {
+        target: "http://127.0.0.1:8000",
+        changeOrigin: true,
+        secure: false,
+      },
+      "/ws": {
+        target: "ws://127.0.0.1:8000",
+        ws: true,
+        changeOrigin: true,
+        secure: false,
+      },
     },
+  },
 
-    // =====================================================
-    // Preview
-    // =====================================================
+  preview: {
+    host: "0.0.0.0",
+    port: 4173,
+  },
 
-    preview: {
+  optimizeDeps: {
+    include: ["react", "react-dom/client"],
+  },
 
-        host: "0.0.0.0",
-
-        port: 4173
+  build: {
+    target: "es2018",
+    cssTarget: "chrome61",
+    modulePreload: { polyfill: true },
+    sourcemap: true,
+    chunkSizeWarningLimit: 2400,
+    rollupOptions: {
+      output: {
+        manualChunks: undefined,
+      },
     },
+  },
 
-    // =====================================================
-    // OptimizeDeps
-    // =====================================================
+  resolve: {
+    // State/orchestration classes use .ts; React views use .tsx. Resolve the
+    // class module first so a same-stem view can never replace a constructor.
+    extensions: [".ts", ".tsx", ".jsx", ".js", ".json"],
+  },
 
-    optimizeDeps: {
-
-        // -------------------------------------------------
-        // IMPORTANT
-        // -------------------------------------------------
-        //
-        // Prevent Vite from attempting
-        // aggressive static optimization
-        // against optional runtime apps.
-        //
-        // Dynamic imports use:
-        //
-        //     /* @vite-ignore */
-        //
-        // but optimizeDeps can still
-        // attempt partial graph resolution.
-        //
-        // -------------------------------------------------
-
-        exclude: [
-
-            // Breadboard
-            "../../runtime_apps/breadboard/HHSRuntimeBreadboard",
-            "../../runtime_apps/breadboard/HHSRuntimeTransportOverlay",
-
-            // Calculator
-            "../../runtime_apps/calculator/HHSCalculatorSurface",
-            "../../runtime_apps/calculator/HHSCalculatorGraphProjection",
-
-            // Instruments
-            "../../runtime_apps/instruments/ReceiptInspector",
-            "../../runtime_apps/instruments/ReplayTimeline"
-        ]
-    },
-
-    // =====================================================
-    // Build
-    // =====================================================
-
-    build: {
-
-        target: "esnext",
-
-        sourcemap: true,
-
-        chunkSizeWarningLimit: 2000,
-
-        rollupOptions: {
-
-            output: {
-
-                manualChunks: {
-
-                    react: [
-
-                        "react",
-
-                        "react-dom"
-                    ]
-                }
-            }
-        }
-    },
-
-    // =====================================================
-    // Resolve
-    // =====================================================
-
-    resolve: {
-
-        extensions: [
-
-            ".tsx",
-
-            ".ts",
-
-            ".jsx",
-
-            ".js",
-
-            ".json"
-        ]
-    },
-
-    // =====================================================
-    // Define
-    // =====================================================
-
-    define: {
-
-        __HHS_RUNTIME__: true
-    }
+  define: {
+    __HHS_RUNTIME__: true,
+  },
 })

@@ -1,11 +1,11 @@
-import{j as n}from"./index-37jiYqeX.js";import"./react-D3F3s8fL.js";const o=({className:e})=>n.jsxs("div",{className:`
+import{j as n}from"./main-BzENKgnW.js";import"./index-w4d0Ryph.js";const o=({className:e})=>n.jsxs("div",{className:`
                 w-full
                 h-full
                 bg-neutral-950
                 text-cyan-400
                 overflow-hidden
                 relative
-                ${e??""}
+                ${e!=null?e:""}
                 `,children:[n.jsx("div",{className:`
                     absolute
                     inset-0
@@ -112,7 +112,7 @@ import{j as n}from"./index-37jiYqeX.js";import"./react-D3F3s8fL.js";const o=({cl
                                     text-cyan-700
                                     text-[10px]
                                     font-mono
-                                `,children:"websocket_projection"})]})})]})})]}),t=({title:e,state:s})=>{const r=(()=>{switch(s){case"online":return"bg-emerald-500";case"pending":return"bg-yellow-500";case"offline":return"bg-red-500";default:return"bg-neutral-500"}})();return n.jsxs("div",{className:`
+                                `,children:"websocket_projection"})]})})]})})]}),t=({title:e,state:r})=>{const s=(()=>{switch(r){case"online":return"bg-emerald-500";case"pending":return"bg-yellow-500";case"offline":return"bg-red-500";default:return"bg-neutral-500"}})();return n.jsxs("div",{className:`
                 w-40
                 rounded-xl
                 border
@@ -132,6 +132,6 @@ import{j as n}from"./index-37jiYqeX.js";import"./react-D3F3s8fL.js";const o=({cl
                     w-3
                     h-3
                     rounded-full
-                    ${r}
+                    ${s}
                 `})]})};export{o as HHSRuntimeBreadboard,o as default};
-//# sourceMappingURL=HHSRuntimeBreadboard-U4DrBR4M.js.map
+//# sourceMappingURL=HHSRuntimeBreadboard-BUe2t6UY.js.map
