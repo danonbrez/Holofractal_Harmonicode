@@ -1,8 +1,9 @@
-"""Governed LiteRT-LM / Gemma 4 conversational thread interface for HHS.
+"""Governed LiteRT-LM-compatible conversational thread interface for HHS.
 
-The model is a local capability provider. It never owns canonical HHS state and
-cannot mutate VM81 directly. Every completed model turn is wrapped in an HHS
-provider invocation receipt and re-enters the universal provider-result ingress.
+A provider is a capability projection only. It never owns canonical HHS state,
+cannot mutate VM81 directly, and every completed turn re-enters the HHS provider
+receipt and result-ingress pipeline. The service accepts either the external
+Gemma/LiteRT transport or a repository-native LiteRT-compatible HHS provider.
 """
 from __future__ import annotations
 
@@ -95,10 +96,14 @@ class LiteRTLMConfig:
 
 
 class LiteRTLMTransport:
-    """Minimal stdlib client for `litert-lm serve` OpenAI-compatible endpoints."""
+    """Minimal stdlib client for LiteRT-LM OpenAI-compatible endpoints."""
+
+    provider_id = PROVIDER_ID
+    requested_operation = "litert_lm.chat_completion"
 
     def __init__(self, config: LiteRTLMConfig):
         self.config = config
+        self.model_id = config.model_id
 
     def _request_sync(
         self,
@@ -167,13 +172,15 @@ class LiteRTLMTransport:
 class ConversationThreadStore:
     """Bounded in-memory projection store with a Hash72-linked message chain."""
 
-    def __init__(self, config: LiteRTLMConfig):
+    def __init__(self, config: LiteRTLMConfig, *, provider_id: str = PROVIDER_ID):
         self.config = config
+        self.provider_id = str(provider_id)
         self._threads: Dict[str, Dict[str, Any]] = {}
         self._order: List[str] = []
         self._lock = threading.RLock()
 
-    def _thread_projection(self, thread: Mapping[str, Any]) -> Dict[str, Any]:
+    @staticmethod
+    def _thread_projection(thread: Mapping[str, Any]) -> Dict[str, Any]:
         return json.loads(json.dumps(dict(thread), ensure_ascii=False, default=str))
 
     def create(
@@ -195,7 +202,7 @@ class ConversationThreadStore:
                 "project_id": project_id,
                 "title": title,
                 "model_id": self.config.model_id,
-                "provider_id": PROVIDER_ID,
+                "provider_id": self.provider_id,
                 "messages": [],
                 "message_count": 0,
                 "created_at_unix_ms": _now_ms(),
@@ -285,10 +292,27 @@ class HHSAssistantService:
         self,
         config: Optional[LiteRTLMConfig] = None,
         transport: Optional[Any] = None,
+        *,
+        provider_id: Optional[str] = None,
+        requested_operation: Optional[str] = None,
+        thread_store: Optional[ConversationThreadStore] = None,
     ):
         self.config = config or LiteRTLMConfig.from_env()
         self.transport = transport or LiteRTLMTransport(self.config)
-        self.threads = ConversationThreadStore(self.config)
+        self.provider_id = str(
+            provider_id
+            or getattr(self.transport, "provider_id", None)
+            or PROVIDER_ID
+        )
+        self.requested_operation = str(
+            requested_operation
+            or getattr(self.transport, "requested_operation", None)
+            or "litert_lm.chat_completion"
+        )
+        self.threads = thread_store or ConversationThreadStore(
+            self.config,
+            provider_id=self.provider_id,
+        )
 
     def create_thread(
         self,
@@ -298,19 +322,30 @@ class HHSAssistantService:
         metadata: Optional[Mapping[str, Any]] = None,
     ) -> Dict[str, Any]:
         return self.threads.create(
-            project_id=project_id, title=title, metadata=metadata
+            project_id=project_id,
+            title=title,
+            metadata=metadata,
         )
+
+    @staticmethod
+    def _registered_model_ids(models: Mapping[str, Any]) -> set[str]:
+        return {
+            str(item.get("id"))
+            for item in (models.get("data") or [])
+            if isinstance(item, Mapping) and item.get("id")
+        }
 
     def status(self) -> Dict[str, Any]:
         status = {
             "schema": STATUS_SCHEMA,
             "version": VERSION,
             "ok": True,
-            "provider_id": PROVIDER_ID,
+            "provider_id": self.provider_id,
             "model_id": self.config.model_id,
             "base_url": self.config.base_url,
             "thread_count": len(self.threads.list()),
             "openai_compatible_endpoints": ["/v1/models", "/v1/chat/completions"],
+            "requested_operation": self.requested_operation,
             "direct_vm81_mutation_allowed": False,
             "provider_result_ingress_required": True,
             "authority": AUTHORITY,
@@ -321,17 +356,32 @@ class HHSAssistantService:
     async def health(self) -> Dict[str, Any]:
         try:
             models = await self.transport.list_models()
+            model_ids = self._registered_model_ids(models)
+            model_ready = self.config.model_id in model_ids
             return {
                 **self.status(),
-                "online": True,
+                "ok": model_ready,
+                "online": model_ready,
                 "models": models,
-                "status": "LITERT_LM_ONLINE",
+                "registered_model_ids": sorted(model_ids),
+                "configured_model_registered": model_ready,
+                "status": (
+                    "LITERT_LM_MODEL_READY"
+                    if model_ready
+                    else "LITERT_LM_MODEL_NOT_REGISTERED"
+                ),
+                "error": (
+                    None
+                    if model_ready
+                    else f"configured model {self.config.model_id!r} is not registered"
+                ),
             }
         except Exception as exc:
             return {
                 **self.status(),
                 "ok": False,
                 "online": False,
+                "configured_model_registered": False,
                 "status": "LITERT_LM_OFFLINE",
                 "error": str(exc),
             }
@@ -372,25 +422,17 @@ class HHSAssistantService:
             "response_id": raw.get("id"),
         }
 
-    async def send_message(
+    async def _execute_turn(
         self,
         thread_id: str,
         *,
-        content: str,
+        user_message: Mapping[str, Any],
         tools: Optional[List[Mapping[str, Any]]] = None,
         response_format: Optional[Mapping[str, Any]] = None,
     ) -> Dict[str, Any]:
-        if not str(content).strip():
-            raise ValueError("message content must not be empty")
         thread = self.threads.get(thread_id)
         if not thread:
             raise KeyError(thread_id)
-
-        user_message = self.threads.append(
-            thread_id, role="user", content=str(content)
-        )
-        thread = self.threads.get(thread_id)
-        assert thread is not None
 
         proposal = build_provider_execution_proposal(
             capability_class="TEXT_GENERATION",
@@ -399,9 +441,9 @@ class HHSAssistantService:
                 "thread_id": thread_id,
                 "message_root_hash72": user_message["message_root_hash72"],
             },
-            requested_operation="litert_lm.chat_completion",
+            requested_operation=self.requested_operation,
             constraints={
-                "provider_id": PROVIDER_ID,
+                "provider_id": self.provider_id,
                 "model_id": self.config.model_id,
                 "direct_mutation_allowed": False,
             },
@@ -415,7 +457,7 @@ class HHSAssistantService:
                 "ok": False,
                 "status": "REJECT_LITERT_LM_PROVIDER_INVOCATION",
                 "thread_id": thread_id,
-                "user_message": user_message,
+                "user_message": dict(user_message),
                 "proposal": proposal,
                 "proposal_validation": proposal_validation,
                 "policy_gate_decision": policy,
@@ -439,7 +481,7 @@ class HHSAssistantService:
                 "ok": False,
                 "status": "LITERT_LM_TRANSPORT_ERROR",
                 "thread_id": thread_id,
-                "user_message": user_message,
+                "user_message": dict(user_message),
                 "proposal": proposal,
                 "proposal_validation": proposal_validation,
                 "policy_gate_decision": policy,
@@ -454,7 +496,7 @@ class HHSAssistantService:
             proposal,
             simulated_raw_result={
                 "schema": "HHS_LITERT_LM_RAW_COMPLETION_V1",
-                "provider_id": PROVIDER_ID,
+                "provider_id": self.provider_id,
                 "model_id": completion.get("model") or self.config.model_id,
                 **completion,
             },
@@ -471,10 +513,13 @@ class HHSAssistantService:
             content=completion["content"],
             tool_calls=completion["tool_calls"],
             admission={
-                "provider_invocation_receipt_hash72":
-                    receipt.get("provider_invocation_receipt_hash72"),
-                "provider_result_ingress_root_hash72":
-                    ingress.get("provider_result_ingress_root_hash72"),
+                "provider_id": self.provider_id,
+                "provider_invocation_receipt_hash72": receipt.get(
+                    "provider_invocation_receipt_hash72"
+                ),
+                "provider_result_ingress_root_hash72": ingress.get(
+                    "provider_result_ingress_root_hash72"
+                ),
                 "provider_result_ingress_ok": bool(ingress.get("ok")),
                 "runtime_mutation_admitted": False,
             },
@@ -489,7 +534,7 @@ class HHSAssistantService:
                 else "PROJECT_LITERT_LM_TURN_WITH_INGRESS_REJECTION"
             ),
             "thread_id": thread_id,
-            "user_message": user_message,
+            "user_message": dict(user_message),
             "assistant_message": assistant_message,
             "proposal": proposal,
             "proposal_validation": proposal_validation,
@@ -504,8 +549,58 @@ class HHSAssistantService:
         result["turn_root_hash72"] = hash72(TURN_SCHEMA, result)
         return result
 
+    async def send_message(
+        self,
+        thread_id: str,
+        *,
+        content: str,
+        tools: Optional[List[Mapping[str, Any]]] = None,
+        response_format: Optional[Mapping[str, Any]] = None,
+    ) -> Dict[str, Any]:
+        if not str(content).strip():
+            raise ValueError("message content must not be empty")
+        if not self.threads.get(thread_id):
+            raise KeyError(thread_id)
+        user_message = self.threads.append(
+            thread_id,
+            role="user",
+            content=str(content),
+        )
+        return await self._execute_turn(
+            thread_id,
+            user_message=user_message,
+            tools=tools,
+            response_format=response_format,
+        )
+
+    async def continue_message(
+        self,
+        thread_id: str,
+        *,
+        user_message: Mapping[str, Any],
+        tools: Optional[List[Mapping[str, Any]]] = None,
+        response_format: Optional[Mapping[str, Any]] = None,
+    ) -> Dict[str, Any]:
+        if not self.threads.get(thread_id):
+            raise KeyError(thread_id)
+        if (
+            user_message.get("thread_id") != thread_id
+            or user_message.get("role") != "user"
+            or not user_message.get("message_root_hash72")
+        ):
+            raise ValueError("existing user message is not a witnessed message for this thread")
+        return await self._execute_turn(
+            thread_id,
+            user_message=user_message,
+            tools=tools,
+            response_format=response_format,
+        )
+
 
 class _SelfTestTransport:
+    provider_id = PROVIDER_ID
+    requested_operation = "litert_lm.chat_completion"
+
     async def list_models(self) -> Dict[str, Any]:
         return {"object": "list", "data": [{"id": "gemma-4-E2B-it"}]}
 
@@ -528,9 +623,7 @@ def litert_lm_assistant_self_test() -> Dict[str, Any]:
     config = LiteRTLMConfig(max_messages_per_thread=8, max_threads=4)
     service = HHSAssistantService(config=config, transport=_SelfTestTransport())
     thread = service.create_thread(project_id="project:self-test")
-    turn = asyncio.run(
-        service.send_message(thread["thread_id"], content="status")
-    )
+    turn = asyncio.run(service.send_message(thread["thread_id"], content="status"))
     health = asyncio.run(service.health())
     ok = bool(
         turn.get("assistant_message", {}).get("message_root_hash72")
@@ -557,9 +650,4 @@ DEFAULT_ASSISTANT_SERVICE = HHSAssistantService()
 
 
 if __name__ == "__main__":
-    print(json.dumps(
-        litert_lm_assistant_self_test(),
-        indent=2,
-        sort_keys=True,
-        default=str,
-    ))
+    print(json.dumps(litert_lm_assistant_self_test(), indent=2, sort_keys=True, default=str))
