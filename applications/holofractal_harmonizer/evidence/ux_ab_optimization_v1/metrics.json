@@ -1,0 +1,99 @@
+{
+  "schema": "HHS_VISUAL_IDE_AB_USABILITY_METRICS_V1",
+  "method": "parallel_scripted_task_trials_same_executable_backends",
+  "workflows": {
+    "code_api": {
+      "A": {
+        "success": true,
+        "action_count": 8,
+        "context_switches": 4,
+        "completion_ms": 4384,
+        "backend_elapsed_ms": 519.32
+      },
+      "B": {
+        "success": true,
+        "action_count": 4,
+        "context_switches": 1,
+        "completion_ms": 2686,
+        "backend_elapsed_ms": 519.74
+      }
+    },
+    "data_dashboard": {
+      "A": {
+        "success": true,
+        "action_count": 8,
+        "context_switches": 4,
+        "completion_ms": 4502,
+        "backend_elapsed_ms": 0.38
+      },
+      "B": {
+        "success": true,
+        "action_count": 4,
+        "context_switches": 1,
+        "completion_ms": 2727,
+        "backend_elapsed_ms": 0.13
+      }
+    },
+    "document_knowledge": {
+      "A": {
+        "success": true,
+        "action_count": 8,
+        "context_switches": 4,
+        "completion_ms": 4332,
+        "backend_elapsed_ms": 0.25
+      },
+      "B": {
+        "success": true,
+        "action_count": 4,
+        "context_switches": 1,
+        "completion_ms": 2664,
+        "backend_elapsed_ms": 0.15,
+        "observed_issue_fixed": "Added internal workspace scrolling and 88px footer clearance after initial pointer interception evidence"
+      }
+    },
+    "image_spatial": {
+      "A": {
+        "success": true,
+        "action_count": 8,
+        "context_switches": 4,
+        "completion_ms": 4422,
+        "backend_elapsed_ms": 0.27
+      },
+      "B": {
+        "success": true,
+        "action_count": 4,
+        "context_switches": 1,
+        "completion_ms": 2682,
+        "backend_elapsed_ms": 0.18
+      }
+    }
+  },
+  "summary": {
+    "A": {
+      "success_rate": 1.0,
+      "mean_action_count": 8,
+      "mean_context_switches": 4,
+      "mean_completion_ms": 4410,
+      "median_completion_ms": 4403.0
+    },
+    "B": {
+      "success_rate": 1.0,
+      "mean_action_count": 4,
+      "mean_context_switches": 1,
+      "mean_completion_ms": 2689.75,
+      "median_completion_ms": 2684.0
+    },
+    "relative_change_B_vs_A": {
+      "actions_percent": -50.0,
+      "context_switches_percent": -75.0,
+      "completion_time_percent": -39.0
+    }
+  },
+  "recommended_default": "WORKFLOW_FIRST_PROGRESSIVE_DISCLOSURE",
+  "limitations": [
+    "Not a recruited-human usability study",
+    "Timing includes fixed scripted think pauses",
+    "Artifact validation is real local execution but is not a canonical VM81 mutation receipt",
+    "Screenshots can reveal visual and interaction risks but do not establish complete accessibility compliance"
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "schema": "HHS_VISUAL_IDE_AB_COMPLETION_RECEIPT_V1",
+  "classification": "HHS_VISUAL_IDE_WORKFLOW_FIRST_DEFAULT_RECOMMENDED",
+  "terminal_claimed": false,
+  "human_study_claimed": false,
+  "canonical_vm81_mutation_receipt_claimed": false,
+  "scripted_trial_successes": 8,
+  "scripted_trial_total": 8,
+  "mean_action_reduction_percent": 50.0,
+  "mean_context_switch_reduction_percent": 75.0,
+  "mean_scripted_completion_time_reduction_percent": 39.0,
+  "known_issue_repaired": "LONG_WORKFLOW_FOOTER_POINTER_COLLISION",
+  "manifest_sha256": "507cebca6151e10fea61a2d032d23e639a1905a329a73990d697f15387a6b84e",
+  "authority_change": "NONE",
+  "binary_capture_storage": "CI_ARTIFACT_AND_LOCAL_HANDOFF",
+  "repository_tracks_binary_captures": false
+}
