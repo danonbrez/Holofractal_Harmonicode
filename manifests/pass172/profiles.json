@@ -1,0 +1,55 @@
+{
+  "schema": "HHS_PASS_172_PROFILE_MANIFEST_V1",
+  "contract_id": "HHS-P172-UCEOCI-DRVBRAS",
+  "profiles": {
+    "core": {
+      "requirements": ["requirements-core.txt"],
+      "included": ["canonical Python runtime", "native HHS C ABI", "VM81 executable", "HARMONICODE runtime surfaces", "Hash72", "Hash216", "CLI", "runtime schemas"],
+      "excluded": ["Node.js", "LiteRT-LM", "model assets", "GPU", "Vulkan", "Android toolchain", "test and formatter tools"]
+    },
+    "runtime": {
+      "inherits": ["core"],
+      "requirements": ["requirements-runtime.txt"],
+      "included": ["FastAPI", "WebSocket runtime", "visual server", "static Pass 161 interface", "persistent runtime directories", "assistant degraded state"]
+    },
+    "assistant-external": {
+      "inherits": ["runtime"],
+      "requirements": ["requirements-runtime.txt"],
+      "included": ["protected external provider configuration", "model registry verification", "provider health validation"],
+      "excluded": ["local LiteRT-LM", "local model assets", "GPU driver installation"]
+    },
+    "assistant-local-cpu": {
+      "inherits": ["runtime"],
+      "requirements": ["requirements-provider-litert-lm.txt"],
+      "included": ["isolated LiteRT-LM", "local CPU provider", "optional model governance"]
+    },
+    "assistant-local-gpu": {
+      "inherits": ["runtime"],
+      "requirements": ["requirements-provider-litert-lm.txt"],
+      "included": ["physical accelerator verification", "Vulkan or Metal verification", "LiteRT-LM local provider", "model governance"],
+      "nonclaims": ["GPU hardware installation", "universal vendor driver installation", "kernel device access creation", "GPU passthrough creation"]
+    },
+    "developer": {
+      "inherits": ["runtime"],
+      "requirements": ["requirements-dev.txt", "requirements-test.txt"],
+      "included": ["Node.js 22+", "npm", "frontend build", "browser testing", "formatters", "diagnostics", "optional FFmpeg"]
+    },
+    "android-build": {
+      "inherits": ["core"],
+      "requirements": ["requirements-android-tools.txt"],
+      "included": ["JDK", "Android SDK", "Android NDK", "CMake", "Gradle", "JNI validation", "APK/AAB receipt"]
+    },
+    "container": {
+      "inherits": ["runtime"],
+      "included": ["OCI build adapter", "non-root runtime", "explicit persistent state mounts", "external-provider mode"]
+    },
+    "offline": {
+      "included": ["verified local source", "verified dependency cache", "verified native assets", "optional verified model assets"],
+      "network_fallback": false
+    },
+    "auto": {
+      "resolution_order": ["assistant-local-gpu", "assistant-local-cpu", "assistant-external", "runtime", "core"],
+      "deterministic": true
+    }
+  }
+}
