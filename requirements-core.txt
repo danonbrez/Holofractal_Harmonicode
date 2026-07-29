@@ -1,0 +1,9 @@
+# Pass 172 core profile: exact runtime, identity, CLI, schemas.
+pydantic>=2.7,<3.0
+cryptography>=46.0,<47.0
+orjson>=3.10,<4.0
+pyyaml>=6.0,<7.0
+rich>=13.7,<14.0
+click>=8.1,<9.0
+typer>=0.12,<1.0
+typing-extensions>=4.12,<5.0
