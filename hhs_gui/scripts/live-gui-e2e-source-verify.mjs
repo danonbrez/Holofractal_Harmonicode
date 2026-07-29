@@ -5,14 +5,10 @@ const files = {
   runtimeOS: "runtime_os/core/RuntimeOS.ts",
   windowManager: "runtime_os/core/RuntimeWindowManager.ts",
   projectionPanel: "runtime_os/core/LiveRuntimeProjectionPanel.tsx",
-  commandClient: "runtime_os/core/RuntimeCommandClient.ts",
-  commandPanel: "runtime_os/core/RuntimeCommandPanel.tsx",
-  mutationClient: "runtime_os/core/RuntimeMutationClient.ts",
-  mutationPanel: "runtime_os/core/RuntimeMutationPanel.tsx",
   canonicalIDE: "runtime_os/core/CanonicalRuntimeIDE.tsx",
   workspace: "runtime_os/workspace/HHSWorkspaceShell.tsx",
   assistant: "runtime_os/assistant/RuntimeAssistantPanel.tsx",
-  capability: "runtime_os/capability/LiveBackendCapabilityPanel.tsx",
+  commandClient: "runtime_os/workspace/WorkspaceCommandClient.ts",
   vite: "vite.config.ts",
 }
 
@@ -28,55 +24,49 @@ for (const channel of ["runtime", "replay", "graph", "transport"]) {
   assert(content.projectionPanel.includes(channel), `LiveRuntimeProjectionPanel missing ${channel}`)
 }
 
-for (const token of ["HHS_LIVE_GUI_COMMAND_ENVELOPE_V1", "/api/runtime/gui/command", "requires_admissibility", "REQUEST_ONLY_NO_DIRECT_MUTATION"]) {
-  assert(content.commandClient.includes(token) || content.commandPanel.includes(token), `GUI command path missing ${token}`)
-}
-
-for (const token of ["AUTHORIZED_MUTATION", "runtime-mutation-panel", "pre_state_hash72", "transformation_hash72", "post_state_hash72", "NO_UI_EVENT_AS_TRUTH"]) {
-  assert(content.mutationClient.includes(token) || content.mutationPanel.includes(token), `GUI mutation path missing ${token}`)
-}
-
-assert(content.projectionPanel.includes("GUI projection only"), "projection panel does not declare projection-only role")
-assert(content.commandPanel.includes("GUI may request; kernel decides"), "command panel does not declare request-only command doctrine")
-assert(content.canonicalIDE.includes("LiveRuntimeProjectionPanel"), "CanonicalRuntimeIDE does not mount LiveRuntimeProjectionPanel")
-assert(content.canonicalIDE.includes("RuntimeCommandPanel"), "CanonicalRuntimeIDE does not mount RuntimeCommandPanel")
-assert(content.canonicalIDE.includes("RuntimeMutationPanel"), "CanonicalRuntimeIDE does not mount RuntimeMutationPanel")
+assert(content.projectionPanel.includes("1500"), "live projection refresh is not production-bounded")
+assert(content.projectionPanel.includes("Loaded only while the Runtime tab is active"), "runtime diagnostics are not deferred")
 assert(content.canonicalIDE.includes("HHSWorkspaceShell"), "CanonicalRuntimeIDE does not mount HHSWorkspaceShell")
-assert(content.vite.includes('"/ws"') && content.vite.includes("ws: true"), "Vite websocket proxy missing")
-assert(!content.socket.includes("NODE_DEMO_STUB"), "socket manager contains Node demo authority")
+assert(!content.canonicalIDE.includes("RuntimeCommandPanel"), "isolated runtime command panel remains public")
+assert(!content.canonicalIDE.includes("RuntimeMutationPanel"), "isolated runtime mutation panel remains public")
+
+for (const endpoint of [
+  "/api/runtime/workspace/session",
+  "/api/runtime/workspace/command",
+  "/api/runtime/live/tick",
+]) {
+  assert(`${content.workspace}\n${content.commandClient}`.includes(endpoint), `integrated workspace missing ${endpoint}`)
+}
+
+for (const operation of [
+  "project.create",
+  "ingress.register",
+  "interpret.execute",
+  "compile.execute",
+  "emulator.create",
+]) {
+  assert(content.workspace.includes(operation), `integrated workspace missing ${operation}`)
+}
+
+for (const token of [
+  "/api/assistant/health",
+  "/api/assistant/chat",
+  "workspace_surface",
+  "source_object_id",
+  "artifact_id",
+]) {
+  assert(content.assistant.includes(token), `assistant integration missing ${token}`)
+}
 
 assert(content.windowManager.includes("export class RuntimeWindowManager"), "RuntimeWindowManager is not a constructible state class")
 assert(content.runtimeOS.includes("new RuntimeWindowManager"), "RuntimeOS does not instantiate the state manager")
-assert(
-  !fs.existsSync(new URL("../runtime_os/core/RuntimeWindowManager.tsx", import.meta.url)),
-  "same-stem RuntimeWindowManager.tsx would shadow the state manager constructor",
-)
-assert(
-  content.vite.indexOf('".ts"') < content.vite.indexOf('".tsx"'),
-  "Vite must resolve .ts state modules before .tsx view modules",
-)
-
-for (const endpoint of [
-  "/api/assistant/health",
-  "/api/assistant/chat",
-  "/api/runtime/canonical-observer/status",
-  "/api/runtime/capability/status",
-  "/api/runtime/capability/contracts",
-  "/api/runtime/capability/providers",
-  "/api/runtime/capability/resolve",
-  "/api/runtime/document/perception/status",
-  "/v1/modalities/language/models/word2vec/status",
-]) {
-  const livePanels = `${content.assistant}\n${content.capability}`
-  assert(livePanels.includes(endpoint), `canonical IDE missing live endpoint ${endpoint}`)
-}
-
-for (const token of ["RuntimeAssistantPanel", "LiveBackendCapabilityPanel", "HHSSymbolicEditor", "CompilerWorkbench", "EmulatorControlPanel", "ReceiptLedgerInspector"]) {
-  assert(content.workspace.includes(token), `HHSWorkspaceShell missing integrated surface ${token}`)
-}
+assert(!fs.existsSync(new URL("../runtime_os/core/RuntimeWindowManager.tsx", import.meta.url)), "same-stem RuntimeWindowManager.tsx would shadow the state manager constructor")
+assert(content.vite.indexOf('".ts"') < content.vite.indexOf('".tsx"'), "Vite must resolve .ts state modules before .tsx view modules")
+assert(content.vite.includes('"/ws"') && content.vite.includes("ws: true"), "Vite websocket proxy missing")
+assert(!content.socket.includes("NODE_DEMO_STUB"), "socket manager contains Node demo authority")
 
 for (const forbidden of ["ProductionApp", "runtime_application_missing", "detached deployment mode"]) {
-  const publicSources = `${content.canonicalIDE}\n${content.workspace}\n${content.assistant}\n${content.capability}`
+  const publicSources = `${content.canonicalIDE}\n${content.workspace}\n${content.assistant}`
   assert(!publicSources.includes(forbidden), `obsolete public behavior leaked: ${forbidden}`)
 }
 
