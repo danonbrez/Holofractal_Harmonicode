@@ -56,12 +56,30 @@ def test_profile_matrix_checks_exclusions() -> None:
     assert result.classification == "P173_PROFILE_CLOSURE_MISMATCH"
 
 
-def test_clean_runner_captures_success_and_recovery_receipt(tmp_path: Path) -> None:
+def test_profile_matrix_requires_planned_dependencies_to_be_installed() -> None:
+    matrix = ProfileMatrix(
+        (
+            ProfileExpectation("core", ("core",), (), ("hhs",), "DISABLED"),
+        )
+    )
+    result = matrix.record(
+        "core",
+        included_dependencies=("core",),
+        installed_dependencies=(),
+        callable_surfaces=("hhs",),
+        provider_state="DISABLED",
+    )
+    assert result.included_match is False
+    assert result.classification == "P173_PROFILE_CLOSURE_MISMATCH"
+
+
+def test_clean_runner_captures_success_and_isolates_source(tmp_path: Path) -> None:
+    marker = tmp_path / "marker.txt"
     runner = CleanInstallRunner()
     result = runner.run(
         CleanInstallRequest(
             case_id="success",
-            command=(sys.executable, "-c", "print('ok')"),
+            command=(sys.executable, "-c", "from pathlib import Path; Path('marker.txt').write_text('isolated'); print('ok')"),
             repository_root=str(tmp_path),
             profile="core",
             platform="test",
@@ -72,7 +90,9 @@ def test_clean_runner_captures_success_and_recovery_receipt(tmp_path: Path) -> N
     try:
         assert result.status == "SUCCESS"
         assert result.exit_status == 0
-        assert result.recovery_receipt["worktree_clean"] is True
+        assert result.recovery_receipt["caller_worktree_untouched"] is True
+        assert result.recovery_receipt["isolated_source_changed"] is True
+        assert marker.exists() is False
         assert result.output_identity
     finally:
         runner.cleanup(result)
@@ -122,3 +142,9 @@ def test_verdict_requires_all_terminal_conditions() -> None:
     assert terminal.verdict is Verdict.A_PLUS
     assert terminal.terminal is True
     assert terminal.omega_173 is True
+
+
+def test_verdict_does_not_promote_redundant_lane_without_prerequisites() -> None:
+    result = VerdictEngine.classify(VerdictInput(redundant_lane_agreement=True))
+    assert result.verdict is Verdict.H
+    assert result.terminal is False
