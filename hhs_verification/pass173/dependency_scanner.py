@@ -6,6 +6,7 @@ from typing import Any, Iterable, Mapping
 import ast
 import json
 import re
+import sys
 
 from hhs_installer.canonical import hash216, stable
 
@@ -46,17 +47,15 @@ class NativeProjectRecord:
 
 
 class DependencyScanner:
-    STANDARD_LIBRARY = {
-        "abc", "argparse", "array", "ast", "asyncio", "base64", "binascii", "bisect", "builtins", "calendar",
-        "collections", "concurrent", "contextlib", "copy", "csv", "ctypes", "dataclasses", "datetime", "decimal",
-        "difflib", "dis", "email", "enum", "errno", "fcntl", "fnmatch", "fractions", "functools", "gc", "getpass",
-        "glob", "gzip", "hashlib", "heapq", "hmac", "html", "http", "importlib", "inspect", "io", "ipaddress",
-        "itertools", "json", "logging", "lzma", "math", "mimetypes", "multiprocessing", "operator", "os", "pathlib",
-        "pickle", "pkgutil", "platform", "plistlib", "pprint", "queue", "random", "re", "resource", "secrets",
-        "select", "selectors", "shlex", "shutil", "signal", "socket", "sqlite3", "ssl", "stat", "statistics", "string",
-        "struct", "subprocess", "sys", "tarfile", "tempfile", "textwrap", "threading", "time", "timeit", "traceback",
-        "types", "typing", "unicodedata", "unittest", "urllib", "uuid", "venv", "warnings", "wave", "weakref", "xml",
-        "zipfile", "zoneinfo"
+    STANDARD_LIBRARY = frozenset(getattr(sys, "stdlib_module_names", ())) | {
+        "__future__",
+        "builtins",
+        "contextvars",
+        "fcntl",
+        "msvcrt",
+        "resource",
+        "winreg",
+        "zlib",
     }
 
     def __init__(self, repository_root: str | Path) -> None:
