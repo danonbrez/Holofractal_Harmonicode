@@ -1,15 +1,18 @@
-name: Build HHS Runtime OS frontend
+name: Build HHS Canonical Visual Runtime OS
 
 on:
   push:
     branches: [main]
     paths:
       - "hhs_gui/**"
-      - "hhs_backend/heroku_server.py"
+      - "hhs_backend/server.py"
+      - "hhs_backend/production_server.py"
       - "hhs_backend/api/litert_lm_assistant_routes.py"
+      - "hhs_backend/api/pass166_word2vec_routes.py"
       - "hhs_backend/runtime/hhs_production_assistant_v1.py"
-      - "hhs_backend/runtime/hhs_assistant_api_tool_gateway_v1.py"
+      - "hhs_backend/runtime/hhs_native_litert_lm_provider_v1.py"
       - "tests/test_hhs_production_public_app_v1.py"
+      - "Procfile"
       - "bin/post_compile"
       - ".github/workflows/hhs-runtime-os-deploy.yml"
       - "!hhs_gui/dist/**"
@@ -17,11 +20,14 @@ on:
     branches: [main]
     paths:
       - "hhs_gui/**"
-      - "hhs_backend/heroku_server.py"
+      - "hhs_backend/server.py"
+      - "hhs_backend/production_server.py"
       - "hhs_backend/api/litert_lm_assistant_routes.py"
+      - "hhs_backend/api/pass166_word2vec_routes.py"
       - "hhs_backend/runtime/hhs_production_assistant_v1.py"
-      - "hhs_backend/runtime/hhs_assistant_api_tool_gateway_v1.py"
+      - "hhs_backend/runtime/hhs_native_litert_lm_provider_v1.py"
       - "tests/test_hhs_production_public_app_v1.py"
+      - "Procfile"
       - "bin/post_compile"
       - ".github/workflows/hhs-runtime-os-deploy.yml"
       - "!hhs_gui/dist/**"
@@ -31,13 +37,13 @@ permissions:
   contents: write
 
 concurrency:
-  group: hhs-runtime-os-${{ github.event_name }}-${{ github.ref }}
+  group: hhs-canonical-runtime-os-${{ github.event_name }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
   build-runtime-os:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 25
 
     steps:
       - name: Check out source revision
@@ -50,10 +56,10 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Install production API test dependencies
+      - name: Install dependency-scoped backend test requirements
         run: |
-          python -m pip install --upgrade pip
-          python -m pip install \
+          timeout 300s python -m pip install --upgrade pip
+          timeout 300s python -m pip install \
             fastapi==0.128.2 \
             starlette==0.50.0 \
             'httpx>=0.27,<1.0' \
@@ -61,15 +67,36 @@ jobs:
 
       - name: Build native Hash72 runtime receipt authority
         run: |
-          bash bin/post_compile
+          timeout 600s bash bin/post_compile
           test -s hhs_runtime/builds/libhhs_runtime.so
 
-      - name: Validate production public APIs
+      - name: Validate canonical backend composition
         env:
           HHS_DISABLE_C_AUTOBUILD: "1"
           HHS_LITERT_LM_BACKEND: auto
           HHS_ASSISTANT_HEALTH_TIMEOUT_SECONDS: "0.1"
-        run: pytest -q tests/test_hhs_production_public_app_v1.py
+        run: |
+          timeout 300s pytest -q tests/test_hhs_production_public_app_v1.py
+          timeout 180s python - <<'PY'
+          from hhs_backend.production_server import app
+          from hhs_backend.server import server_self_test
+
+          paths = {str(getattr(route, "path", "")) for route in app.router.routes}
+          required = {
+              "/api/runtime/gui/command",
+              "/api/runtime/workspace/command",
+              "/api/runtime/capability/resolve",
+              "/api/runtime/document/perceive",
+              "/api/assistant/chat",
+              "/v1/modalities/language/models/word2vec/status",
+              "/ws/runtime",
+              "/",
+          }
+          missing = sorted(required - paths)
+          if missing:
+              raise SystemExit(f"missing canonical production routes: {missing}")
+          server_self_test()
+          PY
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -80,34 +107,40 @@ jobs:
 
       - name: Install frontend dependencies
         working-directory: hhs_gui
-        run: npm install --no-audit --no-fund
+        run: timeout 600s npm install --no-audit --no-fund
 
-      - name: Validate source contracts
+      - name: Validate canonical IDE source contracts
         working-directory: hhs_gui
         run: |
-          npm run test:e2e:source
-          npm run test:workspace:source
+          timeout 180s npm run test:e2e:source
+          timeout 180s npm run test:workspace:source
 
-      - name: Build deployable Runtime OS bundle
+      - name: Build deployable canonical Runtime OS bundle
         working-directory: hhs_gui
-        run: npm run build
+        run: timeout 600s npm run build
 
-      - name: Verify deployable entrypoint
+      - name: Verify canonical deployable entrypoint
         run: |
           test -s hhs_gui/dist/index.html
           test -d hhs_gui/dist/assets
-          grep -q "HHS Runtime OS" hhs_gui/dist/index.html
+          grep -q "HHS Visual Runtime OS Workspace" hhs_gui/dist/index.html
           grep -q "frontend_boot_timeout" hhs_gui/dist/index.html
-          grep -R -q "Production visual IDE · callable surfaces only" hhs_gui/dist/assets
+          grep -R -q "hhs-canonical-runtime-ide" hhs_gui/dist/assets
+          grep -R -q "runtime-assistant-panel" hhs_gui/dist/assets
+          grep -R -q "live-backend-capability-panel" hhs_gui/dist/assets
+          if grep -R -q "Production visual IDE · callable surfaces only" hhs_gui/dist/assets; then
+            echo "Replacement ProductionApp leaked into canonical bundle"
+            exit 1
+          fi
           if grep -R -q "runtime_application_missing" hhs_gui/dist/assets; then
-            echo "Legacy missing-module fallback leaked into production bundle"
+            echo "Missing-module placeholder leaked into canonical bundle"
             exit 1
           fi
 
-      - name: Upload Runtime OS bundle
+      - name: Upload canonical Runtime OS bundle
         uses: actions/upload-artifact@v4
         with:
-          name: hhs-runtime-os-dist
+          name: hhs-canonical-runtime-os-dist
           path: hhs_gui/dist
           if-no-files-found: error
           retention-days: 14
@@ -119,8 +152,8 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -f hhs_gui/dist
           if git diff --cached --quiet; then
-            echo "Runtime OS bundle is unchanged"
+            echo "Canonical Runtime OS bundle is unchanged"
             exit 0
           fi
-          git commit -m "build: publish HHS Runtime OS frontend bundle [skip ci]"
+          git commit -m "build: publish canonical HHS Runtime OS bundle [skip ci]"
           git push origin HEAD:main
