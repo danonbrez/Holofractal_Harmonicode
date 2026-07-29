@@ -55,7 +55,10 @@ jobs:
       - name: Run complete dependency-scoped matrix
         id: tests
         continue-on-error: true
-        run: timeout 420s python -m pytest -q tests/pass172 tests/pass173 | tee "$RUNNER_TEMP/pass172-173-pytest.log"
+        shell: bash
+        run: |
+          set -o pipefail
+          timeout 420s python -m pytest -q tests/pass172 tests/pass173 | tee "$RUNNER_TEMP/pass172-173-pytest.log"
 
       - name: Run read-only probe and plan
         id: smoke
