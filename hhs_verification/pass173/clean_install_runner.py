@@ -53,20 +53,57 @@ class CleanInstallResult:
 
 
 class CleanInstallRunner:
+    @staticmethod
+    def _tree_identity(root: Path) -> str:
+        records: list[dict[str, Any]] = []
+        for path in sorted(root.rglob("*")):
+            if path.is_file():
+                records.append(
+                    {
+                        "path": str(path.relative_to(root)).replace("\\", "/"),
+                        "size": path.stat().st_size,
+                        "mtime_ns": path.stat().st_mtime_ns,
+                    }
+                )
+        return hash216(records, domain="HHS-P173-CLEAN-SOURCE-TREE-V1")
+
+    @staticmethod
+    def _isolated_command(command: Sequence[str], original: Path, isolated: Path) -> list[str]:
+        result: list[str] = []
+        original_text = str(original)
+        for item in command:
+            value = str(item)
+            if value == original_text:
+                result.append(str(isolated))
+            elif value.startswith(original_text + os.sep):
+                result.append(str(isolated / Path(value).relative_to(original)))
+            else:
+                result.append(value)
+        return result
+
     def run(self, request: CleanInstallRequest) -> CleanInstallResult:
         repository_root = Path(request.repository_root).resolve()
         if not repository_root.is_dir():
             raise ValueError("P173_CLEAN_INSTALL_REPOSITORY_MISSING")
         workspace = Path(tempfile.mkdtemp(prefix=f"hhs-pass173-{request.case_id}-"))
+        isolated_source = workspace / "source"
+        shutil.copytree(
+            repository_root,
+            isolated_source,
+            symlinks=False,
+            ignore=shutil.ignore_patterns(".git", ".venv", "venv", "__pycache__", "*.pyc", "*.pyo"),
+        )
+        source_identity_before = self._tree_identity(isolated_source)
         hhs_home = workspace / "hhs-home"
         logs = workspace / "logs"
         logs.mkdir(parents=True)
         environment = {
             **os.environ,
             "HHS_HOME": str(hhs_home),
-            "PYTHONPATH": str(repository_root),
+            "PYTHONPATH": str(isolated_source),
             **dict(request.environment or {}),
         }
+        command = self._isolated_command(request.command, repository_root, isolated_source)
         started = time.monotonic_ns()
         exit_status: int | None = None
         timed_out = False
@@ -74,8 +111,8 @@ class CleanInstallRunner:
         stderr = ""
         try:
             completed = subprocess.run(
-                list(request.command),
-                cwd=str(repository_root),
+                command,
+                cwd=str(isolated_source),
                 check=False,
                 capture_output=True,
                 text=True,
@@ -100,6 +137,7 @@ class CleanInstallRunner:
         duration = time.monotonic_ns() - started
         (logs / "stdout.log").write_text(stdout, encoding="utf-8")
         (logs / "stderr.log").write_text(stderr, encoding="utf-8")
+        source_identity_after = self._tree_identity(isolated_source)
         records: list[dict[str, Any]] = []
         for path in sorted(workspace.rglob("*")):
             if path.is_file():
@@ -112,13 +150,17 @@ class CleanInstallRunner:
             "base_commit": "repository-visible caller ref",
             "branch": "repository-visible caller branch",
             "latest_commit": "repository-visible caller head",
-            "worktree_clean": True,
-            "completed_scope": ["bounded clean-install command execution"],
+            "caller_worktree_untouched": True,
+            "execution_source": str(isolated_source),
+            "isolated_source_changed": source_identity_before != source_identity_after,
+            "isolated_source_identity_before": source_identity_before,
+            "isolated_source_identity_after": source_identity_after,
+            "completed_scope": ["bounded clean-install command execution in an isolated source copy"],
             "remaining_scope": [] if status == "SUCCESS" else ["correct blocker and rerun identical case"],
-            "last_command": list(request.command),
+            "last_command": command,
             "last_exit_status": exit_status,
             "blocker": None if status == "SUCCESS" else classification,
-            "next_command": list(request.command),
+            "next_command": command,
             "merge_status": "not_applicable_test_workspace",
             "workspace": str(workspace),
         }
