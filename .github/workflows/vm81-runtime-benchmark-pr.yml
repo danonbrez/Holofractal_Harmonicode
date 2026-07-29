@@ -1,0 +1,133 @@
+name: VM81 Runtime Benchmark PR
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 1
+
+      - name: Build and verify
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p bench_results build bench
+          {
+            echo "timestamp_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            echo "head_sha=$(git rev-parse HEAD)"
+            echo "source_blob_sha=$(git rev-parse HEAD:hhs_runtime/HARMONICODE_VM_RUNTIME.c)"
+            echo "source_sha256=$(sha256sum hhs_runtime/HARMONICODE_VM_RUNTIME.c | awk '{print $1}')"
+            echo "kernel=$(uname -srmo)"
+            echo "gcc=$(gcc --version | head -1)"
+            echo "nproc=$(nproc)"
+          } | tee bench_results/environment.txt
+          lscpu > bench_results/lscpu.txt
+          gcc -O2 -std=c11 -Wall -Wextra hhs_runtime/HARMONICODE_VM_RUNTIME.c -lm -o build/hhs_vm81
+          size build/hhs_vm81 > bench_results/binary_size.txt
+          sha256sum build/hhs_vm81 > bench_results/binary_sha256.txt
+          ./build/hhs_vm81 --no-trace --verify > bench_results/verify_stdout.txt 2> bench_results/verify_stderr.txt
+          grep -q "FINAL HASH72" bench_results/verify_stdout.txt
+
+      - name: In-process microbenchmarks
+        shell: bash
+        run: |
+          cat > bench/micro.c <<'EOF'
+          #define _POSIX_C_SOURCE 200809L
+          #define main vm81_original_main
+          #include "../hhs_runtime/HARMONICODE_VM_RUNTIME.c"
+          #undef main
+          #include <time.h>
+          #include <inttypes.h>
+
+          static volatile uint64_t sink;
+          typedef void (*fn_t)(void *);
+          typedef struct { VM81 vm; char a[73], b[73]; size_t n; uint64_t counter; } Ctx;
+
+          static double ns(void) {
+            struct timespec t; clock_gettime(CLOCK_MONOTONIC_RAW, &t);
+            return (double)t.tv_sec*1e9 + t.tv_nsec;
+          }
+          static int dc(const void *a,const void *b){double x=*(double*)a,y=*(double*)b;return(x>y)-(x<y);}
+          static uint64_t calibrate(fn_t f, void *c){
+            uint64_t n=1;
+            for(;;){double t=ns();for(uint64_t i=0;i<n;i++)f(c);double d=ns()-t;
+              if(d>5e7){uint64_t r=(uint64_t)(n*2e8/d);return r?r:1;} n*=2;}
+          }
+          static void measure(const char *name, fn_t f, void *c){
+            for(int i=0;i<50;i++)f(c); uint64_t n=calibrate(f,c); double s[9];
+            for(int j=0;j<9;j++){double t=ns();for(uint64_t i=0;i<n;i++)f(c);s[j]=(ns()-t)/n;}
+            qsort(s,9,sizeof(double),dc); double mean=0;for(int j=0;j<9;j++)mean+=s[j];mean/=9;
+            printf("%s,%.3f,%.3f,%.3f,%.3f,%.3f,%" PRIu64 "\n",name,s[4],mean,s[0],s[8],1e9/s[4],n);
+          }
+          static void init(Ctx *c){memset(c,0,sizeof(*c));init_hash72();vm81_init(&c->vm,0,SEED_LOSHU);load_demo(&c->vm);memset(c->a,'A',72);c->a[72]=0;memset(c->b,'B',72);c->b[72]=0;}
+          static void b_init(void *p){Ctx*c=p;vm81_init(&c->vm,c->counter++,SEED_LOSHU);sink^=c->vm.cells[0];}
+          static void b_sweep(void *p){Ctx*c=p;sweep81(&c->vm);sink^=c->vm.cells[0];}
+          static void b_project(void *p){Ctx*c=p;project_hash72(&c->vm,c->a);sink^=c->a[0];}
+          static void b_receipt(void *p){Ctx*c=p;compose_receipt_hash(c->a,17,0xa5a55a5a,c->b,c->a);sink^=c->a[0];}
+          static void b_step(void *p){Ctx*c=p;if(c->vm.halted){vm81_init(&c->vm,0,SEED_LOSHU);load_demo(&c->vm);}vm81_step(&c->vm);sink^=c->vm.step;}
+          static void b_demo(void *p){Ctx*c=p;Options o={128,0,SEED_LOSHU,0,0,0};vm81_init(&c->vm,c->counter++,SEED_LOSHU);load_demo(&c->vm);run_vm(&c->vm,&o);sink^=c->vm.step;}
+          static void b_orbit(void *p){Ctx*c=p;c->vm.seen_count=c->n;sink^=detect_orbit(&c->vm,c->a,c->counter++);}
+          static void fill(Ctx*c,size_t n){c->n=n;for(size_t i=0;i<n;i++){memset(c->vm.seen[i].hash,'A',72);uint64_t x=i;for(int k=0;k<8;k++){c->vm.seen[i].hash[71-k]=HASH72[x%72];x/=72;}c->vm.seen[i].hash[72]=0;c->vm.seen[i].step=i;}memset(c->a,'A',72);memset(c->a+64,'!',8);c->a[72]=0;}
+          int main(void){Ctx c,o256,o1024,o4096,o8192;init(&c);init(&o256);init(&o1024);init(&o4096);init(&o8192);fill(&o256,256);fill(&o1024,1024);fill(&o4096,4096);fill(&o8192,8192);
+            puts("name,median_ns,mean_ns,min_ns,max_ns,median_ops_per_s,iterations");
+            measure("vm81_init",b_init,&c);measure("sweep81",b_sweep,&c);measure("project_hash72",b_project,&c);measure("compose_receipt_hash",b_receipt,&c);measure("vm81_step_demo",b_step,&c);measure("full_demo_13_steps",b_demo,&c);measure("orbit_scan_256",b_orbit,&o256);measure("orbit_scan_1024",b_orbit,&o1024);measure("orbit_scan_4096",b_orbit,&o4096);measure("orbit_scan_8192",b_orbit,&o8192);return sink==UINT64_MAX;}
+          EOF
+          gcc -O2 -std=c11 -Wall -Wextra bench/micro.c -lm -o build/micro
+          ./build/micro > bench_results/microbench.csv
+
+      - name: Process, build, and memory benchmarks
+        shell: bash
+        run: |
+          cat > bench/process.py <<'PY'
+          import csv, json, math, statistics, subprocess, time
+          from pathlib import Path
+          out=Path('bench_results'); exe='./build/hhs_vm81'
+          def pct(v,p):
+            v=sorted(v); k=(len(v)-1)*p; a=int(k); b=min(a+1,len(v)-1); return v[a]+(v[b]-v[a])*(k-a)
+          workloads={
+            'cli_1_step':['--no-trace','--steps','1'],
+            'cli_full_demo':['--no-trace','--steps','128'],
+            'cli_verify':['--no-trace','--verify'],
+            'cli_halt_on_orbit_verify':['--no-trace','--halt-on-orbit','--verify']}
+          rows=[]
+          for name,args in workloads.items():
+            cmd=[exe,*args]
+            for _ in range(20):subprocess.run(cmd,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL,check=True)
+            s=[]
+            for _ in range(500):
+              t=time.perf_counter_ns();subprocess.run(cmd,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL,check=True);s.append(time.perf_counter_ns()-t)
+            rows.append({'workload':name,'runs':len(s),'median_us':statistics.median(s)/1e3,'mean_us':statistics.mean(s)/1e3,'stdev_us':statistics.pstdev(s)/1e3,'min_us':min(s)/1e3,'p95_us':pct(s,.95)/1e3,'p99_us':pct(s,.99)/1e3,'max_us':max(s)/1e3,'median_runs_per_s':1e9/statistics.median(s)})
+          with (out/'process.csv').open('w',newline='') as f:w=csv.DictWriter(f,fieldnames=rows[0]);w.writeheader();w.writerows(rows)
+          (out/'process.json').write_text(json.dumps(rows,indent=2))
+          builds=[]
+          for opt in ('O0','O2','O3'):
+            s=[]
+            for i in range(30):
+              p=f'build/tmp_{opt}_{i}';t=time.perf_counter_ns();subprocess.run(['gcc',f'-{opt}','-std=c11','hhs_runtime/HARMONICODE_VM_RUNTIME.c','-lm','-o',p],stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL,check=True);s.append(time.perf_counter_ns()-t);Path(p).unlink()
+            builds.append({'optimization':opt,'runs':len(s),'median_ms':statistics.median(s)/1e6,'mean_ms':statistics.mean(s)/1e6,'p95_ms':pct(s,.95)/1e6,'min_ms':min(s)/1e6,'max_ms':max(s)/1e6})
+          with (out/'build.csv').open('w',newline='') as f:w=csv.DictWriter(f,fieldnames=builds[0]);w.writeheader();w.writerows(builds)
+          (out/'build.json').write_text(json.dumps(builds,indent=2))
+          micro=list(csv.DictReader((out/'microbench.csv').open())); md={r['name']:r for r in micro}; pd={r['workload']:r for r in rows}; bd={r['optimization']:r for r in builds}
+          summary={'build_O2_median_ms':float(bd['O2']['median_ms']),'cli_full_demo_median_us':float(pd['cli_full_demo']['median_us']),'cli_full_demo_p95_us':float(pd['cli_full_demo']['p95_us']),'cli_verify_median_us':float(pd['cli_verify']['median_us']),'inprocess_full_demo_median_ns':float(md['full_demo_13_steps']['median_ns']),'vm81_step_median_ns':float(md['vm81_step_demo']['median_ns']),'sweep81_median_ns':float(md['sweep81']['median_ns']),'project_hash72_median_ns':float(md['project_hash72']['median_ns']),'receipt_hash_median_ns':float(md['compose_receipt_hash']['median_ns']),'orbit_scan_8192_median_ns':float(md['orbit_scan_8192']['median_ns'])}
+          (out/'summary.json').write_text(json.dumps(summary,indent=2));print(json.dumps(summary,indent=2))
+          PY
+          python3 bench/process.py | tee bench_results/summary_stdout.txt
+          /usr/bin/time -v -o bench_results/time_rss.txt ./build/hhs_vm81 --no-trace --verify >/dev/null
+          (perf stat -r 5 -x, -o bench_results/perf.csv ./build/hhs_vm81 --no-trace --verify >/dev/null) 2>bench_results/perf_stderr.txt || true
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vm81-runtime-benchmark-pr-${{ github.event.pull_request.head.sha }}
+          path: bench_results/
+          retention-days: 7
+          if-no-files-found: error
