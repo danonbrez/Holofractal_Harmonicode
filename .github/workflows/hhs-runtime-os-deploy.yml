@@ -1,0 +1,76 @@
+name: Build HHS Runtime OS frontend
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "hhs_gui/**"
+      - "hhs_backend/heroku_server.py"
+      - ".github/workflows/hhs-runtime-os-deploy.yml"
+      - "!hhs_gui/dist/**"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: hhs-runtime-os-main-build
+  cancel-in-progress: true
+
+jobs:
+  build-runtime-os:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Check out authoritative main
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: hhs_gui/package.json
+
+      - name: Install frontend dependencies
+        working-directory: hhs_gui
+        run: npm install --no-audit --no-fund
+
+      - name: Validate source contracts
+        working-directory: hhs_gui
+        run: |
+          npm run test:e2e:source
+          npm run test:workspace:source
+
+      - name: Build deployable Runtime OS bundle
+        working-directory: hhs_gui
+        run: npm run build
+
+      - name: Verify deployable entrypoint
+        run: |
+          test -s hhs_gui/dist/index.html
+          test -d hhs_gui/dist/assets
+          grep -q "HHS Runtime OS" hhs_gui/dist/index.html
+
+      - name: Upload Runtime OS bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: hhs-runtime-os-dist
+          path: hhs_gui/dist
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Publish generated bundle to main
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -f hhs_gui/dist
+          if git diff --cached --quiet; then
+            echo "Runtime OS bundle is unchanged"
+            exit 0
+          fi
+          git commit -m "build: publish HHS Runtime OS frontend bundle [skip ci]"
+          git push origin HEAD:main
