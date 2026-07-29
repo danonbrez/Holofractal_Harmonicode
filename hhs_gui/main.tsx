@@ -2,197 +2,53 @@ import React from "react"
 import ReactDOM from "react-dom/client"
 
 import RuntimeDesktop from "./runtime_os/core/RuntimeDesktop"
-
-import {
-    RuntimeOS
-} from "./runtime_os/core/RuntimeOS"
-
-// =========================================================
-// Styles
-// =========================================================
+import { RuntimeOS } from "./runtime_os/core/RuntimeOS"
 
 import "./index.css"
 
-// =========================================================
-// RuntimeOS
-// =========================================================
+const runtimeOS = new RuntimeOS({
+    runtimeEndpoint: "/ws/runtime",
+    replayEndpoint: "/ws/replay",
+    graphEndpoint: "/ws/graph",
+    transportEndpoint: "/ws/transport",
+    diagnosticsEnabled: true,
+    mobileMode: window.matchMedia("(max-width: 900px)").matches
+})
 
-const runtimeOS =
-    new RuntimeOS({
+const rootElement = document.getElementById("root")
 
-        runtimeEndpoint:
-            "/ws/runtime",
+if (!rootElement) {
+    throw new Error("Missing root element")
+}
 
-        replayEndpoint:
-            "/ws/replay",
+const root = ReactDOM.createRoot(rootElement)
 
-        graphEndpoint:
-            "/ws/graph",
+root.render(
+    <React.StrictMode>
+        <RuntimeDesktop runtimeOS={runtimeOS} />
+    </React.StrictMode>
+)
 
-        transportEndpoint:
-            "/ws/transport"
-    })
+;(window as typeof window & {
+    __HHS_RUNTIME_OS__?: RuntimeOS
+}).__HHS_RUNTIME_OS__ = runtimeOS
 
-// =========================================================
-// Bootstrap
-// =========================================================
-
-async function bootstrap():
-
+async function bootstrap(): Promise<void> {
     try {
-
-        console.log(
-            "[main] bootstrapping RuntimeOS"
-        )
-
-        // -------------------------------------------------
-        // Runtime Init
-        // -------------------------------------------------
-
         await runtimeOS.initialize()
-
-        // -------------------------------------------------
-        // Root
-        // -------------------------------------------------
-
-        const rootElement =
-            document.getElementById(
-                "root"
-            )
-
-        if (!rootElement) {
-
-            throw new Error(
-
-                "Missing root element"
-            )
-        }
-
-        const root =
-            ReactDOM.createRoot(
-                rootElement
-            )
-
-        // -------------------------------------------------
-        // Render
-        // -------------------------------------------------
-
-        root.render(
-
-            <React.StrictMode>
-
-                <RuntimeDesktop
-                    runtimeOS={
-                        runtimeOS
-                    }
-                />
-
-            </React.StrictMode>
-        )
-
-        // -------------------------------------------------
-        // Dev Metrics
-        // -------------------------------------------------
-
-        if (
-            typeof window
-            !== "undefined"
-        ) {
-
-            ;(
-                window as typeof window & {
-
-                    __HHS_RUNTIME_OS__?:
-                        RuntimeOS
-                }
-
-            ).__HHS_RUNTIME_OS__ =
-                runtimeOS
-        }
-
-        console.log(
-            "[main] RuntimeOS mounted"
-        )
-
+        console.log("[main] RuntimeOS initialized")
     } catch (error) {
-
-        console.error(
-
-            "[main] Runtime bootstrap failure",
-
+        console.warn(
+            "[main] RuntimeOS mounted in disconnected projection mode",
             error
         )
-
-        const fallback =
-            document.getElementById(
-                "root"
-            )
-
-        if (fallback) {
-
-            fallback.innerHTML = `
-
-                <div
-                    style="
-                        position:fixed;
-                        inset:0;
-                        background:#000;
-                        color:#ff6b6b;
-                        font-family:monospace;
-                        display:flex;
-                        align-items:center;
-                        justify-content:center;
-                        padding:32px;
-                    "
-                >
-
-                    <div
-                        style="
-                            max-width:720px;
-                        "
-                    >
-
-                        <h2>
-                            Runtime Bootstrap Failure
-                        </h2>
-
-                        <pre
-                            style="
-                                white-space:pre-wrap;
-                                overflow:auto;
-                            "
-                        >
-
-${String(error)}
-
-                        </pre>
-
-                    </div>
-
-                </div>
-            `
-        }
     }
 }
 
-// =========================================================
-// Lifecycle
-// =========================================================
+void bootstrap()
 
-bootstrap()
-
-// =========================================================
-// Hot Reload Cleanup
-// =========================================================
-
-if (
-    import.meta.hot
-) {
-
-    import.meta.hot.dispose(
-        () => {
-
-            runtimeOS.destroy()
-        }
-    )
+if (import.meta.hot) {
+    import.meta.hot.dispose(() => {
+        runtimeOS.destroy()
+    })
 }
