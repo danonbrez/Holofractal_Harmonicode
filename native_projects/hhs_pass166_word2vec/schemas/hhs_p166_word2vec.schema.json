@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hhs.local/schemas/hhs_p166_word2vec.schema.json",
+  "title": "HHS Pass 166 Word2Vec Native ABI",
+  "type": "object",
+  "required": ["contract_id", "projection_bits", "projection_bytes", "quantization", "authority"],
+  "properties": {
+    "contract_id": {"const": "HHS-P166-W2V-LMVS-MAIS"},
+    "projection_bits": {"const": 5184},
+    "projection_bytes": {"const": 648},
+    "quantization": {
+      "type": "object",
+      "required": ["scale", "rounding", "target"],
+      "properties": {
+        "scale": {"const": 65536},
+        "rounding": {"const": "HALF_EVEN"},
+        "target": {"const": "SIGNED_INT32"}
+      },
+      "additionalProperties": false
+    },
+    "authority": {
+      "type": "object",
+      "required": ["native_commit_authority", "vm81_commit_authority"],
+      "properties": {
+        "native_commit_authority": {"const": false},
+        "vm81_commit_authority": {"const": true}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

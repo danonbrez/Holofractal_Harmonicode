@@ -1,0 +1,39 @@
+{
+  "schema": "HHS_PASS_166_AUTHORITY_BINDING_V1",
+  "contract_id": "HHS-P166-W2V-LMVS-MAIS",
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "implementation_branch": "agent/pass166-word2vec-preinstaller",
+  "authoritative_parent_branch": "main",
+  "authoritative_parent_commit": "217c744aacfb41a382ce287a2412707b1e2617de",
+  "inheritance": {
+    "pass165_terminal_closure": true,
+    "pass165_projection_bits": 5184,
+    "pass165_projection_bytes": 648,
+    "singleton_vm81_commit_authority": true,
+    "hash72_receipts": true,
+    "hash216_operation_identity": true
+  },
+  "model_identity": {
+    "package": "pinned byte length plus SHA-256 plus normalized manifest root",
+    "canonical_vector": "exact source evidence plus Q16.16 half-even integer conversion",
+    "canonical_model": "ordered immutable canonical-vector identities",
+    "projection": "registered 5184-bit activation frame distinct from the dense vector",
+    "index": "versioned exact lookup and similarity index root"
+  },
+  "authority": {
+    "download_worker_commit_authority": false,
+    "archive_reader_commit_authority": false,
+    "word2vec_parser_commit_authority": false,
+    "index_builder_commit_authority": false,
+    "native_abi_commit_authority": false,
+    "vm81_runtime_kernel_cardinality": 1,
+    "canonical_activation_surface": "inherited Pass 163 VMRCRuntime through Pass 165"
+  },
+  "repository_policy": {
+    "source_oriented": true,
+    "large_pretrained_model_committed": false,
+    "generated_fixture_binary_committed": false,
+    "installation_artifacts_external_to_git": true
+  },
+  "validation_policy": "dependency-scoped bounded stage-gate repair-forward"
+}

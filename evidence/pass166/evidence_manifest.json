@@ -1,0 +1,49 @@
+{
+  "schema": "HHS_PASS_166_EVIDENCE_MANIFEST_V1",
+  "contract_id": "HHS-P166-W2V-LMVS-MAIS",
+  "classification": "HHS_PASS_166_WORD2VEC_ACQUISITION_IMPORT_AND_PREINSTALLATION_IMPLEMENTED",
+  "terminal": false,
+  "source_artifacts": [
+    "HHS_PASS_166_WORD2VEC_LANGUAGE_MODALITY_MODEL_ACQUISITION_IMPORT_AND_PREINSTALLATION_SERVICE.md",
+    "HHS_PASS_166_AUTHORITY_BINDING.json",
+    "HHS_PASS_166_IMPLEMENTATION_STATUS.md",
+    "docs/HHS_PASS_166_WORD2VEC_RUNTIME.md",
+    "hhs_runtime/pass166/__init__.py",
+    "hhs_runtime/pass166/common.py",
+    "hhs_runtime/pass166/codec.py",
+    "hhs_runtime/pass166/service.py",
+    "hhs_runtime/pass166/cli.py",
+    "hhs_backend/api/pass166_word2vec_routes.py",
+    "hhs_backend/pass166_server.py",
+    "tools/hhs_model.py",
+    "tools/pass166_terminal_evidence.py",
+    "native_projects/hhs_pass166_word2vec/include/hhs_p166_word2vec.h",
+    "native_projects/hhs_pass166_word2vec/src/hhs_p166_word2vec.c",
+    "native_projects/hhs_pass166_word2vec/tests/test_hhs_p166_word2vec.c",
+    "native_projects/hhs_pass166_word2vec/schemas/hhs_p166_word2vec.schema.json",
+    "tests/test_hhs_pass166_word2vec_v1.py",
+    "tests/test_hhs_pass166_supply_chain_v1.py",
+    ".github/workflows/pass166-word2vec.yml"
+  ],
+  "executed_evidence": [
+    {
+      "path": "evidence/pass166/P166_COMPLETION_RECEIPT.json",
+      "result": "bounded nonterminal implementation receipt"
+    }
+  ],
+  "validation_scope": {
+    "source_present": true,
+    "tests_present": true,
+    "workflow_registered_on_main": true,
+    "repository_python_execution": false,
+    "repository_native_execution": false,
+    "terminal_evidence": false,
+    "main_integration": false
+  },
+  "repository_policy": {
+    "incremental_source_oriented": true,
+    "pretrained_model_binary_committed": false,
+    "generated_fixture_binary_committed": false,
+    "legacy_archive_recommitted": false
+  }
+}
