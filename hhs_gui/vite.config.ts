@@ -39,9 +39,6 @@ export default defineConfig({
   },
 
   build: {
-    // Do not ship unrestricted `esnext` syntax to the public mobile surface.
-    // ES2018 covers the repository's runtime needs while remaining compatible
-    // with older Chromium/Samsung Internet engines and Android WebViews.
     target: "es2018",
     cssTarget: "chrome61",
     modulePreload: { polyfill: true },
@@ -49,15 +46,15 @@ export default defineConfig({
     chunkSizeWarningLimit: 2400,
     rollupOptions: {
       output: {
-        // Keep React in the canonical entry chunk. A missing vendor chunk must
-        // not prevent the bootstrap boundary from reporting the real failure.
         manualChunks: undefined,
       },
     },
   },
 
   resolve: {
-    extensions: [".tsx", ".ts", ".jsx", ".js", ".json"],
+    // State/orchestration classes use .ts; React views use .tsx. Resolve the
+    // class module first so a same-stem view can never replace a constructor.
+    extensions: [".ts", ".tsx", ".jsx", ".js", ".json"],
   },
 
   define: {
