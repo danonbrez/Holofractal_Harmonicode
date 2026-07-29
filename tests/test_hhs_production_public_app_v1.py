@@ -28,7 +28,8 @@ def test_production_server_composes_canonical_backend_and_visual_ide():
         "/ws/runtime",
     }
     assert required.issubset(paths)
-    assert "/" in paths
+    # Starlette represents a StaticFiles mount at the public root with path "".
+    assert "" in paths or "/" in paths
 
 
 def test_procfile_boots_canonical_production_server():
