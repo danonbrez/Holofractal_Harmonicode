@@ -55,7 +55,8 @@ class ProfileMatrix:
         included = set(included_dependencies)
         installed = set(installed_dependencies)
         callable_set = set(callable_surfaces)
-        included_match = set(expected.included_dependencies).issubset(included)
+        required_dependencies = set(expected.included_dependencies)
+        included_match = required_dependencies.issubset(included) and required_dependencies.issubset(installed)
         excluded_match = set(expected.excluded_dependencies).isdisjoint(installed)
         callable_match = set(expected.callable_surfaces).issubset(callable_set)
         provider_match = expected.provider_state == provider_state
@@ -64,6 +65,8 @@ class ProfileMatrix:
             "expectation": expected.to_dict(),
             "included_dependencies": sorted(included),
             "installed_dependencies": sorted(installed),
+            "missing_in_plan": sorted(required_dependencies - included),
+            "missing_from_installation": sorted(required_dependencies - installed),
             "callable_surfaces": sorted(callable_set),
             "provider_state": provider_state,
             "evidence": sorted(set(evidence)),
