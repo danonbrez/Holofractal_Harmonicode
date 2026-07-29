@@ -6,6 +6,9 @@ on:
     paths:
       - "hhs_gui/**"
       - "hhs_backend/heroku_server.py"
+      - "hhs_backend/api/litert_lm_assistant_routes.py"
+      - "hhs_backend/runtime/hhs_production_assistant_v1.py"
+      - "tests/test_hhs_production_public_app_v1.py"
       - ".github/workflows/hhs-runtime-os-deploy.yml"
       - "!hhs_gui/dist/**"
   pull_request:
@@ -13,6 +16,9 @@ on:
     paths:
       - "hhs_gui/**"
       - "hhs_backend/heroku_server.py"
+      - "hhs_backend/api/litert_lm_assistant_routes.py"
+      - "hhs_backend/runtime/hhs_production_assistant_v1.py"
+      - "tests/test_hhs_production_public_app_v1.py"
       - ".github/workflows/hhs-runtime-os-deploy.yml"
       - "!hhs_gui/dist/**"
   workflow_dispatch:
@@ -34,6 +40,30 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install production API test dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install \
+            fastapi==0.128.2 \
+            starlette==0.50.0 \
+            'httpx>=0.27,<1.0' \
+            pytest
+
+      - name: Build native Hash72 runtime receipt authority
+        run: make c-abi
+
+      - name: Validate production public APIs
+        env:
+          HHS_DISABLE_C_AUTOBUILD: "1"
+          HHS_LITERT_LM_BACKEND: auto
+          HHS_ASSISTANT_HEALTH_TIMEOUT_SECONDS: "0.1"
+        run: pytest -q tests/test_hhs_production_public_app_v1.py
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -61,6 +91,12 @@ jobs:
           test -s hhs_gui/dist/index.html
           test -d hhs_gui/dist/assets
           grep -q "HHS Runtime OS" hhs_gui/dist/index.html
+          grep -q "frontend_boot_timeout" hhs_gui/dist/index.html
+          grep -R -q "Production visual IDE · callable surfaces only" hhs_gui/dist/assets
+          if grep -R -q "runtime_application_missing" hhs_gui/dist/assets; then
+            echo "Legacy missing-module fallback leaked into production bundle"
+            exit 1
+          fi
 
       - name: Upload Runtime OS bundle
         uses: actions/upload-artifact@v4
