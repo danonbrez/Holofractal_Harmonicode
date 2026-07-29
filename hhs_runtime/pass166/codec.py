@@ -3,7 +3,7 @@ from __future__ import annotations
 
 from base64 import b64decode, b64encode
 from hashlib import sha256
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 import io
 import shutil
 import tarfile
@@ -30,6 +30,13 @@ from .common import (
     safe_member,
 )
 
+_EXECUTABLE_SUFFIXES = {".exe", ".dll", ".so", ".dylib", ".sh", ".bat", ".cmd", ".com"}
+
+
+def _reject_undeclared_executable(path: PurePosixPath, mode: int) -> None:
+    if (mode & 0o111) != 0 or path.suffix.lower() in _EXECUTABLE_SUFFIXES:
+        raise Word2VecError("P166_UNDECLARED_EXECUTABLE_PAYLOAD", str(path))
+
 
 def extract_package(manifest: Word2VecPackageManifest, package_path: Path, operation_dir: Path) -> Path:
     if manifest.archive_type == "NONE":
@@ -49,9 +56,11 @@ def extract_package(manifest: Word2VecPackageManifest, package_path: Path, opera
                     seen.add(info.filename)
                     if info.is_dir():
                         continue
-                    mode = (info.external_attr >> 16) & 0o170000
-                    if mode == 0o120000:
+                    unix_mode = (info.external_attr >> 16) & 0o177777
+                    file_type = unix_mode & 0o170000
+                    if file_type == 0o120000:
                         raise Word2VecError("P166_ARCHIVE_SYMLINK_REJECTED")
+                    _reject_undeclared_executable(relative, unix_mode)
                     total += info.file_size
                     if total > MAX_EXTRACTED_BYTES or (info.compress_size and info.file_size > max(64 * 1024 * 1024, info.compress_size * 200)):
                         raise Word2VecError("P166_DECOMPRESSION_BOMB")
@@ -79,6 +88,7 @@ def extract_package(manifest: Word2VecPackageManifest, package_path: Path, opera
                         raise Word2VecError("P166_UNSAFE_ARCHIVE_MEMBER", info.name)
                     if not info.isfile():
                         continue
+                    _reject_undeclared_executable(relative, info.mode)
                     total += info.size
                     if total > MAX_EXTRACTED_BYTES:
                         raise Word2VecError("P166_DECOMPRESSION_BOMB")
@@ -131,7 +141,7 @@ def parse_text(raw: bytes, manifest: Word2VecPackageManifest) -> tuple[Canonical
         if token in seen:
             raise Word2VecError("P166_DUPLICATE_TOKEN_CONFLICT", fields[0])
         seen.add(token)
-        vectors.append(CanonicalVector.create(token, fields[0], row, [decimal_fraction(value) for value in fields[1:]], "DECIMAL_TEXT"))
+        vectors.append(CanonicalVector.create(token, fields[0], row, [decimal_fraction(value) for value in fields[1:]], "DECIMAL_TEXT", manifest.manifest_root))
     if len(vectors) != vocabulary:
         raise Word2VecError("P166_VOCABULARY_COUNT_MISMATCH")
     return tuple(vectors)
@@ -172,7 +182,7 @@ def parse_binary(raw: bytes, manifest: Word2VecPackageManifest) -> tuple[Canonic
         if len(vector_raw) != dimension * 4:
             raise Word2VecError("P166_TRUNCATED_WORD2VEC_BINARY", str(row))
         values = [float32_fraction(vector_raw[index : index + 4]) for index in range(0, len(vector_raw), 4)]
-        vectors.append(CanonicalVector.create(token_bytes, decoded, row, values, "IEEE754_BINARY32_BITS"))
+        vectors.append(CanonicalVector.create(token_bytes, decoded, row, values, "IEEE754_BINARY32_BITS", manifest.manifest_root))
         separator = stream.read(1)
         if separator not in (b"", b"\n", b"\r", b" "):
             stream.seek(-1, io.SEEK_CUR)
@@ -227,7 +237,7 @@ def build_model(manifest: Word2VecPackageManifest, package_digest: str, vectors:
             "source_model_identity": model_root,
             "projection_5184_b64": b64encode(frame).decode("ascii"),
             "projection_5184_root": hash72_digest({"model_root": model_root, "vector": vector.canonical_vector_digest, "projection_version": PROJECTION_VERSION}, frame),
-            "provenance_root": root(b"HHS-P166-PROVENANCE-V1\0", {"package_digest": package_digest, "manifest_root": manifest.manifest_root, "source_vector_digest": vector.source_vector_digest}),
+            "provenance_root": root(b"HHS-P166-PROVENANCE-V1\0", {"package_digest": package_digest, "manifest_root": manifest.manifest_root, "source_vector_digest": vector.source_vector_digest, "source_model_root": vector.source_model_root}),
         })
     aliases = {key: tuple(sorted(value)) for key, value in sorted(alias_map.items())}
     index_root = root(b"HHS-P166-INDEX-V1\0", {"index_version": INDEX_VERSION, "model_root": model_root, "exact_tokens": [item.decoded_token for item in vectors], "aliases": aliases, "vectors": [item.canonical_vector_digest for item in vectors]})
