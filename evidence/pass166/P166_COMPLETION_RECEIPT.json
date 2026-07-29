@@ -1,0 +1,43 @@
+{
+  "schema": "P166_COMPLETION_RECEIPT",
+  "version": 1,
+  "contract_id": "HHS-P166-W2V-LMVS-MAIS",
+  "classification": "HHS_PASS_166_WORD2VEC_ACQUISITION_IMPORT_AND_PREINSTALLATION_IMPLEMENTED",
+  "terminal": false,
+  "omega_166": false,
+  "implemented": {
+    "shell_command": true,
+    "http_api": true,
+    "internal_callable_api": true,
+    "pinned_model_acquisition": true,
+    "resumable_download": true,
+    "safe_archive_validation": true,
+    "word2vec_text_reader": true,
+    "word2vec_binary_reader": true,
+    "deterministic_exact_conversion": true,
+    "pass165_language_object_registration": true,
+    "projection_5184": true,
+    "exact_offline_lookup": true,
+    "nearest_neighbor": true,
+    "analogy": true,
+    "vm81_governed_activation": true,
+    "rollback": true,
+    "repair": true,
+    "removal": true,
+    "hash72_hash216_receipts": true,
+    "deterministic_replay": true,
+    "strict_c11_companion": true
+  },
+  "repository_validation": {
+    "state": "PENDING_PULL_REQUEST_WORKFLOW",
+    "python_tests": null,
+    "strict_c11_pass165": null,
+    "strict_c11_pass166": null
+  },
+  "not_yet_verified": [
+    "actual repository test execution",
+    "actual strict C11 execution",
+    "terminal evidence generation",
+    "integration into main"
+  ]
+}
