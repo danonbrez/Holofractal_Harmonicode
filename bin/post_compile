@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+echo "Building HHS native Hash72 runtime authority..."
+make c-abi
+test -s hhs_runtime/builds/libhhs_runtime.so
+echo "HHS native Hash72 runtime authority ready."
