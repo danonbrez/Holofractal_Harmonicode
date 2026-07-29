@@ -1,0 +1,4 @@
+-r requirements-core.txt
+
+# Android SDK, NDK, CMake, Java, and Gradle are host-tool dependencies and are
+# resolved by the android-build platform adapter rather than pip.
