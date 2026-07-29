@@ -5,12 +5,9 @@ from enum import Enum
 from pathlib import Path
 from typing import Any, Mapping
 import json
-import os
 import platform
 import shutil
-import socket
 import ssl
-import subprocess
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -101,10 +98,16 @@ class ProviderResolver:
         model_id: str | None = None,
         require_gpu: bool = False,
         authentication_configured: bool = False,
+        executable_override: str | Path | None = None,
     ) -> ProviderProbe:
         if mode not in {"auto", "local", "external", "disabled"}:
             raise ProviderError("P172_PROVIDER_MODE_INVALID", "provider mode is invalid", {"mode": mode})
-        executable = shutil.which("litert-lm")
+        executable: str | None
+        if executable_override is not None:
+            candidate = Path(executable_override).expanduser().resolve()
+            executable = str(candidate) if candidate.is_file() else None
+        else:
+            executable = shutil.which("litert-lm")
         accelerator = _physical_accelerator_visible()
         substrate = _substrate()
         transport = _transport_classification(endpoint)
