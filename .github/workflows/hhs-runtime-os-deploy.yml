@@ -79,12 +79,13 @@ jobs:
         run: |
           timeout 300s pytest -q tests/test_hhs_production_public_app_v1.py
           timeout 180s python - <<'PY'
-          from hhs_backend.production_server import app
+          from hhs_backend.production_server import app, _workspace_session_snapshot
           from hhs_backend.server import server_self_test
 
           paths = {str(getattr(route, "path", "")) for route in app.router.routes}
           required = {
               "/api/runtime/gui/command",
+              "/api/runtime/workspace/session",
               "/api/runtime/workspace/command",
               "/api/runtime/capability/resolve",
               "/api/runtime/document/perceive",
@@ -97,6 +98,9 @@ jobs:
               raise SystemExit(f"missing canonical production routes: {missing}")
           if "" not in paths and "/" not in paths:
               raise SystemExit("missing canonical public root static mount")
+          session = _workspace_session_snapshot()
+          if session.get("self_tests_executed") is not False:
+              raise SystemExit("workspace session executed production self-tests")
           server_self_test()
           PY
 
@@ -128,8 +132,10 @@ jobs:
           grep -q "HHS Visual Runtime OS Workspace" hhs_gui/dist/index.html
           grep -q "frontend_boot_timeout" hhs_gui/dist/index.html
           grep -R -q "hhs-canonical-runtime-ide" hhs_gui/dist/assets
+          grep -R -q "hhs-visual-runtime-os-workspace" hhs_gui/dist/assets
           grep -R -q "runtime-assistant-panel" hhs_gui/dist/assets
-          grep -R -q "live-backend-capability-panel" hhs_gui/dist/assets
+          grep -R -q "Source → artifact → emulator" hhs_gui/dist/assets
+          grep -R -q "Only operations that actually returned from the backend appear here" hhs_gui/dist/assets
           if grep -R -q "Production visual IDE · callable surfaces only" hhs_gui/dist/assets; then
             echo "Replacement ProductionApp leaked into canonical bundle"
             exit 1
@@ -138,6 +144,12 @@ jobs:
             echo "Missing-module placeholder leaked into canonical bundle"
             exit 1
           fi
+          for forbidden in RuntimeProjectTree MultimodalIngressPanel LiveBackendCapabilityPanel HHSSymbolicEditor InterpreterConsole CompilerWorkbench EmulatorControlPanel RuntimeGraphCanvas SemanticMemoryPanel ReceiptLedgerInspector MutationHistoryPanel RuntimeCommandPanel RuntimeMutationPanel; do
+            if grep -R -q "$forbidden" hhs_gui/dist/assets; then
+              echo "Isolated public panel leaked into integrated bundle: $forbidden"
+              exit 1
+            fi
+          done
 
       - name: Upload canonical Runtime OS bundle
         uses: actions/upload-artifact@v4
@@ -171,7 +183,7 @@ jobs:
               exit 0
             fi
 
-            git commit -m "build: publish canonical HHS Runtime OS bundle [skip ci]"
+            git commit -m "build: publish integrated HHS Runtime OS bundle [skip ci]"
             if timeout 120s git push origin HEAD:main; then
               exit 0
             fi
