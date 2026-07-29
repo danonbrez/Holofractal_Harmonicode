@@ -2,6 +2,8 @@ import fs from "node:fs"
 
 const files = {
   socket: "runtime_os/core/RuntimeSocketManager.ts",
+  runtimeOS: "runtime_os/core/RuntimeOS.ts",
+  windowManager: "runtime_os/core/RuntimeWindowManager.ts",
   projectionPanel: "runtime_os/core/LiveRuntimeProjectionPanel.tsx",
   commandClient: "runtime_os/core/RuntimeCommandClient.ts",
   commandPanel: "runtime_os/core/RuntimeCommandPanel.tsx",
@@ -42,6 +44,17 @@ assert(content.canonicalIDE.includes("RuntimeMutationPanel"), "CanonicalRuntimeI
 assert(content.canonicalIDE.includes("HHSWorkspaceShell"), "CanonicalRuntimeIDE does not mount HHSWorkspaceShell")
 assert(content.vite.includes('"/ws"') && content.vite.includes("ws: true"), "Vite websocket proxy missing")
 assert(!content.socket.includes("NODE_DEMO_STUB"), "socket manager contains Node demo authority")
+
+assert(content.windowManager.includes("export class RuntimeWindowManager"), "RuntimeWindowManager is not a constructible state class")
+assert(content.runtimeOS.includes("new RuntimeWindowManager"), "RuntimeOS does not instantiate the state manager")
+assert(
+  !fs.existsSync(new URL("../runtime_os/core/RuntimeWindowManager.tsx", import.meta.url)),
+  "same-stem RuntimeWindowManager.tsx would shadow the state manager constructor",
+)
+assert(
+  content.vite.indexOf('".ts"') < content.vite.indexOf('".tsx"'),
+  "Vite must resolve .ts state modules before .tsx view modules",
+)
 
 for (const endpoint of [
   "/api/assistant/health",
