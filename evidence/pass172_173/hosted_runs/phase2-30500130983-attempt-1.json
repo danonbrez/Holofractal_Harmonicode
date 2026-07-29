@@ -1,0 +1,21 @@
+{
+  "branch": "agent/pass172-173-terminal-closure-phase2",
+  "failures": 1,
+  "next_action": "inspect the failed step log, commit a dependency-scoped repair, and rerun",
+  "outcomes": {
+    "compile": "success",
+    "contracts": "success",
+    "dependencies": "success",
+    "smoke": "success",
+    "tests": "failure"
+  },
+  "pytest_output_sha256": "7a8342279aeb9d3322ec6c8b7d0d06c165ef92f7b6a3b16831814c7cb44690cc",
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "run_attempt": 1,
+  "run_id": 30500130983,
+  "schema": "HHS_PASS_172_173_PHASE2_HOSTED_VALIDATION_V1",
+  "status": "FAILURE",
+  "terminal_pass172_claimed": false,
+  "terminal_pass173_claimed": false,
+  "validated_sha": "e7b60beb639f8680f12591d8f35d7338bd68df57"
+}
