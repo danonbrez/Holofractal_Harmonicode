@@ -1,0 +1,192 @@
+{
+  "schema": "HHS_PASS_172_173_CONSTRAINT_PROVENANCE_MATRIX_V1",
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "authoritative_base_commit": "3fd4ca088039b1adc0d08a0644d62b979af8997d",
+  "contract_sources_modified": false,
+  "classification_rules": [
+    "IDENTICAL",
+    "ADDITIVE",
+    "STRICTER_COMPATIBLE",
+    "PROFILE_SCOPED",
+    "PLATFORM_SCOPED",
+    "IMPLEMENTATION_VERIFICATION_COMPLEMENT",
+    "HISTORICAL_ONLY",
+    "TRUE_CONFLICT"
+  ],
+  "requirements": [
+    {
+      "requirement_id": "P172-AUTHORITY-001",
+      "sources": ["P172-CANONICAL-CURRENT:sections-1,4,33"],
+      "classification": "ADDITIVE",
+      "obligation": "Preserve one VM81 Runtime, one admitted commit path, IDE-registered public API workflows, and bounded installer host authority distinct from Runtime authority.",
+      "implementation_domains": ["installer", "public_api", "ide_registry", "runtime_boundary"],
+      "terminal_required": true
+    },
+    {
+      "requirement_id": "P172-PROBE-001",
+      "sources": ["P172-CANONICAL-CURRENT:sections-2,5,6,14"],
+      "classification": "ADDITIVE",
+      "obligation": "Run a non-mutating capability probe and emit a precise compatibility/profile decision before installation mutation.",
+      "implementation_domains": ["probe", "planner", "platform_adapters"],
+      "terminal_required": true
+    },
+    {
+      "requirement_id": "P172-PROFILE-001",
+      "sources": ["P172-CANONICAL-CURRENT:section-7"],
+      "classification": "PROFILE_SCOPED",
+      "obligation": "Implement auto, core, runtime, assistant-external, assistant-local-cpu, assistant-local-gpu, developer, android-build, container, and offline profiles with exact inclusion and exclusion sets.",
+      "implementation_domains": ["profiles", "dependencies", "providers"],
+      "terminal_required": true
+    },
+    {
+      "requirement_id": "P172-ENTRYPOINT-001",
+      "sources": ["P172-CANONICAL-CURRENT:sections-8,9,10,11"],
+      "classification": "ADDITIVE",
+      "obligation": "Normalize POSIX, PowerShell, repository-local, portable Python, and offline commands to one installation request schema.",
+      "implementation_domains": ["cli", "bootstrap", "schema"],
+      "terminal_required": true
+    },
+    {
+      "requirement_id": "P172-DEPENDENCY-001",
+      "sources": ["P172-CANONICAL-CURRENT:sections-12,13,18,19"],
+      "classification": "ADDITIVE",
+      "obligation": "Maintain machine-readable dependency graphs, profile-separated manifests, locks, isolated Python environments, Node isolation, and import closure.",
+      "implementation_domains": ["dependencies", "python_environment", "frontend"],
+      "terminal_required": true
+    },
+    {
+      "requirement_id": "P172-PLATFORM-001",
+      "sources": ["P172-CANONICAL-CURRENT:sections-15,16,17,31,32"],
+      "classification": "PLATFORM_SCOPED",
+      "obligation": "Provide capability-based Linux, macOS, Windows, Android/Termux, BSD/POSIX, container, and restricted-cloud adapters plus portable native artifact mapping and validation.",
+      "implementation_domains": ["platforms", "native_builder", "container", "android"],
+      "terminal_required": true
+    },
+    {
+      "requirement_id": "P172-PROVIDER-001",
+      "sources": ["P172-CANONICAL-CURRENT:sections-20,21"],
+      "classification": "PROFILE_SCOPED",
+      "obligation": "Classify local GPU, local CPU, external, disabled, degraded, or incompatible provider state and govern model assets without false hardware claims.",
+      "implementation_domains": ["provider", "model_assets"],
+      "terminal_required": true
+    },
+    {
+      "requirement_id": "P172-SUPPLY-001",
+      "sources": ["P172-CANONICAL-CURRENT:sections-22,30,36"],
+      "classification": "ADDITIVE",
+      "obligation": "Verify source, installer, dependency, bundle, and model identities; enforce safe extraction, secure temporary files, signature/digest policy, and offline no-network behavior.",
+      "implementation_domains": ["acquisition", "verification", "security", "offline"],
+      "terminal_required": true
+    },
+    {
+      "requirement_id": "P172-TRANSACTION-001",
+      "sources": ["P172-CANONICAL-CURRENT:sections-23,24,25,26,27,28,29"],
+      "classification": "ADDITIVE",
+      "obligation": "Implement staged transaction state, atomic activation, idempotence, update, rollback, repair, uninstall, and user-data preservation.",
+      "implementation_domains": ["transaction", "activation", "repair", "update", "rollback", "uninstall"],
+      "terminal_required": true
+    },
+    {
+      "requirement_id": "P172-IDENTITY-001",
+      "sources": ["P172-CANONICAL-CURRENT:sections-34,35"],
+      "classification": "ADDITIVE",
+      "obligation": "Generate canonical installation identities and append-only installation receipts without host-specific contamination of content identity.",
+      "implementation_domains": ["identity", "receipts", "canonical_serialization"],
+      "terminal_required": true
+    },
+    {
+      "requirement_id": "P172-BOUNDS-001",
+      "sources": ["P172-CANONICAL-CURRENT:sections-37,38,39,43,44,45"],
+      "classification": "STRICTER_COMPATIBLE",
+      "obligation": "Use least privilege, bounded timeouts/retries/polling, exclusive mutation locks, structured redacted logs, exact terminal classifications, and no indefinite waits.",
+      "implementation_domains": ["security", "locks", "logging", "timeouts"],
+      "terminal_required": true
+    },
+    {
+      "requirement_id": "P173-LANES-001",
+      "sources": ["P173-CANONICAL-CURRENT:sections-2,3,4,5,6,7"],
+      "classification": "IMPLEMENTATION_VERIFICATION_COMPLEMENT",
+      "obligation": "Verify Pass 172 through static audit, clean installation execution, independent reconstruction, and fault/repair lanes, with redundant evidence for load-bearing claims.",
+      "implementation_domains": ["static_audit", "clean_install_runner", "artifact_reconstructor", "fault_injection"],
+      "terminal_required": true
+    },
+    {
+      "requirement_id": "P173-COVERAGE-001",
+      "sources": ["P173-CANONICAL-CURRENT:sections-8,9,10,14,15,16,17"],
+      "classification": "ADDITIVE",
+      "obligation": "Maintain requirement, dependency, platform, architecture, profile, and calibration coverage matrices, including all bound deep-scan issues.",
+      "implementation_domains": ["coverage_matrix", "dependency_scanner", "environment_matrix", "profile_matrix", "calibration"],
+      "terminal_required": true
+    },
+    {
+      "requirement_id": "P173-HISTORY-001",
+      "sources": ["P173-CANONICAL-CURRENT:sections-11,12,13"],
+      "classification": "HISTORICAL_ONLY",
+      "obligation": "Preserve historical defect evidence, verify current repaired state independently, and prevent superseded findings or external prototypes from becoming false current claims.",
+      "implementation_domains": ["historical_evidence", "verdicts", "reporting"],
+      "terminal_required": true
+    },
+    {
+      "requirement_id": "P173-NATIVE-001",
+      "sources": ["P173-CANONICAL-CURRENT:sections-20,21,22,23"],
+      "classification": "ADDITIVE",
+      "obligation": "Inventory live native projects and independently verify native, Python, and Node dependency/build equivalence at each claimed boundary.",
+      "implementation_domains": ["native_inventory", "dependency_scanner", "artifact_reconstructor"],
+      "terminal_required": true
+    },
+    {
+      "requirement_id": "P173-PROVIDER-001",
+      "sources": ["P173-CANONICAL-CURRENT:sections-24,25"],
+      "classification": "PROFILE_SCOPED",
+      "obligation": "Execute provider and model calibration using real declared boundaries and classify unavailable hardware nonterminally.",
+      "implementation_domains": ["provider_verifier", "model_calibration"],
+      "terminal_required": true
+    },
+    {
+      "requirement_id": "P173-FAULT-001",
+      "sources": ["P173-CANONICAL-CURRENT:sections-26,27,28,29"],
+      "classification": "ADDITIVE",
+      "obligation": "Inject the mandatory fault catalog, require stable classifications, and apply minimal repair-forward corrections followed by dependency-scoped revalidation.",
+      "implementation_domains": ["fault_injection", "repair_planner", "repair_executor"],
+      "terminal_required": true
+    },
+    {
+      "requirement_id": "P173-RECEIPT-001",
+      "sources": ["P173-CANONICAL-CURRENT:sections-30,31,32,33,34"],
+      "classification": "ADDITIVE",
+      "obligation": "Reconcile executed test counts, independently verify receipt chains, reconstruct installation identity, and perform logical/full replay plus cross-platform equivalence classification.",
+      "implementation_domains": ["receipt_reconciler", "artifact_reconstructor", "replay"],
+      "terminal_required": true
+    },
+    {
+      "requirement_id": "P173-BOUNDARY-001",
+      "sources": ["P173-CANONICAL-CURRENT:sections-35,36,37,38,39,40,41,42,43"],
+      "classification": "PLATFORM_SCOPED",
+      "obligation": "Verify path, security, upgrade, uninstall, offline, container, Android, and public status boundaries without accepting prohibited shortcuts.",
+      "implementation_domains": ["security", "environment_matrix", "upgrade", "uninstall", "offline", "container", "android", "api_verification"],
+      "terminal_required": true
+    },
+    {
+      "requirement_id": "P173-CLOSURE-001",
+      "sources": ["P173-CANONICAL-CURRENT:sections-44,45,46,47,48,49,50,51,52,53,54"],
+      "classification": "STRICTER_COMPATIBLE",
+      "obligation": "Produce repository-visible evidence, bounded CI topology, repair-forward cadence, exact verdict hierarchy, honest nonclaims, and A+ replay closure before terminal verification.",
+      "implementation_domains": ["evidence", "ci", "verdicts", "report", "replay"],
+      "terminal_required": true
+    },
+    {
+      "requirement_id": "P172-P173-STATELESS-001",
+      "sources": ["USER-DIRECTIVE:stateless-resumable-corporate-delivery", "docs/operations/STATELESS_RESUMABLE_AGENTIC_DELIVERY_POLICY.md"],
+      "classification": "STRICTER_COMPATIBLE",
+      "obligation": "Externalize complete restart state before long-running operations and close every task as SUCCESS, FAILURE, or BLOCKED with an exact resumable next action.",
+      "implementation_domains": ["journaling", "receipts", "workflow_policy"],
+      "terminal_required": true
+    }
+  ],
+  "summary": {
+    "requirements": 21,
+    "true_conflicts": 0,
+    "contract_files_modified": 0,
+    "compatible_union_required": true
+  }
+}
