@@ -2,4 +2,18 @@
 set -eu
 ROOT=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 export PYTHONPATH="$ROOT${PYTHONPATH:+:$PYTHONPATH}"
-exec python -m hhs_runtime.pass148.cli "$@"
+
+case "${1:-}" in
+  install|probe|plan|status|doctor)
+    exec python3 -m hhs_installer.cli "$@"
+    ;;
+  verify|repair|update|rollback|uninstall|profile|provider|model|environment|receipt|replay-install)
+    # These command names are reserved by Pass 172. Unsupported operations
+    # terminate explicitly through the canonical installer schema rather than
+    # falling through to a parallel authority.
+    exec python3 -m hhs_installer.cli "$@"
+    ;;
+  *)
+    exec python3 -m hhs_runtime.pass148.cli "$@"
+    ;;
+esac

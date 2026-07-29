@@ -1,0 +1,112 @@
+{
+  "schema": "HHS_PASS_172_173_EXISTING_SURFACE_INVENTORY_V1",
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "authoritative_base_commit": "3fd4ca088039b1adc0d08a0644d62b979af8997d",
+  "inventory_status": "BOUNDED_CURRENT_TREE_SCAN",
+  "surfaces": [
+    {
+      "path": "init.sh",
+      "class": "LEGACY_INSTALLATION_ADAPTER",
+      "observed_capabilities": ["Python minimum check", "global requirements installation", "optional Vulkan loader", "native verify-c", "targeted tests", "optional start"],
+      "required_migration": "Become a thin adapter to the Pass 172 canonical installer; preserve useful behavior but remove global-pip and profile contamination."
+    },
+    {
+      "path": "start.sh",
+      "class": "LEGACY_RUNTIME_START_ADAPTER",
+      "observed_capabilities": ["Runtime startup", "LiteRT-LM provider bootstrap", "provider health", "visual server startup"],
+      "required_migration": "Consume Pass 172 generated configuration and provider classification; remain subordinate to the singleton VM81 Runtime."
+    },
+    {
+      "path": "GNUmakefile",
+      "class": "LEGACY_COMMAND_ADAPTER",
+      "observed_capabilities": ["setup", "start", "setup-start", "ledger benchmark"],
+      "required_migration": "Route setup targets through the canonical `hhs install` request instead of owning installation semantics."
+    },
+    {
+      "path": "requirements.txt",
+      "class": "COMBINED_DEPENDENCY_SURFACE",
+      "observed_capabilities": ["Repository-wide Python dependencies"],
+      "required_migration": "Split into core, runtime, provider, test, development, and Android-tool manifests with reviewed locks."
+    },
+    {
+      "path": "tools/bootstrap_litert_lm.sh",
+      "class": "PROVIDER_BOOTSTRAP_ADAPTER",
+      "observed_capabilities": ["LiteRT-LM environment/bootstrap"],
+      "required_migration": "Route through Pass 172 provider planning, verification, receipts, timeout, and rollback."
+    },
+    {
+      "path": "tools/install_vulkan_loader.sh",
+      "class": "GPU_LOADER_ADAPTER",
+      "observed_capabilities": ["Linux distribution package adaptation", "loader staging", "Vulkan verification"],
+      "required_migration": "Register under platform/provider dependency planning and preserve the no-driver/no-hardware nonclaim."
+    },
+    {
+      "path": "tools/import_hhs_gemma4_model.sh",
+      "class": "MODEL_IMPORT_ADAPTER",
+      "observed_capabilities": ["Gemma model import", "registry alias"],
+      "required_migration": "Route through model governance, license/authentication/digest checks, temporary partial paths, quarantine, and import receipts."
+    },
+    {
+      "path": "deployment/pass153/Dockerfile",
+      "class": "HISTORICAL_CONTAINER_SURFACE",
+      "observed_capabilities": ["Pass 153 deployment image"],
+      "required_migration": "Become an adapter or predecessor to the current inherited Runtime container definition."
+    },
+    {
+      "path": "deployment/pass153/huggingface/Dockerfile",
+      "class": "HISTORICAL_PROVIDER_CONTAINER_SURFACE",
+      "observed_capabilities": ["Provider deployment image"],
+      "required_migration": "Preserve split-provider topology while adopting Pass 172 source/dependency verification and non-root runtime rules."
+    },
+    {
+      "path": "deployment/pass153/docker-compose.yml",
+      "class": "SPLIT_TOPOLOGY_SURFACE",
+      "observed_capabilities": ["Web/provider composition"],
+      "required_migration": "Bind to Pass 172 container profiles, explicit state volumes, credentials policy, and health classifications."
+    },
+    {
+      "path": "hhs_backend/visual_server.py",
+      "class": "PUBLIC_RUNTIME_API_COMPOSITION",
+      "observed_capabilities": ["Default visual interface", "FastAPI composition", "assistant-degraded startup"],
+      "required_migration": "Register read-only installation status routes; no unauthenticated host mutation."
+    },
+    {
+      "path": "applications/holofractal_harmonizer",
+      "class": "IDE_APPLICATION_ENVIRONMENT",
+      "observed_capabilities": ["Pass 161 object registry", "workflow-first visual IDE", "public API controller"],
+      "required_migration": "Register installation and verification workflows as public API workflow compilations, not alternate execution authorities."
+    },
+    {
+      "path": "native_projects",
+      "class": "NATIVE_PROJECT_COLLECTION",
+      "observed_capabilities": ["Multiple C11 projects and ABIs"],
+      "required_migration": "Generate a live inventory and classify each project as required core, profile, developer, historical, experimental, orphaned, unreachable, or external."
+    },
+    {
+      "path": "docs/operations/STATELESS_RESUMABLE_AGENTIC_DELIVERY_POLICY.md",
+      "class": "DELIVERY_POLICY",
+      "observed_capabilities": ["Restartable repository-visible task state", "bounded closure", "recovery receipts"],
+      "required_migration": "Apply to every Pass 172/173 long-running action and evidence workflow."
+    }
+  ],
+  "missing_canonical_surfaces_at_scan_time": [
+    "hhs_installer package",
+    "hhs_verification/pass173 package",
+    "hhs-bootstrap.py",
+    "install.ps1",
+    "profile-separated requirements and platform locks",
+    "schemas/pass172",
+    "schemas/pass173",
+    "manifests/pass172",
+    "tests/pass172",
+    "tests/pass173",
+    "Pass 172/173 CI workflows",
+    "installation read-only API routes"
+  ],
+  "authority_result": {
+    "parallel_runtime_detected": false,
+    "canonical_installer_detected": false,
+    "canonical_pass173_verifier_detected": false,
+    "migration_required": true
+  }
+}

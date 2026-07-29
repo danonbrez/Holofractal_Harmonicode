@@ -1,0 +1,116 @@
+name: Pass 172-173 Installation Implementation
+
+on:
+  pull_request:
+    paths:
+      - 'hhs_installer/**'
+      - 'hhs_verification/**'
+      - 'tests/pass172/**'
+      - 'tests/pass173/**'
+      - 'schemas/pass172/**'
+      - 'schemas/pass173/**'
+      - 'manifests/pass172/**'
+      - 'requirements-*.txt'
+      - 'hhs'
+      - 'hhs-bootstrap.py'
+      - 'install.sh'
+      - 'install.ps1'
+      - 'evidence/pass172_173/**'
+      - '.github/workflows/pass172-173-installation.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  dependency-scoped-python:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ['3.11', '3.12']
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install bounded test dependency
+        run: timeout 180s python -m pip install 'pytest>=8,<9'
+
+      - name: Verify contracts were not modified
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin main
+          git diff --exit-code origin/main...HEAD -- \
+            HHS_PASS_172_UNIVERSAL_COMPATIBLE_ENVIRONMENT_ONE_COMMAND_INSTALLATION_DEPENDENCY_RESOLUTION_VERIFIED_BOOTSTRAP_AND_RUNTIME_ACTIVATION_SYSTEM.md \
+            HHS_PASS_173_UNIVERSAL_INSTALLATION_FULL_COVERAGE_REDUNDANT_VERIFICATION_CALIBRATION_REPAIR_AND_REPLAY_CLOSURE_RUNTIME.md
+
+      - name: Compile implementation surfaces
+        run: timeout 120s python -m compileall -q hhs_installer hhs_verification tests/pass172 tests/pass173
+
+      - name: Validate shell adapters
+        shell: bash
+        run: timeout 60s bash -n hhs install.sh
+
+      - name: Run dependency-scoped tests
+        run: timeout 300s python -m pytest -q tests/pass172 tests/pass173
+
+      - name: Execute read-only probe and plan smoke tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          timeout 60s python hhs-bootstrap.py probe --profile core --source . --hhs-home "$RUNNER_TEMP/hhs-home" > "$RUNNER_TEMP/pass172-probe.json"
+          timeout 60s python hhs-bootstrap.py plan --profile core --source . --hhs-home "$RUNNER_TEMP/hhs-home" > "$RUNNER_TEMP/pass172-plan.json"
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          root = Path(os.environ['RUNNER_TEMP'])
+          probe = json.loads((root / 'pass172-probe.json').read_text())
+          plan = json.loads((root / 'pass172-plan.json').read_text())
+          assert probe['host_mutation_performed'] is False
+          assert plan['host_mutation_performed'] is False
+          assert plan['plan']['resolved_profile'] == 'core'
+          PY
+
+  dependency-manifest-audit:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Parse manifests and traceability
+        shell: bash
+        run: |
+          set -euo pipefail
+          timeout 120s python - <<'PY'
+          import json
+          from pathlib import Path
+          required = [
+              'evidence/pass172_173/variant_inventory.json',
+              'evidence/pass172_173/constraint_provenance_matrix.json',
+              'evidence/pass172_173/conflict_register.json',
+              'evidence/pass172_173/existing_surface_inventory.json',
+              'evidence/pass172_173/implementation_traceability.json',
+              'manifests/pass172/profiles.json',
+              'manifests/pass172/dependencies.json',
+              'schemas/pass172/installation_request.schema.json',
+              'schemas/pass173/coverage_matrix.schema.json',
+          ]
+          for name in required:
+              path = Path(name)
+              assert path.is_file(), name
+              json.loads(path.read_text(encoding='utf-8'))
+          conflicts = json.loads(Path('evidence/pass172_173/conflict_register.json').read_text())
+          assert conflicts['unresolved_count'] == 0
+          variants = json.loads(Path('evidence/pass172_173/variant_inventory.json').read_text())
+          assert variants['distinct_repository_content_variants'] == {'pass172': 1, 'pass173': 1}
+          PY

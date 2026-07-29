@@ -1,0 +1,84 @@
+{
+  "schema": "HHS_PASS_172_173_VARIANT_INVENTORY_V1",
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "authoritative_base_commit": "3fd4ca088039b1adc0d08a0644d62b979af8997d",
+  "generated_on_branch": "agent/pass172-173-consolidation-implementation-v5",
+  "contract_source_mutation_permitted": false,
+  "discovery_status": "PARTIAL_REPOSITORY_HISTORY_AND_CURRENT_TREE_COMPLETE_FOR_KNOWN_IDENTITIES",
+  "variants": [
+    {
+      "variant_id": "P172-CANONICAL-CURRENT",
+      "pass": 172,
+      "kind": "canonical_repository_file",
+      "path": "HHS_PASS_172_UNIVERSAL_COMPATIBLE_ENVIRONMENT_ONE_COMMAND_INSTALLATION_DEPENDENCY_RESOLUTION_VERIFIED_BOOTSTRAP_AND_RUNTIME_ACTIVATION_SYSTEM.md",
+      "ref": "main",
+      "blob_sha": "e50d3fe1dc095d803334c9636b6cfc43ae4deea5",
+      "first_known_commit": "a867fa3dff89c1fec7c9c4d7248694f69b912bb3",
+      "contract_id": "HHS-P172-UCEOCI-DRVBRAS",
+      "classification": "NORMATIVE_SOURCE",
+      "content_equivalence_group": "P172-BLOB-e50d3fe1"
+    },
+    {
+      "variant_id": "P172-HISTORICAL-ADD-COMMIT",
+      "pass": 172,
+      "kind": "historical_repository_snapshot",
+      "path": "HHS_PASS_172_UNIVERSAL_COMPATIBLE_ENVIRONMENT_ONE_COMMAND_INSTALLATION_DEPENDENCY_RESOLUTION_VERIFIED_BOOTSTRAP_AND_RUNTIME_ACTIVATION_SYSTEM.md",
+      "ref": "a867fa3dff89c1fec7c9c4d7248694f69b912bb3",
+      "blob_sha": "e50d3fe1dc095d803334c9636b6cfc43ae4deea5",
+      "contract_id": "HHS-P172-UCEOCI-DRVBRAS",
+      "classification": "IDENTICAL_HISTORICAL_PROVENANCE",
+      "content_equivalence_group": "P172-BLOB-e50d3fe1"
+    },
+    {
+      "variant_id": "P172-USER-SUPPLIED-SOURCE",
+      "pass": 172,
+      "kind": "user_supplied_contract_text",
+      "repository_materialization": "P172-CANONICAL-CURRENT",
+      "contract_id": "HHS-P172-UCEOCI-DRVBRAS",
+      "classification": "NORMATIVE_PROVENANCE_BOUND_TO_CANONICAL_REPOSITORY_FILE",
+      "content_equivalence_group": "P172-BLOB-e50d3fe1",
+      "note": "The supplied text was committed as the canonical repository file; conversation transport is not used as execution state."
+    },
+    {
+      "variant_id": "P173-CANONICAL-CURRENT",
+      "pass": 173,
+      "kind": "canonical_repository_file",
+      "path": "HHS_PASS_173_UNIVERSAL_INSTALLATION_FULL_COVERAGE_REDUNDANT_VERIFICATION_CALIBRATION_REPAIR_AND_REPLAY_CLOSURE_RUNTIME.md",
+      "ref": "main",
+      "blob_sha": "293968b759deb6f86804465c1086d0382546b1a2",
+      "first_known_commit": "c089c21ff0d814995de474720d058c86c21373d3",
+      "contract_id": "HHS-P173-UIFCRV-CRRCR",
+      "classification": "NORMATIVE_SOURCE",
+      "content_equivalence_group": "P173-BLOB-293968b7"
+    },
+    {
+      "variant_id": "P173-HISTORICAL-ADD-COMMIT",
+      "pass": 173,
+      "kind": "historical_repository_snapshot",
+      "path": "HHS_PASS_173_UNIVERSAL_INSTALLATION_FULL_COVERAGE_REDUNDANT_VERIFICATION_CALIBRATION_REPAIR_AND_REPLAY_CLOSURE_RUNTIME.md",
+      "ref": "c089c21ff0d814995de474720d058c86c21373d3",
+      "blob_sha": "293968b759deb6f86804465c1086d0382546b1a2",
+      "contract_id": "HHS-P173-UIFCRV-CRRCR",
+      "classification": "IDENTICAL_HISTORICAL_PROVENANCE",
+      "content_equivalence_group": "P173-BLOB-293968b7"
+    },
+    {
+      "variant_id": "P173-USER-SUPPLIED-SOURCE",
+      "pass": 173,
+      "kind": "user_supplied_contract_text",
+      "repository_materialization": "P173-CANONICAL-CURRENT",
+      "contract_id": "HHS-P173-UIFCRV-CRRCR",
+      "classification": "NORMATIVE_PROVENANCE_BOUND_TO_CANONICAL_REPOSITORY_FILE",
+      "content_equivalence_group": "P173-BLOB-293968b7",
+      "note": "The supplied text was committed as the canonical repository file; conversation transport is not used as execution state."
+    }
+  ],
+  "distinct_repository_content_variants": {
+    "pass172": 1,
+    "pass173": 1
+  },
+  "unresolved_discovery": [
+    "Any unindexed or inaccessible branch, deleted ref, release artifact, or external archive containing different Pass 172 or Pass 173 text must be added without changing existing source files.",
+    "No distinct-content repository variant has been proven by current tree, known add commits, branch-name search, code search, or PR-title search."
+  ]
+}

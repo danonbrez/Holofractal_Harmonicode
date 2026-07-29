@@ -1,0 +1,77 @@
+{
+  "schema": "HHS_PASS_172_173_DEPENDENCY_SCOPED_VALIDATION_RECEIPT_V1",
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "branch": "agent/pass172-173-consolidation-implementation-v5",
+  "validated_head": "696864ed87d60ce58962e875c4f3a6ad4f1cf118",
+  "authoritative_main_base": "5980a37dbd2c520ffbd2072fc2229b8dbea0b2d4",
+  "pull_request": 63,
+  "workflow_run_id": 30493192255,
+  "workflow_name": "Pass 172-173 Installation Implementation",
+  "workflow_run_number": 2,
+  "status": "SUCCESS",
+  "conclusion": "success",
+  "bounded": true,
+  "contract_files_modified": false,
+  "jobs": [
+    {
+      "name": "dependency-manifest-audit",
+      "job_id": 90715811647,
+      "conclusion": "success",
+      "verified": [
+        "JSON manifest parsing",
+        "constraint provenance presence",
+        "zero unresolved true conflicts",
+        "one distinct known repository content identity for Pass 172",
+        "one distinct known repository content identity for Pass 173"
+      ]
+    },
+    {
+      "name": "dependency-scoped-python (3.11)",
+      "job_id": 90715811702,
+      "conclusion": "success",
+      "verified": [
+        "contract source diff is zero",
+        "Python compilation",
+        "POSIX shell adapter syntax",
+        "Pass 172 focused tests",
+        "Pass 173 focused tests",
+        "read-only environment probe smoke",
+        "read-only installation plan smoke"
+      ]
+    },
+    {
+      "name": "dependency-scoped-python (3.12)",
+      "job_id": 90715811688,
+      "conclusion": "success",
+      "verified": [
+        "contract source diff is zero",
+        "Python compilation",
+        "POSIX shell adapter syntax",
+        "Pass 172 focused tests",
+        "Pass 173 focused tests",
+        "read-only environment probe smoke",
+        "read-only installation plan smoke"
+      ]
+    }
+  ],
+  "failures": 0,
+  "remaining_nonterminal_scope": [
+    "real clean installation on every claimed platform and architecture",
+    "locked transitive dependency artifacts",
+    "verified release and offline bundle acquisition",
+    "portable native artifact and symbol matrix",
+    "real LiteRT-LM local CPU and local GPU provider execution",
+    "model acquisition/import calibration",
+    "Android build matrix",
+    "container architecture matrix",
+    "fault catalog full execution",
+    "update, rollback, repair and uninstall integration matrices",
+    "independent full clean-environment replay",
+    "Pass 172 terminal closure",
+    "Pass 173 A+ terminal closure"
+  ],
+  "classification": "HHS_PASS_172_INSTALLER_SCAFFOLDED_AND_DEPENDENCY_SCOPED_VALIDATED__HHS_PASS_173_DEPENDENCY_SCOPED_REVALIDATION_PASSED",
+  "terminal_claimed": false,
+  "omega_172": false,
+  "omega_173": false
+}

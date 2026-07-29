@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hhs.local/schemas/pass172/installation_request.schema.json",
+  "title": "HHS Pass 172 Installation Request",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["contract_id", "operation", "source", "profile", "install_mode", "network_policy", "privilege_policy", "provider_policy", "model_policy"],
+  "properties": {
+    "contract_id": {"const": "HHS-P172-UCEOCI-DRVBRAS"},
+    "operation": {"enum": ["install", "probe", "plan", "verify", "repair", "update", "rollback", "uninstall", "status", "doctor", "replay-install"]},
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "reference"],
+      "properties": {
+        "kind": {"enum": ["release", "git", "local", "offline_bundle"]},
+        "reference": {"type": "string", "minLength": 1},
+        "expected_identity": {"type": ["string", "null"]}
+      }
+    },
+    "profile": {"enum": ["auto", "core", "runtime", "assistant-external", "assistant-local-cpu", "assistant-local-gpu", "developer", "android-build", "container", "offline"]},
+    "install_mode": {"enum": ["user", "portable", "system", "container"]},
+    "start_after_install": {"type": "boolean", "default": false},
+    "network_policy": {"enum": ["online", "cached_only", "offline"]},
+    "privilege_policy": {"enum": ["prompt", "never", "preauthorized"]},
+    "provider_policy": {"enum": ["auto", "local", "external", "disabled"]},
+    "model_policy": {"enum": ["auto", "download", "existing", "skip"]},
+    "preserve_user_data": {"type": "boolean", "default": true},
+    "noninteractive": {"type": "boolean", "default": false},
+    "hhs_home": {"type": ["string", "null"]},
+    "timeout_seconds": {"type": "integer", "minimum": 1, "maximum": 86400, "default": 900}
+  }
+}

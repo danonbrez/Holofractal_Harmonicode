@@ -1,0 +1,5 @@
+-r requirements-runtime.txt
+
+# Local LiteRT-LM provider only. Core, runtime, degraded, and external-provider
+# profiles must not install this file.
+litert-lm==0.14.0
