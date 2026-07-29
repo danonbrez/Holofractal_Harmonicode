@@ -173,17 +173,34 @@ class CanonicalVector:
     source_row: int
     dimension: int
     source_numeric_encoding: str
+    source_model_root: str
+    source_values_exact: tuple[str, ...]
     source_vector_digest: str
     canonical_values: tuple[int, ...]
     denominator: int
     canonical_vector_digest: str
 
     @classmethod
-    def create(cls, token: bytes, decoded: str, row: int, values: list[Fraction], encoding: str) -> "CanonicalVector":
+    def create(cls, token: bytes, decoded: str, row: int, values: list[Fraction], encoding: str, source_model_root: str) -> "CanonicalVector":
+        exact_values = tuple(f"{value.numerator}/{value.denominator}" for value in values)
         quantized = tuple(round_half_even(value) for value in values)
-        source_digest = sha256(token + b"\0" + b"|".join(f"{v.numerator}/{v.denominator}".encode() for v in values)).hexdigest()
-        body = {"token_b64": b64encode(token).decode("ascii"), "row": row, "dimension": len(quantized), "denominator": QUANTIZATION_SCALE, "values": quantized}
-        return cls(body["token_b64"], decoded, row, len(quantized), encoding, source_digest, quantized, QUANTIZATION_SCALE, root(b"HHS-P166-CANONICAL-VECTOR-V1\0", body))
+        token_b64 = b64encode(token).decode("ascii")
+        source_body = {"token_b64": token_b64, "row": row, "dimension": len(values), "numeric_encoding": encoding, "source_model_root": source_model_root, "values_exact": exact_values}
+        source_digest = root(b"HHS-P166-SOURCE-VECTOR-V1\0", source_body)
+        canonical_body = {"source_vector_digest": source_digest, "token_b64": token_b64, "row": row, "dimension": len(quantized), "denominator": QUANTIZATION_SCALE, "values": quantized, "quantization_profile": QUANTIZATION_PROFILE}
+        return cls(
+            source_token_b64=token_b64,
+            decoded_token=decoded,
+            source_row=row,
+            dimension=len(quantized),
+            source_numeric_encoding=encoding,
+            source_model_root=source_model_root,
+            source_values_exact=exact_values,
+            source_vector_digest=source_digest,
+            canonical_values=quantized,
+            denominator=QUANTIZATION_SCALE,
+            canonical_vector_digest=root(b"HHS-P166-CANONICAL-VECTOR-V1\0", canonical_body),
+        )
 
 
 @dataclass(frozen=True)
@@ -233,12 +250,22 @@ class InstalledModel:
 
     @classmethod
     def from_serializable(cls, raw: Mapping[str, Any]) -> "InstalledModel":
+        vectors = []
+        for item in raw["vectors"]:
+            normalized = dict(item)
+            normalized["source_values_exact"] = tuple(normalized["source_values_exact"])
+            normalized["canonical_values"] = tuple(normalized["canonical_values"])
+            vectors.append(CanonicalVector(**normalized))
+        objects = []
+        for item in raw["objects"]:
+            normalized = dict(item)
+            normalized["normalized_aliases"] = tuple(normalized["normalized_aliases"])
+            objects.append(LanguageVectorObject(**normalized))
         return cls(
             model_id=str(raw["model_id"]), package_id=str(raw["package_id"]), manifest_root=str(raw["manifest_root"]),
             package_digest=str(raw["package_digest"]), source_format=str(raw["source_format"]), dimension=int(raw["dimension"]),
             vocabulary_size=int(raw["vocabulary_size"]), canonical_model_root=str(raw["canonical_model_root"]),
             index_root=str(raw["index_root"]), idempotence_key=str(raw["idempotence_key"]), lifecycle_state=str(raw["lifecycle_state"]),
-            active=bool(raw["active"]), vectors=tuple(CanonicalVector(**item) for item in raw["vectors"]),
-            objects=tuple(LanguageVectorObject(**item) for item in raw["objects"]),
+            active=bool(raw["active"]), vectors=tuple(vectors), objects=tuple(objects),
             aliases={str(key): tuple(value) for key, value in raw["aliases"].items()}, terminal_receipt=dict(raw["terminal_receipt"]),
         )
