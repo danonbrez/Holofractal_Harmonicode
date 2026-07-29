@@ -8,13 +8,20 @@ on:
       - "hhs_backend/heroku_server.py"
       - ".github/workflows/hhs-runtime-os-deploy.yml"
       - "!hhs_gui/dist/**"
+  pull_request:
+    branches: [main]
+    paths:
+      - "hhs_gui/**"
+      - "hhs_backend/heroku_server.py"
+      - ".github/workflows/hhs-runtime-os-deploy.yml"
+      - "!hhs_gui/dist/**"
   workflow_dispatch:
 
 permissions:
   contents: write
 
 concurrency:
-  group: hhs-runtime-os-main-build
+  group: hhs-runtime-os-${{ github.event_name }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -23,7 +30,7 @@ jobs:
     timeout-minutes: 20
 
     steps:
-      - name: Check out authoritative main
+      - name: Check out source revision
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
@@ -64,6 +71,7 @@ jobs:
           retention-days: 14
 
       - name: Publish generated bundle to main
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
