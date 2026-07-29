@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#070a12">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net 'sha256-LsNam4837xV4JVe6/2cteXOl7gHJjhik9nnr/3TodGI='; style-src 'self'; img-src 'self' data:; worker-src 'self' blob:; connect-src 'self' https://cdn.jsdelivr.net; object-src 'none'; base-uri 'none'; frame-ancestors 'none'">
-  <title>HHS Pass 157 Unified GUI</title>
-  <link rel="stylesheet" href="/styles/app.css">
+  <title>HHS Pass 157 Swarm Diagnostic</title>
+  <link rel="stylesheet" href="./styles/app.css">
   <script type="importmap">
 {
   "imports": {
@@ -20,8 +20,8 @@
   <div id="hhs-app" class="app-shell" data-boot-state="UNINITIALIZED">
     <header class="app-header">
       <div>
-        <p class="eyebrow">HHS PASS 157</p>
-        <h1>Unified Holofractal Application</h1>
+        <p class="eyebrow">HHS PASS 157 · OPTIONAL DIAGNOSTIC</p>
+        <h1>Unified Holofractal Swarm Projection</h1>
       </div>
       <div class="status-strip" aria-live="polite">
         <span id="boot-status" class="status-pill">UNINITIALIZED</span>
@@ -30,7 +30,7 @@
       </div>
     </header>
 
-    <nav class="workspace-nav" aria-label="HHS workspaces">
+    <nav class="workspace-nav" aria-label="HHS diagnostic workspaces">
       <button type="button" data-workspace="Swarm" aria-current="page">Swarm</button>
       <button type="button" data-workspace="Constructor Bridge">Constructor Bridge</button>
       <button type="button" data-workspace="Torus72">Torus72</button>
@@ -44,9 +44,9 @@
 
     <main class="workspace-grid">
       <section class="visual-stage" aria-label="Particle visualization">
-        <canvas id="swarm-canvas" tabindex="0" aria-label="5,184-state Hash72 particle visualization"></canvas>
+        <canvas id="swarm-canvas" tabindex="0" aria-label="5,184-state Hash72 particle diagnostic"></canvas>
         <div class="canvas-controls">
-          <button type="button" id="physics-toggle">Pause</button>
+          <button type="button" id="physics-toggle">Paused · use Step</button>
           <button type="button" id="physics-step">Step</button>
           <button type="button" id="physics-reset">Reset</button>
           <label>Profile
@@ -62,8 +62,8 @@
 
       <section class="workspace-panel" aria-live="polite">
         <article data-panel="Swarm">
-          <h2>Swarm</h2>
-          <p>Every visible state is bound to one ordered Hash72 pair, one 8×8 sector pair, and one VM81 local cell.</p>
+          <h2>Swarm Diagnostic</h2>
+          <p>Continuous hosted simulation is disabled. Use Step for bounded inspection of the 5,184-state projection.</p>
           <dl id="particle-summary" class="data-grid">
             <dt>Selection</dt><dd>None</dd>
             <dt>Population</dt><dd>5,184</dd>
@@ -135,11 +135,12 @@
     </main>
 
     <footer class="app-footer">
-      <span>Exact symbolic authority is isolated from the graphics float projection.</span>
+      <span>Optional projection diagnostic. The Runtime OS visual IDE is the public root.</span>
       <span id="trace-head">TRACE: EMPTY</span>
     </footer>
   </div>
-  <script type="module" src="/src/persistence/global.js"></script>
-  <script type="module" src="/src/app/boot.js"></script>
+  <script type="module" src="./src/persistence/global.js"></script>
+  <script type="module" src="./src/app/boot.js"></script>
+  <script type="module" src="./src/app/resource_guard.js"></script>
 </body>
 </html>
