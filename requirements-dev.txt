@@ -1,0 +1,8 @@
+-r requirements-runtime.txt
+-r requirements-test.txt
+
+# Developer/analytics-only packages. Not installed by core/runtime profiles.
+numpy>=1.26,<3.0
+sympy>=1.13,<2.0
+black>=24.4,<25.0
+isort>=5.13,<6.0
