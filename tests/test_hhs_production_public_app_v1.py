@@ -65,7 +65,6 @@ def test_canonical_workspace_exposes_only_integrated_callable_surfaces():
     ]:
         assert token in source
 
-    # Static doctrine-only cards were removed from the production workspace.
     for token in [
         "CapabilityRegistryPanel",
         "ProviderInspector",
@@ -112,13 +111,13 @@ def test_live_capability_panel_calls_canonical_backend():
 
 
 def test_provider_hierarchy_uses_gemma_then_native_hhs_without_canned_demo():
-    source = Path(
-        "hhs_backend/runtime/hhs_production_assistant_v1.py"
-    ).read_text(encoding="utf-8")
-    native = Path(
-        "hhs_backend/runtime/hhs_native_litert_lm_provider_v1.py"
-    ).read_text(encoding="utf-8")
-    combined = source + native
+    paths = [
+        "hhs_backend/runtime/hhs_production_assistant_v1.py",
+        "hhs_backend/runtime/hhs_native_litert_lm_provider_v1.py",
+        "hhs_backend/runtime/hhs_capability_provider_registry_v1.py",
+        "hhs_backend/runtime/hhs_litert_lm_assistant_v1.py",
+    ]
+    combined = "\n".join(Path(path).read_text(encoding="utf-8") for path in paths)
     assert "provider:hhs.litert_lm.gemma4" in combined
     assert "provider:hhs.local.text" in combined
     assert "Pass 166" in combined or "pass166" in combined
