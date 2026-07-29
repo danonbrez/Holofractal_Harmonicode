@@ -1,4 +1,4 @@
-import{r,j as n}from"./main-BO6Y6fJn.js";import"./index-Dm5fnYpY.js";const b="(x/y)(y/x)==1",h=()=>{const[t,c]=r.useState(b),[s,o]=r.useState(!1),[a,l]=r.useState(null),[d,u]=r.useState(null),i=r.useMemo(()=>`${window.location.origin}/api/hhs/solve`,[]),x=r.useCallback(async()=>{o(!0),l(null);try{const e=await fetch(i,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({expression:t,runtime_id:"runtime_main",branch_id:"main"})});if(!e.ok)throw new Error(`Runtime request failed (${e.status})`);const m=await e.json();u(m)}catch(e){console.error("[HHSCalculatorSurface] runtime solve failure",e),l(e instanceof Error?e.message:"Unknown runtime error")}finally{o(!1)}},[t,i]);return n.jsxs("div",{className:`
+import{r,j as n}from"./main-CIhmWrrY.js";import"./index-BI-fsx-Y.js";const b="(x/y)(y/x)==1",h=()=>{const[t,c]=r.useState(b),[s,o]=r.useState(!1),[a,l]=r.useState(null),[d,u]=r.useState(null),i=r.useMemo(()=>`${window.location.origin}/api/hhs/solve`,[]),x=r.useCallback(async()=>{o(!0),l(null);try{const e=await fetch(i,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({expression:t,runtime_id:"runtime_main",branch_id:"main"})});if(!e.ok)throw new Error(`Runtime request failed (${e.status})`);const m=await e.json();u(m)}catch(e){console.error("[HHSCalculatorSurface] runtime solve failure",e),l(e instanceof Error?e.message:"Unknown runtime error")}finally{o(!1)}},[t,i]);return n.jsxs("div",{className:`
                 w-full
                 h-full
                 bg-neutral-950
@@ -109,4 +109,4 @@ import{r,j as n}from"./main-BO6Y6fJn.js";import"./index-Dm5fnYpY.js";const b="(x
                             break-all
                             overflow-auto
                         `,children:JSON.stringify(d,null,2)})]})})]})};export{h as HHSCalculatorSurface,h as default};
-//# sourceMappingURL=HHSCalculatorSurface--AAyC-oy.js.map
+//# sourceMappingURL=HHSCalculatorSurface-lxvaWXDP.js.map

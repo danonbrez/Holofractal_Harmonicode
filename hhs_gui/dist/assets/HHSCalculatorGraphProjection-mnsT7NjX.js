@@ -1,4 +1,4 @@
-import{r as i,j as n}from"./main-BO6Y6fJn.js";import"./index-Dm5fnYpY.js";const v=()=>{const[e,c]=i.useState([]),[o,s]=i.useState(!0),[d,x]=i.useState(null),p=i.useMemo(()=>`${window.location.origin}/api/runtime/graph`,[]);return i.useEffect(()=>{let r=!0,a;const l=async()=>{try{const t=await fetch(p);if(!t.ok)throw new Error(`Graph request failed (${t.status})`);const m=await t.json();if(!r)return;const u=Array.isArray(m.nodes)?m.nodes:[];c(u),s(!1),x(null)}catch(t){if(console.error("[HHSCalculatorGraphProjection] graph projection failure",t),!r)return;s(!1),x(t instanceof Error?t.message:"Graph projection failure")}};return l(),a=window.setInterval(l,2e3),()=>{r=!1,a&&window.clearInterval(a)}},[p]),n.jsxs("div",{className:`
+import{r as i,j as n}from"./main-CIhmWrrY.js";import"./index-BI-fsx-Y.js";const v=()=>{const[e,c]=i.useState([]),[o,s]=i.useState(!0),[d,x]=i.useState(null),p=i.useMemo(()=>`${window.location.origin}/api/runtime/graph`,[]);return i.useEffect(()=>{let r=!0,a;const l=async()=>{try{const t=await fetch(p);if(!t.ok)throw new Error(`Graph request failed (${t.status})`);const m=await t.json();if(!r)return;const u=Array.isArray(m.nodes)?m.nodes:[];c(u),s(!1),x(null)}catch(t){if(console.error("[HHSCalculatorGraphProjection] graph projection failure",t),!r)return;s(!1),x(t instanceof Error?t.message:"Graph projection failure")}};return l(),a=window.setInterval(l,2e3),()=>{r=!1,a&&window.clearInterval(a)}},[p]),n.jsxs("div",{className:`
                 w-full
                 h-full
                 bg-black
@@ -151,4 +151,4 @@ import{r as i,j as n}from"./main-BO6Y6fJn.js";import"./index-Dm5fnYpY.js";const 
                                 break-all
                                 text-emerald-400
                             `,children:e.receipt_hash72})]})]})};export{v as HHSCalculatorGraphProjection,v as default};
-//# sourceMappingURL=HHSCalculatorGraphProjection-DNwhYWSQ.js.map
+//# sourceMappingURL=HHSCalculatorGraphProjection-mnsT7NjX.js.map
