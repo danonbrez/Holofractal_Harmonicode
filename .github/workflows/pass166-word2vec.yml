@@ -1,6 +1,23 @@
 name: Pass 166 Word2Vec Preinstaller
 
 on:
+  push:
+    branches:
+      - 'agent/pass166-word2vec-preinstaller'
+    paths:
+      - 'hhs_runtime/pass166/**'
+      - 'hhs_backend/api/pass166_word2vec_routes.py'
+      - 'hhs_backend/pass166_server.py'
+      - 'native_projects/hhs_pass166_word2vec/**'
+      - 'tests/test_hhs_pass166_word2vec_v1.py'
+      - 'tests/test_hhs_pass166_supply_chain_v1.py'
+      - 'tools/hhs_model.py'
+      - 'tools/pass166_terminal_evidence.py'
+      - 'HHS_PASS_166_AUTHORITY_BINDING.json'
+      - 'HHS_PASS_166_IMPLEMENTATION_STATUS.md'
+      - 'docs/HHS_PASS_166_WORD2VEC_RUNTIME.md'
+      - 'evidence/pass166/**'
+      - '.github/workflows/pass166-word2vec.yml'
   pull_request:
     paths:
       - 'hhs_runtime/pass166/**'
@@ -8,6 +25,7 @@ on:
       - 'hhs_backend/pass166_server.py'
       - 'native_projects/hhs_pass166_word2vec/**'
       - 'tests/test_hhs_pass166_word2vec_v1.py'
+      - 'tests/test_hhs_pass166_supply_chain_v1.py'
       - 'tools/hhs_model.py'
       - 'tools/pass166_terminal_evidence.py'
       - 'HHS_PASS_166_AUTHORITY_BINDING.json'
@@ -42,18 +60,18 @@ jobs:
             tests/test_hhs_pass164_gcmsl_v1.py \
             tests/test_hhs_pass165_multimodal_ingress_v1.py \
             tests/test_hhs_pass165_terminal_v1.py \
-            tests/test_hhs_pass166_word2vec_v1.py
+            tests/test_hhs_pass166_word2vec_v1.py \
+            tests/test_hhs_pass166_supply_chain_v1.py
       - name: Strict C11 Pass 165
         run: make -C native_projects/hhs_pass165_mmvs clean test
       - name: Strict C11 Pass 166
         run: make -C native_projects/hhs_pass166_word2vec clean test
       - name: Execute terminal evidence harness
-        if: ${{ hashFiles('tools/pass166_terminal_evidence.py') != '' }}
-        run: python tools/pass166_terminal_evidence.py --output evidence/pass166/P166_TERMINAL_EXECUTION.json
+        run: python tools/pass166_terminal_evidence.py --output "$RUNNER_TEMP/pass166-terminal/P166_TERMINAL_EXECUTION.json"
       - name: Upload terminal evidence
-        if: ${{ hashFiles('evidence/pass166/P166_TERMINAL_EXECUTION.json') != '' }}
         uses: actions/upload-artifact@v4
         with:
           name: pass166-terminal-evidence
-          path: evidence/pass166/P166_TERMINAL_EXECUTION.json
+          path: ${{ runner.temp }}/pass166-terminal/P166_TERMINAL_EXECUTION.json
           if-no-files-found: error
+          retention-days: 30
