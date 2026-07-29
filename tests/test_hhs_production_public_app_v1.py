@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import asyncio
-import os
 
 from fastapi.testclient import TestClient
 
@@ -65,11 +64,24 @@ class OfflineModelService:
 
 def test_production_assistant_is_query_specific_and_never_uses_demo_template(monkeypatch):
     async def fake_tool(tool_name, arguments):
-        response = {
-            "status": "IMPLEMENTED_EXECUTION_VERIFIED",
-            "classification": "HHS_PASS_152_UNIVERSAL_ELASTIC_CLOSURE_INVARIANT_VERIFIED",
-            "tool_name": tool_name,
-        }
+        if tool_name == "hhs_repository_search":
+            response = {
+                "schema": "HHS_BOUNDED_REPOSITORY_KNOWLEDGE_SEARCH_V1",
+                "ok": True,
+                "query": arguments["query"],
+                "result_count": 1,
+                "results": [{
+                    "path": "native_projects/hhs_harmonicode_language/README.md",
+                    "score": 72,
+                    "snippet": "HARMONICODE is parsed into source-preserving typed IR.",
+                }],
+            }
+        else:
+            response = {
+                "status": "IMPLEMENTED_EXECUTION_VERIFIED",
+                "classification": "HHS_PASS_152_UNIVERSAL_ELASTIC_CLOSURE_INVARIANT_VERIFIED",
+                "tool_name": tool_name,
+            }
         return {
             "schema": "HHS_ASSISTANT_API_TOOL_RECEIPT_V1",
             "ok": True,
@@ -99,16 +111,28 @@ def test_production_assistant_is_query_specific_and_never_uses_demo_template(mon
             content="What is the current Pass 152 status?",
         )
     )
+    knowledge = asyncio.run(
+        service.send_message(
+            thread["thread_id"],
+            content="Explain the HARMONICODE language service.",
+        )
+    )
 
     first = capabilities["assistant_message"]["content"]
     second = pass_status["assistant_message"]["content"]
-    assert first != second
+    third = knowledge["assistant_message"]["content"]
+    assert len({first, second, third}) == 3
     assert CANNED_DEMO_RESPONSE not in first
     assert CANNED_DEMO_RESPONSE not in second
+    assert CANNED_DEMO_RESPONSE not in third
     assert "hhs_pass152_status" in second
+    assert "native_projects/hhs_harmonicode_language/README.md" in third
+    assert "source-preserving typed IR" in third
     assert pass_status["hhs_api_tool_call_count"] >= 1
-    assert pass_status["runtime_mutation_admitted"] is False
+    assert knowledge["hhs_api_tool_trace"][0]["tool_name"] == "hhs_repository_search"
+    assert knowledge["runtime_mutation_admitted"] is False
     assert pass_status["turn_root_hash72"]
+    assert knowledge["turn_root_hash72"]
 
 
 def test_production_assistant_health_remains_online_without_model():
@@ -118,6 +142,7 @@ def test_production_assistant_health_remains_online_without_model():
     assert health["model_online"] is False
     assert health["effective_mode"] == "DETERMINISTIC_HHS_CAPABILITY_ASSISTANT"
     assert health["same_template_response_enabled"] is False
+    assert health["repository_retrieval_enabled"] is True
 
 
 def test_public_product_routes_are_callable(monkeypatch):
@@ -151,6 +176,21 @@ def test_public_product_routes_are_callable(monkeypatch):
     turn = chat.json()
     assert turn["assistant_message"]["content"]
     assert CANNED_DEMO_RESPONSE not in turn["assistant_message"]["content"]
+
+    search = client.post(
+        "/api/assistant/tools/hhs_repository_search",
+        json={
+            "arguments": {
+                "query": "HARMONICODE language service",
+                "limit": 3,
+            }
+        },
+    )
+    assert search.status_code == 200
+    search_receipt = search.json()
+    assert search_receipt["ok"] is True
+    assert search_receipt["response"]["results"]
+    assert search_receipt["runtime_mutation_admitted"] is False
 
     analysis = client.post(
         "/api/workspace/harmonicode/analyze",
