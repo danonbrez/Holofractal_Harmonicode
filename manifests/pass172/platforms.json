@@ -1,0 +1,24 @@
+{
+  "schema": "HHS_PASS_172_PLATFORM_MANIFEST_V1",
+  "contract_id": "HHS-P172-UCEOCI-DRVBRAS",
+  "support_rule": "A platform is supported only after real-host execution of every claimed profile boundary.",
+  "adapters": {
+    "Linux": ["apt-get", "dnf", "yum", "pacman", "apk", "zypper"],
+    "Darwin": ["Apple Clang", "Homebrew when already installed or explicitly authorized", "Metal probe"],
+    "Windows": ["PowerShell", "winget", "choco", "LLVM/Clang", "native DLL and symbol inspection"],
+    "Android-Termux": ["pkg", "Android OS Vulkan loader", "separate android-build profile"],
+    "Container": ["Docker", "Podman", "non-root", "explicit state mount", "no runtime immutable-layer mutation"]
+  },
+  "status": {
+    "Linux-x86_64": "DEPENDENCY_SCOPED_IMPLEMENTATION_VALIDATED_NOT_FULL_INSTALL_VERIFIED",
+    "Linux-aarch64": "P173_PLATFORM_NOT_VERIFIED",
+    "macOS-arm64": "P173_PLATFORM_NOT_VERIFIED",
+    "macOS-x86_64": "P173_PLATFORM_NOT_VERIFIED",
+    "Windows-x86_64": "P173_PLATFORM_NOT_VERIFIED",
+    "Android-build": "P173_PLATFORM_NOT_VERIFIED",
+    "Termux-arm64": "P173_PLATFORM_NOT_VERIFIED",
+    "OCI-x86_64": "P173_PLATFORM_NOT_VERIFIED",
+    "OCI-arm64": "P173_PLATFORM_NOT_VERIFIED",
+    "real-local-GPU": "P173_PLATFORM_NOT_VERIFIED"
+  }
+}
