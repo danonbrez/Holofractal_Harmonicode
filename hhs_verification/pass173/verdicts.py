@@ -58,9 +58,16 @@ class VerdictEngine:
     @staticmethod
     def classify(value: VerdictInput) -> VerdictResult:
         blockers: list[str] = []
+        all_required_cases = value.required_cases > 0 and value.executed_cases >= value.required_cases
+        integrity_closed = (
+            value.receipt_mismatches == 0
+            and value.authority_bypasses == 0
+            and value.data_loss_events == 0
+            and value.unrepaired_defects == 0
+        )
         terminal_requirements = {
             "contract_fully_mapped": value.contract_fully_mapped,
-            "all_required_cases_executed": value.required_cases > 0 and value.executed_cases >= value.required_cases,
+            "all_required_cases_executed": all_required_cases,
             "full_matrix_executed": value.full_matrix_executed,
             "redundant_lane_agreement": value.redundant_lane_agreement,
             "calibration_passed": value.calibration_passed,
@@ -71,13 +78,16 @@ class VerdictEngine:
             "unrepaired_defects_zero": value.unrepaired_defects == 0,
         }
         blockers.extend(key for key, passed in terminal_requirements.items() if not passed)
+
+        b_prerequisites = value.contract_fully_mapped and all_required_cases and value.full_matrix_executed and integrity_closed
+        a_prerequisites = b_prerequisites and value.redundant_lane_agreement
         if all(terminal_requirements.values()):
             verdict = Verdict.A_PLUS
-        elif value.redundant_lane_agreement:
+        elif a_prerequisites:
             verdict = Verdict.A
-        elif value.full_matrix_executed:
+        elif b_prerequisites:
             verdict = Verdict.B
-        elif value.affected_scopes_revalidated:
+        elif value.affected_scopes_revalidated and value.repairs_implemented > 0 and value.executed_cases > 0:
             verdict = Verdict.C
         elif value.repairs_implemented > 0:
             verdict = Verdict.D
@@ -90,7 +100,18 @@ class VerdictEngine:
         else:
             verdict = Verdict.H
         terminal = verdict is Verdict.A_PLUS
-        payload = {"input": value.to_dict(), "verdict": verdict.value, "terminal": terminal, "blockers": blockers}
+        payload = {
+            "input": value.to_dict(),
+            "derived": {
+                "all_required_cases": all_required_cases,
+                "integrity_closed": integrity_closed,
+                "b_prerequisites": b_prerequisites,
+                "a_prerequisites": a_prerequisites,
+            },
+            "verdict": verdict.value,
+            "terminal": terminal,
+            "blockers": blockers,
+        }
         return VerdictResult(
             verdict=verdict,
             terminal=terminal,
