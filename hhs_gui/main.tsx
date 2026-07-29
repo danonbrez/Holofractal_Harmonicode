@@ -4,6 +4,13 @@ import { CanonicalRuntimeIDE } from "./runtime_os/core/CanonicalRuntimeIDE"
 import { RuntimeOS } from "./runtime_os/core/RuntimeOS"
 import "./src/styles/global.css"
 
+declare global {
+  interface Window {
+    __HHS_RUNTIME_OS__?: RuntimeOS
+    __HHS_REPORT_BOOT_ERROR__?: (label: string, value: unknown) => void
+  }
+}
+
 type FatalBoundaryState = {
   error: Error | null
 }
@@ -38,28 +45,35 @@ class FatalBoundary extends React.Component<React.PropsWithChildren, FatalBounda
   }
 }
 
-const runtimeOS = new RuntimeOS({
-  runtimeEndpoint: "/ws/runtime",
-  replayEndpoint: "/ws/replay",
-  graphEndpoint: "/ws/graph",
-  transportEndpoint: "/ws/transport",
-  diagnosticsEnabled: true,
-  mobileMode: window.matchMedia("(max-width: 900px)").matches,
-})
+const rootDocument = document.documentElement
+rootDocument.dataset.hhsEntry = "loaded"
 
-const rootElement = document.getElementById("root")
-if (!rootElement) throw new Error("Missing #root application mount")
+try {
+  const runtimeOS = new RuntimeOS({
+    runtimeEndpoint: "/ws/runtime",
+    replayEndpoint: "/ws/replay",
+    graphEndpoint: "/ws/graph",
+    transportEndpoint: "/ws/transport",
+    diagnosticsEnabled: true,
+    mobileMode: window.matchMedia("(max-width: 900px)").matches,
+  })
 
-ReactDOM.createRoot(rootElement).render(
-  <React.StrictMode>
+  const rootElement = document.getElementById("root")
+  if (!rootElement) throw new Error("Missing #root application mount")
+
+  ReactDOM.createRoot(rootElement).render(
     <FatalBoundary>
       <CanonicalRuntimeIDE runtimeOS={runtimeOS} />
-    </FatalBoundary>
-  </React.StrictMode>,
-)
+    </FatalBoundary>,
+  )
 
-;(window as typeof window & { __HHS_RUNTIME_OS__?: RuntimeOS }).__HHS_RUNTIME_OS__ = runtimeOS
+  window.__HHS_RUNTIME_OS__ = runtimeOS
 
-if (import.meta.hot) {
-  import.meta.hot.dispose(() => runtimeOS.destroy())
+  if (import.meta.hot) {
+    import.meta.hot.dispose(() => runtimeOS.destroy())
+  }
+} catch (error: unknown) {
+  rootDocument.dataset.hhsEntry = "failed"
+  window.__HHS_REPORT_BOOT_ERROR__?.("frontend_react_entry_error", error)
+  throw error
 }
