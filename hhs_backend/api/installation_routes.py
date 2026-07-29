@@ -9,13 +9,13 @@ from pathlib import Path
 from typing import Any
 import json
 import os
-import platform
 
 from fastapi import APIRouter
 
 from hhs_installer.dependencies import DependencyManifest
 from hhs_installer.management import doctor, installation_status, receipt_status
 from hhs_installer.probe import EnvironmentProbe
+from hhs_installer.receipts import ReceiptChain, ReceiptError
 
 router = APIRouter(prefix="/api/runtime/installation", tags=["installation"])
 
@@ -27,6 +27,18 @@ def _home() -> Path:
 
 def _repo_root() -> Path:
     return Path(__file__).resolve().parents[2]
+
+
+def _latest_completion_receipt(home: Path) -> dict[str, Any] | None:
+    path = home / "install" / "receipts" / "installation-receipts.jsonl"
+    try:
+        chain = ReceiptChain(path)
+    except ReceiptError:
+        return None
+    for receipt in reversed(chain.receipts):
+        if receipt.receipt_class == "P172_COMPLETION_RECEIPT" and receipt.result == "SUCCESS":
+            return receipt.to_dict()
+    return None
 
 
 @router.get("/status")
@@ -46,13 +58,26 @@ async def installation_environment_route() -> dict[str, Any]:
 
 @router.get("/profile")
 async def installation_profile_route() -> dict[str, Any]:
-    status = installation_status(_home())
+    home = _home()
+    status = installation_status(home)
     active = status.get("active") or {}
+    receipt = _latest_completion_receipt(home) or {}
+    requested = active.get("requested_profile") or receipt.get("requested_profile")
+    resolved = active.get("resolved_profile") or active.get("profile") or receipt.get("resolved_profile")
+    provider = active.get("provider") or active.get("provider_state")
+    if provider is None:
+        metadata = receipt.get("execution_metadata") or {}
+        provider = metadata.get("provider_state") or "unclassified"
     return {
         "schema": "HHS_PASS_172_INSTALLATION_PROFILE_ROUTE_V1",
-        "requested_profile": active.get("requested_profile"),
-        "resolved_profile": active.get("resolved_profile") or active.get("profile"),
-        "provider_state": active.get("provider") or active.get("provider_state") or "unclassified",
+        "installed": status.get("installed", False),
+        "requested_profile": requested,
+        "resolved_profile": resolved,
+        "provider_state": provider,
+        "platform": active.get("platform") or receipt.get("platform"),
+        "architecture": active.get("architecture") or receipt.get("architecture"),
+        "completion_receipt_identity": receipt.get("receipt_identity"),
+        "installation_status_identity": status.get("status_identity"),
         "host_mutation_performed": False,
     }
 
