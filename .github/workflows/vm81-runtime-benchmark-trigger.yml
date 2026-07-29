@@ -1,0 +1,72 @@
+name: VM81 Isolated Benchmark Trigger
+
+on:
+  pull_request:
+    branches:
+      - bench/vm81-runtime-20260729
+
+permissions:
+  contents: read
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 1
+
+      - name: Capture source and runner identity
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p bench_results build
+          {
+            echo "timestamp_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            echo "head_sha=$(git rev-parse HEAD)"
+            echo "source_blob_sha=$(git rev-parse HEAD:hhs_runtime/HARMONICODE_VM_RUNTIME.c)"
+            echo "source_sha256=$(sha256sum hhs_runtime/HARMONICODE_VM_RUNTIME.c | awk '{print $1}')"
+            echo "kernel=$(uname -srmo)"
+            echo "gcc=$(gcc --version | head -1)"
+            echo "python=$(python3 --version)"
+            echo "nproc=$(nproc)"
+          } | tee bench_results/environment.txt
+          lscpu > bench_results/lscpu.txt
+          wc -l -c hhs_runtime/HARMONICODE_VM_RUNTIME.c > bench_results/source_size.txt
+
+      - name: Build and verify official O2 runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          gcc -O2 -std=c11 -Wall -Wextra hhs_runtime/HARMONICODE_VM_RUNTIME.c -lm -o build/hhs_vm81
+          size build/hhs_vm81 > bench_results/binary_size.txt
+          sha256sum build/hhs_vm81 > bench_results/binary_sha256.txt
+          ./build/hhs_vm81 --no-trace --verify > bench_results/verify_stdout.txt 2> bench_results/verify_stderr.txt
+          grep -q "FINAL HASH72" bench_results/verify_stdout.txt
+          tail -n 40 bench_results/verify_stdout.txt > bench_results/verify_tail.txt
+
+      - name: Run in-process microbenchmarks
+        shell: bash
+        run: |
+          set -euo pipefail
+          gcc -O2 -std=c11 -Wall -Wextra bench/vm81_microbench.c -lm -o build/vm81_microbench
+          ./build/vm81_microbench > bench_results/microbench.csv
+
+      - name: Run process, build, memory, and perf benchmarks
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 bench/vm81_process_bench.py | tee bench_results/summary_stdout.txt
+          /usr/bin/time -v -o bench_results/time_rss.txt ./build/hhs_vm81 --no-trace --verify > /dev/null
+          (perf stat -r 5 -x, -o bench_results/perf.csv ./build/hhs_vm81 --no-trace --verify > /dev/null) 2> bench_results/perf_stderr.txt || true
+          if [ ! -s bench_results/perf.csv ]; then echo "perf unavailable or permission denied" > bench_results/perf.csv; fi
+
+      - name: Upload evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: vm81-isolated-benchmark-${{ github.event.pull_request.head.sha }}
+          path: bench_results/
+          if-no-files-found: error
+          retention-days: 7
