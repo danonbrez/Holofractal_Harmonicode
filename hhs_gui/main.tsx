@@ -1,40 +1,53 @@
 import React from "react"
 import ReactDOM from "react-dom/client"
 
-import { RuntimeShell } from "./runtime_os/core/RuntimeShell"
-import { RuntimeOS } from "./runtime_os/core/RuntimeOS"
+import ProductionApp from "./src/ProductionApp"
+import "./src/styles/production.css"
 
-import "./src/styles/global.css"
+type FatalBoundaryState = {
+    error: Error | null
+}
 
-const runtimeOS = new RuntimeOS({
-    runtimeEndpoint: "/ws/runtime",
-    replayEndpoint: "/ws/replay",
-    graphEndpoint: "/ws/graph",
-    transportEndpoint: "/ws/transport",
-    diagnosticsEnabled: true,
-    mobileMode: window.matchMedia("(max-width: 900px)").matches
-})
+class FatalBoundary extends React.Component<React.PropsWithChildren, FatalBoundaryState> {
+    public state: FatalBoundaryState = { error: null }
+
+    public static getDerivedStateFromError(error: Error): FatalBoundaryState {
+        return { error }
+    }
+
+    public componentDidCatch(error: Error, info: React.ErrorInfo): void {
+        console.error("[HHS Runtime OS] frontend failure", error, info)
+        document.documentElement.dataset.hhsMounted = "error"
+        document.getElementById("runtime_boot_overlay")?.remove()
+    }
+
+    public render(): React.ReactNode {
+        if (!this.state.error) return this.props.children
+        return (
+            <main className="hhs-fatal">
+                <section className="hhs-fatal-card">
+                    <h1>HHS Runtime OS could not render</h1>
+                    <p>The interface stopped on a frontend exception. The error is shown instead of a blank screen.</p>
+                    <pre>{this.state.error.stack ?? this.state.error.message}</pre>
+                    <button className="hhs-primary" type="button" onClick={() => window.location.reload()}>
+                        Reload interface
+                    </button>
+                </section>
+            </main>
+        )
+    }
+}
 
 const rootElement = document.getElementById("root")
 
 if (!rootElement) {
-    throw new Error("Missing root element")
+    throw new Error("Missing #root application mount")
 }
 
-const root = ReactDOM.createRoot(rootElement)
-
-root.render(
+ReactDOM.createRoot(rootElement).render(
     <React.StrictMode>
-        <RuntimeShell runtimeOS={runtimeOS} />
-    </React.StrictMode>
+        <FatalBoundary>
+            <ProductionApp />
+        </FatalBoundary>
+    </React.StrictMode>,
 )
-
-;(window as typeof window & {
-    __HHS_RUNTIME_OS__?: RuntimeOS
-}).__HHS_RUNTIME_OS__ = runtimeOS
-
-if (import.meta.hot) {
-    import.meta.hot.dispose(() => {
-        runtimeOS.destroy()
-    })
-}
