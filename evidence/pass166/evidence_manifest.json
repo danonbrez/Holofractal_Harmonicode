@@ -16,11 +16,13 @@
     "hhs_backend/api/pass166_word2vec_routes.py",
     "hhs_backend/pass166_server.py",
     "tools/hhs_model.py",
+    "tools/pass166_terminal_evidence.py",
     "native_projects/hhs_pass166_word2vec/include/hhs_p166_word2vec.h",
     "native_projects/hhs_pass166_word2vec/src/hhs_p166_word2vec.c",
     "native_projects/hhs_pass166_word2vec/tests/test_hhs_p166_word2vec.c",
     "native_projects/hhs_pass166_word2vec/schemas/hhs_p166_word2vec.schema.json",
     "tests/test_hhs_pass166_word2vec_v1.py",
+    "tests/test_hhs_pass166_supply_chain_v1.py",
     ".github/workflows/pass166-word2vec.yml"
   ],
   "executed_evidence": [
@@ -32,7 +34,7 @@
   "validation_scope": {
     "source_present": true,
     "tests_present": true,
-    "workflow_present": true,
+    "workflow_registered_on_main": true,
     "repository_python_execution": false,
     "repository_native_execution": false,
     "terminal_evidence": false,
