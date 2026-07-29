@@ -1,4 +1,4 @@
-"""FastAPI routes for the governed HHS LiteRT-LM conversational interface."""
+"""FastAPI routes for the production governed HHS assistant interface."""
 from __future__ import annotations
 
 from typing import Any, Dict, List, Optional
@@ -6,17 +6,17 @@ from typing import Any, Dict, List, Optional
 from fastapi import APIRouter, HTTPException, WebSocket, WebSocketDisconnect
 from pydantic import BaseModel, Field
 
-router = APIRouter(prefix="/api/assistant", tags=["assistant", "litert-lm", "gemma4"])
+router = APIRouter(prefix="/api/assistant", tags=["assistant", "production", "hhs-tools"])
 _SERVICE: Any = None
 
 
 def _service() -> Any:
     global _SERVICE
     if _SERVICE is None:
-        from hhs_backend.runtime.hhs_litert_lm_hhs_api_assistant_v1 import (
-            DEFAULT_HHS_API_ASSISTANT_SERVICE,
+        from hhs_backend.runtime.hhs_production_assistant_v1 import (
+            DEFAULT_PRODUCTION_ASSISTANT_SERVICE,
         )
-        _SERVICE = DEFAULT_HHS_API_ASSISTANT_SERVICE
+        _SERVICE = DEFAULT_PRODUCTION_ASSISTANT_SERVICE
     return _SERVICE
 
 
@@ -36,6 +36,10 @@ class ChatRequest(CreateThreadRequest, SendMessageRequest):
     thread_id: Optional[str] = None
 
 
+class ExecuteToolRequest(BaseModel):
+    arguments: Dict[str, Any] = Field(default_factory=dict)
+
+
 @router.get("/status")
 async def assistant_status() -> Dict[str, Any]:
     return _service().status()
@@ -52,6 +56,17 @@ async def assistant_tools() -> Dict[str, Any]:
         assistant_api_tool_registry,
     )
     return assistant_api_tool_registry()
+
+
+@router.post("/tools/{tool_name}")
+async def assistant_execute_tool(
+    tool_name: str,
+    request: ExecuteToolRequest,
+) -> Dict[str, Any]:
+    from hhs_backend.runtime.hhs_assistant_api_tool_gateway_v1 import (
+        execute_hhs_assistant_api_tool,
+    )
+    return await execute_hhs_assistant_api_tool(tool_name, request.arguments)
 
 
 @router.get("/threads")
