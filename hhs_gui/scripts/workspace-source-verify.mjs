@@ -4,9 +4,13 @@ const read = (path) => fs.readFileSync(new URL(`../${path}`, import.meta.url), "
 const assert = (condition, message) => { if (!condition) throw new Error(message) }
 
 const files = {
+  main: "main.tsx",
+  canonicalIDE: "runtime_os/core/CanonicalRuntimeIDE.tsx",
   shell: "runtime_os/workspace/HHSWorkspaceShell.tsx",
   projectTree: "runtime_os/workspace/RuntimeProjectTree.tsx",
   ingress: "runtime_os/workspace/MultimodalIngressPanel.tsx",
+  assistant: "runtime_os/assistant/RuntimeAssistantPanel.tsx",
+  capability: "runtime_os/capability/LiveBackendCapabilityPanel.tsx",
   editor: "runtime_os/editor/HHSSymbolicEditor.tsx",
   interpreter: "runtime_os/console/InterpreterConsole.tsx",
   compiler: "runtime_os/compiler/CompilerWorkbench.tsx",
@@ -17,24 +21,18 @@ const files = {
   history: "runtime_os/history/MutationHistoryPanel.tsx",
   store: "runtime_os/workspace/WorkspaceProjectionStore.ts",
   commandClient: "runtime_os/workspace/WorkspaceCommandClient.ts",
-  runtimeShell: "runtime_os/core/RuntimeShell.tsx",
-  universalModality: "runtime_os/modality/UniversalModalityPanel.tsx",
-  adapterInspector: "runtime_os/modality/ModalityAdapterInspector.tsx",
-  projectionLineage: "runtime_os/modality/ProjectionLineageViewer.tsx",
-  crossModal: "runtime_os/modality/CrossModalTransformPanel.tsx",
-  artifactPipeline: "runtime_os/artifacts/ArtifactPipelinePanel.tsx",
-  artifactLineage: "runtime_os/artifacts/ArtifactLineageViewer.tsx",
 }
 
 const content = Object.fromEntries(Object.entries(files).map(([key, value]) => [key, read(value)]))
 
 for (const token of [
-  "HHS_VISUAL_RUNTIME_OS_WORKSPACE_V1",
+  "hhs-canonical-runtime-ide",
   "hhs-visual-runtime-os-workspace",
-  "request/projection only",
+  "CanonicalRuntimeIDE",
   "HHSWorkspaceShell",
 ]) {
-  assert(content.shell.includes(token) || content.runtimeShell.includes(token) || content.store.includes(token), `workspace shell missing ${token}`)
+  const combined = `${content.main}\n${content.canonicalIDE}\n${content.shell}`
+  assert(combined.includes(token), `canonical workspace missing ${token}`)
 }
 
 for (const token of [
@@ -49,6 +47,8 @@ for (const token of [
 for (const [name, token] of Object.entries({
   projectTree: "runtime-project-tree",
   ingress: "multimodal-ingress-panel",
+  assistant: "runtime-assistant-panel",
+  capability: "live-backend-capability-panel",
   editor: "hhs-symbolic-editor",
   interpreter: "interpreter-console",
   compiler: "compiler-workbench",
@@ -69,20 +69,26 @@ assert(content.emulator.includes("rewind never erases history"), "emulator histo
 assert(content.graph.includes("Canvas layout is presentation state"), "graph presentation/truth boundary missing")
 assert(content.memory.includes("ranking are projections"), "semantic memory projection boundary missing")
 assert(content.store.includes("frontendCacheIsAuthority: false"), "projection store must reject frontend cache authority")
-assert(content.runtimeShell.includes("HHSWorkspaceShell"), "RuntimeShell does not mount workspace shell")
 
-
-for (const token of [
-  "HHS_UNIVERSAL_MODALITY_ADAPTER_V1",
-  "private truth pipelines",
-  "source ≠ projection ≠ artifact ≠ execution authority",
+for (const endpoint of [
+  "/api/assistant/health",
+  "/api/assistant/chat",
+  "/api/runtime/capability/status",
+  "/api/runtime/capability/resolve",
+  "/api/runtime/document/perception/status",
+  "/v1/modalities/language/models/word2vec/status",
 ]) {
-  assert(content.universalModality.includes(token), `universal modality panel missing ${token}`)
+  const combined = `${content.assistant}\n${content.capability}`
+  assert(combined.includes(endpoint), `live workspace missing backend endpoint ${endpoint}`)
 }
-assert(content.adapterInspector.includes("projection_replaces_source"), "adapter inspector must expose projection/source separation")
-assert(content.projectionLineage.includes("HHS_MODALITY_PROJECTION_RECORD_V1"), "projection lineage viewer missing projection schema")
-assert(content.crossModal.includes("HHS_CROSS_MODAL_TRANSFORMATION_PLAN_V1"), "cross-modal panel missing transformation plan schema")
-assert(content.artifactPipeline.includes("valid artifact ≠ authorized execution"), "artifact pipeline must preserve execution boundary")
-assert(content.artifactLineage.includes("HHS_ARTIFACT_LINEAGE_RECORD_V1"), "artifact lineage viewer missing lineage schema")
+
+for (const forbidden of [
+  "ProductionApp",
+  "CapabilityRegistryPanel",
+  "DocumentPerceptionPanel",
+  "runtime_application_missing",
+]) {
+  assert(!content.main.includes(forbidden) && !content.shell.includes(forbidden), `obsolete public surface leaked: ${forbidden}`)
+}
 
 console.log("workspace-source-verify: PASS")
