@@ -3,7 +3,6 @@ from __future__ import annotations
 from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any, Iterable, Mapping, Sequence
-import os
 import platform
 import re
 import shutil
@@ -89,15 +88,19 @@ class NativeBuilder:
             raise NativeBuildError("P172_NATIVE_TIMEOUT_INVALID", "native timeout is outside 1..7200")
         self.timeout_seconds = timeout_seconds
 
+    @staticmethod
+    def _inspector_names(system: str) -> tuple[str, ...]:
+        return ("dumpbin", "llvm-nm", "nm") if system == "Windows" else ("llvm-nm", "nm")
+
     def probe_toolchain(self) -> NativeToolchain:
         compiler = next((path for name in ("cc", "clang", "gcc") if (path := shutil.which(name))), None)
         if not compiler:
             raise NativeBuildError("P172_NATIVE_COMPILER_MISSING", "no supported C11 compiler is available")
-        inspector_names = ("dumpbin", "llvm-nm", "nm") if platform.system() == "Windows" else ("llvm-nm", "nm")
-        inspector = next((path for name in inspector_names if (path := shutil.which(name))), None)
+        selected_platform = platform.system()
+        inspector = next((path for name in self._inspector_names(selected_platform) if (path := shutil.which(name))), None)
         if not inspector:
             raise NativeBuildError("P172_NATIVE_SYMBOL_INSPECTOR_MISSING", "no supported symbol inspector is available")
-        library, executable = artifact_names("hhs_runtime")
+        library, executable = artifact_names("hhs_runtime", system=selected_platform)
         try:
             result = subprocess.run(
                 [compiler, "--version"],
@@ -113,7 +116,7 @@ class NativeBuilder:
         return NativeToolchain(
             compiler=compiler,
             symbol_inspector=inspector,
-            platform=platform.system(),
+            platform=selected_platform,
             architecture=platform.machine(),
             library_suffix=Path(library).suffix,
             executable_suffix=executable,
@@ -168,7 +171,7 @@ class NativeBuilder:
             argv.extend(["-I", str(include)])
         argv.extend(str(source) for source in sources)
         argv.extend(["-o", str(artifact)])
-        if target.link_math and toolchain.platform not in {"Windows"}:
+        if target.link_math and toolchain.platform != "Windows":
             argv.append("-lm")
 
         started = time.monotonic_ns()
@@ -227,32 +230,55 @@ class NativeBuilder:
             build_identity=hash216(payload, domain="HHS-P172-NATIVE-BUILD-V1"),
         )
 
+    @staticmethod
+    def _inspector_argv(inspector: str, *, selected_platform: str, artifact: Path) -> list[list[str]]:
+        name = Path(inspector).name.lower()
+        if name.startswith("dumpbin"):
+            return [[inspector, "/exports", str(artifact)]]
+        if selected_platform == "Darwin":
+            return [[inspector, "-gU", str(artifact)], [inspector, "--defined-only", str(artifact)]]
+        return [
+            [inspector, "-D", "--defined-only", str(artifact)],
+            [inspector, "--defined-only", str(artifact)],
+        ]
+
     def inspect_symbols(self, artifact: str | Path, *, toolchain: NativeToolchain | None = None) -> tuple[str, ...]:
         selected = toolchain or self.probe_toolchain()
         path = Path(artifact)
-        inspector_name = Path(selected.symbol_inspector).name.lower()
-        if inspector_name.startswith("dumpbin"):
-            argv = [selected.symbol_inspector, "/exports", str(path)]
-        elif selected.platform == "Darwin":
-            argv = [selected.symbol_inspector, "-gU", str(path)]
-        else:
-            argv = [selected.symbol_inspector, "-D", "--defined-only", str(path)]
-        try:
-            completed = subprocess.run(
-                argv,
-                check=False,
-                capture_output=True,
-                text=True,
-                timeout=min(self.timeout_seconds, 120),
+        candidates: list[str] = [selected.symbol_inspector]
+        for name in self._inspector_names(selected.platform):
+            resolved = shutil.which(name)
+            if resolved and resolved not in candidates:
+                candidates.append(resolved)
+        failures: list[dict[str, Any]] = []
+        completed: subprocess.CompletedProcess[str] | None = None
+        used_argv: list[str] | None = None
+        for inspector in candidates:
+            for argv in self._inspector_argv(inspector, selected_platform=selected.platform, artifact=path):
+                try:
+                    attempt = subprocess.run(
+                        argv,
+                        check=False,
+                        capture_output=True,
+                        text=True,
+                        timeout=min(self.timeout_seconds, 120),
+                    )
+                except (OSError, subprocess.TimeoutExpired) as exc:
+                    failures.append({"argv": argv, "error": f"{type(exc).__name__}:{exc}"})
+                    continue
+                if attempt.returncode == 0:
+                    completed = attempt
+                    used_argv = argv
+                    break
+                failures.append({"argv": argv, "exit_status": attempt.returncode, "stderr": attempt.stderr})
+            if completed is not None:
+                break
+        if completed is None:
+            raise NativeBuildError(
+                "P172_NATIVE_SYMBOL_INSPECTION_FAILED",
+                "all available symbol inspectors failed",
+                {"artifact": str(path), "attempts": failures},
             )
-        except (OSError, subprocess.TimeoutExpired) as exc:
-            raise NativeBuildError("P172_NATIVE_SYMBOL_INSPECTION_FAILED", "symbol inspector failed", {"error": f"{type(exc).__name__}:{exc}", "argv": argv}) from exc
-        if completed.returncode != 0:
-            fallback = [selected.symbol_inspector, "--defined-only", str(path)] if "nm" in inspector_name else None
-            if fallback:
-                completed = subprocess.run(fallback, check=False, capture_output=True, text=True, timeout=min(self.timeout_seconds, 120))
-            if completed.returncode != 0:
-                raise NativeBuildError("P172_NATIVE_SYMBOL_INSPECTION_FAILED", "symbol inspector returned failure", {"argv": argv, "stderr": completed.stderr})
         symbols: set[str] = set()
         for line in completed.stdout.splitlines():
             fields = line.strip().split()
@@ -262,4 +288,10 @@ class NativeBuilder:
             candidate = candidate.lstrip("_") if selected.platform == "Darwin" else candidate
             if re.fullmatch(r"[A-Za-z_][A-Za-z0-9_@?$]*", candidate):
                 symbols.add(candidate)
+        if not symbols:
+            raise NativeBuildError(
+                "P172_NATIVE_SYMBOL_INSPECTION_EMPTY",
+                "symbol inspection succeeded without parseable exported symbols",
+                {"argv": used_argv, "stdout": completed.stdout},
+            )
         return tuple(sorted(symbols))
