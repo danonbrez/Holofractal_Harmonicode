@@ -1,8 +1,9 @@
 """Heroku-safe HHS deployment gateway.
 
-The advanced Pass 157 Unified GUI is the public root. The Pass 161 workflow and
-assistant shell remains available at /assistant-ui. Canonical runtime and local
-LiteRT-LM startup are intentionally excluded from web-dyno boot.
+The compiled HHS Runtime OS / visual IDE is the public root. The Pass 161
+assistant shell and Pass 157 particle visualization remain available as
+secondary tools. Canonical runtime and local LiteRT-LM startup are excluded
+from web-dyno boot.
 """
 from __future__ import annotations
 
@@ -12,20 +13,21 @@ import uuid
 from pathlib import Path
 from typing import Any
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, WebSocket, WebSocketDisconnect
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 
 BOOT_ID = str(uuid.uuid4())
 STARTED_AT = time.time()
 ROOT_DIR = Path(__file__).resolve().parents[1]
-UNIFIED_GUI_ROOT = ROOT_DIR / "apps" / "unified_gui"
+RUNTIME_OS_ROOT = ROOT_DIR / "hhs_gui" / "dist"
 PASS161_ROOT = ROOT_DIR / "applications" / "holofractal_harmonizer"
+SWARM_DEMO_ROOT = ROOT_DIR / "apps" / "unified_gui"
 
 app = FastAPI(
     title="HHS Heroku Deployment Gateway",
-    version="1.1.0",
-    description="Advanced GUI gateway with bounded degraded assistant endpoints.",
+    version="1.2.0",
+    description="Runtime OS gateway with bounded detached-runtime projections.",
 )
 
 _threads: dict[str, dict[str, Any]] = {}
@@ -57,12 +59,13 @@ async def health() -> dict[str, Any]:
     return {
         "ok": True,
         "status": "healthy",
-        "mode": "HEROKU_ADVANCED_GUI_GATEWAY",
+        "mode": "HEROKU_RUNTIME_OS_GATEWAY",
         "boot_id": BOOT_ID,
         "uptime_seconds": time.time() - STARTED_AT,
-        "default_interface": "HHS_PASS157_UNIFIED_GUI",
-        "unified_gui_present": (UNIFIED_GUI_ROOT / "index.html").is_file(),
-        "pass161_interface_present": (PASS161_ROOT / "index.html").is_file(),
+        "default_interface": "HHS_RUNTIME_OS_VISUAL_IDE",
+        "runtime_os_bundle_present": (RUNTIME_OS_ROOT / "index.html").is_file(),
+        "assistant_interface_present": (PASS161_ROOT / "index.html").is_file(),
+        "swarm_demo_present": (SWARM_DEMO_ROOT / "index.html").is_file(),
         "canonical_runtime_attached": False,
         "assistant_provider_online": False,
     }
@@ -73,12 +76,43 @@ async def system_status() -> dict[str, Any]:
     return {
         "system": "HARMONICODE",
         "status": "online",
-        "deployment_mode": "HEROKU_ADVANCED_GUI_GATEWAY",
+        "deployment_mode": "HEROKU_RUNTIME_OS_GATEWAY",
         "boot_id": BOOT_ID,
-        "default_interface": "HHS-P157-UHAG-PSME",
+        "default_interface": "HHS_RUNTIME_OS_VISUAL_IDE",
         "assistant_interface": "/assistant-ui/",
-        "runtime_state": "DEGRADED_EXTERNAL_RUNTIME_NOT_ATTACHED",
+        "swarm_diagnostic": "/swarm-demo/",
+        "runtime_state": "DETACHED_PROJECTION_NO_CANONICAL_MUTATION",
     }
+
+
+async def _hold_projection_socket(websocket: WebSocket) -> None:
+    """Keep a projection channel open without fabricating runtime events."""
+    await websocket.accept()
+    try:
+        while True:
+            await websocket.receive()
+    except WebSocketDisconnect:
+        return
+
+
+@app.websocket("/ws/runtime")
+async def runtime_socket(websocket: WebSocket) -> None:
+    await _hold_projection_socket(websocket)
+
+
+@app.websocket("/ws/replay")
+async def replay_socket(websocket: WebSocket) -> None:
+    await _hold_projection_socket(websocket)
+
+
+@app.websocket("/ws/graph")
+async def graph_socket(websocket: WebSocket) -> None:
+    await _hold_projection_socket(websocket)
+
+
+@app.websocket("/ws/transport")
+async def transport_socket(websocket: WebSocket) -> None:
+    await _hold_projection_socket(websocket)
 
 
 @app.get("/api/assistant/status")
@@ -128,8 +162,8 @@ async def create_thread(payload: dict[str, Any] | None = None) -> dict[str, Any]
         "messages": [
             _message(
                 "assistant",
-                "The advanced HHS visual environment is online. The canonical runtime "
-                "and LiteRT-LM provider remain external to this Heroku dyno.",
+                "The HHS Runtime OS is online in detached projection mode. "
+                "The canonical runtime and LiteRT-LM provider remain external.",
             )
         ],
     }
@@ -180,17 +214,24 @@ if (PASS161_ROOT / "index.html").is_file():
         name="hhs-pass161-assistant-ui",
     )
 
-if (UNIFIED_GUI_ROOT / "index.html").is_file():
+if (SWARM_DEMO_ROOT / "index.html").is_file():
+    app.mount(
+        "/swarm-demo",
+        StaticFiles(directory=str(SWARM_DEMO_ROOT), html=True),
+        name="hhs-pass157-swarm-demo",
+    )
+
+if (RUNTIME_OS_ROOT / "index.html").is_file():
     app.mount(
         "/",
-        StaticFiles(directory=str(UNIFIED_GUI_ROOT), html=True),
-        name="hhs-unified-gui",
+        StaticFiles(directory=str(RUNTIME_OS_ROOT), html=True),
+        name="hhs-runtime-os-visual-ide",
     )
 elif (PASS161_ROOT / "index.html").is_file():
     app.mount(
         "/",
         StaticFiles(directory=str(PASS161_ROOT), html=True),
-        name="hhs-pass161-fallback",
+        name="hhs-runtime-os-build-pending",
     )
 else:
     @app.get("/", response_class=HTMLResponse)
@@ -198,6 +239,6 @@ else:
         return """<!doctype html><html><head><meta charset='utf-8'><title>HHS Online</title></head>
         <body style='background:#050912;color:#e8eef8;font-family:system-ui;padding:2rem'>
         <h1>HHS deployment gateway is online</h1>
-        <p>No visual application directory was included in this deployment.</p>
+        <p>The Runtime OS frontend bundle has not been generated.</p>
         <p><a style='color:#8bd5ff' href='/healthz'>View deployment health</a></p>
         </body></html>"""
