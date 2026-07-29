@@ -1,94 +1,109 @@
 import fs from "node:fs"
 
 const read = (path) => fs.readFileSync(new URL(`../${path}`, import.meta.url), "utf8")
+const readRepo = (path) => fs.readFileSync(new URL(`../../${path}`, import.meta.url), "utf8")
 const assert = (condition, message) => { if (!condition) throw new Error(message) }
 
-const files = {
-  main: "main.tsx",
-  canonicalIDE: "runtime_os/core/CanonicalRuntimeIDE.tsx",
-  shell: "runtime_os/workspace/HHSWorkspaceShell.tsx",
-  projectTree: "runtime_os/workspace/RuntimeProjectTree.tsx",
-  ingress: "runtime_os/workspace/MultimodalIngressPanel.tsx",
-  assistant: "runtime_os/assistant/RuntimeAssistantPanel.tsx",
-  capability: "runtime_os/capability/LiveBackendCapabilityPanel.tsx",
-  editor: "runtime_os/editor/HHSSymbolicEditor.tsx",
-  interpreter: "runtime_os/console/InterpreterConsole.tsx",
-  compiler: "runtime_os/compiler/CompilerWorkbench.tsx",
-  emulator: "runtime_os/emulator/EmulatorControlPanel.tsx",
-  graph: "runtime_os/graph/RuntimeGraphCanvas.tsx",
-  memory: "runtime_os/memory/SemanticMemoryPanel.tsx",
-  ledger: "runtime_os/ledger/ReceiptLedgerInspector.tsx",
-  history: "runtime_os/history/MutationHistoryPanel.tsx",
-  store: "runtime_os/workspace/WorkspaceProjectionStore.ts",
-  commandClient: "runtime_os/workspace/WorkspaceCommandClient.ts",
+const content = {
+  main: read("main.tsx"),
+  canonicalIDE: read("runtime_os/core/CanonicalRuntimeIDE.tsx"),
+  shell: read("runtime_os/workspace/HHSWorkspaceShell.tsx"),
+  assistant: read("runtime_os/assistant/RuntimeAssistantPanel.tsx"),
+  projection: read("runtime_os/core/LiveRuntimeProjectionPanel.tsx"),
+  commandClient: read("runtime_os/workspace/WorkspaceCommandClient.ts"),
+  productionServer: readRepo("hhs_backend/production_server.py"),
 }
 
-const content = Object.fromEntries(Object.entries(files).map(([key, value]) => [key, read(value)]))
-
+const publicSource = `${content.main}\n${content.canonicalIDE}\n${content.shell}`
 for (const token of [
   "hhs-canonical-runtime-ide",
   "hhs-visual-runtime-os-workspace",
   "CanonicalRuntimeIDE",
   "HHSWorkspaceShell",
 ]) {
-  const combined = `${content.main}\n${content.canonicalIDE}\n${content.shell}`
-  assert(combined.includes(token), `canonical workspace missing ${token}`)
+  assert(publicSource.includes(token), `canonical workspace missing ${token}`)
+}
+
+for (const token of [
+  "projectId",
+  "selectedObjectId",
+  "artifactId",
+  "sessionId",
+  "ensureProject",
+  "ensureSource",
+  "applyFeedback",
+]) {
+  assert(content.shell.includes(token), `integrated workspace missing shared state ${token}`)
+}
+
+for (const operation of [
+  "project.create",
+  "ingress.register",
+  "interpret.execute",
+  "compile.execute",
+  "emulator.create",
+  "emulator.step",
+  "emulator.run",
+  "emulator.snapshot",
+]) {
+  assert(content.shell.includes(operation), `integrated workflow missing ${operation}`)
+}
+
+for (const tab of ["workbench", "assistant", "runtime", "receipts"]) {
+  assert(content.shell.includes(`tab === \"${tab}\"`), `responsive workspace missing active surface ${tab}`)
 }
 
 for (const token of [
   "HHS_WORKSPACE_COMMAND_ENVELOPE_V1",
   "frontend_may_commit_runtime_truth: false",
   "/api/runtime/workspace/command",
-  "PRESENTATION_ONLY",
+  "AUTHORIZED_NONMUTATING",
+  "AbortController",
 ]) {
   assert(content.commandClient.includes(token), `workspace command client missing ${token}`)
 }
 
-for (const [name, token] of Object.entries({
-  projectTree: "runtime-project-tree",
-  ingress: "multimodal-ingress-panel",
-  assistant: "runtime-assistant-panel",
-  capability: "live-backend-capability-panel",
-  editor: "hhs-symbolic-editor",
-  interpreter: "interpreter-console",
-  compiler: "compiler-workbench",
-  emulator: "emulator-control-panel",
-  graph: "runtime-graph-canvas",
-  memory: "semantic-memory-panel",
-  ledger: "receipt-ledger-inspector",
-  history: "mutation-history-panel",
-})) {
-  assert(content[name].includes(token), `${name} missing ${token}`)
+for (const token of [
+  "/api/runtime/workspace/session",
+  "self_tests_executed",
+  "_workspace_session_snapshot",
+]) {
+  assert(content.productionServer.includes(token), `lightweight workspace session missing ${token}`)
 }
 
-assert(content.ingress.includes("Original source is preserved"), "ingress panel must preserve original source")
-assert(content.editor.includes("local buffer non-authoritative"), "editor buffer must be non-authoritative")
-assert(content.interpreter.includes("No arbitrary host-language evaluation"), "interpreter host eval boundary missing")
-assert(content.compiler.includes("Compilation does not imply execution authorization"), "compiler authorization boundary missing")
-assert(content.emulator.includes("rewind never erases history"), "emulator history boundary missing")
-assert(content.graph.includes("Canvas layout is presentation state"), "graph presentation/truth boundary missing")
-assert(content.memory.includes("ranking are projections"), "semantic memory projection boundary missing")
-assert(content.store.includes("frontendCacheIsAuthority: false"), "projection store must reject frontend cache authority")
-
-for (const endpoint of [
+for (const token of [
+  "projectId",
+  "sourceObjectId",
+  "artifactId",
+  "workspace_surface",
   "/api/assistant/health",
   "/api/assistant/chat",
-  "/api/runtime/capability/status",
-  "/api/runtime/capability/resolve",
-  "/api/runtime/document/perception/status",
-  "/v1/modalities/language/models/word2vec/status",
 ]) {
-  const combined = `${content.assistant}\n${content.capability}`
-  assert(combined.includes(endpoint), `live workspace missing backend endpoint ${endpoint}`)
+  assert(content.assistant.includes(token), `assistant workspace binding missing ${token}`)
 }
 
+assert(content.projection.includes("1500"), "runtime projection refresh is not bounded")
+assert(content.shell.includes("Only operations that actually returned from the backend appear here"), "receipt surface may display fabricated activity")
+assert(content.shell.includes("project objects".replace("p", "P")), "workspace does not expose real project objects")
+
 for (const forbidden of [
+  "RuntimeProjectTree",
+  "MultimodalIngressPanel",
+  "LiveBackendCapabilityPanel",
+  "HHSSymbolicEditor",
+  "InterpreterConsole",
+  "CompilerWorkbench",
+  "EmulatorControlPanel",
+  "RuntimeGraphCanvas",
+  "SemanticMemoryPanel",
+  "ReceiptLedgerInspector",
+  "MutationHistoryPanel",
+  "RuntimeCommandPanel",
+  "RuntimeMutationPanel",
   "ProductionApp",
-  "CapabilityRegistryPanel",
-  "DocumentPerceptionPanel",
   "runtime_application_missing",
 ]) {
-  assert(!content.main.includes(forbidden) && !content.shell.includes(forbidden), `obsolete public surface leaked: ${forbidden}`)
+  assert(!publicSource.includes(forbidden), `isolated or obsolete public panel leaked: ${forbidden}`)
 }
 
 console.log("workspace-source-verify: PASS")
