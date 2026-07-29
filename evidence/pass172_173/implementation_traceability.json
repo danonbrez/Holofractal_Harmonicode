@@ -1,0 +1,107 @@
+{
+  "schema": "HHS_PASS_172_173_IMPLEMENTATION_TRACEABILITY_V1",
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "authoritative_base_commit": "3fd4ca088039b1adc0d08a0644d62b979af8997d",
+  "contract_sources_modified": false,
+  "implementation_status": "SCAFFOLDING_AUTHORIZED",
+  "mappings": [
+    {
+      "requirement_ids": ["P172-AUTHORITY-001", "P172-ENTRYPOINT-001"],
+      "implementation_paths": ["hhs", "hhs-bootstrap.py", "install.sh", "install.ps1", "hhs_installer/cli.py", "hhs_installer/schema.py"],
+      "test_paths": ["tests/pass172/test_cli.py", "tests/pass172/test_schema.py", "tests/pass172/test_authority_boundary.py"],
+      "evidence_paths": ["evidence/pass172/installation_request_vectors.json", "evidence/pass172/authority_boundary.json"],
+      "status": "NOT_STARTED"
+    },
+    {
+      "requirement_ids": ["P172-PROBE-001", "P172-PROFILE-001", "P172-PLATFORM-001"],
+      "implementation_paths": ["hhs_installer/probe.py", "hhs_installer/planner.py", "hhs_installer/platforms/"],
+      "test_paths": ["tests/pass172/test_probe.py", "tests/pass172/test_planner.py", "tests/pass172/test_platforms.py"],
+      "evidence_paths": ["evidence/pass172/probes/", "evidence/pass172/profile_matrix.json"],
+      "status": "NOT_STARTED"
+    },
+    {
+      "requirement_ids": ["P172-DEPENDENCY-001", "P172-SUPPLY-001"],
+      "implementation_paths": ["hhs_installer/dependencies.py", "hhs_installer/acquisition.py", "hhs_installer/verification.py", "hhs_installer/security.py", "hhs_installer/offline.py", "requirements-core.txt", "requirements-runtime.txt", "requirements-provider-litert-lm.txt", "requirements-test.txt", "requirements-dev.txt"],
+      "test_paths": ["tests/pass172/test_dependencies.py", "tests/pass172/test_security.py", "tests/pass172/test_offline_bundle.py"],
+      "evidence_paths": ["evidence/pass172/dependency_resolution.json", "evidence/pass172/supply_chain.json"],
+      "status": "NOT_STARTED"
+    },
+    {
+      "requirement_ids": ["P172-PLATFORM-001"],
+      "implementation_paths": ["hhs_installer/native_builder.py", "manifests/pass172/native_targets.json"],
+      "test_paths": ["tests/pass172/test_native_builder.py"],
+      "evidence_paths": ["evidence/pass172/native/"],
+      "status": "NOT_STARTED"
+    },
+    {
+      "requirement_ids": ["P172-PROVIDER-001"],
+      "implementation_paths": ["hhs_installer/provider.py", "hhs_installer/model_assets.py"],
+      "test_paths": ["tests/pass172/test_provider_resolution.py", "tests/pass172/test_model_assets.py"],
+      "evidence_paths": ["evidence/pass172/provider/", "evidence/pass172/models/"],
+      "status": "NOT_STARTED"
+    },
+    {
+      "requirement_ids": ["P172-TRANSACTION-001", "P172-BOUNDS-001"],
+      "implementation_paths": ["hhs_installer/transaction.py", "hhs_installer/activation.py", "hhs_installer/repair.py", "hhs_installer/update.py", "hhs_installer/rollback.py", "hhs_installer/uninstall.py", "hhs_installer/receipts.py"],
+      "test_paths": ["tests/pass172/test_transaction.py", "tests/pass172/test_repair.py", "tests/pass172/test_update_rollback.py", "tests/pass172/test_uninstall.py"],
+      "evidence_paths": ["evidence/pass172/transactions/", "evidence/pass172/receipts/"],
+      "status": "NOT_STARTED"
+    },
+    {
+      "requirement_ids": ["P172-IDENTITY-001"],
+      "implementation_paths": ["hhs_installer/identity.py", "hhs_installer/receipts.py"],
+      "test_paths": ["tests/pass172/test_identity.py", "tests/pass172/test_receipts.py"],
+      "evidence_paths": ["evidence/pass172/identity_vectors.json", "evidence/pass172/receipt_vectors.json"],
+      "status": "NOT_STARTED"
+    },
+    {
+      "requirement_ids": ["P173-LANES-001", "P173-COVERAGE-001"],
+      "implementation_paths": ["hhs_verification/pass173/requirement_scanner.py", "hhs_verification/pass173/dependency_scanner.py", "hhs_verification/pass173/coverage_matrix.py", "hhs_verification/pass173/static_audit.py", "hhs_verification/pass173/clean_install_runner.py"],
+      "test_paths": ["tests/pass173/test_requirement_coverage.py", "tests/pass173/test_dependency_coverage.py", "tests/pass173/test_environment_matrix.py", "tests/pass173/test_profile_matrix.py"],
+      "evidence_paths": ["evidence/pass173/requirements/", "evidence/pass173/environments/"],
+      "status": "NOT_STARTED"
+    },
+    {
+      "requirement_ids": ["P173-HISTORY-001", "P173-NATIVE-001"],
+      "implementation_paths": ["hhs_verification/pass173/dependency_scanner.py", "hhs_verification/pass173/artifact_reconstructor.py", "hhs_verification/pass173/verdicts.py"],
+      "test_paths": ["tests/pass173/test_artifact_reconstruction.py", "tests/pass173/test_historical_supersession.py"],
+      "evidence_paths": ["evidence/pass173/native/", "evidence/pass173/calibration/"],
+      "status": "NOT_STARTED"
+    },
+    {
+      "requirement_ids": ["P173-PROVIDER-001", "P173-BOUNDARY-001"],
+      "implementation_paths": ["hhs_verification/pass173/environment_matrix.py", "hhs_verification/pass173/profile_matrix.py", "hhs_verification/pass173/calibration.py"],
+      "test_paths": ["tests/pass173/test_environment_matrix.py", "tests/pass173/test_profile_matrix.py"],
+      "evidence_paths": ["evidence/pass173/providers/", "evidence/pass173/models/", "evidence/pass173/offline/", "evidence/pass173/containers/", "evidence/pass173/android/"],
+      "status": "NOT_STARTED"
+    },
+    {
+      "requirement_ids": ["P173-FAULT-001"],
+      "implementation_paths": ["hhs_verification/pass173/fault_injection.py", "hhs_verification/pass173/repair_planner.py", "hhs_verification/pass173/repair_executor.py"],
+      "test_paths": ["tests/pass173/test_fault_injection.py", "tests/pass173/test_repair_planner.py"],
+      "evidence_paths": ["evidence/pass173/faults/", "evidence/pass173/executions/repairs/"],
+      "status": "NOT_STARTED"
+    },
+    {
+      "requirement_ids": ["P173-RECEIPT-001", "P173-CLOSURE-001"],
+      "implementation_paths": ["hhs_verification/pass173/receipt_reconciler.py", "hhs_verification/pass173/replay.py", "hhs_verification/pass173/report.py"],
+      "test_paths": ["tests/pass173/test_receipt_reconciliation.py", "tests/pass173/test_replay.py"],
+      "evidence_paths": ["evidence/pass173/receipts/", "evidence/pass173/replay/", "evidence/pass173/final/"],
+      "status": "NOT_STARTED"
+    },
+    {
+      "requirement_ids": ["P172-P173-STATELESS-001"],
+      "implementation_paths": ["hhs_installer/journal.py", "hhs_verification/pass173/journal.py", "docs/operations/recovery_receipts/"],
+      "test_paths": ["tests/pass172/test_restartability.py", "tests/pass173/test_restartability.py"],
+      "evidence_paths": ["evidence/pass172_173/PASS_172_173_RESTARTABLE_TASK_STATE.md"],
+      "status": "IN_PROGRESS"
+    }
+  ],
+  "summary": {
+    "mapping_groups": 13,
+    "complete": 0,
+    "in_progress": 1,
+    "not_started": 12,
+    "contract_files_modified": 0
+  }
+}
