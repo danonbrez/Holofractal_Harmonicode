@@ -36,6 +36,15 @@ def test_dependency_scanner_detects_undeclared_nonoptional_import(tmp_path: Path
     assert [item["module"] for item in missing] == ["requests"]
 
 
+def test_dependency_scanner_recognizes_runtime_standard_library(tmp_path: Path) -> None:
+    package = tmp_path / "pkg"
+    package.mkdir()
+    (package / "module.py").write_text("import sysconfig\nimport tomllib\nimport graphlib\n", encoding="utf-8")
+    scanner = DependencyScanner(tmp_path)
+    imports = scanner.scan_python_imports(("pkg",))
+    assert scanner.undeclared_imports(imports, (), internal_top_levels=("pkg",)) == ()
+
+
 def test_native_inventory_generated_from_live_tree(tmp_path: Path) -> None:
     project = tmp_path / "native_projects" / "core"
     project.mkdir(parents=True)
@@ -47,7 +56,7 @@ def test_native_inventory_generated_from_live_tree(tmp_path: Path) -> None:
     assert inventory[0].classification == "REQUIRED_PROFILE"
 
 
-def test_static_audit_reports_missing_paths(tmp_path: Path) -> None:
+def test_static_audit_classifies_every_unmapped_clause(tmp_path: Path) -> None:
     p172 = tmp_path / "p172.md"
     p173 = tmp_path / "p173.md"
     p172.write_text("# A\nThe installer SHALL work.\n", encoding="utf-8")
@@ -73,4 +82,46 @@ def test_static_audit_reports_missing_paths(tmp_path: Path) -> None:
         traceability_path=traceability,
     )
     assert report["summary"]["normative_clauses"] == 2
-    assert report["summary"]["implementation_missing"] == 1
+    assert report["summary"]["unmapped_requirements"] == 2
+    assert report["summary"]["mapped_requirements"] == 0
+    assert report["summary"]["full_normative_coverage"] is False
+
+
+def test_static_audit_accepts_exact_scanner_requirement_ids(tmp_path: Path) -> None:
+    p172 = tmp_path / "p172.md"
+    p173 = tmp_path / "p173.md"
+    p172.write_text("# A\nThe installer SHALL work.\n", encoding="utf-8")
+    p173.write_text("# B\nThe verifier SHALL test it.\n", encoding="utf-8")
+    implementation = tmp_path / "implementation.py"
+    test_path = tmp_path / "test_implementation.py"
+    implementation.write_text("VALUE = 1\n", encoding="utf-8")
+    test_path.write_text("def test_value(): assert True\n", encoding="utf-8")
+    scanner = RequirementScanner()
+    ids = [
+        scanner.scan(p172, pass_number=172)[0].requirement_id,
+        scanner.scan(p173, pass_number=173)[0].requirement_id,
+    ]
+    traceability = tmp_path / "trace.json"
+    traceability.write_text(
+        json.dumps(
+            {
+                "mappings": [
+                    {
+                        "requirement_ids": ["legacy-provenance-id"],
+                        "scanner_requirement_ids": ids,
+                        "implementation_paths": ["implementation.py"],
+                        "test_paths": ["test_implementation.py"],
+                    }
+                ]
+            }
+        ),
+        encoding="utf-8",
+    )
+    report = StaticAudit(tmp_path).audit(
+        pass172_contract=p172,
+        pass173_contract=p173,
+        traceability_path=traceability,
+    )
+    assert report["summary"]["mapped_requirements"] == 2
+    assert report["summary"]["unmapped_requirements"] == 0
+    assert report["summary"]["full_normative_coverage"] is True
