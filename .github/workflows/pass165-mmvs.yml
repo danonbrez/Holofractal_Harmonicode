@@ -1,4 +1,4 @@
-name: Pass 165 MMVS
+name: Pass 165-166 Language Modality Integration
 on:
   pull_request:
     paths:
@@ -14,13 +14,26 @@ on:
       - 'HHS_PASS_165_IMPLEMENTATION_STATUS.md'
       - 'docs/HHS_PASS_165_MULTIMODAL_INGRESS_RUNTIME.md'
       - 'evidence/pass165/**'
+      - 'hhs_runtime/pass166/**'
+      - 'hhs_backend/api/pass166_word2vec_routes.py'
+      - 'hhs_backend/pass166_server.py'
+      - 'native_projects/hhs_pass166_word2vec/**'
+      - 'tests/test_hhs_pass166_word2vec_v1.py'
+      - 'tools/hhs_model.py'
+      - 'tools/pass166_terminal_evidence.py'
+      - 'HHS_PASS_166_AUTHORITY_BINDING.json'
+      - 'HHS_PASS_166_IMPLEMENTATION_STATUS.md'
+      - 'docs/HHS_PASS_166_WORD2VEC_RUNTIME.md'
+      - 'evidence/pass166/**'
       - '.github/workflows/pass165-mmvs.yml'
+      - '.github/workflows/pass166-word2vec.yml'
   workflow_dispatch:
 jobs:
   dependency-scoped-validation:
     runs-on: ubuntu-latest
     env:
       PYTHONHASHSEED: '0'
+      HHS_PASS166_STORAGE_DIR: '${{ runner.temp }}/hhs-pass166-default'
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -31,28 +44,37 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y ffmpeg
           python -m pip install pytest fastapi pydantic httpx
-      - name: Python Hash72 + Pass 163 + Pass 164 + Pass 165 terminal matrix
+      - name: Python Hash72 plus Pass 163-166 terminal matrix
         run: |
           python -m pytest -q \
             tests/test_hash72_digest_v1.py \
             tests/test_hhs_pass163_vmrc_v1.py \
             tests/test_hhs_pass164_gcmsl_v1.py \
             tests/test_hhs_pass165_multimodal_ingress_v1.py \
-            tests/test_hhs_pass165_terminal_v1.py
-      - name: Execute terminal evidence harness
+            tests/test_hhs_pass165_terminal_v1.py \
+            tests/test_hhs_pass166_word2vec_v1.py
+      - name: Execute Pass 165 terminal evidence harness
         run: |
           python tools/pass165_terminal_evidence.py \
             --output "$RUNNER_TEMP/pass165-terminal/P165_TERMINAL_EXECUTION.json"
+      - name: Execute Pass 166 terminal evidence harness
+        run: |
+          python tools/pass166_terminal_evidence.py \
+            --output "$RUNNER_TEMP/pass166-terminal/P166_TERMINAL_EXECUTION.json"
       - name: Strict C11 Pass 163
         run: make -C native_projects/hhs_pass163_vmrc clean test
       - name: Strict C11 Pass 164
         run: make -C native_projects/hhs_pass164_gcmsl clean test
       - name: Strict C11 Pass 165
         run: make -C native_projects/hhs_pass165_mmvs clean test
+      - name: Strict C11 Pass 166
+        run: make -C native_projects/hhs_pass166_word2vec clean test
       - name: Upload terminal evidence
         uses: actions/upload-artifact@v4
         with:
-          name: pass165-terminal-evidence
-          path: ${{ runner.temp }}/pass165-terminal/P165_TERMINAL_EXECUTION.json
+          name: pass165-pass166-terminal-evidence
+          path: |
+            ${{ runner.temp }}/pass165-terminal/P165_TERMINAL_EXECUTION.json
+            ${{ runner.temp }}/pass166-terminal/P166_TERMINAL_EXECUTION.json
           if-no-files-found: error
           retention-days: 30
