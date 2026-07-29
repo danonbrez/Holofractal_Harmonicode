@@ -126,8 +126,21 @@ jobs:
           git config user.name hhs-pass172-173-validation
           git config user.email hhs-pass172-173-validation@users.noreply.github.com
           git add evidence/pass172_173/hosted_runs
-          git commit -m "[pass172-173-evidence] record hosted phase 2 validation" || true
-          git push origin "HEAD:${HEAD_REF}"
+          if git diff --cached --quiet; then
+            echo "No new phase 2 evidence to publish"
+            exit 0
+          fi
+          git commit -m "[pass172-173-evidence] record hosted phase 2 validation"
+          for attempt in 1 2 3; do
+            git fetch origin "$HEAD_REF"
+            git rebase "origin/$HEAD_REF"
+            if timeout 120s git push origin "HEAD:${HEAD_REF}"; then
+              exit 0
+            fi
+            echo "Evidence publication raced on attempt $attempt; retrying from latest head"
+          done
+          echo "Phase 2 evidence publication failed after three bounded attempts"
+          exit 1
 
       - name: Enforce bounded terminal result
         if: always()
