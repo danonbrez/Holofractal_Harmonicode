@@ -48,9 +48,21 @@ class OfflineBundleVerifier:
 
     def verify(self, bundle: str | Path, *, expected_sha256: str) -> OfflineBundleVerification:
         bundle_path = Path(bundle).expanduser().resolve()
-        digest = verify_sha256(bundle_path, expected_sha256, maximum_bytes=self.archive_policy.maximum_expanded_bytes)
         temporary_root = Path(tempfile.mkdtemp(prefix="hhs-pass172-offline-"))
         try:
+            try:
+                digest = verify_sha256(
+                    bundle_path,
+                    expected_sha256,
+                    maximum_bytes=self.archive_policy.maximum_expanded_bytes,
+                )
+            except VerificationError as exc:
+                raise OfflineBundleError(
+                    "P172_OFFLINE_BUNDLE_DIGEST_MISMATCH",
+                    "offline bundle digest verification failed",
+                    exc.to_dict(),
+                ) from exc
+
             extraction_root = temporary_root / "bundle"
             inspection = extract_archive(bundle_path, extraction_root, policy=self.archive_policy)
             descriptor_path = extraction_root / "offline-bundle.json"
@@ -108,6 +120,10 @@ class OfflineBundleVerifier:
                 verification_identity=hash216(payload, domain="HHS-P172-OFFLINE-VERIFICATION-V1"),
             )
         except VerificationError as exc:
-            raise OfflineBundleError("P172_OFFLINE_FILE_VERIFICATION_FAILED", "offline bundle file verification failed", exc.to_dict()) from exc
+            raise OfflineBundleError(
+                "P172_OFFLINE_FILE_VERIFICATION_FAILED",
+                "offline bundle file verification failed",
+                exc.to_dict(),
+            ) from exc
         finally:
             shutil.rmtree(temporary_root, ignore_errors=True)
