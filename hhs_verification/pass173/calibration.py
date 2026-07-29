@@ -73,11 +73,20 @@ class CalibrationCorpus:
                     "classification_match": measurement.expected_classification == measurement.observed_classification,
                 }
             )
-        passed = all(item["within_boundary"] and item["classification_match"] for item in results)
+        measured_metrics = {item["measurement"]["metric"] for item in results}
+        required_metrics = set(self.boundaries)
+        missing_metrics = sorted(required_metrics - measured_metrics)
+        coverage_complete = bool(required_metrics) and not missing_metrics
+        passed = bool(results) and coverage_complete and all(
+            item["within_boundary"] and item["classification_match"] for item in results
+        )
         payload = {
             "schema": "HHS_PASS_173_CALIBRATION_CORPUS_V1",
             "boundaries": [item.to_dict() for item in sorted(self.boundaries.values(), key=lambda value: value.metric)],
             "results": results,
+            "measured_metrics": sorted(measured_metrics),
+            "missing_metrics": missing_metrics,
+            "coverage_complete": coverage_complete,
             "passed": passed,
         }
         payload["corpus_identity"] = hash216(payload, domain="HHS-P173-CALIBRATION-CORPUS-V1")
