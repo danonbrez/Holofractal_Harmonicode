@@ -1,0 +1,160 @@
+name: Pass 172-173 Phase 2 Evidence
+
+on:
+  pull_request:
+    paths:
+      - 'hhs_installer/**'
+      - 'hhs_verification/**'
+      - 'hhs_backend/api/installation_routes.py'
+      - 'hhs_backend/visual_server.py'
+      - 'tests/pass172/**'
+      - 'tests/pass173/**'
+      - 'manifests/pass172/**'
+      - '.github/workflows/pass172-173-phase2-evidence.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  validate-and-record:
+    if: ${{ !contains(github.event.head_commit.message || '', '[pass172-173-evidence]') }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref || github.ref_name }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install bounded validation dependencies
+        id: dependencies
+        continue-on-error: true
+        run: timeout 180s python -m pip install 'pytest>=8,<9' 'pytest-asyncio>=0.23,<1' 'fastapi==0.128.2' 'starlette==0.50.0'
+
+      - name: Verify contracts unchanged
+        id: contracts
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin main
+          git diff --exit-code origin/main...HEAD -- \
+            HHS_PASS_172_UNIVERSAL_COMPATIBLE_ENVIRONMENT_ONE_COMMAND_INSTALLATION_DEPENDENCY_RESOLUTION_VERIFIED_BOOTSTRAP_AND_RUNTIME_ACTIVATION_SYSTEM.md \
+            HHS_PASS_173_UNIVERSAL_INSTALLATION_FULL_COVERAGE_REDUNDANT_VERIFICATION_CALIBRATION_REPAIR_AND_REPLAY_CLOSURE_RUNTIME.md
+
+      - name: Compile implementation
+        id: compile
+        continue-on-error: true
+        run: timeout 120s python -m compileall -q hhs_installer hhs_verification hhs_backend/api/installation_routes.py tests/pass172 tests/pass173
+
+      - name: Run complete dependency-scoped matrix
+        id: tests
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -o pipefail
+          timeout 420s python -m pytest -q tests/pass172 tests/pass173 | tee "$RUNNER_TEMP/pass172-173-pytest.log"
+
+      - name: Run read-only probe and plan
+        id: smoke
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -euo pipefail
+          timeout 60s python hhs-bootstrap.py probe --profile core --source . --hhs-home "$RUNNER_TEMP/hhs-home" > "$RUNNER_TEMP/probe.json"
+          timeout 60s python hhs-bootstrap.py plan --profile core --source . --hhs-home "$RUNNER_TEMP/hhs-home" > "$RUNNER_TEMP/plan.json"
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          root = Path(os.environ['RUNNER_TEMP'])
+          probe = json.loads((root / 'probe.json').read_text())
+          plan = json.loads((root / 'plan.json').read_text())
+          assert probe['host_mutation_performed'] is False
+          assert plan['host_mutation_performed'] is False
+          assert plan['plan']['resolved_profile'] == 'core'
+          PY
+
+      - name: Record exact repository-visible evidence
+        if: always()
+        shell: bash
+        env:
+          DEPENDENCIES_OUTCOME: ${{ steps.dependencies.outcome }}
+          CONTRACTS_OUTCOME: ${{ steps.contracts.outcome }}
+          COMPILE_OUTCOME: ${{ steps.compile.outcome }}
+          TESTS_OUTCOME: ${{ steps.tests.outcome }}
+          SMOKE_OUTCOME: ${{ steps.smoke.outcome }}
+          HEAD_REF: ${{ github.event.pull_request.head.ref || github.ref_name }}
+        run: |
+          set -euo pipefail
+          mkdir -p evidence/pass172_173/hosted_runs
+          python - <<'PY'
+          import hashlib, json, os
+          from pathlib import Path
+          log_path = Path(os.environ['RUNNER_TEMP']) / 'pass172-173-pytest.log'
+          log = log_path.read_bytes() if log_path.exists() else b''
+          outcomes = {
+              'dependencies': os.environ['DEPENDENCIES_OUTCOME'],
+              'contracts': os.environ['CONTRACTS_OUTCOME'],
+              'compile': os.environ['COMPILE_OUTCOME'],
+              'tests': os.environ['TESTS_OUTCOME'],
+              'smoke': os.environ['SMOKE_OUTCOME'],
+          }
+          success = all(value == 'success' for value in outcomes.values())
+          payload = {
+              'schema': 'HHS_PASS_172_173_PHASE2_HOSTED_VALIDATION_V1',
+              'repository': os.environ['GITHUB_REPOSITORY'],
+              'branch': os.environ['HEAD_REF'],
+              'validated_sha': os.environ['GITHUB_SHA'],
+              'run_id': int(os.environ['GITHUB_RUN_ID']),
+              'run_attempt': int(os.environ['GITHUB_RUN_ATTEMPT']),
+              'outcomes': outcomes,
+              'pytest_output_sha256': hashlib.sha256(log).hexdigest(),
+              'status': 'SUCCESS' if success else 'FAILURE',
+              'failures': sum(value != 'success' for value in outcomes.values()),
+              'terminal_pass172_claimed': False,
+              'terminal_pass173_claimed': False,
+              'next_action': 'merge after the evidence-only head is revalidated' if success else 'inspect the failed step log, commit a dependency-scoped repair, and rerun',
+          }
+          target = Path('evidence/pass172_173/hosted_runs') / f"phase2-{payload['run_id']}-attempt-{payload['run_attempt']}.json"
+          target.write_text(json.dumps(payload, sort_keys=True, indent=2) + '\n', encoding='utf-8')
+          PY
+          git config user.name hhs-pass172-173-validation
+          git config user.email hhs-pass172-173-validation@users.noreply.github.com
+          git add evidence/pass172_173/hosted_runs
+          if git diff --cached --quiet; then
+            echo "No new phase 2 evidence to publish"
+            exit 0
+          fi
+          git commit -m "[pass172-173-evidence] record hosted phase 2 validation"
+          for attempt in 1 2 3; do
+            git fetch origin "$HEAD_REF"
+            git rebase "origin/$HEAD_REF"
+            if timeout 120s git push origin "HEAD:${HEAD_REF}"; then
+              exit 0
+            fi
+            echo "Evidence publication raced on attempt $attempt; retrying from latest head"
+          done
+          echo "Phase 2 evidence publication failed after three bounded attempts"
+          exit 1
+
+      - name: Enforce bounded terminal result
+        if: always()
+        shell: bash
+        env:
+          DEPENDENCIES_OUTCOME: ${{ steps.dependencies.outcome }}
+          CONTRACTS_OUTCOME: ${{ steps.contracts.outcome }}
+          COMPILE_OUTCOME: ${{ steps.compile.outcome }}
+          TESTS_OUTCOME: ${{ steps.tests.outcome }}
+          SMOKE_OUTCOME: ${{ steps.smoke.outcome }}
+        run: |
+          set -euo pipefail
+          test "$DEPENDENCIES_OUTCOME" = success
+          test "$CONTRACTS_OUTCOME" = success
+          test "$COMPILE_OUTCOME" = success
+          test "$TESTS_OUTCOME" = success
+          test "$SMOKE_OUTCOME" = success

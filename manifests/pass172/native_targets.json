@@ -1,0 +1,28 @@
+{
+  "schema": "HHS_PASS_172_NATIVE_TARGET_MANIFEST_V1",
+  "contract_id": "HHS-P172-UCEOCI-DRVBRAS",
+  "discovery_policy": {
+    "root": "native_projects",
+    "classification_source": "live-tree Pass 173 native project inventory",
+    "required_core_rule": "target is REQUIRED_CORE only when explicitly referenced by the core profile and it passes strict C11 build, symbol, ABI and workload validation",
+    "required_profile_rule": "target is REQUIRED_PROFILE only under its declared profile",
+    "unclassified_default": "HISTORICAL_ONLY_OR_ORPHANED_PENDING_REVIEW"
+  },
+  "platform_artifacts": {
+    "Linux": {"shared_library": "libhhs_runtime.so", "executable_suffix": ""},
+    "Darwin": {"shared_library": "libhhs_runtime.dylib", "executable_suffix": ""},
+    "Windows": {"shared_library": "hhs_runtime.dll", "executable_suffix": ".exe"}
+  },
+  "strict_flags": ["-std=c11", "-Wall", "-Wextra", "-Werror", "-pedantic", "-O2"],
+  "required_validation": [
+    "artifact exists and is nonempty",
+    "artifact platform and architecture match target",
+    "required exported symbols are present",
+    "VM81 executable starts where applicable",
+    "Python bridge loads where applicable",
+    "positive workload passes",
+    "negative workload passes",
+    "repeat build equivalence is tested only where claimed"
+  ],
+  "terminal_status": "LIVE_TARGET_INVENTORY_AND_REAL_PLATFORM_EXECUTION_REQUIRED"
+}

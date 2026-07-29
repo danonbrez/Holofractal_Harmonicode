@@ -1,0 +1,21 @@
+{
+  "branch": "agent/pass172-173-terminal-closure-phase2",
+  "failures": 0,
+  "next_action": "merge after the evidence-only head is revalidated",
+  "outcomes": {
+    "compile": "success",
+    "contracts": "success",
+    "dependencies": "success",
+    "smoke": "success",
+    "tests": "success"
+  },
+  "pytest_output_sha256": "6344813201d82d3763c452589ee6bbe3a9b4a788cc7a548b75d1fa8288e827d6",
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "run_attempt": 1,
+  "run_id": 30495478511,
+  "schema": "HHS_PASS_172_173_PHASE2_HOSTED_VALIDATION_V1",
+  "status": "SUCCESS",
+  "terminal_pass172_claimed": false,
+  "terminal_pass173_claimed": false,
+  "validated_sha": "14b413c2768efb8b6f832af5ef71c5e14602ff41"
+}

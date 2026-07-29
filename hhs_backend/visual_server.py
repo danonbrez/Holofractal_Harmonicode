@@ -1,9 +1,10 @@
 """Default HHS visual development environment server.
 
 This module composes the canonical HHS FastAPI runtime, the governed LiteRT-LM
-assistant API, and the Pass 161 Holofractal Harmonizer static application. The
-canonical server remains the runtime authority; this module only changes the
-HTTP projection presented at the root path.
+assistant API, the read-only Pass 172 installation-status API, and the Pass 161
+Holofractal Harmonizer static application. The canonical server remains the
+runtime authority; this module only changes the HTTP projection presented at
+the root path.
 """
 from __future__ import annotations
 
@@ -13,6 +14,7 @@ from typing import Any, Dict
 from fastapi.staticfiles import StaticFiles
 
 from hhs_backend import server as canonical_server
+from hhs_backend.api.installation_routes import router as installation_router
 from hhs_backend.api.litert_lm_assistant_routes import router as assistant_router
 
 app = canonical_server.app
@@ -30,6 +32,9 @@ def _route_exists(path: str, name: str | None = None) -> bool:
 if not _route_exists("/api/assistant/status"):
     app.include_router(assistant_router)
 
+if not _route_exists("/api/runtime/installation/status"):
+    app.include_router(installation_router)
+
 
 @app.get("/api/system/status", tags=["system"])
 async def visual_system_status() -> Dict[str, Any]:
@@ -40,6 +45,7 @@ async def visual_system_status() -> Dict[str, Any]:
         "boot_id": canonical_server.SERVER_BOOT_ID,
         "default_interface": "HHS_LITERT_LM_VISUAL_DEVELOPMENT_ASSISTANT",
         "assistant_api": "/api/assistant",
+        "installation_api": "/api/runtime/installation",
         "visual_environment": "HHS-P161-HHUMOCE",
     }
 

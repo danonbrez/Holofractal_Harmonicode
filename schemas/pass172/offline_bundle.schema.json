@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hhs.local/schemas/pass172/offline_bundle.schema.json",
+  "title": "HHS Pass 172 Offline Bundle",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "network_fallback_permitted", "file_manifest", "supported_profiles", "supported_platforms", "supported_architectures", "required_host_dependencies"],
+  "properties": {
+    "schema": {"const": "HHS_PASS_172_OFFLINE_BUNDLE_V1"},
+    "network_fallback_permitted": {"const": false},
+    "file_manifest": {"type": "string", "minLength": 1},
+    "supported_profiles": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string"}},
+    "supported_platforms": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string"}},
+    "supported_architectures": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string"}},
+    "required_host_dependencies": {"type": "array", "uniqueItems": true, "items": {"type": "string"}}
+  }
+}
