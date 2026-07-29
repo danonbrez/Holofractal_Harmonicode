@@ -1,10 +1,13 @@
 """Production HHS assistant provider hierarchy.
 
-The public assistant first uses the configured LiteRT-LM/OpenAI-compatible
-provider with the governed HHS tool loop. When that provider is unavailable,
-it remains operational through a deterministic natural-language capability and
-repository-retrieval assistant backed by read-only HHS API tool receipts. The
-fallback does not impersonate a model and does not fabricate runtime mutation.
+Provider order:
+1. configured Gemma model through LiteRT-LM, only when the configured alias is
+   present in the provider model registry;
+2. repository-native HHS local-text provider through the same LiteRT-compatible
+   conversation, tool, policy, receipt, and result-ingress pipeline, only when
+   Pass 148/151 and an active offline-ready Pass 166 Word2Vec model are ready;
+3. a closed provider-unavailable turn. No canned or simulated assistant answer
+   is generated when neither provider is installation-closed.
 """
 from __future__ import annotations
 
@@ -14,30 +17,64 @@ import os
 import time
 from typing import Any, Dict, List, Mapping, Optional
 
-from hhs_backend.runtime.hhs_assistant_api_tool_gateway_v1 import (
-    assistant_api_tool_registry,
-    execute_hhs_assistant_api_tool,
-)
+from hhs_backend.runtime.hhs_litert_lm_assistant_v1 import LiteRTLMConfig
 from hhs_backend.runtime.hhs_litert_lm_hhs_api_assistant_v1 import (
     DEFAULT_HHS_API_ASSISTANT_SERVICE,
+    HHSAPIAssistantService,
+)
+from hhs_backend.runtime.hhs_native_litert_lm_provider_v1 import (
+    HHSNativeLiteRTLMTransport,
+    MODEL_ID as NATIVE_MODEL_ID,
+    PROVIDER_ID as NATIVE_PROVIDER_ID,
 )
 from hhs_backend.runtime.runtime_workspace_object_v1 import hash72
 
-VERSION = "HHS_PRODUCTION_ASSISTANT_V1"
-STATUS_SCHEMA = "HHS_PRODUCTION_ASSISTANT_STATUS_V1"
-TURN_SCHEMA = "HHS_PRODUCTION_ASSISTANT_TURN_V1"
+VERSION = "HHS_PRODUCTION_ASSISTANT_V2"
+STATUS_SCHEMA = "HHS_PRODUCTION_ASSISTANT_STATUS_V2"
+TURN_SCHEMA = "HHS_PRODUCTION_ASSISTANT_TURN_V2"
 PROVIDER_ID = "provider:hhs.production_assistant"
-DETERMINISTIC_PROVIDER_ID = "provider:hhs.deterministic_capability_assistant"
 
 
 class ProductionAssistantService:
-    """Always-available assistant with an honest provider fallback boundary."""
+    """Production provider hierarchy with installation-closed failover."""
 
-    def __init__(self, model_service: Any = None):
+    def __init__(
+        self,
+        model_service: Any = None,
+        native_service: Any = None,
+    ) -> None:
         self.model_service = model_service or DEFAULT_HHS_API_ASSISTANT_SERVICE
         self.threads = self.model_service.threads
-        self._health_cache: Optional[Dict[str, Any]] = None
-        self._health_cache_at = 0.0
+        if native_service is None:
+            native_transport = HHSNativeLiteRTLMTransport()
+            native_config = LiteRTLMConfig(
+                base_url="hhs-native://local/v1",
+                model_id=NATIVE_MODEL_ID,
+                timeout_seconds=30.0,
+                max_threads=self.model_service.config.max_threads,
+                max_messages_per_thread=self.model_service.config.max_messages_per_thread,
+                max_output_tokens=self.model_service.config.max_output_tokens,
+                temperature=0.0,
+                top_p=1.0,
+                top_k=1,
+                seed=72,
+                reasoning_effort="bounded",
+                system_instruction=(
+                    "Use native HHS semantics, bounded reasoning, active Word2Vec memory, "
+                    "and governed read-only HHS tools. Preserve source identity and never "
+                    "claim canonical mutation without admitted runtime evidence."
+                ),
+            )
+            native_service = HHSAPIAssistantService(
+                config=native_config,
+                transport=native_transport,
+                thread_store=self.threads,
+            )
+        else:
+            native_service.threads = self.threads
+        self.native_service = native_service
+        self._health_cache: Dict[str, Dict[str, Any]] = {}
+        self._health_cache_at: Dict[str, float] = {}
         self._health_ttl = max(
             1.0,
             float(os.getenv("HHS_ASSISTANT_HEALTH_CACHE_SECONDS", "15")),
@@ -60,22 +97,110 @@ class ProductionAssistantService:
             metadata=metadata,
         )
 
-    def _base_status(self) -> Dict[str, Any]:
-        model_status = self.model_service.status()
+    async def _provider_health(
+        self,
+        name: str,
+        service: Any,
+        *,
+        force: bool = False,
+    ) -> Dict[str, Any]:
+        now = time.monotonic()
+        if (
+            not force
+            and name in self._health_cache
+            and now - self._health_cache_at.get(name, 0.0) < self._health_ttl
+        ):
+            return dict(self._health_cache[name])
+        try:
+            health = await asyncio.wait_for(
+                service.health(),
+                timeout=self._health_timeout,
+            )
+        except Exception as exc:
+            health = {
+                "ok": False,
+                "online": False,
+                "status": "ASSISTANT_PROVIDER_HEALTH_ERROR",
+                "provider_id": getattr(service, "provider_id", name),
+                "error": f"{type(exc).__name__}: {exc}",
+            }
+        self._health_cache[name] = dict(health)
+        self._health_cache_at[name] = now
+        return dict(health)
+
+    def _native_installation_status(self) -> Dict[str, Any]:
+        transport = getattr(self.native_service, "transport", None)
+        inner = getattr(transport, "inner", transport)
+        installation_status = getattr(inner, "installation_status", None)
+        if callable(installation_status):
+            try:
+                return dict(installation_status())
+            except Exception as exc:
+                return {
+                    "ready": False,
+                    "provider_id": NATIVE_PROVIDER_ID,
+                    "model_id": NATIVE_MODEL_ID,
+                    "error": f"{type(exc).__name__}: {exc}",
+                }
+        return {
+            "ready": False,
+            "provider_id": NATIVE_PROVIDER_ID,
+            "model_id": NATIVE_MODEL_ID,
+            "error": "native provider does not expose installation status",
+        }
+
+    def status(self) -> Dict[str, Any]:
+        gemma_status = dict(self.model_service.status())
+        native_status = dict(self.native_service.status())
+        gemma_health = self._health_cache.get("gemma", {})
+        native_health = self._health_cache.get("native", {})
+        gemma_ready = bool(gemma_health.get("online") and gemma_health.get("ok"))
+        native_ready = bool(native_health.get("online") and native_health.get("ok"))
+        selected = (
+            gemma_status.get("provider_id")
+            if gemma_ready
+            else native_status.get("provider_id")
+            if native_ready
+            else None
+        )
         status: Dict[str, Any] = {
-            **model_status,
             "schema": STATUS_SCHEMA,
             "version": VERSION,
-            "ok": True,
-            "online": True,
+            "ok": bool(selected),
+            "online": bool(selected),
+            "status": (
+                "HHS_PRODUCTION_ASSISTANT_READY"
+                if selected
+                else "HHS_PRODUCTION_ASSISTANT_PROVIDER_UNAVAILABLE"
+            ),
             "provider_id": PROVIDER_ID,
-            "model_provider_id": model_status.get("provider_id"),
-            "deterministic_provider_id": DETERMINISTIC_PROVIDER_ID,
-            "deterministic_fallback_enabled": True,
-            "repository_retrieval_enabled": True,
+            "selected_provider_id": selected,
+            "effective_mode": (
+                "GEMMA4_LITERT_LM"
+                if selected == gemma_status.get("provider_id")
+                else "HHS_NATIVE_LITERT_COMPATIBLE"
+                if selected == native_status.get("provider_id")
+                else "UNAVAILABLE"
+            ),
+            "provider_hierarchy": [
+                gemma_status.get("provider_id"),
+                native_status.get("provider_id"),
+            ],
+            "gemma": {
+                "status": gemma_status,
+                "health": gemma_health,
+                "ready": gemma_ready,
+            },
+            "native_hhs": {
+                "status": native_status,
+                "health": native_health,
+                "installation": self._native_installation_status(),
+                "ready": native_ready,
+            },
             "same_template_response_enabled": False,
-            "public_interface_mode": "PRODUCTION",
+            "repository_search_is_provider": False,
             "runtime_mutation_admitted": False,
+            "public_interface_mode": "PRODUCTION",
         }
         status["status_root_hash72"] = hash72(
             STATUS_SCHEMA,
@@ -83,264 +208,79 @@ class ProductionAssistantService:
         )
         return status
 
-    def status(self) -> Dict[str, Any]:
-        status = self._base_status()
-        cached = self._health_cache or {}
-        status.update({
-            "model_online": bool(cached.get("online")),
-            "effective_mode": (
-                "GOVERNED_MODEL_AND_HHS_TOOLS"
-                if cached.get("online")
-                else "DETERMINISTIC_HHS_CAPABILITY_ASSISTANT"
-            ),
-        })
+    async def health(self) -> Dict[str, Any]:
+        gemma_health, native_health = await asyncio.gather(
+            self._provider_health("gemma", self.model_service, force=True),
+            self._provider_health("native", self.native_service, force=True),
+        )
+        status = self.status()
+        status["gemma"]["health"] = gemma_health
+        status["gemma"]["ready"] = bool(
+            gemma_health.get("ok") and gemma_health.get("online")
+        )
+        status["native_hhs"]["health"] = native_health
+        status["native_hhs"]["ready"] = bool(
+            native_health.get("ok") and native_health.get("online")
+        )
+        status["ok"] = bool(status["gemma"]["ready"] or status["native_hhs"]["ready"])
+        status["online"] = status["ok"]
+        if status["gemma"]["ready"]:
+            status["selected_provider_id"] = self.model_service.provider_id
+            status["effective_mode"] = "GEMMA4_LITERT_LM"
+            status["status"] = "HHS_PRODUCTION_ASSISTANT_READY"
+        elif status["native_hhs"]["ready"]:
+            status["selected_provider_id"] = self.native_service.provider_id
+            status["effective_mode"] = "HHS_NATIVE_LITERT_COMPATIBLE"
+            status["status"] = "HHS_PRODUCTION_ASSISTANT_READY"
+        else:
+            status["selected_provider_id"] = None
+            status["effective_mode"] = "UNAVAILABLE"
+            status["status"] = "HHS_PRODUCTION_ASSISTANT_PROVIDER_UNAVAILABLE"
+        status["status_root_hash72"] = hash72(
+            STATUS_SCHEMA,
+            {key: value for key, value in status.items() if key != "status_root_hash72"},
+        )
         return status
 
-    async def _model_health(self, *, force: bool = False) -> Dict[str, Any]:
-        now = time.monotonic()
-        if (
-            not force
-            and self._health_cache is not None
-            and now - self._health_cache_at < self._health_ttl
-        ):
-            return dict(self._health_cache)
-        try:
-            health = await asyncio.wait_for(
-                self.model_service.health(),
-                timeout=self._health_timeout,
-            )
-        except Exception as exc:
-            health = {
-                "ok": False,
-                "online": False,
-                "status": "MODEL_PROVIDER_HEALTH_ERROR",
-                "error": f"{type(exc).__name__}: {exc}",
-            }
-        self._health_cache = dict(health)
-        self._health_cache_at = now
-        return dict(health)
-
-    async def health(self) -> Dict[str, Any]:
-        model_health = await self._model_health(force=True)
-        result = self._base_status()
-        result.update({
-            "online": True,
-            "status": "HHS_PRODUCTION_ASSISTANT_ONLINE",
-            "model_online": bool(model_health.get("online")),
-            "model_health": model_health,
-            "effective_mode": (
-                "GOVERNED_MODEL_AND_HHS_TOOLS"
-                if model_health.get("online")
-                else "DETERMINISTIC_HHS_CAPABILITY_ASSISTANT"
-            ),
-            "supported_without_model": [
-                "runtime state",
-                "registered services",
-                "service status",
-                "kernel invariants",
-                "kernel conformance",
-                "Pass 152 status",
-                "Pass 152 capabilities",
-                "assistant tool registry",
-                "bounded repository knowledge search",
-            ],
-        })
-        result["status_root_hash72"] = hash72(
-            STATUS_SCHEMA,
-            {key: value for key, value in result.items() if key != "status_root_hash72"},
-        )
-        return result
-
     @staticmethod
-    def _select_tools(content: str) -> List[str]:
-        text = content.casefold()
-        selected: List[str] = []
-
-        def add(name: str) -> None:
-            if name not in selected:
-                selected.append(name)
-
-        if any(token in text for token in ("runtime", "vm81", "state", "status")):
-            add("hhs_runtime_state")
-        if any(token in text for token in ("service", "registered", "surface")):
-            add("hhs_runtime_services")
-            add("hhs_runtime_service_status")
-        if any(token in text for token in ("invariant", "constraint", "kernel", "conformance")):
-            add("hhs_kernel_invariants")
-            add("hhs_kernel_conformance_status")
-        if "pass 152" in text or "pass152" in text or "elastic closure" in text:
-            add("hhs_pass152_status")
-            add("hhs_pass152_capabilities")
-        if not selected and any(token in text for token in ("capability", "tool", "what can", "help")):
-            return []
-        if not selected:
-            add("hhs_repository_search")
-        return selected
-
-    @staticmethod
-    def _top_level_summary(value: Any, *, limit: int = 8) -> List[str]:
-        if not isinstance(value, Mapping):
-            return [str(value)]
-        lines: List[str] = []
-        preferred = (
-            "status",
-            "classification",
-            "system",
-            "runtime_id",
-            "boot_id",
-            "authority",
-            "pass",
-            "contract_id",
-            "canonical_invariant",
-            "available",
-            "count",
+    def _completed(result: Mapping[str, Any]) -> bool:
+        return bool(
+            result.get("ok")
+            and str((result.get("assistant_message") or {}).get("content") or "").strip()
         )
-        for key in preferred:
-            if key not in value:
-                continue
-            item = value[key]
-            if isinstance(item, (str, int, float, bool)) or item is None:
-                lines.append(f"{key}: {item}")
-        if len(lines) < limit:
-            for key, item in value.items():
-                if any(line.startswith(f"{key}:") for line in lines):
-                    continue
-                if isinstance(item, list):
-                    lines.append(f"{key}: {len(item)} item(s)")
-                elif isinstance(item, Mapping):
-                    lines.append(f"{key}: {len(item)} field(s)")
-                elif isinstance(item, (str, int, float, bool)) or item is None:
-                    lines.append(f"{key}: {item}")
-                if len(lines) >= limit:
-                    break
-        return lines or ["No scalar projection was returned."]
 
-    def _compose_answer(
-        self,
-        content: str,
-        trace: List[Dict[str, Any]],
-        model_error: Optional[str] = None,
-    ) -> str:
-        text = content.casefold()
-        if any(token in text for token in ("what can", "capability", "tool", "help")):
-            registry = assistant_api_tool_registry()
-            names = registry.get("tool_names") or []
-            return (
-                "The production assistant is online. I can execute these governed "
-                f"read-only HHS tools now: {', '.join(map(str, names))}. "
-                "A configured model provider expands this to generative reasoning; "
-                "repository retrieval remains available without it, and runtime "
-                "mutation still requires separate admission."
-            )
-
-        sections: List[str] = []
-        for item in trace:
-            tool_name = str(item.get("tool_name") or "HHS tool")
-            receipt = dict(item.get("receipt") or {})
-            if not receipt.get("ok"):
-                sections.append(
-                    f"{tool_name} could not complete: {receipt.get('error') or receipt.get('reason') or receipt.get('status')}"
-                )
-                continue
-            response = receipt.get("response")
-            if tool_name == "hhs_repository_search" and isinstance(response, Mapping):
-                results = response.get("results") or []
-                if results:
-                    evidence = []
-                    for result in results:
-                        if not isinstance(result, Mapping):
-                            continue
-                        evidence.append(
-                            f"- {result.get('path')}: {result.get('snippet')}"
-                        )
-                    sections.append(
-                        "Repository evidence\n" + "\n".join(evidence)
-                    )
-                else:
-                    sections.append(
-                        f"Repository search found no bounded source match for: {content}"
-                    )
-                continue
-            summary = self._top_level_summary(response)
-            sections.append(
-                f"{tool_name}\n" + "\n".join(f"- {line}" for line in summary)
-            )
-
-        if not sections:
-            sections.append(
-                "No matching governed HHS read-only tool was required for this request."
-            )
-        provider_note = (
-            f"\n\nThe configured model provider was unavailable ({model_error}); "
-            "this answer was generated from governed HHS tool and repository evidence."
-            if model_error
-            else "\n\nThis answer was generated from governed HHS tool and repository evidence."
-        )
-        return "\n\n".join(sections) + provider_note
-
-    async def _deterministic_turn(
+    def _unavailable_turn(
         self,
         thread_id: str,
         *,
-        content: str,
-        existing_user_message: Optional[Mapping[str, Any]] = None,
-        model_error: Optional[str] = None,
+        user_message: Mapping[str, Any],
+        gemma_health: Mapping[str, Any],
+        native_health: Mapping[str, Any],
+        gemma_result: Optional[Mapping[str, Any]] = None,
+        native_result: Optional[Mapping[str, Any]] = None,
     ) -> Dict[str, Any]:
-        thread = self.threads.get(thread_id)
-        if not thread:
-            raise KeyError(thread_id)
-        user_message = (
-            dict(existing_user_message)
-            if existing_user_message
-            else self.threads.append(thread_id, role="user", content=content)
-        )
-        trace: List[Dict[str, Any]] = []
-        for tool_name in self._select_tools(content):
-            arguments: Dict[str, Any] = (
-                {"query": content, "limit": 5}
-                if tool_name == "hhs_repository_search"
-                else {}
-            )
-            receipt = await execute_hhs_assistant_api_tool(tool_name, arguments)
-            trace.append({
-                "tool_name": tool_name,
-                "arguments": arguments,
-                "receipt": receipt,
-            })
-        answer = self._compose_answer(content, trace, model_error=model_error)
-        assistant_message = self.threads.append(
-            thread_id,
-            role="assistant",
-            content=answer,
-            admission={
-                "provider_id": DETERMINISTIC_PROVIDER_ID,
-                "runtime_mutation_admitted": False,
-                "tool_receipts": [
-                    item.get("receipt", {}).get("tool_receipt_root_hash72")
-                    for item in trace
-                ],
-            },
-        )
-        tool_trace_root = hash72(
-            "HHS_PRODUCTION_ASSISTANT_TOOL_TRACE_V1",
-            {"thread_id": thread_id, "trace": trace},
-        )
         result: Dict[str, Any] = {
             "schema": TURN_SCHEMA,
             "version": VERSION,
-            "ok": True,
-            "status": "ADMIT_DETERMINISTIC_HHS_ASSISTANT_TURN",
-            "effective_mode": "DETERMINISTIC_HHS_CAPABILITY_ASSISTANT",
-            "provider_id": DETERMINISTIC_PROVIDER_ID,
-            "model_provider_attempted": bool(model_error),
-            "model_provider_error": model_error,
+            "ok": False,
+            "status": "REJECT_ASSISTANT_TURN_WITHOUT_READY_PROVIDER",
+            "error": (
+                "No production language provider is ready. The configured Gemma alias "
+                "must be registered in LiteRT-LM, or the native HHS provider must have "
+                "Pass 148/151 ready with an active offline-ready Pass 166 Word2Vec model."
+            ),
             "thread_id": thread_id,
-            "user_message": user_message,
-            "assistant_message": assistant_message,
-            "hhs_api_tools_enabled": True,
-            "hhs_api_tool_call_count": len(trace),
-            "hhs_api_tool_trace": trace,
-            "hhs_api_tool_trace_root_hash72": tool_trace_root,
+            "user_message": dict(user_message),
+            "assistant_message": None,
+            "provider_hierarchy": [
+                getattr(self.model_service, "provider_id", None),
+                getattr(self.native_service, "provider_id", None),
+            ],
+            "gemma_health": dict(gemma_health),
+            "native_health": dict(native_health),
+            "gemma_result": dict(gemma_result or {}),
+            "native_result": dict(native_result or {}),
+            "native_installation": self._native_installation_status(),
             "runtime_mutation_admitted": False,
             "model_output_is_canonical_without_runtime_admission": False,
             "thread": self.threads.get(thread_id),
@@ -358,28 +298,88 @@ class ProductionAssistantService:
     ) -> Dict[str, Any]:
         if not self.threads.get(thread_id):
             raise KeyError(thread_id)
-        model_health = await self._model_health()
-        if model_health.get("online"):
-            result = await self.model_service.send_message(
+
+        gemma_health = await self._provider_health("gemma", self.model_service)
+        native_health = await self._provider_health("native", self.native_service)
+        gemma_ready = bool(gemma_health.get("ok") and gemma_health.get("online"))
+        native_ready = bool(native_health.get("ok") and native_health.get("online"))
+
+        if gemma_ready:
+            gemma_result = await self.model_service.send_message(
                 thread_id,
                 content=content,
                 tools=tools,
                 response_format=response_format,
             )
-            if result.get("assistant_message", {}).get("content"):
-                result["effective_mode"] = "GOVERNED_MODEL_AND_HHS_TOOLS"
-                result["production_assistant_version"] = VERSION
-                return result
-            return await self._deterministic_turn(
+            if self._completed(gemma_result):
+                gemma_result["effective_mode"] = "GEMMA4_LITERT_LM"
+                gemma_result["production_assistant_version"] = VERSION
+                gemma_result["fallback_used"] = False
+                return gemma_result
+
+            user_message = gemma_result.get("user_message")
+            if native_ready and isinstance(user_message, Mapping):
+                native_result = await self.native_service.continue_message(
+                    thread_id,
+                    user_message=user_message,
+                    tools=tools,
+                    response_format=response_format,
+                )
+                if self._completed(native_result):
+                    native_result["effective_mode"] = "HHS_NATIVE_LITERT_COMPATIBLE"
+                    native_result["production_assistant_version"] = VERSION
+                    native_result["fallback_used"] = True
+                    native_result["failed_primary_result"] = gemma_result
+                    return native_result
+                return self._unavailable_turn(
+                    thread_id,
+                    user_message=user_message,
+                    gemma_health=gemma_health,
+                    native_health=native_health,
+                    gemma_result=gemma_result,
+                    native_result=native_result,
+                )
+            if isinstance(user_message, Mapping):
+                return self._unavailable_turn(
+                    thread_id,
+                    user_message=user_message,
+                    gemma_health=gemma_health,
+                    native_health=native_health,
+                    gemma_result=gemma_result,
+                )
+
+        if native_ready:
+            native_result = await self.native_service.send_message(
                 thread_id,
                 content=content,
-                existing_user_message=result.get("user_message"),
-                model_error=str(result.get("error") or result.get("status")),
+                tools=tools,
+                response_format=response_format,
             )
-        return await self._deterministic_turn(
+            if self._completed(native_result):
+                native_result["effective_mode"] = "HHS_NATIVE_LITERT_COMPATIBLE"
+                native_result["production_assistant_version"] = VERSION
+                native_result["fallback_used"] = True
+                return native_result
+            user_message = native_result.get("user_message")
+            if isinstance(user_message, Mapping):
+                return self._unavailable_turn(
+                    thread_id,
+                    user_message=user_message,
+                    gemma_health=gemma_health,
+                    native_health=native_health,
+                    native_result=native_result,
+                )
+
+        user_message = self.threads.append(
             thread_id,
+            role="user",
             content=content,
-            model_error=str(model_health.get("error") or model_health.get("status")),
+        )
+        return self._unavailable_turn(
+            thread_id,
+            user_message=user_message,
+            gemma_health=gemma_health,
+            native_health=native_health,
         )
 
 
