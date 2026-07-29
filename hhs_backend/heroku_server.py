@@ -1,9 +1,9 @@
 """Production Heroku entrypoint for the HHS Runtime OS.
 
-The public root serves the compiled production interface. Only callable surfaces
-are advertised. Assistant requests use the production provider hierarchy and
-read-only HHS tools; authority-bearing runtime mutations remain rejected unless
-a canonical runtime is attached.
+The public root serves the compiled production interface. Capability visibility
+is derived from callable provider and model state. Assistant requests use Gemma
+through LiteRT-LM when its configured alias is registered, otherwise the native
+HHS LiteRT-compatible provider when Pass 148/151 and Pass 166 are ready.
 """
 from __future__ import annotations
 
@@ -25,7 +25,7 @@ SWARM_DEMO_ROOT = ROOT_DIR / "apps" / "unified_gui"
 
 app = FastAPI(
     title="HHS Runtime OS",
-    version="2.0.0",
+    version="2.1.0",
     description="Production HHS visual IDE and governed assistant API.",
 )
 
@@ -49,83 +49,147 @@ def _detached_rejection(
     }
 
 
-@app.get("/healthz")
-@app.get("/health")
-async def health() -> dict[str, Any]:
+def _word2vec_status() -> dict[str, Any]:
+    try:
+        from hhs_runtime.pass166.service import DEFAULT_WORD2VEC_SERVICE
+
+        return dict(DEFAULT_WORD2VEC_SERVICE.status())
+    except Exception as exc:
+        return {
+            "schema": "HHS_PASS166_STATUS_ERROR_V1",
+            "offline_ready": False,
+            "active_model_id": None,
+            "installed_models": 0,
+            "error": f"{type(exc).__name__}: {exc}",
+        }
+
+
+async def _assistant_health() -> dict[str, Any]:
     from hhs_backend.runtime.hhs_production_assistant_v1 import (
         DEFAULT_PRODUCTION_ASSISTANT_SERVICE,
     )
 
-    assistant_status = DEFAULT_PRODUCTION_ASSISTANT_SERVICE.status()
+    return await DEFAULT_PRODUCTION_ASSISTANT_SERVICE.health()
+
+
+@app.get("/healthz")
+@app.get("/health")
+async def health() -> dict[str, Any]:
+    assistant = await _assistant_health()
+    word2vec = _word2vec_status()
+    bundle_present = (RUNTIME_OS_ROOT / "index.html").is_file()
+    assistant_ready = bool(assistant.get("online") and assistant.get("ok"))
     return {
-        "ok": True,
-        "status": "healthy",
+        "ok": bool(bundle_present and assistant_ready),
+        "status": "healthy" if bundle_present and assistant_ready else "degraded",
         "mode": "HHS_PRODUCTION_RUNTIME_OS",
         "boot_id": BOOT_ID,
         "uptime_seconds": time.time() - STARTED_AT,
         "default_interface": "HHS_RUNTIME_OS_PRODUCTION_IDE",
-        "runtime_os_bundle_present": (RUNTIME_OS_ROOT / "index.html").is_file(),
-        "assistant_online": True,
-        "assistant_mode": assistant_status.get("effective_mode"),
-        "model_online": assistant_status.get("model_online", False),
+        "runtime_os_bundle_present": bundle_present,
+        "assistant_online": assistant_ready,
+        "assistant_mode": assistant.get("effective_mode"),
+        "selected_provider_id": assistant.get("selected_provider_id"),
+        "gemma_online": bool(assistant.get("gemma", {}).get("ready")),
+        "native_hhs_online": bool(assistant.get("native_hhs", {}).get("ready")),
+        "word2vec_ready": bool(
+            word2vec.get("offline_ready") and word2vec.get("active_model_id")
+        ),
+        "word2vec": word2vec,
+        "assistant": assistant,
         "canonical_runtime_attached": False,
     }
 
 
 @app.get("/api/system/status")
 async def system_status() -> dict[str, Any]:
+    assistant = await _assistant_health()
+    word2vec = _word2vec_status()
     return {
-        "schema": "HHS_PUBLIC_SYSTEM_STATUS_V2",
+        "schema": "HHS_PUBLIC_SYSTEM_STATUS_V3",
         "system": "HARMONICODE",
         "status": "online",
         "deployment_mode": "HHS_PRODUCTION_RUNTIME_OS",
         "boot_id": BOOT_ID,
         "default_interface": "HHS_RUNTIME_OS_PRODUCTION_IDE",
         "assistant_api": "/api/assistant",
+        "assistant_ready": bool(assistant.get("ok") and assistant.get("online")),
+        "assistant_mode": assistant.get("effective_mode"),
+        "selected_provider_id": assistant.get("selected_provider_id"),
         "capability_api": "/api/product/capabilities",
         "harmonicode_analysis_api": "/api/workspace/harmonicode/analyze",
+        "word2vec_status_api": "/v1/modalities/language/models/word2vec/status",
+        "word2vec_ready": bool(
+            word2vec.get("offline_ready") and word2vec.get("active_model_id")
+        ),
         "runtime_authority": "DETACHED_READ_ONLY_PROJECTION",
     }
 
 
 @app.get("/api/product/capabilities")
 async def product_capabilities() -> dict[str, Any]:
+    assistant = await _assistant_health()
+    word2vec = _word2vec_status()
+    assistant_ready = bool(assistant.get("online") and assistant.get("ok"))
+    word2vec_ready = bool(
+        word2vec.get("offline_ready") and word2vec.get("active_model_id")
+    )
+    capabilities = [
+        {
+            "id": "assistant",
+            "title": "Governed natural-language assistant",
+            "callable": assistant_ready,
+            "endpoint": "/api/assistant/chat",
+            "provider": assistant.get("selected_provider_id"),
+            "status": assistant.get("status"),
+        },
+        {
+            "id": "assistant_tools",
+            "title": "Read-only HHS runtime tools",
+            "callable": True,
+            "endpoint": "/api/assistant/tools",
+        },
+        {
+            "id": "harmonicode_analysis",
+            "title": "Repository-native HARMONICODE parse and typed IR",
+            "callable": True,
+            "endpoint": "/api/workspace/harmonicode/analyze",
+        },
+        {
+            "id": "runtime_projection",
+            "title": "Runtime, services, invariants, and Pass status projections",
+            "callable": True,
+            "endpoint": "/api/runtime/read/{surface}",
+        },
+        {
+            "id": "word2vec_language_memory",
+            "title": "Pass 166 Word2Vec language memory and vector queries",
+            "callable": word2vec_ready,
+            "endpoint": "/v1/modalities/language/vectors/{token}",
+            "model_id": word2vec.get("active_model_id"),
+            "status_endpoint": "/v1/modalities/language/models/word2vec/status",
+        },
+    ]
     return {
-        "schema": "HHS_PUBLIC_PRODUCT_CAPABILITIES_V1",
+        "schema": "HHS_PUBLIC_PRODUCT_CAPABILITIES_V2",
         "ok": True,
         "production": True,
         "demo_mode": False,
-        "capabilities": [
-            {
-                "id": "assistant",
-                "title": "Governed natural-language assistant",
-                "callable": True,
-                "endpoint": "/api/assistant/chat",
-            },
-            {
-                "id": "assistant_tools",
-                "title": "Read-only HHS runtime tools",
-                "callable": True,
-                "endpoint": "/api/assistant/tools",
-            },
-            {
-                "id": "harmonicode_analysis",
-                "title": "Repository-native HARMONICODE parse and typed IR",
-                "callable": True,
-                "endpoint": "/api/workspace/harmonicode/analyze",
-            },
-            {
-                "id": "runtime_projection",
-                "title": "Runtime, services, invariants, and Pass status projections",
-                "callable": True,
-                "endpoint": "/api/runtime/read/{surface}",
-            },
+        "capabilities": capabilities,
+        "callable_capability_ids": [
+            item["id"] for item in capabilities if item["callable"]
         ],
+        "unavailable_capabilities": [
+            item for item in capabilities if not item["callable"]
+        ],
+        "assistant": assistant,
+        "word2vec": word2vec,
         "hidden_until_callable": [
             "runtime mutation",
             "canonical compiler commit",
             "VM81 state mutation",
-            "local GPU model hosting",
+            *([] if assistant_ready else ["natural-language assistant"]),
+            *([] if word2vec_ready else ["Word2Vec language-memory queries"]),
         ],
     }
 
@@ -262,8 +326,10 @@ async def detached_runtime_fallback(
 
 
 from hhs_backend.api.litert_lm_assistant_routes import router as assistant_router
+from hhs_backend.api.pass166_word2vec_routes import router as word2vec_router
 
 app.include_router(assistant_router)
+app.include_router(word2vec_router)
 
 
 if (PASS161_ROOT / "index.html").is_file():
