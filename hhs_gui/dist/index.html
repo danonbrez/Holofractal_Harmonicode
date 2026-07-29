@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="theme-color" content="#000000" />
   <meta name="description" content="HHS Visual Runtime OS: canonical project, language, multimodal, runtime, graph, receipt, and assistant workspace" />
-  <meta name="hhs-build-contract" content="canonical-visual-runtime-os" />
+  <meta name="hhs-build-contract" content="canonical-visual-runtime-os-mobile-safe" />
   <title>HHS Visual Runtime OS Workspace</title>
   <style>
     html, body, #root { width: 100%; min-height: 100%; margin: 0; background: #000; color: #fff; }
@@ -23,9 +23,7 @@
     #runtime_boot_status { margin-top: 12px; color: rgba(255,255,255,.62); font: 12px/1.6 ui-monospace, SFMono-Regular, Menlo, monospace; white-space: pre-wrap; }
     #runtime_boot_error { display: none; margin-top: 14px; color: #fecaca; font: 11px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace; white-space: pre-wrap; word-break: break-word; }
   </style>
-  <script type="module" crossorigin src="/assets/index-37jiYqeX.js"></script>
-  <link rel="modulepreload" crossorigin href="/assets/react-D3F3s8fL.js">
-  <link rel="stylesheet" crossorigin href="/assets/index-DNhGIB_Q.css">
+  <script type="module" crossorigin src="/assets/index-Dm5fnYpY.js"></script>
 </head>
 <body>
   <div id="root"></div>
@@ -33,34 +31,45 @@
     <div id="runtime_boot_panel">
       <div id="runtime_boot_title">HHS Visual Runtime OS Workspace</div>
       <div id="runtime_boot_status">boot_sequence:
+  → load compatibility bootstrap
+  → import canonical IDE bundle
   → mount canonical IDE shell
   → initialize runtime projection transport
-  → connect graph, replay, and receipt channels
   → expose project, editor, compiler, emulator, assistant, and multimodal tools</div>
       <div id="runtime_boot_error"></div>
     </div>
   </div>
   <script>
     (() => {
-      const report = (label, value) => {
-        const status = document.getElementById('runtime_boot_status');
-        const error = document.getElementById('runtime_boot_error');
-        if (status) status.textContent = 'The canonical HHS IDE did not mount.';
-        if (error) {
-          error.style.display = 'block';
-          error.textContent = `${label}\n${value || 'Unknown frontend error'}`;
-        }
+      const stringify = (value) => {
+        if (value == null) return "Unknown frontend error";
+        if (typeof value === "string") return value;
+        if (value.stack) return String(value.stack);
+        if (value.message) return String(value.message);
+        try { return JSON.stringify(value, null, 2); } catch (_) { return String(value); }
       };
-      window.addEventListener('error', (event) => report('frontend_error', event.error?.stack || event.message));
-      window.addEventListener('unhandledrejection', (event) => {
-        const reason = event.reason;
-        report('unhandled_promise_rejection', reason?.stack || reason?.message || String(reason));
-      });
-      window.setTimeout(() => {
-        if (!document.documentElement.dataset.hhsMounted) {
-          report('frontend_boot_timeout', 'No canonical IDE surface mounted within 8 seconds. The error is retained for diagnosis.');
+      const report = (label, value) => {
+        const status = document.getElementById("runtime_boot_status");
+        const error = document.getElementById("runtime_boot_error");
+        if (status) status.textContent = "The canonical HHS IDE did not mount.";
+        if (error) {
+          error.style.display = "block";
+          error.textContent = `${label}\n${stringify(value)}`;
         }
-      }, 8000);
+        document.documentElement.dataset.hhsBootFailure = label;
+      };
+      window.__HHS_REPORT_BOOT_ERROR__ = report;
+      window.addEventListener("error", (event) => report("frontend_error", event.error || event.message));
+      window.addEventListener("unhandledrejection", (event) => report("unhandled_promise_rejection", event.reason));
+      window.setTimeout(() => {
+        if (document.documentElement.dataset.hhsMounted) return;
+        const bootstrap = document.documentElement.dataset.hhsBootstrap || "not-loaded";
+        const entry = document.documentElement.dataset.hhsEntry || "not-loaded";
+        report(
+          "frontend_boot_timeout",
+          `bootstrap=${bootstrap}\nentry=${entry}\nNo canonical IDE surface committed within 12 seconds.`
+        );
+      }, 12000);
     })();
   </script>
 </body>
