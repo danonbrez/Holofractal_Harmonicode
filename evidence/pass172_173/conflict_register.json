@@ -1,0 +1,32 @@
+{
+  "schema": "HHS_PASS_172_173_CONFLICT_REGISTER_V1",
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "authoritative_base_commit": "3fd4ca088039b1adc0d08a0644d62b979af8997d",
+  "contract_sources_modified": false,
+  "terminal_rule": "Any unresolved true conflict blocks terminal closure.",
+  "conflicts": [],
+  "apparent_conflicts_resolved_by_scope": [
+    {
+      "identity": "P172-P173-AUTHORITY-SEPARATION",
+      "clauses": ["Pass 172 installation implementation authority", "Pass 173 verification and repair authority"],
+      "resolution": "Complementary authorities: Pass 173 executes and verifies Pass 172 but does not become a second installer."
+    },
+    {
+      "identity": "PROVIDER-PROFILE-DIFFERENCES",
+      "clauses": ["local GPU", "local CPU", "external", "degraded", "disabled", "incompatible"],
+      "resolution": "Profile- and capability-scoped states, not contradictory global claims."
+    },
+    {
+      "identity": "PLATFORM-ARTIFACT-DIFFERENCES",
+      "clauses": ["Linux .so", "macOS .dylib", "Windows .dll"],
+      "resolution": "Platform artifact identities may differ while ABI and semantic surfaces remain equivalent."
+    },
+    {
+      "identity": "INSTALLER-RUNTIME-AUTHORITY",
+      "clauses": ["bounded host provisioning", "singleton VM81 Runtime authority"],
+      "resolution": "Installer provisions and verifies the Runtime but never performs canonical Runtime computation."
+    }
+  ],
+  "unresolved_count": 0,
+  "status": "NO_TRUE_CONFLICT_IDENTIFIED_IN_BOUND_SOURCES"
+}
