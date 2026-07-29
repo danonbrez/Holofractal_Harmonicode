@@ -98,6 +98,37 @@ def test_clean_runner_captures_success_and_isolates_source(tmp_path: Path) -> No
         runner.cleanup(result)
 
 
+def test_clean_runner_reserves_hhs_home_and_pythonpath(tmp_path: Path) -> None:
+    runner = CleanInstallRunner()
+    result = runner.run(
+        CleanInstallRequest(
+            case_id="reserved-environment",
+            command=(
+                sys.executable,
+                "-c",
+                "import os; print(os.environ['HHS_HOME']); print(os.environ['PYTHONPATH'])",
+            ),
+            repository_root=str(tmp_path),
+            profile="core",
+            platform="test",
+            architecture="test",
+            timeout_seconds=30,
+            environment={"HHS_HOME": "/real/home", "PYTHONPATH": "/caller/source", "SAFE_CUSTOM": "preserved"},
+        )
+    )
+    try:
+        lines = result.stdout.strip().splitlines()
+        assert lines == [
+            result.recovery_receipt["isolated_hhs_home"],
+            result.recovery_receipt["isolated_pythonpath"],
+        ]
+        assert result.recovery_receipt["ignored_reserved_environment"] == ["HHS_HOME", "PYTHONPATH"]
+        assert "/real/home" not in result.stdout
+        assert "/caller/source" not in result.stdout
+    finally:
+        runner.cleanup(result)
+
+
 def test_clean_runner_timeout_is_blocked(tmp_path: Path) -> None:
     runner = CleanInstallRunner()
     result = runner.run(
