@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hhs.local/schemas/pass172/environment_probe.schema.json",
+  "title": "HHS Pass 172 Environment Probe",
+  "type": "object",
+  "required": ["platform", "platform_release", "architecture", "capabilities", "compatible_profiles", "primary_classification", "selected_ports", "probe_identity"],
+  "properties": {
+    "platform": {"type": "string"},
+    "platform_release": {"type": "string"},
+    "architecture": {"type": "string"},
+    "python_version": {"type": ["string", "null"]},
+    "capabilities": {"type": "array", "items": {"type": "object"}},
+    "compatible_profiles": {"type": "array", "items": {"type": "string"}},
+    "primary_classification": {"type": "string"},
+    "selected_ports": {"type": "object", "additionalProperties": {"type": "integer"}},
+    "probe_identity": {"type": "string", "minLength": 1}
+  }
+}
