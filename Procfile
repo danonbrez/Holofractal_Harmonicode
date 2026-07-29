@@ -1,1 +1,1 @@
-web: env HHS_START_LITERT_LM=0 HHS_LITERT_LM_PROVIDER_MODE=disabled HHS_LITERT_LM_STRICT_STARTUP=0 HHS_SKIP_C_BUILD=1 python -m uvicorn hhs_backend.visual_server:app --host 0.0.0.0 --port $PORT --ws websockets --log-level info
+web: python -m uvicorn hhs_backend.heroku_server:app --host 0.0.0.0 --port $PORT --workers 1 --timeout-keep-alive 5 --log-level info
