@@ -1,301 +1,64 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
 <head>
-
-    <meta charset="UTF-8" />
-
-    <meta
-        name="viewport"
-        content="
-            width=device-width,
-            initial-scale=1.0,
-            viewport-fit=cover
-        "
-    />
-
-    <meta
-        name="theme-color"
-        content="#000000"
-    />
-
-    <title>
-        HHS Runtime OS
-    </title>
-
-    <!-- =====================================================
-         Runtime Boot Styling
-    ====================================================== -->
-
-    <style>
-
-        html,
-        body,
-        #root {
-
-            margin: 0;
-            padding: 0;
-
-            width: 100%;
-            height: 100%;
-
-            overflow: hidden;
-
-            background: #000;
-        }
-
-        body {
-
-            font-family:
-                Inter,
-                system-ui,
-                sans-serif;
-
-            color: white;
-        }
-
-        * {
-
-            box-sizing: border-box;
-        }
-
-        /* =================================================
-           Runtime Boot Overlay
-        ================================================== */
-
-        #runtime_boot_overlay {
-
-            position: fixed;
-
-            inset: 0;
-
-            background:
-                radial-gradient(
-
-                    circle at center,
-
-                    rgba(34,211,238,0.10),
-
-                    transparent 70%
-                ),
-                #000;
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-            z-index: 999999;
-        }
-
-        #runtime_boot_panel {
-
-            width: min(90vw, 520px);
-
-            border-radius: 24px;
-
-            border:
-                1px solid rgba(34,211,238,0.18);
-
-            background:
-                rgba(0,0,0,0.72);
-
-            backdrop-filter:
-                blur(24px);
-
-            padding: 32px;
-
-            display: flex;
-
-            flex-direction: column;
-
-            gap: 18px;
-
-            box-shadow:
-                0 0 60px rgba(34,211,238,0.12);
-        }
-
-        #runtime_boot_title {
-
-            color: rgb(103,232,249);
-
-            font-size: 20px;
-
-            font-weight: 700;
-
-            letter-spacing: 0.04em;
-        }
-
-        #runtime_boot_subtitle {
-
-            color: rgba(255,255,255,0.45);
-
-            font-size: 12px;
-
-            font-family: monospace;
-        }
-
-        #runtime_boot_loader {
-
-            width: 100%;
-
-            height: 10px;
-
-            overflow: hidden;
-
-            border-radius: 999px;
-
-            background:
-                rgba(255,255,255,0.08);
-
-            position: relative;
-        }
-
-        #runtime_boot_loader::after {
-
-            content: "";
-
-            position: absolute;
-
-            inset: 0;
-
-            width: 40%;
-
-            background:
-                linear-gradient(
-                    90deg,
-                    transparent,
-                    rgba(34,211,238,0.85),
-                    transparent
-                );
-
-            animation:
-                runtime_boot_pulse 1.2s linear infinite;
-        }
-
-        @keyframes runtime_boot_pulse {
-
-            from {
-
-                transform:
-                    translateX(-120%);
-            }
-
-            to {
-
-                transform:
-                    translateX(260%);
-            }
-        }
-
-        #runtime_boot_status {
-
-            color:
-                rgba(255,255,255,0.65);
-
-            font-size: 11px;
-
-            font-family: monospace;
-
-            white-space: pre-wrap;
-        }
-
-    </style>
-
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#050811" />
+  <meta name="description" content="HHS Runtime OS production visual IDE and governed assistant" />
+  <title>HHS Runtime OS</title>
+  <style>
+    html, body, #root { width: 100%; min-height: 100%; margin: 0; background: #050811; color: #eef7ff; }
+    * { box-sizing: border-box; }
+    #runtime_boot_overlay {
+      position: fixed; inset: 0; z-index: 999999; display: grid; place-items: center;
+      padding: 24px; background: radial-gradient(circle at 50% 15%, rgba(23,124,172,.16), transparent 42%), #050811;
+      font-family: Inter, system-ui, sans-serif;
+    }
+    #runtime_boot_panel {
+      width: min(620px, 94vw); border: 1px solid rgba(103,232,249,.22); border-radius: 18px;
+      background: rgba(8,16,29,.96); padding: 22px; box-shadow: 0 24px 80px rgba(0,0,0,.38);
+    }
+    #runtime_boot_title { color: #67e8f9; font-size: 19px; font-weight: 800; letter-spacing: .035em; }
+    #runtime_boot_status { margin-top: 10px; color: #91a9bc; font: 12px/1.55 ui-monospace, SFMono-Regular, Menlo, monospace; white-space: pre-wrap; }
+    #runtime_boot_error { display: none; margin-top: 14px; color: #fecaca; font: 11px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace; white-space: pre-wrap; word-break: break-word; }
+  </style>
   <script type="module" crossorigin src="/assets/index-B2O9DC8C.js"></script>
   <link rel="modulepreload" crossorigin href="/assets/react-D3F3s8fL.js">
   <link rel="stylesheet" crossorigin href="/assets/index-CljKRO-y.css">
 </head>
-
 <body>
-
-    <!-- =====================================================
-         Root
-    ====================================================== -->
-
-    <div id="root"></div>
-
-    <!-- =====================================================
-         Runtime Boot Overlay
-    ====================================================== -->
-
-    <div id="runtime_boot_overlay">
-
-        <div id="runtime_boot_panel">
-
-            <div id="runtime_boot_title">
-                HHS Runtime OS
-            </div>
-
-            <div id="runtime_boot_subtitle">
-                runtime_projection_bootstrap
-            </div>
-
-            <div id="runtime_boot_loader"></div>
-
-            <div id="runtime_boot_status">
-
-boot_sequence:
-  → initialize RuntimeOS
-  → connect websocket transport
-  → initialize runtime graph
-  → initialize replay topology
-  → mount runtime surfaces
-
-            </div>
-
-        </div>
-
+  <div id="root"></div>
+  <div id="runtime_boot_overlay" role="status" aria-live="polite">
+    <div id="runtime_boot_panel">
+      <div id="runtime_boot_title">HHS Runtime OS</div>
+      <div id="runtime_boot_status">Loading the production interface…</div>
+      <div id="runtime_boot_error"></div>
     </div>
-
-    <!-- =====================================================
-         Runtime Entrypoint
-    ====================================================== -->
-
-
-    <!-- =====================================================
-         Overlay Removal
-    ====================================================== -->
-
-    <script>
-
-        window.addEventListener(
-
-            "load",
-
-            () => {
-
-                const overlay =
-
-                    document.getElementById(
-                        "runtime_boot_overlay"
-                    )
-
-                if (!overlay) {
-
-                    return
-                }
-
-                setTimeout(() => {
-
-                    overlay.style.opacity = "0"
-
-                    overlay.style.transition =
-                        "opacity 400ms ease"
-
-                    setTimeout(() => {
-
-                        overlay.remove()
-
-                    }, 450)
-
-                }, 300)
-            }
-        )
-
-    </script>
-
+  </div>
+  <script>
+    (() => {
+      const report = (label, value) => {
+        const status = document.getElementById('runtime_boot_status');
+        const error = document.getElementById('runtime_boot_error');
+        if (status) status.textContent = 'The production interface did not mount.';
+        if (error) {
+          error.style.display = 'block';
+          error.textContent = `${label}\n${value || 'Unknown frontend error'}`;
+        }
+      };
+      window.addEventListener('error', (event) => {
+        report('frontend_error', event.error?.stack || event.message);
+      });
+      window.addEventListener('unhandledrejection', (event) => {
+        const reason = event.reason;
+        report('unhandled_promise_rejection', reason?.stack || reason?.message || String(reason));
+      });
+      window.setTimeout(() => {
+        if (!document.documentElement.dataset.hhsMounted) {
+          report('frontend_boot_timeout', 'The JavaScript bundle loaded no application surface within 8 seconds. Check the displayed error and deployment assets.');
+        }
+      }, 8000);
+    })();
+  </script>
 </body>
-
 </html>
