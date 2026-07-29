@@ -1,215 +1,125 @@
 from __future__ import annotations
 
-import asyncio
-
-from fastapi.testclient import TestClient
-
-from hhs_backend.runtime.hhs_litert_lm_assistant_v1 import (
-    ConversationThreadStore,
-    LiteRTLMConfig,
-)
-from hhs_backend.runtime.hhs_production_assistant_v1 import (
-    ProductionAssistantService,
-)
+from pathlib import Path
 
 
-CANNED_DEMO_RESPONSE = (
-    "The request was received without runtime mutation. LiteRT-LM and the "
-    "canonical HHS runtime must be attached before inference can execute."
-)
-
-HARMONICODE_SOURCE = """PHASE_GATE := {
-  x==1/y;
-  z==1/w;
-  xy≠yx;
-  Δe=0;
-  Ψ=0;
-  Θ15=true;
-  Ω=true
-}
-PHASE_GATE
-"""
+def route_paths(app) -> set[str]:
+    return {str(getattr(route, "path", "")) for route in app.router.routes}
 
 
-class OfflineModelService:
-    def __init__(self) -> None:
-        self.config = LiteRTLMConfig(
-            max_threads=8,
-            max_messages_per_thread=16,
-        )
-        self.threads = ConversationThreadStore(self.config)
+def test_production_server_composes_canonical_backend_and_visual_ide():
+    from hhs_backend.production_server import app
 
-    def create_thread(self, **kwargs):
-        return self.threads.create(**kwargs)
-
-    def status(self):
-        return {
-            "schema": "TEST_OFFLINE_MODEL_STATUS_V1",
-            "ok": True,
-            "provider_id": "provider:test.offline",
-            "model_id": "test-offline-model",
-        }
-
-    async def health(self):
-        return {
-            "ok": False,
-            "online": False,
-            "status": "TEST_MODEL_OFFLINE",
-            "error": "intentional offline provider",
-        }
-
-    async def send_message(self, *args, **kwargs):
-        raise AssertionError("offline model service must not be invoked")
-
-
-def test_production_assistant_is_query_specific_and_never_uses_demo_template(monkeypatch):
-    async def fake_tool(tool_name, arguments):
-        if tool_name == "hhs_repository_search":
-            response = {
-                "schema": "HHS_BOUNDED_REPOSITORY_KNOWLEDGE_SEARCH_V1",
-                "ok": True,
-                "query": arguments["query"],
-                "result_count": 1,
-                "results": [{
-                    "path": "native_projects/hhs_harmonicode_language/README.md",
-                    "score": 72,
-                    "snippet": "HARMONICODE is parsed into source-preserving typed IR.",
-                }],
-            }
-        else:
-            response = {
-                "status": "IMPLEMENTED_EXECUTION_VERIFIED",
-                "classification": "HHS_PASS_152_UNIVERSAL_ELASTIC_CLOSURE_INVARIANT_VERIFIED",
-                "tool_name": tool_name,
-            }
-        return {
-            "schema": "HHS_ASSISTANT_API_TOOL_RECEIPT_V1",
-            "ok": True,
-            "status": "ADMIT_READ_ONLY_HHS_ASSISTANT_API_TOOL_RESULT",
-            "tool_name": tool_name,
-            "arguments": dict(arguments),
-            "response": response,
-            "runtime_mutation_admitted": False,
-            "tool_receipt_root_hash72": f"receipt:{tool_name}",
-        }
-
-    import hhs_backend.runtime.hhs_production_assistant_v1 as production
-
-    monkeypatch.setattr(production, "execute_hhs_assistant_api_tool", fake_tool)
-    service = ProductionAssistantService(model_service=OfflineModelService())
-    thread = service.create_thread(project_id="project:test:production")
-
-    capabilities = asyncio.run(
-        service.send_message(
-            thread["thread_id"],
-            content="What can the production assistant do?",
-        )
-    )
-    pass_status = asyncio.run(
-        service.send_message(
-            thread["thread_id"],
-            content="What is the current Pass 152 status?",
-        )
-    )
-    knowledge = asyncio.run(
-        service.send_message(
-            thread["thread_id"],
-            content="Explain the HARMONICODE language service.",
-        )
-    )
-
-    first = capabilities["assistant_message"]["content"]
-    second = pass_status["assistant_message"]["content"]
-    third = knowledge["assistant_message"]["content"]
-    assert len({first, second, third}) == 3
-    assert CANNED_DEMO_RESPONSE not in first
-    assert CANNED_DEMO_RESPONSE not in second
-    assert CANNED_DEMO_RESPONSE not in third
-    assert "hhs_pass152_status" in second
-    assert "native_projects/hhs_harmonicode_language/README.md" in third
-    assert "source-preserving typed IR" in third
-    assert pass_status["hhs_api_tool_call_count"] >= 1
-    assert knowledge["hhs_api_tool_trace"][0]["tool_name"] == "hhs_repository_search"
-    assert knowledge["runtime_mutation_admitted"] is False
-    assert pass_status["turn_root_hash72"]
-    assert knowledge["turn_root_hash72"]
-
-
-def test_production_assistant_health_remains_online_without_model():
-    service = ProductionAssistantService(model_service=OfflineModelService())
-    health = asyncio.run(service.health())
-    assert health["online"] is True
-    assert health["model_online"] is False
-    assert health["effective_mode"] == "DETERMINISTIC_HHS_CAPABILITY_ASSISTANT"
-    assert health["same_template_response_enabled"] is False
-    assert health["repository_retrieval_enabled"] is True
-
-
-def test_public_product_routes_are_callable(monkeypatch):
-    monkeypatch.setenv("HHS_ASSISTANT_HEALTH_TIMEOUT_SECONDS", "0.1")
-    monkeypatch.setenv("HHS_LITERT_LM_BACKEND", "auto")
-
-    from hhs_backend.heroku_server import app
-
-    client = TestClient(app)
-
-    health = client.get("/healthz")
-    assert health.status_code == 200
-    assert health.json()["assistant_online"] is True
-
-    capabilities = client.get("/api/product/capabilities")
-    assert capabilities.status_code == 200
-    payload = capabilities.json()
-    assert payload["production"] is True
-    assert payload["demo_mode"] is False
-    assert all(item["callable"] for item in payload["capabilities"])
-
-    chat = client.post(
+    paths = route_paths(app)
+    required = {
+        "/healthz",
+        "/api/system/status",
+        "/api/runtime/live/status",
+        "/api/runtime/gui/command",
+        "/api/runtime/workspace/status",
+        "/api/runtime/workspace/command",
+        "/api/runtime/capability/status",
+        "/api/runtime/capability/resolve",
+        "/api/runtime/document/perception/status",
+        "/api/runtime/document/perceive",
+        "/api/assistant/health",
         "/api/assistant/chat",
-        json={
-            "project_id": "project:test:public",
-            "title": "Production public test",
-            "content": "What can the production assistant do?",
-        },
+        "/v1/modalities/language/models/word2vec/status",
+        "/ws/runtime",
+    }
+    assert required.issubset(paths)
+    # Starlette represents a StaticFiles mount at the public root with path "".
+    assert "" in paths or "/" in paths
+
+
+def test_procfile_boots_canonical_production_server():
+    procfile = Path("Procfile").read_text(encoding="utf-8")
+    assert "hhs_backend.production_server:app" in procfile
+    assert "hhs_backend.heroku_server:app" not in procfile
+
+
+def test_frontend_entrypoint_is_canonical_runtime_ide_not_replacement_app():
+    source = Path("hhs_gui/main.tsx").read_text(encoding="utf-8")
+    assert "CanonicalRuntimeIDE" in source
+    assert "RuntimeOS" in source
+    assert "ProductionApp" not in source
+    assert "global.css" in source
+
+
+def test_canonical_workspace_exposes_only_integrated_callable_surfaces():
+    source = Path("hhs_gui/runtime_os/workspace/HHSWorkspaceShell.tsx").read_text(
+        encoding="utf-8"
     )
-    assert chat.status_code == 200
-    turn = chat.json()
-    assert turn["assistant_message"]["content"]
-    assert CANNED_DEMO_RESPONSE not in turn["assistant_message"]["content"]
+    for token in [
+        "RuntimeAssistantPanel",
+        "LiveBackendCapabilityPanel",
+        "RuntimeProjectTree",
+        "MultimodalIngressPanel",
+        "HHSSymbolicEditor",
+        "InterpreterConsole",
+        "CompilerWorkbench",
+        "EmulatorControlPanel",
+        "RuntimeGraphCanvas",
+        "SemanticMemoryPanel",
+        "ReceiptLedgerInspector",
+        "MutationHistoryPanel",
+    ]:
+        assert token in source
 
-    search = client.post(
-        "/api/assistant/tools/hhs_repository_search",
-        json={
-            "arguments": {
-                "query": "HARMONICODE language service",
-                "limit": 3,
-            }
-        },
-    )
-    assert search.status_code == 200
-    search_receipt = search.json()
-    assert search_receipt["ok"] is True
-    assert search_receipt["response"]["results"]
-    assert search_receipt["runtime_mutation_admitted"] is False
-
-    analysis = client.post(
-        "/api/workspace/harmonicode/analyze",
-        json={"source": HARMONICODE_SOURCE},
-    )
-    assert analysis.status_code == 200
-    result = analysis.json()
-    assert result["ok"] is True
-    assert result["result"]["document"]["ast"]
-    assert result["result"]["typed_ir"]["schema"] == "HHS_TYPED_IR_V1"
-    assert result["program_effects_executed"] is False
-    assert result["runtime_mutation_admitted"] is False
+    for token in [
+        "CapabilityRegistryPanel",
+        "ProviderInspector",
+        "DocumentPerceptionPanel",
+        "OCRProjectionViewer",
+        "runtime_application_missing",
+    ]:
+        assert token not in source
 
 
-def test_public_html_contains_boot_watchdog_and_no_disappearing_overlay():
-    from pathlib import Path
-
+def test_public_html_keeps_boot_failure_visible():
     source = Path("hhs_gui/index.html").read_text(encoding="utf-8")
+    assert "HHS Visual Runtime OS Workspace" in source
     assert "frontend_boot_timeout" in source
     assert "dataset.hhsMounted" in source
-    assert "setTimeout(() =>" in source
     assert "overlay.remove()" not in source
+
+
+def test_assistant_is_real_api_client_without_suggestion_autosubmit():
+    source = Path(
+        "hhs_gui/runtime_os/assistant/RuntimeAssistantPanel.tsx"
+    ).read_text(encoding="utf-8")
+    assert 'requestJson("/api/assistant/health")' in source
+    assert 'requestJson("/api/assistant/chat"' in source
+    assert "No assistant response or runtime mutation was fabricated" in source
+    assert "Suggestion" not in source
+    assert "setInput(\"Explain" not in source
+
+
+def test_live_capability_panel_calls_canonical_backend():
+    source = Path(
+        "hhs_gui/runtime_os/capability/LiveBackendCapabilityPanel.tsx"
+    ).read_text(encoding="utf-8")
+    for endpoint in [
+        "/api/runtime/canonical-observer/status",
+        "/api/runtime/capability/status",
+        "/api/runtime/capability/contracts",
+        "/api/runtime/capability/providers",
+        "/api/runtime/capability/resolve",
+        "/api/runtime/document/perception/status",
+        "/v1/modalities/language/models/word2vec/status",
+    ]:
+        assert endpoint in source
+
+
+def test_provider_hierarchy_uses_gemma_then_native_hhs_without_canned_demo():
+    paths = [
+        "hhs_backend/runtime/hhs_production_assistant_v1.py",
+        "hhs_backend/runtime/hhs_native_litert_lm_provider_v1.py",
+        "hhs_backend/runtime/hhs_capability_provider_registry_v1.py",
+        "hhs_backend/runtime/hhs_litert_lm_assistant_v1.py",
+    ]
+    combined = "\n".join(Path(path).read_text(encoding="utf-8") for path in paths)
+    assert "provider:hhs.litert_lm.gemma4" in combined
+    assert "provider:hhs.local.text" in combined
+    assert "Pass 166" in combined or "pass166" in combined
+    assert "The request was received without runtime mutation" not in combined

@@ -3,23 +3,23 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <meta name="theme-color" content="#050811" />
-  <meta name="description" content="HHS Runtime OS production visual IDE and governed assistant" />
-  <title>HHS Runtime OS</title>
+  <meta name="theme-color" content="#000000" />
+  <meta name="description" content="HHS Visual Runtime OS: canonical project, language, multimodal, runtime, graph, receipt, and assistant workspace" />
+  <title>HHS Visual Runtime OS Workspace</title>
   <style>
-    html, body, #root { width: 100%; min-height: 100%; margin: 0; background: #050811; color: #eef7ff; }
+    html, body, #root { width: 100%; min-height: 100%; margin: 0; background: #000; color: #fff; }
     * { box-sizing: border-box; }
     #runtime_boot_overlay {
       position: fixed; inset: 0; z-index: 999999; display: grid; place-items: center;
-      padding: 24px; background: radial-gradient(circle at 50% 15%, rgba(23,124,172,.16), transparent 42%), #050811;
+      padding: 24px; background: radial-gradient(circle at center, rgba(34,211,238,.1), transparent 70%), #000;
       font-family: Inter, system-ui, sans-serif;
     }
     #runtime_boot_panel {
-      width: min(620px, 94vw); border: 1px solid rgba(103,232,249,.22); border-radius: 18px;
-      background: rgba(8,16,29,.96); padding: 22px; box-shadow: 0 24px 80px rgba(0,0,0,.38);
+      width: min(620px, 94vw); border: 1px solid rgba(34,211,238,.22); border-radius: 20px;
+      background: rgba(0,0,0,.88); padding: 26px; box-shadow: 0 24px 80px rgba(0,0,0,.5);
     }
-    #runtime_boot_title { color: #67e8f9; font-size: 19px; font-weight: 800; letter-spacing: .035em; }
-    #runtime_boot_status { margin-top: 10px; color: #91a9bc; font: 12px/1.55 ui-monospace, SFMono-Regular, Menlo, monospace; white-space: pre-wrap; }
+    #runtime_boot_title { color: rgb(103,232,249); font-size: 20px; font-weight: 800; letter-spacing: .04em; }
+    #runtime_boot_status { margin-top: 12px; color: rgba(255,255,255,.62); font: 12px/1.6 ui-monospace, SFMono-Regular, Menlo, monospace; white-space: pre-wrap; }
     #runtime_boot_error { display: none; margin-top: 14px; color: #fecaca; font: 11px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace; white-space: pre-wrap; word-break: break-word; }
   </style>
 </head>
@@ -27,8 +27,12 @@
   <div id="root"></div>
   <div id="runtime_boot_overlay" role="status" aria-live="polite">
     <div id="runtime_boot_panel">
-      <div id="runtime_boot_title">HHS Runtime OS</div>
-      <div id="runtime_boot_status">Loading the production interface…</div>
+      <div id="runtime_boot_title">HHS Visual Runtime OS Workspace</div>
+      <div id="runtime_boot_status">boot_sequence:
+  → mount canonical IDE shell
+  → initialize runtime projection transport
+  → connect graph, replay, and receipt channels
+  → expose project, editor, compiler, emulator, assistant, and multimodal tools</div>
       <div id="runtime_boot_error"></div>
     </div>
   </div>
@@ -37,22 +41,20 @@
       const report = (label, value) => {
         const status = document.getElementById('runtime_boot_status');
         const error = document.getElementById('runtime_boot_error');
-        if (status) status.textContent = 'The production interface did not mount.';
+        if (status) status.textContent = 'The canonical HHS IDE did not mount.';
         if (error) {
           error.style.display = 'block';
           error.textContent = `${label}\n${value || 'Unknown frontend error'}`;
         }
       };
-      window.addEventListener('error', (event) => {
-        report('frontend_error', event.error?.stack || event.message);
-      });
+      window.addEventListener('error', (event) => report('frontend_error', event.error?.stack || event.message));
       window.addEventListener('unhandledrejection', (event) => {
         const reason = event.reason;
         report('unhandled_promise_rejection', reason?.stack || reason?.message || String(reason));
       });
       window.setTimeout(() => {
         if (!document.documentElement.dataset.hhsMounted) {
-          report('frontend_boot_timeout', 'The JavaScript bundle loaded no application surface within 8 seconds. Check the displayed error and deployment assets.');
+          report('frontend_boot_timeout', 'No canonical IDE surface mounted within 8 seconds. The error is retained for diagnosis.');
         }
       }, 8000);
     })();
