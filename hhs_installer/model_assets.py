@@ -26,6 +26,24 @@ class ModelAssetError(ValueError):
         return {"code": self.code, "message": self.message, "details": self.details}
 
 
+def _validate_simple_component(value: str, *, field: str) -> None:
+    path = Path(value)
+    if (
+        not value
+        or value in {".", ".."}
+        or "\x00" in value
+        or "/" in value
+        or "\\" in value
+        or path.is_absolute()
+        or path.name != value
+    ):
+        raise ModelAssetError(
+            "P172_MODEL_PATH_COMPONENT_INVALID",
+            f"{field} must be a simple managed-path component",
+            {"field": field, "value": value},
+        )
+
+
 @dataclass(frozen=True)
 class ModelAssetRequest:
     registry_id: str
@@ -42,8 +60,9 @@ class ModelAssetRequest:
     def __post_init__(self) -> None:
         if not self.registry_id or not self.filename or not self.version:
             raise ModelAssetError("P172_MODEL_REQUEST_FIELDS_REQUIRED", "model registry ID, filename, and version are required")
-        if Path(self.filename).name != self.filename or "\x00" in self.filename:
-            raise ModelAssetError("P172_MODEL_FILENAME_INVALID", "model filename must be a simple filename")
+        _validate_simple_component(self.registry_id, field="registry_id")
+        _validate_simple_component(self.version, field="version")
+        _validate_simple_component(self.filename, field="filename")
         if len(self.expected_sha256) != 64:
             raise ModelAssetError("P172_MODEL_SHA256_REQUIRED", "model expected SHA-256 must be declared")
         if self.expected_size is not None and self.expected_size < 1:
@@ -80,6 +99,16 @@ class ModelAssetManager:
         self.model_root.mkdir(parents=True, exist_ok=True, mode=0o700)
         self.cache_root.mkdir(parents=True, exist_ok=True, mode=0o700)
 
+    def _managed_path(self, *components: str) -> Path:
+        candidate = self.model_root.joinpath(*components).resolve()
+        if candidate != self.model_root and self.model_root not in candidate.parents:
+            raise ModelAssetError(
+                "P172_MODEL_DESTINATION_ESCAPE",
+                "model destination escapes the managed model root",
+                {"model_root": str(self.model_root), "candidate": str(candidate)},
+            )
+        return candidate
+
     def import_asset(
         self,
         request: ModelAssetRequest,
@@ -102,8 +131,10 @@ class ModelAssetManager:
             )
 
         request_identity = hash216(request.to_dict(), domain="HHS-P172-MODEL-REQUEST-V1")
-        destination_directory = self.model_root / request.registry_id / request.version
-        destination = destination_directory / request.filename
+        destination_directory = self._managed_path(request.registry_id, request.version)
+        destination = self._managed_path(request.registry_id, request.version, request.filename)
+        if destination.parent != destination_directory:
+            raise ModelAssetError("P172_MODEL_DESTINATION_ESCAPE", "model filename escaped its managed version directory")
         receipt_path = destination_directory / "model-import-receipt.json"
         if destination.is_file():
             observed = verify_sha256(destination, request.expected_sha256, maximum_bytes=request.expected_size)
@@ -122,7 +153,7 @@ class ModelAssetManager:
             raise ModelAssetError("P172_MODEL_SOURCE_NOT_FILE", "model acquisition did not produce a file")
         observed = verify_sha256(source_path, request.expected_sha256, maximum_bytes=request.expected_size)
         if request.expected_size is not None and observed.size != request.expected_size:
-            quarantine = self.model_root / "quarantine" / f"{request.registry_id}-{request.version}-{request.filename}"
+            quarantine = self._managed_path("quarantine", f"{request.registry_id}-{request.version}-{request.filename}")
             quarantine.parent.mkdir(parents=True, exist_ok=True, mode=0o700)
             shutil.copy2(source_path, quarantine)
             raise ModelAssetError(
