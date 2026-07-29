@@ -82,7 +82,35 @@ class SourceAcquirer:
                 exc.to_dict(),
             ) from exc
 
+    @staticmethod
+    def _apply_read_timeout(response: Any, timeout_seconds: int) -> bool:
+        """Set the response transport read timeout without weakening connect bounds."""
+        queue = [response]
+        seen: set[int] = set()
+        attributes = ("fp", "raw", "_sock", "sock", "socket", "_fp")
+        while queue:
+            current = queue.pop(0)
+            identity = id(current)
+            if identity in seen:
+                continue
+            seen.add(identity)
+            setter = getattr(current, "settimeout", None)
+            if callable(setter):
+                setter(timeout_seconds)
+                return True
+            for attribute in attributes:
+                nested = getattr(current, attribute, None)
+                if nested is not None:
+                    queue.append(nested)
+        return False
+
     def acquire(self, source: SourceSpec, *, network_policy: NetworkPolicy) -> AcquisitionResult:
+        if source.kind is SourceKind.RELEASE and not source.expected_identity:
+            raise AcquisitionError(
+                "P172_RELEASE_TRUST_ANCHOR_REQUIRED",
+                "release acquisition requires a trusted expected SHA-256 identity",
+                {"reference": source.reference},
+            )
         if source.kind is SourceKind.LOCAL:
             return self._local(source)
         if source.kind is SourceKind.OFFLINE_BUNDLE:
@@ -226,13 +254,19 @@ class SourceAcquirer:
             bytes_acquired=observed.size,
             sha256=observed.sha256,
             expected_identity=source.expected_identity,
-            verified=source.expected_identity is None or source.expected_identity == observed.sha256,
+            verified=source.expected_identity is not None and source.expected_identity == observed.sha256,
             resumed=True,
             attempts=0,
             acquisition_identity=hash216(payload, domain="HHS-P172-ACQUISITION-V1"),
         )
 
     def _download(self, source: SourceSpec) -> AcquisitionResult:
+        if not source.expected_identity:
+            raise AcquisitionError(
+                "P172_RELEASE_TRUST_ANCHOR_REQUIRED",
+                "release acquisition requires a trusted expected SHA-256 identity",
+                {"reference": source.reference},
+            )
         parsed = urllib.parse.urlparse(source.reference)
         if parsed.scheme not in {"https", "http"}:
             raise AcquisitionError("P172_DOWNLOAD_SCHEME_INVALID", "download URL must use HTTP or HTTPS")
@@ -267,12 +301,20 @@ class SourceAcquirer:
                     "partial_bytes": existing,
                     "maximum_bytes": self.policy.maximum_bytes,
                     "expected_identity": source.expected_identity,
+                    "connect_timeout_seconds": self.policy.connect_timeout_seconds,
+                    "read_timeout_seconds": self.policy.read_timeout_seconds,
                     "status": "ACTIVE",
                     "next_action": "resume the same URL using the partial file and Range header",
                 },
             )
             try:
                 with urllib.request.urlopen(request, timeout=self.policy.connect_timeout_seconds, context=context) as response:
+                    if not self._apply_read_timeout(response, self.policy.read_timeout_seconds):
+                        raise AcquisitionError(
+                            "P172_DOWNLOAD_READ_TIMEOUT_CONFIGURATION_FAILED",
+                            "unable to apply the declared read timeout to the response transport",
+                            {"read_timeout_seconds": self.policy.read_timeout_seconds},
+                        )
                     status = int(getattr(response, "status", 200))
                     if existing and status != 206:
                         partial.unlink(missing_ok=True)
@@ -291,8 +333,7 @@ class SourceAcquirer:
                         output.flush()
                         os.fsync(output.fileno())
                 observed = sha256_file(partial, maximum_bytes=self.policy.maximum_bytes)
-                if source.expected_identity:
-                    verify_sha256(partial, source.expected_identity, maximum_bytes=self.policy.maximum_bytes)
+                verify_sha256(partial, source.expected_identity, maximum_bytes=self.policy.maximum_bytes)
                 os.replace(partial, destination)
                 atomic_write_json(
                     journal,
@@ -302,14 +343,18 @@ class SourceAcquirer:
                         "attempt": attempts,
                         "bytes": observed.size,
                         "sha256": observed.sha256,
+                        "expected_identity": source.expected_identity,
+                        "verified": True,
                         "status": "SUCCESS",
-                        "next_action": "verify and stage the downloaded source",
+                        "next_action": "stage the trust-anchored downloaded source",
                     },
                 )
                 payload = {
                     "source_kind": source.kind.value,
                     "reference": source.reference,
                     "sha256": observed.sha256,
+                    "expected_identity": source.expected_identity,
+                    "verified": True,
                     "bytes": observed.size,
                 }
                 return AcquisitionResult(
@@ -319,7 +364,7 @@ class SourceAcquirer:
                     bytes_acquired=observed.size,
                     sha256=observed.sha256,
                     expected_identity=source.expected_identity,
-                    verified=source.expected_identity is None or source.expected_identity == observed.sha256,
+                    verified=True,
                     resumed=resumed,
                     attempts=attempts,
                     acquisition_identity=hash216(payload, domain="HHS-P172-ACQUISITION-V1"),
