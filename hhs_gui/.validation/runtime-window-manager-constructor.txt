@@ -1,0 +1,1 @@
+validation-only: verify RuntimeWindowManager resolves to the constructible .ts state class and the generated bundle boots without the prior ap constructor collision.
