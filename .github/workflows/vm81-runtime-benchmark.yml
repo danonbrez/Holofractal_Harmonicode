@@ -1,0 +1,404 @@
+name: VM81 Runtime Benchmark
+
+on:
+  push:
+    branches:
+      - bench/vm81-runtime-20260729
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  LC_ALL: C
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Checkout exact benchmark revision
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Capture environment and source identity
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p bench_results build
+          {
+            echo "timestamp_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            echo "commit_sha=$(git rev-parse HEAD)"
+            echo "source_blob_sha=$(git rev-parse HEAD:hhs_runtime/HARMONICODE_VM_RUNTIME.c)"
+            echo "kernel=$(uname -srmo)"
+            echo "runner_arch=$(uname -m)"
+            echo "nproc=$(nproc)"
+            echo "gcc=$(gcc --version | head -1)"
+            echo "python=$(python3 --version)"
+          } | tee bench_results/environment.txt
+          lscpu > bench_results/lscpu.txt
+          git status --short > bench_results/git_status.txt
+          sha256sum hhs_runtime/HARMONICODE_VM_RUNTIME.c > bench_results/source.sha256
+          wc -l -c hhs_runtime/HARMONICODE_VM_RUNTIME.c > bench_results/source_size.txt
+
+      - name: Build official and comparison binaries
+        shell: bash
+        run: |
+          set -euo pipefail
+          gcc -O0 -std=c11 -Wall -Wextra hhs_runtime/HARMONICODE_VM_RUNTIME.c -lm -o build/hhs_vm81_O0
+          gcc -O2 -std=c11 -Wall -Wextra hhs_runtime/HARMONICODE_VM_RUNTIME.c -lm -o build/hhs_vm81_O2
+          gcc -O3 -std=c11 -Wall -Wextra hhs_runtime/HARMONICODE_VM_RUNTIME.c -lm -o build/hhs_vm81_O3
+          for f in build/hhs_vm81_O0 build/hhs_vm81_O2 build/hhs_vm81_O3; do
+            size "$f"
+            sha256sum "$f"
+          done | tee bench_results/binary_identity.txt
+
+      - name: Verify authoritative runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          ./build/hhs_vm81_O2 --no-trace --verify > bench_results/verify_stdout.txt 2> bench_results/verify_stderr.txt
+          echo $? > bench_results/verify_exit_code.txt
+          grep -q "FINAL HASH72" bench_results/verify_stdout.txt
+          tail -n 40 bench_results/verify_stdout.txt > bench_results/verify_tail.txt
+
+      - name: Create exact-source in-process microbenchmark harness
+        shell: bash
+        run: |
+          cat > bench/vm81_microbench.c <<'EOF'
+          #define _POSIX_C_SOURCE 200809L
+          #define main hhs_vm81_cli_main
+          #include "../hhs_runtime/HARMONICODE_VM_RUNTIME.c"
+          #undef main
+          #include <inttypes.h>
+          #include <time.h>
+
+          static volatile uint64_t bench_sink = 0;
+
+          typedef void (*bench_fn)(void *);
+          typedef struct {
+              const char *name;
+              bench_fn fn;
+              void *ctx;
+          } Bench;
+
+          static double now_ns(void) {
+              struct timespec ts;
+              clock_gettime(CLOCK_MONOTONIC_RAW, &ts);
+              return (double)ts.tv_sec * 1e9 + (double)ts.tv_nsec;
+          }
+
+          static int cmp_double(const void *a, const void *b) {
+              const double x = *(const double *)a;
+              const double y = *(const double *)b;
+              return (x > y) - (x < y);
+          }
+
+          static uint64_t calibrate(bench_fn fn, void *ctx) {
+              uint64_t n = 1;
+              for (;;) {
+                  double t0 = now_ns();
+                  for (uint64_t i = 0; i < n; ++i) fn(ctx);
+                  double dt = now_ns() - t0;
+                  if (dt >= 5e7 || n >= (1ULL << 31)) {
+                      double target = 2.5e8;
+                      uint64_t scaled = dt > 0 ? (uint64_t)((double)n * target / dt) : n;
+                      if (scaled < 1) scaled = 1;
+                      if (scaled > (1ULL << 31)) scaled = (1ULL << 31);
+                      return scaled;
+                  }
+                  n *= 2;
+              }
+          }
+
+          static void measure(const Bench *b) {
+              for (int i = 0; i < 100; ++i) b->fn(b->ctx);
+              uint64_t n = calibrate(b->fn, b->ctx);
+              double samples[9];
+              for (int s = 0; s < 9; ++s) {
+                  double t0 = now_ns();
+                  for (uint64_t i = 0; i < n; ++i) b->fn(b->ctx);
+                  samples[s] = (now_ns() - t0) / (double)n;
+              }
+              qsort(samples, 9, sizeof(double), cmp_double);
+              double mean = 0.0;
+              for (int s = 0; s < 9; ++s) mean += samples[s];
+              mean /= 9.0;
+              printf("%s,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%" PRIu64 "\n",
+                     b->name, samples[4], mean, samples[0], samples[8],
+                     samples[0], samples[1], samples[2], samples[3], samples[4],
+                     samples[5], samples[6], samples[7], samples[8],
+                     1e9 / samples[4], 1e9 / mean, (double)bench_sink,
+                     samples[6], samples[7], samples[8], n);
+          }
+
+          typedef struct {
+              VM81 vm;
+              Instruction ins_add;
+              Instruction ins_mul;
+              char hash[73];
+              char receipt[73];
+              uint64_t counter;
+              size_t orbit_n;
+          } Ctx;
+
+          static void seed_ctx(Ctx *c) {
+              memset(c, 0, sizeof(*c));
+              init_hash72();
+              vm81_init(&c->vm, 0, SEED_LOSHU);
+              load_demo(&c->vm);
+              c->ins_add = (Instruction){ OP_ADD, 0, 1, 2, 21, 3, {{0}} };
+              c->ins_mul = (Instruction){ OP_MULXY, 2, 1, 3, 16, 7, {{0}} };
+              memset(c->hash, 'A', 72); c->hash[72] = 0;
+              memset(c->receipt, 'B', 72); c->receipt[72] = 0;
+          }
+
+          static void op_vm_init(void *p) {
+              Ctx *c = p;
+              vm81_init(&c->vm, c->counter++, SEED_LOSHU);
+              bench_sink ^= c->vm.cells[c->counter % GRID_SIZE];
+          }
+          static void op_sweep81(void *p) {
+              Ctx *c = p; sweep81(&c->vm); bench_sink ^= c->vm.cells[0];
+          }
+          static void op_close81(void *p) {
+              Ctx *c = p; close81(&c->vm); bench_sink ^= c->vm.cells[72];
+          }
+          static void op_project_hash72(void *p) {
+              Ctx *c = p; project_hash72(&c->vm, c->hash); bench_sink ^= (unsigned char)c->hash[0];
+          }
+          static void op_receipt_hash(void *p) {
+              Ctx *c = p; compose_receipt_hash(c->hash, 17, 0xA5A55A5Au, c->receipt, c->hash); bench_sink ^= (unsigned char)c->hash[0];
+          }
+          static void op_identity_gate(void *p) {
+              Ctx *c = p; double r = 0; int v = check_gate_identity(&c->vm, 10, 11, 12, &r); bench_sink ^= (uint64_t)(v + 2); bench_sink ^= (uint64_t)r;
+          }
+          static void op_manifold(void *p) {
+              Ctx *c = p; hhs_manifold_step(&c->vm, (uint8_t)c->counter++); bench_sink ^= (uint64_t)c->vm.manifold[0][0];
+          }
+          static void op_add_instruction(void *p) {
+              Ctx *c = p; uint32_t w = 0; double r = 0; int h = 0; apply_instruction(&c->vm, &c->ins_add, &w, &r, &h); bench_sink ^= c->vm.cells[2] ^ w;
+          }
+          static void op_mulxy_instruction(void *p) {
+              Ctx *c = p; uint32_t w = 0; double r = 0; int h = 0; apply_instruction(&c->vm, &c->ins_mul, &w, &r, &h); bench_sink ^= c->vm.cells[3] ^ w;
+          }
+          static void op_vm_step(void *p) {
+              Ctx *c = p;
+              if (c->vm.halted) { vm81_init(&c->vm, 0, SEED_LOSHU); load_demo(&c->vm); }
+              vm81_step(&c->vm); bench_sink ^= c->vm.step;
+          }
+          static void op_full_demo(void *p) {
+              Ctx *c = p;
+              Options o = { .steps = 128, .seed = 0, .mode = SEED_LOSHU, .trace = 0, .halt_on_orbit = 0, .verify = 0 };
+              vm81_init(&c->vm, c->counter++, SEED_LOSHU); load_demo(&c->vm); run_vm(&c->vm, &o); bench_sink ^= c->vm.step;
+          }
+          static void op_constraint_compete(void *p) {
+              Ctx *c = p; constraint_compete(&c->vm); bench_sink ^= c->vm.constraints[c->vm.constraint_count ? c->vm.constraint_count - 1 : 0].strength;
+          }
+          static void op_phase_transport(void *p) {
+              Ctx *c = p; propagate_phase_transport(&c->vm, 17, 29, 7); bench_sink ^= c->vm.cells[17];
+          }
+          static void op_orbit_scan(void *p) {
+              Ctx *c = p; c->vm.seen_count = c->orbit_n; uint64_t v = detect_orbit(&c->vm, c->hash, c->counter++); bench_sink ^= v;
+          }
+
+          static void fill_constraints(Ctx *c, size_t n) {
+              c->vm.constraint_count = n;
+              for (size_t i = 0; i < n; ++i) {
+                  c->vm.constraints[i].active = 1;
+                  c->vm.constraints[i].strength = 255;
+                  c->vm.constraints[i].phase = 1;
+              }
+          }
+
+          static void fill_orbits(Ctx *c, size_t n) {
+              c->orbit_n = n;
+              for (size_t i = 0; i < n; ++i) {
+                  memset(c->vm.seen[i].hash, 'A', 72);
+                  uint64_t x = i;
+                  for (int k = 0; k < 8; ++k) {
+                      c->vm.seen[i].hash[71-k] = HASH72[x % 72];
+                      x /= 72;
+                  }
+                  c->vm.seen[i].hash[72] = 0;
+                  c->vm.seen[i].step = i;
+              }
+              memset(c->hash, 'A', 72);
+              memset(c->hash + 64, '!', 8);
+              c->hash[72] = 0;
+          }
+
+          int main(void) {
+              Ctx base, c16, c32, c64, o1, o256, o1024, o4096, o8192;
+              seed_ctx(&base); seed_ctx(&c16); seed_ctx(&c32); seed_ctx(&c64);
+              fill_constraints(&c16, 16); fill_constraints(&c32, 32); fill_constraints(&c64, 64);
+              seed_ctx(&o1); seed_ctx(&o256); seed_ctx(&o1024); seed_ctx(&o4096); seed_ctx(&o8192);
+              fill_orbits(&o1, 1); fill_orbits(&o256, 256); fill_orbits(&o1024, 1024); fill_orbits(&o4096, 4096); fill_orbits(&o8192, 8192);
+
+              Bench benches[] = {
+                  {"vm81_init", op_vm_init, &base},
+                  {"sweep81", op_sweep81, &base},
+                  {"close81", op_close81, &base},
+                  {"project_hash72", op_project_hash72, &base},
+                  {"compose_receipt_hash", op_receipt_hash, &base},
+                  {"identity_gate", op_identity_gate, &base},
+                  {"manifold_step_81_sin", op_manifold, &base},
+                  {"apply_add_c0", op_add_instruction, &base},
+                  {"apply_mulxy_c0", op_mulxy_instruction, &base},
+                  {"vm81_step_demo", op_vm_step, &base},
+                  {"full_demo_13_steps", op_full_demo, &base},
+                  {"constraint_compete_c16", op_constraint_compete, &c16},
+                  {"constraint_compete_c32", op_constraint_compete, &c32},
+                  {"constraint_compete_c64", op_constraint_compete, &c64},
+                  {"phase_transport_c0", op_phase_transport, &base},
+                  {"phase_transport_c16", op_phase_transport, &c16},
+                  {"phase_transport_c64", op_phase_transport, &c64},
+                  {"orbit_scan_n1", op_orbit_scan, &o1},
+                  {"orbit_scan_n256", op_orbit_scan, &o256},
+                  {"orbit_scan_n1024", op_orbit_scan, &o1024},
+                  {"orbit_scan_n4096", op_orbit_scan, &o4096},
+                  {"orbit_scan_n8192", op_orbit_scan, &o8192},
+              };
+
+              printf("name,median_ns,mean_ns,min_ns,max_ns,s1_ns,s2_ns,s3_ns,s4_ns,s5_ns,s6_ns,s7_ns,s8_ns,s9_ns,median_ops_per_s,mean_ops_per_s,sink,p75_ns,p875_ns,p100_ns,iterations\n");
+              for (size_t i = 0; i < sizeof(benches)/sizeof(benches[0]); ++i) measure(&benches[i]);
+              return 0;
+          }
+          EOF
+
+      - name: Compile and run microbenchmarks
+        shell: bash
+        run: |
+          set -euo pipefail
+          for opt in O0 O2 O3; do
+            gcc -${opt} -std=c11 -Wall -Wextra bench/vm81_microbench.c -lm -o build/vm81_microbench_${opt}
+            ./build/vm81_microbench_${opt} > bench_results/microbench_${opt}.csv
+          done
+
+      - name: Run process, build, memory, and optional perf benchmarks
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat > bench/process_bench.py <<'PY'
+          import csv, json, math, os, platform, shutil, statistics, subprocess, time
+          from pathlib import Path
+
+          ROOT = Path.cwd()
+          OUT = ROOT / "bench_results"
+          BUILD = ROOT / "build"
+
+          def percentile(xs, p):
+              ys = sorted(xs)
+              if not ys: return math.nan
+              k = (len(ys)-1)*p
+              lo, hi = math.floor(k), math.ceil(k)
+              return ys[lo] if lo == hi else ys[lo]*(hi-k)+ys[hi]*(k-lo)
+
+          rows = []
+          commands = {
+              "cli_1_step": ["--no-trace", "--steps", "1"],
+              "cli_full_demo": ["--no-trace", "--steps", "128"],
+              "cli_verify": ["--no-trace", "--verify"],
+              "cli_halt_on_orbit_verify": ["--no-trace", "--halt-on-orbit", "--verify"],
+          }
+          for opt in ("O0", "O2", "O3"):
+              exe = str(BUILD / f"hhs_vm81_{opt}")
+              for workload, args in commands.items():
+                  cmd = [exe, *args]
+                  for _ in range(20):
+                      subprocess.run(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=True)
+                  samples = []
+                  for _ in range(300):
+                      t0 = time.perf_counter_ns()
+                      subprocess.run(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=True)
+                      samples.append(time.perf_counter_ns() - t0)
+                  rows.append({
+                      "optimization": opt,
+                      "workload": workload,
+                      "runs": len(samples),
+                      "median_us": statistics.median(samples)/1e3,
+                      "mean_us": statistics.mean(samples)/1e3,
+                      "stdev_us": statistics.pstdev(samples)/1e3,
+                      "min_us": min(samples)/1e3,
+                      "p95_us": percentile(samples, .95)/1e3,
+                      "p99_us": percentile(samples, .99)/1e3,
+                      "max_us": max(samples)/1e3,
+                      "median_runs_per_s": 1e9/statistics.median(samples),
+                  })
+
+          with (OUT / "process_bench.csv").open("w", newline="") as f:
+              w = csv.DictWriter(f, fieldnames=rows[0].keys())
+              w.writeheader(); w.writerows(rows)
+          (OUT / "process_bench.json").write_text(json.dumps(rows, indent=2))
+
+          build_rows = []
+          src = "hhs_runtime/HARMONICODE_VM_RUNTIME.c"
+          for opt in ("O0", "O2", "O3"):
+              samples=[]
+              for i in range(20):
+                  out = BUILD / f"compile_{opt}_{i}"
+                  t0=time.perf_counter_ns()
+                  subprocess.run(["gcc", f"-{opt}", "-std=c11", src, "-lm", "-o", str(out)], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                  samples.append(time.perf_counter_ns()-t0)
+                  out.unlink()
+              build_rows.append({
+                  "optimization": opt, "runs": len(samples),
+                  "median_ms": statistics.median(samples)/1e6,
+                  "mean_ms": statistics.mean(samples)/1e6,
+                  "p95_ms": percentile(samples,.95)/1e6,
+                  "min_ms": min(samples)/1e6, "max_ms": max(samples)/1e6,
+              })
+          with (OUT / "build_bench.csv").open("w", newline="") as f:
+              w=csv.DictWriter(f, fieldnames=build_rows[0].keys()); w.writeheader(); w.writerows(build_rows)
+          (OUT / "build_bench.json").write_text(json.dumps(build_rows, indent=2))
+          PY
+          python3 bench/process_bench.py
+
+          /usr/bin/time -v -o bench_results/time_rss_O2.txt ./build/hhs_vm81_O2 --no-trace --verify > /dev/null
+          (perf stat -r 5 -x, -o bench_results/perf_O2.csv ./build/hhs_vm81_O2 --no-trace --verify > /dev/null) 2> bench_results/perf_stderr.txt || true
+          if [ ! -s bench_results/perf_O2.csv ]; then echo "perf unavailable or permission denied" > bench_results/perf_O2.csv; fi
+
+      - name: Build summary
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import csv, json
+          from pathlib import Path
+          out=Path('bench_results')
+          proc=list(csv.DictReader((out/'process_bench.csv').open()))
+          micro=list(csv.DictReader((out/'microbench_O2.csv').open()))
+          build=list(csv.DictReader((out/'build_bench.csv').open()))
+          p={r['workload']:r for r in proc if r['optimization']=='O2'}
+          m={r['name']:r for r in micro}
+          b=next(r for r in build if r['optimization']=='O2')
+          summary={
+            'official_optimization':'O2',
+            'build_median_ms':float(b['median_ms']),
+            'cli_full_demo_median_us':float(p['cli_full_demo']['median_us']),
+            'cli_full_demo_p95_us':float(p['cli_full_demo']['p95_us']),
+            'cli_verify_median_us':float(p['cli_verify']['median_us']),
+            'full_demo_inprocess_median_ns':float(m['full_demo_13_steps']['median_ns']),
+            'vm81_step_median_ns':float(m['vm81_step_demo']['median_ns']),
+            'project_hash72_median_ns':float(m['project_hash72']['median_ns']),
+            'receipt_hash_median_ns':float(m['compose_receipt_hash']['median_ns']),
+            'sweep81_median_ns':float(m['sweep81']['median_ns']),
+            'orbit_scan_8192_median_ns':float(m['orbit_scan_n8192']['median_ns']),
+            'constraint_compete_64_median_ns':float(m['constraint_compete_c64']['median_ns']),
+            'phase_transport_64_median_ns':float(m['phase_transport_c64']['median_ns']),
+          }
+          (out/'summary.json').write_text(json.dumps(summary, indent=2))
+          lines=['# VM81 Runtime Benchmark Summary','', 'Official build: `-O2 -std=c11 -lm`','']
+          for k,v in summary.items(): lines.append(f'- **{k}**: {v}')
+          (out/'SUMMARY.md').write_text('\n'.join(lines)+'\n')
+          print(json.dumps(summary, indent=2))
+          PY
+
+      - name: Upload benchmark evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: vm81-runtime-benchmark-${{ github.sha }}
+          path: bench_results/
+          if-no-files-found: error
+          retention-days: 7
