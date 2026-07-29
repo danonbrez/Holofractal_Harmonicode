@@ -9,6 +9,7 @@ on:
       - "hhs_backend/api/litert_lm_assistant_routes.py"
       - "hhs_backend/runtime/hhs_production_assistant_v1.py"
       - "tests/test_hhs_production_public_app_v1.py"
+      - "bin/post_compile"
       - ".github/workflows/hhs-runtime-os-deploy.yml"
       - "!hhs_gui/dist/**"
   pull_request:
@@ -19,6 +20,7 @@ on:
       - "hhs_backend/api/litert_lm_assistant_routes.py"
       - "hhs_backend/runtime/hhs_production_assistant_v1.py"
       - "tests/test_hhs_production_public_app_v1.py"
+      - "bin/post_compile"
       - ".github/workflows/hhs-runtime-os-deploy.yml"
       - "!hhs_gui/dist/**"
   workflow_dispatch:
@@ -56,7 +58,9 @@ jobs:
             pytest
 
       - name: Build native Hash72 runtime receipt authority
-        run: make c-abi
+        run: |
+          bash bin/post_compile
+          test -s hhs_runtime/builds/libhhs_runtime.so
 
       - name: Validate production public APIs
         env:
