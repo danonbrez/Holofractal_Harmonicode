@@ -17,6 +17,7 @@ from typing import Any, Mapping
 # and Pass 151 bounded reasoner; Word2Vec remains an optional additive memory
 # layer and Gemma remains the preferred provider whenever its registry is ready.
 os.environ.setdefault("HHS_NATIVE_LANGUAGE_REQUIRE_WORD2VEC", "0")
+os.environ.setdefault("HHS_ASSISTANT_HEALTH_TIMEOUT_SECONDS", "5")
 
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
@@ -30,7 +31,7 @@ RUNTIME_OS_ROOT = ROOT_DIR / "hhs_gui" / "dist"
 
 app = canonical.app
 app.title = "HHS Visual Runtime OS"
-app.version = "3.2.0"
+app.version = "3.2.1"
 app.description = (
     "Canonical HHS runtime, workspace, graph, replay, receipt, multimodal, "
     "capability, document, language-memory, and assistant server."
@@ -46,8 +47,6 @@ if not _has_route_prefix("/api/assistant"):
 if not _has_route_prefix("/v1/modalities/language"):
     app.include_router(word2vec_router)
 
-# The canonical development server exposes JSON at `/`. Production serves the
-# actual Runtime OS HTML there while preserving every API and WebSocket route.
 app.router.routes = [
     route
     for route in app.router.routes
@@ -128,13 +127,11 @@ def _workspace_session_snapshot(project_id: str | None = None) -> dict[str, Any]
 
 @app.get("/api/runtime/workspace/session")
 async def production_workspace_session(project_id: str | None = None) -> dict[str, Any]:
-    """Return one inexpensive, coherent workspace projection without running self-tests."""
     return _workspace_session_snapshot(project_id)
 
 
 @app.post("/api/runtime/workspace/session")
 async def production_workspace_session_ensure(payload: dict[str, Any]) -> dict[str, Any]:
-    """Resume an existing project or create the requested project through workspace authority."""
     requested_id = str(payload.get("project_id") or "")
     if requested_id and requested_id in canonical.WORKSPACE_AUTHORITY_LOOP.projects:
         return _workspace_session_snapshot(requested_id)
@@ -150,6 +147,12 @@ async def _assistant_health() -> dict[str, Any]:
             DEFAULT_PRODUCTION_ASSISTANT_SERVICE,
         )
 
+        # A cold native provider must be given enough bounded time to import and
+        # verify Pass 148/151. This is the same singleton used by /api/assistant/chat.
+        DEFAULT_PRODUCTION_ASSISTANT_SERVICE._health_timeout = max(
+            float(DEFAULT_PRODUCTION_ASSISTANT_SERVICE._health_timeout),
+            5.0,
+        )
         return await DEFAULT_PRODUCTION_ASSISTANT_SERVICE.health()
     except Exception as exc:
         return {
@@ -163,21 +166,31 @@ async def _assistant_health() -> dict[str, Any]:
 def _runtime_authority_status() -> dict[str, Any]:
     workflow = canonical.LIVE_WORKFLOW.status()
     runtime_state = canonical.runtime_controller.latest_runtime_state()
+    last_emission = dict(workflow.get("last_emission") or {})
+    receipt_hash72 = last_emission.get("receipt_hash72") or runtime_state.get("receipt_hash72")
+    state_hash72 = last_emission.get("runtime_state_hash72") or runtime_state.get("state_hash72")
+    authority_ready = bool(
+        canonical.SERVER_STATE.get("runtime_initialized")
+        and canonical.SERVER_STATE.get("graph_initialized")
+        and canonical.SERVER_STATE.get("websocket_ready")
+        and workflow.get("running")
+        and workflow.get("authority_ready")
+        and receipt_hash72
+        and state_hash72
+    )
     return {
         "schema": "HHS_PRODUCTION_RUNTIME_AUTHORITY_STATUS_V1",
-        "ok": bool(
-            canonical.SERVER_STATE.get("runtime_initialized")
-            and canonical.SERVER_STATE.get("graph_initialized")
-            and workflow.get("running")
-        ),
+        "ok": authority_ready,
         "status": (
             "HHS_RUNTIME_AUTHORITY_ONLINE"
-            if canonical.SERVER_STATE.get("runtime_initialized") and workflow.get("running")
+            if authority_ready
             else "HHS_RUNTIME_AUTHORITY_OFFLINE"
         ),
         "canonical_runtime_attached": bool(canonical.SERVER_STATE.get("runtime_initialized")),
         "graph_initialized": bool(canonical.SERVER_STATE.get("graph_initialized")),
         "websocket_ready": bool(canonical.SERVER_STATE.get("websocket_ready")),
+        "receipt_hash72": receipt_hash72,
+        "runtime_state_hash72": state_hash72,
         "live_workflow": workflow,
         "runtime": runtime_state,
         "authority": "HHS_FASTAPI_KERNEL_RUNTIME_AUTHORITY_V1",
@@ -187,13 +200,11 @@ def _runtime_authority_status() -> dict[str, Any]:
 
 @app.get("/api/runtime/authority/status")
 async def production_runtime_authority_status() -> dict[str, Any]:
-    """Return backend execution authority independently of browser WebSocket state."""
     return _runtime_authority_status()
 
 
 @app.get("/api/product/health")
 async def production_product_health() -> dict[str, Any]:
-    """Return one bounded product-level runtime and assistant readiness record."""
     runtime = _runtime_authority_status()
     assistant = await _assistant_health()
     return {
