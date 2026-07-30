@@ -6,6 +6,8 @@ export interface LiveRuntimeProjectionPanelProps {
   runtimeOS: RuntimeOS
 }
 
+type Json = Record<string, any>
+
 const CHANNEL_LABELS: Record<string, string> = {
   runtime: "Runtime",
   replay: "Replay",
@@ -13,6 +15,7 @@ const CHANNEL_LABELS: Record<string, string> = {
   transport: "Transport",
 }
 
+const record = (value: unknown): Json => value && typeof value === "object" ? value as Json : {}
 const shortHash = (value?: string): string => value ? `${value.slice(0, 10)}…${value.slice(-6)}` : "—"
 
 const statusClass = (status: RuntimeChannelHealth["status"]): string => {
@@ -28,42 +31,88 @@ const latestEvents = (runtimeOS: RuntimeOS): Record<string, RuntimeSocketEvent |
   transport: runtimeOS.socketManager.state.lastTransportEvent,
 })
 
+async function requestAuthorityStatus(): Promise<Json> {
+  const controller = new AbortController()
+  const timeout = window.setTimeout(() => controller.abort(), 8000)
+  try {
+    const response = await fetch("/api/runtime/authority/status", {
+      headers: { accept: "application/json" },
+      signal: controller.signal,
+    })
+    const body = record(await response.json())
+    if (!response.ok) throw new Error(String(body.error ?? body.status ?? response.statusText))
+    return body
+  } finally {
+    window.clearTimeout(timeout)
+  }
+}
+
 export const LiveRuntimeProjectionPanel: React.FC<LiveRuntimeProjectionPanelProps> = ({ runtimeOS }) => {
   const [channelHealth, setChannelHealth] = useState<RuntimeChannelHealth[]>(runtimeOS.socketManager.getChannelHealth())
   const [events, setEvents] = useState<Record<string, RuntimeSocketEvent | undefined>>(latestEvents(runtimeOS))
+  const [authority, setAuthority] = useState<Json>({})
   const [connectionError, setConnectionError] = useState<string | null>(null)
 
   useEffect(() => {
     let mounted = true
-    const refresh = () => {
+    const refreshProjection = () => {
       if (!mounted) return
       setChannelHealth(runtimeOS.socketManager.getChannelHealth())
       setEvents(latestEvents(runtimeOS))
     }
+    const refreshAuthority = async () => {
+      try {
+        const status = await requestAuthorityStatus()
+        if (mounted) {
+          setAuthority(status)
+          setConnectionError(null)
+        }
+      } catch (error) {
+        if (mounted) setConnectionError(error instanceof Error ? error.message : String(error))
+      }
+    }
 
     runtimeOS.initialize()
-      .then(refresh)
+      .then(() => {
+        refreshProjection()
+        void refreshAuthority()
+      })
       .catch((error: unknown) => {
         if (mounted) setConnectionError(error instanceof Error ? error.message : String(error))
       })
 
-    const interval = window.setInterval(refresh, 1500)
+    const projectionInterval = window.setInterval(refreshProjection, 1500)
+    const authorityInterval = window.setInterval(() => void refreshAuthority(), 5000)
     return () => {
       mounted = false
-      window.clearInterval(interval)
+      window.clearInterval(projectionInterval)
+      window.clearInterval(authorityInterval)
       runtimeOS.shutdown()
     }
   }, [runtimeOS])
 
+  const workflow = record(authority.live_workflow)
+  const runtime = record(authority.runtime)
+  const authorityOnline = Boolean(authority.ok)
+
   return (
     <section data-testid="live-runtime-projection-panel" className="rounded-2xl border border-cyan-900/70 bg-black/80 p-3 font-mono shadow-2xl">
-      <header className="mb-3 flex items-center justify-between gap-3 px-1">
+      <header className="mb-3 flex flex-wrap items-center justify-between gap-3 px-1">
         <div>
-          <h2 className="text-sm font-semibold text-cyan-200">Live kernel projection</h2>
-          <p className="text-[9px] text-neutral-600">Connected only while this tab is active · refresh 1500 ms</p>
+          <h2 className="text-sm font-semibold text-cyan-200">Live kernel authority and projection</h2>
+          <p className="text-[9px] text-neutral-600">Backend authority is verified by HTTP; WebSockets are on-demand projection channels.</p>
         </div>
-        <span className="text-[9px] uppercase tracking-widest text-neutral-600">projection only</span>
+        <button type="button" onClick={() => void requestAuthorityStatus().then(setAuthority).catch((error) => setConnectionError(String(error)))} className={`rounded-full border px-3 py-1 text-[9px] ${authorityOnline ? "border-emerald-800 text-emerald-300" : "border-red-900 text-red-300"}`}>
+          {authorityOnline ? "RUNTIME AUTHORITY ONLINE" : "RUNTIME AUTHORITY OFFLINE"}
+        </button>
       </header>
+
+      <div className="mb-3 grid gap-2 rounded-xl border border-neutral-800 bg-neutral-950/80 p-3 text-[10px] sm:grid-cols-4">
+        <Field label="runtime step" value={String(runtime.step ?? "—")} />
+        <Field label="workflow ticks" value={String(workflow.tick_count ?? "—")} />
+        <Field label="background task" value={workflow.background_task_active ? "active" : "inactive"} />
+        <Field label="state" value={shortHash(typeof runtime.state_hash72 === "string" ? runtime.state_hash72 : undefined)} />
+      </div>
 
       {connectionError ? <p className="mb-3 rounded-lg border border-red-900 bg-red-950/30 p-2 text-[10px] text-red-300">{connectionError}</p> : null}
 
@@ -85,7 +134,7 @@ export const LiveRuntimeProjectionPanel: React.FC<LiveRuntimeProjectionPanelProp
                 <Field label="state" value={shortHash(health.lastRuntimeStateHash72)} />
               </div>
               <div className="mt-3 truncate text-[9px] text-neutral-600" title={event ? Object.keys(event.payload ?? {}).join(", ") : "no packet"}>
-                {event ? Object.keys(event.payload ?? {}).join(", ") || "empty payload" : "no live packet"}
+                {event ? Object.keys(event.payload ?? {}).join(", ") || "empty payload" : authorityOnline ? "authority online; projection packet pending" : "no live packet"}
               </div>
             </article>
           )
