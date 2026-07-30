@@ -1,0 +1,18 @@
+{
+  "schema": "HHS_GUI_RELIABILITY_ACCEPTANCE_RECEIPT_V1",
+  "classification": "HHS_GUI_OVERLAY_AND_MOBILE_APPLICATION_RELIABILITY_REPAIR",
+  "authority": "PRESENTATION_ONLY_NO_RUNTIME_MUTATION_AUTHORITY",
+  "checks": {
+    "visible_close_controls": true,
+    "escape_dismissal": true,
+    "backdrop_dismissal": true,
+    "browser_back_dismissal": true,
+    "focus_restoration": true,
+    "single_transient_surface": true,
+    "transparent_glass_surfaces": true,
+    "persistent_mobile_pane": true,
+    "safe_area_layout": true,
+    "dynamic_viewport_height": true,
+    "runtime_lifecycle_unchanged": true
+  }
+}
