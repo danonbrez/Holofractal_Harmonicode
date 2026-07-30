@@ -1,0 +1,76 @@
+"""Pass 175 governed WebSocket events and instruction execution surface."""
+from __future__ import annotations
+
+from base64 import b64decode
+import json
+from typing import Any
+
+from fastapi import APIRouter, WebSocket, WebSocketDisconnect
+
+from hhs_backend.api.pass175_runtime_routes import get_runtime
+from hhs_runtime.pass175 import InstructionRequest, Pass175Error
+
+router = APIRouter(tags=["pass175", "websocket", "vm81"])
+
+
+def _decode_instruction(item: dict[str, Any]) -> InstructionRequest:
+    try:
+        exact = b64decode(str(item["exact_bytes_b64"]), validate=True)
+    except Exception as exc:
+        raise Pass175Error("HHS_P175_MALFORMED_EXACT_BYTES_BASE64") from exc
+    return InstructionRequest(
+        exact_bytes=exact,
+        decoder_mode=str(item.get("decoder_mode", "LONG_64")),
+        ordered_operands=tuple(str(value) for value in item.get("ordered_operands", [])),
+        parenthesization=str(item.get("parenthesization", "EXACT_SOURCE_ORDER")),
+        read_set=tuple(int(value) for value in item.get("read_set", [])),
+        write_set=tuple(int(value) for value in item.get("write_set", [])),
+        thread_id=int(item.get("thread_id", 0)),
+        sequence=int(item.get("sequence", 0)),
+        explicit_delta=tuple((int(key), int(value)) for key, value in dict(item.get("explicit_delta", {})).items()),
+        allow_privileged=bool(item.get("allow_privileged", False)),
+    )
+
+
+async def _send(websocket: WebSocket, payload: dict[str, Any]) -> None:
+    await websocket.send_text(json.dumps(payload, sort_keys=True, separators=(",", ":"), default=str))
+
+
+@router.websocket("/api/v1/pass175/ws/events")
+async def pass175_events(websocket: WebSocket) -> None:
+    await websocket.accept()
+    runtime = get_runtime()
+    await _send(websocket, {
+        "schema": "HHS_P175_WS_CONNECTED_V1",
+        "classification": "HHS_PASS_175_WS_READY",
+        "runtime": runtime.status(),
+    })
+    try:
+        while True:
+            raw = await websocket.receive_text()
+            try:
+                request = json.loads(raw)
+                action = str(request.get("action", "status"))
+                if action == "ping":
+                    result = {"schema": "HHS_P175_WS_PONG_V1", "classification": "HHS_PASS_175_WS_PONG"}
+                elif action == "status":
+                    result = runtime.status()
+                elif action == "hydrate_bootstrap":
+                    result = runtime.cold_hydrate_bootstrap(seal=bool(request.get("seal", True)))
+                elif action == "execute_batch":
+                    instructions = [_decode_instruction(item) for item in request.get("instructions", [])]
+                    result = runtime.execute_batch(instructions, max_workers=int(request.get("max_workers", 4)))
+                elif action == "replay":
+                    result = runtime.replay()
+                else:
+                    raise Pass175Error("HHS_P175_WS_ACTION_UNKNOWN", action)
+                await _send(websocket, {"ok": True, "action": action, "result": result})
+            except Exception as exc:
+                await _send(websocket, {
+                    "ok": False,
+                    "schema": "HHS_P175_WS_REJECTION_V1",
+                    "classification": getattr(exc, "classification", type(exc).__name__),
+                    "detail": getattr(exc, "detail", str(exc)),
+                })
+    except WebSocketDisconnect:
+        return

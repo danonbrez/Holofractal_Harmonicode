@@ -8,6 +8,7 @@ import { initIntegratedAssistant } from './integrated-assistant.mjs';
 import { initIntuitiveIDE } from './intuitive-ide.mjs';
 import { initApplicationStudio } from './application-studio.mjs';
 import { initDeployableAppCompiler } from './deployable-app-compiler.mjs';
+import { initPass175Processor } from './pass175-processor.mjs';
 
 $('#ide-home').onclick = showIde;
 $('#assistant-home').addEventListener('click', () => showOther('assistant'), true);
@@ -36,5 +37,5 @@ const layout = $('#ide-layout'); layout.dataset.mobilePane = 'editor';
 $$('.ide-mobile-dock button').forEach((button) => { button.onclick = () => { $$('.ide-mobile-dock button').forEach((item) => item.classList.toggle('active', item === button)); if (button.dataset.mobilePane === 'explorer') $('#registry-nav').classList.add('open'); else layout.dataset.mobilePane = button.dataset.mobilePane; }; });
 document.addEventListener('keydown', (event) => { if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 's') { event.preventDefault(); saveFile(); } if ((event.ctrlKey || event.metaKey) && event.key === 'Enter') { event.preventDefault(); runLifecycle(); } });
 window.HHSVisualIDE = Object.freeze({ state, show: showIde, ingest, snapshot: loadSnapshot, interpret, compile, run, lifecycle: runLifecycle, replay, egress: exportEgress });
-renderFiles(); activateFile(state.activePath); renderSnapshot({ projection_b64: bytesToBase64(new Uint8Array(648)), projection_hash72: 'GENESIS' }); renderHash216({ ingestion_operation_hash216: 'GENESIS', ingestion_positions_hash216: [] }); bind3d(); showIde(); initProjectLifecycle(); initIntegratedWorkbench(); initIntegratedAssistant(); initIntuitiveIDE(); initApplicationStudio(); initDeployableAppCompiler(); setText('#ide-registry-state', 'LIVE');
+renderFiles(); activateFile(state.activePath); renderSnapshot({ projection_b64: bytesToBase64(new Uint8Array(648)), projection_hash72: 'GENESIS' }); renderHash216({ ingestion_operation_hash216: 'GENESIS', ingestion_positions_hash216: [] }); bind3d(); showIde(); initProjectLifecycle(); initIntegratedWorkbench(); initIntegratedAssistant(); initIntuitiveIDE(); initApplicationStudio(); initDeployableAppCompiler(); initPass175Processor(); setText('#ide-registry-state', 'LIVE');
 void ensureProject().then((projectId) => log(`Workspace authority bound to ${projectId}.`)).catch((error) => log(`Workspace initialization deferred: ${error.message}`));
