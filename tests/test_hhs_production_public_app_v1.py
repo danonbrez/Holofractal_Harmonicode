@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import asyncio
 from pathlib import Path
 
 
@@ -14,6 +15,8 @@ def test_production_server_composes_canonical_backend_and_visual_ide():
     required = {
         "/healthz",
         "/api/system/status",
+        "/api/product/health",
+        "/api/runtime/authority/status",
         "/api/runtime/live/status",
         "/api/runtime/gui/command",
         "/api/runtime/workspace/status",
@@ -43,13 +46,60 @@ def test_integrated_workspace_session_is_lightweight_and_real():
         "canonical_runtime_attached",
         "graph_initialized",
         "websocket_ready",
+        "live_workflow",
     }
+
+
+def test_hosted_native_assistant_is_executable_without_optional_word2vec():
+    from hhs_backend import production_server
+
+    health = asyncio.run(production_server._assistant_health())
+    assert health["ok"] is True
+    assert health["online"] is True
+    assert health["selected_provider_id"] == "provider:hhs.local.text"
+    assert health["effective_mode"] == "HHS_NATIVE_LITERT_COMPATIBLE"
+    assert health["native_hhs"]["installation"]["ready"] is True
+    assert health["native_hhs"]["installation"]["word2vec_required"] is False
+    assert health["repository_search_is_provider"] is False
+    assert health["same_template_response_enabled"] is False
+
+
+def test_runtime_authority_boots_and_reports_real_workflow_state():
+    from hhs_backend import production_server
+    from hhs_backend import server as canonical
+
+    async def verify() -> None:
+        await canonical.startup_sequence()
+        try:
+            status = production_server._runtime_authority_status()
+            assert status["ok"] is True
+            assert status["status"] == "HHS_RUNTIME_AUTHORITY_ONLINE"
+            assert status["canonical_runtime_attached"] is True
+            assert status["graph_initialized"] is True
+            assert status["websocket_ready"] is True
+            assert status["live_workflow"]["running"] is True
+            assert status["runtime"].get("state_hash72")
+            tick = await canonical.LIVE_WORKFLOW.tick_once({"source": "production_authority_test"})
+            assert tick["ok"] is True
+            assert tick.get("receipt_hash72")
+            assert tick.get("runtime_state_hash72")
+        finally:
+            await canonical.shutdown_sequence()
+
+    asyncio.run(verify())
 
 
 def test_procfile_boots_canonical_production_server():
     procfile = Path("Procfile").read_text(encoding="utf-8")
     assert "hhs_backend.production_server:app" in procfile
     assert "hhs_backend.heroku_server:app" not in procfile
+
+
+def test_post_compile_refuses_assistant_offline_deployment():
+    source = Path("bin/post_compile").read_text(encoding="utf-8")
+    assert "--require-assistant" in source
+    assert "HHS_NATIVE_LANGUAGE_REQUIRE_WORD2VEC" in source
+    assert "make c-abi" in source
 
 
 def test_frontend_entrypoint_uses_integrated_client_not_legacy_desktop_runtime():
@@ -62,7 +112,7 @@ def test_frontend_entrypoint_uses_integrated_client_not_legacy_desktop_runtime()
     assert "global.css" in source
 
 
-def test_runtime_transport_is_deferred_until_runtime_surface():
+def test_runtime_transport_is_deferred_but_authority_is_verified_independently():
     client = Path("hhs_gui/runtime_os/core/IntegratedRuntimeClient.ts").read_text(
         encoding="utf-8"
     )
@@ -72,13 +122,20 @@ def test_runtime_transport_is_deferred_until_runtime_surface():
     projection = Path(
         "hhs_gui/runtime_os/core/LiveRuntimeProjectionPanel.tsx"
     ).read_text(encoding="utf-8")
+    product = Path(
+        "hhs_gui/runtime_os/workspace/HHSProductWorkspace.tsx"
+    ).read_text(encoding="utf-8")
 
     assert "RuntimeApplicationRegistry" not in client
     assert "RuntimeWindowManager" not in client
     assert "runtimeClient.shutdown" in canonical
     assert "runtimeOS.initialize()" in projection
     assert "runtimeOS.shutdown()" in projection
-    assert "Connected only while this tab is active" in projection
+    assert "/api/runtime/authority/status" in projection
+    assert "WebSockets are on-demand projection channels" in projection
+    assert "/api/product/health" in product
+    assert "runtimeOnline" in product
+    assert "assistantOnline" in product
 
 
 def test_canonical_workspace_is_one_shared_transaction_surface():
