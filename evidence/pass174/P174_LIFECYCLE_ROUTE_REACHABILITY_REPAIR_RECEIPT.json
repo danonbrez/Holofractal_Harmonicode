@@ -1,0 +1,36 @@
+{
+  "schema": "P174_LIFECYCLE_ROUTE_REACHABILITY_REPAIR_RECEIPT_V1",
+  "contract": "HHS-P174-HPG-EH216-RAVWSC-VFIDE-SDLC",
+  "pass": 174,
+  "classification": "HHS_PASS_174_LIFECYCLE_API_ROUTE_REACHABILITY_REPAIR_VERIFIED",
+  "terminal_pass174_classification_emitted": false,
+  "pass174_status": "PASS_174_IMPLEMENTATION_IN_PROGRESS",
+  "authority": "ROUTE_ASSEMBLY_AND_DIAGNOSTICS_ONLY_NO_ALTERNATE_RUNTIME_AUTHORITY",
+  "observed_failure": "Lifecycle failed: Non-JSON response from /api/runtime/development/lifecycle",
+  "pull_request": 83,
+  "implementation_commit": "c4eadca5c198c058f9b3ccd13fe38f828e905d32",
+  "amendment_path": "HHS_PASS_174_LIFECYCLE_ROUTE_REACHABILITY_REPAIR_AMENDMENT.md",
+  "verified": {
+    "canonical_base_server_registers_pass165_router": true,
+    "canonical_base_server_registers_development_lifecycle_router": true,
+    "integrated_ide_server_remains_compatible": true,
+    "lifecycle_route_precedes_static_mount": true,
+    "pass165_ingress_route_precedes_static_mount": true,
+    "malformed_lifecycle_returns_json_422": true,
+    "unknown_api_returns_json_404": true,
+    "static_spa_api_fallback_disabled": true,
+    "frontend_rejects_non_json_as_route_unreachable": true,
+    "http_status_content_type_and_preview_reported": true,
+    "production_chromium_verification": true,
+    "runtime_authority_unchanged": true
+  },
+  "workflow_results": {
+    "Pass 161 Finalization": "success",
+    "HHS Visual IDE A-B Usability": "success",
+    "Validate HHS Pass 161 Production Harmonizer": "success"
+  },
+  "not_claimed": [
+    "public_host_redeployment_completed",
+    "full_pass174_terminal_closure"
+  ]
+}
