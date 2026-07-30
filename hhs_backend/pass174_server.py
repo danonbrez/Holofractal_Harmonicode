@@ -1,8 +1,10 @@
-"""Canonical Pass 174 deployment overlay.
+"""Canonical Pass 174 production overlay.
 
-The existing hhs_backend.server application remains the inherited backend
-origin. This module additively mounts the Pass 174 router, readiness watchdog,
-and front-and-center Visual IDE without replacing legacy routes.
+The complete production Visual IDE, assistant, installation, multimodal,
+workspace, API, WebSocket, and singleton runtime surfaces are inherited first.
+Pass 174 then adds its governed runtime routes, bounded readiness watchdog, and
+front-and-center visual workspace. The prior production visual application is
+preserved at ``/legacy-ide/`` rather than deleted.
 """
 from __future__ import annotations
 
@@ -13,13 +15,20 @@ from pathlib import Path
 import time
 from typing import Any
 
-from fastapi.responses import RedirectResponse
-from starlette.middleware.base import BaseHTTPMiddleware
-from starlette.requests import Request
-from starlette.staticfiles import StaticFiles
+from fastapi.staticfiles import StaticFiles
 
-from hhs_backend.server import app
+from hhs_backend import production_ide_server as inherited_ide
+from hhs_backend import production_server as inherited_production
 from hhs_backend.api.pass174_runtime_routes import get_runtime, router as pass174_router
+
+app = inherited_ide.app
+app.title = "HHS Pass 174 Harmonic Visual SDLC Runtime"
+app.version = "4.0.0"
+app.description = (
+    "Append-only successor to every legacy HHS pass through Pass 173, with a "
+    "64:72:81 phase-gear VM81 runtime, encrypted Hash216 retrieval, governed "
+    "multimodal SDLC execution, and front-and-center mobile Visual IDE."
+)
 
 PASS174_BOOT_STATE: dict[str, Any] = {
     "schema": "HHS_P174_BOOT_STATE_V1",
@@ -29,26 +38,48 @@ PASS174_BOOT_STATE: dict[str, Any] = {
     "started_monotonic": time.monotonic(),
 }
 
-
-class Pass174FrontDoorMiddleware(BaseHTTPMiddleware):
-    async def dispatch(self, request: Request, call_next):
-        if request.url.path == "/" and "application/json" not in request.headers.get("accept", ""):
-            return RedirectResponse(url="/ide/", status_code=307)
-        return await call_next(request)
-
-
-app.add_middleware(Pass174FrontDoorMiddleware)
-app.include_router(pass174_router)
-
 _repository_root = Path(os.environ.get("HHS_REPOSITORY_ROOT") or Path(__file__).resolve().parents[1]).resolve()
 _ide_root = _repository_root / "applications" / "pass174_visual_ide"
-if not _ide_root.is_dir():
+_legacy_ide_root = inherited_production.VISUAL_ROOT
+
+
+def _has_route_prefix(prefix: str) -> bool:
+    return any(str(getattr(route, "path", "")).startswith(prefix) for route in app.router.routes)
+
+
+# Remove only the inherited static root mount. All API, WebSocket, assistant,
+# installation, workspace, multimodal, lifecycle, and runtime routes remain.
+app.router.routes = [
+    route
+    for route in app.router.routes
+    if getattr(route, "name", None) not in {
+        "hhs-production-harmonizer",
+        "hhs-pass174-visual-ide",
+        "hhs-pass174-legacy-ide",
+    }
+]
+
+if not _has_route_prefix("/api/v1/pass174"):
+    app.include_router(pass174_router)
+
+if _legacy_ide_root.is_dir():
+    app.mount(
+        "/legacy-ide",
+        StaticFiles(directory=str(_legacy_ide_root), html=True),
+        name="hhs-pass174-legacy-ide",
+    )
+
+if _ide_root.is_dir():
+    app.mount(
+        "/",
+        StaticFiles(directory=str(_ide_root), html=True),
+        name="hhs-pass174-visual-ide",
+    )
+else:
     PASS174_BOOT_STATE.update({
         "classification": "HHS_P174_VISUAL_IDE_ASSET_ROOT_MISSING",
         "asset_root": str(_ide_root),
     })
-else:
-    app.mount("/ide", StaticFiles(directory=str(_ide_root), html=True), name="pass174-visual-ide")
 
 
 async def _pass174_readiness_probe() -> None:
@@ -56,12 +87,17 @@ async def _pass174_readiness_probe() -> None:
     status = runtime.status()
     if status["kernel_authorities"] != 1:
         raise RuntimeError("HHS_P174_SINGLETON_VM81_AUTHORITY_REQUIRED")
-    if status["frame_bits"] != 5184:
+    if status["frame_bits"] != 5184 or status["frame_bytes"] != 648:
         raise RuntimeError("HHS_P174_FRAME_GEOMETRY_MISMATCH")
-    if status["legacy_foundation"]["maximum_inherited_pass"] != 173:
+    foundation = status["legacy_foundation"]
+    if foundation["maximum_inherited_pass"] != 173 or not foundation["minimum_foundation"]:
         raise RuntimeError("HHS_P174_LEGACY_FOUNDATION_INCOMPLETE")
-    if not _ide_root.is_dir():
+    if not _ide_root.is_dir() or not (_ide_root / "index.html").is_file():
         raise RuntimeError("HHS_P174_VISUAL_IDE_ASSET_ROOT_MISSING")
+    if not _has_route_prefix("/api/runtime/workspace"):
+        raise RuntimeError("HHS_P174_INHERITED_WORKSPACE_ROUTE_MISSING")
+    if not _has_route_prefix("/api/runtime/multimodal-ingress"):
+        raise RuntimeError("HHS_P174_INHERITED_MULTIMODAL_ROUTE_MISSING")
 
 
 async def initialize_pass174_overlay() -> None:
@@ -93,12 +129,14 @@ async def initialize_pass174_overlay() -> None:
         "silent_freeze": False,
         "ready_monotonic": time.monotonic(),
         "asset_root": str(_ide_root),
+        "legacy_ide_root": str(_legacy_ide_root),
+        "legacy_ide_preserved": _legacy_ide_root.is_dir(),
+        "inherited_route_count": len(app.router.routes),
     })
 
 
-# The inherited application already defines a lifespan context. Compose the
-# Pass 174 readiness gate inside that authority rather than registering a
-# second startup mechanism that FastAPI may skip when lifespan is present.
+# The inherited production app already owns the complete canonical lifespan.
+# Pass 174 composes its bounded readiness gate inside that authority.
 _inherited_lifespan = app.router.lifespan_context
 
 
