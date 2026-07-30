@@ -1,0 +1,353 @@
+:root {
+  --hhs-app-height: 100dvh;
+  --hhs-overlay-scrim: rgba(1, 5, 11, .42);
+  --hhs-glass-panel: rgba(7, 17, 30, .86);
+  --hhs-glass-panel-strong: rgba(6, 15, 27, .94);
+  --hhs-glass-border: rgba(126, 218, 255, .30);
+  --hhs-sheet-width: min(88vw, 360px);
+}
+
+#hhs-mobile-scrim[hidden],
+.workflow-command-palette[hidden] {
+  display: none !important;
+}
+
+#hhs-mobile-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 1040;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: var(--hhs-overlay-scrim);
+  -webkit-backdrop-filter: blur(6px) saturate(115%);
+  backdrop-filter: blur(6px) saturate(115%);
+  cursor: default;
+}
+
+body.hhs-transient-open {
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+.workflow-command-palette {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  display: grid;
+  place-items: start center;
+  padding: max(72px, 10vh) 14px 24px;
+  background: rgba(1, 5, 11, .34) !important;
+  -webkit-backdrop-filter: blur(12px) saturate(125%);
+  backdrop-filter: blur(12px) saturate(125%);
+  touch-action: none;
+}
+
+.workflow-command-card {
+  width: min(720px, 96vw) !important;
+  max-height: min(74vh, 720px);
+  display: grid;
+  grid-template-rows: auto auto minmax(0, 1fr);
+  overflow: hidden;
+  border: 1px solid var(--hhs-glass-border) !important;
+  border-radius: 16px !important;
+  background:
+    linear-gradient(145deg, rgba(13, 30, 50, .90), rgba(4, 11, 21, .88)) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(135%);
+  backdrop-filter: blur(24px) saturate(135%);
+  box-shadow: 0 28px 90px rgba(0, 0, 0, .52), inset 0 1px rgba(255,255,255,.06) !important;
+}
+
+.hhs-command-toolbar {
+  min-height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 10px 8px 15px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(4, 12, 23, .56);
+}
+
+.hhs-command-title {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.hhs-command-title strong {
+  font-size: 13px;
+}
+
+.hhs-command-title small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 10px;
+}
+
+.workflow-command-card > input {
+  width: calc(100% - 24px);
+  margin: 12px;
+  border-color: var(--border-strong);
+  background: rgba(2, 8, 16, .62);
+}
+
+.workflow-command-results {
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  padding: 0 8px 10px;
+}
+
+.hhs-surface-close {
+  flex: 0 0 auto;
+  width: 36px;
+  min-width: 36px;
+  min-height: 36px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 1px solid rgba(145, 210, 242, .24);
+  border-radius: 9px;
+  background: rgba(22, 41, 62, .56);
+  color: var(--text);
+  font: 22px/1 system-ui, sans-serif;
+}
+
+.hhs-surface-close:hover,
+.hhs-surface-close:focus-visible {
+  border-color: var(--active);
+  background: rgba(45, 101, 137, .42);
+  color: var(--active);
+}
+
+.registry > .panel-heading .hhs-surface-close,
+.inspector > .panel-heading .hhs-surface-close {
+  display: none;
+}
+
+.spatial-view,
+.api-view {
+  background: linear-gradient(145deg, rgba(8, 20, 35, .88), rgba(3, 9, 17, .90));
+  -webkit-backdrop-filter: blur(18px) saturate(120%);
+  backdrop-filter: blur(18px) saturate(120%);
+}
+
+[data-close-view] {
+  min-width: 72px;
+}
+
+.ide-mobile-dock button {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+@media (max-width: 980px) {
+  html,
+  body {
+    height: var(--hhs-app-height);
+    min-height: var(--hhs-app-height);
+    overflow: hidden;
+  }
+
+  .shell {
+    height: var(--hhs-app-height);
+    min-height: var(--hhs-app-height);
+  }
+
+  .workspace {
+    min-height: 0;
+    height: 100%;
+    padding: 7px 7px calc(66px + env(safe-area-inset-bottom));
+    overflow: hidden;
+  }
+
+  .visual-ide-view {
+    height: 100%;
+    min-height: 0;
+    display: grid;
+    grid-template-rows: auto auto minmax(0, 1fr);
+  }
+
+  .ide-menu-bar,
+  .ide-tab-strip {
+    scrollbar-width: none;
+  }
+
+  .ide-menu-bar::-webkit-scrollbar,
+  .ide-tab-strip::-webkit-scrollbar {
+    display: none;
+  }
+
+  .ide-layout {
+    height: 100%;
+    min-height: 0;
+    padding-top: 6px;
+    display: block;
+    overflow: hidden;
+  }
+
+  .ide-layout > .ide-editor-pane,
+  .ide-layout > .ide-control-pane,
+  .ide-layout > .ide-bottom-pane,
+  .ide-layout > .ide-spatial-pane {
+    display: none !important;
+    height: 100%;
+    min-height: 0;
+  }
+
+  .ide-layout[data-mobile-pane="editor"] > .ide-editor-pane {
+    display: grid !important;
+  }
+
+  .ide-layout[data-mobile-pane="lifecycle"] > .ide-control-pane {
+    display: grid !important;
+    grid-template-rows: minmax(190px, auto) minmax(220px, 1fr);
+    overflow: auto;
+    overscroll-behavior: contain;
+  }
+
+  .ide-layout[data-mobile-pane="terminal"] > .ide-bottom-pane {
+    display: grid !important;
+  }
+
+  .ide-layout[data-mobile-pane="spatial"] > .ide-spatial-pane {
+    display: grid !important;
+  }
+
+  .ide-window {
+    border-radius: 10px;
+    box-shadow: 0 12px 34px rgba(0,0,0,.24), inset 0 1px rgba(255,255,255,.03);
+  }
+
+  .registry,
+  .inspector {
+    position: fixed !important;
+    top: 0;
+    bottom: 0;
+    z-index: 1100;
+    width: var(--hhs-sheet-width);
+    max-width: calc(100vw - 34px);
+    height: var(--hhs-app-height);
+    display: block !important;
+    overflow: auto;
+    overscroll-behavior: contain;
+    border: 1px solid var(--hhs-glass-border);
+    background: var(--hhs-glass-panel) !important;
+    -webkit-backdrop-filter: blur(22px) saturate(135%);
+    backdrop-filter: blur(22px) saturate(135%);
+    box-shadow: 0 24px 70px rgba(0,0,0,.46);
+    transition: transform 180ms ease, visibility 180ms ease;
+    visibility: hidden;
+  }
+
+  .registry {
+    left: 0;
+    right: auto;
+    transform: translate3d(-105%, 0, 0);
+    border-radius: 0 14px 14px 0;
+  }
+
+  .inspector {
+    right: 0;
+    left: auto;
+    transform: translate3d(105%, 0, 0);
+    border-radius: 14px 0 0 14px;
+  }
+
+  .registry.open,
+  .inspector.open {
+    transform: translate3d(0, 0, 0);
+    visibility: visible;
+  }
+
+  .registry > .panel-heading,
+  .inspector > .panel-heading {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    min-height: 56px;
+    background: var(--hhs-glass-panel-strong);
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+  }
+
+  .registry > .panel-heading .hhs-surface-close,
+  .inspector > .panel-heading .hhs-surface-close {
+    display: grid;
+  }
+
+  .ide-mobile-dock {
+    position: fixed !important;
+    left: max(8px, env(safe-area-inset-left));
+    right: max(8px, env(safe-area-inset-right));
+    bottom: max(7px, env(safe-area-inset-bottom));
+    z-index: 900;
+    min-height: 54px;
+    display: grid !important;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 4px;
+    padding: 5px;
+    border: 1px solid var(--hhs-glass-border);
+    border-radius: 15px;
+    background: rgba(6, 15, 27, .84);
+    -webkit-backdrop-filter: blur(20px) saturate(135%);
+    backdrop-filter: blur(20px) saturate(135%);
+    box-shadow: 0 16px 48px rgba(0,0,0,.42);
+  }
+
+  .ide-mobile-dock button {
+    min-width: 0;
+    min-height: 44px;
+    padding: 0 4px;
+    border: 0;
+    border-radius: 10px;
+    background: transparent;
+    color: var(--muted);
+    font-size: 10px;
+  }
+
+  .ide-mobile-dock button.active {
+    color: var(--active);
+    background: rgba(50, 145, 196, .20);
+    box-shadow: inset 0 0 0 1px rgba(93,231,255,.22);
+  }
+
+  .workflow-command-palette {
+    place-items: start center;
+    padding: max(58px, calc(env(safe-area-inset-top) + 46px)) 8px 72px;
+    background: rgba(1, 5, 11, .30) !important;
+  }
+
+  .workflow-command-card {
+    width: 100% !important;
+    max-height: calc(var(--hhs-app-height) - 138px);
+    border-radius: 14px !important;
+  }
+
+  .hhs-command-toolbar {
+    min-height: 50px;
+  }
+
+  #ide-source-editor {
+    padding-bottom: 24vh;
+    font-size: 13px;
+  }
+
+  .ide-drop-overlay {
+    background: rgba(2, 10, 20, .72);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .registry,
+  .inspector {
+    transition: none;
+  }
+}
