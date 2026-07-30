@@ -36,7 +36,8 @@ export function renderFiles() {
 export function activateFile(path) {
   const prior = activeFile();
   const editor = $('#ide-source-editor');
-  if (prior && editor && !prior.bytesB64) prior.content = editor.value;
+  const editorLoadedPath = editor?.dataset.loadedPath || '';
+  if (prior && editor && !prior.bytesB64 && editorLoadedPath === prior.path) prior.content = editor.value;
   state.activePath = path;
   const file = activeFile();
   setText('#ide-active-file', file.name);
@@ -44,6 +45,7 @@ export function activateFile(path) {
   setText('#ide-language-mode', file.mediaType);
   editor.readOnly = Boolean(file.bytesB64 && !TEXT_MODALITIES.has(file.mediaType));
   editor.value = editor.readOnly ? `[Preserved ${file.mediaType} source]\nname=${file.name}\nbytes=${base64ToBytes(file.bytesB64).length}` : (file.content || '');
+  editor.dataset.loadedPath = file.path;
   updateLineNumbers(); renderFiles(); persist();
 }
 export function updateLineNumbers() {
@@ -54,8 +56,9 @@ export function updateLineNumbers() {
 }
 export function saveFile() {
   const file = activeFile();
-  if (!file.bytesB64) {
-    file.content = $('#ide-source-editor').value;
+  const editor = $('#ide-source-editor');
+  if (!file.bytesB64 && editor.dataset.loadedPath === file.path) {
+    file.content = editor.value;
     file.dirty = false;
     persist(); renderFiles(); setText('#ide-editor-state', 'SAVED');
   }

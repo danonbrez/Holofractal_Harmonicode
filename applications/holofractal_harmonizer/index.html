@@ -1,15 +1,20 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="hhs-harmonic-studio-theme">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#050912">
-  <meta name="description" content="HHS visual IDE for governed multimodal software lifecycles, VM81 execution, 5184-bit snapshots, Hash216 indexing, and receipt-closed automation">
-  <title>HHS LiteRT-LM Development Assistant · Holofractal Harmonizer Visual IDE</title>
+  <meta name="theme-color" content="#1a130e">
+  <meta name="description" content="Full HHS multimodal application IDE for games, tools, documents, audio, video, compilation, VM81 execution, assistant-led development, preview, testing, and ZIP export">
+  <title>HHS Full Multimodal Application IDE</title>
   <link rel="stylesheet" href="./src/styles.css">
   <link rel="stylesheet" href="./src/ux-default.css">
   <link rel="stylesheet" href="./src/production-integration.css">
   <link rel="stylesheet" href="./src/visual-ide.css">
+  <link rel="stylesheet" href="./src/harmonic-studio-theme.css" data-hhs-harmonic-theme>
+  <link rel="stylesheet" href="./src/integrated-workbench.css" data-hhs-integrated-workbench>
+  <link rel="stylesheet" href="./src/integrated-assistant.css" data-hhs-integrated-assistant>
+  <link rel="stylesheet" href="./src/intuitive-ide.css" data-hhs-intuitive-ide>
+  <link rel="stylesheet" href="./src/application-studio.css" data-hhs-application-studio>
 </head>
 <body>
   <div id="harmonizer" class="shell" data-profile="BALANCED">
@@ -17,7 +22,7 @@
       <button id="nav-toggle" class="icon-button mobile-only" aria-label="Open project and object navigator">☰</button>
       <div class="identity">
         <strong>HHS Holofractal Harmonizer</strong>
-        <span>Visual IDE · VM81 · 5184-bit snapshots · Hash216 indexed lifecycles</span>
+        <span>Full Application IDE · Multimodal Studio · VM81 · Assistant · Compiler</span>
       </div>
       <label class="search">
         <span class="sr-only">Search workflows, files, registered objects, services, and commands</span>
@@ -147,7 +152,7 @@ q=81
             </section>
           </aside>
 
-          <section class="ide-bottom-pane ide-window" aria-label="Terminal, receipts, and Hash216 indexes">
+          <section class="ide-bottom-pane ide-window" aria-label="Terminal, receipts, Hash216 indexes, application preview, and repository history">
             <header class="ide-bottom-tabs" role="tablist">
               <button type="button" class="active" data-bottom-tab="terminal">Terminal</button>
               <button type="button" data-bottom-tab="hash216">Hash216 Index</button>
@@ -156,8 +161,8 @@ q=81
               <span id="ide-terminal-state">IDLE</span>
             </header>
             <div id="ide-terminal-panel" class="ide-bottom-panel active" data-bottom-panel="terminal">
-              <pre id="ide-terminal-output" aria-live="polite">HHS Visual IDE ready.
-Use Run Full Lifecycle to preserve, index, project, interpret, compile, execute, and export the active source through runtime authority.</pre>
+              <pre id="ide-terminal-output" aria-live="polite">HHS Full Application IDE ready.
+Create a real application, edit its source, build and preview it, test it, compile target artifacts, and export the complete project.</pre>
             </div>
             <div class="ide-bottom-panel" data-bottom-panel="hash216">
               <div id="ide-hash216-lanes" class="ide-hash216-lanes"></div>
@@ -205,9 +210,9 @@ Use Run Full Lifecycle to preserve, index, project, interpret, compile, execute,
       <section id="assistant-view" class="assistant-view" hidden>
         <div class="assistant-heading">
           <div>
-            <span class="eyebrow">GOVERNED DEVELOPMENT ASSISTANT</span>
-            <h1>Natural-Language Software Lifecycle Assistant</h1>
-            <p>Inspect and direct the active IDE through governed HHS tools. Model operations remain proposals until admitted by runtime authority.</p>
+            <span class="eyebrow">INTEGRATED DEVELOPMENT ASSISTANT</span>
+            <h1>Natural-Language Application Development Assistant</h1>
+            <p>Ask for help creating, editing, compiling, testing, debugging, previewing, or exporting the active project.</p>
           </div>
           <div class="workspace-actions">
             <button id="new-thread">New Thread</button>
@@ -219,20 +224,20 @@ Use Run Full Lifecycle to preserve, index, project, interpret, compile, execute,
           <article><span>MODEL</span><strong id="model-id">hhs-native-language-v1</strong><small id="backend-id">backend pending</small></article>
           <article><span>THREAD</span><strong id="thread-label">initializing</strong><small id="message-count">0 messages</small></article>
           <article><span>HHS TOOLS</span><strong id="tool-count">—</strong><small>governed runtime tools</small></article>
-          <article><span>AUTHORITY</span><strong>ADVISORY</strong><small>no direct VM81 mutation</small></article>
+          <article><span>AUTHORITY</span><strong>ADVISORY</strong><small>direct IDE controls remain available</small></article>
         </div>
         <section class="conversation-shell" aria-label="HHS assistant conversation">
           <div id="conversation" class="conversation" aria-live="polite" aria-busy="false">
-            <article class="message assistant-message"><div class="message-role">HHS ASSISTANT</div><div class="message-content">The assistant is available alongside the primary visual IDE.</div></article>
+            <article class="message assistant-message"><div class="message-role">HHS ASSISTANT</div><div class="message-content">Describe the application, document, audio, video, game, or tool you want to build.</div></article>
           </div>
           <form id="prompt-form" class="prompt-form">
             <label for="prompt-input" class="sr-only">Message the HHS development assistant</label>
-            <textarea id="prompt-input" name="content" rows="3" placeholder="Describe what to build, inspect, test, or explain…" required></textarea>
+            <textarea id="prompt-input" name="content" rows="3" placeholder="Describe what to build, change, test, or debug…" required></textarea>
             <div class="prompt-controls">
               <div class="quick-prompts" aria-label="Suggested prompts">
-                <button type="button" data-prompt="Inspect the active visual IDE lifecycle and identify the next admitted action.">Lifecycle status</button>
-                <button type="button" data-prompt="Inspect the latest 5184-bit snapshot and Hash216 index evidence.">VM snapshot</button>
-                <button type="button" data-prompt="Review the current compile and execution receipts.">Receipts</button>
+                <button type="button" data-prompt="Help me build and test the active application from its current project files.">Build project</button>
+                <button type="button" data-prompt="Review the active application source and identify the most likely bug.">Debug source</button>
+                <button type="button" data-prompt="Explain the available compilation and export targets for this project.">Export targets</button>
               </div>
               <button id="send-prompt" type="submit" class="primary-action">Send</button>
             </div>
@@ -266,14 +271,14 @@ Use Run Full Lifecycle to preserve, index, project, interpret, compile, execute,
     <aside id="inspector" class="inspector" aria-label="Nested object inspector">
       <div class="panel-heading"><strong>Inspector</strong><button id="inspector-back" aria-label="Back in inspector lineage">Back</button></div>
       <div id="lineage" class="lineage"></div>
-      <div id="inspector-content"><p>Select a registered object, file, VM cell, Hash216 position, or lifecycle receipt.</p></div>
+      <div id="inspector-content"><p>Select a registered object, file, VM cell, Hash216 position, lifecycle artifact, or repository contract.</p></div>
     </aside>
 
     <footer class="operation-strip">
       <span id="selected-object">IDE · main.hhs</span>
       <span>Project <code id="active-thread">project:visual-development</code></span>
       <span>Receipt <code id="receipt-tip">GENESIS</code></span>
-      <span id="validation-state">VISUAL IDE · RUNTIME CONNECTING</span>
+      <span id="validation-state">FULL APPLICATION IDE · RUNTIME CONNECTING</span>
       <span id="latency-state">BALANCED · LOCAL</span>
     </footer>
   </div>

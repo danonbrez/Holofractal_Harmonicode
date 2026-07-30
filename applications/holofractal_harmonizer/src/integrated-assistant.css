@@ -1,0 +1,191 @@
+.ide-assistant-drawer {
+  position: fixed;
+  top: 64px;
+  right: 0;
+  bottom: 38px;
+  z-index: 80;
+  width: min(560px, 48vw);
+  min-width: 360px;
+  max-width: 82vw;
+  overflow: auto;
+  resize: horizontal;
+  direction: rtl;
+  border-left: 1px solid var(--border-strong);
+  background: linear-gradient(150deg, rgba(42, 31, 22, .985), rgba(18, 13, 10, .99));
+  box-shadow: -24px 0 70px rgba(0, 0, 0, .46);
+  transform: translateX(calc(100% + 24px));
+  visibility: hidden;
+  transition: transform 180ms ease, visibility 180ms ease;
+}
+
+body.ide-assistant-open .ide-assistant-drawer {
+  transform: translateX(0);
+  visibility: visible;
+}
+
+.ide-assistant-drawer > * {
+  direction: ltr;
+}
+
+.ide-assistant-drawer .assistant-view {
+  width: 100%;
+  min-height: 100%;
+  margin: 0;
+  padding: 16px;
+}
+
+.ide-assistant-drawer .assistant-heading {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  align-items: flex-start;
+  padding: 8px 2px 14px;
+  margin: 0;
+  background: linear-gradient(180deg, rgba(36, 26, 18, .99), rgba(36, 26, 18, .94), transparent);
+}
+
+.ide-assistant-drawer .assistant-heading h1 {
+  font-size: clamp(20px, 2.2vw, 30px);
+}
+
+.ide-assistant-drawer .assistant-heading p {
+  font-size: 12px;
+}
+
+.ide-assistant-drawer .assistant-status-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.ide-assistant-drawer .conversation-shell {
+  min-height: calc(100vh - 300px);
+  border-color: var(--border-strong);
+  background: rgba(20, 14, 10, .9);
+}
+
+.ide-assistant-drawer .conversation {
+  padding: 15px;
+}
+
+.ide-assistant-drawer .message {
+  width: 96%;
+}
+
+.ide-assistant-drawer .prompt-form {
+  position: sticky;
+  bottom: 0;
+}
+
+.ide-assistant-command {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--active);
+}
+
+.ide-assistant-command small {
+  padding: 2px 5px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: var(--muted);
+  font-size: 7px;
+  letter-spacing: .08em;
+}
+
+.ide-assistant-command small[data-state="ready"] {
+  color: var(--verified);
+  border-color: color-mix(in srgb, var(--verified) 50%, transparent);
+}
+
+.ide-assistant-command.active {
+  background: rgba(224, 166, 60, .13);
+  box-shadow: inset 0 -2px var(--active);
+}
+
+.ide-assistant-fab {
+  position: fixed;
+  right: 18px;
+  bottom: 54px;
+  z-index: 85;
+  width: 68px;
+  height: 52px;
+  display: grid;
+  place-items: center;
+  gap: 0;
+  padding: 5px;
+  border-color: var(--border-strong);
+  background: linear-gradient(145deg, rgba(102, 69, 25, .96), rgba(47, 32, 18, .98));
+  box-shadow: 0 12px 30px rgba(0, 0, 0, .36), inset 0 1px rgba(255, 232, 180, .08);
+}
+
+.ide-assistant-fab span {
+  color: #f3c56d;
+  font: 700 15px/1 ui-monospace, SFMono-Regular, Consolas, monospace;
+}
+
+.ide-assistant-fab small {
+  color: var(--muted);
+  font-size: 8px;
+}
+
+.ide-assistant-fab.active {
+  border-color: var(--active);
+  box-shadow: 0 0 24px rgba(224, 166, 60, .28);
+}
+
+#ide-assistant-close {
+  border-color: var(--border-strong);
+}
+
+body.ide-assistant-open .workspace {
+  scrollbar-gutter: stable;
+}
+
+@media (max-width: 980px) {
+  .ide-assistant-drawer {
+    top: 0;
+    bottom: 0;
+    width: min(620px, 94vw);
+    max-width: 94vw;
+    min-width: 0;
+    resize: none;
+  }
+
+  .ide-assistant-drawer .assistant-view {
+    padding-top: max(12px, env(safe-area-inset-top));
+    padding-bottom: max(14px, env(safe-area-inset-bottom));
+  }
+
+  .ide-assistant-drawer .conversation-shell {
+    min-height: calc(100vh - 270px);
+  }
+}
+
+@media (max-width: 620px) {
+  .ide-assistant-drawer {
+    width: 100vw;
+    max-width: 100vw;
+    border-left: 0;
+  }
+
+  .ide-assistant-drawer .assistant-heading {
+    display: grid;
+  }
+
+  .ide-assistant-drawer .workspace-actions {
+    justify-content: start;
+  }
+
+  .ide-assistant-drawer .assistant-status-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .ide-assistant-drawer .quick-prompts {
+    display: none;
+  }
+
+  .ide-assistant-fab {
+    right: 10px;
+    bottom: 58px;
+    width: 54px;
+  }
+}
