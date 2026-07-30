@@ -1,12 +1,12 @@
 import React from "react"
 import ReactDOM from "react-dom/client"
 import { CanonicalRuntimeIDE } from "./runtime_os/core/CanonicalRuntimeIDE"
-import { RuntimeOS } from "./runtime_os/core/RuntimeOS"
+import { IntegratedRuntimeClient } from "./runtime_os/core/IntegratedRuntimeClient"
 import "./src/styles/global.css"
 
 declare global {
   interface Window {
-    __HHS_RUNTIME_OS__?: RuntimeOS
+    __HHS_RUNTIME_CLIENT__?: IntegratedRuntimeClient
     __HHS_REPORT_BOOT_ERROR__?: (label: string, value: unknown) => void
   }
 }
@@ -23,7 +23,7 @@ class FatalBoundary extends React.Component<React.PropsWithChildren, FatalBounda
   }
 
   public componentDidCatch(error: Error, info: React.ErrorInfo): void {
-    console.error("[HHS Runtime OS] canonical IDE failure", error, info)
+    console.error("[HHS Runtime OS] integrated workspace failure", error, info)
     document.documentElement.dataset.hhsMounted = "error"
     document.getElementById("runtime_boot_overlay")?.remove()
   }
@@ -34,10 +34,10 @@ class FatalBoundary extends React.Component<React.PropsWithChildren, FatalBounda
       <main className="min-h-screen bg-neutral-950 p-6 text-white">
         <section className="mx-auto max-w-3xl rounded-2xl border border-red-900 bg-neutral-900 p-5">
           <h1 className="text-lg font-semibold text-red-200">HHS Visual Runtime OS could not render</h1>
-          <p className="mt-2 text-sm text-neutral-300">The canonical IDE stopped on a frontend exception. The error remains visible instead of collapsing to a black page.</p>
+          <p className="mt-2 text-sm text-neutral-300">The integrated workspace stopped on a frontend exception. The error remains visible instead of collapsing to a black page.</p>
           <pre className="mt-4 max-h-96 overflow-auto whitespace-pre-wrap rounded-lg bg-black p-3 text-xs text-red-200">{this.state.error.stack ?? this.state.error.message}</pre>
           <button className="runtime-button mt-4 px-3 py-2 text-sm" type="button" onClick={() => window.location.reload()}>
-            Reload canonical IDE
+            Reload integrated workspace
           </button>
         </section>
       </main>
@@ -49,13 +49,11 @@ const rootDocument = document.documentElement
 rootDocument.dataset.hhsEntry = "loaded"
 
 try {
-  const runtimeOS = new RuntimeOS({
+  const runtimeClient = new IntegratedRuntimeClient({
     runtimeEndpoint: "/ws/runtime",
     replayEndpoint: "/ws/replay",
     graphEndpoint: "/ws/graph",
     transportEndpoint: "/ws/transport",
-    diagnosticsEnabled: true,
-    mobileMode: window.matchMedia("(max-width: 900px)").matches,
   })
 
   const rootElement = document.getElementById("root")
@@ -63,14 +61,14 @@ try {
 
   ReactDOM.createRoot(rootElement).render(
     <FatalBoundary>
-      <CanonicalRuntimeIDE runtimeOS={runtimeOS} />
+      <CanonicalRuntimeIDE runtimeClient={runtimeClient} />
     </FatalBoundary>,
   )
 
-  window.__HHS_RUNTIME_OS__ = runtimeOS
+  window.__HHS_RUNTIME_CLIENT__ = runtimeClient
 
   if (import.meta.hot) {
-    import.meta.hot.dispose(() => runtimeOS.destroy())
+    import.meta.hot.dispose(() => runtimeClient.shutdown())
   }
 } catch (error: unknown) {
   rootDocument.dataset.hhsEntry = "failed"
