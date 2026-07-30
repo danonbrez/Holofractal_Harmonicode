@@ -4,27 +4,28 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#050912">
-  <meta name="description" content="HHS LiteRT-LM visual development environment and governed natural-language assistant">
-  <title>HHS LiteRT-LM Development Assistant</title>
+  <meta name="description" content="HHS visual IDE for governed multimodal software lifecycles, VM81 execution, 5184-bit snapshots, Hash216 indexing, and receipt-closed automation">
+  <title>HHS Holofractal Harmonizer Visual IDE</title>
   <link rel="stylesheet" href="./src/styles.css">
   <link rel="stylesheet" href="./src/ux-default.css">
   <link rel="stylesheet" href="./src/production-integration.css">
+  <link rel="stylesheet" href="./src/visual-ide.css">
 </head>
 <body>
   <div id="harmonizer" class="shell" data-profile="BALANCED">
     <header class="system-bar">
-      <button id="nav-toggle" class="icon-button mobile-only" aria-label="Open registered object navigator">☰</button>
+      <button id="nav-toggle" class="icon-button mobile-only" aria-label="Open project and object navigator">☰</button>
       <div class="identity">
-        <strong>HHS Development Assistant</strong>
-        <span>LiteRT-LM · Gemma 4 · Pass 161 visual environment</span>
+        <strong>HHS Holofractal Harmonizer</strong>
+        <span>Visual IDE · VM81 · 5184-bit snapshots · Hash216 indexed lifecycles</span>
       </div>
       <label class="search">
-        <span class="sr-only">Search registered objects</span>
-        <input id="object-search" type="search" placeholder="Search objects, services, APIs…" autocomplete="off">
+        <span class="sr-only">Search workflows, files, registered objects, services, and commands</span>
+        <input id="object-search" type="search" placeholder="Search files, objects, services, commands…" autocomplete="off">
       </label>
       <div class="system-state">
-        <span id="provider-status" class="status pending">PROVIDER CHECK</span>
-        <span class="status authority">GOVERNED TOOLS</span>
+        <span id="provider-status" class="status pending">RUNTIME CHECK</span>
+        <span class="status authority">RUNTIME AUTHORITY</span>
         <select id="profile-select" aria-label="Performance profile">
           <option>MOBILE_SAFE</option>
           <option selected>BALANCED</option>
@@ -36,22 +37,176 @@
       <button id="inspect-toggle" class="icon-button mobile-only" aria-label="Open object inspector">◎</button>
     </header>
 
-    <nav id="registry-nav" class="registry" aria-label="Registered objects">
-      <div class="panel-heading"><strong>Registry</strong><span id="object-count">0 objects</span></div>
-      <div class="home-actions">
-        <button id="assistant-home" class="active">Assistant</button>
-        <button id="object-workspace">Object Workspace</button>
+    <nav id="registry-nav" class="registry" aria-label="Project files and registered objects">
+      <div class="panel-heading"><strong>Explorer</strong><span id="object-count">0 objects</span></div>
+      <div class="home-actions ide-home-actions">
+        <button id="ide-home" class="active">Visual IDE</button>
+        <button id="assistant-home">Assistant</button>
+        <button id="object-workspace">Objects</button>
       </div>
-      <div id="registry-tree"></div>
+      <section class="ide-project-explorer" aria-label="IDE project file tree">
+        <div class="explorer-section-title"><span>PROJECT FILES</span><button id="ide-new-file" type="button" aria-label="Create file">＋</button></div>
+        <div id="ide-file-tree" class="ide-file-tree" role="tree"></div>
+      </section>
+      <section class="ide-registry-explorer" aria-label="HHS object registry">
+        <div class="explorer-section-title"><span>RUNTIME REGISTRY</span><span id="ide-registry-state">BOOT</span></div>
+        <div id="registry-tree"></div>
+      </section>
     </nav>
 
-    <main class="workspace" aria-label="Active workspace">
-      <section id="assistant-view" class="assistant-view">
+    <main class="workspace" aria-label="Active development workspace">
+      <section id="ide-view" class="visual-ide-view" aria-label="HHS visual software development environment">
+        <div class="ide-menu-bar" role="menubar" aria-label="IDE menu">
+          <button type="button" data-ide-command="new">File</button>
+          <button type="button" data-ide-command="save">Save</button>
+          <button type="button" data-ide-command="ingress">Ingress</button>
+          <button type="button" data-ide-command="interpret">Interpret</button>
+          <button type="button" data-ide-command="compile">Compile</button>
+          <button type="button" data-ide-command="run">Run</button>
+          <button type="button" data-ide-command="lifecycle" class="ide-menu-primary">Automate Lifecycle</button>
+          <button type="button" data-ide-command="egress">Egress</button>
+          <span class="ide-menu-spacer"></span>
+          <span id="ide-project-label" class="ide-project-label">project:visual-development</span>
+        </div>
+
+        <div class="ide-tab-strip" role="tablist" aria-label="Open files">
+          <div id="ide-editor-tabs" class="ide-editor-tabs"></div>
+          <button id="ide-upload-trigger" type="button" class="ide-tab-action">＋ Ingress file</button>
+          <input id="ide-file-input" type="file" multiple hidden accept="text/*,application/json,application/pdf,image/*,audio/*,video/*,.hhs,.md,.js,.ts,.py,.c,.cpp,.rs,.go,.java,.html,.css">
+        </div>
+
+        <div id="ide-layout" class="ide-layout">
+          <section class="ide-editor-pane ide-window" aria-label="Source editor">
+            <header class="ide-window-titlebar">
+              <div><span class="window-dot"></span><strong id="ide-active-file">main.hhs</strong></div>
+              <div class="ide-title-actions">
+                <span id="ide-editor-state">UNSAVED</span>
+                <button id="ide-save" type="button">Save</button>
+              </div>
+            </header>
+            <div id="ide-drop-zone" class="ide-drop-zone" tabindex="0" role="button" aria-label="Drop source or multimodal files here">
+              <div class="ide-line-numbers" id="ide-line-numbers" aria-hidden="true">1</div>
+              <textarea id="ide-source-editor" spellcheck="false" aria-label="HHS source editor">a²=1
+b²=2
+c²=3
+P=72
+p=64
+q=81
+Δ=P²-pq
+(P²-pq)-Δ=0</textarea>
+              <div id="ide-drop-overlay" class="ide-drop-overlay">Drop text, code, PDF, image, audio, video, or binary source</div>
+            </div>
+            <footer class="ide-editor-status">
+              <span id="ide-cursor-state">Ln 1, Col 1</span>
+              <span>UTF-8</span>
+              <span id="ide-language-mode">HARMONICODE</span>
+              <span>NO FLOAT CANONICAL AUTHORITY</span>
+            </footer>
+          </section>
+
+          <aside class="ide-control-pane" aria-label="Lifecycle controls and VM snapshot">
+            <section class="ide-window lifecycle-control-window">
+              <header class="ide-window-titlebar"><strong>Development Lifecycle</strong><span id="ide-pipeline-state">READY</span></header>
+              <div id="ide-lifecycle-stages" class="ide-lifecycle-stages" aria-label="Lifecycle stages">
+                <button type="button" data-stage="ingress"><span>01</span><strong>Ingress</strong><small>Preserve source</small></button>
+                <button type="button" data-stage="index"><span>02</span><strong>Hash216</strong><small>Index operation</small></button>
+                <button type="button" data-stage="snapshot"><span>03</span><strong>5184-bit VM</strong><small>Project snapshot</small></button>
+                <button type="button" data-stage="interpret"><span>04</span><strong>Interpret</strong><small>Exact semantics</small></button>
+                <button type="button" data-stage="compile"><span>05</span><strong>Compile</strong><small>HHS IR artifact</small></button>
+                <button type="button" data-stage="execute"><span>06</span><strong>Execute</strong><small>VM81 bounded run</small></button>
+                <button type="button" data-stage="egress"><span>07</span><strong>Egress</strong><small>Artifact + receipt</small></button>
+              </div>
+              <div class="ide-run-controls">
+                <label>Steps <input id="ide-run-steps" type="number" min="1" max="32" value="8"></label>
+                <button id="ide-run-lifecycle" type="button" class="primary-action">Run Full Lifecycle</button>
+              </div>
+              <div class="ide-pipeline-buttons">
+                <button id="ide-ingest" type="button">Ingress</button>
+                <button id="ide-interpret" type="button">Interpret</button>
+                <button id="ide-compile" type="button">Compile</button>
+                <button id="ide-run" type="button">Run VM</button>
+                <button id="ide-replay" type="button">Replay</button>
+                <button id="ide-egress" type="button">Export</button>
+              </div>
+            </section>
+
+            <section class="ide-window vm-snapshot-window">
+              <header class="ide-window-titlebar">
+                <strong>5184-bit VM Snapshot</strong>
+                <span id="ide-vm-root">GENESIS</span>
+              </header>
+              <div class="vm-snapshot-summary">
+                <div><span>BITS</span><strong>5184</strong></div>
+                <div><span>BYTES</span><strong>648</strong></div>
+                <div><span>CELLS</span><strong>81×64</strong></div>
+                <div><span>HASH216</span><strong>3×72</strong></div>
+              </div>
+              <div id="ide-vm-grid" class="ide-vm-grid" aria-label="81 VM cells"></div>
+              <div id="ide-vm-cell-detail" class="ide-vm-cell-detail">Select a VM81 cell to inspect its 64-bit lane.</div>
+            </section>
+          </aside>
+
+          <section class="ide-bottom-pane ide-window" aria-label="Terminal, receipts, and Hash216 indexes">
+            <header class="ide-bottom-tabs" role="tablist">
+              <button type="button" class="active" data-bottom-tab="terminal">Terminal</button>
+              <button type="button" data-bottom-tab="hash216">Hash216 Index</button>
+              <button type="button" data-bottom-tab="receipts">Receipts</button>
+              <button type="button" data-bottom-tab="egress">Egress</button>
+              <span id="ide-terminal-state">IDLE</span>
+            </header>
+            <div id="ide-terminal-panel" class="ide-bottom-panel active" data-bottom-panel="terminal">
+              <pre id="ide-terminal-output" aria-live="polite">HHS Visual IDE ready.
+Use Run Full Lifecycle to preserve, index, project, interpret, compile, execute, and export the active source through runtime authority.</pre>
+            </div>
+            <div class="ide-bottom-panel" data-bottom-panel="hash216">
+              <div id="ide-hash216-lanes" class="ide-hash216-lanes"></div>
+              <pre id="ide-hash216-output">No Hash216 operation has been committed.</pre>
+            </div>
+            <div class="ide-bottom-panel" data-bottom-panel="receipts">
+              <pre id="ide-receipt-output">No receipt has been committed.</pre>
+            </div>
+            <div class="ide-bottom-panel" data-bottom-panel="egress">
+              <div class="ide-egress-actions">
+                <button id="ide-download-egress" type="button">Download lifecycle bundle</button>
+                <span id="ide-egress-state">No artifact available</span>
+              </div>
+              <pre id="ide-egress-output">Egress is created only from backend-returned lifecycle evidence.</pre>
+            </div>
+          </section>
+
+          <section class="ide-spatial-pane ide-window" aria-label="Draggable 3D VM and object control viewport">
+            <header class="ide-window-titlebar"><strong>3D Runtime Object Space</strong><span>DRAG · PINCH · TAP</span></header>
+            <div id="ide-3d-viewport" class="ide-3d-viewport" tabindex="0">
+              <div id="ide-3d-scene" class="ide-3d-scene">
+                <div class="ide-3d-ring ring-one"></div>
+                <div class="ide-3d-ring ring-two"></div>
+                <button class="ide-3d-node node-runtime" data-object-id="hhs:runtime:vm81">VM81</button>
+                <button class="ide-3d-node node-hash" data-object-id="hhs:service:hash72">H72</button>
+                <button class="ide-3d-node node-index">H216</button>
+                <button class="ide-3d-node node-ingress">IN</button>
+                <button class="ide-3d-node node-egress">OUT</button>
+                <div id="ide-3d-snapshot" class="ide-3d-snapshot"></div>
+              </div>
+              <div class="ide-3d-hint">Pointer drag rotates the VM snapshot. Mouse wheel or pinch scales it.</div>
+            </div>
+          </section>
+        </div>
+
+        <nav class="ide-mobile-dock" aria-label="Mobile IDE panes">
+          <button type="button" data-mobile-pane="editor" class="active">Code</button>
+          <button type="button" data-mobile-pane="lifecycle">Lifecycle</button>
+          <button type="button" data-mobile-pane="terminal">Output</button>
+          <button type="button" data-mobile-pane="spatial">3D</button>
+          <button type="button" data-mobile-pane="explorer">Files</button>
+        </nav>
+      </section>
+
+      <section id="assistant-view" class="assistant-view" hidden>
         <div class="assistant-heading">
           <div>
-            <span class="eyebrow">DEFAULT HOME INTERFACE</span>
-            <h1>Natural-Language Visual Development Environment</h1>
-            <p>Develop, inspect, and reason over registered HHS objects through the repository-native LiteRT-LM model. Model operations remain proposals until admitted by HHS runtime authority.</p>
+            <span class="eyebrow">GOVERNED DEVELOPMENT ASSISTANT</span>
+            <h1>Natural-Language Software Lifecycle Assistant</h1>
+            <p>Inspect and direct the active IDE through governed HHS tools. Model operations remain proposals until admitted by runtime authority.</p>
           </div>
           <div class="workspace-actions">
             <button id="new-thread">New Thread</button>
@@ -59,29 +214,24 @@
             <button id="open-api">API Controller</button>
           </div>
         </div>
-
         <div class="assistant-status-grid" aria-label="Assistant runtime status">
-          <article><span>MODEL</span><strong id="model-id">gemma4-12b</strong><small id="backend-id">backend pending</small></article>
+          <article><span>MODEL</span><strong id="model-id">hhs-native-language-v1</strong><small id="backend-id">backend pending</small></article>
           <article><span>THREAD</span><strong id="thread-label">initializing</strong><small id="message-count">0 messages</small></article>
-          <article><span>HHS TOOLS</span><strong id="tool-count">—</strong><small>read-only governed API tools</small></article>
-          <article><span>AUTHORITY</span><strong>PROPOSAL ONLY</strong><small>no direct VM81 mutation</small></article>
+          <article><span>HHS TOOLS</span><strong id="tool-count">—</strong><small>governed runtime tools</small></article>
+          <article><span>AUTHORITY</span><strong>ADVISORY</strong><small>no direct VM81 mutation</small></article>
         </div>
-
-        <section class="conversation-shell" aria-label="LiteRT-LM conversation">
+        <section class="conversation-shell" aria-label="HHS assistant conversation">
           <div id="conversation" class="conversation" aria-live="polite" aria-busy="false">
-            <article class="message assistant-message">
-              <div class="message-role">HHS ASSISTANT</div>
-              <div class="message-content">The visual development assistant is initializing the native LiteRT-LM provider and governed HHS tool surface.</div>
-            </article>
+            <article class="message assistant-message"><div class="message-role">HHS ASSISTANT</div><div class="message-content">The assistant is available alongside the primary visual IDE.</div></article>
           </div>
           <form id="prompt-form" class="prompt-form">
             <label for="prompt-input" class="sr-only">Message the HHS development assistant</label>
             <textarea id="prompt-input" name="content" rows="3" placeholder="Describe what to build, inspect, test, or explain…" required></textarea>
             <div class="prompt-controls">
               <div class="quick-prompts" aria-label="Suggested prompts">
-                <button type="button" data-prompt="Inspect the current HHS runtime status and summarize what needs attention.">Runtime status</button>
-                <button type="button" data-prompt="List the registered services relevant to visual application development.">Visual services</button>
-                <button type="button" data-prompt="Explain the active conformance and authority constraints for this workspace.">Authority constraints</button>
+                <button type="button" data-prompt="Inspect the active visual IDE lifecycle and identify the next admitted action.">Lifecycle status</button>
+                <button type="button" data-prompt="Inspect the latest 5184-bit snapshot and Hash216 index evidence.">VM snapshot</button>
+                <button type="button" data-prompt="Review the current compile and execution receipts.">Receipts</button>
               </div>
               <button id="send-prompt" type="submit" class="primary-action">Send</button>
             </div>
@@ -90,10 +240,7 @@
       </section>
 
       <section id="workspace-view" hidden>
-        <div class="workspace-header">
-          <div><span class="eyebrow">REGISTERED OBJECT WORKSPACE</span><h1>Unified Multimodal Object Control</h1></div>
-          <button id="return-assistant">Return to Assistant</button>
-        </div>
+        <div class="workspace-header"><div><span class="eyebrow">REGISTERED OBJECT WORKSPACE</span><h1>Unified Multimodal Object Control</h1></div><button id="return-assistant">Return to IDE</button></div>
         <section id="object-grid" class="object-grid" aria-live="polite"></section>
       </section>
 
@@ -109,7 +256,7 @@
       </section>
 
       <section id="api-view" class="api-view" hidden>
-        <div class="view-toolbar"><h2>Registered Object Search API</h2><button data-close-view>Close</button></div>
+        <div class="view-toolbar"><h2>Registered Runtime API Controller</h2><button data-close-view>Close</button></div>
         <form id="api-form"><input name="query" aria-label="Object search query"><button>Invoke</button></form>
         <pre id="api-output">No invocation yet.</pre>
       </section>
@@ -118,14 +265,14 @@
     <aside id="inspector" class="inspector" aria-label="Nested object inspector">
       <div class="panel-heading"><strong>Inspector</strong><button id="inspector-back" aria-label="Back in inspector lineage">Back</button></div>
       <div id="lineage" class="lineage"></div>
-      <div id="inspector-content"><p>Select a registered object.</p></div>
+      <div id="inspector-content"><p>Select a registered object, file, VM cell, Hash216 position, or lifecycle receipt.</p></div>
     </aside>
 
     <footer class="operation-strip">
-      <span id="selected-object">AGENT · hhs:agent:visual-development-assistant</span>
-      <span>Thread <code id="active-thread">—</code></span>
-      <span>Receipt <code id="receipt-tip">—</code></span>
-      <span id="validation-state">P161 AUTHORITY BOUND</span>
+      <span id="selected-object">IDE · main.hhs</span>
+      <span>Project <code id="active-thread">project:visual-development</code></span>
+      <span>Receipt <code id="receipt-tip">GENESIS</code></span>
+      <span id="validation-state">VISUAL IDE · RUNTIME CONNECTING</span>
       <span id="latency-state">BALANCED · LOCAL</span>
     </footer>
   </div>
@@ -133,5 +280,6 @@
   <script type="module" src="./src/browser.mjs"></script>
   <script type="module" src="./src/ux-default.mjs"></script>
   <script type="module" src="./src/production-integration.mjs"></script>
+  <script type="module" src="./src/visual-ide.mjs"></script>
 </body>
 </html>
