@@ -1,10 +1,10 @@
 """Canonical production server for the verified HHS visual environment.
 
 This module composes the authoritative HHS backend with the governed assistant,
-Pass 166 language-memory, Pass 172 installation-status, runtime-authority, and
-product-health routes. The public root is the terminal-verified Pass 161
-Holofractal Harmonizer with its workflow-first usability enhancement. Runtime
-execution remains owned by ``hhs_backend.server``.
+Pass 165 multimodal lifecycle, Pass 166 language-memory, Pass 172 installation
+status, runtime-authority, and product-health routes. The public root is the
+front-and-center Holofractal Harmonizer Visual IDE. Runtime execution remains
+owned by ``hhs_backend.server``.
 """
 from __future__ import annotations
 
@@ -18,12 +18,14 @@ from typing import Any, Mapping
 os.environ.setdefault("HHS_NATIVE_LANGUAGE_REQUIRE_WORD2VEC", "0")
 os.environ.setdefault("HHS_ASSISTANT_HEALTH_TIMEOUT_SECONDS", "5")
 
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 
 from hhs_backend import server as canonical
+from hhs_backend.api.development_lifecycle_routes import router as development_lifecycle_router
 from hhs_backend.api.installation_routes import router as installation_router
 from hhs_backend.api.litert_lm_assistant_routes import router as assistant_router
+from hhs_backend.api.pass165_multimodal_ingress_routes import router as pass165_router
 from hhs_backend.api.pass166_word2vec_routes import router as word2vec_router
 
 ROOT_DIR = Path(__file__).resolve().parents[1]
@@ -31,11 +33,12 @@ VISUAL_ROOT = ROOT_DIR / "applications" / "holofractal_harmonizer"
 
 app = canonical.app
 app.title = "HHS Holofractal Harmonizer"
-app.version = "3.3.0"
+app.version = "3.4.1"
 app.description = (
-    "Canonical HHS runtime, Pass 161 object environment, workflow-first visual "
-    "IDE, workspace, graph, replay, receipt, multimodal, installation, "
-    "language-memory, and assistant server."
+    "Canonical HHS runtime and front-and-center visual IDE with source-preserving "
+    "multimodal ingress, Hash216 indexing, exact 5,184-bit VM snapshots, HHS "
+    "interpretation, compilation, bounded VM81 execution, receipts, replay, egress, "
+    "workspace, installation, language-memory, and assistant services."
 )
 
 
@@ -49,6 +52,10 @@ if not _has_route_prefix("/v1/modalities/language"):
     app.include_router(word2vec_router)
 if not _has_route_prefix("/api/runtime/installation"):
     app.include_router(installation_router)
+if not _has_route_prefix("/api/runtime/multimodal-ingress"):
+    app.include_router(pass165_router)
+if not _has_route_prefix("/api/runtime/development"):
+    app.include_router(development_lifecycle_router)
 
 # Remove only prior root projections or static root mounts. Every API and
 # WebSocket route remains registered before the verified visual application.
@@ -227,7 +234,7 @@ async def production_product_health() -> dict[str, Any]:
         "runtime": runtime,
         "assistant": assistant,
         "visual_shell_only": False,
-        "public_interface": "HHS_PASS_161_WORKFLOW_FIRST_HARMONIZER",
+        "public_interface": "HHS_PASS_174_FRONT_AND_CENTER_VISUAL_IDE",
         "hosted_native_assistant_word2vec_required": False,
         "gemma_preferred_when_registered": True,
     }
@@ -244,7 +251,7 @@ async def production_health() -> dict[str, Any]:
         "schema": "HHS_CANONICAL_PRODUCTION_HEALTH_V1",
         "ok": fully_ready,
         "status": "healthy" if fully_ready else "degraded",
-        "interface": "HHS_PASS_161_WORKFLOW_FIRST_HARMONIZER",
+        "interface": "HHS_PASS_174_FRONT_AND_CENTER_VISUAL_IDE",
         "visual_application_present": visual_present,
         "canonical_runtime_attached": bool(canonical.SERVER_STATE.get("runtime_initialized")),
         "graph_initialized": bool(canonical.SERVER_STATE.get("graph_initialized")),
@@ -260,8 +267,8 @@ async def production_system_status() -> dict[str, Any]:
     return {
         "schema": "HHS_CANONICAL_PRODUCTION_SYSTEM_STATUS_V1",
         "system": "HARMONICODE",
-        "interface": "HHS_PASS_161_WORKFLOW_FIRST_HARMONIZER",
-        "visual_environment": "HHS-P161-HHUMOCE",
+        "interface": "HHS_PASS_174_FRONT_AND_CENTER_VISUAL_IDE",
+        "visual_environment": "HHS-P174-HPG-EH216-RAVWSC-VFIDE-SDLC",
         "usability_default": "WORKFLOW_FIRST_PROGRESSIVE_DISCLOSURE",
         "canonical_runtime_attached": bool(canonical.SERVER_STATE.get("runtime_initialized")),
         "graph_initialized": bool(canonical.SERVER_STATE.get("graph_initialized")),
@@ -274,10 +281,35 @@ async def production_system_status() -> dict[str, Any]:
         "runtime_services_api": "/api/runtime/services",
         "capability_api": "/api/runtime/capability",
         "document_api": "/api/runtime/document",
+        "multimodal_ingress_api": "/api/runtime/multimodal-ingress",
+        "development_lifecycle_api": "/api/runtime/development/lifecycle",
         "assistant_api": "/api/assistant",
         "installation_api": "/api/runtime/installation",
         "word2vec_api": "/v1/modalities/language",
     }
+
+
+@app.api_route(
+    "/api/{unmatched_path:path}",
+    methods=["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "HEAD"],
+    include_in_schema=False,
+)
+async def production_api_not_found(unmatched_path: str) -> JSONResponse:
+    """Prevent unknown API requests from falling through to the HTML SPA mount."""
+    return JSONResponse(
+        status_code=404,
+        content={
+            "schema": "HHS_PRODUCTION_API_ROUTE_NOT_FOUND_V1",
+            "ok": False,
+            "status": "HHS_API_ROUTE_NOT_FOUND",
+            "detail": {
+                "classification": "HHS_API_ROUTE_NOT_FOUND",
+                "path": f"/api/{unmatched_path}",
+                "static_fallback_used": False,
+                "frontend_result_fabricated": False,
+            },
+        },
+    )
 
 
 if (VISUAL_ROOT / "index.html").is_file():
@@ -291,7 +323,7 @@ else:
     async def missing_visual_application() -> str:
         return """<!doctype html><html><head><meta charset='utf-8'><title>HHS Holofractal Harmonizer</title></head>
         <body style='background:#050912;color:#fff;font-family:system-ui;padding:2rem'>
-        <h1>Verified Pass 161 visual application unavailable</h1>
+        <h1>Verified Pass 174 visual application unavailable</h1>
         <p>Expected <code>applications/holofractal_harmonizer/index.html</code>.</p>
         <p><a style='color:#67e8f9' href='/healthz'>View canonical backend health</a></p>
         </body></html>"""
