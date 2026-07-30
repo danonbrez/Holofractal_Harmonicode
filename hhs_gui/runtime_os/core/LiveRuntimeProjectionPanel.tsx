@@ -31,6 +31,7 @@ const latestEvents = (runtimeOS: RuntimeOS): Record<string, RuntimeSocketEvent |
 export const LiveRuntimeProjectionPanel: React.FC<LiveRuntimeProjectionPanelProps> = ({ runtimeOS }) => {
   const [channelHealth, setChannelHealth] = useState<RuntimeChannelHealth[]>(runtimeOS.socketManager.getChannelHealth())
   const [events, setEvents] = useState<Record<string, RuntimeSocketEvent | undefined>>(latestEvents(runtimeOS))
+  const [connectionError, setConnectionError] = useState<string | null>(null)
 
   useEffect(() => {
     let mounted = true
@@ -40,13 +41,17 @@ export const LiveRuntimeProjectionPanel: React.FC<LiveRuntimeProjectionPanelProp
       setEvents(latestEvents(runtimeOS))
     }
 
-    refresh()
-    // This panel is mounted only on the Runtime tab. A 1.5 second projection
-    // cadence keeps status useful without forcing four full UI updates at 4 Hz.
+    runtimeOS.initialize()
+      .then(refresh)
+      .catch((error: unknown) => {
+        if (mounted) setConnectionError(error instanceof Error ? error.message : String(error))
+      })
+
     const interval = window.setInterval(refresh, 1500)
     return () => {
       mounted = false
       window.clearInterval(interval)
+      runtimeOS.shutdown()
     }
   }, [runtimeOS])
 
@@ -55,10 +60,12 @@ export const LiveRuntimeProjectionPanel: React.FC<LiveRuntimeProjectionPanelProp
       <header className="mb-3 flex items-center justify-between gap-3 px-1">
         <div>
           <h2 className="text-sm font-semibold text-cyan-200">Live kernel projection</h2>
-          <p className="text-[9px] text-neutral-600">Loaded only while the Runtime tab is active · refresh 1500 ms</p>
+          <p className="text-[9px] text-neutral-600">Connected only while this tab is active · refresh 1500 ms</p>
         </div>
         <span className="text-[9px] uppercase tracking-widest text-neutral-600">projection only</span>
       </header>
+
+      {connectionError ? <p className="mb-3 rounded-lg border border-red-900 bg-red-950/30 p-2 text-[10px] text-red-300">{connectionError}</p> : null}
 
       <div className="grid gap-2 md:grid-cols-2">
         {channelHealth.map((health) => {
