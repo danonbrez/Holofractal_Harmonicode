@@ -1,6 +1,7 @@
 import React, { useEffect } from "react"
 import { HHSWorkspaceShell } from "../workspace/HHSWorkspaceShell"
 import { IntegratedRuntimeClient } from "./IntegratedRuntimeClient"
+import type { RuntimeOS } from "./RuntimeOS"
 
 export interface CanonicalRuntimeIDEProps {
   runtimeClient: IntegratedRuntimeClient
@@ -15,7 +16,10 @@ export const CanonicalRuntimeIDE: React.FC<CanonicalRuntimeIDEProps> = ({ runtim
 
   return (
     <div data-testid="hhs-canonical-runtime-ide" className="min-h-screen bg-neutral-950 text-white">
-      <HHSWorkspaceShell runtimeClient={runtimeClient} />
+      <HHSWorkspaceShell
+        runtimeOS={runtimeClient as unknown as RuntimeOS}
+        transportState="ON_DEMAND"
+      />
     </div>
   )
 }
