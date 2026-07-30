@@ -1,6 +1,6 @@
 {
   "authoritative_branch": "main",
-  "authoritative_main_commit": "e9257a66c8b9d19d6b13163b7c0b766deffbc1ff",
+  "authoritative_main_commit": "4268436be55291a2baecd8b1b6774e4645c87074",
   "checks": {
     "authoritative_main": true,
     "cross_architecture": true,
@@ -18,7 +18,7 @@
   "classification": "HHS_PASS_159_VM81_HASH216_HARMONICODE_INTERPRETER_AND_C11_NATIVE_COMPILER_VERIFIED",
   "contract": "HHS-P159-VM81-H216-HCI-C11C",
   "main_closure_required": false,
-  "main_closure_root": "418364986fe50690529cabaa2ec77c5b1662d8327eb56c6b1358a0de5f03b9c2",
+  "main_closure_root": "b7b9a2946304ab2ea062900458c1e8ab294c3b5c6837b5a0ab13e08a71e68754",
   "omega_159": true,
   "pre_main_evidence_root": "8e3468d7b5b0a8c43402bb19d156caad8df06cd2d49e3b625211182262cb3aa5",
   "schema": "P159_COMPLETION_RECEIPT_V1",
