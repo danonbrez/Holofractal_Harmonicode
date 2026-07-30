@@ -3,6 +3,7 @@ name: Pass 174 dependency-scoped validation
 on:
   push:
     branches:
+      - main
       - agent/pass174-full-implementation
     paths:
       - 'hhs_runtime/pass174/**'
