@@ -1,0 +1,25 @@
+# Pass 174 PR validation checkpoint
+
+- Repository: `danonbrez/Holofractal_Harmonicode`
+- Active branch: `agent/pass174-full-implementation`
+- Merge target: `main`
+- Pull request: `#84`
+- Pull request state: `OPEN_READY`
+- Legacy foundation rule: every repository-visible pass specification through Pass 173 is preserved as the append-only minimum foundation for Pass 174 and all successor passes.
+- Implemented files are committed; no private local state is required for restart.
+- Local isolated pre-commit checks executed:
+  - Python syntax compilation for Pass 174 runtime, inheritance authority, API, and server overlay;
+  - JavaScript syntax validation with `node --check`;
+  - isolated Pass 174 authority harness: `9 passed` against a Pass 163-compatible authority stub.
+- Repository-native validation requested by `.github/workflows/pass174-validation.yml`:
+  - affected Python compilation;
+  - inherited Pass 163 tests;
+  - Pass 174 runtime and persistent vector-store tests;
+  - executable verification harness;
+  - CLI parity;
+  - production server boot;
+  - HTTP, WebSocket, Visual IDE root, and prior-IDE preservation checks.
+- External execution fallback attempts:
+  - Hugging Face Jobs connector invocation failed with `hf_jobs not found`; no evidence was claimed from that surface.
+- Existing unrelated Vercel status reports a build-rate-limit failure; this is classified as an external service quota condition, not Pass 174 test evidence.
+- Next exact action: inspect PR-triggered workflow jobs for this synchronized head; repair dependency-scoped failures only; then merge PR #84 and verify authoritative main.
