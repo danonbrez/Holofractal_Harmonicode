@@ -1,9 +1,10 @@
-"""Canonical production server for the HHS Visual Runtime OS.
+"""Canonical production server for the verified HHS visual environment.
 
-This module composes the repository's authoritative backend server with the
-assistant and Pass 166 language-memory routers, then serves the compiled
-canonical IDE. It does not replace runtime operations with detached or demo
-responses.
+This module composes the authoritative HHS backend with the governed assistant,
+Pass 166 language-memory, Pass 172 installation-status, runtime-authority, and
+product-health routes. The public root is the terminal-verified Pass 161
+Holofractal Harmonizer with its workflow-first usability enhancement. Runtime
+execution remains owned by ``hhs_backend.server``.
 """
 from __future__ import annotations
 
@@ -13,9 +14,7 @@ from typing import Any, Mapping
 
 # Hosted production must always have an executable language authority even when
 # a large external LiteRT-LM model or Pass 166 vector package has not yet been
-# provisioned. The native provider still requires the Pass 148 semantic membrane
-# and Pass 151 bounded reasoner; Word2Vec remains an optional additive memory
-# layer and Gemma remains the preferred provider whenever its registry is ready.
+# provisioned. Gemma remains preferred whenever its registry is ready.
 os.environ.setdefault("HHS_NATIVE_LANGUAGE_REQUIRE_WORD2VEC", "0")
 os.environ.setdefault("HHS_ASSISTANT_HEALTH_TIMEOUT_SECONDS", "5")
 
@@ -23,18 +22,20 @@ from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 
 from hhs_backend import server as canonical
+from hhs_backend.api.installation_routes import router as installation_router
 from hhs_backend.api.litert_lm_assistant_routes import router as assistant_router
 from hhs_backend.api.pass166_word2vec_routes import router as word2vec_router
 
 ROOT_DIR = Path(__file__).resolve().parents[1]
-RUNTIME_OS_ROOT = ROOT_DIR / "hhs_gui" / "dist"
+VISUAL_ROOT = ROOT_DIR / "applications" / "holofractal_harmonizer"
 
 app = canonical.app
-app.title = "HHS Visual Runtime OS"
-app.version = "3.2.1"
+app.title = "HHS Holofractal Harmonizer"
+app.version = "3.3.0"
 app.description = (
-    "Canonical HHS runtime, workspace, graph, replay, receipt, multimodal, "
-    "capability, document, language-memory, and assistant server."
+    "Canonical HHS runtime, Pass 161 object environment, workflow-first visual "
+    "IDE, workspace, graph, replay, receipt, multimodal, installation, "
+    "language-memory, and assistant server."
 )
 
 
@@ -46,13 +47,24 @@ if not _has_route_prefix("/api/assistant"):
     app.include_router(assistant_router)
 if not _has_route_prefix("/v1/modalities/language"):
     app.include_router(word2vec_router)
+if not _has_route_prefix("/api/runtime/installation"):
+    app.include_router(installation_router)
 
+# Remove only prior root projections or static root mounts. Every API and
+# WebSocket route remains registered before the verified visual application.
 app.router.routes = [
     route
     for route in app.router.routes
     if not (
-        getattr(route, "path", None) == "/"
-        and "GET" in (getattr(route, "methods", None) or set())
+        getattr(route, "path", None) in {"", "/"}
+        and (
+            "GET" in (getattr(route, "methods", None) or set())
+            or getattr(route, "name", None) in {
+                "hhs-canonical-visual-runtime-os",
+                "hhs-visual-home",
+                "hhs-production-harmonizer",
+            }
+        )
     )
 ]
 
@@ -73,7 +85,10 @@ def _object_summary(obj: Mapping[str, Any]) -> dict[str, Any]:
 def _workspace_session_snapshot(project_id: str | None = None) -> dict[str, Any]:
     loop = canonical.WORKSPACE_AUTHORITY_LOOP
     projects = list(loop.projects.values())
-    projects.sort(key=lambda item: int(item.get("updated_at_unix_ms") or item.get("created_at_unix_ms") or 0), reverse=True)
+    projects.sort(
+        key=lambda item: int(item.get("updated_at_unix_ms") or item.get("created_at_unix_ms") or 0),
+        reverse=True,
+    )
     active = loop.projects.get(project_id or "") if project_id else None
     if active is None and projects:
         active = projects[0]
@@ -147,8 +162,6 @@ async def _assistant_health() -> dict[str, Any]:
             DEFAULT_PRODUCTION_ASSISTANT_SERVICE,
         )
 
-        # A cold native provider must be given enough bounded time to import and
-        # verify Pass 148/151. This is the same singleton used by /api/assistant/chat.
         DEFAULT_PRODUCTION_ASSISTANT_SERVICE._health_timeout = max(
             float(DEFAULT_PRODUCTION_ASSISTANT_SERVICE._health_timeout),
             5.0,
@@ -181,11 +194,7 @@ def _runtime_authority_status() -> dict[str, Any]:
     return {
         "schema": "HHS_PRODUCTION_RUNTIME_AUTHORITY_STATUS_V1",
         "ok": authority_ready,
-        "status": (
-            "HHS_RUNTIME_AUTHORITY_ONLINE"
-            if authority_ready
-            else "HHS_RUNTIME_AUTHORITY_OFFLINE"
-        ),
+        "status": "HHS_RUNTIME_AUTHORITY_ONLINE" if authority_ready else "HHS_RUNTIME_AUTHORITY_WARMING",
         "canonical_runtime_attached": bool(canonical.SERVER_STATE.get("runtime_initialized")),
         "graph_initialized": bool(canonical.SERVER_STATE.get("graph_initialized")),
         "websocket_ready": bool(canonical.SERVER_STATE.get("websocket_ready")),
@@ -218,6 +227,7 @@ async def production_product_health() -> dict[str, Any]:
         "runtime": runtime,
         "assistant": assistant,
         "visual_shell_only": False,
+        "public_interface": "HHS_PASS_161_WORKFLOW_FIRST_HARMONIZER",
         "hosted_native_assistant_word2vec_required": False,
         "gemma_preferred_when_registered": True,
     }
@@ -227,15 +237,15 @@ async def production_product_health() -> dict[str, Any]:
 async def production_health() -> dict[str, Any]:
     canonical_health = await canonical.health()
     assistant_health = await _assistant_health()
-    bundle_present = (RUNTIME_OS_ROOT / "index.html").is_file()
+    visual_present = (VISUAL_ROOT / "index.html").is_file()
     runtime_status = _runtime_authority_status()
-    fully_ready = bool(bundle_present and runtime_status.get("ok") and assistant_health.get("online"))
+    fully_ready = bool(visual_present and runtime_status.get("ok") and assistant_health.get("online"))
     return {
         "schema": "HHS_CANONICAL_PRODUCTION_HEALTH_V1",
         "ok": fully_ready,
         "status": "healthy" if fully_ready else "degraded",
-        "interface": "HHS_VISUAL_RUNTIME_OS_WORKSPACE",
-        "runtime_os_bundle_present": bundle_present,
+        "interface": "HHS_PASS_161_WORKFLOW_FIRST_HARMONIZER",
+        "visual_application_present": visual_present,
         "canonical_runtime_attached": bool(canonical.SERVER_STATE.get("runtime_initialized")),
         "graph_initialized": bool(canonical.SERVER_STATE.get("graph_initialized")),
         "websocket_ready": bool(canonical.SERVER_STATE.get("websocket_ready")),
@@ -250,7 +260,9 @@ async def production_system_status() -> dict[str, Any]:
     return {
         "schema": "HHS_CANONICAL_PRODUCTION_SYSTEM_STATUS_V1",
         "system": "HARMONICODE",
-        "interface": "HHS_VISUAL_RUNTIME_OS_WORKSPACE",
+        "interface": "HHS_PASS_161_WORKFLOW_FIRST_HARMONIZER",
+        "visual_environment": "HHS-P161-HHUMOCE",
+        "usability_default": "WORKFLOW_FIRST_PROGRESSIVE_DISCLOSURE",
         "canonical_runtime_attached": bool(canonical.SERVER_STATE.get("runtime_initialized")),
         "graph_initialized": bool(canonical.SERVER_STATE.get("graph_initialized")),
         "websocket_ready": bool(canonical.SERVER_STATE.get("websocket_ready")),
@@ -259,25 +271,27 @@ async def production_system_status() -> dict[str, Any]:
         "workspace_session_api": "/api/runtime/workspace/session",
         "workspace_api": "/api/runtime/workspace",
         "runtime_api": "/api/runtime",
+        "runtime_services_api": "/api/runtime/services",
         "capability_api": "/api/runtime/capability",
         "document_api": "/api/runtime/document",
         "assistant_api": "/api/assistant",
+        "installation_api": "/api/runtime/installation",
         "word2vec_api": "/v1/modalities/language",
     }
 
 
-if (RUNTIME_OS_ROOT / "index.html").is_file():
+if (VISUAL_ROOT / "index.html").is_file():
     app.mount(
         "/",
-        StaticFiles(directory=str(RUNTIME_OS_ROOT), html=True),
-        name="hhs-canonical-visual-runtime-os",
+        StaticFiles(directory=str(VISUAL_ROOT), html=True),
+        name="hhs-production-harmonizer",
     )
 else:
     @app.get("/", response_class=HTMLResponse)
-    async def missing_runtime_os_bundle() -> str:
-        return """<!doctype html><html><head><meta charset='utf-8'><title>HHS Visual Runtime OS</title></head>
-        <body style='background:#000;color:#fff;font-family:system-ui;padding:2rem'>
-        <h1>Canonical Runtime OS bundle unavailable</h1>
-        <p>Build <code>hhs_gui/dist</code> before starting production.</p>
+    async def missing_visual_application() -> str:
+        return """<!doctype html><html><head><meta charset='utf-8'><title>HHS Holofractal Harmonizer</title></head>
+        <body style='background:#050912;color:#fff;font-family:system-ui;padding:2rem'>
+        <h1>Verified Pass 161 visual application unavailable</h1>
+        <p>Expected <code>applications/holofractal_harmonizer/index.html</code>.</p>
         <p><a style='color:#67e8f9' href='/healthz'>View canonical backend health</a></p>
         </body></html>"""
