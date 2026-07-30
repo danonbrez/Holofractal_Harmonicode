@@ -6,6 +6,8 @@ $('#ide-home').onclick = showIde;
 $('#assistant-home').addEventListener('click', () => showOther('assistant'), true);
 $('#object-workspace').addEventListener('click', () => showOther('workspace'), true);
 $('#return-assistant').addEventListener('click', (event) => { event.stopImmediatePropagation(); showIde(); }, true);
+$('#open-api').addEventListener('click', (event) => { event.stopImmediatePropagation(); showOther('api'); }, true);
+$('#assistant-open-api').addEventListener('click', () => showOther('api'), true);
 $$('[data-close-view]').forEach((button) => button.addEventListener('click', (event) => { event.stopImmediatePropagation(); showIde(); }, true));
 $('#ide-new-file').onclick = createFile;
 $('#ide-save').onclick = saveFile;
