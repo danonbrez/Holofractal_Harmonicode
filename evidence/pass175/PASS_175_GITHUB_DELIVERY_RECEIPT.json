@@ -1,0 +1,47 @@
+{
+  "branch": "main",
+  "classification": "PRECONTRACT_CONTRACT_AND_EVIDENCE_DELIVERED_NOT_TERMINAL_PASS175_IMPLEMENTATION",
+  "commits": [
+    {
+      "scope": "formal Pass 175 contract",
+      "sha": "20050f26b2ddb54229d2f6b469d001e7f84b938f"
+    },
+    {
+      "scope": "deep pattern analysis and benchmark report",
+      "sha": "7e1c55706c9d6f8f1467ef7063cae4353554862a"
+    },
+    {
+      "scope": "combined machine-readable benchmark evidence",
+      "sha": "f583633a6318710ade5984a25248561c7c7936a1"
+    },
+    {
+      "scope": "machine-readable pattern analysis",
+      "sha": "04c13b1b62e1fb58a8348a747fdae25e7c2470cf"
+    },
+    {
+      "scope": "restartable pre-contract checkpoint",
+      "sha": "55b2afe094aeb1456c6773e5db5364ee9fc6edef"
+    },
+    {
+      "scope": "native C11 candidate and singular-commit benchmark source",
+      "sha": "ed3e50a837ce168ddeb54487f2656e26cd99eaef"
+    }
+  ],
+  "latest_observed_main": "ed3e50a837ce168ddeb54487f2656e26cd99eaef",
+  "local_validation": [
+    "Python py_compile passed",
+    "C11/OpenMP compiled with -O3 -Wall -Wextra -Werror",
+    "native smoke execution produced valid JSON",
+    "all evidence JSON parsed",
+    "Markdown fence and display-math delimiters balanced",
+    "ZIP integrity test passed"
+  ],
+  "post_delivery_status": {
+    "combined_status": "failure",
+    "interpretation": "Platform deployment quota failure; no claim of green CI.",
+    "reason": "Vercel build-rate-limit / upgradeToPro status URL",
+    "status_context": "Vercel"
+  },
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "schema": "HHS_PASS_175_GITHUB_DELIVERY_RECEIPT_V1"
+}
