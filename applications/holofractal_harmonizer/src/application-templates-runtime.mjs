@@ -1,5 +1,6 @@
 import { APPLICATION_TEMPLATES as BASE_TEMPLATES } from './application-templates.mjs';
 import { HARMONIC_PUZZLE_TEMPLATE } from './harmonic-puzzle-template.mjs';
+import { PLATFORMER_LEVEL1_TEMPLATE } from './platformer-template.mjs';
 
 const CALCULATOR_APPLICATION_SOURCE = [
   'const display = document.querySelector("#display");',
@@ -119,6 +120,7 @@ function normalizeTemplate(template) {
 const TEMPLATE_SOURCES = Object.freeze({
   ...BASE_TEMPLATES,
   [HARMONIC_PUZZLE_TEMPLATE.id]: HARMONIC_PUZZLE_TEMPLATE,
+  [PLATFORMER_LEVEL1_TEMPLATE.id]: PLATFORMER_LEVEL1_TEMPLATE,
 });
 
 export const APPLICATION_TEMPLATES = Object.freeze(Object.fromEntries(
