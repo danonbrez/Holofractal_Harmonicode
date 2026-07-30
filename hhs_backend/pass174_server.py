@@ -2,14 +2,15 @@
 
 The complete production Visual IDE, assistant, installation, multimodal,
 workspace, API, WebSocket, and singleton runtime surfaces are inherited first.
-Pass 174 then adds its governed runtime routes, bounded readiness watchdog, and
-front-and-center visual workspace. The prior production visual application is
-preserved at ``/legacy-ide/`` rather than deleted.
+Pass 174 then adds its governed runtime routes, non-blocking readiness watchdog,
+and front-and-center visual workspace. The prior production visual application
+is preserved at ``/legacy-ide/`` rather than deleted.
 """
 from __future__ import annotations
 
 import asyncio
-from contextlib import asynccontextmanager
+from contextlib import asynccontextmanager, suppress
+import json
 import os
 from pathlib import Path
 import time
@@ -24,7 +25,7 @@ from hhs_backend.api import pass174_ws_routes as _pass174_ws_routes  # registers
 
 app = inherited_ide.app
 app.title = "HHS Pass 174 Harmonic Visual SDLC Runtime"
-app.version = "4.0.0"
+app.version = "4.0.1"
 app.description = (
     "Append-only successor to every legacy HHS pass through Pass 173, with a "
     "64:72:81 phase-gear VM81 runtime, encrypted Hash216 retrieval, governed "
@@ -35,6 +36,9 @@ PASS174_BOOT_STATE: dict[str, Any] = {
     "schema": "HHS_P174_BOOT_STATE_V1",
     "classification": "HHS_P174_BOOT_PENDING",
     "ready": False,
+    "authority_ready": False,
+    "service_available": False,
+    "degraded": False,
     "silent_freeze": False,
     "started_monotonic": time.monotonic(),
 }
@@ -80,11 +84,15 @@ if _legacy_ide_root.is_dir():
     )
 
 
+def _emit_boot_event() -> None:
+    """Emit one bounded machine-readable startup record to platform logs."""
+    print(json.dumps(PASS174_BOOT_STATE, sort_keys=True, default=str), flush=True)
+
+
 async def _pass174_readiness_probe() -> None:
     # Repository specification discovery and SQLite initialization are
-    # synchronous filesystem work. Run them off the event loop so wait_for can
-    # actually enforce the bounded boot timeout instead of reporting a timeout
-    # only after a blocking scan has already completed.
+    # synchronous filesystem work. Run them off the event loop so the web
+    # service remains responsive while the authority becomes ready.
     runtime = await asyncio.to_thread(get_runtime)
     status = await asyncio.to_thread(runtime.status)
     if status["kernel_authorities"] != 1:
@@ -103,39 +111,59 @@ async def _pass174_readiness_probe() -> None:
     if not _has_route_prefix("/api/v1/pass174/ws/events"):
         raise RuntimeError("HHS_P174_LIVE_EVENT_ROUTE_MISSING")
     route_paths = [str(getattr(route, "path", "")) for route in app.router.routes]
-    if route_paths.index("/api/v1/pass174/status") > route_paths.index(_API_FALLBACK_PATH):
+    if _API_FALLBACK_PATH in route_paths and route_paths.index("/api/v1/pass174/status") > route_paths.index(_API_FALLBACK_PATH):
         raise RuntimeError("HHS_P174_API_ROUTE_SHADOWED_BY_FALLBACK")
 
 
-async def initialize_pass174_overlay() -> None:
+async def initialize_pass174_overlay() -> bool:
+    """Initialize authority without terminating the serving process on failure.
+
+    Readiness remains fail-closed: authority endpoints continue to return their
+    explicit 503/rejection classifications until initialization succeeds. The
+    web process itself remains available so Heroku can route health, deployment
+    status, diagnostics, and the degraded Visual IDE instead of showing H10/H20.
+    """
     timeout_seconds = float(os.environ.get("HHS_PASS174_BOOT_TIMEOUT_SECONDS", "12"))
     probe_started = time.monotonic()
     try:
         await asyncio.wait_for(_pass174_readiness_probe(), timeout=timeout_seconds)
-    except asyncio.TimeoutError as exc:
+    except asyncio.TimeoutError:
         PASS174_BOOT_STATE.update({
             "classification": "HHS_P174_BOOT_FREEZE_DETECTED",
             "phase": "PASS174_READINESS_PROBE",
             "ready": False,
+            "authority_ready": False,
+            "service_available": True,
+            "degraded": True,
             "silent_freeze": False,
             "timeout_seconds": timeout_seconds,
             "elapsed_seconds": time.monotonic() - probe_started,
+            "remediation": "Inspect /api/v1/pass174/deployment/status and retry after peer recovery.",
         })
-        raise RuntimeError("HHS_P174_BOOT_FREEZE_DETECTED:PASS174_READINESS_PROBE") from exc
+        _emit_boot_event()
+        return False
     except Exception as exc:
         PASS174_BOOT_STATE.update({
             "classification": getattr(exc, "classification", "HHS_P174_BOOT_PEER_FAILURE"),
             "phase": "PASS174_READINESS_PROBE",
             "ready": False,
+            "authority_ready": False,
+            "service_available": True,
+            "degraded": True,
             "silent_freeze": False,
-            "detail": str(exc),
+            "detail": f"{type(exc).__name__}: {exc}",
             "elapsed_seconds": time.monotonic() - probe_started,
+            "remediation": "Inspect platform logs and the deployment-status endpoint; runtime authority remains closed.",
         })
-        raise
+        _emit_boot_event()
+        return False
     PASS174_BOOT_STATE.update({
         "classification": "HHS_P174_BOOT_READY",
         "phase": "COMPLETE",
         "ready": True,
+        "authority_ready": True,
+        "service_available": True,
+        "degraded": False,
         "silent_freeze": False,
         "ready_monotonic": time.monotonic(),
         "readiness_elapsed_seconds": time.monotonic() - probe_started,
@@ -145,18 +173,39 @@ async def initialize_pass174_overlay() -> None:
         "inherited_route_count": len(app.router.routes),
         "api_fallback_deferred": bool(_deferred_api_fallback_routes),
     })
+    _emit_boot_event()
+    return True
 
 
 # The inherited production app already owns the complete canonical lifespan.
-# Pass 174 composes its bounded readiness gate inside that authority.
+# Pass 174 starts its bounded authority probe after the serving lifespan enters;
+# no recoverable peer or filesystem failure may terminate the only web dyno.
 _inherited_lifespan = app.router.lifespan_context
 
 
 @asynccontextmanager
 async def _pass174_lifespan(app_instance):
     async with _inherited_lifespan(app_instance):
-        await initialize_pass174_overlay()
-        yield
+        PASS174_BOOT_STATE.update({
+            "classification": "HHS_P174_BOOT_PROBING",
+            "phase": "PASS174_READINESS_PROBE",
+            "service_available": True,
+            "authority_ready": False,
+            "degraded": False,
+            "silent_freeze": False,
+        })
+        _emit_boot_event()
+        readiness_task = asyncio.create_task(
+            initialize_pass174_overlay(),
+            name="hhs-pass174-readiness-probe",
+        )
+        try:
+            yield
+        finally:
+            if not readiness_task.done():
+                readiness_task.cancel()
+            with suppress(asyncio.CancelledError):
+                await readiness_task
 
 
 app.router.lifespan_context = _pass174_lifespan
@@ -183,4 +232,7 @@ else:
     PASS174_BOOT_STATE.update({
         "classification": "HHS_P174_VISUAL_IDE_ASSET_ROOT_MISSING",
         "asset_root": str(_ide_root),
+        "ready": False,
+        "authority_ready": False,
+        "degraded": True,
     })
