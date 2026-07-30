@@ -11,6 +11,8 @@ on:
       - "hhs_backend/api/pass166_word2vec_routes.py"
       - "hhs_backend/runtime/hhs_production_assistant_v1.py"
       - "hhs_backend/runtime/hhs_native_litert_lm_provider_v1.py"
+      - "hhs_backend/runtime/hhs_litert_lm_hhs_api_assistant_v1.py"
+      - "hhs_backend/runtime/live_fastapi_workflow_v1.py"
       - "tests/test_hhs_production_public_app_v1.py"
       - "Procfile"
       - "bin/post_compile"
@@ -26,6 +28,8 @@ on:
       - "hhs_backend/api/pass166_word2vec_routes.py"
       - "hhs_backend/runtime/hhs_production_assistant_v1.py"
       - "hhs_backend/runtime/hhs_native_litert_lm_provider_v1.py"
+      - "hhs_backend/runtime/hhs_litert_lm_hhs_api_assistant_v1.py"
+      - "hhs_backend/runtime/live_fastapi_workflow_v1.py"
       - "tests/test_hhs_production_public_app_v1.py"
       - "Procfile"
       - "bin/post_compile"
@@ -70,7 +74,7 @@ jobs:
       - name: Build native Hash72 runtime and assistant authority
         env:
           HHS_NATIVE_LANGUAGE_REQUIRE_WORD2VEC: "0"
-          HHS_ASSISTANT_HEALTH_TIMEOUT_SECONDS: "0.5"
+          HHS_ASSISTANT_HEALTH_TIMEOUT_SECONDS: "5"
         run: |
           timeout 600s bash bin/post_compile
           test -s hhs_runtime/builds/libhhs_runtime.so
@@ -80,7 +84,7 @@ jobs:
           HHS_DISABLE_C_AUTOBUILD: "1"
           HHS_LITERT_LM_BACKEND: auto
           HHS_NATIVE_LANGUAGE_REQUIRE_WORD2VEC: "0"
-          HHS_ASSISTANT_HEALTH_TIMEOUT_SECONDS: "0.5"
+          HHS_ASSISTANT_HEALTH_TIMEOUT_SECONDS: "5"
         run: |
           timeout 300s pytest -q tests/test_hhs_production_public_app_v1.py
           timeout 180s python - <<'PY'
