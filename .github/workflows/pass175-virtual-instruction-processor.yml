@@ -1,0 +1,78 @@
+name: Validate Pass 175 Virtual Instruction Processor
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'hhs_runtime/pass175/**'
+      - 'hhs_backend/api/pass175_*'
+      - 'hhs_backend/application_ide_server.py'
+      - 'native_projects/hhs_pass175_virtual_instruction_processor/**'
+      - 'tests/test_pass175_virtual_instruction_processor.py'
+      - '.github/workflows/pass175-virtual-instruction-processor.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'hhs_runtime/pass175/**'
+      - 'hhs_backend/api/pass175_*'
+      - 'hhs_backend/application_ide_server.py'
+      - 'native_projects/hhs_pass175_virtual_instruction_processor/**'
+      - 'tests/test_pass175_virtual_instruction_processor.py'
+      - '.github/workflows/pass175-virtual-instruction-processor.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pass175-virtual-instruction-processor-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate-pass175:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      HHS_DISABLE_C_AUTOBUILD: '1'
+      HHS_NATIVE_LANGUAGE_REQUIRE_WORD2VEC: '0'
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependency-scoped packages
+        run: |
+          timeout 300s python -m pip install --upgrade pip
+          timeout 300s python -m pip install \
+            fastapi==0.128.2 \
+            starlette==0.50.0 \
+            'cryptography>=46.0,<47.0' \
+            pytest
+
+      - name: Compile Pass 175 Python surfaces
+        run: |
+          timeout 60s python -m py_compile \
+            hhs_runtime/pass175/runtime.py \
+            hhs_runtime/pass175/cli.py \
+            hhs_backend/api/pass175_runtime_routes.py \
+            hhs_backend/api/pass175_ws_routes.py \
+            hhs_backend/application_ide_server.py
+
+      - name: Execute Pass 175 Python verification matrix
+        run: timeout 600s pytest -q tests/test_pass175_virtual_instruction_processor.py
+
+      - name: Build and execute strict C11 native tests
+        working-directory: native_projects/hhs_pass175_virtual_instruction_processor
+        run: timeout 300s make clean test
+
+      - name: Verify production route composition
+        run: |
+          grep -q 'pass175_runtime_routes' hhs_backend/application_ide_server.py
+          grep -q '/api/v1/pass175/ws/events' hhs_backend/api/pass175_ws_routes.py
+          grep -q 'singleton_vm81_commit_authority' hhs_runtime/pass175/runtime.py
+          grep -q 'parallel_state_authority.*False' hhs_runtime/pass175/runtime.py

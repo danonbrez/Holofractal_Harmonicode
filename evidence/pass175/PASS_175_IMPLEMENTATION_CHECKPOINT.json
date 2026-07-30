@@ -1,0 +1,36 @@
+{
+  "schema": "HHS_PASS_175_IMPLEMENTATION_CHECKPOINT_V1",
+  "classification": "PASS_175_IMPLEMENTATION_DEVELOPMENT_ACTIVE_NONTERMINAL",
+  "authoritative_base_commit": "654e7f589557efde142418f7f9240e9e1e04e8a9",
+  "active_branch": "agent/pass175-implementation",
+  "merge_target": "main",
+  "implemented": [
+    "VM5184 permanent instruction addressing",
+    "G243 five-trit control addressing",
+    "Hash216 hydrated instruction records with 216 positional indexes",
+    "bounded exact x86_64 bootstrap decoder and retained byte identity",
+    "durable append-only microcode store",
+    "conflict-safe parallel immutable candidate waves",
+    "deterministic ordering barrier",
+    "singleton inherited VM81 commit delegation",
+    "guarded reciprocal xy/yx projection",
+    "governed keyboard and port I/O candidates",
+    "HTTP API, WebSocket, CLI, C11 native layer, and CI validation"
+  ],
+  "validation_commands": [
+    "python -m py_compile hhs_runtime/pass175/runtime.py hhs_runtime/pass175/cli.py hhs_backend/api/pass175_runtime_routes.py hhs_backend/api/pass175_ws_routes.py hhs_backend/application_ide_server.py",
+    "pytest -q tests/test_pass175_virtual_instruction_processor.py",
+    "make -C native_projects/hhs_pass175_virtual_instruction_processor clean test"
+  ],
+  "remaining": [
+    "complete x86_64 architectural decoder corpus",
+    "complete virtual firmware and BIOS hydration",
+    "full governed device set",
+    "encrypted durable Hash216 integration",
+    "compiled invariant kernel binary artifacts",
+    "cross-architecture and production performance verification",
+    "Visual IDE processor panels and browser end-to-end verification"
+  ],
+  "next_action": "Run dependency-scoped CI, repair failures, merge the ready implementation PR to main, and verify main.",
+  "terminal_pass175_completion_claimed": false
+}
