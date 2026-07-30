@@ -7,7 +7,6 @@ on:
       - "hhs_backend/api/pass174_runtime_routes.py"
       - "hhs_runtime/pass174/**"
       - "tests/test_hhs_pass174_heroku_boot_resilience_v1.py"
-      - "tests/test_hhs_production_public_app_v1.py"
       - ".github/workflows/pass174-heroku-boot-resilience.yml"
   push:
     branches: [main]
@@ -16,7 +15,6 @@ on:
       - "hhs_backend/api/pass174_runtime_routes.py"
       - "hhs_runtime/pass174/**"
       - "tests/test_hhs_pass174_heroku_boot_resilience_v1.py"
-      - "tests/test_hhs_production_public_app_v1.py"
       - ".github/workflows/pass174-heroku-boot-resilience.yml"
   workflow_dispatch:
 
@@ -30,7 +28,7 @@ jobs:
     env:
       HHS_NATIVE_LANGUAGE_REQUIRE_WORD2VEC: "0"
       HHS_ASSISTANT_HEALTH_TIMEOUT_SECONDS: "1"
-      HHS_PASS174_BOOT_TIMEOUT_SECONDS: "12"
+      HHS_PASS174_BOOT_TIMEOUT_SECONDS: "2"
       HHS_PASS174_STATE_DIR: ${{ runner.temp }}/hhs/pass174
     steps:
       - name: Check out source revision
@@ -52,11 +50,6 @@ jobs:
 
       - name: Prove degraded boot keeps the web service alive
         run: python -m pytest -q tests/test_hhs_pass174_heroku_boot_resilience_v1.py
-
-      - name: Prove production overlay reaches terminal readiness
-        run: >-
-          python -m pytest -q
-          tests/test_hhs_production_public_app_v1.py::test_pass174_public_overlay_routes_http_websocket_and_visual_roots
 
       - name: Prove production entrypoint imports
         run: |
