@@ -64,9 +64,13 @@ jobs:
             starlette==0.50.0 \
             'httpx>=0.27,<1.0' \
             'uvicorn[standard]>=0.30,<1.0' \
+            'cryptography>=46.0,<47.0' \
             pytest
 
-      - name: Build native Hash72 runtime receipt authority
+      - name: Build native Hash72 runtime and assistant authority
+        env:
+          HHS_NATIVE_LANGUAGE_REQUIRE_WORD2VEC: "0"
+          HHS_ASSISTANT_HEALTH_TIMEOUT_SECONDS: "0.5"
         run: |
           timeout 600s bash bin/post_compile
           test -s hhs_runtime/builds/libhhs_runtime.so
@@ -75,7 +79,8 @@ jobs:
         env:
           HHS_DISABLE_C_AUTOBUILD: "1"
           HHS_LITERT_LM_BACKEND: auto
-          HHS_ASSISTANT_HEALTH_TIMEOUT_SECONDS: "0.1"
+          HHS_NATIVE_LANGUAGE_REQUIRE_WORD2VEC: "0"
+          HHS_ASSISTANT_HEALTH_TIMEOUT_SECONDS: "0.5"
         run: |
           timeout 300s pytest -q tests/test_hhs_production_public_app_v1.py
           timeout 180s python - <<'PY'
@@ -84,11 +89,14 @@ jobs:
 
           paths = {str(getattr(route, "path", "")) for route in app.router.routes}
           required = {
+              "/api/product/health",
+              "/api/runtime/authority/status",
               "/api/runtime/gui/command",
               "/api/runtime/workspace/session",
               "/api/runtime/workspace/command",
               "/api/runtime/capability/resolve",
               "/api/runtime/document/perceive",
+              "/api/assistant/health",
               "/api/assistant/chat",
               "/v1/modalities/language/models/word2vec/status",
               "/ws/runtime",
@@ -132,10 +140,17 @@ jobs:
           grep -q "HHS Visual Runtime OS Workspace" hhs_gui/dist/index.html
           grep -q "frontend_boot_timeout" hhs_gui/dist/index.html
           grep -R -q "hhs-canonical-runtime-ide" hhs_gui/dist/assets
+          grep -R -q "hhs-product-workspace" hhs_gui/dist/assets
+          grep -R -q "registry-visual-programmer" hhs_gui/dist/assets
           grep -R -q "hhs-visual-runtime-os-workspace" hhs_gui/dist/assets
           grep -R -q "runtime-assistant-panel" hhs_gui/dist/assets
           grep -R -q "Source → artifact → emulator" hhs_gui/dist/assets
           grep -R -q "Only operations that actually returned from the backend appear here" hhs_gui/dist/assets
+          grep -R -q "/api/product/health" hhs_gui/dist/assets
+          grep -R -q "/api/runtime/authority/status" hhs_gui/dist/assets
+          grep -R -q "RUNTIME AUTHORITY ONLINE" hhs_gui/dist/assets
+          grep -R -q "/api/runtime/services/dispatch" hhs_gui/dist/assets
+          grep -R -q "HHS_REGISTRY_VISUAL_PROGRAM_V1" hhs_gui/dist/assets
           if grep -R -q "Production visual IDE · callable surfaces only" hhs_gui/dist/assets; then
             echo "Replacement ProductionApp leaked into canonical bundle"
             exit 1
