@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import asyncio
+import json
 from pathlib import Path
 
 
@@ -8,9 +9,10 @@ def route_paths(app) -> set[str]:
     return {str(getattr(route, "path", "")) for route in app.router.routes}
 
 
-def test_production_server_composes_canonical_backend_and_visual_ide():
-    from hhs_backend.production_server import app
+def test_production_server_composes_canonical_backend_and_verified_harmonizer():
+    from hhs_backend import production_server
 
+    app = production_server.app
     paths = route_paths(app)
     required = {
         "/healthz",
@@ -26,6 +28,9 @@ def test_production_server_composes_canonical_backend_and_visual_ide():
         "/api/runtime/capability/resolve",
         "/api/runtime/document/perception/status",
         "/api/runtime/document/perceive",
+        "/api/runtime/services",
+        "/api/runtime/services/dispatch",
+        "/api/runtime/installation/status",
         "/api/assistant/health",
         "/api/assistant/chat",
         "/v1/modalities/language/models/word2vec/status",
@@ -33,6 +38,12 @@ def test_production_server_composes_canonical_backend_and_visual_ide():
     }
     assert required.issubset(paths)
     assert "" in paths or "/" in paths
+    assert production_server.VISUAL_ROOT == Path("applications/holofractal_harmonizer").resolve()
+    assert (production_server.VISUAL_ROOT / "index.html").is_file()
+    assert any(
+        getattr(route, "name", None) == "hhs-production-harmonizer"
+        for route in app.router.routes
+    )
 
 
 def test_integrated_workspace_session_is_lightweight_and_real():
@@ -119,7 +130,7 @@ def test_runtime_authority_boots_and_reports_real_workflow_state():
     asyncio.run(verify())
 
 
-def test_procfile_boots_canonical_production_server():
+def test_procfile_boots_integrated_production_server():
     procfile = Path("Procfile").read_text(encoding="utf-8")
     assert "hhs_backend.production_server:app" in procfile
     assert "hhs_backend.heroku_server:app" not in procfile
@@ -132,108 +143,88 @@ def test_post_compile_refuses_assistant_offline_deployment():
     assert "make c-abi" in source
 
 
-def test_frontend_entrypoint_uses_integrated_client_not_legacy_desktop_runtime():
-    source = Path("hhs_gui/main.tsx").read_text(encoding="utf-8")
-    assert "CanonicalRuntimeIDE" in source
-    assert "IntegratedRuntimeClient" in source
-    assert "__HHS_RUNTIME_CLIENT__" in source
-    assert 'from "./runtime_os/core/RuntimeOS"' not in source
-    assert "ProductionApp" not in source
-    assert "global.css" in source
+def test_pass161_terminal_browser_is_the_public_html_authority():
+    terminal = json.loads(
+        Path("applications/holofractal_harmonizer/HHS_PASS_161_TERMINAL_RELEASE.json")
+        .read_text(encoding="utf-8")
+    )
+    receipt = json.loads(
+        Path("applications/holofractal_harmonizer/evidence/pass161/P161_COMPLETION_RECEIPT.json")
+        .read_text(encoding="utf-8")
+    )
+    html = Path("applications/holofractal_harmonizer/index.html").read_text(encoding="utf-8")
+
+    assert terminal["omega_161"] is True
+    assert terminal["terminal_claimed"] is True
+    assert receipt["checks"]["browser_complete"] is True
+    assert receipt["checks"]["native_bound"] is True
+    assert 'id="registry-tree"' in html
+    assert 'id="assistant-view"' in html
+    assert 'id="api-view"' in html
+    assert 'id="inspector"' in html
+    assert html.index("src/browser.mjs") < html.index("src/ux-default.mjs")
+    assert html.index("src/ux-default.mjs") < html.index("src/production-integration.mjs")
+    assert "hhs_gui/dist" not in html
 
 
-def test_runtime_transport_is_deferred_but_authority_is_verified_independently():
-    client = Path("hhs_gui/runtime_os/core/IntegratedRuntimeClient.ts").read_text(
+def test_usability_evidence_promotes_workflow_first_without_removing_objects():
+    report = Path("HHS_VISUAL_IDE_PARALLEL_AB_USABILITY_REPORT.md").read_text(
         encoding="utf-8"
     )
-    canonical = Path("hhs_gui/runtime_os/core/CanonicalRuntimeIDE.tsx").read_text(
+    metrics = json.loads(
+        Path("applications/holofractal_harmonizer/evidence/ux_ab_optimization_v1/metrics.json")
+        .read_text(encoding="utf-8")
+    )
+    ux_source = Path("applications/holofractal_harmonizer/src/ux-default.mjs").read_text(
         encoding="utf-8"
     )
-    projection = Path(
-        "hhs_gui/runtime_os/core/LiveRuntimeProjectionPanel.tsx"
+
+    assert "WORKFLOW_FIRST_PROGRESSIVE_DISCLOSURE" in report
+    assert "The enhancement does not replace `browser.mjs`, `core.mjs`, the object registry" in report
+    assert metrics["recommended_default"] == "WORKFLOW_FIRST_PROGRESSIVE_DISCLOSURE"
+    assert metrics["summary"]["relative_change_B_vs_A"] == {
+        "actions_percent": -50.0,
+        "context_switches_percent": -75.0,
+        "completion_time_percent": -39.0,
+    }
+    assert "Advanced Object Controls" in ux_source
+    assert "window.HHSHarmonizer" in ux_source
+    assert "workflow-mobile-tabs" in ux_source
+
+
+def test_verified_harmonizer_hydrates_live_backend_registry_and_dispatch():
+    source = Path(
+        "applications/holofractal_harmonizer/src/production-integration.mjs"
     ).read_text(encoding="utf-8")
-    product = Path(
-        "hhs_gui/runtime_os/workspace/HHSProductWorkspace.tsx"
-    ).read_text(encoding="utf-8")
 
-    assert "RuntimeApplicationRegistry" not in client
-    assert "RuntimeWindowManager" not in client
-    assert "runtimeClient.shutdown" in canonical
-    assert "runtimeOS.initialize()" in projection
-    assert "runtimeOS.shutdown()" in projection
-    assert "/api/runtime/authority/status" in projection
-    assert "WebSockets are on-demand projection channels" in projection
-    assert "/api/product/health" in product
-    assert "runtimeOnline" in product
-    assert "assistantOnline" in product
-
-
-def test_canonical_workspace_is_one_shared_transaction_surface():
-    source = Path("hhs_gui/runtime_os/workspace/HHSWorkspaceShell.tsx").read_text(
-        encoding="utf-8"
-    )
+    for endpoint in [
+        "/api/runtime/authority/status",
+        "/api/runtime/services",
+        "/api/runtime/services/dispatch",
+        "/api/runtime/workspace/session",
+        "/api/runtime/installation/status",
+    ]:
+        assert endpoint in source
 
     for token in [
-        "projectId",
-        "selectedObjectId",
-        "artifactId",
-        "sessionId",
-        "ensureProject",
-        "ensureSource",
-        "applyFeedback",
-        'tab === "workbench"',
-        'tab === "assistant"',
-        'tab === "runtime"',
-        'tab === "receipts"',
-        "project.create",
-        "ingress.register",
-        "interpret.execute",
-        "compile.execute",
-        "emulator.create",
-        "emulator.step",
-        "Only operations that actually returned from the backend appear here",
+        "runtime.registry.register",
+        "runtime.registry.relate",
+        "serviceDescriptors",
+        "serviceObjectIds",
+        "schemaDefaults",
+        "Execute registered service",
+        "BACKEND RESULT RETURNED",
+        "extractReceiptHash",
+        "frontend_result_fabricated: false",
+        "RUNTIME AUTHORITY · WARMING",
+        "frontend_is_authority: false",
     ]:
         assert token in source
 
-    for token in [
-        "RuntimeProjectTree",
-        "MultimodalIngressPanel",
-        "LiveBackendCapabilityPanel",
-        "HHSSymbolicEditor",
-        "InterpreterConsole",
-        "CompilerWorkbench",
-        "EmulatorControlPanel",
-        "RuntimeGraphCanvas",
-        "SemanticMemoryPanel",
-        "ReceiptLedgerInspector",
-        "MutationHistoryPanel",
-        "RuntimeCommandPanel",
-        "RuntimeMutationPanel",
-        "runtime_application_missing",
-    ]:
-        assert token not in source
-
-
-def test_public_html_keeps_boot_failure_visible():
-    source = Path("hhs_gui/index.html").read_text(encoding="utf-8")
-    assert "HHS Visual Runtime OS Workspace" in source
-    assert "frontend_boot_timeout" in source
-    assert "dataset.hhsMounted" in source
-    assert "overlay.remove()" not in source
-
-
-def test_assistant_is_bound_to_workspace_without_suggestion_autosubmit():
-    source = Path(
-        "hhs_gui/runtime_os/assistant/RuntimeAssistantPanel.tsx"
-    ).read_text(encoding="utf-8")
-    assert 'requestJson("/api/assistant/health")' in source
-    assert 'requestJson("/api/assistant/chat"' in source
-    assert "workspace_surface" in source
-    assert "source_object_id" in source
-    assert "artifact_id" in source
-    assert "No response or runtime mutation was fabricated" in source
-    assert "Suggestion" not in source
-    assert 'setInput("Explain' not in source
+    assert "new HarmonizerRuntime" not in source
+    assert "new WebSocket" not in source
+    assert "simulated_raw_result" not in source
+    assert "disabled registry item" not in source
 
 
 def test_provider_hierarchy_uses_gemma_then_native_hhs_without_canned_demo():
