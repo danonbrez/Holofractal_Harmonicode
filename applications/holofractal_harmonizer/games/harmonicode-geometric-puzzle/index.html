@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#100d18">
+  <meta name="description" content="A deterministic Lo Shu resonance puzzle built for the HHS Holofractal Harmonizer.">
+  <title>Harmonicode: Geometry of Closure</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <main class="game-shell">
+    <header class="game-header">
+      <div class="title-block">
+        <span class="eyebrow">HARMONICODE GEOMETRIC PUZZLE</span>
+        <h1>Geometry of Closure</h1>
+        <p>Rotate triads and the outer orbit until the Lo Shu lattice reaches full 144-point resonance.</p>
+      </div>
+      <div class="header-actions">
+        <label class="level-picker">Level
+          <select id="level-select" aria-label="Puzzle level"></select>
+        </label>
+        <button id="sound-toggle" type="button" aria-pressed="true">Sound on</button>
+      </div>
+    </header>
+
+    <section class="play-layout">
+      <section class="playfield-card" aria-label="Harmonic puzzle playfield">
+        <div class="hud" aria-label="Puzzle status">
+          <div><span>Resonance</span><strong id="score">0 / 144</strong></div>
+          <div><span>Aligned paths</span><strong id="resonant-lines">0 / 8</strong></div>
+          <div><span>Moves</span><strong id="moves">0 / 0</strong></div>
+          <div><span>Closure</span><strong id="closure-state">OPEN</strong></div>
+        </div>
+        <div class="canvas-frame">
+          <canvas id="game-canvas" width="900" height="900" tabindex="0" aria-label="Nine-cell Lo Shu lattice. Swipe rows, columns, or diagonals to rotate them."></canvas>
+          <div id="gesture-hint" class="gesture-hint">Swipe across a row, column, or diagonal. Use the phase controls for exact moves.</div>
+        </div>
+        <div class="primary-controls">
+          <button id="undo" type="button">Undo</button>
+          <button id="hint" type="button">Hint</button>
+          <button id="reset" type="button">Reset</button>
+          <button id="new-seed" type="button">New pattern</button>
+        </div>
+        <output id="status" class="status" aria-live="polite">Lattice initialized.</output>
+      </section>
+
+      <aside class="phase-panel" aria-label="Phase rotation controls">
+        <header>
+          <span class="eyebrow">PHASE GATES</span>
+          <h2>Rotate a geometric path</h2>
+          <p>Each gate preserves all nine values while changing their orientation.</p>
+        </header>
+        <div id="move-controls" class="move-controls"></div>
+        <details>
+          <summary>Keyboard controls</summary>
+          <p><kbd>1</kbd>–<kbd>9</kbd> select a gate. <kbd>←</kbd>/<kbd>→</kbd> rotate. <kbd>U</kbd> undo, <kbd>H</kbd> hint, <kbd>R</kbd> reset.</p>
+        </details>
+        <section class="invariant-card">
+          <span>Canonical target</span>
+          <code>4 9 2<br>3 5 7<br>8 1 6</code>
+          <small>Every row, column, and diagonal sums to 15. Exact orientation closes at 144.</small>
+        </section>
+      </aside>
+    </section>
+  </main>
+
+  <dialog id="win-dialog" class="win-dialog">
+    <form method="dialog">
+      <span class="eyebrow">RECURSION CLOSED</span>
+      <h2 id="win-title">Lattice stabilized</h2>
+      <p id="win-summary"></p>
+      <div class="dialog-actions">
+        <button value="close">Inspect board</button>
+        <button id="next-level" type="button" class="primary">Next level</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
