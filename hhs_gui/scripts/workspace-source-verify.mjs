@@ -16,6 +16,7 @@ const content = {
   commandClient: read("runtime_os/workspace/WorkspaceCommandClient.ts"),
   applicationRegistry: read("runtime_os/core/RuntimeApplicationRegistry.tsx"),
   productionServer: readRepo("hhs_backend/production_server.py"),
+  postCompile: readRepo("bin/post_compile"),
 }
 
 const publicSource = `${content.main}\n${content.canonicalIDE}\n${content.product}\n${content.programmer}\n${content.shell}`
@@ -37,7 +38,8 @@ assert(!content.main.includes('from "./runtime_os/core/RuntimeOS"'), "legacy des
 assert(!content.client.includes("RuntimeWindowManager"), "integrated client imports desktop window manager")
 assert(content.projection.includes("runtimeOS.initialize()"), "runtime transport is not activated by the selected Runtime surface")
 assert(content.projection.includes("runtimeOS.shutdown()"), "runtime transport remains active after leaving the Runtime surface")
-assert(content.projection.includes("Connected only while this tab is active"), "runtime transport is not declared on-demand")
+assert(content.projection.includes("/api/runtime/authority/status"), "runtime authority is inferred only from projection traffic")
+assert(content.projection.includes("WebSockets are on-demand projection channels"), "projection channel role is not explicit")
 
 for (const token of [
   'useState<ProductSurface>("program")',
@@ -46,6 +48,9 @@ for (const token of [
   "RegistryVisualProgrammer",
   "HHSWorkspaceShell",
   "executeWorkspaceOperation",
+  "/api/product/health",
+  "runtimeOnline",
+  "assistantOnline",
 ]) {
   assert(content.product.includes(token), `product composition missing ${token}`)
 }
@@ -77,11 +82,11 @@ for (const token of [
 }
 
 assert(content.programmer.includes("visibleDefinitions.map"), "registry palette does not expose every matching definition")
-assert(content.programmer.includes("definition.kind === \"service\""), "backend services are not executable nodes")
-assert(content.programmer.includes("definition.kind === \"workspace\""), "workspace operations are not executable nodes")
+assert(content.programmer.includes('definition.kind === "service"'), "backend services are not executable nodes")
+assert(content.programmer.includes('definition.kind === "workspace"'), "workspace operations are not executable nodes")
 assert(content.programmer.includes("setActiveApplicationId"), "application registry modules are inactive catalog entries")
 assert(content.programmer.includes("resultMap"), "graph execution does not propagate actual prior-node results")
-assert(content.programmer.includes("throw new Error(\"Visual program contains a cycle"), "graph cycle rejection is missing")
+assert(content.programmer.includes('throw new Error("Visual program contains a cycle'), "graph cycle rejection is missing")
 assert(!content.programmer.includes("disabled registry item"), "registry contains intentionally inactive buttons")
 
 for (const operation of [
@@ -139,11 +144,18 @@ for (const token of [
 
 for (const token of [
   "/api/runtime/workspace/session",
+  "/api/runtime/authority/status",
+  "/api/product/health",
+  "_runtime_authority_status",
+  "_assistant_health",
   "self_tests_executed",
   "_workspace_session_snapshot",
+  'os.environ.setdefault("HHS_NATIVE_LANGUAGE_REQUIRE_WORD2VEC", "0")',
 ]) {
-  assert(content.productionServer.includes(token), `lightweight workspace session missing ${token}`)
+  assert(content.productionServer.includes(token), `production authority composition missing ${token}`)
 }
+assert(content.postCompile.includes("--require-assistant"), "deployment can publish without an executable assistant provider")
+assert(content.postCompile.includes("HHS_NATIVE_LANGUAGE_REQUIRE_WORD2VEC"), "hosted native assistant mode is not explicit")
 
 for (const token of [
   "projectId",
@@ -163,6 +175,7 @@ assert(content.shell.includes("Project objects"), "workspace does not expose rea
 for (const forbidden of [
   "ProductionApp",
   "runtime_application_missing",
+  "visual_shell_only: true",
 ]) {
   assert(!publicSource.includes(forbidden), `obsolete public fallback leaked: ${forbidden}`)
 }
