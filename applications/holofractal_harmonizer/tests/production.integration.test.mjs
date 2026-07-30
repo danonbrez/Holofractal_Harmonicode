@@ -23,6 +23,32 @@ test('verified workflow-first Harmonizer remains the public presentation authori
   assert.match(html, /id="inspector"/);
 });
 
+test('Pass 161 browser imports and calls only verified core contracts', () => {
+  const source = read('src/browser.mjs');
+  assert.match(source, /HarmonizerRuntime,\s*OBJECT_TYPES,/s);
+  assert.doesNotMatch(source, /REGISTERED_OBJECT_TYPES/);
+  assert.match(source, /runtime\.authority\.grant\('human:owner'/);
+  assert.match(source, /'api\.invoke'/);
+  assert.match(source, /runtime\.apis\.register\(\s*'hhs:api:object-search',\s*\{/s);
+  assert.match(source, /operation:\s*'OBJECT_SEARCH'/);
+  assert.match(source, /authoritative_completion_evidence:\s*true/);
+  assert.match(source, /runtime\.faces\.register/);
+  assert.doesNotMatch(source, /runtime\.panels\.registerFace/);
+  assert.match(source, /runtime\.panels\.open\(objectId, \{ allow_repeat: true, stateful: false \}\)/);
+  assert.match(source, /runtime\.registry\.lookup\(objectId\)/);
+  assert.match(source, /object\.receipts\?\.at\(-1\)/);
+  for (const forbidden of [
+    "authority_state: 'ADMITTED'",
+    "authority_state: 'PROPOSAL_ONLY'",
+    "authority_state: 'EXTERNAL_PROVIDER'",
+    "authority_state: 'CANONICAL'",
+    "authority_state: 'API_BOUND'",
+    "authority_state: 'PROJECTION_ONLY'",
+  ]) {
+    assert.ok(!source.includes(forbidden), `browser uses invalid Pass 161 authority enum: ${forbidden}`);
+  }
+});
+
 test('Pass 161 runtime is exposed before assistant cold-start work', () => {
   const source = read('src/browser.mjs');
   const runtimeExposure = source.indexOf('window.HHSHarmonizer = runtime');
