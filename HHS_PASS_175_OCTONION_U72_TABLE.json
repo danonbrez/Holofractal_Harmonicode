@@ -1,0 +1,642 @@
+[
+  {
+    "left": "x",
+    "right": "x",
+    "ordered_product": "x*x",
+    "phase_index": 36,
+    "raw_additive_phase": 36,
+    "loshu_cell": 4,
+    "orientation": "COMPOSED",
+    "closure": true
+  },
+  {
+    "left": "x",
+    "right": "y",
+    "ordered_product": "x*y",
+    "phase_index": 0,
+    "raw_additive_phase": 0,
+    "loshu_cell": 4,
+    "orientation": "DIRECT",
+    "closure": true
+  },
+  {
+    "left": "x",
+    "right": "z",
+    "ordered_product": "x*z",
+    "phase_index": 36,
+    "raw_additive_phase": 36,
+    "loshu_cell": 4,
+    "orientation": "COMPOSED",
+    "closure": true
+  },
+  {
+    "left": "x",
+    "right": "w",
+    "ordered_product": "x*w",
+    "phase_index": 0,
+    "raw_additive_phase": 0,
+    "loshu_cell": 4,
+    "orientation": "COMPOSED",
+    "closure": true
+  },
+  {
+    "left": "x",
+    "right": "xy",
+    "ordered_product": "x*xy",
+    "phase_index": 18,
+    "raw_additive_phase": 18,
+    "loshu_cell": 4,
+    "orientation": "COMPOSED",
+    "closure": false
+  },
+  {
+    "left": "x",
+    "right": "yx",
+    "ordered_product": "x*yx",
+    "phase_index": 54,
+    "raw_additive_phase": 54,
+    "loshu_cell": 4,
+    "orientation": "COMPOSED",
+    "closure": false
+  },
+  {
+    "left": "x",
+    "right": "zw",
+    "ordered_product": "x*zw",
+    "phase_index": 18,
+    "raw_additive_phase": 18,
+    "loshu_cell": 4,
+    "orientation": "COMPOSED",
+    "closure": false
+  },
+  {
+    "left": "x",
+    "right": "wz",
+    "ordered_product": "x*wz",
+    "phase_index": 54,
+    "raw_additive_phase": 54,
+    "loshu_cell": 4,
+    "orientation": "COMPOSED",
+    "closure": false
+  },
+  {
+    "left": "y",
+    "right": "x",
+    "ordered_product": "y*x",
+    "phase_index": 36,
+    "raw_additive_phase": 0,
+    "loshu_cell": 4,
+    "orientation": "REVERSED",
+    "closure": true
+  },
+  {
+    "left": "y",
+    "right": "y",
+    "ordered_product": "y*y",
+    "phase_index": 36,
+    "raw_additive_phase": 36,
+    "loshu_cell": 4,
+    "orientation": "COMPOSED",
+    "closure": true
+  },
+  {
+    "left": "y",
+    "right": "z",
+    "ordered_product": "y*z",
+    "phase_index": 0,
+    "raw_additive_phase": 0,
+    "loshu_cell": 4,
+    "orientation": "COMPOSED",
+    "closure": true
+  },
+  {
+    "left": "y",
+    "right": "w",
+    "ordered_product": "y*w",
+    "phase_index": 36,
+    "raw_additive_phase": 36,
+    "loshu_cell": 4,
+    "orientation": "COMPOSED",
+    "closure": true
+  },
+  {
+    "left": "y",
+    "right": "xy",
+    "ordered_product": "y*xy",
+    "phase_index": 54,
+    "raw_additive_phase": 54,
+    "loshu_cell": 4,
+    "orientation": "COMPOSED",
+    "closure": false
+  },
+  {
+    "left": "y",
+    "right": "yx",
+    "ordered_product": "y*yx",
+    "phase_index": 18,
+    "raw_additive_phase": 18,
+    "loshu_cell": 4,
+    "orientation": "COMPOSED",
+    "closure": false
+  },
+  {
+    "left": "y",
+    "right": "zw",
+    "ordered_product": "y*zw",
+    "phase_index": 54,
+    "raw_additive_phase": 54,
+    "loshu_cell": 4,
+    "orientation": "COMPOSED",
+    "closure": false
+  },
+  {
+    "left": "y",
+    "right": "wz",
+    "ordered_product": "y*wz",
+    "phase_index": 18,
+    "raw_additive_phase": 18,
+    "loshu_cell": 4,
+    "orientation": "COMPOSED",
+    "closure": false
+  },
+  {
+    "left": "z",
+    "right": "x",
+    "ordered_product": "z*x",
+    "phase_index": 36,
+    "raw_additive_phase": 36,
+    "loshu_cell": 4,
+    "orientation": "COMPOSED",
+    "closure": true
+  },
+  {
+    "left": "z",
+    "right": "y",
+    "ordered_product": "z*y",
+    "phase_index": 0,
+    "raw_additive_phase": 0,
+    "loshu_cell": 4,
+    "orientation": "COMPOSED",
+    "closure": true
+  },
+  {
+    "left": "z",
+    "right": "z",
+    "ordered_product": "z*z",
+    "phase_index": 36,
+    "raw_additive_phase": 36,
+    "loshu_cell": 4,
+    "orientation": "COMPOSED",
+    "closure": true
+  },
+  {
+    "left": "z",
+    "right": "w",
+    "ordered_product": "z*w",
+    "phase_index": 0,
+    "raw_additive_phase": 0,
+    "loshu_cell": 4,
+    "orientation": "DIRECT",
+    "closure": true
+  },
+  {
+    "left": "z",
+    "right": "xy",
+    "ordered_product": "z*xy",
+    "phase_index": 18,
+    "raw_additive_phase": 18,
+    "loshu_cell": 4,
+    "orientation": "COMPOSED",
+    "closure": false
+  },
+  {
+    "left": "z",
+    "right": "yx",
+    "ordered_product": "z*yx",
+    "phase_index": 54,
+    "raw_additive_phase": 54,
+    "loshu_cell": 4,
+    "orientation": "COMPOSED",
+    "closure": false
+  },
+  {
+    "left": "z",
+    "right": "zw",
+    "ordered_product": "z*zw",
+    "phase_index": 18,
+    "raw_additive_phase": 18,
+    "loshu_cell": 4,
+    "orientation": "COMPOSED",
+    "closure": false
+  },
+  {
+    "left": "z",
+    "right": "wz",
+    "ordered_product": "z*wz",
+    "phase_index": 54,
+    "raw_additive_phase": 54,
+    "loshu_cell": 4,
+    "orientation": "COMPOSED",
+    "closure": false
+  },
+  {
+    "left": "w",
+    "right": "x",
+    "ordered_product": "w*x",
+    "phase_index": 0,
+    "raw_additive_phase": 0,
+    "loshu_cell": 4,
+    "orientation": "COMPOSED",
+    "closure": true
+  },
+  {
+    "left": "w",
+    "right": "y",
+    "ordered_product": "w*y",
+    "phase_index": 36,
+    "raw_additive_phase": 36,
+    "loshu_cell": 4,
+    "orientation": "COMPOSED",
+    "closure": true
+  },
+  {
+    "left": "w",
+    "right": "z",
+    "ordered_product": "w*z",
+    "phase_index": 36,
+    "raw_additive_phase": 0,
+    "loshu_cell": 4,
+    "orientation": "REVERSED",
+    "closure": true
+  },
+  {
+    "left": "w",
+    "right": "w",
+    "ordered_product": "w*w",
+    "phase_index": 36,
+    "raw_additive_phase": 36,
+    "loshu_cell": 4,
+    "orientation": "COMPOSED",
+    "closure": true
+  },
+  {
+    "left": "w",
+    "right": "xy",
+    "ordered_product": "w*xy",
+    "phase_index": 54,
+    "raw_additive_phase": 54,
+    "loshu_cell": 4,
+    "orientation": "COMPOSED",
+    "closure": false
+  },
+  {
+    "left": "w",
+    "right": "yx",
+    "ordered_product": "w*yx",
+    "phase_index": 18,
+    "raw_additive_phase": 18,
+    "loshu_cell": 4,
+    "orientation": "COMPOSED",
+    "closure": false
+  },
+  {
+    "left": "w",
+    "right": "zw",
+    "ordered_product": "w*zw",
+    "phase_index": 54,
+    "raw_additive_phase": 54,
+    "loshu_cell": 4,
+    "orientation": "COMPOSED",
+    "closure": false
+  },
+  {
+    "left": "w",
+    "right": "wz",
+    "ordered_product": "w*wz",
+    "phase_index": 18,
+    "raw_additive_phase": 18,
+    "loshu_cell": 4,
+    "orientation": "COMPOSED",
+    "closure": false
+  },
+  {
+    "left": "xy",
+    "right": "x",
+    "ordered_product": "xy*x",
+    "phase_index": 18,
+    "raw_additive_phase": 18,
+    "loshu_cell": 4,
+    "orientation": "COMPOSED",
+    "closure": false
+  },
+  {
+    "left": "xy",
+    "right": "y",
+    "ordered_product": "xy*y",
+    "phase_index": 54,
+    "raw_additive_phase": 54,
+    "loshu_cell": 4,
+    "orientation": "COMPOSED",
+    "closure": false
+  },
+  {
+    "left": "xy",
+    "right": "z",
+    "ordered_product": "xy*z",
+    "phase_index": 18,
+    "raw_additive_phase": 18,
+    "loshu_cell": 4,
+    "orientation": "COMPOSED",
+    "closure": false
+  },
+  {
+    "left": "xy",
+    "right": "w",
+    "ordered_product": "xy*w",
+    "phase_index": 54,
+    "raw_additive_phase": 54,
+    "loshu_cell": 4,
+    "orientation": "COMPOSED",
+    "closure": false
+  },
+  {
+    "left": "xy",
+    "right": "xy",
+    "ordered_product": "xy*xy",
+    "phase_index": 0,
+    "raw_additive_phase": 0,
+    "loshu_cell": 4,
+    "orientation": "COMPOSED",
+    "closure": true
+  },
+  {
+    "left": "xy",
+    "right": "yx",
+    "ordered_product": "xy*yx",
+    "phase_index": 36,
+    "raw_additive_phase": 36,
+    "loshu_cell": 4,
+    "orientation": "COMPOSED",
+    "closure": true
+  },
+  {
+    "left": "xy",
+    "right": "zw",
+    "ordered_product": "xy*zw",
+    "phase_index": 0,
+    "raw_additive_phase": 0,
+    "loshu_cell": 4,
+    "orientation": "COMPOSED",
+    "closure": true
+  },
+  {
+    "left": "xy",
+    "right": "wz",
+    "ordered_product": "xy*wz",
+    "phase_index": 36,
+    "raw_additive_phase": 36,
+    "loshu_cell": 4,
+    "orientation": "COMPOSED",
+    "closure": true
+  },
+  {
+    "left": "yx",
+    "right": "x",
+    "ordered_product": "yx*x",
+    "phase_index": 54,
+    "raw_additive_phase": 54,
+    "loshu_cell": 4,
+    "orientation": "COMPOSED",
+    "closure": false
+  },
+  {
+    "left": "yx",
+    "right": "y",
+    "ordered_product": "yx*y",
+    "phase_index": 18,
+    "raw_additive_phase": 18,
+    "loshu_cell": 4,
+    "orientation": "COMPOSED",
+    "closure": false
+  },
+  {
+    "left": "yx",
+    "right": "z",
+    "ordered_product": "yx*z",
+    "phase_index": 54,
+    "raw_additive_phase": 54,
+    "loshu_cell": 4,
+    "orientation": "COMPOSED",
+    "closure": false
+  },
+  {
+    "left": "yx",
+    "right": "w",
+    "ordered_product": "yx*w",
+    "phase_index": 18,
+    "raw_additive_phase": 18,
+    "loshu_cell": 4,
+    "orientation": "COMPOSED",
+    "closure": false
+  },
+  {
+    "left": "yx",
+    "right": "xy",
+    "ordered_product": "yx*xy",
+    "phase_index": 36,
+    "raw_additive_phase": 36,
+    "loshu_cell": 4,
+    "orientation": "COMPOSED",
+    "closure": true
+  },
+  {
+    "left": "yx",
+    "right": "yx",
+    "ordered_product": "yx*yx",
+    "phase_index": 0,
+    "raw_additive_phase": 0,
+    "loshu_cell": 4,
+    "orientation": "COMPOSED",
+    "closure": true
+  },
+  {
+    "left": "yx",
+    "right": "zw",
+    "ordered_product": "yx*zw",
+    "phase_index": 36,
+    "raw_additive_phase": 36,
+    "loshu_cell": 4,
+    "orientation": "COMPOSED",
+    "closure": true
+  },
+  {
+    "left": "yx",
+    "right": "wz",
+    "ordered_product": "yx*wz",
+    "phase_index": 0,
+    "raw_additive_phase": 0,
+    "loshu_cell": 4,
+    "orientation": "COMPOSED",
+    "closure": true
+  },
+  {
+    "left": "zw",
+    "right": "x",
+    "ordered_product": "zw*x",
+    "phase_index": 18,
+    "raw_additive_phase": 18,
+    "loshu_cell": 4,
+    "orientation": "COMPOSED",
+    "closure": false
+  },
+  {
+    "left": "zw",
+    "right": "y",
+    "ordered_product": "zw*y",
+    "phase_index": 54,
+    "raw_additive_phase": 54,
+    "loshu_cell": 4,
+    "orientation": "COMPOSED",
+    "closure": false
+  },
+  {
+    "left": "zw",
+    "right": "z",
+    "ordered_product": "zw*z",
+    "phase_index": 18,
+    "raw_additive_phase": 18,
+    "loshu_cell": 4,
+    "orientation": "COMPOSED",
+    "closure": false
+  },
+  {
+    "left": "zw",
+    "right": "w",
+    "ordered_product": "zw*w",
+    "phase_index": 54,
+    "raw_additive_phase": 54,
+    "loshu_cell": 4,
+    "orientation": "COMPOSED",
+    "closure": false
+  },
+  {
+    "left": "zw",
+    "right": "xy",
+    "ordered_product": "zw*xy",
+    "phase_index": 0,
+    "raw_additive_phase": 0,
+    "loshu_cell": 4,
+    "orientation": "COMPOSED",
+    "closure": true
+  },
+  {
+    "left": "zw",
+    "right": "yx",
+    "ordered_product": "zw*yx",
+    "phase_index": 36,
+    "raw_additive_phase": 36,
+    "loshu_cell": 4,
+    "orientation": "COMPOSED",
+    "closure": true
+  },
+  {
+    "left": "zw",
+    "right": "zw",
+    "ordered_product": "zw*zw",
+    "phase_index": 0,
+    "raw_additive_phase": 0,
+    "loshu_cell": 4,
+    "orientation": "COMPOSED",
+    "closure": true
+  },
+  {
+    "left": "zw",
+    "right": "wz",
+    "ordered_product": "zw*wz",
+    "phase_index": 36,
+    "raw_additive_phase": 36,
+    "loshu_cell": 4,
+    "orientation": "COMPOSED",
+    "closure": true
+  },
+  {
+    "left": "wz",
+    "right": "x",
+    "ordered_product": "wz*x",
+    "phase_index": 54,
+    "raw_additive_phase": 54,
+    "loshu_cell": 4,
+    "orientation": "COMPOSED",
+    "closure": false
+  },
+  {
+    "left": "wz",
+    "right": "y",
+    "ordered_product": "wz*y",
+    "phase_index": 18,
+    "raw_additive_phase": 18,
+    "loshu_cell": 4,
+    "orientation": "COMPOSED",
+    "closure": false
+  },
+  {
+    "left": "wz",
+    "right": "z",
+    "ordered_product": "wz*z",
+    "phase_index": 54,
+    "raw_additive_phase": 54,
+    "loshu_cell": 4,
+    "orientation": "COMPOSED",
+    "closure": false
+  },
+  {
+    "left": "wz",
+    "right": "w",
+    "ordered_product": "wz*w",
+    "phase_index": 18,
+    "raw_additive_phase": 18,
+    "loshu_cell": 4,
+    "orientation": "COMPOSED",
+    "closure": false
+  },
+  {
+    "left": "wz",
+    "right": "xy",
+    "ordered_product": "wz*xy",
+    "phase_index": 36,
+    "raw_additive_phase": 36,
+    "loshu_cell": 4,
+    "orientation": "COMPOSED",
+    "closure": true
+  },
+  {
+    "left": "wz",
+    "right": "yx",
+    "ordered_product": "wz*yx",
+    "phase_index": 0,
+    "raw_additive_phase": 0,
+    "loshu_cell": 4,
+    "orientation": "COMPOSED",
+    "closure": true
+  },
+  {
+    "left": "wz",
+    "right": "zw",
+    "ordered_product": "wz*zw",
+    "phase_index": 36,
+    "raw_additive_phase": 36,
+    "loshu_cell": 4,
+    "orientation": "COMPOSED",
+    "closure": true
+  },
+  {
+    "left": "wz",
+    "right": "wz",
+    "ordered_product": "wz*wz",
+    "phase_index": 0,
+    "raw_additive_phase": 0,
+    "loshu_cell": 4,
+    "orientation": "COMPOSED",
+    "closure": true
+  }
+]
