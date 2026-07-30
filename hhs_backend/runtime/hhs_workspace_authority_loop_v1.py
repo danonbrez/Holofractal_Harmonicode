@@ -84,7 +84,11 @@ class WorkspaceAuthorityLoop:
             )
             result = compile_hhs_source(request, str(payload_dict.get("source_text") or "a²=1"))
         elif operation == "emulator.create":
-            result = self.emulator.create_session(str(payload_dict.get("project_id") or "project:default"), str(payload_dict.get("program_artifact_id") or "artifact:hhs-ir"))
+            result = self.emulator.create_session(
+                str(payload_dict.get("project_id") or "project:default"),
+                str(payload_dict.get("program_artifact_id") or "artifact:hhs-ir"),
+                initial_state=payload_dict.get("initial_state"),
+            )
         elif operation.startswith("emulator."):
             result = self.emulator.command(str(payload_dict.get("session_id") or "emulator:missing"), operation.split(".", 1)[1], payload_dict)
         elif operation == "memory.search":
@@ -127,13 +131,14 @@ def workspace_authority_loop_self_test() -> Dict[str, Any]:
     patch = loop.submit("source.patch", {"project_id": project["result"]["project"]["project_id"], "replacement_text": "a²=1\nb²=2"})
     interpret = loop.submit("interpret.execute", {"expression": "1+2"})
     compile_result = loop.submit("compile.execute", {"source_text": "a²=1", "target": "HHS_IR"})
-    emu_create = loop.submit("emulator.create", {"program_artifact_id": "artifact:hhs-ir"})
+    initial_state = {"snapshot_bits": 5184, "snapshot_bytes": 648, "projection_hash72": "snapshot:hash72"}
+    emu_create = loop.submit("emulator.create", {"program_artifact_id": "artifact:hhs-ir", "initial_state": initial_state})
     emu_step = loop.submit("emulator.step", {"session_id": emu_create["result"]["session"]["session_id"]})
     direct = loop.submit("source.patch", {"frontend_mutated_runtime_truth": True, "replacement_text": "x=1"})
     return {
         "schema": "HHS_WORKSPACE_AUTHORITY_LOOP_SELF_TEST_V1",
         "version": VERSION,
-        "ok": bool(presentation.get("ok") and project.get("ok") and ingress.get("ok") and patch.get("ok") and interpret.get("ok") and compile_result.get("ok") and emu_create.get("ok") and emu_step.get("ok") and not direct.get("ok")),
+        "ok": bool(presentation.get("ok") and project.get("ok") and ingress.get("ok") and patch.get("ok") and interpret.get("ok") and compile_result.get("ok") and emu_create.get("ok") and emu_create["result"]["session"].get("initial_state_root_hash72") and emu_step.get("ok") and not direct.get("ok")),
         "status": loop.status(),
         "presentation": presentation,
         "project": project,
