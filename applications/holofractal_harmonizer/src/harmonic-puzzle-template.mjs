@@ -6,6 +6,16 @@ import { content as controls } from './harmonic-puzzle-template-parts/controls.m
 import { content as app } from './harmonic-puzzle-template-parts/app.mjs';
 import { content as readme } from './harmonic-puzzle-template-parts/readme.mjs';
 
+function stripModuleSyntax(source) {
+  return source
+    .replace(/^import\s+[\s\S]*?\s+from\s+['"][^'"]+['"];\n?/gm, '')
+    .replace(/^export\s+/gm, '');
+}
+
+const bundledApplication = [model, renderer, controls, app]
+  .map(stripModuleSyntax)
+  .join('\n');
+
 export const HARMONIC_PUZZLE_TEMPLATE = Object.freeze({
   id: 'harmonic-puzzle',
   label: 'Harmonicode Geometry',
@@ -14,10 +24,7 @@ export const HARMONIC_PUZZLE_TEMPLATE = Object.freeze({
   files: Object.freeze([
     Object.freeze(['harmonic-puzzle/index.html', 'HTML', index]),
     Object.freeze(['harmonic-puzzle/style.css', 'SOURCE_CODE', style]),
-    Object.freeze(['harmonic-puzzle/model.js', 'SOURCE_CODE', model]),
-    Object.freeze(['harmonic-puzzle/renderer.js', 'SOURCE_CODE', renderer]),
-    Object.freeze(['harmonic-puzzle/controls.js', 'SOURCE_CODE', controls]),
-    Object.freeze(['harmonic-puzzle/app.js', 'SOURCE_CODE', app]),
+    Object.freeze(['harmonic-puzzle/app.js', 'SOURCE_CODE', bundledApplication]),
     Object.freeze(['harmonic-puzzle/README.md', 'MARKDOWN', readme]),
   ]),
 });
