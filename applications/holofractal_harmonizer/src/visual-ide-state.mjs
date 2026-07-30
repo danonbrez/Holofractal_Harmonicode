@@ -101,6 +101,9 @@ export function sourcePayload() {
     authorization_scope: 'HHS_VISUAL_IDE_USER_AUTHORIZED_INGRESS',
   };
 }
+function responsePreview(raw) {
+  return String(raw || '').replace(/\s+/g, ' ').trim().slice(0, 240);
+}
 export async function requestJson(path, options = {}) {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), options.timeoutMs || 120000);
@@ -110,7 +113,16 @@ export async function requestJson(path, options = {}) {
       signal: controller.signal,
       headers: { Accept: 'application/json', ...(options.body ? { 'Content-Type': 'application/json' } : {}), ...(options.headers || {}) },
     });
-    const payload = await response.json().catch(() => ({ error: `Non-JSON response from ${path}` }));
+    const contentType = response.headers.get('content-type') || 'unknown';
+    const raw = await response.text();
+    let payload;
+    try { payload = raw ? JSON.parse(raw) : {}; }
+    catch {
+      const preview = responsePreview(raw);
+      throw new Error(
+        `HHS_API_ROUTE_UNREACHABLE: ${path} returned HTTP ${response.status} ${contentType} instead of JSON${preview ? ` · ${preview}` : ''}`,
+      );
+    }
     if (!response.ok) {
       throw new Error(payload.detail?.detail || payload.detail?.classification || payload.detail || payload.error || `HTTP ${response.status}`);
     }
