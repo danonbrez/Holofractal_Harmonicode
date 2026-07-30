@@ -1,0 +1,67 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
+
+const root = resolve(new URL('..', import.meta.url).pathname);
+const read = (path) => readFileSync(resolve(root, path), 'utf8');
+
+test('verified workflow-first Harmonizer remains the public presentation authority', () => {
+  const html = read('index.html');
+  const browserIndex = html.indexOf('src/browser.mjs');
+  const uxIndex = html.indexOf('src/ux-default.mjs');
+  const integrationIndex = html.indexOf('src/production-integration.mjs');
+  assert.ok(browserIndex >= 0);
+  assert.ok(browserIndex < uxIndex);
+  assert.ok(uxIndex < integrationIndex);
+  assert.match(html, /src\/production-integration\.css/);
+  assert.match(html, /id="registry-tree"/);
+  assert.match(html, /id="assistant-view"/);
+  assert.match(html, /id="api-view"/);
+  assert.match(html, /id="inspector"/);
+});
+
+test('production integration hydrates existing Pass 161 objects from live backend registries', () => {
+  const source = read('src/production-integration.mjs');
+  for (const endpoint of [
+    '/api/runtime/authority/status',
+    '/api/runtime/services',
+    '/api/runtime/workspace/session',
+    '/api/runtime/installation/status',
+  ]) {
+    assert.match(source, new RegExp(endpoint.replaceAll('/', '\\/')));
+  }
+  assert.match(source, /runtime\.registry\.register/);
+  assert.match(source, /runtime\.registry\.relate/);
+  assert.match(source, /refreshRegistryProjection/);
+  assert.match(source, /window\.HHSHarmonizer/);
+  assert.match(source, /VALIDATED_PROJECTION/);
+  assert.match(source, /frontend_is_authority:\s*false/);
+  assert.doesNotMatch(source, /new\s+HarmonizerRuntime/);
+  assert.doesNotMatch(source, /new\s+WebSocket/);
+});
+
+test('every live service remains executable through guarded backend dispatch', () => {
+  const source = read('src/production-integration.mjs');
+  assert.match(source, /serviceDescriptors/);
+  assert.match(source, /serviceObjectIds/);
+  assert.match(source, /schemaDefaults/);
+  assert.match(source, /service-schema-fields/);
+  assert.match(source, /\/api\/runtime\/services\/dispatch/);
+  assert.match(source, /JSON\.stringify\(\{ service: descriptor\.name, payload \}\)/);
+  assert.match(source, /Execute registered service/);
+  assert.match(source, /extractReceiptHash/);
+  assert.match(source, /BACKEND RESULT RETURNED/);
+  assert.match(source, /frontend_result_fabricated:\s*false/);
+  assert.doesNotMatch(source, /disabled registry item/);
+  assert.doesNotMatch(source, /simulated_raw_result/);
+});
+
+test('runtime warming is disclosed without blocking the verified workflow interface', () => {
+  const source = read('src/production-integration.mjs');
+  assert.match(source, /RUNTIME AUTHORITY · WARMING/);
+  assert.match(source, /Promise\.allSettled/);
+  assert.match(source, /hydrateProductionRegistry\(\)\.catch/);
+  assert.doesNotMatch(source, /document\.body\.replaceChildren/);
+  assert.doesNotMatch(source, /window\.location\.replace/);
+});
