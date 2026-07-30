@@ -70,18 +70,6 @@ if _legacy_ide_root.is_dir():
         name="hhs-pass174-legacy-ide",
     )
 
-if _ide_root.is_dir():
-    app.mount(
-        "/",
-        StaticFiles(directory=str(_ide_root), html=True),
-        name="hhs-pass174-visual-ide",
-    )
-else:
-    PASS174_BOOT_STATE.update({
-        "classification": "HHS_P174_VISUAL_IDE_ASSET_ROOT_MISSING",
-        "asset_root": str(_ide_root),
-    })
-
 
 async def _pass174_readiness_probe() -> None:
     runtime = get_runtime()
@@ -156,3 +144,18 @@ app.router.lifespan_context = _pass174_lifespan
 @app.get("/api/v1/pass174/deployment/status")
 async def pass174_deployment_status() -> dict[str, Any]:
     return dict(PASS174_BOOT_STATE)
+
+
+# Static root must be mounted last so it can never shadow any inherited or
+# Pass 174 API/WebSocket/health route registered above.
+if _ide_root.is_dir():
+    app.mount(
+        "/",
+        StaticFiles(directory=str(_ide_root), html=True),
+        name="hhs-pass174-visual-ide",
+    )
+else:
+    PASS174_BOOT_STATE.update({
+        "classification": "HHS_P174_VISUAL_IDE_ASSET_ROOT_MISSING",
+        "asset_root": str(_ide_root),
+    })
