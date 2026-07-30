@@ -1,0 +1,231 @@
+{
+  "address_geometry": {
+    "all_permanent_roundtrips": 5184,
+    "all_projected_roundtrips": 1259712,
+    "closed_ring": true,
+    "control_count": 243,
+    "factorization": "1,259,712 = 2^6 * 3^9",
+    "inverse": [
+      "c=floor(s/64)",
+      "o=s mod 64"
+    ],
+    "permanent": "s=64c+o",
+    "permanent_count": 5184,
+    "projected": "q=243s+g",
+    "projected_count": 1259712,
+    "projected_inverse": [
+      "s=floor(q/243)",
+      "g=q mod 243"
+    ]
+  },
+  "authoritative_main_observed": "f1d4d2e8b182e7f93f51f682f531a9aadbe0601b",
+  "classification": "PRECONTRACT_PATTERN_EVIDENCE_NOT_TERMINAL_IMPLEMENTATION",
+  "formal_boundaries": [
+    "The exact 64-operation phase table was not executed from the live repository in this environment; the fixture preserves the supplied measured distribution and x*y/y*x anchors.",
+    "bench_hash72 is a domain-separated SHA-256 benchmark lane constructor and does not replace inherited Hash72.",
+    "No physical quantum-computation claim.",
+    "No terminal Pass 175 integration claim."
+  ],
+  "g243_hamming_graph": {
+    "degree": 10,
+    "diameter": 5,
+    "undirected_edges_across_vm5184": 6298560,
+    "undirected_edges_per_instruction": 1215,
+    "vertices": 243
+  },
+  "hash216_geometry": {
+    "characters_per_record": 216,
+    "hex_minimum_total_bytes": 73446912,
+    "positional_indexes": 1119744,
+    "raw_minimum_total_bytes": 37283328,
+    "records": 5184,
+    "store_root": "ecc081f09bc30fbcafedfde10b90178fee2cc7fb7b03174467226b8f4c517d5b"
+  },
+  "parallel_pattern": {
+    "commit_order": [
+      "epoch",
+      "instruction_sequence",
+      "thread_id",
+      "s",
+      "g"
+    ],
+    "deterministic_root": "fefefd9978997c779b4d16230c480d1de1ff0f0a998abf861ed2384c5d0dcf03",
+    "finding": "Candidate throughput scales beyond end-to-end throughput; singular ordered commit becomes the limiting stage.",
+    "long_results": [
+      {
+        "candidate_median_transitions_per_second": 190767711.591,
+        "candidate_ns_per_transition": 5.241977,
+        "commit_root": "955fad5c9d963650",
+        "cross_thread_commit_root_equal": true,
+        "end_to_end_median_transitions_per_second": 92890128.132,
+        "end_to_end_ns_per_transition": 10.765407,
+        "repeat_roots_stable": true,
+        "threads": 1
+      },
+      {
+        "candidate_median_transitions_per_second": 364423765.395,
+        "candidate_ns_per_transition": 2.744058,
+        "commit_root": "955fad5c9d963650",
+        "cross_thread_commit_root_equal": true,
+        "end_to_end_median_transitions_per_second": 115242722.654,
+        "end_to_end_ns_per_transition": 8.677338,
+        "repeat_roots_stable": true,
+        "threads": 2
+      },
+      {
+        "candidate_median_transitions_per_second": 603256067.643,
+        "candidate_ns_per_transition": 1.657671,
+        "commit_root": "955fad5c9d963650",
+        "cross_thread_commit_root_equal": true,
+        "end_to_end_median_transitions_per_second": 126958309.889,
+        "end_to_end_ns_per_transition": 7.876601,
+        "repeat_roots_stable": true,
+        "threads": 4
+      },
+      {
+        "candidate_median_transitions_per_second": 424933980.002,
+        "candidate_ns_per_transition": 2.353307,
+        "commit_root": "955fad5c9d963650",
+        "cross_thread_commit_root_equal": true,
+        "end_to_end_median_transitions_per_second": 102292550.995,
+        "end_to_end_ns_per_transition": 9.775883,
+        "repeat_roots_stable": true,
+        "threads": 5
+      }
+    ],
+    "repeated_results": [
+      {
+        "amdahl_implied_serial_fraction": null,
+        "candidate_median_transitions_per_second": 190993872.575,
+        "candidate_ns_per_transition": 5.23577,
+        "candidate_parallel_efficiency": 1.0,
+        "candidate_speedup_vs_1_thread": 1.0,
+        "commit_root": "c08ba429505487bd",
+        "cross_thread_commit_root_equal": true,
+        "end_to_end_median_transitions_per_second": 90218758.561,
+        "end_to_end_ns_per_transition": 11.084169,
+        "end_to_end_parallel_efficiency": 1.0,
+        "end_to_end_speedup_vs_1_thread": 1.0,
+        "repeat_roots_stable": true,
+        "threads": 1
+      },
+      {
+        "amdahl_implied_serial_fraction": 0.5047216572028088,
+        "candidate_median_transitions_per_second": 356947614.529,
+        "candidate_ns_per_transition": 2.801532,
+        "candidate_parallel_efficiency": 0.9344478168765148,
+        "candidate_speedup_vs_1_thread": 1.8688956337530296,
+        "commit_root": "c08ba429505487bd",
+        "cross_thread_commit_root_equal": true,
+        "end_to_end_median_transitions_per_second": 119914215.535,
+        "end_to_end_ns_per_transition": 8.339295,
+        "end_to_end_parallel_efficiency": 0.6645747372699763,
+        "end_to_end_speedup_vs_1_thread": 1.3291494745399526,
+        "repeat_roots_stable": true,
+        "threads": 2
+      },
+      {
+        "amdahl_implied_serial_fraction": 0.6446105934522035,
+        "candidate_median_transitions_per_second": 579831980.709,
+        "candidate_ns_per_transition": 1.724638,
+        "candidate_parallel_efficiency": 0.7589667313558842,
+        "candidate_speedup_vs_1_thread": 3.035866925423537,
+        "commit_root": "c08ba429505487bd",
+        "cross_thread_commit_root_equal": true,
+        "end_to_end_median_transitions_per_second": 123004678.271,
+        "end_to_end_ns_per_transition": 8.129772,
+        "end_to_end_parallel_efficiency": 0.3408511717322964,
+        "end_to_end_speedup_vs_1_thread": 1.3634046869291856,
+        "repeat_roots_stable": true,
+        "threads": 4
+      },
+      {
+        "amdahl_implied_serial_fraction": 0.808242315031974,
+        "candidate_median_transitions_per_second": 698402108.787,
+        "candidate_ns_per_transition": 1.43184,
+        "candidate_parallel_efficiency": 0.7313345704457085,
+        "candidate_speedup_vs_1_thread": 3.6566728522285423,
+        "commit_root": "c08ba429505487bd",
+        "cross_thread_commit_root_equal": true,
+        "end_to_end_median_transitions_per_second": 106566753.757,
+        "end_to_end_ns_per_transition": 9.38379,
+        "end_to_end_parallel_efficiency": 0.23624078951373856,
+        "end_to_end_speedup_vs_1_thread": 1.1812039475686928,
+        "repeat_roots_stable": true,
+        "threads": 5
+      }
+    ],
+    "scheduling_bounds": {
+      "address_local": {
+        "max_parallel": 5184,
+        "waves": 1
+      },
+      "authority_rule": "Parallel candidate evaluation never implies parallel canonical mutation.",
+      "cell_local": {
+        "max_parallel": 81,
+        "waves": 64
+      },
+      "global_barrier": {
+        "max_parallel": 1,
+        "waves": 5184
+      },
+      "neighbor_coupled_ring": {
+        "max_parallel": 27,
+        "waves": 192
+      }
+    }
+  },
+  "phase_spectrum": {
+    "circular_resultant_fraction": 0.0625,
+    "closure_fraction": 0.5,
+    "counts": {
+      "0": 14,
+      "18": 16,
+      "36": 18,
+      "54": 16
+    },
+    "counts_vm5184": {
+      "0": 1134,
+      "18": 1296,
+      "36": 1458,
+      "54": 1296
+    },
+    "dft": [
+      {
+        "imag": 0.0,
+        "k": 0,
+        "magnitude": 64.0,
+        "real": 64.0
+      },
+      {
+        "imag": -0.0,
+        "k": 1,
+        "magnitude": 4.0,
+        "real": -4.0
+      },
+      {
+        "imag": -0.0,
+        "k": 2,
+        "magnitude": 0.0,
+        "real": 0.0
+      },
+      {
+        "imag": -0.0,
+        "k": 3,
+        "magnitude": 4.0,
+        "real": -4.0
+      }
+    ],
+    "entropy_deficit_bits": 0.005650295855751386,
+    "interpretation": "The measured distribution has exact 18/54 balance, zero second harmonic, and a first-harmonic bias of four states toward phase 36.",
+    "shannon_entropy_bits": 1.9943497041442486
+  },
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "retrieval_pattern": {
+    "boundary": "Benchmark-only Hash72-shaped lanes; terminal implementation must reproduce through inherited Hash72/Hash216.",
+    "cold_median_seconds": 3.097091731,
+    "cold_warm_per_state_ratio": 2447.886203203954,
+    "warm_ns_per_lookup": 244.06069926697532
+  },
+  "schema": "HHS_PASS_175_DEEP_PATTERN_ANALYSIS_RESULTS_V1"
+}
