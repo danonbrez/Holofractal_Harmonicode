@@ -39,7 +39,7 @@ concurrency:
 jobs:
   validate-full-application-ide:
     runs-on: ubuntu-latest
-    timeout-minutes: 35
+    timeout-minutes: 40
     env:
       HHS_DISABLE_C_AUTOBUILD: '1'
       HHS_NATIVE_LANGUAGE_REQUIRE_WORD2VEC: '0'
@@ -72,7 +72,8 @@ jobs:
             'uvicorn[standard]>=0.30,<1.0' \
             'cryptography>=46.0,<47.0' \
             requests \
-            pytest
+            pytest \
+            playwright
 
       - name: Build inherited native authorities
         run: |
@@ -99,12 +100,16 @@ jobs:
           timeout 60s python -m py_compile \
             hhs_backend/application_ide_server.py \
             hhs_backend/production_ide_server.py \
-            hhs_backend/api/repository_history_routes.py
+            hhs_backend/api/repository_history_routes.py \
+            applications/holofractal_harmonizer/ux_lab/full_application_smoke.py
           timeout 300s pytest -q \
             tests/test_hhs_full_application_ide_root_v1.py \
             tests/test_hhs_repository_history_surface_v1.py
 
-      - name: Boot the exact Heroku entrypoint
+      - name: Install bounded Chromium runtime
+        run: timeout 600s python -m playwright install --with-deps chromium
+
+      - name: Boot and browser-verify the exact Heroku entrypoint
         run: |
           set -euo pipefail
           python -m uvicorn hhs_backend.application_ide_server:app \
@@ -152,6 +157,9 @@ jobs:
           if repository.get('ide_default_surface') != 'FULL_INTEGRATED_DEVELOPMENT_ENVIRONMENT':
               raise SystemExit(repository)
           PY
+          HHS_FULL_APPLICATION_IDE_URL=http://127.0.0.1:8766 \
+            timeout 300s python applications/holofractal_harmonizer/ux_lab/full_application_smoke.py
+          cat applications/holofractal_harmonizer/evidence/full_application_ide_smoke.json
 
       - name: Verify public-root contract and representative applications
         run: |
@@ -163,3 +171,12 @@ jobs:
           grep -q "'audio'" applications/holofractal_harmonizer/tests/application.studio.test.mjs
           grep -q "'video'" applications/holofractal_harmonizer/tests/application.studio.test.mjs
           grep -q 'HHS_DEPLOYABLE_BROWSER_APPLICATION_V1' applications/holofractal_harmonizer/src/deployable-app-compiler.mjs
+          grep -q '"ok": true' applications/holofractal_harmonizer/evidence/full_application_ide_smoke.json
+
+      - name: Upload browser acceptance evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: full-application-ide-smoke
+          path: applications/holofractal_harmonizer/evidence/full_application_ide_smoke.json
+          if-no-files-found: error
+          retention-days: 30
