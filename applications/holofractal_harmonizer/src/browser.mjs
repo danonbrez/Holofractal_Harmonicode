@@ -1,6 +1,6 @@
 import {
   HarmonizerRuntime,
-  REGISTERED_OBJECT_TYPES,
+  OBJECT_TYPES,
   selectPerformanceProfile,
 } from './core.mjs';
 
@@ -22,7 +22,7 @@ const objects = [
     description: 'Unified metadata-rich control environment for registered HHS services and multimodal objects.',
     modality_classes: ['TEXT', 'IMAGE', 'AUDIO', 'VIDEO', '3D', 'CODE', 'RECEIPT'],
     lifecycle_state: 'ACTIVE',
-    authority_state: 'ADMITTED',
+    authority_state: 'VALIDATED_PROJECTION',
     validation_state: 'VERIFIED',
     capabilities: ['OBJECT_REGISTRY', 'NESTED_PANELS', 'API_CONTROLLER', 'SPATIAL_PROJECTION'],
     actions: [{ action_id: 'open', label: 'Open Workspace' }],
@@ -35,7 +35,7 @@ const objects = [
     description: 'Repository-native LiteRT-LM natural-language thread bound to governed HHS API tools.',
     modality_classes: ['TEXT', 'CODE', 'RECEIPT'],
     lifecycle_state: 'ACTIVE',
-    authority_state: 'PROPOSAL_ONLY',
+    authority_state: 'ADVISORY',
     validation_state: 'PROVIDER_PENDING',
     capabilities: ['NATURAL_LANGUAGE', 'HHS_API_TOOLS', 'THREAD_MEMORY'],
     actions: [{ action_id: 'message', label: 'Send Message' }],
@@ -49,7 +49,7 @@ const objects = [
     description: 'Local repository-native language model provider used through the HHS assistant service.',
     modality_classes: ['TEXT', 'CODE'],
     lifecycle_state: 'READY',
-    authority_state: 'EXTERNAL_PROVIDER',
+    authority_state: 'ADVISORY',
     validation_state: 'RUNTIME_HEALTH_REQUIRED',
     capabilities: ['CHAT_COMPLETION', 'TOOL_CALLS', 'BOUNDED_REASONING'],
     actions: [{ action_id: 'health', label: 'Check Provider Health' }],
@@ -59,10 +59,10 @@ const objects = [
     object_type: 'RUNTIME',
     canonical_name: 'HHS_VM81_RUNTIME',
     display_name: 'VM81 Runtime',
-    description: 'Canonical execution authority for admitted state transitions.',
+    description: 'Validated projection of the canonical backend execution authority for admitted state transitions.',
     modality_classes: ['RUNTIME_STATE', 'RECEIPT'],
     lifecycle_state: 'READY',
-    authority_state: 'CANONICAL',
+    authority_state: 'VALIDATED_PROJECTION',
     validation_state: 'VERIFIED',
     capabilities: ['EXECUTE', 'REPLAY', 'RECEIPT_COMMIT'],
     actions: [{ action_id: 'status', label: 'Runtime Status' }],
@@ -72,10 +72,10 @@ const objects = [
     object_type: 'SERVICE',
     canonical_name: 'HHS_HASH72_RECEIPT_SERVICE',
     display_name: 'Hash72 Receipt Service',
-    description: 'Append-only receipt identity and verification surface.',
+    description: 'Validated projection of the append-only receipt identity and verification surface.',
     modality_classes: ['RECEIPT', 'LEDGER'],
     lifecycle_state: 'READY',
-    authority_state: 'CANONICAL',
+    authority_state: 'VALIDATED_PROJECTION',
     validation_state: 'VERIFIED',
     capabilities: ['RECEIPT_READ', 'RECEIPT_VERIFY'],
     actions: [{ action_id: 'tip', label: 'Read Tip' }],
@@ -88,7 +88,7 @@ const objects = [
     description: 'Governed conversation, health, tools, thread, and WebSocket routes.',
     modality_classes: ['JSON', 'TEXT', 'WEBSOCKET'],
     lifecycle_state: 'READY',
-    authority_state: 'API_BOUND',
+    authority_state: 'VALIDATED_PROJECTION',
     validation_state: 'VERIFIED',
     capabilities: ['THREAD_CREATE', 'MESSAGE_SEND', 'TOOLS_READ'],
     actions: [{ action_id: 'status', method: 'GET', endpoint: '/api/assistant/status' }],
@@ -101,7 +101,7 @@ const objects = [
     description: 'Read-only search across registered object metadata.',
     modality_classes: ['JSON'],
     lifecycle_state: 'ACTIVE',
-    authority_state: 'PROJECTION_ONLY',
+    authority_state: 'VALIDATED_PROJECTION',
     validation_state: 'VERIFIED',
     capabilities: ['OBJECT_SEARCH'],
     actions: [{ action_id: 'search', method: 'POST', endpoint: '/api/objects/search' }],
@@ -117,29 +117,54 @@ await runtime.registry.relate('hhs:application:harmonizer', 'hhs:service:hash72'
 await runtime.registry.relate('hhs:agent:visual-development-assistant', 'hhs:model:litert-lm:gemma4', 'USES_PROVIDER', 'system:pass161-browser');
 await runtime.registry.relate('hhs:agent:visual-development-assistant', 'hhs:api:assistant', 'USES_API', 'system:pass161-browser');
 
-runtime.apis.register('hhs:api:object-search', async ({ query = '', filters = {} } = {}) => ({
-  schema: 'HHS_REGISTERED_OBJECT_SEARCH_RESPONSE_V1',
-  count: runtime.registry.search(query, filters).length,
-  objects: runtime.registry.search(query, filters),
-  mutation_authority: false,
-}));
+runtime.authority.grant('human:owner', [
+  'registry.read',
+  'api.invoke',
+  'application.launch',
+  'analysis.exact',
+]);
 
-runtime.panels.registerFace('APPLICATION', (object) => ({
-  kind: 'application-dashboard',
-  title: object.display_name,
-  sections: [
-    { label: 'Capabilities', value: object.capabilities },
-    { label: 'Modalities', value: object.modality_classes },
-    { label: 'Lifecycle', value: object.lifecycle_state },
-  ],
-}));
+runtime.apis.register(
+  'hhs:api:object-search',
+  {
+    endpoint: '/registry/search',
+    operation: 'OBJECT_SEARCH',
+    authority_requirements: ['api.invoke'],
+  },
+  async ({ query = '' } = {}) => {
+    const matches = runtime.registry.search(query);
+    return {
+      schema: 'HHS_REGISTERED_OBJECT_SEARCH_RESPONSE_V1',
+      count: matches.length,
+      objects: matches,
+      mutation_authority: false,
+      authoritative_completion_evidence: true,
+    };
+  },
+);
+
+await runtime.faces.register({
+  face_id: 'p161:face:browser-default',
+  object_type_binding: '*',
+  projection_class: 'CARD',
+  field_layout: [],
+  responsive_rules: { mobile: 'STACK', desktop: 'PANEL' },
+  accessibility_profile: { keyboard: true, screen_reader: true },
+});
 
 function objectGlyph(object) {
   const glyphs = {
     APPLICATION: 'APP', AGENT: 'AI', MODEL: 'LM', RUNTIME: '81', SERVICE: 'SVC', API: 'API',
-    DATASET: 'DAT', PIPELINE: 'PIP', VISUALIZER: 'VIS', DOCUMENT: 'DOC', RECEIPT: '72',
+    DATA: 'DAT', PIPELINE: 'PIP', VISUALIZER: 'VIS', DOCUMENT: 'DOC', RECEIPT: '72',
   };
   return glyphs[object.object_type] || object.object_type.slice(0, 3);
+}
+
+function receiptTipFor(object) {
+  return object.receipt_tip
+    || object.receipts?.at(-1)
+    || runtime.ledger.tip
+    || '0'.repeat(64);
 }
 
 function renderObjects(list = runtime.registry.list()) {
@@ -151,7 +176,7 @@ function renderObjects(list = runtime.registry.list()) {
     group.push(object);
     groups.set(object.object_type, group);
   }
-  for (const type of REGISTERED_OBJECT_TYPES) {
+  for (const type of OBJECT_TYPES) {
     const group = groups.get(type);
     if (!group?.length) continue;
     const section = document.createElement('section');
@@ -183,6 +208,7 @@ function renderObjects(list = runtime.registry.list()) {
 
 function renderInspector(result) {
   const object = result.object;
+  const receiptTip = receiptTipFor(object);
   const content = $('#inspector-content');
   content.innerHTML = `
     <section class="object-identity">
@@ -194,7 +220,7 @@ function renderInspector(result) {
       <div><dt>Lifecycle</dt><dd>${object.lifecycle_state}</dd></div>
       <div><dt>Authority</dt><dd>${object.authority_state}</dd></div>
       <div><dt>Validation</dt><dd>${object.validation_state}</dd></div>
-      <div><dt>Receipt tip</dt><dd>${object.receipt_tip.slice(0, 16)}</dd></div>
+      <div><dt>Receipt tip</dt><dd>${receiptTip.slice(0, 16)}</dd></div>
     </dl>
     <details open><summary>Capabilities</summary><div class="chip-list">${object.capabilities.map((item) => `<span>${item}</span>`).join('')}</div></details>
     <details><summary>Actions</summary><pre>${JSON.stringify(object.actions, null, 2)}</pre></details>
@@ -203,12 +229,19 @@ function renderInspector(result) {
   `;
   $('#lineage').textContent = result.lineage.map((item) => item.display_name).join('  ›  ');
   $('#selected-object').textContent = `${object.object_type} · ${object.object_id}`;
-  $('#receipt-tip').textContent = object.receipt_tip.slice(0, 16);
-  document.querySelectorAll('[data-object-id]').forEach((element) => element.classList.toggle('selected', element.dataset.objectId === object.object_id));
+  $('#receipt-tip').textContent = receiptTip.slice(0, 16);
+  document.querySelectorAll('[data-object-id]').forEach((element) => {
+    element.classList.toggle('selected', element.dataset.objectId === object.object_id);
+  });
 }
 
 async function selectObject(objectId) {
-  const result = await runtime.panels.open(objectId, 'human:owner');
+  runtime.panels.reset();
+  await runtime.panels.open(objectId, { allow_repeat: true, stateful: false });
+  const result = {
+    object: runtime.registry.lookup(objectId),
+    lineage: runtime.panels.path().map((entry) => runtime.registry.lookup(entry.object_id)),
+  };
   renderInspector(result);
   $('#inspector').classList.add('open');
   return result;
@@ -247,7 +280,8 @@ async function requestJson(path, options = {}) {
   });
   const payload = await response.json().catch(() => ({ error: `Non-JSON response from ${path}` }));
   if (!response.ok) {
-    const error = new Error(payload.detail?.reason || payload.detail || payload.error || `HTTP ${response.status}`);
+    const detail = payload.detail?.reason || payload.detail || payload.error || `HTTP ${response.status}`;
+    const error = new Error(typeof detail === 'string' ? detail : JSON.stringify(detail));
     error.status = response.status;
     error.payload = payload;
     throw error;
@@ -276,7 +310,11 @@ function renderThread(thread) {
     appendMessage('assistant', 'The repository-native LiteRT-LM assistant is ready. Ask about the runtime, registered services, HARMONICODE, conformance, receipts, or the active project.');
     return;
   }
-  for (const message of messages) appendMessage(message.role, message.content, { hash72: message.message_root_hash72?.slice(0, 16) });
+  for (const message of messages) {
+    appendMessage(message.role, message.content, {
+      hash72: message.message_root_hash72?.slice(0, 16),
+    });
+  }
 }
 
 async function createThread() {
@@ -316,8 +354,12 @@ async function refreshAssistantStatus() {
       requestJson('/api/assistant/health'),
       requestJson('/api/assistant/tools'),
     ]);
-    $('#model-id').textContent = status.model_id || status.request_model_id || 'gemma4-12b';
-    $('#backend-id').textContent = `${status.execution_backend || 'local'} backend · ${status.provider_id || 'LiteRT-LM'}`;
+    assistantState.status = health;
+    $('#model-id').textContent = health.selected_provider_id
+      || status.model_id
+      || status.request_model_id
+      || 'hhs-native-language-v1';
+    $('#backend-id').textContent = `${health.effective_mode || status.execution_backend || 'local'} · ${health.selected_provider_id || status.provider_id || 'HHS provider'}`;
     const toolList = tools.tools || tools.registry || tools.capabilities || [];
     const count = tools.count ?? (Array.isArray(toolList) ? toolList.length : Object.keys(toolList || {}).length);
     $('#tool-count').textContent = String(count);
@@ -360,10 +402,7 @@ async function sendAssistantMessage(content) {
       || result.provider_result_ingress?.provider_result_ingress_root_hash72
       || result.turn_root_hash72;
     if (receipt) $('#receipt-tip').textContent = receipt.slice(0, 16);
-    if (result.thread) {
-      updateThreadIdentity(result.thread);
-      $('#message-count').textContent = `${result.thread.message_count ?? 0} messages`;
-    }
+    if (result.thread) updateThreadIdentity(result.thread);
   } catch (error) {
     pending.remove();
     appendMessage('assistant', `The assistant request failed without runtime mutation: ${error.message}`);
@@ -379,7 +418,12 @@ async function sendAssistantMessage(content) {
 $('#object-search').addEventListener('input', (event) => renderObjects(runtime.registry.search(event.target.value)));
 $('#nav-toggle').addEventListener('click', () => $('#registry-nav').classList.toggle('open'));
 $('#inspect-toggle').addEventListener('click', () => $('#inspector').classList.toggle('open'));
-$('#inspector-back').addEventListener('click', () => runtime.panels.back());
+$('#inspector-back').addEventListener('click', () => {
+  runtime.panels.back();
+  const lineage = runtime.panels.path();
+  const previous = lineage.at(-1);
+  if (previous) selectObject(previous.object_id);
+});
 $('#profile-select').addEventListener('change', (event) => {
   const profile = selectPerformanceProfile(event.target.value);
   $('#harmonizer').dataset.profile = profile.profile;
@@ -390,17 +434,30 @@ $('#object-workspace').addEventListener('click', () => showView('workspace'));
 $('#return-assistant').addEventListener('click', () => showView('assistant'));
 $('#open-3d').addEventListener('click', () => showView('spatial'));
 $('#open-api').addEventListener('click', () => showView('api'));
-document.querySelectorAll('[data-close-view]').forEach((button) => button.addEventListener('click', () => showView('assistant')));
-document.querySelectorAll('.spatial-node').forEach((node) => node.addEventListener('click', () => selectObject(node.dataset.objectId)));
+document.querySelectorAll('[data-close-view]').forEach((button) => {
+  button.addEventListener('click', () => showView('assistant'));
+});
+document.querySelectorAll('.spatial-node').forEach((node) => {
+  node.addEventListener('click', () => selectObject(node.dataset.objectId));
+});
 
 $('#api-form').addEventListener('submit', async (event) => {
   event.preventDefault();
   const query = new FormData(event.currentTarget).get('query');
-  $('#api-output').textContent = JSON.stringify(
-    await runtime.apis.invoke('hhs:api:object-search', 'human:owner', { query }),
-    null,
-    2,
-  );
+  try {
+    $('#api-output').textContent = JSON.stringify(
+      await runtime.apis.invoke('hhs:api:object-search', 'human:owner', { query }),
+      null,
+      2,
+    );
+  } catch (error) {
+    $('#api-output').textContent = JSON.stringify({
+      schema: 'HHS_REGISTERED_OBJECT_SEARCH_CLIENT_ERROR_V1',
+      ok: false,
+      error: error.message,
+      mutation_authority: false,
+    }, null, 2);
+  }
 });
 
 $('#prompt-form').addEventListener('submit', async (event) => {
@@ -433,18 +490,30 @@ $('#new-thread').addEventListener('click', async () => {
 
 renderObjects();
 showView('assistant');
-await selectObject('hhs:agent:visual-development-assistant');
 
-// The terminal-verified object environment is usable before optional provider
-// health and conversation restoration finish. Expose it immediately so live
-// registry hydration and human interaction are never serialized behind model
-// cold start.
+// The terminal-verified object environment is available before optional
+// provider health and conversation restoration finish. It is a projection;
+// canonical execution remains in the backend runtime.
 window.HHSHarmonizer = runtime;
 window.HHSAssistant = Object.freeze({
   get threadId() { return assistantState.threadId; },
+  get status() { return assistantState.status; },
   refreshStatus: refreshAssistantStatus,
   newThread: createThread,
   send: sendAssistantMessage,
 });
+
+try {
+  await selectObject('hhs:agent:visual-development-assistant');
+} catch (error) {
+  runtime.diagnostics.emit({
+    diagnostic_id: 'diag:initial-inspector-selection',
+    class: 'APPLICATION',
+    severity: 'WARNING',
+    object_id: 'hhs:agent:visual-development-assistant',
+    message: error.message,
+    projection_state: 'VALIDATED_PROJECTION',
+  });
+}
 
 void Promise.allSettled([refreshAssistantStatus(), restoreOrCreateThread()]);
