@@ -1,0 +1,24 @@
+services:
+  hhs-pass174:
+    build:
+      context: ../..
+      dockerfile: deployment/pass174/Dockerfile
+    environment:
+      PORT: "8000"
+      HHS_REPOSITORY_ROOT: /app
+      HHS_NATIVE_LANGUAGE_REQUIRE_WORD2VEC: "0"
+      HHS_ASSISTANT_HEALTH_TIMEOUT_SECONDS: "5"
+      HHS_PASS174_BOOT_TIMEOUT_SECONDS: "12"
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - "import json,urllib.request; data=json.load(urllib.request.urlopen('http://127.0.0.1:8000/api/v1/pass174/deployment/status', timeout=4)); raise SystemExit(0 if data.get('ready') else 1)"
+      interval: 20s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
