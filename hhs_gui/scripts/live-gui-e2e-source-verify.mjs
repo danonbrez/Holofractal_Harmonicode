@@ -7,9 +7,12 @@ const files = {
   windowManager: "runtime_os/core/RuntimeWindowManager.ts",
   projectionPanel: "runtime_os/core/LiveRuntimeProjectionPanel.tsx",
   canonicalIDE: "runtime_os/core/CanonicalRuntimeIDE.tsx",
+  product: "runtime_os/workspace/HHSProductWorkspace.tsx",
+  programmer: "runtime_os/workspace/RegistryVisualProgrammer.tsx",
   workspace: "runtime_os/workspace/HHSWorkspaceShell.tsx",
   assistant: "runtime_os/assistant/RuntimeAssistantPanel.tsx",
   commandClient: "runtime_os/workspace/WorkspaceCommandClient.ts",
+  applicationRegistry: "runtime_os/core/RuntimeApplicationRegistry.tsx",
   vite: "vite.config.ts",
 }
 
@@ -29,19 +32,34 @@ assert(content.projectionPanel.includes("1500"), "live projection refresh is not
 assert(content.projectionPanel.includes("Connected only while this tab is active"), "runtime diagnostics are not deferred")
 assert(content.projectionPanel.includes("runtimeOS.initialize()"), "Runtime tab does not activate transport")
 assert(content.projectionPanel.includes("runtimeOS.shutdown()"), "Runtime tab does not release transport")
-assert(content.canonicalIDE.includes("HHSWorkspaceShell"), "CanonicalRuntimeIDE does not mount HHSWorkspaceShell")
+assert(content.canonicalIDE.includes("HHSProductWorkspace"), "CanonicalRuntimeIDE does not mount the product workspace")
+assert(content.product.includes("RegistryVisualProgrammer"), "product workspace does not expose registry visual programming")
+assert(content.product.includes("HHSWorkspaceShell"), "product workspace removed the full conventional workspace")
 assert(content.canonicalIDE.includes("IntegratedRuntimeClient"), "CanonicalRuntimeIDE does not use integrated client")
-assert(!content.integratedClient.includes("RuntimeApplicationRegistry"), "public client imports legacy app registry")
 assert(!content.integratedClient.includes("RuntimeWindowManager"), "public client imports legacy window manager")
 assert(!content.canonicalIDE.includes("RuntimeCommandPanel"), "isolated runtime command panel remains public")
 assert(!content.canonicalIDE.includes("RuntimeMutationPanel"), "isolated runtime mutation panel remains public")
+
+for (const token of [
+  "/api/runtime/services",
+  "/api/runtime/services/dispatch",
+  "runtimeApplicationRegistry.all()",
+  "topologicalOrder",
+  "sourcePath",
+  "targetPath",
+  "executeNode",
+  "runGraph",
+  "HHS_REGISTRY_VISUAL_PROGRAM_V1",
+]) {
+  assert(content.programmer.includes(token), `registry visual programmer missing ${token}`)
+}
 
 for (const endpoint of [
   "/api/runtime/workspace/session",
   "/api/runtime/workspace/command",
   "/api/runtime/live/tick",
 ]) {
-  assert(`${content.workspace}\n${content.commandClient}`.includes(endpoint), `integrated workspace missing ${endpoint}`)
+  assert(`${content.product}\n${content.workspace}\n${content.commandClient}`.includes(endpoint), `integrated product missing ${endpoint}`)
 }
 
 for (const operation of [
@@ -52,6 +70,7 @@ for (const operation of [
   "emulator.create",
 ]) {
   assert(content.workspace.includes(operation), `integrated workspace missing ${operation}`)
+  assert(content.programmer.includes(operation), `visual programming surface missing ${operation}`)
 }
 
 for (const token of [
@@ -64,6 +83,10 @@ for (const token of [
   assert(content.assistant.includes(token), `assistant integration missing ${token}`)
 }
 
+for (const token of ["lazyLoader", "resolveLazyComponent", "runtime_console", "calculator", "breadboard", "receipt_inspector", "replay_timeline"]) {
+  assert(content.applicationRegistry.includes(token), `application registry missing ${token}`)
+}
+
 assert(content.windowManager.includes("export class RuntimeWindowManager"), "RuntimeWindowManager is not a constructible state class")
 assert(content.runtimeOS.includes("new RuntimeWindowManager"), "legacy RuntimeOS state manager regression")
 assert(!fs.existsSync(new URL("../runtime_os/core/RuntimeWindowManager.tsx", import.meta.url)), "same-stem RuntimeWindowManager.tsx would shadow the state manager constructor")
@@ -72,7 +95,7 @@ assert(content.vite.includes('"/ws"') && content.vite.includes("ws: true"), "Vit
 assert(!content.socket.includes("NODE_DEMO_STUB"), "socket manager contains Node demo authority")
 
 for (const forbidden of ["ProductionApp", "runtime_application_missing", "detached deployment mode"]) {
-  const publicSources = `${content.canonicalIDE}\n${content.workspace}\n${content.assistant}`
+  const publicSources = `${content.canonicalIDE}\n${content.product}\n${content.programmer}\n${content.workspace}\n${content.assistant}`
   assert(!publicSources.includes(forbidden), `obsolete public behavior leaked: ${forbidden}`)
 }
 
