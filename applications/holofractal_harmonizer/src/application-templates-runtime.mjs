@@ -1,4 +1,5 @@
 import { APPLICATION_TEMPLATES as BASE_TEMPLATES } from './application-templates.mjs';
+import { HARMONIC_PUZZLE_TEMPLATE } from './harmonic-puzzle-template.mjs';
 
 const CALCULATOR_APPLICATION_SOURCE = [
   'const display = document.querySelector("#display");',
@@ -115,8 +116,13 @@ function normalizeTemplate(template) {
   });
 }
 
+const TEMPLATE_SOURCES = Object.freeze({
+  ...BASE_TEMPLATES,
+  [HARMONIC_PUZZLE_TEMPLATE.id]: HARMONIC_PUZZLE_TEMPLATE,
+});
+
 export const APPLICATION_TEMPLATES = Object.freeze(Object.fromEntries(
-  Object.entries(BASE_TEMPLATES).map(([id, template]) => [id, normalizeTemplate(template)]),
+  Object.entries(TEMPLATE_SOURCES).map(([id, template]) => [id, normalizeTemplate(template)]),
 ));
 
 export function applicationTemplateList() {
