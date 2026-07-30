@@ -1,4 +1,4 @@
-import{j as n}from"./main-BzENKgnW.js";import"./index-w4d0Ryph.js";const o=({className:e})=>n.jsxs("div",{className:`
+import{j as n}from"./main-OSlVFEii.js";import"./index-DYGEw1pb.js";const o=({className:e})=>n.jsxs("div",{className:`
                 w-full
                 h-full
                 bg-neutral-950
@@ -134,4 +134,4 @@ import{j as n}from"./main-BzENKgnW.js";import"./index-w4d0Ryph.js";const o=({cla
                     rounded-full
                     ${s}
                 `})]})};export{o as HHSRuntimeBreadboard,o as default};
-//# sourceMappingURL=HHSRuntimeBreadboard-BUe2t6UY.js.map
+//# sourceMappingURL=HHSRuntimeBreadboard-Bbnf02mz.js.map
