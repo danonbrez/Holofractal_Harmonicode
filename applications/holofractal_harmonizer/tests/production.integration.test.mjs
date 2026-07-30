@@ -8,10 +8,12 @@ const read = (path) => readFileSync(resolve(root, path), 'utf8');
 
 test('verified workflow-first Harmonizer remains the public presentation authority', () => {
   const html = read('index.html');
+  const coordinatorIndex = html.indexOf('src/production-startup-coordinator.mjs');
   const browserIndex = html.indexOf('src/browser.mjs');
   const uxIndex = html.indexOf('src/ux-default.mjs');
   const integrationIndex = html.indexOf('src/production-integration.mjs');
-  assert.ok(browserIndex >= 0);
+  assert.ok(coordinatorIndex >= 0);
+  assert.ok(coordinatorIndex < browserIndex);
   assert.ok(browserIndex < uxIndex);
   assert.ok(uxIndex < integrationIndex);
   assert.match(html, /src\/production-integration\.css/);
@@ -33,6 +35,18 @@ test('Pass 161 runtime is exposed before assistant cold-start work', () => {
     source,
     /await Promise\.allSettled\(\[refreshAssistantStatus\(\), restoreOrCreateThread\(\)\]\);\s*window\.HHSHarmonizer/,
   );
+});
+
+test('production startup gives live runtime registry priority over assistant cold start', () => {
+  const source = read('src/production-startup-coordinator.mjs');
+  assert.match(source, /pathname\.startsWith\('\/api\/assistant\/'\)/);
+  assert.match(source, /HHSProductionIntegration/);
+  assert.match(source, /serviceCount/);
+  assert.match(source, /MAX_ASSISTANT_DEFERRAL_MS/);
+  assert.match(source, /runtime_registry_has_priority:\s*true/);
+  assert.match(source, /frontend_is_authority:\s*false/);
+  assert.doesNotMatch(source, /\/api\/runtime\/services/);
+  assert.doesNotMatch(source, /new\s+WebSocket/);
 });
 
 test('production integration hydrates existing Pass 161 objects from live backend registries', () => {
