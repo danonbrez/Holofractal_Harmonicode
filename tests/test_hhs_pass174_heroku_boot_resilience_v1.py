@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+# Validation-only carrier: functional behavior is already merged on main.
 import asyncio
 from contextlib import asynccontextmanager
 
