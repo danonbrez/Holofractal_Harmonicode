@@ -72,8 +72,12 @@ if _legacy_ide_root.is_dir():
 
 
 async def _pass174_readiness_probe() -> None:
-    runtime = get_runtime()
-    status = runtime.status()
+    # Repository specification discovery and SQLite initialization are
+    # synchronous filesystem work. Run them off the event loop so wait_for can
+    # actually enforce the bounded boot timeout instead of reporting a timeout
+    # only after a blocking scan has already completed.
+    runtime = await asyncio.to_thread(get_runtime)
+    status = await asyncio.to_thread(runtime.status)
     if status["kernel_authorities"] != 1:
         raise RuntimeError("HHS_P174_SINGLETON_VM81_AUTHORITY_REQUIRED")
     if status["frame_bits"] != 5184 or status["frame_bytes"] != 648:
@@ -93,6 +97,7 @@ async def _pass174_readiness_probe() -> None:
 
 async def initialize_pass174_overlay() -> None:
     timeout_seconds = float(os.environ.get("HHS_PASS174_BOOT_TIMEOUT_SECONDS", "12"))
+    probe_started = time.monotonic()
     try:
         await asyncio.wait_for(_pass174_readiness_probe(), timeout=timeout_seconds)
     except asyncio.TimeoutError as exc:
@@ -102,6 +107,7 @@ async def initialize_pass174_overlay() -> None:
             "ready": False,
             "silent_freeze": False,
             "timeout_seconds": timeout_seconds,
+            "elapsed_seconds": time.monotonic() - probe_started,
         })
         raise RuntimeError("HHS_P174_BOOT_FREEZE_DETECTED:PASS174_READINESS_PROBE") from exc
     except Exception as exc:
@@ -111,6 +117,7 @@ async def initialize_pass174_overlay() -> None:
             "ready": False,
             "silent_freeze": False,
             "detail": str(exc),
+            "elapsed_seconds": time.monotonic() - probe_started,
         })
         raise
     PASS174_BOOT_STATE.update({
@@ -119,6 +126,7 @@ async def initialize_pass174_overlay() -> None:
         "ready": True,
         "silent_freeze": False,
         "ready_monotonic": time.monotonic(),
+        "readiness_elapsed_seconds": time.monotonic() - probe_started,
         "asset_root": str(_ide_root),
         "legacy_ide_root": str(_legacy_ide_root),
         "legacy_ide_preserved": _legacy_ide_root.is_dir(),
