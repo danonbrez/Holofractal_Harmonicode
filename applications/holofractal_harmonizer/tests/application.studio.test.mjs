@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import test from 'node:test';
-import { APPLICATION_TEMPLATES, materializeApplicationTemplate } from '../src/application-templates.mjs';
+import { APPLICATION_TEMPLATES, materializeApplicationTemplate } from '../src/application-templates-runtime.mjs';
 
 const root = new URL('../', import.meta.url);
 const source = async (path) => readFile(new URL(path, root), 'utf8');
@@ -21,7 +21,8 @@ test('application gallery contains real representative project classes', () => {
 
 test('game, calculator, document, audio and video starters contain executable behavior', () => {
   const pong = JSON.stringify(materializeApplicationTemplate('pong'));
-  const calculator = JSON.stringify(materializeApplicationTemplate('calculator'));
+  const calculatorProject = materializeApplicationTemplate('calculator');
+  const calculator = JSON.stringify(calculatorProject);
   const puzzle = JSON.stringify(materializeApplicationTemplate('puzzle'));
   const documentProject = JSON.stringify(materializeApplicationTemplate('document'));
   const audio = JSON.stringify(materializeApplicationTemplate('audio'));
@@ -36,6 +37,8 @@ test('game, calculator, document, audio and video starters contain executable be
   assert.match(audio, /MediaRecorder/);
   assert.match(video, /captureStream/);
   assert.match(video, /MediaRecorder/);
+  const calculatorSource = calculatorProject.files.find((file) => file.path.endsWith('/app.js')).content;
+  assert.doesNotThrow(() => new Function(calculatorSource));
 });
 
 test('full IDE initializes application studio and deployable browser compiler', async () => {
@@ -46,6 +49,7 @@ test('full IDE initializes application studio and deployable browser compiler', 
   assert.match(ide, /initApplicationStudio/);
   assert.match(ide, /initDeployableAppCompiler/);
   assert.match(studio, /Pong, calculator, puzzle, document, audio, video/);
+  assert.match(studio, /application-templates-runtime/);
   assert.match(compiler, /HHS_DEPLOYABLE_BROWSER_APPLICATION_V1/);
   assert.match(compiler, /Download App ZIP/);
   assert.match(index, /application-studio\.css/);
