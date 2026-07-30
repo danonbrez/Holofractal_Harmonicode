@@ -58,16 +58,25 @@ class LiveFastAPIRuntimeWorkflow:
         if self._running:
             return self.status()
         self._running = True
-        if self.cognition_runtime is not None:
-            try:
+        try:
+            if self.cognition_runtime is not None:
                 await asyncio.to_thread(self.cognition_runtime.initialize)
-            except Exception as exc:
-                self._errors.append(f"cognition_initialize:{exc}")
-                self._errors = self._errors[-16:]
-                raise
-        if self.auto_start:
-            self._task = asyncio.create_task(self._run_loop())
-        return self.status()
+
+            # Runtime authority is not ready merely because a task was scheduled.
+            # Complete one real emulator tick, Hash72 receipt, runtime-state hash,
+            # graph ingress, cognition pass, and four-channel propagation before
+            # startup returns or health may classify the workflow as online.
+            if self._tick_count == 0 or not self._last_emission:
+                await self.tick_once({"source": "live_fastapi_workflow.startup"})
+
+            if self.auto_start:
+                self._task = asyncio.create_task(self._run_loop())
+            return self.status()
+        except Exception as exc:
+            self._errors.append(f"startup:{exc}")
+            self._errors = self._errors[-16:]
+            self._running = False
+            raise
 
     async def stop(self) -> Dict[str, Any]:
         self._running = False
@@ -129,14 +138,22 @@ class LiveFastAPIRuntimeWorkflow:
                 cognition_status = self.cognition_runtime.status()
             except Exception as exc:  # pragma: no cover
                 cognition_status = {"ok": False, "error": str(exc)}
+        last_emission = dict(self._last_emission or {})
+        receipt_ready = bool(
+            last_emission.get("ok")
+            and last_emission.get("receipt_hash72")
+            and last_emission.get("runtime_state_hash72")
+        )
         return {
             "schema": "HHS_LIVE_FASTAPI_WORKFLOW_STATUS_V1",
             "version": VERSION,
             "running": self._running,
+            "authority_ready": bool(self._running and receipt_ready),
             "background_task_active": self._task is not None and not self._task.done(),
             "tick_count": self._tick_count,
             "last_emission": self._last_emission,
             "last_cognition": self._last_cognition,
+            "receipt_ready": receipt_ready,
             "errors": list(self._errors[-8:]),
             "bridge": self.bridge.status(),
             "cognition": cognition_status,
@@ -153,18 +170,17 @@ def live_fastapi_workflow_self_test() -> Dict[str, Any]:
             auto_start=False,
         )
         await workflow.start()
-        emission = await workflow.tick_once({"source": "self_test"})
+        emission = dict(workflow.status().get("last_emission") or {})
         await workflow.stop()
         workflow_status = workflow.status()
         cognition_ok = bool(emission.get("cognition", {}).get("processed"))
         return {
             "schema": "HHS_LIVE_FASTAPI_WORKFLOW_SELF_TEST_V1",
             "version": VERSION,
-            # Preserve the inherited Pass 045 terminal condition. Cognition is
-            # additive and receives its own independently testable result.
             "ok": bool(
                 emission.get("ok")
                 and workflow_status.get("tick_count") == 1
+                and workflow_status.get("receipt_ready")
             ),
             "cognition_ok": cognition_ok,
             "emission": emission,
