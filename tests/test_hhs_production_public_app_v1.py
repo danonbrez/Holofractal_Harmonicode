@@ -50,18 +50,46 @@ def test_integrated_workspace_session_is_lightweight_and_real():
     }
 
 
-def test_hosted_native_assistant_is_executable_without_optional_word2vec():
+def test_hosted_native_assistant_executes_receipt_bearing_turn_without_word2vec():
     from hhs_backend import production_server
+    from hhs_backend.runtime.hhs_production_assistant_v1 import (
+        DEFAULT_PRODUCTION_ASSISTANT_SERVICE,
+    )
+
+    service = DEFAULT_PRODUCTION_ASSISTANT_SERVICE
+    service._health_timeout = max(float(service._health_timeout), 5.0)
+
+    installation = service._native_installation_status()
+    assert installation["ready"] is True, installation
+    assert installation["word2vec_required"] is False, installation
+
+    native_health = asyncio.run(service.native_service.health())
+    assert native_health["ok"] is True, native_health
+    assert native_health["online"] is True, native_health
 
     health = asyncio.run(production_server._assistant_health())
-    assert health["ok"] is True
-    assert health["online"] is True
-    assert health["selected_provider_id"] == "provider:hhs.local.text"
-    assert health["effective_mode"] == "HHS_NATIVE_LITERT_COMPATIBLE"
+    assert health["ok"] is True, health
+    assert health["online"] is True, health
+    assert health["selected_provider_id"] == "provider:hhs.local.text", health
+    assert health["effective_mode"] == "HHS_NATIVE_LITERT_COMPATIBLE", health
     assert health["native_hhs"]["installation"]["ready"] is True
     assert health["native_hhs"]["installation"]["word2vec_required"] is False
     assert health["repository_search_is_provider"] is False
     assert health["same_template_response_enabled"] is False
+
+    thread = service.create_thread(
+        project_id="project:hosted-assistant-test",
+        title="Hosted assistant execution test",
+    )
+    turn = asyncio.run(service.send_message(thread["thread_id"], content="AB=P^4"))
+    assert turn["ok"] is True, turn
+    assert turn["effective_mode"] == "HHS_NATIVE_LITERT_COMPATIBLE", turn
+    assert str(turn["assistant_message"]["content"]).strip(), turn
+    assert turn["assistant_message"]["message_root_hash72"], turn
+    assert turn["provider_invocation_receipt"]["provider_invocation_receipt_hash72"], turn
+    assert turn["provider_result_ingress"]["provider_result_ingress_root_hash72"], turn
+    assert turn["turn_root_hash72"], turn
+    assert turn["runtime_mutation_admitted"] is False
 
 
 def test_runtime_authority_boots_and_reports_real_workflow_state():
