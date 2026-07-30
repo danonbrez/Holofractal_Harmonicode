@@ -1,0 +1,277 @@
+{
+  "authoritative_main_observed": "f1d4d2e8b182e7f93f51f682f531a9aadbe0601b",
+  "classification": "PRECONTRACT_EVIDENCE_CONTRACT_AUTHORIZATION_ONLY_NOT_PASS175_IMPLEMENTATION",
+  "derived_findings": {
+    "best_repeated_candidate_threads": 5,
+    "best_repeated_candidate_throughput": 698402108.787,
+    "best_repeated_end_to_end_threads": 4,
+    "best_repeated_end_to_end_throughput": 123004678.271,
+    "closure_fraction": 0.5,
+    "global_closure_states": 2592,
+    "hash216_positional_indexes": 1119744,
+    "hex_minimum_hash_material_bytes": 73446912,
+    "phase36_first_harmonic_bias_fraction": 0.0625,
+    "phase_distribution_entropy_bits": 1.9943497041442486,
+    "phase_distribution_entropy_deficit_bits": 0.005650295855751386,
+    "projected_address_factorization": "1,259,712 = 2^6 * 3^9 = 5,184 * 243",
+    "raw_minimum_hash_material_bytes": 37283328,
+    "singular_commit_bottleneck_observed": true,
+    "warm_to_cold_per_state_ratio": 2447.886203203954
+  },
+  "evidence_sha256": {
+    "PASS_175_NATIVE_103680000_TRANSITION_RUN.json": "62696ca8ddb2b41981cd06a054da1375010fbee91a675456030edb9eb750e9e6",
+    "PASS_175_NATIVE_CANDIDATE_BENCHMARK_RESULTS.json": "4e4064d2d23326f00504448d66741d91128d22dc4c88eb9d7cdef9d5a3d73424",
+    "PASS_175_ORDERED_64_OPERATION_PHASE_TABLE.json": "9a0e9592befed400de2596040918180729db6c38efe098fdf8dec48ce196b06b",
+    "PASS_175_PRECONTRACT_BENCHMARK_RESULTS.json": "f34733ba5cece6c78d1efa9c5f8746d24e1d6bd233809e749dce005f405b25c2",
+    "PASS_175_VM5184_INSTRUCTION_MAP.json": "dc3ef0444e169f4cec13b1047ed2ac13583e10d9e8028bdec8cf05f36a9504b0",
+    "pass175_native_candidate_benchmark": "6fb755b013132cd0ac07ead14da29edb8559c7095f8fb05ef294a974e8aca5d7",
+    "pass175_native_candidate_benchmark.c": "f950cb5762820ad3475f4d8424d2bef6533f8634d3913651140b5c923eb7a160",
+    "pass175_precontract_benchmark.py": "85e9cd37f93b1bf0e6cd27f3486f3bbdcc0a8b82f54383c06f20f7c413f3e3b6"
+  },
+  "native_103680000_transition_run": {
+    "canonical_commit_root": "955fad5c9d963650",
+    "classification": "PRECONTRACT_NATIVE_CANDIDATE_EVIDENCE",
+    "global_sink": "0000000000000000",
+    "loops": 20000,
+    "omp_max_threads": 5,
+    "parallel_candidates_singular_commit": true,
+    "repeats": 1,
+    "results": [
+      {
+        "candidate_median_transitions_per_second": 190767711.591,
+        "candidate_ns_per_transition": 5.241977,
+        "commit_root": "955fad5c9d963650",
+        "cross_thread_commit_root_equal": true,
+        "end_to_end_median_transitions_per_second": 92890128.132,
+        "end_to_end_ns_per_transition": 10.765407,
+        "repeat_roots_stable": true,
+        "threads": 1
+      },
+      {
+        "candidate_median_transitions_per_second": 364423765.395,
+        "candidate_ns_per_transition": 2.744058,
+        "commit_root": "955fad5c9d963650",
+        "cross_thread_commit_root_equal": true,
+        "end_to_end_median_transitions_per_second": 115242722.654,
+        "end_to_end_ns_per_transition": 8.677338,
+        "repeat_roots_stable": true,
+        "threads": 2
+      },
+      {
+        "candidate_median_transitions_per_second": 603256067.643,
+        "candidate_ns_per_transition": 1.657671,
+        "commit_root": "955fad5c9d963650",
+        "cross_thread_commit_root_equal": true,
+        "end_to_end_median_transitions_per_second": 126958309.889,
+        "end_to_end_ns_per_transition": 7.876601,
+        "repeat_roots_stable": true,
+        "threads": 4
+      },
+      {
+        "candidate_median_transitions_per_second": 424933980.002,
+        "candidate_ns_per_transition": 2.353307,
+        "commit_root": "955fad5c9d963650",
+        "cross_thread_commit_root_equal": true,
+        "end_to_end_median_transitions_per_second": 102292550.995,
+        "end_to_end_ns_per_transition": 9.775883,
+        "repeat_roots_stable": true,
+        "threads": 5
+      }
+    ],
+    "schema": "HHS_PASS_175_NATIVE_CANDIDATE_BENCHMARK_V1",
+    "states": 5184,
+    "transitions_per_run": 103680000
+  },
+  "native_repeated_benchmark": {
+    "canonical_commit_root": "c08ba429505487bd",
+    "classification": "PRECONTRACT_NATIVE_CANDIDATE_EVIDENCE",
+    "global_sink": "0000000000000000",
+    "loops": 2000,
+    "omp_max_threads": 5,
+    "parallel_candidates_singular_commit": true,
+    "repeats": 5,
+    "results": [
+      {
+        "amdahl_implied_serial_fraction": null,
+        "candidate_median_transitions_per_second": 190993872.575,
+        "candidate_ns_per_transition": 5.23577,
+        "candidate_parallel_efficiency": 1.0,
+        "candidate_speedup_vs_1_thread": 1.0,
+        "commit_root": "c08ba429505487bd",
+        "cross_thread_commit_root_equal": true,
+        "end_to_end_median_transitions_per_second": 90218758.561,
+        "end_to_end_ns_per_transition": 11.084169,
+        "end_to_end_parallel_efficiency": 1.0,
+        "end_to_end_speedup_vs_1_thread": 1.0,
+        "repeat_roots_stable": true,
+        "threads": 1
+      },
+      {
+        "amdahl_implied_serial_fraction": 0.5047216572028088,
+        "candidate_median_transitions_per_second": 356947614.529,
+        "candidate_ns_per_transition": 2.801532,
+        "candidate_parallel_efficiency": 0.9344478168765148,
+        "candidate_speedup_vs_1_thread": 1.8688956337530296,
+        "commit_root": "c08ba429505487bd",
+        "cross_thread_commit_root_equal": true,
+        "end_to_end_median_transitions_per_second": 119914215.535,
+        "end_to_end_ns_per_transition": 8.339295,
+        "end_to_end_parallel_efficiency": 0.6645747372699763,
+        "end_to_end_speedup_vs_1_thread": 1.3291494745399526,
+        "repeat_roots_stable": true,
+        "threads": 2
+      },
+      {
+        "amdahl_implied_serial_fraction": 0.6446105934522035,
+        "candidate_median_transitions_per_second": 579831980.709,
+        "candidate_ns_per_transition": 1.724638,
+        "candidate_parallel_efficiency": 0.7589667313558842,
+        "candidate_speedup_vs_1_thread": 3.035866925423537,
+        "commit_root": "c08ba429505487bd",
+        "cross_thread_commit_root_equal": true,
+        "end_to_end_median_transitions_per_second": 123004678.271,
+        "end_to_end_ns_per_transition": 8.129772,
+        "end_to_end_parallel_efficiency": 0.3408511717322964,
+        "end_to_end_speedup_vs_1_thread": 1.3634046869291856,
+        "repeat_roots_stable": true,
+        "threads": 4
+      },
+      {
+        "amdahl_implied_serial_fraction": 0.808242315031974,
+        "candidate_median_transitions_per_second": 698402108.787,
+        "candidate_ns_per_transition": 1.43184,
+        "candidate_parallel_efficiency": 0.7313345704457085,
+        "candidate_speedup_vs_1_thread": 3.6566728522285423,
+        "commit_root": "c08ba429505487bd",
+        "cross_thread_commit_root_equal": true,
+        "end_to_end_median_transitions_per_second": 106566753.757,
+        "end_to_end_ns_per_transition": 9.38379,
+        "end_to_end_parallel_efficiency": 0.23624078951373856,
+        "end_to_end_speedup_vs_1_thread": 1.1812039475686928,
+        "repeat_roots_stable": true,
+        "threads": 5
+      }
+    ],
+    "schema": "HHS_PASS_175_NATIVE_CANDIDATE_BENCHMARK_V1",
+    "states": 5184,
+    "transitions_per_run": 10368000
+  },
+  "pass174_implementation_merge": "08d5011441ab0280845adfd39d64d7cdfdbfc50e",
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "schema": "HHS_PASS_175_COMBINED_PRECONTRACT_EVIDENCE_V1",
+  "structural_and_hash_benchmark": {
+    "classification": "PRECONTRACT_EXECUTABLE_EVIDENCE_NOT_TERMINAL_PASS_175_IMPLEMENTATION",
+    "completion": {
+      "all_hash_records_unique": true,
+      "all_structural_tests_pass": true,
+      "deterministic_parallel_commit": true
+    },
+    "cryptographic_and_retrieval_benchmark": {
+      "cold_median_seconds": 3.097091731,
+      "cold_ns_per_state": 597432.8184799383,
+      "cold_roots": [
+        "ecc081f09bc30fbcafedfde10b90178fee2cc7fb7b03174467226b8f4c517d5b",
+        "ecc081f09bc30fbcafedfde10b90178fee2cc7fb7b03174467226b8f4c517d5b",
+        "ecc081f09bc30fbcafedfde10b90178fee2cc7fb7b03174467226b8f4c517d5b"
+      ],
+      "cold_roots_identical": true,
+      "cold_seconds": [3.188394467, 3.097091731, 3.059935784],
+      "full_positional_revalidation_ns_per_state": 590697.449845679,
+      "full_positional_revalidation_passes": 5184,
+      "full_positional_revalidation_seconds": 3.06217558,
+      "mutation_misses": {
+        "key_character": 5184,
+        "leading_zero_removed": 5184,
+        "operand_order": 5184,
+        "phase37": 5184
+      },
+      "mutation_rejections": {"phase37": 5184},
+      "positional_indexes_constructed": 1119744,
+      "store_root": "ecc081f09bc30fbcafedfde10b90178fee2cc7fb7b03174467226b8f4c517d5b",
+      "unique_hash216_strings": 5184,
+      "unique_keys": 5184,
+      "unique_record_roots": 5184,
+      "warm_accumulator": 0,
+      "warm_lookups": 1036800,
+      "warm_ns_per_lookup": 244.06069926697532,
+      "warm_replays": 200,
+      "warm_total_seconds": 0.253042133
+    },
+    "deterministic_parallel_admission": {
+      "commit_order": ["epoch", "instruction_sequence", "thread_id", "s", "g"],
+      "parallel_roots": {
+        "2": "fefefd9978997c779b4d16230c480d1de1ff0f0a998abf861ed2384c5d0dcf03",
+        "4": "fefefd9978997c779b4d16230c480d1de1ff0f0a998abf861ed2384c5d0dcf03"
+      },
+      "passed": true,
+      "sequential_root": "fefefd9978997c779b4d16230c480d1de1ff0f0a998abf861ed2384c5d0dcf03",
+      "shuffled_root": "fefefd9978997c779b4d16230c480d1de1ff0f0a998abf861ed2384c5d0dcf03"
+    },
+    "duration_seconds": 13.905564785003662,
+    "environment": {
+      "cpu_count": 5,
+      "machine": "x86_64",
+      "platform": "Linux-6.12.13-x86_64-with-glibc2.41",
+      "python": "3.13.5 (main, May  5 2026, 21:05:52) [GCC 14.2.0]"
+    },
+    "phase_analysis": {
+      "chi_square_vs_uniform": 0.5,
+      "circular_resultant_fraction": 0.0625,
+      "closure_count_per_table": 32,
+      "closure_count_vm5184": 2592,
+      "counts_over_vm5184": {"0": 1134, "18": 1296, "36": 1458, "54": 1296},
+      "counts_per_operation_table": {"0": 14, "18": 16, "36": 18, "54": 16},
+      "dft": [
+        {"imag": 0.0, "k": 0, "magnitude": 64.0, "real": 64.0},
+        {"imag": -0.0, "k": 1, "magnitude": 4.0, "real": -4.0},
+        {"imag": -0.0, "k": 2, "magnitude": 0.0, "real": 0.0},
+        {"imag": -0.0, "k": 3, "magnitude": 4.0, "real": -4.0}
+      ],
+      "entropy_deficit_bits": 0.005650295855751386,
+      "interpretation": "The measured distribution has exact 18/54 balance, zero second harmonic, and a first-harmonic bias of four states toward phase 36.",
+      "shannon_entropy_bits": 1.9943497041442486,
+      "uniform_entropy_bits": 2.0
+    },
+    "scheduling_analysis": {
+      "address_local": {"max_parallel": 5184, "waves": 1},
+      "authority_rule": "Parallel candidate evaluation never implies parallel canonical mutation.",
+      "cell_local": {"max_parallel": 81, "waves": 64},
+      "global_barrier": {"max_parallel": 1, "waves": 5184},
+      "neighbor_coupled_ring": {"max_parallel": 27, "waves": 192}
+    },
+    "schema": "HHS_PASS_175_PRECONTRACT_BENCHMARK_RESULTS_V2",
+    "scope": {
+      "fixture_boundary": "The exact 64-operation phase table was not executed from the live repository in this environment; the fixture preserves the supplied measured distribution and x*y/y*x anchors.",
+      "hash_boundary": "bench_hash72 is a domain-separated SHA-256 benchmark lane constructor and does not replace inherited Hash72.",
+      "repository_grounding": "Pass 174 dimensions, singleton VM81 authority, Hash216 216-position geometry, exact arithmetic, public surfaces, and retrieval-first behavior were grounded from authoritative repository records."
+    },
+    "storage_analysis": {
+      "hex_text_bytes_per_record": 14168,
+      "hex_text_total_bytes": 73446912,
+      "note": "Minimum digest material only; excludes database pages, encryption envelopes, provenance, alignment, and runtime object overhead.",
+      "positional_index_count": 1119744,
+      "raw_minimum_bytes_per_record": 7192,
+      "raw_minimum_total_bytes": 37283328
+    },
+    "structural": {
+      "ab_p4_witnesses": 5184,
+      "control_roundtrips": 243,
+      "controls": 243,
+      "grouping_identities": 512,
+      "leading_zero_identity": true,
+      "operations_per_cell": 64,
+      "permanent_states": 5184,
+      "phase37_rejections": 81,
+      "phase_counts": {"0": 14, "18": 16, "36": 18, "54": 16},
+      "projected_addresses": 1259712,
+      "projected_checksum": "5ca0f67ecacfd64086944adeaea2dd8c88924ee7fbf84366b880f3af2cc7fd24",
+      "projected_roundtrips": 1259712,
+      "ring_5183_to_0": true,
+      "state_roundtrips": 5184,
+      "vm81_cells": 81,
+      "xy_phase": 0,
+      "yx_phase": 36
+    },
+    "timestamp_unix": 1785447250.2834203
+  }
+}
