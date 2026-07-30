@@ -4,11 +4,11 @@ import { LiveRuntimeProjectionPanel } from "../core/LiveRuntimeProjectionPanel"
 import type { RuntimeOS } from "../core/RuntimeOS"
 import { WorkspaceCommandClient } from "./WorkspaceCommandClient"
 
-type JsonRecord = Record<string, any>
+type Json = Record<string, any>
 type WorkspaceTab = "workbench" | "assistant" | "runtime" | "receipts"
 type BusyAction = "boot" | "project" | "source" | "interpret" | "compile" | "emulator" | "runtime" | null
 
-type ActivityRecord = {
+type Activity = {
   id: string
   operation: string
   ok: boolean
@@ -16,7 +16,7 @@ type ActivityRecord = {
   summary: string
   receiptHash72: string | null
   createdAt: number
-  raw?: JsonRecord
+  raw?: Json
 }
 
 export interface HHSWorkspaceShellProps {
@@ -25,14 +25,14 @@ export interface HHSWorkspaceShellProps {
   transportError?: string | null
 }
 
-const asRecord = (value: unknown): JsonRecord => value && typeof value === "object" ? value as JsonRecord : {}
-const asString = (value: unknown, fallback = ""): string => typeof value === "string" ? value : fallback
+const record = (value: unknown): Json => value && typeof value === "object" ? value as Json : {}
+const text = (value: unknown, fallback = ""): string => typeof value === "string" ? value : fallback
 const shortHash = (value: unknown): string => {
-  const text = asString(value)
-  return text ? `${text.slice(0, 10)}…${text.slice(-6)}` : "—"
+  const valueText = text(value)
+  return valueText ? `${valueText.slice(0, 10)}…${valueText.slice(-6)}` : "—"
 }
 
-async function requestJson(url: string, init?: RequestInit, timeoutMs = 20000): Promise<JsonRecord> {
+async function requestJson(url: string, init?: RequestInit, timeoutMs = 20000): Promise<Json> {
   const controller = new AbortController()
   const timeout = window.setTimeout(() => controller.abort(), timeoutMs)
   try {
@@ -45,38 +45,37 @@ async function requestJson(url: string, init?: RequestInit, timeoutMs = 20000): 
         ...(init?.headers ?? {}),
       },
     })
-    const body = asRecord(await response.json())
-    if (!response.ok) throw new Error(asString(body.detail ?? body.error ?? body.status, response.statusText))
+    const body = record(await response.json())
+    if (!response.ok) throw new Error(text(body.detail ?? body.error ?? body.status, response.statusText))
     return body
   } finally {
     window.clearTimeout(timeout)
   }
 }
 
-function projectObjects(project: JsonRecord | null): JsonRecord[] {
+function objectsFromProject(project: Json | null): Json[] {
   if (!project) return []
-  const registry = asRecord(project.object_registry)
+  const registry = record(project.object_registry)
   const order = Array.isArray(project.object_order) ? project.object_order.map(String) : Object.keys(registry)
-  return order.map((id) => asRecord(registry[id])).filter((item) => Object.keys(item).length > 0)
+  return order.map((id) => record(registry[id])).filter((item) => Boolean(item.object_id))
 }
 
-function extractProject(feedback: JsonRecord): JsonRecord | null {
-  const result = asRecord(feedback.result)
-  const registration = asRecord(result.registration)
-  const candidates = [feedback.project, result.project, registration.project]
-  for (const candidate of candidates) {
-    const project = asRecord(candidate)
+function extractProject(feedback: Json): Json | null {
+  const result = record(feedback.result)
+  const registration = record(result.registration)
+  for (const candidate of [feedback.project, result.project, registration.project]) {
+    const project = record(candidate)
     if (project.project_id) return project
   }
   return null
 }
 
-function extractReceipt(feedback: JsonRecord): string | null {
-  const result = asRecord(feedback.result)
-  const artifact = asRecord(result.artifact)
-  const registration = asRecord(result.registration)
-  const receipt = asRecord(result.receipt)
-  const executionReceipt = asRecord(result.execution_receipt)
+function extractReceipt(feedback: Json): string | null {
+  const result = record(feedback.result)
+  const artifact = record(result.artifact)
+  const registration = record(result.registration)
+  const receipt = record(result.receipt)
+  const executionReceipt = record(result.execution_receipt)
   const candidate = feedback.receipt_hash72
     ?? result.receipt_hash72
     ?? result.result_root_hash72
@@ -87,36 +86,34 @@ function extractReceipt(feedback: JsonRecord): string | null {
   return typeof candidate === "string" ? candidate : null
 }
 
-function describe(operation: string, feedback: JsonRecord): string {
-  const result = asRecord(feedback.result)
+function summarize(operation: string, feedback: Json): string {
+  const result = record(feedback.result)
   if (operation === "project.create") {
-    const project = asRecord(result.project)
-    return `Opened ${asString(project.name, "workspace")} with canonical project identity.`
+    return `Opened ${text(record(result.project).name, "workspace")} with canonical project identity.`
   }
   if (operation === "ingress.register") {
-    const object = asRecord(result.workspace_object)
-    return `Witnessed ${asString(object.name, "source")} as ${asString(object.modality, "source")} and registered it in the active project.`
+    const object = record(result.workspace_object)
+    return `Witnessed ${text(object.name, "source")} as ${text(object.modality, "source")} and registered it in the active project.`
   }
   if (operation === "interpret.execute") {
     return result.ok
-      ? `Exact result: ${asString(result.display_value, "completed")}.`
-      : `Interpretation rejected: ${(result.reasons ?? []).join(", ") || asString(result.status, "unknown rejection")}.`
+      ? `Exact result: ${text(result.display_value, "completed")}.`
+      : `Interpretation rejected: ${(result.reasons ?? []).join(", ") || text(result.status, "unknown rejection")}.`
   }
   if (operation === "compile.execute") {
-    const artifact = asRecord(result.artifact)
-    const ir = asRecord(artifact.ir)
-    const operations = Array.isArray(ir.operations) ? ir.operations.length : 0
+    const artifact = record(result.artifact)
+    const operations = Array.isArray(record(artifact.ir).operations) ? record(artifact.ir).operations.length : 0
     return result.ok
-      ? `Created ${asString(artifact.target, "HHS_IR")} artifact ${asString(artifact.artifact_id, "")}; ${operations} witnessed IR operation(s).`
-      : `Compilation rejected: ${asString(result.status, "unknown rejection")}.`
+      ? `Created ${text(artifact.target, "HHS_IR")} artifact ${text(artifact.artifact_id)} with ${operations} witnessed IR operation(s).`
+      : `Compilation rejected: ${text(result.status, "unknown rejection")}.`
   }
   if (operation.startsWith("emulator.")) {
-    const session = asRecord(result.session)
+    const session = record(result.session)
     return result.ok
-      ? `${asString(result.status, operation)} · tick ${String(session.tick ?? 0)} · ${asString(session.mode, "PAUSED")}.`
-      : `Emulator request rejected: ${asString(result.status, "unknown rejection")}.`
+      ? `${text(result.status, operation)} · tick ${String(session.tick ?? 0)} · ${text(session.mode, "PAUSED")}.`
+      : `Emulator request rejected: ${text(result.status, "unknown rejection")}.`
   }
-  return asString(feedback.status ?? result.status, operation)
+  return text(feedback.status ?? result.status, operation)
 }
 
 export const HHSWorkspaceShell: React.FC<HHSWorkspaceShellProps> = ({
@@ -128,8 +125,8 @@ export const HHSWorkspaceShell: React.FC<HHSWorkspaceShellProps> = ({
   const [tab, setTab] = useState<WorkspaceTab>("workbench")
   const [busyAction, setBusyAction] = useState<BusyAction>("boot")
   const [error, setError] = useState<string | null>(null)
-  const [project, setProject] = useState<JsonRecord | null>(null)
-  const [objects, setObjects] = useState<JsonRecord[]>([])
+  const [project, setProject] = useState<Json | null>(null)
+  const [objects, setObjects] = useState<Json[]>([])
   const [selectedObjectId, setSelectedObjectId] = useState<string | null>(null)
   const [projectName, setProjectName] = useState("HHS Workspace")
   const [sourceName, setSourceName] = useState("main.hhs")
@@ -137,45 +134,46 @@ export const HHSWorkspaceShell: React.FC<HHSWorkspaceShellProps> = ({
   const [witnessedSourceText, setWitnessedSourceText] = useState("")
   const [expression, setExpression] = useState("1+2*3/4")
   const [target, setTarget] = useState("HHS_IR")
-  const [artifact, setArtifact] = useState<JsonRecord | null>(null)
-  const [emulatorSession, setEmulatorSession] = useState<JsonRecord | null>(null)
-  const [lastResult, setLastResult] = useState<JsonRecord | null>(null)
-  const [activity, setActivity] = useState<ActivityRecord[]>([])
+  const [artifact, setArtifact] = useState<Json | null>(null)
+  const [emulatorSession, setEmulatorSession] = useState<Json | null>(null)
+  const [lastResult, setLastResult] = useState<Json | null>(null)
+  const [activity, setActivity] = useState<Activity[]>([])
 
   const selectedObject = objects.find((item) => item.object_id === selectedObjectId) ?? null
-  const projectId = asString(project?.project_id)
+  const projectId = text(project?.project_id)
+  const artifactId = text(artifact?.artifact_id)
+  const sessionId = text(emulatorSession?.session_id)
   const sourceDirty = sourceText !== witnessedSourceText
-  const artifactId = asString(artifact?.artifact_id)
-  const sessionId = asString(emulatorSession?.session_id)
 
-  const mergeSession = (session: JsonRecord): void => {
-    const nextProject = asRecord(session.project)
+  const mergeSession = (session: Json): void => {
+    const nextProject = record(session.project)
     if (nextProject.project_id) {
-      setProject(nextProject)
       const nextObjects = Array.isArray(session.objects)
-        ? session.objects.map(asRecord)
-        : projectObjects(nextProject)
+        ? session.objects.map(record).filter((item: Json) => Boolean(item.object_id))
+        : objectsFromProject(nextProject)
+      const lastObject = nextObjects.length > 0 ? nextObjects[nextObjects.length - 1] : null
+      setProject(nextProject)
       setObjects(nextObjects)
-      setSelectedObjectId((current) => current ?? asString(nextObjects.at(-1)?.object_id) || null)
+      setSelectedObjectId((current) => current ?? (text(lastObject?.object_id) || null))
     }
-    const remoteHistory = Array.isArray(session.history) ? session.history.map(asRecord) : []
-    if (remoteHistory.length) {
-      setActivity(remoteHistory.map((item, index) => ({
-        id: asString(item.command_id, `remote-${index}`),
-        operation: asString(item.operation, "workspace.command"),
+
+    const history = Array.isArray(session.history) ? session.history.map(record) : []
+    if (history.length > 0) {
+      setActivity(history.map((item: Json, index: number) => ({
+        id: text(item.command_id, `remote-${index}`),
+        operation: text(item.operation, "workspace.command"),
         ok: Boolean(item.ok),
-        status: asString(item.status, "UNKNOWN"),
-        summary: asString(item.status, "Workspace command"),
+        status: text(item.status, "UNKNOWN"),
+        summary: text(item.status, "Workspace command"),
         receiptHash72: typeof item.receipt_hash72 === "string" ? item.receipt_hash72 : null,
-        createdAt: Date.now() - (remoteHistory.length - index) * 1000,
+        createdAt: Date.now() - (history.length - index) * 1000,
       })))
     }
   }
 
   const refreshSession = async (requestedProjectId?: string): Promise<void> => {
     const query = requestedProjectId ? `?project_id=${encodeURIComponent(requestedProjectId)}` : ""
-    const session = await requestJson(`/api/runtime/workspace/session${query}`)
-    mergeSession(session)
+    mergeSession(await requestJson(`/api/runtime/workspace/session${query}`))
   }
 
   useEffect(() => {
@@ -187,47 +185,48 @@ export const HHSWorkspaceShell: React.FC<HHSWorkspaceShellProps> = ({
     return () => { active = false }
   }, [])
 
-  const applyFeedback = (operation: string, feedback: JsonRecord): void => {
-    const result = asRecord(feedback.result)
+  const applyFeedback = (operation: string, feedback: Json): void => {
+    const result = record(feedback.result)
     const nextProject = extractProject(feedback)
     if (nextProject) {
       setProject(nextProject)
-      setObjects(projectObjects(nextProject))
+      setObjects(objectsFromProject(nextProject))
     }
 
-    const workspaceObject = asRecord(result.workspace_object)
+    const workspaceObject = record(result.workspace_object)
     if (workspaceObject.object_id) {
-      setSelectedObjectId(asString(workspaceObject.object_id))
+      setSelectedObjectId(text(workspaceObject.object_id))
       setWitnessedSourceText(sourceText)
     }
 
-    const compiledArtifact = asRecord(result.artifact)
+    const compiledArtifact = record(result.artifact)
     if (compiledArtifact.artifact_id) setArtifact(compiledArtifact)
-    const nextSession = asRecord(result.session)
+    const nextSession = record(result.session)
     if (nextSession.session_id) setEmulatorSession(nextSession)
 
     const receiptHash72 = extractReceipt(feedback)
-    setLastResult({ operation, feedback, result, receipt_hash72: receiptHash72 })
+    const summary = summarize(operation, feedback)
+    setLastResult({ operation, feedback, receipt_hash72: receiptHash72, summary })
     setActivity((current) => [{
       id: `${operation}:${Date.now()}`,
       operation,
       ok: Boolean(feedback.ok),
-      status: asString(feedback.status ?? result.status, feedback.ok ? "COMPLETED" : "REJECTED"),
-      summary: describe(operation, feedback),
+      status: text(feedback.status ?? result.status, feedback.ok ? "COMPLETED" : "REJECTED"),
+      summary,
       receiptHash72,
       createdAt: Date.now(),
       raw: feedback,
     }, ...current].slice(0, 48))
   }
 
-  const submit = async (operation: string, payload: JsonRecord): Promise<JsonRecord> => {
-    const feedback = asRecord(await commandClient.submit(operation, payload))
+  const submit = async (operation: string, payload: Json): Promise<Json> => {
+    const feedback = record(await commandClient.submit(operation, payload))
     applyFeedback(operation, feedback)
-    if (feedback.ok === false) throw new Error(describe(operation, feedback))
+    if (feedback.ok === false) throw new Error(summarize(operation, feedback))
     return feedback
   }
 
-  const ensureProject = async (): Promise<JsonRecord> => {
+  const ensureProject = async (): Promise<Json> => {
     if (project?.project_id) return project
     const feedback = await submit("project.create", { name: projectName })
     const created = extractProject(feedback)
@@ -235,7 +234,7 @@ export const HHSWorkspaceShell: React.FC<HHSWorkspaceShellProps> = ({
     return created
   }
 
-  const ensureSource = async (activeProject: JsonRecord): Promise<JsonRecord> => {
+  const ensureSource = async (activeProject: Json): Promise<Json> => {
     if (selectedObject?.object_id && !sourceDirty) return selectedObject
     if (!sourceText.trim()) throw new Error("Enter source content before witnessing or compiling it")
     const feedback = await submit("ingress.register", {
@@ -244,10 +243,10 @@ export const HHSWorkspaceShell: React.FC<HHSWorkspaceShellProps> = ({
       source_payload: sourceText,
       declared_modality: sourceName.endsWith(".hhs") ? "HARMONICODE_SOURCE" : "TEXT",
     })
-    const object = asRecord(asRecord(feedback.result).workspace_object)
-    if (!object.object_id) throw new Error("Ingress completed without a workspace object")
-    await refreshSession(asString(activeProject.project_id))
-    return object
+    const workspaceObject = record(record(feedback.result).workspace_object)
+    if (!workspaceObject.object_id) throw new Error("Ingress completed without a workspace object")
+    await refreshSession(text(activeProject.project_id))
+    return workspaceObject
   }
 
   const run = async (action: BusyAction, task: () => Promise<void>): Promise<void> => {
@@ -268,8 +267,7 @@ export const HHSWorkspaceShell: React.FC<HHSWorkspaceShellProps> = ({
   })
 
   const witnessSource = () => run("source", async () => {
-    const activeProject = await ensureProject()
-    await ensureSource(activeProject)
+    await ensureSource(await ensureProject())
   })
 
   const interpret = () => run("interpret", async () => {
@@ -292,7 +290,7 @@ export const HHSWorkspaceShell: React.FC<HHSWorkspaceShellProps> = ({
     })
   })
 
-  const ensureArtifact = async (): Promise<JsonRecord> => {
+  const ensureArtifact = async (): Promise<Json> => {
     if (artifact?.artifact_id && !sourceDirty) return artifact
     const activeProject = await ensureProject()
     const object = await ensureSource(activeProject)
@@ -302,7 +300,7 @@ export const HHSWorkspaceShell: React.FC<HHSWorkspaceShellProps> = ({
       source_text: sourceText,
       target,
     })
-    const nextArtifact = asRecord(asRecord(feedback.result).artifact)
+    const nextArtifact = record(record(feedback.result).artifact)
     if (!nextArtifact.artifact_id) throw new Error("Compiler returned no artifact identity")
     return nextArtifact
   }
@@ -327,20 +325,22 @@ export const HHSWorkspaceShell: React.FC<HHSWorkspaceShellProps> = ({
 
   const runtimeTick = () => run("runtime", async () => {
     const result = await requestJson("/api/runtime/live/tick", { method: "POST" })
-    setLastResult({ operation: "runtime.live.tick", result })
+    const receiptHash72 = typeof result.receipt_hash72 === "string" ? result.receipt_hash72 : null
+    const summary = "Advanced the canonical live runtime workflow by one bounded tick."
+    setLastResult({ operation: "runtime.live.tick", feedback: { result }, receipt_hash72: receiptHash72, summary })
     setActivity((current) => [{
       id: `runtime.live.tick:${Date.now()}`,
       operation: "runtime.live.tick",
       ok: Boolean(result.ok ?? true),
-      status: asString(result.status, "RUNTIME_TICK_COMPLETED"),
-      summary: `Advanced the canonical live runtime workflow by one bounded tick.`,
-      receiptHash72: typeof result.receipt_hash72 === "string" ? result.receipt_hash72 : null,
+      status: text(result.status, "RUNTIME_TICK_COMPLETED"),
+      summary,
+      receiptHash72,
       createdAt: Date.now(),
       raw: result,
     }, ...current].slice(0, 48))
   })
 
-  const recordAssistantReceipt = (receiptHash72: string, raw: JsonRecord): void => {
+  const recordAssistantReceipt = (receiptHash72: string, raw: Json): void => {
     setActivity((current) => [{
       id: `assistant:${Date.now()}`,
       operation: "assistant.chat",
@@ -362,7 +362,7 @@ export const HHSWorkspaceShell: React.FC<HHSWorkspaceShellProps> = ({
           <div className="min-w-0">
             <div className="truncate text-sm font-semibold tracking-wide text-cyan-200">HHS Visual Runtime OS</div>
             <div className="truncate text-[10px] text-neutral-500">
-              {project ? `${asString(project.name, "Workspace")} · ${shortHash(project.project_id)}` : "Create a project to begin"}
+              {project ? `${text(project.name, "Workspace")} · ${shortHash(project.project_id)}` : "Create a project to begin"}
             </div>
           </div>
           <div className="flex items-center gap-2 text-[10px]">
@@ -380,12 +380,7 @@ export const HHSWorkspaceShell: React.FC<HHSWorkspaceShellProps> = ({
             ["runtime", "Runtime"],
             ["receipts", "Receipts"],
           ] as [WorkspaceTab, string][]).map(([id, label]) => (
-            <button
-              key={id}
-              type="button"
-              onClick={() => setTab(id)}
-              className={`min-h-10 rounded-lg px-2 text-xs ${tab === id ? "bg-cyan-900 text-white" : "bg-neutral-900 text-neutral-400"}`}
-            >
+            <button key={id} type="button" onClick={() => setTab(id)} className={`min-h-10 rounded-lg px-2 text-xs ${tab === id ? "bg-cyan-900 text-white" : "bg-neutral-900 text-neutral-400"}`}>
               {label}
             </button>
           ))}
@@ -418,14 +413,9 @@ export const HHSWorkspaceShell: React.FC<HHSWorkspaceShellProps> = ({
               ) : (
                 <div className="mt-3 space-y-2">
                   {objects.map((object) => (
-                    <button
-                      key={asString(object.object_id)}
-                      type="button"
-                      onClick={() => setSelectedObjectId(asString(object.object_id))}
-                      className={`w-full rounded-xl border p-3 text-left ${selectedObjectId === object.object_id ? "border-cyan-700 bg-cyan-950/40" : "border-neutral-800 bg-black/40"}`}
-                    >
-                      <div className="truncate text-xs font-medium text-neutral-100">{asString(object.name, "workspace object")}</div>
-                      <div className="mt-1 truncate text-[9px] text-neutral-500">{asString(object.object_type)} · {asString(object.lifecycle_state)}</div>
+                    <button key={text(object.object_id)} type="button" onClick={() => setSelectedObjectId(text(object.object_id))} className={`w-full rounded-xl border p-3 text-left ${selectedObjectId === object.object_id ? "border-cyan-700 bg-cyan-950/40" : "border-neutral-800 bg-black/40"}`}>
+                      <div className="truncate text-xs font-medium text-neutral-100">{text(object.name, "workspace object")}</div>
+                      <div className="mt-1 truncate text-[9px] text-neutral-500">{text(object.object_type)} · {text(object.lifecycle_state)}</div>
                       <div className="mt-1 truncate font-mono text-[9px] text-cyan-800">{shortHash(object.root_hash72 ?? object.current_root_hash72)}</div>
                     </button>
                   ))}
@@ -438,7 +428,7 @@ export const HHSWorkspaceShell: React.FC<HHSWorkspaceShellProps> = ({
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <div>
                     <h2 className="text-sm font-semibold text-white">Source → artifact → emulator</h2>
-                    <p className="text-[10px] text-neutral-500">Every action below advances the same selected project and receipt chain.</p>
+                    <p className="text-[10px] text-neutral-500">Every action advances the same selected project and receipt chain.</p>
                   </div>
                   <span className={sourceDirty ? "text-[10px] text-amber-300" : "text-[10px] text-emerald-300"}>{sourceDirty ? "local changes not witnessed" : "source witnessed"}</span>
                 </div>
@@ -448,27 +438,11 @@ export const HHSWorkspaceShell: React.FC<HHSWorkspaceShellProps> = ({
                 <div className="grid gap-2 sm:grid-cols-[minmax(0,1fr)_160px]">
                   <input value={sourceName} onChange={(event) => setSourceName(event.target.value)} className="rounded-lg border border-neutral-700 bg-black p-2 text-sm" aria-label="Source file name" />
                   <select value={target} onChange={(event) => setTarget(event.target.value)} className="rounded-lg border border-neutral-700 bg-black p-2 text-sm" aria-label="Compiler target">
-                    {[
-                      "HHS_IR",
-                      "C_KERNEL_PLAN",
-                      "C_SOURCE",
-                      "PYTHON_ADAPTER",
-                      "JSON_EXECUTION_GRAPH",
-                      "DOT_GRAPH",
-                      "BYTECODE_OR_VM_PLAN",
-                      "RECEIPT_ONLY_PLAN",
-                    ].map((item) => <option key={item}>{item}</option>)}
+                    {["HHS_IR", "C_KERNEL_PLAN", "C_SOURCE", "PYTHON_ADAPTER", "JSON_EXECUTION_GRAPH", "DOT_GRAPH", "BYTECODE_OR_VM_PLAN", "RECEIPT_ONLY_PLAN"].map((item) => <option key={item}>{item}</option>)}
                   </select>
                 </div>
 
-                <textarea
-                  value={sourceText}
-                  onChange={(event) => setSourceText(event.target.value)}
-                  className="min-h-[38vh] w-full resize-y rounded-xl border border-neutral-700 bg-black p-3 font-mono text-sm leading-6 text-cyan-50 outline-none focus:border-cyan-600"
-                  placeholder="Enter HARMONICODE or source content…"
-                  spellCheck={false}
-                  aria-label="HHS source editor"
-                />
+                <textarea value={sourceText} onChange={(event) => setSourceText(event.target.value)} className="min-h-[38vh] w-full resize-y rounded-xl border border-neutral-700 bg-black p-3 font-mono text-sm leading-6 text-cyan-50 outline-none focus:border-cyan-600" placeholder="Enter HARMONICODE or source content…" spellCheck={false} aria-label="HHS source editor" />
 
                 <div className="grid gap-2 sm:grid-cols-3">
                   <button type="button" onClick={witnessSource} disabled={Boolean(busyAction) || !sourceText.trim()} className="runtime-button min-h-11 px-3 text-sm">Witness source</button>
@@ -498,7 +472,7 @@ export const HHSWorkspaceShell: React.FC<HHSWorkspaceShellProps> = ({
 
                 {emulatorSession ? (
                   <div className="mt-3 rounded-xl border border-neutral-800 bg-black/50 p-3">
-                    <div className="flex items-center justify-between text-xs"><span>{asString(emulatorSession.mode, "PAUSED")}</span><span>tick {String(emulatorSession.tick ?? 0)}</span></div>
+                    <div className="flex items-center justify-between text-xs"><span>{text(emulatorSession.mode, "PAUSED")}</span><span>tick {String(emulatorSession.tick ?? 0)}</span></div>
                     <div className="mt-2 grid grid-cols-3 gap-1">
                       <button type="button" onClick={() => emulatorCommand("emulator.step")} disabled={Boolean(busyAction)} className="runtime-button min-h-9 text-xs">Step</button>
                       <button type="button" onClick={() => emulatorCommand("emulator.run")} disabled={Boolean(busyAction)} className="runtime-button min-h-9 text-xs">Run 4</button>
@@ -511,11 +485,11 @@ export const HHSWorkspaceShell: React.FC<HHSWorkspaceShellProps> = ({
               <section className="rounded-2xl border border-neutral-800 bg-neutral-900/60 p-3">
                 <div className="flex items-center justify-between gap-2">
                   <h2 className="text-xs font-semibold text-cyan-200">Last result</h2>
-                  <span className="font-mono text-[9px] text-neutral-600">{shortHash(asRecord(lastResult).receipt_hash72)}</span>
+                  <span className="font-mono text-[9px] text-neutral-600">{shortHash(record(lastResult).receipt_hash72)}</span>
                 </div>
                 {lastResult ? (
                   <>
-                    <p className="mt-3 text-sm leading-6 text-neutral-200">{describe(asString(lastResult.operation), asRecord(lastResult.feedback ?? lastResult.result))}</p>
+                    <p className="mt-3 text-sm leading-6 text-neutral-200">{text(lastResult.summary, "Operation completed.")}</p>
                     <details className="mt-3 rounded-lg border border-neutral-800 bg-black/50 p-2">
                       <summary className="cursor-pointer text-[10px] text-neutral-500">Technical evidence</summary>
                       <pre className="mt-2 max-h-72 overflow-auto whitespace-pre-wrap break-all text-[9px] text-neutral-400">{JSON.stringify(lastResult, null, 2)}</pre>
@@ -528,13 +502,7 @@ export const HHSWorkspaceShell: React.FC<HHSWorkspaceShellProps> = ({
         ) : null}
 
         {tab === "assistant" ? (
-          <RuntimeAssistantPanel
-            projectId={projectId || null}
-            sourceObjectId={selectedObjectId}
-            sourceName={sourceName}
-            artifactId={artifactId || null}
-            onReceipt={recordAssistantReceipt}
-          />
+          <RuntimeAssistantPanel projectId={projectId || null} sourceObjectId={selectedObjectId} sourceName={sourceName} artifactId={artifactId || null} onReceipt={recordAssistantReceipt} />
         ) : null}
 
         {tab === "runtime" ? (
