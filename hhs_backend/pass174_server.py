@@ -20,6 +20,7 @@ from fastapi.staticfiles import StaticFiles
 from hhs_backend import production_ide_server as inherited_ide
 from hhs_backend import production_server as inherited_production
 from hhs_backend.api.pass174_runtime_routes import get_runtime, router as pass174_router
+from hhs_backend.api import pass174_ws_routes as _pass174_ws_routes  # registers WebSocket routes
 
 app = inherited_ide.app
 app.title = "HHS Pass 174 Harmonic Visual SDLC Runtime"
@@ -98,6 +99,8 @@ async def _pass174_readiness_probe() -> None:
         raise RuntimeError("HHS_P174_INHERITED_WORKSPACE_ROUTE_MISSING")
     if not _has_route_prefix("/api/runtime/multimodal-ingress"):
         raise RuntimeError("HHS_P174_INHERITED_MULTIMODAL_ROUTE_MISSING")
+    if not _has_route_prefix("/api/v1/pass174/ws/events"):
+        raise RuntimeError("HHS_P174_LIVE_EVENT_ROUTE_MISSING")
 
 
 async def initialize_pass174_overlay() -> None:
