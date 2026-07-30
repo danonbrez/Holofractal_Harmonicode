@@ -1,3 +1,5 @@
+import './theme-bootstrap.mjs';
+
 const originalFetch = window.fetch.bind(window);
 const startedAt = performance.now();
 const MAX_ASSISTANT_DEFERRAL_MS = 1_500;
@@ -35,10 +37,11 @@ window.fetch = async function coordinatedFetch(input, init) {
 };
 
 window.HHSProductionStartupCoordinator = Object.freeze({
-  schema: 'HHS_PASS161_PRODUCTION_STARTUP_COORDINATOR_V2',
+  schema: 'HHS_PASS161_PRODUCTION_STARTUP_COORDINATOR_V3',
   assistant_requests_deferred_until_registry_ready: true,
   max_assistant_deferral_ms: MAX_ASSISTANT_DEFERRAL_MS,
   runtime_registry_has_priority: true,
   visual_ide_requests_never_deferred: true,
+  theme_bootstrap_independent_of_ide_module: true,
   frontend_is_authority: false,
 });
