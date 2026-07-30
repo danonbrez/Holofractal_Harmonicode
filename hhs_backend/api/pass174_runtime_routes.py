@@ -327,7 +327,7 @@ def run_sdlc(request: SDLCRunRequest) -> Dict[str, Any]:
     )
     interpretation = inherited.get("interpretation") or {}
     compilation = inherited.get("compilation") or {}
-    execution = inherited.get("execution") or {}
+    lifecycle_execution = inherited.get("execution") or {}
     overall_ok = bool(inherited.get("ok") and continuation.get("receipt"))
     source_identity = str(((inherited.get("ingress") or {}).get("source") or {}).get("source_hash") or sha256(source_bytes).hexdigest())
     stages = [
@@ -335,7 +335,7 @@ def run_sdlc(request: SDLCRunRequest) -> Dict[str, Any]:
         {"stage": "GENERATE", "status": "COMPLETED" if (inherited.get("workspace_ingress") or {}).get("ok") else "REJECTED", "identity": source_identity},
         {"stage": "INTERPRET", "status": "COMPLETED" if interpretation.get("ok") else "NOT_APPLICABLE_OR_REJECTED", "identity": receipts.get("interpretation_receipt_hash72")},
         {"stage": "COMPILE", "status": "COMPLETED" if compilation.get("ok") else "NOT_APPLICABLE_OR_REJECTED", "identity": receipts.get("compilation_receipt_hash72")},
-        {"stage": "RUN", "status": "COMPLETED" if execution.get("ok") else "NOT_APPLICABLE_OR_REJECTED", "identity": receipts.get("execution_receipt_hash72")},
+        {"stage": "RUN", "status": "COMPLETED" if lifecycle_execution.get("ok") else "NOT_APPLICABLE_OR_REJECTED", "identity": receipts.get("execution_receipt_hash72")},
         {"stage": "VALIDATE", "status": "COMPLETED" if inherited.get("ok") else "PARTIAL", "identity": receipts.get("lifecycle_receipt_hash72")},
         {"stage": "RECEIPT", "status": "COMPLETED", "identity": continuation["receipt"]["receipt_sha256"]},
     ]
@@ -350,6 +350,7 @@ def run_sdlc(request: SDLCRunRequest) -> Dict[str, Any]:
         "stages": stages,
         "inherited_lifecycle": inherited,
         "pass174_continuation": continuation,
+        "execution": continuation,
         "replayable": True,
         "frontend_result_fabricated": False,
         "canonical_authorities": inherited.get("canonical_authorities", []) + [
