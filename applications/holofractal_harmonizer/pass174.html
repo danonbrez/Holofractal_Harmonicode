@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#030711">
+  <meta name="description" content="HHS Pass 174 whole-state phase gear, Hash72 clock, Hash216 encrypted retrieval, audit, and efficiency workspace">
+  <title>HHS Pass 174 Harmonic Retrieval Runtime</title>
+  <link rel="stylesheet" href="./src/pass174.css">
+</head>
+<body>
+  <div class="p174-shell">
+    <header class="p174-topbar">
+      <div class="brand-block">
+        <a class="back-link" href="./">← HHS IDE</a>
+        <div>
+          <span class="eyebrow">HHS-P174 · SINGLETON VM81 AUTHORITY</span>
+          <h1>Harmonic Retrieval Runtime</h1>
+          <p>5184-bit whole-state computation · 64:72:81 phase gears · encrypted Hash216 continuation memory</p>
+        </div>
+      </div>
+      <div class="top-status" aria-label="Runtime status">
+        <span id="runtime-health" class="pill pending">CONNECTING</span>
+        <span id="ws-health" class="pill pending">STREAM OFFLINE</span>
+        <span id="transition-count" class="counter">0 transitions</span>
+      </div>
+    </header>
+
+    <nav class="section-nav" aria-label="Pass 174 workspace sections">
+      <button data-section="manifold" class="active">5184-bit Manifold</button>
+      <button data-section="phase">Phase Gears</button>
+      <button data-section="harmonic">Harmonic Circuit</button>
+      <button data-section="hash">Hash72 / Hash216</button>
+      <button data-section="efficiency">Efficiency</button>
+      <button data-section="audit">Audit & Security</button>
+    </nav>
+
+    <main>
+      <section id="section-manifold" class="workspace-section active" aria-labelledby="manifold-heading">
+        <div class="section-heading">
+          <div>
+            <span class="eyebrow">AUTHORITATIVE WHOLE FRAME</span>
+            <h2 id="manifold-heading">81 × 64-bit VM81 RAM Manifold</h2>
+            <p>Every admitted operation computes all 81 words from one immutable source frame before an atomic commit.</p>
+          </div>
+          <div class="heading-actions">
+            <button id="refresh-frame">Refresh Frame</button>
+            <button id="toggle-bits">Compact Words</button>
+          </div>
+        </div>
+
+        <div class="frame-summary">
+          <article><span>FRAME ID</span><code id="frame-id">—</code></article>
+          <article><span>CANDIDATE</span><code id="candidate-id">none</code></article>
+          <article><span>CHANGED CELLS</span><strong id="changed-cells">0</strong></article>
+          <article><span>CHANGED BITS</span><strong id="changed-bits">0</strong></article>
+          <article><span>CLOSURE</span><strong id="closure-state">GENESIS</strong></article>
+        </div>
+
+        <div class="frame-legend" aria-label="Bit state legend">
+          <span><i class="bit zero"></i>0</span>
+          <span><i class="bit one"></i>1</span>
+          <span><i class="bit changed"></i>changed</span>
+          <span><i class="cell-marker candidate"></i>candidate differs</span>
+        </div>
+        <div id="frame-grid" class="frame-grid" aria-live="polite"></div>
+      </section>
+
+      <section id="section-phase" class="workspace-section" aria-labelledby="phase-heading">
+        <div class="section-heading">
+          <div>
+            <span class="eyebrow">POLYRHYTHMIC CONTROL GEOMETRY</span>
+            <h2 id="phase-heading">64:72:81 Phase-Gear Control</h2>
+            <p>The control geometry repeats at 5184 while the evolved whole-state frame continues.</p>
+          </div>
+          <button id="phase-step">Commit One Phase Step</button>
+        </div>
+        <div class="gear-stage">
+          <article class="gear-card gear-64"><div class="gear" id="gear-64"><span>64</span></div><strong id="phase64">0 / 64</strong><small>8/8 word lane</small></article>
+          <article class="gear-card gear-72"><div class="gear" id="gear-72"><span>72</span></div><strong id="phase72">0 / 72</strong><small>8/9 · 9/8 bridge</small></article>
+          <article class="gear-card gear-81"><div class="gear" id="gear-81"><span>81</span></div><strong id="phase81">0 / 81</strong><small>9/9 VM81 lane</small></article>
+          <article class="gear-card closure"><div class="closure-ring" id="gear-5184"><span>5184</span></div><strong id="phase5184">0 / 5184</strong><small>complete phase lock</small></article>
+        </div>
+        <div class="phase-lanes">
+          <article><span>8/8</span><meter id="lane-88" min="0" max="64" value="0"></meter></article>
+          <article><span>8/9</span><meter id="lane-89" min="0" max="72" value="0"></meter></article>
+          <article><span>9/8</span><meter id="lane-98" min="0" max="72" value="0"></meter></article>
+          <article><span>9/9</span><meter id="lane-99" min="0" max="81" value="0"></meter></article>
+        </div>
+        <div id="phase-events" class="event-log" aria-live="polite"></div>
+      </section>
+
+      <section id="section-harmonic" class="workspace-section" aria-labelledby="harmonic-heading">
+        <div class="section-heading">
+          <div>
+            <span class="eyebrow">IDE-REGISTERED PUBLIC API WORKFLOW</span>
+            <h2 id="harmonic-heading">Whole-State Harmonic Circuit Editor</h2>
+            <p>Controls compile an ordered operator proposal and submit it to the singleton Runtime for complete-frame admission.</p>
+          </div>
+          <span class="pill authority">NO BROWSER AUTHORITY</span>
+        </div>
+        <form id="operator-form" class="operator-editor">
+          <label>Operator
+            <select id="operator-kind" name="kind">
+              <option value="rotate">Rotate</option>
+              <option value="xor">Xor</option>
+              <option value="add">Add</option>
+              <option value="permute">Permute</option>
+              <option value="reciprocal">Reciprocal</option>
+              <option value="harmonic" selected>Harmonic</option>
+              <option value="mixed">Mixed Connector Circuit</option>
+            </select>
+          </label>
+          <label>Amount<input id="operator-amount" type="number" value="1" step="1"></label>
+          <label>Numerator<input id="operator-numerator" type="number" value="3" step="1"></label>
+          <label>Denominator<input id="operator-denominator" type="number" value="2" step="1" min="1"></label>
+          <label>Mask<input id="operator-mask" value="0xffffffffffffffff" spellcheck="false"></label>
+          <label>Execution Path
+            <select id="execution-mode">
+              <option value="auto" selected>Adaptive auto</option>
+              <option value="direct">Direct Runtime</option>
+              <option value="retrieval">Validated Retrieval</option>
+              <option value="hybrid">Hybrid Continuation</option>
+            </select>
+          </label>
+          <fieldset class="connector-fieldset">
+            <legend>Ordered Connectors</legend>
+            <div id="connector-list" class="connector-list">
+              <button type="button" data-connector="Xor">Xor</button>
+              <button type="button" data-connector="Add">Add</button>
+              <button type="button" data-connector="Multiply">Multiply</button>
+              <button type="button" data-connector="Reciprocal">Reciprocal</button>
+              <button type="button" data-connector="Rotate">Rotate</button>
+              <button type="button" data-connector="And">And</button>
+              <button type="button" data-connector="Or">Or</button>
+            </div>
+            <ol id="connector-order" aria-label="Current connector order"></ol>
+            <button id="clear-connectors" type="button">Clear Order</button>
+          </fieldset>
+          <div class="operator-actions">
+            <button id="compile-operator" type="button">Compile Proposal</button>
+            <button id="candidate-operator" type="button">Compute Candidate</button>
+            <button id="execute-operator" type="submit" class="primary">Compute & Commit Whole Frame</button>
+            <button id="commit-candidate" type="button">Commit Pending Candidate</button>
+          </div>
+        </form>
+        <div class="circuit-output-grid">
+          <article><h3>Compiled Operator</h3><pre id="compiled-operator">No operator compiled.</pre></article>
+          <article><h3>Runtime Result</h3><pre id="execution-result">No operation submitted.</pre></article>
+        </div>
+      </section>
+
+      <section id="section-hash" class="workspace-section" aria-labelledby="hash-heading">
+        <div class="section-heading">
+          <div>
+            <span class="eyebrow">THREE-STATE AUTHORITATIVE CLOCK</span>
+            <h2 id="hash-heading">Hash72 Clock & Hash216 Field</h2>
+            <p>Predecessor, current, and successor lanes retain ordered provenance; every one of 216 positions is SHA-256 indexed.</p>
+          </div>
+          <button id="refresh-hash">Refresh Hash Field</button>
+        </div>
+        <div class="hash72-clock">
+          <span>HASH72 TIP</span>
+          <code id="hash72-tip">—</code>
+          <small id="hash72-count">0 committed transitions</small>
+        </div>
+        <div class="hash-lanes">
+          <article><h3>Lane − · Predecessor</h3><div id="lane-minus" class="hash-character-grid"></div></article>
+          <article><h3>Lane 0 · Current</h3><div id="lane-zero" class="hash-character-grid"></div></article>
+          <article><h3>Lane + · Successor</h3><div id="lane-plus" class="hash-character-grid"></div></article>
+        </div>
+        <div class="hash-summary">
+          <article><span>HASH216 ID</span><code id="hash216-id">none</code></article>
+          <article><span>INDEX ROOT</span><code id="index-root">none</code></article>
+          <article><span>INDEXED POSITIONS</span><strong id="index-count">0 / 216</strong></article>
+          <article><span>ENCRYPTED OBJECTS</span><strong id="encrypted-count">0</strong></article>
+        </div>
+        <div id="hash-index-detail" class="index-detail">Select a Hash216 character to inspect its position-bound index.</div>
+      </section>
+
+      <section id="section-efficiency" class="workspace-section" aria-labelledby="efficiency-heading">
+        <div class="section-heading">
+          <div>
+            <span class="eyebrow">EXACT COST FIELD · NEVER AUTHORITY</span>
+            <h2 id="efficiency-heading">Retrieval-versus-Runtime Calibration</h2>
+            <p>Deterministic VM81 cost units select among already valid paths. Similarity, frequency, and efficiency do not create trust.</p>
+          </div>
+          <button id="refresh-efficiency">Refresh Report</button>
+        </div>
+        <div class="efficiency-rule">EFFICIENCY SELECTS AMONG VALID PATHS · EFFICIENCY NEVER CREATES AUTHORITY</div>
+        <div id="efficiency-cards" class="efficiency-cards"></div>
+        <table class="efficiency-table">
+          <thead><tr><th>Query</th><th>Direct</th><th>Retrieval</th><th>Hybrid</th><th>Hits</th><th>Rejects</th><th>Avoided Work</th><th>Changed Bits</th></tr></thead>
+          <tbody id="efficiency-body"></tbody>
+        </table>
+      </section>
+
+      <section id="section-audit" class="workspace-section" aria-labelledby="audit-heading">
+        <div class="section-heading">
+          <div>
+            <span class="eyebrow">BOUNDED-FRONTIER TRUST</span>
+            <h2 id="audit-heading">Genesis Audit & Encrypted Security State</h2>
+            <p>Sampling supplements authenticated admission; a failed object is quarantined and prohibited from retrieval.</p>
+          </div>
+          <div class="heading-actions">
+            <button id="light-audit">Run Light Audit</button>
+            <button id="deep-audit">Run Deep Audit</button>
+            <button id="run-replay">Run Deterministic Replay</button>
+          </div>
+        </div>
+        <div class="security-grid">
+          <article><span>GENESIS ANCHOR</span><code id="genesis-anchor">—</code></article>
+          <article><span>SEALED FRONTIER</span><code id="sealed-frontier">none</code></article>
+          <article><span>ACTIVE SUFFIX</span><strong id="active-suffix">0 / 64</strong></article>
+          <article><span>AEAD</span><strong>AES-256-GCM</strong></article>
+          <article><span>INDEX POLICY</span><strong>216 POSITION-BOUND</strong></article>
+          <article><span>HOT PATH</span><strong>BOUNDED · NO GENESIS REPLAY</strong></article>
+        </div>
+        <form id="audit-form" class="audit-controls">
+          <label>Samples<input id="audit-samples" type="number" min="1" max="5184" value="4"></label>
+          <label>Challenge (hex, optional)<input id="audit-challenge" pattern="[0-9a-fA-F]*" spellcheck="false"></label>
+          <label>Assumed corruption fraction<input id="audit-fraction" value="1/100" pattern="[0-9]+/[0-9]+"></label>
+        </form>
+        <div class="audit-output-grid">
+          <article><h3>Audit Result</h3><pre id="audit-result">No audit executed.</pre></article>
+          <article><h3>Replay Result</h3><pre id="replay-result">No replay executed.</pre></article>
+          <article><h3>Security Events</h3><div id="security-events" class="event-log"></div></article>
+        </div>
+      </section>
+    </main>
+
+    <footer class="p174-footer">
+      <span>Runtime <code id="footer-runtime">pending</code></span>
+      <span>Frame <code id="footer-frame">—</code></span>
+      <span>Hash72 <code id="footer-tip">—</code></span>
+      <span>Receipt <code id="footer-receipt">—</code></span>
+      <span class="nonterminal">IMPLEMENTATION ACTIVE · TERMINAL FALSE</span>
+    </footer>
+  </div>
+  <script type="module" src="./src/pass174.mjs"></script>
+</body>
+</html>
