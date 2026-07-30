@@ -1,0 +1,103 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hhs.local/schemas/pass174/runtime.schema.json",
+  "title": "HHS Pass 174 Runtime Schemas",
+  "type": "object",
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "hash72": {
+      "type": "string",
+      "minLength": 72,
+      "maxLength": 72
+    },
+    "phaseCoordinate": {
+      "type": "object",
+      "required": ["logical_step", "phase64", "phase72", "phase81", "phase5184", "full_phase_lock"],
+      "properties": {
+        "logical_step": {"type": "integer", "minimum": 0},
+        "phase64": {"type": "integer", "minimum": 0, "maximum": 63},
+        "phase72": {"type": "integer", "minimum": 0, "maximum": 71},
+        "phase81": {"type": "integer", "minimum": 0, "maximum": 80},
+        "phase5184": {"type": "integer", "minimum": 0, "maximum": 5183},
+        "lock64_72": {"type": "boolean"},
+        "lock72_81": {"type": "boolean"},
+        "full_phase_lock": {"type": "boolean"}
+      },
+      "additionalProperties": false
+    },
+    "vm81Frame5184": {
+      "type": "object",
+      "required": ["encoding", "frame_bits", "frame_bytes", "base64_symbols", "snapshot_b64", "snapshot_hash72", "state_hash72"],
+      "properties": {
+        "encoding": {"const": "CANONICAL_UNPADDED_BASE64"},
+        "frame_bits": {"const": 5184},
+        "frame_bytes": {"const": 648},
+        "base64_symbols": {"const": 864},
+        "snapshot_b64": {"type": "string", "minLength": 864, "maxLength": 864, "pattern": "^[A-Za-z0-9+/]{864}$"},
+        "snapshot_hash72": {"$ref": "#/$defs/hash72"},
+        "state_hash72": {"$ref": "#/$defs/hash72"},
+        "phase": {"$ref": "#/$defs/phaseCoordinate"}
+      }
+    },
+    "hash216Array": {
+      "type": "object",
+      "required": ["predecessor", "current", "successor", "combined", "character_indexes_sha256", "index_root_sha256", "logical_identity_sha256"],
+      "properties": {
+        "predecessor": {"$ref": "#/$defs/hash72"},
+        "current": {"$ref": "#/$defs/hash72"},
+        "successor": {"$ref": "#/$defs/hash72"},
+        "combined": {"type": "string", "minLength": 216, "maxLength": 216},
+        "character_indexes_sha256": {
+          "type": "array",
+          "minItems": 216,
+          "maxItems": 216,
+          "items": {"$ref": "#/$defs/sha256"}
+        },
+        "index_root_sha256": {"$ref": "#/$defs/sha256"},
+        "logical_identity_sha256": {"$ref": "#/$defs/sha256"}
+      },
+      "additionalProperties": false
+    },
+    "encryptedVectorObject": {
+      "type": "object",
+      "required": ["object_id", "operation_key", "logical_step", "input_hash72", "output_hash72", "operation_identity_sha256", "hash216", "associated_data_sha256", "key_version", "plaintext_exposed"],
+      "properties": {
+        "object_id": {"$ref": "#/$defs/sha256"},
+        "operation_key": {"$ref": "#/$defs/sha256"},
+        "logical_step": {"type": "integer", "minimum": 0},
+        "input_hash72": {"$ref": "#/$defs/hash72"},
+        "output_hash72": {"$ref": "#/$defs/hash72"},
+        "operation_identity_sha256": {"$ref": "#/$defs/sha256"},
+        "hash216": {"$ref": "#/$defs/hash216Array"},
+        "associated_data_sha256": {"$ref": "#/$defs/sha256"},
+        "key_version": {"type": "integer", "minimum": 1},
+        "direct_cost_units": {"type": "integer", "minimum": 0},
+        "changed_bits": {"type": "integer", "minimum": 0, "maximum": 5184},
+        "parent_object_id": {"anyOf": [{"$ref": "#/$defs/sha256"}, {"type": "null"}]},
+        "plaintext_exposed": {"const": false}
+      }
+    },
+    "legacyFoundation": {
+      "type": "object",
+      "required": ["schema", "maximum_inherited_pass", "specification_count", "aggregate_root_sha256", "pass_numbers_present"],
+      "properties": {
+        "schema": {"const": "HHS_P174_LEGACY_AUTHORITY_MANIFEST_V1"},
+        "maximum_inherited_pass": {"const": 173},
+        "specification_count": {"type": "integer", "minimum": 1},
+        "aggregate_root_sha256": {"$ref": "#/$defs/sha256"},
+        "pass_numbers_present": {"type": "array", "contains": {"const": 173}},
+        "missing_pass_numbers": {"type": "array", "items": {"type": "integer", "minimum": 1, "maximum": 173}}
+      }
+    }
+  },
+  "properties": {
+    "phase": {"$ref": "#/$defs/phaseCoordinate"},
+    "frame": {"$ref": "#/$defs/vm81Frame5184"},
+    "hash216": {"$ref": "#/$defs/hash216Array"},
+    "vector": {"$ref": "#/$defs/encryptedVectorObject"},
+    "legacy_foundation": {"$ref": "#/$defs/legacyFoundation"}
+  }
+}
