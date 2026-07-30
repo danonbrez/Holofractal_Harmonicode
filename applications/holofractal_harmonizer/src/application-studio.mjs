@@ -1,6 +1,6 @@
 import { $, state, persist, setText, log } from './visual-ide-state.mjs';
 import { renderFiles, activateFile, openBottomTab } from './visual-ide-ui.mjs';
-import { applicationTemplateList, materializeApplicationTemplate } from './application-templates.mjs';
+import { applicationTemplateList, materializeApplicationTemplate } from './application-templates-runtime.mjs';
 
 let selectedTemplate = 'pong';
 let previousProject = null;
@@ -24,7 +24,17 @@ function refreshProjectSurfaces() {
   persist();
   renderFiles();
   activateFile(state.activePath);
-  window.HHSProjectLifecycle?.refreshEntrypoints?.();
+  const entrypoint = $('#ide-project-entrypoint');
+  if (entrypoint) {
+    const selected = state.activePath;
+    entrypoint.replaceChildren(...state.files.map((file) => {
+      const option = document.createElement('option');
+      option.value = file.path;
+      option.textContent = file.path;
+      option.selected = file.path === selected;
+      return option;
+    }));
+  }
 }
 
 function restorePreviousProject() {
@@ -82,8 +92,6 @@ export function createApplicationProject(id = selectedTemplate, requestedName = 
   state.projectBuild = null;
   const projectName = $('#ide-project-name');
   if (projectName) projectName.value = name;
-  const entrypoint = $('#ide-project-entrypoint');
-  if (entrypoint) entrypoint.value = template.entrypoint;
   refreshProjectSurfaces();
   bindProjectUndo();
   closeGallery();
