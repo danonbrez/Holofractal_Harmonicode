@@ -1,3 +1,4 @@
+import './gui-reliability.mjs';
 import { $, $$, state, activeFile, persist, setText, log, bytesToBase64, ensureProject } from './visual-ide-state.mjs';
 import { showIde, showOther, renderFiles, activateFile, updateLineNumbers, saveFile, createFile, addBrowserFiles, renderSnapshot, renderHash216, openBottomTab, bind3d } from './visual-ide-ui.mjs';
 import { ingest, loadSnapshot, interpret, compile, run, runLifecycle, replay, exportEgress } from './visual-ide-runtime.mjs';
