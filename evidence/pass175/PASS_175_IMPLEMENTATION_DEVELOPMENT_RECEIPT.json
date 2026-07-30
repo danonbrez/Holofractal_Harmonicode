@@ -1,0 +1,73 @@
+{
+  "schema": "HHS_PASS_175_IMPLEMENTATION_DEVELOPMENT_RECEIPT_V1",
+  "classification": "PASS_175_IMPLEMENTATION_DEVELOPMENT_MERGED_NONTERMINAL",
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "authoritative_base_commit": "654e7f589557efde142418f7f9240e9e1e04e8a9",
+  "implementation_branch": "agent/pass175-implementation",
+  "pull_request": 90,
+  "validated_head_commit": "faa39fdbe3238050d7df0b265448d31c2e6955ac",
+  "authoritative_merge_commit": "eb95773b1b9b3ac07042f10619488975e2c685ec",
+  "merged_to": "main",
+  "implemented": {
+    "permanent_vm5184_instruction_identities": 5184,
+    "g243_controls_per_instruction": 243,
+    "projected_execution_addresses": 1259712,
+    "exact_scalar_circuit_tokens_preserved": true,
+    "hash216_hydrated_records_with_216_positional_indexes": true,
+    "bounded_exact_x86_64_bootstrap_decoder": true,
+    "durable_append_only_microcode_store": true,
+    "parallel_immutable_candidate_workers": true,
+    "parallel_state_authority": false,
+    "singleton_inherited_vm81_commit_authority": true,
+    "singular_hash72_commit_stream": true,
+    "guarded_xy_yx_reciprocal_projection": true,
+    "governed_keyboard_and_port_io": true,
+    "http_api": true,
+    "websocket": true,
+    "cli": true,
+    "front_and_center_visual_ide_processor_panel": true,
+    "strict_c11_native_support": true
+  },
+  "validation": {
+    "validate_pass175_virtual_instruction_processor": {
+      "run_id": 30590193521,
+      "conclusion": "success"
+    },
+    "pass161_finalization": {
+      "run_id": 30590193496,
+      "conclusion": "success"
+    },
+    "visual_ide_ab_usability": {
+      "run_id": 30590193492,
+      "conclusion": "success"
+    },
+    "validate_full_application_ide": {
+      "run_id": 30590193499,
+      "conclusion": "success"
+    },
+    "validate_pass161_production_harmonizer": {
+      "run_id": 30590193485,
+      "conclusion": "success"
+    },
+    "python_verification_tests": 15,
+    "strict_c11_native_test": "HHS_PASS_175_NATIVE_ADDRESS_CONTROL_CANDIDATE_TEST_PASS",
+    "route_shadow_repair_verified": true,
+    "browser_end_to_end_verified": true
+  },
+  "post_merge_platform_status": {
+    "context": "Vercel",
+    "state": "failure",
+    "reason": "build-rate-limit / upgradeToPro platform quota",
+    "code_validation_failure_claimed": false
+  },
+  "remaining_terminal_work": [
+    "complete x86_64 architectural decoder and conformance corpus",
+    "complete virtual firmware and BIOS hydration",
+    "complete governed device fabric",
+    "encrypted durable Hash216 microcode integration",
+    "compiled invariant kernel binary and required native artifact set",
+    "cross-architecture verification",
+    "production performance and terminal Pass 175 closure"
+  ],
+  "terminal_pass175_completion_claimed": false
+}
