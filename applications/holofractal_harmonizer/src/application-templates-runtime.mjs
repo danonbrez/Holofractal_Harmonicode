@@ -58,13 +58,59 @@ const CALCULATOR_APPLICATION_SOURCE = [
   '});',
 ].join('\n') + '\n';
 
+const DOCUMENT_APPLICATION_SOURCE = [
+  'const editor = document.querySelector("#editor");',
+  'const title = document.querySelector("#title");',
+  'const saved = document.querySelector("#saved");',
+  'const words = document.querySelector("#words");',
+  'const KEY = "hhs-document-studio-v1";',
+  'function storageRead() {',
+  '  try { return JSON.parse(localStorage.getItem(KEY) || "null"); }',
+  '  catch { return null; }',
+  '}',
+  'function storageWrite(value) {',
+  '  try { localStorage.setItem(KEY, JSON.stringify(value)); return true; }',
+  '  catch { return false; }',
+  '}',
+  'const prior = storageRead();',
+  'if (prior) { title.value = prior.title; editor.innerHTML = prior.html; }',
+  'function count() {',
+  '  const value = editor.innerText.trim();',
+  '  words.textContent = `${value ? value.split(/\\s+/).length : 0} words`;',
+  '}',
+  'function persist() {',
+  '  const stored = storageWrite({ title: title.value, html: editor.innerHTML });',
+  '  saved.textContent = stored ? `Saved ${new Date().toLocaleTimeString()}` : "Session edit · autosave available after export";',
+  '  count();',
+  '}',
+  'function download(name, type, content) {',
+  '  const url = URL.createObjectURL(new Blob([content], { type }));',
+  '  const link = document.createElement("a");',
+  '  link.href = url;',
+  '  link.download = name;',
+  '  link.click();',
+  '  setTimeout(() => URL.revokeObjectURL(url), 1000);',
+  '}',
+  'editor.addEventListener("input", persist);',
+  'title.addEventListener("input", persist);',
+  'document.querySelector("#saveText").onclick = () => download(`${title.value || "document"}.txt`, "text/plain", editor.innerText);',
+  'document.querySelector("#saveHtml").onclick = () => download(`${title.value || "document"}.html`, "text/html", `<!doctype html><meta charset="utf-8"><title>${title.value}</title><article>${editor.innerHTML}</article>`);',
+  'count();',
+].join('\n') + '\n';
+
+function normalizedContent(template, path, content) {
+  if (path.endsWith('/app.js') && template.id === 'calculator') return CALCULATOR_APPLICATION_SOURCE;
+  if (path.endsWith('/app.js') && template.id === 'document') return DOCUMENT_APPLICATION_SOURCE;
+  return content;
+}
+
 function normalizeTemplate(template) {
   return Object.freeze({
     ...template,
     files: Object.freeze(template.files.map(([path, mediaType, content]) => Object.freeze([
       path,
       mediaType,
-      template.id === 'calculator' && path.endsWith('/app.js') ? CALCULATOR_APPLICATION_SOURCE : content,
+      normalizedContent(template, path, content),
     ]))),
   });
 }
