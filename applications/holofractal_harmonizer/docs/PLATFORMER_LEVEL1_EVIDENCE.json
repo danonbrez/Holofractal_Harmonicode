@@ -1,0 +1,61 @@
+{
+  "classification": "HHS_PLATFORMER_LEVEL1_BROWSER_DEMO_VERIFIED",
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "baseline_main": "d3ea9005315c56ba7c9d4a3c3f6e9c31b2e3b865",
+  "level": 1,
+  "logical_viewport": [960, 540],
+  "simulation_hz": 60,
+  "playthrough": {
+    "frames_simulated": 389,
+    "final": {
+      "phase": "victory",
+      "x": 3394.25,
+      "elapsed": 12.96666666666689,
+      "shards": 4,
+      "lives": 3
+    },
+    "errors": [],
+    "samples": [
+      {"phase":"running","x":1371.25,"elapsed":5.033333333333321,"shards":2,"lives":3},
+      {"phase":"running","x":1626.25,"elapsed":6.033333333333317,"shards":2,"lives":3},
+      {"phase":"running","x":1881.25,"elapsed":7.033333333333314,"shards":2,"lives":3},
+      {"phase":"running","x":2136.25,"elapsed":8.033333333333312,"shards":3,"lives":3},
+      {"phase":"running","x":2391.25,"elapsed":9.033333333333362,"shards":4,"lives":3},
+      {"phase":"running","x":2646.25,"elapsed":10.033333333333411,"shards":4,"lives":3},
+      {"phase":"running","x":2901.25,"elapsed":11.033333333333461,"shards":4,"lives":3},
+      {"phase":"running","x":3156.25,"elapsed":12.03333333333351,"shards":4,"lives":3}
+    ]
+  },
+  "performance": {
+    "frames": 900,
+    "ticks": 1800,
+    "ms": 1464,
+    "render_fps": 614.7540983606558,
+    "tick_rate": 1229.5081967213116,
+    "final": {
+      "phase": "victory",
+      "x": 3394.25,
+      "elapsed": 12.96666666666689,
+      "shards": 4,
+      "lives": 3
+    },
+    "particles": 60
+  },
+  "video": {
+    "codec_name": "h264",
+    "width": 1100,
+    "height": 700,
+    "r_frame_rate": "25/1",
+    "duration": "15.760000",
+    "size": "1073106"
+  },
+  "sha256": {
+    "index.html": "f7b2d3139aadc7160935cabaefbe1fc19ba28e18268ac4a876c9758b37450a4d",
+    "style.css": "3eff2f01f40b0f7122c8b9164e4ede3023e5c7881bfb99059a1cc189ff3a2668",
+    "app.js": "f4e0b398bc4e7fcd2e82f471e77563788677c15615d14e1e8799fa159b0aa4ca",
+    "HHS_VM81_PLATFORMER_LEVEL1_PLAYTHROUGH.mp4": "db5cfb9ee4fd26a070b35be853cda2ee9c8efc880cefec35e36429645e4932b0",
+    "playtest-result.json": "2b063131c129e86fe126e7deb69e02f70b2b71404360b4cc187956c34cc633b9",
+    "performance-benchmark.json": "1778b69474201a4de9b0eaffdfbbc14ad451a5edfc740841fb228ed5537dae7a",
+    "ffprobe.json": "c29902a6db6f31238832afc328277105b66a86e1245ba91ef9f9d99f8a1b9b0f"
+  }
+}
