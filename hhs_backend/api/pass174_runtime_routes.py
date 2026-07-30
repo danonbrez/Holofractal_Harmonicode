@@ -1,6 +1,7 @@
 """Pass 174 governed runtime and Visual IDE API routes."""
 from __future__ import annotations
 
+from base64 import b64decode, b64encode
 from dataclasses import asdict
 from hashlib import sha256
 import json
@@ -11,6 +12,10 @@ from typing import Any, Dict, List, Optional
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
 
+from hhs_backend.api.development_lifecycle_routes import (
+    DevelopmentLifecycleRequest,
+    run_development_lifecycle,
+)
 from hhs_runtime.pass174 import (
     Pass174Error,
     Pass174Runtime,
@@ -20,6 +25,24 @@ from hhs_runtime.pass174 import (
 router = APIRouter(prefix="/api/v1/pass174", tags=["pass174", "vm81", "hash216", "visual-ide", "sdlc"])
 _RUNTIME: Pass174Runtime | None = None
 _RUNTIME_ERROR: Exception | None = None
+
+_MODALITY_MAP = {
+    "CODE": "SOURCE_CODE",
+    "SOURCE_CODE": "SOURCE_CODE",
+    "HARMONICODE_SOURCE": "SOURCE_CODE",
+    "TEXT": "TEXT",
+    "DOCUMENT": "MARKDOWN",
+    "MARKDOWN": "MARKDOWN",
+    "JSON": "JSON",
+    "JSONL": "JSONL",
+    "CSV": "CSV",
+    "HTML": "HTML",
+    "XML": "XML",
+    "IMAGE": "IMAGE",
+    "SPATIAL": "IMAGE",
+    "AUDIO": "AUDIO",
+    "BINARY": "BINARY_OBJECT",
+}
 
 
 def _repository_root() -> Path:
@@ -41,6 +64,19 @@ def _canonical_json(value: Any) -> bytes:
         allow_nan=False,
         default=str,
     ).encode("utf-8")
+
+
+def _source_bytes(value: Any) -> bytes:
+    if isinstance(value, str):
+        return value.encode("utf-8")
+    if isinstance(value, dict):
+        encoded = value.get("source_b64") or value.get("content_b64") or value.get("base64")
+        if isinstance(encoded, str):
+            try:
+                return b64decode(encoded, validate=True)
+            except Exception as exc:
+                raise Pass174Error("HHS_P174_MALFORMED_SOURCE_BASE64") from exc
+    return _canonical_json(value)
 
 
 def get_runtime() -> Pass174Runtime:
@@ -115,11 +151,17 @@ class QueryRequest(BaseModel):
 
 
 class SDLCRunRequest(BaseModel):
-    project_id: str = "project:default"
+    project_id: Optional[str] = None
+    project_name: str = "HHS Pass 174 Visual IDE Project"
     source_name: str = "main.hhs"
     source_modality: str = "CODE"
     source_payload: Any
     requested_output: str = "VALIDATED_ARTIFACT"
+    expression: Optional[str] = None
+    target: str = "HHS_IR"
+    steps: int = Field(default=8, ge=1, le=32)
+    provenance: str = "PASS174_VISUAL_IDE"
+    authorization_scope: str = "P174_MULTIMODAL_SDLC_PIPELINE"
     thread: int = Field(default=0, ge=0, le=63)
 
 
@@ -151,6 +193,7 @@ def boot_status() -> Dict[str, Any]:
             "hash216": True,
             "persistent_storage": "persistent_vector_store" in status_payload,
             "visual_ide": True,
+            "inherited_development_lifecycle": True,
         },
         "runtime": status_payload,
     }
@@ -246,56 +289,72 @@ def legacy_foundation() -> Dict[str, Any]:
 def run_sdlc(request: SDLCRunRequest) -> Dict[str, Any]:
     runtime = get_runtime()
     payload = _payload(request)
-    canonical_source = {
-        "project_id": payload["project_id"],
-        "source_name": payload["source_name"],
-        "source_modality": payload["source_modality"],
-        "source_payload": payload["source_payload"],
-        "requested_output": payload["requested_output"],
-    }
-    source_identity = sha256(
-        b"HHS-P174-SDLC-SOURCE-V1\0" + _canonical_json(canonical_source)
-    ).hexdigest()
-    compiled_identity = sha256(
-        b"HHS-P174-SDLC-COMPILED-V1\0"
-        + bytes.fromhex(source_identity)
-        + bytes.fromhex(runtime.legacy_foundation_root)
-    ).hexdigest()
+    source_bytes = _source_bytes(payload["source_payload"])
+    declared_media_type = _MODALITY_MAP.get(
+        str(payload["source_modality"]).upper(),
+        str(payload["source_modality"]).upper(),
+    )
+    lifecycle_request = DevelopmentLifecycleRequest(
+        source_b64=b64encode(source_bytes).decode("ascii"),
+        source_name=payload["source_name"],
+        declared_media_type=declared_media_type,
+        provenance=payload["provenance"],
+        authorization_scope=payload["authorization_scope"],
+        project_id=payload["project_id"],
+        project_name=payload["project_name"],
+        expression=payload["expression"],
+        target=payload["target"],
+        steps=payload["steps"],
+    )
+    inherited = run_development_lifecycle(lifecycle_request)
+    receipts = inherited.get("receipts") or {}
+    lifecycle_hash216 = str(receipts.get("lifecycle_hash216") or "")
+    if len(lifecycle_hash216) != 64:
+        raise HTTPException(status_code=409, detail={
+            "classification": "HHS_P174_INHERITED_LIFECYCLE_HASH216_MISSING",
+            "inherited_status": inherited.get("status"),
+        })
     writes = {
         index % 81: 1 if byte & 1 else -1
-        for index, byte in enumerate(bytes.fromhex(compiled_identity)[:16])
+        for index, byte in enumerate(bytes.fromhex(lifecycle_hash216)[:16])
     }
-    execution = runtime.execute(
+    continuation = runtime.execute(
         thread=payload["thread"],
         writes=writes,
         operation="VMRC_COMMIT",
-        capability_scope="P174_MULTIMODAL_SDLC_PIPELINE",
+        capability_scope=payload["authorization_scope"],
         prefer_retrieval=True,
     )
-    artifact_identity = sha256(
-        b"HHS-P174-SDLC-ARTIFACT-V1\0"
-        + bytes.fromhex(source_identity)
-        + bytes.fromhex(compiled_identity)
-        + execution["receipt"]["receipt_hash72"].encode("ascii")
-    ).hexdigest()
+    interpretation = inherited.get("interpretation") or {}
+    compilation = inherited.get("compilation") or {}
+    execution = inherited.get("execution") or {}
+    overall_ok = bool(inherited.get("ok") and continuation.get("receipt"))
+    source_identity = str(((inherited.get("ingress") or {}).get("source") or {}).get("source_hash") or sha256(source_bytes).hexdigest())
     stages = [
         {"stage": "PLAN", "status": "COMPLETED", "identity": source_identity},
-        {"stage": "GENERATE", "status": "COMPLETED", "identity": source_identity},
-        {"stage": "INTERPRET", "status": "COMPLETED", "identity": source_identity},
-        {"stage": "COMPILE", "status": "COMPLETED", "identity": compiled_identity},
-        {"stage": "RUN", "status": "COMPLETED", "identity": execution["receipt"]["receipt_sha256"]},
-        {"stage": "VALIDATE", "status": "COMPLETED", "identity": execution["receipt"]["receipt_hash72"]},
-        {"stage": "RECEIPT", "status": "COMPLETED", "identity": artifact_identity},
+        {"stage": "GENERATE", "status": "COMPLETED" if (inherited.get("workspace_ingress") or {}).get("ok") else "REJECTED", "identity": source_identity},
+        {"stage": "INTERPRET", "status": "COMPLETED" if interpretation.get("ok") else "NOT_APPLICABLE_OR_REJECTED", "identity": receipts.get("interpretation_receipt_hash72")},
+        {"stage": "COMPILE", "status": "COMPLETED" if compilation.get("ok") else "NOT_APPLICABLE_OR_REJECTED", "identity": receipts.get("compilation_receipt_hash72")},
+        {"stage": "RUN", "status": "COMPLETED" if execution.get("ok") else "NOT_APPLICABLE_OR_REJECTED", "identity": receipts.get("execution_receipt_hash72")},
+        {"stage": "VALIDATE", "status": "COMPLETED" if inherited.get("ok") else "PARTIAL", "identity": receipts.get("lifecycle_receipt_hash72")},
+        {"stage": "RECEIPT", "status": "COMPLETED", "identity": continuation["receipt"]["receipt_sha256"]},
     ]
     return {
-        "schema": "HHS_P174_MULTIMODAL_SDLC_RESULT_V1",
-        "classification": "HHS_P174_SDLC_PIPELINE_COMMITTED",
-        "project_id": payload["project_id"],
+        "schema": "HHS_P174_MULTIMODAL_SDLC_RESULT_V2",
+        "classification": "HHS_P174_SDLC_PIPELINE_COMMITTED" if overall_ok else "HHS_P174_SDLC_PIPELINE_PARTIAL",
+        "ok": overall_ok,
+        "project_id": (inherited.get("project") or {}).get("project_id"),
         "source_identity_sha256": source_identity,
-        "compiled_identity_sha256": compiled_identity,
-        "artifact_identity_sha256": artifact_identity,
+        "lifecycle_hash216": lifecycle_hash216,
+        "lifecycle_receipt_hash72": receipts.get("lifecycle_receipt_hash72"),
         "stages": stages,
-        "execution": execution,
+        "inherited_lifecycle": inherited,
+        "pass174_continuation": continuation,
         "replayable": True,
-        "kernel_authority_path": "INPUT→SYMBOLIC_EXPANSION→STATE_PATCH→KERNEL_AUDIT→RECEIPT_COMMIT→REPLAY_VERIFICATION",
+        "frontend_result_fabricated": False,
+        "canonical_authorities": inherited.get("canonical_authorities", []) + [
+            "PASS174_ENCRYPTED_HASH216_VECTOR_STORE",
+            "PASS174_VM81_WHOLE_FRAME_CONTINUATION",
+        ],
+        "kernel_authority_path": "INPUT→PASS165_INGRESS→HHS_INTERPRETER→HHS_IR_COMPILER→VM81_EMULATOR→PASS174_WHOLE_FRAME_CONTINUATION→HASH72_RECEIPT→HASH216_INDEX→REPLAY_VERIFICATION",
     }
