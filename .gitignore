@@ -22,4 +22,5 @@ dist/
 venv/
 .hhs/litert-lm/
 .hhs/runtime/graphics/vulkan/
+.hhs/pass174/
 logs/litert-lm/
