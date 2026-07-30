@@ -22,6 +22,7 @@ from .runtime import (
     Pass174VMRCAuthority,
     PhaseCoordinate,
 )
+from .storage import PersistentEncryptedVectorStore
 
 __all__ = [
     "DIRECTED_PHASE_RELATIONSHIPS",
@@ -40,6 +41,7 @@ __all__ = [
     "Pass174Error",
     "Pass174Runtime",
     "Pass174VMRCAuthority",
+    "PersistentEncryptedVectorStore",
     "PhaseCoordinate",
     "build_legacy_manifest",
     "verify_manifest",
