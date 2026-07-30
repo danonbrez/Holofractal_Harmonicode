@@ -1,0 +1,61 @@
+{
+  "schema": "P174_HEROKU_BOOT_RESILIENCE_REPAIR_RECEIPT_V1",
+  "contract": "HHS-P174-HPG-EH216-RAVWSC-VFIDE-SDLC",
+  "pass": 174,
+  "classification": "HHS_PASS_174_HEROKU_WEB_DYNO_BOOT_RESILIENCE_REPAIR_VERIFIED_IN_REPOSITORY_SCOPE",
+  "external_deployment_status": "HEROKU_REDEPLOYMENT_AND_LIVE_ROUTE_RECOVERY_NOT_YET_VERIFIED",
+  "reported_symptom": "HEROKU_PLATFORM_APPLICATION_ERROR_PAGE",
+  "private_heroku_logs_inspected": false,
+  "repository_confirmed_failure_mode": "PASS174_LIFESPAN_RETHREW_RECOVERABLE_READINESS_FAILURE_AND_COULD_TERMINATE_ONLY_WEB_PROCESS",
+  "implementation": {
+    "web_dyno_survival_commit": "b973bc71a7927dd61cc8358c89863933321380e3",
+    "terminal_readiness_status_commit": "abc74dda1f111c7ce9cd79a68dbbde1709710007",
+    "amendment_commit": "82944d2cc715803cb71c319058d6d18e44a84d03",
+    "pull_requests": [85, 87]
+  },
+  "verified": {
+    "web_service_enters_inherited_lifespan_before_pass174_probe_completion": true,
+    "readiness_probe_runs_as_background_task": true,
+    "readiness_exception_does_not_terminate_serving_lifespan": true,
+    "readiness_timeout_does_not_terminate_serving_lifespan": true,
+    "runtime_authority_remains_fail_closed": true,
+    "service_available_and_authority_ready_are_distinct": true,
+    "structured_degraded_boot_state": true,
+    "machine_readable_platform_boot_log": true,
+    "bounded_terminal_deployment_status": true,
+    "immediate_nonblocking_deployment_diagnostic": true,
+    "caller_timeout_does_not_cancel_authority_probe": true,
+    "api_routes_precede_static_root": true,
+    "pass161_finalization": true,
+    "arm64_replay": true,
+    "x86_finalization": true,
+    "browser_mobile_accessibility_contracts": true,
+    "integrated_repository_replay": true,
+    "visual_ide_ab_usability": true,
+    "canonical_backend_authority_matrix": true,
+    "pass174_production_overlay_http_websocket_lifecycle": true,
+    "node_visual_integration": true,
+    "chromium_production_browser": true,
+    "production_projection_integration": true
+  },
+  "not_yet_verified": [
+    "heroku_release_contains_authoritative_main",
+    "heroku_web_dyno_restart_completed",
+    "live_heroku_root_serves_visual_ide",
+    "live_heroku_deployment_status_terminal_result",
+    "private_heroku_log_root_cause_confirmation"
+  ],
+  "authority_unchanged": [
+    "VM81",
+    "HASH72",
+    "HASH216",
+    "ENCRYPTED_VECTOR_ADMISSION",
+    "HHS_INTERPRETER",
+    "HHS_IR_COMPILER",
+    "MULTIMODAL_INGRESS_EGRESS",
+    "RECEIPT_CLOSURE",
+    "DETERMINISTIC_REPLAY"
+  ],
+  "frontend_result_fabricated": false,
+  "terminal_pass174_reclassification_emitted": false
+}
