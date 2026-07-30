@@ -52,12 +52,33 @@ def test_procfile_boots_canonical_production_server():
     assert "hhs_backend.heroku_server:app" not in procfile
 
 
-def test_frontend_entrypoint_is_canonical_runtime_ide_not_replacement_app():
+def test_frontend_entrypoint_uses_integrated_client_not_legacy_desktop_runtime():
     source = Path("hhs_gui/main.tsx").read_text(encoding="utf-8")
     assert "CanonicalRuntimeIDE" in source
-    assert "RuntimeOS" in source
+    assert "IntegratedRuntimeClient" in source
+    assert "__HHS_RUNTIME_CLIENT__" in source
+    assert 'from "./runtime_os/core/RuntimeOS"' not in source
     assert "ProductionApp" not in source
     assert "global.css" in source
+
+
+def test_runtime_transport_is_deferred_until_runtime_surface():
+    client = Path("hhs_gui/runtime_os/core/IntegratedRuntimeClient.ts").read_text(
+        encoding="utf-8"
+    )
+    canonical = Path("hhs_gui/runtime_os/core/CanonicalRuntimeIDE.tsx").read_text(
+        encoding="utf-8"
+    )
+    projection = Path(
+        "hhs_gui/runtime_os/core/LiveRuntimeProjectionPanel.tsx"
+    ).read_text(encoding="utf-8")
+
+    assert "RuntimeApplicationRegistry" not in client
+    assert "RuntimeWindowManager" not in client
+    assert "runtimeClient.shutdown" in canonical
+    assert "runtimeOS.initialize()" in projection
+    assert "runtimeOS.shutdown()" in projection
+    assert "Connected only while this tab is active" in projection
 
 
 def test_canonical_workspace_is_one_shared_transaction_surface():
@@ -126,15 +147,6 @@ def test_assistant_is_bound_to_workspace_without_suggestion_autosubmit():
     assert "No response or runtime mutation was fabricated" in source
     assert "Suggestion" not in source
     assert 'setInput("Explain' not in source
-
-
-def test_runtime_projection_is_deferred_and_bounded():
-    source = Path(
-        "hhs_gui/runtime_os/core/LiveRuntimeProjectionPanel.tsx"
-    ).read_text(encoding="utf-8")
-    assert "1500" in source
-    assert "Loaded only while the Runtime tab is active" in source
-    assert "250" not in source
 
 
 def test_provider_hierarchy_uses_gemma_then_native_hhs_without_canned_demo():
