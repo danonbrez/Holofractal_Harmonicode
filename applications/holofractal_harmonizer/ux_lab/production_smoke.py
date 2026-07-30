@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import os
+import time
 from pathlib import Path
 
 from playwright.sync_api import sync_playwright
@@ -24,7 +25,9 @@ def main() -> None:
             else None,
         )
 
+        started = time.monotonic()
         response = page.goto(BASE_URL, wait_until="domcontentloaded", timeout=120_000)
+        dom_content_loaded_ms = round((time.monotonic() - started) * 1000)
         if response is None or not response.ok:
             raise AssertionError(f"production root failed: {getattr(response, 'status', None)}")
 
@@ -36,8 +39,8 @@ def main() -> None:
             )""",
             timeout=120_000,
         )
+        registry_hydrated_ms = round((time.monotonic() - started) * 1000)
         page.wait_for_selector("body.workflow-default", timeout=30_000)
-        page.wait_for_selector("#runtime-service-controller select", timeout=30_000)
 
         service_count = page.evaluate("window.HHSProductionIntegration.serviceCount")
         registry_count = page.locator("#registry-tree [data-object-id]").count()
@@ -47,6 +50,7 @@ def main() -> None:
 
         page.locator("#open-api").click()
         page.wait_for_selector("#api-view:not([hidden])", timeout=10_000)
+        page.wait_for_selector("#runtime-service-controller select", timeout=30_000)
         controller = page.locator("#runtime-service-controller")
         service_select = controller.locator("select")
         service_select.select_option("runtime_contract.self_test")
@@ -60,6 +64,7 @@ def main() -> None:
             }""",
             timeout=120_000,
         )
+        dispatch_completed_ms = round((time.monotonic() - started) * 1000)
         dispatch_text = output.inner_text()
         dispatch_payload = json.loads(dispatch_text)
 
@@ -99,6 +104,11 @@ def main() -> None:
             "dispatch_schema": dispatch_payload.get("schema"),
             "dispatch_result_schema_present": "HHS_RUNTIME_CONTRACT_SELF_TEST_V1" in dispatch_text,
             "dispatch_runtime_contract_present": bool(dispatch_payload.get("runtime_contract")),
+            "timing_ms": {
+                "dom_content_loaded": dom_content_loaded_ms,
+                "registry_hydrated": registry_hydrated_ms,
+                "service_dispatch_completed": dispatch_completed_ms,
+            },
             "console_errors": console_errors,
             "frontend_is_authority": False,
         }
