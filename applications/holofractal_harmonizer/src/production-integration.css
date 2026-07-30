@@ -1,0 +1,81 @@
+/* Functional layout for live backend controls inside the verified Pass 161 UI. */
+.service-executor {
+  display: grid;
+  gap: 10px;
+  min-width: 0;
+  padding: 12px;
+  border-top: 1px solid var(--border);
+}
+
+.service-executor h3,
+#runtime-service-controller h3 {
+  margin: 0;
+}
+
+.service-executor p,
+#runtime-service-controller > p {
+  margin: 0;
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+
+.service-executor label,
+.service-schema-field {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.service-executor textarea,
+.service-executor input,
+#runtime-service-controller > select {
+  width: 100%;
+  min-width: 0;
+  padding: 10px 12px;
+  background: rgba(2, 7, 14, 0.84);
+}
+
+.service-executor textarea {
+  resize: vertical;
+  font: 11px/1.45 ui-monospace, SFMono-Regular, Consolas, monospace;
+}
+
+.service-schema-fields {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 8px;
+}
+
+.service-executor pre {
+  max-height: min(420px, 52vh);
+  margin: 0;
+  overflow: auto;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+#runtime-service-controller {
+  display: grid;
+  grid-template-rows: auto;
+  gap: 12px;
+  min-height: 0;
+  margin-top: 18px;
+  padding: 16px;
+  overflow: visible;
+}
+
+#runtime-service-controller .service-executor {
+  padding-inline: 0;
+}
+
+@media (max-width: 620px) {
+  .service-schema-fields {
+    grid-template-columns: 1fr;
+  }
+
+  #runtime-service-controller {
+    padding: 12px;
+  }
+}
