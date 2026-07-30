@@ -78,7 +78,9 @@ def test_runtime_authority_boots_and_reports_real_workflow_state():
             assert status["graph_initialized"] is True
             assert status["websocket_ready"] is True
             assert status["live_workflow"]["running"] is True
-            assert status["runtime"].get("state_hash72")
+            assert status["live_workflow"]["authority_ready"] is True
+            assert status["runtime_state_hash72"]
+            assert status["receipt_hash72"]
             tick = await canonical.LIVE_WORKFLOW.tick_once({"source": "production_authority_test"})
             assert tick["ok"] is True
             assert tick.get("receipt_hash72")
