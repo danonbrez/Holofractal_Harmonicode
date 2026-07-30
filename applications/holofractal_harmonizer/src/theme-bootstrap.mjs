@@ -4,6 +4,7 @@ root.classList.add('hhs-harmonic-studio-theme');
 for (const [href, marker] of [
   ['./src/harmonic-studio-theme.css', 'hhs-harmonic-theme'],
   ['./src/integrated-workbench.css', 'hhs-integrated-workbench'],
+  ['./src/integrated-assistant.css', 'hhs-integrated-assistant'],
 ]) {
   if (document.querySelector(`link[data-${marker}]`)) continue;
   const link = document.createElement('link');
@@ -17,8 +18,10 @@ const themeColor = document.querySelector('meta[name="theme-color"]');
 if (themeColor) themeColor.content = '#1a130e';
 
 window.HHSThemeBootstrap = Object.freeze({
-  schema: 'HHS_HARMONIC_STUDIO_THEME_BOOTSTRAP_V1',
+  schema: 'HHS_HARMONIC_STUDIO_THEME_BOOTSTRAP_V2',
   theme: 'WARM_CHARCOAL_AMBER_GOLD',
   static_layout_replaced: false,
+  integrated_workbench_css_independent: true,
+  integrated_assistant_css_independent: true,
   frontend_is_authority: false,
 });
