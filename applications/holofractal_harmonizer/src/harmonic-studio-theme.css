@@ -1,0 +1,299 @@
+/* Additive Harmonicode Studio aesthetic layer.
+   Preserves the deployed shell, layout, routes, and interaction model while
+   adapting the visual language from the warm charcoal / amber reference UI. */
+html.hhs-harmonic-studio-theme {
+  color-scheme: dark;
+  --background: #16110d;
+  --panel: rgba(36, 28, 21, .91);
+  --panel-solid: #241c15;
+  --border: rgba(201, 163, 91, .22);
+  --border-strong: rgba(224, 166, 60, .52);
+  --text: #efe6d8;
+  --muted: #a99b86;
+  --active: #e0a63c;
+  --verified: #8fae6b;
+  --authority: #c9a35b;
+  --warning: #c96f3b;
+  --danger: #c25b4a;
+}
+
+html.hhs-harmonic-studio-theme body {
+  background:
+    radial-gradient(circle at 54% -16%, rgba(224, 166, 60, .14), transparent 38%),
+    radial-gradient(circle at 8% 92%, rgba(139, 92, 45, .14), transparent 35%),
+    linear-gradient(145deg, #16110d, #1d1712 52%, #130f0c);
+  color: var(--text);
+}
+
+html.hhs-harmonic-studio-theme body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: .18;
+  background-image:
+    linear-gradient(rgba(224, 166, 60, .025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(224, 166, 60, .025) 1px, transparent 1px);
+  background-size: 32px 32px;
+  mask-image: radial-gradient(circle at center, black, transparent 78%);
+}
+
+html.hhs-harmonic-studio-theme button,
+html.hhs-harmonic-studio-theme input,
+html.hhs-harmonic-studio-theme select,
+html.hhs-harmonic-studio-theme textarea {
+  border-color: var(--border);
+  background: rgba(53, 42, 31, .78);
+  color: var(--text);
+}
+
+html.hhs-harmonic-studio-theme button:hover {
+  border-color: var(--border-strong);
+  background: rgba(73, 55, 35, .92);
+}
+
+html.hhs-harmonic-studio-theme button:focus-visible,
+html.hhs-harmonic-studio-theme input:focus-visible,
+html.hhs-harmonic-studio-theme select:focus-visible,
+html.hhs-harmonic-studio-theme textarea:focus-visible {
+  outline-color: var(--active);
+}
+
+html.hhs-harmonic-studio-theme .system-bar,
+html.hhs-harmonic-studio-theme .operation-strip {
+  background: linear-gradient(180deg, rgba(44, 34, 25, .98), rgba(24, 18, 14, .98));
+  border-color: var(--border);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, .2);
+}
+
+html.hhs-harmonic-studio-theme .identity strong,
+html.hhs-harmonic-studio-theme .ide-window-titlebar strong,
+html.hhs-harmonic-studio-theme .panel-heading strong {
+  color: #f2dfba;
+}
+
+html.hhs-harmonic-studio-theme .registry,
+html.hhs-harmonic-studio-theme .inspector {
+  background:
+    linear-gradient(180deg, rgba(39, 30, 22, .96), rgba(27, 21, 16, .97)),
+    var(--panel);
+  border-color: var(--border);
+}
+
+html.hhs-harmonic-studio-theme .workspace {
+  background:
+    radial-gradient(circle at 70% 12%, rgba(224, 166, 60, .05), transparent 28%),
+    transparent;
+}
+
+html.hhs-harmonic-studio-theme .ide-menu-bar,
+html.hhs-harmonic-studio-theme .ide-tab-strip,
+html.hhs-harmonic-studio-theme .ide-window-titlebar,
+html.hhs-harmonic-studio-theme .ide-editor-status,
+html.hhs-harmonic-studio-theme .ide-bottom-tabs {
+  background: linear-gradient(180deg, rgba(45, 34, 25, .97), rgba(28, 21, 16, .98));
+  border-color: var(--border);
+}
+
+html.hhs-harmonic-studio-theme .ide-window {
+  border-color: var(--border);
+  background:
+    linear-gradient(145deg, rgba(41, 31, 23, .96), rgba(21, 16, 12, .98));
+  box-shadow:
+    0 20px 52px rgba(0, 0, 0, .3),
+    inset 0 1px rgba(255, 239, 210, .025);
+}
+
+html.hhs-harmonic-studio-theme .ide-drop-zone {
+  background:
+    linear-gradient(rgba(224, 166, 60, .025) 1px, transparent 1px),
+    rgba(19, 14, 11, .96);
+  background-size: 100% 24px;
+}
+
+html.hhs-harmonic-studio-theme #ide-source-editor {
+  color: #efe6d8;
+  caret-color: var(--active);
+}
+
+html.hhs-harmonic-studio-theme .ide-line-numbers {
+  color: rgba(177, 151, 112, .62);
+  border-color: var(--border);
+}
+
+html.hhs-harmonic-studio-theme .ide-file-item:hover,
+html.hhs-harmonic-studio-theme .ide-file-item.active,
+html.hhs-harmonic-studio-theme .home-actions button.active {
+  background: rgba(224, 166, 60, .1);
+}
+
+html.hhs-harmonic-studio-theme .ide-file-item.active {
+  color: var(--active);
+  box-shadow: inset 2px 0 var(--active);
+}
+
+html.hhs-harmonic-studio-theme .ide-editor-tab,
+html.hhs-harmonic-studio-theme .ide-tab-action,
+html.hhs-harmonic-studio-theme .ide-lifecycle-stages button,
+html.hhs-harmonic-studio-theme .vm-snapshot-summary div {
+  background: rgba(47, 35, 25, .82);
+  border-color: var(--border);
+}
+
+html.hhs-harmonic-studio-theme .ide-editor-tab.active {
+  color: var(--active);
+  background: rgba(76, 55, 29, .88);
+  box-shadow: inset 0 -2px var(--active);
+}
+
+html.hhs-harmonic-studio-theme .primary-action {
+  border-color: var(--border-strong);
+  background: linear-gradient(135deg, #4a3517, #6a491c);
+  color: #f2c86f;
+  box-shadow: inset 0 1px rgba(255, 228, 164, .08), 0 8px 24px rgba(0, 0, 0, .16);
+}
+
+html.hhs-harmonic-studio-theme .primary-action:hover {
+  background: linear-gradient(135deg, #5a4020, #7a5522);
+}
+
+html.hhs-harmonic-studio-theme .ide-vm-cell,
+html.hhs-harmonic-studio-theme .ide-3d-node,
+html.hhs-harmonic-studio-theme .spatial-node {
+  border-color: rgba(224, 166, 60, .38);
+  box-shadow: 0 0 18px rgba(224, 166, 60, calc(.05 + var(--vm-density, .1) * .15));
+}
+
+html.hhs-harmonic-studio-theme .ide-3d-ring,
+html.hhs-harmonic-studio-theme .orbit {
+  border-color: rgba(201, 163, 91, .24);
+}
+
+.ide-project-build {
+  margin: 0 8px 8px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: rgba(23, 17, 13, .72);
+}
+
+.ide-project-build-heading {
+  min-height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 7px 10px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(53, 41, 29, .72);
+}
+
+.ide-project-build-heading > div {
+  display: grid;
+  gap: 2px;
+}
+
+.ide-project-build-heading span {
+  color: var(--muted);
+  font-size: 8px;
+  letter-spacing: .13em;
+}
+
+.ide-project-build-heading strong {
+  color: var(--text);
+  font-size: 11px;
+}
+
+#ide-project-build-state[data-state="running"] { color: var(--warning); }
+#ide-project-build-state[data-state="complete"] { color: var(--verified); }
+#ide-project-build-state[data-state="failed"] { color: var(--danger); }
+
+.ide-project-fields {
+  display: grid;
+  grid-template-columns: minmax(150px, 1.2fr) minmax(130px, 1fr) minmax(120px, .8fr);
+  gap: 6px;
+  padding: 8px;
+}
+
+.ide-project-fields label {
+  min-width: 0;
+  display: grid;
+  gap: 4px;
+  color: var(--muted);
+  font-size: 8px;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+}
+
+.ide-project-fields input,
+.ide-project-fields select {
+  width: 100%;
+  min-height: 32px;
+  padding: 0 8px;
+  font-size: 10px;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.ide-project-targets {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 4px;
+  padding: 0 8px 8px;
+}
+
+.ide-project-targets label {
+  min-width: 0;
+  min-height: 30px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 4px 7px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: rgba(49, 37, 27, .58);
+  color: var(--muted);
+  font-size: 8px;
+}
+
+.ide-project-targets input {
+  width: 14px;
+  height: 14px;
+  min-height: 0;
+  accent-color: var(--active);
+}
+
+.ide-project-targets span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ide-project-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 0 8px 8px;
+}
+
+.ide-project-actions button {
+  min-height: 31px;
+  padding: 0 9px;
+  font-size: 9px;
+}
+
+.ide-project-actions .primary-action {
+  flex: 1;
+  min-width: 110px;
+}
+
+@media (max-width: 1180px) {
+  .ide-project-fields { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 760px) {
+  .ide-project-targets { grid-template-columns: 1fr; }
+  .ide-project-actions button { flex: 1 1 42%; }
+}
