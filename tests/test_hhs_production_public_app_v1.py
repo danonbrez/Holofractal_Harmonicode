@@ -3,6 +3,7 @@ from __future__ import annotations
 import asyncio
 import json
 from pathlib import Path
+import subprocess
 
 
 def route_paths(app) -> set[str]:
@@ -291,6 +292,23 @@ def test_pass174_exact_legacy_foundation_and_persistent_retrieval(tmp_path):
     consumer_store.close()
 
 
+def test_pass174_native_c11_phase_hash216_and_whole_frame_abi(tmp_path):
+    build_dir = tmp_path / "pass174-native"
+    completed = subprocess.run(
+        [
+            "make",
+            "-C",
+            "native_projects/hhs_pass174_harmonic_runtime",
+            f"BUILD_DIR={build_dir}",
+            "test",
+        ],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    assert "HHS_PASS_174_NATIVE_PHASE_HASH216_WHOLE_FRAME_ABI_VERIFIED" in completed.stdout
+
+
 def test_pass174_public_overlay_routes_http_websocket_and_visual_roots(tmp_path, monkeypatch):
     monkeypatch.setenv("HHS_PASS174_STATE_DIR", str(tmp_path / "api-state"))
 
@@ -339,6 +357,29 @@ def test_pass174_public_overlay_routes_http_websocket_and_visual_roots(tmp_path,
         )
         assert direct.status_code == 200, direct.text
         assert direct.json()["path"] == "DIRECT_RUNTIME"
+
+        lifecycle = client.post(
+            "/api/v1/pass174/sdlc/run",
+            json={
+                "project_name": "Pass 174 production integration",
+                "source_name": "main.hhs",
+                "source_modality": "SOURCE_CODE",
+                "source_payload": "result = 1 + 1",
+                "expression": "1 + 1",
+                "target": "HHS_IR",
+                "steps": 4,
+                "thread": 1,
+            },
+        )
+        assert lifecycle.status_code == 200, lifecycle.text
+        lifecycle_body = lifecycle.json()
+        assert lifecycle_body["ok"] is True
+        assert lifecycle_body["frontend_result_fabricated"] is False
+        assert lifecycle_body["inherited_lifecycle"]["status"] == "HHS_DEVELOPMENT_LIFECYCLE_COMPLETED"
+        assert "HHS_INTERPRETER" in lifecycle_body["canonical_authorities"]
+        assert "HHS_IR_COMPILER" in lifecycle_body["canonical_authorities"]
+        assert "VM81_VISUAL_EMULATOR" in lifecycle_body["canonical_authorities"]
+        assert lifecycle_body["pass174_continuation"]["receipt"]["receipt_hash72"]
 
         visual = client.get("/")
         assert visual.status_code == 200
