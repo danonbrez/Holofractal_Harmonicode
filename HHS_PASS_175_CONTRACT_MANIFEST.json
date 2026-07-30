@@ -1,0 +1,19 @@
+{
+  "contract_identifier": "HHS-P175-H216-VM5184-G243-VHIP",
+  "contract_version": "1.0.0",
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "evidence_baseline": "83479dbf1b89f477636646623c5d134cb49d8a37",
+  "status": "CONTRACT_AUTHORIZED — FULL IMPLEMENTATION REQUIRED",
+  "precontract_harness_verified": true,
+  "state_count": 5184,
+  "g243_controls_per_state": 243,
+  "total_projections": 1259712,
+  "cold_fill_seconds": 7.868741129,
+  "warm_replay_median_ns": 1209604,
+  "warm_speedup_vs_cold": 6505.220823509181,
+  "native_median_transitions_per_second": 179526599.888,
+  "state_root_sha256": "3493b2f340db7931be54418e93a5c4e6d0ec5514eb8ccee83eb0be5a7a878882",
+  "cache_root_sha256": "40efa24d47d9da67686917a887bb25f7e16e53a3c83f89eaf12fb733c2147d56",
+  "egress_root_sha256": "dfb1a249a58b48124683a3929ac7bb262d3ab71c607df6a4d621a28ee82a560b",
+  "contract_sha256": "41615cc6d08ecda4393c9317d71bb5e5b54a3394371d0435854deb925c6e1940"
+}
