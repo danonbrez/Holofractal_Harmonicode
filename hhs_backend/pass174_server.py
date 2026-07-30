@@ -42,14 +42,22 @@ PASS174_BOOT_STATE: dict[str, Any] = {
 _repository_root = Path(os.environ.get("HHS_REPOSITORY_ROOT") or Path(__file__).resolve().parents[1]).resolve()
 _ide_root = _repository_root / "applications" / "pass174_visual_ide"
 _legacy_ide_root = inherited_production.VISUAL_ROOT
+_API_FALLBACK_PATH = "/api/{unmatched_path:path}"
 
 
 def _has_route_prefix(prefix: str) -> bool:
     return any(str(getattr(route, "path", "")).startswith(prefix) for route in app.router.routes)
 
 
-# Remove only the inherited static root mount. All API, WebSocket, assistant,
-# installation, workspace, multimodal, lifecycle, and runtime routes remain.
+# Production Server registers a deliberate unknown-API fallback immediately
+# before its static root. That fallback must remain, but any successor API
+# routes added after it would otherwise be shadowed and return 404. Defer the
+# fallback, remove only static roots, register Pass 174, then restore the
+# fallback before the final static mount.
+_deferred_api_fallback_routes = [
+    route for route in app.router.routes
+    if str(getattr(route, "path", "")) == _API_FALLBACK_PATH
+]
 app.router.routes = [
     route
     for route in app.router.routes
@@ -58,6 +66,7 @@ app.router.routes = [
         "hhs-pass174-visual-ide",
         "hhs-pass174-legacy-ide",
     }
+    and str(getattr(route, "path", "")) != _API_FALLBACK_PATH
 ]
 
 if not _has_route_prefix("/api/v1/pass174"):
@@ -93,6 +102,9 @@ async def _pass174_readiness_probe() -> None:
         raise RuntimeError("HHS_P174_INHERITED_MULTIMODAL_ROUTE_MISSING")
     if not _has_route_prefix("/api/v1/pass174/ws/events"):
         raise RuntimeError("HHS_P174_LIVE_EVENT_ROUTE_MISSING")
+    route_paths = [str(getattr(route, "path", "")) for route in app.router.routes]
+    if route_paths.index("/api/v1/pass174/status") > route_paths.index(_API_FALLBACK_PATH):
+        raise RuntimeError("HHS_P174_API_ROUTE_SHADOWED_BY_FALLBACK")
 
 
 async def initialize_pass174_overlay() -> None:
@@ -131,6 +143,7 @@ async def initialize_pass174_overlay() -> None:
         "legacy_ide_root": str(_legacy_ide_root),
         "legacy_ide_preserved": _legacy_ide_root.is_dir(),
         "inherited_route_count": len(app.router.routes),
+        "api_fallback_deferred": bool(_deferred_api_fallback_routes),
     })
 
 
@@ -153,6 +166,10 @@ app.router.lifespan_context = _pass174_lifespan
 async def pass174_deployment_status() -> dict[str, Any]:
     return dict(PASS174_BOOT_STATE)
 
+
+# Restore the inherited unknown-API classification only after every Pass 174
+# API and WebSocket route has been registered.
+app.router.routes.extend(_deferred_api_fallback_routes)
 
 # Static root must be mounted last so it can never shadow any inherited or
 # Pass 174 API/WebSocket/health route registered above.
