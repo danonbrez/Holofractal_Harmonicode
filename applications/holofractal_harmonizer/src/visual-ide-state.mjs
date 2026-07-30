@@ -1,3 +1,4 @@
+// Validation-only carrier for Pass 174 Heroku boot resilience; do not merge.
 export const $ = (selector) => document.querySelector(selector);
 export const $$ = (selector) => [...document.querySelectorAll(selector)];
 export const TEXT_MODALITIES = new Set(['TEXT', 'MARKDOWN', 'SOURCE_CODE', 'JSON', 'JSONL', 'CSV', 'HTML', 'XML', 'HHS_CONTRACT', 'HHS_RECEIPT', 'HHS_MANIFEST', 'HHS_VECTOR_PACKET']);
