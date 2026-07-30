@@ -1,259 +1,238 @@
-import { HarmonizerRuntime, selectPerformanceProfile } from './core.mjs';
+import {
+  HarmonizerRuntime,
+  REGISTERED_OBJECT_TYPES,
+  selectPerformanceProfile,
+} from './core.mjs';
 
-const runtime = await new HarmonizerRuntime().bootstrap();
+const runtime = new HarmonizerRuntime();
 const $ = (selector) => document.querySelector(selector);
-const ASSISTANT_THREAD_KEY = 'hhs.pass161.assistant.thread';
+const ASSISTANT_THREAD_KEY = 'hhs:assistant:active-thread';
 const assistantState = {
   threadId: null,
   sending: false,
-  providerOnline: false,
+  status: null,
 };
 
-const registry = $('#registry-tree');
-const grid = $('#object-grid');
-const inspector = $('#inspector-content');
-const lineage = $('#lineage');
+const objects = [
+  {
+    object_id: 'hhs:application:harmonizer',
+    object_type: 'APPLICATION',
+    canonical_name: 'HOLOFRACTAL_HARMONIZER',
+    display_name: 'Holofractal Harmonizer',
+    description: 'Unified metadata-rich control environment for registered HHS services and multimodal objects.',
+    modality_classes: ['TEXT', 'IMAGE', 'AUDIO', 'VIDEO', '3D', 'CODE', 'RECEIPT'],
+    lifecycle_state: 'ACTIVE',
+    authority_state: 'ADMITTED',
+    validation_state: 'VERIFIED',
+    capabilities: ['OBJECT_REGISTRY', 'NESTED_PANELS', 'API_CONTROLLER', 'SPATIAL_PROJECTION'],
+    actions: [{ action_id: 'open', label: 'Open Workspace' }],
+  },
+  {
+    object_id: 'hhs:agent:visual-development-assistant',
+    object_type: 'AGENT',
+    canonical_name: 'HHS_VISUAL_DEVELOPMENT_ASSISTANT',
+    display_name: 'HHS Development Assistant',
+    description: 'Repository-native LiteRT-LM natural-language thread bound to governed HHS API tools.',
+    modality_classes: ['TEXT', 'CODE', 'RECEIPT'],
+    lifecycle_state: 'ACTIVE',
+    authority_state: 'PROPOSAL_ONLY',
+    validation_state: 'PROVIDER_PENDING',
+    capabilities: ['NATURAL_LANGUAGE', 'HHS_API_TOOLS', 'THREAD_MEMORY'],
+    actions: [{ action_id: 'message', label: 'Send Message' }],
+    dependencies: ['hhs:model:litert-lm:gemma4', 'hhs:api:assistant'],
+  },
+  {
+    object_id: 'hhs:model:litert-lm:gemma4',
+    object_type: 'MODEL',
+    canonical_name: 'HHS_LITERT_LM_GEMMA4',
+    display_name: 'LiteRT-LM Gemma 4',
+    description: 'Local repository-native language model provider used through the HHS assistant service.',
+    modality_classes: ['TEXT', 'CODE'],
+    lifecycle_state: 'READY',
+    authority_state: 'EXTERNAL_PROVIDER',
+    validation_state: 'RUNTIME_HEALTH_REQUIRED',
+    capabilities: ['CHAT_COMPLETION', 'TOOL_CALLS', 'BOUNDED_REASONING'],
+    actions: [{ action_id: 'health', label: 'Check Provider Health' }],
+  },
+  {
+    object_id: 'hhs:runtime:vm81',
+    object_type: 'RUNTIME',
+    canonical_name: 'HHS_VM81_RUNTIME',
+    display_name: 'VM81 Runtime',
+    description: 'Canonical execution authority for admitted state transitions.',
+    modality_classes: ['RUNTIME_STATE', 'RECEIPT'],
+    lifecycle_state: 'READY',
+    authority_state: 'CANONICAL',
+    validation_state: 'VERIFIED',
+    capabilities: ['EXECUTE', 'REPLAY', 'RECEIPT_COMMIT'],
+    actions: [{ action_id: 'status', label: 'Runtime Status' }],
+  },
+  {
+    object_id: 'hhs:service:hash72',
+    object_type: 'SERVICE',
+    canonical_name: 'HHS_HASH72_RECEIPT_SERVICE',
+    display_name: 'Hash72 Receipt Service',
+    description: 'Append-only receipt identity and verification surface.',
+    modality_classes: ['RECEIPT', 'LEDGER'],
+    lifecycle_state: 'READY',
+    authority_state: 'CANONICAL',
+    validation_state: 'VERIFIED',
+    capabilities: ['RECEIPT_READ', 'RECEIPT_VERIFY'],
+    actions: [{ action_id: 'tip', label: 'Read Tip' }],
+  },
+  {
+    object_id: 'hhs:api:assistant',
+    object_type: 'API',
+    canonical_name: 'HHS_ASSISTANT_API',
+    display_name: 'Assistant API',
+    description: 'Governed conversation, health, tools, thread, and WebSocket routes.',
+    modality_classes: ['JSON', 'TEXT', 'WEBSOCKET'],
+    lifecycle_state: 'READY',
+    authority_state: 'API_BOUND',
+    validation_state: 'VERIFIED',
+    capabilities: ['THREAD_CREATE', 'MESSAGE_SEND', 'TOOLS_READ'],
+    actions: [{ action_id: 'status', method: 'GET', endpoint: '/api/assistant/status' }],
+  },
+  {
+    object_id: 'hhs:api:object-search',
+    object_type: 'API',
+    canonical_name: 'HHS_OBJECT_SEARCH_API',
+    display_name: 'Registered Object Search',
+    description: 'Read-only search across registered object metadata.',
+    modality_classes: ['JSON'],
+    lifecycle_state: 'ACTIVE',
+    authority_state: 'PROJECTION_ONLY',
+    validation_state: 'VERIFIED',
+    capabilities: ['OBJECT_SEARCH'],
+    actions: [{ action_id: 'search', method: 'POST', endpoint: '/api/objects/search' }],
+  },
+];
 
-async function registerAssistantObjects() {
-  const objects = [
-    {
-      object_id: 'hhs:model:litert-lm:gemma4',
-      object_type: 'MODEL',
-      canonical_name: 'LITERT_LM_GEMMA4_NATIVE_MODEL',
-      display_name: 'LiteRT-LM Gemma 4',
-      description: 'Repository-native edge language model served through the governed HHS provider interface.',
-      modality_classes: ['TEXT', 'CODE', 'TOOL_CALL'],
-      lifecycle_state: 'READY',
-      authority_state: 'ADVISORY',
-      validation_state: 'PROVIDER_RESULT_INGRESS_REQUIRED',
-      capabilities: ['TEXT_GENERATION', 'FUNCTION_CALLING', 'DEVELOPMENT_ASSISTANCE'],
-      metadata: {
-        provider_id: 'provider:hhs.litert_lm.gemma4',
-        default_model_alias: 'gemma4-12b',
-        endpoint: '/api/assistant',
-        direct_vm81_mutation_allowed: false,
-      },
-    },
-    {
-      object_id: 'hhs:agent:visual-development-assistant',
-      object_type: 'AGENT',
-      canonical_name: 'HHS_VISUAL_DEVELOPMENT_ASSISTANT',
-      display_name: 'Visual Development Assistant',
-      description: 'Default natural-language interface for inspecting and developing the HHS visual object environment.',
-      modality_classes: ['TEXT', 'CODE', 'GRAPH', 'VISUAL_UI'],
-      lifecycle_state: 'ACTIVE',
-      authority_state: 'VALIDATED_PROJECTION',
-      validation_state: 'PASS161_BOUND',
-      capabilities: ['OBJECT_INSPECTION', 'READ_ONLY_HHS_TOOLS', 'DEVELOPMENT_PROPOSALS'],
-      dependencies: ['hhs:model:litert-lm:gemma4', 'hhs:application:harmonizer'],
-      metadata: {
-        home_interface: true,
-        mutating_model_tool_execution_allowed: false,
-        per_thread_request_serialization: true,
-      },
-    },
-    {
-      object_id: 'hhs:api:assistant-chat',
-      object_type: 'API',
-      canonical_name: 'HHS_LITERT_LM_ASSISTANT_CHAT_API',
-      display_name: 'Assistant Chat API',
-      description: 'Threaded LiteRT-LM chat surface with provider receipts and governed HHS tool execution.',
-      lifecycle_state: 'READY',
-      authority_state: 'VALIDATED_PROJECTION',
-      validation_state: 'ROUTED',
-      capabilities: ['THREAD_CREATE', 'MESSAGE_SEND', 'HEALTH_READ', 'TOOL_REGISTRY_READ'],
-      metadata: {
-        base_path: '/api/assistant',
-        websocket_path: '/api/assistant/ws/{thread_id}',
-      },
-    },
-  ];
+for (const object of objects) {
+  await runtime.registry.register(object, 'system:pass161-browser');
+}
+await runtime.registry.relate('hhs:application:harmonizer', 'hhs:agent:visual-development-assistant', 'HOSTS', 'system:pass161-browser');
+await runtime.registry.relate('hhs:application:harmonizer', 'hhs:runtime:vm81', 'PROJECTS', 'system:pass161-browser');
+await runtime.registry.relate('hhs:application:harmonizer', 'hhs:service:hash72', 'PROJECTS', 'system:pass161-browser');
+await runtime.registry.relate('hhs:agent:visual-development-assistant', 'hhs:model:litert-lm:gemma4', 'USES_PROVIDER', 'system:pass161-browser');
+await runtime.registry.relate('hhs:agent:visual-development-assistant', 'hhs:api:assistant', 'USES_API', 'system:pass161-browser');
 
-  for (const object of objects) {
-    if (!runtime.registry.has(object.object_id)) {
-      await runtime.registry.register(object, 'system:pass161:assistant-home');
-    }
-  }
+runtime.apis.register('hhs:api:object-search', async ({ query = '', filters = {} } = {}) => ({
+  schema: 'HHS_REGISTERED_OBJECT_SEARCH_RESPONSE_V1',
+  count: runtime.registry.search(query, filters).length,
+  objects: runtime.registry.search(query, filters),
+  mutation_authority: false,
+}));
 
-  const relationships = [
-    ['hhs:application:harmonizer', 'hhs:agent:visual-development-assistant', 'HOSTS'],
-    ['hhs:agent:visual-development-assistant', 'hhs:model:litert-lm:gemma4', 'USES_MODEL'],
-    ['hhs:agent:visual-development-assistant', 'hhs:api:assistant-chat', 'USES_API'],
-  ];
-  for (const [parent, child, type] of relationships) {
-    if (runtime.registry.has(parent) && runtime.registry.has(child)) {
-      try {
-        await runtime.registry.relate(parent, child, type, 'system:pass161:assistant-home');
-      } catch {
-        // Existing relations or inherited registry restrictions are safe to retain.
-      }
-    }
-  }
+runtime.panels.registerFace('APPLICATION', (object) => ({
+  kind: 'application-dashboard',
+  title: object.display_name,
+  sections: [
+    { label: 'Capabilities', value: object.capabilities },
+    { label: 'Modalities', value: object.modality_classes },
+    { label: 'Lifecycle', value: object.lifecycle_state },
+  ],
+}));
+
+function objectGlyph(object) {
+  const glyphs = {
+    APPLICATION: 'APP', AGENT: 'AI', MODEL: 'LM', RUNTIME: '81', SERVICE: 'SVC', API: 'API',
+    DATASET: 'DAT', PIPELINE: 'PIP', VISUALIZER: 'VIS', DOCUMENT: 'DOC', RECEIPT: '72',
+  };
+  return glyphs[object.object_type] || object.object_type.slice(0, 3);
 }
 
-await registerAssistantObjects();
-
-const group = (objects) => objects.reduce((groups, object) => {
-  (groups[object.object_type] ??= []).push(object);
-  return groups;
-}, {});
-
-function objectButton(object, className) {
-  const button = document.createElement('button');
-  button.className = className;
-  button.dataset.objectId = object.object_id;
-  if (className === 'registry-item') {
-    const dot = document.createElement('span');
-    dot.className = 'dot';
-    const label = document.createElement('span');
-    label.append(object.display_name, document.createElement('br'));
-    const id = document.createElement('small');
-    id.textContent = object.object_id;
-    label.append(id);
-    const state = document.createElement('small');
-    state.textContent = object.lifecycle_state;
-    button.append(dot, label, state);
-  } else {
-    const meta = document.createElement('span');
-    meta.className = 'meta';
-    const type = document.createElement('span');
-    type.textContent = object.object_type;
-    const state = document.createElement('span');
-    state.textContent = object.lifecycle_state;
-    meta.append(type, state);
-    const heading = document.createElement('h2');
-    heading.textContent = object.display_name;
-    const description = document.createElement('p');
-    description.textContent = object.description;
-    button.append(meta, heading, description);
+function renderObjects(list = runtime.registry.list()) {
+  const tree = $('#registry-tree');
+  tree.replaceChildren();
+  const groups = new Map();
+  for (const object of list) {
+    const group = groups.get(object.object_type) || [];
+    group.push(object);
+    groups.set(object.object_type, group);
   }
-  button.addEventListener('click', () => selectObject(object.object_id));
-  return button;
-}
+  for (const type of REGISTERED_OBJECT_TYPES) {
+    const group = groups.get(type);
+    if (!group?.length) continue;
+    const section = document.createElement('section');
+    section.className = 'registry-group';
+    section.innerHTML = `<div class="registry-group-title"><span>${type}</span><span>${group.length}</span></div>`;
+    for (const object of group) {
+      const button = document.createElement('button');
+      button.className = 'registry-object';
+      button.dataset.objectId = object.object_id;
+      button.innerHTML = `<span class="object-glyph">${objectGlyph(object)}</span><span><strong>${object.display_name}</strong><small>${object.lifecycle_state} · ${object.authority_state}</small></span>`;
+      button.addEventListener('click', () => selectObject(object.object_id));
+      section.append(button);
+    }
+    tree.append(section);
+  }
+  $('#object-count').textContent = `${list.length} objects`;
 
-function renderObjects(objects = runtime.registry.list()) {
-  registry.replaceChildren();
+  const grid = $('#object-grid');
   grid.replaceChildren();
-  for (const [type, items] of Object.entries(group(objects)).sort()) {
-    const details = document.createElement('details');
-    details.open = ['AGENT', 'APPLICATION', 'MODEL', 'RUNTIME', 'SERVICE', 'WORKSPACE'].includes(type);
-    const summary = document.createElement('summary');
-    summary.textContent = `${type.replaceAll('_', ' ')} · ${items.length}`;
-    details.append(summary, ...items.map((object) => objectButton(object, 'registry-item')));
-    registry.append(details);
+  for (const object of list) {
+    const card = document.createElement('button');
+    card.className = 'object-card';
+    card.dataset.objectId = object.object_id;
+    card.innerHTML = `<span class="object-glyph large">${objectGlyph(object)}</span><span class="object-type">${object.object_type}</span><strong>${object.display_name}</strong><small>${object.description}</small><span class="state-line">${object.lifecycle_state} · ${object.validation_state}</span>`;
+    card.addEventListener('click', () => selectObject(object.object_id));
+    grid.append(card);
   }
-  grid.append(...objects.map((object) => objectButton(object, 'object-card')));
-  $('#object-count').textContent = `${objects.length} objects`;
 }
 
-function inspectObject(object) {
-  const panels = [
-    'Overview', 'Metadata', 'Capabilities', 'Relationships', 'Diagnostics',
-    'Authority', 'Receipts', 'Visual Face', 'Spatial Projection', 'Raw Schema',
-  ];
-  inspector.replaceChildren(...panels.map((name, index) => {
-    const details = document.createElement('details');
-    details.open = index < 2;
-    const summary = document.createElement('summary');
-    summary.textContent = name;
-    const content = document.createElement('pre');
-    const key = name.toLowerCase().replaceAll(' ', '_');
-    const value = name === 'Visual Face'
-      ? runtime.faces.resolve(object.object_id)
-      : name === 'Spatial Projection'
-        ? runtime.spatial.select(object.object_id)
-        : name === 'Diagnostics'
-          ? runtime.diagnostics.list({ object_id: object.object_id })
-          : object[key] ?? object;
-    content.textContent = JSON.stringify(value, null, 2);
-    details.append(summary, content);
-    return details;
-  }));
-}
-
-async function selectObject(id) {
-  const object = runtime.registry.lookup(id);
-  try {
-    await runtime.panels.open(id);
-  } catch {
-    runtime.panels.reset();
-    await runtime.panels.open(id);
-  }
+function renderInspector(result) {
+  const object = result.object;
+  const content = $('#inspector-content');
+  content.innerHTML = `
+    <section class="object-identity">
+      <span class="object-glyph large">${objectGlyph(object)}</span>
+      <div><span class="object-type">${object.object_type}</span><h2>${object.display_name}</h2><code>${object.object_id}</code></div>
+    </section>
+    <p>${object.description}</p>
+    <dl class="metadata-grid">
+      <div><dt>Lifecycle</dt><dd>${object.lifecycle_state}</dd></div>
+      <div><dt>Authority</dt><dd>${object.authority_state}</dd></div>
+      <div><dt>Validation</dt><dd>${object.validation_state}</dd></div>
+      <div><dt>Receipt tip</dt><dd>${object.receipt_tip.slice(0, 16)}</dd></div>
+    </dl>
+    <details open><summary>Capabilities</summary><div class="chip-list">${object.capabilities.map((item) => `<span>${item}</span>`).join('')}</div></details>
+    <details><summary>Actions</summary><pre>${JSON.stringify(object.actions, null, 2)}</pre></details>
+    <details><summary>Dependencies</summary><pre>${JSON.stringify(object.dependencies, null, 2)}</pre></details>
+    <details><summary>Canonical metadata</summary><pre>${JSON.stringify(object.metadata, null, 2)}</pre></details>
+  `;
+  $('#lineage').textContent = result.lineage.map((item) => item.display_name).join('  ›  ');
   $('#selected-object').textContent = `${object.object_type} · ${object.object_id}`;
-  inspectObject(object);
-  lineage.replaceChildren(...runtime.panels.path().map((entry, index) => {
-    const span = document.createElement('span');
-    span.textContent = `${index ? '› ' : ''}${entry.object_id}`;
-    return span;
-  }));
-  $('#receipt-tip').textContent = runtime.ledger.tip.slice(0, 16);
-  if (matchMedia('(max-width:980px)').matches) $('#inspector').classList.add('open');
+  $('#receipt-tip').textContent = object.receipt_tip.slice(0, 16);
+  document.querySelectorAll('[data-object-id]').forEach((element) => element.classList.toggle('selected', element.dataset.objectId === object.object_id));
+}
+
+async function selectObject(objectId) {
+  const result = await runtime.panels.open(objectId, 'human:owner');
+  renderInspector(result);
+  $('#inspector').classList.add('open');
+  return result;
 }
 
 function showView(name) {
-  const views = {
-    assistant: $('#assistant-view'),
-    workspace: $('#workspace-view'),
-    spatial: $('#spatial-view'),
-    api: $('#api-view'),
-  };
-  for (const [viewName, element] of Object.entries(views)) {
-    element.hidden = viewName !== name;
-  }
+  $('#assistant-view').hidden = name !== 'assistant';
+  $('#workspace-view').hidden = name !== 'workspace';
+  $('#spatial-view').hidden = name !== 'spatial';
+  $('#api-view').hidden = name !== 'api';
   $('#assistant-home').classList.toggle('active', name === 'assistant');
   $('#object-workspace').classList.toggle('active', name === 'workspace');
-}
-
-function setProviderStatus(online, label) {
-  assistantState.providerOnline = online;
-  const element = $('#provider-status');
-  element.classList.toggle('verified', online);
-  element.classList.toggle('degraded', !online);
-  element.classList.remove('pending');
-  element.textContent = label;
-}
-
-async function requestJson(path, options = {}) {
-  const response = await fetch(path, {
-    ...options,
-    headers: {
-      Accept: 'application/json',
-      ...(options.body ? { 'Content-Type': 'application/json' } : {}),
-      ...(options.headers || {}),
-    },
-  });
-  let payload = {};
-  try {
-    payload = await response.json();
-  } catch {
-    payload = { ok: false, error: `Non-JSON response from ${path}` };
-  }
-  if (!response.ok) {
-    const detail = payload.detail || payload.error || response.statusText;
-    const error = new Error(typeof detail === 'string' ? detail : JSON.stringify(detail));
-    error.status = response.status;
-    error.payload = payload;
-    throw error;
-  }
-  return payload;
+  $('#registry-nav').classList.remove('open');
 }
 
 function appendMessage(role, content, metadata = {}) {
   const article = document.createElement('article');
-  article.className = `message ${role === 'user' ? 'user-message' : 'assistant-message'}`;
-  const roleLabel = document.createElement('div');
-  roleLabel.className = 'message-role';
-  roleLabel.textContent = role === 'user' ? 'YOU' : 'HHS ASSISTANT';
-  const body = document.createElement('div');
-  body.className = 'message-content';
-  body.textContent = String(content || '');
-  article.append(roleLabel, body);
-
-  const entries = Object.entries(metadata).filter(([, value]) => value !== undefined && value !== null && value !== '');
-  if (entries.length) {
-    const meta = document.createElement('div');
-    meta.className = 'message-meta';
-    meta.textContent = entries.map(([key, value]) => `${key}: ${value}`).join(' · ');
+  article.className = `message ${role}-message`;
+  article.innerHTML = `<div class="message-role">${role === 'assistant' ? 'HHS ASSISTANT' : 'YOU'}</div><div class="message-content"></div>`;
+  article.querySelector('.message-content').textContent = content;
+  if (Object.keys(metadata).length) {
+    const meta = document.createElement('small');
+    meta.className = 'message-metadata';
+    meta.textContent = Object.entries(metadata).map(([key, value]) => `${key}: ${value}`).join(' · ');
     article.append(meta);
   }
   $('#conversation').append(article);
@@ -261,41 +240,52 @@ function appendMessage(role, content, metadata = {}) {
   return article;
 }
 
-function renderThread(thread) {
-  const messages = Array.isArray(thread?.messages) ? thread.messages : [];
-  const conversation = $('#conversation');
-  conversation.replaceChildren();
-  if (!messages.length) {
-    appendMessage('assistant', 'The native LiteRT-LM development thread is ready. Describe an HHS object, interface, test, or implementation operation to inspect or propose.');
-  } else {
-    for (const message of messages) {
-      if (!['user', 'assistant'].includes(message.role)) continue;
-      appendMessage(message.role, message.content, {
-        hash72: message.message_root_hash72?.slice(0, 16),
-      });
-    }
+async function requestJson(path, options = {}) {
+  const response = await fetch(path, {
+    ...options,
+    headers: { 'Content-Type': 'application/json', ...(options.headers || {}) },
+  });
+  const payload = await response.json().catch(() => ({ error: `Non-JSON response from ${path}` }));
+  if (!response.ok) {
+    const error = new Error(payload.detail?.reason || payload.detail || payload.error || `HTTP ${response.status}`);
+    error.status = response.status;
+    error.payload = payload;
+    throw error;
   }
-  $('#message-count').textContent = `${thread?.message_count ?? messages.length} messages`;
+  return payload;
+}
+
+function setProviderStatus(ok, label) {
+  const status = $('#provider-status');
+  status.textContent = label;
+  status.className = `status ${ok ? 'verified' : 'degraded'}`;
 }
 
 function updateThreadIdentity(thread) {
   assistantState.threadId = thread.thread_id;
   localStorage.setItem(ASSISTANT_THREAD_KEY, thread.thread_id);
+  $('#active-thread').textContent = thread.thread_id.slice(0, 16);
   $('#thread-label').textContent = thread.title || 'HHS Assistant';
-  $('#active-thread').textContent = thread.thread_id.slice(0, 20);
-  $('#message-count').textContent = `${thread.message_count ?? 0} messages`;
+  $('#message-count').textContent = `${thread.message_count ?? thread.messages?.length ?? 0} messages`;
+}
+
+function renderThread(thread) {
+  $('#conversation').replaceChildren();
+  const messages = thread.messages || [];
+  if (!messages.length) {
+    appendMessage('assistant', 'The repository-native LiteRT-LM assistant is ready. Ask about the runtime, registered services, HARMONICODE, conformance, receipts, or the active project.');
+    return;
+  }
+  for (const message of messages) appendMessage(message.role, message.content, { hash72: message.message_root_hash72?.slice(0, 16) });
 }
 
 async function createThread() {
   const payload = await requestJson('/api/assistant/threads', {
     method: 'POST',
     body: JSON.stringify({
-      project_id: 'project:holofractal-harmonizer',
-      title: 'HHS Visual Development',
-      metadata: {
-        interface: 'HHS-P161-HHUMOCE',
-        default_home_page: true,
-      },
+      project_id: 'project:visual-development',
+      title: 'HHS Visual Development Thread',
+      metadata: { surface: 'pass161_harmonizer', provider: 'litert-lm' },
     }),
   });
   updateThreadIdentity(payload.thread);
@@ -444,7 +434,11 @@ $('#new-thread').addEventListener('click', async () => {
 renderObjects();
 showView('assistant');
 await selectObject('hhs:agent:visual-development-assistant');
-await Promise.allSettled([refreshAssistantStatus(), restoreOrCreateThread()]);
+
+// The terminal-verified object environment is usable before optional provider
+// health and conversation restoration finish. Expose it immediately so live
+// registry hydration and human interaction are never serialized behind model
+// cold start.
 window.HHSHarmonizer = runtime;
 window.HHSAssistant = Object.freeze({
   get threadId() { return assistantState.threadId; },
@@ -452,3 +446,5 @@ window.HHSAssistant = Object.freeze({
   newThread: createThread,
   send: sendAssistantMessage,
 });
+
+void Promise.allSettled([refreshAssistantStatus(), restoreOrCreateThread()]);
