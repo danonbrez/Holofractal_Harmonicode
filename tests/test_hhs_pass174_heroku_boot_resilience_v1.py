@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import asyncio
-from contextlib import asynccontextmanager
+from contextlib import asynccontextmanager, suppress
 
 from hhs_backend import pass174_server as server
 
@@ -54,6 +54,57 @@ def test_lifespan_yields_while_background_probe_is_degraded(monkeypatch) -> None
     assert server.PASS174_BOOT_STATE["service_available"] is True
     assert server.PASS174_BOOT_STATE["authority_ready"] is False
     assert server.PASS174_BOOT_STATE["degraded"] is True
+
+
+def test_deployment_status_supports_immediate_probing_diagnostic(monkeypatch) -> None:
+    async def exercise() -> None:
+        task = asyncio.create_task(asyncio.sleep(30, result=True))
+        monkeypatch.setattr(server, "_readiness_task", task)
+        server.PASS174_BOOT_STATE.update({
+            "classification": "HHS_P174_BOOT_PROBING",
+            "ready": False,
+            "authority_ready": False,
+            "service_available": True,
+            "degraded": False,
+        })
+        payload = await server.pass174_deployment_status(wait_for_terminal=False)
+        assert payload["ready"] is False
+        assert payload["terminal"] is False
+        assert payload["probe_running"] is True
+        assert payload["status_waited_for_terminal"] is False
+        task.cancel()
+        with suppress(asyncio.CancelledError):
+            await task
+
+    asyncio.run(exercise())
+
+
+def test_deployment_status_waits_for_bounded_terminal_result(monkeypatch) -> None:
+    async def exercise() -> None:
+        async def complete_probe() -> bool:
+            await asyncio.sleep(0)
+            server.PASS174_BOOT_STATE.update({
+                "classification": "HHS_P174_BOOT_READY",
+                "ready": True,
+                "authority_ready": True,
+                "service_available": True,
+                "degraded": False,
+            })
+            return True
+
+        task = asyncio.create_task(complete_probe())
+        monkeypatch.setattr(server, "_readiness_task", task)
+        payload = await server.pass174_deployment_status(
+            wait_for_terminal=True,
+            timeout_seconds=1,
+        )
+        assert payload["ready"] is True
+        assert payload["terminal"] is True
+        assert payload["probe_running"] is False
+        assert payload["status_waited_for_terminal"] is True
+        assert payload["status_wait_timed_out"] is False
+
+    asyncio.run(exercise())
 
 
 def test_pass174_routes_precede_static_root() -> None:

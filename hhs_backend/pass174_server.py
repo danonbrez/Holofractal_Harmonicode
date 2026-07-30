@@ -25,7 +25,7 @@ from hhs_backend.api import pass174_ws_routes as _pass174_ws_routes  # registers
 
 app = inherited_ide.app
 app.title = "HHS Pass 174 Harmonic Visual SDLC Runtime"
-app.version = "4.0.1"
+app.version = "4.0.2"
 app.description = (
     "Append-only successor to every legacy HHS pass through Pass 173, with a "
     "64:72:81 phase-gear VM81 runtime, encrypted Hash216 retrieval, governed "
@@ -47,6 +47,7 @@ _repository_root = Path(os.environ.get("HHS_REPOSITORY_ROOT") or Path(__file__).
 _ide_root = _repository_root / "applications" / "pass174_visual_ide"
 _legacy_ide_root = inherited_production.VISUAL_ROOT
 _API_FALLBACK_PATH = "/api/{unmatched_path:path}"
+_readiness_task: asyncio.Task[bool] | None = None
 
 
 def _has_route_prefix(prefix: str) -> bool:
@@ -185,6 +186,7 @@ _inherited_lifespan = app.router.lifespan_context
 
 @asynccontextmanager
 async def _pass174_lifespan(app_instance):
+    global _readiness_task
     async with _inherited_lifespan(app_instance):
         PASS174_BOOT_STATE.update({
             "classification": "HHS_P174_BOOT_PROBING",
@@ -195,25 +197,56 @@ async def _pass174_lifespan(app_instance):
             "silent_freeze": False,
         })
         _emit_boot_event()
-        readiness_task = asyncio.create_task(
+        _readiness_task = asyncio.create_task(
             initialize_pass174_overlay(),
             name="hhs-pass174-readiness-probe",
         )
         try:
             yield
         finally:
-            if not readiness_task.done():
-                readiness_task.cancel()
-            with suppress(asyncio.CancelledError):
-                await readiness_task
+            if _readiness_task is not None and not _readiness_task.done():
+                _readiness_task.cancel()
+            if _readiness_task is not None:
+                with suppress(asyncio.CancelledError):
+                    await _readiness_task
+            _readiness_task = None
 
 
 app.router.lifespan_context = _pass174_lifespan
 
 
 @app.get("/api/v1/pass174/deployment/status")
-async def pass174_deployment_status() -> dict[str, Any]:
-    return dict(PASS174_BOOT_STATE)
+async def pass174_deployment_status(
+    wait_for_terminal: bool = True,
+    timeout_seconds: float = 15.0,
+) -> dict[str, Any]:
+    """Return boot state, optionally waiting for the bounded probe to finish.
+
+    The web process is already serving before this wait occurs. Callers needing
+    an immediate diagnostic can use ``wait_for_terminal=false``; deployment
+    gates retain the historical terminal-readiness behavior by default.
+    """
+    task = _readiness_task
+    waited = False
+    wait_timed_out = False
+    bounded_timeout = max(0.0, min(float(timeout_seconds), 30.0))
+    if wait_for_terminal and task is not None and not task.done() and bounded_timeout > 0:
+        waited = True
+        try:
+            await asyncio.wait_for(asyncio.shield(task), timeout=bounded_timeout)
+        except asyncio.TimeoutError:
+            wait_timed_out = True
+    payload = dict(PASS174_BOOT_STATE)
+    payload.update({
+        "terminal": payload.get("classification") not in {
+            "HHS_P174_BOOT_PENDING",
+            "HHS_P174_BOOT_PROBING",
+        },
+        "probe_running": bool(task is not None and not task.done()),
+        "status_waited_for_terminal": waited,
+        "status_wait_timed_out": wait_timed_out,
+    })
+    return payload
 
 
 # Restore the inherited unknown-API classification only after every Pass 174
