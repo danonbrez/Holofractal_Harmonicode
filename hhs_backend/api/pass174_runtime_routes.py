@@ -3,6 +3,7 @@ from __future__ import annotations
 
 from dataclasses import asdict
 from hashlib import sha256
+import json
 import os
 from pathlib import Path
 from typing import Any, Dict, List, Optional
@@ -29,6 +30,17 @@ def _repository_root() -> Path:
 def _state_root(repository_root: Path) -> Path:
     configured = os.environ.get("HHS_PASS174_STATE_DIR")
     return Path(configured).resolve() if configured else repository_root / ".hhs" / "pass174"
+
+
+def _canonical_json(value: Any) -> bytes:
+    return json.dumps(
+        value,
+        sort_keys=True,
+        separators=(",", ":"),
+        ensure_ascii=False,
+        allow_nan=False,
+        default=str,
+    ).encode("utf-8")
 
 
 def get_runtime() -> Pass174Runtime:
@@ -127,7 +139,6 @@ def status() -> Dict[str, Any]:
 
 @router.get("/boot")
 def boot_status() -> Dict[str, Any]:
-    runtime = get_runtime()
     status_payload = status()
     return {
         "schema": "HHS_P174_BOOT_STATUS_V1",
@@ -243,12 +254,12 @@ def run_sdlc(request: SDLCRunRequest) -> Dict[str, Any]:
         "requested_output": payload["requested_output"],
     }
     source_identity = sha256(
-        b"HHS-P174-SDLC-SOURCE-V1\0" + repr(canonical_source).encode("utf-8")
+        b"HHS-P174-SDLC-SOURCE-V1\0" + _canonical_json(canonical_source)
     ).hexdigest()
     compiled_identity = sha256(
         b"HHS-P174-SDLC-COMPILED-V1\0"
         + bytes.fromhex(source_identity)
-        + runtime.legacy_foundation_root.encode("ascii")
+        + bytes.fromhex(runtime.legacy_foundation_root)
     ).hexdigest()
     writes = {
         index % 81: 1 if byte & 1 else -1
