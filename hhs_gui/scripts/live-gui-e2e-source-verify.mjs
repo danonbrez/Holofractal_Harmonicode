@@ -29,12 +29,17 @@ for (const channel of ["runtime", "replay", "graph", "transport"]) {
 }
 
 assert(content.projectionPanel.includes("1500"), "live projection refresh is not production-bounded")
-assert(content.projectionPanel.includes("Connected only while this tab is active"), "runtime diagnostics are not deferred")
+assert(content.projectionPanel.includes("/api/runtime/authority/status"), "runtime surface does not verify backend authority")
+assert(content.projectionPanel.includes("WebSockets are on-demand projection channels"), "runtime authority is still conflated with WebSocket projection")
+assert(content.projectionPanel.includes("RUNTIME AUTHORITY ONLINE"), "runtime surface does not expose active authority")
 assert(content.projectionPanel.includes("runtimeOS.initialize()"), "Runtime tab does not activate transport")
 assert(content.projectionPanel.includes("runtimeOS.shutdown()"), "Runtime tab does not release transport")
 assert(content.canonicalIDE.includes("HHSProductWorkspace"), "CanonicalRuntimeIDE does not mount the product workspace")
 assert(content.product.includes("RegistryVisualProgrammer"), "product workspace does not expose registry visual programming")
 assert(content.product.includes("HHSWorkspaceShell"), "product workspace removed the full conventional workspace")
+assert(content.product.includes("/api/product/health"), "product does not verify runtime and assistant execution authorities")
+assert(content.product.includes("runtime online"), "product does not expose runtime authority readiness")
+assert(content.product.includes("assistantOnline"), "product does not expose assistant provider readiness")
 assert(content.canonicalIDE.includes("IntegratedRuntimeClient"), "CanonicalRuntimeIDE does not use integrated client")
 assert(!content.integratedClient.includes("RuntimeWindowManager"), "public client imports legacy window manager")
 assert(!content.canonicalIDE.includes("RuntimeCommandPanel"), "isolated runtime command panel remains public")
@@ -94,9 +99,9 @@ assert(content.vite.indexOf('".ts"') < content.vite.indexOf('".tsx"'), "Vite mus
 assert(content.vite.includes('"/ws"') && content.vite.includes("ws: true"), "Vite websocket proxy missing")
 assert(!content.socket.includes("NODE_DEMO_STUB"), "socket manager contains Node demo authority")
 
-for (const forbidden of ["ProductionApp", "runtime_application_missing", "detached deployment mode"]) {
+for (const forbidden of ["ProductionApp", "runtime_application_missing", "detached deployment mode", "visual_shell_only: true"]) {
   const publicSources = `${content.canonicalIDE}\n${content.product}\n${content.programmer}\n${content.workspace}\n${content.assistant}`
-  assert(!publicSources.includes(forbidden), `obsolete public behavior leaked: ${forbidden}`)
+  assert(!publicSources.includes(forbidden), `obsolete or shell-only public behavior leaked: ${forbidden}`)
 }
 
 console.log("live-gui-e2e-source-verify: PASS")
