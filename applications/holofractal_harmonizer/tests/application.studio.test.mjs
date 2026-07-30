@@ -6,7 +6,7 @@ import { APPLICATION_TEMPLATES, materializeApplicationTemplate } from '../src/ap
 const root = new URL('../', import.meta.url);
 const source = async (path) => readFile(new URL(path, root), 'utf8');
 
-const required = ['web', 'pong', 'calculator', 'puzzle', 'document', 'audio', 'video', 'automation'];
+const required = ['web', 'pong', 'calculator', 'puzzle', 'document', 'audio', 'video', 'automation', 'harmonic-puzzle'];
 
 test('application gallery contains real representative project classes', () => {
   assert.deepEqual(Object.keys(APPLICATION_TEMPLATES), required);
@@ -24,6 +24,8 @@ test('game, calculator, document, audio and video starters contain executable be
   const calculatorProject = materializeApplicationTemplate('calculator');
   const calculator = JSON.stringify(calculatorProject);
   const puzzle = JSON.stringify(materializeApplicationTemplate('puzzle'));
+  const harmonicProject = materializeApplicationTemplate('harmonic-puzzle');
+  const harmonic = JSON.stringify(harmonicProject);
   const documentProjectObject = materializeApplicationTemplate('document');
   const documentProject = JSON.stringify(documentProjectObject);
   const audio = JSON.stringify(materializeApplicationTemplate('audio'));
@@ -32,6 +34,8 @@ test('game, calculator, document, audio and video starters contain executable be
   assert.match(pong, /pointermove/);
   assert.match(calculator, /evaluate/);
   assert.match(puzzle, /solvableShuffle/);
+  assert.match(harmonic, /HarmonicPuzzleModel/);
+  assert.match(harmonic, /HarmonicRenderer/);
   assert.match(documentProject, /contenteditable/);
   assert.match(documentProject, /Download TXT/);
   assert.match(documentProject, /autosave available after export/);
@@ -40,8 +44,10 @@ test('game, calculator, document, audio and video starters contain executable be
   assert.match(video, /captureStream/);
   assert.match(video, /MediaRecorder/);
   const calculatorSource = calculatorProject.files.find((file) => file.path.endsWith('/app.js')).content;
+  const harmonicSource = harmonicProject.files.find((file) => file.path.endsWith('/app.js')).content;
   const documentSource = documentProjectObject.files.find((file) => file.path.endsWith('/app.js')).content;
   assert.doesNotThrow(() => new Function(calculatorSource));
+  assert.doesNotThrow(() => new Function(harmonicSource));
   assert.doesNotThrow(() => new Function(documentSource));
 });
 
