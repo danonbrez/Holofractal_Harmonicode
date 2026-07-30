@@ -1,51 +1,57 @@
-name: Build HHS Canonical Visual Runtime OS
+name: Validate HHS Pass 161 Production Harmonizer
 
 on:
   push:
     branches: [main]
     paths:
-      - "hhs_gui/**"
+      - "applications/holofractal_harmonizer/**"
+      - "HHS_VISUAL_IDE_PARALLEL_AB_USABILITY_REPORT.md"
+      - "HHS_PASS_161_AUTHORITY_BINDING.json"
       - "hhs_backend/server.py"
       - "hhs_backend/production_server.py"
+      - "hhs_backend/api/installation_routes.py"
       - "hhs_backend/api/litert_lm_assistant_routes.py"
       - "hhs_backend/api/pass166_word2vec_routes.py"
+      - "hhs_backend/api/runtime_routes.py"
+      - "hhs_backend/runtime/live_fastapi_workflow_v1.py"
       - "hhs_backend/runtime/hhs_production_assistant_v1.py"
       - "hhs_backend/runtime/hhs_native_litert_lm_provider_v1.py"
       - "hhs_backend/runtime/hhs_litert_lm_hhs_api_assistant_v1.py"
-      - "hhs_backend/runtime/live_fastapi_workflow_v1.py"
       - "tests/test_hhs_production_public_app_v1.py"
       - "Procfile"
       - "bin/post_compile"
       - ".github/workflows/hhs-runtime-os-deploy.yml"
-      - "!hhs_gui/dist/**"
   pull_request:
     branches: [main]
     paths:
-      - "hhs_gui/**"
+      - "applications/holofractal_harmonizer/**"
+      - "HHS_VISUAL_IDE_PARALLEL_AB_USABILITY_REPORT.md"
+      - "HHS_PASS_161_AUTHORITY_BINDING.json"
       - "hhs_backend/server.py"
       - "hhs_backend/production_server.py"
+      - "hhs_backend/api/installation_routes.py"
       - "hhs_backend/api/litert_lm_assistant_routes.py"
       - "hhs_backend/api/pass166_word2vec_routes.py"
+      - "hhs_backend/api/runtime_routes.py"
+      - "hhs_backend/runtime/live_fastapi_workflow_v1.py"
       - "hhs_backend/runtime/hhs_production_assistant_v1.py"
       - "hhs_backend/runtime/hhs_native_litert_lm_provider_v1.py"
       - "hhs_backend/runtime/hhs_litert_lm_hhs_api_assistant_v1.py"
-      - "hhs_backend/runtime/live_fastapi_workflow_v1.py"
       - "tests/test_hhs_production_public_app_v1.py"
       - "Procfile"
       - "bin/post_compile"
       - ".github/workflows/hhs-runtime-os-deploy.yml"
-      - "!hhs_gui/dist/**"
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
-  group: hhs-canonical-runtime-os-${{ github.event_name }}-${{ github.ref }}
+  group: hhs-pass161-production-${{ github.event_name }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  build-runtime-os:
+  validate-production-harmonizer:
     runs-on: ubuntu-latest
     timeout-minutes: 25
 
@@ -60,7 +66,7 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Install dependency-scoped backend test requirements
+      - name: Install dependency-scoped backend requirements
         run: |
           timeout 300s python -m pip install --upgrade pip
           timeout 300s python -m pip install \
@@ -74,32 +80,33 @@ jobs:
       - name: Build native Hash72 runtime and assistant authority
         env:
           HHS_NATIVE_LANGUAGE_REQUIRE_WORD2VEC: "0"
-          HHS_ASSISTANT_HEALTH_TIMEOUT_SECONDS: "5"
+          HHS_ASSISTANT_HEALTH_TIMEOUT_SECONDS: "0.5"
         run: |
           timeout 600s bash bin/post_compile
           test -s hhs_runtime/builds/libhhs_runtime.so
 
-      - name: Validate canonical backend composition
+      - name: Validate canonical backend and real execution authorities
         env:
           HHS_DISABLE_C_AUTOBUILD: "1"
           HHS_LITERT_LM_BACKEND: auto
           HHS_NATIVE_LANGUAGE_REQUIRE_WORD2VEC: "0"
-          HHS_ASSISTANT_HEALTH_TIMEOUT_SECONDS: "5"
+          HHS_ASSISTANT_HEALTH_TIMEOUT_SECONDS: "0.5"
         run: |
           timeout 300s pytest -q tests/test_hhs_production_public_app_v1.py
           timeout 180s python - <<'PY'
-          from hhs_backend.production_server import app, _workspace_session_snapshot
+          from pathlib import Path
+          from hhs_backend.production_server import app, VISUAL_ROOT, _workspace_session_snapshot
           from hhs_backend.server import server_self_test
 
           paths = {str(getattr(route, "path", "")) for route in app.router.routes}
           required = {
               "/api/product/health",
               "/api/runtime/authority/status",
-              "/api/runtime/gui/command",
+              "/api/runtime/services",
+              "/api/runtime/services/dispatch",
               "/api/runtime/workspace/session",
               "/api/runtime/workspace/command",
-              "/api/runtime/capability/resolve",
-              "/api/runtime/document/perceive",
+              "/api/runtime/installation/status",
               "/api/assistant/health",
               "/api/assistant/chat",
               "/v1/modalities/language/models/word2vec/status",
@@ -107,9 +114,13 @@ jobs:
           }
           missing = sorted(required - paths)
           if missing:
-              raise SystemExit(f"missing canonical production routes: {missing}")
+              raise SystemExit(f"missing production routes: {missing}")
           if "" not in paths and "/" not in paths:
-              raise SystemExit("missing canonical public root static mount")
+              raise SystemExit("missing verified Pass 161 public root mount")
+          if VISUAL_ROOT != Path("applications/holofractal_harmonizer").resolve():
+              raise SystemExit(f"wrong production visual root: {VISUAL_ROOT}")
+          if not any(getattr(route, "name", None) == "hhs-production-harmonizer" for route in app.router.routes):
+              raise SystemExit("verified Harmonizer is not the production static mount")
           session = _workspace_session_snapshot()
           if session.get("self_tests_executed") is not False:
               raise SystemExit("workspace session executed production self-tests")
@@ -120,94 +131,55 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "22"
-          cache: npm
-          cache-dependency-path: hhs_gui/package.json
 
-      - name: Install frontend dependencies
-        working-directory: hhs_gui
-        run: timeout 600s npm install --no-audit --no-fund
-
-      - name: Validate canonical IDE source contracts
-        working-directory: hhs_gui
+      - name: Validate terminal Pass 161 browser and workflow-first integration
+        working-directory: applications/holofractal_harmonizer
         run: |
-          timeout 180s npm run test:e2e:source
-          timeout 180s npm run test:workspace:source
+          timeout 300s npm test
+          timeout 180s npm run audit:browser
+          timeout 60s node --check src/browser.mjs
+          timeout 60s node --check src/ux-default.mjs
+          timeout 60s node --check src/production-integration.mjs
 
-      - name: Build deployable canonical Runtime OS bundle
-        working-directory: hhs_gui
-        run: timeout 600s npm run build
-
-      - name: Verify canonical deployable entrypoint
+      - name: Verify authoritative usability evidence remains bound
         run: |
-          test -s hhs_gui/dist/index.html
-          test -d hhs_gui/dist/assets
-          grep -q "HHS Visual Runtime OS Workspace" hhs_gui/dist/index.html
-          grep -q "frontend_boot_timeout" hhs_gui/dist/index.html
-          grep -R -q "hhs-canonical-runtime-ide" hhs_gui/dist/assets
-          grep -R -q "hhs-product-workspace" hhs_gui/dist/assets
-          grep -R -q "registry-visual-programmer" hhs_gui/dist/assets
-          grep -R -q "hhs-visual-runtime-os-workspace" hhs_gui/dist/assets
-          grep -R -q "runtime-assistant-panel" hhs_gui/dist/assets
-          grep -R -q "Source → artifact → emulator" hhs_gui/dist/assets
-          grep -R -q "Only operations that actually returned from the backend appear here" hhs_gui/dist/assets
-          grep -R -q "/api/product/health" hhs_gui/dist/assets
-          grep -R -q "/api/runtime/authority/status" hhs_gui/dist/assets
-          grep -R -q "RUNTIME AUTHORITY ONLINE" hhs_gui/dist/assets
-          grep -R -q "/api/runtime/services/dispatch" hhs_gui/dist/assets
-          grep -R -q "HHS_REGISTRY_VISUAL_PROGRAM_V1" hhs_gui/dist/assets
-          if grep -R -q "Production visual IDE · callable surfaces only" hhs_gui/dist/assets; then
-            echo "Replacement ProductionApp leaked into canonical bundle"
+          grep -q 'WORKFLOW_FIRST_PROGRESSIVE_DISCLOSURE' HHS_VISUAL_IDE_PARALLEL_AB_USABILITY_REPORT.md
+          grep -q '50%' HHS_VISUAL_IDE_PARALLEL_AB_USABILITY_REPORT.md
+          grep -q '75%' HHS_VISUAL_IDE_PARALLEL_AB_USABILITY_REPORT.md
+          grep -q '39%' HHS_VISUAL_IDE_PARALLEL_AB_USABILITY_REPORT.md
+          grep -q '"omega_161": true' applications/holofractal_harmonizer/HHS_PASS_161_TERMINAL_RELEASE.json
+          grep -q '"browser_complete": true' applications/holofractal_harmonizer/evidence/pass161/P161_COMPLETION_RECEIPT.json
+
+      - name: Verify production projection and executable registry integration
+        run: |
+          grep -q 'HHS LiteRT-LM Development Assistant' applications/holofractal_harmonizer/index.html
+          grep -q 'src/browser.mjs' applications/holofractal_harmonizer/index.html
+          grep -q 'src/ux-default.mjs' applications/holofractal_harmonizer/index.html
+          grep -q 'src/production-integration.mjs' applications/holofractal_harmonizer/index.html
+          grep -q '/api/runtime/services/dispatch' applications/holofractal_harmonizer/src/production-integration.mjs
+          grep -q 'runtime.registry.register' applications/holofractal_harmonizer/src/production-integration.mjs
+          grep -q 'Execute registered service' applications/holofractal_harmonizer/src/production-integration.mjs
+          grep -q 'VISUAL_ROOT = ROOT_DIR / "applications" / "holofractal_harmonizer"' hhs_backend/production_server.py
+          grep -q 'hhs-production-harmonizer' hhs_backend/production_server.py
+          if grep -q 'RUNTIME_OS_ROOT = ROOT_DIR / "hhs_gui" / "dist"' hhs_backend/production_server.py; then
+            echo "Replacement hhs_gui shell remains the production root"
             exit 1
           fi
-          if grep -R -q "runtime_application_missing" hhs_gui/dist/assets; then
-            echo "Missing-module placeholder leaked into canonical bundle"
+          if grep -q 'new HarmonizerRuntime' applications/holofractal_harmonizer/src/production-integration.mjs; then
+            echo "Production integration created an alternate frontend runtime"
             exit 1
           fi
-          for forbidden in RuntimeProjectTree MultimodalIngressPanel LiveBackendCapabilityPanel HHSSymbolicEditor InterpreterConsole CompilerWorkbench EmulatorControlPanel RuntimeGraphCanvas SemanticMemoryPanel ReceiptLedgerInspector MutationHistoryPanel RuntimeCommandPanel RuntimeMutationPanel; do
-            if grep -R -q "$forbidden" hhs_gui/dist/assets; then
-              echo "Isolated public panel leaked into integrated bundle: $forbidden"
-              exit 1
-            fi
-          done
 
-      - name: Upload canonical Runtime OS bundle
+      - name: Upload verified production visual application
         uses: actions/upload-artifact@v4
         with:
-          name: hhs-canonical-runtime-os-dist
-          path: hhs_gui/dist
+          name: hhs-pass161-production-harmonizer
+          path: |
+            applications/holofractal_harmonizer/index.html
+            applications/holofractal_harmonizer/src/**
+            applications/holofractal_harmonizer/HHS_PASS_161_TERMINAL_RELEASE.json
+            applications/holofractal_harmonizer/evidence/pass161/P161_COMPLETION_RECEIPT.json
+            applications/holofractal_harmonizer/evidence/ux_ab_optimization_v1/metrics.json
+            HHS_VISUAL_IDE_PARALLEL_AB_USABILITY_REPORT.md
           if-no-files-found: error
           retention-days: 14
-
-      - name: Publish generated bundle to main
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        run: |
-          set -euo pipefail
-          PUBLISH_DIR="$RUNNER_TEMP/hhs-canonical-runtime-os-dist"
-          rm -rf "$PUBLISH_DIR"
-          cp -a hhs_gui/dist "$PUBLISH_DIR"
-
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-
-          for attempt in 1 2 3; do
-            git fetch origin main
-            git checkout -B hhs-canonical-dist-publish origin/main
-            rm -rf hhs_gui/dist
-            mkdir -p hhs_gui
-            cp -a "$PUBLISH_DIR" hhs_gui/dist
-            git add -f hhs_gui/dist
-
-            if git diff --cached --quiet; then
-              echo "Canonical Runtime OS bundle is unchanged"
-              exit 0
-            fi
-
-            git commit -m "build: publish integrated HHS Runtime OS bundle [skip ci]"
-            if timeout 120s git push origin HEAD:main; then
-              exit 0
-            fi
-            echo "Publish attempt $attempt raced with main; retrying from the latest branch tip"
-          done
-
-          echo "Canonical Runtime OS bundle publication failed after three bounded attempts"
-          exit 1
