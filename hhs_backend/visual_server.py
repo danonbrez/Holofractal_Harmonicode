@@ -1,10 +1,10 @@
 """Default HHS visual development environment server.
 
 This module composes the canonical HHS FastAPI runtime, the governed LiteRT-LM
-assistant API, the read-only Pass 172 installation-status API, and the Pass 161
-Holofractal Harmonizer static application. The canonical server remains the
-runtime authority; this module only changes the HTTP projection presented at
-the root path.
+assistant API, the read-only Pass 172 installation-status API, the Pass 174
+whole-state workflow API, and the Pass 161 Holofractal Harmonizer static
+application. The canonical server remains the runtime authority; this module
+only changes the HTTP projection presented at the root path.
 """
 from __future__ import annotations
 
@@ -16,6 +16,7 @@ from fastapi.staticfiles import StaticFiles
 from hhs_backend import server as canonical_server
 from hhs_backend.api.installation_routes import router as installation_router
 from hhs_backend.api.litert_lm_assistant_routes import router as assistant_router
+from hhs_backend.api.pass174_routes import router as pass174_router
 
 app = canonical_server.app
 
@@ -35,6 +36,9 @@ if not _route_exists("/api/assistant/status"):
 if not _route_exists("/api/runtime/installation/status"):
     app.include_router(installation_router)
 
+if not _route_exists("/api/v1/pass174/status"):
+    app.include_router(pass174_router)
+
 
 @app.get("/api/system/status", tags=["system"])
 async def visual_system_status() -> Dict[str, Any]:
@@ -46,7 +50,10 @@ async def visual_system_status() -> Dict[str, Any]:
         "default_interface": "HHS_LITERT_LM_VISUAL_DEVELOPMENT_ASSISTANT",
         "assistant_api": "/api/assistant",
         "installation_api": "/api/runtime/installation",
+        "pass174_api": "/api/v1/pass174",
+        "pass174_workspace": "/pass174.html",
         "visual_environment": "HHS-P161-HHUMOCE",
+        "runtime_authority": "singleton VM81 authority",
     }
 
 
@@ -71,6 +78,8 @@ _visual_root = (
 )
 if not (_visual_root / "index.html").is_file():
     raise RuntimeError(f"Pass 161 visual application is missing: {_visual_root}")
+if not (_visual_root / "pass174.html").is_file():
+    raise RuntimeError(f"Pass 174 visual application is missing: {_visual_root / 'pass174.html'}")
 
 if not any(getattr(route, "name", None) == "hhs-visual-home" for route in app.router.routes):
     app.mount(
