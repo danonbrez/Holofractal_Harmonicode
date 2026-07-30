@@ -6,11 +6,15 @@ services:
     environment:
       PORT: "8000"
       HHS_REPOSITORY_ROOT: /app
+      HHS_PASS174_STATE_DIR: /var/lib/hhs/pass174
+      HHS_PASS174_ACTIVE_SUFFIX_LIMIT: "72"
       HHS_NATIVE_LANGUAGE_REQUIRE_WORD2VEC: "0"
       HHS_ASSISTANT_HEALTH_TIMEOUT_SECONDS: "5"
       HHS_PASS174_BOOT_TIMEOUT_SECONDS: "12"
     ports:
       - "8000:8000"
+    volumes:
+      - pass174-state:/var/lib/hhs/pass174
     restart: unless-stopped
     healthcheck:
       test:
@@ -22,3 +26,6 @@ services:
       timeout: 5s
       retries: 3
       start_period: 30s
+
+volumes:
+  pass174-state:
