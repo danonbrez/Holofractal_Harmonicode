@@ -190,7 +190,9 @@ jobs:
 
       - name: Verify production projection and executable registry integration
         run: |
-          grep -q 'HHS LiteRT-LM Development Assistant' applications/holofractal_harmonizer/index.html
+          grep -q 'HHS Full Multimodal Application IDE' applications/holofractal_harmonizer/index.html
+          grep -q 'id="assistant-view"' applications/holofractal_harmonizer/index.html
+          grep -q 'Natural-Language Application Development Assistant' applications/holofractal_harmonizer/index.html
           grep -q 'src/browser.mjs' applications/holofractal_harmonizer/index.html
           grep -q 'src/ux-default.mjs' applications/holofractal_harmonizer/index.html
           grep -q 'src/production-integration.mjs' applications/holofractal_harmonizer/index.html
