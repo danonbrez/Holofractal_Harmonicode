@@ -8,18 +8,25 @@ const content = {
   main: read("main.tsx"),
   canonicalIDE: read("runtime_os/core/CanonicalRuntimeIDE.tsx"),
   client: read("runtime_os/core/IntegratedRuntimeClient.ts"),
+  product: read("runtime_os/workspace/HHSProductWorkspace.tsx"),
+  programmer: read("runtime_os/workspace/RegistryVisualProgrammer.tsx"),
   shell: read("runtime_os/workspace/HHSWorkspaceShell.tsx"),
   assistant: read("runtime_os/assistant/RuntimeAssistantPanel.tsx"),
   projection: read("runtime_os/core/LiveRuntimeProjectionPanel.tsx"),
   commandClient: read("runtime_os/workspace/WorkspaceCommandClient.ts"),
+  applicationRegistry: read("runtime_os/core/RuntimeApplicationRegistry.tsx"),
   productionServer: readRepo("hhs_backend/production_server.py"),
 }
 
-const publicSource = `${content.main}\n${content.canonicalIDE}\n${content.shell}`
+const publicSource = `${content.main}\n${content.canonicalIDE}\n${content.product}\n${content.programmer}\n${content.shell}`
 for (const token of [
   "hhs-canonical-runtime-ide",
+  "hhs-product-workspace",
+  "registry-visual-programmer",
   "hhs-visual-runtime-os-workspace",
   "CanonicalRuntimeIDE",
+  "HHSProductWorkspace",
+  "RegistryVisualProgrammer",
   "HHSWorkspaceShell",
   "IntegratedRuntimeClient",
 ]) {
@@ -27,23 +34,55 @@ for (const token of [
 }
 
 assert(!content.main.includes('from "./runtime_os/core/RuntimeOS"'), "legacy desktop RuntimeOS remains in public entry")
-assert(!content.client.includes("RuntimeApplicationRegistry"), "integrated client imports application registry")
 assert(!content.client.includes("RuntimeWindowManager"), "integrated client imports desktop window manager")
 assert(content.projection.includes("runtimeOS.initialize()"), "runtime transport is not activated by the selected Runtime surface")
 assert(content.projection.includes("runtimeOS.shutdown()"), "runtime transport remains active after leaving the Runtime surface")
 assert(content.projection.includes("Connected only while this tab is active"), "runtime transport is not declared on-demand")
 
 for (const token of [
-  "projectId",
-  "selectedObjectId",
-  "artifactId",
-  "sessionId",
-  "ensureProject",
-  "ensureSource",
-  "applyFeedback",
+  'useState<ProductSurface>("program")',
+  "Visual Program",
+  "Workspace",
+  "RegistryVisualProgrammer",
+  "HHSWorkspaceShell",
+  "executeWorkspaceOperation",
 ]) {
-  assert(content.shell.includes(token), `integrated workspace missing shared state ${token}`)
+  assert(content.product.includes(token), `product composition missing ${token}`)
 }
+
+for (const token of [
+  "/api/runtime/services",
+  "/api/runtime/services/dispatch",
+  "runtimeApplicationRegistry.all()",
+  "resolveLazyComponent",
+  "topologicalOrder",
+  "executeNode",
+  "runGraph",
+  "sourcePath",
+  "targetPath",
+  "schemaDefaults",
+  "setPath",
+  "getPath",
+  "HHS_REGISTRY_VISUAL_PROGRAM_V1",
+  "JSON_EXECUTION_GRAPH",
+  "Witness graph",
+  "Run graph",
+  "Schema inputs",
+  "Raw payload",
+  "Data edges",
+  "Suspense",
+  "ApplicationBoundary",
+]) {
+  assert(content.programmer.includes(token), `registry visual programmer missing ${token}`)
+}
+
+assert(content.programmer.includes("visibleDefinitions.map"), "registry palette does not expose every matching definition")
+assert(content.programmer.includes("definition.kind === \"service\""), "backend services are not executable nodes")
+assert(content.programmer.includes("definition.kind === \"workspace\""), "workspace operations are not executable nodes")
+assert(content.programmer.includes("setActiveApplicationId"), "application registry modules are inactive catalog entries")
+assert(content.programmer.includes("resultMap"), "graph execution does not propagate actual prior-node results")
+assert(content.programmer.includes("throw new Error(\"Visual program contains a cycle"), "graph cycle rejection is missing")
+assert(!content.programmer.includes("disabled registry item"), "registry contains intentionally inactive buttons")
 
 for (const operation of [
   "project.create",
@@ -55,7 +94,33 @@ for (const operation of [
   "emulator.run",
   "emulator.snapshot",
 ]) {
+  assert(content.programmer.includes(operation), `visual programming registry missing workspace operation ${operation}`)
   assert(content.shell.includes(operation), `integrated workflow missing ${operation}`)
+}
+
+for (const token of [
+  "lazyLoader",
+  "resolveLazyComponent",
+  "runtime_console",
+  "calculator",
+  "graph_projection",
+  "breadboard",
+  "receipt_inspector",
+  "replay_timeline",
+]) {
+  assert(content.applicationRegistry.includes(token), `runtime application registry missing ${token}`)
+}
+
+for (const token of [
+  "projectId",
+  "selectedObjectId",
+  "artifactId",
+  "sessionId",
+  "ensureProject",
+  "ensureSource",
+  "applyFeedback",
+]) {
+  assert(content.shell.includes(token), `integrated workspace missing shared state ${token}`)
 }
 
 for (const tab of ["workbench", "assistant", "runtime", "receipts"]) {
@@ -96,23 +161,10 @@ assert(content.shell.includes("Only operations that actually returned from the b
 assert(content.shell.includes("Project objects"), "workspace does not expose real project objects")
 
 for (const forbidden of [
-  "RuntimeProjectTree",
-  "MultimodalIngressPanel",
-  "LiveBackendCapabilityPanel",
-  "HHSSymbolicEditor",
-  "InterpreterConsole",
-  "CompilerWorkbench",
-  "EmulatorControlPanel",
-  "RuntimeGraphCanvas",
-  "SemanticMemoryPanel",
-  "ReceiptLedgerInspector",
-  "MutationHistoryPanel",
-  "RuntimeCommandPanel",
-  "RuntimeMutationPanel",
   "ProductionApp",
   "runtime_application_missing",
 ]) {
-  assert(!publicSource.includes(forbidden), `isolated or obsolete public panel leaked: ${forbidden}`)
+  assert(!publicSource.includes(forbidden), `obsolete public fallback leaked: ${forbidden}`)
 }
 
 console.log("workspace-source-verify: PASS")
