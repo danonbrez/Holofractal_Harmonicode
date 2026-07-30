@@ -13,6 +13,10 @@ case "${1:-}" in
     # falling through to a parallel authority.
     exec python3 -m hhs_installer.cli "$@"
     ;;
+  pass174)
+    shift
+    exec python3 -m hhs_runtime.pass174.cli "$@"
+    ;;
   *)
     exec python3 -m hhs_runtime.pass148.cli "$@"
     ;;
