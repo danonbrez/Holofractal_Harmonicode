@@ -81,7 +81,7 @@ def run() -> dict[str, object]:
         expect(document.locator("#editor")).to_have_attribute("contenteditable", "true")
         document.locator("#editor").click()
         document.locator("#editor").press("Control+A")
-        document.locator("#editor").fill("A real editable HHS document.")
+        document.locator("#editor").fill("A real editable HHS document now.")
         expect(document.locator("#words")).to_contain_text("6 words")
 
         _create_with_api(page, "audio", "Audio Acceptance")
@@ -101,7 +101,8 @@ def run() -> dict[str, object]:
         expect(page.locator("#ide-assistant-drawer")).to_be_visible()
         expect(page.locator("#prompt-input")).to_be_visible()
         page.locator("#ide-assistant-close").click()
-        expect(page.locator("#ide-assistant-drawer")).not_to_have_class("open")
+        expect(page.locator("body")).not_to_have_class("ide-assistant-open")
+        expect(page.locator("#ide-assistant-drawer")).to_be_hidden()
 
         # Compile and inspect an actual deployable application ZIP.
         _create_with_api(page, "calculator", "Deployable Calculator")
