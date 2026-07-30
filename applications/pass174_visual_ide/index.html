@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#090d16" />
+  <title>HHS Pass 174 Visual IDE</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <button id="systemMenuButton" class="brand" aria-expanded="false">HHS ⌘</button>
+    <div class="title-stack">
+      <strong>Pass 174 Harmonic Visual SDLC Runtime</strong>
+      <span id="bootClass">Connecting to authoritative runtime…</span>
+    </div>
+    <div class="phase-badges" aria-label="phase coordinates">
+      <span>64 <b id="phase64">0</b></span>
+      <span>72 <b id="phase72">0</b></span>
+      <span>81 <b id="phase81">0</b></span>
+      <span>5184 <b id="phase5184">0</b></span>
+    </div>
+  </header>
+
+  <nav id="systemMenu" class="system-menu" hidden>
+    <input id="menuSearch" placeholder="Search registered operations" aria-label="Search system menu" />
+    <button data-operation="status">Runtime status</button>
+    <button data-operation="frame">Open 5184-bit frame</button>
+    <button data-operation="audit">Run Genesis audit</button>
+    <button data-operation="replay">Verify replay closure</button>
+    <button data-operation="efficiency">Efficiency report</button>
+  </nav>
+
+  <main class="desktop" id="desktop">
+    <section class="panel explorer" data-window="explorer">
+      <header><span>Registry / Project</span><button class="panel-button" data-collapse="explorer">—</button></header>
+      <div class="panel-body">
+        <div class="registry-tree">
+          <details open><summary>HHS Runtime</summary>
+            <div draggable="true" class="tree-item" data-source="runtime.pass174">Pass 174 Authority</div>
+            <div draggable="true" class="tree-item" data-source="vm81.frame">VM81 5184-bit Frame</div>
+            <div draggable="true" class="tree-item" data-source="hash72.clock">Hash72 Clock</div>
+            <div draggable="true" class="tree-item" data-source="hash216.field">Hash216 Field</div>
+          </details>
+          <details open><summary>Workspace</summary>
+            <div draggable="true" class="tree-item" data-source="main.hhs">main.hhs</div>
+            <div draggable="true" class="tree-item" data-source="scene.hhs3d">scene.hhs3d</div>
+            <div draggable="true" class="tree-item" data-source="input.multimodal">ingress.multimodal</div>
+          </details>
+        </div>
+        <label class="drop-zone" id="fileDropZone">
+          Drop files or tap to ingest
+          <input id="fileInput" type="file" multiple hidden />
+        </label>
+        <div id="ingressList" class="ingress-list"></div>
+      </div>
+    </section>
+
+    <section class="panel editor" data-window="editor">
+      <header><span>HARMONICODE / SDLC Editor</span><button class="panel-button" data-collapse="editor">—</button></header>
+      <div class="panel-body editor-body">
+        <textarea id="sourceEditor" spellcheck="false"># Pass 174 whole-state program
+phase 64:72:81
+frame 81x64
+operator VMRC_COMMIT
+write thread=0 positions=0,8,72 value=1
+receipt required</textarea>
+        <div class="toolbar">
+          <button id="runPipeline">Run plan → receipt</button>
+          <button id="stepFrame">Commit frame step</button>
+          <button id="compileGate">Compile harmonic gate</button>
+        </div>
+        <div id="pipeline" class="pipeline" aria-label="reorderable SDLC pipeline">
+          <div draggable="true" data-stage="PLAN">PLAN</div>
+          <div draggable="true" data-stage="GENERATE">GENERATE</div>
+          <div draggable="true" data-stage="INTERPRET">INTERPRET</div>
+          <div draggable="true" data-stage="COMPILE">COMPILE</div>
+          <div draggable="true" data-stage="RUN">RUN</div>
+          <div draggable="true" data-stage="VALIDATE">VALIDATE</div>
+          <div draggable="true" data-stage="RECEIPT">RECEIPT</div>
+        </div>
+        <pre id="console" class="console" aria-live="polite">Ready.</pre>
+      </div>
+    </section>
+
+    <section class="panel scene" data-window="scene">
+      <header><span>VM81 3D Manifold</span><button class="panel-button" data-collapse="scene">—</button></header>
+      <div class="panel-body scene-body">
+        <canvas id="manifold" width="900" height="620" aria-label="interactive 3D VM81 manifold"></canvas>
+        <div class="scene-controls">
+          <button data-view="reset">Reset camera</button>
+          <button data-view="rotate">Auto rotate</button>
+          <label>Zoom <input id="zoom" type="range" min="45" max="180" value="95" /></label>
+        </div>
+        <div id="cellInspector" class="cell-inspector">Select a VM81 cell.</div>
+      </div>
+    </section>
+
+    <section class="panel diagnostics" data-window="diagnostics">
+      <header><span>Hash216 / Efficiency / Receipts</span><button class="panel-button" data-collapse="diagnostics">—</button></header>
+      <div class="panel-body">
+        <div class="metric-grid">
+          <article><span>State Hash72</span><code id="stateHash72">—</code></article>
+          <article><span>Vector objects</span><b id="vectorObjects">0</b></article>
+          <article><span>Legacy specs</span><b id="legacySpecs">0</b></article>
+          <article><span>Phase lock</span><b id="phaseLock">OPEN</b></article>
+        </div>
+        <div class="hash216-grid" id="hash216Grid" aria-label="216 Hash216 character positions"></div>
+        <div class="diagnostic-actions">
+          <button id="refreshStatus">Refresh</button>
+          <button id="runAudit">Audit</button>
+          <button id="runReplay">Replay</button>
+          <button id="showEfficiency">Efficiency</button>
+        </div>
+        <pre id="receiptView" class="receipt-view">No receipt yet.</pre>
+      </div>
+    </section>
+  </main>
+
+  <template id="toastTemplate"><div class="toast"></div></template>
+  <div id="toasts" class="toasts" aria-live="assertive"></div>
+  <script src="./app.js" defer></script>
+</body>
+</html>

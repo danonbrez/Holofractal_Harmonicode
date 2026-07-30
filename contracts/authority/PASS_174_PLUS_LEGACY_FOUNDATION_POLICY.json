@@ -1,0 +1,25 @@
+{
+  "schema": "HHS_PASS_174_PLUS_LEGACY_FOUNDATION_POLICY_V1",
+  "version": 1,
+  "effective_from_pass": 174,
+  "rule": "EVERY_PASS_N_MUST_CARRY_FORWARD_EVERY_REPOSITORY_VISIBLE_LEGACY_PASS_SPECIFICATION_WITH_PASS_NUMBER_LESS_THAN_N_AS_AN_APPEND_ONLY_MINIMUM_FOUNDATION",
+  "pass_174_inherits_through": 173,
+  "requirements": {
+    "byte_preserve_prior_specifications": true,
+    "retain_prior_nonterminal_classifications": true,
+    "retain_prior_repair_obligations": true,
+    "retain_prior_test_and_receipt_authority": true,
+    "forbid_implicit_weakening": true,
+    "forbid_document_or_evidence_deletion": true,
+    "require_content_sha256_per_specification": true,
+    "require_aggregate_legacy_foundation_root": true,
+    "bind_foundation_root_into_genesis": true,
+    "bind_foundation_root_into_runtime_receipts": true,
+    "bind_foundation_root_into_hash216_vector_objects": true
+  },
+  "successor_algorithm": {
+    "for_pass_n": "scan repository-visible specification artifacts; select parsed pass_number < N; canonical-sort by pass_number, path, sha256; hash each exact file; construct domain-separated chained aggregate root; require immediate predecessor pass; reject any mismatch against sealed expected root"
+  },
+  "authority": "APPEND_ONLY_MINIMUM_FOUNDATION",
+  "replacement_authority": false
+}

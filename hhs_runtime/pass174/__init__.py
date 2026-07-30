@@ -1,0 +1,48 @@
+"""Pass 174 harmonic phase-gear, Hash216 retrieval, and Visual IDE runtime."""
+from .inheritance import (
+    LegacyAuthorityManifest,
+    LegacyInheritanceError,
+    LegacySpecification,
+    build_legacy_manifest,
+    verify_manifest,
+)
+from .runtime import (
+    DIRECTED_PHASE_RELATIONSHIPS,
+    HASH216_CHARACTERS,
+    PHASE_LOCK_PERIOD,
+    RUNTIME_VERSION,
+    EfficiencyRecord,
+    EncryptedVectorObject,
+    EncryptedVectorStore,
+    ExactCost,
+    HarmonicGate,
+    Hash216Array,
+    Pass174Error,
+    Pass174Runtime,
+    Pass174VMRCAuthority,
+    PhaseCoordinate,
+)
+from .storage import PersistentEncryptedVectorStore
+
+__all__ = [
+    "DIRECTED_PHASE_RELATIONSHIPS",
+    "HASH216_CHARACTERS",
+    "PHASE_LOCK_PERIOD",
+    "RUNTIME_VERSION",
+    "EfficiencyRecord",
+    "EncryptedVectorObject",
+    "EncryptedVectorStore",
+    "ExactCost",
+    "HarmonicGate",
+    "Hash216Array",
+    "LegacyAuthorityManifest",
+    "LegacyInheritanceError",
+    "LegacySpecification",
+    "Pass174Error",
+    "Pass174Runtime",
+    "Pass174VMRCAuthority",
+    "PersistentEncryptedVectorStore",
+    "PhaseCoordinate",
+    "build_legacy_manifest",
+    "verify_manifest",
+]

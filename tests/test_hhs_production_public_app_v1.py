@@ -3,6 +3,7 @@ from __future__ import annotations
 import asyncio
 import json
 from pathlib import Path
+import subprocess
 
 
 def route_paths(app) -> set[str]:
@@ -130,10 +131,14 @@ def test_runtime_authority_boots_and_reports_real_workflow_state():
     asyncio.run(verify())
 
 
-def test_procfile_boots_integrated_production_server():
+def test_procfile_boots_pass174_overlay_over_integrated_production_server():
     procfile = Path("Procfile").read_text(encoding="utf-8")
-    assert "hhs_backend.production_server:app" in procfile
+    assert "hhs_backend.pass174_server:app" in procfile
     assert "hhs_backend.heroku_server:app" not in procfile
+    server_source = Path("hhs_backend/pass174_server.py").read_text(encoding="utf-8")
+    assert "production_ide_server as inherited_ide" in server_source
+    assert '"/legacy-ide"' in server_source
+    assert "hhs-pass174-visual-ide" in server_source
 
 
 def test_post_compile_refuses_assistant_offline_deployment():
@@ -239,3 +244,151 @@ def test_provider_hierarchy_uses_gemma_then_native_hhs_without_canned_demo():
     assert "provider:hhs.local.text" in combined
     assert "Pass 166" in combined or "pass166" in combined
     assert "The request was received without runtime mutation" not in combined
+
+
+def test_pass174_exact_legacy_foundation_and_persistent_retrieval(tmp_path):
+    from hhs_runtime.pass174 import (
+        Pass174Runtime,
+        PersistentEncryptedVectorStore,
+        build_legacy_manifest,
+    )
+
+    manifest = build_legacy_manifest(Path("."))
+    assert manifest.maximum_inherited_pass == 173
+    assert 173 in manifest.pass_numbers_present
+    assert manifest.specification_count > 0
+    assert all("evidence/" not in item.path for item in manifest.specifications)
+    assert all("tests/" not in item.path for item in manifest.specifications)
+
+    database = tmp_path / "pass174" / "vectors.sqlite3"
+    key_path = tmp_path / "pass174" / "vectors.key"
+    producer_store = PersistentEncryptedVectorStore(database, key_path=key_path)
+    producer = Pass174Runtime(legacy_manifest=manifest, vector_store=producer_store)
+    direct = producer.execute(thread=4, writes={0: 1, 8: 1, 72: 1, 80: -1})
+    expected_frame = producer.vmrc.snapshot().to_bytes()
+    expected_hash72 = producer.vmrc.state_hash72
+    assert direct["path"] == "DIRECT_RUNTIME"
+    assert direct["object"]["plaintext_exposed"] is False
+    assert len(direct["object"]["hash216"]["combined"]) == 216
+    assert len(direct["object"]["hash216"]["character_indexes_sha256"]) == 216
+    assert producer_store.storage_status()["plaintext_persisted"] is False
+    producer_store.close()
+
+    consumer_store = PersistentEncryptedVectorStore(database, key_path=key_path)
+    consumer = Pass174Runtime(legacy_manifest=manifest, vector_store=consumer_store)
+    retrieved = consumer.execute(
+        thread=4,
+        writes={0: 1, 8: 1, 72: 1, 80: -1},
+        prefer_retrieval=True,
+    )
+    assert retrieved["path"] == "RETRIEVAL"
+    assert consumer.vmrc.snapshot().to_bytes() == expected_frame
+    assert consumer.vmrc.state_hash72 == expected_hash72
+    audit = consumer.audit(challenge="production-test-post-seal", deep=True)
+    assert audit["classification"] == "HHS_PASS_174_AUDIT_PASS"
+    replay = consumer.replay()
+    assert replay["classification"] == "HHS_PASS_174_REPLAY_CLOSED"
+    assert replay["receipt_chain_valid"] is True
+    consumer_store.close()
+
+
+def test_pass174_native_c11_phase_hash216_and_whole_frame_abi(tmp_path):
+    build_dir = tmp_path / "pass174-native"
+    completed = subprocess.run(
+        [
+            "make",
+            "-C",
+            "native_projects/hhs_pass174_harmonic_runtime",
+            f"BUILD_DIR={build_dir}",
+            "test",
+        ],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    assert "HHS_PASS_174_NATIVE_PHASE_HASH216_WHOLE_FRAME_ABI_VERIFIED" in completed.stdout
+
+
+def test_pass174_public_overlay_routes_http_websocket_and_visual_roots(tmp_path, monkeypatch):
+    monkeypatch.setenv("HHS_PASS174_STATE_DIR", str(tmp_path / "api-state"))
+
+    from fastapi.testclient import TestClient
+    from hhs_backend import pass174_server
+
+    paths = route_paths(pass174_server.app)
+    required = {
+        "/api/v1/pass174/status",
+        "/api/v1/pass174/frame",
+        "/api/v1/pass174/phase",
+        "/api/v1/pass174/execute",
+        "/api/v1/pass174/audit",
+        "/api/v1/pass174/replay",
+        "/api/v1/pass174/legacy-foundation",
+        "/api/v1/pass174/sdlc/run",
+        "/api/v1/pass174/ws/events",
+        "/api/v1/pass174/deployment/status",
+        "/legacy-ide",
+        "",
+    }
+    assert required.issubset(paths)
+
+    with TestClient(pass174_server.app) as client:
+        deployment = client.get("/api/v1/pass174/deployment/status")
+        assert deployment.status_code == 200
+        assert deployment.json()["ready"] is True
+        assert deployment.json()["silent_freeze"] is False
+
+        status = client.get("/api/v1/pass174/status")
+        assert status.status_code == 200
+        body = status.json()
+        assert body["frame_bits"] == 5184
+        assert body["kernel_authorities"] == 1
+        assert body["legacy_foundation"]["maximum_inherited_pass"] == 173
+        assert body["persistent_vector_store"]["plaintext_persisted"] is False
+
+        frame = client.get("/api/v1/pass174/frame")
+        assert frame.status_code == 200
+        assert frame.json()["frame_bytes"] == 648
+        assert len(frame.json()["snapshot_b64"]) == 864
+
+        direct = client.post(
+            "/api/v1/pass174/execute",
+            json={"thread": 0, "writes": {"0": 1, "8": 1, "72": 1}, "prefer_retrieval": True},
+        )
+        assert direct.status_code == 200, direct.text
+        assert direct.json()["path"] == "DIRECT_RUNTIME"
+
+        lifecycle = client.post(
+            "/api/v1/pass174/sdlc/run",
+            json={
+                "project_name": "Pass 174 production integration",
+                "source_name": "main.hhs",
+                "source_modality": "SOURCE_CODE",
+                "source_payload": "result = 1 + 1",
+                "expression": "1 + 1",
+                "target": "HHS_IR",
+                "steps": 4,
+                "thread": 1,
+            },
+        )
+        assert lifecycle.status_code == 200, lifecycle.text
+        lifecycle_body = lifecycle.json()
+        assert lifecycle_body["ok"] is True
+        assert lifecycle_body["frontend_result_fabricated"] is False
+        assert lifecycle_body["inherited_lifecycle"]["status"] == "HHS_DEVELOPMENT_LIFECYCLE_COMPLETED"
+        assert "HHS_INTERPRETER" in lifecycle_body["canonical_authorities"]
+        assert "HHS_IR_COMPILER" in lifecycle_body["canonical_authorities"]
+        assert "VM81_VISUAL_EMULATOR" in lifecycle_body["canonical_authorities"]
+        assert lifecycle_body["pass174_continuation"]["receipt"]["receipt_hash72"]
+
+        visual = client.get("/")
+        assert visual.status_code == 200
+        assert "Pass 174 Harmonic Visual SDLC Runtime" in visual.text
+        legacy = client.get("/legacy-ide/")
+        assert legacy.status_code == 200
+        assert "Holofractal" in legacy.text
+
+        with client.websocket_connect("/api/v1/pass174/ws/events") as websocket:
+            event = websocket.receive_json()
+            assert event["classification"] == "HHS_PASS_174_LIVE_PROJECTION"
+            assert event["mutation_authority"] is False
