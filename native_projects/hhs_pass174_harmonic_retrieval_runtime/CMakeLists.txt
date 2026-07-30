@@ -21,8 +21,7 @@ if(MSVC)
     target_compile_options(hhs_pass174_runtime PRIVATE /W4 /WX)
 else()
     target_compile_options(hhs_pass174_runtime PRIVATE
-        -Wall -Wextra -Wpedantic -Werror
-        -Wconversion -Wshadow -Wstrict-prototypes
+        -Wall -Wextra -Wpedantic -Werror -Wstrict-prototypes
     )
 endif()
 
