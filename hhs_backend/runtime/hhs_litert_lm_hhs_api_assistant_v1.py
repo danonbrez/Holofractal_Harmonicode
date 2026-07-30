@@ -198,13 +198,18 @@ class HHSAPIAssistantService(HHSAssistantService):
             backend=requested_backend,
         )
         self.execution_backend = requested_backend
+
+        # `getattr(obj, name, expression)` evaluates `expression` eagerly. The
+        # previous code therefore tried to normalize the already-native backend
+        # even when the provided transport supplied its own request model ID,
+        # raising before the production assistant singleton could be created.
+        provided_request_model_id = getattr(inner, "request_model_id", None)
         self.request_model_id = str(
-            getattr(
-                inner,
-                "request_model_id",
-                compose_request_model_id(resolved_config.model_id, requested_backend),
-            )
+            provided_request_model_id
+            if provided_request_model_id
+            else compose_request_model_id(resolved_config.model_id, requested_backend)
         )
+
         governed = (
             inner
             if isinstance(inner, GovernedHHSToolLoopTransport)
