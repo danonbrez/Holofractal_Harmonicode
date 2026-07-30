@@ -10,7 +10,11 @@ from typing import Any, Dict, List, Optional
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
 
-from hhs_runtime.pass174 import Pass174Error, Pass174Runtime
+from hhs_runtime.pass174 import (
+    Pass174Error,
+    Pass174Runtime,
+    PersistentEncryptedVectorStore,
+)
 
 router = APIRouter(prefix="/api/v1/pass174", tags=["pass174", "vm81", "hash216", "visual-ide", "sdlc"])
 _RUNTIME: Pass174Runtime | None = None
@@ -22,11 +26,26 @@ def _repository_root() -> Path:
     return Path(configured).resolve() if configured else Path(__file__).resolve().parents[2]
 
 
+def _state_root(repository_root: Path) -> Path:
+    configured = os.environ.get("HHS_PASS174_STATE_DIR")
+    return Path(configured).resolve() if configured else repository_root / ".hhs" / "pass174"
+
+
 def get_runtime() -> Pass174Runtime:
     global _RUNTIME, _RUNTIME_ERROR
     if _RUNTIME is None and _RUNTIME_ERROR is None:
         try:
-            _RUNTIME = Pass174Runtime(repository_root=_repository_root())
+            repository_root = _repository_root()
+            state_root = _state_root(repository_root)
+            vector_store = PersistentEncryptedVectorStore(
+                state_root / "hash216_vectors.sqlite3",
+                key_path=state_root / "hash216_vectors.key",
+                active_suffix_limit=int(os.environ.get("HHS_PASS174_ACTIVE_SUFFIX_LIMIT", "72")),
+            )
+            _RUNTIME = Pass174Runtime(
+                repository_root=repository_root,
+                vector_store=vector_store,
+            )
         except Exception as exc:
             _RUNTIME_ERROR = exc
     if _RUNTIME is None:
@@ -44,7 +63,11 @@ def get_runtime() -> Pass174Runtime:
 def _raise(exc: Exception) -> None:
     classification = getattr(exc, "classification", type(exc).__name__)
     detail = getattr(exc, "detail", str(exc))
-    status_code = 409 if classification in {"HHS_P174_RETRIEVAL_STALE_ROOT", "HHS_P174_VECTOR_QUARANTINED", "HHS_P174_AUDIT_FAILED"} else 422
+    status_code = 409 if classification in {
+        "HHS_P174_RETRIEVAL_STALE_ROOT",
+        "HHS_P174_VECTOR_QUARANTINED",
+        "HHS_P174_AUDIT_FAILED",
+    } else 422
     raise HTTPException(status_code=status_code, detail={
         "schema": "HHS_P174_REJECTION_V1",
         "classification": classification,
@@ -94,13 +117,18 @@ def _payload(model: BaseModel) -> dict[str, Any]:
 
 @router.get("/status")
 def status() -> Dict[str, Any]:
-    return get_runtime().status()
+    runtime = get_runtime()
+    result = runtime.status()
+    storage = runtime.vector_store
+    if hasattr(storage, "storage_status"):
+        result["persistent_vector_store"] = storage.storage_status()
+    return result
 
 
 @router.get("/boot")
 def boot_status() -> Dict[str, Any]:
     runtime = get_runtime()
-    status_payload = runtime.status()
+    status_payload = status()
     return {
         "schema": "HHS_P174_BOOT_STATUS_V1",
         "classification": "HHS_P174_BOOT_READY",
@@ -110,6 +138,7 @@ def boot_status() -> Dict[str, Any]:
             "legacy_foundation": True,
             "vm81": status_payload["vmrc"]["kernel_authorities"] == 1,
             "hash216": True,
+            "persistent_storage": "persistent_vector_store" in status_payload,
             "visual_ide": True,
         },
         "runtime": status_payload,
@@ -140,7 +169,11 @@ def frame() -> Dict[str, Any]:
 @router.get("/phase")
 def phase() -> Dict[str, Any]:
     runtime = get_runtime()
-    return {"schema": "HHS_P174_PHASE_GEAR_STATUS_V1", "coordinate": asdict(runtime.phase), "controller": runtime.phase_controller()}
+    return {
+        "schema": "HHS_P174_PHASE_GEAR_STATUS_V1",
+        "coordinate": asdict(runtime.phase),
+        "controller": runtime.phase_controller(),
+    }
 
 
 @router.post("/execute")
@@ -209,9 +242,18 @@ def run_sdlc(request: SDLCRunRequest) -> Dict[str, Any]:
         "source_payload": payload["source_payload"],
         "requested_output": payload["requested_output"],
     }
-    source_identity = sha256(b"HHS-P174-SDLC-SOURCE-V1\0" + repr(canonical_source).encode("utf-8")).hexdigest()
-    compiled_identity = sha256(b"HHS-P174-SDLC-COMPILED-V1\0" + bytes.fromhex(source_identity) + runtime.legacy_foundation_root.encode("ascii")).hexdigest()
-    writes = {index % 81: 1 if byte & 1 else -1 for index, byte in enumerate(bytes.fromhex(compiled_identity)[:16])}
+    source_identity = sha256(
+        b"HHS-P174-SDLC-SOURCE-V1\0" + repr(canonical_source).encode("utf-8")
+    ).hexdigest()
+    compiled_identity = sha256(
+        b"HHS-P174-SDLC-COMPILED-V1\0"
+        + bytes.fromhex(source_identity)
+        + runtime.legacy_foundation_root.encode("ascii")
+    ).hexdigest()
+    writes = {
+        index % 81: 1 if byte & 1 else -1
+        for index, byte in enumerate(bytes.fromhex(compiled_identity)[:16])
+    }
     execution = runtime.execute(
         thread=payload["thread"],
         writes=writes,
@@ -219,7 +261,12 @@ def run_sdlc(request: SDLCRunRequest) -> Dict[str, Any]:
         capability_scope="P174_MULTIMODAL_SDLC_PIPELINE",
         prefer_retrieval=True,
     )
-    artifact_identity = sha256(b"HHS-P174-SDLC-ARTIFACT-V1\0" + bytes.fromhex(source_identity) + bytes.fromhex(compiled_identity) + execution["receipt"]["receipt_hash72"].encode("ascii")).hexdigest()
+    artifact_identity = sha256(
+        b"HHS-P174-SDLC-ARTIFACT-V1\0"
+        + bytes.fromhex(source_identity)
+        + bytes.fromhex(compiled_identity)
+        + execution["receipt"]["receipt_hash72"].encode("ascii")
+    ).hexdigest()
     stages = [
         {"stage": "PLAN", "status": "COMPLETED", "identity": source_identity},
         {"stage": "GENERATE", "status": "COMPLETED", "identity": source_identity},
