@@ -4,11 +4,18 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT_DIR"
 
+# Hosted production always requires an executable assistant authority. Gemma and
+# Pass 166 Word2Vec remain preferred/additive providers, while the Pass 148/151
+# native semantic and bounded-reasoning provider is allowed to run without a
+# vector model so the deployed assistant cannot collapse into an offline shell.
+export HHS_NATIVE_LANGUAGE_REQUIRE_WORD2VEC="${HHS_NATIVE_LANGUAGE_REQUIRE_WORD2VEC:-0}"
+
+
 echo "Building HHS native Hash72 runtime authority..."
 make c-abi
 test -s hhs_runtime/builds/libhhs_runtime.so
 echo "HHS native Hash72 runtime authority ready."
 
-echo "Verifying production LiteRT-LM and Pass 166 language assets..."
-python tools/install_production_language_assets.py --install-if-configured
-echo "Production language asset verification complete."
+echo "Verifying executable production language authority..."
+python tools/install_production_language_assets.py --install-if-configured --require-assistant
+echo "Production language authority ready."
