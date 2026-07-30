@@ -1,4 +1,4 @@
-import{r,j as e}from"./main-DPcMUe0W.js";import"./index-C0QsYSm-.js";const j=({runtimeStore:n})=>{const[t,o]=r.useState(n.getReceipts()),[a,u]=r.useState(null),[c,p]=r.useState("");r.useEffect(()=>{const s=n.subscribe(l=>{o([...l.receipts])});return()=>{s()}},[n]);const d=r.useMemo(()=>{if(!c.trim())return t;const s=c.toLowerCase();return t.filter(l=>l.receipt_hash72.toLowerCase().includes(s)||l.source_hash72.toLowerCase().includes(s)||l.operation.toLowerCase().includes(s))},[t,c]);return e.jsxs("div",{className:`
+import{r,j as e}from"./main-DZvqsg20.js";import"./index-Dxncb0RY.js";const j=({runtimeStore:n})=>{const[t,o]=r.useState(n.getReceipts()),[a,u]=r.useState(null),[c,p]=r.useState("");r.useEffect(()=>{const s=n.subscribe(l=>{o([...l.receipts])});return()=>{s()}},[n]);const d=r.useMemo(()=>{if(!c.trim())return t;const s=c.toLowerCase();return t.filter(l=>l.receipt_hash72.toLowerCase().includes(s)||l.source_hash72.toLowerCase().includes(s)||l.operation.toLowerCase().includes(s))},[t,c]);return e.jsxs("div",{className:`
                 w-full
                 h-full
                 overflow-hidden
@@ -185,4 +185,4 @@ import{r,j as e}from"./main-DPcMUe0W.js";import"./index-C0QsYSm-.js";const j=({r
                 font-mono
                 text-sm
             `,children:"select_receipt_to_inspect"});export{j as default};
-//# sourceMappingURL=ReceiptInspector-C0p2QFOz.js.map
+//# sourceMappingURL=ReceiptInspector-CVL6VF2o.js.map
