@@ -1,0 +1,44 @@
+{
+  "schema": "HHS_PASS_174_MULTIFILE_PROJECT_LIFECYCLE_AESTHETIC_EXTENSION_RECEIPT_V1",
+  "extension_identifier": "HHS-P174-MPCL-AE-V1",
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "protected_baseline": "39261b3b0af3fad7b5873d20a2fd7421913274a3",
+  "merge_target": "main",
+  "production_entrypoint_modified": false,
+  "existing_lifecycle_route_modified": false,
+  "existing_theme_files_replaced": false,
+  "additive_files": [
+    "applications/holofractal_harmonizer/src/project-lifecycle.mjs",
+    "applications/holofractal_harmonizer/src/project-zip.mjs",
+    "applications/holofractal_harmonizer/src/harmonic-studio-theme.css",
+    "applications/holofractal_harmonizer/tests/project.lifecycle.test.mjs",
+    "HHS_PASS_174_MULTIFILE_PROJECT_LIFECYCLE_AESTHETIC_EXTENSION.md"
+  ],
+  "modified_files": [
+    "applications/holofractal_harmonizer/src/visual-ide.mjs"
+  ],
+  "capabilities": {
+    "path_aware_file_creation": true,
+    "non_destructive_project_starters": true,
+    "relative_folder_import": true,
+    "multifile_backend_lifecycle": true,
+    "multiple_authorized_compiler_targets": true,
+    "binary_source_preservation": true,
+    "standards_compatible_zip_export": true,
+    "original_source_preserved": true,
+    "backend_evidence_unmodified": true,
+    "frontend_runtime_authority": false,
+    "warm_aesthetic_overlay": true
+  },
+  "bounds": {
+    "maximum_files_per_build": 64,
+    "maximum_source_bytes_per_build": 25165824,
+    "processing_order": "SEQUENTIAL"
+  },
+  "validation": {
+    "node_tests": "3/3 PASS",
+    "javascript_syntax_checks": "PASS",
+    "python_zipfile_readback": "PASS"
+  },
+  "status": "READY_FOR_REPOSITORY_BRANCH_PUBLICATION"
+}
