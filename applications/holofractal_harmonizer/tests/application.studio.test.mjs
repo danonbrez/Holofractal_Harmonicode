@@ -24,7 +24,8 @@ test('game, calculator, document, audio and video starters contain executable be
   const calculatorProject = materializeApplicationTemplate('calculator');
   const calculator = JSON.stringify(calculatorProject);
   const puzzle = JSON.stringify(materializeApplicationTemplate('puzzle'));
-  const documentProject = JSON.stringify(materializeApplicationTemplate('document'));
+  const documentProjectObject = materializeApplicationTemplate('document');
+  const documentProject = JSON.stringify(documentProjectObject);
   const audio = JSON.stringify(materializeApplicationTemplate('audio'));
   const video = JSON.stringify(materializeApplicationTemplate('video'));
   assert.match(pong, /requestAnimationFrame/);
@@ -33,12 +34,15 @@ test('game, calculator, document, audio and video starters contain executable be
   assert.match(puzzle, /solvableShuffle/);
   assert.match(documentProject, /contenteditable/);
   assert.match(documentProject, /Download TXT/);
+  assert.match(documentProject, /autosave available after export/);
   assert.match(audio, /AudioContext/);
   assert.match(audio, /MediaRecorder/);
   assert.match(video, /captureStream/);
   assert.match(video, /MediaRecorder/);
   const calculatorSource = calculatorProject.files.find((file) => file.path.endsWith('/app.js')).content;
+  const documentSource = documentProjectObject.files.find((file) => file.path.endsWith('/app.js')).content;
   assert.doesNotThrow(() => new Function(calculatorSource));
+  assert.doesNotThrow(() => new Function(documentSource));
 });
 
 test('full IDE initializes application studio and deployable browser compiler', async () => {
