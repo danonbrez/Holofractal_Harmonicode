@@ -1,0 +1,103 @@
+{
+  "schema": "HHS_PASS_175_PRECONTRACT_BENCHMARK_V1",
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "authoritative_baseline_observed": "83479dbf1b89f477636646623c5d134cb49d8a37",
+  "environment": {
+    "python": "3.13.5",
+    "platform": "Linux-6.12.13-x86_64-with-glibc2.41",
+    "machine": "x86_64",
+    "processor": "",
+    "gcc": "gcc (Debian 14.2.0-19) 14.2.0"
+  },
+  "state_model": {
+    "vm81_cells": 81,
+    "ordered_operation_slots": 64,
+    "state_count": 5184,
+    "address_formula": "state_id = vm81_cell * 64 + operation_slot",
+    "successor": "sigma(state_id) = (state_id + 1) mod 5184",
+    "cycle_closed": true
+  },
+  "octonion_u72_table": {
+    "basis": ["x", "y", "z", "w", "xy", "yx", "zw", "wz"],
+    "cell_count": 64,
+    "closure_count": 32,
+    "phase_distribution": {"0": 14, "18": 16, "36": 18, "54": 16},
+    "orientation_distribution": {"COMPOSED": 60, "DIRECT": 2, "REVERSED": 2},
+    "phase_asymmetric_unordered_pair_count": 2,
+    "phase_asymmetric_unordered_pairs": [
+      {
+        "pair": ["x", "y"],
+        "forward_phase": 0,
+        "reverse_phase": 36,
+        "forward_orientation": "DIRECT",
+        "reverse_orientation": "REVERSED"
+      },
+      {
+        "pair": ["z", "w"],
+        "forward_phase": 0,
+        "reverse_phase": 36,
+        "forward_orientation": "DIRECT",
+        "reverse_orientation": "REVERSED"
+      }
+    ],
+    "xy_phase": 0,
+    "yx_phase": 36,
+    "zw_phase": 0,
+    "wz_phase": 36
+  },
+  "algebra": {
+    "AB_equals_P4_all_states": true,
+    "A_lane": {"word": "xy", "phase": 0, "magnitude": "P^2"},
+    "B_lane": {"word": "yx", "phase": 36, "magnitude": "P^2"},
+    "reciprocal_pair_projection_closed_all_states": true,
+    "projected_AB_phase_zero_all_states": true,
+    "negative_phase_perturbation_rejected": 81,
+    "orientation_residue_x_plus_y_minus_z_minus_w_mod72": 0,
+    "parenthesization_identity_distinct_cases": 512,
+    "exact_list_source_hash": "2947147d65466bf4aec360af1d7a5a49fffff956816f5601e5a68b7ecf61aff2",
+    "stripped_list_source_hash": "48ef77ef655c6979feb411bfea7d64e06490800ac5debd5299c908eda496c95e",
+    "leading_zero_identity_sensitive": true
+  },
+  "hash216_cache": {
+    "objects": 5184,
+    "unique_operation_keys": 5184,
+    "unique_operation_identities": 5184,
+    "unique_index_roots": 5184,
+    "cold_fill_ns": 7868741129,
+    "cold_fill_seconds": 7.868741129,
+    "cold_per_state_ns": 1517889.878279321,
+    "warm_replay_median_ns": 1209604,
+    "warm_per_state_ns": 233.3341049382716,
+    "warm_speedup_vs_cold_fill": 6505.220823509181,
+    "mutated_key_misses": 5184,
+    "mutated_key_probe_ns": 4200495,
+    "state_root_sha256": "3493b2f340db7931be54418e93a5c4e6d0ec5514eb8ccee83eb0be5a7a878882",
+    "cache_root_sha256": "40efa24d47d9da67686917a887bb25f7e16e53a3c83f89eaf12fb733c2147d56",
+    "egress_root_sha256": "dfb1a249a58b48124683a3929ac7bb262d3ab71c607df6a4d621a28ee82a560b"
+  },
+  "python_algebra": {
+    "median_ns": 4355908,
+    "per_state_ns": 840.2600308641976,
+    "states_per_second": 1190107.780054124,
+    "checksum": 0
+  },
+  "x86_64_native": {
+    "runs": [
+      {"states": 5184, "repeats": 20000, "transitions": 103680000, "elapsed_ns": 577518875, "transitions_per_second": 179526599.888, "checksum": "4848533531383451"},
+      {"states": 5184, "repeats": 20000, "transitions": 103680000, "elapsed_ns": 624628983, "transitions_per_second": 165986534.121, "checksum": "4848533531383451"},
+      {"states": 5184, "repeats": 20000, "transitions": 103680000, "elapsed_ns": 558439453, "transitions_per_second": 185660234.862, "checksum": "4848533531383451"},
+      {"states": 5184, "repeats": 20000, "transitions": 103680000, "elapsed_ns": 583981269, "transitions_per_second": 177539940.926, "checksum": "4848533531383451"},
+      {"states": 5184, "repeats": 20000, "transitions": 103680000, "elapsed_ns": 546150640, "transitions_per_second": 189837734.146, "checksum": "4848533531383451"}
+    ],
+    "median_transitions_per_second": 179526599.888,
+    "executable_sha256": "461cb5947ad32cc2f3313c2d7ce41fc7d7dd6db4653228166615721f96bca1d3",
+    "disassembly_sha256": "11f80d0ca33219f43a09949fa3231a62eeaf311423e65c99770835b7c9089756"
+  },
+  "verdict": {
+    "precontract_harness_passed": true,
+    "physical_quantum_claim": false,
+    "software_quantum_like_phase_control": true,
+    "native_repository_integration_complete": false,
+    "next_contract_required": true
+  }
+}
