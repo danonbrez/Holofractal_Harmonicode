@@ -1,0 +1,253 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hhs.local/schemas/pass174/pass174.schema.json",
+  "title": "HHS Pass 174 Runtime Schemas",
+  "type": "object",
+  "required": ["schema_version", "canonicalization", "payload"],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "canonicalization": {"const": "HHS174_LENGTH_PREFIXED_DOMAIN_SEPARATED_V1"},
+    "payload": {"$ref": "#/$defs/Pass174Receipt"}
+  },
+  "$defs": {
+    "Sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "Hash72": {"type": "string", "minLength": 72, "maxLength": 72},
+    "UInt64Hex": {"type": "string", "pattern": "^[0-9a-f]{16}$"},
+    "VM81Cell64": {
+      "type": "object",
+      "required": ["schema", "cell", "type_tag", "word"],
+      "properties": {
+        "schema": {"const": "VM81Cell64@1"},
+        "cell": {"type": "integer", "minimum": 0, "maximum": 80},
+        "type_tag": {"type": "string", "minLength": 1},
+        "word": {"$ref": "#/$defs/UInt64Hex"}
+      },
+      "additionalProperties": false
+    },
+    "VM81Frame5184": {
+      "type": "object",
+      "required": ["schema", "sequence", "identity", "word_count", "word_bits", "frame_bits", "words"],
+      "properties": {
+        "schema": {"const": "VM81Frame5184@1"},
+        "sequence": {"type": "integer", "minimum": 0},
+        "identity": {"$ref": "#/$defs/Sha256"},
+        "word_count": {"const": 81},
+        "word_bits": {"const": 64},
+        "frame_bits": {"const": 5184},
+        "words": {"type": "array", "minItems": 81, "maxItems": 81, "items": {"$ref": "#/$defs/UInt64Hex"}}
+      },
+      "additionalProperties": true
+    },
+    "PhaseGearCoordinate": {
+      "type": "object",
+      "required": ["transition", "phase64", "phase72", "phase81", "phase5184", "lock64", "lock72", "lock81", "complete_lock"],
+      "properties": {
+        "transition": {"type": "integer", "minimum": 0},
+        "phase64": {"type": "integer", "minimum": 0, "maximum": 63},
+        "phase72": {"type": "integer", "minimum": 0, "maximum": 71},
+        "phase81": {"type": "integer", "minimum": 0, "maximum": 80},
+        "phase5184": {"type": "integer", "minimum": 0, "maximum": 5183},
+        "lock64": {"type": "boolean"},
+        "lock72": {"type": "boolean"},
+        "lock81": {"type": "boolean"},
+        "complete_lock": {"type": "boolean"}
+      },
+      "additionalProperties": false
+    },
+    "PhaseLockEvent": {
+      "type": "object",
+      "required": ["schema", "phase", "state_reset"],
+      "properties": {
+        "schema": {"const": "PhaseLockEvent@1"},
+        "phase": {"$ref": "#/$defs/PhaseGearCoordinate"},
+        "state_reset": {"const": false}
+      }
+    },
+    "HarmonicOperatorState": {
+      "type": "object",
+      "required": ["schema", "kind", "parameters", "ordered_connectors", "identity"],
+      "properties": {
+        "schema": {"const": "HarmonicOperatorState@1"},
+        "kind": {"enum": ["rotate", "xor", "add", "permute", "reciprocal", "harmonic", "mixed"]},
+        "parameters": {"type": "object"},
+        "ordered_connectors": {"type": "array", "items": {"type": "string"}},
+        "identity": {"$ref": "#/$defs/Sha256"}
+      },
+      "additionalProperties": false
+    },
+    "VirtualQudit3144State": {
+      "type": "object",
+      "required": ["schema", "planes", "directed_relationships_per_plane", "forward", "reciprocal"],
+      "properties": {
+        "schema": {"const": "VirtualQudit3144State@1"},
+        "planes": {"const": 3},
+        "directed_relationships_per_plane": {"const": 144},
+        "forward": {"const": 72},
+        "reciprocal": {"const": 72}
+      }
+    },
+    "Hash72ThreeStateTransition": {
+      "type": "object",
+      "required": ["schema", "previous_frame_identity", "current_frame_identity", "successor_frame_identity", "operator_identity", "phase", "incoming_tip", "outgoing_tip", "lanes", "witness_identity"],
+      "properties": {
+        "schema": {"const": "Hash72ThreeStateTransition@1"},
+        "previous_frame_identity": {"$ref": "#/$defs/Sha256"},
+        "current_frame_identity": {"$ref": "#/$defs/Sha256"},
+        "successor_frame_identity": {"$ref": "#/$defs/Sha256"},
+        "operator_identity": {"$ref": "#/$defs/Sha256"},
+        "phase": {"$ref": "#/$defs/PhaseGearCoordinate"},
+        "incoming_tip": {"$ref": "#/$defs/Hash72"},
+        "outgoing_tip": {"$ref": "#/$defs/Hash72"},
+        "lanes": {"type": "array", "minItems": 3, "maxItems": 3, "items": {"$ref": "#/$defs/Hash72"}},
+        "witness_identity": {"$ref": "#/$defs/Sha256"}
+      },
+      "additionalProperties": true
+    },
+    "Hash216CharacterIndex": {
+      "type": "object",
+      "required": ["position", "lane", "lane_position", "character", "previous_index", "next_boundary_commitment", "digest"],
+      "properties": {
+        "position": {"type": "integer", "minimum": 0, "maximum": 215},
+        "lane": {"type": "integer", "minimum": 0, "maximum": 2},
+        "lane_position": {"type": "integer", "minimum": 0, "maximum": 71},
+        "character": {"type": "string", "minLength": 1, "maxLength": 1},
+        "previous_index": {"$ref": "#/$defs/Sha256"},
+        "next_boundary_commitment": {"$ref": "#/$defs/Sha256"},
+        "digest": {"$ref": "#/$defs/Sha256"}
+      },
+      "additionalProperties": false
+    },
+    "Hash216Array": {
+      "type": "object",
+      "required": ["schema", "logical_identity", "lane_order", "lanes", "value", "length", "index_root", "index_count"],
+      "properties": {
+        "schema": {"const": "Hash216Array@1"},
+        "logical_identity": {"$ref": "#/$defs/Sha256"},
+        "lane_order": {"const": ["predecessor", "current", "successor"]},
+        "lanes": {"type": "array", "minItems": 3, "maxItems": 3, "items": {"$ref": "#/$defs/Hash72"}},
+        "value": {"type": "string", "minLength": 216, "maxLength": 216},
+        "length": {"const": 216},
+        "index_root": {"$ref": "#/$defs/Sha256"},
+        "index_count": {"const": 216},
+        "indexes": {"type": "array", "minItems": 216, "maxItems": 216, "items": {"$ref": "#/$defs/Hash216CharacterIndex"}}
+      },
+      "additionalProperties": false
+    },
+    "EncryptedVectorObject": {
+      "type": "object",
+      "required": ["schema", "logical_identity", "ciphertext_identity", "key_version", "nonce", "associated_data_identity", "authenticated"],
+      "properties": {
+        "schema": {"const": "EncryptedVectorObject@1"},
+        "logical_identity": {"$ref": "#/$defs/Sha256"},
+        "ciphertext_identity": {"$ref": "#/$defs/Sha256"},
+        "key_version": {"type": "integer", "minimum": 1},
+        "nonce": {"type": "string", "contentEncoding": "base64"},
+        "associated_data_identity": {"$ref": "#/$defs/Sha256"},
+        "authenticated": {"const": true}
+      }
+    },
+    "ValidatedFrontier": {
+      "type": "object",
+      "required": ["schema", "hash72_tip", "hash216_head", "bounded_suffix_limit"],
+      "properties": {
+        "schema": {"const": "ValidatedFrontier@1"},
+        "hash72_tip": {"$ref": "#/$defs/Hash72"},
+        "hash216_head": {"anyOf": [{"$ref": "#/$defs/Sha256"}, {"type": "null"}]},
+        "bounded_suffix_limit": {"type": "integer", "minimum": 1, "maximum": 5184}
+      }
+    },
+    "ActiveSuffix": {
+      "type": "object",
+      "required": ["schema", "limit", "identities"],
+      "properties": {
+        "schema": {"const": "ActiveSuffix@1"},
+        "limit": {"type": "integer", "minimum": 1, "maximum": 5184},
+        "identities": {"type": "array", "items": {"$ref": "#/$defs/Sha256"}}
+      }
+    },
+    "SparseFrameDelta": {
+      "type": "object",
+      "required": ["schema", "identity", "source_identity", "destination_identity", "changes", "changed_bit_masks"],
+      "properties": {
+        "schema": {"const": "SparseFrameDelta@1"},
+        "identity": {"$ref": "#/$defs/Sha256"},
+        "source_identity": {"$ref": "#/$defs/Sha256"},
+        "destination_identity": {"$ref": "#/$defs/Sha256"},
+        "changes": {"type": "array"},
+        "changed_bit_masks": {"type": "array"}
+      }
+    },
+    "EfficiencyObservation": {
+      "type": "object",
+      "required": ["query_key", "direct_runtime_cost", "retrieval_cost", "hybrid_cost", "changed_cell_count", "changed_bit_count"],
+      "properties": {
+        "query_key": {"$ref": "#/$defs/Sha256"},
+        "direct_runtime_cost": {"type": "integer", "minimum": 0},
+        "retrieval_cost": {"type": "integer", "minimum": 0},
+        "hybrid_cost": {"type": "integer", "minimum": 0},
+        "changed_cell_count": {"type": "integer", "minimum": 0, "maximum": 81},
+        "changed_bit_count": {"type": "integer", "minimum": 0, "maximum": 5184}
+      }
+    },
+    "EfficiencyWeight": {
+      "type": "object",
+      "required": ["numerator", "denominator", "authority_created"],
+      "properties": {
+        "numerator": {"type": "integer"},
+        "denominator": {"type": "integer", "minimum": 1},
+        "authority_created": {"const": false}
+      }
+    },
+    "GenesisAuditChallenge": {
+      "type": "object",
+      "required": ["schema", "seed_identity", "sample_count", "selected_identities"],
+      "properties": {
+        "schema": {"const": "GenesisAuditChallenge@1"},
+        "seed_identity": {"$ref": "#/$defs/Sha256"},
+        "sample_count": {"type": "integer", "minimum": 1},
+        "selected_identities": {"type": "array", "items": {"$ref": "#/$defs/Sha256"}}
+      }
+    },
+    "GenesisAuditResult": {
+      "type": "object",
+      "required": ["schema", "audit_class", "seed_identity", "sample_count", "passed", "failed_identities", "receipt_identity"],
+      "properties": {
+        "schema": {"const": "GenesisAuditResult@1"},
+        "audit_class": {"enum": ["light", "deep"]},
+        "seed_identity": {"$ref": "#/$defs/Sha256"},
+        "sample_count": {"type": "integer", "minimum": 1},
+        "passed": {"type": "boolean"},
+        "failed_identities": {"type": "array", "items": {"$ref": "#/$defs/Sha256"}},
+        "receipt_identity": {"$ref": "#/$defs/Sha256"}
+      }
+    },
+    "BootFingerprint": {
+      "type": "object",
+      "required": ["schema", "canonical_signature", "instance_signature", "boot_counter", "genesis_identity"],
+      "properties": {
+        "schema": {"const": "BootFingerprint@1"},
+        "canonical_signature": {"$ref": "#/$defs/Sha256"},
+        "instance_signature": {"$ref": "#/$defs/Sha256"},
+        "boot_counter": {"type": "integer", "minimum": 1},
+        "genesis_identity": {"$ref": "#/$defs/Sha256"}
+      }
+    },
+    "Pass174Receipt": {
+      "type": "object",
+      "required": ["schema", "contract_id", "receipt_class", "sequence", "parent_receipt", "genesis_identity", "hash72_tip", "canonical_timestamp_ns", "payload", "receipt_identity"],
+      "properties": {
+        "schema": {"const": "Pass174Receipt@1"},
+        "contract_id": {"const": "HHS-P174-HPG-EH216-RAVWSC"},
+        "receipt_class": {"type": "string", "pattern": "^P174_"},
+        "sequence": {"type": "integer", "minimum": 0},
+        "parent_receipt": {"$ref": "#/$defs/Sha256"},
+        "genesis_identity": {"$ref": "#/$defs/Sha256"},
+        "hash72_tip": {"$ref": "#/$defs/Hash72"},
+        "canonical_timestamp_ns": {"type": "integer", "minimum": 0},
+        "payload": {"type": "object"},
+        "receipt_identity": {"$ref": "#/$defs/Sha256"}
+      },
+      "additionalProperties": false
+    }
+  }
+}
