@@ -21,6 +21,20 @@ test('verified workflow-first Harmonizer remains the public presentation authori
   assert.match(html, /id="inspector"/);
 });
 
+test('Pass 161 runtime is exposed before assistant cold-start work', () => {
+  const source = read('src/browser.mjs');
+  const runtimeExposure = source.indexOf('window.HHSHarmonizer = runtime');
+  const assistantExposure = source.indexOf('window.HHSAssistant = Object.freeze');
+  const assistantColdStart = source.indexOf('void Promise.allSettled([refreshAssistantStatus(), restoreOrCreateThread()])');
+  assert.ok(runtimeExposure >= 0);
+  assert.ok(assistantExposure > runtimeExposure);
+  assert.ok(assistantColdStart > assistantExposure);
+  assert.doesNotMatch(
+    source,
+    /await Promise\.allSettled\(\[refreshAssistantStatus\(\), restoreOrCreateThread\(\)\]\);\s*window\.HHSHarmonizer/,
+  );
+});
+
 test('production integration hydrates existing Pass 161 objects from live backend registries', () => {
   const source = read('src/production-integration.mjs');
   for (const endpoint of [
