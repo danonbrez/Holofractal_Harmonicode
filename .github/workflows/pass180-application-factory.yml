@@ -1,0 +1,106 @@
+name: Pass 180 Integrated Application Factory
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'hhs_backend/runtime/hhs_application_factory_v1.py'
+      - 'hhs_backend/api/application_factory_routes.py'
+      - 'hhs_backend/visual_server.py'
+      - 'tests/test_pass180_application_factory.py'
+      - 'docs/pass180/**'
+      - '.github/workflows/pass180-application-factory.yml'
+  push:
+    branches:
+      - agent/pass180-integrated-application-factory
+      - main
+    paths:
+      - 'hhs_backend/runtime/hhs_application_factory_v1.py'
+      - 'hhs_backend/api/application_factory_routes.py'
+      - 'hhs_backend/visual_server.py'
+      - 'tests/test_pass180_application_factory.py'
+      - 'docs/pass180/**'
+      - '.github/workflows/pass180-application-factory.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pass180-application-factory-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  application-factory:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      HHS_DISABLE_C_AUTOBUILD: '1'
+      HHS_LITERT_LM_PROVIDER_MODE: disabled
+      HHS_START_LITERT_LM: '0'
+      HHS_NATIVE_LANGUAGE_REQUIRE_WORD2VEC: '0'
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependency-scoped packages
+        run: |
+          timeout 300s python -m pip install --upgrade pip
+          timeout 600s python -m pip install \
+            fastapi==0.128.2 \
+            starlette==0.50.0 \
+            'pydantic>=2.7,<3.0' \
+            'uvicorn[standard]>=0.30,<1.0' \
+            'httpx>=0.27,<1.0' \
+            'requests>=2.32,<3.0' \
+            'websockets>=12.0,<16.0' \
+            'cryptography>=46.0,<47.0' \
+            'networkx>=3.3,<4.0' \
+            'orjson>=3.10,<4.0' \
+            'pyyaml>=6.0,<7.0' \
+            'numpy>=1.26,<3.0' \
+            'sympy>=1.13,<2.0' \
+            'sqlalchemy>=2.0,<3.0' \
+            'aiosqlite>=0.20,<1.0' \
+            'rich>=13.7,<14.0' \
+            'click>=8.1,<9.0' \
+            'typer>=0.12,<1.0' \
+            'loguru>=0.7,<1.0' \
+            'pytest>=8.0,<10.0' \
+            'pytest-asyncio>=0.23,<1.0'
+
+      - name: Build canonical HHS C ABI
+        run: timeout 600s make c-abi
+
+      - name: Compile Pass 180 surfaces
+        run: |
+          timeout 60s python -m py_compile \
+            hhs_backend/runtime/hhs_application_factory_v1.py \
+            hhs_backend/api/application_factory_routes.py \
+            hhs_backend/visual_server.py \
+            tests/test_pass180_application_factory.py
+
+      - name: Run application-factory regression
+        run: timeout 600s pytest -q tests/test_pass180_application_factory.py
+
+      - name: Verify visual-server route binding
+        run: |
+          timeout 120s python - <<'PY'
+          from hhs_backend.visual_server import app
+          paths = {getattr(route, 'path', None) for route in app.router.routes}
+          required = {
+              '/api/runtime/application-factory/status',
+              '/api/runtime/application-factory/modules',
+              '/api/runtime/application-factory/workflows',
+              '/api/runtime/application-factory/projects',
+          }
+          missing = required - paths
+          assert not missing, sorted(missing)
+          print({'registered_application_factory_routes': sorted(path for path in paths if path and path.startswith('/api/runtime/application-factory'))})
+          PY
