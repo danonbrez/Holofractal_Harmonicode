@@ -5,11 +5,17 @@ import os
 import time
 from pathlib import Path
 
+from playwright.sync_api import TimeoutError as PlaywrightTimeoutError
 from playwright.sync_api import sync_playwright
 
 
 BASE_URL = os.environ.get("HHS_PASS176_SMOKE_URL", "http://127.0.0.1:8765")
 EVIDENCE_DIR = Path(__file__).resolve().parents[1] / "evidence" / "pass176"
+
+
+def phase(name: str, **data: object) -> None:
+    payload = {"phase": name, "monotonic": round(time.monotonic(), 3), **data}
+    print(json.dumps(payload, sort_keys=True), flush=True)
 
 
 def write_json(name: str, payload: dict) -> None:
@@ -23,13 +29,23 @@ def write_json(name: str, payload: dict) -> None:
 def main() -> None:
     EVIDENCE_DIR.mkdir(parents=True, exist_ok=True)
     with sync_playwright() as playwright:
+        phase("chromium-launch")
         browser = playwright.chromium.launch(headless=True)
         context = browser.new_context(viewport={"width": 1440, "height": 1000})
         page = context.new_page()
+        page.set_default_timeout(20_000)
+        page.set_default_navigation_timeout(60_000)
         console_errors: list[str] = []
+        console_messages: list[dict[str, str]] = []
         page_errors: list[str] = []
         request_failures: list[dict[str, str]] = []
-        page.on("console", lambda message: console_errors.append(message.text) if message.type == "error" else None)
+        page.on(
+            "console",
+            lambda message: (
+                console_messages.append({"type": message.type, "text": message.text}),
+                console_errors.append(message.text) if message.type == "error" else None,
+            ),
+        )
         page.on("pageerror", lambda error: page_errors.append(str(error)))
         page.on(
             "requestfailed",
@@ -40,23 +56,35 @@ def main() -> None:
         )
 
         started = time.monotonic()
+        current_phase = "navigate"
         try:
-            response = page.goto(BASE_URL, wait_until="domcontentloaded", timeout=120_000)
+            phase(current_phase, url=BASE_URL)
+            response = page.goto(BASE_URL, wait_until="domcontentloaded", timeout=60_000)
             if response is None or not response.ok:
                 raise AssertionError(f"Pass 176 production root failed: {getattr(response, 'status', None)}")
             dom_loaded_ms = round((time.monotonic() - started) * 1000)
+            phase("dom-content-loaded", status=response.status, elapsed_ms=dom_loaded_ms)
+
+            current_phase = "wait-pass176-controller"
+            page.wait_for_function("() => Boolean(window.HHSPass176)", timeout=20_000)
+            controller_snapshot = page.evaluate("() => window.HHSPass176.status()")
+            phase(current_phase, stage=controller_snapshot.get("boot", {}).get("stage"))
+
+            current_phase = "wait-pass176-interactive"
             page.wait_for_function(
                 """() => Boolean(
                     window.HHSPass176 &&
                     window.HHSPass176.status().boot.interactive &&
                     window.HHSVisualIDE
                 )""",
-                timeout=180_000,
+                timeout=60_000,
             )
             interactive_ms = round((time.monotonic() - started) * 1000)
-            page.wait_for_selector("#ide-source-editor", timeout=30_000)
-            page.wait_for_selector("#pass176-stability-status.interactive", timeout=30_000)
+            phase(current_phase, elapsed_ms=interactive_ms)
+            page.wait_for_selector("#ide-source-editor", timeout=20_000)
+            page.wait_for_selector("#pass176-stability-status.interactive", timeout=20_000)
 
+            current_phase = "initial-state"
             initial = page.evaluate("""() => ({
                 activePath: window.HHSVisualIDE.state.activePath,
                 editorValue: document.querySelector('#ide-source-editor')?.value,
@@ -64,7 +92,9 @@ def main() -> None:
                 bootRecords: window.HHSPass176.status().boot.records.length,
                 stage: window.HHSPass176.status().boot.stage,
             })""")
+            phase(current_phase, stage=initial["stage"], resources=initial["resourceTotal"])
 
+            current_phase = "duplicate-boot"
             duplicate_boot = page.evaluate("""async () => {
                 const [left, right] = await Promise.all([
                     window.HHSPass176.boot([]),
@@ -76,7 +106,9 @@ def main() -> None:
                     recordCount: left.boot.records.length,
                 };
             }""")
+            phase(current_phase, **duplicate_boot)
 
+            current_phase = "mobile-repetition"
             page.set_viewport_size({"width": 390, "height": 844})
             page.wait_for_timeout(150)
             cycles = page.evaluate("""async () => {
@@ -103,7 +135,9 @@ def main() -> None:
                     resourceTotal: window.HHSPass176.status().resources.total,
                 };
             }""")
+            phase(current_phase, **cycles)
 
+            current_phase = "stale-response"
             stale_response = page.evaluate("""() => {
                 const older = window.HHSPass176.generation('preview');
                 const current = window.HHSPass176.generation('preview');
@@ -115,18 +149,20 @@ def main() -> None:
                     currentAccepted: window.HHSPass176.accept(current, 'current') === 'current',
                 };
             }""")
+            phase(current_phase, **stale_response)
 
+            current_phase = "bounded-cancellation"
             cancelled_job = page.evaluate("""async () => {
                 const promise = window.HHSPass176.runAction(
                     'pass176-smoke-cancel',
                     ({ signal }) => new Promise((resolve, reject) => {
-                        const timer = setTimeout(() => resolve('unexpected'), 5000);
+                        const timer = setTimeout(() => resolve('unexpected'), 2000);
                         signal.addEventListener('abort', () => {
                             clearTimeout(timer);
                             reject(new DOMException('cancelled', 'AbortError'));
                         }, { once: true });
                     }),
-                    { timeoutMs: 8000, detail: 'Cancellation smoke test' },
+                    { timeoutMs: 4000, detail: 'Cancellation smoke test' },
                 );
                 setTimeout(() => window.HHSPass176.cancel('pass176-smoke-cancel'), 20);
                 try {
@@ -136,7 +172,9 @@ def main() -> None:
                     return { cancelled: error.name === 'AbortError' || String(error.message).includes('CANCEL') };
                 }
             }""")
+            phase(current_phase, **cancelled_job)
 
+            current_phase = "atomic-recovery"
             recovery = page.evaluate("""() => {
                 const editor = document.querySelector('#ide-source-editor');
                 const original = editor?.value || '';
@@ -156,7 +194,9 @@ def main() -> None:
                         envelope?.metadata?.authoritativeBackendDurabilityClaimed,
                 };
             }""")
+            phase(current_phase, **recovery)
 
+            current_phase = "final-status"
             final_status = page.evaluate("""() => {
                 const status = window.HHSPass176.status();
                 const navigation = performance.getEntriesByType('navigation')[0];
@@ -177,6 +217,7 @@ def main() -> None:
                     } : null,
                 };
             }""")
+            phase(current_phase, classification=final_status["classification"])
 
             if initial["stage"] != "INTERACTIVE":
                 raise AssertionError(f"Pass 176 did not reach INTERACTIVE: {initial}")
@@ -203,7 +244,8 @@ def main() -> None:
             if console_errors:
                 raise AssertionError(f"console errors observed: {console_errors}")
 
-            page.screenshot(path=str(EVIDENCE_DIR / "pass176-frozen-ide.png"), full_page=True)
+            current_phase = "evidence"
+            page.screenshot(path=str(EVIDENCE_DIR / "pass176-frozen-ide.png"), full_page=True, timeout=20_000)
             evidence = {
                 "schema": "HHS_PASS_176_FROZEN_IDE_BROWSER_SMOKE_V1",
                 "ok": True,
@@ -221,32 +263,40 @@ def main() -> None:
                 "recovery": recovery,
                 "final_status": final_status,
                 "console_errors": console_errors,
+                "console_messages": console_messages[-100:],
                 "page_errors": page_errors,
                 "request_failures": request_failures,
                 "external_vercel_status_considered": False,
             }
             write_json("browser-smoke.json", evidence)
-            print(json.dumps(evidence, indent=2, sort_keys=True))
-        except Exception:
-            diagnostic = page.evaluate("""() => ({
-                pass176: window.HHSPass176?.status?.() || null,
-                activePath: window.HHSVisualIDE?.state?.activePath || null,
-                editorValueLength: document.querySelector('#ide-source-editor')?.value?.length || 0,
-                documentReadyState: document.readyState,
-            })""")
+            phase(current_phase, ok=True)
+            print(json.dumps(evidence, indent=2, sort_keys=True), flush=True)
+        except Exception as error:
             failure = {
                 "schema": "HHS_PASS_176_FROZEN_IDE_BROWSER_SMOKE_FAILURE_V1",
                 "ok": False,
-                "diagnostic": diagnostic,
+                "phase": current_phase,
+                "exception_type": type(error).__name__,
+                "exception": str(error),
                 "console_errors": console_errors,
+                "console_messages": console_messages[-100:],
                 "page_errors": page_errors,
                 "request_failures": request_failures,
+                "elapsed_ms": round((time.monotonic() - started) * 1000),
             }
             write_json("browser-smoke-failure.json", failure)
-            page.screenshot(path=str(EVIDENCE_DIR / "pass176-frozen-ide-failure.png"), full_page=True)
-            print(json.dumps(failure, indent=2, sort_keys=True))
+            phase("failure", **failure)
+            try:
+                page.screenshot(
+                    path=str(EVIDENCE_DIR / "pass176-frozen-ide-failure.png"),
+                    full_page=True,
+                    timeout=10_000,
+                )
+            except (PlaywrightTimeoutError, Exception) as screenshot_error:
+                phase("failure-screenshot-unavailable", error=str(screenshot_error))
             raise
         finally:
+            phase("browser-close")
             context.close()
             browser.close()
 
