@@ -19,18 +19,19 @@ test('public boot launches the complete application experience independently', (
   );
 });
 
-test('application experience initializes real project creation in dependency order', () => {
+test('New Application is the non-blocking critical path', () => {
   const source = read('src/application-experience.mjs');
-  const lifecycle = source.indexOf("initialize('HHSProjectLifecycle'");
-  const workbench = source.indexOf("initialize('HHSIntegratedWorkbench'");
   const intuitive = source.indexOf("initialize('HHSIntuitiveIDE'");
   const studio = source.indexOf("initialize('HHSApplicationStudio'");
-  const compiler = source.indexOf("initialize('HHSDeployableAppCompiler'");
-  assert.ok(lifecycle >= 0);
-  assert.ok(lifecycle < workbench);
-  assert.ok(workbench < intuitive);
+  const support = source.indexOf('const supportReady = Promise.allSettled');
+  assert.ok(intuitive >= 0);
   assert.ok(intuitive < studio);
-  assert.ok(studio < compiler);
+  assert.ok(studio < support);
+  assert.doesNotMatch(source.slice(0, intuitive), /project-lifecycle|integrated-workbench|deployable-app-compiler/);
+  assert.match(source, /loadSupport\('project-lifecycle', '\.\/project-lifecycle\.mjs'/);
+  assert.match(source, /loadSupport\('integrated-workbench', '\.\/integrated-workbench\.mjs'/);
+  assert.match(source, /loadSupport\('deployable-app-compiler', '\.\/deployable-app-compiler\.mjs'/);
+  assert.match(source, /state: 'INTERACTIVE'/);
   assert.match(source, /new_application_control: Boolean\(document\.querySelector\('#ide-new-app'\)\)/);
   assert.match(source, /creates_real_runnable_projects:/);
   assert.match(source, /if \(bootRecord\) return bootRecord/);
