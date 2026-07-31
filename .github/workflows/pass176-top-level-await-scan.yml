@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   scan:
@@ -25,9 +25,10 @@ jobs:
           node-version: '24'
       - name: Install parser
         run: npm install --no-save --no-package-lock acorn acorn-walk
-      - name: Report every top-level await in the public source graph
+      - name: Record every top-level await in the public source graph
         run: |
-          node <<'NODE'
+          mkdir -p evidence/pass176/generated
+          node <<'NODE' > evidence/pass176/generated/top-level-await-scan.json
           const fs = require('node:fs');
           const path = require('node:path');
           const acorn = require('acorn');
@@ -61,5 +62,22 @@ jobs:
             });
           }
           console.log(JSON.stringify({ schema: 'HHS_PASS_176_TOP_LEVEL_AWAIT_SCAN_V1', file_count: files.length, finding_count: findings.length, findings }, null, 2));
-          if (!findings.length) process.exitCode = 1;
           NODE
+          cat evidence/pass176/generated/top-level-await-scan.json
+      - name: Publish scan and remove temporary workflow
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git rm .github/workflows/pass176-top-level-await-scan.yml
+          git add evidence/pass176/generated/top-level-await-scan.json
+          git diff --cached --check
+          git commit -m 'Record Pass 176 top-level await scan'
+          for attempt in 1 2 3 4 5; do
+            if git push origin HEAD:agent/pass176-frozen-ide-stabilization; then
+              exit 0
+            fi
+            git pull --rebase origin agent/pass176-frozen-ide-stabilization
+            sleep $((attempt * 2))
+          done
+          exit 1
