@@ -25,9 +25,10 @@ def application_frame(page):
     return page.frame_locator("#ide-application-frame")
 
 
-def geometry(locator) -> dict[str, object]:
-    return locator.evaluate(
-        """node => {
+def geometry(page, selector: str) -> dict[str, object]:
+    return page.evaluate(
+        """selector => {
+          const node = document.querySelector(selector);
           const summarize = element => {
             if (!(element instanceof Element)) return null;
             const style = getComputedStyle(element);
@@ -67,6 +68,15 @@ def geometry(locator) -> dict[str, object]:
               zIndex: style.zIndex,
             };
           };
+          if (!node) {
+            return {
+              node: null,
+              selector,
+              duplicateCount: document.querySelectorAll(selector).length,
+              documentClass: document.documentElement.className,
+              bodyClass: document.body.className,
+            };
+          }
           const ancestors = [];
           let current = node;
           while (current && ancestors.length < 14) {
@@ -92,9 +102,10 @@ def geometry(locator) -> dict[str, object]:
             documentClass: document.documentElement.className,
             bodyClass: document.body.className,
             activeElement: summarize(document.activeElement),
-            duplicateTemplateCount: document.querySelectorAll(`[data-application-template="${node.dataset.applicationTemplate}"]`).length,
+            duplicateCount: document.querySelectorAll(selector).length,
           };
-        }"""
+        }""",
+        selector,
     )
 
 
@@ -103,12 +114,13 @@ def create_project(page, template: str, name: str):
     page.locator("#ide-new-app").click()
     gallery = page.locator("#ide-application-gallery")
     expect(gallery).to_be_visible(timeout=20_000)
-    template_button = gallery.locator(f'[data-application-template="{template}"]')
+    template_selector = f'#ide-application-gallery [data-application-template="{template}"]'
+    template_button = page.locator(template_selector)
     phase(
         "TEMPLATE_GEOMETRY",
         template=template,
-        gallery=geometry(gallery),
-        template_button=geometry(template_button),
+        gallery=geometry(page, "#ide-application-gallery"),
+        template_button=geometry(page, template_selector),
     )
     expect(template_button).to_be_visible(timeout=20_000)
     template_button.click()
