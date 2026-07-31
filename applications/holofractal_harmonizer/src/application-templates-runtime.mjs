@@ -6,8 +6,9 @@ const CALCULATOR_APPLICATION_SOURCE = [
   'const display = document.querySelector("#display");',
   'const history = document.querySelector("#history");',
   'const keys = document.querySelector("#keys");',
-  'const labels = ["C","(",")","÷","7","8","9","×","4","5","6","−","1","2","3","+","0",".","⌫","="];',
+  'const labels = ["C", "(", ")", "÷", "7", "8", "9", "×", "4", "5", "6", "−", "1", "2", "3", "+", "0", ".", "⌫", "="];',
   'let expression = "";',
+  '',
   'for (const label of labels) {',
   '  const button = document.createElement("button");',
   '  button.textContent = label;',
@@ -15,9 +16,11 @@ const CALCULATOR_APPLICATION_SOURCE = [
   '  if ("÷×−+".includes(label)) button.dataset.kind = "operator";',
   '  keys.append(button);',
   '}',
+  '',
   'function render() {',
   '  display.textContent = expression || "0";',
   '}',
+  '',
   'function evaluate() {',
   '  const safe = expression.replaceAll("×", "*").replaceAll("÷", "/").replaceAll("−", "-");',
   '  if (!/^[0-9+\\-*/().\\s]+$/.test(safe)) throw new Error("Unsupported expression");',
@@ -27,16 +30,21 @@ const CALCULATOR_APPLICATION_SOURCE = [
   '  expression = String(result);',
   '  render();',
   '}',
-  'keys.addEventListener("click", event => {',
+  '',
+  'keys.addEventListener("click", (event) => {',
   '  const value = event.target.dataset.value;',
   '  if (!value) return;',
   '  try {',
   '    if (value === "C") {',
   '      expression = "";',
   '      history.textContent = "Cleared";',
-  '    } else if (value === "⌫") expression = expression.slice(0, -1);',
-  '    else if (value === "=") evaluate();',
-  '    else expression += value;',
+  '    } else if (value === "⌫") {',
+  '      expression = expression.slice(0, -1);',
+  '    } else if (value === "=") {',
+  '      evaluate();',
+  '    } else {',
+  '      expression += value;',
+  '    }',
   '    render();',
   '  } catch (error) {',
   '    history.textContent = error.message;',
@@ -44,7 +52,8 @@ const CALCULATOR_APPLICATION_SOURCE = [
   '    render();',
   '  }',
   '});',
-  'addEventListener("keydown", event => {',
+  '',
+  'addEventListener("keydown", (event) => {',
   '  if (/^[0-9+\\-*/().]$/.test(event.key)) {',
   '    expression += event.key;',
   '    render();',
@@ -66,25 +75,34 @@ const DOCUMENT_APPLICATION_SOURCE = [
   'const saved = document.querySelector("#saved");',
   'const words = document.querySelector("#words");',
   'const KEY = "hhs-document-studio-v1";',
+  '',
   'function storageRead() {',
   '  try { return JSON.parse(localStorage.getItem(KEY) || "null"); }',
   '  catch { return null; }',
   '}',
+  '',
   'function storageWrite(value) {',
   '  try { localStorage.setItem(KEY, JSON.stringify(value)); return true; }',
   '  catch { return false; }',
   '}',
+  '',
   'const prior = storageRead();',
-  'if (prior) { title.value = prior.title; editor.innerHTML = prior.html; }',
+  'if (prior) {',
+  '  title.value = prior.title;',
+  '  editor.innerHTML = prior.html;',
+  '}',
+  '',
   'function count() {',
   '  const value = editor.innerText.trim();',
   '  words.textContent = `${value ? value.split(/\\s+/).length : 0} words`;',
   '}',
+  '',
   'function persist() {',
   '  const stored = storageWrite({ title: title.value, html: editor.innerHTML });',
   '  saved.textContent = stored ? `Saved ${new Date().toLocaleTimeString()}` : "Session edit · autosave available after export";',
   '  count();',
   '}',
+  '',
   'function download(name, type, content) {',
   '  const url = URL.createObjectURL(new Blob([content], { type }));',
   '  const link = document.createElement("a");',
@@ -93,6 +111,7 @@ const DOCUMENT_APPLICATION_SOURCE = [
   '  link.click();',
   '  setTimeout(() => URL.revokeObjectURL(url), 1000);',
   '}',
+  '',
   'editor.addEventListener("input", persist);',
   'title.addEventListener("input", persist);',
   'document.querySelector("#saveText").onclick = () => download(`${title.value || "document"}.txt`, "text/plain", editor.innerText);',
@@ -100,9 +119,23 @@ const DOCUMENT_APPLICATION_SOURCE = [
   'count();',
 ].join('\n') + '\n';
 
+function readableHtml(content) {
+  const source = String(content || '').trim();
+  if (!source) return '';
+  return `${source.replace(/>\s*</g, '>\n<')}\n`;
+}
+
+function readableCss(content) {
+  const source = String(content || '').trim();
+  if (!source) return '';
+  return `${source.replace(/}\s*/g, '}\n').replace(/\n{3,}/g, '\n\n').trim()}\n`;
+}
+
 function normalizedContent(template, path, content) {
   if (path.endsWith('/app.js') && template.id === 'calculator') return CALCULATOR_APPLICATION_SOURCE;
   if (path.endsWith('/app.js') && template.id === 'document') return DOCUMENT_APPLICATION_SOURCE;
+  if (/\.html?$/i.test(path)) return readableHtml(content);
+  if (/\.css$/i.test(path)) return readableCss(content);
   return content;
 }
 
@@ -140,7 +173,8 @@ export function materializeApplicationTemplate(id) {
       name: path.split('/').at(-1),
       mediaType,
       content,
-      dirty: true,
+      dirty: false,
+      checkpoint: `Created from ${template.label} starter`,
     })),
   };
 }
