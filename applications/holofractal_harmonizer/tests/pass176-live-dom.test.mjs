@@ -27,3 +27,14 @@ test('legacy lifecycle button has one production recovery owner', async () => {
   assert.doesNotMatch(visual, /required\('#ide-run-lifecycle'\)\.onclick/);
   assert.match(recovery, /bind\('#ide-run-lifecycle',\s*\(\) => void runBoundedProjectTest/);
 });
+
+test('public entry modules do not block DOMContentLoaded with top-level await', async () => {
+  const browser = await read('src/browser.mjs');
+  const workflow = await read('src/ux-default.mjs');
+  assert.match(browser, /async function initializeBrowserRegistry\(\)/);
+  assert.match(browser, /window\.HHSBrowserReady = browserReadyPromise/);
+  assert.doesNotMatch(browser, /^await\s/m);
+  assert.match(workflow, /async function initializeWorkflowUX\(\)/);
+  assert.match(workflow, /window\.HHSWorkflowUXReady = workflowUXReadyPromise/);
+  assert.doesNotMatch(workflow, /^await\s/m);
+});
