@@ -61,3 +61,11 @@ def test_whole_job_deadline_and_application_entrypoint_selection():
     assert "PER_JOB_TIMEOUT_MS - elapsed" in text
     assert "#ide-preview-entrypoint" in text
     assert "accessibility: () => previewCommand('accessibility')" in text
+
+
+def test_all_primary_lifecycle_entrypoints_use_bounded_controller():
+    entry = ENTRY.read_text(encoding="utf-8")
+    module = MODULE.read_text(encoding="utf-8")
+    assert "lifecycle: runBoundedProjectTest" in entry
+    assert "runLifecycle" not in entry
+    assert "lastRetry = runBoundedProjectTest" in module
