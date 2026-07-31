@@ -38,7 +38,7 @@ def main() -> None:
         browser = playwright.chromium.launch(headless=True)
         page = browser.new_page(viewport={"width": 1440, "height": 1000})
         page.set_default_timeout(20_000)
-        page.set_default_navigation_timeout(60_000)
+        page.set_default_navigation_timeout(90_000)
         page.on("console", lambda message: console_errors.append(message.text) if message.type == "error" else None)
         page.on("pageerror", lambda error: page_errors.append(str(error)))
         page.on(
@@ -56,17 +56,18 @@ def main() -> None:
         )
 
         try:
-            # The browser module graph owns asynchronous hydration. A module script
-            # may legitimately delay DOMContentLoaded, so navigation closes on the
-            # successful HTTP commit and readiness closes on runtime contracts below.
+            # Repository tests prohibit top-level await in public entry modules.
+            # DOMContentLoaded is therefore the bounded parsed-document boundary;
+            # live registry hydration remains a separate authority assertion.
             current_phase = "NAVIGATE"
             phase(current_phase, url=BASE_URL)
-            response = page.goto(BASE_URL, wait_until="commit", timeout=60_000)
+            response = page.goto(BASE_URL, wait_until="domcontentloaded", timeout=90_000)
             if response is None or not response.ok:
                 raise AssertionError(f"production root failed: {getattr(response, 'status', None)}")
             http_committed_ms = round((time.monotonic() - started) * 1000)
-            current_phase = "HTTP_COMMITTED"
+            current_phase = "DOCUMENT_PARSED"
             phase(current_phase, status=response.status, elapsed_ms=http_committed_ms)
+            page.wait_for_selector("#harmonizer", state="attached", timeout=20_000)
 
             current_phase = "WAIT_RUNTIME_INTEGRATION"
             phase(current_phase)
@@ -79,7 +80,7 @@ def main() -> None:
                         window.HHSProductionIntegration.phase === 'DEGRADED'
                     )
                 )""",
-                timeout=90_000,
+                timeout=60_000,
             )
             integration = page.evaluate("""() => ({
                 phase: window.HHSProductionIntegration?.phase,
