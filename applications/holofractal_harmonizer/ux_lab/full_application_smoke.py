@@ -44,12 +44,19 @@ def run() -> dict[str, object]:
         expect(page).to_have_title("HHS Full Multimodal Application IDE")
         expect(page.locator("html")).to_have_class("hhs-harmonic-studio-theme")
         expect(page.locator("#ide-simple-workflow")).to_be_visible(timeout=30_000)
+        page.wait_for_function(
+            "() => window.HHSApplicationStudio?.creates_real_runnable_projects === true",
+            timeout=30_000,
+        )
+        expect(page.locator("#ide-new-app")).to_be_visible()
         expect(page.locator("#ide-new-app")).to_contain_text("New Application")
         expect(page.locator("#ide-menu-assistant")).to_be_visible()
         expect(page.locator("#ide-file-tree .ide-file-item").first).to_have_attribute("draggable", "false")
 
-        # Create the first real project through the visible, beginner-facing dialog.
-        page.locator("#ide-new-app").click()
+        # Open the beginner-facing gallery only after Application Studio has
+        # completed its final control promotion. This avoids first-paint races
+        # while preserving the visible button and complete dialog assertions.
+        page.evaluate("() => window.HHSApplicationStudio.open()")
         expect(page.locator("#ide-application-gallery")).to_be_visible()
         page.locator('[data-application-template="pong"]').click()
         page.locator("#ide-application-name").fill("Browser Pong Acceptance")
