@@ -1,0 +1,171 @@
+name: Verify Terminal Pass 175 Completion
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'hhs_runtime/pass175/**'
+      - 'hhs_backend/api/pass175_terminal_*'
+      - 'hhs_backend/application_ide_server.py'
+      - 'hhs_verification/pass175/**'
+      - 'native_projects/hhs_pass175_virtual_instruction_processor/**'
+      - 'applications/holofractal_harmonizer/src/pass175-terminal.mjs'
+      - 'applications/holofractal_harmonizer/src/visual-ide.mjs'
+      - 'tests/test_pass175_terminal_completion.py'
+      - '.github/workflows/pass175-terminal-completion.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'hhs_runtime/pass175/**'
+      - 'hhs_backend/api/pass175_terminal_*'
+      - 'hhs_backend/application_ide_server.py'
+      - 'hhs_verification/pass175/**'
+      - 'native_projects/hhs_pass175_virtual_instruction_processor/**'
+      - 'applications/holofractal_harmonizer/src/pass175-terminal.mjs'
+      - 'applications/holofractal_harmonizer/src/visual-ide.mjs'
+      - 'tests/test_pass175_terminal_completion.py'
+      - '.github/workflows/pass175-terminal-completion.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pass175-terminal-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  terminal-pass175:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    env:
+      HHS_DISABLE_C_AUTOBUILD: '1'
+      HHS_NATIVE_LANGUAGE_REQUIRE_WORD2VEC: '0'
+      HHS_ASSISTANT_HEALTH_TIMEOUT_SECONDS: '0.5'
+      HHS_PASS174_BOOT_TIMEOUT_SECONDS: '20'
+      HHS_PASS175_NATIVE_ARTIFACT_DIR: ${{ github.workspace }}/native_projects/hhs_pass175_virtual_instruction_processor/build/terminal
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Install dependency-scoped packages
+        run: |
+          timeout 300s python -m pip install --upgrade pip
+          timeout 300s python -m pip install \
+            fastapi==0.128.2 \
+            starlette==0.50.0 \
+            'cryptography>=46.0,<47.0' \
+            pytest
+
+      - name: Build exact x86_64 invariant kernel artifacts
+        working-directory: native_projects/hhs_pass175_virtual_instruction_processor
+        run: timeout 600s make clean test
+
+      - name: Verify required native artifact set
+        run: |
+          set -euo pipefail
+          root="$HHS_PASS175_NATIVE_ARTIFACT_DIR"
+          for name in \
+            vm81_invariant_kernel_x86_64.o \
+            libvm81_invariant_kernel.so \
+            vm81_invariant_kernel.bin \
+            vm81_invariant_kernel.map \
+            vm81_invariant_kernel.sha256 \
+            vm81_invariant_kernel.hash216 \
+            vm81_invariant_kernel_manifest.json \
+            vm81_invariant_kernel_test_receipt.json
+          do
+            test -s "$root/$name"
+          done
+          test "$(tr -d '\n' < "$root/vm81_invariant_kernel.hash216" | wc -c)" -eq 216
+
+      - name: Compile all terminal Python and JavaScript surfaces
+        run: |
+          timeout 120s python -m py_compile \
+            hhs_runtime/pass175/runtime.py \
+            hhs_runtime/pass175/x86_64.py \
+            hhs_runtime/pass175/devices.py \
+            hhs_runtime/pass175/secure_store.py \
+            hhs_runtime/pass175/firmware.py \
+            hhs_runtime/pass175/terminal.py \
+            hhs_runtime/pass175/terminal_cli.py \
+            hhs_backend/api/pass175_runtime_routes.py \
+            hhs_backend/api/pass175_ws_routes.py \
+            hhs_backend/api/pass175_terminal_routes.py \
+            hhs_backend/api/pass175_terminal_ws_routes.py \
+            hhs_backend/application_ide_server.py \
+            hhs_verification/pass175/terminal_verify.py
+          node --check applications/holofractal_harmonizer/src/pass175-terminal.mjs
+          node --check applications/holofractal_harmonizer/src/visual-ide.mjs
+
+      - name: Execute Pass 175 dependency-scoped verification
+        run: |
+          timeout 1200s pytest -q \
+            tests/test_pass175_virtual_instruction_processor.py \
+            tests/test_pass175_terminal_completion.py
+
+      - name: Execute inherited-authority terminal closure
+        run: |
+          timeout 1200s python hhs_verification/pass175/terminal_verify.py \
+            --repository-root . \
+            --native-root "$HHS_PASS175_NATIVE_ARTIFACT_DIR" \
+            --output evidence/pass175/generated/PASS_175_TERMINAL_COMPLETION_RECEIPT.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          path = Path('evidence/pass175/generated/PASS_175_TERMINAL_COMPLETION_RECEIPT.json')
+          payload = json.loads(path.read_text())
+          assert payload['terminal_pass175_completion'] is True
+          assert payload['checks']['external_deployment_quota_excluded'] is True
+          assert payload['external_deployment_quota_not_an_acceptance_gate'] is True
+          assert all(payload['checks'].values())
+          print(payload['receipt_sha256'])
+          PY
+
+      - name: Verify production route and visual composition
+        run: |
+          grep -q 'pass175_terminal_routes' hhs_backend/application_ide_server.py
+          grep -q '/api/v1/pass175/terminal/ws/events' hhs_backend/api/pass175_terminal_ws_routes.py
+          grep -q 'initPass175TerminalProcessor' applications/holofractal_harmonizer/src/visual-ide.mjs
+          grep -q 'terminal_pass175_completion' hhs_runtime/pass175/terminal.py
+          grep -q 'external_deployment_quota_not_an_acceptance_gate' hhs_runtime/pass175/terminal.py
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pass175-terminal-completion-evidence
+          path: |
+            evidence/pass175/generated/PASS_175_TERMINAL_COMPLETION_RECEIPT.json
+            native_projects/hhs_pass175_virtual_instruction_processor/build/terminal/
+          if-no-files-found: error
+          retention-days: 30
+
+  native-portability:
+    name: Native portability (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, macos-14]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile strict C11 kernel on host architecture
+        working-directory: native_projects/hhs_pass175_virtual_instruction_processor
+        run: |
+          mkdir -p build/portability
+          cc -std=c11 -O2 -Wall -Wextra -Werror -pedantic -fno-fast-math \
+            -Iinclude \
+            src/vm81_invariant_kernel.c \
+            tests/test_vm81_invariant_kernel.c \
+            -o build/portability/test_vm81_invariant_kernel
+          ./build/portability/test_vm81_invariant_kernel
