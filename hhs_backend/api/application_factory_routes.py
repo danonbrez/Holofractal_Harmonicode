@@ -115,8 +115,8 @@ def application_factory_retry(job_id: str) -> Dict[str, Any]:
     return APPLICATION_FACTORY.retry_job(job_id)
 
 
-@router.get("/projects/{project_id}/source.zip")
-def application_factory_source_zip(project_id: str) -> Response | Dict[str, Any]:
+@router.get("/projects/{project_id}/source.zip", response_model=None)
+def application_factory_source_zip(project_id: str) -> Any:
     result = APPLICATION_FACTORY.export_source_zip(project_id)
     if not result.get("ok"):
         return result
