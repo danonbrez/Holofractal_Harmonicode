@@ -8,6 +8,7 @@ on:
       - agent/pass181-canonical-mp4-timeline
       - agent/pass181-native-recipe-residuals
       - agent/pass181-bounded-optimization-loop
+      - agent/pass181-vector-hydration-invariants
     paths:
       - "docs/pass181/**"
       - "hhs_backend/runtime/hhs_graphics_hydration_v1.py"
@@ -15,11 +16,14 @@ on:
       - "hhs_backend/runtime/hhs_graphics_recipe_v1.py"
       - "hhs_backend/runtime/hhs_graphics_optimization_v1.py"
       - "hhs_backend/runtime/hhs_graphics_optimizer_instance_v1.py"
+      - "hhs_backend/runtime/hhs_graphics_vector_hydration_v1.py"
+      - "hhs_backend/runtime/hhs_graphics_vector_hydration_instance_v1.py"
       - "hhs_backend/api/graphics_hydration_routes.py"
       - "hhs_backend/visual_server.py"
       - "tests/test_pass181_graphics_hydration_runtime.py"
       - "tests/test_pass181_native_recipe_residuals.py"
       - "tests/test_pass181_graphics_optimization.py"
+      - "tests/test_pass181_graphics_vector_hydration.py"
       - ".github/workflows/pass181-graphics-hydration.yml"
   pull_request:
     paths:
@@ -29,11 +33,14 @@ on:
       - "hhs_backend/runtime/hhs_graphics_recipe_v1.py"
       - "hhs_backend/runtime/hhs_graphics_optimization_v1.py"
       - "hhs_backend/runtime/hhs_graphics_optimizer_instance_v1.py"
+      - "hhs_backend/runtime/hhs_graphics_vector_hydration_v1.py"
+      - "hhs_backend/runtime/hhs_graphics_vector_hydration_instance_v1.py"
       - "hhs_backend/api/graphics_hydration_routes.py"
       - "hhs_backend/visual_server.py"
       - "tests/test_pass181_graphics_hydration_runtime.py"
       - "tests/test_pass181_native_recipe_residuals.py"
       - "tests/test_pass181_graphics_optimization.py"
+      - "tests/test_pass181_graphics_vector_hydration.py"
       - ".github/workflows/pass181-graphics-hydration.yml"
 
 permissions:
@@ -42,7 +49,7 @@ permissions:
 jobs:
   authority-core:
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -67,14 +74,17 @@ jobs:
             hhs_backend/runtime/hhs_graphics_recipe_v1.py \
             hhs_backend/runtime/hhs_graphics_optimization_v1.py \
             hhs_backend/runtime/hhs_graphics_optimizer_instance_v1.py \
+            hhs_backend/runtime/hhs_graphics_vector_hydration_v1.py \
+            hhs_backend/runtime/hhs_graphics_vector_hydration_instance_v1.py \
             hhs_backend/api/graphics_hydration_routes.py \
             hhs_backend/visual_server.py
-      - name: Run Pass 181 authority, timeline, recipe, residual, and optimization tests
+      - name: Run complete Pass 181 runtime suite
         run: |
           python -m pytest -q \
             tests/test_pass181_graphics_hydration_runtime.py \
             tests/test_pass181_native_recipe_residuals.py \
-            tests/test_pass181_graphics_optimization.py
+            tests/test_pass181_graphics_optimization.py \
+            tests/test_pass181_graphics_vector_hydration.py
       - name: Verify public route and authority declarations
         run: |
           grep -F '/api/runtime/graphics-hydration/status' hhs_backend/visual_server.py
@@ -87,7 +97,8 @@ jobs:
           grep -F 'HHS_P181_NATIVE_RECONSTRUCTION_RESIDUAL_REPORT_V1' hhs_backend/runtime/hhs_graphics_recipe_v1.py
           grep -F 'ONE_CANDIDATE_PER_STEP' hhs_backend/runtime/hhs_graphics_optimization_v1.py
           grep -F 'parallel_candidate_execution' hhs_backend/runtime/hhs_graphics_optimization_v1.py
-          grep -F '/decode/manifest' hhs_backend/api/graphics_hydration_routes.py
-          grep -F '/recipes/validate' hhs_backend/api/graphics_hydration_routes.py
-          grep -F '/residuals/compare' hhs_backend/api/graphics_hydration_routes.py
+          grep -F 'runtime_constraint_freeze_authority' hhs_backend/runtime/hhs_graphics_vector_hydration_v1.py
+          grep -F 'P181_VECTOR_OBSERVATION_CANNOT_FREEZE_RUNTIME_CONSTRAINT' hhs_backend/runtime/hhs_graphics_vector_hydration_v1.py
           grep -F '/optimization/jobs' hhs_backend/api/graphics_hydration_routes.py
+          grep -F '/vector-hydration/jobs/admit' hhs_backend/api/graphics_hydration_routes.py
+          grep -F '/vector-hydration/invariants/extract' hhs_backend/api/graphics_hydration_routes.py
