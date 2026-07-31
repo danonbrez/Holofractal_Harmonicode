@@ -1,0 +1,55 @@
+{
+  "schema": "HHS_PASS_176_DEPLOYMENT_BACKEND_DEGRADED_MODE_RECEIPT_V1",
+  "contract": "HHS-P176-DBDM-LH-CAG-P175-AIG",
+  "classification": "HHS_PASS_176_DEPLOYMENT_BACKEND_DEGRADED_MODE_IMPLEMENTED",
+  "authoritative_branch": "main",
+  "baseline_commit": "862dc89f2ea1258db6ceb0e1a0a2d38b1eb21975",
+  "implementation_commits": [
+    "144a15c0129a2ff3be3169effa14af7323a17c70",
+    "dd6f2ea3bb0b56424b9153d4ddb61b5e8a08ad16",
+    "10a14d0ca0add1cc9b754501a729e40f4fd1ba48",
+    "1dcc402f5dc023cd6db7cd5329eb449ce3bda956",
+    "50a4f3142e4432578c9889adfd873faffa7b60a9",
+    "3e8273bbdbae1a304c2a2e227553f0b085c875b6"
+  ],
+  "acceptance_bindings": {
+    "lightweight_health_routes": true,
+    "health_routes_before_fallback_and_static_mount": true,
+    "bounded_browser_health_probe_ms": 4000,
+    "persistent_degraded_mode_banner": true,
+    "retryable_health_diagnostics": true,
+    "runtime_controls_fail_closed_when_unavailable": true,
+    "assistant_prompt_remains_editable": true,
+    "assistant_send_is_capability_gated": true,
+    "pass175_optimistic_state_prevented_when_offline": true,
+    "preview_console_ready_messages_deduplicated": true,
+    "generated_starters_clean": true,
+    "generated_html_css_readable": true,
+    "local_edit_preview_export_preserved": true,
+    "frontend_runtime_authority": false,
+    "live_heroku_recovery_claimed": false
+  },
+  "git_blob_sha": {
+    "HHS_PASS_176_DEPLOYMENT_BACKEND_DEGRADED_MODE_AMENDMENT.md": "53bccfb378afe68240c5267eedeac1ccb8ca8ee5",
+    "applications/holofractal_harmonizer/src/deployment-health.mjs": "319128d2d2b0250b25278f64663cf634bcaa03d9",
+    "applications/holofractal_harmonizer/src/visual-ide.mjs": "ad89d6c1e2e6dea6b09f7840d0a44092a2422357",
+    "applications/holofractal_harmonizer/src/application-templates-runtime.mjs": "dc1c5e5947276a2ffd26dbd4c2e3cd3ac3c0ad61",
+    "hhs_backend/application_ide_server.py": "c03c59706f31d1a44c1ee3770b06604913c40ffd",
+    "tests/pass176/test_deployment_backend_degraded_mode_static.py": "ecb6e4b17687aa5fcca739f9ea930c6d8d2c1499"
+  },
+  "validation": {
+    "dependency_scoped_static_tests": {
+      "passed": 7,
+      "failed": 0
+    },
+    "node_check_deployment_health": true,
+    "node_check_visual_ide": true,
+    "node_check_application_templates_runtime": true,
+    "python_compile_application_ide_server": true
+  },
+  "deployment_boundary": {
+    "repository_repair_complete": true,
+    "heroku_dns_or_dyno_verified": false,
+    "reason": "No Heroku control-plane connection was available and the public target could not be independently reached from the available network path."
+  }
+}
