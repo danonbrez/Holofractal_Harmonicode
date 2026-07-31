@@ -1,5 +1,5 @@
 import './gui-reliability.mjs';
-import { $, $$, state, activeFile, persist, setText, log, bytesToBase64, ensureProject } from './visual-ide-state.mjs';
+import { $, $$, state, activeFile, persist, setText, log, bytesToBase64, ensureProject, requestJson } from './visual-ide-state.mjs';
 import { showIde, showOther, renderFiles, activateFile, updateLineNumbers, saveFile, createFile, addBrowserFiles, renderSnapshot, renderHash216, openBottomTab, bind3d } from './visual-ide-ui.mjs';
 import { ingest, loadSnapshot, interpret, compile, run, replay, exportEgress } from './visual-ide-runtime.mjs';
 import { initProjectLifecycle } from './project-lifecycle.mjs';
@@ -35,10 +35,19 @@ function bind(node, eventName, handler, key = eventName, options = undefined) {
   return true;
 }
 
-function action(name, operation, { timeoutMs = 120000, detail = name } = {}) {
+function canonicalActionKey(name) {
+  const value = String(name || 'action');
+  const alias = value.replace(/^(workflow|command|shortcut|stage)-/, '');
+  if (alias === 'index' || alias === 'snapshot') return 'snapshot';
+  if (alias === 'execute') return 'run';
+  if (alias === 'multimodal-ingress' || alias === 'drop-ingress') return 'ingress';
+  return alias;
+}
+
+function action(name, operation, { timeoutMs = 120000, detail = name, key = canonicalActionKey(name) } = {}) {
   return (event) => {
     event?.preventDefault?.();
-    void stability.runAction(name, (job) => operation(job), { timeoutMs, detail }).catch((error) => {
+    void stability.runAction(name, (job) => operation(job), { timeoutMs, detail, key }).catch((error) => {
       stability.recordError(error, { action: name, recoverable: true });
     });
   };
@@ -82,6 +91,10 @@ function bindCoreControls() {
     }, 'close-view', true);
   }
 
+  const profile = required('#profile-select');
+  profile.value = stability.status().profile;
+  bind(profile, 'change', () => stability.setProfile(profile.value), 'performance-profile');
+
   bind(required('#ide-new-file'), 'click', action('file-create', () => createFile(), {
     timeoutMs: 15000,
     detail: 'Creating a project file',
@@ -96,6 +109,7 @@ function bindCoreControls() {
     event.target.value = '';
     if (!files.length) return;
     await stability.runAction('multimodal-ingress', (job) => addBrowserFiles(files, () => ingest({ signal: job.signal })), {
+      key: 'ingress',
       timeoutMs: 180000,
       detail: `Importing ${files.length} file${files.length === 1 ? '' : 's'}`,
     });
@@ -198,6 +212,7 @@ function bindCoreControls() {
     const files = [...(event.dataTransfer?.files || [])];
     if (!files.length) return;
     void stability.runAction('drop-ingress', (job) => addBrowserFiles(files, () => ingest({ signal: job.signal })), {
+      key: 'ingress',
       timeoutMs: 180000,
       detail: `Importing ${files.length} dropped file${files.length === 1 ? '' : 's'}`,
     }).catch((error) => stability.recordError(error, { action: 'drop-ingress' }));
@@ -275,15 +290,23 @@ async function bootVisualIDE() {
     },
     {
       stage: 'BACKEND_CAPABILITY_CHECKED',
-      run: () => {
+      run: async () => {
+        const [productHealth, pass175] = await Promise.all([
+          requestJson('/api/product/health', { timeoutMs: 10000, retryCount: 1 }),
+          requestJson('/api/v1/pass175/status', { timeoutMs: 10000, retryCount: 1 }),
+        ]);
+        const authorityEvidence = stability.setAuthorityEvidence({ productHealth, pass175 });
+        if (!authorityEvidence.vm81AuthorityPreserved || authorityEvidence.hash72CommitStreams !== 1) {
+          throw new Error('HHS_P176_BACKEND_AUTHORITY_EVIDENCE_REJECTED');
+        }
         void stability.runAction('workspace-authority-bind', async ({ signal }) => {
           const projectId = await ensureProject({ signal });
           log(`Workspace authority bound to ${projectId}.`);
           return projectId;
-        }, { timeoutMs: 30000, detail: 'Checking backend workspace authority' }).catch((error) => {
+        }, { key: 'workspace-authority-bind', timeoutMs: 30000, detail: 'Checking backend workspace authority' }).catch((error) => {
           log(`Workspace initialization deferred: ${error.message}`);
         });
-        return { nonblocking: true };
+        return authorityEvidence;
       },
       optional: true,
     },
