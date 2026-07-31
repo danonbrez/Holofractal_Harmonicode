@@ -1,7 +1,13 @@
 const $ = (selector) => document.querySelector(selector);
 
 let assistantOpen = false;
+let initialized = false;
 let providerObserver = null;
+let providerTimer = null;
+let focusTimer = null;
+let refreshPromise = null;
+let lastRefreshAt = 0;
+const REFRESH_COOLDOWN_MS = 5000;
 
 function syncCommandState() {
   const state = $('#ide-assistant-command-state');
@@ -14,7 +20,32 @@ function syncCommandState() {
 }
 
 function focusPrompt() {
-  window.setTimeout(() => $('#prompt-input')?.focus(), 80);
+  if (focusTimer !== null) window.clearTimeout(focusTimer);
+  focusTimer = window.setTimeout(() => {
+    focusTimer = null;
+    $('#prompt-input')?.focus();
+  }, 80);
+}
+
+function refreshAssistantStatusBounded() {
+  const refresh = window.HHSAssistant?.refreshStatus;
+  if (typeof refresh !== 'function') return null;
+  const now = Date.now();
+  if (refreshPromise || now - lastRefreshAt < REFRESH_COOLDOWN_MS) return refreshPromise;
+  lastRefreshAt = now;
+  refreshPromise = Promise.resolve()
+    .then(() => refresh.call(window.HHSAssistant))
+    .catch((error) => {
+      window.dispatchEvent(new CustomEvent('hhs:assistant:status-refresh-error', {
+        detail: {
+          classification: 'HHS_P176_ASSISTANT_STATUS_REFRESH_DEFERRED',
+          message: error?.message || String(error),
+        },
+      }));
+      return null;
+    })
+    .finally(() => { refreshPromise = null; });
+  return refreshPromise;
 }
 
 export function openIntegratedAssistant() {
@@ -29,7 +60,7 @@ export function openIntegratedAssistant() {
   $('#ide-menu-assistant')?.classList.add('active');
   $('#ide-assistant-fab')?.classList.add('active');
   syncCommandState();
-  void window.HHSAssistant?.refreshStatus?.();
+  void refreshAssistantStatusBounded();
   focusPrompt();
 }
 
@@ -41,6 +72,10 @@ export function closeIntegratedAssistant() {
   $('#assistant-home')?.classList.remove('active');
   $('#ide-menu-assistant')?.classList.remove('active');
   $('#ide-assistant-fab')?.classList.remove('active');
+  if (focusTimer !== null) {
+    window.clearTimeout(focusTimer);
+    focusTimer = null;
+  }
 }
 
 export function toggleIntegratedAssistant() {
@@ -110,8 +145,9 @@ function mountPersistentLauncher() {
 
 function rebindExplorerAssistant() {
   const original = $('#assistant-home');
-  if (!original) return;
+  if (!original || original.dataset.hhsIntegratedAssistantBound === 'true') return;
   const replacement = original.cloneNode(true);
+  replacement.dataset.hhsIntegratedAssistantBound = 'true';
   original.replaceWith(replacement);
   replacement.onclick = openIntegratedAssistant;
 }
@@ -129,19 +165,25 @@ function bindKeyboard() {
 function watchProvider() {
   const provider = $('#provider-status');
   providerObserver?.disconnect();
+  if (providerTimer !== null) window.clearInterval(providerTimer);
   if (provider) {
     providerObserver = new MutationObserver(syncCommandState);
     providerObserver.observe(provider, { childList: true, characterData: true, subtree: true, attributes: true });
   }
   let checks = 0;
-  const timer = window.setInterval(() => {
+  providerTimer = window.setInterval(() => {
     syncCommandState();
     checks += 1;
-    if (window.HHSAssistant || checks >= 40) window.clearInterval(timer);
+    if (window.HHSAssistant || checks >= 40) {
+      window.clearInterval(providerTimer);
+      providerTimer = null;
+    }
   }, 125);
 }
 
 export function initIntegratedAssistant() {
+  if (initialized && window.HHSIntegratedAssistant) return window.HHSIntegratedAssistant;
+  initialized = true;
   moveAssistantIntoDrawer();
   rebindExplorerAssistant();
   mountDesktopCommand();
@@ -155,8 +197,12 @@ export function initIntegratedAssistant() {
     open: openIntegratedAssistant,
     close: closeIntegratedAssistant,
     toggle: toggleIntegratedAssistant,
+    refreshStatus: refreshAssistantStatusBounded,
     get isOpen() { return assistantOpen; },
     assistant_remains_advisory: true,
     ide_remains_primary_surface: true,
+    status_refresh_deduplicated: true,
+    status_refresh_cooldown_ms: REFRESH_COOLDOWN_MS,
   });
+  return window.HHSIntegratedAssistant;
 }

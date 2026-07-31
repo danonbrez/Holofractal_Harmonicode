@@ -42,5 +42,14 @@ test('repository history is an IDE subsystem rather than a replacement landing p
   ]) assert.ok(source.includes(endpoint), `missing ${endpoint}`);
   assert.match(source, /PASS CONSTRAINTS \+ HISTORY/);
   assert.match(source, /The editor remains the primary product surface/);
-  assert.match(ide, /initProjectLifecycle\(\); initIntegratedWorkbench\(\)/);
+
+  const lifecycle = ide.indexOf("safeInit('project-lifecycle', initProjectLifecycle)");
+  const workbench = ide.indexOf("safeInit('integrated-workbench', initIntegratedWorkbench, { optional: true })");
+  const interactive = ide.indexOf("stage: 'INTERACTIVE'");
+  assert.ok(lifecycle >= 0, 'project lifecycle is not initialized through Pass 176 safety');
+  assert.ok(workbench >= 0, 'repository workbench is not initialized through Pass 176 safety');
+  assert.ok(interactive >= 0, 'Pass 176 ordered boot does not expose INTERACTIVE');
+  assert.ok(lifecycle < workbench, 'optional repository history must initialize after project lifecycle');
+  assert.match(ide, /OPTIONAL_REGISTRY_HISTORY_DIAGNOSTICS_LOADING/);
+  assert.match(ide, /queueMicrotask\(/);
 });

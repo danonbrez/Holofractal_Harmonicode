@@ -47,7 +47,14 @@ test('deployed visual IDE gains the additive project lifecycle without replacing
   const ide = read('src/visual-ide.mjs');
   const theme = read('src/harmonic-studio-theme.css');
   assert.match(ide, /import \{ initProjectLifecycle \} from '\.\/project-lifecycle\.mjs'/);
-  assert.match(ide, /showIde\(\); initProjectLifecycle\(\);/);
+  assert.match(ide, /showIde\(\)/);
+  assert.match(ide, /safeInit\('project-lifecycle', initProjectLifecycle\)/);
+  assert.match(ide, /stage: 'EDITOR_READY'/);
+  assert.match(ide, /stage: 'PREVIEW_READY'/);
+  assert.ok(
+    ide.indexOf("stage: 'EDITOR_READY'") < ide.indexOf("stage: 'PREVIEW_READY'"),
+    'the editor must become ready before additive lifecycle initialization',
+  );
   assert.match(theme, /--background: #16110d/);
   assert.match(theme, /--active: #e0a63c/);
   assert.match(theme, /Additive Harmonicode Studio aesthetic layer/);
