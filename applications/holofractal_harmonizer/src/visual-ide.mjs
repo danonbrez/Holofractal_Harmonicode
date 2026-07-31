@@ -10,11 +10,12 @@ import { initApplicationStudio } from './application-studio.mjs';
 import { initDeployableAppCompiler } from './deployable-app-compiler.mjs';
 import { initPass175Processor } from './pass175-processor.mjs';
 import { initPass175TerminalProcessor } from './pass175-terminal.mjs';
-import { initProductionRecovery, runBoundedProjectTest } from './production-recovery.mjs';
+import { initProductionRecovery, runBoundedProjectTest, cancelActiveJob } from './production-recovery.mjs';
 import { initDeploymentHealth } from './deployment-health.mjs';
 import { initPass176Stability } from './pass176-stability.mjs';
 
-const stability = await initPass176Stability({ state, activeFile, persist, ensureProject, log });
+let stability = null;
+const bootOptions = { state, activeFile, persist, ensureProject, log };
 const bindings = new WeakMap();
 
 function required(selector) {
@@ -37,7 +38,7 @@ function bind(node, eventName, handler, key = eventName, options = undefined) {
 function action(name, operation, { timeoutMs = 120000, detail = name } = {}) {
   return (event) => {
     event?.preventDefault?.();
-    void stability.runAction(name, operation, { timeoutMs, detail }).catch((error) => {
+    void stability.runAction(name, (job) => operation(job), { timeoutMs, detail }).catch((error) => {
       stability.recordError(error, { action: name, recoverable: true });
     });
   };
@@ -51,6 +52,14 @@ async function safeInit(name, initializer, { optional = false } = {}) {
     if (!optional) throw error;
     return null;
   }
+}
+
+async function runGovernedLifecycle(job) {
+  const abort = () => cancelActiveJob();
+  if (job?.signal?.aborted) abort();
+  else job?.signal?.addEventListener('abort', abort, { once: true });
+  try { return await runBoundedProjectTest(); }
+  finally { job?.signal?.removeEventListener?.('abort', abort); }
 }
 
 function bindCoreControls() {
@@ -86,7 +95,7 @@ function bindCoreControls() {
     const files = [...(event.target.files || [])];
     event.target.value = '';
     if (!files.length) return;
-    await stability.runAction('multimodal-ingress', () => addBrowserFiles(files, ingest), {
+    await stability.runAction('multimodal-ingress', (job) => addBrowserFiles(files, () => ingest({ signal: job.signal })), {
       timeoutMs: 180000,
       detail: `Importing ${files.length} file${files.length === 1 ? '' : 's'}`,
     });
@@ -95,11 +104,11 @@ function bindCoreControls() {
   const commands = {
     new: () => createFile(),
     save: () => saveFile(),
-    ingress: () => ingest(),
-    interpret: () => interpret(),
-    compile: () => compile(),
-    run: () => run(),
-    lifecycle: () => runBoundedProjectTest(),
+    ingress: (job) => ingest({ signal: job?.signal }),
+    interpret: (job) => interpret({ signal: job?.signal }),
+    compile: (job) => compile({ signal: job?.signal }),
+    run: (job) => run({ signal: job?.signal }),
+    lifecycle: (job) => runGovernedLifecycle(job),
     egress: () => exportEgress(),
   };
   const timeouts = { ingress: 180000, interpret: 120000, compile: 180000, run: 180000, lifecycle: 240000, egress: 60000 };
@@ -113,7 +122,7 @@ function bindCoreControls() {
     ['#ide-egress', 'egress'],
     ['#ide-download-egress', 'egress'],
   ]) {
-    const operation = name === 'replay' ? () => replay() : commands[name];
+    const operation = name === 'replay' ? (job) => replay({ signal: job?.signal }) : commands[name];
     bind(required(selector), 'click', action(`workflow-${name}`, operation, {
       timeoutMs: timeouts[name] || 120000,
       detail: `${name[0].toUpperCase()}${name.slice(1)} workflow`,
@@ -133,12 +142,12 @@ function bindCoreControls() {
     bind(button, 'click', () => openBottomTab(button.dataset.bottomTab), `bottom-${button.dataset.bottomTab}`);
   }
   const stageActions = {
-    ingress: () => ingest(),
-    index: () => loadSnapshot(),
-    snapshot: () => loadSnapshot(),
-    interpret: () => interpret(),
-    compile: () => compile(),
-    execute: () => run(),
+    ingress: (job) => ingest({ signal: job?.signal }),
+    index: (job) => loadSnapshot(undefined, { signal: job?.signal }),
+    snapshot: (job) => loadSnapshot(undefined, { signal: job?.signal }),
+    interpret: (job) => interpret({ signal: job?.signal }),
+    compile: (job) => compile({ signal: job?.signal }),
+    execute: (job) => run({ signal: job?.signal }),
     egress: () => exportEgress(),
   };
   for (const button of $$('[data-stage]')) {
@@ -165,6 +174,11 @@ function bindCoreControls() {
   for (const eventName of ['click', 'keyup', 'select']) {
     bind(editor, eventName, updateLineNumbers, `editor-${eventName}`);
   }
+  bind(window, 'hhs:pass176:recovery-applied', () => {
+    renderFiles();
+    const restoredPath = state.activePath || state.files[0]?.path || null;
+    if (restoredPath) activateFile(restoredPath);
+  }, 'pass176-recovery-render');
 
   const zone = required('#ide-drop-zone');
   for (const eventName of ['dragenter', 'dragover']) {
@@ -183,7 +197,7 @@ function bindCoreControls() {
   bind(zone, 'drop', (event) => {
     const files = [...(event.dataTransfer?.files || [])];
     if (!files.length) return;
-    void stability.runAction('drop-ingress', () => addBrowserFiles(files, ingest), {
+    void stability.runAction('drop-ingress', (job) => addBrowserFiles(files, () => ingest({ signal: job.signal })), {
       timeoutMs: 180000,
       detail: `Importing ${files.length} dropped file${files.length === 1 ? '' : 's'}`,
     }).catch((error) => stability.recordError(error, { action: 'drop-ingress' }));
@@ -196,111 +210,126 @@ function bindCoreControls() {
     }
     if ((event.ctrlKey || event.metaKey) && event.key === 'Enter') {
       event.preventDefault();
-      action('shortcut-lifecycle', () => runBoundedProjectTest(), { timeoutMs: 240000, detail: 'Running the application lifecycle' })(event);
+      action('shortcut-lifecycle', (job) => runGovernedLifecycle(job), { timeoutMs: 240000, detail: 'Running the application lifecycle' })(event);
     }
   }, 'global-shortcuts');
 
   const layout = required('#ide-layout');
-if (!layout.dataset.mobilePane) layout.dataset.mobilePane = 'editor';
-for (const button of $$('.ide-mobile-dock button')) {
-  bind(button, 'click', () => {
-    $$('.ide-mobile-dock button').forEach((item) => item.classList.toggle('active', item === button));
-    if (button.dataset.mobilePane === 'explorer') $('#registry-nav')?.classList.add('open');
-    else layout.dataset.mobilePane = button.dataset.mobilePane || 'editor';
-  }, `mobile-pane-${button.dataset.mobilePane || button.textContent}`);
-}
+  if (!layout.dataset.mobilePane) layout.dataset.mobilePane = 'editor';
+  for (const button of $$('.ide-mobile-dock button')) {
+    bind(button, 'click', () => {
+      $$('.ide-mobile-dock button').forEach((item) => item.classList.toggle('active', item === button));
+      if (button.dataset.mobilePane === 'explorer') $('#registry-nav')?.classList.add('open');
+      else layout.dataset.mobilePane = button.dataset.mobilePane || 'editor';
+    }, `mobile-pane-${button.dataset.mobilePane || button.textContent}`);
+  }
 }
 
-await stability.boot([
-  {
-    stage: 'STATIC_THEME_READY',
-    run: () => {
-      document.documentElement.dataset.hhsFrozenVisualBaseline = 'PASS176';
-      return { theme: 'accepted-production-theme-preserved' };
+async function bootVisualIDE() {
+  stability = await initPass176Stability(bootOptions);
+  return stability.boot([
+    {
+      stage: 'STATIC_THEME_READY',
+      run: () => {
+        document.documentElement.dataset.hhsFrozenVisualBaseline = 'PASS176';
+        return { theme: 'accepted-production-theme-preserved' };
+      },
     },
-  },
-  {
-    stage: 'CORE_WORKSPACE_READY',
-    run: () => bindCoreControls(),
-  },
-  {
-    stage: 'PROJECT_STATE_RESTORED',
-    run: () => {
-      stability.flushRecovery('boot-baseline');
-      return { recoveryAvailable: stability.status().recoveryAvailable };
+    {
+      stage: 'CORE_WORKSPACE_READY',
+      run: () => bindCoreControls(),
     },
-  },
-  {
-    stage: 'EDITOR_READY',
-    run: () => {
-      renderFiles();
-      activateFile(state.activePath);
-      renderSnapshot({ projection_b64: bytesToBase64(new Uint8Array(648)), projection_hash72: 'GENESIS' });
-      renderHash216({ ingestion_operation_hash216: 'GENESIS', ingestion_positions_hash216: [] });
-      bind3d();
-      showIde();
+    {
+      stage: 'PROJECT_STATE_RESTORED',
+      run: () => {
+        if (!stability.status().recoveryAvailable) stability.flushRecovery('boot-baseline');
+        return { recoveryAvailable: stability.status().recoveryAvailable };
+      },
     },
-  },
-  {
-    stage: 'PREVIEW_READY',
-    run: async () => {
-      await safeInit('project-lifecycle', initProjectLifecycle);
-      await safeInit('production-recovery', initProductionRecovery);
-      await safeInit('deployment-health', initDeploymentHealth, { optional: true });
-      await safeInit('application-studio', initApplicationStudio);
-      await safeInit('deployable-app-compiler', initDeployableAppCompiler);
+    {
+      stage: 'EDITOR_READY',
+      run: () => {
+        renderFiles();
+        activateFile(state.activePath);
+        renderSnapshot({ projection_b64: bytesToBase64(new Uint8Array(648)), projection_hash72: 'GENESIS' });
+        renderHash216({ ingestion_operation_hash216: 'GENESIS', ingestion_positions_hash216: [] });
+        bind3d();
+        showIde();
+      },
     },
-  },
-  {
-    stage: 'ASSISTANT_READY',
-    run: () => safeInit('integrated-assistant', initIntegratedAssistant, { optional: true }),
-    optional: true,
-  },
-  {
-    stage: 'BACKEND_CAPABILITY_CHECKED',
-    run: () => {
-      void stability.runAction('workspace-authority-bind', async () => {
-        const projectId = await ensureProject();
-        log(`Workspace authority bound to ${projectId}.`);
-        return projectId;
-      }, { timeoutMs: 30000, detail: 'Checking backend workspace authority' }).catch((error) => {
-        log(`Workspace initialization deferred: ${error.message}`);
-      });
-      return { nonblocking: true };
+    {
+      stage: 'PREVIEW_READY',
+      run: async () => {
+        await safeInit('project-lifecycle', initProjectLifecycle);
+        await safeInit('production-recovery', initProductionRecovery);
+        required('#ide-run-lifecycle').onclick = null;
+        await safeInit('deployment-health', initDeploymentHealth, { optional: true });
+        await safeInit('application-studio', initApplicationStudio);
+        await safeInit('deployable-app-compiler', initDeployableAppCompiler);
+      },
     },
-    optional: true,
-  },
-  {
-    stage: 'OPTIONAL_REGISTRY_HISTORY_DIAGNOSTICS_LOADING',
-    run: () => {
-      queueMicrotask(() => {
-        void safeInit('integrated-workbench', initIntegratedWorkbench, { optional: true });
-        void safeInit('intuitive-ide', initIntuitiveIDE, { optional: true });
-        void safeInit('pass175-processor', initPass175Processor, { optional: true });
-        void safeInit('pass175-terminal-processor', initPass175TerminalProcessor, { optional: true });
-      });
-      return { deferred: true };
+    {
+      stage: 'ASSISTANT_READY',
+      run: () => safeInit('integrated-assistant', initIntegratedAssistant, { optional: true }),
+      optional: true,
     },
-    optional: true,
-  },
-  {
-    stage: 'INTERACTIVE',
-    run: () => {
-      setText('#ide-registry-state', 'LIVE');
-      window.HHSVisualIDE = Object.freeze({
-        state,
-        show: showIde,
-        ingest,
-        snapshot: loadSnapshot,
-        interpret,
-        compile,
-        run,
-        lifecycle: runBoundedProjectTest,
-        replay,
-        egress: exportEgress,
-        stability: () => stability.status(),
-      });
-      window.dispatchEvent(new CustomEvent('hhs:visual-ide:interactive', { detail: stability.status() }));
+    {
+      stage: 'BACKEND_CAPABILITY_CHECKED',
+      run: () => {
+        void stability.runAction('workspace-authority-bind', async ({ signal }) => {
+          const projectId = await ensureProject({ signal });
+          log(`Workspace authority bound to ${projectId}.`);
+          return projectId;
+        }, { timeoutMs: 30000, detail: 'Checking backend workspace authority' }).catch((error) => {
+          log(`Workspace initialization deferred: ${error.message}`);
+        });
+        return { nonblocking: true };
+      },
+      optional: true,
     },
-  },
-]);
+    {
+      stage: 'OPTIONAL_REGISTRY_HISTORY_DIAGNOSTICS_LOADING',
+      run: () => {
+        queueMicrotask(() => {
+          void safeInit('integrated-workbench', initIntegratedWorkbench, { optional: true });
+          void safeInit('intuitive-ide', initIntuitiveIDE, { optional: true });
+          void safeInit('pass175-processor', initPass175Processor, { optional: true });
+          void safeInit('pass175-terminal-processor', initPass175TerminalProcessor, { optional: true });
+        });
+        return { deferred: true };
+      },
+      optional: true,
+    },
+    {
+      stage: 'INTERACTIVE',
+      run: () => {
+        setText('#ide-registry-state', 'LIVE');
+        window.HHSVisualIDE = Object.freeze({
+          state,
+          show: showIde,
+          ingest,
+          snapshot: loadSnapshot,
+          interpret,
+          compile,
+          run,
+          lifecycle: runBoundedProjectTest,
+          replay,
+          egress: exportEgress,
+          stability: () => stability.status(),
+        });
+        window.dispatchEvent(new CustomEvent('hhs:visual-ide:interactive', { detail: stability.status() }));
+      },
+    },
+  ]);
+}
+
+const visualIdeBootPromise = bootVisualIDE();
+window.HHSVisualIDEBoot = visualIdeBootPromise;
+void visualIdeBootPromise.catch((error) => {
+  const detail = {
+    classification: error?.classification || 'HHS_P176_VISUAL_IDE_BOOT_FAILED',
+    message: error?.message || String(error),
+  };
+  window.dispatchEvent(new CustomEvent('hhs:visual-ide:boot-error', { detail }));
+  console.error(detail.classification, detail.message);
+});
