@@ -1,0 +1,125 @@
+name: Pass 175 Runtime ABI and First Hydration
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'native_projects/hhs_pass175_virtual_instruction_processor/**'
+      - 'hhs_runtime/pass174/**'
+      - 'hhs_runtime/pass175/**'
+      - 'tests/test_pass175_virtual_instruction_processor.py'
+      - 'tests/test_pass175_terminal_completion.py'
+      - 'tools/pass175_runtime_abi_hydration_benchmark.py'
+      - '.github/workflows/pass175-runtime-abi-hydration.yml'
+  push:
+    branches:
+      - agent/pass175-runtime-abi-hydration
+      - main
+    paths:
+      - 'native_projects/hhs_pass175_virtual_instruction_processor/**'
+      - 'hhs_runtime/pass174/**'
+      - 'hhs_runtime/pass175/**'
+      - 'tests/test_pass175_virtual_instruction_processor.py'
+      - 'tests/test_pass175_terminal_completion.py'
+      - 'tools/pass175_runtime_abi_hydration_benchmark.py'
+      - '.github/workflows/pass175-runtime-abi-hydration.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pass175-runtime-abi-hydration-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  abi-hydration-benchmark:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    env:
+      HHS_DISABLE_C_AUTOBUILD: '1'
+      HHS_NATIVE_LANGUAGE_REQUIRE_WORD2VEC: '0'
+      HHS_ASSISTANT_HEALTH_TIMEOUT_SECONDS: '0.5'
+      HHS_PASS174_BOOT_TIMEOUT_SECONDS: '20'
+      HHS_PASS175_NATIVE_ARTIFACT_DIR: ${{ github.workspace }}/native_projects/hhs_pass175_virtual_instruction_processor/build/terminal
+      REPORT_PATH: evidence/pass175/generated/PASS_175_RUNTIME_ABI_FIRST_HYDRATION_BENCHMARK.json
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependency-scoped packages
+        run: |
+          timeout 300s python -m pip install --upgrade pip
+          timeout 300s python -m pip install \
+            fastapi==0.128.2 \
+            starlette==0.50.0 \
+            'cryptography>=46.0,<47.0' \
+            pytest
+
+      - name: Build and verify the native Runtime ABI
+        working-directory: native_projects/hhs_pass175_virtual_instruction_processor
+        run: timeout 600s make clean test
+
+      - name: Compile the benchmark harness
+        run: timeout 60s python -m py_compile tools/pass175_runtime_abi_hydration_benchmark.py
+
+      - name: Execute native ABI benchmark and first hydration
+        run: |
+          timeout 1200s python tools/pass175_runtime_abi_hydration_benchmark.py \
+            --abi-library "$HHS_PASS175_NATIVE_ARTIFACT_DIR/libvm81_invariant_kernel.so" \
+            --repository-root . \
+            --iterations 50000 \
+            --batch-size 64 \
+            --output "$REPORT_PATH"
+
+      - name: Validate benchmark receipt
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          path = Path(os.environ['REPORT_PATH'])
+          report = json.loads(path.read_text(encoding='utf-8'))
+          assert report['classification'] == 'HHS_PASS_175_RUNTIME_KERNEL_ABI_AND_FIRST_HYDRATION_VERIFIED'
+          assert report['native_abi']['abi_version'] == '0x00017501'
+          assert all(report['native_abi']['checks'].values())
+          assert all(report['first_hydration']['checks'].values())
+          assert report['first_hydration']['hydration']['sealed'] is True
+          assert report['first_hydration']['firmware']['ready'] is True
+          assert report['first_hydration']['execution']['parallel_state_authority'] is False
+          assert report['first_hydration']['execution']['singleton_vm81_commit_authority'] is True
+          assert report['first_hydration']['execution']['hash72_commit_streams'] == 1
+          assert report['first_hydration']['replay']['deterministic_replay'] is True
+          assert len(report['report_sha256']) == 64
+          print(json.dumps({
+              'report_sha256': report['report_sha256'],
+              'native_timings': report['native_abi']['timings_nonauthoritative'],
+              'hydration_timings': report['first_hydration']['timings_nonauthoritative'],
+          }, indent=2, sort_keys=True))
+          PY
+
+      - name: Run dependency-scoped Pass 175 regression
+        run: |
+          timeout 1200s pytest -q \
+            tests/test_pass175_virtual_instruction_processor.py \
+            tests/test_pass175_terminal_completion.py
+
+      - name: Upload benchmark and native evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass175-runtime-abi-first-hydration
+          path: |
+            evidence/pass175/generated/PASS_175_RUNTIME_ABI_FIRST_HYDRATION_BENCHMARK.json
+            native_projects/hhs_pass175_virtual_instruction_processor/build/terminal/vm81_invariant_kernel_test_receipt.json
+            native_projects/hhs_pass175_virtual_instruction_processor/build/terminal/vm81_invariant_kernel_manifest.json
+            native_projects/hhs_pass175_virtual_instruction_processor/build/terminal/vm81_invariant_kernel.hash216
+            native_projects/hhs_pass175_virtual_instruction_processor/build/terminal/vm81_invariant_kernel.sha256
+          if-no-files-found: error
+          retention-days: 30
