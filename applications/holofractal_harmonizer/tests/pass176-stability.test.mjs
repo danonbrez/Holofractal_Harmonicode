@@ -71,6 +71,32 @@ test('bounded jobs deduplicate duplicate invocations and support cancellation', 
   assert.equal(jobs.snapshot().active.length, 0);
 });
 
+test('bounded jobs deduplicate command aliases by canonical key', async () => {
+  const jobs = new BoundedJobManager();
+  let executions = 0;
+  let release;
+  const blocker = new Promise((resolve) => { release = resolve; });
+  const workflow = jobs.run('workflow-lifecycle', async () => {
+    executions += 1;
+    await blocker;
+    return 'complete';
+  }, { key: 'lifecycle' });
+  const shortcut = jobs.run('shortcut-lifecycle', async () => 'duplicate', { key: 'lifecycle' });
+  assert.equal(workflow, shortcut);
+  await Promise.resolve();
+  assert.equal(executions, 1);
+  release();
+  assert.equal(await workflow, 'complete');
+  assert.equal(jobs.snapshot().active.length, 0);
+});
+
+test('bounded jobs settle on timeout even when executor ignores AbortSignal', async () => {
+  const jobs = new BoundedJobManager();
+  const ignored = jobs.run('ignored-signal', () => new Promise(() => {}), { timeoutMs: 20 });
+  await assert.rejects(ignored, /HHS_P176_JOB_TIMEOUT/);
+  assert.equal(jobs.snapshot().active.length, 0);
+});
+
 test('atomic recovery prefers the newest complete or pending envelope', () => {
   const values = new Map();
   const storage = {
@@ -86,4 +112,18 @@ test('atomic recovery prefers the newest complete or pending envelope', () => {
   assert.equal(recovery.load().payload.activePath, 'src/new.hhs');
   recovery.clear();
   assert.equal(recovery.load(), null);
+});
+
+test('atomic recovery prefers pending envelope when timestamps tie', () => {
+  const values = new Map();
+  const storage = {
+    getItem: (key) => values.get(key) ?? null,
+    setItem: (key, value) => values.set(key, value),
+    removeItem: (key) => values.delete(key),
+  };
+  const recovery = new AtomicRecoveryStore(storage);
+  const complete = recovery.save({ activePath: 'src/main.hhs', files: [{ path: 'src/main.hhs' }] });
+  const pending = { ...complete, payload: { activePath: 'src/pending.hhs', files: [{ path: 'src/pending.hhs' }] } };
+  storage.setItem(recovery.pendingKey, JSON.stringify(pending));
+  assert.equal(recovery.load().payload.activePath, 'src/pending.hhs');
 });
