@@ -8,6 +8,8 @@ const REQUIRED_APPLICATION_TEMPLATES = Object.freeze([
 let selectedTemplate = 'pong';
 let previousProject = null;
 let priorUndoHandler = null;
+let workflowObserver = null;
+let workflowRepairPending = false;
 
 function snapshotProject() {
   return {
@@ -182,17 +184,72 @@ function mountGallery() {
   renderTemplateButtons(gallery);
 }
 
+function createStableApplicationLauncher() {
+  let newApp = $('#ide-new-app');
+  if (newApp) return newApp;
+  const primaryActions = document.querySelector('#ide-simple-workflow .ide-simple-primary-actions');
+  const menu = document.querySelector('.ide-menu-bar');
+  const host = primaryActions || menu || $('#ide-view');
+  if (!host) return null;
+  newApp = document.createElement('button');
+  newApp.id = 'ide-new-app';
+  newApp.type = 'button';
+  newApp.className = primaryActions ? 'primary-action' : 'ide-new-application-launcher';
+  newApp.setAttribute('aria-label', 'Create a new application');
+  const symbol = document.createElement('span');
+  symbol.textContent = '＋';
+  const label = document.createElement('strong');
+  label.textContent = 'New Application';
+  const description = document.createElement('small');
+  description.textContent = 'Games, tools, documents, audio, video';
+  newApp.append(symbol, label, description);
+  if (!primaryActions) {
+    newApp.style.cssText = [
+      'display:inline-flex', 'align-items:center', 'gap:6px', 'min-height:30px',
+      'padding:0 11px', 'border:1px solid #6f87d9', 'border-radius:7px',
+      'background:linear-gradient(135deg,#5e78db,#344d9f)', 'color:#f6f8ff',
+      'font-size:12px', 'font-weight:800', 'cursor:pointer', 'white-space:nowrap',
+    ].join(';');
+    description.style.display = 'none';
+  }
+  if (menu) {
+    const spacer = menu.querySelector('.ide-menu-spacer');
+    menu.insertBefore(newApp, spacer || null);
+  } else {
+    host.prepend(newApp);
+  }
+  return newApp;
+}
+
 function promotePrimaryWorkflow() {
-  const newApp = $('#ide-new-app');
+  const newApp = createStableApplicationLauncher();
   if (newApp) {
-    const replacement = newApp.cloneNode(true);
-    newApp.replaceWith(replacement);
-    replacement.onclick = openApplicationGallery;
-    replacement.querySelector('strong').textContent = 'New Application';
-    replacement.querySelector('small').textContent = 'Games, tools, documents, audio, video';
+    newApp.onclick = openApplicationGallery;
+    const label = newApp.querySelector('strong');
+    const description = newApp.querySelector('small');
+    if (label) label.textContent = 'New Application';
+    if (description) description.textContent = 'Games, tools, documents, audio, video';
   }
   const status = $('#ide-simple-workflow-state');
   if (status) status.textContent = 'Ready. Create a real application, add your own files, or drop a folder anywhere.';
+}
+
+function observePrimaryWorkflowInvariant() {
+  if (workflowObserver || !document.body) return;
+  workflowObserver = new MutationObserver(() => {
+    if ($('#ide-new-app') || workflowRepairPending) return;
+    workflowRepairPending = true;
+    queueMicrotask(() => {
+      workflowRepairPending = false;
+      if (!$('#ide-new-app')) {
+        promotePrimaryWorkflow();
+        window.dispatchEvent(new CustomEvent('hhs:application-studio:workflow-restored', {
+          detail: { control: 'ide-new-app', frontend_is_authority: false },
+        }));
+      }
+    });
+  });
+  workflowObserver.observe(document.body, { childList: true, subtree: true });
 }
 
 function bindKeyboard() {
@@ -208,15 +265,18 @@ function bindKeyboard() {
 export function initApplicationStudio() {
   mountGallery();
   promotePrimaryWorkflow();
+  observePrimaryWorkflowInvariant();
   bindKeyboard();
   const templates = applicationTemplateList().map(({ id, label, description, entrypoint }) => ({ id, label, description, entrypoint }));
   window.HHSApplicationStudio = Object.freeze({
     open: openApplicationGallery,
     create: createApplicationProject,
     restorePreviousProject,
+    ensurePrimaryControl: promotePrimaryWorkflow,
     templates,
     required_templates: REQUIRED_APPLICATION_TEMPLATES,
     template_registry_complete: REQUIRED_APPLICATION_TEMPLATES.every((id) => templates.some((template) => template.id === id)),
+    primary_control_is_self_healing: true,
     creates_real_runnable_projects: true,
     prior_project_is_recoverable: true,
   });
