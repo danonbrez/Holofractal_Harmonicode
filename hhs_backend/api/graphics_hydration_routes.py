@@ -13,11 +13,13 @@ from hhs_backend.runtime.hhs_graphics_hydration_v1 import (
     reciprocal_palette_phases,
     validate_native_frame_provenance,
 )
+from hhs_backend.runtime.hhs_graphics_optimization_v1 import GraphicsOptimizationError
+from hhs_backend.runtime.hhs_graphics_optimizer_instance_v1 import GRAPHICS_OPTIMIZER
 
 router = APIRouter(prefix="/api/runtime/graphics-hydration", tags=["graphics-hydration"])
 
 
-def _rejection(error: GraphicsHydrationError) -> Dict[str, Any]:
+def _rejection(error: Exception) -> Dict[str, Any]:
     return {
         "schema": "HHS_P181_GRAPHICS_HYDRATION_ROUTE_RESULT_V1",
         "ok": False,
@@ -35,6 +37,8 @@ def _require_operator_local_path_authority() -> None:
 def graphics_hydration_status() -> Dict[str, Any]:
     status = GRAPHICS_HYDRATION.status()
     status["self_test_projection"] = graphics_hydration_self_test()
+    status["bounded_optimizer"] = GRAPHICS_OPTIMIZER.status()
+    status["implementation_stage"] = "PASS_181_PHASE_4_BOUNDED_NATIVE_OPTIMIZATION_LOOP"
     return status
 
 
@@ -139,6 +143,82 @@ def graphics_hydration_compare_residuals(payload: Dict[str, Any]) -> Dict[str, A
             semantic_metrics=semantic_metrics,
         )
     except GraphicsHydrationError as error:
+        return _rejection(error)
+
+
+@router.post("/optimization/jobs")
+def graphics_hydration_create_optimization_job(payload: Dict[str, Any]) -> Dict[str, Any]:
+    try:
+        reference_manifest = payload.get("reference_manifest")
+        candidates = payload.get("candidate_recipes")
+        baseline = payload.get("baseline_residual_report")
+        if not isinstance(reference_manifest, dict):
+            raise GraphicsOptimizationError("P181_REFERENCE_MANIFEST_REQUIRED")
+        if not isinstance(candidates, list):
+            raise GraphicsOptimizationError("P181_CANDIDATE_RECIPE_LIST_REQUIRED")
+        if baseline is not None and not isinstance(baseline, dict):
+            raise GraphicsOptimizationError("P181_BASELINE_RESIDUAL_REPORT_INVALID")
+        return GRAPHICS_OPTIMIZER.create_job(
+            reference_manifest=reference_manifest,
+            candidate_recipes=candidates,
+            baseline_residual_report=baseline,
+            timeout_seconds=int(payload.get("timeout_seconds") or 3600),
+            render_timeout_seconds=int(payload.get("render_timeout_seconds") or 1800),
+            stop_on_exact=bool(payload.get("stop_on_exact", True)),
+        )
+    except (GraphicsOptimizationError, TypeError, ValueError) as error:
+        if not isinstance(error, GraphicsOptimizationError):
+            error = GraphicsOptimizationError("P181_OPTIMIZATION_REQUEST_INVALID")
+        return _rejection(error)
+
+
+@router.get("/optimization/jobs/{job_id}")
+def graphics_hydration_get_optimization_job(job_id: str) -> Dict[str, Any]:
+    try:
+        return GRAPHICS_OPTIMIZER.get_job(job_id)
+    except GraphicsOptimizationError as error:
+        return _rejection(error)
+
+
+@router.post("/optimization/jobs/{job_id}/step")
+def graphics_hydration_step_optimization_job(job_id: str) -> Dict[str, Any]:
+    try:
+        return GRAPHICS_OPTIMIZER.step_job(job_id)
+    except GraphicsOptimizationError as error:
+        return _rejection(error)
+
+
+@router.post("/optimization/jobs/{job_id}/run")
+def graphics_hydration_run_optimization_job(
+    job_id: str,
+    payload: Dict[str, Any] | None = None,
+) -> Dict[str, Any]:
+    try:
+        body = payload or {}
+        max_steps = body.get("max_steps")
+        return GRAPHICS_OPTIMIZER.run_job(
+            job_id,
+            max_steps=None if max_steps is None else int(max_steps),
+        )
+    except (GraphicsOptimizationError, TypeError, ValueError) as error:
+        if not isinstance(error, GraphicsOptimizationError):
+            error = GraphicsOptimizationError("P181_OPTIMIZATION_RUN_REQUEST_INVALID")
+        return _rejection(error)
+
+
+@router.post("/optimization/jobs/{job_id}/cancel")
+def graphics_hydration_cancel_optimization_job(job_id: str) -> Dict[str, Any]:
+    try:
+        return GRAPHICS_OPTIMIZER.cancel_job(job_id)
+    except GraphicsOptimizationError as error:
+        return _rejection(error)
+
+
+@router.post("/optimization/jobs/{job_id}/retry")
+def graphics_hydration_retry_optimization_job(job_id: str) -> Dict[str, Any]:
+    try:
+        return GRAPHICS_OPTIMIZER.retry_job(job_id)
+    except GraphicsOptimizationError as error:
         return _rejection(error)
 
 
