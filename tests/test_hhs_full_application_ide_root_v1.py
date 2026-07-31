@@ -35,8 +35,21 @@ def test_full_application_ide_is_public_root_and_console_is_preserved() -> None:
     assert names.index("hhs-full-application-ide-index") < names.index("hhs-full-application-ide")
     assert paths.index("/src") < names.index("hhs-full-application-ide")
     assert paths.index("/runtime-console") < names.index("hhs-full-application-ide")
+
+    root_routes = [
+        route for route in routes
+        if str(getattr(route, "path", "")) in {"", "/"}
+    ]
+    assert [getattr(route, "name", None) for route in root_routes] == [
+        "hhs-full-application-ide-index",
+        "hhs-full-application-ide",
+    ]
+    assert {"GET", "HEAD"}.issubset(root_routes[0].methods)
+    assert getattr(root_routes[1], "methods", None) is None
+
     assert server.pass174.PASS174_BOOT_STATE["application_ide_is_public_root"] is True
     assert server.pass174.PASS174_BOOT_STATE["diagnostic_console_is_supporting_surface"] is True
+    assert server.pass174.PASS174_BOOT_STATE["single_public_root_authority"] is True
     assert server.pass174.PASS174_BOOT_STATE["inline_public_boot"] == "HHS_INLINE_PUBLIC_BOOT_V2"
 
 
