@@ -7,6 +7,17 @@ from fastapi.testclient import TestClient
 from hhs_backend import application_ide_server as server
 
 
+PUBLIC_SOURCE_ASSETS = (
+    "production-startup-coordinator.mjs",
+    "browser.mjs",
+    "ux-default.mjs",
+    "production-integration.mjs",
+    "visual-ide.mjs",
+    "styles.css",
+    "application-studio.css",
+)
+
+
 def test_full_application_ide_is_public_root_and_console_is_preserved() -> None:
     routes = list(server.app.router.routes)
     names = [getattr(route, "name", None) for route in routes]
@@ -16,6 +27,8 @@ def test_full_application_ide_is_public_root_and_console_is_preserved() -> None:
     assert server.RUNTIME_CONSOLE_ROOT.name == "pass174_visual_ide"
     assert "hhs-full-application-ide" in names
     assert "hhs-pass174-runtime-console" in names
+    assert server.production.VISUAL_SOURCE_MOUNT_NAME in names
+    assert paths.index("/src") < names.index("hhs-full-application-ide")
     assert paths.index("/runtime-console") < names.index("hhs-full-application-ide")
     assert server.pass174.PASS174_BOOT_STATE["application_ide_is_public_root"] is True
     assert server.pass174.PASS174_BOOT_STATE["diagnostic_console_is_supporting_surface"] is True
@@ -28,6 +41,15 @@ def test_public_root_contains_full_ide_and_representative_application_studio() -
     assert "HHS Full Multimodal Application IDE" in response.text
     assert "src/application-studio.css" in response.text
     assert "src/visual-ide.mjs" in response.text
+
+    for asset in PUBLIC_SOURCE_ASSETS:
+        asset_response = client.get(f"/src/{asset}")
+        assert asset_response.status_code == 200, (asset, asset_response.text[:200])
+        assert asset_response.content, asset
+        if asset.endswith(".mjs"):
+            assert "javascript" in asset_response.headers.get("content-type", ""), asset
+        else:
+            assert "text/css" in asset_response.headers.get("content-type", ""), asset
 
     console = client.get("/runtime-console/")
     assert console.status_code == 200
