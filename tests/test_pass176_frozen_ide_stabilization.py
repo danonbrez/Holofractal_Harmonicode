@@ -70,15 +70,20 @@ def test_human_safe_interaction_and_resource_lifecycle_are_bound() -> None:
 
 def test_real_ide_surfaces_remain_primary_and_pass175_is_preserved() -> None:
     visual = read(APP / "src" / "visual-ide.mjs")
-    server = read(ROOT / "hhs_backend" / "production_server.py")
+    production = read(ROOT / "hhs_backend" / "production_server.py")
+    application = read(ROOT / "hhs_backend" / "application_ide_server.py")
+    procfile = read(ROOT / "Procfile")
     assert "initIntegratedAssistant" in visual
     assert "initApplicationStudio" in visual
     assert "initDeployableAppCompiler" in visual
     assert "initPass175Processor" in visual
     assert "initPass175TerminalProcessor" in visual
     assert "HHSVisualIDE" in visual
-    assert 'VISUAL_ROOT = ROOT_DIR / "applications" / "holofractal_harmonizer"' in server
-    assert "hhs-production-harmonizer" in server
+    assert 'VISUAL_ROOT = ROOT_DIR / "applications" / "holofractal_harmonizer"' in production
+    assert "hhs-production-harmonizer" in production
+    assert "pass175_terminal_router" in application
+    assert "hhs-full-application-ide" in application
+    assert "hhs_backend.application_ide_server:app" in procfile
 
 
 def test_pass176_browser_and_repetition_evidence_harness_is_bounded() -> None:
@@ -89,5 +94,14 @@ def test_pass176_browser_and_repetition_evidence_harness_is_bounded() -> None:
     assert "resource growth detected" in smoke
     assert "console errors observed" in smoke
     assert "page errors observed" in smoke
+    assert "HTTP errors observed" in smoke
+    assert "HHSGUIReliability.selectMobilePane" in smoke
     assert "for (let cycle = 0; cycle < 100; cycle += 1)" in node_test
     assert "bounded jobs deduplicate duplicate invocations" in node_test
+
+
+def test_temporary_pass176_repair_machinery_is_absent() -> None:
+    assert not (ROOT / "tools" / "patch_pass176.py").exists()
+    assert not (ROOT / "tools" / "patch_pass176_production_routes_and_smoke.py").exists()
+    assert not (ROOT / ".github" / "workflows" / "pass176-production-route-repair.yml").exists()
+    assert not (APP / "pass176-source-bundle.tar").exists()
