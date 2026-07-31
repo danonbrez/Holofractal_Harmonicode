@@ -2,6 +2,9 @@ import { $, state, persist, setText, log } from './visual-ide-state.mjs';
 import { renderFiles, activateFile, openBottomTab } from './visual-ide-ui.mjs';
 import { applicationTemplateList, materializeApplicationTemplate } from './application-templates-runtime.mjs';
 
+const REQUIRED_APPLICATION_TEMPLATES = Object.freeze([
+  'pong', 'calculator', 'puzzle', 'document', 'audio', 'video',
+]);
 let selectedTemplate = 'pong';
 let previousProject = null;
 let priorUndoHandler = null;
@@ -75,15 +78,56 @@ function closeGallery() {
   document.body.classList.remove('ide-dialog-open');
 }
 
+function templateRegistry() {
+  const templates = applicationTemplateList();
+  const byId = new Map(templates.map((template) => [template.id, template]));
+  const missing = REQUIRED_APPLICATION_TEMPLATES.filter((id) => !byId.has(id));
+  if (missing.length) {
+    throw new Error(`HHS_APPLICATION_TEMPLATE_REGISTRY_INCOMPLETE: ${missing.join(',')}`);
+  }
+  return { templates, byId };
+}
+
+function renderTemplateButtons(gallery) {
+  const grid = gallery.querySelector('#ide-application-template-grid');
+  if (!grid) throw new Error('HHS_APPLICATION_TEMPLATE_GRID_MISSING');
+  const { templates } = templateRegistry();
+  const expected = templates.map((template) => template.id).join('|');
+  if (grid.dataset.templateRegistry === expected
+      && templates.every((template) => grid.querySelector(`[data-application-template="${CSS.escape(template.id)}"]`))) {
+    return;
+  }
+  grid.replaceChildren(...templates.map((template) => {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.dataset.applicationTemplate = template.id;
+    button.setAttribute('aria-pressed', template.id === selectedTemplate ? 'true' : 'false');
+    const label = document.createElement('strong');
+    label.textContent = template.label;
+    const description = document.createElement('span');
+    description.textContent = template.description;
+    const fileCount = document.createElement('small');
+    fileCount.textContent = `${template.files.length} editable files`;
+    button.append(label, description, fileCount);
+    button.onclick = () => selectTemplate(template.id);
+    return button;
+  }));
+  grid.dataset.templateRegistry = expected;
+  selectTemplate(selectedTemplate);
+}
+
 export function openApplicationGallery() {
   const gallery = $('#ide-application-gallery');
   if (!gallery) return;
+  renderTemplateButtons(gallery);
   gallery.hidden = false;
   document.body.classList.add('ide-dialog-open');
   $('#ide-application-name')?.focus();
 }
 
 export function createApplicationProject(id = selectedTemplate, requestedName = '') {
+  const { byId } = templateRegistry();
+  if (!byId.has(id)) throw new Error(`HHS_APPLICATION_TEMPLATE_NOT_REGISTERED: ${id}`);
   const template = materializeApplicationTemplate(id);
   const name = requestedName.trim() || template.label;
   previousProject = snapshotProject();
@@ -110,35 +154,32 @@ export function createApplicationProject(id = selectedTemplate, requestedName = 
 }
 
 function mountGallery() {
-  if ($('#ide-application-gallery')) return;
-  const gallery = document.createElement('section');
-  gallery.id = 'ide-application-gallery';
-  gallery.className = 'ide-application-gallery';
-  gallery.hidden = true;
-  gallery.setAttribute('role', 'dialog');
-  gallery.setAttribute('aria-modal', 'true');
-  gallery.setAttribute('aria-labelledby', 'ide-application-gallery-title');
-  gallery.innerHTML = `
-    <div class="ide-application-gallery-card">
-      <header>
-        <div><span>NEW APPLICATION</span><h2 id="ide-application-gallery-title">Choose something real to build</h2><p>Every starter is editable, runnable, testable, compilable, and exportable.</p></div>
-        <button id="ide-close-application-gallery" type="button" aria-label="Close">×</button>
-      </header>
-      <label class="ide-application-name-label">Project name<input id="ide-application-name" value="My Application" maxlength="120"></label>
-      <div class="ide-application-template-grid">
-        ${applicationTemplateList().map((template) => `<button type="button" data-application-template="${template.id}" aria-pressed="${template.id === selectedTemplate}"><strong>${template.label}</strong><span>${template.description}</span><small>${template.files.length} editable files</small></button>`).join('')}
-      </div>
-      <footer><button id="ide-cancel-application-gallery" type="button">Cancel</button><button id="ide-create-application-project" type="button" class="primary-action">Create & Run Project</button></footer>
-    </div>`;
-  document.body.append(gallery);
-  $('#ide-close-application-gallery').onclick = closeGallery;
-  $('#ide-cancel-application-gallery').onclick = closeGallery;
-  $('#ide-create-application-project').onclick = () => createApplicationProject(selectedTemplate, $('#ide-application-name')?.value || '');
-  gallery.addEventListener('click', (event) => { if (event.target === gallery) closeGallery(); });
-  gallery.querySelectorAll('[data-application-template]').forEach((button) => {
-    button.onclick = () => selectTemplate(button.dataset.applicationTemplate);
-  });
-  selectTemplate(selectedTemplate);
+  let gallery = $('#ide-application-gallery');
+  if (!gallery) {
+    gallery = document.createElement('section');
+    gallery.id = 'ide-application-gallery';
+    gallery.className = 'ide-application-gallery';
+    gallery.hidden = true;
+    gallery.setAttribute('role', 'dialog');
+    gallery.setAttribute('aria-modal', 'true');
+    gallery.setAttribute('aria-labelledby', 'ide-application-gallery-title');
+    gallery.innerHTML = `
+      <div class="ide-application-gallery-card">
+        <header>
+          <div><span>NEW APPLICATION</span><h2 id="ide-application-gallery-title">Choose something real to build</h2><p>Every starter is editable, runnable, testable, compilable, and exportable.</p></div>
+          <button id="ide-close-application-gallery" type="button" aria-label="Close">×</button>
+        </header>
+        <label class="ide-application-name-label">Project name<input id="ide-application-name" value="My Application" maxlength="120"></label>
+        <div id="ide-application-template-grid" class="ide-application-template-grid"></div>
+        <footer><button id="ide-cancel-application-gallery" type="button">Cancel</button><button id="ide-create-application-project" type="button" class="primary-action">Create & Run Project</button></footer>
+      </div>`;
+    document.body.append(gallery);
+    $('#ide-close-application-gallery').onclick = closeGallery;
+    $('#ide-cancel-application-gallery').onclick = closeGallery;
+    $('#ide-create-application-project').onclick = () => createApplicationProject(selectedTemplate, $('#ide-application-name')?.value || '');
+    gallery.addEventListener('click', (event) => { if (event.target === gallery) closeGallery(); });
+  }
+  renderTemplateButtons(gallery);
 }
 
 function promotePrimaryWorkflow() {
@@ -168,11 +209,14 @@ export function initApplicationStudio() {
   mountGallery();
   promotePrimaryWorkflow();
   bindKeyboard();
+  const templates = applicationTemplateList().map(({ id, label, description, entrypoint }) => ({ id, label, description, entrypoint }));
   window.HHSApplicationStudio = Object.freeze({
     open: openApplicationGallery,
     create: createApplicationProject,
     restorePreviousProject,
-    templates: applicationTemplateList().map(({ id, label, description, entrypoint }) => ({ id, label, description, entrypoint })),
+    templates,
+    required_templates: REQUIRED_APPLICATION_TEMPLATES,
+    template_registry_complete: REQUIRED_APPLICATION_TEMPLATES.every((id) => templates.some((template) => template.id === id)),
     creates_real_runnable_projects: true,
     prior_project_is_recoverable: true,
   });
