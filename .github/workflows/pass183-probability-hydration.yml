@@ -1,0 +1,63 @@
+name: Pass 183 Probability Hydration Runtime
+on:
+  pull_request:
+    branches: [main]
+    paths: ['docs/pass183/**','hhs_runtime/pass183/**','hhs_backend/api/probability_hydration_routes.py','hhs_backend/visual_server.py','applications/probability_hydration_studio/**','native_projects/hhs_pass183_probability_hydration/**','tests/test_pass183_probability_hydration.py','tests/test_pass183_api_and_studio.py','tests/pass183_acceptance_harness.py','scripts/test_pass183_probability_hydration.sh','.github/workflows/pass183-probability-hydration.yml']
+  push:
+    branches: [main, agent/pass183-probability-hydration-runtime]
+    paths: ['docs/pass183/**','hhs_runtime/pass183/**','hhs_backend/api/probability_hydration_routes.py','hhs_backend/visual_server.py','applications/probability_hydration_studio/**','native_projects/hhs_pass183_probability_hydration/**','tests/test_pass183_probability_hydration.py','tests/test_pass183_api_and_studio.py','tests/pass183_acceptance_harness.py','scripts/test_pass183_probability_hydration.sh','.github/workflows/pass183-probability-hydration.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: pass183-probability-hydration-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  probability-hydration:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      HHS_DISABLE_C_AUTOBUILD: '1'
+      HHS_NATIVE_LANGUAGE_REQUIRE_WORD2VEC: '0'
+      HHS_ASSISTANT_HEALTH_TIMEOUT_SECONDS: '0.5'
+      HHS_PASS174_BOOT_TIMEOUT_SECONDS: '20'
+      HHS_PASS183_JOB_DIR: ${{ github.workspace }}/.pass183_jobs
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - name: Install dependency-scoped packages
+        run: |
+          timeout 300s python -m pip install --upgrade pip
+          timeout 300s python -m pip install fastapi==0.128.2 starlette==0.50.0 'cryptography>=46.0,<47.0' 'httpx>=0.27,<1.0' pytest
+      - name: Validate JavaScript studio
+        run: node --check applications/probability_hydration_studio/app.js
+      - name: Run bounded Pass 183 acceptance
+        run: timeout 1200s bash scripts/test_pass183_probability_hydration.sh
+      - name: Verify completion receipt
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          path=Path('native_projects/hhs_pass183_probability_hydration/evidence/PASS_183_COMPLETION.json')
+          result=json.loads(path.read_text())
+          assert result['classification']=='HHS_PASS_183_PROBABILITY_EQUATION_HYDRATION_MEMBRANE_RUNTIME_VERIFIED'
+          assert result['authority_mode']=='GENUINE_PASS174_VM81'
+          assert all(result['checks'].values())
+          assert result['route_count']==11
+          assert len(result['receipt_sha256'])==64
+          print(json.dumps({'classification':result['classification'],'receipt_sha256':result['receipt_sha256'],'route_count':result['route_count']},indent=2,sort_keys=True))
+          PY
+      - name: Upload Pass 183 evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass183-probability-hydration-evidence
+          path: |
+            native_projects/hhs_pass183_probability_hydration/evidence/PASS_183_COMPLETION.json
+            native_projects/hhs_pass183_probability_hydration/build/test_hhs_p183
+            native_projects/hhs_pass183_probability_hydration/build/libhhs_p183_probability_hydration.a
+          if-no-files-found: error
+          retention-days: 30
