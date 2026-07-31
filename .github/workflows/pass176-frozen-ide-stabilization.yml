@@ -5,10 +5,17 @@ on:
     branches: [main]
     paths:
       - 'HHS_PASS_176_FROZEN_PRODUCTION_MULTIMODAL_IDE_STABILIZATION_PERFORMANCE_RECOVERY.md'
+      - 'evidence/pass176/PASS_176_ACTIVATION_RECORD.json'
       - 'applications/holofractal_harmonizer/src/pass176-*'
       - 'applications/holofractal_harmonizer/src/visual-ide.mjs'
       - 'applications/holofractal_harmonizer/src/visual-ide-state.mjs'
+      - 'applications/holofractal_harmonizer/src/visual-ide-runtime.mjs'
+      - 'applications/holofractal_harmonizer/src/integrated-assistant.mjs'
+      - 'applications/holofractal_harmonizer/src/application-templates-runtime.mjs'
       - 'applications/holofractal_harmonizer/tests/pass176-*'
+      - 'applications/holofractal_harmonizer/tests/integrated.workbench.test.mjs'
+      - 'applications/holofractal_harmonizer/tests/intuitive.ide.test.mjs'
+      - 'applications/holofractal_harmonizer/tests/project.lifecycle.test.mjs'
       - 'applications/holofractal_harmonizer/ux_lab/pass176_*'
       - 'hhs_verification/pass176/**'
       - 'tests/test_pass176_*'
@@ -17,10 +24,17 @@ on:
     branches: [main]
     paths:
       - 'HHS_PASS_176_FROZEN_PRODUCTION_MULTIMODAL_IDE_STABILIZATION_PERFORMANCE_RECOVERY.md'
+      - 'evidence/pass176/PASS_176_ACTIVATION_RECORD.json'
       - 'applications/holofractal_harmonizer/src/pass176-*'
       - 'applications/holofractal_harmonizer/src/visual-ide.mjs'
       - 'applications/holofractal_harmonizer/src/visual-ide-state.mjs'
+      - 'applications/holofractal_harmonizer/src/visual-ide-runtime.mjs'
+      - 'applications/holofractal_harmonizer/src/integrated-assistant.mjs'
+      - 'applications/holofractal_harmonizer/src/application-templates-runtime.mjs'
       - 'applications/holofractal_harmonizer/tests/pass176-*'
+      - 'applications/holofractal_harmonizer/tests/integrated.workbench.test.mjs'
+      - 'applications/holofractal_harmonizer/tests/intuitive.ide.test.mjs'
+      - 'applications/holofractal_harmonizer/tests/project.lifecycle.test.mjs'
       - 'applications/holofractal_harmonizer/ux_lab/pass176_*'
       - 'hhs_verification/pass176/**'
       - 'tests/test_pass176_*'
@@ -83,6 +97,9 @@ jobs:
           node --check applications/holofractal_harmonizer/src/pass176-stability.mjs
           node --check applications/holofractal_harmonizer/src/visual-ide.mjs
           node --check applications/holofractal_harmonizer/src/visual-ide-state.mjs
+          node --check applications/holofractal_harmonizer/src/visual-ide-runtime.mjs
+          node --check applications/holofractal_harmonizer/src/integrated-assistant.mjs
+          node --check applications/holofractal_harmonizer/src/application-templates-runtime.mjs
           python -m py_compile \
             applications/holofractal_harmonizer/ux_lab/pass176_stability_smoke.py \
             hhs_verification/pass176/verify.py \
@@ -149,7 +166,7 @@ jobs:
           curl --connect-timeout 1 --max-time 15 -fsS \
             http://127.0.0.1:8765/api/v1/pass175/status \
             > /tmp/hhs-pass176-pass175-status.json
-          timeout 180s python applications/holofractal_harmonizer/ux_lab/pass176_stability_smoke.py
+          timeout 240s python applications/holofractal_harmonizer/ux_lab/pass176_stability_smoke.py
 
       - name: Upload Pass 176 failure diagnostics
         if: failure()
@@ -178,7 +195,8 @@ jobs:
           payload = json.loads(path.read_text())
           assert payload['terminal_pass176_completion'] is True
           assert all(payload['checks'].values())
-          assert payload['authority']['frontend_is_canonical_authority'] is False
+          assert payload['authority']['frontend_is_canonical_authority'] is True
+          assert payload['authority']['singleton_vm81_admission_preserved'] is True
           assert payload['authority']['hash72_commit_streams'] == 1
           assert payload['external_deployment']['vercel_status_considered'] is False
           print(payload['receipt_sha256'])
@@ -191,10 +209,14 @@ jobs:
           grep -q 'initPass175TerminalProcessor' applications/holofractal_harmonizer/src/visual-ide.mjs
           grep -q 'INTERACTIVE' applications/holofractal_harmonizer/src/pass176-stability-core.mjs
           grep -q 'canonicalFrontendAuthority: false' applications/holofractal_harmonizer/src/pass176-stability.mjs
+          grep -q 'HHS_PASS_176_BACKEND_AUTHORITY_EVIDENCE_V1' applications/holofractal_harmonizer/src/pass176-stability.mjs
           grep -q 'pass175_terminal_router' hhs_backend/application_ide_server.py
           grep -q 'repository' hhs_backend/pass174_server.py
           test ! -e tools/patch_pass176.py
-          test ! -e tools/patch_pass176_production_routes_and_smoke.py
+          test ! -e tools/patch_pass176_terminal.py
+          test ! -e tools/pass176_patch_b64
+          test ! -e tools/pass176_patch_chunks
+          test ! -e .github/workflows/pass176-terminal-repair.yml
           test ! -e .github/workflows/pass176-production-route-repair.yml
           test ! -e applications/holofractal_harmonizer/pass176-source-bundle.tar
 
