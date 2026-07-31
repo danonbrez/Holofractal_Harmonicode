@@ -1,4 +1,4 @@
-"""HTTP projection for the Pass 181 graphics hydration authority core."""
+"""HTTP projection for the Pass 181 graphics hydration authority."""
 from __future__ import annotations
 
 from typing import Any, Dict
@@ -24,6 +24,11 @@ def _rejection(error: GraphicsHydrationError) -> Dict[str, Any]:
         "status": "REJECT_GRAPHICS_HYDRATION_REQUEST",
         "reason": str(error),
     }
+
+
+def _require_operator_local_path_authority() -> None:
+    if not GRAPHICS_HYDRATION.status()["operator_local_path_decode_enabled"]:
+        raise GraphicsHydrationError("P181_OPERATOR_LOCAL_PATH_DECODE_DISABLED")
 
 
 @router.get("/status")
@@ -64,6 +69,40 @@ def graphics_hydration_validate_provenance(payload: Dict[str, Any]) -> Dict[str,
 @router.post("/fidelity/classify")
 def graphics_hydration_classify_fidelity(payload: Dict[str, Any]) -> Dict[str, Any]:
     return classify_fidelity(payload)
+
+
+@router.post("/decode/manifest")
+def graphics_hydration_decode_manifest(payload: Dict[str, Any]) -> Dict[str, Any]:
+    """Operator-only local-file decode; browser uploads use a separate ingress path."""
+
+    try:
+        _require_operator_local_path_authority()
+        return GRAPHICS_HYDRATION.build_decode_manifest(
+            str(payload.get("source_path") or ""),
+            logical_name=payload.get("logical_name"),
+        )
+    except (GraphicsHydrationError, OSError) as error:
+        if not isinstance(error, GraphicsHydrationError):
+            error = GraphicsHydrationError(f"P181_REFERENCE_PATH_INVALID:{error}")
+        return _rejection(error)
+
+
+@router.post("/decode/replay")
+def graphics_hydration_decode_replay(payload: Dict[str, Any]) -> Dict[str, Any]:
+    try:
+        _require_operator_local_path_authority()
+        expected = str(payload.get("expected_timeline_hash216") or "").strip()
+        if not expected:
+            raise GraphicsHydrationError("P181_EXPECTED_TIMELINE_IDENTITY_REQUIRED")
+        return GRAPHICS_HYDRATION.replay_decode_manifest(
+            str(payload.get("source_path") or ""),
+            expected_timeline_hash216=expected,
+            logical_name=payload.get("logical_name"),
+        )
+    except (GraphicsHydrationError, OSError) as error:
+        if not isinstance(error, GraphicsHydrationError):
+            error = GraphicsHydrationError(f"P181_REFERENCE_PATH_INVALID:{error}")
+        return _rejection(error)
 
 
 @router.post("/constraints/promote")
