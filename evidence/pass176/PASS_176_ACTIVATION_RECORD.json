@@ -38,7 +38,7 @@
     "source_backup_branch": "backup/pass176-pre-current-main-integration-20260731-2"
   },
   "merge_target": "main",
-  "next_action": "Execute bounded Pass 176 validation on the latest-main-integrated branch, merge after green terminal evidence, and record authoritative-main closure.",
+  "next_action": "Run bounded validation, merge after terminal evidence, and verify authoritative main.",
   "rebase": {
     "backup_branch": "backup/pass176-frozen-ide-stabilization-pre-rebase-20260731",
     "current_main_base": "862dc89f2ea1258db6ceb0e1a0a2d38b1eb21975",
