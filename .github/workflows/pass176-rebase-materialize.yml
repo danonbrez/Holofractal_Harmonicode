@@ -1,0 +1,103 @@
+name: Materialize Pass 176 on Current Main
+
+on:
+  push:
+    branches: [agent/pass176-frozen-ide-stabilization]
+    paths:
+      - '.github/workflows/pass176-rebase-materialize.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  materialize:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/pass176-frozen-ide-stabilization
+          fetch-depth: 0
+      - name: Materialize validated Pass 176 files over current main
+        run: |
+          set -euo pipefail
+          git fetch origin backup/pass176-frozen-ide-stabilization-pre-rebase-20260731
+          backup=origin/backup/pass176-frozen-ide-stabilization-pre-rebase-20260731
+          git checkout "$backup" -- \
+            .github/workflows/pass176-frozen-ide-stabilization.yml \
+            applications/holofractal_harmonizer/src/pass176-stability-core.mjs \
+            applications/holofractal_harmonizer/src/pass176-stability.css \
+            applications/holofractal_harmonizer/src/pass176-stability.mjs \
+            applications/holofractal_harmonizer/src/visual-ide-state.mjs \
+            applications/holofractal_harmonizer/src/visual-ide.mjs \
+            applications/holofractal_harmonizer/tests/integrated.workbench.test.mjs \
+            applications/holofractal_harmonizer/tests/intuitive.ide.test.mjs \
+            applications/holofractal_harmonizer/tests/pass176-stability.test.mjs \
+            applications/holofractal_harmonizer/tests/project.lifecycle.test.mjs \
+            applications/holofractal_harmonizer/ux_lab/pass176_stability_smoke.py \
+            evidence/pass176/PASS_176_ACTIVATION_RECORD.json \
+            hhs_verification/pass176/verify.py \
+            tests/test_pass176_frozen_ide_stabilization.py
+          python - <<'PY'
+          from pathlib import Path
+          import json
+
+          path = Path('applications/holofractal_harmonizer/src/visual-ide.mjs')
+          source = path.read_text(encoding='utf-8')
+          source = source.replace(
+              "import { ingest, loadSnapshot, interpret, compile, run, runLifecycle, replay, exportEgress } from './visual-ide-runtime.mjs';",
+              "import { ingest, loadSnapshot, interpret, compile, run, replay, exportEgress } from './visual-ide-runtime.mjs';",
+          )
+          anchor = "import { initPass175TerminalProcessor } from './pass175-terminal.mjs';\n"
+          addition = "import { initProductionRecovery, runBoundedProjectTest } from './production-recovery.mjs';\n"
+          if addition not in source:
+              source = source.replace(anchor, anchor + addition)
+          source = source.replace("lifecycle: () => runLifecycle(),", "lifecycle: () => runBoundedProjectTest(),")
+          source = source.replace("const operation = name === 'replay' ? () => replay() : commands[name];", "const operation = name === 'replay' ? () => replay() : commands[name];")
+          source = source.replace("action('shortcut-lifecycle', () => runLifecycle(),", "action('shortcut-lifecycle', () => runBoundedProjectTest(),")
+          source = source.replace("lifecycle: runLifecycle,", "lifecycle: runBoundedProjectTest,")
+          source = source.replace(
+              "await safeInit('project-lifecycle', initProjectLifecycle);\n      await safeInit('application-studio', initApplicationStudio);",
+              "await safeInit('project-lifecycle', initProjectLifecycle);\n      await safeInit('production-recovery', initProductionRecovery);\n      await safeInit('application-studio', initApplicationStudio);",
+          )
+          mobile_anchor = "  const layout = required('#ide-layout');\n  if (!layout.dataset.mobilePane) layout.dataset.mobilePane = 'editor';\n"
+          mobile_block = """  const layout = required('#ide-layout');
+          if (!layout.dataset.mobilePane) layout.dataset.mobilePane = 'editor';
+          for (const button of $$('.ide-mobile-dock button')) {
+            bind(button, 'click', () => {
+              $$('.ide-mobile-dock button').forEach((item) => item.classList.toggle('active', item === button));
+              if (button.dataset.mobilePane === 'explorer') $('#registry-nav')?.classList.add('open');
+              else layout.dataset.mobilePane = button.dataset.mobilePane || 'editor';
+            }, `mobile-pane-${button.dataset.mobilePane || button.textContent}`);
+          }
+          """
+          if mobile_anchor in source:
+              source = source.replace(mobile_anchor, mobile_block)
+          if 'runLifecycle' in source:
+              raise SystemExit('PASS176_REBASE_LEFT_LEGACY_RUN_LIFECYCLE')
+          for required in ['initProductionRecovery', 'runBoundedProjectTest', "stage: 'INTERACTIVE'", 'initPass175TerminalProcessor']:
+              if required not in source:
+                  raise SystemExit(f'PASS176_REBASE_REQUIRED_TOKEN_MISSING:{required}')
+          path.write_text(source, encoding='utf-8')
+
+          activation_path = Path('evidence/pass176/PASS_176_ACTIVATION_RECORD.json')
+          activation = json.loads(activation_path.read_text(encoding='utf-8'))
+          activation['authoritative_base_commit'] = '862dc89f2ea1258db6ceb0e1a0a2d38b1eb21975'
+          activation['rebase'] = {
+              'previous_branch_head': 'cd294dcdd49a339cca3cbeeb99987b89ea0877af',
+              'backup_branch': 'backup/pass176-frozen-ide-stabilization-pre-rebase-20260731',
+              'current_main_base': '862dc89f2ea1258db6ceb0e1a0a2d38b1eb21975',
+              'main_pass176_deployment_recovery_preserved': True,
+          }
+          activation['next_action'] = 'Execute bounded Pass 176 validation on the current-main-integrated branch, repair dependency-scoped failures, merge after green terminal evidence, and record authoritative-main closure.'
+          activation_path.write_text(json.dumps(activation, indent=2, sort_keys=True) + '\n', encoding='utf-8')
+          PY
+          rm .github/workflows/pass176-rebase-materialize.yml
+      - name: Commit current-main-integrated Pass 176 implementation
+        run: |
+          git config user.name 'hhs-pass176-integration'
+          git config user.email 'hhs-pass176-integration@users.noreply.github.com'
+          git add -A
+          git commit -m 'Integrate Pass 176 stabilization with current main recovery'
+          git push origin HEAD:agent/pass176-frozen-ide-stabilization
