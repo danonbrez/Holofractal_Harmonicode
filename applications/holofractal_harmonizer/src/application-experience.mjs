@@ -1,10 +1,7 @@
-import { initProjectLifecycle } from './project-lifecycle.mjs';
-import { initIntegratedWorkbench } from './integrated-workbench.mjs';
 import { initIntuitiveIDE } from './intuitive-ide.mjs';
 import { initApplicationStudio } from './application-studio.mjs';
-import { initDeployableAppCompiler } from './deployable-app-compiler.mjs';
 
-const EXPERIENCE_SCHEMA = 'HHS_APPLICATION_EXPERIENCE_BOOT_V1';
+const EXPERIENCE_SCHEMA = 'HHS_APPLICATION_EXPERIENCE_BOOT_V2';
 let bootRecord = null;
 
 function initialize(globalName, initializer, initialized) {
@@ -17,20 +14,60 @@ function initialize(globalName, initializer, initialized) {
   initialized.push({ component: globalName, state: 'READY' });
 }
 
+function loadSupport(component, path, initializerName, globalName, support) {
+  const record = { component, state: 'LOADING', error: null };
+  support.push(record);
+  return import(path).then((module) => {
+    if (!window[globalName]) {
+      const initializer = module[initializerName];
+      if (typeof initializer !== 'function') {
+        throw new Error(`HHS_APPLICATION_SUPPORT_INITIALIZER_MISSING: ${initializerName}`);
+      }
+      initializer();
+    }
+    if (!window[globalName]) throw new Error(`HHS_APPLICATION_SUPPORT_MISSING: ${globalName}`);
+    record.state = 'READY';
+    return { component, state: 'READY' };
+  }).catch((error) => {
+    record.state = 'FAILED';
+    record.error = `${error?.name || 'Error'}: ${error?.message || String(error)}`;
+    window.dispatchEvent(new CustomEvent('hhs:application-experience:support-error', {
+      detail: { ...record },
+    }));
+    console.error('HHS_APPLICATION_EXPERIENCE_SUPPORT_FAILED', component, record.error);
+    return { component, state: 'FAILED', error: record.error };
+  });
+}
+
 export function startApplicationExperience() {
   if (bootRecord) return bootRecord;
   const initialized = [];
+  const support = [];
 
-  initialize('HHSProjectLifecycle', initProjectLifecycle, initialized);
-  initialize('HHSIntegratedWorkbench', initIntegratedWorkbench, initialized);
+  // The critical user path has no dependency on backend lifecycle hydration:
+  // mount New Application first, then promote it into the real gallery.
   initialize('HHSIntuitiveIDE', initIntuitiveIDE, initialized);
   initialize('HHSApplicationStudio', initApplicationStudio, initialized);
-  initialize('HHSDeployableAppCompiler', initDeployableAppCompiler, initialized);
+
+  // Preview, source ZIP, and deployable compilation remain real, but hydrate in
+  // parallel after the primary control is already usable.
+  const supportReady = Promise.allSettled([
+    loadSupport('project-lifecycle', './project-lifecycle.mjs', 'initProjectLifecycle', 'HHSProjectLifecycle', support),
+    loadSupport('integrated-workbench', './integrated-workbench.mjs', 'initIntegratedWorkbench', 'HHSIntegratedWorkbench', support),
+    loadSupport('deployable-app-compiler', './deployable-app-compiler.mjs', 'initDeployableAppCompiler', 'HHSDeployableAppCompiler', support),
+  ]).then((results) => {
+    window.dispatchEvent(new CustomEvent('hhs:application-experience:support-settled', {
+      detail: { schema: EXPERIENCE_SCHEMA, support: support.map((entry) => ({ ...entry })), results },
+    }));
+    return results;
+  });
 
   bootRecord = Object.freeze({
     schema: EXPERIENCE_SCHEMA,
-    state: 'READY',
+    state: 'INTERACTIVE',
     initialized: Object.freeze(initialized.map((entry) => Object.freeze({ ...entry }))),
+    support,
+    supportReady,
     new_application_control: Boolean(document.querySelector('#ide-new-app')),
     application_gallery: Boolean(document.querySelector('#ide-application-gallery')),
     creates_real_runnable_projects: window.HHSApplicationStudio?.creates_real_runnable_projects === true,
