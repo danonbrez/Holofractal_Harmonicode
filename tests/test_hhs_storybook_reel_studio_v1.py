@@ -52,6 +52,7 @@ def test_no_code_studio_and_contextual_defaults_are_reachable():
     assert "HHS Storybook Reel Studio" in studio.text
     assert "Upload narration audio" in studio.text
     assert "Generate 90-second reel" in studio.text
+    assert "no parallel workers" in studio.text
     defaults = client.post(
         "/api/runtime/storybook-reel/defaults",
         json={"text": "A hero reached the checkpoint gate in the final game level."},
@@ -90,7 +91,6 @@ def test_static_studio_uses_no_external_frontend_dependencies():
     assert stylesheet.status_code == 200
     assert "https://" not in javascript.text
     assert "import " not in javascript.text
-    assert "parallel workers" in javascript.text
 
 
 def test_main_visual_ide_exposes_storybook_reel_without_route_knowledge():
