@@ -7,10 +7,13 @@ const root = new URL('../', import.meta.url);
 const source = async (path) => readFile(new URL(path, root), 'utf8');
 
 const required = ['web', 'pong', 'calculator', 'puzzle', 'document', 'audio', 'video', 'automation', 'harmonic-puzzle', 'platformer'];
+const pass177Required = ['modular-web-application', 'offline-pwa', 'csv-data-explorer', 'canvas-simulation', 'local-media-studio'];
 
 test('application gallery contains real representative project classes', () => {
-  assert.deepEqual(Object.keys(APPLICATION_TEMPLATES), required);
-  for (const id of required) {
+  const templateIds = Object.keys(APPLICATION_TEMPLATES);
+  assert.deepEqual(templateIds.slice(0, required.length), required);
+  assert.deepEqual(templateIds.slice(required.length), pass177Required);
+  for (const id of [...required, ...pass177Required]) {
     const project = materializeApplicationTemplate(id);
     assert.equal(project.id, id);
     assert.ok(project.files.length >= 3);

@@ -67,7 +67,8 @@ test('application gallery exposes an editable runnable Harmonicode puzzle projec
   assert.equal(template.entrypoint, 'harmonic-puzzle/index.html');
   const project = materializeApplicationTemplate('harmonic-puzzle');
   assert.equal(project.files.length, 4);
-  assert.ok(project.files.every((file) => file.dirty === true));
+  assert.ok(project.files.every((file) => file.dirty === false));
+  assert.ok(project.files.every((file) => file.checkpoint === `Created from ${template.label} starter`));
   assert.match(project.files.find((file) => file.path.endsWith('/app.js')).content, /class HarmonicPuzzleModel/);
   assert.match(project.files.find((file) => file.path.endsWith('/app.js')).content, /class HarmonicRenderer/);
 });
