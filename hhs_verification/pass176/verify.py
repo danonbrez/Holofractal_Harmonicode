@@ -11,6 +11,7 @@ from typing import Any
 
 
 HEX64 = re.compile(r"^[0-9a-f]{64}$")
+HEX40 = re.compile(r"^[0-9a-f]{40}$")
 
 
 def canonical(value: Any) -> bytes:
@@ -93,8 +94,7 @@ def main() -> int:
         and parent_main.get("merged") is True
         and parent_main.get("main_source_fetch_verified") is True
         and HEX64.fullmatch(str(parent_roots.get("terminal_receipt_sha256") or ""))
-        and HEX64.fullmatch(str(parent.get("authoritative_merge_commit") or "")) is None
-        and re.fullmatch(r"[0-9a-f]{40}", str(parent.get("authoritative_merge_commit") or ""))
+        and HEX40.fullmatch(str(parent.get("authoritative_merge_commit") or ""))
     )
     evidence_integrity = bool(
         authority_evidence.get("schema") == "HHS_PASS_176_BACKEND_AUTHORITY_EVIDENCE_V1"
@@ -118,6 +118,8 @@ def main() -> int:
         "stale_response_rejected": (browser.get("stale_response") or {}).get("rejected") is True,
         "current_response_accepted": (browser.get("stale_response") or {}).get("currentAccepted") is True,
         "bounded_cancellation": (browser.get("cancelled_job") or {}).get("cancelled") is True,
+        "canonical_job_alias_deduplicated": (browser.get("alias_job") or {}).get("samePromise") is True
+        and (browser.get("alias_job") or {}).get("executions") == 1,
         "atomic_recovery_saved": (browser.get("recovery") or {}).get("saved") is True,
         "recovery_applied_to_editor": (browser.get("recovery") or {}).get("editorRestored") is True,
         "frontend_not_canonical_authority": final_status.get("canonicalFrontendAuthority") is False,
@@ -174,7 +176,8 @@ def main() -> int:
             "http_errors": browser.get("http_errors"),
         },
         "authority": {
-            "frontend_is_canonical_authority": final_status.get("canonicalFrontendAuthority") is False,
+            "frontend_is_canonical_authority": final_status.get("canonicalFrontendAuthority"),
+            "frontend_non_authority_verified": checks["frontend_not_canonical_authority"],
             "backend_evidence": authority_evidence,
             "singleton_vm81_admission_preserved": evidence_integrity and final_status.get("vm81AuthorityPreserved") is True,
             "hash72_commit_streams": authority_evidence.get("hash72CommitStreams", 0),
