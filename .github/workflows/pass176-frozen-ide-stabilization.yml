@@ -105,6 +105,11 @@ jobs:
         run: timeout 600s python -m playwright install --with-deps chromium
 
       - name: Browser and mobile stabilization acceptance
+        env:
+          HHS_DISABLE_C_AUTOBUILD: '1'
+          HHS_LITERT_LM_BACKEND: auto
+          HHS_NATIVE_LANGUAGE_REQUIRE_WORD2VEC: '0'
+          HHS_ASSISTANT_HEALTH_TIMEOUT_SECONDS: '5'
         run: |
           set -euo pipefail
           python -m uvicorn hhs_backend.production_server:app \
@@ -117,8 +122,10 @@ jobs:
           }
           trap cleanup EXIT
           ready=0
-          for attempt in $(seq 1 120); do
-            if curl -fsS http://127.0.0.1:8765/api/system/status > /tmp/hhs-pass176-status.json; then
+          for attempt in $(seq 1 60); do
+            if curl --connect-timeout 1 --max-time 5 -fsS \
+              http://127.0.0.1:8765/api/product/health \
+              > /tmp/hhs-pass176-health.json; then
               ready=1
               break
             fi
@@ -128,6 +135,10 @@ jobs:
             cat /tmp/hhs-pass176-production-server.log
             exit 1
           fi
+          curl --connect-timeout 1 --max-time 10 -fsS \
+            http://127.0.0.1:8765/ \
+            > /tmp/hhs-pass176-root.html
+          grep -q 'HHS Full Multimodal Application IDE' /tmp/hhs-pass176-root.html
           timeout 300s python applications/holofractal_harmonizer/ux_lab/pass176_stability_smoke.py
 
       - name: Generate terminal candidate receipt
