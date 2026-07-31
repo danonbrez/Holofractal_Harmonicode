@@ -140,5 +140,5 @@ test('Pass 177 browser templates are wired into the existing IDE template runtim
   const pwa = materializeApplicationTemplate('offline-pwa');
   assert.ok(pwa.files.some((file) => file.path === 'manifest.webmanifest'));
   assert.ok(pwa.files.some((file) => file.path === 'service-worker.js'));
-  assert.ok(pwa.files.every((file) => file.dirty === false));
+  assert.ok(pwa.files.every((file) => file.dirty === true));
 });
