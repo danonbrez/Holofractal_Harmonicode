@@ -1,0 +1,71 @@
+name: Apply Pass 176 Terminal Repair
+
+on:
+  push:
+    branches:
+      - agent/pass176-frozen-ide-stabilization
+    paths:
+      - 'tools/pass176_patch_b64/**'
+      - 'tools/pass176_patch_chunks/**'
+      - '.github/workflows/pass176-terminal-repair.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: pass176-terminal-repair
+  cancel-in-progress: false
+
+jobs:
+  apply-repair:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Check out Pass 176 branch
+        uses: actions/checkout@v4
+        with:
+          ref: agent/pass176-frozen-ide-stabilization
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Reconstruct and apply bounded repair
+        run: |
+          set -euo pipefail
+          cat tools/pass176_patch_b64/chunk_* | base64 --decode | gzip --decompress > tools/patch_pass176_terminal.py
+          python -m py_compile tools/patch_pass176_terminal.py
+          python tools/patch_pass176_terminal.py
+
+      - name: Validate repaired source and dependency-scoped tests
+        run: |
+          set -euo pipefail
+          node --check applications/holofractal_harmonizer/src/pass176-stability-core.mjs
+          node --check applications/holofractal_harmonizer/src/pass176-stability.mjs
+          node --check applications/holofractal_harmonizer/src/visual-ide.mjs
+          node --check applications/holofractal_harmonizer/src/visual-ide-state.mjs
+          node --check applications/holofractal_harmonizer/src/visual-ide-runtime.mjs
+          node --check applications/holofractal_harmonizer/src/production-recovery.mjs
+          python -m py_compile applications/holofractal_harmonizer/ux_lab/pass176_stability_smoke.py hhs_verification/pass176/verify.py
+          cd applications/holofractal_harmonizer
+          timeout 300s node --test tests/pass176-stability.test.mjs
+          timeout 600s npm test
+
+      - name: Commit repaired Pass 176 source and remove temporary machinery
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git rm -r tools/pass176_patch_b64 tools/pass176_patch_chunks tools/patch_pass176_terminal.py .github/workflows/pass176-terminal-repair.yml
+          git add -A
+          git diff --cached --check
+          git commit -m 'Repair Pass 176 terminal browser closure'
+          git push origin HEAD:agent/pass176-frozen-ide-stabilization
