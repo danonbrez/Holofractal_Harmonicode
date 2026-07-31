@@ -70,7 +70,7 @@ def main() -> None:
             phase("dom-content-loaded", status=response.status, elapsed_ms=dom_loaded_ms)
 
             current_phase = "wait-pass176-controller"
-            page.wait_for_function("() => Boolean(window.HHSPass176)", timeout=20_000)
+            page.wait_for_function("() => Boolean(window.HHSPass176 && window.HHSVisualIDEBoot)", timeout=20_000)
             current_phase = "wait-pass176-interactive"
             page.wait_for_function(
                 """() => Boolean(
@@ -81,19 +81,36 @@ def main() -> None:
                 )""",
                 timeout=60_000,
             )
+            page.wait_for_function(
+                """() => {
+                    const status = window.HHSPass176?.status();
+                    return Boolean(
+                        status?.authorityEvidence?.schema === 'HHS_PASS_176_BACKEND_AUTHORITY_EVIDENCE_V1' &&
+                        status.vm81AuthorityPreserved === true &&
+                        status.hash72CommitStreams === 1
+                    );
+                }""",
+                timeout=30_000,
+            )
+            page.wait_for_function("() => window.HHSPass176.status().jobs.active.length === 0", timeout=30_000)
+            page.wait_for_timeout(1000)
             interactive_ms = round((time.monotonic() - started) * 1000)
             page.wait_for_selector("#ide-source-editor", timeout=20_000)
             page.wait_for_selector("#pass176-stability-status.interactive", timeout=20_000)
             phase(current_phase, elapsed_ms=interactive_ms)
 
             current_phase = "initial-state"
-            initial = page.evaluate("""() => ({
-                activePath: window.HHSVisualIDE.state.activePath,
-                editorValue: document.querySelector('#ide-source-editor')?.value,
-                resourceTotal: window.HHSPass176.status().resources.total,
-                bootRecords: window.HHSPass176.status().boot.records.length,
-                stage: window.HHSPass176.status().boot.stage,
-            })""")
+            initial = page.evaluate("""() => {
+                const status = window.HHSPass176.status();
+                return {
+                    activePath: window.HHSVisualIDE.state.activePath,
+                    editorValue: document.querySelector('#ide-source-editor')?.value,
+                    resourceTotal: status.resources.total,
+                    bootRecords: status.boot.records.length,
+                    stage: status.boot.stage,
+                    authorityEvidence: status.authorityEvidence,
+                };
+            }""")
             phase(current_phase, stage=initial["stage"], resources=initial["resourceTotal"])
 
             current_phase = "duplicate-boot"
@@ -131,10 +148,6 @@ def main() -> None:
             missing = sorted(set(STABLE_MOBILE_PANES) - set(available_panes))
             if missing:
                 raise AssertionError(f"Pass 176 stable mobile panes are incomplete: {missing}")
-            for pane in STABLE_MOBILE_PANES:
-                page.locator(f'.ide-mobile-dock [data-mobile-pane="{pane}"]').first.dispatch_event(
-                    "click", timeout=2_000
-                )
 
             for index in range(100):
                 current_phase = f"mobile-pane-cycle-{index + 1}"
@@ -177,17 +190,34 @@ def main() -> None:
             }""")
             phase(current_phase, **stale_response)
 
+            current_phase = "canonical-job-alias"
+            alias_job = page.evaluate("""async () => {
+                let executions = 0;
+                let release;
+                const blocker = new Promise((resolve) => { release = resolve; });
+                const first = window.HHSPass176.runAction(
+                    'workflow-lifecycle',
+                    async () => { executions += 1; await blocker; return 'complete'; },
+                    { key: 'lifecycle-smoke', timeoutMs: 4000, detail: 'Alias smoke' },
+                );
+                const duplicate = window.HHSPass176.runAction(
+                    'shortcut-lifecycle',
+                    async () => 'duplicate',
+                    { key: 'lifecycle-smoke', timeoutMs: 4000, detail: 'Alias smoke' },
+                );
+                const samePromise = first === duplicate;
+                await Promise.resolve();
+                release();
+                const result = await first;
+                return { samePromise, executions, result };
+            }""")
+            phase(current_phase, **alias_job)
+
             current_phase = "bounded-cancellation"
             cancelled_job = page.evaluate("""async () => {
                 const promise = window.HHSPass176.runAction(
                     'pass176-smoke-cancel',
-                    ({ signal }) => new Promise((resolve, reject) => {
-                        const timer = setTimeout(() => resolve('unexpected'), 2000);
-                        signal.addEventListener('abort', () => {
-                            clearTimeout(timer);
-                            reject(new DOMException('cancelled', 'AbortError'));
-                        }, { once: true });
-                    }),
+                    () => new Promise(() => {}),
                     { timeoutMs: 4000, detail: 'Cancellation smoke test' },
                 );
                 setTimeout(() => window.HHSPass176.cancel('pass176-smoke-cancel'), 20);
@@ -202,8 +232,9 @@ def main() -> None:
             recovery = page.evaluate("""() => {
                 const editor = document.querySelector('#ide-source-editor');
                 const original = editor?.value || '';
+                const marker = '// PASS176_RECOVERY_SMOKE';
                 if (editor) {
-                    editor.value = `${original}\n// PASS176_RECOVERY_SMOKE`;
+                    editor.value = `${original}\n${marker}`;
                     editor.dispatchEvent(new Event('input', { bubbles: true }));
                 }
                 const envelope = window.HHSPass176.flushRecovery('browser-smoke');
@@ -211,9 +242,12 @@ def main() -> None:
                     editor.value = original;
                     editor.dispatchEvent(new Event('input', { bubbles: true }));
                 }
+                const applied = window.HHSPass176.applyRecovery();
                 return {
                     saved: Boolean(envelope),
+                    applied,
                     schema: envelope?.schema,
+                    editorRestored: Boolean(document.querySelector('#ide-source-editor')?.value.includes(marker)),
                     authoritativeBackendDurabilityClaimed:
                         envelope?.metadata?.authoritativeBackendDurabilityClaimed,
                 };
@@ -221,6 +255,7 @@ def main() -> None:
             phase(current_phase, **recovery)
 
             current_phase = "final-status"
+            page.wait_for_function("() => window.HHSPass176.status().jobs.active.length === 0", timeout=10_000)
             final_status = page.evaluate("""() => {
                 const status = window.HHSPass176.status();
                 const navigation = performance.getEntriesByType('navigation')[0];
@@ -235,12 +270,13 @@ def main() -> None:
                     canonicalFrontendAuthority: status.canonicalFrontendAuthority,
                     vm81AuthorityPreserved: status.vm81AuthorityPreserved,
                     hash72CommitStreams: status.hash72CommitStreams,
+                    authorityEvidence: status.authorityEvidence,
                     navigation: navigation ? {
                         domContentLoaded: Math.round(navigation.domContentLoadedEventEnd),
                         loadEventEnd: Math.round(navigation.loadEventEnd),
-                    } : None,
+                    } : null,
                 };
-            }""".replace("None", "null"))
+            }""")
             phase(current_phase, classification=final_status["classification"])
 
             if initial["stage"] != "INTERACTIVE":
@@ -255,12 +291,21 @@ def main() -> None:
                 raise AssertionError(f"resource growth detected: {initial} -> {cycles}")
             if not stale_response["rejected"] or not stale_response["currentAccepted"]:
                 raise AssertionError(f"stale response gate failed: {stale_response}")
+            if not alias_job["samePromise"] or alias_job["executions"] != 1 or alias_job["result"] != "complete":
+                raise AssertionError(f"canonical job alias dedupe failed: {alias_job}")
             if not cancelled_job["cancelled"]:
                 raise AssertionError(f"bounded cancellation failed: {cancelled_job}")
-            if not recovery["saved"] or recovery["authoritativeBackendDurabilityClaimed"] is not False:
+            if not recovery["saved"] or not recovery["applied"] or not recovery["editorRestored"]:
                 raise AssertionError(f"recovery envelope invalid: {recovery}")
+            if recovery["authoritativeBackendDurabilityClaimed"] is not False:
+                raise AssertionError(f"recovery claimed backend durability: {recovery}")
             if final_status["canonicalFrontendAuthority"] is not False:
                 raise AssertionError("frontend incorrectly claimed canonical authority")
+            authority = final_status.get("authorityEvidence") or {}
+            if authority.get("schema") != "HHS_PASS_176_BACKEND_AUTHORITY_EVIDENCE_V1":
+                raise AssertionError(f"backend authority evidence missing: {authority}")
+            if not authority.get("runtimeReceiptHash72") or authority.get("runtimeStatus") != "HHS_RUNTIME_AUTHORITY_ONLINE":
+                raise AssertionError(f"runtime authority evidence incomplete: {authority}")
             if not final_status["vm81AuthorityPreserved"] or final_status["hash72CommitStreams"] != 1:
                 raise AssertionError("backend authority invariants were not preserved")
             if final_status["errors"]:
@@ -286,6 +331,7 @@ def main() -> None:
                 "duplicate_boot": duplicate_boot,
                 "repetition": cycles,
                 "stale_response": stale_response,
+                "alias_job": alias_job,
                 "cancelled_job": cancelled_job,
                 "recovery": recovery,
                 "final_status": final_status,
