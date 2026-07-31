@@ -9,6 +9,7 @@ on:
       - 'hhs_runtime/pass175/**'
       - 'tests/test_pass175_virtual_instruction_processor.py'
       - 'tests/test_pass175_terminal_completion.py'
+      - 'tests/test_pass175_genuine_pass174_authority.py'
       - 'tools/pass175_runtime_abi_hydration_benchmark.py'
       - '.github/workflows/pass175-runtime-abi-hydration.yml'
   push:
@@ -21,6 +22,7 @@ on:
       - 'hhs_runtime/pass175/**'
       - 'tests/test_pass175_virtual_instruction_processor.py'
       - 'tests/test_pass175_terminal_completion.py'
+      - 'tests/test_pass175_genuine_pass174_authority.py'
       - 'tools/pass175_runtime_abi_hydration_benchmark.py'
       - '.github/workflows/pass175-runtime-abi-hydration.yml'
   workflow_dispatch:
@@ -109,7 +111,8 @@ jobs:
         run: |
           timeout 1200s pytest -q \
             tests/test_pass175_virtual_instruction_processor.py \
-            tests/test_pass175_terminal_completion.py
+            tests/test_pass175_terminal_completion.py \
+            tests/test_pass175_genuine_pass174_authority.py
 
       - name: Upload benchmark and native evidence
         uses: actions/upload-artifact@v4
