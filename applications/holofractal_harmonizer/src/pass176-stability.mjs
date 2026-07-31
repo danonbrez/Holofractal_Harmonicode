@@ -20,6 +20,21 @@ function ready() {
   return new Promise((resolve) => document.addEventListener('DOMContentLoaded', resolve, { once: true }));
 }
 
+function storageAdapter() {
+  try {
+    const storage = window.localStorage;
+    storage.getItem(PROFILE_KEY);
+    return storage;
+  } catch {
+    const memory = new Map();
+    return {
+      getItem: (key) => memory.has(key) ? memory.get(key) : null,
+      setItem: (key, value) => memory.set(key, String(value)),
+      removeItem: (key) => memory.delete(key),
+    };
+  }
+}
+
 function loadStyle() {
   if (document.getElementById(STYLE_ID)) return;
   const link = document.createElement('link');
@@ -104,18 +119,21 @@ class Pass176BrowserController {
     this.persist = typeof persist === 'function' ? persist : () => {};
     this.ensureProject = typeof ensureProject === 'function' ? ensureProject : async () => null;
     this.log = typeof log === 'function' ? log : () => {};
+    this.storage = storageAdapter();
     this.bootState = new BootStateMachine();
     this.generations = new GenerationGate();
     this.resources = new ResourceLedger();
     this.jobs = new BoundedJobManager();
-    this.recovery = new AtomicRecoveryStore(localStorage, { key: RECOVERY_KEY });
+    this.recovery = new AtomicRecoveryStore(this.storage, { key: RECOVERY_KEY });
     this.errors = [];
     this.longTasks = [];
     this.bootPromise = null;
     this.disposed = false;
     this.recoveryEnvelope = null;
+    this.authorityEvidence = null;
     this.surface = makeStatusSurface();
-    this.profile = localStorage.getItem(PROFILE_KEY) || 'BALANCED';
+    this.profile = this.storage.getItem(PROFILE_KEY) || 'BALANCED';
+    document.documentElement.dataset.hhsPerformanceProfile = this.profile;
     this.drag = null;
     this.#installGlobalBoundaries();
     this.#installRecovery();
@@ -137,7 +155,7 @@ class Pass176BrowserController {
     const dismiss = this.surface.querySelector('[data-pass176-dismiss]');
     this.#listen(cancel, 'click', () => {
       const active = this.jobs.snapshot().active.at(-1);
-      if (active) this.jobs.cancel(active.name);
+      if (active) this.jobs.cancel(active.key || active.name);
     });
     this.#listen(recover, 'click', () => {
       const restored = this.applyRecovery();
@@ -289,7 +307,7 @@ class Pass176BrowserController {
     return this.bootPromise;
   }
 
-  runAction(name, operation, { timeoutMs = 120_000, detail = name } = {}) {
+  runAction(name, operation, { timeoutMs = 120_000, detail = name, key = name, dedupe = true } = {}) {
     return this.jobs.run(name, async (job) => {
       this.#render(detail, 'running');
       const cancel = this.surface.querySelector('[data-pass176-cancel]');
@@ -298,10 +316,12 @@ class Pass176BrowserController {
       this.#render(`${detail} complete.`, 'ready');
       return result;
     }, {
+      key,
+      dedupe,
       timeoutMs,
       onSettled: (job) => {
         const cancel = this.surface.querySelector('[data-pass176-cancel]');
-        if (cancel) cancel.hidden = true;
+        if (cancel) cancel.hidden = this.jobs.snapshot().active.length === 0;
         if (job.stage === 'FAILED' || job.stage === 'CANCELLED') {
           this.#render(`${detail} ${job.stage.toLowerCase()}. Project recovery remains available.`, 'error');
         }
@@ -324,22 +344,17 @@ class Pass176BrowserController {
 
   flushRecovery(reason = 'manual') {
     if (this.disposed || !validateRecoveryPayload(copyProjectState(this.state))) return null;
-    try {
-      const envelope = this.recovery.save(copyProjectState(this.state), {
-        reason,
-        activeFile: this.activeFile()?.path || null,
-        authoritativeBackendDurabilityClaimed: false,
-      });
-      this.recoveryEnvelope = envelope;
-      return envelope;
-    } catch (error) {
-      this.recordError(error, { source: 'recovery-save', recoverable: true });
-      return null;
-    }
+    const envelope = this.recovery.save(copyProjectState(this.state), {
+      reason,
+      activeFile: this.activeFile()?.path || null,
+      authoritativeBackendDurabilityClaimed: false,
+    });
+    if (envelope) this.recoveryEnvelope = envelope;
+    return envelope;
   }
 
   applyRecovery() {
-    const envelope = this.recovery.load();
+    const envelope = this.recoveryEnvelope || this.recovery.load();
     if (!envelope || !validateRecoveryPayload(envelope.payload)) return false;
     const payload = envelope.payload;
     this.state.projectId = payload.projectId || this.state.projectId || null;
@@ -348,17 +363,43 @@ class Pass176BrowserController {
       ? payload.activePath
       : payload.files[0]?.path || null;
     this.persist();
-    window.dispatchEvent(new CustomEvent('hhs:pass176:recovery-applied', { detail: { savedAt: envelope.savedAt } }));
+    this.recoveryEnvelope = null;
+    window.dispatchEvent(new CustomEvent('hhs:pass176:recovery-applied', { detail: { savedAt: envelope.savedAt, activePath: this.state.activePath } }));
     const recoverButton = this.surface.querySelector('[data-pass176-recover]');
     if (recoverButton) recoverButton.hidden = true;
     return true;
+  }
+
+  setAuthorityEvidence(evidence = {}) {
+    const productHealth = evidence.productHealth || null;
+    const pass175 = evidence.pass175 || null;
+    const runtime = productHealth?.runtime || null;
+    const vm81AuthorityPreserved = Boolean(
+      productHealth?.ok === true &&
+      runtime?.canonical_runtime_attached === true &&
+      pass175?.singleton_vm81_commit_authority === true
+    );
+    const hash72CommitStreams = vm81AuthorityPreserved && Number(pass175?.hash72_commit_streams) === 1 ? 1 : 0;
+    this.authorityEvidence = Object.freeze({
+      schema: 'HHS_PASS_176_BACKEND_AUTHORITY_EVIDENCE_V1',
+      observedAt: new Date().toISOString(),
+      productHealthSchema: productHealth?.schema || null,
+      runtimeStatus: runtime?.status || null,
+      runtimeReceiptHash72: runtime?.receipt_hash72 || null,
+      pass175Schema: pass175?.schema || null,
+      pass175Classification: pass175?.classification || null,
+      singletonVm81CommitAuthority: pass175?.singleton_vm81_commit_authority === true,
+      vm81AuthorityPreserved,
+      hash72CommitStreams,
+    });
+    return this.authorityEvidence;
   }
 
   setProfile(profile) {
     const allowed = new Set(['MOBILE_SAFE', 'BALANCED', 'DESKTOP_HIGH', 'HIGH_REFRESH', 'DIAGNOSTIC']);
     if (!allowed.has(profile)) throw new Pass176Error('HHS_P176_UNKNOWN_PERFORMANCE_PROFILE', profile);
     this.profile = profile;
-    localStorage.setItem(PROFILE_KEY, profile);
+    this.storage.setItem(PROFILE_KEY, profile);
     document.documentElement.dataset.hhsPerformanceProfile = profile;
     return profile;
   }
@@ -408,11 +449,12 @@ class Pass176BrowserController {
       generations: this.generations.snapshot(),
       errors: [...this.errors],
       longTasks: [...this.longTasks],
-      recoveryAvailable: Boolean(this.recovery.load()),
+      recoveryAvailable: Boolean(this.recoveryEnvelope || this.recovery.load()),
       profile: this.profile,
       canonicalFrontendAuthority: false,
-      vm81AuthorityPreserved: true,
-      hash72CommitStreams: 1,
+      vm81AuthorityPreserved: this.authorityEvidence?.vm81AuthorityPreserved === true,
+      hash72CommitStreams: this.authorityEvidence?.hash72CommitStreams || 0,
+      authorityEvidence: this.authorityEvidence ? { ...this.authorityEvidence } : null,
     });
   }
 
@@ -438,13 +480,14 @@ export async function initPass176Stability(options = {}) {
     status: () => controller.status(),
     boot: (steps) => controller.boot(steps),
     mark: (stage, metadata) => controller.mark(stage, metadata),
-    runAction: (name, operation, options) => controller.runAction(name, operation, options),
+    runAction: (name, operation, actionOptions) => controller.runAction(name, operation, actionOptions),
     cancel: (name) => controller.jobs.cancel(name),
     currentSignal: () => controller.currentSignal(),
     generation: (scope) => controller.generation(scope),
     accept: (token, value) => controller.accept(token, value),
     flushRecovery: (reason) => controller.flushRecovery(reason),
     applyRecovery: () => controller.applyRecovery(),
+    setAuthorityEvidence: (evidence) => controller.setAuthorityEvidence(evidence),
     setProfile: (profile) => controller.setProfile(profile),
     own: (kind, disposer, metadata) => controller.own(kind, disposer, metadata),
     trackObjectUrl: (url) => controller.trackObjectUrl(url),
