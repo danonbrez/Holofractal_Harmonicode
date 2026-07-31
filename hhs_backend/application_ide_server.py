@@ -9,10 +9,13 @@ static mounts.
 
 * ``/`` serves the complete Holofractal Harmonizer application IDE.
 * ``/runtime-console/`` preserves the prior Pass 174 diagnostic console.
+* ``/health`` and ``/api/health`` provide bounded, dependency-light liveness.
 
 Static mounts are installed last so they cannot shadow any API or WebSocket.
 """
 from __future__ import annotations
+
+from typing import Any
 
 from fastapi.staticfiles import StaticFiles
 
@@ -25,7 +28,7 @@ from hhs_backend.api.pass175_terminal_ws_routes import router as pass175_termina
 
 app = pass174.app
 app.title = "HHS Full Multimodal Application IDE"
-app.version = "4.3.0"
+app.version = "4.3.1"
 app.description = (
     "Full integrated development environment for real web applications, games, "
     "calculators, documents, audio, video, multimodal projects, HARMONICODE, "
@@ -41,6 +44,10 @@ API_FALLBACK_PATH = pass174._API_FALLBACK_PATH
 
 def _has_route_prefix(prefix: str) -> bool:
     return any(str(getattr(route, "path", "")).startswith(prefix) for route in app.router.routes)
+
+
+def _has_exact_route(path: str) -> bool:
+    return any(str(getattr(route, "path", "")) == path for route in app.router.routes)
 
 
 _deferred_api_fallback_routes = [
@@ -69,6 +76,61 @@ if not _has_route_prefix("/api/v1/pass175/terminal/status"):
     app.include_router(pass175_terminal_router)
 if not _has_route_prefix("/api/v1/pass175/terminal/ws/events"):
     app.include_router(pass175_terminal_ws_router)
+
+
+async def application_ide_liveness() -> dict[str, Any]:
+    """Return cheap process and route liveness without invoking heavy peers.
+
+    This endpoint intentionally does not claim that VM81, Hash72, Hash216, or the
+    assistant provider are ready merely because the web process can respond.
+    Authority readiness is projected from the bounded Pass 174 boot state, while
+    full product health remains available at ``/api/product/health``.
+    """
+    boot = dict(pass174.PASS174_BOOT_STATE)
+    authority_ready = bool(boot.get("authority_ready") and boot.get("ready"))
+    return {
+        "schema": "HHS_FULL_APPLICATION_IDE_LIVENESS_V1",
+        "ok": True,
+        "status": "HHS_IDE_SERVICE_REACHABLE",
+        "service_available": True,
+        "authority_ready": authority_ready,
+        "runtime_ready": authority_ready,
+        "assistant_ready": False,
+        "assistant_health_requires_product_probe": True,
+        "frontend_runtime_authority": False,
+        "public_interface": "HHS_FULL_MULTIMODAL_APPLICATION_IDE",
+        "pass174_boot": boot,
+        "routes": {
+            "workspace": _has_route_prefix("/api/runtime/workspace"),
+            "development_lifecycle": _has_route_prefix("/api/runtime/development"),
+            "assistant": _has_route_prefix("/api/assistant"),
+            "pass175_processor": _has_route_prefix("/api/v1/pass175/status"),
+            "pass175_terminal": _has_route_prefix("/api/v1/pass175/terminal/status"),
+        },
+        "remediation": (
+            None
+            if authority_ready
+            else "The web service is reachable, but runtime authority is not ready. Inspect /api/v1/pass174/deployment/status and platform logs."
+        ),
+    }
+
+
+if not _has_exact_route("/health"):
+    app.add_api_route(
+        "/health",
+        application_ide_liveness,
+        methods=["GET", "HEAD"],
+        include_in_schema=False,
+        name="hhs-full-ide-health",
+    )
+if not _has_exact_route("/api/health"):
+    app.add_api_route(
+        "/api/health",
+        application_ide_liveness,
+        methods=["GET", "HEAD"],
+        include_in_schema=False,
+        name="hhs-full-ide-api-health",
+    )
 
 if RUNTIME_CONSOLE_ROOT.is_dir():
     app.mount(
@@ -106,5 +168,7 @@ pass174.PASS174_BOOT_STATE.update({
     "pass175_terminal_routes": _has_route_prefix("/api/v1/pass175/terminal/status"),
     "pass175_terminal_websocket_routes": _has_route_prefix("/api/v1/pass175/terminal/ws/events"),
     "api_fallback_deferred_for_pass175": bool(_deferred_api_fallback_routes),
+    "lightweight_health_route": "/health",
+    "lightweight_api_health_route": "/api/health",
     "external_vercel_quota_is_not_pass175_acceptance_gate": True,
 })
