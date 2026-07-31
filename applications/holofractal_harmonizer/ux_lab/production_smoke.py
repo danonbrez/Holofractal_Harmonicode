@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import time
 import traceback
 from pathlib import Path
@@ -93,7 +94,10 @@ def main() -> None:
 
             current_phase = "WAIT_WORKFLOW_SURFACE"
             phase(current_phase)
-            expect(page.locator("body")).to_have_class("workflow-default", timeout=60_000)
+            expect(page.locator("body")).to_have_class(
+                re.compile(r"(^|\s)workflow-default(\s|$)"),
+                timeout=60_000,
+            )
             phase("WORKFLOW_SURFACE_READY", runtime_state=runtime_state)
 
             current_phase = "OPEN_API_SURFACE"
