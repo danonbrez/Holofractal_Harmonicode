@@ -5,6 +5,7 @@ from pathlib import Path
 from fastapi.testclient import TestClient
 
 from hhs_backend import application_ide_server as server
+from hhs_backend.public_ide_bootstrap import LEGACY_PUBLIC_MODULES
 
 
 PUBLIC_SOURCE_ASSETS = (
@@ -36,21 +37,27 @@ def test_full_application_ide_is_public_root_and_console_is_preserved() -> None:
     assert paths.index("/runtime-console") < names.index("hhs-full-application-ide")
     assert server.pass174.PASS174_BOOT_STATE["application_ide_is_public_root"] is True
     assert server.pass174.PASS174_BOOT_STATE["diagnostic_console_is_supporting_surface"] is True
-    assert server.pass174.PASS174_BOOT_STATE["inline_public_boot"] == "HHS_INLINE_PUBLIC_BOOT_V1"
+    assert server.pass174.PASS174_BOOT_STATE["inline_public_boot"] == "HHS_INLINE_PUBLIC_BOOT_V2"
 
 
-def test_public_root_contains_full_ide_and_parsing_time_module_launcher() -> None:
+def test_public_root_has_one_boot_authority_and_preserved_module_lineage() -> None:
     client = TestClient(server.app)
     response = client.get("/")
     assert response.status_code == 200
-    assert response.headers["x-hhs-public-boot"] == "HHS_INLINE_PUBLIC_BOOT_V1"
+    assert response.headers["x-hhs-public-boot"] == "HHS_INLINE_PUBLIC_BOOT_V2"
+    assert response.headers["x-hhs-legacy-module-entries"] == "disabled"
     assert "HHS Full Multimodal Application IDE" in response.text
     assert "src/application-studio.css" in response.text
     assert "src/visual-ide.mjs" in response.text
-    assert "data-hhs-inline-public-boot" in response.text
-    assert "HHS_INLINE_PUBLIC_BOOT_V1" in response.text
+    assert response.text.count("data-hhs-inline-public-boot") == 1
+    assert "HHS_INLINE_PUBLIC_BOOT_V2" in response.text
     assert "import(moduleUrl)" in response.text
     assert response.text.index("data-hhs-inline-public-boot") < response.text.index("</body>")
+
+    for module_name in LEGACY_PUBLIC_MODULES:
+        marker = f"data-hhs-legacy-module-disabled src=./src/{module_name}"
+        assert response.text.count(marker) == 1, module_name
+        assert f'<script type="module" src="./src/{module_name}"></script>' not in response.text
 
     for asset in PUBLIC_SOURCE_ASSETS:
         asset_response = client.get(f"/src/{asset}")
