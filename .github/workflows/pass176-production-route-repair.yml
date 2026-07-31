@@ -40,3 +40,5 @@ jobs:
           git add -A
           git commit -m 'Expose Pass 175 and repository services in Pass 176 production IDE'
           git push origin HEAD:agent/pass176-frozen-ide-stabilization
+
+# Re-trigger after the workflow exists on the branch.
