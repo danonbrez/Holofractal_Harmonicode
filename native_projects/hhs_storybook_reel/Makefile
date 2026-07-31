@@ -27,11 +27,11 @@ $(LIB): $(STORY_SRC) include/hhs_storybook_reel.h include/hhs_storybook_reel_sty
 		$(GAME_CORE) $(GAME_RELEASE) $(GAME_SPRITE) $(GAME_TEXTURE) \
 		$(STORY_SRC) $(HASH_SRC) -o $@
 
-$(CLI): $(STORY_SRC) src/hhs_storybook_reel_cli.c include/hhs_storybook_reel.h include/hhs_storybook_reel_style_v2.h \
+$(CLI): $(STORY_SRC) src/hhs_storybook_reel_cli.c src/hhs_storybook_reel_cli_v2.c include/hhs_storybook_reel.h include/hhs_storybook_reel_style_v2.h \
 	$(GAME_CORE) $(GAME_RELEASE) $(GAME_SPRITE) $(GAME_TEXTURE) $(HASH_SRC) | $(DIST)
 	$(CC) $(CFLAGS) $(INCLUDES) \
 		$(GAME_CORE) $(GAME_RELEASE) $(GAME_SPRITE) $(GAME_TEXTURE) \
-		$(STORY_SRC) src/hhs_storybook_reel_cli.c $(HASH_SRC) -o $@
+		$(STORY_SRC) src/hhs_storybook_reel_cli_v2.c $(HASH_SRC) -o $@
 
 $(TEST): $(STORY_SRC) tests/test_hhs_storybook_reel.c include/hhs_storybook_reel.h include/hhs_storybook_reel_style_v2.h \
 	$(GAME_CORE) $(GAME_RELEASE) $(GAME_SPRITE) $(GAME_TEXTURE) $(HASH_SRC) | $(DIST)
