@@ -136,6 +136,19 @@ body.ide-dialog-open [data-hhs-storybook-reel-launcher] {
   text-align: left;
   border-radius: 13px;
   background: rgba(46, 35, 26, .78);
+  animation: none !important;
+  transition: none !important;
+  transform: none !important;
+}
+
+.ide-application-template-grid button:hover,
+.ide-application-template-grid button:focus,
+.ide-application-template-grid button:active {
+  transform: none !important;
+}
+
+.ide-application-template-grid button > * {
+  pointer-events: none;
 }
 
 .ide-application-template-grid button strong {
