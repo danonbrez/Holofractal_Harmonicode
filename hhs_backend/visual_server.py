@@ -3,9 +3,10 @@
 This module composes the canonical HHS FastAPI runtime, the governed LiteRT-LM
 assistant API, the read-only Pass 172 installation-status API, the Pass 180
 integrated application-factory API, the native storybook-reel studio, the Pass
-181 graphics-hydration and governed constraint-registry authorities, and the Pass
-161 Holofractal Harmonizer static application. The canonical server remains the
-runtime authority; this module only changes HTTP projection.
+181 graphics-hydration and governed constraint-registry authorities, the Pass
+183 exact probability-hydration authority, and the Pass 161 Holofractal
+Harmonizer static application. The canonical server remains the runtime
+authority; this module only changes HTTP projection.
 """
 from __future__ import annotations
 
@@ -20,6 +21,7 @@ from hhs_backend.api.graphics_constraint_routes import router as graphics_constr
 from hhs_backend.api.graphics_hydration_routes import router as graphics_hydration_router
 from hhs_backend.api.installation_routes import router as installation_router
 from hhs_backend.api.litert_lm_assistant_routes import router as assistant_router
+from hhs_backend.api.probability_hydration_routes import router as probability_hydration_router
 from hhs_backend.api.storybook_reel_routes import router as storybook_reel_router
 
 app = canonical_server.app
@@ -54,6 +56,9 @@ if not _route_exists("/api/runtime/graphics-hydration/constraints/registry/statu
 if not _route_exists("/api/runtime/graphics-hydration/status"):
     app.include_router(graphics_hydration_router)
 
+if not _route_exists("/api/v1/probability/status"):
+    app.include_router(probability_hydration_router)
+
 
 @app.get("/api/system/status", tags=["system"])
 async def visual_system_status() -> Dict[str, Any]:
@@ -69,19 +74,18 @@ async def visual_system_status() -> Dict[str, Any]:
         "storybook_reel_api": "/api/runtime/storybook-reel",
         "graphics_hydration_api": "/api/runtime/graphics-hydration",
         "graphics_constraint_registry_api": "/api/runtime/graphics-hydration/constraints/registry",
+        "probability_hydration_api": "/api/v1/probability",
         "storybook_reel_studio": "/storybook-reel/",
+        "probability_hydration_studio": "/probability-hydration/",
         "visual_environment": "HHS-P161-HHUMOCE",
         "application_factory": "HHS-P180-INTEGRATED-APPLICATION-FACTORY",
         "storybook_reel": "HHS-NATIVE-VM81-STORYBOOK-REEL-STUDIO-V1",
         "graphics_hydration": "HHS-P181-NATIVE-CINEMATIC-GRAPHICS-HYDRATION-RUNTIME",
         "graphics_constraints": "HHS-P181-GRAPHICS-CONSTRAINT-FREEZE-REGISTRY-V1",
+        "probability_hydration": "HHS-P183-PEHMR-M1259713-F72-VM81-H72-H216",
     }
 
 
-# The canonical server historically returned JSON at `/`. Remove only that
-# single projection route, leaving all runtime, health, docs, and API routes
-# unchanged. Static applications are mounted after all APIs so route authority
-# and machine-readable endpoints retain precedence.
 app.router.routes[:] = [
     route
     for route in app.router.routes
@@ -94,10 +98,13 @@ app.router.routes[:] = [
 
 _applications_root = Path(__file__).resolve().parents[1] / "applications"
 _storybook_root = _applications_root / "storybook_reel_studio"
+_probability_root = _applications_root / "probability_hydration_studio"
 _visual_root = _applications_root / "holofractal_harmonizer"
 
 if not (_storybook_root / "index.html").is_file():
     raise RuntimeError(f"Storybook reel studio is missing: {_storybook_root}")
+if not (_probability_root / "index.html").is_file():
+    raise RuntimeError(f"Pass 183 probability hydration studio is missing: {_probability_root}")
 if not (_visual_root / "index.html").is_file():
     raise RuntimeError(f"Pass 161 visual application is missing: {_visual_root}")
 
@@ -106,6 +113,13 @@ if not any(getattr(route, "name", None) == "hhs-storybook-reel-studio" for route
         "/storybook-reel",
         StaticFiles(directory=str(_storybook_root), html=True),
         name="hhs-storybook-reel-studio",
+    )
+
+if not any(getattr(route, "name", None) == "hhs-probability-hydration-studio" for route in app.router.routes):
+    app.mount(
+        "/probability-hydration",
+        StaticFiles(directory=str(_probability_root), html=True),
+        name="hhs-probability-hydration-studio",
     )
 
 if not any(getattr(route, "name", None) == "hhs-visual-home" for route in app.router.routes):
