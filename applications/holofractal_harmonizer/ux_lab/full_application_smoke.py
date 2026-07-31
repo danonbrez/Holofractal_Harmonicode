@@ -36,38 +36,9 @@ def _create_with_api(page, template: str, name: str) -> None:
     phase("PROJECT_READY", template=template)
 
 
-def _diagnostic(page, page_errors: list[str], console_errors: list[str]) -> dict[str, object]:
-    try:
-        browser_state = page.evaluate("""() => ({
-            url: location.href,
-            title: document.title,
-            readyState: document.readyState,
-            bodyClass: document.body?.className || null,
-            hasVisualIDE: Boolean(window.HHSVisualIDE),
-            hasApplicationStudio: Boolean(window.HHSApplicationStudio),
-            applicationStudio: window.HHSApplicationStudio ? {
-                createsRealProjects: window.HHSApplicationStudio.creates_real_runnable_projects,
-                templateCount: window.HHSApplicationStudio.templates?.length || null,
-            } : null,
-            simpleWorkflowVisible: Boolean(document.querySelector('#ide-simple-workflow')?.offsetParent),
-            newApplicationVisible: Boolean(document.querySelector('#ide-new-app')?.offsetParent),
-            galleryVisible: Boolean(document.querySelector('#ide-application-gallery')?.offsetParent),
-            activePreview: Boolean(document.querySelector('#ide-preview-panel.active')),
-            fileCount: document.querySelectorAll('#ide-file-tree .ide-file-item').length,
-            validationState: document.querySelector('#validation-state')?.textContent || null,
-            bodyPreview: (document.body?.innerText || '').slice(0, 1500),
-        })""")
-    except Exception as error:
-        browser_state = {"diagnostic_error": f"{type(error).__name__}: {error}", "url": getattr(page, "url", None)}
-    return {
-        "browser_state": browser_state,
-        "page_errors": page_errors,
-        "console_errors": console_errors,
-    }
-
-
 def run() -> dict[str, object]:
     started = time.monotonic()
+    current_phase = "START"
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch(headless=True)
         context = browser.new_context(accept_downloads=True, viewport={"width": 1440, "height": 960})
@@ -83,28 +54,43 @@ def run() -> dict[str, object]:
             # The IDE intentionally maintains background runtime and assistant traffic,
             # so network-idle is not a valid readiness predicate. Bind acceptance to
             # DOM readiness followed by explicit, bounded interface assertions below.
-            phase("NAVIGATE", url=BASE_URL)
+            current_phase = "NAVIGATE"
+            phase(current_phase, url=BASE_URL)
             response = page.goto(f"{BASE_URL}/", wait_until="domcontentloaded", timeout=45_000)
             if response is None or not response.ok:
                 raise AssertionError(f"full application root failed: {getattr(response, 'status', None)}")
-            phase("DOM_READY", elapsed_ms=round((time.monotonic() - started) * 1000))
+            current_phase = "DOM_READY"
+            phase(current_phase, elapsed_ms=round((time.monotonic() - started) * 1000))
 
+            current_phase = "TITLE_CHECK"
+            phase(current_phase)
             expect(page).to_have_title("HHS Full Multimodal Application IDE")
+            current_phase = "THEME_CHECK"
+            phase(current_phase)
             expect(page.locator("html")).to_have_class("hhs-harmonic-studio-theme")
+            current_phase = "SIMPLE_WORKFLOW_CHECK"
+            phase(current_phase)
             expect(page.locator("#ide-simple-workflow")).to_be_visible(timeout=20_000)
+            current_phase = "WAIT_APPLICATION_STUDIO"
+            phase(current_phase)
             page.wait_for_function(
                 "() => window.HHSApplicationStudio?.creates_real_runnable_projects === true",
                 timeout=30_000,
             )
+            current_phase = "NEW_APP_CHECK"
+            phase(current_phase)
             expect(page.locator("#ide-new-app")).to_be_visible(timeout=15_000)
             expect(page.locator("#ide-new-app")).to_contain_text("New Application")
             expect(page.locator("#ide-menu-assistant")).to_be_visible()
             expect(page.locator("#ide-file-tree .ide-file-item").first).to_have_attribute("draggable", "false")
-            phase("APPLICATION_STUDIO_READY")
+            current_phase = "APPLICATION_STUDIO_READY"
+            phase(current_phase)
 
             # Open the beginner-facing gallery only after Application Studio has
             # completed its final control promotion. This avoids first-paint races
             # while preserving the visible button and complete dialog assertions.
+            current_phase = "OPEN_APPLICATION_GALLERY"
+            phase(current_phase)
             page.evaluate("() => window.HHSApplicationStudio.open()")
             expect(page.locator("#ide-application-gallery")).to_be_visible(timeout=15_000)
             page.locator('[data-application-template="pong"]').click()
@@ -119,9 +105,11 @@ def run() -> dict[str, object]:
             expect(page.locator("#ide-file-tree")).to_contain_text("index.html")
             expect(page.locator("#ide-file-tree")).to_contain_text("app.js")
             expect(page.locator("#ide-file-tree")).to_contain_text("style.css")
-            phase("PONG_VERIFIED")
+            current_phase = "PONG_VERIFIED"
+            phase(current_phase)
 
             # A calculator must execute real user interaction, not just display a shell.
+            current_phase = "CREATE_CALCULATOR"
             _create_with_api(page, "calculator", "Calculator Acceptance")
             calculator = _frame(page)
             calculator.locator('[data-value="7"]').click()
@@ -129,15 +117,19 @@ def run() -> dict[str, object]:
             calculator.locator('[data-value="8"]').click()
             calculator.locator('[data-value="="]').click()
             expect(calculator.locator("#display")).to_have_text("56")
-            phase("CALCULATOR_VERIFIED")
+            current_phase = "CALCULATOR_VERIFIED"
+            phase(current_phase)
 
             # Representative non-game and multimodal project classes must render.
+            current_phase = "CREATE_PUZZLE"
             _create_with_api(page, "puzzle", "Puzzle Acceptance")
             puzzle = _frame(page)
             expect(puzzle.locator(".tile")).to_have_count(16)
             puzzle.locator("#shuffle").click()
-            phase("PUZZLE_VERIFIED")
+            current_phase = "PUZZLE_VERIFIED"
+            phase(current_phase)
 
+            current_phase = "CREATE_DOCUMENT"
             _create_with_api(page, "document", "Document Acceptance")
             document = _frame(page)
             expect(document.locator("#editor")).to_have_attribute("contenteditable", "true")
@@ -145,33 +137,44 @@ def run() -> dict[str, object]:
             document.locator("#editor").press("Control+A")
             document.locator("#editor").fill("A real editable HHS document now.")
             expect(document.locator("#words")).to_contain_text("6 words")
-            phase("DOCUMENT_VERIFIED")
+            current_phase = "DOCUMENT_VERIFIED"
+            phase(current_phase)
 
+            current_phase = "CREATE_AUDIO"
             _create_with_api(page, "audio", "Audio Acceptance")
             audio = _frame(page)
             expect(audio.locator(".pad")).to_have_count(4)
             expect(audio.locator("#record")).to_be_visible()
             audio.locator(".pad").first.click()
-            phase("AUDIO_VERIFIED")
+            current_phase = "AUDIO_VERIFIED"
+            phase(current_phase)
 
+            current_phase = "CREATE_VIDEO"
             _create_with_api(page, "video", "Video Acceptance")
             video = _frame(page)
             expect(video.locator("#stage")).to_be_visible()
             expect(video.locator("#record")).to_be_visible()
             expect(video.locator("#title")).to_have_value("HHS Motion")
-            phase("VIDEO_VERIFIED")
+            current_phase = "VIDEO_VERIFIED"
+            phase(current_phase)
 
             # The natural-language assistant remains available without leaving the IDE.
+            current_phase = "OPEN_ASSISTANT"
+            phase(current_phase)
             page.locator("#ide-menu-assistant").click()
             expect(page.locator("#ide-assistant-drawer")).to_be_visible(timeout=15_000)
             expect(page.locator("#prompt-input")).to_be_visible()
             page.locator("#ide-assistant-close").click()
             expect(page.locator("body")).not_to_have_class("ide-assistant-open")
             expect(page.locator("#ide-assistant-drawer")).to_be_hidden()
-            phase("ASSISTANT_VERIFIED")
+            current_phase = "ASSISTANT_VERIFIED"
+            phase(current_phase)
 
             # Compile and inspect an actual deployable application ZIP.
+            current_phase = "CREATE_DEPLOYABLE_CALCULATOR"
             _create_with_api(page, "calculator", "Deployable Calculator")
+            current_phase = "DOWNLOAD_ZIP"
+            phase(current_phase)
             with page.expect_download(timeout=20_000) as download_info:
                 page.locator("#ide-download-deployable-app").click()
             download = download_info.value
@@ -187,9 +190,12 @@ def run() -> dict[str, object]:
                     assert "<script" in compiled and "<style" in compiled
                     assert manifest["runnable_browser_application"] is True
                     assert manifest["project_local_javascript_inlined"] is True
-            phase("ZIP_VERIFIED")
+            current_phase = "ZIP_VERIFIED"
+            phase(current_phase)
 
             # The preserved diagnostic console remains reachable as a supporting surface.
+            current_phase = "OPEN_RUNTIME_CONSOLE"
+            phase(current_phase)
             diagnostic = context.new_page()
             diagnostic.set_default_timeout(15_000)
             diagnostic.set_default_navigation_timeout(30_000)
@@ -197,7 +203,8 @@ def run() -> dict[str, object]:
             expect(diagnostic).to_have_title("HHS Pass 174 Visual IDE")
             expect(diagnostic.locator("body")).to_contain_text("Pass 174 Harmonic Visual SDLC Runtime")
             diagnostic.close()
-            phase("RUNTIME_CONSOLE_VERIFIED")
+            current_phase = "RUNTIME_CONSOLE_VERIFIED"
+            phase(current_phase)
 
             # Give asynchronous preview errors a bounded chance to surface.
             time.sleep(0.5)
@@ -217,32 +224,41 @@ def run() -> dict[str, object]:
                 raise AssertionError(json.dumps(result, indent=2))
             EVIDENCE_PATH.parent.mkdir(parents=True, exist_ok=True)
             EVIDENCE_PATH.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
-            phase("COMPLETE", elapsed_ms=result["elapsed_ms"])
+            current_phase = "COMPLETE"
+            phase(current_phase, elapsed_ms=result["elapsed_ms"])
             return result
         except Exception as error:
             failure = {
                 "ok": False,
                 "url": BASE_URL,
+                "phase": current_phase,
                 "error": f"{type(error).__name__}: {error}",
                 "traceback": traceback.format_exc(),
                 "elapsed_ms": round((time.monotonic() - started) * 1000),
-                **_diagnostic(page, page_errors, console_errors),
+                "page_errors": page_errors,
+                "console_errors": console_errors,
             }
             FAILURE_PATH.parent.mkdir(parents=True, exist_ok=True)
             FAILURE_PATH.write_text(json.dumps(failure, indent=2) + "\n", encoding="utf-8")
+            print(json.dumps(failure, indent=2), flush=True)
             try:
                 page.screenshot(
                     path="applications/holofractal_harmonizer/evidence/full_application_ide_smoke_failure.png",
                     full_page=True,
-                    timeout=10_000,
+                    timeout=5_000,
                 )
             except Exception:
                 pass
-            print(json.dumps(failure, indent=2), flush=True)
             raise
         finally:
-            context.close()
-            browser.close()
+            try:
+                context.close()
+            except Exception:
+                pass
+            try:
+                browser.close()
+            except Exception:
+                pass
 
 
 if __name__ == "__main__":
