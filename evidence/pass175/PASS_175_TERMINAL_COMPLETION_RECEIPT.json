@@ -1,0 +1,117 @@
+{
+  "schema": "HHS_PASS_175_TERMINAL_MAIN_COMPLETION_RECEIPT_V1",
+  "classification": "HHS_PASS_175_HASH216_HYDRATED_VM5184_G243_VIRTUAL_INSTRUCTION_PROCESSOR_VERIFIED",
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "authoritative_branch": "main",
+  "pull_request": 93,
+  "validated_source_commit": "11b8d9b43c316a80e9b5df8b1cb56f563462f013",
+  "evidence_only_successor_commit": "86d83e006e1edbea2e4a04ab67e40b81164ccf8e",
+  "authoritative_merge_commit": "34cf0557187960076768d1e1cb83a7b0ddcab81b",
+  "terminal_pass175_completion": true,
+  "dimensions": {
+    "permanent_instruction_identities": 5184,
+    "controls_per_identity": 243,
+    "projected_execution_addresses": 1259712,
+    "ring_edge_5183_to_0": true
+  },
+  "authority": {
+    "parallel_candidate_workers": true,
+    "parallel_state_authority": false,
+    "singleton_vm81_admission": true,
+    "hash72_commit_streams": 1,
+    "cache_bypasses_vm81": false
+  },
+  "terminal_validation": {
+    "workflow_name": "Verify Terminal Pass 175 Completion",
+    "workflow_run_id": 30598643082,
+    "conclusion": "success",
+    "dependency_scoped_python_tests": 23,
+    "native_portability": {
+      "ubuntu_24_04": "success",
+      "macos_14": "success"
+    },
+    "inherited_authority_terminal_closure": "success",
+    "production_route_and_visual_composition": "success",
+    "evidence_artifact_id": 8781071297,
+    "evidence_artifact_sha256": "52f253b988eb4a5febbfa23e40e014ab5dd698a9fa75b42385723accac53aea7"
+  },
+  "integrated_validation": {
+    "pass175_virtual_instruction_processor_run_id": 30598643053,
+    "pass175_virtual_instruction_processor": "success",
+    "full_application_ide_run_id": 30598643108,
+    "full_application_ide": "success",
+    "production_harmonizer_run_id": 30598643080,
+    "production_harmonizer": "success",
+    "visual_ide_ab_run_id": 30598643083,
+    "visual_ide_ab": "success",
+    "pass161_finalization_run_id": 30598643077,
+    "pass161_finalization": "success",
+    "pass172_173_installation_run_id": 30598643073,
+    "pass172_173_installation": "success",
+    "pass172_173_phase2_run_id": 30598643084,
+    "pass172_173_phase2": "success"
+  },
+  "terminal_roots": {
+    "terminal_receipt_sha256": "5e83be31c1bba60a764a9aff0f09c44cf13a174976764a3f992d9b9c357e630f",
+    "repository_receipt_sha256": "c450820a9e599ff8462e587d2cb78f8058df13a8aebad7722b25cb59d9ea19e3",
+    "secure_store_root_sha256": "50feb45eb93e8423ea7908f9c6a7035e26711075001ef8037f62fd4eed1f98b6",
+    "native_artifact_root_sha256": "252b59c212c92bc9cc38a6418563cff01518c3bdff0e7e096e092cd88943ae72",
+    "decoder_corpus_root_sha256": "f060dafed93787418dce841778222593080cf7020ac40317c66775db6ff5a63e",
+    "firmware_image_root_sha256": "e3c7e1e74908201e9607a33d8e16bbdcd1034e664414ca0aa59e7d6da8936824",
+    "firmware_boot_root_sha256": "f71b9293c414228b2aee2bac6b6869933bf8c0f7276b9ffe18885ece81fcaa45",
+    "device_root_sha256": "58ca972b2945f97cf03857b3843f80562621ed42d83871bb15dd7c3b41f54dbc",
+    "terminal_journal_root_sha256": "1943eb28972c9b5b752fe7a379e9dbb31d610fa0a50d426bd715510bcbfa447e"
+  },
+  "hydration": {
+    "exact_x86_64_positive_forms": 57,
+    "negative_forms": 8,
+    "privileged_trapped_forms": 7,
+    "unsupported_fail_closed": true,
+    "exact_reencode": true,
+    "secure_store_records": 60,
+    "positional_indexes": 12960,
+    "encryption": "AES_GCM",
+    "sqlite_wal": true,
+    "durable": true,
+    "sealed": true
+  },
+  "firmware_and_devices": {
+    "firmware_verified": true,
+    "firmware_stages": 18,
+    "firmware_reset_vector": 1048560,
+    "firmware_entry_point": 983040,
+    "external_computational_environment_warm": true,
+    "governed_device_count": 14,
+    "host_direct_access": false
+  },
+  "native_artifacts": {
+    "complete": true,
+    "vm81_invariant_kernel_x86_64_o_sha256": "0f0f67c14f1985addefff1a09b775a5ad14700c8c1892c324aa24e6ace5c3497",
+    "libvm81_invariant_kernel_so_sha256": "9dfa664e5cf050898942f405bfbd58dccd396869a639987d4b269e93eec1aa1c",
+    "vm81_invariant_kernel_bin_sha256": "99840f6f80d28a3f7f24a3b5b5c2bb7518ad938735cefa86718fc6270748ab37",
+    "vm81_invariant_kernel_map_sha256": "c0f6767206aa9c25b16957807446199ec1feaa7a62fc299869f8120c68e7cbe7",
+    "manifest_sha256": "e2e67bffca7bea2047d8cc2696aa7d131fdb13a70eec7bd12e510930c7df32d9",
+    "test_receipt_sha256": "966c64a12910cd837145db9d90d9ea6752c08ef5a58343b889aa0b788cbbb782"
+  },
+  "replay": {
+    "deterministic_replay": true,
+    "receipt_chain_valid": true,
+    "authority_epoch": 19,
+    "authority_receipt_count": 20,
+    "device_event_count": 14,
+    "device_replay_verified": true
+  },
+  "main_verification": {
+    "merged": true,
+    "main_source_fetch_verified": true,
+    "vmrc_commit_binding_verified_on_main": true,
+    "temporary_source_bundles_absent": true,
+    "temporary_repair_workflows_absent": true,
+    "repository_visible_completion_receipt": true
+  },
+  "external_deployment": {
+    "vercel_build_rate_quota_considered": false,
+    "external_deployment_quota_not_an_acceptance_gate": true,
+    "external_deployment_failure_is_not_code_validation_failure": true
+  }
+}
