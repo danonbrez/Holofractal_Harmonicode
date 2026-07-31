@@ -4,6 +4,7 @@
     "advanced_runtime_preserved": true,
     "application_first_workspace": true,
     "cancel_and_retry": true,
+    "canonical_lifecycle_entrypoints_bounded": true,
     "finite_state_jobs": true,
     "frontend_runtime_authority": false,
     "generated_starters_clean": true,
@@ -19,13 +20,13 @@
   "sha256": {
     "HHS_PASS_176_DEPLOYMENT_USABILITY_RECOVERY_AMENDMENT.md": "9e391a79fdc85ee718a1ff83797b08b6bb95d4e301d9c955821c21432c3ed081",
     "applications/holofractal_harmonizer/src/production-recovery.mjs": "b3f46975e08d526a8b9130439bc24ccfed44c8bb7eca313d182b5916e0b4740e",
-    "applications/holofractal_harmonizer/src/visual-ide.mjs": "77f9929744c8d456c1cf7a52c3af9e35855a99c1e815cce8af811da99dd5703d",
-    "tests/pass176/test_production_recovery_static.py": "d682617f79037e97223c0ac97b1ce246f467165135baf7d8b072fb707345ceaf"
+    "applications/holofractal_harmonizer/src/visual-ide.mjs": "50e29a44a14f86e54ccfababc477bb3488553627a891ec8d3f8152345cf91eeb",
+    "tests/pass176/test_production_recovery_static.py": "2c86c868154a3968adcbd574b4677749fb409b013c9c08f279ed49651a16e127"
   },
   "validation": {
     "dependency_scoped_pytest": {
       "failed": 0,
-      "passed": 6
+      "passed": 7
     },
     "node_check_production_recovery": true,
     "node_check_visual_ide": true
