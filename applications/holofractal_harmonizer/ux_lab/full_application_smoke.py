@@ -25,12 +25,93 @@ def application_frame(page):
     return page.frame_locator("#ide-application-frame")
 
 
+def geometry(locator) -> dict[str, object]:
+    return locator.evaluate(
+        """node => {
+          const summarize = element => {
+            if (!(element instanceof Element)) return null;
+            const style = getComputedStyle(element);
+            const rect = element.getBoundingClientRect();
+            return {
+              tag: element.tagName,
+              id: element.id || null,
+              className: String(element.className || ''),
+              hidden: Boolean(element.hidden),
+              inert: Boolean(element.inert),
+              ariaHidden: element.getAttribute('aria-hidden'),
+              disabled: Boolean(element.disabled),
+              rect: {
+                x: rect.x,
+                y: rect.y,
+                width: rect.width,
+                height: rect.height,
+                top: rect.top,
+                right: rect.right,
+                bottom: rect.bottom,
+                left: rect.left,
+              },
+              offsetWidth: element.offsetWidth,
+              offsetHeight: element.offsetHeight,
+              clientWidth: element.clientWidth,
+              clientHeight: element.clientHeight,
+              scrollWidth: element.scrollWidth,
+              scrollHeight: element.scrollHeight,
+              display: style.display,
+              visibility: style.visibility,
+              opacity: style.opacity,
+              position: style.position,
+              overflow: style.overflow,
+              contentVisibility: style.contentVisibility,
+              transform: style.transform,
+              pointerEvents: style.pointerEvents,
+              zIndex: style.zIndex,
+            };
+          };
+          const ancestors = [];
+          let current = node;
+          while (current && ancestors.length < 14) {
+            ancestors.push(summarize(current));
+            current = current.parentElement;
+          }
+          const rect = node.getBoundingClientRect();
+          const centerX = rect.left + rect.width / 2;
+          const centerY = rect.top + rect.height / 2;
+          const topElement = rect.width > 0 && rect.height > 0
+            ? document.elementFromPoint(centerX, centerY)
+            : null;
+          return {
+            node: summarize(node),
+            ancestors,
+            center: {x: centerX, y: centerY},
+            elementFromPoint: summarize(topElement),
+            viewport: {
+              innerWidth: window.innerWidth,
+              innerHeight: window.innerHeight,
+              devicePixelRatio: window.devicePixelRatio,
+            },
+            documentClass: document.documentElement.className,
+            bodyClass: document.body.className,
+            activeElement: summarize(document.activeElement),
+            duplicateTemplateCount: document.querySelectorAll(`[data-application-template="${node.dataset.applicationTemplate}"]`).length,
+          };
+        }"""
+    )
+
+
 def create_project(page, template: str, name: str):
     phase("CREATE_PROJECT", template=template, project_name=name)
     page.locator("#ide-new-app").click()
     gallery = page.locator("#ide-application-gallery")
     expect(gallery).to_be_visible(timeout=20_000)
-    gallery.locator(f'[data-application-template="{template}"]').click()
+    template_button = gallery.locator(f'[data-application-template="{template}"]')
+    phase(
+        "TEMPLATE_GEOMETRY",
+        template=template,
+        gallery=geometry(gallery),
+        template_button=geometry(template_button),
+    )
+    expect(template_button).to_be_visible(timeout=20_000)
+    template_button.click()
     page.locator("#ide-application-name").fill(name)
     page.locator("#ide-create-application-project").click()
     expect(gallery).to_be_hidden(timeout=20_000)
