@@ -580,7 +580,7 @@ class TerminalPass175Runtime:
             authority_result = self.base.authority.execute(
                 thread=0,
                 writes=writes,
-                operation="P175_TERMINAL_HASH216_HYDRATION_SEAL",
+                operation="VMRC_COMMIT",
                 capability_scope="P175_TERMINAL_SINGLETON_VM81_ADMISSION",
                 prefer_retrieval=True,
             )
