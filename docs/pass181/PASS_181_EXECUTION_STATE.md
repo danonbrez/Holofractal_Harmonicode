@@ -9,6 +9,7 @@
 - Phase 1 authority core publication: completed through `008a7c6ba1219b52f280e88bdc49daa204ca1b37`
 - Phase 2 canonical MP4 timeline merge: `7ffc02667f6480e6877263459a55f47e91a84189` through PR `#104`
 - Phase 3 native recipe and residual merge: `e822a235cad8d7c2854169a121b6ccb826623217` through PR `#105`
+- Phase 4 bounded optimization merge: `0eb277adc5e1c77a3456ad9f99216cde52be247e` through PR `#106`
 - Contract: `HHS-P181-NCSR-GHIR-VM81-H72-H216`
 - Authority: `HHS_VM81_SINGLETON_GRAPHICS_HYDRATION_AUTHORITY_V1`
 
@@ -60,15 +61,33 @@
 - Hash216 residual-report identities and Hash72 receipts;
 - `/recipes/validate` and `/residuals/compare` API routes.
 
+### Phase 4 — bounded native optimization loop
+
+- durable optimization jobs with Hash216 state identities and Hash72 receipts;
+- finite `QUEUED`, `RUNNING`, `CANCEL_REQUESTED`, `SUCCEEDED`, `FAILED`, `CANCELLED`, and `TIMED_OUT` lifecycle;
+- one candidate per serialized step with no background worker and no parallel candidate execution;
+- fixed operator-configured renderer command not selectable by API callers;
+- mandatory native-renderer manifest with `HHS_NATIVE_ABI` frame authority, exact recipe identity, single-thread declaration, and no-passthrough declaration;
+- canonical decode and residual comparison after each native candidate render;
+- exact lexicographic integer scoring over provenance, missing/extra records, timing, frame content, audio content, and semantic residuals;
+- incumbent mutation only for strict improvement;
+- rejected candidates preserved as evidence without runtime mutation;
+- optional exact-match early closure and baseline preservation;
+- durable cancellation, bounded run, single-step continuation, retry, and restart from repository-visible state;
+- create, read, step, run, cancel, and retry API routes under `/optimization/jobs`.
+
 ## Files added or modified
 
 - `hhs_backend/runtime/hhs_graphics_hydration_v1.py`
 - `hhs_backend/runtime/hhs_graphics_mp4_decode_v1.py`
 - `hhs_backend/runtime/hhs_graphics_recipe_v1.py`
+- `hhs_backend/runtime/hhs_graphics_optimization_v1.py`
+- `hhs_backend/runtime/hhs_graphics_optimizer_instance_v1.py`
 - `hhs_backend/api/graphics_hydration_routes.py`
 - `hhs_backend/visual_server.py`
 - `tests/test_pass181_graphics_hydration_runtime.py`
 - `tests/test_pass181_native_recipe_residuals.py`
+- `tests/test_pass181_graphics_optimization.py`
 - `.github/workflows/pass181-graphics-hydration.yml`
 - `docs/pass181/PASS_181_EXECUTION_STATE.md`
 
@@ -77,21 +96,21 @@
 - Phase 1 branch validation run `30643593291`: success.
 - Phase 2 pull-request validation run `30645052111`: success.
 - Phase 3 pull-request validation run `30645954294`: success.
-- Phase 3 validation explicitly installed and verified ffmpeg/ffprobe, preventing canonical media tests from being silently skipped.
-- Phase 3 validation passed compilation and the complete authority, canonical timeline, recipe, residual, negative-path, route, and declaration suites.
-- PR `#104` was merged by squash into `main` as `7ffc02667f6480e6877263459a55f47e91a84189`.
-- PR `#105` was merged by squash into `main` as `e822a235cad8d7c2854169a121b6ccb826623217`.
-- No completed native scene inference, bounded optimization training, vector-store hydration, graphics-constraint freeze, or full 90-second inverse reconstruction is claimed yet.
+- Phase 4 pull-request validation run `30646805891`: success.
+- Phase 4 acceptance generated an immutable reference MP4 and three independent candidate MP4s through a fixed renderer protocol; it proved two strict admissions, one no-improvement rejection, exact decoded audiovisual closure, durable state replay, retry, cancellation, missing-renderer failure, and native-manifest passthrough rejection.
+- PR `#104` merged to `main` as `7ffc02667f6480e6877263459a55f47e91a84189`.
+- PR `#105` merged to `main` as `e822a235cad8d7c2854169a121b6ccb826623217`.
+- PR `#106` merged to `main` as `0eb277adc5e1c77a3456ad9f99216cde52be247e`.
+- No completed vector-store hydration, invariant extraction, graphics-constraint freeze, cold-start full reconstruction replay, Three.js editor enhancement, or 90-second inverse reconstruction is claimed yet.
 
 ## Remaining Pass 181 phases
 
-1. Bounded single-authority proposal, native render, canonical decode, compare, score, admit/reject optimization loop.
-2. Hydration vector-store admission and invariant candidate extraction.
-3. Native graphics constraint registry, promotion evidence, freeze, rollback, and supersession.
-4. Deterministic cold-start reconstruction replay.
-5. Three.js editor-preview enhancement without final-frame authority.
-6. Full 90-second inverse-render reconstruction acceptance and one-click evidence package export.
+1. Hydration vector-store admission and invariant candidate extraction.
+2. Native graphics constraint registry, promotion evidence, freeze, rollback, and supersession.
+3. Deterministic cold-start reconstruction replay.
+4. Three.js editor-preview enhancement without final-frame authority.
+5. Full 90-second inverse-render reconstruction acceptance and one-click evidence package export.
 
 ## Exact next action
 
-Implement a finite, checkpointed optimization job that admits only validated native recipes, invokes one declared native renderer, canonically decodes each candidate output, computes exact residual reports, admits only strictly improved candidates, persists rejected proposals without mutating authority, supports cancellation and restart, and emits Hash72/Hash216 receipts.
+Hydrate accepted and rejected optimization evidence into typed immutable vector records; derive only support-counted candidate invariants; preserve universal constraints, style profiles, project recipes, residuals, and rejection evidence as separate authority classes; and prohibit direct vector-store observations from becoming frozen runtime constraints without promotion evidence.
