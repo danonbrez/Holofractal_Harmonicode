@@ -1,0 +1,21 @@
+{
+  "branch": "agent/pass183-probability-hydration-runtime",
+  "failures": 0,
+  "next_action": "merge after the evidence-only head is revalidated",
+  "outcomes": {
+    "compile": "success",
+    "contracts": "success",
+    "dependencies": "success",
+    "smoke": "success",
+    "tests": "success"
+  },
+  "pytest_output_sha256": "d8e1a97b635037e3f89bbf52761c365373551c893d88da22b34d1a9fdbc507cb",
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "run_attempt": 1,
+  "run_id": 30660560759,
+  "schema": "HHS_PASS_172_173_PHASE2_HOSTED_VALIDATION_V1",
+  "status": "SUCCESS",
+  "terminal_pass172_claimed": false,
+  "terminal_pass173_claimed": false,
+  "validated_sha": "0b4cdc7128d4aca80c79507445dde3b0116096da"
+}
