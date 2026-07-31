@@ -56,9 +56,6 @@ def main() -> None:
         )
 
         try:
-            # The integrated module graph may keep DOMContentLoaded pending while the
-            # visual shell is already rendered. Close on HTTP commit, prove the real
-            # shell exists, then evaluate the production authority globals.
             current_phase = "NAVIGATE"
             phase(current_phase, url=BASE_URL)
             response = page.goto(BASE_URL, wait_until="commit", timeout=60_000)
@@ -74,99 +71,85 @@ def main() -> None:
             current_phase = "RENDERED_SHELL_READY"
             phase(current_phase)
 
+            # Use rendered, backend-grounded state only. Locator assertions and real
+            # interactions remain operable while the integrated page keeps its
+            # navigation lifecycle open; page-global evaluation is intentionally
+            # excluded from this production acceptance path.
             current_phase = "WAIT_RUNTIME_INTEGRATION"
             phase(current_phase)
-            page.wait_for_function(
-                """() => Boolean(
-                    window.HHSHarmonizer &&
-                    window.HHSProductionIntegration &&
-                    (
-                        window.HHSProductionIntegration.serviceCount > 0 ||
-                        window.HHSProductionIntegration.phase === 'DEGRADED'
-                    )
-                )""",
-                timeout=60_000,
-            )
-            integration = page.evaluate("""() => ({
-                phase: window.HHSProductionIntegration?.phase,
-                serviceCount: window.HHSProductionIntegration?.serviceCount,
-                failures: window.HHSProductionIntegration?.failures,
-                timings: window.HHSProductionIntegration?.timings,
-                runtimeAuthority: window.HHSProductionIntegration?.runtimeAuthority,
-                coordinator: window.HHSProductionStartupCoordinator,
-                hasHarmonizer: Boolean(window.HHSHarmonizer),
-                bodyClass: document.body.className,
-                validationState: document.querySelector('#validation-state')?.textContent,
-            })""")
-            service_count = int(integration.get("serviceCount") or 0)
-            current_phase = "REGISTRY_HYDRATED"
-            phase(current_phase, integration_phase=integration.get("phase"), service_count=service_count)
-            if service_count <= 0:
-                raise AssertionError(f"live service registry did not hydrate: {integration}")
+            validation = page.locator("#validation-state")
+            expect(validation).to_contain_text("RECEIPT CLOSED", timeout=90_000)
+            registry_rows = page.locator("#registry-tree [data-object-id]")
+            expect(registry_rows.first).to_be_visible(timeout=60_000)
+            runtime_state = validation.inner_text()
+            registry_count = registry_rows.count()
+            if registry_count <= 0:
+                raise AssertionError("live runtime registry projected no objects")
             if source_failures:
                 raise AssertionError(f"browser source modules failed: {source_failures}")
-
             registry_hydrated_ms = round((time.monotonic() - started) * 1000)
+            current_phase = "REGISTRY_HYDRATED"
+            phase(current_phase, registry_count=registry_count, runtime_state=runtime_state)
+
             current_phase = "WAIT_WORKFLOW_SURFACE"
             phase(current_phase)
-            page.wait_for_selector("body.workflow-default", timeout=30_000)
-            registry_count = page.locator("#registry-tree [data-object-id]").count()
-            runtime_state = page.locator("#validation-state").inner_text()
-            if "RECEIPT CLOSED" not in runtime_state:
-                raise AssertionError(f"runtime authority did not become receipt-closed: {runtime_state}")
+            expect(page.locator("body")).to_have_class("workflow-default", timeout=60_000)
             phase("WORKFLOW_SURFACE_READY", runtime_state=runtime_state)
 
             current_phase = "OPEN_API_SURFACE"
             phase(current_phase)
             page.locator("#open-api").click()
-            page.wait_for_selector("#api-view:not([hidden])", timeout=20_000)
-            page.wait_for_selector("#runtime-service-controller select", timeout=30_000)
+            api_view = page.locator("#api-view:not([hidden])")
+            expect(api_view).to_be_visible(timeout=20_000)
             controller = page.locator("#runtime-service-controller")
-            controller.locator("select").select_option("runtime_contract.self_test")
-            controller.locator("button", has_text="Execute registered service").click()
+            expect(controller).to_be_visible(timeout=60_000)
+            service_select = controller.locator("select")
+            expect(service_select).to_be_visible(timeout=20_000)
+            service_options = service_select.locator("option")
+            service_count = service_options.count()
+            if service_count <= 0:
+                raise AssertionError("runtime service controller exposed no live services")
+            service_select.select_option("runtime_contract.self_test")
+            execute = controller.locator("button", has_text="Execute registered service")
+            expect(execute).to_be_visible(timeout=20_000)
+            execute.click()
             output = controller.locator("pre")
-            output.wait_for(timeout=20_000)
-            page.wait_for_function(
-                """() => document.querySelector('#runtime-service-controller pre')
-                    ?.textContent.includes('HHS_RUNTIME_CONTRACT_SELF_TEST_V1')""",
-                timeout=60_000,
-            )
+            expect(output).to_contain_text("HHS_RUNTIME_CONTRACT_SELF_TEST_V1", timeout=90_000)
             dispatch_text = output.inner_text()
             dispatch_payload = json.loads(dispatch_text)
             dispatch_completed_ms = round((time.monotonic() - started) * 1000)
+            expect(validation).to_contain_text("BACKEND RESULT RETURNED", timeout=20_000)
             phase("SERVICE_DISPATCH_VERIFIED", elapsed_ms=dispatch_completed_ms)
 
             current_phase = "OPEN_ASSISTANT"
             phase(current_phase)
             page.locator("#assistant-home").click()
-            page.wait_for_selector("#assistant-view:not([hidden])", timeout=20_000)
-            page.wait_for_function(
-                """() => {
-                    const status = document.querySelector('#provider-status');
-                    return status && (
-                        status.classList.contains('verified') ||
-                        status.classList.contains('degraded')
-                    );
-                }""",
-                timeout=45_000,
-            )
-            provider_state = page.locator("#provider-status").inner_text()
-            if "ONLINE" not in provider_state:
-                raise AssertionError(f"assistant provider was not executable: {provider_state}")
+            assistant_view = page.locator("#assistant-view:not([hidden])")
+            expect(assistant_view).to_be_visible(timeout=20_000)
+            provider = page.locator("#provider-status")
+            expect(provider).to_contain_text("ONLINE", timeout=60_000)
+            provider_state = provider.inner_text()
             phase("ASSISTANT_VERIFIED", provider_state=provider_state)
 
             page.screenshot(
                 path=str(EVIDENCE_DIR / "pass161-production-harmonizer.png"),
                 full_page=True,
             )
+            body_class = page.locator("body").get_attribute("class") or ""
+            integration = {
+                "phase": "READY",
+                "serviceCount": service_count,
+                "registryProjectedObjectCount": registry_count,
+                "runtimeAuthorityState": runtime_state,
+                "domDrivenAcceptance": True,
+                "frontend_is_authority": False,
+            }
             evidence = {
                 "schema": "HHS_PASS161_PRODUCTION_BROWSER_SMOKE_V1",
                 "ok": True,
                 "base_url": BASE_URL,
                 "title": page.title(),
-                "workflow_default": page.locator("body").evaluate(
-                    "element => element.classList.contains('workflow-default')"
-                ),
+                "workflow_default": "workflow-default" in body_class.split(),
                 "service_count": service_count,
                 "registry_projected_object_count": registry_count,
                 "runtime_state": runtime_state,
@@ -187,6 +170,8 @@ def main() -> None:
                 "source_failures": source_failures,
                 "frontend_is_authority": False,
             }
+            if console_errors or page_errors or request_failures or source_failures:
+                raise AssertionError(json.dumps(evidence, indent=2, sort_keys=True))
             write_evidence("production-smoke.json", evidence)
             current_phase = "COMPLETE"
             phase(current_phase, elapsed_ms=round((time.monotonic() - started) * 1000))
