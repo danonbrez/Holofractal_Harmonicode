@@ -9,6 +9,7 @@
 #define HHS_STORYBOOK_FONT_HEIGHT 7
 #define HHS_STORYBOOK_CAPTION_CHARS 48U
 #define HHS_STORYBOOK_CHAIN_BYTES (HHS_HASH72_LEN * 2U + sizeof(uint32_t))
+#define HHS_STORYBOOK_VM81_CYCLE_FRAMES 72U
 
 static const uint8_t HHS_STORYBOOK_FONT[37][HHS_STORYBOOK_FONT_HEIGHT] = {
     {14,17,17,31,17,17,17}, {30,17,17,30,17,17,30}, {14,17,16,16,16,17,14},
@@ -202,8 +203,8 @@ static void hhs_storybook_apply_page(uint8_t* rgba, const HHSStorybookScene* sce
 static HHSStorybookReelStatus hhs_storybook_validate_config(const HHSStorybookReelConfig* config) {
     if (!config || config->struct_size < sizeof(*config) || config->abi_version != HHS_STORYBOOK_REEL_ABI_VERSION) return HHS_STORYBOOK_REEL_INVALID_ARGUMENT;
     if (config->fps == 0U || config->frame_count == 0U || config->frame_count % config->fps != 0U) return HHS_STORYBOOK_REEL_FRAME_COUNT_INVALID;
-    if (config->scene_count == 0U || config->scene_count > HHS_STORYBOOK_REEL_SCENES) return HHS_STORYBOOK_REEL_FRAME_COUNT_INVALID;
-    if (config->audio_rate == 0U) return HHS_STORYBOOK_REEL_FRAME_COUNT_INVALID;
+    if (config->scene_count == 0U || config->scene_count > HHS_STORYBOOK_REEL_SCENES || config->frame_count < config->scene_count) return HHS_STORYBOOK_REEL_SCENE_COUNT_INVALID;
+    if (config->audio_rate != HHS_STORYBOOK_REEL_AUDIO_RATE) return HHS_STORYBOOK_REEL_INVALID_ARGUMENT;
     return HHS_STORYBOOK_REEL_OK;
 }
 
@@ -213,14 +214,14 @@ const char* hhs_storybook_reel_status_name(HHSStorybookReelStatus status) {
         case HHS_STORYBOOK_REEL_INVALID_ARGUMENT: return "HHS_STORYBOOK_REEL_INVALID_ARGUMENT";
         case HHS_STORYBOOK_REEL_TEXT_EMPTY: return "HHS_STORYBOOK_REEL_TEXT_EMPTY";
         case HHS_STORYBOOK_REEL_TEXT_TOO_LARGE: return "HHS_STORYBOOK_REEL_TEXT_TOO_LARGE";
-        case HHS_STORYBOOK_REEL_TITLE_TOO_LARGE: return "HHS_STORYBOOK_REEL_TITLE_TOO_LARGE";
         case HHS_STORYBOOK_REEL_FRAME_COUNT_INVALID: return "HHS_STORYBOOK_REEL_FRAME_COUNT_INVALID";
-        case HHS_STORYBOOK_REEL_IO_FAILURE: return "HHS_STORYBOOK_REEL_IO_FAILURE";
+        case HHS_STORYBOOK_REEL_SCENE_COUNT_INVALID: return "HHS_STORYBOOK_REEL_SCENE_COUNT_INVALID";
         case HHS_STORYBOOK_REEL_GAME_ABI_FAILURE: return "HHS_STORYBOOK_REEL_GAME_ABI_FAILURE";
+        case HHS_STORYBOOK_REEL_IO_FAILURE: return "HHS_STORYBOOK_REEL_IO_FAILURE";
+        case HHS_STORYBOOK_REEL_STATE_MUTATION_FAILURE: return "HHS_STORYBOOK_REEL_STATE_MUTATION_FAILURE";
         case HHS_STORYBOOK_REEL_OPCODE_COVERAGE_FAILURE: return "HHS_STORYBOOK_REEL_OPCODE_COVERAGE_FAILURE";
         case HHS_STORYBOOK_REEL_REPLAY_FAILURE: return "HHS_STORYBOOK_REEL_REPLAY_FAILURE";
         case HHS_STORYBOOK_REEL_PROGRAM_ROUNDTRIP_FAILURE: return "HHS_STORYBOOK_REEL_PROGRAM_ROUNDTRIP_FAILURE";
-        case HHS_STORYBOOK_REEL_STATE_MUTATION_FAILURE: return "HHS_STORYBOOK_REEL_STATE_MUTATION_FAILURE";
         default: return "HHS_STORYBOOK_REEL_UNKNOWN";
     }
 }
@@ -231,9 +232,11 @@ HHSStorybookReelStatus hhs_storybook_reel_default_config(HHSStorybookReelConfig*
     config->struct_size = (uint32_t)sizeof(*config);
     config->abi_version = HHS_STORYBOOK_REEL_ABI_VERSION;
     config->fps = HHS_STORYBOOK_REEL_FPS;
-    config->frame_count = HHS_STORYBOOK_REEL_FRAME_COUNT;
-    config->audio_rate = HHS_STORYBOOK_REEL_AUDIO_RATE;
+    config->frame_count = HHS_STORYBOOK_REEL_FRAMES;
     config->scene_count = HHS_STORYBOOK_REEL_SCENES;
+    config->audio_rate = HHS_STORYBOOK_REEL_AUDIO_RATE;
+    config->capture_interval = HHS_STORYBOOK_REEL_CAPTURE_INTERVAL;
+    config->parallel_workers = 1U;
     return HHS_STORYBOOK_REEL_OK;
 }
 
@@ -244,7 +247,7 @@ HHSStorybookReelStatus hhs_storybook_reel_plan_scenes(
     HHSStorybookScene* scenes,
     size_t scene_capacity
 ) {
-    uint32_t scene_index;
+    size_t scene_index;
     size_t cursor = 0U;
     HHSStorybookReelStatus config_status = hhs_storybook_validate_config(config);
     if (config_status != HHS_STORYBOOK_REEL_OK) return config_status;
@@ -324,6 +327,7 @@ HHSStorybookReelStatus hhs_storybook_reel_render_frame(
 ) {
     const HHSStorybookScene* scene;
     uint32_t local_frame;
+    uint32_t cycle_frame;
     uint8_t input = 0U;
     HHSVM81GameStatus game_status;
     HHSVM81GameTextureReport texture_report;
@@ -336,6 +340,7 @@ HHSStorybookReelStatus hhs_storybook_reel_render_frame(
     scene = hhs_storybook_scene_for_frame(scenes, scene_count, frame_index);
     if (!scene) return HHS_STORYBOOK_REEL_INVALID_ARGUMENT;
     local_frame = frame_index - scene->first_frame;
+    cycle_frame = local_frame % HHS_STORYBOOK_VM81_CYCLE_FRAMES;
 
     if (frame_index == 0U) {
         game_status = hhs_vm81_game_release_init(release);
@@ -347,9 +352,15 @@ HHSStorybookReelStatus hhs_storybook_reel_render_frame(
         if (game_status != HHS_GAME_STATUS_OK) return HHS_STORYBOOK_REEL_GAME_ABI_FAILURE;
     }
 
-    if (((local_frame / 45U) & 1U) == 0U) input |= HHS_VM81_GAME_INPUT_RIGHT;
+    /*
+     * The serial adapter resets the inherited release every 72 admitted player
+     * frames. Drive each restarted VM81 cycle from its own bounded phase rather
+     * than the scene-global frame, so a fresh player state never inherits the
+     * second half of the prior cycle's leftward trajectory.
+     */
+    if (((cycle_frame / 45U) & 1U) == 0U) input |= HHS_VM81_GAME_INPUT_RIGHT;
     else input |= HHS_VM81_GAME_INPUT_LEFT;
-    if (((local_frame + scene->palette[0]) % 53U) == 0U) input |= HHS_VM81_GAME_INPUT_JUMP;
+    if (((cycle_frame + scene->palette[0]) % 53U) == 0U) input |= HHS_VM81_GAME_INPUT_JUMP;
     game_status = hhs_vm81_game_release_step(release, input);
     if (game_status != HHS_GAME_STATUS_OK) return HHS_STORYBOOK_REEL_GAME_ABI_FAILURE;
 
@@ -428,25 +439,62 @@ static HHSStorybookReelStatus hhs_storybook_write_audio(
         int32_t signed_a;
         int32_t signed_b;
         int32_t envelope;
-        int32_t mixed;
-        int16_t sample;
+        int32_t sample;
+        uint16_t phase16_a;
+        uint16_t phase16_b;
         phase_a += step_a;
         phase_b += step_b;
-        wave_a = phase_a & 0xffffU;
-        wave_b = phase_b & 0xffffU;
-        wave_a = wave_a < 32768U ? wave_a : 65535U - wave_a;
-        wave_b = wave_b < 32768U ? wave_b : 65535U - wave_b;
-        signed_a = (int32_t)wave_a * 2 - 32767;
-        signed_b = (int32_t)wave_b * 2 - 32767;
-        envelope = 5000 - (int32_t)((sample_index % (config->audio_rate * 6U)) / 24U);
-        if (envelope < 1800) envelope = 1800;
-        mixed = (signed_a * envelope) / 32767 + (signed_b * (envelope / 2)) / 32767;
-        if (mixed > 32767) mixed = 32767;
-        if (mixed < -32768) mixed = -32768;
-        sample = (int16_t)mixed;
-        if (fwrite(&sample, sizeof(sample), 1U, pcm) != 1U) return HHS_STORYBOOK_REEL_IO_FAILURE;
+        phase16_a = (uint16_t)phase_a;
+        phase16_b = (uint16_t)phase_b;
+        wave_a = phase16_a < 32768U ? phase16_a : 65535U - phase16_a;
+        wave_b = phase16_b < 32768U ? phase16_b : 65535U - phase16_b;
+        signed_a = (int32_t)wave_a - 16384;
+        signed_b = (int32_t)wave_b - 16384;
+        envelope = (int32_t)((sample_index % (config->audio_rate / 2U)) * 32767U / (config->audio_rate / 2U));
+        if (envelope > 16384) envelope = 32767 - envelope;
+        sample = ((signed_a * 3 + signed_b * 2) / 5) * envelope / 32767;
+        {
+            int16_t pcm_sample = (int16_t)sample;
+            if (fwrite(&pcm_sample, sizeof(pcm_sample), 1U, pcm) != 1U) return HHS_STORYBOOK_REEL_IO_FAILURE;
+        }
     }
     *out_samples = (uint32_t)total_samples;
+    return HHS_STORYBOOK_REEL_OK;
+}
+
+static HHSStorybookReelStatus hhs_storybook_compute_chain(
+    FILE* rgba,
+    const HHSStorybookReelConfig* config,
+    HHSHash72* out_hash72,
+    HHSHash216* out_hash216
+) {
+    uint8_t* frame;
+    uint8_t chain_payload[HHS_STORYBOOK_CHAIN_BYTES];
+    uint32_t frame_index;
+    HHSHash72 chain;
+    if (!rgba || !config || !out_hash72 || !out_hash216) return HHS_STORYBOOK_REEL_INVALID_ARGUMENT;
+    frame = (uint8_t*)malloc(HHS_STORYBOOK_REEL_RGBA_BYTES);
+    if (!frame) return HHS_STORYBOOK_REEL_IO_FAILURE;
+    hhs_hash72_compute("HHS_STORYBOOK_FRAME_CHAIN", 25U, &chain);
+    rewind(rgba);
+    for (frame_index = 0U; frame_index < config->frame_count; ++frame_index) {
+        HHSHash72 frame_hash;
+        if (fread(frame, 1U, HHS_STORYBOOK_REEL_RGBA_BYTES, rgba) != HHS_STORYBOOK_REEL_RGBA_BYTES) {
+            free(frame);
+            return HHS_STORYBOOK_REEL_IO_FAILURE;
+        }
+        hhs_hash72_compute(frame, HHS_STORYBOOK_REEL_RGBA_BYTES, &frame_hash);
+        memcpy(chain_payload, chain.value, HHS_HASH72_LEN);
+        memcpy(chain_payload + HHS_HASH72_LEN, frame_hash.value, HHS_HASH72_LEN);
+        chain_payload[HHS_HASH72_LEN * 2U + 0U] = (uint8_t)(frame_index & 0xffU);
+        chain_payload[HHS_HASH72_LEN * 2U + 1U] = (uint8_t)((frame_index >> 8U) & 0xffU);
+        chain_payload[HHS_HASH72_LEN * 2U + 2U] = (uint8_t)((frame_index >> 16U) & 0xffU);
+        chain_payload[HHS_HASH72_LEN * 2U + 3U] = (uint8_t)((frame_index >> 24U) & 0xffU);
+        hhs_hash72_compute(chain_payload, sizeof(chain_payload), &chain);
+    }
+    *out_hash72 = chain;
+    hhs_hash216_compute(chain.value, HHS_HASH72_LEN, out_hash216);
+    free(frame);
     return HHS_STORYBOOK_REEL_OK;
 }
 
@@ -462,62 +510,50 @@ HHSStorybookReelStatus hhs_storybook_reel_render_files(
 ) {
     HHSStorybookScene scenes[HHS_STORYBOOK_REEL_SCENES];
     HHSVM81GameRelease release;
-    uint8_t* rgba = NULL;
-    FILE* rgba_file = NULL;
-    FILE* pcm_file = NULL;
-    HHSStorybookReelStatus status;
-    uint32_t frame_index;
-    uint32_t prior_instructions = 0U;
+    HHSHash72 story_hash72;
+    HHSHash216 story_hash216;
     HHSHash72 frame_hash72;
     HHSHash216 frame_hash216;
-    HHSHash72 chain72;
-    HHSHash216 chain216;
-    char chain_buffer[HHS_HASH216_LEN * 2U + 32U];
-    if (!report) return HHS_STORYBOOK_REEL_INVALID_ARGUMENT;
+    HHSStorybookReelStatus status;
+    FILE* rgba;
+    FILE* pcm;
+    uint8_t* frame;
+    uint32_t frame_index;
+    uint32_t samples = 0U;
+    if (!report || !rgba_path || !pcm_path) return HHS_STORYBOOK_REEL_INVALID_ARGUMENT;
     memset(report, 0, sizeof(*report));
-    status = hhs_storybook_validate_config(config);
-    if (status != HHS_STORYBOOK_REEL_OK) goto finish;
-    if (!text || !title || !rgba_path || !pcm_path) {
-        status = HHS_STORYBOOK_REEL_INVALID_ARGUMENT;
-        goto finish;
-    }
-    if (text_length == 0U) {
-        status = HHS_STORYBOOK_REEL_TEXT_EMPTY;
-        goto finish;
-    }
-    if (text_length > HHS_STORYBOOK_REEL_MAX_TEXT_BYTES) {
-        status = HHS_STORYBOOK_REEL_TEXT_TOO_LARGE;
-        goto finish;
-    }
-    if (title_length > HHS_STORYBOOK_REEL_MAX_TITLE_BYTES) {
-        status = HHS_STORYBOOK_REEL_TITLE_TOO_LARGE;
-        goto finish;
+    status = hhs_storybook_reel_plan_scenes(text, text_length, config, scenes, HHS_STORYBOOK_REEL_SCENES);
+    if (status != HHS_STORYBOOK_REEL_OK) {
+        report->status = status;
+        return status;
     }
     status = hhs_storybook_verify_full_game_abi(report);
-    if (status != HHS_STORYBOOK_REEL_OK) goto finish;
-    status = hhs_storybook_reel_plan_scenes(text, text_length, config, scenes, HHS_STORYBOOK_REEL_SCENES);
-    if (status != HHS_STORYBOOK_REEL_OK) goto finish;
-
-    hhs_hash72_compute(text, text_length, &report->story_hash72);
-    hhs_hash216_compute(text, text_length, &report->story_hash216);
-    chain72 = report->story_hash72;
-    chain216 = report->story_hash216;
-    rgba = (uint8_t*)malloc(HHS_STORYBOOK_REEL_RGBA_BYTES);
-    if (!rgba) {
-        status = HHS_STORYBOOK_REEL_IO_FAILURE;
-        goto finish;
+    if (status != HHS_STORYBOOK_REEL_OK) {
+        report->status = status;
+        return status;
     }
-    rgba_file = fopen(rgba_path, "wb");
-    pcm_file = fopen(pcm_path, "wb");
-    if (!rgba_file || !pcm_file) {
-        status = HHS_STORYBOOK_REEL_IO_FAILURE;
-        goto finish;
+    rgba = fopen(rgba_path, "w+b");
+    if (!rgba) {
+        report->status = HHS_STORYBOOK_REEL_IO_FAILURE;
+        return HHS_STORYBOOK_REEL_IO_FAILURE;
+    }
+    pcm = fopen(pcm_path, "wb");
+    if (!pcm) {
+        fclose(rgba);
+        report->status = HHS_STORYBOOK_REEL_IO_FAILURE;
+        return HHS_STORYBOOK_REEL_IO_FAILURE;
+    }
+    frame = (uint8_t*)malloc(HHS_STORYBOOK_REEL_RGBA_BYTES);
+    if (!frame) {
+        fclose(rgba);
+        fclose(pcm);
+        report->status = HHS_STORYBOOK_REEL_IO_FAILURE;
+        return HHS_STORYBOOK_REEL_IO_FAILURE;
     }
     memset(&release, 0, sizeof(release));
-    report->state_projection_non_mutating = 1U;
+    hhs_hash72_compute(text, text_length, &story_hash72);
+    hhs_hash216_compute(text, text_length, &story_hash216);
     for (frame_index = 0U; frame_index < config->frame_count; ++frame_index) {
-        uint32_t before = release.instructions_executed;
-        int written;
         status = hhs_storybook_reel_render_frame(
             text,
             text_length,
@@ -528,65 +564,33 @@ HHSStorybookReelStatus hhs_storybook_reel_render_files(
             config->scene_count,
             frame_index,
             &release,
-            rgba,
+            frame,
             HHS_STORYBOOK_REEL_RGBA_BYTES,
             &frame_hash72,
             &frame_hash216
         );
-        if (status != HHS_STORYBOOK_REEL_OK) goto finish;
-        if (fwrite(rgba, 1U, HHS_STORYBOOK_REEL_RGBA_BYTES, rgba_file) != HHS_STORYBOOK_REEL_RGBA_BYTES) {
+        if (status != HHS_STORYBOOK_REEL_OK) break;
+        if (fwrite(frame, 1U, HHS_STORYBOOK_REEL_RGBA_BYTES, rgba) != HHS_STORYBOOK_REEL_RGBA_BYTES) {
             status = HHS_STORYBOOK_REEL_IO_FAILURE;
-            goto finish;
+            break;
         }
-        if (release.instructions_executed >= before) report->game_steps += release.instructions_executed - before;
-        else report->game_steps += release.instructions_executed;
-        prior_instructions = release.instructions_executed;
-        (void)prior_instructions;
-        written = snprintf(
-            chain_buffer,
-            sizeof(chain_buffer),
-            "%s|%s|%u",
-            chain72.value,
-            frame_hash72.value,
-            frame_index
-        );
-        if (written <= 0 || (size_t)written >= sizeof(chain_buffer)) {
-            status = HHS_STORYBOOK_REEL_IO_FAILURE;
-            goto finish;
-        }
-        hhs_hash72_compute(chain_buffer, (size_t)written, &chain72);
-        written = snprintf(
-            chain_buffer,
-            sizeof(chain_buffer),
-            "%s|%s|%u",
-            chain216.value,
-            frame_hash216.value,
-            frame_index
-        );
-        if (written <= 0 || (size_t)written >= sizeof(chain_buffer)) {
-            status = HHS_STORYBOOK_REEL_IO_FAILURE;
-            goto finish;
-        }
-        hhs_hash216_compute(chain_buffer, (size_t)written, &chain216);
     }
-    status = hhs_storybook_write_audio(pcm_file, config, scenes, config->scene_count, &report->audio_samples);
-    if (status != HHS_STORYBOOK_REEL_OK) goto finish;
-    report->frame_chain_hash72 = chain72;
-    report->frame_chain_hash216 = chain216;
-    report->fps = config->fps;
-    report->frame_count = config->frame_count;
-    report->duration_seconds = config->frame_count / config->fps;
-    report->scene_count = config->scene_count;
-    report->width = HHS_STORYBOOK_REEL_WIDTH;
-    report->height = HHS_STORYBOOK_REEL_HEIGHT;
-    report->audio_rate = config->audio_rate;
+    if (status == HHS_STORYBOOK_REEL_OK) status = hhs_storybook_write_audio(pcm, config, scenes, config->scene_count, &samples);
+    if (status == HHS_STORYBOOK_REEL_OK) status = hhs_storybook_compute_chain(rgba, config, &report->frame_chain_hash72, &report->frame_chain_hash216);
+    if (fflush(rgba) != 0 || fflush(pcm) != 0) status = HHS_STORYBOOK_REEL_IO_FAILURE;
+    fclose(rgba);
+    fclose(pcm);
+    free(frame);
+    report->status = status;
+    report->frame_count = status == HHS_STORYBOOK_REEL_OK ? config->frame_count : frame_index;
+    report->audio_samples = samples;
+    report->duration_seconds = status == HHS_STORYBOOK_REEL_OK ? config->frame_count / config->fps : 0U;
+    report->parallel_workers = 1U;
     report->parallel_computation_used = 0U;
-    status = HHS_STORYBOOK_REEL_OK;
-
-finish:
-    if (rgba_file && fclose(rgba_file) != 0 && status == HHS_STORYBOOK_REEL_OK) status = HHS_STORYBOOK_REEL_IO_FAILURE;
-    if (pcm_file && fclose(pcm_file) != 0 && status == HHS_STORYBOOK_REEL_OK) status = HHS_STORYBOOK_REEL_IO_FAILURE;
-    free(rgba);
-    report->status = (uint32_t)status;
+    report->state_projection_non_mutating = 1U;
+    report->story_hash72 = story_hash72;
+    report->story_hash216 = story_hash216;
+    report->last_frame_hash72 = frame_hash72;
+    report->last_frame_hash216 = frame_hash216;
     return status;
 }
