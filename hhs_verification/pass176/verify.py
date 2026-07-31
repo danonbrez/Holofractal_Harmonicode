@@ -6,7 +6,11 @@ import argparse
 from hashlib import sha256
 import json
 from pathlib import Path
+import re
 from typing import Any
+
+
+HEX64 = re.compile(r"^[0-9a-f]{64}$")
 
 
 def canonical(value: Any) -> bytes:
@@ -43,11 +47,19 @@ def main() -> int:
 
     required = [
         root / "HHS_PASS_176_FROZEN_PRODUCTION_MULTIMODAL_IDE_STABILIZATION_PERFORMANCE_RECOVERY.md",
+        root / "evidence/pass176/PASS_176_ACTIVATION_RECORD.json",
+        root / "applications/holofractal_harmonizer/src/application-templates-runtime.mjs",
+        root / "applications/holofractal_harmonizer/src/integrated-assistant.mjs",
         root / "applications/holofractal_harmonizer/src/pass176-stability-core.mjs",
         root / "applications/holofractal_harmonizer/src/pass176-stability.mjs",
         root / "applications/holofractal_harmonizer/src/pass176-stability.css",
         root / "applications/holofractal_harmonizer/src/visual-ide.mjs",
+        root / "applications/holofractal_harmonizer/src/visual-ide-state.mjs",
+        root / "applications/holofractal_harmonizer/src/visual-ide-runtime.mjs",
+        root / "applications/holofractal_harmonizer/tests/integrated.workbench.test.mjs",
+        root / "applications/holofractal_harmonizer/tests/intuitive.ide.test.mjs",
         root / "applications/holofractal_harmonizer/tests/pass176-stability.test.mjs",
+        root / "applications/holofractal_harmonizer/tests/project.lifecycle.test.mjs",
         root / "applications/holofractal_harmonizer/ux_lab/pass176_stability_smoke.py",
         root / "tests/test_pass176_frozen_ide_stabilization.py",
         root / ".github/workflows/pass176-frozen-ide-stabilization.yml",
@@ -58,16 +70,43 @@ def main() -> int:
     if missing:
         raise SystemExit(f"PASS176_REQUIRED_ARTIFACT_MISSING:{missing}")
 
-    parent = json.loads((root / "evidence/pass175/PASS_175_TERMINAL_COMPLETION_RECEIPT.json").read_text())
-    browser = json.loads(browser_path.read_text())
+    parent_path = root / "evidence/pass175/PASS_175_TERMINAL_COMPLETION_RECEIPT.json"
+    parent = json.loads(parent_path.read_text(encoding="utf-8"))
+    browser = json.loads(browser_path.read_text(encoding="utf-8"))
     initial = browser.get("initial") or {}
     repetition = browser.get("repetition") or {}
     final_status = browser.get("final_status") or {}
     boot = final_status.get("boot") or {}
     resources = final_status.get("resources") or {}
+    authority_evidence = final_status.get("authorityEvidence") or {}
+    parent_authority = parent.get("authority") or {}
+    parent_roots = parent.get("terminal_roots") or {}
+    parent_main = parent.get("main_verification") or {}
+    parent_replay = parent.get("replay") or {}
+
+    parent_integrity = bool(
+        parent.get("schema") == "HHS_PASS_175_TERMINAL_MAIN_COMPLETION_RECEIPT_V1"
+        and parent.get("terminal_pass175_completion") is True
+        and parent_authority.get("singleton_vm81_admission") is True
+        and parent_authority.get("hash72_commit_streams") == 1
+        and parent_replay.get("receipt_chain_valid") is True
+        and parent_main.get("merged") is True
+        and parent_main.get("main_source_fetch_verified") is True
+        and HEX64.fullmatch(str(parent_roots.get("terminal_receipt_sha256") or ""))
+        and HEX64.fullmatch(str(parent.get("authoritative_merge_commit") or "")) is None
+        and re.fullmatch(r"[0-9a-f]{40}", str(parent.get("authoritative_merge_commit") or ""))
+    )
+    evidence_integrity = bool(
+        authority_evidence.get("schema") == "HHS_PASS_176_BACKEND_AUTHORITY_EVIDENCE_V1"
+        and authority_evidence.get("singletonVm81CommitAuthority") is True
+        and authority_evidence.get("vm81AuthorityPreserved") is True
+        and authority_evidence.get("hash72CommitStreams") == 1
+        and authority_evidence.get("runtimeReceiptHash72")
+        and authority_evidence.get("runtimeStatus") == "HHS_RUNTIME_AUTHORITY_ONLINE"
+    )
 
     checks = {
-        "pass175_activation_gate": parent.get("terminal_pass175_completion") is True,
+        "pass175_activation_gate": parent_integrity,
         "browser_smoke_ok": browser.get("ok") is True,
         "production_root_full_ide": bool(browser.get("title")) and initial.get("stage") == "INTERACTIVE",
         "ordered_boot_complete": boot.get("stage") == "INTERACTIVE" and len(boot.get("records") or []) == 10,
@@ -80,7 +119,9 @@ def main() -> int:
         "current_response_accepted": (browser.get("stale_response") or {}).get("currentAccepted") is True,
         "bounded_cancellation": (browser.get("cancelled_job") or {}).get("cancelled") is True,
         "atomic_recovery_saved": (browser.get("recovery") or {}).get("saved") is True,
+        "recovery_applied_to_editor": (browser.get("recovery") or {}).get("editorRestored") is True,
         "frontend_not_canonical_authority": final_status.get("canonicalFrontendAuthority") is False,
+        "backend_authority_evidence_bound": evidence_integrity,
         "vm81_authority_preserved": final_status.get("vm81AuthorityPreserved") is True,
         "single_hash72_commit_stream": final_status.get("hash72CommitStreams") == 1,
         "console_errors_clean": browser.get("console_errors") == [],
@@ -111,9 +152,12 @@ def main() -> int:
         "checks": checks,
         "activation_parent": {
             "pass": 175,
+            "schema": parent.get("schema"),
             "classification": parent.get("classification"),
             "authoritative_merge_commit": parent.get("authoritative_merge_commit"),
-            "terminal_receipt_sha256": (parent.get("terminal_roots") or {}).get("terminal_receipt_sha256"),
+            "terminal_receipt_sha256": parent_roots.get("terminal_receipt_sha256"),
+            "receipt_file_sha256": file_sha(parent_path),
+            "integrity_verified": parent_integrity,
         },
         "frozen_visual_baseline_preserved": True,
         "source_hashes": source_hashes,
@@ -130,10 +174,11 @@ def main() -> int:
             "http_errors": browser.get("http_errors"),
         },
         "authority": {
-            "frontend_is_canonical_authority": False,
-            "singleton_vm81_admission_preserved": True,
-            "hash72_commit_streams": 1,
-            "pass175_instruction_authority_preserved": True,
+            "frontend_is_canonical_authority": final_status.get("canonicalFrontendAuthority") is False,
+            "backend_evidence": authority_evidence,
+            "singleton_vm81_admission_preserved": evidence_integrity and final_status.get("vm81AuthorityPreserved") is True,
+            "hash72_commit_streams": authority_evidence.get("hash72CommitStreams", 0),
+            "pass175_instruction_authority_preserved": parent_integrity,
         },
         "external_deployment": {
             "vercel_status_considered": False,
