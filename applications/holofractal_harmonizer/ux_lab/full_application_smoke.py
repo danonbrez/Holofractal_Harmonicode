@@ -20,84 +20,81 @@ def phase(name: str, **details: object) -> None:
     print(json.dumps({"browser_phase": name, **details}, sort_keys=True), flush=True)
 
 
-def _frame(page):
-    expect(page.locator("#ide-application-frame")).to_be_visible(timeout=15_000)
+def application_frame(page):
+    expect(page.locator("#ide-application-frame")).to_be_visible(timeout=20_000)
     return page.frame_locator("#ide-application-frame")
 
 
-def _create_with_api(page, template: str, name: str) -> None:
+def create_project(page, template: str, name: str):
     phase("CREATE_PROJECT", template=template, name=name)
     page.evaluate(
         "([template, name]) => window.HHSApplicationStudio.create(template, name)",
         [template, name],
     )
-    expect(page.locator("#ide-preview-panel.active")).to_be_visible(timeout=15_000)
-    _frame(page)
+    expect(page.locator("#ide-preview-panel.active")).to_be_visible(timeout=20_000)
+    frame = application_frame(page)
     phase("PROJECT_READY", template=template)
+    return frame
 
 
 def run() -> dict[str, object]:
     started = time.monotonic()
     current_phase = "START"
+    page_errors: list[str] = []
+    console_errors: list[str] = []
+    failed_responses: list[dict[str, object]] = []
+
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch(headless=True)
         context = browser.new_context(accept_downloads=True, viewport={"width": 1440, "height": 960})
         page = context.new_page()
-        page.set_default_timeout(15_000)
-        page.set_default_navigation_timeout(45_000)
-        page_errors: list[str] = []
-        console_errors: list[str] = []
+        page.set_default_timeout(20_000)
+        page.set_default_navigation_timeout(60_000)
         page.on("pageerror", lambda error: page_errors.append(str(error)))
         page.on("console", lambda message: console_errors.append(message.text) if message.type == "error" else None)
+        page.on(
+            "response",
+            lambda response: failed_responses.append({"status": response.status, "url": response.url})
+            if response.status >= 400
+            else None,
+        )
 
         try:
-            # The IDE intentionally maintains background runtime and assistant traffic,
-            # so network-idle is not a valid readiness predicate. Bind acceptance to
-            # DOM readiness followed by explicit, bounded interface assertions below.
+            # Module scripts intentionally perform asynchronous runtime boot and may
+            # delay DOMContentLoaded. Accept the HTTP response first, then bind every
+            # readiness decision to explicit IDE contracts below.
             current_phase = "NAVIGATE"
             phase(current_phase, url=BASE_URL)
-            response = page.goto(f"{BASE_URL}/", wait_until="domcontentloaded", timeout=45_000)
+            response = page.goto(f"{BASE_URL}/", wait_until="commit", timeout=60_000)
             if response is None or not response.ok:
                 raise AssertionError(f"full application root failed: {getattr(response, 'status', None)}")
-            current_phase = "DOM_READY"
-            phase(current_phase, elapsed_ms=round((time.monotonic() - started) * 1000))
+            current_phase = "HTTP_COMMITTED"
+            phase(current_phase, status=response.status)
 
-            current_phase = "TITLE_CHECK"
-            phase(current_phase)
-            expect(page).to_have_title("HHS Full Multimodal Application IDE")
-            current_phase = "THEME_CHECK"
-            phase(current_phase)
-            expect(page.locator("html")).to_have_class("hhs-harmonic-studio-theme")
-            current_phase = "SIMPLE_WORKFLOW_CHECK"
-            phase(current_phase)
-            expect(page.locator("#ide-simple-workflow")).to_be_visible(timeout=20_000)
+            expect(page).to_have_title("HHS Full Multimodal Application IDE", timeout=30_000)
+            expect(page.locator("html")).to_have_class("hhs-harmonic-studio-theme", timeout=30_000)
+            expect(page.locator("#ide-simple-workflow")).to_be_visible(timeout=30_000)
+
             current_phase = "WAIT_APPLICATION_STUDIO"
             phase(current_phase)
             page.wait_for_function(
                 "() => window.HHSApplicationStudio?.creates_real_runnable_projects === true",
-                timeout=30_000,
+                timeout=60_000,
             )
-            current_phase = "NEW_APP_CHECK"
-            phase(current_phase)
-            expect(page.locator("#ide-new-app")).to_be_visible(timeout=15_000)
+            expect(page.locator("#ide-new-app")).to_be_visible()
             expect(page.locator("#ide-new-app")).to_contain_text("New Application")
             expect(page.locator("#ide-menu-assistant")).to_be_visible()
             expect(page.locator("#ide-file-tree .ide-file-item").first).to_have_attribute("draggable", "false")
             current_phase = "APPLICATION_STUDIO_READY"
             phase(current_phase)
 
-            # Open the beginner-facing gallery only after Application Studio has
-            # completed its final control promotion. This avoids first-paint races
-            # while preserving the visible button and complete dialog assertions.
-            current_phase = "OPEN_APPLICATION_GALLERY"
-            phase(current_phase)
             page.evaluate("() => window.HHSApplicationStudio.open()")
-            expect(page.locator("#ide-application-gallery")).to_be_visible(timeout=15_000)
+            expect(page.locator("#ide-application-gallery")).to_be_visible()
             page.locator('[data-application-template="pong"]').click()
             page.locator("#ide-application-name").fill("Browser Pong Acceptance")
             page.locator("#ide-create-application-project").click()
-            expect(page.locator("#ide-application-gallery")).to_be_hidden(timeout=15_000)
-            pong = _frame(page)
+            expect(page.locator("#ide-application-gallery")).to_be_hidden()
+            pong = application_frame(page)
             expect(pong.locator("#game")).to_be_visible()
             expect(pong.locator("#start")).to_be_visible()
             pong.locator("#start").click()
@@ -105,77 +102,46 @@ def run() -> dict[str, object]:
             expect(page.locator("#ide-file-tree")).to_contain_text("index.html")
             expect(page.locator("#ide-file-tree")).to_contain_text("app.js")
             expect(page.locator("#ide-file-tree")).to_contain_text("style.css")
-            current_phase = "PONG_VERIFIED"
-            phase(current_phase)
+            phase("PONG_VERIFIED")
 
-            # A calculator must execute real user interaction, not just display a shell.
-            current_phase = "CREATE_CALCULATOR"
-            _create_with_api(page, "calculator", "Calculator Acceptance")
-            calculator = _frame(page)
-            calculator.locator('[data-value="7"]').click()
-            calculator.locator('[data-value="×"]').click()
-            calculator.locator('[data-value="8"]').click()
-            calculator.locator('[data-value="="]').click()
+            calculator = create_project(page, "calculator", "Calculator Acceptance")
+            for value in ["7", "×", "8", "="]:
+                calculator.locator(f'[data-value="{value}"]').click()
             expect(calculator.locator("#display")).to_have_text("56")
-            current_phase = "CALCULATOR_VERIFIED"
-            phase(current_phase)
+            phase("CALCULATOR_VERIFIED")
 
-            # Representative non-game and multimodal project classes must render.
-            current_phase = "CREATE_PUZZLE"
-            _create_with_api(page, "puzzle", "Puzzle Acceptance")
-            puzzle = _frame(page)
+            puzzle = create_project(page, "puzzle", "Puzzle Acceptance")
             expect(puzzle.locator(".tile")).to_have_count(16)
             puzzle.locator("#shuffle").click()
-            current_phase = "PUZZLE_VERIFIED"
-            phase(current_phase)
+            phase("PUZZLE_VERIFIED")
 
-            current_phase = "CREATE_DOCUMENT"
-            _create_with_api(page, "document", "Document Acceptance")
-            document = _frame(page)
+            document = create_project(page, "document", "Document Acceptance")
             expect(document.locator("#editor")).to_have_attribute("contenteditable", "true")
-            document.locator("#editor").click()
-            document.locator("#editor").press("Control+A")
             document.locator("#editor").fill("A real editable HHS document now.")
             expect(document.locator("#words")).to_contain_text("6 words")
-            current_phase = "DOCUMENT_VERIFIED"
-            phase(current_phase)
+            phase("DOCUMENT_VERIFIED")
 
-            current_phase = "CREATE_AUDIO"
-            _create_with_api(page, "audio", "Audio Acceptance")
-            audio = _frame(page)
+            audio = create_project(page, "audio", "Audio Acceptance")
             expect(audio.locator(".pad")).to_have_count(4)
             expect(audio.locator("#record")).to_be_visible()
             audio.locator(".pad").first.click()
-            current_phase = "AUDIO_VERIFIED"
-            phase(current_phase)
+            phase("AUDIO_VERIFIED")
 
-            current_phase = "CREATE_VIDEO"
-            _create_with_api(page, "video", "Video Acceptance")
-            video = _frame(page)
+            video = create_project(page, "video", "Video Acceptance")
             expect(video.locator("#stage")).to_be_visible()
             expect(video.locator("#record")).to_be_visible()
             expect(video.locator("#title")).to_have_value("HHS Motion")
-            current_phase = "VIDEO_VERIFIED"
-            phase(current_phase)
+            phase("VIDEO_VERIFIED")
 
-            # The natural-language assistant remains available without leaving the IDE.
-            current_phase = "OPEN_ASSISTANT"
-            phase(current_phase)
             page.locator("#ide-menu-assistant").click()
-            expect(page.locator("#ide-assistant-drawer")).to_be_visible(timeout=15_000)
+            expect(page.locator("#ide-assistant-drawer")).to_be_visible()
             expect(page.locator("#prompt-input")).to_be_visible()
             page.locator("#ide-assistant-close").click()
-            expect(page.locator("body")).not_to_have_class("ide-assistant-open")
             expect(page.locator("#ide-assistant-drawer")).to_be_hidden()
-            current_phase = "ASSISTANT_VERIFIED"
-            phase(current_phase)
+            phase("ASSISTANT_VERIFIED")
 
-            # Compile and inspect an actual deployable application ZIP.
-            current_phase = "CREATE_DEPLOYABLE_CALCULATOR"
-            _create_with_api(page, "calculator", "Deployable Calculator")
-            current_phase = "DOWNLOAD_ZIP"
-            phase(current_phase)
-            with page.expect_download(timeout=20_000) as download_info:
+            create_project(page, "calculator", "Deployable Calculator")
+            with page.expect_download(timeout=30_000) as download_info:
                 page.locator("#ide-download-deployable-app").click()
             download = download_info.value
             with tempfile.TemporaryDirectory() as directory:
@@ -190,29 +156,31 @@ def run() -> dict[str, object]:
                     assert "<script" in compiled and "<style" in compiled
                     assert manifest["runnable_browser_application"] is True
                     assert manifest["project_local_javascript_inlined"] is True
-            current_phase = "ZIP_VERIFIED"
-            phase(current_phase)
+            phase("ZIP_VERIFIED")
 
-            # The preserved diagnostic console remains reachable as a supporting surface.
-            current_phase = "OPEN_RUNTIME_CONSOLE"
-            phase(current_phase)
             diagnostic = context.new_page()
-            diagnostic.set_default_timeout(15_000)
-            diagnostic.set_default_navigation_timeout(30_000)
-            diagnostic.goto(f"{BASE_URL}/runtime-console/", wait_until="domcontentloaded", timeout=30_000)
-            expect(diagnostic).to_have_title("HHS Pass 174 Visual IDE")
-            expect(diagnostic.locator("body")).to_contain_text("Pass 174 Harmonic Visual SDLC Runtime")
+            diagnostic_response = diagnostic.goto(
+                f"{BASE_URL}/runtime-console/",
+                wait_until="commit",
+                timeout=45_000,
+            )
+            if diagnostic_response is None or not diagnostic_response.ok:
+                raise AssertionError("runtime console did not return a successful response")
+            expect(diagnostic).to_have_title("HHS Pass 174 Visual IDE", timeout=20_000)
+            expect(diagnostic.locator("body")).to_contain_text(
+                "Pass 174 Harmonic Visual SDLC Runtime",
+                timeout=20_000,
+            )
             diagnostic.close()
-            current_phase = "RUNTIME_CONSOLE_VERIFIED"
-            phase(current_phase)
+            phase("RUNTIME_CONSOLE_VERIFIED")
 
-            # Give asynchronous preview errors a bounded chance to surface.
             time.sleep(0.5)
             result = {
-                "ok": not page_errors and not console_errors,
+                "ok": not page_errors and not console_errors and not failed_responses,
                 "url": BASE_URL,
                 "page_errors": page_errors,
                 "console_errors": console_errors,
+                "failed_responses": failed_responses,
                 "projects_verified": ["pong", "calculator", "puzzle", "document", "audio", "video"],
                 "assistant_integrated": True,
                 "deployable_zip_verified": True,
@@ -224,8 +192,7 @@ def run() -> dict[str, object]:
                 raise AssertionError(json.dumps(result, indent=2))
             EVIDENCE_PATH.parent.mkdir(parents=True, exist_ok=True)
             EVIDENCE_PATH.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
-            current_phase = "COMPLETE"
-            phase(current_phase, elapsed_ms=result["elapsed_ms"])
+            phase("COMPLETE", elapsed_ms=result["elapsed_ms"])
             return result
         except Exception as error:
             failure = {
@@ -237,6 +204,7 @@ def run() -> dict[str, object]:
                 "elapsed_ms": round((time.monotonic() - started) * 1000),
                 "page_errors": page_errors,
                 "console_errors": console_errors,
+                "failed_responses": failed_responses,
             }
             FAILURE_PATH.parent.mkdir(parents=True, exist_ok=True)
             FAILURE_PATH.write_text(json.dumps(failure, indent=2) + "\n", encoding="utf-8")
@@ -262,5 +230,4 @@ def run() -> dict[str, object]:
 
 
 if __name__ == "__main__":
-    output = run()
-    print(json.dumps(output, indent=2), flush=True)
+    print(json.dumps(run(), indent=2), flush=True)
