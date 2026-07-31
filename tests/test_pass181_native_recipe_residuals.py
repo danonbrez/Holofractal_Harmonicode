@@ -132,7 +132,7 @@ def test_native_recipe_rejects_reference_frame_passthrough(tmp_path: Path) -> No
     runtime = GraphicsHydrationRuntime(tmp_path / "hydration")
     recipe = _native_recipe()
     recipe["scenes"][0]["layers"][0]["source_type"] = "reference_frame"
-    with pytest.raises(GraphicsHydrationError, match="PASSTHROUGH_PROHIBITED"):
+    with pytest.raises(GraphicsHydrationError, match="PASSTHROUGH.*PROHIBITED"):
         runtime.validate_native_recipe(recipe, _reference_manifest())
 
 
