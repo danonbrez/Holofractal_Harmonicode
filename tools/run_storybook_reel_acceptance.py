@@ -5,10 +5,14 @@ from __future__ import annotations
 import argparse
 import json
 import shutil
-import tempfile
+import sys
 import wave
 import zipfile
 from pathlib import Path
+
+REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
+if str(REPOSITORY_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPOSITORY_ROOT))
 
 from hhs_backend.runtime.hhs_storybook_reel_v1 import StorybookReelRuntime
 
