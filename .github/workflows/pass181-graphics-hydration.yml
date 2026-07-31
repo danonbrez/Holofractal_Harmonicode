@@ -7,15 +7,19 @@ on:
       - agent/pass181-graphics-hydration-runtime
       - agent/pass181-canonical-mp4-timeline
       - agent/pass181-native-recipe-residuals
+      - agent/pass181-bounded-optimization-loop
     paths:
       - "docs/pass181/**"
       - "hhs_backend/runtime/hhs_graphics_hydration_v1.py"
       - "hhs_backend/runtime/hhs_graphics_mp4_decode_v1.py"
       - "hhs_backend/runtime/hhs_graphics_recipe_v1.py"
+      - "hhs_backend/runtime/hhs_graphics_optimization_v1.py"
+      - "hhs_backend/runtime/hhs_graphics_optimizer_instance_v1.py"
       - "hhs_backend/api/graphics_hydration_routes.py"
       - "hhs_backend/visual_server.py"
       - "tests/test_pass181_graphics_hydration_runtime.py"
       - "tests/test_pass181_native_recipe_residuals.py"
+      - "tests/test_pass181_graphics_optimization.py"
       - ".github/workflows/pass181-graphics-hydration.yml"
   pull_request:
     paths:
@@ -23,10 +27,13 @@ on:
       - "hhs_backend/runtime/hhs_graphics_hydration_v1.py"
       - "hhs_backend/runtime/hhs_graphics_mp4_decode_v1.py"
       - "hhs_backend/runtime/hhs_graphics_recipe_v1.py"
+      - "hhs_backend/runtime/hhs_graphics_optimization_v1.py"
+      - "hhs_backend/runtime/hhs_graphics_optimizer_instance_v1.py"
       - "hhs_backend/api/graphics_hydration_routes.py"
       - "hhs_backend/visual_server.py"
       - "tests/test_pass181_graphics_hydration_runtime.py"
       - "tests/test_pass181_native_recipe_residuals.py"
+      - "tests/test_pass181_graphics_optimization.py"
       - ".github/workflows/pass181-graphics-hydration.yml"
 
 permissions:
@@ -35,7 +42,7 @@ permissions:
 jobs:
   authority-core:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -58,13 +65,16 @@ jobs:
             hhs_backend/runtime/hhs_graphics_hydration_v1.py \
             hhs_backend/runtime/hhs_graphics_mp4_decode_v1.py \
             hhs_backend/runtime/hhs_graphics_recipe_v1.py \
+            hhs_backend/runtime/hhs_graphics_optimization_v1.py \
+            hhs_backend/runtime/hhs_graphics_optimizer_instance_v1.py \
             hhs_backend/api/graphics_hydration_routes.py \
             hhs_backend/visual_server.py
-      - name: Run Pass 181 authority, timeline, recipe, and residual tests
+      - name: Run Pass 181 authority, timeline, recipe, residual, and optimization tests
         run: |
           python -m pytest -q \
             tests/test_pass181_graphics_hydration_runtime.py \
-            tests/test_pass181_native_recipe_residuals.py
+            tests/test_pass181_native_recipe_residuals.py \
+            tests/test_pass181_graphics_optimization.py
       - name: Verify public route and authority declarations
         run: |
           grep -F '/api/runtime/graphics-hydration/status' hhs_backend/visual_server.py
@@ -75,6 +85,9 @@ jobs:
           grep -F 'CANONICAL_HASH_ALGORITHM = "sha256"' hhs_backend/runtime/hhs_graphics_mp4_decode_v1.py
           grep -F 'HHS_P181_NATIVE_RECONSTRUCTION_RECIPE_V1' hhs_backend/runtime/hhs_graphics_recipe_v1.py
           grep -F 'HHS_P181_NATIVE_RECONSTRUCTION_RESIDUAL_REPORT_V1' hhs_backend/runtime/hhs_graphics_recipe_v1.py
+          grep -F 'ONE_CANDIDATE_PER_STEP' hhs_backend/runtime/hhs_graphics_optimization_v1.py
+          grep -F 'parallel_candidate_execution' hhs_backend/runtime/hhs_graphics_optimization_v1.py
           grep -F '/decode/manifest' hhs_backend/api/graphics_hydration_routes.py
           grep -F '/recipes/validate' hhs_backend/api/graphics_hydration_routes.py
           grep -F '/residuals/compare' hhs_backend/api/graphics_hydration_routes.py
+          grep -F '/optimization/jobs' hhs_backend/api/graphics_hydration_routes.py
