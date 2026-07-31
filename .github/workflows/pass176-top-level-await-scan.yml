@@ -1,0 +1,65 @@
+name: Scan Pass 176 Top-Level Await
+
+on:
+  push:
+    branches:
+      - agent/pass176-frozen-ide-stabilization
+    paths:
+      - '.github/workflows/pass176-top-level-await-scan.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  scan:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/pass176-frozen-ide-stabilization
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Install parser
+        run: npm install --no-save --no-package-lock acorn acorn-walk
+      - name: Report every top-level await in the public source graph
+        run: |
+          node <<'NODE'
+          const fs = require('node:fs');
+          const path = require('node:path');
+          const acorn = require('acorn');
+          const walk = require('acorn-walk');
+          const root = 'applications/holofractal_harmonizer/src';
+          const files = [];
+          function collect(dir) {
+            for (const name of fs.readdirSync(dir)) {
+              const full = path.join(dir, name);
+              const stat = fs.statSync(full);
+              if (stat.isDirectory()) collect(full);
+              else if (name.endsWith('.mjs')) files.push(full);
+            }
+          }
+          collect(root);
+          const findings = [];
+          const functionTypes = new Set(['FunctionDeclaration', 'FunctionExpression', 'ArrowFunctionExpression']);
+          for (const file of files.sort()) {
+            const source = fs.readFileSync(file, 'utf8');
+            const ast = acorn.parse(source, { ecmaVersion: 'latest', sourceType: 'module', locations: true });
+            walk.ancestor(ast, {
+              AwaitExpression(node, ancestors) {
+                const insideFunction = ancestors.slice(0, -1).some((ancestor) => functionTypes.has(ancestor.type));
+                if (!insideFunction) findings.push({ file, line: node.loc.start.line, column: node.loc.start.column, type: node.type, source: source.split(/\r?\n/)[node.loc.start.line - 1].trim() });
+              },
+              ForOfStatement(node, ancestors) {
+                if (!node.await) return;
+                const insideFunction = ancestors.slice(0, -1).some((ancestor) => functionTypes.has(ancestor.type));
+                if (!insideFunction) findings.push({ file, line: node.loc.start.line, column: node.loc.start.column, type: 'ForAwaitOfStatement', source: source.split(/\r?\n/)[node.loc.start.line - 1].trim() });
+              },
+            });
+          }
+          console.log(JSON.stringify({ schema: 'HHS_PASS_176_TOP_LEVEL_AWAIT_SCAN_V1', file_count: files.length, finding_count: findings.length, findings }, null, 2));
+          if (!findings.length) process.exitCode = 1;
+          NODE
