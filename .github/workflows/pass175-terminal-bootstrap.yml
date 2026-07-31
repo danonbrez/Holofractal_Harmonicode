@@ -7,6 +7,12 @@ on:
       - 'tools/pass175_terminal_source_bundle.b64'
       - 'tools/apply_pass175_terminal_bundle.py'
       - '.github/workflows/pass175-terminal-bootstrap.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'tools/pass175_terminal_source_bundle.b64'
+      - 'tools/apply_pass175_terminal_bundle.py'
+      - '.github/workflows/pass175-terminal-bootstrap.yml'
   workflow_dispatch:
 
 permissions:
@@ -18,6 +24,7 @@ concurrency:
 
 jobs:
   materialize:
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
