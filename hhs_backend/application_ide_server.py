@@ -33,7 +33,7 @@ from hhs_backend.public_ide_bootstrap import render_public_ide_index
 
 app = pass174.app
 app.title = "HHS Full Multimodal Application IDE"
-app.version = "4.4.0"
+app.version = "4.4.1"
 app.description = (
     "Full integrated development environment for real web applications, games, "
     "calculators, documents, audio, video, multimodal projects, HARMONICODE, "
@@ -57,15 +57,34 @@ def _has_exact_route(path: str) -> bool:
     return any(str(getattr(route, "path", "")) == path for route in app.router.routes)
 
 
+def _is_inherited_public_root(route: Any) -> bool:
+    """Identify every inherited GET/static authority for the public root.
+
+    Import reuse can preserve a root mount under a name not known to the final
+    composition. Route identity is therefore decided by path and callable shape,
+    not only by an inherited name. API and WebSocket paths are unaffected.
+    """
+    path = str(getattr(route, "path", ""))
+    if path not in {"", "/"}:
+        return False
+    methods = getattr(route, "methods", None)
+    return methods is None or bool({"GET", "HEAD"}.intersection(methods))
+
+
 _deferred_api_fallback_routes = [
     route for route in app.router.routes
     if str(getattr(route, "path", "")) == API_FALLBACK_PATH
 ]
 
+# Remove every inherited root handler or root static mount before composing the
+# rendered index plus its final static fallback. This closes the live-server
+# race where the raw production StaticFiles mount could bypass the inline
+# public boot even though name-based TestClient checks passed.
 app.router.routes = [
     route
     for route in app.router.routes
-    if getattr(route, "name", None) not in {
+    if not _is_inherited_public_root(route)
+    and getattr(route, "name", None) not in {
         "hhs-production-harmonizer",
         "hhs-pass174-visual-ide",
         "hhs-pass174-legacy-ide",
@@ -201,6 +220,7 @@ pass174.PASS174_BOOT_STATE.update({
     "pass184_portable_runtime_routes": _has_route_prefix("/api/v1/pass184/status"),
     "pass184_runtime_package_studio": _has_exact_route("/runtime-package"),
     "api_fallback_deferred_for_pass175": bool(_deferred_api_fallback_routes),
+    "single_public_root_authority": True,
     "lightweight_health_route": "/health",
     "lightweight_api_health_route": "/api/health",
     "inline_public_boot": "HHS_INLINE_PUBLIC_BOOT_V2",
