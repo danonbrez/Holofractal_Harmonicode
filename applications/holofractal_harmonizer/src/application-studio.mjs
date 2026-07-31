@@ -119,10 +119,15 @@ function renderTemplateButtons(gallery) {
 }
 
 export function openApplicationGallery() {
+  mountGallery();
   const gallery = $('#ide-application-gallery');
   if (!gallery) return;
   renderTemplateButtons(gallery);
   gallery.hidden = false;
+  gallery.removeAttribute('inert');
+  gallery.style.display = '';
+  gallery.style.visibility = 'visible';
+  gallery.style.opacity = '1';
   document.body.classList.add('ide-dialog-open');
   $('#ide-application-name')?.focus();
 }
@@ -184,40 +189,53 @@ function mountGallery() {
   renderTemplateButtons(gallery);
 }
 
+function launcherIsStable(node) {
+  return Boolean(
+    node instanceof HTMLButtonElement
+    && node.isConnected
+    && node.parentElement === document.body
+    && !node.hidden
+    && !node.disabled
+    && !node.closest('[hidden]')
+    && node.dataset.hhsStableApplicationLauncher === 'true'
+  );
+}
+
 function createStableApplicationLauncher() {
-  let newApp = $('#ide-new-app');
-  if (newApp) return newApp;
-  const primaryActions = document.querySelector('#ide-simple-workflow .ide-simple-primary-actions');
-  const menu = document.querySelector('.ide-menu-bar');
-  const host = primaryActions || menu || $('#ide-view');
-  if (!host) return null;
-  newApp = document.createElement('button');
-  newApp.id = 'ide-new-app';
-  newApp.type = 'button';
-  newApp.className = primaryActions ? 'primary-action' : 'ide-new-application-launcher';
-  newApp.setAttribute('aria-label', 'Create a new application');
-  const symbol = document.createElement('span');
-  symbol.textContent = '＋';
-  const label = document.createElement('strong');
-  label.textContent = 'New Application';
-  const description = document.createElement('small');
-  description.textContent = 'Games, tools, documents, audio, video';
-  newApp.append(symbol, label, description);
-  if (!primaryActions) {
-    newApp.style.cssText = [
-      'display:inline-flex', 'align-items:center', 'gap:6px', 'min-height:30px',
-      'padding:0 11px', 'border:1px solid #6f87d9', 'border-radius:7px',
-      'background:linear-gradient(135deg,#5e78db,#344d9f)', 'color:#f6f8ff',
-      'font-size:12px', 'font-weight:800', 'cursor:pointer', 'white-space:nowrap',
-    ].join(';');
+  const launchers = [...document.querySelectorAll('[id="ide-new-app"]')];
+  let newApp = launchers.find(launcherIsStable) || null;
+  for (const launcher of launchers) {
+    if (launcher !== newApp) launcher.remove();
+  }
+  if (!newApp) {
+    newApp = document.createElement('button');
+    newApp.id = 'ide-new-app';
+    newApp.type = 'button';
+    newApp.className = 'ide-new-application-launcher';
+    newApp.dataset.hhsStableApplicationLauncher = 'true';
+    newApp.setAttribute('aria-label', 'Create a new application');
+    const symbol = document.createElement('span');
+    symbol.textContent = '＋';
+    const label = document.createElement('strong');
+    label.textContent = 'New Application';
+    const description = document.createElement('small');
+    description.textContent = 'Games, tools, documents, audio, video';
     description.style.display = 'none';
+    newApp.append(symbol, label, description);
+    document.body.append(newApp);
   }
-  if (menu) {
-    const spacer = menu.querySelector('.ide-menu-spacer');
-    menu.insertBefore(newApp, spacer || null);
-  } else {
-    host.prepend(newApp);
-  }
+  newApp.hidden = false;
+  newApp.disabled = false;
+  newApp.removeAttribute('inert');
+  newApp.style.cssText = [
+    'position:fixed', 'top:8px', 'right:210px', 'z-index:2147483000',
+    'display:inline-flex', 'align-items:center', 'justify-content:center', 'gap:6px',
+    'min-height:32px', 'padding:0 12px', 'border:1px solid #6f87d9',
+    'border-radius:8px', 'background:linear-gradient(135deg,#5e78db,#344d9f)',
+    'color:#f6f8ff', 'font-size:12px', 'font-weight:800', 'cursor:pointer',
+    'white-space:nowrap', 'visibility:visible', 'opacity:1', 'pointer-events:auto',
+    'transform:none', 'transition:none', 'touch-action:manipulation',
+  ].join(';');
   return newApp;
 }
 
@@ -237,19 +255,23 @@ function promotePrimaryWorkflow() {
 function observePrimaryWorkflowInvariant() {
   if (workflowObserver || !document.body) return;
   workflowObserver = new MutationObserver(() => {
-    if ($('#ide-new-app') || workflowRepairPending) return;
+    const launchers = [...document.querySelectorAll('[id="ide-new-app"]')];
+    if ((launchers.length === 1 && launcherIsStable(launchers[0])) || workflowRepairPending) return;
     workflowRepairPending = true;
     queueMicrotask(() => {
       workflowRepairPending = false;
-      if (!$('#ide-new-app')) {
-        promotePrimaryWorkflow();
-        window.dispatchEvent(new CustomEvent('hhs:application-studio:workflow-restored', {
-          detail: { control: 'ide-new-app', frontend_is_authority: false },
-        }));
-      }
+      promotePrimaryWorkflow();
+      window.dispatchEvent(new CustomEvent('hhs:application-studio:workflow-restored', {
+        detail: {
+          control: 'ide-new-app',
+          duplicate_count_before_repair: launchers.length,
+          stable_body_launcher: true,
+          frontend_is_authority: false,
+        },
+      }));
     });
   });
-  workflowObserver.observe(document.body, { childList: true, subtree: true });
+  workflowObserver.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['hidden', 'disabled', 'style', 'inert'] });
 }
 
 function bindKeyboard() {
@@ -277,6 +299,7 @@ export function initApplicationStudio() {
     required_templates: REQUIRED_APPLICATION_TEMPLATES,
     template_registry_complete: REQUIRED_APPLICATION_TEMPLATES.every((id) => templates.some((template) => template.id === id)),
     primary_control_is_self_healing: true,
+    primary_control_is_single_stable_body_launcher: true,
     creates_real_runnable_projects: true,
     prior_project_is_recoverable: true,
   });
