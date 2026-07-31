@@ -5,12 +5,14 @@ on:
     branches: [agent/pass175-terminal-completion]
     paths:
       - 'tools/pass175_terminal_source_bundle.b64'
+      - 'tools/pass175_terminal_bundle_parts/**'
       - 'tools/apply_pass175_terminal_bundle.py'
       - '.github/workflows/pass175-terminal-bootstrap.yml'
   pull_request:
     branches: [main]
     paths:
       - 'tools/pass175_terminal_source_bundle.b64'
+      - 'tools/pass175_terminal_bundle_parts/**'
       - 'tools/apply_pass175_terminal_bundle.py'
       - '.github/workflows/pass175-terminal-bootstrap.yml'
   workflow_dispatch:
@@ -41,6 +43,7 @@ jobs:
           test -s native_projects/hhs_pass175_virtual_instruction_processor/src/vm81_invariant_kernel.c
           test -s .github/workflows/pass175-terminal-completion.yml
           test ! -e tools/pass175_terminal_source_bundle.b64
+          test ! -e tools/pass175_terminal_bundle_parts
           test ! -e evidence/pass175/_unused
       - name: Commit materialized sources
         run: |
