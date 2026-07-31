@@ -1,0 +1,21 @@
+{
+  "branch": "agent/pass181-graphics-hydration-runtime",
+  "failures": 0,
+  "next_action": "merge after the evidence-only head is revalidated",
+  "outcomes": {
+    "compile": "success",
+    "contracts": "success",
+    "dependencies": "success",
+    "smoke": "success",
+    "tests": "success"
+  },
+  "pytest_output_sha256": "76447bd38fa9c3656fb67fe1b2a15872a24577191351d484ab9e0c3540c35653",
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "run_attempt": 1,
+  "run_id": 30643593215,
+  "schema": "HHS_PASS_172_173_PHASE2_HOSTED_VALIDATION_V1",
+  "status": "SUCCESS",
+  "terminal_pass172_claimed": false,
+  "terminal_pass173_claimed": false,
+  "validated_sha": "8561fbd30924c17622aa5ad3db39fb8d311b7c46"
+}
