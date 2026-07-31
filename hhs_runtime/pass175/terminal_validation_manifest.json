@@ -1,0 +1,18 @@
+{
+  "schema": "HHS_PASS_175_TERMINAL_VALIDATION_REQUEST_V1",
+  "classification": "PASS_175_TERMINAL_IMPLEMENTATION_READY_FOR_EXECUTABLE_VALIDATION",
+  "external_deployment_quota_is_acceptance_gate": false,
+  "required_authorities": {
+    "parallel_candidate_workers": true,
+    "parallel_state_authority": false,
+    "singleton_vm81_admission": true,
+    "hash72_commit_streams": 1,
+    "hash216_hydration": true
+  },
+  "required_dimensions": {
+    "permanent_instruction_identities": 5184,
+    "controls_per_identity": 243,
+    "projected_execution_addresses": 1259712
+  },
+  "terminal_evidence_required": true
+}
