@@ -41,7 +41,8 @@ export const activeFile = () => state.files.find((file) => file.path === state.a
 export function persist() {
   const serialized = JSON.stringify({ savedAt: Date.now(), projectId: state.projectId, activePath: state.activePath, files: state.files });
   try {
-    localStorage.setItem(STORAGE_PENDING_KEY, serialized);
+    // localStorage.setItem replaces one key atomically; keeping a second full copy
+    // would require double quota for supported multimodal project payloads.
     localStorage.setItem(STORAGE_KEY, serialized);
     localStorage.removeItem(STORAGE_PENDING_KEY);
     return true;
