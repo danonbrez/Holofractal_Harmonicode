@@ -11,19 +11,16 @@ from playwright.sync_api import sync_playwright
 
 BASE_URL = os.environ.get("HHS_PASS176_SMOKE_URL", "http://127.0.0.1:8765")
 EVIDENCE_DIR = Path(__file__).resolve().parents[1] / "evidence" / "pass176"
+STABLE_MOBILE_PANES = ("editor", "lifecycle", "terminal", "spatial")
 
 
 def phase(name: str, **data: object) -> None:
-    payload = {"phase": name, "monotonic": round(time.monotonic(), 3), **data}
-    print(json.dumps(payload, sort_keys=True), flush=True)
+    print(json.dumps({"phase": name, "monotonic": round(time.monotonic(), 3), **data}, sort_keys=True), flush=True)
 
 
 def write_json(name: str, payload: dict) -> None:
     EVIDENCE_DIR.mkdir(parents=True, exist_ok=True)
-    (EVIDENCE_DIR / name).write_text(
-        json.dumps(payload, indent=2, sort_keys=True) + "\n",
-        encoding="utf-8",
-    )
+    (EVIDENCE_DIR / name).write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
 
 def main() -> None:
@@ -35,10 +32,12 @@ def main() -> None:
         page = context.new_page()
         page.set_default_timeout(20_000)
         page.set_default_navigation_timeout(60_000)
+
         console_errors: list[str] = []
         console_messages: list[dict[str, str]] = []
         page_errors: list[str] = []
         request_failures: list[dict[str, str]] = []
+        http_errors: list[dict[str, object]] = []
         page.on(
             "console",
             lambda message: (
@@ -54,6 +53,11 @@ def main() -> None:
                 "failure": request.failure or "unknown request failure",
             }),
         )
+        page.on(
+            "response",
+            lambda response: http_errors.append({"url": response.url, "status": response.status})
+            if response.status >= 400 else None,
+        )
 
         started = time.monotonic()
         current_phase = "navigate"
@@ -67,22 +71,20 @@ def main() -> None:
 
             current_phase = "wait-pass176-controller"
             page.wait_for_function("() => Boolean(window.HHSPass176)", timeout=20_000)
-            controller_snapshot = page.evaluate("() => window.HHSPass176.status()")
-            phase(current_phase, stage=controller_snapshot.get("boot", {}).get("stage"))
-
             current_phase = "wait-pass176-interactive"
             page.wait_for_function(
                 """() => Boolean(
-                    window.HHSPass176 &&
-                    window.HHSPass176.status().boot.interactive &&
-                    window.HHSVisualIDE
+                    window.HHSPass176?.status().boot.interactive &&
+                    window.HHSVisualIDE &&
+                    window.HHSIntegratedAssistant &&
+                    window.HHSGUIReliability
                 )""",
                 timeout=60_000,
             )
             interactive_ms = round((time.monotonic() - started) * 1000)
-            phase(current_phase, elapsed_ms=interactive_ms)
             page.wait_for_selector("#ide-source-editor", timeout=20_000)
             page.wait_for_selector("#pass176-stability-status.interactive", timeout=20_000)
+            phase(current_phase, elapsed_ms=interactive_ms)
 
             current_phase = "initial-state"
             initial = page.evaluate("""() => ({
@@ -117,39 +119,48 @@ def main() -> None:
 
             for index in range(100):
                 current_phase = f"assistant-cycle-{index + 1}"
-                opener = page.locator("#assistant-home")
-                opener.wait_for(state="attached", timeout=2_000)
-                opener.dispatch_event("click", timeout=2_000)
-                closer = page.locator("#ide-assistant-close")
-                closer.wait_for(state="attached", timeout=2_000)
-                closer.dispatch_event("click", timeout=2_000)
+                page.locator("#assistant-home").dispatch_event("click", timeout=2_000)
+                page.locator("#ide-assistant-close").dispatch_event("click", timeout=2_000)
                 if (index + 1) % 10 == 0:
                     phase("assistant-cycle-progress", completed=index + 1)
 
-            current_phase = "mobile-pane-cycle-setup"
-            dock = page.locator(".ide-mobile-dock [data-mobile-pane]")
-            dock_count = dock.count()
-            if dock_count <= 0:
-                raise AssertionError("Pass 176 mobile pane controls are absent")
+            current_phase = "mobile-pane-control-validation"
+            available_panes = page.evaluate("""() => [...document.querySelectorAll(
+                '.ide-mobile-dock [data-mobile-pane]'
+            )].map((button) => button.dataset.mobilePane)""")
+            missing = sorted(set(STABLE_MOBILE_PANES) - set(available_panes))
+            if missing:
+                raise AssertionError(f"Pass 176 stable mobile panes are incomplete: {missing}")
+            for pane in STABLE_MOBILE_PANES:
+                page.locator(f'.ide-mobile-dock [data-mobile-pane="{pane}"]').first.dispatch_event(
+                    "click", timeout=2_000
+                )
+
             for index in range(100):
                 current_phase = f"mobile-pane-cycle-{index + 1}"
-                dock.nth(index % dock_count).dispatch_event("click", timeout=2_000)
+                pane = STABLE_MOBILE_PANES[index % len(STABLE_MOBILE_PANES)]
+                selected = page.evaluate("""(requested) => {
+                    window.HHSGUIReliability.selectMobilePane(requested);
+                    return {
+                        selected: window.HHSGUIReliability.mobilePane,
+                        layout: document.querySelector('#ide-layout')?.dataset.mobilePane,
+                    };
+                }""", pane)
+                if selected["selected"] != pane or selected["layout"] != pane:
+                    raise AssertionError(f"mobile pane selection diverged: {pane} -> {selected}")
                 if (index + 1) % 10 == 0:
-                    phase("mobile-pane-cycle-progress", completed=index + 1, controls=dock_count)
+                    phase("mobile-pane-cycle-progress", completed=index + 1, controls=len(STABLE_MOBILE_PANES))
 
             current_phase = "mobile-repetition-result"
-            cycles = page.evaluate("""(baseline) => {
-                const editor = document.querySelector('#ide-source-editor');
-                return {
-                    assistantCycles: 100,
-                    paneCycles: 100,
-                    editorPreserved: editor?.value === baseline.editorValue,
-                    activePath: window.HHSVisualIDE.state.activePath,
-                    baselineActivePath: baseline.activePath,
-                    resourceTotal: window.HHSPass176.status().resources.total,
-                    assistantOpen: Boolean(window.HHSIntegratedAssistant?.isOpen),
-                };
-            }""", cycle_baseline)
+            cycles = page.evaluate("""(baseline) => ({
+                assistantCycles: 100,
+                paneCycles: 100,
+                editorPreserved: document.querySelector('#ide-source-editor')?.value === baseline.editorValue,
+                activePath: window.HHSVisualIDE.state.activePath,
+                baselineActivePath: baseline.activePath,
+                resourceTotal: window.HHSPass176.status().resources.total,
+                assistantOpen: Boolean(window.HHSIntegratedAssistant?.isOpen),
+            })""", cycle_baseline)
             phase(current_phase, **cycles)
 
             current_phase = "stale-response"
@@ -180,10 +191,8 @@ def main() -> None:
                     { timeoutMs: 4000, detail: 'Cancellation smoke test' },
                 );
                 setTimeout(() => window.HHSPass176.cancel('pass176-smoke-cancel'), 20);
-                try {
-                    await promise;
-                    return { cancelled: false };
-                } catch (error) {
+                try { await promise; return { cancelled: false }; }
+                catch (error) {
                     return { cancelled: error.name === 'AbortError' || String(error.message).includes('CANCEL') };
                 }
             }""")
@@ -229,9 +238,9 @@ def main() -> None:
                     navigation: navigation ? {
                         domContentLoaded: Math.round(navigation.domContentLoadedEventEnd),
                         loadEventEnd: Math.round(navigation.loadEventEnd),
-                    } : null,
+                    } : None,
                 };
-            }""")
+            }""".replace("None", "null"))
             phase(current_phase, classification=final_status["classification"])
 
             if initial["stage"] != "INTERACTIVE":
@@ -256,6 +265,10 @@ def main() -> None:
                 raise AssertionError("backend authority invariants were not preserved")
             if final_status["errors"]:
                 raise AssertionError(f"Pass 176 recorded browser errors: {final_status['errors']}")
+            if request_failures:
+                raise AssertionError(f"request failures observed: {request_failures}")
+            if http_errors:
+                raise AssertionError(f"HTTP errors observed: {http_errors}")
             if page_errors:
                 raise AssertionError(f"page errors observed: {page_errors}")
             if console_errors:
@@ -268,10 +281,7 @@ def main() -> None:
                 "ok": True,
                 "base_url": BASE_URL,
                 "title": page.title(),
-                "timing_ms": {
-                    "dom_content_loaded": dom_loaded_ms,
-                    "pass176_interactive": interactive_ms,
-                },
+                "timing_ms": {"dom_content_loaded": dom_loaded_ms, "pass176_interactive": interactive_ms},
                 "initial": initial,
                 "duplicate_boot": duplicate_boot,
                 "repetition": cycles,
@@ -283,6 +293,7 @@ def main() -> None:
                 "console_messages": console_messages[-100:],
                 "page_errors": page_errors,
                 "request_failures": request_failures,
+                "http_errors": http_errors,
                 "external_vercel_status_considered": False,
             }
             write_json("browser-smoke.json", evidence)
@@ -299,6 +310,7 @@ def main() -> None:
                 "console_messages": console_messages[-100:],
                 "page_errors": page_errors,
                 "request_failures": request_failures,
+                "http_errors": http_errors,
                 "elapsed_ms": round((time.monotonic() - started) * 1000),
             }
             write_json("browser-smoke-failure.json", failure)
