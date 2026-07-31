@@ -1,0 +1,44 @@
+name: Materialize Pass 175 Terminal Sources
+
+on:
+  push:
+    branches: [agent/pass175-terminal-completion]
+    paths:
+      - 'tools/pass175_terminal_source_bundle.b64'
+      - 'tools/apply_pass175_terminal_bundle.py'
+      - '.github/workflows/pass175-terminal-bootstrap.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: pass175-terminal-bootstrap
+  cancel-in-progress: false
+
+jobs:
+  materialize:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/pass175-terminal-completion
+          fetch-depth: 0
+      - name: Expand bounded source bundle
+        run: python tools/apply_pass175_terminal_bundle.py
+      - name: Verify expected source layout
+        run: |
+          test -s hhs_runtime/pass175/terminal.py
+          test -s hhs_runtime/pass175/x86_64.py
+          test -s native_projects/hhs_pass175_virtual_instruction_processor/src/vm81_invariant_kernel.c
+          test -s .github/workflows/pass175-terminal-completion.yml
+          test ! -e tools/pass175_terminal_source_bundle.b64
+          test ! -e evidence/pass175/_unused
+      - name: Commit materialized sources
+        run: |
+          git config user.name 'hhs-pass175-terminal'
+          git config user.email 'hhs-pass175-terminal@users.noreply.github.com'
+          git add -A
+          git commit -m 'Implement terminal Pass 175 processor and invariant kernel'
+          git push origin HEAD:agent/pass175-terminal-completion
