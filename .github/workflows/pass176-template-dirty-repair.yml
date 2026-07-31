@@ -34,3 +34,5 @@ jobs:
           git add -A
           git commit -m 'Preserve editable dirty state for generated application projects'
           git push origin HEAD:agent/pass176-frozen-ide-stabilization
+
+# Trigger after workflow registration.
