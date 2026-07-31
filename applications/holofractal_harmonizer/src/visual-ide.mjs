@@ -64,9 +64,11 @@ async function safeInit(name, initializer, { optional = false } = {}) {
 }
 
 async function runGovernedLifecycle(job) {
+  if (job?.signal?.aborted) {
+    throw new DOMException(String(job.signal.reason || 'HHS_P176_JOB_ABORTED'), 'AbortError');
+  }
   const abort = () => cancelActiveJob();
-  if (job?.signal?.aborted) abort();
-  else job?.signal?.addEventListener('abort', abort, { once: true });
+  job?.signal?.addEventListener('abort', abort, { once: true });
   try { return await runBoundedProjectTest(); }
   finally { job?.signal?.removeEventListener?.('abort', abort); }
 }
