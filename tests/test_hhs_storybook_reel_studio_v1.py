@@ -2,10 +2,14 @@ from __future__ import annotations
 
 import io
 import wave
+from pathlib import Path
 
 from fastapi.testclient import TestClient
 
 from hhs_backend.visual_server import app
+
+
+REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
 
 
 def _wav_bytes(seconds: int = 1, sample_rate: int = 8000) -> bytes:
@@ -87,3 +91,17 @@ def test_static_studio_uses_no_external_frontend_dependencies():
     assert "https://" not in javascript.text
     assert "import " not in javascript.text
     assert "parallel workers" in javascript.text
+
+
+def test_main_visual_ide_exposes_storybook_reel_without_route_knowledge():
+    coordinator = (
+        REPOSITORY_ROOT
+        / "applications"
+        / "holofractal_harmonizer"
+        / "src"
+        / "production-startup-coordinator.mjs"
+    ).read_text(encoding="utf-8")
+    assert "installStorybookReelLauncher" in coordinator
+    assert "href = '/storybook-reel/'" in coordinator
+    assert "Open the no-code 90-second storybook reel studio" in coordinator
+    assert "storybook_reel_requests_never_deferred: true" in coordinator
