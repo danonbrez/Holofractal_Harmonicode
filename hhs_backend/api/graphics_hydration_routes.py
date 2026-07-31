@@ -105,6 +105,43 @@ def graphics_hydration_decode_replay(payload: Dict[str, Any]) -> Dict[str, Any]:
         return _rejection(error)
 
 
+@router.post("/recipes/validate")
+def graphics_hydration_validate_recipe(payload: Dict[str, Any]) -> Dict[str, Any]:
+    try:
+        recipe = payload.get("recipe")
+        reference_manifest = payload.get("reference_manifest")
+        if not isinstance(recipe, dict) or not isinstance(reference_manifest, dict):
+            raise GraphicsHydrationError("P181_RECIPE_AND_REFERENCE_MANIFEST_REQUIRED")
+        return GRAPHICS_HYDRATION.validate_native_recipe(recipe, reference_manifest)
+    except GraphicsHydrationError as error:
+        return _rejection(error)
+
+
+@router.post("/residuals/compare")
+def graphics_hydration_compare_residuals(payload: Dict[str, Any]) -> Dict[str, Any]:
+    try:
+        reference_manifest = payload.get("reference_manifest")
+        native_manifest = payload.get("native_manifest")
+        validated_recipe = payload.get("validated_recipe")
+        semantic_metrics = payload.get("semantic_metrics")
+        if not isinstance(reference_manifest, dict):
+            raise GraphicsHydrationError("P181_REFERENCE_MANIFEST_REQUIRED")
+        if not isinstance(native_manifest, dict):
+            raise GraphicsHydrationError("P181_NATIVE_MANIFEST_REQUIRED")
+        if not isinstance(validated_recipe, dict):
+            raise GraphicsHydrationError("P181_VALIDATED_RECIPE_REQUIRED")
+        if semantic_metrics is not None and not isinstance(semantic_metrics, dict):
+            raise GraphicsHydrationError("P181_SEMANTIC_METRICS_INVALID")
+        return GRAPHICS_HYDRATION.build_residual_report(
+            reference_manifest,
+            native_manifest,
+            validated_recipe,
+            semantic_metrics=semantic_metrics,
+        )
+    except GraphicsHydrationError as error:
+        return _rejection(error)
+
+
 @router.post("/constraints/promote")
 def graphics_hydration_promote_constraint(payload: Dict[str, Any]) -> Dict[str, Any]:
     try:
