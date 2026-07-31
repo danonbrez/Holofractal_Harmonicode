@@ -1,0 +1,21 @@
+{
+  "branch": "agent/storybook-reel-native-abi",
+  "failures": 0,
+  "next_action": "merge after the evidence-only head is revalidated",
+  "outcomes": {
+    "compile": "success",
+    "contracts": "success",
+    "dependencies": "success",
+    "smoke": "success",
+    "tests": "success"
+  },
+  "pytest_output_sha256": "071eb9009c69cf0135191250bb53ea07a95d711d28db797d3f5ff1c1f9ca568e",
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "run_attempt": 1,
+  "run_id": 30638265421,
+  "schema": "HHS_PASS_172_173_PHASE2_HOSTED_VALIDATION_V1",
+  "status": "SUCCESS",
+  "terminal_pass172_claimed": false,
+  "terminal_pass173_claimed": false,
+  "validated_sha": "deb3abc3cff32a84eb07b5a77da6f81eed3a4144"
+}
