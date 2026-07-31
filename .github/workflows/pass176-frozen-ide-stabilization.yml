@@ -195,7 +195,8 @@ jobs:
           payload = json.loads(path.read_text())
           assert payload['terminal_pass176_completion'] is True
           assert all(payload['checks'].values())
-          assert payload['authority']['frontend_is_canonical_authority'] is True
+          assert payload['authority']['frontend_is_canonical_authority'] is False
+          assert payload['authority']['frontend_non_authority_verified'] is True
           assert payload['authority']['singleton_vm81_admission_preserved'] is True
           assert payload['authority']['hash72_commit_streams'] == 1
           assert payload['external_deployment']['vercel_status_considered'] is False
