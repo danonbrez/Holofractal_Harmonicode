@@ -2,9 +2,10 @@
 
 This module composes the canonical HHS FastAPI runtime, the governed LiteRT-LM
 assistant API, the read-only Pass 172 installation-status API, the Pass 180
-integrated application-factory API, the native storybook-reel studio, and the
-Pass 161 Holofractal Harmonizer static application. The canonical server
-remains the runtime authority; this module only changes HTTP projection.
+integrated application-factory API, the native storybook-reel studio, the Pass
+181 graphics-hydration authority, and the Pass 161 Holofractal Harmonizer static
+application. The canonical server remains the runtime authority; this module
+only changes HTTP projection.
 """
 from __future__ import annotations
 
@@ -15,6 +16,7 @@ from fastapi.staticfiles import StaticFiles
 
 from hhs_backend import server as canonical_server
 from hhs_backend.api.application_factory_routes import router as application_factory_router
+from hhs_backend.api.graphics_hydration_routes import router as graphics_hydration_router
 from hhs_backend.api.installation_routes import router as installation_router
 from hhs_backend.api.litert_lm_assistant_routes import router as assistant_router
 from hhs_backend.api.storybook_reel_routes import router as storybook_reel_router
@@ -43,6 +45,9 @@ if not _route_exists("/api/runtime/application-factory/status"):
 if not _route_exists("/api/runtime/storybook-reel/status"):
     app.include_router(storybook_reel_router)
 
+if not _route_exists("/api/runtime/graphics-hydration/status"):
+    app.include_router(graphics_hydration_router)
+
 
 @app.get("/api/system/status", tags=["system"])
 async def visual_system_status() -> Dict[str, Any]:
@@ -56,10 +61,12 @@ async def visual_system_status() -> Dict[str, Any]:
         "installation_api": "/api/runtime/installation",
         "application_factory_api": "/api/runtime/application-factory",
         "storybook_reel_api": "/api/runtime/storybook-reel",
+        "graphics_hydration_api": "/api/runtime/graphics-hydration",
         "storybook_reel_studio": "/storybook-reel/",
         "visual_environment": "HHS-P161-HHUMOCE",
         "application_factory": "HHS-P180-INTEGRATED-APPLICATION-FACTORY",
         "storybook_reel": "HHS-NATIVE-VM81-STORYBOOK-REEL-STUDIO-V1",
+        "graphics_hydration": "HHS-P181-NATIVE-CINEMATIC-GRAPHICS-HYDRATION-RUNTIME",
     }
 
 
