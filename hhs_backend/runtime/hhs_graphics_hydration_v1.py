@@ -1,9 +1,10 @@
 """Pass 181 native graphics inverse-render hydration authority core.
 
-This first implementation slice establishes immutable MP4 identity, native-frame
-provenance enforcement, exact reciprocal palette phases, typed residual records,
-fidelity classification, and gated runtime-constraint promotion. It does not
-claim completed media decomposition or native reconstruction.
+This implementation establishes immutable MP4 identity, canonical decoded video
+and audio timelines, native-frame provenance enforcement, exact reciprocal
+palette phases, typed residual records, fidelity classification, and gated
+runtime-constraint promotion. It does not yet claim scene decomposition or
+native inverse reconstruction.
 """
 from __future__ import annotations
 
@@ -14,6 +15,10 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Dict, Iterable, Mapping, Optional, Sequence
 
+from hhs_backend.runtime.hhs_graphics_mp4_decode_v1 import (
+    CanonicalMp4Decoder,
+    Mp4DecodeError,
+)
 from hhs_installer.canonical import canonical_bytes, hash72, hash216, stable
 
 VERSION = "HHS_GRAPHICS_HYDRATION_RUNTIME_V1"
@@ -173,7 +178,7 @@ def validate_native_frame_provenance(frame_manifest: Mapping[str, Any]) -> Dict[
 
 
 class GraphicsHydrationRuntime:
-    """Serialized first-stage authority for Pass 181 hydration operations."""
+    """Serialized authority for Pass 181 hydration and decode operations."""
 
     def __init__(self, artifact_root: Optional[Path] = None) -> None:
         repo_root = Path(__file__).resolve().parents[2]
@@ -182,6 +187,7 @@ class GraphicsHydrationRuntime:
         self.reference_manifest_root = self.artifact_root / "references"
         self.trial_root = self.artifact_root / "trials"
         self.constraint_root = self.artifact_root / "constraints"
+        self.decode_runtime = CanonicalMp4Decoder(self.artifact_root / "decode_manifests")
         self._authority_lock = threading.RLock()
         for path in (self.reference_manifest_root, self.trial_root, self.constraint_root):
             path.mkdir(parents=True, exist_ok=True)
@@ -198,10 +204,14 @@ class GraphicsHydrationRuntime:
             "reference_mp4_read_only": True,
             "reference_frame_passthrough": False,
             "threejs_role": "preview_enhancement_only",
-            "ffmpeg_role": "media_transport_only",
+            "ffmpeg_role": "canonical_decode_and_media_transport_only",
+            "operator_local_path_decode_enabled": os.environ.get(
+                "HHS_GRAPHICS_HYDRATION_ALLOW_LOCAL_PATHS", "0"
+            ) == "1",
+            "canonical_decode": self.decode_runtime.status(),
             "promotion_stages": list(PROMOTION_STAGES),
             "residual_classes": list(RESIDUAL_CLASSES),
-            "implementation_stage": "PASS_181_PHASE_1_AUTHORITY_AND_IDENTITY_CORE",
+            "implementation_stage": "PASS_181_PHASE_2_CANONICAL_MP4_TIMELINE_IDENTITY",
         }
 
     def ingest_reference(self, source_path: Path | str, *, logical_name: Optional[str] = None) -> Dict[str, Any]:
@@ -241,6 +251,50 @@ class GraphicsHydrationRuntime:
             output = self.reference_manifest_root / _artifact_filename(reference_id)
             output.write_bytes(canonical_bytes(manifest))
             return {**manifest, "manifest_path": str(output)}
+
+    def build_decode_manifest(
+        self,
+        source_path: Path | str,
+        *,
+        logical_name: Optional[str] = None,
+    ) -> Dict[str, Any]:
+        """Create exact decoded frame, PCM, DTS, PTS, and duration identities."""
+
+        with self._authority_lock:
+            reference = self.ingest_reference(source_path, logical_name=logical_name)
+            identity = reference["identity"]
+            try:
+                return self.decode_runtime.build(
+                    source_path,
+                    reference_id=str(identity["reference_id"]),
+                    source_sha256=str(identity["sha256"]),
+                    logical_name=str(identity["logical_name"]),
+                )
+            except Mp4DecodeError as error:
+                raise GraphicsHydrationError(str(error)) from error
+
+    def replay_decode_manifest(
+        self,
+        source_path: Path | str,
+        *,
+        expected_timeline_hash216: str,
+        logical_name: Optional[str] = None,
+    ) -> Dict[str, Any]:
+        """Re-decode immutable evidence and compare its canonical timeline root."""
+
+        with self._authority_lock:
+            reference = self.ingest_reference(source_path, logical_name=logical_name)
+            identity = reference["identity"]
+            try:
+                return self.decode_runtime.replay(
+                    source_path,
+                    reference_id=str(identity["reference_id"]),
+                    source_sha256=str(identity["sha256"]),
+                    expected_timeline_hash216=str(expected_timeline_hash216),
+                    logical_name=str(identity["logical_name"]),
+                )
+            except Mp4DecodeError as error:
+                raise GraphicsHydrationError(str(error)) from error
 
     def record_trial(
         self,
