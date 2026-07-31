@@ -45,13 +45,16 @@ def test_stability_runtime_implements_ordered_idempotent_boot_and_recovery() -> 
     assert "HHS_PASS_176_RECOVERY_ENVELOPE_V1" in core
     assert "authoritativeBackendDurabilityClaimed: false" in browser
     assert "canonicalFrontendAuthority: false" in browser
-    assert "vm81AuthorityPreserved: true" in browser
-    assert "hash72CommitStreams: 1" in browser
+    assert "HHS_PASS_176_BACKEND_AUTHORITY_EVIDENCE_V1" in browser
+    assert "vm81AuthorityPreserved: this.authorityEvidence?.vm81AuthorityPreserved === true" in browser
+    assert "hash72CommitStreams: this.authorityEvidence?.hash72CommitStreams || 0" in browser
+    assert "setAuthorityEvidence({ productHealth, pass175 })" in visual
 
 
 def test_human_safe_interaction_and_resource_lifecycle_are_bound() -> None:
     browser = read(APP / "src" / "pass176-stability.mjs")
     style = read(APP / "src" / "pass176-stability.css")
+    core = read(APP / "src" / "pass176-stability-core.mjs")
     for token in [
         "DRAG_THRESHOLD_PX = 8",
         "pointercancel",
@@ -62,7 +65,8 @@ def test_human_safe_interaction_and_resource_lifecycle_are_bound() -> None:
         "disposeAll",
         "cancelAll",
     ]:
-        assert token in browser
+        assert token in browser or token in core
+    assert "Promise.race([executionPromise, abortPromise])" in core
     assert "prefers-reduced-motion" in style
     assert "min-height: 2.75rem" in style
     assert "data-hhs-pointer-owner" in style
@@ -81,6 +85,7 @@ def test_real_ide_surfaces_remain_primary_and_pass175_is_preserved() -> None:
     assert "initProductionRecovery" in visual
     assert "initDeploymentHealth" in visual
     assert "HHSVisualIDE" in visual
+    assert "window.HHSVisualIDEBoot" in visual
     assert 'VISUAL_ROOT = ROOT_DIR / "applications" / "holofractal_harmonizer"' in production
     assert "hhs-production-harmonizer" in production
     assert "pass175_terminal_router" in application
@@ -98,8 +103,12 @@ def test_pass176_browser_and_repetition_evidence_harness_is_bounded() -> None:
     assert "page errors observed" in smoke
     assert "HTTP errors observed" in smoke
     assert "HHSGUIReliability.selectMobilePane" in smoke
+    assert "editorRestored" in smoke
+    assert "authorityEvidence" in smoke
     assert "for (let cycle = 0; cycle < 100; cycle += 1)" in node_test
     assert "bounded jobs deduplicate duplicate invocations" in node_test
+    assert "executor ignores AbortSignal" in node_test
+    assert "canonical key" in node_test
 
 
 def test_generated_template_projects_remain_editable_and_unsaved() -> None:
@@ -112,8 +121,12 @@ def test_generated_template_projects_remain_editable_and_unsaved() -> None:
 
 def test_temporary_pass176_repair_machinery_is_absent() -> None:
     assert not (ROOT / "tools" / "patch_pass176.py").exists()
+    assert not (ROOT / "tools" / "patch_pass176_terminal.py").exists()
     assert not (ROOT / "tools" / "patch_pass176_production_routes_and_smoke.py").exists()
     assert not (ROOT / "tools" / "patch_pass176_template_dirty.py").exists()
+    assert not (ROOT / "tools" / "pass176_patch_b64").exists()
+    assert not (ROOT / "tools" / "pass176_patch_chunks").exists()
+    assert not (ROOT / ".github" / "workflows" / "pass176-terminal-repair.yml").exists()
     assert not (ROOT / ".github" / "workflows" / "pass176-production-route-repair.yml").exists()
     assert not (ROOT / ".github" / "workflows" / "pass176-template-dirty-repair.yml").exists()
     assert not (APP / "pass176-source-bundle.tar").exists()
