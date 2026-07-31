@@ -42,6 +42,7 @@ from typing import (
 )
 
 from hhs_python.runtime.hhs_runtime_state import (
+    HHSRuntimeReceipt,
     HHSRuntimeState,
     V44_KERNEL_AVAILABLE,
     AUTHORITATIVE_TRUST_POLICY_V44,
@@ -97,6 +98,15 @@ logger = logging.getLogger(
 # ============================================================================
 
 REHYDRATION_SCHEMA_VERSION = "v1"
+
+
+def _runtime_state_payload(runtime_state: HHSRuntimeState) -> Dict[str, Any]:
+    return runtime_state.to_dict()
+
+
+def _runtime_state_receipt_hash72(runtime_state: HHSRuntimeState) -> str:
+    latest = runtime_state.latest_receipt()
+    return latest.receipt_hash72 if latest else ""
 
 # ============================================================================
 # REHYDRATION SESSION
@@ -329,7 +339,7 @@ class HHSRuntimeRehydrationEngine:
                 packet.snapshot_hash72,
 
             restored_receipt_hash72=
-                runtime_state.receipt_hash72,
+                _runtime_state_receipt_hash72(runtime_state),
 
             replay_equivalent=
                 replay_equivalent,
@@ -375,8 +385,10 @@ class HHSRuntimeRehydrationEngine:
     ):
 
         reconstructed = json.loads(
-
-            restored_state.serialize_deterministic()
+            json.dumps(
+                _runtime_state_payload(restored_state),
+                sort_keys=True,
+            )
         )
 
         equivalent = (
@@ -521,16 +533,19 @@ class HHSRuntimeRehydrationEngine:
             return False
 
         baseline = json.loads(
-
-            runtime_states[0]
-            .serialize_deterministic()
+            json.dumps(
+                _runtime_state_payload(runtime_states[0]),
+                sort_keys=True,
+            )
         )
 
         for state in runtime_states[1:]:
 
             comparison = json.loads(
-
-                state.serialize_deterministic()
+                json.dumps(
+                    _runtime_state_payload(state),
+                    sort_keys=True,
+                )
             )
 
             if comparison != baseline:
@@ -805,32 +820,28 @@ def runtime_rehydration_engine_self_test():
         runtime_id="runtime_001",
 
         step=1,
-
-        orbit_id=72,
-
-        transport_flux="1/1",
-
-        orientation_flux="1/1",
-
-        constraint_flux="1/1",
-
-        witness_flags=7,
-
-        prev_receipt_hash72="",
-
-        state_hash72="state001",
-
-        receipt_hash72="receipt001",
-
-        lo_shu_slot=5,
-
-        closure_class="0",
-
-        converged=True,
-
-        halted=False,
-
-        timestamp_ns=time.time_ns(),
+        runtime_status="online",
+        phase="abi_runtime",
+        closure_state="stable",
+        transport_flux=1,
+        orientation_flux=1,
+        constraint_flux=1,
+        runtime_metadata={
+            "orbit_id": 72,
+            "state_hash72": "state001",
+            "receipt_hash72": "receipt001",
+            "converged": True,
+            "halted": False,
+        },
+    )
+    runtime_state.receipts.append(
+        HHSRuntimeReceipt(
+            receipt_hash72="receipt001",
+            source_hash72="state001",
+            operation="runtime_rehydration_engine_self_test",
+            timestamp_ns=time.time_ns(),
+            witness_flags=7,
+        )
     )
 
     from hhs_backend.runtime.runtime_snapshot_codec import (

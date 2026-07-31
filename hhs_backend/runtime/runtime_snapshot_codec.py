@@ -45,6 +45,7 @@ from typing import (
 )
 
 from hhs_python.runtime.hhs_runtime_state import (
+    HHSRuntimeReceipt,
     HHSRuntimeState,
     V44_KERNEL_AVAILABLE,
     AUTHORITATIVE_TRUST_POLICY_V44,
@@ -96,6 +97,62 @@ logger = logging.getLogger(
 SNAPSHOT_SCHEMA_VERSION = "v1"
 
 HASH72_LEN = 72
+
+
+def _latest_receipt_hash72(runtime_state: HHSRuntimeState) -> str:
+    latest = runtime_state.latest_receipt()
+    return latest.receipt_hash72 if latest else ""
+
+
+def abi_projection_to_runtime_state(
+    runtime_projection: Dict[str, Any],
+    *,
+    runtime_id: str = "hhs_runtime_abi",
+    runtime_status: Optional[str] = None,
+    phase: str = "abi_runtime",
+    closure_state: Optional[str] = None,
+    runtime_metadata: Optional[Dict[str, Any]] = None,
+) -> HHSRuntimeState:
+    halted = bool(runtime_projection.get("halted", False))
+    converged = bool(runtime_projection.get("converged", False))
+    status = runtime_status or ("halted" if halted else "online")
+    closure = closure_state or ("stable" if converged else "active")
+    projection_metadata = dict(runtime_projection)
+    if runtime_metadata:
+        projection_metadata.update(runtime_metadata)
+
+    receipt_hash72 = str(runtime_projection.get("receipt_hash72", ""))
+    state_hash72 = str(runtime_projection.get("state_hash72", ""))
+    witness_flags = int(runtime_projection.get("witness_flags", 0))
+
+    payload = {
+        "runtime_id": runtime_id,
+        "runtime_status": status,
+        "step": int(runtime_projection.get("step", 0)),
+        "phase": phase,
+        "closure_state": closure,
+        "transport_flux": runtime_projection.get("transport_flux", 0),
+        "orientation_flux": runtime_projection.get("orientation_flux", 0),
+        "constraint_flux": runtime_projection.get("constraint_flux", 0),
+        "receipts": [],
+        "runtime_metadata": projection_metadata,
+    }
+
+    if receipt_hash72 or state_hash72:
+        payload["receipts"].append(
+            {
+                "receipt_hash72": receipt_hash72,
+                "source_hash72": state_hash72,
+                "operation": "abi_runtime_snapshot",
+                "timestamp_ns": time.time_ns(),
+                "closure_class": closure,
+                "converged": converged,
+                "halted": halted,
+                "witness_flags": witness_flags,
+            }
+        )
+
+    return HHSRuntimeState.from_dict(payload)
 
 # ============================================================================
 # HASH72
@@ -317,8 +374,8 @@ class HHSRuntimeSnapshotCodec:
                 "Snapshot materialization invalid."
             )
 
-        runtime_state = HHSRuntimeState(
-            **packet.runtime_state
+        runtime_state = HHSRuntimeState.from_dict(
+            packet.runtime_state
         )
 
         logger.info(
@@ -709,11 +766,7 @@ def create_snapshot_packet(
 
     parent_snapshot_hash72: str = "",
 ):
-
-    runtime_payload = json.loads(
-
-        runtime_state.serialize_deterministic()
-    )
+    runtime_payload = runtime_state.to_dict()
 
     replay_hash = compute_hash72({
 
@@ -751,7 +804,7 @@ def create_snapshot_packet(
             parent_snapshot_hash72,
 
         receipt_hash72=
-            runtime_state.receipt_hash72,
+            _latest_receipt_hash72(runtime_state),
 
         replay_hash72=
             replay_hash,
@@ -778,6 +831,38 @@ def create_snapshot_packet(
         },
     )
 
+
+def create_abi_snapshot_packet(
+    runtime_projection: Dict[str, Any],
+    *,
+    receipt_chain: List[Dict[str, Any]],
+    event_topology: List[Dict[str, Any]],
+    branch_topology: Dict[str, Any],
+    branch_id: str = "main",
+    parent_snapshot_hash72: str = "",
+    runtime_id: str = "hhs_runtime_abi",
+    runtime_status: Optional[str] = None,
+    phase: str = "abi_runtime",
+    closure_state: Optional[str] = None,
+    runtime_metadata: Optional[Dict[str, Any]] = None,
+) -> HHSSnapshotPacket:
+    runtime_state = abi_projection_to_runtime_state(
+        runtime_projection,
+        runtime_id=runtime_id,
+        runtime_status=runtime_status,
+        phase=phase,
+        closure_state=closure_state,
+        runtime_metadata=runtime_metadata,
+    )
+    return create_snapshot_packet(
+        runtime_state=runtime_state,
+        receipt_chain=receipt_chain,
+        event_topology=event_topology,
+        branch_topology=branch_topology,
+        branch_id=branch_id,
+        parent_snapshot_hash72=parent_snapshot_hash72,
+    )
+
 # ============================================================================
 # SELF TEST
 # ============================================================================
@@ -789,32 +874,28 @@ def runtime_snapshot_codec_self_test():
         runtime_id="runtime_001",
 
         step=1,
-
-        orbit_id=72,
-
-        transport_flux="1/1",
-
-        orientation_flux="1/1",
-
-        constraint_flux="1/1",
-
-        witness_flags=7,
-
-        prev_receipt_hash72="",
-
-        state_hash72="state001",
-
-        receipt_hash72="receipt001",
-
-        lo_shu_slot=5,
-
-        closure_class="0",
-
-        converged=True,
-
-        halted=False,
-
-        timestamp_ns=time.time_ns(),
+        runtime_status="online",
+        phase="abi_runtime",
+        closure_state="stable",
+        transport_flux=1,
+        orientation_flux=1,
+        constraint_flux=1,
+        runtime_metadata={
+            "orbit_id": 72,
+            "state_hash72": "state001",
+            "receipt_hash72": "receipt001",
+            "converged": True,
+            "halted": False,
+        },
+    )
+    runtime_state.receipts.append(
+        HHSRuntimeReceipt(
+            receipt_hash72="receipt001",
+            source_hash72="state001",
+            operation="runtime_snapshot_codec_self_test",
+            timestamp_ns=time.time_ns(),
+            witness_flags=7,
+        )
     )
 
     packet = create_snapshot_packet(
