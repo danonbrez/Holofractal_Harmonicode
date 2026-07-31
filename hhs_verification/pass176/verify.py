@@ -85,6 +85,8 @@ def main() -> int:
         "single_hash72_commit_stream": final_status.get("hash72CommitStreams") == 1,
         "console_errors_clean": browser.get("console_errors") == [],
         "page_errors_clean": browser.get("page_errors") == [],
+        "request_failures_clean": browser.get("request_failures") == [],
+        "http_errors_clean": browser.get("http_errors") == [],
         "bounded_jobs_drained": (final_status.get("jobs") or {}).get("active") == [],
         "external_vercel_excluded": browser.get("external_vercel_status_considered") is False,
     }
@@ -125,6 +127,7 @@ def main() -> int:
             "long_tasks": final_status.get("longTasks"),
             "profile": final_status.get("profile"),
             "request_failures": browser.get("request_failures"),
+            "http_errors": browser.get("http_errors"),
         },
         "authority": {
             "frontend_is_canonical_authority": False,
