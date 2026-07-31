@@ -9,6 +9,7 @@ on:
       - 'hhs_backend/api/storybook_reel_routes.py'
       - 'hhs_backend/visual_server.py'
       - 'applications/storybook_reel_studio/**'
+      - 'applications/holofractal_harmonizer/src/production-startup-coordinator.mjs'
       - 'tests/test_hhs_storybook_reel_*.py'
       - 'tools/run_storybook_reel_acceptance.py'
       - '.github/workflows/storybook-reel-studio.yml'
@@ -23,6 +24,7 @@ on:
       - 'hhs_backend/api/storybook_reel_routes.py'
       - 'hhs_backend/visual_server.py'
       - 'applications/storybook_reel_studio/**'
+      - 'applications/holofractal_harmonizer/src/production-startup-coordinator.mjs'
       - 'tests/test_hhs_storybook_reel_*.py'
       - 'tools/run_storybook_reel_acceptance.py'
       - '.github/workflows/storybook-reel-studio.yml'
@@ -115,6 +117,7 @@ jobs:
             tests/test_hhs_storybook_reel_studio_v1.py \
             tools/run_storybook_reel_acceptance.py
           node --check applications/storybook_reel_studio/app.js
+          node --check applications/holofractal_harmonizer/src/production-startup-coordinator.mjs
 
       - name: Run timing, route, audio-ingress, and UI regression
         run: |
@@ -127,7 +130,8 @@ jobs:
           grep -q 'Upload narration audio' applications/storybook_reel_studio/index.html
           grep -q 'Generate 90-second reel' applications/storybook_reel_studio/index.html
           grep -q 'Automatic compatible x/y/z/w palette' applications/storybook_reel_studio/app.js
-          grep -q 'parallel workers' applications/storybook_reel_studio/app.js
+          grep -q 'no parallel workers' applications/storybook_reel_studio/index.html
+          grep -q "href = '/storybook-reel/'" applications/holofractal_harmonizer/src/production-startup-coordinator.mjs
 
   full-90-second-acceptance:
     needs: native-api-ui
