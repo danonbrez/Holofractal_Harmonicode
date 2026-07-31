@@ -1,8 +1,9 @@
 import { initIntuitiveIDE } from './intuitive-ide.mjs';
 import { initApplicationStudio } from './application-studio.mjs';
 
-const EXPERIENCE_SCHEMA = 'HHS_APPLICATION_EXPERIENCE_BOOT_V2';
+const EXPERIENCE_SCHEMA = 'HHS_APPLICATION_EXPERIENCE_BOOT_V3';
 let bootRecord = null;
+let bootPromise = null;
 
 function initialize(globalName, initializer, initialized) {
   if (window[globalName]) {
@@ -39,7 +40,7 @@ function loadSupport(component, path, initializerName, globalName, support) {
   });
 }
 
-export function startApplicationExperience() {
+function initializeApplicationExperience() {
   if (bootRecord) return bootRecord;
   const initialized = [];
   const support = [];
@@ -78,4 +79,31 @@ export function startApplicationExperience() {
   return bootRecord;
 }
 
+export function startApplicationExperience() {
+  if (bootRecord) return bootRecord;
+  if (document.readyState === 'loading' || !document.querySelector('#ide-view')) {
+    if (!bootPromise) {
+      bootPromise = new Promise((resolve, reject) => {
+        const start = () => {
+          try {
+            resolve(initializeApplicationExperience());
+          } catch (error) {
+            reject(error);
+          }
+        };
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', start, { once: true });
+        } else {
+          queueMicrotask(start);
+        }
+      });
+    }
+    return bootPromise;
+  }
+  return initializeApplicationExperience();
+}
+
+// Safe under classic, defer, async, or dynamically injected module ordering.
+// When the module is evaluated before the static IDE DOM is available, startup
+// is retained and replayed exactly once at DOMContentLoaded.
 startApplicationExperience();
