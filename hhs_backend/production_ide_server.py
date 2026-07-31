@@ -13,10 +13,11 @@ from hhs_backend import production_server as production
 from hhs_backend.api.development_lifecycle_routes import router as development_lifecycle_router
 from hhs_backend.api.pass165_multimodal_ingress_routes import router as pass165_router
 from hhs_backend.api.repository_history_routes import router as repository_history_router
+from hhs_backend.public_ide_bootstrap import render_public_ide_index
 
 app = production.app
 app.title = "HHS Holofractal Harmonizer Visual IDE"
-app.version = "3.5.0"
+app.version = "3.5.1"
 app.description = (
     "Canonical HHS runtime and full integrated development environment with a "
     "project file tree, editable source workspace, sandboxed application and media "
@@ -35,7 +36,10 @@ def _has_route_prefix(prefix: str) -> bool:
 app.router.routes = [
     route
     for route in app.router.routes
-    if getattr(route, "name", None) != "hhs-production-harmonizer"
+    if getattr(route, "name", None) not in {
+        "hhs-production-harmonizer",
+        "hhs-production-harmonizer-index",
+    }
 ]
 
 if not _has_route_prefix("/api/runtime/multimodal-ingress"):
@@ -64,6 +68,16 @@ if repository_routes:
         app.router.routes.insert(fallback_index, route)
 
 if (production.VISUAL_ROOT / "index.html").is_file():
+    async def production_harmonizer_index():
+        return render_public_ide_index(production.VISUAL_ROOT)
+
+    app.add_api_route(
+        "/",
+        production_harmonizer_index,
+        methods=["GET", "HEAD"],
+        include_in_schema=False,
+        name="hhs-production-harmonizer-index",
+    )
     app.mount(
         "/",
         StaticFiles(directory=str(production.VISUAL_ROOT), html=True),

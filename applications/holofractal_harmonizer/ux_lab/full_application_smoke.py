@@ -26,7 +26,7 @@ def application_frame(page):
 
 
 def create_project(page, template: str, name: str):
-    phase("CREATE_PROJECT", template=template, name=name)
+    phase("CREATE_PROJECT", template=template, project_name=name)
     page.locator("#ide-new-app").click()
     gallery = page.locator("#ide-application-gallery")
     expect(gallery).to_be_visible(timeout=20_000)
@@ -79,16 +79,14 @@ def run() -> dict[str, object]:
             current_phase = "STATIC_SHELL_READY"
             phase(current_phase)
 
-            # Locator assertions continue operating while the integrated document
-            # navigation remains open. Bind readiness to the real user-facing
-            # controls instead of page-evaluation commands serialized behind it.
             current_phase = "WAIT_APPLICATION_STUDIO"
             phase(current_phase)
             new_application = page.locator("#ide-new-app")
             expect(new_application).to_be_visible(timeout=60_000)
             expect(new_application).to_contain_text("New Application")
-            expect(page.locator("#ide-menu-assistant")).to_be_visible()
-            expect(page.locator("#ide-file-tree .ide-file-item").first).to_have_attribute("draggable", "false")
+            expect(page.locator("#assistant-home")).to_be_visible(timeout=20_000)
+            expect(page.locator("#assistant-view")).to_be_visible(timeout=20_000)
+            expect(page.locator("#prompt-input")).to_be_visible(timeout=20_000)
             current_phase = "APPLICATION_STUDIO_READY"
             phase(current_phase)
 
@@ -100,6 +98,7 @@ def run() -> dict[str, object]:
             expect(page.locator("#ide-file-tree")).to_contain_text("index.html")
             expect(page.locator("#ide-file-tree")).to_contain_text("app.js")
             expect(page.locator("#ide-file-tree")).to_contain_text("style.css")
+            expect(page.locator("#ide-file-tree .ide-file-item").first).to_have_attribute("draggable", "false")
             phase("PONG_VERIFIED")
 
             calculator = create_project(page, "calculator", "Calculator Acceptance")
@@ -131,11 +130,11 @@ def run() -> dict[str, object]:
             expect(video.locator("#title")).to_have_value("HHS Motion")
             phase("VIDEO_VERIFIED")
 
-            page.locator("#ide-menu-assistant").click()
-            expect(page.locator("#ide-assistant-drawer")).to_be_visible()
-            expect(page.locator("#prompt-input")).to_be_visible()
-            page.locator("#ide-assistant-close").click()
-            expect(page.locator("#ide-assistant-drawer")).to_be_hidden()
+            page.locator("#assistant-home").click()
+            expect(page.locator("#assistant-view")).to_be_visible(timeout=20_000)
+            expect(page.locator("#prompt-input")).to_be_visible(timeout=20_000)
+            page.locator("#ide-home").click()
+            expect(page.locator("#ide-view")).to_be_visible(timeout=20_000)
             phase("ASSISTANT_VERIFIED")
 
             create_project(page, "calculator", "Deployable Calculator")
@@ -181,6 +180,7 @@ def run() -> dict[str, object]:
                 "failed_responses": failed_responses,
                 "projects_verified": ["pong", "calculator", "puzzle", "document", "audio", "video"],
                 "assistant_integrated": True,
+                "assistant_surface": "explorer-and-conversation",
                 "deployable_zip_verified": True,
                 "runtime_console_preserved": True,
                 "drag_safe_file_items": True,

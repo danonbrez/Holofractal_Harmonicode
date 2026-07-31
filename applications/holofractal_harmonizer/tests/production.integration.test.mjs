@@ -23,17 +23,20 @@ test('verified workflow-first Harmonizer remains the public presentation authori
   assert.match(html, /id="inspector"/);
 });
 
-test('public startup launches independent authorities before legacy module serialization', () => {
+test('public startup gives application controls sole ownership before visual hydration', () => {
   const coordinator = read('src/production-startup-coordinator.mjs');
   const boot = read('src/public-boot.mjs');
   assert.match(coordinator, /import \{ startPublicBoot \} from '\.\/public-boot\.mjs'/);
   assert.match(coordinator, /window\.HHSProductionStartupCoordinator = Object\.freeze/);
   assert.ok(coordinator.indexOf('window.HHSProductionStartupCoordinator = Object.freeze') < coordinator.indexOf('startPublicBoot();'));
+  assert.match(boot, /const BOOT_SCHEMA = 'HHS_PUBLIC_MODULE_BOOT_V2'/);
   assert.match(boot, /export function startPublicBoot\(\)/);
   assert.match(boot, /const browser = launch\('browser', '\.\/browser\.mjs'\)/);
   assert.match(boot, /const productionIntegration = launch\('production-integration', '\.\/production-integration\.mjs'\)/);
-  assert.match(boot, /const visualIDE = launch\('visual-ide', '\.\/visual-ide\.mjs'\)/);
+  assert.match(boot, /const applicationExperience = launch\('application-experience', '\.\/application-experience\.mjs'\)/);
+  assert.match(boot, /const visualIDE = applicationExperience\.then\(\(\) => launch\('visual-ide', '\.\/visual-ide\.mjs'\)\)/);
   assert.match(boot, /const workflowDefault = browser\.then\(\(\) => launch\('ux-default', '\.\/ux-default\.mjs'\)\)/);
+  assert.match(boot, /legacy_parser_module_entries_disabled: true/);
   assert.match(boot, /if \(publicBoot\) return publicBoot/);
   assert.doesNotMatch(boot, /await\s+import\(/);
 });
