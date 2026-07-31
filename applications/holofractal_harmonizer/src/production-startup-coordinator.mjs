@@ -1,4 +1,5 @@
 import './theme-bootstrap.mjs';
+import { startApplicationExperience } from './application-experience.mjs';
 import { startPublicBoot } from './public-boot.mjs';
 
 const originalFetch = window.fetch.bind(window);
@@ -79,11 +80,12 @@ if (document.readyState === 'loading') {
 }
 
 window.HHSProductionStartupCoordinator = Object.freeze({
-  schema: 'HHS_PASS161_PRODUCTION_STARTUP_COORDINATOR_V4',
+  schema: 'HHS_PASS161_PRODUCTION_STARTUP_COORDINATOR_V5',
   assistant_requests_deferred_until_registry_ready: true,
   max_assistant_deferral_ms: MAX_ASSISTANT_DEFERRAL_MS,
   runtime_registry_has_priority: true,
   visual_ide_requests_never_deferred: true,
+  application_experience_is_synchronous_entry_dependency: true,
   storybook_reel_requests_never_deferred: true,
   storybook_reel_launcher_installed: true,
   theme_bootstrap_independent_of_ide_module: true,
@@ -91,7 +93,12 @@ window.HHSProductionStartupCoordinator = Object.freeze({
   frontend_is_authority: false,
 });
 
-// This is the first public entry module. Launch the browser runtime,
-// production registry integration, and visual IDE independently now, before
-// any unresolved legacy module can serialize the remaining deferred scripts.
+// The application workflow is the user-critical surface. Initialize it as a
+// synchronous dependency of the first public entry module so New App, Add
+// Files, Build & Preview, Test, and Export cannot be stranded behind a dynamic
+// import queue while the lower visual IDE and registry surfaces continue.
+startApplicationExperience();
+
+// Launch all remaining public runtime, registry, and IDE modules. The public
+// boot layer safely reuses the already initialized application experience.
 startPublicBoot();
