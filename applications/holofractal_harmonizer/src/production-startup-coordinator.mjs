@@ -65,6 +65,19 @@ function installStorybookReelLauncher() {
   }
 }
 
+function installApplicationStudioLauncherInterposition() {
+  document.addEventListener('click', (event) => {
+    const target = event.target instanceof Element ? event.target.closest('#ide-new-app') : null;
+    if (!target) return;
+    const studio = window.HHSApplicationStudio;
+    if (!studio || typeof studio.open !== 'function') return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    studio.ensurePrimaryControl?.();
+    studio.open();
+  }, true);
+}
+
 window.fetch = async function coordinatedFetch(input, init) {
   // Only optional assistant cold-start calls receive a short priority window.
   // IDE, runtime, ingress, compiler, VM81, receipt, egress, and storybook-reel
@@ -73,6 +86,8 @@ window.fetch = async function coordinatedFetch(input, init) {
   return originalFetch(input, init);
 };
 
+installApplicationStudioLauncherInterposition();
+
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', installStorybookReelLauncher, { once: true });
 } else {
@@ -80,12 +95,13 @@ if (document.readyState === 'loading') {
 }
 
 window.HHSProductionStartupCoordinator = Object.freeze({
-  schema: 'HHS_PASS161_PRODUCTION_STARTUP_COORDINATOR_V5',
+  schema: 'HHS_PASS161_PRODUCTION_STARTUP_COORDINATOR_V6',
   assistant_requests_deferred_until_registry_ready: true,
   max_assistant_deferral_ms: MAX_ASSISTANT_DEFERRAL_MS,
   runtime_registry_has_priority: true,
   visual_ide_requests_never_deferred: true,
   application_experience_is_synchronous_entry_dependency: true,
+  application_studio_launcher_capture_interposition: true,
   storybook_reel_requests_never_deferred: true,
   storybook_reel_launcher_installed: true,
   theme_bootstrap_independent_of_ide_module: true,
