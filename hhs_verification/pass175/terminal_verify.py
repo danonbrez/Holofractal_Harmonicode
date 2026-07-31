@@ -6,8 +6,13 @@ import argparse
 from hashlib import sha256
 import json
 from pathlib import Path
+import sys
 import tempfile
 from typing import Any
+
+REPOSITORY_ROOT = Path(__file__).resolve().parents[2]
+if str(REPOSITORY_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPOSITORY_ROOT))
 
 from hhs_runtime.pass174 import Pass174Runtime
 from hhs_runtime.pass175 import (
@@ -74,7 +79,10 @@ def main() -> int:
         receipt["repository_receipt_sha256"] = sha256(
             b"HHS-P175-TERMINAL-REPOSITORY-RECEIPT\0" + canonical(body)
         ).hexdigest()
-        output.write_text(json.dumps(receipt, sort_keys=True, indent=2) + "\n", encoding="utf-8")
+        output.write_text(
+            json.dumps(receipt, sort_keys=True, indent=2) + "\n",
+            encoding="utf-8",
+        )
         secure.close()
 
     if not receipt.get("terminal_pass175_completion"):
