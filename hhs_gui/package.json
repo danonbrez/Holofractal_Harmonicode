@@ -10,6 +10,7 @@
     "preview": "vite preview",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
+    "test:calculator": "node --test ./scripts/scientific-calculator-engine.test.mjs",
     "test:e2e:source": "node ./scripts/live-gui-e2e-source-verify.mjs",
     "test:e2e": "npm run test:e2e:source",
     "test:workspace:source": "node ./scripts/workspace-source-verify.mjs"
