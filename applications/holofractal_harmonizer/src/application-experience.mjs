@@ -1,7 +1,7 @@
 import { initIntuitiveIDE } from './intuitive-ide.mjs';
 import { initApplicationStudio } from './application-studio.mjs';
 
-const EXPERIENCE_SCHEMA = 'HHS_APPLICATION_EXPERIENCE_BOOT_V3';
+const EXPERIENCE_SCHEMA = 'HHS_APPLICATION_EXPERIENCE_BOOT_V4';
 let bootRecord = null;
 let bootPromise = null;
 
@@ -13,6 +13,15 @@ function initialize(globalName, initializer, initialized) {
   initializer();
   if (!window[globalName]) throw new Error(`HHS_APPLICATION_EXPERIENCE_MISSING: ${globalName}`);
   initialized.push({ component: globalName, state: 'READY' });
+}
+
+function retireLegacyApplicationLauncher() {
+  const legacy = document.querySelector('#ide-simple-workflow #ide-new-app');
+  if (!legacy) return false;
+  legacy.id = 'ide-new-project-legacy';
+  legacy.dataset.hhsLegacyProjectLauncher = 'true';
+  legacy.setAttribute('aria-label', 'Open the legacy starter-project dialog');
+  return true;
 }
 
 function loadSupport(component, path, initializerName, globalName, support) {
@@ -46,8 +55,10 @@ function initializeApplicationExperience() {
   const support = [];
 
   // The critical user path has no dependency on backend lifecycle hydration:
-  // mount New Application first, then promote it into the real gallery.
+  // mount the inherited workflow, retire its duplicate public ID, then install
+  // the single authoritative executable application launcher and gallery.
   initialize('HHSIntuitiveIDE', initIntuitiveIDE, initialized);
+  const legacyLauncherRetired = retireLegacyApplicationLauncher();
   initialize('HHSApplicationStudio', initApplicationStudio, initialized);
 
   // Preview, source ZIP, and deployable compilation remain real, but hydrate in
@@ -69,6 +80,8 @@ function initializeApplicationExperience() {
     initialized: Object.freeze(initialized.map((entry) => Object.freeze({ ...entry }))),
     support,
     supportReady,
+    legacy_application_launcher_retired: legacyLauncherRetired,
+    public_application_launcher_count: document.querySelectorAll('[id="ide-new-app"]').length,
     new_application_control: Boolean(document.querySelector('#ide-new-app')),
     application_gallery: Boolean(document.querySelector('#ide-application-gallery')),
     creates_real_runnable_projects: window.HHSApplicationStudio?.creates_real_runnable_projects === true,
