@@ -78,6 +78,8 @@ def test_real_ide_surfaces_remain_primary_and_pass175_is_preserved() -> None:
     assert "initDeployableAppCompiler" in visual
     assert "initPass175Processor" in visual
     assert "initPass175TerminalProcessor" in visual
+    assert "initProductionRecovery" in visual
+    assert "initDeploymentHealth" in visual
     assert "HHSVisualIDE" in visual
     assert 'VISUAL_ROOT = ROOT_DIR / "applications" / "holofractal_harmonizer"' in production
     assert "hhs-production-harmonizer" in production
@@ -100,8 +102,18 @@ def test_pass176_browser_and_repetition_evidence_harness_is_bounded() -> None:
     assert "bounded jobs deduplicate duplicate invocations" in node_test
 
 
+def test_generated_template_projects_remain_editable_and_unsaved() -> None:
+    runtime = read(APP / "src" / "application-templates-runtime.mjs")
+    materializer = runtime[runtime.index("export function materializeApplicationTemplate"):]
+    assert "dirty: true" in materializer
+    assert "dirty: false" not in materializer
+    assert "checkpoint: `Created from ${template.label} starter`" in materializer
+
+
 def test_temporary_pass176_repair_machinery_is_absent() -> None:
     assert not (ROOT / "tools" / "patch_pass176.py").exists()
     assert not (ROOT / "tools" / "patch_pass176_production_routes_and_smoke.py").exists()
+    assert not (ROOT / "tools" / "patch_pass176_template_dirty.py").exists()
     assert not (ROOT / ".github" / "workflows" / "pass176-production-route-repair.yml").exists()
+    assert not (ROOT / ".github" / "workflows" / "pass176-template-dirty-repair.yml").exists()
     assert not (APP / "pass176-source-bundle.tar").exists()
