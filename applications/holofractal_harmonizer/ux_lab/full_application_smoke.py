@@ -26,7 +26,7 @@ def application_frame(page):
 
 
 def create_project(page, template: str, name: str):
-    phase("CREATE_PROJECT", template=template, name=name)
+    phase("CREATE_PROJECT", template=template, project_name=name)
     page.locator("#ide-new-app").click()
     gallery = page.locator("#ide-application-gallery")
     expect(gallery).to_be_visible(timeout=20_000)
