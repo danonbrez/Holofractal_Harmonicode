@@ -25,10 +25,11 @@ from hhs_backend.api.pass175_runtime_routes import router as pass175_router
 from hhs_backend.api.pass175_ws_routes import router as pass175_ws_router
 from hhs_backend.api.pass175_terminal_routes import router as pass175_terminal_router
 from hhs_backend.api.pass175_terminal_ws_routes import router as pass175_terminal_ws_router
+from hhs_backend.public_ide_bootstrap import render_public_ide_index
 
 app = pass174.app
 app.title = "HHS Full Multimodal Application IDE"
-app.version = "4.3.1"
+app.version = "4.3.2"
 app.description = (
     "Full integrated development environment for real web applications, games, "
     "calculators, documents, audio, video, multimodal projects, HARMONICODE, "
@@ -64,6 +65,7 @@ app.router.routes = [
         "hhs-pass174-legacy-ide",
         "hhs-pass174-runtime-console",
         "hhs-full-application-ide",
+        "hhs-full-application-ide-index",
     }
     and str(getattr(route, "path", "")) != API_FALLBACK_PATH
 ]
@@ -142,6 +144,16 @@ if RUNTIME_CONSOLE_ROOT.is_dir():
 app.router.routes.extend(_deferred_api_fallback_routes)
 
 if FULL_IDE_ROOT.is_dir() and (FULL_IDE_ROOT / "index.html").is_file():
+    async def full_application_ide_index():
+        return render_public_ide_index(FULL_IDE_ROOT)
+
+    app.add_api_route(
+        "/",
+        full_application_ide_index,
+        methods=["GET", "HEAD"],
+        include_in_schema=False,
+        name="hhs-full-application-ide-index",
+    )
     app.mount(
         "/",
         StaticFiles(directory=str(FULL_IDE_ROOT), html=True),
@@ -170,5 +182,6 @@ pass174.PASS174_BOOT_STATE.update({
     "api_fallback_deferred_for_pass175": bool(_deferred_api_fallback_routes),
     "lightweight_health_route": "/health",
     "lightweight_api_health_route": "/api/health",
+    "inline_public_boot": "HHS_INLINE_PUBLIC_BOOT_V1",
     "external_vercel_quota_is_not_pass175_acceptance_gate": True,
 })
