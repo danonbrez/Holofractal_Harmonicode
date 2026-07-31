@@ -9,6 +9,7 @@ on:
       - agent/pass181-native-recipe-residuals
       - agent/pass181-bounded-optimization-loop
       - agent/pass181-vector-hydration-invariants
+      - agent/pass181-constraint-freeze-registry
     paths:
       - "docs/pass181/**"
       - "hhs_backend/runtime/hhs_graphics_hydration_v1.py"
@@ -18,12 +19,16 @@ on:
       - "hhs_backend/runtime/hhs_graphics_optimizer_instance_v1.py"
       - "hhs_backend/runtime/hhs_graphics_vector_hydration_v1.py"
       - "hhs_backend/runtime/hhs_graphics_vector_hydration_instance_v1.py"
+      - "hhs_backend/runtime/hhs_graphics_constraint_registry_v1.py"
+      - "hhs_backend/runtime/hhs_graphics_constraint_registry_instance_v1.py"
       - "hhs_backend/api/graphics_hydration_routes.py"
+      - "hhs_backend/api/graphics_constraint_routes.py"
       - "hhs_backend/visual_server.py"
       - "tests/test_pass181_graphics_hydration_runtime.py"
       - "tests/test_pass181_native_recipe_residuals.py"
       - "tests/test_pass181_graphics_optimization.py"
       - "tests/test_pass181_graphics_vector_hydration.py"
+      - "tests/test_pass181_graphics_constraint_registry.py"
       - ".github/workflows/pass181-graphics-hydration.yml"
   pull_request:
     paths:
@@ -35,12 +40,16 @@ on:
       - "hhs_backend/runtime/hhs_graphics_optimizer_instance_v1.py"
       - "hhs_backend/runtime/hhs_graphics_vector_hydration_v1.py"
       - "hhs_backend/runtime/hhs_graphics_vector_hydration_instance_v1.py"
+      - "hhs_backend/runtime/hhs_graphics_constraint_registry_v1.py"
+      - "hhs_backend/runtime/hhs_graphics_constraint_registry_instance_v1.py"
       - "hhs_backend/api/graphics_hydration_routes.py"
+      - "hhs_backend/api/graphics_constraint_routes.py"
       - "hhs_backend/visual_server.py"
       - "tests/test_pass181_graphics_hydration_runtime.py"
       - "tests/test_pass181_native_recipe_residuals.py"
       - "tests/test_pass181_graphics_optimization.py"
       - "tests/test_pass181_graphics_vector_hydration.py"
+      - "tests/test_pass181_graphics_constraint_registry.py"
       - ".github/workflows/pass181-graphics-hydration.yml"
 
 permissions:
@@ -49,7 +58,7 @@ permissions:
 jobs:
   authority-core:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 35
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -76,7 +85,10 @@ jobs:
             hhs_backend/runtime/hhs_graphics_optimizer_instance_v1.py \
             hhs_backend/runtime/hhs_graphics_vector_hydration_v1.py \
             hhs_backend/runtime/hhs_graphics_vector_hydration_instance_v1.py \
+            hhs_backend/runtime/hhs_graphics_constraint_registry_v1.py \
+            hhs_backend/runtime/hhs_graphics_constraint_registry_instance_v1.py \
             hhs_backend/api/graphics_hydration_routes.py \
+            hhs_backend/api/graphics_constraint_routes.py \
             hhs_backend/visual_server.py
       - name: Run complete Pass 181 runtime suite
         run: |
@@ -84,10 +96,13 @@ jobs:
             tests/test_pass181_graphics_hydration_runtime.py \
             tests/test_pass181_native_recipe_residuals.py \
             tests/test_pass181_graphics_optimization.py \
-            tests/test_pass181_graphics_vector_hydration.py
+            tests/test_pass181_graphics_vector_hydration.py \
+            tests/test_pass181_graphics_constraint_registry.py
       - name: Verify public route and authority declarations
         run: |
           grep -F '/api/runtime/graphics-hydration/status' hhs_backend/visual_server.py
+          grep -F 'graphics_constraint_router' hhs_backend/visual_server.py
+          grep -F '/api/runtime/graphics-hydration/constraints/registry/status' hhs_backend/visual_server.py
           grep -F 'HHS_VM81_SINGLETON_GRAPHICS_HYDRATION_AUTHORITY_V1' hhs_backend/runtime/hhs_graphics_hydration_v1.py
           grep -F 'reference_frame' hhs_backend/runtime/hhs_graphics_hydration_v1.py
           grep -F 'CANONICAL_VIDEO_PIXEL_FORMAT = "rgba"' hhs_backend/runtime/hhs_graphics_mp4_decode_v1.py
@@ -99,6 +114,12 @@ jobs:
           grep -F 'parallel_candidate_execution' hhs_backend/runtime/hhs_graphics_optimization_v1.py
           grep -F 'runtime_constraint_freeze_authority' hhs_backend/runtime/hhs_graphics_vector_hydration_v1.py
           grep -F 'P181_VECTOR_OBSERVATION_CANNOT_FREEZE_RUNTIME_CONSTRAINT' hhs_backend/runtime/hhs_graphics_vector_hydration_v1.py
+          grep -F 'atomic_frontier' hhs_backend/runtime/hhs_graphics_constraint_registry_v1.py
+          grep -F 'HHS_GRAPHICS_CONSTRAINT_COLD_RESTART_REPLAY_VERIFIED' hhs_backend/runtime/hhs_graphics_constraint_registry_v1.py
+          grep -F 'P181_LEGACY_DIRECT_CONSTRAINT_PROMOTION_DISABLED_USE_REGISTRY_FREEZE' hhs_backend/api/graphics_constraint_routes.py
           grep -F '/optimization/jobs' hhs_backend/api/graphics_hydration_routes.py
           grep -F '/vector-hydration/jobs/admit' hhs_backend/api/graphics_hydration_routes.py
           grep -F '/vector-hydration/invariants/extract' hhs_backend/api/graphics_hydration_routes.py
+          grep -F '/registry/freeze' hhs_backend/api/graphics_constraint_routes.py
+          grep -F '/registry/rollback' hhs_backend/api/graphics_constraint_routes.py
+          grep -F '/registry/replay' hhs_backend/api/graphics_constraint_routes.py
