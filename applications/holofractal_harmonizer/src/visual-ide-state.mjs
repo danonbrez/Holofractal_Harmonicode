@@ -4,13 +4,22 @@ export const TEXT_MODALITIES = new Set(['TEXT', 'MARKDOWN', 'SOURCE_CODE', 'JSON
 const STORAGE_KEY = 'hhs.visualIde.v1';
 const STORAGE_PENDING_KEY = `${STORAGE_KEY}.pending`;
 const genesis = `a²=1\nb²=2\nc²=3\nP=72\np=64\nq=81\nΔ=P²-pq\n(P²-pq)-Δ=0`;
+function storageRead(key) {
+  try { return localStorage.getItem(key); }
+  catch { return null; }
+}
 const stored = (() => {
-  const candidates = [localStorage.getItem(STORAGE_KEY), localStorage.getItem(STORAGE_PENDING_KEY)].filter(Boolean);
-  for (const raw of candidates) {
-    try { return JSON.parse(raw); }
+  const candidates = [
+    { raw: storageRead(STORAGE_KEY), pending: false },
+    { raw: storageRead(STORAGE_PENDING_KEY), pending: true },
+  ].filter((candidate) => candidate.raw);
+  const parsed = [];
+  for (const candidate of candidates) {
+    try { parsed.push({ ...JSON.parse(candidate.raw), pending: candidate.pending }); }
     catch { /* malformed recovery candidates do not block the editor */ }
   }
-  return null;
+  parsed.sort((left, right) => Number(right.savedAt || 0) - Number(left.savedAt || 0) || Number(right.pending) - Number(left.pending));
+  return parsed[0] || null;
 })();
 export const state = {
   projectId: stored?.projectId || null,
@@ -30,16 +39,17 @@ export const state = {
 };
 export const activeFile = () => state.files.find((file) => file.path === state.activePath) || state.files[0];
 export function persist() {
-  const serialized = JSON.stringify({ projectId: state.projectId, activePath: state.activePath, files: state.files });
+  const serialized = JSON.stringify({ savedAt: Date.now(), projectId: state.projectId, activePath: state.activePath, files: state.files });
   try {
     localStorage.setItem(STORAGE_PENDING_KEY, serialized);
     localStorage.setItem(STORAGE_KEY, serialized);
     localStorage.removeItem(STORAGE_PENDING_KEY);
+    return true;
   } catch (error) {
     window.dispatchEvent(new CustomEvent('hhs:visual-ide:storage-error', {
       detail: { classification: 'HHS_P176_LOCAL_STORAGE_WRITE_FAILED', message: error?.message || String(error) },
     }));
-    throw error;
+    return false;
   }
 }
 export function setText(selector, value) {
@@ -125,7 +135,7 @@ function abortMessage(path, signal) {
 }
 export async function requestJson(path, options = {}) {
   const controller = new AbortController();
-  const upstream = options.signal || window.HHSPass176?.currentSignal?.() || null;
+  const upstream = options.signal || null;
   const timeoutMs = Math.max(1, Number(options.timeoutMs || 120000));
   const retryCount = Math.max(0, Math.min(3, Number(options.retryCount || 0)));
   const method = String(options.method || 'GET').toUpperCase();
@@ -184,10 +194,11 @@ export async function requestJson(path, options = {}) {
     upstream?.removeEventListener?.('abort', forwardAbort);
   }
 }
-export async function ensureProject() {
+export async function ensureProject(options = {}) {
   if (state.projectId) return state.projectId;
   const session = await requestJson('/api/runtime/workspace/session', {
     method: 'POST',
+    signal: options.signal,
     body: JSON.stringify({ name: 'HHS Visual IDE Project' }),
     timeoutMs: 30000,
   });
