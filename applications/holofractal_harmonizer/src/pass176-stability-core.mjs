@@ -195,17 +195,20 @@ export class BoundedJobManager {
 
   run(name, executor, options = {}) {
     if (!name || typeof executor !== 'function') throw new Pass176Error('HHS_P176_INVALID_JOB');
-    const existing = this.#jobs.get(name);
+    const key = String(options.key || name);
+    const existing = this.#jobs.get(key);
     if (existing && options.dedupe !== false) return existing.promise;
     if (existing) existing.controller.abort('HHS_P176_JOB_SUPERSEDED');
 
     const controller = new AbortController();
     const timeoutMs = Math.max(1, Number(options.timeoutMs || 120_000));
-    const id = `${name}:${++this.#sequence}`;
+    const id = `${key}:${++this.#sequence}`;
     const startedAt = this.now();
     let timer = null;
+    let removeAbortListener = () => {};
     const job = {
       id,
+      key,
       name,
       controller,
       startedAt,
@@ -224,14 +227,21 @@ export class BoundedJobManager {
 
     job.promise = Promise.resolve().then(async () => {
       timer = this.setTimer(() => controller.abort('HHS_P176_JOB_TIMEOUT'), timeoutMs);
+      const abortPromise = new Promise((_, reject) => {
+        const rejectAbort = () => reject(abortError(String(controller.signal.reason || 'HHS_P176_JOB_ABORTED')));
+        controller.signal.addEventListener('abort', rejectAbort, { once: true });
+        removeAbortListener = () => controller.signal.removeEventListener('abort', rejectAbort);
+        if (controller.signal.aborted) rejectAbort();
+      });
+      const executionPromise = Promise.resolve().then(() => executor({
+        id,
+        name,
+        signal: controller.signal,
+        update,
+        startedAt,
+      }));
       try {
-        const result = await executor({
-          id,
-          name,
-          signal: controller.signal,
-          update,
-          startedAt,
-        });
+        const result = await Promise.race([executionPromise, abortPromise]);
         if (controller.signal.aborted) throw abortError(String(controller.signal.reason || 'HHS_P176_JOB_ABORTED'));
         job.stage = 'COMPLETE';
         job.progress = 1;
@@ -243,12 +253,13 @@ export class BoundedJobManager {
         }
         throw error;
       } finally {
+        removeAbortListener();
         if (timer !== null) this.clearTimer(timer);
-        if (this.#jobs.get(name) === job) this.#jobs.delete(name);
+        if (this.#jobs.get(key) === job) this.#jobs.delete(key);
         options.onSettled?.(Object.freeze(this.describe(job)));
       }
     });
-    this.#jobs.set(name, job);
+    this.#jobs.set(key, job);
     options.onStart?.(Object.freeze(this.describe(job)));
     return job.promise;
   }
@@ -256,6 +267,7 @@ export class BoundedJobManager {
   describe(job) {
     return {
       id: job.id,
+      key: job.key,
       name: job.name,
       startedAt: job.startedAt,
       elapsedMs: Math.max(0, this.now() - job.startedAt),
@@ -268,7 +280,7 @@ export class BoundedJobManager {
   }
 
   cancel(name, reason = 'HHS_P176_USER_CANCELLED') {
-    const job = this.#jobs.get(name);
+    const job = this.#jobs.get(name) || [...this.#jobs.values()].find((candidate) => candidate.name === name);
     if (!job) return false;
     job.controller.abort(reason);
     return true;
@@ -276,7 +288,12 @@ export class BoundedJobManager {
 
   cancelAll(reason = 'HHS_P176_DISPOSED') {
     let count = 0;
-    for (const name of [...this.#jobs.keys()]) if (this.cancel(name, reason)) count += 1;
+    for (const job of [...this.#jobs.values()]) {
+      if (!job.controller.signal.aborted) {
+        job.controller.abort(reason);
+        count += 1;
+      }
+    }
     return count;
   }
 
@@ -313,20 +330,31 @@ export class AtomicRecoveryStore {
       payload,
     };
     const serialized = JSON.stringify(envelope);
-    this.storage.setItem(this.pendingKey, serialized);
-    this.storage.setItem(this.key, serialized);
-    this.storage.removeItem?.(this.pendingKey);
-    return envelope;
+    try {
+      this.storage.setItem(this.pendingKey, serialized);
+      this.storage.setItem(this.key, serialized);
+      this.storage.removeItem?.(this.pendingKey);
+      return envelope;
+    } catch {
+      return null;
+    }
   }
 
   load() {
-    const candidates = [this.storage.getItem(this.key), this.storage.getItem(this.pendingKey)].filter(Boolean);
-    let selected = null;
-    for (const raw of candidates) {
+    const candidates = [];
+    for (const [key, pending] of [[this.key, false], [this.pendingKey, true]]) {
       try {
-        const parsed = JSON.parse(raw);
+        const raw = this.storage.getItem(key);
+        if (raw) candidates.push({ raw, pending });
+      } catch { /* unavailable storage must not block boot */ }
+    }
+    let selected = null;
+    for (const candidate of candidates) {
+      try {
+        const parsed = JSON.parse(candidate.raw);
         if (parsed?.schema !== 'HHS_PASS_176_RECOVERY_ENVELOPE_V1' || parsed.version !== this.version) continue;
-        if (!selected || Number(parsed.savedAt || 0) > Number(selected.savedAt || 0)) selected = parsed;
+        const record = { ...parsed, pending: candidate.pending };
+        if (!selected || Number(record.savedAt || 0) > Number(selected.savedAt || 0) || (Number(record.savedAt || 0) === Number(selected.savedAt || 0) && record.pending && !selected.pending)) selected = record;
       } catch {
         // Malformed recovery records are ignored rather than blocking the editor.
       }
@@ -335,7 +363,7 @@ export class AtomicRecoveryStore {
   }
 
   clear() {
-    this.storage.removeItem?.(this.key);
-    this.storage.removeItem?.(this.pendingKey);
+    try { this.storage.removeItem?.(this.key); } catch { /* best effort */ }
+    try { this.storage.removeItem?.(this.pendingKey); } catch { /* best effort */ }
   }
 }
