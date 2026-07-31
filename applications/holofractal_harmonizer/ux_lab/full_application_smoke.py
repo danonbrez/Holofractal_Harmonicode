@@ -37,7 +37,10 @@ def run() -> dict[str, object]:
         page.on("pageerror", lambda error: page_errors.append(str(error)))
         page.on("console", lambda message: console_errors.append(message.text) if message.type == "error" else None)
 
-        page.goto(f"{BASE_URL}/", wait_until="networkidle", timeout=120_000)
+        # The IDE intentionally maintains background runtime and assistant traffic,
+        # so network-idle is not a valid readiness predicate. Bind acceptance to
+        # DOM readiness followed by explicit, bounded interface assertions below.
+        page.goto(f"{BASE_URL}/", wait_until="domcontentloaded", timeout=120_000)
         expect(page).to_have_title("HHS Full Multimodal Application IDE")
         expect(page.locator("html")).to_have_class("hhs-harmonic-studio-theme")
         expect(page.locator("#ide-simple-workflow")).to_be_visible(timeout=30_000)
