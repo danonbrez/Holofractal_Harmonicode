@@ -41,7 +41,6 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 45
     env:
-      HHS_DISABLE_C_AUTUILD: '1'
       HHS_DISABLE_C_AUTOBUILD: '1'
       HHS_NATIVE_LANGUAGE_REQUIRE_WORD2VEC: '0'
       HHS_ASSISTANT_HEALTH_TIMEOUT_SECONDS: '0.5'
