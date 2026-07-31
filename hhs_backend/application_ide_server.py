@@ -29,7 +29,7 @@ from hhs_backend.public_ide_bootstrap import render_public_ide_index
 
 app = pass174.app
 app.title = "HHS Full Multimodal Application IDE"
-app.version = "4.3.2"
+app.version = "4.3.3"
 app.description = (
     "Full integrated development environment for real web applications, games, "
     "calculators, documents, audio, video, multimodal projects, HARMONICODE, "
@@ -182,6 +182,7 @@ pass174.PASS174_BOOT_STATE.update({
     "api_fallback_deferred_for_pass175": bool(_deferred_api_fallback_routes),
     "lightweight_health_route": "/health",
     "lightweight_api_health_route": "/api/health",
-    "inline_public_boot": "HHS_INLINE_PUBLIC_BOOT_V1",
+    "inline_public_boot": "HHS_INLINE_PUBLIC_BOOT_V2",
+    "legacy_parser_module_entries_disabled": True,
     "external_vercel_quota_is_not_pass175_acceptance_gate": True,
 })
