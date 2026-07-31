@@ -68,4 +68,12 @@ jobs:
           git add -A
           git diff --cached --check
           git commit -m 'Repair Pass 176 terminal browser closure'
-          git push origin HEAD:agent/pass176-frozen-ide-stabilization
+          for attempt in 1 2 3 4 5; do
+            if git push origin HEAD:agent/pass176-frozen-ide-stabilization; then
+              exit 0
+            fi
+            git pull --rebase origin agent/pass176-frozen-ide-stabilization
+            sleep $((attempt * 2))
+          done
+          echo 'Unable to publish repaired Pass 176 commit after bounded retries.' >&2
+          exit 1
