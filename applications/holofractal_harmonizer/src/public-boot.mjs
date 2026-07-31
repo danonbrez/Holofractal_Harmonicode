@@ -50,18 +50,22 @@ export function startPublicBoot() {
     });
   };
 
-  // Independent application authorities launch concurrently before the legacy
-  // parser-deferred module queue can serialize them. The workflow enhancement
-  // retains its sole ordering edge after browser module evaluation.
+  // Independent product surfaces launch concurrently before the legacy
+  // parser-deferred module queue can serialize them. The application experience
+  // owns New Application, six real modalities, preview, lifecycle, and ZIP export.
+  // The workflow enhancement retains its sole ordering edge after browser module
+  // evaluation because it decorates the canonical browser runtime.
   const browser = launch('browser', './browser.mjs');
   const productionIntegration = launch('production-integration', './production-integration.mjs');
   const visualIDE = launch('visual-ide', './visual-ide.mjs');
+  const applicationExperience = launch('application-experience', './application-experience.mjs');
   const workflowDefault = browser.then(() => launch('ux-default', './ux-default.mjs'));
 
   const allSettled = Promise.allSettled([
     browser,
     productionIntegration,
     visualIDE,
+    applicationExperience,
     workflowDefault,
   ]).then((results) => {
     window.dispatchEvent(new CustomEvent('hhs:public-boot:settled', {
@@ -81,6 +85,7 @@ export function startPublicBoot() {
     browser,
     productionIntegration,
     visualIDE,
+    applicationExperience,
     workflowDefault,
     allSettled,
     status: snapshot,
