@@ -1,0 +1,42 @@
+name: Apply Pass 176 Production Route Repair
+
+on:
+  push:
+    branches: [agent/pass176-frozen-ide-stabilization]
+    paths:
+      - 'tools/patch_pass176_production_routes_and_smoke.py'
+      - '.github/workflows/pass176-production-route-repair.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  repair:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/pass176-frozen-ide-stabilization
+          fetch-depth: 0
+      - name: Mount inherited production routes and stabilize mobile repetition
+        run: python tools/patch_pass176_production_routes_and_smoke.py
+      - name: Verify source compilation before commit
+        run: |
+          python -m py_compile \
+            hhs_backend/production_server.py \
+            applications/holofractal_harmonizer/ux_lab/pass176_stability_smoke.py \
+            hhs_verification/pass176/verify.py
+          grep -q 'repository_history_router' hhs_backend/production_server.py
+          grep -q 'pass175_terminal_router' hhs_backend/production_server.py
+          grep -q 'HHSGUIReliability.selectMobilePane' applications/holofractal_harmonizer/ux_lab/pass176_stability_smoke.py
+      - name: Remove temporary repair machinery and commit
+        run: |
+          rm tools/patch_pass176_production_routes_and_smoke.py
+          rm .github/workflows/pass176-production-route-repair.yml
+          git config user.name 'hhs-pass176-stabilization'
+          git config user.email 'hhs-pass176-stabilization@users.noreply.github.com'
+          git add -A
+          git commit -m 'Expose Pass 175 and repository services in Pass 176 production IDE'
+          git push origin HEAD:agent/pass176-frozen-ide-stabilization
