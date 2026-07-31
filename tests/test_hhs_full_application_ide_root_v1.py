@@ -8,6 +8,7 @@ from hhs_backend import application_ide_server as server
 
 
 PUBLIC_SOURCE_ASSETS = (
+    "public-boot.mjs",
     "production-startup-coordinator.mjs",
     "browser.mjs",
     "ux-default.mjs",
