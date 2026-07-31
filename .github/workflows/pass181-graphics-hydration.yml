@@ -1,0 +1,50 @@
+name: Pass 181 Graphics Hydration Runtime
+
+on:
+  push:
+    branches:
+      - main
+      - agent/pass181-graphics-hydration-runtime
+    paths:
+      - "docs/pass181/**"
+      - "hhs_backend/runtime/hhs_graphics_hydration_v1.py"
+      - "hhs_backend/api/graphics_hydration_routes.py"
+      - "hhs_backend/visual_server.py"
+      - "tests/test_pass181_graphics_hydration_runtime.py"
+      - ".github/workflows/pass181-graphics-hydration.yml"
+  pull_request:
+    paths:
+      - "docs/pass181/**"
+      - "hhs_backend/runtime/hhs_graphics_hydration_v1.py"
+      - "hhs_backend/api/graphics_hydration_routes.py"
+      - "hhs_backend/visual_server.py"
+      - "tests/test_pass181_graphics_hydration_runtime.py"
+      - ".github/workflows/pass181-graphics-hydration.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  authority-core:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install targeted test dependency
+        run: python -m pip install --disable-pip-version-check pytest
+      - name: Compile Pass 181 surfaces
+        run: |
+          python -m py_compile \
+            hhs_backend/runtime/hhs_graphics_hydration_v1.py \
+            hhs_backend/api/graphics_hydration_routes.py \
+            hhs_backend/visual_server.py
+      - name: Run Pass 181 authority tests
+        run: python -m pytest -q tests/test_pass181_graphics_hydration_runtime.py
+      - name: Verify public route registration
+        run: |
+          grep -F '/api/runtime/graphics-hydration/status' hhs_backend/visual_server.py
+          grep -F 'HHS_VM81_SINGLETON_GRAPHICS_HYDRATION_AUTHORITY_V1' hhs_backend/runtime/hhs_graphics_hydration_v1.py
+          grep -F 'reference_frame' hhs_backend/runtime/hhs_graphics_hydration_v1.py
