@@ -1,0 +1,110 @@
+{
+  "baseline_commit": "d80149721294c2817a9ab10db5d89494e0c66229",
+  "classification": "HHS_PASS_175_RUNTIME_KERNEL_ABI_AND_FIRST_HYDRATION_VERIFIED",
+  "contract": "HHS-P175-H216-VM5184-G243-VIP-PCW-SVA-H72-X64IE",
+  "first_hydration": {
+    "authority": {
+      "calls": 20,
+      "epoch": 20,
+      "kernel_authorities": 1,
+      "state_hash72": "xVo/<cT2Q>oPRCrPbXcEmW4acpGiw>uJs9KMs6d8L+cO<NHQnpRarMJGK-WV?E8h0FqUWEJ4"
+    },
+    "checks": {
+      "authority_call_count_20": true,
+      "controls_per_instruction_243": true,
+      "deterministic_replay": true,
+      "firmware_ready": true,
+      "firmware_stage_count_18": true,
+      "hash216_positional_indexes": true,
+      "hash216_store_sealed": true,
+      "no_parallel_state_authority": true,
+      "parallel_execution_candidates": true,
+      "permanent_identity_count_5184": true,
+      "permanent_instruction_count_5184": true,
+      "projected_address_count_1259712": true,
+      "single_hash72_commit_stream": true,
+      "singleton_vm81_authority": true,
+      "supported_corpus_hydrated": true
+    },
+    "execution": {
+      "candidate_count": 3,
+      "hash72_commit_streams": 1,
+      "parallel_execution_candidates": true,
+      "parallel_state_authority": false,
+      "singleton_vm81_commit_authority": true,
+      "wave_count": 1
+    },
+    "firmware": {
+      "classification": "HHS_PASS_175_EXTERNAL_COMPUTATIONAL_ENVIRONMENT_WARM",
+      "ready": true,
+      "stage_count": 18
+    },
+    "hydration": {
+      "classification": "HHS_PASS_175_TERMINAL_HYDRATION_SEALED",
+      "sealed": true,
+      "secure_store_root_sha256": "3df841a26c99b8ec6ae09e43f06252fe22ecc1fc81978fbc42e32dde13a26bfa",
+      "supported_instruction_forms": 57
+    },
+    "replay": {
+      "deterministic_replay": true,
+      "journal_root_sha256": "64528f9b5cc649b78e1ffaf8e5764f1caa10a9d487d5baf11cb29ef5e4ac23ba"
+    },
+    "timings_nonauthoritative": {
+      "cold_hydration_and_seal_ns": 241380747,
+      "firmware_boot_ns": 82896691,
+      "replay_ns": 3069324,
+      "runtime_initialization_ns": 710387774,
+      "three_candidate_execution_ns": 9749185
+    }
+  },
+  "generated_unix_ns": 1785496325884426479,
+  "host": {
+    "machine": "x86_64",
+    "platform": "Linux-6.17.0-1020-azure-x86_64-with-glibc2.39",
+    "processor": "x86_64",
+    "python": "3.12.13"
+  },
+  "native_abi": {
+    "abi_version": "0x00017501",
+    "checks": {
+      "abi_version": true,
+      "address_roundtrip": true,
+      "control_roundtrip_all_243": true,
+      "projected_roundtrip": true,
+      "scalar_hi_exact": true,
+      "scalar_lo_exact": true,
+      "singleton_vm81_candidate_commit": true
+    },
+    "library": "/home/runner/work/Holofractal_Harmonicode/Holofractal_Harmonicode/native_projects/hhs_pass175_virtual_instruction_processor/build/terminal/libvm81_invariant_kernel.so",
+    "timings_nonauthoritative": {
+      "address_roundtrip": {
+        "median_ns": 114962642,
+        "operations_per_second_median": 434923.8946683219,
+        "p95_ns": 116862683,
+        "roundtrips_per_sample": 50000,
+        "sample_count": 5
+      },
+      "candidate_prepare_sort_commit": {
+        "batch_size": 64,
+        "batches_per_sample": 500,
+        "candidates_per_sample": 32000,
+        "median_ns": 33481626,
+        "operations_per_second_median": 955748.0870254032,
+        "p95_ns": 33669016,
+        "sample_count": 5
+      },
+      "projected_roundtrip": {
+        "median_ns": 135830050,
+        "operations_per_second_median": 368107.0573116921,
+        "p95_ns": 136142003,
+        "roundtrips_per_sample": 50000,
+        "sample_count": 5
+      }
+    }
+  },
+  "report_sha256": "46867e5bddd12f9119d86f171e372c7ae33acc6da10e5710c8b900ea0a0c5a2a",
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "schema": "HHS_PASS_175_RUNTIME_ABI_FIRST_HYDRATION_BENCHMARK_V1",
+  "timing_authority": "NONAUTHORITATIVE_HOST_OBSERVATION",
+  "total_elapsed_ns_nonauthoritative": 2532551738
+}
