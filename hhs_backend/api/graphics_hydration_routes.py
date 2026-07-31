@@ -1,7 +1,7 @@
 """HTTP projection for the Pass 181 graphics hydration authority."""
 from __future__ import annotations
 
-from typing import Any, Dict
+from typing import Any, Dict, Optional
 
 from fastapi import APIRouter
 
@@ -15,6 +15,12 @@ from hhs_backend.runtime.hhs_graphics_hydration_v1 import (
 )
 from hhs_backend.runtime.hhs_graphics_optimization_v1 import GraphicsOptimizationError
 from hhs_backend.runtime.hhs_graphics_optimizer_instance_v1 import GRAPHICS_OPTIMIZER
+from hhs_backend.runtime.hhs_graphics_vector_hydration_instance_v1 import (
+    GRAPHICS_VECTOR_HYDRATION,
+)
+from hhs_backend.runtime.hhs_graphics_vector_hydration_v1 import (
+    GraphicsVectorHydrationError,
+)
 
 router = APIRouter(prefix="/api/runtime/graphics-hydration", tags=["graphics-hydration"])
 
@@ -38,7 +44,8 @@ def graphics_hydration_status() -> Dict[str, Any]:
     status = GRAPHICS_HYDRATION.status()
     status["self_test_projection"] = graphics_hydration_self_test()
     status["bounded_optimizer"] = GRAPHICS_OPTIMIZER.status()
-    status["implementation_stage"] = "PASS_181_PHASE_4_BOUNDED_NATIVE_OPTIMIZATION_LOOP"
+    status["vector_hydration"] = GRAPHICS_VECTOR_HYDRATION.status()
+    status["implementation_stage"] = "PASS_181_PHASE_5_VECTOR_HYDRATION_AND_INVARIANT_CANDIDATES"
     return status
 
 
@@ -219,6 +226,81 @@ def graphics_hydration_retry_optimization_job(job_id: str) -> Dict[str, Any]:
     try:
         return GRAPHICS_OPTIMIZER.retry_job(job_id)
     except GraphicsOptimizationError as error:
+        return _rejection(error)
+
+
+@router.get("/vector-hydration/status")
+def graphics_vector_hydration_status() -> Dict[str, Any]:
+    return GRAPHICS_VECTOR_HYDRATION.status()
+
+
+@router.post("/vector-hydration/jobs/admit")
+def graphics_vector_hydration_admit_job(payload: Dict[str, Any]) -> Dict[str, Any]:
+    try:
+        job_id = str(payload.get("job_id") or "").strip()
+        if not job_id:
+            raise GraphicsVectorHydrationError("P181_OPTIMIZATION_JOB_ID_REQUIRED")
+        job = GRAPHICS_OPTIMIZER.get_job(job_id)
+        return GRAPHICS_VECTOR_HYDRATION.hydrate_optimization_job(job)
+    except (GraphicsVectorHydrationError, GraphicsOptimizationError) as error:
+        return _rejection(error)
+
+
+@router.get("/vector-hydration/records")
+def graphics_vector_hydration_records(
+    record_class: Optional[str] = None,
+    source_job_id: Optional[str] = None,
+) -> Dict[str, Any]:
+    return {
+        "schema": "HHS_P181_GRAPHICS_VECTOR_RECORD_LIST_V1",
+        "records": GRAPHICS_VECTOR_HYDRATION.list_records(
+            record_class=record_class,
+            source_job_id=source_job_id,
+        ),
+    }
+
+
+@router.post("/vector-hydration/invariants/extract")
+def graphics_vector_hydration_extract_invariants(payload: Dict[str, Any]) -> Dict[str, Any]:
+    try:
+        return GRAPHICS_VECTOR_HYDRATION.extract_invariant_candidates(
+            minimum_support=int(payload.get("minimum_support") or 2),
+            minimum_distinct_jobs=int(payload.get("minimum_distinct_jobs") or 2),
+        )
+    except (GraphicsVectorHydrationError, TypeError, ValueError) as error:
+        if not isinstance(error, GraphicsVectorHydrationError):
+            error = GraphicsVectorHydrationError("P181_INVARIANT_EXTRACTION_REQUEST_INVALID")
+        return _rejection(error)
+
+
+@router.get("/vector-hydration/invariants")
+def graphics_vector_hydration_invariants(
+    candidate_class: Optional[str] = None,
+    eligible_only: bool = False,
+) -> Dict[str, Any]:
+    return {
+        "schema": "HHS_P181_GRAPHICS_INVARIANT_CANDIDATE_LIST_V1",
+        "candidates": GRAPHICS_VECTOR_HYDRATION.list_invariant_candidates(
+            candidate_class=candidate_class,
+            eligible_only=eligible_only,
+        ),
+        "runtime_constraints_frozen": 0,
+    }
+
+
+@router.post("/vector-hydration/invariants/{candidate_hash216}/promotion-proposal")
+def graphics_vector_hydration_promotion_proposal(candidate_hash216: str) -> Dict[str, Any]:
+    try:
+        return GRAPHICS_VECTOR_HYDRATION.build_promotion_proposal(candidate_hash216)
+    except GraphicsVectorHydrationError as error:
+        return _rejection(error)
+
+
+@router.post("/vector-hydration/replay")
+def graphics_vector_hydration_replay() -> Dict[str, Any]:
+    try:
+        return GRAPHICS_VECTOR_HYDRATION.replay()
+    except GraphicsVectorHydrationError as error:
         return _rejection(error)
 
 
