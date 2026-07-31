@@ -7,6 +7,7 @@ on:
       - 'native_projects/hhs_pass175_virtual_instruction_processor/**'
       - 'hhs_runtime/pass174/**'
       - 'hhs_runtime/pass175/**'
+      - 'tests/test_hhs_pass174_runtime_v1.py'
       - 'tests/test_pass175_virtual_instruction_processor.py'
       - 'tests/test_pass175_terminal_completion.py'
       - 'tests/test_pass175_genuine_pass174_authority.py'
@@ -20,6 +21,7 @@ on:
       - 'native_projects/hhs_pass175_virtual_instruction_processor/**'
       - 'hhs_runtime/pass174/**'
       - 'hhs_runtime/pass175/**'
+      - 'tests/test_hhs_pass174_runtime_v1.py'
       - 'tests/test_pass175_virtual_instruction_processor.py'
       - 'tests/test_pass175_terminal_completion.py'
       - 'tests/test_pass175_genuine_pass174_authority.py'
@@ -39,6 +41,7 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 45
     env:
+      HHS_DISABLE_C_AUTUILD: '1'
       HHS_DISABLE_C_AUTOBUILD: '1'
       HHS_NATIVE_LANGUAGE_REQUIRE_WORD2VEC: '0'
       HHS_ASSISTANT_HEALTH_TIMEOUT_SECONDS: '0.5'
@@ -107,9 +110,10 @@ jobs:
           }, indent=2, sort_keys=True))
           PY
 
-      - name: Run dependency-scoped Pass 175 regression
+      - name: Run dependency-scoped Pass 174 and Pass 175 regression
         run: |
           timeout 1200s pytest -q \
+            tests/test_hhs_pass174_runtime_v1.py \
             tests/test_pass175_virtual_instruction_processor.py \
             tests/test_pass175_terminal_completion.py \
             tests/test_pass175_genuine_pass174_authority.py
