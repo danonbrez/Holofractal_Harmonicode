@@ -179,7 +179,7 @@ export function materializeApplicationTemplate(id) {
       name: path.split('/').at(-1),
       mediaType,
       content,
-      dirty: true,
+      dirty: false,
       checkpoint: `Created from ${template.label} starter`,
     })),
   };
