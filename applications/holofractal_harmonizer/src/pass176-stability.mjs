@@ -69,9 +69,11 @@ function validateRecoveryPayload(payload) {
   if (!payload || !Array.isArray(payload.files) || payload.files.length > 4096) return false;
   const paths = new Set();
   for (const file of payload.files) {
-    if (!file || typeof file.path !== 'string' || !file.path || file.path.startsWith('/') || file.path.includes('..')) return false;
-    if (paths.has(file.path)) return false;
-    paths.add(file.path);
+    if (!file || typeof file.path !== 'string' || !file.path) return false;
+    const normalizedPath = file.path.replaceAll('\\', '/');
+    if (normalizedPath.startsWith('/') || normalizedPath.split('/').includes('..')) return false;
+    if (paths.has(normalizedPath)) return false;
+    paths.add(normalizedPath);
     if (typeof file.content === 'string' && file.content.length > 16 * 1024 * 1024) return false;
     if (typeof file.bytesB64 === 'string' && file.bytesB64.length > 24 * 1024 * 1024) return false;
   }
@@ -375,7 +377,7 @@ class Pass176BrowserController {
     const pass175 = evidence.pass175 || null;
     const runtime = productHealth?.runtime || null;
     const vm81AuthorityPreserved = Boolean(
-      productHealth?.ok === true &&
+      runtime?.ok === true &&
       runtime?.canonical_runtime_attached === true &&
       pass175?.singleton_vm81_commit_authority === true
     );
