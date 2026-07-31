@@ -1,15 +1,13 @@
-"""Pass 181 native graphics inverse-render hydration authority.
+"""Pass 181 native graphics inverse-render hydration authority core.
 
-This first implementation slice establishes immutable MP4 identity, native-frame
-provenance enforcement, deterministic palette phase rules, typed optimization
-records, fidelity classification, and gated runtime-constraint promotion.
-It deliberately does not claim that media decomposition or native reconstruction
-is complete.
+This implementation slice establishes immutable MP4 identity, native-frame
+provenance enforcement, exact reciprocal palette phases, typed optimization
+records, fidelity classification, and gated runtime-constraint promotion. It
+makes no claim that media decomposition or native reconstruction is complete.
 """
 from __future__ import annotations
 
 import hashlib
-import json
 import os
 import threading
 from dataclasses import dataclass
@@ -103,7 +101,16 @@ class ReferenceIdentity:
     stat_mtime_ns: int
 
     def to_dict(self) -> Dict[str, Any]:
-        return stable(self)
+        return {
+            "reference_id": self.reference_id,
+            "sha256": self.sha256,
+            "size_bytes": self.size_bytes,
+            "logical_name": self.logical_name,
+            "suffix": self.suffix,
+            "source_path": self.source_path,
+            "stat_mode": self.stat_mode,
+            "stat_mtime_ns": self.stat_mtime_ns,
+        }
 
 
 def _sha256_file(path: Path) -> str:
@@ -117,12 +124,22 @@ def _sha256_file(path: Path) -> str:
     return digest.hexdigest()
 
 
+def _artifact_filename(canonical_identity: str) -> str:
+    """Map arbitrary canonical glyph identities to portable filesystem names."""
+
+    return hashlib.sha256(canonical_identity.encode("utf-8")).hexdigest() + ".json"
+
+
 def reciprocal_palette_phases(x_phase: int, y_phase: int, w_phase: int) -> Dict[str, int]:
     phases = {"x": int(x_phase), "y": int(y_phase), "w": int(w_phase)}
     if any(value < 0 or value >= 72 for value in phases.values()):
         raise GraphicsHydrationError("P181_PALETTE_PHASE_OUT_OF_RANGE")
-    phases["z"] = (phases["x"] + 36) % 72
-    return {"x": phases["x"], "y": phases["y"], "z": phases["z"], "w": phases["w"]}
+    return {
+        "x": phases["x"],
+        "y": phases["y"],
+        "z": (phases["x"] + 36) % 72,
+        "w": phases["w"],
+    }
 
 
 def classify_fidelity(metrics: Mapping[str, Any]) -> Dict[str, Any]:
@@ -279,7 +296,7 @@ class GraphicsHydrationRuntime:
                 "identity": identity.to_dict(),
             }
             manifest["receipt_hash72"] = hash72(manifest, domain=RECEIPT_DOMAIN)
-            output = self.reference_manifest_root / f"{reference_id}.json"
+            output = self.reference_manifest_root / _artifact_filename(reference_id)
             output.write_bytes(canonical_bytes(manifest))
             return {**manifest, "manifest_path": str(output)}
 
@@ -314,7 +331,7 @@ class GraphicsHydrationRuntime:
                 **payload,
             }
             record["receipt_hash72"] = hash72(record, domain=RECEIPT_DOMAIN)
-            output = self.trial_root / f"{trial_id}.json"
+            output = self.trial_root / _artifact_filename(trial_id)
             output.write_bytes(canonical_bytes(record))
             return {**record, "record_path": str(output)}
 
@@ -363,7 +380,7 @@ class GraphicsHydrationRuntime:
                 **canonical_candidate,
             }
             record["constraint_hash72"] = hash72(record, domain=RECEIPT_DOMAIN)
-            output = self.constraint_root / f"{constraint_id}.json"
+            output = self.constraint_root / _artifact_filename(constraint_id)
             output.write_bytes(canonical_bytes(record))
             return {
                 "schema": "HHS_P181_GRAPHICS_CONSTRAINT_PROMOTION_V1",
