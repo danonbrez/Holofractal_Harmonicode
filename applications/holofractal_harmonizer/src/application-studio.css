@@ -1,22 +1,42 @@
 .ide-application-gallery {
   position: fixed;
   inset: 0;
-  z-index: 1450;
+  z-index: 2147483646;
+  isolation: isolate;
   display: grid;
   place-items: center;
   padding: 18px;
+  overflow: auto;
+  overscroll-behavior: contain;
+  pointer-events: auto;
+  visibility: visible;
+  opacity: 1;
   background: rgba(8, 6, 4, .78);
   backdrop-filter: blur(12px);
 }
 
-.ide-application-gallery[hidden] { display: none; }
+.ide-application-gallery[hidden] {
+  display: none !important;
+  pointer-events: none !important;
+}
+
+body.ide-dialog-open #ide-new-app,
+body.ide-dialog-open #ide-assistant-fab,
+body.ide-dialog-open .ide-assistant-drawer,
+body.ide-dialog-open [data-hhs-storybook-reel-launcher] {
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
 
 .ide-application-gallery-card {
+  position: relative;
+  z-index: 1;
   width: min(1080px, 100%);
   max-height: min(900px, calc(100vh - 36px));
   display: grid;
   grid-template-rows: auto auto minmax(0, 1fr) auto;
   overflow: hidden;
+  pointer-events: auto;
   border: 1px solid var(--border-strong, #9d7440);
   border-radius: 18px;
   background: linear-gradient(145deg, rgba(44, 33, 24, .99), rgba(20, 15, 11, .995));
@@ -84,20 +104,28 @@
 }
 
 .ide-application-template-grid {
+  position: relative;
+  z-index: 2;
   min-height: 0;
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 9px;
   overflow: auto;
+  overscroll-behavior: contain;
   padding: 0 17px 17px;
+  pointer-events: auto;
 }
 
 .ide-application-template-grid button {
+  position: relative;
+  z-index: 1;
   min-height: 134px;
   display: grid;
   align-content: start;
   gap: 8px;
   padding: 13px;
+  pointer-events: auto;
+  touch-action: manipulation;
   text-align: left;
   border-radius: 13px;
   background: rgba(46, 35, 26, .78);
