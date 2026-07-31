@@ -258,5 +258,6 @@ def test_pass181_self_test() -> None:
     result = graphics_hydration_self_test()
     assert result["ok"] is True
     status = GraphicsHydrationRuntime().status()
-    assert status["implementation_stage"] == "PASS_181_PHASE_2_CANONICAL_MP4_TIMELINE_IDENTITY"
+    assert status["implementation_stage"] == "PASS_181_PHASE_3_NATIVE_RECIPE_AND_RESIDUAL_CORE"
     assert status["canonical_decode"]["decoder_threads"] == 1
+    assert status["native_recipe_schema"] == "HHS_P181_NATIVE_RECONSTRUCTION_RECIPE_V1"

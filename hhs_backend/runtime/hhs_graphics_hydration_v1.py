@@ -1,10 +1,10 @@
 """Pass 181 native graphics inverse-render hydration authority core.
 
 This implementation establishes immutable MP4 identity, canonical decoded video
-and audio timelines, native-frame provenance enforcement, exact reciprocal
-palette phases, typed residual records, fidelity classification, and gated
-runtime-constraint promotion. It does not yet claim scene decomposition or
-native inverse reconstruction.
+and audio timelines, typed native reconstruction recipes, exact residual
+reports, native-frame provenance enforcement, reciprocal palette phases,
+fidelity classification, and gated runtime-constraint promotion. It does not
+yet claim completed scene inference or optimization training.
 """
 from __future__ import annotations
 
@@ -18,6 +18,10 @@ from typing import Any, Dict, Iterable, Mapping, Optional, Sequence
 from hhs_backend.runtime.hhs_graphics_mp4_decode_v1 import (
     CanonicalMp4Decoder,
     Mp4DecodeError,
+)
+from hhs_backend.runtime.hhs_graphics_recipe_v1 import (
+    NativeRecipeError,
+    NativeRecipeRuntime,
 )
 from hhs_installer.canonical import canonical_bytes, hash72, hash216, stable
 
@@ -48,6 +52,9 @@ FIDELITY_LEVELS: Sequence[str] = (
     "MP4_BITSTREAM_IDENTITY_WHEN_ENCODER_STATE_IS_AVAILABLE",
 )
 RESIDUAL_CLASSES: Sequence[str] = (
+    "FRAME_CONTENT_RESIDUAL",
+    "AUDIO_CONTENT_RESIDUAL",
+    "TIMELINE_RESIDUAL",
     "BACKGROUND_GEOMETRY_RESIDUAL",
     "SPRITE_SHAPE_RESIDUAL",
     "TEXTURE_DETAIL_RESIDUAL",
@@ -178,7 +185,7 @@ def validate_native_frame_provenance(frame_manifest: Mapping[str, Any]) -> Dict[
 
 
 class GraphicsHydrationRuntime:
-    """Serialized authority for Pass 181 hydration and decode operations."""
+    """Serialized authority for Pass 181 hydration, decode, and recipe operations."""
 
     def __init__(self, artifact_root: Optional[Path] = None) -> None:
         repo_root = Path(__file__).resolve().parents[2]
@@ -188,6 +195,7 @@ class GraphicsHydrationRuntime:
         self.trial_root = self.artifact_root / "trials"
         self.constraint_root = self.artifact_root / "constraints"
         self.decode_runtime = CanonicalMp4Decoder(self.artifact_root / "decode_manifests")
+        self.recipe_runtime = NativeRecipeRuntime(self.artifact_root / "native_reconstruction")
         self._authority_lock = threading.RLock()
         for path in (self.reference_manifest_root, self.trial_root, self.constraint_root):
             path.mkdir(parents=True, exist_ok=True)
@@ -209,9 +217,11 @@ class GraphicsHydrationRuntime:
                 "HHS_GRAPHICS_HYDRATION_ALLOW_LOCAL_PATHS", "0"
             ) == "1",
             "canonical_decode": self.decode_runtime.status(),
+            "native_recipe_schema": "HHS_P181_NATIVE_RECONSTRUCTION_RECIPE_V1",
+            "residual_report_schema": "HHS_P181_NATIVE_RECONSTRUCTION_RESIDUAL_REPORT_V1",
             "promotion_stages": list(PROMOTION_STAGES),
             "residual_classes": list(RESIDUAL_CLASSES),
-            "implementation_stage": "PASS_181_PHASE_2_CANONICAL_MP4_TIMELINE_IDENTITY",
+            "implementation_stage": "PASS_181_PHASE_3_NATIVE_RECIPE_AND_RESIDUAL_CORE",
         }
 
     def ingest_reference(self, source_path: Path | str, *, logical_name: Optional[str] = None) -> Dict[str, Any]:
@@ -258,8 +268,6 @@ class GraphicsHydrationRuntime:
         *,
         logical_name: Optional[str] = None,
     ) -> Dict[str, Any]:
-        """Create exact decoded frame, PCM, DTS, PTS, and duration identities."""
-
         with self._authority_lock:
             reference = self.ingest_reference(source_path, logical_name=logical_name)
             identity = reference["identity"]
@@ -280,8 +288,6 @@ class GraphicsHydrationRuntime:
         expected_timeline_hash216: str,
         logical_name: Optional[str] = None,
     ) -> Dict[str, Any]:
-        """Re-decode immutable evidence and compare its canonical timeline root."""
-
         with self._authority_lock:
             reference = self.ingest_reference(source_path, logical_name=logical_name)
             identity = reference["identity"]
@@ -294,6 +300,36 @@ class GraphicsHydrationRuntime:
                     logical_name=str(identity["logical_name"]),
                 )
             except Mp4DecodeError as error:
+                raise GraphicsHydrationError(str(error)) from error
+
+    def validate_native_recipe(
+        self,
+        recipe: Mapping[str, Any],
+        reference_manifest: Mapping[str, Any],
+    ) -> Dict[str, Any]:
+        with self._authority_lock:
+            try:
+                return self.recipe_runtime.validate_and_store(recipe, reference_manifest)
+            except NativeRecipeError as error:
+                raise GraphicsHydrationError(str(error)) from error
+
+    def build_residual_report(
+        self,
+        reference_manifest: Mapping[str, Any],
+        native_manifest: Mapping[str, Any],
+        validated_recipe: Mapping[str, Any],
+        *,
+        semantic_metrics: Optional[Mapping[str, Any]] = None,
+    ) -> Dict[str, Any]:
+        with self._authority_lock:
+            try:
+                return self.recipe_runtime.compare_and_store(
+                    reference_manifest,
+                    native_manifest,
+                    validated_recipe,
+                    semantic_metrics=semantic_metrics,
+                )
+            except NativeRecipeError as error:
                 raise GraphicsHydrationError(str(error)) from error
 
     def record_trial(
