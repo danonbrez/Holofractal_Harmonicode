@@ -1,6 +1,11 @@
 import { APPLICATION_TEMPLATES as BASE_TEMPLATES } from './application-templates.mjs';
 import { HARMONIC_PUZZLE_TEMPLATE } from './harmonic-puzzle-template.mjs';
 import { PLATFORMER_LEVEL1_TEMPLATE } from './platformer-template.mjs';
+import {
+  PASS177_IDE_TEMPLATE_SOURCES,
+  createPass177Project,
+  pass177TemplateList,
+} from './pass177/project-factory.mjs';
 
 const CALCULATOR_APPLICATION_SOURCE = [
   'const display = document.querySelector("#display");',
@@ -154,6 +159,7 @@ const TEMPLATE_SOURCES = Object.freeze({
   ...BASE_TEMPLATES,
   [HARMONIC_PUZZLE_TEMPLATE.id]: HARMONIC_PUZZLE_TEMPLATE,
   [PLATFORMER_LEVEL1_TEMPLATE.id]: PLATFORMER_LEVEL1_TEMPLATE,
+  ...PASS177_IDE_TEMPLATE_SOURCES,
 });
 
 export const APPLICATION_TEMPLATES = Object.freeze(Object.fromEntries(
@@ -178,3 +184,5 @@ export function materializeApplicationTemplate(id) {
     })),
   };
 }
+
+export { createPass177Project, pass177TemplateList };
