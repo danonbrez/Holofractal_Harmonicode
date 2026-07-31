@@ -1,0 +1,185 @@
+name: Native Storybook Reel Studio
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'native_projects/hhs_storybook_reel/**'
+      - 'hhs_backend/runtime/hhs_storybook_reel_*.py'
+      - 'hhs_backend/api/storybook_reel_routes.py'
+      - 'hhs_backend/visual_server.py'
+      - 'applications/storybook_reel_studio/**'
+      - 'tests/test_hhs_storybook_reel_*.py'
+      - 'tools/run_storybook_reel_acceptance.py'
+      - '.github/workflows/storybook-reel-studio.yml'
+      - 'docs/storybook-reel/**'
+  push:
+    branches:
+      - agent/storybook-reel-native-abi
+      - main
+    paths:
+      - 'native_projects/hhs_storybook_reel/**'
+      - 'hhs_backend/runtime/hhs_storybook_reel_*.py'
+      - 'hhs_backend/api/storybook_reel_routes.py'
+      - 'hhs_backend/visual_server.py'
+      - 'applications/storybook_reel_studio/**'
+      - 'tests/test_hhs_storybook_reel_*.py'
+      - 'tools/run_storybook_reel_acceptance.py'
+      - '.github/workflows/storybook-reel-studio.yml'
+      - 'docs/storybook-reel/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: storybook-reel-studio-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  native-api-ui:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      HHS_DISABLE_C_AUTOBUILD: '1'
+      HHS_LITERT_LM_PROVIDER_MODE: disabled
+      HHS_START_LITERT_LM: '0'
+      HHS_NATIVE_LANGUAGE_REQUIRE_WORD2VEC: '0'
+      OMP_NUM_THREADS: '1'
+      OPENBLAS_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+      NUMEXPR_NUM_THREADS: '1'
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install native media tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends ffmpeg build-essential
+          ffmpeg -version | head -n 1
+          ffprobe -version | head -n 1
+
+      - name: Install dependency-scoped Python packages
+        run: |
+          timeout 300s python -m pip install --upgrade pip
+          timeout 600s python -m pip install \
+            fastapi==0.128.2 \
+            starlette==0.50.0 \
+            'pydantic>=2.7,<3.0' \
+            'uvicorn[standard]>=0.30,<1.0' \
+            'httpx>=0.27,<1.0' \
+            'requests>=2.32,<3.0' \
+            'websockets>=12.0,<16.0' \
+            'cryptography>=46.0,<47.0' \
+            'networkx>=3.3,<4.0' \
+            'orjson>=3.10,<4.0' \
+            'pyyaml>=6.0,<7.0' \
+            'numpy>=1.26,<3.0' \
+            'sympy>=1.13,<2.0' \
+            'sqlalchemy>=2.0,<3.0' \
+            'aiosqlite>=0.20,<1.0' \
+            'rich>=13.7,<14.0' \
+            'click>=8.1,<9.0' \
+            'typer>=0.12,<1.0' \
+            'loguru>=0.7,<1.0' \
+            'pytest>=8.0,<10.0' \
+            'pytest-asyncio>=0.23,<1.0'
+
+      - name: Build canonical HHS ABI
+        run: timeout 600s make c-abi
+
+      - name: Build and test native storybook ABI
+        run: |
+          timeout 900s make -C native_projects/hhs_storybook_reel clean all test
+          timeout 900s make -C native_projects/hhs_storybook_reel sanitize
+
+      - name: Compile Python and JavaScript surfaces
+        run: |
+          timeout 90s python -m py_compile \
+            hhs_backend/runtime/hhs_storybook_reel_timing_v1.py \
+            hhs_backend/runtime/hhs_storybook_reel_v1.py \
+            hhs_backend/api/storybook_reel_routes.py \
+            hhs_backend/visual_server.py \
+            tests/test_hhs_storybook_reel_timing_v1.py \
+            tests/test_hhs_storybook_reel_studio_v1.py \
+            tools/run_storybook_reel_acceptance.py
+          node --check applications/storybook_reel_studio/app.js
+
+      - name: Run timing, route, audio-ingress, and UI regression
+        run: |
+          timeout 900s pytest -q \
+            tests/test_hhs_storybook_reel_timing_v1.py \
+            tests/test_hhs_storybook_reel_studio_v1.py
+
+      - name: Verify static no-code studio contract
+        run: |
+          grep -q 'Upload narration audio' applications/storybook_reel_studio/index.html
+          grep -q 'Generate 90-second reel' applications/storybook_reel_studio/index.html
+          grep -q 'Automatic compatible x/y/z/w palette' applications/storybook_reel_studio/app.js
+          grep -q 'parallel workers' applications/storybook_reel_studio/app.js
+
+  full-90-second-acceptance:
+    needs: native-api-ui
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    env:
+      HHS_DISABLE_C_AUTOBUILD: '1'
+      HHS_LITERT_LM_PROVIDER_MODE: disabled
+      HHS_START_LITERT_LM: '0'
+      HHS_NATIVE_LANGUAGE_REQUIRE_WORD2VEC: '0'
+      OMP_NUM_THREADS: '1'
+      OPENBLAS_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+      NUMEXPR_NUM_THREADS: '1'
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install full-duration dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends ffmpeg build-essential
+          timeout 300s python -m pip install --upgrade pip
+          timeout 600s python -m pip install \
+            'pydantic>=2.7,<3.0' \
+            'cryptography>=46.0,<47.0' \
+            'numpy>=1.26,<3.0'
+
+      - name: Build canonical and storybook native ABIs
+        run: |
+          timeout 600s make c-abi
+          timeout 900s make -C native_projects/hhs_storybook_reel all
+
+      - name: Generate and inspect complete 90-second reel
+        run: |
+          timeout 3000s python tools/run_storybook_reel_acceptance.py \
+            --output evidence/storybook-reel-acceptance \
+            | tee evidence/storybook-reel-acceptance.log
+          grep -q 'HHS_90_SECOND_STORYBOOK_REEL_NO_CODE_APPLICATION_VERIFIED' \
+            evidence/storybook-reel-acceptance/acceptance.json
+
+      - name: Upload reel package and acceptance evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: hhs-storybook-reel-90-second-acceptance
+          if-no-files-found: error
+          retention-days: 30
+          path: |
+            evidence/storybook-reel-acceptance/acceptance.json
+            evidence/storybook-reel-acceptance.log
+            evidence/storybook-reel-acceptance/runtime/renders/*/storybook-reel-package.zip
