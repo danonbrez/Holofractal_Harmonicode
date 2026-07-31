@@ -71,9 +71,17 @@ def run() -> dict[str, object]:
             current_phase = "HTTP_COMMITTED"
             phase(current_phase, status=response.status)
 
+            # A committed navigation can precede document parsing. Wait for the
+            # static workflow shell first; only then assert document metadata and
+            # proceed to the asynchronous Application Studio authority boundary.
+            current_phase = "WAIT_STATIC_SHELL"
+            phase(current_phase)
+            page.wait_for_selector("#ide-simple-workflow", state="attached", timeout=90_000)
+            expect(page.locator("#ide-simple-workflow")).to_be_visible(timeout=30_000)
             expect(page).to_have_title("HHS Full Multimodal Application IDE", timeout=30_000)
             expect(page.locator("html")).to_have_class("hhs-harmonic-studio-theme", timeout=30_000)
-            expect(page.locator("#ide-simple-workflow")).to_be_visible(timeout=30_000)
+            current_phase = "STATIC_SHELL_READY"
+            phase(current_phase)
 
             current_phase = "WAIT_APPLICATION_STUDIO"
             phase(current_phase)
@@ -166,6 +174,7 @@ def run() -> dict[str, object]:
             )
             if diagnostic_response is None or not diagnostic_response.ok:
                 raise AssertionError("runtime console did not return a successful response")
+            diagnostic.wait_for_selector("body", state="attached", timeout=30_000)
             expect(diagnostic).to_have_title("HHS Pass 174 Visual IDE", timeout=20_000)
             expect(diagnostic.locator("body")).to_contain_text(
                 "Pass 174 Harmonic Visual SDLC Runtime",
