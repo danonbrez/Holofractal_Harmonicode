@@ -15,7 +15,11 @@ test('primary IDE boots intuitive workflow, integrated assistant, and workbench'
   assert.match(source, /safeInit\('integrated-assistant', initIntegratedAssistant, \{ optional: true \}\)/);
   assert.match(source, /safeInit\('integrated-workbench', initIntegratedWorkbench, \{ optional: true \}\)/);
   assert.match(source, /safeInit\('intuitive-ide', initIntuitiveIDE, \{ optional: true \}\)/);
-  assert.match(source, /await stability\.boot\(\[/);
+  assert.match(source, /async function bootVisualIDE\(\)/);
+  assert.match(source, /return stability\.boot\(\[/);
+  assert.match(source, /const visualIdeBootPromise = bootVisualIDE\(\)/);
+  assert.match(source, /window\.HHSVisualIDEBoot = visualIdeBootPromise/);
+  assert.doesNotMatch(source, /^await stability\.boot\(\[/m);
   assert.match(source, /stage: 'EDITOR_READY'/);
   assert.match(source, /stage: 'INTERACTIVE'/);
 });
