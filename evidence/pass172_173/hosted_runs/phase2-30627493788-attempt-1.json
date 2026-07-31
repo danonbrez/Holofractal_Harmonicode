@@ -1,0 +1,21 @@
+{
+  "branch": "agent/pass176-frozen-ide-stabilization",
+  "failures": 0,
+  "next_action": "merge after the evidence-only head is revalidated",
+  "outcomes": {
+    "compile": "success",
+    "contracts": "success",
+    "dependencies": "success",
+    "smoke": "success",
+    "tests": "success"
+  },
+  "pytest_output_sha256": "ec60354fc3f83102bde672a431d43e9bc572a0347a51fd5db2326f0c84acdb46",
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "run_attempt": 1,
+  "run_id": 30627493788,
+  "schema": "HHS_PASS_172_173_PHASE2_HOSTED_VALIDATION_V1",
+  "status": "SUCCESS",
+  "terminal_pass172_claimed": false,
+  "terminal_pass173_claimed": false,
+  "validated_sha": "8b4fe583d1457d38fa99f6bdfa64e437611d6116"
+}
