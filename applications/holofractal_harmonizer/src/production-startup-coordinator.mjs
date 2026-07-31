@@ -1,4 +1,5 @@
 import './theme-bootstrap.mjs';
+import { startPublicBoot } from './public-boot.mjs';
 
 const originalFetch = window.fetch.bind(window);
 const startedAt = performance.now();
@@ -37,11 +38,17 @@ window.fetch = async function coordinatedFetch(input, init) {
 };
 
 window.HHSProductionStartupCoordinator = Object.freeze({
-  schema: 'HHS_PASS161_PRODUCTION_STARTUP_COORDINATOR_V3',
+  schema: 'HHS_PASS161_PRODUCTION_STARTUP_COORDINATOR_V4',
   assistant_requests_deferred_until_registry_ready: true,
   max_assistant_deferral_ms: MAX_ASSISTANT_DEFERRAL_MS,
   runtime_registry_has_priority: true,
   visual_ide_requests_never_deferred: true,
   theme_bootstrap_independent_of_ide_module: true,
+  public_module_boot_concurrent: true,
   frontend_is_authority: false,
 });
+
+// This is the first public entry module. Launch the browser runtime,
+// production registry integration, and visual IDE independently now, before
+// any unresolved legacy module can serialize the remaining deferred scripts.
+startPublicBoot();

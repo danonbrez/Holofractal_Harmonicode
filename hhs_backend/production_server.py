@@ -30,6 +30,8 @@ from hhs_backend.api.pass166_word2vec_routes import router as word2vec_router
 
 ROOT_DIR = Path(__file__).resolve().parents[1]
 VISUAL_ROOT = ROOT_DIR / "applications" / "holofractal_harmonizer"
+VISUAL_SOURCE_ROOT = VISUAL_ROOT / "src"
+VISUAL_SOURCE_MOUNT_NAME = "hhs-production-source-assets"
 
 app = canonical.app
 app.title = "HHS Holofractal Harmonizer"
@@ -311,6 +313,21 @@ async def production_api_not_found(unmatched_path: str) -> JSONResponse:
         },
     )
 
+
+# Serve the browser module graph through a dedicated mount before any inherited
+# root SPA mount. Successor composition layers retain this route, preventing
+# root-mount replacement from turning the IDE into an HTML-only shell.
+app.router.routes = [
+    route
+    for route in app.router.routes
+    if getattr(route, "name", None) != VISUAL_SOURCE_MOUNT_NAME
+]
+if VISUAL_SOURCE_ROOT.is_dir():
+    app.mount(
+        "/src",
+        StaticFiles(directory=str(VISUAL_SOURCE_ROOT)),
+        name=VISUAL_SOURCE_MOUNT_NAME,
+    )
 
 if (VISUAL_ROOT / "index.html").is_file():
     app.mount(

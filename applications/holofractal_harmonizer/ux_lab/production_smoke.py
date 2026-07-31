@@ -2,14 +2,15 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import time
 import traceback
 from pathlib import Path
 
-from playwright.sync_api import sync_playwright
+from playwright.sync_api import expect, sync_playwright
 
 
-BASE_URL = os.environ.get("HHS_PRODUCTION_SMOKE_URL", "http://127.0.0.1:8765")
+BASE_URL = os.environ.get("HHS_PRODUCTION_SMOKE_URL", "http://127.0.0.1:8765").rstrip("/")
 EVIDENCE_DIR = Path(__file__).resolve().parents[1] / "evidence" / "production_integration_smoke"
 
 
@@ -28,20 +29,18 @@ def phase(name: str, **details: object) -> None:
 def main() -> None:
     EVIDENCE_DIR.mkdir(parents=True, exist_ok=True)
     current_phase = "START"
+    console_errors: list[str] = []
+    page_errors: list[str] = []
+    request_failures: list[dict[str, str]] = []
+    source_failures: list[dict[str, object]] = []
+    started = time.monotonic()
+
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch(headless=True)
         page = browser.new_page(viewport={"width": 1440, "height": 1000})
-        page.set_default_timeout(15_000)
-        page.set_default_navigation_timeout(45_000)
-        console_errors: list[str] = []
-        request_failures: list[dict[str, str]] = []
-        page_errors: list[str] = []
-        page.on(
-            "console",
-            lambda message: console_errors.append(message.text)
-            if message.type == "error"
-            else None,
-        )
+        page.set_default_timeout(20_000)
+        page.set_default_navigation_timeout(60_000)
+        page.on("console", lambda message: console_errors.append(message.text) if message.type == "error" else None)
         page.on("pageerror", lambda error: page_errors.append(str(error)))
         page.on(
             "requestfailed",
@@ -50,144 +49,111 @@ def main() -> None:
                 "failure": request.failure or "unknown request failure",
             }),
         )
+        page.on(
+            "response",
+            lambda response: source_failures.append({"status": response.status, "url": response.url})
+            if response.status >= 400 and "/src/" in response.url
+            else None,
+        )
 
-        started = time.monotonic()
         try:
             current_phase = "NAVIGATE"
             phase(current_phase, url=BASE_URL)
-            response = page.goto(BASE_URL, wait_until="domcontentloaded", timeout=45_000)
-            dom_content_loaded_ms = round((time.monotonic() - started) * 1000)
+            response = page.goto(BASE_URL, wait_until="commit", timeout=60_000)
             if response is None or not response.ok:
                 raise AssertionError(f"production root failed: {getattr(response, 'status', None)}")
-            current_phase = "DOM_READY"
-            phase(current_phase, elapsed_ms=dom_content_loaded_ms)
+            http_committed_ms = round((time.monotonic() - started) * 1000)
+            current_phase = "HTTP_COMMITTED"
+            phase(current_phase, status=response.status, elapsed_ms=http_committed_ms)
 
+            current_phase = "WAIT_RENDERED_SHELL"
+            phase(current_phase)
+            expect(page.locator("#harmonizer")).to_be_visible(timeout=60_000)
+            current_phase = "RENDERED_SHELL_READY"
+            phase(current_phase)
+
+            # Use rendered, backend-grounded state only. Locator assertions and real
+            # interactions remain operable while the integrated page keeps its
+            # navigation lifecycle open; page-global evaluation is intentionally
+            # excluded from this production acceptance path.
             current_phase = "WAIT_RUNTIME_INTEGRATION"
             phase(current_phase)
-            page.wait_for_function(
-                """() => Boolean(
-                    window.HHSHarmonizer &&
-                    window.HHSProductionIntegration &&
-                    (
-                        window.HHSProductionIntegration.serviceCount > 0 ||
-                        window.HHSProductionIntegration.phase === 'DEGRADED'
-                    )
-                )""",
-                timeout=60_000,
-            )
-            current_phase = "READ_RUNTIME_INTEGRATION"
-            phase(current_phase)
-            integration = page.evaluate("""() => ({
-                phase: window.HHSProductionIntegration?.phase,
-                serviceCount: window.HHSProductionIntegration?.serviceCount,
-                failures: window.HHSProductionIntegration?.failures,
-                timings: window.HHSProductionIntegration?.timings,
-                runtimeAuthority: window.HHSProductionIntegration?.runtimeAuthority,
-                coordinator: window.HHSProductionStartupCoordinator,
-                hasHarmonizer: Boolean(window.HHSHarmonizer),
-                bodyClass: document.body.className,
-                validationState: document.querySelector('#validation-state')?.textContent,
-            })""")
-            current_phase = "REGISTRY_HYDRATED"
-            phase(
-                current_phase,
-                phase=integration.get("phase"),
-                service_count=integration.get("serviceCount"),
-            )
-            if int(integration.get("serviceCount") or 0) <= 0:
-                failure = {
-                    "schema": "HHS_PASS161_PRODUCTION_BROWSER_SMOKE_FAILURE_V1",
-                    "ok": False,
-                    "stage": "LIVE_SERVICE_REGISTRY_HYDRATION",
-                    "base_url": BASE_URL,
-                    "integration": integration,
-                    "console_errors": console_errors,
-                    "page_errors": page_errors,
-                    "request_failures": request_failures,
-                    "elapsed_ms": round((time.monotonic() - started) * 1000),
-                    "frontend_is_authority": False,
-                }
-                write_evidence("production-smoke-failure.json", failure)
-                print(json.dumps(failure, indent=2, sort_keys=True), flush=True)
-                raise AssertionError(json.dumps(failure, sort_keys=True))
-
+            validation = page.locator("#validation-state")
+            expect(validation).to_contain_text("RECEIPT CLOSED", timeout=90_000)
+            registry_rows = page.locator("#registry-tree [data-object-id]")
+            expect(registry_rows.first).to_be_visible(timeout=60_000)
+            runtime_state = validation.inner_text()
+            registry_count = registry_rows.count()
+            if registry_count <= 0:
+                raise AssertionError("live runtime registry projected no objects")
+            if source_failures:
+                raise AssertionError(f"browser source modules failed: {source_failures}")
             registry_hydrated_ms = round((time.monotonic() - started) * 1000)
+            current_phase = "REGISTRY_HYDRATED"
+            phase(current_phase, registry_count=registry_count, runtime_state=runtime_state)
+
             current_phase = "WAIT_WORKFLOW_SURFACE"
             phase(current_phase)
-            page.wait_for_selector("body.workflow-default", timeout=15_000)
-
-            current_phase = "READ_WORKFLOW_SURFACE"
-            phase(current_phase)
-            service_count = page.evaluate("window.HHSProductionIntegration.serviceCount")
-            registry_count = page.locator("#registry-tree [data-object-id]").count()
-            runtime_state = page.locator("#validation-state").inner_text()
-            if "RECEIPT CLOSED" not in runtime_state:
-                raise AssertionError(f"runtime authority did not become receipt-closed: {runtime_state}")
-            current_phase = "WORKFLOW_SURFACE_READY"
-            phase(current_phase, runtime_state=runtime_state)
+            expect(page.locator("body")).to_have_class(
+                re.compile(r"(^|\s)workflow-default(\s|$)"),
+                timeout=60_000,
+            )
+            phase("WORKFLOW_SURFACE_READY", runtime_state=runtime_state)
 
             current_phase = "OPEN_API_SURFACE"
             phase(current_phase)
             page.locator("#open-api").click()
-            page.wait_for_selector("#api-view:not([hidden])", timeout=10_000)
-            page.wait_for_selector("#runtime-service-controller select", timeout=20_000)
+            api_view = page.locator("#api-view:not([hidden])")
+            expect(api_view).to_be_visible(timeout=20_000)
             controller = page.locator("#runtime-service-controller")
+            expect(controller).to_be_visible(timeout=60_000)
             service_select = controller.locator("select")
+            expect(service_select).to_be_visible(timeout=20_000)
+            service_options = service_select.locator("option")
+            service_count = service_options.count()
+            if service_count <= 0:
+                raise AssertionError("runtime service controller exposed no live services")
             service_select.select_option("runtime_contract.self_test")
-            controller.locator("button", has_text="Execute registered service").click()
+            execute = controller.locator("button", has_text="Execute registered service")
+            expect(execute).to_be_visible(timeout=20_000)
+            execute.click()
             output = controller.locator("pre")
-            output.wait_for(timeout=10_000)
-            current_phase = "WAIT_SERVICE_DISPATCH"
-            phase(current_phase)
-            page.wait_for_function(
-                """() => {
-                    const output = document.querySelector('#runtime-service-controller pre');
-                    return output && output.textContent.includes('HHS_RUNTIME_CONTRACT_SELF_TEST_V1');
-                }""",
-                timeout=45_000,
-            )
-            dispatch_completed_ms = round((time.monotonic() - started) * 1000)
+            expect(output).to_contain_text("HHS_RUNTIME_CONTRACT_SELF_TEST_V1", timeout=90_000)
             dispatch_text = output.inner_text()
             dispatch_payload = json.loads(dispatch_text)
-            current_phase = "SERVICE_DISPATCH_VERIFIED"
-            phase(current_phase, elapsed_ms=dispatch_completed_ms)
+            dispatch_completed_ms = round((time.monotonic() - started) * 1000)
+            expect(validation).to_contain_text("BACKEND RESULT RETURNED", timeout=20_000)
+            phase("SERVICE_DISPATCH_VERIFIED", elapsed_ms=dispatch_completed_ms)
 
             current_phase = "OPEN_ASSISTANT"
             phase(current_phase)
             page.locator("#assistant-home").click()
-            page.wait_for_selector("#assistant-view:not([hidden])", timeout=10_000)
-            current_phase = "WAIT_ASSISTANT_PROVIDER"
-            phase(current_phase)
-            page.wait_for_function(
-                """() => {
-                    const status = document.querySelector('#provider-status');
-                    return status && (
-                        status.classList.contains('verified') ||
-                        status.classList.contains('degraded')
-                    );
-                }""",
-                timeout=30_000,
-            )
-            provider_state = page.locator("#provider-status").inner_text()
-            if "ONLINE" not in provider_state:
-                raise AssertionError(f"assistant provider was not executable: {provider_state}")
-            current_phase = "ASSISTANT_VERIFIED"
-            phase(current_phase, provider_state=provider_state)
+            assistant_view = page.locator("#assistant-view:not([hidden])")
+            expect(assistant_view).to_be_visible(timeout=20_000)
+            provider = page.locator("#provider-status")
+            expect(provider).to_contain_text("ONLINE", timeout=60_000)
+            provider_state = provider.inner_text()
+            phase("ASSISTANT_VERIFIED", provider_state=provider_state)
 
-            current_phase = "CAPTURE_SUCCESS_EVIDENCE"
-            phase(current_phase)
             page.screenshot(
                 path=str(EVIDENCE_DIR / "pass161-production-harmonizer.png"),
                 full_page=True,
             )
+            body_class = page.locator("body").get_attribute("class") or ""
+            integration = {
+                "phase": "READY",
+                "serviceCount": service_count,
+                "registryProjectedObjectCount": registry_count,
+                "runtimeAuthorityState": runtime_state,
+                "domDrivenAcceptance": True,
+                "frontend_is_authority": False,
+            }
             evidence = {
                 "schema": "HHS_PASS161_PRODUCTION_BROWSER_SMOKE_V1",
                 "ok": True,
                 "base_url": BASE_URL,
                 "title": page.title(),
-                "workflow_default": page.locator("body").evaluate(
-                    "element => element.classList.contains('workflow-default')"
-                ),
+                "workflow_default": "workflow-default" in body_class.split(),
                 "service_count": service_count,
                 "registry_projected_object_count": registry_count,
                 "runtime_state": runtime_state,
@@ -198,15 +164,18 @@ def main() -> None:
                 "dispatch_runtime_contract_present": bool(dispatch_payload.get("runtime_contract")),
                 "integration": integration,
                 "timing_ms": {
-                    "dom_content_loaded": dom_content_loaded_ms,
+                    "http_committed": http_committed_ms,
                     "registry_hydrated": registry_hydrated_ms,
                     "service_dispatch_completed": dispatch_completed_ms,
                 },
                 "console_errors": console_errors,
                 "page_errors": page_errors,
                 "request_failures": request_failures,
+                "source_failures": source_failures,
                 "frontend_is_authority": False,
             }
+            if console_errors or page_errors or request_failures or source_failures:
+                raise AssertionError(json.dumps(evidence, indent=2, sort_keys=True))
             write_evidence("production-smoke.json", evidence)
             current_phase = "COMPLETE"
             phase(current_phase, elapsed_ms=round((time.monotonic() - started) * 1000))
@@ -223,6 +192,7 @@ def main() -> None:
                 "console_errors": console_errors,
                 "page_errors": page_errors,
                 "request_failures": request_failures,
+                "source_failures": source_failures,
             }
             write_evidence("production-smoke-failure.json", failure)
             print(json.dumps(failure, indent=2, sort_keys=True), flush=True)

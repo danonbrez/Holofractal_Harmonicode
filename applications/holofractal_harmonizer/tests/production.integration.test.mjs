@@ -23,6 +23,21 @@ test('verified workflow-first Harmonizer remains the public presentation authori
   assert.match(html, /id="inspector"/);
 });
 
+test('public startup launches independent authorities before legacy module serialization', () => {
+  const coordinator = read('src/production-startup-coordinator.mjs');
+  const boot = read('src/public-boot.mjs');
+  assert.match(coordinator, /import \{ startPublicBoot \} from '\.\/public-boot\.mjs'/);
+  assert.match(coordinator, /window\.HHSProductionStartupCoordinator = Object\.freeze/);
+  assert.ok(coordinator.indexOf('window.HHSProductionStartupCoordinator = Object.freeze') < coordinator.indexOf('startPublicBoot();'));
+  assert.match(boot, /export function startPublicBoot\(\)/);
+  assert.match(boot, /const browser = launch\('browser', '\.\/browser\.mjs'\)/);
+  assert.match(boot, /const productionIntegration = launch\('production-integration', '\.\/production-integration\.mjs'\)/);
+  assert.match(boot, /const visualIDE = launch\('visual-ide', '\.\/visual-ide\.mjs'\)/);
+  assert.match(boot, /const workflowDefault = browser\.then\(\(\) => launch\('ux-default', '\.\/ux-default\.mjs'\)\)/);
+  assert.match(boot, /if \(publicBoot\) return publicBoot/);
+  assert.doesNotMatch(boot, /await\s+import\(/);
+});
+
 test('Pass 161 browser imports and calls only verified core contracts', () => {
   const source = read('src/browser.mjs');
   assert.match(source, /HarmonizerRuntime,\s*OBJECT_TYPES,/s);
@@ -70,6 +85,7 @@ test('production startup gives live runtime registry priority over assistant col
   assert.match(source, /serviceCount/);
   assert.match(source, /MAX_ASSISTANT_DEFERRAL_MS/);
   assert.match(source, /runtime_registry_has_priority:\s*true/);
+  assert.match(source, /public_module_boot_concurrent:\s*true/);
   assert.match(source, /frontend_is_authority:\s*false/);
   assert.doesNotMatch(source, /\/api\/runtime\/services/);
   assert.doesNotMatch(source, /new\s+WebSocket/);
