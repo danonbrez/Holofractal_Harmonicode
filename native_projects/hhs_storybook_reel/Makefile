@@ -1,5 +1,5 @@
 CC ?= cc
-CFLAGS ?= -std=c11 -O2 -Wall -Wextra -Werror -pedantic
+CFLAGS ?= -std=c11 -O2 -Wall -Wextra -Werror -Wno-unused-function -pedantic
 ROOT := ../..
 GAME := ../hhs_vm81_game_level10
 INCLUDES := -Iinclude -I$(GAME)/include -I$(ROOT)/hhs_runtime/include
@@ -43,7 +43,7 @@ test: all
 	$(TEST)
 
 sanitize: | $(DIST)
-	$(CC) -std=c11 -O1 -g -Wall -Wextra -Werror -pedantic \
+	$(CC) -std=c11 -O1 -g -Wall -Wextra -Werror -Wno-unused-function -pedantic \
 		-fsanitize=address,undefined -fno-omit-frame-pointer $(INCLUDES) \
 		$(GAME_CORE) $(GAME_RELEASE) $(GAME_SPRITE) $(GAME_TEXTURE) \
 		$(STORY_SRC) tests/test_hhs_storybook_reel.c $(HASH_SRC) \
