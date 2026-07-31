@@ -1,0 +1,23 @@
+# Reference template only. `python -m hhs_runtime.pass184.cli build` emits the
+# authoritative unit with verified absolute paths.
+[Unit]
+Description=HHS Pass 184 Full Application IDE
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=@@HHS_REPOSITORY_ROOT@@
+EnvironmentFile=@@HHS_INSTALL_ROOT@@/configuration/hhs.env
+ExecStart=@@HHS_INSTALL_ROOT@@/bin/hhs-runtime
+Restart=on-failure
+RestartSec=3
+TimeoutStartSec=75
+TimeoutStopSec=20
+KillSignal=SIGTERM
+KillMode=mixed
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
