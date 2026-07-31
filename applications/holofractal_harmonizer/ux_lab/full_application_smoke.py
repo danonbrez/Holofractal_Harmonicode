@@ -49,7 +49,7 @@ def run() -> dict[str, object]:
         context = browser.new_context(accept_downloads=True, viewport={"width": 1440, "height": 960})
         page = context.new_page()
         page.set_default_timeout(20_000)
-        page.set_default_navigation_timeout(60_000)
+        page.set_default_navigation_timeout(90_000)
         page.on("pageerror", lambda error: page_errors.append(str(error)))
         page.on("console", lambda message: console_errors.append(message.text) if message.type == "error" else None)
         page.on(
@@ -60,24 +60,18 @@ def run() -> dict[str, object]:
         )
 
         try:
-            # Module scripts intentionally perform asynchronous runtime boot and may
-            # delay DOMContentLoaded. Accept the HTTP response first, then bind every
-            # readiness decision to explicit IDE contracts below.
+            # Public entry modules are contractually free of top-level await, so
+            # DOMContentLoaded is the bounded parsed-document boundary. Runtime and
+            # application authorities remain independently asserted below.
             current_phase = "NAVIGATE"
             phase(current_phase, url=BASE_URL)
-            response = page.goto(f"{BASE_URL}/", wait_until="commit", timeout=60_000)
+            response = page.goto(f"{BASE_URL}/", wait_until="domcontentloaded", timeout=90_000)
             if response is None or not response.ok:
                 raise AssertionError(f"full application root failed: {getattr(response, 'status', None)}")
-            current_phase = "HTTP_COMMITTED"
+            current_phase = "DOCUMENT_PARSED"
             phase(current_phase, status=response.status)
 
-            # A committed navigation can precede document parsing. Wait for the
-            # static workflow shell first; only then assert document metadata and
-            # proceed to the asynchronous Application Studio authority boundary.
-            current_phase = "WAIT_STATIC_SHELL"
-            phase(current_phase)
-            page.wait_for_selector("#ide-simple-workflow", state="attached", timeout=90_000)
-            expect(page.locator("#ide-simple-workflow")).to_be_visible(timeout=30_000)
+            expect(page.locator("#ide-view")).to_be_visible(timeout=30_000)
             expect(page).to_have_title("HHS Full Multimodal Application IDE", timeout=30_000)
             expect(page.locator("html")).to_have_class("hhs-harmonic-studio-theme", timeout=30_000)
             current_phase = "STATIC_SHELL_READY"
@@ -169,12 +163,11 @@ def run() -> dict[str, object]:
             diagnostic = context.new_page()
             diagnostic_response = diagnostic.goto(
                 f"{BASE_URL}/runtime-console/",
-                wait_until="commit",
+                wait_until="domcontentloaded",
                 timeout=45_000,
             )
             if diagnostic_response is None or not diagnostic_response.ok:
                 raise AssertionError("runtime console did not return a successful response")
-            diagnostic.wait_for_selector("body", state="attached", timeout=30_000)
             expect(diagnostic).to_have_title("HHS Pass 174 Visual IDE", timeout=20_000)
             expect(diagnostic.locator("body")).to_contain_text(
                 "Pass 174 Harmonic Visual SDLC Runtime",
