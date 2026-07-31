@@ -6,11 +6,15 @@
 - Contract commits on `main`:
   - Pass 181: `74c0ed26566f5bfe12750e5adfa06736d187123e`
   - Pass 182: `3107120f00fc7b8823e9134845502c4cd43ac82d`
-- First Pass 181 implementation publication: direct to `main`, completed through `442b16c6414bb76d3751b7d0d51cb519e3910731`
+- Phase 1 authority core publication: completed through `008a7c6ba1219b52f280e88bdc49daa204ca1b37`
+- Phase 2 canonical MP4 timeline merge: `7ffc02667f6480e6877263459a55f47e91a84189`
+- Phase 2 delivery PR: `#104`
 - Contract: `HHS-P181-NCSR-GHIR-VM81-H72-H216`
 - Authority: `HHS_VM81_SINGLETON_GRAPHICS_HYDRATION_AUTHORITY_V1`
 
-## Implemented in the first slice
+## Implemented
+
+### Phase 1 — authority and identity core
 
 - immutable read-only MP4 content identity;
 - source-change detection during ingestion;
@@ -21,13 +25,28 @@
 - typed graphics residual admission;
 - complete-stage constraint-promotion gating;
 - serialized runtime authority and repository-visible manifests;
-- initial FastAPI status, palette, provenance, fidelity, and promotion routes;
-- visual-server route registration;
-- targeted tests and dedicated GitHub Actions workflow.
+- initial FastAPI status, palette, provenance, fidelity, and promotion routes.
+
+### Phase 2 — canonical MP4 decode and timeline identity
+
+- ffprobe format and stream metadata capture;
+- deterministic single-threaded media-tool execution;
+- every video stream decoded to canonical RGBA raw frames;
+- every audio stream decoded to canonical signed 32-bit PCM;
+- SHA-256 identity for every decoded video and audio frame;
+- exact DTS, PTS, duration, byte size, and time-base records;
+- per-stream Hash216 timeline identities;
+- complete audiovisual Hash216 timeline identity;
+- Hash216 decode-manifest identity and Hash72 receipt;
+- before/after source size, modification-time, and SHA-256 verification;
+- deterministic timeline replay verification;
+- guarded operator-only local-path decode and replay API routes;
+- malformed-container fail-closed behavior.
 
 ## Files added or modified
 
 - `hhs_backend/runtime/hhs_graphics_hydration_v1.py`
+- `hhs_backend/runtime/hhs_graphics_mp4_decode_v1.py`
 - `hhs_backend/api/graphics_hydration_routes.py`
 - `hhs_backend/visual_server.py`
 - `tests/test_pass181_graphics_hydration_runtime.py`
@@ -36,22 +55,32 @@
 
 ## Validation state
 
-- Branch validation run `30643593291`, workflow `Pass 181 Graphics Hydration Runtime`, completed successfully.
-- The successful run compiled all Pass 181 Python surfaces, passed all targeted authority tests, and verified route and authority declarations.
-- The initial run exposed and then repaired dataclass canonicalization recursion and non-portable Hash216 filename use. Canonical Hash216 values remain unchanged; filesystem locators use SHA-256 projections of those identities.
-- Main-branch workflow validation is required after this state record lands; no unobserved main validation result is claimed here.
+- Phase 1 branch validation run `30643593291`: success.
+- Phase 2 pull-request validation run `30645052111`: success.
+- Phase 2 validation generated a real MP4 fixture and verified:
+  - ffmpeg and ffprobe availability;
+  - Python compilation;
+  - exact RGBA frame timeline hashing;
+  - exact PCM audio timeline hashing;
+  - stable Hash216 timeline replay;
+  - reference read-only preservation;
+  - malformed MP4 rejection;
+  - existing provenance, palette, fidelity, residual, and constraint tests;
+  - public route and authority declarations.
+- PR `#104` was merged by squash into `main` as `7ffc02667f6480e6877263459a55f47e91a84189`.
+- No scene decomposition, native inverse reconstruction, optimization-training, vector-store hydration, or graphics-constraint freeze completion is claimed yet.
 
 ## Remaining Pass 181 phases
 
-1. Canonical ffprobe/FFmpeg MP4 decode manifest with exact frame, audio, and PTS identity.
-2. Native scene, sprite, texture, caption, palette, camera, lighting, and audio recipe schemas.
-3. Difference-map and temporal residual calculation.
-4. Bounded single-authority optimization loop.
-5. Hydration vector-store admission and invariant candidate extraction.
-6. Native graphics constraint registry and deterministic cold-start replay.
-7. Three.js preview enhancement without final-frame authority.
-8. Full 90-second inverse-render reconstruction acceptance and one-click package export.
+1. Native scene, sprite, texture, caption, palette, camera, lighting, transition, and audio recipe schemas.
+2. Reference-versus-native difference maps and exact temporal residual calculation.
+3. Bounded single-authority proposal, render, compare, score, admit/reject optimization loop.
+4. Hydration vector-store admission and invariant candidate extraction.
+5. Native graphics constraint registry, promotion evidence, freeze, rollback, and supersession.
+6. Deterministic cold-start reconstruction replay.
+7. Three.js editor-preview enhancement without final-frame authority.
+8. Full 90-second inverse-render reconstruction acceptance and one-click evidence package export.
 
 ## Exact next action
 
-Validate the current `main` head with the dedicated Pass 181 workflow, repair any main-only integration defect, then implement canonical MP4 decode and timeline identity without weakening the read-only or no-passthrough rules.
+Implement typed native reconstruction recipe schemas bound to the canonical timeline manifest, then add frame, audio, timing, palette, caption, camera, and provenance residual records without admitting reference-frame passthrough.
