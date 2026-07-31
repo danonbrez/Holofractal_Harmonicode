@@ -123,6 +123,10 @@ jobs:
           trap cleanup EXIT
           ready=0
           for attempt in $(seq 1 60); do
+            if ! kill -0 "$SERVER_PID" 2>/dev/null; then
+              cat /tmp/hhs-pass176-production-server.log
+              exit 1
+            fi
             if curl --connect-timeout 1 --max-time 5 -fsS \
               http://127.0.0.1:8765/api/product/health \
               > /tmp/hhs-pass176-health.json; then
@@ -139,7 +143,20 @@ jobs:
             http://127.0.0.1:8765/ \
             > /tmp/hhs-pass176-root.html
           grep -q 'HHS Full Multimodal Application IDE' /tmp/hhs-pass176-root.html
-          timeout 300s python applications/holofractal_harmonizer/ux_lab/pass176_stability_smoke.py
+          timeout 180s python applications/holofractal_harmonizer/ux_lab/pass176_stability_smoke.py
+
+      - name: Upload Pass 176 failure diagnostics
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass176-frozen-ide-failure-diagnostics
+          path: |
+            applications/holofractal_harmonizer/evidence/pass176/**
+            /tmp/hhs-pass176-production-server.log
+            /tmp/hhs-pass176-health.json
+            /tmp/hhs-pass176-root.html
+          if-no-files-found: warn
+          retention-days: 7
 
       - name: Generate terminal candidate receipt
         run: |
