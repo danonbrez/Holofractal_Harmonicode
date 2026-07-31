@@ -11,6 +11,8 @@ static char** hhs_storybook_cli_argv = NULL;
 #undef hhs_storybook_style_default_v2
 #undef main
 
+HHSStorybookReelStatus hhs_storybook_style_default_v2(HHSStorybookReelStyleV2* style);
+
 static unsigned long hhs_storybook_cli_unsigned(const char* name, unsigned long fallback) {
     int index;
     for (index = 1; index + 1 < hhs_storybook_cli_argc; ++index) {
