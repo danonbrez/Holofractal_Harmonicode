@@ -1,0 +1,170 @@
+name: Verify Pass 176 Frozen IDE Stabilization
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'HHS_PASS_176_FROZEN_PRODUCTION_MULTIMODAL_IDE_STABILIZATION_PERFORMANCE_RECOVERY.md'
+      - 'applications/holofractal_harmonizer/src/pass176-*'
+      - 'applications/holofractal_harmonizer/src/visual-ide.mjs'
+      - 'applications/holofractal_harmonizer/src/visual-ide-state.mjs'
+      - 'applications/holofractal_harmonizer/tests/pass176-*'
+      - 'applications/holofractal_harmonizer/ux_lab/pass176_*'
+      - 'hhs_verification/pass176/**'
+      - 'tests/test_pass176_*'
+      - '.github/workflows/pass176-frozen-ide-stabilization.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'HHS_PASS_176_FROZEN_PRODUCTION_MULTIMODAL_IDE_STABILIZATION_PERFORMANCE_RECOVERY.md'
+      - 'applications/holofractal_harmonizer/src/pass176-*'
+      - 'applications/holofractal_harmonizer/src/visual-ide.mjs'
+      - 'applications/holofractal_harmonizer/src/visual-ide-state.mjs'
+      - 'applications/holofractal_harmonizer/tests/pass176-*'
+      - 'applications/holofractal_harmonizer/ux_lab/pass176_*'
+      - 'hhs_verification/pass176/**'
+      - 'tests/test_pass176_*'
+      - '.github/workflows/pass176-frozen-ide-stabilization.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pass176-frozen-ide-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify-pass176:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    env:
+      HHS_DISABLE_C_AUTOBUILD: '1'
+      HHS_NATIVE_LANGUAGE_REQUIRE_WORD2VEC: '0'
+      HHS_ASSISTANT_HEALTH_TIMEOUT_SECONDS: '0.5'
+      HHS_PASS176_SMOKE_URL: 'http://127.0.0.1:8765'
+
+    steps:
+      - name: Check out exact source revision
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Install dependency-scoped runtime and browser packages
+        run: |
+          timeout 300s python -m pip install --upgrade pip
+          timeout 300s python -m pip install \
+            fastapi==0.128.2 \
+            starlette==0.50.0 \
+            'httpx>=0.27,<1.0' \
+            'uvicorn[standard]>=0.30,<1.0' \
+            'cryptography>=46.0,<47.0' \
+            playwright \
+            pytest
+
+      - name: Build inherited native runtime authority
+        run: |
+          timeout 600s bash bin/post_compile
+          test -s hhs_runtime/builds/libhhs_runtime.so
+
+      - name: Compile Pass 176 source surfaces
+        run: |
+          node --check applications/holofractal_harmonizer/src/pass176-stability-core.mjs
+          node --check applications/holofractal_harmonizer/src/pass176-stability.mjs
+          node --check applications/holofractal_harmonizer/src/visual-ide.mjs
+          node --check applications/holofractal_harmonizer/src/visual-ide-state.mjs
+          python -m py_compile \
+            applications/holofractal_harmonizer/ux_lab/pass176_stability_smoke.py \
+            hhs_verification/pass176/verify.py \
+            tests/test_pass176_frozen_ide_stabilization.py
+
+      - name: Execute deterministic core and repetition tests
+        working-directory: applications/holofractal_harmonizer
+        run: |
+          timeout 300s node --test tests/pass176-stability.test.mjs
+          timeout 600s npm test
+
+      - name: Execute dependency-scoped Python validation
+        run: |
+          timeout 600s pytest -q \
+            tests/test_pass176_frozen_ide_stabilization.py \
+            tests/test_pass175_terminal_completion.py \
+            tests/test_hhs_production_public_app_v1.py
+
+      - name: Install bounded Chromium runtime
+        run: timeout 600s python -m playwright install --with-deps chromium
+
+      - name: Browser and mobile stabilization acceptance
+        run: |
+          set -euo pipefail
+          python -m uvicorn hhs_backend.production_server:app \
+            --host 127.0.0.1 --port 8765 --workers 1 --log-level info \
+            > /tmp/hhs-pass176-production-server.log 2>&1 &
+          SERVER_PID=$!
+          cleanup() {
+            kill "$SERVER_PID" 2>/dev/null || true
+            wait "$SERVER_PID" 2>/dev/null || true
+          }
+          trap cleanup EXIT
+          ready=0
+          for attempt in $(seq 1 120); do
+            if curl -fsS http://127.0.0.1:8765/api/system/status > /tmp/hhs-pass176-status.json; then
+              ready=1
+              break
+            fi
+            sleep 1
+          done
+          if [ "$ready" -ne 1 ]; then
+            cat /tmp/hhs-pass176-production-server.log
+            exit 1
+          fi
+          timeout 300s python applications/holofractal_harmonizer/ux_lab/pass176_stability_smoke.py
+
+      - name: Generate terminal candidate receipt
+        run: |
+          timeout 120s python hhs_verification/pass176/verify.py \
+            --repository-root . \
+            --output evidence/pass176/generated/PASS_176_TERMINAL_COMPLETION_RECEIPT.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          path = Path('evidence/pass176/generated/PASS_176_TERMINAL_COMPLETION_RECEIPT.json')
+          payload = json.loads(path.read_text())
+          assert payload['terminal_pass176_completion'] is True
+          assert all(payload['checks'].values())
+          assert payload['authority']['frontend_is_canonical_authority'] is False
+          assert payload['authority']['hash72_commit_streams'] == 1
+          assert payload['external_deployment']['vercel_status_considered'] is False
+          print(payload['receipt_sha256'])
+          PY
+
+      - name: Verify frozen baseline and temporary-artifact discipline
+        run: |
+          grep -q 'HHS Full Multimodal Application IDE' applications/holofractal_harmonizer/index.html
+          grep -q 'initIntegratedAssistant' applications/holofractal_harmonizer/src/visual-ide.mjs
+          grep -q 'initPass175TerminalProcessor' applications/holofractal_harmonizer/src/visual-ide.mjs
+          grep -q 'INTERACTIVE' applications/holofractal_harmonizer/src/pass176-stability-core.mjs
+          grep -q 'canonicalFrontendAuthority: false' applications/holofractal_harmonizer/src/pass176-stability.mjs
+          grep -q 'VISUAL_ROOT = ROOT_DIR / "applications" / "holofractal_harmonizer"' hhs_backend/production_server.py
+          test ! -e tools/patch_pass176.py
+          test ! -e applications/holofractal_harmonizer/pass176-source-bundle.tar
+
+      - name: Upload Pass 176 browser and receipt evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass176-frozen-ide-stabilization-evidence
+          path: |
+            applications/holofractal_harmonizer/evidence/pass176/**
+            evidence/pass176/generated/PASS_176_TERMINAL_COMPLETION_RECEIPT.json
+          if-no-files-found: error
+          retention-days: 30
