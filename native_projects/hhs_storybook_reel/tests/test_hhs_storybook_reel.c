@@ -3,6 +3,7 @@
 
 #include <assert.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 static long file_size(const char* path) {
@@ -59,6 +60,67 @@ static void test_twelve_tone_reciprocal_palette(void) {
     assert(strlen(first.palette_hash72.value) == HHS_HASH72_LEN);
     assert(strlen(first.palette_hash216.value) == HHS_HASH216_LEN);
     assert(memcmp(&first.palette_hash216, &next.palette_hash216, sizeof(first.palette_hash216)) != 0);
+}
+
+static void test_full_serial_frame_sequence(void) {
+    const char* story = "Beyond the copper hills, a small lantern learned that every color has a reciprocal answer. Red called to teal across the night. Gold found violet in the quiet river. The lantern followed four phase planes through the old forest, carrying each sentence at the measured pace of the voice. At the final gate, the colors turned together like twelve notes around one wheel, and the path home became visible.";
+    const char* title = "THE RECIPROCAL LANTERN";
+    HHSStorybookReelConfig config;
+    HHSStorybookScene scenes[HHS_STORYBOOK_REEL_SCENES];
+    HHSVM81GameRelease release;
+    HHSHash72 frame_hash72;
+    HHSHash216 frame_hash216;
+    uint8_t* rgba;
+    uint32_t frame;
+    HHSStorybookReelStatus status;
+    assert(hhs_storybook_reel_default_config(&config) == HHS_STORYBOOK_REEL_OK);
+    assert(hhs_storybook_reel_plan_scenes(story, strlen(story), &config, scenes, HHS_STORYBOOK_REEL_SCENES) == HHS_STORYBOOK_REEL_OK);
+    rgba = (uint8_t*)malloc(HHS_STORYBOOK_REEL_RGBA_BYTES);
+    assert(rgba != NULL);
+    memset(&release, 0, sizeof(release));
+    for (frame = 0U; frame < config.frame_count; ++frame) {
+        status = hhs_storybook_reel_render_frame(
+            story,
+            strlen(story),
+            title,
+            strlen(title),
+            &config,
+            scenes,
+            config.scene_count,
+            frame,
+            &release,
+            rgba,
+            HHS_STORYBOOK_REEL_RGBA_BYTES,
+            &frame_hash72,
+            &frame_hash216
+        );
+        if (status != HHS_STORYBOOK_REEL_OK) {
+            fprintf(
+                stderr,
+                "STORYBOOK_FRAME_FAILURE frame=%u status=%s phase=%u event=%u scene=%u local=%u player_frames=%u vm_frame=%llu vm_step=%llu pc=%u receipts=%u lives=%u deaths=%u checkpoint=%u x_px=%d y_px=%d\n",
+                frame,
+                hhs_storybook_reel_status_name(status),
+                release.phase,
+                release.event,
+                frame / (config.frame_count / config.scene_count),
+                frame % (config.frame_count / config.scene_count),
+                release.player_frames,
+                (unsigned long long)release.vm.frame,
+                (unsigned long long)release.vm.step,
+                release.vm.pc,
+                release.vm.receipt_count,
+                release.lives,
+                release.deaths,
+                release.checkpoint,
+                release.vm.player.x_subpx / HHS_VM81_GAME_SUBPIXELS,
+                release.vm.player.y_subpx / HHS_VM81_GAME_SUBPIXELS
+            );
+        }
+        assert(status == HHS_STORYBOOK_REEL_OK);
+    }
+    assert(strlen(frame_hash72.value) == HHS_HASH72_LEN);
+    assert(strlen(frame_hash216.value) == HHS_HASH216_LEN);
+    free(rgba);
 }
 
 static void test_native_game_render_style_and_replay(void) {
@@ -135,6 +197,7 @@ static void test_rejections(void) {
 int main(void) {
     test_default_geometry_and_scene_plan();
     test_twelve_tone_reciprocal_palette();
+    test_full_serial_frame_sequence();
     test_native_game_render_style_and_replay();
     test_rejections();
     puts("HHS_STORYBOOK_REEL_NATIVE_ABI_TESTS_VERIFIED");
