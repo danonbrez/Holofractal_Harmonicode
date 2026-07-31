@@ -63,7 +63,7 @@ test('bounded jobs deduplicate duplicate invocations and support cancellation', 
   });
   const duplicate = jobs.run('compile', async () => 'duplicate');
   assert.equal(first, duplicate);
-  await Promise.resolve();
+  await new Promise((resolve) => setImmediate(resolve));
   assert.equal(executions, 1);
   assert.equal(jobs.cancel('compile'), true);
   release();
@@ -83,7 +83,7 @@ test('bounded jobs deduplicate command aliases by canonical key', async () => {
   }, { key: 'lifecycle' });
   const shortcut = jobs.run('shortcut-lifecycle', async () => 'duplicate', { key: 'lifecycle' });
   assert.equal(workflow, shortcut);
-  await Promise.resolve();
+  await new Promise((resolve) => setImmediate(resolve));
   assert.equal(executions, 1);
   release();
   assert.equal(await workflow, 'complete');
