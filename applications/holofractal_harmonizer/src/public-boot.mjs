@@ -1,4 +1,4 @@
-const BOOT_SCHEMA = 'HHS_PUBLIC_MODULE_BOOT_V1';
+const BOOT_SCHEMA = 'HHS_PUBLIC_MODULE_BOOT_V2';
 let publicBoot = null;
 
 export function startPublicBoot() {
@@ -50,22 +50,21 @@ export function startPublicBoot() {
     });
   };
 
-  // Independent product surfaces launch concurrently before the legacy
-  // parser-deferred module queue can serialize them. The application experience
-  // owns New Application, six real modalities, preview, lifecycle, and ZIP export.
-  // The workflow enhancement retains its sole ordering edge after browser module
-  // evaluation because it decorates the canonical browser runtime.
+  // The composed document disables all duplicate parser-owned entry modules.
+  // Browser and registry authorities start concurrently. Application controls
+  // initialize before visual-IDE hydration because both import the same control
+  // modules and the application surface owns the user-critical New Application path.
   const browser = launch('browser', './browser.mjs');
   const productionIntegration = launch('production-integration', './production-integration.mjs');
-  const visualIDE = launch('visual-ide', './visual-ide.mjs');
   const applicationExperience = launch('application-experience', './application-experience.mjs');
+  const visualIDE = applicationExperience.then(() => launch('visual-ide', './visual-ide.mjs'));
   const workflowDefault = browser.then(() => launch('ux-default', './ux-default.mjs'));
 
   const allSettled = Promise.allSettled([
     browser,
     productionIntegration,
-    visualIDE,
     applicationExperience,
+    visualIDE,
     workflowDefault,
   ]).then((results) => {
     window.dispatchEvent(new CustomEvent('hhs:public-boot:settled', {
@@ -82,10 +81,11 @@ export function startPublicBoot() {
   publicBoot = Object.freeze({
     schema: BOOT_SCHEMA,
     coordinator_ready: Boolean(window.HHSProductionStartupCoordinator),
+    legacy_parser_module_entries_disabled: true,
     browser,
     productionIntegration,
-    visualIDE,
     applicationExperience,
+    visualIDE,
     workflowDefault,
     allSettled,
     status: snapshot,
