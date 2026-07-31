@@ -1,0 +1,49 @@
+{
+  "schema": "HHS_PASS_176_ACTIVATION_RECORD_V1",
+  "classification": "HHS_PASS_176_ACTIVATED_BY_PASS_175_TERMINAL_CLOSURE",
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "authoritative_base_commit": "acdbab25a43438b587f4078c2ccae5de0647d16f",
+  "active_branch": "agent/pass176-frozen-ide-stabilization",
+  "merge_target": "main",
+  "activation_parent": {
+    "pass": 175,
+    "completion_receipt_path": "evidence/pass175/PASS_175_TERMINAL_COMPLETION_RECEIPT.json",
+    "completion_receipt_commit": "e2dfd3f38a6128b0433bbce62270623a020da1dc",
+    "terminal_completion": true
+  },
+  "frozen_visual_baseline": {
+    "principal_route": "/",
+    "diagnostic_route": "/runtime-console/",
+    "identity_preserved": true,
+    "frontend_canonical_authority": false
+  },
+  "implementation_units": [
+    "applications/holofractal_harmonizer/src/pass176-stability-core.mjs",
+    "applications/holofractal_harmonizer/src/pass176-stability.mjs",
+    "applications/holofractal_harmonizer/src/pass176-stability.css",
+    "applications/holofractal_harmonizer/src/visual-ide.mjs",
+    "applications/holofractal_harmonizer/src/visual-ide-state.mjs",
+    "applications/holofractal_harmonizer/tests/pass176-stability.test.mjs",
+    "applications/holofractal_harmonizer/ux_lab/pass176_stability_smoke.py",
+    "hhs_verification/pass176/verify.py",
+    "tests/test_pass176_frozen_ide_stabilization.py",
+    ".github/workflows/pass176-frozen-ide-stabilization.yml"
+  ],
+  "validation_completed": [
+    "local Node syntax checks for Pass 176 modules",
+    "local deterministic core test suite: 6 passed",
+    "Python compilation for browser, verification, and repository tests"
+  ],
+  "validation_remaining": [
+    "GitHub dependency-scoped test workflow",
+    "production-root Chromium acceptance",
+    "100-cycle browser repetition checks",
+    "terminal candidate receipt generation",
+    "authoritative-main merge and post-merge verification"
+  ],
+  "external_deployment": {
+    "vercel_status_considered": false,
+    "external_vercel_failure_is_not_acceptance_gate": true
+  },
+  "next_action": "Open a ready implementation pull request, execute bounded Pass 176 validation, repair dependency-scoped failures, merge after green terminal evidence, and record authoritative-main closure."
+}
