@@ -112,9 +112,9 @@ jobs:
           HHS_ASSISTANT_HEALTH_TIMEOUT_SECONDS: '5'
         run: |
           set -euo pipefail
-          python -m uvicorn hhs_backend.production_server:app \
+          python -m uvicorn hhs_backend.application_ide_server:app \
             --host 127.0.0.1 --port 8765 --workers 1 --log-level info \
-            > /tmp/hhs-pass176-production-server.log 2>&1 &
+            > /tmp/hhs-pass176-application-ide-server.log 2>&1 &
           SERVER_PID=$!
           cleanup() {
             kill "$SERVER_PID" 2>/dev/null || true
@@ -124,7 +124,7 @@ jobs:
           ready=0
           for attempt in $(seq 1 60); do
             if ! kill -0 "$SERVER_PID" 2>/dev/null; then
-              cat /tmp/hhs-pass176-production-server.log
+              cat /tmp/hhs-pass176-application-ide-server.log
               exit 1
             fi
             if curl --connect-timeout 1 --max-time 5 -fsS \
@@ -136,13 +136,19 @@ jobs:
             sleep 1
           done
           if [ "$ready" -ne 1 ]; then
-            cat /tmp/hhs-pass176-production-server.log
+            cat /tmp/hhs-pass176-application-ide-server.log
             exit 1
           fi
           curl --connect-timeout 1 --max-time 10 -fsS \
             http://127.0.0.1:8765/ \
             > /tmp/hhs-pass176-root.html
           grep -q 'HHS Full Multimodal Application IDE' /tmp/hhs-pass176-root.html
+          curl --connect-timeout 1 --max-time 15 -fsS \
+            http://127.0.0.1:8765/api/runtime/repository/status \
+            > /tmp/hhs-pass176-repository-status.json
+          curl --connect-timeout 1 --max-time 15 -fsS \
+            http://127.0.0.1:8765/api/v1/pass175/status \
+            > /tmp/hhs-pass176-pass175-status.json
           timeout 180s python applications/holofractal_harmonizer/ux_lab/pass176_stability_smoke.py
 
       - name: Upload Pass 176 failure diagnostics
@@ -152,9 +158,11 @@ jobs:
           name: pass176-frozen-ide-failure-diagnostics
           path: |
             applications/holofractal_harmonizer/evidence/pass176/**
-            /tmp/hhs-pass176-production-server.log
+            /tmp/hhs-pass176-application-ide-server.log
             /tmp/hhs-pass176-health.json
             /tmp/hhs-pass176-root.html
+            /tmp/hhs-pass176-repository-status.json
+            /tmp/hhs-pass176-pass175-status.json
           if-no-files-found: warn
           retention-days: 7
 
@@ -183,8 +191,11 @@ jobs:
           grep -q 'initPass175TerminalProcessor' applications/holofractal_harmonizer/src/visual-ide.mjs
           grep -q 'INTERACTIVE' applications/holofractal_harmonizer/src/pass176-stability-core.mjs
           grep -q 'canonicalFrontendAuthority: false' applications/holofractal_harmonizer/src/pass176-stability.mjs
-          grep -q 'VISUAL_ROOT = ROOT_DIR / "applications" / "holofractal_harmonizer"' hhs_backend/production_server.py
+          grep -q 'pass175_terminal_router' hhs_backend/application_ide_server.py
+          grep -q 'repository' hhs_backend/pass174_server.py
           test ! -e tools/patch_pass176.py
+          test ! -e tools/patch_pass176_production_routes_and_smoke.py
+          test ! -e .github/workflows/pass176-production-route-repair.yml
           test ! -e applications/holofractal_harmonizer/pass176-source-bundle.tar
 
       - name: Upload Pass 176 browser and receipt evidence
