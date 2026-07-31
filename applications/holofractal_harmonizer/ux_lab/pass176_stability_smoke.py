@@ -108,33 +108,48 @@ def main() -> None:
             }""")
             phase(current_phase, **duplicate_boot)
 
-            current_phase = "mobile-repetition"
             page.set_viewport_size({"width": 390, "height": 844})
             page.wait_for_timeout(150)
-            cycles = page.evaluate("""async () => {
-                const assistant = document.querySelector('#assistant-home');
-                const back = document.querySelector('#return-assistant');
+            cycle_baseline = page.evaluate("""() => ({
+                editorValue: document.querySelector('#ide-source-editor')?.value,
+                activePath: window.HHSVisualIDE.state.activePath,
+            })""")
+
+            for index in range(100):
+                current_phase = f"assistant-cycle-{index + 1}"
+                opener = page.locator("#assistant-home")
+                opener.wait_for(state="attached", timeout=2_000)
+                opener.dispatch_event("click", timeout=2_000)
+                closer = page.locator("#ide-assistant-close")
+                closer.wait_for(state="attached", timeout=2_000)
+                closer.dispatch_event("click", timeout=2_000)
+                if (index + 1) % 10 == 0:
+                    phase("assistant-cycle-progress", completed=index + 1)
+
+            current_phase = "mobile-pane-cycle-setup"
+            dock = page.locator(".ide-mobile-dock [data-mobile-pane]")
+            dock_count = dock.count()
+            if dock_count <= 0:
+                raise AssertionError("Pass 176 mobile pane controls are absent")
+            for index in range(100):
+                current_phase = f"mobile-pane-cycle-{index + 1}"
+                dock.nth(index % dock_count).dispatch_event("click", timeout=2_000)
+                if (index + 1) % 10 == 0:
+                    phase("mobile-pane-cycle-progress", completed=index + 1, controls=dock_count)
+
+            current_phase = "mobile-repetition-result"
+            cycles = page.evaluate("""(baseline) => {
                 const editor = document.querySelector('#ide-source-editor');
-                const before = editor?.value;
-                for (let index = 0; index < 100; index += 1) {
-                    assistant?.click();
-                    await Promise.resolve();
-                    back?.click();
-                    await Promise.resolve();
-                }
-                const dock = [...document.querySelectorAll('.ide-mobile-dock [data-mobile-pane]')];
-                for (let index = 0; index < 100; index += 1) {
-                    dock[index % Math.max(1, dock.length)]?.click();
-                    await Promise.resolve();
-                }
                 return {
                     assistantCycles: 100,
                     paneCycles: 100,
-                    editorPreserved: editor?.value === before,
+                    editorPreserved: editor?.value === baseline.editorValue,
                     activePath: window.HHSVisualIDE.state.activePath,
+                    baselineActivePath: baseline.activePath,
                     resourceTotal: window.HHSPass176.status().resources.total,
+                    assistantOpen: Boolean(window.HHSIntegratedAssistant?.isOpen),
                 };
-            }""")
+            }""", cycle_baseline)
             phase(current_phase, **cycles)
 
             current_phase = "stale-response"
@@ -225,6 +240,8 @@ def main() -> None:
                 raise AssertionError(f"duplicate boot changed state: {duplicate_boot}")
             if not cycles["editorPreserved"] or cycles["activePath"] != initial["activePath"]:
                 raise AssertionError(f"UI cycles changed editor/project state: {cycles}")
+            if cycles["assistantOpen"]:
+                raise AssertionError(f"assistant remained open after cycle closure: {cycles}")
             if cycles["resourceTotal"] != initial["resourceTotal"]:
                 raise AssertionError(f"resource growth detected: {initial} -> {cycles}")
             if not stale_response["rejected"] or not stale_response["currentAccepted"]:
