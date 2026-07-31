@@ -1,0 +1,89 @@
+name: Apply Pass 176 GUI Readiness Repair
+
+on:
+  push:
+    branches:
+      - agent/pass176-frozen-ide-stabilization
+    paths:
+      - '.github/workflows/pass176-gui-readiness-repair.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: pass176-gui-readiness-repair
+  cancel-in-progress: false
+
+jobs:
+  repair:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/pass176-frozen-ide-stabilization
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Remove imported GUI module DOMContentLoaded self-deadlock
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          path = Path('applications/holofractal_harmonizer/src/gui-reliability.mjs')
+          text = path.read_text(encoding='utf-8')
+          old = """const ready = () => new Promise((resolve) => {
+            if (document.readyState === 'loading') {
+              document.addEventListener('DOMContentLoaded', resolve, { once: true });
+            } else {
+              resolve();
+            }
+          });
+
+          await ready();
+
+          """
+          count = text.count(old)
+          if count != 1:
+              raise SystemExit(f'expected one GUI readiness barrier, found {count}')
+          path.write_text(text.replace(old, '', 1), encoding='utf-8')
+          PY
+
+      - name: Validate public module graph has no column-zero top-level await
+        run: |
+          set -euo pipefail
+          node --check applications/holofractal_harmonizer/src/gui-reliability.mjs
+          node --check applications/holofractal_harmonizer/src/browser.mjs
+          node --check applications/holofractal_harmonizer/src/ux-default.mjs
+          node --check applications/holofractal_harmonizer/src/visual-ide.mjs
+          if grep -R -nE '^await[[:space:]]' applications/holofractal_harmonizer/src --include='*.mjs'; then
+            echo 'Column-zero top-level await remains in the public module graph.' >&2
+            exit 1
+          fi
+          cd applications/holofractal_harmonizer
+          timeout 600s npm test
+
+      - name: Commit repair and remove temporary workflow
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git rm .github/workflows/pass176-gui-readiness-repair.yml
+          git add applications/holofractal_harmonizer/src/gui-reliability.mjs
+          git diff --cached --check
+          git commit -m 'Remove Pass 176 GUI module DOM readiness deadlock'
+          for attempt in 1 2 3 4 5; do
+            if git push origin HEAD:agent/pass176-frozen-ide-stabilization; then
+              exit 0
+            fi
+            git pull --rebase origin agent/pass176-frozen-ide-stabilization
+            sleep $((attempt * 2))
+          done
+          exit 1
