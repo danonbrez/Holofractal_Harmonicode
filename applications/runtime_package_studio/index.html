@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>HHS Runtime Package Studio</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <main class="shell">
+    <header class="hero">
+      <div>
+        <p class="eyebrow">HHS PASS 184</p>
+        <h1>Runtime Package Studio</h1>
+        <p>Compile a verified HHS installation profile, inspect its dependency closure, verify the package manifest, and test the supervised service listener.</p>
+      </div>
+      <div id="authorityBadge" class="badge pending">Authority loading</div>
+    </header>
+
+    <section class="grid">
+      <form id="packageForm" class="panel controls">
+        <h2>Package plan</h2>
+        <label>Profile
+          <select id="profile" name="profile">
+            <option>full</option><option>multimodal</option><option>applications</option>
+            <option>games</option><option>video</option><option>graphics</option>
+            <option>audio</option><option>documents</option><option>text</option><option>minimal</option>
+          </select>
+        </label>
+        <label>Installation name
+          <input id="installName" name="install_name" value="hhs-runtime" autocomplete="off">
+        </label>
+        <div class="pair">
+          <label>Host<input id="host" name="host" value="0.0.0.0" autocomplete="off"></label>
+          <label>Port<input id="port" name="port" type="number" min="1" max="65535" value="8080"></label>
+        </div>
+        <div class="actions">
+          <button type="button" data-action="plan">Resolve plan</button>
+          <button type="button" data-action="build" class="primary">Build package</button>
+          <button type="button" data-action="verify">Verify package</button>
+          <button type="button" data-action="probe">Probe service</button>
+        </div>
+        <p class="hint">Package writes remain inside the configured Pass 184 package root. API probes are loopback-restricted.</p>
+      </form>
+
+      <section class="panel status-panel" aria-live="polite">
+        <div class="status-head">
+          <h2>Authority result</h2>
+          <span id="statePill" class="state neutral">IDLE</span>
+        </div>
+        <p id="summary">Choose an action to resolve a deterministic package plan.</p>
+        <dl id="facts" class="facts"></dl>
+        <div>
+          <h3>Resolved components</h3>
+          <ol id="components" class="components"><li>No plan loaded</li></ol>
+        </div>
+      </section>
+    </section>
+
+    <section class="panel evidence">
+      <div>
+        <h2>Service acceptance law</h2>
+        <p>A running PID is not accepted as a ready service. Pass 184 requires a verified package, a bound port, and a responsive <code>/health</code> endpoint.</p>
+      </div>
+      <pre id="rawResult">HHS_PASS_184_RUNTIME_PACKAGE_STUDIO_READY</pre>
+    </section>
+  </main>
+  <script src="./app.js" defer></script>
+</body>
+</html>
