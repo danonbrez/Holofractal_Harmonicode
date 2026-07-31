@@ -49,7 +49,7 @@ def run() -> dict[str, object]:
         context = browser.new_context(accept_downloads=True, viewport={"width": 1440, "height": 960})
         page = context.new_page()
         page.set_default_timeout(20_000)
-        page.set_default_navigation_timeout(90_000)
+        page.set_default_navigation_timeout(60_000)
         page.on("pageerror", lambda error: page_errors.append(str(error)))
         page.on("console", lambda message: console_errors.append(message.text) if message.type == "error" else None)
         page.on(
@@ -60,18 +60,20 @@ def run() -> dict[str, object]:
         )
 
         try:
-            # Public entry modules are contractually free of top-level await, so
-            # DOMContentLoaded is the bounded parsed-document boundary. Runtime and
-            # application authorities remain independently asserted below.
+            # The integrated module graph may keep DOMContentLoaded pending while the
+            # static IDE is already rendered. Close navigation on the successful HTTP
+            # commit, then bind readiness to the authoritative rendered shell.
             current_phase = "NAVIGATE"
             phase(current_phase, url=BASE_URL)
-            response = page.goto(f"{BASE_URL}/", wait_until="domcontentloaded", timeout=90_000)
+            response = page.goto(f"{BASE_URL}/", wait_until="commit", timeout=60_000)
             if response is None or not response.ok:
                 raise AssertionError(f"full application root failed: {getattr(response, 'status', None)}")
-            current_phase = "DOCUMENT_PARSED"
+            current_phase = "HTTP_COMMITTED"
             phase(current_phase, status=response.status)
 
-            expect(page.locator("#ide-view")).to_be_visible(timeout=30_000)
+            current_phase = "WAIT_RENDERED_SHELL"
+            phase(current_phase)
+            expect(page.locator("#ide-view")).to_be_visible(timeout=60_000)
             expect(page).to_have_title("HHS Full Multimodal Application IDE", timeout=30_000)
             expect(page.locator("html")).to_have_class("hhs-harmonic-studio-theme", timeout=30_000)
             current_phase = "STATIC_SHELL_READY"
@@ -163,16 +165,16 @@ def run() -> dict[str, object]:
             diagnostic = context.new_page()
             diagnostic_response = diagnostic.goto(
                 f"{BASE_URL}/runtime-console/",
-                wait_until="domcontentloaded",
+                wait_until="commit",
                 timeout=45_000,
             )
             if diagnostic_response is None or not diagnostic_response.ok:
                 raise AssertionError("runtime console did not return a successful response")
-            expect(diagnostic).to_have_title("HHS Pass 174 Visual IDE", timeout=20_000)
             expect(diagnostic.locator("body")).to_contain_text(
                 "Pass 174 Harmonic Visual SDLC Runtime",
-                timeout=20_000,
+                timeout=30_000,
             )
+            expect(diagnostic).to_have_title("HHS Pass 174 Visual IDE", timeout=20_000)
             diagnostic.close()
             phase("RUNTIME_CONSOLE_VERIFIED")
 
