@@ -1,0 +1,76 @@
+.pass176-stability-status {
+  position: relative;
+  z-index: 40;
+  margin: .35rem .55rem 0;
+  border: 1px solid rgba(217, 169, 93, .24);
+  border-radius: .55rem;
+  background: linear-gradient(135deg, rgba(39, 32, 27, .96), rgba(18, 21, 25, .96));
+  box-shadow: 0 .45rem 1.4rem rgba(0, 0, 0, .22);
+  color: var(--text, #f3e6cd);
+  overflow: hidden;
+}
+.pass176-stability-summary {
+  min-height: 2.25rem;
+  display: flex;
+  align-items: center;
+  gap: .55rem;
+  padding: .38rem .65rem;
+  font-size: .72rem;
+}
+.pass176-stability-summary strong { font-size: .76rem; white-space: nowrap; }
+.pass176-stability-summary > span[data-pass176-stage] {
+  min-width: 0;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: rgba(245, 218, 172, .8);
+  letter-spacing: .04em;
+}
+.pass176-stability-summary button {
+  min-height: 2rem;
+  padding: .25rem .55rem;
+  border-radius: .4rem;
+  border: 1px solid rgba(223, 178, 105, .3);
+  background: rgba(89, 65, 38, .38);
+  color: inherit;
+  cursor: pointer;
+}
+.pass176-stability-summary button:focus-visible {
+  outline: 2px solid #f1c57f;
+  outline-offset: 2px;
+}
+.pass176-stability-detail {
+  padding: 0 .65rem .5rem 1.78rem;
+  color: rgba(235, 224, 205, .72);
+  font-size: .65rem;
+  line-height: 1.35;
+}
+.pass176-stability-light {
+  width: .62rem;
+  height: .62rem;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: #d89d4c;
+  box-shadow: 0 0 .65rem rgba(216, 157, 76, .72);
+}
+.pass176-stability-status.interactive .pass176-stability-light,
+.pass176-stability-status[data-state="ready"] .pass176-stability-light { background: #8fc980; box-shadow: 0 0 .65rem rgba(143, 201, 128, .7); }
+.pass176-stability-status[data-state="degraded"] .pass176-stability-light { background: #e2bd5c; }
+.pass176-stability-status.has-error,
+.pass176-stability-status[data-state="error"] { border-color: rgba(239, 126, 103, .6); }
+.pass176-stability-status.has-error .pass176-stability-light,
+.pass176-stability-status[data-state="error"] .pass176-stability-light { background: #ef7e67; box-shadow: 0 0 .65rem rgba(239, 126, 103, .7); }
+[data-hhs-dragging="true"] { cursor: grabbing !important; user-select: none !important; touch-action: none; }
+html[data-hhs-pointer-owner="drag"] iframe,
+html[data-hhs-pointer-owner="drag"] canvas { pointer-events: none !important; }
+@media (max-width: 760px) {
+  .pass176-stability-status { margin: .25rem .35rem 0; }
+  .pass176-stability-summary { gap: .35rem; padding: .34rem .5rem; }
+  .pass176-stability-summary strong { display: none; }
+  .pass176-stability-summary button { min-width: 2.75rem; min-height: 2.75rem; }
+  .pass176-stability-detail { padding-left: .5rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pass176-stability-status *, [data-hhs-dragging="true"] { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}

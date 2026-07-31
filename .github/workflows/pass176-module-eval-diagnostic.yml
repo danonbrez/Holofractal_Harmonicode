@@ -1,0 +1,115 @@
+name: Diagnose Pass 176 Module Evaluation
+
+on:
+  push:
+    branches:
+      - agent/pass176-frozen-ide-stabilization
+    paths:
+      - '.github/workflows/pass176-module-eval-diagnostic.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/pass176-frozen-ide-stabilization
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install bounded browser runtime
+        run: |
+          timeout 300s python -m pip install playwright
+          timeout 600s python -m playwright install --with-deps chromium
+      - name: Instrument every module locally
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          root = Path('applications/holofractal_harmonizer/src')
+          for path in sorted(root.rglob('*.mjs')):
+              rel = path.as_posix()
+              source = path.read_text(encoding='utf-8')
+              path.write_text(
+                  f"console.info('HHS_MODULE_START:{rel}');\n" + source +
+                  f"\nconsole.info('HHS_MODULE_END:{rel}');\n",
+                  encoding='utf-8',
+              )
+          PY
+      - name: Capture module evaluation frontier
+        run: |
+          set -euo pipefail
+          python -m http.server 8765 --directory applications/holofractal_harmonizer > /tmp/pass176-static.log 2>&1 &
+          SERVER_PID=$!
+          cleanup() {
+            kill "$SERVER_PID" 2>/dev/null || true
+            wait "$SERVER_PID" 2>/dev/null || true
+          }
+          trap cleanup EXIT
+          for attempt in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:8765/ >/tmp/pass176-static-root.html; then break; fi
+            sleep 1
+          done
+          mkdir -p evidence/pass176/generated
+          timeout 90s python - <<'PY'
+          from pathlib import Path
+          import json
+          import time
+          from playwright.sync_api import sync_playwright, TimeoutError as PlaywrightTimeoutError
+
+          messages = []
+          page_errors = []
+          result = {
+              'schema': 'HHS_PASS_176_MODULE_EVALUATION_DIAGNOSTIC_V1',
+              'dom_content_loaded': False,
+              'messages': messages,
+              'page_errors': page_errors,
+          }
+          with sync_playwright() as p:
+              browser = p.chromium.launch(headless=True)
+              page = browser.new_page()
+              page.on('console', lambda message: messages.append({'type': message.type, 'text': message.text, 'at': time.time()}))
+              page.on('pageerror', lambda error: page_errors.append(str(error)))
+              try:
+                  response = page.goto('http://127.0.0.1:8765/', wait_until='commit', timeout=30000)
+                  result['http_status'] = response.status if response else None
+                  try:
+                      page.wait_for_load_state('domcontentloaded', timeout=30000)
+                      result['dom_content_loaded'] = True
+                  except PlaywrightTimeoutError as error:
+                      result['dom_timeout'] = str(error)
+              except Exception as error:
+                  result['navigation_error'] = str(error)
+              finally:
+                  starts = [m['text'].removeprefix('HHS_MODULE_START:') for m in messages if m['text'].startswith('HHS_MODULE_START:')]
+                  ends = [m['text'].removeprefix('HHS_MODULE_END:') for m in messages if m['text'].startswith('HHS_MODULE_END:')]
+                  result['started_modules'] = starts
+                  result['ended_modules'] = ends
+                  result['started_without_end'] = [name for name in starts if name not in set(ends)]
+                  result['last_module_message'] = next((m['text'] for m in reversed(messages) if m['text'].startswith('HHS_MODULE_')), None)
+                  Path('evidence/pass176/generated/module-evaluation-diagnostic.json').write_text(json.dumps(result, indent=2, sort_keys=True) + '\n', encoding='utf-8')
+                  browser.close()
+          print(json.dumps(result, indent=2, sort_keys=True))
+          PY
+      - name: Restore source, publish diagnostic, and remove workflow
+        if: always()
+        run: |
+          set -euo pipefail
+          git restore applications/holofractal_harmonizer/src
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git rm .github/workflows/pass176-module-eval-diagnostic.yml
+          git add evidence/pass176/generated/module-evaluation-diagnostic.json
+          git diff --cached --check
+          git commit -m 'Record Pass 176 module evaluation frontier'
+          for attempt in 1 2 3 4 5; do
+            if git push origin HEAD:agent/pass176-frozen-ide-stabilization; then exit 0; fi
+            git pull --rebase origin agent/pass176-frozen-ide-stabilization
+            sleep $((attempt * 2))
+          done
+          exit 1

@@ -108,49 +108,52 @@ const objects = [
   },
 ];
 
-for (const object of objects) {
-  await runtime.registry.register(object, 'system:pass161-browser');
+async function initializeBrowserRegistry() {
+  for (const object of objects) {
+    await runtime.registry.register(object, 'system:pass161-browser');
+  }
+  await runtime.registry.relate('hhs:application:harmonizer', 'hhs:agent:visual-development-assistant', 'HOSTS', 'system:pass161-browser');
+  await runtime.registry.relate('hhs:application:harmonizer', 'hhs:runtime:vm81', 'PROJECTS', 'system:pass161-browser');
+  await runtime.registry.relate('hhs:application:harmonizer', 'hhs:service:hash72', 'PROJECTS', 'system:pass161-browser');
+  await runtime.registry.relate('hhs:agent:visual-development-assistant', 'hhs:model:litert-lm:gemma4', 'USES_PROVIDER', 'system:pass161-browser');
+  await runtime.registry.relate('hhs:agent:visual-development-assistant', 'hhs:api:assistant', 'USES_API', 'system:pass161-browser');
+
+  runtime.authority.grant('human:owner', [
+    'registry.read',
+    'api.invoke',
+    'application.launch',
+    'analysis.exact',
+  ]);
+
+  runtime.apis.register(
+    'hhs:api:object-search',
+    {
+      endpoint: '/registry/search',
+      operation: 'OBJECT_SEARCH',
+      authority_requirements: ['api.invoke'],
+    },
+    async ({ query = '' } = {}) => {
+      const matches = runtime.registry.search(query);
+      return {
+        schema: 'HHS_REGISTERED_OBJECT_SEARCH_RESPONSE_V1',
+        count: matches.length,
+        objects: matches,
+        mutation_authority: false,
+        authoritative_completion_evidence: true,
+      };
+    },
+  );
+
+  await runtime.faces.register({
+    face_id: 'p161:face:browser-default',
+    object_type_binding: '*',
+    projection_class: 'CARD',
+    field_layout: [],
+    responsive_rules: { mobile: 'STACK', desktop: 'PANEL' },
+    accessibility_profile: { keyboard: true, screen_reader: true },
+  });
+
 }
-await runtime.registry.relate('hhs:application:harmonizer', 'hhs:agent:visual-development-assistant', 'HOSTS', 'system:pass161-browser');
-await runtime.registry.relate('hhs:application:harmonizer', 'hhs:runtime:vm81', 'PROJECTS', 'system:pass161-browser');
-await runtime.registry.relate('hhs:application:harmonizer', 'hhs:service:hash72', 'PROJECTS', 'system:pass161-browser');
-await runtime.registry.relate('hhs:agent:visual-development-assistant', 'hhs:model:litert-lm:gemma4', 'USES_PROVIDER', 'system:pass161-browser');
-await runtime.registry.relate('hhs:agent:visual-development-assistant', 'hhs:api:assistant', 'USES_API', 'system:pass161-browser');
-
-runtime.authority.grant('human:owner', [
-  'registry.read',
-  'api.invoke',
-  'application.launch',
-  'analysis.exact',
-]);
-
-runtime.apis.register(
-  'hhs:api:object-search',
-  {
-    endpoint: '/registry/search',
-    operation: 'OBJECT_SEARCH',
-    authority_requirements: ['api.invoke'],
-  },
-  async ({ query = '' } = {}) => {
-    const matches = runtime.registry.search(query);
-    return {
-      schema: 'HHS_REGISTERED_OBJECT_SEARCH_RESPONSE_V1',
-      count: matches.length,
-      objects: matches,
-      mutation_authority: false,
-      authoritative_completion_evidence: true,
-    };
-  },
-);
-
-await runtime.faces.register({
-  face_id: 'p161:face:browser-default',
-  object_type_binding: '*',
-  projection_class: 'CARD',
-  field_layout: [],
-  responsive_rules: { mobile: 'STACK', desktop: 'PANEL' },
-  accessibility_profile: { keyboard: true, screen_reader: true },
-});
 
 function objectGlyph(object) {
   const glyphs = {
@@ -488,32 +491,45 @@ $('#new-thread').addEventListener('click', async () => {
   $('#prompt-input').focus();
 });
 
-renderObjects();
-showView('assistant');
+async function finishBrowserBootstrap() {
+  await initializeBrowserRegistry();
+  renderObjects();
+  showView('assistant');
 
-// The terminal-verified object environment is available before optional
-// provider health and conversation restoration finish. It is a projection;
-// canonical execution remains in the backend runtime.
-window.HHSHarmonizer = runtime;
-window.HHSAssistant = Object.freeze({
-  get threadId() { return assistantState.threadId; },
-  get status() { return assistantState.status; },
-  refreshStatus: refreshAssistantStatus,
-  newThread: createThread,
-  send: sendAssistantMessage,
-});
-
-try {
-  await selectObject('hhs:agent:visual-development-assistant');
-} catch (error) {
-  runtime.diagnostics.emit({
-    diagnostic_id: 'diag:initial-inspector-selection',
-    class: 'APPLICATION',
-    severity: 'WARNING',
-    object_id: 'hhs:agent:visual-development-assistant',
-    message: error.message,
-    projection_state: 'VALIDATED_PROJECTION',
+  // The terminal-verified object environment is available before optional
+  // provider health and conversation restoration finish. It is a projection;
+  // canonical execution remains in the backend runtime.
+  window.HHSHarmonizer = runtime;
+  window.HHSAssistant = Object.freeze({
+    get threadId() { return assistantState.threadId; },
+    get status() { return assistantState.status; },
+    refreshStatus: refreshAssistantStatus,
+    newThread: createThread,
+    send: sendAssistantMessage,
   });
+
+  try {
+    await selectObject('hhs:agent:visual-development-assistant');
+  } catch (error) {
+    runtime.diagnostics.emit({
+      diagnostic_id: 'diag:initial-inspector-selection',
+      class: 'APPLICATION',
+      severity: 'WARNING',
+      object_id: 'hhs:agent:visual-development-assistant',
+      message: error.message,
+      projection_state: 'VALIDATED_PROJECTION',
+    });
+  }
+
+  void Promise.allSettled([refreshAssistantStatus(), restoreOrCreateThread()]);
+  return runtime;
 }
 
-void Promise.allSettled([refreshAssistantStatus(), restoreOrCreateThread()]);
+const browserReadyPromise = finishBrowserBootstrap();
+window.HHSBrowserReady = browserReadyPromise;
+void browserReadyPromise.catch((error) => {
+  console.error('HHS Pass 161 browser bootstrap failed', error);
+  window.dispatchEvent(new CustomEvent('hhs:browser:bootstrap-error', {
+    detail: { classification: 'HHS_P176_BROWSER_BOOTSTRAP_FAILED', message: error?.message || String(error) },
+  }));
+});

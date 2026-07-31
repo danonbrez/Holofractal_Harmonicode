@@ -2,10 +2,24 @@ export const $ = (selector) => document.querySelector(selector);
 export const $$ = (selector) => [...document.querySelectorAll(selector)];
 export const TEXT_MODALITIES = new Set(['TEXT', 'MARKDOWN', 'SOURCE_CODE', 'JSON', 'JSONL', 'CSV', 'HTML', 'XML', 'HHS_CONTRACT', 'HHS_RECEIPT', 'HHS_MANIFEST', 'HHS_VECTOR_PACKET']);
 const STORAGE_KEY = 'hhs.visualIde.v1';
+const STORAGE_PENDING_KEY = `${STORAGE_KEY}.pending`;
 const genesis = `a²=1\nb²=2\nc²=3\nP=72\np=64\nq=81\nΔ=P²-pq\n(P²-pq)-Δ=0`;
-const stored = (() => {
-  try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null'); }
+function storageRead(key) {
+  try { return localStorage.getItem(key); }
   catch { return null; }
+}
+const stored = (() => {
+  const candidates = [
+    { raw: storageRead(STORAGE_KEY), pending: false },
+    { raw: storageRead(STORAGE_PENDING_KEY), pending: true },
+  ].filter((candidate) => candidate.raw);
+  const parsed = [];
+  for (const candidate of candidates) {
+    try { parsed.push({ ...JSON.parse(candidate.raw), pending: candidate.pending }); }
+    catch { /* malformed recovery candidates do not block the editor */ }
+  }
+  parsed.sort((left, right) => Number(right.savedAt || 0) - Number(left.savedAt || 0) || Number(right.pending) - Number(left.pending));
+  return parsed[0] || null;
 })();
 export const state = {
   projectId: stored?.projectId || null,
@@ -25,7 +39,19 @@ export const state = {
 };
 export const activeFile = () => state.files.find((file) => file.path === state.activePath) || state.files[0];
 export function persist() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify({ projectId: state.projectId, activePath: state.activePath, files: state.files }));
+  const serialized = JSON.stringify({ savedAt: Date.now(), projectId: state.projectId, activePath: state.activePath, files: state.files });
+  try {
+    // localStorage.setItem replaces one key atomically; keeping a second full copy
+    // would require double quota for supported multimodal project payloads.
+    localStorage.setItem(STORAGE_KEY, serialized);
+    localStorage.removeItem(STORAGE_PENDING_KEY);
+    return true;
+  } catch (error) {
+    window.dispatchEvent(new CustomEvent('hhs:visual-ide:storage-error', {
+      detail: { classification: 'HHS_P176_LOCAL_STORAGE_WRITE_FAILED', message: error?.message || String(error) },
+    }));
+    return false;
+  }
 }
 export function setText(selector, value) {
   const node = $(selector);
@@ -104,35 +130,76 @@ export function sourcePayload() {
 function responsePreview(raw) {
   return String(raw || '').replace(/\s+/g, ' ').trim().slice(0, 240);
 }
+function abortMessage(path, signal) {
+  const reason = signal?.reason ? String(signal.reason) : 'request aborted';
+  return `HHS_P176_REQUEST_ABORTED: ${path} · ${reason}`;
+}
 export async function requestJson(path, options = {}) {
   const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), options.timeoutMs || 120000);
+  const upstream = options.signal || null;
+  const timeoutMs = Math.max(1, Number(options.timeoutMs || 120000));
+  const retryCount = Math.max(0, Math.min(3, Number(options.retryCount || 0)));
+  const method = String(options.method || 'GET').toUpperCase();
+  const fetchOptions = { ...options };
+  delete fetchOptions.timeoutMs;
+  delete fetchOptions.retryCount;
+  delete fetchOptions.signal;
+  const forwardAbort = () => controller.abort(upstream?.reason || 'HHS_P176_PARENT_JOB_ABORTED');
+  if (upstream?.aborted) forwardAbort();
+  else upstream?.addEventListener('abort', forwardAbort, { once: true });
+  const timer = setTimeout(() => controller.abort('HHS_P176_REQUEST_TIMEOUT'), timeoutMs);
   try {
-    const response = await fetch(path, {
-      ...options,
-      signal: controller.signal,
-      headers: { Accept: 'application/json', ...(options.body ? { 'Content-Type': 'application/json' } : {}), ...(options.headers || {}) },
-    });
-    const contentType = response.headers.get('content-type') || 'unknown';
-    const raw = await response.text();
-    let payload;
-    try { payload = raw ? JSON.parse(raw) : {}; }
-    catch {
-      const preview = responsePreview(raw);
-      throw new Error(
-        `HHS_API_ROUTE_UNREACHABLE: ${path} returned HTTP ${response.status} ${contentType} instead of JSON${preview ? ` · ${preview}` : ''}`,
-      );
+    let lastError = null;
+    for (let attempt = 0; attempt <= retryCount; attempt += 1) {
+      if (controller.signal.aborted) throw new DOMException(abortMessage(path, controller.signal), 'AbortError');
+      try {
+        const response = await fetch(path, {
+          ...fetchOptions,
+          signal: controller.signal,
+          headers: { Accept: 'application/json', ...(options.body ? { 'Content-Type': 'application/json' } : {}), ...(options.headers || {}) },
+        });
+        const contentType = response.headers.get('content-type') || 'unknown';
+        const raw = await response.text();
+        let payload;
+        try { payload = raw ? JSON.parse(raw) : {}; }
+        catch {
+          const preview = responsePreview(raw);
+          throw new Error(
+            `HHS_API_ROUTE_UNREACHABLE: ${path} returned HTTP ${response.status} ${contentType} instead of JSON${preview ? ` · ${preview}` : ''}`,
+          );
+        }
+        if (!response.ok) {
+          const message = payload.detail?.detail || payload.detail?.classification || payload.detail || payload.error || `HTTP ${response.status}`;
+          const error = new Error(message);
+          error.status = response.status;
+          throw error;
+        }
+        return payload;
+      } catch (error) {
+        lastError = error;
+        if (controller.signal.aborted) throw new DOMException(abortMessage(path, controller.signal), 'AbortError');
+        const retryable = method === 'GET' && attempt < retryCount && (!error?.status || Number(error.status) >= 500);
+        if (!retryable) throw error;
+        await new Promise((resolve, reject) => {
+          const delay = setTimeout(resolve, 150 * (attempt + 1));
+          controller.signal.addEventListener('abort', () => {
+            clearTimeout(delay);
+            reject(new DOMException(abortMessage(path, controller.signal), 'AbortError'));
+          }, { once: true });
+        });
+      }
     }
-    if (!response.ok) {
-      throw new Error(payload.detail?.detail || payload.detail?.classification || payload.detail || payload.error || `HTTP ${response.status}`);
-    }
-    return payload;
-  } finally { clearTimeout(timer); }
+    throw lastError || new Error(`HHS_P176_REQUEST_FAILED: ${path}`);
+  } finally {
+    clearTimeout(timer);
+    upstream?.removeEventListener?.('abort', forwardAbort);
+  }
 }
-export async function ensureProject() {
+export async function ensureProject(options = {}) {
   if (state.projectId) return state.projectId;
   const session = await requestJson('/api/runtime/workspace/session', {
     method: 'POST',
+    signal: options.signal,
     body: JSON.stringify({ name: 'HHS Visual IDE Project' }),
     timeoutMs: 30000,
   });

@@ -213,26 +213,38 @@ function observeAssistantCompletion() {
   observer.observe(conversation, { childList: true, subtree: true });
 }
 
-await ready();
-const validation = validateWorkflowTemplates();
-if (!validation.ok) throw new Error(`Workflow templates failed validation: ${validation.failures.join(', ')}`);
-document.body.classList.add('workflow-default');
-document.querySelector('#harmonizer')?.setAttribute('data-ux-default', 'WORKFLOW_FIRST_PROGRESSIVE_DISCLOSURE');
-const assistantView = document.querySelector('#assistant-view');
-const statusGrid = document.querySelector('.assistant-status-grid');
-if (assistantView && statusGrid) assistantView.insertBefore(buildLauncher(), statusGrid);
-const systemState = document.querySelector('.system-state');
-if (systemState && !document.querySelector('#workflow-advanced-toggle-top')) {
-  const topToggle = el('button', { className: 'workflow-advanced-toggle', text: 'Evidence', attrs: { id: 'workflow-advanced-toggle-top', type: 'button', 'aria-label': 'Toggle advanced evidence inspector' } });
-  topToggle.addEventListener('click', () => setAdvanced(!document.body.classList.contains('advanced-open')));
-  systemState.append(topToggle);
+async function initializeWorkflowUX() {
+  await ready();
+  const validation = validateWorkflowTemplates();
+  if (!validation.ok) throw new Error(`Workflow templates failed validation: ${validation.failures.join(', ')}`);
+  document.body.classList.add('workflow-default');
+  document.querySelector('#harmonizer')?.setAttribute('data-ux-default', 'WORKFLOW_FIRST_PROGRESSIVE_DISCLOSURE');
+  const assistantView = document.querySelector('#assistant-view');
+  const statusGrid = document.querySelector('.assistant-status-grid');
+  if (assistantView && statusGrid) assistantView.insertBefore(buildLauncher(), statusGrid);
+  const systemState = document.querySelector('.system-state');
+  if (systemState && !document.querySelector('#workflow-advanced-toggle-top')) {
+    const topToggle = el('button', { className: 'workflow-advanced-toggle', text: 'Evidence', attrs: { id: 'workflow-advanced-toggle-top', type: 'button', 'aria-label': 'Toggle advanced evidence inspector' } });
+    topToggle.addEventListener('click', () => setAdvanced(!document.body.classList.contains('advanced-open')));
+    systemState.append(topToggle);
+  }
+  const objectSearch = document.querySelector('#object-search');
+  if (objectSearch) objectSearch.placeholder = 'Search workflows, objects, services, commands…';
+  buildCommandPalette();
+  buildMobileTabs();
+  observeAssistantCompletion();
+  applyTemplate(state.template);
+  setAdvanced(localStorage.getItem(ADVANCED_KEY) === '1');
+  window.HHSWorkflowTemplates = WORKFLOW_TEMPLATES;
+  window.HHSWorkflowUX = Object.freeze({ validation, applyTemplate, startWorkflow, setAdvanced });
+  return window.HHSWorkflowUX;
 }
-const objectSearch = document.querySelector('#object-search');
-if (objectSearch) objectSearch.placeholder = 'Search workflows, objects, services, commands…';
-buildCommandPalette();
-buildMobileTabs();
-observeAssistantCompletion();
-applyTemplate(state.template);
-setAdvanced(localStorage.getItem(ADVANCED_KEY) === '1');
-window.HHSWorkflowTemplates = WORKFLOW_TEMPLATES;
-window.HHSWorkflowUX = Object.freeze({ validation, applyTemplate, startWorkflow, setAdvanced });
+
+const workflowUXReadyPromise = initializeWorkflowUX();
+window.HHSWorkflowUXReady = workflowUXReadyPromise;
+void workflowUXReadyPromise.catch((error) => {
+  console.error('HHS workflow UX bootstrap failed', error);
+  window.dispatchEvent(new CustomEvent('hhs:workflow-ux:bootstrap-error', {
+    detail: { classification: 'HHS_P176_WORKFLOW_UX_BOOTSTRAP_FAILED', message: error?.message || String(error) },
+  }));
+});
