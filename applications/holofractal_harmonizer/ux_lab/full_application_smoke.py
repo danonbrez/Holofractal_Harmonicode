@@ -109,6 +109,30 @@ def geometry(page, selector: str) -> dict[str, object]:
     )
 
 
+def verified_pointer_click(page, selector: str, evidence: dict[str, object]) -> None:
+    node = evidence.get("node")
+    center = evidence.get("center")
+    hit = evidence.get("elementFromPoint")
+    if not isinstance(node, dict) or not isinstance(center, dict) or not isinstance(hit, dict):
+        raise AssertionError(f"pointer target evidence incomplete for {selector}: {evidence}")
+    rect = node.get("rect")
+    if not isinstance(rect, dict) or float(rect.get("width", 0)) <= 0 or float(rect.get("height", 0)) <= 0:
+        raise AssertionError(f"pointer target has no visible geometry for {selector}: {evidence}")
+    if evidence.get("duplicateCount") != 1:
+        raise AssertionError(f"pointer target is not unique for {selector}: {evidence}")
+    if node.get("hidden") or node.get("inert") or node.get("disabled"):
+        raise AssertionError(f"pointer target is not actionable for {selector}: {evidence}")
+    if node.get("display") == "none" or node.get("visibility") != "visible" or node.get("pointerEvents") == "none":
+        raise AssertionError(f"pointer target is not rendered for {selector}: {evidence}")
+    if hit.get("tag") != "BUTTON" or hit.get("pointerEvents") == "none":
+        raise AssertionError(f"pointer hit-test does not resolve to the button for {selector}: {evidence}")
+    x = float(center["x"])
+    y = float(center["y"])
+    page.mouse.move(x, y)
+    page.mouse.down()
+    page.mouse.up()
+
+
 def create_project(page, template: str, name: str):
     phase("CREATE_PROJECT", template=template, project_name=name)
     page.locator("#ide-new-app").click()
@@ -116,14 +140,17 @@ def create_project(page, template: str, name: str):
     expect(gallery).to_be_visible(timeout=20_000)
     template_selector = f'#ide-application-gallery [data-application-template="{template}"]'
     template_button = page.locator(template_selector)
+    gallery_evidence = geometry(page, "#ide-application-gallery")
+    template_evidence = geometry(page, template_selector)
     phase(
         "TEMPLATE_GEOMETRY",
         template=template,
-        gallery=geometry(page, "#ide-application-gallery"),
-        template_button=geometry(page, template_selector),
+        gallery=gallery_evidence,
+        template_button=template_evidence,
     )
     expect(template_button).to_be_visible(timeout=20_000)
-    template_button.click()
+    verified_pointer_click(page, template_selector, template_evidence)
+    expect(template_button).to_have_attribute("aria-pressed", "true", timeout=20_000)
     page.locator("#ide-application-name").fill(name)
     page.locator("#ide-create-application-project").click()
     expect(gallery).to_be_hidden(timeout=20_000)
@@ -278,6 +305,7 @@ def run() -> dict[str, object]:
                 "runtime_console_preserved": True,
                 "drag_safe_file_items": True,
                 "dom_driven_acceptance": True,
+                "verified_real_pointer_input": True,
                 "elapsed_ms": round((time.monotonic() - started) * 1000),
             }
             if not result["ok"]:
