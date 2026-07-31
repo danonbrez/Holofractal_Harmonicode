@@ -133,7 +133,6 @@ function bindCoreControls() {
     ['#ide-interpret', 'interpret'],
     ['#ide-compile', 'compile'],
     ['#ide-run', 'run'],
-    ['#ide-run-lifecycle', 'lifecycle'],
     ['#ide-replay', 'replay'],
     ['#ide-egress', 'egress'],
     ['#ide-download-egress', 'egress'],
@@ -279,7 +278,6 @@ async function bootVisualIDE() {
       run: async () => {
         await safeInit('project-lifecycle', initProjectLifecycle);
         await safeInit('production-recovery', initProductionRecovery);
-        required('#ide-run-lifecycle').onclick = null;
         await safeInit('deployment-health', initDeploymentHealth, { optional: true });
         await safeInit('application-studio', initApplicationStudio);
         await safeInit('deployable-app-compiler', initDeployableAppCompiler);

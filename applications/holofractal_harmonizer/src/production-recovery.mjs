@@ -493,19 +493,25 @@ function detachAdvancedSurfaces() {
   for (const selector of selectors) {
     for (const node of document.querySelectorAll(selector)) {
       if (node.closest('#hhs-app-command-bar')) continue;
-      const marker = document.createComment(`hhs-pass176:${selector}`);
-      node.parentNode?.insertBefore(marker, node);
-      detachedAdvanced.push({ node, marker });
-      node.remove();
+      detachedAdvanced.push({
+        node,
+        hidden: Boolean(node.hidden),
+        ariaHidden: node.getAttribute('aria-hidden'),
+      });
+      node.hidden = true;
+      node.setAttribute('aria-hidden', 'true');
+      node.dataset.hhsPass176AdvancedHidden = 'true';
     }
   }
 }
 
 function restoreAdvancedSurfaces() {
   while (detachedAdvanced.length) {
-    const { node, marker } = detachedAdvanced.shift();
-    marker.parentNode?.insertBefore(node, marker);
-    marker.remove();
+    const { node, hidden, ariaHidden } = detachedAdvanced.shift();
+    node.hidden = hidden;
+    if (ariaHidden === null) node.removeAttribute('aria-hidden');
+    else node.setAttribute('aria-hidden', ariaHidden);
+    delete node.dataset.hhsPass176AdvancedHidden;
   }
 }
 
