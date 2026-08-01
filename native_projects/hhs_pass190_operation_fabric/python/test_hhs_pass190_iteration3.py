@@ -23,6 +23,8 @@ from hhs_pass190_iteration3 import (  # noqa: E402
 )
 from hhs_pass190_iteration3_server import build_server  # noqa: E402
 
+TEST_SECRET = "pass190-iteration3-native-test-secret-" + ("x" * 48)
+
 
 class Iteration3Tests(unittest.TestCase):
     @classmethod
@@ -102,7 +104,11 @@ class Iteration3Tests(unittest.TestCase):
 
     def test_live_compiler_http_surface(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
-            server = build_server(port=0, database=Path(directory) / "authority.sqlite3")
+            server = build_server(
+                port=0,
+                database=Path(directory) / "authority.sqlite3",
+                capability_secret=TEST_SECRET,
+            )
             thread = threading.Thread(target=server.serve_forever, daemon=True)
             thread.start()
             base = f"http://127.0.0.1:{server.server_address[1]}"
@@ -124,6 +130,7 @@ class Iteration3Tests(unittest.TestCase):
                     openapi = json.load(response)
                 self.assertEqual(openapi["x-hhs-iteration"], 3)
                 self.assertIn("/api/pass190/compile-execute", openapi["paths"])
+                self.assertIn("/api/pass190/integrity", openapi["paths"])
             finally:
                 server.shutdown()
                 server.server_close()
