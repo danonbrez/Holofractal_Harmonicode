@@ -6,17 +6,35 @@ import { resolve } from 'node:path';
 const root = resolve(new URL('..', import.meta.url).pathname);
 const read = (path) => readFileSync(resolve(root, path), 'utf8');
 
-test('public boot launches the complete application experience independently', () => {
+test('public boot awaits the complete application experience before lower hydration', () => {
   const boot = read('src/public-boot.mjs');
-  assert.match(
-    boot,
-    /const applicationExperience = launch\('application-experience', '\.\/application-experience\.mjs'\)/,
-  );
-  assert.match(boot, /applicationExperience,/);
-  assert.ok(
-    boot.indexOf("const applicationExperience = launch('application-experience'")
-      < boot.indexOf('const workflowDefault = browser.then'),
-  );
+  const experience = boot.indexOf('const applicationExperience = launch(');
+  const browser = boot.indexOf('const browser = applicationExperience.then');
+  const integration = boot.indexOf('const productionIntegration = applicationExperience.then');
+  const visual = boot.indexOf('const visualIDE = applicationExperience.then');
+  const workflow = boot.indexOf('const workflowDefault = browser.then');
+
+  assert.ok(experience >= 0);
+  assert.ok(experience < browser);
+  assert.ok(experience < integration);
+  assert.ok(experience < visual);
+  assert.ok(browser < workflow);
+  assert.match(boot, /async \(module\) => \{\s*const result = await module\.startApplicationExperience\(\)/);
+  assert.match(boot, /HHS_APPLICATION_EXPERIENCE_NOT_INTERACTIVE/);
+  assert.match(boot, /application_experience_awaited_before_hydration: true/);
+  assert.match(boot, /critical_surface_reasserted_after_settlement: true/);
+  assert.match(boot, /await experienceModule\.startApplicationExperience\(\)/);
+});
+
+test('production startup awaits and reasserts the critical application surface', () => {
+  const coordinator = read('src/production-startup-coordinator.mjs');
+  assert.match(coordinator, /async function startProductionSurface\(\)/);
+  assert.match(coordinator, /const applicationExperience = await startApplicationExperience\(\)/);
+  assert.match(coordinator, /await publicBoot\.applicationExperience/);
+  assert.match(coordinator, /await publicBoot\.allSettled/);
+  assert.match(coordinator, /await startApplicationExperience\(\)/);
+  assert.match(coordinator, /window\.HHSProductionStartupReady = startupReady/);
+  assert.match(coordinator, /HHS_PRODUCTION_SURFACE_FAILED/);
 });
 
 test('New Application and Assistant are synchronous fail-closed critical surfaces', () => {
