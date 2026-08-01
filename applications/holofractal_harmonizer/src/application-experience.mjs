@@ -2,7 +2,7 @@ import { initIntuitiveIDE } from './intuitive-ide.mjs';
 import { initApplicationStudio } from './application-studio.mjs';
 import { initIntegratedAssistant } from './integrated-assistant.mjs';
 
-const EXPERIENCE_SCHEMA = 'HHS_APPLICATION_EXPERIENCE_BOOT_V5';
+const EXPERIENCE_SCHEMA = 'HHS_APPLICATION_EXPERIENCE_BOOT_V6';
 let bootRecord = null;
 let bootPromise = null;
 
@@ -25,9 +25,31 @@ function retireLegacyApplicationLauncher() {
   return true;
 }
 
+function reconcileApplicationProjectIdentity() {
+  const pending = window.HHSPendingApplicationProjectIdentity;
+  const input = document.querySelector('#ide-project-name');
+  const requested = String(pending?.name || '').trim();
+  if (!(input instanceof HTMLInputElement) || !requested) return false;
+  input.value = requested;
+  input.dataset.hhsApplicationStudioOwned = 'true';
+  input.dataset.hhsIdentityCommittedAt = String(pending.requested_at || new Date().toISOString());
+  input.dispatchEvent(new Event('input', { bubbles: true }));
+  input.dispatchEvent(new Event('change', { bubbles: true }));
+  window.dispatchEvent(new CustomEvent('hhs:application-project:identity-reconciled', {
+    detail: {
+      schema: 'HHS_APPLICATION_PROJECT_IDENTITY_V1',
+      name: requested,
+      source: pending.source || 'APPLICATION_STUDIO',
+      frontend_is_authority: false,
+    },
+  }));
+  return true;
+}
+
 function enforceCriticalSurfacePostconditions() {
   window.HHSApplicationStudio?.ensurePrimaryControl?.();
   window.HHSIntegratedAssistant?.open?.();
+  reconcileApplicationProjectIdentity();
 
   const launchers = [...document.querySelectorAll('[id="ide-new-app"]')];
   const launcher = launchers[0] || null;
@@ -100,26 +122,26 @@ function initializeApplicationExperience() {
   const initialized = [];
   const support = [];
 
-  // The critical user path is synchronous and independent of lower runtime
-  // hydration. Mount the inherited workflow, retire its duplicate public ID,
-  // install the executable application studio, and expose the advisory
-  // assistant before the application experience can report INTERACTIVE.
   initialize('HHSIntuitiveIDE', initIntuitiveIDE, initialized);
   const legacyLauncherRetired = retireLegacyApplicationLauncher();
   initialize('HHSApplicationStudio', initApplicationStudio, initialized);
   initialize('HHSIntegratedAssistant', initIntegratedAssistant, initialized);
   const criticalSurface = enforceCriticalSurfacePostconditions();
 
-  // Preview, source ZIP, and deployable compilation remain real, but hydrate in
-  // parallel after New Application and Assistant are already usable.
   const supportReady = Promise.allSettled([
     loadSupport('project-lifecycle', './project-lifecycle.mjs', 'initProjectLifecycle', 'HHSProjectLifecycle', support),
     loadSupport('integrated-workbench', './integrated-workbench.mjs', 'initIntegratedWorkbench', 'HHSIntegratedWorkbench', support),
     loadSupport('deployable-app-compiler', './deployable-app-compiler.mjs', 'initDeployableAppCompiler', 'HHSDeployableAppCompiler', support),
   ]).then((results) => {
+    const projectIdentityReconciled = reconcileApplicationProjectIdentity();
     enforceCriticalSurfacePostconditions();
     window.dispatchEvent(new CustomEvent('hhs:application-experience:support-settled', {
-      detail: { schema: EXPERIENCE_SCHEMA, support: support.map((entry) => ({ ...entry })), results },
+      detail: {
+        schema: EXPERIENCE_SCHEMA,
+        support: support.map((entry) => ({ ...entry })),
+        results,
+        project_identity_reconciled: projectIdentityReconciled,
+      },
     }));
     return results;
   });
@@ -131,6 +153,7 @@ function initializeApplicationExperience() {
     support,
     supportReady,
     legacy_application_launcher_retired: legacyLauncherRetired,
+    project_identity_reconciled_after_support_hydration: true,
     ...criticalSurface,
     new_application_control: true,
     application_gallery: true,
@@ -142,6 +165,8 @@ function initializeApplicationExperience() {
   window.dispatchEvent(new CustomEvent('hhs:application-experience:ready', { detail: bootRecord }));
   return bootRecord;
 }
+
+window.addEventListener('hhs:application-project:identity-requested', reconcileApplicationProjectIdentity);
 
 export function startApplicationExperience() {
   if (bootRecord) {
@@ -170,7 +195,4 @@ export function startApplicationExperience() {
   return initializeApplicationExperience();
 }
 
-// Safe under classic, defer, async, or dynamically injected module ordering.
-// When the module is evaluated before the static IDE DOM is available, startup
-// is retained and replayed exactly once at DOMContentLoaded.
 startApplicationExperience();
