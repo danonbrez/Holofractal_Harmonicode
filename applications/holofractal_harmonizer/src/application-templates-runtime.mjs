@@ -127,11 +127,12 @@ const DOCUMENT_APPLICATION_SOURCE = [
 function readableHtml(content) {
   const source = String(content || '').trim();
   if (!source) return '';
-  const canonicalScripts = source.replace(
+  const readable = source.replace(/>\s*</g, '>\n<');
+  const canonicalScripts = readable.replace(
     /<script\b([^>]*\bsrc=["'][^"']+["'][^>]*)>\s*<\/script>/gi,
     '<script$1></script>',
   );
-  return `${canonicalScripts.replace(/>\s*</g, '>\n<')}\n`;
+  return `${canonicalScripts}\n`;
 }
 
 function readableCss(content) {
