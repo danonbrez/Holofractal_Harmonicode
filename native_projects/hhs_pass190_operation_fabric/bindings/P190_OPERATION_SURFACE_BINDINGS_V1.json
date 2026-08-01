@@ -1,0 +1,88 @@
+{
+  "bindings": [
+    {
+      "gui_action_id": "pass190.invoke.system.status",
+      "operation_id": "system.status",
+      "python_sdk_symbol": "system_status",
+      "typescript_sdk_symbol": "system_status",
+      "websocket_channel": "pass190.receipts",
+      "workflow_step_id": "pass190.operation.system.status"
+    },
+    {
+      "gui_action_id": "pass190.invoke.python.len",
+      "operation_id": "python.len",
+      "python_sdk_symbol": "python_len",
+      "typescript_sdk_symbol": "python_len",
+      "websocket_channel": "pass190.receipts",
+      "workflow_step_id": "pass190.operation.python.len"
+    },
+    {
+      "gui_action_id": "pass190.invoke.python.abs",
+      "operation_id": "python.abs",
+      "python_sdk_symbol": "python_abs",
+      "typescript_sdk_symbol": "python_abs",
+      "websocket_channel": "pass190.receipts",
+      "workflow_step_id": "pass190.operation.python.abs"
+    },
+    {
+      "gui_action_id": "pass190.invoke.python.sorted",
+      "operation_id": "python.sorted",
+      "python_sdk_symbol": "python_sorted",
+      "typescript_sdk_symbol": "python_sorted",
+      "websocket_channel": "pass190.receipts",
+      "workflow_step_id": "pass190.operation.python.sorted"
+    },
+    {
+      "gui_action_id": "pass190.invoke.list.with_appended",
+      "operation_id": "list.with_appended",
+      "python_sdk_symbol": "list_with_appended",
+      "typescript_sdk_symbol": "list_with_appended",
+      "websocket_channel": "pass190.receipts",
+      "workflow_step_id": "pass190.operation.list.with_appended"
+    },
+    {
+      "gui_action_id": "pass190.invoke.dict.get",
+      "operation_id": "dict.get",
+      "python_sdk_symbol": "dict_get",
+      "typescript_sdk_symbol": "dict_get",
+      "websocket_channel": "pass190.receipts",
+      "workflow_step_id": "pass190.operation.dict.get"
+    },
+    {
+      "gui_action_id": "pass190.invoke.text.join",
+      "operation_id": "text.join",
+      "python_sdk_symbol": "text_join",
+      "typescript_sdk_symbol": "text_join",
+      "websocket_channel": "pass190.receipts",
+      "workflow_step_id": "pass190.operation.text.join"
+    },
+    {
+      "gui_action_id": "pass190.invoke.math.gcd",
+      "operation_id": "math.gcd",
+      "python_sdk_symbol": "math_gcd",
+      "typescript_sdk_symbol": "math_gcd",
+      "websocket_channel": "pass190.receipts",
+      "workflow_step_id": "pass190.operation.math.gcd"
+    },
+    {
+      "gui_action_id": "pass190.invoke.pass189.context.decode",
+      "operation_id": "pass189.context.decode",
+      "python_sdk_symbol": "pass189_context_decode",
+      "typescript_sdk_symbol": "pass189_context_decode",
+      "websocket_channel": "pass190.receipts",
+      "workflow_step_id": "pass190.operation.pass189.context.decode"
+    },
+    {
+      "gui_action_id": "pass190.invoke.state.counter.advance",
+      "operation_id": "state.counter.advance",
+      "python_sdk_symbol": "state_counter_advance",
+      "typescript_sdk_symbol": "state_counter_advance",
+      "websocket_channel": "pass190.receipts",
+      "workflow_step_id": "pass190.operation.state.counter.advance"
+    }
+  ],
+  "bindings_hash216": "e5993262bfacbb30aee459c4655717e0ea904d825a466d115d162fafced4bb2347264dccb7c1e9ca67a1540dc9cc62dc3e294ca9bf7a010a497464ebc57fb8b2eff871dde84c6b434cac50ce36b67f34f209c812a470ae3b221e23afd12667860defc51117388e1b33fdbf1b",
+  "contract": "HHS-P190-OVRA-HOSS-PCA-FHF-VM81-H72-H216",
+  "registry_hash216": "0abd827df8272b43a6a4c4e173c5155f8869501efd8ebb3c615cbdcd32e9772d78173ab95683a539680d76da0e50c5333ec7338bef84d510ca1468e08c5a17038ef1619a520db48b12a4e4585e4f135942acac2220fa7ff388d5d77a3500349d36c56e94796e33329194901e",
+  "schema": "P190_OPERATION_SURFACE_BINDINGS_V1"
+}
