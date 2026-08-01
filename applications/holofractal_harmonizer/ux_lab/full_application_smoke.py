@@ -74,8 +74,7 @@ def geometry(page, selector: str) -> dict[str, object]:
     )
 
 
-def verified_pointer_click(page, selector: str) -> dict[str, object]:
-    evidence = geometry(page, selector)
+def validate_pointer_target(selector: str, evidence: dict[str, object]) -> None:
     node = evidence.get("node")
     center = evidence.get("center")
     hit = evidence.get("elementFromPoint")
@@ -92,6 +91,12 @@ def verified_pointer_click(page, selector: str) -> dict[str, object]:
         raise AssertionError(f"pointer target is not rendered for {selector}: {evidence}")
     if not evidence.get("hitButtonMatches") or hit.get("pointerEvents") == "none":
         raise AssertionError(f"pointer hit-test does not resolve within the button for {selector}: {evidence}")
+
+
+def verified_pointer_click(page, selector: str) -> dict[str, object]:
+    evidence = geometry(page, selector)
+    validate_pointer_target(selector, evidence)
+    center = evidence["center"]
     page.mouse.move(float(center["x"]), float(center["y"]))
     page.mouse.down()
     page.mouse.up()
@@ -104,26 +109,39 @@ def create_project(page, template: str, name: str):
     launcher = page.locator("#ide-new-app")
     expect(launcher).to_be_visible(timeout=20_000)
     launcher_evidence = verified_pointer_click(page, "#ide-new-app")
+    phase("APPLICATION_GALLERY_REQUESTED", template=template)
 
     gallery = page.locator("#ide-application-gallery")
     expect(gallery).to_be_visible(timeout=20_000)
+    phase("APPLICATION_GALLERY_VISIBLE", template=template)
+
     template_selector = f'#ide-application-gallery [data-application-template="{template}"]'
     template_button = page.locator(template_selector)
     expect(template_button).to_be_visible(timeout=20_000)
     template_evidence = verified_pointer_click(page, template_selector)
     expect(template_button).to_have_attribute("aria-pressed", "true", timeout=20_000)
+    phase("APPLICATION_TEMPLATE_SELECTED", template=template)
 
     page.locator("#ide-application-name").fill(name)
     commit_selector = "#ide-create-application-project"
-    expect(page.locator(commit_selector)).to_be_visible(timeout=20_000)
-    commit_evidence = verified_pointer_click(page, commit_selector)
+    commit_button = page.locator(commit_selector)
+    expect(commit_button).to_be_visible(timeout=20_000)
+    commit_evidence = geometry(page, commit_selector)
+    validate_pointer_target(commit_selector, commit_evidence)
+    phase("APPLICATION_PROJECT_COMMIT_REQUESTED", template=template)
 
-    # The application preview iframe navigates as part of project creation.
-    # Real mouse input is retained, while product postconditions replace
-    # Playwright's unrelated automatic top-level navigation wait.
+    # This remains a real Playwright pointer click. no_wait_after prevents the
+    # preview iframe's scheduled navigation from being mistaken for a top-level
+    # page navigation owned by the commit button.
+    commit_button.click(timeout=20_000, no_wait_after=True)
+    phase("APPLICATION_PROJECT_COMMIT_DISPATCHED", template=template)
+
     expect(gallery).to_be_hidden(timeout=20_000)
+    phase("APPLICATION_GALLERY_CLOSED", template=template)
     expect(page.locator("#ide-project-name")).to_have_value(name, timeout=20_000)
+    phase("APPLICATION_PROJECT_NAME_COMMITTED", template=template)
     expect(page.locator("#ide-preview-panel.active")).to_be_visible(timeout=20_000)
+    phase("APPLICATION_PREVIEW_ACTIVE", template=template)
     frame = application_frame(page)
     phase(
         "PROJECT_READY",
