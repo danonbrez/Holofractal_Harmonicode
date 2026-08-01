@@ -10,6 +10,7 @@ let previousProject = null;
 let priorUndoHandler = null;
 let workflowObserver = null;
 let workflowRepairPending = false;
+let projectCommitPending = false;
 
 function snapshotProject() {
   return {
@@ -53,7 +54,7 @@ function restorePreviousProject() {
   refreshProjectSurfaces();
   setStatus('Previous project restored. Use Undo again to switch back.', 'ready');
   log('Restored the prior project working tree without deleting either snapshot.');
-  window.HHSIntegratedWorkbench?.preview?.();
+  window.setTimeout(() => window.HHSIntegratedWorkbench?.preview?.(), 0);
 }
 
 function bindProjectUndo() {
@@ -155,9 +156,79 @@ export function createApplicationProject(id = selectedTemplate, requestedName = 
   });
   if (/\.html?$/i.test(template.entrypoint)) {
     openBottomTab('preview');
-    window.HHSIntegratedWorkbench?.preview?.();
+    window.setTimeout(() => {
+      try {
+        window.HHSIntegratedWorkbench?.preview?.();
+      } catch (error) {
+        setStatus(`Preview needs attention: ${error.message}`, 'failed');
+        window.dispatchEvent(new CustomEvent('hhs:application-project:preview-error', {
+          detail: {
+            schema: 'HHS_APPLICATION_PROJECT_PREVIEW_ERROR_V1',
+            template: template.id,
+            message: error.message,
+            frontend_is_authority: false,
+          },
+        }));
+      }
+    }, 0);
   }
   return template;
+}
+
+function commitApplicationProject() {
+  if (projectCommitPending) return;
+  const button = $('#ide-create-application-project');
+  const id = selectedTemplate;
+  const requestedName = $('#ide-application-name')?.value || '';
+  projectCommitPending = true;
+  if (button) {
+    button.disabled = true;
+    button.dataset.state = 'accepted';
+    button.textContent = 'Creating…';
+  }
+  closeGallery();
+  setStatus('Creating the selected application from editable source…', 'working');
+  window.dispatchEvent(new CustomEvent('hhs:application-project:commit-accepted', {
+    detail: {
+      schema: 'HHS_APPLICATION_PROJECT_COMMIT_ACCEPTED_V1',
+      template: id,
+      requested_name: requestedName,
+      deferred_beyond_pointer_dispatch: true,
+      frontend_is_authority: false,
+    },
+  }));
+  window.setTimeout(() => {
+    try {
+      createApplicationProject(id, requestedName);
+      window.dispatchEvent(new CustomEvent('hhs:application-project:created', {
+        detail: {
+          schema: 'HHS_APPLICATION_PROJECT_CREATED_V1',
+          template: id,
+          requested_name: requestedName,
+          frontend_is_authority: false,
+        },
+      }));
+    } catch (error) {
+      setStatus(`Application creation failed: ${error.message}`, 'failed');
+      openApplicationGallery();
+      window.dispatchEvent(new CustomEvent('hhs:application-project:create-error', {
+        detail: {
+          schema: 'HHS_APPLICATION_PROJECT_CREATE_ERROR_V1',
+          template: id,
+          message: error.message,
+          frontend_is_authority: false,
+        },
+      }));
+    } finally {
+      projectCommitPending = false;
+      const currentButton = $('#ide-create-application-project');
+      if (currentButton) {
+        currentButton.disabled = false;
+        currentButton.dataset.state = 'ready';
+        currentButton.textContent = 'Create & Run Project';
+      }
+    }
+  }, 0);
 }
 
 function mountGallery() {
@@ -183,7 +254,7 @@ function mountGallery() {
     document.body.append(gallery);
     $('#ide-close-application-gallery').onclick = closeGallery;
     $('#ide-cancel-application-gallery').onclick = closeGallery;
-    $('#ide-create-application-project').onclick = () => createApplicationProject(selectedTemplate, $('#ide-application-name')?.value || '');
+    $('#ide-create-application-project').onclick = commitApplicationProject;
     gallery.addEventListener('click', (event) => { if (event.target === gallery) closeGallery(); });
   }
   renderTemplateButtons(gallery);
@@ -293,6 +364,7 @@ export function initApplicationStudio() {
   window.HHSApplicationStudio = Object.freeze({
     open: openApplicationGallery,
     create: createApplicationProject,
+    commit: commitApplicationProject,
     restorePreviousProject,
     ensurePrimaryControl: promotePrimaryWorkflow,
     templates,
@@ -300,6 +372,8 @@ export function initApplicationStudio() {
     template_registry_complete: REQUIRED_APPLICATION_TEMPLATES.every((id) => templates.some((template) => template.id === id)),
     primary_control_is_self_healing: true,
     primary_control_is_single_stable_body_launcher: true,
+    project_commit_deferred_beyond_pointer_dispatch: true,
+    preview_deferred_beyond_project_materialization: true,
     creates_real_runnable_projects: true,
     prior_project_is_recoverable: true,
   });
