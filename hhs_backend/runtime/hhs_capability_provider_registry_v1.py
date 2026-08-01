@@ -15,6 +15,7 @@ from hhs_backend.runtime.hhs_capability_contract_v1 import (
 PROVIDER_SCHEMA = "HHS_CAPABILITY_PROVIDER_RECORD_V1"
 REGISTRY_SCHEMA = "HHS_CAPABILITY_PROVIDER_REGISTRY_V1"
 LITERT_LM_PROVIDER_ID = "provider:hhs.litert_lm.gemma4"
+KIMI_K3_PROVIDER_ID = "provider:hhs.moonshot.kimi_k3"
 
 
 def build_provider_record(
@@ -100,6 +101,18 @@ def build_default_provider_registry() -> Dict[str, Any]:
             output_modality="TEXT",
         ),
         build_provider_record(
+            provider_id=KIMI_K3_PROVIDER_ID,
+            provider_name="Moonshot Kimi K3 Multimodal Content Planning Provider",
+            capability_classes=[
+                "TEXT_GENERATION",
+                "IMAGE_ANALYSIS",
+                "VIDEO_DECODING",
+                "CODE_ANALYSIS",
+                "GRAPH_ANALYSIS",
+            ],
+            provider_kind="MOONSHOT_KIMI_K3_OPENAI_COMPATIBLE_EXTERNAL_PROVIDER",
+        ),
+        build_provider_record(
             provider_id="provider:hhs.local.text",
             provider_name="HHS Local Text Provider",
             capability_classes=[
@@ -166,6 +179,11 @@ def capability_provider_registry_self_test() -> Dict[str, Any]:
         for provider in registry["providers"]
         if "TEXT_GENERATION" in provider["capability_classes"]
     )[0]
+    kimi_provider = next(
+        provider
+        for provider in registry["providers"]
+        if provider["provider_id"] == KIMI_K3_PROVIDER_ID
+    )
     return {
         "schema": "HHS_CAPABILITY_PROVIDER_REGISTRY_SELF_TEST_V1",
         "version": VERSION,
@@ -173,10 +191,13 @@ def capability_provider_registry_self_test() -> Dict[str, Any]:
             all(validation["ok"] for validation in registry["validations"])
             and not validate_provider_record(bad)["ok"]
             and selected_text_provider == LITERT_LM_PROVIDER_ID
+            and "IMAGE_ANALYSIS" in kimi_provider["capability_classes"]
+            and not kimi_provider["provider_is_canonical_authority"]
         ),
         "registry": registry,
         "bad_validation": validate_provider_record(bad),
         "selected_text_provider": selected_text_provider,
+        "kimi_k3_provider_id": KIMI_K3_PROVIDER_ID,
         "doctrine":
             "provider output returns through Runtime ingress before canonical identity",
     }
