@@ -1,0 +1,31 @@
+{
+  "aggregate_sha256": "51c707691c2911915fa0325dda57382b168bc53fdf90f8533811d69b28a718a1",
+  "authoritative_base": "43e0f63ede1a0e324d9377d327fc691a3956b094",
+  "contract": "HHS-P189-HQLH-LS41-XNOR-P1-H72-H216-UPA",
+  "file_count": 21,
+  "files": {
+    ".github/workflows/pass189-hqlh-runtime.yml": "758c03ebc46fac898bf993d2916d6e44e3e7aa27628e292f5c796e3b8a566b69",
+    "HHS_PASS_189_HQLH_RUNTIME_IMPLEMENTATION_AND_DIGITALOCEAN_AUTHORITY.md": "051fb4d4dfabb00bf2db59be6719b8311de1d0be436f3903c4bbca965175c2fd",
+    "hhs_gui/runtime_apps/hqlh/Pass189HQLHSurface.tsx": "e21e0623384a13ee03140c5bf9f5aaaff41e990ed03836e33ec946bfea827b77",
+    "hhs_gui/runtime_os/core/RuntimeApplicationRegistry.tsx": "9c6ce4473b7fec15653ac7cc364509dd61f19a27fd45edff7cacc3ef0fb8350b",
+    "native_projects/hhs_pass189_hqlh_runtime/Makefile": "563a068dd20582a4b3de7a5511d8827210bec32f1ce296706800cd8e50d510b4",
+    "native_projects/hhs_pass189_hqlh_runtime/README.md": "8bc39369a58dd5d1278194f3e7ac551ca60e5a3505d937f0a44ed6a9ad75dee2",
+    "native_projects/hhs_pass189_hqlh_runtime/RESTART_RECORD.md": "60ff467e815ae29f8d5ff746bc698995b782f6faa4031b857bf1c535a9b79723",
+    "native_projects/hhs_pass189_hqlh_runtime/deployment/digitalocean/hhs-pass189.service": "300eb20cb8954a17b4eddbaf9c3988881099de6a08e7ff212a6f568aa0bbc50a",
+    "native_projects/hhs_pass189_hqlh_runtime/deployment/digitalocean/install.sh": "a54c91761b1b81204c16daa27687749c146ff63e09ac8ca788d3caee1d475ef3",
+    "native_projects/hhs_pass189_hqlh_runtime/deployment/digitalocean/nginx-hhs-pass189.conf": "0055e21bd635ffa7e6bdc2a4ed4fb2800c85574278bfa1267b9d3f91b9336fcb",
+    "native_projects/hhs_pass189_hqlh_runtime/deployment/digitalocean/verify.sh": "f65f2bb5bd4cf37d940dc01dc449d93da42f261e42f13c6a043dbdd37602cbb7",
+    "native_projects/hhs_pass189_hqlh_runtime/include/hhs_pass189_hqlh.h": "111f8b458dcbaef57a20e2fcd20754bdd63ebd1bed376193bb4acfa841438308",
+    "native_projects/hhs_pass189_hqlh_runtime/python/hhs_pass189.py": "1949962994f2fb3e6f17caaf275149836f21a37ae6acd33f80e52923c29238b6",
+    "native_projects/hhs_pass189_hqlh_runtime/python/test_hhs_pass189.py": "bc194ee722d491b2d576ad1cd513dc14249c50e1a6121024ce2e571c479d06e6",
+    "native_projects/hhs_pass189_hqlh_runtime/registry/hhs_pass189_hqlh.template.json": "dac48279aa5da576a088ec5f6739256efe07397026ccc733e93b916269cd50e6",
+    "native_projects/hhs_pass189_hqlh_runtime/server/hhs_pass189_server.py": "84da9fc38232279a3ff1c5211638a0812ee33862a7ff81cd1c1d6d327faf43a5",
+    "native_projects/hhs_pass189_hqlh_runtime/src/hhs_pass189_hqlh.c": "3fafee6f32c8f3ab8aea4fbd4c7153bb24bd9f6f44bdb57ee7ee7cbff0020761",
+    "native_projects/hhs_pass189_hqlh_runtime/tests/hhs_pass189_hqlh_test.c": "925dc6bfd09c8ab8310f88ee17e951bea7400a36c7d77985ac2f554ff3915f17",
+    "native_projects/hhs_pass189_hqlh_runtime/tools/hhs_pass189_cli.c": "2be464ffe604285dcb5ac174bfeac60af023f12b9a1342048120a37daaad9a88",
+    "native_projects/hhs_pass189_hqlh_runtime/tools/hhs_pass189_surface_smoke.py": "5e47873dc3024b12433754142c588ab6936ec79cfbbb7615a616633b0b523e2a",
+    "native_projects/hhs_pass189_hqlh_runtime/web/index.html": "1247bd009f521d055f30a63d07b5f18d4fd28154351ea592e6e33e8aa2f58bae"
+  },
+  "implementation": "HHS-P189-HQLH-RUNTIME-DO-1.0.0",
+  "schema": "HHS_PASS_189_HQLH_SOURCE_MANIFEST_V1"
+}
