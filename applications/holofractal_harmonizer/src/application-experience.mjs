@@ -1,7 +1,8 @@
 import { initIntuitiveIDE } from './intuitive-ide.mjs';
 import { initApplicationStudio } from './application-studio.mjs';
+import { initIntegratedAssistant } from './integrated-assistant.mjs';
 
-const EXPERIENCE_SCHEMA = 'HHS_APPLICATION_EXPERIENCE_BOOT_V4';
+const EXPERIENCE_SCHEMA = 'HHS_APPLICATION_EXPERIENCE_BOOT_V5';
 let bootRecord = null;
 let bootPromise = null;
 
@@ -22,6 +23,48 @@ function retireLegacyApplicationLauncher() {
   legacy.dataset.hhsLegacyProjectLauncher = 'true';
   legacy.setAttribute('aria-label', 'Open the legacy starter-project dialog');
   return true;
+}
+
+function enforceCriticalSurfacePostconditions() {
+  window.HHSApplicationStudio?.ensurePrimaryControl?.();
+  window.HHSIntegratedAssistant?.open?.();
+
+  const launchers = [...document.querySelectorAll('[id="ide-new-app"]')];
+  const launcher = launchers[0] || null;
+  const gallery = document.querySelector('#ide-application-gallery');
+  const assistantView = document.querySelector('#assistant-view');
+  const assistantPrompt = document.querySelector('#prompt-input');
+
+  if (launchers.length !== 1) {
+    throw new Error(`HHS_APPLICATION_LAUNCHER_CARDINALITY_INVALID: ${launchers.length}`);
+  }
+  if (!(launcher instanceof HTMLButtonElement)
+      || !launcher.isConnected
+      || launcher.hidden
+      || launcher.disabled
+      || launcher.closest('[hidden]')) {
+    throw new Error('HHS_APPLICATION_LAUNCHER_NOT_ACTIONABLE');
+  }
+  if (!gallery || !gallery.isConnected) {
+    throw new Error('HHS_APPLICATION_GALLERY_NOT_MOUNTED');
+  }
+  if (!window.HHSIntegratedAssistant || typeof window.HHSIntegratedAssistant.open !== 'function') {
+    throw new Error('HHS_INTEGRATED_ASSISTANT_NOT_INITIALIZED');
+  }
+  if (!assistantView || !assistantView.isConnected || assistantView.hidden) {
+    throw new Error('HHS_INTEGRATED_ASSISTANT_NOT_VISIBLE');
+  }
+  if (!assistantPrompt || !assistantPrompt.isConnected || assistantPrompt.hidden) {
+    throw new Error('HHS_INTEGRATED_ASSISTANT_PROMPT_NOT_VISIBLE');
+  }
+
+  return Object.freeze({
+    public_application_launcher_count: launchers.length,
+    public_application_launcher_actionable: true,
+    application_gallery_mounted: true,
+    integrated_assistant_visible: true,
+    integrated_assistant_prompt_visible: true,
+  });
 }
 
 function loadSupport(component, path, initializerName, globalName, support) {
@@ -50,24 +93,31 @@ function loadSupport(component, path, initializerName, globalName, support) {
 }
 
 function initializeApplicationExperience() {
-  if (bootRecord) return bootRecord;
+  if (bootRecord) {
+    enforceCriticalSurfacePostconditions();
+    return bootRecord;
+  }
   const initialized = [];
   const support = [];
 
-  // The critical user path has no dependency on backend lifecycle hydration:
-  // mount the inherited workflow, retire its duplicate public ID, then install
-  // the single authoritative executable application launcher and gallery.
+  // The critical user path is synchronous and independent of lower runtime
+  // hydration. Mount the inherited workflow, retire its duplicate public ID,
+  // install the executable application studio, and expose the advisory
+  // assistant before the application experience can report INTERACTIVE.
   initialize('HHSIntuitiveIDE', initIntuitiveIDE, initialized);
   const legacyLauncherRetired = retireLegacyApplicationLauncher();
   initialize('HHSApplicationStudio', initApplicationStudio, initialized);
+  initialize('HHSIntegratedAssistant', initIntegratedAssistant, initialized);
+  const criticalSurface = enforceCriticalSurfacePostconditions();
 
   // Preview, source ZIP, and deployable compilation remain real, but hydrate in
-  // parallel after the primary control is already usable.
+  // parallel after New Application and Assistant are already usable.
   const supportReady = Promise.allSettled([
     loadSupport('project-lifecycle', './project-lifecycle.mjs', 'initProjectLifecycle', 'HHSProjectLifecycle', support),
     loadSupport('integrated-workbench', './integrated-workbench.mjs', 'initIntegratedWorkbench', 'HHSIntegratedWorkbench', support),
     loadSupport('deployable-app-compiler', './deployable-app-compiler.mjs', 'initDeployableAppCompiler', 'HHSDeployableAppCompiler', support),
   ]).then((results) => {
+    enforceCriticalSurfacePostconditions();
     window.dispatchEvent(new CustomEvent('hhs:application-experience:support-settled', {
       detail: { schema: EXPERIENCE_SCHEMA, support: support.map((entry) => ({ ...entry })), results },
     }));
@@ -81,9 +131,10 @@ function initializeApplicationExperience() {
     support,
     supportReady,
     legacy_application_launcher_retired: legacyLauncherRetired,
-    public_application_launcher_count: document.querySelectorAll('[id="ide-new-app"]').length,
-    new_application_control: Boolean(document.querySelector('#ide-new-app')),
-    application_gallery: Boolean(document.querySelector('#ide-application-gallery')),
+    ...criticalSurface,
+    new_application_control: true,
+    application_gallery: true,
+    integrated_assistant: true,
     creates_real_runnable_projects: window.HHSApplicationStudio?.creates_real_runnable_projects === true,
     frontend_is_authority: false,
   });
@@ -93,7 +144,10 @@ function initializeApplicationExperience() {
 }
 
 export function startApplicationExperience() {
-  if (bootRecord) return bootRecord;
+  if (bootRecord) {
+    enforceCriticalSurfacePostconditions();
+    return bootRecord;
+  }
   if (document.readyState === 'loading' || !document.querySelector('#ide-view')) {
     if (!bootPromise) {
       bootPromise = new Promise((resolve, reject) => {
