@@ -43,6 +43,7 @@ class HHSClient:
 
     def operations(self) -> dict[str, Any]: return self._request("/api/pass190/operations")
     def integrity(self) -> dict[str, Any]: return self._request("/api/pass190/integrity")
+    def arbitration(self) -> dict[str, Any]: return self._request("/api/pass190/arbitration")
     def events(self, after: int = 0, limit: int = 100) -> dict[str, Any]: return self._request(f"/api/pass190/events?after={{after}}&limit={{limit}}")
     def receipts(self, after: int = 0, limit: int = 100) -> dict[str, Any]: return self._request(f"/api/pass190/receipts?after={{after}}&limit={{limit}}")
     def replay(self, hash72: str) -> dict[str, Any]: return self._request("/api/pass190/replay", {{"hash72": hash72}})
@@ -80,6 +81,7 @@ export class HHSClient {{
   }}
   operations() {{ return this.request("/api/pass190/operations") }}
   integrity() {{ return this.request("/api/pass190/integrity") }}
+  arbitration() {{ return this.request("/api/pass190/arbitration") }}
   events(after = 0, limit = 100) {{ return this.request(`/api/pass190/events?after=${{after}}&limit=${{limit}}`) }}
   receipts(after = 0, limit = 100) {{ return this.request(`/api/pass190/receipts?after=${{after}}&limit=${{limit}}`) }}
   replay(hash72: string) {{ return this.request("/api/pass190/replay", {{ method:"POST", headers:{{"Content-Type":"application/json"}}, body:JSON.stringify({{hash72}}) }}) }}
