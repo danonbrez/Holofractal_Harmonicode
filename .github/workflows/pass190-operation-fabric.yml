@@ -1,0 +1,23 @@
+name: Pass 190 Executable Operation Fabric Foundation
+
+on:
+  push:
+    paths:
+      - "HHS_PASS_190_EXECUTABLE_OPERATION_FABRIC_FOUNDATION.md"
+      - "native_projects/hhs_pass190_operation_fabric/**"
+      - ".github/workflows/pass190-operation-fabric.yml"
+  pull_request:
+    paths:
+      - "HHS_PASS_190_EXECUTABLE_OPERATION_FABRIC_FOUNDATION.md"
+      - "native_projects/hhs_pass190_operation_fabric/**"
+      - ".github/workflows/pass190-operation-fabric.yml"
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate Pass 190 executable foundation
+        working-directory: native_projects/hhs_pass190_operation_fabric
+        run: make validate
