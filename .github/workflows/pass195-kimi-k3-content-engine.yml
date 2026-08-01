@@ -1,0 +1,51 @@
+name: Pass 195 Kimi K3 Content Engine
+
+on:
+  push:
+    paths:
+      - "hhs_backend/runtime/hhs_kimi_k3_content_engine_v1.py"
+      - "hhs_backend/api/kimi_k3_content_routes.py"
+      - "hhs_backend/runtime/hhs_capability_provider_registry_v1.py"
+      - "hhs_backend/visual_server.py"
+      - "applications/storybook_reel_studio/kimi-content-engine.js"
+      - "applications/storybook_reel_studio/index.html"
+      - "tests/test_hhs_kimi_k3_content_engine_v1.py"
+      - "docs/pass195/**"
+      - "deploy/digitalocean/hhs-kimi-k3.env.example"
+      - ".github/workflows/pass195-kimi-k3-content-engine.yml"
+  pull_request:
+    paths:
+      - "hhs_backend/runtime/hhs_kimi_k3_content_engine_v1.py"
+      - "hhs_backend/api/kimi_k3_content_routes.py"
+      - "hhs_backend/runtime/hhs_capability_provider_registry_v1.py"
+      - "hhs_backend/visual_server.py"
+      - "applications/storybook_reel_studio/kimi-content-engine.js"
+      - "applications/storybook_reel_studio/index.html"
+      - "tests/test_hhs_kimi_k3_content_engine_v1.py"
+      - "docs/pass195/**"
+      - "deploy/digitalocean/hhs-kimi-k3.env.example"
+      - ".github/workflows/pass195-kimi-k3-content-engine.yml"
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Install Python dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Compile Pass 195 Python surfaces
+        run: |
+          python -m py_compile hhs_backend/runtime/hhs_kimi_k3_content_engine_v1.py
+          python -m py_compile hhs_backend/api/kimi_k3_content_routes.py
+          python -m py_compile tests/test_hhs_kimi_k3_content_engine_v1.py
+      - name: Validate Storybook Studio integration
+        run: node --check applications/storybook_reel_studio/kimi-content-engine.js
+      - name: Run Pass 195 tests
+        run: python -m unittest tests.test_hhs_kimi_k3_content_engine_v1
