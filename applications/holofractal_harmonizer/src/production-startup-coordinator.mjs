@@ -1,5 +1,5 @@
+import './mobile-first-paint-fix.mjs';
 import './theme-bootstrap.mjs';
-import { startPublicBoot } from './public-boot.mjs';
 
 const originalFetch = window.fetch.bind(window);
 const startedAt = performance.now();
@@ -79,7 +79,7 @@ if (document.readyState === 'loading') {
 }
 
 window.HHSProductionStartupCoordinator = Object.freeze({
-  schema: 'HHS_PASS161_PRODUCTION_STARTUP_COORDINATOR_V4',
+  schema: 'HHS_PASS161_PRODUCTION_STARTUP_COORDINATOR_V5',
   assistant_requests_deferred_until_registry_ready: true,
   max_assistant_deferral_ms: MAX_ASSISTANT_DEFERRAL_MS,
   runtime_registry_has_priority: true,
@@ -87,11 +87,22 @@ window.HHSProductionStartupCoordinator = Object.freeze({
   storybook_reel_requests_never_deferred: true,
   storybook_reel_launcher_installed: true,
   theme_bootstrap_independent_of_ide_module: true,
+  mobile_first_paint_precedes_public_module_graph: true,
   public_module_boot_concurrent: true,
   frontend_is_authority: false,
 });
 
-// This is the first public entry module. Launch the browser runtime,
-// production registry integration, and visual IDE independently now, before
-// any unresolved legacy module can serialize the remaining deferred scripts.
-startPublicBoot();
+// The visible IDE and mobile interaction ownership are established first.
+// The remaining public module graph is then loaded asynchronously so a slow
+// legacy or optional module cannot block first paint or mobile controls.
+void import('./public-boot.mjs')
+  .then(({ startPublicBoot }) => startPublicBoot())
+  .catch((error) => {
+    console.error('HHS public module boot failed', error);
+    window.dispatchEvent(new CustomEvent('hhs:public-module-boot-error', {
+      detail: {
+        classification: 'HHS_PUBLIC_MODULE_BOOT_FAILED',
+        message: error?.message || String(error),
+      },
+    }));
+  });
