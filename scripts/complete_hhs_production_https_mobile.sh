@@ -34,6 +34,24 @@ require_command() {
   command -v "$1" >/dev/null 2>&1 || fail "required command not found: $1"
 }
 
+configure_firewall() {
+  if ! command -v ufw >/dev/null 2>&1; then
+    printf 'UFW not installed; skipping host-firewall mutation.\n'
+    return 0
+  fi
+
+  local status
+  status="$(ufw status 2>/dev/null | head -n 1 || true)"
+  if [[ "${status}" == *inactive* ]]; then
+    printf 'UFW is inactive; no firewall rule required.\n'
+    return 0
+  fi
+
+  ufw allow 80/tcp >/dev/null
+  ufw allow 443/tcp >/dev/null
+  ufw status | grep -Eq '443/tcp.*ALLOW' || fail "UFW did not admit HTTPS"
+}
+
 run_as_app() {
   if command -v runuser >/dev/null 2>&1; then
     runuser -u "${HHS_APP_USER}" -- "$@"
@@ -215,7 +233,7 @@ deploy_frontend_repair() {
 verify_public_surface() {
   local https_root="https://${HHS_IP}"
 
-  curl -fsSI "http://${HHS_IP}/" | grep -Eq '^HTTP/[0-9.]+ 308|^location: https://' \
+  curl -fsSI "http://${HHS_IP}/" | grep -Eqi '^HTTP/[0-9.]+ 308|^location: https://' \
     || fail "HTTP did not redirect to HTTPS"
 
   curl -fsS "${https_root}${HHS_HEALTH_PATH}" >/tmp/hhs-production-health.json
@@ -253,6 +271,9 @@ main() {
 
   note "Checking backend health"
   curl -fsS "${HHS_BACKEND}${HHS_HEALTH_PATH}" >/tmp/hhs-backend-health.json
+
+  note "Admitting HTTP and HTTPS through the host firewall"
+  configure_firewall
 
   note "Configuring Nginx HTTPS and WebSocket proxy"
   local site_file
