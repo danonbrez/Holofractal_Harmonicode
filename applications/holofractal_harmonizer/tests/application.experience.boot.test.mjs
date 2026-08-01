@@ -56,6 +56,22 @@ test('preview readiness is bound before hydration and accepts only the active fr
   assert.match(smoke, /APPLICATION_PREVIEW_FRAME_READY/);
 });
 
+test('application project identity survives asynchronous support hydration', () => {
+  const coordinator = read('src/production-startup-coordinator.mjs');
+  const experience = read('src/application-experience.mjs');
+
+  assert.match(coordinator, /closest\('#ide-create-application-project'\)/);
+  assert.match(coordinator, /window\.HHSPendingApplicationProjectIdentity = identity/);
+  assert.match(coordinator, /hhs:application-project:identity-requested/);
+  assert.match(coordinator, /application_project_identity_captured_before_hydration: true/);
+  assert.match(experience, /function reconcileApplicationProjectIdentity\(\)/);
+  assert.match(experience, /window\.HHSPendingApplicationProjectIdentity/);
+  assert.match(experience, /input\.value = requested/);
+  assert.match(experience, /project_identity_reconciled_after_support_hydration: true/);
+  assert.match(experience, /project_identity_reconciled: projectIdentityReconciled/);
+  assert.match(experience, /hhs:application-project:identity-reconciled/);
+});
+
 test('New Application and Assistant are synchronous fail-closed critical surfaces', () => {
   const source = read('src/application-experience.mjs');
   const intuitive = source.indexOf("initialize('HHSIntuitiveIDE'");
