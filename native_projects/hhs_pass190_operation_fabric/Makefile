@@ -27,10 +27,10 @@ native-test: $(NATIVE_TEST)
 	./$(NATIVE_TEST)
 
 test:
-	PYTHONPATH=python:server:tools HHS_PASS190_NATIVE_LIBRARY=$(NATIVE_LIBRARY) $(PYTHON) -m unittest -v python/test_hhs_pass190.py python/test_hhs_pass190_iteration2.py python/test_hhs_pass190_iteration3.py
+	PYTHONPATH=python:server:tools HHS_PASS190_NATIVE_LIBRARY=$(NATIVE_LIBRARY) $(PYTHON) -m unittest -v python/test_hhs_pass190.py python/test_hhs_pass190_iteration2.py python/test_hhs_pass190_iteration3.py python/test_hhs_pass190_iteration3_hardening.py
 
 compile:
-	$(PYTHON) -m py_compile python/hhs_pass190.py python/hhs_pass190_iteration2.py python/hhs_pass190_iteration3.py server/hhs_pass190_server.py server/hhs_pass190_iteration2_server.py server/hhs_pass190_iteration3_server.py python/test_hhs_pass190.py python/test_hhs_pass190_iteration2.py python/test_hhs_pass190_iteration3.py tools/generate_sdks.py tools/generate_bindings.py tools/generate_native_abi.py tools/verify_iteration2_gui.py tools/verify_deploy.py tools/verify_iteration3.py sdk/python/hhs_pass190_client.py
+	$(PYTHON) -m py_compile python/hhs_pass190.py python/hhs_pass190_capability.py python/hhs_pass190_iteration2.py python/hhs_pass190_iteration3.py python/hhs_pass190_iteration3_hardening.py server/hhs_pass190_server.py server/hhs_pass190_iteration2_server.py server/hhs_pass190_iteration3_server.py python/test_hhs_pass190.py python/test_hhs_pass190_iteration2.py python/test_hhs_pass190_iteration3.py python/test_hhs_pass190_iteration3_hardening.py tools/generate_sdks.py tools/generate_bindings.py tools/generate_native_abi.py tools/issue_capability.py tools/verify_iteration2_gui.py tools/verify_iteration3.py tools/verify_iteration3_gui.py tools/verify_deploy.py sdk/python/hhs_pass190_client.py
 
 no-private-eval:
 	! grep -R -n -E '(^|[^A-Za-z_])(eval|exec)[[:space:]]*\(' python server sdk/python
@@ -43,6 +43,7 @@ bindings-check:
 
 gui-check:
 	$(PYTHON) tools/verify_iteration2_gui.py
+	$(PYTHON) tools/verify_iteration3_gui.py
 
 deploy-check:
 	$(PYTHON) tools/verify_deploy.py
