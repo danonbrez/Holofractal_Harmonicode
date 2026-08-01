@@ -68,3 +68,4 @@ class HHSClient:
 
     def state_counter_advance(self, arguments: dict[str, Any] | None = None, **kwargs: Any) -> dict[str, Any]:
         return self.invoke("state.counter.advance", arguments or {}, **kwargs)
+
