@@ -1,0 +1,40 @@
+{
+  "schema": "HHS_PASS_186_VALIDATION_RECEIPT_V1",
+  "contract": "HHS-P186-X64-VM81-Q144-F7-G243-NCABI",
+  "classification": "HHS_PASS_186_X64_VM81_Q144_NONCOMMUTATIVE_ABI_VALIDATED",
+  "baseline_commit": "711b4a1e73f9339ce51c7bf43dac5ff660fbc3da",
+  "environment": {
+    "architecture": "x86_64",
+    "compiler_mode": "C11 -O3 -Wall -Wextra -Werror -pedantic",
+    "assembler": "GNU as through cc",
+    "disassembler": "objdump"
+  },
+  "invariants": {
+    "q12_squared": 144,
+    "factorial7": 5040,
+    "factorial_q144_lanes": 35,
+    "q144_lanes": 36,
+    "vm81_cells": 81,
+    "operations_per_cell": 64,
+    "vm5184": 5184,
+    "g243": 243,
+    "hydrated_cardinality": 1259712,
+    "outer_envelope_modulus": 1259713
+  },
+  "validation": {
+    "strict_compile": true,
+    "exhaustive_roundtrip_states": 1259712,
+    "maximum_internal_address": 1259711,
+    "factorial_boundary_checked": true,
+    "noncommutative_order_tags_checked": true,
+    "x86_64_register_probe_checked": true,
+    "floating_point_opcode_scan": "PASS"
+  },
+  "source_sha256": {
+    "include/hhs_pass186_x64_vm81_q144_abi.h": "2aefd5927465a4d6de3ee59b8ff9beba5c140bdc98428e4fa147be3ed92d63c7",
+    "src/hhs_pass186_x64_vm81_q144_abi.c": "de09001808029bb7660c986cdc440e6a9d950f39b8e64ab6d53fbf2ae6963281",
+    "src/hhs_pass186_x64_registers.S": "2a77dbc0eda3783e3b3c7f8f411ada92259aeddadf16aa043db6c35a73e0d2a6",
+    "tests/hhs_pass186_x64_vm81_q144_smoke.c": "126c496f436144fba9e63666dba13d973dba3bee5abec1bd8c9c850d45f86bc8",
+    "Makefile": "df649ab12b3299a4b36cee37806cc820e1b47333593160d83072ea6de7d05036"
+  }
+}
