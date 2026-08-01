@@ -12,15 +12,21 @@ type RuntimeEvent = {
   operation_id?: string
   hash72?: string
   fencing_token?: number
+  kernel_authority_hash72?: string
 }
 
 type ArbitrationStatus = {
   active?: boolean
+  lease_state?: string
   holder_id?: string | null
   fencing_token?: number
   fence_count?: number
   highest_committed_fence?: number
   lease_expires_ns?: number
+  lease_transition_count?: number
+  last_transition?: string | null
+  last_transition_hash72?: string | null
+  lease_receipt_chain_verified?: boolean
 }
 
 const field: React.CSSProperties = {
@@ -63,11 +69,23 @@ export default function Pass190OperationFabricSurface() {
   const lastSequenceRef = useRef(0)
   const reconnectAttemptRef = useRef(0)
   const reconnectTimerRef = useRef<number | null>(null)
+  const authorityTimerRef = useRef<number | null>(null)
 
   const current = useMemo(
     () => operations.find((operation) => operation.operation_id === selected),
     [operations, selected],
   )
+
+  async function refreshAuthority() {
+    const [integrityPayload, arbitrationPayload] = await Promise.all([
+      fetch(apiUrl("/api/pass190/integrity")).then(checkedJson),
+      fetch(apiUrl("/api/pass190/arbitration")).then(checkedJson),
+    ])
+    if (stoppedRef.current) return
+    setIntegrity(integrityPayload)
+    setArbitration(arbitrationPayload)
+    setStatus(integrityPayload.status === "ok" ? "KERNEL AUTHORITY READY" : "DEGRADED")
+  }
 
   useEffect(() => {
     stoppedRef.current = false
@@ -80,13 +98,22 @@ export default function Pass190OperationFabricSurface() {
       setOperations(registry.operations || [])
       setIntegrity(integrityPayload)
       setArbitration(arbitrationPayload)
-      setStatus(integrityPayload.status === "ok" ? "DISTRIBUTED AUTHORITY READY" : "DEGRADED")
+      setStatus(integrityPayload.status === "ok" ? "KERNEL AUTHORITY READY" : "DEGRADED")
     }).catch((caught) => {
       if (!stoppedRef.current) {
         setStatus("DEGRADED")
         setError(caught instanceof Error ? caught.message : String(caught))
       }
     })
+
+    authorityTimerRef.current = window.setInterval(() => {
+      void refreshAuthority().catch((caught) => {
+        if (!stoppedRef.current) {
+          setStatus("AUTHORITY REFRESH DEGRADED")
+          setError(caught instanceof Error ? caught.message : String(caught))
+        }
+      })
+    }, 2000)
 
     const connect = () => {
       if (stoppedRef.current) return
@@ -95,7 +122,7 @@ export default function Pass190OperationFabricSurface() {
       setStatus(reconnectAttemptRef.current ? "EVENT CHANNEL RECOVERING" : "EVENT CHANNEL CONNECTING")
       socket.onopen = () => {
         reconnectAttemptRef.current = 0
-        setStatus("DISTRIBUTED AUTHORITY READY")
+        setStatus("KERNEL AUTHORITY READY")
       }
       socket.onmessage = (message) => {
         try {
@@ -105,6 +132,7 @@ export default function Pass190OperationFabricSurface() {
             lastSequenceRef.current = event.sequence
           }
           setEvents((previous) => [...previous.slice(-49), event])
+          void refreshAuthority().catch(() => undefined)
         } catch (caught) {
           setStatus("EVENT PAYLOAD REJECTED")
           setError(caught instanceof Error ? caught.message : String(caught))
@@ -123,19 +151,11 @@ export default function Pass190OperationFabricSurface() {
     return () => {
       stoppedRef.current = true
       if (reconnectTimerRef.current !== null) window.clearTimeout(reconnectTimerRef.current)
+      if (authorityTimerRef.current !== null) window.clearInterval(authorityTimerRef.current)
       socketRef.current?.close()
       socketRef.current = null
     }
   }, [])
-
-  async function refreshAuthority() {
-    const [integrityPayload, arbitrationPayload] = await Promise.all([
-      fetch(apiUrl("/api/pass190/integrity")).then(checkedJson),
-      fetch(apiUrl("/api/pass190/arbitration")).then(checkedJson),
-    ])
-    setIntegrity(integrityPayload)
-    setArbitration(arbitrationPayload)
-  }
 
   async function invoke() {
     setError("")
@@ -160,7 +180,7 @@ export default function Pass190OperationFabricSurface() {
     <header style={{ display: "flex", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
       <div>
         <h2 style={{ margin: 0 }}>Pass 190 Operation Fabric</h2>
-        <p style={{ margin: "4px 0 0", color: "#9ab9c9" }}>Authenticated registry authority, distributed singleton fencing, persistent Hash72 lineage, native compiler parity, and resumable events.</p>
+        <p style={{ margin: "4px 0 0", color: "#9ab9c9" }}>Atomic snapshots, lease-transition receipts, kernel-authority fencing, persistent Hash72 lineage, native compiler parity, and resumable events.</p>
       </div>
       <strong>{status}</strong>
     </header>
@@ -172,7 +192,7 @@ export default function Pass190OperationFabricSurface() {
         <p style={{ color: "#9ab9c9" }}>{current?.canonical_name || "Loading registry"}</p>
         <label>Arguments<textarea value={argumentsText} onChange={(event) => setArgumentsText(event.target.value)} rows={8} style={{ ...field, marginTop: 6, fontFamily: "monospace" }} /></label>
         <label style={{ display: "block", marginTop: 10 }}>Signed capability token<input type="password" autoComplete="off" value={capabilityToken} onChange={(event) => setCapabilityToken(event.target.value)} placeholder={current?.capability_scope === "public" ? "Not required" : current?.capability_scope || "Protected operation"} style={{ ...field, marginTop: 6 }} /></label>
-        <button onClick={invoke} style={{ marginTop: 12, borderRadius: 8, padding: "10px 16px", cursor: "pointer" }}>Invoke through distributed VM81 authority</button>
+        <button onClick={invoke} style={{ marginTop: 12, borderRadius: 8, padding: "10px 16px", cursor: "pointer" }}>Invoke through kernel authority</button>
         {error && <p role="alert" style={{ color: "#ffb2a6" }}>{error}</p>}
       </section>
       <section style={{ display: "grid", gap: 14 }}>
@@ -183,8 +203,13 @@ export default function Pass190OperationFabricSurface() {
             <dt>Events</dt><dd>{String(integrity?.event_count ?? 0)}</dd>
             <dt>Fence witnesses</dt><dd>{String(arbitration?.fence_count ?? 0)}</dd>
             <dt>Highest fence</dt><dd>{String(arbitration?.highest_committed_fence ?? 0)}</dd>
-            <dt>Admission lease</dt><dd>{arbitration?.active ? "ACTIVE" : "RELEASED"}</dd>
+            <dt>Lease transitions</dt><dd>{String(arbitration?.lease_transition_count ?? 0)}</dd>
+            <dt>Last transition</dt><dd>{arbitration?.last_transition || "—"}</dd>
+            <dt>Admission lease</dt><dd>{String(arbitration?.lease_state || "absent").toUpperCase()}</dd>
             <dt>Lease holder</dt><dd style={{ overflowWrap: "anywhere" }}>{arbitration?.holder_id || "—"}</dd>
+            <dt>Atomic snapshot</dt><dd>{integrity?.atomic_snapshot_verified ? "VERIFIED" : "UNVERIFIED"}</dd>
+            <dt>Lease receipt chain</dt><dd>{arbitration?.lease_receipt_chain_verified ? "VERIFIED" : "UNVERIFIED"}</dd>
+            <dt>Kernel authority</dt><dd>{integrity?.kernel_authority_verified ? "VERIFIED" : "UNVERIFIED"}</dd>
             <dt>Metadata</dt><dd>{integrity?.metadata_complete ? "VERIFIED" : "UNVERIFIED"}</dd>
             <dt>Event topology</dt><dd>{integrity?.events_verified ? "VERIFIED" : "UNVERIFIED"}</dd>
             <dt>Distributed singleton</dt><dd>{integrity?.distributed_singleton_verified ? "VERIFIED" : "UNVERIFIED"}</dd>
@@ -197,10 +222,11 @@ export default function Pass190OperationFabricSurface() {
           {result ? <pre style={{ whiteSpace: "pre-wrap", overflowWrap: "anywhere" }}>{JSON.stringify(result, null, 2)}</pre> : <p style={{ color: "#9ab9c9" }}>No operation admitted in this window.</p>}
         </article>
         <article style={{ border: "1px solid #284552", borderRadius: 10, padding: 14, maxHeight: 260, overflow: "auto" }}>
-          <h3 style={{ marginTop: 0 }}>Verified fenced event channel</h3>
+          <h3 style={{ marginTop: 0 }}>Verified kernel-authority event channel</h3>
           {events.slice().reverse().map((event, index) => <div key={`${event.sequence ?? event.event_type}-${index}`} style={{ borderTop: "1px solid #203845", padding: "8px 0" }}>
             <strong>{event.event_type}</strong>{event.operation_id && <span> · {event.operation_id}</span>}{typeof event.sequence === "number" && <span> · sequence {event.sequence}</span>}{typeof event.fencing_token === "number" && <span> · fence {event.fencing_token}</span>}
             {event.hash72 && <div style={{ color: "#9ab9c9", overflowWrap: "anywhere" }}>{event.hash72}</div>}
+            {event.kernel_authority_hash72 && <div style={{ color: "#7898aa", overflowWrap: "anywhere" }}>kernel {event.kernel_authority_hash72}</div>}
           </div>)}
         </article>
       </section>
