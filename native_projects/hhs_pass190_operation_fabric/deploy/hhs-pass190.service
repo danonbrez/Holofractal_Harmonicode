@@ -1,5 +1,5 @@
 [Unit]
-Description=HHS Pass 190 Iteration 2 Operation Authority
+Description=HHS Pass 190 Iteration 3 Operation and Compiler Authority
 After=network-online.target
 Wants=network-online.target
 
@@ -9,7 +9,7 @@ User=hhs
 Group=hhs
 WorkingDirectory=/opt/hhs/Holofractal_Harmonicode/native_projects/hhs_pass190_operation_fabric
 Environment=PYTHONPATH=python:server
-ExecStart=/usr/bin/python3 server/hhs_pass190_iteration2_server.py --host 127.0.0.1 --port 8190 --database /var/lib/hhs/pass190-authority.sqlite3
+ExecStart=/usr/bin/python3 server/hhs_pass190_iteration3_server.py --host 127.0.0.1 --port 8190 --database /var/lib/hhs/pass190-authority.sqlite3
 Restart=on-failure
 RestartSec=2
 NoNewPrivileges=true
