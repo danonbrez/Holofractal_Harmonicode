@@ -1,3 +1,5 @@
+import { sha256Bytes } from '../sha256.mjs';
+
 const encoder = new TextEncoder();
 
 const DOMAIN = encoder.encode('HHS-P150-HASH216-CONSTRAINT-GENOME-V1\0');
@@ -36,9 +38,7 @@ function hexToBytes(value) {
 }
 
 async function sha256(bytes) {
-  const subtle = globalThis.crypto?.subtle;
-  if (!subtle) throw new Error('Web Crypto SHA-256 is required');
-  return new Uint8Array(await subtle.digest('SHA-256', bytes));
+  return sha256Bytes(bytes);
 }
 
 function canonicalValue(value) {
