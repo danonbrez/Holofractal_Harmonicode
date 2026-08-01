@@ -1,5 +1,5 @@
 [Unit]
-Description=HHS Pass 190 Iteration 3 Operation and Compiler Authority
+Description=HHS Pass 190 Iteration 3 Native Compiler and Authenticated Authority
 After=network-online.target
 Wants=network-online.target
 
@@ -7,14 +7,22 @@ Wants=network-online.target
 Type=simple
 User=hhs
 Group=hhs
-WorkingDirectory=/opt/hhs/Holofractal_Harmonicode/native_projects/hhs_pass190_operation_fabric
-Environment=PYTHONPATH=python:server
+WorkingDirectory=/opt/hhs/pass190-operation-fabric
+EnvironmentFile=/etc/hhs/pass190.env
+Environment=PYTHONPATH=/opt/hhs/pass190-operation-fabric/python:/opt/hhs/pass190-operation-fabric/server
 ExecStart=/usr/bin/python3 server/hhs_pass190_iteration3_server.py --host 127.0.0.1 --port 8190 --database /var/lib/hhs/pass190-authority.sqlite3
 Restart=on-failure
 RestartSec=2
+UMask=0077
 NoNewPrivileges=true
 PrivateTmp=true
 ProtectSystem=strict
+ProtectHome=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+LockPersonality=true
 ReadWritePaths=/var/lib/hhs
 
 [Install]
