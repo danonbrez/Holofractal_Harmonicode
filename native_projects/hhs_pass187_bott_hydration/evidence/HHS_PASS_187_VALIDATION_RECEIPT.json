@@ -1,0 +1,33 @@
+{
+  "authoritative_baseline": "347e05bd715639cd98b085adbd56cd3567d4f92b",
+  "classification": "HHS_PASS_187_CONTRACT_FROZEN_HYDRATION_BASELINE_VERIFIED",
+  "contract": "HHS-P187-BP-XNOR-IPRE-VM81-Q144-G243-X64",
+  "inherited_pass186_merge": "fd42056c22071d290945b02efe3a5752aaa3d737",
+  "receipt_sha256": "bd0de38c24b2bc919014b508d250dbe58436331352440f02f1d80be862b2cddd",
+  "schema": "HHS_PASS_187_CONTRACT_AND_BENCHMARK_RECEIPT_V1",
+  "scope_status": {
+    "formal_contract_written": true,
+    "full_pass187_runtime_implementation_complete": false,
+    "pass186_native_tests_rerun": true,
+    "pass186_no_float_disassembly_scan": true,
+    "pass187_hydration_benchmark_run": true
+  },
+  "sha256": {
+    "benchmark_report_canonical": "0382a2193da3cbceade64d9962f092ae0ce4949f7a7fe687920ed1762ca38d68",
+    "benchmark_report_file": "1519eb3bf63ad87350f5dcee589f5eacfd7caa8d0edaf36b686d528ef8de7161",
+    "benchmark_source": "c2353b14796fc9936a2fee58a480badd18232306ab9409e3f41b450fe64acdfe",
+    "contract": "7c2bbc001dccb2ded4d1a270104c7d6e73b7eab714fcf5b09faab57edfb4a4c3"
+  },
+  "validation": {
+    "active_period_two_states": 629856,
+    "asymmetric_collapse_states": 629856,
+    "coordinate_drift": 0,
+    "deterministic_checksum_u64": "11e3bbf0214751c3",
+    "full_sweeps": 7,
+    "gear_preserved_states": 1259712,
+    "hydrated_addresses": 1259712,
+    "median_ns_nonauthoritative": 34050444,
+    "p95_ns_nonauthoritative": 35445900,
+    "states_per_second_median_nonauthoritative": 36995464
+  }
+}
