@@ -1,0 +1,37 @@
+name: Browser SHA-256 Insecure-Context Regression
+
+on:
+  push:
+    paths:
+      - 'applications/holofractal_harmonizer/src/sha256.mjs'
+      - 'applications/holofractal_harmonizer/src/core.mjs'
+      - 'applications/holofractal_harmonizer/src/pass177/hash216-browser.mjs'
+      - 'applications/holofractal_harmonizer/tests/http-insecure-sha256-fallback.test.mjs'
+      - '.github/workflows/http-insecure-browser-sha256.yml'
+  pull_request:
+    paths:
+      - 'applications/holofractal_harmonizer/src/sha256.mjs'
+      - 'applications/holofractal_harmonizer/src/core.mjs'
+      - 'applications/holofractal_harmonizer/src/pass177/hash216-browser.mjs'
+      - 'applications/holofractal_harmonizer/tests/http-insecure-sha256-fallback.test.mjs'
+      - '.github/workflows/http-insecure-browser-sha256.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  insecure-context-fallback:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate module syntax
+        run: |
+          node --check applications/holofractal_harmonizer/src/sha256.mjs
+          node --check applications/holofractal_harmonizer/src/core.mjs
+          node --check applications/holofractal_harmonizer/src/pass177/hash216-browser.mjs
+      - name: Run insecure-context SHA-256 regression
+        run: node --test applications/holofractal_harmonizer/tests/http-insecure-sha256-fallback.test.mjs
