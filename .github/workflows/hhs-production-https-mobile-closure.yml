@@ -1,0 +1,54 @@
+name: HHS Production HTTPS Mobile Closure
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - scripts/complete_hhs_production_https_mobile.sh
+      - applications/holofractal_harmonizer/src/sha256.mjs
+      - applications/holofractal_harmonizer/src/core.mjs
+      - applications/holofractal_harmonizer/src/pass177/hash216-browser.mjs
+      - applications/holofractal_harmonizer/src/mobile-first-paint-fix.mjs
+      - applications/holofractal_harmonizer/src/production-startup-coordinator.mjs
+      - applications/holofractal_harmonizer/tests/http-insecure-sha256-fallback.test.mjs
+      - applications/holofractal_harmonizer/tests/mobile-first-paint-fix.test.mjs
+      - .github/workflows/hhs-production-https-mobile-closure.yml
+  pull_request:
+    paths:
+      - scripts/complete_hhs_production_https_mobile.sh
+      - applications/holofractal_harmonizer/src/sha256.mjs
+      - applications/holofractal_harmonizer/src/core.mjs
+      - applications/holofractal_harmonizer/src/pass177/hash216-browser.mjs
+      - applications/holofractal_harmonizer/src/mobile-first-paint-fix.mjs
+      - applications/holofractal_harmonizer/src/production-startup-coordinator.mjs
+      - applications/holofractal_harmonizer/tests/http-insecure-sha256-fallback.test.mjs
+      - applications/holofractal_harmonizer/tests/mobile-first-paint-fix.test.mjs
+      - .github/workflows/hhs-production-https-mobile-closure.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate production closure shell
+        run: bash -n scripts/complete_hhs_production_https_mobile.sh
+      - name: Validate browser modules
+        run: |
+          node --check applications/holofractal_harmonizer/src/sha256.mjs
+          node --check applications/holofractal_harmonizer/src/core.mjs
+          node --check applications/holofractal_harmonizer/src/pass177/hash216-browser.mjs
+          node --check applications/holofractal_harmonizer/src/mobile-first-paint-fix.mjs
+          node --check applications/holofractal_harmonizer/src/production-startup-coordinator.mjs
+      - name: Run insecure-context and mobile first-paint regressions
+        run: |
+          node --test \
+            applications/holofractal_harmonizer/tests/http-insecure-sha256-fallback.test.mjs \
+            applications/holofractal_harmonizer/tests/mobile-first-paint-fix.test.mjs
