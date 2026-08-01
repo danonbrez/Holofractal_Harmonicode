@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>HHS Pass 189 — HQLH Runtime</title>
+<style>
+:root{color-scheme:dark;background:#071017;color:#e9f7ff;font-family:Inter,system-ui,sans-serif;--panel:#0d1b25;--line:#254253;--cyan:#72e7ff;--gold:#ffd675;--muted:#9fb4c2}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 20% 0,#173247 0,#071017 42%);min-height:100vh}.shell{max-width:1500px;margin:auto;padding:18px}.top{display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap}.badge{border:1px solid var(--cyan);color:var(--cyan);padding:6px 10px;border-radius:999px;font-size:12px}.grid{display:grid;grid-template-columns:minmax(300px,420px) 1fr;gap:16px;margin-top:16px}.panel{background:rgba(13,27,37,.92);border:1px solid var(--line);border-radius:14px;padding:14px;box-shadow:0 15px 50px #0006}.controls{display:grid;gap:10px}label{font-size:12px;color:var(--muted)}input,textarea,button{width:100%;border-radius:9px;border:1px solid var(--line);background:#08141d;color:#e9f7ff;padding:10px}textarea{min-height:95px;resize:vertical}button{cursor:pointer;background:linear-gradient(135deg,#174b60,#223c54);font-weight:700}button:hover{border-color:var(--cyan)}.metrics{display:grid;grid-template-columns:repeat(4,minmax(110px,1fr));gap:10px}.metric{background:#08141d;border:1px solid var(--line);padding:10px;border-radius:10px}.metric b{display:block;color:var(--gold);font-size:18px}.state-grid{display:grid;grid-template-columns:repeat(9,minmax(45px,1fr));gap:5px;margin-top:10px}.cell{padding:7px 4px;border:1px solid var(--line);border-radius:7px;text-align:center;font-size:11px;background:#091821}.cell.active{border-color:var(--cyan);box-shadow:0 0 12px #72e7ff44}.split{display:grid;grid-template-columns:1fr 1fr;gap:12px}.scroll{max-height:330px;overflow:auto}pre{white-space:pre-wrap;word-break:break-word;font-size:11px;color:#cbe8f5}.membrane{border-left:3px solid var(--gold);padding:7px 9px;margin:7px 0;background:#0a1620}.status{color:var(--muted);font-size:12px}@media(max-width:900px){.grid,.split{grid-template-columns:1fr}.metrics{grid-template-columns:repeat(2,1fr)}.state-grid{grid-template-columns:repeat(6,1fr)}}
+</style>
+</head>
+<body>
+<div class="shell">
+  <div class="top"><div><h1>Pass 189 HQLH Runtime</h1><div class="status">Exact Lo Shu 41 lanes · P+1 membranes · XNOR ternary · V72 · Hash216 · DigitalOcean authority</div></div><div class="badge" id="health">CONNECTING</div></div>
+  <div class="grid">
+    <section class="panel controls">
+      <label>Projected address (0–1,259,711)<input id="projected" type="number" min="0" max="1259711" value="0"></label>
+      <label>Base-41 path (comma-separated −20…20)<input id="path" value="8,-8,0"></label>
+      <label>Exact equation/source<textarea id="source">List(01,xy)==(yx=01)+(zw*wz)</textarea></label>
+      <div class="split"><label>XNOR A<input id="a" type="number" min="0" max="1" value="1"></label><label>XNOR B<input id="b" type="number" min="0" max="1" value="1"></label></div>
+      <button id="hydrate">Hydrate and admit</button><button id="membranes">Inspect membranes only</button>
+      <div class="status" id="message">No physical output is emitted without real calibration evidence.</div>
+    </section>
+    <main class="panel">
+      <div class="metrics"><div class="metric">Cell 81<b id="cell">—</b></div><div class="metric">Phase 72<b id="phase">—</b></div><div class="metric">Ternary<b id="ternary">—</b></div><div class="metric">Receipt<b id="receipt">—</b></div></div>
+      <h3>72-coordinate topology</h3><div class="state-grid" id="v72"></div>
+      <div class="split" style="margin-top:14px"><section><h3>Membranes</h3><div class="scroll" id="membraneList"></div></section><section><h3>Receipt and projections</h3><div class="scroll"><pre id="output">Hydrate a state to inspect its receipt.</pre></div></section></div>
+    </main>
+  </div>
+</div>
+<script>
+const $=id=>document.getElementById(id);let last=null;
+async function json(url,options){const r=await fetch(url,options);const data=await r.json();if(!r.ok)throw new Error(data.error||r.statusText);return data}
+function renderMembranes(items){$('membraneList').innerHTML=items.map(m=>`<div class="membrane"><b>${m.kind}</b> <code>${m.operator}</code><br><small>P=${m.interior_states}, P+1=${m.outer_boundary}, depth=${m.depth}</small><br>${m.exact_source.replaceAll('&','&amp;').replaceAll('<','&lt;')}</div>`).join('')||'<div class="status">No structural membranes found.</div>'}
+function renderNode(n){last=n;$('cell').textContent=n.resolved_cell81;$('phase').textContent=n.phase72;$('ternary').textContent=n.ternary;$('receipt').textContent=n.transition_receipt.receipt_index;renderMembranes(n.membranes);$('v72').innerHTML=n.v72.map((v,i)=>`<div class="cell ${i===n.address.ordered_basis8*9?'active':''}">${v.lane}<br>${v.lo_shu}<br>u${v.phase72}</div>`).join('');$('output').textContent=JSON.stringify({hash72:n.hash72,hash216:n.hash216,receipt:n.transition_receipt,projections:n.projections},null,2);$('message').textContent='Admitted through the singleton receipt chain; physical output remains calibration-gated.'}
+async function hydrate(){try{const body={projected:+$('projected').value,path:$('path').value.trim()?$('path').value.split(',').map(Number):[],source:$('source').value,xnor_a:+$('a').value,xnor_b:+$('b').value,admit:true};renderNode(await json('/api/pass189/hydrate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}))}catch(e){$('message').textContent=e.message}}
+async function membranes(){try{const a=await json('/api/pass189/membranes',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({source:$('source').value})});renderMembranes(a.membranes);$('output').textContent=JSON.stringify(a,null,2)}catch(e){$('message').textContent=e.message}}
+$('hydrate').onclick=hydrate;$('membranes').onclick=membranes;
+json('/api/pass189/health').then(h=>{$('health').textContent=h.status.toUpperCase()+' · DIGITALOCEAN';$('health').title=JSON.stringify(h)}).catch(e=>{$('health').textContent='DEGRADED';$('message').textContent=e.message});
+</script>
+</body>
+</html>
