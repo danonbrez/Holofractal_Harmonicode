@@ -95,26 +95,53 @@ if (document.readyState === 'loading') {
 }
 
 window.HHSProductionStartupCoordinator = Object.freeze({
-  schema: 'HHS_PASS161_PRODUCTION_STARTUP_COORDINATOR_V6',
+  schema: 'HHS_PASS161_PRODUCTION_STARTUP_COORDINATOR_V7',
   assistant_requests_deferred_until_registry_ready: true,
   max_assistant_deferral_ms: MAX_ASSISTANT_DEFERRAL_MS,
   runtime_registry_has_priority: true,
   visual_ide_requests_never_deferred: true,
-  application_experience_is_synchronous_entry_dependency: true,
+  application_experience_is_awaited_entry_dependency: true,
   application_studio_launcher_capture_interposition: true,
   storybook_reel_requests_never_deferred: true,
   storybook_reel_launcher_installed: true,
   theme_bootstrap_independent_of_ide_module: true,
-  public_module_boot_concurrent: true,
+  public_module_boot_serialized_after_critical_surface: true,
   frontend_is_authority: false,
 });
 
-// The application workflow is the user-critical surface. Initialize it as a
-// synchronous dependency of the first public entry module so New App, Add
-// Files, Build & Preview, Test, and Export cannot be stranded behind a dynamic
-// import queue while the lower visual IDE and registry surfaces continue.
-startApplicationExperience();
+async function startProductionSurface() {
+  const applicationExperience = await startApplicationExperience();
+  if (!applicationExperience || applicationExperience.state !== 'INTERACTIVE') {
+    throw new Error('HHS_PRODUCTION_APPLICATION_EXPERIENCE_NOT_INTERACTIVE');
+  }
+  const publicBoot = startPublicBoot();
+  await publicBoot.applicationExperience;
+  await publicBoot.allSettled;
+  await startApplicationExperience();
+  installStorybookReelLauncher();
+  return Object.freeze({
+    schema: 'HHS_PRODUCTION_SURFACE_READY_V1',
+    application_experience: 'INTERACTIVE',
+    public_boot: publicBoot.schema,
+    critical_surface_reasserted: true,
+    frontend_is_authority: false,
+  });
+}
 
-// Launch all remaining public runtime, registry, and IDE modules. The public
-// boot layer safely reuses the already initialized application experience.
-startPublicBoot();
+const startupReady = startProductionSurface().then((record) => {
+  window.HHSProductionSurfaceReady = record;
+  window.dispatchEvent(new CustomEvent('hhs:production-surface:ready', { detail: record }));
+  return record;
+}).catch((error) => {
+  const detail = {
+    schema: 'HHS_PRODUCTION_SURFACE_FAILURE_V1',
+    error: `${error?.name || 'Error'}: ${error?.message || String(error)}`,
+    frontend_is_authority: false,
+  };
+  window.HHSProductionSurfaceFailure = Object.freeze(detail);
+  window.dispatchEvent(new CustomEvent('hhs:production-surface:error', { detail }));
+  console.error('HHS_PRODUCTION_SURFACE_FAILED', detail);
+  throw error;
+});
+
+window.HHSProductionStartupReady = startupReady;
