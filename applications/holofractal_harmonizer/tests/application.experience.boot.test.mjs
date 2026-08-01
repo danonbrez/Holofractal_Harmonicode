@@ -37,6 +37,25 @@ test('production startup awaits and reasserts the critical application surface',
   assert.match(coordinator, /HHS_PRODUCTION_SURFACE_FAILED/);
 });
 
+test('preview readiness is bound before hydration and accepts only the active frame source', () => {
+  const coordinator = read('src/production-startup-coordinator.mjs');
+  const readiness = read('src/preview-readiness.mjs');
+  const smoke = read('ux_lab/full_application_smoke.py');
+
+  assert.match(coordinator, /import \{ initPreviewReadiness \} from '\.\/preview-readiness\.mjs'/);
+  assert.ok(coordinator.indexOf('initPreviewReadiness();') < coordinator.indexOf('startProductionSurface()'));
+  assert.match(coordinator, /application_preview_readiness_bound_before_hydration: true/);
+  assert.match(readiness, /event\.source !== frame\.contentWindow/);
+  assert.match(readiness, /payload\.source !== 'hhs-application-preview'/);
+  assert.match(readiness, /frame\.dataset\.previewState = state/);
+  assert.match(readiness, /frame\.dataset\.previewReady = state === 'READY' \? 'true' : 'false'/);
+  assert.match(readiness, /payload\.kind === 'ready'/);
+  assert.match(readiness, /payload\.kind === 'error'/);
+  assert.match(smoke, /data-preview-state/);
+  assert.match(smoke, /data-preview-ready/);
+  assert.match(smoke, /APPLICATION_PREVIEW_FRAME_READY/);
+});
+
 test('New Application and Assistant are synchronous fail-closed critical surfaces', () => {
   const source = read('src/application-experience.mjs');
   const intuitive = source.indexOf("initialize('HHSIntuitiveIDE'");
