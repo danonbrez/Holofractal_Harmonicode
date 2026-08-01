@@ -53,16 +53,19 @@ def geometry(page, selector: str) -> dict[str, object]:
               node: null,
               center: null,
               elementFromPoint: null,
+              hitButtonMatches: false,
               duplicateCount: document.querySelectorAll(selector).length,
             };
           }
           const rect = node.getBoundingClientRect();
           const center = {x: rect.left + rect.width / 2, y: rect.top + rect.height / 2};
+          const hit = document.elementFromPoint(center.x, center.y);
           return {
             selector,
             node: summarize(node),
             center,
-            elementFromPoint: summarize(document.elementFromPoint(center.x, center.y)),
+            elementFromPoint: summarize(hit),
+            hitButtonMatches: Boolean(hit?.closest('button') === node),
             duplicateCount: document.querySelectorAll(selector).length,
             bodyClass: document.body.className,
           };
@@ -83,12 +86,12 @@ def verified_pointer_click(page, selector: str) -> dict[str, object]:
         raise AssertionError(f"pointer target has no visible geometry for {selector}: {evidence}")
     if evidence.get("duplicateCount") != 1:
         raise AssertionError(f"pointer target is not unique for {selector}: {evidence}")
-    if node.get("hidden") or node.get("inert") or node.get("disabled"):
-        raise AssertionError(f"pointer target is not actionable for {selector}: {evidence}")
+    if node.get("tag") != "BUTTON" or node.get("hidden") or node.get("inert") or node.get("disabled"):
+        raise AssertionError(f"pointer target is not an actionable button for {selector}: {evidence}")
     if node.get("display") == "none" or node.get("visibility") != "visible" or node.get("pointerEvents") == "none":
         raise AssertionError(f"pointer target is not rendered for {selector}: {evidence}")
-    if hit.get("tag") != "BUTTON" or hit.get("pointerEvents") == "none":
-        raise AssertionError(f"pointer hit-test does not resolve to a button for {selector}: {evidence}")
+    if not evidence.get("hitButtonMatches") or hit.get("pointerEvents") == "none":
+        raise AssertionError(f"pointer hit-test does not resolve within the button for {selector}: {evidence}")
     page.mouse.move(float(center["x"]), float(center["y"]))
     page.mouse.down()
     page.mouse.up()
