@@ -12,10 +12,13 @@ from pathlib import Path
 from typing import Any, Iterable, Mapping
 
 from hhs_pass190 import (
+    CLASSIFICATION,
+    CONTRACT_ID,
     DEFAULT_REGISTRY,
     HHSAuthorityContext,
     HHSOperationError,
     InvocationResult,
+    ReplayMismatchError,
     canonical_json,
     hash72,
     hash216,
@@ -314,7 +317,29 @@ class PersistentAuthorityContext(HHSAuthorityContext):
 
     def replay(self, receipt_hash72: str) -> InvocationResult:
         with self._lock:
-            result = super().replay(receipt_hash72)
+            receipt = self._receipts.get(receipt_hash72)
+            if receipt is None:
+                raise ReplayMismatchError("unknown receipt")
+            if receipt["operation_id"] == "system.status":
+                expected = copy.deepcopy(receipt["result"])
+                recomputed = {
+                    "status": "ok",
+                    "classification": CLASSIFICATION,
+                    "contract": CONTRACT_ID,
+                    "operations": len(self.registry.records),
+                    "state_root": receipt["state_before"],
+                    "receipt_index": receipt["receipt_index"] - 1,
+                }
+                if recomputed != expected:
+                    raise ReplayMismatchError("semantic replay mismatch")
+                payload = {key: value for key, value in receipt.items() if key not in {"hash72", "hash216"}}
+                if hash72("pass190.receipt", payload) != receipt["hash72"]:
+                    raise ReplayMismatchError("Hash72 replay mismatch")
+                if hash216("pass190.receipt.topology", payload) != receipt["hash216"]:
+                    raise ReplayMismatchError("Hash216 replay mismatch")
+                result = InvocationResult("system.status", expected, receipt, "replay", True)
+            else:
+                result = super().replay(receipt_hash72)
             self.store.append_event(
                 "operation.replayed",
                 {"operation_id": result.operation_id, "hash72": receipt_hash72, "replay_verified": True},
