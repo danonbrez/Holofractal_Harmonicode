@@ -1,4 +1,5 @@
 import './theme-bootstrap.mjs';
+import { initPreviewReadiness } from './preview-readiness.mjs';
 import { startApplicationExperience } from './application-experience.mjs';
 import { startPublicBoot } from './public-boot.mjs';
 
@@ -86,6 +87,7 @@ window.fetch = async function coordinatedFetch(input, init) {
   return originalFetch(input, init);
 };
 
+initPreviewReadiness();
 installApplicationStudioLauncherInterposition();
 
 if (document.readyState === 'loading') {
@@ -95,13 +97,15 @@ if (document.readyState === 'loading') {
 }
 
 window.HHSProductionStartupCoordinator = Object.freeze({
-  schema: 'HHS_PASS161_PRODUCTION_STARTUP_COORDINATOR_V7',
+  schema: 'HHS_PASS161_PRODUCTION_STARTUP_COORDINATOR_V8',
   assistant_requests_deferred_until_registry_ready: true,
   max_assistant_deferral_ms: MAX_ASSISTANT_DEFERRAL_MS,
   runtime_registry_has_priority: true,
   visual_ide_requests_never_deferred: true,
   application_experience_is_awaited_entry_dependency: true,
   application_studio_launcher_capture_interposition: true,
+  application_preview_readiness_bound_before_hydration: true,
+  application_preview_source_window_required: true,
   storybook_reel_requests_never_deferred: true,
   storybook_reel_launcher_installed: true,
   theme_bootstrap_independent_of_ide_module: true,
@@ -118,11 +122,13 @@ async function startProductionSurface() {
   await publicBoot.applicationExperience;
   await publicBoot.allSettled;
   await startApplicationExperience();
+  initPreviewReadiness();
   installStorybookReelLauncher();
   return Object.freeze({
-    schema: 'HHS_PRODUCTION_SURFACE_READY_V1',
+    schema: 'HHS_PRODUCTION_SURFACE_READY_V2',
     application_experience: 'INTERACTIVE',
     public_boot: publicBoot.schema,
+    preview_readiness: window.HHSApplicationPreviewReadiness?.schema || null,
     critical_surface_reasserted: true,
     frontend_is_authority: false,
   });
