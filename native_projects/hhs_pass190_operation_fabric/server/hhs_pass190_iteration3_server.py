@@ -11,6 +11,7 @@ import socket
 import sqlite3
 import struct
 import sys
+import threading
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from typing import Any, Iterable, Mapping
@@ -56,9 +57,7 @@ def websocket_text_frame(payload: Any) -> bytes:
     return bytes((0x81, 127)) + struct.pack("!Q", len(body)) + body
 
 
-def iteration3_openapi_document(
-    context: HardenedAuthorityContext,
-) -> dict[str, Any]:
+def iteration3_openapi_document(context: HardenedAuthorityContext) -> dict[str, Any]:
     document = context.openapi_document()
     document["info"]["version"] = "3.1.0"
     document["x-hhs-iteration"] = 3
@@ -78,101 +77,57 @@ def iteration3_openapi_document(
         "description": f"{AUTHORIZATION_SCHEME} <signed-token>",
     }
     paths = document.setdefault("paths", {})
-    paths.update(
-        {
-            "/api/pass190/health": {
-                "get": {
-                    "operationId": "pass190.health",
-                    "responses": {"200": {"description": "Runtime status receipt"}},
-                }
-            },
-            "/api/pass190/operations": {
-                "get": {
-                    "operationId": "pass190.operations",
-                    "responses": {"200": {"description": "Canonical operation registry"}},
-                }
-            },
-            "/api/pass190/integrity": {
-                "get": {
-                    "operationId": "pass190.integrity",
-                    "responses": {
-                        "200": {"description": "Verified persistent authority"},
-                        "503": {"description": "Persistent authority unavailable"},
-                    },
-                }
-            },
-            "/api/pass190/events": {
-                "get": {
-                    "operationId": "pass190.events",
-                    "parameters": [
-                        {"name": "after", "in": "query", "schema": {"type": "integer", "minimum": 0}},
-                        {"name": "limit", "in": "query", "schema": {"type": "integer", "minimum": 1, "maximum": 1000}},
-                    ],
-                    "responses": {"200": {"description": "Verified event page"}},
-                }
-            },
-            "/api/pass190/receipts": {
-                "get": {
-                    "operationId": "pass190.receipts",
-                    "parameters": [
-                        {"name": "after", "in": "query", "schema": {"type": "integer", "minimum": 0}},
-                        {"name": "limit", "in": "query", "schema": {"type": "integer", "minimum": 1, "maximum": 1000}},
-                    ],
-                    "responses": {"200": {"description": "Receipt page"}},
-                }
-            },
-            "/api/pass190/native-abi": {
-                "get": {
-                    "operationId": "pass190.native.abi",
-                    "responses": {"200": {"description": "Native ABI manifest"}},
-                }
-            },
-            "/api/pass190/invoke": {
-                "post": {
-                    "operationId": "pass190.invoke",
-                    "security": [{"HhsCapabilityToken": []}],
-                    "responses": {
-                        "200": {"description": "Admitted result and receipt"},
-                        "401": {"description": "Invalid capability credential"},
-                        "403": {"description": "Required scope absent"},
-                        "409": {"description": "Expected-state conflict"},
-                        "503": {"description": "Persistent authority unavailable"},
-                    },
-                }
-            },
-            "/api/pass190/replay": {
-                "post": {
-                    "operationId": "pass190.replay",
-                    "responses": {"200": {"description": "Verified replay result"}},
-                }
-            },
-            "/api/pass190/compile": {
-                "post": {
-                    "operationId": "pass190.compile",
-                    "summary": "Lower exact constructors through CST, AST, HIR, and VMIR",
-                    "responses": {"200": {"description": "Compiled program"}},
-                }
-            },
-            "/api/pass190/compile-execute": {
-                "post": {
-                    "operationId": "pass190.compile.execute",
-                    "security": [{"HhsCapabilityToken": []}],
-                    "summary": "Compile and execute through persistent VM81 authority",
-                    "responses": {
-                        "200": {"description": "Compiled program and admitted results"},
-                        "401": {"description": "Invalid capability credential"},
-                        "403": {"description": "Required scope absent"},
-                        "503": {"description": "Persistent authority unavailable"},
-                    },
-                }
+    for path, operation_id, description in (
+        ("/api/pass190/health", "pass190.health", "Runtime status receipt"),
+        ("/api/pass190/operations", "pass190.operations", "Canonical operation registry"),
+        ("/api/pass190/integrity", "pass190.integrity", "Verified persistent authority"),
+        ("/api/pass190/events", "pass190.events", "Verified event page"),
+        ("/api/pass190/receipts", "pass190.receipts", "Receipt page"),
+        ("/api/pass190/native-abi", "pass190.native.abi", "Native ABI manifest"),
+    ):
+        paths[path] = {"get": {"operationId": operation_id, "responses": {"200": {"description": description}}}}
+    paths["/api/pass190/invoke"] = {
+        "post": {
+            "operationId": "pass190.invoke",
+            "security": [{"HhsCapabilityToken": []}],
+            "responses": {
+                "200": {"description": "Admitted result and receipt"},
+                "401": {"description": "Invalid capability credential"},
+                "403": {"description": "Required scope absent"},
+                "409": {"description": "Expected-state conflict"},
+                "503": {"description": "Persistent authority unavailable"},
             },
         }
-    )
+    }
+    paths["/api/pass190/replay"] = {
+        "post": {"operationId": "pass190.replay", "responses": {"200": {"description": "Verified replay result"}}}
+    }
+    paths["/api/pass190/compile"] = {
+        "post": {
+            "operationId": "pass190.compile",
+            "summary": "Lower exact constructors through CST, AST, HIR, and VMIR",
+            "responses": {"200": {"description": "Compiled program"}},
+        }
+    }
+    paths["/api/pass190/compile-execute"] = {
+        "post": {
+            "operationId": "pass190.compile.execute",
+            "security": [{"HhsCapabilityToken": []}],
+            "summary": "Compile and execute through persistent VM81 authority",
+            "responses": {
+                "200": {"description": "Compiled program and admitted results"},
+                "401": {"description": "Invalid capability credential"},
+                "403": {"description": "Required scope absent"},
+                "503": {"description": "Persistent authority unavailable"},
+            },
+        }
+    }
     return document
 
 
 class Pass190Iteration3Server(ThreadingHTTPServer):
-    daemon_threads = True
+    daemon_threads = False
+    block_on_close = True
 
     def __init__(
         self,
@@ -184,9 +139,11 @@ class Pass190Iteration3Server(ThreadingHTTPServer):
         self.context = context
         self.compiler = compiler
         self.capability_secret = capability_secret
+        self.closing = threading.Event()
         super().__init__(address, Handler)
 
     def server_close(self) -> None:
+        self.closing.set()
         super().server_close()
         self.context.close()
 
@@ -205,6 +162,10 @@ class Handler(BaseHTTPRequestHandler):
     @property
     def capability_secret(self) -> str | bytes:
         return self.server.capability_secret  # type: ignore[attr-defined]
+
+    @property
+    def closing(self) -> threading.Event:
+        return self.server.closing  # type: ignore[attr-defined]
 
     def _write(self, status: int, payload: Any) -> None:
         body = canonical_json(payload).encode("utf-8")
@@ -231,13 +192,7 @@ class Handler(BaseHTTPRequestHandler):
         return payload
 
     @staticmethod
-    def _query_integer(
-        query: Mapping[str, list[str]],
-        name: str,
-        default: int,
-        minimum: int,
-        maximum: int,
-    ) -> int:
+    def _query_integer(query: Mapping[str, list[str]], name: str, default: int, minimum: int, maximum: int) -> int:
         values = query.get(name, [str(default)])
         if len(values) != 1:
             raise ArgumentValidationError(f"duplicate {name} parameter")
@@ -256,21 +211,17 @@ class Handler(BaseHTTPRequestHandler):
             cls._query_integer(query, "limit", 100, 1, 1000),
         )
 
-    def _authorized_capabilities(
-        self,
-        operation_ids: Iterable[str],
-    ) -> tuple[frozenset[str], str]:
+    def _authorized_capabilities(self, operation_ids: Iterable[str]) -> tuple[frozenset[str], str]:
         if self.headers.get("X-HHS-Capability"):
             raise CapabilityTokenError("unsigned X-HHS-Capability claims are forbidden")
-        required = {
-            self.context.registry.resolve(operation_id).capability
-            for operation_id in operation_ids
-        } - {"public", "none"}
+        required = {self.context.registry.resolve(operation_id).capability for operation_id in operation_ids} - {"public", "none"}
         authorization = self.headers.get("Authorization")
         if not required and not authorization:
             return frozenset(), "anonymous"
-        token = parse_authorization_header(authorization)
-        principal = verify_capability_token(token, self.capability_secret)
+        principal = verify_capability_token(
+            parse_authorization_header(authorization),
+            self.capability_secret,
+        )
         missing = required - principal.scopes
         if missing:
             raise CapabilityDeniedError(f"missing authenticated capabilities: {sorted(missing)}")
@@ -293,20 +244,14 @@ class Handler(BaseHTTPRequestHandler):
         if self.headers.get("Upgrade", "").lower() != "websocket":
             self._write(426, {"error": "websocket_upgrade_required"})
             return
-        connection_tokens = {
-            value.strip().lower()
-            for value in self.headers.get("Connection", "").split(",")
-            if value.strip()
-        }
-        if "upgrade" not in connection_tokens:
+        tokens = {value.strip().lower() for value in self.headers.get("Connection", "").split(",") if value.strip()}
+        if "upgrade" not in tokens:
             raise ArgumentValidationError("invalid websocket Connection header")
         if self.headers.get("Sec-WebSocket-Version") != "13":
             self._write(426, {"error": "unsupported_websocket_version"})
             return
         key = self._validated_websocket_key(self.headers.get("Sec-WebSocket-Key"))
-        accept = base64.b64encode(
-            hashlib.sha1((key + WS_GUID).encode("ascii")).digest()
-        ).decode("ascii")
+        accept = base64.b64encode(hashlib.sha1((key + WS_GUID).encode("ascii")).digest()).decode("ascii")
         self.send_response(101, "Switching Protocols")
         self.send_header("Upgrade", "websocket")
         self.send_header("Connection", "Upgrade")
@@ -320,15 +265,10 @@ class Handler(BaseHTTPRequestHandler):
                 "after": sequence,
                 "integrity": self.context.integrity_report(),
             }))
-            while True:
-                events = self.context.wait_for_events(sequence, timeout=15)
-                if not events:
-                    self.connection.sendall(websocket_text_frame({
-                        "schema": "HHS_PASS_190_EVENT_V1",
-                        "event_type": "channel.heartbeat",
-                        "after": sequence,
-                    }))
-                    continue
+            while not self.closing.is_set():
+                events = self.context.wait_for_events(sequence, timeout=0.25)
+                if self.closing.is_set():
+                    break
                 for event in events:
                     sequence = max(sequence, int(event["sequence"]))
                     self.connection.sendall(websocket_text_frame(event))
@@ -344,31 +284,24 @@ class Handler(BaseHTTPRequestHandler):
         try:
             if parsed.path == "/api/pass190/health":
                 self._write(200, self.context.invoke("system.status", {}, surface="http").to_dict())
-                return
-            if parsed.path == "/api/pass190/operations":
+            elif parsed.path == "/api/pass190/operations":
                 self._write(200, {"operations": [record.raw for record in self.context.registry.records]})
-                return
-            if parsed.path == "/api/pass190/integrity":
+            elif parsed.path == "/api/pass190/integrity":
                 self._write(200, self.context.integrity_report())
-                return
-            if parsed.path == "/api/pass190/events":
+            elif parsed.path == "/api/pass190/events":
                 after, limit = self._range(query)
                 self._write(200, {"events": self.context.events_after(after, limit)})
-                return
-            if parsed.path == "/api/pass190/receipts":
+            elif parsed.path == "/api/pass190/receipts":
                 after, limit = self._range(query)
                 self._write(200, {"receipts": self.context.receipts_after(after, limit)})
-                return
-            if parsed.path == "/api/pass190/native-abi":
+            elif parsed.path == "/api/pass190/native-abi":
                 self._write(200, self._manifest())
-                return
-            if parsed.path == "/api/pass190/ws":
+            elif parsed.path == "/api/pass190/ws":
                 self._websocket(query)
-                return
-            if parsed.path == "/openapi.json":
+            elif parsed.path == "/openapi.json":
                 self._write(200, iteration3_openapi_document(self.context))
-                return
-            self._write(404, {"error": "not_found"})
+            else:
+                self._write(404, {"error": "not_found"})
         except (PersistentStoreError, sqlite3.Error, OSError) as exc:
             self._write(503, {"error": "persistent_authority_unavailable", "message": str(exc)})
         except (ValueError, HHSOperationError) as exc:
@@ -383,15 +316,14 @@ class Handler(BaseHTTPRequestHandler):
                 if not isinstance(operation_id, str):
                     raise ArgumentValidationError("operation_id must be a string")
                 capabilities, principal = self._authorized_capabilities([operation_id])
-                result = self.context.invoke(
+                self._write(200, self.context.invoke(
                     operation_id,
                     payload.get("arguments", {}),
                     surface=f"http:{principal}",
                     capabilities=capabilities,
                     idempotency_key=self.headers.get("Idempotency-Key"),
                     expected_state=self.headers.get("X-HHS-Expected-State"),
-                )
-                self._write(200, result.to_dict())
+                ).to_dict())
                 return
             if parsed.path == "/api/pass190/replay":
                 receipt_hash = payload["hash72"]
@@ -408,9 +340,7 @@ class Handler(BaseHTTPRequestHandler):
                 if parsed.path.endswith("compile-execute"):
                     operation_ids = [item["operation_id"] for item in program["instructions"]]
                     capabilities, _principal = self._authorized_capabilities(operation_ids)
-                    response["results"] = self.compiler.execute(
-                        program, self.context, capabilities=capabilities
-                    )
+                    response["results"] = self.compiler.execute(program, self.context, capabilities=capabilities)
                 self._write(200, response)
                 return
             self._write(404, {"error": "not_found"})
@@ -462,6 +392,7 @@ def main() -> int:
     except KeyboardInterrupt:
         pass
     finally:
+        server.shutdown()
         server.server_close()
     return 0
 
