@@ -36,80 +36,43 @@ def geometry(page, selector: str) -> dict[str, object]:
             return {
               tag: element.tagName,
               id: element.id || null,
-              className: String(element.className || ''),
               hidden: Boolean(element.hidden),
               inert: Boolean(element.inert),
-              ariaHidden: element.getAttribute('aria-hidden'),
               disabled: Boolean(element.disabled),
-              rect: {
-                x: rect.x,
-                y: rect.y,
-                width: rect.width,
-                height: rect.height,
-                top: rect.top,
-                right: rect.right,
-                bottom: rect.bottom,
-                left: rect.left,
-              },
-              offsetWidth: element.offsetWidth,
-              offsetHeight: element.offsetHeight,
-              clientWidth: element.clientWidth,
-              clientHeight: element.clientHeight,
-              scrollWidth: element.scrollWidth,
-              scrollHeight: element.scrollHeight,
+              rect: {x: rect.x, y: rect.y, width: rect.width, height: rect.height},
               display: style.display,
               visibility: style.visibility,
               opacity: style.opacity,
-              position: style.position,
-              overflow: style.overflow,
-              contentVisibility: style.contentVisibility,
-              transform: style.transform,
               pointerEvents: style.pointerEvents,
-              zIndex: style.zIndex,
+              transform: style.transform,
             };
           };
           if (!node) {
             return {
-              node: null,
               selector,
+              node: null,
+              center: null,
+              elementFromPoint: null,
               duplicateCount: document.querySelectorAll(selector).length,
-              documentClass: document.documentElement.className,
-              bodyClass: document.body.className,
             };
           }
-          const ancestors = [];
-          let current = node;
-          while (current && ancestors.length < 14) {
-            ancestors.push(summarize(current));
-            current = current.parentElement;
-          }
           const rect = node.getBoundingClientRect();
-          const centerX = rect.left + rect.width / 2;
-          const centerY = rect.top + rect.height / 2;
-          const topElement = rect.width > 0 && rect.height > 0
-            ? document.elementFromPoint(centerX, centerY)
-            : null;
+          const center = {x: rect.left + rect.width / 2, y: rect.top + rect.height / 2};
           return {
+            selector,
             node: summarize(node),
-            ancestors,
-            center: {x: centerX, y: centerY},
-            elementFromPoint: summarize(topElement),
-            viewport: {
-              innerWidth: window.innerWidth,
-              innerHeight: window.innerHeight,
-              devicePixelRatio: window.devicePixelRatio,
-            },
-            documentClass: document.documentElement.className,
-            bodyClass: document.body.className,
-            activeElement: summarize(document.activeElement),
+            center,
+            elementFromPoint: summarize(document.elementFromPoint(center.x, center.y)),
             duplicateCount: document.querySelectorAll(selector).length,
+            bodyClass: document.body.className,
           };
         }""",
         selector,
     )
 
 
-def verified_pointer_click(page, selector: str, evidence: dict[str, object]) -> None:
+def verified_pointer_click(page, selector: str) -> dict[str, object]:
+    evidence = geometry(page, selector)
     node = evidence.get("node")
     center = evidence.get("center")
     hit = evidence.get("elementFromPoint")
@@ -125,38 +88,47 @@ def verified_pointer_click(page, selector: str, evidence: dict[str, object]) -> 
     if node.get("display") == "none" or node.get("visibility") != "visible" or node.get("pointerEvents") == "none":
         raise AssertionError(f"pointer target is not rendered for {selector}: {evidence}")
     if hit.get("tag") != "BUTTON" or hit.get("pointerEvents") == "none":
-        raise AssertionError(f"pointer hit-test does not resolve to the button for {selector}: {evidence}")
-    x = float(center["x"])
-    y = float(center["y"])
-    page.mouse.move(x, y)
+        raise AssertionError(f"pointer hit-test does not resolve to a button for {selector}: {evidence}")
+    page.mouse.move(float(center["x"]), float(center["y"]))
     page.mouse.down()
     page.mouse.up()
+    return evidence
 
 
 def create_project(page, template: str, name: str):
     phase("CREATE_PROJECT", template=template, project_name=name)
-    page.locator("#ide-new-app").click()
+
+    launcher = page.locator("#ide-new-app")
+    expect(launcher).to_be_visible(timeout=20_000)
+    launcher_evidence = verified_pointer_click(page, "#ide-new-app")
+
     gallery = page.locator("#ide-application-gallery")
     expect(gallery).to_be_visible(timeout=20_000)
     template_selector = f'#ide-application-gallery [data-application-template="{template}"]'
     template_button = page.locator(template_selector)
-    gallery_evidence = geometry(page, "#ide-application-gallery")
-    template_evidence = geometry(page, template_selector)
-    phase(
-        "TEMPLATE_GEOMETRY",
-        template=template,
-        gallery=gallery_evidence,
-        template_button=template_evidence,
-    )
     expect(template_button).to_be_visible(timeout=20_000)
-    verified_pointer_click(page, template_selector, template_evidence)
+    template_evidence = verified_pointer_click(page, template_selector)
     expect(template_button).to_have_attribute("aria-pressed", "true", timeout=20_000)
+
     page.locator("#ide-application-name").fill(name)
-    page.locator("#ide-create-application-project").click()
+    commit_selector = "#ide-create-application-project"
+    expect(page.locator(commit_selector)).to_be_visible(timeout=20_000)
+    commit_evidence = verified_pointer_click(page, commit_selector)
+
+    # The application preview iframe navigates as part of project creation.
+    # Real mouse input is retained, while product postconditions replace
+    # Playwright's unrelated automatic top-level navigation wait.
     expect(gallery).to_be_hidden(timeout=20_000)
+    expect(page.locator("#ide-project-name")).to_have_value(name, timeout=20_000)
     expect(page.locator("#ide-preview-panel.active")).to_be_visible(timeout=20_000)
     frame = application_frame(page)
-    phase("PROJECT_READY", template=template)
+    phase(
+        "PROJECT_READY",
+        template=template,
+        launcher=launcher_evidence,
+        template_button=template_evidence,
+        commit_button=commit_evidence,
+    )
     return frame
 
 
@@ -201,15 +173,15 @@ def run() -> dict[str, object]:
 
             current_phase = "WAIT_APPLICATION_STUDIO"
             phase(current_phase)
-            new_application = page.locator("#ide-new-app")
-            expect(new_application).to_be_visible(timeout=60_000)
-            expect(new_application).to_contain_text("New Application")
+            expect(page.locator("#ide-new-app")).to_be_visible(timeout=60_000)
+            expect(page.locator("#ide-new-app")).to_contain_text("New Application")
             expect(page.locator("#assistant-home")).to_be_visible(timeout=20_000)
             expect(page.locator("#assistant-view")).to_be_visible(timeout=20_000)
             expect(page.locator("#prompt-input")).to_be_visible(timeout=20_000)
             current_phase = "APPLICATION_STUDIO_READY"
             phase(current_phase)
 
+            current_phase = "PONG"
             pong = create_project(page, "pong", "Browser Pong Acceptance")
             expect(pong.locator("#game")).to_be_visible()
             expect(pong.locator("#start")).to_be_visible()
@@ -221,35 +193,41 @@ def run() -> dict[str, object]:
             expect(page.locator("#ide-file-tree .ide-file-item").first).to_have_attribute("draggable", "false")
             phase("PONG_VERIFIED")
 
+            current_phase = "CALCULATOR"
             calculator = create_project(page, "calculator", "Calculator Acceptance")
             for value in ["7", "×", "8", "="]:
                 calculator.locator(f'[data-value="{value}"]').click()
             expect(calculator.locator("#display")).to_have_text("56")
             phase("CALCULATOR_VERIFIED")
 
+            current_phase = "PUZZLE"
             puzzle = create_project(page, "puzzle", "Puzzle Acceptance")
             expect(puzzle.locator(".tile")).to_have_count(16)
             puzzle.locator("#shuffle").click()
             phase("PUZZLE_VERIFIED")
 
+            current_phase = "DOCUMENT"
             document = create_project(page, "document", "Document Acceptance")
             expect(document.locator("#editor")).to_have_attribute("contenteditable", "true")
             document.locator("#editor").fill("A real editable HHS document now.")
             expect(document.locator("#words")).to_contain_text("6 words")
             phase("DOCUMENT_VERIFIED")
 
+            current_phase = "AUDIO"
             audio = create_project(page, "audio", "Audio Acceptance")
             expect(audio.locator(".pad")).to_have_count(4)
             expect(audio.locator("#record")).to_be_visible()
             audio.locator(".pad").first.click()
             phase("AUDIO_VERIFIED")
 
+            current_phase = "VIDEO"
             video = create_project(page, "video", "Video Acceptance")
             expect(video.locator("#stage")).to_be_visible()
             expect(video.locator("#record")).to_be_visible()
             expect(video.locator("#title")).to_have_value("HHS Motion")
             phase("VIDEO_VERIFIED")
 
+            current_phase = "ASSISTANT"
             page.locator("#assistant-home").click()
             expect(page.locator("#assistant-view")).to_be_visible(timeout=20_000)
             expect(page.locator("#prompt-input")).to_be_visible(timeout=20_000)
@@ -257,6 +235,7 @@ def run() -> dict[str, object]:
             expect(page.locator("#ide-view")).to_be_visible(timeout=20_000)
             phase("ASSISTANT_VERIFIED")
 
+            current_phase = "DEPLOYABLE_ZIP"
             create_project(page, "calculator", "Deployable Calculator")
             with page.expect_download(timeout=30_000) as download_info:
                 page.locator("#ide-download-deployable-app").click()
@@ -275,6 +254,7 @@ def run() -> dict[str, object]:
                     assert manifest["project_local_javascript_inlined"] is True
             phase("ZIP_VERIFIED")
 
+            current_phase = "RUNTIME_CONSOLE"
             diagnostic = context.new_page()
             diagnostic_response = diagnostic.goto(
                 f"{BASE_URL}/runtime-console/",
@@ -306,6 +286,7 @@ def run() -> dict[str, object]:
                 "drag_safe_file_items": True,
                 "dom_driven_acceptance": True,
                 "verified_real_pointer_input": True,
+                "navigation_wait_false_positive_removed": True,
                 "elapsed_ms": round((time.monotonic() - started) * 1000),
             }
             if not result["ok"]:
