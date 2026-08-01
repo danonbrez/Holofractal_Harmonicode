@@ -1,0 +1,91 @@
+{
+  "abi_version": "1.0.0",
+  "canonical_registry_schema": "HHS_OPERATION_REGISTRY_V1",
+  "contract": "HHS-P190-OVRA-HOSS-PCA-FHF-VM81-H72-H216",
+  "full_native_parity_claimed": false,
+  "iteration": 3,
+  "operation_count": 10,
+  "operations": [
+    {
+      "mutates_state": false,
+      "native_profile": "status-v1",
+      "native_symbol": "hhs_p190_system_status",
+      "operation_id": "system.status",
+      "slot": 0,
+      "vm81_binding": "VM81:status"
+    },
+    {
+      "mutates_state": false,
+      "native_profile": "length-v1",
+      "native_symbol": "hhs_p190_python_len",
+      "operation_id": "python.len",
+      "slot": 1,
+      "vm81_binding": "VM81:len"
+    },
+    {
+      "mutates_state": false,
+      "native_profile": "int64-v1",
+      "native_symbol": "hhs_p190_python_abs",
+      "operation_id": "python.abs",
+      "slot": 2,
+      "vm81_binding": "VM81:abs"
+    },
+    {
+      "mutates_state": false,
+      "native_profile": "int64-array-v1",
+      "native_symbol": "hhs_p190_python_sorted_i64",
+      "operation_id": "python.sorted",
+      "slot": 3,
+      "vm81_binding": "VM81:sorted"
+    },
+    {
+      "mutates_state": false,
+      "native_profile": "int64-array-v1",
+      "native_symbol": "hhs_p190_list_with_appended_i64",
+      "operation_id": "list.with_appended",
+      "slot": 4,
+      "vm81_binding": "VM81:list.with_appended"
+    },
+    {
+      "mutates_state": false,
+      "native_profile": "utf8-key-json-value-v1",
+      "native_symbol": "hhs_p190_dict_get_json",
+      "operation_id": "dict.get",
+      "slot": 5,
+      "vm81_binding": "VM81:dict.get"
+    },
+    {
+      "mutates_state": false,
+      "native_profile": "utf8-sequence-v1",
+      "native_symbol": "hhs_p190_text_join",
+      "operation_id": "text.join",
+      "slot": 6,
+      "vm81_binding": "VM81:text.join"
+    },
+    {
+      "mutates_state": false,
+      "native_profile": "int64-v1",
+      "native_symbol": "hhs_p190_math_gcd",
+      "operation_id": "math.gcd",
+      "slot": 7,
+      "vm81_binding": "VM81:math.gcd"
+    },
+    {
+      "mutates_state": false,
+      "native_profile": "pass189-address-v1",
+      "native_symbol": "hhs_p190_pass189_context_decode",
+      "operation_id": "pass189.context.decode",
+      "slot": 8,
+      "vm81_binding": "VM81:P189.decode"
+    },
+    {
+      "mutates_state": true,
+      "native_profile": "singleton-counter-v1",
+      "native_symbol": "hhs_p190_state_counter_advance",
+      "operation_id": "state.counter.advance",
+      "slot": 9,
+      "vm81_binding": "VM81:state.counter.advance"
+    }
+  ],
+  "schema": "HHS_NATIVE_ABI_MANIFEST_V1"
+}
