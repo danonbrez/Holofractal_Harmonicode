@@ -41,24 +41,15 @@ class HHSClient:
         with urlopen(request, timeout=10) as response:
             return json.loads(response.read())
 
-    def operations(self) -> dict[str, Any]:
-        return self._request("/api/pass190/operations")
+    def operations(self) -> dict[str, Any]: return self._request("/api/pass190/operations")
+    def integrity(self) -> dict[str, Any]: return self._request("/api/pass190/integrity")
+    def events(self, after: int = 0, limit: int = 100) -> dict[str, Any]: return self._request(f"/api/pass190/events?after={{after}}&limit={{limit}}")
+    def receipts(self, after: int = 0, limit: int = 100) -> dict[str, Any]: return self._request(f"/api/pass190/receipts?after={{after}}&limit={{limit}}")
+    def replay(self, hash72: str) -> dict[str, Any]: return self._request("/api/pass190/replay", {{"hash72": hash72}})
 
-    def integrity(self) -> dict[str, Any]:
-        return self._request("/api/pass190/integrity")
-
-    def events(self, after: int = 0, limit: int = 100) -> dict[str, Any]:
-        return self._request(f"/api/pass190/events?after={{after}}&limit={{limit}}")
-
-    def receipts(self, after: int = 0, limit: int = 100) -> dict[str, Any]:
-        return self._request(f"/api/pass190/receipts?after={{after}}&limit={{limit}}")
-
-    def replay(self, hash72: str) -> dict[str, Any]:
-        return self._request("/api/pass190/replay", {{"hash72": hash72}})
-
-    def invoke(self, operation_id: str, arguments: dict[str, Any], *, capability: str | None = None, idempotency_key: str | None = None, expected_state: str | None = None) -> dict[str, Any]:
+    def invoke(self, operation_id: str, arguments: dict[str, Any], *, capability_token: str | None = None, idempotency_key: str | None = None, expected_state: str | None = None) -> dict[str, Any]:
         headers: dict[str,str] = {{}}
-        if capability: headers["X-HHS-Capability"] = capability
+        if capability_token: headers["Authorization"] = "HHS-Capability " + capability_token
         if idempotency_key: headers["Idempotency-Key"] = idempotency_key
         if expected_state: headers["X-HHS-Expected-State"] = expected_state
         return self._request("/api/pass190/invoke", {{"operation_id":operation_id,"arguments":arguments}}, headers)
@@ -78,7 +69,7 @@ def generate_ts(operations):
     )
     return f'''// Generated Pass 190 TypeScript SDK. Do not edit by hand.
 export type OperationId = {union}
-export type InvokeOptions = {{ capability?: string; idempotencyKey?: string; expectedState?: string }}
+export type InvokeOptions = {{ capabilityToken?: string; idempotencyKey?: string; expectedState?: string }}
 export class HHSClient {{
   constructor(readonly baseUrl = "http://127.0.0.1:8190") {{}}
   private async request(path: string, init: RequestInit = {{}}) {{
@@ -94,15 +85,12 @@ export class HHSClient {{
   replay(hash72: string) {{ return this.request("/api/pass190/replay", {{ method:"POST", headers:{{"Content-Type":"application/json"}}, body:JSON.stringify({{hash72}}) }}) }}
   invoke(operationId: OperationId, arguments_: Record<string, unknown>, options: InvokeOptions = {{}}) {{
     const headers: Record<string,string> = {{"Content-Type":"application/json"}}
-    if (options.capability) headers["X-HHS-Capability"] = options.capability
+    if (options.capabilityToken) headers["Authorization"] = `HHS-Capability ${{options.capabilityToken}}`
     if (options.idempotencyKey) headers["Idempotency-Key"] = options.idempotencyKey
     if (options.expectedState) headers["X-HHS-Expected-State"] = options.expectedState
     return this.request("/api/pass190/invoke", {{method:"POST", headers, body:JSON.stringify({{operation_id:operationId, arguments:arguments_}})}})
   }}
-  websocket(after = 0) {{
-    const url = this.baseUrl.replace(/^http/, "ws").replace(/\\/$/, "") + `/api/pass190/ws?after=${{after}}`
-    return new WebSocket(url)
-  }}
+  websocket(after = 0) {{ return new WebSocket(this.baseUrl.replace(/^http/, "ws").replace(/\\/$/, "") + `/api/pass190/ws?after=${{after}}`) }}
 {methods}
 }}
 '''
@@ -112,17 +100,17 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--check", action="store_true")
     args = parser.parse_args()
-    operations = json.loads(REGISTRY.read_text())["operations"]
+    operations = json.loads(REGISTRY.read_text(encoding="utf-8"))["operations"]
     python_source = generate_python(operations)
     typescript_source = generate_ts(operations)
     if args.check:
-        if PY_TARGET.read_text() != python_source or TS_TARGET.read_text() != typescript_source:
+        if PY_TARGET.read_text(encoding="utf-8") != python_source or TS_TARGET.read_text(encoding="utf-8") != typescript_source:
             raise SystemExit("generated SDKs are stale")
     else:
         PY_TARGET.parent.mkdir(parents=True, exist_ok=True)
         TS_TARGET.parent.mkdir(parents=True, exist_ok=True)
-        PY_TARGET.write_text(python_source)
-        TS_TARGET.write_text(typescript_source)
+        PY_TARGET.write_text(python_source, encoding="utf-8")
+        TS_TARGET.write_text(typescript_source, encoding="utf-8")
     return 0
 
 
