@@ -8,6 +8,7 @@ import json
 import socket
 import struct
 import sys
+import threading
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from typing import Any
@@ -43,13 +44,16 @@ def websocket_text_frame(payload: Any) -> bytes:
 
 
 class Pass190Iteration2Server(ThreadingHTTPServer):
-    daemon_threads = True
+    daemon_threads = False
+    block_on_close = True
 
     def __init__(self, address: tuple[str, int], context: PersistentAuthorityContext):
         self.context = context
+        self.closing = threading.Event()
         super().__init__(address, Handler)
 
     def server_close(self) -> None:
+        self.closing.set()
         super().server_close()
         self.context.close()
 
@@ -60,6 +64,10 @@ class Handler(BaseHTTPRequestHandler):
     @property
     def context(self) -> PersistentAuthorityContext:
         return self.server.context  # type: ignore[attr-defined]
+
+    @property
+    def closing(self) -> threading.Event:
+        return self.server.closing  # type: ignore[attr-defined]
 
     def _write(self, status: int, payload: Any) -> None:
         body = canonical_json(payload).encode("utf-8")
@@ -105,14 +113,11 @@ class Handler(BaseHTTPRequestHandler):
                 "after": sequence,
                 "integrity": self.context.integrity_report(),
             }))
-            while True:
-                events = self.context.wait_for_events(sequence, timeout=15)
+            while not self.closing.is_set():
+                events = self.context.wait_for_events(sequence, timeout=0.25)
+                if self.closing.is_set():
+                    break
                 if not events:
-                    self.connection.sendall(websocket_text_frame({
-                        "schema": "HHS_PASS_190_EVENT_V1",
-                        "event_type": "channel.heartbeat",
-                        "after": sequence,
-                    }))
                     continue
                 for event in events:
                     sequence = max(sequence, int(event["sequence"]))
