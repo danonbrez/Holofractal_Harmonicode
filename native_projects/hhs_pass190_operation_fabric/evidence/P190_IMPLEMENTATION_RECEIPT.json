@@ -1,0 +1,28 @@
+{
+  "schema": "HHS_PASS_190_IMPLEMENTATION_RECEIPT_V1",
+  "contract": "HHS-P190-OVRA-HOSS-PCA-FHF-VM81-H72-H216",
+  "classification": "HHS_PASS_190_EXECUTABLE_OPERATION_FABRIC_FOUNDATION_VERIFIED",
+  "authoritative_baseline": "c065f4b55741ba165f675ed864466411785beaea",
+  "scope": {
+    "registered_operations": 10,
+    "canonical_authority_context": true,
+    "harmonicode_constructor_surface": true,
+    "shell_surface": true,
+    "python_identity_surface": true,
+    "openapi_projection": true,
+    "http_surface": true,
+    "capability_gated_mutation": true,
+    "hash72_receipts": true,
+    "hash216_topology": true,
+    "deterministic_replay": true,
+    "pass189_context_decoder": true
+  },
+  "validation": {
+    "unit_tests": 10,
+    "python_compile": true,
+    "private_eval_exec_scan": true,
+    "dependency_free": true
+  },
+  "full_pass_190_completion_claimed": false,
+  "remaining_work_recorded": true
+}
