@@ -68,7 +68,30 @@ function installStorybookReelLauncher() {
 
 function installApplicationStudioLauncherInterposition() {
   document.addEventListener('click', (event) => {
-    const target = event.target instanceof Element ? event.target.closest('#ide-new-app') : null;
+    const element = event.target instanceof Element ? event.target : null;
+    const commit = element?.closest('#ide-create-application-project');
+    if (commit) {
+      const requested = String(document.querySelector('#ide-application-name')?.value || '').trim();
+      if (requested) {
+        const identity = Object.freeze({
+          schema: 'HHS_APPLICATION_PROJECT_IDENTITY_V1',
+          name: requested,
+          requested_at: new Date().toISOString(),
+          source: 'APPLICATION_STUDIO_COMMIT',
+          frontend_is_authority: false,
+        });
+        window.HHSPendingApplicationProjectIdentity = identity;
+        const input = document.querySelector('#ide-project-name');
+        if (input instanceof HTMLInputElement) {
+          input.value = requested;
+          input.dataset.hhsApplicationStudioOwned = 'true';
+        }
+        window.dispatchEvent(new CustomEvent('hhs:application-project:identity-requested', { detail: identity }));
+      }
+      return;
+    }
+
+    const target = element?.closest('#ide-new-app');
     if (!target) return;
     const studio = window.HHSApplicationStudio;
     if (!studio || typeof studio.open !== 'function') return;
@@ -80,9 +103,6 @@ function installApplicationStudioLauncherInterposition() {
 }
 
 window.fetch = async function coordinatedFetch(input, init) {
-  // Only optional assistant cold-start calls receive a short priority window.
-  // IDE, runtime, ingress, compiler, VM81, receipt, egress, and storybook-reel
-  // calls are never held behind assistant/provider initialization.
   if (isAssistantRequest(input)) await waitForRegistryPriorityWindow();
   return originalFetch(input, init);
 };
@@ -97,13 +117,14 @@ if (document.readyState === 'loading') {
 }
 
 window.HHSProductionStartupCoordinator = Object.freeze({
-  schema: 'HHS_PASS161_PRODUCTION_STARTUP_COORDINATOR_V8',
+  schema: 'HHS_PASS161_PRODUCTION_STARTUP_COORDINATOR_V9',
   assistant_requests_deferred_until_registry_ready: true,
   max_assistant_deferral_ms: MAX_ASSISTANT_DEFERRAL_MS,
   runtime_registry_has_priority: true,
   visual_ide_requests_never_deferred: true,
   application_experience_is_awaited_entry_dependency: true,
   application_studio_launcher_capture_interposition: true,
+  application_project_identity_captured_before_hydration: true,
   application_preview_readiness_bound_before_hydration: true,
   application_preview_source_window_required: true,
   storybook_reel_requests_never_deferred: true,
@@ -125,10 +146,11 @@ async function startProductionSurface() {
   initPreviewReadiness();
   installStorybookReelLauncher();
   return Object.freeze({
-    schema: 'HHS_PRODUCTION_SURFACE_READY_V2',
+    schema: 'HHS_PRODUCTION_SURFACE_READY_V3',
     application_experience: 'INTERACTIVE',
     public_boot: publicBoot.schema,
     preview_readiness: window.HHSApplicationPreviewReadiness?.schema || null,
+    project_identity: window.HHSPendingApplicationProjectIdentity?.schema || null,
     critical_surface_reasserted: true,
     frontend_is_authority: false,
   });
