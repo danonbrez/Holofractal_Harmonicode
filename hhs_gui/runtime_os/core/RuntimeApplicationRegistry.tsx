@@ -142,3 +142,16 @@ runtimeApplicationRegistry.register({
   })),
   windowPreset: { width: 920, height: 620, minWidth: 520, minHeight: 320, resizable: true },
 })
+
+runtimeApplicationRegistry.register({
+  id: "pass189_hqlh",
+  title: "Pass 189 HQLH Runtime",
+  authority: "runtime",
+  description: "Exact Lo Shu 41, P+1 membrane, XNOR ternary, V72, Hash72/Hash216 hydration authority",
+  lazyLoader: () => import("../../runtime_apps/hqlh/Pass189HQLHSurface").then((module) => ({
+    default: module.default,
+  })),
+  windowPreset: { width: 1180, height: 760, minWidth: 640, minHeight: 420, resizable: true },
+  singleton: true,
+  mobileSupported: true,
+})

@@ -1,0 +1,80 @@
+{
+  "authoritative_base": "43e0f63ede1a0e324d9377d327fc691a3956b094",
+  "claims": {
+    "hydration_verified": true,
+    "measured_physical_residuals_present": false,
+    "real_breadboard_calibration_present": false,
+    "unified_physics_verified": false
+  },
+  "classification": "HHS_PASS_189_HQLH_HYDRATION_VERIFIED",
+  "contract": "HHS-P189-HQLH-LS41-XNOR-P1-H72-H216-UPA",
+  "deployment": {
+    "authority": "DIGITALOCEAN_SELF_HOSTED",
+    "external_digitalocean_mutation_performed": false,
+    "install_script": true,
+    "nginx_asset": true,
+    "systemd_asset": true,
+    "vercel_required": false,
+    "verify_script": true
+  },
+  "host_observation": {
+    "authority": "NONAUTHORITATIVE",
+    "elapsed_seconds": 4.78,
+    "maximum_rss_kb": 111948
+  },
+  "implementation": "HHS-P189-HQLH-RUNTIME-DO-1.0.0",
+  "inherited_contract_merge": "54ffe9d89d1aa928a6be75a3663ad51f709b7b9d",
+  "native": {
+    "checksum_u64": "e02ef2dc8070e3f3",
+    "contextual_addresses": 51648192,
+    "coordinate_drift": 0,
+    "integer_only_disassembly_scan": true,
+    "reciprocal_checks": 51648192,
+    "strict_c11": true
+  },
+  "runtime": {
+    "canonical_payload_verification": true,
+    "deterministic_replay": true,
+    "exact_membranes": true,
+    "hash216_glyphs": 216,
+    "hash72_glyphs": 72,
+    "ordered_identity_sensitivity": true,
+    "p_plus_1_non_destructive": true,
+    "physical_output_calibration_gate": true,
+    "shared_equation_projections": true,
+    "signed_xnor_truth_table": true,
+    "sparse_base41_hydration": true,
+    "ternary_nucleus_witness": true,
+    "v72_coordinates": 72,
+    "xnor_truth_table": true
+  },
+  "schema": "HHS_PASS_189_HQLH_VALIDATION_RECEIPT_V1",
+  "source_aggregate_sha256": "51c707691c2911915fa0325dda57382b168bc53fdf90f8533811d69b28a718a1",
+  "source_manifest_sha256": "034bb98dd3d281b38a4279014a8c58aa9f35a6f7465c2f03db169e7f22a9007f",
+  "surfaces": {
+    "c_abi": true,
+    "http_api": true,
+    "native_cli": true,
+    "python_cli": true,
+    "python_runtime": true,
+    "runtime_application_registry": true,
+    "server_sent_events": true,
+    "template_registry": true,
+    "visual_inspector": true,
+    "websocket": true
+  },
+  "validation": {
+    "deployment_shell_syntax": true,
+    "digitalocean_authority_check": true,
+    "http_health": true,
+    "make_validate": true,
+    "python_bytecode_compile": true,
+    "python_tests_passed": 9,
+    "registry_read": true,
+    "replay": true,
+    "sse": true,
+    "surface_smoke_passed": true,
+    "visual_document": true,
+    "websocket_upgrade": true
+  }
+}
