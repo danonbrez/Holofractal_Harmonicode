@@ -11,6 +11,7 @@ export class HHSClient {
   }
   operations() { return this.request("/api/pass190/operations") }
   integrity() { return this.request("/api/pass190/integrity") }
+  arbitration() { return this.request("/api/pass190/arbitration") }
   events(after = 0, limit = 100) { return this.request(`/api/pass190/events?after=${after}&limit=${limit}`) }
   receipts(after = 0, limit = 100) { return this.request(`/api/pass190/receipts?after=${after}&limit=${limit}`) }
   replay(hash72: string) { return this.request("/api/pass190/replay", { method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({hash72}) }) }
