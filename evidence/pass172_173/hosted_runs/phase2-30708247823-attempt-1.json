@@ -1,0 +1,21 @@
+{
+  "branch": "agent/pass195-kimi-k3-content-engine",
+  "failures": 0,
+  "next_action": "merge after the evidence-only head is revalidated",
+  "outcomes": {
+    "compile": "success",
+    "contracts": "success",
+    "dependencies": "success",
+    "smoke": "success",
+    "tests": "success"
+  },
+  "pytest_output_sha256": "358e1fb241a26cea904e6f30d5eea022636dd87672ecd2c32f4b62adf1ec655e",
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "run_attempt": 1,
+  "run_id": 30708247823,
+  "schema": "HHS_PASS_172_173_PHASE2_HOSTED_VALIDATION_V1",
+  "status": "SUCCESS",
+  "terminal_pass172_claimed": false,
+  "terminal_pass173_claimed": false,
+  "validated_sha": "a8bf40ba347c11a152aa4c1574195fe91f028c06"
+}
