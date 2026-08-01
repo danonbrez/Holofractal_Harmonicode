@@ -1,0 +1,62 @@
+{
+  "authoritative_baseline": "db4c09c00d46b10769f6894ea7e91154abd18e0a",
+  "classification": "HHS_PASS_188_BOTT_RUNTIME_FULL_SURFACE_IMPLEMENTATION_VERIFIED",
+  "closure": {
+    "delta_e": 0,
+    "omega": true,
+    "psi": 0
+  },
+  "contract": "HHS-P188-BOTT-RUNTIME-H216-VM81-Q144-G243-X64",
+  "host": {
+    "compiler": "cc (Debian 14.2.0-19) 14.2.0",
+    "os": "Linux 6.12.13 x86_64",
+    "python": "3.13.5"
+  },
+  "inherited_pass187_merge": "5db45d6b72b93132997f815d16df4540fd13adfc",
+  "nonauthoritative_host_observation": {
+    "max_rss_kb": 1480,
+    "native_hydration_elapsed_seconds_rounded": 0.03
+  },
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "schema": "HHS_PASS_188_VALIDATION_RECEIPT_V1",
+  "scope_status": {
+    "external_deployment_performed": false,
+    "pass187_runtime_implementation_gap_closed": true,
+    "repository_delivery_required": true
+  },
+  "source_aggregate_sha256": "141120f58bd21c4c62b6fa14178b8d0961d144735b21961ca8ab5b51e2a2f7c7",
+  "source_manifest_sha256": "04b41fbbec3e0be45d69a16220d38fbe5e9b6dfd53f229dad517ac035ffb116b",
+  "surfaces": {
+    "c_abi": true,
+    "deterministic_replay": true,
+    "http_api": true,
+    "native_cli": true,
+    "python": true,
+    "python_cli": true,
+    "server_sent_events": true,
+    "visual_inspector": true,
+    "websocket": true,
+    "x86_64_assembly": true
+  },
+  "validation": {
+    "active_period_two_states": 629856,
+    "asymmetric_collapse_states": 629856,
+    "chromium_dom_layout_qa": true,
+    "chromium_loopback_block_reason": "ERR_BLOCKED_BY_ADMINISTRATOR; real transport validated separately by socket-level smoke test",
+    "chromium_real_loopback_network_qa": false,
+    "coordinate_drift_states": 0,
+    "deterministic_checksum_u64": "11e3bbf0214751c3",
+    "gear_preserved_states": 1259712,
+    "http_health_transition_replay": true,
+    "integer_only_disassembly_scan": true,
+    "make_validate": true,
+    "native_exhaustive_addresses": 1259712,
+    "native_replay_addresses": 1259712,
+    "pass187_checksum_continuity": true,
+    "python_bytecode_compile": true,
+    "python_tests_passed": 5,
+    "server_sent_events": true,
+    "visual_document_served": true,
+    "websocket_upgrade": true
+  }
+}

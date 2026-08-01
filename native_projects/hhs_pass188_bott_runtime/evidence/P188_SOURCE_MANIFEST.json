@@ -1,0 +1,21 @@
+{
+  "aggregate_sha256": "141120f58bd21c4c62b6fa14178b8d0961d144735b21961ca8ab5b51e2a2f7c7",
+  "authoritative_baseline": "db4c09c00d46b10769f6894ea7e91154abd18e0a",
+  "contract": "HHS-P188-BOTT-RUNTIME-H216-VM81-Q144-G243-X64",
+  "files": {
+    "../../HHS_PASS_188_BOTT_RUNTIME_FULL_SURFACE_IMPLEMENTATION.md": "ce41878b2573571c26ef79eb6c80f5893b8c0a040a8775f4ad42545580ca46c2",
+    "Makefile": "873c44d0889be2b1a5154709e03bdc9054c2742dd8732d2c87c7f59345cbac87",
+    "README.md": "85f197efe46a12d4a3b78eb81b6448dccfe5a59aa84c44e6c8898a8e7c2286af",
+    "include/hhs_pass188_bott_runtime.h": "02bde223b14d5494ab0d8701996190d86de9668dc3a2e51e232ab31594bce9bf",
+    "python/hhs_pass188.py": "353f5b1823cd45f147ede04faf63269c47002678170944feebdb3c2e9e3f7b4a",
+    "python/test_hhs_pass188.py": "1d667f105c2daa12514b716ede9047a914813456fa6925be760b8bd251607be0",
+    "server/hhs_pass188_server.py": "afb7f14972822c23eb91edbbb0291773a047d8578237f269a5da58771be2c1cf",
+    "src/hhs_pass188_bott_runtime.c": "245b3879048df9553c35eecbacc3f6b76106260d90cd9b3072bac131e73bdd0b",
+    "src/hhs_pass188_bott_step_x86_64.S": "d666b8f906c615f3049763905541acba9e60e113ca40afa2c17b300c50cb310f",
+    "tests/hhs_pass188_bott_runtime_test.c": "87ae1b55a4769e5983878b3f5e493c2c670a39cc672122453f3c92877a8bb8e7",
+    "tools/hhs_pass188_cli.c": "a45cb7889315f26dab3c94e4229baa175162c34f45de91900262d7636791155a",
+    "tools/hhs_pass188_surface_smoke.py": "67904991f4b2f4f0163c65e5b23c61552daefeef05c7dd7f9eeb251d01c4f472",
+    "web/index.html": "e64206bf0b7b05f2af2ed048eee49251f8b9b57de7c64881164e2c9afc281202"
+  },
+  "schema": "HHS_PASS_188_SOURCE_MANIFEST_V1"
+}
