@@ -32,7 +32,9 @@ test('public startup gives application controls sole ownership before visual hyd
   assert.ok(coordinator.indexOf('window.HHSProductionStartupCoordinator = Object.freeze') < coordinator.indexOf('startProductionSurface()'));
   assert.match(boot, /const BOOT_SCHEMA = 'HHS_PUBLIC_MODULE_BOOT_V3'/);
   assert.match(boot, /export function startPublicBoot\(\)/);
-  assert.match(boot, /const applicationExperience = launch\(/[\s\S]*'application-experience',[\s\S]*'\.\/application-experience\.mjs'/);
+  assert.match(boot, /const applicationExperience = launch\(/);
+  assert.match(boot, /'application-experience'/);
+  assert.match(boot, /'\.\/application-experience\.mjs'/);
   assert.match(boot, /const result = await module\.startApplicationExperience\(\)/);
   assert.match(boot, /const browser = applicationExperience\.then/);
   assert.match(boot, /return launch\('browser', '\.\/browser\.mjs'\)/);
