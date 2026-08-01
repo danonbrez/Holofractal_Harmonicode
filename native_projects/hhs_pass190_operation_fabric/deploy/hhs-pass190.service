@@ -1,5 +1,5 @@
 [Unit]
-Description=HHS Pass 190 Iteration 3 Native Compiler and Authenticated Authority
+Description=HHS Pass 190 Iteration 4 Distributed Singleton Authority
 After=network-online.target
 Wants=network-online.target
 
@@ -10,7 +10,7 @@ Group=hhs
 WorkingDirectory=/opt/hhs/pass190-operation-fabric
 EnvironmentFile=/etc/hhs/pass190.env
 Environment=PYTHONPATH=/opt/hhs/pass190-operation-fabric/python:/opt/hhs/pass190-operation-fabric/server
-ExecStart=/usr/bin/python3 server/hhs_pass190_iteration3_server.py --host 127.0.0.1 --port 8190 --database /var/lib/hhs/pass190-authority.sqlite3
+ExecStart=/usr/bin/python3 server/hhs_pass190_iteration4_server.py --host 127.0.0.1 --port 8190 --database /var/lib/hhs/pass190-authority.sqlite3
 Restart=on-failure
 RestartSec=2
 UMask=0077
