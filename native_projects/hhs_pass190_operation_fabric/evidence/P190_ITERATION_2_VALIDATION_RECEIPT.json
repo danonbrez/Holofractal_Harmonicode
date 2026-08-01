@@ -1,0 +1,32 @@
+{
+  "schema": "HHS_PASS_190_ITERATION_2_VALIDATION_RECEIPT_V1",
+  "contract": "HHS-P190-OVRA-HOSS-PCA-FHF-VM81-H72-H216",
+  "iteration": 2,
+  "classification": "HHS_PASS_190_ITERATION_2_PERSISTENT_EVENT_SDK_GUI_FOUNDATION_VERIFIED",
+  "authoritative_baseline": "f268a4d538e609685e5f1d9f19e41511b7a808cd",
+  "validated_scope": {
+    "sqlite_receipt_state_persistence": true,
+    "startup_chain_verification": true,
+    "restart_idempotency": true,
+    "rollback_on_persistence_failure": true,
+    "resumable_event_log": true,
+    "websocket_event_channel": true,
+    "python_sdk_generated": true,
+    "typescript_sdk_generated": true,
+    "gui_runtime_application": true,
+    "workflow_surface_bindings": true,
+    "digitalocean_deployment_package": true
+  },
+  "validation": {
+    "iteration_1_regression_tests": 10,
+    "iteration_2_tests": 6,
+    "python_compile": true,
+    "sdk_generation_check": true,
+    "binding_generation_check": true,
+    "gui_source_verification": true,
+    "deployment_source_verification": true,
+    "private_eval_exec_scan": true
+  },
+  "full_pass_190_completion_claimed": false,
+  "remaining_work_recorded": true
+}
