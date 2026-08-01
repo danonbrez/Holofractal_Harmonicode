@@ -50,9 +50,9 @@ if (!document.querySelector(`#${style.id}`)) document.head.append(style);
 
 function suppressLegacyMobileTabs() {
   document.querySelectorAll('.workflow-mobile-tabs').forEach((tabs) => {
-    tabs.hidden = true;
-    tabs.inert = true;
-    tabs.setAttribute('aria-hidden', 'true');
+    if (!tabs.hidden) tabs.hidden = true;
+    if (!tabs.inert) tabs.inert = true;
+    if (tabs.getAttribute('aria-hidden') !== 'true') tabs.setAttribute('aria-hidden', 'true');
   });
 }
 
@@ -64,7 +64,9 @@ function setExplorerOpen(open) {
     inspector?.classList.remove('open');
     body.classList.remove('mobile-inspector-open', 'advanced-open');
   }
-  navToggle?.setAttribute('aria-expanded', String(next));
+  if (navToggle?.getAttribute('aria-expanded') !== String(next)) {
+    navToggle?.setAttribute('aria-expanded', String(next));
+  }
 }
 
 function setInspectorOpen(open) {
@@ -75,7 +77,9 @@ function setInspectorOpen(open) {
     registry?.classList.remove('open');
     body.classList.remove('mobile-explorer-open');
   }
-  inspectToggle?.setAttribute('aria-expanded', String(next));
+  if (inspectToggle?.getAttribute('aria-expanded') !== String(next)) {
+    inspectToggle?.setAttribute('aria-expanded', String(next));
+  }
 }
 
 function enforceVisualIdeSurface() {
@@ -133,9 +137,15 @@ document.addEventListener('keydown', (event) => {
   setInspectorOpen(false);
 });
 
+let observerScheduled = false;
 const observer = new MutationObserver(() => {
-  suppressLegacyMobileTabs();
-  enforceVisualIdeSurface();
+  if (observerScheduled) return;
+  observerScheduled = true;
+  queueMicrotask(() => {
+    observerScheduled = false;
+    suppressLegacyMobileTabs();
+    enforceVisualIdeSurface();
+  });
 });
 observer.observe(body, {
   subtree: true,
