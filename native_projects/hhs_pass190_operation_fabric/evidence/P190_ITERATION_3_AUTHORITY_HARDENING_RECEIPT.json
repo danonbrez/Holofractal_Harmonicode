@@ -1,0 +1,43 @@
+{
+  "schema": "HHS_PASS_190_ITERATION_3_AUTHORITY_HARDENING_RECEIPT_V1",
+  "contract": "HHS-P190-OVRA-HOSS-PCA-FHF-VM81-H72-H216",
+  "iteration": 3,
+  "classification": "HHS_PASS_190_ITERATION_3_AUTHENTICATED_FAIL_CLOSED_AUTHORITY_VERIFIED",
+  "authoritative_baseline": "c4757ed8c33604645961cc70275090f1c252fb9c",
+  "inherits_native_compiler_classification": "HHS_PASS_190_ITERATION_3_NATIVE_ABI_COMPILER_PARITY_FOUNDATION_VERIFIED",
+  "validated_scope": {
+    "signed_capability_tokens": true,
+    "unsigned_scope_rejection": true,
+    "complete_authority_metadata": true,
+    "receipt_state_continuity": true,
+    "event_hash72_identity": true,
+    "event_receipt_topology": true,
+    "structured_persistence_failure": true,
+    "websocket_pre_upgrade_cursor_validation": true,
+    "websocket_handshake_buffering": true,
+    "complete_combined_openapi": true,
+    "native_compiler_routes_preserved": true,
+    "gui_resumable_reconnect": true,
+    "vite_pass190_proxy": true,
+    "runtime_singleton_enforcement": true,
+    "validated_source_installation": true
+  },
+  "validation": {
+    "native_c11_build": true,
+    "native_executable_test": true,
+    "iteration_1_regression_tests": 10,
+    "iteration_2_regression_tests": 6,
+    "native_compiler_iteration_3_tests": 8,
+    "authority_hardening_tests": 8,
+    "python_compile": true,
+    "sdk_generation_check": true,
+    "binding_generation_check": true,
+    "gui_source_verification": true,
+    "deployment_source_verification": true,
+    "private_eval_exec_scan": true,
+    "native_float_authority_scan": true
+  },
+  "full_pass_190_completion_claimed": false,
+  "live_digitalocean_acceptance_claimed": false,
+  "remaining_work_recorded": true
+}
