@@ -21,13 +21,11 @@ from hhs_pass190_iteration4_server import (  # noqa: E402
     Handler as Iteration4Handler,
     Pass190Iteration4Server,
 )
-from hhs_pass190_iteration5 import (  # noqa: E402
-    ITERATION5_CLASSIFICATION,
-    CorrectedAuthorityContext,
-)
+from hhs_pass190_iteration5 import ITERATION5_CLASSIFICATION  # noqa: E402
+from hhs_pass190_iteration5_runtime import AtomicKernelAuthorityContext  # noqa: E402
 
 
-def iteration5_openapi_document(context: CorrectedAuthorityContext) -> dict:
+def iteration5_openapi_document(context: AtomicKernelAuthorityContext) -> dict:
     document = iteration3_openapi_document(context)
     document["info"]["version"] = "5.0.0"
     document["x-hhs-iteration"] = 5
@@ -65,7 +63,7 @@ class Handler(Iteration4Handler):
     server_version = "HHS-P190-I5/5.0"
 
     @property
-    def context(self) -> CorrectedAuthorityContext:
+    def context(self) -> AtomicKernelAuthorityContext:
         return self.server.context  # type: ignore[attr-defined]
 
     def do_GET(self) -> None:  # noqa: N802
@@ -97,7 +95,7 @@ class Pass190Iteration5Server(Pass190Iteration4Server):
     def __init__(
         self,
         address: tuple[str, int],
-        context: CorrectedAuthorityContext,
+        context: AtomicKernelAuthorityContext,
         compiler: HarmonicodeOperationCompiler,
         capability_secret: str | bytes,
     ):
@@ -109,7 +107,7 @@ def build_server(
     port: int = 8190,
     *,
     database: Path | str = "pass190-authority.sqlite3",
-    context: CorrectedAuthorityContext | None = None,
+    context: AtomicKernelAuthorityContext | None = None,
     compiler: HarmonicodeOperationCompiler | None = None,
     capability_secret: str | bytes | None = None,
 ) -> Pass190Iteration5Server:
@@ -118,7 +116,7 @@ def build_server(
         raise RuntimeError("HHS_PASS190_CAPABILITY_SECRET is required")
     return Pass190Iteration5Server(
         (host, port),
-        context or CorrectedAuthorityContext(database),
+        context or AtomicKernelAuthorityContext(database),
         compiler or HarmonicodeOperationCompiler(),
         secret,
     )
