@@ -21,7 +21,11 @@ def phase(name: str, **details: object) -> None:
 
 
 def application_frame(page):
-    expect(page.locator("#ide-application-frame")).to_be_visible(timeout=20_000)
+    frame_node = page.locator("#ide-application-frame")
+    expect(frame_node).to_be_visible(timeout=20_000)
+    expect(frame_node).to_have_attribute("data-preview-state", "READY", timeout=20_000)
+    expect(frame_node).to_have_attribute("data-preview-ready", "true", timeout=20_000)
+    phase("APPLICATION_PREVIEW_FRAME_READY")
     return page.frame_locator("#ide-application-frame")
 
 
@@ -127,10 +131,6 @@ def create_project(page, template: str, name: str):
     expect(page.locator(commit_selector)).to_be_visible(timeout=20_000)
     phase("APPLICATION_PROJECT_COMMIT_REQUESTED", template=template)
 
-    # This is genuine Chromium mouse input at a unique, visible, enabled and
-    # hit-tested button. It avoids only Playwright's locator stability heuristic;
-    # the application must still close the modal and satisfy every product
-    # postcondition below.
     commit_evidence = verified_pointer_click(page, commit_selector)
     phase("APPLICATION_PROJECT_COMMIT_DISPATCHED", template=template)
 
@@ -202,10 +202,10 @@ def run() -> dict[str, object]:
 
             current_phase = "PONG"
             pong = create_project(page, "pong", "Browser Pong Acceptance")
-            expect(pong.locator("#game")).to_be_visible()
-            expect(pong.locator("#start")).to_be_visible()
-            pong.locator("#start").click()
-            pong.locator("#game").hover(position={"x": 80, "y": 180})
+            expect(pong.locator("#game")).to_be_visible(timeout=20_000)
+            expect(pong.locator("#start")).to_be_visible(timeout=20_000)
+            pong.locator("#start").click(timeout=20_000)
+            pong.locator("#game").hover(position={"x": 80, "y": 180}, timeout=20_000)
             expect(page.locator("#ide-file-tree")).to_contain_text("index.html")
             expect(page.locator("#ide-file-tree")).to_contain_text("app.js")
             expect(page.locator("#ide-file-tree")).to_contain_text("style.css")
@@ -215,49 +215,49 @@ def run() -> dict[str, object]:
             current_phase = "CALCULATOR"
             calculator = create_project(page, "calculator", "Calculator Acceptance")
             for value in ["7", "×", "8", "="]:
-                calculator.locator(f'[data-value="{value}"]').click()
-            expect(calculator.locator("#display")).to_have_text("56")
+                calculator.locator(f'[data-value="{value}"]').click(timeout=20_000)
+            expect(calculator.locator("#display")).to_have_text("56", timeout=20_000)
             phase("CALCULATOR_VERIFIED")
 
             current_phase = "PUZZLE"
             puzzle = create_project(page, "puzzle", "Puzzle Acceptance")
-            expect(puzzle.locator(".tile")).to_have_count(16)
-            puzzle.locator("#shuffle").click()
+            expect(puzzle.locator(".tile")).to_have_count(16, timeout=20_000)
+            puzzle.locator("#shuffle").click(timeout=20_000)
             phase("PUZZLE_VERIFIED")
 
             current_phase = "DOCUMENT"
             document = create_project(page, "document", "Document Acceptance")
-            expect(document.locator("#editor")).to_have_attribute("contenteditable", "true")
-            document.locator("#editor").fill("A real editable HHS document now.")
-            expect(document.locator("#words")).to_contain_text("6 words")
+            expect(document.locator("#editor")).to_have_attribute("contenteditable", "true", timeout=20_000)
+            document.locator("#editor").fill("A real editable HHS document now.", timeout=20_000)
+            expect(document.locator("#words")).to_contain_text("6 words", timeout=20_000)
             phase("DOCUMENT_VERIFIED")
 
             current_phase = "AUDIO"
             audio = create_project(page, "audio", "Audio Acceptance")
-            expect(audio.locator(".pad")).to_have_count(4)
-            expect(audio.locator("#record")).to_be_visible()
-            audio.locator(".pad").first.click()
+            expect(audio.locator(".pad")).to_have_count(4, timeout=20_000)
+            expect(audio.locator("#record")).to_be_visible(timeout=20_000)
+            audio.locator(".pad").first.click(timeout=20_000)
             phase("AUDIO_VERIFIED")
 
             current_phase = "VIDEO"
             video = create_project(page, "video", "Video Acceptance")
-            expect(video.locator("#stage")).to_be_visible()
-            expect(video.locator("#record")).to_be_visible()
-            expect(video.locator("#title")).to_have_value("HHS Motion")
+            expect(video.locator("#stage")).to_be_visible(timeout=20_000)
+            expect(video.locator("#record")).to_be_visible(timeout=20_000)
+            expect(video.locator("#title")).to_have_value("HHS Motion", timeout=20_000)
             phase("VIDEO_VERIFIED")
 
             current_phase = "ASSISTANT"
-            page.locator("#assistant-home").click()
+            page.locator("#assistant-home").click(timeout=20_000)
             expect(page.locator("#assistant-view")).to_be_visible(timeout=20_000)
             expect(page.locator("#prompt-input")).to_be_visible(timeout=20_000)
-            page.locator("#ide-home").click()
+            page.locator("#ide-home").click(timeout=20_000)
             expect(page.locator("#ide-view")).to_be_visible(timeout=20_000)
             phase("ASSISTANT_VERIFIED")
 
             current_phase = "DEPLOYABLE_ZIP"
             create_project(page, "calculator", "Deployable Calculator")
             with page.expect_download(timeout=30_000) as download_info:
-                page.locator("#ide-download-deployable-app").click()
+                page.locator("#ide-download-deployable-app").click(timeout=20_000)
             download = download_info.value
             with tempfile.TemporaryDirectory() as directory:
                 archive_path = Path(directory) / download.suggested_filename
@@ -305,7 +305,7 @@ def run() -> dict[str, object]:
                 "drag_safe_file_items": True,
                 "dom_driven_acceptance": True,
                 "verified_real_pointer_input": True,
-                "navigation_wait_false_positive_removed": True,
+                "preview_bridge_ready_required": True,
                 "elapsed_ms": round((time.monotonic() - started) * 1000),
             }
             if not result["ok"]:
