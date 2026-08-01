@@ -17,24 +17,15 @@ class HHSClient:
         with urlopen(request, timeout=10) as response:
             return json.loads(response.read())
 
-    def operations(self) -> dict[str, Any]:
-        return self._request("/api/pass190/operations")
+    def operations(self) -> dict[str, Any]: return self._request("/api/pass190/operations")
+    def integrity(self) -> dict[str, Any]: return self._request("/api/pass190/integrity")
+    def events(self, after: int = 0, limit: int = 100) -> dict[str, Any]: return self._request(f"/api/pass190/events?after={after}&limit={limit}")
+    def receipts(self, after: int = 0, limit: int = 100) -> dict[str, Any]: return self._request(f"/api/pass190/receipts?after={after}&limit={limit}")
+    def replay(self, hash72: str) -> dict[str, Any]: return self._request("/api/pass190/replay", {"hash72": hash72})
 
-    def integrity(self) -> dict[str, Any]:
-        return self._request("/api/pass190/integrity")
-
-    def events(self, after: int = 0, limit: int = 100) -> dict[str, Any]:
-        return self._request(f"/api/pass190/events?after={after}&limit={limit}")
-
-    def receipts(self, after: int = 0, limit: int = 100) -> dict[str, Any]:
-        return self._request(f"/api/pass190/receipts?after={after}&limit={limit}")
-
-    def replay(self, hash72: str) -> dict[str, Any]:
-        return self._request("/api/pass190/replay", {"hash72": hash72})
-
-    def invoke(self, operation_id: str, arguments: dict[str, Any], *, capability: str | None = None, idempotency_key: str | None = None, expected_state: str | None = None) -> dict[str, Any]:
+    def invoke(self, operation_id: str, arguments: dict[str, Any], *, capability_token: str | None = None, idempotency_key: str | None = None, expected_state: str | None = None) -> dict[str, Any]:
         headers: dict[str,str] = {}
-        if capability: headers["X-HHS-Capability"] = capability
+        if capability_token: headers["Authorization"] = "HHS-Capability " + capability_token
         if idempotency_key: headers["Idempotency-Key"] = idempotency_key
         if expected_state: headers["X-HHS-Expected-State"] = expected_state
         return self._request("/api/pass190/invoke", {"operation_id":operation_id,"arguments":arguments}, headers)
