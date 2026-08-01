@@ -4,9 +4,10 @@ This module composes the canonical HHS FastAPI runtime, the governed LiteRT-LM
 assistant API, the read-only Pass 172 installation-status API, the Pass 180
 integrated application-factory API, the native storybook-reel studio, the Pass
 181 graphics-hydration and governed constraint-registry authorities, the Pass
-183 exact probability-hydration authority, and the Pass 161 Holofractal
-Harmonizer static application. The canonical server remains the runtime
-authority; this module only changes HTTP projection.
+183 exact probability-hydration authority, the Pass 195 Kimi K3 multimodal
+content engine, and the Pass 161 Holofractal Harmonizer static application. The
+canonical server remains the runtime authority; this module only changes HTTP
+projection.
 """
 from __future__ import annotations
 
@@ -20,6 +21,7 @@ from hhs_backend.api.application_factory_routes import router as application_fac
 from hhs_backend.api.graphics_constraint_routes import router as graphics_constraint_router
 from hhs_backend.api.graphics_hydration_routes import router as graphics_hydration_router
 from hhs_backend.api.installation_routes import router as installation_router
+from hhs_backend.api.kimi_k3_content_routes import router as kimi_k3_content_router
 from hhs_backend.api.litert_lm_assistant_routes import router as assistant_router
 from hhs_backend.api.probability_hydration_routes import router as probability_hydration_router
 from hhs_backend.api.storybook_reel_routes import router as storybook_reel_router
@@ -48,6 +50,9 @@ if not _route_exists("/api/runtime/application-factory/status"):
 if not _route_exists("/api/runtime/storybook-reel/status"):
     app.include_router(storybook_reel_router)
 
+if not _route_exists("/api/runtime/content-engine/kimi-k3/status"):
+    app.include_router(kimi_k3_content_router)
+
 # Register governed freeze authority before the broader hydration router so the
 # legacy `/constraints/promote` projection is shadowed by a fail-closed route.
 if not _route_exists("/api/runtime/graphics-hydration/constraints/registry/status"):
@@ -72,6 +77,7 @@ async def visual_system_status() -> Dict[str, Any]:
         "installation_api": "/api/runtime/installation",
         "application_factory_api": "/api/runtime/application-factory",
         "storybook_reel_api": "/api/runtime/storybook-reel",
+        "kimi_k3_content_engine_api": "/api/runtime/content-engine/kimi-k3",
         "graphics_hydration_api": "/api/runtime/graphics-hydration",
         "graphics_constraint_registry_api": "/api/runtime/graphics-hydration/constraints/registry",
         "probability_hydration_api": "/api/v1/probability",
@@ -80,6 +86,7 @@ async def visual_system_status() -> Dict[str, Any]:
         "visual_environment": "HHS-P161-HHUMOCE",
         "application_factory": "HHS-P180-INTEGRATED-APPLICATION-FACTORY",
         "storybook_reel": "HHS-NATIVE-VM81-STORYBOOK-REEL-STUDIO-V1",
+        "kimi_k3_content_engine": "HHS-P195-KIMI-K3-MULTIMODAL-CONTENT-ENGINE",
         "graphics_hydration": "HHS-P181-NATIVE-CINEMATIC-GRAPHICS-HYDRATION-RUNTIME",
         "graphics_constraints": "HHS-P181-GRAPHICS-CONSTRAINT-FREEZE-REGISTRY-V1",
         "probability_hydration": "HHS-P183-PEHMR-M1259713-F72-VM81-H72-H216",
