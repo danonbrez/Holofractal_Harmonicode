@@ -19,6 +19,7 @@ class HHSClient:
 
     def operations(self) -> dict[str, Any]: return self._request("/api/pass190/operations")
     def integrity(self) -> dict[str, Any]: return self._request("/api/pass190/integrity")
+    def arbitration(self) -> dict[str, Any]: return self._request("/api/pass190/arbitration")
     def events(self, after: int = 0, limit: int = 100) -> dict[str, Any]: return self._request(f"/api/pass190/events?after={after}&limit={limit}")
     def receipts(self, after: int = 0, limit: int = 100) -> dict[str, Any]: return self._request(f"/api/pass190/receipts?after={after}&limit={limit}")
     def replay(self, hash72: str) -> dict[str, Any]: return self._request("/api/pass190/replay", {"hash72": hash72})
