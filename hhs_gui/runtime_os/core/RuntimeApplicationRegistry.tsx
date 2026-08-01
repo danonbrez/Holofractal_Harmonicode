@@ -155,3 +155,16 @@ runtimeApplicationRegistry.register({
   singleton: true,
   mobileSupported: true,
 })
+
+runtimeApplicationRegistry.register({
+  id: "pass190_operation_fabric",
+  title: "Pass 190 Operation Fabric",
+  authority: "runtime",
+  description: "Canonical operation registry, persistent Hash72 receipts, generated SDKs, and resumable WebSocket events",
+  lazyLoader: () => import("../../runtime_apps/pass190/Pass190OperationFabricSurface").then((module) => ({
+    default: module.default,
+  })),
+  windowPreset: { width: 1180, height: 760, minWidth: 680, minHeight: 440, resizable: true },
+  singleton: true,
+  mobileSupported: true,
+})
