@@ -2,20 +2,28 @@
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-service = (ROOT / "deploy/hhs-pass190.service").read_text()
-nginx = (ROOT / "deploy/nginx-hhs-pass190.conf").read_text()
-install = (ROOT / "deploy/install.sh").read_text()
-verify = (ROOT / "deploy/verify.sh").read_text()
+service = (ROOT / "deploy/hhs-pass190.service").read_text(encoding="utf-8")
+nginx = (ROOT / "deploy/nginx-hhs-pass190.conf").read_text(encoding="utf-8")
+install = (ROOT / "deploy/install.sh").read_text(encoding="utf-8")
+verify = (ROOT / "deploy/verify.sh").read_text(encoding="utf-8")
 checks = {
     "persistent_database": "/var/lib/hhs/pass190-authority.sqlite3" in service,
-    "single_server": "hhs_pass190_iteration3_server.py" in service,
-    "compiler_pythonpath": "PYTHONPATH=python:server" in service,
-    "websocket_upgrade": "proxy_set_header Upgrade" in nginx,
+    "iteration3_server": "hhs_pass190_iteration3_server.py" in service,
+    "installed_working_directory": "WorkingDirectory=/opt/hhs/pass190-operation-fabric" in service,
+    "capability_environment": "EnvironmentFile=/etc/hhs/pass190.env" in service,
+    "service_source_copy": 'sudo cp -a "$ROOT/." "$STAGE/"' in install,
+    "atomic_swap": 'sudo mv -T "$STAGE" "$TARGET"' in install,
+    "rollback_path": "rollback()" in install and "trap rollback ERR" in install,
+    "secret_generation": "HHS_PASS190_CAPABILITY_SECRET" in install,
     "validation_before_install": "make validate" in install,
+    "websocket_upgrade": "proxy_set_header Upgrade" in nginx,
+    "authorization_forwarding": "proxy_set_header Authorization $http_authorization" in nginx,
+    "unsigned_scope_removed": 'proxy_set_header X-HHS-Capability ""' in nginx,
     "integrity_probe": "/api/pass190/integrity" in verify,
     "native_manifest_probe": "/api/pass190/native-abi" in verify,
+    "compiler_probe": '"/api/pass190/compile-execute"' in verify,
 }
 failed = [key for key, value in checks.items() if not value]
 if failed:
     raise SystemExit("deployment verification failed: " + ", ".join(failed))
-print("Pass 190 iteration 3 deployment verification: PASS")
+print("Pass 190 iteration 3 combined deployment verification: PASS")
