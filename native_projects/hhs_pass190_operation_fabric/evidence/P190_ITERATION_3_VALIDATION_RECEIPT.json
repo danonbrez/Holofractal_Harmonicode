@@ -1,0 +1,35 @@
+{
+  "schema": "HHS_PASS_190_ITERATION_3_VALIDATION_RECEIPT_V1",
+  "contract": "HHS-P190-OVRA-HOSS-PCA-FHF-VM81-H72-H216",
+  "iteration": 3,
+  "classification": "HHS_PASS_190_ITERATION_3_NATIVE_ABI_COMPILER_PARITY_FOUNDATION_VERIFIED",
+  "authoritative_baseline": "570878c2b84ed39da641492eb258aeaf6753af27",
+  "validated_scope": {
+    "registry_generated_native_manifest": true,
+    "c11_shared_library": true,
+    "ten_operation_native_symbol_table": true,
+    "typed_native_profiles": true,
+    "native_negative_boundaries": true,
+    "cst_ast_hir_vmir_lowering": true,
+    "compiled_program_hash72_hash216": true,
+    "compiler_authority_execution": true,
+    "python_native_semantic_parity": true,
+    "compiler_http_surface": true,
+    "iteration3_deployment_entrypoint": true
+  },
+  "validation": {
+    "iteration_1_regression_tests": 10,
+    "iteration_2_regression_tests": 6,
+    "iteration_3_tests": 8,
+    "native_c_tests": true,
+    "strict_c11_compile": true,
+    "shared_library_compile": true,
+    "python_compile": true,
+    "native_generation_check": true,
+    "no_float_native_scan": true,
+    "private_eval_exec_scan": true
+  },
+  "full_pass_190_completion_claimed": false,
+  "full_native_type_parity_claimed": false,
+  "remaining_work_recorded": true
+}
