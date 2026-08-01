@@ -1,0 +1,31 @@
+{
+  "baseline": "main @ ab304e2bfec9a1158c6f3a097b5b1927291090f6",
+  "errors": 0,
+  "failures": 0,
+  "limitations": [
+    "The repository could not be cloned because github.com DNS resolution is unavailable in this execution environment.",
+    "No GitHub Actions pull-request workflow runs were attached to the current main commits.",
+    "The repository combined status exposed an external Vercel deployment failure; this is not treated as a mathematical or schema test result.",
+    "These are pre-contract mathematical and schema tests, not a claim that Pass 192 or Pass 193 runtime implementation exists."
+  ],
+  "passed": true,
+  "runner": "python3 standard-library unittest",
+  "schema": "HHS_PASS_192_193_PRECONTRACT_VALIDATION_V1",
+  "scope": [
+    "Lo Shu invariants",
+    "Fibonacci exact-rational nesting",
+    "source lexical preservation",
+    "membrane witnesses",
+    "higher-dimensional plane rotations",
+    "noncommutative composition",
+    "fractal lineage identity",
+    "bounded finite materialization",
+    "developer manifest schemas",
+    "x86_64 and ARM64 artifact projection distinction",
+    "NFT identity and execution-authorization separation"
+  ],
+  "skipped": 0,
+  "test_file": "tests/pass192_193/test_pass192_193_contract_invariants.py",
+  "tests_run": 37,
+  "timestamp_utc": "2026-08-01T15:41:00Z"
+}
