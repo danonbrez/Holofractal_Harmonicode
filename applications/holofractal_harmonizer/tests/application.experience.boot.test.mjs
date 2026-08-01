@@ -19,21 +19,36 @@ test('public boot launches the complete application experience independently', (
   );
 });
 
-test('New Application is the non-blocking critical path', () => {
+test('New Application and Assistant are synchronous fail-closed critical surfaces', () => {
   const source = read('src/application-experience.mjs');
   const intuitive = source.indexOf("initialize('HHSIntuitiveIDE'");
   const studio = source.indexOf("initialize('HHSApplicationStudio'");
+  const assistant = source.indexOf("initialize('HHSIntegratedAssistant'");
+  const postcondition = source.indexOf('const criticalSurface = enforceCriticalSurfacePostconditions()');
   const support = source.indexOf('const supportReady = Promise.allSettled');
+
+  assert.match(source, /import \{ initIntegratedAssistant \} from '\.\/integrated-assistant\.mjs'/);
   assert.ok(intuitive >= 0);
   assert.ok(intuitive < studio);
-  assert.ok(studio < support);
+  assert.ok(studio < assistant);
+  assert.ok(assistant < postcondition);
+  assert.ok(postcondition < support);
   assert.doesNotMatch(source.slice(0, intuitive), /project-lifecycle|integrated-workbench|deployable-app-compiler/);
+  assert.match(source, /retireLegacyApplicationLauncher\(\)/);
+  assert.match(source, /window\.HHSApplicationStudio\?\.ensurePrimaryControl\?\.\(\)/);
+  assert.match(source, /window\.HHSIntegratedAssistant\?\.open\?\.\(\)/);
+  assert.match(source, /HHS_APPLICATION_LAUNCHER_CARDINALITY_INVALID/);
+  assert.match(source, /HHS_APPLICATION_LAUNCHER_NOT_ACTIONABLE/);
+  assert.match(source, /HHS_INTEGRATED_ASSISTANT_NOT_VISIBLE/);
+  assert.match(source, /HHS_INTEGRATED_ASSISTANT_PROMPT_NOT_VISIBLE/);
   assert.match(source, /loadSupport\('project-lifecycle', '\.\/project-lifecycle\.mjs'/);
   assert.match(source, /loadSupport\('integrated-workbench', '\.\/integrated-workbench\.mjs'/);
   assert.match(source, /loadSupport\('deployable-app-compiler', '\.\/deployable-app-compiler\.mjs'/);
   assert.match(source, /state: 'INTERACTIVE'/);
-  assert.match(source, /new_application_control: Boolean\(document\.querySelector\('#ide-new-app'\)\)/);
+  assert.match(source, /public_application_launcher_count:/);
+  assert.match(source, /integrated_assistant_visible:/);
   assert.match(source, /creates_real_runnable_projects:/);
-  assert.match(source, /if \(bootRecord\) return bootRecord/);
+  assert.match(source, /if \(bootRecord\) \{\s*enforceCriticalSurfacePostconditions\(\);\s*return bootRecord;/);
+  assert.match(source, /supportReady = Promise\.allSettled[\s\S]*enforceCriticalSurfacePostconditions\(\)/);
   assert.match(source, /frontend_is_authority: false/);
 });
