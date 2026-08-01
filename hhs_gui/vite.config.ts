@@ -10,6 +10,17 @@ export default defineConfig({
     strictPort: false,
     cors: true,
     proxy: {
+      "/api/pass190": {
+        target: "http://127.0.0.1:8190",
+        ws: true,
+        changeOrigin: true,
+        secure: false,
+      },
+      "/openapi.json": {
+        target: "http://127.0.0.1:8190",
+        changeOrigin: true,
+        secure: false,
+      },
       "/api": {
         target: "http://127.0.0.1:8000",
         changeOrigin: true,

@@ -1,6 +1,6 @@
 // Generated Pass 190 TypeScript SDK. Do not edit by hand.
 export type OperationId = "system.status" | "python.len" | "python.abs" | "python.sorted" | "list.with_appended" | "dict.get" | "text.join" | "math.gcd" | "pass189.context.decode" | "state.counter.advance"
-export type InvokeOptions = { capability?: string; idempotencyKey?: string; expectedState?: string }
+export type InvokeOptions = { capabilityToken?: string; idempotencyKey?: string; expectedState?: string }
 export class HHSClient {
   constructor(readonly baseUrl = "http://127.0.0.1:8190") {}
   private async request(path: string, init: RequestInit = {}) {
@@ -16,15 +16,12 @@ export class HHSClient {
   replay(hash72: string) { return this.request("/api/pass190/replay", { method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({hash72}) }) }
   invoke(operationId: OperationId, arguments_: Record<string, unknown>, options: InvokeOptions = {}) {
     const headers: Record<string,string> = {"Content-Type":"application/json"}
-    if (options.capability) headers["X-HHS-Capability"] = options.capability
+    if (options.capabilityToken) headers["Authorization"] = `HHS-Capability ${options.capabilityToken}`
     if (options.idempotencyKey) headers["Idempotency-Key"] = options.idempotencyKey
     if (options.expectedState) headers["X-HHS-Expected-State"] = options.expectedState
     return this.request("/api/pass190/invoke", {method:"POST", headers, body:JSON.stringify({operation_id:operationId, arguments:arguments_})})
   }
-  websocket(after = 0) {
-    const url = this.baseUrl.replace(/^http/, "ws").replace(/\/$/, "") + `/api/pass190/ws?after=${after}`
-    return new WebSocket(url)
-  }
+  websocket(after = 0) { return new WebSocket(this.baseUrl.replace(/^http/, "ws").replace(/\/$/, "") + `/api/pass190/ws?after=${after}`) }
   system_status(arguments: Record<string, unknown> = {}, options: InvokeOptions = {}) {
     return this.invoke("system.status", arguments, options)
   }

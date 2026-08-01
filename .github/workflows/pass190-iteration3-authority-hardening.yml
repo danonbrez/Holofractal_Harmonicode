@@ -1,0 +1,29 @@
+name: Pass 190 Iteration 3 Authenticated Fail-Closed Authority
+
+on:
+  push:
+    paths:
+      - "HHS_PASS_190_ITERATION_3_AUTHENTICATED_FAIL_CLOSED_AUTHORITY.md"
+      - "native_projects/hhs_pass190_operation_fabric/**"
+      - "hhs_gui/runtime_apps/pass190/**"
+      - "hhs_gui/runtime_os/core/RuntimeWindowManager.ts"
+      - "hhs_gui/vite.config.ts"
+      - ".github/workflows/pass190-iteration3-authority-hardening.yml"
+  pull_request:
+    paths:
+      - "HHS_PASS_190_ITERATION_3_AUTHENTICATED_FAIL_CLOSED_AUTHORITY.md"
+      - "native_projects/hhs_pass190_operation_fabric/**"
+      - "hhs_gui/runtime_apps/pass190/**"
+      - "hhs_gui/runtime_os/core/RuntimeWindowManager.ts"
+      - "hhs_gui/vite.config.ts"
+      - ".github/workflows/pass190-iteration3-authority-hardening.yml"
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate native compiler and authenticated authority
+        working-directory: native_projects/hhs_pass190_operation_fabric
+        run: make validate

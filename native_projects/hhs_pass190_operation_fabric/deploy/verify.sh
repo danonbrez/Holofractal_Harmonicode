@@ -1,8 +1,33 @@
 #!/usr/bin/env bash
 set -euo pipefail
 BASE_URL="${1:-http://127.0.0.1:8190}"
-curl --fail --silent --show-error "$BASE_URL/api/pass190/health" | python3 -m json.tool >/dev/null
-curl --fail --silent --show-error "$BASE_URL/api/pass190/integrity" | python3 -m json.tool >/dev/null
-curl --fail --silent --show-error "$BASE_URL/api/pass190/native-abi" | python3 -m json.tool >/dev/null
-curl --fail --silent --show-error "$BASE_URL/openapi.json" | python3 -m json.tool >/dev/null
-printf 'Pass 190 iteration 3 service verification: PASS\n'
+
+health="$(curl --fail --silent --show-error "$BASE_URL/api/pass190/health")"
+integrity="$(curl --fail --silent --show-error "$BASE_URL/api/pass190/integrity")"
+native="$(curl --fail --silent --show-error "$BASE_URL/api/pass190/native-abi")"
+openapi="$(curl --fail --silent --show-error "$BASE_URL/openapi.json")"
+
+python3 - "$health" "$integrity" "$native" "$openapi" <<'PY'
+import json
+import sys
+health, integrity, native, openapi = map(json.loads, sys.argv[1:])
+assert health["result"]["status"] == "ok"
+assert integrity["status"] == "ok"
+assert integrity["metadata_complete"] is True
+assert integrity["events_verified"] is True
+assert native["operation_count"] == 10
+assert openapi["x-hhs-iteration"] == 3
+required = {
+    "/api/pass190/integrity",
+    "/api/pass190/events",
+    "/api/pass190/receipts",
+    "/api/pass190/native-abi",
+    "/api/pass190/invoke",
+    "/api/pass190/replay",
+    "/api/pass190/compile",
+    "/api/pass190/compile-execute",
+}
+assert required.issubset(openapi["paths"])
+PY
+
+printf 'Pass 190 iteration 3 combined service verification: PASS\n'
