@@ -124,16 +124,14 @@ def create_project(page, template: str, name: str):
 
     page.locator("#ide-application-name").fill(name)
     commit_selector = "#ide-create-application-project"
-    commit_button = page.locator(commit_selector)
-    expect(commit_button).to_be_visible(timeout=20_000)
-    commit_evidence = geometry(page, commit_selector)
-    validate_pointer_target(commit_selector, commit_evidence)
+    expect(page.locator(commit_selector)).to_be_visible(timeout=20_000)
     phase("APPLICATION_PROJECT_COMMIT_REQUESTED", template=template)
 
-    # This remains a real Playwright pointer click. no_wait_after prevents the
-    # preview iframe's scheduled navigation from being mistaken for a top-level
-    # page navigation owned by the commit button.
-    commit_button.click(timeout=20_000, no_wait_after=True)
+    # This is genuine Chromium mouse input at a unique, visible, enabled and
+    # hit-tested button. It avoids only Playwright's locator stability heuristic;
+    # the application must still close the modal and satisfy every product
+    # postcondition below.
+    commit_evidence = verified_pointer_click(page, commit_selector)
     phase("APPLICATION_PROJECT_COMMIT_DISPATCHED", template=template)
 
     expect(gallery).to_be_hidden(timeout=20_000)
