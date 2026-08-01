@@ -1,4 +1,6 @@
 import './theme-bootstrap.mjs';
+import { initPreviewReadiness } from './preview-readiness.mjs';
+import { startApplicationExperience } from './application-experience.mjs';
 import { startPublicBoot } from './public-boot.mjs';
 
 const originalFetch = window.fetch.bind(window);
@@ -64,13 +66,49 @@ function installStorybookReelLauncher() {
   }
 }
 
+function installApplicationStudioLauncherInterposition() {
+  document.addEventListener('click', (event) => {
+    const element = event.target instanceof Element ? event.target : null;
+    const commit = element?.closest('#ide-create-application-project');
+    if (commit) {
+      const requested = String(document.querySelector('#ide-application-name')?.value || '').trim();
+      if (requested) {
+        const identity = Object.freeze({
+          schema: 'HHS_APPLICATION_PROJECT_IDENTITY_V1',
+          name: requested,
+          requested_at: new Date().toISOString(),
+          source: 'APPLICATION_STUDIO_COMMIT',
+          frontend_is_authority: false,
+        });
+        window.HHSPendingApplicationProjectIdentity = identity;
+        const input = document.querySelector('#ide-project-name');
+        if (input instanceof HTMLInputElement) {
+          input.value = requested;
+          input.dataset.hhsApplicationStudioOwned = 'true';
+        }
+        window.dispatchEvent(new CustomEvent('hhs:application-project:identity-requested', { detail: identity }));
+      }
+      return;
+    }
+
+    const target = element?.closest('#ide-new-app');
+    if (!target) return;
+    const studio = window.HHSApplicationStudio;
+    if (!studio || typeof studio.open !== 'function') return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    studio.ensurePrimaryControl?.();
+    studio.open();
+  }, true);
+}
+
 window.fetch = async function coordinatedFetch(input, init) {
-  // Only optional assistant cold-start calls receive a short priority window.
-  // IDE, runtime, ingress, compiler, VM81, receipt, egress, and storybook-reel
-  // calls are never held behind assistant/provider initialization.
   if (isAssistantRequest(input)) await waitForRegistryPriorityWindow();
   return originalFetch(input, init);
 };
+
+initPreviewReadiness();
+installApplicationStudioLauncherInterposition();
 
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', installStorybookReelLauncher, { once: true });
@@ -79,19 +117,59 @@ if (document.readyState === 'loading') {
 }
 
 window.HHSProductionStartupCoordinator = Object.freeze({
-  schema: 'HHS_PASS161_PRODUCTION_STARTUP_COORDINATOR_V4',
+  schema: 'HHS_PASS161_PRODUCTION_STARTUP_COORDINATOR_V9',
   assistant_requests_deferred_until_registry_ready: true,
   max_assistant_deferral_ms: MAX_ASSISTANT_DEFERRAL_MS,
   runtime_registry_has_priority: true,
   visual_ide_requests_never_deferred: true,
+  application_experience_is_awaited_entry_dependency: true,
+  application_studio_launcher_capture_interposition: true,
+  application_project_identity_captured_before_hydration: true,
+  application_preview_readiness_bound_before_hydration: true,
+  application_preview_source_window_required: true,
   storybook_reel_requests_never_deferred: true,
   storybook_reel_launcher_installed: true,
   theme_bootstrap_independent_of_ide_module: true,
-  public_module_boot_concurrent: true,
+  public_module_boot_serialized_after_critical_surface: true,
   frontend_is_authority: false,
 });
 
-// This is the first public entry module. Launch the browser runtime,
-// production registry integration, and visual IDE independently now, before
-// any unresolved legacy module can serialize the remaining deferred scripts.
-startPublicBoot();
+async function startProductionSurface() {
+  const applicationExperience = await startApplicationExperience();
+  if (!applicationExperience || applicationExperience.state !== 'INTERACTIVE') {
+    throw new Error('HHS_PRODUCTION_APPLICATION_EXPERIENCE_NOT_INTERACTIVE');
+  }
+  const publicBoot = startPublicBoot();
+  await publicBoot.applicationExperience;
+  await publicBoot.allSettled;
+  await startApplicationExperience();
+  initPreviewReadiness();
+  installStorybookReelLauncher();
+  return Object.freeze({
+    schema: 'HHS_PRODUCTION_SURFACE_READY_V3',
+    application_experience: 'INTERACTIVE',
+    public_boot: publicBoot.schema,
+    preview_readiness: window.HHSApplicationPreviewReadiness?.schema || null,
+    project_identity: window.HHSPendingApplicationProjectIdentity?.schema || null,
+    critical_surface_reasserted: true,
+    frontend_is_authority: false,
+  });
+}
+
+const startupReady = startProductionSurface().then((record) => {
+  window.HHSProductionSurfaceReady = record;
+  window.dispatchEvent(new CustomEvent('hhs:production-surface:ready', { detail: record }));
+  return record;
+}).catch((error) => {
+  const detail = {
+    schema: 'HHS_PRODUCTION_SURFACE_FAILURE_V1',
+    error: `${error?.name || 'Error'}: ${error?.message || String(error)}`,
+    frontend_is_authority: false,
+  };
+  window.HHSProductionSurfaceFailure = Object.freeze(detail);
+  window.dispatchEvent(new CustomEvent('hhs:production-surface:error', { detail }));
+  console.error('HHS_PRODUCTION_SURFACE_FAILED', detail);
+  throw error;
+});
+
+window.HHSProductionStartupReady = startupReady;

@@ -22,6 +22,18 @@ test('application gallery contains real representative project classes', () => {
   }
 });
 
+test('executable starter script tags remain canonical and preview-inlineable', () => {
+  for (const id of ['web', 'pong', 'calculator', 'puzzle', 'document', 'audio', 'video']) {
+    const project = materializeApplicationTemplate(id);
+    const html = project.files.find((file) => /\.html?$/i.test(file.path))?.content || '';
+    assert.ok(html.length > 0, `${id} requires an HTML entrypoint`);
+    assert.doesNotMatch(html, /<script\b[^>]*\bsrc=["'][^"']+["'][^>]*>\s+<\/script>/i, `${id} has non-inlineable script whitespace`);
+    if (/<script\b[^>]*\bsrc=/i.test(html)) {
+      assert.match(html, /<script\b[^>]*\bsrc=["'][^"']+["'][^>]*><\/script>/i, `${id} requires canonical external script tags`);
+    }
+  }
+});
+
 test('game, calculator, document, audio and video starters contain executable behavior', () => {
   const pong = JSON.stringify(materializeApplicationTemplate('pong'));
   const calculatorProject = materializeApplicationTemplate('calculator');

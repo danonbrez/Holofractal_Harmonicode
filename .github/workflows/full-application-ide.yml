@@ -80,16 +80,20 @@ jobs:
           timeout 600s bash bin/post_compile
           test -s hhs_runtime/builds/libhhs_runtime.so
 
-      - name: Validate executable application templates and browser compiler
+      - name: Validate executable application templates and awaited public boot
         working-directory: applications/holofractal_harmonizer
         run: |
           timeout 60s node --check src/application-templates.mjs
           timeout 60s node --check src/application-studio.mjs
+          timeout 60s node --check src/application-experience.mjs
+          timeout 60s node --check src/public-boot.mjs
+          timeout 60s node --check src/production-startup-coordinator.mjs
           timeout 60s node --check src/deployable-app-compiler.mjs
           timeout 60s node --check src/integrated-assistant.mjs
           timeout 60s node --check src/integrated-workbench.mjs
           timeout 60s node --check src/intuitive-ide.mjs
           timeout 120s node --test \
+            tests/application.experience.boot.test.mjs \
             tests/application.studio.test.mjs \
             tests/intuitive.ide.test.mjs \
             tests/integrated.workbench.test.mjs \

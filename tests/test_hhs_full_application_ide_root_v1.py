@@ -28,15 +28,29 @@ def test_full_application_ide_is_public_root_and_console_is_preserved() -> None:
 
     assert server.FULL_IDE_ROOT.name == "holofractal_harmonizer"
     assert server.RUNTIME_CONSOLE_ROOT.name == "pass174_visual_ide"
-    assert "hhs-full-application-ide-index" in names
-    assert "hhs-full-application-ide" in names
+    assert names.count("hhs-full-application-ide-index") == 1
+    assert "hhs-full-application-ide" not in names
+    assert "hhs-pass174-visual-ide" not in names
+    assert "hhs-production-harmonizer" not in names
     assert "hhs-pass174-runtime-console" in names
     assert server.production.VISUAL_SOURCE_MOUNT_NAME in names
-    assert names.index("hhs-full-application-ide-index") < names.index("hhs-full-application-ide")
-    assert paths.index("/src") < names.index("hhs-full-application-ide")
-    assert paths.index("/runtime-console") < names.index("hhs-full-application-ide")
+    assert paths.index("/src") < names.index("hhs-full-application-ide-index")
+    assert paths.index("/runtime-console") < names.index("hhs-full-application-ide-index")
+
+    root_routes = [
+        route for route in routes
+        if str(getattr(route, "path", "")) in {"", "/"}
+    ]
+    assert [getattr(route, "name", None) for route in root_routes] == [
+        "hhs-full-application-ide-index",
+    ]
+    assert {"GET", "HEAD"}.issubset(root_routes[0].methods)
+
     assert server.pass174.PASS174_BOOT_STATE["application_ide_is_public_root"] is True
     assert server.pass174.PASS174_BOOT_STATE["diagnostic_console_is_supporting_surface"] is True
+    assert server.pass174.PASS174_BOOT_STATE["single_public_root_authority"] is True
+    assert server.pass174.PASS174_BOOT_STATE["public_root_static_fallback"] is False
+    assert server.pass174.PASS174_BOOT_STATE["public_source_mount"] == "/src"
     assert server.pass174.PASS174_BOOT_STATE["inline_public_boot"] == "HHS_INLINE_PUBLIC_BOOT_V2"
 
 
@@ -67,6 +81,9 @@ def test_public_root_has_one_boot_authority_and_preserved_module_lineage() -> No
             assert "javascript" in asset_response.headers.get("content-type", ""), asset
         else:
             assert "text/css" in asset_response.headers.get("content-type", ""), asset
+
+    missing_root_asset = client.get("/index.html")
+    assert missing_root_asset.status_code == 404
 
     console = client.get("/runtime-console/")
     assert console.status_code == 200

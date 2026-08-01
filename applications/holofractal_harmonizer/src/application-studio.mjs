@@ -2,9 +2,15 @@ import { $, state, persist, setText, log } from './visual-ide-state.mjs';
 import { renderFiles, activateFile, openBottomTab } from './visual-ide-ui.mjs';
 import { applicationTemplateList, materializeApplicationTemplate } from './application-templates-runtime.mjs';
 
+const REQUIRED_APPLICATION_TEMPLATES = Object.freeze([
+  'pong', 'calculator', 'puzzle', 'document', 'audio', 'video',
+]);
 let selectedTemplate = 'pong';
 let previousProject = null;
 let priorUndoHandler = null;
+let workflowObserver = null;
+let workflowRepairPending = false;
+let projectCommitPending = false;
 
 function snapshotProject() {
   return {
@@ -48,7 +54,7 @@ function restorePreviousProject() {
   refreshProjectSurfaces();
   setStatus('Previous project restored. Use Undo again to switch back.', 'ready');
   log('Restored the prior project working tree without deleting either snapshot.');
-  window.HHSIntegratedWorkbench?.preview?.();
+  window.setTimeout(() => window.HHSIntegratedWorkbench?.preview?.(), 0);
 }
 
 function bindProjectUndo() {
@@ -75,15 +81,61 @@ function closeGallery() {
   document.body.classList.remove('ide-dialog-open');
 }
 
+function templateRegistry() {
+  const templates = applicationTemplateList();
+  const byId = new Map(templates.map((template) => [template.id, template]));
+  const missing = REQUIRED_APPLICATION_TEMPLATES.filter((id) => !byId.has(id));
+  if (missing.length) {
+    throw new Error(`HHS_APPLICATION_TEMPLATE_REGISTRY_INCOMPLETE: ${missing.join(',')}`);
+  }
+  return { templates, byId };
+}
+
+function renderTemplateButtons(gallery) {
+  const grid = gallery.querySelector('#ide-application-template-grid');
+  if (!grid) throw new Error('HHS_APPLICATION_TEMPLATE_GRID_MISSING');
+  const { templates } = templateRegistry();
+  const expected = templates.map((template) => template.id).join('|');
+  if (grid.dataset.templateRegistry === expected
+      && templates.every((template) => grid.querySelector(`[data-application-template="${CSS.escape(template.id)}"]`))) {
+    return;
+  }
+  grid.replaceChildren(...templates.map((template) => {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.dataset.applicationTemplate = template.id;
+    button.setAttribute('aria-pressed', template.id === selectedTemplate ? 'true' : 'false');
+    const label = document.createElement('strong');
+    label.textContent = template.label;
+    const description = document.createElement('span');
+    description.textContent = template.description;
+    const fileCount = document.createElement('small');
+    fileCount.textContent = `${template.files.length} editable files`;
+    button.append(label, description, fileCount);
+    button.onclick = () => selectTemplate(template.id);
+    return button;
+  }));
+  grid.dataset.templateRegistry = expected;
+  selectTemplate(selectedTemplate);
+}
+
 export function openApplicationGallery() {
+  mountGallery();
   const gallery = $('#ide-application-gallery');
   if (!gallery) return;
+  renderTemplateButtons(gallery);
   gallery.hidden = false;
+  gallery.removeAttribute('inert');
+  gallery.style.display = '';
+  gallery.style.visibility = 'visible';
+  gallery.style.opacity = '1';
   document.body.classList.add('ide-dialog-open');
   $('#ide-application-name')?.focus();
 }
 
 export function createApplicationProject(id = selectedTemplate, requestedName = '') {
+  const { byId } = templateRegistry();
+  if (!byId.has(id)) throw new Error(`HHS_APPLICATION_TEMPLATE_NOT_REGISTERED: ${id}`);
   const template = materializeApplicationTemplate(id);
   const name = requestedName.trim() || template.label;
   previousProject = snapshotProject();
@@ -104,54 +156,193 @@ export function createApplicationProject(id = selectedTemplate, requestedName = 
   });
   if (/\.html?$/i.test(template.entrypoint)) {
     openBottomTab('preview');
-    window.HHSIntegratedWorkbench?.preview?.();
+    window.setTimeout(() => {
+      try {
+        window.HHSIntegratedWorkbench?.preview?.();
+      } catch (error) {
+        setStatus(`Preview needs attention: ${error.message}`, 'failed');
+        window.dispatchEvent(new CustomEvent('hhs:application-project:preview-error', {
+          detail: {
+            schema: 'HHS_APPLICATION_PROJECT_PREVIEW_ERROR_V1',
+            template: template.id,
+            message: error.message,
+            frontend_is_authority: false,
+          },
+        }));
+      }
+    }, 0);
   }
   return template;
 }
 
+function commitApplicationProject() {
+  if (projectCommitPending) return;
+  const button = $('#ide-create-application-project');
+  const id = selectedTemplate;
+  const requestedName = $('#ide-application-name')?.value || '';
+  projectCommitPending = true;
+  if (button) {
+    button.disabled = true;
+    button.dataset.state = 'accepted';
+    button.textContent = 'Creating…';
+  }
+  closeGallery();
+  setStatus('Creating the selected application from editable source…', 'working');
+  window.dispatchEvent(new CustomEvent('hhs:application-project:commit-accepted', {
+    detail: {
+      schema: 'HHS_APPLICATION_PROJECT_COMMIT_ACCEPTED_V1',
+      template: id,
+      requested_name: requestedName,
+      deferred_beyond_pointer_dispatch: true,
+      frontend_is_authority: false,
+    },
+  }));
+  window.setTimeout(() => {
+    try {
+      createApplicationProject(id, requestedName);
+      window.dispatchEvent(new CustomEvent('hhs:application-project:created', {
+        detail: {
+          schema: 'HHS_APPLICATION_PROJECT_CREATED_V1',
+          template: id,
+          requested_name: requestedName,
+          frontend_is_authority: false,
+        },
+      }));
+    } catch (error) {
+      setStatus(`Application creation failed: ${error.message}`, 'failed');
+      openApplicationGallery();
+      window.dispatchEvent(new CustomEvent('hhs:application-project:create-error', {
+        detail: {
+          schema: 'HHS_APPLICATION_PROJECT_CREATE_ERROR_V1',
+          template: id,
+          message: error.message,
+          frontend_is_authority: false,
+        },
+      }));
+    } finally {
+      projectCommitPending = false;
+      const currentButton = $('#ide-create-application-project');
+      if (currentButton) {
+        currentButton.disabled = false;
+        currentButton.dataset.state = 'ready';
+        currentButton.textContent = 'Create & Run Project';
+      }
+    }
+  }, 0);
+}
+
 function mountGallery() {
-  if ($('#ide-application-gallery')) return;
-  const gallery = document.createElement('section');
-  gallery.id = 'ide-application-gallery';
-  gallery.className = 'ide-application-gallery';
-  gallery.hidden = true;
-  gallery.setAttribute('role', 'dialog');
-  gallery.setAttribute('aria-modal', 'true');
-  gallery.setAttribute('aria-labelledby', 'ide-application-gallery-title');
-  gallery.innerHTML = `
-    <div class="ide-application-gallery-card">
-      <header>
-        <div><span>NEW APPLICATION</span><h2 id="ide-application-gallery-title">Choose something real to build</h2><p>Every starter is editable, runnable, testable, compilable, and exportable.</p></div>
-        <button id="ide-close-application-gallery" type="button" aria-label="Close">×</button>
-      </header>
-      <label class="ide-application-name-label">Project name<input id="ide-application-name" value="My Application" maxlength="120"></label>
-      <div class="ide-application-template-grid">
-        ${applicationTemplateList().map((template) => `<button type="button" data-application-template="${template.id}" aria-pressed="${template.id === selectedTemplate}"><strong>${template.label}</strong><span>${template.description}</span><small>${template.files.length} editable files</small></button>`).join('')}
-      </div>
-      <footer><button id="ide-cancel-application-gallery" type="button">Cancel</button><button id="ide-create-application-project" type="button" class="primary-action">Create & Run Project</button></footer>
-    </div>`;
-  document.body.append(gallery);
-  $('#ide-close-application-gallery').onclick = closeGallery;
-  $('#ide-cancel-application-gallery').onclick = closeGallery;
-  $('#ide-create-application-project').onclick = () => createApplicationProject(selectedTemplate, $('#ide-application-name')?.value || '');
-  gallery.addEventListener('click', (event) => { if (event.target === gallery) closeGallery(); });
-  gallery.querySelectorAll('[data-application-template]').forEach((button) => {
-    button.onclick = () => selectTemplate(button.dataset.applicationTemplate);
-  });
-  selectTemplate(selectedTemplate);
+  let gallery = $('#ide-application-gallery');
+  if (!gallery) {
+    gallery = document.createElement('section');
+    gallery.id = 'ide-application-gallery';
+    gallery.className = 'ide-application-gallery';
+    gallery.hidden = true;
+    gallery.setAttribute('role', 'dialog');
+    gallery.setAttribute('aria-modal', 'true');
+    gallery.setAttribute('aria-labelledby', 'ide-application-gallery-title');
+    gallery.innerHTML = `
+      <div class="ide-application-gallery-card">
+        <header>
+          <div><span>NEW APPLICATION</span><h2 id="ide-application-gallery-title">Choose something real to build</h2><p>Every starter is editable, runnable, testable, compilable, and exportable.</p></div>
+          <button id="ide-close-application-gallery" type="button" aria-label="Close">×</button>
+        </header>
+        <label class="ide-application-name-label">Project name<input id="ide-application-name" value="My Application" maxlength="120"></label>
+        <div id="ide-application-template-grid" class="ide-application-template-grid"></div>
+        <footer><button id="ide-cancel-application-gallery" type="button">Cancel</button><button id="ide-create-application-project" type="button" class="primary-action">Create & Run Project</button></footer>
+      </div>`;
+    document.body.append(gallery);
+    $('#ide-close-application-gallery').onclick = closeGallery;
+    $('#ide-cancel-application-gallery').onclick = closeGallery;
+    $('#ide-create-application-project').onclick = commitApplicationProject;
+    gallery.addEventListener('click', (event) => { if (event.target === gallery) closeGallery(); });
+  }
+  renderTemplateButtons(gallery);
+}
+
+function launcherIsStable(node) {
+  return Boolean(
+    node instanceof HTMLButtonElement
+    && node.isConnected
+    && node.parentElement === document.body
+    && !node.hidden
+    && !node.disabled
+    && !node.closest('[hidden]')
+    && node.dataset.hhsStableApplicationLauncher === 'true'
+  );
+}
+
+function createStableApplicationLauncher() {
+  const launchers = [...document.querySelectorAll('[id="ide-new-app"]')];
+  let newApp = launchers.find(launcherIsStable) || null;
+  for (const launcher of launchers) {
+    if (launcher !== newApp) launcher.remove();
+  }
+  if (!newApp) {
+    newApp = document.createElement('button');
+    newApp.id = 'ide-new-app';
+    newApp.type = 'button';
+    newApp.className = 'ide-new-application-launcher';
+    newApp.dataset.hhsStableApplicationLauncher = 'true';
+    newApp.setAttribute('aria-label', 'Create a new application');
+    const symbol = document.createElement('span');
+    symbol.textContent = '＋';
+    const label = document.createElement('strong');
+    label.textContent = 'New Application';
+    const description = document.createElement('small');
+    description.textContent = 'Games, tools, documents, audio, video';
+    description.style.display = 'none';
+    newApp.append(symbol, label, description);
+    document.body.append(newApp);
+  }
+  newApp.hidden = false;
+  newApp.disabled = false;
+  newApp.removeAttribute('inert');
+  newApp.style.cssText = [
+    'position:fixed', 'top:8px', 'right:210px', 'z-index:2147483000',
+    'display:inline-flex', 'align-items:center', 'justify-content:center', 'gap:6px',
+    'min-height:32px', 'padding:0 12px', 'border:1px solid #6f87d9',
+    'border-radius:8px', 'background:linear-gradient(135deg,#5e78db,#344d9f)',
+    'color:#f6f8ff', 'font-size:12px', 'font-weight:800', 'cursor:pointer',
+    'white-space:nowrap', 'visibility:visible', 'opacity:1', 'pointer-events:auto',
+    'transform:none', 'transition:none', 'touch-action:manipulation',
+  ].join(';');
+  return newApp;
 }
 
 function promotePrimaryWorkflow() {
-  const newApp = $('#ide-new-app');
+  const newApp = createStableApplicationLauncher();
   if (newApp) {
-    const replacement = newApp.cloneNode(true);
-    newApp.replaceWith(replacement);
-    replacement.onclick = openApplicationGallery;
-    replacement.querySelector('strong').textContent = 'New Application';
-    replacement.querySelector('small').textContent = 'Games, tools, documents, audio, video';
+    newApp.onclick = openApplicationGallery;
+    const label = newApp.querySelector('strong');
+    const description = newApp.querySelector('small');
+    if (label) label.textContent = 'New Application';
+    if (description) description.textContent = 'Games, tools, documents, audio, video';
   }
   const status = $('#ide-simple-workflow-state');
   if (status) status.textContent = 'Ready. Create a real application, add your own files, or drop a folder anywhere.';
+}
+
+function observePrimaryWorkflowInvariant() {
+  if (workflowObserver || !document.body) return;
+  workflowObserver = new MutationObserver(() => {
+    const launchers = [...document.querySelectorAll('[id="ide-new-app"]')];
+    if ((launchers.length === 1 && launcherIsStable(launchers[0])) || workflowRepairPending) return;
+    workflowRepairPending = true;
+    queueMicrotask(() => {
+      workflowRepairPending = false;
+      promotePrimaryWorkflow();
+      window.dispatchEvent(new CustomEvent('hhs:application-studio:workflow-restored', {
+        detail: {
+          control: 'ide-new-app',
+          duplicate_count_before_repair: launchers.length,
+          stable_body_launcher: true,
+          frontend_is_authority: false,
+        },
+      }));
+    });
+  });
+  workflowObserver.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['hidden', 'disabled', 'style', 'inert'] });
 }
 
 function bindKeyboard() {
@@ -167,12 +358,22 @@ function bindKeyboard() {
 export function initApplicationStudio() {
   mountGallery();
   promotePrimaryWorkflow();
+  observePrimaryWorkflowInvariant();
   bindKeyboard();
+  const templates = applicationTemplateList().map(({ id, label, description, entrypoint }) => ({ id, label, description, entrypoint }));
   window.HHSApplicationStudio = Object.freeze({
     open: openApplicationGallery,
     create: createApplicationProject,
+    commit: commitApplicationProject,
     restorePreviousProject,
-    templates: applicationTemplateList().map(({ id, label, description, entrypoint }) => ({ id, label, description, entrypoint })),
+    ensurePrimaryControl: promotePrimaryWorkflow,
+    templates,
+    required_templates: REQUIRED_APPLICATION_TEMPLATES,
+    template_registry_complete: REQUIRED_APPLICATION_TEMPLATES.every((id) => templates.some((template) => template.id === id)),
+    primary_control_is_self_healing: true,
+    primary_control_is_single_stable_body_launcher: true,
+    project_commit_deferred_beyond_pointer_dispatch: true,
+    preview_deferred_beyond_project_materialization: true,
     creates_real_runnable_projects: true,
     prior_project_is_recoverable: true,
   });

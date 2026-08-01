@@ -26,19 +26,29 @@ test('verified workflow-first Harmonizer remains the public presentation authori
 test('public startup gives application controls sole ownership before visual hydration', () => {
   const coordinator = read('src/production-startup-coordinator.mjs');
   const boot = read('src/public-boot.mjs');
+  assert.match(coordinator, /import \{ startApplicationExperience \} from '\.\/application-experience\.mjs'/);
   assert.match(coordinator, /import \{ startPublicBoot \} from '\.\/public-boot\.mjs'/);
   assert.match(coordinator, /window\.HHSProductionStartupCoordinator = Object\.freeze/);
-  assert.ok(coordinator.indexOf('window.HHSProductionStartupCoordinator = Object.freeze') < coordinator.indexOf('startPublicBoot();'));
-  assert.match(boot, /const BOOT_SCHEMA = 'HHS_PUBLIC_MODULE_BOOT_V2'/);
+  assert.ok(coordinator.indexOf('window.HHSProductionStartupCoordinator = Object.freeze') < coordinator.indexOf('startProductionSurface()'));
+  assert.match(boot, /const BOOT_SCHEMA = 'HHS_PUBLIC_MODULE_BOOT_V3'/);
   assert.match(boot, /export function startPublicBoot\(\)/);
-  assert.match(boot, /const browser = launch\('browser', '\.\/browser\.mjs'\)/);
-  assert.match(boot, /const productionIntegration = launch\('production-integration', '\.\/production-integration\.mjs'\)/);
-  assert.match(boot, /const applicationExperience = launch\('application-experience', '\.\/application-experience\.mjs'\)/);
-  assert.match(boot, /const visualIDE = applicationExperience\.then\(\(\) => launch\('visual-ide', '\.\/visual-ide\.mjs'\)\)/);
-  assert.match(boot, /const workflowDefault = browser\.then\(\(\) => launch\('ux-default', '\.\/ux-default\.mjs'\)\)/);
+  assert.match(boot, /const applicationExperience = launch\(/);
+  assert.match(boot, /'application-experience'/);
+  assert.match(boot, /'\.\/application-experience\.mjs'/);
+  assert.match(boot, /const result = await module\.startApplicationExperience\(\)/);
+  assert.match(boot, /const browser = applicationExperience\.then/);
+  assert.match(boot, /return launch\('browser', '\.\/browser\.mjs'\)/);
+  assert.match(boot, /const productionIntegration = applicationExperience\.then/);
+  assert.match(boot, /return launch\('production-integration', '\.\/production-integration\.mjs'\)/);
+  assert.match(boot, /const visualIDE = applicationExperience\.then/);
+  assert.match(boot, /return launch\('visual-ide', '\.\/visual-ide\.mjs'\)/);
+  assert.match(boot, /const workflowDefault = browser\.then/);
+  assert.match(boot, /return launch\('ux-default', '\.\/ux-default\.mjs'\)/);
+  assert.match(boot, /application_experience_awaited_before_hydration: true/);
+  assert.match(boot, /critical_surface_reasserted_after_settlement: true/);
+  assert.match(boot, /await experienceModule\.startApplicationExperience\(\)/);
   assert.match(boot, /legacy_parser_module_entries_disabled: true/);
   assert.match(boot, /if \(publicBoot\) return publicBoot/);
-  assert.doesNotMatch(boot, /await\s+import\(/);
 });
 
 test('Pass 161 browser imports and calls only verified core contracts', () => {
@@ -81,14 +91,18 @@ test('Pass 161 runtime is exposed before assistant cold-start work', () => {
   );
 });
 
-test('production startup gives live runtime registry priority over assistant cold start', () => {
+test('production startup gives live runtime registry priority without bypassing critical-surface closure', () => {
   const source = read('src/production-startup-coordinator.mjs');
   assert.match(source, /pathname\.startsWith\('\/api\/assistant\/'\)/);
   assert.match(source, /HHSProductionIntegration/);
   assert.match(source, /serviceCount/);
   assert.match(source, /MAX_ASSISTANT_DEFERRAL_MS/);
   assert.match(source, /runtime_registry_has_priority:\s*true/);
-  assert.match(source, /public_module_boot_concurrent:\s*true/);
+  assert.match(source, /application_experience_is_awaited_entry_dependency:\s*true/);
+  assert.match(source, /public_module_boot_serialized_after_critical_surface:\s*true/);
+  assert.match(source, /const applicationExperience = await startApplicationExperience\(\)/);
+  assert.match(source, /await publicBoot\.applicationExperience/);
+  assert.match(source, /await publicBoot\.allSettled/);
   assert.match(source, /frontend_is_authority:\s*false/);
   assert.doesNotMatch(source, /\/api\/runtime\/services/);
   assert.doesNotMatch(source, /new\s+WebSocket/);

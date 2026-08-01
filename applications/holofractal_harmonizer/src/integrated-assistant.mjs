@@ -182,7 +182,10 @@ function watchProvider() {
 }
 
 export function initIntegratedAssistant() {
-  if (initialized && window.HHSIntegratedAssistant) return window.HHSIntegratedAssistant;
+  if (initialized && window.HHSIntegratedAssistant) {
+    if (!assistantOpen) openIntegratedAssistant();
+    return window.HHSIntegratedAssistant;
+  }
   initialized = true;
   moveAssistantIntoDrawer();
   rebindExplorerAssistant();
@@ -201,8 +204,14 @@ export function initIntegratedAssistant() {
     get isOpen() { return assistantOpen; },
     assistant_remains_advisory: true,
     ide_remains_primary_surface: true,
+    assistant_visible_at_production_boot: true,
     status_refresh_deduplicated: true,
     status_refresh_cooldown_ms: REFRESH_COOLDOWN_MS,
   });
+
+  // The application IDE remains visible while the advisory assistant occupies
+  // its integrated drawer. Do not hide the assistant immediately after the
+  // browser bootstrap has selected it as the primary help surface.
+  openIntegratedAssistant();
   return window.HHSIntegratedAssistant;
 }

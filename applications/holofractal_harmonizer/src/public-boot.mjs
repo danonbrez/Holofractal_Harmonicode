@@ -1,4 +1,4 @@
-const BOOT_SCHEMA = 'HHS_PUBLIC_MODULE_BOOT_V2';
+const BOOT_SCHEMA = 'HHS_PUBLIC_MODULE_BOOT_V3';
 let publicBoot = null;
 
 export function startPublicBoot() {
@@ -19,7 +19,7 @@ export function startPublicBoot() {
     }));
   };
 
-  const launch = (moduleId, path) => {
+  const launch = (moduleId, path, activate = null) => {
     records.set(moduleId, {
       module_id: moduleId,
       path,
@@ -30,7 +30,8 @@ export function startPublicBoot() {
     });
     publish();
 
-    return import(path).then(() => {
+    return import(path).then(async (module) => {
+      if (typeof activate === 'function') await activate(module);
       const record = records.get(moduleId);
       record.state = 'READY';
       record.completed_ms = elapsed();
@@ -50,23 +51,46 @@ export function startPublicBoot() {
     });
   };
 
-  // The composed document disables all duplicate parser-owned entry modules.
-  // Browser and registry authorities start concurrently. Application controls
-  // initialize before visual-IDE hydration because both import the same control
-  // modules and the application surface owns the user-critical New Application path.
-  const browser = launch('browser', './browser.mjs');
-  const productionIntegration = launch('production-integration', './production-integration.mjs');
-  const applicationExperience = launch('application-experience', './application-experience.mjs');
-  const visualIDE = applicationExperience.then(() => launch('visual-ide', './visual-ide.mjs'));
-  const workflowDefault = browser.then(() => launch('ux-default', './ux-default.mjs'));
+  // The application experience is the user-critical prerequisite. Importing
+  // its module is not sufficient: await its real DOM initialization before
+  // lower browser, registry, and visual IDE hydration can mutate the surface.
+  const applicationExperience = launch(
+    'application-experience',
+    './application-experience.mjs',
+    async (module) => {
+      const result = await module.startApplicationExperience();
+      if (!result || result.state !== 'INTERACTIVE') {
+        throw new Error('HHS_APPLICATION_EXPERIENCE_NOT_INTERACTIVE');
+      }
+    },
+  );
+
+  const browser = applicationExperience.then((result) => {
+    if (result.state !== 'READY') return result;
+    return launch('browser', './browser.mjs');
+  });
+  const productionIntegration = applicationExperience.then((result) => {
+    if (result.state !== 'READY') return result;
+    return launch('production-integration', './production-integration.mjs');
+  });
+  const visualIDE = applicationExperience.then((result) => {
+    if (result.state !== 'READY') return result;
+    return launch('visual-ide', './visual-ide.mjs');
+  });
+  const workflowDefault = browser.then((result) => {
+    if (result.state !== 'READY') return result;
+    return launch('ux-default', './ux-default.mjs');
+  });
 
   const allSettled = Promise.allSettled([
+    applicationExperience,
     browser,
     productionIntegration,
-    applicationExperience,
     visualIDE,
     workflowDefault,
-  ]).then((results) => {
+  ]).then(async (results) => {
+    const experienceModule = await import('./application-experience.mjs');
+    await experienceModule.startApplicationExperience();
     window.dispatchEvent(new CustomEvent('hhs:public-boot:settled', {
       detail: {
         schema: BOOT_SCHEMA,
@@ -76,15 +100,27 @@ export function startPublicBoot() {
       },
     }));
     return results;
+  }).catch((error) => {
+    const detail = {
+      schema: BOOT_SCHEMA,
+      elapsed_ms: elapsed(),
+      error: `${error?.name || 'Error'}: ${error?.message || String(error)}`,
+      modules: snapshot(),
+    };
+    window.dispatchEvent(new CustomEvent('hhs:public-boot:error', { detail }));
+    console.error('HHS_PUBLIC_BOOT_POSTCONDITION_FAILED', detail);
+    throw error;
   });
 
   publicBoot = Object.freeze({
     schema: BOOT_SCHEMA,
     coordinator_ready: Boolean(window.HHSProductionStartupCoordinator),
     legacy_parser_module_entries_disabled: true,
+    application_experience_awaited_before_hydration: true,
+    critical_surface_reasserted_after_settlement: true,
+    applicationExperience,
     browser,
     productionIntegration,
-    applicationExperience,
     visualIDE,
     workflowDefault,
     allSettled,
