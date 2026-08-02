@@ -209,7 +209,7 @@ export default function Pass190OperationFabricSurface() {
         <p style={{ color: "#9ab9c9" }}>{current?.canonical_name || "Loading registry"}</p>
         <label>Arguments<textarea value={argumentsText} onChange={(event) => setArgumentsText(event.target.value)} rows={8} style={{ ...field, marginTop: 6, fontFamily: "monospace" }} /></label>
         <label style={{ display: "block", marginTop: 10 }}>Signed capability token<input type="password" autoComplete="off" value={capabilityToken} onChange={(event) => setCapabilityToken(event.target.value)} placeholder={current?.capability_scope === "public" ? "Not required" : current?.capability_scope || "Protected operation"} style={{ ...field, marginTop: 6 }} /></label>
-        <button onClick={invoke} style={{ marginTop: 12, borderRadius: 8, padding: "10px 16px", cursor: "pointer" }}>Invoke through unified VM81 authority</button>
+        <button onClick={invoke} title="Invoke through unified VM81 authority" style={{ marginTop: 12, borderRadius: 8, padding: "10px 16px", cursor: "pointer" }}>Invoke through kernel authority</button>
         {error && <p role="alert" style={{ color: "#ffb2a6" }}>{error}</p>}
       </section>
       <section style={{ display: "grid", gap: 14 }}>
