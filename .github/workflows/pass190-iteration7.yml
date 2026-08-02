@@ -1,0 +1,25 @@
+name: Pass 190 Iteration 7 Durable Worker Execution
+
+on:
+  push:
+    paths:
+      - "HHS_PASS_190_ITERATION_7_DURABLE_WORKER_EXECUTION_SCHEDULING.md"
+      - "native_projects/hhs_pass190_operation_fabric/**"
+      - "hhs_gui/runtime_apps/pass190/**"
+      - ".github/workflows/pass190-iteration7.yml"
+  pull_request:
+    paths:
+      - "HHS_PASS_190_ITERATION_7_DURABLE_WORKER_EXECUTION_SCHEDULING.md"
+      - "native_projects/hhs_pass190_operation_fabric/**"
+      - "hhs_gui/runtime_apps/pass190/**"
+      - ".github/workflows/pass190-iteration7.yml"
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate Pass 190 Iteration 7
+        working-directory: native_projects/hhs_pass190_operation_fabric
+        run: make validate
