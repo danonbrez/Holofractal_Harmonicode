@@ -1,5 +1,5 @@
 {
-  "actual_repository_baseline": "1ebcfc5179efbb7c5766b6fd2ab9c844d0db9f99",
+  "actual_repository_baseline": "992b4e92a54d4656d66af4edfab7e03922addca6",
   "additive_over": [
     "PASS_082_1",
     "PASS_082_2",
@@ -47,9 +47,13 @@
     "psi": 0,
     "theta_15": true
   },
-  "native_benchmark_ops_per_sec": 18.429553263021514,
+  "native_benchmark_authority": {
+    "artifact": "PASS_191_NATIVE_BENCHMARK.json",
+    "status": "DETERMINISTIC_BIFURCATION_VERIFIED",
+    "timing_classification": "NONAUTHORITATIVE_WALL_CLOCK_MEASUREMENT_EXECUTED_NOT_COMMITTED"
+  },
   "parent_pass": "PASS_161",
-  "pass191_release_root_hash72": "H72N-b486ddebfdd388a6aa",
+  "pass191_release_root_hash72": "H72N-7d3b4144cd3f1f5455",
   "pass_id": "PASS_191",
   "receipt_chain_root_hash72": "H72N-3429a26ffd20e72b47",
   "schema": "HHS_PASS_191_RELEASE_MANIFEST_V1",

@@ -33,7 +33,11 @@
     "psi": 0,
     "theta_15": true
   },
-  "native_benchmark_ops_per_sec": 18.429553263021514,
+  "native_benchmark_authority": {
+    "artifact": "PASS_191_NATIVE_BENCHMARK.json",
+    "status": "DETERMINISTIC_BIFURCATION_VERIFIED",
+    "timing_classification": "NONAUTHORITATIVE_WALL_CLOCK_MEASUREMENT_EXECUTED_NOT_COMMITTED"
+  },
   "parent_pass": "PASS_161",
   "pass_id": "PASS_191",
   "receipt_chain_root_hash72": "H72N-3429a26ffd20e72b47",

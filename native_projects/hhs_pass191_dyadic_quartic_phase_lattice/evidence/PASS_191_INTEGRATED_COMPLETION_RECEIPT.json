@@ -9,7 +9,7 @@
     "HASH72_DETERMINISTIC_REPLAY"
   ],
   "classification": "HHS_PASS_191_UNIFIED_MANIFOLD_VM81_PROOF_SEARCH_EXECUTED",
-  "completion_hash72": "/i<H?hpD3VLB!2ebZZ(JCg?RG(f-+pYzXqbd*9YHim>9nUAvcd<k*BH9dSrmplrnNt*lrYOz",
+  "completion_hash72": "GgOsu)S<Zt4hatm7jn<ijKOYl>0Pxc)TpvkR?0HOX2PZhFOl0l07DsH72f>>gnVnIXmhDLr<",
   "contextual_cardinality": 51648192,
   "exact_chain_hits": 837,
   "frontier_size": 16,
@@ -26,7 +26,7 @@
         "PROVED": 4
       }
     },
-    "pass191_release_root_hash72": "H72N-b486ddebfdd388a6aa",
+    "pass191_release_root_hash72": "H72N-7d3b4144cd3f1f5455",
     "role": "DEPENDENCY_SCOPED_PARSER_AND_ALGEBRA_EVIDENCE"
   },
   "manifold_checksum_fnv1a64": "5f89e7e466d337ed",
