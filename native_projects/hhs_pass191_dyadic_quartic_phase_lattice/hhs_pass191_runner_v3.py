@@ -3,7 +3,7 @@
 Version 3 retains the dependency-scoped v2 parser/algebra evidence, then runs
 the theorem target through the inherited Pass 186 native tensor ABI, Pass 175
 Hash216 VM5184 x G243 hydration, Pass 174 singleton VM81 authority, and Hash72
-replay.  The integrated result supersedes literal unit outcomes as the theorem
+replay. The integrated result supersedes literal unit outcomes as the theorem
 decision surface.
 """
 
@@ -18,6 +18,10 @@ from hhs_runtime.core.hash72_digest_v1 import hash72_digest
 from native_projects.hhs_pass191_dyadic_quartic_phase_lattice import hhs_pass191_runner_v2 as legacy_runner
 from native_projects.hhs_pass191_dyadic_quartic_phase_lattice.hhs_pass191_integrated_proof_engine_v1 import (
     CLASSIFICATION,
+    Pass186NativeABI,
+    exact_reflection_obstruction,
+    hydrated_symmetry_search,
+    native_tensor_witnesses,
     run_integrated_proof_search,
     verify_integrated_proof_search,
 )
@@ -35,6 +39,29 @@ def _read_json(path: Path) -> dict[str, Any]:
 
 def _write_json(path: Path, payload: Any) -> None:
     legacy_runner.implementation.stable_json_write(path, payload)
+
+
+def _normalize_integrated(payload: dict[str, Any]) -> dict[str, Any]:
+    hydration = payload["vm81_hash216_hydration"]
+    hydration["cold_hydration"].pop("elapsed_ns_nonauthoritative", None)
+    hydration_core = {
+        key: value
+        for key, value in hydration.items()
+        if key != "hydration_receipt_hash72"
+    }
+    hydration["hydration_receipt_hash72"] = hash72_digest(
+        {"domain": "HHS-PASS-191-VM81-HYDRATION-V1"}, hydration_core
+    )
+
+    integrated_core = {
+        key: value
+        for key, value in payload.items()
+        if key != "integrated_proof_search_hash72"
+    }
+    payload["integrated_proof_search_hash72"] = hash72_digest(
+        {"domain": "HHS-PASS-191-INTEGRATED-PROOF-SEARCH-V1"}, integrated_core
+    )
+    return payload
 
 
 def _completion_payload(
@@ -74,7 +101,9 @@ def build_artifacts(
 ) -> dict[str, Any]:
     output_dir.mkdir(parents=True, exist_ok=True)
     legacy = legacy_runner.build_artifacts(repo_root, output_dir)
-    integrated = run_integrated_proof_search(repo_root, native_library)
+    integrated = _normalize_integrated(
+        run_integrated_proof_search(repo_root, native_library)
+    )
     integrated_verification = verify_integrated_proof_search(integrated)
     completion = _completion_payload(legacy, integrated)
 
@@ -101,16 +130,15 @@ def verify_existing_artifacts(
     completion = _read_json(output_dir / INTEGRATED_COMPLETION)
     integrated_verification = verify_integrated_proof_search(integrated)
 
-    native_probe = run_integrated_proof_search(repo_root, native_library)
-    if native_probe["native_tensor_witnesses"] != integrated["native_tensor_witnesses"]:
+    native = Pass186NativeABI(native_library)
+    native_probe = native_tensor_witnesses(native)
+    obstruction_probe = exact_reflection_obstruction()
+    search_probe = hydrated_symmetry_search(native)
+    if native_probe != integrated["native_tensor_witnesses"]:
         raise RuntimeError("committed Pass 186 native tensor witnesses do not replay")
-    if native_probe["rh_symmetry_obstruction"] != integrated[
-        "rh_symmetry_obstruction"
-    ]:
+    if obstruction_probe != integrated["rh_symmetry_obstruction"]:
         raise RuntimeError("committed reflection obstruction does not replay")
-    if native_probe["hydrated_symmetry_search"] != integrated[
-        "hydrated_symmetry_search"
-    ]:
+    if search_probe != integrated["hydrated_symmetry_search"]:
         raise RuntimeError("committed hydrated symmetry search does not replay")
 
     completion_core = {
@@ -136,7 +164,13 @@ def verify_existing_artifacts(
         "classification": CLASSIFICATION,
         "legacy": legacy,
         "integrated_verification": integrated_verification,
-        "native_replay_hash72": native_probe["integrated_proof_search_hash72"],
+        "native_tensor_witness_hash72": native_probe[
+            "native_tensor_witness_hash72"
+        ],
+        "reflection_certificate_hash72": obstruction_probe[
+            "certificate_hash72"
+        ],
+        "hydrated_symmetry_search_hash72": search_probe["search_hash72"],
         "completion_hash72": expected_completion_hash,
     }
 
