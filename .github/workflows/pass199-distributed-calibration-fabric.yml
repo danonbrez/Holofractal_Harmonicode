@@ -6,6 +6,7 @@ on:
       - 'HHS_PASS_199_DISTRIBUTED_CALIBRATION_FABRIC.md'
       - 'hhs_backend/runtime/hhs_pass199_distributed_calibration_fabric_v1.py'
       - 'hhs_backend/runtime/hhs_pass199_distributed_calibration_runtime_v1.py'
+      - 'hhs_backend/runtime/hhs_pass199_distributed_calibration_runtime_v2.py'
       - 'hhs_backend/api/pass199_distributed_calibration_routes.py'
       - 'hhs_backend/visual_server.py'
       - 'applications/holofractal_harmonizer/src/pass199-distributed-calibration.mjs'
@@ -40,6 +41,7 @@ jobs:
           python -m py_compile \
             hhs_backend/runtime/hhs_pass199_distributed_calibration_fabric_v1.py \
             hhs_backend/runtime/hhs_pass199_distributed_calibration_runtime_v1.py \
+            hhs_backend/runtime/hhs_pass199_distributed_calibration_runtime_v2.py \
             hhs_backend/api/pass199_distributed_calibration_routes.py \
             tests/test_hhs_pass199_distributed_calibration_fabric_v1.py
 
@@ -52,12 +54,13 @@ jobs:
           HHS_PASS199_STATE_ROOT="$PWD/.hhs/pass199-ci" python - <<'PY'
           import json
           from pathlib import Path
-          from hhs_backend.runtime.hhs_pass199_distributed_calibration_runtime_v1 import Pass199DistributedCalibrationRuntime
+          from hhs_backend.runtime.hhs_pass199_distributed_calibration_runtime_v2 import Pass199DistributedCalibrationRuntime
 
           runtime = Pass199DistributedCalibrationRuntime(state_root='.hhs/pass199-ci')
           try:
               report = runtime.run(worker_count=8, vm81_receipt_hash72='7' * 72)
               summary = report['summary']
+              worker = report['worker_fabric']
               assert report['closed'] is True
               assert summary['evaluated_parameter_states'] == 405
               assert summary['admitted_parameter_states'] == 320
@@ -66,9 +69,13 @@ jobs:
               assert summary['singular_parameter_states'] == 0
               assert summary['address_comparisons'] == 1_658_880
               assert summary['branch_job_count'] == 810
-              assert report['worker_fabric']['completed_job_count'] == 810
-              assert report['worker_fabric']['candidate_computation_outside_authority_lock'] is True
-              assert report['worker_fabric']['peak_parallel_candidate_workers'] >= 2
+              assert worker['completed_job_count'] == 810
+              assert worker['candidate_computation_outside_authority_lock'] is True
+              assert worker['compute_worker_count'] == 8
+              assert worker['durable_worker_slot_count'] == 64
+              assert worker['peak_parallel_candidate_workers'] >= 2
+              assert worker['claim_batch_count'] == worker['completion_batch_count']
+              assert worker['claim_batch_count'] <= 13
               assert report['singleton_commit']['canonical_commit_operation_count'] == 1
               assert report['singleton_commit']['candidate_worker_is_authority'] is False
               assert report['replay']['deterministic'] is True
@@ -85,7 +92,7 @@ jobs:
         run: |
           HHS_PASS199_STATE_ROOT="$PWD/.hhs/pass199-ci" python - <<'PY'
           from hhs_backend.runtime.hhs_pass199_distributed_calibration_fabric_v1 import COMMIT_OPERATION_ID
-          from hhs_backend.runtime.hhs_pass199_distributed_calibration_runtime_v1 import Pass199DistributedCalibrationRuntime
+          from hhs_backend.runtime.hhs_pass199_distributed_calibration_runtime_v2 import Pass199DistributedCalibrationRuntime
 
           runtime = Pass199DistributedCalibrationRuntime(state_root='.hhs/pass199-ci')
           try:
@@ -109,7 +116,8 @@ jobs:
         run: |
           if grep -RInE '(^|[^[:alnum:]_])(float\(|Decimal\(|numpy|np\.)' \
             hhs_backend/runtime/hhs_pass199_distributed_calibration_fabric_v1.py \
-            hhs_backend/runtime/hhs_pass199_distributed_calibration_runtime_v1.py; then
+            hhs_backend/runtime/hhs_pass199_distributed_calibration_runtime_v1.py \
+            hhs_backend/runtime/hhs_pass199_distributed_calibration_runtime_v2.py; then
             echo 'Floating-point canonical operation detected.' >&2
             exit 1
           fi
@@ -117,8 +125,9 @@ jobs:
       - name: Verify authority wiring
         run: |
           grep -Fq 'out-of-authority-lock candidate computation' HHS_PASS_199_DISTRIBUTED_CALIBRATION_FABRIC.md
-          grep -Fq 'calibration.complete_claimed' hhs_backend/runtime/hhs_pass199_distributed_calibration_fabric_v1.py
           grep -Fq 'calibration.commit_tree' hhs_backend/runtime/hhs_pass199_distributed_calibration_fabric_v1.py
+          grep -Fq 'calibration.claim_batch' hhs_backend/runtime/hhs_pass199_distributed_calibration_runtime_v1.py
+          grep -Fq 'calibration.ensure_workers' hhs_backend/runtime/hhs_pass199_distributed_calibration_runtime_v2.py
           grep -Fq 'runtime_controller.authorized_tick' hhs_backend/api/pass199_distributed_calibration_routes.py
 
       - name: Upload full distributed calibration evidence
