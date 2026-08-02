@@ -18,8 +18,12 @@ from hhs_backend.runtime.hhs_pass199_distributed_calibration_runtime_v1 import (
     BATCH_OPERATION_IDS,
     BATCH_SUBMIT_OPERATION_ID,
     Pass199BatchOperationRegistry,
+)
+from hhs_backend.runtime.hhs_pass199_distributed_calibration_runtime_v2 import (
+    ENSURE_WORKERS_OPERATION_ID,
     Pass199DistributedCalibrationRuntime,
-    RestartSafePass199DurableCalibrationContext,
+    Pass199WorkerSlotContext,
+    Pass199WorkerSlotRegistry,
 )
 
 SMALL_CONFIG = {
@@ -47,16 +51,17 @@ class Pass199DistributedCalibrationTests(unittest.TestCase):
         base = Pass199OperationRegistry()
         self.assertEqual(tuple(record.operation_id for record in base.records[-3:]), PASS199_OPERATION_IDS)
         self.assertEqual(len(base.records), 45)
-        registry = Pass199BatchOperationRegistry()
-        expected_tail = (*PASS199_OPERATION_IDS, *BATCH_OPERATION_IDS)
-        self.assertEqual(len(registry.records), 48)
-        self.assertEqual(tuple(record.operation_id for record in registry.records[-6:]), expected_tail)
+        batch = Pass199BatchOperationRegistry()
+        self.assertEqual(len(batch.records), 48)
+        registry = Pass199WorkerSlotRegistry()
+        expected_tail = (*PASS199_OPERATION_IDS, *BATCH_OPERATION_IDS, ENSURE_WORKERS_OPERATION_ID)
+        self.assertEqual(len(registry.records), 49)
+        self.assertEqual(tuple(record.operation_id for record in registry.records[-7:]), expected_tail)
         self.assertEqual(registry.resolve(BRANCH_OPERATION_ID).effect_class, "pure")
         self.assertEqual(registry.resolve(COMPLETE_OPERATION_ID).effect_class, "mutation")
         self.assertEqual(registry.resolve(COMMIT_OPERATION_ID).effect_class, "mutation")
-        for operation_id in BATCH_OPERATION_IDS:
-            self.assertEqual(registry.resolve(operation_id).effect_class, "mutation")
-        self.assertEqual(registry.payload["distributed_calibration_operation_count"], 6)
+        self.assertEqual(registry.resolve(ENSURE_WORKERS_OPERATION_ID).effect_class, "mutation")
+        self.assertEqual(registry.payload["distributed_calibration_operation_count"], 7)
 
     def test_small_tree_runs_through_durable_workers_and_singleton_commit(self) -> None:
         report = self.runtime.run(
@@ -74,6 +79,7 @@ class Pass199DistributedCalibrationTests(unittest.TestCase):
         self.assertTrue(report["singleton_commit"]["receipt_verified"])
         self.assertTrue(report["replay"]["deterministic"])
         self.assertGreaterEqual(report["worker_fabric"]["peak_parallel_candidate_workers"], 1)
+        self.assertEqual(report["worker_fabric"]["durable_worker_slot_count"], 12)
         self.assertGreaterEqual(report["worker_fabric"]["claim_batch_count"], 1)
         self.assertEqual(
             report["worker_fabric"]["claim_batch_count"],
@@ -88,14 +94,16 @@ class Pass199DistributedCalibrationTests(unittest.TestCase):
         receipts = self.runtime.context.receipts_after(0, 1000)
         commits = [item for item in receipts if item["operation_id"] == COMMIT_OPERATION_ID]
         batches = [item for item in receipts if item["operation_id"] == BATCH_SUBMIT_OPERATION_ID]
+        workers = [item for item in receipts if item["operation_id"] == ENSURE_WORKERS_OPERATION_ID]
         self.assertEqual(len(commits), 1)
         self.assertGreaterEqual(len(batches), 1)
+        self.assertGreaterEqual(len(workers), 1)
 
     def test_prepared_jobs_survive_context_restart(self) -> None:
         prepared = self.runtime.prepare_tree("pass197.reciprocal_matrix_gate", SMALL_CONFIG)
         database = self.runtime.database_path
         self.runtime.context.close()
-        self.runtime.context = RestartSafePass199DurableCalibrationContext(database, holder_id="pass199-reopened")
+        self.runtime.context = Pass199WorkerSlotContext(database, holder_id="pass199-reopened")
         jobs = self.runtime.context.invoke(
             "job.list", {"workspace_id": prepared["workspace_id"]}, capabilities=("job:read",)
         ).result
