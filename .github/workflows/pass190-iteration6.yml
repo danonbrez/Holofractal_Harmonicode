@@ -1,0 +1,25 @@
+name: Pass 190 Iteration 6 Unified Resource Registry
+
+on:
+  push:
+    paths:
+      - "HHS_PASS_190_ITERATION_6_UNIFIED_RESOURCE_REGISTRY_JOB_LIFECYCLE.md"
+      - "native_projects/hhs_pass190_operation_fabric/**"
+      - "hhs_gui/runtime_apps/pass190/**"
+      - ".github/workflows/pass190-iteration6.yml"
+  pull_request:
+    paths:
+      - "HHS_PASS_190_ITERATION_6_UNIFIED_RESOURCE_REGISTRY_JOB_LIFECYCLE.md"
+      - "native_projects/hhs_pass190_operation_fabric/**"
+      - "hhs_gui/runtime_apps/pass190/**"
+      - ".github/workflows/pass190-iteration6.yml"
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 22
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate Pass 190 Iteration 6
+        working-directory: native_projects/hhs_pass190_operation_fabric
+        run: make validate
