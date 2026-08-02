@@ -9,7 +9,7 @@
 | Canonical pass name | `SERIALIZED_PARALLEL_INTEGRATED_REPOSITORY_API_HYDRATION_ENCRYPTED_VECTOR_DATABASE_LINUX_TOOL_SERVER_VISUAL_IDE` |
 | Short name | `P196 Integrated Environment Deep Scan` |
 | Repository | `danonbrez/Holofractal_Harmonicode` |
-| Authoritative implementation baseline | `main @ 5178787599dc02c477cc8160eee0e39047437660` |
+| Branch base commit | `main @ 1d3c7588a242e3a83304f5083c2ec5a974f19399` |
 | Merge target | `main` |
 | Inherited scope | Genesis and every compatible accepted requirement through Pass 195 |
 | Mutation authority | Exactly one VM81-authorized runtime tick and Hash72 receipt boundary |
