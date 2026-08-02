@@ -140,6 +140,7 @@ def test_benchmark_normalization_is_stable_across_wall_clock_variance():
     )
 
     assert first == second
+    assert normalize_benchmark_artifact(first) == first
     assert first["timing_classification"] == BENCHMARK_TIMING_CLASSIFICATION
     assert first["volatile_fields_excluded_from_authority"] == list(
         VOLATILE_BENCHMARK_FIELDS
