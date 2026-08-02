@@ -1,0 +1,57 @@
+{
+  "bundle_hash72s": [
+    "VDn>cC1BCPQAm(xALzY(E3i*>b8EC)Ag2kOzXZBLfwEDlaU/8UxmAdCYdZ1)2Rmtc<R!claf",
+    "gzJIFM<w1bmaQ2nhPf(7aoLHf4+<dnw3z>ORDU)ih-+VN/Qx/p)ZMcvv/yqkWOJ6TEYMu?J7",
+    "yiIje6/es6OYOibEjMBuXYpJ>Xa)FkR4wLqwfqLinU-Ajj3Z-Qy>geAXB-1/64<uu0SrSmiT",
+    "c!*2Wwy(?9!e3>rN(K+s5vl<(vUII9c-NuGPJ7E*?WGYiyit/Us2Cf6-WaPqNt>pAlWmDAC9"
+  ],
+  "claim_boundary": {
+    "active_enabled": false,
+    "canary_enabled": false,
+    "candidate_execution_is_authority": false,
+    "compiler_auto_activation": false,
+    "frozen_constraint_enabled": false,
+    "live_digitalocean_acceptance": false,
+    "physical_hardware_evidence": false,
+    "reference_result_remains_authoritative": true,
+    "runtime_auto_admission": false
+  },
+  "classification": "HHS_PASS_200A_PROOF_CARRYING_COMPILER_SHADOW_FOUNDATION_VERIFIED",
+  "closed": true,
+  "contract": "HHS-P200A-HOLDOUT-BUNDLE-SHADOW-VM81-H72-H216",
+  "envelope_hash72s": [
+    "v0ATvqhAUeV/ODyxV<VDpya(PaB1MfjQhNSMG7c?1P8Yag!hxVhUBUpPC2L)AaUhFKQ/daaM",
+    "FPKylajTyZvA3nSB>Vk1N*FvS26*0B3+IoxhIt6x5ih8g5nJTvt*/TNM!L>-JaSlKDRYEVep",
+    "?OadldIYnaCDO!!(!xuH)cp5wU1V5zLems6))V*LqY?7Axew-I6Eu3JO!>MWnCnk0D3LAtZ3",
+    "c3GiDWcBTazLl)?m)AVD(mhS?w8r9Z0hLI7!F-xXiZ>cta-ZOt6EnQcLElF/R1U)<*OGIVyt"
+  ],
+  "event_chain": {
+    "event_count": 12,
+    "ok": true,
+    "tip_hash72": "6VPwYfi9tnqfym0aVq(U*NBDbHj/hyURJOUyw+qNze0sx6bQykF5uAZxtfQp+kFgxRkmV6XI"
+  },
+  "qualification_hash72": "p-*-OZjfUmukbWXy++M*h-t10BD4Ckj4ba91G6*u0-kUUT4LcXJ9gDtdXu!XW7LO4O57yv3b",
+  "schema": "HHS_PASS_200A_VALIDATION_RECEIPT_V1",
+  "shadow_suite_hash72": "xH9qZf3JsD6aIvJ-o1/xCSh*m6+uMJqf*XT2GffLVhlATDX7CTjQadHB+TIHC*o+aSwUuvmT",
+  "status_hash72": "Gz5dgCtuVZMi-3iY)N5UauLHyfFHi><T?N1PGdGBzVdNd1fb0zLBD7gu8RiPUGJxKx?6?x2U",
+  "summary": {
+    "address_comparisons": 1363392,
+    "admitted_states": 263,
+    "candidate_activations": 0,
+    "compiler_candidate_bundles": 4,
+    "domain_rejections": 27,
+    "durable_branch_jobs": 580,
+    "independent_envelopes": 4,
+    "negative_mutations": 24,
+    "parameter_states": 290,
+    "reference_returns": 4,
+    "shadow_matches": 4
+  },
+  "workflow": {
+    "artifact_digest": "sha256:642ca6be1883603409ee25c3067c096e40ad884a1ef0ca0ef7df6c9c1e83c8d1",
+    "artifact_id": 8841089828,
+    "conclusion": "success",
+    "run_id": 30772837176,
+    "validated_head_commit": "27707a7d0c7ed310941ec6e4238364bb70cd84d8"
+  }
+}
