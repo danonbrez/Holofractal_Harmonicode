@@ -1,0 +1,39 @@
+{
+  "schema": "HHS_PASS_197_LOCAL_VALIDATION_RECEIPT_V1",
+  "contract": "HHS-P197-ABTREE-VM81X64-EXACT-LOSSLESS-HYDRATION",
+  "classification": "DEPENDENCY_SCOPED_STANDALONE_VALIDATION",
+  "hash_authority": "STANDALONE_SHA512_VALIDATION_FALLBACK",
+  "canonical_kernel_acceptance_claimed": false,
+  "validation": {
+    "test_command": "python -m unittest -v tests/test_hhs_pass197_ab_hydration_calibration_v1.py",
+    "tests_passed": 7,
+    "tests_failed": 0,
+    "default_parameter_states": 405,
+    "admitted_parameter_states": 320,
+    "domain_rejected_parameter_states": 85,
+    "singular_parameter_states": 0,
+    "mismatch_parameter_states": 0,
+    "vm5184_address_comparisons": 1658880,
+    "replayed_parameter_states": 405,
+    "replay_deterministic": true,
+    "checkpoint_tamper_rejected": true,
+    "float_ingress_rejected": true,
+    "address_codec_coverage": 5184,
+    "saved_fraction": {
+      "numerator": 63,
+      "denominator": 64
+    }
+  },
+  "identities": {
+    "report_hash72": "3652d7d157706f07f489e79e8faf0336fac9441d5af0e631f3d9dd30d3ac945d6771f311",
+    "state_root_hash72": "ec88893ff8621057309813927277a2db2dd62ba2a6f6cf423cae7b5fa57ab4bc10dc5fec",
+    "replay_root_hash72": "714489147daf1c1e665e487b366510b49e0db44972a1babee909168c61d7d3d9fc3a9e74"
+  },
+  "claim_boundary": {
+    "arithmetic_and_replay_algorithm_validated": true,
+    "repository_native_hash72_bridge_validated": false,
+    "physical_hardware_evidence": false,
+    "live_digitalocean_acceptance": false,
+    "finite_grid_is_universal_parameter_exhaustion": false
+  }
+}
