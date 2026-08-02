@@ -4,10 +4,12 @@
 
 - Repository: `danonbrez/Holofractal_Harmonicode`
 - Branch: `agent/pass197-ab-hydration-calibration`
+- Pull request: `#133`
 - Merge target: `main`
-- Branch creation base / current merge base: `77bf7ddfcfb09246a805a6e8f0919cfa18d0f3c0`
-- Main observed during publication: `454f8a285bbaa1e5fbaacf868554dc7a5beb8175`
-- Main advanced after branch creation. The shared modified files were fetched from current main and retained the same blob identities, so no inspected path conflict was present.
+- Branch creation base / merge base: `77bf7ddfcfb09246a805a6e8f0919cfa18d0f3c0`
+- Main observed at PR creation: `454f8a285bbaa1e5fbaacf868554dc7a5beb8175`
+- Verified PR state: mergeable, draft.
+- Main advanced after branch creation. The shared modified files retained the same mainline blob identities, so no inspected path conflict was present.
 
 ## Implemented files
 
@@ -34,6 +36,7 @@
 - bounded default parameter tree;
 - atomic branch checkpoints and integrity validation;
 - deterministic full replay;
+- bounded canonical SHA-512 plus byte-length projection into the native Hash72 ring;
 - VM81-authorized API mutation surface;
 - API-tool registry and invocation surface;
 - visual IDE run and report controls;
@@ -41,13 +44,7 @@
 
 ## Executed validation
 
-Dependency-scoped standalone validation completed before publication:
-
-```text
-python -m unittest -v tests/test_hhs_pass197_ab_hydration_calibration_v1.py
-```
-
-Observed result:
+### Standalone prepublication validation
 
 ```text
 7 tests passed
@@ -61,28 +58,47 @@ Observed result:
 63/64 repeated scalar evaluations removed by lane-preserving broadcast
 ```
 
-The standalone validation process could not load the repository-native C Hash72 bridge and therefore used the explicitly classified SHA-512 validation fallback. This result validates the arithmetic, address, checkpoint, and replay algorithms but is not represented as canonical kernel acceptance.
+This first run used the explicitly classified standalone fallback and supplied algorithmic evidence only.
+
+### Repository workflow validation
+
+Workflow: `Pass 197 A/B Hydration Calibration`
+
+Successful run: `30759299949`
+
+Validated commit: `93d71fc3dffdfd227311b990df9b71449930684e`
+
+Successful stages:
+
+- checkout exact PR tree;
+- Python setup and bytecode compilation;
+- seven exact calibration tests;
+- independent complete 405-state envelope;
+- floating-point canonical-operation rejection scan;
+- Node setup and JavaScript syntax checks;
+- API and visual wiring assertions;
+- evidence JSON validation.
+
+The repository run loaded the native Hash72 authority path and validated the bounded canonical-digest transport added after profiling exposed excessive byte-by-byte transport cost for large calibration reports.
 
 ## Validation remaining
 
-- GitHub Actions execution against the exact branch tree;
-- repository-native Hash72 bridge execution in the configured CI/runtime environment;
-- FastAPI route import and source smoke checks in CI;
-- JavaScript syntax checks in CI;
-- mergeability and current-main integration review;
-- live DigitalOcean deployment and browser acceptance, which are outside this branch's local execution claim.
+- final workflow run for the evidence/restart-record-only receipt refresh;
+- ready-for-review transition and merge;
+- verification of the merged main commit;
+- live DigitalOcean deployment and browser acceptance, which remain outside this branch's execution claim.
 
 ## Environment state
 
 - No external DigitalOcean mutation was performed.
 - No Vercel dependency is introduced.
 - Runtime state defaults to `.hhs/pass197` or `HHS_PASS197_STATE_ROOT`.
-- Generated checkpoint and report state are not committed as runtime authority.
+- Generated checkpoints and reports are not committed as fixed runtime authority.
 
 ## Next action
 
-Run the Pass 197 GitHub workflow on the draft PR. If it passes, inspect the exact PR diff and mergeability, repair only dependency-scoped failures, then merge to main and verify the merged workflow/result.
+Confirm the final Pass 197 workflow on the current head, mark PR #133 ready, merge to main, and verify the merged commit and mainline workflow state.
 
 ## Blockers
 
-No implementation blocker is known. Canonical Hash72 acceptance remains dependent on an environment where the repository-native bridge builds and loads successfully.
+No implementation blocker is known.
