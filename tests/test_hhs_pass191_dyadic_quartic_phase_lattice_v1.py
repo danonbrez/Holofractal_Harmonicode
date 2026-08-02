@@ -1,5 +1,12 @@
 from fractions import Fraction
 
+from native_projects.hhs_pass191_dyadic_quartic_phase_lattice.hhs_pass191_formal_outcomes_v1 import (
+    FALSIFIED,
+    OBSTRUCTED,
+    PROVED,
+    build_formal_outcome_ledger,
+    verify_formal_outcome_ledger,
+)
 from native_projects.hhs_pass191_dyadic_quartic_phase_lattice.hhs_pass191_phase_lattice_v1 import (
     PhaseState,
     WORKLOAD_IDS,
@@ -7,9 +14,9 @@ from native_projects.hhs_pass191_dyadic_quartic_phase_lattice.hhs_pass191_phase_
     collatz_orbit,
     integer_phase_embedding,
     phase_trace,
-    pure_workloads,
     quadratic_reciprocity_checks,
 )
+from native_projects.hhs_pass191_dyadic_quartic_phase_lattice.hhs_pass191_runner_v2 import formal_workloads
 
 
 def test_quartic_dyadic_trace_is_exact():
@@ -30,7 +37,7 @@ def test_integer_embedding_reconstructs_bounded_sample():
         assert row["reconstruction"] == n
 
 
-def test_collatz_seed_seven_only_bounded_claim():
+def test_collatz_seed_seven_exact_orbit_prefix():
     orbit = collatz_orbit(7, 64)
     assert orbit[-1] == 1
     assert orbit[:4] == [7, 11, 17, 26]
@@ -42,9 +49,57 @@ def test_quadratic_reciprocity_exact_bounded_cases():
     assert all(row["ok"] for row in rows)
 
 
-def test_all_workloads_close_without_external_theorem_claims():
-    workloads = pure_workloads()
+def test_all_workloads_close_with_registered_formal_obligations():
+    workloads = formal_workloads()
     assert tuple(workloads) == WORKLOAD_IDS
     assert_workloads(workloads)
-    assert workloads["W191-C"]["checks"]["zeta_zero_not_numerically_or_analytically_claimed"]
-    assert workloads["W191-D"]["checks"]["universal_collatz_convergence_not_claimed"]
+    assert workloads["W191-C"]["checks"]["rh_transfer_obligation_registered"]
+    assert workloads["W191-D"]["checks"]["collatz_global_obligation_registered"]
+    assert workloads["W191-E"]["checks"]["quadratic_reciprocity_transfer_obligation_registered"]
+
+
+def test_formal_outcome_ledger_hashes_and_counts_close():
+    ledger = build_formal_outcome_ledger()
+    result = verify_formal_outcome_ledger(ledger)
+    assert result["ok"] is True
+    assert result["outcome_count"] == 10
+    assert result["outcome_counts"] == {
+        PROVED: 4,
+        FALSIFIED: 3,
+        OBSTRUCTED: 3,
+    }
+
+
+def test_literal_candidates_receive_exact_counterexamples():
+    ledger = build_formal_outcome_ledger()
+    by_id = {row["obligation_id"]: row for row in ledger["outcomes"]}
+
+    resonance = by_id["DQPL-RESONANCE-LITERAL"]
+    assert resonance["status"] == FALSIFIED
+    assert resonance["certificate"]["counterexample"] == "t=0"
+    assert resonance["certificate"]["left"]["exact_value"] == "i"
+    assert resonance["certificate"]["right"]["exact_value"] == "-1"
+
+    critical_axis = by_id["DQPL-CRITICAL-AXIS-LITERAL"]
+    assert critical_axis["status"] == FALSIFIED
+    assert critical_axis["certificate"]["difference"] == "1"
+
+    fibonacci_product = by_id["DQPL-FIBONACCI-PRODUCT"]
+    assert fibonacci_product["status"] == FALSIFIED
+    assert fibonacci_product["certificate"]["left"] == "F(3)=2"
+    assert fibonacci_product["certificate"]["right"] == "phi*psi=-1"
+
+
+def test_rh_transfer_obstruction_names_complete_bridge_set():
+    ledger = build_formal_outcome_ledger()
+    by_id = {row["obligation_id"]: row for row in ledger["outcomes"]}
+    rh = by_id["DQPL-RH-TRANSFER"]
+    assert rh["status"] == OBSTRUCTED
+    assert rh["certificate"]["registered_derivation_path_exists"] is False
+    assert rh["dependencies"] == [
+        "ZETA_DOMAIN_AND_ANALYTIC_CONTINUATION_ENCODING",
+        "ZETA_ZERO_TO_PHASE_CLOSURE_EQUIVALENCE",
+        "PHASE_MAP_FAITHFULNESS",
+        "OFF_AXIS_ZERO_EXCLUSION_OR_COUNTEREXAMPLE_TRANSFER",
+    ]
+    assert ledger["hypothesis_decisions"]["RIEMANN_HYPOTHESIS"]["controlling_obligation"] == "DQPL-RH-TRANSFER"
