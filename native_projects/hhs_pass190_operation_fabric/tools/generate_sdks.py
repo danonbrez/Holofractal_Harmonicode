@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import argparse
+import difflib
 import json
 import sys
 from pathlib import Path
@@ -108,6 +109,19 @@ export class HHSClient {{
 '''
 
 
+def _report_diff(path: Path, expected: str) -> bool:
+    actual = path.read_text(encoding="utf-8") if path.exists() else ""
+    if actual == expected:
+        return False
+    print("".join(difflib.unified_diff(
+        actual.splitlines(keepends=True),
+        expected.splitlines(keepends=True),
+        fromfile=str(path.relative_to(ROOT)) + ".actual",
+        tofile=str(path.relative_to(ROOT)) + ".expected",
+    )), file=sys.stderr)
+    return True
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--check", action="store_true")
@@ -116,7 +130,7 @@ def main() -> int:
     python_source = generate_python(operations)
     typescript_source = generate_ts(operations)
     if args.check:
-        if PY_TARGET.read_text(encoding="utf-8") != python_source or TS_TARGET.read_text(encoding="utf-8") != typescript_source:
+        if _report_diff(PY_TARGET, python_source) or _report_diff(TS_TARGET, typescript_source):
             raise SystemExit("generated SDKs are stale")
     else:
         PY_TARGET.parent.mkdir(parents=True, exist_ok=True)
