@@ -1,5 +1,5 @@
 // Generated Pass 190 TypeScript SDK. Do not edit by hand.
-export type OperationId = "system.status" | "python.len" | "python.abs" | "python.sorted" | "list.with_appended" | "dict.get" | "text.join" | "math.gcd" | "pass189.context.decode" | "state.counter.advance" | "workspace.create" | "workspace.get" | "workspace.list" | "workspace.update" | "workspace.archive" | "artifact.register" | "artifact.get" | "artifact.list" | "provider.register" | "provider.get" | "provider.list" | "provider.set_enabled" | "capability.define" | "capability.get" | "capability.list" | "job.submit" | "job.get" | "job.list" | "job.claim" | "job.complete" | "job.fail"
+export type OperationId = "system.status" | "python.len" | "python.abs" | "python.sorted" | "list.with_appended" | "dict.get" | "text.join" | "math.gcd" | "pass189.context.decode" | "state.counter.advance" | "workspace.create" | "workspace.get" | "workspace.list" | "workspace.update" | "workspace.archive" | "artifact.register" | "artifact.get" | "artifact.list" | "provider.register" | "provider.get" | "provider.list" | "provider.set_enabled" | "capability.define" | "capability.get" | "capability.list" | "job.submit" | "job.get" | "job.list" | "job.claim" | "job.complete" | "job.fail" | "worker.register" | "worker.get" | "worker.list" | "worker.heartbeat" | "worker.set_enabled" | "job.submit_execution" | "job.cancel" | "job.retry" | "job.claim_next" | "job.execute_claimed" | "scheduler.tick"
 export type InvokeOptions = { capabilityToken?: string; idempotencyKey?: string; expectedState?: string }
 export class HHSClient {
   constructor(readonly baseUrl = "http://127.0.0.1:8190") {}
@@ -13,6 +13,7 @@ export class HHSClient {
   integrity() { return this.request("/api/pass190/integrity") }
   arbitration() { return this.request("/api/pass190/arbitration") }
   resourceRegistry() { return this.request("/api/pass190/resource-registry") }
+  executionRuntime() { return this.request("/api/pass190/execution-runtime") }
   leaseReceipts(after = 0, limit = 100) { return this.request(`/api/pass190/lease-receipts?after=${after}&limit=${limit}`) }
   events(after = 0, limit = 100) { return this.request(`/api/pass190/events?after=${after}&limit=${limit}`) }
   receipts(after = 0, limit = 100) { return this.request(`/api/pass190/receipts?after=${after}&limit=${limit}`) }
@@ -147,6 +148,50 @@ export class HHSClient {
 
   job_fail(arguments: Record<string, unknown> = {}, options: InvokeOptions = {}) {
     return this.invoke("job.fail", arguments, options)
+  }
+
+  worker_register(arguments: Record<string, unknown> = {}, options: InvokeOptions = {}) {
+    return this.invoke("worker.register", arguments, options)
+  }
+
+  worker_get(arguments: Record<string, unknown> = {}, options: InvokeOptions = {}) {
+    return this.invoke("worker.get", arguments, options)
+  }
+
+  worker_list(arguments: Record<string, unknown> = {}, options: InvokeOptions = {}) {
+    return this.invoke("worker.list", arguments, options)
+  }
+
+  worker_heartbeat(arguments: Record<string, unknown> = {}, options: InvokeOptions = {}) {
+    return this.invoke("worker.heartbeat", arguments, options)
+  }
+
+  worker_set_enabled(arguments: Record<string, unknown> = {}, options: InvokeOptions = {}) {
+    return this.invoke("worker.set_enabled", arguments, options)
+  }
+
+  job_submit_execution(arguments: Record<string, unknown> = {}, options: InvokeOptions = {}) {
+    return this.invoke("job.submit_execution", arguments, options)
+  }
+
+  job_cancel(arguments: Record<string, unknown> = {}, options: InvokeOptions = {}) {
+    return this.invoke("job.cancel", arguments, options)
+  }
+
+  job_retry(arguments: Record<string, unknown> = {}, options: InvokeOptions = {}) {
+    return this.invoke("job.retry", arguments, options)
+  }
+
+  job_claim_next(arguments: Record<string, unknown> = {}, options: InvokeOptions = {}) {
+    return this.invoke("job.claim_next", arguments, options)
+  }
+
+  job_execute_claimed(arguments: Record<string, unknown> = {}, options: InvokeOptions = {}) {
+    return this.invoke("job.execute_claimed", arguments, options)
+  }
+
+  scheduler_tick(arguments: Record<string, unknown> = {}, options: InvokeOptions = {}) {
+    return this.invoke("scheduler.tick", arguments, options)
   }
 
 }
