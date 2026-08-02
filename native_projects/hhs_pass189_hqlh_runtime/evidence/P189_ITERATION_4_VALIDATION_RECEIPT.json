@@ -15,7 +15,10 @@
     "real_hardware_driver_loaded": false,
     "real_hardware_dispatch_authorized": false,
     "public_key_code_signing_claimed": false,
-    "unified_physics_verified": false
+    "unified_physics_verified": false,
+    "required_issue_witness": true,
+    "promotion_token_validation": true,
+    "persistent_promotion_expiry": true
   },
   "promotion_classes": {
     "software_test": "SOFTWARE_TEST_EXECUTABLE",
@@ -33,7 +36,7 @@
     "vercel_required": false
   },
   "validation": {
-    "iteration4_unit_tests_passed": 12,
+    "iteration4_unit_tests_passed": 16,
     "iteration4_surface_smoke_passed": true,
     "manifest_authentication_mismatch_rejected": true,
     "payload_digest_binding": true,
@@ -49,7 +52,12 @@
     "http_sse_websocket_visual": true,
     "python_bytecode_compile": true,
     "deployment_shell_syntax": true,
-    "local_prepublication_validation_passed": true
+    "local_prepublication_validation_passed": true,
+    "issue_witness_required": true,
+    "promotion_token_validation": true,
+    "promotion_expiry_persisted": true,
+    "token_lifecycle_unit_tests_passed": 4,
+    "token_lifecycle_surface_smoke_passed": true
   },
   "source_manifest": "P189_ITERATION_4_SOURCE_MANIFEST.json"
 }
