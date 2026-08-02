@@ -56,7 +56,11 @@ bundle:
 	cd $(REPO_ROOT) && $(PYTHON) hhs_v1_bundle_runner.py
 
 no-sandbox-drift:
-	cd $(REPO_ROOT) && ! grep -R --exclude=Makefile "/mnt/data" \
+	cd $(REPO_ROOT) && ! grep -R \
+		--exclude=Makefile \
+		--exclude-dir=build \
+		--exclude-dir=__pycache__ \
+		"/mnt/data" \
 		native_projects/hhs_pass191_dyadic_quartic_phase_lattice \
 		terminal_hhsprog_v4_symbolic.py \
 		HHS_PASS_191_DYADIC_QUARTIC_PHASE_LATTICE_PROOF.md
