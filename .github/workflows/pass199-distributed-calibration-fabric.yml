@@ -7,11 +7,14 @@ on:
       - 'hhs_backend/runtime/hhs_pass199_distributed_calibration_fabric_v1.py'
       - 'hhs_backend/runtime/hhs_pass199_distributed_calibration_runtime_v1.py'
       - 'hhs_backend/runtime/hhs_pass199_distributed_calibration_runtime_v2.py'
+      - 'hhs_backend/runtime/hhs_pass199_distributed_calibration_runtime.py'
       - 'hhs_backend/api/pass199_distributed_calibration_routes.py'
+      - 'hhs_backend/api/pass199_distributed_calibration_routes_v2.py'
       - 'hhs_backend/visual_server.py'
       - 'applications/holofractal_harmonizer/src/pass199-distributed-calibration.mjs'
       - 'applications/holofractal_harmonizer/src/production-startup-coordinator.mjs'
       - 'tests/test_hhs_pass199_distributed_calibration_fabric_v1.py'
+      - 'tests/test_hhs_pass199_production_projection_v1.py'
       - 'docs/pass199/**'
       - 'evidence/pass199/**'
       - '.github/workflows/pass199-distributed-calibration-fabric.yml'
@@ -42,11 +45,17 @@ jobs:
             hhs_backend/runtime/hhs_pass199_distributed_calibration_fabric_v1.py \
             hhs_backend/runtime/hhs_pass199_distributed_calibration_runtime_v1.py \
             hhs_backend/runtime/hhs_pass199_distributed_calibration_runtime_v2.py \
+            hhs_backend/runtime/hhs_pass199_distributed_calibration_runtime.py \
             hhs_backend/api/pass199_distributed_calibration_routes.py \
-            tests/test_hhs_pass199_distributed_calibration_fabric_v1.py
+            hhs_backend/api/pass199_distributed_calibration_routes_v2.py \
+            tests/test_hhs_pass199_distributed_calibration_fabric_v1.py \
+            tests/test_hhs_pass199_production_projection_v1.py
 
       - name: Run durable calibration lifecycle tests
-        run: python -m unittest -v tests.test_hhs_pass199_distributed_calibration_fabric_v1
+        run: |
+          python -m unittest -v \
+            tests.test_hhs_pass199_distributed_calibration_fabric_v1 \
+            tests.test_hhs_pass199_production_projection_v1
 
       - name: Execute full registered 405-state tree through durable workers
         run: |
@@ -54,7 +63,8 @@ jobs:
           HHS_PASS199_STATE_ROOT="$PWD/.hhs/pass199-ci" python - <<'PY'
           import json
           from pathlib import Path
-          from hhs_backend.runtime.hhs_pass199_distributed_calibration_runtime_v2 import Pass199DistributedCalibrationRuntime
+          from hhs_backend.runtime.hhs_pass199_distributed_calibration_runtime import Pass199DistributedCalibrationRuntime
+          from hhs_backend.runtime.hhs_pass199_distributed_calibration_runtime_v2 import V2_CONTRACT
 
           runtime = Pass199DistributedCalibrationRuntime(state_root='.hhs/pass199-ci')
           try:
@@ -62,6 +72,10 @@ jobs:
               summary = report['summary']
               worker = report['worker_fabric']
               assert report['closed'] is True
+              assert report['contract'] == V2_CONTRACT
+              assert report['version'] == 'HHS_PASS_199_DISTRIBUTED_CALIBRATION_FABRIC_V2'
+              assert report['governed_operation_count'] == 49
+              assert report['core_contract'] != report['contract']
               assert summary['evaluated_parameter_states'] == 405
               assert summary['admitted_parameter_states'] == 320
               assert summary['domain_rejected_parameter_states'] == 85
@@ -92,7 +106,7 @@ jobs:
         run: |
           HHS_PASS199_STATE_ROOT="$PWD/.hhs/pass199-ci" python - <<'PY'
           from hhs_backend.runtime.hhs_pass199_distributed_calibration_fabric_v1 import COMMIT_OPERATION_ID
-          from hhs_backend.runtime.hhs_pass199_distributed_calibration_runtime_v2 import Pass199DistributedCalibrationRuntime
+          from hhs_backend.runtime.hhs_pass199_distributed_calibration_runtime import Pass199DistributedCalibrationRuntime
 
           runtime = Pass199DistributedCalibrationRuntime(state_root='.hhs/pass199-ci')
           try:
@@ -117,7 +131,8 @@ jobs:
           if grep -RInE '(^|[^[:alnum:]_])(float\(|Decimal\(|numpy|np\.)' \
             hhs_backend/runtime/hhs_pass199_distributed_calibration_fabric_v1.py \
             hhs_backend/runtime/hhs_pass199_distributed_calibration_runtime_v1.py \
-            hhs_backend/runtime/hhs_pass199_distributed_calibration_runtime_v2.py; then
+            hhs_backend/runtime/hhs_pass199_distributed_calibration_runtime_v2.py \
+            hhs_backend/runtime/hhs_pass199_distributed_calibration_runtime.py; then
             echo 'Floating-point canonical operation detected.' >&2
             exit 1
           fi
@@ -138,7 +153,9 @@ jobs:
           grep -Fq 'calibration.commit_tree' hhs_backend/runtime/hhs_pass199_distributed_calibration_fabric_v1.py
           grep -Fq 'calibration.claim_batch' hhs_backend/runtime/hhs_pass199_distributed_calibration_runtime_v1.py
           grep -Fq 'calibration.ensure_workers' hhs_backend/runtime/hhs_pass199_distributed_calibration_runtime_v2.py
+          grep -Fq 'PRODUCTION_VERSION' hhs_backend/runtime/hhs_pass199_distributed_calibration_runtime.py
           grep -Fq 'runtime_controller.authorized_tick' hhs_backend/api/pass199_distributed_calibration_routes.py
+          grep -Fq 'PASS199_DISTRIBUTED_CALIBRATION_RUNTIME' hhs_backend/api/pass199_distributed_calibration_routes_v2.py
           grep -Fq 'pass199_distributed_calibration_router' hhs_backend/visual_server.py
           grep -Fq '/api/runtime/distributed-calibration' hhs_backend/visual_server.py
           grep -Fq "import './pass199-distributed-calibration.mjs';" applications/holofractal_harmonizer/src/production-startup-coordinator.mjs
