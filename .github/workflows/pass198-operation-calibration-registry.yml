@@ -1,0 +1,141 @@
+name: Pass 198 Operation Calibration Registry
+
+on:
+  pull_request:
+    paths:
+      - 'HHS_PASS_198_OPERATION_CALIBRATION_REGISTRY.md'
+      - 'hhs_backend/runtime/hhs_pass198_operation_calibration_registry_v1.py'
+      - 'hhs_backend/api/pass198_calibration_registry_routes.py'
+      - 'hhs_backend/visual_server.py'
+      - 'applications/holofractal_harmonizer/src/pass198-calibration-registry.mjs'
+      - 'applications/holofractal_harmonizer/src/production-startup-coordinator.mjs'
+      - 'tests/test_hhs_pass198_operation_calibration_registry_v1.py'
+      - 'tools/pass198_current_tree_scan.py'
+      - 'docs/pass198/**'
+      - 'evidence/pass198/**'
+      - '.github/workflows/pass198-operation-calibration-registry.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-pass198:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout exact tree
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Compile Pass 198 Python surfaces
+        run: |
+          python -m py_compile \
+            hhs_backend/runtime/hhs_pass198_operation_calibration_registry_v1.py \
+            hhs_backend/api/pass198_calibration_registry_routes.py \
+            tests/test_hhs_pass198_operation_calibration_registry_v1.py \
+            tools/pass198_current_tree_scan.py
+
+      - name: Run registry lifecycle tests
+        run: python -m unittest -v tests.test_hhs_pass198_operation_calibration_registry_v1
+
+      - name: Execute complete registered envelope independently
+        run: |
+          python - <<'PY'
+          import tempfile
+          from hhs_backend.runtime.hhs_pass198_operation_calibration_registry_v1 import Pass198OperationCalibrationRegistry
+
+          with tempfile.TemporaryDirectory() as root:
+              registry = Pass198OperationCalibrationRegistry(state_root=root)
+              run = registry.run_operation(
+                  'pass197.reciprocal_matrix_gate',
+                  {},
+                  vm81_receipt_hash72='7' * 72,
+              )
+              summary = run['summary']
+              assert run['status'] == 'CLOSED'
+              assert summary['evaluated_parameter_states'] == 405
+              assert summary['admitted_parameter_states'] == 320
+              assert summary['domain_rejected_parameter_states'] == 85
+              assert summary['address_comparisons'] == 1_658_880
+              assert summary['mismatch_parameter_states'] == 0
+              assert summary['singular_parameter_states'] == 0
+              proofs = registry.list_simplifications()
+              assert len(proofs) == 4
+              assert all(item['status'] == 'ENVELOPE_VERIFIED' for item in proofs)
+              assert registry.verify_event_chain()['ok'] is True
+              registry.close()
+          PY
+
+      - name: Reject floating-point canonical operations
+        run: |
+          if grep -RInE '(^|[^[:alnum:]_])(float\(|Decimal\(|numpy|np\.)' \
+            hhs_backend/runtime/hhs_pass198_operation_calibration_registry_v1.py; then
+            echo 'Floating-point canonical operation detected.' >&2
+            exit 1
+          fi
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Check visual JavaScript syntax
+        run: |
+          node --check applications/holofractal_harmonizer/src/pass198-calibration-registry.mjs
+          node --check applications/holofractal_harmonizer/src/production-startup-coordinator.mjs
+
+      - name: Verify API and visual wiring
+        run: |
+          grep -Fq 'pass198_calibration_registry_router' hhs_backend/visual_server.py
+          grep -Fq '/api/runtime/calibration-registry' hhs_backend/visual_server.py
+          grep -Fq "import './pass198-calibration-registry.mjs';" applications/holofractal_harmonizer/src/production-startup-coordinator.mjs
+          grep -Fq 'pass198_calibration_registry_projection_loaded: true' applications/holofractal_harmonizer/src/production-startup-coordinator.mjs
+          grep -Fq 'runtime_controller.authorized_tick' hhs_backend/api/pass198_calibration_registry_routes.py
+          grep -Fq 'compiler_auto_promotion' hhs_backend/runtime/hhs_pass198_operation_calibration_registry_v1.py
+          grep -Fq 'runtime_auto_admission' hhs_backend/runtime/hhs_pass198_operation_calibration_registry_v1.py
+
+      - name: Run current-tree Pass 196 integration scan
+        run: |
+          mkdir -p evidence/pass198-ci
+          python tools/pass198_current_tree_scan.py \
+            --repository-root . \
+            --output evidence/pass198-ci/PASS198_CURRENT_TREE_SCAN.json
+
+      - name: Validate current-tree scan result
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          path = Path('evidence/pass198-ci/PASS198_CURRENT_TREE_SCAN.json')
+          report = json.loads(path.read_text())
+          assert report['scanned'] is True
+          assert report['maximum_discovered_pass'] >= 198
+          assert report['pass198'] is not None
+          assert report['pass198']['state'] == 'INTEGRATED'
+          assert report['claim_boundary']['scan_grants_runtime_authority'] is False
+          assert report['claim_boundary']['persisted_encrypted_vector'] is False
+          print(json.dumps({
+              'manifest_hash72': report['manifest_hash72'],
+              'phase': report['phase'],
+              'integration_closed': report['integration_closed'],
+              'maximum_discovered_pass': report['maximum_discovered_pass'],
+              'pass_state_counts': report['pass_state_counts'],
+              'unresolved_pass_count': report['unresolved_pass_count'],
+              'pass198_state': report['pass198']['state'],
+              'scan_report_hash72': report['scan_report_hash72'],
+          }, indent=2, sort_keys=True))
+          PY
+
+      - name: Upload current-tree integration evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass198-current-tree-integration-scan
+          path: evidence/pass198-ci/PASS198_CURRENT_TREE_SCAN.json
+          if-no-files-found: error
+          retention-days: 30
