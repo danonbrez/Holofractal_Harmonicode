@@ -7,12 +7,12 @@ Wants=network-online.target
 Type=simple
 User=hhs
 Group=hhs
-WorkingDirectory=/opt/hhs/Holofractal_Harmonicode
+WorkingDirectory=/opt/hhs/app
 EnvironmentFile=-/etc/hhs/pass196.env
 Environment=PYTHONUNBUFFERED=1
-Environment=HHS_REPOSITORY_ROOT=/opt/hhs/Holofractal_Harmonicode
+Environment=HHS_REPOSITORY_ROOT=/opt/hhs/app
 Environment=HHS_PASS196_STATE_ROOT=/var/lib/hhs/pass196
-ExecStart=/opt/hhs/venv/bin/python -m uvicorn hhs_backend.visual_server:app --host 127.0.0.1 --port 8000 --workers 1
+ExecStart=/opt/hhs/venv/bin/python -m uvicorn hhs_backend.visual_server:app --host 127.0.0.1 --port 8080 --workers 1
 Restart=on-failure
 RestartSec=2
 TimeoutStartSec=120
@@ -21,7 +21,7 @@ UMask=0077
 NoNewPrivileges=true
 PrivateTmp=true
 ProtectSystem=full
-ReadWritePaths=/var/lib/hhs /opt/hhs/Holofractal_Harmonicode/.hhs
+ReadWritePaths=/var/lib/hhs /opt/hhs/app/.hhs
 
 [Install]
 WantedBy=multi-user.target
