@@ -9,7 +9,7 @@ from pydantic import BaseModel, Field
 
 from hhs_backend.api.runtime_routes import _contract_response, io_gateway, runtime_controller
 from hhs_backend.runtime.hhs_pass199_distributed_calibration_fabric_v1 import Pass199CalibrationError
-from hhs_backend.runtime.hhs_pass199_distributed_calibration_runtime_v1 import (
+from hhs_backend.runtime.hhs_pass199_distributed_calibration_runtime_v2 import (
     PASS199_DISTRIBUTED_CALIBRATION_RUNTIME,
 )
 
@@ -24,7 +24,7 @@ PASS199_DISTRIBUTED_CALIBRATION_FABRIC = PASS199_DISTRIBUTED_CALIBRATION_RUNTIME
 class DistributedCalibrationRunRequest(BaseModel):
     operation_id: str = Field(default="pass197.reciprocal_matrix_gate", min_length=1, max_length=256)
     config: Dict[str, Any] = Field(default_factory=dict)
-    worker_count: int = Field(default=4, ge=1, le=64)
+    worker_count: int = Field(default=8, ge=1, le=64)
     resume: bool = True
     full_replay: bool = True
 
@@ -92,6 +92,8 @@ def distributed_calibration_prepare(request: DistributedCalibrationPrepareReques
         "state_count": result["tree"]["state_count"],
         "expected_job_count": result["expected_job_count"],
         "submitted_job_count": result["submitted_job_count"],
+        "existing_job_count": result.get("existing_job_count", 0),
+        "submission_receipt_mode": result.get("submission_receipt_mode"),
         "candidate_workers_are_authority": False,
     }
     projection["io"] = {
@@ -135,6 +137,7 @@ async def distributed_calibration_run(request: DistributedCalibrationRunRequest)
                 "report_hash72": result.get("report_hash72"),
                 "branch_job_count": result.get("summary", {}).get("branch_job_count"),
                 "canonical_commit_operation_count": result.get("singleton_commit", {}).get("canonical_commit_operation_count"),
+                "durable_worker_slot_count": result.get("worker_fabric", {}).get("durable_worker_slot_count"),
             },
         ),
     }
@@ -167,11 +170,12 @@ def distributed_calibration_tools() -> Dict[str, Any]:
         {"name": "distributed_calibration.report", "method": "GET", "path": "/api/runtime/distributed-calibration/report", "mutation": False},
     ]
     result = {
-        "schema": "HHS_PASS_199_TOOL_REGISTRY_V1",
+        "schema": "HHS_PASS_199_TOOL_REGISTRY_V2",
         "tools": tools,
         "mutation_requires_vm81_authorized_tick": True,
         "candidate_workers_are_authority": False,
         "tool_server_is_authority": False,
+        "maximum_durable_worker_slots": 64,
     }
     result["io"] = {"ingress": ingress, "egress": _egress(operation, {"tool_count": len(tools)})}
     return _contract_response("/api/runtime/distributed-calibration/tools", "GET", result)
@@ -195,6 +199,7 @@ async def distributed_calibration_tool_invoke(request: DistributedCalibrationToo
                 "tree_hash72": prepared["tree"]["tree_hash72"],
                 "state_count": prepared["tree"]["state_count"],
                 "expected_job_count": prepared["expected_job_count"],
+                "submission_receipt_mode": prepared.get("submission_receipt_mode"),
             }
         elif request.tool == "distributed_calibration.run":
             tick, receipt_hash72 = _authorized_receipt(operation)
@@ -202,7 +207,7 @@ async def distributed_calibration_tool_invoke(request: DistributedCalibrationToo
                 PASS199_DISTRIBUTED_CALIBRATION_FABRIC.run,
                 str(request.arguments.get("operation_id", "pass197.reciprocal_matrix_gate")),
                 dict(request.arguments.get("config") or {}),
-                worker_count=int(request.arguments.get("worker_count", 4)),
+                worker_count=int(request.arguments.get("worker_count", 8)),
                 vm81_receipt_hash72=receipt_hash72,
                 resume=bool(request.arguments.get("resume", True)),
                 full_replay=bool(request.arguments.get("full_replay", True)),
@@ -215,7 +220,7 @@ async def distributed_calibration_tool_invoke(request: DistributedCalibrationToo
     except (KeyError, TypeError, ValueError, RuntimeError, Pass199CalibrationError) as exc:
         raise HTTPException(status_code=409, detail=str(exc)) from exc
     result["tool_invocation"] = {
-        "schema": "HHS_PASS_199_TOOL_INVOCATION_V1",
+        "schema": "HHS_PASS_199_TOOL_INVOCATION_V2",
         "tool": request.tool,
         "tool_server_is_authority": False,
         "candidate_workers_are_authority": False,
