@@ -6,13 +6,44 @@ import json
 from typing import Any, Mapping
 
 from hhs_backend.runtime.hhs_pass199_distributed_calibration_fabric_v1 import (
+    COMMIT_OPERATION_ID,
     Pass199DistributedCalibrationFabric,
+    Pass199DurableCalibrationContext,
     hhs_hash72,
 )
 
 
+class RestartSafePass199DurableCalibrationContext(Pass199DurableCalibrationContext):
+    """Pass 199 context with bounded pagination for commit-receipt recovery."""
+
+    def find_tree_commit_receipt(self, run_id: str) -> dict[str, Any] | None:
+        cursor = 0
+        match: dict[str, Any] | None = None
+        while True:
+            page = self.receipts_after(cursor, 1000)
+            if not page:
+                break
+            for receipt in page:
+                if (
+                    receipt.get("operation_id") == COMMIT_OPERATION_ID
+                    and receipt.get("arguments", {}).get("run_id") == run_id
+                ):
+                    self._verify_receipt_identity(receipt)
+                    match = copy.deepcopy(receipt)
+            cursor = int(page[-1]["receipt_index"])
+        return match
+
+
 class Pass199DistributedCalibrationRuntime(Pass199DistributedCalibrationFabric):
     """Public runtime preserving receipt-independent resume identity."""
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+        self.context.close()
+        self.context = RestartSafePass199DurableCalibrationContext(
+            self.database_path,
+            holder_id="pass199-public-runtime",
+        )
 
     def run(
         self,
