@@ -4,8 +4,13 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 import tempfile
 from pathlib import Path
+
+REPOSITORY_IMPORT_ROOT = Path(__file__).resolve().parents[1]
+if str(REPOSITORY_IMPORT_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPOSITORY_IMPORT_ROOT))
 
 from hhs_backend.runtime.hhs_pass196_integrated_environment_v1 import Pass196IntegratedEnvironment
 from hhs_backend.runtime.pass197_exact_v1 import canonical_json, hash72
@@ -69,7 +74,7 @@ def build_report(repository_root: Path, state_root: Path) -> dict:
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--repository-root", default=".")
+    parser.add_argument("--repository-root", default=str(REPOSITORY_IMPORT_ROOT))
     parser.add_argument("--output", required=True)
     parser.add_argument("--state-root")
     args = parser.parse_args()
