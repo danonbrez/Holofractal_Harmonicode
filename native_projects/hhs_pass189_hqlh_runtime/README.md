@@ -1,6 +1,6 @@
 # HHS Pass 189 HQLH Runtime
 
-This project implements the executable hydration authority specified by the Pass 189 HARMONICODE quantum-logic and unified-physics addition.
+This project implements the executable hydration, calibration, causal-batch, fail-closed adapter, and driver-provenance authorities specified by Pass 189.
 
 It supplies:
 
@@ -12,8 +12,11 @@ It supplies:
 - exact tagged `V72 = 8 × 9` topology;
 - Hash72 local identity, ordered Hash216 neighborhoods, singleton admission, and replay;
 - canonical equation objects with shared VM81, circuit, breadboard, simulation, visual, and worldline projections;
-- CLI, HTTP, SSE, WebSocket, standalone visual inspector, and HHS runtime-window integration;
-- DigitalOcean Ubuntu `systemd` and nginx deployment assets.
+- persistent exact calibration evidence and atomic receipt-locked causal batches;
+- fail-closed `LOOPBACK` and sandboxed `FILE_SINK` software adapters;
+- authenticated driver-package quarantine, conformance evidence, dual promotion, token validation, expiry, revocation, and rollback;
+- CLI, HTTP, SSE, WebSocket, standalone visual inspectors, and HHS runtime-window integration;
+- DigitalOcean Ubuntu `systemd` and nginx deployment assets for Iterations 1–4.
 
 Vercel is not part of the runtime or deployment authority.
 
@@ -35,9 +38,10 @@ The validation target performs:
 2. exhaustive round-trip validation of all 51,648,192 contextual addresses;
 3. reciprocal Lo Shu lane validation for every address;
 4. no-floating-arithmetic disassembly scan;
-5. nine Python unit tests;
-6. HTTP, visual document, replay, SSE, WebSocket, registry, and DigitalOcean-authority smoke tests;
-7. Python bytecode compilation.
+5. inherited and Iterations 2–4 Python authority tests;
+6. token-lifecycle migration and persistent-expiry tests;
+7. HTTP, visual document, replay, SSE, WebSocket, registry, and DigitalOcean-authority smoke tests;
+8. Python bytecode and deployment shell-syntax checks.
 
 ## CLI
 
@@ -52,13 +56,13 @@ PYTHONPATH=python python3 python/hhs_pass189.py hydrate 1259711 --path 8,-8,0 --
 PYTHONPATH=python python3 python/hhs_pass189.py equation 'V==I*R'
 ```
 
-## Server and visual inspector
+## Runtime surfaces
+
+### Iteration 1 hydration
 
 ```sh
 python3 server/hhs_pass189_server.py --host 127.0.0.1 --port 8189
 ```
-
-Surfaces:
 
 ```text
 GET  /pass189/
@@ -73,30 +77,74 @@ POST /api/pass189/replay
 POST /api/pass189/equation
 ```
 
+### Persistent iterations
+
+```text
+Iteration 2 calibration and causal authority    127.0.0.1:8190
+Iteration 3 fail-closed adapters                127.0.0.1:8191
+Iteration 4 driver provenance and lifecycle     127.0.0.1:8192
+```
+
+The corresponding visual routes are `/pass189/i2/`, `/pass189/i3/`, and `/pass189/i4/`.
+
 ## DigitalOcean deployment
+
+The canonical operator documentation is:
+
+- [DigitalOcean installation, operations, and maintenance runbook](../../docs/deployment/DIGITALOCEAN_INSTALLATION_OPERATIONS_MAINTENANCE.md)
+- [Deployment-directory quick reference](deployment/digitalocean/README.md)
 
 On the authoritative Ubuntu host:
 
 ```sh
+cd /opt/holofractal-harmonicode
+make -C native_projects/hhs_pass189_hqlh_runtime validate
+
 sudo REPO_ROOT=/opt/holofractal-harmonicode \
+  SERVICE_USER=hhs \
   native_projects/hhs_pass189_hqlh_runtime/deployment/digitalocean/install.sh
 ```
 
-Add `deployment/digitalocean/nginx-hhs-pass189.conf` inside the existing HTTPS server block, validate nginx, and reload it. Then run:
+Install `deployment/digitalocean/nginx-hhs-pass189.conf` as an include inside the existing HTTPS server block, run `nginx -t`, reload nginx, and verify all four services.
+
+Local verification:
 
 ```sh
-BASE_URL=https://YOUR_DOMAIN \
+sudo native_projects/hhs_pass189_hqlh_runtime/deployment/digitalocean/verify.sh
+```
+
+Public verification through one nginx origin:
+
+```sh
+sudo \
+  BASE_URL=https://YOUR_DOMAIN \
+  ITERATION2_URL=https://YOUR_DOMAIN \
+  ITERATION3_URL=https://YOUR_DOMAIN \
+  ITERATION4_URL=https://YOUR_DOMAIN \
   native_projects/hhs_pass189_hqlh_runtime/deployment/digitalocean/verify.sh
 ```
 
-The service binds to loopback at `127.0.0.1:8189`; nginx remains the public TLS authority.
+The four services bind to loopback at ports `8189–8192`; nginx remains the public TLS authority.
 
-## Calibration boundary
+### Co-host port warning
 
-The runtime can construct breadboard, circuit, simulation, and worldline projections from one canonical equation identity, but it does not fabricate physical verification. Hardware output remains blocked until real device bindings, ranges, units, calibration coefficients, measurements, residuals, and safety tests are admitted. Therefore the completion classification is:
+Pass 190 also defaults to `127.0.0.1:8190`. A host running both stacks must use a documented systemd/nginx/verifier port override or separate hosts. Pass 196 uses `127.0.0.1:8080` and does not conflict with the default Pass 189 range.
+
+## Calibration and hardware boundary
+
+The runtime can construct breadboard, circuit, simulation, and worldline projections from one canonical equation identity, retain measured-calibration candidates, and govern non-executable driver packages. It does not fabricate physical verification.
+
+Iteration 3 executes only software test adapters. Iteration 4 real-hardware packages remain `HARDWARE_CANDIDATE_NONEXECUTABLE` with:
 
 ```text
-HHS_PASS_189_HQLH_HYDRATION_VERIFIED
+executable = false
+real_hardware_dispatch_authorized = false
+```
+
+The current classification remains:
+
+```text
+HHS_PASS_189_HQLH_CALIBRATION_IN_PROGRESS
 ```
 
 not `HHS_PASS_189_HQLH_UNIFIED_PHYSICS_VERIFIED`.
