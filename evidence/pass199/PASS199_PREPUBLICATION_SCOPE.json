@@ -1,0 +1,25 @@
+{
+  "schema": "HHS_PASS_199_PREPUBLICATION_SCOPE_V1",
+  "contract": "HHS-P199-P198-P190-DCT-WORKER-VM81-H72",
+  "base_commit": "df50f29fda77d6093d3af40dd1e3896523c4aab5",
+  "classification": "IMPLEMENTED_PENDING_EXACT_WORKFLOW_VALIDATION",
+  "expected": {
+    "pass190_parent_operations": 42,
+    "pass199_added_operations": 3,
+    "combined_operations": 45,
+    "default_parameter_states": 405,
+    "default_branch_jobs": 810,
+    "default_admitted_states": 320,
+    "default_domain_rejections": 85,
+    "default_address_comparisons": 1658880,
+    "canonical_tree_commit_operations": 1
+  },
+  "boundaries": {
+    "candidate_workers_are_authority": false,
+    "compiler_auto_promotion": false,
+    "runtime_auto_admission": false,
+    "live_digitalocean_acceptance": false,
+    "multi_host_consensus": false,
+    "physical_hardware_evidence": false
+  }
+}
