@@ -1,0 +1,42 @@
+name: HHS Native DNS Gate
+
+on:
+  push:
+    paths:
+      - "HHS_NATIVE_DNS_GATE_PORT_CONFLICT_AUTHORITY.md"
+      - "native_projects/hhs_native_dns_gate/**"
+      - "native_projects/hhs_pass189_hqlh_runtime/deployment/digitalocean/**"
+      - "native_projects/hhs_pass190_operation_fabric/deploy/**"
+      - ".github/workflows/native-dns-gate.yml"
+  pull_request:
+    paths:
+      - "HHS_NATIVE_DNS_GATE_PORT_CONFLICT_AUTHORITY.md"
+      - "native_projects/hhs_native_dns_gate/**"
+      - "native_projects/hhs_pass189_hqlh_runtime/deployment/digitalocean/**"
+      - "native_projects/hhs_pass190_operation_fabric/deploy/**"
+      - ".github/workflows/native-dns-gate.yml"
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate native DNS authority
+        run: make -C native_projects/hhs_native_dns_gate validate
+      - name: Prove simultaneous canonical port binding
+        run: |
+          python3 - <<'PY'
+          import socket
+          sockets=[]
+          try:
+              for address in ("127.189.0.2", "127.190.0.1"):
+                  current=socket.socket()
+                  current.bind((address, 8190))
+                  current.listen()
+                  sockets.append(current)
+              print("HHS_NATIVE_DNS_GATE_SAME_PORT_BIND_PASS")
+          finally:
+              for current in sockets:
+                  current.close()
+          PY

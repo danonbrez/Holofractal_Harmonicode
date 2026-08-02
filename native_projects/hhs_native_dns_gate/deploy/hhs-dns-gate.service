@@ -1,0 +1,34 @@
+[Unit]
+Description=HHS Native DNS Gate
+Documentation=file:/opt/holofractal-harmonicode/native_projects/hhs_native_dns_gate/README.md
+After=network.target
+Before=nginx.service hhs-pass189.service hhs-pass189-iteration2.service hhs-pass189-iteration3.service hhs-pass189-iteration4.service hhs-pass190.service hhs-pass196-integrated-environment.service
+
+[Service]
+Type=simple
+User=hhs
+Group=hhs
+WorkingDirectory=/opt/holofractal-harmonicode/native_projects/hhs_native_dns_gate
+ExecStart=/usr/bin/python3 python/hhs_dns_gate.py --registry config/service_registry.json serve --host 127.0.0.55 --port 53
+Restart=on-failure
+RestartSec=2
+TimeoutStartSec=30
+TimeoutStopSec=15
+AmbientCapabilities=CAP_NET_BIND_SERVICE
+CapabilityBoundingSet=CAP_NET_BIND_SERVICE
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+LockPersonality=true
+MemoryDenyWriteExecute=true
+RestrictAddressFamilies=AF_UNIX AF_INET
+IPAddressDeny=any
+IPAddressAllow=localhost
+
+[Install]
+WantedBy=multi-user.target

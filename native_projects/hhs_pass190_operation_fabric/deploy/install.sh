@@ -2,6 +2,8 @@
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+REPO_ROOT="$(cd "$ROOT/../.." && pwd)"
+DNS_GATE="$REPO_ROOT/native_projects/hhs_native_dns_gate"
 TARGET="/opt/hhs/pass190-operation-fabric"
 STAGE="${TARGET}.new.$$"
 BACKUP="${TARGET}.previous"
@@ -10,6 +12,11 @@ ENV_FILE="${ENV_DIR}/pass190.env"
 
 cd "$ROOT"
 make validate
+if [[ ! -d "$DNS_GATE" ]]; then
+  echo "Missing native DNS gate at $DNS_GATE" >&2
+  exit 3
+fi
+sudo REPO_ROOT="$REPO_ROOT" SERVICE_USER=hhs "$DNS_GATE/deploy/install.sh"
 
 if ! id -u hhs >/dev/null 2>&1; then
   sudo useradd --system --home /var/lib/hhs --shell /usr/sbin/nologin hhs

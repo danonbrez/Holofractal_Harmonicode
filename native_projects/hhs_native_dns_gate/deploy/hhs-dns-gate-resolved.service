@@ -1,0 +1,16 @@
+[Unit]
+Description=Route hhs.internal queries to the HHS Native DNS Gate
+After=hhs-dns-gate.service systemd-resolved.service
+Requires=hhs-dns-gate.service systemd-resolved.service
+Before=nginx.service hhs-pass189.service hhs-pass189-iteration2.service hhs-pass189-iteration3.service hhs-pass189-iteration4.service hhs-pass190.service hhs-pass196-integrated-environment.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/resolvectl dns lo 127.0.0.55
+ExecStart=/usr/bin/resolvectl domain lo ~hhs.internal ~0.189.127.in-addr.arpa ~0.190.127.in-addr.arpa ~0.196.127.in-addr.arpa ~0.0.127.in-addr.arpa
+ExecStart=/usr/bin/resolvectl default-route lo no
+ExecStop=/usr/bin/resolvectl revert lo
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
