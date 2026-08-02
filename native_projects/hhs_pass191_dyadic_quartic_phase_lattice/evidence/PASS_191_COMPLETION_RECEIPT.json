@@ -1,0 +1,53 @@
+{
+  "classification": "HHS_PASS_191_DYADIC_QUARTIC_PHASE_LATTICE_FORMAL_DECISION_VERIFIED",
+  "formal_decision_mode": "PROOF_FALSIFICATION_OBSTRUCTION",
+  "formal_outcome_counts": {
+    "FALSIFIED": 3,
+    "OBSTRUCTED": 3,
+    "PROVED": 4
+  },
+  "formal_outcome_ledger_hash72": "A!qhhIhc>U61rVL1ieh2Q6SI+Xs+B7/6FTDbd7OAP!PKOHhwHB+HHwY5/M3z7wtHJMsqgIyI",
+  "hypothesis_decisions": {
+    "COLLATZ_CONJECTURE": {
+      "controlling_obligation": "DQPL-COLLATZ-GLOBAL",
+      "next_admissible_operations": [
+        "PROVE_WELL_FOUNDED_DESCENT",
+        "PRODUCE_NONCONVERGENT_ORBIT_CERTIFICATE"
+      ],
+      "scope": "CURRENT_REGISTERED_RULE_GRAPH",
+      "status": "OBSTRUCTED"
+    },
+    "RIEMANN_HYPOTHESIS": {
+      "controlling_obligation": "DQPL-RH-TRANSFER",
+      "next_admissible_operations": [
+        "PROVE_BRIDGE_LEMMAS",
+        "PRODUCE_EXACT_OFF_AXIS_ZERO_CERTIFICATE"
+      ],
+      "scope": "CURRENT_REGISTERED_RULE_GRAPH",
+      "status": "OBSTRUCTED"
+    }
+  },
+  "invariants": {
+    "delta_e": 0,
+    "omega": true,
+    "psi": 0,
+    "theta_15": true
+  },
+  "native_benchmark_authority": {
+    "artifact": "PASS_191_NATIVE_BENCHMARK.json",
+    "status": "DETERMINISTIC_BIFURCATION_VERIFIED",
+    "timing_classification": "NONAUTHORITATIVE_WALL_CLOCK_MEASUREMENT_EXECUTED_NOT_COMMITTED"
+  },
+  "parent_pass": "PASS_161",
+  "pass_id": "PASS_191",
+  "receipt_chain_root_hash72": "H72N-3429a26ffd20e72b47",
+  "schema": "HHS_PASS_191_COMPLETION_RECEIPT_V1",
+  "white_paper_hash72": "H72N-da04c07dd9012b05e1",
+  "workloads_verified": [
+    "W191-A",
+    "W191-B",
+    "W191-C",
+    "W191-D",
+    "W191-E"
+  ]
+}

@@ -1,0 +1,79 @@
+name: Pass 191 Dyadic Quartic Phase Lattice
+
+on:
+  push:
+    paths:
+      - "HHS_PASS_191_DYADIC_QUARTIC_PHASE_LATTICE_PROOF.md"
+      - "terminal_hhsprog_v4_symbolic.py"
+      - "native_projects/hhs_pass189_hqlh_runtime/**"
+      - "native_projects/hhs_pass191_dyadic_quartic_phase_lattice/**"
+      - "tests/test_terminal_hhsprog_v4_symbolic_compat_v1.py"
+      - "tests/test_hhs_pass191_dyadic_quartic_phase_lattice_v1.py"
+      - "tests/test_hhs_pass191_integrated_proof_engine_v1.py"
+      - "requirements-core.txt"
+      - ".github/workflows/pass191-dyadic-quartic-phase-lattice.yml"
+  pull_request:
+    paths:
+      - "HHS_PASS_191_DYADIC_QUARTIC_PHASE_LATTICE_PROOF.md"
+      - "terminal_hhsprog_v4_symbolic.py"
+      - "native_projects/hhs_pass189_hqlh_runtime/**"
+      - "native_projects/hhs_pass191_dyadic_quartic_phase_lattice/**"
+      - "tests/test_terminal_hhsprog_v4_symbolic_compat_v1.py"
+      - "tests/test_hhs_pass191_dyadic_quartic_phase_lattice_v1.py"
+      - "tests/test_hhs_pass191_integrated_proof_engine_v1.py"
+      - "requirements-core.txt"
+      - ".github/workflows/pass191-dyadic-quartic-phase-lattice.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install inherited runtime and validation dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements-core.txt
+          python -m pip install \
+            "pytest>=8.0,<9.0" \
+            "pytest-asyncio>=0.23,<1.0" \
+            "fastapi==0.128.2" \
+            "starlette==0.50.0" \
+            "uvicorn>=0.30,<1.0" \
+            "httpx>=0.27,<1.0" \
+            "websockets>=12.0,<16.0" \
+            "anyio>=4.4,<5.0"
+
+      - name: Validate Pass 191
+        working-directory: native_projects/hhs_pass191_dyadic_quartic_phase_lattice
+        run: make validate
+
+      - name: Commit generated formal evidence snapshot
+        if: github.event_name == 'push' && github.ref != 'refs/heads/main'
+        run: |
+          git add native_projects/hhs_pass191_dyadic_quartic_phase_lattice/evidence/*.json
+          if git diff --cached --quiet; then
+            echo "Formal evidence already committed and verified."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Record Pass 191 formal decision evidence"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
+
+      - name: Upload Pass 191 evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass191-evidence
+          path: native_projects/hhs_pass191_dyadic_quartic_phase_lattice/evidence/*.json
+          if-no-files-found: error
