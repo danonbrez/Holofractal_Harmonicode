@@ -1,0 +1,99 @@
+name: Pass 197 A/B Hydration Calibration
+
+on:
+  pull_request:
+    paths:
+      - 'HHS_PASS_197_AB_HYDRATION_CALIBRATION.md'
+      - 'hhs_backend/runtime/pass197_exact_v1.py'
+      - 'hhs_backend/runtime/pass197_state_v1.py'
+      - 'hhs_backend/runtime/hhs_pass197_ab_hydration_calibration_v1.py'
+      - 'hhs_backend/api/pass197_calibration_routes.py'
+      - 'hhs_backend/visual_server.py'
+      - 'applications/holofractal_harmonizer/src/pass197-calibration.mjs'
+      - 'applications/holofractal_harmonizer/src/production-startup-coordinator.mjs'
+      - 'tests/test_hhs_pass197_ab_hydration_calibration_v1.py'
+      - 'evidence/pass197/**'
+      - 'docs/pass197/**'
+      - '.github/workflows/pass197-ab-hydration-calibration.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-pass197:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout exact tree
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Compile Pass 197 Python surfaces
+        run: |
+          python -m py_compile \
+            hhs_backend/runtime/pass197_exact_v1.py \
+            hhs_backend/runtime/pass197_state_v1.py \
+            hhs_backend/runtime/hhs_pass197_ab_hydration_calibration_v1.py \
+            hhs_backend/api/pass197_calibration_routes.py \
+            tests/test_hhs_pass197_ab_hydration_calibration_v1.py
+
+      - name: Run exact A/B calibration tests
+        run: python -m unittest -v tests.test_hhs_pass197_ab_hydration_calibration_v1
+
+      - name: Verify report envelope independently
+        run: |
+          python - <<'PY'
+          import tempfile
+          from hhs_backend.runtime.hhs_pass197_ab_hydration_calibration_v1 import Pass197ABHydrationCalibration
+
+          with tempfile.TemporaryDirectory() as root:
+              report = Pass197ABHydrationCalibration(state_root=root).run()
+              summary = report['summary']
+              assert report['closed'] is True
+              assert summary['evaluated_parameter_states'] == 405
+              assert summary['admitted_parameter_states'] == 320
+              assert summary['domain_rejected_parameter_states'] == 85
+              assert summary['address_comparisons'] == 1_658_880
+              assert summary['mismatch_parameter_states'] == 0
+              assert summary['singular_parameter_states'] == 0
+              assert summary['saved_fraction'] == {'numerator': 63, 'denominator': 64}
+              assert report['replay']['deterministic'] is True
+              assert report['replay']['replayed_parameter_states'] == 405
+          PY
+
+      - name: Reject floating-point canonical operations
+        run: |
+          if grep -RInE '(^|[^[:alnum:]_])(float\(|Decimal\(|numpy|np\.)' \
+            hhs_backend/runtime/pass197_exact_v1.py \
+            hhs_backend/runtime/pass197_state_v1.py \
+            hhs_backend/runtime/hhs_pass197_ab_hydration_calibration_v1.py; then
+            echo 'Floating-point canonical operation detected.' >&2
+            exit 1
+          fi
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Check visual JavaScript syntax
+        run: |
+          node --check applications/holofractal_harmonizer/src/pass197-calibration.mjs
+          node --check applications/holofractal_harmonizer/src/production-startup-coordinator.mjs
+
+      - name: Verify API and visual wiring
+        run: |
+          grep -Fq 'pass197_calibration_router' hhs_backend/visual_server.py
+          grep -Fq '/api/runtime/calibration' hhs_backend/visual_server.py
+          grep -Fq "import './pass197-calibration.mjs';" applications/holofractal_harmonizer/src/production-startup-coordinator.mjs
+          grep -Fq 'pass197_calibration_projection_loaded: true' applications/holofractal_harmonizer/src/production-startup-coordinator.mjs
+          grep -Fq 'VM81_AUTHORIZED_TICK_AND_HASH72_RECEIPT' hhs_backend/runtime/hhs_pass197_ab_hydration_calibration_v1.py
+          grep -Fq 'runtime_controller.authorized_tick' hhs_backend/api/pass197_calibration_routes.py
+
+      - name: Validate evidence JSON
+        run: python -m json.tool evidence/pass197/PASS197_LOCAL_VALIDATION_RECEIPT.json >/dev/null

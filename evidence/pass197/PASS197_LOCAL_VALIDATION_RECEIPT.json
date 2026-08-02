@@ -1,0 +1,57 @@
+{
+  "schema": "HHS_PASS_197_VALIDATION_RECEIPT_V2",
+  "contract": "HHS-P197-ABTREE-VM81X64-EXACT-LOSSLESS-HYDRATION",
+  "classification": "DEPENDENCY_SCOPED_REPOSITORY_WORKFLOW_VERIFIED",
+  "current_hash_transport": "CANONICAL_SHA512_LENGTH_BOUND_TO_HASH72_RING",
+  "canonical_kernel_acceptance_claimed": true,
+  "validation": {
+    "workflow_run_id": 30759299949,
+    "validated_head_commit": "93d71fc3dffdfd227311b990df9b71449930684e",
+    "workflow_name": "Pass 197 A/B Hydration Calibration",
+    "workflow_conclusion": "success",
+    "python_compile": "success",
+    "test_command": "python -m unittest -v tests.test_hhs_pass197_ab_hydration_calibration_v1",
+    "tests_passed": 7,
+    "tests_failed": 0,
+    "independent_default_envelope": "success",
+    "default_parameter_states": 405,
+    "admitted_parameter_states": 320,
+    "domain_rejected_parameter_states": 85,
+    "singular_parameter_states": 0,
+    "mismatch_parameter_states": 0,
+    "vm5184_address_comparisons": 1658880,
+    "replayed_parameter_states": 405,
+    "replay_deterministic": true,
+    "checkpoint_tamper_rejected": true,
+    "float_ingress_rejected": true,
+    "address_codec_coverage": 5184,
+    "javascript_syntax": "success",
+    "api_visual_wiring": "success",
+    "saved_fraction": {
+      "numerator": 63,
+      "denominator": 64
+    }
+  },
+  "identity_policy": {
+    "current_report_identity": "generated and integrity-checked per exact runtime run",
+    "current_state_root_identity": "generated and integrity-checked per exact parameter tree",
+    "current_replay_root_identity": "generated and compared within the same admitted run",
+    "fixed_runtime_output_hash_committed_as_authority": false,
+    "reason": "runtime identities bind the VM81 authorized tick, exact configuration, current Hash72 transport, and branch receipt chain"
+  },
+  "superseded_prepublication_prototype": {
+    "classification": "STANDALONE_SHA512_VALIDATION_FALLBACK_BEFORE_BOUNDED_RING_TRANSPORT",
+    "report_hash72": "3652d7d157706f07f489e79e8faf0336fac9441d5af0e631f3d9dd30d3ac945d6771f311",
+    "state_root_hash72": "ec88893ff8621057309813927277a2db2dd62ba2a6f6cf423cae7b5fa57ab4bc10dc5fec",
+    "replay_root_hash72": "714489147daf1c1e665e487b366510b49e0db44972a1babee909168c61d7d3d9fc3a9e74",
+    "current_tree_authority": false
+  },
+  "claim_boundary": {
+    "arithmetic_and_replay_algorithm_validated": true,
+    "repository_native_hash72_bridge_validated": true,
+    "bounded_hash_transport_validated": true,
+    "physical_hardware_evidence": false,
+    "live_digitalocean_acceptance": false,
+    "finite_grid_is_universal_parameter_exhaustion": false
+  }
+}

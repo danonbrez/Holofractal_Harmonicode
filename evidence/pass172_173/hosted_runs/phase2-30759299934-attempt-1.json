@@ -1,0 +1,21 @@
+{
+  "branch": "agent/pass197-ab-hydration-calibration",
+  "failures": 0,
+  "next_action": "merge after the evidence-only head is revalidated",
+  "outcomes": {
+    "compile": "success",
+    "contracts": "success",
+    "dependencies": "success",
+    "smoke": "success",
+    "tests": "success"
+  },
+  "pytest_output_sha256": "fc4391fd51b7cedbef4ac0da47580cd43a7f093607c099c37ab71453cd2f7048",
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "run_attempt": 1,
+  "run_id": 30759299934,
+  "schema": "HHS_PASS_172_173_PHASE2_HOSTED_VALIDATION_V1",
+  "status": "SUCCESS",
+  "terminal_pass172_claimed": false,
+  "terminal_pass173_claimed": false,
+  "validated_sha": "b62cf7ffcc9d309b9d6a81ef370f0e5c77b1d3e2"
+}
