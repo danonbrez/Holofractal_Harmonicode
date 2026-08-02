@@ -80,9 +80,9 @@ No package promoted by Iteration 4 can bypass Iteration 3 or load a physical dri
 
 ## 8. Dual approval and bounded token
 
-Promotion requires two distinct Hash72 approver identities, a conformant package, an issue witness, an expiry no greater than seven days, and an optional rollback package belonging to the same driver identity.
+Promotion requires two distinct Hash72 approver identities, a conformant package, a required Hash72 issue witness, an expiry no greater than seven days, and an optional rollback package belonging to the same driver identity. Token validation checks the trust root, package state, active-driver designation, and validity window. Overdue promotions are persistently marked `EXPIRED`, removed from active designation, and recorded on the Hash72 event chain.
 
-The admission token binds package, package Hash72, driver class, promotion class, approvals, time window, rollback reference, and explicit hardware-dispatch denial.
+The admission token binds package, package Hash72, driver class, promotion class, approvals, issue witness, time window, rollback reference, and explicit hardware-dispatch denial.
 
 ## 9. Revocation and rollback
 
@@ -94,7 +94,7 @@ Promotion revocation removes the active designation and invalidates the token. R
 
 The SQLite authority uses WAL, full synchronous commits, foreign-key enforcement, bounded busy timeouts, bounded retries, reciprocal process locking, and `BEGIN IMMEDIATE` singleton mutation.
 
-Trust roots, packages, conformance runs, promotions, revocations, rollbacks, and checkpoints append one ordered Hash72 event each.
+Trust roots, packages, conformance runs, promotions, expirations, revocations, rollbacks, and checkpoints append one ordered Hash72 event each.
 
 ## 11. Callable surfaces
 
@@ -107,6 +107,8 @@ POST /api/pass189/i4/package/sign
 POST /api/pass189/i4/package/ingest
 POST /api/pass189/i4/conformance
 POST /api/pass189/i4/promote
+POST /api/pass189/i4/promotion/validate
+POST /api/pass189/i4/promotion/sweep
 POST /api/pass189/i4/promotion/revoke
 POST /api/pass189/i4/rollback
 POST /api/pass189/i4/chain/verify
@@ -126,14 +128,14 @@ Iteration 3 adapters         127.0.0.1:8191
 Iteration 4 provenance       127.0.0.1:8192
 ```
 
-Iteration 4 stores authority at `/var/lib/hhs-pass189/iteration4.sqlite3` and quarantine payloads under `/var/lib/hhs-pass189/iteration4-quarantine`.
+Iteration 4 stores authority at `/var/lib/hhs-pass189/iteration4.sqlite3` and quarantine payloads under `/var/lib/hhs-pass189/iteration4-quarantine`. The authoritative systemd service runs the token-lifecycle overlay, which migrates existing Iteration 4 databases in place while preserving the pre-lifecycle package and event history.
 
 ## 13. Validation
 
-Validation includes all inherited Pass 189 native and Python authority, twelve Iteration 4 unit tests, signature mismatch rejection, payload-digest binding, path traversal rejection, concurrent quarantine idempotence, evidence-class separation, dual approval, hardware-candidate non-execution, trust-root cascade revocation, rollback, event-chain verification, checkpoint recovery, HTTP, visual, SSE, WebSocket, Python bytecode, and deployment shell syntax.
+Validation includes all inherited Pass 189 native and Python authority, sixteen Iteration 4 unit tests (twelve provenance tests plus four token-lifecycle tests), signature mismatch rejection, payload-digest binding, path traversal rejection, concurrent quarantine idempotence, evidence-class separation, dual approval, required issue-witness validation, bounded token validation and persistent expiry, hardware-candidate non-execution, trust-root cascade revocation, rollback, event-chain verification, checkpoint recovery, HTTP, visual, SSE, WebSocket, Python bytecode, and deployment shell syntax.
 
 ## 14. Honest boundary
 
-Iteration 4 verifies the software provenance and quarantine membrane. Repository hardware-in-loop tests use explicit fixtures only where stated; no external laboratory run is asserted. No GPIO, serial, USB, network-device, actuator, kernel module, or userspace hardware driver is loaded or executed.
+Iteration 4 verifies the software provenance, quarantine, and promotion-token lifecycle membrane. Repository hardware-in-loop tests use explicit fixtures only where stated; no external laboratory run is asserted. No GPIO, serial, USB, network-device, actuator, kernel module, or userspace hardware driver is loaded or executed.
 
 The classification remains `HHS_PASS_189_HQLH_CALIBRATION_IN_PROGRESS`. `HHS_PASS_189_HQLH_UNIFIED_PHYSICS_VERIFIED` is not claimed.
