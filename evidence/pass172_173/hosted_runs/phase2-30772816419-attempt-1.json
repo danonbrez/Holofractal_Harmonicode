@@ -1,0 +1,21 @@
+{
+  "branch": "agent/pass200a-proof-carrying-shadow-optimization",
+  "failures": 0,
+  "next_action": "merge after the evidence-only head is revalidated",
+  "outcomes": {
+    "compile": "success",
+    "contracts": "success",
+    "dependencies": "success",
+    "smoke": "success",
+    "tests": "success"
+  },
+  "pytest_output_sha256": "c8fbabaaf6bab5c17dc73f9c7c2d109805e806d09e22b32ff9e5f7f7eba567b0",
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "run_attempt": 1,
+  "run_id": 30772816419,
+  "schema": "HHS_PASS_172_173_PHASE2_HOSTED_VALIDATION_V1",
+  "status": "SUCCESS",
+  "terminal_pass172_claimed": false,
+  "terminal_pass173_claimed": false,
+  "validated_sha": "e33c7b43e478d55b7cf4a2fb5596f58c6c0560d7"
+}
