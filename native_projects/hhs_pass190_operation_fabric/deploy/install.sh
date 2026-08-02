@@ -31,12 +31,14 @@ sudo cp -a "$ROOT/." "$STAGE/"
 sudo chown -R root:hhs "$STAGE"
 
 rollback() {
+  sudo systemctl stop hhs-pass190-worker.service >/dev/null 2>&1 || true
   sudo systemctl stop hhs-pass190.service >/dev/null 2>&1 || true
   sudo rm -rf "$TARGET"
   if sudo test -d "$BACKUP"; then
     sudo mv -T "$BACKUP" "$TARGET"
     sudo systemctl daemon-reload
     sudo systemctl start hhs-pass190.service >/dev/null 2>&1 || true
+    sudo systemctl start hhs-pass190-worker.service >/dev/null 2>&1 || true
   fi
 }
 trap rollback ERR
@@ -45,12 +47,14 @@ sudo rm -rf "$BACKUP"
 if sudo test -d "$TARGET"; then sudo mv -T "$TARGET" "$BACKUP"; fi
 sudo mv -T "$STAGE" "$TARGET"
 sudo install -m 0644 "$TARGET/deploy/hhs-pass190.service" /etc/systemd/system/hhs-pass190.service
+sudo install -m 0644 "$TARGET/deploy/hhs-pass190-worker.service" /etc/systemd/system/hhs-pass190-worker.service
 sudo install -m 0644 "$TARGET/deploy/nginx-hhs-pass190.conf" /etc/nginx/snippets/hhs-pass190.conf
 sudo systemctl daemon-reload
-sudo systemctl enable --now hhs-pass190.service
+sudo systemctl enable hhs-pass190.service hhs-pass190-worker.service
 sudo systemctl restart hhs-pass190.service
+sudo systemctl restart hhs-pass190-worker.service
 "$TARGET/deploy/verify.sh"
 
 trap - ERR
 sudo rm -rf "$BACKUP"
-sudo systemctl --no-pager --full status hhs-pass190.service
+sudo systemctl --no-pager --full status hhs-pass190.service hhs-pass190-worker.service

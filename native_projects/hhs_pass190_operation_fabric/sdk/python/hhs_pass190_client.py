@@ -5,7 +5,7 @@ import json
 from typing import Any
 from urllib.request import Request, urlopen
 
-OPERATION_IDS = ('system.status', 'python.len', 'python.abs', 'python.sorted', 'list.with_appended', 'dict.get', 'text.join', 'math.gcd', 'pass189.context.decode', 'state.counter.advance', 'workspace.create', 'workspace.get', 'workspace.list', 'workspace.update', 'workspace.archive', 'artifact.register', 'artifact.get', 'artifact.list', 'provider.register', 'provider.get', 'provider.list', 'provider.set_enabled', 'capability.define', 'capability.get', 'capability.list', 'job.submit', 'job.get', 'job.list', 'job.claim', 'job.complete', 'job.fail')
+OPERATION_IDS = ('system.status', 'python.len', 'python.abs', 'python.sorted', 'list.with_appended', 'dict.get', 'text.join', 'math.gcd', 'pass189.context.decode', 'state.counter.advance', 'workspace.create', 'workspace.get', 'workspace.list', 'workspace.update', 'workspace.archive', 'artifact.register', 'artifact.get', 'artifact.list', 'provider.register', 'provider.get', 'provider.list', 'provider.set_enabled', 'capability.define', 'capability.get', 'capability.list', 'job.submit', 'job.get', 'job.list', 'job.claim', 'job.complete', 'job.fail', 'worker.register', 'worker.get', 'worker.list', 'worker.heartbeat', 'worker.set_enabled', 'job.submit_execution', 'job.cancel', 'job.retry', 'job.claim_next', 'job.execute_claimed', 'scheduler.tick')
 
 class HHSClient:
     def __init__(self, base_url: str = "http://127.0.0.1:8190"):
@@ -21,6 +21,7 @@ class HHSClient:
     def integrity(self) -> dict[str, Any]: return self._request("/api/pass190/integrity")
     def arbitration(self) -> dict[str, Any]: return self._request("/api/pass190/arbitration")
     def resource_registry(self) -> dict[str, Any]: return self._request("/api/pass190/resource-registry")
+    def execution_runtime(self) -> dict[str, Any]: return self._request("/api/pass190/execution-runtime")
     def lease_receipts(self, after: int = 0, limit: int = 100) -> dict[str, Any]: return self._request(f"/api/pass190/lease-receipts?after={after}&limit={limit}")
     def events(self, after: int = 0, limit: int = 100) -> dict[str, Any]: return self._request(f"/api/pass190/events?after={after}&limit={limit}")
     def receipts(self, after: int = 0, limit: int = 100) -> dict[str, Any]: return self._request(f"/api/pass190/receipts?after={after}&limit={limit}")
@@ -126,3 +127,35 @@ class HHSClient:
     def job_fail(self, arguments: dict[str, Any] | None = None, **kwargs: Any) -> dict[str, Any]:
         return self.invoke("job.fail", arguments or {}, **kwargs)
 
+    def worker_register(self, arguments: dict[str, Any] | None = None, **kwargs: Any) -> dict[str, Any]:
+        return self.invoke("worker.register", arguments or {}, **kwargs)
+
+    def worker_get(self, arguments: dict[str, Any] | None = None, **kwargs: Any) -> dict[str, Any]:
+        return self.invoke("worker.get", arguments or {}, **kwargs)
+
+    def worker_list(self, arguments: dict[str, Any] | None = None, **kwargs: Any) -> dict[str, Any]:
+        return self.invoke("worker.list", arguments or {}, **kwargs)
+
+    def worker_heartbeat(self, arguments: dict[str, Any] | None = None, **kwargs: Any) -> dict[str, Any]:
+        return self.invoke("worker.heartbeat", arguments or {}, **kwargs)
+
+    def worker_set_enabled(self, arguments: dict[str, Any] | None = None, **kwargs: Any) -> dict[str, Any]:
+        return self.invoke("worker.set_enabled", arguments or {}, **kwargs)
+
+    def job_submit_execution(self, arguments: dict[str, Any] | None = None, **kwargs: Any) -> dict[str, Any]:
+        return self.invoke("job.submit_execution", arguments or {}, **kwargs)
+
+    def job_cancel(self, arguments: dict[str, Any] | None = None, **kwargs: Any) -> dict[str, Any]:
+        return self.invoke("job.cancel", arguments or {}, **kwargs)
+
+    def job_retry(self, arguments: dict[str, Any] | None = None, **kwargs: Any) -> dict[str, Any]:
+        return self.invoke("job.retry", arguments or {}, **kwargs)
+
+    def job_claim_next(self, arguments: dict[str, Any] | None = None, **kwargs: Any) -> dict[str, Any]:
+        return self.invoke("job.claim_next", arguments or {}, **kwargs)
+
+    def job_execute_claimed(self, arguments: dict[str, Any] | None = None, **kwargs: Any) -> dict[str, Any]:
+        return self.invoke("job.execute_claimed", arguments or {}, **kwargs)
+
+    def scheduler_tick(self, arguments: dict[str, Any] | None = None, **kwargs: Any) -> dict[str, Any]:
+        return self.invoke("scheduler.tick", arguments or {}, **kwargs)

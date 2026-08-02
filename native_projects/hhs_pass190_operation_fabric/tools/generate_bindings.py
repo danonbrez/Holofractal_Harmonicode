@@ -9,19 +9,22 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "python"))
 
-from hhs_pass190_iteration6_registry import ITERATION6_CONTRACT, ExpandedOperationRegistry
+from hhs_pass190_iteration7_registry import ITERATION7_CONTRACT, Iteration7OperationRegistry
 
-TARGET = ROOT / "bindings" / "P190_OPERATION_SURFACE_BINDINGS_V2.json"
+TARGET = ROOT / "bindings" / "P190_OPERATION_SURFACE_BINDINGS_V3.json"
 
 
 def generate() -> str:
-    registry = ExpandedOperationRegistry()
-    native_ids = {record.operation_id for record in registry.records[:registry.payload["native_operation_count"]]}
+    registry = Iteration7OperationRegistry()
+    native_count = int(registry.payload["native_operation_count"])
+    native_ids = {record.operation_id for record in registry.records[:native_count]}
+    execution_ids = {record.operation_id for record in registry.records[-int(registry.payload["execution_operation_count"]):]}
     bindings = []
     for record in registry.records:
         operation_id = record.operation_id
         symbol = operation_id.replace(".", "_").replace("-", "_")
         bindings.append({
+            "execution_operation": operation_id in execution_ids,
             "gui_action_id": f"pass190.invoke.{operation_id}",
             "native_available": operation_id in native_ids,
             "operation_id": operation_id,
@@ -32,11 +35,12 @@ def generate() -> str:
         })
     document = {
         "bindings": bindings,
-        "contract": ITERATION6_CONTRACT,
+        "contract": ITERATION7_CONTRACT,
+        "execution_operation_count": registry.payload["execution_operation_count"],
         "governed_operation_count": len(registry.records),
-        "native_operation_count": registry.payload["native_operation_count"],
+        "native_operation_count": native_count,
         "parent_contract": registry.payload["parent_contract"],
-        "schema": "P190_OPERATION_SURFACE_BINDINGS_V2",
+        "schema": "P190_OPERATION_SURFACE_BINDINGS_V3",
     }
     return json.dumps(document, separators=(",", ":"), sort_keys=True) + "\n"
 
@@ -48,7 +52,7 @@ def main() -> int:
     content = generate()
     if args.check:
         if not TARGET.exists() or TARGET.read_text(encoding="utf-8") != content:
-            raise SystemExit("generated Iteration 6 bindings are stale")
+            raise SystemExit("generated Iteration 7 bindings are stale")
     else:
         TARGET.parent.mkdir(parents=True, exist_ok=True)
         TARGET.write_text(content, encoding="utf-8")

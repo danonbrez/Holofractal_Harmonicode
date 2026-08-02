@@ -1,7 +1,8 @@
 [Unit]
-Description=HHS Pass 190 Iteration 7 Durable Execution Authority
-After=network-online.target
+Description=HHS Pass 190 Iteration 7 Durable Worker
+After=network-online.target hhs-pass190.service
 Wants=network-online.target
+Requires=hhs-pass190.service
 
 [Service]
 Type=simple
@@ -10,7 +11,7 @@ Group=hhs
 WorkingDirectory=/opt/hhs/pass190-operation-fabric
 EnvironmentFile=/etc/hhs/pass190.env
 Environment=PYTHONPATH=/opt/hhs/pass190-operation-fabric/python:/opt/hhs/pass190-operation-fabric/server:/opt/hhs/pass190-operation-fabric/worker
-ExecStart=/usr/bin/python3 server/hhs_pass190_iteration7_server.py --host 127.0.0.1 --port 8190 --database /var/lib/hhs/pass190-authority.sqlite3
+ExecStart=/usr/bin/python3 worker/hhs_pass190_iteration7_worker.py --database /var/lib/hhs/pass190-authority.sqlite3 --worker-id hhs-worker-%H --labels local,digitalocean --poll-ms 250
 Restart=on-failure
 RestartSec=2
 UMask=0077
