@@ -8,9 +8,9 @@ from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
 
 from hhs_backend.api.runtime_routes import _contract_response, io_gateway, runtime_controller
-from hhs_backend.runtime.hhs_pass199_distributed_calibration_fabric_v1 import (
-    Pass199CalibrationError,
-    Pass199DistributedCalibrationFabric,
+from hhs_backend.runtime.hhs_pass199_distributed_calibration_fabric_v1 import Pass199CalibrationError
+from hhs_backend.runtime.hhs_pass199_distributed_calibration_runtime_v1 import (
+    PASS199_DISTRIBUTED_CALIBRATION_RUNTIME,
 )
 
 router = APIRouter(
@@ -18,7 +18,7 @@ router = APIRouter(
     tags=["runtime", "pass190", "pass198", "pass199", "vm81", "hash72", "durable-worker", "calibration"],
 )
 
-PASS199_DISTRIBUTED_CALIBRATION_FABRIC = Pass199DistributedCalibrationFabric()
+PASS199_DISTRIBUTED_CALIBRATION_FABRIC = PASS199_DISTRIBUTED_CALIBRATION_RUNTIME
 
 
 class DistributedCalibrationRunRequest(BaseModel):
