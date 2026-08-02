@@ -1,0 +1,253 @@
+{
+  "classification": "HHS_PASS_191_DYADIC_QUARTIC_PHASE_LATTICE_FORMAL_DECISION_VERIFIED",
+  "formal_outcome_ledger_hash72": "A!qhhIhc>U61rVL1ieh2Q6SI+Xs+B7/6FTDbd7OAP!PKOHhwHB+HHwY5/M3z7wtHJMsqgIyI",
+  "hypothesis_decisions": {
+    "COLLATZ_CONJECTURE": {
+      "controlling_obligation": "DQPL-COLLATZ-GLOBAL",
+      "next_admissible_operations": [
+        "PROVE_WELL_FOUNDED_DESCENT",
+        "PRODUCE_NONCONVERGENT_ORBIT_CERTIFICATE"
+      ],
+      "scope": "CURRENT_REGISTERED_RULE_GRAPH",
+      "status": "OBSTRUCTED"
+    },
+    "RIEMANN_HYPOTHESIS": {
+      "controlling_obligation": "DQPL-RH-TRANSFER",
+      "next_admissible_operations": [
+        "PROVE_BRIDGE_LEMMAS",
+        "PRODUCE_EXACT_OFF_AXIS_ZERO_CERTIFICATE"
+      ],
+      "scope": "CURRENT_REGISTERED_RULE_GRAPH",
+      "status": "OBSTRUCTED"
+    }
+  },
+  "outcome_counts": {
+    "FALSIFIED": 3,
+    "OBSTRUCTED": 3,
+    "PROVED": 4
+  },
+  "outcomes": [
+    {
+      "certificate": {
+        "equation": "2^(0+1)=2",
+        "initial_state": {
+          "dyadic_level": 0,
+          "magnitude": "1",
+          "quartic_phase": 0
+        },
+        "operator": "square",
+        "proof_kind": "EXACT_STATE_TRANSITION",
+        "result_state": {
+          "dyadic_level": 1,
+          "magnitude": "2",
+          "quartic_phase": 1
+        }
+      },
+      "dependencies": [],
+      "obligation_id": "DQPL-UNIT",
+      "outcome_hash72": "TsVqzL8Pul)bfcsVB-AkZ>eQzu>kXdv2IsFrMnl1)/ikHz)vYf*sfRfZqq?9Ey1!/29psfwQ",
+      "proposition": "PHASE_SQUARE(1,0) advances the dyadic magnitude projection from 1 to 2.",
+      "scope": "CURRENT_REGISTERED_RULE_GRAPH",
+      "status": "PROVED"
+    },
+    {
+      "certificate": {
+        "closure_equation": "(0+4) mod 4 = 0",
+        "dyadic_levels": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "magnitudes": [
+          "1",
+          "2",
+          "4",
+          "8",
+          "16"
+        ],
+        "proof_kind": "FINITE_EXACT_TRACE",
+        "quartic_phases": [
+          0,
+          1,
+          2,
+          3,
+          0
+        ]
+      },
+      "dependencies": [],
+      "obligation_id": "DQPL-QUARTIC",
+      "outcome_hash72": "M7zxZ8tuQ*?zn<iPgntVzE9O<(+gFKh2qaaL87(ucbgm(ut2m/aO*75qGE/?hzw-*49T7hgo",
+      "proposition": "Four phase advances return quartic phase to zero while advancing dyadic magnitude 1→2→4→8→16.",
+      "scope": "CURRENT_REGISTERED_RULE_GRAPH",
+      "status": "PROVED"
+    },
+    {
+      "certificate": {
+        "counterexample": "t=0",
+        "derived_identity": "exp(i*pi*(1/2+i*t)) = i*exp(-pi*t)",
+        "equality": false,
+        "left": {
+          "exact_value": "i",
+          "expression": "exp(i*pi/2)"
+        },
+        "proof_kind": "EXACT_COUNTEREXAMPLE",
+        "right": {
+          "exact_value": "-1",
+          "expression": "-exp(0)"
+        }
+      },
+      "dependencies": [],
+      "obligation_id": "DQPL-RESONANCE-LITERAL",
+      "outcome_hash72": "c4(!EbcRT99SR*DO!>Mv22XWrud(NejTj?e)8nC9Y7(hAQGL0cV94*f*HSV9fJ3X3-nDMq34",
+      "proposition": "exp(i*pi*(1/2+i*t)) = -exp(-pi*t) for all real t.",
+      "scope": "CURRENT_REGISTERED_RULE_GRAPH",
+      "status": "FALSIFIED"
+    },
+    {
+      "certificate": {
+        "difference": "1",
+        "equality": false,
+        "identity": "i^2=-1",
+        "left_value": "1/2",
+        "middle_value": "-1/2",
+        "proof_kind": "EXACT_COUNTEREXAMPLE",
+        "required_extension": "A separately defined phase-equivalence relation may be tested without identifying it with equality."
+      },
+      "dependencies": [],
+      "obligation_id": "DQPL-CRITICAL-AXIS-LITERAL",
+      "outcome_hash72": "pFCla93gulnjfYyOyHP70I7E8W)2<e7xKkkvzBGuN!vIrd(cLnDtRs(NnQ!Hw<-Tfm6rh)CQ",
+      "proposition": "1/2 = i^2/2 = -1/2 under the equality relation.",
+      "scope": "CURRENT_REGISTERED_RULE_GRAPH",
+      "status": "FALSIFIED"
+    },
+    {
+      "certificate": {
+        "base_cases": {
+          "F(0)": 0,
+          "F(1)": 1
+        },
+        "induction_rule": "F(n+2):=F(n+1)+F(n)",
+        "proof_kind": "DEFINITIONAL_INDUCTION",
+        "witness_n_10": "F(12)=144=89+55"
+      },
+      "dependencies": [],
+      "obligation_id": "DQPL-FIBONACCI-RECURRENCE",
+      "outcome_hash72": "NLH/+r?ekL+elgiAaafY*4wPDXCpGQ?(FJb+gtEVfr6AxHm4(77evuGPvc8BrtfVztv1s6LO",
+      "proposition": "F(n+2)=F(n+1)+F(n) for the recursively defined Fibonacci sequence.",
+      "scope": "CURRENT_REGISTERED_RULE_GRAPH",
+      "status": "PROVED"
+    },
+    {
+      "certificate": {
+        "counterexample": "n=1",
+        "equality": false,
+        "left": "F(3)=2",
+        "proof_kind": "EXACT_COUNTEREXAMPLE",
+        "right": "phi*psi=-1",
+        "root_product": "phi*psi=-1"
+      },
+      "dependencies": [],
+      "obligation_id": "DQPL-FIBONACCI-PRODUCT",
+      "outcome_hash72": "wHVHOquo0GtbbkTrZT-A!WvKfpr2PWhkQAAEqCpi6P?/wzO4xBESuw?YTXPI784h?1F0PPC4",
+      "proposition": "F(n+2)=phi^n*psi^n for all n, where phi and psi are the roots of x^2-x-1.",
+      "scope": "CURRENT_REGISTERED_RULE_GRAPH",
+      "status": "FALSIFIED"
+    },
+    {
+      "certificate": {
+        "conclusion": "rho^4/rho=rho+1",
+        "premises": [
+          "rho^3=rho+1",
+          "rho!=0"
+        ],
+        "proof_kind": "EXACT_ALGEBRAIC_REDUCTION",
+        "steps": [
+          "rho^4/rho=rho^3",
+          "rho^3=rho+1"
+        ]
+      },
+      "dependencies": [],
+      "obligation_id": "DQPL-PLASTIC-CLOSURE",
+      "outcome_hash72": "i/JpR<Z+87GZOvvBZuJ<RBR(vDyv(r-lg5BMOa1uSNoLvIRBce/2oMfD6RMd/?gd7v51UM4B",
+      "proposition": "For nonzero rho satisfying rho^3=rho+1, rho^4/rho=rho+1.",
+      "scope": "CURRENT_REGISTERED_RULE_GRAPH",
+      "status": "PROVED"
+    },
+    {
+      "certificate": {
+        "missing_lemmas": [
+          "COLLATZ_PHASE_MAP_TOTAL",
+          "COLLATZ_PHASE_TRANSITION_HOMOMORPHISM",
+          "WELL_FOUNDED_DESCENT_MEASURE",
+          "DESCENT_IMPLIES_EVENTUAL_ONE"
+        ],
+        "nonmonotone_witness": "7→11",
+        "proof_kind": "MISSING_RULE_GRAPH_PATH",
+        "registered_derivation_path_exists": false,
+        "registered_local_rule": "T(n)=n/2 if even, else (3n+1)/2"
+      },
+      "dependencies": [
+        "COLLATZ_PHASE_MAP_TOTAL",
+        "COLLATZ_PHASE_TRANSITION_HOMOMORPHISM",
+        "WELL_FOUNDED_DESCENT_MEASURE",
+        "DESCENT_IMPLIES_EVENTUAL_ONE"
+      ],
+      "obligation_id": "DQPL-COLLATZ-GLOBAL",
+      "outcome_hash72": "li+(9GCa/PyC12HCxeZJBY5RIed91npgrWrPlJ-3bPpevx-x+PD*8uax8KAvdB78Rg/pBvAd",
+      "proposition": "Quartic phase closure entails convergence of every positive Collatz orbit.",
+      "scope": "CURRENT_REGISTERED_RULE_GRAPH",
+      "status": "OBSTRUCTED"
+    },
+    {
+      "certificate": {
+        "decision_condition": "Add and verify every bridge lemma, or construct an exact off-axis zero certificate accepted by the same map.",
+        "missing_lemmas": [
+          "ZETA_DOMAIN_AND_ANALYTIC_CONTINUATION_ENCODING",
+          "ZETA_ZERO_TO_PHASE_CLOSURE_EQUIVALENCE",
+          "PHASE_MAP_FAITHFULNESS",
+          "OFF_AXIS_ZERO_EXCLUSION_OR_COUNTEREXAMPLE_TRANSFER"
+        ],
+        "proof_kind": "MISSING_RULE_GRAPH_PATH",
+        "registered_axis_fact": "Re(1/2+i*t)=1/2",
+        "registered_derivation_path_exists": false
+      },
+      "dependencies": [
+        "ZETA_DOMAIN_AND_ANALYTIC_CONTINUATION_ENCODING",
+        "ZETA_ZERO_TO_PHASE_CLOSURE_EQUIVALENCE",
+        "PHASE_MAP_FAITHFULNESS",
+        "OFF_AXIS_ZERO_EXCLUSION_OR_COUNTEREXAMPLE_TRANSFER"
+      ],
+      "obligation_id": "DQPL-RH-TRANSFER",
+      "outcome_hash72": "/!CY3tD1RXg?7<AFgVRMUVZ-MiEZrXkZIABi(5q!pIXh1zdUka+2boTFB!i54qKJrJzr66br",
+      "proposition": "Dyadic-quartic phase closure proves or falsifies that every nontrivial zeta zero has real part 1/2.",
+      "scope": "CURRENT_REGISTERED_RULE_GRAPH",
+      "status": "OBSTRUCTED"
+    },
+    {
+      "certificate": {
+        "missing_lemmas": [
+          "LEGENDRE_TO_PHASE_ALIGNMENT_MAP",
+          "MODULAR_PHASE_HALVING_COMPOSITION_LAW",
+          "RECIPROCITY_IF_AND_ONLY_IF_PHASE_COMMUTATIVITY"
+        ],
+        "proof_kind": "MISSING_RULE_GRAPH_PATH",
+        "registered_derivation_path_exists": false,
+        "verified_component": "Bounded Legendre-symbol reciprocity checks are exact."
+      },
+      "dependencies": [
+        "LEGENDRE_TO_PHASE_ALIGNMENT_MAP",
+        "MODULAR_PHASE_HALVING_COMPOSITION_LAW",
+        "RECIPROCITY_IF_AND_ONLY_IF_PHASE_COMMUTATIVITY"
+      ],
+      "obligation_id": "DQPL-QUADRATIC-RECIPROCITY-TRANSFER",
+      "outcome_hash72": "yHUvvrO!nJv55RGFLK/7w6ovf3GT9gCJ2>M>R!00QJs8tuRRv91W1uqv7mTkWpgptAMdTC0S",
+      "proposition": "Quadratic reciprocity is equivalent to phase commutativity under modular phase halving.",
+      "scope": "CURRENT_REGISTERED_RULE_GRAPH",
+      "status": "OBSTRUCTED"
+    }
+  ],
+  "schema": "HHS_PASS_191_FORMAL_OUTCOME_LEDGER_V1",
+  "scope": "CURRENT_REGISTERED_RULE_GRAPH"
+}

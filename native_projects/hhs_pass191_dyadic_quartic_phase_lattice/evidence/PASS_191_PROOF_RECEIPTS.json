@@ -1,0 +1,2429 @@
+{
+  "classification": "HHS_PASS_191_DYADIC_QUARTIC_PHASE_LATTICE_FORMAL_DECISION_VERIFIED",
+  "formal_decision_mode": "PROOF_FALSIFICATION_OBSTRUCTION",
+  "formal_outcome_counts": {
+    "FALSIFIED": 3,
+    "OBSTRUCTED": 3,
+    "PROVED": 4
+  },
+  "formal_outcome_ledger_hash72": "A!qhhIhc>U61rVL1ieh2Q6SI+Xs+B7/6FTDbd7OAP!PKOHhwHB+HHwY5/M3z7wtHJMsqgIyI",
+  "formal_outcomes": [
+    {
+      "certificate": {
+        "equation": "2^(0+1)=2",
+        "initial_state": {
+          "dyadic_level": 0,
+          "magnitude": "1",
+          "quartic_phase": 0
+        },
+        "operator": "square",
+        "proof_kind": "EXACT_STATE_TRANSITION",
+        "result_state": {
+          "dyadic_level": 1,
+          "magnitude": "2",
+          "quartic_phase": 1
+        }
+      },
+      "dependencies": [],
+      "obligation_id": "DQPL-UNIT",
+      "outcome_hash72": "TsVqzL8Pul)bfcsVB-AkZ>eQzu>kXdv2IsFrMnl1)/ikHz)vYf*sfRfZqq?9Ey1!/29psfwQ",
+      "proposition": "PHASE_SQUARE(1,0) advances the dyadic magnitude projection from 1 to 2.",
+      "scope": "CURRENT_REGISTERED_RULE_GRAPH",
+      "status": "PROVED"
+    },
+    {
+      "certificate": {
+        "closure_equation": "(0+4) mod 4 = 0",
+        "dyadic_levels": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "magnitudes": [
+          "1",
+          "2",
+          "4",
+          "8",
+          "16"
+        ],
+        "proof_kind": "FINITE_EXACT_TRACE",
+        "quartic_phases": [
+          0,
+          1,
+          2,
+          3,
+          0
+        ]
+      },
+      "dependencies": [],
+      "obligation_id": "DQPL-QUARTIC",
+      "outcome_hash72": "M7zxZ8tuQ*?zn<iPgntVzE9O<(+gFKh2qaaL87(ucbgm(ut2m/aO*75qGE/?hzw-*49T7hgo",
+      "proposition": "Four phase advances return quartic phase to zero while advancing dyadic magnitude 1→2→4→8→16.",
+      "scope": "CURRENT_REGISTERED_RULE_GRAPH",
+      "status": "PROVED"
+    },
+    {
+      "certificate": {
+        "counterexample": "t=0",
+        "derived_identity": "exp(i*pi*(1/2+i*t)) = i*exp(-pi*t)",
+        "equality": false,
+        "left": {
+          "exact_value": "i",
+          "expression": "exp(i*pi/2)"
+        },
+        "proof_kind": "EXACT_COUNTEREXAMPLE",
+        "right": {
+          "exact_value": "-1",
+          "expression": "-exp(0)"
+        }
+      },
+      "dependencies": [],
+      "obligation_id": "DQPL-RESONANCE-LITERAL",
+      "outcome_hash72": "c4(!EbcRT99SR*DO!>Mv22XWrud(NejTj?e)8nC9Y7(hAQGL0cV94*f*HSV9fJ3X3-nDMq34",
+      "proposition": "exp(i*pi*(1/2+i*t)) = -exp(-pi*t) for all real t.",
+      "scope": "CURRENT_REGISTERED_RULE_GRAPH",
+      "status": "FALSIFIED"
+    },
+    {
+      "certificate": {
+        "difference": "1",
+        "equality": false,
+        "identity": "i^2=-1",
+        "left_value": "1/2",
+        "middle_value": "-1/2",
+        "proof_kind": "EXACT_COUNTEREXAMPLE",
+        "required_extension": "A separately defined phase-equivalence relation may be tested without identifying it with equality."
+      },
+      "dependencies": [],
+      "obligation_id": "DQPL-CRITICAL-AXIS-LITERAL",
+      "outcome_hash72": "pFCla93gulnjfYyOyHP70I7E8W)2<e7xKkkvzBGuN!vIrd(cLnDtRs(NnQ!Hw<-Tfm6rh)CQ",
+      "proposition": "1/2 = i^2/2 = -1/2 under the equality relation.",
+      "scope": "CURRENT_REGISTERED_RULE_GRAPH",
+      "status": "FALSIFIED"
+    },
+    {
+      "certificate": {
+        "base_cases": {
+          "F(0)": 0,
+          "F(1)": 1
+        },
+        "induction_rule": "F(n+2):=F(n+1)+F(n)",
+        "proof_kind": "DEFINITIONAL_INDUCTION",
+        "witness_n_10": "F(12)=144=89+55"
+      },
+      "dependencies": [],
+      "obligation_id": "DQPL-FIBONACCI-RECURRENCE",
+      "outcome_hash72": "NLH/+r?ekL+elgiAaafY*4wPDXCpGQ?(FJb+gtEVfr6AxHm4(77evuGPvc8BrtfVztv1s6LO",
+      "proposition": "F(n+2)=F(n+1)+F(n) for the recursively defined Fibonacci sequence.",
+      "scope": "CURRENT_REGISTERED_RULE_GRAPH",
+      "status": "PROVED"
+    },
+    {
+      "certificate": {
+        "counterexample": "n=1",
+        "equality": false,
+        "left": "F(3)=2",
+        "proof_kind": "EXACT_COUNTEREXAMPLE",
+        "right": "phi*psi=-1",
+        "root_product": "phi*psi=-1"
+      },
+      "dependencies": [],
+      "obligation_id": "DQPL-FIBONACCI-PRODUCT",
+      "outcome_hash72": "wHVHOquo0GtbbkTrZT-A!WvKfpr2PWhkQAAEqCpi6P?/wzO4xBESuw?YTXPI784h?1F0PPC4",
+      "proposition": "F(n+2)=phi^n*psi^n for all n, where phi and psi are the roots of x^2-x-1.",
+      "scope": "CURRENT_REGISTERED_RULE_GRAPH",
+      "status": "FALSIFIED"
+    },
+    {
+      "certificate": {
+        "conclusion": "rho^4/rho=rho+1",
+        "premises": [
+          "rho^3=rho+1",
+          "rho!=0"
+        ],
+        "proof_kind": "EXACT_ALGEBRAIC_REDUCTION",
+        "steps": [
+          "rho^4/rho=rho^3",
+          "rho^3=rho+1"
+        ]
+      },
+      "dependencies": [],
+      "obligation_id": "DQPL-PLASTIC-CLOSURE",
+      "outcome_hash72": "i/JpR<Z+87GZOvvBZuJ<RBR(vDyv(r-lg5BMOa1uSNoLvIRBce/2oMfD6RMd/?gd7v51UM4B",
+      "proposition": "For nonzero rho satisfying rho^3=rho+1, rho^4/rho=rho+1.",
+      "scope": "CURRENT_REGISTERED_RULE_GRAPH",
+      "status": "PROVED"
+    },
+    {
+      "certificate": {
+        "missing_lemmas": [
+          "COLLATZ_PHASE_MAP_TOTAL",
+          "COLLATZ_PHASE_TRANSITION_HOMOMORPHISM",
+          "WELL_FOUNDED_DESCENT_MEASURE",
+          "DESCENT_IMPLIES_EVENTUAL_ONE"
+        ],
+        "nonmonotone_witness": "7→11",
+        "proof_kind": "MISSING_RULE_GRAPH_PATH",
+        "registered_derivation_path_exists": false,
+        "registered_local_rule": "T(n)=n/2 if even, else (3n+1)/2"
+      },
+      "dependencies": [
+        "COLLATZ_PHASE_MAP_TOTAL",
+        "COLLATZ_PHASE_TRANSITION_HOMOMORPHISM",
+        "WELL_FOUNDED_DESCENT_MEASURE",
+        "DESCENT_IMPLIES_EVENTUAL_ONE"
+      ],
+      "obligation_id": "DQPL-COLLATZ-GLOBAL",
+      "outcome_hash72": "li+(9GCa/PyC12HCxeZJBY5RIed91npgrWrPlJ-3bPpevx-x+PD*8uax8KAvdB78Rg/pBvAd",
+      "proposition": "Quartic phase closure entails convergence of every positive Collatz orbit.",
+      "scope": "CURRENT_REGISTERED_RULE_GRAPH",
+      "status": "OBSTRUCTED"
+    },
+    {
+      "certificate": {
+        "decision_condition": "Add and verify every bridge lemma, or construct an exact off-axis zero certificate accepted by the same map.",
+        "missing_lemmas": [
+          "ZETA_DOMAIN_AND_ANALYTIC_CONTINUATION_ENCODING",
+          "ZETA_ZERO_TO_PHASE_CLOSURE_EQUIVALENCE",
+          "PHASE_MAP_FAITHFULNESS",
+          "OFF_AXIS_ZERO_EXCLUSION_OR_COUNTEREXAMPLE_TRANSFER"
+        ],
+        "proof_kind": "MISSING_RULE_GRAPH_PATH",
+        "registered_axis_fact": "Re(1/2+i*t)=1/2",
+        "registered_derivation_path_exists": false
+      },
+      "dependencies": [
+        "ZETA_DOMAIN_AND_ANALYTIC_CONTINUATION_ENCODING",
+        "ZETA_ZERO_TO_PHASE_CLOSURE_EQUIVALENCE",
+        "PHASE_MAP_FAITHFULNESS",
+        "OFF_AXIS_ZERO_EXCLUSION_OR_COUNTEREXAMPLE_TRANSFER"
+      ],
+      "obligation_id": "DQPL-RH-TRANSFER",
+      "outcome_hash72": "/!CY3tD1RXg?7<AFgVRMUVZ-MiEZrXkZIABi(5q!pIXh1zdUka+2boTFB!i54qKJrJzr66br",
+      "proposition": "Dyadic-quartic phase closure proves or falsifies that every nontrivial zeta zero has real part 1/2.",
+      "scope": "CURRENT_REGISTERED_RULE_GRAPH",
+      "status": "OBSTRUCTED"
+    },
+    {
+      "certificate": {
+        "missing_lemmas": [
+          "LEGENDRE_TO_PHASE_ALIGNMENT_MAP",
+          "MODULAR_PHASE_HALVING_COMPOSITION_LAW",
+          "RECIPROCITY_IF_AND_ONLY_IF_PHASE_COMMUTATIVITY"
+        ],
+        "proof_kind": "MISSING_RULE_GRAPH_PATH",
+        "registered_derivation_path_exists": false,
+        "verified_component": "Bounded Legendre-symbol reciprocity checks are exact."
+      },
+      "dependencies": [
+        "LEGENDRE_TO_PHASE_ALIGNMENT_MAP",
+        "MODULAR_PHASE_HALVING_COMPOSITION_LAW",
+        "RECIPROCITY_IF_AND_ONLY_IF_PHASE_COMMUTATIVITY"
+      ],
+      "obligation_id": "DQPL-QUADRATIC-RECIPROCITY-TRANSFER",
+      "outcome_hash72": "yHUvvrO!nJv55RGFLK/7w6ovf3GT9gCJ2>M>R!00QJs8tuRRv91W1uqv7mTkWpgptAMdTC0S",
+      "proposition": "Quadratic reciprocity is equivalent to phase commutativity under modular phase halving.",
+      "scope": "CURRENT_REGISTERED_RULE_GRAPH",
+      "status": "OBSTRUCTED"
+    }
+  ],
+  "hypothesis_decisions": {
+    "COLLATZ_CONJECTURE": {
+      "controlling_obligation": "DQPL-COLLATZ-GLOBAL",
+      "next_admissible_operations": [
+        "PROVE_WELL_FOUNDED_DESCENT",
+        "PRODUCE_NONCONVERGENT_ORBIT_CERTIFICATE"
+      ],
+      "scope": "CURRENT_REGISTERED_RULE_GRAPH",
+      "status": "OBSTRUCTED"
+    },
+    "RIEMANN_HYPOTHESIS": {
+      "controlling_obligation": "DQPL-RH-TRANSFER",
+      "next_admissible_operations": [
+        "PROVE_BRIDGE_LEMMAS",
+        "PRODUCE_EXACT_OFF_AXIS_ZERO_CERTIFICATE"
+      ],
+      "scope": "CURRENT_REGISTERED_RULE_GRAPH",
+      "status": "OBSTRUCTED"
+    }
+  },
+  "macro_report": {
+    "calls": [
+      {
+        "expanded_symbolic_commit": {
+          "form_type": "EQUALITY_CHAIN",
+          "normalized_source": "(DYADIC_LEVEL((1))+1==QUARTIC_PHASE((0)+1))==2",
+          "ok": true,
+          "receipt": {
+            "gate_status": "LOCKED",
+            "input_hash72": "H72N-025f358adb76a16ec7",
+            "integrity_hash72": "H72N-690f39da3932cce67e",
+            "locked": true,
+            "operation": "SUM",
+            "operation_hash72": "H72N-15140432141bc37597",
+            "parent_receipt_hash72": "H72N-8eeb1dee2e11d79fa0",
+            "phase": 17,
+            "post_state_hash72": "H72N-a54eb74fe8a349ea64",
+            "pre_state_hash72": "H72N-7196d1bcde349e5b9f",
+            "quarantine": false,
+            "reason": "",
+            "receipt_hash72": "H72N-57b6e9a2971d6663c1",
+            "witness_hash72": "H72N-b70ea7d61227077d69"
+          },
+          "source": "(DYADIC_LEVEL((1))+1==QUARTIC_PHASE((0)+1))==2",
+          "source_hash72": "H72N-6f9fe5fd5bb6bc0dda",
+          "structure": {
+            "contains_float_literal": false,
+            "definition_count": 0,
+            "equality_count": 2,
+            "form": "EQUALITY_CHAIN",
+            "parentheses_balanced": true,
+            "semantic_policy": "SYNTAX_PRESERVING_NO_IMPLICIT_TRUTH",
+            "token_count": 21,
+            "tokens": [
+              "(",
+              "DYADIC_LEVEL",
+              "(",
+              "(",
+              "1",
+              ")",
+              ")",
+              "+",
+              "1",
+              "==",
+              "QUARTIC_PHASE",
+              "(",
+              "(",
+              "0",
+              ")",
+              "+",
+              "1",
+              ")",
+              ")",
+              "==",
+              "2"
+            ],
+            "truth_evaluated": false
+          },
+          "symbolic_hash72": "H72N-4bc48637e7e89fb877"
+        },
+        "macro_call": {
+          "args": [],
+          "bindings": {},
+          "error": "",
+          "expanded_source": "(DYADIC_LEVEL((1))+1==QUARTIC_PHASE((0)+1))==2",
+          "expansion_hash72": "H72N-371a2586770b83b1a4",
+          "macro_hash72": "H72N-8aa94fb954e3fb80e5",
+          "name": "DYADIC_UNIT",
+          "nested_expansions": [
+            {
+              "args": [
+                "1",
+                "0"
+              ],
+              "bindings": {
+                "p": "0",
+                "x": "1"
+              },
+              "error": "",
+              "expanded_source": "DYADIC_LEVEL((1))+1==QUARTIC_PHASE((0)+1)",
+              "expansion_hash72": "H72N-fad9413689f7c51994",
+              "macro_hash72": "H72N-79645a09eacef1aab7",
+              "name": "PHASE_SQUARE",
+              "nested_expansions": [],
+              "ok": true,
+              "raw_body": "DYADIC_LEVEL(x)+1==QUARTIC_PHASE(p+1)",
+              "receipt": null
+            }
+          ],
+          "ok": true,
+          "raw_body": "PHASE_SQUARE(1,0)==2",
+          "receipt": {
+            "gate_status": "LOCKED",
+            "input_hash72": "H72N-59640bcddfd68ad528",
+            "integrity_hash72": "H72N-3b5f750a2836fbb096",
+            "locked": true,
+            "operation": "SUM",
+            "operation_hash72": "H72N-733f31db6a74ee261e",
+            "parent_receipt_hash72": "H72N-8d9a5087fa24b0e13f",
+            "phase": 16,
+            "post_state_hash72": "H72N-80dfcbecc2adcace0b",
+            "pre_state_hash72": "H72N-2ea94ac925fbffc187",
+            "quarantine": false,
+            "reason": "",
+            "receipt_hash72": "H72N-8eeb1dee2e11d79fa0",
+            "witness_hash72": "H72N-8935fdab4b92738141"
+          }
+        },
+        "ok": true
+      },
+      {
+        "expanded_symbolic_commit": {
+          "form_type": "EQUALITY_CHAIN",
+          "normalized_source": "I^4==1==16/16",
+          "ok": true,
+          "receipt": {
+            "gate_status": "LOCKED",
+            "input_hash72": "H72N-e8a052636efbc0b852",
+            "integrity_hash72": "H72N-9671e3ef93ff491c95",
+            "locked": true,
+            "operation": "SUM",
+            "operation_hash72": "H72N-9d8995a637924ab9d6",
+            "parent_receipt_hash72": "H72N-bca36860081852437e",
+            "phase": 19,
+            "post_state_hash72": "H72N-c1fb65fe2552d6c89b",
+            "pre_state_hash72": "H72N-8ff9e4924fcf5749f2",
+            "quarantine": false,
+            "reason": "",
+            "receipt_hash72": "H72N-21d8a57728efa77a7b",
+            "witness_hash72": "H72N-731fa5281b2450aa9d"
+          },
+          "source": "I^4==1==16/16",
+          "source_hash72": "H72N-0f42a1e2146a3dfd5c",
+          "structure": {
+            "contains_float_literal": false,
+            "definition_count": 0,
+            "equality_count": 2,
+            "form": "EQUALITY_CHAIN",
+            "parentheses_balanced": true,
+            "semantic_policy": "SYNTAX_PRESERVING_NO_IMPLICIT_TRUTH",
+            "token_count": 7,
+            "tokens": [
+              "I",
+              "^",
+              "4",
+              "==",
+              "1",
+              "==",
+              "16/16"
+            ],
+            "truth_evaluated": false
+          },
+          "symbolic_hash72": "H72N-bb37c4cd633566ce05"
+        },
+        "macro_call": {
+          "args": [],
+          "bindings": {},
+          "error": "",
+          "expanded_source": "I^4==1==16/16",
+          "expansion_hash72": "H72N-06c54691652f2c8c42",
+          "macro_hash72": "H72N-27c7c73764c8a30d14",
+          "name": "QUARTIC_CYCLE",
+          "nested_expansions": [],
+          "ok": true,
+          "raw_body": "I^4==1==16/16",
+          "receipt": {
+            "gate_status": "LOCKED",
+            "input_hash72": "H72N-72d52e7f1b64bed9c0",
+            "integrity_hash72": "H72N-2d529c52d25632d80c",
+            "locked": true,
+            "operation": "SUM",
+            "operation_hash72": "H72N-4286ed9897e79e5fbc",
+            "parent_receipt_hash72": "H72N-57b6e9a2971d6663c1",
+            "phase": 18,
+            "post_state_hash72": "H72N-e9c138f098194c0da4",
+            "pre_state_hash72": "H72N-55a6da7e577a8930e3",
+            "quarantine": false,
+            "reason": "",
+            "receipt_hash72": "H72N-bca36860081852437e",
+            "witness_hash72": "H72N-085136d18cdd697117"
+          }
+        },
+        "ok": true
+      },
+      {
+        "expanded_symbolic_commit": {
+          "form_type": "EQUALITY_CHAIN",
+          "normalized_source": "RE(1/2+I*(141347/10000))==1/2",
+          "ok": true,
+          "receipt": {
+            "gate_status": "LOCKED",
+            "input_hash72": "H72N-61dce94628ffe8516d",
+            "integrity_hash72": "H72N-e2d65b24834225f3cc",
+            "locked": true,
+            "operation": "SUM",
+            "operation_hash72": "H72N-593640abe6b8aac643",
+            "parent_receipt_hash72": "H72N-92aded27c39ca2bec4",
+            "phase": 21,
+            "post_state_hash72": "H72N-ee9b57b5bfa2921daa",
+            "pre_state_hash72": "H72N-f4afec24801010b6a4",
+            "quarantine": false,
+            "reason": "",
+            "receipt_hash72": "H72N-1303c297cedcee9b57",
+            "witness_hash72": "H72N-0c0ca3f8b0eff8abd0"
+          },
+          "source": "RE(1/2+I*(141347/10000))==1/2",
+          "source_hash72": "H72N-2ed332444af376d06b",
+          "structure": {
+            "contains_float_literal": false,
+            "definition_count": 0,
+            "equality_count": 1,
+            "form": "EQUALITY_CHAIN",
+            "parentheses_balanced": true,
+            "semantic_policy": "SYNTAX_PRESERVING_NO_IMPLICIT_TRUTH",
+            "token_count": 12,
+            "tokens": [
+              "RE",
+              "(",
+              "1/2",
+              "+",
+              "I",
+              "*",
+              "(",
+              "141347/10000",
+              ")",
+              ")",
+              "==",
+              "1/2"
+            ],
+            "truth_evaluated": false
+          },
+          "symbolic_hash72": "H72N-986d0e6f6db118c0c9"
+        },
+        "macro_call": {
+          "args": [
+            "141347/10000"
+          ],
+          "bindings": {
+            "t": "141347/10000"
+          },
+          "error": "",
+          "expanded_source": "RE(1/2+I*(141347/10000))==1/2",
+          "expansion_hash72": "H72N-b5b5581085e6884ed9",
+          "macro_hash72": "H72N-12c4c9ec14a2640cac",
+          "name": "CRITICAL_AXIS",
+          "nested_expansions": [],
+          "ok": true,
+          "raw_body": "RE(1/2+I*t)==1/2",
+          "receipt": {
+            "gate_status": "LOCKED",
+            "input_hash72": "H72N-181dcde94445837f91",
+            "integrity_hash72": "H72N-b04d0bcf58f0e23781",
+            "locked": true,
+            "operation": "SUM",
+            "operation_hash72": "H72N-b7b8bc386c2dcd5002",
+            "parent_receipt_hash72": "H72N-21d8a57728efa77a7b",
+            "phase": 20,
+            "post_state_hash72": "H72N-f7bcf3349fa01849ab",
+            "pre_state_hash72": "H72N-95f61961ee984a3707",
+            "quarantine": false,
+            "reason": "",
+            "receipt_hash72": "H72N-92aded27c39ca2bec4",
+            "witness_hash72": "H72N-8b86cb6d741e463073"
+          }
+        },
+        "ok": true
+      },
+      {
+        "expanded_symbolic_commit": {
+          "form_type": "EQUALITY_CHAIN",
+          "normalized_source": "E^(I*Pi*(1/2+I*(141347/10000)))==I*E^(-Pi*(141347/10000))",
+          "ok": true,
+          "receipt": {
+            "gate_status": "LOCKED",
+            "input_hash72": "H72N-0a625f5ca9e50f73a6",
+            "integrity_hash72": "H72N-632afc5f62b1efaeb6",
+            "locked": true,
+            "operation": "SUM",
+            "operation_hash72": "H72N-f86f8b991e8ec5c996",
+            "parent_receipt_hash72": "H72N-341a35b1bc43c68dac",
+            "phase": 23,
+            "post_state_hash72": "H72N-6f8e6902da1beea630",
+            "pre_state_hash72": "H72N-0ccca85d696cddf70c",
+            "quarantine": false,
+            "reason": "",
+            "receipt_hash72": "H72N-8cfc3663d738ad09c4",
+            "witness_hash72": "H72N-dd7eb72805df04a339"
+          },
+          "source": "E^(I*Pi*(1/2+I*(141347/10000)))==I*E^(-Pi*(141347/10000))",
+          "source_hash72": "H72N-ce1dfbb4cdbe37cfa0",
+          "structure": {
+            "contains_float_literal": false,
+            "definition_count": 0,
+            "equality_count": 1,
+            "form": "EQUALITY_CHAIN",
+            "parentheses_balanced": true,
+            "semantic_policy": "SYNTAX_PRESERVING_NO_IMPLICIT_TRUTH",
+            "token_count": 30,
+            "tokens": [
+              "E",
+              "^",
+              "(",
+              "I",
+              "*",
+              "Pi",
+              "*",
+              "(",
+              "1/2",
+              "+",
+              "I",
+              "*",
+              "(",
+              "141347/10000",
+              ")",
+              ")",
+              ")",
+              "==",
+              "I",
+              "*",
+              "E",
+              "^",
+              "(",
+              "-",
+              "Pi",
+              "*",
+              "(",
+              "141347/10000",
+              ")",
+              ")"
+            ],
+            "truth_evaluated": false
+          },
+          "symbolic_hash72": "H72N-f9034addd9f19b62d2"
+        },
+        "macro_call": {
+          "args": [
+            "141347/10000"
+          ],
+          "bindings": {
+            "t": "141347/10000"
+          },
+          "error": "",
+          "expanded_source": "E^(I*Pi*(1/2+I*(141347/10000)))==I*E^(-Pi*(141347/10000))",
+          "expansion_hash72": "H72N-16d309d6b5d271ebf6",
+          "macro_hash72": "H72N-aae78711418a930590",
+          "name": "RESONANCE",
+          "nested_expansions": [],
+          "ok": true,
+          "raw_body": "E^(I*Pi*(1/2+I*t))==I*E^(-Pi*t)",
+          "receipt": {
+            "gate_status": "LOCKED",
+            "input_hash72": "H72N-850209823cee583a75",
+            "integrity_hash72": "H72N-6f09c176977c7431f6",
+            "locked": true,
+            "operation": "SUM",
+            "operation_hash72": "H72N-a1e6070444058803fd",
+            "parent_receipt_hash72": "H72N-1303c297cedcee9b57",
+            "phase": 22,
+            "post_state_hash72": "H72N-4224349088acb2e483",
+            "pre_state_hash72": "H72N-8da82458beff388e79",
+            "quarantine": false,
+            "reason": "",
+            "receipt_hash72": "H72N-341a35b1bc43c68dac",
+            "witness_hash72": "H72N-076561e19a8ce7325f"
+          }
+        },
+        "ok": true
+      },
+      {
+        "expanded_symbolic_commit": {
+          "form_type": "EQUALITY_CHAIN",
+          "normalized_source": "F((10)+2)==F((10)+1)+F((10))",
+          "ok": true,
+          "receipt": {
+            "gate_status": "LOCKED",
+            "input_hash72": "H72N-5fdad2832fbfbe3c6d",
+            "integrity_hash72": "H72N-03259be823126f4cda",
+            "locked": true,
+            "operation": "SUM",
+            "operation_hash72": "H72N-c2b5fb2f0c87afdf63",
+            "parent_receipt_hash72": "H72N-b0fe2fdb27c7806d76",
+            "phase": 25,
+            "post_state_hash72": "H72N-d2e4eca883749eb819",
+            "pre_state_hash72": "H72N-50ff9d695449aa2b8e",
+            "quarantine": false,
+            "reason": "",
+            "receipt_hash72": "H72N-d207f242d80593832a",
+            "witness_hash72": "H72N-e6140ff31aeb327069"
+          },
+          "source": "F((10)+2)==F((10)+1)+F((10))",
+          "source_hash72": "H72N-71e77c43ef887d5e8f",
+          "structure": {
+            "contains_float_literal": false,
+            "definition_count": 0,
+            "equality_count": 1,
+            "form": "EQUALITY_CHAIN",
+            "parentheses_balanced": true,
+            "semantic_policy": "SYNTAX_PRESERVING_NO_IMPLICIT_TRUTH",
+            "token_count": 24,
+            "tokens": [
+              "F",
+              "(",
+              "(",
+              "10",
+              ")",
+              "+",
+              "2",
+              ")",
+              "==",
+              "F",
+              "(",
+              "(",
+              "10",
+              ")",
+              "+",
+              "1",
+              ")",
+              "+",
+              "F",
+              "(",
+              "(",
+              "10",
+              ")",
+              ")"
+            ],
+            "truth_evaluated": false
+          },
+          "symbolic_hash72": "H72N-56377b40e30cc2eefd"
+        },
+        "macro_call": {
+          "args": [
+            "10"
+          ],
+          "bindings": {
+            "n": "10"
+          },
+          "error": "",
+          "expanded_source": "F((10)+2)==F((10)+1)+F((10))",
+          "expansion_hash72": "H72N-ad5951e3008b6b06ee",
+          "macro_hash72": "H72N-5be43b2f728d3d48f5",
+          "name": "FIBONACCI_PHASE",
+          "nested_expansions": [],
+          "ok": true,
+          "raw_body": "F(n+2)==F(n+1)+F(n)",
+          "receipt": {
+            "gate_status": "LOCKED",
+            "input_hash72": "H72N-b0281a7f2ea0e887d5",
+            "integrity_hash72": "H72N-87dbffd61d17c21d95",
+            "locked": true,
+            "operation": "SUM",
+            "operation_hash72": "H72N-8d6120afa4f9efb18c",
+            "parent_receipt_hash72": "H72N-8cfc3663d738ad09c4",
+            "phase": 24,
+            "post_state_hash72": "H72N-444286e767564ba6dd",
+            "pre_state_hash72": "H72N-5c0534991a224c7e76",
+            "quarantine": false,
+            "reason": "",
+            "receipt_hash72": "H72N-b0fe2fdb27c7806d76",
+            "witness_hash72": "H72N-0962830f8245e5280b"
+          }
+        },
+        "ok": true
+      },
+      {
+        "expanded_symbolic_commit": {
+          "form_type": "EQUALITY_CHAIN",
+          "normalized_source": "phi^2==phi+1",
+          "ok": true,
+          "receipt": {
+            "gate_status": "LOCKED",
+            "input_hash72": "H72N-9bca77ccd5d775a1b0",
+            "integrity_hash72": "H72N-228d24105eb3dc554c",
+            "locked": true,
+            "operation": "SUM",
+            "operation_hash72": "H72N-d0e61a263fd04ab8fd",
+            "parent_receipt_hash72": "H72N-801da6f0cad243d849",
+            "phase": 27,
+            "post_state_hash72": "H72N-3c10c136863244db6e",
+            "pre_state_hash72": "H72N-afef35be9f8edc5b24",
+            "quarantine": false,
+            "reason": "",
+            "receipt_hash72": "H72N-812e9bbd6af37b4235",
+            "witness_hash72": "H72N-7806578d859e2d65e3"
+          },
+          "source": "phi^2==phi+1",
+          "source_hash72": "H72N-777c692b1c59e07f4e",
+          "structure": {
+            "contains_float_literal": false,
+            "definition_count": 0,
+            "equality_count": 1,
+            "form": "EQUALITY_CHAIN",
+            "parentheses_balanced": true,
+            "semantic_policy": "SYNTAX_PRESERVING_NO_IMPLICIT_TRUTH",
+            "token_count": 7,
+            "tokens": [
+              "phi",
+              "^",
+              "2",
+              "==",
+              "phi",
+              "+",
+              "1"
+            ],
+            "truth_evaluated": false
+          },
+          "symbolic_hash72": "H72N-47f6bdb3d7d7261699"
+        },
+        "macro_call": {
+          "args": [],
+          "bindings": {},
+          "error": "",
+          "expanded_source": "phi^2==phi+1",
+          "expansion_hash72": "H72N-de4b9d54be55612537",
+          "macro_hash72": "H72N-261468dacc597d9533",
+          "name": "GOLDEN_CLOSURE",
+          "nested_expansions": [],
+          "ok": true,
+          "raw_body": "phi^2==phi+1",
+          "receipt": {
+            "gate_status": "LOCKED",
+            "input_hash72": "H72N-a16d15d4e973af0873",
+            "integrity_hash72": "H72N-1aee09047f2203a186",
+            "locked": true,
+            "operation": "SUM",
+            "operation_hash72": "H72N-1bc0b7bb91bbbab420",
+            "parent_receipt_hash72": "H72N-d207f242d80593832a",
+            "phase": 26,
+            "post_state_hash72": "H72N-c836f1558927c5093e",
+            "pre_state_hash72": "H72N-e1162cb89c3395fde3",
+            "quarantine": false,
+            "reason": "",
+            "receipt_hash72": "H72N-801da6f0cad243d849",
+            "witness_hash72": "H72N-4cd368ea4d3394af29"
+          }
+        },
+        "ok": true
+      },
+      {
+        "expanded_symbolic_commit": {
+          "form_type": "EQUALITY_CHAIN",
+          "normalized_source": "rho^3==rho+1==rho^4/rho",
+          "ok": true,
+          "receipt": {
+            "gate_status": "LOCKED",
+            "input_hash72": "H72N-12b243849ccf986460",
+            "integrity_hash72": "H72N-cd61dfa1f8d649412f",
+            "locked": true,
+            "operation": "SUM",
+            "operation_hash72": "H72N-6f14b938ace4268119",
+            "parent_receipt_hash72": "H72N-43bab30e53cf0b415f",
+            "phase": 29,
+            "post_state_hash72": "H72N-6643bce588af8d6579",
+            "pre_state_hash72": "H72N-5fd638979c3257f43f",
+            "quarantine": false,
+            "reason": "",
+            "receipt_hash72": "H72N-bd94917d03ccf88e1f",
+            "witness_hash72": "H72N-173c71939bf4838674"
+          },
+          "source": "rho^3==rho+1==rho^4/rho",
+          "source_hash72": "H72N-60fc7eba6075fd5c31",
+          "structure": {
+            "contains_float_literal": false,
+            "definition_count": 0,
+            "equality_count": 2,
+            "form": "EQUALITY_CHAIN",
+            "parentheses_balanced": true,
+            "semantic_policy": "SYNTAX_PRESERVING_NO_IMPLICIT_TRUTH",
+            "token_count": 13,
+            "tokens": [
+              "rho",
+              "^",
+              "3",
+              "==",
+              "rho",
+              "+",
+              "1",
+              "==",
+              "rho",
+              "^",
+              "4",
+              "/",
+              "rho"
+            ],
+            "truth_evaluated": false
+          },
+          "symbolic_hash72": "H72N-134ae9c71c7621e978"
+        },
+        "macro_call": {
+          "args": [],
+          "bindings": {},
+          "error": "",
+          "expanded_source": "rho^3==rho+1==rho^4/rho",
+          "expansion_hash72": "H72N-bfda0bc128f258b4b6",
+          "macro_hash72": "H72N-9289d94a26a68f40a1",
+          "name": "PLASTIC_CLOSURE",
+          "nested_expansions": [],
+          "ok": true,
+          "raw_body": "rho^3==rho+1==rho^4/rho",
+          "receipt": {
+            "gate_status": "LOCKED",
+            "input_hash72": "H72N-d8509eaeac255a0ed7",
+            "integrity_hash72": "H72N-092b407afa961dbf0e",
+            "locked": true,
+            "operation": "SUM",
+            "operation_hash72": "H72N-f1f9704f7ec9a0f30c",
+            "parent_receipt_hash72": "H72N-812e9bbd6af37b4235",
+            "phase": 28,
+            "post_state_hash72": "H72N-c5cf1cf3188f3b0497",
+            "pre_state_hash72": "H72N-9580c30889755598b4",
+            "quarantine": false,
+            "reason": "",
+            "receipt_hash72": "H72N-43bab30e53cf0b415f",
+            "witness_hash72": "H72N-7a19f2e8a779ce72b4"
+          }
+        },
+        "ok": true
+      },
+      {
+        "expanded_symbolic_commit": {
+          "form_type": "EQUALITY_CHAIN",
+          "normalized_source": "IF (7)%2==0 THEN (7)/2 ELSE (3*(7)+1)/2 FI",
+          "ok": true,
+          "receipt": {
+            "gate_status": "LOCKED",
+            "input_hash72": "H72N-9537cd573881038a57",
+            "integrity_hash72": "H72N-d2b4c4d6c7ad631912",
+            "locked": true,
+            "operation": "SUM",
+            "operation_hash72": "H72N-2f78112822f70f7c34",
+            "parent_receipt_hash72": "H72N-8bce400ec6b83cab62",
+            "phase": 31,
+            "post_state_hash72": "H72N-d04e58f22c61c1c04f",
+            "pre_state_hash72": "H72N-09b79fa9dcb38c78d2",
+            "quarantine": false,
+            "reason": "",
+            "receipt_hash72": "H72N-3ad30467986cd05597",
+            "witness_hash72": "H72N-2d2055bab780fdac9e"
+          },
+          "source": "IF (7)%2==0 THEN (7)/2 ELSE (3*(7)+1)/2 FI",
+          "source_hash72": "H72N-640bb65193c8e185b5",
+          "structure": {
+            "contains_float_literal": false,
+            "definition_count": 0,
+            "equality_count": 1,
+            "form": "EQUALITY_CHAIN",
+            "parentheses_balanced": true,
+            "semantic_policy": "SYNTAX_PRESERVING_NO_IMPLICIT_TRUTH",
+            "token_count": 27,
+            "tokens": [
+              "IF",
+              "(",
+              "7",
+              ")",
+              "%",
+              "2",
+              "==",
+              "0",
+              "THEN",
+              "(",
+              "7",
+              ")",
+              "/",
+              "2",
+              "ELSE",
+              "(",
+              "3",
+              "*",
+              "(",
+              "7",
+              ")",
+              "+",
+              "1",
+              ")",
+              "/",
+              "2",
+              "FI"
+            ],
+            "truth_evaluated": false
+          },
+          "symbolic_hash72": "H72N-0c0f785d304f41e266"
+        },
+        "macro_call": {
+          "args": [
+            "7"
+          ],
+          "bindings": {
+            "n": "7"
+          },
+          "error": "",
+          "expanded_source": "IF (7)%2==0 THEN (7)/2 ELSE (3*(7)+1)/2 FI",
+          "expansion_hash72": "H72N-4c51af1302b020da0c",
+          "macro_hash72": "H72N-bd3a0b0145768b706b",
+          "name": "COLLATZ_STEP",
+          "nested_expansions": [],
+          "ok": true,
+          "raw_body": "IF n%2==0 THEN n/2 ELSE (3*n+1)/2 FI",
+          "receipt": {
+            "gate_status": "LOCKED",
+            "input_hash72": "H72N-591104fd3bfb7b2bb9",
+            "integrity_hash72": "H72N-0f850c48ed00a9540b",
+            "locked": true,
+            "operation": "SUM",
+            "operation_hash72": "H72N-673b9a045623b6e3a8",
+            "parent_receipt_hash72": "H72N-bd94917d03ccf88e1f",
+            "phase": 30,
+            "post_state_hash72": "H72N-4e36e6c9cdce4f3349",
+            "pre_state_hash72": "H72N-0ac4ca07f43167ec22",
+            "quarantine": false,
+            "reason": "",
+            "receipt_hash72": "H72N-8bce400ec6b83cab62",
+            "witness_hash72": "H72N-b9385b62a3ab8a5850"
+          }
+        },
+        "ok": true
+      },
+      {
+        "expanded_symbolic_commit": {
+          "form_type": "CALL",
+          "normalized_source": "CELL(PHASE((1)))",
+          "ok": true,
+          "receipt": {
+            "gate_status": "LOCKED",
+            "input_hash72": "H72N-ea500e9aa754a2a4c7",
+            "integrity_hash72": "H72N-1e2bb815c19750ef81",
+            "locked": true,
+            "operation": "SUM",
+            "operation_hash72": "H72N-137aed985f487293ec",
+            "parent_receipt_hash72": "H72N-245d33c81118d90aee",
+            "phase": 33,
+            "post_state_hash72": "H72N-717cba908c5d8580de",
+            "pre_state_hash72": "H72N-c6b49f95a95a26df29",
+            "quarantine": false,
+            "reason": "",
+            "receipt_hash72": "H72N-ad4ff121e7841720e6",
+            "witness_hash72": "H72N-b718cdbbd32571e922"
+          },
+          "source": "CELL(PHASE((1)))",
+          "source_hash72": "H72N-afa5228bc163cbcff2",
+          "structure": {
+            "contains_float_literal": false,
+            "definition_count": 0,
+            "equality_count": 0,
+            "form": "CALL",
+            "parentheses_balanced": true,
+            "semantic_policy": "SYNTAX_PRESERVING_NO_IMPLICIT_TRUTH",
+            "token_count": 9,
+            "tokens": [
+              "CELL",
+              "(",
+              "PHASE",
+              "(",
+              "(",
+              "1",
+              ")",
+              ")",
+              ")"
+            ],
+            "truth_evaluated": false
+          },
+          "symbolic_hash72": "H72N-a512f53183c94134e3"
+        },
+        "macro_call": {
+          "args": [
+            "1"
+          ],
+          "bindings": {
+            "x": "1"
+          },
+          "error": "",
+          "expanded_source": "CELL(PHASE((1)))",
+          "expansion_hash72": "H72N-31673c91da56924a97",
+          "macro_hash72": "H72N-95048d469a23f93b51",
+          "name": "PHASE_THEN_CELL",
+          "nested_expansions": [],
+          "ok": true,
+          "raw_body": "CELL(PHASE(x))",
+          "receipt": {
+            "gate_status": "LOCKED",
+            "input_hash72": "H72N-89e6a38e4bd388b333",
+            "integrity_hash72": "H72N-7d14c05248453ee0b2",
+            "locked": true,
+            "operation": "SUM",
+            "operation_hash72": "H72N-b551c1a854fa52da80",
+            "parent_receipt_hash72": "H72N-3ad30467986cd05597",
+            "phase": 32,
+            "post_state_hash72": "H72N-6c5ae697e550bc1c21",
+            "pre_state_hash72": "H72N-733520362d49965957",
+            "quarantine": false,
+            "reason": "",
+            "receipt_hash72": "H72N-245d33c81118d90aee",
+            "witness_hash72": "H72N-b2b6417f633a65c35d"
+          }
+        },
+        "ok": true
+      },
+      {
+        "expanded_symbolic_commit": {
+          "form_type": "CALL",
+          "normalized_source": "PHASE(CELL((1)))",
+          "ok": true,
+          "receipt": {
+            "gate_status": "LOCKED",
+            "input_hash72": "H72N-71c68d2bc1d779f17e",
+            "integrity_hash72": "H72N-5fdd424722a5238b72",
+            "locked": true,
+            "operation": "SUM",
+            "operation_hash72": "H72N-605816247221128e25",
+            "parent_receipt_hash72": "H72N-90af727d8903a57e1a",
+            "phase": 35,
+            "post_state_hash72": "H72N-955ab8a21cd40e3734",
+            "pre_state_hash72": "H72N-6436ee2dc36242bf21",
+            "quarantine": false,
+            "reason": "",
+            "receipt_hash72": "H72N-6bd7ef7456ed67d13d",
+            "witness_hash72": "H72N-f452ec8c95bbb20a71"
+          },
+          "source": "PHASE(CELL((1)))",
+          "source_hash72": "H72N-afb4ae630fc39d398c",
+          "structure": {
+            "contains_float_literal": false,
+            "definition_count": 0,
+            "equality_count": 0,
+            "form": "CALL",
+            "parentheses_balanced": true,
+            "semantic_policy": "SYNTAX_PRESERVING_NO_IMPLICIT_TRUTH",
+            "token_count": 9,
+            "tokens": [
+              "PHASE",
+              "(",
+              "CELL",
+              "(",
+              "(",
+              "1",
+              ")",
+              ")",
+              ")"
+            ],
+            "truth_evaluated": false
+          },
+          "symbolic_hash72": "H72N-a87e593f1ad412eaa5"
+        },
+        "macro_call": {
+          "args": [
+            "1"
+          ],
+          "bindings": {
+            "x": "1"
+          },
+          "error": "",
+          "expanded_source": "PHASE(CELL((1)))",
+          "expansion_hash72": "H72N-dbd843f640a2da3170",
+          "macro_hash72": "H72N-21ff25ca58cd2343e0",
+          "name": "CELL_THEN_PHASE",
+          "nested_expansions": [],
+          "ok": true,
+          "raw_body": "PHASE(CELL(x))",
+          "receipt": {
+            "gate_status": "LOCKED",
+            "input_hash72": "H72N-aa1b4a05ec85325e1e",
+            "integrity_hash72": "H72N-32d7c44c0ca3330338",
+            "locked": true,
+            "operation": "SUM",
+            "operation_hash72": "H72N-1d9f2b3af001428378",
+            "parent_receipt_hash72": "H72N-ad4ff121e7841720e6",
+            "phase": 34,
+            "post_state_hash72": "H72N-f4d2d818e53184afcf",
+            "pre_state_hash72": "H72N-f636600a47bea9215f",
+            "quarantine": false,
+            "reason": "",
+            "receipt_hash72": "H72N-90af727d8903a57e1a",
+            "witness_hash72": "H72N-74d8406a85dbe526ff"
+          }
+        },
+        "ok": true
+      }
+    ],
+    "chain": {
+      "count": 36,
+      "ok": true,
+      "tip_hash72": "H72N-6bd7ef7456ed67d13d"
+    },
+    "definitions": [
+      {
+        "body": "PHASE_SQUARE(1,0)==2",
+        "macro_hash72": "H72N-8aa94fb954e3fb80e5",
+        "name": "DYADIC_UNIT",
+        "normalized_body": "PHASE_SQUARE(1,0)==2",
+        "params": [],
+        "source_hash72": "H72N-36563060b938dd2aa9",
+        "symbolic_hash72": "H72N-6f83b3a445dae5a6a2"
+      },
+      {
+        "body": "I^4==1==16/16",
+        "macro_hash72": "H72N-27c7c73764c8a30d14",
+        "name": "QUARTIC_CYCLE",
+        "normalized_body": "I^4==1==16/16",
+        "params": [],
+        "source_hash72": "H72N-9d3f2f294c5fcfdcc8",
+        "symbolic_hash72": "H72N-bb37c4cd633566ce05"
+      },
+      {
+        "body": "DYADIC_LEVEL(x)+1==QUARTIC_PHASE(p+1)",
+        "macro_hash72": "H72N-79645a09eacef1aab7",
+        "name": "PHASE_SQUARE",
+        "normalized_body": "DYADIC_LEVEL(x)+1==QUARTIC_PHASE(p+1)",
+        "params": [
+          "x",
+          "p"
+        ],
+        "source_hash72": "H72N-63c99fb75ddb372eca",
+        "symbolic_hash72": "H72N-76c4aac185a8310c2f"
+      },
+      {
+        "body": "RE(1/2+I*t)==1/2",
+        "macro_hash72": "H72N-12c4c9ec14a2640cac",
+        "name": "CRITICAL_AXIS",
+        "normalized_body": "RE(1/2+I*t)==1/2",
+        "params": [
+          "t"
+        ],
+        "source_hash72": "H72N-0df7001742d43e7f39",
+        "symbolic_hash72": "H72N-12da18e4c908bc23ed"
+      },
+      {
+        "body": "E^(I*Pi*(1/2+I*t))==I*E^(-Pi*t)",
+        "macro_hash72": "H72N-aae78711418a930590",
+        "name": "RESONANCE",
+        "normalized_body": "E^(I*Pi*(1/2+I*t))==I*E^(-Pi*t)",
+        "params": [
+          "t"
+        ],
+        "source_hash72": "H72N-e648831c9b0717d005",
+        "symbolic_hash72": "H72N-530b03f5cc3c876527"
+      },
+      {
+        "body": "F(n+2)==F(n+1)+F(n)",
+        "macro_hash72": "H72N-5be43b2f728d3d48f5",
+        "name": "FIBONACCI_PHASE",
+        "normalized_body": "F(n+2)==F(n+1)+F(n)",
+        "params": [
+          "n"
+        ],
+        "source_hash72": "H72N-4fb47f40f2e3132ce3",
+        "symbolic_hash72": "H72N-f67ea61e92bc14b806"
+      },
+      {
+        "body": "phi^2==phi+1",
+        "macro_hash72": "H72N-261468dacc597d9533",
+        "name": "GOLDEN_CLOSURE",
+        "normalized_body": "phi^2==phi+1",
+        "params": [],
+        "source_hash72": "H72N-0b7a9cba5754e7f3a6",
+        "symbolic_hash72": "H72N-47f6bdb3d7d7261699"
+      },
+      {
+        "body": "IF n%2==0 THEN n/2 ELSE (3*n+1)/2 FI",
+        "macro_hash72": "H72N-bd3a0b0145768b706b",
+        "name": "COLLATZ_STEP",
+        "normalized_body": "IF n%2==0 THEN n/2 ELSE (3*n+1)/2 FI",
+        "params": [
+          "n"
+        ],
+        "source_hash72": "H72N-5c8f4e884c81cbb72e",
+        "symbolic_hash72": "H72N-122e55c7f2e5e34646"
+      },
+      {
+        "body": "rho^3==rho+1==rho^4/rho",
+        "macro_hash72": "H72N-9289d94a26a68f40a1",
+        "name": "PLASTIC_CLOSURE",
+        "normalized_body": "rho^3==rho+1==rho^4/rho",
+        "params": [],
+        "source_hash72": "H72N-296dce44c657306719",
+        "symbolic_hash72": "H72N-134ae9c71c7621e978"
+      },
+      {
+        "body": "CELL(PHASE(x))",
+        "macro_hash72": "H72N-95048d469a23f93b51",
+        "name": "PHASE_THEN_CELL",
+        "normalized_body": "CELL(PHASE(x))",
+        "params": [
+          "x"
+        ],
+        "source_hash72": "H72N-4d3633ca3879ccad84",
+        "symbolic_hash72": "H72N-6bfe43237a4d434b46"
+      },
+      {
+        "body": "PHASE(CELL(x))",
+        "macro_hash72": "H72N-21ff25ca58cd2343e0",
+        "name": "CELL_THEN_PHASE",
+        "normalized_body": "PHASE(CELL(x))",
+        "params": [
+          "x"
+        ],
+        "source_hash72": "H72N-c41f78bc2cde1a5c1f",
+        "symbolic_hash72": "H72N-35aa2e9e3466ded50b"
+      }
+    ],
+    "terminal": "TERMINAL_HHSPROG_V5_MACRO_ALGEBRA",
+    "tip_hash72": "H72N-6bd7ef7456ed67d13d"
+  },
+  "pass_id": "PASS_191",
+  "receipts": [
+    {
+      "gate_status": "LOCKED",
+      "input_hash72": "H72N-925549149c2ffe4c24",
+      "integrity_hash72": "H72N-2ac7349e645975326e",
+      "locked": true,
+      "operation": "PASS191_VERIFY",
+      "operation_hash72": "H72N-7162d43699332c696b",
+      "parent_receipt_hash72": "H72N-GENESIS",
+      "phase": 0,
+      "post_state_hash72": "H72N-33a27df985c8c52601",
+      "pre_state_hash72": "H72N-3c36d517258c66b1ef",
+      "quarantine": false,
+      "reason": "",
+      "receipt_hash72": "H72N-f7c96565574db273ad",
+      "vm81_authorized_tick": 0,
+      "witness_hash72": "H72N-57e3a3bf3ce4c9d7be",
+      "workload_id": "W191-A"
+    },
+    {
+      "gate_status": "LOCKED",
+      "input_hash72": "H72N-7118c7023858c9464f",
+      "integrity_hash72": "H72N-db9d870fdb19494d64",
+      "locked": true,
+      "operation": "PASS191_VERIFY",
+      "operation_hash72": "H72N-ad1d132f70fefd68ea",
+      "parent_receipt_hash72": "H72N-f7c96565574db273ad",
+      "phase": 1,
+      "post_state_hash72": "H72N-843489801810312a84",
+      "pre_state_hash72": "H72N-130b77bac3fd4676e6",
+      "quarantine": false,
+      "reason": "",
+      "receipt_hash72": "H72N-e083d607546e8e57c8",
+      "vm81_authorized_tick": 1,
+      "witness_hash72": "H72N-ceb4bf538e4dc158f6",
+      "workload_id": "W191-B"
+    },
+    {
+      "gate_status": "LOCKED",
+      "input_hash72": "H72N-ab2a2d48109f3b5ffb",
+      "integrity_hash72": "H72N-5a92b51ca838320218",
+      "locked": true,
+      "operation": "PASS191_VERIFY",
+      "operation_hash72": "H72N-eab1fc0c942e2f8c6d",
+      "parent_receipt_hash72": "H72N-e083d607546e8e57c8",
+      "phase": 2,
+      "post_state_hash72": "H72N-885d08635e727511f5",
+      "pre_state_hash72": "H72N-29135a3051cea583be",
+      "quarantine": false,
+      "reason": "",
+      "receipt_hash72": "H72N-bba101f4f2c6f331bd",
+      "vm81_authorized_tick": 2,
+      "witness_hash72": "H72N-122bf7bbc3910b5ebb",
+      "workload_id": "W191-C"
+    },
+    {
+      "gate_status": "LOCKED",
+      "input_hash72": "H72N-6b8eecc553f7adbd3e",
+      "integrity_hash72": "H72N-f40101c846f4725432",
+      "locked": true,
+      "operation": "PASS191_VERIFY",
+      "operation_hash72": "H72N-560d8a9c61175aff53",
+      "parent_receipt_hash72": "H72N-bba101f4f2c6f331bd",
+      "phase": 3,
+      "post_state_hash72": "H72N-56c27f45a019cf76c6",
+      "pre_state_hash72": "H72N-84b0671babf4d447c8",
+      "quarantine": false,
+      "reason": "",
+      "receipt_hash72": "H72N-da72cfce72d0ea7c0a",
+      "vm81_authorized_tick": 3,
+      "witness_hash72": "H72N-5ffadd485dc3bc09c3",
+      "workload_id": "W191-D"
+    },
+    {
+      "gate_status": "LOCKED",
+      "input_hash72": "H72N-5dbf4ec8c4fb1066ba",
+      "integrity_hash72": "H72N-4c418ee250a1efca91",
+      "locked": true,
+      "operation": "PASS191_VERIFY",
+      "operation_hash72": "H72N-c31270192d83b080af",
+      "parent_receipt_hash72": "H72N-da72cfce72d0ea7c0a",
+      "phase": 4,
+      "post_state_hash72": "H72N-5bb7af3caad5f5a90a",
+      "pre_state_hash72": "H72N-c9c6158f886c217ed6",
+      "quarantine": false,
+      "reason": "",
+      "receipt_hash72": "H72N-3429a26ffd20e72b47",
+      "vm81_authorized_tick": 4,
+      "witness_hash72": "H72N-4391a4f3b85e0784e6",
+      "workload_id": "W191-E"
+    }
+  ],
+  "replay": {
+    "count": 5,
+    "details": {
+      "expected_tip_hash72": "H72N-3429a26ffd20e72b47"
+    },
+    "failed_index": null,
+    "ok": true,
+    "reason": "receipt chain verified",
+    "tip_hash72": "H72N-3429a26ffd20e72b47"
+  },
+  "schema": "HHS_PASS_191_PROOF_RECEIPTS_V1",
+  "workloads": {
+    "W191-A": {
+      "after_one_advance": {
+        "dyadic_level": 1,
+        "magnitude": "2",
+        "phase_basis": "i",
+        "quartic_phase": 1
+      },
+      "checks": {
+        "integer_embeddings_reconstruct": true,
+        "magnitude_advance_1_to_2": true,
+        "phase_advance_operator_registered": true
+      },
+      "integer_embedding_sample": [
+        {
+          "injective_phase_state_alone": false,
+          "integer": -16,
+          "odd_residue": 1,
+          "phase_state": {
+            "dyadic_level": 4,
+            "magnitude": "16",
+            "phase_basis": "-1",
+            "quartic_phase": 2
+          },
+          "reconstruction": -16
+        },
+        {
+          "injective_phase_state_alone": false,
+          "integer": -15,
+          "odd_residue": 15,
+          "phase_state": {
+            "dyadic_level": 0,
+            "magnitude": "1",
+            "phase_basis": "-1",
+            "quartic_phase": 2
+          },
+          "reconstruction": -15
+        },
+        {
+          "injective_phase_state_alone": false,
+          "integer": -14,
+          "odd_residue": 7,
+          "phase_state": {
+            "dyadic_level": 1,
+            "magnitude": "2",
+            "phase_basis": "-1",
+            "quartic_phase": 2
+          },
+          "reconstruction": -14
+        },
+        {
+          "injective_phase_state_alone": false,
+          "integer": -13,
+          "odd_residue": 13,
+          "phase_state": {
+            "dyadic_level": 0,
+            "magnitude": "1",
+            "phase_basis": "-1",
+            "quartic_phase": 2
+          },
+          "reconstruction": -13
+        },
+        {
+          "injective_phase_state_alone": false,
+          "integer": -12,
+          "odd_residue": 3,
+          "phase_state": {
+            "dyadic_level": 2,
+            "magnitude": "4",
+            "phase_basis": "-1",
+            "quartic_phase": 2
+          },
+          "reconstruction": -12
+        },
+        {
+          "injective_phase_state_alone": false,
+          "integer": -11,
+          "odd_residue": 11,
+          "phase_state": {
+            "dyadic_level": 0,
+            "magnitude": "1",
+            "phase_basis": "-1",
+            "quartic_phase": 2
+          },
+          "reconstruction": -11
+        },
+        {
+          "injective_phase_state_alone": false,
+          "integer": -10,
+          "odd_residue": 5,
+          "phase_state": {
+            "dyadic_level": 1,
+            "magnitude": "2",
+            "phase_basis": "-1",
+            "quartic_phase": 2
+          },
+          "reconstruction": -10
+        },
+        {
+          "injective_phase_state_alone": false,
+          "integer": -9,
+          "odd_residue": 9,
+          "phase_state": {
+            "dyadic_level": 0,
+            "magnitude": "1",
+            "phase_basis": "-1",
+            "quartic_phase": 2
+          },
+          "reconstruction": -9
+        },
+        {
+          "injective_phase_state_alone": false,
+          "integer": -8,
+          "odd_residue": 1,
+          "phase_state": {
+            "dyadic_level": 3,
+            "magnitude": "8",
+            "phase_basis": "-1",
+            "quartic_phase": 2
+          },
+          "reconstruction": -8
+        },
+        {
+          "injective_phase_state_alone": false,
+          "integer": -7,
+          "odd_residue": 7,
+          "phase_state": {
+            "dyadic_level": 0,
+            "magnitude": "1",
+            "phase_basis": "-1",
+            "quartic_phase": 2
+          },
+          "reconstruction": -7
+        },
+        {
+          "injective_phase_state_alone": false,
+          "integer": -6,
+          "odd_residue": 3,
+          "phase_state": {
+            "dyadic_level": 1,
+            "magnitude": "2",
+            "phase_basis": "-1",
+            "quartic_phase": 2
+          },
+          "reconstruction": -6
+        },
+        {
+          "injective_phase_state_alone": false,
+          "integer": -5,
+          "odd_residue": 5,
+          "phase_state": {
+            "dyadic_level": 0,
+            "magnitude": "1",
+            "phase_basis": "-1",
+            "quartic_phase": 2
+          },
+          "reconstruction": -5
+        },
+        {
+          "injective_phase_state_alone": false,
+          "integer": -4,
+          "odd_residue": 1,
+          "phase_state": {
+            "dyadic_level": 2,
+            "magnitude": "4",
+            "phase_basis": "-1",
+            "quartic_phase": 2
+          },
+          "reconstruction": -4
+        },
+        {
+          "injective_phase_state_alone": false,
+          "integer": -3,
+          "odd_residue": 3,
+          "phase_state": {
+            "dyadic_level": 0,
+            "magnitude": "1",
+            "phase_basis": "-1",
+            "quartic_phase": 2
+          },
+          "reconstruction": -3
+        },
+        {
+          "injective_phase_state_alone": false,
+          "integer": -2,
+          "odd_residue": 1,
+          "phase_state": {
+            "dyadic_level": 1,
+            "magnitude": "2",
+            "phase_basis": "-1",
+            "quartic_phase": 2
+          },
+          "reconstruction": -2
+        },
+        {
+          "injective_phase_state_alone": false,
+          "integer": -1,
+          "odd_residue": 1,
+          "phase_state": {
+            "dyadic_level": 0,
+            "magnitude": "1",
+            "phase_basis": "-1",
+            "quartic_phase": 2
+          },
+          "reconstruction": -1
+        },
+        {
+          "injective_phase_state_alone": false,
+          "integer": 0,
+          "odd_residue": 0,
+          "phase_state": {
+            "dyadic_level": 0,
+            "magnitude": "1",
+            "phase_basis": "1",
+            "quartic_phase": 0
+          },
+          "reconstruction": 0
+        },
+        {
+          "injective_phase_state_alone": false,
+          "integer": 1,
+          "odd_residue": 1,
+          "phase_state": {
+            "dyadic_level": 0,
+            "magnitude": "1",
+            "phase_basis": "1",
+            "quartic_phase": 0
+          },
+          "reconstruction": 1
+        },
+        {
+          "injective_phase_state_alone": false,
+          "integer": 2,
+          "odd_residue": 1,
+          "phase_state": {
+            "dyadic_level": 1,
+            "magnitude": "2",
+            "phase_basis": "1",
+            "quartic_phase": 0
+          },
+          "reconstruction": 2
+        },
+        {
+          "injective_phase_state_alone": false,
+          "integer": 3,
+          "odd_residue": 3,
+          "phase_state": {
+            "dyadic_level": 0,
+            "magnitude": "1",
+            "phase_basis": "1",
+            "quartic_phase": 0
+          },
+          "reconstruction": 3
+        },
+        {
+          "injective_phase_state_alone": false,
+          "integer": 4,
+          "odd_residue": 1,
+          "phase_state": {
+            "dyadic_level": 2,
+            "magnitude": "4",
+            "phase_basis": "1",
+            "quartic_phase": 0
+          },
+          "reconstruction": 4
+        },
+        {
+          "injective_phase_state_alone": false,
+          "integer": 5,
+          "odd_residue": 5,
+          "phase_state": {
+            "dyadic_level": 0,
+            "magnitude": "1",
+            "phase_basis": "1",
+            "quartic_phase": 0
+          },
+          "reconstruction": 5
+        },
+        {
+          "injective_phase_state_alone": false,
+          "integer": 6,
+          "odd_residue": 3,
+          "phase_state": {
+            "dyadic_level": 1,
+            "magnitude": "2",
+            "phase_basis": "1",
+            "quartic_phase": 0
+          },
+          "reconstruction": 6
+        },
+        {
+          "injective_phase_state_alone": false,
+          "integer": 7,
+          "odd_residue": 7,
+          "phase_state": {
+            "dyadic_level": 0,
+            "magnitude": "1",
+            "phase_basis": "1",
+            "quartic_phase": 0
+          },
+          "reconstruction": 7
+        },
+        {
+          "injective_phase_state_alone": false,
+          "integer": 8,
+          "odd_residue": 1,
+          "phase_state": {
+            "dyadic_level": 3,
+            "magnitude": "8",
+            "phase_basis": "1",
+            "quartic_phase": 0
+          },
+          "reconstruction": 8
+        },
+        {
+          "injective_phase_state_alone": false,
+          "integer": 9,
+          "odd_residue": 9,
+          "phase_state": {
+            "dyadic_level": 0,
+            "magnitude": "1",
+            "phase_basis": "1",
+            "quartic_phase": 0
+          },
+          "reconstruction": 9
+        },
+        {
+          "injective_phase_state_alone": false,
+          "integer": 10,
+          "odd_residue": 5,
+          "phase_state": {
+            "dyadic_level": 1,
+            "magnitude": "2",
+            "phase_basis": "1",
+            "quartic_phase": 0
+          },
+          "reconstruction": 10
+        },
+        {
+          "injective_phase_state_alone": false,
+          "integer": 11,
+          "odd_residue": 11,
+          "phase_state": {
+            "dyadic_level": 0,
+            "magnitude": "1",
+            "phase_basis": "1",
+            "quartic_phase": 0
+          },
+          "reconstruction": 11
+        },
+        {
+          "injective_phase_state_alone": false,
+          "integer": 12,
+          "odd_residue": 3,
+          "phase_state": {
+            "dyadic_level": 2,
+            "magnitude": "4",
+            "phase_basis": "1",
+            "quartic_phase": 0
+          },
+          "reconstruction": 12
+        },
+        {
+          "injective_phase_state_alone": false,
+          "integer": 13,
+          "odd_residue": 13,
+          "phase_state": {
+            "dyadic_level": 0,
+            "magnitude": "1",
+            "phase_basis": "1",
+            "quartic_phase": 0
+          },
+          "reconstruction": 13
+        },
+        {
+          "injective_phase_state_alone": false,
+          "integer": 14,
+          "odd_residue": 7,
+          "phase_state": {
+            "dyadic_level": 1,
+            "magnitude": "2",
+            "phase_basis": "1",
+            "quartic_phase": 0
+          },
+          "reconstruction": 14
+        },
+        {
+          "injective_phase_state_alone": false,
+          "integer": 15,
+          "odd_residue": 15,
+          "phase_state": {
+            "dyadic_level": 0,
+            "magnitude": "1",
+            "phase_basis": "1",
+            "quartic_phase": 0
+          },
+          "reconstruction": 15
+        },
+        {
+          "injective_phase_state_alone": false,
+          "integer": 16,
+          "odd_residue": 1,
+          "phase_state": {
+            "dyadic_level": 4,
+            "magnitude": "16",
+            "phase_basis": "1",
+            "quartic_phase": 0
+          },
+          "reconstruction": 16
+        }
+      ],
+      "scope": "HHS phase-square magnitude projection",
+      "start": {
+        "dyadic_level": 0,
+        "magnitude": "1",
+        "phase_basis": "1",
+        "quartic_phase": 0
+      },
+      "title": "Renormalized Unit Consistency"
+    },
+    "W191-B": {
+      "checks": {
+        "dyadic_level_advances_by_four": true,
+        "dyadic_magnitudes_are_1_2_4_8_16": true,
+        "phase_returns_to_zero_after_four": true
+      },
+      "title": "Quartic Closure Verification",
+      "trace": [
+        {
+          "dyadic_level": 0,
+          "magnitude": "1",
+          "phase_basis": "1",
+          "quartic_phase": 0
+        },
+        {
+          "dyadic_level": 1,
+          "magnitude": "2",
+          "phase_basis": "i",
+          "quartic_phase": 1
+        },
+        {
+          "dyadic_level": 2,
+          "magnitude": "4",
+          "phase_basis": "-1",
+          "quartic_phase": 2
+        },
+        {
+          "dyadic_level": 3,
+          "magnitude": "8",
+          "phase_basis": "-i",
+          "quartic_phase": 3
+        },
+        {
+          "dyadic_level": 4,
+          "magnitude": "16",
+          "phase_basis": "1",
+          "quartic_phase": 0
+        }
+      ]
+    },
+    "W191-C": {
+      "checks": {
+        "critical_axis_is_exact_half": true,
+        "rh_transfer_obligation_registered": true,
+        "u72_offset_is_half_cycle": true
+      },
+      "critical_axis": "Re(1/2 + i*t) = 1/2",
+      "exact_exponential_identity": "exp(i*pi*(1/2+i*t)) = i*exp(-pi*t)",
+      "supplied_zero_parameter": "141347/10000",
+      "title": "Critical Axis Resonance",
+      "u72_half_offset": 36
+    },
+    "W191-D": {
+      "checks": {
+        "algebraic_numbers_kept_symbolic": true,
+        "collatz_global_obligation_registered": true,
+        "collatz_seed_7_reaches_1_within_bound": true,
+        "fibonacci_recurrence": true
+      },
+      "collatz_seed_7_orbit": [
+        7,
+        11,
+        17,
+        26,
+        13,
+        20,
+        10,
+        5,
+        8,
+        4,
+        2,
+        1
+      ],
+      "fibonacci": {
+        "f_n": 55,
+        "f_n1": 89,
+        "f_n2": 144,
+        "n": 10
+      },
+      "golden_polynomial": "phi^2-phi-1=0",
+      "plastic_polynomial": "rho^3-rho-1=0",
+      "title": "Fibonacci Plastic Collatz Integration"
+    },
+    "W191-E": {
+      "cell_then_phase": {
+        "dyadic_level": 0,
+        "magnitude": "1",
+        "phase_basis": "i",
+        "quartic_phase": 1
+      },
+      "checks": {
+        "bounded_quadratic_reciprocity_exact": true,
+        "phase_cell_order_is_noncommutative": true,
+        "quadratic_reciprocity_transfer_obligation_registered": true
+      },
+      "phase_then_cell": {
+        "dyadic_level": 1,
+        "magnitude": "2",
+        "phase_basis": "i",
+        "quartic_phase": 1
+      },
+      "quadratic_reciprocity_bound": 43,
+      "quadratic_reciprocity_cases": [
+        {
+          "lhs": 1,
+          "ok": true,
+          "p": 3,
+          "q": 5,
+          "rhs": 1
+        },
+        {
+          "lhs": -1,
+          "ok": true,
+          "p": 3,
+          "q": 7,
+          "rhs": -1
+        },
+        {
+          "lhs": -1,
+          "ok": true,
+          "p": 3,
+          "q": 11,
+          "rhs": -1
+        },
+        {
+          "lhs": 1,
+          "ok": true,
+          "p": 3,
+          "q": 13,
+          "rhs": 1
+        },
+        {
+          "lhs": 1,
+          "ok": true,
+          "p": 3,
+          "q": 17,
+          "rhs": 1
+        },
+        {
+          "lhs": -1,
+          "ok": true,
+          "p": 3,
+          "q": 19,
+          "rhs": -1
+        },
+        {
+          "lhs": -1,
+          "ok": true,
+          "p": 3,
+          "q": 23,
+          "rhs": -1
+        },
+        {
+          "lhs": 1,
+          "ok": true,
+          "p": 3,
+          "q": 29,
+          "rhs": 1
+        },
+        {
+          "lhs": -1,
+          "ok": true,
+          "p": 3,
+          "q": 31,
+          "rhs": -1
+        },
+        {
+          "lhs": 1,
+          "ok": true,
+          "p": 3,
+          "q": 37,
+          "rhs": 1
+        },
+        {
+          "lhs": 1,
+          "ok": true,
+          "p": 3,
+          "q": 41,
+          "rhs": 1
+        },
+        {
+          "lhs": -1,
+          "ok": true,
+          "p": 3,
+          "q": 43,
+          "rhs": -1
+        },
+        {
+          "lhs": 1,
+          "ok": true,
+          "p": 5,
+          "q": 7,
+          "rhs": 1
+        },
+        {
+          "lhs": 1,
+          "ok": true,
+          "p": 5,
+          "q": 11,
+          "rhs": 1
+        },
+        {
+          "lhs": 1,
+          "ok": true,
+          "p": 5,
+          "q": 13,
+          "rhs": 1
+        },
+        {
+          "lhs": 1,
+          "ok": true,
+          "p": 5,
+          "q": 17,
+          "rhs": 1
+        },
+        {
+          "lhs": 1,
+          "ok": true,
+          "p": 5,
+          "q": 19,
+          "rhs": 1
+        },
+        {
+          "lhs": 1,
+          "ok": true,
+          "p": 5,
+          "q": 23,
+          "rhs": 1
+        },
+        {
+          "lhs": 1,
+          "ok": true,
+          "p": 5,
+          "q": 29,
+          "rhs": 1
+        },
+        {
+          "lhs": 1,
+          "ok": true,
+          "p": 5,
+          "q": 31,
+          "rhs": 1
+        },
+        {
+          "lhs": 1,
+          "ok": true,
+          "p": 5,
+          "q": 37,
+          "rhs": 1
+        },
+        {
+          "lhs": 1,
+          "ok": true,
+          "p": 5,
+          "q": 41,
+          "rhs": 1
+        },
+        {
+          "lhs": 1,
+          "ok": true,
+          "p": 5,
+          "q": 43,
+          "rhs": 1
+        },
+        {
+          "lhs": -1,
+          "ok": true,
+          "p": 7,
+          "q": 11,
+          "rhs": -1
+        },
+        {
+          "lhs": 1,
+          "ok": true,
+          "p": 7,
+          "q": 13,
+          "rhs": 1
+        },
+        {
+          "lhs": 1,
+          "ok": true,
+          "p": 7,
+          "q": 17,
+          "rhs": 1
+        },
+        {
+          "lhs": -1,
+          "ok": true,
+          "p": 7,
+          "q": 19,
+          "rhs": -1
+        },
+        {
+          "lhs": -1,
+          "ok": true,
+          "p": 7,
+          "q": 23,
+          "rhs": -1
+        },
+        {
+          "lhs": 1,
+          "ok": true,
+          "p": 7,
+          "q": 29,
+          "rhs": 1
+        },
+        {
+          "lhs": -1,
+          "ok": true,
+          "p": 7,
+          "q": 31,
+          "rhs": -1
+        },
+        {
+          "lhs": 1,
+          "ok": true,
+          "p": 7,
+          "q": 37,
+          "rhs": 1
+        },
+        {
+          "lhs": 1,
+          "ok": true,
+          "p": 7,
+          "q": 41,
+          "rhs": 1
+        },
+        {
+          "lhs": -1,
+          "ok": true,
+          "p": 7,
+          "q": 43,
+          "rhs": -1
+        },
+        {
+          "lhs": 1,
+          "ok": true,
+          "p": 11,
+          "q": 13,
+          "rhs": 1
+        },
+        {
+          "lhs": 1,
+          "ok": true,
+          "p": 11,
+          "q": 17,
+          "rhs": 1
+        },
+        {
+          "lhs": -1,
+          "ok": true,
+          "p": 11,
+          "q": 19,
+          "rhs": -1
+        },
+        {
+          "lhs": -1,
+          "ok": true,
+          "p": 11,
+          "q": 23,
+          "rhs": -1
+        },
+        {
+          "lhs": 1,
+          "ok": true,
+          "p": 11,
+          "q": 29,
+          "rhs": 1
+        },
+        {
+          "lhs": -1,
+          "ok": true,
+          "p": 11,
+          "q": 31,
+          "rhs": -1
+        },
+        {
+          "lhs": 1,
+          "ok": true,
+          "p": 11,
+          "q": 37,
+          "rhs": 1
+        },
+        {
+          "lhs": 1,
+          "ok": true,
+          "p": 11,
+          "q": 41,
+          "rhs": 1
+        },
+        {
+          "lhs": -1,
+          "ok": true,
+          "p": 11,
+          "q": 43,
+          "rhs": -1
+        },
+        {
+          "lhs": 1,
+          "ok": true,
+          "p": 13,
+          "q": 17,
+          "rhs": 1
+        },
+        {
+          "lhs": 1,
+          "ok": true,
+          "p": 13,
+          "q": 19,
+          "rhs": 1
+        },
+        {
+          "lhs": 1,
+          "ok": true,
+          "p": 13,
+          "q": 23,
+          "rhs": 1
+        },
+        {
+          "lhs": 1,
+          "ok": true,
+          "p": 13,
+          "q": 29,
+          "rhs": 1
+        },
+        {
+          "lhs": 1,
+          "ok": true,
+          "p": 13,
+          "q": 31,
+          "rhs": 1
+        },
+        {
+          "lhs": 1,
+          "ok": true,
+          "p": 13,
+          "q": 37,
+          "rhs": 1
+        },
+        {
+          "lhs": 1,
+          "ok": true,
+          "p": 13,
+          "q": 41,
+          "rhs": 1
+        },
+        {
+          "lhs": 1,
+          "ok": true,
+          "p": 13,
+          "q": 43,
+          "rhs": 1
+        },
+        {
+          "lhs": 1,
+          "ok": true,
+          "p": 17,
+          "q": 19,
+          "rhs": 1
+        },
+        {
+          "lhs": 1,
+          "ok": true,
+          "p": 17,
+          "q": 23,
+          "rhs": 1
+        },
+        {
+          "lhs": 1,
+          "ok": true,
+          "p": 17,
+          "q": 29,
+          "rhs": 1
+        },
+        {
+          "lhs": 1,
+          "ok": true,
+          "p": 17,
+          "q": 31,
+          "rhs": 1
+        },
+        {
+          "lhs": 1,
+          "ok": true,
+          "p": 17,
+          "q": 37,
+          "rhs": 1
+        },
+        {
+          "lhs": 1,
+          "ok": true,
+          "p": 17,
+          "q": 41,
+          "rhs": 1
+        },
+        {
+          "lhs": 1,
+          "ok": true,
+          "p": 17,
+          "q": 43,
+          "rhs": 1
+        },
+        {
+          "lhs": -1,
+          "ok": true,
+          "p": 19,
+          "q": 23,
+          "rhs": -1
+        },
+        {
+          "lhs": 1,
+          "ok": true,
+          "p": 19,
+          "q": 29,
+          "rhs": 1
+        },
+        {
+          "lhs": -1,
+          "ok": true,
+          "p": 19,
+          "q": 31,
+          "rhs": -1
+        },
+        {
+          "lhs": 1,
+          "ok": true,
+          "p": 19,
+          "q": 37,
+          "rhs": 1
+        },
+        {
+          "lhs": 1,
+          "ok": true,
+          "p": 19,
+          "q": 41,
+          "rhs": 1
+        },
+        {
+          "lhs": -1,
+          "ok": true,
+          "p": 19,
+          "q": 43,
+          "rhs": -1
+        },
+        {
+          "lhs": 1,
+          "ok": true,
+          "p": 23,
+          "q": 29,
+          "rhs": 1
+        },
+        {
+          "lhs": -1,
+          "ok": true,
+          "p": 23,
+          "q": 31,
+          "rhs": -1
+        },
+        {
+          "lhs": 1,
+          "ok": true,
+          "p": 23,
+          "q": 37,
+          "rhs": 1
+        },
+        {
+          "lhs": 1,
+          "ok": true,
+          "p": 23,
+          "q": 41,
+          "rhs": 1
+        },
+        {
+          "lhs": -1,
+          "ok": true,
+          "p": 23,
+          "q": 43,
+          "rhs": -1
+        },
+        {
+          "lhs": 1,
+          "ok": true,
+          "p": 29,
+          "q": 31,
+          "rhs": 1
+        },
+        {
+          "lhs": 1,
+          "ok": true,
+          "p": 29,
+          "q": 37,
+          "rhs": 1
+        },
+        {
+          "lhs": 1,
+          "ok": true,
+          "p": 29,
+          "q": 41,
+          "rhs": 1
+        },
+        {
+          "lhs": 1,
+          "ok": true,
+          "p": 29,
+          "q": 43,
+          "rhs": 1
+        },
+        {
+          "lhs": 1,
+          "ok": true,
+          "p": 31,
+          "q": 37,
+          "rhs": 1
+        },
+        {
+          "lhs": 1,
+          "ok": true,
+          "p": 31,
+          "q": 41,
+          "rhs": 1
+        },
+        {
+          "lhs": -1,
+          "ok": true,
+          "p": 31,
+          "q": 43,
+          "rhs": -1
+        },
+        {
+          "lhs": 1,
+          "ok": true,
+          "p": 37,
+          "q": 41,
+          "rhs": 1
+        },
+        {
+          "lhs": 1,
+          "ok": true,
+          "p": 37,
+          "q": 43,
+          "rhs": 1
+        },
+        {
+          "lhs": 1,
+          "ok": true,
+          "p": 41,
+          "q": 43,
+          "rhs": 1
+        }
+      ],
+      "title": "Noncommutative Phase Order and Bounded Reciprocity"
+    }
+  }
+}

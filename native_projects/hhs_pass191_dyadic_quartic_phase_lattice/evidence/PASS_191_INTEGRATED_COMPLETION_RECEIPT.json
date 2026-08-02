@@ -1,0 +1,57 @@
+{
+  "authoritative_decision_surface": "PASS_191_INTEGRATED_PROOF_SEARCH.json",
+  "authority_path": [
+    "PASS_189_HQLH_51648192_CONTEXTUAL_FABRIC",
+    "PASS_191_EXACT_MANIFOLD_RESIDUAL_KERNEL",
+    "PASS_186_X86_64_Q144_NONCOMMUTATIVE_ABI",
+    "PASS_175_HASH216_VM5184_G243_HYDRATION",
+    "PASS_174_SINGLETON_VM81_COMMIT_AUTHORITY",
+    "HASH72_DETERMINISTIC_REPLAY"
+  ],
+  "classification": "HHS_PASS_191_UNIFIED_MANIFOLD_VM81_PROOF_SEARCH_EXECUTED",
+  "completion_hash72": "IcqeLFh?MkbcXzsjq3F<cuGE2/n/1W2T!T+-s+Q7!aPiM/G(sexKfkWJKB3DzetgJ/2pAv)H",
+  "contextual_cardinality": 51648192,
+  "exact_chain_hits": 837,
+  "frontier_size": 16,
+  "integrated_manifold_search_hash72": "YfRskPD)ljGo?1wMIrt3V5dKI+i/ZQJ4wqkgQwJUFKN0Ho>ZBXPEs1wVF?QnU*ppAL964WW-",
+  "legacy_dependency_evidence": {
+    "classification": "HHS_PASS_191_DYADIC_QUARTIC_PHASE_LATTICE_FORMAL_DECISION_VERIFIED",
+    "formal_outcome_verification": {
+      "formal_outcome_ledger_hash72": "A!qhhIhc>U61rVL1ieh2Q6SI+Xs+B7/6FTDbd7OAP!PKOHhwHB+HHwY5/M3z7wtHJMsqgIyI",
+      "ok": true,
+      "outcome_count": 10,
+      "outcome_counts": {
+        "FALSIFIED": 3,
+        "OBSTRUCTED": 3,
+        "PROVED": 4
+      }
+    },
+    "pass191_release_root_hash72": "H72N-f36bc8376c76769c7d",
+    "role": "DEPENDENCY_SCOPED_PARSER_AND_ALGEBRA_EVIDENCE"
+  },
+  "manifold_checksum_fnv1a64": "5f89e7e466d337ed",
+  "manifold_epoch_hash72": "txM+>*rcJ<Vsm!tI2GPjrb9)YN4WNUw(3j5>8y)-Y1Rba0)qReL+0>OhUIdLg6l>GeN(kM!r",
+  "outer_envelope_modulus": 1259713,
+  "projected_cardinality": 1259712,
+  "schema": "HHS_PASS_191_UNIFIED_MANIFOLD_COMPLETION_RECEIPT_V2",
+  "snapshot": {
+    "branch_frontier_size": 16,
+    "cursor": 51648192,
+    "next_epoch": 1
+  },
+  "theorem_decision": {
+    "obstruction": {
+      "missing_bridge": "ZETA_ZERO(sigma,t) => 2*sigma-1=0, or an exact nontrivial off-axis zeta-zero witness satisfying 2*sigma-1!=0",
+      "reopen_condition": "Register and validate a zeta-zero-specific exact rule eliminating all off-axis cycles, or produce an exact off-axis zero certificate.",
+      "why_required": "The registered reflection and quartic closure rules admit both critical fixed points and off-axis two-cycles. The complete finite contextual epoch therefore cannot transfer closure alone into a zeta-zero location theorem."
+    },
+    "proved_results": [
+      "Every contextual state in [0,51648192) was traversed through the inherited Pass 189 address authority and evaluated by the exact Pass 191 manifold residual kernel",
+      "PHASE_CLOSURE_ALONE_IS_NOT_A_FAITHFUL_CRITICAL_LINE_DISCRIMINATOR"
+    ],
+    "scope": "CURRENT_REGISTERED_RULE_GRAPH",
+    "status": "OBSTRUCTED",
+    "target": "RIEMANN_HYPOTHESIS"
+  },
+  "visited": 51648192
+}
