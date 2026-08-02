@@ -1,0 +1,21 @@
+{
+  "branch": "agent/pass199-distributed-calibration-fabric",
+  "failures": 0,
+  "next_action": "merge after the evidence-only head is revalidated",
+  "outcomes": {
+    "compile": "success",
+    "contracts": "success",
+    "dependencies": "success",
+    "smoke": "success",
+    "tests": "success"
+  },
+  "pytest_output_sha256": "0aa587cf73bf04909f539a2a55b6d56eeefc68e9676ddec52ebba55e2a6bb125",
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "run_attempt": 1,
+  "run_id": 30770804706,
+  "schema": "HHS_PASS_172_173_PHASE2_HOSTED_VALIDATION_V1",
+  "status": "SUCCESS",
+  "terminal_pass172_claimed": false,
+  "terminal_pass173_claimed": false,
+  "validated_sha": "ca3d34ca6a076834ed57fcad1384452890f9238c"
+}
