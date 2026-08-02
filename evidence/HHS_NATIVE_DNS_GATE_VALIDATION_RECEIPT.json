@@ -12,7 +12,7 @@
     "kernel_socket_tuple_distinct": true
   },
   "validation": {
-    "unit_tests_passed": 12,
+    "unit_tests_passed": 15,
     "udp_dns": true,
     "tcp_dns": true,
     "a_records": true,

@@ -2,7 +2,7 @@
 set -euo pipefail
 BASE_URL="${1:-http://pass190-runtime.hhs.internal:8190}"
 resolvectl query pass190-runtime.hhs.internal | grep -q '127.190.0.1'
-resolvectl service _http._tcp.pass190-runtime.hhs.internal >/dev/null
+resolvectl query -t SRV _http._tcp.pass190-runtime.hhs.internal | grep -q '8190'
 
 for _attempt in $(seq 1 40); do
   if health="$(curl --fail --silent --show-error "$BASE_URL/api/pass190/health" 2>/dev/null)"; then

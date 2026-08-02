@@ -16,8 +16,11 @@ from hhs_dns_gate import (
     TCPHandler,
     TYPE_A,
     TYPE_AAAA,
+    TYPE_NS,
     TYPE_PTR,
+    TYPE_SOA,
     TYPE_SRV,
+    TYPE_TXT,
     ThreadingTCP,
     ThreadingUDP,
     UDPHandler,
@@ -77,6 +80,21 @@ class GateTests(unittest.TestCase):
     def test_ptr_records(self):
         answer = parse_first_answer(self.authority.answer(build_query(reverse_name("127.190.0.1"), TYPE_PTR)))
         self.assertEqual(answer["target"], "pass190-runtime.hhs.internal")
+
+
+    def test_ns_authority_record(self):
+        answer = parse_first_answer(self.authority.answer(build_query("hhs.internal", TYPE_NS)))
+        self.assertEqual(answer["target"], "dns-gate.hhs.internal")
+
+    def test_soa_authority_record(self):
+        answer = parse_first_answer(self.authority.answer(build_query("hhs.internal", TYPE_SOA)))
+        self.assertEqual(answer["type"], TYPE_SOA)
+        self.assertEqual(answer["answer_count"], 1)
+
+    def test_txt_registry_record(self):
+        answer = parse_first_answer(self.authority.answer(build_query("_gate.hhs.internal", TYPE_TXT)))
+        self.assertEqual(answer["type"], TYPE_TXT)
+        self.assertEqual(answer["answer_count"], 1)
 
     def test_unknown_in_zone_is_nxdomain(self):
         answer = parse_first_answer(self.authority.answer(build_query("missing.hhs.internal", TYPE_A)))
