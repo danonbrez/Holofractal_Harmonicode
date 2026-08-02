@@ -1,6 +1,6 @@
 # HHS PASS 199 — DURABLE DISTRIBUTED CALIBRATION FABRIC
 
-Contract identifier: `HHS-P199-P198-P190-DCT-WORKER-VM81-H72`
+Contract identifier: `HHS-P199-P198-P190-DCT-WORKER-SLOTS64-VM81-H72`
 
 Classification target: `HHS_PASS_199_DURABLE_DISTRIBUTED_CALIBRATION_FABRIC_VERIFIED`
 
@@ -14,10 +14,10 @@ It executes registered A/B parameter trees as durable branch jobs while preservi
 
 Candidate workers may:
 
-- claim a durable branch job;
-- read its immutable exact arguments;
+- claim one durable branch job per worker slot;
+- read immutable exact arguments;
 - evaluate branch A or branch B outside the VM81 authority lock;
-- return an immutable candidate with exact cell and lane witnesses.
+- return immutable candidates with exact cell and lane witnesses.
 
 Candidate workers may not:
 
@@ -28,7 +28,7 @@ Candidate workers may not:
 - commit the completed tree;
 - create a second Hash72 authority stream.
 
-Candidate completion re-enters Pass 190 only to validate the claim token, candidate binding, candidate Hash72, lease, capability, and worker ownership before storing the durable candidate receipt.
+Candidate completion re-enters Pass 190 only to validate the claim token, candidate binding, candidate Hash72, lease, capability, and worker ownership before storing durable candidate evidence.
 
 ## Durable branch jobs
 
@@ -38,6 +38,8 @@ Each Pass 198 parameter state creates two deterministic jobs:
 ordinal n, branch A → calibration.evaluate_branch
 ordinal n, branch B → calibration.evaluate_branch
 ```
+
+Default Pass 197 calibration produces 405 states and 810 individual durable branch jobs.
 
 The job identity binds:
 
@@ -49,7 +51,30 @@ The job identity binds:
 - lexical integer `xy` exponent;
 - branch identity.
 
-Default Pass 197 calibration therefore produces 405 states and 810 durable branch jobs.
+## Bounded authority batching
+
+Individual durable jobs are retained, but repeated whole-state mutation is bounded through governed batch operations:
+
+```text
+calibration.submit_tree
+  → one atomic mutation creates all durable branch jobs
+
+calibration.ensure_workers
+  → one atomic mutation creates or refreshes up to 64 one-job worker slots
+
+calibration.claim_batch
+  → one atomic mutation assigns at most one job to each available slot
+
+candidate computation
+  → exact work occurs concurrently outside authority
+
+calibration.complete_batch
+  → one atomic mutation validates and completes the claimed slot set
+```
+
+For the default 810-job tree, 64 durable slots require no more than 13 claim batches and 13 completion batches. The compute-worker count is independently bounded from 1 to 64; the verified default is eight compute workers over 64 durable slots.
+
+This batching changes transport cost, not job identity, worker ownership, candidate semantics, or canonical admission.
 
 ## Exact candidate witness
 
@@ -63,7 +88,7 @@ Every admitted branch candidate retains:
 - branch identity;
 - operation and tree identity;
 - candidate Hash72;
-- Pass 190 execution request and execution receipt identity.
+- Pass 190 execution request and durable completion identity.
 
 The address witness uses
 
@@ -81,13 +106,13 @@ No floating-point value participates in candidate identity, equality, admission,
 Pass 190 invocation remains the serialized mutation authority. Pass 199 deliberately separates candidate computation from candidate admission:
 
 ```text
-claim under Pass 190 authority
+batch claim under Pass 190 authority
   → release authority
-  → compute immutable exact candidate
-  → validate and persist candidate under Pass 190 authority
+  → compute immutable exact candidates concurrently
+  → validate and persist the batch under Pass 190 authority
 ```
 
-This permits real concurrent candidate computation without allowing concurrent canonical mutation.
+This permits concurrent candidate computation without concurrent canonical mutation.
 
 ## Canonical ordinal serialization
 
@@ -105,7 +130,7 @@ The singleton operation:
 8. records the closed or rejected tree in canonical Pass 190 state;
 9. emits one canonical tree-commit receipt.
 
-Worker completion receipts are durable candidate evidence. They are not canonical tree admissions.
+Submission, worker-slot, claim, and completion receipts are durable transport evidence. They are not canonical tree admissions.
 
 ## Cancellation, retry, and recovery
 
@@ -120,11 +145,11 @@ Pass 199 inherits and validates Pass 190 behavior for:
 - idempotent tree preparation;
 - receipt-independent run identity.
 
-Cancellation, retry, worker count, worker ordering, and process restart must not alter the final ordered state root.
+Cancellation, retry, worker count, worker ordering, batching, and process restart must not alter the final ordered state root.
 
 ## Replay
 
-After singleton admission, Pass 199 performs a complete independent replay of every branch candidate.
+After singleton admission, Pass 199 performs a complete independent replay of all 810 branch candidates for the default tree.
 
 The replay must reproduce:
 
@@ -133,7 +158,7 @@ The replay must reproduce:
 - canonical ordinal ordering;
 - the final ordered state root.
 
-Replay mismatch prevents closure and prevents Pass 198 simplification proof recording.
+Replay mismatch prevents closure and prevents Pass 198 simplification-proof recording.
 
 ## Pass 198 integration
 
@@ -143,7 +168,7 @@ A closed distributed run is recorded in the Pass 198 atomic event ledger with ex
 PASS199_DURABLE_DISTRIBUTED
 ```
 
-The existing proof-carrying simplification records receive the distributed run identity only after:
+Proof-carrying simplification records receive the distributed run identity only after:
 
 - zero A/B mismatches;
 - zero admitted singular states;
@@ -155,20 +180,27 @@ Pass 199 does not automatically promote any simplification. Compiler and runtime
 
 ## Registered Pass 190 overlay operations
 
-Pass 199 adds three governed operations above the 42-operation Pass 190 Iteration 7 registry:
+The authoritative Pass 199 V2 registry contains 49 operations: the inherited 42 Pass 190 Iteration 7 operations plus seven Pass 199 operations.
+
+The Pass 199 operations are:
 
 - `calibration.evaluate_branch` — pure immutable candidate operation;
-- `calibration.complete_claimed` — durable candidate receipt mutation;
-- `calibration.commit_tree` — singleton canonical tree admission.
+- `calibration.complete_claimed` — single-candidate compatibility completion;
+- `calibration.commit_tree` — singleton canonical tree admission;
+- `calibration.submit_tree` — atomic durable-tree submission;
+- `calibration.claim_batch` — atomic one-job-per-worker batch claim;
+- `calibration.complete_batch` — atomic validated candidate-batch completion;
+- `calibration.ensure_workers` — atomic durable worker-slot creation or refresh.
 
-The combined registry contains 45 operations and retains every inherited Pass 190 operation unchanged.
+Every inherited Pass 190 operation remains unchanged.
 
-## Runtime and API surfaces
+## Runtime, API, and visual surfaces
 
 Runtime:
 
 - `hhs_backend/runtime/hhs_pass199_distributed_calibration_fabric_v1.py`
 - `hhs_backend/runtime/hhs_pass199_distributed_calibration_runtime_v1.py`
+- `hhs_backend/runtime/hhs_pass199_distributed_calibration_runtime_v2.py`
 
 API:
 
@@ -179,9 +211,16 @@ API:
 - `GET /api/runtime/distributed-calibration/tools`
 - `POST /api/runtime/distributed-calibration/tools/invoke`
 
-## Acceptance criteria
+Visual IDE:
 
-The first Pass 199 workload is verified when:
+- Pass 199 durable calibration panel;
+- compute-worker selector;
+- state, job, slot, batch, replay, and commit receipt projection;
+- no frontend fabrication of canonical state.
+
+## Verified workload requirements
+
+The first Pass 199 workload is accepted only when:
 
 - Pass 190 Iterations 1–7 inherited authority workflows remain passing;
 - all Pass 199 lifecycle tests pass;
@@ -190,15 +229,17 @@ The first Pass 199 workload is verified when:
 - direct in-lock execution of a calibration branch is rejected;
 - cancellation and retry preserve the state root;
 - stale lease recovery preserves the state root;
-- the default 405-state tree creates and completes 810 branch jobs;
+- the default 405-state tree creates and completes 810 jobs;
 - 320 states are admitted and 85 are explicit domain rejections;
 - 1,658,880 VM5184 address comparisons close with zero mismatches;
+- 64 durable slots complete the tree in no more than 13 claim/completion batches;
 - candidate computation occurs outside the authority lock;
-- complete replay reproduces the ordered state root;
+- complete 810-branch replay reproduces the ordered state root;
 - exactly one canonical `calibration.commit_tree` receipt exists;
 - four proof-carrying simplification records are bound into Pass 198;
-- floating-point canonical operations remain absent.
+- floating-point canonical operations remain absent;
+- API and visual projections pass source and syntax validation.
 
 ## Claim boundary
 
-Pass 199 does not claim multi-host distributed consensus, external provider execution, arbitrary registered adapters, automatic compiler mutation, automatic runtime admission, live DigitalOcean acceptance, or physical hardware calibration. The initial implementation is a single-host durable worker fabric with parallel immutable candidate computation and one serialized VM81 admission authority.
+Pass 199 does not claim multi-host distributed consensus, external provider execution, arbitrary registered adapters, automatic compiler mutation, automatic runtime admission, live DigitalOcean acceptance, or physical hardware calibration. The implementation is a single-host durable worker fabric with parallel immutable candidate computation, bounded authority batches, and one serialized VM81 tree-admission authority.
