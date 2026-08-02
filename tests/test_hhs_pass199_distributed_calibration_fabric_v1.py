@@ -15,7 +15,8 @@ from hhs_backend.runtime.hhs_pass199_distributed_calibration_fabric_v1 import (
     evaluate_branch_candidate,
 )
 from hhs_backend.runtime.hhs_pass199_distributed_calibration_runtime_v1 import (
-    BATCH_OPERATION_ID,
+    BATCH_OPERATION_IDS,
+    BATCH_SUBMIT_OPERATION_ID,
     Pass199BatchOperationRegistry,
     Pass199DistributedCalibrationRuntime,
     RestartSafePass199DurableCalibrationContext,
@@ -47,13 +48,15 @@ class Pass199DistributedCalibrationTests(unittest.TestCase):
         self.assertEqual(tuple(record.operation_id for record in base.records[-3:]), PASS199_OPERATION_IDS)
         self.assertEqual(len(base.records), 45)
         registry = Pass199BatchOperationRegistry()
-        self.assertEqual(len(registry.records), 46)
-        self.assertEqual(tuple(record.operation_id for record in registry.records[-4:]), (*PASS199_OPERATION_IDS, BATCH_OPERATION_ID))
+        expected_tail = (*PASS199_OPERATION_IDS, *BATCH_OPERATION_IDS)
+        self.assertEqual(len(registry.records), 48)
+        self.assertEqual(tuple(record.operation_id for record in registry.records[-6:]), expected_tail)
         self.assertEqual(registry.resolve(BRANCH_OPERATION_ID).effect_class, "pure")
         self.assertEqual(registry.resolve(COMPLETE_OPERATION_ID).effect_class, "mutation")
         self.assertEqual(registry.resolve(COMMIT_OPERATION_ID).effect_class, "mutation")
-        self.assertEqual(registry.resolve(BATCH_OPERATION_ID).effect_class, "mutation")
-        self.assertEqual(registry.payload["distributed_calibration_operation_count"], 4)
+        for operation_id in BATCH_OPERATION_IDS:
+            self.assertEqual(registry.resolve(operation_id).effect_class, "mutation")
+        self.assertEqual(registry.payload["distributed_calibration_operation_count"], 6)
 
     def test_small_tree_runs_through_durable_workers_and_singleton_commit(self) -> None:
         report = self.runtime.run(
@@ -71,6 +74,11 @@ class Pass199DistributedCalibrationTests(unittest.TestCase):
         self.assertTrue(report["singleton_commit"]["receipt_verified"])
         self.assertTrue(report["replay"]["deterministic"])
         self.assertGreaterEqual(report["worker_fabric"]["peak_parallel_candidate_workers"], 1)
+        self.assertGreaterEqual(report["worker_fabric"]["claim_batch_count"], 1)
+        self.assertEqual(
+            report["worker_fabric"]["claim_batch_count"],
+            report["worker_fabric"]["completion_batch_count"],
+        )
         self.assertEqual(len(self.runtime.pass198.list_simplifications()), 4)
 
     def test_resume_returns_same_report_without_second_commit(self) -> None:
@@ -79,7 +87,7 @@ class Pass199DistributedCalibrationTests(unittest.TestCase):
         self.assertEqual(second["report_hash72"], first["report_hash72"])
         receipts = self.runtime.context.receipts_after(0, 1000)
         commits = [item for item in receipts if item["operation_id"] == COMMIT_OPERATION_ID]
-        batches = [item for item in receipts if item["operation_id"] == BATCH_OPERATION_ID]
+        batches = [item for item in receipts if item["operation_id"] == BATCH_SUBMIT_OPERATION_ID]
         self.assertEqual(len(commits), 1)
         self.assertGreaterEqual(len(batches), 1)
 
