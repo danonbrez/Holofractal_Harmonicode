@@ -6,7 +6,7 @@ LDFLAGS ?=
 BUILD := build
 LIBOBJ := $(BUILD)/hhs_pass189_hqlh.o
 
-.PHONY: all clean test disassemble validate python-test iteration2-test surface-test iteration2-surface-test
+.PHONY: all clean test disassemble validate python-test iteration2-test iteration3-test surface-test iteration2-surface-test iteration3-surface-test
 
 all: $(BUILD)/libhhs_pass189.a $(BUILD)/libhhs_pass189.so $(BUILD)/hhs_pass189_cli $(BUILD)/hhs_pass189_test
 
@@ -41,19 +41,27 @@ python-test:
 iteration2-test:
 	PYTHONPATH=python python3 -m unittest -v python/test_hhs_pass189_iteration2.py
 
+iteration3-test:
+	PYTHONPATH=python python3 -m unittest -v python/test_hhs_pass189_iteration3.py
+
 surface-test:
 	python3 tools/hhs_pass189_surface_smoke.py
 
 iteration2-surface-test:
 	python3 tools/hhs_pass189_iteration2_surface_smoke.py
 
+iteration3-surface-test:
+	python3 tools/hhs_pass189_iteration3_surface_smoke.py
+
 validate: clean all test disassemble
 	$(BUILD)/hhs_pass189_cli validate
 	$(MAKE) python-test
 	$(MAKE) iteration2-test
+	$(MAKE) iteration3-test
 	$(MAKE) surface-test
 	$(MAKE) iteration2-surface-test
-	python3 -m py_compile python/hhs_pass189.py python/hhs_pass189_iteration2.py server/hhs_pass189_server.py server/hhs_pass189_iteration2_server.py
+	$(MAKE) iteration3-surface-test
+	python3 -m py_compile python/hhs_pass189.py python/hhs_pass189_iteration2.py python/hhs_pass189_iteration3.py server/hhs_pass189_server.py server/hhs_pass189_iteration2_server.py server/hhs_pass189_iteration3_server.py
 	bash -n deployment/digitalocean/install.sh deployment/digitalocean/verify.sh
 
 clean:
