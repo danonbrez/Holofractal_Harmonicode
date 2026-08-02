@@ -1,0 +1,194 @@
+name: Pass 200A Proof-Carrying Shadow Optimization
+
+on:
+  pull_request:
+    paths:
+      - 'HHS_PASS_200A_PROOF_CARRYING_SHADOW_OPTIMIZATION.md'
+      - 'hhs_backend/runtime/hhs_pass200a_proof_carrying_optimization_v1.py'
+      - 'hhs_backend/api/pass200a_optimization_routes.py'
+      - 'hhs_backend/visual_server.py'
+      - 'applications/holofractal_harmonizer/src/pass200a-proof-carrying-optimization.mjs'
+      - 'applications/holofractal_harmonizer/src/production-startup-coordinator.mjs'
+      - 'tests/test_hhs_pass200a_proof_carrying_optimization_v1.py'
+      - 'docs/pass200a/**'
+      - 'evidence/pass200a/**'
+      - '.github/workflows/pass200a-proof-carrying-shadow-optimization.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-pass200a:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - name: Checkout exact tree
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install inherited runtime dependencies
+        run: python -m pip install -r requirements.txt
+
+      - name: Compile Pass 200A surfaces
+        run: |
+          python -m py_compile \
+            hhs_backend/runtime/hhs_pass200a_proof_carrying_optimization_v1.py \
+            hhs_backend/api/pass200a_optimization_routes.py \
+            tests/test_hhs_pass200a_proof_carrying_optimization_v1.py
+
+      - name: Run proof, bundle, shadow, restart, and tamper tests
+        run: python -m unittest -v tests.test_hhs_pass200a_proof_carrying_optimization_v1
+
+      - name: Execute four production holdouts and compiler shadow suite
+        run: |
+          mkdir -p evidence/pass200a-ci
+          HHS_PASS200A_STATE_ROOT="$PWD/.hhs/pass200a-ci" python - <<'PY'
+          import json
+          from pathlib import Path
+          from hhs_backend.runtime.hhs_pass200a_proof_carrying_optimization_v1 import (
+              CLASSIFICATION,
+              Pass200AProofCarryingOptimizationAuthority,
+          )
+
+          root = Path('.hhs/pass200a-ci')
+          authority = Pass200AProofCarryingOptimizationAuthority(state_root=root)
+          try:
+              qualification = authority.run_holdouts(
+                  worker_count=8,
+                  vm81_receipt_hash72='7' * 72,
+              )
+              envelopes = qualification['envelopes']
+              total_states = sum(item['summary']['evaluated_parameter_states'] for item in envelopes)
+              admitted = sum(item['summary']['admitted_parameter_states'] for item in envelopes)
+              rejected = sum(item['summary']['domain_rejected_parameter_states'] for item in envelopes)
+              comparisons = sum(item['summary']['address_comparisons'] for item in envelopes)
+              jobs = sum(item['summary']['branch_job_count'] for item in envelopes)
+              mutations = sum(len(item['negative_mutations']) for item in envelopes)
+              assert qualification['closed'] is True
+              assert qualification['independent_envelope_count'] == 4
+              assert qualification['bundle_count'] == 4
+              assert qualification['compiler_candidate_count'] == 4
+              assert qualification['automatic_promotion_count'] == 0
+              assert total_states == 290
+              assert admitted == 263
+              assert rejected == 27
+              assert comparisons == 1_363_392
+              assert jobs == 580
+              assert mutations == 24
+              assert len({item['tree_hash72'] for item in envelopes}) == 4
+              assert len({item['config_hash72'] for item in envelopes}) == 4
+              assert len({item['report_hash72'] for item in envelopes}) == 4
+              assert len({item['state_root_hash72'] for item in envelopes}) == 4
+              assert all(item['status'] == 'COMPILER_CANDIDATE' for item in qualification['bundles'])
+              assert all(item['compiler_mode'] == 'SHADOW' for item in qualification['bundles'])
+
+              shadows = authority.execute_all_shadows(
+                  worker_count=8,
+                  vm81_receipt_hash72='8' * 72,
+              )
+              assert shadows['closed'] is True
+              assert shadows['bundle_count'] == 4
+              assert shadows['shadow_match_count'] == 4
+              assert shadows['reference_return_count'] == 4
+              assert shadows['candidate_activation_count'] == 0
+              assert all(item['returned_path'] == 'REFERENCE' for item in shadows['records'])
+              assert all(item['exact_match'] for item in shadows['records'])
+              assert all(item['witness_match'] for item in shadows['records'])
+              assert all(item['replay_match'] for item in shadows['records'])
+
+              status = authority.status()
+              assert status['closed'] is True
+              assert status['classification'] == CLASSIFICATION
+              assert status['compiler_mode'] == 'SHADOW'
+              assert status['candidate_activation_count'] == 0
+              assert status['canary_enabled'] is False
+              assert status['active_enabled'] is False
+              assert status['frozen_constraint_enabled'] is False
+              assert status['event_chain']['ok'] is True
+
+              evidence = {
+                  'schema': 'HHS_PASS_200A_VALIDATION_RECEIPT_V1',
+                  'contract': status['contract'],
+                  'classification': status['classification'],
+                  'closed': True,
+                  'summary': {
+                      'independent_envelopes': 4,
+                      'parameter_states': total_states,
+                      'durable_branch_jobs': jobs,
+                      'admitted_states': admitted,
+                      'domain_rejections': rejected,
+                      'address_comparisons': comparisons,
+                      'negative_mutations': mutations,
+                      'compiler_candidate_bundles': 4,
+                      'shadow_matches': shadows['shadow_match_count'],
+                      'reference_returns': shadows['reference_return_count'],
+                      'candidate_activations': shadows['candidate_activation_count'],
+                  },
+                  'qualification_hash72': qualification['qualification_hash72'],
+                  'shadow_suite_hash72': shadows['shadow_suite_hash72'],
+                  'status_hash72': status['status_hash72'],
+                  'event_chain': status['event_chain'],
+                  'bundle_hash72s': [item['bundle_hash72'] for item in qualification['bundles']],
+                  'envelope_hash72s': [item['envelope_hash72'] for item in envelopes],
+                  'claim_boundary': {
+                      'reference_result_remains_authoritative': True,
+                      'candidate_execution_is_authority': False,
+                      'compiler_auto_activation': False,
+                      'runtime_auto_admission': False,
+                      'canary_enabled': False,
+                      'active_enabled': False,
+                      'frozen_constraint_enabled': False,
+                      'live_digitalocean_acceptance': False,
+                      'physical_hardware_evidence': False,
+                  },
+              }
+              Path('evidence/pass200a-ci/PASS200A_VALIDATION_RECEIPT.json').write_text(
+                  json.dumps(evidence, sort_keys=True, separators=(',', ':')) + '\n',
+                  encoding='utf-8',
+              )
+              tip = status['event_chain']['tip_hash72']
+          finally:
+              authority.close()
+
+          reopened = Pass200AProofCarryingOptimizationAuthority(state_root=root)
+          try:
+              status = reopened.status()
+              assert status['closed'] is True
+              assert status['independent_envelope_count'] == 4
+              assert status['bundle_count'] == 4
+              assert status['shadow_match_count'] == 4
+              assert status['candidate_activation_count'] == 0
+              assert status['event_chain']['tip_hash72'] == tip
+          finally:
+              reopened.close()
+          PY
+
+      - name: Reject floating-point canonical operations
+        run: |
+          if grep -RInE '(^|[^[:alnum:]_])(float\(|Decimal\(|numpy|np\.)' \
+            hhs_backend/runtime/hhs_pass200a_proof_carrying_optimization_v1.py; then
+            echo 'Floating-point canonical operation detected.' >&2
+            exit 1
+          fi
+
+      - name: Verify authority and API wiring
+        run: |
+          grep -Fq 'reference_result_remains_authoritative' hhs_backend/runtime/hhs_pass200a_proof_carrying_optimization_v1.py
+          grep -Fq 'candidate_execution_is_authority' hhs_backend/runtime/hhs_pass200a_proof_carrying_optimization_v1.py
+          grep -Fq 'COMPILER_CANDIDATE' hhs_backend/runtime/hhs_pass200a_proof_carrying_optimization_v1.py
+          grep -Fq 'runtime_controller.authorized_tick' hhs_backend/api/pass200a_optimization_routes.py
+          grep -Fq '/api/runtime/optimization-authority' hhs_backend/api/pass200a_optimization_routes.py
+          grep -Fq 'Pass 200A does not activate an optimization' HHS_PASS_200A_PROOF_CARRYING_SHADOW_OPTIMIZATION.md
+
+      - name: Upload Pass 200A evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass200a-proof-carrying-shadow-optimization
+          path: evidence/pass200a-ci/PASS200A_VALIDATION_RECEIPT.json
+          if-no-files-found: error
+          retention-days: 30
