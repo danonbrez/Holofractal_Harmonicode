@@ -13,7 +13,7 @@ The repository is a **working transitional hybrid**, not a scaffold.
 | Pass 190 registry | 42 governed operations: 10 inherited native ABI operations and 32 exact VM81-authority fallback operations. |
 | Pass 191 | The universal Genesis-to-runtime repository-hydration contract is frozen on `main`. Contract presence does not by itself claim full Pass 191 implementation or repository-wide verification. |
 | Visual environment | `bash start.sh` launches the integrated HHS visual development assistant through `hhs_backend.visual_server:app`. |
-| Deployment target | DigitalOcean/systemd deployment assets are repository-native for the Pass 190 service and worker path. Vercel is not part of that acceptance path. |
+| Deployment target | DigitalOcean/systemd deployment assets are repository-native for Pass 189 Iterations 1–4, the Pass 190 service and worker path, and the Pass 196 integrated environment. Vercel is not part of those acceptance paths. |
 
 The latest completed Pass 190 layer intentionally does **not** claim external provider execution, arbitrary subprocess execution, mutating target execution, multi-host consensus, final Pass 190 completion, or live DigitalOcean production acceptance.
 
@@ -123,6 +123,26 @@ The Pass 190 service is designed to run on `127.0.0.1:8190` behind the repositor
 /var/lib/hhs/pass190-authority.sqlite3
 ```
 
+## DigitalOcean deployment operations
+
+The canonical installation and operations runbook for the Pass 189 DigitalOcean stack is:
+
+[`docs/deployment/DIGITALOCEAN_INSTALLATION_OPERATIONS_MAINTENANCE.md`](docs/deployment/DIGITALOCEAN_INSTALLATION_OPERATIONS_MAINTENANCE.md)
+
+It documents:
+
+- Ubuntu host preparation and repository installation;
+- Pass 189 systemd dependency ordering and nginx TLS routing;
+- local and public verification;
+- controlled upgrades and restart procedures;
+- SQLite and filesystem backups;
+- restore and rollback;
+- security maintenance, logs, troubleshooting, and incident isolation;
+- routine daily, weekly, and monthly maintenance;
+- the default `8190` collision between Pass 189 Iteration 2 and Pass 190.
+
+Before co-hosting multiple pass services, assign and record a non-conflicting loopback port plan. Pass 196 uses `127.0.0.1:8080`; Pass 189 uses `8189–8192`; Pass 190 currently defaults to `8190` and therefore requires relocation or a separate host when Pass 189 Iteration 2 is enabled.
+
 ## Integrated visual environment
 
 ### Prerequisites
@@ -223,6 +243,7 @@ It explains the dyadic–quartic phase lattice, critical resonance, integer and 
 - [`RUNTIME_FLOW.md`](RUNTIME_FLOW.md) — end-to-end execution, receipt, replay, worker, API, and visual projection flow
 - [`GLOSSARY.md`](GLOSSARY.md) — stable definitions for the principal HHS terms
 - [`AGENTS.md`](AGENTS.md) — repository navigation and implementation rules
+- [`docs/deployment/DIGITALOCEAN_INSTALLATION_OPERATIONS_MAINTENANCE.md`](docs/deployment/DIGITALOCEAN_INSTALLATION_OPERATIONS_MAINTENANCE.md) — DigitalOcean installation, service operation, backup, restore, rollback, security, troubleshooting, and maintenance
 - [`HHS_PASS_190_ITERATION_7_DURABLE_WORKER_EXECUTION_SCHEDULING.md`](HHS_PASS_190_ITERATION_7_DURABLE_WORKER_EXECUTION_SCHEDULING.md) — current verified operation-fabric contract
 
 ## Baseline validation
