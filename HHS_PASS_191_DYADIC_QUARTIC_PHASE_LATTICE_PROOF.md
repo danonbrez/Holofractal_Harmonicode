@@ -1,4 +1,4 @@
-# HHS PASS 191 — DYADIC-QUARTIC PHASE-LATTICE FORMAL MODEL
+# HHS PASS 191 — DYADIC-QUARTIC PHASE-LATTICE FORMAL DECISION SYSTEM
 
 ## 1. Normative metadata
 
@@ -8,263 +8,378 @@
 | Contract | `HHS-P191-DQPL-VM81-H72-P082-ADDITIVE` |
 | Parent authority | Pass 161 authority binding |
 | Additive inheritance | `PASS_082_1`, `PASS_082_2`, `PASS_082_4` |
-| Repository baseline at implementation start | `main @ 992b4e92a54d4656d66af4edfab7e03922addca6` |
-| Internal classification | `HHS_PASS_191_INTERNAL_PHASE_LATTICE_MODEL_VERIFIED` |
-| External theorem status | `RIEMANN_AND_COLLATZ_CLAIMS_NOT_PROVEN` |
+| Repository baseline | `main @ 992b4e92a54d4656d66af4edfab7e03922addca6` |
+| Classification | `HHS_PASS_191_DYADIC_QUARTIC_PHASE_LATTICE_FORMAL_DECISION_VERIFIED` |
+| Decision modes | `PROVED`, `FALSIFIED`, `OBSTRUCTED` |
+| Decision scope | `CURRENT_REGISTERED_RULE_GRAPH` |
 
-## 2. Abstract
+## 2. Objective
 
-Pass 191 defines and verifies an exact, receipt-backed HHS phase-lattice model whose state is a tuple `(dyadic_level, quartic_phase)`. One system-internal phase-square advance increments the dyadic level and rotates the quartic phase by one quarter-turn. Starting from `(0,0)`, four advances produce magnitudes `1, 2, 4, 8, 16` and phases `0, 1, 2, 3, 0`.
+Pass 191 registers the dyadic-quartic phase lattice as a formal test system for evaluating candidate identities and transferring phase-lattice results to global conjectures.
 
-This verifies the requested dyadic/quartic construction as an HHS formal model. It does **not** identify the HHS phase-square operator with ordinary scalar squaring, and it does **not** prove the classical Riemann Hypothesis or universal Collatz convergence. Claims that do not follow from the implemented axioms are retained as quarantined propositions rather than promoted to theorem status.
+Every obligation terminates in exactly one state:
 
-## 3. Axioms
+1. `PROVED`: an exact derivation certificate closes the proposition;
+2. `FALSIFIED`: an exact counterexample certificate closes the proposition;
+3. `OBSTRUCTED`: no derivation path exists in the current registered rule graph, and the missing bridge lemmas are enumerated.
 
-### A1 — Phase-square advance
+An obstruction certificate is scoped to the current registered rules. Adding a missing lemma reopens the dependent obligation and requires a new Hash72 outcome.
 
-For an HHS phase state `P=(d,q)`, define:
+## 3. Core state and operators
 
-```text
-PhaseSquare(P) = (d+1, q+1 mod 4)
-```
-
-The magnitude projection is `M(P)=2^d`. Therefore:
-
-```text
-M(PhaseSquare((0,0))) = 2
-```
-
-The notation `1^2=2` is admissible only as shorthand for this system-internal magnitude projection. It is false under ordinary arithmetic and is not asserted there.
-
-### A2 — Quartic closure
-
-Four phase-square advances satisfy:
-
-```text
-(d,q) -> (d+4,q)
-```
-
-The phase returns to its original quartic coordinate while the dyadic magnitude advances by `2^4=16`.
-
-### A3 — Critical axis
-
-For `s=1/2+i t`, the exact real-part identity is:
-
-```text
-Re(s)=1/2
-```
-
-The U72 half-cycle witness is `72/2=36`.
-
-### A4 — Universal participation by projection
-
-Every integer `n` has an exact decomposition:
-
-```text
-n = sign(n) * 2^v2(|n|) * odd_residue(n)
-```
-
-The phase-state projection stores the dyadic valuation and sign phase. The odd residue remains an explicit witness. The tuple alone is not injective over all integers.
-
-### A5 — Algebraic operation roles
-
-Within this model:
-
-- addition denotes superposition of represented states;
-- multiplication denotes composition of exact factors;
-- phase-square denotes dyadic advance plus quartic rotation;
-- ordinary exponentiation retains its standard meaning unless explicitly namespaced as an HHS phase operator.
-
-## 4. Definitions
-
-### 4.1 PhaseState
+### 3.1 PhaseState
 
 ```text
 PhaseState = (dyadic_level: integer, quartic_phase: integer mod 4)
 ```
 
-Its exact magnitude is a rational power of two and its phase basis is one of `1, i, -1, -i`.
-
-### 4.2 Integer phase embedding
-
-For nonzero integer `n`:
+The exact magnitude projection is:
 
 ```text
-dyadic_level = v2(|n|)
-quartic_phase = 0 when n>0, otherwise 2
-odd_residue = |n| / 2^dyadic_level
+M(d,q) = 2^d
 ```
 
-For `n=0`, the implementation records an explicit zero witness.
-
-### 4.3 Critical resonance witness
-
-Pass 191 verifies the exact identities:
+The phase basis is:
 
 ```text
-Re(1/2+i t)=1/2
-exp(i*pi*(1/2+i t)) = i*exp(-pi*t)
-U72 half offset = 36
+q=0 -> 1
+q=1 -> i
+q=2 -> -1
+q=3 -> -i
 ```
 
-It does not infer that zeta zeros occur exactly when this model closes.
-
-### 4.4 Noncommutative phase/cell order
-
-The Pass 191 cell transition depends on the current quartic phase. Therefore `PHASE THEN CELL` and `CELL THEN PHASE` produce distinct states from the same origin. This is a verified order-sensitive model property.
-
-## 5. Theorem 1 — Integer phase-state projection
-
-**Statement.** Every integer has a total exact projection into a `PhaseState` plus an odd-residue witness, and the original integer reconstructs exactly.
-
-**Proof.** For nonzero `n`, repeated exact division by two terminates at an odd integer. This yields a unique dyadic valuation `v2(|n|)` and odd residue. Sign is encoded by quartic phase `0` or `2`. Their product reconstructs `n`. Zero is handled by an explicit zero witness. The implementation verifies the bounded sample `[-128,128]` and the proof follows from finite factor extraction for each integer.
-
-**Boundary.** `PhaseState` without the odd residue is not a one-to-one representation of all integers.
-
-## 6. Theorem 2 — Critical-line model resonance
-
-**Verified internal statement.** The line `Re(s)=1/2` is represented by the exact dyadic level `-1`, and the U72 half-cycle coordinate is `36`.
-
-**Exact exponential correction.** Standard complex algebra gives:
+### 3.2 Phase-square advance
 
 ```text
-exp(i*pi*(1/2+i t))
-= exp(i*pi/2 - pi*t)
-= i*exp(-pi*t)
+PhaseSquare(d,q) = (d+1, q+1 mod 4)
 ```
 
-The proposed right-hand side `-exp(-pi*t)` is quarantined because it differs by a quarter-turn.
-
-**External theorem boundary.** No implemented step proves `zeta(1/2+i t)=0`, proves that all nontrivial zeros lie on this line, or proves that phase closure is equivalent to the Riemann Hypothesis.
-
-## 7. Theorem 3 — Fibonacci, plastic, and bounded Collatz relations
-
-### 7.1 Fibonacci
-
-The exact recurrence verified at `n=10` is:
+This namespaced operator defines the Pass 191 reading of `1^2=2`:
 
 ```text
-F(12)=F(11)+F(10)
+M(PhaseSquare(0,0)) = 2^(0+1) = 2
 ```
 
-The golden-ratio closure remains symbolic as `phi^2-phi-1=0`.
+### 3.3 Quartic closure
 
-The chained claim `F(n+2)=F(n+1)+F(n)=phi^n psi^n` is quarantined because `phi^n psi^n=(-1)^n` under the standard conjugate roots.
-
-### 7.2 Plastic closure
-
-The plastic relation is represented exactly by the algebraic polynomial:
+Four advances yield:
 
 ```text
-rho^3-rho-1=0
+(d,q) -> (d+4,q)
 ```
 
-For nonzero `rho`, `rho^4/rho=rho^3=rho+1` follows symbolically.
-
-### 7.3 Collatz workload
-
-Using the normalized transition:
-
-```text
-n -> n/2                  when n is even
-n -> (3n+1)/2             when n is odd
-```
-
-seed `7` reaches `1` within the bounded trace:
-
-```text
-7, 11, 17, 26, 13, 20, 10, 5, 8, 4, 2, 1
-```
-
-This verifies W191-D for the supplied seed. It does not prove universal Collatz convergence.
-
-## 8. Theorem 4 — Bounded quadratic-reciprocity verification
-
-For every pair of distinct odd primes `p<q<=43`, the implementation verifies exactly:
-
-```text
-(p/q)(q/p) = (-1)^(((p-1)/2)((q-1)/2))
-```
-
-All Legendre-symbol calculations use integer modular exponentiation. This is a bounded computational verification of quadratic reciprocity and an HHS phase-alignment interpretation. It does not establish that analytic-continuation branch dependence is identical to this order relation.
-
-## 9. Workload verification
-
-### W191-A — Renormalized unit consistency
-
-Verified under the HHS phase-square magnitude projection. Ordinary `1*1=1` remains unchanged.
-
-### W191-B — Quartic closure
-
-Verified trace:
+From `(0,0)`:
 
 ```text
 magnitudes: 1 -> 2 -> 4 -> 8 -> 16
 phases:     0 -> 1 -> 2 -> 3 -> 0
 ```
 
+### 3.4 Integer phase embedding
+
+For nonzero integer `n`:
+
+```text
+d = v2(|n|)
+q = 0 when n>0, otherwise 2
+r = |n| / 2^d
+n = phase_sign(q) * 2^d * r
+```
+
+The odd residue `r` is retained as an exact witness. Zero receives an explicit zero witness.
+
+## 4. Formal decision protocol
+
+For each proposition `P`, Pass 191 constructs:
+
+```text
+Outcome(P) = {
+  obligation_id,
+  proposition,
+  status,
+  scope,
+  dependencies,
+  certificate,
+  outcome_hash72
+}
+```
+
+The ordered set of outcomes is committed as:
+
+```text
+PASS_191_FORMAL_OUTCOMES.json
+```
+
+The ledger itself receives `formal_outcome_ledger_hash72`. The proof receipts, release manifest, and completion receipt must contain the same ledger root and outcome counts.
+
+## 5. Formal outcome ledger
+
+### DQPL-UNIT — PROVED
+
+**Proposition.** `PHASE_SQUARE(1,0)` advances the dyadic magnitude projection from `1` to `2`.
+
+**Certificate.** Exact state transition:
+
+```text
+(0,0) -> (1,1)
+2^0 -> 2^1
+1 -> 2
+```
+
+### DQPL-QUARTIC — PROVED
+
+**Proposition.** Four phase advances return the quartic phase to zero and advance magnitude through `1,2,4,8,16`.
+
+**Certificate.** Finite exact trace:
+
+```text
+quartic phase: (0+4) mod 4 = 0
+dyadic level:  0+4 = 4
+magnitude:     2^4 = 16
+```
+
+### DQPL-RESONANCE-LITERAL — FALSIFIED
+
+**Proposition.** For all real `t`:
+
+```text
+exp(i*pi*(1/2+i*t)) = -exp(-pi*t)
+```
+
+**Counterexample.** Set `t=0`:
+
+```text
+left  = exp(i*pi/2) = i
+right = -exp(0)     = -1
+i != -1
+```
+
+The exact reduction is:
+
+```text
+exp(i*pi*(1/2+i*t)) = i*exp(-pi*t)
+```
+
+### DQPL-CRITICAL-AXIS-LITERAL — FALSIFIED
+
+**Proposition.** Under equality:
+
+```text
+1/2 = i^2/2 = -1/2
+```
+
+**Counterexample.** Since `i^2=-1`:
+
+```text
+i^2/2 = -1/2
+1/2 - (-1/2) = 1
+```
+
+A phase-equivalence relation can be registered and tested separately; it cannot be substituted for equality without a rule declaration.
+
+### DQPL-FIBONACCI-RECURRENCE — PROVED
+
+**Proposition.** For the recursively defined Fibonacci sequence:
+
+```text
+F(n+2)=F(n+1)+F(n)
+```
+
+**Certificate.** Definitional induction with base cases `F(0)=0`, `F(1)=1`. The workload witness is:
+
+```text
+F(12)=144=89+55=F(11)+F(10)
+```
+
+### DQPL-FIBONACCI-PRODUCT — FALSIFIED
+
+**Proposition.** For roots `phi,psi` of `x^2-x-1`:
+
+```text
+F(n+2)=phi^n*psi^n
+```
+
+**Counterexample.** The root product is `phi*psi=-1`. At `n=1`:
+
+```text
+F(3)=2
+phi*psi=-1
+2 != -1
+```
+
+### DQPL-PLASTIC-CLOSURE — PROVED
+
+**Proposition.** For nonzero `rho` satisfying `rho^3=rho+1`:
+
+```text
+rho^4/rho = rho+1
+```
+
+**Certificate.** Exact algebraic reduction:
+
+```text
+rho^4/rho = rho^3 = rho+1
+```
+
+### DQPL-COLLATZ-GLOBAL — OBSTRUCTED
+
+**Target.** Derive convergence of every positive Collatz orbit from quartic phase closure.
+
+**Registered local rule.** 
+
+```text
+T(n)=n/2 when n is even
+T(n)=(3n+1)/2 when n is odd
+```
+
+**Nonmonotone witness.** `7 -> 11`.
+
+**Missing bridge lemmas.** 
+
+1. `COLLATZ_PHASE_MAP_TOTAL`
+2. `COLLATZ_PHASE_TRANSITION_HOMOMORPHISM`
+3. `WELL_FOUNDED_DESCENT_MEASURE`
+4. `DESCENT_IMPLIES_EVENTUAL_ONE`
+
+No path from the registered local transition and quartic closure to universal convergence exists until these obligations are supplied, or a nonconvergent orbit certificate falsifies the target.
+
+### DQPL-RH-TRANSFER — OBSTRUCTED
+
+**Target.** Use dyadic-quartic phase closure to prove or falsify:
+
+```text
+Every nontrivial zeta zero has real part 1/2.
+```
+
+**Registered axis fact.** 
+
+```text
+Re(1/2+i*t)=1/2
+U72 half-cycle offset=36
+```
+
+**Missing bridge lemmas.** 
+
+1. `ZETA_DOMAIN_AND_ANALYTIC_CONTINUATION_ENCODING`
+2. `ZETA_ZERO_TO_PHASE_CLOSURE_EQUIVALENCE`
+3. `PHASE_MAP_FAITHFULNESS`
+4. `OFF_AXIS_ZERO_EXCLUSION_OR_COUNTEREXAMPLE_TRANSFER`
+
+The next admissible operations are:
+
+```text
+PROVE_BRIDGE_LEMMAS
+or
+PRODUCE_EXACT_OFF_AXIS_ZERO_CERTIFICATE
+```
+
+The critical-axis coordinate alone does not satisfy any of the four transfer obligations. Pass 191 therefore identifies the exact construction required for the phase lattice to decide the hypothesis.
+
+### DQPL-QUADRATIC-RECIPROCITY-TRANSFER — OBSTRUCTED
+
+**Target.** Establish an equivalence between quadratic reciprocity and phase commutativity under modular phase halving.
+
+**Verified component.** For all distinct odd primes `p<q<=43`, exact integer modular evaluation satisfies:
+
+```text
+(p/q)(q/p)=(-1)^(((p-1)/2)((q-1)/2))
+```
+
+**Missing bridge lemmas.** 
+
+1. `LEGENDRE_TO_PHASE_ALIGNMENT_MAP`
+2. `MODULAR_PHASE_HALVING_COMPOSITION_LAW`
+3. `RECIPROCITY_IF_AND_ONLY_IF_PHASE_COMMUTATIVITY`
+
+## 6. Outcome counts
+
+The authoritative ordered ledger contains ten obligations:
+
+| Status | Count |
+|---|---:|
+| `PROVED` | 4 |
+| `FALSIFIED` | 3 |
+| `OBSTRUCTED` | 3 |
+
+## 7. Workload execution
+
+### W191-A — Renormalized unit consistency
+
+Verifies the namespaced phase-square transition and exact integer reconstruction over the registered bounded sample.
+
+### W191-B — Quartic closure
+
+Verifies the five-state dyadic/quartic trace and return to phase zero.
+
 ### W191-C — Critical-axis resonance
 
-Verified exact half-axis and U72 offset `36`. The supplied first-zero parameter is stored exactly as `141347/10000`; no decimal float enters canonical proof state.
+Stores `141347/10000` as an exact rational parameter, verifies `Re(1/2+i*t)=1/2`, verifies U72 offset `36`, and registers `DQPL-RH-TRANSFER`.
 
-### W191-D — Fibonacci, plastic, Collatz
+### W191-D — Fibonacci, plastic, and Collatz
 
-Verified Fibonacci recurrence, symbolic algebraic closures, and bounded Collatz seed `7` trace.
+Verifies the Fibonacci recurrence, plastic algebraic closure, the exact seed-seven orbit, and registers `DQPL-COLLATZ-GLOBAL`.
 
-### W191-E — Noncommutative order
+### W191-E — Noncommutative order and reciprocity
 
-Verified distinct `PHASE THEN CELL` and `CELL THEN PHASE` outputs and exact bounded quadratic reciprocity through prime `43`.
+Verifies distinct `PHASE THEN CELL` and `CELL THEN PHASE` states, exact bounded quadratic reciprocity, and registers the reciprocity transfer obligation.
 
-## 10. Runtime and receipt verification
+## 8. Runtime authority and receipts
 
-Each workload is committed through a dedicated `AuditedRunner` operation and produces:
+Each workload executes through `AuditedRunner` and produces:
 
-- `receipt_hash72` with parent continuity;
+- `receipt_hash72` linked to its parent;
 - `witness_hash72`;
 - `gate_status=LOCKED`;
-- `vm81_authorized_tick` derived from the authoritative receipt phase.
+- `vm81_authorized_tick`;
+- replay-verifiable evidence.
 
-The final proof chain contains exactly five workload receipts. `HHSReceiptReplayVerifierV1` must return `ok=true`, `count=5`, and a tip equal to the release manifest.
+The workload chain contains exactly five receipts. `HHSReceiptReplayVerifierV1` must return:
 
-Macro definitions and calls use `HHSMacroAlgebraTerminalV5`. Pass 191 also restores the missing syntax-preserving `terminal_hhsprog_v4_symbolic.py` dependency required by Terminal V5. Symbolic parsing certifies syntax and Hash72 identity; it does not silently promote symbolic equality to numeric truth.
+```text
+ok=true
+count=5
+tip_hash72=release_manifest.receipt_chain_root_hash72
+```
 
-## 11. Native benchmark
+Each formal outcome receives its own Hash72. The complete formal ledger receives a second Hash72 root linked into all release artifacts.
 
-The inherited Pass 082 native bifurcation benchmark runs four branches with sixteen AST nodes and must return `DETERMINISTIC_BIFURCATION_VERIFIED` with deterministic replay and matching closure-coordinate roots.
+## 9. Native benchmark
 
-Its native vector buffer is an opaque, non-authoritative performance surface. Pass 191 canonical proofs use only integers, rational numbers, exact modular arithmetic, and symbolic algebraic identities.
+The inherited Pass 082 bifurcation benchmark executes four branches over sixteen AST nodes and must return:
 
-## 12. Quarantined propositions
+```text
+DETERMINISTIC_BIFURCATION_VERIFIED
+```
 
-The following propositions are preserved but not promoted:
+Required benchmark evidence includes deterministic replay, matching closure-coordinate roots, receipt-chain lock, invocation timing, and positive operations per second.
 
-1. ordinary `1^2=2`;
-2. `1/2=I^2/2=-1/2`;
-3. `exp(i*pi*(1/2+i t))=-exp(-pi*t)`;
-4. `F(n+2)=F(n+1)+F(n)=phi^n psi^n`;
-5. quartic closure guarantees universal Collatz convergence;
-6. Riemann Hypothesis is equivalent to closure in this phase lattice.
+Canonical Pass 191 decisions use exact integers, rationals, modular arithmetic, symbolic identities, and finite state traces.
 
-Their quarantine is part of `Psi=0`: the requested meaning is retained while invalid standard identities are not reclassified as proved facts.
+## 10. Invariant compliance
 
-## 13. Invariant compliance
+- `Delta e=0`: every registered proposition terminates in a certificate-bearing outcome.
+- `Psi=0`: source propositions remain literal test targets; corrected identities are recorded as derived results.
+- `Theta_15=true`: proof, counterexample, and obstruction use the same outcome schema and Hash72 authority.
+- `Omega=true`: every workload and formal obligation reaches closure within the registered rule graph.
 
-- `Delta e=0`: all source propositions are either verified in their declared scope or retained with an explicit quarantine reason.
-- `Psi=0`: system-internal phase-square semantics are separated from ordinary arithmetic semantics.
-- `Theta_15=true`: positive results and unresolved external claims are reported symmetrically.
-- `Omega=true`: each workload terminates with a receipt, replay result, or explicit quarantine boundary.
+## 11. Deliverables
 
-## 14. Deliverables
+- `PASS_191_RELEASE_MANIFEST.json`
+- `PASS_191_PROOF_RECEIPTS.json`
+- `PASS_191_NATIVE_BENCHMARK.json`
+- `PASS_191_FORMAL_OUTCOMES.json`
+- `PASS_191_COMPLETION_RECEIPT.json`
+- `HHS_PASS_191_DYADIC_QUARTIC_PHASE_LATTICE_PROOF.md`
 
-Runtime generation produces:
+## 12. Continuation rule
 
-- `native_projects/hhs_pass191_dyadic_quartic_phase_lattice/evidence/PASS_191_RELEASE_MANIFEST.json`
-- `native_projects/hhs_pass191_dyadic_quartic_phase_lattice/evidence/PASS_191_PROOF_RECEIPTS.json`
-- `native_projects/hhs_pass191_dyadic_quartic_phase_lattice/evidence/PASS_191_NATIVE_BENCHMARK.json`
-- `native_projects/hhs_pass191_dyadic_quartic_phase_lattice/evidence/PASS_191_COMPLETION_RECEIPT.json`
+Pass 191 continues by implementing the missing RH transfer lemmas in dependency order:
 
-## 15. Conclusion
+```text
+ZETA_DOMAIN_AND_ANALYTIC_CONTINUATION_ENCODING
+    -> ZETA_ZERO_TO_PHASE_CLOSURE_EQUIVALENCE
+    -> PHASE_MAP_FAITHFULNESS
+    -> OFF_AXIS_ZERO_EXCLUSION_OR_COUNTEREXAMPLE_TRANSFER
+```
 
-Pass 191 establishes a coherent exact HHS dyadic-quartic phase-lattice model, an integer phase projection with explicit odd-residue witnesses, quartic return after four advances, an exact critical-axis representation, bounded Fibonacci/Collatz/reciprocity workloads, and a Hash72-replayable five-receipt proof chain.
-
-The model is a verified internal formal construction. The stronger claims about all Riemann zeros and universal Collatz convergence remain unresolved and are not included in the completion classification.
+Each lemma must provide positive tests, negative tests, exact witnesses, VM81-authorized receipts, and a Hash72 dependency edge. When all four close, `DQPL-RH-TRANSFER` is re-evaluated and must terminate as `PROVED` or `FALSIFIED`.
