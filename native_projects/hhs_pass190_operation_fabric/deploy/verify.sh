@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
-BASE_URL="${1:-http://127.0.0.1:8190}"
+BASE_URL="${1:-http://pass190-runtime.hhs.internal:8190}"
+resolvectl query pass190-runtime.hhs.internal | grep -q '127.190.0.1'
+resolvectl query -t SRV _http._tcp.pass190-runtime.hhs.internal | grep -q '8190'
 
 for _attempt in $(seq 1 40); do
   if health="$(curl --fail --silent --show-error "$BASE_URL/api/pass190/health" 2>/dev/null)"; then
@@ -82,24 +84,14 @@ assert openapi["x-hhs-governed-operation-count"] == 42
 assert openapi["x-hhs-native-operation-count"] == 10
 assert openapi["x-hhs-execution-operation-count"] == 11
 required = {
-    "/api/pass190/integrity",
-    "/api/pass190/arbitration",
-    "/api/pass190/resource-registry",
-    "/api/pass190/execution-runtime",
-    "/api/pass190/lease-receipts",
-    "/api/pass190/events",
-    "/api/pass190/receipts",
-    "/api/pass190/native-abi",
-    "/api/pass190/invoke",
-    "/api/pass190/replay",
-    "/api/pass190/compile",
-    "/api/pass190/compile-execute",
-    "/api/pass190/operations/workspace.create",
-    "/api/pass190/operations/job.submit_execution",
-    "/api/pass190/operations/worker.register",
-    "/api/pass190/operations/scheduler.tick",
+    "/api/pass190/integrity", "/api/pass190/arbitration", "/api/pass190/resource-registry",
+    "/api/pass190/execution-runtime", "/api/pass190/lease-receipts", "/api/pass190/events",
+    "/api/pass190/receipts", "/api/pass190/native-abi", "/api/pass190/invoke",
+    "/api/pass190/replay", "/api/pass190/compile", "/api/pass190/compile-execute",
+    "/api/pass190/operations/workspace.create", "/api/pass190/operations/job.submit_execution",
+    "/api/pass190/operations/worker.register", "/api/pass190/operations/scheduler.tick",
 }
 assert required.issubset(openapi["paths"])
 PY
 
-printf 'Pass 190 iteration 7 durable execution authority verification: PASS\n'
+printf 'Pass 190 iteration 7 durable execution authority verification: PASS url=%s\n' "$BASE_URL"

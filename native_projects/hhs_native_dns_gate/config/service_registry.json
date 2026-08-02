@@ -1,0 +1,14 @@
+{
+  "schema": "HHS_NATIVE_DNS_GATE_REGISTRY_V1",
+  "zone": "hhs.internal",
+  "ttl": 30,
+  "dns": {"name": "dns-gate.hhs.internal", "address": "127.0.0.55", "port": 53},
+  "services": [
+    {"service_id": "pass189.iteration1", "name": "pass189-runtime.hhs.internal", "aliases": ["pass189-i1.hhs.internal"], "address": "127.189.0.1", "port": 8189, "protocol": "http"},
+    {"service_id": "pass189.iteration2", "name": "pass189-calibration.hhs.internal", "aliases": ["pass189-i2.hhs.internal"], "address": "127.189.0.2", "port": 8190, "protocol": "http"},
+    {"service_id": "pass189.iteration3", "name": "pass189-adapter.hhs.internal", "aliases": ["pass189-i3.hhs.internal"], "address": "127.189.0.3", "port": 8191, "protocol": "http"},
+    {"service_id": "pass189.iteration4", "name": "pass189-provenance.hhs.internal", "aliases": ["pass189-i4.hhs.internal"], "address": "127.189.0.4", "port": 8192, "protocol": "http"},
+    {"service_id": "pass190.runtime", "name": "pass190-runtime.hhs.internal", "aliases": ["pass190.hhs.internal"], "address": "127.190.0.1", "port": 8190, "protocol": "http"},
+    {"service_id": "pass196.ide", "name": "pass196-ide.hhs.internal", "aliases": ["ide.hhs.internal"], "address": "127.196.0.1", "port": 8080, "protocol": "http"}
+  ]
+}

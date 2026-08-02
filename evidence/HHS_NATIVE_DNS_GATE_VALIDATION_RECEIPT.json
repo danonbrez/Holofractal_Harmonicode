@@ -1,0 +1,43 @@
+{
+  "schema": "HHS_NATIVE_DNS_GATE_VALIDATION_RECEIPT_V1",
+  "contract": "HHS-NDG-HOST-LOCAL-DNS-SAME-PORT-AUTHORITY-V1",
+  "classification": "HHS_NATIVE_DNS_GATE_SAME_PORT_CONFLICT_RESOLVED",
+  "authoritative_base": "e302cca3618592a120752f9f766850ef798b6dc3",
+  "zone": "hhs.internal",
+  "dns_endpoint": "127.0.0.55:53",
+  "conflict": {
+    "pass189_iteration2": "127.189.0.2:8190",
+    "pass190_runtime": "127.190.0.1:8190",
+    "canonical_port_preserved": true,
+    "kernel_socket_tuple_distinct": true
+  },
+  "validation": {
+    "unit_tests_passed": 15,
+    "udp_dns": true,
+    "tcp_dns": true,
+    "a_records": true,
+    "aliases": true,
+    "ptr_records": true,
+    "srv_records": true,
+    "nxdomain": true,
+    "outside_zone_refused": true,
+    "registry_hash72": true,
+    "conflict_resolution_hash72": true,
+    "same_port_simultaneous_bind": true,
+    "route_only_resolver_domains": true,
+    "systemd_ordering_cycle_absent": true,
+    "shell_syntax": true,
+    "python_bytecode": true,
+    "integration_assets": true
+  },
+  "claims": {
+    "host_local_only": true,
+    "public_dns_exposure": false,
+    "recursive_dns": false,
+    "dnssec_claimed": false,
+    "multi_host_consensus_claimed": false,
+    "external_digitalocean_mutation_performed": false,
+    "hardware_dispatch_authorized": false
+  },
+  "publication_identity": "AUTHORITATIVE_MERGED_GIT_COMMIT_AND_TREE"
+}
