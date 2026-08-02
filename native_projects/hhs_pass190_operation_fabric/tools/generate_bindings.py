@@ -10,15 +10,16 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "python"))
 
 from hhs_pass190 import hash216
+from hhs_pass190_iteration6_registry import ExpandedOperationRegistry
 
-REGISTRY = ROOT / "registry" / "HHS_OPERATION_REGISTRY_V1.json"
 TARGET = ROOT / "bindings" / "P190_OPERATION_SURFACE_BINDINGS_V1.json"
 
 
 def generate() -> str:
-    payload = json.loads(REGISTRY.read_text())
+    registry = ExpandedOperationRegistry()
     bindings = []
-    for operation in payload["operations"]:
+    for record in registry.records:
+        operation = record.raw
         operation_id = operation["operation_id"]
         symbol = operation_id.replace(".", "_").replace("-", "_")
         bindings.append({
@@ -28,11 +29,14 @@ def generate() -> str:
             "websocket_channel": "pass190.receipts",
             "python_sdk_symbol": symbol,
             "typescript_sdk_symbol": symbol,
+            "native_available": operation_id in tuple(item.operation_id for item in registry.records[:registry.payload["native_operation_count"]]),
         })
     document = {
         "schema": "P190_OPERATION_SURFACE_BINDINGS_V1",
-        "contract": payload.get("contract"),
-        "registry_hash216": payload.get("registry_hash216"),
+        "contract": registry.payload.get("contract"),
+        "registry_hash216": registry.payload.get("registry_hash216"),
+        "governed_operation_count": len(registry.records),
+        "native_operation_count": registry.payload["native_operation_count"],
         "bindings": bindings,
     }
     document["bindings_hash216"] = hash216(
