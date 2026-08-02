@@ -1,0 +1,54 @@
+{
+  "schema": "HHS_PASS_189_ITERATION_3_VALIDATION_RECEIPT_V1",
+  "contract": "HHS-P189-HQLH-LS41-XNOR-P1-H72-H216-UPA",
+  "iteration": "HHS-P189-HQLH-ITERATION-3-DEVICE-ADAPTER-LEASE-WATCHDOG",
+  "classification": "HHS_PASS_189_HQLH_CALIBRATION_IN_PROGRESS",
+  "authoritative_base": "5178787599dc02c477cc8160eee0e39047437660",
+  "parent_iteration_merge": "c3cc477cd1b573eb5a318c7f38a1197e428d7014",
+  "claims": {
+    "device_adapter_registry": true,
+    "bounded_operator_leases": true,
+    "anti_replay_command_authority": true,
+    "watchdog_expiry": true,
+    "emergency_revoke_disable": true,
+    "software_trace_authority": true,
+    "checkpoint_recovery": true,
+    "real_hardware_trace_present": false,
+    "physical_device_dispatch_included": false,
+    "unified_physics_verified": false
+  },
+  "drivers": {
+    "supported": ["LOOPBACK", "FILE_SINK"],
+    "forbidden": ["GPIO", "SERIAL", "USB", "NETWORK_DEVICE", "ACTUATOR"],
+    "software_traces_are_hardware_measurements": false
+  },
+  "deployment": {
+    "authority": "DIGITALOCEAN_SELF_HOSTED",
+    "external_digitalocean_mutation_performed": false,
+    "hydration_port": 8189,
+    "iteration2_port": 8190,
+    "iteration3_port": 8191,
+    "persistent_database": "/var/lib/hhs-pass189/iteration3.sqlite3",
+    "vercel_required": false
+  },
+  "validation": {
+    "iteration3_unit_tests_passed": 11,
+    "iteration3_surface_smoke_passed": true,
+    "float_ingress_rejected": true,
+    "forbidden_driver_rejected": true,
+    "adapter_payload_sensitivity": true,
+    "lease_bounds": true,
+    "operator_arm_identity": true,
+    "candidate_gate": true,
+    "anti_replay_concurrency": true,
+    "watchdog_persistence": true,
+    "revoke_disable_fail_closed": true,
+    "file_sink_sandbox": true,
+    "event_chain_verification": true,
+    "checkpoint_recovery": true,
+    "http_sse_websocket_visual": true,
+    "python_bytecode_compile": true,
+    "deployment_shell_syntax": true,
+    "local_prepublication_validation_passed": true
+  }
+}
