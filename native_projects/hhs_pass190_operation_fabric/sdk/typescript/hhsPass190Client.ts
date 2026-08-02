@@ -1,5 +1,5 @@
 // Generated Pass 190 TypeScript SDK. Do not edit by hand.
-export type OperationId = "system.status" | "python.len" | "python.abs" | "python.sorted" | "list.with_appended" | "dict.get" | "text.join" | "math.gcd" | "pass189.context.decode" | "state.counter.advance"
+export type OperationId = "system.status" | "python.len" | "python.abs" | "python.sorted" | "list.with_appended" | "dict.get" | "text.join" | "math.gcd" | "pass189.context.decode" | "state.counter.advance" | "workspace.create" | "workspace.get" | "workspace.list" | "workspace.update" | "workspace.archive" | "artifact.register" | "artifact.get" | "artifact.list" | "provider.register" | "provider.get" | "provider.list" | "provider.set_enabled" | "capability.define" | "capability.get" | "capability.list" | "job.submit" | "job.get" | "job.list" | "job.claim" | "job.complete" | "job.fail"
 export type InvokeOptions = { capabilityToken?: string; idempotencyKey?: string; expectedState?: string }
 export class HHSClient {
   constructor(readonly baseUrl = "http://127.0.0.1:8190") {}
@@ -12,6 +12,7 @@ export class HHSClient {
   operations() { return this.request("/api/pass190/operations") }
   integrity() { return this.request("/api/pass190/integrity") }
   arbitration() { return this.request("/api/pass190/arbitration") }
+  resourceRegistry() { return this.request("/api/pass190/resource-registry") }
   leaseReceipts(after = 0, limit = 100) { return this.request(`/api/pass190/lease-receipts?after=${after}&limit=${limit}`) }
   events(after = 0, limit = 100) { return this.request(`/api/pass190/events?after=${after}&limit=${limit}`) }
   receipts(after = 0, limit = 100) { return this.request(`/api/pass190/receipts?after=${after}&limit=${limit}`) }
@@ -62,6 +63,90 @@ export class HHSClient {
 
   state_counter_advance(arguments: Record<string, unknown> = {}, options: InvokeOptions = {}) {
     return this.invoke("state.counter.advance", arguments, options)
+  }
+
+  workspace_create(arguments: Record<string, unknown> = {}, options: InvokeOptions = {}) {
+    return this.invoke("workspace.create", arguments, options)
+  }
+
+  workspace_get(arguments: Record<string, unknown> = {}, options: InvokeOptions = {}) {
+    return this.invoke("workspace.get", arguments, options)
+  }
+
+  workspace_list(arguments: Record<string, unknown> = {}, options: InvokeOptions = {}) {
+    return this.invoke("workspace.list", arguments, options)
+  }
+
+  workspace_update(arguments: Record<string, unknown> = {}, options: InvokeOptions = {}) {
+    return this.invoke("workspace.update", arguments, options)
+  }
+
+  workspace_archive(arguments: Record<string, unknown> = {}, options: InvokeOptions = {}) {
+    return this.invoke("workspace.archive", arguments, options)
+  }
+
+  artifact_register(arguments: Record<string, unknown> = {}, options: InvokeOptions = {}) {
+    return this.invoke("artifact.register", arguments, options)
+  }
+
+  artifact_get(arguments: Record<string, unknown> = {}, options: InvokeOptions = {}) {
+    return this.invoke("artifact.get", arguments, options)
+  }
+
+  artifact_list(arguments: Record<string, unknown> = {}, options: InvokeOptions = {}) {
+    return this.invoke("artifact.list", arguments, options)
+  }
+
+  provider_register(arguments: Record<string, unknown> = {}, options: InvokeOptions = {}) {
+    return this.invoke("provider.register", arguments, options)
+  }
+
+  provider_get(arguments: Record<string, unknown> = {}, options: InvokeOptions = {}) {
+    return this.invoke("provider.get", arguments, options)
+  }
+
+  provider_list(arguments: Record<string, unknown> = {}, options: InvokeOptions = {}) {
+    return this.invoke("provider.list", arguments, options)
+  }
+
+  provider_set_enabled(arguments: Record<string, unknown> = {}, options: InvokeOptions = {}) {
+    return this.invoke("provider.set_enabled", arguments, options)
+  }
+
+  capability_define(arguments: Record<string, unknown> = {}, options: InvokeOptions = {}) {
+    return this.invoke("capability.define", arguments, options)
+  }
+
+  capability_get(arguments: Record<string, unknown> = {}, options: InvokeOptions = {}) {
+    return this.invoke("capability.get", arguments, options)
+  }
+
+  capability_list(arguments: Record<string, unknown> = {}, options: InvokeOptions = {}) {
+    return this.invoke("capability.list", arguments, options)
+  }
+
+  job_submit(arguments: Record<string, unknown> = {}, options: InvokeOptions = {}) {
+    return this.invoke("job.submit", arguments, options)
+  }
+
+  job_get(arguments: Record<string, unknown> = {}, options: InvokeOptions = {}) {
+    return this.invoke("job.get", arguments, options)
+  }
+
+  job_list(arguments: Record<string, unknown> = {}, options: InvokeOptions = {}) {
+    return this.invoke("job.list", arguments, options)
+  }
+
+  job_claim(arguments: Record<string, unknown> = {}, options: InvokeOptions = {}) {
+    return this.invoke("job.claim", arguments, options)
+  }
+
+  job_complete(arguments: Record<string, unknown> = {}, options: InvokeOptions = {}) {
+    return this.invoke("job.complete", arguments, options)
+  }
+
+  job_fail(arguments: Record<string, unknown> = {}, options: InvokeOptions = {}) {
+    return this.invoke("job.fail", arguments, options)
   }
 
 }

@@ -3,10 +3,14 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-REGISTRY = ROOT / "registry" / "HHS_OPERATION_REGISTRY_V1.json"
+sys.path.insert(0, str(ROOT / "python"))
+
+from hhs_pass190_iteration6_registry import ExpandedOperationRegistry
+
 PY_TARGET = ROOT / "sdk" / "python" / "hhs_pass190_client.py"
 TS_TARGET = ROOT / "sdk" / "typescript" / "hhsPass190Client.ts"
 
@@ -44,6 +48,7 @@ class HHSClient:
     def operations(self) -> dict[str, Any]: return self._request("/api/pass190/operations")
     def integrity(self) -> dict[str, Any]: return self._request("/api/pass190/integrity")
     def arbitration(self) -> dict[str, Any]: return self._request("/api/pass190/arbitration")
+    def resource_registry(self) -> dict[str, Any]: return self._request("/api/pass190/resource-registry")
     def lease_receipts(self, after: int = 0, limit: int = 100) -> dict[str, Any]: return self._request(f"/api/pass190/lease-receipts?after={{after}}&limit={{limit}}")
     def events(self, after: int = 0, limit: int = 100) -> dict[str, Any]: return self._request(f"/api/pass190/events?after={{after}}&limit={{limit}}")
     def receipts(self, after: int = 0, limit: int = 100) -> dict[str, Any]: return self._request(f"/api/pass190/receipts?after={{after}}&limit={{limit}}")
@@ -83,6 +88,7 @@ export class HHSClient {{
   operations() {{ return this.request("/api/pass190/operations") }}
   integrity() {{ return this.request("/api/pass190/integrity") }}
   arbitration() {{ return this.request("/api/pass190/arbitration") }}
+  resourceRegistry() {{ return this.request("/api/pass190/resource-registry") }}
   leaseReceipts(after = 0, limit = 100) {{ return this.request(`/api/pass190/lease-receipts?after=${{after}}&limit=${{limit}}`) }}
   events(after = 0, limit = 100) {{ return this.request(`/api/pass190/events?after=${{after}}&limit=${{limit}}`) }}
   receipts(after = 0, limit = 100) {{ return this.request(`/api/pass190/receipts?after=${{after}}&limit=${{limit}}`) }}
@@ -104,7 +110,7 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--check", action="store_true")
     args = parser.parse_args()
-    operations = json.loads(REGISTRY.read_text(encoding="utf-8"))["operations"]
+    operations = [dict(record.raw) for record in ExpandedOperationRegistry().records]
     python_source = generate_python(operations)
     typescript_source = generate_ts(operations)
     if args.check:

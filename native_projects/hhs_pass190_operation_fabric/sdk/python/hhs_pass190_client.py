@@ -5,7 +5,7 @@ import json
 from typing import Any
 from urllib.request import Request, urlopen
 
-OPERATION_IDS = ('system.status', 'python.len', 'python.abs', 'python.sorted', 'list.with_appended', 'dict.get', 'text.join', 'math.gcd', 'pass189.context.decode', 'state.counter.advance')
+OPERATION_IDS = ('system.status', 'python.len', 'python.abs', 'python.sorted', 'list.with_appended', 'dict.get', 'text.join', 'math.gcd', 'pass189.context.decode', 'state.counter.advance', 'workspace.create', 'workspace.get', 'workspace.list', 'workspace.update', 'workspace.archive', 'artifact.register', 'artifact.get', 'artifact.list', 'provider.register', 'provider.get', 'provider.list', 'provider.set_enabled', 'capability.define', 'capability.get', 'capability.list', 'job.submit', 'job.get', 'job.list', 'job.claim', 'job.complete', 'job.fail')
 
 class HHSClient:
     def __init__(self, base_url: str = "http://127.0.0.1:8190"):
@@ -20,6 +20,7 @@ class HHSClient:
     def operations(self) -> dict[str, Any]: return self._request("/api/pass190/operations")
     def integrity(self) -> dict[str, Any]: return self._request("/api/pass190/integrity")
     def arbitration(self) -> dict[str, Any]: return self._request("/api/pass190/arbitration")
+    def resource_registry(self) -> dict[str, Any]: return self._request("/api/pass190/resource-registry")
     def lease_receipts(self, after: int = 0, limit: int = 100) -> dict[str, Any]: return self._request(f"/api/pass190/lease-receipts?after={after}&limit={limit}")
     def events(self, after: int = 0, limit: int = 100) -> dict[str, Any]: return self._request(f"/api/pass190/events?after={after}&limit={limit}")
     def receipts(self, after: int = 0, limit: int = 100) -> dict[str, Any]: return self._request(f"/api/pass190/receipts?after={after}&limit={limit}")
@@ -61,4 +62,67 @@ class HHSClient:
 
     def state_counter_advance(self, arguments: dict[str, Any] | None = None, **kwargs: Any) -> dict[str, Any]:
         return self.invoke("state.counter.advance", arguments or {}, **kwargs)
+
+    def workspace_create(self, arguments: dict[str, Any] | None = None, **kwargs: Any) -> dict[str, Any]:
+        return self.invoke("workspace.create", arguments or {}, **kwargs)
+
+    def workspace_get(self, arguments: dict[str, Any] | None = None, **kwargs: Any) -> dict[str, Any]:
+        return self.invoke("workspace.get", arguments or {}, **kwargs)
+
+    def workspace_list(self, arguments: dict[str, Any] | None = None, **kwargs: Any) -> dict[str, Any]:
+        return self.invoke("workspace.list", arguments or {}, **kwargs)
+
+    def workspace_update(self, arguments: dict[str, Any] | None = None, **kwargs: Any) -> dict[str, Any]:
+        return self.invoke("workspace.update", arguments or {}, **kwargs)
+
+    def workspace_archive(self, arguments: dict[str, Any] | None = None, **kwargs: Any) -> dict[str, Any]:
+        return self.invoke("workspace.archive", arguments or {}, **kwargs)
+
+    def artifact_register(self, arguments: dict[str, Any] | None = None, **kwargs: Any) -> dict[str, Any]:
+        return self.invoke("artifact.register", arguments or {}, **kwargs)
+
+    def artifact_get(self, arguments: dict[str, Any] | None = None, **kwargs: Any) -> dict[str, Any]:
+        return self.invoke("artifact.get", arguments or {}, **kwargs)
+
+    def artifact_list(self, arguments: dict[str, Any] | None = None, **kwargs: Any) -> dict[str, Any]:
+        return self.invoke("artifact.list", arguments or {}, **kwargs)
+
+    def provider_register(self, arguments: dict[str, Any] | None = None, **kwargs: Any) -> dict[str, Any]:
+        return self.invoke("provider.register", arguments or {}, **kwargs)
+
+    def provider_get(self, arguments: dict[str, Any] | None = None, **kwargs: Any) -> dict[str, Any]:
+        return self.invoke("provider.get", arguments or {}, **kwargs)
+
+    def provider_list(self, arguments: dict[str, Any] | None = None, **kwargs: Any) -> dict[str, Any]:
+        return self.invoke("provider.list", arguments or {}, **kwargs)
+
+    def provider_set_enabled(self, arguments: dict[str, Any] | None = None, **kwargs: Any) -> dict[str, Any]:
+        return self.invoke("provider.set_enabled", arguments or {}, **kwargs)
+
+    def capability_define(self, arguments: dict[str, Any] | None = None, **kwargs: Any) -> dict[str, Any]:
+        return self.invoke("capability.define", arguments or {}, **kwargs)
+
+    def capability_get(self, arguments: dict[str, Any] | None = None, **kwargs: Any) -> dict[str, Any]:
+        return self.invoke("capability.get", arguments or {}, **kwargs)
+
+    def capability_list(self, arguments: dict[str, Any] | None = None, **kwargs: Any) -> dict[str, Any]:
+        return self.invoke("capability.list", arguments or {}, **kwargs)
+
+    def job_submit(self, arguments: dict[str, Any] | None = None, **kwargs: Any) -> dict[str, Any]:
+        return self.invoke("job.submit", arguments or {}, **kwargs)
+
+    def job_get(self, arguments: dict[str, Any] | None = None, **kwargs: Any) -> dict[str, Any]:
+        return self.invoke("job.get", arguments or {}, **kwargs)
+
+    def job_list(self, arguments: dict[str, Any] | None = None, **kwargs: Any) -> dict[str, Any]:
+        return self.invoke("job.list", arguments or {}, **kwargs)
+
+    def job_claim(self, arguments: dict[str, Any] | None = None, **kwargs: Any) -> dict[str, Any]:
+        return self.invoke("job.claim", arguments or {}, **kwargs)
+
+    def job_complete(self, arguments: dict[str, Any] | None = None, **kwargs: Any) -> dict[str, Any]:
+        return self.invoke("job.complete", arguments or {}, **kwargs)
+
+    def job_fail(self, arguments: dict[str, Any] | None = None, **kwargs: Any) -> dict[str, Any]:
+        return self.invoke("job.fail", arguments or {}, **kwargs)
 
