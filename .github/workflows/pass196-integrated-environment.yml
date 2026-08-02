@@ -53,4 +53,4 @@ jobs:
           grep -F "pass196_integration_router" hhs_backend/visual_server.py
           grep -F "hhs_backend.visual_server:app" deploy/digitalocean/hhs-pass196-integrated-environment.service
       - name: Run Pass 196 tests
-        run: python -m unittest tests.test_hhs_pass196_integrated_environment_v1
+        run: python tests/test_hhs_pass196_integrated_environment_v1.py
