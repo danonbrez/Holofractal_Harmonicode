@@ -5,7 +5,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from hhs_backend.runtime.hhs_pass200a_proof_carrying_optimization_v1 import (
+from hhs_backend.runtime.hhs_pass200a_proof_carrying_optimization import (
     CONTRACT,
     Pass200AError,
     Pass200AProofCarryingOptimizationAuthority,
