@@ -2,9 +2,9 @@
 
 This module composes the canonical HHS FastAPI runtime, governed assistant,
 installation, application-factory, media, hydration, Pass 196 integration,
-Pass 197 exact A/B calibration, and the Pass 161 visual application. The
-canonical server remains runtime authority; this module only changes HTTP
-projection.
+Pass 197 exact A/B calibration, Pass 198 operation calibration registry, and
+the Pass 161 visual application. The canonical server remains runtime
+authority; this module only changes HTTP projection.
 """
 from __future__ import annotations
 
@@ -22,6 +22,7 @@ from hhs_backend.api.kimi_k3_content_routes import router as kimi_k3_content_rou
 from hhs_backend.api.litert_lm_assistant_routes import router as assistant_router
 from hhs_backend.api.pass196_integration_routes import router as pass196_integration_router
 from hhs_backend.api.pass197_calibration_routes import router as pass197_calibration_router
+from hhs_backend.api.pass198_calibration_registry_routes import router as pass198_calibration_registry_router
 from hhs_backend.api.probability_hydration_routes import router as probability_hydration_router
 from hhs_backend.api.storybook_reel_routes import router as storybook_reel_router
 
@@ -51,6 +52,8 @@ if not _route_exists("/api/runtime/integration/status"):
     app.include_router(pass196_integration_router)
 if not _route_exists("/api/runtime/calibration/status"):
     app.include_router(pass197_calibration_router)
+if not _route_exists("/api/runtime/calibration-registry/status"):
+    app.include_router(pass198_calibration_registry_router)
 
 # Register governed freeze authority before the broader hydration router so the
 # legacy `/constraints/promote` projection is shadowed by a fail-closed route.
@@ -77,6 +80,7 @@ async def visual_system_status() -> Dict[str, Any]:
         "kimi_k3_content_engine_api": "/api/runtime/content-engine/kimi-k3",
         "pass196_integration_api": "/api/runtime/integration",
         "pass197_calibration_api": "/api/runtime/calibration",
+        "pass198_calibration_registry_api": "/api/runtime/calibration-registry",
         "graphics_hydration_api": "/api/runtime/graphics-hydration",
         "graphics_constraint_registry_api": "/api/runtime/graphics-hydration/constraints/registry",
         "probability_hydration_api": "/api/v1/probability",
@@ -88,6 +92,7 @@ async def visual_system_status() -> Dict[str, Any]:
         "kimi_k3_content_engine": "HHS-P195-KIMI-K3-MULTIMODAL-CONTENT-ENGINE",
         "pass196_integrated_environment": "HHS-P196-SPIRAH-EVDB-LINUX-TOOLSERVER-VIDE-VM81-H72-H216",
         "pass197_ab_hydration_calibration": "HHS-P197-ABTREE-VM81X64-EXACT-LOSSLESS-HYDRATION",
+        "pass198_operation_calibration_registry": "HHS-P198-OCR-PROOF-SIMPLIFICATION-VM81-H72",
         "graphics_hydration": "HHS-P181-NATIVE-CINEMATIC-GRAPHICS-HYDRATION-RUNTIME",
         "graphics_constraints": "HHS-P181-GRAPHICS-CONSTRAINT-FREEZE-REGISTRY-V1",
         "probability_hydration": "HHS-P183-PEHMR-M1259713-F72-VM81-H72-H216",
