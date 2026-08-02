@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import tempfile
+import time
 import unittest
 from pathlib import Path
 
@@ -70,7 +71,7 @@ class Pass199DistributedCalibrationTests(unittest.TestCase):
         first = self.runtime.run(config_payload=SMALL_CONFIG, worker_count=3, vm81_receipt_hash72="8" * 72)
         second = self.runtime.run(config_payload=SMALL_CONFIG, worker_count=3, vm81_receipt_hash72="8" * 72, resume=True)
         self.assertEqual(second["report_hash72"], first["report_hash72"])
-        receipts = self.runtime.context.receipts_after(0, 100_000)
+        receipts = self.runtime.context.receipts_after(0, 1000)
         commits = [item for item in receipts if item["operation_id"] == COMMIT_OPERATION_ID]
         self.assertEqual(len(commits), 1)
 
@@ -117,7 +118,7 @@ class Pass199DistributedCalibrationTests(unittest.TestCase):
             "pass197.reciprocal_matrix_gate",
             {"x_values": ["1"], "y_values": ["1"], "xy_symbol_values": [0]},
         )
-        now = 100
+        now = time.time_ns()
         self.runtime._ensure_worker("p199.worker.tamper", now)
         claim = self.runtime.context.invoke(
             "job.claim_next",
@@ -125,10 +126,11 @@ class Pass199DistributedCalibrationTests(unittest.TestCase):
                 "worker_id": "p199.worker.tamper",
                 "workspace_id": prepared["workspace_id"],
                 "now_ns": now,
-                "lease_duration_ns": 1000,
+                "lease_duration_ns": 300_000_000_000,
             },
             capabilities=("worker:execute",),
         ).result
+        self.assertTrue(claim["claimed"])
         candidate = evaluate_branch_candidate(claim["job"]["arguments"])
         candidate["cell_value_hashes"][0] = "0" * 72
         with self.assertRaises(StateConflictError):
@@ -149,16 +151,19 @@ class Pass199DistributedCalibrationTests(unittest.TestCase):
             "pass197.reciprocal_matrix_gate",
             {"x_values": ["1"], "y_values": ["1"], "xy_symbol_values": [0]},
         )
-        self.runtime._ensure_worker("p199.worker.direct", 100)
+        now = time.time_ns()
+        self.runtime._ensure_worker("p199.worker.direct", now)
         claim = self.runtime.context.invoke(
             "job.claim_next",
             {
                 "worker_id": "p199.worker.direct",
                 "workspace_id": prepared["workspace_id"],
-                "now_ns": 100,
+                "now_ns": now,
+                "lease_duration_ns": 300_000_000_000,
             },
             capabilities=("worker:execute",),
         ).result
+        self.assertTrue(claim["claimed"])
         with self.assertRaises(StateConflictError):
             self.runtime.context.invoke(
                 "job.execute_claimed",
@@ -166,7 +171,7 @@ class Pass199DistributedCalibrationTests(unittest.TestCase):
                     "job_id": claim["job"]["job_id"],
                     "worker_id": "p199.worker.direct",
                     "claim_token_hash72": claim["claim_token_hash72"],
-                    "now_ns": 101,
+                    "now_ns": now + 1,
                 },
                 capabilities=("worker:execute",),
             )
