@@ -1,5 +1,6 @@
 import './mobile-first-paint-fix.mjs';
 import './theme-bootstrap.mjs';
+import './pass196-integration.mjs';
 
 const originalFetch = window.fetch.bind(window);
 const startedAt = performance.now();
@@ -86,6 +87,7 @@ window.HHSProductionStartupCoordinator = Object.freeze({
   visual_ide_requests_never_deferred: true,
   storybook_reel_requests_never_deferred: true,
   storybook_reel_launcher_installed: true,
+  pass196_integration_projection_loaded: true,
   theme_bootstrap_independent_of_ide_module: true,
   mobile_first_paint_precedes_public_module_graph: true,
   public_module_boot_concurrent: true,
