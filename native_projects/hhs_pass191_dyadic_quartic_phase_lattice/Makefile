@@ -1,6 +1,6 @@
 PYTHON ?= python3
-REPO_ROOT := ../../..
-PACKAGE := native_projects.hhs_pass191_dyadic_quartic_phase_lattice.hhs_pass191_phase_lattice_v1
+REPO_ROOT := ../..
+PACKAGE := native_projects.hhs_pass191_dyadic_quartic_phase_lattice.hhs_pass191_runner_v1
 EVIDENCE := native_projects/hhs_pass191_dyadic_quartic_phase_lattice/evidence
 
 .PHONY: validate bootstrap test generate verify-existing bundle no-sandbox-drift
