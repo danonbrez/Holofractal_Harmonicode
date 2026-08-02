@@ -239,6 +239,7 @@ export default function Pass190OperationFabricSurface() {
             <dt>Last transition</dt><dd>{arbitration?.last_transition || "—"}</dd>
             <dt>Admission lease</dt><dd>{String(arbitration?.lease_state || "absent").toUpperCase()}</dd>
             <dt>Lease holder</dt><dd style={{ overflowWrap: "anywhere" }}>{arbitration?.holder_id || "—"}</dd>
+            <dt>Distributed singleton</dt><dd>{integrity?.distributed_singleton_verified ? "VERIFIED" : "UNVERIFIED"}</dd>
             <dt>Resource registry</dt><dd>{integrity?.resource_registry_verified ? "VERIFIED" : "UNVERIFIED"}</dd>
             <dt>Atomic snapshot</dt><dd>{integrity?.atomic_snapshot_verified ? "VERIFIED" : "UNVERIFIED"}</dd>
             <dt>Kernel authority</dt><dd>{integrity?.kernel_authority_verified ? "VERIFIED" : "UNVERIFIED"}</dd>
