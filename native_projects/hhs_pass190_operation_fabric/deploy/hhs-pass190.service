@@ -1,5 +1,5 @@
 [Unit]
-Description=HHS Pass 190 Iteration 6 Unified Resource Registry Authority
+Description=HHS Pass 190 Iteration 7 Durable Execution Authority
 After=network-online.target
 Wants=network-online.target
 
@@ -9,8 +9,8 @@ User=hhs
 Group=hhs
 WorkingDirectory=/opt/hhs/pass190-operation-fabric
 EnvironmentFile=/etc/hhs/pass190.env
-Environment=PYTHONPATH=/opt/hhs/pass190-operation-fabric/python:/opt/hhs/pass190-operation-fabric/server
-ExecStart=/usr/bin/python3 server/hhs_pass190_iteration6_server.py --host 127.0.0.1 --port 8190 --database /var/lib/hhs/pass190-authority.sqlite3
+Environment=PYTHONPATH=/opt/hhs/pass190-operation-fabric/python:/opt/hhs/pass190-operation-fabric/server:/opt/hhs/pass190-operation-fabric/worker
+ExecStart=/usr/bin/python3 server/hhs_pass190_iteration7_server.py --host 127.0.0.1 --port 8190 --database /var/lib/hhs/pass190-authority.sqlite3
 Restart=on-failure
 RestartSec=2
 UMask=0077
