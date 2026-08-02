@@ -17,14 +17,11 @@ from hhs_backend.runtime.hhs_pass199_distributed_calibration_fabric_v1 import (
     DEFAULT_LEASE_TTL_NS,
     DEFAULT_LEASE_WAIT_NS,
     DEFAULT_REGISTRY,
-    EXECUTION_JOB_SCHEMA_VERSION,
     HHSAuthorityContext,
-    OPERATION_STATES,
     PASS199_ADMISSION_CAPABILITY,
     PASS199_CAPABILITY,
     PASS199_OPERATION_IDS,
     REGISTRY_SCHEMA,
-    RESOURCE_SCHEMAS,
     VERSION,
     OperationRecord,
     Pass199DistributedCalibrationFabric,
@@ -41,6 +38,8 @@ from hhs_backend.runtime.hhs_pass199_distributed_calibration_fabric_v1 import (
     pass190_hash216,
 )
 from hhs_pass190 import ArgumentValidationError, _validate_schema
+from hhs_pass190_iteration6 import RESOURCE_SCHEMAS
+from hhs_pass190_iteration7_registry import EXECUTION_JOB_SCHEMA_VERSION
 
 BATCH_OPERATION_ID = "calibration.submit_tree"
 BATCH_CONTRACT = "HHS-P199-P198-P190-DCT-BATCH-WORKER-VM81-H72"
@@ -196,7 +195,6 @@ class RestartSafePass199DurableCalibrationContext(Pass199DurableCalibrationConte
         metadata: Mapping[str, Any],
     ) -> dict[str, Any]:
         _validate_schema(arguments, operation.argument_schema)
-        required_capabilities = [PASS199_CAPABILITY]
         definitions = self._resource_registries()["capabilities"]
         if PASS199_CAPABILITY not in definitions:
             raise ArgumentValidationError(f"undefined required capability: {PASS199_CAPABILITY}")
@@ -207,7 +205,7 @@ class RestartSafePass199DurableCalibrationContext(Pass199DurableCalibrationConte
             "arguments": copy.deepcopy(dict(arguments)),
             "dependency_job_ids": [],
             "input_artifact_ids": [],
-            "required_capabilities": required_capabilities,
+            "required_capabilities": [PASS199_CAPABILITY],
             "submitted_at_ns": submitted_at_ns,
             "schedule_not_before_ns": submitted_at_ns,
             "max_attempts": 3,
@@ -289,8 +287,7 @@ class RestartSafePass199DurableCalibrationContext(Pass199DurableCalibrationConte
                         "contract": CONTRACT,
                     },
                 )
-        expected_ordinals = list(range(len(args["states"])))
-        if sorted(ordinals) != expected_ordinals:
+        if sorted(ordinals) != list(range(len(args["states"]))):
             raise StateConflictError("batch parameter ordinals must be contiguous and canonical")
         committed, _workers = self._commit_execution_records(job_payloads=payloads) if payloads else ({}, {})
         body = {
