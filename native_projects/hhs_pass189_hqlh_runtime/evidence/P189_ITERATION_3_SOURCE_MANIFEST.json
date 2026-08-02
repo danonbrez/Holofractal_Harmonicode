@@ -1,0 +1,26 @@
+{
+  "schema": "HHS_PASS_189_ITERATION_3_SOURCE_MANIFEST_V1",
+  "contract": "HHS-P189-HQLH-LS41-XNOR-P1-H72-H216-UPA",
+  "iteration": "HHS-P189-HQLH-ITERATION-3-DEVICE-ADAPTER-LEASE-WATCHDOG",
+  "authoritative_base": "5178787599dc02c477cc8160eee0e39047437660",
+  "publication_identity": "AUTHORITATIVE_GIT_COMMIT_AND_TREE",
+  "prepublication_validation_aggregate_sha256": "bd371584019c224e144eb2572fe27ba1c0050c02561591f7e18a6c510d5d1357",
+  "paths": [
+    "HHS_PASS_189_ITERATION_3_DEVICE_ADAPTER_LEASE_WATCHDOG_AUTHORITY.md",
+    ".github/workflows/pass189-hqlh-runtime.yml",
+    "native_projects/hhs_pass189_hqlh_runtime/Makefile",
+    "native_projects/hhs_pass189_hqlh_runtime/python/hhs_pass189_iteration3.py",
+    "native_projects/hhs_pass189_hqlh_runtime/python/test_hhs_pass189_iteration3.py",
+    "native_projects/hhs_pass189_hqlh_runtime/server/hhs_pass189_iteration3_server.py",
+    "native_projects/hhs_pass189_hqlh_runtime/tools/hhs_pass189_iteration3_surface_smoke.py",
+    "native_projects/hhs_pass189_hqlh_runtime/web/iteration3.html",
+    "native_projects/hhs_pass189_hqlh_runtime/deployment/digitalocean/hhs-pass189-iteration3.service",
+    "native_projects/hhs_pass189_hqlh_runtime/deployment/digitalocean/install.sh",
+    "native_projects/hhs_pass189_hqlh_runtime/deployment/digitalocean/nginx-hhs-pass189.conf",
+    "native_projects/hhs_pass189_hqlh_runtime/deployment/digitalocean/verify.sh",
+    "native_projects/hhs_pass189_hqlh_runtime/registry/hhs_pass189_hqlh.template.json",
+    "native_projects/hhs_pass189_hqlh_runtime/evidence/P189_ITERATION_3_VALIDATION_RECEIPT.json",
+    "native_projects/hhs_pass189_hqlh_runtime/README_ITERATION_3.md",
+    "native_projects/hhs_pass189_hqlh_runtime/RESTART_RECORD_ITERATION_3.md"
+  ]
+}
