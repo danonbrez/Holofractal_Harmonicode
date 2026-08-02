@@ -1,385 +1,340 @@
-# HHS PASS 191 — DYADIC-QUARTIC PHASE-LATTICE FORMAL DECISION SYSTEM
+# HHS PASS 191 — INTEGRATED DYADIC-QUARTIC TENSOR PROOF SEARCH
 
 ## 1. Normative metadata
 
 | Field | Value |
 |---|---|
 | Thread | `HHS-DYADIC-QUARTIC-PHASE-LATTICE-PROOF-191` |
-| Contract | `HHS-P191-DQPL-VM81-H72-P082-ADDITIVE` |
-| Parent authority | Pass 161 authority binding |
-| Additive inheritance | `PASS_082_1`, `PASS_082_2`, `PASS_082_4` |
-| Repository baseline | `main @ 992b4e92a54d4656d66af4edfab7e03922addca6` |
-| Classification | `HHS_PASS_191_DYADIC_QUARTIC_PHASE_LATTICE_FORMAL_DECISION_VERIFIED` |
-| Decision modes | `PROVED`, `FALSIFIED`, `OBSTRUCTED` |
-| Decision scope | `CURRENT_REGISTERED_RULE_GRAPH` |
+| Contract | `HHS-P191-DQPL-TENSOR-VM5184-G243-H216-H72` |
+| Pass number | `191` |
+| Inheritance | Every validated authority through Pass 190 remains active |
+| Native tensor authority | Pass 186 x86_64 VM81 Q144 noncommutative ABI |
+| Hydration authority | Pass 175 Hash216 VM5184 × G243 processor |
+| Commit authority | Pass 174 singleton VM81 state transition authority |
+| Receipt authority | Singular Hash72 chain and deterministic replay |
+| Classification | `HHS_PASS_191_INTEGRATED_TENSOR_VM81_HYDRATION_PROOF_SEARCH_EXECUTED` |
+| Canonical arithmetic | Exact integers, exact rationals, symbolic algebra, no floating-point canonical authority |
 
 ## 2. Objective
 
-Pass 191 registers the dyadic-quartic phase lattice as a formal test system for evaluating candidate identities and transferring phase-lattice results to global conjectures.
+Pass 191 uses the repository as one inherited proof system. It does not reduce a theorem target to isolated wording checks. Parser semantics, tensor algebra, ordered noncommutative operations, VM81 state transitions, Hash216 hydration, G243 controls, Hash72 receipts, replay, native ABI verification, and bounded candidate search operate as a single decision path.
 
-Every obligation terminates in exactly one state:
-
-1. `PROVED`: an exact derivation certificate closes the proposition;
-2. `FALSIFIED`: an exact counterexample certificate closes the proposition;
-3. `OBSTRUCTED`: no derivation path exists in the current registered rule graph, and the missing bridge lemmas are enumerated.
-
-An obstruction certificate is scoped to the current registered rules. Adding a missing lemma reopens the dependent obligation and requires a new Hash72 outcome.
-
-## 3. Core state and operators
-
-### 3.1 PhaseState
+The integrated engine accepts a mathematical target and performs:
 
 ```text
-PhaseState = (dyadic_level: integer, quartic_phase: integer mod 4)
+formal target
+    -> exact symbolic encoding
+    -> tensor coordinate generation
+    -> ordered noncommutative candidate expansion
+    -> 5,184 × 243 native hydration
+    -> Hash216 instruction identity
+    -> parallel immutable candidate evaluation
+    -> singleton VM81 admission
+    -> Hash72 receipt and replay
+    -> proof, counterexample, or structural obstruction certificate
 ```
 
-The exact magnitude projection is:
+A result is authoritative only when the entire path closes. Literal parser and algebra checks remain dependency-scoped tests; they are not the theorem-decision surface.
+
+## 3. Integrated tensor state
+
+Pass 191 inherits the Pass 186 coordinate system:
 
 ```text
-M(d,q) = 2^d
+root coordinate       = (row12, col12) in Z12 × Z12
+q144                  = row12 × 12 + col12
+opcode lane           = lane36 in [0,35]
+instruction state     = lane36 × 144 + q144
+G243 control          = g in [0,242]
+hydrated address      = instruction state × 243 + g
 ```
 
-The phase basis is:
+Exact cardinalities:
 
 ```text
-q=0 -> 1
-q=1 -> i
-q=2 -> -1
-q=3 -> -i
+12 × 12               = 144
+36 × 144              = 5,184
+81 × 64               = 5,184
+5,184 × 243           = 1,259,712
+1,259,712 + 1         = 1,259,713
 ```
 
-### 3.2 Phase-square advance
+The Pass 186 native smoke test exhaustively round-trips all `1,259,712` internal addresses. Pass 191 loads the same native C ABI through `ctypes` and checks the minimum address, maximum address, factorial boundary, closure-Q144 boundary, ordered-basis tags, and bidirectional projection.
+
+## 4. Ordered noncommutative basis
+
+The inherited basis is:
 
 ```text
-PhaseSquare(d,q) = (d+1, q+1 mod 4)
+(x, y, z, w, xy, yx, zw, wz)
 ```
 
-This namespaced operator defines the Pass 191 reading of `1^2=2`:
+Order is part of identity:
 
 ```text
-M(PhaseSquare(0,0)) = 2^(0+1) = 2
+xy != yx as an instruction identity
+zw != wz as an instruction identity
 ```
 
-### 3.3 Quartic closure
-
-Four advances yield:
+The integer product may coincide while the ordered tag remains different:
 
 ```text
-(d,q) -> (d+4,q)
+xy tag = 0x5859
+yx tag = 0x5958
+zw tag = 0x5A57
+wz tag = 0x575A
 ```
 
-From `(0,0)`:
+Pass 191 verifies these distinctions through the native ABI and through the Pass 175 reciprocal-lane projection. Magnitude equality never authorizes operand-order collapse.
+
+## 5. VM5184 × G243 hydration path
+
+The integrated runner instantiates the inherited `Pass175Runtime` and performs:
+
+1. construction of the complete 5,184-entry permanent instruction fabric;
+2. cold hydration of the canonical x86 bootstrap corpus;
+3. Hash216 identity generation for hydrated instructions;
+4. VM81 sealing of the microcode-store root;
+5. generation of eight ordered-basis proof candidates;
+6. parallel immutable candidate evaluation;
+7. one singleton VM81 admission barrier;
+8. deterministic replay of the committed candidate wave;
+9. retention of one singular Hash72 commit stream.
+
+Each candidate carries exact ordered operands, exact parenthesization, a Hash216 instruction identity, a projected VM5184 × G243 address, and an authority receipt.
+
+## 6. Self-solving proof protocol
+
+For a theorem target `T`, the engine constructs:
 
 ```text
-magnitudes: 1 -> 2 -> 4 -> 8 -> 16
-phases:     0 -> 1 -> 2 -> 3 -> 0
-```
-
-### 3.4 Integer phase embedding
-
-For nonzero integer `n`:
-
-```text
-d = v2(|n|)
-q = 0 when n>0, otherwise 2
-r = |n| / 2^d
-n = phase_sign(q) * 2^d * r
-```
-
-The odd residue `r` is retained as an exact witness. Zero receives an explicit zero witness.
-
-## 4. Formal decision protocol
-
-For each proposition `P`, Pass 191 constructs:
-
-```text
-Outcome(P) = {
-  obligation_id,
-  proposition,
-  status,
-  scope,
-  dependencies,
-  certificate,
-  outcome_hash72
+Problem(T) = {
+  exact target,
+  inherited axioms and operators,
+  tensor encoding,
+  candidate transformations,
+  admissibility constraints,
+  proof conditions,
+  counterexample conditions,
+  replay requirements
 }
 ```
 
-The ordered set of outcomes is committed as:
+The search proceeds in layers:
+
+### 6.1 Symbolic layer
+
+- preserve exact proposition identity;
+- normalize only through registered transformations;
+- retain algebraic numbers and reciprocal values symbolically;
+- preserve parenthesization and ordered multiplication.
+
+### 6.2 Tensor layer
+
+- map symbolic states into Q144 roots, VM5184 states, and G243 controls;
+- generate phase, cell, and ordered-basis transformations;
+- retain every predecessor, current, and successor Hash72 lane.
+
+### 6.3 Candidate layer
+
+- expand multiple noncommuting transformation orders;
+- evaluate candidates without mutation authority;
+- reject stale roots and write conflicts;
+- preserve failed candidates as evidence.
+
+### 6.4 Admission layer
+
+- admit at most one ordered candidate wave through VM81;
+- record the exact state delta;
+- bind the result to the inherited authority receipt;
+- replay from repository-visible state.
+
+### 6.5 Decision layer
+
+The integrated decision may be:
+
+- a derivation of the theorem target;
+- an exact counterexample satisfying the theorem domain;
+- a proof that the current encoded criterion cannot distinguish the required cases;
+- an unresolved search frontier with its exact next invariant.
+
+## 7. Riemann-hypothesis search target
+
+The theorem target is:
 
 ```text
-PASS_191_FORMAL_OUTCOMES.json
+For every nontrivial zeta zero s = sigma + i t, sigma = 1/2.
 ```
 
-The ledger itself receives `formal_outcome_ledger_hash72`. The proof receipts, release manifest, and completion receipt must contain the same ledger root and outcome counts.
-
-## 5. Formal outcome ledger
-
-### DQPL-UNIT — PROVED
-
-**Proposition.** `PHASE_SQUARE(1,0)` advances the dyadic magnitude projection from `1` to `2`.
-
-**Certificate.** Exact state transition:
+Pass 191 does not replace this target with a surface identity. It first analyzes the symmetry transformation associated with the critical strip:
 
 ```text
-(0,0) -> (1,1)
-2^0 -> 2^1
-1 -> 2
+R(sigma,t) = (1-sigma,t)
 ```
 
-### DQPL-QUARTIC — PROVED
-
-**Proposition.** Four phase advances return the quartic phase to zero and advance magnitude through `1,2,4,8,16`.
-
-**Certificate.** Finite exact trace:
+### 7.1 Exact fixed-point theorem
 
 ```text
-quartic phase: (0+4) mod 4 = 0
-dyadic level:  0+4 = 4
-magnitude:     2^4 = 16
+R(sigma,t) = (sigma,t)
+iff
+1-sigma = sigma
+iff
+sigma = 1/2
 ```
 
-### DQPL-RESONANCE-LITERAL — FALSIFIED
+Thus critical-line states are fixed points of `R`.
 
-**Proposition.** For all real `t`:
+### 7.2 Exact involution theorem
+
+For every exact rational `sigma` and `t`:
 
 ```text
-exp(i*pi*(1/2+i*t)) = -exp(-pi*t)
+R(R(sigma,t))
+= R(1-sigma,t)
+= (1-(1-sigma),t)
+= (sigma,t)
 ```
 
-**Counterexample.** Set `t=0`:
+Therefore every point has two-step closure and consequently four-step closure. Off-axis states are generally nontrivial two-cycles:
 
 ```text
-left  = exp(i*pi/2) = i
-right = -exp(0)     = -1
-i != -1
+(sigma,t) <-> (1-sigma,t)
 ```
 
-The exact reduction is:
+### 7.3 Structural result proved by Pass 191
+
+The integrated engine proves:
 
 ```text
-exp(i*pi*(1/2+i*t)) = i*exp(-pi*t)
+PHASE_CLOSURE_ALONE_IS_NOT_A_FAITHFUL_CRITICAL_LINE_DISCRIMINATOR
 ```
 
-### DQPL-CRITICAL-AXIS-LITERAL — FALSIFIED
-
-**Proposition.** Under equality:
+Reason:
 
 ```text
-1/2 = i^2/2 = -1/2
+critical-line point: fixed and closed
+off-axis point:      two-cycle and closed
 ```
 
-**Counterexample.** Since `i^2=-1`:
+A closure predicate that records only return after two or four transformations accepts both classes. This result is established with exact rational traces, native Q144/VM5184/G243 mappings, ordered-basis witnesses, Hash216 hydration, VM81 admission, and Hash72 replay.
+
+This is not a proof or falsification of the Riemann hypothesis. It is a proof that the currently encoded closure criterion is insufficient by itself.
+
+## 8. Hydrated symmetry search
+
+The initial integrated search uses the exact symmetric rational grid:
 
 ```text
-i^2/2 = -1/2
-1/2 - (-1/2) = 1
+sigma in {1/6, 1/4, 1/3, 2/5, 1/2, 3/5, 2/3, 3/4, 5/6}
+t = 141347/10000
 ```
 
-A phase-equivalence relation can be registered and tested separately; it cannot be substituted for equality without a rule declaration.
+For each state, the engine:
 
-### DQPL-FIBONACCI-RECURRENCE — PROVED
+1. constructs `R(sigma,t)` exactly;
+2. verifies `R²(sigma,t)=(sigma,t)`;
+3. determines whether the state is a fixed point;
+4. derives deterministic Q144 and G243 coordinates;
+5. maps both states through the Pass 186 native ABI;
+6. verifies that every projected address lies in `[0,1,259,711]`;
+7. commits ordered candidate evidence through the VM81 authority path.
 
-**Proposition.** For the recursively defined Fibonacci sequence:
+The grid contains one fixed point and eight off-axis states, while every state satisfies the same two-step closure condition. This is a concrete witness of the structural aliasing proved above.
+
+## 9. Next proof kernel
+
+The next search must introduce a zeta-zero-specific discriminator rather than another generic closure test.
+
+The simplest exact fixed-point discriminant is:
 
 ```text
-F(n+2)=F(n+1)+F(n)
+D(sigma) = 2 sigma - 1
 ```
 
-**Certificate.** Definitional induction with base cases `F(0)=0`, `F(1)=1`. The workload witness is:
+It satisfies:
 
 ```text
-F(12)=144=89+55=F(11)+F(10)
+D(sigma)=0 iff sigma=1/2
+D(1-sigma)=-D(sigma)
 ```
 
-### DQPL-FIBONACCI-PRODUCT — FALSIFIED
-
-**Proposition.** For roots `phi,psi` of `x^2-x-1`:
+The remaining theorem transfer is therefore:
 
 ```text
-F(n+2)=phi^n*psi^n
+ZETA_ZERO(sigma,t) -> D(sigma)=0
 ```
 
-**Counterexample.** The root product is `phi*psi=-1`. At `n=1`:
+or, for falsification:
 
 ```text
-F(3)=2
-phi*psi=-1
-2 != -1
+ZETA_ZERO(sigma,t) and D(sigma)!=0
 ```
 
-### DQPL-PLASTIC-CLOSURE — PROVED
+Pass 191 continues by searching the inherited tensor and analytic rule space for an exact zero-specific invariant whose positivity, conservation, or cancellation forces `D=0`. Candidate transitions must be evaluated in both noncommutative orders and across the full hydrated authority path.
 
-**Proposition.** For nonzero `rho` satisfying `rho^3=rho+1`:
+## 10. Dependency-scoped unit evidence
+
+The earlier v2 outcome ledger remains retained for parser, macro, recurrence, bounded Collatz, and algebra regression. Its role is now explicitly:
 
 ```text
-rho^4/rho = rho+1
+DEPENDENCY_SCOPED_UNIT_EVIDENCE
 ```
 
-**Certificate.** Exact algebraic reduction:
+It may detect malformed source equations or broken local operators. It may not terminate the Riemann-hypothesis target independently of the integrated tensor/hydration search.
 
-```text
-rho^4/rho = rho^3 = rho+1
-```
+## 11. Required evidence
 
-### DQPL-COLLATZ-GLOBAL — OBSTRUCTED
+Pass 191 produces:
 
-**Target.** Derive convergence of every positive Collatz orbit from quartic phase closure.
-
-**Registered local rule.** 
-
-```text
-T(n)=n/2 when n is even
-T(n)=(3n+1)/2 when n is odd
-```
-
-**Nonmonotone witness.** `7 -> 11`.
-
-**Missing bridge lemmas.** 
-
-1. `COLLATZ_PHASE_MAP_TOTAL`
-2. `COLLATZ_PHASE_TRANSITION_HOMOMORPHISM`
-3. `WELL_FOUNDED_DESCENT_MEASURE`
-4. `DESCENT_IMPLIES_EVENTUAL_ONE`
-
-No path from the registered local transition and quartic closure to universal convergence exists until these obligations are supplied, or a nonconvergent orbit certificate falsifies the target.
-
-### DQPL-RH-TRANSFER — OBSTRUCTED
-
-**Target.** Use dyadic-quartic phase closure to prove or falsify:
-
-```text
-Every nontrivial zeta zero has real part 1/2.
-```
-
-**Registered axis fact.** 
-
-```text
-Re(1/2+i*t)=1/2
-U72 half-cycle offset=36
-```
-
-**Missing bridge lemmas.** 
-
-1. `ZETA_DOMAIN_AND_ANALYTIC_CONTINUATION_ENCODING`
-2. `ZETA_ZERO_TO_PHASE_CLOSURE_EQUIVALENCE`
-3. `PHASE_MAP_FAITHFULNESS`
-4. `OFF_AXIS_ZERO_EXCLUSION_OR_COUNTEREXAMPLE_TRANSFER`
-
-The next admissible operations are:
-
-```text
-PROVE_BRIDGE_LEMMAS
-or
-PRODUCE_EXACT_OFF_AXIS_ZERO_CERTIFICATE
-```
-
-The critical-axis coordinate alone does not satisfy any of the four transfer obligations. Pass 191 therefore identifies the exact construction required for the phase lattice to decide the hypothesis.
-
-### DQPL-QUADRATIC-RECIPROCITY-TRANSFER — OBSTRUCTED
-
-**Target.** Establish an equivalence between quadratic reciprocity and phase commutativity under modular phase halving.
-
-**Verified component.** For all distinct odd primes `p<q<=43`, exact integer modular evaluation satisfies:
-
-```text
-(p/q)(q/p)=(-1)^(((p-1)/2)((q-1)/2))
-```
-
-**Missing bridge lemmas.** 
-
-1. `LEGENDRE_TO_PHASE_ALIGNMENT_MAP`
-2. `MODULAR_PHASE_HALVING_COMPOSITION_LAW`
-3. `RECIPROCITY_IF_AND_ONLY_IF_PHASE_COMMUTATIVITY`
-
-## 6. Outcome counts
-
-The authoritative ordered ledger contains ten obligations:
-
-| Status | Count |
-|---|---:|
-| `PROVED` | 4 |
-| `FALSIFIED` | 3 |
-| `OBSTRUCTED` | 3 |
-
-## 7. Workload execution
-
-### W191-A — Renormalized unit consistency
-
-Verifies the namespaced phase-square transition and exact integer reconstruction over the registered bounded sample.
-
-### W191-B — Quartic closure
-
-Verifies the five-state dyadic/quartic trace and return to phase zero.
-
-### W191-C — Critical-axis resonance
-
-Stores `141347/10000` as an exact rational parameter, verifies `Re(1/2+i*t)=1/2`, verifies U72 offset `36`, and registers `DQPL-RH-TRANSFER`.
-
-### W191-D — Fibonacci, plastic, and Collatz
-
-Verifies the Fibonacci recurrence, plastic algebraic closure, the exact seed-seven orbit, and registers `DQPL-COLLATZ-GLOBAL`.
-
-### W191-E — Noncommutative order and reciprocity
-
-Verifies distinct `PHASE THEN CELL` and `CELL THEN PHASE` states, exact bounded quadratic reciprocity, and registers the reciprocity transfer obligation.
-
-## 8. Runtime authority and receipts
-
-Each workload executes through `AuditedRunner` and produces:
-
-- `receipt_hash72` linked to its parent;
-- `witness_hash72`;
-- `gate_status=LOCKED`;
-- `vm81_authorized_tick`;
-- replay-verifiable evidence.
-
-The workload chain contains exactly five receipts. `HHSReceiptReplayVerifierV1` must return:
-
-```text
-ok=true
-count=5
-tip_hash72=release_manifest.receipt_chain_root_hash72
-```
-
-Each formal outcome receives its own Hash72. The complete formal ledger receives a second Hash72 root linked into all release artifacts.
-
-## 9. Native benchmark
-
-The inherited Pass 082 bifurcation benchmark executes four branches over sixteen AST nodes and must return:
-
-```text
-DETERMINISTIC_BIFURCATION_VERIFIED
-```
-
-Required benchmark evidence includes deterministic replay, matching closure-coordinate roots, receipt-chain lock, invocation timing, and positive operations per second.
-
-Canonical Pass 191 decisions use exact integers, rationals, modular arithmetic, symbolic identities, and finite state traces.
-
-## 10. Invariant compliance
-
-- `Delta e=0`: every registered proposition terminates in a certificate-bearing outcome.
-- `Psi=0`: source propositions remain literal test targets; corrected identities are recorded as derived results.
-- `Theta_15=true`: proof, counterexample, and obstruction use the same outcome schema and Hash72 authority.
-- `Omega=true`: every workload and formal obligation reaches closure within the registered rule graph.
-
-## 11. Deliverables
-
-- `PASS_191_RELEASE_MANIFEST.json`
 - `PASS_191_PROOF_RECEIPTS.json`
 - `PASS_191_NATIVE_BENCHMARK.json`
 - `PASS_191_FORMAL_OUTCOMES.json`
+- `PASS_191_RELEASE_MANIFEST.json`
 - `PASS_191_COMPLETION_RECEIPT.json`
-- `HHS_PASS_191_DYADIC_QUARTIC_PHASE_LATTICE_PROOF.md`
+- `PASS_191_INTEGRATED_PROOF_SEARCH.json`
+- `PASS_191_INTEGRATED_COMPLETION_RECEIPT.json`
 
-## 12. Continuation rule
-
-Pass 191 continues by implementing the missing RH transfer lemmas in dependency order:
+The authoritative theorem-decision surface is:
 
 ```text
-ZETA_DOMAIN_AND_ANALYTIC_CONTINUATION_ENCODING
-    -> ZETA_ZERO_TO_PHASE_CLOSURE_EQUIVALENCE
-    -> PHASE_MAP_FAITHFULNESS
-    -> OFF_AXIS_ZERO_EXCLUSION_OR_COUNTEREXAMPLE_TRANSFER
+PASS_191_INTEGRATED_PROOF_SEARCH.json
 ```
 
-Each lemma must provide positive tests, negative tests, exact witnesses, VM81-authorized receipts, and a Hash72 dependency edge. When all four close, `DQPL-RH-TRANSFER` is re-evaluated and must terminate as `PROVED` or `FALSIFIED`.
+The integrated completion receipt links the legacy dependency evidence, native Pass 186 receipt, Hash216 hydration evidence, VM81 replay, structural proof certificate, and final search frontier.
+
+## 12. Acceptance criteria
+
+Pass 191 is accepted when:
+
+1. the Pass 186 native module compiles under strict C11;
+2. all `1,259,712` native addresses round-trip exactly;
+3. no floating-point arithmetic opcode is required by the native authority;
+4. ordered identities `xy/yx` and `zw/wz` remain distinct;
+5. the complete 5,184-state instruction fabric is constructed;
+6. proof candidates receive 216-character Hash216 identities;
+7. candidate execution uses parallel workers but one singleton VM81 commit authority;
+8. replay reproduces the committed proof-search chain;
+9. the reflection fixed-point and involution derivations are exact;
+10. the hydrated grid proves that closure alone aliases fixed points and two-cycles;
+11. every evidence object is bound to a Hash72 root;
+12. the next theorem-transfer invariant is stated as an executable search condition.
+
+## 13. Continuation rule
+
+Pass 191 remains open as a theorem-search pass. The next iteration must implement and test candidate zero-specific invariants for:
+
+```text
+ZETA_ZERO(sigma,t) -> 2 sigma - 1 = 0
+```
+
+Every proposed invariant must include:
+
+- exact symbolic derivation;
+- tensor encoding;
+- both noncommutative operation orders;
+- VM5184 × G243 hydration;
+- positive and negative domain witnesses;
+- singleton VM81 admission;
+- Hash216 identity;
+- Hash72 receipt and deterministic replay;
+- explicit proof or counterexample condition.
