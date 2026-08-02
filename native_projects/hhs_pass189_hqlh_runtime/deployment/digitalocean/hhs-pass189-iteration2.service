@@ -1,0 +1,30 @@
+[Unit]
+Description=HHS Pass 189 Iteration 2 Calibration and Causal Authority
+After=network-online.target hhs-pass189.service
+Wants=network-online.target
+Requires=hhs-pass189.service
+
+[Service]
+Type=simple
+User=hhs
+Group=hhs
+WorkingDirectory=/opt/holofractal-harmonicode/native_projects/hhs_pass189_hqlh_runtime
+EnvironmentFile=-/etc/hhs/pass189.env
+ExecStart=/usr/bin/python3 server/hhs_pass189_iteration2_server.py --host 127.0.0.1 --port 8190 --db /var/lib/hhs-pass189/iteration2.sqlite3
+Restart=on-failure
+RestartSec=3
+TimeoutStartSec=30
+TimeoutStopSec=15
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+LockPersonality=true
+ReadWritePaths=/var/lib/hhs-pass189
+
+[Install]
+WantedBy=multi-user.target
