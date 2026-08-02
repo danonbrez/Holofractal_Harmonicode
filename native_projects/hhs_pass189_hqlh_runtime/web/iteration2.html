@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pass 189 Iteration 2 Authority</title>
+<style>
+:root{color-scheme:dark;font-family:Inter,system-ui,sans-serif;background:#061018;color:#e9f8ff}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top right,#153648 0,#07131b 45%,#040b10 100%);min-height:100vh}main{max-width:1180px;margin:auto;padding:24px}header{display:flex;justify-content:space-between;gap:18px;align-items:center;flex-wrap:wrap}.badge{border:1px solid #2d6679;border-radius:999px;padding:8px 12px;color:#7de9ff}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin-top:18px}.card{background:#0a1821dd;border:1px solid #254454;border-radius:14px;padding:16px;box-shadow:0 16px 40px #0008}.metric{font-size:1.8rem;color:#ffd576}.row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}label{display:grid;gap:6px;margin:8px 0}input,select,button,textarea{width:100%;border:1px solid #31556a;border-radius:8px;background:#07121a;color:#e9f8ff;padding:10px}button{cursor:pointer;font-weight:700;background:#123245}button:hover{background:#19455d}pre{white-space:pre-wrap;word-break:break-word;background:#061018;border-radius:10px;padding:12px;max-height:360px;overflow:auto}.warn{color:#ffbf69}.ok{color:#78f0c2}@media(max-width:620px){main{padding:14px}.row{grid-template-columns:1fr}}
+</style>
+</head>
+<body><main>
+<header><div><h1>Pass 189 · Iteration 2</h1><p>Persistent calibration · bounded output admission · atomic causal batches · checkpoint recovery</p></div><div id="health" class="badge">CONNECTING</div></header>
+<div class="grid">
+<section class="card"><h2>Authority</h2><div id="receipt" class="metric">0</div><small>global receipt index</small><p id="root"></p><p class="warn">Physical dispatch remains candidate-only and requires measured evidence, attestation, validation, and operator arming.</p></section>
+<section class="card"><h2>Register synthetic profile</h2><label>Device ID<input id="device" value="adc-demo"></label><div class="row"><label>Variable<input id="variable" value="V"></label><label>Unit<input id="unit" value="volt"></label></div><button id="register">Register profile</button><pre id="profileOut">No profile registered.</pre></section>
+<section class="card"><h2>Exact sample</h2><label>Profile ID<input id="profileId"></label><div class="row"><label>Raw<input id="raw" value="1000"></label><label>Expected<input id="expected" value="1"></label></div><button id="sample">Record sample</button><pre id="sampleOut">Awaiting sample.</pre></section>
+<section class="card"><h2>Simulation admission</h2><label>Requested canonical value<input id="requested" value="1"></label><button id="admit">Admit simulation candidate</button><pre id="admitOut">No admission request.</pre></section>
+<section class="card"><h2>Joint worldline resolution</h2><button id="worldline">Resolve two-object batch</button><pre id="worldlineOut">No batch resolved.</pre></section>
+<section class="card"><h2>Checkpoint</h2><label>Label<input id="label" value="operator-checkpoint"></label><button id="checkpoint">Create checkpoint</button><pre id="checkpointOut">No checkpoint.</pre></section>
+</div></main>
+<script>
+const q=id=>document.getElementById(id);const show=(id,v)=>q(id).textContent=JSON.stringify(v,null,2);
+async function request(path,body){const r=await fetch(path,{method:body?'POST':'GET',headers:{'Content-Type':'application/json'},body:body?JSON.stringify(body):undefined});const p=await r.json();if(!r.ok)throw new Error(p.error||r.statusText);return p}
+async function refresh(){try{const s=await request('/api/pass189/i2/status');q('health').textContent='DIGITALOCEAN READY';q('health').className='badge ok';q('receipt').textContent=s.events;q('root').textContent='root '+s.root_hash72}catch(e){q('health').textContent='DEGRADED';q('health').className='badge warn'}}
+q('register').onclick=async()=>{try{const p=await request('/api/pass189/i2/calibration/profile',{device_id:q('device').value,variable:q('variable').value,unit:q('unit').value,dimension:'electric_potential',scale:{numerator:1,denominator:1000},offset:0,raw_min:0,raw_max:5000,canonical_min:0,canonical_max:5,resolution:{numerator:1,denominator:1000},tolerance:{numerator:1,denominator:100},required_samples:3,evidence_class:'SYNTHETIC',calibration_source:'visual-fixture',device_attested:false,operator_arm_hash72:'0'.repeat(72),created_ns:1});q('profileId').value=p.profile_id;show('profileOut',p);refresh()}catch(e){show('profileOut',{error:e.message})}}
+q('sample').onclick=async()=>{try{show('sampleOut',await request('/api/pass189/i2/calibration/sample',{profile_id:q('profileId').value,measurement_id:'visual-'+Date.now(),measurement_ns:Date.now()*1000000,source:'visual-fixture',raw:q('raw').value,expected:q('expected').value}));refresh()}catch(e){show('sampleOut',{error:e.message})}}
+q('admit').onclick=async()=>{try{show('admitOut',await request('/api/pass189/i2/calibration/admit',{profile_id:q('profileId').value,requested:q('requested').value,mode:'SIMULATION'}));refresh()}catch(e){show('admitOut',{error:e.message})}}
+q('worldline').onclick=async()=>{try{const s=await request('/api/pass189/i2/status');show('worldlineOut',await request('/api/pass189/i2/worldline/resolve',{causal_rate:1,collision_policy:'REJECT',candidates:[{object_id:'alpha',input_receipt_index:s.events,position4:[0,0,0,0],delta4:[2,1,0,0]},{object_id:'beta',input_receipt_index:s.events,position4:[0,4,0,0],delta4:[2,-1,0,0]}]}));refresh()}catch(e){show('worldlineOut',{error:e.message})}}
+q('checkpoint').onclick=async()=>{try{show('checkpointOut',await request('/api/pass189/i2/checkpoint',{label:q('label').value}));refresh()}catch(e){show('checkpointOut',{error:e.message})}}
+refresh();
+</script></body></html>

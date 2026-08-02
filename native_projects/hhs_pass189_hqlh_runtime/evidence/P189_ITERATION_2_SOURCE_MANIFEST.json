@@ -1,0 +1,29 @@
+{
+  "authoritative_base": "992b4e92a54d4656d66af4edfab7e03922addca6",
+  "contract": "HHS-P189-HQLH-LS41-XNOR-P1-H72-H216-UPA",
+  "files": [
+    ".github/workflows/pass189-hqlh-runtime.yml",
+    "HHS_PASS_189_ITERATION_2_CALIBRATION_CAUSAL_PERSISTENCE_AUTHORITY.md",
+    "hhs_gui/runtime_apps/hqlh/Pass189HQLHSurface.tsx",
+    "native_projects/hhs_pass189_hqlh_runtime/Makefile",
+    "native_projects/hhs_pass189_hqlh_runtime/README_ITERATION_2.md",
+    "native_projects/hhs_pass189_hqlh_runtime/RESTART_RECORD_ITERATION_2.md",
+    "native_projects/hhs_pass189_hqlh_runtime/deployment/digitalocean/hhs-pass189-iteration2.service",
+    "native_projects/hhs_pass189_hqlh_runtime/deployment/digitalocean/install.sh",
+    "native_projects/hhs_pass189_hqlh_runtime/deployment/digitalocean/nginx-hhs-pass189.conf",
+    "native_projects/hhs_pass189_hqlh_runtime/deployment/digitalocean/verify.sh",
+    "native_projects/hhs_pass189_hqlh_runtime/evidence/P189_ITERATION_2_SOURCE_MANIFEST.json",
+    "native_projects/hhs_pass189_hqlh_runtime/evidence/P189_ITERATION_2_VALIDATION_RECEIPT.json",
+    "native_projects/hhs_pass189_hqlh_runtime/python/hhs_pass189_iteration2.py",
+    "native_projects/hhs_pass189_hqlh_runtime/python/test_hhs_pass189_iteration2.py",
+    "native_projects/hhs_pass189_hqlh_runtime/registry/hhs_pass189_hqlh.template.json",
+    "native_projects/hhs_pass189_hqlh_runtime/server/hhs_pass189_iteration2_server.py",
+    "native_projects/hhs_pass189_hqlh_runtime/tools/hhs_pass189_iteration2_surface_smoke.py",
+    "native_projects/hhs_pass189_hqlh_runtime/web/iteration2.html"
+  ],
+  "iteration": "HHS-P189-HQLH-ITERATION-2-CALIBRATION-CAUSAL-PERSISTENCE",
+  "local_prepublication_aggregate_sha256": "1c61bbc7d137b2ab0bf4ba9d20737e7296a7213e0fcabdd468ac32cba18a19dd",
+  "note": "The local aggregate identifies the validated prepublication workspace. The authoritative published content identity is the Git commit and tree containing this manifest; stale prepublication per-file hashes are intentionally not treated as repository authority.",
+  "publication_authority": "GIT_COMMIT_AND_TREE",
+  "schema": "HHS_PASS_189_ITERATION_2_SOURCE_MANIFEST_V1"
+}

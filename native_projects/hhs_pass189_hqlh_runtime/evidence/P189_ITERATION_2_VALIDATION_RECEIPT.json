@@ -1,0 +1,41 @@
+{
+  "authoritative_base": "992b4e92a54d4656d66af4edfab7e03922addca6",
+  "claims": {
+    "atomic_worldline_authority": true,
+    "checkpoint_recovery": true,
+    "persistent_calibration_authority": true,
+    "physical_device_dispatch_included": false,
+    "real_hardware_calibration_present": false,
+    "unified_physics_verified": false
+  },
+  "classification": "HHS_PASS_189_HQLH_CALIBRATION_IN_PROGRESS",
+  "contract": "HHS-P189-HQLH-LS41-XNOR-P1-H72-H216-UPA",
+  "deployment": {
+    "authority": "DIGITALOCEAN_SELF_HOSTED",
+    "external_digitalocean_mutation_performed": false,
+    "hydration_port": 8189,
+    "iteration2_port": 8190,
+    "persistent_database": "/var/lib/hhs-pass189/iteration2.sqlite3",
+    "vercel_required": false
+  },
+  "iteration": "HHS-P189-HQLH-ITERATION-2-CALIBRATION-CAUSAL-PERSISTENCE",
+  "parent_iteration_merge": "a1a55a4f621ff3678f5af81119439e9558cf9db4",
+  "safety_boundary": {
+    "actual_device_driver_dispatch": false,
+    "physical_candidates_require_measured_evidence_attestation_and_arm": true,
+    "simulation_candidates_supported": true
+  },
+  "schema": "HHS_PASS_189_ITERATION_2_VALIDATION_RECEIPT_V1",
+  "source_manifest": "P189_ITERATION_2_SOURCE_MANIFEST.json",
+  "validation": {
+    "bounded_concurrency_test": true,
+    "checkpoint_recovery_test": true,
+    "digitalocean_shell_syntax": true,
+    "float_canonical_ingress_rejected": true,
+    "iteration2_surface_smoke_passed": true,
+    "iteration2_unit_tests_passed": 11,
+    "joint_worldline_test": true,
+    "local_prepublication_validation_passed": true,
+    "python_bytecode_compile": true
+  }
+}

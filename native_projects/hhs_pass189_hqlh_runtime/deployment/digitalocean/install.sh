@@ -19,22 +19,31 @@ install -d -o "$SERVICE_USER" -g "$SERVICE_USER" /var/lib/hhs-pass189 /etc/hhs
 
 make -C "$PROJECT" validate
 install -m 0644 "$PROJECT/deployment/digitalocean/hhs-pass189.service" /etc/systemd/system/hhs-pass189.service
+install -m 0644 "$PROJECT/deployment/digitalocean/hhs-pass189-iteration2.service" /etc/systemd/system/hhs-pass189-iteration2.service
 if [[ ! -f /etc/hhs/pass189.env ]]; then
   cat >/etc/hhs/pass189.env <<'EOF'
 HHS189_HOST=127.0.0.1
 HHS189_PORT=8189
 HHS189_QUIET=0
+HHS189_I2_HOST=127.0.0.1
+HHS189_I2_PORT=8190
+HHS189_I2_DB=/var/lib/hhs-pass189/iteration2.sqlite3
+HHS189_I2_QUIET=0
 EOF
 fi
+chown root:"$SERVICE_USER" /etc/hhs/pass189.env
+chmod 0640 /etc/hhs/pass189.env
 
 systemctl daemon-reload
-systemctl enable --now hhs-pass189.service
+systemctl enable --now hhs-pass189.service hhs-pass189-iteration2.service
 sleep 1
 curl --fail --silent http://127.0.0.1:8189/api/pass189/health >/dev/null
+curl --fail --silent http://127.0.0.1:8190/api/pass189/i2/status >/dev/null
 
 cat <<EOF
-Pass 189 runtime is healthy on 127.0.0.1:8189.
-Add deployment/digitalocean/nginx-hhs-pass189.conf to the existing HTTPS server block,
+Pass 189 hydration is healthy on 127.0.0.1:8189.
+Pass 189 Iteration 2 is healthy on 127.0.0.1:8190 with persistent state in /var/lib/hhs-pass189.
+Install deployment/digitalocean/nginx-hhs-pass189.conf inside the existing HTTPS server block,
 then run: nginx -t && systemctl reload nginx
 Vercel is not part of this deployment authority.
 EOF
