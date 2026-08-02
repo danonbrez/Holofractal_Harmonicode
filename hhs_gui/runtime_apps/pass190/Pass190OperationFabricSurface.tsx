@@ -39,6 +39,19 @@ type ResourceRegistryStatus = {
   state_root?: string
 }
 
+type ExecutionRuntimeStatus = {
+  worker_count?: number
+  enabled_worker_count?: number
+  queued_job_count?: number
+  scheduled_job_count?: number
+  running_job_count?: number
+  execution_operation_count?: number
+  governed_operation_count?: number
+  native_operation_count?: number
+  execution_runtime_hash72?: string
+  state_root?: string
+}
+
 const field: React.CSSProperties = {
   width: "100%",
   borderRadius: 8,
@@ -69,9 +82,10 @@ export default function Pass190OperationFabricSurface() {
   const [argumentsText, setArgumentsText] = useState("{}")
   const [capabilityToken, setCapabilityToken] = useState("")
   const [status, setStatus] = useState("CONNECTING")
-  const [integrity, setIntegrity] = useState<Record<string, unknown> | null>(null)
+  const [integrity, setIntegrity] = useState<Record<string, any> | null>(null)
   const [arbitration, setArbitration] = useState<ArbitrationStatus | null>(null)
   const [resources, setResources] = useState<ResourceRegistryStatus | null>(null)
+  const [execution, setExecution] = useState<ExecutionRuntimeStatus | null>(null)
   const [result, setResult] = useState<Record<string, any> | null>(null)
   const [events, setEvents] = useState<RuntimeEvent[]>([])
   const [error, setError] = useState("")
@@ -88,16 +102,18 @@ export default function Pass190OperationFabricSurface() {
   )
 
   async function refreshAuthority() {
-    const [integrityPayload, arbitrationPayload, resourcePayload] = await Promise.all([
+    const [integrityPayload, arbitrationPayload, resourcePayload, executionPayload] = await Promise.all([
       fetch(apiUrl("/api/pass190/integrity")).then(checkedJson),
       fetch(apiUrl("/api/pass190/arbitration")).then(checkedJson),
       fetch(apiUrl("/api/pass190/resource-registry")).then(checkedJson),
+      fetch(apiUrl("/api/pass190/execution-runtime")).then(checkedJson),
     ])
     if (stoppedRef.current) return
     setIntegrity(integrityPayload)
     setArbitration(arbitrationPayload)
     setResources(resourcePayload)
-    setStatus(integrityPayload.status === "ok" ? "UNIFIED AUTHORITY READY" : "DEGRADED")
+    setExecution(executionPayload)
+    setStatus(integrityPayload.status === "ok" ? "DURABLE EXECUTION AUTHORITY READY" : "DEGRADED")
   }
 
   useEffect(() => {
@@ -107,13 +123,15 @@ export default function Pass190OperationFabricSurface() {
       fetch(apiUrl("/api/pass190/integrity")).then(checkedJson),
       fetch(apiUrl("/api/pass190/arbitration")).then(checkedJson),
       fetch(apiUrl("/api/pass190/resource-registry")).then(checkedJson),
-    ]).then(([registry, integrityPayload, arbitrationPayload, resourcePayload]) => {
+      fetch(apiUrl("/api/pass190/execution-runtime")).then(checkedJson),
+    ]).then(([registry, integrityPayload, arbitrationPayload, resourcePayload, executionPayload]) => {
       if (stoppedRef.current) return
       setOperations(registry.operations || [])
       setIntegrity(integrityPayload)
       setArbitration(arbitrationPayload)
       setResources(resourcePayload)
-      setStatus(integrityPayload.status === "ok" ? "UNIFIED AUTHORITY READY" : "DEGRADED")
+      setExecution(executionPayload)
+      setStatus(integrityPayload.status === "ok" ? "DURABLE EXECUTION AUTHORITY READY" : "DEGRADED")
     }).catch((caught) => {
       if (!stoppedRef.current) {
         setStatus("DEGRADED")
@@ -137,7 +155,7 @@ export default function Pass190OperationFabricSurface() {
       setStatus(reconnectAttemptRef.current ? "EVENT CHANNEL RECOVERING" : "EVENT CHANNEL CONNECTING")
       socket.onopen = () => {
         reconnectAttemptRef.current = 0
-        setStatus("UNIFIED AUTHORITY READY")
+        setStatus("DURABLE EXECUTION AUTHORITY READY")
       }
       socket.onmessage = (message) => {
         try {
@@ -197,7 +215,7 @@ export default function Pass190OperationFabricSurface() {
     <header style={{ display: "flex", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
       <div>
         <h2 style={{ margin: 0 }}>Pass 190 Operation Fabric</h2>
-        <p style={{ margin: "4px 0 0", color: "#9ab9c9" }}>Unified workspace, artifact, provider, capability, and job registries under atomic VM81 admission, Hash72 lineage, native ABI, and exact compiler fallback.</p>
+        <p style={{ margin: "4px 0 0", color: "#9ab9c9" }}>Durable workers, dependency scheduling, cancellation, bounded retry, exact execution leases, and receipt-bound VM81 operation execution.</p>
       </div>
       <strong>{status}</strong>
     </header>
@@ -213,6 +231,18 @@ export default function Pass190OperationFabricSurface() {
         {error && <p role="alert" style={{ color: "#ffb2a6" }}>{error}</p>}
       </section>
       <section style={{ display: "grid", gap: 14 }}>
+        <article style={{ border: "1px solid #284552", borderRadius: 10, padding: 14 }}>
+          <h3 style={{ marginTop: 0 }}>Durable execution</h3>
+          <dl style={{ display: "grid", gridTemplateColumns: "auto 1fr", gap: "6px 12px" }}>
+            <dt>Workers</dt><dd>{String(execution?.worker_count ?? 0)}</dd>
+            <dt>Enabled workers</dt><dd>{String(execution?.enabled_worker_count ?? 0)}</dd>
+            <dt>Queued jobs</dt><dd>{String(execution?.queued_job_count ?? 0)}</dd>
+            <dt>Scheduled / retry jobs</dt><dd>{String(execution?.scheduled_job_count ?? 0)}</dd>
+            <dt>Running jobs</dt><dd>{String(execution?.running_job_count ?? 0)}</dd>
+            <dt>Execution operations</dt><dd>{String(execution?.execution_operation_count ?? 0)}</dd>
+            <dt>Execution runtime Hash72</dt><dd style={{ overflowWrap: "anywhere" }}>{execution?.execution_runtime_hash72 || "—"}</dd>
+          </dl>
+        </article>
         <article style={{ border: "1px solid #284552", borderRadius: 10, padding: 14 }}>
           <h3 style={{ marginTop: 0 }}>Unified resource registry</h3>
           <dl style={{ display: "grid", gridTemplateColumns: "auto 1fr", gap: "6px 12px" }}>
@@ -239,8 +269,10 @@ export default function Pass190OperationFabricSurface() {
             <dt>Last transition</dt><dd>{arbitration?.last_transition || "—"}</dd>
             <dt>Admission lease</dt><dd>{String(arbitration?.lease_state || "absent").toUpperCase()}</dd>
             <dt>Lease holder</dt><dd style={{ overflowWrap: "anywhere" }}>{arbitration?.holder_id || "—"}</dd>
+            <dt>Lease receipt chain</dt><dd>{arbitration?.lease_receipt_chain_verified ? "VERIFIED" : "UNVERIFIED"}</dd>
             <dt>Distributed singleton</dt><dd>{integrity?.distributed_singleton_verified ? "VERIFIED" : "UNVERIFIED"}</dd>
             <dt>Resource registry</dt><dd>{integrity?.resource_registry_verified ? "VERIFIED" : "UNVERIFIED"}</dd>
+            <dt>Execution runtime</dt><dd>{integrity?.execution_runtime_verified ? "VERIFIED" : "UNVERIFIED"}</dd>
             <dt>Atomic snapshot</dt><dd>{integrity?.atomic_snapshot_verified ? "VERIFIED" : "UNVERIFIED"}</dd>
             <dt>Kernel authority</dt><dd>{integrity?.kernel_authority_verified ? "VERIFIED" : "UNVERIFIED"}</dd>
             <dt>Chain head</dt><dd style={{ overflowWrap: "anywhere" }}>{String(integrity?.chain_head ?? "—")}</dd>
