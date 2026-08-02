@@ -1,0 +1,25 @@
+{
+  "schema": "HHS_PASS_189_ITERATION_4_SOURCE_MANIFEST_V1",
+  "contract": "HHS-P189-HQLH-LS41-XNOR-P1-H72-H216-UPA",
+  "iteration": "HHS-P189-HQLH-ITERATION-4-DRIVER-PROVENANCE-QUARANTINE-PROMOTION",
+  "authoritative_base": "1d3c7588a242e3a83304f5083c2ec5a974f19399",
+  "publication_identity": "BOUND_TO_GIT_COMMIT_AND_TREE_AFTER_MERGE",
+  "aggregate_sha256": "a65fa92c2644bd7072ee64fc2caa556aac936087170e5202375e4e672925574d",
+  "files": {
+    "HHS_PASS_189_ITERATION_4_DRIVER_PROVENANCE_QUARANTINE_PROMOTION_AUTHORITY.md": "c52842abe422a2aae4551fc1f03f2c2274273fa03f6dde7e95ddb3912024eb24",
+    "Makefile": "9dfd99b437283f00961bd9b2aef73e5800c361becb338275d00dc03eabbe30af",
+    "README_ITERATION_4.md": "d49166e9857f928ff23a05e9e131f9a336e39cc32c73f8baf6e844164f937e6b",
+    "RESTART_RECORD_ITERATION_4.md": "caa795e145732a6b65d7f7e8d117ec2b1546347389854572c4b4b2587c73b4a5",
+    "pass189-hqlh-runtime.yml": "77622c54133ee6ad2b89606b596a1f7b16fcc857e01033f5f1e3b405d28e2445",
+    "python/hhs_pass189_iteration4.py": "cb05e73a1a34bf38facb0bb4355324f2f3b7eb0b1aa07a218ca8fedc9a7e74c9",
+    "python/test_hhs_pass189_iteration4.py": "64712375d4bb42d77b16c675d68d4056fe8e78c9f4d3bda80251cd388cd10eb8",
+    "server/hhs_pass189_iteration4_server.py": "02f8d88623c73b6998605601cc36baa9d5255f9b00627dc92ca1b6789077ef6f",
+    "tools/hhs_pass189_iteration4_surface_smoke.py": "779562ef4fab0e20e8eef5c06e6ba1e11b5b674cc6ace59d29491278267817b3",
+    "web/iteration4.html": "d016fb671c5df85eb1afcadf9c0cf498397d8d4577799733324fe8c9f9a135d4",
+    "deployment/digitalocean/hhs-pass189-iteration4.service": "b9943a555fb6351b4c106c54274f54a2edd2a48ecb2941327edfd7a0a94213ea",
+    "deployment/digitalocean/install.sh": "6beb215b0ccd9140e05d428dc03812b4f0486cff8241f349f52d4396317c5364",
+    "deployment/digitalocean/nginx-hhs-pass189.conf": "e51598c548a540bc3c46e327dc349f588d7c71e3a1d18b859ee7225d91555506",
+    "deployment/digitalocean/verify.sh": "e88a4fbd0d0c68eb6513b1d0bcc82bd23d5998c5ba7a01f16898bcedba98f780",
+    "registry.json": "9383533e6dff96284932c8612f5c1039ad2e8c11e7a98d8d2644488f388bca25"
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "schema": "HHS_PASS_189_ITERATION_4_VALIDATION_RECEIPT_V1",
+  "contract": "HHS-P189-HQLH-LS41-XNOR-P1-H72-H216-UPA",
+  "iteration": "HHS-P189-HQLH-ITERATION-4-DRIVER-PROVENANCE-QUARANTINE-PROMOTION",
+  "classification": "HHS_PASS_189_HQLH_CALIBRATION_IN_PROGRESS",
+  "authoritative_base": "1d3c7588a242e3a83304f5083c2ec5a974f19399",
+  "parent_iteration_merge": "f3ceba745ce5b478ca850c14a543a18189cc7d6c",
+  "claims": {
+    "operator_key_manifest_authentication": true,
+    "payload_bound_quarantine": true,
+    "conformance_evidence_ledger": true,
+    "dual_approval_promotion": true,
+    "trust_root_cascade_revocation": true,
+    "deterministic_rollback": true,
+    "real_hardware_driver_loaded": false,
+    "real_hardware_dispatch_authorized": false,
+    "public_key_code_signing_claimed": false,
+    "unified_physics_verified": false
+  },
+  "promotion_classes": {
+    "software_test": "SOFTWARE_TEST_EXECUTABLE",
+    "real_hardware": "HARDWARE_CANDIDATE_NONEXECUTABLE"
+  },
+  "deployment": {
+    "authority": "DIGITALOCEAN_SELF_HOSTED",
+    "external_digitalocean_mutation_performed": false,
+    "hydration_port": 8189,
+    "iteration2_port": 8190,
+    "iteration3_port": 8191,
+    "iteration4_port": 8192,
+    "persistent_database": "/var/lib/hhs-pass189/iteration4.sqlite3",
+    "quarantine_directory": "/var/lib/hhs-pass189/iteration4-quarantine",
+    "vercel_required": false
+  },
+  "validation": {
+    "iteration4_unit_tests_passed": 12,
+    "iteration4_surface_smoke_passed": true,
+    "manifest_authentication_mismatch_rejected": true,
+    "payload_digest_binding": true,
+    "path_traversal_rejected": true,
+    "concurrent_quarantine_idempotence": true,
+    "evidence_class_separation": true,
+    "dual_approval_enforced": true,
+    "hardware_candidate_nonexecution": true,
+    "trust_root_revocation_cascade": true,
+    "rollback": true,
+    "event_chain_verification": true,
+    "checkpoint_recovery": true,
+    "http_sse_websocket_visual": true,
+    "python_bytecode_compile": true,
+    "deployment_shell_syntax": true,
+    "local_prepublication_validation_passed": true
+  },
+  "source_manifest": "P189_ITERATION_4_SOURCE_MANIFEST.json"
+}
