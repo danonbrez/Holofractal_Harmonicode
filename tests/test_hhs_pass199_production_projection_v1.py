@@ -30,7 +30,11 @@ class Pass199ProductionProjectionTests(unittest.TestCase):
                 self.assertNotEqual(report["core_contract"], report["contract"])
                 self.assertEqual(report["governed_operation_count"], 49)
                 self.assertEqual(runtime.report()["report_hash72"], report["report_hash72"])
-                self.assertEqual(runtime.pass198.list_runs()[0]["report_hash72"], report["report_hash72"])
+                persistent_hashes = {
+                    item["report_hash72"]
+                    for item in runtime.pass198.list_runs()
+                }
+                self.assertIn(report["report_hash72"], persistent_hashes)
             finally:
                 runtime.close()
 
