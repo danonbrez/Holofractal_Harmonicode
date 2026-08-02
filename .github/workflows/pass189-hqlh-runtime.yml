@@ -5,6 +5,7 @@ on:
     paths:
       - "HHS_PASS_189_HQLH_RUNTIME_IMPLEMENTATION_AND_DIGITALOCEAN_AUTHORITY.md"
       - "HHS_PASS_189_ITERATION_2_CALIBRATION_CAUSAL_PERSISTENCE_AUTHORITY.md"
+      - "HHS_PASS_189_ITERATION_3_DEVICE_ADAPTER_LEASE_WATCHDOG_AUTHORITY.md"
       - "native_projects/hhs_pass189_hqlh_runtime/**"
       - "hhs_gui/runtime_apps/hqlh/**"
       - "hhs_gui/runtime_os/core/RuntimeApplicationRegistry.tsx"
@@ -13,6 +14,7 @@ on:
     paths:
       - "HHS_PASS_189_HQLH_RUNTIME_IMPLEMENTATION_AND_DIGITALOCEAN_AUTHORITY.md"
       - "HHS_PASS_189_ITERATION_2_CALIBRATION_CAUSAL_PERSISTENCE_AUTHORITY.md"
+      - "HHS_PASS_189_ITERATION_3_DEVICE_ADAPTER_LEASE_WATCHDOG_AUTHORITY.md"
       - "native_projects/hhs_pass189_hqlh_runtime/**"
       - "hhs_gui/runtime_apps/hqlh/**"
       - "hhs_gui/runtime_os/core/RuntimeApplicationRegistry.tsx"
@@ -21,9 +23,9 @@ on:
 jobs:
   validate:
     runs-on: ubuntu-24.04
-    timeout-minutes: 12
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
-      - name: Validate exact Pass 189 authority and Iteration 2 persistence
+      - name: Validate exact Pass 189 authority through Iteration 3
         working-directory: native_projects/hhs_pass189_hqlh_runtime
         run: make validate
