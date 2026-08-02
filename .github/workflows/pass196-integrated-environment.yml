@@ -47,10 +47,13 @@ jobs:
           python -m py_compile tests/test_hhs_pass196_integrated_environment_v1.py
       - name: Validate Pass 196 browser module
         run: node --check applications/holofractal_harmonizer/src/pass196-integration.mjs
-      - name: Verify Visual IDE and server wiring
+      - name: Verify Visual IDE, server, and DigitalOcean wiring
         run: |
           grep -F "import './pass196-integration.mjs';" applications/holofractal_harmonizer/src/production-startup-coordinator.mjs
           grep -F "pass196_integration_router" hhs_backend/visual_server.py
           grep -F "hhs_backend.visual_server:app" deploy/digitalocean/hhs-pass196-integrated-environment.service
+          grep -F "WorkingDirectory=/opt/hhs/app" deploy/digitalocean/hhs-pass196-integrated-environment.service
+          grep -F -- "--port 8080 --workers 1" deploy/digitalocean/hhs-pass196-integrated-environment.service
+          grep -F "HHS_REPOSITORY_ROOT=/opt/hhs/app" deploy/digitalocean/hhs-pass196.env.example
       - name: Run Pass 196 tests
         run: python tests/test_hhs_pass196_integrated_environment_v1.py
