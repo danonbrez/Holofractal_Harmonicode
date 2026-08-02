@@ -1,14 +1,17 @@
-"""Restart-safe public runtime and bounded batch submission for Pass 199."""
+"""Restart-safe batched durable execution runtime for Pass 199."""
 from __future__ import annotations
 
 import copy
 import json
 import os
+import threading
 import time
 import uuid
+from concurrent.futures import ThreadPoolExecutor
 from typing import Any, Mapping
 
 from hhs_backend.runtime.hhs_pass199_distributed_calibration_fabric_v1 import (
+    ADDRESS_COUNT,
     BRANCH_OPERATION_ID,
     COMMIT_OPERATION_ID,
     COMPLETE_OPERATION_ID,
@@ -33,6 +36,7 @@ from hhs_backend.runtime.hhs_pass199_distributed_calibration_fabric_v1 import (
     _EXECUTION_IMPLEMENTATIONS,
     _RESOURCE_IMPLEMENTATIONS,
     _pass199_operation,
+    evaluate_branch_candidate,
     hhs_hash72,
     pass190_hash72,
     pass190_hash216,
@@ -41,12 +45,19 @@ from hhs_pass190 import ArgumentValidationError, _validate_schema
 from hhs_pass190_iteration6 import RESOURCE_SCHEMAS
 from hhs_pass190_iteration7_registry import EXECUTION_JOB_SCHEMA_VERSION
 
-BATCH_OPERATION_ID = "calibration.submit_tree"
+BATCH_SUBMIT_OPERATION_ID = "calibration.submit_tree"
+BATCH_CLAIM_OPERATION_ID = "calibration.claim_batch"
+BATCH_COMPLETE_OPERATION_ID = "calibration.complete_batch"
+BATCH_OPERATION_IDS = (
+    BATCH_SUBMIT_OPERATION_ID,
+    BATCH_CLAIM_OPERATION_ID,
+    BATCH_COMPLETE_OPERATION_ID,
+)
 BATCH_CONTRACT = "HHS-P199-P198-P190-DCT-BATCH-WORKER-VM81-H72"
 
 
-def _batch_operation_record() -> dict[str, Any]:
-    rational = {
+def _rational_schema() -> dict[str, Any]:
+    return {
         "type": "object",
         "additionalProperties": False,
         "properties": {
@@ -55,54 +66,108 @@ def _batch_operation_record() -> dict[str, Any]:
         },
         "required": ["numerator", "denominator"],
     }
+
+
+def _batch_operation_records() -> tuple[dict[str, Any], ...]:
+    exact_ns = {"type": "integer", "minimum": 0, "maximum": 9_223_372_036_854_775_807}
+    identifier = {"type": "string", "maxLength": 256}
     state = {
         "type": "object",
         "additionalProperties": False,
         "properties": {
             "ordinal": {"type": "integer", "minimum": 0, "maximum": 49_999},
-            "x": rational,
-            "y": rational,
+            "x": _rational_schema(),
+            "y": _rational_schema(),
             "xy_symbol": {"type": "integer", "minimum": -16, "maximum": 16},
         },
         "required": ["ordinal", "x", "y", "xy_symbol"],
     }
-    return _pass199_operation(
-        BATCH_OPERATION_ID,
-        "Submit complete durable calibration tree",
-        "CalibrationSubmitTree",
-        "job:write",
-        "mutation",
-        {
-            "type": "object",
-            "additionalProperties": False,
-            "properties": {
-                "run_id": {"type": "string", "maxLength": 256},
-                "workspace_id": {"type": "string", "maxLength": 256},
-                "operation_id": {"type": "string", "maxLength": 256},
-                "operation_spec_hash72": {"type": "string", "maxLength": 72},
-                "tree_hash72": {"type": "string", "maxLength": 72},
-                "submitted_at_ns": {"type": "integer", "minimum": 0, "maximum": 9_223_372_036_854_775_807},
-                "states": {"type": "array", "maxItems": 50_000, "items": state},
-            },
-            "required": [
-                "run_id", "workspace_id", "operation_id", "operation_spec_hash72",
-                "tree_hash72", "submitted_at_ns", "states",
-            ],
+    completion = {
+        "type": "object",
+        "additionalProperties": False,
+        "properties": {
+            "job_id": identifier,
+            "worker_id": identifier,
+            "claim_token_hash72": {"type": "string", "maxLength": 72},
+            "candidate_result": {"type": "object"},
         },
-        "calibration-submit-tree",
+        "required": ["job_id", "worker_id", "claim_token_hash72", "candidate_result"],
+    }
+    return (
+        _pass199_operation(
+            BATCH_SUBMIT_OPERATION_ID,
+            "Submit complete durable calibration tree",
+            "CalibrationSubmitTree",
+            "job:write",
+            "mutation",
+            {
+                "type": "object",
+                "additionalProperties": False,
+                "properties": {
+                    "run_id": identifier,
+                    "workspace_id": identifier,
+                    "operation_id": identifier,
+                    "operation_spec_hash72": {"type": "string", "maxLength": 72},
+                    "tree_hash72": {"type": "string", "maxLength": 72},
+                    "submitted_at_ns": exact_ns,
+                    "states": {"type": "array", "maxItems": 50_000, "items": state},
+                },
+                "required": [
+                    "run_id", "workspace_id", "operation_id", "operation_spec_hash72",
+                    "tree_hash72", "submitted_at_ns", "states",
+                ],
+            },
+            "calibration-submit-tree",
+        ),
+        _pass199_operation(
+            BATCH_CLAIM_OPERATION_ID,
+            "Claim one calibration job per worker atomically",
+            "CalibrationClaimBatch",
+            "worker:execute",
+            "mutation",
+            {
+                "type": "object",
+                "additionalProperties": False,
+                "properties": {
+                    "workspace_id": identifier,
+                    "worker_ids": {"type": "array", "maxItems": 64, "items": identifier},
+                    "now_ns": exact_ns,
+                    "lease_duration_ns": {"type": "integer", "minimum": 1, "maximum": 3_600_000_000_000},
+                },
+                "required": ["workspace_id", "worker_ids", "now_ns", "lease_duration_ns"],
+            },
+            "calibration-claim-batch",
+        ),
+        _pass199_operation(
+            BATCH_COMPLETE_OPERATION_ID,
+            "Complete a claimed calibration worker batch atomically",
+            "CalibrationCompleteBatch",
+            "worker:execute",
+            "mutation",
+            {
+                "type": "object",
+                "additionalProperties": False,
+                "properties": {
+                    "completions": {"type": "array", "maxItems": 64, "items": completion},
+                    "now_ns": exact_ns,
+                },
+                "required": ["completions", "now_ns"],
+            },
+            "calibration-complete-batch",
+        ),
     )
 
 
-BATCH_OPERATION_RECORD = _batch_operation_record()
+BATCH_OPERATION_RECORDS = _batch_operation_records()
 
 
 class Pass199BatchOperationRegistry(Pass199OperationRegistry):
-    """Pass 199 registry with one atomic durable-tree submission mutation."""
+    """Pass 199 registry with atomic submission, claim, and completion batches."""
 
     def __init__(self, registry_path: Any = DEFAULT_REGISTRY) -> None:
         parent = Pass199OperationRegistry(registry_path)
         combined = [copy.deepcopy(dict(record.raw)) for record in parent.records]
-        combined.append(copy.deepcopy(BATCH_OPERATION_RECORD))
+        combined.extend(copy.deepcopy(record) for record in BATCH_OPERATION_RECORDS)
         identity = {
             "schema": REGISTRY_SCHEMA,
             "contract": BATCH_CONTRACT,
@@ -117,7 +182,7 @@ class Pass199BatchOperationRegistry(Pass199OperationRegistry):
             "native_operation_count": int(parent.payload["native_operation_count"]),
             "governed_operation_count": len(combined),
             "execution_operation_count": int(parent.payload["execution_operation_count"]),
-            "distributed_calibration_operation_count": len(PASS199_OPERATION_IDS) + 1,
+            "distributed_calibration_operation_count": len(PASS199_OPERATION_IDS) + len(BATCH_OPERATION_IDS),
         }
         self.records = tuple(OperationRecord(record) for record in combined)
         self.by_id = {}
@@ -125,12 +190,13 @@ class Pass199BatchOperationRegistry(Pass199OperationRegistry):
         self.by_python = {}
         self.by_shell = {}
         self._validate_and_index()
-        if tuple(record.operation_id for record in self.records[-4:]) != (*PASS199_OPERATION_IDS, BATCH_OPERATION_ID):
+        expected_tail = (*PASS199_OPERATION_IDS, *BATCH_OPERATION_IDS)
+        if tuple(record.operation_id for record in self.records[-len(expected_tail):]) != expected_tail:
             raise RegistryValidationError("Pass 199 batch operation order mismatch")
 
 
 class RestartSafePass199DurableCalibrationContext(Pass199DurableCalibrationContext):
-    """Pass 199 authority with batch submission and bounded receipt recovery."""
+    """Pass 199 authority with bounded batched worker mutations."""
 
     def __init__(
         self,
@@ -156,7 +222,9 @@ class RestartSafePass199DurableCalibrationContext(Pass199DurableCalibrationConte
                 BRANCH_OPERATION_ID: self._op_calibration_evaluate_branch,
                 COMPLETE_OPERATION_ID: self._op_calibration_complete_claimed,
                 COMMIT_OPERATION_ID: self._op_calibration_commit_tree,
-                BATCH_OPERATION_ID: self._op_calibration_submit_tree,
+                BATCH_SUBMIT_OPERATION_ID: self._op_calibration_submit_tree,
+                BATCH_CLAIM_OPERATION_ID: self._op_calibration_claim_batch,
+                BATCH_COMPLETE_OPERATION_ID: self._op_calibration_complete_batch,
             }
         )
         if set(self._implementations) != set(self.registry.by_id):
@@ -175,10 +243,7 @@ class RestartSafePass199DurableCalibrationContext(Pass199DurableCalibrationConte
             if not page:
                 break
             for receipt in page:
-                if (
-                    receipt.get("operation_id") == COMMIT_OPERATION_ID
-                    and receipt.get("arguments", {}).get("run_id") == run_id
-                ):
+                if receipt.get("operation_id") == COMMIT_OPERATION_ID and receipt.get("arguments", {}).get("run_id") == run_id:
                     self._verify_receipt_identity(receipt)
                     match = copy.deepcopy(receipt)
             cursor = int(page[-1]["receipt_index"])
@@ -303,9 +368,198 @@ class RestartSafePass199DurableCalibrationContext(Pass199DurableCalibrationConte
         }
         return {**body, "batch_hash72": pass190_hash72("pass199.batch.submission", body)}
 
+    def _op_calibration_claim_batch(self, args: dict[str, Any]) -> dict[str, Any]:
+        workspace_id = self._identifier(args["workspace_id"], "workspace_id")
+        worker_ids = [self._identifier(value, "worker_id") for value in args["worker_ids"]]
+        if not worker_ids or len(worker_ids) != len(set(worker_ids)):
+            raise ArgumentValidationError("worker_ids must contain unique workers")
+        now_ns = int(args["now_ns"])
+        job_payloads, scheduler_workers, _counts, _changed = self._scheduler_payloads(now_ns, 1000)
+        if job_payloads or scheduler_workers:
+            self._commit_execution_records(job_payloads=job_payloads, worker_payloads=scheduler_workers)
+        workers = {worker_id: self._worker_lookup(worker_id) for worker_id in worker_ids}
+        for worker_id, worker in workers.items():
+            if not worker["enabled"]:
+                raise StateConflictError(f"worker is disabled: {worker_id}")
+            if now_ns > int(worker["last_heartbeat_ns"]) + int(worker["lease_timeout_ns"]):
+                raise StateConflictError(f"worker heartbeat lease expired: {worker_id}")
+            if worker.get("current_job_id") is not None:
+                raise StateConflictError(f"worker already owns a running job: {worker_id}")
+        eligible = [
+            job for job in self._resource_registries()["jobs"].values()
+            if self._is_execution_job(job)
+            and job["status"] == "queued"
+            and job.get("provider_id") is None
+            and job["workspace_id"] == workspace_id
+            and now_ns >= int(job["next_attempt_ns"])
+            and self._dependency_state(job) == (True, [])
+        ]
+        eligible.sort(key=lambda item: (-int(item["priority"]), item["job_id"]))
+        claimed_jobs: dict[str, Mapping[str, Any]] = {}
+        claimed_workers: dict[str, Mapping[str, Any]] = {}
+        claim_records: list[dict[str, Any]] = []
+        available = list(eligible)
+        for worker_id in worker_ids:
+            worker = workers[worker_id]
+            index = next(
+                (
+                    idx for idx, job in enumerate(available)
+                    if set(job["required_capabilities"]).issubset(set(worker["capabilities"]))
+                ),
+                None,
+            )
+            if index is None:
+                continue
+            job = available.pop(index)
+            attempt = int(job["attempt"]) + 1
+            if attempt > int(job["max_attempts"]):
+                raise StateConflictError(f"job exhausted its attempt budget: {job['job_id']}")
+            lease_duration = min(int(args["lease_duration_ns"]), int(worker["lease_timeout_ns"]))
+            claim_payload = {
+                "job_id": job["job_id"],
+                "worker_id": worker_id,
+                "attempt": attempt,
+                "claimed_at_ns": now_ns,
+                "lease_duration_ns": lease_duration,
+                "preclaim_state_root": self._state_root,
+            }
+            claim_token = pass190_hash72("pass190.execution.claim", claim_payload)
+            claimed_jobs[job["job_id"]] = self._updated_payload(
+                job,
+                {
+                    "status": "running",
+                    "attempt": attempt,
+                    "worker_id": worker_id,
+                    "claim_token_hash72": claim_token,
+                    "lease_expires_ns": now_ns + lease_duration,
+                    "cancel_requested": False,
+                    "started_at_ns": now_ns,
+                    "finished_at_ns": None,
+                },
+            )
+            claimed_workers[worker_id] = self._updated_payload(
+                worker,
+                {
+                    "current_job_id": job["job_id"],
+                    "current_claim_token_hash72": claim_token,
+                    "last_heartbeat_ns": max(int(worker["last_heartbeat_ns"]), now_ns),
+                },
+            )
+            claim_records.append(
+                {
+                    "job_id": job["job_id"],
+                    "worker_id": worker_id,
+                    "claim_token_hash72": claim_token,
+                }
+            )
+        if not claim_records:
+            return {"claimed": False, "claims": [], "state_root": self._state_root}
+        committed_jobs, _committed_workers = self._commit_execution_records(
+            job_payloads=claimed_jobs,
+            worker_payloads=claimed_workers,
+        )
+        claims = [
+            {
+                **record,
+                "job": committed_jobs[record["job_id"]],
+            }
+            for record in claim_records
+        ]
+        return {
+            "claimed": True,
+            "claims": claims,
+            "claim_count": len(claims),
+            "one_job_per_worker": True,
+            "state_root": self._state_root,
+        }
+
+    def _op_calibration_complete_batch(self, args: dict[str, Any]) -> dict[str, Any]:
+        completions = args["completions"]
+        if not completions:
+            raise ArgumentValidationError("completions must not be empty")
+        job_ids = [self._identifier(item["job_id"], "job_id") for item in completions]
+        worker_ids = [self._identifier(item["worker_id"], "worker_id") for item in completions]
+        if len(job_ids) != len(set(job_ids)) or len(worker_ids) != len(set(worker_ids)):
+            raise ArgumentValidationError("batch completion jobs and workers must be unique")
+        now_ns = int(args["now_ns"])
+        job_payloads: dict[str, Mapping[str, Any]] = {}
+        worker_payloads: dict[str, Mapping[str, Any]] = {}
+        completed: list[dict[str, Any]] = []
+        for item in completions:
+            job_id = self._identifier(item["job_id"], "job_id")
+            worker_id = self._identifier(item["worker_id"], "worker_id")
+            job = self._lookup("jobs", job_id)
+            worker = self._worker_lookup(worker_id)
+            token = item["claim_token_hash72"]
+            if job.get("operation_id") != BRANCH_OPERATION_ID or job.get("status") != "running":
+                raise StateConflictError(f"job is not a running calibration branch: {job_id}")
+            if job.get("worker_id") != worker_id or job.get("claim_token_hash72") != token:
+                raise StateConflictError(f"job claim token mismatch: {job_id}")
+            if worker.get("current_job_id") != job_id or worker.get("current_claim_token_hash72") != token:
+                raise StateConflictError(f"worker claim token mismatch: {worker_id}")
+            if now_ns >= int(job["lease_expires_ns"]):
+                raise StateConflictError(f"candidate completion lease expired: {job_id}")
+            if not worker["enabled"] or now_ns > int(worker["last_heartbeat_ns"]) + int(worker["lease_timeout_ns"]):
+                raise StateConflictError(f"worker authority expired: {worker_id}")
+            candidate = copy.deepcopy(item["candidate_result"])
+            self._validate_candidate_binding(job, candidate)
+            execution = {
+                "job_id": job_id,
+                "worker_id": worker_id,
+                "attempt": job["attempt"],
+                "execution_request_hash72": job["execution_request_hash72"],
+                "candidate_hash72": candidate["candidate_hash72"],
+                "finished_at_ns": now_ns,
+            }
+            execution_hash = pass190_hash72("pass199.candidate.execution", execution)
+            job_payloads[job_id] = self._updated_payload(
+                job,
+                {
+                    "status": "completed",
+                    "result": candidate,
+                    "error": None,
+                    "execution_hash72": execution_hash,
+                    "worker_id": None,
+                    "claim_token_hash72": None,
+                    "lease_expires_ns": None,
+                    "finished_at_ns": now_ns,
+                },
+            )
+            worker_payloads[worker_id] = self._updated_payload(
+                worker,
+                {
+                    "current_job_id": None,
+                    "current_claim_token_hash72": None,
+                    "last_heartbeat_ns": max(int(worker["last_heartbeat_ns"]), now_ns),
+                    "completed_job_count": int(worker["completed_job_count"]) + 1,
+                },
+            )
+            completed.append(
+                {
+                    "job_id": job_id,
+                    "worker_id": worker_id,
+                    "candidate_hash72": candidate["candidate_hash72"],
+                    "execution_hash72": execution_hash,
+                }
+            )
+        committed_jobs, _committed_workers = self._commit_execution_records(
+            job_payloads=job_payloads,
+            worker_payloads=worker_payloads,
+        )
+        return {
+            "completed": True,
+            "completion_count": len(completed),
+            "completions": [
+                {**item, "job_status": committed_jobs[item["job_id"]]["status"]}
+                for item in completed
+            ],
+            "candidate_workers_are_authority": False,
+            "state_root": self._state_root,
+        }
+
 
 class Pass199DistributedCalibrationRuntime(Pass199DistributedCalibrationFabric):
-    """Public runtime preserving bounded scheduler and resume identities."""
+    """Public runtime preserving exact durable jobs with bounded authority mutations."""
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
@@ -333,7 +587,7 @@ class Pass199DistributedCalibrationRuntime(Pass199DistributedCalibrationFabric):
         self._ensure_workspace(workspace_id)
         submission = self._invoke(
             self.context,
-            BATCH_OPERATION_ID,
+            BATCH_SUBMIT_OPERATION_ID,
             {
                 "run_id": run_id,
                 "workspace_id": workspace_id,
@@ -365,6 +619,75 @@ class Pass199DistributedCalibrationRuntime(Pass199DistributedCalibrationFabric):
             "submission_receipt_mode": "ONE_GOVERNED_BATCH_RECEIPT",
             "individual_jobs_remain_durable": True,
             "deterministic_ordering": "CANONICAL_JOB_ID_THEN_ORDINAL_COMMIT",
+        }
+
+    def execute_workers(self, prepared: Mapping[str, Any], *, worker_count: int = 4) -> dict[str, Any]:
+        if not 1 <= worker_count <= 64:
+            raise ValueError("worker_count must be in [1,64]")
+        worker_ids = [f"p199.worker.{index:02d}" for index in range(worker_count)]
+        now = time.time_ns()
+        for worker_id in worker_ids:
+            self._ensure_worker(worker_id, now)
+        active = 0
+        peak = 0
+        active_lock = threading.Lock()
+        completed_ids: list[str] = []
+        claim_batch_count = 0
+        completion_batch_count = 0
+
+        def compute(claim: Mapping[str, Any]) -> dict[str, Any]:
+            nonlocal active, peak
+            with active_lock:
+                active += 1
+                peak = max(peak, active)
+            try:
+                candidate = evaluate_branch_candidate(claim["job"]["arguments"])
+                return {
+                    "job_id": claim["job_id"],
+                    "worker_id": claim["worker_id"],
+                    "claim_token_hash72": claim["claim_token_hash72"],
+                    "candidate_result": candidate,
+                }
+            finally:
+                with active_lock:
+                    active -= 1
+
+        while True:
+            claim_result = self._invoke(
+                self.context,
+                BATCH_CLAIM_OPERATION_ID,
+                {
+                    "workspace_id": prepared["workspace_id"],
+                    "worker_ids": worker_ids,
+                    "now_ns": time.time_ns(),
+                    "lease_duration_ns": 300_000_000_000,
+                },
+                "worker:execute",
+            ).result
+            if not claim_result["claimed"]:
+                break
+            claim_batch_count += 1
+            claims = claim_result["claims"]
+            with ThreadPoolExecutor(max_workers=min(worker_count, len(claims))) as pool:
+                completions = list(pool.map(compute, claims))
+            completion_result = self._invoke(
+                self.context,
+                BATCH_COMPLETE_OPERATION_ID,
+                {"completions": completions, "now_ns": time.time_ns()},
+                "worker:execute",
+            ).result
+            completion_batch_count += 1
+            completed_ids.extend(item["job_id"] for item in completion_result["completions"])
+        return {
+            "worker_count": worker_count,
+            "completed_job_count": len(completed_ids),
+            "completed_job_ids": sorted(completed_ids),
+            "peak_parallel_candidate_workers": peak,
+            "candidate_computation_outside_authority_lock": True,
+            "one_job_per_worker": True,
+            "claim_batch_count": claim_batch_count,
+            "completion_batch_count": completion_batch_count,
+            "authority_mutations_reduced": True,
         }
 
     def run(
