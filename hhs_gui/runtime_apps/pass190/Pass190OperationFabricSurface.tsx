@@ -29,6 +29,16 @@ type ArbitrationStatus = {
   lease_receipt_chain_verified?: boolean
 }
 
+type ResourceRegistryStatus = {
+  counts?: Record<string, number>
+  active_job_count?: number
+  governed_operation_count?: number
+  native_operation_count?: number
+  compiler_fallback_operation_count?: number
+  resource_registry_hash72?: string
+  state_root?: string
+}
+
 const field: React.CSSProperties = {
   width: "100%",
   borderRadius: 8,
@@ -61,6 +71,7 @@ export default function Pass190OperationFabricSurface() {
   const [status, setStatus] = useState("CONNECTING")
   const [integrity, setIntegrity] = useState<Record<string, unknown> | null>(null)
   const [arbitration, setArbitration] = useState<ArbitrationStatus | null>(null)
+  const [resources, setResources] = useState<ResourceRegistryStatus | null>(null)
   const [result, setResult] = useState<Record<string, any> | null>(null)
   const [events, setEvents] = useState<RuntimeEvent[]>([])
   const [error, setError] = useState("")
@@ -77,14 +88,16 @@ export default function Pass190OperationFabricSurface() {
   )
 
   async function refreshAuthority() {
-    const [integrityPayload, arbitrationPayload] = await Promise.all([
+    const [integrityPayload, arbitrationPayload, resourcePayload] = await Promise.all([
       fetch(apiUrl("/api/pass190/integrity")).then(checkedJson),
       fetch(apiUrl("/api/pass190/arbitration")).then(checkedJson),
+      fetch(apiUrl("/api/pass190/resource-registry")).then(checkedJson),
     ])
     if (stoppedRef.current) return
     setIntegrity(integrityPayload)
     setArbitration(arbitrationPayload)
-    setStatus(integrityPayload.status === "ok" ? "KERNEL AUTHORITY READY" : "DEGRADED")
+    setResources(resourcePayload)
+    setStatus(integrityPayload.status === "ok" ? "UNIFIED AUTHORITY READY" : "DEGRADED")
   }
 
   useEffect(() => {
@@ -93,12 +106,14 @@ export default function Pass190OperationFabricSurface() {
       fetch(apiUrl("/api/pass190/operations")).then(checkedJson),
       fetch(apiUrl("/api/pass190/integrity")).then(checkedJson),
       fetch(apiUrl("/api/pass190/arbitration")).then(checkedJson),
-    ]).then(([registry, integrityPayload, arbitrationPayload]) => {
+      fetch(apiUrl("/api/pass190/resource-registry")).then(checkedJson),
+    ]).then(([registry, integrityPayload, arbitrationPayload, resourcePayload]) => {
       if (stoppedRef.current) return
       setOperations(registry.operations || [])
       setIntegrity(integrityPayload)
       setArbitration(arbitrationPayload)
-      setStatus(integrityPayload.status === "ok" ? "KERNEL AUTHORITY READY" : "DEGRADED")
+      setResources(resourcePayload)
+      setStatus(integrityPayload.status === "ok" ? "UNIFIED AUTHORITY READY" : "DEGRADED")
     }).catch((caught) => {
       if (!stoppedRef.current) {
         setStatus("DEGRADED")
@@ -122,7 +137,7 @@ export default function Pass190OperationFabricSurface() {
       setStatus(reconnectAttemptRef.current ? "EVENT CHANNEL RECOVERING" : "EVENT CHANNEL CONNECTING")
       socket.onopen = () => {
         reconnectAttemptRef.current = 0
-        setStatus("KERNEL AUTHORITY READY")
+        setStatus("UNIFIED AUTHORITY READY")
       }
       socket.onmessage = (message) => {
         try {
@@ -176,11 +191,13 @@ export default function Pass190OperationFabricSurface() {
     }
   }
 
+  const counts = resources?.counts || {}
+
   return <div style={{ minHeight: "100%", padding: 16, background: "#071017", color: "#e8f7ff", fontFamily: "system-ui" }}>
     <header style={{ display: "flex", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
       <div>
         <h2 style={{ margin: 0 }}>Pass 190 Operation Fabric</h2>
-        <p style={{ margin: "4px 0 0", color: "#9ab9c9" }}>Atomic snapshots, lease-transition receipts, kernel-authority fencing, persistent Hash72 lineage, native compiler parity, and resumable events.</p>
+        <p style={{ margin: "4px 0 0", color: "#9ab9c9" }}>Unified workspace, artifact, provider, capability, and job registries under atomic VM81 admission, Hash72 lineage, native ABI, and exact compiler fallback.</p>
       </div>
       <strong>{status}</strong>
     </header>
@@ -192,10 +209,25 @@ export default function Pass190OperationFabricSurface() {
         <p style={{ color: "#9ab9c9" }}>{current?.canonical_name || "Loading registry"}</p>
         <label>Arguments<textarea value={argumentsText} onChange={(event) => setArgumentsText(event.target.value)} rows={8} style={{ ...field, marginTop: 6, fontFamily: "monospace" }} /></label>
         <label style={{ display: "block", marginTop: 10 }}>Signed capability token<input type="password" autoComplete="off" value={capabilityToken} onChange={(event) => setCapabilityToken(event.target.value)} placeholder={current?.capability_scope === "public" ? "Not required" : current?.capability_scope || "Protected operation"} style={{ ...field, marginTop: 6 }} /></label>
-        <button onClick={invoke} style={{ marginTop: 12, borderRadius: 8, padding: "10px 16px", cursor: "pointer" }}>Invoke through kernel authority</button>
+        <button onClick={invoke} style={{ marginTop: 12, borderRadius: 8, padding: "10px 16px", cursor: "pointer" }}>Invoke through unified VM81 authority</button>
         {error && <p role="alert" style={{ color: "#ffb2a6" }}>{error}</p>}
       </section>
       <section style={{ display: "grid", gap: 14 }}>
+        <article style={{ border: "1px solid #284552", borderRadius: 10, padding: 14 }}>
+          <h3 style={{ marginTop: 0 }}>Unified resource registry</h3>
+          <dl style={{ display: "grid", gridTemplateColumns: "auto 1fr", gap: "6px 12px" }}>
+            <dt>Governed operations</dt><dd>{String(resources?.governed_operation_count ?? operations.length)}</dd>
+            <dt>Native ABI operations</dt><dd>{String(resources?.native_operation_count ?? 0)}</dd>
+            <dt>Exact fallback operations</dt><dd>{String(resources?.compiler_fallback_operation_count ?? 0)}</dd>
+            <dt>Workspaces</dt><dd>{String(counts.workspaces ?? 0)}</dd>
+            <dt>Artifacts</dt><dd>{String(counts.artifacts ?? 0)}</dd>
+            <dt>Providers</dt><dd>{String(counts.providers ?? 0)}</dd>
+            <dt>Capabilities</dt><dd>{String(counts.capabilities ?? 0)}</dd>
+            <dt>Jobs</dt><dd>{String(counts.jobs ?? 0)}</dd>
+            <dt>Active jobs</dt><dd>{String(resources?.active_job_count ?? 0)}</dd>
+            <dt>Registry Hash72</dt><dd style={{ overflowWrap: "anywhere" }}>{resources?.resource_registry_hash72 || "—"}</dd>
+          </dl>
+        </article>
         <article style={{ border: "1px solid #284552", borderRadius: 10, padding: 14 }}>
           <h3 style={{ marginTop: 0 }}>Authority integrity</h3>
           <dl style={{ display: "grid", gridTemplateColumns: "auto 1fr", gap: "6px 12px" }}>
@@ -207,12 +239,9 @@ export default function Pass190OperationFabricSurface() {
             <dt>Last transition</dt><dd>{arbitration?.last_transition || "—"}</dd>
             <dt>Admission lease</dt><dd>{String(arbitration?.lease_state || "absent").toUpperCase()}</dd>
             <dt>Lease holder</dt><dd style={{ overflowWrap: "anywhere" }}>{arbitration?.holder_id || "—"}</dd>
+            <dt>Resource registry</dt><dd>{integrity?.resource_registry_verified ? "VERIFIED" : "UNVERIFIED"}</dd>
             <dt>Atomic snapshot</dt><dd>{integrity?.atomic_snapshot_verified ? "VERIFIED" : "UNVERIFIED"}</dd>
-            <dt>Lease receipt chain</dt><dd>{arbitration?.lease_receipt_chain_verified ? "VERIFIED" : "UNVERIFIED"}</dd>
             <dt>Kernel authority</dt><dd>{integrity?.kernel_authority_verified ? "VERIFIED" : "UNVERIFIED"}</dd>
-            <dt>Metadata</dt><dd>{integrity?.metadata_complete ? "VERIFIED" : "UNVERIFIED"}</dd>
-            <dt>Event topology</dt><dd>{integrity?.events_verified ? "VERIFIED" : "UNVERIFIED"}</dd>
-            <dt>Distributed singleton</dt><dd>{integrity?.distributed_singleton_verified ? "VERIFIED" : "UNVERIFIED"}</dd>
             <dt>Chain head</dt><dd style={{ overflowWrap: "anywhere" }}>{String(integrity?.chain_head ?? "—")}</dd>
             <dt>State root</dt><dd style={{ overflowWrap: "anywhere" }}>{String(integrity?.state_root ?? "—")}</dd>
           </dl>
