@@ -10,7 +10,7 @@ server = (ROOT / "server/hhs_pass190_iteration7_server.py").read_text(encoding="
 tests = (ROOT / "python/test_hhs_pass190_iteration7.py").read_text(encoding="utf-8")
 bindings = (ROOT / "bindings/P190_OPERATION_SURFACE_BINDINGS_V3.json").read_text(encoding="utf-8")
 checks = {
-    "eleven_operations": "EXECUTION_OPERATION_IDS" in registry and registry.count("_operation(") == 12,
+    "eleven_operations": "EXECUTION_OPERATION_IDS" in registry and registry.count("_operation(") == 11,
     "forty_two_governed": '"governed_operation_count": len(combined_records)' in registry and '"execution_operation_count": len(EXECUTION_OPERATION_RECORDS)' in registry,
     "native_preserved": "NativeManifest(OperationRegistry" in compiler,
     "pure_execution_boundary": "durable internal execution accepts pure operations only" in authority and "durable worker cannot execute mutating targets" in authority,
