@@ -127,7 +127,7 @@ def main() -> int:
     parser.add_argument("--check", action="store_true")
     args = parser.parse_args()
     operations = [dict(record.raw) for record in Iteration7OperationRegistry().records]
-    python_source = generate_python(operations)
+    python_source = generate_python(operations).rstrip() + "\n"
     typescript_source = generate_ts(operations)
     if args.check:
         if _report_diff(PY_TARGET, python_source) or _report_diff(TS_TARGET, typescript_source):
