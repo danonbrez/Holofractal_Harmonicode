@@ -14,6 +14,7 @@ except Exception:
     _kernel_hash72 = None
     HASH_AUTHORITY = "STANDALONE_SHA512_VALIDATION_FALLBACK"
 
+HASH_TRANSPORT = "CANONICAL_SHA512_LENGTH_BOUND_TO_HASH72_RING"
 CELL_COUNT = 81
 LANE_COUNT = 64
 ADDRESS_COUNT = CELL_COUNT * LANE_COUNT
@@ -25,9 +26,20 @@ def canonical_json(value: Any) -> str:
 
 
 def hash72(label: str, value: Any) -> str:
+    canonical = canonical_json(value).encode("utf-8")
+    canonical_sha512 = hashlib.sha512(canonical).hexdigest()
     if _kernel_hash72 is not None:
-        return _kernel_hash72(label, value)
-    return hashlib.sha512(f"{label}\u241f{canonical_json(value)}".encode()).hexdigest()[:72]
+        return _kernel_hash72(
+            label,
+            {
+                "schema": "HHS_PASS_197_BOUNDED_HASH72_TRANSPORT_V1",
+                "canonical_sha512": canonical_sha512,
+                "canonical_bytes": len(canonical),
+            },
+        )
+    return hashlib.sha512(
+        f"{label}\u241f{len(canonical)}\u241f{canonical_sha512}".encode("utf-8")
+    ).hexdigest()[:72]
 
 
 def exact_fraction(value: Any, *, field: str) -> Fraction:
