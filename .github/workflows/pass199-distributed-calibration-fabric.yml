@@ -92,7 +92,14 @@ jobs:
               before = runtime.report()
               resumed = runtime.run(worker_count=8, vm81_receipt_hash72='9' * 72, resume=True)
               assert resumed['report_hash72'] == before['report_hash72']
-              receipts = runtime.context.receipts_after(0, 100_000)
+              receipts = []
+              cursor = 0
+              while True:
+                  page = runtime.context.receipts_after(cursor, 1000)
+                  if not page:
+                      break
+                  receipts.extend(page)
+                  cursor = int(page[-1]['receipt_index'])
               assert sum(item['operation_id'] == COMMIT_OPERATION_ID for item in receipts) == 1
           finally:
               runtime.close()
@@ -109,10 +116,9 @@ jobs:
 
       - name: Verify authority wiring
         run: |
-          grep -Fq 'candidate computation outside authority' HHS_PASS_199_DISTRIBUTED_CALIBRATION_FABRIC.md || true
+          grep -Fq 'out-of-authority-lock candidate computation' HHS_PASS_199_DISTRIBUTED_CALIBRATION_FABRIC.md
           grep -Fq 'calibration.complete_claimed' hhs_backend/runtime/hhs_pass199_distributed_calibration_fabric_v1.py
           grep -Fq 'calibration.commit_tree' hhs_backend/runtime/hhs_pass199_distributed_calibration_fabric_v1.py
-          grep -Fq 'candidate workers must compute outside authority' hhs_backend/runtime/hhs_pass199_distributed_calibration_fabric_v1.py || true
           grep -Fq 'runtime_controller.authorized_tick' hhs_backend/api/pass199_distributed_calibration_routes.py
 
       - name: Upload full distributed calibration evidence
