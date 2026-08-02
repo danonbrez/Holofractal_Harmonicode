@@ -4,7 +4,7 @@ This directory contains the repository-native DigitalOcean deployment assets for
 
 The complete installation, operations, backup, restore, rollback, security, troubleshooting, and maintenance runbook is:
 
-[`docs/deployment/DIGITALOCEAN_INSTALLATION_OPERATIONS_MAINTENANCE.md`](../../../../../docs/deployment/DIGITALOCEAN_INSTALLATION_OPERATIONS_MAINTENANCE.md)
+[`docs/deployment/DIGITALOCEAN_INSTALLATION_OPERATIONS_MAINTENANCE.md`](../../../../docs/deployment/DIGITALOCEAN_INSTALLATION_OPERATIONS_MAINTENANCE.md)
 
 ## Service map
 
