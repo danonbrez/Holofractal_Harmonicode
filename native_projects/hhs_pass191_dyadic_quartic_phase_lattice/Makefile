@@ -1,6 +1,6 @@
 PYTHON ?= python3
 REPO_ROOT := ../..
-PACKAGE := native_projects.hhs_pass191_dyadic_quartic_phase_lattice.hhs_pass191_runner_v1
+PACKAGE := native_projects.hhs_pass191_dyadic_quartic_phase_lattice.hhs_pass191_runner_v2
 EVIDENCE := native_projects/hhs_pass191_dyadic_quartic_phase_lattice/evidence
 
 .PHONY: validate bootstrap test generate verify-existing bundle no-sandbox-drift
@@ -31,11 +31,4 @@ no-sandbox-drift:
 		terminal_hhsprog_v4_symbolic.py \
 		HHS_PASS_191_DYADIC_QUARTIC_PHASE_LATTICE_PROOF.md
 
-validate: bootstrap test
-	cd $(REPO_ROOT) && if test -f $(EVIDENCE)/PASS_191_RELEASE_MANIFEST.json; then \
-		$(PYTHON) -m $(PACKAGE) --output-dir $(EVIDENCE) --verify-existing; \
-	else \
-		$(PYTHON) -m $(PACKAGE) --output-dir $(EVIDENCE); \
-	fi
-	$(MAKE) bundle
-	$(MAKE) no-sandbox-drift
+validate: bootstrap test generate verify-existing bundle no-sandbox-drift
