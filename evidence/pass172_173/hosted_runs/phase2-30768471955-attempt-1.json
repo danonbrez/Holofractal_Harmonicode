@@ -1,0 +1,21 @@
+{
+  "branch": "agent/pass198-operation-calibration-registry",
+  "failures": 0,
+  "next_action": "merge after the evidence-only head is revalidated",
+  "outcomes": {
+    "compile": "success",
+    "contracts": "success",
+    "dependencies": "success",
+    "smoke": "success",
+    "tests": "success"
+  },
+  "pytest_output_sha256": "8f938fa692afd6416bbe8f6b838672cba9cd0e7dd00d7a7c1072c41ba55b257b",
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "run_attempt": 1,
+  "run_id": 30768471955,
+  "schema": "HHS_PASS_172_173_PHASE2_HOSTED_VALIDATION_V1",
+  "status": "SUCCESS",
+  "terminal_pass172_claimed": false,
+  "terminal_pass173_claimed": false,
+  "validated_sha": "8537983557017281dd3aeb0fb3570325e407d3de"
+}
