@@ -1,7 +1,7 @@
 {
   "template_id": "hhs.pass189.hqlh.unified-physics-runtime",
   "logical_module_id": "hhs.harmonicode.quantum-logic-hydration",
-  "template_version": "1.3.0",
+  "template_version": "1.3.1",
   "source_root": "native_projects/hhs_pass189_hqlh_runtime",
   "source_files": [
     "include/hhs_pass189_hqlh.h",
@@ -17,7 +17,9 @@
     "web/iteration3.html",
     "python/hhs_pass189_iteration4.py",
     "server/hhs_pass189_iteration4_server.py",
-    "web/iteration4.html"
+    "web/iteration4.html",
+    "python/hhs_pass189_iteration4_token_lifecycle.py",
+    "server/hhs_pass189_iteration4_token_server.py"
   ],
   "manifest_files": [
     "registry/hhs_pass189_hqlh.template.json",
@@ -31,7 +33,7 @@
     "evidence/P189_ITERATION_4_VALIDATION_RECEIPT.json"
   ],
   "implementation_status": "EXECUTABLE_VERIFIED",
-  "maturity": "DRIVER_PROVENANCE_QUARANTINE_IMPLEMENTED_REAL_DRIVER_EXECUTION_PENDING",
+  "maturity": "DRIVER_PROVENANCE_QUARANTINE_AND_TOKEN_LIFECYCLE_IMPLEMENTED_REAL_DRIVER_EXECUTION_PENDING",
   "modality_sets": [
     "Harmonicode / Exact Math",
     "Quantum / Qudit / Tensor Layers",
@@ -97,7 +99,7 @@
     "Pass 189 Device Adapter Authority",
     "Pass 189 Driver Provenance Authority"
   ],
-  "description": "Executable exact hydration, calibration, causal, test-adapter, and authenticated driver-provenance authority with quarantine, conformance, dual promotion, revocation, rollback, APIs, events, and visual inspection.",
+  "description": "Executable exact hydration, calibration, causal, test-adapter, authenticated driver-provenance, and promotion-token lifecycle authority with quarantine, conformance, dual promotion, persistent expiry, revocation, rollback, APIs, events, and visual inspection.",
   "capabilities": [
     "decode_51648192_contexts",
     "exact_membrane_ast",
@@ -127,7 +129,9 @@
     "evidence_class_conformance",
     "dual_approval_promotion",
     "trust_root_revocation",
-    "deterministic_driver_rollback"
+    "deterministic_driver_rollback",
+    "promotion_token_validation",
+    "persistent_promotion_expiry"
   ],
   "permissions": [
     "read_source",
@@ -207,7 +211,9 @@
     "record_driver_conformance",
     "promote_driver_package",
     "revoke_driver_promotion",
-    "rollback_driver_package"
+    "rollback_driver_package",
+    "validate_driver_promotion_token",
+    "sweep_expired_driver_promotions"
   ],
   "dependencies": [
     "python>=3.10",
