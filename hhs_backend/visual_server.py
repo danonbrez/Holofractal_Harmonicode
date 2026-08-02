@@ -24,7 +24,7 @@ from hhs_backend.api.litert_lm_assistant_routes import router as assistant_route
 from hhs_backend.api.pass196_integration_routes import router as pass196_integration_router
 from hhs_backend.api.pass197_calibration_routes import router as pass197_calibration_router
 from hhs_backend.api.pass198_calibration_registry_routes import router as pass198_calibration_registry_router
-from hhs_backend.api.pass199_distributed_calibration_routes import router as pass199_distributed_calibration_router
+from hhs_backend.api.pass199_distributed_calibration_routes_v2 import router as pass199_distributed_calibration_router
 from hhs_backend.api.probability_hydration_routes import router as probability_hydration_router
 from hhs_backend.api.storybook_reel_routes import router as storybook_reel_router
 
