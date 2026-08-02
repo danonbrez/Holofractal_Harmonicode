@@ -16,7 +16,13 @@ from native_projects.hhs_pass191_dyadic_quartic_phase_lattice.hhs_pass191_phase_
     phase_trace,
     quadratic_reciprocity_checks,
 )
-from native_projects.hhs_pass191_dyadic_quartic_phase_lattice.hhs_pass191_runner_v2 import formal_workloads
+from native_projects.hhs_pass191_dyadic_quartic_phase_lattice.hhs_pass191_runner_v2 import (
+    AUTHORIZED_REPOSITORY_BASELINE,
+    BENCHMARK_TIMING_CLASSIFICATION,
+    VOLATILE_BENCHMARK_FIELDS,
+    formal_workloads,
+    normalize_benchmark_artifact,
+)
 
 
 def test_quartic_dyadic_trace_is_exact():
@@ -103,3 +109,40 @@ def test_rh_transfer_obstruction_names_complete_bridge_set():
         "OFF_AXIS_ZERO_EXCLUSION_OR_COUNTEREXAMPLE_TRANSFER",
     ]
     assert ledger["hypothesis_decisions"]["RIEMANN_HYPOTHESIS"]["controlling_obligation"] == "DQPL-RH-TRANSFER"
+
+
+def test_benchmark_normalization_is_stable_across_wall_clock_variance():
+    common = {
+        "schema": "HHS_PASS_191_NATIVE_BENCHMARK_V1",
+        "status": "DETERMINISTIC_BIFURCATION_VERIFIED",
+        "branch_count": 4,
+        "determinism_mismatch_count": 0,
+        "closure_coordinate_roots_match": True,
+        "receipt_chain_locks": True,
+        "replay_receipt_root_hash72": "stable-root",
+        "canonical_float_authority_used": False,
+    }
+    first = normalize_benchmark_artifact(
+        {
+            **common,
+            "total_execution_ns": 100,
+            "native_invocation_ns_reported": 10,
+            "operations_per_second": 40.0,
+        }
+    )
+    second = normalize_benchmark_artifact(
+        {
+            **common,
+            "total_execution_ns": 900,
+            "native_invocation_ns_reported": 90,
+            "operations_per_second": 4.0,
+        }
+    )
+
+    assert first == second
+    assert first["timing_classification"] == BENCHMARK_TIMING_CLASSIFICATION
+    assert first["volatile_fields_excluded_from_authority"] == list(
+        VOLATILE_BENCHMARK_FIELDS
+    )
+    assert all(field not in first for field in VOLATILE_BENCHMARK_FIELDS)
+    assert AUTHORIZED_REPOSITORY_BASELINE == "992b4e92a54d4656d66af4edfab7e03922addca6"
