@@ -33,7 +33,7 @@
     "psi": 0,
     "theta_15": true
   },
-  "native_benchmark_ops_per_sec": 13.880836846781353,
+  "native_benchmark_ops_per_sec": 18.429553263021514,
   "parent_pass": "PASS_161",
   "pass_id": "PASS_191",
   "receipt_chain_root_hash72": "H72N-3429a26ffd20e72b47",

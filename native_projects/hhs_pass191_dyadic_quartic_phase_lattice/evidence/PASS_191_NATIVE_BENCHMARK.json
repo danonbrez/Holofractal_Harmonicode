@@ -5,10 +5,10 @@
   "determinism_mismatch_count": 0,
   "native_invocation_ns_reported": 0,
   "note": "Pass 082 uses an opaque native float buffer only as non-authoritative benchmark output; canonical Pass 191 proofs remain exact.",
-  "operations_per_second": 13.880836846781353,
+  "operations_per_second": 18.429553263021514,
   "receipt_chain_locks": true,
   "replay_receipt_root_hash72": "0000000000000000000000000000004C7PmfGx*a?)/WVyzXrg-kQ3?X=vAP/0+Fj27JVszk",
   "schema": "HHS_PASS_191_NATIVE_BENCHMARK_V1",
   "status": "DETERMINISTIC_BIFURCATION_VERIFIED",
-  "total_execution_ns": 288167064
+  "total_execution_ns": 217042700
 }
