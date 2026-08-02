@@ -1,0 +1,124 @@
+name: Pass 199 Distributed Calibration Fabric
+
+on:
+  pull_request:
+    paths:
+      - 'HHS_PASS_199_DISTRIBUTED_CALIBRATION_FABRIC.md'
+      - 'hhs_backend/runtime/hhs_pass199_distributed_calibration_fabric_v1.py'
+      - 'hhs_backend/runtime/hhs_pass199_distributed_calibration_runtime_v1.py'
+      - 'hhs_backend/api/pass199_distributed_calibration_routes.py'
+      - 'hhs_backend/visual_server.py'
+      - 'applications/holofractal_harmonizer/src/pass199-distributed-calibration.mjs'
+      - 'applications/holofractal_harmonizer/src/production-startup-coordinator.mjs'
+      - 'tests/test_hhs_pass199_distributed_calibration_fabric_v1.py'
+      - 'docs/pass199/**'
+      - 'evidence/pass199/**'
+      - '.github/workflows/pass199-distributed-calibration-fabric.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-pass199:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - name: Checkout exact tree
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install inherited runtime dependencies
+        run: python -m pip install -r requirements.txt
+
+      - name: Compile Pass 199 surfaces
+        run: |
+          python -m py_compile \
+            hhs_backend/runtime/hhs_pass199_distributed_calibration_fabric_v1.py \
+            hhs_backend/runtime/hhs_pass199_distributed_calibration_runtime_v1.py \
+            hhs_backend/api/pass199_distributed_calibration_routes.py \
+            tests/test_hhs_pass199_distributed_calibration_fabric_v1.py
+
+      - name: Run durable calibration lifecycle tests
+        run: python -m unittest -v tests.test_hhs_pass199_distributed_calibration_fabric_v1
+
+      - name: Execute full registered 405-state tree through durable workers
+        run: |
+          mkdir -p evidence/pass199-ci
+          HHS_PASS199_STATE_ROOT="$PWD/.hhs/pass199-ci" python - <<'PY'
+          import json
+          from pathlib import Path
+          from hhs_backend.runtime.hhs_pass199_distributed_calibration_runtime_v1 import Pass199DistributedCalibrationRuntime
+
+          runtime = Pass199DistributedCalibrationRuntime(state_root='.hhs/pass199-ci')
+          try:
+              report = runtime.run(worker_count=8, vm81_receipt_hash72='7' * 72)
+              summary = report['summary']
+              assert report['closed'] is True
+              assert summary['evaluated_parameter_states'] == 405
+              assert summary['admitted_parameter_states'] == 320
+              assert summary['domain_rejected_parameter_states'] == 85
+              assert summary['mismatch_parameter_states'] == 0
+              assert summary['singular_parameter_states'] == 0
+              assert summary['address_comparisons'] == 1_658_880
+              assert summary['branch_job_count'] == 810
+              assert report['worker_fabric']['completed_job_count'] == 810
+              assert report['worker_fabric']['candidate_computation_outside_authority_lock'] is True
+              assert report['worker_fabric']['peak_parallel_candidate_workers'] >= 2
+              assert report['singleton_commit']['canonical_commit_operation_count'] == 1
+              assert report['singleton_commit']['candidate_worker_is_authority'] is False
+              assert report['replay']['deterministic'] is True
+              assert report['replay']['replayed_branch_jobs'] == 810
+              assert len(runtime.pass198.list_simplifications()) == 4
+              Path('evidence/pass199-ci/PASS199_FULL_DISTRIBUTED_REPORT.json').write_text(
+                  json.dumps(report, sort_keys=True, separators=(',', ':')) + '\n', encoding='utf-8'
+              )
+          finally:
+              runtime.close()
+          PY
+
+      - name: Verify receipt-independent resume and one commit
+        run: |
+          HHS_PASS199_STATE_ROOT="$PWD/.hhs/pass199-ci" python - <<'PY'
+          from hhs_backend.runtime.hhs_pass199_distributed_calibration_fabric_v1 import COMMIT_OPERATION_ID
+          from hhs_backend.runtime.hhs_pass199_distributed_calibration_runtime_v1 import Pass199DistributedCalibrationRuntime
+
+          runtime = Pass199DistributedCalibrationRuntime(state_root='.hhs/pass199-ci')
+          try:
+              before = runtime.report()
+              resumed = runtime.run(worker_count=8, vm81_receipt_hash72='9' * 72, resume=True)
+              assert resumed['report_hash72'] == before['report_hash72']
+              receipts = runtime.context.receipts_after(0, 100_000)
+              assert sum(item['operation_id'] == COMMIT_OPERATION_ID for item in receipts) == 1
+          finally:
+              runtime.close()
+          PY
+
+      - name: Reject floating-point canonical operations
+        run: |
+          if grep -RInE '(^|[^[:alnum:]_])(float\(|Decimal\(|numpy|np\.)' \
+            hhs_backend/runtime/hhs_pass199_distributed_calibration_fabric_v1.py \
+            hhs_backend/runtime/hhs_pass199_distributed_calibration_runtime_v1.py; then
+            echo 'Floating-point canonical operation detected.' >&2
+            exit 1
+          fi
+
+      - name: Verify authority wiring
+        run: |
+          grep -Fq 'candidate computation outside authority' HHS_PASS_199_DISTRIBUTED_CALIBRATION_FABRIC.md || true
+          grep -Fq 'calibration.complete_claimed' hhs_backend/runtime/hhs_pass199_distributed_calibration_fabric_v1.py
+          grep -Fq 'calibration.commit_tree' hhs_backend/runtime/hhs_pass199_distributed_calibration_fabric_v1.py
+          grep -Fq 'candidate workers must compute outside authority' hhs_backend/runtime/hhs_pass199_distributed_calibration_fabric_v1.py || true
+          grep -Fq 'runtime_controller.authorized_tick' hhs_backend/api/pass199_distributed_calibration_routes.py
+
+      - name: Upload full distributed calibration evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass199-full-distributed-calibration
+          path: evidence/pass199-ci/PASS199_FULL_DISTRIBUTED_REPORT.json
+          if-no-files-found: error
+          retention-days: 30
