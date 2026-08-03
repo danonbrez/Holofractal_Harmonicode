@@ -21,10 +21,9 @@ def digest(value: Any) -> str:
 
 def unwrap(value: Any) -> Any:
     if isinstance(value, Mapping):
-        for key in ("payload", "result"):
-            nested = value.get(key)
-            if isinstance(nested, Mapping):
-                return nested
+        nested = value.get("payload")
+        if isinstance(nested, Mapping):
+            return nested
     return value
 
 
