@@ -6,6 +6,7 @@ from typing import Any, Dict, Mapping, Sequence
 
 from fastapi import FastAPI
 
+import hhs_backend.runtime.hhs_pass201_public_api_federation_v1 as _v1
 from hhs_backend.runtime.hhs_pass201_public_api_federation_v1 import (
     CLASSIFICATION,
     CONTRACT,
@@ -55,6 +56,13 @@ PASS201_PUBLIC_API_FEDERATION = PublicAPIFederation()
 
 def register_public_api_federation(app: FastAPI) -> Dict[str, Any]:
     return PASS201_PUBLIC_API_FEDERATION.register_all_api_routers(app)
+
+
+# Importing the production projection before legacy V1 symbols are consumed
+# keeps existing import paths compatible while making the normalized behavior
+# canonical for the composed public server.
+_v1.PASS201_PUBLIC_API_FEDERATION = PASS201_PUBLIC_API_FEDERATION
+_v1.register_public_api_federation = register_public_api_federation
 
 
 __all__ = [
