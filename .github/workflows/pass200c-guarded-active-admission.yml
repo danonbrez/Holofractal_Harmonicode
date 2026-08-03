@@ -1,0 +1,56 @@
+name: Pass 200C Guarded Active Admission
+
+on:
+  pull_request:
+    paths:
+      - 'HHS_PASS_200C_GUARDED_ACTIVE_ADMISSION.md'
+      - 'hhs_backend/runtime/hhs_pass200c_guarded_active_admission_v1.py'
+      - 'hhs_backend/runtime/hhs_pass200c_guarded_active_admission.py'
+      - 'hhs_backend/api/pass200c_active_routes.py'
+      - 'hhs_backend/visual_server.py'
+      - 'applications/holofractal_harmonizer/src/pass200c-guarded-active.mjs'
+      - 'applications/holofractal_harmonizer/src/production-startup-coordinator.mjs'
+      - 'tests/test_hhs_pass200c_guarded_active_admission_v1.py'
+      - 'docs/pass200c/**'
+      - 'evidence/pass200c/**'
+      - '.github/workflows/pass200c-guarded-active-admission.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-pass200c:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - name: Checkout exact tree
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install inherited runtime dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Compile Pass 200C surfaces
+        run: |
+          python -m py_compile \
+            hhs_backend/runtime/hhs_pass200c_guarded_active_admission_v1.py \
+            hhs_backend/runtime/hhs_pass200c_guarded_active_admission.py \
+            tests/test_hhs_pass200c_guarded_active_admission_v1.py
+      - name: Run guarded active lifecycle tests
+        run: python -m unittest -v tests.test_hhs_pass200c_guarded_active_admission_v1
+      - name: Reject floating-point canonical operations
+        run: |
+          if grep -RInE '(^|[^[:alnum:]_])(float\(|Decimal\(|numpy|np\.)' \
+            hhs_backend/runtime/hhs_pass200c_guarded_active_admission_v1.py \
+            hhs_backend/runtime/hhs_pass200c_guarded_active_admission.py; then
+            echo 'Floating-point canonical operation detected.' >&2
+            exit 1
+          fi
+      - name: Verify guarded authority markers
+        run: |
+          grep -Fq 'SINGLETON_ACTIVE_FRONTIER_ACTIVATED' hhs_backend/runtime/hhs_pass200c_guarded_active_admission_v1.py
+          grep -Fq 'ACTIVE_EXACT_GUARD_MISMATCH' hhs_backend/runtime/hhs_pass200c_guarded_active_admission_v1.py
+          grep -Fq 'three distinct principals' hhs_backend/runtime/hhs_pass200c_guarded_active_admission_v1.py
+          grep -Fq 'automatic_frozen_constraint_promotion' hhs_backend/runtime/hhs_pass200c_guarded_active_admission_v1.py
