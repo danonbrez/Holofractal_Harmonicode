@@ -1,0 +1,30 @@
+# Pass 202 Restart Record
+
+- Base commit: `bdf19276b0974481bd69d70ca1154f284f238e48`
+- Branch: `pass202-guarded-continuous-integration`
+- Merge target: `main`
+- Scope: GitHub trusted merge gate plus DigitalOcean fetch, isolated validation, fast-forward promotion, health verification, receipts, and rollback.
+- Changed files:
+  - `.github/workflows/guarded-continuous-integration.yml`
+  - `deployment/digitalocean/guarded_auto_update/*`
+  - `tests/test_hhs_guarded_auto_update_contract_v1.py`
+  - `docs/pass202/*`
+- Validation completed before publication:
+  - `bash -n` for all deployment scripts
+  - `pytest -q tests/test_hhs_guarded_auto_update_contract_v1.py` — 5 passed
+  - workflow YAML parse — passed
+- Validation remaining:
+  - repository pull-request checks
+  - DigitalOcean dry-run candidate validation
+  - controlled rollback drill
+- Host installation remaining:
+  - run `sudo REPO_ROOT=/opt/hhs/app bash deployment/digitalocean/guarded_auto_update/install.sh`
+  - inspect the dry-run receipt
+  - enable live promotion
+  - perform a controlled rollback drill
+- Environment assumptions:
+  - Ubuntu systemd host
+  - live checkout `/opt/hhs/app`
+  - production unit `hhs.service`
+  - production health endpoint `http://127.0.0.1:8080/api/system/status`
+- Next action: merge the validated branch, pull `main` on the production host once, install the timer, then allow the timer to own future updates.
