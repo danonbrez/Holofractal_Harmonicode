@@ -1,0 +1,17 @@
+{
+  "schema": "HHS_PASS_205_COMBINED_DESIGN_VALIDATION_SUMMARY_V1",
+  "classification": "HHS_PASS_205_COMBINED_DESIGN_VALIDATION_PASSED",
+  "base_validation_groups": 22,
+  "gpu_translation_validation_groups": 6,
+  "total_validation_groups": 28,
+  "base_receipt": "evidence/pass205/PASS205_MULTIMODAL_CONTINUATION_DESIGN_VALIDATION_RECEIPT.json",
+  "gpu_receipt": "evidence/pass205/PASS205_GPU_TRANSLATION_DESIGN_VALIDATION_RECEIPT.json",
+  "continuations": 600,
+  "vector_snapshots": 648,
+  "retrieval_continuations": 120,
+  "gpu_translation_batches": 256,
+  "exact_rerank_recall": 1.0,
+  "gpu_sparse_transfer_reduction": 7.657311669128508,
+  "physical_gpu_execution_claimed": false,
+  "production_implementation_complete": false
+}
