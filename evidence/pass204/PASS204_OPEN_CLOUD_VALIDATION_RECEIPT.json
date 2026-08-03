@@ -1,0 +1,101 @@
+{
+  "catalog_sha256": "4700a6ed0a746eb1e4693a6c2497db1e58087d126e8fcf12d2f52cd2d0b06259",
+  "classification": "HHS_PASS_204_UNIVERSAL_EXECUTABLE_DECLARATIONS_OPEN_CLOUD_VERIFIED",
+  "closed": true,
+  "contract": "HHS-P204-UNIVERSAL-EXECUTABLE-DECLARATIONS-OPEN-CLOUD-SANDBOX-VM81-H72-H216",
+  "core_native_receipt_hash72": "KLW)NAj5T9kF6JT6ZA0kok!uVFLe!*gAYYK(><uwvpf52hlwgCXoTKkSuZHNG8Iy364Tw3VY",
+  "host_trust_boundary": {
+    "capability_state_recovered": false,
+    "external_components": [
+      "physical_cpu",
+      "memory",
+      "storage_device",
+      "firmware",
+      "hypervisor",
+      "host_kernel",
+      "network_fabric",
+      "power_and_thermal_environment"
+    ],
+    "harmonicode_history_authority_inside_boundary": true,
+    "host_fault_can_mutate_constraint_contract": false,
+    "host_fault_can_rewrite_admitted_hash_history": false,
+    "host_fault_may_damage_uncommitted_physical_execution": true,
+    "host_fault_may_interrupt_availability": true,
+    "recovery_source": "CONTENT_ADDRESSED_LAYERED_SNAPSHOT_AND_RECEIPT_CHAIN",
+    "schema": "HHS_PASS_204_CLOUD_HOST_TRUST_BOUNDARY_V1",
+    "weakest_external_operational_layer": "CLOUD_SERVER_HARDWARE_ENVIRONMENT"
+  },
+  "kernel_constraint_manifest": {
+    "admitted_history_mutable": false,
+    "caller_adjustable_internal_parameters": false,
+    "constraint_authority_mutable": false,
+    "error_correction_functions_integrated": true,
+    "higher_dimensional_tensor_algebra_constraints": true,
+    "integrated_modular_system": true,
+    "native_machine_learning_optimization": true,
+    "nft_crypto_state_machine": true,
+    "noncommutative_entanglement_constraints": true,
+    "opcode_interrupt_scope": "DISPOSABLE_SANDBOX_HARDWARE_PROJECTION",
+    "schema": "HHS_PASS_204_IMMUTABLE_KERNEL_CONSTRAINT_MANIFEST_V1",
+    "thermodynamic_agentic_information_geometry_economy": true
+  },
+  "production_entrypoint": "hhs_backend.application_ide_server:app",
+  "project_native_job_id": "job:43071d0967f44539ab92380595775b26",
+  "project_native_receipt_hash72": "Np78ojOERbOo2pB0+Bvp47*KhGqdS1EtpcSX(Kuex(Uuf<!s2wn!<wtxqNWCYQg)lFpKlJRi",
+  "python_receipt_hash72": "UVWNb8<?hS(/HJWjO!!lMwtp)j92bq3E(pPrvVDjQJ)0LYl3dc7u2<yiAeVmFv*)lwgh(TaS",
+  "recall_verified": true,
+  "sandbox_policy": {
+    "caller_adjustable_internal_policy": false,
+    "direct_host_kernel_access": false,
+    "durable_outputs": [
+      "artifacts",
+      "jobs",
+      "receipts",
+      "layered_snapshots"
+    ],
+    "ephemeral_compute": true,
+    "internal_behavior_parameters_exposed": false,
+    "persistent_capabilities": false,
+    "remote_users_automatically_sandboxed": true,
+    "repo_source_read_only": true,
+    "sandbox_writes_discarded_after_snapshot": true,
+    "schema": "HHS_PASS_204_FIXED_SANDBOX_POLICY_V1",
+    "session_recall_restores_capabilities": false,
+    "virtual_device_table": true,
+    "virtual_filesystem": true,
+    "virtual_network_boundary": true,
+    "virtual_process_table": true
+  },
+  "schema": "HHS_PASS_204_OPEN_CLOUD_VALIDATION_RECEIPT_V1",
+  "snapshot_root": "JCR<sW/pI9rz*w5svIUaOIs/1(Rkfo050NYBfXRSDhY+i/maOouphah7vgrK(UuIXOv)v-hm",
+  "status_hash72": "LH0bm1Oh2BoGuenUhhwB/KIc!cUG/3XON6wm+Y)pcyuZXv8x0Y2LKQyubd8g4JD)FAtnxz)0",
+  "summary": {
+    "binding_gap_count": 0,
+    "callable_count": 2939,
+    "catalog_count": 2939,
+    "core_native_execution_status": "COMPLETED",
+    "hydrated_count": 2939,
+    "openapi_path_count": 441,
+    "project_native_execution_status": "ACCEPTED",
+    "public_route_count": 470,
+    "representative_results": [
+      {
+        "execution_status": "COMPLETED",
+        "function_id": "py:358a3df35d986b053cbd9e17f97fbc95fffaaf45df361dbfceb5aff6a1f342bd",
+        "inherited_mode": "ADAPTER_REQUIRED"
+      },
+      {
+        "execution_status": "CONTINUATION_REQUIRED",
+        "function_id": "py:53b3b7cc16ef5e4764cc69a33ce5d256e633c8bb4c6263551b7bf97107dcb8ca",
+        "inherited_mode": "FORBIDDEN"
+      }
+    ]
+  },
+  "validation": {
+    "workflow": "Pass 204 Open Cloud Mainframe",
+    "run_id": 30810581205,
+    "artifact_id": 8854643521,
+    "artifact_digest": "sha256:a84053f9c213441948cc63292dd4d409fbbfe608544fa47c4a472fe3ad60f508",
+    "validated_head": "1ee96a0968cf0316ab27a5a3a4d11d744077b938"
+  }
+}
