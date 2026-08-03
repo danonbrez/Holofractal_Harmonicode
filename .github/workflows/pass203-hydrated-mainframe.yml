@@ -53,8 +53,11 @@ jobs:
       - name: Execute production mainframe validation
         env:
           HHS_PASS190_CAPABILITY_SECRET: pass203-ci-secret
+          PYTHONFAULTHANDLER: '1'
+          PYTHONUNBUFFERED: '1'
         run: |
-          PYTHONPATH=. python scripts/pass203_hydrated_mainframe_validation.py \
+          PYTHONPATH=. timeout --signal=ABRT --kill-after=30s 600s \
+            python scripts/pass203_hydrated_mainframe_validation.py \
             --evidence evidence/pass203-ci/PASS203_VALIDATION_RECEIPT.json
 
       - name: Run inherited Pass 201 federation tests
@@ -83,6 +86,7 @@ jobs:
           grep -Fq 'ABI_BINDING_REQUIRED' hhs_backend/runtime/hhs_pass203_hydrated_mainframe_v1.py
           grep -Fq '/api/runtime/mainframe/functions' HHS_PASS_203_UNIVERSAL_HYDRATED_FUNCTION_MAINFRAME.md
           grep -Fq 'assistant_plan_is_execution_authority' hhs_backend/api/pass203_mainframe_routes.py
+          grep -Fq 'pass203_hydrated_mainframe_projection_loaded: true' applications/holofractal_harmonizer/src/production-startup-coordinator.mjs
 
       - name: Upload Pass 203 evidence
         uses: actions/upload-artifact@v4
