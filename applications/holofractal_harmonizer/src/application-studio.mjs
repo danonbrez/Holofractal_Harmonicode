@@ -5,6 +5,7 @@ import { applicationTemplateList, materializeApplicationTemplate } from './appli
 let selectedTemplate = 'pong';
 let previousProject = null;
 let priorUndoHandler = null;
+let previewTask = null;
 
 function snapshotProject() {
   return {
@@ -18,6 +19,14 @@ function setStatus(message, status = 'ready') {
   setText('#ide-simple-workflow-state', message);
   const node = $('#ide-simple-workflow-state');
   if (node) node.dataset.state = status;
+}
+
+function schedulePreviewHydration() {
+  if (previewTask !== null) window.clearTimeout(previewTask);
+  previewTask = window.setTimeout(() => {
+    previewTask = null;
+    window.HHSIntegratedWorkbench?.preview?.();
+  }, 0);
 }
 
 function refreshProjectSurfaces() {
@@ -48,7 +57,7 @@ function restorePreviousProject() {
   refreshProjectSurfaces();
   setStatus('Previous project restored. Use Undo again to switch back.', 'ready');
   log('Restored the prior project working tree without deleting either snapshot.');
-  window.HHSIntegratedWorkbench?.preview?.();
+  schedulePreviewHydration();
 }
 
 function bindProjectUndo() {
@@ -101,10 +110,11 @@ export function createApplicationProject(id = selectedTemplate, requestedName = 
     entrypoint: template.entrypoint,
     files: template.files.map((file) => file.path),
     previous_project_restorable: true,
+    preview_hydration_deferred: true,
   });
   if (/\.html?$/i.test(template.entrypoint)) {
     openBottomTab('preview');
-    window.HHSIntegratedWorkbench?.preview?.();
+    schedulePreviewHydration();
   }
   return template;
 }
@@ -175,6 +185,7 @@ export function initApplicationStudio() {
     templates: applicationTemplateList().map(({ id, label, description, entrypoint }) => ({ id, label, description, entrypoint })),
     creates_real_runnable_projects: true,
     prior_project_is_recoverable: true,
+    preview_hydration_is_deferred: true,
   });
   log('Application Studio ready with Pong, calculator, puzzle, document, audio, video, web, and automation projects.');
 }
