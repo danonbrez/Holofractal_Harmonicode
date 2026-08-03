@@ -22,6 +22,9 @@
 - Standalone reproducible design-validation harness.
 - Design-validation receipt and report.
 - GitHub Actions contract-validation workflow.
+- GPU translation-layer contract for exact SoA state/projection buffers and CSR sparse frontiers.
+- Deterministic accelerator scheduling, integer reductions, and CPU fallback requirements.
+- GPU translation validation over 256 batches with 7.6573× sparse transfer reduction.
 
 ## Design validation executed
 
@@ -37,13 +40,15 @@ Result:
 
 ```text
 HHS_PASS_205_DESIGN_VALIDATION_PASSED
-22 / 22 test groups passed
+28 / 28 test groups passed
 600 deterministic continuations
 648 stored vector snapshots
 120 retrieval continuations
 100% exact-best recall after top-32 shortlist and exact rerank
-mean sparse/full throughput gain: 6.5760x
-minimum seed throughput gain: 5.9518x
+mean sparse/full throughput gain: 6.8865x
+minimum seed throughput gain: 6.5482x
+GPU translation batches: 256
+GPU sparse transfer reduction: 7.6573x
 ```
 
 ## Changed files
@@ -58,6 +63,7 @@ minimum seed throughput gain: 5.9518x
 ## Remaining Pass 205 implementation
 
 - Bind the canonical state and continuation records to production Hash216, Hash72, and VM81 authority.
+- Implement and benchmark at least one physical GPU backend through the exact translation ABI.
 - Implement native C ABI state/delta/continuation/projection structures.
 - Implement persistent snapshot, lineage, vector, and receipt storage.
 - Integrate the game/graphics/physics projection bridge and ML feature/update bridge.
