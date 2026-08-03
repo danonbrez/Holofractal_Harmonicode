@@ -1,0 +1,28 @@
+{
+  "catalog_sha256": "0b2a06230ce9de2cd487db25d43d19fdd994037aa8d103738422a1b096c37262",
+  "classification": "HHS_PASS_203_UNIVERSAL_HYDRATED_FUNCTION_MAINFRAME_VERIFIED",
+  "closed": true,
+  "compiler_receipt_hash72": "!TeA24K!euXgEBE)b<WDlG862zDuR9JulFKuhbe19oXwEmD2YPA4HTdOi7y3/DC4DnfhKoJ?",
+  "contract": "HHS-P203-UNIVERSAL-HYDRATED-FUNCTION-MAINFRAME-VM81-H72-H216",
+  "interpreter_receipt_hash72": "rZYFTiyXj?6zo<XAkPkCHEA+7?Vjazi8l5(N4rqG?b9bGQ6iW9svShAk>m*MST4Oq70DrXIu",
+  "operation_native_receipt_hash72": "7f7a9b2389ea5aaa862ded1783fc5eeff16f698c6df2d8f31206a4e4ca1ebc2d78be0c8e",
+  "operation_receipt_hash72": "EKmmxz6X14rSXR5F0!WXazrv<*QkYY8D/9txeQRyZHMCfMuTJEZdBdhyJopaYPaemXydHt?r",
+  "schema": "HHS_PASS_204_INHERITED_PASS_203_REPLAY_RECEIPT_V1",
+  "standalone_replay": true,
+  "status_hash72": "1mF9t/1Y/!2b<sQdoosJnicrwsx812Jo9VC5?)5S9P*Skx3qkF?+cXgLFRu+>XenzGEbM1O+",
+  "summary": {
+    "callable_count": 688,
+    "catalog_count": 2910,
+    "hydrated_count": 688,
+    "openapi_path_count": 11,
+    "route_count": 16,
+    "unbound_internal_count": 2222
+  },
+  "validation": {
+    "workflow": "Pass 204 Open Cloud Mainframe",
+    "run_id": 30810581205,
+    "artifact_id": 8854643521,
+    "artifact_digest": "sha256:a84053f9c213441948cc63292dd4d409fbbfe608544fa47c4a472fe3ad60f508",
+    "validated_head": "1ee96a0968cf0316ab27a5a3a4d11d744077b938"
+  }
+}
