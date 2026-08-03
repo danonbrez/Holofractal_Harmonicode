@@ -59,6 +59,9 @@ def create_project(page, template: str, name: str):
     if creation["selected_template"] != template or creation["project_name"] != name:
         raise AssertionError(f"application creation transaction mismatch: {creation}")
     expect(gallery).to_be_hidden(timeout=20_000)
+    preview_tab = page.locator('[data-bottom-tab="preview"]')
+    expect(preview_tab).to_be_visible(timeout=20_000)
+    preview_tab.click()
     expect(page.locator("#ide-preview-panel.active")).to_be_visible(timeout=20_000)
     frame = application_frame(page)
     phase("PROJECT_READY", template=template)
