@@ -17,6 +17,9 @@
 4. `905a18e0a99ec262ea90aa765cbf97c9fcbaea3d` — lossless uint64 HTTP transport and canonical retrieval ordering.
 5. `10974bf6564b9157e09916974efe2d0382a9d1da` — trusted Pass 205 production workflow expansion.
 6. `64a110e24a3d18ccc811083df411cf5e0f750fd3` — removal of the superseded temporary workflow.
+7. `55340ca0dbf06c5eaf8397fb9df8d40ebf6fcb6e` — move synchronous kernel tick and event construction off the FastAPI event loop and serve bridge status from the last committed emission.
+8. `ae141d822594ad5505a6966dea55f5b95dae9ad7` — move packet projection and graph ingestion off the FastAPI event loop while preserving startup receipt closure.
+9. `540d05c39fa18870480b556c168b61d8340e5de8` — align full-application browser acceptance with the current explicit Application Preview tab contract.
 
 ## Implemented repair scope
 
@@ -30,6 +33,9 @@
 - Encode uint64 state words, learning features, and XOR masks as decimal strings at the HTTP boundary while retaining exact integer internals.
 - Sort compatible and rejected vector candidates canonically before retrieval identity construction and persistence.
 - Expose `GET /api/runtime/continuation/transport` and bind hosted Pass 205 routes to the governed singleton through deterministic API federation order.
+- Keep long synchronous kernel, event-construction, packet-projection, and graph-ingestion work outside the FastAPI event loop so runtime authority and visual integration requests remain serviceable during background continuation ticks.
+- Preserve strict production acceptance: the browser still requires a real committed receipt and runtime-state Hash72 before classifying the runtime authority as online.
+- Exercise the explicit preview-tab activation path before inspecting generated application frames.
 
 ## Changed files
 
@@ -37,8 +43,11 @@
 - `hhs_python/runtime/hhs_pass205_native_freshness_guard.py`
 - `hhs_backend/runtime/hhs_pass205_governed_continuation_v2.py`
 - `hhs_backend/runtime/hhs_pass205_retrieval_order_v1.py`
+- `hhs_backend/runtime/live_kernel_event_bridge_v1.py`
+- `hhs_backend/runtime/live_fastapi_workflow_v1.py`
 - `hhs_backend/api/a0_pass205_transport_bootstrap.py`
 - `hhs_backend/api/a_pass205_governed_bootstrap.py`
+- `applications/holofractal_harmonizer/ux_lab/full_application_smoke.py`
 - `deployment/digitalocean/pass205_state/install.sh`
 - `deployment/digitalocean/pass205_state/README.md`
 - `bin/post_compile`
@@ -57,13 +66,22 @@ The trusted Pass 205 production workflow now runs:
 - inherited Pass 205 design and GPU-translation tests;
 - hosted production validation and evidence generation;
 - hosted public federation binding checks;
-- inherited Pass 201–204 regression tests.
+- inherited Pass 201–204 regression tests;
+- full visual application browser acceptance through the current preview-tab workflow;
+- production receipt-closure acceptance while background kernel continuation work is active.
+
+## Current validation state
+
+- Focused Pass 205 authority, persistence, replay, transport, and retrieval tests were green before the event-loop repair continuation.
+- The prior production browser failure was isolated to FastAPI event-loop starvation during a real background kernel tick; the receipt-closure assertion was retained.
+- The prior full-application failure was isolated to a stale selector that assumed implicit preview activation; acceptance now performs the supported tab activation explicitly.
+- The current branch head must complete the trusted Pass 205, production Harmonizer, full application IDE, Pass 159, Pass 161, and usability workflows before readiness or merge.
 
 ## Remaining work
 
 1. Repair only dependency-scoped failures reported by PR #152 checks.
 2. Confirm the hosted application exposes the governed singleton and lossless transport route.
-3. Update this record with terminal workflow run and evidence artifact identities.
+3. Update PR #152 with terminal workflow and evidence identities.
 4. Mark PR #152 ready and merge only after the trusted Pass 205 workflow is green.
 5. Verify authoritative `main` and DigitalOcean guarded deployment receipts.
 6. Physical GPU execution remains a separate validation boundary and is not claimed by this repair.
