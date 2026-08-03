@@ -6,14 +6,16 @@ single cumulative Pass 203 system version.
 """
 from __future__ import annotations
 
-from typing import Any, Dict, Mapping, Optional
+from typing import Any, Dict, List, Mapping, Optional
 
+from hhs_backend.runtime.hhs_storybook_reel_timing_v1 import STYLE_TEMPLATES
 from hhs_backend.runtime.hhs_storybook_reel_v2 import (
     FIT_MODES,
     PIXEL_FORMATS,
     QUALITY_PRESETS,
     SCALE_FILTERS,
     SPRITE_OVERLAY_BITS,
+    TEMPLATE_SIGNALS,
     TEXTURE_LAYER_BITS,
     VIDEO_PRESETS,
     HighFidelityStorybookReelRuntime as _InheritedHighFidelityRuntime,
@@ -56,6 +58,52 @@ def _upgrade(value: Any) -> Any:
 class Pass203HighFidelityStorybookRuntime(_InheritedHighFidelityRuntime):
     """Cumulative Pass 203 projection over the inherited high-fidelity ABI."""
 
+    @staticmethod
+    def _template_candidates(text: str, selected_id: str) -> List[Dict[str, Any]]:
+        """Rank native templates while allowing multiple strong signals to win.
+
+        The inherited contextual selector remains a useful fallback, but it may
+        not overpower explicit story evidence. A 20-point continuity bonus keeps
+        unmarked text stable; each matched signal contributes 16 points, so two
+        strong signals such as ``candle`` and ``clock`` select ``serif_fable``.
+        """
+        normalized = str(text or "").lower()
+        candidates: List[Dict[str, Any]] = []
+        for template_id, template in STYLE_TEMPLATES.items():
+            matched = [token for token in TEMPLATE_SIGNALS.get(template_id, ()) if token in normalized]
+            continuity_bonus = 20 if template_id == selected_id else 0
+            score = 10 + len(matched) * 16 + continuity_bonus
+            reasons: List[str] = []
+            if matched:
+                reasons.append("matched:" + ",".join(matched))
+            if template_id == selected_id:
+                reasons.append("inherited_contextual_fallback")
+            if not reasons:
+                reasons.append("available_native_template")
+            candidates.append(
+                {
+                    "template_id": template_id,
+                    "label": template["label"],
+                    "description": template["description"],
+                    "score": score,
+                    "matched_signal_count": len(matched),
+                    "reasons": reasons,
+                    "style": {
+                        key: value
+                        for key, value in template.items()
+                        if key not in {"label", "description"}
+                    },
+                }
+            )
+        candidates.sort(
+            key=lambda item: (
+                -int(item["score"]),
+                -int(item["matched_signal_count"]),
+                str(item["template_id"]),
+            )
+        )
+        return candidates[:3]
+
     def parameter_catalog(self) -> Dict[str, Any]:
         result = _upgrade(super().parameter_catalog())
         result.update(
@@ -94,6 +142,17 @@ class Pass203HighFidelityStorybookRuntime(_InheritedHighFidelityRuntime):
 
     def contextual_defaults(self, text: str) -> Dict[str, Any]:
         result = _upgrade(super().contextual_defaults(text))
+        candidates = list(result.get("template_candidates") or [])
+        if candidates:
+            selected_id = str(candidates[0]["template_id"])
+            selected_template = STYLE_TEMPLATES[selected_id]
+            result["template_id"] = selected_id
+            result["template"] = dict(selected_template)
+            result["reason"] = (
+                "ranked_native_story_signals"
+                if int(candidates[0].get("matched_signal_count") or 0) > 0
+                else "inherited_contextual_fallback"
+            )
         result.update(
             {
                 "schema": "HHS_PASS_203_CONTEXTUAL_DEFAULTS_V1",
