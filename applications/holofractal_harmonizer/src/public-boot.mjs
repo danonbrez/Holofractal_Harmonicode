@@ -1,4 +1,4 @@
-const BOOT_SCHEMA = 'HHS_PUBLIC_MODULE_BOOT_V2';
+const BOOT_SCHEMA = 'HHS_PUBLIC_MODULE_BOOT_V3';
 let publicBoot = null;
 
 export function startPublicBoot() {
@@ -50,20 +50,22 @@ export function startPublicBoot() {
     });
   };
 
-  // The composed document disables all duplicate parser-owned entry modules.
-  // Browser and registry authorities start concurrently. Application controls
-  // initialize before visual-IDE hydration because both import the same control
-  // modules and the application surface owns the user-critical New Application path.
-  const browser = launch('browser', './browser.mjs');
-  const productionIntegration = launch('production-integration', './production-integration.mjs');
+  // Application controls are the user-critical boot membrane. They must mount
+  // before browser, registry, assistant, and visual hydration can occupy the
+  // main thread. The heavier graphs begin concurrently only after the complete
+  // application experience has committed its INTERACTIVE state.
   const applicationExperience = launch('application-experience', './application-experience.mjs');
+  const browser = applicationExperience.then(() => launch('browser', './browser.mjs'));
+  const productionIntegration = applicationExperience.then(
+    () => launch('production-integration', './production-integration.mjs'),
+  );
   const visualIDE = applicationExperience.then(() => launch('visual-ide', './visual-ide.mjs'));
   const workflowDefault = browser.then(() => launch('ux-default', './ux-default.mjs'));
 
   const allSettled = Promise.allSettled([
+    applicationExperience,
     browser,
     productionIntegration,
-    applicationExperience,
     visualIDE,
     workflowDefault,
   ]).then((results) => {
@@ -82,9 +84,10 @@ export function startPublicBoot() {
     schema: BOOT_SCHEMA,
     coordinator_ready: Boolean(window.HHSProductionStartupCoordinator),
     legacy_parser_module_entries_disabled: true,
+    application_controls_first: true,
+    applicationExperience,
     browser,
     productionIntegration,
-    applicationExperience,
     visualIDE,
     workflowDefault,
     allSettled,
