@@ -188,7 +188,33 @@ Required operations:
 
 The modular NFT state-machine identity is internal content-addressed non-fungibility and lineage. It does not require an external public blockchain.
 
-## 10. Runtime and ABI surfaces
+## 10. GPU translation and accelerator scaling
+
+The canonical continuation model shall remain backend-independent while exposing an exact accelerator translation layer for CUDA, HIP, Vulkan compute, WebGPU, Metal, and future GPU/accelerator targets.
+
+Required canonical buffer mappings:
+
+```text
+state:       uint64 SoA[cell][batch]
+projection:  uint32 SoA[channel][cell][batch]
+delta:       CSR offsets + uint32 cell + uint64 XOR mask
+hydration:   CSR offsets + uint32 q address
+features:    fixed-width integer SoA[feature][batch]
+```
+
+The accelerator layer shall:
+
+- preserve bit-exact 5,184-bit state and Hash216/Hash72 identities;
+- compact sparse dependency-complete frontiers before transfer and dispatch;
+- batch independent continuations and branches without merging their lineage;
+- use deterministic integer reductions and deterministic collision/admission ordering;
+- permit GPU execution of graphics, geometry, lighting, color, vector distance, feature hydration, and candidate evaluation;
+- return canonical deltas and witnesses to VM81/Hash72 admission rather than treating GPU memory as authority;
+- fall back to the CPU path with identical resulting state and receipts.
+
+Design validation confirmed exact SoA round trips, CSR frontier reconstruction, scatter-order independence, deterministic partitioned ML reductions, and a `7.6573×` reduction in tested transfer volume. This validates translation and scheduling only; physical GPU execution remains a production implementation requirement.
+
+## 11. Runtime and ABI surfaces
 
 Pass 205 shall add one cumulative continuation service, not a parallel application-specific runtime.
 
@@ -215,12 +241,12 @@ Required implementation layers:
 - visual IDE controls for graph inspection, branch selection, replay, and performance evidence;
 - deterministic validation and restart records.
 
-## 11. Design-validation baseline
+## 12. Design-validation baseline
 
 The Pass 205 design harness completed the following bounded matrix:
 
 ```text
-22 / 22 test groups passed
+28 / 28 test groups passed
 5 deterministic seeds
 120 continuations per seed
 600 gaming/graphics/physics/learning continuations
@@ -233,18 +259,20 @@ The Pass 205 design harness completed the following bounded matrix:
 Measured design baseline:
 
 ```text
-mean sparse/full throughput gain: 6.5760x
-minimum seed throughput gain: 5.9518x
+mean sparse/full throughput gain: 6.8865x
+minimum seed throughput gain: 6.5482x
 mean changed cells per continuation: 5.5950 / 81
 mean refreshed projection cells: 9.6200 / 81
 mean state payload reduction: 12.8861x
 mean 32-channel projection payload reduction: 8.4308x
 vector exact-rerank recall: 1.0000
+GPU translation transfer reduction: 7.6573x
+GPU batches validated: 256
 ```
 
 The standalone harness uses fixed-width deterministic digest witnesses only to validate representation and continuation semantics. Production closure must use the inherited repository Hash216, Hash72, and VM81 implementations.
 
-## 12. Acceptance criteria
+## 13. Acceptance criteria
 
 Pass 205 is closed only when the repository implementation proves:
 
@@ -263,6 +291,10 @@ Pass 205 is closed only when the repository implementation proves:
 13. invalid coordinates, controls, parents, receipts, and incomplete frontiers fail closed;
 14. incompatible vector candidates are rejected before exact parent selection;
 15. the benchmark top-32 shortlist contains the exact minimum-delta compatible parent in at least 95% of trials, followed by exact reranking;
-16. the sparse path provides a measured throughput improvement without changing canonical results;
-17. all inherited Pass 201–204 validation remains green;
-18. the exact hosted application exposes the continuation API and visual graph controls before fallback/static mounts.
+16. the benchmark top-32 shortlist and exact rerank remain deterministic across CPU/GPU translation;
+17. the sparse CPU path provides a measured throughput improvement without changing canonical results;
+18. exact CPU/GPU equivalence for canonical state, deltas, projections, features, continuation roots, and receipts;
+19. deterministic accelerator dispatch, reductions, collision ordering, and CPU fallback;
+20. sparse accelerator transfer and frontier compaction produce a measured reduction without omitting dependencies;
+21. all inherited Pass 201–204 validation remains green;
+22. the exact hosted application exposes the continuation API and visual graph controls before fallback/static mounts.
