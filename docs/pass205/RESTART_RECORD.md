@@ -34,6 +34,11 @@ python /mnt/data/pass205_multimodal_continuation_design_validation.py \
   --ticks 120 \
   --seeds 1,72,216,5184,1259713 \
   --output /mnt/data/PASS205_MULTIMODAL_CONTINUATION_DESIGN_VALIDATION_RECEIPT.json
+
+PYTHONPATH=/mnt/data python /mnt/data/pass205_gpu_translation_design_validation.py \
+  --seed 216 \
+  --batches 256 \
+  --output /mnt/data/PASS205_GPU_TRANSLATION_DESIGN_VALIDATION_RECEIPT.json
 ```
 
 Result:
@@ -55,9 +60,11 @@ GPU sparse transfer reduction: 7.6573x
 
 - `HHS_PASS_205_DETERMINISTIC_VM5184_G243_MULTIMODAL_CONTINUATION_RUNTIME.md`
 - `scripts/pass205_multimodal_continuation_design_validation.py`
+- `scripts/pass205_gpu_translation_design_validation.py`
 - `docs/pass205/DESIGN_VALIDATION_REPORT.md`
 - `docs/pass205/RESTART_RECORD.md`
 - `evidence/pass205/PASS205_MULTIMODAL_CONTINUATION_DESIGN_VALIDATION_RECEIPT.json`
+- `evidence/pass205/PASS205_GPU_TRANSLATION_DESIGN_VALIDATION_RECEIPT.json`
 - `.github/workflows/pass205-multimodal-continuation-contract.yml`
 
 ## Remaining Pass 205 implementation
