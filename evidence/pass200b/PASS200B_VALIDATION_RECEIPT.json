@@ -1,0 +1,47 @@
+{
+  "candidate_return_ordinals": [
+    0,
+    4
+  ],
+  "claim_boundary": {
+    "automatic_active_promotion": false,
+    "automatic_frozen_constraint_promotion": false,
+    "candidate_self_authorization": false,
+    "dual_approval_required": true,
+    "exhaustion_restores_reference": true,
+    "mismatch_returns_reference": true
+  },
+  "classification": "HHS_PASS_200B_GOVERNED_CANARY_ADMISSION_VERIFIED",
+  "closed": true,
+  "contract": "HHS-P200B-DUAL-APPROVAL-CANARY-ROLLBACK-VM81-H72",
+  "current_frontier_hash72": "xb0HzUzWcd<R!fnvvLLFWRLrO1mMsLJlaFrM3T!ZiCGSYV7x/vx)+lC6ie-1HscINA?T3v?9",
+  "event_chain": {
+    "event_count": 14,
+    "ok": true,
+    "tip_hash72": "gTECBrf>qqsWpntqLpq?lIpTBbo*eYdw>!8E4Ac!w-mxM7AvVK-QAT(5LHpp1DLtj/uh/g(*"
+  },
+  "first_canary_frontier_hash72": "XqCJ1Jb-8M+U61R-j*CuG4k0(El9)798Ifv3M4CD)3LxZywca9DZblkgYxFAXK1bh3KFTSxG",
+  "schema": "HHS_PASS_200B_VALIDATION_RECEIPT_V1",
+  "second_canary_frontier_hash72": "QzWae*WmxCAFNWi+pRH7fZV4m+nU>I7nm2TqTV*ylZqGyB<GYyG5A5Jds<hxq1yMT?iGcH-?",
+  "status_hash72": "Qi*2wV+yaNRLMO3M2kKlGPi*)S48tpy83m1O)-DTthuGZ/CTzRID!6v(Dz0?1OosagvUr!NS",
+  "summary": {
+    "bounded_invocations": 9,
+    "canary_frontiers": 2,
+    "candidate_returns": 2,
+    "event_count": 14,
+    "exhausted_frontiers": 1,
+    "pass200a_compiler_candidate_bundles": 4,
+    "pass200a_independent_envelopes": 4,
+    "pass200a_shadow_matches": 4,
+    "reference_returns": 7,
+    "rollback_frontiers": 1,
+    "singleton_activation_commits": 2
+  },
+  "workflow": {
+    "artifact_digest": "sha256:b95a8091ba8ce19301ee4b3a1ab51a994503940fe6293c752d24e63f22eb1cd8",
+    "artifact_id": 8841987422,
+    "conclusion": "success",
+    "run_id": 30775726043,
+    "validated_head_commit": "f13eed02531e77737562b23fb207962c0744ed0d"
+  }
+}

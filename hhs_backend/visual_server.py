@@ -4,8 +4,9 @@ This module composes the canonical HHS FastAPI runtime, governed assistant,
 installation, application-factory, media, hydration, Pass 196 integration,
 Pass 197 exact A/B calibration, Pass 198 operation calibration registry,
 Pass 199 durable distributed calibration, Pass 200A proof-carrying compiler
-shadow optimization, and the Pass 161 visual application. The canonical server
-remains runtime authority; this module only changes HTTP projection.
+shadow optimization, Pass 200B governed canary admission, and the Pass 161
+visual application. The canonical server remains runtime authority; this module
+only changes HTTP projection.
 """
 from __future__ import annotations
 
@@ -26,6 +27,7 @@ from hhs_backend.api.pass197_calibration_routes import router as pass197_calibra
 from hhs_backend.api.pass198_calibration_registry_routes import router as pass198_calibration_registry_router
 from hhs_backend.api.pass199_distributed_calibration_routes_v2 import router as pass199_distributed_calibration_router
 from hhs_backend.api.pass200a_optimization_routes_v2 import router as pass200a_optimization_router
+from hhs_backend.api.pass200b_canary_routes import router as pass200b_canary_router
 from hhs_backend.api.probability_hydration_routes import router as probability_hydration_router
 from hhs_backend.api.storybook_reel_routes import router as storybook_reel_router
 
@@ -61,6 +63,8 @@ if not _route_exists("/api/runtime/distributed-calibration/status"):
     app.include_router(pass199_distributed_calibration_router)
 if not _route_exists("/api/runtime/optimization-authority/status"):
     app.include_router(pass200a_optimization_router)
+if not _route_exists("/api/runtime/optimization-canary/status"):
+    app.include_router(pass200b_canary_router)
 
 # Register governed freeze authority before the broader hydration router so the
 # legacy `/constraints/promote` projection is shadowed by a fail-closed route.
@@ -90,6 +94,7 @@ async def visual_system_status() -> Dict[str, Any]:
         "pass198_calibration_registry_api": "/api/runtime/calibration-registry",
         "pass199_distributed_calibration_api": "/api/runtime/distributed-calibration",
         "pass200a_optimization_authority_api": "/api/runtime/optimization-authority",
+        "pass200b_governed_canary_api": "/api/runtime/optimization-canary",
         "graphics_hydration_api": "/api/runtime/graphics-hydration",
         "graphics_constraint_registry_api": "/api/runtime/graphics-hydration/constraints/registry",
         "probability_hydration_api": "/api/v1/probability",
@@ -104,6 +109,7 @@ async def visual_system_status() -> Dict[str, Any]:
         "pass198_operation_calibration_registry": "HHS-P198-OCR-PROOF-SIMPLIFICATION-VM81-H72",
         "pass199_distributed_calibration": "HHS-P199-P198-P190-DCT-WORKER-SLOTS64-VM81-H72",
         "pass200a_proof_carrying_optimization": "HHS-P200A-HOLDOUT-BUNDLE-SHADOW-VM81-H72-H216",
+        "pass200b_governed_canary": "HHS-P200B-DUAL-APPROVAL-CANARY-ROLLBACK-VM81-H72",
         "graphics_hydration": "HHS-P181-NATIVE-CINEMATIC-GRAPHICS-HYDRATION-RUNTIME",
         "graphics_constraints": "HHS-P181-GRAPHICS-CONSTRAINT-FREEZE-REGISTRY-V1",
         "probability_hydration": "HHS-P183-PEHMR-M1259713-F72-VM81-H72-H216",
