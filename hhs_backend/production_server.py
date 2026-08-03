@@ -185,12 +185,33 @@ async def _assistant_health() -> dict[str, Any]:
         }
 
 
+def _committed_runtime_projection(workflow: Mapping[str, Any]) -> dict[str, Any]:
+    """Return the last Hash72-committed emission without traversing mutable VM state."""
+
+    last_emission = dict(workflow.get("last_emission") or {})
+    bridge = dict(workflow.get("bridge") or {})
+    emulator = dict(bridge.get("emulator") or {})
+    receipt_hash72 = last_emission.get("receipt_hash72") or emulator.get("receipt_hash72")
+    state_hash72 = last_emission.get("runtime_state_hash72") or emulator.get("runtime_state_hash72")
+    return {
+        "schema": "HHS_COMMITTED_RUNTIME_AUTHORITY_PROJECTION_V1",
+        "source": "LIVE_WORKFLOW_COMMITTED_EMISSION",
+        "state_hash72": state_hash72,
+        "receipt_hash72": receipt_hash72,
+        "step": last_emission.get("kernel_tick") or emulator.get("runtime_step"),
+        "boot_id": emulator.get("boot_id"),
+        "sequence_id": last_emission.get("sequence_id") or bridge.get("sequence_id"),
+        "committed_emission_snapshot": True,
+        "bounded_status_projection": True,
+        "mutable_runtime_traversal_performed": False,
+    }
+
+
 def _runtime_authority_status() -> dict[str, Any]:
     workflow = canonical.LIVE_WORKFLOW.status()
-    runtime_state = canonical.runtime_controller.latest_runtime_state()
-    last_emission = dict(workflow.get("last_emission") or {})
-    receipt_hash72 = last_emission.get("receipt_hash72") or runtime_state.get("receipt_hash72")
-    state_hash72 = last_emission.get("runtime_state_hash72") or runtime_state.get("state_hash72")
+    runtime_state = _committed_runtime_projection(workflow)
+    receipt_hash72 = runtime_state.get("receipt_hash72")
+    state_hash72 = runtime_state.get("state_hash72")
     authority_ready = bool(
         canonical.SERVER_STATE.get("runtime_initialized")
         and canonical.SERVER_STATE.get("graph_initialized")
@@ -213,6 +234,7 @@ def _runtime_authority_status() -> dict[str, Any]:
         "runtime": runtime_state,
         "authority": "HHS_FASTAPI_KERNEL_RUNTIME_AUTHORITY_V1",
         "frontend_is_authority": False,
+        "status_read_is_bounded": True,
     }
 
 
