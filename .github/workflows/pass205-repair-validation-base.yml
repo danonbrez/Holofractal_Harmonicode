@@ -1,0 +1,91 @@
+name: Pass 205 Repair Validation Base
+
+on:
+  pull_request:
+    paths:
+      - 'hhs_python/runtime/**'
+      - 'hhs_backend/runtime/hhs_pass205_*'
+      - 'hhs_backend/api/a0_pass205_transport_bootstrap.py'
+      - 'hhs_backend/api/a_pass205_governed_bootstrap.py'
+      - 'deployment/digitalocean/pass205_state/**'
+      - 'bin/post_compile'
+      - 'tests/test_hhs_pass205_*'
+      - '.github/workflows/pass205-repair-validation-base.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  PYTHONFAULTHANDLER: '1'
+  PYTHONUNBUFFERED: '1'
+
+jobs:
+  validate-pass205-repair:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    env:
+      HHS_PASS205_DB: ${{ runner.temp }}/pass205-repair.sqlite3
+    steps:
+      - name: Checkout exact merge tree
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: python -m pip install -r requirements.txt
+
+      - name: Validate shell and Python syntax
+        run: |
+          bash -n bin/post_compile
+          bash -n deployment/digitalocean/pass205_state/install.sh
+          python -m py_compile \
+            hhs_python/runtime/__init__.py \
+            hhs_python/runtime/hhs_pass205_native_freshness_guard.py \
+            hhs_backend/runtime/hhs_pass205_governed_continuation_v2.py \
+            hhs_backend/runtime/hhs_pass205_retrieval_order_v1.py \
+            hhs_backend/api/a0_pass205_transport_bootstrap.py \
+            hhs_backend/api/a_pass205_governed_bootstrap.py
+
+      - name: Build native authorities
+        run: |
+          make c-abi
+          python - <<'PY'
+          from hhs_python.runtime.hhs_pass205_continuation_bridge import build_native_library
+          print(build_native_library(force=True))
+          PY
+
+      - name: Run focused repair tests
+        run: |
+          python -m pytest -q \
+            tests/test_hhs_pass205_native_freshness_guard_v1.py \
+            tests/test_hhs_pass205_state_deployment_v1.py \
+            tests/test_hhs_pass205_governed_continuation_v2.py \
+            tests/test_hhs_pass205_transport_and_retrieval_v1.py
+
+      - name: Run inherited Pass 205 production tests
+        run: python -m pytest -q tests/test_hhs_pass205_continuation_runtime_v1.py
+
+      - name: Verify hosted governed route binding
+        run: |
+          python - <<'PY'
+          from hhs_backend.application_ide_server import app
+          from hhs_backend.api import pass205_continuation_routes as routes
+          from hhs_backend.runtime.hhs_pass205_governed_continuation_v2 import GovernedPass205ContinuationRuntime
+
+          assert isinstance(routes.PASS205_CONTINUATION_RUNTIME, GovernedPass205ContinuationRuntime)
+          paths = {str(getattr(route, 'path', '')) for route in app.router.routes}
+          assert '/api/runtime/continuation/advance' in paths
+          assert '/api/runtime/continuation/transport' in paths
+          status = routes.PASS205_CONTINUATION_RUNTIME.status()
+          assert status['vm81_admission_required_before_persistence']
+          assert status['replay_reconstructs_ordered_deltas']
+          PY
+
+      - name: Run inherited federation and guarded deployment tests
+        run: |
+          python -m unittest -v tests.test_hhs_pass201_public_api_federation_v1
+          python -m pytest -q tests/test_hhs_guarded_auto_update_contract_v1.py
