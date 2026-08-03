@@ -24,17 +24,18 @@ DIST := dist
 LIB := $(DIST)/libhhs_storybook_reel.so
 CLI := $(DIST)/hhs-storybook-reel
 TEST := $(DIST)/test-hhs-storybook-reel
+PROJECTION_TEST := $(DIST)/test-hhs-storybook-projection-v2
 
 ifeq ($(wildcard $(GAME_CORE)),)
 $(error VM81 game sources not found. Expected sibling $(SIBLING_GAME), vendored $(VENDORED_GAME), or direct files under src/)
 endif
 
-.PHONY: all test sanitize clean print-source-layout
+.PHONY: all test test-projection sanitize clean print-source-layout
 
 print-source-layout:
 	@printf 'GAME=%s\nGAME_SRC_DIR=%s\nGAME_INCLUDE_DIR=%s\n' "$(GAME)" "$(GAME_SRC_DIR)" "$(GAME_INCLUDE_DIR)"
 
-all: $(LIB) $(CLI) $(TEST)
+all: $(LIB) $(CLI) $(TEST) $(PROJECTION_TEST)
 
 $(DIST):
 	mkdir -p $(DIST)
@@ -56,8 +57,18 @@ $(TEST): $(STORY_SRC) tests/test_hhs_storybook_reel.c $(STORY_HEADERS) \
 		$(GAME_CORE) $(GAME_RELEASE) $(GAME_SPRITE) $(GAME_TEXTURE) \
 		$(STORY_SRC) tests/test_hhs_storybook_reel.c $(HASH_SRC) -o $@
 
+$(PROJECTION_TEST): src/hhs_storybook_reel_projection_v2.c tests/test_hhs_storybook_projection_v2.c $(STORY_HEADERS) \
+	$(GAME_CORE) $(GAME_RELEASE) $(GAME_SPRITE) $(GAME_TEXTURE) $(HASH_SRC) | $(DIST)
+	$(CC) $(CFLAGS) $(INCLUDES) \
+		$(GAME_CORE) $(GAME_RELEASE) $(GAME_SPRITE) $(GAME_TEXTURE) \
+		src/hhs_storybook_reel_projection_v2.c tests/test_hhs_storybook_projection_v2.c $(HASH_SRC) -o $@
+
 test: all
 	$(TEST)
+	$(PROJECTION_TEST)
+
+test-projection: $(PROJECTION_TEST)
+	$(PROJECTION_TEST)
 
 sanitize: | $(DIST)
 	$(CC) -std=c11 -O1 -g -Wall -Wextra -Werror -Wno-unused-function -pedantic \
