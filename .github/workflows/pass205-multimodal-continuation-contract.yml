@@ -1,0 +1,52 @@
+name: Pass 205 Multimodal Continuation Contract
+
+on:
+  pull_request:
+    paths:
+      - 'HHS_PASS_205_DETERMINISTIC_VM5184_G243_MULTIMODAL_CONTINUATION_RUNTIME.md'
+      - 'scripts/pass205_multimodal_continuation_design_validation.py'
+      - 'docs/pass205/**'
+      - 'evidence/pass205/**'
+      - '.github/workflows/pass205-multimodal-continuation-contract.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-pass205-contract:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Checkout exact tree
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Compile validation harness
+        run: python -m py_compile scripts/pass205_multimodal_continuation_design_validation.py
+
+      - name: Execute Pass 205 design validation
+        run: |
+          python scripts/pass205_multimodal_continuation_design_validation.py \
+            --ticks 120 \
+            --seeds 1,72,216,5184,1259713 \
+            --output evidence/pass205-ci/PASS205_MULTIMODAL_CONTINUATION_DESIGN_VALIDATION_RECEIPT.json
+
+      - name: Verify contract and evidence classifications
+        run: |
+          grep -Fq 'HHS-P205-VM5184-G243-DETERMINISTIC-MULTIMODAL-CONTINUATION-GAMING-ML-H72-H216' \
+            HHS_PASS_205_DETERMINISTIC_VM5184_G243_MULTIMODAL_CONTINUATION_RUNTIME.md
+          grep -Fq 'HHS_PASS_205_DESIGN_VALIDATION_PASSED' \
+            evidence/pass205-ci/PASS205_MULTIMODAL_CONTINUATION_DESIGN_VALIDATION_RECEIPT.json
+
+      - name: Upload Pass 205 design evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass205-multimodal-continuation-design
+          path: evidence/pass205-ci/*.json
+          if-no-files-found: error
+          retention-days: 30
