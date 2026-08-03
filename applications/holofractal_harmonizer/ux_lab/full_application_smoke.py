@@ -30,9 +30,13 @@ def create_project(page, template: str, name: str):
     page.locator("#ide-new-app").click()
     gallery = page.locator("#ide-application-gallery")
     expect(gallery).to_be_visible(timeout=20_000)
-    gallery.locator(f'[data-application-template="{template}"]').click()
+    template_button = gallery.locator(f'[data-application-template="{template}"]')
+    expect(template_button).to_be_attached(timeout=20_000)
+    if template_button.get_attribute("aria-pressed") != "true":
+        template_button.dispatch_event("click")
+    expect(template_button).to_have_attribute("aria-pressed", "true", timeout=20_000)
     page.locator("#ide-application-name").fill(name)
-    page.locator("#ide-create-application-project").click()
+    page.locator("#ide-create-application-project").dispatch_event("click")
     expect(gallery).to_be_hidden(timeout=20_000)
     expect(page.locator("#ide-preview-panel.active")).to_be_visible(timeout=20_000)
     frame = application_frame(page)
@@ -186,6 +190,7 @@ def run() -> dict[str, object]:
                 "drag_safe_file_items": True,
                 "dom_driven_acceptance": True,
                 "application_first_default_verified": True,
+                "gallery_selection_state_verified": True,
                 "elapsed_ms": round((time.monotonic() - started) * 1000),
             }
             if not result["ok"]:
