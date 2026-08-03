@@ -85,8 +85,8 @@ def run() -> dict[str, object]:
             expect(new_application).to_be_visible(timeout=60_000)
             expect(new_application).to_contain_text("New Application")
             expect(page.locator("#assistant-home")).to_be_visible(timeout=20_000)
-            expect(page.locator("#assistant-view")).to_be_visible(timeout=20_000)
-            expect(page.locator("#prompt-input")).to_be_visible(timeout=20_000)
+            expect(page.locator("#assistant-view")).to_be_hidden(timeout=20_000)
+            expect(page.locator("#ide-view")).to_be_visible(timeout=20_000)
             current_phase = "APPLICATION_STUDIO_READY"
             phase(current_phase)
 
@@ -185,6 +185,7 @@ def run() -> dict[str, object]:
                 "runtime_console_preserved": True,
                 "drag_safe_file_items": True,
                 "dom_driven_acceptance": True,
+                "application_first_default_verified": True,
                 "elapsed_ms": round((time.monotonic() - started) * 1000),
             }
             if not result["ok"]:
