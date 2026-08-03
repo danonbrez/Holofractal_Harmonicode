@@ -24,6 +24,9 @@
 11. `d952650553c1fc46436a97eedb18cfc67eac023b` — regress calculator starter JavaScript inlining and executable behavior.
 12. `90c646ca9edb7cc786254a70b0b4f5c334986591` and `c4fe8fec3d57a99ffbd2151f861049713bc4b56c` — follow the initialized Assistant drawer contract with valid Python Playwright regex matching.
 13. `105fdaeba53aad5c41ae5cd1e6a71369ca1bf00a` — project production authority from the last Hash72-committed workflow emission without traversing mutable VM state on the request event loop.
+14. `e34620f1b700e8e346b5072fa6ef4fe3037af90b` — bound public workflow authority/session projections, add a no-full-diagnostics and sub-64-KiB regression, and wire it into the trusted Pass 205 workflow.
+15. `59875b1aeeb220bde986bc9cdf56c04ba0233cd5` — start the canonical public application before Pass 196–203 projection modules and defer those modules until receipt closure.
+16. `9a5f4ae8955bc48d6ae90d8de14ffb43e235c74e` — regress receipt-first startup ordering, closed-authority prerequisites, inherited projection order, and burst-free sequential imports.
 
 ## Implemented repair scope
 
@@ -39,7 +42,11 @@
 - Expose `GET /api/runtime/continuation/transport` and bind hosted Pass 205 routes to the governed singleton through deterministic API federation order.
 - Keep long synchronous kernel, event-construction, packet-projection, and graph-ingestion work outside the FastAPI event loop so runtime authority and visual integration requests remain serviceable during background continuation ticks.
 - Serve runtime authority status from the last committed receipt/state emission instead of synchronously traversing mutable runtime-controller state.
+- Bound public authority and workspace-session workflow projections so they never serialize expanding cognition or full-emission diagnostics.
 - Preserve strict production acceptance: the browser still requires a real committed receipt and runtime-state Hash72 before classifying the runtime authority as online.
+- Start the application, visual IDE, and production-integration graph before non-critical Pass 196–203 calibration, optimization, federation, and mainframe projections.
+- Require production integration `phase=READY`, an online runtime authority, and a populated service registry before loading those inherited projections.
+- Load inherited projections in deterministic order with bounded spacing to prevent a startup burst of long-running status reads.
 - Exercise the explicit preview-tab activation path before inspecting generated application frames.
 - Preserve executable starter JavaScript after HTML readability normalization.
 - Exercise the asynchronously initialized Assistant through its supported drawer launcher and close control.
@@ -56,17 +63,19 @@
 - `hhs_backend/api/a0_pass205_transport_bootstrap.py`
 - `hhs_backend/api/a_pass205_governed_bootstrap.py`
 - `applications/holofractal_harmonizer/src/application-templates-runtime.mjs`
+- `applications/holofractal_harmonizer/src/production-startup-coordinator.mjs`
 - `applications/holofractal_harmonizer/tests/application.studio.test.mjs`
+- `applications/holofractal_harmonizer/tests/production.startup.coordinator.test.mjs`
 - `applications/holofractal_harmonizer/ux_lab/full_application_smoke.py`
 - `deployment/digitalocean/pass205_state/install.sh`
 - `deployment/digitalocean/pass205_state/README.md`
 - `bin/post_compile`
 - `.github/workflows/pass205-production-runtime.yml`
-- four focused repair test modules.
+- focused native-freshness, deployment, governed-continuation, transport/retrieval, and bounded-authority test modules.
 
 ## Validation gate
 
-The trusted Pass 205 production workflow now runs:
+The terminal Pass 205 gate requires:
 
 - deployment shell syntax checks;
 - Python compilation for all repair surfaces;
@@ -77,22 +86,25 @@ The trusted Pass 205 production workflow now runs:
 - hosted production validation and evidence generation;
 - hosted public federation binding checks;
 - inherited Pass 201–204 regression tests;
+- all Holofractal Harmonizer Node tests, including receipt-first startup ordering;
 - full visual application browser acceptance through the current preview-tab and Assistant-drawer workflows;
-- production receipt-closure acceptance while background kernel continuation work is active.
+- production receipt-closure acceptance while background kernel continuation work is active;
+- Pass 159, both Pass 161 architecture/finalization gates, Pass 176 stabilization, HTTPS/mobile closure, and workflow-first usability evidence.
 
 ## Current validation state
 
-- Focused Pass 205 authority, persistence, replay, transport, and retrieval tests are green on the repair branch.
-- Pass 159, both Pass 161 terminal architectures, and both workflow-first usability A/B runs were green before the final authority projection commit.
-- The full-application sequence has already verified Pong, calculator, puzzle, document, audio, and video template execution after repairing starter-script inlining; the current exact head must close the Assistant, ZIP, and runtime-console stages.
-- The production receipt stall was isolated to synchronous `latest_runtime_state()` traversal inside `/api/runtime/authority/status`; the endpoint now uses only the already committed workflow emission and retains receipt/state strictness.
-- The current branch head must complete the trusted Pass 205, production Harmonizer, full application IDE, Pass 159, Pass 161, and usability workflows before readiness or merge.
+- Focused Pass 205 authority, persistence, replay, transport, retrieval, and bounded public-status tests are green on the repair branch.
+- Pass 159, both Pass 161 terminal architectures, and both workflow-first usability A/B runs were green on the prior bounded-status head.
+- The full-application sequence verified Pong, calculator, puzzle, document, audio, and video template execution after repairing starter-script inlining; the Assistant, ZIP, and runtime-console continuation is included in the terminal rerun.
+- The original production stall from synchronous mutable runtime traversal is repaired and its regression is green.
+- The next production log isolated the remaining pre-receipt contention to statically imported Pass 196–203 projection modules issuing calibration, optimization, canary, active, and public-federation status reads before canonical public boot.
+- The current head removes those projections from the critical receipt path and has queued the full inherited and browser validation matrix.
 
 ## Remaining work
 
-1. Repair only dependency-scoped failures reported by PR #152 checks.
+1. Repair only dependency-scoped failures reported against the current exact head.
 2. Confirm the hosted application closes runtime authority from a real committed receipt and exposes the governed singleton and lossless transport route.
 3. Update PR #152 with terminal workflow and evidence identities.
-4. Mark PR #152 ready and merge only after the trusted Pass 205 workflow is green.
+4. Mark PR #152 ready and merge only after the terminal required checks are green.
 5. Verify authoritative `main` and DigitalOcean guarded deployment receipts.
 6. Physical GPU execution remains a separate validation boundary and is not claimed by this repair.
