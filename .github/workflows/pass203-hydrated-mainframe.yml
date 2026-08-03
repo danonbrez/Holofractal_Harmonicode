@@ -6,6 +6,7 @@ on:
       - 'HHS_PASS_203_UNIVERSAL_HYDRATED_FUNCTION_MAINFRAME.md'
       - 'hhs_backend/runtime/hhs_pass203_hydrated_mainframe_v1.py'
       - 'hhs_backend/runtime/hhs_pass203_function_worker_v1.py'
+      - 'hhs_backend/runtime/hhs_pass203_storybook_functions_v1.py'
       - 'hhs_backend/api/pass203_mainframe_routes.py'
       - 'hhs_backend/runtime/hhs_storybook_reel_v2.py'
       - 'hhs_backend/runtime/hhs_storybook_reel_v3.py'
@@ -47,6 +48,7 @@ jobs:
           python -m py_compile \
             hhs_backend/runtime/hhs_pass203_hydrated_mainframe_v1.py \
             hhs_backend/runtime/hhs_pass203_function_worker_v1.py \
+            hhs_backend/runtime/hhs_pass203_storybook_functions_v1.py \
             hhs_backend/api/pass203_mainframe_routes.py \
             hhs_backend/runtime/hhs_storybook_reel_v2.py \
             hhs_backend/runtime/hhs_storybook_reel_v3.py \
@@ -116,6 +118,7 @@ jobs:
           grep -Fq '/api/runtime/mainframe/functions' HHS_PASS_203_UNIVERSAL_HYDRATED_FUNCTION_MAINFRAME.md
           grep -Fq 'assistant_plan_is_execution_authority' hhs_backend/api/pass203_mainframe_routes.py
           grep -Fq 'pass203_hydrated_mainframe_projection_loaded: true' applications/holofractal_harmonizer/src/production-startup-coordinator.mjs
+          grep -Fq 'get_storybook_parameter_catalog' hhs_backend/runtime/hhs_pass203_storybook_functions_v1.py
           grep -Fq 'logical_frame_is_output_quality_ceiling' hhs_backend/runtime/hhs_storybook_reel_v3.py
           grep -Fq '/api/runtime/storybook-reel/parameters' hhs_backend/api/storybook_reel_routes.py
           grep -Fq 'pass203-high-fidelity-controls.js' applications/storybook_reel_studio/index.html
