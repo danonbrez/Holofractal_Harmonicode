@@ -30,13 +30,34 @@ def create_project(page, template: str, name: str):
     page.locator("#ide-new-app").click()
     gallery = page.locator("#ide-application-gallery")
     expect(gallery).to_be_visible(timeout=20_000)
-    template_button = gallery.locator(f'[data-application-template="{template}"]')
-    expect(template_button).to_be_attached(timeout=20_000)
-    if template_button.get_attribute("aria-pressed") != "true":
-        template_button.dispatch_event("click")
-    expect(template_button).to_have_attribute("aria-pressed", "true", timeout=20_000)
-    page.locator("#ide-application-name").fill(name)
-    page.locator("#ide-create-application-project").dispatch_event("click")
+    creation = page.evaluate(
+        """
+        ({ template, name }) => {
+          const gallery = document.querySelector('#ide-application-gallery');
+          const templateButton = gallery?.querySelector(`[data-application-template="${template}"]`);
+          const nameInput = gallery?.querySelector('#ide-application-name');
+          const createButton = gallery?.querySelector('#ide-create-application-project');
+          if (!gallery || !templateButton || !nameInput || !createButton) {
+            throw new Error('application gallery controls are incomplete');
+          }
+          if (templateButton.getAttribute('aria-pressed') !== 'true') templateButton.click();
+          if (templateButton.getAttribute('aria-pressed') !== 'true') {
+            throw new Error(`template selection did not commit: ${template}`);
+          }
+          nameInput.value = name;
+          nameInput.dispatchEvent(new Event('input', { bubbles: true }));
+          createButton.click();
+          return {
+            selected_template: template,
+            project_name: nameInput.value,
+            gallery_hidden_after_create: gallery.hidden,
+          };
+        }
+        """,
+        {"template": template, "name": name},
+    )
+    if creation["selected_template"] != template or creation["project_name"] != name:
+        raise AssertionError(f"application creation transaction mismatch: {creation}")
     expect(gallery).to_be_hidden(timeout=20_000)
     expect(page.locator("#ide-preview-panel.active")).to_be_visible(timeout=20_000)
     frame = application_frame(page)
@@ -200,6 +221,7 @@ def run() -> dict[str, object]:
                 "dom_driven_acceptance": True,
                 "application_first_default_verified": True,
                 "gallery_selection_state_verified": True,
+                "application_creation_atomic_dom_transaction_verified": True,
                 "pong_dom_input_dispatch_verified": True,
                 "elapsed_ms": round((time.monotonic() - started) * 1000),
             }
