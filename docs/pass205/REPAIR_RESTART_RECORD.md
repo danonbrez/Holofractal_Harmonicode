@@ -20,6 +20,10 @@
 7. `55340ca0dbf06c5eaf8397fb9df8d40ebf6fcb6e` — move synchronous kernel tick and event construction off the FastAPI event loop and serve bridge status from the last committed emission.
 8. `ae141d822594ad5505a6966dea55f5b95dae9ad7` — move packet projection and graph ingestion off the FastAPI event loop while preserving startup receipt closure.
 9. `540d05c39fa18870480b556c168b61d8340e5de8` — align full-application browser acceptance with the current explicit Application Preview tab contract.
+10. `f977e836e4970c5865a8b71bd3772519c4637caf` — preserve inlineable empty starter script tags after readability formatting.
+11. `d952650553c1fc46436a97eedb18cfc67eac023b` — regress calculator starter JavaScript inlining and executable behavior.
+12. `90c646ca9edb7cc786254a70b0b4f5c334986591` and `c4fe8fec3d57a99ffbd2151f861049713bc4b56c` — follow the initialized Assistant drawer contract with valid Python Playwright regex matching.
+13. `105fdaeba53aad5c41ae5cd1e6a71369ca1bf00a` — project production authority from the last Hash72-committed workflow emission without traversing mutable VM state on the request event loop.
 
 ## Implemented repair scope
 
@@ -34,19 +38,25 @@
 - Sort compatible and rejected vector candidates canonically before retrieval identity construction and persistence.
 - Expose `GET /api/runtime/continuation/transport` and bind hosted Pass 205 routes to the governed singleton through deterministic API federation order.
 - Keep long synchronous kernel, event-construction, packet-projection, and graph-ingestion work outside the FastAPI event loop so runtime authority and visual integration requests remain serviceable during background continuation ticks.
+- Serve runtime authority status from the last committed receipt/state emission instead of synchronously traversing mutable runtime-controller state.
 - Preserve strict production acceptance: the browser still requires a real committed receipt and runtime-state Hash72 before classifying the runtime authority as online.
 - Exercise the explicit preview-tab activation path before inspecting generated application frames.
+- Preserve executable starter JavaScript after HTML readability normalization.
+- Exercise the asynchronously initialized Assistant through its supported drawer launcher and close control.
 
 ## Changed files
 
 - `hhs_python/runtime/__init__.py`
 - `hhs_python/runtime/hhs_pass205_native_freshness_guard.py`
+- `hhs_backend/production_server.py`
 - `hhs_backend/runtime/hhs_pass205_governed_continuation_v2.py`
 - `hhs_backend/runtime/hhs_pass205_retrieval_order_v1.py`
 - `hhs_backend/runtime/live_kernel_event_bridge_v1.py`
 - `hhs_backend/runtime/live_fastapi_workflow_v1.py`
 - `hhs_backend/api/a0_pass205_transport_bootstrap.py`
 - `hhs_backend/api/a_pass205_governed_bootstrap.py`
+- `applications/holofractal_harmonizer/src/application-templates-runtime.mjs`
+- `applications/holofractal_harmonizer/tests/application.studio.test.mjs`
 - `applications/holofractal_harmonizer/ux_lab/full_application_smoke.py`
 - `deployment/digitalocean/pass205_state/install.sh`
 - `deployment/digitalocean/pass205_state/README.md`
@@ -67,20 +77,21 @@ The trusted Pass 205 production workflow now runs:
 - hosted production validation and evidence generation;
 - hosted public federation binding checks;
 - inherited Pass 201–204 regression tests;
-- full visual application browser acceptance through the current preview-tab workflow;
+- full visual application browser acceptance through the current preview-tab and Assistant-drawer workflows;
 - production receipt-closure acceptance while background kernel continuation work is active.
 
 ## Current validation state
 
-- Focused Pass 205 authority, persistence, replay, transport, and retrieval tests were green before the event-loop repair continuation.
-- The prior production browser failure was isolated to FastAPI event-loop starvation during a real background kernel tick; the receipt-closure assertion was retained.
-- The prior full-application failure was isolated to a stale selector that assumed implicit preview activation; acceptance now performs the supported tab activation explicitly.
+- Focused Pass 205 authority, persistence, replay, transport, and retrieval tests are green on the repair branch.
+- Pass 159, both Pass 161 terminal architectures, and both workflow-first usability A/B runs were green before the final authority projection commit.
+- The full-application sequence has already verified Pong, calculator, puzzle, document, audio, and video template execution after repairing starter-script inlining; the current exact head must close the Assistant, ZIP, and runtime-console stages.
+- The production receipt stall was isolated to synchronous `latest_runtime_state()` traversal inside `/api/runtime/authority/status`; the endpoint now uses only the already committed workflow emission and retains receipt/state strictness.
 - The current branch head must complete the trusted Pass 205, production Harmonizer, full application IDE, Pass 159, Pass 161, and usability workflows before readiness or merge.
 
 ## Remaining work
 
 1. Repair only dependency-scoped failures reported by PR #152 checks.
-2. Confirm the hosted application exposes the governed singleton and lossless transport route.
+2. Confirm the hosted application closes runtime authority from a real committed receipt and exposes the governed singleton and lossless transport route.
 3. Update PR #152 with terminal workflow and evidence identities.
 4. Mark PR #152 ready and merge only after the trusted Pass 205 workflow is green.
 5. Verify authoritative `main` and DigitalOcean guarded deployment receipts.
