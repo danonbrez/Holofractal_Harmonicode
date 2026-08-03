@@ -88,6 +88,25 @@ def test_isolated_python_self_test(mainframe: HydratedMainframe) -> None:
     assert result["result"]["constraint"] == "NO_ARBITRARY_HOST_LANGUAGE_EVALUATION"
 
 
+def test_high_fidelity_renderer_functions_are_hydrated(mainframe: HydratedMainframe) -> None:
+    functions = mainframe.list_functions(query="storybook", hydrated_only=True, limit=500)["functions"]
+    names = {item["name"] for item in functions}
+    assert {
+        "status_storybook_renderer",
+        "get_storybook_parameter_catalog",
+        "get_storybook_quality_presets",
+        "contextual_storybook_direction",
+        "resolve_storybook_parameters",
+        "render_storybook_filter_graph",
+        "validate_storybook_parameter_catalog",
+    } <= names
+    target = next(item for item in functions if item["name"] == "validate_storybook_parameter_catalog")
+    result = mainframe.invoke(target["function_id"], {})
+    assert result["result"]["ok"] is True
+    assert result["result"]["native_layer_count"] == 10
+    assert result["result"]["quality_profile_count"] >= 5
+
+
 def test_unhydrated_function_fails_closed(mainframe: HydratedMainframe) -> None:
     target = next(item for item in mainframe.catalog() if not item["hydrated"])
     with pytest.raises(InvocationRejectedError):
