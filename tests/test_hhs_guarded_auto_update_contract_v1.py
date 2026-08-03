@@ -63,6 +63,14 @@ def test_timer_and_service_are_bounded() -> None:
     assert "NoNewPrivileges=true" in service
 
 
+def test_installer_bootstraps_in_dry_run_mode() -> None:
+    installer = read("install.sh")
+    example = read("hhs-guarded-update.env.example")
+    assert "HHS_UPDATE_DRY_RUN=1" in installer
+    assert "HHS_UPDATE_DRY_RUN=1" in example
+    assert "set HHS_UPDATE_DRY_RUN=0" in installer
+
+
 def test_github_merge_gate_is_label_and_trust_scoped() -> None:
     workflow = (ROOT / ".github" / "workflows" / "guarded-continuous-integration.yml").read_text(
         encoding="utf-8"

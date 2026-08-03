@@ -49,7 +49,7 @@ HHS_KEEP_CANDIDATES=3
 HHS_POST_MERGE_COMMAND=bash bin/post_compile
 HHS_ROLLBACK_COMMAND=bash bin/post_compile
 HHS_UPDATE_SYNC_SELF=1
-HHS_UPDATE_DRY_RUN=0
+HHS_UPDATE_DRY_RUN=1
 EOF
 fi
 chown root:root "$ENV_FILE"
@@ -64,7 +64,7 @@ systemctl enable --now hhs-guarded-update.timer
 systemctl start hhs-guarded-update.service
 
 cat <<EOF
-Guarded continuous deployment installed.
+Guarded continuous deployment installed in dry-run mode.
 
 Environment: $ENV_FILE
 Timer:       hhs-guarded-update.timer
@@ -75,4 +75,6 @@ Inspect:
   systemctl status hhs-guarded-update.timer --no-pager
   journalctl -u hhs-guarded-update.service -n 200 --no-pager
   tail -n 20 $STATE_ROOT/receipts.jsonl
+
+After a successful dry-run receipt, set HHS_UPDATE_DRY_RUN=0 in $ENV_FILE.
 EOF
