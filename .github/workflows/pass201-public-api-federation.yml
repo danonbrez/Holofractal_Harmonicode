@@ -5,8 +5,11 @@ on:
     paths:
       - 'HHS_PASS_201_PUBLIC_API_FEDERATION.md'
       - 'hhs_backend/runtime/hhs_pass201_public_api_federation_v1.py'
+      - 'hhs_backend/runtime/hhs_pass201_public_api_federation.py'
+      - 'hhs_backend/api/__init__.py'
       - 'hhs_backend/api/public_api_registry_routes.py'
       - 'hhs_backend/visual_server.py'
+      - 'hhs_backend/application_ide_server.py'
       - 'applications/holofractal_harmonizer/src/pass201-public-api-federation.mjs'
       - 'applications/holofractal_harmonizer/src/production-startup-coordinator.mjs'
       - 'tests/test_hhs_pass201_public_api_federation_v1.py'
@@ -39,8 +42,11 @@ jobs:
         run: |
           python -m py_compile \
             hhs_backend/runtime/hhs_pass201_public_api_federation_v1.py \
+            hhs_backend/runtime/hhs_pass201_public_api_federation.py \
+            hhs_backend/api/__init__.py \
             hhs_backend/api/public_api_registry_routes.py \
             hhs_backend/visual_server.py \
+            hhs_backend/application_ide_server.py \
             tests/test_hhs_pass201_public_api_federation_v1.py \
             scripts/pass201_public_api_validation.py
 
@@ -67,8 +73,11 @@ jobs:
           grep -Fq 'register_all_api_routers' hhs_backend/runtime/hhs_pass201_public_api_federation_v1.py
           grep -Fq 'unexposed_route_count' hhs_backend/runtime/hhs_pass201_public_api_federation_v1.py
           grep -Fq 'arbitrary_python_execution_public' hhs_backend/runtime/hhs_pass201_public_api_federation_v1.py
+          grep -Fq '_openapi_path' hhs_backend/runtime/hhs_pass201_public_api_federation.py
           grep -Fq '/api/public/status' HHS_PASS_201_PUBLIC_API_FEDERATION.md
           grep -Fq 'register_public_api_federation(app)' hhs_backend/visual_server.py
+          grep -Fq 'register_public_api_federation(app)' hhs_backend/application_ide_server.py
+          grep -Fq 'PASS201_PUBLIC_API_REGISTRATION' hhs_backend/application_ide_server.py
           grep -Fq 'pass201_public_api_federation_projection_loaded: true' applications/holofractal_harmonizer/src/production-startup-coordinator.mjs
           grep -Fq 'Every registered service route' applications/holofractal_harmonizer/src/pass201-public-api-federation.mjs
 
