@@ -1,0 +1,36 @@
+"""Canonical production projection for Pass 200C guarded active admission."""
+from hhs_backend.runtime.hhs_pass200c_guarded_active_admission_v1 import (
+    APPROVAL_SCHEMA,
+    CLASSIFICATION,
+    CONTRACT,
+    EVIDENCE_SCHEMA,
+    EVENT_SCHEMA,
+    FRONTIER_SCHEMA,
+    INVOCATION_SCHEMA,
+    MAX_ACTIVE_LEASE_INVOCATIONS,
+    MIN_CANARY_INVOCATIONS,
+    MIN_SUCCESSFUL_CANARIES,
+    PASS200C_ACTIVE_AUTHORITY,
+    REQUIRED_CAPABILITIES,
+    VERSION,
+    Pass200CError,
+    Pass200CGuardedActiveAuthority,
+)
+
+__all__ = [
+    "APPROVAL_SCHEMA",
+    "CLASSIFICATION",
+    "CONTRACT",
+    "EVIDENCE_SCHEMA",
+    "EVENT_SCHEMA",
+    "FRONTIER_SCHEMA",
+    "INVOCATION_SCHEMA",
+    "MAX_ACTIVE_LEASE_INVOCATIONS",
+    "MIN_CANARY_INVOCATIONS",
+    "MIN_SUCCESSFUL_CANARIES",
+    "PASS200C_ACTIVE_AUTHORITY",
+    "REQUIRED_CAPABILITIES",
+    "VERSION",
+    "Pass200CError",
+    "Pass200CGuardedActiveAuthority",
+]
