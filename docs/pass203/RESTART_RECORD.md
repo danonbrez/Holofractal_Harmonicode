@@ -3,9 +3,9 @@
 ## Identity
 
 - Primary contract: `HHS-P203-UNIVERSAL-HYDRATED-FUNCTION-MAINFRAME-VM81-H72-H216`
-- Primary classification target: `HHS_PASS_203_UNIVERSAL_HYDRATED_FUNCTION_MAINFRAME_VERIFIED`
+- Primary classification: `HHS_PASS_203_UNIVERSAL_HYDRATED_FUNCTION_MAINFRAME_VERIFIED`
 - Render subauthority: `HHS-P203-HIGH-FIDELITY-NATIVE-RENDER-PARAMETER-AUTHORITY-VM81-H72-H216`
-- Render classification target: `HHS_PASS_203_HIGH_FIDELITY_NATIVE_RENDER_SUBAUTHORITY_VERIFIED`
+- Render classification: `HHS_PASS_203_HIGH_FIDELITY_NATIVE_RENDER_SUBAUTHORITY_VERIFIED`
 - Base commit: `8bd57b5843648efb52092568fae3501eeeefeda0`
 - Branch: `agent/pass203-universal-hydrated-mainframe`
 - Pull request: `#145`
@@ -21,6 +21,7 @@ Pass 203 is the complete HHS version through this pass. It inherits all prior pa
 - `HHS_PASS_203_UNIVERSAL_HYDRATED_FUNCTION_MAINFRAME.md`
 - `hhs_backend/runtime/hhs_pass203_hydrated_mainframe_v1.py`
 - `hhs_backend/runtime/hhs_pass203_function_worker_v1.py`
+- `hhs_backend/runtime/hhs_pass203_storybook_functions_v1.py`
 - `hhs_backend/api/pass203_mainframe_routes.py`
 - `applications/holofractal_harmonizer/src/pass203-mainframe.mjs`
 - `applications/holofractal_harmonizer/src/production-startup-coordinator.mjs`
@@ -47,79 +48,111 @@ Pass 203 is the complete HHS version through this pass. It inherits all prior pa
 
 ### Universal mainframe
 
-- Pass 190 Iteration 7 operation-registry ingestion.
-- Static public Python function inventory with typed parameter records.
-- Native `hhs_*` ABI symbol inventory.
-- Stable function identities and descriptor digests.
-- Hydrated versus adapter-required execution state.
-- Exact interpreter adapter.
-- Proof-carrying compiler adapter with execution admission disabled.
+- Pass 190 governed operation-registry ingestion.
+- Typed public Python function inventory.
+- Native `hhs_*` ABI inventory.
+- Stable function IDs and descriptor digests.
+- Hydrated versus binding-required execution state.
+- Exact interpreter and proof-carrying compiler adapters.
 - Bounded isolated Python worker.
-- Governed Pass 190 invocation and replay.
-- Durable execution runtime projection.
-- Typed plan validation and dependency-ordered execution.
+- Governed operation invocation and replay.
+- Durable execution-runtime projection.
+- Dependency-ordered agent plans with per-step and final receipts.
 - Structured retryability and remediation errors.
-- Public API, standalone mainframe studio, and IDE projection.
+- Public API, standalone mainframe studio, and Visual IDE projection.
 
 ### High-fidelity creative runtime
 
-- Makefile source-layout discovery for sibling, nested-vendored, and directly vendored VM81 game sources.
-- Native projection bridge controlling five texture layers and five sprite-overlay layers.
-- Public parameter catalog covering all mutable style, render, codec, and native layer controls.
+- Source-layout discovery for sibling, nested-vendored, and directly vendored VM81 game sources.
+- Native projection bridge controlling five texture and five sprite-overlay layers.
+- Complete public parameter catalog for style, render, codec, and native-layer controls.
 - Public read-only inventory of compiled native shader constants.
-- Ranked contextual template candidates with reason traces.
+- Ranked contextual templates with reason traces.
 - 1080×1920, 1440×2560, and 2160×3840 production profiles.
-- Lossless native RGBA and intentional integer-scale profiles.
-- Configurable cinematic blur, storybook, full-bleed, contain, and native-integer fit modes.
-- Lanczos, spline, bicubic, bilinear, and neighbor scaling controls.
-- Public grading, sharpening, vignette, codec, preset, CRF, pixel-format, and bitrate controls.
-- Studio controls dynamically populated from the API catalog.
-- VM81 logical-frame identity preserved; logical resolution is not the output quality ceiling.
+- Lossless RGBA and intentional integer-scale profiles.
+- Configurable fit, scaling, grading, sharpening, vignette, codec, CRF, pixel-format, and audio controls.
+- Studio controls populated from the API catalog.
+- VM81 frame identity preserved; 160×144 is not the delivery-quality ceiling.
 
-## Validation completed
-
-- Initial Python syntax and unit-level mainframe implementation.
-- First CI run isolated and repaired the inherited Pass 190 result-envelope assertion.
-- Second production run isolated and repaired bounded catalog pagination validation for inventories larger than 1,000 entries.
-- Native renderer substrate was copied byte-exactly from its previously implemented branch, then wrapped under cumulative Pass 203 public identities.
-
-## Validation in progress
+## Canonical validation
 
 Workflow: `Pass 203 Integrated Mainframe`
 
-The integrated gate validates:
+Successful run: `30789634543`
 
-- mainframe and renderer Python compilation;
-- mainframe unit tests;
-- high-fidelity renderer unit tests;
-- native C projection build and test;
-- hosted `hhs_backend.application_ide_server:app` mainframe behavior;
-- hosted storybook parameter and resolution routes;
-- Pass 201 public federation regression;
-- Pass 202 guarded deployment regression;
-- visual JavaScript syntax;
-- cumulative authority and claim boundaries;
-- canonical evidence artifact upload.
+Artifact:
+
+- ID: `8846608307`
+- Name: `pass203-integrated-mainframe`
+- Digest: `sha256:f082ac4900e7bed35e1b9de891ff4dbf15ac0815bbf62b17fdf6903ec8793eea`
+
+### Mainframe measurements
+
+- Discovered functions: `2,902`
+- Hydrated and callable functions: `688`
+- Publicly indexed binding gaps: `2,214`
+- Governed operations: `42`
+- Python functions: `2,644`
+- Native ABI symbols: `211`
+- Explicit mainframe adapters: `5`
+- Public application routes: `464`
+- OpenAPI paths: `435`
+- Validated plan steps: `3`
+- Catalog SHA-256: `aefc0c4997ec6ac798d2c1934242719b3176596296b45921032ba31edbc859fe`
+- Status Hash72: `J*pPaI2yHf3zQj6UDE9v*MNVOsw9/uQ-9ZF6Y!?ZaqjSF-(rMK*0R-wQFRt((-ZNc*CU55Ra`
+- Receipt SHA-256: `208f222d939fbad90e1d0071448554c2af7154ef3a7cf7a32c3007b3e661ea75`
+
+### Renderer measurements
+
+- Public parameter and compiled-constant records: `415`
+- Mutable style parameters: `30`
+- Native layer parameters: `10`
+- Render/transport parameters: `21`
+- Compiled native constants: `346`
+- Quality profiles: `5`
+- Validated production output: `1440×2560`
+- Texture mask: `31/31`
+- Sprite-overlay mask: `31/31`
+- Catalog Hash72: `iN/zFXtXYMQKEf*xUis0(/wqZrCuIh2-5QDiHC8BE<kH!n<xyNubi<0ZPfxA(COAqV9bKmkX`
+- Resolution Hash72: `*KkuLM+rHas(KGVm5mU<LMd*!NyB8pVtTv)Cm6GK3I9a5RrfvXwZWSDouTwyKhgvLn(7e?De`
+- Filter graph SHA-256: `d5602d04b1184888cb65ca5ef8384dd251a273374a96011d3d2c60e5dbc69545`
+- Receipt SHA-256: `c36cf06d8c331af53f9d01046d2f55b2d01c38fb819bab5869236460f463f2b9`
+
+### Passed stages
+
+- Python compilation.
+- Universal mainframe unit suite.
+- High-fidelity renderer unit suite.
+- Native C projection build and test.
+- Hosted `hhs_backend.application_ide_server:app` mainframe validation.
+- Hosted storybook parameter and resolution validation.
+- Pass 201 public federation regression.
+- Pass 202 guarded deployment regression.
+- Visual JavaScript syntax.
+- Cumulative claim-boundary checks.
+- Canonical evidence upload.
+
+## Final compatibility repair
+
+The inherited `Native Storybook Reel Studio` workflow exposed an implicit C declaration in `hhs_storybook_reel_serial.c`. The serial-step prototype was moved before the macro-included renderer source. Runtime behavior was unchanged; this restores the inherited full native library and sanitizer build under `-Werror`.
 
 ## Environment
 
 - Authoritative deployment: DigitalOcean Ubuntu service behind Nginx.
 - Vercel is not deployment authority.
 - Canonical numeric identity remains exact integer/rational and symbolic authority.
-- Public execution forbids arbitrary host-language evaluation, unrestricted shell commands, and unbound native symbol dispatch.
+- Public execution forbids arbitrary host-language evaluation, unrestricted shell commands, and unbound native-symbol dispatch.
 - FFmpeg/ffprobe remain codec transport, audio normalization, muxing, and inspection tools rather than VM81 creative authority.
 
 ## Next action
 
-1. inspect the integrated workflow result;
-2. repair only observed dependency-scoped failures;
-3. commit canonical mainframe and renderer evidence;
-4. update PR #145 with measured counts and hashes;
-5. close obsolete intermediate PR #146 without merging it;
-6. run a receipt-updated final workflow;
-7. remove unrelated workflow-generated commits;
-8. mark PR #145 ready, merge the exact validated head, and verify `main`.
+1. run the receipt-updated exact-head integrated workflow and inherited Storybook workflow;
+2. verify canonical artifacts and digests;
+3. remove unrelated workflow-generated commits if any;
+4. mark PR #145 ready;
+5. merge with the exact validated head SHA;
+6. verify `main` is identical to the merge commit.
 
 ## Blockers
 
-No architectural blocker is known. Remaining work is validation and dependency-scoped repair.
+None known. Only final exact-head validation and merge closure remain.
