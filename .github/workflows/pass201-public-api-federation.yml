@@ -1,0 +1,90 @@
+name: Pass 201 Public API Federation
+
+on:
+  pull_request:
+    paths:
+      - 'HHS_PASS_201_PUBLIC_API_FEDERATION.md'
+      - 'hhs_backend/runtime/hhs_pass201_public_api_federation_v1.py'
+      - 'hhs_backend/runtime/hhs_pass201_public_api_federation.py'
+      - 'hhs_backend/api/__init__.py'
+      - 'hhs_backend/api/public_api_registry_routes.py'
+      - 'hhs_backend/visual_server.py'
+      - 'hhs_backend/application_ide_server.py'
+      - 'applications/holofractal_harmonizer/src/pass201-public-api-federation.mjs'
+      - 'applications/holofractal_harmonizer/src/production-startup-coordinator.mjs'
+      - 'tests/test_hhs_pass201_public_api_federation_v1.py'
+      - 'scripts/pass201_public_api_validation.py'
+      - 'docs/pass201/**'
+      - 'evidence/pass201/**'
+      - '.github/workflows/pass201-public-api-federation.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-pass201:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - name: Checkout exact tree
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install inherited runtime dependencies
+        run: python -m pip install -r requirements.txt
+
+      - name: Compile Pass 201 surfaces
+        run: |
+          python -m py_compile \
+            hhs_backend/runtime/hhs_pass201_public_api_federation_v1.py \
+            hhs_backend/runtime/hhs_pass201_public_api_federation.py \
+            hhs_backend/api/__init__.py \
+            hhs_backend/api/public_api_registry_routes.py \
+            hhs_backend/visual_server.py \
+            hhs_backend/application_ide_server.py \
+            tests/test_hhs_pass201_public_api_federation_v1.py \
+            scripts/pass201_public_api_validation.py
+
+      - name: Run public API federation tests
+        run: python -m unittest -v tests.test_hhs_pass201_public_api_federation_v1
+
+      - name: Execute production public API validation
+        run: |
+          PYTHONPATH=. python scripts/pass201_public_api_validation.py \
+            --evidence evidence/pass201-ci/PASS201_VALIDATION_RECEIPT.json
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Validate visual JavaScript
+        run: |
+          node --check applications/holofractal_harmonizer/src/pass201-public-api-federation.mjs
+          node --check applications/holofractal_harmonizer/src/production-startup-coordinator.mjs
+
+      - name: Verify federation wiring and claim boundary
+        run: |
+          grep -Fq 'register_all_api_routers' hhs_backend/runtime/hhs_pass201_public_api_federation_v1.py
+          grep -Fq 'unexposed_route_count' hhs_backend/runtime/hhs_pass201_public_api_federation_v1.py
+          grep -Fq 'arbitrary_python_execution_public' hhs_backend/runtime/hhs_pass201_public_api_federation_v1.py
+          grep -Fq '_openapi_path' hhs_backend/runtime/hhs_pass201_public_api_federation.py
+          grep -Fq '/api/public/status' HHS_PASS_201_PUBLIC_API_FEDERATION.md
+          grep -Fq 'register_public_api_federation(app)' hhs_backend/visual_server.py
+          grep -Fq 'register_public_api_federation(app)' hhs_backend/application_ide_server.py
+          grep -Fq 'PASS201_PUBLIC_API_REGISTRATION' hhs_backend/application_ide_server.py
+          grep -Fq 'pass201_public_api_federation_projection_loaded: true' applications/holofractal_harmonizer/src/production-startup-coordinator.mjs
+          grep -Fq 'Every registered service route' applications/holofractal_harmonizer/src/pass201-public-api-federation.mjs
+
+      - name: Upload Pass 201 evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass201-public-api-federation
+          path: evidence/pass201-ci/PASS201_VALIDATION_RECEIPT.json
+          if-no-files-found: error
+          retention-days: 30
