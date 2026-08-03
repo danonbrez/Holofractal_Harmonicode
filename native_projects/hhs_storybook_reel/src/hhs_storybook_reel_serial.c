@@ -1,3 +1,5 @@
+#include "hhs_storybook_reel.h"
+
 /*
  * Storybook-specific serial adapter over the inherited platformer release API.
  *
@@ -10,6 +12,11 @@
  */
 #define HHS_STORYBOOK_SERIAL_CYCLE_FRAMES 72U
 #define HHS_STORYBOOK_SERIAL_DIRECTION_WINDOW 45U
+
+HHSVM81GameStatus hhs_storybook_reel_serial_step(
+    HHSVM81GameRelease* release,
+    uint8_t input_bits
+);
 
 #define hhs_vm81_game_release_step hhs_storybook_reel_serial_step
 #include "hhs_storybook_reel.c"

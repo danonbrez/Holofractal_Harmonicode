@@ -1,0 +1,133 @@
+name: Pass 203 Integrated Mainframe
+
+on:
+  pull_request:
+    paths:
+      - 'HHS_PASS_203_UNIVERSAL_HYDRATED_FUNCTION_MAINFRAME.md'
+      - 'hhs_backend/runtime/hhs_pass203_hydrated_mainframe_v1.py'
+      - 'hhs_backend/runtime/hhs_pass203_function_worker_v1.py'
+      - 'hhs_backend/runtime/hhs_pass203_storybook_functions_v1.py'
+      - 'hhs_backend/api/pass203_mainframe_routes.py'
+      - 'hhs_backend/runtime/hhs_storybook_reel_v2.py'
+      - 'hhs_backend/runtime/hhs_storybook_reel_v3.py'
+      - 'hhs_backend/api/storybook_reel_routes.py'
+      - 'native_projects/hhs_storybook_reel/**'
+      - 'applications/storybook_reel_studio/**'
+      - 'applications/holofractal_harmonizer/src/pass203-mainframe.mjs'
+      - 'applications/holofractal_harmonizer/src/production-startup-coordinator.mjs'
+      - 'tests/test_hhs_pass203_hydrated_mainframe_v1.py'
+      - 'tests/test_hhs_pass203_high_fidelity_render_v1.py'
+      - 'scripts/pass203_hydrated_mainframe_validation.py'
+      - 'scripts/pass203_high_fidelity_render_validation.py'
+      - 'docs/pass203/**'
+      - 'evidence/pass203/**'
+      - '.github/workflows/pass203-hydrated-mainframe.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-pass203-integrated-system:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 75
+    steps:
+      - name: Checkout exact tree
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install inherited runtime dependencies
+        run: python -m pip install -r requirements.txt
+
+      - name: Compile Pass 203 Python surfaces
+        run: |
+          python -m py_compile \
+            hhs_backend/runtime/hhs_pass203_hydrated_mainframe_v1.py \
+            hhs_backend/runtime/hhs_pass203_function_worker_v1.py \
+            hhs_backend/runtime/hhs_pass203_storybook_functions_v1.py \
+            hhs_backend/api/pass203_mainframe_routes.py \
+            hhs_backend/runtime/hhs_storybook_reel_v2.py \
+            hhs_backend/runtime/hhs_storybook_reel_v3.py \
+            hhs_backend/api/storybook_reel_routes.py \
+            tests/test_hhs_pass203_hydrated_mainframe_v1.py \
+            tests/test_hhs_pass203_high_fidelity_render_v1.py \
+            scripts/pass203_hydrated_mainframe_validation.py \
+            scripts/pass203_high_fidelity_render_validation.py \
+            hhs_backend/application_ide_server.py
+
+      - name: Run Pass 203 mainframe unit tests
+        env:
+          HHS_PASS190_CAPABILITY_SECRET: pass203-ci-secret
+        run: python -m pytest -q tests/test_hhs_pass203_hydrated_mainframe_v1.py
+
+      - name: Run Pass 203 high-fidelity render unit tests
+        run: python -m pytest -q tests/test_hhs_pass203_high_fidelity_render_v1.py
+
+      - name: Build and test native storybook projection
+        run: |
+          make -C native_projects/hhs_storybook_reel print-source-layout
+          make -C native_projects/hhs_storybook_reel test-projection
+
+      - name: Execute production mainframe validation
+        env:
+          HHS_PASS190_CAPABILITY_SECRET: pass203-ci-secret
+          PYTHONFAULTHANDLER: '1'
+          PYTHONUNBUFFERED: '1'
+        run: |
+          PYTHONPATH=. timeout --signal=ABRT --kill-after=30s 600s \
+            python scripts/pass203_hydrated_mainframe_validation.py \
+            --evidence evidence/pass203-ci/PASS203_MAINFRAME_VALIDATION_RECEIPT.json
+
+      - name: Execute high-fidelity renderer validation
+        env:
+          PYTHONFAULTHANDLER: '1'
+          PYTHONUNBUFFERED: '1'
+        run: |
+          PYTHONPATH=. timeout --signal=ABRT --kill-after=30s 600s \
+            python scripts/pass203_high_fidelity_render_validation.py \
+            --evidence evidence/pass203-ci/PASS203_HIGH_FIDELITY_RENDER_VALIDATION_RECEIPT.json
+
+      - name: Run inherited Pass 201 federation tests
+        run: python -m unittest -v tests.test_hhs_pass201_public_api_federation_v1
+
+      - name: Run inherited Pass 202 guarded deployment contract tests
+        run: python -m pytest -q tests/test_hhs_guarded_auto_update_contract_v1.py
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Validate visual JavaScript
+        run: |
+          node --check applications/holofractal_harmonizer/src/pass203-mainframe.mjs
+          node --check applications/holofractal_harmonizer/src/production-startup-coordinator.mjs
+          node --check applications/storybook_reel_studio/app.js
+          node --check applications/storybook_reel_studio/pass203-high-fidelity-controls.js
+
+      - name: Verify cumulative authority boundary
+        run: |
+          grep -Fq 'PASS_203_INHERITS_ALL_PRIOR_PASSES_AS_ONE_INTEGRATED_SYSTEM' hhs_backend/runtime/hhs_pass203_hydrated_mainframe_v1.py
+          grep -Fq 'arbitrary_host_eval_available' hhs_backend/runtime/hhs_pass203_hydrated_mainframe_v1.py
+          grep -Fq 'unrestricted_subprocess_available' hhs_backend/runtime/hhs_pass203_hydrated_mainframe_v1.py
+          grep -Fq 'ABI_BINDING_REQUIRED' hhs_backend/runtime/hhs_pass203_hydrated_mainframe_v1.py
+          grep -Fq '/api/runtime/mainframe/functions' HHS_PASS_203_UNIVERSAL_HYDRATED_FUNCTION_MAINFRAME.md
+          grep -Fq 'assistant_plan_is_execution_authority' hhs_backend/api/pass203_mainframe_routes.py
+          grep -Fq 'pass203_hydrated_mainframe_projection_loaded: true' applications/holofractal_harmonizer/src/production-startup-coordinator.mjs
+          grep -Fq 'get_storybook_parameter_catalog' hhs_backend/runtime/hhs_pass203_storybook_functions_v1.py
+          grep -Fq 'logical_frame_is_output_quality_ceiling' hhs_backend/runtime/hhs_storybook_reel_v3.py
+          grep -Fq '/api/runtime/storybook-reel/parameters' hhs_backend/api/storybook_reel_routes.py
+          grep -Fq 'pass203-high-fidelity-controls.js' applications/storybook_reel_studio/index.html
+          grep -Fq 'HHS_PASS_203_NATIVE_PROJECTION_BRIDGE_VERIFIED' native_projects/hhs_storybook_reel/tests/test_hhs_storybook_projection_v2.c
+
+      - name: Upload Pass 203 evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass203-integrated-mainframe
+          path: evidence/pass203-ci/*.json
+          if-no-files-found: error
+          retention-days: 30

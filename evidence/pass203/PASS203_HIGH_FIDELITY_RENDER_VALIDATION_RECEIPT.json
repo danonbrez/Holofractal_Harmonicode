@@ -1,0 +1,35 @@
+{
+  "all_prior_passes_inherited": true,
+  "catalog_hash72": "iN/zFXtXYMQKEf*xUis0(/wqZrCuIh2-5QDiHC8BE<kH!n<xyNubi<0ZPfxA(COAqV9bKmkX",
+  "claim_boundary": {
+    "all_mutable_parameters_publicly_enumerated": true,
+    "compiled_constants_public_and_read_only": true,
+    "frontend_is_authority": false,
+    "logical_frame_is_output_quality_ceiling": false,
+    "native_frame_identity_preserved": true,
+    "native_layers_publicly_selectable": true,
+    "parallel_computation_used": false
+  },
+  "classification": "HHS_PASS_203_HIGH_FIDELITY_NATIVE_RENDER_SUBAUTHORITY_VERIFIED",
+  "closed": true,
+  "contract": "HHS-P203-HIGH-FIDELITY-NATIVE-RENDER-PARAMETER-AUTHORITY-VM81-H72-H216",
+  "cumulative_system_version": 203,
+  "filter_graph_sha256": "d5602d04b1184888cb65ca5ef8384dd251a273374a96011d3d2c60e5dbc69545",
+  "native_projection_test": "make: Entering directory '/home/runner/work/Holofractal_Harmonicode/Holofractal_Harmonicode/native_projects/hhs_storybook_reel'\ndist/test-hhs-storybook-projection-v2\nHHS_PASS_203_NATIVE_PROJECTION_BRIDGE_VERIFIED\nmake: Leaving directory '/home/runner/work/Holofractal_Harmonicode/Holofractal_Harmonicode/native_projects/hhs_storybook_reel'",
+  "receipt_sha256": "c36cf06d8c331af53f9d01046d2f55b2d01c38fb819bab5869236460f463f2b9",
+  "resolution_hash72": "*KkuLM+rHas(KGVm5mU<LMd*!NyB8pVtTv)Cm6GK3I9a5RrfvXwZWSDouTwyKhgvLn(7e?De",
+  "schema": "HHS_PASS_203_HIGH_FIDELITY_RENDER_VALIDATION_RECEIPT_V1",
+  "source_layout": "make: Entering directory '/home/runner/work/Holofractal_Harmonicode/Holofractal_Harmonicode/native_projects/hhs_storybook_reel'\nGAME=../hhs_vm81_game_level10\nGAME_SRC_DIR=../hhs_vm81_game_level10/src\nGAME_INCLUDE_DIR=../hhs_vm81_game_level10/include\nmake: Leaving directory '/home/runner/work/Holofractal_Harmonicode/Holofractal_Harmonicode/native_projects/hhs_storybook_reel'",
+  "summary": {
+    "compiled_native_constant_record_count": 346,
+    "native_layer_parameter_count": 10,
+    "parameter_count": 415,
+    "quality_profile_count": 5,
+    "render_parameter_count": 21,
+    "sprite_overlay_flags": 31,
+    "style_parameter_count": 30,
+    "texture_flags": 31,
+    "validated_output_height": 2560,
+    "validated_output_width": 1440
+  }
+}
