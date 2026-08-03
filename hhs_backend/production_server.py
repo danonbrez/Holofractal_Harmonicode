@@ -2,7 +2,8 @@
 
 This module composes the authoritative HHS backend with the governed assistant,
 Pass 165 multimodal lifecycle, Pass 166 language-memory, Pass 172 installation
-status, runtime-authority, and product-health routes. The public root is the
+status, runtime-authority, Passes 196 through 200C integration/calibration/
+optimization authority, and product-health routes. The public root is the
 front-and-center Holofractal Harmonizer Visual IDE. Runtime execution remains
 owned by ``hhs_backend.server``.
 """
@@ -27,20 +28,30 @@ from hhs_backend.api.installation_routes import router as installation_router
 from hhs_backend.api.litert_lm_assistant_routes import router as assistant_router
 from hhs_backend.api.pass165_multimodal_ingress_routes import router as pass165_router
 from hhs_backend.api.pass166_word2vec_routes import router as word2vec_router
+from hhs_backend.api.pass196_integration_routes import router as pass196_integration_router
+from hhs_backend.api.pass197_calibration_routes import router as pass197_calibration_router
+from hhs_backend.api.pass198_calibration_registry_routes import router as pass198_calibration_registry_router
+from hhs_backend.api.pass199_distributed_calibration_routes_v2 import router as pass199_distributed_calibration_router
+from hhs_backend.api.pass200a_optimization_routes_v2 import router as pass200a_optimization_router
+from hhs_backend.api.pass200b_canary_routes import router as pass200b_canary_router
+from hhs_backend.api.pass200c_active_routes import router as pass200c_active_router
 
 ROOT_DIR = Path(__file__).resolve().parents[1]
 VISUAL_ROOT = ROOT_DIR / "applications" / "holofractal_harmonizer"
 VISUAL_SOURCE_ROOT = VISUAL_ROOT / "src"
 VISUAL_SOURCE_MOUNT_NAME = "hhs-production-source-assets"
+API_FALLBACK_PATH = "/api/{unmatched_path:path}"
 
 app = canonical.app
 app.title = "HHS Holofractal Harmonizer"
-app.version = "3.4.1"
+app.version = "3.4.2"
 app.description = (
     "Canonical HHS runtime and front-and-center visual IDE with source-preserving "
     "multimodal ingress, Hash216 indexing, exact 5,184-bit VM snapshots, HHS "
     "interpretation, compilation, bounded VM81 execution, receipts, replay, egress, "
-    "workspace, installation, language-memory, and assistant services."
+    "workspace, installation, language-memory, assistant services, Pass 196 "
+    "repository integration, Passes 197-199 exact calibration, and Passes 200A-200C "
+    "proof-carrying optimization authority."
 )
 
 
@@ -58,6 +69,20 @@ if not _has_route_prefix("/api/runtime/multimodal-ingress"):
     app.include_router(pass165_router)
 if not _has_route_prefix("/api/runtime/development"):
     app.include_router(development_lifecycle_router)
+if not _has_route_prefix("/api/runtime/integration/status"):
+    app.include_router(pass196_integration_router)
+if not _has_route_prefix("/api/runtime/calibration/status"):
+    app.include_router(pass197_calibration_router)
+if not _has_route_prefix("/api/runtime/calibration-registry/status"):
+    app.include_router(pass198_calibration_registry_router)
+if not _has_route_prefix("/api/runtime/distributed-calibration/status"):
+    app.include_router(pass199_distributed_calibration_router)
+if not _has_route_prefix("/api/runtime/optimization-authority/status"):
+    app.include_router(pass200a_optimization_router)
+if not _has_route_prefix("/api/runtime/optimization-canary/status"):
+    app.include_router(pass200b_canary_router)
+if not _has_route_prefix("/api/runtime/optimization-active/status"):
+    app.include_router(pass200c_active_router)
 
 # Remove only prior root projections or static root mounts. Every API and
 # WebSocket route remains registered before the verified visual application.
@@ -281,18 +306,25 @@ async def production_system_status() -> dict[str, Any]:
         "workspace_api": "/api/runtime/workspace",
         "runtime_api": "/api/runtime",
         "runtime_services_api": "/api/runtime/services",
-        "capability_api": "/api/runtime/capability",
-        "document_api": "/api/runtime/document",
+        "capability_api": "/api/runtime/capability/status",
+        "document_api": "/api/runtime/document/perception/status",
         "multimodal_ingress_api": "/api/runtime/multimodal-ingress",
         "development_lifecycle_api": "/api/runtime/development/lifecycle",
         "assistant_api": "/api/assistant",
         "installation_api": "/api/runtime/installation",
         "word2vec_api": "/v1/modalities/language",
+        "integration_api": "/api/runtime/integration",
+        "calibration_api": "/api/runtime/calibration",
+        "calibration_registry_api": "/api/runtime/calibration-registry",
+        "distributed_calibration_api": "/api/runtime/distributed-calibration",
+        "optimization_authority_api": "/api/runtime/optimization-authority",
+        "optimization_canary_api": "/api/runtime/optimization-canary",
+        "optimization_active_api": "/api/runtime/optimization-active",
     }
 
 
 @app.api_route(
-    "/api/{unmatched_path:path}",
+    API_FALLBACK_PATH,
     methods=["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "HEAD"],
     include_in_schema=False,
 )
