@@ -8,11 +8,15 @@
  * This adapter changes no game ABI implementation and creates no competing
  * mutation authority.
  */
+#include "hhs_storybook_reel_projection_v2.h"
+
 #define HHS_STORYBOOK_SERIAL_CYCLE_FRAMES 72U
 #define HHS_STORYBOOK_SERIAL_DIRECTION_WINDOW 45U
 
 #define hhs_vm81_game_release_step hhs_storybook_reel_serial_step
+#define hhs_vm81_game_texture_render_rgba hhs_storybook_texture_render_bridge_v2
 #include "hhs_storybook_reel.c"
+#undef hhs_vm81_game_texture_render_rgba
 #undef hhs_vm81_game_release_step
 
 HHSVM81GameStatus hhs_vm81_game_release_step(
