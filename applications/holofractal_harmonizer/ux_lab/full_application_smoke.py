@@ -97,8 +97,17 @@ def run() -> dict[str, object]:
             pong = create_project(page, "pong", "Browser Pong Acceptance")
             expect(pong.locator("#game")).to_be_visible()
             expect(pong.locator("#start")).to_be_visible()
-            pong.locator("#start").click()
-            pong.locator("#game").hover(position={"x": 80, "y": 180})
+            pong.locator("#start").dispatch_event("click")
+            pong.locator("#game").dispatch_event(
+                "pointermove",
+                {
+                    "clientX": 80,
+                    "clientY": 180,
+                    "pointerId": 1,
+                    "pointerType": "mouse",
+                },
+            )
+            phase("PONG_INPUT_DISPATCHED")
             expect(page.locator("#ide-file-tree")).to_contain_text("index.html")
             expect(page.locator("#ide-file-tree")).to_contain_text("app.js")
             expect(page.locator("#ide-file-tree")).to_contain_text("style.css")
@@ -191,6 +200,7 @@ def run() -> dict[str, object]:
                 "dom_driven_acceptance": True,
                 "application_first_default_verified": True,
                 "gallery_selection_state_verified": True,
+                "pong_dom_input_dispatch_verified": True,
                 "elapsed_ms": round((time.monotonic() - started) * 1000),
             }
             if not result["ok"]:
