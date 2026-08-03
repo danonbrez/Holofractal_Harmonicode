@@ -5,7 +5,7 @@ import json
 import pytest
 
 from hhs_backend.runtime.hhs_pass205_continuation_runtime_v1 import ContinuationRejected
-from hhs_backend.runtime.hhs_pass205_governed_continuation_v2 import (
+from hhs_backend.runtime.hhs_pass205_governed_continuation_v3 import (
     GovernedPass205ContinuationRuntime,
 )
 
@@ -105,6 +105,7 @@ def test_replay_reconstructs_ordered_deltas_and_detects_payload_tamper(tmp_path)
     replay = runtime.replay(second["continuation_root216"])
     assert replay["ok"]
     assert replay["reconstructed_from_ordered_deltas"] is True
+    assert replay["native_argument_mapping_explicit"] is True
     assert replay["reconstructed_target_state_words"] == second["state_words"]
 
     tampered = list(first["state_words"])
@@ -128,4 +129,5 @@ def test_public_federation_bootstrap_rebinds_legacy_routes() -> None:
     from hhs_backend.api import pass205_continuation_routes as routes
 
     assert bootstrap.PASS205_GOVERNED_ROUTE_BINDING["ok"]
+    assert bootstrap.PASS205_GOVERNED_ROUTE_BINDING["replay_projection"].endswith("V3")
     assert isinstance(routes.PASS205_CONTINUATION_RUNTIME, GovernedPass205ContinuationRuntime)
