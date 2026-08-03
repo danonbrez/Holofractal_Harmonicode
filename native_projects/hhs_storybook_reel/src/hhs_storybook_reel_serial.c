@@ -1,3 +1,5 @@
+#include "hhs_storybook_reel.h"
+
 /*
  * Storybook-specific serial adapter over the inherited platformer release API.
  *
