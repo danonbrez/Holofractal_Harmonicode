@@ -137,17 +137,11 @@ def run() -> dict[str, object]:
 
             calculator = create_project(page, "calculator", "Calculator Acceptance")
             calculator_display = calculator.locator("#display")
-            calculator_body = calculator.locator("body")
+            calculator_keys = calculator.locator("#keys button")
             expect(calculator_display).to_be_visible(timeout=20_000)
-            for key in ["7", "*", "8", "Enter"]:
-                calculator_body.dispatch_event(
-                    "keydown",
-                    {
-                        "key": key,
-                        "code": "Enter" if key == "Enter" else key,
-                        "bubbles": True,
-                    },
-                )
+            expect(calculator_keys).to_have_count(20, timeout=20_000)
+            for value in ["7", "×", "8", "="]:
+                calculator.locator(f'[data-value="{value}"]').dispatch_event("click")
             expect(calculator_display).to_have_text("56")
             phase("CALCULATOR_VERIFIED")
 
@@ -233,7 +227,7 @@ def run() -> dict[str, object]:
                 "gallery_selection_state_verified": True,
                 "application_creation_atomic_dom_transaction_verified": True,
                 "pong_dom_input_dispatch_verified": True,
-                "calculator_keyboard_contract_verified": True,
+                "calculator_dom_keypad_contract_verified": True,
                 "elapsed_ms": round((time.monotonic() - started) * 1000),
             }
             if not result["ok"]:
