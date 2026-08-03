@@ -1,0 +1,21 @@
+{
+  "branch": "agent/pass200c-active-admission",
+  "failures": 0,
+  "next_action": "merge after the evidence-only head is revalidated",
+  "outcomes": {
+    "compile": "success",
+    "contracts": "success",
+    "dependencies": "success",
+    "smoke": "success",
+    "tests": "success"
+  },
+  "pytest_output_sha256": "670abdabc08fe73c124dd5ede54b4bbd83667c64e74e00b9fcbc4be8ffc7b1a1",
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "run_attempt": 1,
+  "run_id": 30777006353,
+  "schema": "HHS_PASS_172_173_PHASE2_HOSTED_VALIDATION_V1",
+  "status": "SUCCESS",
+  "terminal_pass172_claimed": false,
+  "terminal_pass173_claimed": false,
+  "validated_sha": "8c6ce4c0385ec609faa81c203addfcdca89fcb56"
+}
