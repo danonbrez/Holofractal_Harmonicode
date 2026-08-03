@@ -34,6 +34,28 @@ KERNEL_CONSTRAINT_MANIFEST = {
     "caller_adjustable_internal_parameters": False,
 }
 
+HOST_TRUST_BOUNDARY = {
+    "schema": "HHS_PASS_204_CLOUD_HOST_TRUST_BOUNDARY_V1",
+    "weakest_external_operational_layer": "CLOUD_SERVER_HARDWARE_ENVIRONMENT",
+    "external_components": [
+        "physical_cpu",
+        "memory",
+        "storage_device",
+        "firmware",
+        "hypervisor",
+        "host_kernel",
+        "network_fabric",
+        "power_and_thermal_environment",
+    ],
+    "harmonicode_history_authority_inside_boundary": True,
+    "host_fault_can_rewrite_admitted_hash_history": False,
+    "host_fault_can_mutate_constraint_contract": False,
+    "host_fault_may_interrupt_availability": True,
+    "host_fault_may_damage_uncommitted_physical_execution": True,
+    "recovery_source": "CONTENT_ADDRESSED_LAYERED_SNAPSHOT_AND_RECEIPT_CHAIN",
+    "capability_state_recovered": False,
+}
+
 
 class OpenCloudMainframe(_V1OpenCloudMainframe):
     """Production authority with strict invalid-call separation and kernel roots."""
@@ -42,6 +64,7 @@ class OpenCloudMainframe(_V1OpenCloudMainframe):
     def _overlay_record(record: Mapping[str, Any]) -> Dict[str, Any]:
         item = _V1OpenCloudMainframe._overlay_record(record)
         item["kernel_constraint_manifest_sha256"] = _v1._sha256(KERNEL_CONSTRAINT_MANIFEST)
+        item["host_trust_boundary_sha256"] = _v1._sha256(HOST_TRUST_BOUNDARY)
         item["opcode_interrupt_can_rewrite_history"] = False
         item["valid_call_http_error"] = False
         item["descriptor_sha256"] = _v1._sha256(item)
@@ -51,6 +74,8 @@ class OpenCloudMainframe(_V1OpenCloudMainframe):
         payload = super().status()
         payload["kernel_constraint_manifest"] = dict(KERNEL_CONSTRAINT_MANIFEST)
         payload["kernel_constraint_manifest_sha256"] = _v1._sha256(KERNEL_CONSTRAINT_MANIFEST)
+        payload["host_trust_boundary"] = dict(HOST_TRUST_BOUNDARY)
+        payload["host_trust_boundary_sha256"] = _v1._sha256(HOST_TRUST_BOUNDARY)
         payload["all_declarations_executable"] = (
             payload["catalog_count"] == payload["callable_count"] == payload["hydrated_count"]
             and payload["unbound_internal_count"] == 0
@@ -61,6 +86,7 @@ class OpenCloudMainframe(_V1OpenCloudMainframe):
     def _invoke_sandbox(self, detail: Mapping[str, Any], arguments: Mapping[str, Any], timeout: int) -> Dict[str, Any]:
         request = self._worker_request(detail, arguments, timeout)
         request["kernel_constraint_manifest"] = KERNEL_CONSTRAINT_MANIFEST
+        request["host_trust_boundary"] = HOST_TRUST_BOUNDARY
         environment = {
             "PATH": os.environ.get("PATH", ""),
             "PYTHONPATH": str(self.repo_root),
@@ -106,10 +132,13 @@ class OpenCloudMainframe(_V1OpenCloudMainframe):
         snapshot = super()._persist_snapshot(**kwargs)
         snapshot["kernel_constraint_manifest"] = dict(KERNEL_CONSTRAINT_MANIFEST)
         snapshot["kernel_constraint_manifest_sha256"] = _v1._sha256(KERNEL_CONSTRAINT_MANIFEST)
+        snapshot["host_trust_boundary"] = dict(HOST_TRUST_BOUNDARY)
+        snapshot["host_trust_boundary_sha256"] = _v1._sha256(HOST_TRUST_BOUNDARY)
         snapshot["integrated_system_state"] = {
             "catalog_sha256": _v1._sha256(self.catalog()),
             "sandbox_policy_sha256": _v1._sha256(SANDBOX_POLICY),
             "kernel_constraint_manifest_sha256": snapshot["kernel_constraint_manifest_sha256"],
+            "host_trust_boundary_sha256": snapshot["host_trust_boundary_sha256"],
             "pass190_runtime": _v1._safe(self._pass190().execution_runtime_report()),
             "pass_inheritance": "PASS_204_INHERITS_ALL_PRIOR_PASSES_AS_ONE_INTEGRATED_SYSTEM",
             "history_rewrite_permitted": False,
@@ -131,6 +160,7 @@ _v1.PASS204_MAINFRAME = PASS204_MAINFRAME
 __all__ = [
     "CLASSIFICATION",
     "CONTRACT",
+    "HOST_TRUST_BOUNDARY",
     "KERNEL_CONSTRAINT_MANIFEST",
     "OPEN_CLOUD_PREFIX",
     "OpenCloudMainframe",
