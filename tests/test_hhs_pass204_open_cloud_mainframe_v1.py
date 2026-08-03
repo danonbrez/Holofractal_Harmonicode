@@ -102,17 +102,33 @@ def test_formerly_unbound_python_declaration_executes_and_is_recallable(mainfram
     assert recalled["snapshot"]["snapshot_root"] == result["snapshot"]["snapshot_root"]
 
 
-def test_unbound_native_abi_declaration_is_accepted_as_durable_call_job(mainframe: OpenCloudMainframe) -> None:
+def test_canonical_core_native_abi_symbol_executes_immediately(mainframe: OpenCloudMainframe) -> None:
+    mainframe.refresh()
+    target = next(
+        item for item in mainframe.catalog()
+        if item["kind"] == "NATIVE_ABI" and item["name"] == "hhs_sizeof_runtime_state"
+    )
+    result = mainframe.invoke(target["function_id"], {})
+    assert result["ok"] is True
+    assert result["execution_status"] == "COMPLETED"
+    assert result["result"]["outcome"] == "CANONICAL_CTYPES_ABI_EXECUTED"
+    assert int(result["result"]["result"]) > 0
+    assert result["result"]["raw_pointer_exposed"] is False
+
+
+def test_project_native_abi_declaration_is_accepted_as_durable_call_job(mainframe: OpenCloudMainframe) -> None:
     mainframe.refresh()
     target = next(
         item
         for item in mainframe.catalog()
-        if item["kind"] == "NATIVE_ABI" and item["inherited_execution_mode"] == "ABI_BINDING_REQUIRED"
+        if item["kind"] == "NATIVE_ABI"
+        and item["inherited_execution_mode"] == "ABI_BINDING_REQUIRED"
+        and str(item["name"]).startswith("hhs_storybook_")
     )
     result = mainframe.invoke(target["function_id"], {})
     assert result["ok"] is True
     assert result["execution_status"] == "ACCEPTED"
-    assert result["result"]["outcome"] == "NATIVE_ABI_BUILD_AND_CALL_ACCEPTED"
+    assert result["result"]["outcome"] == "PROJECT_NATIVE_ABI_BUILD_AND_CALL_ACCEPTED"
     assert result["job"]["status"] == "ACCEPTED"
     assert mainframe.job(result["job"]["job_id"])["job_id"] == result["job"]["job_id"]
     assert result["result"]["result"]["native_pointer_exposed"] is False
@@ -154,3 +170,4 @@ def test_inherited_mainframe_api_returns_http_success_for_valid_declaration_call
     closure_payload = closure_payload.get("data", closure_payload.get("result", closure_payload))
     assert closure_payload["all_declarations_executable"] is True
     assert closure_payload["binding_gap_count"] == 0
+    assert closure_payload["capabilities_restored_on_recall"] is False
