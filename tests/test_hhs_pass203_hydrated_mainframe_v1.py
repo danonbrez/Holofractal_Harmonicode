@@ -72,10 +72,12 @@ def test_compiler_adapter_creates_non_authorized_artifact(mainframe: HydratedMai
 def test_pass190_operation_and_replay(mainframe: HydratedMainframe) -> None:
     result = mainframe.invoke("op:system.status", {})
     assert result["ok"] is True
-    assert result["result"]["status"] == "ok"
-    operation_receipt = result["result"].get("receipt_hash72") or result["result"].get("hash72")
-    if operation_receipt:
-        assert mainframe.replay(operation_receipt)
+    operation = result["result"]
+    assert operation["result"]["status"] == "ok"
+    operation_receipt = operation["receipt"]["hash72"]
+    replay = mainframe.replay(operation_receipt)
+    assert replay["replay_verified"] is True
+    assert replay["operation_id"] == "system.status"
 
 
 def test_isolated_python_self_test(mainframe: HydratedMainframe) -> None:
