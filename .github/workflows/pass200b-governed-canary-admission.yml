@@ -5,6 +5,7 @@ on:
     paths:
       - 'HHS_PASS_200B_GOVERNED_CANARY_ADMISSION.md'
       - 'hhs_backend/runtime/hhs_pass200b_governed_canary_admission_v1.py'
+      - 'hhs_backend/runtime/hhs_pass200b_governed_canary_admission.py'
       - 'hhs_backend/api/pass200b_canary_routes.py'
       - 'hhs_backend/visual_server.py'
       - 'applications/holofractal_harmonizer/src/pass200b-governed-canary.mjs'
@@ -25,29 +26,265 @@ jobs:
     steps:
       - name: Checkout exact tree
         uses: actions/checkout@v4
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+
       - name: Install inherited runtime dependencies
         run: python -m pip install -r requirements.txt
+
       - name: Compile Pass 200B surfaces
         run: |
           python -m py_compile \
             hhs_backend/runtime/hhs_pass200b_governed_canary_admission_v1.py \
+            hhs_backend/runtime/hhs_pass200b_governed_canary_admission.py \
+            hhs_backend/api/pass200b_canary_routes.py \
+            hhs_backend/visual_server.py \
             tests/test_hhs_pass200b_governed_canary_admission_v1.py
+
       - name: Run canary lifecycle, rollback, restart, and tamper tests
         run: python -m unittest -v tests.test_hhs_pass200b_governed_canary_admission_v1
+
+      - name: Execute production proof, bounded canary, exhaustion, and rollback
+        run: |
+          rm -rf .hhs/pass200b-ci evidence/pass200b-ci
+          mkdir -p evidence/pass200b-ci
+          python - <<'PY'
+          import json
+          import time
+          from pathlib import Path
+
+          from hhs_backend.runtime.hhs_pass200a_proof_carrying_optimization import (
+              Pass200AProofCarryingOptimizationAuthority,
+          )
+          from hhs_backend.runtime.hhs_pass200b_governed_canary_admission import (
+              CLASSIFICATION,
+              Pass200BGovernedCanaryAuthority,
+          )
+
+          root = Path('.hhs/pass200b-ci')
+          pass200a = Pass200AProofCarryingOptimizationAuthority(state_root=root / 'pass200a')
+          canary = None
+          reopened = None
+          try:
+              qualification = pass200a.run_holdouts(
+                  worker_count=8,
+                  vm81_receipt_hash72='7' * 72,
+              )
+              shadows = pass200a.execute_all_shadows(
+                  worker_count=8,
+                  vm81_receipt_hash72='8' * 72,
+              )
+              assert qualification['closed'] is True
+              assert qualification['independent_envelope_count'] == 4
+              assert qualification['bundle_count'] == 4
+              assert shadows['closed'] is True
+              assert shadows['shadow_match_count'] == 4
+              assert shadows['candidate_activation_count'] == 0
+
+              canary = Pass200BGovernedCanaryAuthority(
+                  state_root=root / 'pass200b',
+                  pass200a=pass200a,
+              )
+              bundles = pass200a.list_bundles()
+              assert len(bundles) == 4
+
+              def approvals(bundle, now_ns):
+                  current = canary.current_frontier()
+                  expiry = now_ns + 900_000_000_000
+                  return [
+                      canary.build_approval(
+                          principal_id='vm81:compiler-promotion-authority',
+                          capability='COMPILER_PROMOTION_APPROVE',
+                          receipt_hash72='C' * 72,
+                          bundle_hash72=bundle['bundle_hash72'],
+                          expected_frontier_hash72=current['frontier_hash72'],
+                          expires_at_ns=expiry,
+                      ),
+                      canary.build_approval(
+                          principal_id='vm81:runtime-promotion-authority',
+                          capability='RUNTIME_PROMOTION_APPROVE',
+                          receipt_hash72='D' * 72,
+                          bundle_hash72=bundle['bundle_hash72'],
+                          expected_frontier_hash72=current['frontier_hash72'],
+                          expires_at_ns=expiry,
+                      ),
+                  ], expiry
+
+              now = time.time_ns()
+              approval_set, expiry = approvals(bundles[0], now)
+              first = canary.admit_canary(
+                  bundles[0]['bundle_id'],
+                  invocation_limit=8,
+                  canary_numerator=1,
+                  canary_denominator=4,
+                  approvals=approval_set,
+                  vm81_activation_receipt_hash72='A' * 72,
+                  expires_at_ns=expiry,
+                  now_ns=now,
+              )
+              assert first['mode'] == 'CANARY'
+              assert first['singleton_activation_commit_count'] == 1
+              paths = []
+              for ordinal in range(8):
+                  result = canary.execute_verified_probe(
+                      first['frontier_id'],
+                      invocation_receipt_hash72='I' * 72,
+                      now_ns=now + ordinal + 1,
+                  )
+                  paths.append(result['returned_path'])
+              assert paths == [
+                  'CANDIDATE', 'REFERENCE', 'REFERENCE', 'REFERENCE',
+                  'CANDIDATE', 'REFERENCE', 'REFERENCE', 'REFERENCE',
+              ]
+              assert canary.current_frontier()['mode'] == 'EXHAUSTED'
+
+              now2 = now + 10_000
+              approval_set2, expiry2 = approvals(bundles[1], now2)
+              second = canary.admit_canary(
+                  bundles[1]['bundle_id'],
+                  invocation_limit=4,
+                  canary_numerator=1,
+                  canary_denominator=2,
+                  approvals=approval_set2,
+                  vm81_activation_receipt_hash72='B' * 72,
+                  expires_at_ns=expiry2,
+                  now_ns=now2,
+              )
+              mismatch = canary.execute_canary(
+                  second['frontier_id'],
+                  reference_result={'value': 1},
+                  candidate_result={'value': 2},
+                  reference_witness_hash72='W' * 72,
+                  candidate_witness_hash72='X' * 72,
+                  reference_replay_hash72='R' * 72,
+                  candidate_replay_hash72='Q' * 72,
+                  invocation_receipt_hash72='M' * 72,
+                  now_ns=now2 + 1,
+              )
+              assert mismatch['status'] == 'ROLLED_BACK'
+              assert mismatch['returned_path'] == 'REFERENCE'
+              assert canary.current_frontier()['mode'] == 'ROLLED_BACK'
+
+              status = canary.status()
+              verification = canary.verify()
+              assert status['classification'] == CLASSIFICATION
+              assert status['closed'] is True
+              assert status['total_invocations'] == 9
+              assert status['candidate_returns'] == 2
+              assert status['reference_returns'] == 7
+              assert status['current_mode'] == 'ROLLED_BACK'
+              assert status['active_mode_enabled'] is False
+              assert status['frozen_constraint_enabled'] is False
+              assert verification['frontier_count'] == 5
+              assert verification['canary_frontier_count'] == 2
+              assert verification['rollback_frontier_count'] == 1
+              assert verification['exhausted_frontier_count'] == 1
+              assert verification['singleton_activation_commit_count'] == 2
+              assert verification['invocation_count'] == 9
+              assert verification['event_chain']['ok'] is True
+              assert verification['event_chain']['event_count'] == 14
+
+              current = canary.current_frontier()
+              tip = verification['event_chain']['tip_hash72']
+              evidence = {
+                  'schema': 'HHS_PASS_200B_VALIDATION_RECEIPT_V1',
+                  'contract': status['contract'],
+                  'classification': status['classification'],
+                  'closed': True,
+                  'summary': {
+                      'pass200a_independent_envelopes': qualification['independent_envelope_count'],
+                      'pass200a_compiler_candidate_bundles': qualification['bundle_count'],
+                      'pass200a_shadow_matches': shadows['shadow_match_count'],
+                      'canary_frontiers': verification['canary_frontier_count'],
+                      'singleton_activation_commits': verification['singleton_activation_commit_count'],
+                      'bounded_invocations': status['total_invocations'],
+                      'candidate_returns': status['candidate_returns'],
+                      'reference_returns': status['reference_returns'],
+                      'rollback_frontiers': verification['rollback_frontier_count'],
+                      'exhausted_frontiers': verification['exhausted_frontier_count'],
+                      'event_count': verification['event_chain']['event_count'],
+                  },
+                  'first_canary_frontier_hash72': first['frontier_hash72'],
+                  'second_canary_frontier_hash72': second['frontier_hash72'],
+                  'current_frontier_hash72': current['frontier_hash72'],
+                  'status_hash72': status['status_hash72'],
+                  'event_chain': verification['event_chain'],
+                  'candidate_return_ordinals': [0, 4],
+                  'claim_boundary': {
+                      'dual_approval_required': True,
+                      'candidate_self_authorization': False,
+                      'automatic_active_promotion': False,
+                      'automatic_frozen_constraint_promotion': False,
+                      'mismatch_returns_reference': True,
+                      'exhaustion_restores_reference': True,
+                  },
+              }
+              Path('evidence/pass200b-ci/PASS200B_VALIDATION_RECEIPT.json').write_text(
+                  json.dumps(evidence, sort_keys=True, separators=(',', ':')) + '\n',
+                  encoding='utf-8',
+              )
+              canary.close()
+              canary = None
+              reopened = Pass200BGovernedCanaryAuthority(
+                  state_root=root / 'pass200b',
+                  pass200a=pass200a,
+              )
+              restarted = reopened.status()
+              assert restarted['current_frontier']['frontier_hash72'] == current['frontier_hash72']
+              assert restarted['total_invocations'] == 9
+              assert restarted['candidate_returns'] == 2
+              assert restarted['reference_returns'] == 7
+              assert restarted['event_chain']['tip_hash72'] == tip
+          finally:
+              if reopened is not None:
+                  reopened.close()
+              if canary is not None:
+                  canary.close()
+              pass200a.close()
+          PY
+
       - name: Reject floating-point canonical operations
         run: |
           if grep -RInE '(^|[^[:alnum:]_])(float\(|Decimal\(|numpy|np\.)' \
-            hhs_backend/runtime/hhs_pass200b_governed_canary_admission_v1.py; then
+            hhs_backend/runtime/hhs_pass200b_governed_canary_admission_v1.py \
+            hhs_backend/runtime/hhs_pass200b_governed_canary_admission.py; then
             echo 'Floating-point canonical operation detected.' >&2
             exit 1
           fi
-      - name: Verify bounded authority markers
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Validate visual JavaScript
+        run: |
+          node --check applications/holofractal_harmonizer/src/pass200b-governed-canary.mjs
+          node --check applications/holofractal_harmonizer/src/production-startup-coordinator.mjs
+
+      - name: Verify authority, API, and visual wiring
         run: |
           grep -Fq 'SINGLETON_CANARY_FRONTIER_ACTIVATED' hhs_backend/runtime/hhs_pass200b_governed_canary_admission_v1.py
           grep -Fq 'EXACT_CANARY_MISMATCH' hhs_backend/runtime/hhs_pass200b_governed_canary_admission_v1.py
           grep -Fq 'promotion approvals require two distinct principals' hhs_backend/runtime/hhs_pass200b_governed_canary_admission_v1.py
           grep -Fq 'automatic_active_promotion' hhs_backend/runtime/hhs_pass200b_governed_canary_admission_v1.py
+          grep -Fq 'runtime_controller.authorized_tick' hhs_backend/api/pass200b_canary_routes.py
+          grep -Fq 'vm81:compiler-promotion-authority' hhs_backend/api/pass200b_canary_routes.py
+          grep -Fq 'vm81:runtime-promotion-authority' hhs_backend/api/pass200b_canary_routes.py
+          grep -Fq '/api/runtime/optimization-canary' hhs_backend/visual_server.py
+          grep -Fq 'pass200b_canary_router' hhs_backend/visual_server.py
+          grep -Fq "import './pass200b-governed-canary.mjs';" applications/holofractal_harmonizer/src/production-startup-coordinator.mjs
+          grep -Fq 'pass200b_governed_canary_projection_loaded: true' applications/holofractal_harmonizer/src/production-startup-coordinator.mjs
+          grep -Fq 'The panel cannot manufacture approvals' applications/holofractal_harmonizer/src/pass200b-governed-canary.mjs
+          grep -Fq 'candidate cannot authorize itself' HHS_PASS_200B_GOVERNED_CANARY_ADMISSION.md
+
+      - name: Upload Pass 200B evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass200b-governed-canary-admission
+          path: evidence/pass200b-ci/PASS200B_VALIDATION_RECEIPT.json
+          if-no-files-found: error
+          retention-days: 30
