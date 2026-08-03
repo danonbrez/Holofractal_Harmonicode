@@ -71,6 +71,11 @@ test('full IDE initializes application studio and deployable browser compiler', 
   assert.match(ide, /initDeployableAppCompiler/);
   assert.match(studio, /Pong, calculator, puzzle, document, audio, video/);
   assert.match(studio, /application-templates-runtime/);
+  assert.match(studio, /function schedulePreviewHydration\(\)/);
+  assert.match(studio, /window\.setTimeout\(\(\) =>/);
+  assert.match(studio, /preview_hydration_deferred:\s*true/);
+  assert.match(studio, /preview_hydration_is_deferred:\s*true/);
+  assert.doesNotMatch(studio, /openBottomTab\('preview'\);\s*window\.HHSIntegratedWorkbench\?\.preview\?\.\(\)/);
   assert.match(compiler, /HHS_DEPLOYABLE_BROWSER_APPLICATION_V1/);
   assert.match(compiler, /Download App ZIP/);
   assert.match(index, /application-studio\.css/);
