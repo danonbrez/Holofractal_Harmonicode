@@ -17,6 +17,10 @@ from hhs_backend.runtime.hhs_pass196_integrated_environment_v1 import (
     PASS196_INTEGRATED_ENVIRONMENT,
     Pass196Error,
 )
+from hhs_backend.runtime.hhs_pass196_scan_jobs_v1 import (
+    Pass196ScanJobError,
+    Pass196ScanJobManager,
+)
 
 router = APIRouter(
     prefix="/api/runtime/integration",
@@ -64,6 +68,25 @@ def _project_runtime_graph() -> None:
     runtime_graph.ingest_runtime_state(packet)
 
 
+def _background_scan_runner(
+    *,
+    vm81_receipt_hash72: str | None,
+    persist_vector: bool,
+) -> Dict[str, Any]:
+    result = PASS196_INTEGRATED_ENVIRONMENT.scan(
+        vm81_receipt_hash72=vm81_receipt_hash72,
+        persist_vector=persist_vector,
+    )
+    _project_runtime_graph()
+    return result
+
+
+PASS196_SCAN_JOBS = Pass196ScanJobManager(
+    _background_scan_runner,
+    state_root=PASS196_INTEGRATED_ENVIRONMENT.state_root,
+)
+
+
 async def _run_scan(*, persist_vector: bool, source: str) -> Dict[str, Any]:
     authorized_tick = runtime_controller.authorized_tick(source=source)
     receipt_hash72 = _receipt_hash72(authorized_tick)
@@ -92,6 +115,9 @@ def integration_status() -> Dict[str, Any]:
     operation = "api.runtime.integration.status"
     ingress = _ingress(operation, {"method": "GET"})
     result = PASS196_INTEGRATED_ENVIRONMENT.status()
+    latest_job = PASS196_SCAN_JOBS.latest()
+    if latest_job is not None:
+        result["latest_scan_job"] = latest_job
     result["io"] = {
         "ingress": ingress,
         "egress": _egress(
@@ -101,6 +127,8 @@ def integration_status() -> Dict[str, Any]:
                 "scanned": result.get("scanned"),
                 "integration_closed": result.get("integration_closed", False),
                 "manifest_hash72": result.get("manifest_hash72"),
+                "latest_scan_job_id": (latest_job or {}).get("job_id"),
+                "latest_scan_job_state": (latest_job or {}).get("state"),
             },
         ),
     }
@@ -109,6 +137,7 @@ def integration_status() -> Dict[str, Any]:
 
 @router.post("/scan")
 async def integration_scan(request: IntegrationScanRequest) -> Dict[str, Any]:
+    """Compatibility endpoint for callers that deliberately wait for completion."""
     operation = "api.runtime.integration.scan"
     ingress = _ingress(
         operation,
@@ -142,6 +171,100 @@ async def integration_scan(request: IntegrationScanRequest) -> Dict[str, Any]:
         ),
     }
     return _contract_response("/api/runtime/integration/scan", "POST", result)
+
+
+@router.post("/scan/jobs", status_code=202)
+def integration_scan_job_submit(request: IntegrationScanRequest) -> Dict[str, Any]:
+    """Start or join the singleton background scan without holding HTTP open."""
+    operation = "api.runtime.integration.scan.jobs.submit"
+    ingress = _ingress(
+        operation,
+        {"method": "POST", "persist_vector": request.persist_vector},
+    )
+    authorized_tick = runtime_controller.authorized_tick(source=operation)
+    receipt_hash72 = _receipt_hash72(authorized_tick)
+    job = PASS196_SCAN_JOBS.submit(
+        persist_vector=request.persist_vector,
+        vm81_receipt_hash72=receipt_hash72,
+        source=operation,
+    )
+    job["vm81_authorized_tick"] = {
+        "source": operation,
+        "receipt_hash72": receipt_hash72,
+        "runtime_step": authorized_tick.get("runtime", {}).get("step"),
+        "background_worker_grants_mutation_authority": False,
+    }
+    job["poll_api"] = f"/api/runtime/integration/scan/jobs/{job['job_id']}"
+    job["io"] = {
+        "ingress": ingress,
+        "egress": _egress(
+            operation,
+            {
+                "job_id": job.get("job_id"),
+                "state": job.get("state"),
+                "deduplicated": job.get("deduplicated"),
+            },
+        ),
+    }
+    return _contract_response("/api/runtime/integration/scan/jobs", "POST", job)
+
+
+@router.get("/scan/jobs/latest")
+def integration_scan_job_latest() -> Dict[str, Any]:
+    operation = "api.runtime.integration.scan.jobs.latest"
+    ingress = _ingress(operation, {"method": "GET"})
+    job = PASS196_SCAN_JOBS.latest()
+    if job is None:
+        raise HTTPException(
+            status_code=404,
+            detail={
+                "schema": "HHS_PASS_196_INTEGRATION_SCAN_JOB_NOT_FOUND_V1",
+                "ok": False,
+                "reason": "no Pass 196 scan job has been submitted in this process",
+            },
+        )
+    job["io"] = {
+        "ingress": ingress,
+        "egress": _egress(
+            operation,
+            {"job_id": job.get("job_id"), "state": job.get("state")},
+        ),
+    }
+    return _contract_response(
+        "/api/runtime/integration/scan/jobs/latest",
+        "GET",
+        job,
+    )
+
+
+@router.get("/scan/jobs/{job_id}")
+def integration_scan_job_status(job_id: str) -> Dict[str, Any]:
+    operation = "api.runtime.integration.scan.jobs.status"
+    ingress = _ingress(operation, {"method": "GET", "job_id": job_id})
+    try:
+        job = PASS196_SCAN_JOBS.get(job_id)
+    except Pass196ScanJobError as exc:
+        raise HTTPException(
+            status_code=404,
+            detail={
+                "schema": "HHS_PASS_196_INTEGRATION_SCAN_JOB_NOT_FOUND_V1",
+                "ok": False,
+                "job_id": job_id,
+                "reason": str(exc),
+            },
+        ) from exc
+    job["io"] = {
+        "ingress": ingress,
+        "egress": _egress(
+            operation,
+            {"job_id": job.get("job_id"), "state": job.get("state")},
+        ),
+    }
+    return _contract_response(
+        "/api/runtime/integration/scan/jobs/{job_id}",
+        "GET",
+        job,
+    )
 
 
 @router.get("/manifest")
@@ -193,6 +316,28 @@ def integration_tools() -> Dict[str, Any]:
     operation = "api.runtime.integration.tools"
     ingress = _ingress(operation, {"method": "GET"})
     result = PASS196_INTEGRATED_ENVIRONMENT.tools()
+    result["tools"].extend(
+        [
+            {
+                "name": "integration.scan.submit",
+                "method": "POST",
+                "path": "/api/runtime/integration/scan/jobs",
+                "mutation": True,
+            },
+            {
+                "name": "integration.scan.latest",
+                "method": "GET",
+                "path": "/api/runtime/integration/scan/jobs/latest",
+                "mutation": False,
+            },
+            {
+                "name": "integration.scan.job",
+                "method": "GET",
+                "path": "/api/runtime/integration/scan/jobs/{job_id}",
+                "mutation": False,
+            },
+        ]
+    )
     result["io"] = {
         "ingress": ingress,
         "egress": _egress(operation, {"tool_count": len(result["tools"])}),
@@ -215,13 +360,26 @@ async def integration_tool_invoke(request: IntegrationToolInvokeRequest) -> Dict
                 persist_vector=bool(request.arguments.get("persist_vector", True)),
                 source=operation,
             )
+        elif request.tool == "integration.scan.submit":
+            authorized_tick = runtime_controller.authorized_tick(source=operation)
+            result = PASS196_SCAN_JOBS.submit(
+                persist_vector=bool(request.arguments.get("persist_vector", True)),
+                vm81_receipt_hash72=_receipt_hash72(authorized_tick),
+                source=operation,
+            )
+        elif request.tool == "integration.scan.latest":
+            result = PASS196_SCAN_JOBS.latest()
+            if result is None:
+                raise Pass196Error("no Pass 196 scan job has been submitted")
+        elif request.tool == "integration.scan.job":
+            result = PASS196_SCAN_JOBS.get(str(request.arguments.get("job_id") or ""))
         elif request.tool == "integration.manifest":
             result = PASS196_INTEGRATED_ENVIRONMENT.manifest()
         elif request.tool == "integration.gaps":
             result = PASS196_INTEGRATED_ENVIRONMENT.gaps()
         else:
             raise Pass196Error(f"unknown integration tool: {request.tool}")
-    except Pass196Error as exc:
+    except (Pass196Error, Pass196ScanJobError) as exc:
         raise HTTPException(status_code=409, detail=str(exc)) from exc
     result["tool_invocation"] = {
         "schema": "HHS_PASS_196_API_TOOL_INVOCATION_V1",
@@ -236,6 +394,8 @@ async def integration_tool_invoke(request: IntegrationToolInvokeRequest) -> Dict
                 "tool": request.tool,
                 "ok": result.get("ok", True),
                 "manifest_hash72": result.get("manifest_hash72"),
+                "job_id": result.get("job_id"),
+                "job_state": result.get("state"),
             },
         ),
     }
