@@ -1,0 +1,24 @@
+[Unit]
+Description=HHS fail-closed TLS certificate renewal and verification
+Documentation=https://github.com/danonbrez/Holofractal_Harmonicode
+Wants=network-online.target
+After=network-online.target nginx.service
+
+[Service]
+Type=oneshot
+User=root
+Group=root
+Environment=HHS_TLS_ENV_FILE=/etc/hhs/tls-renew.env
+ExecStart=/usr/local/sbin/hhs-tls-renew
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectHome=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+LockPersonality=true
+RestrictRealtime=true
+UMask=0077
+
+[Install]
+WantedBy=multi-user.target
