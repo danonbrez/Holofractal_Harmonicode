@@ -32,6 +32,7 @@ jobs:
           python -m py_compile \
             scripts/pass205_multimodal_continuation_design_validation.py \
             scripts/pass205_gpu_translation_design_validation.py
+          mkdir -p evidence/pass205-ci
 
       - name: Execute Pass 205 continuation validation
         run: |
