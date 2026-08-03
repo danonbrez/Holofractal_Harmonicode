@@ -6,6 +6,7 @@ import './pass198-calibration-registry.mjs';
 import './pass199-distributed-calibration.mjs';
 import './pass200a-proof-carrying-optimization.mjs';
 import './pass200b-governed-canary.mjs';
+import './pass200c-guarded-active.mjs';
 
 const originalFetch = window.fetch.bind(window);
 const startedAt = performance.now();
@@ -71,7 +72,7 @@ if (document.readyState === 'loading') {
 }
 
 window.HHSProductionStartupCoordinator = Object.freeze({
-  schema: 'HHS_PASS161_PRODUCTION_STARTUP_COORDINATOR_V10',
+  schema: 'HHS_PASS161_PRODUCTION_STARTUP_COORDINATOR_V11',
   assistant_requests_deferred_until_registry_ready: true,
   max_assistant_deferral_ms: MAX_ASSISTANT_DEFERRAL_MS,
   runtime_registry_has_priority: true,
@@ -84,6 +85,7 @@ window.HHSProductionStartupCoordinator = Object.freeze({
   pass199_distributed_calibration_projection_loaded: true,
   pass200a_proof_carrying_optimization_projection_loaded: true,
   pass200b_governed_canary_projection_loaded: true,
+  pass200c_guarded_active_projection_loaded: true,
   theme_bootstrap_independent_of_ide_module: true,
   mobile_first_paint_precedes_public_module_graph: true,
   public_module_boot_concurrent: true,
