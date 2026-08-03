@@ -1,4 +1,4 @@
-const BOOT_SCHEMA = 'HHS_PUBLIC_MODULE_BOOT_V3';
+const BOOT_SCHEMA = 'HHS_PUBLIC_MODULE_BOOT_V4';
 let publicBoot = null;
 
 export function startPublicBoot() {
@@ -50,23 +50,34 @@ export function startPublicBoot() {
     });
   };
 
-  // Application controls are the user-critical boot membrane. They must mount
-  // before browser, registry, assistant, and visual hydration can occupy the
-  // main thread. The heavier graphs begin concurrently only after the complete
-  // application experience has committed its INTERACTIVE state.
+  const awaitGlobalPromise = async (name, result) => {
+    const promise = window[name];
+    if (promise && typeof promise.then === 'function') await promise;
+    return result;
+  };
+
+  // The usable application and visual editor are the critical membrane. Commit
+  // Pass 176 INTERACTIVE before loading browser registry and production service
+  // projections, because those projections may perform substantial hashing and
+  // catalog work. They remain real and ordered, but cannot monopolize the first
+  // browser interaction or prevent the visual authority from becoming observable.
   const applicationExperience = launch('application-experience', './application-experience.mjs');
-  const browser = applicationExperience.then(() => launch('browser', './browser.mjs'));
-  const productionIntegration = applicationExperience.then(
+  const visualIDE = applicationExperience
+    .then(() => launch('visual-ide', './visual-ide.mjs'))
+    .then((result) => awaitGlobalPromise('HHSVisualIDEBoot', result));
+  const browser = visualIDE
+    .then(() => launch('browser', './browser.mjs'))
+    .then((result) => awaitGlobalPromise('HHSBrowserReady', result));
+  const productionIntegration = browser.then(
     () => launch('production-integration', './production-integration.mjs'),
   );
-  const visualIDE = applicationExperience.then(() => launch('visual-ide', './visual-ide.mjs'));
   const workflowDefault = browser.then(() => launch('ux-default', './ux-default.mjs'));
 
   const allSettled = Promise.allSettled([
     applicationExperience,
+    visualIDE,
     browser,
     productionIntegration,
-    visualIDE,
     workflowDefault,
   ]).then((results) => {
     window.dispatchEvent(new CustomEvent('hhs:public-boot:settled', {
@@ -85,6 +96,8 @@ export function startPublicBoot() {
     coordinator_ready: Boolean(window.HHSProductionStartupCoordinator),
     legacy_parser_module_entries_disabled: true,
     application_controls_first: true,
+    visual_ide_interactive_before_browser_projection: true,
+    browser_registry_before_production_projection: true,
     applicationExperience,
     browser,
     productionIntegration,
