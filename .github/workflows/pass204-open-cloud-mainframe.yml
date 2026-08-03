@@ -8,6 +8,7 @@ on:
       - 'hhs_backend/runtime/hhs_pass204_open_cloud_mainframe.py'
       - 'hhs_backend/runtime/hhs_pass204_sandbox_worker_v1.py'
       - 'hhs_backend/runtime/hhs_pass204_sandbox_worker.py'
+      - 'hhs_backend/runtime/hhs_pass204_native_abi_executor_v1.py'
       - 'hhs_backend/api/pass204_open_cloud_routes.py'
       - 'hhs_backend/application_ide_server.py'
       - 'tests/test_hhs_pass204_open_cloud_mainframe_v1.py'
@@ -43,10 +44,14 @@ jobs:
             hhs_backend/runtime/hhs_pass204_open_cloud_mainframe.py \
             hhs_backend/runtime/hhs_pass204_sandbox_worker_v1.py \
             hhs_backend/runtime/hhs_pass204_sandbox_worker.py \
+            hhs_backend/runtime/hhs_pass204_native_abi_executor_v1.py \
             hhs_backend/api/pass204_open_cloud_routes.py \
             tests/test_hhs_pass204_open_cloud_mainframe_v1.py \
             scripts/pass204_open_cloud_validation.py \
             hhs_backend/application_ide_server.py
+
+      - name: Build canonical HHS C ABI
+        run: make c-abi
 
       - name: Run Pass 204 unit tests
         env:
@@ -92,6 +97,7 @@ jobs:
           grep -Fq 'all_declarations_executable' hhs_backend/runtime/hhs_pass204_open_cloud_mainframe.py
           grep -Fq 'CLOUD_SERVER_HARDWARE_ENVIRONMENT' hhs_backend/runtime/hhs_pass204_open_cloud_mainframe.py
           grep -Fq 'history_rewrite_permitted' hhs_backend/runtime/hhs_pass204_open_cloud_mainframe.py
+          grep -Fq 'CANONICAL_CTYPES_ABI_EXECUTED' hhs_backend/runtime/hhs_pass204_native_abi_executor_v1.py
           grep -Fq '/api/runtime/open-cloud/closure' HHS_PASS_204_UNIVERSAL_EXECUTABLE_DECLARATIONS_OPEN_CLOUD_COMPUTER.md
           grep -Fq 'valid_call_http_error' hhs_backend/api/pass204_open_cloud_routes.py
           grep -Fq 'capabilities_restored' hhs_backend/api/pass204_open_cloud_routes.py
