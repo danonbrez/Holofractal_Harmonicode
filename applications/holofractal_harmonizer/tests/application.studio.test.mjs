@@ -52,10 +52,13 @@ test('game, calculator, document, audio and video starters contain executable be
   assert.match(audio, /MediaRecorder/);
   assert.match(video, /captureStream/);
   assert.match(video, /MediaRecorder/);
+  const calculatorHtml = calculatorProject.files.find((file) => file.path === calculatorProject.entrypoint).content;
   const calculatorSource = calculatorProject.files.find((file) => file.path.endsWith('/app.js')).content;
   const harmonicSource = harmonicProject.files.find((file) => file.path.endsWith('/app.js')).content;
   const platformerSource = platformerProject.files.find((file) => file.path.endsWith('/app.js')).content;
   const documentSource = documentProjectObject.files.find((file) => file.path.endsWith('/app.js')).content;
+  assert.match(calculatorHtml, /<script src="\.\/app\.js"><\/script>/);
+  assert.doesNotMatch(calculatorHtml, /<script src="\.\/app\.js">\s+<\/script>/);
   assert.doesNotThrow(() => new Function(calculatorSource));
   assert.doesNotThrow(() => new Function(harmonicSource));
   assert.doesNotThrow(() => new Function(platformerSource));
