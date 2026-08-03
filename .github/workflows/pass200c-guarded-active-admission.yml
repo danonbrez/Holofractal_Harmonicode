@@ -26,20 +26,315 @@ jobs:
     steps:
       - name: Checkout exact tree
         uses: actions/checkout@v4
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+
       - name: Install inherited runtime dependencies
         run: python -m pip install -r requirements.txt
+
       - name: Compile Pass 200C surfaces
         run: |
           python -m py_compile \
             hhs_backend/runtime/hhs_pass200c_guarded_active_admission_v1.py \
             hhs_backend/runtime/hhs_pass200c_guarded_active_admission.py \
+            hhs_backend/api/pass200c_active_routes.py \
+            hhs_backend/visual_server.py \
             tests/test_hhs_pass200c_guarded_active_admission_v1.py
+
       - name: Run guarded active lifecycle tests
         run: python -m unittest -v tests.test_hhs_pass200c_guarded_active_admission_v1
+
+      - name: Execute production proof, dual canary evidence, active lease, exhaustion, and rollback
+        run: |
+          rm -rf .hhs/pass200c-ci evidence/pass200c-ci
+          mkdir -p evidence/pass200c-ci
+          python - <<'PY'
+          import json
+          import time
+          from pathlib import Path
+
+          from hhs_backend.runtime.hhs_pass200a_proof_carrying_optimization import (
+              Pass200AProofCarryingOptimizationAuthority,
+          )
+          from hhs_backend.runtime.hhs_pass200b_governed_canary_admission import (
+              Pass200BGovernedCanaryAuthority,
+          )
+          from hhs_backend.runtime.hhs_pass200c_guarded_active_admission import (
+              CLASSIFICATION,
+              Pass200CGuardedActiveAuthority,
+          )
+
+          root = Path('.hhs/pass200c-ci')
+          pass200a = Pass200AProofCarryingOptimizationAuthority(state_root=root / 'pass200a')
+          pass200b = None
+          pass200c = None
+          reopened = None
+          try:
+              qualification = pass200a.run_holdouts(
+                  worker_count=8,
+                  vm81_receipt_hash72='7' * 72,
+              )
+              shadows = pass200a.execute_all_shadows(
+                  worker_count=8,
+                  vm81_receipt_hash72='8' * 72,
+              )
+              assert qualification['closed'] is True
+              assert qualification['independent_envelope_count'] == 4
+              assert qualification['bundle_count'] == 4
+              assert shadows['closed'] is True
+              assert shadows['shadow_match_count'] == 4
+              assert shadows['candidate_activation_count'] == 0
+
+              pass200b = Pass200BGovernedCanaryAuthority(
+                  state_root=root / 'pass200b',
+                  pass200a=pass200a,
+              )
+              bundles = pass200a.list_bundles()
+              bundle = bundles[0]
+
+              def canary_approvals(now_ns, compiler_receipt, runtime_receipt):
+                  current = pass200b.current_frontier()
+                  expiry = now_ns + 900_000_000_000
+                  return [
+                      pass200b.build_approval(
+                          principal_id='vm81:compiler-promotion-authority',
+                          capability='COMPILER_PROMOTION_APPROVE',
+                          receipt_hash72=compiler_receipt,
+                          bundle_hash72=bundle['bundle_hash72'],
+                          expected_frontier_hash72=current['frontier_hash72'],
+                          expires_at_ns=expiry,
+                      ),
+                      pass200b.build_approval(
+                          principal_id='vm81:runtime-promotion-authority',
+                          capability='RUNTIME_PROMOTION_APPROVE',
+                          receipt_hash72=runtime_receipt,
+                          bundle_hash72=bundle['bundle_hash72'],
+                          expected_frontier_hash72=current['frontier_hash72'],
+                          expires_at_ns=expiry,
+                      ),
+                  ], expiry
+
+              now = time.time_ns()
+              approvals1, expiry1 = canary_approvals(now, 'C' * 72, 'D' * 72)
+              canary1 = pass200b.admit_canary(
+                  bundle['bundle_id'],
+                  invocation_limit=8,
+                  canary_numerator=1,
+                  canary_denominator=4,
+                  approvals=approvals1,
+                  vm81_activation_receipt_hash72='A' * 72,
+                  expires_at_ns=expiry1,
+                  now_ns=now,
+              )
+              canary_paths1 = []
+              for ordinal in range(8):
+                  result = pass200b.execute_verified_probe(
+                      canary1['frontier_id'],
+                      invocation_receipt_hash72='I' * 72,
+                      now_ns=now + ordinal + 1,
+                  )
+                  canary_paths1.append(result['returned_path'])
+              assert canary_paths1 == [
+                  'CANDIDATE', 'REFERENCE', 'REFERENCE', 'REFERENCE',
+                  'CANDIDATE', 'REFERENCE', 'REFERENCE', 'REFERENCE',
+              ]
+              assert pass200b.current_frontier()['mode'] == 'EXHAUSTED'
+
+              now2 = now + 10_000
+              approvals2, expiry2 = canary_approvals(now2, 'E' * 72, 'F' * 72)
+              canary2 = pass200b.admit_canary(
+                  bundle['bundle_id'],
+                  invocation_limit=8,
+                  canary_numerator=1,
+                  canary_denominator=2,
+                  approvals=approvals2,
+                  vm81_activation_receipt_hash72='B' * 72,
+                  expires_at_ns=expiry2,
+                  now_ns=now2,
+              )
+              canary_paths2 = []
+              for ordinal in range(8):
+                  result = pass200b.execute_verified_probe(
+                      canary2['frontier_id'],
+                      invocation_receipt_hash72='J' * 72,
+                      now_ns=now2 + ordinal + 1,
+                  )
+                  canary_paths2.append(result['returned_path'])
+              assert canary_paths2 == [
+                  'CANDIDATE', 'REFERENCE', 'CANDIDATE', 'REFERENCE',
+                  'CANDIDATE', 'REFERENCE', 'CANDIDATE', 'REFERENCE',
+              ]
+              assert pass200b.current_frontier()['mode'] == 'EXHAUSTED'
+
+              pass200c = Pass200CGuardedActiveAuthority(
+                  state_root=root / 'pass200c',
+                  pass200b=pass200b,
+              )
+              evidence = pass200c.aggregate_canary_evidence(bundle['bundle_id'])
+              assert evidence['successful_canary_count'] == 2
+              assert evidence['total_canary_invocations'] == 16
+              assert evidence['total_candidate_returns'] == 6
+              assert evidence['total_reference_returns'] == 10
+
+              def active_approvals(now_ns, receipts):
+                  current = pass200c.current_frontier()
+                  expiry = now_ns + 1_800_000_000_000
+                  specs = [
+                      ('vm81:compiler-active-authority', 'COMPILER_ACTIVE_APPROVE', receipts[0]),
+                      ('vm81:runtime-active-authority', 'RUNTIME_ACTIVE_APPROVE', receipts[1]),
+                      ('vm81:operations-active-authority', 'OPERATIONS_ACTIVE_APPROVE', receipts[2]),
+                  ]
+                  return [
+                      pass200c.build_approval(
+                          principal_id=principal,
+                          capability=capability,
+                          receipt_hash72=receipt,
+                          bundle_hash72=bundle['bundle_hash72'],
+                          evidence_hash72=evidence['evidence_hash72'],
+                          expected_frontier_hash72=current['frontier_hash72'],
+                          expires_at_ns=expiry,
+                      )
+                      for principal, capability, receipt in specs
+                  ], expiry
+
+              now3 = now + 20_000
+              active_approvals1, active_expiry1 = active_approvals(
+                  now3, ('K' * 72, 'L' * 72, 'M' * 72)
+              )
+              active1 = pass200c.admit_active(
+                  bundle['bundle_id'],
+                  lease_invocation_limit=6,
+                  approvals=active_approvals1,
+                  vm81_activation_receipt_hash72='N' * 72,
+                  expires_at_ns=active_expiry1,
+                  now_ns=now3,
+              )
+              active_paths = []
+              for ordinal in range(6):
+                  result = pass200c.execute_verified_probe(
+                      active1['frontier_id'],
+                      invocation_receipt_hash72='P' * 72,
+                      now_ns=now3 + ordinal + 1,
+                  )
+                  active_paths.append(result['returned_path'])
+              assert active_paths == ['CANDIDATE'] * 6
+              assert pass200c.current_frontier()['mode'] == 'LEASE_EXHAUSTED'
+
+              now4 = now + 30_000
+              active_approvals2, active_expiry2 = active_approvals(
+                  now4, ('Q' * 72, 'R' * 72, 'S' * 72)
+              )
+              active2 = pass200c.admit_active(
+                  bundle['bundle_id'],
+                  lease_invocation_limit=4,
+                  approvals=active_approvals2,
+                  vm81_activation_receipt_hash72='U' * 72,
+                  expires_at_ns=active_expiry2,
+                  now_ns=now4,
+              )
+              mismatch = pass200c.execute_active(
+                  active2['frontier_id'],
+                  reference_result={'value': 1},
+                  candidate_result={'value': 2},
+                  reference_witness_hash72='W' * 72,
+                  candidate_witness_hash72='X' * 72,
+                  reference_replay_hash72='Y' * 72,
+                  candidate_replay_hash72='Z' * 72,
+                  invocation_receipt_hash72='V' * 72,
+                  now_ns=now4 + 1,
+              )
+              assert mismatch['status'] == 'ROLLED_BACK'
+              assert mismatch['returned_path'] == 'REFERENCE'
+              assert pass200c.current_frontier()['mode'] == 'ROLLED_BACK'
+
+              status = pass200c.status()
+              verification = pass200c.verify()
+              assert status['classification'] == CLASSIFICATION
+              assert status['closed'] is True
+              assert status['total_invocations'] == 7
+              assert status['candidate_returns'] == 6
+              assert status['reference_returns'] == 1
+              assert status['current_mode'] == 'ROLLED_BACK'
+              assert status['guard_every_active_invocation'] is True
+              assert status['frozen_constraint_enabled'] is False
+              assert verification['frontier_count'] == 5
+              assert verification['active_frontier_count'] == 2
+              assert verification['lease_exhausted_frontier_count'] == 1
+              assert verification['rollback_frontier_count'] == 1
+              assert verification['singleton_activation_commit_count'] == 2
+              assert verification['evidence_count'] == 1
+              assert verification['invocation_count'] == 7
+              assert verification['event_chain']['ok'] is True
+              assert verification['event_chain']['event_count'] == 12
+
+              current = pass200c.current_frontier()
+              tip = verification['event_chain']['tip_hash72']
+              receipt = {
+                  'schema': 'HHS_PASS_200C_VALIDATION_RECEIPT_V1',
+                  'contract': status['contract'],
+                  'classification': status['classification'],
+                  'closed': True,
+                  'summary': {
+                      'pass200a_independent_envelopes': qualification['independent_envelope_count'],
+                      'pass200a_compiler_candidate_bundles': qualification['bundle_count'],
+                      'pass200a_shadow_matches': shadows['shadow_match_count'],
+                      'successful_canary_frontiers': evidence['successful_canary_count'],
+                      'canary_invocations': evidence['total_canary_invocations'],
+                      'canary_candidate_returns': evidence['total_candidate_returns'],
+                      'canary_reference_returns': evidence['total_reference_returns'],
+                      'active_frontiers': verification['active_frontier_count'],
+                      'singleton_activation_commits': verification['singleton_activation_commit_count'],
+                      'active_invocations': status['total_invocations'],
+                      'active_candidate_returns': status['candidate_returns'],
+                      'active_reference_returns': status['reference_returns'],
+                      'lease_exhausted_frontiers': verification['lease_exhausted_frontier_count'],
+                      'rollback_frontiers': verification['rollback_frontier_count'],
+                      'event_count': verification['event_chain']['event_count'],
+                  },
+                  'evidence_hash72': evidence['evidence_hash72'],
+                  'first_active_frontier_hash72': active1['frontier_hash72'],
+                  'second_active_frontier_hash72': active2['frontier_hash72'],
+                  'current_frontier_hash72': current['frontier_hash72'],
+                  'status_hash72': status['status_hash72'],
+                  'event_chain': verification['event_chain'],
+                  'claim_boundary': {
+                      'three_active_approvals_required': True,
+                      'guard_every_active_invocation': True,
+                      'candidate_self_authorization': False,
+                      'mismatch_returns_reference': True,
+                      'lease_exhaustion_restores_reference': True,
+                      'automatic_frozen_constraint_promotion': False,
+                  },
+              }
+              Path('evidence/pass200c-ci/PASS200C_VALIDATION_RECEIPT.json').write_text(
+                  json.dumps(receipt, sort_keys=True, separators=(',', ':')) + '\n',
+                  encoding='utf-8',
+              )
+              pass200c.close()
+              pass200c = None
+              reopened = Pass200CGuardedActiveAuthority(
+                  state_root=root / 'pass200c',
+                  pass200b=pass200b,
+              )
+              restarted = reopened.status()
+              assert restarted['current_frontier']['frontier_hash72'] == current['frontier_hash72']
+              assert restarted['total_invocations'] == 7
+              assert restarted['candidate_returns'] == 6
+              assert restarted['reference_returns'] == 1
+              assert restarted['event_chain']['tip_hash72'] == tip
+          finally:
+              if reopened is not None:
+                  reopened.close()
+              if pass200c is not None:
+                  pass200c.close()
+              if pass200b is not None:
+                  pass200b.close()
+              pass200a.close()
+          PY
+
       - name: Reject floating-point canonical operations
         run: |
           if grep -RInE '(^|[^[:alnum:]_])(float\(|Decimal\(|numpy|np\.)' \
@@ -48,9 +343,38 @@ jobs:
             echo 'Floating-point canonical operation detected.' >&2
             exit 1
           fi
-      - name: Verify guarded authority markers
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Validate visual JavaScript
+        run: |
+          node --check applications/holofractal_harmonizer/src/pass200c-guarded-active.mjs
+          node --check applications/holofractal_harmonizer/src/production-startup-coordinator.mjs
+
+      - name: Verify authority, API, and visual wiring
         run: |
           grep -Fq 'SINGLETON_ACTIVE_FRONTIER_ACTIVATED' hhs_backend/runtime/hhs_pass200c_guarded_active_admission_v1.py
           grep -Fq 'ACTIVE_EXACT_GUARD_MISMATCH' hhs_backend/runtime/hhs_pass200c_guarded_active_admission_v1.py
           grep -Fq 'three distinct principals' hhs_backend/runtime/hhs_pass200c_guarded_active_admission_v1.py
           grep -Fq 'automatic_frozen_constraint_promotion' hhs_backend/runtime/hhs_pass200c_guarded_active_admission_v1.py
+          grep -Fq 'runtime_controller.authorized_tick' hhs_backend/api/pass200c_active_routes.py
+          grep -Fq 'vm81:compiler-active-authority' hhs_backend/api/pass200c_active_routes.py
+          grep -Fq 'vm81:runtime-active-authority' hhs_backend/api/pass200c_active_routes.py
+          grep -Fq 'vm81:operations-active-authority' hhs_backend/api/pass200c_active_routes.py
+          grep -Fq '/api/runtime/optimization-active' hhs_backend/visual_server.py
+          grep -Fq 'pass200c_active_router' hhs_backend/visual_server.py
+          grep -Fq "import './pass200c-guarded-active.mjs';" applications/holofractal_harmonizer/src/production-startup-coordinator.mjs
+          grep -Fq 'pass200c_guarded_active_projection_loaded: true' applications/holofractal_harmonizer/src/production-startup-coordinator.mjs
+          grep -Fq 'The exact guard executes on every active invocation' applications/holofractal_harmonizer/src/pass200c-guarded-active.mjs
+          grep -Fq 'Permanent freezing requires a separate pass' HHS_PASS_200C_GUARDED_ACTIVE_ADMISSION.md
+
+      - name: Upload Pass 200C evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass200c-guarded-active-admission
+          path: evidence/pass200c-ci/PASS200C_VALIDATION_RECEIPT.json
+          if-no-files-found: error
+          retention-days: 30
