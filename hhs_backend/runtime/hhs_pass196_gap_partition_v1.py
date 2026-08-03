@@ -16,16 +16,19 @@ def partition_integration_gaps(
     unresolved_passes: Iterable[Mapping[str, Any]],
     *,
     maximum_discovered_pass: int,
+    missing_mandatory_surfaces: Iterable[str] = (),
     legacy_end: int = LEGACY_END,
     current_frontier_start: int = CURRENT_FRONTIER_START,
 ) -> dict[str, Any]:
     """Classify scope while preserving every original unresolved row.
 
     This is a reporting projection only. It never changes a pass state to
-    INTEGRATED and never suppresses a gap from the canonical raw report.
+    INTEGRATED and never suppresses a pass-layer or mandatory-surface gap from
+    the canonical raw report.
     """
 
     unresolved = _stable_rows(unresolved_passes)
+    missing_surfaces = sorted({str(item) for item in missing_mandatory_surfaces})
     legacy = [row for row in unresolved if int(row["pass_number"]) <= legacy_end]
     bridge = [
         row
@@ -39,6 +42,8 @@ def partition_integration_gaps(
     ]
     current_frontier_present = maximum_discovered_pass >= current_frontier_start
     current_frontier_closed = current_frontier_present and not current
+    pass_layers_closed = not unresolved
+    mandatory_surfaces_closed = not missing_surfaces
 
     return {
         "schema": SCHEMA,
@@ -57,7 +62,12 @@ def partition_integration_gaps(
         "current_frontier_unresolved_passes": current,
         "current_frontier_present": current_frontier_present,
         "current_frontier_closed": current_frontier_closed,
-        "global_integration_closed": not unresolved,
+        "pass_layers_closed": pass_layers_closed,
+        "missing_mandatory_surfaces": missing_surfaces,
+        "mandatory_surfaces_closed": mandatory_surfaces_closed,
+        "global_integration_closed": (
+            pass_layers_closed and mandatory_surfaces_closed
+        ),
         "raw_gap_count_preserved": len(unresolved),
         "classification_mutates_canonical_state": False,
     }
