@@ -4,15 +4,14 @@ All inherited Pass 174 APIs, VM81/Hash216 authorities, WebSockets, readiness
 semantics, assistant routes, multimodal ingress, compiler services, and legacy
 contracts remain registered by :mod:`hhs_backend.pass174_server`. Pass 175 adds
 its VM5184 × G243 processor, encrypted terminal hydration, firmware, governed
-devices, native-kernel evidence, and WebSocket surfaces. Passes 196 through 200C
-add the repository integration, exact calibration, distributed calibration, and
-proof-carrying optimization authority surfaces used by the public IDE. Every
-successor route is registered before all fail-closed API fallbacks and static
-mounts.
+devices, native-kernel evidence, and WebSocket surfaces. Pass 201 then federates
+every registered API router—including Passes 196 through 200C—before all
+fallbacks and static mounts.
 
 * ``/`` serves the complete Holofractal Harmonizer application IDE.
 * ``/runtime-console/`` preserves the prior Pass 174 diagnostic console.
 * ``/health`` and ``/api/health`` provide bounded, dependency-light liveness.
+* ``/api/public/*`` catalogs every public route, service, and pass module.
 
 Static mounts are installed last so they cannot shadow any API or WebSocket.
 """
@@ -28,18 +27,13 @@ from hhs_backend.api.pass175_runtime_routes import router as pass175_router
 from hhs_backend.api.pass175_ws_routes import router as pass175_ws_router
 from hhs_backend.api.pass175_terminal_routes import router as pass175_terminal_router
 from hhs_backend.api.pass175_terminal_ws_routes import router as pass175_terminal_ws_router
-from hhs_backend.api.pass196_integration_routes import router as pass196_integration_router
-from hhs_backend.api.pass197_calibration_routes import router as pass197_calibration_router
-from hhs_backend.api.pass198_calibration_registry_routes import router as pass198_calibration_registry_router
-from hhs_backend.api.pass199_distributed_calibration_routes_v2 import router as pass199_distributed_calibration_router
-from hhs_backend.api.pass200a_optimization_routes_v2 import router as pass200a_optimization_router
-from hhs_backend.api.pass200b_canary_routes import router as pass200b_canary_router
-from hhs_backend.api.pass200c_active_routes import router as pass200c_active_router
+from hhs_backend.api.public_api_registry_routes import router as public_api_router
 from hhs_backend.public_ide_bootstrap import render_public_ide_index
+from hhs_backend.runtime.hhs_pass201_public_api_federation import register_public_api_federation
 
 app = pass174.app
 app.title = "HHS Full Multimodal Application IDE"
-app.version = "4.3.4"
+app.version = "4.4.1"
 app.description = (
     "Full integrated development environment for real web applications, games, "
     "calculators, documents, audio, video, multimodal projects, HARMONICODE, "
@@ -47,7 +41,7 @@ app.description = (
     "VM5184 × G243 virtual instruction processing, Pass 196 repository hydration, "
     "Passes 197-199 exact calibration, Passes 200A-200C proof-carrying optimization, "
     "firmware and governed devices, repository lineage, assistant-led development, "
-    "preview, testing, and egress."
+    "preview, testing, egress, and Pass 201 public API federation."
 )
 
 FULL_IDE_ROOT = production.VISUAL_ROOT
@@ -63,10 +57,8 @@ def _has_exact_route(path: str) -> bool:
     return any(str(getattr(route, "path", "")) == path for route in app.router.routes)
 
 
-# Pass 174 restores the inherited production unknown-API route before its own
-# static projection. Defer every route with that exact catch-all path while the
-# full application composition registers successor APIs. They are restored only
-# after all concrete Pass 175-200C paths are present.
+# Every exact unknown-API fallback is deferred while Pass 175 and Pass 201
+# compose concrete successor routes. Static mounts are also deferred below.
 _deferred_api_fallback_routes = [
     route for route in app.router.routes
     if str(getattr(route, "path", "")) == API_FALLBACK_PATH
@@ -94,30 +86,16 @@ if not _has_route_prefix("/api/v1/pass175/terminal/status"):
     app.include_router(pass175_terminal_router)
 if not _has_route_prefix("/api/v1/pass175/terminal/ws/events"):
     app.include_router(pass175_terminal_ws_router)
-if not _has_route_prefix("/api/runtime/integration/status"):
-    app.include_router(pass196_integration_router)
-if not _has_route_prefix("/api/runtime/calibration/status"):
-    app.include_router(pass197_calibration_router)
-if not _has_route_prefix("/api/runtime/calibration-registry/status"):
-    app.include_router(pass198_calibration_registry_router)
-if not _has_route_prefix("/api/runtime/distributed-calibration/status"):
-    app.include_router(pass199_distributed_calibration_router)
-if not _has_route_prefix("/api/runtime/optimization-authority/status"):
-    app.include_router(pass200a_optimization_router)
-if not _has_route_prefix("/api/runtime/optimization-canary/status"):
-    app.include_router(pass200b_canary_router)
-if not _has_route_prefix("/api/runtime/optimization-active/status"):
-    app.include_router(pass200c_active_router)
+if not _has_exact_route("/api/public/status"):
+    app.include_router(public_api_router)
+
+# Public federation is composed before fallback/static routes. All importable
+# hhs_backend.api routers become directly accessible at their native paths.
+PASS201_PUBLIC_API_REGISTRATION = register_public_api_federation(app)
 
 
 async def application_ide_liveness() -> dict[str, Any]:
-    """Return cheap process and route liveness without invoking heavy peers.
-
-    This endpoint intentionally does not claim that VM81, Hash72, Hash216, or the
-    assistant provider are ready merely because the web process can respond.
-    Authority readiness is projected from the bounded Pass 174 boot state, while
-    full product health remains available at ``/api/product/health``.
-    """
+    """Return cheap process and route liveness without invoking heavy peers."""
     boot = dict(pass174.PASS174_BOOT_STATE)
     authority_ready = bool(boot.get("authority_ready") and boot.get("ready"))
     return {
@@ -131,6 +109,9 @@ async def application_ide_liveness() -> dict[str, Any]:
         "assistant_health_requires_product_probe": True,
         "frontend_runtime_authority": False,
         "public_interface": "HHS_FULL_MULTIMODAL_APPLICATION_IDE",
+        "public_api": "/api/public",
+        "public_api_catalog": "/api/public/catalog",
+        "public_api_registration_closed": PASS201_PUBLIC_API_REGISTRATION.get("closed", False),
         "pass174_boot": boot,
         "routes": {
             "workspace": _has_route_prefix("/api/runtime/workspace"),
@@ -145,6 +126,7 @@ async def application_ide_liveness() -> dict[str, Any]:
             "pass200a_shadow": _has_route_prefix("/api/runtime/optimization-authority/status"),
             "pass200b_canary": _has_route_prefix("/api/runtime/optimization-canary/status"),
             "pass200c_active": _has_route_prefix("/api/runtime/optimization-active/status"),
+            "public_api": _has_route_prefix("/api/public/status"),
         },
         "remediation": (
             None
@@ -178,8 +160,8 @@ if RUNTIME_CONSOLE_ROOT.is_dir():
         name="hhs-pass174-runtime-console",
     )
 
-# Unknown API requests remain fail-closed, but only after every registered
-# successor route has had an opportunity to match.
+# Unknown API requests remain fail-closed only after every federated route had
+# an opportunity to match.
 app.router.routes.extend(_deferred_api_fallback_routes)
 
 if FULL_IDE_ROOT.is_dir() and (FULL_IDE_ROOT / "index.html").is_file():
@@ -225,10 +207,14 @@ pass174.PASS174_BOOT_STATE.update({
     "pass200a_optimization_routes": _has_route_prefix("/api/runtime/optimization-authority/status"),
     "pass200b_canary_routes": _has_route_prefix("/api/runtime/optimization-canary/status"),
     "pass200c_active_routes": _has_route_prefix("/api/runtime/optimization-active/status"),
+    "pass201_public_api_federation": _has_route_prefix("/api/public/status"),
+    "pass201_registration_closed": PASS201_PUBLIC_API_REGISTRATION.get("closed", False),
     "api_fallback_deferred_for_successor_routes": bool(_deferred_api_fallback_routes),
+    "api_fallback_deferred_for_pass175_and_pass201": bool(_deferred_api_fallback_routes),
     "lightweight_health_route": "/health",
     "lightweight_api_health_route": "/api/health",
     "inline_public_boot": "HHS_INLINE_PUBLIC_BOOT_V2",
     "legacy_parser_module_entries_disabled": True,
     "external_vercel_quota_is_not_acceptance_gate": True,
+    "external_vercel_quota_is_not_pass201_acceptance_gate": True,
 })
