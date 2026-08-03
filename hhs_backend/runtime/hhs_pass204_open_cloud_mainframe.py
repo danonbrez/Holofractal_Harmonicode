@@ -7,6 +7,7 @@ import subprocess
 import sys
 from typing import Any, Dict, Mapping
 
+import hhs_backend.runtime.hhs_pass203_hydrated_mainframe_v1 as _pass203
 import hhs_backend.runtime.hhs_pass204_open_cloud_mainframe_v1 as _v1
 from hhs_backend.runtime.hhs_pass203_hydrated_mainframe_v1 import InvocationRejectedError
 from hhs_backend.runtime.hhs_pass204_open_cloud_mainframe_v1 import (
@@ -18,6 +19,12 @@ from hhs_backend.runtime.hhs_pass204_open_cloud_mainframe_v1 import (
     VERSION,
     OpenCloudMainframe as _V1OpenCloudMainframe,
 )
+
+# Pass 203 omitted canonical ABI declarations located beside the C source.
+# Pass 204 inherits and expands the catalog rather than leaving those symbols
+# outside the universal executable-declaration inventory.
+if "hhs_runtime/c" not in _pass203._C_HEADER_ROOTS:
+    _pass203._C_HEADER_ROOTS = (*_pass203._C_HEADER_ROOTS, "hhs_runtime/c")
 
 KERNEL_CONSTRAINT_MANIFEST = {
     "schema": "HHS_PASS_204_IMMUTABLE_KERNEL_CONSTRAINT_MANIFEST_V1",
@@ -77,6 +84,7 @@ class OpenCloudMainframe(_V1OpenCloudMainframe):
         payload["kernel_constraint_manifest_sha256"] = _v1._sha256(KERNEL_CONSTRAINT_MANIFEST)
         payload["host_trust_boundary"] = dict(HOST_TRUST_BOUNDARY)
         payload["host_trust_boundary_sha256"] = _v1._sha256(HOST_TRUST_BOUNDARY)
+        payload["catalog_header_roots"] = list(_pass203._C_HEADER_ROOTS)
         payload["all_declarations_executable"] = (
             payload["catalog_count"] == payload["callable_count"] == payload["hydrated_count"]
             and payload["unbound_internal_count"] == 0
