@@ -29,7 +29,7 @@ const CALCULATOR_APPLICATION_SOURCE = [
   'function evaluate() {',
   '  const safe = expression.replaceAll("×", "*").replaceAll("÷", "/").replaceAll("−", "-");',
   '  if (!/^[0-9+\\-*/().\\s]+$/.test(safe)) throw new Error("Unsupported expression");',
-  '  const result = Function("\\"use strict\\"; return (" + (safe || "0") + ")")();',
+  '  const result = Function("return (" + (safe || "0") + ")")();',
   '  if (!Number.isFinite(result)) throw new Error("Result is not finite");',
   '  history.textContent = expression;',
   '  expression = String(result);',
