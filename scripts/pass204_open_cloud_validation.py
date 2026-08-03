@@ -7,7 +7,7 @@ import json
 import os
 import tempfile
 from pathlib import Path
-from typing import Any, Dict, Iterable, Mapping
+from typing import Any, Dict, Mapping
 
 
 def _unwrap(value: Any) -> Any:
@@ -60,16 +60,6 @@ def _required_arguments(record: Mapping[str, Any]) -> Dict[str, Any]:
     return result
 
 
-def _select(records: Iterable[Mapping[str, Any]], *, kind: str = "", inherited_mode: str = "") -> Mapping[str, Any]:
-    for item in records:
-        if kind and item.get("kind") != kind:
-            continue
-        if inherited_mode and item.get("inherited_execution_mode") != inherited_mode:
-            continue
-        return item
-    raise AssertionError(f"missing representative kind={kind!r} inherited_mode={inherited_mode!r}")
-
-
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--evidence", required=True)
@@ -103,6 +93,7 @@ def main() -> int:
         closure = _unwrap(closure_response.json())
         assert closure["all_declarations_executable"] is True
         assert closure["binding_gap_count"] == 0
+        assert closure["capabilities_restored_on_recall"] is False
 
         canonicalize = next(
             item for item in catalog
@@ -119,19 +110,35 @@ def main() -> int:
         assert python_invocation["execution_status"] == "COMPLETED"
         assert python_invocation["result"]["result"] == {"a": 1, "b": 2}
 
-        native = _select(catalog, kind="NATIVE_ABI", inherited_mode="ABI_BINDING_REQUIRED")
-        native_response = client.post(
-            "/api/runtime/mainframe/invoke",
-            json={"function_id": native["function_id"], "arguments": {}},
+        core_native = next(
+            item for item in catalog
+            if item.get("kind") == "NATIVE_ABI" and item.get("name") == "hhs_sizeof_runtime_state"
         )
-        assert native_response.status_code == 200, native_response.text
-        native_invocation = _unwrap(native_response.json())
-        assert native_invocation["execution_status"] == "ACCEPTED"
-        assert native_invocation["job"]["job_id"]
+        core_native_response = client.post(
+            "/api/runtime/mainframe/invoke",
+            json={"function_id": core_native["function_id"], "arguments": {}},
+        )
+        assert core_native_response.status_code == 200, core_native_response.text
+        core_native_invocation = _unwrap(core_native_response.json())
+        assert core_native_invocation["execution_status"] == "COMPLETED"
+        assert core_native_invocation["result"]["outcome"] == "CANONICAL_CTYPES_ABI_EXECUTED"
+        assert int(core_native_invocation["result"]["result"]) > 0
 
-        # Validate one representative of every inherited binding-gap class. A
-        # valid argument shape must return HTTP success, whether the sandbox
-        # completes immediately or creates a durable continuation.
+        project_native = next(
+            item for item in catalog
+            if item.get("kind") == "NATIVE_ABI"
+            and item.get("inherited_execution_mode") == "ABI_BINDING_REQUIRED"
+            and str(item.get("name")).startswith("hhs_storybook_")
+        )
+        project_native_response = client.post(
+            "/api/runtime/mainframe/invoke",
+            json={"function_id": project_native["function_id"], "arguments": {}},
+        )
+        assert project_native_response.status_code == 200, project_native_response.text
+        project_native_invocation = _unwrap(project_native_response.json())
+        assert project_native_invocation["execution_status"] == "ACCEPTED"
+        assert project_native_invocation["job"]["job_id"]
+
         representative_results = []
         for mode in ("ADAPTER_REQUIRED", "WORKSPACE_JOB_ADAPTER_REQUIRED", "FORBIDDEN"):
             candidates = [
@@ -191,11 +198,15 @@ def main() -> int:
                 "public_route_count": len(app.routes),
                 "openapi_path_count": len(paths),
                 "representative_results": representative_results,
+                "core_native_execution_status": core_native_invocation["execution_status"],
+                "project_native_execution_status": project_native_invocation["execution_status"],
             },
             "catalog_sha256": status["catalog_sha256"],
             "status_hash72": status["status_hash72"],
             "python_receipt_hash72": python_invocation["receipt"]["receipt_hash72"],
-            "native_receipt_hash72": native_invocation["receipt"]["receipt_hash72"],
+            "core_native_receipt_hash72": core_native_invocation["receipt"]["receipt_hash72"],
+            "project_native_receipt_hash72": project_native_invocation["receipt"]["receipt_hash72"],
+            "project_native_job_id": project_native_invocation["job"]["job_id"],
             "snapshot_root": python_invocation["snapshot"]["snapshot_root"],
             "recall_verified": recall["verified"],
             "sandbox_policy": status["sandbox_policy"],
