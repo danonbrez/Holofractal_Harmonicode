@@ -24,6 +24,8 @@ class Pass196GapPartitionTests(unittest.TestCase):
         self.assertEqual(result["current_frontier_unresolved_count"], 1)
         self.assertEqual(result["raw_gap_count_preserved"], len(rows))
         self.assertFalse(result["current_frontier_closed"])
+        self.assertFalse(result["pass_layers_closed"])
+        self.assertTrue(result["mandatory_surfaces_closed"])
         self.assertFalse(result["global_integration_closed"])
         self.assertFalse(result["classification_mutates_canonical_state"])
 
@@ -36,6 +38,30 @@ class Pass196GapPartitionTests(unittest.TestCase):
         self.assertTrue(result["current_frontier_closed"])
         self.assertFalse(result["global_integration_closed"])
         self.assertEqual(result["legacy_unresolved_passes"], rows)
+
+    def test_missing_mandatory_surface_prevents_global_closure(self) -> None:
+        result = partition_integration_gaps(
+            [],
+            maximum_discovered_pass=200,
+            missing_mandatory_surfaces=["api", "visual_ide", "api"],
+        )
+        self.assertTrue(result["pass_layers_closed"])
+        self.assertFalse(result["mandatory_surfaces_closed"])
+        self.assertEqual(
+            result["missing_mandatory_surfaces"],
+            ["api", "visual_ide"],
+        )
+        self.assertFalse(result["global_integration_closed"])
+
+    def test_global_closure_requires_pass_and_surface_closure(self) -> None:
+        result = partition_integration_gaps(
+            [],
+            maximum_discovered_pass=200,
+            missing_mandatory_surfaces=[],
+        )
+        self.assertTrue(result["pass_layers_closed"])
+        self.assertTrue(result["mandatory_surfaces_closed"])
+        self.assertTrue(result["global_integration_closed"])
 
 
 if __name__ == "__main__":
