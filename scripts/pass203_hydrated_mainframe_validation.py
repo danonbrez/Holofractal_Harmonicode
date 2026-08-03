@@ -49,21 +49,9 @@ def main() -> int:
 
         with TestClient(app) as client:
             status = request(client, "GET", "/api/runtime/mainframe/status")
-            functions = request(
-                client,
-                "GET",
-                "/api/runtime/mainframe/functions?limit=1000",
-            )
-            hydrated = request(
-                client,
-                "GET",
-                "/api/runtime/mainframe/functions?hydrated_only=true&limit=1000",
-            )
-            operations = request(
-                client,
-                "GET",
-                "/api/runtime/mainframe/operations?limit=1000",
-            )
+            functions = request(client, "GET", "/api/runtime/mainframe/functions?limit=1000")
+            hydrated = request(client, "GET", "/api/runtime/mainframe/functions?hydrated_only=true&limit=1000")
+            operations = request(client, "GET", "/api/runtime/mainframe/operations?limit=1000")
             public_catalog = request(client, "GET", "/api/public/catalog")
             openapi = request(client, "GET", "/api/public/openapi")
 
@@ -119,7 +107,10 @@ def main() -> int:
                 "/api/runtime/mainframe/operations/invoke",
                 json={"operation_id": "system.status", "arguments": {}},
             )
-            assert operation["result"]["status"] == "ok"
+            assert operation["result"]["result"]["status"] == "ok"
+            operation_native_receipt = operation["result"]["receipt"]["hash72"]
+            replay = request(client, "GET", f"/api/runtime/mainframe/replay/{operation_native_receipt}")
+            assert replay["replay_verified"] is True
 
             python_targets = [
                 item for item in hydrated["functions"]
@@ -166,7 +157,8 @@ def main() -> int:
             assert plan_execution["failure_count"] == 0
 
             jobs = request(client, "GET", "/api/runtime/mainframe/jobs/runtime")
-            assert jobs["execution_runtime_verified"] if "execution_runtime_verified" in jobs else jobs["worker_count"] >= 0
+            assert jobs["worker_count"] >= 0
+            assert jobs["governed_operation_count"] == operations["total"]
 
             missing = next((item for item in functions["functions"] if not item["hydrated"]), None)
             assert missing is not None
@@ -222,6 +214,7 @@ def main() -> int:
                 "interpreter_receipt_hash72": interpreter["receipt"]["receipt_hash72"],
                 "compiler_receipt_hash72": compiler["receipt"]["receipt_hash72"],
                 "operation_receipt_hash72": operation["receipt"]["receipt_hash72"],
+                "operation_native_receipt_hash72": operation_native_receipt,
                 "plan_final_receipt_hash72": plan_execution["final_vm81_receipt_hash72"],
                 "claim_boundary": {
                     "all_discovered_functions_indexed": True,
