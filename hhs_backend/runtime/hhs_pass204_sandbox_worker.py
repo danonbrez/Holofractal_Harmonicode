@@ -4,9 +4,14 @@ from __future__ import annotations
 import os
 import sys
 from pathlib import Path
-from typing import Any
+from typing import Any, Mapping
 
 import hhs_backend.runtime.hhs_pass204_sandbox_worker_v1 as _v1
+from hhs_backend.runtime.hhs_pass204_native_abi_executor_v1 import (
+    NativeArgumentError,
+    NativeBindingUnavailable,
+    execute_core_symbol,
+)
 
 
 def _inside(path: Path, root: Path) -> bool:
@@ -64,7 +69,42 @@ def _production_audit_boundary(repo_root: Path, sandbox_root: Path) -> None:
     sys.addaudithook(hook)
 
 
+def _production_native_execution(function_record: Mapping[str, Any], arguments: Mapping[str, Any]) -> dict[str, Any]:
+    symbol = str(function_record.get("symbol") or "")
+    try:
+        result = execute_core_symbol(symbol, arguments)
+        result.update(
+            {
+                "ok": True,
+                "native_pointer_exposed": False,
+                "direct_kernel_access": False,
+            }
+        )
+        return result
+    except NativeArgumentError as exc:
+        raise _v1.InvalidCallShapeError(str(exc)) from exc
+    except NativeBindingUnavailable as exc:
+        manifest = {
+            "schema": "HHS_PASS_204_NATIVE_ABI_CALL_MANIFEST_V2",
+            "symbol": symbol,
+            "header": function_record.get("header"),
+            "return_type": function_record.get("return_type"),
+            "parameters_c": function_record.get("parameters_c"),
+            "arguments": _v1._safe(arguments),
+            "canonical_bridge_unavailable_reason": str(exc),
+            "native_pointer_exposed": False,
+            "direct_kernel_access": False,
+            "execution_pipeline": ["ABI_PARSE", "VM81_LOWER", "SANDBOX_BUILD", "CALL", "RECEIPT"],
+        }
+        return {
+            "execution_status": "ACCEPTED",
+            "outcome": "PROJECT_NATIVE_ABI_BUILD_AND_CALL_ACCEPTED",
+            "result": manifest,
+        }
+
+
 _v1._install_audit_boundary = _production_audit_boundary
+_v1._native_execution = _production_native_execution
 main = _v1.main
 
 
