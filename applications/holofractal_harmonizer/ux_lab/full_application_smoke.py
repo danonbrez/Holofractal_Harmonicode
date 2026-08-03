@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import os
 from pathlib import Path
+import re
 import tempfile
 import time
 import traceback
@@ -180,7 +181,7 @@ def run() -> dict[str, object]:
             assistant_launcher = page.locator("#ide-open-assistant-simple")
             expect(assistant_launcher).to_be_visible(timeout=20_000)
             assistant_launcher.click()
-            expect(page.locator("body")).to_have_class(/ide-assistant-open/, timeout=20_000)
+            expect(page.locator("body")).to_have_class(re.compile(r"ide-assistant-open"), timeout=20_000)
             expect(page.locator("#assistant-view")).to_be_visible(timeout=20_000)
             expect(page.locator("#prompt-input")).to_be_visible(timeout=20_000)
             assistant_close = page.locator("#ide-assistant-close")
