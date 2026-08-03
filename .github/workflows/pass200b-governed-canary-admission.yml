@@ -1,0 +1,53 @@
+name: Pass 200B Governed Canary Admission
+
+on:
+  pull_request:
+    paths:
+      - 'HHS_PASS_200B_GOVERNED_CANARY_ADMISSION.md'
+      - 'hhs_backend/runtime/hhs_pass200b_governed_canary_admission_v1.py'
+      - 'hhs_backend/api/pass200b_canary_routes.py'
+      - 'hhs_backend/visual_server.py'
+      - 'applications/holofractal_harmonizer/src/pass200b-governed-canary.mjs'
+      - 'applications/holofractal_harmonizer/src/production-startup-coordinator.mjs'
+      - 'tests/test_hhs_pass200b_governed_canary_admission_v1.py'
+      - 'docs/pass200b/**'
+      - 'evidence/pass200b/**'
+      - '.github/workflows/pass200b-governed-canary-admission.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-pass200b:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - name: Checkout exact tree
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install inherited runtime dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Compile Pass 200B surfaces
+        run: |
+          python -m py_compile \
+            hhs_backend/runtime/hhs_pass200b_governed_canary_admission_v1.py \
+            tests/test_hhs_pass200b_governed_canary_admission_v1.py
+      - name: Run canary lifecycle, rollback, restart, and tamper tests
+        run: python -m unittest -v tests.test_hhs_pass200b_governed_canary_admission_v1
+      - name: Reject floating-point canonical operations
+        run: |
+          if grep -RInE '(^|[^[:alnum:]_])(float\(|Decimal\(|numpy|np\.)' \
+            hhs_backend/runtime/hhs_pass200b_governed_canary_admission_v1.py; then
+            echo 'Floating-point canonical operation detected.' >&2
+            exit 1
+          fi
+      - name: Verify bounded authority markers
+        run: |
+          grep -Fq 'SINGLETON_CANARY_FRONTIER_ACTIVATED' hhs_backend/runtime/hhs_pass200b_governed_canary_admission_v1.py
+          grep -Fq 'EXACT_CANARY_MISMATCH' hhs_backend/runtime/hhs_pass200b_governed_canary_admission_v1.py
+          grep -Fq 'promotion approvals require two distinct principals' hhs_backend/runtime/hhs_pass200b_governed_canary_admission_v1.py
+          grep -Fq 'automatic_active_promotion' hhs_backend/runtime/hhs_pass200b_governed_canary_admission_v1.py
