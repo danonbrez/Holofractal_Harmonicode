@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from hhs_backend.api import a0_pass205_transport_bootstrap as transport
 from hhs_backend.api import pass205_continuation_routes as routes
-from hhs_backend.runtime.hhs_pass205_governed_continuation_v2 import (
+from hhs_backend.runtime.hhs_pass205_governed_continuation_v3 import (
     GovernedPass205ContinuationRuntime,
 )
 
@@ -110,3 +110,4 @@ def test_transport_status_route_is_additive() -> None:
     paths = {route.path for route in transport.router.routes}
     assert "/api/runtime/continuation/transport" in paths
     assert transport.PASS205_TRANSPORT_BOOTSTRAP["lossless_uint64"] is True
+    assert transport.PASS205_TRANSPORT_BOOTSTRAP["replay_argument_mapping_repaired"] is True
