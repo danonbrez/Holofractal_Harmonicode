@@ -12,9 +12,10 @@ from hhs_backend.runtime.hhs_pass203_hydrated_mainframe_v1 import (
     InvocationRejectedError,
     UnknownFunctionError,
 )
-from hhs_backend.runtime.hhs_pass204_open_cloud_mainframe_v1 import (
+from hhs_backend.runtime.hhs_pass204_open_cloud_mainframe import (
     CLASSIFICATION,
     CONTRACT,
+    KERNEL_CONSTRAINT_MANIFEST,
     OPEN_CLOUD_PREFIX,
     PASS204_MAINFRAME,
     SANDBOX_POLICY,
@@ -27,10 +28,9 @@ router = APIRouter(
 
 PASS204_MAINFRAME.configure_authority(lambda source: runtime_controller.authorized_tick(source=source))
 
-# Upgrade the inherited Pass 203 route functions in place. Their endpoint
-# functions resolve these module globals at request time, so the existing
-# /api/runtime/mainframe catalog, invoke, plan, replay, and studio surfaces now
-# use the cumulative Pass 204 authority without a parallel API dialect.
+# Upgrade the inherited Pass 203 endpoints in place. Their request handlers
+# resolve these module globals at call time, so catalog, invoke, plans, replay,
+# jobs, and the existing visual studio all use Pass 204 without a forked API.
 inherited_mainframe_routes.PASS203_MAINFRAME = PASS204_MAINFRAME
 inherited_mainframe_routes.CONTRACT = CONTRACT
 inherited_mainframe_routes.CLASSIFICATION = CLASSIFICATION
@@ -94,6 +94,7 @@ def open_cloud_policy() -> Dict[str, Any]:
         "classification": CLASSIFICATION,
         "ok": True,
         "policy": dict(SANDBOX_POLICY),
+        "kernel_constraint_manifest": dict(KERNEL_CONSTRAINT_MANIFEST),
         "policy_is_read_only": True,
         "policy_mutation_endpoint": None,
     }
@@ -113,10 +114,7 @@ def open_cloud_closure() -> Dict[str, Any]:
         "callable_count": status["callable_count"],
         "hydrated_count": status["hydrated_count"],
         "binding_gap_count": status["unbound_internal_count"],
-        "all_declarations_executable": (
-            status["catalog_count"] == status["callable_count"] == status["hydrated_count"]
-            and status["unbound_internal_count"] == 0
-        ),
+        "all_declarations_executable": status["all_declarations_executable"],
         "valid_call_outcomes": ["COMPLETED", "ACCEPTED", "CONTINUATION_REQUIRED"],
         "valid_call_http_error": False,
     }
