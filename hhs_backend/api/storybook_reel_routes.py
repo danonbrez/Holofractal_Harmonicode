@@ -1,4 +1,4 @@
-"""No-code HTTP surface for the HHS native storybook-reel studio."""
+"""Public HTTP surface for the HHS native high-fidelity storybook studio."""
 from __future__ import annotations
 
 from typing import Any, Dict, Optional
@@ -8,16 +8,25 @@ from fastapi.responses import FileResponse
 from pydantic import BaseModel, Field
 
 from hhs_backend.api.runtime_routes import _contract_response, io_gateway, runtime_controller, runtime_graph
-from hhs_backend.runtime.hhs_storybook_reel_v1 import STORYBOOK_REEL_RUNTIME
+from hhs_backend.runtime.hhs_storybook_reel_v2 import STORYBOOK_REEL_RUNTIME
 
 router = APIRouter(
     prefix="/api/runtime/storybook-reel",
-    tags=["runtime", "vm81", "game-engine", "storybook-reel", "media"],
+    tags=["runtime", "vm81", "game-engine", "storybook-reel", "media", "pass202"],
 )
 
 
 class StorybookDefaultsRequest(BaseModel):
     text: str = Field(default="", max_length=16_384)
+
+
+class StorybookResolveRequest(BaseModel):
+    text: str = Field(default="", max_length=16_384)
+    template_id: Optional[str] = None
+    style: Dict[str, Any] = Field(default_factory=dict)
+    quality_profile: Optional[str] = None
+    render: Dict[str, Any] = Field(default_factory=dict)
+    native_layers: Dict[str, Any] = Field(default_factory=dict)
 
 
 class StorybookGenerateRequest(BaseModel):
@@ -26,7 +35,25 @@ class StorybookGenerateRequest(BaseModel):
     title: str = Field(default="HHS STORYBOOK", min_length=1, max_length=128)
     template_id: Optional[str] = None
     style: Dict[str, Any] = Field(default_factory=dict)
+    quality_profile: Optional[str] = None
+    render: Dict[str, Any] = Field(default_factory=dict)
+    native_layers: Dict[str, Any] = Field(default_factory=dict)
     alignment: Optional[Dict[str, Any]] = None
+
+
+def _dump(model: BaseModel) -> Dict[str, Any]:
+    return model.model_dump(exclude_none=True) if hasattr(model, "model_dump") else model.dict(exclude_none=True)
+
+
+def _rejection(schema: str, reason: str, remediation: str, *, retryable: bool = False) -> Dict[str, Any]:
+    return {
+        "schema": schema,
+        "ok": False,
+        "reason": reason,
+        "retryable": retryable,
+        "remediation": remediation,
+        "frontend_result_fabricated": False,
+    }
 
 
 @router.get("/status")
@@ -41,10 +68,51 @@ def storybook_reel_status() -> Dict[str, Any]:
                 "ok": result.get("ok"),
                 "single_threaded": result.get("single_threaded"),
                 "template_count": len(result.get("templates") or []),
+                "high_fidelity_compositor": result.get("high_fidelity_compositor"),
+                "default_quality_profile": result.get("default_quality_profile"),
             },
         ),
     }
     return _contract_response("/api/runtime/storybook-reel/status", "GET", result)
+
+
+@router.get("/parameters")
+def storybook_reel_parameters() -> Dict[str, Any]:
+    return _contract_response(
+        "/api/runtime/storybook-reel/parameters",
+        "GET",
+        STORYBOOK_REEL_RUNTIME.parameter_catalog(),
+    )
+
+
+@router.get("/presets")
+def storybook_reel_presets() -> Dict[str, Any]:
+    return _contract_response(
+        "/api/runtime/storybook-reel/presets",
+        "GET",
+        STORYBOOK_REEL_RUNTIME.presets(),
+    )
+
+
+@router.post("/parameters/resolve")
+def storybook_reel_parameters_resolve(request: StorybookResolveRequest) -> Dict[str, Any]:
+    payload = _dump(request)
+    try:
+        result = STORYBOOK_REEL_RUNTIME.resolve_parameters(payload)
+    except (TypeError, ValueError) as exc:
+        raise HTTPException(
+            status_code=422,
+            detail=_rejection(
+                "HHS_PASS_202_PARAMETER_REJECTION_V1",
+                str(exc),
+                "Inspect GET /api/runtime/storybook-reel/parameters and submit values within the published type, range, and enum constraints.",
+            ),
+        ) from exc
+    return _contract_response(
+        "/api/runtime/storybook-reel/parameters/resolve",
+        "POST",
+        result,
+    )
 
 
 @router.post("/defaults")
@@ -62,11 +130,31 @@ def storybook_reel_defaults(request: StorybookDefaultsRequest) -> Dict[str, Any]
             "api.runtime.storybook_reel.defaults",
             {
                 "template_id": result.get("template_id"),
+                "candidate_count": result.get("candidate_count"),
+                "quality_profile": result.get("quality_profile"),
                 "chromatic_tonic": (result.get("palette") or {}).get("chromatic_tonic"),
             },
         ),
     }
     return _contract_response("/api/runtime/storybook-reel/defaults", "POST", result)
+
+
+@router.post("/defaults/candidates")
+def storybook_reel_default_candidates(request: StorybookDefaultsRequest) -> Dict[str, Any]:
+    result = STORYBOOK_REEL_RUNTIME.contextual_defaults(request.text)
+    return _contract_response(
+        "/api/runtime/storybook-reel/defaults/candidates",
+        "POST",
+        {
+            "schema": "HHS_PASS_202_CONTEXTUAL_TEMPLATE_CANDIDATES_V1",
+            "ok": True,
+            "template_id": result.get("template_id"),
+            "quality_profile": result.get("quality_profile"),
+            "candidate_count": result.get("candidate_count"),
+            "candidates": result.get("template_candidates"),
+            "reason_trace_public": True,
+        },
+    )
 
 
 @router.post("/audio")
@@ -88,20 +176,21 @@ async def storybook_reel_audio_upload(request: Request) -> Dict[str, Any]:
     except ValueError as exc:
         raise HTTPException(
             status_code=422,
-            detail={
-                "schema": "HHS_STORYBOOK_REEL_AUDIO_REJECTION_V1",
-                "ok": False,
-                "reason": str(exc),
-            },
+            detail=_rejection(
+                "HHS_STORYBOOK_REEL_AUDIO_REJECTION_V2",
+                str(exc),
+                "Upload a supported audio file to POST /api/runtime/storybook-reel/audio before submitting generation.",
+            ),
         ) from exc
     except (RuntimeError, OSError) as exc:
         raise HTTPException(
             status_code=503,
-            detail={
-                "schema": "HHS_STORYBOOK_REEL_AUDIO_RUNTIME_ERROR_V1",
-                "ok": False,
-                "reason": str(exc),
-            },
+            detail=_rejection(
+                "HHS_STORYBOOK_REEL_AUDIO_RUNTIME_ERROR_V2",
+                str(exc),
+                "Inspect GET /api/runtime/storybook-reel/status for ffmpeg and ffprobe capability flags, install missing host tools, then retry the upload.",
+                retryable=True,
+            ),
         ) from exc
     result["io"] = {
         "ingress": ingress,
@@ -119,7 +208,7 @@ async def storybook_reel_audio_upload(request: Request) -> Dict[str, Any]:
 
 @router.post("/generate")
 def storybook_reel_generate(request: StorybookGenerateRequest) -> Dict[str, Any]:
-    payload = request.model_dump(exclude_none=True) if hasattr(request, "model_dump") else request.dict(exclude_none=True)
+    payload = _dump(request)
     ingress = io_gateway.ingress(
         "api.runtime.storybook_reel.generate",
         {
@@ -127,6 +216,7 @@ def storybook_reel_generate(request: StorybookGenerateRequest) -> Dict[str, Any]
             "audio_id": request.audio_id,
             "text_length": len(request.text),
             "template_id": request.template_id,
+            "quality_profile": request.quality_profile,
             "single_threaded": True,
         },
     )
@@ -134,22 +224,27 @@ def storybook_reel_generate(request: StorybookGenerateRequest) -> Dict[str, Any]
         authorized_tick = runtime_controller.authorized_tick(source="api.runtime.storybook_reel.generate")
         result = STORYBOOK_REEL_RUNTIME.generate(payload)
     except (ValueError, FileNotFoundError) as exc:
+        remediation = (
+            "POST the narration file to /api/runtime/storybook-reel/audio first and use the returned audio_id. "
+            "Validate visual parameters through POST /api/runtime/storybook-reel/parameters/resolve before retrying."
+        )
         raise HTTPException(
             status_code=422,
-            detail={
-                "schema": "HHS_STORYBOOK_REEL_REQUEST_REJECTION_V1",
-                "ok": False,
-                "reason": str(exc),
-            },
+            detail=_rejection(
+                "HHS_STORYBOOK_REEL_REQUEST_REJECTION_V2",
+                str(exc),
+                remediation,
+            ),
         ) from exc
     except (RuntimeError, OSError) as exc:
         raise HTTPException(
             status_code=503,
-            detail={
-                "schema": "HHS_STORYBOOK_REEL_GENERATION_ERROR_V1",
-                "ok": False,
-                "reason": str(exc),
-            },
+            detail=_rejection(
+                "HHS_STORYBOOK_REEL_GENERATION_ERROR_V2",
+                str(exc),
+                "Inspect the storybook status capability flags, native Makefile source layout, ffmpeg/ffprobe availability, and native CLI readiness, then retry the same receipt-bound request.",
+                retryable=True,
+            ),
         ) from exc
     packet = runtime_controller.export_multimodal_packet()
     runtime_graph.ingest_runtime_state(packet)
@@ -174,6 +269,8 @@ def storybook_reel_generate(request: StorybookGenerateRequest) -> Dict[str, Any]
                 "artifact_id": result.get("artifact_id"),
                 "receipt_hash72": result.get("receipt_hash72"),
                 "video_sha256_transport_hint": result.get("video_sha256_transport_hint"),
+                "quality_profile": (result.get("pass202") or {}).get("quality_profile"),
+                "resolution_hash72": (result.get("pass202") or {}).get("resolution_hash72"),
             },
         ),
     }
