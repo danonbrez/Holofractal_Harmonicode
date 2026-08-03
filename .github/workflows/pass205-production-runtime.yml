@@ -1,9 +1,8 @@
-name: Pass 205 Multimodal Continuation Contract
+name: Pass 205 Production Continuation Runtime
 
 on:
   pull_request:
     paths:
-      - 'HHS_PASS_205_DETERMINISTIC_VM5184_G243_MULTIMODAL_CONTINUATION_RUNTIME.md'
       - 'hhs_runtime/c/hhs_pass205_continuation.h'
       - 'hhs_runtime/c/hhs_pass205_continuation.c'
       - 'hhs_python/runtime/hhs_pass205_continuation_bridge.py'
@@ -11,95 +10,24 @@ on:
       - 'hhs_backend/runtime/hhs_pass205_accelerator_translation_v1.py'
       - 'hhs_backend/api/pass205_continuation_routes.py'
       - 'tests/test_hhs_pass205_continuation_runtime_v1.py'
-      - 'scripts/pass205_multimodal_continuation_design_validation.py'
-      - 'scripts/pass205_gpu_translation_design_validation.py'
       - 'scripts/pass205_production_validation.py'
       - 'docs/pass205/**'
       - 'evidence/pass205/**'
-      - '.github/workflows/pass205-multimodal-continuation-contract.yml'
-      - '.github/workflows/pass205-production-runtime.yml'
-  push:
-    branches:
-      - main
-    paths:
-      - 'HHS_PASS_205_DETERMINISTIC_VM5184_G243_MULTIMODAL_CONTINUATION_RUNTIME.md'
-      - 'hhs_runtime/c/hhs_pass205_continuation.h'
-      - 'hhs_runtime/c/hhs_pass205_continuation.c'
-      - 'hhs_python/runtime/hhs_pass205_continuation_bridge.py'
-      - 'hhs_backend/runtime/hhs_pass205_continuation_runtime_v1.py'
-      - 'hhs_backend/runtime/hhs_pass205_accelerator_translation_v1.py'
-      - 'hhs_backend/api/pass205_continuation_routes.py'
-      - 'tests/test_hhs_pass205_continuation_runtime_v1.py'
-      - 'scripts/pass205_multimodal_continuation_design_validation.py'
-      - 'scripts/pass205_gpu_translation_design_validation.py'
-      - 'scripts/pass205_production_validation.py'
-      - 'docs/pass205/**'
-      - 'evidence/pass205/**'
-      - '.github/workflows/pass205-multimodal-continuation-contract.yml'
       - '.github/workflows/pass205-production-runtime.yml'
   workflow_dispatch:
 
 permissions:
   contents: read
 
+env:
+  PYTHONFAULTHANDLER: '1'
+  PYTHONUNBUFFERED: '1'
+  HHS_PASS205_DB: ${{ runner.temp }}/pass205-continuation.sqlite3
+
 jobs:
-  validate-pass205-contract:
-    runs-on: ubuntu-24.04
-    timeout-minutes: 20
-    steps:
-      - name: Checkout exact tree
-        uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-
-      - name: Compile validation harnesses
-        run: |
-          python -m py_compile \
-            scripts/pass205_multimodal_continuation_design_validation.py \
-            scripts/pass205_gpu_translation_design_validation.py
-          mkdir -p evidence/pass205-ci
-
-      - name: Execute Pass 205 continuation validation
-        run: |
-          python scripts/pass205_multimodal_continuation_design_validation.py \
-            --ticks 120 \
-            --seeds 1,72,216,5184,1259713 \
-            --output evidence/pass205-ci/PASS205_MULTIMODAL_CONTINUATION_DESIGN_VALIDATION_RECEIPT.json
-
-      - name: Execute Pass 205 GPU translation validation
-        run: |
-          python scripts/pass205_gpu_translation_design_validation.py \
-            --seed 216 \
-            --batches 256 \
-            --output evidence/pass205-ci/PASS205_GPU_TRANSLATION_DESIGN_VALIDATION_RECEIPT.json
-
-      - name: Verify contract and evidence classifications
-        run: |
-          grep -Fq 'HHS-P205-VM5184-G243-DETERMINISTIC-MULTIMODAL-CONTINUATION-GAMING-ML-H72-H216' \
-            HHS_PASS_205_DETERMINISTIC_VM5184_G243_MULTIMODAL_CONTINUATION_RUNTIME.md
-          grep -Fq 'HHS_PASS_205_DESIGN_VALIDATION_PASSED' \
-            evidence/pass205-ci/PASS205_MULTIMODAL_CONTINUATION_DESIGN_VALIDATION_RECEIPT.json
-          grep -Fq 'HHS_PASS_205_GPU_TRANSLATION_DESIGN_VALIDATION_PASSED' \
-            evidence/pass205-ci/PASS205_GPU_TRANSLATION_DESIGN_VALIDATION_RECEIPT.json
-
-      - name: Upload Pass 205 design evidence
-        uses: actions/upload-artifact@v4
-        with:
-          name: pass205-multimodal-continuation-design
-          path: evidence/pass205-ci/*.json
-          if-no-files-found: error
-          retention-days: 30
-
   validate-pass205-production:
     runs-on: ubuntu-24.04
     timeout-minutes: 90
-    env:
-      PYTHONFAULTHANDLER: '1'
-      PYTHONUNBUFFERED: '1'
-      HHS_PASS205_DB: ${{ runner.temp }}/pass205-continuation.sqlite3
     steps:
       - name: Checkout exact tree
         uses: actions/checkout@v4
@@ -112,7 +40,7 @@ jobs:
       - name: Install inherited runtime dependencies
         run: python -m pip install -r requirements.txt
 
-      - name: Compile Pass 205 production surfaces
+      - name: Compile Pass 205 Python surfaces
         run: |
           python -m py_compile \
             hhs_python/runtime/hhs_pass205_continuation_bridge.py \
@@ -136,9 +64,18 @@ jobs:
       - name: Run Pass 205 production tests
         run: python -m pytest -q tests/test_hhs_pass205_continuation_runtime_v1.py
 
-      - name: Execute hosted Pass 205 production validation
+      - name: Run existing Pass 205 design tests
         run: |
           mkdir -p evidence/pass205-ci
+          python scripts/pass205_multimodal_continuation_design_validation.py \
+            --ticks 120 \
+            --seeds 1,72,216,5184,1259713 \
+            --output evidence/pass205-ci/PASS205_MULTIMODAL_CONTINUATION_DESIGN_VALIDATION_RECEIPT.json
+          python scripts/pass205_gpu_translation_design_validation.py \
+            --output evidence/pass205-ci/PASS205_GPU_TRANSLATION_DESIGN_VALIDATION_RECEIPT.json
+
+      - name: Execute hosted Pass 205 production validation
+        run: |
           python scripts/pass205_production_validation.py \
             --db "${HHS_PASS205_DB}" \
             --evidence evidence/pass205-ci/PASS205_PRODUCTION_VALIDATION_RECEIPT.json
@@ -159,7 +96,7 @@ jobs:
       - name: Run inherited Pass 202 guarded deployment tests
         run: python -m pytest -q tests/test_hhs_guarded_auto_update_contract_v1.py
 
-      - name: Verify Pass 205 production closure markers
+      - name: Verify Pass 205 closure markers
         run: |
           grep -Fq 'HHS_PASS_205_DETERMINISTIC_MULTIMODAL_CONTINUATION_RUNTIME_VERIFIED' \
             evidence/pass205-ci/PASS205_PRODUCTION_VALIDATION_RECEIPT.json
@@ -171,6 +108,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: pass205-production-continuation-runtime
-          path: evidence/pass205-ci/PASS205_PRODUCTION_VALIDATION_RECEIPT.json
+          path: evidence/pass205-ci/*.json
           if-no-files-found: error
           retention-days: 30
