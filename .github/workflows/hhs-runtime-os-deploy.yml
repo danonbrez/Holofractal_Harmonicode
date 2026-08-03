@@ -9,6 +9,7 @@ on:
       - "HHS_PASS_161_AUTHORITY_BINDING.json"
       - "hhs_backend/server.py"
       - "hhs_backend/production_server.py"
+      - "hhs_backend/application_ide_server.py"
       - "hhs_backend/api/installation_routes.py"
       - "hhs_backend/api/litert_lm_assistant_routes.py"
       - "hhs_backend/api/pass166_word2vec_routes.py"
@@ -36,6 +37,7 @@ on:
       - "HHS_PASS_161_AUTHORITY_BINDING.json"
       - "hhs_backend/server.py"
       - "hhs_backend/production_server.py"
+      - "hhs_backend/application_ide_server.py"
       - "hhs_backend/api/installation_routes.py"
       - "hhs_backend/api/litert_lm_assistant_routes.py"
       - "hhs_backend/api/pass166_word2vec_routes.py"
@@ -199,7 +201,7 @@ jobs:
       - name: Install bounded Chromium runtime
         run: timeout 600s python -m playwright install --with-deps chromium
 
-      - name: Browser-verify production server and executable registry
+      - name: Browser-verify deployed application entrypoint and executable registry
         env:
           HHS_DISABLE_C_AUTOBUILD: "1"
           HHS_LITERT_LM_BACKEND: auto
@@ -208,7 +210,7 @@ jobs:
           HHS_PRODUCTION_SMOKE_URL: "http://127.0.0.1:8765"
         run: |
           set -euo pipefail
-          python -m uvicorn hhs_backend.production_server:app \
+          python -m uvicorn hhs_backend.application_ide_server:app \
             --host 127.0.0.1 --port 8765 --workers 1 --log-level info \
             > /tmp/hhs-pass161-production-server.log 2>&1 &
           SERVER_PID=$!
