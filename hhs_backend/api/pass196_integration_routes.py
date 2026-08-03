@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 import asyncio
-from typing import Any, Dict
+from typing import Any, Dict, Mapping
 
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
@@ -58,9 +58,9 @@ def _egress(operation: str, payload: Dict[str, Any]) -> Dict[str, Any]:
     return io_gateway.egress(operation, payload)
 
 
-def _receipt_hash72(authorized_tick: Dict[str, Any]) -> str | None:
-    receipt = authorized_tick.get("receipt") if isinstance(authorized_tick, dict) else None
-    if not isinstance(receipt, dict):
+def _receipt_hash72(authorized_tick: Mapping[str, Any]) -> str | None:
+    receipt = authorized_tick.get("receipt") if isinstance(authorized_tick, Mapping) else None
+    if not isinstance(receipt, Mapping):
         return None
     value = receipt.get("receipt_hash72")
     return value if isinstance(value, str) and value else None
@@ -69,6 +69,46 @@ def _receipt_hash72(authorized_tick: Dict[str, Any]) -> str | None:
 def _project_runtime_graph() -> None:
     packet = runtime_controller.export_multimodal_packet()
     runtime_graph.ingest_runtime_state(packet)
+
+
+def _scan_authorization(source: str) -> Dict[str, Any]:
+    authorized_tick = runtime_controller.authorized_tick(source=source)
+    return {
+        "source": source,
+        "receipt_hash72": _receipt_hash72(authorized_tick),
+        "runtime_step": (
+            authorized_tick.get("runtime", {}).get("step")
+            if isinstance(authorized_tick, Mapping)
+            else None
+        ),
+        "background_worker_grants_mutation_authority": False,
+        "parallel_workers_grant_mutation_authority": False,
+        "vector_projection_grants_source_authority": False,
+    }
+
+
+def _gap_scope_from_scan_result(result: Mapping[str, Any]) -> Dict[str, Any]:
+    """Derive immutable gap scope from the exact manifest returned by this scan."""
+    manifest = result.get("manifest")
+    if not isinstance(manifest, Mapping):
+        raise Pass196Error("completed scan result does not contain its manifest")
+    pass_matrix = manifest.get("pass_matrix")
+    if not isinstance(pass_matrix, list):
+        raise Pass196Error("completed scan manifest does not contain a pass matrix")
+    unresolved = [
+        dict(item)
+        for item in pass_matrix
+        if isinstance(item, Mapping) and item.get("state") != "INTEGRATED"
+    ]
+    maximum = int(
+        result.get("maximum_discovered_pass")
+        or manifest.get("maximum_discovered_pass")
+        or 0
+    )
+    return partition_integration_gaps(
+        unresolved,
+        maximum_discovered_pass=maximum,
+    )
 
 
 def _background_scan_runner(
@@ -80,6 +120,7 @@ def _background_scan_runner(
         vm81_receipt_hash72=vm81_receipt_hash72,
         persist_vector=persist_vector,
     )
+    result["gap_scope"] = _gap_scope_from_scan_result(result)
     _project_runtime_graph()
     return result
 
@@ -94,6 +135,18 @@ def _gap_report() -> Dict[str, Any]:
     return result
 
 
+def _result_scope(result: Mapping[str, Any]) -> Mapping[str, Any]:
+    direct = result.get("gap_scope") or result.get("scope")
+    if isinstance(direct, Mapping):
+        return direct
+    nested = result.get("result")
+    if isinstance(nested, Mapping):
+        nested_scope = nested.get("gap_scope")
+        if isinstance(nested_scope, Mapping):
+            return nested_scope
+    return {}
+
+
 PASS196_SCAN_JOBS = Pass196ScanJobManager(
     _background_scan_runner,
     state_root=PASS196_INTEGRATED_ENVIRONMENT.state_root,
@@ -101,25 +154,15 @@ PASS196_SCAN_JOBS = Pass196ScanJobManager(
 
 
 async def _run_scan(*, persist_vector: bool, source: str) -> Dict[str, Any]:
-    authorized_tick = runtime_controller.authorized_tick(source=source)
-    receipt_hash72 = _receipt_hash72(authorized_tick)
+    authorization = _scan_authorization(source)
     result = await asyncio.to_thread(
         PASS196_INTEGRATED_ENVIRONMENT.scan,
-        vm81_receipt_hash72=receipt_hash72,
+        vm81_receipt_hash72=authorization.get("receipt_hash72"),
         persist_vector=persist_vector,
     )
+    result["gap_scope"] = _gap_scope_from_scan_result(result)
     _project_runtime_graph()
-    result["vm81_authorized_tick"] = {
-        "source": source,
-        "receipt_hash72": receipt_hash72,
-        "runtime_step": (
-            authorized_tick.get("runtime", {}).get("step")
-            if isinstance(authorized_tick, dict)
-            else None
-        ),
-        "parallel_workers_grant_mutation_authority": False,
-        "vector_projection_grants_source_authority": False,
-    }
+    result["vm81_authorized_tick"] = authorization
     return result
 
 
@@ -175,7 +218,6 @@ async def integration_scan(request: IntegrationScanRequest) -> Dict[str, Any]:
                 "reason": str(exc),
             },
         ) from exc
-    result["gap_scope"] = _gap_report()["scope"]
     result["io"] = {
         "ingress": ingress,
         "egress": _egress(
@@ -203,19 +245,21 @@ def integration_scan_job_submit(request: IntegrationScanRequest) -> Dict[str, An
         operation,
         {"method": "POST", "persist_vector": request.persist_vector},
     )
-    authorized_tick = runtime_controller.authorized_tick(source=operation)
-    receipt_hash72 = _receipt_hash72(authorized_tick)
-    job = PASS196_SCAN_JOBS.submit(
-        persist_vector=request.persist_vector,
-        vm81_receipt_hash72=receipt_hash72,
-        source=operation,
-    )
-    job["vm81_authorized_tick"] = {
-        "source": operation,
-        "receipt_hash72": receipt_hash72,
-        "runtime_step": authorized_tick.get("runtime", {}).get("step"),
-        "background_worker_grants_mutation_authority": False,
-    }
+    try:
+        job = PASS196_SCAN_JOBS.submit(
+            persist_vector=request.persist_vector,
+            source=operation,
+            authorization_factory=lambda: _scan_authorization(operation),
+        )
+    except (Pass196ScanJobError, RuntimeError) as exc:
+        raise HTTPException(
+            status_code=503,
+            detail={
+                "schema": "HHS_PASS_196_INTEGRATION_SCAN_JOB_SUBMISSION_FAILURE_V1",
+                "ok": False,
+                "reason": str(exc),
+            },
+        ) from exc
     job["poll_api"] = f"/api/runtime/integration/scan/jobs/{job['job_id']}"
     job["io"] = {
         "ingress": ingress,
@@ -225,6 +269,9 @@ def integration_scan_job_submit(request: IntegrationScanRequest) -> Dict[str, An
                 "job_id": job.get("job_id"),
                 "state": job.get("state"),
                 "deduplicated": job.get("deduplicated"),
+                "receipt_hash72": (job.get("vm81_authorized_tick") or {}).get(
+                    "receipt_hash72"
+                ),
             },
         ),
     }
@@ -275,13 +322,17 @@ def integration_scan_job_status(job_id: str) -> Dict[str, Any]:
                 "reason": str(exc),
             },
         ) from exc
-    if job.get("state") == "SUCCEEDED":
-        job["gap_scope"] = _gap_report()["scope"]
     job["io"] = {
         "ingress": ingress,
         "egress": _egress(
             operation,
-            {"job_id": job.get("job_id"), "state": job.get("state")},
+            {
+                "job_id": job.get("job_id"),
+                "state": job.get("state"),
+                "manifest_hash72": (job.get("result") or {}).get(
+                    "manifest_hash72"
+                ),
+            },
         ),
     }
     return _contract_response(
@@ -390,13 +441,11 @@ async def integration_tool_invoke(request: IntegrationToolInvokeRequest) -> Dict
                 persist_vector=bool(request.arguments.get("persist_vector", True)),
                 source=operation,
             )
-            result["gap_scope"] = _gap_report()["scope"]
         elif request.tool == "integration.scan.submit":
-            authorized_tick = runtime_controller.authorized_tick(source=operation)
             result = PASS196_SCAN_JOBS.submit(
                 persist_vector=bool(request.arguments.get("persist_vector", True)),
-                vm81_receipt_hash72=_receipt_hash72(authorized_tick),
                 source=operation,
+                authorization_factory=lambda: _scan_authorization(operation),
             )
         elif request.tool == "integration.scan.latest":
             result = PASS196_SCAN_JOBS.latest()
@@ -410,13 +459,14 @@ async def integration_tool_invoke(request: IntegrationToolInvokeRequest) -> Dict
             result = _gap_report()
         else:
             raise Pass196Error(f"unknown integration tool: {request.tool}")
-    except (Pass196Error, Pass196ScanJobError) as exc:
+    except (Pass196Error, Pass196ScanJobError, RuntimeError) as exc:
         raise HTTPException(status_code=409, detail=str(exc)) from exc
     result["tool_invocation"] = {
         "schema": "HHS_PASS_196_API_TOOL_INVOCATION_V1",
         "tool": request.tool,
         "tool_server_is_authority": False,
     }
+    scope = _result_scope(result)
     result["io"] = {
         "ingress": ingress,
         "egress": _egress(
@@ -427,9 +477,7 @@ async def integration_tool_invoke(request: IntegrationToolInvokeRequest) -> Dict
                 "manifest_hash72": result.get("manifest_hash72"),
                 "job_id": result.get("job_id"),
                 "job_state": result.get("state"),
-                "current_frontier_closed": (result.get("scope") or {}).get(
-                    "current_frontier_closed"
-                ),
+                "current_frontier_closed": scope.get("current_frontier_closed"),
             },
         ),
     }
