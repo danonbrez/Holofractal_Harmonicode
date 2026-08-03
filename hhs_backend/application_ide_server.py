@@ -4,13 +4,18 @@ All inherited Pass 174 APIs, VM81/Hash216 authorities, WebSockets, readiness
 semantics, assistant routes, multimodal ingress, compiler services, and legacy
 contracts remain registered by :mod:`hhs_backend.pass174_server`. Pass 175 adds
 its VM5184 × G243 processor, encrypted terminal hydration, firmware, governed
-devices, native-kernel evidence, and WebSocket surfaces. Pass 201 then federates
-every registered API router before all fallbacks and static mounts.
+devices, native-kernel evidence, and WebSocket surfaces. Pass 201 federates
+every registered API router before all fallbacks and static mounts. Pass 203
+adds the hydrated-function mainframe and high-fidelity creative runtime. Pass
+204 upgrades every indexed declaration to an executable disposable-sandbox
+binding and exposes the safe open cloud-computer state/recall surface.
 
 * ``/`` serves the complete Holofractal Harmonizer application IDE.
 * ``/runtime-console/`` preserves the prior Pass 174 diagnostic console.
 * ``/health`` and ``/api/health`` provide bounded, dependency-light liveness.
 * ``/api/public/*`` catalogs every public route, service, and pass module.
+* ``/api/runtime/mainframe/*`` exposes universal executable declarations.
+* ``/api/runtime/open-cloud/*`` exposes sandbox policy, closure, jobs, and recall.
 
 Static mounts are installed last so they cannot shadow any API or WebSocket.
 """
@@ -31,15 +36,15 @@ from hhs_backend.public_ide_bootstrap import render_public_ide_index
 from hhs_backend.runtime.hhs_pass201_public_api_federation import register_public_api_federation
 
 app = pass174.app
-app.title = "HHS Full Multimodal Application IDE"
-app.version = "4.4.0"
+app.title = "HHS Safe Open Cloud Computer IDE"
+app.version = "4.5.0"
 app.description = (
-    "Full integrated development environment for real web applications, games, "
-    "calculators, documents, audio, video, multimodal projects, HARMONICODE, "
-    "multi-target compilation, VM81 execution, Pass 175 Hash216-hydrated "
-    "VM5184 × G243 virtual instruction processing, firmware and governed devices, "
-    "repository lineage, assistant-led development, preview, testing, egress, "
-    "and complete public API federation for registered services and pass modules."
+    "Full integrated development environment and safe open cloud computer for real web applications, "
+    "games, calculators, documents, audio, video, multimodal projects, HARMONICODE, multi-target "
+    "compilation, VM81 execution, Hash216-hydrated VM5184 × G243 virtual instruction processing, "
+    "firmware and governed devices, repository lineage, assistant-led development, preview, testing, "
+    "egress, complete public API federation, universal executable declarations, disposable remote "
+    "sandboxes, durable jobs, layered state snapshots, and capability-free session recall."
 )
 
 FULL_IDE_ROOT = production.VISUAL_ROOT
@@ -95,18 +100,21 @@ async def application_ide_liveness() -> dict[str, Any]:
     boot = dict(pass174.PASS174_BOOT_STATE)
     authority_ready = bool(boot.get("authority_ready") and boot.get("ready"))
     return {
-        "schema": "HHS_FULL_APPLICATION_IDE_LIVENESS_V1",
+        "schema": "HHS_FULL_APPLICATION_IDE_LIVENESS_V2",
         "ok": True,
-        "status": "HHS_IDE_SERVICE_REACHABLE",
+        "status": "HHS_SAFE_OPEN_CLOUD_IDE_SERVICE_REACHABLE",
         "service_available": True,
         "authority_ready": authority_ready,
         "runtime_ready": authority_ready,
         "assistant_ready": False,
         "assistant_health_requires_product_probe": True,
         "frontend_runtime_authority": False,
-        "public_interface": "HHS_FULL_MULTIMODAL_APPLICATION_IDE",
+        "public_interface": "HHS_SAFE_OPEN_CLOUD_COMPUTER_IDE",
         "public_api": "/api/public",
         "public_api_catalog": "/api/public/catalog",
+        "mainframe": "/api/runtime/mainframe/status",
+        "open_cloud": "/api/runtime/open-cloud/status",
+        "open_cloud_closure": "/api/runtime/open-cloud/closure",
         "public_api_registration_closed": PASS201_PUBLIC_API_REGISTRATION.get("closed", False),
         "pass174_boot": boot,
         "routes": {
@@ -116,6 +124,9 @@ async def application_ide_liveness() -> dict[str, Any]:
             "pass175_processor": _has_route_prefix("/api/v1/pass175/status"),
             "pass175_terminal": _has_route_prefix("/api/v1/pass175/terminal/status"),
             "public_api": _has_route_prefix("/api/public/status"),
+            "mainframe": _has_route_prefix("/api/runtime/mainframe/status"),
+            "open_cloud": _has_route_prefix("/api/runtime/open-cloud/status"),
+            "open_cloud_closure": _has_route_prefix("/api/runtime/open-cloud/closure"),
         },
         "remediation": (
             None
@@ -177,7 +188,7 @@ else:
     })
 
 pass174.PASS174_BOOT_STATE.update({
-    "public_interface": "HHS_FULL_MULTIMODAL_APPLICATION_IDE",
+    "public_interface": "HHS_SAFE_OPEN_CLOUD_COMPUTER_IDE",
     "public_asset_root": str(FULL_IDE_ROOT),
     "runtime_console_root": str(RUNTIME_CONSOLE_ROOT),
     "runtime_console_preserved": RUNTIME_CONSOLE_ROOT.is_dir(),
@@ -189,10 +200,13 @@ pass174.PASS174_BOOT_STATE.update({
     "pass175_terminal_websocket_routes": _has_route_prefix("/api/v1/pass175/terminal/ws/events"),
     "pass201_public_api_federation": _has_route_prefix("/api/public/status"),
     "pass201_registration_closed": PASS201_PUBLIC_API_REGISTRATION.get("closed", False),
-    "api_fallback_deferred_for_pass175_and_pass201": bool(_deferred_api_fallback_routes),
+    "pass203_mainframe_routes": _has_route_prefix("/api/runtime/mainframe/status"),
+    "pass204_open_cloud_routes": _has_route_prefix("/api/runtime/open-cloud/status"),
+    "pass204_executable_declaration_closure": _has_route_prefix("/api/runtime/open-cloud/closure"),
+    "api_fallback_deferred_for_integrated_passes": bool(_deferred_api_fallback_routes),
     "lightweight_health_route": "/health",
     "lightweight_api_health_route": "/api/health",
     "inline_public_boot": "HHS_INLINE_PUBLIC_BOOT_V2",
     "legacy_parser_module_entries_disabled": True,
-    "external_vercel_quota_is_not_pass201_acceptance_gate": True,
+    "external_vercel_quota_is_not_acceptance_gate": True,
 })
