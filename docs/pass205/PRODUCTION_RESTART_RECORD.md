@@ -6,9 +6,10 @@
 - Base commit: `5143fc9cc57a9e8da7dfc37e0a4d0b533c5b7172`
 - Branch: `agent/pass205-production-runtime`
 - Merge target: `main`
+- Pull request: `#149`
 - Parent pass: Pass 204
 - Design contract: already merged on authoritative `main`
-- Current boundary: implementation complete locally; repository CI and authoritative merge pending
+- Current boundary: production implementation published; design CI green; expanded production and inherited CI pending
 
 ## Changed files
 
@@ -23,6 +24,7 @@
 - `docs/pass205/PRODUCTION_IMPLEMENTATION.md`
 - `docs/pass205/PRODUCTION_RESTART_RECORD.md`
 - `.github/workflows/pass205-production-runtime.yml`
+- `.github/workflows/pass205-multimodal-continuation-contract.yml`
 
 ## Local validations completed
 
@@ -35,17 +37,26 @@ branch, replay, inverse continuation, retrieval, hydration, and tamper rejection
 accelerator SoA/CSR packing and CPU equality oracle passed
 ```
 
+## Repository validation state
+
+```text
+PR #149 open and mergeable
+Pass 205 design workflow: PASS
+Production workflow: added on branch
+Trusted Pass 205 workflow: expanded with production and inherited gates
+Authoritative merge: pending production CI
+Post-merge verification: pending
+```
+
 Local validation intentionally does not claim hosted closure. Hosted route federation, OpenAPI exposure, inherited Pass 201–204 validation, CI evidence upload, merge, and post-merge verification remain required.
 
 ## Exact next action
 
-1. Commit files to `agent/pass205-production-runtime`.
-2. Open a pull request to `main`.
-3. Run `.github/workflows/pass205-production-runtime.yml`.
-4. Repair only failed dependency-scoped checks.
-5. Merge after Pass 205 and inherited checks are green.
-6. Verify the exact Pass 205 routes and receipt on authoritative `main`.
-7. Update the Pass 205 contract status and closure receipt only after post-merge evidence exists.
+1. Run the expanded trusted Pass 205 workflow against the latest PR merge tree.
+2. Repair only failed dependency-scoped checks.
+3. Merge after Pass 205 and inherited checks are green.
+4. Verify the exact Pass 205 routes and receipt on authoritative `main`.
+5. Update the Pass 205 contract status and closure receipt only after post-merge evidence exists.
 
 ## Exclusions
 
