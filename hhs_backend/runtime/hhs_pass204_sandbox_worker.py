@@ -37,15 +37,29 @@ def _production_audit_boundary(repo_root: Path, sandbox_root: Path) -> None:
     def readable(path: Path) -> bool:
         return _inside(path, sandbox_root) or any(_inside(path, root) for root in immutable_roots)
 
+    def approved_library(value: Any) -> bool:
+        name = getattr(value, "_name", value)
+        if name in (None, "", 0):
+            return False
+        try:
+            path = Path(os.fsdecode(name))
+        except (TypeError, ValueError):
+            return False
+        if not path.is_absolute():
+            path = Path.cwd() / path
+        return readable(path)
+
     def hook(event: str, args: tuple[Any, ...]) -> None:
         if event in {"socket.connect", "socket.bind", "socket.listen"}:
             raise _v1.SandboxBoundaryError("network operation requires a mediated durable job")
         if event in {"os.system", "subprocess.Popen", "pty.spawn"}:
             raise _v1.SandboxBoundaryError("host process creation is not exposed to remote sessions")
-        if event in {"ctypes.dlopen", "ctypes.dlsym"}:
-            target = Path(str(args[0])) if args else Path("")
-            if not readable(target):
+        if event == "ctypes.dlopen":
+            if not args or not approved_library(args[0]):
                 raise _v1.SandboxBoundaryError("native libraries must be immutable-runtime or sandbox scoped")
+        if event in {"ctypes.dlsym", "ctypes.dlsym/handle"}:
+            if not args or not approved_library(args[0]):
+                raise _v1.SandboxBoundaryError("native symbol lookup requires an approved immutable library")
         if event == "open" and args:
             raw_path = args[0]
             if isinstance(raw_path, int):
