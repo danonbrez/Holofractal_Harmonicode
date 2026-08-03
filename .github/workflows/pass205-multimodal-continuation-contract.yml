@@ -18,6 +18,25 @@ on:
       - 'evidence/pass205/**'
       - '.github/workflows/pass205-multimodal-continuation-contract.yml'
       - '.github/workflows/pass205-production-runtime.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - 'HHS_PASS_205_DETERMINISTIC_VM5184_G243_MULTIMODAL_CONTINUATION_RUNTIME.md'
+      - 'hhs_runtime/c/hhs_pass205_continuation.h'
+      - 'hhs_runtime/c/hhs_pass205_continuation.c'
+      - 'hhs_python/runtime/hhs_pass205_continuation_bridge.py'
+      - 'hhs_backend/runtime/hhs_pass205_continuation_runtime_v1.py'
+      - 'hhs_backend/runtime/hhs_pass205_accelerator_translation_v1.py'
+      - 'hhs_backend/api/pass205_continuation_routes.py'
+      - 'tests/test_hhs_pass205_continuation_runtime_v1.py'
+      - 'scripts/pass205_multimodal_continuation_design_validation.py'
+      - 'scripts/pass205_gpu_translation_design_validation.py'
+      - 'scripts/pass205_production_validation.py'
+      - 'docs/pass205/**'
+      - 'evidence/pass205/**'
+      - '.github/workflows/pass205-multimodal-continuation-contract.yml'
+      - '.github/workflows/pass205-production-runtime.yml'
   workflow_dispatch:
 
 permissions:
