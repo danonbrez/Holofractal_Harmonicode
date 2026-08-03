@@ -27,6 +27,14 @@
 14. `e34620f1b700e8e346b5072fa6ef4fe3037af90b` — bound public workflow authority/session projections, add a no-full-diagnostics and sub-64-KiB regression, and wire it into the trusted Pass 205 workflow.
 15. `59875b1aeeb220bde986bc9cdf56c04ba0233cd5` — start the canonical public application before Pass 196–203 projection modules and defer those modules until receipt closure.
 16. `9a5f4ae8955bc48d6ae90d8de14ffb43e235c74e` — regress receipt-first startup ordering, closed-authority prerequisites, inherited projection order, and burst-free sequential imports.
+17. `ba70c804f1bab6d5535a35f342b8d6c0ebaf30ed` — retain inherited Pass 196–203 registration witnesses without restoring pre-receipt execution.
+18. `3e8c51cd219d81221afcf76841933c38a21983f8` — run Pass 196 validation through the repository module path.
+19. `b8f8f59e0a82739f77a784ba9209bedeaa30d4fb` — preserve the Pass 161 direct public-boot source contract while retaining deferred projection loading.
+20. `7115fbe02f22e6bd72d7b41635509726f9fea569` — serialize application experience, interactive visual IDE, browser registry, and production integration so projections cannot block first interaction.
+21. `8d5fc34ca11c0645a4e33cd54fe4534db824f83c` — regress visual interaction before browser and production projections.
+22. `b8c5f140bf8b44634a78e80fc7add6ff6b46a821` — add an immutable deep-snapshot catalog identity guard for Pass 203.
+23. `0bbfa1af9f6d99f669a731292609893ea6f8cd39` — install the Pass 203 catalog guard before public API federation.
+24. `a95e7ef43586ed351c698afebd4cf3aa93ebb49a` and `7710d0f1162c39fcb1754ce81ecb4fefb26da3ee` — add focused and core-suite regressions for caller-isolated descriptors and atomic catalog refresh identity.
 
 ## Implemented repair scope
 
@@ -44,9 +52,14 @@
 - Serve runtime authority status from the last committed receipt/state emission instead of synchronously traversing mutable runtime-controller state.
 - Bound public authority and workspace-session workflow projections so they never serialize expanding cognition or full-emission diagnostics.
 - Preserve strict production acceptance: the browser still requires a real committed receipt and runtime-state Hash72 before classifying the runtime authority as online.
-- Start the application, visual IDE, and production-integration graph before non-critical Pass 196–203 calibration, optimization, federation, and mainframe projections.
-- Require production integration `phase=READY`, an online runtime authority, and a populated service registry before loading those inherited projections.
-- Load inherited projections in deterministic order with bounded spacing to prevent a startup burst of long-running status reads.
+- Start the application and visual IDE before non-critical browser-registry, production-service, calibration, optimization, federation, and mainframe projections.
+- Await the actual `HHSVisualIDEBoot` INTERACTIVE promise before constructing the browser object registry.
+- Await browser-registry readiness before starting production service projection.
+- Require production integration `phase=READY`, an online runtime authority, and a populated service registry before loading inherited Pass 196–203 projections.
+- Load inherited projections in deterministic order with bounded spacing to prevent startup bursts of long-running status reads.
+- Deep-snapshot the hosted Pass 203 catalog and return isolated descriptor copies so callers cannot mutate a previously hashed catalog.
+- Atomically advance the Pass 203 catalog generation and hash only through explicit refresh.
+- Install the Pass 203 identity guard before API router federation, keeping hosted and direct singleton reads on one catalog identity.
 - Exercise the explicit preview-tab activation path before inspecting generated application frames.
 - Preserve executable starter JavaScript after HTML readability normalization.
 - Exercise the asynchronously initialized Assistant through its supported drawer launcher and close control.
@@ -60,18 +73,25 @@
 - `hhs_backend/runtime/hhs_pass205_retrieval_order_v1.py`
 - `hhs_backend/runtime/live_kernel_event_bridge_v1.py`
 - `hhs_backend/runtime/live_fastapi_workflow_v1.py`
+- `hhs_backend/runtime/hhs_pass203_catalog_identity_guard_v1.py`
 - `hhs_backend/api/a0_pass205_transport_bootstrap.py`
 - `hhs_backend/api/a_pass205_governed_bootstrap.py`
+- `hhs_backend/api/a_pass203_catalog_identity_bootstrap.py`
 - `applications/holofractal_harmonizer/src/application-templates-runtime.mjs`
 - `applications/holofractal_harmonizer/src/production-startup-coordinator.mjs`
+- `applications/holofractal_harmonizer/src/public-boot.mjs`
 - `applications/holofractal_harmonizer/tests/application.studio.test.mjs`
 - `applications/holofractal_harmonizer/tests/production.startup.coordinator.test.mjs`
+- `applications/holofractal_harmonizer/tests/public.boot.ordering.test.mjs`
 - `applications/holofractal_harmonizer/ux_lab/full_application_smoke.py`
 - `deployment/digitalocean/pass205_state/install.sh`
 - `deployment/digitalocean/pass205_state/README.md`
+- `tests/test_hhs_pass203_catalog_identity_guard_v1.py`
+- `tests/test_hhs_pass203_hydrated_mainframe_v1.py`
 - `bin/post_compile`
+- `.github/workflows/pass196-integrated-environment.yml`
 - `.github/workflows/pass205-production-runtime.yml`
-- focused native-freshness, deployment, governed-continuation, transport/retrieval, and bounded-authority test modules.
+- focused native-freshness, deployment, governed-continuation, transport/retrieval, bounded-authority, and catalog-identity tests.
 
 ## Validation gate
 
@@ -86,25 +106,27 @@ The terminal Pass 205 gate requires:
 - hosted production validation and evidence generation;
 - hosted public federation binding checks;
 - inherited Pass 201–204 regression tests;
-- all Holofractal Harmonizer Node tests, including receipt-first startup ordering;
+- all Holofractal Harmonizer Node tests, including receipt-first and visual-interaction-first startup ordering;
 - full visual application browser acceptance through the current preview-tab and Assistant-drawer workflows;
 - production receipt-closure acceptance while background kernel continuation work is active;
 - Pass 159, both Pass 161 architecture/finalization gates, Pass 176 stabilization, HTTPS/mobile closure, and workflow-first usability evidence.
 
 ## Current validation state
 
-- Focused Pass 205 authority, persistence, replay, transport, retrieval, and bounded public-status tests are green on the repair branch.
-- Pass 159, both Pass 161 terminal architectures, and both workflow-first usability A/B runs were green on the prior bounded-status head.
-- The full-application sequence verified Pong, calculator, puzzle, document, audio, and video template execution after repairing starter-script inlining; the Assistant, ZIP, and runtime-console continuation is included in the terminal rerun.
-- The original production stall from synchronous mutable runtime traversal is repaired and its regression is green.
-- The next production log isolated the remaining pre-receipt contention to statically imported Pass 196–203 projection modules issuing calibration, optimization, canary, active, and public-federation status reads before canonical public boot.
-- The current head removes those projections from the critical receipt path and has queued the full inherited and browser validation matrix.
+- Focused Pass 205 authority, persistence, replay, transport, retrieval, and bounded public-status tests were green on the prior repair head.
+- Pass 159, both Pass 161 terminal architectures, Passes 196–201, Pass 200A/B/C, HTTPS/mobile closure, and both workflow-first usability A/B runs were green on `b8f8f59e0a82739f77a784ba9209bedeaa30d4fb`.
+- The remaining browser failure on that head reached DOM content and returned the initial health, authority, product-health, and Pass 175 responses, but did not expose `HHSPass176` before the outer smoke timeout.
+- Server request ordering showed browser-registry and production-integration projections began concurrently with the visual IDE. The current repair commits the visual IDE's real INTERACTIVE promise before either projection begins.
+- The prior Pass 203 failure was a deterministic mismatch between the hosted status catalog hash and the direct singleton catalog hash after public startup. The current repair installs a deep immutable snapshot guard before federation and retains the original equality assertion.
+- Exact-head repository-native workflows were queued but had not started when this restart record was committed; no green browser or Pass 203 terminal claim is made for the new tranche.
 
 ## Remaining work
 
-1. Repair only dependency-scoped failures reported against the current exact head.
-2. Confirm the hosted application closes runtime authority from a real committed receipt and exposes the governed singleton and lossless transport route.
-3. Update PR #152 with terminal workflow and evidence identities.
-4. Mark PR #152 ready and merge only after the terminal required checks are green.
-5. Verify authoritative `main` and DigitalOcean guarded deployment receipts.
-6. Physical GPU execution remains a separate validation boundary and is not claimed by this repair.
+1. Run the exact-head Pass 203 core and production validation, including hosted/direct catalog hash equality.
+2. Run exact-head Pass 176, Production Harmonizer, and Full Application IDE Chromium acceptance.
+3. Repair only dependency-scoped failures reported by those exact-head checks.
+4. Confirm the hosted application closes runtime authority from a real committed receipt and exposes the governed singleton and lossless transport route.
+5. Update PR #152 with terminal workflow and evidence identities.
+6. Mark PR #152 ready and merge only after the terminal required checks are green.
+7. Verify authoritative `main` and DigitalOcean guarded deployment receipts.
+8. Physical GPU execution remains a separate validation boundary and is not claimed by this repair.
