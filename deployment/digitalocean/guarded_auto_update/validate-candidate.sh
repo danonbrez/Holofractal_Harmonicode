@@ -81,12 +81,12 @@ fi
 
 if [[ -f scripts/pass205_production_validation.py ]]; then
   rm -f "$PASS205_DB" "$PASS205_DB-wal" "$PASS205_DB-shm" "$PASS205_EVIDENCE"
-  HHS_PASS205_DB="$PASS205_DB" run_stage \
+  run_stage \
     "Pass 205 deterministic production receipt" \
+    env PYTHONPATH="$ROOT" HHS_PASS205_DB="$PASS205_DB" \
     "$PYTHON" scripts/pass205_production_validation.py \
       --db "$PASS205_DB" \
-      --evidence "$PASS205_EVIDENCE" \
-      --skip-hosted
+      --evidence "$PASS205_EVIDENCE"
   grep -Fq 'HHS_PASS_205_DETERMINISTIC_MULTIMODAL_CONTINUATION_RUNTIME_VERIFIED' "$PASS205_EVIDENCE"
   grep -Fq '1259712' "$PASS205_EVIDENCE"
 fi
