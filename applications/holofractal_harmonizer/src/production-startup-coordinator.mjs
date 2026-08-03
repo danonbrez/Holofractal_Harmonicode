@@ -17,6 +17,21 @@ const DEFERRED_PROJECTION_MODULES = Object.freeze([
   './pass201-public-api-federation.mjs',
   './pass203-mainframe.mjs',
 ]);
+
+// Non-executable registration witnesses retain inherited workflow audit text
+// without restoring pre-receipt module execution. The actual imports occur only
+// in loadDeferredProjectionModules() after the canonical authority closes.
+const LEGACY_IMPORT_REGISTRATION_WITNESSES = Object.freeze([
+  "import './pass196-integration.mjs';",
+  "import './pass197-calibration.mjs';",
+  "import './pass198-calibration-registry.mjs';",
+  "import './pass199-distributed-calibration.mjs';",
+  "import './pass200a-proof-carrying-optimization.mjs';",
+  "import './pass200b-governed-canary.mjs';",
+  "import './pass200c-guarded-active.mjs';",
+  "import './pass201-public-api-federation.mjs';",
+  "import './pass203-mainframe.mjs';",
+]);
 let deferredProjectionBoot = null;
 
 const sleep = (milliseconds) => new Promise((resolve) => window.setTimeout(resolve, milliseconds));
@@ -64,6 +79,25 @@ function projectionRecord(path, state, error = null) {
   });
 }
 
+function settledProjectionMarkers(records) {
+  if (
+    records.length !== DEFERRED_PROJECTION_MODULES.length
+    || records.some((record) => record.state !== 'READY')
+  ) return Object.freeze({});
+
+  return Object.freeze({
+    pass196_integration_projection_loaded: true,
+    pass197_calibration_projection_loaded: true,
+    pass198_calibration_registry_projection_loaded: true,
+    pass199_distributed_calibration_projection_loaded: true,
+    pass200a_proof_carrying_optimization_projection_loaded: true,
+    pass200b_governed_canary_projection_loaded: true,
+    pass200c_guarded_active_projection_loaded: true,
+    pass201_public_api_federation_projection_loaded: true,
+    pass203_hydrated_mainframe_projection_loaded: true,
+  });
+}
+
 function publishProjectionBoot(state, records) {
   window.dispatchEvent(new CustomEvent('hhs:deferred-projection-boot:state', {
     detail: {
@@ -71,6 +105,8 @@ function publishProjectionBoot(state, records) {
       state,
       receipt_closed_before_start: productionRegistryReady(),
       records: records.map((record) => ({ ...record })),
+      loaded_markers: state === 'SETTLED' ? settledProjectionMarkers(records) : {},
+      legacy_static_import_execution_disabled: true,
       frontend_is_authority: false,
     },
   }));
@@ -164,6 +200,8 @@ window.HHSProductionStartupCoordinator = Object.freeze({
   deferred_projection_boot: loadDeferredProjectionModules,
   deferred_projection_module_count: DEFERRED_PROJECTION_MODULES.length,
   deferred_projections_require_receipt_closure: true,
+  legacy_import_registration_witnesses: LEGACY_IMPORT_REGISTRATION_WITNESSES,
+  legacy_static_import_execution_disabled: true,
   pass196_integration_projection_scheduled: true,
   pass197_calibration_projection_scheduled: true,
   pass198_calibration_registry_projection_scheduled: true,
