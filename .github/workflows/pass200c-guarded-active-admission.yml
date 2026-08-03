@@ -51,7 +51,7 @@ jobs:
 
       - name: Execute production proof, canary evidence, active lease, exhaustion, and rollback
         run: |
-          python scripts/pass200c_production_validation.py \
+          PYTHONPATH="$PWD" python scripts/pass200c_production_validation.py \
             --state-root .hhs/pass200c-ci \
             --evidence evidence/pass200c-ci/PASS200C_VALIDATION_RECEIPT.json
 
