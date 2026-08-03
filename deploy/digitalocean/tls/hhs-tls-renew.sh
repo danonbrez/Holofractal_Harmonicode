@@ -36,13 +36,27 @@ fi
 renew_window_seconds=$((HHS_TLS_RENEW_BEFORE_DAYS * 86400))
 minimum_valid_seconds=$((HHS_TLS_MINIMUM_VALID_DAYS * 86400))
 
+is_ipv6_identity() {
+  [[ "${HHS_TLS_HOST}" == *:* ]]
+}
+
 is_ip_identity() {
-  [[ "${HHS_TLS_HOST}" == *:* || "${HHS_TLS_HOST}" =~ ^([0-9]{1,3}\.){3}[0-9]{1,3}$ ]]
+  is_ipv6_identity || [[ "${HHS_TLS_HOST}" =~ ^([0-9]{1,3}\.){3}[0-9]{1,3}$ ]]
+}
+
+connect_endpoint() {
+  if is_ipv6_identity; then
+    printf '[%s]:%s' "${HHS_TLS_HOST}" "${HHS_TLS_PORT}"
+  else
+    printf '%s:%s' "${HHS_TLS_HOST}" "${HHS_TLS_PORT}"
+  fi
 }
 
 certificate_pem() {
+  local endpoint
+  endpoint="$(connect_endpoint)"
   local -a verify_args=(
-    -connect "${HHS_TLS_HOST}:${HHS_TLS_PORT}"
+    -connect "${endpoint}"
     -showcerts
     -verify_return_error
     -verify_quiet
