@@ -1,6 +1,7 @@
 """Pass 204 safe open cloud computer public API."""
 from __future__ import annotations
 
+import os
 from typing import Any, Dict
 
 from fastapi import APIRouter, HTTPException
@@ -28,12 +29,17 @@ router = APIRouter(
 
 PASS204_MAINFRAME.configure_authority(lambda source: runtime_controller.authorized_tick(source=source))
 
-# Upgrade the inherited Pass 203 endpoints in place. Their request handlers
-# resolve these module globals at call time, so catalog, invoke, plans, replay,
-# jobs, and the existing visual studio all use Pass 204 without a forked API.
-inherited_mainframe_routes.PASS203_MAINFRAME = PASS204_MAINFRAME
-inherited_mainframe_routes.CONTRACT = CONTRACT
-inherited_mainframe_routes.CLASSIFICATION = CLASSIFICATION
+# Production upgrades the inherited Pass 203 endpoints in place. A validation-
+# only environment switch permits an exact replay of the prior hosted contract
+# in a fresh process; it is not a public runtime parameter and is never exposed
+# through an API or persisted in a session snapshot.
+PASS204_MAINFRAME_UPGRADE_ENABLED = os.environ.get(
+    "HHS_PASS204_DISABLE_MAINFRAME_UPGRADE", ""
+).strip().lower() not in {"1", "true", "yes", "on"}
+if PASS204_MAINFRAME_UPGRADE_ENABLED:
+    inherited_mainframe_routes.PASS203_MAINFRAME = PASS204_MAINFRAME
+    inherited_mainframe_routes.CONTRACT = CONTRACT
+    inherited_mainframe_routes.CLASSIFICATION = CLASSIFICATION
 
 
 class RecallRequest(BaseModel):
@@ -98,6 +104,7 @@ def open_cloud_policy() -> Dict[str, Any]:
         "policy_is_read_only": True,
         "policy_mutation_endpoint": None,
         "capabilities_restored_on_recall": False,
+        "mainframe_upgrade_enabled": PASS204_MAINFRAME_UPGRADE_ENABLED,
     }
     return _contract_response(f"{OPEN_CLOUD_PREFIX}/policy", "GET", result)
 
@@ -119,6 +126,7 @@ def open_cloud_closure() -> Dict[str, Any]:
         "valid_call_outcomes": ["COMPLETED", "ACCEPTED", "CONTINUATION_REQUIRED"],
         "valid_call_http_error": False,
         "capabilities_restored_on_recall": False,
+        "mainframe_upgrade_enabled": PASS204_MAINFRAME_UPGRADE_ENABLED,
     }
     return _contract_response(f"{OPEN_CLOUD_PREFIX}/closure", "GET", result)
 
