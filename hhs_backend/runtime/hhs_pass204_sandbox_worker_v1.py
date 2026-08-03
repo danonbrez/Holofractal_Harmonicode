@@ -3,10 +3,11 @@ from __future__ import annotations
 
 import asyncio
 import base64
-import builtins
+import contextlib
 import dataclasses
 import importlib
 import inspect
+import io
 import json
 import os
 import resource
@@ -20,6 +21,7 @@ from typing import Any, Mapping, get_args, get_origin, get_type_hints
 MAX_INPUT_BYTES = 2 * 1024 * 1024
 MAX_MEMORY_BYTES = 768 * 1024 * 1024
 MAX_CPU_SECONDS = 60
+MAX_CAPTURE_CHARS = 64 * 1024
 
 
 class SandboxBoundaryError(RuntimeError):
@@ -109,9 +111,7 @@ def _inside(path: Path, root: Path) -> bool:
 
 
 def _install_audit_boundary(repo_root: Path, sandbox_root: Path) -> None:
-    write_flags = {
-        "w", "a", "x", "+",
-    }
+    write_flags = {"w", "a", "x", "+"}
 
     def hook(event: str, args: tuple[Any, ...]) -> None:
         if event in {"socket.connect", "socket.bind", "socket.listen", "socket.getaddrinfo"}:
@@ -126,7 +126,7 @@ def _install_audit_boundary(repo_root: Path, sandbox_root: Path) -> None:
             raw_path = args[0]
             if isinstance(raw_path, int):
                 return
-            path = Path(str(raw_path))
+            path = Path(os.fsdecode(raw_path))
             if not path.is_absolute():
                 path = Path.cwd() / path
             mode = str(args[1]) if len(args) > 1 else "r"
@@ -136,7 +136,7 @@ def _install_audit_boundary(repo_root: Path, sandbox_root: Path) -> None:
             if not writing and not (_inside(path, repo_root) or _inside(path, sandbox_root)):
                 raise SandboxBoundaryError("reads are restricted to repository and sandbox projections")
         if event in {"os.remove", "os.rmdir", "os.rename", "os.replace", "os.unlink"} and args:
-            paths = [Path(str(item)) for item in args[:2] if isinstance(item, (str, bytes, os.PathLike))]
+            paths = [Path(os.fsdecode(item)) for item in args[:2] if isinstance(item, (str, bytes, os.PathLike))]
             if any(not _inside(path if path.is_absolute() else Path.cwd() / path, sandbox_root) for path in paths):
                 raise SandboxBoundaryError("destructive operations are restricted to the ephemeral sandbox")
 
@@ -214,24 +214,27 @@ def _python_execution(function_record: Mapping[str, Any], arguments: Mapping[str
     qualname = str(function_record["qualname"])
     if "." in qualname or qualname.startswith("_"):
         raise TypeError("only indexed public top-level declarations are executable")
-    module = importlib.import_module(module_name)
-    function = getattr(module, qualname)
-    if not inspect.isfunction(function):
-        raise TypeError("indexed target is not a Python function")
-    positional, keywords = _bind_call(function, arguments, sandbox_root)
-    result = function(*positional, **keywords)
-    if inspect.isawaitable(result):
-        result = asyncio.run(result)
+    stdout = io.StringIO()
+    stderr = io.StringIO()
+    with contextlib.redirect_stdout(stdout), contextlib.redirect_stderr(stderr):
+        module = importlib.import_module(module_name)
+        function = getattr(module, qualname)
+        if not inspect.isfunction(function):
+            raise TypeError("indexed target is not a Python function")
+        positional, keywords = _bind_call(function, arguments, sandbox_root)
+        result = function(*positional, **keywords)
+        if inspect.isawaitable(result):
+            result = asyncio.run(result)
     return {
         "execution_status": "COMPLETED",
         "outcome": "PYTHON_DECLARATION_EXECUTED",
         "result": _safe(result),
+        "stdout": stdout.getvalue()[-MAX_CAPTURE_CHARS:],
+        "stderr": stderr.getvalue()[-MAX_CAPTURE_CHARS:],
     }
 
 
 def _native_execution(function_record: Mapping[str, Any], arguments: Mapping[str, Any]) -> dict[str, Any]:
-    # Native symbols are admitted to the deterministic build-and-call queue. The
-    # queue owns ABI lowering and never exposes a host pointer or dlopen handle.
     manifest = {
         "schema": "HHS_PASS_204_NATIVE_ABI_CALL_MANIFEST_V1",
         "symbol": function_record.get("symbol"),
@@ -292,9 +295,6 @@ def main() -> int:
                     "continuation": {"kind": kind},
                 }
         except (TypeError, ValueError, KeyError) as exc:
-            # These describe an invalid call shape and are surfaced distinctly to
-            # the parent, which may reject the request as invalid rather than
-            # treating it as a valid execution failure.
             response = {
                 "execution_status": "INVALID_CALL",
                 "outcome": "ARGUMENT_VALIDATION_REJECTED",
