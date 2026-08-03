@@ -76,6 +76,7 @@ jobs:
       - name: Run inherited Pass 203 hosted validation
         env:
           HHS_PASS190_CAPABILITY_SECRET: pass204-ci-secret
+          HHS_PASS204_DISABLE_MAINFRAME_UPGRADE: '1'
           PYTHONFAULTHANDLER: '1'
           PYTHONUNBUFFERED: '1'
         run: |
@@ -101,6 +102,7 @@ jobs:
           grep -Fq '/api/runtime/open-cloud/closure' HHS_PASS_204_UNIVERSAL_EXECUTABLE_DECLARATIONS_OPEN_CLOUD_COMPUTER.md
           grep -Fq 'valid_call_http_error' hhs_backend/api/pass204_open_cloud_routes.py
           grep -Fq 'capabilities_restored' hhs_backend/api/pass204_open_cloud_routes.py
+          grep -Fq 'HHS_PASS204_DISABLE_MAINFRAME_UPGRADE' hhs_backend/api/pass204_open_cloud_routes.py
 
       - name: Upload Pass 204 evidence
         uses: actions/upload-artifact@v4
