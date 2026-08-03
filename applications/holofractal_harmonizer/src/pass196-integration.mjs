@@ -158,7 +158,7 @@ async function show(name) {
 
 styles();
 createPanel();
-document.querySelector('#pass196-scan')?.addEventListener('click', scan);
-document.querySelector('#pass196-gaps')?.addEventListener('click', () => show('gaps'));
-document.querySelector('#pass196-tools')?.addEventListener('click', () => show('tools'));
+document.querySelector('#p196-scan')?.addEventListener('click', scan);
+document.querySelector('#p196-gaps')?.addEventListener('click', () => show('gaps'));
+document.querySelector('#p196-tools')?.addEventListener('click', () => show('tools'));
 refresh();
