@@ -8,7 +8,7 @@ This directory installs a fail-closed certificate-expiry check for the public Ng
 cd /opt/hhs/app
 sudo apt update
 sudo apt install -y certbot openssl nginx
-sudo deploy/digitalocean/tls/install.sh
+sudo bash deploy/digitalocean/tls/install.sh
 ```
 
 The installer preserves an existing `/etc/hhs/tls-renew.env`. Review the active host and renewal command before running it on a host that does not use Certbot:
