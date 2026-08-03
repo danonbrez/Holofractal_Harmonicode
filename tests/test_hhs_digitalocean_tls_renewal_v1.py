@@ -51,6 +51,16 @@ class DigitalOceanTLSRenewalAssetsTests(unittest.TestCase):
         self.assertNotIn("ufw allow 8080", script)
         self.assertNotIn("0.0.0.0:8080", script)
 
+    def test_ipv6_connection_target_is_bracketed_but_identity_is_not(self) -> None:
+        script = self.assets.joinpath("hhs-tls-renew.sh").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn("is_ipv6_identity", script)
+        self.assertIn("printf '[%s]:%s'", script)
+        self.assertIn('-connect "${endpoint}"', script)
+        self.assertIn('-verify_ip "${HHS_TLS_HOST}"', script)
+        self.assertNotIn('-verify_ip "[${HHS_TLS_HOST}]"', script)
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
