@@ -54,6 +54,7 @@ class Pass196ScanJobManager:
             thread_name_prefix="hhs-pass196-scan-job",
         )
         self._jobs: dict[str, dict[str, Any]] = {}
+        self._volatile_results: dict[str, dict[str, Any]] = {}
         self._latest_job_id: str | None = None
         self._load_restart_state()
 
@@ -120,6 +121,7 @@ class Pass196ScanJobManager:
                 "gap_scope",
                 "vector",
                 "vm81_authorized_tick",
+                "runtime_graph_projection",
             )
             if key in result
         }
@@ -206,7 +208,10 @@ class Pass196ScanJobManager:
                 vm81_receipt_hash72=receipt,
                 persist_vector=persist_vector,
             )
-        except Exception as exc:  # boundary converts every failure to evidence
+            if not isinstance(result, Mapping):
+                raise Pass196ScanJobError("scan runner must return a mapping")
+            full_result = _stable(dict(result))
+        except Exception as exc:  # boundary converts pre-commit failure to evidence
             with self._lock:
                 job = self._jobs[job_id]
                 job["state"] = "FAILED"
@@ -220,9 +225,10 @@ class Pass196ScanJobManager:
 
         with self._lock:
             job = self._jobs[job_id]
+            self._volatile_results[job_id] = full_result
             job["state"] = "SUCCEEDED"
             job["finished_at_unix_ms"] = _unix_ms()
-            job["result"] = self._summary(result)
+            job["result"] = self._summary(full_result)
             self._persist(job)
 
     def get(self, job_id: str) -> dict[str, Any]:
@@ -231,6 +237,23 @@ class Pass196ScanJobManager:
             if job is None:
                 raise Pass196ScanJobError(f"unknown Pass 196 scan job: {job_id}")
             return _stable(job)
+
+    def result(self, job_id: str) -> dict[str, Any]:
+        """Return the full in-process result or its durable summary after restart."""
+        with self._lock:
+            job = self._jobs.get(job_id)
+            if job is None:
+                raise Pass196ScanJobError(f"unknown Pass 196 scan job: {job_id}")
+            if job.get("state") != "SUCCEEDED":
+                raise Pass196ScanJobError(
+                    f"Pass 196 scan job has no committed result: {job_id} ({job.get('state')})"
+                )
+            result = self._volatile_results.get(job_id) or job.get("result")
+            if not isinstance(result, Mapping):
+                raise Pass196ScanJobError(
+                    f"Pass 196 scan job result is unavailable: {job_id}"
+                )
+            return _stable(dict(result))
 
     def latest(self) -> dict[str, Any] | None:
         with self._lock:
