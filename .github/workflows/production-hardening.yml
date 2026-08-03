@@ -28,10 +28,10 @@ jobs:
         with:
           python-version: '3.12'
           cache: pip
-      - name: Install runtime test dependencies
+      - name: Install dependency-scoped runtime requirements
         run: |
           python -m pip install --upgrade pip
-          python -m pip install -r requirements.txt
+          python -m pip install 'cryptography>=46.0,<47.0'
       - name: Compile changed Python surfaces
         run: |
           python -m py_compile \
