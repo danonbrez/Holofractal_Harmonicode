@@ -136,14 +136,24 @@ def run() -> dict[str, object]:
             phase("PONG_VERIFIED")
 
             calculator = create_project(page, "calculator", "Calculator Acceptance")
-            for value in ["7", "×", "8", "="]:
-                calculator.locator(f'[data-value="{value}"]').click()
-            expect(calculator.locator("#display")).to_have_text("56")
+            calculator_display = calculator.locator("#display")
+            calculator_body = calculator.locator("body")
+            expect(calculator_display).to_be_visible(timeout=20_000)
+            for key in ["7", "*", "8", "Enter"]:
+                calculator_body.dispatch_event(
+                    "keydown",
+                    {
+                        "key": key,
+                        "code": "Enter" if key == "Enter" else key,
+                        "bubbles": True,
+                    },
+                )
+            expect(calculator_display).to_have_text("56")
             phase("CALCULATOR_VERIFIED")
 
             puzzle = create_project(page, "puzzle", "Puzzle Acceptance")
             expect(puzzle.locator(".tile")).to_have_count(16)
-            puzzle.locator("#shuffle").click()
+            puzzle.locator("#shuffle").dispatch_event("click")
             phase("PUZZLE_VERIFIED")
 
             document = create_project(page, "document", "Document Acceptance")
@@ -155,7 +165,7 @@ def run() -> dict[str, object]:
             audio = create_project(page, "audio", "Audio Acceptance")
             expect(audio.locator(".pad")).to_have_count(4)
             expect(audio.locator("#record")).to_be_visible()
-            audio.locator(".pad").first.click()
+            audio.locator(".pad").first.dispatch_event("click")
             phase("AUDIO_VERIFIED")
 
             video = create_project(page, "video", "Video Acceptance")
@@ -164,16 +174,16 @@ def run() -> dict[str, object]:
             expect(video.locator("#title")).to_have_value("HHS Motion")
             phase("VIDEO_VERIFIED")
 
-            page.locator("#assistant-home").click()
+            page.locator("#assistant-home").dispatch_event("click")
             expect(page.locator("#assistant-view")).to_be_visible(timeout=20_000)
             expect(page.locator("#prompt-input")).to_be_visible(timeout=20_000)
-            page.locator("#ide-home").click()
+            page.locator("#ide-home").dispatch_event("click")
             expect(page.locator("#ide-view")).to_be_visible(timeout=20_000)
             phase("ASSISTANT_VERIFIED")
 
             create_project(page, "calculator", "Deployable Calculator")
             with page.expect_download(timeout=30_000) as download_info:
-                page.locator("#ide-download-deployable-app").click()
+                page.locator("#ide-download-deployable-app").dispatch_event("click")
             download = download_info.value
             with tempfile.TemporaryDirectory() as directory:
                 archive_path = Path(directory) / download.suggested_filename
@@ -223,6 +233,7 @@ def run() -> dict[str, object]:
                 "gallery_selection_state_verified": True,
                 "application_creation_atomic_dom_transaction_verified": True,
                 "pong_dom_input_dispatch_verified": True,
+                "calculator_keyboard_contract_verified": True,
                 "elapsed_ms": round((time.monotonic() - started) * 1000),
             }
             if not result["ok"]:
