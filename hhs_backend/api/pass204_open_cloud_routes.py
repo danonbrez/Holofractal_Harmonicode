@@ -97,6 +97,7 @@ def open_cloud_policy() -> Dict[str, Any]:
         "kernel_constraint_manifest": dict(KERNEL_CONSTRAINT_MANIFEST),
         "policy_is_read_only": True,
         "policy_mutation_endpoint": None,
+        "capabilities_restored_on_recall": False,
     }
     return _contract_response(f"{OPEN_CLOUD_PREFIX}/policy", "GET", result)
 
@@ -117,6 +118,7 @@ def open_cloud_closure() -> Dict[str, Any]:
         "all_declarations_executable": status["all_declarations_executable"],
         "valid_call_outcomes": ["COMPLETED", "ACCEPTED", "CONTINUATION_REQUIRED"],
         "valid_call_http_error": False,
+        "capabilities_restored_on_recall": False,
     }
     return _contract_response(f"{OPEN_CLOUD_PREFIX}/closure", "GET", result)
 
