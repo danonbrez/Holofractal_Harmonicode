@@ -7,7 +7,7 @@ from fastapi import APIRouter
 
 from hhs_backend.api.runtime_routes import _contract_response
 from hhs_backend.api import pass205_continuation_routes as _routes
-from hhs_backend.runtime.hhs_pass205_governed_continuation_v2 import (
+from hhs_backend.runtime.hhs_pass205_governed_continuation_v3 import (
     GOVERNED_PASS205_CONTINUATION_RUNTIME,
     GovernedPass205ContinuationRuntime,
 )
@@ -70,7 +70,7 @@ def continuation_transport_status():
         f"{_routes.API_PREFIX}/transport",
         "GET",
         {
-            "schema": "HHS_PASS_205_LOSSLESS_UINT64_TRANSPORT_V1",
+            "schema": "HHS_PASS_205_LOSSLESS_UINT64_TRANSPORT_V2",
             "ok": True,
             "canonical_internal_state": "uint64",
             "http_state_words": "decimal-string",
@@ -80,15 +80,17 @@ def continuation_transport_status():
             "decimal_string_request_compatibility": True,
             "javascript_number_rounding_permitted": False,
             "retrieval_candidate_ordering": "CANONICAL_ROOT_REASON_ORDER",
+            "replay_projection": "HHS_PASS_205_RECONSTRUCTIVE_REPLAY_V3",
         },
     )
 
 
 PASS205_TRANSPORT_BOOTSTRAP = {
-    "schema": "HHS_PASS_205_TRANSPORT_BOOTSTRAP_V1",
+    "schema": "HHS_PASS_205_TRANSPORT_BOOTSTRAP_V2",
     "ok": True,
     "lossless_uint64": True,
     "deterministic_retrieval": True,
+    "replay_argument_mapping_repaired": True,
 }
 
 
