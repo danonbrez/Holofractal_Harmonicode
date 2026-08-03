@@ -5,7 +5,8 @@ semantics, assistant routes, multimodal ingress, compiler services, and legacy
 contracts remain registered by :mod:`hhs_backend.pass174_server`. Pass 175 adds
 its VM5184 × G243 processor, encrypted terminal hydration, firmware, governed
 devices, native-kernel evidence, and WebSocket surfaces. Pass 201 then federates
-every registered API router before all fallbacks and static mounts.
+every registered API router—including Passes 196 through 200C—before all
+fallbacks and static mounts.
 
 * ``/`` serves the complete Holofractal Harmonizer application IDE.
 * ``/runtime-console/`` preserves the prior Pass 174 diagnostic console.
@@ -32,14 +33,15 @@ from hhs_backend.runtime.hhs_pass201_public_api_federation import register_publi
 
 app = pass174.app
 app.title = "HHS Full Multimodal Application IDE"
-app.version = "4.4.0"
+app.version = "4.4.1"
 app.description = (
     "Full integrated development environment for real web applications, games, "
     "calculators, documents, audio, video, multimodal projects, HARMONICODE, "
     "multi-target compilation, VM81 execution, Pass 175 Hash216-hydrated "
-    "VM5184 × G243 virtual instruction processing, firmware and governed devices, "
-    "repository lineage, assistant-led development, preview, testing, egress, "
-    "and complete public API federation for registered services and pass modules."
+    "VM5184 × G243 virtual instruction processing, Pass 196 repository hydration, "
+    "Passes 197-199 exact calibration, Passes 200A-200C proof-carrying optimization, "
+    "firmware and governed devices, repository lineage, assistant-led development, "
+    "preview, testing, egress, and Pass 201 public API federation."
 )
 
 FULL_IDE_ROOT = production.VISUAL_ROOT
@@ -55,6 +57,8 @@ def _has_exact_route(path: str) -> bool:
     return any(str(getattr(route, "path", "")) == path for route in app.router.routes)
 
 
+# Every exact unknown-API fallback is deferred while Pass 175 and Pass 201
+# compose concrete successor routes. Static mounts are also deferred below.
 _deferred_api_fallback_routes = [
     route for route in app.router.routes
     if str(getattr(route, "path", "")) == API_FALLBACK_PATH
@@ -115,6 +119,13 @@ async def application_ide_liveness() -> dict[str, Any]:
             "assistant": _has_route_prefix("/api/assistant"),
             "pass175_processor": _has_route_prefix("/api/v1/pass175/status"),
             "pass175_terminal": _has_route_prefix("/api/v1/pass175/terminal/status"),
+            "pass196_integration": _has_route_prefix("/api/runtime/integration/status"),
+            "pass197_calibration": _has_route_prefix("/api/runtime/calibration/status"),
+            "pass198_registry": _has_route_prefix("/api/runtime/calibration-registry/status"),
+            "pass199_distributed": _has_route_prefix("/api/runtime/distributed-calibration/status"),
+            "pass200a_shadow": _has_route_prefix("/api/runtime/optimization-authority/status"),
+            "pass200b_canary": _has_route_prefix("/api/runtime/optimization-canary/status"),
+            "pass200c_active": _has_route_prefix("/api/runtime/optimization-active/status"),
             "public_api": _has_route_prefix("/api/public/status"),
         },
         "remediation": (
@@ -149,6 +160,8 @@ if RUNTIME_CONSOLE_ROOT.is_dir():
         name="hhs-pass174-runtime-console",
     )
 
+# Unknown API requests remain fail-closed only after every federated route had
+# an opportunity to match.
 app.router.routes.extend(_deferred_api_fallback_routes)
 
 if FULL_IDE_ROOT.is_dir() and (FULL_IDE_ROOT / "index.html").is_file():
@@ -187,12 +200,21 @@ pass174.PASS174_BOOT_STATE.update({
     "pass175_websocket_routes": _has_route_prefix("/api/v1/pass175/ws/events"),
     "pass175_terminal_routes": _has_route_prefix("/api/v1/pass175/terminal/status"),
     "pass175_terminal_websocket_routes": _has_route_prefix("/api/v1/pass175/terminal/ws/events"),
+    "pass196_integration_routes": _has_route_prefix("/api/runtime/integration/status"),
+    "pass197_calibration_routes": _has_route_prefix("/api/runtime/calibration/status"),
+    "pass198_calibration_registry_routes": _has_route_prefix("/api/runtime/calibration-registry/status"),
+    "pass199_distributed_calibration_routes": _has_route_prefix("/api/runtime/distributed-calibration/status"),
+    "pass200a_optimization_routes": _has_route_prefix("/api/runtime/optimization-authority/status"),
+    "pass200b_canary_routes": _has_route_prefix("/api/runtime/optimization-canary/status"),
+    "pass200c_active_routes": _has_route_prefix("/api/runtime/optimization-active/status"),
     "pass201_public_api_federation": _has_route_prefix("/api/public/status"),
     "pass201_registration_closed": PASS201_PUBLIC_API_REGISTRATION.get("closed", False),
+    "api_fallback_deferred_for_successor_routes": bool(_deferred_api_fallback_routes),
     "api_fallback_deferred_for_pass175_and_pass201": bool(_deferred_api_fallback_routes),
     "lightweight_health_route": "/health",
     "lightweight_api_health_route": "/api/health",
     "inline_public_boot": "HHS_INLINE_PUBLIC_BOOT_V2",
     "legacy_parser_module_entries_disabled": True,
+    "external_vercel_quota_is_not_acceptance_gate": True,
     "external_vercel_quota_is_not_pass201_acceptance_gate": True,
 })

@@ -1,8 +1,9 @@
 const API = '/api/runtime/integration';
 const OBJECT_ID = 'hhs:runtime:pass196-integrated-environment';
-const state = { status: null, busy: false, error: null };
+const state = { status: null, busy: false, error: null, scanJob: null };
 
 const unwrap = (value) => value?.payload && typeof value.payload === 'object' ? value.payload : value?.result && typeof value.result === 'object' ? value.result : value;
+const sleep = (milliseconds) => new Promise((resolve) => setTimeout(resolve, milliseconds));
 
 async function request(path, options = {}) {
   const controller = new AbortController();
@@ -58,8 +59,8 @@ function render(status = {}, output = null) {
   const summary = passSummary(status);
   const badge = document.querySelector('#p196-badge');
   if (badge) {
-    badge.textContent = state.error ? 'ERROR' : status.integration_closed ? 'CLOSED' : status.scanned ? 'DEGRADED' : 'UNSCANNED';
-    badge.className = `p196-badge ${state.error ? 'error' : status.integration_closed ? 'ready' : status.scanned ? 'degraded' : ''}`;
+    badge.textContent = state.error ? 'ERROR' : state.busy ? 'SCANNING' : status.integration_closed ? 'CLOSED' : status.scanned ? 'DEGRADED' : 'UNSCANNED';
+    badge.className = `p196-badge ${state.error ? 'error' : status.integration_closed ? 'ready' : status.scanned || state.busy ? 'degraded' : ''}`;
   }
   setText('p196-passes', summary.maximum || '—');
   setText('p196-integrated', status.scanned ? `${summary.integrated} / ${summary.maximum}` : '—');
@@ -68,7 +69,7 @@ function render(status = {}, output = null) {
   const view = document.querySelector('#p196-output');
   if (view) view.textContent = output ? (typeof output === 'string' ? output : JSON.stringify(output, null, 2)) : state.error || (status.scanned ? [`phase=${status.phase}`, `integration_closed=${Boolean(status.integration_closed)}`, `global_surfaces_operational=${Boolean(status.operational)}`, `unresolved_pass_layers=${summary.unresolved}`, `manifest_hash72=${status.manifest_hash72 || '—'}`, `vector_object=${status.vector?.vector_object_id || '—'}`].join('\n') : view.textContent);
   const button = document.querySelector('#p196-scan');
-  if (button) { button.disabled = state.busy; button.textContent = state.busy ? 'Scanning through VM81 authority…' : 'Run deep integration scan'; }
+  if (button) { button.disabled = state.busy; button.textContent = state.busy ? 'Scanning in governed background job…' : 'Run deep integration scan'; }
   const validation = document.querySelector('#validation-state');
   if (validation && status.scanned) validation.textContent = status.integration_closed ? 'PASS 196 · FULL PASS-LAYER INTEGRATION CLOSED' : `PASS 196 · DEGRADED · ${summary.unresolved} PASS LAYERS REQUIRE JOIN`;
 }
@@ -91,7 +92,7 @@ async function project(status) {
           capabilities: ['INTEGRATION_STATUS_READ', 'INTEGRATION_SCAN_REQUEST', 'INTEGRATION_GAP_READ', 'API_TOOL_DISCOVERY'],
           actions: [
             { action_id: 'status', method: 'GET', endpoint: `${API}/status` },
-            { action_id: 'scan', method: 'POST', endpoint: `${API}/scan`, requires_authority: true },
+            { action_id: 'scan', method: 'POST', endpoint: `${API}/scan/jobs`, requires_authority: true },
             { action_id: 'gaps', method: 'GET', endpoint: `${API}/gaps` },
             { action_id: 'tools', method: 'GET', endpoint: `${API}/tools` },
           ],
@@ -101,7 +102,7 @@ async function project(status) {
       } catch (error) { console.warn('[HHS Pass196 projection]', error); }
       return;
     }
-    await new Promise((resolve) => setTimeout(resolve, 50));
+    await sleep(50);
   }
 }
 
@@ -111,10 +112,41 @@ async function refresh() {
   catch (error) { state.error = `${error.name}: ${error.message}`; render(state.status || {}); }
 }
 
+async function waitForScanJob(submitted) {
+  const deadline = Date.now() + 10 * 60 * 1000;
+  let job = submitted;
+  while (['QUEUED', 'RUNNING'].includes(job?.state)) {
+    state.scanJob = job;
+    render(state.status || {}, {
+      schema: job.schema,
+      job_id: job.job_id,
+      state: job.state,
+      created_at_unix_ms: job.created_at_unix_ms,
+      started_at_unix_ms: job.started_at_unix_ms,
+      deduplicated: job.deduplicated,
+      message: 'The HTTP request is released while the singleton VM81-governed scan continues.',
+    });
+    if (Date.now() >= deadline) throw new Error(`Pass 196 scan job exceeded bounded 10 minute wait: ${job.job_id}`);
+    await sleep(1000);
+    const path = job.poll_api || `${API}/scan/jobs/${encodeURIComponent(job.job_id)}`;
+    job = await request(path, { timeoutMs: 30000 });
+  }
+  state.scanJob = job;
+  if (job?.state !== 'SUCCEEDED') {
+    throw new Error(`${job?.state || 'UNKNOWN'}: ${job?.error?.type || 'ScanJobError'}: ${job?.error?.message || 'Pass 196 scan did not succeed'}`);
+  }
+  return job;
+}
+
 async function scan() {
   state.busy = true; state.error = null; render(state.status || {});
-  try { const status = await request(`${API}/scan`, { method: 'POST', body: JSON.stringify({ persist_vector: true }), timeoutMs: 300000 }); render(status); await project(status); }
-  catch (error) { state.error = `${error.name}: ${error.message}`; render(state.status || {}); }
+  try {
+    const submitted = await request(`${API}/scan/jobs`, { method: 'POST', body: JSON.stringify({ persist_vector: true }), timeoutMs: 30000 });
+    const completed = await waitForScanJob(submitted);
+    render(completed.result || state.status || {}, completed);
+    await refresh();
+  }
+  catch (error) { state.error = `${error.name}: ${error.message}`; render(state.status || {}, state.scanJob); }
   finally { state.busy = false; render(state.status || {}); }
 }
 

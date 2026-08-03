@@ -5,11 +5,15 @@ on:
     paths:
       - "HHS_PASS_196_SERIALIZED_PARALLEL_INTEGRATED_ENVIRONMENT.md"
       - "hhs_backend/runtime/hhs_pass196_integrated_environment_v1.py"
+      - "hhs_backend/runtime/hhs_pass196_scan_jobs_v1.py"
+      - "hhs_backend/runtime/hhs_pass196_gap_partition_v1.py"
       - "hhs_backend/api/pass196_integration_routes.py"
       - "hhs_backend/visual_server.py"
       - "applications/holofractal_harmonizer/src/pass196-integration.mjs"
       - "applications/holofractal_harmonizer/src/production-startup-coordinator.mjs"
       - "tests/test_hhs_pass196_integrated_environment_v1.py"
+      - "tests/test_hhs_pass196_scan_jobs_v1.py"
+      - "tests/test_hhs_pass196_gap_partition_v1.py"
       - "deploy/digitalocean/hhs-pass196*"
       - "docs/pass196/**"
       - ".github/workflows/pass196-integrated-environment.yml"
@@ -17,11 +21,15 @@ on:
     paths:
       - "HHS_PASS_196_SERIALIZED_PARALLEL_INTEGRATED_ENVIRONMENT.md"
       - "hhs_backend/runtime/hhs_pass196_integrated_environment_v1.py"
+      - "hhs_backend/runtime/hhs_pass196_scan_jobs_v1.py"
+      - "hhs_backend/runtime/hhs_pass196_gap_partition_v1.py"
       - "hhs_backend/api/pass196_integration_routes.py"
       - "hhs_backend/visual_server.py"
       - "applications/holofractal_harmonizer/src/pass196-integration.mjs"
       - "applications/holofractal_harmonizer/src/production-startup-coordinator.mjs"
       - "tests/test_hhs_pass196_integrated_environment_v1.py"
+      - "tests/test_hhs_pass196_scan_jobs_v1.py"
+      - "tests/test_hhs_pass196_gap_partition_v1.py"
       - "deploy/digitalocean/hhs-pass196*"
       - "docs/pass196/**"
       - ".github/workflows/pass196-integrated-environment.yml"
@@ -43,8 +51,12 @@ jobs:
       - name: Compile Pass 196 Python surfaces
         run: |
           python -m py_compile hhs_backend/runtime/hhs_pass196_integrated_environment_v1.py
+          python -m py_compile hhs_backend/runtime/hhs_pass196_scan_jobs_v1.py
+          python -m py_compile hhs_backend/runtime/hhs_pass196_gap_partition_v1.py
           python -m py_compile hhs_backend/api/pass196_integration_routes.py
           python -m py_compile tests/test_hhs_pass196_integrated_environment_v1.py
+          python -m py_compile tests/test_hhs_pass196_scan_jobs_v1.py
+          python -m py_compile tests/test_hhs_pass196_gap_partition_v1.py
       - name: Validate Pass 196 browser module
         run: node --check applications/holofractal_harmonizer/src/pass196-integration.mjs
       - name: Verify Visual IDE, server, and DigitalOcean wiring
@@ -56,4 +68,8 @@ jobs:
           grep -F -- "--port 8080 --workers 1" deploy/digitalocean/hhs-pass196-integrated-environment.service
           grep -F "HHS_REPOSITORY_ROOT=/opt/hhs/app" deploy/digitalocean/hhs-pass196.env.example
       - name: Run Pass 196 tests
-        run: python tests/test_hhs_pass196_integrated_environment_v1.py
+        run: |
+          python -m unittest -v \
+            tests.test_hhs_pass196_integrated_environment_v1 \
+            tests.test_hhs_pass196_scan_jobs_v1 \
+            tests.test_hhs_pass196_gap_partition_v1

@@ -20,6 +20,16 @@ PUBLIC_SOURCE_ASSETS = (
     "application-studio.css",
 )
 
+SUCCESSOR_STATUS_PATHS = (
+    "/api/runtime/integration/status",
+    "/api/runtime/calibration/status",
+    "/api/runtime/calibration-registry/status",
+    "/api/runtime/distributed-calibration/status",
+    "/api/runtime/optimization-authority/status",
+    "/api/runtime/optimization-canary/status",
+    "/api/runtime/optimization-active/status",
+)
+
 
 def test_full_application_ide_is_public_root_and_console_is_preserved() -> None:
     routes = list(server.app.router.routes)
@@ -38,6 +48,34 @@ def test_full_application_ide_is_public_root_and_console_is_preserved() -> None:
     assert server.pass174.PASS174_BOOT_STATE["application_ide_is_public_root"] is True
     assert server.pass174.PASS174_BOOT_STATE["diagnostic_console_is_supporting_surface"] is True
     assert server.pass174.PASS174_BOOT_STATE["inline_public_boot"] == "HHS_INLINE_PUBLIC_BOOT_V2"
+
+
+def test_successor_api_routes_precede_fail_closed_fallback() -> None:
+    paths = [str(getattr(route, "path", "")) for route in server.app.router.routes]
+    fallback_indexes = [
+        index
+        for index, path in enumerate(paths)
+        if path == server.API_FALLBACK_PATH
+    ]
+    assert fallback_indexes, "full application composition lost the fail-closed API fallback"
+    first_fallback = min(fallback_indexes)
+
+    for path in SUCCESSOR_STATUS_PATHS:
+        assert path in paths, path
+        assert paths.index(path) < first_fallback, f"{path} is shadowed by {server.API_FALLBACK_PATH}"
+
+    assert server.pass174.PASS174_BOOT_STATE["pass196_integration_routes"] is True
+    assert server.pass174.PASS174_BOOT_STATE["pass199_distributed_calibration_routes"] is True
+    assert server.pass174.PASS174_BOOT_STATE["pass200c_active_routes"] is True
+
+
+def test_successor_status_endpoints_do_not_fall_through_to_not_found_envelope() -> None:
+    client = TestClient(server.app)
+    for path in SUCCESSOR_STATUS_PATHS:
+        response = client.get(path)
+        assert response.status_code != 404, (path, response.text[:500])
+        payload = response.json()
+        assert payload.get("schema") != "HHS_PRODUCTION_API_ROUTE_NOT_FOUND_V1", path
 
 
 def test_public_root_has_one_boot_authority_and_preserved_module_lineage() -> None:

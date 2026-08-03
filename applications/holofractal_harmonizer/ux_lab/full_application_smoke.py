@@ -85,8 +85,11 @@ def run() -> dict[str, object]:
             expect(new_application).to_be_visible(timeout=60_000)
             expect(new_application).to_contain_text("New Application")
             expect(page.locator("#assistant-home")).to_be_visible(timeout=20_000)
-            expect(page.locator("#assistant-view")).to_be_visible(timeout=20_000)
-            expect(page.locator("#prompt-input")).to_be_visible(timeout=20_000)
+            # Workflow-first progressive disclosure keeps the application IDE
+            # visible by default. The assistant DOM remains mounted but hidden
+            # until its explicit navigation control is activated.
+            expect(page.locator("#assistant-view")).to_be_hidden(timeout=20_000)
+            expect(page.locator("#prompt-input")).to_have_count(1)
             current_phase = "APPLICATION_STUDIO_READY"
             phase(current_phase)
 
