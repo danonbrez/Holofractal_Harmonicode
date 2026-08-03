@@ -102,13 +102,19 @@ class LiveFastAPIRuntimeWorkflow:
         self,
         instruction: Optional[Mapping[str, Any]] = None,
     ) -> Dict[str, Any]:
+        # Kernel execution, packet projection, and graph ingestion are genuine
+        # synchronous workloads. Keep them off the FastAPI event loop so live
+        # health, authority, UI, and websocket requests remain serviceable while
+        # the next reusable continuation snapshot is computed.
         emission = await self.bridge.emit_tick_event(instruction=instruction)
         self._tick_count += 1
 
-        packet = self.runtime_emulator.controller.export_multimodal_packet()
+        packet = await asyncio.to_thread(
+            self.runtime_emulator.controller.export_multimodal_packet,
+        )
         if self.runtime_graph is not None:
             try:
-                self.runtime_graph.ingest_runtime_state(packet)
+                await asyncio.to_thread(self.runtime_graph.ingest_runtime_state, packet)
             except Exception as exc:
                 self._errors.append(f"graph_ingest:{exc}")
                 self._errors = self._errors[-16:]
@@ -159,6 +165,7 @@ class LiveFastAPIRuntimeWorkflow:
             "cognition": cognition_status,
             "channels": ["/ws/runtime", "/ws/replay", "/ws/graph", "/ws/transport"],
             "node_role": "GUI_PROXY_ONLY_NO_RUNTIME_EVENT_AUTHORITY",
+            "event_loop_blocking_kernel_work": False,
         }
 
 
