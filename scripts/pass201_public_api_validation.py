@@ -9,7 +9,7 @@ from typing import Any, Dict
 
 from fastapi.testclient import TestClient
 
-from hhs_backend.visual_server import app
+from hhs_backend.application_ide_server import app
 
 
 def validate() -> Dict[str, Any]:
@@ -36,7 +36,17 @@ def validate() -> Dict[str, Any]:
     assert any(pass_module["pass_id"] == "pass200c" for pass_module in passes)
     assert any(route["path"] == "/api/public/status" for route in routes)
     assert any(route["path"] == "/api/runtime/optimization-active/status" for route in routes)
-    assert getattr(app.router.routes[-1], "name", None) == "hhs-visual-home"
+    assert getattr(app.router.routes[-1], "name", None) == "hhs-full-application-ide"
+
+    public_route_index = next(
+        index for index, route in enumerate(app.router.routes)
+        if getattr(route, "path", None) == "/api/public/status"
+    )
+    fallback_indexes = [
+        index for index, route in enumerate(app.router.routes)
+        if str(getattr(route, "path", "")) == "/api/{path:path}"
+    ]
+    assert not fallback_indexes or public_route_index < min(fallback_indexes)
 
     second = federation.catalog(app)
     assert second["catalog_sha256"] == catalog["catalog_sha256"]
@@ -53,7 +63,7 @@ def validate() -> Dict[str, Any]:
         "/api/public/passes",
         "/api/public/openapi",
         "/api/public/tools",
-        "/api/system/status",
+        "/api/health",
     )
     for endpoint in endpoints:
         response = client.get(endpoint)
@@ -76,6 +86,7 @@ def validate() -> Dict[str, Any]:
         "contract": catalog["contract"],
         "classification": catalog["classification"],
         "closed": True,
+        "production_entrypoint": "hhs_backend.application_ide_server:app",
         "summary": {
             "api_modules": report["api_module_count"],
             "imported_api_modules": report["imported_module_count"],
@@ -95,6 +106,7 @@ def validate() -> Dict[str, Any]:
         "registration_report_sha256": report["report_sha256"],
         "catalog_sha256": catalog["catalog_sha256"],
         "claim_boundary": catalog["claim_boundary"],
+        "public_routes_precede_unknown_api_fallback": True,
         "static_root_is_last": True,
         "deterministic_restart_projection": True,
     }
