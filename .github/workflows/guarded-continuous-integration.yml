@@ -1,0 +1,100 @@
+name: Guarded Continuous Integration
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, reopened, synchronize, labeled, ready_for_review]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+  checks: read
+
+concurrency:
+  group: guarded-continuous-integration-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (
+        github.event.pull_request.draft == false &&
+        github.event.pull_request.head.repo.full_name == github.repository &&
+        contains(github.event.pull_request.labels.*.name, 'hhs-automerge') &&
+        contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'), github.event.pull_request.author_association)
+      )
+    runs-on: ubuntu-latest
+    timeout-minutes: 70
+    env:
+      HHS_DISABLE_C_AUTOBUILD: '1'
+      HHS_NATIVE_LANGUAGE_REQUIRE_WORD2VEC: '0'
+      HHS_ASSISTANT_HEALTH_TIMEOUT_SECONDS: '0.5'
+      HHS_PASS174_BOOT_TIMEOUT_SECONDS: '12'
+      HHS_VALIDATE_NATIVE: '1'
+      HHS_VALIDATE_NODE_TESTS: '1'
+      HHS_VALIDATE_BOOT: '1'
+      HHS_VALIDATE_BROWSER: '0'
+      HHS_CANDIDATE_PORT: '18080'
+
+    steps:
+      - name: Check out merge candidate
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install deployment-gate dependencies
+        run: |
+          timeout 300s python -m pip install --upgrade pip
+          timeout 300s python -m pip install \
+            fastapi==0.128.2 \
+            starlette==0.50.0 \
+            'httpx>=0.27,<1.0' \
+            'uvicorn[standard]>=0.30,<1.0' \
+            'cryptography>=46.0,<47.0' \
+            requests \
+            pytest
+
+      - name: Run repository-native guarded candidate gate
+        run: |
+          timeout 3900s bash \
+            deployment/digitalocean/guarded_auto_update/validate-candidate.sh \
+            "$GITHUB_WORKSPACE"
+
+      - name: Record candidate summary
+        run: |
+          {
+            echo '### Guarded integration candidate'
+            echo
+            echo "- Commit: \`$(git rev-parse HEAD)\`"
+            echo '- Native authority: validated'
+            echo '- Python integration: validated'
+            echo '- Application studio: validated'
+            echo '- Candidate boot/API: validated'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  merge:
+    if: >-
+      github.event_name == 'pull_request' &&
+      needs.validate.result == 'success'
+    needs: validate
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Merge trusted validated pull request
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_URL: ${{ github.event.pull_request.html_url }}
+        run: |
+          gh pr merge "$PR_URL" --merge --delete-branch
