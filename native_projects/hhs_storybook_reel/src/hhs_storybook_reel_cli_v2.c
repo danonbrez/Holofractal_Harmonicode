@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "hhs_storybook_reel_projection_v2.h"
+
 static int hhs_storybook_cli_argc = 0;
 static char** hhs_storybook_cli_argv = NULL;
 
@@ -47,7 +49,21 @@ HHSStorybookReelStatus hhs_storybook_style_default_v2_cli(HHSStorybookReelStyleV
 }
 
 int main(int argc, char** argv) {
+    HHSStorybookProjectionConfigV2 projection;
+    HHSStorybookReelStatus projection_status;
     hhs_storybook_cli_argc = argc;
     hhs_storybook_cli_argv = argv;
+    projection_status = hhs_storybook_projection_default_v2(&projection);
+    if (projection_status != HHS_STORYBOOK_REEL_OK) return 3;
+    projection.texture_flags = (uint32_t)hhs_storybook_cli_unsigned(
+        "--texture-flags",
+        projection.texture_flags
+    );
+    projection.sprite_overlay_flags = (uint32_t)hhs_storybook_cli_unsigned(
+        "--sprite-overlay-flags",
+        projection.sprite_overlay_flags
+    );
+    projection_status = hhs_storybook_projection_set_v2(&projection);
+    if (projection_status != HHS_STORYBOOK_REEL_OK) return 2;
     return hhs_storybook_reel_cli_base_main(argc, argv);
 }
