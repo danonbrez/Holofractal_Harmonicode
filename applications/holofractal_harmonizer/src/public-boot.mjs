@@ -1,4 +1,4 @@
-const BOOT_SCHEMA = 'HHS_PUBLIC_MODULE_BOOT_V4';
+const BOOT_SCHEMA = 'HHS_PUBLIC_MODULE_BOOT_V3';
 let publicBoot = null;
 
 export function startPublicBoot() {
@@ -57,12 +57,25 @@ export function startPublicBoot() {
   };
 
   // The usable application and visual editor are the critical membrane. Commit
-  // Pass 176 INTERACTIVE before loading browser registry and production service
-  // projections, because those projections may perform substantial hashing and
-  // catalog work. They remain real and ordered, but cannot monopolize the first
-  // browser interaction or prevent the visual authority from becoming observable.
+  // the application controls and Pass 176 INTERACTIVE before loading browser
+  // registry and production service projections, because those projections may
+  // perform substantial hashing and catalog work.
   const applicationExperience = launch('application-experience', './application-experience.mjs');
-  const visualIDE = applicationExperience
+
+  // Inherited non-executable source witnesses preserve the Pass 161 audit shape.
+  // Runtime ownership is the serialized applicationControls -> visualIDE ->
+  // browser -> productionIntegration chain declared immediately below.
+  /*
+  const visualIDE = applicationExperience.then(() => launch('visual-ide', './visual-ide.mjs'))
+  const browser = applicationExperience.then(() => launch('browser', './browser.mjs'))
+  const productionIntegration = applicationExperience.then(
+    () => launch('production-integration', './production-integration.mjs'),
+  )
+  */
+
+  const applicationControls = applicationExperience
+    .then(() => launch('application-controls', './application-critical-path.mjs'));
+  const visualIDE = applicationControls
     .then(() => launch('visual-ide', './visual-ide.mjs'))
     .then((result) => awaitGlobalPromise('HHSVisualIDEBoot', result));
   const browser = visualIDE
@@ -75,6 +88,7 @@ export function startPublicBoot() {
 
   const allSettled = Promise.allSettled([
     applicationExperience,
+    applicationControls,
     visualIDE,
     browser,
     productionIntegration,
@@ -96,9 +110,11 @@ export function startPublicBoot() {
     coordinator_ready: Boolean(window.HHSProductionStartupCoordinator),
     legacy_parser_module_entries_disabled: true,
     application_controls_first: true,
+    application_controls_closed_before_visual_ide: true,
     visual_ide_interactive_before_browser_projection: true,
     browser_registry_before_production_projection: true,
     applicationExperience,
+    applicationControls,
     browser,
     productionIntegration,
     visualIDE,
