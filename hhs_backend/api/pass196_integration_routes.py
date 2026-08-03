@@ -40,6 +40,8 @@ router = APIRouter(
     ],
 )
 
+SCAN_WAIT_TIMEOUT_SECONDS = 600.0
+
 
 class IntegrationScanRequest(BaseModel):
     persist_vector: bool = True
@@ -87,6 +89,18 @@ def _scan_authorization(source: str) -> Dict[str, Any]:
     }
 
 
+def _missing_surfaces(value: Mapping[str, Any]) -> list[str]:
+    surface_matrix = value.get("surface_matrix")
+    if isinstance(surface_matrix, Mapping):
+        missing = surface_matrix.get("missing_mandatory_surfaces")
+        if isinstance(missing, list):
+            return [str(item) for item in missing]
+    direct = value.get("missing_mandatory_surfaces")
+    if isinstance(direct, list):
+        return [str(item) for item in direct]
+    return []
+
+
 def _gap_scope_from_scan_result(result: Mapping[str, Any]) -> Dict[str, Any]:
     """Derive immutable gap scope from the exact manifest returned by this scan."""
     manifest = result.get("manifest")
@@ -108,6 +122,9 @@ def _gap_scope_from_scan_result(result: Mapping[str, Any]) -> Dict[str, Any]:
     return partition_integration_gaps(
         unresolved,
         maximum_discovered_pass=maximum,
+        missing_mandatory_surfaces=(
+            _missing_surfaces(result) or _missing_surfaces(manifest)
+        ),
     )
 
 
@@ -116,12 +133,32 @@ def _background_scan_runner(
     vm81_receipt_hash72: str | None,
     persist_vector: bool,
 ) -> Dict[str, Any]:
+    """Commit the scan first, then project it without invalidating that commit."""
     result = PASS196_INTEGRATED_ENVIRONMENT.scan(
         vm81_receipt_hash72=vm81_receipt_hash72,
         persist_vector=persist_vector,
     )
     result["gap_scope"] = _gap_scope_from_scan_result(result)
-    _project_runtime_graph()
+    try:
+        _project_runtime_graph()
+    except Exception as exc:
+        result["runtime_graph_projection"] = {
+            "ok": False,
+            "status": "RUNTIME_GRAPH_PROJECTION_FAILED_AFTER_SCAN_COMMIT",
+            "error": {
+                "type": type(exc).__name__,
+                "message": str(exc),
+            },
+            "scan_commit_preserved": True,
+            "retry_requires_new_scan": False,
+        }
+    else:
+        result["runtime_graph_projection"] = {
+            "ok": True,
+            "status": "RUNTIME_GRAPH_PROJECTION_COMMITTED",
+            "scan_commit_preserved": True,
+            "retry_requires_new_scan": False,
+        }
     return result
 
 
@@ -131,6 +168,9 @@ def _gap_report() -> Dict[str, Any]:
     result["scope"] = partition_integration_gaps(
         result.get("unresolved_passes") or [],
         maximum_discovered_pass=int(status.get("maximum_discovered_pass") or 0),
+        missing_mandatory_surfaces=(
+            _missing_surfaces(result) or _missing_surfaces(status)
+        ),
     )
     return result
 
@@ -153,16 +193,47 @@ PASS196_SCAN_JOBS = Pass196ScanJobManager(
 )
 
 
-async def _run_scan(*, persist_vector: bool, source: str) -> Dict[str, Any]:
-    authorization = _scan_authorization(source)
-    result = await asyncio.to_thread(
-        PASS196_INTEGRATED_ENVIRONMENT.scan,
-        vm81_receipt_hash72=authorization.get("receipt_hash72"),
+def _submit_scan(*, persist_vector: bool, source: str) -> Dict[str, Any]:
+    """Submit or join the one canonical Pass 196 scan admission boundary."""
+    return PASS196_SCAN_JOBS.submit(
         persist_vector=persist_vector,
+        source=source,
+        authorization_factory=lambda: _scan_authorization(source),
     )
-    result["gap_scope"] = _gap_scope_from_scan_result(result)
-    _project_runtime_graph()
-    result["vm81_authorized_tick"] = authorization
+
+
+async def _wait_for_committed_scan(
+    job_id: str,
+    *,
+    timeout_seconds: float = SCAN_WAIT_TIMEOUT_SECONDS,
+) -> Dict[str, Any]:
+    job = await asyncio.to_thread(
+        PASS196_SCAN_JOBS.wait,
+        job_id,
+        timeout_seconds,
+    )
+    if job.get("state") != "SUCCEEDED":
+        error = job.get("error") if isinstance(job.get("error"), Mapping) else {}
+        raise Pass196Error(
+            f"Pass 196 scan job {job_id} ended in {job.get('state')}: "
+            f"{error.get('type') or 'ScanJobError'}: "
+            f"{error.get('message') or 'scan did not commit'}"
+        )
+    result = PASS196_SCAN_JOBS.result(job_id)
+    result["vm81_authorized_tick"] = job.get("vm81_authorized_tick")
+    result["scan_job"] = {
+        key: job.get(key)
+        for key in (
+            "schema",
+            "job_id",
+            "state",
+            "created_at_unix_ms",
+            "started_at_unix_ms",
+            "finished_at_unix_ms",
+            "source",
+            "deduplicated",
+        )
+    }
     return result
 
 
@@ -198,18 +269,31 @@ def integration_status() -> Dict[str, Any]:
 
 @router.post("/scan")
 async def integration_scan(request: IntegrationScanRequest) -> Dict[str, Any]:
-    """Compatibility endpoint for callers that deliberately wait for completion."""
+    """Compatibility endpoint that joins the singleton job and waits boundedly."""
     operation = "api.runtime.integration.scan"
     ingress = _ingress(
         operation,
         {"method": "POST", "persist_vector": request.persist_vector},
     )
+    job: Dict[str, Any] | None = None
     try:
-        result = await _run_scan(
+        job = _submit_scan(
             persist_vector=request.persist_vector,
             source=operation,
         )
-    except (Pass196Error, OSError, ValueError, RuntimeError) as exc:
+        result = await _wait_for_committed_scan(str(job["job_id"]))
+    except TimeoutError as exc:
+        raise HTTPException(
+            status_code=504,
+            detail={
+                "schema": "HHS_PASS_196_INTEGRATION_SCAN_WAIT_TIMEOUT_V1",
+                "ok": False,
+                "job_id": (job or {}).get("job_id"),
+                "job_continues": True,
+                "reason": str(exc),
+            },
+        ) from exc
+    except (Pass196Error, Pass196ScanJobError, OSError, ValueError, RuntimeError) as exc:
         raise HTTPException(
             status_code=503,
             detail={
@@ -228,9 +312,10 @@ async def integration_scan(request: IntegrationScanRequest) -> Dict[str, Any]:
                 "manifest_hash72": result.get("manifest_hash72"),
                 "file_count": result.get("file_count"),
                 "vector_object_id": (result.get("vector") or {}).get("vector_object_id"),
-                "current_frontier_closed": result["gap_scope"].get(
+                "current_frontier_closed": (result.get("gap_scope") or {}).get(
                     "current_frontier_closed"
                 ),
+                "job_id": (result.get("scan_job") or {}).get("job_id"),
             },
         ),
     }
@@ -246,10 +331,9 @@ def integration_scan_job_submit(request: IntegrationScanRequest) -> Dict[str, An
         {"method": "POST", "persist_vector": request.persist_vector},
     )
     try:
-        job = PASS196_SCAN_JOBS.submit(
+        job = _submit_scan(
             persist_vector=request.persist_vector,
             source=operation,
-            authorization_factory=lambda: _scan_authorization(operation),
         )
     except (Pass196ScanJobError, RuntimeError) as exc:
         raise HTTPException(
@@ -332,6 +416,9 @@ def integration_scan_job_status(job_id: str) -> Dict[str, Any]:
                 "manifest_hash72": (job.get("result") or {}).get(
                     "manifest_hash72"
                 ),
+                "projection_ok": (
+                    (job.get("result") or {}).get("runtime_graph_projection") or {}
+                ).get("ok"),
             },
         ),
     }
@@ -382,6 +469,9 @@ def integration_gaps() -> Dict[str, Any]:
                 "missing_mandatory_surfaces": result.get("missing_mandatory_surfaces"),
                 "current_frontier_closed": result["scope"].get(
                     "current_frontier_closed"
+                ),
+                "global_integration_closed": result["scope"].get(
+                    "global_integration_closed"
                 ),
                 "legacy_unresolved_count": result["scope"].get(
                     "legacy_unresolved_count"
@@ -437,15 +527,15 @@ async def integration_tool_invoke(request: IntegrationToolInvokeRequest) -> Dict
         if request.tool == "integration.status":
             result = PASS196_INTEGRATED_ENVIRONMENT.status()
         elif request.tool == "integration.scan":
-            result = await _run_scan(
+            job = _submit_scan(
                 persist_vector=bool(request.arguments.get("persist_vector", True)),
                 source=operation,
             )
+            result = await _wait_for_committed_scan(str(job["job_id"]))
         elif request.tool == "integration.scan.submit":
-            result = PASS196_SCAN_JOBS.submit(
+            result = _submit_scan(
                 persist_vector=bool(request.arguments.get("persist_vector", True)),
                 source=operation,
-                authorization_factory=lambda: _scan_authorization(operation),
             )
         elif request.tool == "integration.scan.latest":
             result = PASS196_SCAN_JOBS.latest()
@@ -459,6 +549,17 @@ async def integration_tool_invoke(request: IntegrationToolInvokeRequest) -> Dict
             result = _gap_report()
         else:
             raise Pass196Error(f"unknown integration tool: {request.tool}")
+    except TimeoutError as exc:
+        raise HTTPException(
+            status_code=504,
+            detail={
+                "schema": "HHS_PASS_196_INTEGRATION_TOOL_WAIT_TIMEOUT_V1",
+                "ok": False,
+                "tool": request.tool,
+                "job_continues": True,
+                "reason": str(exc),
+            },
+        ) from exc
     except (Pass196Error, Pass196ScanJobError, RuntimeError) as exc:
         raise HTTPException(status_code=409, detail=str(exc)) from exc
     result["tool_invocation"] = {
@@ -475,9 +576,12 @@ async def integration_tool_invoke(request: IntegrationToolInvokeRequest) -> Dict
                 "tool": request.tool,
                 "ok": result.get("ok", True),
                 "manifest_hash72": result.get("manifest_hash72"),
-                "job_id": result.get("job_id"),
-                "job_state": result.get("state"),
+                "job_id": result.get("job_id")
+                or (result.get("scan_job") or {}).get("job_id"),
+                "job_state": result.get("state")
+                or (result.get("scan_job") or {}).get("state"),
                 "current_frontier_closed": scope.get("current_frontier_closed"),
+                "global_integration_closed": scope.get("global_integration_closed"),
             },
         ),
     }
