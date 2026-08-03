@@ -1,0 +1,43 @@
+{
+  "artifact": {
+    "digest": "sha256:903bd1196a08ba4f1976348e190a59122e35b907fce1dc197062caaa2397499f",
+    "id": 8844926215
+  },
+  "catalog_sha256": "1ad64a407101e837cbcf8e22e8207a22acddb670782951d3b5db3778ecf0e8ed",
+  "claim_boundary": {
+    "all_registered_routers_public": true,
+    "arbitrary_python_execution_public": false,
+    "native_authority_routes_preserved": true,
+    "pass_metadata_public": true
+  },
+  "classification": "HHS_PASS_201_PUBLIC_API_FEDERATION_VERIFIED",
+  "closed": true,
+  "contract": "HHS-P201-PUBLIC-API-FEDERATION-SERVICE-PASS-ROUTER-OPENAPI",
+  "deterministic_restart_projection": true,
+  "production_entrypoint": "hhs_backend.application_ide_server:app",
+  "public_routes_precede_unknown_api_fallback": true,
+  "registration_report_sha256": "66c83543955a84c7325a32b2b9b48529586cb9294d02be23d91100fa9171e084",
+  "schema": "HHS_PASS_201_VALIDATION_RECEIPT_V1",
+  "static_root_is_last": true,
+  "summary": {
+    "api_import_failures": 0,
+    "api_modules": 37,
+    "existing_routes_preserved": 273,
+    "imported_api_modules": 37,
+    "openapi_missing_operations": 0,
+    "openapi_paths": 421,
+    "public_pass_modules": 41,
+    "public_routes": 449,
+    "public_services": 68,
+    "router_routes_discovered": 452,
+    "routers": 39,
+    "routes_attached_by_federation": 179,
+    "unexposed_router_routes": 0,
+    "validated_public_endpoints": 12
+  },
+  "workflow": {
+    "conclusion": "success",
+    "run_id": 30784863958,
+    "validated_head_commit": "2f5299b44b6ee01af73e43a57d27cc7c6e2f7eda"
+  }
+}
