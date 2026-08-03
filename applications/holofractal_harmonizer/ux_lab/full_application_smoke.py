@@ -171,12 +171,25 @@ def run() -> dict[str, object]:
             expect(video.locator("#title")).to_have_value("HHS Motion")
             phase("VIDEO_VERIFIED")
 
-            page.locator("#assistant-home").dispatch_event("click")
+            current_phase = "WAIT_INTEGRATED_ASSISTANT"
+            phase(current_phase)
+            page.wait_for_function(
+                "() => typeof window.HHSIntegratedAssistant?.open === 'function'",
+                timeout=60_000,
+            )
+            assistant_launcher = page.locator("#ide-open-assistant-simple")
+            expect(assistant_launcher).to_be_visible(timeout=20_000)
+            assistant_launcher.click()
+            expect(page.locator("body")).to_have_class(/ide-assistant-open/, timeout=20_000)
             expect(page.locator("#assistant-view")).to_be_visible(timeout=20_000)
             expect(page.locator("#prompt-input")).to_be_visible(timeout=20_000)
-            page.locator("#ide-home").dispatch_event("click")
+            assistant_close = page.locator("#ide-assistant-close")
+            expect(assistant_close).to_be_visible(timeout=20_000)
+            assistant_close.click()
+            expect(page.locator("#assistant-view")).to_be_hidden(timeout=20_000)
             expect(page.locator("#ide-view")).to_be_visible(timeout=20_000)
-            phase("ASSISTANT_VERIFIED")
+            current_phase = "ASSISTANT_VERIFIED"
+            phase(current_phase)
 
             create_project(page, "calculator", "Deployable Calculator")
             with page.expect_download(timeout=30_000) as download_info:
@@ -221,7 +234,8 @@ def run() -> dict[str, object]:
                 "failed_responses": failed_responses,
                 "projects_verified": ["pong", "calculator", "puzzle", "document", "audio", "video"],
                 "assistant_integrated": True,
-                "assistant_surface": "explorer-and-conversation",
+                "assistant_surface": "drawer-and-conversation",
+                "assistant_ready_gate_verified": True,
                 "deployable_zip_verified": True,
                 "runtime_console_preserved": True,
                 "drag_safe_file_items": True,
