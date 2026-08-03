@@ -40,6 +40,11 @@ class Pass196ScanJobManagerTests(unittest.TestCase):
                     "legacy_unresolved_count": 12,
                     "current_frontier_closed": True,
                 },
+                "runtime_graph_projection": {
+                    "ok": False,
+                    "status": "RUNTIME_GRAPH_PROJECTION_FAILED_AFTER_SCAN_COMMIT",
+                    "scan_commit_preserved": True,
+                },
                 "manifest": {"must_not_be_persisted": True},
                 "kwargs": kwargs,
             }
@@ -96,7 +101,22 @@ class Pass196ScanJobManagerTests(unittest.TestCase):
         self.assertEqual(completed["state"], "SUCCEEDED")
         self.assertEqual(completed["result"]["file_count"], 4900)
         self.assertTrue(completed["result"]["gap_scope"]["current_frontier_closed"])
+        self.assertFalse(completed["result"]["runtime_graph_projection"]["ok"])
+        self.assertTrue(
+            completed["result"]["runtime_graph_projection"]["scan_commit_preserved"]
+        )
         self.assertNotIn("manifest", completed["result"])
+
+        full_result = self.manager.result(first["job_id"])
+        self.assertIn("manifest", full_result)
+        self.assertEqual(
+            full_result["manifest"],
+            {"must_not_be_persisted": True},
+        )
+        self.assertEqual(
+            full_result["kwargs"]["vm81_receipt_hash72"],
+            "a" * 72,
+        )
 
         persisted = json.loads(
             self.state_root.joinpath("scan-jobs", f"{first['job_id']}.json").read_text(
@@ -116,6 +136,8 @@ class Pass196ScanJobManagerTests(unittest.TestCase):
     def test_unknown_job_fails_explicitly(self) -> None:
         with self.assertRaises(Pass196ScanJobError):
             self.manager.get("pass196-scan:missing")
+        with self.assertRaises(Pass196ScanJobError):
+            self.manager.result("pass196-scan:missing")
 
     def test_restart_marks_active_job_interrupted(self) -> None:
         jobs = self.state_root / "scan-jobs"
@@ -141,6 +163,8 @@ class Pass196ScanJobManagerTests(unittest.TestCase):
             recovered = other.get("pass196-scan-stale")
             self.assertEqual(recovered["state"], "INTERRUPTED")
             self.assertEqual(recovered["error"]["type"], "ProcessRestart")
+            with self.assertRaises(Pass196ScanJobError):
+                other.result("pass196-scan-stale")
         finally:
             other.shutdown()
 
@@ -178,6 +202,10 @@ class Pass196ScanJobManagerTests(unittest.TestCase):
             latest = other.latest()
             self.assertIsNotNone(latest)
             self.assertEqual(latest["job_id"], newer["job_id"])
+            self.assertEqual(
+                other.result(newer["job_id"])["manifest_hash72"],
+                "n" * 72,
+            )
         finally:
             other.shutdown()
 
