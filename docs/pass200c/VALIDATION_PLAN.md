@@ -56,11 +56,13 @@ The production workflow must:
 | Lease-exhausted frontiers | 1 |
 | Rollback frontiers | 1 |
 | Immutable Pass 200C frontiers including genesis | 5 |
-| Pass 200C Hash72 events | 12 |
+| Pass 200C Hash72 events | 13 |
+
+The 13 events are: one genesis frontier, one canary-evidence aggregation, two active admissions, seven guarded invocations, one lease-exhaustion transition, and one rollback transition.
 
 ## Static validation
 
-- Python compilation of runtime, API, server, and tests.
+- Python compilation of runtime, API, server, tests, and the restartable production harness.
 - No floating-point canonical operations in Pass 200C authority code.
 - Node syntax checks for the active panel and startup coordinator.
 - Source checks for the four VM81 receipt roles, exact guard, route registration, and disabled frozen promotion.
