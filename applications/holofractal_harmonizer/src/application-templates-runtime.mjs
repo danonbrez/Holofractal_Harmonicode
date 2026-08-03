@@ -127,7 +127,9 @@ const DOCUMENT_APPLICATION_SOURCE = [
 function readableHtml(content) {
   const source = String(content || '').trim();
   if (!source) return '';
-  return `${source.replace(/>\s*</g, '>\n<')}\n`;
+  const readable = source.replace(/>\s*</g, '>\n<');
+  const inlineable = readable.replace(/<script\b([^>]*)>\s*<\/script>/gi, '<script$1></script>');
+  return `${inlineable}\n`;
 }
 
 function readableCss(content) {
