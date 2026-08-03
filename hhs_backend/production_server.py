@@ -143,7 +143,7 @@ def _workspace_session_snapshot(project_id: str | None = None) -> dict[str, Any]
             "canonical_runtime_attached": bool(canonical.SERVER_STATE.get("runtime_initialized")),
             "graph_initialized": bool(canonical.SERVER_STATE.get("graph_initialized")),
             "websocket_ready": bool(canonical.SERVER_STATE.get("websocket_ready")),
-            "live_workflow": canonical.LIVE_WORKFLOW.status(),
+            "live_workflow": canonical.LIVE_WORKFLOW.authority_status(),
         },
         "self_tests_executed": False,
     }
@@ -208,7 +208,7 @@ def _committed_runtime_projection(workflow: Mapping[str, Any]) -> dict[str, Any]
 
 
 def _runtime_authority_status() -> dict[str, Any]:
-    workflow = canonical.LIVE_WORKFLOW.status()
+    workflow = canonical.LIVE_WORKFLOW.authority_status()
     runtime_state = _committed_runtime_projection(workflow)
     receipt_hash72 = runtime_state.get("receipt_hash72")
     state_hash72 = runtime_state.get("state_hash72")
