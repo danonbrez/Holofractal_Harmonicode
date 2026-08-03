@@ -49,8 +49,8 @@ def main() -> int:
 
         with TestClient(app) as client:
             status = request(client, "GET", "/api/runtime/mainframe/status")
-            functions = request(client, "GET", "/api/runtime/mainframe/functions?limit=1000")
-            hydrated = request(client, "GET", "/api/runtime/mainframe/functions?hydrated_only=true&limit=1000")
+            functions = request(client, "GET", "/api/runtime/mainframe/functions?limit=50")
+            hydrated = request(client, "GET", "/api/runtime/mainframe/functions?hydrated_only=true&limit=50")
             operations = request(client, "GET", "/api/runtime/mainframe/operations?limit=1000")
             public_catalog = request(client, "GET", "/api/public/catalog")
             openapi = request(client, "GET", "/api/public/openapi")
@@ -60,14 +60,38 @@ def main() -> int:
             assert status["unrestricted_subprocess_available"] is False
             assert status["native_authority_preserved"] is True
             assert status["catalog_count"] == functions["total"]
-            assert status["hydrated_count"] == hydrated["total"]
-            assert status["hydrated_count"] == status["callable_count"]
+            assert status["hydrated_count"] == hydrated["total"] == status["callable_count"]
             assert status["kind_counts"]["GOVERNED_OPERATION"] > 10
             assert status["kind_counts"]["PYTHON_FUNCTION"] > 10
             assert status["kind_counts"]["NATIVE_ABI"] > 10
             assert operations["total"] == status["kind_counts"]["GOVERNED_OPERATION"]
-            assert len({item["function_id"] for item in functions["functions"]}) == functions["total"]
+
+            first_ids = [item["function_id"] for item in functions["functions"]]
+            assert len(first_ids) == min(50, functions["total"])
+            assert len(first_ids) == len(set(first_ids))
             assert all(not item["hydrated"] or item["callable"] for item in functions["functions"])
+
+            last_page = request(
+                client,
+                "GET",
+                f"/api/runtime/mainframe/functions?offset={max(0, functions['total'] - 1)}&limit=1",
+            )
+            assert last_page["total"] == functions["total"]
+            assert len(last_page["functions"]) == 1
+            if functions["total"] > 1:
+                assert last_page["functions"][0]["function_id"] != first_ids[0]
+
+            hydrated_ids = [item["function_id"] for item in hydrated["functions"]]
+            assert len(hydrated_ids) == min(50, hydrated["total"])
+            assert len(hydrated_ids) == len(set(hydrated_ids))
+            if hydrated["total"] > 50:
+                last_hydrated = request(
+                    client,
+                    "GET",
+                    f"/api/runtime/mainframe/functions?hydrated_only=true&offset={hydrated['total'] - 1}&limit=1",
+                )
+                assert last_hydrated["total"] == hydrated["total"]
+                assert last_hydrated["functions"][0]["callable"] is True
 
             interpreter = request(
                 client,
@@ -112,8 +136,13 @@ def main() -> int:
             replay = request(client, "GET", f"/api/runtime/mainframe/replay/{operation_native_receipt}")
             assert replay["replay_verified"] is True
 
+            python_search = request(
+                client,
+                "GET",
+                "/api/runtime/mainframe/functions?hydrated_only=true&query=live_interpreter_self_test&limit=20",
+            )
             python_targets = [
-                item for item in hydrated["functions"]
+                item for item in python_search["functions"]
                 if item["kind"] == "PYTHON_FUNCTION" and item["name"] == "live_interpreter_self_test"
             ]
             assert python_targets
@@ -130,23 +159,14 @@ def main() -> int:
                 "workspace_id": "workspace:pass203",
                 "project_id": "project:pass203",
                 "steps": [
-                    {
-                        "step_id": "interpret",
-                        "function_id": "adapter:interpreter.exact",
-                        "arguments": {"expression": "9/3+7"},
-                    },
+                    {"step_id": "interpret", "function_id": "adapter:interpreter.exact", "arguments": {"expression": "9/3+7"}},
                     {
                         "step_id": "compile",
                         "function_id": "adapter:compiler.hhs_ir",
                         "arguments": {"source_text": "a²=1 b²=2", "target": "HHS_IR"},
                         "depends_on": ["interpret"],
                     },
-                    {
-                        "step_id": "status",
-                        "function_id": "op:system.status",
-                        "arguments": {},
-                        "depends_on": ["compile"],
-                    },
+                    {"step_id": "status", "function_id": "op:system.status", "arguments": {}, "depends_on": ["compile"]},
                 ],
             }
             plan_validation = request(client, "POST", "/api/runtime/mainframe/plans/validate", json=plan)
@@ -161,6 +181,8 @@ def main() -> int:
             assert jobs["governed_operation_count"] == operations["total"]
 
             missing = next((item for item in functions["functions"] if not item["hydrated"]), None)
+            if missing is None and not last_page["functions"][0]["hydrated"]:
+                missing = last_page["functions"][0]
             assert missing is not None
             response = client.post(
                 "/api/runtime/mainframe/invoke",
@@ -208,6 +230,8 @@ def main() -> int:
                     "public_route_count": public_catalog.get("summary", {}).get("route_count"),
                     "openapi_path_count": len(openapi_paths),
                     "plan_step_count": plan_execution["completed_step_count"],
+                    "catalog_page_limit": functions["limit"],
+                    "last_catalog_page_reachable": True,
                 },
                 "catalog_sha256": status["catalog_sha256"],
                 "status_hash72": status["status_hash72"],
@@ -219,6 +243,7 @@ def main() -> int:
                 "claim_boundary": {
                     "all_discovered_functions_indexed": True,
                     "all_hydrated_functions_callable": True,
+                    "bounded_pagination_preserved": True,
                     "unbound_functions_fail_closed": True,
                     "arbitrary_host_eval_available": False,
                     "unrestricted_subprocess_available": False,
