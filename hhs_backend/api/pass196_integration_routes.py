@@ -13,6 +13,9 @@ from hhs_backend.api.runtime_routes import (
     runtime_controller,
     runtime_graph,
 )
+from hhs_backend.runtime.hhs_pass196_gap_partition_v1 import (
+    partition_integration_gaps,
+)
 from hhs_backend.runtime.hhs_pass196_integrated_environment_v1 import (
     PASS196_INTEGRATED_ENVIRONMENT,
     Pass196Error,
@@ -81,6 +84,16 @@ def _background_scan_runner(
     return result
 
 
+def _gap_report() -> Dict[str, Any]:
+    result = PASS196_INTEGRATED_ENVIRONMENT.gaps()
+    status = PASS196_INTEGRATED_ENVIRONMENT.status()
+    result["scope"] = partition_integration_gaps(
+        result.get("unresolved_passes") or [],
+        maximum_discovered_pass=int(status.get("maximum_discovered_pass") or 0),
+    )
+    return result
+
+
 PASS196_SCAN_JOBS = Pass196ScanJobManager(
     _background_scan_runner,
     state_root=PASS196_INTEGRATED_ENVIRONMENT.state_root,
@@ -118,6 +131,8 @@ def integration_status() -> Dict[str, Any]:
     latest_job = PASS196_SCAN_JOBS.latest()
     if latest_job is not None:
         result["latest_scan_job"] = latest_job
+    if result.get("scanned"):
+        result["gap_scope"] = _gap_report()["scope"]
     result["io"] = {
         "ingress": ingress,
         "egress": _egress(
@@ -129,6 +144,9 @@ def integration_status() -> Dict[str, Any]:
                 "manifest_hash72": result.get("manifest_hash72"),
                 "latest_scan_job_id": (latest_job or {}).get("job_id"),
                 "latest_scan_job_state": (latest_job or {}).get("state"),
+                "current_frontier_closed": (result.get("gap_scope") or {}).get(
+                    "current_frontier_closed"
+                ),
             },
         ),
     }
@@ -157,6 +175,7 @@ async def integration_scan(request: IntegrationScanRequest) -> Dict[str, Any]:
                 "reason": str(exc),
             },
         ) from exc
+    result["gap_scope"] = _gap_report()["scope"]
     result["io"] = {
         "ingress": ingress,
         "egress": _egress(
@@ -167,6 +186,9 @@ async def integration_scan(request: IntegrationScanRequest) -> Dict[str, Any]:
                 "manifest_hash72": result.get("manifest_hash72"),
                 "file_count": result.get("file_count"),
                 "vector_object_id": (result.get("vector") or {}).get("vector_object_id"),
+                "current_frontier_closed": result["gap_scope"].get(
+                    "current_frontier_closed"
+                ),
             },
         ),
     }
@@ -253,6 +275,8 @@ def integration_scan_job_status(job_id: str) -> Dict[str, Any]:
                 "reason": str(exc),
             },
         ) from exc
+    if job.get("state") == "SUCCEEDED":
+        job["gap_scope"] = _gap_report()["scope"]
     job["io"] = {
         "ingress": ingress,
         "egress": _egress(
@@ -294,7 +318,7 @@ def integration_gaps() -> Dict[str, Any]:
     operation = "api.runtime.integration.gaps"
     ingress = _ingress(operation, {"method": "GET"})
     try:
-        result = PASS196_INTEGRATED_ENVIRONMENT.gaps()
+        result = _gap_report()
     except Pass196Error as exc:
         raise HTTPException(status_code=409, detail=str(exc)) from exc
     result["io"] = {
@@ -305,6 +329,12 @@ def integration_gaps() -> Dict[str, Any]:
                 "complete": result.get("complete"),
                 "unresolved_pass_count": result.get("unresolved_pass_count"),
                 "missing_mandatory_surfaces": result.get("missing_mandatory_surfaces"),
+                "current_frontier_closed": result["scope"].get(
+                    "current_frontier_closed"
+                ),
+                "legacy_unresolved_count": result["scope"].get(
+                    "legacy_unresolved_count"
+                ),
             },
         ),
     }
@@ -360,6 +390,7 @@ async def integration_tool_invoke(request: IntegrationToolInvokeRequest) -> Dict
                 persist_vector=bool(request.arguments.get("persist_vector", True)),
                 source=operation,
             )
+            result["gap_scope"] = _gap_report()["scope"]
         elif request.tool == "integration.scan.submit":
             authorized_tick = runtime_controller.authorized_tick(source=operation)
             result = PASS196_SCAN_JOBS.submit(
@@ -376,7 +407,7 @@ async def integration_tool_invoke(request: IntegrationToolInvokeRequest) -> Dict
         elif request.tool == "integration.manifest":
             result = PASS196_INTEGRATED_ENVIRONMENT.manifest()
         elif request.tool == "integration.gaps":
-            result = PASS196_INTEGRATED_ENVIRONMENT.gaps()
+            result = _gap_report()
         else:
             raise Pass196Error(f"unknown integration tool: {request.tool}")
     except (Pass196Error, Pass196ScanJobError) as exc:
@@ -396,6 +427,9 @@ async def integration_tool_invoke(request: IntegrationToolInvokeRequest) -> Dict
                 "manifest_hash72": result.get("manifest_hash72"),
                 "job_id": result.get("job_id"),
                 "job_state": result.get("state"),
+                "current_frontier_closed": (result.get("scope") or {}).get(
+                    "current_frontier_closed"
+                ),
             },
         ),
     }
