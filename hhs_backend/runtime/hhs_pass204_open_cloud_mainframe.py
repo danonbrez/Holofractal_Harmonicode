@@ -72,6 +72,7 @@ class OpenCloudMainframe(_V1OpenCloudMainframe):
 
     def status(self) -> Dict[str, Any]:
         payload = super().status()
+        payload.pop("status_hash72", None)
         payload["kernel_constraint_manifest"] = dict(KERNEL_CONSTRAINT_MANIFEST)
         payload["kernel_constraint_manifest_sha256"] = _v1._sha256(KERNEL_CONSTRAINT_MANIFEST)
         payload["host_trust_boundary"] = dict(HOST_TRUST_BOUNDARY)
@@ -130,6 +131,8 @@ class OpenCloudMainframe(_V1OpenCloudMainframe):
 
     def _persist_snapshot(self, **kwargs: Any) -> Dict[str, Any]:
         snapshot = super()._persist_snapshot(**kwargs)
+        snapshot.pop("snapshot_root", None)
+        snapshot.pop("recall_token", None)
         snapshot["kernel_constraint_manifest"] = dict(KERNEL_CONSTRAINT_MANIFEST)
         snapshot["kernel_constraint_manifest_sha256"] = _v1._sha256(KERNEL_CONSTRAINT_MANIFEST)
         snapshot["host_trust_boundary"] = dict(HOST_TRUST_BOUNDARY)
