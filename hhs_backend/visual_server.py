@@ -5,8 +5,9 @@ installation, application-factory, media, hydration, Pass 196 integration,
 Pass 197 exact A/B calibration, Pass 198 operation calibration registry,
 Pass 199 durable distributed calibration, Pass 200A proof-carrying compiler
 shadow optimization, Pass 200B governed canary admission, Pass 200C guarded
-active admission, and the Pass 161 visual application. The canonical server
-remains runtime authority; this module only changes HTTP projection.
+active admission, Pass 201 public API federation, and the Pass 161 visual
+application. The canonical server remains runtime authority; this module only
+changes HTTP projection.
 """
 from __future__ import annotations
 
@@ -30,7 +31,9 @@ from hhs_backend.api.pass200a_optimization_routes_v2 import router as pass200a_o
 from hhs_backend.api.pass200b_canary_routes import router as pass200b_canary_router
 from hhs_backend.api.pass200c_active_routes import router as pass200c_active_router
 from hhs_backend.api.probability_hydration_routes import router as probability_hydration_router
+from hhs_backend.api.public_api_registry_routes import router as public_api_router
 from hhs_backend.api.storybook_reel_routes import router as storybook_reel_router
+from hhs_backend.runtime.hhs_pass201_public_api_federation_v1 import register_public_api_federation
 
 app = canonical_server.app
 
@@ -77,6 +80,12 @@ if not _route_exists("/api/runtime/graphics-hydration/status"):
     app.include_router(graphics_hydration_router)
 if not _route_exists("/api/v1/probability/status"):
     app.include_router(probability_hydration_router)
+if not _route_exists("/api/public/status"):
+    app.include_router(public_api_router)
+
+# Pass 201 inspects every module under hhs_backend.api and attaches each route
+# that is not already registered. This happens before the root static mount.
+PUBLIC_API_REGISTRATION = register_public_api_federation(app)
 
 
 @app.get("/api/system/status", tags=["system"])
@@ -87,6 +96,10 @@ async def visual_system_status() -> Dict[str, Any]:
         "status": "online",
         "boot_id": canonical_server.SERVER_BOOT_ID,
         "default_interface": "HHS_LITERT_LM_VISUAL_DEVELOPMENT_ASSISTANT",
+        "public_api": "/api/public",
+        "public_api_catalog": "/api/public/catalog",
+        "public_api_openapi": "/api/public/openapi",
+        "public_api_registration_closed": PUBLIC_API_REGISTRATION.get("closed", False),
         "assistant_api": "/api/assistant",
         "installation_api": "/api/runtime/installation",
         "application_factory_api": "/api/runtime/application-factory",
@@ -99,6 +112,7 @@ async def visual_system_status() -> Dict[str, Any]:
         "pass200a_optimization_authority_api": "/api/runtime/optimization-authority",
         "pass200b_governed_canary_api": "/api/runtime/optimization-canary",
         "pass200c_guarded_active_api": "/api/runtime/optimization-active",
+        "pass201_public_api_federation_api": "/api/public",
         "graphics_hydration_api": "/api/runtime/graphics-hydration",
         "graphics_constraint_registry_api": "/api/runtime/graphics-hydration/constraints/registry",
         "probability_hydration_api": "/api/v1/probability",
@@ -115,6 +129,7 @@ async def visual_system_status() -> Dict[str, Any]:
         "pass200a_proof_carrying_optimization": "HHS-P200A-HOLDOUT-BUNDLE-SHADOW-VM81-H72-H216",
         "pass200b_governed_canary": "HHS-P200B-DUAL-APPROVAL-CANARY-ROLLBACK-VM81-H72",
         "pass200c_guarded_active": "HHS-P200C-CANARY-EVIDENCE-ACTIVE-GUARD-VM81-H72",
+        "pass201_public_api_federation": "HHS-P201-PUBLIC-API-FEDERATION-SERVICE-PASS-ROUTER-OPENAPI",
         "graphics_hydration": "HHS-P181-NATIVE-CINEMATIC-GRAPHICS-HYDRATION-RUNTIME",
         "graphics_constraints": "HHS-P181-GRAPHICS-CONSTRAINT-FREEZE-REGISTRY-V1",
         "probability_hydration": "HHS-P183-PEHMR-M1259713-F72-VM81-H72-H216",
