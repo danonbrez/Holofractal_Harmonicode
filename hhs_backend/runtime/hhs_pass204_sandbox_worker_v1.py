@@ -28,6 +28,10 @@ class SandboxBoundaryError(RuntimeError):
     pass
 
 
+class InvalidCallShapeError(ValueError):
+    pass
+
+
 def _safe(value: Any) -> Any:
     if dataclasses.is_dataclass(value):
         return _safe(dataclasses.asdict(value))
@@ -173,39 +177,44 @@ def _bind_call(function: Any, supplied: Mapping[str, Any], sandbox_root: Path) -
     accepted_names = set(signature.parameters)
     unknown = set(explicit_kwargs) - accepted_names
     if unknown and not has_var_keyword:
-        raise TypeError(f"unknown arguments: {sorted(unknown)}")
+        raise InvalidCallShapeError(f"unknown arguments: {sorted(unknown)}")
 
-    for name, parameter in signature.parameters.items():
-        annotation = hints.get(name, parameter.annotation)
-        if parameter.kind is inspect.Parameter.VAR_POSITIONAL:
-            while explicit_index < len(explicit_args):
-                positional.append(_coerce(explicit_args[explicit_index], annotation, sandbox_root))
-                explicit_index += 1
-            continue
-        if parameter.kind is inspect.Parameter.VAR_KEYWORD:
-            for key in list(explicit_kwargs):
-                if key not in accepted_names:
-                    keywords[key] = explicit_kwargs.pop(key)
-            continue
-        present = name in explicit_kwargs
-        if parameter.kind is inspect.Parameter.POSITIONAL_ONLY:
-            if explicit_index < len(explicit_args):
+    try:
+        for name, parameter in signature.parameters.items():
+            annotation = hints.get(name, parameter.annotation)
+            if parameter.kind is inspect.Parameter.VAR_POSITIONAL:
+                while explicit_index < len(explicit_args):
+                    positional.append(_coerce(explicit_args[explicit_index], annotation, sandbox_root))
+                    explicit_index += 1
+                continue
+            if parameter.kind is inspect.Parameter.VAR_KEYWORD:
+                for key in list(explicit_kwargs):
+                    if key not in accepted_names:
+                        keywords[key] = explicit_kwargs.pop(key)
+                continue
+            present = name in explicit_kwargs
+            if parameter.kind is inspect.Parameter.POSITIONAL_ONLY:
+                if explicit_index < len(explicit_args):
+                    positional.append(_coerce(explicit_args[explicit_index], annotation, sandbox_root))
+                    explicit_index += 1
+                elif present:
+                    positional.append(_coerce(explicit_kwargs.pop(name), annotation, sandbox_root))
+                elif parameter.default is inspect.Signature.empty:
+                    raise InvalidCallShapeError(f"missing required argument: {name}")
+                continue
+            if explicit_index < len(explicit_args) and parameter.kind is inspect.Parameter.POSITIONAL_OR_KEYWORD:
                 positional.append(_coerce(explicit_args[explicit_index], annotation, sandbox_root))
                 explicit_index += 1
             elif present:
-                positional.append(_coerce(explicit_kwargs.pop(name), annotation, sandbox_root))
+                keywords[name] = _coerce(explicit_kwargs.pop(name), annotation, sandbox_root)
             elif parameter.default is inspect.Signature.empty:
-                raise TypeError(f"missing required argument: {name}")
-            continue
-        if explicit_index < len(explicit_args) and parameter.kind is inspect.Parameter.POSITIONAL_OR_KEYWORD:
-            positional.append(_coerce(explicit_args[explicit_index], annotation, sandbox_root))
-            explicit_index += 1
-        elif present:
-            keywords[name] = _coerce(explicit_kwargs.pop(name), annotation, sandbox_root)
-        elif parameter.default is inspect.Signature.empty:
-            raise TypeError(f"missing required argument: {name}")
+                raise InvalidCallShapeError(f"missing required argument: {name}")
+    except InvalidCallShapeError:
+        raise
+    except Exception as exc:
+        raise InvalidCallShapeError(f"argument coercion failed: {exc.__class__.__name__}: {exc}") from exc
     if explicit_index < len(explicit_args):
-        raise TypeError("too many positional arguments")
+        raise InvalidCallShapeError("too many positional arguments")
     return positional, keywords
 
 
@@ -213,14 +222,14 @@ def _python_execution(function_record: Mapping[str, Any], arguments: Mapping[str
     module_name = str(function_record["module"])
     qualname = str(function_record["qualname"])
     if "." in qualname or qualname.startswith("_"):
-        raise TypeError("only indexed public top-level declarations are executable")
+        raise InvalidCallShapeError("only indexed public top-level declarations are executable")
     stdout = io.StringIO()
     stderr = io.StringIO()
     with contextlib.redirect_stdout(stdout), contextlib.redirect_stderr(stderr):
         module = importlib.import_module(module_name)
         function = getattr(module, qualname)
         if not inspect.isfunction(function):
-            raise TypeError("indexed target is not a Python function")
+            raise InvalidCallShapeError("indexed target is not a Python function")
         positional, keywords = _bind_call(function, arguments, sandbox_root)
         result = function(*positional, **keywords)
         if inspect.isawaitable(result):
@@ -294,7 +303,7 @@ def main() -> int:
                     "outcome": "GOVERNED_ADAPTER_REQUIRED",
                     "continuation": {"kind": kind},
                 }
-        except (TypeError, ValueError, KeyError) as exc:
+        except InvalidCallShapeError as exc:
             response = {
                 "execution_status": "INVALID_CALL",
                 "outcome": "ARGUMENT_VALIDATION_REJECTED",
