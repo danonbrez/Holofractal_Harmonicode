@@ -21,13 +21,18 @@ class DigitalOceanTLSRenewalAssetsTests(unittest.TestCase):
             )
             self.assertEqual(result.returncode, 0, result.stderr)
 
-    def test_timer_is_persistent_and_bounded(self) -> None:
+    def test_timer_and_service_are_persistent_and_bounded(self) -> None:
         timer = self.assets.joinpath("hhs-tls-renew.timer").read_text(
+            encoding="utf-8"
+        )
+        service = self.assets.joinpath("hhs-tls-renew.service").read_text(
             encoding="utf-8"
         )
         self.assertIn("OnBootSec=5min", timer)
         self.assertIn("OnUnitActiveSec=12h", timer)
         self.assertIn("Persistent=true", timer)
+        self.assertIn("TimeoutStartSec=10min", service)
+        self.assertIn("KillMode=control-group", service)
 
     def test_watchdog_is_fail_closed_and_does_not_open_application_port(self) -> None:
         script = self.assets.joinpath("hhs-tls-renew.sh").read_text(
