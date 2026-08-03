@@ -66,6 +66,13 @@ class Pass203HighFidelityStorybookRuntime(_InheritedHighFidelityRuntime):
                 "version": VERSION,
                 "cumulative_system_version": 203,
                 "all_prior_passes_inherited": True,
+                "quality_profiles": {name: dict(values) for name, values in QUALITY_PRESETS.items()},
+                "fit_modes": list(FIT_MODES),
+                "scale_filters": list(SCALE_FILTERS),
+                "video_presets": list(VIDEO_PRESETS),
+                "pixel_formats": list(PIXEL_FORMATS),
+                "texture_layer_bits": dict(TEXTURE_LAYER_BITS),
+                "sprite_overlay_bits": dict(SPRITE_OVERLAY_BITS),
             }
         )
         result.pop("catalog_hash72", None)
@@ -80,6 +87,7 @@ class Pass203HighFidelityStorybookRuntime(_InheritedHighFidelityRuntime):
                 "contract": CONTRACT,
                 "classification": CLASSIFICATION,
                 "cumulative_system_version": 203,
+                "quality_profiles": {name: dict(values) for name, values in QUALITY_PRESETS.items()},
             }
         )
         return result
@@ -123,6 +131,12 @@ class Pass203HighFidelityStorybookRuntime(_InheritedHighFidelityRuntime):
                 "logical_frame_is_output_quality_ceiling": False,
                 "all_native_layers_publicly_selectable": True,
                 "all_render_parameters_publicly_enumerated": True,
+                "quality_profiles": [
+                    {"id": name, **dict(values)} for name, values in QUALITY_PRESETS.items()
+                ],
+                "parameter_catalog_url": "/api/runtime/storybook-reel/parameters",
+                "presets_url": "/api/runtime/storybook-reel/presets",
+                "resolve_url": "/api/runtime/storybook-reel/resolve",
             }
         )
         return result
