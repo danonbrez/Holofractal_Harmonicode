@@ -1,0 +1,95 @@
+name: Pass 205 Authority and Transport Repair
+
+on:
+  pull_request:
+    paths:
+      - 'hhs_python/runtime/__init__.py'
+      - 'hhs_python/runtime/hhs_pass205_native_freshness_guard.py'
+      - 'hhs_backend/runtime/hhs_pass205_governed_continuation_v2.py'
+      - 'hhs_backend/runtime/hhs_pass205_retrieval_order_v1.py'
+      - 'hhs_backend/api/a0_pass205_transport_bootstrap.py'
+      - 'hhs_backend/api/a_pass205_governed_bootstrap.py'
+      - 'deployment/digitalocean/pass205_state/**'
+      - 'bin/post_compile'
+      - 'tests/test_hhs_pass205_native_freshness_guard_v1.py'
+      - 'tests/test_hhs_pass205_state_deployment_v1.py'
+      - 'tests/test_hhs_pass205_governed_continuation_v2.py'
+      - 'tests/test_hhs_pass205_transport_and_retrieval_v1.py'
+      - '.github/workflows/pass205-authority-transport-repair.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  PYTHONFAULTHANDLER: '1'
+  PYTHONUNBUFFERED: '1'
+
+jobs:
+  validate-pass205-repair:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    env:
+      HHS_PASS205_DB: ${{ runner.temp }}/pass205-repair.sqlite3
+    steps:
+      - name: Checkout exact tree
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install inherited runtime dependencies
+        run: python -m pip install -r requirements.txt
+
+      - name: Validate deployment shell surfaces
+        run: |
+          bash -n bin/post_compile
+          bash -n deployment/digitalocean/pass205_state/install.sh
+
+      - name: Build canonical and Pass 205 native ABIs
+        run: |
+          make c-abi
+          python - <<'PY'
+          from hhs_python.runtime.hhs_pass205_continuation_bridge import build_native_library
+          print(build_native_library(force=True))
+          PY
+
+      - name: Compile repair surfaces
+        run: |
+          python -m py_compile \
+            hhs_python/runtime/__init__.py \
+            hhs_python/runtime/hhs_pass205_native_freshness_guard.py \
+            hhs_backend/runtime/hhs_pass205_governed_continuation_v2.py \
+            hhs_backend/runtime/hhs_pass205_retrieval_order_v1.py \
+            hhs_backend/api/a0_pass205_transport_bootstrap.py \
+            hhs_backend/api/a_pass205_governed_bootstrap.py
+
+      - name: Run focused Pass 205 repair tests
+        run: |
+          python -m pytest -q \
+            tests/test_hhs_pass205_native_freshness_guard_v1.py \
+            tests/test_hhs_pass205_state_deployment_v1.py \
+            tests/test_hhs_pass205_governed_continuation_v2.py \
+            tests/test_hhs_pass205_transport_and_retrieval_v1.py
+
+      - name: Run inherited Pass 205 production suite
+        run: python -m pytest -q tests/test_hhs_pass205_continuation_runtime_v1.py
+
+      - name: Verify hosted federation uses governed singleton
+        run: |
+          python - <<'PY'
+          from hhs_backend.application_ide_server import app
+          from hhs_backend.api import pass205_continuation_routes as routes
+          from hhs_backend.runtime.hhs_pass205_governed_continuation_v2 import GovernedPass205ContinuationRuntime
+
+          assert isinstance(routes.PASS205_CONTINUATION_RUNTIME, GovernedPass205ContinuationRuntime)
+          paths = {str(getattr(route, 'path', '')) for route in app.router.routes}
+          assert '/api/runtime/continuation/advance' in paths
+          assert '/api/runtime/continuation/transport' in paths
+          assert routes.PASS205_CONTINUATION_RUNTIME.status()['vm81_admission_required_before_persistence']
+          PY
+
+      - name: Run inherited public federation tests
+        run: python -m unittest -v tests.test_hhs_pass201_public_api_federation_v1
