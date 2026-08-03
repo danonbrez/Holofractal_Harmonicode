@@ -13,11 +13,18 @@ on:
       - "hhs_backend/api/litert_lm_assistant_routes.py"
       - "hhs_backend/api/pass166_word2vec_routes.py"
       - "hhs_backend/api/runtime_routes.py"
+      - "hhs_backend/api/a0_pass205_transport_bootstrap.py"
+      - "hhs_backend/api/a_pass205_governed_bootstrap.py"
       - "hhs_backend/runtime/live_fastapi_workflow_v1.py"
       - "hhs_backend/runtime/hhs_production_assistant_v1.py"
       - "hhs_backend/runtime/hhs_native_litert_lm_provider_v1.py"
       - "hhs_backend/runtime/hhs_litert_lm_hhs_api_assistant_v1.py"
+      - "hhs_backend/runtime/hhs_pass205_governed_continuation_v2.py"
+      - "hhs_backend/runtime/hhs_pass205_retrieval_order_v1.py"
+      - "hhs_python/runtime/hhs_pass205_native_freshness_guard.py"
+      - "deployment/digitalocean/pass205_state/**"
       - "tests/test_hhs_production_public_app_v1.py"
+      - "tests/test_hhs_pass205_*"
       - "Procfile"
       - "bin/post_compile"
       - ".github/workflows/hhs-runtime-os-deploy.yml"
@@ -33,11 +40,18 @@ on:
       - "hhs_backend/api/litert_lm_assistant_routes.py"
       - "hhs_backend/api/pass166_word2vec_routes.py"
       - "hhs_backend/api/runtime_routes.py"
+      - "hhs_backend/api/a0_pass205_transport_bootstrap.py"
+      - "hhs_backend/api/a_pass205_governed_bootstrap.py"
       - "hhs_backend/runtime/live_fastapi_workflow_v1.py"
       - "hhs_backend/runtime/hhs_production_assistant_v1.py"
       - "hhs_backend/runtime/hhs_native_litert_lm_provider_v1.py"
       - "hhs_backend/runtime/hhs_litert_lm_hhs_api_assistant_v1.py"
+      - "hhs_backend/runtime/hhs_pass205_governed_continuation_v2.py"
+      - "hhs_backend/runtime/hhs_pass205_retrieval_order_v1.py"
+      - "hhs_python/runtime/hhs_pass205_native_freshness_guard.py"
+      - "deployment/digitalocean/pass205_state/**"
       - "tests/test_hhs_production_public_app_v1.py"
+      - "tests/test_hhs_pass205_*"
       - "Procfile"
       - "bin/post_compile"
       - ".github/workflows/hhs-runtime-os-deploy.yml"
@@ -53,7 +67,7 @@ concurrency:
 jobs:
   validate-production-harmonizer:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 45
 
     steps:
       - name: Check out source revision
@@ -85,6 +99,45 @@ jobs:
         run: |
           timeout 600s bash bin/post_compile
           test -s hhs_runtime/builds/libhhs_runtime.so
+
+      - name: Validate Pass 205 authority and transport repairs
+        if: ${{ hashFiles('hhs_backend/runtime/hhs_pass205_governed_continuation_v2.py') != '' }}
+        env:
+          HHS_PASS205_DB: ${{ runner.temp }}/pass205-repair.sqlite3
+        run: |
+          set -euo pipefail
+          bash -n bin/post_compile
+          bash -n deployment/digitalocean/pass205_state/install.sh
+          python -m py_compile \
+            hhs_python/runtime/__init__.py \
+            hhs_python/runtime/hhs_pass205_native_freshness_guard.py \
+            hhs_backend/runtime/hhs_pass205_governed_continuation_v2.py \
+            hhs_backend/runtime/hhs_pass205_retrieval_order_v1.py \
+            hhs_backend/api/a0_pass205_transport_bootstrap.py \
+            hhs_backend/api/a_pass205_governed_bootstrap.py
+          python - <<'PY'
+          from hhs_python.runtime.hhs_pass205_continuation_bridge import build_native_library
+          print(build_native_library(force=True))
+          PY
+          timeout 600s pytest -q \
+            tests/test_hhs_pass205_native_freshness_guard_v1.py \
+            tests/test_hhs_pass205_state_deployment_v1.py \
+            tests/test_hhs_pass205_governed_continuation_v2.py \
+            tests/test_hhs_pass205_transport_and_retrieval_v1.py
+          timeout 900s pytest -q tests/test_hhs_pass205_continuation_runtime_v1.py
+          timeout 180s python - <<'PY'
+          from hhs_backend.application_ide_server import app
+          from hhs_backend.api import pass205_continuation_routes as routes
+          from hhs_backend.runtime.hhs_pass205_governed_continuation_v2 import GovernedPass205ContinuationRuntime
+
+          assert isinstance(routes.PASS205_CONTINUATION_RUNTIME, GovernedPass205ContinuationRuntime)
+          paths = {str(getattr(route, 'path', '')) for route in app.router.routes}
+          assert '/api/runtime/continuation/advance' in paths
+          assert '/api/runtime/continuation/transport' in paths
+          status = routes.PASS205_CONTINUATION_RUNTIME.status()
+          assert status['vm81_admission_required_before_persistence']
+          assert status['replay_reconstructs_ordered_deltas']
+          PY
 
       - name: Validate canonical backend and real execution authorities
         env:
