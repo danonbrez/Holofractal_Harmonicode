@@ -222,10 +222,9 @@ window.HHSProductionStartupCoordinator = Object.freeze({
 // are imported only after that path has committed a real receipt and service
 // registry, so their status reads can never delay RECEIPT CLOSED.
 void import('./public-boot.mjs')
-  .then(({ startPublicBoot }) => {
-    const boot = startPublicBoot();
+  .then(({ startPublicBoot }) => startPublicBoot())
+  .then(() => {
     void loadDeferredProjectionModules();
-    return boot;
   })
   .catch((error) => {
     console.error('HHS public module boot failed', error);
