@@ -73,6 +73,53 @@ async function runGovernedLifecycle(job) {
   finally { job?.signal?.removeEventListener?.('abort', abort); }
 }
 
+async function hydrateBackendAuthorityEvidence() {
+  const [productHealth, pass175] = await Promise.all([
+    requestJson('/api/product/health', { timeoutMs: 10000, retryCount: 1 }),
+    requestJson('/api/v1/pass175/status', { timeoutMs: 10000, retryCount: 1 }),
+  ]);
+  const authorityEvidence = stability.setAuthorityEvidence({ productHealth, pass175 });
+  if (!authorityEvidence.vm81AuthorityPreserved || authorityEvidence.hash72CommitStreams !== 1) {
+    throw new Error('HHS_P176_BACKEND_AUTHORITY_EVIDENCE_REJECTED');
+  }
+  void stability.runAction('workspace-authority-bind', async ({ signal }) => {
+    const projectId = await ensureProject({ signal });
+    log(`Workspace authority bound to ${projectId}.`);
+    return projectId;
+  }, { key: 'workspace-authority-bind', timeoutMs: 30000, detail: 'Checking backend workspace authority' }).catch((error) => {
+    log(`Workspace initialization deferred: ${error.message}`);
+  });
+  return authorityEvidence;
+}
+
+function scheduleBackendAuthorityHydration() {
+  window.setTimeout(() => {
+    void hydrateBackendAuthorityEvidence().catch((error) => {
+      stability.recordError(error, {
+        stage: 'BACKEND_CAPABILITY_CHECKED',
+        optional: true,
+        deferred: true,
+      });
+    });
+  }, 0);
+  return { deferred: true, authorityRequiredBeforeAcceptance: true };
+}
+
+function scheduleOptionalProjectionHydration() {
+  const initializers = [
+    ['integrated-workbench', initIntegratedWorkbench],
+    ['intuitive-ide', initIntuitiveIDE],
+    ['pass175-processor', initPass175Processor],
+    ['pass175-terminal-processor', initPass175TerminalProcessor],
+  ];
+  initializers.forEach(([name, initializer], index) => {
+    window.setTimeout(() => {
+      void safeInit(name, initializer, { optional: true });
+    }, index * 16);
+  });
+  return { deferred: true, taskBounded: true, count: initializers.length };
+}
+
 function bindCoreControls() {
   bind(required('#ide-home'), 'click', showIde, 'ide-home');
   bind(required('#assistant-home'), 'click', () => showOther('assistant'), 'assistant-home', true);
@@ -290,37 +337,12 @@ async function bootVisualIDE() {
     },
     {
       stage: 'BACKEND_CAPABILITY_CHECKED',
-      run: async () => {
-        const [productHealth, pass175] = await Promise.all([
-          requestJson('/api/product/health', { timeoutMs: 10000, retryCount: 1 }),
-          requestJson('/api/v1/pass175/status', { timeoutMs: 10000, retryCount: 1 }),
-        ]);
-        const authorityEvidence = stability.setAuthorityEvidence({ productHealth, pass175 });
-        if (!authorityEvidence.vm81AuthorityPreserved || authorityEvidence.hash72CommitStreams !== 1) {
-          throw new Error('HHS_P176_BACKEND_AUTHORITY_EVIDENCE_REJECTED');
-        }
-        void stability.runAction('workspace-authority-bind', async ({ signal }) => {
-          const projectId = await ensureProject({ signal });
-          log(`Workspace authority bound to ${projectId}.`);
-          return projectId;
-        }, { key: 'workspace-authority-bind', timeoutMs: 30000, detail: 'Checking backend workspace authority' }).catch((error) => {
-          log(`Workspace initialization deferred: ${error.message}`);
-        });
-        return authorityEvidence;
-      },
+      run: () => scheduleBackendAuthorityHydration(),
       optional: true,
     },
     {
       stage: 'OPTIONAL_REGISTRY_HISTORY_DIAGNOSTICS_LOADING',
-      run: () => {
-        queueMicrotask(() => {
-          void safeInit('integrated-workbench', initIntegratedWorkbench, { optional: true });
-          void safeInit('intuitive-ide', initIntuitiveIDE, { optional: true });
-          void safeInit('pass175-processor', initPass175Processor, { optional: true });
-          void safeInit('pass175-terminal-processor', initPass175TerminalProcessor, { optional: true });
-        });
-        return { deferred: true };
-      },
+      run: () => scheduleOptionalProjectionHydration(),
       optional: true,
     },
     {
