@@ -30,3 +30,14 @@ test('deployment health reconciliation is task-bounded and non-reentrant', async
   assert.match(source, /setText\('#hhs-backend-health-title'/);
   assert.match(source, /setText\('#hhs-backend-health-message'/);
 });
+
+test('deployment health uses bounded status projections without duplicating product health', async () => {
+  const source = await readFile(healthUrl, 'utf8');
+  assert.match(source, /const RUNTIME_AUTHORITY_PATH = '\/api\/runtime\/authority\/status';/);
+  assert.match(source, /const ASSISTANT_STATUS_PATH = '\/api\/assistant\/status';/);
+  assert.match(source, /Promise\.allSettled\(\[/);
+  assert.match(source, /withTimeout\(RUNTIME_AUTHORITY_PATH\)/);
+  assert.match(source, /withTimeout\(ASSISTANT_STATUS_PATH\)/);
+  assert.doesNotMatch(source, /\/api\/product\/health/);
+  assert.match(source, /heavyweight_product_health_probe_duplicated:\s*false/);
+});
