@@ -1,0 +1,65 @@
+{
+  "schema": "HHS_PASS_207_GPU_DRIVER_PLUGIN_MANIFEST_V1",
+  "plugin_id": "hhs.pass207.vm81_gpu_hyperthread_driver",
+  "version": "1.0.0",
+  "contract": "HHS-P207-VM81-5184-GPU-HYPERTHREAD-DRIVER-VECTOR-BUFFER-CACHE-H72-H216",
+  "classification": "ADDITIVE_CORE_PRESERVING_RUNTIME_PLUGIN",
+  "native_abi": {
+    "header": "hhs_runtime/c/hhs_pass207_gpu_driver.h",
+    "source": "hhs_runtime/c/hhs_pass207_gpu_driver.c",
+    "library_linux": "hhs_runtime/builds/libhhs_pass207_gpu_driver.so",
+    "library_macos": "hhs_runtime/builds/libhhs_pass207_gpu_driver.dylib",
+    "library_windows": "hhs_runtime/builds/hhs_pass207_gpu_driver.dll",
+    "api_version": 1,
+    "source_segments": [
+      "hhs_runtime/c/hhs_pass207_gpu_driver_part1.inc",
+      "hhs_runtime/c/hhs_pass207_gpu_driver_part2.inc",
+      "hhs_runtime/c/hhs_pass207_gpu_driver_part3.inc",
+      "hhs_runtime/c/hhs_pass207_gpu_driver_part4.inc",
+      "hhs_runtime/c/hhs_pass207_gpu_driver_part5.inc"
+    ]
+  },
+  "python_bindings": [
+    "hhs_python.runtime.hhs_pass207_gpu_driver_native",
+    "hhs_python.runtime.hhs_pass207_gpu_driver_bridge.Pass207GPUDriver",
+    "hhs_backend.runtime.hhs_pass207_vm81_gpu_runtime_v1.Pass207VM81GPURuntime"
+  ],
+  "inherited_bindings": [
+    "hhs_backend.runtime.hhs_pass205_accelerator_translation_v1.AcceleratorBatch",
+    "hhs_backend.runtime.hhs_pass205_accelerator_translation_v1.Pass205AcceleratorTranslation",
+    "VM81_KERNEL_SINGLE_ADMISSION_AUTHORITY",
+    "HASH72_SINGLE_COMMIT_STREAM",
+    "HASH216_VECTOR_INDEX"
+  ],
+  "stable_topology": {
+    "cells": 81,
+    "hyperthreads_per_cell": 64,
+    "lanes": 5184,
+    "phase_rows": 72,
+    "phase_columns": 72
+  },
+  "capabilities": [
+    "OPENCL_GPU_DYNAMIC_DISCOVERY",
+    "VM81_5184_LANE_CANDIDATE_DISPATCH",
+    "DETERMINISTIC_64_LANE_CELL_PACKING",
+    "SPARSE_32_CHANNEL_PROJECTION",
+    "Q_ADDRESS_HYDRATION_VALIDATION",
+    "EXACT_CPU_ORACLE_COMPARISON",
+    "CONTENT_KEYED_HOST_DEVICE_BUFFER_CACHE",
+    "HASH72_VECTOR_MATRIX_DISTANCE_ACCELERATION"
+  ],
+  "authority": {
+    "may_propose_candidate": true,
+    "may_commit_hash72": false,
+    "may_mutate_canonical_state": false,
+    "may_bypass_vm81": false,
+    "may_reorder_noncommutative_operations": false
+  },
+  "compatibility": {
+    "pass205_accelerator_batch": true,
+    "pass206_core_freeze": true,
+    "no_existing_abi_symbol_modified": true,
+    "no_existing_opcode_modified": true,
+    "no_existing_route_modified": true
+  }
+}

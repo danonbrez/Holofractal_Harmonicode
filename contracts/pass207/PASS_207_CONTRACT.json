@@ -1,0 +1,144 @@
+{
+  "schema": "HHS_PASS_207_CONTRACT_V1",
+  "pass": 207,
+  "contract_id": "HHS-P207-VM81-5184-GPU-HYPERTHREAD-DRIVER-VECTOR-BUFFER-CACHE-H72-H216",
+  "title": "Deterministic VM81 GPU Hyperthread Driver and Vector-Store Buffer Cache",
+  "classification": "CONTRACT_AUTHORIZED_FULL_IMPLEMENTATION_REQUIRED",
+  "parent": "Complete cumulative HHS runtime through Pass 206",
+  "implementation_mode": "ADDITIVE_CORE_PRESERVING_PLUGIN",
+  "authority": {
+    "canonical_mutation_authority": "VM81_KERNEL",
+    "canonical_mutation_authority_count": 1,
+    "canonical_hash72_commit_stream_count": 1,
+    "gpu_role": "PARALLEL_CANDIDATE_CALCULATION_ONLY",
+    "gpu_may_commit_hash72": false,
+    "gpu_may_bypass_vm81_admission": false,
+    "parallel_canonical_authorities_allowed": false
+  },
+  "topology": {
+    "vm81_cells": 81,
+    "logical_hyperthreads_per_cell": 64,
+    "logical_lanes_per_batch": 5184,
+    "lane_formula": "lane=64*cell+hyperthread",
+    "lane_domain": "cell in [0,80], hyperthread in [0,63]",
+    "phase_square_dimension": 72,
+    "phase_formula": "phase_row=floor(lane/72), phase_column=lane mod 72",
+    "bijection": "81*64=72*72=5184",
+    "opencl_workgroup_size": 64,
+    "opencl_workgroups_per_batch": 81
+  },
+  "determinism": {
+    "stable_lane_identity": true,
+    "physical_completion_order_is_noncanonical": true,
+    "lane_writes_are_disjoint": true,
+    "cell_pack_reduction_order": "hyperthread_0_through_63",
+    "projection_order": "channel_then_cell_then_batch",
+    "vector_ranking_order": [
+      "distance",
+      "candidate_hash72",
+      "candidate_id",
+      "source_ordinal"
+    ],
+    "integer_only_canonical_fields": true,
+    "canonical_float_fields": 0,
+    "cpu_vm5184_equivalence_required": true
+  },
+  "driver": {
+    "language": "C11",
+    "abi_version": 1,
+    "backends": [
+      "CPU_REFERENCE",
+      "OPENCL_GPU",
+      "AUTO"
+    ],
+    "opencl_loading": "DYNAMIC_NO_SDK_HEADER_BUILD_DEPENDENCY",
+    "minimum_opencl_workgroup": 64,
+    "state_layout": "uint64 SoA[cell][batch]",
+    "projection_layout": "uint32 SoA[channel][cell][batch]",
+    "delta_layout": "CSR offsets + uint32 cell + uint8 control_g + uint64 XOR mask",
+    "hydration_layout": "CSR offsets + uint32 q",
+    "physical_gpu_required_only_when_explicitly_configured": true
+  },
+  "execution_pipeline": [
+    "VALIDATE_FIXED_WIDTH_SOA_CSR_INPUT",
+    "VALIDATE_ORDERED_HYDRATION_Q_ADDRESSES",
+    "DISPATCH_5184_STABLE_VM81_LANES_PER_BATCH",
+    "WRITE_ONE_BIT_SLOT_PER_LOGICAL_LANE",
+    "PACK_64_LANES_PER_CELL_IN_CANONICAL_ORDER",
+    "RECOMPUTE_SPARSE_32_CHANNEL_PROJECTION",
+    "DOWNLOAD_CANDIDATE",
+    "COMPARE_WITH_EXACT_CPU_VM5184_ORACLE",
+    "RETURN_VERIFIED_CANDIDATE_TO_SINGLETON_VM81_ADMISSION",
+    "NEVER_COMMIT_HASH72_FROM_GPU_DRIVER"
+  ],
+  "buffer_cache": {
+    "mode": "CONTENT_KEYED_LRU_HOST_AND_DEVICE_BUFFER_CACHE",
+    "key_width_bits": 256,
+    "key_source": "SHA256_OF_EXACT_FIXED_WIDTH_CONTENT_AND_LAYOUT_DOMAIN",
+    "cacheable_objects": [
+      "STATE_SOA",
+      "PROJECTION_SOA",
+      "DELTA_CSR",
+      "HYDRATION_CSR",
+      "CHILD_STATE_SOA",
+      "CHILD_PROJECTION_SOA",
+      "HASH72_VECTOR_MATRIX"
+    ],
+    "cache_hit_authorizes_mutation": false,
+    "cache_reuse_requires_same_content_identity": true,
+    "vector_store_use": "RETAIN_HASH72_CANDIDATE_MATRICES_FOR_PARALLEL_DISTANCE_RANKING"
+  },
+  "safety": {
+    "unknown_backend_fails_closed": true,
+    "required_physical_gpu_unavailable_fails_closed": true,
+    "hydration_mismatch_fails_closed": true,
+    "gpu_cpu_mismatch_fails_closed": true,
+    "duplicate_delta_cell_fails_closed": true,
+    "invalid_control_or_uint_width_fails_closed": true,
+    "cache_cannot_mutate_canonical_state": true,
+    "no_vendor_driver_or_host_kernel_authority": true
+  },
+  "core_preservation": {
+    "modifies_pass205_core_abi": false,
+    "modifies_pass206_frozen_core": false,
+    "new_additive_files_only": true,
+    "uses_existing_pass205_translation_contract": true,
+    "uses_existing_vm81_single_authority_boundary": true
+  },
+  "required_artifacts": [
+    "hhs_runtime/c/hhs_pass207_gpu_driver.h",
+    "hhs_runtime/c/hhs_pass207_gpu_driver.c",
+    "hhs_runtime/c/hhs_pass207_gpu_driver_part1.inc",
+    "hhs_runtime/c/hhs_pass207_gpu_driver_part2.inc",
+    "hhs_runtime/c/hhs_pass207_gpu_driver_part3.inc",
+    "hhs_runtime/c/hhs_pass207_gpu_driver_part4.inc",
+    "hhs_runtime/c/hhs_pass207_gpu_driver_part5.inc",
+    "hhs_python/runtime/hhs_pass207_gpu_driver_native.py",
+    "hhs_python/runtime/hhs_pass207_gpu_driver_bridge.py",
+    "hhs_backend/runtime/hhs_pass207_vm81_gpu_runtime_v1.py",
+    "tests/test_hhs_pass207_gpu_driver_v1.c",
+    "tests/test_hhs_pass207_gpu_driver_v1.py",
+    "contracts/pass207/PASS_207_CONTRACT.json",
+    "artifacts/pass207/GPU_DRIVER_PLUGIN_MANIFEST.json",
+    "docs/pass207/IMPLEMENTATION.md",
+    "docs/pass207/RESTART_RECORD.md",
+    ".github/workflows/pass207-vm81-gpu-hyperthreads.yml"
+  ],
+  "validation": {
+    "exhaustive_lane_bijection_count": 5184,
+    "native_c_strict_build": true,
+    "native_cpu_reference_test": true,
+    "address_and_undefined_sanitizers": true,
+    "python_ctypes_bridge_test": true,
+    "pass205_cpu_oracle_equivalence": true,
+    "buffer_cache_reuse_test": true,
+    "stable_vector_ranking_test": true,
+    "physical_opencl_gpu_execution": "REQUIRED_FOR_PHYSICAL_GPU_COMPLETION_CLAIM"
+  },
+  "claim_boundary": {
+    "software_driver_implemented": true,
+    "cpu_reference_locally_validated": true,
+    "physical_gpu_execution_claimed": false,
+    "reason": "No physical OpenCL GPU is attached to the implementation environment; the physical path remains subject to hardware validation."
+  }
+}
