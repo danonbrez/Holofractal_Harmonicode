@@ -1,0 +1,84 @@
+name: Patch Pass 210 production composition
+
+on:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/pass210-kimi-k3-native-llm
+          fetch-depth: 0
+
+      - name: Repair exact production assistant composition
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path("hhs_backend/production_server.py")
+          text = path.read_text(encoding="utf-8")
+
+          text = text.replace(
+              "from hhs_backend.api.litert_lm_assistant_routes import router as assistant_router\n",
+              "from hhs_backend.api.litert_lm_assistant_routes import router as assistant_router\n"
+              "from hhs_backend.api.pass210_llm_orchestrator_routes import router as pass210_llm_router\n",
+          )
+          text = text.replace(
+              "def _has_route_prefix(prefix: str) -> bool:\n"
+              "    return any(str(getattr(route, \"path\", \"\")).startswith(prefix) for route in app.router.routes)\n\n\n"
+              "if not _has_route_prefix(\"/api/assistant\"):\n"
+              "    app.include_router(assistant_router)\n",
+              "def _has_route_prefix(prefix: str) -> bool:\n"
+              "    return any(str(getattr(route, \"path\", \"\")).startswith(prefix) for route in app.router.routes)\n\n\n"
+              "def _has_exact_route(path: str) -> bool:\n"
+              "    return any(str(getattr(route, \"path\", \"\")) == path for route in app.router.routes)\n\n\n"
+              "if not _has_exact_route(\"/api/assistant/chat\") or not _has_exact_route(\"/api/assistant/health\"):\n"
+              "    app.include_router(assistant_router)\n"
+              "if not _has_route_prefix(\"/api/runtime/llm-orchestrator\"):\n"
+              "    app.include_router(pass210_llm_router)\n",
+          )
+          text = text.replace(
+              "from hhs_backend.runtime.hhs_production_assistant_v1 import (\n"
+              "            DEFAULT_PRODUCTION_ASSISTANT_SERVICE,\n"
+              "        )\n\n"
+              "        DEFAULT_PRODUCTION_ASSISTANT_SERVICE._health_timeout = max(\n"
+              "            float(DEFAULT_PRODUCTION_ASSISTANT_SERVICE._health_timeout),\n"
+              "            5.0,\n"
+              "        )\n"
+              "        return await DEFAULT_PRODUCTION_ASSISTANT_SERVICE.health()",
+              "from hhs_backend.runtime.hhs_pass210_production_assistant_v1 import (\n"
+              "            DEFAULT_PASS210_PRODUCTION_ASSISTANT,\n"
+              "        )\n\n"
+              "        DEFAULT_PASS210_PRODUCTION_ASSISTANT._health_timeout = max(\n"
+              "            float(DEFAULT_PASS210_PRODUCTION_ASSISTANT._health_timeout),\n"
+              "            5.0,\n"
+              "        )\n"
+              "        return await DEFAULT_PASS210_PRODUCTION_ASSISTANT.health()",
+          )
+
+          required = (
+              "pass210_llm_router",
+              "def _has_exact_route(path: str)",
+              '"/api/assistant/chat"',
+              '"/api/runtime/llm-orchestrator"',
+              "DEFAULT_PASS210_PRODUCTION_ASSISTANT",
+          )
+          missing = [value for value in required if value not in text]
+          if missing:
+              raise SystemExit(f"Pass 210 production patch incomplete: {missing}")
+          path.write_text(text, encoding="utf-8")
+          PY
+
+          git config user.name hhs-pass210-production-patch
+          git config user.email hhs-pass210-production-patch@users.noreply.github.com
+          git add hhs_backend/production_server.py
+          git commit -m "Compose Pass 210 assistant in production server"
+          git push origin HEAD:agent/pass210-kimi-k3-native-llm
