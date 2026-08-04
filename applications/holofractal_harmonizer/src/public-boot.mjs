@@ -77,6 +77,7 @@ export function startPublicBoot() {
   const productionIntegration = applicationExperience.then(
     () => launch('production-integration', './production-integration.mjs'),
   )
+  const workflowDefault = browser.then(() => launch('ux-default', './ux-default.mjs'))
   */
 
   const applicationControls = applicationExperience
