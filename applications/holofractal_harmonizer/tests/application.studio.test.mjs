@@ -75,9 +75,16 @@ test('full IDE initializes application studio and deployable browser compiler', 
   assert.match(studio, /Pong, calculator, puzzle, document, audio, video/);
   assert.match(studio, /application-templates-runtime/);
   assert.match(studio, /function schedulePreviewHydration\(\)/);
-  assert.match(studio, /window\.setTimeout\(\(\) =>/);
+  assert.match(studio, /const PREVIEW_READY_ATTEMPTS = 2_400;/);
+  assert.match(studio, /const PREVIEW_RETRY_MS = 25;/);
+  assert.match(studio, /const generation = \+\+previewGeneration;/);
+  assert.match(studio, /typeof preview === 'function'/);
+  assert.match(studio, /attemptPreview\(attempt \+ 1\)/);
+  assert.match(studio, /hhs:application-preview:hydrated/);
+  assert.match(studio, /project_files_preserved: true/);
   assert.match(studio, /preview_hydration_deferred:\s*true/);
   assert.match(studio, /preview_hydration_is_deferred:\s*true/);
+  assert.match(studio, /preview_hydration_retries_until_workbench_ready:\s*true/);
   assert.doesNotMatch(studio, /openBottomTab\('preview'\);\s*window\.HHSIntegratedWorkbench\?\.preview\?\.\(\)/);
   assert.match(compiler, /HHS_DEPLOYABLE_BROWSER_APPLICATION_V1/);
   assert.match(compiler, /Download App ZIP/);
