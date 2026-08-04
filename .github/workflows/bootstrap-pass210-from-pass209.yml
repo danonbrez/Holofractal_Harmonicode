@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - agent/pass210-kimi-k3-native-llm
+  pull_request:
+    branches:
+      - main
 
 permissions:
   contents: write
@@ -106,6 +109,20 @@ jobs:
           )
           route.write_text(text, encoding="utf-8")
 
+          for obsolete in (
+              ".github/workflows/pass209-kimi-k3-native-llm.yml",
+              "contracts/pass209/PASS_209_CONTRACT.json",
+              "deployment/digitalocean/llm/pass209-llm.env.example",
+              "hhs_backend/api/pass209_llm_orchestrator_routes.py",
+              "hhs_backend/runtime/hhs_pass209_native_agi_optimizer_v1.py",
+              "hhs_backend/runtime/hhs_pass209_production_assistant_v1.py",
+              "scripts/pass209_native_agi_optimizer_worker.py",
+              "tests/test_hhs_pass209_digitalocean_llm_deployment_v1.py",
+              "tests/test_hhs_pass209_llm_orchestrator_v1.py",
+          ):
+              path = Path(obsolete)
+              if path.exists():
+                  path.unlink()
           Path(".github/workflows/bootstrap-pass210-from-pass209.yml").unlink()
           PY
 
