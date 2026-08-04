@@ -173,6 +173,34 @@ def run() -> dict[str, object]:
             expect(page.locator("#ide-file-tree .ide-file-item").first).to_have_attribute("draggable", "false")
             phase("PONG_VERIFIED")
 
+            current_phase = "WAIT_FULL_IDE_STABILIZATION_AFTER_EARLY_PONG"
+            phase(current_phase)
+            page.wait_for_function(
+                """() => {
+                    const pass176 = window.HHSPass176?.status?.();
+                    const integration = window.HHSProductionIntegration;
+                    return Boolean(
+                        pass176?.boot?.interactive &&
+                        window.HHSVisualIDE &&
+                        window.HHSHarmonizer?.registry &&
+                        integration?.phase === 'READY' &&
+                        integration?.runtimeAuthority?.ok === true &&
+                        Number(integration?.serviceCount || 0) > 0
+                    );
+                }""",
+                timeout=120_000,
+            )
+            stabilized = page.evaluate(
+                """() => ({
+                    pass176_stage: window.HHSPass176?.status?.().boot?.stage,
+                    browser_ready: Boolean(window.HHSHarmonizer?.registry),
+                    production_phase: window.HHSProductionIntegration?.phase,
+                    runtime_authority_ok: window.HHSProductionIntegration?.runtimeAuthority?.ok,
+                    service_count: Number(window.HHSProductionIntegration?.serviceCount || 0),
+                })"""
+            )
+            phase("FULL_IDE_STABILIZED", **stabilized)
+
             calculator = create_project(page, "calculator", "Calculator Acceptance")
             calculator_display = calculator.locator("#display")
             calculator_keys = calculator.locator("#keys button")
@@ -276,6 +304,8 @@ def run() -> dict[str, object]:
                 "drag_safe_file_items": True,
                 "dom_driven_acceptance": True,
                 "application_first_default_verified": True,
+                "early_pong_before_full_runtime_stabilization_verified": True,
+                "full_runtime_stabilized_before_multi_project_stress": True,
                 "gallery_selection_state_verified": True,
                 "application_creation_atomic_dom_transaction_verified": True,
                 "pong_dom_input_dispatch_verified": True,
