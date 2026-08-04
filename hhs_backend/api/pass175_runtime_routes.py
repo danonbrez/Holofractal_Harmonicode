@@ -1,7 +1,7 @@
 """Pass 175 hydrated virtual instruction processor API routes."""
 from __future__ import annotations
 
-from base64 import b64decode
+from base64 import b64decode, b64encode
 import os
 from pathlib import Path
 from typing import Any
@@ -24,6 +24,10 @@ from hhs_runtime.pass175 import (
     Pass175Runtime,
     ReciprocalLane,
     RUNTIME_VERSION,
+    SCALAR_CIRCUIT_HI_BYTES,
+    SCALAR_CIRCUIT_HI_TOKENS,
+    SCALAR_CIRCUIT_LO_BYTES,
+    SCALAR_CIRCUIT_LO_TOKENS,
     VM81_CELLS,
 )
 
@@ -149,14 +153,8 @@ def _model_dict(model: BaseModel) -> dict[str, Any]:
     return model.model_dump() if hasattr(model, "model_dump") else model.dict()
 
 
-@router.get("/authority")
 def authority_witness() -> dict[str, Any]:
-    """Return immutable Pass 175 authority identity without hydrating VM5184.
-
-    This endpoint does not claim that the expensive permanent-instruction fabric
-    has been materialized. Runtime readiness and live receipt evidence are
-    supplied independently by the canonical live runtime status projection.
-    """
+    """Return immutable Pass 175 identity without materializing VM5184."""
     phase_distribution = {str(phase): PHASE_TABLE.count(phase) for phase in (0, 18, 36, 54)}
     return {
         "schema": "P175_AUTHORITY_WITNESS_V1",
@@ -176,13 +174,71 @@ def authority_witness() -> dict[str, Any]:
         "authority_witness_only": True,
         "heavy_fabric_materialized": _RUNTIME is not None,
         "heavy_fabric_initialization_failed": _RUNTIME_ERROR is not None,
-        "full_runtime_status_path": "/api/v1/pass175/status",
+        "full_runtime_status_path": "/api/v1/pass175/status/materialized",
     }
+
+
+def bounded_status() -> dict[str, Any]:
+    """Return the full invariant status shape without eager fabric creation."""
+    if _RUNTIME is not None:
+        payload = dict(_RUNTIME.status())
+        payload["heavy_fabric_materialized"] = True
+        payload["bounded_status_read"] = True
+        payload["materialized_runtime_status_path"] = "/api/v1/pass175/status/materialized"
+        return payload
+    witness = authority_witness()
+    return {
+        **witness,
+        "schema": "P175_RUNTIME_STATUS_V1",
+        "classification": "HHS_PASS_175_VIRTUAL_INSTRUCTION_PROCESSOR_IMPLEMENTED_DEVELOPMENT",
+        "permanent_identity_count": PERMANENT_INSTRUCTION_COUNT,
+        "scalar_circuits": {
+            "lo_tokens": SCALAR_CIRCUIT_LO_TOKENS,
+            "hi_tokens": SCALAR_CIRCUIT_HI_TOKENS,
+            "lo_bytes_b64": b64encode(SCALAR_CIRCUIT_LO_BYTES).decode("ascii"),
+            "hi_bytes_b64": b64encode(SCALAR_CIRCUIT_HI_BYTES).decode("ascii"),
+            "leading_zero_identity_preserved": True,
+        },
+        "hydrated_instruction_records": 0,
+        "microcode_store_root_sha256": None,
+        "parallel_candidate_workers": True,
+        "device_bus": {
+            "keyboard_queue": 0,
+            "serial_bytes": 0,
+            "post_events": 0,
+            "framebuffer_events": 0,
+            "storage_events": 0,
+            "network_events": 0,
+            "host_direct_access": False,
+        },
+        "x86_64_decoder_scope": "BOUNDED_BOOTSTRAP_EXACT_FAIL_CLOSED",
+        "terminal_pass175_completion_claimed": False,
+        "authority": {
+            "materialized": False,
+            "live_runtime_evidence_required": True,
+            "live_runtime_status_path": "/api/runtime/live/status",
+        },
+        "bounded_status_read": True,
+        "materialized_runtime_status_path": "/api/v1/pass175/status/materialized",
+    }
+
+
+@router.get("/authority")
+def authority_status() -> dict[str, Any]:
+    return authority_witness()
 
 
 @router.get("/status")
 def status() -> dict[str, Any]:
-    return get_runtime().status()
+    return bounded_status()
+
+
+@router.get("/status/materialized")
+def materialized_status() -> dict[str, Any]:
+    payload = dict(get_runtime().status())
+    payload["heavy_fabric_materialized"] = True
+    payload["bounded_status_read"] = False
+    return payload
 
 
 @router.get("/boot")
