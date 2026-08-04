@@ -87,6 +87,25 @@ jobs:
             tests/test_hhs_litert_lm_assistant_v1.py \
             tests/test_hhs_litert_lm_hhs_api_tools_v1.py
 
+      - name: Fresh production route manifest
+        run: |
+          python - <<'PY'
+          from hhs_backend import production_server
+          paths = sorted(str(getattr(route, "path", "")) for route in production_server.app.router.routes)
+          selected = [
+              path for path in paths
+              if path.startswith("/api/assistant")
+              or path.startswith("/api/runtime/services")
+              or path.startswith("/api/runtime/installation")
+              or path.startswith("/api/runtime/capability")
+              or path.startswith("/v1/modalities/language")
+              or path.startswith("/ws")
+          ]
+          print("HHS_PASS210_FRESH_PRODUCTION_ROUTE_MANIFEST")
+          for path in selected:
+              print(path)
+          PY
+
       - name: Fresh production public app tests
         run: python -m pytest -q tests/test_hhs_production_public_app_v1.py
 
