@@ -55,7 +55,11 @@ export function persist() {
 }
 export function setText(selector, value) {
   const node = $(selector);
-  if (node) node.textContent = String(value);
+  if (!node) return false;
+  const next = String(value);
+  if (node.textContent === next) return false;
+  node.textContent = next;
+  return true;
 }
 export function log(message, data) {
   const output = $('#ide-terminal-output');
