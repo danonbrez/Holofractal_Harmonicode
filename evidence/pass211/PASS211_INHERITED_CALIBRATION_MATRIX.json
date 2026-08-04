@@ -1,0 +1,152 @@
+{
+  "base_requirement": "Complete cumulative HHS repository through Pass 210",
+  "classification": "HHS_PASS_211_INHERITED_CALIBRATION_MATRIX_PASS",
+  "completed_cases": 9,
+  "pass210_chromium_gate": {
+    "included_in_this_matrix": false,
+    "reason": "Pass 211 is stacked on draft Pass 210 PR #163. The unresolved final deployed Chromium smoke remains a Pass 210 merge blocker and cannot be silently reclassified by Pass 211.",
+    "status": "INHERITED_PENDING"
+  },
+  "passed": true,
+  "promotion_classification": "HHS_PASS_211_REPOSITORY_VISIBLE_CALIBRATION_EVIDENCE",
+  "receipt_sha256": "ae76439627ac8d1cef70550dcd03bacb88bb222f6e50bea94345f057c6e5bb42",
+  "required_cases": 9,
+  "results": [
+    {
+      "command": ["make", "-C", "native_projects/hhs_pass188_bott_runtime", "validate"],
+      "elapsed_ns": 4110527323,
+      "elapsed_seconds": 4.110527,
+      "name": "pass188_exhaustive_1259712_projected_states",
+      "passed": true,
+      "returncode": 0,
+      "timed_out": false,
+      "timeout_seconds": 1800
+    },
+    {
+      "command": ["make", "-C", "native_projects/hhs_pass189_hqlh_runtime", "validate"],
+      "elapsed_ns": 4761454655,
+      "elapsed_seconds": 4.761455,
+      "name": "pass189_exhaustive_51648192_contextual_states",
+      "passed": true,
+      "returncode": 0,
+      "timed_out": false,
+      "timeout_seconds": 3600
+    },
+    {
+      "command": ["/opt/hostedtoolcache/Python/3.12.13/x64/bin/python", "-c", "from hhs_python.runtime.hhs_pass205_continuation_bridge import build_native_library; print(build_native_library(force=True))"],
+      "elapsed_ns": 552692461,
+      "elapsed_seconds": 0.552692,
+      "name": "pass205_native_continuation_abi_build",
+      "passed": true,
+      "returncode": 0,
+      "timed_out": false,
+      "timeout_seconds": 300
+    },
+    {
+      "command": ["/opt/hostedtoolcache/Python/3.12.13/x64/bin/python", "-c", "from hhs_python.runtime.hhs_pass207_gpu_driver_native import build_native_library; print(build_native_library(force=True))"],
+      "elapsed_ns": 1043323286,
+      "elapsed_seconds": 1.043323,
+      "name": "pass207_native_gpu_abi_cpu_oracle_build",
+      "passed": true,
+      "returncode": 0,
+      "timed_out": false,
+      "timeout_seconds": 300
+    },
+    {
+      "command": [
+        "/opt/hostedtoolcache/Python/3.12.13/x64/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/test_hhs_pass205_continuation_runtime_v1.py",
+        "tests/test_hhs_pass207_gpu_driver_v1.py",
+        "tests/test_hhs_pass208_gpu_branch_manifold_v1.py",
+        "tests/test_hhs_pass208_digitalocean_gpu_deployment_v1.py",
+        "tests/test_hhs_pass196_integrated_environment_v1.py",
+        "tests/test_runtime_bootstrap_gateway.py",
+        "tests/test_hhs_pass210_llm_orchestrator_v1.py",
+        "tests/test_hhs_pass210_digitalocean_llm_deployment_v1.py",
+        "tests/test_hhs_production_public_app_v1.py"
+      ],
+      "elapsed_ns": 74809373454,
+      "elapsed_seconds": 74.809373,
+      "name": "pass205_to_pass210_dependency_scoped_regression",
+      "passed": true,
+      "returncode": 0,
+      "timed_out": false,
+      "timeout_seconds": 1800
+    },
+    {
+      "command": [
+        "/opt/hostedtoolcache/Python/3.12.13/x64/bin/python",
+        "scripts/pass205_multimodal_continuation_design_validation.py",
+        "--ticks",
+        "360",
+        "--seeds",
+        "1,5,7,41,64,72,81,144,216,243,5040,5184,1259713",
+        "--output",
+        "evidence/pass211-ci/PASS211_PASS205_CONTINUATION_CALIBRATION.json"
+      ],
+      "elapsed_ns": 157612104100,
+      "elapsed_seconds": 157.612104,
+      "name": "pass205_extended_multimodal_continuation_calibration",
+      "passed": true,
+      "returncode": 0,
+      "timed_out": false,
+      "timeout_seconds": 900
+    },
+    {
+      "command": [
+        "/opt/hostedtoolcache/Python/3.12.13/x64/bin/python",
+        "scripts/pass205_gpu_translation_design_validation.py",
+        "--output",
+        "evidence/pass211-ci/PASS211_PASS205_GPU_TRANSLATION_CALIBRATION.json"
+      ],
+      "elapsed_ns": 1025425078,
+      "elapsed_seconds": 1.025425,
+      "name": "pass205_gpu_translation_calibration",
+      "passed": true,
+      "returncode": 0,
+      "timed_out": false,
+      "timeout_seconds": 600
+    },
+    {
+      "command": ["/opt/hostedtoolcache/Python/3.12.13/x64/bin/python", "-m", "pytest", "-q", "tests/test_pass211_multimodal_invariant_benchmark.py"],
+      "elapsed_ns": 493518477,
+      "elapsed_seconds": 0.493518,
+      "name": "pass211_benchmark_unit_tests",
+      "passed": true,
+      "returncode": 0,
+      "timed_out": false,
+      "timeout_seconds": 300
+    },
+    {
+      "command": [
+        "/opt/hostedtoolcache/Python/3.12.13/x64/bin/python",
+        "scripts/pass211_multimodal_invariant_benchmark.py",
+        "--output",
+        "evidence/pass211-ci/PASS211_MULTIMODAL_INVARIANT_BENCHMARK_RECEIPT.json",
+        "--address-samples",
+        "1000000",
+        "--max-vector-objects",
+        "2048",
+        "--query-limit",
+        "512"
+      ],
+      "elapsed_ns": 9528911515,
+      "elapsed_seconds": 9.528912,
+      "name": "pass211_repository_invariant_and_retrieval_benchmark",
+      "passed": true,
+      "returncode": 0,
+      "timed_out": false,
+      "timeout_seconds": 900
+    }
+  ],
+  "schema": "HHS_PASS_211_INHERITED_CALIBRATION_MATRIX_V1",
+  "source_workflow": {
+    "artifact_digest": "sha256:570a12bde346e6a57570450da0e637606913b8c69e826172b25a214a8905d24d",
+    "artifact_id": 8902175739,
+    "workflow_head_sha": "72f977e7e2b4d4eeb5dcdb0cdb8531cd190cb15d",
+    "workflow_run_id": 30933301683
+  }
+}

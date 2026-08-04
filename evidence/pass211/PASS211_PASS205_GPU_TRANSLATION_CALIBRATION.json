@@ -1,0 +1,35 @@
+{
+  "batches": 256,
+  "classification": "HHS_PASS_205_GPU_TRANSLATION_DESIGN_VALIDATION_PASSED",
+  "dense_transfer_bytes": 2820096,
+  "dirty_projection_entries": 2105,
+  "execution_scope": "translation and deterministic scheduling validated on CPU; no physical GPU claimed",
+  "frontier_entries": 1180,
+  "frontier_layout": "CSR offsets + uint32 cells + uint64 XOR masks",
+  "hydration_entries": 20658,
+  "hydration_layout": "CSR offsets + uint32 q addresses",
+  "mean_frontier_cells": 4.609375,
+  "mean_q_addresses": 80.6953125,
+  "projection_layout": "uint32 SoA[channel][cell][batch]",
+  "promotion_classification": "HHS_PASS_211_REPOSITORY_VISIBLE_INHERITED_CALIBRATION_EVIDENCE",
+  "schema": "HHS_PASS_205_GPU_TRANSLATION_DESIGN_VALIDATION_V1",
+  "seed": 216,
+  "source_workflow": {
+    "artifact_digest": "sha256:570a12bde346e6a57570450da0e637606913b8c69e826172b25a214a8905d24d",
+    "artifact_id": 8902175739,
+    "workflow_head_sha": "72f977e7e2b4d4eeb5dcdb0cdb8531cd190cb15d",
+    "workflow_run_id": 30933301683
+  },
+  "sparse_transfer_bytes": 368288,
+  "state_layout": "uint64 SoA[cell][batch]",
+  "tests": {
+    "gpu_deterministic_ml_reduction": "PASS",
+    "gpu_projection_soa_roundtrip": "PASS",
+    "gpu_schedule_independence": "PASS",
+    "gpu_sparse_frontier_csr": "PASS",
+    "gpu_sparse_transfer_reduction": "PASS",
+    "gpu_state_soa_roundtrip": "PASS"
+  },
+  "transfer_reduction": 7.657311669128508,
+  "translation_witness216": "9c5f7f5ae5859b05a2d9949aa0c6f48936c9f64398b29a505a2063"
+}

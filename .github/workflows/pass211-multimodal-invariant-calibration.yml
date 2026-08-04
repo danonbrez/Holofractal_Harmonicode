@@ -1,0 +1,168 @@
+name: Pass 211 Multimodal Invariant Calibration
+
+on:
+  pull_request:
+    paths:
+      - 'scripts/pass211_multimodal_invariant_benchmark.py'
+      - 'scripts/pass211_run_inherited_calibrations.py'
+      - 'tests/test_pass211_multimodal_invariant_benchmark.py'
+      - 'contracts/pass211/**'
+      - 'docs/pass211/**'
+      - 'evidence/pass211/**'
+      - 'HHS_PASS_211_*'
+      - '.github/workflows/pass211-multimodal-invariant-calibration.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/pass211_multimodal_invariant_benchmark.py'
+      - 'scripts/pass211_run_inherited_calibrations.py'
+      - 'tests/test_pass211_multimodal_invariant_benchmark.py'
+      - 'contracts/pass211/**'
+      - 'docs/pass211/**'
+      - 'evidence/pass211/**'
+      - 'HHS_PASS_211_*'
+      - '.github/workflows/pass211-multimodal-invariant-calibration.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  inherited-tests-and-calibrations:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    env:
+      PYTHONFAULTHANDLER: '1'
+      PYTHONUNBUFFERED: '1'
+      HHS_PASS207_GPU_BACKEND: CPU_REFERENCE
+      HHS_PASS207_REQUIRE_PHYSICAL_GPU: '0'
+      HHS_PASS208_GPU_ENABLED: '0'
+      HHS_PASS190_CAPABILITY_SECRET: pass211-calibration-secret
+    steps:
+      - name: Checkout exact stacked tree
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install repository validation dependencies
+        run: |
+          python -m pip install --disable-pip-version-check -r requirements.txt
+          python -m pip install --disable-pip-version-check pytest jsonschema fastapi pydantic
+
+      - name: Parse and verify Pass 211 contract
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          contract = json.loads(Path('contracts/pass211/PASS_211_CONTRACT.json').read_text())
+          assert contract['pass'] == 211
+          assert contract['inheritance']['immediate_parent_pass'] == 210
+          assert contract['inheritance']['parent_pull_request'] == 163
+          assert contract['inheritance']['parent_chromium_gate']['status'] == 'INHERITED_PENDING'
+          assert contract['authority']['canonical_mutation_authority_count'] == 1
+          assert contract['authority']['canonical_mutation_authority'] == 'VM81'
+          assert contract['state_space']['compact_nucleus_bits'] == 5184
+          assert contract['state_space']['projected_states'] == 1259712
+          assert contract['state_space']['contextual_states'] == 51648192
+          assert contract['state_space']['factorial_states'] == 5040
+          assert contract['open_weight_hydration']['required_identity'] == 'ReverseExpand(Hydrate(SourceWeights)) == SourceWeights'
+          assert contract['multi_model_cache']['incompatible_modalities_may_share_cache'] is True
+          assert contract['computation_compression']['vector_distance_alone_authorizes_reuse'] is False
+          assert contract['repository_calibration_matrix']['required_cases'] == 9
+          assert contract['claim_boundaries']['repository_retrieval_proves_model_weight_hydration'] is False
+
+          specification = Path(
+              'HHS_PASS_211_DETERMINISTIC_EVOLUTIONARY_MULTIMODAL_INVARIANT_COMPUTATION_COMPRESSION_AND_OPEN_WEIGHT_HYDRATION.md'
+          ).read_text()
+          for marker in (
+              '51,648,192',
+              'ReverseExpand(H)',
+              'Probability-seeded deterministic evolutionary deep learning',
+              'Progressive transitional-frame removal training',
+              'Pass 210 remains an inherited dependency',
+          ):
+              assert marker in specification, marker
+          PY
+
+      - name: Verify promoted Pass 211 evidence
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          evidence = Path('evidence/pass211')
+          matrix = json.loads((evidence / 'PASS211_INHERITED_CALIBRATION_MATRIX.json').read_text())
+          benchmark = json.loads((evidence / 'PASS211_MULTIMODAL_INVARIANT_BENCHMARK_RECEIPT.json').read_text())
+          continuation = json.loads((evidence / 'PASS211_PASS205_CONTINUATION_CALIBRATION.json').read_text())
+          gpu = json.loads((evidence / 'PASS211_PASS205_GPU_TRANSLATION_CALIBRATION.json').read_text())
+
+          assert matrix['passed'] is True
+          assert matrix['completed_cases'] == matrix['required_cases'] == 9
+          assert all(item['passed'] for item in matrix['results'])
+          assert matrix['pass210_chromium_gate']['status'] == 'INHERITED_PENDING'
+          assert benchmark['passed'] is True
+          assert benchmark['address_roundtrip']['samples'] == 1000000
+          assert benchmark['address_roundtrip']['coordinate_drift'] == 0
+          assert benchmark['retrieval_calibration']['exact_hit_rate'] == 1.0
+          assert benchmark['retrieval_calibration']['single_bit_adaptation_nearest_rate'] == 1.0
+          assert not benchmark['repository_scan']['json']['pass211_owned_invalid_paths']
+          assert continuation['aggregate']['total_ticks'] == 4680
+          assert continuation['aggregate']['speedup_mean'] > 7.0
+          assert continuation['vector_retrieval']['exact_rerank_recall'] == 1.0
+          assert gpu['transfer_reduction'] > 7.0
+          assert gpu['execution_scope'].endswith('no physical GPU claimed')
+          for document in (matrix, benchmark, continuation, gpu):
+              assert document['source_workflow']['workflow_run_id'] == 30933301683
+              assert document['source_workflow']['artifact_id'] == 8902175739
+          PY
+
+      - name: Compile Pass 211 benchmark surfaces
+        run: |
+          python -m py_compile \
+            scripts/pass211_multimodal_invariant_benchmark.py \
+            scripts/pass211_run_inherited_calibrations.py \
+            tests/test_pass211_multimodal_invariant_benchmark.py
+
+      - name: Run inherited validation and benchmark matrix
+        run: |
+          python scripts/pass211_run_inherited_calibrations.py \
+            --output evidence/pass211-ci/PASS211_INHERITED_CALIBRATION_MATRIX.json \
+            --continue-on-failure
+
+      - name: Verify calibration closure
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          matrix = json.loads(
+              Path('evidence/pass211-ci/PASS211_INHERITED_CALIBRATION_MATRIX.json').read_text()
+          )
+          benchmark = json.loads(
+              Path('evidence/pass211-ci/PASS211_MULTIMODAL_INVARIANT_BENCHMARK_RECEIPT.json').read_text()
+          )
+          assert matrix['passed'] is True, matrix
+          assert matrix['required_cases'] == 9
+          assert benchmark['passed'] is True, benchmark
+          assert benchmark['constants']['values']['permanent_states'] == 5184
+          assert benchmark['constants']['values']['projected_states'] == 1259712
+          assert benchmark['constants']['values']['contextual_states'] == 51648192
+          assert benchmark['constants']['values']['factorial_states'] == 5040
+          assert benchmark['address_roundtrip']['coordinate_drift'] == 0
+          assert benchmark['retrieval_calibration']['exact_hit_rate'] == 1.0
+          assert benchmark['retrieval_calibration']['single_bit_adaptation_nearest_rate'] == 1.0
+          assert not benchmark['repository_scan']['json']['pass211_owned_invalid_paths']
+          PY
+
+      - name: Upload Pass 211 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass211-multimodal-invariant-calibration
+          path: evidence/pass211-ci/*.json
+          if-no-files-found: warn
+          retention-days: 30
