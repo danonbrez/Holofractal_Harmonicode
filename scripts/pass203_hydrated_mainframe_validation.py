@@ -46,11 +46,12 @@ def main() -> int:
         from fastapi.testclient import TestClient
         from hhs_backend.application_ide_server import app
         from hhs_backend.runtime.hhs_pass203_hydrated_mainframe_v1 import PASS203_MAINFRAME, InvocationRejectedError
+        from hhs_backend.runtime.hhs_pass204_open_cloud_mainframe import PASS204_MAINFRAME
 
         with TestClient(app) as client:
-            # Representative hosted calls prove public composition. Complete inventory
-            # validation uses the same global authority directly, avoiding repeated
-            # semantic-evidence writes for multi-megabyte catalog responses.
+            # Representative hosted calls prove public composition. The production
+            # route is intentionally upgraded in place by Pass 204, while the full
+            # inherited Pass 203 inventory remains directly validated below.
             hosted_status = request(client, "GET", "/api/runtime/mainframe/status")
             hosted_first_page = request(client, "GET", "/api/runtime/mainframe/functions?limit=50")
             hosted_interpreter = request(
@@ -66,9 +67,24 @@ def main() -> int:
             operations = [item for item in catalog if item["kind"] == "GOVERNED_OPERATION"]
             unbound = [item for item in catalog if not item["hydrated"]]
 
-            assert hosted_status["catalog_sha256"] == status["catalog_sha256"]
+            hosted_pass204_overlay = hosted_status.get("schema") == "HHS_PASS_204_OPEN_CLOUD_MAINFRAME_STATUS_V1"
+            if hosted_pass204_overlay:
+                pass204_status = PASS204_MAINFRAME.status()
+                pass204_catalog = PASS204_MAINFRAME.catalog()
+                assert PASS204_MAINFRAME.base is PASS203_MAINFRAME
+                assert hosted_status["catalog_sha256"] == pass204_status["catalog_sha256"]
+                assert hosted_status["pass_inheritance"] == "PASS_204_INHERITS_ALL_PRIOR_PASSES_AS_ONE_INTEGRATED_SYSTEM"
+                assert hosted_status["all_declarations_executable"] is True
+                assert [item["function_id"] for item in pass204_catalog] == [item["function_id"] for item in catalog]
+                hosted_pass203_invocation = hosted_interpreter["result"]["result"]
+                assert hosted_interpreter["execution_status"] == "COMPLETED"
+                assert hosted_interpreter["result"]["outcome"] == "GOVERNED_RESULT"
+            else:
+                assert hosted_status["catalog_sha256"] == status["catalog_sha256"]
+                hosted_pass203_invocation = hosted_interpreter
+
             assert hosted_first_page["total"] == len(catalog)
-            assert hosted_interpreter["result"]["exact_symbolic_value"] == {"numerator": 5, "denominator": 2}
+            assert hosted_pass203_invocation["result"]["exact_symbolic_value"] == {"numerator": 5, "denominator": 2}
             assert len(catalog) == status["catalog_count"]
             assert len(hydrated) == status["hydrated_count"] == status["callable_count"]
             assert len(unbound) == status["unbound_internal_count"]
@@ -88,7 +104,10 @@ def main() -> int:
                 f"/api/runtime/mainframe/functions?offset={max(0, len(catalog) - 1)}&limit=1",
             )
             assert last_page["total"] == len(catalog)
-            assert last_page["functions"] == [catalog[-1]]
+            assert len(last_page["functions"]) == 1
+            assert last_page["functions"][0]["function_id"] == catalog[-1]["function_id"]
+            if not hosted_pass204_overlay:
+                assert last_page["functions"] == [catalog[-1]]
 
             rejected = PASS203_MAINFRAME.invoke(
                 "adapter:interpreter.exact",
@@ -184,9 +203,12 @@ def main() -> int:
                     "openapi_path_count": len(openapi_paths),
                     "plan_step_count": len(plan_results),
                     "hosted_catalog_page_limit": hosted_first_page["limit"],
+                    "hosted_contract": hosted_status["contract"],
+                    "hosted_pass204_overlay": hosted_pass204_overlay,
                     "last_catalog_page_reachable": True,
                 },
                 "catalog_sha256": status["catalog_sha256"],
+                "hosted_catalog_sha256": hosted_status["catalog_sha256"],
                 "status_hash72": status["status_hash72"],
                 "interpreter_receipt_hash72": hosted_interpreter["receipt"]["receipt_hash72"],
                 "compiler_receipt_hash72": compiler["receipt"]["receipt_hash72"],
@@ -198,6 +220,7 @@ def main() -> int:
                     "all_hydrated_functions_callable": True,
                     "bounded_pagination_preserved": True,
                     "unbound_functions_fail_closed": True,
+                    "pass204_production_overlay_preserves_pass203_identity": hosted_pass204_overlay,
                     "arbitrary_host_eval_available": False,
                     "unrestricted_subprocess_available": False,
                     "assistant_plan_is_execution_authority": False,

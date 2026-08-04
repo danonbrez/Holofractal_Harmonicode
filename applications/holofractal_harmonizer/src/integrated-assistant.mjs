@@ -152,6 +152,18 @@ function rebindExplorerAssistant() {
   replacement.onclick = openIntegratedAssistant;
 }
 
+function bindSimpleWorkflowLauncher() {
+  document.addEventListener('click', (event) => {
+    const launcher = event.target instanceof Element
+      ? event.target.closest('#ide-open-assistant-simple')
+      : null;
+    if (!launcher) return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    openIntegratedAssistant();
+  }, true);
+}
+
 function bindKeyboard() {
   document.addEventListener('keydown', (event) => {
     if ((event.ctrlKey || event.metaKey) && event.shiftKey && event.key.toLowerCase() === 'a') {
@@ -189,6 +201,7 @@ export function initIntegratedAssistant() {
   mountDesktopCommand();
   mountMobileCommand();
   mountPersistentLauncher();
+  bindSimpleWorkflowLauncher();
   bindKeyboard();
   watchProvider();
   syncCommandState();
@@ -203,6 +216,7 @@ export function initIntegratedAssistant() {
     ide_remains_primary_surface: true,
     status_refresh_deduplicated: true,
     status_refresh_cooldown_ms: REFRESH_COOLDOWN_MS,
+    simple_workflow_launcher_capture_owned: true,
   });
   return window.HHSIntegratedAssistant;
 }

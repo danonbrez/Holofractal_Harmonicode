@@ -5,6 +5,9 @@ from pathlib import Path
 
 import pytest
 
+from hhs_backend.runtime.hhs_pass203_catalog_identity_guard_v1 import (
+    install_pass203_catalog_identity_guard,
+)
 from hhs_backend.runtime.hhs_pass203_hydrated_mainframe_v1 import (
     HydratedMainframe,
     InvocationRejectedError,
@@ -43,6 +46,25 @@ def test_catalog_unifies_operations_python_abi_and_adapters(mainframe: HydratedM
     assert sum(item["kind"] == "MAINFRAME_ADAPTER" for item in catalog) >= 5
     assert len({item["function_id"] for item in catalog}) == len(catalog)
     assert all(not item["hydrated"] or item["callable"] for item in catalog)
+
+
+def test_catalog_identity_guard_isolates_callers_and_refreshes_atomically(mainframe: HydratedMainframe) -> None:
+    guard = install_pass203_catalog_identity_guard(mainframe)
+    before = mainframe.status()
+    caller_catalog = mainframe.catalog()
+    original_name = caller_catalog[0]["name"]
+    caller_catalog[0]["name"] = "CALLER_MUTATION_MUST_NOT_ESCAPE"
+
+    after = mainframe.status()
+    assert mainframe.catalog()[0]["name"] == original_name
+    assert before["catalog_sha256"] == after["catalog_sha256"] == guard.status()["catalog_sha256"]
+
+    generation = guard.status()["generation"]
+    report = mainframe.refresh()
+    refreshed = mainframe.status()
+    assert guard.status()["generation"] > generation
+    assert report["catalog_sha256"] == refreshed["catalog_sha256"] == guard.status()["catalog_sha256"]
+    assert report["catalog_identity_guard"] == "HHS_PASS_203_CATALOG_IDENTITY_GUARD_V1"
 
 
 def test_exact_interpreter_adapter_and_host_eval_rejection(mainframe: HydratedMainframe) -> None:

@@ -1,6 +1,6 @@
 """
 HHS Live Kernel Event Bridge v1
-===============================
+=============================
 
 Pass 045 binds the Python/C kernel runtime to FastAPI websocket authority.
 This module is the canonical bridge from real emulator ticks to runtime event
@@ -10,6 +10,7 @@ built from an HHSCEmulator tick, receipt, authority audit, and runtime packet.
 
 from __future__ import annotations
 
+import asyncio
 from dataclasses import dataclass, field
 from typing import Any, Dict, Mapping, Optional
 
@@ -111,10 +112,10 @@ class LiveKernelEventBridge:
         return event
 
     async def emit_tick_event(self, instruction: Optional[Mapping[str, Any]] = None) -> Dict[str, Any]:
-        """Tick the kernel and propagate the resulting event to all four channels."""
+        """Tick the kernel without blocking FastAPI, then propagate all four channels."""
 
-        tick_result = self.tick_kernel(instruction=instruction)
-        event = self.build_event(tick_result)
+        tick_result = await asyncio.to_thread(self.tick_kernel, instruction)
+        event = await asyncio.to_thread(self.build_event, tick_result)
         await propagate_runtime_event(event)
         return {
             "schema": "HHS_LIVE_KERNEL_EVENT_EMISSION_RECORD_V1",
@@ -129,10 +130,11 @@ class LiveKernelEventBridge:
         }
 
     def status(self) -> Dict[str, Any]:
-        # Pass 045 keeps live status bounded.  HHSCEmulator.status() includes a
-        # full service-registry status, which rebuilds the conformance map and
-        # is too heavy for every live health poll/background tick.
-        runtime_state = self.runtime_emulator.controller.latest_runtime_state()
+        # Live status must remain available while the next kernel tick is running.
+        # Read the last committed emission rather than traversing mutable emulator
+        # state from the FastAPI event loop.
+        last_event = dict(self.emitted_events[-1]) if self.emitted_events else {}
+        metadata = dict(last_event.get("metadata") or {})
         return {
             "schema": "HHS_LIVE_KERNEL_EVENT_BRIDGE_STATUS_V1",
             "version": VERSION,
@@ -146,10 +148,11 @@ class LiveKernelEventBridge:
                 "boot_id": self.runtime_emulator.config.boot_id,
                 "booted": self.runtime_emulator.booted,
                 "ticks": len(self.runtime_emulator.tick_history),
-                "runtime_step": runtime_state.get("step"),
-                "runtime_state_hash72": runtime_state.get("state_hash72"),
-                "receipt_hash72": runtime_state.get("receipt_hash72"),
+                "runtime_step": metadata.get("kernel_tick"),
+                "runtime_state_hash72": metadata.get("runtime_state_hash72"),
+                "receipt_hash72": last_event.get("receipt_hash72"),
                 "bounded_live_status": True,
+                "committed_emission_snapshot": True,
             },
         }
 

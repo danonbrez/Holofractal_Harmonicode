@@ -56,4 +56,4 @@ jobs:
           grep -F -- "--port 8080 --workers 1" deploy/digitalocean/hhs-pass196-integrated-environment.service
           grep -F "HHS_REPOSITORY_ROOT=/opt/hhs/app" deploy/digitalocean/hhs-pass196.env.example
       - name: Run Pass 196 tests
-        run: python tests/test_hhs_pass196_integrated_environment_v1.py
+        run: python -m unittest -v tests.test_hhs_pass196_integrated_environment_v1

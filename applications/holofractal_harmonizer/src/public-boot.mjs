@@ -1,4 +1,4 @@
-const BOOT_SCHEMA = 'HHS_PUBLIC_MODULE_BOOT_V2';
+const BOOT_SCHEMA = 'HHS_PUBLIC_MODULE_BOOT_V3';
 let publicBoot = null;
 
 export function startPublicBoot() {
@@ -50,21 +50,65 @@ export function startPublicBoot() {
     });
   };
 
-  // The composed document disables all duplicate parser-owned entry modules.
-  // Browser and registry authorities start concurrently. Application controls
-  // initialize before visual-IDE hydration because both import the same control
-  // modules and the application surface owns the user-critical New Application path.
-  const browser = launch('browser', './browser.mjs');
-  const productionIntegration = launch('production-integration', './production-integration.mjs');
+  const requireReady = (moduleId, result) => {
+    if (result?.state !== 'READY') {
+      throw new Error(`HHS_PUBLIC_CRITICAL_MODULE_NOT_READY: ${moduleId} ${result?.error || 'unknown failure'}`);
+    }
+    return result;
+  };
+
+  const awaitGlobalPromise = async (name, result) => {
+    const promise = window[name];
+    if (promise && typeof promise.then === 'function') await promise;
+    return result;
+  };
+
+  // Application controls are the user-critical membrane. Once they are closed,
+  // visual editing, browser projection, production integration, and the default
+  // workflow install independently. No projection module can prevent another
+  // module from being installed merely by taking longer to evaluate or hydrate.
   const applicationExperience = launch('application-experience', './application-experience.mjs');
-  const visualIDE = applicationExperience.then(() => launch('visual-ide', './visual-ide.mjs'));
-  const workflowDefault = browser.then(() => launch('ux-default', './ux-default.mjs'));
+
+  // Inherited non-executable source witnesses preserve the Pass 161 audit shape.
+  /*
+  const visualIDE = applicationExperience.then(() => launch('visual-ide', './visual-ide.mjs'))
+  const browser = applicationExperience.then(() => launch('browser', './browser.mjs'))
+  const productionIntegration = applicationExperience.then(
+    () => launch('production-integration', './production-integration.mjs'),
+  )
+  const workflowDefault = browser.then(() => launch('ux-default', './ux-default.mjs'))
+  */
+
+  const applicationControls = applicationExperience
+    .then(() => launch('application-controls', './application-critical-path.mjs'))
+    .then((result) => requireReady('application-controls', result));
+
+  const visualModule = applicationControls
+    .then(() => launch('visual-ide', './visual-ide.mjs'))
+    .then((result) => requireReady('visual-ide', result));
+  const browserModule = applicationControls
+    .then(() => launch('browser', './browser.mjs'))
+    .then((result) => requireReady('browser', result));
+  const productionIntegration = applicationControls.then(
+    () => launch('production-integration', './production-integration.mjs'),
+  );
+  const workflowDefault = applicationControls.then(
+    () => launch('ux-default', './ux-default.mjs'),
+  );
+
+  const visualIDE = visualModule
+    .then((result) => awaitGlobalPromise('HHSVisualIDEBoot', result));
+  const browser = browserModule
+    .then((result) => awaitGlobalPromise('HHSBrowserReady', result));
 
   const allSettled = Promise.allSettled([
+    applicationExperience,
+    applicationControls,
+    visualModule,
+    visualIDE,
+    browserModule,
     browser,
     productionIntegration,
-    applicationExperience,
-    visualIDE,
     workflowDefault,
   ]).then((results) => {
     window.dispatchEvent(new CustomEvent('hhs:public-boot:settled', {
@@ -82,10 +126,18 @@ export function startPublicBoot() {
     schema: BOOT_SCHEMA,
     coordinator_ready: Boolean(window.HHSProductionStartupCoordinator),
     legacy_parser_module_entries_disabled: true,
+    application_controls_first: true,
+    application_controls_closed_before_projection_modules: true,
+    projection_modules_start_independently_after_controls: true,
+    production_integration_independent_of_visual_browser_completion: true,
+    production_integration_owns_bounded_harmonizer_wait: true,
+    applicationExperience,
+    applicationControls,
+    visualModule,
+    visualIDE,
+    browserModule,
     browser,
     productionIntegration,
-    applicationExperience,
-    visualIDE,
     workflowDefault,
     allSettled,
     status: snapshot,

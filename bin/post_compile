@@ -16,6 +16,14 @@ make c-abi
 test -s hhs_runtime/builds/libhhs_runtime.so
 echo "HHS native Hash72 runtime authority ready."
 
+if [[ $EUID -eq 0 && -x deployment/digitalocean/pass205_state/install.sh ]]; then
+  echo "Configuring writable Pass 205 continuation state..."
+  bash deployment/digitalocean/pass205_state/install.sh
+  echo "Pass 205 continuation state boundary ready."
+else
+  echo "Skipping system Pass 205 state installation outside a root deployment context."
+fi
+
 echo "Verifying executable production language authority..."
 python tools/install_production_language_assets.py --install-if-configured --require-assistant
 echo "Production language authority ready."

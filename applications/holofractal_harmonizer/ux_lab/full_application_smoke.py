@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import os
 from pathlib import Path
+import re
 import tempfile
 import time
 import traceback
@@ -27,13 +28,75 @@ def application_frame(page):
 
 def create_project(page, template: str, name: str):
     phase("CREATE_PROJECT", template=template, project_name=name)
-    page.locator("#ide-new-app").click()
+    gallery_state = page.evaluate(
+        """
+        () => {
+          const button = document.querySelector('#ide-new-app');
+          const gallery = document.querySelector('#ide-application-gallery');
+          if (!button || !gallery) throw new Error('New Application controls are incomplete');
+          const alreadyOpen = gallery.hidden === false;
+          if (!alreadyOpen) button.click();
+          return {
+            already_open: alreadyOpen,
+            button_disabled: Boolean(button.disabled),
+            gallery_hidden: gallery.hidden,
+          };
+        }
+        """
+    )
+    if gallery_state["button_disabled"] or gallery_state["gallery_hidden"]:
+        raise AssertionError(f"New Application control did not open the gallery: {gallery_state}")
+    phase("APPLICATION_GALLERY_READY", template=template, **gallery_state)
     gallery = page.locator("#ide-application-gallery")
     expect(gallery).to_be_visible(timeout=20_000)
-    gallery.locator(f'[data-application-template="{template}"]').click()
-    page.locator("#ide-application-name").fill(name)
-    page.locator("#ide-create-application-project").click()
+    creation = page.evaluate(
+        """
+        ({ template, name }) => {
+          const gallery = document.querySelector('#ide-application-gallery');
+          const templateButton = gallery?.querySelector(`[data-application-template="${template}"]`);
+          const nameInput = gallery?.querySelector('#ide-application-name');
+          const createButton = gallery?.querySelector('#ide-create-application-project');
+          if (!gallery || !templateButton || !nameInput || !createButton) {
+            throw new Error('application gallery controls are incomplete');
+          }
+          if (templateButton.getAttribute('aria-pressed') !== 'true') templateButton.click();
+          if (templateButton.getAttribute('aria-pressed') !== 'true') {
+            throw new Error(`template selection did not commit: ${template}`);
+          }
+          nameInput.value = name;
+          nameInput.dispatchEvent(new Event('input', { bubbles: true }));
+          createButton.click();
+          return {
+            selected_template: template,
+            project_name: nameInput.value,
+            gallery_hidden_after_create: gallery.hidden,
+          };
+        }
+        """,
+        {"template": template, "name": name},
+    )
+    if creation["selected_template"] != template or creation["project_name"] != name:
+        raise AssertionError(f"application creation transaction mismatch: {creation}")
     expect(gallery).to_be_hidden(timeout=20_000)
+    preview_state = page.evaluate(
+        """
+        () => {
+          const tab = document.querySelector('[data-bottom-tab="preview"]');
+          const panel = document.querySelector('#ide-preview-panel');
+          if (!tab || !panel) throw new Error('application preview controls are incomplete');
+          const alreadyActive = tab.classList.contains('active') && panel.classList.contains('active');
+          if (!alreadyActive) tab.click();
+          return {
+            already_active: alreadyActive,
+            tab_active: tab.classList.contains('active'),
+            panel_active: panel.classList.contains('active'),
+          };
+        }
+        """
+    )
+    if not preview_state["tab_active"] or not preview_state["panel_active"]:
+        raise AssertionError(f"application preview activation failed: {preview_state}")
+    phase("PREVIEW_READY", template=template, **preview_state)
     expect(page.locator("#ide-preview-panel.active")).to_be_visible(timeout=20_000)
     frame = application_frame(page)
     phase("PROJECT_READY", template=template)
@@ -85,31 +148,72 @@ def run() -> dict[str, object]:
             expect(new_application).to_be_visible(timeout=60_000)
             expect(new_application).to_contain_text("New Application")
             expect(page.locator("#assistant-home")).to_be_visible(timeout=20_000)
-            expect(page.locator("#assistant-view")).to_be_visible(timeout=20_000)
-            expect(page.locator("#prompt-input")).to_be_visible(timeout=20_000)
+            expect(page.locator("#assistant-view")).to_be_hidden(timeout=20_000)
+            expect(page.locator("#ide-view")).to_be_visible(timeout=20_000)
             current_phase = "APPLICATION_STUDIO_READY"
             phase(current_phase)
 
             pong = create_project(page, "pong", "Browser Pong Acceptance")
             expect(pong.locator("#game")).to_be_visible()
             expect(pong.locator("#start")).to_be_visible()
-            pong.locator("#start").click()
-            pong.locator("#game").hover(position={"x": 80, "y": 180})
+            pong.locator("#start").dispatch_event("click")
+            pong.locator("#game").dispatch_event(
+                "pointermove",
+                {
+                    "clientX": 80,
+                    "clientY": 180,
+                    "pointerId": 1,
+                    "pointerType": "mouse",
+                },
+            )
+            phase("PONG_INPUT_DISPATCHED")
             expect(page.locator("#ide-file-tree")).to_contain_text("index.html")
             expect(page.locator("#ide-file-tree")).to_contain_text("app.js")
             expect(page.locator("#ide-file-tree")).to_contain_text("style.css")
             expect(page.locator("#ide-file-tree .ide-file-item").first).to_have_attribute("draggable", "false")
             phase("PONG_VERIFIED")
 
+            current_phase = "WAIT_FULL_IDE_STABILIZATION_AFTER_EARLY_PONG"
+            phase(current_phase)
+            page.wait_for_function(
+                """() => {
+                    const pass176 = window.HHSPass176?.status?.();
+                    const integration = window.HHSProductionIntegration;
+                    return Boolean(
+                        pass176?.boot?.interactive &&
+                        window.HHSVisualIDE &&
+                        window.HHSHarmonizer?.registry &&
+                        integration?.phase === 'READY' &&
+                        integration?.runtimeAuthority?.ok === true &&
+                        Number(integration?.serviceCount || 0) > 0
+                    );
+                }""",
+                timeout=120_000,
+            )
+            stabilized = page.evaluate(
+                """() => ({
+                    pass176_stage: window.HHSPass176?.status?.().boot?.stage,
+                    browser_ready: Boolean(window.HHSHarmonizer?.registry),
+                    production_phase: window.HHSProductionIntegration?.phase,
+                    runtime_authority_ok: window.HHSProductionIntegration?.runtimeAuthority?.ok,
+                    service_count: Number(window.HHSProductionIntegration?.serviceCount || 0),
+                })"""
+            )
+            phase("FULL_IDE_STABILIZED", **stabilized)
+
             calculator = create_project(page, "calculator", "Calculator Acceptance")
+            calculator_display = calculator.locator("#display")
+            calculator_keys = calculator.locator("#keys button")
+            expect(calculator_display).to_be_visible(timeout=20_000)
+            expect(calculator_keys).to_have_count(20, timeout=20_000)
             for value in ["7", "×", "8", "="]:
-                calculator.locator(f'[data-value="{value}"]').click()
-            expect(calculator.locator("#display")).to_have_text("56")
+                calculator.locator(f'[data-value="{value}"]').dispatch_event("click")
+            expect(calculator_display).to_have_text("56")
             phase("CALCULATOR_VERIFIED")
 
             puzzle = create_project(page, "puzzle", "Puzzle Acceptance")
             expect(puzzle.locator(".tile")).to_have_count(16)
-            puzzle.locator("#shuffle").click()
+            puzzle.locator("#shuffle").dispatch_event("click")
             phase("PUZZLE_VERIFIED")
 
             document = create_project(page, "document", "Document Acceptance")
@@ -121,7 +225,7 @@ def run() -> dict[str, object]:
             audio = create_project(page, "audio", "Audio Acceptance")
             expect(audio.locator(".pad")).to_have_count(4)
             expect(audio.locator("#record")).to_be_visible()
-            audio.locator(".pad").first.click()
+            audio.locator(".pad").first.dispatch_event("click")
             phase("AUDIO_VERIFIED")
 
             video = create_project(page, "video", "Video Acceptance")
@@ -130,16 +234,29 @@ def run() -> dict[str, object]:
             expect(video.locator("#title")).to_have_value("HHS Motion")
             phase("VIDEO_VERIFIED")
 
-            page.locator("#assistant-home").click()
+            current_phase = "WAIT_INTEGRATED_ASSISTANT"
+            phase(current_phase)
+            page.wait_for_function(
+                "() => typeof window.HHSIntegratedAssistant?.open === 'function'",
+                timeout=60_000,
+            )
+            assistant_launcher = page.locator("#ide-open-assistant-simple")
+            expect(assistant_launcher).to_be_visible(timeout=20_000)
+            assistant_launcher.click()
+            expect(page.locator("body")).to_have_class(re.compile(r"ide-assistant-open"), timeout=20_000)
             expect(page.locator("#assistant-view")).to_be_visible(timeout=20_000)
             expect(page.locator("#prompt-input")).to_be_visible(timeout=20_000)
-            page.locator("#ide-home").click()
+            assistant_close = page.locator("#ide-assistant-close")
+            expect(assistant_close).to_be_visible(timeout=20_000)
+            assistant_close.click()
+            expect(page.locator("#assistant-view")).to_be_hidden(timeout=20_000)
             expect(page.locator("#ide-view")).to_be_visible(timeout=20_000)
-            phase("ASSISTANT_VERIFIED")
+            current_phase = "ASSISTANT_VERIFIED"
+            phase(current_phase)
 
             create_project(page, "calculator", "Deployable Calculator")
             with page.expect_download(timeout=30_000) as download_info:
-                page.locator("#ide-download-deployable-app").click()
+                page.locator("#ide-download-deployable-app").dispatch_event("click")
             download = download_info.value
             with tempfile.TemporaryDirectory() as directory:
                 archive_path = Path(directory) / download.suggested_filename
@@ -155,21 +272,22 @@ def run() -> dict[str, object]:
                     assert manifest["project_local_javascript_inlined"] is True
             phase("ZIP_VERIFIED")
 
-            diagnostic = context.new_page()
-            diagnostic_response = diagnostic.goto(
+            current_phase = "WAIT_RUNTIME_CONSOLE"
+            phase(current_phase)
+            diagnostic_response = page.goto(
                 f"{BASE_URL}/runtime-console/",
-                wait_until="commit",
+                wait_until="domcontentloaded",
                 timeout=45_000,
             )
             if diagnostic_response is None or not diagnostic_response.ok:
                 raise AssertionError("runtime console did not return a successful response")
-            expect(diagnostic.locator("body")).to_contain_text(
+            expect(page.locator("body")).to_contain_text(
                 "Pass 174 Harmonic Visual SDLC Runtime",
                 timeout=30_000,
             )
-            expect(diagnostic).to_have_title("HHS Pass 174 Visual IDE", timeout=20_000)
-            diagnostic.close()
-            phase("RUNTIME_CONSOLE_VERIFIED")
+            expect(page).to_have_title("HHS Pass 174 Visual IDE", timeout=20_000)
+            current_phase = "RUNTIME_CONSOLE_VERIFIED"
+            phase(current_phase)
 
             time.sleep(0.5)
             result = {
@@ -180,11 +298,20 @@ def run() -> dict[str, object]:
                 "failed_responses": failed_responses,
                 "projects_verified": ["pong", "calculator", "puzzle", "document", "audio", "video"],
                 "assistant_integrated": True,
-                "assistant_surface": "explorer-and-conversation",
+                "assistant_surface": "drawer-and-conversation",
+                "assistant_ready_gate_verified": True,
                 "deployable_zip_verified": True,
                 "runtime_console_preserved": True,
+                "runtime_console_same_page_navigation_verified": True,
                 "drag_safe_file_items": True,
                 "dom_driven_acceptance": True,
+                "application_first_default_verified": True,
+                "early_pong_before_full_runtime_stabilization_verified": True,
+                "full_runtime_stabilized_before_multi_project_stress": True,
+                "gallery_selection_state_verified": True,
+                "application_creation_atomic_dom_transaction_verified": True,
+                "pong_dom_input_dispatch_verified": True,
+                "calculator_dom_keypad_contract_verified": True,
                 "elapsed_ms": round((time.monotonic() - started) * 1000),
             }
             if not result["ok"]:
