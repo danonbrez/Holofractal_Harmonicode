@@ -17,6 +17,8 @@ import { initPass176Stability } from './pass176-stability.mjs';
 let stability = null;
 const bootOptions = { state, activeFile, persist, ensureProject, log };
 const bindings = new WeakMap();
+const WORKSPACE_AUTHORITY_BIND_TIMEOUT_MS = 15_000;
+let workspaceAuthorityBindPromise = null;
 
 function required(selector) {
   const node = $(selector);
@@ -85,6 +87,46 @@ function stateHashFromLiveStatus(liveStatus) {
     || null;
 }
 
+function scheduleWorkspaceAuthorityBind() {
+  if (workspaceAuthorityBindPromise) return workspaceAuthorityBindPromise;
+  const controller = new AbortController();
+  const timer = window.setTimeout(
+    () => controller.abort('HHS_P176_OPTIONAL_WORKSPACE_BIND_TIMEOUT'),
+    WORKSPACE_AUTHORITY_BIND_TIMEOUT_MS,
+  );
+  workspaceAuthorityBindPromise = ensureProject({ signal: controller.signal })
+    .then((projectId) => {
+      log(`Workspace authority bound to ${projectId}.`);
+      window.dispatchEvent(new CustomEvent('hhs:workspace-authority-bind:ready', {
+        detail: {
+          project_id: projectId,
+          optional_background_task: true,
+          blocks_pass176_quiescence: false,
+          frontend_is_authority: false,
+        },
+      }));
+      return projectId;
+    })
+    .catch((error) => {
+      log(`Workspace initialization deferred: ${error.message}`);
+      window.dispatchEvent(new CustomEvent('hhs:workspace-authority-bind:deferred', {
+        detail: {
+          classification: error?.name === 'AbortError'
+            ? 'HHS_P176_OPTIONAL_WORKSPACE_BIND_TIMEOUT'
+            : 'HHS_P176_OPTIONAL_WORKSPACE_BIND_DEFERRED',
+          message: error?.message || String(error),
+          optional_background_task: true,
+          blocks_pass176_quiescence: false,
+          project_files_preserved: true,
+          frontend_is_authority: false,
+        },
+      }));
+      return null;
+    })
+    .finally(() => window.clearTimeout(timer));
+  return workspaceAuthorityBindPromise;
+}
+
 async function hydrateBackendAuthorityEvidence() {
   const [serviceHealth, liveStatus, pass175] = await Promise.all([
     requestJson('/api/health', { timeoutMs: 10000, retryCount: 1 }),
@@ -126,13 +168,7 @@ async function hydrateBackendAuthorityEvidence() {
   if (!authorityEvidence.vm81AuthorityPreserved || authorityEvidence.hash72CommitStreams !== 1) {
     throw new Error('HHS_P176_BACKEND_AUTHORITY_EVIDENCE_REJECTED');
   }
-  void stability.runAction('workspace-authority-bind', async ({ signal }) => {
-    const projectId = await ensureProject({ signal });
-    log(`Workspace authority bound to ${projectId}.`);
-    return projectId;
-  }, { key: 'workspace-authority-bind', timeoutMs: 30000, detail: 'Checking backend workspace authority' }).catch((error) => {
-    log(`Workspace initialization deferred: ${error.message}`);
-  });
+  void scheduleWorkspaceAuthorityBind();
   return authorityEvidence;
 }
 
@@ -405,6 +441,8 @@ async function bootVisualIDE() {
           replay,
           egress: exportEgress,
           stability: () => stability.status(),
+          workspaceAuthorityBinding: () => workspaceAuthorityBindPromise,
+          optionalWorkspaceBindBlocksQuiescence: false,
         });
         window.dispatchEvent(new CustomEvent('hhs:visual-ide:interactive', { detail: stability.status() }));
       },
