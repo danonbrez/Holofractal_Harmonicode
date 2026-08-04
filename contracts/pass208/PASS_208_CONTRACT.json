@@ -133,6 +133,8 @@
     "hhs_backend/api/pass208_gpu_manifold_routes.py",
     "deployment/digitalocean/gpu/install.sh",
     "deployment/digitalocean/gpu/hhs-gpu-preflight.sh",
+    "deployment/digitalocean/gpu/post-merge.sh",
+    "deployment/digitalocean/gpu/validate-candidate.sh",
     "deployment/digitalocean/gpu/validate-json-spec-package.py",
     "deployment/digitalocean/gpu/pass208-gpu.env.example",
     "deployment/digitalocean/gpu/README.md",
