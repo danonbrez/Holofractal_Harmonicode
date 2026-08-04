@@ -37,7 +37,8 @@ def test_production_server_composes_canonical_backend_and_verified_harmonizer():
         "/v1/modalities/language/models/word2vec/status",
         "/ws/runtime",
     }
-    assert required.issubset(paths)
+    missing = sorted(required - paths)
+    assert not missing, missing
     assert "" in paths or "/" in paths
     assert production_server.VISUAL_ROOT == Path("applications/holofractal_harmonizer").resolve()
     assert (production_server.VISUAL_ROOT / "index.html").is_file()
@@ -62,45 +63,82 @@ def test_integrated_workspace_session_is_lightweight_and_real():
     }
 
 
-def test_hosted_native_assistant_executes_receipt_bearing_turn_without_word2vec():
+def test_hosted_pass210_assistant_closes_without_kimi_or_gemma(monkeypatch, tmp_path):
     from hhs_backend import production_server
-    from hhs_backend.runtime.hhs_production_assistant_v1 import (
-        DEFAULT_PRODUCTION_ASSISTANT_SERVICE,
+    from hhs_backend.runtime import hhs_pass210_production_assistant_v1 as production_module
+    from hhs_backend.runtime.hhs_kimi_k3_agentic_assistant_v1 import (
+        KimiConversationThreadStore,
+        KimiK3AgenticAssistantService,
+        KimiK3AssistantConfig,
+    )
+    from hhs_backend.runtime.hhs_litert_lm_assistant_v1 import LiteRTLMConfig
+    from hhs_backend.runtime.hhs_litert_lm_hhs_api_assistant_v1 import (
+        HHSAPIAssistantService,
+    )
+    from hhs_backend.runtime.hhs_pass210_native_agi_optimizer_v1 import (
+        NativeAGIOptimizer,
+    )
+    from hhs_backend.runtime.hhs_pass210_production_assistant_v1 import (
+        Pass210ProductionAssistantService,
     )
 
-    service = DEFAULT_PRODUCTION_ASSISTANT_SERVICE
-    service._health_timeout = max(float(service._health_timeout), 5.0)
-
-    installation = service._native_installation_status()
-    assert installation["ready"] is True, installation
-    assert installation["word2vec_required"] is False, installation
-
-    native_health = asyncio.run(service.native_service.health())
-    assert native_health["ok"] is True, native_health
-    assert native_health["online"] is True, native_health
+    kimi_config = KimiK3AssistantConfig(
+        enabled=False,
+        api_key="",
+        max_threads=8,
+        max_messages_per_thread=32,
+    )
+    shared = KimiConversationThreadStore(
+        kimi_config,
+        provider_id="provider:hhs.pass210.production-test",
+    )
+    primary = KimiK3AgenticAssistantService(
+        config=kimi_config,
+        thread_store=shared,
+    )
+    fallback = HHSAPIAssistantService(
+        config=LiteRTLMConfig(
+            base_url="http://127.0.0.1:9/v1",
+            model_id="gemma-4-E2B-it",
+            timeout_seconds=0.1,
+            max_threads=8,
+            max_messages_per_thread=32,
+        ),
+        thread_store=shared,
+    )
+    optimizer = NativeAGIOptimizer(db_path=tmp_path / "optimizer.sqlite3")
+    service = Pass210ProductionAssistantService(
+        primary_service=primary,
+        fallback_service=fallback,
+        optimizer=optimizer,
+    )
+    service._health_timeout = 0.5
+    monkeypatch.setattr(
+        production_module,
+        "DEFAULT_PASS210_PRODUCTION_ASSISTANT",
+        service,
+    )
 
     health = asyncio.run(production_server._assistant_health())
-    assert health["ok"] is True, health
-    assert health["online"] is True, health
-    assert health["selected_provider_id"] == "provider:hhs.local.text", health
-    assert health["effective_mode"] == "HHS_NATIVE_LITERT_COMPATIBLE", health
-    assert health["native_hhs"]["installation"]["ready"] is True
-    assert health["native_hhs"]["installation"]["word2vec_required"] is False
-    assert health["repository_search_is_provider"] is False
-    assert health["same_template_response_enabled"] is False
+    assert health["ok"] is False, health
+    assert health["online"] is False, health
+    assert health["selected_provider_id"] is None, health
+    assert health["effective_mode"] == "UNAVAILABLE", health
+    assert health["native_agi_is_user_facing_provider"] is False
+    assert health["native_agi_is_backend_learning_agent"] is True
 
     thread = service.create_thread(
         project_id="project:hosted-assistant-test",
-        title="Hosted assistant execution test",
+        title="Hosted assistant fail-closed test",
     )
     turn = asyncio.run(service.send_message(thread["thread_id"], content="AB=P^4"))
-    assert turn["ok"] is True, turn
-    assert turn["effective_mode"] == "HHS_NATIVE_LITERT_COMPATIBLE", turn
-    assert str(turn["assistant_message"]["content"]).strip(), turn
-    assert turn["assistant_message"]["message_root_hash72"], turn
-    assert turn["provider_invocation_receipt"]["provider_invocation_receipt_hash72"], turn
-    assert turn["provider_result_ingress"]["provider_result_ingress_root_hash72"], turn
-    assert turn["turn_root_hash72"], turn
+    assert turn["ok"] is False, turn
+    assert turn["status"] == "REJECT_ASSISTANT_TURN_WITHOUT_READY_PROVIDER"
+    assert turn["effective_mode"] == "UNAVAILABLE"
+    assert turn["selected_provider_id"] is None
+    assert turn["assistant_message"] is None
+    assert turn["native_agi_is_user_facing_provider"] is False
+    assert turn["native_agi_observation_root_hash72"]
     assert turn["runtime_mutation_admitted"] is False
 
 
@@ -238,17 +276,23 @@ def test_verified_harmonizer_hydrates_live_backend_registry_and_dispatch():
     assert "disabled registry item" not in source
 
 
-def test_provider_hierarchy_uses_gemma_then_native_hhs_without_canned_demo():
+def test_provider_hierarchy_uses_kimi_then_gemma_with_native_optimizer():
     paths = [
-        "hhs_backend/runtime/hhs_production_assistant_v1.py",
-        "hhs_backend/runtime/hhs_native_litert_lm_provider_v1.py",
+        "hhs_backend/runtime/hhs_kimi_k3_agentic_assistant_v1.py",
+        "hhs_backend/runtime/hhs_pass210_production_assistant_v1.py",
+        "hhs_backend/runtime/hhs_pass210_native_agi_optimizer_v1.py",
         "hhs_backend/runtime/hhs_capability_provider_registry_v1.py",
         "hhs_backend/runtime/hhs_litert_lm_assistant_v1.py",
     ]
     combined = "\n".join(Path(path).read_text(encoding="utf-8") for path in paths)
+    assert "provider:hhs.moonshot.kimi_k3.agentic" in combined
     assert "provider:hhs.litert_lm.gemma4" in combined
     assert "provider:hhs.local.text" in combined
-    assert "Pass 166" in combined or "pass166" in combined
+    assert "KIMI_K3_AGENTIC_SWARM_API" in combined
+    assert "GEMMA4_LITERT_LM_FALLBACK" in combined
+    assert "BACKEND_LEARNING_AND_OPTIMIZATION_AGENT" in combined
+    assert "native_agi_is_user_facing_provider" in combined
+    assert "HHS_NATIVE_LITERT_COMPATIBLE" not in combined
     assert "The request was received without runtime mutation" not in combined
 
 

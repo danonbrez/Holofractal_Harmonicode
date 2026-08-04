@@ -1,0 +1,26 @@
+[Unit]
+Description=HHS LiteRT-LM Gemma 4 local fallback server
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=hhs
+Group=hhs
+EnvironmentFile=/etc/hhs/pass210-llm.env
+Environment=HOME=/var/lib/hhs
+WorkingDirectory=/var/lib/hhs/litert-lm
+ExecStart=/opt/hhs/litert-lm/bin/litert-lm serve --host 127.0.0.1 --port 9379
+Restart=on-failure
+RestartSec=3
+TimeoutStartSec=300
+TimeoutStopSec=30
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ProtectHome=true
+ReadWritePaths=/var/lib/hhs/litert-lm
+
+[Install]
+WantedBy=multi-user.target

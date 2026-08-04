@@ -25,6 +25,7 @@ from hhs_backend import server as canonical
 from hhs_backend.api.development_lifecycle_routes import router as development_lifecycle_router
 from hhs_backend.api.installation_routes import router as installation_router
 from hhs_backend.api.litert_lm_assistant_routes import router as assistant_router
+from hhs_backend.api.pass210_llm_orchestrator_routes import router as pass210_llm_router
 from hhs_backend.api.pass165_multimodal_ingress_routes import router as pass165_router
 from hhs_backend.api.pass166_word2vec_routes import router as word2vec_router
 
@@ -48,8 +49,14 @@ def _has_route_prefix(prefix: str) -> bool:
     return any(str(getattr(route, "path", "")).startswith(prefix) for route in app.router.routes)
 
 
-if not _has_route_prefix("/api/assistant"):
+def _has_exact_route(path: str) -> bool:
+    return any(str(getattr(route, "path", "")) == path for route in app.router.routes)
+
+
+if not _has_exact_route("/api/assistant/chat") or not _has_exact_route("/api/assistant/health"):
     app.include_router(assistant_router)
+if not _has_route_prefix("/api/runtime/llm-orchestrator"):
+    app.include_router(pass210_llm_router)
 if not _has_route_prefix("/v1/modalities/language"):
     app.include_router(word2vec_router)
 if not _has_route_prefix("/api/runtime/installation"):
@@ -167,15 +174,15 @@ async def production_workspace_session_ensure(payload: dict[str, Any]) -> dict[s
 
 async def _assistant_health() -> dict[str, Any]:
     try:
-        from hhs_backend.runtime.hhs_production_assistant_v1 import (
-            DEFAULT_PRODUCTION_ASSISTANT_SERVICE,
+        from hhs_backend.runtime.hhs_pass210_production_assistant_v1 import (
+            DEFAULT_PASS210_PRODUCTION_ASSISTANT,
         )
 
-        DEFAULT_PRODUCTION_ASSISTANT_SERVICE._health_timeout = max(
-            float(DEFAULT_PRODUCTION_ASSISTANT_SERVICE._health_timeout),
+        DEFAULT_PASS210_PRODUCTION_ASSISTANT._health_timeout = max(
+            float(DEFAULT_PASS210_PRODUCTION_ASSISTANT._health_timeout),
             5.0,
         )
-        return await DEFAULT_PRODUCTION_ASSISTANT_SERVICE.health()
+        return await DEFAULT_PASS210_PRODUCTION_ASSISTANT.health()
     except Exception as exc:
         return {
             "ok": False,
@@ -289,6 +296,69 @@ async def production_system_status() -> dict[str, Any]:
         "installation_api": "/api/runtime/installation",
         "word2vec_api": "/v1/modalities/language",
     }
+
+
+# Pass 210 final route closure. The canonical bootstrap may import this overlay
+# while the shared FastAPI app is still being composed. Re-append only route
+# identities that are absent after every inherited root/static filter, then
+# close startup if the production API or WebSocket surface is incomplete.
+HHS_PASS_210_PRODUCTION_ROUTE_CLOSURE_V1 = True
+
+
+def _route_identity(route: Any) -> tuple[str, str, tuple[str, ...]]:
+    return (
+        route.__class__.__name__,
+        str(getattr(route, "path", "")),
+        tuple(sorted(str(method) for method in (getattr(route, "methods", None) or ()))),
+    )
+
+
+def _append_missing_router_routes(router: Any) -> int:
+    existing = {_route_identity(route) for route in app.router.routes}
+    appended = 0
+    for route in router.routes:
+        identity = _route_identity(route)
+        if identity in existing:
+            continue
+        app.router.routes.append(route)
+        existing.add(identity)
+        appended += 1
+    return appended
+
+
+PRODUCTION_ROUTE_CLOSURE_APPENDED = {
+    "canonical_runtime": _append_missing_router_routes(canonical.runtime_router),
+    "canonical_websocket": _append_missing_router_routes(canonical.runtime_ws_router),
+    "assistant": _append_missing_router_routes(assistant_router),
+    "pass210_orchestrator": _append_missing_router_routes(pass210_llm_router),
+    "word2vec": _append_missing_router_routes(word2vec_router),
+    "installation": _append_missing_router_routes(installation_router),
+    "multimodal_ingress": _append_missing_router_routes(pass165_router),
+    "development_lifecycle": _append_missing_router_routes(development_lifecycle_router),
+}
+
+PRODUCTION_REQUIRED_ROUTE_CLOSURE = {
+    "/api/assistant/chat",
+    "/api/assistant/health",
+    "/api/runtime/llm-orchestrator/status",
+    "/api/runtime/llm-orchestrator/optimizer/status",
+    "/api/runtime/installation/status",
+    "/api/runtime/services",
+    "/api/runtime/services/dispatch",
+    "/v1/modalities/language/models/word2vec/status",
+    "/ws/runtime",
+}
+PRODUCTION_ROUTE_CLOSURE_PATHS = {
+    str(getattr(route, "path", "")) for route in app.router.routes
+}
+PRODUCTION_ROUTE_CLOSURE_MISSING = sorted(
+    PRODUCTION_REQUIRED_ROUTE_CLOSURE - PRODUCTION_ROUTE_CLOSURE_PATHS
+)
+if PRODUCTION_ROUTE_CLOSURE_MISSING:
+    raise RuntimeError(
+        "Pass 210 production route closure failed: "
+        + ", ".join(PRODUCTION_ROUTE_CLOSURE_MISSING)
+    )
 
 
 @app.api_route(

@@ -5,6 +5,7 @@ import os
 import re
 import time
 import traceback
+import urllib.request
 from pathlib import Path
 
 from playwright.sync_api import expect, sync_playwright
@@ -24,6 +25,19 @@ def write_evidence(name: str, payload: dict) -> None:
 
 def phase(name: str, **details: object) -> None:
     print(json.dumps({"browser_phase": name, **details}, sort_keys=True), flush=True)
+
+
+def get_json(path: str) -> dict:
+    request = urllib.request.Request(
+        f"{BASE_URL}{path}",
+        headers={"Accept": "application/json", "User-Agent": "HHS-Pass161-Production-Smoke/1.0"},
+        method="GET",
+    )
+    with urllib.request.urlopen(request, timeout=30) as response:
+        payload = json.loads(response.read().decode("utf-8"))
+    if not isinstance(payload, dict):
+        raise AssertionError(f"non-object JSON response from {path}")
+    return payload
 
 
 def main() -> None:
@@ -131,9 +145,47 @@ def main() -> None:
             assistant_view = page.locator("#assistant-view:not([hidden])")
             expect(assistant_view).to_be_visible(timeout=20_000)
             provider = page.locator("#provider-status")
-            expect(provider).to_contain_text("ONLINE", timeout=60_000)
-            provider_state = provider.inner_text()
-            phase("ASSISTANT_VERIFIED", provider_state=provider_state)
+            expect(provider).to_have_text(
+                re.compile(r"^(LITERT-LM ONLINE|ASSISTANT DEGRADED)$"),
+                timeout=60_000,
+            )
+            provider_state = provider.inner_text().strip()
+            assistant_health = get_json("/api/assistant/health")
+            if provider_state == "LITERT-LM ONLINE":
+                if not (
+                    assistant_health.get("ok")
+                    and assistant_health.get("online")
+                    and assistant_health.get("selected_provider_id")
+                ):
+                    raise AssertionError(
+                        f"online assistant badge lacks a selected healthy provider: {assistant_health}"
+                    )
+                assistant_acceptance = "SELECTED_PROVIDER_ONLINE"
+            else:
+                expected_unavailable = {
+                    "ok": False,
+                    "online": False,
+                    "selected_provider_id": None,
+                    "effective_mode": "UNAVAILABLE",
+                    "native_agi_is_user_facing_provider": False,
+                    "native_agi_is_backend_learning_agent": True,
+                }
+                mismatches = {
+                    key: {"expected": expected, "actual": assistant_health.get(key)}
+                    for key, expected in expected_unavailable.items()
+                    if assistant_health.get(key) != expected
+                }
+                if mismatches:
+                    raise AssertionError(
+                        "degraded assistant badge lacks exact Pass 210 fail-closed health: "
+                        + json.dumps(mismatches, sort_keys=True)
+                    )
+                assistant_acceptance = "PASS210_FAIL_CLOSED_WITH_NATIVE_OBSERVER"
+            phase(
+                "ASSISTANT_VERIFIED",
+                provider_state=provider_state,
+                assistant_acceptance=assistant_acceptance,
+            )
 
             page.screenshot(
                 path=str(EVIDENCE_DIR / "pass161-production-harmonizer.png"),
@@ -145,6 +197,7 @@ def main() -> None:
                 "serviceCount": service_count,
                 "registryProjectedObjectCount": registry_count,
                 "runtimeAuthorityState": runtime_state,
+                "assistantAcceptance": assistant_acceptance,
                 "domDrivenAcceptance": True,
                 "frontend_is_authority": False,
             }
@@ -158,6 +211,19 @@ def main() -> None:
                 "registry_projected_object_count": registry_count,
                 "runtime_state": runtime_state,
                 "assistant_provider_state": provider_state,
+                "assistant_acceptance": assistant_acceptance,
+                "assistant_health": {
+                    "ok": assistant_health.get("ok"),
+                    "online": assistant_health.get("online"),
+                    "selected_provider_id": assistant_health.get("selected_provider_id"),
+                    "effective_mode": assistant_health.get("effective_mode"),
+                    "native_agi_is_user_facing_provider": assistant_health.get(
+                        "native_agi_is_user_facing_provider"
+                    ),
+                    "native_agi_is_backend_learning_agent": assistant_health.get(
+                        "native_agi_is_backend_learning_agent"
+                    ),
+                },
                 "dispatch_service": "runtime_contract.self_test",
                 "dispatch_schema": dispatch_payload.get("schema"),
                 "dispatch_result_schema_present": "HHS_RUNTIME_CONTRACT_SELF_TEST_V1" in dispatch_text,
