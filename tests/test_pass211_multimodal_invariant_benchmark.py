@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import importlib.util
+import sys
 from pathlib import Path
 
 import pytest
@@ -10,6 +11,7 @@ SCRIPT = Path(__file__).resolve().parents[1] / "scripts" / "pass211_multimodal_i
 SPEC = importlib.util.spec_from_file_location("pass211_benchmark", SCRIPT)
 assert SPEC is not None and SPEC.loader is not None
 MODULE = importlib.util.module_from_spec(SPEC)
+sys.modules[SPEC.name] = MODULE
 SPEC.loader.exec_module(MODULE)
 
 
@@ -107,10 +109,13 @@ def test_repository_scan_detects_modalities_invariants_and_json(tmp_path: Path) 
         encoding="utf-8",
     )
     (tmp_path / "valid.json").write_text('{"ok": true}', encoding="utf-8")
+    (tmp_path / "legacy-invalid.json").write_text('{"legacy":', encoding="utf-8")
     scan, objects = MODULE.scan_repository(tmp_path, max_vector_objects=32)
     assert scan["highest_pass_observed"] == 210
     assert scan["json"]["valid_files"] == 1
-    assert scan["json"]["invalid_files"] == 0
+    assert scan["json"]["invalid_files"] == 1
+    assert scan["json"]["invalid_paths"] == ["legacy-invalid.json"]
+    assert scan["json"]["pass211_owned_invalid_paths"] == []
     assert scan["invariant_file_counts"]["contextual_51648192"] == 1
     assert scan["modality_file_counts"]["retrieval"] == 1
     assert objects
