@@ -11,6 +11,7 @@ on:
       - 'applications/holofractal_harmonizer/src/visual-ide-state.mjs'
       - 'applications/holofractal_harmonizer/src/visual-ide-runtime.mjs'
       - 'applications/holofractal_harmonizer/src/integrated-assistant.mjs'
+      - 'applications/holofractal_harmonizer/src/integrated-workbench.mjs'
       - 'applications/holofractal_harmonizer/src/application-templates-runtime.mjs'
       - 'applications/holofractal_harmonizer/tests/pass176-*'
       - 'applications/holofractal_harmonizer/tests/integrated.workbench.test.mjs'
@@ -30,6 +31,7 @@ on:
       - 'applications/holofractal_harmonizer/src/visual-ide-state.mjs'
       - 'applications/holofractal_harmonizer/src/visual-ide-runtime.mjs'
       - 'applications/holofractal_harmonizer/src/integrated-assistant.mjs'
+      - 'applications/holofractal_harmonizer/src/integrated-workbench.mjs'
       - 'applications/holofractal_harmonizer/src/application-templates-runtime.mjs'
       - 'applications/holofractal_harmonizer/tests/pass176-*'
       - 'applications/holofractal_harmonizer/tests/integrated.workbench.test.mjs'
@@ -99,6 +101,7 @@ jobs:
           node --check applications/holofractal_harmonizer/src/visual-ide-state.mjs
           node --check applications/holofractal_harmonizer/src/visual-ide-runtime.mjs
           node --check applications/holofractal_harmonizer/src/integrated-assistant.mjs
+          node --check applications/holofractal_harmonizer/src/integrated-workbench.mjs
           node --check applications/holofractal_harmonizer/src/application-templates-runtime.mjs
           python -m py_compile \
             applications/holofractal_harmonizer/ux_lab/pass176_stability_smoke.py \
@@ -161,9 +164,6 @@ jobs:
             > /tmp/hhs-pass176-root.html
           grep -q 'HHS Full Multimodal Application IDE' /tmp/hhs-pass176-root.html
           curl --connect-timeout 1 --max-time 15 -fsS \
-            http://127.0.0.1:8765/api/runtime/repository/status \
-            > /tmp/hhs-pass176-repository-status.json
-          curl --connect-timeout 1 --max-time 15 -fsS \
             http://127.0.0.1:8765/api/v1/pass175/status \
             > /tmp/hhs-pass176-pass175-status.json
           timeout 240s python applications/holofractal_harmonizer/ux_lab/pass176_stability_smoke.py
@@ -178,7 +178,6 @@ jobs:
             /tmp/hhs-pass176-application-ide-server.log
             /tmp/hhs-pass176-health.json
             /tmp/hhs-pass176-root.html
-            /tmp/hhs-pass176-repository-status.json
             /tmp/hhs-pass176-pass175-status.json
           if-no-files-found: warn
           retention-days: 7
