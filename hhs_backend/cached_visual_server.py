@@ -33,9 +33,10 @@ DEFAULT_STATUS_PATHS = (
 )
 STATUS_PATH_RE = re.compile(r"^/api/(?:runtime|public)(?:/[^?#]+)*/status$")
 PRODUCTION_INTEGRATION_PATH = "/src/production-integration.mjs"
+BOOTSTRAP_COORDINATOR_PATH = "/runtime-bootstrap-coordinator.js"
+BOOTSTRAP_TAG = '<script src="/runtime-bootstrap-coordinator.js" data-hhs-runtime-bootstrap-coordinator="v1"></script>'
 
-BOOTSTRAP_SCRIPT = r"""
-<script data-hhs-runtime-bootstrap-coordinator="v1">
+BOOTSTRAP_SOURCE = r"""
 (() => {
   if (window.__HHSRuntimeBootstrapCoordinator) return;
   const nativeFetch = window.fetch.bind(window);
@@ -96,7 +97,6 @@ BOOTSTRAP_SCRIPT = r"""
   window.setTimeout(poll, 0);
   window.addEventListener('pagehide', () => { if (pollTimer) window.clearTimeout(pollTimer); }, { once: true });
 })();
-</script>
 """.strip()
 
 OLD_WAIT_FOR_HARMONIZER = """async function waitForHarmonizer() {
@@ -137,11 +137,11 @@ def inject_bootstrap_script(html: str) -> str:
     marker = '<script type="module"'
     index = html.find(marker)
     if index >= 0:
-        return html[:index] + BOOTSTRAP_SCRIPT + "\n" + html[index:]
+        return html[:index] + BOOTSTRAP_TAG + "\n" + html[index:]
     closing = html.lower().find("</head>")
     if closing >= 0:
-        return html[:closing] + BOOTSTRAP_SCRIPT + "\n" + html[closing:]
-    return BOOTSTRAP_SCRIPT + "\n" + html
+        return html[:closing] + BOOTSTRAP_TAG + "\n" + html[closing:]
+    return BOOTSTRAP_TAG + "\n" + html
 
 
 def transform_production_integration(source: str) -> str:
@@ -167,7 +167,7 @@ class RuntimeBootstrapGateway:
         self.cache = cache or RuntimeStatusCache(cache_path, ttl_seconds=ttl)
         self.status_paths = list(dict.fromkeys(status_paths))
         self.probe_enabled = probe_enabled and os.getenv("HHS_RUNTIME_STATUS_PROBE", "1") != "0"
-        self.probe_interval = max(1.0, float(os.getenv("HHS_RUNTIME_STATUS_PROBE_INTERVAL_SECONDS", "15")))
+        self.probe_interval = max(1.0, float(os.getenv("HHS_RUNTIME_STATUS_PROBE_INTERVAL_SECONDS", "60")))
         self.probe_timeout = max(5.0, float(os.getenv("HHS_RUNTIME_STATUS_PROBE_TIMEOUT_SECONDS", "180")))
         self._probe_task: asyncio.Task[None] | None = None
         self._last_probe_started = 0.0
@@ -178,6 +178,9 @@ class RuntimeBootstrapGateway:
             return
         path = str(scope.get("path") or "")
         self._ensure_probe()
+        if path == BOOTSTRAP_COORDINATOR_PATH:
+            await self._send_javascript(send, BOOTSTRAP_SOURCE)
+            return
         if path == "/api/runtime/bootstrap/status":
             await self._send_json(send, 200, self._bootstrap_status())
             return
@@ -213,7 +216,7 @@ class RuntimeBootstrapGateway:
         process = await asyncio.create_subprocess_exec(
             *command,
             stdout=asyncio.subprocess.PIPE,
-            stderr=asyncio.subprocess.PIPE,
+            stderr=asyncio.subprocess.DEVNULL,
             env=environment,
         )
         try:
@@ -331,6 +334,23 @@ class RuntimeBootstrapGateway:
         headers.append((b"x-hhs-runtime-bootstrap", b"v1"))
         await send({"type": "http.response.start", "status": start.get("status", 200), "headers": headers})
         await send({"type": "http.response.body", "body": transformed, "more_body": False})
+
+    @staticmethod
+    async def _send_javascript(
+        send: Callable[[dict[str, Any]], Awaitable[None]],
+        source: str,
+    ) -> None:
+        body = source.encode("utf-8")
+        await send({
+            "type": "http.response.start",
+            "status": 200,
+            "headers": [
+                (b"content-type", b"text/javascript; charset=utf-8"),
+                (b"content-length", str(len(body)).encode("ascii")),
+                (b"cache-control", b"no-store"),
+            ],
+        })
+        await send({"type": "http.response.body", "body": body, "more_body": False})
 
     @staticmethod
     async def _send_json(
