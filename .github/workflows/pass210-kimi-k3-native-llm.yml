@@ -91,6 +91,26 @@ jobs:
         run: |
           python - <<'PY'
           from hhs_backend import production_server
+          routers = {
+              "assistant": production_server.assistant_router,
+              "orchestrator": production_server.pass210_llm_router,
+              "word2vec": production_server.word2vec_router,
+              "installation": production_server.installation_router,
+              "runtime": production_server.canonical.runtime_router,
+              "runtime_ws": production_server.canonical.runtime_ws_router,
+          }
+          for name, router in routers.items():
+              print(f"HHS_PASS210_ROUTER {name} count={len(router.routes)}")
+              for route in router.routes:
+                  path = str(getattr(route, "path", ""))
+                  if (
+                      "assistant" in path
+                      or "services" in path
+                      or "installation" in path
+                      or "word2vec" in path
+                      or path.startswith("/ws")
+                  ):
+                      print(f"  {path}")
           paths = sorted(str(getattr(route, "path", "")) for route in production_server.app.router.routes)
           selected = [
               path for path in paths
