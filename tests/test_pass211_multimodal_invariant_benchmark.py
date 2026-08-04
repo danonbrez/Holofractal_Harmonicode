@@ -103,7 +103,7 @@ def test_retrieval_calibration_exact_and_single_bit_nearest() -> None:
 def test_repository_scan_detects_modalities_invariants_and_json(tmp_path: Path) -> None:
     (tmp_path / "docs").mkdir()
     (tmp_path / "docs" / "PASS_210_TEST.md").write_text(
-        "Hash72 Hash216 singleton VM81 noncommutative 81 × 64 G243 "
+        "PASS 210 Hash72 Hash216 singleton VM81 noncommutative 81 × 64 G243 "
         "1,259,712 51,648,192 5,040 image video animation audio physics game "
         "language model parameter GPU continuation retrieval",
         encoding="utf-8",
