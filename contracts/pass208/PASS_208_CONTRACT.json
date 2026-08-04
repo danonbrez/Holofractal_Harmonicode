@@ -1,0 +1,151 @@
+{
+  "schema": "HHS_PASS_208_CONTRACT_V1",
+  "pass": 208,
+  "contract_id": "HHS-P208-DIGITALOCEAN-PHYSICAL-GPU-NEURAL-BRANCH-MANIFOLD-VM81-HYDRATION-LATTICE-H72-H216",
+  "title": "DigitalOcean Physical GPU Neural Branch Expansion Manifold",
+  "classification": "CONTRACT_AUTHORIZED_FULL_IMPLEMENTATION_REQUIRED",
+  "parent": "Complete cumulative HHS runtime through Pass 207",
+  "implementation_mode": "ADDITIVE_GPU_MANIFOLD_WITH_SINGLETON_VM81_COMMIT",
+  "formal_model": {
+    "gpu_interpretation": "NEURAL_NETWORK_BRANCH_TREE_EXPANSION_MANIFOLD",
+    "separate_model_authority": false,
+    "separate_kernel": false,
+    "same_kernel_bytecode_hydration_lattice": true,
+    "same_parent_snapshot_required": true,
+    "same_constraint_root_required": true,
+    "same_q_address_formula": "q=243s+g",
+    "same_vm5184_lane_formula": "s=64c+o",
+    "same_hash216_lineage_required": true,
+    "same_hash72_commit_stream_required": true
+  },
+  "branch_object": {
+    "required_fields": [
+      "parent_continuation_root216",
+      "parent_receipt_hash72",
+      "bytecode_hydration_lattice_root216",
+      "branch_ordinal",
+      "ordered_delta_events",
+      "ordered_hydration_q_addresses",
+      "dependency_frontier",
+      "child_content_root216",
+      "child_projection_root216",
+      "branch_candidate_root216"
+    ],
+    "candidate_only": true,
+    "canonical_commit_authority": false
+  },
+  "parallelism": {
+    "vm81_cells": 81,
+    "logical_hyperthreads_per_cell": 64,
+    "logical_lanes_per_branch": 5184,
+    "branches_per_dispatch": "BOUNDED_BY_HHS_PASS208_MAX_BRANCHES",
+    "physical_completion_order_is_noncanonical": true,
+    "stable_branch_order": [
+      "objective_distance",
+      "branch_candidate_root216",
+      "branch_ordinal"
+    ]
+  },
+  "commit_path": [
+    "EXPAND_BRANCHES_ON_GPU",
+    "VERIFY_EACH_BRANCH_AGAINST_EXACT_CPU_VM5184_ORACLE",
+    "RANK_WITH_STABLE_INTEGER_OBJECTIVE",
+    "SELECT_EXACT_BRANCH",
+    "SUBMIT_SELECTED_ORDERED_DELTA_TO_EXISTING_PASS205_ADVANCE",
+    "RECOMPUTE_AND_VALIDATE_INSIDE_SINGLETON_VM81_AUTHORITY",
+    "BUILD_PARENT_BOUND_HASH216_AND_HASH72_TOKEN",
+    "PERSIST_IMMUTABLE_SNAPSHOT_AND_RECEIPT"
+  ],
+  "json_specification_package": {
+    "file_count": 23,
+    "root_environment_variable": "HHS_JSON_SPEC_PACKAGE_ROOT",
+    "manifest_environment_variable": "HHS_JSON_SPEC_MANIFEST",
+    "validation_required_before_physical_gpu_enablement": true,
+    "schema_validation_required": true,
+    "conformance_vector_validation_required": true,
+    "checksum_validation_required": true,
+    "example_object_count": 4,
+    "required_domains": [
+      "canonical_constants_and_minimum_registry_unit",
+      "vm81_vm5184_logical_and_control_addressing",
+      "hash216_snapshot_identity",
+      "fixed_width_noncommutative_nested_constraint_bytecode",
+      "novel_transition_and_inverse_delta_records",
+      "cpu_directed_gpu_dispatch_manifests",
+      "global_serialization_vector_cache_entries",
+      "emergent_object_closure",
+      "validation_and_commit_receipts",
+      "deep_learning_candidate_transitions",
+      "phase_error_syndromes_5184",
+      "runtime_state_machine_rules",
+      "default_implementation_profile",
+      "examples_checksums_and_conformance_vectors"
+    ]
+  },
+  "digitalocean": {
+    "gpu_droplet_required": true,
+    "ordinary_cpu_droplet_cannot_expose_physical_gpu": true,
+    "recommended_image": "DIGITALOCEAN_AI_ML_READY_GPU_IMAGE",
+    "nvidia_image_slug_single_gpu": "gpu-h100x1-base",
+    "nvidia_image_slug_eight_gpu": "gpu-h100x8-base",
+    "amd_image_slug": "gpu-amd-base",
+    "runtime_backend": "OPENCL",
+    "required_device_workgroup_size": 64,
+    "physical_gpu_fail_closed": true
+  },
+  "systemd": {
+    "service": "hhs.service",
+    "environment_file": "/etc/hhs/pass208-gpu.env",
+    "drop_in": "/etc/systemd/system/hhs.service.d/40-pass208-gpu.conf",
+    "preflight": "/usr/local/lib/hhs-gpu/hhs-gpu-preflight.sh",
+    "state_root": "/var/lib/hhs/pass208",
+    "cache_root": "/var/cache/hhs/pass207"
+  },
+  "authority": {
+    "gpu_may_expand_candidates": true,
+    "gpu_may_rank_candidates": true,
+    "gpu_may_commit_hash72": false,
+    "gpu_may_persist_canonical_snapshot": false,
+    "gpu_may_bypass_vm81": false,
+    "cache_hit_authorizes_mutation": false,
+    "singleton_vm81_mutation_authority": true
+  },
+  "fail_closed_conditions": [
+    "GPU_DEVICE_MISSING",
+    "OPENCL_ICD_MISSING",
+    "OPENCL_WORKGROUP_LT_64",
+    "PASS207_NATIVE_BUILD_FAILURE",
+    "PHYSICAL_GPU_PROBE_FAILURE",
+    "JSON_SPEC_PACKAGE_MISSING",
+    "JSON_SPEC_FILE_COUNT_MISMATCH",
+    "JSON_SCHEMA_VALIDATION_FAILURE",
+    "CHECKSUM_MISMATCH",
+    "CONFORMANCE_VECTOR_FAILURE",
+    "BYTECODE_ROOT_MISMATCH",
+    "GPU_CPU_CANDIDATE_DIVERGENCE",
+    "DEPENDENCY_FRONTIER_MISMATCH",
+    "HYDRATION_Q_ADDRESS_MISMATCH",
+    "SELECTED_BRANCH_COMMIT_DIVERGENCE"
+  ],
+  "required_artifacts": [
+    "contracts/pass208/PASS_208_CONTRACT.json",
+    "hhs_backend/runtime/hhs_pass208_gpu_branch_manifold_v1.py",
+    "hhs_backend/api/pass208_gpu_manifold_routes.py",
+    "deployment/digitalocean/gpu/install.sh",
+    "deployment/digitalocean/gpu/hhs-gpu-preflight.sh",
+    "deployment/digitalocean/gpu/post-merge.sh",
+    "deployment/digitalocean/gpu/validate-candidate.sh",
+    "deployment/digitalocean/gpu/validate-json-spec-package.py",
+    "deployment/digitalocean/gpu/pass208-gpu.env.example",
+    "deployment/digitalocean/gpu/README.md",
+    "tests/test_hhs_pass208_gpu_branch_manifold_v1.py",
+    "tests/test_hhs_pass208_digitalocean_gpu_deployment_v1.py",
+    ".github/workflows/pass208-digitalocean-gpu-manifold.yml",
+    "docs/pass208/RESTART_RECORD.md"
+  ],
+  "claim_boundary": {
+    "repository_deployment_support_implemented": true,
+    "physical_digitalocean_gpu_provisioned_by_this_repository_change": false,
+    "reason": "A GPU Droplet must exist and the JSON specification package path must be supplied on the host before the installer can complete."
+  }
+}
