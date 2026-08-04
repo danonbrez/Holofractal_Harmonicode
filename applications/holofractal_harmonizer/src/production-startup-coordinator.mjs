@@ -6,6 +6,8 @@ const startedAt = performance.now();
 const MAX_ASSISTANT_DEFERRAL_MS = 1_500;
 const PRODUCTION_REGISTRY_WAIT_LIMIT = 2_400;
 const PRODUCTION_REGISTRY_POLL_MS = 25;
+const SHADOWED_AUTHORITY_PATH = '/api/runtime/authority/status';
+const LIVE_RUNTIME_STATUS_PATH = '/api/runtime/live/status';
 const DEFERRED_PROJECTION_MODULES = Object.freeze([
   './pass196-integration.mjs',
   './pass197-calibration.mjs',
@@ -36,14 +38,111 @@ let deferredProjectionBoot = null;
 
 const sleep = (milliseconds) => new Promise((resolve) => window.setTimeout(resolve, milliseconds));
 
-function isAssistantRequest(input) {
+function requestUrl(input) {
   const raw = typeof input === 'string' ? input : input?.url || '';
   try {
-    const url = new URL(raw, window.location.href);
-    return url.origin === window.location.origin && url.pathname.startsWith('/api/assistant/');
+    return new URL(raw, window.location.href);
   } catch {
-    return false;
+    return null;
   }
+}
+
+function isAssistantRequest(input) {
+  const url = requestUrl(input);
+  return Boolean(
+    url
+    && url.origin === window.location.origin
+    && url.pathname.startsWith('/api/assistant/')
+  );
+}
+
+function isShadowedAuthorityRequest(input, init) {
+  const url = requestUrl(input);
+  const method = String(init?.method || (typeof input === 'object' ? input?.method : '') || 'GET').toUpperCase();
+  return Boolean(
+    url
+    && url.origin === window.location.origin
+    && url.pathname === SHADOWED_AUTHORITY_PATH
+    && method === 'GET'
+  );
+}
+
+function liveReceiptHash72(status) {
+  return status?.last_emission?.receipt_hash72
+    || status?.bridge?.emulator?.receipt_hash72
+    || null;
+}
+
+function liveStateHash72(status) {
+  return status?.last_emission?.runtime_state_hash72
+    || status?.bridge?.emulator?.runtime_state_hash72
+    || null;
+}
+
+function normalizeLiveRuntimeAuthority(status) {
+  const receiptHash72 = liveReceiptHash72(status);
+  const runtimeStateHash72 = liveStateHash72(status);
+  const canonicalRuntimeAttached = status?.running === true && status?.authority_ready === true;
+  const ok = Boolean(
+    canonicalRuntimeAttached
+    && status?.receipt_ready === true
+    && receiptHash72
+    && runtimeStateHash72
+  );
+  return Object.freeze({
+    schema: 'HHS_PRODUCTION_RUNTIME_AUTHORITY_STATUS_V1',
+    ok,
+    status: ok ? 'HHS_RUNTIME_AUTHORITY_ONLINE' : 'HHS_RUNTIME_AUTHORITY_WARMING',
+    canonical_runtime_attached: canonicalRuntimeAttached,
+    graph_initialized: status?.authority_ready === true,
+    websocket_ready: status?.running === true,
+    receipt_hash72: receiptHash72,
+    runtime_state_hash72: runtimeStateHash72,
+    live_workflow: status,
+    runtime: Object.freeze({
+      schema: 'HHS_COMMITTED_RUNTIME_AUTHORITY_PROJECTION_V1',
+      source: 'LIVE_WORKFLOW_COMMITTED_EMISSION',
+      state_hash72: runtimeStateHash72,
+      receipt_hash72: receiptHash72,
+      step: status?.last_emission?.kernel_tick || status?.bridge?.emulator?.runtime_step || null,
+      boot_id: status?.bridge?.emulator?.boot_id || null,
+      sequence_id: status?.last_emission?.sequence_id || status?.bridge?.sequence_id || null,
+      committed_emission_snapshot: true,
+      bounded_status_projection: true,
+      mutable_runtime_traversal_performed: false,
+    }),
+    authority: 'HHS_FASTAPI_KERNEL_RUNTIME_AUTHORITY_V1',
+    frontend_is_authority: false,
+    status_read_is_bounded: true,
+    source_route: LIVE_RUNTIME_STATUS_PATH,
+    shadowed_role_authority_route_used: false,
+  });
+}
+
+async function fetchLiveRuntimeAuthority(input, init = {}) {
+  const requested = requestUrl(input);
+  const liveUrl = new URL(LIVE_RUNTIME_STATUS_PATH, window.location.href);
+  if (requested) liveUrl.search = requested.search;
+  const liveResponse = await originalFetch(liveUrl.href, {
+    ...init,
+    method: 'GET',
+    body: undefined,
+    headers: {
+      Accept: 'application/json',
+      ...(init?.headers || {}),
+    },
+  });
+  if (!liveResponse.ok) return liveResponse;
+  const liveStatus = await liveResponse.json();
+  const authority = normalizeLiveRuntimeAuthority(liveStatus);
+  return new Response(JSON.stringify(authority), {
+    status: 200,
+    headers: {
+      'Content-Type': 'application/json',
+      'Cache-Control': 'no-store',
+      'X-HHS-Authority-Projection': 'LIVE_RUNTIME_STATUS',
+    },
+  });
 }
 
 function productionRegistryReady() {
@@ -178,6 +277,7 @@ function installStorybookReelLauncher() {
 }
 
 window.fetch = async function coordinatedFetch(input, init) {
+  if (isShadowedAuthorityRequest(input, init)) return fetchLiveRuntimeAuthority(input, init);
   if (isAssistantRequest(input)) await waitForRegistryPriorityWindow();
   return originalFetch(input, init);
 };
@@ -189,7 +289,7 @@ if (document.readyState === 'loading') {
 }
 
 window.HHSProductionStartupCoordinator = Object.freeze({
-  schema: 'HHS_PASS161_PRODUCTION_STARTUP_COORDINATOR_V14',
+  schema: 'HHS_PASS161_PRODUCTION_STARTUP_COORDINATOR_V15',
   assistant_requests_deferred_until_registry_ready: true,
   max_assistant_deferral_ms: MAX_ASSISTANT_DEFERRAL_MS,
   runtime_registry_has_priority: true,
@@ -197,6 +297,10 @@ window.HHSProductionStartupCoordinator = Object.freeze({
   storybook_reel_requests_never_deferred: true,
   mainframe_requests_never_deferred: true,
   storybook_reel_launcher_installed: true,
+  shadowed_runtime_authority_path: SHADOWED_AUTHORITY_PATH,
+  live_runtime_authority_source: LIVE_RUNTIME_STATUS_PATH,
+  shadowed_runtime_authority_route_used: false,
+  live_runtime_authority_projection_fail_closed: true,
   deferred_projection_boot: loadDeferredProjectionModules,
   deferred_projection_module_count: DEFERRED_PROJECTION_MODULES.length,
   deferred_projections_require_receipt_closure: true,
