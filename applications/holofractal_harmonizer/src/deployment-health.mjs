@@ -1,7 +1,8 @@
 import { $, setText, log } from './visual-ide-state.mjs';
 
 const LIVENESS_PATHS = ['/health', '/api/health', '/healthz'];
-const PRODUCT_HEALTH_PATH = '/api/product/health';
+const RUNTIME_AUTHORITY_PATH = '/api/runtime/authority/status';
+const ASSISTANT_STATUS_PATH = '/api/assistant/status';
 const REQUEST_TIMEOUT_MS = 4_000;
 const ONLINE_POLL_MS = 30_000;
 const DEGRADED_POLL_MS = 12_000;
@@ -60,17 +61,33 @@ function capability(payload, keys, fallback = false) {
 
 async function probeBackend() {
   const liveness = await firstReachable(LIVENESS_PATHS);
-  let product = null;
-  try { product = await withTimeout(PRODUCT_HEALTH_PATH); } catch { product = null; }
+  const [runtimeResult, assistantResult] = await Promise.allSettled([
+    withTimeout(RUNTIME_AUTHORITY_PATH),
+    withTimeout(ASSISTANT_STATUS_PATH),
+  ]);
   const live = liveness.payload || {};
-  const productPayload = product?.payload || {};
-  const runtimeReady = capability(productPayload, ['runtime.ok', 'runtime_authority.ok'], capability(live, ['runtime_ready', 'authority_ready', 'runtime_authority.ok', 'ok'], false));
-  const assistantReady = capability(productPayload, ['assistant.online', 'assistant.ok'], capability(live, ['assistant_ready'], false));
+  const runtimePayload = runtimeResult.status === 'fulfilled' ? runtimeResult.value.payload || {} : {};
+  const assistantPayload = assistantResult.status === 'fulfilled' ? assistantResult.value.payload || {} : {};
+  const runtimeReady = capability(runtimePayload, ['ok', 'authority_ready', 'runtime_authority.ok'], capability(live, ['runtime_ready', 'authority_ready', 'runtime_authority.ok', 'ok'], false));
+  const assistantReady = capability(assistantPayload, ['online', 'ok'], capability(live, ['assistant_ready'], false));
   let detail = 'Runtime backend reachable.';
   if (!runtimeReady && !assistantReady) detail = 'Runtime service is reachable, but execution authority and the assistant are unavailable.';
   else if (!runtimeReady) detail = 'Runtime service is reachable, but VM81 lifecycle authority is not ready.';
   else if (!assistantReady) detail = 'VM81 runtime authority is online; the assistant provider is unavailable.';
-  return Object.freeze({ checked: true, reachable: true, runtimeReady, assistantReady, mode: runtimeReady && assistantReady ? 'online' : 'degraded', detail, checkedAt: new Date().toISOString(), livenessPath: liveness.path, liveness: live, product: productPayload });
+  return Object.freeze({
+    checked: true,
+    reachable: true,
+    runtimeReady,
+    assistantReady,
+    mode: runtimeReady && assistantReady ? 'online' : 'degraded',
+    detail,
+    checkedAt: new Date().toISOString(),
+    livenessPath: liveness.path,
+    liveness: live,
+    runtime: runtimePayload,
+    assistant: assistantPayload,
+    boundedStatusRoutes: Object.freeze([RUNTIME_AUTHORITY_PATH, ASSISTANT_STATUS_PATH]),
+  });
 }
 
 function mountBanner() {
@@ -261,6 +278,7 @@ export function initDeploymentHealth() {
     frontend_runtime_authority: false,
     editing_preview_export_remain_available_offline: true,
     reconciliation_task_bounded: true,
+    heavyweight_product_health_probe_duplicated: false,
   });
   void checkBackend(false);
 }
