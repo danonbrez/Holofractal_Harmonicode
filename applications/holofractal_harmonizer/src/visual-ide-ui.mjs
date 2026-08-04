@@ -37,7 +37,10 @@ export function activateFile(path) {
   const prior = activeFile();
   const editor = $('#ide-source-editor');
   const editorLoadedPath = editor?.dataset.loadedPath || '';
-  if (prior && editor && !prior.bytesB64 && editorLoadedPath === prior.path) prior.content = editor.value;
+  // Switching away from a file may commit the current editor buffer. Reloading
+  // the already-active path must not write that stale buffer over a freshly
+  // restored recovery object before its recovered content is rendered.
+  if (path !== state.activePath && prior && editor && !prior.bytesB64 && editorLoadedPath === prior.path) prior.content = editor.value;
   state.activePath = path;
   const file = activeFile();
   setText('#ide-active-file', file.name);
