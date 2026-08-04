@@ -29,3 +29,18 @@ test('final FastAPI composition retains one bounded production authority route',
   assert.match(source, /"runtime_readiness_uses_committed_live_projection": True/);
   assert.match(source, /"runtime_authority_route_deduplicated": True/);
 });
+
+test('final FastAPI composition installs only the bounded Pass 175 status owners', async () => {
+  const source = await readFile(serverUrl, 'utf8');
+  assert.match(source, /from hhs_backend\.api import pass175_runtime_routes as pass175_runtime_api/);
+  assert.match(source, /PASS175_AUTHORITY_STATUS_PATH = "\/api\/v1\/pass175\/authority"/);
+  assert.match(source, /PASS175_BOUNDED_STATUS_PATH = "\/api\/v1\/pass175\/status"/);
+  assert.match(source, /PASS175_MATERIALIZED_STATUS_PATH = "\/api\/v1\/pass175\/status\/materialized"/);
+  assert.match(source, /if str\(getattr\(route, "path", ""\)\) not in PASS175_FINAL_STATUS_PATHS/);
+  assert.match(source, /pass175_runtime_api\.authority_status/);
+  assert.match(source, /pass175_runtime_api\.status/);
+  assert.match(source, /pass175_runtime_api\.materialized_status/);
+  assert.match(source, /name="hhs-pass175-bounded-status"/);
+  assert.match(source, /"pass175_status_routes_deduplicated": True/);
+  assert.doesNotMatch(source, /PASS175_FINAL_STATUS_PATHS[\s\S]*get_runtime\(\)/);
+});
