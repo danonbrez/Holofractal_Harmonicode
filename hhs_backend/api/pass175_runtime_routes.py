@@ -12,12 +12,19 @@ from pydantic import BaseModel, Field
 from hhs_backend.api.pass174_runtime_routes import get_runtime as get_pass174_runtime
 from hhs_runtime.pass175 import (
     ControlWord,
+    G243_CONTROL_COUNT,
     HydratedMicrocodeStore,
     InstructionAddress,
     InstructionRequest,
+    OPERATIONS_PER_CELL,
+    PERMANENT_INSTRUCTION_COUNT,
+    PHASE_TABLE,
+    PROJECTED_ADDRESS_COUNT,
     Pass175Error,
     Pass175Runtime,
     ReciprocalLane,
+    RUNTIME_VERSION,
+    VM81_CELLS,
 )
 
 router = APIRouter(
@@ -140,6 +147,37 @@ def _decode_exact(value: str) -> bytes:
 
 def _model_dict(model: BaseModel) -> dict[str, Any]:
     return model.model_dump() if hasattr(model, "model_dump") else model.dict()
+
+
+@router.get("/authority")
+def authority_witness() -> dict[str, Any]:
+    """Return immutable Pass 175 authority identity without hydrating VM5184.
+
+    This endpoint does not claim that the expensive permanent-instruction fabric
+    has been materialized. Runtime readiness and live receipt evidence are
+    supplied independently by the canonical live runtime status projection.
+    """
+    phase_distribution = {str(phase): PHASE_TABLE.count(phase) for phase in (0, 18, 36, 54)}
+    return {
+        "schema": "P175_AUTHORITY_WITNESS_V1",
+        "classification": "HHS_PASS_175_AUTHORITY_CONTRACT_REGISTERED",
+        "runtime_version": RUNTIME_VERSION,
+        "vm81_cells": VM81_CELLS,
+        "operations_per_cell": OPERATIONS_PER_CELL,
+        "permanent_instruction_count": PERMANENT_INSTRUCTION_COUNT,
+        "controls_per_instruction": G243_CONTROL_COUNT,
+        "projected_address_count": PROJECTED_ADDRESS_COUNT,
+        "phase_distribution": phase_distribution,
+        "closure_operations": 32,
+        "singleton_vm81_commit_authority": True,
+        "hash72_commit_streams": 1,
+        "parallel_state_authority": False,
+        "frontend_runtime_authority": False,
+        "authority_witness_only": True,
+        "heavy_fabric_materialized": _RUNTIME is not None,
+        "heavy_fabric_initialization_failed": _RUNTIME_ERROR is not None,
+        "full_runtime_status_path": "/api/v1/pass175/status",
+    }
 
 
 @router.get("/status")
