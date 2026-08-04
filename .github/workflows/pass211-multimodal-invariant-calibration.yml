@@ -88,6 +88,38 @@ jobs:
               assert marker in specification, marker
           PY
 
+      - name: Verify promoted Pass 211 evidence
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          evidence = Path('evidence/pass211')
+          matrix = json.loads((evidence / 'PASS211_INHERITED_CALIBRATION_MATRIX.json').read_text())
+          benchmark = json.loads((evidence / 'PASS211_MULTIMODAL_INVARIANT_BENCHMARK_RECEIPT.json').read_text())
+          continuation = json.loads((evidence / 'PASS211_PASS205_CONTINUATION_CALIBRATION.json').read_text())
+          gpu = json.loads((evidence / 'PASS211_PASS205_GPU_TRANSLATION_CALIBRATION.json').read_text())
+
+          assert matrix['passed'] is True
+          assert matrix['completed_cases'] == matrix['required_cases'] == 9
+          assert all(item['passed'] for item in matrix['results'])
+          assert matrix['pass210_chromium_gate']['status'] == 'INHERITED_PENDING'
+          assert benchmark['passed'] is True
+          assert benchmark['address_roundtrip']['samples'] == 1000000
+          assert benchmark['address_roundtrip']['coordinate_drift'] == 0
+          assert benchmark['retrieval_calibration']['exact_hit_rate'] == 1.0
+          assert benchmark['retrieval_calibration']['single_bit_adaptation_nearest_rate'] == 1.0
+          assert not benchmark['repository_scan']['json']['pass211_owned_invalid_paths']
+          assert continuation['aggregate']['total_ticks'] == 4680
+          assert continuation['aggregate']['speedup_mean'] > 7.0
+          assert continuation['vector_retrieval']['exact_rerank_recall'] == 1.0
+          assert gpu['transfer_reduction'] > 7.0
+          assert gpu['execution_scope'].endswith('no physical GPU claimed')
+          for document in (matrix, benchmark, continuation, gpu):
+              assert document['source_workflow']['workflow_run_id'] == 30933301683
+              assert document['source_workflow']['artifact_id'] == 8902175739
+          PY
+
       - name: Compile Pass 211 benchmark surfaces
         run: |
           python -m py_compile \
