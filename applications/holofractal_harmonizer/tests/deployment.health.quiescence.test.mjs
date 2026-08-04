@@ -12,18 +12,21 @@ test('unchanged IDE status text preserves DOM identity', async () => {
   assert.match(source, /node\.textContent = next;/);
 });
 
-test('deployment health observes child mutations through the idempotent text membrane', async () => {
+test('deployment health reconciliation is task-bounded and non-reentrant', async () => {
   const source = await readFile(healthUrl, 'utf8');
   const observer = source.match(
-    /mutationObserver = new MutationObserver\([\s\S]*?mutationObserver\.observe\(document\.body, \{([^}]*)\}\);/,
+    /mutationObserver = new MutationObserver\(scheduleHealthReconciliation\);[\s\S]*?mutationObserver\.observe\(document\.body, \{([^}]*)\}\);/,
   );
   assert.ok(observer, 'body health observer contract is present');
-  assert.match(observer[0], /applyHealthState\(\)/);
-  assert.match(observer[0], /repairAssistantInput\(\)/);
-  assert.match(observer[0], /dedupePreviewConsole\(\)/);
   assert.match(observer[1], /childList:\s*true/);
   assert.match(observer[1], /subtree:\s*true/);
   assert.doesNotMatch(observer[1], /characterData:\s*true/);
+  assert.match(source, /let healthReconcileTimer = null;/);
+  assert.match(source, /let healthReconcileRunning = false;/);
+  assert.match(source, /if \(healthReconcileTimer !== null\) return;/);
+  assert.match(source, /healthReconcileTimer = window\.setTimeout/);
+  assert.match(source, /if \(healthReconcileRunning\) return;/);
+  assert.match(source, /reconciliation_task_bounded:\s*true/);
   assert.match(source, /setText\('#hhs-backend-health-title'/);
   assert.match(source, /setText\('#hhs-backend-health-message'/);
 });
