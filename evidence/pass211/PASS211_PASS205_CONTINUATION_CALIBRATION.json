@@ -1,0 +1,92 @@
+{
+  "aggregate": {
+    "changed_cells_mean": 4.515811965811966,
+    "elapsed_seconds": 157.548560071,
+    "projection_dirty_mean": 8.419230769230769,
+    "projection_payload_reduction_mean": 9.62487083509016,
+    "seeds": [1, 5, 7, 41, 64, 72, 81, 144, 216, 243, 5040, 5184, 1259713],
+    "speedup_mean": 7.968273466984317,
+    "speedup_min": 7.756750853752741,
+    "state_payload_reduction_mean": 15.946695742137113,
+    "ticks_per_seed": 360,
+    "total_ticks": 4680
+  },
+  "classification": "HHS_PASS_205_DESIGN_VALIDATION_PASSED",
+  "digest_transport": "standalone fixed-width BLAKE2b witnesses; production inherits repository Hash216/Hash72/VM81",
+  "dimensions": {
+    "controls": 243,
+    "hydration_addresses": 1259712,
+    "state_bits": 5184,
+    "status": "PASS"
+  },
+  "negative_guards": {
+    "incompatible_vector_candidate_rejected": "PASS",
+    "incomplete_projection_frontier_detected": "PASS",
+    "invalid_inputs_rejected": 9,
+    "mutation_sensitivity": "PASS",
+    "status": "PASS",
+    "wrong_parent_rejected_by_identity": "PASS"
+  },
+  "pack_roundtrip": {
+    "roundtrips": 100000,
+    "status": "PASS"
+  },
+  "promotion_classification": "HHS_PASS_211_REPOSITORY_VISIBLE_INHERITED_CALIBRATION_EVIDENCE",
+  "schema": "HHS_PASS_205_MULTIMODAL_CONTINUATION_DESIGN_VALIDATION_V1",
+  "source_workflow": {
+    "artifact_digest": "sha256:570a12bde346e6a57570450da0e637606913b8c69e826172b25a214a8905d24d",
+    "artifact_id": 8902175739,
+    "workflow_head_sha": "72f977e7e2b4d4eeb5dcdb0cdb8531cd190cb15d",
+    "workflow_run_id": 30933301683
+  },
+  "tests": {
+    "branch_independence": "PASS",
+    "cell_pack_roundtrip": "PASS",
+    "collision_consistency": "PASS",
+    "deterministic_full_delta_equivalence": "PASS",
+    "deterministic_replay": "PASS",
+    "dimension_and_address_closure": "PASS",
+    "five_trit_control_bijection": "PASS",
+    "fixed_point_3d_geometry": "PASS",
+    "incompatible_vector_candidate_rejection": "PASS",
+    "incomplete_projection_frontier_detection": "PASS",
+    "incremental_ml_feature_hydration": "PASS",
+    "invalid_coordinate_rejection": "PASS",
+    "lighting_and_color_consistency": "PASS",
+    "nearest_snapshot_exact_rerank": "PASS",
+    "one_bit_mutation_sensitivity": "PASS",
+    "persistent_continuation_lineage": "PASS",
+    "same_content_distinct_lineage": "PASS",
+    "thirty_two_channel_projection": "PASS",
+    "vector_candidate_compatibility": "PASS",
+    "visual_equivalence_hidden_state_nonfungibility": "PASS",
+    "wrong_parent_lineage_rejection": "PASS",
+    "xor_reversible_delta": "PASS"
+  },
+  "vector_retrieval": {
+    "compatible_snapshots": 486,
+    "continuations_constructed": 120,
+    "database_snapshots": 648,
+    "exact_rerank_recall": 1.0,
+    "queries": 120,
+    "selected_delta_bits_mean": 47.375,
+    "selected_delta_bits_p95": 79,
+    "status": "PASS",
+    "top_k": 32
+  },
+  "workloads": [
+    {"seed": 1, "status": "PASS", "ticks": 360, "speedup": 7.984591727492183, "state_payload_reduction": 15.586289837642815, "projection_payload_reduction": 9.604743083003953, "changed_cells_mean": 4.6194444444444445, "projection_dirty_mean": 8.433333333333334, "hydration_addresses_mean": 81.56388888888888, "final_content_root216": "d61a25435d058c06923596f6fd5d2b219ea7a3be9d9ae36e02aa5e", "final_continuation_root216": "eab41133302eee93581b29cbb32f300765b5693de25a7caf4fda15", "final_receipt72": "a02747107934733c01"},
+    {"seed": 5, "status": "PASS", "ticks": 360, "speedup": 7.82810180023362, "state_payload_reduction": 15.990129549660704, "projection_payload_reduction": 9.358151476251605, "changed_cells_mean": 4.502777777777778, "projection_dirty_mean": 8.655555555555555, "hydration_addresses_mean": 80.55555555555556, "final_content_root216": "0085928ea62c0e4e39e667fe9a2b482d7f83be9406a7c5dd218913", "final_continuation_root216": "e7054e5d9b4f98cd41d893797b2489b096cd2631e3561cab291dc3", "final_receipt72": "502cfd82629f8b92dd"},
+    {"seed": 7, "status": "PASS", "ticks": 360, "speedup": 7.756750853752741, "state_payload_reduction": 16.009882643607163, "projection_payload_reduction": 9.337175792507205, "changed_cells_mean": 4.497222222222222, "projection_dirty_mean": 8.675, "hydration_addresses_mean": 81.76666666666667, "final_content_root216": "b45639e89ddd006422006224981a854d7c32e6921be0a4e68197bd", "final_continuation_root216": "f56276b06d1d0d9ecf4813b30df9da2e38991f160516f3ed99993d", "final_receipt72": "dce7b250fe87259574"},
+    {"seed": 41, "status": "PASS", "ticks": 360, "speedup": 7.986893176072037, "state_payload_reduction": 15.671100362756953, "projection_payload_reduction": 9.707057256990678, "changed_cells_mean": 4.594444444444444, "projection_dirty_mean": 8.344444444444445, "hydration_addresses_mean": 81.57222222222222, "final_content_root216": "f766be105d0abd8b4e050596355333cd2ba68e3380e8918dfa6c0b", "final_continuation_root216": "cf3208998d8c22d4b9d2179ebe62e712ec42841b68a82711000129", "final_receipt72": "2d87fdeed1756ae145"},
+    {"seed": 64, "status": "PASS", "ticks": 360, "speedup": 8.053889266114371, "state_payload_reduction": 16.02968460111317, "projection_payload_reduction": 9.755771160923386, "changed_cells_mean": 4.491666666666666, "projection_dirty_mean": 8.302777777777777, "hydration_addresses_mean": 81.725, "final_content_root216": "9c34491de50270faa44f6ddebe8abe19b0b54d8f7afadfab5e46b0", "final_continuation_root216": "7413f3d4b923d512b0de59607f1549e5ba227446a1a45183634233", "final_receipt72": "5531b96f2df5907100"},
+    {"seed": 72, "status": "PASS", "ticks": 360, "speedup": 7.790518064463041, "state_payload_reduction": 16.0, "projection_payload_reduction": 9.352148813341886, "changed_cells_mean": 4.5, "projection_dirty_mean": 8.661111111111111, "hydration_addresses_mean": 80.27222222222223, "final_content_root216": "4d3d00a14e1052f5cfd40f82d3a982bbc65ad4221c81091d174f45", "final_continuation_root216": "4c807896b798b7897b1a32a1ee9ee6bfa74e036b254e2384dd403d", "final_receipt72": "183b918aca4e1a88fd"},
+    {"seed": 81, "status": "PASS", "ticks": 360, "speedup": 8.19885137254866, "state_payload_reduction": 15.737704918032787, "projection_payload_reduction": 9.996571820363387, "changed_cells_mean": 4.575, "projection_dirty_mean": 8.102777777777778, "hydration_addresses_mean": 80.79166666666667, "final_content_root216": "72f9dd890d319c9bc518f09e77fdc4e63da6fd6964b4c965feb5c1", "final_continuation_root216": "fc42d06ec512e69d4c75b97ae346837aa8d56c5a75b49aa21f984d", "final_receipt72": "f062b909937eda5735"},
+    {"seed": 144, "status": "PASS", "ticks": 360, "speedup": 7.996952573543579, "state_payload_reduction": 16.07940446650124, "projection_payload_reduction": 9.665230361286046, "changed_cells_mean": 4.477777777777778, "projection_dirty_mean": 8.380555555555556, "hydration_addresses_mean": 80.83611111111111, "final_content_root216": "b4c36ec728cc27c3f07dcccf89f7c41137cd2d12a4952ceed5dc7c", "final_continuation_root216": "1d7c6e548ac51e0ce7d8d825192b767cdedb690ebdd765bd5a2d73", "final_receipt72": "9dd50d78fe59bb684b"},
+    {"seed": 216, "status": "PASS", "ticks": 360, "speedup": 7.943542220106479, "state_payload_reduction": 15.690072639225182, "projection_payload_reduction": 9.592105263157896, "changed_cells_mean": 4.588888888888889, "projection_dirty_mean": 8.444444444444445, "hydration_addresses_mean": 81.70555555555555, "final_content_root216": "b8c02fa1380263c0f5ec2ede6828afafc0451e568e0fd1f385d123", "final_continuation_root216": "164031480460294f92ba654904087c40530c2f2c1b701ce6fd0b72", "final_receipt72": "0332a9a187bb90de6c"},
+    {"seed": 243, "status": "PASS", "ticks": 360, "speedup": 7.964553889174948, "state_payload_reduction": 16.089385474860336, "projection_payload_reduction": 9.601580507079355, "changed_cells_mean": 4.475, "projection_dirty_mean": 8.436111111111112, "hydration_addresses_mean": 81.42777777777778, "final_content_root216": "42920786f4cf7bc599a9408b398db567841f88f295be1e98df47b0", "final_continuation_root216": "90a53e56685b19db6b746306f753ed3b1aa915fa0e1b39568b86e9", "final_receipt72": "e036d3bfcf25bc2358"},
+    {"seed": 5040, "status": "PASS", "ticks": 360, "speedup": 8.197828374086212, "state_payload_reduction": 16.2406015037594, "projection_payload_reduction": 9.959016393442623, "changed_cells_mean": 4.433333333333334, "projection_dirty_mean": 8.133333333333333, "hydration_addresses_mean": 80.525, "final_content_root216": "f25af32f81f6d08cd5e72d00cc5fe5972e2137b05560f64d084bb6", "final_continuation_root216": "686219a49a9c402a27a37b0bee1693b6aa8f9541ffcad5377fe87d", "final_receipt72": "4df6585bb948026535"},
+    {"seed": 5184, "status": "PASS", "ticks": 360, "speedup": 7.9453134287310325, "state_payload_reduction": 15.911602209944752, "projection_payload_reduction": 9.617414248021108, "changed_cells_mean": 4.525, "projection_dirty_mean": 8.422222222222222, "hydration_addresses_mean": 80.79722222222222, "final_content_root216": "8c594c054eaa2e66c4156fb4fde994ea3d19ec69aff480e7bcb1f8", "final_continuation_root216": "5235d24b803ebe040c23bf0637a90511edc4760421ae61d9646f83", "final_receipt72": "bfc465c88918f73c7b"},
+    {"seed": 1259713, "status": "PASS", "ticks": 360, "speedup": 7.939768324477211, "state_payload_reduction": 16.271186440677965, "projection_payload_reduction": 9.576354679802956, "changed_cells_mean": 4.425, "projection_dirty_mean": 8.458333333333334, "hydration_addresses_mean": 80.85, "final_content_root216": "efe0bb8b433f93527025e909d2b27e89f484fd5e42cd7a4fac12e5", "final_continuation_root216": "09b6fffd7beee4956d0c573eae8a80ab6e687d1995ca277d26eef0", "final_receipt72": "ff2242ddfb0881380b"}
+  ]
+}
