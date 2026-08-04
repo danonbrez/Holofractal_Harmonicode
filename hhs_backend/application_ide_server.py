@@ -37,7 +37,7 @@ from hhs_backend.runtime.hhs_pass201_public_api_federation import register_publi
 
 app = pass174.app
 app.title = "HHS Safe Open Cloud Computer IDE"
-app.version = "4.5.2"
+app.version = "4.5.3"
 app.description = (
     "Full integrated development environment and safe open cloud computer for real web applications, "
     "games, calculators, documents, audio, video, multimodal projects, HARMONICODE, multi-target "
@@ -100,10 +100,23 @@ if not _has_route_prefix("/api/v1/pass175/terminal/ws/events"):
 if not _has_exact_route("/api/public/status"):
     app.include_router(public_api_router)
 
+
+async def final_pass175_authority_status() -> dict[str, Any]:
+    """Return immutable Pass 175 identity without entering the worker pool."""
+    return pass175_runtime_api.authority_witness()
+
+
+async def final_pass175_bounded_status() -> dict[str, Any]:
+    """Return the bounded Pass 175 status without entering the worker pool."""
+    return pass175_runtime_api.bounded_status()
+
+
 # Earlier Pass 175 composition layers may retain an eager status handler that
 # materializes all 5,184 permanent instructions. Replace only the three status
 # surfaces with the current bounded authority module. Hydration, execution,
 # terminal, firmware, device, and WebSocket routes retain their inherited owners.
+# The two non-materializing reads are coroutine endpoints, so inherited
+# synchronous probes cannot starve their acceptance path in Starlette's pool.
 app.router.routes = [
     route
     for route in app.router.routes
@@ -111,13 +124,13 @@ app.router.routes = [
 ]
 app.add_api_route(
     PASS175_AUTHORITY_STATUS_PATH,
-    pass175_runtime_api.authority_status,
+    final_pass175_authority_status,
     methods=["GET"],
     name="hhs-pass175-authority-witness",
 )
 app.add_api_route(
     PASS175_BOUNDED_STATUS_PATH,
-    pass175_runtime_api.status,
+    final_pass175_bounded_status,
     methods=["GET"],
     name="hhs-pass175-bounded-status",
 )
@@ -259,6 +272,9 @@ pass174.PASS174_BOOT_STATE.update({
     "pass175_bounded_status_route": PASS175_BOUNDED_STATUS_PATH,
     "pass175_materialized_status_route": PASS175_MATERIALIZED_STATUS_PATH,
     "pass175_status_routes_deduplicated": True,
+    "pass175_bounded_status_async": True,
+    "pass175_authority_witness_async": True,
+    "pass175_materialized_status_worker_isolated": True,
     "pass175_websocket_routes": _has_route_prefix("/api/v1/pass175/ws/events"),
     "pass175_terminal_routes": _has_route_prefix("/api/v1/pass175/terminal/status"),
     "pass175_terminal_websocket_routes": _has_route_prefix("/api/v1/pass175/terminal/ws/events"),
