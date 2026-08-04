@@ -8,6 +8,7 @@ on:
       - 'tests/test_pass211_multimodal_invariant_benchmark.py'
       - 'contracts/pass211/**'
       - 'docs/pass211/**'
+      - 'evidence/pass211/**'
       - 'HHS_PASS_211_*'
       - '.github/workflows/pass211-multimodal-invariant-calibration.yml'
   push:
@@ -18,6 +19,7 @@ on:
       - 'tests/test_pass211_multimodal_invariant_benchmark.py'
       - 'contracts/pass211/**'
       - 'docs/pass211/**'
+      - 'evidence/pass211/**'
       - 'HHS_PASS_211_*'
       - '.github/workflows/pass211-multimodal-invariant-calibration.yml'
   workflow_dispatch:
@@ -49,6 +51,42 @@ jobs:
         run: |
           python -m pip install --disable-pip-version-check -r requirements.txt
           python -m pip install --disable-pip-version-check pytest jsonschema fastapi pydantic
+
+      - name: Parse and verify Pass 211 contract
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          contract = json.loads(Path('contracts/pass211/PASS_211_CONTRACT.json').read_text())
+          assert contract['pass'] == 211
+          assert contract['inheritance']['immediate_parent_pass'] == 210
+          assert contract['inheritance']['parent_pull_request'] == 163
+          assert contract['inheritance']['parent_chromium_gate']['status'] == 'INHERITED_PENDING'
+          assert contract['authority']['canonical_mutation_authority_count'] == 1
+          assert contract['authority']['canonical_mutation_authority'] == 'VM81'
+          assert contract['state_space']['compact_nucleus_bits'] == 5184
+          assert contract['state_space']['projected_states'] == 1259712
+          assert contract['state_space']['contextual_states'] == 51648192
+          assert contract['state_space']['factorial_states'] == 5040
+          assert contract['open_weight_hydration']['required_identity'] == 'ReverseExpand(Hydrate(SourceWeights)) == SourceWeights'
+          assert contract['multi_model_cache']['incompatible_modalities_may_share_cache'] is True
+          assert contract['computation_compression']['vector_distance_alone_authorizes_reuse'] is False
+          assert contract['repository_calibration_matrix']['required_cases'] == 9
+          assert contract['claim_boundaries']['repository_retrieval_proves_model_weight_hydration'] is False
+
+          specification = Path(
+              'HHS_PASS_211_DETERMINISTIC_EVOLUTIONARY_MULTIMODAL_INVARIANT_COMPUTATION_COMPRESSION_AND_OPEN_WEIGHT_HYDRATION.md'
+          ).read_text()
+          for marker in (
+              '51,648,192',
+              'ReverseExpand(H)',
+              'Probability-seeded deterministic evolutionary deep learning',
+              'Progressive transitional-frame removal training',
+              'INHERITED_PENDING',
+          ):
+              assert marker in specification, marker
+          PY
 
       - name: Compile Pass 211 benchmark surfaces
         run: |
@@ -82,8 +120,10 @@ jobs:
           assert benchmark['constants']['values']['projected_states'] == 1259712
           assert benchmark['constants']['values']['contextual_states'] == 51648192
           assert benchmark['constants']['values']['factorial_states'] == 5040
+          assert benchmark['address_roundtrip']['coordinate_drift'] == 0
           assert benchmark['retrieval_calibration']['exact_hit_rate'] == 1.0
           assert benchmark['retrieval_calibration']['single_bit_adaptation_nearest_rate'] == 1.0
+          assert not benchmark['repository_scan']['json']['pass211_owned_invalid_paths']
           PY
 
       - name: Upload Pass 211 evidence
