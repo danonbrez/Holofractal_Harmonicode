@@ -25,6 +25,7 @@ from hhs_backend import server as canonical
 from hhs_backend.api.development_lifecycle_routes import router as development_lifecycle_router
 from hhs_backend.api.installation_routes import router as installation_router
 from hhs_backend.api.litert_lm_assistant_routes import router as assistant_router
+from hhs_backend.api.pass210_llm_orchestrator_routes import router as pass210_llm_router
 from hhs_backend.api.pass165_multimodal_ingress_routes import router as pass165_router
 from hhs_backend.api.pass166_word2vec_routes import router as word2vec_router
 
@@ -48,8 +49,14 @@ def _has_route_prefix(prefix: str) -> bool:
     return any(str(getattr(route, "path", "")).startswith(prefix) for route in app.router.routes)
 
 
-if not _has_route_prefix("/api/assistant"):
+def _has_exact_route(path: str) -> bool:
+    return any(str(getattr(route, "path", "")) == path for route in app.router.routes)
+
+
+if not _has_exact_route("/api/assistant/chat") or not _has_exact_route("/api/assistant/health"):
     app.include_router(assistant_router)
+if not _has_route_prefix("/api/runtime/llm-orchestrator"):
+    app.include_router(pass210_llm_router)
 if not _has_route_prefix("/v1/modalities/language"):
     app.include_router(word2vec_router)
 if not _has_route_prefix("/api/runtime/installation"):
@@ -167,15 +174,15 @@ async def production_workspace_session_ensure(payload: dict[str, Any]) -> dict[s
 
 async def _assistant_health() -> dict[str, Any]:
     try:
-        from hhs_backend.runtime.hhs_production_assistant_v1 import (
-            DEFAULT_PRODUCTION_ASSISTANT_SERVICE,
+        from hhs_backend.runtime.hhs_pass210_production_assistant_v1 import (
+            DEFAULT_PASS210_PRODUCTION_ASSISTANT,
         )
 
-        DEFAULT_PRODUCTION_ASSISTANT_SERVICE._health_timeout = max(
-            float(DEFAULT_PRODUCTION_ASSISTANT_SERVICE._health_timeout),
+        DEFAULT_PASS210_PRODUCTION_ASSISTANT._health_timeout = max(
+            float(DEFAULT_PASS210_PRODUCTION_ASSISTANT._health_timeout),
             5.0,
         )
-        return await DEFAULT_PRODUCTION_ASSISTANT_SERVICE.health()
+        return await DEFAULT_PASS210_PRODUCTION_ASSISTANT.health()
     except Exception as exc:
         return {
             "ok": False,
