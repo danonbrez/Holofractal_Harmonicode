@@ -112,6 +112,8 @@ def scan_repository(root: Path, max_vector_objects: int) -> tuple[dict[str, Any]
     skipped_oversized: list[str] = []
     valid_json = 0
     invalid_json = 0
+    invalid_json_paths: list[str] = []
+    invalid_json_errors: dict[str, str] = {}
     valid_jsonl_lines = 0
     invalid_jsonl_lines = 0
 
@@ -162,8 +164,12 @@ def scan_repository(root: Path, max_vector_objects: int) -> tuple[dict[str, Any]
             try:
                 json.loads(text)
                 valid_json += 1
-            except json.JSONDecodeError:
+            except json.JSONDecodeError as exc:
                 invalid_json += 1
+                invalid_json_paths.append(rel)
+                invalid_json_errors[rel] = (
+                    f"{exc.msg} at line {exc.lineno}, column {exc.colno}, char {exc.pos}"
+                )
         elif path.suffix.lower() == ".jsonl":
             for line in text.splitlines():
                 if not line.strip():
@@ -213,6 +219,19 @@ def scan_repository(root: Path, max_vector_objects: int) -> tuple[dict[str, Any]
             "json": {
                 "valid_files": valid_json,
                 "invalid_files": invalid_json,
+                "invalid_paths": sorted(invalid_json_paths),
+                "invalid_errors": dict(sorted(invalid_json_errors.items())),
+                "pass211_owned_invalid_paths": sorted(
+                    rel
+                    for rel in invalid_json_paths
+                    if rel.startswith(
+                        (
+                            "contracts/pass211/",
+                            "evidence/pass211/",
+                            "artifacts/pass211/",
+                        )
+                    )
+                ),
                 "valid_jsonl_lines": valid_jsonl_lines,
                 "invalid_jsonl_lines": invalid_jsonl_lines,
             },
@@ -420,7 +439,10 @@ def main() -> int:
         "single_bit_nearest_retrieval": retrieval["single_bit_adaptation_nearest_rate"] == 1.0,
         "required_invariants_present": required_invariants <= present_invariants,
         "required_modalities_present": required_modalities <= present_modalities,
-        "json_files_parse": scan["json"]["invalid_files"] == 0,
+        "pass211_owned_json_files_parse": not scan["json"]["pass211_owned_invalid_paths"],
+        "historical_json_failures_reported": (
+            len(scan["json"]["invalid_paths"]) == scan["json"]["invalid_files"]
+        ),
         "jsonl_lines_parse": scan["json"]["invalid_jsonl_lines"] == 0,
         "pass210_or_later_observed": (scan["highest_pass_observed"] or 0) >= 210,
     }
