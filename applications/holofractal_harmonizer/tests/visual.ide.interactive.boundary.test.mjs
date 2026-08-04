@@ -13,8 +13,12 @@ test('visual IDE publication is not awaited behind backend authority hydration',
   assert.match(source, /function scheduleBackendAuthorityHydration\(\)/);
   assert.match(source, /window\.setTimeout\(\(\) => \{/);
   assert.match(source, /authorityRequiredBeforeAcceptance: true/);
-  assert.match(source, /requestJson\('\/api\/product\/health'/);
+  assert.match(source, /requestJson\('\/api\/runtime\/authority\/status'/);
   assert.match(source, /requestJson\('\/api\/v1\/pass175\/status'/);
+  assert.doesNotMatch(source, /requestJson\('\/api\/product\/health'/);
+  assert.match(source, /HHS_PASS_176_BOUNDED_RUNTIME_AUTHORITY_PROJECTION_V1/);
+  assert.match(source, /runtime: runtimeStatus/);
+  assert.match(source, /assistantHealthExcluded: true/);
   assert.match(source, /stability\.setAuthorityEvidence\(\{ productHealth, pass175 \}\)/);
   assert.match(source, /HHS_P176_BACKEND_AUTHORITY_EVIDENCE_REJECTED/);
 });
