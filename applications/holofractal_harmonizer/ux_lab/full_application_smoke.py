@@ -60,9 +60,25 @@ def create_project(page, template: str, name: str):
     if creation["selected_template"] != template or creation["project_name"] != name:
         raise AssertionError(f"application creation transaction mismatch: {creation}")
     expect(gallery).to_be_hidden(timeout=20_000)
-    preview_tab = page.locator('[data-bottom-tab="preview"]')
-    expect(preview_tab).to_be_visible(timeout=20_000)
-    preview_tab.click()
+    preview_state = page.evaluate(
+        """
+        () => {
+          const tab = document.querySelector('[data-bottom-tab="preview"]');
+          const panel = document.querySelector('#ide-preview-panel');
+          if (!tab || !panel) throw new Error('application preview controls are incomplete');
+          const alreadyActive = tab.classList.contains('active') && panel.classList.contains('active');
+          if (!alreadyActive) tab.click();
+          return {
+            already_active: alreadyActive,
+            tab_active: tab.classList.contains('active'),
+            panel_active: panel.classList.contains('active'),
+          };
+        }
+        """
+    )
+    if not preview_state["tab_active"] or not preview_state["panel_active"]:
+        raise AssertionError(f"application preview activation failed: {preview_state}")
+    phase("PREVIEW_READY", template=template, **preview_state)
     expect(page.locator("#ide-preview-panel.active")).to_be_visible(timeout=20_000)
     frame = application_frame(page)
     phase("PROJECT_READY", template=template)
