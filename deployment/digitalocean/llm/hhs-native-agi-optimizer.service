@@ -1,0 +1,27 @@
+[Unit]
+Description=HHS Pass 209 repository-native AGI learning and optimization worker
+After=network-online.target hhs.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=hhs
+Group=hhs
+EnvironmentFile=/etc/hhs/pass209-llm.env
+Environment=PYTHONUNBUFFERED=1
+Environment=HHS_REPOSITORY_ROOT=/opt/hhs/app
+WorkingDirectory=/opt/hhs/app
+ExecStart=/opt/hhs/venv/bin/python scripts/pass209_native_agi_optimizer_worker.py --interval 5 --limit 8
+Restart=on-failure
+RestartSec=5
+TimeoutStartSec=60
+TimeoutStopSec=30
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ProtectHome=true
+ReadWritePaths=/var/lib/hhs/pass209 /var/lib/hhs
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,129 @@
+{
+  "schema": "HHS_PASS_209_CONTRACT_V1",
+  "pass": 209,
+  "contract_id": "HHS-P209-KIMI-K3-AGENTIC-SWARM-LITERT-LM-GEMMA4-NATIVE-AGI-OPTIMIZER-DIGITALOCEAN",
+  "title": "Kimi K3 Primary Agentic Assistant with Gemma 4 Fallback and Native HHS Learning Optimizer",
+  "classification": "CONTRACT_AUTHORIZED_FULL_IMPLEMENTATION_REQUIRED",
+  "parent": "Complete cumulative HHS runtime through Pass 208",
+  "provider_hierarchy": [
+    {
+      "priority": 1,
+      "provider_id": "provider:hhs.moonshot.kimi_k3.agentic",
+      "model_id": "kimi-k3",
+      "mode": "REMOTE_OPENAI_COMPATIBLE_AGENTIC_SWARM",
+      "base_url": "https://api.moonshot.ai/v1",
+      "required_secret": "MOONSHOT_API_KEY"
+    },
+    {
+      "priority": 2,
+      "provider_id": "provider:hhs.litert_lm.gemma4",
+      "model_id": "gemma-4-E2B-it",
+      "mode": "LOCAL_LITERT_LM_OPENAI_COMPATIBLE_FALLBACK",
+      "base_url": "http://127.0.0.1:9379/v1"
+    }
+  ],
+  "native_backend_agent": {
+    "provider_id": "provider:hhs.local.text",
+    "model_id": "hhs-native-language-v1",
+    "role": "BACKEND_LEARNING_AND_OPTIMIZATION_AGENT",
+    "user_facing_fallback": false,
+    "observes_primary_turns": true,
+    "observes_fallback_turns": true,
+    "persists_durable_observation_queue": true,
+    "produces_noncanonical_optimization_proposals": true,
+    "may_mutate_vm81_directly": false,
+    "may_commit_hash72_directly": false,
+    "may_modify_repository_directly": false,
+    "proposal_requires_separate_admission": true
+  },
+  "kimi_k3": {
+    "api_protocol": "OPENAI_CHAT_COMPLETIONS_COMPATIBLE",
+    "models_endpoint": "/v1/models",
+    "chat_endpoint": "/v1/chat/completions",
+    "reasoning_always_enabled": true,
+    "reasoning_effort": "max",
+    "temperature": 1.0,
+    "full_reasoning_content_history_preserved": true,
+    "full_tool_call_history_preserved": true,
+    "parallel_tool_calls": true,
+    "bounded_swarm_rounds": true,
+    "bounded_parallel_tool_execution": true,
+    "prompt_cache_key_bound_to_thread": true
+  },
+  "gemma4": {
+    "runtime": "LiteRT-LM",
+    "package_version": "0.14.0",
+    "model_repository": "litert-community/gemma-4-E2B-it-litert-lm",
+    "model_file": "gemma-4-E2B-it.litertlm",
+    "model_sha256": "181938105e0eefd105961417e8da75903eacda102c4fce9ce90f50b97139a63c",
+    "import_alias": "gemma-4-E2B-it",
+    "server_host": "127.0.0.1",
+    "server_port": 9379,
+    "backend": "cpu",
+    "local_fallback_requires_network": false
+  },
+  "agentic_tool_rules": {
+    "default_tools": "HHS_GOVERNED_ASSISTANT_API_TOOL_REGISTRY",
+    "parallel_calls_may_execute_concurrently": true,
+    "tool_results_return_in_original_call_order": true,
+    "mutating_model_tool_execution_allowed": false,
+    "tool_receipts_required": true,
+    "tool_round_limit_required": true,
+    "tool_call_limit_required": true
+  },
+  "conversation_rules": {
+    "shared_thread_store_across_primary_and_fallback": true,
+    "single_user_message_witness_on_failover": true,
+    "provider_result_ingress_required": true,
+    "model_output_is_not_canonical_without_admission": true,
+    "thread_messages_hash72_linked": true,
+    "provider_reasoning_is_not_exposed_by_status_endpoints": true
+  },
+  "digitalocean": {
+    "canonical_service": "hhs.service",
+    "gemma_service": "hhs-litert-lm-gemma4.service",
+    "optimizer_service": "hhs-native-agi-optimizer.service",
+    "environment_file": "/etc/hhs/pass209-llm.env",
+    "hhs_drop_in": "/etc/systemd/system/hhs.service.d/50-pass209-llm.conf",
+    "state_root": "/var/lib/hhs/pass209",
+    "litert_state_root": "/var/lib/hhs/litert-lm",
+    "model_download_is_install_time_only": true,
+    "moonshot_key_never_stored_in_repository": true,
+    "at_least_one_inference_provider_required": true,
+    "gemma_local_fallback_required_for_installation_closure": true
+  },
+  "failover_rules": [
+    "KIMI_CONFIGURATION_MISSING_TO_GEMMA",
+    "KIMI_MODEL_NOT_REGISTERED_TO_GEMMA",
+    "KIMI_TRANSPORT_ERROR_TO_GEMMA",
+    "KIMI_EMPTY_COMPLETION_TO_GEMMA",
+    "KIMI_TOOL_ROUND_LIMIT_TO_GEMMA",
+    "GEMMA_UNAVAILABLE_CLOSES_WITHOUT_SYNTHETIC_RESPONSE"
+  ],
+  "required_artifacts": [
+    "contracts/pass209/PASS_209_CONTRACT.json",
+    "hhs_backend/runtime/hhs_kimi_k3_agentic_assistant_v1.py",
+    "hhs_backend/runtime/hhs_pass209_native_agi_optimizer_v1.py",
+    "hhs_backend/runtime/hhs_pass209_production_assistant_v1.py",
+    "hhs_backend/api/pass209_llm_orchestrator_routes.py",
+    "scripts/pass209_native_agi_optimizer_worker.py",
+    "deployment/digitalocean/llm/install.sh",
+    "deployment/digitalocean/llm/hhs-llm-preflight.sh",
+    "deployment/digitalocean/llm/hhs-litert-lm-gemma4.service",
+    "deployment/digitalocean/llm/hhs-native-agi-optimizer.service",
+    "deployment/digitalocean/llm/pass209-llm.env.example",
+    "deployment/digitalocean/llm/README.md",
+    "tests/test_hhs_pass209_llm_orchestrator_v1.py",
+    "tests/test_hhs_pass209_digitalocean_llm_deployment_v1.py",
+    ".github/workflows/pass209-kimi-k3-native-llm.yml",
+    "docs/pass209/RESTART_RECORD.md"
+  ],
+  "claim_boundary": {
+    "repository_implementation": true,
+    "moonshot_api_key_configured_by_repository_change": false,
+    "digitalocean_host_mutated_by_repository_change": false,
+    "gemma_model_downloaded_by_ci": false,
+    "live_kimi_k3_call_executed_by_ci": false,
+    "reason": "Secrets, multi-gigabyte model installation, and production host execution remain explicit operator actions."
+  }
+}
