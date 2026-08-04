@@ -32,10 +32,11 @@ ROOT_DIR = Path(__file__).resolve().parents[1]
 VISUAL_ROOT = ROOT_DIR / "applications" / "holofractal_harmonizer"
 VISUAL_SOURCE_ROOT = VISUAL_ROOT / "src"
 VISUAL_SOURCE_MOUNT_NAME = "hhs-production-source-assets"
+PRODUCTION_LIVENESS_PATH = "/api/health"
 
 app = canonical.app
 app.title = "HHS Holofractal Harmonizer"
-app.version = "3.4.1"
+app.version = "3.4.2"
 app.description = (
     "Canonical HHS runtime and front-and-center visual IDE with source-preserving "
     "multimodal ingress, Hash216 indexing, exact 5,184-bit VM snapshots, HHS "
@@ -243,6 +244,39 @@ async def production_runtime_authority_status() -> dict[str, Any]:
     return _runtime_authority_status()
 
 
+# Canonical server layers may already publish an unrelated or heavyweight
+# `/api/health` handler. Production UI health must resolve one dependency-light
+# liveness projection before the API fallback and static root are installed.
+app.router.routes = [
+    route
+    for route in app.router.routes
+    if str(getattr(route, "path", "")) != PRODUCTION_LIVENESS_PATH
+]
+
+
+@app.get(PRODUCTION_LIVENESS_PATH, name="hhs-production-bounded-liveness")
+async def production_liveness() -> dict[str, Any]:
+    runtime = _runtime_authority_status()
+    authority_ready = bool(runtime.get("ok"))
+    return {
+        "schema": "HHS_PRODUCTION_BOUNDED_LIVENESS_V1",
+        "ok": True,
+        "status": "HHS_PRODUCTION_SERVICE_REACHABLE",
+        "service_available": True,
+        "authority_ready": authority_ready,
+        "runtime_ready": authority_ready,
+        "assistant_ready": False,
+        "assistant_health_requires_separate_probe": True,
+        "frontend_runtime_authority": False,
+        "public_interface": "HHS_PASS_174_FRONT_AND_CENTER_VISUAL_IDE",
+        "runtime_authority": runtime,
+        "runtime_authority_source": "/api/runtime/authority/status",
+        "runtime_readiness_uses_committed_live_projection": True,
+        "status_read_is_bounded": True,
+        "mutable_runtime_traversal_performed": False,
+    }
+
+
 @app.get("/api/product/health")
 async def production_product_health() -> dict[str, Any]:
     runtime = _runtime_authority_status()
@@ -297,6 +331,7 @@ async def production_system_status() -> dict[str, Any]:
         "canonical_runtime_attached": bool(canonical.SERVER_STATE.get("runtime_initialized")),
         "graph_initialized": bool(canonical.SERVER_STATE.get("graph_initialized")),
         "websocket_ready": bool(canonical.SERVER_STATE.get("websocket_ready")),
+        "bounded_liveness_api": PRODUCTION_LIVENESS_PATH,
         "runtime_authority_api": "/api/runtime/authority/status",
         "product_health_api": "/api/product/health",
         "workspace_session_api": "/api/runtime/workspace/session",
