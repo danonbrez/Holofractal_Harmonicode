@@ -63,15 +63,14 @@ export function startPublicBoot() {
     return result;
   };
 
-  // The usable application and visual editor are the critical membrane. Commit
-  // the application controls and Pass 176 INTERACTIVE before loading browser
-  // registry and production service projections, because those projections may
-  // perform substantial hashing and catalog work.
+  // Application controls are the user-critical membrane. Once they exist, the
+  // visual and browser modules may initialize their own bounded asynchronous
+  // projections. Production integration is installed as soon as the browser
+  // module exists; its internal waitForHarmonizer gate remains the authority
+  // boundary and cannot be blocked by an unrelated long-lived browser promise.
   const applicationExperience = launch('application-experience', './application-experience.mjs');
 
   // Inherited non-executable source witnesses preserve the Pass 161 audit shape.
-  // Runtime ownership is the serialized applicationControls -> visualIDE ->
-  // browser -> productionIntegration chain declared immediately below.
   /*
   const visualIDE = applicationExperience.then(() => launch('visual-ide', './visual-ide.mjs'))
   const browser = applicationExperience.then(() => launch('browser', './browser.mjs'))
@@ -83,21 +82,30 @@ export function startPublicBoot() {
   const applicationControls = applicationExperience
     .then(() => launch('application-controls', './application-critical-path.mjs'))
     .then((result) => requireReady('application-controls', result));
-  const visualIDE = applicationControls
+
+  const visualModule = applicationControls
     .then(() => launch('visual-ide', './visual-ide.mjs'))
+    .then((result) => requireReady('visual-ide', result));
+  const visualIDE = visualModule
     .then((result) => awaitGlobalPromise('HHSVisualIDEBoot', result));
-  const browser = visualIDE
+
+  const browserModule = visualModule
     .then(() => launch('browser', './browser.mjs'))
+    .then((result) => requireReady('browser', result));
+  const browser = browserModule
     .then((result) => awaitGlobalPromise('HHSBrowserReady', result));
-  const productionIntegration = browser.then(
+
+  const productionIntegration = browserModule.then(
     () => launch('production-integration', './production-integration.mjs'),
   );
-  const workflowDefault = browser.then(() => launch('ux-default', './ux-default.mjs'));
+  const workflowDefault = browserModule.then(() => launch('ux-default', './ux-default.mjs'));
 
   const allSettled = Promise.allSettled([
     applicationExperience,
     applicationControls,
+    visualModule,
     visualIDE,
+    browserModule,
     browser,
     productionIntegration,
     workflowDefault,
@@ -118,14 +126,17 @@ export function startPublicBoot() {
     coordinator_ready: Boolean(window.HHSProductionStartupCoordinator),
     legacy_parser_module_entries_disabled: true,
     application_controls_first: true,
-    application_controls_closed_before_visual_ide: true,
-    visual_ide_interactive_before_browser_projection: true,
-    browser_registry_before_production_projection: true,
+    application_controls_closed_before_projection_modules: true,
+    visual_module_installed_before_browser_module: true,
+    production_integration_installed_before_browser_projection_completion: true,
+    production_integration_owns_bounded_harmonizer_wait: true,
     applicationExperience,
     applicationControls,
+    visualModule,
+    visualIDE,
+    browserModule,
     browser,
     productionIntegration,
-    visualIDE,
     workflowDefault,
     allSettled,
     status: snapshot,
