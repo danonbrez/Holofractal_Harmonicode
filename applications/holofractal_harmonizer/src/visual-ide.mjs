@@ -74,10 +74,15 @@ async function runGovernedLifecycle(job) {
 }
 
 async function hydrateBackendAuthorityEvidence() {
-  const [productHealth, pass175] = await Promise.all([
-    requestJson('/api/product/health', { timeoutMs: 10000, retryCount: 1 }),
+  const [runtimeStatus, pass175] = await Promise.all([
+    requestJson('/api/runtime/authority/status', { timeoutMs: 10000, retryCount: 1 }),
     requestJson('/api/v1/pass175/status', { timeoutMs: 10000, retryCount: 1 }),
   ]);
+  const productHealth = Object.freeze({
+    schema: 'HHS_PASS_176_BOUNDED_RUNTIME_AUTHORITY_PROJECTION_V1',
+    runtime: runtimeStatus,
+    assistantHealthExcluded: true,
+  });
   const authorityEvidence = stability.setAuthorityEvidence({ productHealth, pass175 });
   if (!authorityEvidence.vm81AuthorityPreserved || authorityEvidence.hash72CommitStreams !== 1) {
     throw new Error('HHS_P176_BACKEND_AUTHORITY_EVIDENCE_REJECTED');
