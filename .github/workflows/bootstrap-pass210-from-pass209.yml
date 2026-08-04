@@ -1,4 +1,4 @@
-name: Bootstrap Pass 210 from completed Pass 209 branch work
+name: Bootstrap Pass 210 source migration
 
 on:
   push:
@@ -21,7 +21,7 @@ jobs:
           ref: agent/pass210-kimi-k3-native-llm
           fetch-depth: 0
 
-      - name: Copy and renumber the isolated LLM pass
+      - name: Copy and renumber the isolated LLM source
         run: |
           git fetch origin agent/pass209-kimi-k3-native-llm
           python - <<'PY'
@@ -33,8 +33,6 @@ jobs:
           old_base = "13025bbeccb0cd45ebfcf7151fa2bca9cfbb61ea"
           new_base = "36d110ba2f808f83bace25d6df84d45e44ab024b"
           copies = {
-              ".github/workflows/pass209-kimi-k3-native-llm.yml":
-                  ".github/workflows/pass210-kimi-k3-native-llm.yml",
               "contracts/pass209/PASS_209_CONTRACT.json":
                   "contracts/pass210/PASS_210_CONTRACT.json",
               "deployment/digitalocean/llm/README.md":
@@ -116,7 +114,6 @@ jobs:
           route.write_text(text, encoding="utf-8")
 
           for obsolete in (
-              ".github/workflows/pass209-kimi-k3-native-llm.yml",
               "contracts/pass209/PASS_209_CONTRACT.json",
               "deployment/digitalocean/llm/pass209-llm.env.example",
               "hhs_backend/api/pass209_llm_orchestrator_routes.py",
@@ -129,11 +126,10 @@ jobs:
               path = Path(obsolete)
               if path.exists():
                   path.unlink()
-          Path(".github/workflows/bootstrap-pass210-from-pass209.yml").unlink()
           PY
 
           git config user.name hhs-pass210-bootstrap
           git config user.email hhs-pass210-bootstrap@users.noreply.github.com
-          git add -A
-          git commit -m "Migrate Kimi K3 LLM hierarchy to Pass 210"
+          git add -A -- ':!.github/workflows'
+          git commit -m "Migrate Kimi K3 LLM source to Pass 210"
           git push origin HEAD:agent/pass210-kimi-k3-native-llm
