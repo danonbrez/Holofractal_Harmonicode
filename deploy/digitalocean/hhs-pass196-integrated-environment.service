@@ -12,7 +12,11 @@ EnvironmentFile=-/etc/hhs/pass196.env
 Environment=PYTHONUNBUFFERED=1
 Environment=HHS_REPOSITORY_ROOT=/opt/hhs/app
 Environment=HHS_PASS196_STATE_ROOT=/var/lib/hhs/pass196
-ExecStart=/opt/hhs/venv/bin/python -m uvicorn hhs_backend.visual_server:app --host 127.0.0.1 --port 8080 --workers 1
+Environment=HHS_RUNTIME_STATUS_CACHE=/var/lib/hhs/runtime-bootstrap/status-cache.json
+Environment=HHS_RUNTIME_STATUS_TTL_SECONDS=15
+Environment=HHS_RUNTIME_STATUS_PROBE_INTERVAL_SECONDS=15
+Environment=HHS_RUNTIME_STATUS_PROBE_TIMEOUT_SECONDS=180
+ExecStart=/opt/hhs/venv/bin/python -m uvicorn hhs_backend.cached_visual_server:app --host 127.0.0.1 --port 8080 --workers 1
 Restart=on-failure
 RestartSec=2
 TimeoutStartSec=120
