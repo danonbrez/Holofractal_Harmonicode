@@ -123,3 +123,13 @@ def test_gateway_transforms_html_and_integration_module(tmp_path: Path):
     _, _, source = asyncio.run(invoke(gateway, "/src/production-integration.mjs"))
     assert b"hhs:browser:ready" in source
     assert b"attempt < 800" not in source
+
+
+def test_gateway_serves_external_coordinator(tmp_path: Path):
+    cache = RuntimeStatusCache(tmp_path / "cache.json", ttl_seconds=30)
+    gateway = RuntimeBootstrapGateway(fake_app, cache=cache, probe_enabled=False)
+    status, headers, source = asyncio.run(invoke(gateway, "/runtime-bootstrap-coordinator.js"))
+    assert status == 200
+    assert headers[b"content-type"].startswith(b"text/javascript")
+    assert b"coordinatedFetch" in source
+    assert b"hhs:browser:ready" in source
