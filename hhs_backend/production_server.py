@@ -298,6 +298,69 @@ async def production_system_status() -> dict[str, Any]:
     }
 
 
+# Pass 210 final route closure. The canonical bootstrap may import this overlay
+# while the shared FastAPI app is still being composed. Re-append only route
+# identities that are absent after every inherited root/static filter, then
+# close startup if the production API or WebSocket surface is incomplete.
+HHS_PASS_210_PRODUCTION_ROUTE_CLOSURE_V1 = True
+
+
+def _route_identity(route: Any) -> tuple[str, str, tuple[str, ...]]:
+    return (
+        route.__class__.__name__,
+        str(getattr(route, "path", "")),
+        tuple(sorted(str(method) for method in (getattr(route, "methods", None) or ()))),
+    )
+
+
+def _append_missing_router_routes(router: Any) -> int:
+    existing = {_route_identity(route) for route in app.router.routes}
+    appended = 0
+    for route in router.routes:
+        identity = _route_identity(route)
+        if identity in existing:
+            continue
+        app.router.routes.append(route)
+        existing.add(identity)
+        appended += 1
+    return appended
+
+
+PRODUCTION_ROUTE_CLOSURE_APPENDED = {
+    "canonical_runtime": _append_missing_router_routes(canonical.runtime_router),
+    "canonical_websocket": _append_missing_router_routes(canonical.runtime_ws_router),
+    "assistant": _append_missing_router_routes(assistant_router),
+    "pass210_orchestrator": _append_missing_router_routes(pass210_llm_router),
+    "word2vec": _append_missing_router_routes(word2vec_router),
+    "installation": _append_missing_router_routes(installation_router),
+    "multimodal_ingress": _append_missing_router_routes(pass165_router),
+    "development_lifecycle": _append_missing_router_routes(development_lifecycle_router),
+}
+
+PRODUCTION_REQUIRED_ROUTE_CLOSURE = {
+    "/api/assistant/chat",
+    "/api/assistant/health",
+    "/api/runtime/llm-orchestrator/status",
+    "/api/runtime/llm-orchestrator/optimizer/status",
+    "/api/runtime/installation/status",
+    "/api/runtime/services",
+    "/api/runtime/services/dispatch",
+    "/v1/modalities/language/models/word2vec/status",
+    "/ws/runtime",
+}
+PRODUCTION_ROUTE_CLOSURE_PATHS = {
+    str(getattr(route, "path", "")) for route in app.router.routes
+}
+PRODUCTION_ROUTE_CLOSURE_MISSING = sorted(
+    PRODUCTION_REQUIRED_ROUTE_CLOSURE - PRODUCTION_ROUTE_CLOSURE_PATHS
+)
+if PRODUCTION_ROUTE_CLOSURE_MISSING:
+    raise RuntimeError(
+        "Pass 210 production route closure failed: "
+        + ", ".join(PRODUCTION_ROUTE_CLOSURE_MISSING)
+    )
+
+
 @app.api_route(
     "/api/{unmatched_path:path}",
     methods=["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "HEAD"],
