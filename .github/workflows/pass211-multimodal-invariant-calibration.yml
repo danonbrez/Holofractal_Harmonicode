@@ -1,0 +1,96 @@
+name: Pass 211 Multimodal Invariant Calibration
+
+on:
+  pull_request:
+    paths:
+      - 'scripts/pass211_multimodal_invariant_benchmark.py'
+      - 'scripts/pass211_run_inherited_calibrations.py'
+      - 'tests/test_pass211_multimodal_invariant_benchmark.py'
+      - 'contracts/pass211/**'
+      - 'docs/pass211/**'
+      - 'HHS_PASS_211_*'
+      - '.github/workflows/pass211-multimodal-invariant-calibration.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/pass211_multimodal_invariant_benchmark.py'
+      - 'scripts/pass211_run_inherited_calibrations.py'
+      - 'tests/test_pass211_multimodal_invariant_benchmark.py'
+      - 'contracts/pass211/**'
+      - 'docs/pass211/**'
+      - 'HHS_PASS_211_*'
+      - '.github/workflows/pass211-multimodal-invariant-calibration.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  inherited-tests-and-calibrations:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    env:
+      PYTHONFAULTHANDLER: '1'
+      PYTHONUNBUFFERED: '1'
+      HHS_PASS207_GPU_BACKEND: CPU_REFERENCE
+      HHS_PASS207_REQUIRE_PHYSICAL_GPU: '0'
+      HHS_PASS208_GPU_ENABLED: '0'
+      HHS_PASS190_CAPABILITY_SECRET: pass211-calibration-secret
+    steps:
+      - name: Checkout exact stacked tree
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install repository validation dependencies
+        run: |
+          python -m pip install --disable-pip-version-check -r requirements.txt
+          python -m pip install --disable-pip-version-check pytest jsonschema fastapi pydantic
+
+      - name: Compile Pass 211 benchmark surfaces
+        run: |
+          python -m py_compile \
+            scripts/pass211_multimodal_invariant_benchmark.py \
+            scripts/pass211_run_inherited_calibrations.py \
+            tests/test_pass211_multimodal_invariant_benchmark.py
+
+      - name: Run inherited validation and benchmark matrix
+        run: |
+          python scripts/pass211_run_inherited_calibrations.py \
+            --output evidence/pass211-ci/PASS211_INHERITED_CALIBRATION_MATRIX.json \
+            --continue-on-failure
+
+      - name: Verify calibration closure
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          matrix = json.loads(
+              Path('evidence/pass211-ci/PASS211_INHERITED_CALIBRATION_MATRIX.json').read_text()
+          )
+          benchmark = json.loads(
+              Path('evidence/pass211-ci/PASS211_MULTIMODAL_INVARIANT_BENCHMARK_RECEIPT.json').read_text()
+          )
+          assert matrix['passed'] is True, matrix
+          assert matrix['required_cases'] == 9
+          assert benchmark['passed'] is True, benchmark
+          assert benchmark['constants']['values']['permanent_states'] == 5184
+          assert benchmark['constants']['values']['projected_states'] == 1259712
+          assert benchmark['constants']['values']['contextual_states'] == 51648192
+          assert benchmark['constants']['values']['factorial_states'] == 5040
+          assert benchmark['retrieval_calibration']['exact_hit_rate'] == 1.0
+          assert benchmark['retrieval_calibration']['single_bit_adaptation_nearest_rate'] == 1.0
+          PY
+
+      - name: Upload Pass 211 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass211-multimodal-invariant-calibration
+          path: evidence/pass211-ci/*.json
+          if-no-files-found: warn
+          retention-days: 30
