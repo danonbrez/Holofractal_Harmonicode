@@ -38,7 +38,8 @@ SPEC_ROOT=${HHS_JSON_SPEC_PACKAGE_ROOT:-${1:-}}
 bash -n \
   "$SOURCE/install.sh" \
   "$SOURCE/hhs-gpu-preflight.sh" \
-  "$SOURCE/post-merge.sh"
+  "$SOURCE/post-merge.sh" \
+  "$SOURCE/validate-candidate.sh"
 "$PYTHON" -m py_compile \
   "$SOURCE/validate-json-spec-package.py" \
   "$REPO_ROOT/hhs_backend/runtime/hhs_pass208_gpu_branch_manifold_v1.py" \
@@ -151,10 +152,11 @@ chmod 0755 hhs_runtime/builds/libhhs_pass207_gpu_driver.so
 
 if [[ -f /etc/hhs/guarded-update.env ]]; then
   guarded_tmp=$(mktemp)
-  grep -Ev '^HHS_POST_MERGE_COMMAND=|^HHS_ROLLBACK_COMMAND=|^HHS_VALIDATE_GPU=' \
+  grep -Ev '^HHS_POST_MERGE_COMMAND=|^HHS_ROLLBACK_COMMAND=|^HHS_VALIDATE_GPU=|^HHS_VALIDATOR_RELATIVE_PATH=' \
     /etc/hhs/guarded-update.env >"$guarded_tmp" || true
   cat >>"$guarded_tmp" <<EOF
 HHS_VALIDATE_GPU=1
+HHS_VALIDATOR_RELATIVE_PATH=deployment/digitalocean/gpu/validate-candidate.sh
 HHS_POST_MERGE_COMMAND=$INSTALL_ROOT/post-merge.sh
 HHS_ROLLBACK_COMMAND=$INSTALL_ROOT/post-merge.sh
 EOF
