@@ -1,5 +1,6 @@
 import './mobile-first-paint-fix.mjs';
 import './theme-bootstrap.mjs';
+import './pass176-early-bootstrap.mjs';
 
 const originalFetch = window.fetch.bind(window);
 const startedAt = performance.now();
@@ -289,7 +290,7 @@ if (document.readyState === 'loading') {
 }
 
 window.HHSProductionStartupCoordinator = Object.freeze({
-  schema: 'HHS_PASS161_PRODUCTION_STARTUP_COORDINATOR_V15',
+  schema: 'HHS_PASS161_PRODUCTION_STARTUP_COORDINATOR_V16',
   assistant_requests_deferred_until_registry_ready: true,
   max_assistant_deferral_ms: MAX_ASSISTANT_DEFERRAL_MS,
   runtime_registry_has_priority: true,
@@ -297,6 +298,8 @@ window.HHSProductionStartupCoordinator = Object.freeze({
   storybook_reel_requests_never_deferred: true,
   mainframe_requests_never_deferred: true,
   storybook_reel_launcher_installed: true,
+  pass176_controller_bootstrap_precedes_public_graph: true,
+  pass176_early_bootstrap_claims_interactive: false,
   shadowed_runtime_authority_path: SHADOWED_AUTHORITY_PATH,
   live_runtime_authority_source: LIVE_RUNTIME_STATUS_PATH,
   shadowed_runtime_authority_route_used: false,
