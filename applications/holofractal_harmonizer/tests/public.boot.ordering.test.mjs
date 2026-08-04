@@ -13,25 +13,41 @@ async function criticalPathSource() {
   return readFile(criticalPathUrl, 'utf8');
 }
 
-test('application controls and visual IDE commit before browser and production projections', async () => {
+test('application controls close before projection modules are installed', async () => {
   const text = await publicBootSource();
   const applicationIndex = text.indexOf("const applicationExperience = launch('application-experience'");
   const controlsIndex = text.indexOf('const applicationControls = applicationExperience');
-  const visualIndex = text.indexOf('const visualIDE = applicationControls');
-  const browserIndex = text.indexOf('const browser = visualIDE');
-  const productionIndex = text.indexOf('const productionIntegration = browser.then');
+  const visualModuleIndex = text.indexOf('const visualModule = applicationControls');
+  const browserModuleIndex = text.indexOf('const browserModule = visualModule');
+  const productionIndex = text.indexOf('const productionIntegration = browserModule.then');
 
   assert.ok(applicationIndex >= 0);
   assert.ok(controlsIndex > applicationIndex);
-  assert.ok(visualIndex > controlsIndex);
-  assert.ok(browserIndex > visualIndex);
-  assert.ok(productionIndex > browserIndex);
+  assert.ok(visualModuleIndex > controlsIndex);
+  assert.ok(browserModuleIndex > visualModuleIndex);
+  assert.ok(productionIndex > browserModuleIndex);
   assert.match(text, /launch\('application-controls', '\.\/application-critical-path\.mjs'\)/);
+  assert.match(text, /requireReady\('application-controls', result\)/);
+  assert.match(text, /requireReady\('visual-ide', result\)/);
+  assert.match(text, /requireReady\('browser', result\)/);
+  assert.match(text, /application_controls_closed_before_projection_modules: true/);
+  assert.match(text, /visual_module_installed_before_browser_module: true/);
+});
+
+test('production integration is not blocked by browser projection completion', async () => {
+  const text = await publicBootSource();
+  const browserModuleIndex = text.indexOf('const browserModule = visualModule');
+  const browserCompletionIndex = text.indexOf('const browser = browserModule');
+  const productionIndex = text.indexOf('const productionIntegration = browserModule.then');
+
+  assert.ok(browserModuleIndex >= 0);
+  assert.ok(browserCompletionIndex > browserModuleIndex);
+  assert.ok(productionIndex > browserCompletionIndex);
+  assert.doesNotMatch(text, /const productionIntegration = browser\.then\(/);
+  assert.match(text, /production_integration_installed_before_browser_projection_completion: true/);
+  assert.match(text, /production_integration_owns_bounded_harmonizer_wait: true/);
   assert.match(text, /awaitGlobalPromise\('HHSVisualIDEBoot', result\)/);
   assert.match(text, /awaitGlobalPromise\('HHSBrowserReady', result\)/);
-  assert.match(text, /application_controls_closed_before_visual_ide: true/);
-  assert.match(text, /visual_ide_interactive_before_browser_projection: true/);
-  assert.match(text, /browser_registry_before_production_projection: true/);
 });
 
 test('critical path guarantees New Application and gallery controls', async () => {
