@@ -14,9 +14,16 @@ test('unchanged IDE status text preserves DOM identity', async () => {
 
 test('deployment health observes child mutations through the idempotent text membrane', async () => {
   const source = await readFile(healthUrl, 'utf8');
-  assert.match(source, /mutationObserver = new MutationObserver\(\(\) => \{ applyHealthState\(\); repairAssistantInput\(\); dedupePreviewConsole\(\); \}\);/);
-  assert.match(source, /mutationObserver\.observe\(document\.body, \{ childList: true, subtree: true \}\);/);
+  const observer = source.match(
+    /mutationObserver = new MutationObserver\([\s\S]*?mutationObserver\.observe\(document\.body, \{([^}]*)\}\);/,
+  );
+  assert.ok(observer, 'body health observer contract is present');
+  assert.match(observer[0], /applyHealthState\(\)/);
+  assert.match(observer[0], /repairAssistantInput\(\)/);
+  assert.match(observer[0], /dedupePreviewConsole\(\)/);
+  assert.match(observer[1], /childList:\s*true/);
+  assert.match(observer[1], /subtree:\s*true/);
+  assert.doesNotMatch(observer[1], /characterData:\s*true/);
   assert.match(source, /setText\('#hhs-backend-health-title'/);
   assert.match(source, /setText\('#hhs-backend-health-message'/);
-  assert.doesNotMatch(source, /characterData:\s*true/);
 });
