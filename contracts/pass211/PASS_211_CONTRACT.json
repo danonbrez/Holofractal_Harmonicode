@@ -1,0 +1,391 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "schema": "HHS_PASS_211_CONTRACT_V1",
+  "pass": 211,
+  "contract_id": "HHS-P211-DETERMINISTIC-EVOLUTIONARY-MULTIMODAL-INVARIANT-COMPUTATION-COMPRESSION-OPEN-WEIGHT-HYDRATION-VM81-H72-H216",
+  "canonical_name": "DETERMINISTIC_EVOLUTIONARY_MULTIMODAL_INVARIANT_COMPUTATION_COMPRESSION_AND_OPEN_WEIGHT_HYDRATION",
+  "version": "1.0.0",
+  "classification": "CONTRACT_AUTHORIZED_FULL_IMPLEMENTATION_REQUIRED",
+  "current_stage": "REPOSITORY_CALIBRATION_STAGE",
+  "full_completion_classification": "HHS_PASS_211_OPEN_WEIGHT_MULTIMODAL_INVARIANT_HYDRATION_VERIFIED",
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "inheritance": {
+    "range": "Genesis and Passes 001-210",
+    "immediate_parent_pass": 210,
+    "parent_branch": "agent/pass210-kimi-k3-native-llm",
+    "parent_pull_request": 163,
+    "pass211_pull_request": 164,
+    "parent_chromium_gate": {
+      "status": "INHERITED_PENDING",
+      "may_be_reclassified_by_pass211": false
+    },
+    "core_functions_may_be_altered": false
+  },
+  "authority": {
+    "canonical_mutation_authority_count": 1,
+    "canonical_mutation_authority": "VM81",
+    "hash72_role": "canonical receipt lineage after valid transition",
+    "hash216_role": "post-receipt ordered identity topology archival and continuation retrieval",
+    "external_models_may_commit": false,
+    "gpu_may_commit": false,
+    "cache_hit_may_bypass_current_validation": false,
+    "probability_may_commit": false
+  },
+  "state_space": {
+    "vm81_cells": 81,
+    "operations_per_cell": 64,
+    "compact_nucleus_bits": 5184,
+    "g243_controls": 243,
+    "projected_states": 1259712,
+    "local_context_coordinates": 41,
+    "contextual_states": 51648192,
+    "factorial_states": 5040,
+    "factorial_identity": "7!",
+    "outer_envelope": 1259713,
+    "address_law": {
+      "permanent": "s = 64*c + o",
+      "projected": "q = 243*s + g",
+      "contextual": "x = 41*q + kappa"
+    },
+    "required_roundtrip": [
+      "Decode(Encode(c,o,g,kappa)) == (c,o,g,kappa)",
+      "Encode(Decode(x)) == x"
+    ]
+  },
+  "canonical_invariants": {
+    "no_float_canonical_authority": true,
+    "ordered_noncommutative_operations": true,
+    "single_vm81_authority": true,
+    "exact_list_preservation": true,
+    "probability_hydration_formula": "(List(x*Factorial(72),(y*(1/Factorial(72))))*z)*(w*List((y*(1/Factorial(72))),x*Factorial(72)))/u^72==(x*y)/(x*y)==u^72",
+    "outer_modulus": 1259713,
+    "membrane_rule": "() = n MOD (n+1)",
+    "ordered_basis": ["x", "y", "z", "w", "xy", "yx", "zw", "wz"],
+    "lo_shu": [[4, 9, 2], [3, 5, 7], [8, 1, 6]],
+    "symbol_distinction": "O != Pi"
+  },
+  "open_weight_hydration": {
+    "native_format": "VM81_TO_64K_REVERSIBLE_HYDRATED_CAPSULE",
+    "source_checkpoint_role": "ingress and archival witness",
+    "required_identity": "ReverseExpand(Hydrate(SourceWeights)) == SourceWeights",
+    "lossy_quantization_satisfies_completion": false,
+    "external_tensor_shard_index_satisfies_completion": false,
+    "source_checkpoint_pointer_satisfies_completion": false,
+    "required_source_preservation": [
+      "all checkpoint bytes",
+      "file and shard order",
+      "tensor names",
+      "tensor shapes and strides",
+      "source dtypes and exact encodings",
+      "tensor and operator order",
+      "tokenizer vocabulary merges special tokens and prompt templates",
+      "scheduler sampler normalization and architecture configuration",
+      "tied-weight relationships and aliases",
+      "license provenance repository revision and hashes"
+    ],
+    "foreign_float_bytes_may_be_preserved": true,
+    "foreign_float_bytes_become_canonical_arithmetic": false
+  },
+  "model_capsule": {
+    "required_fields": [
+      "model_root",
+      "source_manifest",
+      "vm81_nucleus",
+      "contextual_expansion",
+      "parameter_dictionary",
+      "ordered_operator_graph",
+      "constraint_graph",
+      "modality_schema",
+      "ingress_egress_bridges",
+      "hash72_lineage",
+      "hash216_topology",
+      "replay_recovery_state"
+    ],
+    "immutable_parameter_identity": true,
+    "changed_parameter_requires_new_identity": true
+  },
+  "multi_model_cache": {
+    "enabled": true,
+    "incompatible_modalities_may_share_cache": true,
+    "untyped_parameter_aliasing_forbidden": true,
+    "complete_namespace_identity_required": true,
+    "supported_target_modalities": [
+      "image",
+      "video",
+      "language",
+      "vision",
+      "depth",
+      "segmentation",
+      "optical_flow",
+      "audio",
+      "speech",
+      "music",
+      "3d",
+      "physics",
+      "motion"
+    ],
+    "bridge_requires": [
+      "source_model_root",
+      "destination_model_root",
+      "source_schema",
+      "destination_schema",
+      "operation_order",
+      "normalization_and_scaling",
+      "reversible_information",
+      "declared_loss",
+      "dependencies",
+      "constraints",
+      "hash72_behavior",
+      "hash216_identity",
+      "replay_and_invalidation"
+    ]
+  },
+  "multimodal_invariant": {
+    "definition": "A typed relation identity topology constraint or executable transformation structure validated across at least two declared representations modalities models states or execution paths",
+    "statistical_correlation_alone_sufficient": false,
+    "required_tests": [
+      "positive",
+      "negative",
+      "cross-modal",
+      "forward",
+      "inverse",
+      "replay",
+      "mutation"
+    ]
+  },
+  "computation_compression": {
+    "law": "Computation = compatible validated invariant nucleus composed with the smallest dependency-complete unresolved delta",
+    "preferred_path": [
+      "retrieve invariant",
+      "verify exact compatibility",
+      "compose ordered transformations",
+      "compute sparse novel frontier",
+      "validate complete result",
+      "VM81 admission",
+      "Hash72 receipt",
+      "Hash216 archival"
+    ],
+    "retrieval_outcomes": [
+      "EXACT_CONTINUATION_HIT",
+      "COMPATIBLE_ADAPTATION",
+      "NOVEL_TRANSITION"
+    ],
+    "vector_distance_alone_authorizes_reuse": false
+  },
+  "learning": {
+    "architecture": "PROBABILITY_SEEDED_DETERMINISTIC_EVOLUTIONARY_CONSTRAINT_BASED_DEEP_LEARNING",
+    "probabilistic_candidate_sources": [
+      "pretrained weights",
+      "stochastic initialization",
+      "diffusion noise and samplers",
+      "gradients and optimizer proposals",
+      "attention and token probabilities",
+      "latent distributions",
+      "mutation distributions",
+      "candidate outputs"
+    ],
+    "selection_law": "Delta* = argmax F(S,Delta_i) subject to all mandatory constraints",
+    "high_fitness_constraint_violation_action": "REJECT_CORRECT_QUARANTINE_OR_DEFER",
+    "admitted_states_must_be": [
+      "reversible",
+      "branchable",
+      "replayable",
+      "receipt-bound"
+    ]
+  },
+  "storyboard_video_training": {
+    "storyboard_is_ordered_scene_program": true,
+    "curriculum": [
+      "isolated low-motion missing frames",
+      "short continuous gaps",
+      "alternating-frame removal",
+      "motion-phase anchors",
+      "storyboard keyframes",
+      "initial state plus structured action",
+      "complete scene from storyboard audio and physics constraints"
+    ],
+    "successful_reconstructions_become_hash216_continuations": true,
+    "required_evaluations": [
+      "endpoint closure",
+      "pixel and latent correspondence",
+      "object and character identity",
+      "geometry and depth",
+      "optical flow and motion phase",
+      "camera continuity",
+      "lighting and material continuity",
+      "collision contact and physics constraints",
+      "forward and inverse replay",
+      "deterministic reconstruction"
+    ]
+  },
+  "physics_projection": {
+    "unity_and_other_engines_are_foreign_backends": true,
+    "universal_clock_witness": "10^-100",
+    "foreign_engine_receives_scaled_projection": true,
+    "candidate_state_requires_vm81_admission": true
+  },
+  "repository_calibration_matrix": {
+    "required_cases": 9,
+    "cases": [
+      "Pass188 exhaustive 1259712 projected states",
+      "Pass189 exhaustive 51648192 contextual addresses",
+      "Pass205 native continuation ABI build",
+      "Pass207 native GPU ABI CPU-reference build",
+      "Pass205-210 dependency-scoped regression",
+      "Pass205 extended multimodal continuation calibration",
+      "Pass205 GPU translation calibration",
+      "Pass211 benchmark unit tests",
+      "Pass211 repository invariant and retrieval benchmark"
+    ],
+    "measured_precontract_baseline": {
+      "pass188_checksum": "11e3bbf0214751c3",
+      "pass189_checksum": "e02ef2dc8070e3f3",
+      "dependency_scoped_tests_passed": 49,
+      "continuation_seed_count": 13,
+      "continuation_total_ticks": 4680,
+      "mean_sparse_speedup_approx": 7.68,
+      "mean_state_payload_reduction_approx": 15.95,
+      "mean_projection_payload_reduction_approx": 9.62,
+      "gpu_translation_transfer_reduction_approx": 7.66,
+      "address_roundtrip_samples": 1000000,
+      "address_coordinate_drift": 0,
+      "exact_retrieval_rate": 1.0,
+      "single_bit_adaptation_nearest_rate": 1.0
+    },
+    "baseline_values_are_universal_guarantees": false
+  },
+  "external_model_completion_matrix": {
+    "minimum_named_models": 1,
+    "second_incompatible_model_required_for_multi_model_completion": true,
+    "required_tests": [
+      "source hash verification",
+      "source manifest",
+      "native hydration",
+      "reverse expansion",
+      "byte-for-byte checkpoint equality",
+      "tensor name shape dtype order and value equality",
+      "tokenizer and configuration equality",
+      "deterministic reference inference parity",
+      "image generation parity",
+      "image-to-video or text-to-video parity when supported",
+      "retrieval reuse",
+      "sparse novel frontier",
+      "cache eviction restart",
+      "rollback",
+      "corruption recovery",
+      "license and provenance preservation"
+    ]
+  },
+  "required_metrics": [
+    "source checkpoint bytes",
+    "native hydrated bytes",
+    "expanded bytes",
+    "reversible compression ratio",
+    "hydration duration",
+    "reverse expansion duration",
+    "peak CPU RAM",
+    "peak accelerator memory",
+    "source and reconstructed hashes",
+    "parameter and tensor totals",
+    "exact mismatch count",
+    "inference latency",
+    "exact adaptation and novel rates",
+    "retrieval coverage",
+    "sparse frontier size",
+    "full and sparse execution time",
+    "full and sparse transfer bytes",
+    "modality output metrics",
+    "replay and rollback",
+    "failure and exclusion reasons"
+  ],
+  "negative_tests": [
+    "source checkpoint hash mismatch",
+    "missing shard",
+    "tensor order drift",
+    "dtype drift",
+    "one-bit weight corruption",
+    "incomplete reverse expansion",
+    "tokenizer mismatch",
+    "cross-model parameter alias",
+    "untyped bridge",
+    "illegal operation reorder",
+    "partial compatibility cache reuse",
+    "stale parent root",
+    "direct model or GPU commit",
+    "invalid G243 control",
+    "invalid VM81 coordinate",
+    "invalid local context coordinate",
+    "unresolved noncommutative conflict",
+    "visually plausible physically invalid motion",
+    "invalid path with matching endpoint",
+    "probabilistic candidate represented as admitted truth",
+    "missing license provenance",
+    "hidden original checkpoint dependency",
+    "malformed Pass211 evidence",
+    "replay rollback mismatch"
+  ],
+  "interface": {
+    "raw_json_only_sufficient": false,
+    "required_views": [
+      "model capsules",
+      "license and provenance",
+      "hydration and reverse expansion",
+      "exact mismatches",
+      "nucleus and contextual identities",
+      "invariant coverage",
+      "retrieval outcome rates",
+      "sparse frontier and savings",
+      "storyboard shot source audio and physics bindings",
+      "branch and parent continuation",
+      "validation replay rollback and corruption",
+      "Hash72 and Hash216 state",
+      "blockers and unsupported capabilities"
+    ]
+  },
+  "required_artifacts": [
+    "HHS_PASS_211_DETERMINISTIC_EVOLUTIONARY_MULTIMODAL_INVARIANT_COMPUTATION_COMPRESSION_AND_OPEN_WEIGHT_HYDRATION.md",
+    "contracts/pass211/PASS_211_CONTRACT.json",
+    "scripts/pass211_multimodal_invariant_benchmark.py",
+    "scripts/pass211_run_inherited_calibrations.py",
+    "tests/test_pass211_multimodal_invariant_benchmark.py",
+    ".github/workflows/pass211-multimodal-invariant-calibration.yml",
+    "evidence/pass211/PASS211_INHERITED_CALIBRATION_MATRIX.json",
+    "evidence/pass211/PASS211_MULTIMODAL_INVARIANT_BENCHMARK_RECEIPT.json",
+    "evidence/pass211/PASS211_PASS205_CONTINUATION_CALIBRATION.json",
+    "evidence/pass211/PASS211_PASS205_GPU_TRANSLATION_CALIBRATION.json",
+    "artifacts/pass211/OPEN_WEIGHT_MODEL_SOURCE_MANIFEST.json",
+    "artifacts/pass211/OPEN_WEIGHT_HYDRATION_MANIFEST.json",
+    "artifacts/pass211/OPEN_WEIGHT_REVERSE_EXPANSION_REPORT.json",
+    "artifacts/pass211/MULTIMODAL_INVARIANT_REGISTRY.json",
+    "artifacts/pass211/MULTI_MODEL_COMPATIBILITY_REPORT.json",
+    "artifacts/pass211/GENERATION_RETRIEVAL_BENCHMARK.json",
+    "artifacts/pass211/TRANSITIONAL_FRAME_TRAINING_REPORT.json",
+    "artifacts/pass211/PASS_211_COMPLETION_RECEIPT.json",
+    "docs/pass211/RESTART_RECORD.md",
+    "docs/pass211/COMPLETION.md"
+  ],
+  "claim_boundaries": {
+    "repository_retrieval_proves_model_weight_hydration": false,
+    "cpu_translation_test_proves_physical_gpu_acceleration": false,
+    "simulation_proves_physical_science": false,
+    "contract_presence_proves_implementation": false,
+    "repository_calibration_stage_proves_full_completion": false
+  },
+  "closure_sequence": [
+    "freeze inherited evidence",
+    "exhaustive inherited address validation",
+    "dependency-scoped regression",
+    "repository invariant retrieval calibration",
+    "repair impacted failures",
+    "freeze contract",
+    "select named open-weight model",
+    "hydrate and reverse-expand",
+    "prove exact source equality",
+    "generation and retrieval benchmarks",
+    "transitional-frame training",
+    "multi-model compatibility",
+    "final cumulative integration and replay",
+    "commit",
+    "verify authoritative main"
+  ]
+}
