@@ -18,33 +18,35 @@ test('application controls close before projection modules are installed', async
   const applicationIndex = text.indexOf("const applicationExperience = launch('application-experience'");
   const controlsIndex = text.indexOf('const applicationControls = applicationExperience');
   const visualModuleIndex = text.indexOf('const visualModule = applicationControls');
-  const browserModuleIndex = text.indexOf('const browserModule = visualModule');
-  const productionIndex = text.indexOf('const productionIntegration = browserModule.then');
+  const browserModuleIndex = text.indexOf('const browserModule = applicationControls');
+  const productionIndex = text.indexOf('const productionIntegration = applicationControls.then');
+  const workflowIndex = text.indexOf('const workflowDefault = applicationControls.then');
 
   assert.ok(applicationIndex >= 0);
   assert.ok(controlsIndex > applicationIndex);
   assert.ok(visualModuleIndex > controlsIndex);
-  assert.ok(browserModuleIndex > visualModuleIndex);
-  assert.ok(productionIndex > browserModuleIndex);
+  assert.ok(browserModuleIndex > controlsIndex);
+  assert.ok(productionIndex > controlsIndex);
+  assert.ok(workflowIndex > controlsIndex);
   assert.match(text, /launch\('application-controls', '\.\/application-critical-path\.mjs'\)/);
   assert.match(text, /requireReady\('application-controls', result\)/);
   assert.match(text, /requireReady\('visual-ide', result\)/);
   assert.match(text, /requireReady\('browser', result\)/);
   assert.match(text, /application_controls_closed_before_projection_modules: true/);
-  assert.match(text, /visual_module_installed_before_browser_module: true/);
 });
 
-test('production integration is not blocked by browser projection completion', async () => {
+test('projection modules cannot block each other from being installed', async () => {
   const text = await publicBootSource();
-  const browserModuleIndex = text.indexOf('const browserModule = visualModule');
-  const browserCompletionIndex = text.indexOf('const browser = browserModule');
-  const productionIndex = text.indexOf('const productionIntegration = browserModule.then');
 
-  assert.ok(browserModuleIndex >= 0);
-  assert.ok(browserCompletionIndex > browserModuleIndex);
-  assert.ok(productionIndex > browserCompletionIndex);
+  assert.match(text, /const visualModule = applicationControls\s*\.then/);
+  assert.match(text, /const browserModule = applicationControls\s*\.then/);
+  assert.match(text, /const productionIntegration = applicationControls\.then/);
+  assert.match(text, /const workflowDefault = applicationControls\.then/);
+  assert.doesNotMatch(text, /const browserModule = visualModule\s*\.then/);
+  assert.doesNotMatch(text, /const productionIntegration = browserModule\.then/);
   assert.doesNotMatch(text, /const productionIntegration = browser\.then\(/);
-  assert.match(text, /production_integration_installed_before_browser_projection_completion: true/);
+  assert.match(text, /projection_modules_start_independently_after_controls: true/);
+  assert.match(text, /production_integration_independent_of_visual_browser_completion: true/);
   assert.match(text, /production_integration_owns_bounded_harmonizer_wait: true/);
   assert.match(text, /awaitGlobalPromise\('HHSVisualIDEBoot', result\)/);
   assert.match(text, /awaitGlobalPromise\('HHSBrowserReady', result\)/);
