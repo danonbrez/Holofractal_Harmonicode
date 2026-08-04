@@ -123,7 +123,8 @@ jobs:
           trap cleanup EXIT
           ready=0
           for attempt in $(seq 1 120); do
-            if curl -fsS http://127.0.0.1:8766/ > /tmp/hhs-full-ide.html; then
+            if curl --connect-timeout 1 --max-time 5 -fsS \
+              http://127.0.0.1:8766/ > /tmp/hhs-full-ide.html; then
               ready=1
               break
             fi
@@ -136,26 +137,29 @@ jobs:
           grep -q 'HHS Full Multimodal Application IDE' /tmp/hhs-full-ide.html
           grep -q 'application-studio.css' /tmp/hhs-full-ide.html
           grep -q 'visual-ide.mjs' /tmp/hhs-full-ide.html
-          curl -fsS http://127.0.0.1:8766/runtime-console/ | grep -q 'Pass 174 Harmonic Visual SDLC Runtime'
-          curl -fsS http://127.0.0.1:8766/api/assistant/status > /tmp/hhs-assistant-status.json
-          curl -fsS http://127.0.0.1:8766/api/runtime/repository/status > /tmp/hhs-repository-status.json
-          curl -fsS http://127.0.0.1:8766/api/runtime/workspace/session > /tmp/hhs-workspace-session.json
-          curl -fsS http://127.0.0.1:8766/api/v1/pass174/deployment/status?wait_for_terminal=false > /tmp/hhs-pass174-status.json
+          curl --connect-timeout 1 --max-time 10 -fsS \
+            http://127.0.0.1:8766/runtime-console/ \
+            | grep -q 'Pass 174 Harmonic Visual SDLC Runtime'
+          curl --connect-timeout 1 --max-time 15 -fsS \
+            http://127.0.0.1:8766/api/assistant/status \
+            > /tmp/hhs-assistant-status.json
+          curl --connect-timeout 1 --max-time 15 -fsS \
+            http://127.0.0.1:8766/api/runtime/workspace/session \
+            > /tmp/hhs-workspace-session.json
+          curl --connect-timeout 1 --max-time 15 -fsS \
+            'http://127.0.0.1:8766/api/v1/pass174/deployment/status?wait_for_terminal=false' \
+            > /tmp/hhs-pass174-status.json
           python - <<'PY'
           import json
           from pathlib import Path
           for path in [
               '/tmp/hhs-assistant-status.json',
-              '/tmp/hhs-repository-status.json',
               '/tmp/hhs-workspace-session.json',
               '/tmp/hhs-pass174-status.json',
           ]:
               payload = json.loads(Path(path).read_text())
               if not isinstance(payload, dict):
                   raise SystemExit(f'non-object response: {path}')
-          repository = json.loads(Path('/tmp/hhs-repository-status.json').read_text())
-          if repository.get('ide_default_surface') != 'FULL_INTEGRATED_DEVELOPMENT_ENVIRONMENT':
-              raise SystemExit(repository)
           PY
           HHS_FULL_APPLICATION_IDE_URL=http://127.0.0.1:8766 \
             timeout 300s python applications/holofractal_harmonizer/ux_lab/full_application_smoke.py

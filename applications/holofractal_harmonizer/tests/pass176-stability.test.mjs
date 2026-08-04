@@ -97,6 +97,33 @@ test('bounded jobs settle on timeout even when executor ignores AbortSignal', as
   assert.equal(jobs.snapshot().active.length, 0);
 });
 
+test('default bounded-job timers retain the browser global receiver', async () => {
+  const originalSetTimeout = globalThis.setTimeout;
+  const originalClearTimeout = globalThis.clearTimeout;
+  let setReceiverVerified = false;
+  let clearReceiverVerified = false;
+  globalThis.setTimeout = function receiverCheckedSetTimeout(callback, delay) {
+    assert.equal(this, globalThis);
+    setReceiverVerified = true;
+    return originalSetTimeout(callback, delay);
+  };
+  globalThis.clearTimeout = function receiverCheckedClearTimeout(timer) {
+    assert.equal(this, globalThis);
+    clearReceiverVerified = true;
+    return originalClearTimeout(timer);
+  };
+  try {
+    const jobs = new BoundedJobManager();
+    assert.equal(await jobs.run('browser-receiver', async () => 'complete', { timeoutMs: 1000 }), 'complete');
+    assert.equal(jobs.snapshot().active.length, 0);
+    assert.equal(setReceiverVerified, true);
+    assert.equal(clearReceiverVerified, true);
+  } finally {
+    globalThis.setTimeout = originalSetTimeout;
+    globalThis.clearTimeout = originalClearTimeout;
+  }
+});
+
 test('atomic recovery prefers the newest complete or pending envelope', () => {
   const values = new Map();
   const storage = {

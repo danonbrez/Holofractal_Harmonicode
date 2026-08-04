@@ -1,8 +1,9 @@
 import { $, setText, log } from './visual-ide-state.mjs';
 
-const LIVENESS_PATHS = ['/health', '/api/health', '/healthz'];
-const PRODUCT_HEALTH_PATH = '/api/product/health';
-const REQUEST_TIMEOUT_MS = 4_000;
+const LIVENESS_PATHS = ['/api/health'];
+const RUNTIME_AUTHORITY_PATH = '/api/runtime/authority/status';
+const ASSISTANT_STATUS_PATH = '/api/assistant/status';
+const REQUEST_TIMEOUT_MS = 30_000;
 const ONLINE_POLL_MS = 30_000;
 const DEGRADED_POLL_MS = 12_000;
 
@@ -22,6 +23,8 @@ let checking = false;
 let consoleObserver = null;
 let mutationObserver = null;
 let suppressConsoleObserver = false;
+let healthReconcileTimer = null;
+let healthReconcileRunning = false;
 
 function withTimeout(path, options = {}) {
   const controller = new AbortController();
@@ -58,17 +61,33 @@ function capability(payload, keys, fallback = false) {
 
 async function probeBackend() {
   const liveness = await firstReachable(LIVENESS_PATHS);
-  let product = null;
-  try { product = await withTimeout(PRODUCT_HEALTH_PATH); } catch { product = null; }
+  const [runtimeResult, assistantResult] = await Promise.allSettled([
+    withTimeout(RUNTIME_AUTHORITY_PATH),
+    withTimeout(ASSISTANT_STATUS_PATH),
+  ]);
   const live = liveness.payload || {};
-  const productPayload = product?.payload || {};
-  const runtimeReady = capability(productPayload, ['runtime.ok', 'runtime_authority.ok'], capability(live, ['runtime_ready', 'authority_ready', 'runtime_authority.ok', 'ok'], false));
-  const assistantReady = capability(productPayload, ['assistant.online', 'assistant.ok'], capability(live, ['assistant_ready'], false));
+  const runtimePayload = runtimeResult.status === 'fulfilled' ? runtimeResult.value.payload || {} : {};
+  const assistantPayload = assistantResult.status === 'fulfilled' ? assistantResult.value.payload || {} : {};
+  const runtimeReady = capability(runtimePayload, ['ok', 'authority_ready', 'runtime_authority.ok'], capability(live, ['runtime_ready', 'authority_ready', 'runtime_authority.ok', 'ok'], false));
+  const assistantReady = capability(assistantPayload, ['online', 'ok'], capability(live, ['assistant_ready'], false));
   let detail = 'Runtime backend reachable.';
   if (!runtimeReady && !assistantReady) detail = 'Runtime service is reachable, but execution authority and the assistant are unavailable.';
   else if (!runtimeReady) detail = 'Runtime service is reachable, but VM81 lifecycle authority is not ready.';
   else if (!assistantReady) detail = 'VM81 runtime authority is online; the assistant provider is unavailable.';
-  return Object.freeze({ checked: true, reachable: true, runtimeReady, assistantReady, mode: runtimeReady && assistantReady ? 'online' : 'degraded', detail, checkedAt: new Date().toISOString(), livenessPath: liveness.path, liveness: live, product: productPayload });
+  return Object.freeze({
+    checked: true,
+    reachable: true,
+    runtimeReady,
+    assistantReady,
+    mode: runtimeReady && assistantReady ? 'online' : 'degraded',
+    detail,
+    checkedAt: new Date().toISOString(),
+    livenessPath: liveness.path,
+    liveness: live,
+    runtime: runtimePayload,
+    assistant: assistantPayload,
+    boundedStatusRoutes: Object.freeze([RUNTIME_AUTHORITY_PATH, ASSISTANT_STATUS_PATH]),
+  });
 }
 
 function mountBanner() {
@@ -79,7 +98,8 @@ function mountBanner() {
   banner.setAttribute('role', 'status');
   banner.setAttribute('aria-live', 'polite');
   banner.innerHTML = `<div><strong id="hhs-backend-health-title">Checking runtime backend…</strong><span id="hhs-backend-health-message">Editing, preview, and export remain available during this check.</span></div><div class="hhs-backend-health-actions"><button id="hhs-backend-health-retry" type="button">Retry backend</button><details><summary>Details</summary><pre id="hhs-backend-health-detail">No health result yet.</pre></details></div>`;
-  document.body.prepend(banner);
+  const anchor = document.querySelector('.ide-control-pane, .ide-system-bar, #ide-layout');
+  (anchor?.parentElement || document.body).insertBefore(banner, anchor || null);
   $('#hhs-backend-health-retry').onclick = () => void checkBackend(true);
 }
 
@@ -96,12 +116,13 @@ function setDisabled(selector, disabled, reason) {
     if (!(node instanceof HTMLButtonElement || node instanceof HTMLInputElement || node instanceof HTMLSelectElement)) return;
     if (disabled) {
       if (!node.disabled) { node.disabled = true; node.dataset.hhsBackendDisabled = 'true'; }
-      node.title = reason;
-      node.setAttribute('aria-description', reason);
+      if (node.title !== reason) node.title = reason;
+      if (node.getAttribute('aria-description') !== reason) node.setAttribute('aria-description', reason);
     } else if (node.dataset.hhsBackendDisabled === 'true') {
       node.disabled = false;
       delete node.dataset.hhsBackendDisabled;
       if (/backend|runtime authority|assistant provider/i.test(node.title || '')) node.removeAttribute('title');
+      node.removeAttribute('aria-description');
     }
   });
 }
@@ -121,8 +142,8 @@ function repairAssistantInput() {
   prompt.readOnly = false;
   prompt.tabIndex = 0;
   prompt.style.pointerEvents = 'auto';
-  prompt.setAttribute('aria-describedby', 'hhs-backend-health-message');
-  prompt.setAttribute('autocomplete', 'off');
+  if (prompt.getAttribute('aria-describedby') !== 'hhs-backend-health-message') prompt.setAttribute('aria-describedby', 'hhs-backend-health-message');
+  if (prompt.getAttribute('autocomplete') !== 'off') prompt.setAttribute('autocomplete', 'off');
   const form = $('#prompt-form');
   if (form && !form.dataset.hhsBackendGuarded) {
     form.addEventListener('submit', (event) => {
@@ -139,7 +160,12 @@ function updateRuntimePanels() {
   if (current.runtimeReady) return;
   const message = current.reachable ? 'Backend reachable, but VM81/Pass 175 authority is not ready. Retry after the health state changes.' : 'Backend unreachable. No firmware, VM81, Hash216, or receipt state was changed.';
   ['#pass175-terminal-window .pass175-terminal-state', '#pass175-processor-window .pass175-state'].forEach((selector) => setText(selector, current.reachable ? 'AUTHORITY DEGRADED' : 'BACKEND OFFLINE'));
-  ['#pass175-terminal-window .pass175-terminal-output', '#pass175-processor-window .pass175-result'].forEach((selector) => { const node = $(selector); if (node) { node.textContent = message; node.classList.add('error'); } });
+  ['#pass175-terminal-window .pass175-terminal-output', '#pass175-processor-window .pass175-result'].forEach((selector) => {
+    const node = $(selector);
+    if (!node) return;
+    setText(selector, message);
+    node.classList.add('error');
+  });
 }
 
 function updateAssistantSurface() {
@@ -148,15 +174,16 @@ function updateAssistantSurface() {
   setText('#provider-status', current.reachable ? 'ASSISTANT DEGRADED' : 'ASSISTANT API OFFLINE');
   setText('#backend-id', current.reachable ? 'provider unavailable' : 'backend unreachable');
   const provider = $('#provider-status');
-  if (provider) provider.className = 'status degraded';
+  if (provider && provider.className !== 'status degraded') provider.className = 'status degraded';
 }
 
 function applyHealthState() {
   mountBanner();
   const banner = $('#hhs-backend-health-banner');
   if (!banner) return;
-  banner.dataset.mode = current.mode;
-  banner.hidden = current.mode === 'online';
+  if (banner.dataset.mode !== current.mode) banner.dataset.mode = current.mode;
+  const hidden = current.mode === 'online';
+  if (banner.hidden !== hidden) banner.hidden = hidden;
   let title = 'Runtime backend online';
   let message = 'VM81 lifecycle authority and assistant provider are available.';
   if (current.mode === 'offline') { title = 'Runtime backend unreachable'; message = 'Editing, preview, and source/runnable ZIP export remain available. Lifecycle, receipts, VM81, Pass 175, and assistant actions are disabled.'; }
@@ -200,6 +227,26 @@ function dedupePreviewConsole() {
   normalize();
 }
 
+function reconcileHealthSurfaces() {
+  if (healthReconcileRunning) return;
+  healthReconcileRunning = true;
+  try {
+    applyHealthState();
+    repairAssistantInput();
+    dedupePreviewConsole();
+  } finally {
+    healthReconcileRunning = false;
+  }
+}
+
+function scheduleHealthReconciliation() {
+  if (healthReconcileTimer !== null) return;
+  healthReconcileTimer = window.setTimeout(() => {
+    healthReconcileTimer = null;
+    reconcileHealthSurfaces();
+  }, 0);
+}
+
 function scheduleNext() {
   clearTimeout(pollTimer);
   pollTimer = setTimeout(() => void checkBackend(false), current.mode === 'online' ? ONLINE_POLL_MS : DEGRADED_POLL_MS);
@@ -211,7 +258,7 @@ export async function checkBackend(userInitiated = false) {
   if (userInitiated) showBackendMessage('Checking runtime backend…', 'Testing liveness, VM81 authority, and assistant provider status.');
   try { current = await probeBackend(); }
   catch (error) { current = Object.freeze({ checked: true, reachable: false, runtimeReady: false, assistantReady: false, mode: 'offline', detail: String(error?.message || error || 'BACKEND_UNREACHABLE'), checkedAt: new Date().toISOString() }); }
-  finally { checking = false; applyHealthState(); scheduleNext(); }
+  finally { checking = false; reconcileHealthSurfaces(); scheduleNext(); }
   log(`Deployment backend health: ${current.mode}.`, { reachable: current.reachable, runtime_ready: current.runtimeReady, assistant_ready: current.assistantReady, detail: current.detail });
   return current;
 }
@@ -222,10 +269,20 @@ export function initDeploymentHealth() {
   repairAssistantInput();
   dedupePreviewConsole();
   if (!mutationObserver) {
-    mutationObserver = new MutationObserver(() => { applyHealthState(); repairAssistantInput(); dedupePreviewConsole(); });
+    mutationObserver = new MutationObserver(scheduleHealthReconciliation);
     mutationObserver.observe(document.body, { childList: true, subtree: true });
   }
   document.addEventListener('visibilitychange', () => { if (!document.hidden) void checkBackend(false); });
-  window.HHSDeploymentHealth = Object.freeze({ check: checkBackend, get state() { return current; }, frontend_runtime_authority: false, editing_preview_export_remain_available_offline: true });
+  window.HHSDeploymentHealth = Object.freeze({
+    check: checkBackend,
+    get state() { return current; },
+    frontend_runtime_authority: false,
+    editing_preview_export_remain_available_offline: true,
+    reconciliation_task_bounded: true,
+    heavyweight_product_health_probe_duplicated: false,
+    startup_liveness_paths: Object.freeze([...LIVENESS_PATHS]),
+    startup_health_timeout_ms: REQUEST_TIMEOUT_MS,
+    healthz_startup_probe_disabled: true,
+  });
   void checkBackend(false);
 }

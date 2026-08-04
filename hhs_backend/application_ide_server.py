@@ -27,7 +27,7 @@ from fastapi.staticfiles import StaticFiles
 
 from hhs_backend import pass174_server as pass174
 from hhs_backend import production_server as production
-from hhs_backend.api.pass175_runtime_routes import router as pass175_router
+from hhs_backend.api import pass175_runtime_routes as pass175_runtime_api
 from hhs_backend.api.pass175_ws_routes import router as pass175_ws_router
 from hhs_backend.api.pass175_terminal_routes import router as pass175_terminal_router
 from hhs_backend.api.pass175_terminal_ws_routes import router as pass175_terminal_ws_router
@@ -37,7 +37,7 @@ from hhs_backend.runtime.hhs_pass201_public_api_federation import register_publi
 
 app = pass174.app
 app.title = "HHS Safe Open Cloud Computer IDE"
-app.version = "4.5.0"
+app.version = "4.5.3"
 app.description = (
     "Full integrated development environment and safe open cloud computer for real web applications, "
     "games, calculators, documents, audio, video, multimodal projects, HARMONICODE, multi-target "
@@ -50,6 +50,15 @@ app.description = (
 FULL_IDE_ROOT = production.VISUAL_ROOT
 RUNTIME_CONSOLE_ROOT = pass174._ide_root
 API_FALLBACK_PATH = pass174._API_FALLBACK_PATH
+RUNTIME_AUTHORITY_STATUS_PATH = "/api/runtime/authority/status"
+PASS175_AUTHORITY_STATUS_PATH = "/api/v1/pass175/authority"
+PASS175_BOUNDED_STATUS_PATH = "/api/v1/pass175/status"
+PASS175_MATERIALIZED_STATUS_PATH = "/api/v1/pass175/status/materialized"
+PASS175_FINAL_STATUS_PATHS = frozenset({
+    PASS175_AUTHORITY_STATUS_PATH,
+    PASS175_BOUNDED_STATUS_PATH,
+    PASS175_MATERIALIZED_STATUS_PATH,
+})
 
 
 def _has_route_prefix(prefix: str) -> bool:
@@ -79,6 +88,7 @@ app.router.routes = [
     and str(getattr(route, "path", "")) != API_FALLBACK_PATH
 ]
 
+pass175_router = pass175_runtime_api.router
 if not _has_route_prefix("/api/v1/pass175/status"):
     app.include_router(pass175_router)
 if not _has_route_prefix("/api/v1/pass175/ws/events"):
@@ -90,17 +100,74 @@ if not _has_route_prefix("/api/v1/pass175/terminal/ws/events"):
 if not _has_exact_route("/api/public/status"):
     app.include_router(public_api_router)
 
+
+async def final_pass175_authority_status() -> dict[str, Any]:
+    """Return immutable Pass 175 identity without entering the worker pool."""
+    return pass175_runtime_api.authority_witness()
+
+
+async def final_pass175_bounded_status() -> dict[str, Any]:
+    """Return the bounded Pass 175 status without entering the worker pool."""
+    return pass175_runtime_api.bounded_status()
+
+
+# Earlier Pass 175 composition layers may retain an eager status handler that
+# materializes all 5,184 permanent instructions. Replace only the three status
+# surfaces with the current bounded authority module. Hydration, execution,
+# terminal, firmware, device, and WebSocket routes retain their inherited owners.
+# The two non-materializing reads are coroutine endpoints, so inherited
+# synchronous probes cannot starve their acceptance path in Starlette's pool.
+app.router.routes = [
+    route
+    for route in app.router.routes
+    if str(getattr(route, "path", "")) not in PASS175_FINAL_STATUS_PATHS
+]
+app.add_api_route(
+    PASS175_AUTHORITY_STATUS_PATH,
+    final_pass175_authority_status,
+    methods=["GET"],
+    name="hhs-pass175-authority-witness",
+)
+app.add_api_route(
+    PASS175_BOUNDED_STATUS_PATH,
+    final_pass175_bounded_status,
+    methods=["GET"],
+    name="hhs-pass175-bounded-status",
+)
+app.add_api_route(
+    PASS175_MATERIALIZED_STATUS_PATH,
+    pass175_runtime_api.materialized_status,
+    methods=["GET"],
+    name="hhs-pass175-materialized-status",
+)
+
+# The inherited Pass 54 role-orchestration router and production server both
+# register this path. FastAPI resolves the first match, so retain one bounded
+# production endpoint before public federation catalogs the final route graph.
+app.router.routes = [
+    route
+    for route in app.router.routes
+    if str(getattr(route, "path", "")) != RUNTIME_AUTHORITY_STATUS_PATH
+]
+app.add_api_route(
+    RUNTIME_AUTHORITY_STATUS_PATH,
+    production.production_runtime_authority_status,
+    methods=["GET"],
+    name="hhs-production-runtime-authority-status",
+)
+
 # Public federation is composed before fallback/static routes. All importable
 # hhs_backend.api routers become directly accessible at their native paths.
 PASS201_PUBLIC_API_REGISTRATION = register_public_api_federation(app)
 
 
 async def application_ide_liveness() -> dict[str, Any]:
-    """Return cheap process and route liveness without invoking heavy peers."""
+    """Return cheap process, route, and committed live-runtime readiness."""
     boot = dict(pass174.PASS174_BOOT_STATE)
-    authority_ready = bool(boot.get("authority_ready") and boot.get("ready"))
+    runtime = production._runtime_authority_status()
+    authority_ready = bool(runtime.get("ok"))
     return {
-        "schema": "HHS_FULL_APPLICATION_IDE_LIVENESS_V2",
+        "schema": "HHS_FULL_APPLICATION_IDE_LIVENESS_V3",
         "ok": True,
         "status": "HHS_SAFE_OPEN_CLOUD_IDE_SERVICE_REACHABLE",
         "service_available": True,
@@ -117,21 +184,27 @@ async def application_ide_liveness() -> dict[str, Any]:
         "open_cloud_closure": "/api/runtime/open-cloud/closure",
         "public_api_registration_closed": PASS201_PUBLIC_API_REGISTRATION.get("closed", False),
         "pass174_boot": boot,
+        "runtime_authority": runtime,
+        "runtime_authority_source": RUNTIME_AUTHORITY_STATUS_PATH,
+        "runtime_readiness_uses_committed_live_projection": True,
         "routes": {
             "workspace": _has_route_prefix("/api/runtime/workspace"),
             "development_lifecycle": _has_route_prefix("/api/runtime/development"),
             "assistant": _has_route_prefix("/api/assistant"),
-            "pass175_processor": _has_route_prefix("/api/v1/pass175/status"),
+            "pass175_processor": _has_exact_route(PASS175_BOUNDED_STATUS_PATH),
+            "pass175_authority": _has_exact_route(PASS175_AUTHORITY_STATUS_PATH),
+            "pass175_materialized_status": _has_exact_route(PASS175_MATERIALIZED_STATUS_PATH),
             "pass175_terminal": _has_route_prefix("/api/v1/pass175/terminal/status"),
             "public_api": _has_route_prefix("/api/public/status"),
             "mainframe": _has_route_prefix("/api/runtime/mainframe/status"),
             "open_cloud": _has_route_prefix("/api/runtime/open-cloud/status"),
             "open_cloud_closure": _has_route_prefix("/api/runtime/open-cloud/closure"),
+            "runtime_authority": _has_exact_route(RUNTIME_AUTHORITY_STATUS_PATH),
         },
         "remediation": (
             None
             if authority_ready
-            else "The web service is reachable, but runtime authority is not ready. Inspect /api/v1/pass174/deployment/status and platform logs."
+            else "The web service is reachable, but the committed live runtime authority is not ready. Inspect /api/runtime/live/status and platform logs."
         ),
     }
 
@@ -194,7 +267,14 @@ pass174.PASS174_BOOT_STATE.update({
     "runtime_console_preserved": RUNTIME_CONSOLE_ROOT.is_dir(),
     "application_ide_is_public_root": True,
     "diagnostic_console_is_supporting_surface": True,
-    "pass175_virtual_instruction_processor_routes": _has_route_prefix("/api/v1/pass175/status"),
+    "pass175_virtual_instruction_processor_routes": _has_exact_route(PASS175_BOUNDED_STATUS_PATH),
+    "pass175_authority_witness_route": PASS175_AUTHORITY_STATUS_PATH,
+    "pass175_bounded_status_route": PASS175_BOUNDED_STATUS_PATH,
+    "pass175_materialized_status_route": PASS175_MATERIALIZED_STATUS_PATH,
+    "pass175_status_routes_deduplicated": True,
+    "pass175_bounded_status_async": True,
+    "pass175_authority_witness_async": True,
+    "pass175_materialized_status_worker_isolated": True,
     "pass175_websocket_routes": _has_route_prefix("/api/v1/pass175/ws/events"),
     "pass175_terminal_routes": _has_route_prefix("/api/v1/pass175/terminal/status"),
     "pass175_terminal_websocket_routes": _has_route_prefix("/api/v1/pass175/terminal/ws/events"),
@@ -206,6 +286,9 @@ pass174.PASS174_BOOT_STATE.update({
     "api_fallback_deferred_for_integrated_passes": bool(_deferred_api_fallback_routes),
     "lightweight_health_route": "/health",
     "lightweight_api_health_route": "/api/health",
+    "runtime_authority_route": RUNTIME_AUTHORITY_STATUS_PATH,
+    "runtime_authority_route_deduplicated": True,
+    "runtime_readiness_uses_committed_live_projection": True,
     "inline_public_boot": "HHS_INLINE_PUBLIC_BOOT_V2",
     "legacy_parser_module_entries_disabled": True,
     "external_vercel_quota_is_not_acceptance_gate": True,
