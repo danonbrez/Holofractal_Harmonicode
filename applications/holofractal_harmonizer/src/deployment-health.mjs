@@ -1,9 +1,9 @@
 import { $, setText, log } from './visual-ide-state.mjs';
 
-const LIVENESS_PATHS = ['/health', '/api/health', '/healthz'];
+const LIVENESS_PATHS = ['/api/health'];
 const RUNTIME_AUTHORITY_PATH = '/api/runtime/authority/status';
 const ASSISTANT_STATUS_PATH = '/api/assistant/status';
-const REQUEST_TIMEOUT_MS = 4_000;
+const REQUEST_TIMEOUT_MS = 30_000;
 const ONLINE_POLL_MS = 30_000;
 const DEGRADED_POLL_MS = 12_000;
 
@@ -98,7 +98,8 @@ function mountBanner() {
   banner.setAttribute('role', 'status');
   banner.setAttribute('aria-live', 'polite');
   banner.innerHTML = `<div><strong id="hhs-backend-health-title">Checking runtime backend…</strong><span id="hhs-backend-health-message">Editing, preview, and export remain available during this check.</span></div><div class="hhs-backend-health-actions"><button id="hhs-backend-health-retry" type="button">Retry backend</button><details><summary>Details</summary><pre id="hhs-backend-health-detail">No health result yet.</pre></details></div>`;
-  document.body.prepend(banner);
+  const anchor = document.querySelector('.ide-control-pane, .ide-system-bar, #ide-layout');
+  (anchor?.parentElement || document.body).insertBefore(banner, anchor || null);
   $('#hhs-backend-health-retry').onclick = () => void checkBackend(true);
 }
 
@@ -279,6 +280,9 @@ export function initDeploymentHealth() {
     editing_preview_export_remain_available_offline: true,
     reconciliation_task_bounded: true,
     heavyweight_product_health_probe_duplicated: false,
+    startup_liveness_paths: Object.freeze([...LIVENESS_PATHS]),
+    startup_health_timeout_ms: REQUEST_TIMEOUT_MS,
+    healthz_startup_probe_disabled: true,
   });
   void checkBackend(false);
 }
