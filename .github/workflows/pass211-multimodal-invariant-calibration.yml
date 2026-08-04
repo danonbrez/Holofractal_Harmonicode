@@ -83,7 +83,7 @@ jobs:
               'ReverseExpand(H)',
               'Probability-seeded deterministic evolutionary deep learning',
               'Progressive transitional-frame removal training',
-              'INHERITED_PENDING',
+              'Pass 210 remains an inherited dependency',
           ):
               assert marker in specification, marker
           PY
