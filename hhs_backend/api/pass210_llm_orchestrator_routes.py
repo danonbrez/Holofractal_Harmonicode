@@ -1,4 +1,4 @@
-"""Status and evidence routes for the Pass 209 production LLM hierarchy."""
+"""Status and evidence routes for the Pass 210 production LLM hierarchy."""
 from __future__ import annotations
 
 from typing import Any, Dict
@@ -7,16 +7,16 @@ from fastapi import APIRouter, Query
 
 router = APIRouter(
     prefix="/api/runtime/llm-orchestrator",
-    tags=["runtime", "assistant", "kimi-k3", "gemma4", "native-agi", "pass209"],
+    tags=["runtime", "assistant", "kimi-k3", "gemma4", "native-agi", "pass210"],
 )
 
 
 def _service() -> Any:
-    from hhs_backend.runtime.hhs_pass209_production_assistant_v1 import (
-        DEFAULT_PASS209_PRODUCTION_ASSISTANT,
+    from hhs_backend.runtime.hhs_pass210_production_assistant_v1 import (
+        DEFAULT_PASS210_PRODUCTION_ASSISTANT,
     )
 
-    return DEFAULT_PASS209_PRODUCTION_ASSISTANT
+    return DEFAULT_PASS210_PRODUCTION_ASSISTANT
 
 
 @router.get("/status")
@@ -40,7 +40,7 @@ def native_agi_optimizer_observations(
 ) -> Dict[str, Any]:
     observations = _service().optimizer.observations(limit=limit)
     return {
-        "schema": "HHS_PASS_209_NATIVE_AGI_OBSERVATION_LIST_V1",
+        "schema": "HHS_PASS_210_NATIVE_AGI_OBSERVATION_LIST_V1",
         "ok": True,
         "count": len(observations),
         "observations": observations,
@@ -55,7 +55,7 @@ def native_agi_optimizer_proposals(
 ) -> Dict[str, Any]:
     proposals = _service().optimizer.proposals(limit=limit)
     return {
-        "schema": "HHS_PASS_209_NATIVE_AGI_OPTIMIZATION_PROPOSAL_LIST_V1",
+        "schema": "HHS_PASS_210_NATIVE_AGI_OPTIMIZATION_PROPOSAL_LIST_V1",
         "ok": True,
         "count": len(proposals),
         "proposals": proposals,

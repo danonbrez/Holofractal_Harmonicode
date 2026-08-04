@@ -14,11 +14,11 @@ from hhs_backend.runtime.hhs_litert_lm_assistant_v1 import LiteRTLMConfig
 from hhs_backend.runtime.hhs_litert_lm_hhs_api_assistant_v1 import (
     HHSAPIAssistantService,
 )
-from hhs_backend.runtime.hhs_pass209_native_agi_optimizer_v1 import (
+from hhs_backend.runtime.hhs_pass210_native_agi_optimizer_v1 import (
     NativeAGIOptimizer,
 )
-from hhs_backend.runtime.hhs_pass209_production_assistant_v1 import (
-    Pass209ProductionAssistantService,
+from hhs_backend.runtime.hhs_pass210_production_assistant_v1 import (
+    Pass210ProductionAssistantService,
 )
 
 
@@ -199,7 +199,7 @@ def test_kimi_agentic_swarm_preserves_reasoning_and_deterministic_tool_order(mon
     config = _kimi_config()
     inner = _KimiToolTransport()
     service = KimiK3AgenticAssistantService(config=config, transport=inner)
-    thread = service.create_thread(project_id="project:pass209")
+    thread = service.create_thread(project_id="project:pass210")
     result = asyncio.run(
         service.send_message(thread["thread_id"], content="Inspect runtime and invariants")
     )
@@ -228,7 +228,7 @@ def test_kimi_failure_continues_same_witnessed_turn_through_gemma() -> None:
     kimi_config = _kimi_config()
     shared = KimiConversationThreadStore(
         kimi_config,
-        provider_id="provider:hhs.pass209.shared_thread",
+        provider_id="provider:hhs.pass210.shared_thread",
     )
     primary = KimiK3AgenticAssistantService(
         config=kimi_config,
@@ -246,12 +246,12 @@ def test_kimi_failure_continues_same_witnessed_turn_through_gemma() -> None:
         thread_store=shared,
     )
     optimizer = _RecordingOptimizer()
-    service = Pass209ProductionAssistantService(
+    service = Pass210ProductionAssistantService(
         primary_service=primary,
         fallback_service=fallback,
         optimizer=optimizer,
     )
-    thread = service.create_thread(project_id="project:pass209-fallback")
+    thread = service.create_thread(project_id="project:pass210-fallback")
     result = asyncio.run(
         service.send_message(thread["thread_id"], content="Continue safely")
     )
@@ -321,7 +321,7 @@ def test_status_declares_two_user_facing_providers_and_native_observer() -> None
         transport=_GemmaTransport(),
         thread_store=shared,
     )
-    service = Pass209ProductionAssistantService(
+    service = Pass210ProductionAssistantService(
         primary_service=primary,
         fallback_service=fallback,
         optimizer=_RecordingOptimizer(),

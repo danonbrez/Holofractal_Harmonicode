@@ -7,7 +7,7 @@ Wants=network-online.target
 Type=simple
 User=hhs
 Group=hhs
-EnvironmentFile=/etc/hhs/pass209-llm.env
+EnvironmentFile=/etc/hhs/pass210-llm.env
 Environment=HOME=/var/lib/hhs
 WorkingDirectory=/var/lib/hhs/litert-lm
 ExecStart=/opt/hhs/litert-lm/bin/litert-lm serve --host 127.0.0.1 --port 9379

@@ -7,13 +7,13 @@ ROOT = Path(__file__).resolve().parents[1]
 DEPLOY = ROOT / "deployment" / "digitalocean" / "llm"
 
 
-def test_pass209_contract_and_required_artifacts_exist() -> None:
+def test_pass210_contract_and_required_artifacts_exist() -> None:
     contract = json.loads(
-        (ROOT / "contracts" / "pass209" / "PASS_209_CONTRACT.json").read_text(
+        (ROOT / "contracts" / "pass210" / "PASS_210_CONTRACT.json").read_text(
             encoding="utf-8"
         )
     )
-    assert contract["pass"] == 209
+    assert contract["pass"] == 210
     assert contract["provider_hierarchy"][0]["model_id"] == "kimi-k3"
     assert contract["provider_hierarchy"][1]["model_id"] == "gemma-4-E2B-it"
     assert contract["native_backend_agent"]["user_facing_fallback"] is False
@@ -45,8 +45,8 @@ def test_systemd_orders_local_fallback_before_hhs_and_native_optimizer_after() -
     assert "litert-lm serve --host 127.0.0.1 --port 9379" in gemma
     assert "ReadWritePaths=/var/lib/hhs/litert-lm" in gemma
     assert "After=network-online.target hhs.service" in optimizer
-    assert "pass209_native_agi_optimizer_worker.py" in optimizer
-    assert "ReadWritePaths=/var/lib/hhs/pass209" in optimizer
+    assert "pass210_native_agi_optimizer_worker.py" in optimizer
+    assert "ReadWritePaths=/var/lib/hhs/pass210" in optimizer
     assert "After=hhs-litert-lm-gemma4.service" in install
     assert "Wants=hhs-litert-lm-gemma4.service" in install
     assert "ExecStartPre=$INSTALL_ROOT/hhs-llm-preflight.sh" in install
@@ -63,14 +63,14 @@ def test_preflight_requires_kimi_configuration_and_registered_local_fallback() -
     assert "runtime_mutation_admitted" in preflight
 
 
-def test_public_assistant_routes_resolve_pass209_hierarchy() -> None:
+def test_public_assistant_routes_resolve_pass210_hierarchy() -> None:
     routes = (ROOT / "hhs_backend" / "api" / "litert_lm_assistant_routes.py").read_text(
         encoding="utf-8"
     )
     production = (
-        ROOT / "hhs_backend" / "runtime" / "hhs_pass209_production_assistant_v1.py"
+        ROOT / "hhs_backend" / "runtime" / "hhs_pass210_production_assistant_v1.py"
     ).read_text(encoding="utf-8")
-    assert "DEFAULT_PASS209_PRODUCTION_ASSISTANT" in routes
+    assert "DEFAULT_PASS210_PRODUCTION_ASSISTANT" in routes
     assert "KIMI_K3_AGENTIC_SWARM_API" in production
     assert "GEMMA4_LITERT_LM_FALLBACK" in production
     assert "native_agi_is_user_facing_provider" in production

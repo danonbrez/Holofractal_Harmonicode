@@ -5,13 +5,13 @@ umask 027
 REPO_ROOT=${HHS_REPO_ROOT:-/opt/hhs/app}
 SOURCE="$REPO_ROOT/deployment/digitalocean/llm"
 INSTALL_ROOT=${HHS_LLM_INSTALL_ROOT:-/usr/local/lib/hhs-llm}
-ENV_FILE=${HHS_PASS209_ENV_FILE:-/etc/hhs/pass209-llm.env}
+ENV_FILE=${HHS_PASS210_ENV_FILE:-/etc/hhs/pass210-llm.env}
 LITERT_VENV=${HHS_LITERT_LM_VENV:-/opt/hhs/litert-lm}
 LITERT_STATE_ROOT=${LITERT_LM_DIR:-/var/lib/hhs/litert-lm}
-STATE_ROOT=${HHS_PASS209_STATE_ROOT:-/var/lib/hhs/pass209}
+STATE_ROOT=${HHS_PASS210_STATE_ROOT:-/var/lib/hhs/pass210}
 DROPIN_DIR=/etc/systemd/system/hhs.service.d
-DROPIN_FILE="$DROPIN_DIR/50-pass209-llm.conf"
-PYTHON=${HHS_PASS209_PYTHON:-/opt/hhs/venv/bin/python}
+DROPIN_FILE="$DROPIN_DIR/50-pass210-llm.conf"
+PYTHON=${HHS_PASS210_PYTHON:-/opt/hhs/venv/bin/python}
 LITERT_VERSION=${HHS_LITERT_LM_VERSION:-0.14.0}
 GEMMA_REPOSITORY=${HHS_GEMMA4_REPOSITORY:-litert-community/gemma-4-E2B-it-litert-lm}
 GEMMA_FILE=${HHS_GEMMA4_FILE:-gemma-4-E2B-it.litertlm}
@@ -29,7 +29,7 @@ KIMI_BASE_URL=${HHS_KIMI_K3_BASE_URL:-https://api.moonshot.ai/v1}
   exit 3
 }
 [[ -d "$SOURCE" ]] || {
-  echo "Pass 209 deployment source not found at $SOURCE" >&2
+  echo "Pass 210 deployment source not found at $SOURCE" >&2
   exit 4
 }
 [[ -x "$PYTHON" ]] || {
@@ -49,8 +49,8 @@ fi
   echo "Set MOONSHOT_API_KEY before running this installer." >&2
   exit 7
 }
-if [[ "$API_KEY" =~ [[:space:]'"] ]]; then
-  echo "MOONSHOT_API_KEY contains unsupported whitespace or quote characters" >&2
+if [[ ! "$API_KEY" =~ ^[A-Za-z0-9._-]+$ ]]; then
+  echo "MOONSHOT_API_KEY contains unsupported characters" >&2
   exit 8
 fi
 
@@ -60,11 +60,11 @@ bash -n \
   "$SOURCE/post-merge.sh"
 "$PYTHON" -m py_compile \
   "$REPO_ROOT/hhs_backend/runtime/hhs_kimi_k3_agentic_assistant_v1.py" \
-  "$REPO_ROOT/hhs_backend/runtime/hhs_pass209_native_agi_optimizer_v1.py" \
-  "$REPO_ROOT/hhs_backend/runtime/hhs_pass209_production_assistant_v1.py" \
-  "$REPO_ROOT/hhs_backend/api/pass209_llm_orchestrator_routes.py" \
+  "$REPO_ROOT/hhs_backend/runtime/hhs_pass210_native_agi_optimizer_v1.py" \
+  "$REPO_ROOT/hhs_backend/runtime/hhs_pass210_production_assistant_v1.py" \
+  "$REPO_ROOT/hhs_backend/api/pass210_llm_orchestrator_routes.py" \
   "$REPO_ROOT/hhs_backend/api/litert_lm_assistant_routes.py" \
-  "$REPO_ROOT/scripts/pass209_native_agi_optimizer_worker.py"
+  "$REPO_ROOT/scripts/pass210_native_agi_optimizer_worker.py"
 
 export DEBIAN_FRONTEND=noninteractive
 apt-get update
@@ -161,10 +161,10 @@ set_env HHS_LITERT_LM_TOP_P "${HHS_LITERT_LM_TOP_P:-0.95}"
 set_env HHS_LITERT_LM_TOP_K "${HHS_LITERT_LM_TOP_K:-40}"
 set_env HHS_LITERT_LM_SEED 72
 set_env LITERT_LM_DIR "$LITERT_STATE_ROOT"
-set_env HHS_PASS209_OPTIMIZER_DB "$STATE_ROOT/native_agi_optimizer.sqlite3"
+set_env HHS_PASS210_OPTIMIZER_DB "$STATE_ROOT/native_agi_optimizer.sqlite3"
 set_env HHS_NATIVE_LANGUAGE_REQUIRE_WORD2VEC "${HHS_NATIVE_LANGUAGE_REQUIRE_WORD2VEC:-1}"
-set_env HHS_PASS209_STATE_ROOT "$STATE_ROOT"
-set_env HHS_PASS209_PREFLIGHT_RECEIPT "$STATE_ROOT/PASS209_LLM_PREFLIGHT_RECEIPT.json"
+set_env HHS_PASS210_STATE_ROOT "$STATE_ROOT"
+set_env HHS_PASS210_PREFLIGHT_RECEIPT "$STATE_ROOT/PASS210_LLM_PREFLIGHT_RECEIPT.json"
 set_env HHS_REPOSITORY_ROOT "$REPO_ROOT"
 
 cat >"$DROPIN_FILE" <<EOF
@@ -234,10 +234,10 @@ systemctl restart hhs.service
 systemctl restart hhs-native-agi-optimizer.service
 
 ready=0
-for _ in $(seq 1 "${HHS_PASS209_HEALTH_TIMEOUT_SECONDS:-180}"); do
+for _ in $(seq 1 "${HHS_PASS210_HEALTH_TIMEOUT_SECONDS:-180}"); do
   if curl -fsS http://127.0.0.1:8080/api/assistant/health \
-    >/tmp/hhs-pass209-assistant-health.json 2>/dev/null; then
-    if HHS_HEALTH_JSON=/tmp/hhs-pass209-assistant-health.json python3 - <<'PY'
+    >/tmp/hhs-pass210-assistant-health.json 2>/dev/null; then
+    if HHS_HEALTH_JSON=/tmp/hhs-pass210-assistant-health.json python3 - <<'PY'
 import json
 import os
 from pathlib import Path
@@ -262,9 +262,9 @@ if [[ "$ready" != 1 ]]; then
   exit 11
 fi
 
-python3 -m json.tool /tmp/hhs-pass209-assistant-health.json
+python3 -m json.tool /tmp/hhs-pass210-assistant-health.json
 cat <<EOF
-Pass 209 production LLM hierarchy installed.
+Pass 210 production LLM hierarchy installed.
 
 Primary:       Kimi K3 API agentic swarm
 Fallback:      LiteRT-LM Gemma 4 E2B on CPU
@@ -277,5 +277,5 @@ Inspect:
   systemctl status hhs-litert-lm-gemma4.service hhs.service hhs-native-agi-optimizer.service --no-pager --full
   curl -fsS http://127.0.0.1:8080/api/assistant/health | python3 -m json.tool
   curl -fsS http://127.0.0.1:8080/api/runtime/llm-orchestrator/status | python3 -m json.tool
-  cat $STATE_ROOT/PASS209_LLM_PREFLIGHT_RECEIPT.json
+  cat $STATE_ROOT/PASS210_LLM_PREFLIGHT_RECEIPT.json
 EOF

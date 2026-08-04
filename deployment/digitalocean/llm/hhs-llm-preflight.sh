@@ -2,14 +2,14 @@
 set -Eeuo pipefail
 umask 077
 
-ENV_FILE=${HHS_PASS209_ENV_FILE:-/etc/hhs/pass209-llm.env}
-STATE_ROOT=${HHS_PASS209_STATE_ROOT:-/var/lib/hhs/pass209}
-RECEIPT=${HHS_PASS209_PREFLIGHT_RECEIPT:-$STATE_ROOT/PASS209_LLM_PREFLIGHT_RECEIPT.json}
+ENV_FILE=${HHS_PASS210_ENV_FILE:-/etc/hhs/pass210-llm.env}
+STATE_ROOT=${HHS_PASS210_STATE_ROOT:-/var/lib/hhs/pass210}
+RECEIPT=${HHS_PASS210_PREFLIGHT_RECEIPT:-$STATE_ROOT/PASS210_LLM_PREFLIGHT_RECEIPT.json}
 MODELS_URL=${HHS_LITERT_LM_MODELS_URL:-http://127.0.0.1:9379/v1/models}
-TIMEOUT=${HHS_PASS209_PREFLIGHT_TIMEOUT_SECONDS:-120}
+TIMEOUT=${HHS_PASS210_PREFLIGHT_TIMEOUT_SECONDS:-120}
 
 [[ -r "$ENV_FILE" ]] || {
-  echo "Pass 209 environment is not readable: $ENV_FILE" >&2
+  echo "Pass 210 environment is not readable: $ENV_FILE" >&2
   exit 2
 }
 
@@ -32,7 +32,7 @@ API_KEY=${MOONSHOT_API_KEY:-${HHS_KIMI_K3_API_KEY:-}}
   exit 5
 }
 [[ "${HHS_LITERT_LM_BACKEND:-}" == "cpu" ]] || {
-  echo "Pass 209 development fallback must use the CPU LiteRT-LM backend" >&2
+  echo "Pass 210 development fallback must use the CPU LiteRT-LM backend" >&2
   exit 6
 }
 
@@ -87,7 +87,7 @@ model_ids = sorted(
     if isinstance(item, dict) and item.get("id")
 )
 payload = {
-    "schema": "HHS_PASS_209_LLM_PREFLIGHT_RECEIPT_V1",
+    "schema": "HHS_PASS_210_LLM_PREFLIGHT_RECEIPT_V1",
     "ok": True,
     "timestamp": datetime.now(timezone.utc).isoformat(),
     "primary_provider": "KIMI_K3_AGENTIC_SWARM_API",
@@ -107,4 +107,4 @@ receipt.parent.mkdir(parents=True, exist_ok=True)
 receipt.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 PY
 
-printf 'Pass 209 LLM preflight passed\n'
+printf 'Pass 210 LLM preflight passed\n'

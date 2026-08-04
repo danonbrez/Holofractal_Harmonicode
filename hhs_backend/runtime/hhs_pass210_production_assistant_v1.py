@@ -1,4 +1,4 @@
-"""Pass 209 production assistant provider hierarchy.
+"""Pass 210 production assistant provider hierarchy.
 
 Provider order:
 1. Kimi K3 remote API as the primary governed agentic-swarm assistant;
@@ -25,19 +25,19 @@ from hhs_backend.runtime.hhs_litert_lm_hhs_api_assistant_v1 import (
     HHSAPIAssistantService,
     HHS_API_SYSTEM_INSTRUCTION,
 )
-from hhs_backend.runtime.hhs_pass209_native_agi_optimizer_v1 import (
-    DEFAULT_PASS209_NATIVE_AGI_OPTIMIZER,
+from hhs_backend.runtime.hhs_pass210_native_agi_optimizer_v1 import (
+    DEFAULT_PASS210_NATIVE_AGI_OPTIMIZER,
     NativeAGIOptimizer,
 )
 from hhs_backend.runtime.runtime_workspace_object_v1 import hash72
 
-VERSION = "HHS_PASS_209_PRODUCTION_ASSISTANT_V1"
-STATUS_SCHEMA = "HHS_PASS_209_PRODUCTION_ASSISTANT_STATUS_V1"
-TURN_SCHEMA = "HHS_PASS_209_PRODUCTION_ASSISTANT_TURN_V1"
-PROVIDER_ID = "provider:hhs.pass209.production_assistant"
+VERSION = "HHS_PASS_210_PRODUCTION_ASSISTANT_V1"
+STATUS_SCHEMA = "HHS_PASS_210_PRODUCTION_ASSISTANT_STATUS_V1"
+TURN_SCHEMA = "HHS_PASS_210_PRODUCTION_ASSISTANT_TURN_V1"
+PROVIDER_ID = "provider:hhs.pass210.production_assistant"
 
 
-class Pass209ProductionAssistantService:
+class Pass210ProductionAssistantService:
     """Kimi-first, Gemma-fallback hierarchy with native AGI observation."""
 
     def __init__(
@@ -50,7 +50,7 @@ class Pass209ProductionAssistantService:
             kimi_config = KimiK3AssistantConfig.from_env()
             shared_store = KimiConversationThreadStore(
                 kimi_config,
-                provider_id="provider:hhs.pass209.shared_thread",
+                provider_id="provider:hhs.pass210.shared_thread",
             )
             primary_service = KimiK3AgenticAssistantService(
                 config=kimi_config,
@@ -79,7 +79,7 @@ class Pass209ProductionAssistantService:
 
         self.primary_service = primary_service
         self.fallback_service = fallback_service
-        self.optimizer = optimizer or DEFAULT_PASS209_NATIVE_AGI_OPTIMIZER
+        self.optimizer = optimizer or DEFAULT_PASS210_NATIVE_AGI_OPTIMIZER
         self.threads = shared_store
         self._health_cache: Dict[str, Dict[str, Any]] = {}
         self._health_cache_at: Dict[str, float] = {}
@@ -164,7 +164,7 @@ class Pass209ProductionAssistantService:
             )
         except Exception as exc:
             observation = {
-                "schema": "HHS_PASS_209_NATIVE_AGI_OBSERVATION_ENQUEUE_ERROR_V1",
+                "schema": "HHS_PASS_210_NATIVE_AGI_OBSERVATION_ENQUEUE_ERROR_V1",
                 "ok": False,
                 "error": f"{type(exc).__name__}: {exc}",
                 "native_agi_is_user_facing_provider": False,
@@ -214,9 +214,9 @@ class Pass209ProductionAssistantService:
             "ok": bool(selected),
             "online": bool(selected),
             "status": (
-                "HHS_PASS_209_PRODUCTION_ASSISTANT_READY"
+                "HHS_PASS_210_PRODUCTION_ASSISTANT_READY"
                 if selected
-                else "HHS_PASS_209_PRODUCTION_ASSISTANT_PROVIDER_UNAVAILABLE"
+                else "HHS_PASS_210_PRODUCTION_ASSISTANT_PROVIDER_UNAVAILABLE"
             ),
             "provider_id": PROVIDER_ID,
             "selected_provider_id": selected,
@@ -260,19 +260,19 @@ class Pass209ProductionAssistantService:
             status["online"] = True
             status["selected_provider_id"] = self.primary_service.provider_id
             status["effective_mode"] = "KIMI_K3_AGENTIC_SWARM_API"
-            status["status"] = "HHS_PASS_209_PRODUCTION_ASSISTANT_READY"
+            status["status"] = "HHS_PASS_210_PRODUCTION_ASSISTANT_READY"
         elif status["fallback_gemma4"]["ready"]:
             status["ok"] = True
             status["online"] = True
             status["selected_provider_id"] = self.fallback_service.provider_id
             status["effective_mode"] = "GEMMA4_LITERT_LM_FALLBACK"
-            status["status"] = "HHS_PASS_209_PRODUCTION_ASSISTANT_READY"
+            status["status"] = "HHS_PASS_210_PRODUCTION_ASSISTANT_READY"
         else:
             status["ok"] = False
             status["online"] = False
             status["selected_provider_id"] = None
             status["effective_mode"] = "UNAVAILABLE"
-            status["status"] = "HHS_PASS_209_PRODUCTION_ASSISTANT_PROVIDER_UNAVAILABLE"
+            status["status"] = "HHS_PASS_210_PRODUCTION_ASSISTANT_PROVIDER_UNAVAILABLE"
         status["status_root_hash72"] = hash72(
             STATUS_SCHEMA,
             {key: value for key, value in status.items() if key != "status_root_hash72"},
@@ -425,7 +425,7 @@ class Pass209ProductionAssistantService:
         )
 
 
-DEFAULT_PASS209_PRODUCTION_ASSISTANT = Pass209ProductionAssistantService(
+DEFAULT_PASS210_PRODUCTION_ASSISTANT = Pass210ProductionAssistantService(
     primary_service=DEFAULT_KIMI_K3_AGENTIC_ASSISTANT,
-    optimizer=DEFAULT_PASS209_NATIVE_AGI_OPTIMIZER,
+    optimizer=DEFAULT_PASS210_NATIVE_AGI_OPTIMIZER,
 )

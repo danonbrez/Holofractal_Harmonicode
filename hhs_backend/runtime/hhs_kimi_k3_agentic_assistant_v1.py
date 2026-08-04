@@ -45,7 +45,7 @@ from hhs_backend.runtime.hhs_provider_result_ingress_v1 import (
 )
 from hhs_backend.runtime.runtime_workspace_object_v1 import hash72
 
-VERSION = "HHS_PASS_209_KIMI_K3_AGENTIC_SWARM_ASSISTANT_V1"
+VERSION = "HHS_PASS_210_KIMI_K3_AGENTIC_SWARM_ASSISTANT_V1"
 STATUS_SCHEMA = "HHS_KIMI_K3_AGENTIC_ASSISTANT_STATUS_V1"
 TURN_SCHEMA = "HHS_KIMI_K3_AGENTIC_ASSISTANT_TURN_V1"
 TOOL_TRACE_SCHEMA = "HHS_KIMI_K3_AGENTIC_SWARM_TOOL_TRACE_V1"
@@ -252,7 +252,7 @@ class KimiK3APITransport:
         headers = {
             "Accept": "application/json",
             "Authorization": f"Bearer {self.config.api_key}",
-            "User-Agent": "HHS-Pass209-KimiK3-Agentic/1.0",
+            "User-Agent": "HHS-Pass210-KimiK3-Agentic/1.0",
         }
         if payload is not None:
             body = _canonical_json(dict(payload)).encode("utf-8")

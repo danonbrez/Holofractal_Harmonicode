@@ -1,4 +1,4 @@
-"""Durable repository-native AGI learning and optimization observer for Pass 209.
+"""Durable repository-native AGI learning and optimization observer for Pass 210.
 
 The observer consumes admitted or rejected assistant-turn evidence after the
 user-facing provider hierarchy completes. It may derive optimization proposals
@@ -21,11 +21,11 @@ from hhs_backend.runtime.hhs_native_litert_lm_provider_v1 import (
 )
 from hhs_backend.runtime.runtime_workspace_object_v1 import hash72
 
-VERSION = "HHS_PASS_209_NATIVE_AGI_OPTIMIZER_V1"
-OBSERVATION_SCHEMA = "HHS_PASS_209_NATIVE_AGI_TURN_OBSERVATION_V1"
-PROPOSAL_SCHEMA = "HHS_PASS_209_NATIVE_AGI_OPTIMIZATION_PROPOSAL_V1"
-STATUS_SCHEMA = "HHS_PASS_209_NATIVE_AGI_OPTIMIZER_STATUS_V1"
-DEFAULT_DB = "/var/lib/hhs/pass209/native_agi_optimizer.sqlite3"
+VERSION = "HHS_PASS_210_NATIVE_AGI_OPTIMIZER_V1"
+OBSERVATION_SCHEMA = "HHS_PASS_210_NATIVE_AGI_TURN_OBSERVATION_V1"
+PROPOSAL_SCHEMA = "HHS_PASS_210_NATIVE_AGI_OPTIMIZATION_PROPOSAL_V1"
+STATUS_SCHEMA = "HHS_PASS_210_NATIVE_AGI_OPTIMIZER_STATUS_V1"
+DEFAULT_DB = "/var/lib/hhs/pass210/native_agi_optimizer.sqlite3"
 
 OPTIMIZER_SYSTEM_INSTRUCTION = """You are the repository-native HHS backend
 learning and optimization agent. Analyze the witnessed assistant-turn record
@@ -73,7 +73,7 @@ class NativeAGIOptimizer:
     ) -> None:
         self.db_path = Path(
             db_path
-            or os.getenv("HHS_PASS209_OPTIMIZER_DB")
+            or os.getenv("HHS_PASS210_OPTIMIZER_DB")
             or DEFAULT_DB
         )
         self.transport = transport or HHSNativeLiteRTLMTransport()
@@ -167,7 +167,7 @@ class NativeAGIOptimizer:
             "assistant_message": _bounded_text(assistant.get("content")),
             "assistant_reasoning_present": bool(reasoning),
             "assistant_reasoning_root_hash72": (
-                hash72("HHS_PASS_209_PROVIDER_REASONING_WITNESS_V1", reasoning)
+                hash72("HHS_PASS_210_PROVIDER_REASONING_WITNESS_V1", reasoning)
                 if reasoning
                 else None
             ),
@@ -218,7 +218,7 @@ class NativeAGIOptimizer:
             )
             connection.commit()
         return {
-            "schema": "HHS_PASS_209_NATIVE_AGI_OBSERVATION_ENQUEUE_V1",
+            "schema": "HHS_PASS_210_NATIVE_AGI_OBSERVATION_ENQUEUE_V1",
             "ok": True,
             "observation_root_hash72": payload["observation_root_hash72"],
             "status": "PENDING",
@@ -357,7 +357,7 @@ class NativeAGIOptimizer:
         for row in rows:
             results.append(await self._process_row(row))
         return {
-            "schema": "HHS_PASS_209_NATIVE_AGI_OPTIMIZER_BATCH_V1",
+            "schema": "HHS_PASS_210_NATIVE_AGI_OPTIMIZER_BATCH_V1",
             "version": VERSION,
             "ok": all(item.get("ok") for item in results) if results else True,
             "selected_count": len(rows),
@@ -441,4 +441,4 @@ class NativeAGIOptimizer:
         return status
 
 
-DEFAULT_PASS209_NATIVE_AGI_OPTIMIZER = NativeAGIOptimizer()
+DEFAULT_PASS210_NATIVE_AGI_OPTIMIZER = NativeAGIOptimizer()

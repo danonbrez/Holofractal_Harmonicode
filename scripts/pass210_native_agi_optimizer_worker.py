@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Process the Pass 209 native-AGI optimization observation queue."""
+"""Process the Pass 210 native-AGI optimization observation queue."""
 from __future__ import annotations
 
 import argparse
@@ -9,8 +9,8 @@ import signal
 import time
 from typing import Any
 
-from hhs_backend.runtime.hhs_pass209_native_agi_optimizer_v1 import (
-    DEFAULT_PASS209_NATIVE_AGI_OPTIMIZER,
+from hhs_backend.runtime.hhs_pass210_native_agi_optimizer_v1 import (
+    DEFAULT_PASS210_NATIVE_AGI_OPTIMIZER,
 )
 
 _STOP = False
@@ -38,7 +38,7 @@ def main() -> int:
 
     while not _STOP:
         result = asyncio.run(
-            DEFAULT_PASS209_NATIVE_AGI_OPTIMIZER.process_pending(limit=limit)
+            DEFAULT_PASS210_NATIVE_AGI_OPTIMIZER.process_pending(limit=limit)
         )
         print(json.dumps(result, sort_keys=True, default=str), flush=True)
         if args.once:

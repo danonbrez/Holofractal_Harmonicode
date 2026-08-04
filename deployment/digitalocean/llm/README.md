@@ -1,6 +1,6 @@
-# Pass 209 DigitalOcean Production LLM Hierarchy
+# Pass 210 DigitalOcean Production LLM Hierarchy
 
-Pass 209 makes the existing `/api/assistant` surface use one cumulative,
+Pass 210 makes the existing `/api/assistant` surface use one cumulative,
 governed provider hierarchy:
 
 1. **Kimi K3 API** — primary agentic-swarm language and tool-planning provider.
@@ -54,7 +54,7 @@ unset MOONSHOT_API_KEY
 
 The installer performs all of the following:
 
-- validates Pass 209 Python and shell sources;
+- validates Pass 210 Python and shell sources;
 - creates `/opt/hhs/litert-lm` as a dedicated virtual environment;
 - installs `litert-lm==0.14.0`;
 - imports `gemma-4-E2B-it.litertlm` as `gemma-4-E2B-it`;
@@ -62,7 +62,7 @@ The installer performs all of the following:
   `181938105e0eefd105961417e8da75903eacda102c4fce9ce90f50b97139a63c`;
 - installs the local LiteRT-LM systemd service;
 - installs the native-AGI optimization worker;
-- writes `/etc/hhs/pass209-llm.env` as `root:hhs` mode `0640`;
+- writes `/etc/hhs/pass210-llm.env` as `root:hhs` mode `0640`;
 - adds an `hhs.service` drop-in requiring the local fallback preflight;
 - validates that the configured Kimi model is registered;
 - restarts the complete hierarchy and verifies the hosted assistant health.
@@ -99,7 +99,7 @@ curl -fsS http://127.0.0.1:8080/api/assistant/health | python3 -m json.tool
 curl -fsS http://127.0.0.1:8080/api/runtime/llm-orchestrator/status | python3 -m json.tool
 curl -fsS http://127.0.0.1:8080/api/runtime/llm-orchestrator/optimizer/status | python3 -m json.tool
 
-sudo cat /var/lib/hhs/pass209/PASS209_LLM_PREFLIGHT_RECEIPT.json
+sudo cat /var/lib/hhs/pass210/PASS210_LLM_PREFLIGHT_RECEIPT.json
 ```
 
 A healthy Kimi-first response contains:
@@ -125,7 +125,7 @@ native_agi_is_user_facing_provider = false
 thread_id=$(
   curl -fsS -X POST http://127.0.0.1:8080/api/assistant/threads \
     -H 'content-type: application/json' \
-    -d '{"project_id":"project:production-smoke","title":"Pass 209 smoke"}' \
+    -d '{"project_id":"project:production-smoke","title":"Pass 210 smoke"}' \
   | python3 -c 'import json,sys; print(json.load(sys.stdin)["thread"]["thread_id"])'
 )
 
@@ -141,9 +141,9 @@ curl -fsS -X POST \
 Do not delete the key. Temporarily block the primary only for a bounded test:
 
 ```bash
-sudo cp /etc/hhs/pass209-llm.env /etc/hhs/pass209-llm.env.test-backup
+sudo cp /etc/hhs/pass210-llm.env /etc/hhs/pass210-llm.env.test-backup
 sudo sed -i 's#^HHS_KIMI_K3_BASE_URL=.*#HHS_KIMI_K3_BASE_URL=http://127.0.0.1:9/v1#' \
-  /etc/hhs/pass209-llm.env
+  /etc/hhs/pass210-llm.env
 sudo systemctl restart hhs.service
 
 curl -fsS http://127.0.0.1:8080/api/assistant/health | python3 -m json.tool
@@ -152,9 +152,9 @@ curl -fsS http://127.0.0.1:8080/api/assistant/health | python3 -m json.tool
 Restore immediately:
 
 ```bash
-sudo mv /etc/hhs/pass209-llm.env.test-backup /etc/hhs/pass209-llm.env
-sudo chown root:hhs /etc/hhs/pass209-llm.env
-sudo chmod 0640 /etc/hhs/pass209-llm.env
+sudo mv /etc/hhs/pass210-llm.env.test-backup /etc/hhs/pass210-llm.env
+sudo chown root:hhs /etc/hhs/pass210-llm.env
+sudo chmod 0640 /etc/hhs/pass210-llm.env
 sudo systemctl restart hhs.service
 ```
 
@@ -180,14 +180,14 @@ explicit provider-unavailable result rather than fabricating a response.
 
 ## Guarded updates
 
-When the guarded DigitalOcean updater is installed, the Pass 209 installer
+When the guarded DigitalOcean updater is installed, the Pass 210 installer
 changes its ordered units to:
 
 ```text
 hhs-litert-lm-gemma4.service hhs.service hhs-native-agi-optimizer.service
 ```
 
-Candidate promotion must preserve the Gemma registry, Pass 209 preflight,
+Candidate promotion must preserve the Gemma registry, Pass 210 preflight,
 assistant health, and native optimizer importability. The model file remains in
 `/var/lib/hhs/litert-lm` and is not redownloaded for ordinary source updates.
 
