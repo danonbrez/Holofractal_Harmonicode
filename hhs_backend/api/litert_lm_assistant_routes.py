@@ -1,4 +1,4 @@
-"""FastAPI routes for the Pass 209 production governed HHS assistant."""
+"""FastAPI routes for the Pass 210 production governed HHS assistant."""
 from __future__ import annotations
 
 from typing import Any, Dict, List, Optional
@@ -13,10 +13,10 @@ _SERVICE: Any = None
 def _service() -> Any:
     global _SERVICE
     if _SERVICE is None:
-        from hhs_backend.runtime.hhs_pass209_production_assistant_v1 import (
-            DEFAULT_PASS209_PRODUCTION_ASSISTANT,
+        from hhs_backend.runtime.hhs_pass210_production_assistant_v1 import (
+            DEFAULT_PASS210_PRODUCTION_ASSISTANT,
         )
-        _SERVICE = DEFAULT_PASS209_PRODUCTION_ASSISTANT
+        _SERVICE = DEFAULT_PASS210_PRODUCTION_ASSISTANT
     return _SERVICE
 
 
