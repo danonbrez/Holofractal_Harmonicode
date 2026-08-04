@@ -1,358 +1,356 @@
 # HHS Runtime Flow
 
-This document defines the current end-to-end execution flow for Harmonicode programs, registered operations, Pass 190 durable jobs, provider proposals, receipts, replay, persistence, APIs, SDKs, and visual projection.
+This document defines the canonical end-to-end execution, validation, receipt, archival, hydration, cache, replay, interface, and plug-in flow for the integrated Holofractal Harmonicode System.
+
+Normative architecture companion:
+
+[`docs/architecture/HHS_SINGLE_AUTHORITY_HYDRATED_OBJECT_AND_PLUG_IN_COMPATIBILITY_SPEC.md`](docs/architecture/HHS_SINGLE_AUTHORITY_HYDRATED_OBJECT_AND_PLUG_IN_COMPATIBILITY_SPEC.md)
 
 ## 1. Universal transition flow
 
 ```text
-request or source
-→ canonical input capture
-→ parsing and source preservation
-→ symbolic normalization or macro expansion
-→ typed operation/state proposal
-→ capability and policy checks
-→ singleton VM81 admission
-→ exact evaluation
-→ kernel/invariant audit
-→ LOCKED or QUARANTINED decision
-→ Hash72 receipt commitment
-→ Hash216 ordered identity/topology witness
-→ replay verification
-→ persistence and graph ingestion
-→ API/SDK/WebSocket/assistant/visual projection
+request, source, object, native bytes, event, or provider result
+→ exact ingress capture and identity preservation
+→ parsing, typing, capability, and policy checks
+→ phase-locked Python security and constraint mesh
+→ private VM81/kernel execution and validation
+→ exact Harmonicode closure
+→ tensor, entropy, phase, lineage, recovery, and replay checks
+→ LOCKED, CORRECTED, RECOVERED, REJECTED, or QUARANTINED decision
 ```
 
-No user-facing surface is an alternate authority. The same transition may be invoked from CLI, API, SDK, assistant, worker, or GUI, but its canonical path remains singular.
+No API, worker, cache, provider, database, GUI, or compatibility layer is an alternate authority.
 
-## 2. Harmonicode source flow
+## 2. Admitted transformation receipt
+
+Only a successfully admitted transformation produces the canonical three-part Hash72 block:
+
+```text
+(prev_hash72, state_hash72, receipt_hash72)
+```
+
+The block means:
+
+- `prev_hash72`: exact authoritative predecessor boundary;
+- `state_hash72`: exact admitted resulting state;
+- `receipt_hash72`: proof that the bounded transformation survived the complete applicable validation path.
+
+A terminal value or a Hash72-shaped string without parent, state, invariant, witness, and replay agreement is not a valid transformation receipt.
+
+Rejected or quarantined operations preserve structured evidence without changing canonical state.
+
+## 3. Post-receipt Hash216 archival
+
+Hash216 storage begins only after the valid receipt block exists.
+
+```text
+prev_hash72
++ state_hash72
++ receipt_hash72
+→ exact ordered 216-character concatenation
+→ preserve every character position
+→ derive configured character-addressed SHA-256 array
+→ bind metadata and lineage
+→ store durable Hash216/vector index record
+```
+
+Required bindings include:
+
+- predecessor and state identity;
+- transformation receipt;
+- exact concatenated block;
+- positional SHA-256 array;
+- dependency and constraint roots;
+- replay and recovery metadata;
+- source, decoder, compiler, and native-byte identity where applicable.
+
+Hash216 preserves and retrieves completed proof. It does not authorize the original transformation.
+
+## 4. Validated-computation cache flow
+
+```text
+new request
+→ derive exact lookup context
+→ resolve nearest or exact Hash216 record
+→ verify store root, predecessor, decoder, compiler, dependencies, constraints, and privilege context
+→ retrieve validated lowering, branch, route, proof, and retained-byte records
+→ reuse unchanged computation
+→ calculate immutable candidate delta
+→ singleton VM81 admission
+→ new Hash72 receipt block
+→ new Hash216 continuation record
+```
+
+A cache hit may remove redundant work. It never bypasses current-context validation, admission, or commitment.
+
+## 5. VM5184 × G243 execution coordinates
+
+Permanent address:
+
+```text
+s = 64c + o
+```
+
+- `c`: VM81 cell, `0..80`;
+- `o`: ordered operation position, `0..63`;
+- `s`: permanent address, `0..5183`.
+
+Projected control address:
+
+```text
+q = 243s + g
+```
+
+- `g`: ordered five-trit control, `0..242`;
+- `q`: projected execution coordinate, `0..1,259,711`.
+
+Every applicable route preserves state-bit position, operation order, phase, grouping, dependencies, constraints, source identity, and receipt lineage.
+
+## 6. Exact x86_64 ingress
+
+```text
+exact x86_64 byte sequence
+→ preserve length, prefixes, opcode map, ModR/M, SIB, displacement, immediate, modes, features, and privilege class
+→ resolve or construct Hash216 instruction record
+→ lower into VM81 intermediate representation
+→ route through VM5184 × G243
+→ execute immutable candidate
+→ trap faults without canonical mutation
+→ singleton VM81 admission
+→ Hash72 receipt commitment
+```
+
+Different encodings retain different instruction identities even when their visible architectural effects are similar.
+
+Unsafe, malformed, unavailable, privileged, or host-escaping operations are trapped, modeled, rejected, or quarantined.
+
+## 7. Retained native egress
+
+```text
+validated VM81 trace
+→ verified Hash216 instruction identity
+→ retained original encoding or explicitly authorized native kernel sequence
+→ governed binary or device egress
+```
+
+Equivalent behavior does not authorize silent byte substitution. Reverse translation must preserve the exact encoding identity or record a separately admitted transformation permitting replacement.
+
+## 8. Full hydration branch-tree flow
+
+```text
+validated parent hydrated object
+→ enumerate locally admissible operations and controls
+→ enforce membrane depth and local constraints
+→ enforce inherited global constraints
+→ preserve phase, ordering, dependencies, and entanglement links
+→ calculate branch candidates
+→ prune invalid branches
+→ close valid branches
+→ deterministically order mutation candidates
+→ singleton VM81 admission
+→ receipt and archival
+```
+
+Millions of nested branches may exist as reusable closed continuations. Parallel branch exploration does not create parallel canonical state authorities.
+
+## 9. Memory and logic unification
+
+A hydrated object is loaded and stored as one circuit object:
+
+```text
+state
++ admissible transformations
++ constraint topology
++ execution route
++ validation lineage
++ continuation address
+```
+
+The serialized block is simultaneously memory, logic, contract, history, program continuation, index, and recovery image.
+
+Loading a hydrated object restores both values and the validated relationships required to continue computation.
+
+## 10. Sparse continuation flow
+
+```text
+nearest valid parent state
+→ validate parent receipt and Hash216 roots
+→ validate bounded delta
+→ derive affected dependency/projection frontier
+→ copy parent state and projection
+→ preserve every unaffected cell and branch
+→ recompute only affected frontier
+→ compare sparse result with canonical full projection
+→ VM81 admission
+→ new receipt block
+→ new continuation token and vector record
+```
+
+Continuation roots may bind parent, content, delta, hydration, dependency, projection, learning, generation, and parent-receipt identities.
+
+## 11. Harmonicode source flow
 
 ```text
 Harmonicode source
-→ preserve lexical form and membranes
+→ preserve lexical form, widths, Lists, grouping, and membranes
 → parse typed expressions
-→ resolve equality/constraint-join domains
-→ normalize symbolic structure without erasing identity
-→ bind macro parameters
-→ recursively expand nested macros
-→ commit source, macro, and expansion Hash72 identities
-→ submit expanded operation to AuditedRunner
-→ VM81/kernel admission
-→ receipt and replay
+→ preserve ordered products such as xy and yx
+→ bind parameters and recursively expand macros
+→ retain exact rational, reciprocal, modular, and symbolic forms
+→ submit bounded transformation proposal
+→ integrated validation and VM81 admission
+→ receipt, archival, cache, and replay
 ```
 
-Required preservation includes:
+No parser or macro layer may normalize away identity-bearing structure.
 
-- ordered products such as `xy` and `yx`;
-- exact lists, positions, lexical widths, and identity-bearing leading zeros;
-- exact reciprocal and rational forms;
-- parenthetical membrane depth and scope;
-- source spans and nested macro lineage;
-- symbolic distinctions such as `O != Pi` where defined by contract.
+## 12. Agent and worker flow
 
-## 3. `.hhsprog` execution
+Agents and workers may:
 
-A program file declares ordered operations.
+- discover prior validated objects;
+- generate immutable candidate transformations;
+- explore branch trees;
+- compare reconstructed modalities;
+- optimize schedules and hydration frontiers;
+- propose files, media, applications, code, simulations, or device changes.
+
+They may not directly mutate canonical state.
 
 ```text
-load `.hhsprog`
-→ validate format and program name
-→ validate ordered operation records
-→ initialize one AuditedRunner
-→ execute each operation in order
-→ stop on quarantine unless `continue_on_quarantine` is declared
-→ collect results and receipts
-→ verify the runner receipt chain
-→ optionally persist through the database bridge
-→ emit `.hhsrun`-compatible result
+agent proposal
+→ typed work item
+→ capability, resource, and dependency checks
+→ immutable candidate computation
+→ deterministic ordering barrier
+→ singleton VM81 admission
+→ receipt and archival
 ```
 
-A run result contains:
+Worker-local queues, memory, timers, result files, and provider outputs are noncanonical.
 
-- program Hash72;
-- declared and executed operation counts;
-- per-step results;
-- receipts;
-- chain status;
-- replay report;
-- optional storage report;
-- final `all_ok` state.
-
-## 4. Audited operation flow
+## 13. Plug-and-play object registration
 
 ```text
-registered operation + arguments
-→ capture pre-state and current receipt tip
-→ execute exact implementation
-→ derive audit value and operation witnesses
-→ submit to kernel gate
-→ evaluate operation-specific conditions
-→ build post-state
-→ commit input/pre-state/operation/post-state/witness identities
-→ commit parent-linked receipt
-→ return admitted result or quarantined evidence
+new module or application
+→ declare stable schema and object identity
+→ declare exact inputs, outputs, dependencies, capabilities, and mutation scope
+→ bind existing ABI, opcodes, services, and authority path
+→ inherit local and global constraints
+→ provide positive, negative, replay, rollback, and recovery vectors
+→ validate backwards compatibility
+→ admit representative transformations
+→ bind receipts and Hash216 continuation records
+→ register discoverable CLI, API, SDK, assistant, and visual surfaces
 ```
 
-### Locked result
+A plug-in is incomplete if it requires a new canonical authority, breaks inherited objects, depends on hidden conversation state, or exposes only a JSON receipt without the actual capability.
+
+## 14. API and JSON flow
 
 ```text
-kernel and operation conditions satisfied
-→ gate_status = LOCKED
-→ result may enter canonical state
-```
-
-### Quarantined result
-
-```text
-exception, invariant failure, order breach, invalid capability, stale claim, or other gate failure
-→ gate_status = QUARANTINED
-→ evidence and reason are committed
-→ result is blocked from canonical mutation
-```
-
-## 5. Receipt structure
-
-A transition receipt binds at least:
-
-```text
-phase or tick
-operation
-parent_receipt_hash72
-input_hash72
-pre_state_hash72
-operation_hash72
-post_state_hash72
-witness_hash72
-receipt_hash72
-integrity_hash72
-gate_status
-locked/quarantine state
-reason
-```
-
-The next receipt must name the previous receipt as its parent. Chain continuity is part of execution correctness.
-
-## 6. Replay flow
-
-```text
-receipt sequence
-→ start from genesis or declared parent boundary
-→ verify parent linkage
-→ verify canonical receipt fields
-→ rederive commitment identities
-→ verify expected chain tip
-→ compare deterministic reconstruction
-→ return verified or explicit mismatch
-```
-
-Replay mismatch must not be silently ignored. The outcome must be explicit failure, quarantine, rollback boundary, or unresolved evidence state.
-
-## 7. Pass 190 Iteration 7 durable job flow
-
-Current path:
-
-```text
-job.submit_execution
-→ verify operation exists
-→ require operation effect_class == pure
-→ verify workspace, dependency, schedule, retry, and capability fields
-→ commit scheduled or queued job
-→ scheduler.tick evaluates time and dependencies
-→ eligible worker heartbeat and capabilities verified
-→ job.claim_next selects deterministically
-→ Hash72 claim token committed
-→ job.execute_claimed validates token, worker, lease, and capabilities
-→ exact target implementation evaluated
-→ one outer VM81 admission
-→ one execution Hash72 and receipt
-→ atomically update job, worker, state root, and event
-```
-
-### Deterministic selection
-
-```text
-highest priority first
-then lexicographically smallest job_id
-```
-
-### Dependency states
-
-```text
-all dependencies completed
-→ schedule boundary may release job to queued
-
-any dependency failed or cancelled
-→ dependent job fails with typed dependency witness
-
-otherwise
-→ job remains scheduled
-```
-
-### Job states
-
-```text
-scheduled → queued → running → completed
-scheduled → failed
-queued → cancelled
-running → cancelled
-running → retry_wait → queued
-running → failed
-failed/cancelled → retry_wait or queued when budget remains
-```
-
-### Retry coordinate
-
-```text
-next_attempt_ns = observed_now_ns + retry_backoff_ns × max(1, attempt)
-```
-
-All time coordinates are exact nonnegative integer nanoseconds.
-
-### Stale-worker recovery
-
-`scheduler.tick` checks running jobs for:
-
-- expired execution lease;
-- missing worker;
-- disabled worker;
-- expired heartbeat authority.
-
-Recovery atomically releases the worker and moves the job to retry or terminal failure according to remaining attempt budget.
-
-## 8. Pass 190 service topology
-
-```text
-hhs-pass190.service
-hhs-pass190-worker.service
-        ↓
-shared authoritative SQLite state
-/var/lib/hhs/pass190-authority.sqlite3
-```
-
-The worker process performs:
-
-```text
-ensure registered
-→ heartbeat
-→ scheduler tick
-→ claim next eligible job
-→ execute claimed job
-→ repeat
-```
-
-The worker owns no authoritative local queue or result store.
-
-## 9. API flow
-
-```text
-HTTP request
-→ route validation and capability extraction
-→ orchestrator/runtime call
-→ canonical execution path
-→ receipt-bearing result
+HTTP/WebSocket/SDK request
+→ transport validation
+→ authoritative runtime call
+→ actual computational or application result
+→ admitted receipt-bearing state
 → response serialization
 ```
 
-Routes must not contain canonical business or mutation logic.
+Routes and WebSocket handlers transport already-governed requests and events. They do not implement canonical business logic or fabricate success.
 
-Pass 190 Iteration 7 exposes:
+JSON is protocol representation for request, result, status, receipt, export, diagnostics, and replay. It is not the native capability itself.
 
-```text
-GET /api/pass190/execution-runtime
-```
-
-The route projects already-governed worker, queue, operation, state-root, and execution-runtime evidence.
-
-## 10. WebSocket flow
-
-```text
-canonical state transition
-→ committed event
-→ orchestrator/event bus
-→ WebSocket serialization
-→ client projection
-```
-
-WebSocket handlers transport events. They do not create unreceipted state transitions.
-
-## 11. Visual IDE flow
+## 15. Visual interface flow
 
 ```text
 user action
-→ frontend request
-→ backend route
-→ authoritative runtime operation
-→ receipt-bearing response/event
-→ update UI from runtime evidence
+→ registered capability binding
+→ backend/native authoritative execution
+→ actual file, scene, package, media, simulation, editor, calculator, device, or workflow result
+→ receipt and lifecycle evidence
+→ human-readable visual projection
 ```
 
-The UI must expose:
+The UI must derive from the complete user-facing capability registry. A capability is either visible and operable or has an explicit machine-readable exclusion reason.
 
-- pending/running/completed/failed/cancelled states;
-- timeout, retry, and failure reasons;
-- degraded backend/provider status;
-- receipt and authority evidence where relevant;
-- no optimistic success that contradicts runtime state.
+The UI must not reduce native functionality to raw JSON or repeatedly expose only a manually chosen subset of demos.
 
-## 12. Assistant and provider flow
+## 16. Replay flow
 
 ```text
-human request
-→ bounded assistant thread
-→ allowlisted tool or provider proposal
-→ capability and policy gate
-→ provider invocation
-→ invocation receipt
-→ HHS result ingress
-→ VM81/kernel admission where mutation is requested
-→ bounded assistant or artifact projection
+receipt sequence and declared parent boundary
+→ verify exact prev/state/receipt blocks
+→ verify parent continuity
+→ rederive canonical identities and witnesses
+→ verify Hash216 archival binding and positional array
+→ verify dependency, decoder, compiler, cache, and hydration context
+→ reconstruct ordered state transitions
+→ compare expected chain tip and resulting object
+→ VERIFIED, MISMATCH, ROLLBACK, REPAIR_REQUIRED, or QUARANTINED
 ```
 
-Model output is not canonical solely because the provider returned it.
+Replay is a canonical execution property, not optional debugging output.
 
-## 13. Graph and persistence flow
+## 17. Recovery flow
 
 ```text
-locked or quarantined receipt
-→ graph ingestion
-→ parent/topology indexing
-→ state and artifact persistence
-→ replay lookup and reconstruction
+corruption, mismatch, invalid branch, or authority failure
+→ prevent canonical mutation
+→ preserve evidence
+→ apply bounded correction when authorized
+→ otherwise denature or quarantine
+→ restore last known-good state or declared recovery point
+→ replay forward through validated receipts
+→ emit correction, recovery, rejection, or quarantine receipt
 ```
 
-Graph and storage layers preserve execution evidence. They do not create alternate execution authority.
+No recovery path may silently weaken an invariant to make a failing state pass.
 
-## 14. Pass 191 hydration target
+## 18. Backward-compatibility validation
 
-The frozen Pass 191 contract extends the runtime flow to every accepted repository object and surface:
+Every new extension must demonstrate:
 
 ```text
-Genesis and inherited pass history
-→ repository object discovery
-→ canonical object graph
-→ canonical operation registry
-→ inherited invariant binding
-→ VM81 admission path
-→ Hash72 lineage
-→ Hash216 topology
-→ parity across ABI, CLI, API, WebSocket, SDK, automation, assistant, and Visual IDE
+new capability works
+AND inherited capabilities still work
+AND inherited identities remain valid
+AND shared constraints remain intact
+AND the existing authority path is used
+AND deterministic replay agrees
+AND no alternate authority exists
 ```
 
-Full Pass 191 completion requires source, manifests, tests, receipts, replay, integration evidence, and authoritative-main verification.
+Required tests include:
 
-## 15. Validation
+- exact schema, ABI, and opcode compatibility;
+- no-float authority boundaries;
+- ordered operand and grouping preservation;
+- positive admission and negative rejection;
+- rollback without unauthorized mutation;
+- correct `(prev,state,receipt)` production;
+- Hash216/SHA-256 archival only after receipt closure;
+- cache-hit verification without bypass;
+- address reversibility where applicable;
+- retained native-byte identity where applicable;
+- plug-and-play discovery and interface operation;
+- dependency-scoped inherited regression;
+- final integrated replay.
 
-Baseline:
+## 19. Canonical summary
 
-```bash
-python hhs_runtime_smoke_tests_v1.py
-python hhs_regression_suite_v1.py
-python hhs_v1_bundle_runner.py
+```text
+proposal
+→ integrated Python and native validation
+→ singleton VM81 admission
+→ valid Hash72 (prev,state,receipt)
+→ exact 216-character archival block
+→ character-addressed SHA-256 array
+→ Hash216 durable vector record
+→ validated-computation cache
+→ VM5184 × G243 hydrated continuation
+→ exact native ingress/egress
+→ reusable backward-compatible object
 ```
 
-Pass 190 Iteration 7:
-
-```bash
-make -C native_projects/hhs_pass190_operation_fabric validate
-```
-
-A path, dependency, or environment failure is repaired at the adapter boundary. Invariants, identity preservation, receipt continuity, and replay requirements are not weakened.
+The order is mandatory. Storage and caching preserve validated computation; they do not replace the authority that validates it.
