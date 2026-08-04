@@ -29,6 +29,7 @@ jobs:
           import subprocess
 
           source_branch = "origin/agent/pass209-kimi-k3-native-llm"
+          restart_record_commit = "215ec71c296419c8aa399dea6b0fe03b5b398862"
           old_base = "13025bbeccb0cd45ebfcf7151fa2bca9cfbb61ea"
           new_base = "36d110ba2f808f83bace25d6df84d45e44ab024b"
           copies = {
@@ -69,8 +70,13 @@ jobs:
           }
 
           for source, destination in copies.items():
+              source_ref = (
+                  restart_record_commit
+                  if source == "docs/pass209/RESTART_RECORD.md"
+                  else source_branch
+              )
               content = subprocess.check_output(
-                  ["git", "show", f"{source_branch}:{source}"],
+                  ["git", "show", f"{source_ref}:{source}"],
                   text=True,
               )
               content = content.replace("209", "210")
