@@ -272,21 +272,22 @@ def run() -> dict[str, object]:
                     assert manifest["project_local_javascript_inlined"] is True
             phase("ZIP_VERIFIED")
 
-            diagnostic = context.new_page()
-            diagnostic_response = diagnostic.goto(
+            current_phase = "WAIT_RUNTIME_CONSOLE"
+            phase(current_phase)
+            diagnostic_response = page.goto(
                 f"{BASE_URL}/runtime-console/",
-                wait_until="commit",
+                wait_until="domcontentloaded",
                 timeout=45_000,
             )
             if diagnostic_response is None or not diagnostic_response.ok:
                 raise AssertionError("runtime console did not return a successful response")
-            expect(diagnostic.locator("body")).to_contain_text(
+            expect(page.locator("body")).to_contain_text(
                 "Pass 174 Harmonic Visual SDLC Runtime",
                 timeout=30_000,
             )
-            expect(diagnostic).to_have_title("HHS Pass 174 Visual IDE", timeout=20_000)
-            diagnostic.close()
-            phase("RUNTIME_CONSOLE_VERIFIED")
+            expect(page).to_have_title("HHS Pass 174 Visual IDE", timeout=20_000)
+            current_phase = "RUNTIME_CONSOLE_VERIFIED"
+            phase(current_phase)
 
             time.sleep(0.5)
             result = {
@@ -301,6 +302,7 @@ def run() -> dict[str, object]:
                 "assistant_ready_gate_verified": True,
                 "deployable_zip_verified": True,
                 "runtime_console_preserved": True,
+                "runtime_console_same_page_navigation_verified": True,
                 "drag_safe_file_items": True,
                 "dom_driven_acceptance": True,
                 "application_first_default_verified": True,
