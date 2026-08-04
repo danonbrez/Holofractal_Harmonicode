@@ -28,7 +28,25 @@ def application_frame(page):
 
 def create_project(page, template: str, name: str):
     phase("CREATE_PROJECT", template=template, project_name=name)
-    page.locator("#ide-new-app").click()
+    gallery_state = page.evaluate(
+        """
+        () => {
+          const button = document.querySelector('#ide-new-app');
+          const gallery = document.querySelector('#ide-application-gallery');
+          if (!button || !gallery) throw new Error('New Application controls are incomplete');
+          const alreadyOpen = gallery.hidden === false;
+          if (!alreadyOpen) button.click();
+          return {
+            already_open: alreadyOpen,
+            button_disabled: Boolean(button.disabled),
+            gallery_hidden: gallery.hidden,
+          };
+        }
+        """
+    )
+    if gallery_state["button_disabled"] or gallery_state["gallery_hidden"]:
+        raise AssertionError(f"New Application control did not open the gallery: {gallery_state}")
+    phase("APPLICATION_GALLERY_READY", template=template, **gallery_state)
     gallery = page.locator("#ide-application-gallery")
     expect(gallery).to_be_visible(timeout=20_000)
     creation = page.evaluate(
