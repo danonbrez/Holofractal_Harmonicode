@@ -73,13 +73,52 @@ async function runGovernedLifecycle(job) {
   finally { job?.signal?.removeEventListener?.('abort', abort); }
 }
 
+function receiptHashFromLiveStatus(liveStatus) {
+  return liveStatus?.last_emission?.receipt_hash72
+    || liveStatus?.bridge?.emulator?.receipt_hash72
+    || null;
+}
+
+function stateHashFromLiveStatus(liveStatus) {
+  return liveStatus?.last_emission?.runtime_state_hash72
+    || liveStatus?.bridge?.emulator?.runtime_state_hash72
+    || null;
+}
+
 async function hydrateBackendAuthorityEvidence() {
-  const [runtimeStatus, pass175] = await Promise.all([
-    requestJson('/api/runtime/authority/status', { timeoutMs: 10000, retryCount: 1 }),
+  const [serviceHealth, liveStatus, pass175] = await Promise.all([
+    requestJson('/api/health', { timeoutMs: 10000, retryCount: 1 }),
+    requestJson('/api/runtime/live/status', { timeoutMs: 10000, retryCount: 1 }),
     requestJson('/api/v1/pass175/status', { timeoutMs: 10000, retryCount: 1 }),
   ]);
+  const receiptHash72 = receiptHashFromLiveStatus(liveStatus);
+  const runtimeStateHash72 = stateHashFromLiveStatus(liveStatus);
+  const canonicalRuntimeAttached = serviceHealth?.runtime_ready === true
+    && serviceHealth?.authority_ready === true;
+  const runtimeReady = canonicalRuntimeAttached
+    && liveStatus?.running === true
+    && liveStatus?.authority_ready === true
+    && liveStatus?.receipt_ready === true
+    && Boolean(receiptHash72)
+    && Boolean(runtimeStateHash72);
+  const runtimeStatus = Object.freeze({
+    schema: 'HHS_PASS_176_BOUNDED_RUNTIME_AUTHORITY_PROJECTION_V2',
+    ok: runtimeReady,
+    status: runtimeReady ? 'HHS_RUNTIME_AUTHORITY_ONLINE' : 'HHS_RUNTIME_AUTHORITY_WARMING',
+    canonical_runtime_attached: canonicalRuntimeAttached,
+    graph_initialized: serviceHealth?.authority_ready === true,
+    websocket_ready: liveStatus?.running === true,
+    receipt_hash72: receiptHash72,
+    runtime_state_hash72: runtimeStateHash72,
+    live_workflow: liveStatus,
+    authority: 'HHS_FASTAPI_KERNEL_RUNTIME_AUTHORITY_V1',
+    frontend_is_authority: false,
+    status_read_is_bounded: true,
+    source_routes: Object.freeze(['/api/health', '/api/runtime/live/status']),
+    shadowed_role_authority_route_used: false,
+  });
   const productHealth = Object.freeze({
-    schema: 'HHS_PASS_176_BOUNDED_RUNTIME_AUTHORITY_PROJECTION_V1',
+    schema: 'HHS_PASS_176_BOUNDED_RUNTIME_AUTHORITY_EVIDENCE_INPUT_V2',
     runtime: runtimeStatus,
     assistantHealthExcluded: true,
   });
