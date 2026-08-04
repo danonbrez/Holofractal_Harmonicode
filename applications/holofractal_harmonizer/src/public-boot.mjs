@@ -50,6 +50,13 @@ export function startPublicBoot() {
     });
   };
 
+  const requireReady = (moduleId, result) => {
+    if (result?.state !== 'READY') {
+      throw new Error(`HHS_PUBLIC_CRITICAL_MODULE_NOT_READY: ${moduleId} ${result?.error || 'unknown failure'}`);
+    }
+    return result;
+  };
+
   const awaitGlobalPromise = async (name, result) => {
     const promise = window[name];
     if (promise && typeof promise.then === 'function') await promise;
@@ -74,7 +81,8 @@ export function startPublicBoot() {
   */
 
   const applicationControls = applicationExperience
-    .then(() => launch('application-controls', './application-critical-path.mjs'));
+    .then(() => launch('application-controls', './application-critical-path.mjs'))
+    .then((result) => requireReady('application-controls', result));
   const visualIDE = applicationControls
     .then(() => launch('visual-ide', './visual-ide.mjs'))
     .then((result) => awaitGlobalPromise('HHSVisualIDEBoot', result));
