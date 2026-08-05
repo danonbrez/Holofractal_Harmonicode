@@ -58,7 +58,7 @@ jobs:
   validate:
     runs-on: ubuntu-latest
     env:
-      PYOQS_VERSION: '0.15.0'
+      PYOQS_VERSION: '0.16.0'
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
