@@ -2,7 +2,7 @@
 
 **Contract:** `HHS-P213-TB-AMT-CROM-RMIK-H72-H216-VM5184-G243`  
 **Status:** `CONTRACT_AUTHORIZED — IMPLEMENTATION IN PROGRESS`  
-**Current iteration:** `5`
+**Current iteration:** `6`
 
 ## Binding inheritance
 
@@ -80,8 +80,6 @@ Iteration 5 makes the compiled ROM persistent across process and deployment boun
 - an authenticated checkpoint chain;
 - reconciliation against the native protected-memory store.
 
-The admission path becomes:
-
 ```text
 validate and correct carrier
 → admit into sealed native memory
@@ -90,19 +88,15 @@ validate and correct carrier
 → retain authenticated recovery carrier
 ```
 
-The recovery path becomes:
-
 ```text
 persistent LIVE entry absent from native store
 → classify unexplained absence
-→ load retained carrier or authenticated checkpoint material
+→ retained carrier or authenticated checkpoint material
 → Pass 212 correction and Hash216 validation
 → restore sealed native entry
 → append RECOVER event
 → commit successor inventory root
 ```
-
-The authorized retirement path becomes:
 
 ```text
 current inventory root
@@ -112,42 +106,118 @@ current inventory root
 → zeroize and destroy native arena
 ```
 
-A replacement authorization cannot be replayed after another inventory transition because it is bound to the exact current root. A tombstoned identity cannot be silently readmitted or recovered as LIVE. An unexplained missing LIVE identity remains a reconciliation failure until exact recovery completes.
+Every reopen verifies event continuity, event authentication, deterministic state replay, successor inventory roots, retained carriers, deletion authorizations, checkpoint continuity, and persistent LIVE identities against protected native entries.
 
-Every reopen verifies:
+## Iteration 6 — post-quantum signed checkpoints and recovery enclosure
 
-1. event sequence and prior-event continuity;
-2. event Hash216 and keyed authentication;
-3. deterministic replay of LIVE and TOMBSTONED state;
-4. every successor inventory root;
-5. retained carrier authenticity and identity;
-6. tombstone deletion authorization;
-7. checkpoint root, authentication, ordering, and inventory anchor;
-8. persistent LIVE identities against native protected entries.
+Iteration 6 encloses the persistent inventory with three independent standardized post-quantum authorities executed through `liboqs`:
+
+- **ML-KEM-768** establishes recovery shared secrets;
+- **ML-DSA-65** signs operational inventory checkpoints;
+- **SLH-DSA SHA2-128s** signs the same checkpoints for archival authority.
+
+The runtime detects the enabled mechanism names from liboqs and fails the iteration gate unless all three required families and parameter sets are available.
+
+### Native protected key authority
+
+`PQCProtectedAuthority` creates one ML-KEM keypair and two independent signature keypairs. Each secret key is written into a distinct Iteration 3 native arena:
+
+```text
+post-quantum secret key
+→ owner-bound native arena
+→ locked / no-dump / no-fork pages
+→ read-only seal
+→ public commitment record
+```
+
+Only public keys, algorithm names, public-key Hash216 commitments, and the verifier-bundle root leave the protected authority. Signing and decapsulation read the required secret internally for one bounded operation and clear the transient mutable copy. Authority shutdown zeroizes and destroys all three arenas.
+
+### Dual-signed checkpoint chain
+
+Each signed checkpoint binds:
+
+- the complete Iteration 5 checkpoint record;
+- its inventory root and event-chain head;
+- its authenticated retained LIVE and TOMBSTONED state;
+- the signed-checkpoint sequence;
+- the prior signed-checkpoint root;
+- the verifier-bundle root.
+
+The exact same canonical signing message receives an ML-DSA operational signature and an SLH-DSA archival signature:
+
+```text
+Iteration 5 authenticated checkpoint
++ prior signed root
++ signed sequence
++ verifier-bundle root
+→ canonical checkpoint signing message
+→ ML-DSA-65 signature
+→ SLH-DSA SHA2-128s signature
+→ successor signed-checkpoint Hash216
+```
+
+`PostQuantumCheckpointStore` appends the complete dual-signature envelope to SQLite WAL storage. A verifier-only process can reopen and replay the full signed chain using the public verifier bundle without access to any secret key.
+
+### ML-KEM recovery capsule
+
+Every signed checkpoint receives a checkpoint-bound recovery capsule:
+
+```text
+ML-KEM-768 encapsulation to recovery public key
+→ shared secret
+→ HKDF-SHA-256 with checkpoint-root salt and complete capsule AAD
+→ AES-256-GCM wrapping key
+→ encrypt exact 256-bit recovery root
+→ commit KEM ciphertext, nonce, ciphertext, AAD root, and checkpoint root
+```
+
+The capsule binds its signed sequence, checkpoint root, algorithm identity, and recipient public-key Hash216. Recovery requires the protected ML-KEM secret-key arena. Any altered KEM ciphertext, nonce, encrypted recovery key, AAD, recipient key, sequence, or checkpoint root fails structural validation or authenticated decryption.
+
+### Persistent post-quantum sequence
+
+```text
+valid Iteration 5 checkpoint
+→ ML-DSA operational signature
+→ SLH-DSA archival signature
+→ signed-checkpoint successor root
+→ ML-KEM recovery capsule
+→ atomic SQLite append
+→ public verifier-only chain replay
+```
 
 ## Current acceptance path
 
 ```text
 untrusted carrier
-→ correction and Hash216 validation
+→ Pass 212 correction and Hash216 validation
 → recovered admission proof
 → sealed native compiled-ROM arena
 → persistent ADMIT/root chain
 → exact or parametric compiled match
 → timestamp-bound VM81 authority
+→ persistent checkpoint
+→ ML-DSA + SLH-DSA signed checkpoint
+→ ML-KEM recovery enclosure
 → governed native dispatch
-→ successor receipt
-→ persistent reconciliation and recovery
+→ successor receipt and persistent reconciliation
 ```
 
 ## Validation
 
 ```bash
+python -m pip install -r requirements/pass213-pqc.txt
 bash scripts/run_pass213_iteration1_validation.sh
 ```
 
-The gate builds the native C arena with warnings treated as errors, executes every Iteration 1–5 test module, compiles all Pass 213 runtime modules, and parses the machine-readable contract.
+The dedicated gate:
+
+1. builds the native C arena with warnings treated as errors;
+2. loads the pinned liboqs Python binding and matching liboqs release;
+3. verifies ML-KEM-768, ML-DSA-65, and SLH-DSA SHA2-128s are enabled;
+4. executes every Iteration 1–6 test module;
+5. compiles every Pass 213 runtime module;
+6. parses the machine-readable contract.
 
 ## Iteration boundary
 
-Pass 213 remains nonterminal. Remaining work includes post-quantum enclosure and checkpoint signatures, external trusted timestamp checkpoints, the full high-dimensional magic-square/Sudoku/Fibonacci tensor family, API and CLI surfaces, governed native dispatch, performance evidence, final integration, merge, and verified-main closure.
+Pass 213 remains nonterminal. Remaining work includes trusted external timestamp checkpoint anchoring, the full high-dimensional magic-square/Sudoku/Fibonacci moving tensor family, API and CLI surfaces, governed native dispatch, performance evidence, final integration, merge, and verified-main closure.
