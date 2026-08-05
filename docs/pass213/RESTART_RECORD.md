@@ -4,6 +4,7 @@
 - Immediate parent: Pass 212 full hydration compression and physical erasure recovery
 - Base commit: `2be050264a6e9c659603100be802979bbc49bf7a`
 - Branch: `agent/pass213-compiled-rom-integrity`
+- Current published head: `9e07c45c1e965c3f961c86246e6d3eff0e03c04a`
 - Merge target: `main`
 - Draft pull request: `#169`
 - Iteration: `2`
@@ -53,13 +54,20 @@ new test module Python compilation: PASS
 12 iteration-2 interface tests against a Pass 212 API-compatible local harness: PASS
 ```
 
-The local harness validated the Pass 213 integration logic and public Pass 212 call contract. Repository-native execution against the inherited Pass 212 implementation is delegated to:
+The local harness validated the Pass 213 integration logic and public Pass 212 call contract. Repository-native execution against the inherited Pass 212 implementation is performed by:
 
 ```bash
 bash scripts/run_pass213_iteration1_validation.sh
 ```
 
 The branch workflow `.github/workflows/pass213-compiled-rom-integrity.yml` runs both Pass 213 test modules against the repository implementation.
+
+## Repository workflow state
+
+- Workflow: `Pass 213 Compiled ROM Integrity`
+- Run: `31026111177`
+- Published-head state at this restart-record update: `QUEUED`
+- Guarded Continuous Integration: skipped by its inherited guard policy
 
 ## Iteration 2 test coverage
 
@@ -88,4 +96,4 @@ The branch workflow `.github/workflows/pass213-compiled-rom-integrity.yml` runs 
 
 ## Next exact action
 
-After the repository-native Pass 213 workflow validates iteration 2, implement the protected kernel-memory arena with explicit allocation ownership, page locking, no-dump/no-swap controls, guard regions, and zeroization receipts. Do not merge Pass 214 ahead of authoritative Pass 213 closure.
+Resolve the repository-native iteration-2 workflow. If it passes, implement the protected kernel-memory arena with explicit allocation ownership, page locking, no-dump/no-swap controls, guard regions, and zeroization receipts. If it fails, repair the failing Pass 212 compatibility or Pass 213 invariant on this branch before advancing. Do not merge Pass 214 ahead of authoritative Pass 213 closure.
