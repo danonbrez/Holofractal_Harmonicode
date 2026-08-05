@@ -184,6 +184,56 @@ class NativeProtectedCompiledROMStore:
             ) from exc
         return self.lookup_hash216(entry_hash216)
 
+    def contains_hash216(self, entry_hash216: str) -> bool:
+        """Return whether one exact protected record and arena are present."""
+        self._require_open()
+        return (
+            entry_hash216 in self._records
+            and entry_hash216 in self._arenas
+        )
+
+    def record_hashes(self) -> tuple[str, ...]:
+        """Return sorted protected identities without exposing payload bytes."""
+        self._require_open()
+        if set(self._records) != set(self._arenas):
+            raise Pass213SecureMemoryError(
+                "PASS213_PROTECTED_ROM_RECORD_ARENA_DIVERGENCE"
+            )
+        return tuple(sorted(self._records))
+
+    def lookup_record(
+        self,
+        entry_hash216: str,
+    ) -> ProtectedCompiledROMRecord:
+        """Return one public commitment record after validating its entry."""
+        self.lookup_hash216(entry_hash216)
+        return self._records[entry_hash216]
+
+    def retire_hash216(self, entry_hash216: str) -> SecureMemoryReceipt:
+        """Zeroize and remove one protected entry after external authorization."""
+        self._require_open()
+        try:
+            record = self._records[entry_hash216]
+            arena = self._arenas[entry_hash216]
+        except KeyError as exc:
+            raise Pass213SecureMemoryError(
+                "PASS213_PROTECTED_ROM_ENTRY_NOT_FOUND"
+            ) from exc
+        indexed = self._operation_index.get(record.operation_id)
+        if indexed != entry_hash216:
+            raise Pass213SecureMemoryError(
+                "PASS213_PROTECTED_ROM_OPERATION_INDEX_DIVERGENCE"
+            )
+        receipt = arena.close()
+        if receipt is None:
+            raise Pass213SecureMemoryError(
+                "PASS213_PROTECTED_ROM_RETIREMENT_RECEIPT_MISSING"
+            )
+        del self._arenas[entry_hash216]
+        del self._records[entry_hash216]
+        del self._operation_index[record.operation_id]
+        return receipt
+
     def inventory_root(self) -> str:
         self._require_open()
         payload = {
