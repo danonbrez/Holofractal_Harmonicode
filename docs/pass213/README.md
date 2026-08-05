@@ -1,13 +1,13 @@
-# Pass 213 — Iterations 1–3
+# Pass 213 — Iterations 1–4
 
-Pass 213 builds the timestamp-bound authenticated compiled ROM, corrects its physical carriers before interpretation, and stores admitted entries in native protected memory.
+Pass 213 builds the timestamp-bound authenticated compiled ROM, corrects its physical carriers before interpretation, stores admitted entries in native protected memory, and reuses compiled transformations through dependency-scoped parametric validation.
 
 ## Iteration 1: compiled-ROM authority
 
 Implemented:
 
 - exact canonical serialization and framed SHA-256 identities;
-- HMAC-SHA-256 domain-separated key derivation;
+- domain-separated keyed derivation;
 - integer-nanosecond opening and closing boundaries;
 - authenticated noncommutative operation-group chaining;
 - deterministic keyed full-cycle permutations;
@@ -22,60 +22,58 @@ Implemented:
 - keyed Pass 213 carrier roots and authentication;
 - correction of one or two missing shards within the inherited budget;
 - fail-closed rejection outside the budget;
-- recovered payload Hash216 validation before JSON deserialization;
+- recovered payload Hash216 validation before deserialization;
 - immutable entry Hash216 validation after deserialization;
 - keyed `RecoveredROMAdmission` proofs;
 - recovery-gated canonical insertion.
 
-Canonical sequence:
-
-```text
-validate carrier
-→ correct physical damage
-→ validate reconstructed payload Hash216
-→ deserialize
-→ validate compiled-entry Hash216
-→ mint admission proof
-```
-
 ## Iteration 3: native secure memory
 
-Implemented native C arena:
+Implemented:
 
-- `mmap` allocation with two `PROT_NONE` guard pages;
+- guarded native `mmap` arenas;
 - non-executable data pages;
-- `mlock` no-swap enforcement;
-- `MADV_DONTDUMP` core-dump exclusion;
-- `MADV_DONTFORK` child-process exclusion;
-- `PR_SET_DUMPABLE` process hardening;
-- constant-time 256-bit owner-token authorization;
-- bounds-checked internal reads and writes;
-- read-only sealing;
-- explicit zeroization and zero verification;
-- zeroization before unmap and release.
+- `mlock`, `MADV_DONTDUMP`, and `MADV_DONTFORK` enforcement;
+- process dumpability hardening;
+- constant-time owner-token authorization;
+- bounds-checked access and read-only sealing;
+- explicit zeroization and verification before release;
+- keyed memory lifecycle receipts;
+- sealed native storage and revalidation for recovered compiled-ROM entries.
 
-Implemented runtime surfaces:
+## Iteration 4: parametric delta admission
 
-- `NativeSecureArena` with no public raw-address surface;
-- keyed `ALLOCATE`, `WRITE`, `SEAL`, `ZEROIZE`, and `DESTROY` receipts;
-- `NativeProtectedCompiledROMStore`, which accepts only validated recovered admissions;
-- sealed native storage of canonical compiled-entry bytes;
-- internal lookup deserialization and Hash216 revalidation;
-- inventory roots binding admission, arena, length, and receipt commitments;
-- complete zeroizing retirement of protected entries.
+Implemented:
 
-End-to-end sequence:
+- immutable templates bound to protected compiled-ROM entries;
+- exact operand and context schemas;
+- field-level mutable and immutable declarations;
+- deterministic constraint bytecode and explicit dependency sets;
+- baseline constraint witnesses;
+- complete field-set and type validation on every invocation;
+- exact changed-field delta construction;
+- dependency-closure selection of affected constraints;
+- semantic revalidation only for affected constraints;
+- authenticated reuse of unaffected baseline witnesses;
+- timestamp-, lineage-, route-, and policy-bound VM81 admission roots;
+- sealed native template and admission storage;
+- zeroizing template and admission retirement.
+
+Parametric sequence:
 
 ```text
-Pass 212 correction
-→ recovered admission
-→ native guarded allocation
-→ bounded write
-→ read-only seal
-→ internal Hash216 verification
-→ protected compiled-ROM lookup
-→ zeroizing retirement
+protected compiled operation
+→ sealed template
+→ complete typed invocation validation
+→ exact changed-field delta
+→ affected constraint dependency closure
+→ affected-only semantic revalidation
+→ authenticated unaffected-witness reuse
+→ timestamp-bound VM81 admission root
+→ sealed native admission arena
 ```
+
+A parametric match never relies on vector similarity. It requires an exact registered template whose protected base entry, schema, dependency graph, baseline witnesses, current timestamp boundary, and VM5184×G243 route all validate.
 
 ## Validation
 
@@ -83,8 +81,8 @@ Pass 212 correction
 bash scripts/run_pass213_iteration1_validation.sh
 ```
 
-The gate builds the C source with `-Wall -Wextra -Werror`, executes every Pass 213 test module, compiles all runtime modules, and validates the JSON contract.
+The gate builds the C source with `-Wall -Wextra -Werror`, executes every Pass 213 Iteration 1–4 test module, compiles all runtime modules, and validates the JSON contract.
 
 ## Current boundary
 
-Pass 213 remains incomplete. Parametric delta validation, persistent tombstones, PQC enclosure, trusted external timestamps, full tensor invariants, API/CLI/native dispatch, performance evidence, final integration, merge, and verified-main closure remain subsequent work.
+Pass 213 remains incomplete. Persistent inventories and tombstones, deletion recovery, PQC enclosure, trusted external timestamps, full tensor invariants, API/CLI/native dispatch, performance evidence, final integration, merge, and verified-main closure remain subsequent work.
