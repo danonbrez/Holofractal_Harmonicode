@@ -14,10 +14,12 @@ on:
       - 'hhs_backend/runtime/hhs_pass213_recovery_admission_v1.py'
       - 'hhs_backend/runtime/hhs_pass213_secure_memory_v1.py'
       - 'hhs_backend/runtime/hhs_pass213_native_protected_rom_v1.py'
+      - 'hhs_backend/runtime/hhs_pass213_parametric_delta_v1.py'
       - 'tests/test_pass213_compiled_rom_v1.py'
       - 'tests/test_pass213_recovery_admission_v1.py'
       - 'tests/test_pass213_secure_memory_v1.py'
       - 'tests/test_pass213_native_protected_rom_v1.py'
+      - 'tests/test_pass213_parametric_delta_v1.py'
       - 'scripts/run_pass213_iteration1_validation.sh'
       - '.github/workflows/pass213-compiled-rom-integrity.yml'
   pull_request:
@@ -30,10 +32,12 @@ on:
       - 'hhs_backend/runtime/hhs_pass213_recovery_admission_v1.py'
       - 'hhs_backend/runtime/hhs_pass213_secure_memory_v1.py'
       - 'hhs_backend/runtime/hhs_pass213_native_protected_rom_v1.py'
+      - 'hhs_backend/runtime/hhs_pass213_parametric_delta_v1.py'
       - 'tests/test_pass213_compiled_rom_v1.py'
       - 'tests/test_pass213_recovery_admission_v1.py'
       - 'tests/test_pass213_secure_memory_v1.py'
       - 'tests/test_pass213_native_protected_rom_v1.py'
+      - 'tests/test_pass213_parametric_delta_v1.py'
       - 'scripts/run_pass213_iteration1_validation.sh'
       - '.github/workflows/pass213-compiled-rom-integrity.yml'
 
@@ -48,5 +52,5 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Validate Pass 213 iterations 1 through 3
+      - name: Validate Pass 213 iterations 1 through 4
         run: bash scripts/run_pass213_iteration1_validation.sh
