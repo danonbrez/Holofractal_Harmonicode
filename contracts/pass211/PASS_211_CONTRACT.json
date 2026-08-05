@@ -1,0 +1,75 @@
+{
+  "schema": "HHS_PASS_211_CONTRACT_V1",
+  "contract": "HHS-P211-P133-BIGINT-HFC-MULTIREGISTER-H72-H216",
+  "pass": 211,
+  "version": "1.0.0",
+  "classification": "HHS_PASS_211_BIGINT_HFC_CARRIER_CONTRACT_FROZEN",
+  "inherits": [
+    "HHS-P133-PALINDROMIC-ECC-BIGINT-CARRIER",
+    "HHS-P210-HFC-VM81-H72-H216"
+  ],
+  "purpose": "Compose the exact Pass 133 palindromic SECDED BigInt carrier with deterministic Pass 210 HFC multi-register framing without broadening either inherited claim boundary.",
+  "constants": {
+    "hfc_register_boolean_cells": 5184,
+    "packed_shard_bytes": 648,
+    "snapshot_count": 36,
+    "snapshot_width": 288,
+    "snapshot_stride": 144,
+    "bit_order": "MSB_FIRST_WITHIN_EACH_BYTE",
+    "shard_order": "ZERO_BASED_ASCENDING",
+    "maximum_shards": 4096
+  },
+  "invariants": {
+    "P211-I1": "5184 Boolean cells pack to exactly 648 bytes.",
+    "P211-I2": "The Pass 133 carrier bytes are sharded without normalization, truncation, reordering, or alternate serialization.",
+    "P211-I3": "Every non-final shard contains exactly 648 payload bytes and every final shard records its exact payload bit length.",
+    "P211-I4": "Every shard retains independent Hash72, Hash216, phase, frame, snapshot, and HFC receipt anchors.",
+    "P211-I5": "The package root commits to the ordered shard roots, carrier identity, source identity, Pass 133 witness, shard count, and final-shard bit length.",
+    "P211-I6": "One deterministic package-level Hash72 receipt commits the package root and ordered shard roots.",
+    "P211-I7": "Missing, duplicate, reordered, substituted, mis-sized, or non-zero-padded shards fail closed.",
+    "P211-I8": "All HFC reconstruction and erasure recovery completes before Pass 133 carrier decoding.",
+    "P211-I9": "Fresh-against-fresh projection agreement is contemporaneous consistency only; historical integrity requires a retained minted anchor.",
+    "P211-I10": "Strict compression remains per-shard and receipt-gated to the Pass 210 declared affine-Fibonacci admissible domain.",
+    "P211-I11": "Metrics separately report source bytes, carrier expansion, canonical HFC storage, packed capacity, and multi-register use without conflating them.",
+    "P211-I12": "Zero and negative ciphertext values remain rejected by the inherited Pass 133 positive BigInt envelope."
+  },
+  "required_operations": [
+    "pass211_encode_bigint(ciphertext)",
+    "pass211_decode_bigint(package)",
+    "pass211_recover_shard(package, shard_index, lost_snapshot_index)",
+    "pass211_anchored_compare(package, shard_index, fresh_payload)",
+    "packed_bytes_to_register(payload)",
+    "register_to_packed_bytes(register, payload_bit_length)"
+  ],
+  "negative_behavior": [
+    "PASS211_MISSING_SHARD",
+    "PASS211_DUPLICATE_SHARD",
+    "PASS211_SHARD_ORDER_VIOLATION",
+    "PASS211_SHARD_SUBSTITUTION_DETECTED",
+    "PASS211_NONZERO_REGISTER_PADDING",
+    "PASS211_PACKAGE_ROOT_MISMATCH",
+    "PASS211_PACKAGE_RECEIPT_MISMATCH",
+    "PASS211_PASS133_ENVELOPE_REJECTED"
+  ],
+  "agreement_semantics": "hfc_agree establishes consistency among supplied projections. A uniformly changed source can generate mutually agreeing fresh projections. Pass 211 historical corruption detection therefore compares fresh reads against independently retained shard anchors minted at package creation.",
+  "compression_claim_boundary": {
+    "unconditional": [
+      "exact Pass 133 carrier reconstruction",
+      "deterministic 648-byte sharding",
+      "Pass 210 two-witness frame coverage",
+      "single-snapshot erasure recovery",
+      "ordered shard substitution and reordering detection",
+      "anchored disagreement localization"
+    ],
+    "domain_restricted": "Strict-size compression is claimed only for an individual register admitted by Pass 210 under HFC_ADMISSIBLE_AFFINE_FIBONACCI_MOD2_V1."
+  },
+  "validation": {
+    "pass133_corpus_roundtrips": 11,
+    "pass133_single_bit_corrections": 512,
+    "combined_single_register_packages": 4,
+    "combined_erasure_recoveries": 144,
+    "anchored_corruption_cell": 1000,
+    "multi_register_boundary": "deterministic 1024-bit source",
+    "entrypoint": "scripts/run_pass211_bigint_hfc_validation.sh"
+  }
+}

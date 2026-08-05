@@ -1,0 +1,50 @@
+name: Pass 211 BigInt HFC Carrier
+
+on:
+  push:
+    branches:
+      - main
+      - agent/pass211-bigint-hfc-carrier
+    paths:
+      - 'hhs_backend/runtime/hhs_pass211_bigint_hfc_carrier_v1.py'
+      - 'hhs_backend/api/pass211_bigint_hfc_routes.py'
+      - 'tests/test_hhs_pass211_bigint_hfc_carrier_v1.py'
+      - 'tests/test_hhs_pass211_bigint_hfc_api_v1.py'
+      - 'tools/generate_pass211_bigint_hfc_evidence.py'
+      - 'evidence/pass211/**'
+      - 'contracts/pass211/**'
+      - 'docs/pass211/**'
+      - 'HHS_PASS_211_BIGINT_HFC_CARRIER_AND_MULTI_REGISTER_FRAMING.md'
+      - 'scripts/run_pass211_bigint_hfc_validation.sh'
+      - '.github/workflows/pass211-bigint-hfc-carrier.yml'
+  pull_request:
+    paths:
+      - 'hhs_backend/runtime/hhs_pass211_bigint_hfc_carrier_v1.py'
+      - 'hhs_backend/api/pass211_bigint_hfc_routes.py'
+      - 'tests/test_hhs_pass211_bigint_hfc_carrier_v1.py'
+      - 'tests/test_hhs_pass211_bigint_hfc_api_v1.py'
+      - 'tools/generate_pass211_bigint_hfc_evidence.py'
+      - 'evidence/pass211/**'
+      - 'contracts/pass211/**'
+      - 'docs/pass211/**'
+      - 'HHS_PASS_211_BIGINT_HFC_CARRIER_AND_MULTI_REGISTER_FRAMING.md'
+      - 'scripts/run_pass211_bigint_hfc_validation.sh'
+      - '.github/workflows/pass211-bigint-hfc-carrier.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install validation dependencies
+        run: python -m pip install --disable-pip-version-check pytest pytest-asyncio fastapi pydantic httpx sympy
+      - name: Parse frozen contract
+        run: python -m json.tool contracts/pass211/PASS_211_CONTRACT.json >/dev/null
+      - name: Validate inherited runtimes and frozen Pass 211 evidence
+        run: bash scripts/run_pass211_bigint_hfc_validation.sh

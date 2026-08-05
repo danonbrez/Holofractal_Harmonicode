@@ -1,0 +1,1255 @@
+{
+  "anchored_corruption_drill": {
+    "disagreement_cells": [
+      1000
+    ],
+    "fresh_anchor_matches": {
+      "frame": false,
+      "hash216": false,
+      "hash72": false,
+      "phase": false
+    },
+    "fresh_projection_agreement": true,
+    "fresh_projection_self_consistency_is_not_historical_integrity": true,
+    "repair_performed": false,
+    "schema": "HHS_PASS_211_ANCHORED_AGREEMENT_V1",
+    "shard_index": 0,
+    "status": "ANCHORED_DISAGREEMENT_LOCATED",
+    "stored_anchor_validity": {
+      "frame": true,
+      "hash216": true,
+      "hash72": true,
+      "phase": true
+    },
+    "surviving_witnesses": [
+      "stored_hash72",
+      "stored_hash216",
+      "stored_phase",
+      "stored_frame"
+    ]
+  },
+  "capacity": {
+    "bit_order": "MSB_FIRST_WITHIN_EACH_BYTE",
+    "hfc_boolean_cells": 5184,
+    "packed_shard_bytes": 648
+  },
+  "combined_fitting_packages": [
+    {
+      "carrier_byte_length": 393,
+      "final_shard_bit_length": 3144,
+      "label": "one_bit",
+      "metrics": {
+        "canonical_hfc_storage_bytes": 5184,
+        "carrier_byte_length": 393,
+        "carrier_expansion_ratio": {
+          "denominator": 1,
+          "numerator": 393
+        },
+        "logical_register_occupancy": {
+          "denominator": 5184,
+          "numerator": 393
+        },
+        "multi_register_required": false,
+        "native_packed_capacity_bytes": 648,
+        "packed_bit_capacity_occupancy": {
+          "denominator": 5184,
+          "numerator": 3144
+        },
+        "single_register_capacity_bytes": 648,
+        "source_byte_length": 1,
+        "strict_compression_claim": "PER_SHARD_ONLY_WHEN_DECLARED_DOMAIN_ADMITTED"
+      },
+      "package_receipt_hash72": "zuM6P7GniqDWX)fgq67NvikF3zuFIkPKd8ZUks/5UlHYC*V96+LUuvvDWt<1zl30bx8sxGJD",
+      "package_root216": "ffc4ae307f261e1b3c2652a981a6a7e3c8ba27c4d57330655c11232b6c5a54f1",
+      "roundtrip_exact": true,
+      "shard_count": 1,
+      "source_bit_length": 1,
+      "strict_domain_statuses": [
+        "STRICT_DOMAIN_REJECTED"
+      ]
+    },
+    {
+      "carrier_byte_length": 535,
+      "final_shard_bit_length": 4280,
+      "label": "factorial_72",
+      "metrics": {
+        "canonical_hfc_storage_bytes": 5184,
+        "carrier_byte_length": 535,
+        "carrier_expansion_ratio": {
+          "denominator": 44,
+          "numerator": 535
+        },
+        "logical_register_occupancy": {
+          "denominator": 5184,
+          "numerator": 535
+        },
+        "multi_register_required": false,
+        "native_packed_capacity_bytes": 648,
+        "packed_bit_capacity_occupancy": {
+          "denominator": 5184,
+          "numerator": 4280
+        },
+        "single_register_capacity_bytes": 648,
+        "source_byte_length": 44,
+        "strict_compression_claim": "PER_SHARD_ONLY_WHEN_DECLARED_DOMAIN_ADMITTED"
+      },
+      "package_receipt_hash72": "y>R>x4G<?vGKwmHi)(d7(ZcDR3<AiJx/SPItjtFt6BINdyQoO/!esL14b+Z+<1plYOPH8jk/",
+      "package_root216": "4e76b7d9fb1b7e2ae47985a246772de55d05067f7a57172770dd59801f1d7eee",
+      "roundtrip_exact": true,
+      "shard_count": 1,
+      "source_bit_length": 345,
+      "strict_domain_statuses": [
+        "STRICT_DOMAIN_REJECTED"
+      ]
+    },
+    {
+      "carrier_byte_length": 535,
+      "final_shard_bit_length": 4280,
+      "label": "fibonacci_500",
+      "metrics": {
+        "canonical_hfc_storage_bytes": 5184,
+        "carrier_byte_length": 535,
+        "carrier_expansion_ratio": {
+          "denominator": 44,
+          "numerator": 535
+        },
+        "logical_register_occupancy": {
+          "denominator": 5184,
+          "numerator": 535
+        },
+        "multi_register_required": false,
+        "native_packed_capacity_bytes": 648,
+        "packed_bit_capacity_occupancy": {
+          "denominator": 5184,
+          "numerator": 4280
+        },
+        "single_register_capacity_bytes": 648,
+        "source_byte_length": 44,
+        "strict_compression_claim": "PER_SHARD_ONLY_WHEN_DECLARED_DOMAIN_ADMITTED"
+      },
+      "package_receipt_hash72": "m8h4vJSUoQ38FH8Ogr0B7xot1TwI9BA2KiCjwyyEzTz1ZfEUeQQwRLgswPeHvc>Fvk8zOYO-",
+      "package_root216": "2a87ecd5755a5bd22801b0b4f528b5edfbd442c8616f1bfde2a204d652ecdee2",
+      "roundtrip_exact": true,
+      "shard_count": 1,
+      "source_bit_length": 346,
+      "strict_domain_statuses": [
+        "STRICT_DOMAIN_REJECTED"
+      ]
+    },
+    {
+      "carrier_byte_length": 441,
+      "final_shard_bit_length": 3528,
+      "label": "palindrome_constant",
+      "metrics": {
+        "canonical_hfc_storage_bytes": 5184,
+        "carrier_byte_length": 441,
+        "carrier_expansion_ratio": {
+          "denominator": 16,
+          "numerator": 441
+        },
+        "logical_register_occupancy": {
+          "denominator": 5184,
+          "numerator": 441
+        },
+        "multi_register_required": false,
+        "native_packed_capacity_bytes": 648,
+        "packed_bit_capacity_occupancy": {
+          "denominator": 5184,
+          "numerator": 3528
+        },
+        "single_register_capacity_bytes": 648,
+        "source_byte_length": 16,
+        "strict_compression_claim": "PER_SHARD_ONLY_WHEN_DECLARED_DOMAIN_ADMITTED"
+      },
+      "package_receipt_hash72": "pr6YcZNVadb3r2c0w<MnPk+E03/+*XTRf1sWUtGIPeZM4A(r>P9/PCuEcOA!tl2El?mL>!tc",
+      "package_root216": "f995f47fd47f8f311f058d64a720d860374168eb376dbccf146f1b37d54b77ff",
+      "roundtrip_exact": true,
+      "shard_count": 1,
+      "source_bit_length": 127,
+      "strict_domain_statuses": [
+        "STRICT_DOMAIN_REJECTED"
+      ]
+    }
+  ],
+  "contract": "HHS-P211-P133-BIGINT-HFC-MULTIREGISTER-H72-H216",
+  "deterministic_replay": {
+    "equal": true,
+    "package_receipt_hash72": "m8h4vJSUoQ38FH8Ogr0B7xot1TwI9BA2KiCjwyyEzTz1ZfEUeQQwRLgswPeHvc>Fvk8zOYO-",
+    "package_root216": "2a87ecd5755a5bd22801b0b4f528b5edfbd442c8616f1bfde2a204d652ecdee2"
+  },
+  "multi_register_boundary": {
+    "carrier_byte_length": 811,
+    "final_shard_bit_length": 1304,
+    "label": "random_1024",
+    "ordered_shard_roots": [
+      "5fa2f05bce02fb43d76d1efd6fb909fe5744a3d1de636c2b29422d763b1b8569",
+      "d9954748cfa1b5447c14bda2691c5efba1721502b6865975e2576ad4d7809e59"
+    ],
+    "package_root216": "b5b1e92df89a9422a7367b166c32c9362848573a065be3d2192981a4da4d1234",
+    "roundtrip_exact": true,
+    "shard_count": 2,
+    "shard_payload_byte_lengths": [
+      648,
+      163
+    ],
+    "single_register_capacity_bytes": 648,
+    "source_bit_length": 1024
+  },
+  "negative_cases": {
+    "duplicate_shard": "Pass211ValidationError:PASS211_DUPLICATE_SHARD",
+    "missing_shard": "Pass211ValidationError:PASS211_MISSING_SHARD",
+    "negative": "Pass211ValidationError:PASS211_PASS133_ENVELOPE_REJECTED:BigInt envelope must be a positive integer",
+    "reordered_shards": "Pass211ValidationError:PASS211_SHARD_ORDER_VIOLATION",
+    "substituted_shard": "Pass211ValidationError:PASS211_SHARD_SUBSTITUTION_DETECTED",
+    "zero": "Pass211ValidationError:PASS211_PASS133_ENVELOPE_REJECTED:BigInt envelope must be a positive integer"
+  },
+  "pass133_independent_corpus": [
+    {
+      "carrier_byte_length": 393,
+      "carrier_status": "PALINDROMIC_ECC_BIGINT_RECONSTRUCTION_VERIFIED",
+      "expansion_ratio": {
+        "denominator": 1,
+        "numerator": 393
+      },
+      "label": "one_bit",
+      "roundtrip_exact": true,
+      "source_bit_length": 1,
+      "source_byte_length": 1
+    },
+    {
+      "carrier_byte_length": 393,
+      "carrier_status": "PALINDROMIC_ECC_BIGINT_RECONSTRUCTION_VERIFIED",
+      "expansion_ratio": {
+        "denominator": 1,
+        "numerator": 393
+      },
+      "label": "byte_a5",
+      "roundtrip_exact": true,
+      "source_bit_length": 8,
+      "source_byte_length": 1
+    },
+    {
+      "carrier_byte_length": 415,
+      "carrier_status": "PALINDROMIC_ECC_BIGINT_RECONSTRUCTION_VERIFIED",
+      "expansion_ratio": {
+        "denominator": 8,
+        "numerator": 415
+      },
+      "label": "word_64",
+      "roundtrip_exact": true,
+      "source_bit_length": 64,
+      "source_byte_length": 8
+    },
+    {
+      "carrier_byte_length": 535,
+      "carrier_status": "PALINDROMIC_ECC_BIGINT_RECONSTRUCTION_VERIFIED",
+      "expansion_ratio": {
+        "denominator": 44,
+        "numerator": 535
+      },
+      "label": "factorial_72",
+      "roundtrip_exact": true,
+      "source_bit_length": 345,
+      "source_byte_length": 44
+    },
+    {
+      "carrier_byte_length": 431,
+      "carrier_status": "PALINDROMIC_ECC_BIGINT_RECONSTRUCTION_VERIFIED",
+      "expansion_ratio": {
+        "denominator": 13,
+        "numerator": 431
+      },
+      "label": "lcm_1_72",
+      "roundtrip_exact": true,
+      "source_bit_length": 103,
+      "source_byte_length": 13
+    },
+    {
+      "carrier_byte_length": 535,
+      "carrier_status": "PALINDROMIC_ECC_BIGINT_RECONSTRUCTION_VERIFIED",
+      "expansion_ratio": {
+        "denominator": 44,
+        "numerator": 535
+      },
+      "label": "fibonacci_500",
+      "roundtrip_exact": true,
+      "source_bit_length": 346,
+      "source_byte_length": 44
+    },
+    {
+      "carrier_byte_length": 607,
+      "carrier_status": "PALINDROMIC_ECC_BIGINT_RECONSTRUCTION_VERIFIED",
+      "expansion_ratio": {
+        "denominator": 66,
+        "numerator": 607
+      },
+      "label": "mersenne_521",
+      "roundtrip_exact": true,
+      "source_bit_length": 521,
+      "source_byte_length": 66
+    },
+    {
+      "carrier_byte_length": 441,
+      "carrier_status": "PALINDROMIC_ECC_BIGINT_RECONSTRUCTION_VERIFIED",
+      "expansion_ratio": {
+        "denominator": 16,
+        "numerator": 441
+      },
+      "label": "palindrome_constant",
+      "roundtrip_exact": true,
+      "source_bit_length": 127,
+      "source_byte_length": 16
+    },
+    {
+      "carrier_byte_length": 497,
+      "carrier_status": "PALINDROMIC_ECC_BIGINT_RECONSTRUCTION_VERIFIED",
+      "expansion_ratio": {
+        "denominator": 32,
+        "numerator": 497
+      },
+      "label": "random_256",
+      "roundtrip_exact": true,
+      "source_bit_length": 256,
+      "source_byte_length": 32
+    },
+    {
+      "carrier_byte_length": 811,
+      "carrier_status": "PALINDROMIC_ECC_BIGINT_RECONSTRUCTION_VERIFIED",
+      "expansion_ratio": {
+        "denominator": 128,
+        "numerator": 811
+      },
+      "label": "random_1024",
+      "roundtrip_exact": true,
+      "source_bit_length": 1024,
+      "source_byte_length": 128
+    },
+    {
+      "carrier_byte_length": 2059,
+      "carrier_status": "PALINDROMIC_ECC_BIGINT_RECONSTRUCTION_VERIFIED",
+      "expansion_ratio": {
+        "denominator": 512,
+        "numerator": 2059
+      },
+      "label": "random_4096",
+      "roundtrip_exact": true,
+      "source_bit_length": 4096,
+      "source_byte_length": 512
+    }
+  ],
+  "pass133_stress": [
+    {
+      "double_error_fail_closed": true,
+      "label": "factorial_72",
+      "schema": "HHS_PASS133_PALINDROMIC_ECC_STRESS_REPORT_V1",
+      "single_bit_corrected": 256,
+      "single_bit_samples": 256,
+      "status": "PASS"
+    },
+    {
+      "double_error_fail_closed": true,
+      "label": "random_256",
+      "schema": "HHS_PASS133_PALINDROMIC_ECC_STRESS_REPORT_V1",
+      "single_bit_corrected": 256,
+      "single_bit_samples": 256,
+      "status": "PASS"
+    }
+  ],
+  "runtime_classification": "HHS_PASS_211_BIGINT_HFC_CARRIER_RUNTIME_VERIFIED",
+  "schema": "HHS_PASS_211_BIGINT_HFC_REFERENCE_EVIDENCE_V1",
+  "single_snapshot_erasure_events": [
+    {
+      "label": "one_bit",
+      "lost_snapshot_index": 0,
+      "payload_hash216": "2f312ebe34444d158e79d1f5dfaf2a585cab5fddba9ea25ca96cce99ac8576b7",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "one_bit",
+      "lost_snapshot_index": 1,
+      "payload_hash216": "2f312ebe34444d158e79d1f5dfaf2a585cab5fddba9ea25ca96cce99ac8576b7",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "one_bit",
+      "lost_snapshot_index": 2,
+      "payload_hash216": "2f312ebe34444d158e79d1f5dfaf2a585cab5fddba9ea25ca96cce99ac8576b7",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "one_bit",
+      "lost_snapshot_index": 3,
+      "payload_hash216": "2f312ebe34444d158e79d1f5dfaf2a585cab5fddba9ea25ca96cce99ac8576b7",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "one_bit",
+      "lost_snapshot_index": 4,
+      "payload_hash216": "2f312ebe34444d158e79d1f5dfaf2a585cab5fddba9ea25ca96cce99ac8576b7",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "one_bit",
+      "lost_snapshot_index": 5,
+      "payload_hash216": "2f312ebe34444d158e79d1f5dfaf2a585cab5fddba9ea25ca96cce99ac8576b7",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "one_bit",
+      "lost_snapshot_index": 6,
+      "payload_hash216": "2f312ebe34444d158e79d1f5dfaf2a585cab5fddba9ea25ca96cce99ac8576b7",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "one_bit",
+      "lost_snapshot_index": 7,
+      "payload_hash216": "2f312ebe34444d158e79d1f5dfaf2a585cab5fddba9ea25ca96cce99ac8576b7",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "one_bit",
+      "lost_snapshot_index": 8,
+      "payload_hash216": "2f312ebe34444d158e79d1f5dfaf2a585cab5fddba9ea25ca96cce99ac8576b7",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "one_bit",
+      "lost_snapshot_index": 9,
+      "payload_hash216": "2f312ebe34444d158e79d1f5dfaf2a585cab5fddba9ea25ca96cce99ac8576b7",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "one_bit",
+      "lost_snapshot_index": 10,
+      "payload_hash216": "2f312ebe34444d158e79d1f5dfaf2a585cab5fddba9ea25ca96cce99ac8576b7",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "one_bit",
+      "lost_snapshot_index": 11,
+      "payload_hash216": "2f312ebe34444d158e79d1f5dfaf2a585cab5fddba9ea25ca96cce99ac8576b7",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "one_bit",
+      "lost_snapshot_index": 12,
+      "payload_hash216": "2f312ebe34444d158e79d1f5dfaf2a585cab5fddba9ea25ca96cce99ac8576b7",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "one_bit",
+      "lost_snapshot_index": 13,
+      "payload_hash216": "2f312ebe34444d158e79d1f5dfaf2a585cab5fddba9ea25ca96cce99ac8576b7",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "one_bit",
+      "lost_snapshot_index": 14,
+      "payload_hash216": "2f312ebe34444d158e79d1f5dfaf2a585cab5fddba9ea25ca96cce99ac8576b7",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "one_bit",
+      "lost_snapshot_index": 15,
+      "payload_hash216": "2f312ebe34444d158e79d1f5dfaf2a585cab5fddba9ea25ca96cce99ac8576b7",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "one_bit",
+      "lost_snapshot_index": 16,
+      "payload_hash216": "2f312ebe34444d158e79d1f5dfaf2a585cab5fddba9ea25ca96cce99ac8576b7",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "one_bit",
+      "lost_snapshot_index": 17,
+      "payload_hash216": "2f312ebe34444d158e79d1f5dfaf2a585cab5fddba9ea25ca96cce99ac8576b7",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "one_bit",
+      "lost_snapshot_index": 18,
+      "payload_hash216": "2f312ebe34444d158e79d1f5dfaf2a585cab5fddba9ea25ca96cce99ac8576b7",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "one_bit",
+      "lost_snapshot_index": 19,
+      "payload_hash216": "2f312ebe34444d158e79d1f5dfaf2a585cab5fddba9ea25ca96cce99ac8576b7",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "one_bit",
+      "lost_snapshot_index": 20,
+      "payload_hash216": "2f312ebe34444d158e79d1f5dfaf2a585cab5fddba9ea25ca96cce99ac8576b7",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "one_bit",
+      "lost_snapshot_index": 21,
+      "payload_hash216": "2f312ebe34444d158e79d1f5dfaf2a585cab5fddba9ea25ca96cce99ac8576b7",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "one_bit",
+      "lost_snapshot_index": 22,
+      "payload_hash216": "2f312ebe34444d158e79d1f5dfaf2a585cab5fddba9ea25ca96cce99ac8576b7",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "one_bit",
+      "lost_snapshot_index": 23,
+      "payload_hash216": "2f312ebe34444d158e79d1f5dfaf2a585cab5fddba9ea25ca96cce99ac8576b7",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "one_bit",
+      "lost_snapshot_index": 24,
+      "payload_hash216": "2f312ebe34444d158e79d1f5dfaf2a585cab5fddba9ea25ca96cce99ac8576b7",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "one_bit",
+      "lost_snapshot_index": 25,
+      "payload_hash216": "2f312ebe34444d158e79d1f5dfaf2a585cab5fddba9ea25ca96cce99ac8576b7",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "one_bit",
+      "lost_snapshot_index": 26,
+      "payload_hash216": "2f312ebe34444d158e79d1f5dfaf2a585cab5fddba9ea25ca96cce99ac8576b7",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "one_bit",
+      "lost_snapshot_index": 27,
+      "payload_hash216": "2f312ebe34444d158e79d1f5dfaf2a585cab5fddba9ea25ca96cce99ac8576b7",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "one_bit",
+      "lost_snapshot_index": 28,
+      "payload_hash216": "2f312ebe34444d158e79d1f5dfaf2a585cab5fddba9ea25ca96cce99ac8576b7",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "one_bit",
+      "lost_snapshot_index": 29,
+      "payload_hash216": "2f312ebe34444d158e79d1f5dfaf2a585cab5fddba9ea25ca96cce99ac8576b7",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "one_bit",
+      "lost_snapshot_index": 30,
+      "payload_hash216": "2f312ebe34444d158e79d1f5dfaf2a585cab5fddba9ea25ca96cce99ac8576b7",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "one_bit",
+      "lost_snapshot_index": 31,
+      "payload_hash216": "2f312ebe34444d158e79d1f5dfaf2a585cab5fddba9ea25ca96cce99ac8576b7",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "one_bit",
+      "lost_snapshot_index": 32,
+      "payload_hash216": "2f312ebe34444d158e79d1f5dfaf2a585cab5fddba9ea25ca96cce99ac8576b7",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "one_bit",
+      "lost_snapshot_index": 33,
+      "payload_hash216": "2f312ebe34444d158e79d1f5dfaf2a585cab5fddba9ea25ca96cce99ac8576b7",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "one_bit",
+      "lost_snapshot_index": 34,
+      "payload_hash216": "2f312ebe34444d158e79d1f5dfaf2a585cab5fddba9ea25ca96cce99ac8576b7",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "one_bit",
+      "lost_snapshot_index": 35,
+      "payload_hash216": "2f312ebe34444d158e79d1f5dfaf2a585cab5fddba9ea25ca96cce99ac8576b7",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "factorial_72",
+      "lost_snapshot_index": 0,
+      "payload_hash216": "3c57551e9226fe04a57c83c11dee0189f5fcc9f6868de52dde7774b816767035",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "factorial_72",
+      "lost_snapshot_index": 1,
+      "payload_hash216": "3c57551e9226fe04a57c83c11dee0189f5fcc9f6868de52dde7774b816767035",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "factorial_72",
+      "lost_snapshot_index": 2,
+      "payload_hash216": "3c57551e9226fe04a57c83c11dee0189f5fcc9f6868de52dde7774b816767035",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "factorial_72",
+      "lost_snapshot_index": 3,
+      "payload_hash216": "3c57551e9226fe04a57c83c11dee0189f5fcc9f6868de52dde7774b816767035",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "factorial_72",
+      "lost_snapshot_index": 4,
+      "payload_hash216": "3c57551e9226fe04a57c83c11dee0189f5fcc9f6868de52dde7774b816767035",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "factorial_72",
+      "lost_snapshot_index": 5,
+      "payload_hash216": "3c57551e9226fe04a57c83c11dee0189f5fcc9f6868de52dde7774b816767035",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "factorial_72",
+      "lost_snapshot_index": 6,
+      "payload_hash216": "3c57551e9226fe04a57c83c11dee0189f5fcc9f6868de52dde7774b816767035",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "factorial_72",
+      "lost_snapshot_index": 7,
+      "payload_hash216": "3c57551e9226fe04a57c83c11dee0189f5fcc9f6868de52dde7774b816767035",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "factorial_72",
+      "lost_snapshot_index": 8,
+      "payload_hash216": "3c57551e9226fe04a57c83c11dee0189f5fcc9f6868de52dde7774b816767035",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "factorial_72",
+      "lost_snapshot_index": 9,
+      "payload_hash216": "3c57551e9226fe04a57c83c11dee0189f5fcc9f6868de52dde7774b816767035",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "factorial_72",
+      "lost_snapshot_index": 10,
+      "payload_hash216": "3c57551e9226fe04a57c83c11dee0189f5fcc9f6868de52dde7774b816767035",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "factorial_72",
+      "lost_snapshot_index": 11,
+      "payload_hash216": "3c57551e9226fe04a57c83c11dee0189f5fcc9f6868de52dde7774b816767035",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "factorial_72",
+      "lost_snapshot_index": 12,
+      "payload_hash216": "3c57551e9226fe04a57c83c11dee0189f5fcc9f6868de52dde7774b816767035",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "factorial_72",
+      "lost_snapshot_index": 13,
+      "payload_hash216": "3c57551e9226fe04a57c83c11dee0189f5fcc9f6868de52dde7774b816767035",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "factorial_72",
+      "lost_snapshot_index": 14,
+      "payload_hash216": "3c57551e9226fe04a57c83c11dee0189f5fcc9f6868de52dde7774b816767035",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "factorial_72",
+      "lost_snapshot_index": 15,
+      "payload_hash216": "3c57551e9226fe04a57c83c11dee0189f5fcc9f6868de52dde7774b816767035",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "factorial_72",
+      "lost_snapshot_index": 16,
+      "payload_hash216": "3c57551e9226fe04a57c83c11dee0189f5fcc9f6868de52dde7774b816767035",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "factorial_72",
+      "lost_snapshot_index": 17,
+      "payload_hash216": "3c57551e9226fe04a57c83c11dee0189f5fcc9f6868de52dde7774b816767035",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "factorial_72",
+      "lost_snapshot_index": 18,
+      "payload_hash216": "3c57551e9226fe04a57c83c11dee0189f5fcc9f6868de52dde7774b816767035",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "factorial_72",
+      "lost_snapshot_index": 19,
+      "payload_hash216": "3c57551e9226fe04a57c83c11dee0189f5fcc9f6868de52dde7774b816767035",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "factorial_72",
+      "lost_snapshot_index": 20,
+      "payload_hash216": "3c57551e9226fe04a57c83c11dee0189f5fcc9f6868de52dde7774b816767035",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "factorial_72",
+      "lost_snapshot_index": 21,
+      "payload_hash216": "3c57551e9226fe04a57c83c11dee0189f5fcc9f6868de52dde7774b816767035",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "factorial_72",
+      "lost_snapshot_index": 22,
+      "payload_hash216": "3c57551e9226fe04a57c83c11dee0189f5fcc9f6868de52dde7774b816767035",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "factorial_72",
+      "lost_snapshot_index": 23,
+      "payload_hash216": "3c57551e9226fe04a57c83c11dee0189f5fcc9f6868de52dde7774b816767035",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "factorial_72",
+      "lost_snapshot_index": 24,
+      "payload_hash216": "3c57551e9226fe04a57c83c11dee0189f5fcc9f6868de52dde7774b816767035",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "factorial_72",
+      "lost_snapshot_index": 25,
+      "payload_hash216": "3c57551e9226fe04a57c83c11dee0189f5fcc9f6868de52dde7774b816767035",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "factorial_72",
+      "lost_snapshot_index": 26,
+      "payload_hash216": "3c57551e9226fe04a57c83c11dee0189f5fcc9f6868de52dde7774b816767035",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "factorial_72",
+      "lost_snapshot_index": 27,
+      "payload_hash216": "3c57551e9226fe04a57c83c11dee0189f5fcc9f6868de52dde7774b816767035",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "factorial_72",
+      "lost_snapshot_index": 28,
+      "payload_hash216": "3c57551e9226fe04a57c83c11dee0189f5fcc9f6868de52dde7774b816767035",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "factorial_72",
+      "lost_snapshot_index": 29,
+      "payload_hash216": "3c57551e9226fe04a57c83c11dee0189f5fcc9f6868de52dde7774b816767035",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "factorial_72",
+      "lost_snapshot_index": 30,
+      "payload_hash216": "3c57551e9226fe04a57c83c11dee0189f5fcc9f6868de52dde7774b816767035",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "factorial_72",
+      "lost_snapshot_index": 31,
+      "payload_hash216": "3c57551e9226fe04a57c83c11dee0189f5fcc9f6868de52dde7774b816767035",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "factorial_72",
+      "lost_snapshot_index": 32,
+      "payload_hash216": "3c57551e9226fe04a57c83c11dee0189f5fcc9f6868de52dde7774b816767035",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "factorial_72",
+      "lost_snapshot_index": 33,
+      "payload_hash216": "3c57551e9226fe04a57c83c11dee0189f5fcc9f6868de52dde7774b816767035",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "factorial_72",
+      "lost_snapshot_index": 34,
+      "payload_hash216": "3c57551e9226fe04a57c83c11dee0189f5fcc9f6868de52dde7774b816767035",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "factorial_72",
+      "lost_snapshot_index": 35,
+      "payload_hash216": "3c57551e9226fe04a57c83c11dee0189f5fcc9f6868de52dde7774b816767035",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "fibonacci_500",
+      "lost_snapshot_index": 0,
+      "payload_hash216": "982dc604828dc2d5f655484850d9ee5867f8f906b192946dab0f8d700e100821",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "fibonacci_500",
+      "lost_snapshot_index": 1,
+      "payload_hash216": "982dc604828dc2d5f655484850d9ee5867f8f906b192946dab0f8d700e100821",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "fibonacci_500",
+      "lost_snapshot_index": 2,
+      "payload_hash216": "982dc604828dc2d5f655484850d9ee5867f8f906b192946dab0f8d700e100821",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "fibonacci_500",
+      "lost_snapshot_index": 3,
+      "payload_hash216": "982dc604828dc2d5f655484850d9ee5867f8f906b192946dab0f8d700e100821",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "fibonacci_500",
+      "lost_snapshot_index": 4,
+      "payload_hash216": "982dc604828dc2d5f655484850d9ee5867f8f906b192946dab0f8d700e100821",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "fibonacci_500",
+      "lost_snapshot_index": 5,
+      "payload_hash216": "982dc604828dc2d5f655484850d9ee5867f8f906b192946dab0f8d700e100821",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "fibonacci_500",
+      "lost_snapshot_index": 6,
+      "payload_hash216": "982dc604828dc2d5f655484850d9ee5867f8f906b192946dab0f8d700e100821",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "fibonacci_500",
+      "lost_snapshot_index": 7,
+      "payload_hash216": "982dc604828dc2d5f655484850d9ee5867f8f906b192946dab0f8d700e100821",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "fibonacci_500",
+      "lost_snapshot_index": 8,
+      "payload_hash216": "982dc604828dc2d5f655484850d9ee5867f8f906b192946dab0f8d700e100821",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "fibonacci_500",
+      "lost_snapshot_index": 9,
+      "payload_hash216": "982dc604828dc2d5f655484850d9ee5867f8f906b192946dab0f8d700e100821",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "fibonacci_500",
+      "lost_snapshot_index": 10,
+      "payload_hash216": "982dc604828dc2d5f655484850d9ee5867f8f906b192946dab0f8d700e100821",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "fibonacci_500",
+      "lost_snapshot_index": 11,
+      "payload_hash216": "982dc604828dc2d5f655484850d9ee5867f8f906b192946dab0f8d700e100821",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "fibonacci_500",
+      "lost_snapshot_index": 12,
+      "payload_hash216": "982dc604828dc2d5f655484850d9ee5867f8f906b192946dab0f8d700e100821",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "fibonacci_500",
+      "lost_snapshot_index": 13,
+      "payload_hash216": "982dc604828dc2d5f655484850d9ee5867f8f906b192946dab0f8d700e100821",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "fibonacci_500",
+      "lost_snapshot_index": 14,
+      "payload_hash216": "982dc604828dc2d5f655484850d9ee5867f8f906b192946dab0f8d700e100821",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "fibonacci_500",
+      "lost_snapshot_index": 15,
+      "payload_hash216": "982dc604828dc2d5f655484850d9ee5867f8f906b192946dab0f8d700e100821",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "fibonacci_500",
+      "lost_snapshot_index": 16,
+      "payload_hash216": "982dc604828dc2d5f655484850d9ee5867f8f906b192946dab0f8d700e100821",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "fibonacci_500",
+      "lost_snapshot_index": 17,
+      "payload_hash216": "982dc604828dc2d5f655484850d9ee5867f8f906b192946dab0f8d700e100821",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "fibonacci_500",
+      "lost_snapshot_index": 18,
+      "payload_hash216": "982dc604828dc2d5f655484850d9ee5867f8f906b192946dab0f8d700e100821",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "fibonacci_500",
+      "lost_snapshot_index": 19,
+      "payload_hash216": "982dc604828dc2d5f655484850d9ee5867f8f906b192946dab0f8d700e100821",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "fibonacci_500",
+      "lost_snapshot_index": 20,
+      "payload_hash216": "982dc604828dc2d5f655484850d9ee5867f8f906b192946dab0f8d700e100821",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "fibonacci_500",
+      "lost_snapshot_index": 21,
+      "payload_hash216": "982dc604828dc2d5f655484850d9ee5867f8f906b192946dab0f8d700e100821",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "fibonacci_500",
+      "lost_snapshot_index": 22,
+      "payload_hash216": "982dc604828dc2d5f655484850d9ee5867f8f906b192946dab0f8d700e100821",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "fibonacci_500",
+      "lost_snapshot_index": 23,
+      "payload_hash216": "982dc604828dc2d5f655484850d9ee5867f8f906b192946dab0f8d700e100821",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "fibonacci_500",
+      "lost_snapshot_index": 24,
+      "payload_hash216": "982dc604828dc2d5f655484850d9ee5867f8f906b192946dab0f8d700e100821",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "fibonacci_500",
+      "lost_snapshot_index": 25,
+      "payload_hash216": "982dc604828dc2d5f655484850d9ee5867f8f906b192946dab0f8d700e100821",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "fibonacci_500",
+      "lost_snapshot_index": 26,
+      "payload_hash216": "982dc604828dc2d5f655484850d9ee5867f8f906b192946dab0f8d700e100821",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "fibonacci_500",
+      "lost_snapshot_index": 27,
+      "payload_hash216": "982dc604828dc2d5f655484850d9ee5867f8f906b192946dab0f8d700e100821",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "fibonacci_500",
+      "lost_snapshot_index": 28,
+      "payload_hash216": "982dc604828dc2d5f655484850d9ee5867f8f906b192946dab0f8d700e100821",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "fibonacci_500",
+      "lost_snapshot_index": 29,
+      "payload_hash216": "982dc604828dc2d5f655484850d9ee5867f8f906b192946dab0f8d700e100821",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "fibonacci_500",
+      "lost_snapshot_index": 30,
+      "payload_hash216": "982dc604828dc2d5f655484850d9ee5867f8f906b192946dab0f8d700e100821",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "fibonacci_500",
+      "lost_snapshot_index": 31,
+      "payload_hash216": "982dc604828dc2d5f655484850d9ee5867f8f906b192946dab0f8d700e100821",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "fibonacci_500",
+      "lost_snapshot_index": 32,
+      "payload_hash216": "982dc604828dc2d5f655484850d9ee5867f8f906b192946dab0f8d700e100821",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "fibonacci_500",
+      "lost_snapshot_index": 33,
+      "payload_hash216": "982dc604828dc2d5f655484850d9ee5867f8f906b192946dab0f8d700e100821",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "fibonacci_500",
+      "lost_snapshot_index": 34,
+      "payload_hash216": "982dc604828dc2d5f655484850d9ee5867f8f906b192946dab0f8d700e100821",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "fibonacci_500",
+      "lost_snapshot_index": 35,
+      "payload_hash216": "982dc604828dc2d5f655484850d9ee5867f8f906b192946dab0f8d700e100821",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "palindrome_constant",
+      "lost_snapshot_index": 0,
+      "payload_hash216": "696848c66caa6cf3ac1094308d4cce595a147a5ca6e4193602bed14c4ee2b785",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "palindrome_constant",
+      "lost_snapshot_index": 1,
+      "payload_hash216": "696848c66caa6cf3ac1094308d4cce595a147a5ca6e4193602bed14c4ee2b785",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "palindrome_constant",
+      "lost_snapshot_index": 2,
+      "payload_hash216": "696848c66caa6cf3ac1094308d4cce595a147a5ca6e4193602bed14c4ee2b785",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "palindrome_constant",
+      "lost_snapshot_index": 3,
+      "payload_hash216": "696848c66caa6cf3ac1094308d4cce595a147a5ca6e4193602bed14c4ee2b785",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "palindrome_constant",
+      "lost_snapshot_index": 4,
+      "payload_hash216": "696848c66caa6cf3ac1094308d4cce595a147a5ca6e4193602bed14c4ee2b785",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "palindrome_constant",
+      "lost_snapshot_index": 5,
+      "payload_hash216": "696848c66caa6cf3ac1094308d4cce595a147a5ca6e4193602bed14c4ee2b785",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "palindrome_constant",
+      "lost_snapshot_index": 6,
+      "payload_hash216": "696848c66caa6cf3ac1094308d4cce595a147a5ca6e4193602bed14c4ee2b785",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "palindrome_constant",
+      "lost_snapshot_index": 7,
+      "payload_hash216": "696848c66caa6cf3ac1094308d4cce595a147a5ca6e4193602bed14c4ee2b785",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "palindrome_constant",
+      "lost_snapshot_index": 8,
+      "payload_hash216": "696848c66caa6cf3ac1094308d4cce595a147a5ca6e4193602bed14c4ee2b785",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "palindrome_constant",
+      "lost_snapshot_index": 9,
+      "payload_hash216": "696848c66caa6cf3ac1094308d4cce595a147a5ca6e4193602bed14c4ee2b785",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "palindrome_constant",
+      "lost_snapshot_index": 10,
+      "payload_hash216": "696848c66caa6cf3ac1094308d4cce595a147a5ca6e4193602bed14c4ee2b785",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "palindrome_constant",
+      "lost_snapshot_index": 11,
+      "payload_hash216": "696848c66caa6cf3ac1094308d4cce595a147a5ca6e4193602bed14c4ee2b785",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "palindrome_constant",
+      "lost_snapshot_index": 12,
+      "payload_hash216": "696848c66caa6cf3ac1094308d4cce595a147a5ca6e4193602bed14c4ee2b785",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "palindrome_constant",
+      "lost_snapshot_index": 13,
+      "payload_hash216": "696848c66caa6cf3ac1094308d4cce595a147a5ca6e4193602bed14c4ee2b785",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "palindrome_constant",
+      "lost_snapshot_index": 14,
+      "payload_hash216": "696848c66caa6cf3ac1094308d4cce595a147a5ca6e4193602bed14c4ee2b785",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "palindrome_constant",
+      "lost_snapshot_index": 15,
+      "payload_hash216": "696848c66caa6cf3ac1094308d4cce595a147a5ca6e4193602bed14c4ee2b785",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "palindrome_constant",
+      "lost_snapshot_index": 16,
+      "payload_hash216": "696848c66caa6cf3ac1094308d4cce595a147a5ca6e4193602bed14c4ee2b785",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "palindrome_constant",
+      "lost_snapshot_index": 17,
+      "payload_hash216": "696848c66caa6cf3ac1094308d4cce595a147a5ca6e4193602bed14c4ee2b785",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "palindrome_constant",
+      "lost_snapshot_index": 18,
+      "payload_hash216": "696848c66caa6cf3ac1094308d4cce595a147a5ca6e4193602bed14c4ee2b785",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "palindrome_constant",
+      "lost_snapshot_index": 19,
+      "payload_hash216": "696848c66caa6cf3ac1094308d4cce595a147a5ca6e4193602bed14c4ee2b785",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "palindrome_constant",
+      "lost_snapshot_index": 20,
+      "payload_hash216": "696848c66caa6cf3ac1094308d4cce595a147a5ca6e4193602bed14c4ee2b785",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "palindrome_constant",
+      "lost_snapshot_index": 21,
+      "payload_hash216": "696848c66caa6cf3ac1094308d4cce595a147a5ca6e4193602bed14c4ee2b785",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "palindrome_constant",
+      "lost_snapshot_index": 22,
+      "payload_hash216": "696848c66caa6cf3ac1094308d4cce595a147a5ca6e4193602bed14c4ee2b785",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "palindrome_constant",
+      "lost_snapshot_index": 23,
+      "payload_hash216": "696848c66caa6cf3ac1094308d4cce595a147a5ca6e4193602bed14c4ee2b785",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "palindrome_constant",
+      "lost_snapshot_index": 24,
+      "payload_hash216": "696848c66caa6cf3ac1094308d4cce595a147a5ca6e4193602bed14c4ee2b785",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "palindrome_constant",
+      "lost_snapshot_index": 25,
+      "payload_hash216": "696848c66caa6cf3ac1094308d4cce595a147a5ca6e4193602bed14c4ee2b785",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "palindrome_constant",
+      "lost_snapshot_index": 26,
+      "payload_hash216": "696848c66caa6cf3ac1094308d4cce595a147a5ca6e4193602bed14c4ee2b785",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "palindrome_constant",
+      "lost_snapshot_index": 27,
+      "payload_hash216": "696848c66caa6cf3ac1094308d4cce595a147a5ca6e4193602bed14c4ee2b785",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "palindrome_constant",
+      "lost_snapshot_index": 28,
+      "payload_hash216": "696848c66caa6cf3ac1094308d4cce595a147a5ca6e4193602bed14c4ee2b785",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "palindrome_constant",
+      "lost_snapshot_index": 29,
+      "payload_hash216": "696848c66caa6cf3ac1094308d4cce595a147a5ca6e4193602bed14c4ee2b785",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "palindrome_constant",
+      "lost_snapshot_index": 30,
+      "payload_hash216": "696848c66caa6cf3ac1094308d4cce595a147a5ca6e4193602bed14c4ee2b785",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "palindrome_constant",
+      "lost_snapshot_index": 31,
+      "payload_hash216": "696848c66caa6cf3ac1094308d4cce595a147a5ca6e4193602bed14c4ee2b785",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "palindrome_constant",
+      "lost_snapshot_index": 32,
+      "payload_hash216": "696848c66caa6cf3ac1094308d4cce595a147a5ca6e4193602bed14c4ee2b785",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "palindrome_constant",
+      "lost_snapshot_index": 33,
+      "payload_hash216": "696848c66caa6cf3ac1094308d4cce595a147a5ca6e4193602bed14c4ee2b785",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "palindrome_constant",
+      "lost_snapshot_index": 34,
+      "payload_hash216": "696848c66caa6cf3ac1094308d4cce595a147a5ca6e4193602bed14c4ee2b785",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    },
+    {
+      "label": "palindrome_constant",
+      "lost_snapshot_index": 35,
+      "payload_hash216": "696848c66caa6cf3ac1094308d4cce595a147a5ca6e4193602bed14c4ee2b785",
+      "status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+    }
+  ],
+  "stacked_integrity_drill": {
+    "ciphertext_exact": true,
+    "ecc_correction_events": 1,
+    "ecc_status": "ECC_ERROR_CORRECTED",
+    "hfc_recovery_status": "PASS211_SHARD_ERASURE_RECOVERY_VERIFIED"
+  },
+  "strict_domain_boundary": {
+    "bigint_detail": "HFC_STRICT_COMPRESSION_DOMAIN_WITNESS_REQUIRED",
+    "bigint_status": "STRICT_DOMAIN_REJECTED",
+    "direct_bigint_probe_error": "HFCValidationError:HFC_STRICT_COMPRESSION_DOMAIN_WITNESS_REQUIRED",
+    "fibonacci_roundtrip_exact": true,
+    "fibonacci_seed": [
+      1,
+      1
+    ],
+    "fibonacci_status": "STRICT_DOMAIN_ADMITTED"
+  },
+  "suite_summary": {
+    "anchored_cell_1000_exact": true,
+    "combined_erasure_expected": 144,
+    "combined_erasure_recoveries": 144,
+    "fresh_projection_self_agreement": true,
+    "pass133_corpus_size": 11,
+    "pass133_roundtrips": 11,
+    "runtime_verified": true,
+    "single_bit_corrections": 512,
+    "single_bit_samples": 512,
+    "strict_claim_boundary_preserved": true
+  }
+}
