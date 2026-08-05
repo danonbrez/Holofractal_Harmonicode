@@ -23,7 +23,8 @@ jobs:
           cat .pass211-bootstrap/chunk00 .pass211-bootstrap/chunk01 .pass211-bootstrap/chunk02 .pass211-bootstrap/chunk03 .pass211-bootstrap/chunk04 > /tmp/pass211_payload.b64
           base64 -d /tmp/pass211_payload.b64 > /tmp/pass211_payload.tar.xz
           tar -xJf /tmp/pass211_payload.tar.xz -C .
-          rm -rf .pass211-bootstrap .github/workflows/pass211-bootstrap.yml
+          rm -rf .pass211-bootstrap
+          rm -f .github/workflows/pass211-bootstrap.yml .github/workflows/pass211-bigint-hfc-carrier.yml
           git config user.name hhs-pass211-bootstrap
           git config user.email hhs-pass211-bootstrap@users.noreply.github.com
           git add -A
