@@ -6,7 +6,7 @@
 - Branch: `agent/pass213-compiled-rom-integrity`
 - Validated Iteration 5 head: `5b7a1f95ab53bdd0c47706314eac2ec1fedb5ea3`
 - Validated Iteration 6 implementation head: `e9ddcb09d3af525018a9e0196d065107c00674fc`
-- Published Iteration 6 evidence head before final evidence-head workflow: `b0dc492b791cf57789f7f6ec3ddc896a72bb83c0`
+- Validated Iteration 6 evidence/workflow head: `93338a7330b480552a79ca437c77aca42e9d9cc0`
 - Merge target: `main`
 - Draft pull request: `#169`
 - Iteration: `6`
@@ -68,6 +68,7 @@ Algorithm authority:
 - the matching liboqs release is selected with `PYOQS_VERSION=0.16.0`;
 - the gate requires enabled ML-KEM-768 and ML-DSA-65 mechanisms;
 - the gate resolves an enabled SLH-DSA SHA2-128s mechanism by normalized family and parameter identity;
+- the native liboqs installation is cached by operating system, runner architecture, and liboqs version;
 - workflow artifacts retain the complete validation transcript for restartable repair.
 
 Native key protection:
@@ -135,23 +136,48 @@ PYOQS_VERSION=0.16.0 bash scripts/run_pass213_iteration1_validation.sh
 
 ## Repository-native Iteration 6 evidence
 
+Implementation head:
+
 ```text
 workflow: Pass 213 Compiled ROM Integrity
 run: 31036482697
 job: 92409747663
-validated implementation head: e9ddcb09d3af525018a9e0196d065107c00674fc
+validated head: e9ddcb09d3af525018a9e0196d065107c00674fc
 algorithm preflight: PASS
-Iterative test command: PASS
+Iterations 1–6 validation: PASS
 workflow conclusion: SUCCESS
 ```
 
-The workflow produced and retained the complete Iteration 6 validation transcript. The preceding diagnostic run established that 67 of 68 tests already passed and isolated the sole failure to punctuation-specific assertion of the enabled liboqs SLH-DSA mechanism name. The assertion was replaced with normalized family and parameter verification; the complete cumulative rerun passed.
+Documentation/evidence head:
+
+```text
+workflow: Pass 213 Compiled ROM Integrity
+run: 31037051553
+job: 92411639513
+validated head: 8d52b3fe0843088a9ae73f6dd1ad0920f07dc3c5
+Iterations 1–6 validation: PASS
+workflow conclusion: SUCCESS
+```
+
+Final workflow-policy head:
+
+```text
+workflow: Pass 213 Compiled ROM Integrity
+run: 31037164477
+job: 92412018053
+validated head: 93338a7330b480552a79ca437c77aca42e9d9cc0
+Iterations 1–6 validation: PASS
+workflow conclusion: SUCCESS
+```
+
+The diagnostic artifact from run `31035783049` established that 67 of 68 tests passed and isolated the only failure to punctuation-specific spelling of the enabled liboqs SLH-DSA mechanism name. The assertion was replaced with normalized family and parameter verification. The full cumulative gate then passed on the implementation, evidence, and final workflow-policy heads.
 
 ## Workflow state
 
 - Workflow: `Pass 213 Compiled ROM Integrity`
-- Implementation-head Iteration 1–6 validation: complete and successful.
-- Final documentation/evidence-head validation: triggered by the current restart-record commit.
+- Iteration 1–6 implementation validation: complete and successful.
+- Final workflow-policy validation: complete and successful.
+- Restart-record-only evidence commits are intentionally excluded from the runtime rerun path.
 - Guarded Continuous Integration remains governed by its inherited path policy.
 - Pull request remains draft and unmerged.
 
@@ -165,4 +191,4 @@ The workflow produced and retained the complete Iteration 6 validation transcrip
 
 ## Next exact action
 
-Resolve the final documentation/evidence-head workflow. After it succeeds, preserve the final run and head in PR #169, then begin the trusted external timestamp checkpoint layer while retaining every Iteration 1–6 gate. Do not merge Pass 214 ahead of authoritative Pass 213 closure.
+Begin the trusted external timestamp checkpoint layer while retaining every Iteration 1–6 gate. Bind external timestamp tokens to the dual-signed checkpoint root, verifier-bundle root, signed sequence, prior anchored root, and Hash216 lineage. Do not merge Pass 214 ahead of authoritative Pass 213 closure.
