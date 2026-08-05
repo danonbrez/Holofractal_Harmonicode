@@ -4,7 +4,7 @@
 - Immediate parent: Pass 212 full hydration compression and physical erasure recovery
 - Base commit: `2be050264a6e9c659603100be802979bbc49bf7a`
 - Branch: `agent/pass213-compiled-rom-integrity`
-- Published head after this restart update: `54a823036b18ee6054d9d48cbc703741b3861f18`
+- Published implementation and restart head before final workflow receipt: `6e87dab5262f539722f795553b0332ef078c241d`
 - Merge target: `main`
 - Draft pull request: `#169`
 - Iteration: `4`
