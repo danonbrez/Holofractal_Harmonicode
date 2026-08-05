@@ -1,49 +1,80 @@
-# Pass 213 — Iterations 1 and 2
+# Pass 213 — Iterations 1–3
 
-Pass 213 builds the timestamp-bound authenticated compiled ROM and protects its canonical admission path with inherited Pass 212 physical recovery.
+Pass 213 builds the timestamp-bound authenticated compiled ROM, corrects its physical carriers before interpretation, and stores admitted entries in native protected memory.
 
-## Iteration 1
+## Iteration 1: compiled-ROM authority
 
 Implemented:
 
 - exact canonical serialization and framed SHA-256 identities;
 - HMAC-SHA-256 domain-separated key derivation;
-- exact integer-nanosecond opening and closing boundaries;
+- integer-nanosecond opening and closing boundaries;
 - authenticated noncommutative operation-group chaining;
-- deterministic keyed full-cycle permutations over declared lattice domains;
-- immutable compiled-ROM records with VM81, operation-slot, and G243 identities;
-- exact compiled lookup and authenticated inventory roots;
-- deterministic authenticated operation-group receipts;
-- focused mutation, rollback, ordering, closure, and duplicate-identity tests.
+- deterministic keyed full-cycle permutations;
+- immutable compiled-ROM records;
+- exact lookup, inventory roots, and deterministic receipts.
 
-The closure implementation uses an affine bijection `cell(i) = (a*i+b) mod N` with `gcd(a,N)=1`. It proves one visit per cell and exact closure for the declared domain. Later iterations may replace or compose this calibration permutation with the full high-dimensional magic-square/Sudoku tensor generator while preserving the same closure interface and evidence requirements.
-
-## Iteration 2
+## Iteration 2: recovery-gated admission
 
 Implemented:
 
-- exact serialization of immutable compiled-ROM entries;
-- Pass 212 `ProtectedPayload` physical shard and parity protection;
-- keyed Pass 213 carrier roots and authentication tags;
-- correction of one or two missing physical shards within the inherited stripe budget;
-- fail-closed behavior beyond the recovery budget;
-- present-shard corruption rejection;
+- Pass 212 physical shard and parity protection;
+- keyed Pass 213 carrier roots and authentication;
+- correction of one or two missing shards within the inherited budget;
+- fail-closed rejection outside the budget;
 - recovered payload Hash216 validation before JSON deserialization;
 - immutable entry Hash216 validation after deserialization;
 - keyed `RecoveredROMAdmission` proofs;
-- `RecoveryGatedCompiledROMStore`, which accepts recovery admissions rather than raw entries;
-- combined inventory roots covering compiled entries and their admission roots.
+- recovery-gated canonical insertion.
 
-The canonical sequence is:
+Canonical sequence:
 
 ```text
 validate carrier
 → correct physical damage
 → validate reconstructed payload Hash216
 → deserialize
-→ validate compiled entry Hash216
+→ validate compiled-entry Hash216
 → mint admission proof
-→ insert into compiled ROM
+```
+
+## Iteration 3: native secure memory
+
+Implemented native C arena:
+
+- `mmap` allocation with two `PROT_NONE` guard pages;
+- non-executable data pages;
+- `mlock` no-swap enforcement;
+- `MADV_DONTDUMP` core-dump exclusion;
+- `MADV_DONTFORK` child-process exclusion;
+- `PR_SET_DUMPABLE` process hardening;
+- constant-time 256-bit owner-token authorization;
+- bounds-checked internal reads and writes;
+- read-only sealing;
+- explicit zeroization and zero verification;
+- zeroization before unmap and release.
+
+Implemented runtime surfaces:
+
+- `NativeSecureArena` with no public raw-address surface;
+- keyed `ALLOCATE`, `WRITE`, `SEAL`, `ZEROIZE`, and `DESTROY` receipts;
+- `NativeProtectedCompiledROMStore`, which accepts only validated recovered admissions;
+- sealed native storage of canonical compiled-entry bytes;
+- internal lookup deserialization and Hash216 revalidation;
+- inventory roots binding admission, arena, length, and receipt commitments;
+- complete zeroizing retirement of protected entries.
+
+End-to-end sequence:
+
+```text
+Pass 212 correction
+→ recovered admission
+→ native guarded allocation
+→ bounded write
+→ read-only seal
+→ internal Hash216 verification
+→ protected compiled-ROM lookup
+→ zeroizing retirement
 ```
 
 ## Validation
@@ -52,8 +83,8 @@ validate carrier
 bash scripts/run_pass213_iteration1_validation.sh
 ```
 
-The script executes both iteration test modules, compiles both runtime modules, and parses the machine-readable contract.
+The gate builds the C source with `-Wall -Wextra -Werror`, executes every Pass 213 test module, compiles all runtime modules, and validates the JSON contract.
 
 ## Current boundary
 
-Pass 213 remains incomplete. Protected-memory enforcement, parametric delta validation, persistent tombstones, PQC enclosure, trusted external timestamp anchoring, native dispatch, APIs, CLI, full performance evidence, final merge, and verified-main closure remain subsequent work.
+Pass 213 remains incomplete. Parametric delta validation, persistent tombstones, PQC enclosure, trusted external timestamps, full tensor invariants, API/CLI/native dispatch, performance evidence, final integration, merge, and verified-main closure remain subsequent work.
