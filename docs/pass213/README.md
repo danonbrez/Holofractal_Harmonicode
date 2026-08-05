@@ -1,79 +1,71 @@
-# Pass 213 — Iterations 1–4
+# Pass 213 — Iterations 1–5
 
-Pass 213 builds the timestamp-bound authenticated compiled ROM, corrects its physical carriers before interpretation, stores admitted entries in native protected memory, and reuses compiled transformations through dependency-scoped parametric validation.
+Pass 213 builds a timestamp-bound authenticated compiled ROM, corrects carriers before interpretation, protects admitted entries in native memory, reuses compatible transformations through dependency-scoped validation, and preserves their inventory across restarts.
 
-## Iteration 1: compiled-ROM authority
+## Implemented progression
 
-Implemented:
+### Iteration 1 — compiled-ROM authority
 
-- exact canonical serialization and framed SHA-256 identities;
-- domain-separated keyed derivation;
-- integer-nanosecond opening and closing boundaries;
-- authenticated noncommutative operation-group chaining;
-- deterministic keyed full-cycle permutations;
-- immutable compiled-ROM records;
-- exact lookup, inventory roots, and deterministic receipts.
+- immutable compiled-operation Hash216 identities;
+- exact timestamp boundaries and noncommutative operation ordering;
+- keyed closure paths, exact lookup, inventory commitments, and receipts.
 
-## Iteration 2: recovery-gated admission
+### Iteration 2 — recovery-gated admission
 
-Implemented:
+- Pass 212 shard validation and bounded reconstruction;
+- recovered-payload Hash216 before deserialization;
+- immutable entry Hash216 after deserialization;
+- keyed recovered-ROM admission proofs.
 
-- Pass 212 physical shard and parity protection;
-- keyed Pass 213 carrier roots and authentication;
-- correction of one or two missing shards within the inherited budget;
-- fail-closed rejection outside the budget;
-- recovered payload Hash216 validation before deserialization;
-- immutable entry Hash216 validation after deserialization;
-- keyed `RecoveredROMAdmission` proofs;
-- recovery-gated canonical insertion.
+### Iteration 3 — native protected memory
 
-## Iteration 3: native secure memory
+- guarded non-executable native arenas;
+- page locking, dump exclusion, and fork exclusion;
+- constant-time owner authorization;
+- read-only sealing and internal Hash216 revalidation;
+- explicit zeroization before release.
 
-Implemented:
+### Iteration 4 — parametric delta admission
 
-- guarded native `mmap` arenas;
-- non-executable data pages;
-- `mlock`, `MADV_DONTDUMP`, and `MADV_DONTFORK` enforcement;
-- process dumpability hardening;
-- constant-time owner-token authorization;
-- bounds-checked access and read-only sealing;
-- explicit zeroization and verification before release;
-- keyed memory lifecycle receipts;
-- sealed native storage and revalidation for recovered compiled-ROM entries.
+- immutable typed templates bound to protected compiled entries;
+- complete candidate-shape and type validation;
+- exact changed-field deltas;
+- affected-constraint dependency closure;
+- authenticated reuse of unaffected witnesses;
+- timestamp-bound VM81 admissions in sealed native arenas.
 
-## Iteration 4: parametric delta admission
+### Iteration 5 — persistent inventory and tombstones
 
-Implemented:
-
-- immutable templates bound to protected compiled-ROM entries;
-- exact operand and context schemas;
-- field-level mutable and immutable declarations;
-- deterministic constraint bytecode and explicit dependency sets;
-- baseline constraint witnesses;
-- complete field-set and type validation on every invocation;
-- exact changed-field delta construction;
-- dependency-closure selection of affected constraints;
-- semantic revalidation only for affected constraints;
-- authenticated reuse of unaffected baseline witnesses;
-- timestamp-, lineage-, route-, and policy-bound VM81 admission roots;
-- sealed native template and admission storage;
-- zeroizing template and admission retirement.
-
-Parametric sequence:
+- SQLite WAL storage with full synchronization;
+- append-only authenticated `ADMIT`, `RECOVER`, and `TOMBSTONE` events;
+- deterministic successor inventory roots;
+- persistent LIVE and TOMBSTONED identity sets;
+- retained authenticated recovery carriers;
+- separate deletion-authority key and root-bound authorizations;
+- tombstone commitment before native zeroization;
+- reconciliation between persistent state and protected native memory;
+- unexplained absence detection;
+- retained-carrier and checkpoint recovery;
+- authenticated checkpoint chain and reopen validation.
 
 ```text
-protected compiled operation
-→ sealed template
-→ complete typed invocation validation
-→ exact changed-field delta
-→ affected constraint dependency closure
-→ affected-only semantic revalidation
-→ authenticated unaffected-witness reuse
-→ timestamp-bound VM81 admission root
-→ sealed native admission arena
+persistent LIVE identity
+→ native presence check
+├─ present: validate protected lookup
+└─ absent: classify unexplained deletion
+           → recover carrier/checkpoint
+           → Pass 212 correction
+           → restore sealed arena
+           → append RECOVER root
 ```
 
-A parametric match never relies on vector similarity. It requires an exact registered template whose protected base entry, schema, dependency graph, baseline witnesses, current timestamp boundary, and VM5184×G243 route all validate.
+```text
+authorized retirement
+→ deletion authorization bound to current inventory root
+→ retained TOMBSTONE transition
+→ successor root
+→ native zeroization and destruction
+```
 
 ## Validation
 
@@ -81,8 +73,8 @@ A parametric match never relies on vector similarity. It requires an exact regis
 bash scripts/run_pass213_iteration1_validation.sh
 ```
 
-The gate builds the C source with `-Wall -Wextra -Werror`, executes every Pass 213 Iteration 1–4 test module, compiles all runtime modules, and validates the JSON contract.
+The gate builds the native C arena with `-Wall -Wextra -Werror`, executes every Iteration 1–5 test module, compiles every Pass 213 runtime module, and validates the machine-readable contract.
 
 ## Current boundary
 
-Pass 213 remains incomplete. Persistent inventories and tombstones, deletion recovery, PQC enclosure, trusted external timestamps, full tensor invariants, API/CLI/native dispatch, performance evidence, final integration, merge, and verified-main closure remain subsequent work.
+Pass 213 remains incomplete. PQC enclosure and checkpoint signatures, external trusted timestamp anchoring, full tensor invariants, API/CLI surfaces, governed native dispatch, performance evidence, final integration, merge, and verified-main closure remain subsequent work.
