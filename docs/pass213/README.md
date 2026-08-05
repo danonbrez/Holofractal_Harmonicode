@@ -110,6 +110,11 @@ final workflow-policy run: 31037164477
 final workflow-policy job: 92412018053
 validated head: 93338a7330b480552a79ca437c77aca42e9d9cc0
 result: SUCCESS
+
+final README/evidence run: 31037308069
+final README/evidence job: 92412545004
+validated head: 229e1fa8c6200138d5a81b42a74c20d41b829ffd
+result: SUCCESS
 ```
 
 The final branch head additionally updates only the restart record with these frozen receipts. Restart-record-only commits are excluded from runtime reruns.
