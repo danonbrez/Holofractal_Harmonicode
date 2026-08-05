@@ -59,7 +59,7 @@ persistent LIVE identity
 
 ### Iteration 6 — post-quantum signed checkpoints
 
-- pinned `liboqs-python 0.15.0` and matching liboqs runtime;
+- pinned `liboqs-python 0.16.0` and matching liboqs runtime;
 - ML-KEM-768 recovery authority;
 - ML-DSA-65 operational checkpoint authority;
 - SLH-DSA SHA2-128s archival checkpoint authority;
@@ -93,10 +93,20 @@ ML-KEM-768 shared secret
 
 ```bash
 python -m pip install -r requirements/pass213-pqc.txt
-bash scripts/run_pass213_iteration1_validation.sh
+PYOQS_VERSION=0.16.0 bash scripts/run_pass213_iteration1_validation.sh
 ```
 
-The dedicated workflow builds the native C arena, verifies the required real liboqs mechanisms, executes every Iteration 1–6 test module, compiles every Pass 213 runtime module, and validates the machine-readable contract.
+The dedicated workflow builds the native C arena, verifies the required real liboqs mechanisms, executes every Iteration 1–6 test module, compiles every Pass 213 runtime module, validates the machine-readable contract, and retains the complete validation transcript as a workflow artifact.
+
+Repository-native Iteration 6 evidence:
+
+```text
+workflow: Pass 213 Compiled ROM Integrity
+run: 31036482697
+job: 92409747663
+validated head: e9ddcb09d3af525018a9e0196d065107c00674fc
+conclusion: SUCCESS
+```
 
 ## Current boundary
 
