@@ -124,7 +124,14 @@ class Pass213Iteration6PQCEnclosureTests(unittest.TestCase):
         suite = self.authority.suite
         self.assertIn("ML-KEM", suite.ml_kem)
         self.assertIn("ML-DSA", suite.ml_dsa)
-        self.assertIn("SLH-DSA", suite.slh_dsa)
+        normalized_slh = "".join(
+            character.lower()
+            for character in suite.slh_dsa
+            if character.isalnum()
+        )
+        self.assertIn("slhdsa", normalized_slh)
+        self.assertIn("sha2", normalized_slh)
+        self.assertIn("128s", normalized_slh)
         records = self.authority.protected_secret_records()
         self.assertEqual(len(records), 3)
         self.assertEqual(
