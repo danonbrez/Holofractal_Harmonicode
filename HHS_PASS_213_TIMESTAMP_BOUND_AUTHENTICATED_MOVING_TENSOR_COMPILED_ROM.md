@@ -2,271 +2,180 @@
 
 **Contract:** `HHS-P213-TB-AMT-CROM-RMIK-H72-H216-VM5184-G243`  
 **Status:** `CONTRACT_AUTHORIZED — IMPLEMENTATION IN PROGRESS`  
-**Current iteration:** `7`
+**Current iteration:** `8`
 
 ## Binding inheritance
 
-Pass 213 is an in-place upgrade of the complete pre-pass foundation and Pass 001–212 state. It preserves Pass 212 full-hydration compression, physical erasure recovery, correction before decompression, Hash216 validation, deterministic Hash72 receipts, VM5184×G243 addressing, exact canonical serialization, and singleton VM81 admission.
+Pass 213 is an in-place upgrade of the complete pre-pass foundation and Passes 001–212. Iteration 8 inherits every validated Pass 213 Iteration 1–7 authority without replacement: compiled-ROM identity, correction before interpretation, native protected memory, dependency-scoped parametric admission, persistent inventory and tombstones, post-quantum signed checkpoints, and RFC 3161 external timestamp anchoring.
 
-## Iteration 1 — compiled-ROM nucleus
-
-Iteration 1 established immutable compiled-operation identity, exact timestamp boundaries, noncommutative operation-group authentication, keyed one-visit closure paths, exact lookup, inventory commitments, and deterministic receipts.
-
-```text
-validated operation
-→ immutable compiled-ROM record
-→ Hash216 identity
-→ timestamp-bound group
-→ keyed closure path
-→ authenticated receipt
-```
-
-## Iteration 2 — correction before interpretation
-
-Iteration 2 integrated the Pass 212 physical recovery layer into compiled-ROM admission.
-
-```text
-compiled-entry bytes
-→ Pass 212 protected shards
-→ bounded reconstruction
-→ reconstructed-payload Hash216
-→ canonical deserialization
-→ immutable entry Hash216
-→ keyed RecoveredROMAdmission
-```
-
-No compiled entry reaches the canonical store before physical correction and reconstructed-payload validation complete.
-
-## Iteration 3 — native protected compiled-ROM memory
-
-Iteration 3 stores admitted compiled entries in native non-executable arenas:
-
-```text
-PROT_NONE guard
-+ mlock / MADV_DONTDUMP / MADV_DONTFORK data pages
-+ PROT_NONE guard
-```
-
-The native layer provides owner-token authorization, bounds enforcement, read-only sealing, process dump hardening, explicit zeroization, zero verification, and keyed `ALLOCATE → WRITE → SEAL → ZEROIZE → DESTROY` receipts. Canonical bytes remain in sealed arenas and are internally revalidated on lookup.
-
-## Iteration 4 — dependency-scoped parametric admission
-
-Iteration 4 permits one deeply validated compiled transformation to serve compatible typed invocations. Every candidate receives complete schema, type, canonical-serialization, immutable-context, lineage, route, policy, epoch, and timestamp-boundary validation. Semantic revalidation is limited to constraints whose declared dependencies intersect the changed fields.
-
-```text
-protected compiled entry
-→ sealed parametric template
-→ complete typed candidate validation
-→ exact changed-field delta
-→ affected dependency closure
-→ affected-only semantic validation
-→ authenticated reuse of unaffected witnesses
-→ timestamp-bound VM81 admission
-→ sealed native admission arena
-```
-
-Similarity alone never grants authority. The candidate must match an exact registered template and protected base entry.
-
-## Iteration 5 — persistent inventory, tombstones, and recovery
-
-Iteration 5 makes the compiled ROM persistent across process and deployment boundaries. `PersistentCompiledROMInventory` uses SQLite WAL mode with full synchronization and maintains:
-
-- an append-only authenticated event chain;
-- one successor inventory root per admission, recovery, or tombstone transition;
-- a persistent LIVE/TOMBSTONED entry registry;
-- retained authenticated Pass 212 recovery carriers;
-- separate keyed deletion authorizations;
-- retained tombstones and deletion evidence;
-- an authenticated checkpoint chain;
-- reconciliation against the native protected-memory store.
-
-```text
-validate and correct carrier
-→ admit into sealed native memory
-→ append ADMIT event
-→ commit successor inventory root
-→ retain authenticated recovery carrier
-```
-
-```text
-persistent LIVE entry absent from native store
-→ classify unexplained absence
-→ retained carrier or authenticated checkpoint material
-→ Pass 212 correction and Hash216 validation
-→ restore sealed native entry
-→ append RECOVER event
-→ commit successor inventory root
-```
-
-```text
-current inventory root
-→ separately keyed deletion authorization
-→ append TOMBSTONE event and successor root
-→ retain carrier and authorization evidence
-→ zeroize and destroy native arena
-```
-
-Every reopen verifies event continuity, event authentication, deterministic state replay, successor inventory roots, retained carriers, deletion authorizations, checkpoint continuity, and persistent LIVE identities against protected native entries.
-
-## Iteration 6 — post-quantum signed checkpoints and recovery enclosure
-
-Iteration 6 encloses the persistent inventory with three independent standardized post-quantum authorities executed through `liboqs`:
-
-- **ML-KEM-768** establishes recovery shared secrets;
-- **ML-DSA-65** signs operational inventory checkpoints;
-- **SLH-DSA SHA2-128s** signs the same checkpoints for archival authority.
-
-The runtime detects the enabled mechanism names from liboqs and fails the iteration gate unless all three required families and parameter sets are available.
-
-### Native protected key authority
-
-`PQCProtectedAuthority` creates one ML-KEM keypair and two independent signature keypairs. Each secret key is written into a distinct Iteration 3 native arena:
-
-```text
-post-quantum secret key
-→ owner-bound native arena
-→ locked / no-dump / no-fork pages
-→ read-only seal
-→ public commitment record
-```
-
-Only public keys, algorithm names, public-key Hash216 commitments, and the verifier-bundle root leave the protected authority. Signing and decapsulation read the required secret internally for one bounded operation and clear the transient mutable copy. Authority shutdown zeroizes and destroys all three arenas.
-
-### Dual-signed checkpoint chain
-
-Each signed checkpoint binds the complete Iteration 5 checkpoint, its inventory and event-chain roots, retained LIVE and TOMBSTONED state, the signed-checkpoint sequence, the prior signed-checkpoint root, and the verifier-bundle root.
-
-```text
-Iteration 5 authenticated checkpoint
-+ prior signed root
-+ signed sequence
-+ verifier-bundle root
-→ canonical checkpoint signing message
-→ ML-DSA-65 signature
-→ SLH-DSA SHA2-128s signature
-→ successor signed-checkpoint Hash216
-```
-
-`PostQuantumCheckpointStore` appends the complete dual-signature envelope to SQLite WAL storage. A verifier-only process can reopen and replay the full signed chain using the public verifier bundle without access to any secret key.
-
-### ML-KEM recovery capsule
-
-```text
-ML-KEM-768 encapsulation to recovery public key
-→ shared secret
-→ HKDF-SHA-256 with checkpoint-root salt and complete capsule AAD
-→ AES-256-GCM wrapping key
-→ encrypt exact 256-bit recovery root
-→ commit KEM ciphertext, nonce, ciphertext, AAD root, and checkpoint root
-```
-
-The capsule binds its signed sequence, checkpoint root, algorithm identity, and recipient public-key Hash216. Recovery requires the protected ML-KEM secret-key arena. Any altered KEM ciphertext, nonce, encrypted recovery key, AAD, recipient key, sequence, or checkpoint root fails structural validation or authenticated decryption.
-
-## Iteration 7 — trusted external timestamp anchoring
-
-Iteration 7 makes the signed checkpoint chain externally time-authenticated through RFC 3161. A timestamp anchor is not a detached wall-clock label. Its message imprint is the SHA-256 digest of a canonical, domain-separated intent containing:
-
-- the complete Iteration 6 signed-checkpoint root;
-- the public verifier-bundle root;
-- the exact signed and anchor sequence;
-- the prior trusted timestamp-anchor root;
-- the Hash216 lineage root for the anchored history;
-- the local integer-nanosecond request boundary;
-- the timestamp-authority identity.
-
-```text
-ML-DSA + SLH-DSA signed checkpoint
-+ verifier-bundle root
-+ prior external anchor root
-+ Hash216 lineage root
-+ local nanosecond boundary
-+ TSA authority ID
-→ canonical timestamp intent
-→ SHA-256 RFC 3161 message imprint
-→ nonce-bearing DER TimeStampReq
-→ independent X.509 TSA signature
-→ DER TimeStampResp
-→ successor trusted timestamp-anchor Hash216
-```
-
-### RFC 3161 authority and transport
-
-`RFC3161TimestampVerifier` uses OpenSSL's RFC 3161 implementation to create a DER request containing the message imprint, certificate request, and fresh nonce. `HTTPRFC3161Transport` submits it using the standard `application/timestamp-query` and `application/timestamp-reply` media types. `OpenSSLTSATransport` provides the same protocol boundary for isolated or offline TSA deployments and deterministic integration testing.
-
-The response is accepted only when OpenSSL verifies it against the original request and an explicitly pinned X.509 trust bundle. The runtime retains:
-
-- the exact DER request and response;
-- request and response SHA-256 identities;
-- the TSA policy identifier;
-- the TSA serial number;
-- the UTC generation time;
-- the TSA subject;
-- the request nonce;
-- the trust-bundle SHA-256 identity;
-- a Hash216 verification receipt and complete evidence root.
-
-### Persistent external anchor chain
-
-`TrustedTimestampAnchorStore` persists one externally timestamped record per signed checkpoint in SQLite WAL mode with full synchronization. Every reopen revalidates both post-quantum signatures and the RFC 3161 token against the pinned trust bundle.
-
-```text
-signed sequence n
-+ prior signed checkpoint root
-+ prior timestamp anchor root
-→ RFC 3161 verified evidence
-→ timestamp anchor n
-→ atomic persistent append
-→ full public reverification on reopen
-```
-
-The store rejects sequence gaps, signed-checkpoint-chain discontinuity, prior-anchor substitution, Hash216-lineage substitution, local-boundary regression, TSA-time regression, repeated TSA serials, certificate-trust substitution, nonce removal, message-imprint mismatch, and DER response alteration. Recomputing local hashes after changing a token does not create an accepted history because the independent TSA signature no longer verifies.
-
-## Current acceptance path
+## Cumulative acceptance path
 
 ```text
 untrusted carrier
-→ Pass 212 correction and Hash216 validation
-→ recovered admission proof
-→ sealed native compiled-ROM arena
-→ persistent ADMIT/root chain
-→ exact or parametric compiled match
-→ timestamp-bound VM81 authority
-→ persistent checkpoint
-→ ML-DSA + SLH-DSA signed checkpoint
+→ Pass 212 correction and reconstructed Hash216 validation
+→ immutable compiled-ROM admission
+→ sealed native memory
+→ exact or dependency-scoped parametric match
+→ persistent inventory and authorized transition root
+→ ML-DSA + SLH-DSA checkpoint signatures
 → ML-KEM recovery enclosure
-→ RFC 3161 external timestamp anchor
-→ governed native dispatch
-→ successor receipt and persistent reconciliation
+→ RFC 3161 trusted external timestamp anchor
+→ exact moving-tensor derivation
+→ singleton VM81 admission and governed native dispatch
 ```
+
+## Iterations 1–7 retained authority
+
+1. **Compiled-ROM nucleus:** immutable Hash216 operations, integer timestamp boundaries, noncommutative order chains, exact lookup, closure paths, and receipts.
+2. **Correction before interpretation:** Pass 212 shard recovery and recovered-payload Hash216 validation precede compiled-entry deserialization.
+3. **Native protected memory:** guarded, locked, non-executable, dump-excluded, fork-excluded, owner-bound arenas with read-only sealing and verified zeroization.
+4. **Parametric admission:** typed immutable templates, exact changed-field deltas, dependency-scoped revalidation, authenticated witness reuse, and timestamp-bound VM81 authority.
+5. **Persistent inventory:** SQLite WAL append-only `ADMIT`, `RECOVER`, and `TOMBSTONE` chains, native reconciliation, unexplained absence detection, and retained recovery material.
+6. **Post-quantum enclosure:** ML-KEM-768 recovery, ML-DSA-65 operational signatures, SLH-DSA SHA2-128s archival signatures, native secret-key arenas, and verifier-only replay.
+7. **Trusted external time:** RFC 3161 DER requests and responses bound to signed checkpoints, verifier roots, prior anchors, Hash216 lineage, local boundaries, TSA identity, nonce, serial, policy, and UTC generation time.
+
+## Iteration 8 — exact moving-tensor authority
+
+Iteration 8 turns the timestamped tensor lattice into an executable canonical authority rather than descriptive metadata.
+
+### Canonical tensor domain
+
+The exact coordinate basis is:
+
+```text
+(row, column, a, b, d, t0, t1, t2, t3, t4, lane)
+```
+
+with axis moduli:
+
+```text
+(9, 9, 4, 4, 4, 3, 3, 3, 3, 3, 40)
+```
+
+After VM5184×G243 projection:
+
+```text
+9² × 4³ × 3⁵ = 1,259,712
+```
+
+After forty hydration lanes:
+
+```text
+9² × 4³ × 3⁵ × 40 = 50,388,480
+```
+
+The logical address remains canonical. The tensor supplies a reversible physical placement for the same logical state.
+
+### Trusted boundary derivation
+
+Every tensor state binds:
+
+- the complete Iteration 7 trusted timestamp-anchor root;
+- signed-checkpoint and verifier-bundle roots;
+- Hash216 lineage;
+- RFC 3161 evidence root;
+- local integer-nanosecond request boundary;
+- TSA serial and UTC generation time;
+- Genesis epoch, tensor sequence, prior tensor root, and declared domain.
+
+These fields and the protected root key derive one domain-separated 256-bit tensor seed. Any change to history, time boundary, lineage, epoch, sequence, domain, or prior state therefore derives a different tensor.
+
+### Lo Shu authority
+
+The runtime selects one of all eight exact dihedral orientations of:
+
+```text
+4 9 2
+3 5 7
+8 1 6
+```
+
+Every accepted orientation proves:
+
+- exact symbols 1–9;
+- row sums equal 15;
+- column sums equal 15;
+- both diagonal sums equal 15.
+
+### Sudoku authority
+
+The 9×9 tensor is generated only through legal exact transformations:
+
+- band and stack permutations;
+- row permutations inside bands;
+- column permutations inside stacks;
+- digit permutation;
+- optional transpose.
+
+Every row, column, and 3×3 region must contain the exact symbols 1–9.
+
+### Fibonacci phase
+
+Exact Fibonacci residues are computed for the eleven axis moduli. These residues participate in operation-axis offsets, G243 control-axis offsets, and hydration-lane phase without introducing floating-point authority.
+
+### Reversible coordinate movement
+
+The moving coordinate map applies:
+
+- exact row and column permutations;
+- operation-axis permutation and modular offsets over three base-4 axes;
+- control-axis permutation and modular offsets over five base-3 axes;
+- a coprime affine permutation over forty hydration lanes.
+
+Both `map_index` and `unmap_index` are exact inverses over `1,259,712` and `50,388,480` positions.
+
+### Full-domain closure proof
+
+For domain size `N`, the closure path is:
+
+```text
+C(i) = (a·i + b) mod N
+```
+
+with:
+
+```text
+gcd(a, N) = 1
+```
+
+The proof stores the modular inverse of `a`, first and last cells, closing successor, sample commitment, inherited closure-path root, and proof root. This proves a one-to-one traversal and exact wrap without materializing all 50,388,480 cells. The 5,184-cell domain is additionally materialized in tests to prove unique visitation directly.
+
+### State and receipt authority
+
+The trusted boundary, seed commitment, Lo Shu tensor, Sudoku tensor, Fibonacci phase, coordinate map, and closure proof are committed into one immutable moving-tensor Hash216 root. A canonical Hash72 receipt is emitted over that root.
+
+### Persistent replay
+
+`MovingTensorStore` uses SQLite WAL mode and `synchronous=FULL`. It stores the complete tensor state and trusted timestamp anchor. Every reopen rederives every state from the protected root key and rejects:
+
+- wrong keys;
+- changed anchors or lineage;
+- timestamp or anchor-sequence regression;
+- altered Lo Shu, Sudoku, Fibonacci, coordinate, closure, tensor-root, or Hash72 evidence;
+- missing or substituted chain links;
+- direct database mutation.
+
+### Derived floating projection
+
+Canonical tensor authority contains no floating-point values. A separate projection may encode exact phase ratios as IEEE-754 binary64 with:
+
+- big-endian serialization;
+- nearest-even rounding;
+- FMA forbidden;
+- NaN forbidden;
+- exact source ratios and exact 64-bit patterns committed into a projection root.
+
+The projection cannot redefine canonical identity, path membership, receipts, counters, keys, or addresses.
 
 ## Validation
 
 ```bash
 python -m pip install -r requirements/pass213-pqc.txt
-bash scripts/run_pass213_iteration1_validation.sh
+PYOQS_VERSION=0.16.0 bash scripts/run_pass213_iteration1_validation.sh
 ```
 
-The dedicated gate:
-
-1. builds the native C arena with warnings treated as errors;
-2. loads the pinned liboqs Python binding and matching liboqs release;
-3. verifies ML-KEM-768, ML-DSA-65, and SLH-DSA SHA2-128s are enabled;
-4. verifies OpenSSL RFC 3161 command support;
-5. creates an actual local X.509 timestamp authority for integration tests;
-6. executes every Iteration 1–7 test module;
-7. compiles every Pass 213 runtime module;
-8. parses the machine-readable contract.
-
-Validated Iteration 7 implementation evidence:
-
-```text
-head: 67e36905679fe99f883b9500ec7efbe13e4abcf4
-workflow run: 31053828521
-job: 92466865251
-tests: 74 passed
-result: SUCCESS
-```
+The cumulative gate builds the native C arena with warnings as errors, verifies real liboqs mechanisms and OpenSSL RFC 3161 support, runs all Iteration 1–8 tests, compiles every Pass 213 runtime module, parses the machine-readable contract, and retains the complete validation transcript.
 
 ## Iteration boundary
 
-Pass 213 remains nonterminal. Remaining work includes the full high-dimensional magic-square/Sudoku/Fibonacci moving tensor family, API and CLI surfaces, governed native dispatch, performance evidence, final integration, merge, and verified-main closure.
+Pass 213 remains nonterminal and unmerged. Remaining implementation work is API/CLI parity, governed native compiled dispatch, full-hydration performance and recovery evidence, and final integration/verified-main closure.
