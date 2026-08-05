@@ -22,6 +22,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          # The generator must work when invoked directly from the repository root.
           python - <<'PY'
           from pathlib import Path
 
