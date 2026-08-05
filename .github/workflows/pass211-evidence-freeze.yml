@@ -25,6 +25,7 @@ jobs:
         run: python -m pip install --disable-pip-version-check sympy
       - name: Generate and validate evidence
         run: |
+          # Freeze only after the deterministic suite summary matches the contract.
           python tools/generate_pass211_bigint_hfc_evidence.py
           python - <<'PY'
           import json
