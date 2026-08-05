@@ -7,7 +7,7 @@
 - Validated Iteration 5 head: `5b7a1f95ab53bdd0c47706314eac2ec1fedb5ea3`
 - Validated Iteration 6 implementation head: `e9ddcb09d3af525018a9e0196d065107c00674fc`
 - Validated Iteration 6 workflow-policy head: `93338a7330b480552a79ca437c77aca42e9d9cc0`
-- Final validated Iteration 6 README/evidence head: `229e1fa8c6200138d5a81b42a74c20d41b829ffd`
+- Final validated Iteration 6 runtime-tracked head: `f7274a1e06e8eb22949effacf9ac1b786708e584`
 - Merge target: `main`
 - Draft pull request: `#169`
 - Iteration: `6`
@@ -160,24 +160,24 @@ Iterations 1–6 validation: PASS
 workflow conclusion: SUCCESS
 ```
 
-Final README/evidence head:
+Final runtime-tracked head:
 
 ```text
 workflow: Pass 213 Compiled ROM Integrity
-run: 31037308069
-job: 92412545004
-validated head: 229e1fa8c6200138d5a81b42a74c20d41b829ffd
+run: 31037437815
+job: 92413017743
+validated head: f7274a1e06e8eb22949effacf9ac1b786708e584
 Iterations 1–6 validation: PASS
 workflow conclusion: SUCCESS
 ```
 
-The diagnostic artifact from run `31035783049` established that 67 of 68 tests passed and isolated the only failure to punctuation-specific spelling of the enabled liboqs SLH-DSA mechanism name. The assertion was replaced with normalized family and parameter verification. The full cumulative gate then passed on the implementation, workflow-policy, and final README/evidence heads.
+The diagnostic artifact from run `31035783049` established that 67 of 68 tests passed and isolated the only failure to punctuation-specific spelling of the enabled liboqs SLH-DSA mechanism name. The assertion was replaced with normalized family and parameter verification. The full cumulative gate then passed on the implementation, workflow-policy, and final runtime-tracked heads.
 
 ## Workflow state
 
 - Workflow: `Pass 213 Compiled ROM Integrity`
 - Iteration 1–6 implementation validation: complete and successful.
-- Final README/evidence-head validation: complete and successful.
+- Final runtime-tracked-head validation: complete and successful.
 - Restart-record-only evidence commits are intentionally excluded from the runtime rerun path.
 - Guarded Continuous Integration remains governed by its inherited path policy.
 - Pull request remains draft and unmerged.
