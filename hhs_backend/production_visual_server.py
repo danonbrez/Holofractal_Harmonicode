@@ -6,12 +6,15 @@ module supplies the deployment-facing ASGI gateway that:
 * prewarms the real Pass 196-201 status routes sequentially;
 * serves direct status reads from the persistent cache;
 * returns an explicit warming projection instead of executing an expensive
-  status handler on the serving event loop; and
+  status handler on the serving event loop;
+* delays the isolated probe briefly after the main cold import; and
 * retains the browser bootstrap injection and event-driven readiness behavior
   implemented by :mod:`hhs_backend.cached_visual_server`.
 """
 from __future__ import annotations
 
+import os
+import time
 from collections.abc import Awaitable, Callable
 from typing import Any
 
@@ -33,6 +36,17 @@ PRODUCTION_STATUS_PATHS = (
 
 class ProductionRuntimeBootstrapGateway(RuntimeBootstrapGateway):
     """Serve known expensive status routes from stale-while-revalidate state."""
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+        delay = float(os.getenv("HHS_RUNTIME_STATUS_PROBE_START_DELAY_SECONDS", "30"))
+        self.probe_start_delay = max(0.0, delay)
+        self._probe_allowed_at = time.monotonic() + self.probe_start_delay
+
+    def _ensure_probe(self) -> None:
+        if time.monotonic() < self._probe_allowed_at:
+            return
+        super()._ensure_probe()
 
     async def __call__(
         self,
