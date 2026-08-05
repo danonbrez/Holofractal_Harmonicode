@@ -1,0 +1,157 @@
+{
+  "schema": "HHS_PASS_210_HOLOGRAPHIC_FRAME_COMPRESSION_CONTRACT_V1",
+  "contract_identifier": "HHS-P210-HFC-VM81-H72-H216",
+  "pass": 210,
+  "canonical_pass_name": "HOLOGRAPHIC_FRAME_COMPRESSION_ALGORITHM",
+  "short_name": "P210 Holographic Frame Compression",
+  "contract_version": "1.0.0",
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "merge_target": "main",
+  "inherited_scope": "Genesis and every compatible accepted requirement through Pass 209",
+  "canonical_source_language": "HARMONICODE",
+  "canonical_mutation_authority": "Exactly one admitted VM81 authority",
+  "canonical_identity_authorities": [
+    "Hash216 object identity",
+    "Hash72 receipt lineage"
+  ],
+  "canonical_arithmetic": [
+    "exact integers",
+    "exact rationals",
+    "symbolic values",
+    "ordered source witnesses"
+  ],
+  "canonical_payload_semantics": "Raw x86_64 Boolean byte string of length 5184",
+  "floating_point_policy": "NO_FLOAT_CANONICAL_AUTHORITY",
+  "initial_classification": "CONTRACT_AUTHORIZED — FULL IMPLEMENTATION REQUIRED",
+  "contract_completion_classification": "HHS_PASS_210_HOLOGRAPHIC_FRAME_COMPRESSION_CONTRACT_FROZEN",
+  "runtime_completion_classification": "HHS_PASS_210_HOLOGRAPHIC_FRAME_COMPRESSION_RUNTIME_VERIFIED",
+  "status_distinction": [
+    "CONTRACT PRESENT",
+    "IMPLEMENTATION PRESENT",
+    "IMPLEMENTATION VERIFIED"
+  ],
+  "constants": {
+    "REGISTER_LEN": 5184,
+    "GRID_LO_SHU": 81,
+    "LINE_BYTES": 64,
+    "HASH72_LEN": 72,
+    "SNAPSHOT_WIDTH": 288,
+    "SNAPSHOT_STRIDE": 144,
+    "SNAPSHOT_COUNT": 36,
+    "SECTION_PHI_HI": 89,
+    "SECTION_PHI_LO": 55,
+    "MATRIX_DIM": 12
+  },
+  "normative_identities": [
+    "5184 = 72^2 = 81 x 64 = 36 x 144",
+    "36 x 288 = 2 x 5184",
+    "89 + 55 = 144",
+    "288 = 89 + 55 + 89 + 55",
+    "gcd(81,64) = 1",
+    "gcd(8,9) = 1",
+    "gcd(89,55) = 1"
+  ],
+  "snapshot_definition": "S_i[k] = REGISTER[(144*i+k) mod 5184], i in 0..35, k in 0..287",
+  "golden_sectioning": [89, 55, 89, 55],
+  "matrix_view": {
+    "stride_bytes": 144,
+    "rows": 12,
+    "columns": 12
+  },
+  "admissible_view_rule": "x -> k*x+c (mod m) iff gcd(k,m)=1 and the inverse is registered",
+  "reference_view": {
+    "k": 5,
+    "c": 1,
+    "modulus": 361,
+    "inverse_multiplier": 289
+  },
+  "multimodal_projections": [
+    "raw",
+    "hash72",
+    "hash216",
+    "phase",
+    "frame"
+  ],
+  "digest_decode_boundary": {
+    "hash72_digest_alone_reversible": false,
+    "hash216_digest_alone_reversible": false,
+    "required_decode_witness": "ordered payload witness or addressed object-store record",
+    "reason": "The implementation preserves exact decode without making an impossible digest-only reversibility claim."
+  },
+  "invariants": {
+    "HFC-I1": "REGISTER_LEN=5184; all snapshot indexing is modulo 5184",
+    "HFC-I2": "Every register cell appears in exactly two snapshots",
+    "HFC-I3": "36*288-2*5184=0",
+    "HFC-I4": "Every snapshot partitions 89+55+89+55 with zero remainder",
+    "HFC-I5": "gcd(81,64)=gcd(8,9)=gcd(89,55)=1",
+    "HFC-I6": "Every admitted affine view is bijective and has a registered inverse",
+    "HFC-I7": "No floating-point value enters canonical encode/decode/verify paths",
+    "HFC-I8": "All valid multimodal projections decode to bit-identical registers",
+    "HFC-I9": "Encode, decode, view admission, recovery, strict compression and strict decompression mint ordered Hash72 receipts; HALT and annotation do not extend the ledger",
+    "HFC-I10": "The register allocation is 64-byte aligned while snapshot stride 144 remains intentionally non-line-aligned"
+  },
+  "operations": [
+    "hfc_frame_encode",
+    "hfc_frame_decode",
+    "hfc_snapshot",
+    "hfc_section",
+    "hfc_matrix",
+    "hfc_view_admit",
+    "hfc_project",
+    "hfc_agree",
+    "hfc_recover",
+    "hfc_strict_compress",
+    "hfc_strict_decompress"
+  ],
+  "negative_cases": {
+    "non_bijective_view": "HFC_NON_BIJECTIVE_VIEW_REJECTED",
+    "single_snapshot_loss": "Exact recovery from surviving neighboring witnesses",
+    "single_modality_cell_corruption": "Located witness violation; no repair from the corrupted modality itself",
+    "stride_realignment": "Conformance failure",
+    "canonical_float_introduction": "Hard failure",
+    "strict_compression_outside_declared_domain": "HFC_STRICT_COMPRESSION_DOMAIN_WITNESS_REQUIRED"
+  },
+  "compression_claim": {
+    "arbitrary_registers": [
+      "exact storage and reconstruction",
+      "double witness coverage",
+      "single-snapshot erasure tolerance",
+      "cross-modal disagreement localization",
+      "lossless registered affine views"
+    ],
+    "strict_size_compression": "Only for a declared admissible lattice domain",
+    "implemented_admissible_subset": "HFC_ADMISSIBLE_AFFINE_FIBONACCI_MOD2_V1",
+    "required_receipt_fields": [
+      "generator expression",
+      "admissible-domain witness",
+      "round-trip verification receipt"
+    ]
+  },
+  "conformance_tests": [
+    "adversarial round-trip corpus",
+    "all-cell double-coverage audit",
+    "frame closure audit",
+    "all-snapshot golden-section audit",
+    "bijective and non-bijective affine view drills",
+    "all 36 single-snapshot erasure drills",
+    "raw/hash72/hash216/phase/frame corruption localization drills",
+    "deterministic clean-runtime receipt replay",
+    "committed reference-vector equality",
+    "no-float AST audit",
+    "public API end-to-end workflow"
+  ],
+  "required_artifacts": [
+    "HHS_PASS_210_HOLOGRAPHIC_FRAME_COMPRESSION_ALGORITHM.md",
+    "contracts/pass210/PASS_210_CONTRACT.json",
+    "hhs_backend/runtime/hhs_pass210_holographic_frame_compression_v1.py",
+    "hhs_backend/api/pass210_holographic_frame_compression_routes.py",
+    "tests/test_hhs_pass210_holographic_frame_compression_v1.py",
+    "tests/test_hhs_pass210_holographic_frame_compression_api_v1.py",
+    "tools/generate_pass210_hfc_evidence.py",
+    "evidence/pass210/PASS_210_HFC_REFERENCE_VECTORS.json",
+    "scripts/run_pass210_hfc_validation.sh",
+    ".github/workflows/pass210-holographic-frame-compression.yml",
+    "docs/pass210/README.md",
+    "docs/pass210/RESTART_RECORD.md"
+  ]
+}
