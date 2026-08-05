@@ -40,7 +40,7 @@ jobs:
         with:
           python-version: '3.12'
       - name: Install validation dependencies
-        run: python -m pip install --disable-pip-version-check pytest fastapi pydantic httpx
+        run: python -m pip install --disable-pip-version-check pytest pytest-asyncio fastapi pydantic httpx sympy
       - name: Parse frozen contract
         run: python -m json.tool contracts/pass211/PASS_211_CONTRACT.json >/dev/null
       - name: Compile Pass 211 surfaces
