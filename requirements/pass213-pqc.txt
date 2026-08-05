@@ -1,2 +1,2 @@
-liboqs-python==0.15.0
+liboqs-python==0.16.0
 cryptography>=45.0,<47.0
