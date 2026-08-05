@@ -6,8 +6,8 @@
 - Branch: `agent/pass213-compiled-rom-integrity`
 - Final validated Iteration 6 runtime-tracked head: `f7274a1e06e8eb22949effacf9ac1b786708e584`
 - Iteration 7 implementation/workflow head: `67e36905679fe99f883b9500ec7efbe13e4abcf4`
-- Final validated Iteration 7 runtime-tracked head: `c817ea38cb29bfa9fe1c5469ebfa436a4eeef99a`
-- Restart-record-only evidence commits follow the validated runtime head and are excluded from the dedicated runtime workflow.
+- Final validated Iteration 7 runtime-tracked documentation/contract head: `c817ea38cb29bfa9fe1c5469ebfa436a4eeef99a`
+- Restart-record-only changes are excluded from the push-path filter; an open pull-request synchronization may still validate the cumulative PR because its diff contains tracked Pass 213 runtime files.
 - Merge target: `main`
 - Draft pull request: `#169`
 - Iteration: `7`
@@ -86,7 +86,7 @@ The complete gate builds the native C arena with warnings as errors, verifies th
 
 - Iteration 1–7 implementation validation: complete and successful.
 - Final Iteration 7 runtime-tracked documentation and contract validation: complete and successful.
-- Restart-record-only evidence commits are intentionally excluded from runtime reruns.
+- Pull-request synchronization may repeat the cumulative gate after a restart-record-only commit; such a run validates the exact branch head and is retained as additional evidence.
 - Guarded Continuous Integration remains governed by its inherited path policy.
 - Pull request remains draft and unmerged.
 
