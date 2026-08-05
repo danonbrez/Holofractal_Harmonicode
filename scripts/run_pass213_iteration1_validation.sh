@@ -28,6 +28,10 @@ assert AESGCM is not None
 print("PASS213_PQC_DEPENDENCY_PREFLIGHT_OK")
 PY
 
+openssl ts -help >/dev/null 2>&1
+
+echo "PASS213_RFC3161_OPENSSL_PREFLIGHT_OK"
+
 python3 -m unittest -v \
   tests.test_pass213_compiled_rom_v1 \
   tests.test_pass213_recovery_admission_v1 \
@@ -35,7 +39,8 @@ python3 -m unittest -v \
   tests.test_pass213_native_protected_rom_v1 \
   tests.test_pass213_parametric_delta_v1 \
   tests.test_pass213_persistent_inventory_v1 \
-  tests.test_pass213_pqc_enclosure_v1
+  tests.test_pass213_pqc_enclosure_v1 \
+  tests.test_pass213_trusted_timestamp_v1
 python3 -m py_compile \
   hhs_backend/runtime/hhs_pass213_compiled_rom_v1.py \
   hhs_backend/runtime/hhs_pass213_recovery_admission_v1.py \
@@ -43,7 +48,8 @@ python3 -m py_compile \
   hhs_backend/runtime/hhs_pass213_native_protected_rom_v1.py \
   hhs_backend/runtime/hhs_pass213_parametric_delta_v1.py \
   hhs_backend/runtime/hhs_pass213_persistent_inventory_v1.py \
-  hhs_backend/runtime/hhs_pass213_pqc_enclosure_v1.py
+  hhs_backend/runtime/hhs_pass213_pqc_enclosure_v1.py \
+  hhs_backend/runtime/hhs_pass213_trusted_timestamp_v1.py
 python3 -m json.tool contracts/pass213/PASS_213_CONTRACT.json >/dev/null
 
-echo "PASS213_ITERATION1_2_3_4_5_6_VALIDATION_OK"
+echo "PASS213_ITERATION1_2_3_4_5_6_7_VALIDATION_OK"
