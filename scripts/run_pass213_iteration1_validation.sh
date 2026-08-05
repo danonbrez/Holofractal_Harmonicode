@@ -40,7 +40,8 @@ python3 -m unittest -v \
   tests.test_pass213_parametric_delta_v1 \
   tests.test_pass213_persistent_inventory_v1 \
   tests.test_pass213_pqc_enclosure_v1 \
-  tests.test_pass213_trusted_timestamp_v1
+  tests.test_pass213_trusted_timestamp_v1 \
+  tests.test_pass213_moving_tensor_v1
 python3 -m py_compile \
   hhs_backend/runtime/hhs_pass213_compiled_rom_v1.py \
   hhs_backend/runtime/hhs_pass213_recovery_admission_v1.py \
@@ -49,7 +50,12 @@ python3 -m py_compile \
   hhs_backend/runtime/hhs_pass213_parametric_delta_v1.py \
   hhs_backend/runtime/hhs_pass213_persistent_inventory_v1.py \
   hhs_backend/runtime/hhs_pass213_pqc_enclosure_v1.py \
-  hhs_backend/runtime/hhs_pass213_trusted_timestamp_v1.py
+  hhs_backend/runtime/hhs_pass213_trusted_timestamp_v1.py \
+  hhs_backend/runtime/hhs_pass213_tensor_geometry_v1.py \
+  hhs_backend/runtime/hhs_pass213_tensor_closure_v1.py \
+  hhs_backend/runtime/hhs_pass213_tensor_boundary_v1.py \
+  hhs_backend/runtime/hhs_pass213_moving_tensor_v1.py \
+  hhs_backend/runtime/hhs_pass213_tensor_store_v1.py
 python3 -m json.tool contracts/pass213/PASS_213_CONTRACT.json >/dev/null
 
-echo "PASS213_ITERATION1_2_3_4_5_6_7_VALIDATION_OK"
+echo "PASS213_ITERATION1_2_3_4_5_6_7_8_VALIDATION_OK"
