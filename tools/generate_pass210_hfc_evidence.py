@@ -57,7 +57,7 @@ def generate() -> dict[str, Any]:
             "register_sha256": sha256(raw),
             "register_hash216": frame.object_hash216,
             "frame_receipt_hash72": frame.receipt_hash72,
-            "snapshot_sha256": [sha256(frame.snapshot_bytes(index)) for index in range(36)],
+            "round_trip_exact": decoded == raw,
             "section_audit": all(
                 tuple(map(len, hfc_section(frame.snapshot_bytes(index)))) == (89, 55, 89, 55)
                 for index in range(36)
@@ -139,7 +139,17 @@ def generate() -> dict[str, Any]:
             "register_sha256": sha256(reference),
             "register_hash216": reference_frame.object_hash216,
         },
-        "clean_multimodal_agreement": clean_verdict,
+        "reference_encode": {
+            "frame_receipt_hash72": reference_frame.receipt_hash72,
+            "snapshot_sha256": [sha256(reference_frame.snapshot_bytes(index)) for index in range(36)],
+            "section_audit": vectors[reference_name]["section_audit"],
+        },
+        "clean_multimodal_agreement": {
+            "agreement": clean_verdict["agreement"],
+            "reference_hash216": clean_verdict["reference_hash216"],
+            "surviving_witnesses": clean_verdict["surviving_witnesses"],
+            "disagreement_cells": clean_verdict["disagreement_cells"],
+        },
         "erasure_drills": erasures,
         "corruption_drills": corruptions,
         "reference_affine_view": {
@@ -160,7 +170,15 @@ def generate() -> dict[str, Any]:
             "canonical_register_bytes": REGISTER_LEN,
             "round_trip_sha256": sha256(strict_round_trip),
         },
-        "deterministic_replay_receipts": replay_receipts,
+        "deterministic_replay_receipts": [
+            {
+                "sequence": record["sequence"],
+                "event": record["event"],
+                "parent_hash72": record["parent_hash72"],
+                "receipt_hash72": record["receipt_hash72"],
+            }
+            for record in replay_receipts
+        ],
         "full_session_receipt_head_hash72": runtime.ledger.head,
         "full_session_receipt_count": len(runtime.ledger.records()),
     }
