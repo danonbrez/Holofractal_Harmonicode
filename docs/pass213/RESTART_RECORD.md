@@ -4,7 +4,7 @@
 - Immediate parent: Pass 212 full-hydration compression and physical erasure recovery
 - Base commit: `2be050264a6e9c659603100be802979bbc49bf7a`
 - Branch: `agent/pass213-compiled-rom-integrity`
-- Published Iteration 5 documentation head before final workflow receipt: `eec263b591d7f8522d97d9845c66ec1d2b268f36`
+- Validated Iteration 5 implementation head: `f3d645163f6e08fa9ac16a9c5155043682e96bcc`
 - Merge target: `main`
 - Draft pull request: `#169`
 - Iteration: `5`
@@ -41,7 +41,7 @@ Iterations 1–4 provide:
 - guarded, locked, sealed, and zeroizing native memory;
 - dependency-scoped parametric validation and authenticated witness reuse.
 
-Repository-native evidence already frozen:
+Repository-native evidence:
 
 ```text
 Iteration 2 workflow: 31026181234 — SUCCESS
@@ -94,34 +94,33 @@ Native store extension:
 - public commitment-record lookup;
 - single-entry zeroizing retirement with DESTROY receipt.
 
-## Iteration 5 test coverage
+## Iteration 5 validation
+
+```text
+workflow: Pass 213 Compiled ROM Integrity
+run: 31030982275
+validated branch head: f3d645163f6e08fa9ac16a9c5155043682e96bcc
+validate job: 92391324246
+step: Validate Pass 213 iterations 1 through 5
+conclusion: SUCCESS
+```
+
+The successful gate built the native C arena with `-Wall -Wextra -Werror`, ran every Iteration 1–5 test module, compiled every Pass 213 runtime module, and parsed the machine-readable contract.
+
+Iteration 5 coverage includes:
 
 - persistent admission root and native reconciliation;
 - unexplained native absence detection and repair;
 - restart recovery of multiple LIVE entries;
 - authorized retirement and tombstone retention;
 - zeroization before native deletion;
-- stale deletion authorization rejection;
-- altered deletion authorization rejection;
+- stale and altered deletion authorization rejection;
 - checkpoint recovery;
 - untracked protected-entry detection;
 - event-history tamper detection;
 - checkpoint tamper detection.
 
-## Validation command
-
-```bash
-bash scripts/run_pass213_iteration1_validation.sh
-```
-
-The command builds the native C arena with `-Wall -Wextra -Werror`, runs every Iteration 1–5 test module, compiles every Pass 213 runtime module, and parses the machine-readable contract.
-
-## Repository workflow state
-
-- Workflow: `Pass 213 Compiled ROM Integrity`
-- Iteration 5 workflow is triggered by the current branch head.
-- Final run identifier and validated head remain to be frozen after completion.
-- Guarded Continuous Integration remains governed by its inherited path policy.
+Guarded Continuous Integration remained skipped under its inherited guard policy. The dedicated Pass 213 workflow is the authoritative dependency-scoped gate for this slice.
 
 ## Remaining work
 
@@ -134,4 +133,4 @@ The command builds the native C arena with `-Wall -Wextra -Werror`, runs every I
 
 ## Next exact action
 
-Resolve the repository-native Iteration 5 workflow. Repair any persistent-chain, SQLite, carrier, checkpoint, or native-retirement incompatibility on this branch before advancing. After success, implement the post-quantum enclosure and signed-checkpoint layer while preserving every Iteration 1–5 gate. Do not merge Pass 214 ahead of authoritative Pass 213 closure.
+Implement the post-quantum enclosure and signed-checkpoint layer while preserving every Iteration 1–5 gate. ML-KEM SHALL protect checkpoint and recovery-key establishment; ML-DSA SHALL sign operational inventory checkpoints; SLH-DSA SHALL be available for archival or Genesis checkpoint authority. Do not merge Pass 214 ahead of authoritative Pass 213 closure.
