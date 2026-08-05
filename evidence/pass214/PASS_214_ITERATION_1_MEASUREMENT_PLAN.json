@@ -1,0 +1,73 @@
+{
+  "schema": "HHS_PASS_214_ITERATION_1_MEASUREMENT_PLAN_V1",
+  "contract": "HHS-P214-OPERATING-COMPRESSION-GRADIENT-ADMISSION-INCIDENCE-CALIBRATION-H72-H216",
+  "pass": 214,
+  "base_commit": "2be050264a6e9c659603100be802979bbc49bf7a",
+  "predecessor": {
+    "pass": 213,
+    "development_branch": "agent/pass213-compiled-rom-integrity",
+    "state_at_contract_freeze": "CONTRACTED_DEVELOPMENT_ITERATION_ONE",
+    "activation_rule": "Pass 214 implementation and final merge must inherit the authoritative Pass 213 closure commit or an explicit superseding cumulative predecessor."
+  },
+  "status": "CONTRACT_ONLY_NO_WORKLOAD_RESULT_CLAIM",
+  "fixed_arithmetic": {
+    "full_hydration_bits": 50388480,
+    "full_hydration_bytes": 6298560,
+    "leaf_count": 9720,
+    "seed_bytes": 2430,
+    "tier1_reference_payload_bytes": 2473,
+    "tier1_reference_ratio_decimal": "2546.930853214719",
+    "tier2_reference_payload_bytes": 10665,
+    "tier2_reference_ratio_decimal": "590.582278480075",
+    "raw_parity_bytes": 51840,
+    "raw_parity_fraction": "51840/6298560",
+    "raw_parity_percent_decimal": "0.823045267490"
+  },
+  "measurement_axes": [
+    "snapshot_incidence",
+    "byte_weighted_incidence",
+    "transition_incidence",
+    "dwell_time_incidence",
+    "tier2_exception_distribution",
+    "operating_ratio"
+  ],
+  "required_workload_classes": [
+    "vm81_continuation_snapshots",
+    "vector_cache_nearest_state_continuations",
+    "graphics_scene_graph_and_control_state",
+    "graphics_pixel_or_codec_payload",
+    "ml_hydration_state",
+    "ml_sparse_update_state",
+    "receipt_and_cryptographic_identity_payload",
+    "uploaded_arbitrary_file_payload"
+  ],
+  "required_transition_cells": [
+    "1->1",
+    "1->2",
+    "1->3",
+    "2->1",
+    "2->2",
+    "2->3",
+    "3->1",
+    "3->2",
+    "3->3"
+  ],
+  "iteration_1_outputs": [
+    "Measurement record JSON Schema.",
+    "Deterministic tier-admission evaluator interface contract.",
+    "Telemetry event contract.",
+    "Workload segmentation registry.",
+    "Exact byte-accounting rules.",
+    "Transition matrix accumulator contract.",
+    "Percentile and break-even calculation contract.",
+    "Replay and negative-test plan.",
+    "Repository-visible restart record."
+  ],
+  "nonclaims": [
+    "No workload admission incidence has yet been measured.",
+    "No operating compression ratio has yet been established.",
+    "The 2546.93:1 and 590.58:1 values remain Pass 212 reference vectors.",
+    "No production telemetry deployment is claimed."
+  ],
+  "next_action": "After authoritative Pass 213 closure, rebase this branch, implement the telemetry/evaluator runtime, execute calibrated workloads, and freeze measured evidence."
+}

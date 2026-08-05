@@ -1,0 +1,202 @@
+{
+  "schema": "HHS_PASS_214_CONTRACT_V1",
+  "contract": "HHS-P214-OPERATING-COMPRESSION-GRADIENT-ADMISSION-INCIDENCE-CALIBRATION-H72-H216",
+  "pass": 214,
+  "version": "1.0.0",
+  "classification": "HHS_PASS_214_OPERATING_COMPRESSION_GRADIENT_CONTRACT_FROZEN",
+  "base_commit": "2be050264a6e9c659603100be802979bbc49bf7a",
+  "predecessor": {
+    "pass": 213,
+    "development_branch": "agent/pass213-compiled-rom-integrity",
+    "state_at_contract_freeze": "CONTRACTED_DEVELOPMENT_ITERATION_ONE",
+    "activation_rule": "Pass 214 implementation and final merge must inherit the authoritative Pass 213 closure commit or an explicit superseding cumulative predecessor."
+  },
+  "inherits": [
+    "HHS-P175-H216-VM5184-G243-VIP-PCW-SVA-H72-X64IE",
+    "HHS-P210-HFC-VM81-H72-H216",
+    "HHS-P211-P133-BIGINT-HFC-MULTIREGISTER-H72-H216",
+    "HHS-P212-FULL-HYDRATION-SUPERFRAME-COMPRESSION-PHYSICAL-ERASURE-RECOVERY-H72-H216",
+    "PASS_213_AUTHORITATIVE_STATE_WHEN_CLOSED"
+  ],
+  "purpose": "Measure the real operating distribution, storage cost, recovery behavior, and transition dynamics of the Pass 212 three-tier compression gradient across actual HHS workloads without converting reference-vector ceilings into unmeasured operating claims.",
+  "fixed_dimensions": {
+    "local_leaf_bits": 5184,
+    "local_leaf_bytes": 648,
+    "controls": 243,
+    "basis_lanes": 8,
+    "magnitude_rows": 5,
+    "hydration_lanes": 40,
+    "full_leaf_count": 9720,
+    "full_hydration_bits": 50388480,
+    "full_hydration_bytes": 6298560,
+    "pure_generator_seed_bits": 19440,
+    "pure_generator_seed_bytes": 2430,
+    "tier1_reference_payload_bytes": 2473,
+    "tier1_reference_protected_bytes": 3769,
+    "tier1_reference_ratio": "6298560/2473",
+    "tier2_reference_exception_bits": 4096,
+    "tier2_reference_payload_bytes": 10665,
+    "tier2_reference_protected_bytes": 11961,
+    "tier2_reference_ratio": "6298560/10665",
+    "raw_parity_bytes": 51840,
+    "raw_protected_bytes": 6350400
+  },
+  "compression_tiers": {
+    "tier_1_generator": {
+      "admission": "The entire hydration is regenerated from an admitted canonical generator witness and exact seed material.",
+      "storage": "Seed, generator/domain witness, manifests, roots, receipts, indexes, and physical recovery material.",
+      "claim": "Domain compression."
+    },
+    "tier_2_exception": {
+      "admission": "An admitted generator state plus exact reversible exceptions is smaller after complete protection than tier 3.",
+      "storage": "Tier 1 material plus exact ordered exception positions and values.",
+      "claim": "Exact generator-plus-delta compression."
+    },
+    "tier_3_fallback": {
+      "admission": "Tier 1 and tier 2 are invalid or not smaller after full physical and metadata cost.",
+      "storage": "Raw canonical bytes plus manifests, roots, receipts, indexes, and physical recovery material.",
+      "claim": "Protection without compression claim."
+    }
+  },
+  "primary_metrics": {
+    "snapshot_incidence": "N_tier / N_total",
+    "byte_weighted_incidence": "canonical_bytes_tier / canonical_bytes_total",
+    "transition_incidence": "transitions_tier / transitions_total",
+    "dwell_time_incidence": "active_duration_tier / active_duration_total",
+    "structured_snapshot_incidence": "(N_tier1 + N_tier2) / N_total",
+    "structured_byte_incidence": "canonical_bytes_tier1_tier2 / canonical_bytes_total",
+    "operating_ratio": "total_canonical_state_bytes / total_protected_physical_bytes"
+  },
+  "operating_ratio_denominator_must_include": [
+    "generator_seeds",
+    "exception_positions",
+    "exception_values",
+    "raw_fallback_payloads",
+    "gf256_parity",
+    "package_manifests",
+    "framing",
+    "hash72_receipts",
+    "hash216_identities",
+    "retrieval_indexes",
+    "reconstruction_indexes",
+    "required_alignment_and_padding"
+  ],
+  "required_measurement_dimensions": [
+    "workload_class",
+    "state_id",
+    "transition_id",
+    "timestamp_boundary",
+    "selected_tier",
+    "canonical_state_bytes",
+    "encoded_payload_bytes",
+    "protected_physical_bytes",
+    "metadata_bytes",
+    "parity_bytes",
+    "exception_count",
+    "exception_density",
+    "nearest_predecessor_distance",
+    "immediate_predecessor_distance",
+    "encode_time_ns",
+    "decode_time_ns",
+    "recovery_time_ns",
+    "dwell_time_ns",
+    "state_hash216",
+    "package_hash216",
+    "hash72_receipt"
+  ],
+  "tier2_required_distributions": [
+    "minimum",
+    "median",
+    "p75",
+    "p90",
+    "p95",
+    "p99",
+    "maximum",
+    "mean",
+    "exception_position_encoded_bytes",
+    "exception_value_encoded_bytes",
+    "break_even_exception_count",
+    "spatial_cluster_by_vm81_cell",
+    "spatial_cluster_by_control",
+    "spatial_cluster_by_basis_lane",
+    "spatial_cluster_by_magnitude",
+    "temporal_exception_reuse"
+  ],
+  "transition_matrix": {
+    "definition": "M[a,b] = count(tier_n=a and tier_n_plus_1=b) / count(tier_n=a)",
+    "tiers": [1, 2, 3],
+    "required_cells": ["1->1", "1->2", "1->3", "2->1", "2->2", "2->3", "3->1", "3->2", "3->3"]
+  },
+  "workload_classes": [
+    "vm81_continuation_snapshots",
+    "vector_cache_nearest_state_continuations",
+    "graphics_scene_graph_and_control_state",
+    "graphics_pixel_or_codec_payload",
+    "ml_hydration_state",
+    "ml_sparse_update_state",
+    "receipt_and_cryptographic_identity_payload",
+    "uploaded_arbitrary_file_payload"
+  ],
+  "admission_policy": {
+    "selection": "Evaluate tier 1, tier 2, and tier 3 deterministically; select the smallest complete protected representation among valid candidates.",
+    "tier1_requirement": "A valid generator/domain witness and exact reconstruction.",
+    "tier2_requirement": "Valid generator witness, exact reversible exceptions, and complete protected size strictly less than tier 3.",
+    "tier3_requirement": "Always available for an exact-length canonical state.",
+    "replay_requirement": "The same canonical input, predecessor set, and policy version must select the same tier and package bytes.",
+    "no_reference_vector_substitution": "Reference ratios are ceilings or calibration points, not operating results."
+  },
+  "integrity_and_recovery_gates": [
+    "Exact full-state reconstruction for every admitted record.",
+    "Canonical state Hash216 equality before encode and after decode.",
+    "Deterministic tier classification and package replay.",
+    "No tier 1 admission without a generator witness.",
+    "No tier 2 admission without exact reversible exceptions.",
+    "Tier 3 fallback whenever semantic admission or size advantage fails.",
+    "One- and two-shard recovery within the declared Pass 212 stripe budget.",
+    "Fail closed beyond the declared physical recovery budget.",
+    "Historical corruption claims require independently retained minted anchors.",
+    "No floating-point authority in canonical metrics or identities."
+  ],
+  "iteration_1_deliverables": [
+    "Measurement record JSON Schema.",
+    "Deterministic tier-admission evaluator interface contract.",
+    "Telemetry event contract.",
+    "Workload segmentation registry.",
+    "Exact byte-accounting rules.",
+    "Transition matrix accumulator contract.",
+    "Percentile and break-even calculation contract.",
+    "Replay and negative-test plan.",
+    "Repository-visible restart record."
+  ],
+  "iteration_1_nonclaims": [
+    "No workload admission incidence has yet been measured.",
+    "No operating compression ratio has yet been established.",
+    "The 2546.93:1 and 590.58:1 values remain Pass 212 reference vectors.",
+    "No production telemetry deployment is claimed."
+  ],
+  "acceptance": {
+    "minimum_observation_count_per_workload": 1000,
+    "minimum_continuation_transitions_per_workload": 999,
+    "required_replay_match_fraction": "1/1",
+    "required_decode_match_fraction": "1/1",
+    "required_declared_recovery_success_fraction": "1/1",
+    "allowed_false_compression_claims": 0,
+    "required_reports": [
+      "tier_incidence_by_state_count",
+      "tier_incidence_by_canonical_bytes",
+      "tier_incidence_by_protected_bytes",
+      "tier_transition_matrix",
+      "tier_dwell_time",
+      "tier2_exception_distribution",
+      "operating_ratio_by_workload",
+      "aggregate_operating_ratio",
+      "recovery_success_and_fail_closed_report"
+    ]
+  },
+  "validation": {
+    "contract_entrypoint": "scripts/run_pass214_contract_validation.sh",
+    "measurement_schema": "contracts/pass214/PASS_214_MEASUREMENT_RECORD.schema.json",
+    "iteration_1_evidence": "evidence/pass214/PASS_214_ITERATION_1_MEASUREMENT_PLAN.json",
+    "status": "CONTRACT_ONLY_PENDING_PASS_213_CLOSURE_AND_RUNTIME_IMPLEMENTATION"
+  }
+}
