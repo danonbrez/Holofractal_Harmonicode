@@ -8,12 +8,14 @@ on:
       - "hhs_backend/api/pass196_integration_routes.py"
       - "hhs_backend/visual_server.py"
       - "hhs_backend/cached_visual_server.py"
+      - "hhs_backend/production_visual_server.py"
       - "hhs_backend/runtime_bootstrap_cache.py"
       - "hhs_backend/runtime_status_probe.py"
       - "applications/holofractal_harmonizer/src/pass196-integration.mjs"
       - "applications/holofractal_harmonizer/src/production-startup-coordinator.mjs"
       - "tests/test_hhs_pass196_integrated_environment_v1.py"
       - "tests/test_runtime_bootstrap_gateway.py"
+      - "tests/test_production_visual_server.py"
       - "deploy/digitalocean/hhs-pass196*"
       - "docs/pass196/**"
       - "docs/pass209/**"
@@ -25,12 +27,14 @@ on:
       - "hhs_backend/api/pass196_integration_routes.py"
       - "hhs_backend/visual_server.py"
       - "hhs_backend/cached_visual_server.py"
+      - "hhs_backend/production_visual_server.py"
       - "hhs_backend/runtime_bootstrap_cache.py"
       - "hhs_backend/runtime_status_probe.py"
       - "applications/holofractal_harmonizer/src/pass196-integration.mjs"
       - "applications/holofractal_harmonizer/src/production-startup-coordinator.mjs"
       - "tests/test_hhs_pass196_integrated_environment_v1.py"
       - "tests/test_runtime_bootstrap_gateway.py"
+      - "tests/test_production_visual_server.py"
       - "deploy/digitalocean/hhs-pass196*"
       - "docs/pass196/**"
       - "docs/pass209/**"
@@ -57,20 +61,26 @@ jobs:
           python -m py_compile hhs_backend/runtime_bootstrap_cache.py
           python -m py_compile hhs_backend/runtime_status_probe.py
           python -m py_compile hhs_backend/cached_visual_server.py
+          python -m py_compile hhs_backend/production_visual_server.py
           python -m py_compile tests/test_hhs_pass196_integrated_environment_v1.py
           python -m py_compile tests/test_runtime_bootstrap_gateway.py
+          python -m py_compile tests/test_production_visual_server.py
       - name: Validate Pass 196 browser module
         run: node --check applications/holofractal_harmonizer/src/pass196-integration.mjs
-      - name: Verify Visual IDE, canonical server, bootstrap wrapper, and DigitalOcean wiring
+      - name: Verify Visual IDE, canonical server, production gateway, and DigitalOcean wiring
         run: |
           grep -F "import './pass196-integration.mjs';" applications/holofractal_harmonizer/src/production-startup-coordinator.mjs
           grep -F "pass196_integration_router" hhs_backend/visual_server.py
           grep -F "from hhs_backend.visual_server import app as authoritative_app" hhs_backend/cached_visual_server.py
-          grep -F "hhs_backend.cached_visual_server:app" deploy/digitalocean/hhs-pass196-integrated-environment.service
+          grep -F "ProductionRuntimeBootstrapGateway" hhs_backend/production_visual_server.py
+          grep -F "hhs_backend.production_visual_server:app" deploy/digitalocean/hhs-pass196-integrated-environment.service
+          grep -F "HHS_PASS204_STATE_ROOT=/var/lib/hhs/pass204" deploy/digitalocean/hhs-pass196-integrated-environment.service
+          grep -F "HHS_PASS205_DB=/var/lib/hhs/pass205/continuation.sqlite3" deploy/digitalocean/hhs-pass196-integrated-environment.service
+          grep -F "HHS_FILESYSTEM_LEDGER_PATH=/var/lib/hhs/runtime-data/hhs_filesystem_ledger.json" deploy/digitalocean/hhs-pass196-integrated-environment.service
           grep -F "WorkingDirectory=/opt/hhs/app" deploy/digitalocean/hhs-pass196-integrated-environment.service
           grep -F -- "--port 8080 --workers 1" deploy/digitalocean/hhs-pass196-integrated-environment.service
           grep -F "HHS_REPOSITORY_ROOT=/opt/hhs/app" deploy/digitalocean/hhs-pass196.env.example
       - name: Run Pass 196 tests
         run: python -m pytest -q tests/test_hhs_pass196_integrated_environment_v1.py
       - name: Run runtime bootstrap regression tests
-        run: python -m pytest -q tests/test_runtime_bootstrap_gateway.py
+        run: python -m pytest -q tests/test_runtime_bootstrap_gateway.py tests/test_production_visual_server.py
