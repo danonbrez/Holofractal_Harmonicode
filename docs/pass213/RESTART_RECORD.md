@@ -8,6 +8,7 @@
 - Validated Iteration 6 implementation head: `e9ddcb09d3af525018a9e0196d065107c00674fc`
 - Validated Iteration 6 workflow-policy head: `93338a7330b480552a79ca437c77aca42e9d9cc0`
 - Final validated Iteration 6 runtime-tracked head: `f7274a1e06e8eb22949effacf9ac1b786708e584`
+- Restart evidence head: `f58497cbecaf85f15ea173b4ac3ff8a59d77a75a`
 - Merge target: `main`
 - Draft pull request: `#169`
 - Iteration: `6`
