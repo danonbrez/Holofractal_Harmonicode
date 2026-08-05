@@ -4,7 +4,6 @@
 - Immediate parent: Pass 212 full hydration compression and physical erasure recovery
 - Base commit: `2be050264a6e9c659603100be802979bbc49bf7a`
 - Branch: `agent/pass213-compiled-rom-integrity`
-- Current published head: `afca676eca3a23c50ad2f0b92513b382560bed31`
 - Merge target: `main`
 - Draft pull request: `#169`
 - Iteration: `2`
@@ -22,7 +21,9 @@
 - `scripts/run_pass213_iteration1_validation.sh`
 - `.github/workflows/pass213-compiled-rom-integrity.yml`
 
-## Iteration 1 implemented state
+## Implemented state
+
+### Iteration 1
 
 - timestamp boundary records and pair validation;
 - exact ordered-operation chaining;
@@ -32,7 +33,7 @@
 - authenticated inventory root;
 - deterministic group receipt.
 
-## Iteration 2 implemented state
+### Iteration 2
 
 - canonical compiled-entry serialization;
 - Pass 212 `ProtectedPayload` carrier integration;
@@ -46,7 +47,9 @@
 - intact/recovered outcome receipts;
 - fail-closed rejection of corrupted and over-budget carriers.
 
-## Validation performed before repository publication
+## Validation
+
+Local pre-publication checks:
 
 ```text
 new runtime module Python compilation: PASS
@@ -54,19 +57,16 @@ new test module Python compilation: PASS
 12 iteration-2 interface tests against a Pass 212 API-compatible local harness: PASS
 ```
 
-The local harness validated the Pass 213 integration logic and public Pass 212 call contract. Repository-native execution against the inherited Pass 212 implementation is performed by:
+Repository-native validation against the inherited Pass 212 implementation:
 
-```bash
-bash scripts/run_pass213_iteration1_validation.sh
+```text
+workflow: Pass 213 Compiled ROM Integrity
+run: 31026181234
+validated implementation head: 3d021b80d9f32afdea60fef8638c66e7ebcfeae2
+conclusion: SUCCESS
 ```
 
-The branch workflow `.github/workflows/pass213-compiled-rom-integrity.yml` runs both Pass 213 test modules against the repository implementation.
-
-## Repository workflow state
-
-- Workflow: `Pass 213 Compiled ROM Integrity`
-- Latest workflow is triggered by the current branch head.
-- Guarded Continuous Integration is expected to remain skipped under its inherited guard policy.
+The workflow executed both Pass 213 test modules, compiled both runtime modules, and parsed the machine-readable contract. Guarded Continuous Integration was skipped under its inherited guard policy.
 
 ## Iteration 2 test coverage
 
@@ -95,4 +95,4 @@ The branch workflow `.github/workflows/pass213-compiled-rom-integrity.yml` runs 
 
 ## Next exact action
 
-Resolve the repository-native iteration-2 workflow. If it passes, implement the protected kernel-memory arena with explicit allocation ownership, page locking, no-dump/no-swap controls, guard regions, and zeroization receipts. If it fails, repair the failing Pass 212 compatibility or Pass 213 invariant on this branch before advancing. Do not merge Pass 214 ahead of authoritative Pass 213 closure.
+Implement the protected kernel-memory arena with explicit allocation ownership, page locking, no-dump/no-swap controls, guard regions, and zeroization receipts. Do not merge Pass 214 ahead of authoritative Pass 213 closure.
