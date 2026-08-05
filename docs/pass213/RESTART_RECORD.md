@@ -1,13 +1,14 @@
-# Pass 213 Restart Record — Iteration 5
+# Pass 213 Restart Record — Iteration 6
 
 - Contract: `HHS-P213-TB-AMT-CROM-RMIK-H72-H216-VM5184-G243`
 - Immediate parent: Pass 212 full-hydration compression and physical erasure recovery
 - Base commit: `2be050264a6e9c659603100be802979bbc49bf7a`
 - Branch: `agent/pass213-compiled-rom-integrity`
-- Validated Iteration 5 implementation head: `f3d645163f6e08fa9ac16a9c5155043682e96bcc`
+- Validated Iteration 5 head: `5b7a1f95ab53bdd0c47706314eac2ec1fedb5ea3`
+- Published Iteration 6 documentation head before final workflow receipt: `2ef4629247c63726cc5123c62d5e7987b9d2b1dd`
 - Merge target: `main`
 - Draft pull request: `#169`
-- Iteration: `5`
+- Iteration: `6`
 
 ## Files in Pass 213 scope
 
@@ -15,6 +16,7 @@
 - `contracts/pass213/PASS_213_CONTRACT.json`
 - `docs/pass213/README.md`
 - `docs/pass213/RESTART_RECORD.md`
+- `requirements/pass213-pqc.txt`
 - `native/pass213/hhs_pass213_secure_arena.c`
 - `hhs_backend/runtime/hhs_pass213_compiled_rom_v1.py`
 - `hhs_backend/runtime/hhs_pass213_recovery_admission_v1.py`
@@ -22,24 +24,30 @@
 - `hhs_backend/runtime/hhs_pass213_native_protected_rom_v1.py`
 - `hhs_backend/runtime/hhs_pass213_parametric_delta_v1.py`
 - `hhs_backend/runtime/hhs_pass213_persistent_inventory_v1.py`
+- `hhs_backend/runtime/hhs_pass213_pqc_enclosure_v1.py`
 - `tests/test_pass213_compiled_rom_v1.py`
 - `tests/test_pass213_recovery_admission_v1.py`
 - `tests/test_pass213_secure_memory_v1.py`
 - `tests/test_pass213_native_protected_rom_v1.py`
 - `tests/test_pass213_parametric_delta_v1.py`
 - `tests/test_pass213_persistent_inventory_v1.py`
+- `tests/test_pass213_pqc_enclosure_v1.py`
 - `scripts/run_pass213_iteration1_validation.sh`
 - `.github/workflows/pass213-compiled-rom-integrity.yml`
 
-## Inherited implemented state
+## Inherited validated state
 
-Iterations 1–4 provide:
+Iterations 1–5 provide:
 
 - timestamp-bound noncommutative compiled-operation identity;
 - Pass 212 correction before compiled-ROM interpretation;
 - recovered-ROM admission proofs;
 - guarded, locked, sealed, and zeroizing native memory;
-- dependency-scoped parametric validation and authenticated witness reuse.
+- dependency-scoped parametric validation and authenticated witness reuse;
+- append-only persistent inventory roots;
+- root-bound authorized tombstones;
+- unexplained deletion detection;
+- retained-carrier and authenticated-checkpoint recovery.
 
 Repository-native evidence:
 
@@ -47,90 +55,98 @@ Repository-native evidence:
 Iteration 2 workflow: 31026181234 — SUCCESS
 Iteration 3 workflow: 31027325613 — SUCCESS
 Iteration 4 workflow: 31028995620 — SUCCESS
+Iteration 5 workflow: 31031068182 — SUCCESS
+Iteration 5 validated head: 5b7a1f95ab53bdd0c47706314eac2ec1fedb5ea3
 ```
 
-## Iteration 5 implemented state
+## Iteration 6 implemented state
 
-Persistent authority:
+Algorithm authority:
 
-- SQLite WAL mode and `synchronous=FULL`;
-- append-only keyed `ADMIT`, `RECOVER`, and `TOMBSTONE` event chain;
-- deterministic successor inventory root after every state mutation;
-- persistent LIVE and TOMBSTONED entry registry;
-- complete retained Pass 212 recovery carriers;
-- full chain verification on every reopen.
+- `liboqs-python==0.15.0` is pinned in `requirements/pass213-pqc.txt`;
+- the matching liboqs release is selected with `PYOQS_VERSION=0.15.0`;
+- the gate requires enabled ML-KEM-768 and ML-DSA-65 mechanisms;
+- the gate resolves an enabled SLH-DSA SHA2-128s mechanism by normalized family and parameter identity.
 
-Deletion authority:
+Native key protection:
 
-- independent deletion key;
-- authorization bound to entry identity and current inventory root;
-- timestamp, nonce, authority, and reason commitment;
-- stale and altered authorization rejection;
-- tombstone committed before native retirement;
-- retained carrier and deletion authorization after retirement;
-- tombstoned-entry readmission and recovery rejection.
+- one ML-KEM recovery keypair;
+- one ML-DSA operational-signature keypair;
+- one SLH-DSA archival-signature keypair;
+- each secret key stored in its own sealed owner-bound native arena;
+- public records retain only algorithm, role, public bytes, and Hash216 commitment;
+- the public verifier bundle commits all three public records and the liboqs suite;
+- authority shutdown zeroizes and destroys all three native arenas.
 
-Recovery authority:
+Dual-signature checkpoint authority:
 
-- reconciliation of persistent LIVE identities with native protected records;
-- unexplained absence and unexpected protected-entry detection;
-- retained-carrier recovery through Pass 212 correction and admission;
-- authenticated checkpoint material recovery;
-- restart recovery of every missing LIVE entry;
-- append-only RECOVER transitions and successor roots.
+- complete Iteration 5 checkpoint mapping bound into the signing message;
+- signed sequence and prior signed-checkpoint root continuity;
+- verifier-bundle root binding;
+- ML-DSA-65 operational signature;
+- SLH-DSA SHA2-128s archival signature;
+- both signatures committed into one successor signed-checkpoint Hash216;
+- verifier-only replay using public material alone.
 
-Checkpoint authority:
+Recovery enclosure:
 
-- complete LIVE carrier set and retained tombstone set;
-- prior-checkpoint continuity;
-- event-chain head and inventory-root anchor;
-- keyed checkpoint authentication;
-- checkpoint tamper detection on reopen.
+- ML-KEM encapsulation to the recovery public key;
+- HKDF-SHA-256 derivation from the ML-KEM shared secret;
+- checkpoint-root salt and complete capsule AAD binding;
+- AES-256-GCM encryption of the exact 256-bit recovery root;
+- KEM ciphertext, nonce, encrypted key, AAD root, recipient key, sequence, and checkpoint root committed into the capsule Hash216;
+- recovery permitted only through the protected ML-KEM secret-key arena.
 
-Native store extension:
+Persistent signed store:
 
-- exact presence query;
-- sorted protected identity enumeration;
-- public commitment-record lookup;
-- single-entry zeroizing retirement with DESTROY receipt.
+- SQLite WAL and full synchronization;
+- atomic signed-envelope and recovery-capsule append;
+- strict signed sequence continuity;
+- strict prior signed-root continuity;
+- signed-head metadata verification;
+- public verifier-bundle persistence and reopen validation;
+- orphan and missing capsule rejection;
+- database envelope and capsule tamper detection.
 
-## Iteration 5 validation
+## Iteration 6 test coverage
 
-```text
-workflow: Pass 213 Compiled ROM Integrity
-run: 31030982275
-validated branch head: f3d645163f6e08fa9ac16a9c5155043682e96bcc
-validate job: 92391324246
-step: Validate Pass 213 iterations 1 through 5
-conclusion: SUCCESS
+- real liboqs algorithm preflight;
+- sealed native protection for all three post-quantum secret keys;
+- ML-DSA and SLH-DSA verification over one canonical checkpoint message;
+- checkpoint mutation and public-key substitution rejection;
+- ML-KEM recovery capsule round trip;
+- authenticated-encryption tamper rejection;
+- integration with an actual Iteration 5 inventory checkpoint;
+- verifier-only SQLite reopen and chain replay;
+- signed-envelope database tamper rejection;
+- recovery-capsule database tamper rejection;
+- verifier-bundle tamper rejection;
+- native PQC secret-key zeroization and destruction.
+
+## Validation command
+
+```bash
+python -m pip install -r requirements/pass213-pqc.txt
+PYOQS_VERSION=0.15.0 bash scripts/run_pass213_iteration1_validation.sh
 ```
 
-The successful gate built the native C arena with `-Wall -Wextra -Werror`, ran every Iteration 1–5 test module, compiled every Pass 213 runtime module, and parsed the machine-readable contract.
+The command builds the native C arena with warnings as errors, verifies the required liboqs algorithms, runs every Iteration 1–6 test module, compiles every Pass 213 runtime module, and parses the machine-readable contract.
 
-Iteration 5 coverage includes:
+## Workflow state
 
-- persistent admission root and native reconciliation;
-- unexplained native absence detection and repair;
-- restart recovery of multiple LIVE entries;
-- authorized retirement and tombstone retention;
-- zeroization before native deletion;
-- stale and altered deletion authorization rejection;
-- checkpoint recovery;
-- untracked protected-entry detection;
-- event-history tamper detection;
-- checkpoint tamper detection.
-
-Guarded Continuous Integration remained skipped under its inherited guard policy. The dedicated Pass 213 workflow is the authoritative dependency-scoped gate for this slice.
+- Workflow: `Pass 213 Compiled ROM Integrity`
+- Iteration 6 final repository-native result: pending current branch-head execution.
+- Guarded Continuous Integration remains governed by its inherited path policy.
+- Pull request remains draft and unmerged.
 
 ## Remaining work
 
-1. Add ML-KEM/ML-DSA/SLH-DSA enclosure and checkpoint signatures.
-2. Add external trusted checkpoint timestamps.
-3. Implement the complete magic-square/Sudoku/Fibonacci moving tensor family.
-4. Add API and CLI surfaces.
-5. Add governed native dispatch and performance evidence.
-6. Run final integration, merge, and verified-main closure.
+1. Add trusted external timestamp checkpoint anchoring.
+2. Implement the complete magic-square/Sudoku/Fibonacci moving tensor family.
+3. Add API and CLI surfaces.
+4. Add governed native dispatch and performance evidence.
+5. Run final integration, merge, and verified-main closure.
 
 ## Next exact action
 
-Implement the post-quantum enclosure and signed-checkpoint layer while preserving every Iteration 1–5 gate. ML-KEM SHALL protect checkpoint and recovery-key establishment; ML-DSA SHALL sign operational inventory checkpoints; SLH-DSA SHALL be available for archival or Genesis checkpoint authority. Do not merge Pass 214 ahead of authoritative Pass 213 closure.
+Resolve the complete Iteration 1–6 repository workflow at the final branch head. Repair any liboqs mechanism, native-memory, dual-signature, AES-GCM capsule, SQLite-chain, or inherited regression failure before advancing. After success, freeze the workflow evidence and begin the trusted external timestamp checkpoint layer. Do not merge Pass 214 ahead of authoritative Pass 213 closure.
