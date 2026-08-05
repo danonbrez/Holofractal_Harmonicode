@@ -1,10 +1,14 @@
 # Pass 210 HFC Restart Record
 
 - Base commit: `36d110ba2f808f83bace25d6df84d45e44ab024b`
-- Working branch: `agent/pass210-multimodal-invariant-calibration`
+- Implementation branch: `agent/pass210-multimodal-invariant-calibration`
 - Merge target: `main`
+- Pull request: `#165`
+- Verified implementation head: `0d1433d30f9fe811dc42a3155afeafa089aa72ff`
+- Authoritative merge commit: `a8cd64e76828fd911e7e6e27ffd9ad02c7d74355`
 - Contract: `HHS-P210-HFC-VM81-H72-H216`
 - Scope: holographic frame compression, integrity, recovery, projection agreement, and admissible-domain strict compression
+- Closure state: `HHS_PASS_210_HOLOGRAPHIC_FRAME_COMPRESSION_RUNTIME_VERIFIED`
 
 ## Changed files
 
@@ -36,23 +40,34 @@ python -m pytest -q \
 python tools/generate_pass210_hfc_evidence.py --check
 ```
 
-Local result: `15 passed`; evidence deterministic; runtime closure string emitted.
+Results:
+
+- Local dependency-scoped validation: `15 passed`.
+- Pull-request Pass 210 workflow run `30994827355`: `success`.
+- Post-merge `main` workflow run `30994901959`: `success`.
+- Frozen contract parse: `success`.
+- Deterministic evidence equality: `PASS210_EVIDENCE_CHECK_OK`.
+- Runtime closure string: `HHS_PASS_210_HOLOGRAPHIC_FRAME_COMPRESSION_RUNTIME_VERIFIED`.
 
 ## Environment state
 
 - Python 3.12-compatible implementation
 - FastAPI/Pydantic v2 API models
-- no network, secret, GPU, database, or production-host dependency
+- no secret, GPU, database, or production-host dependency
 - snapshots are lazy views over one aligned register allocation
+- branch diff was additive: 12 new files, zero inherited modifications or deletions
 
-## Remaining closure actions
+## Authoritative-main closure
 
-1. Commit the validated files to the working branch.
-2. Open a pull request targeting `main`.
-3. Verify the Pass 210 GitHub Actions workflow.
-4. Merge only after CI is green.
-5. Verify authoritative `main` contains the merge commit and rerun the validation entrypoint on deployment checkout.
+1. Validated files committed to the implementation branch.
+2. Pull request `#165` opened against `main`.
+3. Pass 210 pull-request workflow completed successfully.
+4. Pull request merged with expected-head guard.
+5. `main` verified at merge commit `a8cd64e76828fd911e7e6e27ffd9ad02c7d74355`.
+6. Post-merge Pass 210 workflow completed successfully on `main`.
+
+No repository implementation work remains for this pass. Production deployment checkout and service restart were not performed by this repository task and remain an operations action when deployment is authorized.
 
 ## Known independent branch
 
-`agent/pass210-kimi-k3-native-llm` is not modified by this work. Its numbering/migration remains independent and must not overwrite this contract branch.
+`agent/pass210-kimi-k3-native-llm` was not modified by this work. Its numbering/migration remains independent and must not overwrite this contract lineage.
