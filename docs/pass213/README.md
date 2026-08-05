@@ -96,17 +96,23 @@ python -m pip install -r requirements/pass213-pqc.txt
 PYOQS_VERSION=0.16.0 bash scripts/run_pass213_iteration1_validation.sh
 ```
 
-The dedicated workflow builds the native C arena, verifies the required real liboqs mechanisms, executes every Iteration 1–6 test module, compiles every Pass 213 runtime module, validates the machine-readable contract, and retains the complete validation transcript as a workflow artifact.
+The dedicated workflow builds the native C arena, verifies the required real liboqs mechanisms, executes every Iteration 1–6 test module, compiles every Pass 213 runtime module, validates the machine-readable contract, caches the matching native liboqs build, and retains the complete validation transcript as a workflow artifact.
 
 Repository-native Iteration 6 evidence:
 
 ```text
-workflow: Pass 213 Compiled ROM Integrity
-run: 31036482697
-job: 92409747663
-validated head: e9ddcb09d3af525018a9e0196d065107c00674fc
-conclusion: SUCCESS
+implementation run: 31036482697
+implementation job: 92409747663
+implementation head: e9ddcb09d3af525018a9e0196d065107c00674fc
+result: SUCCESS
+
+final workflow-policy run: 31037164477
+final workflow-policy job: 92412018053
+validated head: 93338a7330b480552a79ca437c77aca42e9d9cc0
+result: SUCCESS
 ```
+
+The final branch head additionally updates only the restart record with these frozen receipts. Restart-record-only commits are excluded from runtime reruns.
 
 ## Current boundary
 
