@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "contract_id": "HHS-P213-TB-AMT-CROM-RMIK-H72-H216-VM5184-G243",
+  "pass_number": 213,
+  "version": "1.0.0-iteration1",
+  "classification": "CONTRACT_AUTHORIZED_IMPLEMENTATION_IN_PROGRESS",
+  "immediate_parent": "HHS-P212-FULL-HYDRATION-SUPERFRAME-COMPRESSION-PHYSICAL-ERASURE-RECOVERY-H72-H216",
+  "iteration": 1,
+  "implemented_authorities": [
+    "canonical framed SHA-256 identities",
+    "HMAC-SHA-256 domain-separated state-local derivation",
+    "exact integer-nanosecond timestamp boundaries",
+    "noncommutative ordered-operation authentication chain",
+    "keyed affine full-cycle closure permutation",
+    "immutable compiled-ROM entry identity",
+    "compiled-ROM exact lookup",
+    "authenticated compiled-ROM inventory root",
+    "deterministic group receipt authentication"
+  ],
+  "required_invariants": {
+    "correction_before_interpretation": true,
+    "correction_before_execution": true,
+    "singleton_vm81_admission": true,
+    "timestamp_boundary_continuity": true,
+    "ordered_operation_identity": true,
+    "unique_closure_path": true,
+    "immutable_compiled_rom_entries": true,
+    "unauthorized_deletion_detectable": true,
+    "no_external_protected_memory_mapping": true
+  },
+  "domains": {
+    "vm5184": 5184,
+    "g243": 243,
+    "vm5184_g243": 1259712,
+    "hydration_lanes": 40,
+    "full_hydration": 50388480
+  },
+  "remaining_iterations": [
+    "Pass 212 correction pipeline integration",
+    "protected kernel-memory arena",
+    "parametric delta-validation lane",
+    "persistent inventory and tombstones",
+    "PQC enclosure and checkpoint signatures",
+    "external trusted timestamp checkpoints",
+    "high-dimensional tensor invariant implementation",
+    "API and CLI surfaces",
+    "native compiled dispatch",
+    "full hydration performance and recovery evidence"
+  ]
+}
