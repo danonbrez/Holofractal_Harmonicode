@@ -2,7 +2,7 @@
 
 **Contract:** `HHS-P213-TB-AMT-CROM-RMIK-H72-H216-VM5184-G243`  
 **Status:** `CONTRACT_AUTHORIZED — IMPLEMENTATION IN PROGRESS`  
-**Current iteration:** `2`
+**Current iteration:** `3`
 
 ## Binding inheritance
 
@@ -10,7 +10,7 @@ Pass 213 is an in-place upgrade of the complete pre-pass foundation and Pass 001
 
 ## Iteration 1 — compiled-ROM nucleus
 
-Iteration 1 established the executable compiled-ROM authority:
+Iteration 1 established immutable compiled-ROM identity, exact timestamp boundaries, noncommutative ordered-operation authentication, keyed one-visit closure paths, exact lookup, inventory roots, and deterministic receipts.
 
 ```text
 validated operation
@@ -22,87 +22,114 @@ validated operation
     → deterministic authenticated receipt
 ```
 
-A compiled-ROM entry is an authorized transformation containing canonical operation identity, constraints, VM81 cell, operation slot, G243 control, native dispatch identity, kernel policy root, timestamp-bound creation lineage, closure-path root, and parent Hash216.
-
-Every group has exact integer-nanosecond opening and closing boundaries. Each boundary binds Genesis epoch, monotonic group sequence, unique serial, parent Hash216, previous Hash72 receipt, and kernel measurement.
-
-The ordered operation chain is position-sensitive:
-
-```text
-X0 = AUTH(opening_boundary, 0, operation_0)
-X1 = AUTH(X0, 1, operation_1)
-...
-Xn = AUTH(Xn-1, n, operation_n)
-```
-
-Changing order, omission, duplication, insertion, timestamp, serial, epoch, parent, or kernel measurement changes the resulting group authority.
-
-For declared domain `N`, iteration 1 derives:
-
-```text
-cell(i) = (a*i + b) mod N
-```
-
-with `gcd(a,N)=1`. The mapping is bijective, visits every cell exactly once, supports exact inversion, and closes from the final cell to the first. Tests exercise the 5,184-cell domain and inverse coordinates in the 1,259,712-cell VM5184×G243 domain.
-
 ## Iteration 2 — correction before ROM interpretation
 
-Iteration 2 integrates the inherited Pass 212 physical recovery layer into the canonical compiled-ROM admission path.
-
-The required order is now executable:
+Iteration 2 integrated the inherited Pass 212 physical recovery layer into canonical compiled-ROM admission.
 
 ```text
 serialized immutable compiled-ROM entry
     → Pass 212 ProtectedPayload shards and parity
-    → keyed Pass 213 carrier root and authentication
-    → validation of every present shard
-    → reconstruction of missing shards within budget
+    → keyed Pass 213 carrier authentication
+    → physical validation and bounded reconstruction
     → reconstructed shard Hash216 validation
     → exact recovered payload bytes
     → recovered payload Hash216 validation
-    → canonical JSON deserialization
+    → canonical deserialization
     → immutable compiled-entry Hash216 validation
     → keyed RecoveredROMAdmission proof
-    → recovery-gated compiled-ROM insertion
 ```
 
-The canonical store is `RecoveryGatedCompiledROMStore`. Its insertion surface accepts a valid `RecoveredROMAdmission`, not an arbitrary `CompiledROMEntry` or external mapping. The combined inventory root commits both the immutable compiled-ROM index and every keyed admission root.
+JSON decoding occurs only after physical recovery and recovered-payload Hash216 validation. Malformed, altered, over-budget, unauthenticated, or incorrectly keyed carriers fail before canonical insertion.
 
-A carrier records one of two authenticated outcomes:
+## Iteration 3 — native protected compiled-ROM memory
+
+Iteration 3 implements the native memory enclosure and connects it to recovered compiled-ROM admission.
+
+Every secure arena is constructed as:
 
 ```text
-INTACT     all required physical shards were present and validated
-RECOVERED  one or two missing shards were reconstructed and revalidated
+PROT_NONE guard page
+    +
+mlock + MADV_DONTDUMP + MADV_DONTFORK data pages
+    +
+PROT_NONE guard page
 ```
 
-Damage outside the inherited Pass 212 erasure budget fails closed. A present shard with altered bytes fails its physical Hash216 validation. Carrier metadata, expected entry identity, recovered payload identity, carrier root, admission root, and authentication tags are all bound before canonical insertion.
+The data pages are never executable. They begin read-write for bounded initialization, then become read-only when sealed. Every operation requires a constant-time validated 256-bit owner token. The process hardening surface disables dumpability through `PR_SET_DUMPABLE`.
 
-The pivotal gate is explicit in code: JSON decoding occurs only after `recover_payload(...)` returns and the recovered-payload Hash216 equals the carrier commitment.
+The native arena provides:
 
-## Current compiled-ROM behavior
+- page-aligned allocation;
+- two inaccessible guard pages;
+- no-swap page locking;
+- core-dump exclusion;
+- fork-inheritance exclusion;
+- owner-token authorization;
+- bounds-checked reads and writes;
+- read-only sealing;
+- explicit volatile zeroization;
+- zero verification;
+- zeroization before unmap and release;
+- stable native error codes.
+
+The Python wrapper exposes no raw address. It emits keyed lifecycle receipts for:
 
 ```text
-exact Hash216 lookup
-    → recovery-admission membership validation
-    → immutable entry validation
-    → current boundary compatibility
+ALLOCATE → WRITE → SEAL → ZEROIZE → DESTROY
+```
+
+Receipts bind the logical arena identity, allocation context, native mutation sequence, prior receipt, payload commitment, and protection state without containing the payload or a memory address.
+
+`NativeProtectedCompiledROMStore` closes the full admission path:
+
+```text
+Pass 212 correction
+    → RecoveredROMAdmission validation
+    → canonical entry serialization
+    → owner-bound native arena allocation
+    → bounded write
+    → read-only seal
+    → internal re-read and Hash216 validation
+    → protected-ROM inventory commitment
+```
+
+The Python-side index retains only:
+
+- compiled entry Hash216;
+- operation identifier;
+- recovery-admission root;
+- arena identity commitment;
+- protected payload length;
+- final secure-memory receipt root.
+
+Canonical entry bytes remain in the sealed native arena. Lookup reads them internally, reconstructs a transient entry object, and revalidates its immutable Hash216 before use. Retirement zeroizes and destroys every arena.
+
+## Current acceptance path
+
+```text
+untrusted carrier
+    → physical correction and Hash216 validation
+    → recovered admission proof
+    → native guarded arena
+    → sealed compiled-ROM bytes
+    → internal lookup revalidation
     → singleton VM81 admission
     → native dispatch
     → successor receipt
 ```
 
-Novel operations remain subject to full sandbox validation before compilation and physical protection. Similarity alone never grants authority.
+Similarity never grants authority. A novel operation remains subject to full sandbox validation and compilation before physical protection.
 
 ## Validation
 
-The focused Pass 213 gate executes:
+The focused Pass 213 gate is:
 
 ```bash
 bash scripts/run_pass213_iteration1_validation.sh
 ```
 
-It covers the 11 iteration-1 tests plus 12 iteration-2 recovery-admission tests, Python compilation, and machine-readable contract parsing.
+It builds the native C arena with warnings treated as errors, executes all iteration test modules, compiles all Python runtime modules, and parses the machine-readable contract.
 
 ## Iteration boundary
 
-Pass 213 remains nonterminal. Remaining work includes protected native kernel memory, parametric delta validation, persistent deletion detection and tombstones, PQC enclosure, trusted timestamp checkpoints, full tensor invariants, APIs, CLI, native execution, performance evidence, final integration, merge, and verified-main closure.
+Pass 213 remains nonterminal. Remaining work includes parametric delta validation, persistent deletion detection and tombstones, PQC enclosure, trusted external timestamp checkpoints, full high-dimensional tensor invariants, API and CLI surfaces, governed native dispatch, performance evidence, final integration, merge, and verified-main closure.
