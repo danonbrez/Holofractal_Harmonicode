@@ -8,6 +8,8 @@ Type=simple
 User=hhs
 Group=hhs
 WorkingDirectory=/opt/hhs/app
+StateDirectory=hhs
+StateDirectoryMode=0750
 EnvironmentFile=-/etc/hhs/pass196.env
 Environment=PYTHONUNBUFFERED=1
 Environment=PYTHONPATH=/opt/hhs/app
