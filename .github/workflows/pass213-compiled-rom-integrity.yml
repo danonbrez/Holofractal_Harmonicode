@@ -66,6 +66,11 @@ jobs:
           python-version: '3.12'
           cache: 'pip'
           cache-dependency-path: 'requirements/pass213-pqc.txt'
+      - name: Restore native liboqs cache
+        uses: actions/cache@v4
+        with:
+          path: ~/_oqs
+          key: liboqs-${{ runner.os }}-${{ runner.arch }}-${{ env.PYOQS_VERSION }}
       - name: Install Pass 213 post-quantum dependencies
         run: python -m pip install --disable-pip-version-check -r requirements/pass213-pqc.txt
       - name: Validate Pass 213 iterations 1 through 6
