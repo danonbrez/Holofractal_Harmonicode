@@ -77,7 +77,8 @@ jobs:
           grep -F "StateDirectory=hhs" deploy/digitalocean/hhs-pass196-integrated-environment.service
           grep -F "HHS_PASS204_STATE_ROOT=/var/lib/hhs/pass204" deploy/digitalocean/hhs-pass196-integrated-environment.service
           grep -F "HHS_PASS205_DB=/var/lib/hhs/pass205/continuation.sqlite3" deploy/digitalocean/hhs-pass196-integrated-environment.service
-          grep -F "HHS_FILESYSTEM_LEDGER_PATH=/var/lib/hhs/runtime-data/hhs_filesystem_ledger.json" deploy/digitalocean/hhs-pass196-integrated-environment.service
+          grep -F "HHS_RUNTIME_OUTPUT_DIR=/var/lib/hhs/data/runtime" deploy/digitalocean/hhs-pass196-integrated-environment.service
+          grep -F "HHS_FILESYSTEM_LEDGER_PATH=/var/lib/hhs/data/runtime/hhs_filesystem_ledger.json" deploy/digitalocean/hhs-pass196-integrated-environment.service
           grep -F "HHS_RUNTIME_STATUS_PROBE_START_DELAY_SECONDS=30" deploy/digitalocean/hhs-pass196-integrated-environment.service
           grep -F "WorkingDirectory=/opt/hhs/app" deploy/digitalocean/hhs-pass196-integrated-environment.service
           grep -F -- "--port 8080 --workers 1" deploy/digitalocean/hhs-pass196-integrated-environment.service
