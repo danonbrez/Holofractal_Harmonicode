@@ -1,6 +1,11 @@
 name: Pass 211 Generator Path Fix
 
 on:
+  push:
+    branches:
+      - agent/pass211-bigint-hfc-carrier
+    paths:
+      - '.github/workflows/pass211-generator-path-fix.yml'
   pull_request:
     branches:
       - main
