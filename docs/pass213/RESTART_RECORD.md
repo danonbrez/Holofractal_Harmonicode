@@ -1,4 +1,4 @@
-# Pass 213 Restart Record — Iteration 3
+# Pass 213 Restart Record — Iteration 4
 
 - Contract: `HHS-P213-TB-AMT-CROM-RMIK-H72-H216-VM5184-G243`
 - Immediate parent: Pass 212 full hydration compression and physical erasure recovery
@@ -6,7 +6,7 @@
 - Branch: `agent/pass213-compiled-rom-integrity`
 - Merge target: `main`
 - Draft pull request: `#169`
-- Iteration: `3`
+- Iteration: `4`
 
 ## Files in Pass 213 scope
 
@@ -19,10 +19,12 @@
 - `hhs_backend/runtime/hhs_pass213_recovery_admission_v1.py`
 - `hhs_backend/runtime/hhs_pass213_secure_memory_v1.py`
 - `hhs_backend/runtime/hhs_pass213_native_protected_rom_v1.py`
+- `hhs_backend/runtime/hhs_pass213_parametric_delta_v1.py`
 - `tests/test_pass213_compiled_rom_v1.py`
 - `tests/test_pass213_recovery_admission_v1.py`
 - `tests/test_pass213_secure_memory_v1.py`
 - `tests/test_pass213_native_protected_rom_v1.py`
+- `tests/test_pass213_parametric_delta_v1.py`
 - `scripts/run_pass213_iteration1_validation.sh`
 - `.github/workflows/pass213-compiled-rom-integrity.yml`
 
@@ -57,65 +59,108 @@ conclusion: SUCCESS
 
 ## Iteration 3 implemented state
 
-Native C protected-memory arena:
+- guarded native C protected-memory arena;
+- non-executable, locked, no-dump, no-fork data pages;
+- process dumpability hardening;
+- constant-time owner-token authorization;
+- bounds-checked access and read-only sealing;
+- explicit zeroization and zero verification;
+- keyed memory lifecycle receipts;
+- native sealed backing for recovered compiled-ROM entries;
+- internal Hash216 revalidation and zeroizing retirement.
 
-- inaccessible `PROT_NONE` guard page before and after every arena;
-- non-executable middle data pages;
-- `mlock` no-swap enforcement;
-- `MADV_DONTDUMP` and `MADV_DONTFORK` enforcement;
-- `PR_SET_DUMPABLE` process hardening surface;
-- constant-time 256-bit owner-token authorization;
-- bounds-checked read/write operations;
-- read-only sealing;
-- explicit volatile zeroization;
-- zero verification;
-- zeroization before `munlock`, `PROT_NONE`, `munmap`, and release.
+Repository-native Iteration 3 validation:
 
-Runtime integration:
+```text
+workflow: Pass 213 Compiled ROM Integrity
+run: 31027325613
+validated implementation head: b02f5a0694fe7c4eadcf5c8bb0af6bf4a4ade5a4
+validate job: 92379008538
+conclusion: SUCCESS
+```
 
-- `NativeSecureArena` wrapper exposes no raw address;
-- keyed lifecycle receipt chain for allocation, mutation, seal, zeroization, and destruction;
-- `NativeProtectedCompiledROMStore` accepts recovered admissions only;
-- canonical compiled-entry bytes reside in sealed native arenas;
-- the Python index retains identity and commitment metadata only;
-- lookup revalidates deserialized entry Hash216;
-- inventory commits admission, arena, payload-length, and memory-receipt roots;
-- retirement zeroizes and destroys every arena.
+## Iteration 4 implemented state
 
-## Iteration 3 validation
+Parametric template authority:
+
+- immutable template identity bound to one protected compiled-ROM entry;
+- exact operand and context field registry;
+- exact field type and mutability declarations;
+- deterministic finite semantic-constraint bytecode;
+- explicit dependency paths for every constraint;
+- complete authenticated baseline constraint-witness set.
+
+Dependency-scoped candidate admission:
+
+- complete field-set validation on every invocation;
+- complete type validation on every invocation;
+- exact canonical comparison against the baseline;
+- immutable context mutation rejection;
+- sorted changed-field delta;
+- union of constraints whose dependencies intersect the changed fields;
+- semantic execution only for that affected set;
+- authenticated baseline-witness reuse for unaffected constraints;
+- candidate, delta, evaluated witnesses, reused-witness root, compiled route, kernel policy, parent, epoch, group sequence, and opening timestamp boundary bound into the VM81 admission root;
+- keyed deterministic admission authentication.
+
+Native-memory integration:
+
+- templates stored in sealed owner-bound native arenas;
+- parametric admission bytes stored in separate sealed owner-bound native arenas;
+- public records retain identity, delta, count, arena, length, and receipt commitments only;
+- protected lookup requires the original timestamp boundary and revalidates the complete admission;
+- identical candidate and boundary admissions are idempotent;
+- template and admission arenas are zeroized before destruction.
+
+## Iteration 4 validation
 
 Local pre-publication checks:
 
 ```text
-native C build with -Wall -Wextra -Werror: PASS
-11 secure-arena tests: PASS
-4 native-protected-ROM integration tests: PASS
-iteration-2 plus iteration-3 local compatibility suite: 28 tests PASS
-Python compilation: PASS
+new runtime Python compilation: PASS
+new test Python compilation: PASS
+7 isolated core dependency-selection tests against API-compatible stubs: PASS
 ```
 
 Repository-native validation:
 
 ```text
 workflow: Pass 213 Compiled ROM Integrity
-run: 31027325613
-validated branch head: b02f5a0694fe7c4eadcf5c8bb0af6bf4a4ade5a4
-validate job: 92379008538
-native build and Iteration 1–3 validation step: SUCCESS
+run: 31028844237
+validated branch head: a1c8fb3f7b149f1d23090321f7512ee182c7960a
+validate job: 92384100388
+native build and Iteration 1–4 validation step: SUCCESS
 workflow conclusion: SUCCESS
 ```
+
+Iteration 4 repository coverage includes:
+
+- complete baseline witness set;
+- exact invocation with complete witness reuse;
+- one-field dependency selection;
+- multi-field dependency union;
+- immutable-context rejection;
+- complete type validation;
+- affected-constraint failure;
+- timestamp-boundary-specific authority;
+- wrong-key and altered-admission rejection;
+- baseline-witness tamper rejection;
+- sealed template and admission storage;
+- idempotent admission;
+- original-boundary lookup enforcement;
+- protected-base-entry requirement;
+- zeroizing retirement.
 
 Guarded Continuous Integration remained skipped under its inherited guard policy. The dedicated Pass 213 workflow is the authoritative dependency-scoped validation for this slice.
 
 ## Remaining work
 
-1. Implement parametric delta matching and dependency-scoped revalidation.
-2. Add persistent inventory roots, authorized tombstones, and deleted-entry recovery.
-3. Add ML-KEM/ML-DSA/SLH-DSA enclosure and checkpoint surfaces.
-4. Add trusted external checkpoint timestamps.
-5. Implement the full high-dimensional magic-square/Sudoku/Fibonacci tensor family.
-6. Add API, CLI, native dispatch, performance evidence, and final main verification.
+1. Add persistent inventory roots, authorized tombstones, and deleted-entry recovery.
+2. Add ML-KEM/ML-DSA/SLH-DSA enclosure and checkpoint surfaces.
+3. Add trusted external checkpoint timestamps.
+4. Implement the full high-dimensional magic-square/Sudoku/Fibonacci tensor family.
+5. Add API, CLI, governed native dispatch, performance evidence, and final main verification.
 
 ## Next exact action
 
-Implement the parametric compiled-ROM lane so compatible operations validate only changed operands and affected constraints before VM81 admission. Preserve the Iteration 3 native-memory gate for all admitted compiled representations. Do not merge Pass 214 ahead of authoritative Pass 213 closure.
+Implement the persistent compiled-ROM inventory and deletion-transition layer. Every authorized retirement must retain an authenticated tombstone, while unexplained absence must fail inventory continuity and recover the protected entry from authenticated carrier or checkpoint material. Preserve the Iteration 2 correction gate, Iteration 3 protected-memory gate, and Iteration 4 dependency-scoped admission gate. Do not merge Pass 214 ahead of authoritative Pass 213 closure.
