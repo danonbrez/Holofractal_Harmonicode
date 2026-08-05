@@ -2,7 +2,7 @@
 
 **Contract:** `HHS-P213-TB-AMT-CROM-RMIK-H72-H216-VM5184-G243`  
 **Status:** `CONTRACT_AUTHORIZED — IMPLEMENTATION IN PROGRESS`  
-**Current iteration:** `6`
+**Current iteration:** `7`
 
 ## Binding inheritance
 
@@ -134,16 +134,7 @@ Only public keys, algorithm names, public-key Hash216 commitments, and the verif
 
 ### Dual-signed checkpoint chain
 
-Each signed checkpoint binds:
-
-- the complete Iteration 5 checkpoint record;
-- its inventory root and event-chain head;
-- its authenticated retained LIVE and TOMBSTONED state;
-- the signed-checkpoint sequence;
-- the prior signed-checkpoint root;
-- the verifier-bundle root.
-
-The exact same canonical signing message receives an ML-DSA operational signature and an SLH-DSA archival signature:
+Each signed checkpoint binds the complete Iteration 5 checkpoint, its inventory and event-chain roots, retained LIVE and TOMBSTONED state, the signed-checkpoint sequence, the prior signed-checkpoint root, and the verifier-bundle root.
 
 ```text
 Iteration 5 authenticated checkpoint
@@ -160,8 +151,6 @@ Iteration 5 authenticated checkpoint
 
 ### ML-KEM recovery capsule
 
-Every signed checkpoint receives a checkpoint-bound recovery capsule:
-
 ```text
 ML-KEM-768 encapsulation to recovery public key
 → shared secret
@@ -173,17 +162,64 @@ ML-KEM-768 encapsulation to recovery public key
 
 The capsule binds its signed sequence, checkpoint root, algorithm identity, and recipient public-key Hash216. Recovery requires the protected ML-KEM secret-key arena. Any altered KEM ciphertext, nonce, encrypted recovery key, AAD, recipient key, sequence, or checkpoint root fails structural validation or authenticated decryption.
 
-### Persistent post-quantum sequence
+## Iteration 7 — trusted external timestamp anchoring
+
+Iteration 7 makes the signed checkpoint chain externally time-authenticated through RFC 3161. A timestamp anchor is not a detached wall-clock label. Its message imprint is the SHA-256 digest of a canonical, domain-separated intent containing:
+
+- the complete Iteration 6 signed-checkpoint root;
+- the public verifier-bundle root;
+- the exact signed and anchor sequence;
+- the prior trusted timestamp-anchor root;
+- the Hash216 lineage root for the anchored history;
+- the local integer-nanosecond request boundary;
+- the timestamp-authority identity.
 
 ```text
-valid Iteration 5 checkpoint
-→ ML-DSA operational signature
-→ SLH-DSA archival signature
-→ signed-checkpoint successor root
-→ ML-KEM recovery capsule
-→ atomic SQLite append
-→ public verifier-only chain replay
+ML-DSA + SLH-DSA signed checkpoint
++ verifier-bundle root
++ prior external anchor root
++ Hash216 lineage root
++ local nanosecond boundary
++ TSA authority ID
+→ canonical timestamp intent
+→ SHA-256 RFC 3161 message imprint
+→ nonce-bearing DER TimeStampReq
+→ independent X.509 TSA signature
+→ DER TimeStampResp
+→ successor trusted timestamp-anchor Hash216
 ```
+
+### RFC 3161 authority and transport
+
+`RFC3161TimestampVerifier` uses OpenSSL's RFC 3161 implementation to create a DER request containing the message imprint, certificate request, and fresh nonce. `HTTPRFC3161Transport` submits it using the standard `application/timestamp-query` and `application/timestamp-reply` media types. `OpenSSLTSATransport` provides the same protocol boundary for isolated or offline TSA deployments and deterministic integration testing.
+
+The response is accepted only when OpenSSL verifies it against the original request and an explicitly pinned X.509 trust bundle. The runtime retains:
+
+- the exact DER request and response;
+- request and response SHA-256 identities;
+- the TSA policy identifier;
+- the TSA serial number;
+- the UTC generation time;
+- the TSA subject;
+- the request nonce;
+- the trust-bundle SHA-256 identity;
+- a Hash216 verification receipt and complete evidence root.
+
+### Persistent external anchor chain
+
+`TrustedTimestampAnchorStore` persists one externally timestamped record per signed checkpoint in SQLite WAL mode with full synchronization. Every reopen revalidates both post-quantum signatures and the RFC 3161 token against the pinned trust bundle.
+
+```text
+signed sequence n
++ prior signed checkpoint root
++ prior timestamp anchor root
+→ RFC 3161 verified evidence
+→ timestamp anchor n
+→ atomic persistent append
+→ full public reverification on reopen
+```
+
+The store rejects sequence gaps, signed-checkpoint-chain discontinuity, prior-anchor substitution, Hash216-lineage substitution, local-boundary regression, TSA-time regression, repeated TSA serials, certificate-trust substitution, nonce removal, message-imprint mismatch, and DER response alteration. Recomputing local hashes after changing a token does not create an accepted history because the independent TSA signature no longer verifies.
 
 ## Current acceptance path
 
@@ -198,6 +234,7 @@ untrusted carrier
 → persistent checkpoint
 → ML-DSA + SLH-DSA signed checkpoint
 → ML-KEM recovery enclosure
+→ RFC 3161 external timestamp anchor
 → governed native dispatch
 → successor receipt and persistent reconciliation
 ```
@@ -214,10 +251,22 @@ The dedicated gate:
 1. builds the native C arena with warnings treated as errors;
 2. loads the pinned liboqs Python binding and matching liboqs release;
 3. verifies ML-KEM-768, ML-DSA-65, and SLH-DSA SHA2-128s are enabled;
-4. executes every Iteration 1–6 test module;
-5. compiles every Pass 213 runtime module;
-6. parses the machine-readable contract.
+4. verifies OpenSSL RFC 3161 command support;
+5. creates an actual local X.509 timestamp authority for integration tests;
+6. executes every Iteration 1–7 test module;
+7. compiles every Pass 213 runtime module;
+8. parses the machine-readable contract.
+
+Validated Iteration 7 implementation evidence:
+
+```text
+head: 67e36905679fe99f883b9500ec7efbe13e4abcf4
+workflow run: 31053828521
+job: 92466865251
+tests: 74 passed
+result: SUCCESS
+```
 
 ## Iteration boundary
 
-Pass 213 remains nonterminal. Remaining work includes trusted external timestamp checkpoint anchoring, the full high-dimensional magic-square/Sudoku/Fibonacci moving tensor family, API and CLI surfaces, governed native dispatch, performance evidence, final integration, merge, and verified-main closure.
+Pass 213 remains nonterminal. Remaining work includes the full high-dimensional magic-square/Sudoku/Fibonacci moving tensor family, API and CLI surfaces, governed native dispatch, performance evidence, final integration, merge, and verified-main closure.
