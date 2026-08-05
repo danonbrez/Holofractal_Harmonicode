@@ -1,0 +1,42 @@
+name: Pass 213 Compiled ROM Integrity
+
+on:
+  push:
+    branches:
+      - main
+      - agent/pass213-compiled-rom-integrity
+    paths:
+      - 'HHS_PASS_213_TIMESTAMP_BOUND_AUTHENTICATED_MOVING_TENSOR_COMPILED_ROM.md'
+      - 'contracts/pass213/**'
+      - 'docs/pass213/**'
+      - 'hhs_backend/runtime/hhs_pass213_compiled_rom_v1.py'
+      - 'hhs_backend/runtime/hhs_pass213_recovery_admission_v1.py'
+      - 'tests/test_pass213_compiled_rom_v1.py'
+      - 'tests/test_pass213_recovery_admission_v1.py'
+      - 'scripts/run_pass213_iteration1_validation.sh'
+      - '.github/workflows/pass213-compiled-rom-integrity.yml'
+  pull_request:
+    paths:
+      - 'HHS_PASS_213_TIMESTAMP_BOUND_AUTHENTICATED_MOVING_TENSOR_COMPILED_ROM.md'
+      - 'contracts/pass213/**'
+      - 'docs/pass213/**'
+      - 'hhs_backend/runtime/hhs_pass213_compiled_rom_v1.py'
+      - 'hhs_backend/runtime/hhs_pass213_recovery_admission_v1.py'
+      - 'tests/test_pass213_compiled_rom_v1.py'
+      - 'tests/test_pass213_recovery_admission_v1.py'
+      - 'scripts/run_pass213_iteration1_validation.sh'
+      - '.github/workflows/pass213-compiled-rom-integrity.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate Pass 213 iterations 1 and 2
+        run: bash scripts/run_pass213_iteration1_validation.sh
