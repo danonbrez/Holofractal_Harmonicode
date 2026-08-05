@@ -1,6 +1,6 @@
-# Pass 213 — Iterations 1–6
+# Pass 213 — Iterations 1–7
 
-Pass 213 builds a timestamp-bound authenticated compiled ROM, corrects carriers before interpretation, protects admitted entries in native memory, reuses compatible transformations through dependency-scoped validation, preserves the inventory across restarts, and signs persistent checkpoints with independent post-quantum authorities.
+Pass 213 builds a timestamp-bound authenticated compiled ROM, corrects carriers before interpretation, protects admitted entries in native memory, reuses compatible transformations through dependency-scoped validation, preserves the inventory across restarts, signs persistent checkpoints with independent post-quantum authorities, and anchors the resulting history through independently signed RFC 3161 timestamp tokens.
 
 ## Implemented progression
 
@@ -46,17 +46,6 @@ Pass 213 builds a timestamp-bound authenticated compiled ROM, corrects carriers 
 - retained-carrier and checkpoint recovery;
 - authenticated checkpoint continuity and reopen validation.
 
-```text
-persistent LIVE identity
-→ native presence check
-├─ present: validate protected lookup
-└─ absent: classify unexplained deletion
-           → recover carrier/checkpoint
-           → Pass 212 correction
-           → restore sealed arena
-           → append RECOVER root
-```
-
 ### Iteration 6 — post-quantum signed checkpoints
 
 - pinned `liboqs-python 0.16.0` and matching liboqs runtime;
@@ -82,11 +71,28 @@ Iteration 5 checkpoint
 → signed checkpoint root
 ```
 
+### Iteration 7 — RFC 3161 trusted external timestamp anchors
+
+- canonical timestamp intent bound to the dual-signed checkpoint root;
+- verifier-bundle, sequence, prior-anchor, Hash216-lineage, local-boundary, and authority binding;
+- SHA-256 RFC 3161 message imprint;
+- nonce-bearing DER timestamp requests;
+- HTTP `application/timestamp-query` / `application/timestamp-reply` transport;
+- isolated OpenSSL TSA transport for offline deployments and integration testing;
+- explicit X.509 trust-bundle verification;
+- retained DER request/response, TSA serial, policy, subject, nonce, and UTC generation time;
+- append-only trusted timestamp-anchor roots;
+- complete post-quantum and RFC 3161 reverification on persistent reopen;
+- rejection of trust substitution, sequence gaps, prior-root changes, lineage substitution, time regression, serial reuse, and DER tampering.
+
 ```text
-ML-KEM-768 shared secret
-→ HKDF-SHA-256 bound to checkpoint and AAD
-→ AES-256-GCM recovery-key capsule
-→ persistent capsule root
+ML-DSA + SLH-DSA signed checkpoint
++ prior trusted timestamp root
++ Hash216 lineage
++ local nanosecond boundary
+→ RFC 3161 message imprint
+→ independent TSA signature
+→ trusted timestamp anchor root
 ```
 
 ## Validation
@@ -96,29 +102,21 @@ python -m pip install -r requirements/pass213-pqc.txt
 PYOQS_VERSION=0.16.0 bash scripts/run_pass213_iteration1_validation.sh
 ```
 
-The dedicated workflow builds the native C arena, verifies the required real liboqs mechanisms, executes every Iteration 1–6 test module, compiles every Pass 213 runtime module, validates the machine-readable contract, caches the matching native liboqs build, and retains the complete validation transcript as a workflow artifact.
+The dedicated workflow builds the native C arena, verifies the real liboqs mechanisms, verifies OpenSSL RFC 3161 support, creates an actual local X.509 timestamp authority, executes every Iteration 1–7 test module, compiles every Pass 213 runtime module, validates the machine-readable contract, caches the matching native liboqs build, and retains the complete validation transcript.
 
-Repository-native Iteration 6 evidence:
+Repository-native Iteration 7 implementation evidence:
 
 ```text
-implementation run: 31036482697
-implementation job: 92409747663
-implementation head: e9ddcb09d3af525018a9e0196d065107c00674fc
+workflow: Pass 213 Compiled ROM Integrity
+run: 31053828521
+job: 92466865251
+validated head: 67e36905679fe99f883b9500ec7efbe13e4abcf4
+tests: 74 passed
 result: SUCCESS
-
-final workflow-policy run: 31037164477
-final workflow-policy job: 92412018053
-validated head: 93338a7330b480552a79ca437c77aca42e9d9cc0
-result: SUCCESS
-
-final README/evidence run: 31037308069
-final README/evidence job: 92412545004
-validated head: 229e1fa8c6200138d5a81b42a74c20d41b829ffd
-result: SUCCESS
+artifact: pass213-iteration7-validation-31053828521
+artifact digest: sha256:948f8f200c39b11b52ec1738f36ea391fb1e043868f1908311c2e2ae5ffe6d2d
 ```
-
-The final branch head additionally updates only the restart record with these frozen receipts. Restart-record-only commits are excluded from runtime reruns.
 
 ## Current boundary
 
-Pass 213 remains incomplete. Trusted external timestamp anchoring, full tensor invariants, API/CLI surfaces, governed native dispatch, performance evidence, final integration, merge, and verified-main closure remain subsequent work.
+Pass 213 remains incomplete. Full high-dimensional magic-square/Sudoku/Fibonacci tensor invariants, API/CLI surfaces, governed native dispatch, performance evidence, final integration, merge, and verified-main closure remain subsequent work.
