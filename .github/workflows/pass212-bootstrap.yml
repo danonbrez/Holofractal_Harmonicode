@@ -1,0 +1,72 @@
+name: Pass 212 Bootstrap
+
+on:
+  push:
+    branches:
+      - agent/pass212-physical-shard-erasure-recovery
+    paths:
+      - '.github/workflows/pass212-bootstrap.yml'
+      - '.pass212_chunk_*'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  materialize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/pass212-physical-shard-erasure-recovery
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Materialize reviewed Pass 212 source bundle
+        run: |
+          python - <<'PY'
+          from __future__ import annotations
+          import base64
+          import io
+          from pathlib import Path, PurePosixPath
+          import tarfile
+
+          chunks = sorted(Path('.').glob('.pass212_chunk_*'))
+          if len(chunks) != 4:
+              raise SystemExit(f'PASS212_CHUNK_COUNT_INVALID:{len(chunks)}')
+          encoded = ''.join(path.read_text(encoding='utf-8').strip() for path in chunks)
+          archive = base64.b64decode(encoded, validate=True)
+          with tarfile.open(fileobj=io.BytesIO(archive), mode='r:gz') as bundle:
+              members = bundle.getmembers()
+              if not members:
+                  raise SystemExit('PASS212_ARCHIVE_EMPTY')
+              for member in members:
+                  path = PurePosixPath(member.name)
+                  if path.is_absolute() or '..' in path.parts:
+                      raise SystemExit(f'PASS212_ARCHIVE_PATH_REJECTED:{member.name}')
+                  if not member.isfile():
+                      raise SystemExit(f'PASS212_ARCHIVE_NONFILE_REJECTED:{member.name}')
+              bundle.extractall('.')
+          for path in chunks:
+              path.unlink()
+          print(f'PASS212_SOURCE_FILES_MATERIALIZED:{len(members)}')
+          PY
+      - name: Validate materialized source bundle
+        run: |
+          python -m py_compile \
+            hhs_backend/runtime/hhs_pass212_full_hydration_recovery_v1.py \
+            hhs_backend/api/pass212_full_hydration_recovery_routes.py \
+            tools/generate_pass212_full_hydration_evidence.py \
+            tests/test_hhs_pass212_full_hydration_recovery_v1.py \
+            tests/test_hhs_pass212_full_hydration_recovery_api_v1.py
+          python -m json.tool contracts/pass212/PASS_212_CONTRACT.json >/dev/null
+      - name: Commit permanent Pass 212 implementation
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name hhs-pass212-bootstrap
+          git config user.email hhs-pass212-bootstrap@users.noreply.github.com
+          git add -A
+          git commit -m "feat(pass212): implement full hydration physical recovery"
+          git push origin HEAD:agent/pass212-physical-shard-erasure-recovery
