@@ -5,7 +5,8 @@
 - Base commit: `2be050264a6e9c659603100be802979bbc49bf7a`
 - Branch: `agent/pass213-compiled-rom-integrity`
 - Validated Iteration 5 head: `5b7a1f95ab53bdd0c47706314eac2ec1fedb5ea3`
-- Published Iteration 6 documentation head before final workflow receipt: `2ef4629247c63726cc5123c62d5e7987b9d2b1dd`
+- Validated Iteration 6 implementation head: `e9ddcb09d3af525018a9e0196d065107c00674fc`
+- Published Iteration 6 evidence head before final evidence-head workflow: `b0dc492b791cf57789f7f6ec3ddc896a72bb83c0`
 - Merge target: `main`
 - Draft pull request: `#169`
 - Iteration: `6`
@@ -63,10 +64,11 @@ Iteration 5 validated head: 5b7a1f95ab53bdd0c47706314eac2ec1fedb5ea3
 
 Algorithm authority:
 
-- `liboqs-python==0.15.0` is pinned in `requirements/pass213-pqc.txt`;
-- the matching liboqs release is selected with `PYOQS_VERSION=0.15.0`;
+- `liboqs-python==0.16.0` is pinned in `requirements/pass213-pqc.txt`;
+- the matching liboqs release is selected with `PYOQS_VERSION=0.16.0`;
 - the gate requires enabled ML-KEM-768 and ML-DSA-65 mechanisms;
-- the gate resolves an enabled SLH-DSA SHA2-128s mechanism by normalized family and parameter identity.
+- the gate resolves an enabled SLH-DSA SHA2-128s mechanism by normalized family and parameter identity;
+- workflow artifacts retain the complete validation transcript for restartable repair.
 
 Native key protection:
 
@@ -121,21 +123,35 @@ Persistent signed store:
 - signed-envelope database tamper rejection;
 - recovery-capsule database tamper rejection;
 - verifier-bundle tamper rejection;
-- native PQC secret-key zeroization and destruction.
+- native PQC secret-key zeroization and destruction;
+- all inherited Iteration 1–5 tests.
 
 ## Validation command
 
 ```bash
 python -m pip install -r requirements/pass213-pqc.txt
-PYOQS_VERSION=0.15.0 bash scripts/run_pass213_iteration1_validation.sh
+PYOQS_VERSION=0.16.0 bash scripts/run_pass213_iteration1_validation.sh
 ```
 
-The command builds the native C arena with warnings as errors, verifies the required liboqs algorithms, runs every Iteration 1–6 test module, compiles every Pass 213 runtime module, and parses the machine-readable contract.
+## Repository-native Iteration 6 evidence
+
+```text
+workflow: Pass 213 Compiled ROM Integrity
+run: 31036482697
+job: 92409747663
+validated implementation head: e9ddcb09d3af525018a9e0196d065107c00674fc
+algorithm preflight: PASS
+Iterative test command: PASS
+workflow conclusion: SUCCESS
+```
+
+The workflow produced and retained the complete Iteration 6 validation transcript. The preceding diagnostic run established that 67 of 68 tests already passed and isolated the sole failure to punctuation-specific assertion of the enabled liboqs SLH-DSA mechanism name. The assertion was replaced with normalized family and parameter verification; the complete cumulative rerun passed.
 
 ## Workflow state
 
 - Workflow: `Pass 213 Compiled ROM Integrity`
-- Iteration 6 final repository-native result: pending current branch-head execution.
+- Implementation-head Iteration 1–6 validation: complete and successful.
+- Final documentation/evidence-head validation: triggered by the current restart-record commit.
 - Guarded Continuous Integration remains governed by its inherited path policy.
 - Pull request remains draft and unmerged.
 
@@ -149,4 +165,4 @@ The command builds the native C arena with warnings as errors, verifies the requ
 
 ## Next exact action
 
-Resolve the complete Iteration 1–6 repository workflow at the final branch head. Repair any liboqs mechanism, native-memory, dual-signature, AES-GCM capsule, SQLite-chain, or inherited regression failure before advancing. After success, freeze the workflow evidence and begin the trusted external timestamp checkpoint layer. Do not merge Pass 214 ahead of authoritative Pass 213 closure.
+Resolve the final documentation/evidence-head workflow. After it succeeds, preserve the final run and head in PR #169, then begin the trusted external timestamp checkpoint layer while retaining every Iteration 1–6 gate. Do not merge Pass 214 ahead of authoritative Pass 213 closure.
