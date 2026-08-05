@@ -4,7 +4,7 @@
 - Immediate parent: Pass 212 full hydration compression and physical erasure recovery
 - Base commit: `2be050264a6e9c659603100be802979bbc49bf7a`
 - Branch: `agent/pass213-compiled-rom-integrity`
-- Current published head: `9e07c45c1e965c3f961c86246e6d3eff0e03c04a`
+- Current published head: `afca676eca3a23c50ad2f0b92513b382560bed31`
 - Merge target: `main`
 - Draft pull request: `#169`
 - Iteration: `2`
@@ -65,9 +65,8 @@ The branch workflow `.github/workflows/pass213-compiled-rom-integrity.yml` runs 
 ## Repository workflow state
 
 - Workflow: `Pass 213 Compiled ROM Integrity`
-- Run: `31026111177`
-- Published-head state at this restart-record update: `QUEUED`
-- Guarded Continuous Integration: skipped by its inherited guard policy
+- Latest workflow is triggered by the current branch head.
+- Guarded Continuous Integration is expected to remain skipped under its inherited guard policy.
 
 ## Iteration 2 test coverage
 
