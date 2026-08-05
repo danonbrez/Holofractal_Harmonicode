@@ -1,0 +1,90 @@
+{
+  "schema": "HHS_PASS_212_CONTRACT_V1",
+  "contract": "HHS-P212-FULL-HYDRATION-SUPERFRAME-COMPRESSION-PHYSICAL-ERASURE-RECOVERY-H72-H216",
+  "pass": 212,
+  "version": "1.0.0",
+  "classification": "HHS_PASS_212_FULL_HYDRATION_PHYSICAL_RECOVERY_CONTRACT_FROZEN",
+  "inherits": [
+    "HHS-P175-H216-VM5184-G243-VIP-PCW-SVA-H72-X64IE",
+    "HHS-P210-HFC-VM81-H72-H216",
+    "HHS-P211-P133-BIGINT-HFC-MULTIREGISTER-H72-H216"
+  ],
+  "purpose": "Treat the 5,184-bit HFC register as a recoverable leaf inside the complete 50,388,480-bit hydration, compress declared lattice-generated full states, and reconstruct physically missing encoded shards from independently persisted parity bytes.",
+  "dimensions": {
+    "vm81_cells": 81,
+    "ordered_opcodes": 64,
+    "local_hfc_leaf_bits": 5184,
+    "local_hfc_leaf_bytes": 648,
+    "g243_controls": 243,
+    "ordered_basis_lanes": 8,
+    "lo_shu_local_magnitudes": 5,
+    "hydration_lanes": 40,
+    "full_leaf_count": 9720,
+    "full_hydration_bits": 50388480,
+    "full_hydration_bytes": 6298560,
+    "affine_seed_bits": 19440,
+    "affine_seed_bytes": 2430
+  },
+  "canonical_address": "h=((lane*243+control)*5184)+local_cell",
+  "strict_compression_domain": {
+    "name": "P212_AFFINE_9720_LEAF_SEEDS_PLUS_SPARSE_XOR_V1",
+    "leaf_recurrence": "a[n]=(a[n-1]+a[n-2]-1) mod 2",
+    "seed_width_per_leaf_bits": 2,
+    "leaf_count": 9720,
+    "exception_encoding": "strictly increasing full-hydration bit positions encoded as canonical ULEB128 gaps",
+    "claim_rule": "Strict compression is claimed only when the complete encoded payload is smaller than the 6,298,560-byte raw full hydration."
+  },
+  "physical_recovery": {
+    "field": "GF(256)",
+    "primitive_polynomial": "0x11d",
+    "data_shards_per_stripe": 243,
+    "parity_shards_per_stripe": 2,
+    "shard_bytes": 648,
+    "recoverable_erasures_per_stripe": 2,
+    "raw_full_state_stripes": 40,
+    "raw_full_state_data_shards": 9720,
+    "raw_full_state_parity_shards": 80,
+    "raw_full_state_protected_bytes": 6350400
+  },
+  "invariants": {
+    "P212-I1": "The complete hydration is exactly 40*243*5184 = 50,388,480 bits; 5,184 bits is a local leaf, never the total envelope.",
+    "P212-I2": "Every local leaf is exactly 648 packed bytes and has one stable lane/control coordinate.",
+    "P212-I3": "The strict affine domain stores exactly two seed bits for each of 9,720 leaves plus exact sparse XOR exceptions.",
+    "P212-I4": "Arbitrary full states that do not become smaller use raw packed fallback and are protected without being described as compressed.",
+    "P212-I5": "Every protected stripe contains up to 243 ordered data shards and two independently materialized parity shards.",
+    "P212-I6": "Any two missing physical shards in one stripe are exactly reconstructable; three missing shards in one stripe fail closed.",
+    "P212-I7": "Recovered data and parity bytes must match their retained Hash216 identities before decompression.",
+    "P212-I8": "The decoded full state must match its state Hash216, all 40 lane roots, the full hydration root, package root, and Hash72 receipt.",
+    "P212-I9": "No hash-only record is represented as recovery data; physical recovery requires surviving parity or generator bytes.",
+    "P212-I10": "Canonical identity uses exact bytes and integer dimensions only; floating point is not admitted."
+  },
+  "required_operations": [
+    "generate_affine_hydration(seed_bytes)",
+    "apply_bit_exceptions(state, positions)",
+    "FullHydrationRecoveryRuntime.encode(state)",
+    "FullHydrationRecoveryRuntime.decode(package)",
+    "FullHydrationRecoveryRuntime.protect_payload(payload)",
+    "FullHydrationRecoveryRuntime.recover_payload(protected)",
+    "FullHydrationRecoveryRuntime.without_shards(package, refs)"
+  ],
+  "negative_behavior": [
+    "PASS212_FULL_HYDRATION_LENGTH_INVALID",
+    "PASS212_EXCEPTION_POSITIONS_NOT_STRICTLY_ASCENDING",
+    "PASS212_PHYSICAL_SHARD_HASH_MISMATCH",
+    "PASS212_ERASURE_BUDGET_EXCEEDED",
+    "PASS212_RECOVERED_DATA_SHARD_HASH_MISMATCH",
+    "PASS212_FULL_HYDRATION_ROOT_MISMATCH",
+    "PASS212_PACKAGE_ROOT_OR_RECEIPT_MISMATCH"
+  ],
+  "validation": {
+    "full_affine_bits": 50388480,
+    "pure_affine_compressed_payload_bytes": 2473,
+    "pure_affine_protected_storage_bytes": 3769,
+    "sparse_exception_count": 4096,
+    "sparse_compressed_payload_bytes": 10665,
+    "raw_data_shards": 9720,
+    "raw_parity_shards": 80,
+    "physical_erasures_verified_per_stripe": 2,
+    "entrypoint": "scripts/run_pass212_full_hydration_validation.sh"
+  }
+}

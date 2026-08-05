@@ -1,0 +1,78 @@
+{
+  "affine_full_hydration": {
+    "codec": "AFFINE_9720_LEAF_SEEDS_PLUS_SPARSE_XOR",
+    "compressed_payload_bytes": 2473,
+    "compression_ratio": {
+      "denominator": 2473,
+      "numerator": 6298560
+    },
+    "compression_ratio_decimal": "2546.930853",
+    "data_shards": 4,
+    "full_root216": "4b4e820cfcec05442e3b2db385dedbfbd17ad5de4c88fcd6fe67c3112df8be2c",
+    "parity_shards": 2,
+    "protected_storage_bytes": 3769,
+    "seed_bytes": 2430,
+    "seed_sha256": "7e6c6f0ab9d2f855ad9ac3a38eeaf8b403a6df820ffc0250433d552e31c5046a",
+    "state_hash216": "19c67438fd7d21eb20817d188f7906212a2507f9783acd82e2176d6fc6c97faa",
+    "two_missing_data_shards_recovered": true
+  },
+  "arbitrary_full_hydration_fallback": {
+    "codec": "RAW_PACKED_FALLBACK",
+    "compressed_payload_bytes": 6298560,
+    "data_shards": 9720,
+    "full_root216": "d5753f8b8146a8beae63091652d9a8a0c51dbd9a179476257b83b4d22d2b687f",
+    "parity_shards": 80,
+    "protected_storage_bytes": 6350400,
+    "state_hash216": "6da86f4b17915b107dada49a36b3b9374cccc7855fbbd793798996cbe1890cec",
+    "strict_compression_claim": false,
+    "stripe_count": 40,
+    "two_losses_in_first_and_last_stripes_recovered": true
+  },
+  "contract": "HHS-P212-FULL-HYDRATION-SUPERFRAME-COMPRESSION-PHYSICAL-ERASURE-RECOVERY-H72-H216",
+  "dimensions": {
+    "full_frame_count": 9720,
+    "full_hydration_bits": 50388480,
+    "full_hydration_bytes": 6298560,
+    "full_hydration_mib_rational": {
+      "denominator": 1048576,
+      "numerator": 6298560
+    },
+    "g243_controls": 243,
+    "hydration_lanes": 40,
+    "local_frame_bits": 5184,
+    "local_frame_bytes": 648
+  },
+  "negative_drills": {
+    "corrupted_physical_shard_fail_closed": true,
+    "three_missing_same_stripe_fail_closed": true
+  },
+  "runtime_classification": "HHS_PASS_212_FULL_HYDRATION_PHYSICAL_RECOVERY_RUNTIME_VERIFIED",
+  "schema": "HHS_PASS_212_FULL_HYDRATION_REFERENCE_VECTORS_V1",
+  "sparse_exception_full_hydration": {
+    "codec": "AFFINE_9720_LEAF_SEEDS_PLUS_SPARSE_XOR",
+    "compressed_payload_bytes": 10665,
+    "compression_ratio": {
+      "denominator": 10665,
+      "numerator": 6298560
+    },
+    "compression_ratio_decimal": "590.582278",
+    "data_plus_parity_loss_recovered": true,
+    "data_shards": 17,
+    "exception_count": 4096,
+    "exception_positions_sha256": "d2ab2052c2d34afc1bcd15502919a472e835a25f5dda79e88d77f3e0e1a08362",
+    "full_root216": "0ded0d6c6572cb11484c7eff3ce7c9cf5d62a5f1de3cc3a2e3769fcdde58ef3c",
+    "parity_shards": 2,
+    "protected_storage_bytes": 11961,
+    "state_hash216": "5fd2c170d5500932fdd04d1ea520d2240175f032cd9540ad383acf4d23bd8dfa"
+  },
+  "suite_summary": {
+    "arbitrary_raw_state_exact": true,
+    "full_affine_state_exact": true,
+    "full_hydration_exceeds_50_million_bits": true,
+    "negative_drills_pass": true,
+    "runtime_verified": true,
+    "sparse_affine_state_exact": true,
+    "strict_claim_boundary_preserved": true,
+    "two_physical_erasures_per_stripe_verified": true
+  }
+}
