@@ -2,7 +2,7 @@
 
 **Contract:** `HHS-P213-TB-AMT-CROM-RMIK-H72-H216-VM5184-G243`  
 **Status:** `CONTRACT_AUTHORIZED — IMPLEMENTATION IN PROGRESS`  
-**Current iteration:** `3`
+**Current iteration:** `4`
 
 ## Binding inheritance
 
@@ -78,9 +78,7 @@ The Python wrapper exposes no raw address. It emits keyed lifecycle receipts for
 ALLOCATE → WRITE → SEAL → ZEROIZE → DESTROY
 ```
 
-Receipts bind the logical arena identity, allocation context, native mutation sequence, prior receipt, payload commitment, and protection state without containing the payload or a memory address.
-
-`NativeProtectedCompiledROMStore` closes the full admission path:
+`NativeProtectedCompiledROMStore` closes the recovery and storage path:
 
 ```text
 Pass 212 correction
@@ -93,16 +91,79 @@ Pass 212 correction
     → protected-ROM inventory commitment
 ```
 
-The Python-side index retains only:
-
-- compiled entry Hash216;
-- operation identifier;
-- recovery-admission root;
-- arena identity commitment;
-- protected payload length;
-- final secure-memory receipt root.
-
 Canonical entry bytes remain in the sealed native arena. Lookup reads them internally, reconstructs a transient entry object, and revalidates its immutable Hash216 before use. Retirement zeroizes and destroys every arena.
+
+## Iteration 4 — dependency-scoped parametric compiled-ROM admission
+
+Iteration 4 adds the second compiled execution lane. One deeply validated compiled transformation may be reused for compatible typed operands and execution context without repeating unaffected semantic validation.
+
+A parametric template binds:
+
+- one immutable protected compiled-ROM entry;
+- its operation identifier and native route;
+- the complete operand and context field set;
+- exact field types;
+- mutable and immutable field classification;
+- a finite deterministic semantic-constraint registry;
+- the declared field dependencies of every constraint;
+- authenticated witnesses proving the baseline candidate satisfied every constraint.
+
+Every invocation performs the following exact sequence:
+
+```text
+load protected compiled entry
+    → load sealed parametric template
+    → validate the complete field set
+    → validate every field type
+    → compare every field with the authenticated baseline
+    → reject changed immutable context
+    → construct the sorted changed-field delta
+    → select the union of dependent constraints
+    → re-evaluate only that affected semantic set
+    → reuse authenticated witnesses for unaffected constraints
+    → bind the current opening timestamp boundary and parent lineage
+    → mint the keyed VM81 parametric admission root
+    → store the admission in a sealed native arena
+```
+
+This separates mandatory candidate-shape validation from reusable semantic evidence. Every untrusted invocation is still fully parsed, type-checked, canonically serialized, and compared against the complete template. Only semantic constraints proven independent of the changed fields are reused.
+
+The initial deterministic constraint bytecode supports:
+
+```text
+INT_RANGE
+MAX_BITS
+ENUM
+NONZERO
+EQUAL
+NOT_EQUAL
+ORDERED_LE
+LENGTH_RANGE
+SUM_MAX_BITS
+```
+
+Each constraint names its exact field dependencies. For changed field set \(\Delta\), the runtime selects:
+
+\[
+C_{affected}=\{c\mid dependencies(c)\cap\Delta\neq\varnothing\}
+\]
+
+and reuses the baseline witness for:
+
+\[
+C_{reused}=C_{all}\setminus C_{affected}.
+\]
+
+The admission commits to the candidate hash, exact delta root, changed paths, affected-constraint witnesses, reused-witness root, compiled VM81 cell, operation slot, G243 control, native dispatch identifier, kernel policy, Genesis epoch, group sequence, parent Hash216, and opening timestamp boundary Hash216.
+
+`NativeParametricCompiledROMStore` preserves the Iteration 3 memory gate:
+
+- templates are serialized only after complete validation;
+- template bytes reside in sealed owner-bound native arenas;
+- candidate admissions reside in separate sealed native arenas;
+- public records retain only identity, delta, count, arena, length, and receipt commitments;
+- lookup requires the original timestamp boundary and revalidates the keyed admission;
+- retirement zeroizes and destroys template and admission arenas.
 
 ## Current acceptance path
 
@@ -110,15 +171,19 @@ Canonical entry bytes remain in the sealed native arena. Lookup reads them inter
 untrusted carrier
     → physical correction and Hash216 validation
     → recovered admission proof
-    → native guarded arena
-    → sealed compiled-ROM bytes
-    → internal lookup revalidation
-    → singleton VM81 admission
-    → native dispatch
+    → native guarded compiled-ROM arena
+    → exact compiled match
+         or
+      parametric template match
+         → exact changed-field delta
+         → affected-constraint-only semantic revalidation
+         → timestamp-bound VM81 admission
+    → singleton VM81 commit authority
+    → governed native dispatch
     → successor receipt
 ```
 
-Similarity never grants authority. A novel operation remains subject to full sandbox validation and compilation before physical protection.
+Similarity never grants authority. A novel operation remains subject to full sandbox validation and compilation before physical protection. A parametric candidate is admitted only through an exact registered template whose protected base entry, field schema, dependency graph, constraint witnesses, current timestamp boundary, and execution route all validate.
 
 ## Validation
 
@@ -128,8 +193,8 @@ The focused Pass 213 gate is:
 bash scripts/run_pass213_iteration1_validation.sh
 ```
 
-It builds the native C arena with warnings treated as errors, executes all iteration test modules, compiles all Python runtime modules, and parses the machine-readable contract.
+It builds the native C arena with warnings treated as errors, executes all Iteration 1–4 test modules, compiles all Python runtime modules, and parses the machine-readable contract.
 
 ## Iteration boundary
 
-Pass 213 remains nonterminal. Remaining work includes parametric delta validation, persistent deletion detection and tombstones, PQC enclosure, trusted external timestamp checkpoints, full high-dimensional tensor invariants, API and CLI surfaces, governed native dispatch, performance evidence, final integration, merge, and verified-main closure.
+Pass 213 remains nonterminal. Remaining work includes persistent deletion detection and tombstones, PQC enclosure, trusted external timestamp checkpoints, full high-dimensional tensor invariants, API and CLI surfaces, governed native dispatch, performance evidence, final integration, merge, and verified-main closure.
