@@ -82,7 +82,9 @@ Runtime integration:
 - inventory commits admission, arena, payload-length, and memory-receipt roots;
 - retirement zeroizes and destroys every arena.
 
-## Local validation before publication
+## Iteration 3 validation
+
+Local pre-publication checks:
 
 ```text
 native C build with -Wall -Wextra -Werror: PASS
@@ -92,20 +94,28 @@ iteration-2 plus iteration-3 local compatibility suite: 28 tests PASS
 Python compilation: PASS
 ```
 
-## Repository workflow state
+Repository-native validation:
 
-The dedicated workflow is configured to build the C arena and execute all Iteration 1–3 test modules against the actual repository implementations. The current Iteration 3 branch head requires repository-native workflow closure before advancement.
+```text
+workflow: Pass 213 Compiled ROM Integrity
+run: 31027325613
+validated branch head: b02f5a0694fe7c4eadcf5c8bb0af6bf4a4ade5a4
+validate job: 92379008538
+native build and Iteration 1–3 validation step: SUCCESS
+workflow conclusion: SUCCESS
+```
+
+Guarded Continuous Integration remained skipped under its inherited guard policy. The dedicated Pass 213 workflow is the authoritative dependency-scoped validation for this slice.
 
 ## Remaining work
 
-1. Resolve the Iteration 3 repository-native workflow.
-2. Implement parametric delta matching and dependency-scoped revalidation.
-3. Add persistent inventory roots, authorized tombstones, and deleted-entry recovery.
-4. Add ML-KEM/ML-DSA/SLH-DSA enclosure and checkpoint surfaces.
-5. Add trusted external checkpoint timestamps.
-6. Implement the full high-dimensional magic-square/Sudoku/Fibonacci tensor family.
-7. Add API, CLI, native dispatch, performance evidence, and final main verification.
+1. Implement parametric delta matching and dependency-scoped revalidation.
+2. Add persistent inventory roots, authorized tombstones, and deleted-entry recovery.
+3. Add ML-KEM/ML-DSA/SLH-DSA enclosure and checkpoint surfaces.
+4. Add trusted external checkpoint timestamps.
+5. Implement the full high-dimensional magic-square/Sudoku/Fibonacci tensor family.
+6. Add API, CLI, native dispatch, performance evidence, and final main verification.
 
 ## Next exact action
 
-If the Iteration 3 workflow passes, implement the parametric compiled-ROM lane so compatible operations validate only changed operands and affected constraints before VM81 admission. If it fails, repair the native memory or repository integration on this branch before advancing. Do not merge Pass 214 ahead of authoritative Pass 213 closure.
+Implement the parametric compiled-ROM lane so compatible operations validate only changed operands and affected constraints before VM81 admission. Preserve the Iteration 3 native-memory gate for all admitted compiled representations. Do not merge Pass 214 ahead of authoritative Pass 213 closure.
