@@ -7,6 +7,7 @@
 - Final validated Iteration 7 head: `ff6d0e70504a86c6906573d0cffbbffc131048b9`
 - Iteration 8 implementation/workflow head: `92d506674b529e4a27a14daf997dd61e0006fba6`
 - Final validated Iteration 8 contract/documentation head: `891fc461a698b4a8385a3dc5da6d40adac3c625e`
+- Restart-record synchronization head: `0f0cd59713c24b361176b8334cd076e4f50cc007`
 - Merge target: `main`
 - Draft pull request: `#169`
 - Iteration: `8`
