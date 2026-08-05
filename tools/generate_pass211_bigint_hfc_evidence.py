@@ -8,7 +8,12 @@ import json
 import math
 from pathlib import Path
 import random
+import sys
 from typing import Any
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 
 from hhs_backend.runtime.hhs_pass210_holographic_frame_compression_v1 import (
     HFCValidationError,
@@ -30,7 +35,6 @@ from hhs_runtime.palindromic_ecc import (
     run_ecc_stress,
 )
 
-ROOT = Path(__file__).resolve().parents[1]
 OUTPUT = ROOT / "evidence" / "pass211" / "PASS_211_BIGINT_HFC_REFERENCE_VECTORS.json"
 
 
