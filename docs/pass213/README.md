@@ -1,6 +1,6 @@
-# Pass 213 — Iterations 1–5
+# Pass 213 — Iterations 1–6
 
-Pass 213 builds a timestamp-bound authenticated compiled ROM, corrects carriers before interpretation, protects admitted entries in native memory, reuses compatible transformations through dependency-scoped validation, and preserves their inventory across restarts.
+Pass 213 builds a timestamp-bound authenticated compiled ROM, corrects carriers before interpretation, protects admitted entries in native memory, reuses compatible transformations through dependency-scoped validation, preserves the inventory across restarts, and signs persistent checkpoints with independent post-quantum authorities.
 
 ## Implemented progression
 
@@ -41,12 +41,10 @@ Pass 213 builds a timestamp-bound authenticated compiled ROM, corrects carriers 
 - deterministic successor inventory roots;
 - persistent LIVE and TOMBSTONED identity sets;
 - retained authenticated recovery carriers;
-- separate deletion-authority key and root-bound authorizations;
-- tombstone commitment before native zeroization;
-- reconciliation between persistent state and protected native memory;
-- unexplained absence detection;
+- root-bound deletion authorizations and retained tombstones;
+- reconciliation between persistent state and native protected memory;
 - retained-carrier and checkpoint recovery;
-- authenticated checkpoint chain and reopen validation.
+- authenticated checkpoint continuity and reopen validation.
 
 ```text
 persistent LIVE identity
@@ -59,22 +57,47 @@ persistent LIVE identity
            → append RECOVER root
 ```
 
+### Iteration 6 — post-quantum signed checkpoints
+
+- pinned `liboqs-python 0.15.0` and matching liboqs runtime;
+- ML-KEM-768 recovery authority;
+- ML-DSA-65 operational checkpoint authority;
+- SLH-DSA SHA2-128s archival checkpoint authority;
+- one sealed native secret-key arena per authority;
+- authenticated public verifier bundle;
+- dual signatures over one canonical checkpoint message;
+- append-only signed-checkpoint root continuity;
+- ML-KEM/HKDF-SHA-256/AES-256-GCM recovery capsules;
+- verifier-only chain replay without secret-key access;
+- signed-envelope, public-key, and capsule tamper detection;
+- zeroization and destruction of all PQC secret-key arenas.
+
 ```text
-authorized retirement
-→ deletion authorization bound to current inventory root
-→ retained TOMBSTONE transition
-→ successor root
-→ native zeroization and destruction
+Iteration 5 checkpoint
++ prior signed checkpoint root
++ signed sequence
++ verifier bundle
+→ ML-DSA operational signature
+→ SLH-DSA archival signature
+→ signed checkpoint root
+```
+
+```text
+ML-KEM-768 shared secret
+→ HKDF-SHA-256 bound to checkpoint and AAD
+→ AES-256-GCM recovery-key capsule
+→ persistent capsule root
 ```
 
 ## Validation
 
 ```bash
+python -m pip install -r requirements/pass213-pqc.txt
 bash scripts/run_pass213_iteration1_validation.sh
 ```
 
-The gate builds the native C arena with `-Wall -Wextra -Werror`, executes every Iteration 1–5 test module, compiles every Pass 213 runtime module, and validates the machine-readable contract.
+The dedicated workflow builds the native C arena, verifies the required real liboqs mechanisms, executes every Iteration 1–6 test module, compiles every Pass 213 runtime module, and validates the machine-readable contract.
 
 ## Current boundary
 
-Pass 213 remains incomplete. PQC enclosure and checkpoint signatures, external trusted timestamp anchoring, full tensor invariants, API/CLI surfaces, governed native dispatch, performance evidence, final integration, merge, and verified-main closure remain subsequent work.
+Pass 213 remains incomplete. Trusted external timestamp anchoring, full tensor invariants, API/CLI surfaces, governed native dispatch, performance evidence, final integration, merge, and verified-main closure remain subsequent work.
