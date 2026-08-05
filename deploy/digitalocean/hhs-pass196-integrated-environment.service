@@ -29,6 +29,7 @@ Environment=HHS_RUNTIME_STATUS_CACHE=/var/lib/hhs/runtime-bootstrap/status-cache
 Environment=HHS_RUNTIME_STATUS_TTL_SECONDS=15
 Environment=HHS_RUNTIME_STATUS_PROBE_INTERVAL_SECONDS=60
 Environment=HHS_RUNTIME_STATUS_PROBE_TIMEOUT_SECONDS=180
+Environment=HHS_RUNTIME_STATUS_PROBE_START_DELAY_SECONDS=30
 Environment=HHS_RUNTIME_STATUS_PROBE=1
 ExecStart=/opt/hhs/venv/bin/python -m uvicorn hhs_backend.production_visual_server:app --host 127.0.0.1 --port 8080 --workers 1
 Restart=on-failure
