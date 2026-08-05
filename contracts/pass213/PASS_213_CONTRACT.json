@@ -2,10 +2,10 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "contract_id": "HHS-P213-TB-AMT-CROM-RMIK-H72-H216-VM5184-G243",
   "pass_number": 213,
-  "version": "1.0.0-iteration6",
+  "version": "1.0.0-iteration7",
   "classification": "CONTRACT_AUTHORIZED_IMPLEMENTATION_IN_PROGRESS",
   "immediate_parent": "HHS-P212-FULL-HYDRATION-SUPERFRAME-COMPRESSION-PHYSICAL-ERASURE-RECOVERY-H72-H216",
-  "iteration": 6,
+  "iteration": 7,
   "implemented_authorities": [
     "canonical framed SHA-256 identities",
     "HMAC-SHA-256 domain-separated state-local derivation",
@@ -39,7 +39,14 @@
     "SLH-DSA SHA2-128s archival checkpoint signatures",
     "dual-signature append-only checkpoint root chain",
     "public verifier-bundle replay without secret-key access",
-    "signed-checkpoint and recovery-capsule tamper detection"
+    "signed-checkpoint and recovery-capsule tamper detection",
+    "RFC 3161 DER time-stamp query and response authority",
+    "independently signed X.509 timestamp tokens with explicit CA trust bundle",
+    "SHA-256 message imprint over signed checkpoint, verifier bundle, sequence, prior anchor, lineage, local boundary, and authority identity",
+    "mandatory RFC 3161 nonce, TSA serial, policy, subject, and UTC generation-time retention",
+    "HTTP application/timestamp-query and application/timestamp-reply transport",
+    "append-only trusted timestamp anchor root chain",
+    "verifier-only RFC 3161 replay on every persistent reopen"
   ],
   "iteration_2_admission_order": [
     "validate Pass 213 carrier envelope and keyed authentication",
@@ -100,6 +107,20 @@
     "permit recovery-key decryption only through the protected ML-KEM secret-key arena",
     "zeroize and destroy all post-quantum secret-key arenas on authority shutdown"
   ],
+  "iteration_7_trusted_timestamp_order": [
+    "validate the complete Iteration 6 dual-signed checkpoint and public verifier bundle",
+    "require the next timestamp-anchor sequence to equal the signed-checkpoint sequence",
+    "bind the signed-checkpoint root, verifier-bundle root, prior anchor root, Hash216 lineage root, local nanosecond boundary, and authority ID into one canonical intent",
+    "compute the SHA-256 message imprint over the domain-separated canonical intent",
+    "create an RFC 3161 DER request with certificate inclusion and a fresh nonce",
+    "submit the request through an RFC 3161 HTTP or isolated OpenSSL TSA transport",
+    "verify the DER response against the original request and explicit X.509 trust bundle",
+    "retain TSA policy, unique serial, UTC generation time, subject, nonce, DER request, DER response, and trust-bundle digest",
+    "commit the complete evidence and dual-signed checkpoint into a successor timestamp-anchor Hash216 root",
+    "append the timestamp anchor atomically to SQLite WAL storage",
+    "reject signed-sequence gaps, prior-root discontinuity, local-boundary regression, TSA-time regression, serial reuse, trust substitution, intent substitution, and DER tampering",
+    "reverify every retained RFC 3161 token and both post-quantum checkpoint signatures on reopen"
+  ],
   "required_invariants": {
     "correction_before_interpretation": true,
     "correction_before_execution": true,
@@ -133,6 +154,19 @@
     "recovery_capsule_aead_authenticated": true,
     "verifier_only_reopen_supported": true,
     "pqc_secret_zeroization_before_release": true,
+    "rfc3161_external_timestamp_required": true,
+    "timestamp_sha256_message_imprint_required": true,
+    "timestamp_nonce_required": true,
+    "timestamp_der_request_and_response_retained": true,
+    "timestamp_trust_bundle_pinned": true,
+    "timestamp_signed_checkpoint_binding": true,
+    "timestamp_verifier_bundle_binding": true,
+    "timestamp_prior_anchor_root_continuity": true,
+    "timestamp_hash216_lineage_binding": true,
+    "timestamp_local_boundary_monotonic": true,
+    "timestamp_tsa_time_monotonic": true,
+    "timestamp_tsa_serial_unique": true,
+    "timestamp_reverification_on_reopen": true,
     "guard_pages_required": 2,
     "memory_lock_required": true,
     "dump_exclusion_required": true,
@@ -200,8 +234,15 @@
     "public verifier-bundle tamper detection",
     "post-quantum secret-key zeroization and destruction"
   ],
+  "iteration_7_tests": [
+    "real RFC 3161 DER evidence round trip and intent substitution rejection",
+    "HTTP timestamp-query and timestamp-reply content-type enforcement",
+    "two-anchor persistence and verifier-only reopen",
+    "DER response tamper rejection after local Hash216 roots are recomputed",
+    "trust-bundle substitution and signed-sequence gap rejection",
+    "local timestamp-boundary regression rejection"
+  ],
   "remaining_iterations": [
-    "external trusted timestamp checkpoints",
     "high-dimensional tensor invariant implementation",
     "API and CLI surfaces",
     "native compiled dispatch",
