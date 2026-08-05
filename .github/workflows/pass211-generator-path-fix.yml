@@ -1,0 +1,64 @@
+name: Pass 211 Generator Path Fix
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/pass211-generator-path-fix.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/pass211-bigint-hfc-carrier
+      - name: Make evidence generator directly executable
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path('tools/generate_pass211_bigint_hfc_evidence.py')
+          text = path.read_text(encoding='utf-8')
+          old = '''from pathlib import Path
+          import random
+          from typing import Any
+
+          from hhs_backend'''
+          new = '''from pathlib import Path
+          import random
+          import sys
+          from typing import Any
+
+          ROOT = Path(__file__).resolve().parents[1]
+          if str(ROOT) not in sys.path:
+              sys.path.insert(0, str(ROOT))
+
+          from hhs_backend'''
+          if old not in text:
+              raise SystemExit('generator import insertion anchor missing')
+          text = text.replace(old, new, 1)
+          duplicate = '''
+          ROOT = Path(__file__).resolve().parents[1]
+          OUTPUT = ROOT / "evidence" / "pass211" / "PASS_211_BIGINT_HFC_REFERENCE_VECTORS.json"
+          '''
+          replacement = '''
+          OUTPUT = ROOT / "evidence" / "pass211" / "PASS_211_BIGINT_HFC_REFERENCE_VECTORS.json"
+          '''
+          if duplicate not in text:
+              raise SystemExit('generator ROOT relocation anchor missing')
+          text = text.replace(duplicate, replacement, 1)
+          path.write_text(text, encoding='utf-8')
+          PY
+          git config user.name hhs-pass211-generator-fix
+          git config user.email hhs-pass211-generator-fix@users.noreply.github.com
+          git add tools/generate_pass211_bigint_hfc_evidence.py
+          git commit -m "fix(pass211): make evidence generator directly executable"
+          git push origin HEAD:agent/pass211-bigint-hfc-carrier
