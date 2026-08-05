@@ -1,8 +1,12 @@
 name: Pass 211 Bootstrap
 on:
-  push:
+  pull_request:
     branches:
-      - agent/pass211-bigint-hfc-carrier
+      - main
+    paths:
+      - .pass211-bootstrap/**
+      - .github/workflows/pass211-bootstrap.yml
+  workflow_dispatch:
 permissions:
   contents: write
 jobs:
@@ -10,6 +14,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: agent/pass211-bigint-hfc-carrier
       - name: Materialize Pass 211 source bundle
         shell: bash
         run: |
