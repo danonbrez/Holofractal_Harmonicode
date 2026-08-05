@@ -22,7 +22,7 @@ on:
       - 'hhs_backend/runtime/hhs_pass212_full_hydration_recovery_v1.py'
       - 'hhs_backend/api/pass212_full_hydration_recovery_routes.py'
       - 'tests/test_hhs_pass212_full_hydration_recovery_v1.py'
-      - 'tests/test_hhs_pass212_full_hYDRATION_RECOVERY_API_v1.py'
+      - 'tests/test_hhs_pass212_full_hydration_recovery_api_v1.py'
       - 'tools/generate_pass212_full_hydration_evidence.py'
       - 'evidence/pass212/**'
       - 'contracts/pass212/**'
