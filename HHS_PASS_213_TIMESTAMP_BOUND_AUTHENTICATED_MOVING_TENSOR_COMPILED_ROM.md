@@ -1,201 +1,187 @@
 # HHS Pass 213 — Timestamp-Bound Authenticated Moving Tensor Compiled ROM and Runtime Memory Integrity Kernel
 
 **Contract:** `HHS-P213-TB-AMT-CROM-RMIK-H72-H216-VM5184-G243`  
-**Status:** `CONTRACT_AUTHORIZED — IMPLEMENTATION IN PROGRESS`  
-**Current iteration:** `9`
+**Status:** `CONTRACT AUTHORIZED — IMPLEMENTATION IN PROGRESS`  
+**Current iteration:** `10`
 
 ## Binding inheritance
 
-Pass 213 is an in-place upgrade of the complete pre-pass foundation and Passes 001–212. Iteration 9 inherits every validated Pass 213 Iteration 1–8 authority without replacement: compiled-ROM identity, correction before interpretation, native protected memory, dependency-scoped parametric admission, persistent inventory and tombstones, post-quantum signed checkpoints, RFC 3161 external timestamp anchoring, and exact moving-tensor authority.
+Pass 213 is an in-place upgrade of the complete pre-pass foundation and Passes 001–212. Iteration 10 inherits every validated Iteration 1–9 authority without replacement.
 
-## Cumulative acceptance path
+## Cumulative canonical path
 
 ```text
 untrusted carrier
-→ Pass 212 correction and reconstructed Hash216 validation
+→ Pass 212 physical correction
+→ reconstructed Hash216 validation
 → immutable compiled-ROM admission
-→ sealed native memory
-→ exact or dependency-scoped parametric match
-→ persistent inventory and authorized transition root
-→ ML-DSA + SLH-DSA checkpoint signatures
+→ sealed native protected memory
+→ exact or dependency-scoped reusable admission
+→ persistent inventory / tombstones / recovery
+→ ML-DSA + SLH-DSA signed checkpoint
 → ML-KEM recovery enclosure
-→ RFC 3161 trusted external timestamp anchor
+→ RFC 3161 trusted timestamp anchor
 → exact moving-tensor derivation
-→ governed API/CLI projection
-→ singleton VM81 admission and governed native dispatch
+→ governed projection API/CLI
+→ exact protected compiled-ROM dispatch admission
+→ allocation-free fixed-width C execution
+→ successor Hash216 + ordered Hash72 receipt
+→ authenticated persistent execution ledger
 ```
 
-## Iterations 1–7 retained authority
+## Retained Iterations 1–9
 
-1. **Compiled-ROM nucleus:** immutable Hash216 operations, integer timestamp boundaries, noncommutative order chains, exact lookup, closure paths, and receipts.
-2. **Correction before interpretation:** Pass 212 shard recovery and recovered-payload Hash216 validation precede compiled-entry deserialization.
-3. **Native protected memory:** guarded, locked, non-executable, dump-excluded, fork-excluded, owner-bound arenas with read-only sealing and verified zeroization.
-4. **Parametric admission:** typed immutable templates, exact changed-field deltas, dependency-scoped revalidation, authenticated witness reuse, and timestamp-bound VM81 authority.
-5. **Persistent inventory:** SQLite WAL append-only `ADMIT`, `RECOVER`, and `TOMBSTONE` chains, native reconciliation, unexplained absence detection, and retained recovery material.
-6. **Post-quantum enclosure:** ML-KEM-768 recovery, ML-DSA-65 operational signatures, SLH-DSA SHA2-128s archival signatures, native secret-key arenas, and verifier-only replay.
-7. **Trusted external time:** RFC 3161 DER requests and responses bound to signed checkpoints, verifier roots, prior anchors, Hash216 lineage, local boundaries, TSA identity, nonce, serial, policy, and UTC generation time.
+1. Immutable Hash216 compiled-ROM identity, integer timestamp boundaries, noncommutative operation chains, closure paths, and Hash72 receipts.
+2. Pass 212 correction and reconstructed-payload validation before interpretation or insertion.
+3. Guarded, locked, sealed, non-executable native arenas with owner authorization and verified zeroization.
+4. Typed parametric templates, exact deltas, dependency-scoped revalidation, and authenticated witness reuse.
+5. SQLite WAL inventories, append-only `ADMIT`, `RECOVER`, and `TOMBSTONE` roots, unexplained-absence detection, and retained recovery material.
+6. ML-KEM-768 recovery, ML-DSA-65 operational signatures, SLH-DSA SHA2-128s archival signatures, protected keys, and verifier-only replay.
+7. RFC 3161 external timestamp anchors bound to signed checkpoints, verifier roots, prior anchors, Hash216 lineage, local boundaries, and TSA evidence.
+8. Exact Lo Shu, Sudoku, and Fibonacci moving tensors; reversible VM5184×G243 and 50,388,480-position maps; exact closure proofs; Hash216 roots; Hash72 receipts; keyed replay; derived-only floating projections.
+9. Shared capability-governed API/CLI public projections, authenticated append-only projection storage, source/projection receipt separation, strict protected-field rejection, and no raw-state or unsafe mutation exposure.
 
-## Iteration 8 — exact moving-tensor authority
+## Iteration 10 — governed native compiled dispatch
 
-Iteration 8 turns the timestamped tensor lattice into an executable canonical authority rather than descriptive metadata.
+Iteration 10 turns prevalidated compiled-ROM entries into executable native operations without bypassing the protected-memory, timestamp, tensor, policy, lineage, and singleton VM81 authorities.
 
-### Canonical tensor domain
+### Real native ABI
 
-The exact coordinate basis is:
+`native/pass213/hhs_pass213_native_dispatch.c` implements a versioned fixed-width C ABI with:
+
+- no dynamic allocation;
+- no ambient mutable state;
+- at most eight unsigned-64 operands and four results;
+- exact VM81 cell, operation-slot, and G243 route validation;
+- deterministic status and result structures;
+- warnings treated as errors in the cumulative build gate.
+
+Implemented native operations are:
 
 ```text
-(row, column, a, b, d, t0, t1, t2, t3, t4, lane)
+hhs.native.u64.add.v1
+hhs.native.u64.sub.v1
+hhs.native.u64.xor.v1
+hhs.native.u64.and.v1
+hhs.native.u64.or.v1
+hhs.native.u64.mul_mod.v1
+hhs.native.u64.rotl.v1
+hhs.native.u64.eq.v1
+hhs.native.u64.select.v1
 ```
 
-with axis moduli:
+Modular multiplication uses an exact 128-bit intermediate before unsigned-64 reduction.
+
+### Admission boundary
+
+A native execution request is accepted only when all of the following match the current authority:
+
+- exact protected compiled-ROM `entry_hash216`;
+- exact operation identity and supported native dispatch identifier;
+- current parent state Hash216;
+- current kernel policy Hash216;
+- current kernel measurement Hash216;
+- current Hash216 lineage;
+- current trusted timestamp anchor and monotonic integer-nanosecond request boundary;
+- current moving-tensor root and domain;
+- exact VM81 cell, operation slot, G243 control identifier, and hydration lane;
+- compiled input and result counts;
+- exact sorted read and write sets;
+- compiled unsigned-64 operand maximum and optional modulus;
+- current protected inventory root.
+
+Stale-parent replay, duplicate replay, timestamp rollback, policy substitution, tensor substitution, lineage divergence, access-set mismatch, operand overflow, unsupported dispatch identifiers, and malformed native responses fail before state advancement.
+
+### Hidden moving-tensor route
+
+The canonical compiled entry supplies the logical VM5184×G243 route. For the full domain, the hydration lane extends it into one of `50,388,480` logical positions.
+
+The current moving tensor derives the physical execution address internally. The logical address, physical address, tensor root, closure proof root, compiled entry identity, and route coordinates are committed into a route Hash216. The physical address itself never crosses the public surface.
+
+### Singleton VM81 execution
+
+One authority lock admits one execution at a time. Reentry is rejected before the C ABI is called. The protected compiled entry remains immutable before and after execution.
+
+The native request contains only the compiled route, exact unsigned operands, request sequence, and optional modulus. Native execution cannot compile, repair, delete, read protected memory, alter tensor geometry, issue capabilities, or mutate the persistent ledger directly.
+
+### Deterministic successor
+
+Each successful execution derives:
 
 ```text
-(9, 9, 4, 4, 4, 3, 3, 3, 3, 3, 40)
+request_root_hash216
+result_root_hash216
+route_commitment_hash216
+read_set_root_hash216
+write_set_root_hash216
+successor_state_root_hash216
+receipt_hash72
 ```
 
-After VM5184×G243 projection:
+The successor binds the prior state and receipt, request, result, route, access sets, tensor, policy, kernel measurement, lineage, and protected inventory root.
+
+The ordered Hash72 receipt is emitted over the successor Hash216. The singleton VM81 state advances only after the execution event has been appended successfully to the authenticated ledger.
+
+### Persistent execution ledger
+
+`NativeDispatchLedger` uses SQLite WAL mode with `synchronous=FULL`. Every event stores canonical JSON, a Hash216 event root, and a keyed HMAC-SHA-256 authentication tag.
+
+Every open and append verifies:
+
+- exact contiguous sequence;
+- prior receipt continuity;
+- prior and successor state continuity;
+- event-root integrity;
+- authentication tag integrity;
+- successor Hash72 validity;
+- configured baseline state and receipt anchors.
+
+Database mutation, receipt substitution, state-chain substitution, sequence gaps, wrong keys, and anchor substitution fail closed.
+
+### Dispatch capabilities
+
+Execution and receipt reads use a separate local capability authority:
 
 ```text
-9² × 4³ × 3⁵ = 1,259,712
+dispatch.execute
+dispatch.read
 ```
 
-After forty hydration lanes:
+Capabilities bind subject, exact scopes, issuance and expiration nanoseconds, epoch, nonce, and capability Hash216. Issuance is local CLI authority only; there is no network issuance route.
+
+### HTTP routes
 
 ```text
-9² × 4³ × 3⁵ × 40 = 50,388,480
+GET  /api/runtime/native-dispatch/status
+POST /api/runtime/native-dispatch/execute
+GET  /api/runtime/native-dispatch/receipts/{sequence}
 ```
 
-The logical address remains canonical. The tensor supplies a reversible physical placement for the same logical state.
+HTTP accepts either a Bearer token or `X-HHS-Dispatch-Capability`. Conflicting credentials fail closed. Responses use the inherited canonical runtime envelope.
 
-### Trusted boundary derivation
-
-Every tensor state binds the complete Iteration 7 trusted timestamp-anchor root, signed-checkpoint and verifier-bundle roots, Hash216 lineage, RFC 3161 evidence root, local integer-nanosecond request boundary, TSA serial and UTC generation time, Genesis epoch, tensor sequence, prior tensor root, and declared domain.
-
-These fields and the protected root key derive one domain-separated 256-bit tensor seed. Any change to history, time boundary, lineage, epoch, sequence, domain, or prior state derives a different tensor.
-
-### Exact geometry and closure
-
-The runtime validates all eight Lo Shu dihedral orientations with magic sum 15, exact Sudoku row/column/region invariants, exact Fibonacci residues over all eleven axes, reversible logical-to-physical coordinate maps, and affine one-visit closure proofs over `5,184`, `1,259,712`, and `50,388,480` positions.
-
-The trusted boundary, seed commitment, Lo Shu tensor, Sudoku tensor, Fibonacci phase, coordinate map, and closure proof are committed into one immutable moving-tensor Hash216 root. A canonical Hash72 receipt is emitted over that root.
-
-`MovingTensorStore` uses SQLite WAL mode and `synchronous=FULL`. Every reopen rederives each state from the protected root key and rejects wrong keys, changed anchors or lineage, timestamp regression, altered tensor evidence, substituted chain links, and direct database mutation.
-
-Canonical tensor authority contains no floating-point values. Derived geometry may encode exact phase ratios as committed IEEE-754 binary64 projections, but cannot redefine identity, path membership, receipts, counters, keys, or addresses.
-
-## Iteration 9 — governed API and CLI projection authority
-
-Iteration 9 exposes bounded operational visibility without creating an alternate execution or mutation path.
-
-### Shared transport authority
-
-HTTP and CLI commands call one `Pass213GovernedSurface` dispatcher. Transport formatting cannot alter operation semantics, required capability scope, projection identity, response Hash216, or Hash72 receipt.
-
-The HTTP surface uses FastAPI and inherited canonical runtime response envelopes. The CLI uses `argparse` and emits the same governed payload or a structured fail-closed rejection.
-
-### Scoped capabilities
-
-Protected projection queries require short-lived HMAC-SHA-256 capabilities bound to:
-
-- subject;
-- exact sorted scopes;
-- issue and expiry boundaries in integer nanoseconds;
-- capability epoch;
-- unique nonce;
-- capability Hash216 identity.
-
-The permitted scopes are:
+### CLI parity
 
 ```text
-compiled.read
-inventory.verify
-tensor.read
-tensor.verify
-timestamp.read
-integrity.verify
-receipt.read
+hhs-pass213-dispatch status
+hhs-pass213-dispatch execute
+hhs-pass213-dispatch receipt
+hhs-pass213-dispatch capability issue
 ```
 
-HTTP accepts either a Bearer token or `X-HHS-Capability`; conflicting headers are rejected. Capability issuance is local CLI authority only and has no network route.
-
-### Append-only public projection chain
-
-Only already validated commitments are published into a separate SQLite WAL projection store. Every projection event binds:
-
-- kind and opaque object identity;
-- canonical source Hash216 root;
-- bounded sanitized public data;
-- exact publication boundary;
-- prior projection event root;
-- projection event Hash216;
-- keyed authentication tag;
-- projection-domain Hash72 receipt.
-
-Canonical source receipts remain committed public data but are never substituted for the projection chain's own receipt.
-
-### Protected-state non-exposure
-
-The sanitizer rejects:
-
-- cryptographic keys, owner tokens, authentication tags, capability tokens, and native arena identities;
-- protected carriers, payload bytes, exact state bytes, shard payloads, and recovery material;
-- tensor seeds, coordinate permutations, physical addresses, physical maps, and vector topology;
-- RFC 3161 DER requests, DER responses, and nonces;
-- floating-point values in canonical public projections;
-- unknown binary objects, excessive depth, excessive collection size, and overlong text.
-
-The surface publishes commitments, counts, invariant results, sanitized TSA metadata, Hash216 roots, and Hash72 receipts only.
-
-### Governed routes
-
-```text
-GET  /api/runtime/pass213/status
-GET  /api/runtime/pass213/catalog
-GET  /api/runtime/compiled-rom/status
-POST /api/runtime/compiled-rom/lookup
-GET  /api/runtime/memory-integrity/status
-POST /api/runtime/memory-integrity/scan
-GET  /api/runtime/timestamp-boundary/status
-POST /api/runtime/timestamp-boundary/lookup
-GET  /api/runtime/tensor-lattice/status
-POST /api/runtime/tensor-lattice/lookup
-POST /api/runtime/tensor-lattice/verify
-GET  /api/runtime/inventory/status
-POST /api/runtime/inventory/verify
-GET  /api/runtime/pass213/receipts/{object_id}
-```
-
-Pass 201's API federation discovers and attaches the router before the static visual root mount.
-
-### Governed CLI
-
-```text
-hhs-pass213 status
-hhs-pass213 catalog
-hhs-pass213 compiled-rom status|lookup
-hhs-pass213 memory-integrity status|scan
-hhs-pass213 timestamp-boundary status|lookup
-hhs-pass213 tensor-lattice status|lookup|verify
-hhs-pass213 inventory status|verify
-hhs-pass213 receipt get
-hhs-pass213 capability issue
-```
+HTTP and CLI invoke the same `GovernedNativeDispatchService`. Identical baseline state, request, capability claims, protected entry, and tensor context produce identical governed native results and successor commitments.
 
 ### Explicitly unexposed operations
 
-Iteration 9 does not expose:
+Iteration 10 does not expose:
 
-- compiled-ROM compilation or execution;
-- physical memory reads;
-- repair or recovery mutation;
-- deletion or tombstone creation;
-- tensor physical mapping;
-- recovery-carrier reads;
-- RFC 3161 DER reads;
-- network capability issuance;
+- compiled-ROM creation or replacement;
+- protected memory reads or native pointers;
+- repair, recovery mutation, deletion, or tombstone creation;
+- tensor seeds, permutations, or physical addresses;
+- retained carriers or recovery shards;
+- RFC 3161 DER material;
+- kernel keys or capability-authority keys;
 - uncommitted candidate state.
-
-Those operations remain inside their existing canonical authorities until governed native dispatch is implemented and validated.
 
 ## Validation
 
@@ -204,10 +190,26 @@ python -m pip install -r requirements/pass213-pqc.txt
 PYOQS_VERSION=0.16.0 bash scripts/run_pass213_iteration1_validation.sh
 ```
 
-The cumulative gate builds the native C arena with warnings as errors, verifies real liboqs mechanisms and OpenSSL RFC 3161 support, executes all 102 Iteration 1–9 tests, compiles every Pass 213 runtime/API/CLI module, parses the machine-readable contract, and retains the complete validation transcript.
+The cumulative gate:
 
-Iteration 9 validation includes capability scope/expiry/tamper tests, append-only projection replay, protected-field rejection, source/projection receipt separation, FastAPI OpenAPI and credential behavior, HTTP/CLI parity, local-only capability issuance, mutation-route exclusion, and SQLite tamper detection.
+- builds the secure arena and native dispatch C libraries with warnings as errors;
+- verifies ML-KEM-768, ML-DSA-65, SLH-DSA SHA2-128s, AES-GCM, and OpenSSL RFC 3161 support;
+- executes all 122 Iteration 1–10 tests;
+- compiles every Pass 213 runtime, API, and CLI module;
+- parses the machine-readable Iteration 10 contract;
+- retains the full transcript.
+
+Validated runtime evidence:
+
+```text
+head: af36575233248d77b606ff63b41ca5e51ca23ff5
+workflow run: 31062363170
+job: 92492790661
+122 tests passed
+artifact: pass213-iteration10-validation-31062363170
+artifact digest: sha256:46689e6e95a99fdb1e241431809aad60d15778ea954567be22fe2de9010c3522
+```
 
 ## Iteration boundary
 
-Pass 213 remains nonterminal and unmerged. Remaining implementation work is governed native compiled dispatch, full-hydration performance and recovery evidence, and final integration/verified-main closure.
+Pass 213 remains nonterminal, draft, and unmerged. Remaining implementation work is full-hydration performance and recovery evidence followed by final integration, merge, and verified-main closure. Pass 214 must not merge ahead of authoritative Pass 213 closure.
