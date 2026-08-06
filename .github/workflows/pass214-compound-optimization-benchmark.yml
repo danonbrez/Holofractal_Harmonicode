@@ -29,6 +29,7 @@ jobs:
             | gzip --decompress > /tmp/bootstrap_pass214_iteration1.py
           python /tmp/bootstrap_pass214_iteration1.py
           rm -rf .github/bootstrap_pass214_iteration1
+          git checkout -- .github/workflows/pass214-compound-optimization-benchmark.yml
           git config user.name "hhs-pass214-iteration1"
           git config user.email "hhs-pass214-iteration1@users.noreply.github.com"
           git add -A
