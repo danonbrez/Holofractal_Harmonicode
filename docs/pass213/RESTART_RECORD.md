@@ -7,7 +7,8 @@
 - Final validated Iteration 8 branch head: `b4db0de704e4fb43f5f382e3f11d114418af181c`
 - Validated Iteration 9 implementation head: `109aa45e39a33622a645a48fccb15d6101d06c38`
 - Validated Iteration 9 contract/documentation head: `43c16a00b1be009b59cdbdec1202808ea432fbe5`
-- Final validated Iteration 9 branch head: `e5f1d6f3607376b7cc721a359504696bf645140b`
+- Validated Iteration 9 restart-record head: `e5f1d6f3607376b7cc721a359504696bf645140b`
+- Final validated Iteration 9 branch head: `3f19e457d16d069b4cf44e68ee459f31becd9997`
 - Merge target: `main`
 - Draft pull request: `#169`
 - Iteration: `9`
@@ -72,37 +73,42 @@ job: 92481849207
 validated head: 109aa45e39a33622a645a48fccb15d6101d06c38
 cumulative tests: 102 passed
 result: SUCCESS
-artifact: pass213-iteration9-validation-31058743725
 artifact digest: sha256:cbb528b3e3fc4c44a8d20c39b85cead2f53298ac7390bd0ee4bb1fcb6f77cd55
 ```
 
 Contract/documentation head:
 
 ```text
-workflow: Pass 213 Compiled ROM Integrity
-run: 31058948244
+workflow run: 31058948244
 job: 92482442366
 validated head: 43c16a00b1be009b59cdbdec1202808ea432fbe5
 cumulative tests: 102 passed
 result: SUCCESS
-artifact: pass213-iteration9-validation-31058948244
 artifact digest: sha256:8a42315c5cf4129ac6689796a7d32bb21694bf97dda35001ad783dff3214201a
+```
+
+Restart-record head:
+
+```text
+workflow run: 31059032222
+job: 92482675901
+validated head: e5f1d6f3607376b7cc721a359504696bf645140b
+cumulative tests: 102 passed
+result: SUCCESS
+artifact digest: sha256:01968fdaa7080e520002887c240ae5488218e2a633c2521a4c08af64ff2ac483
 ```
 
 Final branch head:
 
 ```text
-workflow: Pass 213 Compiled ROM Integrity
-run: 31059032222
-job: 92482675901
-validated head: e5f1d6f3607376b7cc721a359504696bf645140b
+workflow run: 31059109040
+job: 92482900034
+validated head: 3f19e457d16d069b4cf44e68ee459f31becd9997
 cumulative tests: 102 passed
 result: SUCCESS
-artifact: pass213-iteration9-validation-31059032222
-artifact digest: sha256:01968fdaa7080e520002887c240ae5488218e2a633c2521a4c08af64ff2ac483
+artifact: pass213-iteration9-validation-31059109040
+artifact digest: sha256:f374fd19b7715235a123ee564dff8c1898e3fa92740128ce1527b92769f6cad3
 ```
-
-The complete gate builds the native arena with warnings as errors, verifies real ML-KEM/ML-DSA/SLH-DSA and RFC 3161 dependencies, executes all 102 cumulative tests, compiles every Iteration 1–9 runtime/API/CLI module, parses the Iteration 9 contract, and retains the complete transcript.
 
 ## Workflow state
 
