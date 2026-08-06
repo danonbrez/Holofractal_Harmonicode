@@ -1,35 +1,25 @@
-# Pass 213 Restart Record — Iteration 10
+# Pass 213 Restart Record — Final Iteration 11
 
 - Contract: `HHS-P213-TB-AMT-CROM-RMIK-H72-H216-VM5184-G243`
 - Immediate parent: Pass 212 full-hydration compression and physical erasure recovery
 - Base commit: `2be050264a6e9c659603100be802979bbc49bf7a`
 - Branch: `agent/pass213-compiled-rom-integrity`
-- Validated Iteration 10 runtime head: `af36575233248d77b606ff63b41ca5e51ca23ff5`
-- Iteration 10 contract commit: `fe1709cf328a832c45f0f12c7cec219ac8c33632`
-- Iteration 10 primary specification commit: `2d9f7a7f3a61344a2f1d6154c958938b8e472899`
-- Iteration 10 README commit: `7db20fd496f653ec604ecfdbc841dfd0d807c2a0`
 - Merge target: `main`
-- Draft pull request: `#169`
-- Iteration: `10`
+- Pull request: `#169`
+- Final iteration: `11`
+- Implementation state: `COMPLETE`
 
-## Cumulative runtime state
+## Cumulative state
 
-Iterations 1–10 are implemented. The chain now includes immutable compiled-ROM identity, Pass 212 correction before interpretation, protected native memory, dependency-scoped parametric admission, persistent inventory/tombstones/recovery, post-quantum checkpoint enclosure, RFC 3161 external timestamp anchoring, exact trusted-anchor-bound moving tensors, capability-governed API/CLI projections, and governed real-C native dispatch.
+Iterations 1–11 are implemented. Pass 213 now includes immutable compiled-ROM identity, correction before interpretation and execution, protected native memory, dependency-scoped parametric admission, persistent inventory/tombstones/recovery, PQC checkpoint enclosure, RFC 3161 external timestamp anchoring, exact moving tensors, governed API/CLI projections, governed real-C native dispatch, complete full-hydration evidence, and interrupted/resumed deterministic replay closure.
 
-## Iteration 10 files
+## Final-iteration files
 
 Added:
 
-- `native/pass213/hhs_pass213_native_dispatch.c`
-- `hhs_backend/runtime/hhs_pass213_native_dispatch_common_v1.py`
-- `hhs_backend/runtime/hhs_pass213_native_dispatch_kernel_v1.py`
-- `hhs_backend/runtime/hhs_pass213_native_dispatch_ledger_v1.py`
-- `hhs_backend/runtime/hhs_pass213_native_dispatch_authority_v1.py`
-- `hhs_backend/runtime/hhs_pass213_governed_native_dispatch_v1.py`
-- `hhs_backend/api/pass213_native_dispatch_routes.py`
-- `hhs_runtime/pass213/native_dispatch_cli.py`
-- `tests/test_pass213_governed_native_dispatch_v1.py`
-- `tests/test_pass213_native_dispatch_api_cli_v1.py`
+- `hhs_backend/runtime/hhs_pass213_final_evidence_v1.py`
+- `tests/test_pass213_final_evidence_v1.py`
+- `scripts/run_pass213_final_evidence.py`
 
 Extended:
 
@@ -40,23 +30,75 @@ Extended:
 - `docs/pass213/README.md`
 - `docs/pass213/RESTART_RECORD.md`
 
-## Iteration 10 authority
+## Final evidence authority
 
-- fixed-width allocation-free C ABI with no ambient mutable state;
-- exact VM81 cell, operation-slot, and G243 route validation;
-- protected compiled-ROM lookup by canonical `entry_hash216`;
-- current parent, kernel policy, kernel measurement, Hash216 lineage, trusted timestamp, moving tensor, hydration lane, and protected inventory binding;
-- exact compiled input/result counts, sorted read/write sets, unsigned-64 operand bounds, and optional modulus;
-- native add, subtract, XOR, AND, OR, modular multiply, rotate-left, equality, and conditional select workloads;
-- internal moving-tensor physical route with public Hash216 commitment only;
-- singleton VM81 lock and pre-native reentry rejection;
-- deterministic request, result, route, access-set, and successor Hash216 roots;
-- ordered Hash72 successor receipt;
-- authenticated SQLite WAL execution ledger with `synchronous=FULL`;
-- exact reopen continuation and rejection of database tamper, wrong anchors, sequence gaps, state substitution, receipt substitution, stale parent, duplicate replay, timestamp rollback, policy substitution, tensor substitution, access mismatch, and operand overflow;
-- shared FastAPI and CLI execution/receipt parity;
-- local-only `dispatch.execute` and `dispatch.read` capability issuance;
-- no compilation, protected-memory read, repair, deletion, physical address, carrier, DER, key, or uncommitted-state exposure.
+- generates the complete `50,388,480`-bit / `6,298,560`-byte affine hydration;
+- selects strict `AFFINE_9720_LEAF_SEEDS_PLUS_SPARSE_XOR` encoding;
+- verifies deterministic full-state re-encoding equality;
+- removes two data shards from one stripe and reconstructs the exact state before interpretation;
+- corrupts a physical shard and verifies rejection before interpretation;
+- validates the exact `50,388,480`-position moving-tensor affine closure and route round trips;
+- measures 2,048 protected exact compiled-ROM lookups;
+- measures 512 parametric admissions with one changed field, two affected constraints, and two reused witnesses;
+- executes 32 singleton-VM81 native dispatches;
+- crosses a recovery boundary at sequence 16;
+- proves uninterrupted and resumed receipt sequences are bit-exactly equal;
+- proves final state roots, Hash72 receipts, and authenticated ledger chains are equal;
+- commits deterministic semantics and hardware-specific timings into separate Hash216 roots;
+- emits a terminal Hash72 receipt over the semantic root;
+- exposes no protected bytes, physical addresses, keys, carriers, tensor seeds, native pointers, or uncommitted state.
+
+## Reference semantic evidence
+
+```text
+full hydration bits:                 50,388,480
+full hydration bytes:                 6,298,560
+affine seed bytes:                        2,430
+compressed payload bytes:                 2,473
+compression ratio:                  6,298,560 / 2,473
+missing data shards recovered:                 2
+corruption detected before interpretation:  true
+moving-tensor domain:               50,388,480
+protected exact lookups:                   2,048
+parametric admissions:                       512
+tensor route round trips:                  8,192
+native dispatches:                            32
+recovery boundary:                    sequence 16
+uninterrupted/resumed equality:              true
+ledger chains valid:                          true
+```
+
+```text
+semantic root Hash216:
+b783eaf39ca3cdff05d31dbe1406dc4ed45943a48b1cf89f3ee451a2c0326c0d
+
+terminal receipt Hash72:
+mO(Wo87dXeN)Ua2hbw96>2mLKi)iBlLT0Qy-qsjl>1icjig(7cc/d)FJd<9(gmvC20YL?twn
+```
+
+## Reference observations
+
+These integer-nanosecond observations are hardware-specific and noncanonical.
+
+```text
+GitHub Actions Ubuntu 24.04 x86_64
+CPython 3.12.13
+logical CPUs: 4
+full-state generation:       2,502,120 ns
+full-state encode:          76,614,754 ns
+two-shard recovery/decode:  30,396,138 ns
+corruption detection:          129,224 ns
+2,048 protected lookups:   147,036,530 ns
+512 parametric admissions: 174,561,123 ns
+8,192 tensor routes:       155,074,550 ns
+32 baseline dispatches:    125,982,772 ns
+32 resumed dispatches:     126,108,221 ns
+```
+
+```text
+observation root Hash216:
+d4bc7fdd97dac1d334711f6ce11e9a2ccdb16dcb1d89d23da8c5a178444d9c53
+```
 
 ## Validation command
 
@@ -65,38 +107,33 @@ python -m pip install -r requirements/pass213-pqc.txt
 PYOQS_VERSION=0.16.0 bash scripts/run_pass213_iteration1_validation.sh
 ```
 
-## Repository-native runtime evidence
+## Reference validated evidence
 
 ```text
 workflow: Pass 213 Compiled ROM Integrity
-run: 31062363170
-job: 92492790661
-validated runtime head: af36575233248d77b606ff63b41ca5e51ca23ff5
-cumulative tests: 122 passed
+run: 31064998624
+job: 92500772659
+validated head: c85e669862079e8346f14404a51a9c152623c062
+cumulative tests: 124 passed
 result: SUCCESS
-artifact: pass213-iteration10-validation-31062363170
-artifact digest: sha256:46689e6e95a99fdb1e241431809aad60d15778ea954567be22fe2de9010c3522
+evidence JSON SHA-256:
+6a79dbf26f7657e4d1726779e93c2edf61685527bbe079e4e8bbaeb980ec78d5
 ```
 
 ## Validation history and repairs
 
-The first Iteration 10 cumulative run exposed two integration defects: the Iteration 8 closure proof field was named `proof_root_hash216`, and FastAPI worker-thread execution required an explicitly locked cross-thread SQLite connection. Both were repaired without changing inherited Iterations 1–9 behavior.
+The first final-iteration run passed all 124 tests but the standalone evidence runner could not import `hhs_backend` when launched from the `scripts/` directory. The validation command was repaired by explicitly binding the repository root into `PYTHONPATH`. No runtime authority, inherited test, semantic root, or evidence algorithm changed.
 
-Subsequent failures were test-only representation assumptions: a safe `physical_route_exposed` boolean was mistaken for the protected `physical_route` key, and protected JSON reconstruction changed tuple containers into canonical-equivalent lists. Tests were corrected to inspect exact protected keys and canonical Hash216 identity.
+## Restartability
 
-## Workflow state
-
-- Iteration 1–10 runtime implementation validation: complete and successful.
-- Iteration 10 machine contract and documentation: repository-visible.
-- Pull request remains draft and unmerged.
-- Pass 214 must not merge ahead of authoritative Pass 213 closure.
-
-## Remaining work
-
-1. Produce full-hydration performance and recovery evidence over the 50,388,480-position domain.
-2. Run final integration and replay validation.
-3. Merge Pass 213 to `main` and verify the exact main head.
+- All implementation changes are committed to `agent/pass213-compiled-rom-integrity`.
+- The final evidence workload is executable from repository-visible state.
+- Both native libraries are rebuilt in the validation gate with warnings as errors.
+- PQC and RFC 3161 dependencies are preflighted.
+- The evidence JSON and validation transcript are retained together by the terminal workflow.
+- There is no uncommitted or chat-only recovery state.
+- There is no remaining Pass 213 implementation iteration.
 
 ## Next exact action
 
-Begin the full-hydration performance and recovery evidence iteration. Measure protected compiled-ROM hit admission, native dispatch, moving-tensor route derivation, successor commitment, ledger append, deterministic replay, controlled damage detection, recovery, and resumed execution across representative exact, parametric, and full-domain workloads. Preserve every Iteration 1–10 gate and do not substitute synthetic throughput claims for measured repository-native evidence.
+Run the final cumulative workflow against the exact completed branch head. When green, mark PR #169 ready, merge it to `main`, run the same terminal gate on the merged main commit, verify the exact main head and retained evidence artifact, and then declare Pass 213 authoritatively closed. Pass 214 must not merge ahead of that verified-main closure.
