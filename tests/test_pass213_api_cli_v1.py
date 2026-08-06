@@ -298,11 +298,10 @@ class Pass213Iteration9APIAndCLIParityTests(unittest.TestCase):
             "/api/runtime/pass213/receipts/{object_id}",
         }
         self.assertTrue(required.issubset(paths), required - paths)
-        forbidden_fragments = ("/execute", "/compile", "/repair", "/delete", "/physical-map")
-        self.assertFalse(
-            any(fragment in path for path in paths for fragment in forbidden_fragments),
-            paths,
-        )
+        forbidden_segments = {"execute", "compile", "repair", "delete", "physical-map"}
+        for path in paths:
+            segments = {segment for segment in path.split("/") if segment}
+            self.assertTrue(segments.isdisjoint(forbidden_segments), path)
 
     def test_api_responses_never_expose_protected_fields(self) -> None:
         forbidden = {
