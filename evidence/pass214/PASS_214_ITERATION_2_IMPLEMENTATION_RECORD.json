@@ -1,0 +1,32 @@
+{
+  "claim_boundary": {
+    "all_iteration1_symbols_recorded": true,
+    "authority_conflict_candidates_enumerated": true,
+    "compatibility_graph_constructed": true,
+    "compound_benchmark_complete": false,
+    "integration_adapters_complete": false,
+    "pass214_terminal_roots_minted": false,
+    "pass215_benchmark_authorized": false,
+    "runtime_oracle_equivalence_complete": false,
+    "static_normal_form_equivalence_analyzed": true
+  },
+  "classification": "HHS_PASS_214_ITERATION_2_CALLABLE_CONFORMANCE_GRAPH_IMPLEMENTED_PENDING_EXACT_HEAD_EVIDENCE",
+  "foundation": {
+    "pass213_authoritative_closure": "86ec461818682fc87232740758769602e8f9fe05",
+    "pass214_iteration1_semantic_root": "3be4e52f0e4e0cf55dc09b8d0fc929423c954cf30f3f3dbfd86f5f968dbc38bf"
+  },
+  "iteration": 2,
+  "outputs": [
+    "callable_conformance_records.json",
+    "semantic_equivalence_groups.json",
+    "authority_conflicts.json",
+    "compatibility_edges.json",
+    "compatibility_graph.json",
+    "iteration2_summary.json"
+  ],
+  "pass": 214,
+  "runner": "tools/pass214_callable_conformance.py",
+  "runtime": "hhs_backend/runtime/hhs_pass214_callable_conformance_v1.py",
+  "schema": "HHS_PASS_214_ITERATION_2_IMPLEMENTATION_RECORD_V1",
+  "test": "tests/test_hhs_pass214_callable_conformance_v1.py"
+}

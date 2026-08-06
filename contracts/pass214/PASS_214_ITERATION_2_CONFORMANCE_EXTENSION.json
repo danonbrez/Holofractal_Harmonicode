@@ -1,0 +1,36 @@
+{
+  "authorization_state": "PASS_214_ITERATION_2_AUTHORIZED_AND_IMPLEMENTED_PENDING_EXACT_HEAD_EVIDENCE",
+  "base_contract": "contracts/pass214/PASS_214_CONTRACT.json",
+  "base_contract_id": "HHS-P214-REPOSITORY-WIDE-COMPOUND-DATA-MANAGEMENT-MULTIMODAL-ML-OPTIMIZATION-INTEGRATION-BENCHMARK-CALIBRATION-EVIDENCE-H72-H216-VM5184-G243",
+  "classification": "HHS_PASS_214_ITERATION_2_CALLABLE_CONFORMANCE_GRAPH_IMPLEMENTED",
+  "inherits": {
+    "pass213_authoritative_closure": "86ec461818682fc87232740758769602e8f9fe05",
+    "pass214_iteration1": "immutable_repository_census_and_static_optimization_registry"
+  },
+  "iteration": 2,
+  "outputs": [
+    "callable_conformance_records.json",
+    "semantic_equivalence_groups.json",
+    "authority_conflicts.json",
+    "compatibility_edges.json",
+    "compatibility_graph.json",
+    "iteration2_summary.json"
+  ],
+  "pass": 214,
+  "required_invariants": [
+    "iteration1_source_commit_and_tree_must_match_iteration2_source",
+    "every_iteration1_symbol_has_exactly_one_iteration2_conformance_record",
+    "candidate_modules_are_read_as_bound_git_objects_and_are_not_imported",
+    "static_normal_form_equivalence_is_not_reported_as_runtime_or_observational_equivalence",
+    "divergent_hard_authorities_are_conflict_candidates_and_are_never_automatically_merged",
+    "compatibility_edges_are_deterministic_and_hash216_bound",
+    "runtime_verified_edges_remain_zero_until oracle workloads execute",
+    "pass214_terminal_roots_are_not_minted_by_iteration2",
+    "pass215_remains_unauthorized"
+  ],
+  "runtime": "hhs_backend/runtime/hhs_pass214_callable_conformance_v1.py",
+  "runner": "tools/pass214_callable_conformance.py",
+  "schema": "HHS_PASS_214_ITERATION_2_CONFORMANCE_EXTENSION_V1",
+  "tests": "tests/test_hhs_pass214_callable_conformance_v1.py",
+  "version": "1.0.0"
+}
