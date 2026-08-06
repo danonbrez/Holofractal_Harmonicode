@@ -130,6 +130,14 @@ evidence JSON sha256:
 6a79dbf26f7657e4d1726779e93c2edf61685527bbe079e4e8bbaeb980ec78d5
 ```
 
+The repository-visible terminal restart state is committed at:
+
+```text
+8e39a21276ec43ebe1c22c04d4a34ba8911fef27
+```
+
+The next workflow run after this line validates the exact completed branch head, including the final restart record, before merge authorization.
+
 ## Closure
 
 Pass 213 implementation is complete. Merge and exact-main verification are the remaining release operations; there is no remaining Pass 213 implementation iteration.
