@@ -7,8 +7,8 @@
 - Final validated Iteration 8 branch head: `b4db0de704e4fb43f5f382e3f11d114418af181c`
 - Validated Iteration 9 implementation head: `109aa45e39a33622a645a48fccb15d6101d06c38`
 - Validated Iteration 9 contract/documentation head: `43c16a00b1be009b59cdbdec1202808ea432fbe5`
-- Validated Iteration 9 restart-record head: `e5f1d6f3607376b7cc721a359504696bf645140b`
-- Final validated Iteration 9 branch head: `3f19e457d16d069b4cf44e68ee459f31becd9997`
+- Validated Iteration 9 evidence head: `3f19e457d16d069b4cf44e68ee459f31becd9997`
+- Final validated Iteration 9 branch head: `bdc68a9bf288f4220ae91415362698c1755353e5`
 - Merge target: `main`
 - Draft pull request: `#169`
 - Iteration: `9`
@@ -43,71 +43,35 @@ Extended:
 
 - one shared governed operation dispatcher for HTTP and CLI;
 - short-lived HMAC-SHA-256 capabilities bound to subject, exact scopes, issue/expiry nanoseconds, epoch, nonce, and capability Hash216;
-- scopes `compiled.read`, `inventory.verify`, `tensor.read`, `tensor.verify`, `timestamp.read`, `integrity.verify`, and `receipt.read`;
 - append-only HMAC-authenticated SQLite WAL public-projection chain;
 - projection Hash216 roots and projection-domain Hash72 receipts;
 - strict separation between canonical source receipts and public-projection receipts;
 - sanitized compiled-ROM, inventory, moving-tensor, timestamp-anchor, integrity, and receipt commitments;
 - FastAPI Bearer and `X-HHS-Capability` handling with conflict rejection;
-- inherited canonical runtime API-response envelopes;
 - argparse CLI parity and structured nonzero rejection results;
 - local-only capability issuance with no HTTP issuance route;
 - rejection of keys, tokens, carriers, bytes, physical mappings, tensor seeds, native addresses, RFC 3161 DER, canonical floats, and uncommitted state;
-- compilation, execution, repair, deletion, protected-memory reads, physical maps, recovery carriers, DER reads, and network capability issuance remain unexposed.
+- compile, execute, repair, deletion, protected-memory reads, physical maps, recovery carriers, DER reads, and network capability issuance remain unexposed.
 
-## Validation command
-
-```bash
-python -m pip install -r requirements/pass213-pqc.txt
-PYOQS_VERSION=0.16.0 bash scripts/run_pass213_iteration1_validation.sh
-```
-
-## Repository-native Iteration 9 evidence
-
-Implementation head:
+## Validation
 
 ```text
-workflow: Pass 213 Compiled ROM Integrity
-run: 31058743725
-job: 92481849207
-validated head: 109aa45e39a33622a645a48fccb15d6101d06c38
-cumulative tests: 102 passed
-result: SUCCESS
-artifact digest: sha256:cbb528b3e3fc4c44a8d20c39b85cead2f53298ac7390bd0ee4bb1fcb6f77cd55
-```
+implementation run: 31058743725
+implementation job: 92481849207
+implementation head: 109aa45e39a33622a645a48fccb15d6101d06c38
+result: SUCCESS — 102 tests
 
-Contract/documentation head:
+contract/documentation run: 31058948244
+contract/documentation job: 92482442366
+contract/documentation head: 43c16a00b1be009b59cdbdec1202808ea432fbe5
+result: SUCCESS — 102 tests
 
-```text
-workflow run: 31058948244
-job: 92482442366
-validated head: 43c16a00b1be009b59cdbdec1202808ea432fbe5
-cumulative tests: 102 passed
-result: SUCCESS
-artifact digest: sha256:8a42315c5cf4129ac6689796a7d32bb21694bf97dda35001ad783dff3214201a
-```
-
-Restart-record head:
-
-```text
-workflow run: 31059032222
-job: 92482675901
-validated head: e5f1d6f3607376b7cc721a359504696bf645140b
-cumulative tests: 102 passed
-result: SUCCESS
-artifact digest: sha256:01968fdaa7080e520002887c240ae5488218e2a633c2521a4c08af64ff2ac483
-```
-
-Final branch head:
-
-```text
-workflow run: 31059109040
-job: 92482900034
-validated head: 3f19e457d16d069b4cf44e68ee459f31becd9997
-cumulative tests: 102 passed
-result: SUCCESS
-artifact: pass213-iteration9-validation-31059109040
-artifact digest: sha256:f374fd19b7715235a123ee564dff8c1898e3fa92740128ce1527b92769f6cad3
+final branch-head run: 31059190117
+final branch-head job: 92483150195
+final branch head: bdc68a9bf288f4220ae91415362698c1755353e5
+result: SUCCESS — 102 tests
+artifact: pass213-iteration9-validation-31059190117
+artifact digest: sha256:3dbc290de908de86ab8f272063f43a9c7bf2e320980e20094301641b8a95dc2b
 ```
 
 ## Workflow state
