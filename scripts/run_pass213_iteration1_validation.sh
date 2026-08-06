@@ -5,9 +5,13 @@ repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$repo_root"
 
 native_output="${TMPDIR:-/tmp}/libhhs_pass213_secure_arena.so"
+native_dispatch_output="${TMPDIR:-/tmp}/libhhs_pass213_native_dispatch.so"
 cc -std=c11 -shared -fPIC -O2 -Wall -Wextra -Werror \
   native/pass213/hhs_pass213_secure_arena.c \
   -o "$native_output"
+cc -std=c11 -shared -fPIC -O2 -Wall -Wextra -Werror \
+  native/pass213/hhs_pass213_native_dispatch.c \
+  -o "$native_dispatch_output"
 
 python3 - <<'PY'
 import oqs
@@ -43,7 +47,9 @@ python3 -m unittest -v \
   tests.test_pass213_trusted_timestamp_v1 \
   tests.test_pass213_moving_tensor_v1 \
   tests.test_pass213_governed_surface_v1 \
-  tests.test_pass213_api_cli_v1
+  tests.test_pass213_api_cli_v1 \
+  tests.test_pass213_governed_native_dispatch_v1 \
+  tests.test_pass213_native_dispatch_api_cli_v1
 python3 -m py_compile \
   hhs_backend/runtime/hhs_pass213_compiled_rom_v1.py \
   hhs_backend/runtime/hhs_pass213_recovery_admission_v1.py \
@@ -60,9 +66,15 @@ python3 -m py_compile \
   hhs_backend/runtime/hhs_pass213_tensor_store_v1.py \
   hhs_backend/runtime/hhs_pass213_governed_surface_v1.py \
   hhs_backend/runtime/hhs_pass213_governed_surface_v2.py \
+  hhs_backend/runtime/hhs_pass213_native_dispatch_common_v1.py \
+  hhs_backend/runtime/hhs_pass213_native_dispatch_kernel_v1.py \
+  hhs_backend/runtime/hhs_pass213_native_dispatch_ledger_v1.py \
+  hhs_backend/runtime/hhs_pass213_native_dispatch_authority_v1.py \
+  hhs_backend/runtime/hhs_pass213_governed_native_dispatch_v1.py \
   hhs_backend/api/pass213_compiled_rom_routes.py \
-  hhs_runtime/pass213/__init__.py \
-  hhs_runtime/pass213/cli.py
+  hhs_backend/api/pass213_native_dispatch_routes.py \
+  hhs_runtime/pass213/cli.py \
+  hhs_runtime/pass213/native_dispatch_cli.py
 python3 -m json.tool contracts/pass213/PASS_213_CONTRACT.json >/dev/null
 
-echo "PASS213_ITERATION1_2_3_4_5_6_7_8_9_VALIDATION_OK"
+echo "PASS213_ITERATION1_2_3_4_5_6_7_8_9_10_VALIDATION_OK"
