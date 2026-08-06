@@ -17,11 +17,15 @@ on:
       - 'hhs_backend/runtime/pass214_i3_payload/**'
       - 'hhs_backend/runtime/hhs_pass214_callable_oracle_v1.py'
       - 'hhs_backend/runtime/pass214_i4_payload/**'
+      - 'hhs_backend/runtime/hhs_pass214_iteration5_callable_corpus_v1.py'
+      - 'hhs_backend/runtime/pass214_i5_payload/**'
       - 'tools/pass214_repository_census.py'
       - 'tools/pass214_callable_conformance.py'
       - 'tools/pass214_oracle_adjudication.py'
       - 'tools/pass214_callable_oracle.py'
       - 'tools/pass214_iteration4_manifest.py'
+      - 'tools/pass214_iteration5_callable_corpus.py'
+      - 'tools/pass214_iteration5_manifest.py'
       - 'scripts/run_pass214_contract_validation.sh'
       - 'tests/test_hhs_pass214_contract_v2.py'
       - 'tests/test_hhs_pass214_repository_census_v1.py'
@@ -31,7 +35,9 @@ on:
       - 'tests/pass214_i3_test_payload/**'
       - 'tests/test_hhs_pass214_callable_oracle_v1.py'
       - 'tests/pass214_i4_test_payload/**'
+      - 'tests/test_hhs_pass214_iteration5_callable_corpus_v1.py'
       - '.github/workflows/pass214-compound-optimization-benchmark.yml'
+      - '.github/workflows/pass214-iteration5-callable-corpus.yml'
   pull_request:
     branches:
       - main
@@ -47,12 +53,13 @@ on:
       - 'tests/test_hhs_pass214_*'
       - 'tests/pass214_i*_test_payload/**'
       - '.github/workflows/pass214-compound-optimization-benchmark.yml'
+      - '.github/workflows/pass214-iteration5-callable-corpus.yml'
 
 permissions:
   contents: read
 
 jobs:
-  iterations-1-2-3-4-validation:
+  iterations-1-2-3-4-5-validation:
     runs-on: ubuntu-24.04
     timeout-minutes: 75
     steps:
@@ -64,7 +71,7 @@ jobs:
           python-version: '3.12'
       - name: Install validation dependency
         run: python -m pip install pytest
-      - name: Validate Pass 214 Iterations 1 through 4
+      - name: Validate Pass 214 Iterations 1 through 5
         run: bash scripts/run_pass214_contract_validation.sh
       - name: Build inherited native C ABI
         run: make c-abi
@@ -100,21 +107,49 @@ jobs:
             --manifest "$RUNNER_TEMP/pass214-iteration4-manifest.json" \
             --output-directory "$RUNNER_TEMP/pass214-iteration4" \
             | tee "$RUNNER_TEMP/pass214-iteration4-validation.log"
-      - name: Retain Pass 214 Iterations 1 through 4 evidence
+      - name: Execute exact-head Iteration 5 callable corpus
+        run: |
+          mkdir -p "$RUNNER_TEMP/pass214-iteration5"
+          python tools/pass214_iteration5_callable_corpus.py \
+            --output-dir "$RUNNER_TEMP/pass214-iteration5" \
+            | tee "$RUNNER_TEMP/pass214-iteration5-validation.log"
+      - name: Enforce Iteration 5 non-promoting gate
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          report = json.loads(
+              (Path(os.environ["RUNNER_TEMP"]) / "pass214-iteration5" / "PASS_214_ITERATION_5_CALLABLE_CORPUS_REPORT.json").read_text()
+          )
+          assert report["status"] == "PILOT_READY"
+          assert report["consecutive_exact_positive_gain"] is True
+          assert report["completed_consecutive_runs"] == 3
+          assert report["family_count"] == 5
+          assert report["policy"]["migration_active"] is False
+          assert report["policy"]["authority_promoted"] is False
+          assert report["policy"]["terminal_roots_minted"] is False
+          assert report["policy"]["pass215_authorized"] is False
+          PY
+      - name: Retain Pass 214 Iterations 1 through 5 evidence
         uses: actions/upload-artifact@v4
         with:
-          name: pass214-iterations-1-2-3-4-${{ github.run_id }}
+          name: pass214-iterations-1-2-3-4-5-${{ github.run_id }}
           path: |
             ${{ runner.temp }}/pass214-iteration1/*.json
             ${{ runner.temp }}/pass214-iteration2/*.json
             ${{ runner.temp }}/pass214-iteration4/*.json
+            ${{ runner.temp }}/pass214-iteration5/*.json
             ${{ runner.temp }}/pass214-iteration4-manifest.json
             ${{ runner.temp }}/pass214-iteration1-validation.log
             ${{ runner.temp }}/pass214-iteration2-validation.log
             ${{ runner.temp }}/pass214-iteration4-manifest.log
             ${{ runner.temp }}/pass214-iteration4-validation.log
+            ${{ runner.temp }}/pass214-iteration5-validation.log
             contracts/pass214/PASS_214_ITERATION_3_ORACLE_ADJUDICATION_EXTENSION.json
             contracts/pass214/PASS_214_ITERATION_4_CALLABLE_ORACLE_EXTENSION.json
             evidence/pass214/PASS_214_ITERATION_3_IMPLEMENTATION_RECORD.json
             evidence/pass214/PASS_214_ITERATION_4_IMPLEMENTATION_RECORD.json
+            evidence/pass214/PASS_214_ITERATION_5_IMPLEMENTATION_RECORD.json
           if-no-files-found: error
