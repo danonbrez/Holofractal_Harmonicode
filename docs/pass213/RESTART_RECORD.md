@@ -4,10 +4,7 @@
 - Immediate parent: Pass 212 full-hydration compression and physical erasure recovery
 - Base commit: `2be050264a6e9c659603100be802979bbc49bf7a`
 - Branch: `agent/pass213-compiled-rom-integrity`
-- Final validated Iteration 8 branch head: `b4db0de704e4fb43f5f382e3f11d114418af181c`
-- Validated Iteration 9 implementation head: `109aa45e39a33622a645a48fccb15d6101d06c38`
-- Validated Iteration 9 contract/documentation head: `43c16a00b1be009b59cdbdec1202808ea432fbe5`
-- Final validated Iteration 9 branch head: `a87a75d704e1ed995f8d160369fda78a73eaae9b`
+- Final validated Iteration 9 branch head: `815c40be81a06e3c883be5c29d890d5a1d691f2f`
 - Merge target: `main`
 - Draft pull request: `#169`
 - Iteration: `9`
@@ -21,9 +18,8 @@ Iterations 1–9 are implemented and repository-validated. The chain includes im
 - one shared governed operation dispatcher for HTTP and CLI;
 - short-lived HMAC-SHA-256 capabilities bound to subject, exact scopes, issue/expiry nanoseconds, epoch, nonce, and capability Hash216;
 - append-only HMAC-authenticated SQLite WAL public-projection chain;
-- projection Hash216 roots and projection-domain Hash72 receipts;
-- strict separation between canonical source receipts and public-projection receipts;
-- sanitized compiled-ROM, inventory, moving-tensor, timestamp-anchor, integrity, and receipt commitments;
+- strict separation between canonical source receipts and projection receipts;
+- sanitized compiled-ROM, inventory, tensor, timestamp, integrity, and receipt commitments;
 - FastAPI Bearer and `X-HHS-Capability` handling with conflict rejection;
 - argparse CLI parity and structured nonzero rejection results;
 - local-only capability issuance with no HTTP issuance route;
@@ -34,22 +30,14 @@ Iterations 1–9 are implemented and repository-validated. The chain includes im
 
 ```text
 workflow: Pass 213 Compiled ROM Integrity
-run: 31059348537
-job: 92483644259
-validated head: a87a75d704e1ed995f8d160369fda78a73eaae9b
+run: 31059466241
+job: 92484017980
+validated head: 815c40be81a06e3c883be5c29d890d5a1d691f2f
 cumulative tests: 102 passed
 result: SUCCESS
-artifact: pass213-iteration9-validation-31059348537
-artifact digest: sha256:3c5fec221f217cef1622857d27e801c0783f650737238565ddbb0625a102a32a
+artifact: pass213-iteration9-validation-31059466241
+artifact digest: sha256:e12a3e34438b9f3b8be96b764d7c929fd44de332baa6c8cde8ddc79bcdc728d7
 ```
-
-## Workflow state
-
-- Iteration 1–9 implementation validation: complete and successful.
-- Iteration 9 contract/documentation validation: complete and successful.
-- Final branch-head validation: complete and successful.
-- Guarded Continuous Integration remains governed by its inherited path policy.
-- Pull request remains draft and unmerged.
 
 ## Remaining work
 
