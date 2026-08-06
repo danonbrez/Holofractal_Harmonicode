@@ -49,7 +49,8 @@ python3 -m unittest -v \
   tests.test_pass213_governed_surface_v1 \
   tests.test_pass213_api_cli_v1 \
   tests.test_pass213_governed_native_dispatch_v1 \
-  tests.test_pass213_native_dispatch_api_cli_v1
+  tests.test_pass213_native_dispatch_api_cli_v1 \
+  tests.test_pass213_final_evidence_v1
 python3 -m py_compile \
   hhs_backend/runtime/hhs_pass213_compiled_rom_v1.py \
   hhs_backend/runtime/hhs_pass213_recovery_admission_v1.py \
@@ -71,10 +72,17 @@ python3 -m py_compile \
   hhs_backend/runtime/hhs_pass213_native_dispatch_ledger_v1.py \
   hhs_backend/runtime/hhs_pass213_native_dispatch_authority_v1.py \
   hhs_backend/runtime/hhs_pass213_governed_native_dispatch_v1.py \
+  hhs_backend/runtime/hhs_pass213_final_evidence_v1.py \
   hhs_backend/api/pass213_compiled_rom_routes.py \
   hhs_backend/api/pass213_native_dispatch_routes.py \
   hhs_runtime/pass213/cli.py \
-  hhs_runtime/pass213/native_dispatch_cli.py
+  hhs_runtime/pass213/native_dispatch_cli.py \
+  scripts/run_pass213_final_evidence.py
+python3 scripts/run_pass213_final_evidence.py \
+  --secure-library "$native_output" \
+  --dispatch-library "$native_dispatch_output" \
+  --output pass213-final-evidence.json
+python3 -m json.tool pass213-final-evidence.json >/dev/null
 python3 -m json.tool contracts/pass213/PASS_213_CONTRACT.json >/dev/null
 
-echo "PASS213_ITERATION1_2_3_4_5_6_7_8_9_10_VALIDATION_OK"
+echo "PASS213_ITERATION1_2_3_4_5_6_7_8_9_10_11_FINAL_VALIDATION_OK"
