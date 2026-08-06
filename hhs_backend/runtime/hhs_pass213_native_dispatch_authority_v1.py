@@ -6,7 +6,8 @@ import threading
 from typing import Any, Mapping
 
 from hhs_backend.runtime.hhs_pass213_compiled_rom_v1 import (
-    CONTRACT, FULL_HYDRATION_DOMAIN, VM5184_G243_DOMAIN, canonical_bytes, hash216,
+    CONTRACT, FULL_HYDRATION_DOMAIN, VM5184_G243_DOMAIN, CompiledROMEntry,
+    canonical_bytes, hash216,
 )
 from hhs_backend.runtime.hhs_pass213_native_dispatch_common_v1 import (
     DISPATCH_ABI_VERSION, DISPATCH_PROFILE, ITERATION, RUNTIME_CLASSIFICATION,
@@ -72,24 +73,25 @@ class GovernedNativeDispatchAuthority:
             )
 
     def status(self) -> Mapping[str, Any]:
-        self._validate_ledger_state_alignment()
-        return {
-            "schema": "HHS_PASS_213_NATIVE_DISPATCH_STATUS_V1",
-            "contract": CONTRACT,
-            "iteration": ITERATION,
-            "runtime_classification": RUNTIME_CLASSIFICATION,
-            "available": True,
-            "native_abi_version": DISPATCH_ABI_VERSION,
-            "dispatch_profile": DISPATCH_PROFILE,
-            "supported_native_dispatch_ids": tuple(sorted(_NATIVE_DISPATCH_IDS)),
-            "ledger_count": self.ledger.count(),
-            "ledger_valid": True,
-            "protected_inventory_root_hash216": self.protected_store.inventory_root(),
-            "runtime_state": self._state.public_mapping(),
-            "native_dynamic_allocation": False,
-            "native_ambient_state": False,
-            "physical_mapping_exposed": False,
-        }
+        with self._lock:
+            self._validate_ledger_state_alignment()
+            return {
+                "schema": "HHS_PASS_213_NATIVE_DISPATCH_STATUS_V1",
+                "contract": CONTRACT,
+                "iteration": ITERATION,
+                "runtime_classification": RUNTIME_CLASSIFICATION,
+                "available": True,
+                "native_abi_version": DISPATCH_ABI_VERSION,
+                "dispatch_profile": DISPATCH_PROFILE,
+                "supported_native_dispatch_ids": tuple(sorted(_NATIVE_DISPATCH_IDS)),
+                "ledger_count": self.ledger.count(),
+                "ledger_valid": True,
+                "protected_inventory_root_hash216": self.protected_store.inventory_root(),
+                "runtime_state": self._state.public_mapping(),
+                "native_dynamic_allocation": False,
+                "native_ambient_state": False,
+                "physical_mapping_exposed": False,
+            }
 
     def _validate_constraints(
         self,
@@ -228,7 +230,7 @@ class GovernedNativeDispatchAuthority:
                         "logical_route": logical_route,
                         "physical_route": physical_route,
                         "tensor_root_hash216": state.tensor_state.tensor_root_hash216,
-                        "tensor_closure_root_hash216": state.tensor_state.closure_proof.closure_root_hash216,
+                        "tensor_closure_root_hash216": state.tensor_state.closure_proof.proof_root_hash216,
                     }),
                 )
                 read_set_root = hash216(
