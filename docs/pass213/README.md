@@ -1,6 +1,6 @@
-# Pass 213 — Iterations 1–9
+# Pass 213 — Iterations 1–10
 
-Pass 213 implements an authenticated compiled ROM whose carriers are corrected before interpretation, whose canonical entries live in protected native memory, whose reusable operations receive exact or dependency-scoped admission, whose inventory survives restarts with authorized tombstones and recovery, whose checkpoints are post-quantum signed, whose history is independently timestamped, whose physical execution geometry is selected by an exact moving tensor, and whose externally visible state is limited to capability-governed public projections.
+Pass 213 implements an authenticated compiled ROM whose carriers are corrected before interpretation, whose canonical entries live in protected native memory, whose reusable operations receive exact or dependency-scoped admission, whose inventory survives restarts with authorized tombstones and recovery, whose checkpoints are post-quantum signed, whose history is independently timestamped, whose execution geometry is selected by an exact moving tensor, whose externally visible state is capability-governed, and whose accepted compiled operations execute through a deterministic native C authority.
 
 ## Implemented progression
 
@@ -11,44 +11,77 @@ Pass 213 implements an authenticated compiled ROM whose carriers are corrected b
 - **Iteration 5:** SQLite WAL inventory, append-only mutation roots, retained recovery carriers, tombstones, and unexplained-deletion detection.
 - **Iteration 6:** ML-KEM-768 recovery, ML-DSA-65 operational signatures, SLH-DSA SHA2-128s archival signatures, protected keys, and verifier-only replay.
 - **Iteration 7:** RFC 3161 external timestamp anchors bound to signed checkpoints, verifier roots, prior anchors, Hash216 lineage, local boundaries, and TSA evidence.
-- **Iteration 8:** exact Lo Shu/Sudoku/Fibonacci moving tensors, reversible VM5184×G243 and full-hydration coordinate maps, exact closure proofs, Hash216 state roots, Hash72 receipts, and keyed persistent replay.
-- **Iteration 9:** shared capability-governed API/CLI projection authority with append-only public commitments, source/projection receipt separation, strict protected-field rejection, and no mutation or raw-state exposure.
+- **Iteration 8:** exact Lo Shu/Sudoku/Fibonacci moving tensors, reversible VM5184×G243 and full-hydration maps, closure proofs, Hash216 roots, Hash72 receipts, and keyed replay.
+- **Iteration 9:** shared capability-governed API/CLI projections with authenticated public commitments, source/projection receipt separation, and strict protected-state non-exposure.
+- **Iteration 10:** real fixed-width C execution for protected compiled-ROM entries, singleton VM81 admission, hidden moving-tensor route commitments, deterministic successor roots, ordered Hash72 receipts, and an authenticated persistent execution ledger.
 
 ## Current canonical path
 
 ```text
-untrusted carrier
-→ Pass 212 correction
-→ Hash216 compiled-ROM admission
-→ sealed native memory
-→ exact or dependency-scoped reuse
+carrier correction
+→ compiled Hash216 admission
+→ protected native memory
+→ reusable exact or parametric validation
 → persistent inventory
-→ PQC signed checkpoint
-→ RFC 3161 trusted timestamp
-→ exact moving tensor
-→ sanitized governed projection
-→ API or CLI transport
+→ PQC checkpoint
+→ RFC 3161 timestamp
+→ moving tensor
+→ governed projection
+→ exact native-dispatch admission
+→ C execution
+→ successor Hash216 / Hash72
+→ authenticated execution ledger
 ```
 
-## Iteration 9 surfaces
-
-Public status and catalog endpoints require no mutation authority. Protected projection lookups and verification require an exact capability scope:
+## Iteration 10 native operations
 
 ```text
-compiled.read
-inventory.verify
-tensor.read
-tensor.verify
-timestamp.read
-integrity.verify
-receipt.read
+hhs.native.u64.add.v1
+hhs.native.u64.sub.v1
+hhs.native.u64.xor.v1
+hhs.native.u64.and.v1
+hhs.native.u64.or.v1
+hhs.native.u64.mul_mod.v1
+hhs.native.u64.rotl.v1
+hhs.native.u64.eq.v1
+hhs.native.u64.select.v1
 ```
 
-The HTTP and CLI transports invoke the same dispatcher and therefore produce the same governed payload, response Hash216, and Hash72 receipt. HTTP additionally applies the inherited canonical runtime response envelope.
+The C ABI is allocation-free, has no ambient mutable state, validates VM81/operation-slot/G243 coordinates, accepts at most eight unsigned-64 operands, and returns fixed-width deterministic results.
 
-The public projection store contains only commitments, bounded counts, invariant results, sanitized TSA metadata, and receipts. It rejects keys, tokens, authentication tags, carriers, payload bytes, native addresses, physical tensor maps, tensor seeds, recovery material, RFC 3161 DER material, and canonical floating-point values.
+Native execution requires exact compatibility with the protected compiled entry, parent state, kernel policy and measurement, Hash216 lineage, trusted timestamp, moving tensor, hydration lane, compiled operand bounds, and exact read/write sets.
 
-Compilation, execution, repair, deletion, protected-memory reads, physical tensor mapping, carrier reads, DER reads, network capability issuance, and uncommitted state remain unexposed.
+The physical tensor address remains internal. A Hash216 route commitment binds it to the logical address, compiled entry, and tensor closure without exposing the address.
+
+## Governed dispatch surfaces
+
+Capabilities:
+
+```text
+dispatch.execute
+dispatch.read
+```
+
+HTTP:
+
+```text
+GET  /api/runtime/native-dispatch/status
+POST /api/runtime/native-dispatch/execute
+GET  /api/runtime/native-dispatch/receipts/{sequence}
+```
+
+CLI:
+
+```text
+hhs-pass213-dispatch status
+hhs-pass213-dispatch execute
+hhs-pass213-dispatch receipt
+hhs-pass213-dispatch capability issue
+```
+
+Capability issuance remains local-only. HTTP and CLI call the same service and produce identical native results and successor commitments from identical state and request inputs.
+
+Compilation, protected-memory reads, repair, deletion, physical map access, carrier access, RFC 3161 DER access, key access, and uncommitted state remain unexposed.
 
 ## Domains
 
@@ -56,7 +89,9 @@ Compilation, execution, repair, deletion, protected-memory reads, physical tenso
 VM5184                    5,184
 VM5184 × G243             1,259,712
 40-lane full hydration    50,388,480
-axis moduli               9,9,4,4,4,3,3,3,3,3,40
+native operand width      64 bits unsigned
+native max operands       8
+native max results        4
 ```
 
 ## Validation
@@ -66,19 +101,19 @@ python -m pip install -r requirements/pass213-pqc.txt
 PYOQS_VERSION=0.16.0 bash scripts/run_pass213_iteration1_validation.sh
 ```
 
-The dedicated workflow executes 102 cumulative tests, compiles the native and Python runtime/API/CLI modules, verifies PQC and RFC 3161 dependencies, validates FastAPI/TestClient and CLI parity, parses the Iteration 9 contract, and retains a validation artifact.
-
-Validated implementation head:
+Validated runtime evidence:
 
 ```text
-109aa45e39a33622a645a48fccb15d6101d06c38
-workflow run 31058743725
-job 92481849207
-102 tests passed
-artifact pass213-iteration9-validation-31058743725
-sha256:cbb528b3e3fc4c44a8d20c39b85cead2f53298ac7390bd0ee4bb1fcb6f77cd55
+head af36575233248d77b606ff63b41ca5e51ca23ff5
+workflow run 31062363170
+job 92492790661
+122 tests passed
+artifact pass213-iteration10-validation-31062363170
+sha256:46689e6e95a99fdb1e241431809aad60d15778ea954567be22fe2de9010c3522
 ```
+
+The cumulative gate builds both C libraries with warnings as errors, verifies PQC and RFC 3161 dependencies, executes all Iteration 1–10 tests, validates API/CLI parity and native execution, compiles all Python modules, parses the machine contract, and retains the transcript.
 
 ## Current boundary
 
-Pass 213 remains draft and nonterminal. Governed native compiled dispatch, full-hydration performance and recovery evidence, final integration, merge, and verified-main closure remain.
+Pass 213 remains draft and nonterminal. Full-hydration performance and recovery evidence, final integration, merge, and verified-main closure remain.
