@@ -1,39 +1,78 @@
-# Pass 213 — Iterations 1–10
+# Pass 213 — Final Implementation
 
-Pass 213 implements an authenticated compiled ROM whose carriers are corrected before interpretation, whose canonical entries live in protected native memory, whose reusable operations receive exact or dependency-scoped admission, whose inventory survives restarts with authorized tombstones and recovery, whose checkpoints are post-quantum signed, whose history is independently timestamped, whose execution geometry is selected by an exact moving tensor, whose externally visible state is capability-governed, and whose accepted compiled operations execute through a deterministic native C authority.
+Pass 213 completes the HHS authenticated compiled-ROM architecture. Carriers are corrected before interpretation or execution, canonical entries reside in protected native memory, exact and parametric reuse remain VM81-governed, persistent inventory supports authenticated recovery and tombstones, checkpoints are post-quantum enclosed and externally timestamped, physical routing is selected by an exact moving tensor, public state is capability-governed, and compiled operations execute through a fixed-width native C authority with deterministic successor receipts.
 
-## Implemented progression
+## Iterations 1–11
 
-- **Iteration 1:** immutable compiled-ROM identity, integer timestamp boundaries, ordered operation chains, exact lookup, closure paths, and receipts.
-- **Iteration 2:** Pass 212 correction and recovered Hash216 validation before compiled-entry decoding.
-- **Iteration 3:** guarded, locked, sealed, non-executable native arenas with verified zeroization.
-- **Iteration 4:** typed parametric templates, exact deltas, affected-only constraint validation, and authenticated witness reuse.
-- **Iteration 5:** SQLite WAL inventory, append-only mutation roots, retained recovery carriers, tombstones, and unexplained-deletion detection.
-- **Iteration 6:** ML-KEM-768 recovery, ML-DSA-65 operational signatures, SLH-DSA SHA2-128s archival signatures, protected keys, and verifier-only replay.
-- **Iteration 7:** RFC 3161 external timestamp anchors bound to signed checkpoints, verifier roots, prior anchors, Hash216 lineage, local boundaries, and TSA evidence.
-- **Iteration 8:** exact Lo Shu/Sudoku/Fibonacci moving tensors, reversible VM5184×G243 and full-hydration maps, closure proofs, Hash216 roots, Hash72 receipts, and keyed replay.
-- **Iteration 9:** shared capability-governed API/CLI projections with authenticated public commitments, source/projection receipt separation, and strict protected-state non-exposure.
-- **Iteration 10:** real fixed-width C execution for protected compiled-ROM entries, singleton VM81 admission, hidden moving-tensor route commitments, deterministic successor roots, ordered Hash72 receipts, and an authenticated persistent execution ledger.
+- **1:** immutable compiled identity, ordered boundaries, closure paths, and receipts.
+- **2:** Pass 212 correction and recovered Hash216 validation before decoding.
+- **3:** guarded, locked, sealed, non-executable native arenas and zeroization.
+- **4:** exact parametric deltas, affected-only validation, and witness reuse.
+- **5:** authenticated persistent inventory, tombstones, deletion detection, and recovery.
+- **6:** ML-KEM-768, ML-DSA-65, SLH-DSA SHA2-128s, protected keys, and verifier replay.
+- **7:** RFC 3161 external timestamp anchors and lineage continuity.
+- **8:** exact Lo Shu/Sudoku/Fibonacci moving tensors and reversible full-domain maps.
+- **9:** shared capability-governed API/CLI projections and strict non-exposure.
+- **10:** allocation-free native C dispatch, singleton VM81 admission, hidden physical routes, successor Hash216, Hash72 receipts, and authenticated execution ledger.
+- **11:** full-hydration measurement, two-shard recovery, corruption rejection, dependency-scoped reuse measurement, and interrupted/resumed replay closure.
 
-## Current canonical path
+## Complete path
 
 ```text
 carrier correction
 → compiled Hash216 admission
 → protected native memory
-→ reusable exact or parametric validation
-→ persistent inventory
-→ PQC checkpoint
-→ RFC 3161 timestamp
-→ moving tensor
+→ exact or dependency-scoped reuse
+→ persistent inventory and recovery
+→ PQC checkpoint and RFC 3161 anchor
+→ exact moving tensor
 → governed projection
 → exact native-dispatch admission
-→ C execution
-→ successor Hash216 / Hash72
-→ authenticated execution ledger
+→ fixed-width C execution
+→ successor Hash216 and Hash72
+→ authenticated ledger
+→ full-hydration recovery/replay evidence
+→ semantic Hash216 + observation Hash216 + terminal Hash72
 ```
 
-## Iteration 10 native operations
+## Terminal evidence
+
+```text
+full hydration bits                 50,388,480
+full hydration bytes                 6,298,560
+affine generator seed bytes              2,430
+compressed payload bytes                 2,473
+recovered missing data shards                 2
+corruption rejected before interpretation   true
+moving-tensor domain                50,388,480
+protected exact lookups                   2,048
+parametric admissions                        512
+tensor route round trips                   8,192
+native dispatches                             32
+recovery boundary                     sequence 16
+uninterrupted/resumed equality               true
+ledger chains valid                          true
+```
+
+Semantic root:
+
+```text
+b783eaf39ca3cdff05d31dbe1406dc4ed45943a48b1cf89f3ee451a2c0326c0d
+```
+
+Terminal Hash72 receipt:
+
+```text
+mO(Wo87dXeN)Ua2hbw96>2mLKi)iBlLT0Qy-qsjl>1icjig(7cc/d)FJd<9(gmvC20YL?twn
+```
+
+Timing observations are committed separately and are not canonical authority. Reference observation root:
+
+```text
+d4bc7fdd97dac1d334711f6ce11e9a2ccdb16dcb1d89d23da8c5a178444d9c53
+```
+
+## Native operations
 
 ```text
 hhs.native.u64.add.v1
@@ -47,30 +86,20 @@ hhs.native.u64.eq.v1
 hhs.native.u64.select.v1
 ```
 
-The C ABI is allocation-free, has no ambient mutable state, validates VM81/operation-slot/G243 coordinates, accepts at most eight unsigned-64 operands, and returns fixed-width deterministic results.
+The C ABI performs no dynamic allocation, owns no ambient mutable state, and exposes no native pointer, physical address, tensor seed, recovery carrier, protected byte, key, or uncommitted state.
 
-Native execution requires exact compatibility with the protected compiled entry, parent state, kernel policy and measurement, Hash216 lineage, trusted timestamp, moving tensor, hydration lane, compiled operand bounds, and exact read/write sets.
-
-The physical tensor address remains internal. A Hash216 route commitment binds it to the logical address, compiled entry, and tensor closure without exposing the address.
-
-## Governed dispatch surfaces
-
-Capabilities:
+## Governed dispatch
 
 ```text
 dispatch.execute
 dispatch.read
 ```
 
-HTTP:
-
 ```text
 GET  /api/runtime/native-dispatch/status
 POST /api/runtime/native-dispatch/execute
 GET  /api/runtime/native-dispatch/receipts/{sequence}
 ```
-
-CLI:
 
 ```text
 hhs-pass213-dispatch status
@@ -79,20 +108,7 @@ hhs-pass213-dispatch receipt
 hhs-pass213-dispatch capability issue
 ```
 
-Capability issuance remains local-only. HTTP and CLI call the same service and produce identical native results and successor commitments from identical state and request inputs.
-
-Compilation, protected-memory reads, repair, deletion, physical map access, carrier access, RFC 3161 DER access, key access, and uncommitted state remain unexposed.
-
-## Domains
-
-```text
-VM5184                    5,184
-VM5184 × G243             1,259,712
-40-lane full hydration    50,388,480
-native operand width      64 bits unsigned
-native max operands       8
-native max results        4
-```
+Capability issuance remains local-only.
 
 ## Validation
 
@@ -101,19 +117,19 @@ python -m pip install -r requirements/pass213-pqc.txt
 PYOQS_VERSION=0.16.0 bash scripts/run_pass213_iteration1_validation.sh
 ```
 
-Validated runtime evidence:
+The final gate builds both C libraries with warnings as errors, verifies PQC and RFC 3161 dependencies, executes 124 cumulative tests, runs the complete production-profile evidence workload, validates semantic and observational tamper rejection, compiles all runtime/API/CLI/evidence modules, parses the contract and evidence JSON, and retains both files.
+
+Reference runtime evidence:
 
 ```text
-head af36575233248d77b606ff63b41ca5e51ca23ff5
-workflow run 31062363170
-job 92492790661
-122 tests passed
-artifact pass213-iteration10-validation-31062363170
-sha256:46689e6e95a99fdb1e241431809aad60d15778ea954567be22fe2de9010c3522
+head c85e669862079e8346f14404a51a9c152623c062
+workflow run 31064998624
+job 92500772659
+124 tests passed
+evidence JSON sha256:
+6a79dbf26f7657e4d1726779e93c2edf61685527bbe079e4e8bbaeb980ec78d5
 ```
 
-The cumulative gate builds both C libraries with warnings as errors, verifies PQC and RFC 3161 dependencies, executes all Iteration 1–10 tests, validates API/CLI parity and native execution, compiles all Python modules, parses the machine contract, and retains the transcript.
+## Closure
 
-## Current boundary
-
-Pass 213 remains draft and nonterminal. Full-hydration performance and recovery evidence, final integration, merge, and verified-main closure remain.
+Pass 213 implementation is complete. Merge and exact-main verification are the remaining release operations; there is no remaining Pass 213 implementation iteration.
