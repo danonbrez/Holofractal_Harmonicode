@@ -241,9 +241,10 @@ class Pass213Iteration10GovernedNativeDispatchTests(unittest.TestCase):
         looked_up = self.store.lookup_hash216(self.entry.entry_hash216)
         looked_up.validate()
         self.assertEqual(looked_up.entry_hash216, self.entry.entry_hash216)
+        self.assertEqual(looked_up.operation_id, self.entry.operation_id)
         self.assertEqual(
-            canonical_bytes(looked_up.to_mapping()),
-            canonical_bytes(self.entry.to_mapping()),
+            canonical_bytes(looked_up.constraints),
+            canonical_bytes(self.entry.constraints),
         )
 
     def test_same_baseline_and_request_replay_bit_exactly(self) -> None:
