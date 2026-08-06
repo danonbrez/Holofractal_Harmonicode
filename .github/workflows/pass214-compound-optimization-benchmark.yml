@@ -24,8 +24,14 @@ jobs:
       - name: Materialize Pass 214 Iteration 2
         shell: bash
         run: |
-          cat .github/bootstrap_pass214_iteration2/part-*.b64 \
-            | base64 --decode \
+          {
+            head -c -1 .github/bootstrap_pass214_iteration2/part-00.b64
+            cat .github/bootstrap_pass214_iteration2/part-01.b64 \
+                .github/bootstrap_pass214_iteration2/part-02.b64 \
+                .github/bootstrap_pass214_iteration2/part-03.b64 \
+                .github/bootstrap_pass214_iteration2/part-04.b64 \
+                .github/bootstrap_pass214_iteration2/part-05.b64
+          } | base64 --decode \
             | gzip --decompress > /tmp/bootstrap_pass214_iteration2.py
           python /tmp/bootstrap_pass214_iteration2.py
           rm -rf .github/bootstrap_pass214_iteration2
