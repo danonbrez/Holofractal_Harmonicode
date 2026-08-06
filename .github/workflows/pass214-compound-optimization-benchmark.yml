@@ -1,6 +1,7 @@
 name: Pass 214 Compound Optimization Benchmark Authority
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
