@@ -237,7 +237,7 @@ class Pass213Iteration10GovernedNativeDispatchTests(unittest.TestCase):
         mapping = result.to_mapping()
         self.assertTrue(mapping["singleton_vm81_admission"])
         self.assertFalse(mapping["physical_route_exposed"])
-        self.assertNotIn("physical_route", canonical_bytes(mapping).decode("utf-8"))
+        self.assertNotIn("physical_route", mapping)
         self.assertEqual(
             self.store.lookup_hash216(self.entry.entry_hash216), self.entry
         )
