@@ -4,7 +4,7 @@
 - Immediate parent: Pass 212 full-hydration compression and physical erasure recovery
 - Base commit: `2be050264a6e9c659603100be802979bbc49bf7a`
 - Branch: `agent/pass213-compiled-rom-integrity`
-- Final validated Iteration 9 branch head: `0acfc30e3b20a1138bef1a692da073666eb1b26c`
+- Final validated Iteration 9 branch head: `ca1bef072b88f0da8245720c058b0c8535149566`
 - Merge target: `main`
 - Draft pull request: `#169`
 - Iteration: `9`
@@ -30,13 +30,13 @@ Iterations 1–9 are implemented and repository-validated. The chain includes im
 
 ```text
 workflow: Pass 213 Compiled ROM Integrity
-run: 31059712081
-job: 92484770449
-validated head: 0acfc30e3b20a1138bef1a692da073666eb1b26c
+run: 31059785641
+job: 92485001562
+validated head: ca1bef072b88f0da8245720c058b0c8535149566
 cumulative tests: 102 passed
 result: SUCCESS
-artifact: pass213-iteration9-validation-31059712081
-artifact digest: sha256:2ac921db38f4f24214b91dfae1e3329482985a124b011da9056e338bdcece4d0
+artifact: pass213-iteration9-validation-31059785641
+artifact digest: sha256:c8583804d5ec9742d591ccccb3273f4fd260fb4f49e35faacdaa6703797869f2
 ```
 
 ## Remaining work
