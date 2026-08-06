@@ -7,8 +7,7 @@
 - Final validated Iteration 8 branch head: `b4db0de704e4fb43f5f382e3f11d114418af181c`
 - Validated Iteration 9 implementation head: `109aa45e39a33622a645a48fccb15d6101d06c38`
 - Validated Iteration 9 contract/documentation head: `43c16a00b1be009b59cdbdec1202808ea432fbe5`
-- Validated Iteration 9 restart evidence head: `bdc68a9bf288f4220ae91415362698c1755353e5`
-- Final validated Iteration 9 branch head: `fb0f07bf207b8814469a69416ad009277579fa48`
+- Final validated Iteration 9 branch head: `a87a75d704e1ed995f8d160369fda78a73eaae9b`
 - Merge target: `main`
 - Draft pull request: `#169`
 - Iteration: `9`
@@ -16,28 +15,6 @@
 ## Cumulative runtime state
 
 Iterations 1–9 are implemented and repository-validated. The chain includes immutable compiled-ROM identity, Pass 212 correction before interpretation, protected native memory, dependency-scoped parametric admission, persistent inventory/tombstones/recovery, post-quantum checkpoint enclosure, RFC 3161 external timestamp anchoring, exact trusted-anchor-bound moving tensors, and capability-governed API/CLI public projections.
-
-## Iteration 9 files
-
-Added:
-
-- `hhs_backend/runtime/hhs_pass213_governed_surface_v1.py`
-- `hhs_backend/runtime/hhs_pass213_governed_surface_v2.py`
-- `hhs_backend/api/pass213_compiled_rom_routes.py`
-- `hhs_runtime/pass213/__init__.py`
-- `hhs_runtime/pass213/cli.py`
-- `tests/test_pass213_governed_surface_v1.py`
-- `tests/test_pass213_api_cli_v1.py`
-
-Extended:
-
-- `requirements/pass213-pqc.txt`
-- `scripts/run_pass213_iteration1_validation.sh`
-- `.github/workflows/pass213-compiled-rom-integrity.yml`
-- `contracts/pass213/PASS_213_CONTRACT.json`
-- `HHS_PASS_213_TIMESTAMP_BOUND_AUTHENTICATED_MOVING_TENSOR_COMPILED_ROM.md`
-- `docs/pass213/README.md`
-- `docs/pass213/RESTART_RECORD.md`
 
 ## Iteration 9 authority
 
@@ -57,16 +34,14 @@ Extended:
 
 ```text
 workflow: Pass 213 Compiled ROM Integrity
-run: 31059269764
-job: 92483397702
-validated head: fb0f07bf207b8814469a69416ad009277579fa48
+run: 31059348537
+job: 92483644259
+validated head: a87a75d704e1ed995f8d160369fda78a73eaae9b
 cumulative tests: 102 passed
 result: SUCCESS
-artifact: pass213-iteration9-validation-31059269764
-artifact digest: sha256:c18683cb3fbadeb02bd0a04552e5d6c7f4c288012fecffdf303d37ebc16ed08a
+artifact: pass213-iteration9-validation-31059348537
+artifact digest: sha256:3c5fec221f217cef1622857d27e801c0783f650737238565ddbb0625a102a32a
 ```
-
-The complete gate builds the native arena with warnings as errors, verifies real ML-KEM/ML-DSA/SLH-DSA and RFC 3161 dependencies, executes all 102 cumulative tests, compiles every Iteration 1–9 runtime/API/CLI module, parses the Iteration 9 contract, and retains the complete transcript.
 
 ## Workflow state
 
