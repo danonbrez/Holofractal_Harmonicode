@@ -2,83 +2,109 @@
 
 ## Repository state
 
-- Base before Iteration 4: `bcdb2422faf7d8e91d1fe96d894db2cfecb7259c`
-- Iteration 4 implementation commit: `7e9995c316ef56ef7fde072cc1d4992f4409e5bd`
-- Pre-checkpoint branch head: `e5333ce37f75bc04ce92444630401ca6017602bd`
+- Iteration 5 base commit: `690ed71ce2fe7233b73b0a0660e7c49a2ba898ae`
+- Iteration 5 implementation commit: `a83dcc82846930d598b9873f5df3482e8d440701`
+- Cumulative validation wiring commit: `119e7fe4ae7e42965526d70f6ec97b03bd35613e`
+- Dispatch-enabled authority workflow commit: `5a0db8ad037af87cb777e0160dd86bdad6631215`
+- Hosted artifact-retention routing commit: `14908e2ce925a71073c6de60298c0d45fd5d7984`
 - Branch: `agent/pass214-operating-compression-gradient`
 - Merge target: `main`
 - Draft PR: `#170`
+- Validation-carrier PR: `#171`, closed unmerged after GitHub emitted no check suite
 - Pass 213 closure dependency: `86ec461818682fc87232740758769602e8f9fe05`
-- Iteration 1 semantic root: `3be4e52f0e4e0cf55dc09b8d0fc929423c954cf30f3f3dbfd86f5f968dbc38bf`
-- Iteration 3 implementation commit: `3125d170311319f01d204fa6fecde7d3df63a372`
-- Pause checkpoint requested: `2026-08-06T16:49:00-04:00`
+- Pass 215 authorization: `false`
 
-## Completed
+## Iteration 5 completed
 
-- Iteration 1 immutable repository census and optimization registry.
-- Iteration 2 callable records, static-normal-form groups, authority-conflict candidates, and compatibility graph.
-- Iteration 3 Pass 213-bound pure oracle models, adapter proofs, non-promoting adjudications, replay validation, and tamper rejection.
-- Iteration 4 exact repository-callable identity binding, isolated deterministic execution, replay equality, callable-backed adjudications, and pair-scoped adapter authorization.
+Iteration 5 extends the Iteration 4 repository-callable oracle into a bounded five-family executable corpus. Each family contains a baseline callable and a smaller generator/transition callable that must produce the same canonical result.
 
-## Iteration 4 changed files
+Families:
 
-- `hhs_backend/runtime/hhs_pass214_callable_oracle_v1.py`
-- `hhs_backend/runtime/pass214_i4_payload/runtime.py.gz`
-- `tools/pass214_callable_oracle.py`
-- `tools/pass214_iteration4_manifest.py`
-- `tests/test_hhs_pass214_callable_oracle_v1.py`
-- `tests/pass214_i4_test_payload/test.py.gz`
-- `contracts/pass214/PASS_214_ITERATION_4_CALLABLE_ORACLE_EXTENSION.json`
-- `evidence/pass214/PASS_214_ITERATION_4_IMPLEMENTATION_RECORD.json`
-- `docs/pass214/ITERATION_4_REPOSITORY_CALLABLE_ORACLE.md`
-- `docs/pass214/RESTART_RECORD.md`
-- `scripts/run_pass214_contract_validation.sh`
+1. `vector_cache`
+2. `wrapper_duplication`
+3. `numeric_lookup`
+4. `serialization_import`
+5. `coprime_lookup`
+
+The corpus runs all five pairs three consecutive times in clean deterministic subprocesses. It rejects floating-point output, compares canonical JSON identities, records SHA-256 result identities, measures source representation, and applies a non-promoting policy gate.
+
+## Iteration 5 changed files
+
+- `hhs_backend/runtime/hhs_pass214_iteration5_callable_corpus_v1.py`
+- `hhs_backend/runtime/pass214_i5_payload/runtime.py.gz`
+- `tools/pass214_iteration5_callable_corpus.py`
+- `tools/pass214_iteration5_manifest.py`
+- `tests/test_hhs_pass214_iteration5_callable_corpus_v1.py`
+- `.github/workflows/pass214-iteration5-callable-corpus.yml`
 - `.github/workflows/pass214-compound-optimization-benchmark.yml`
+- `scripts/run_pass214_contract_validation.sh`
+- `docs/pass214/ITERATION_5_FIVE_FAMILY_CALLABLE_CORPUS.md`
+- `evidence/pass214/PASS_214_ITERATION_5_IMPLEMENTATION_RECORD.json`
+- `docs/pass214/RESTART_RECORD.md`
 
 ## Dependency-scoped validation completed
 
 ```text
 python compile: passed
-Iteration 4 tests: 11 passed
-network denial: passed
-subprocess denial: passed
-filesystem mutation denial: passed
-float-output rejection: passed
-Git blob and Iteration 2 pair binding: passed
-Pass 213 and Iteration 3 forgery rejection: passed
-replay, persistence and recomputed tamper rejection: passed
-automatic authority merges: 0
-repository authority changes: 0
-terminal roots minted: 0
+Iteration 5 tests: 7 passed
+families executed per run: 5
+consecutive complete runs: 3
+exact pair evaluations: 15/15
+source representation bytes per run: 24,530
+target representation bytes per run: 3,127
+gain bytes per run: 21,403
+integer gain percent: 87
+corpus root: daed61b048581066e2dd0b0f7986d7c872e979e57079267511516c86f4822767
+receipt: f6107632e1f2dd79856e9f01ba6a85c7c5502e9b17e2dd1604a215da69ce80df
+status: PILOT_READY
 ```
 
-## Selected repository-callable workload
+Integrity payloads:
 
 ```text
-source: hhs_backend/runtime/hhs_agent_algorithm_identity_v1.py:self_test
-target: hhs_backend/runtime/hhs_agent_contribution_provenance_v1.py:self_test
-shared Git blob: ab698bcb745e0333e79116a71f06c9ebd6cc94c0
-adapter: IDENTITY
-Pass 213 profile: PASS213_DEPENDENCY_SCOPED_VALIDATION_FIXTURE
+runtime source SHA-256: 947c0deb435dbd2b09535c03513ae6ee9696a8f8469343dd60ea0ee85467ee5a
+runtime gzip SHA-256: 6dc437b852cb79d58288dfd2026a2056f02d0f702a95f065cce9d16c8603487a
 ```
 
-Both selected wrappers execute real inherited repository behavior through the native C-backed Hash72 dependency path. The validation-fixture admission does not claim a live RFC 3161 anchor, production moving-tensor state, or production native-dispatch receipt.
+Negative and authority-boundary results:
+
+```text
+cross-family mismatch rejection: passed
+float-output rejection: passed
+migration active: false
+authority promoted: false
+terminal roots minted: false
+Pass 215 authorized: false
+live Pass 213 governed surface required for promotion: true
+```
+
+## Validation commands
+
+```bash
+python -m pytest -q tests/test_hhs_pass214_iteration5_callable_corpus_v1.py
+python tools/pass214_iteration5_callable_corpus.py --output-dir artifacts/pass214/iteration5
+bash scripts/run_pass214_contract_validation.sh
+```
+
+The first two commands were completed in the dependency-scoped Iteration 5 workspace. The cumulative script is committed with Iterations 1–5 coverage and emits the Iteration 5 report into the retained Pass 214 artifact path when `RUNNER_TEMP` is present.
 
 ## Hosted validation state
 
-- No exact-head Pass 214 Actions run exists for pre-checkpoint head `e5333ce37f75bc04ce92444630401ca6017602bd`.
-- The earlier Iteration 2 Ubuntu job `92685913142` was cancelled before any step executed and is not accepted as evidence.
-- Iteration 4 is committed and dependency-tested, but hosted full-tree closure and a retained Iterations 1–4 artifact are not claimed.
+No exact-head GitHub Actions run or check suite was emitted for connector-created commits `a83dcc82846930d598b9873f5df3482e8d440701`, `119e7fe4ae7e42965526d70f6ec97b03bd35613e`, `5a0db8ad037af87cb777e0160dd86bdad6631215`, or `14908e2ce925a71073c6de60298c0d45fd5d7984`.
 
-## Paused state
+A dedicated validation branch and draft PR `#171` were created at exact head `14908e2ce925a71073c6de60298c0d45fd5d7984`. GitHub created merge ref `1f6277e9f62f0781c8088c56c538265163400b6f` but emitted zero check suites. PR `#171` was therefore closed unmerged. Hosted full-tree closure and a retained hosted artifact are not claimed.
 
-Work is intentionally paused at the user's request. No Iteration 5 runtime, benchmark manifest, authority promotion, terminal Pass 214 root, or Pass 215 authorization has been started or claimed.
+The registered cumulative workflow and standalone Iteration 5 workflow are both repository-visible and ready for an external/manual event that is not suppressed by the connector token.
 
-## Next exact action after authorization
+## Current classification
 
-1. Re-run or otherwise obtain exact-head hosted Iterations 1–4 validation and retain the artifact.
-2. Add bounded callable pairs across persistence, recovery, cache, learning, media, compiler/API, and accelerator families.
-3. Require live `PASS213_LIVE_GOVERNED_SURFACE` evidence before any production authority promotion.
-4. Begin the declared compound and ablation benchmark stages only after callable evidence is accepted.
+`PILOT_READY` is a non-promoting benchmark classification only. It means the bounded five-family fixture corpus preserved exact callable results and reduced representation across three consecutive runs. It does not authorize production replacement, repository authority promotion, terminal Pass 214 closure, or Pass 215.
+
+## Next exact action
+
+1. Trigger `.github/workflows/pass214-compound-optimization-benchmark.yml` on `agent/pass214-operating-compression-gradient` through a user-originated push or manual workflow dispatch.
+2. Verify the cumulative Iterations 1–5 job and retain its artifact.
+3. Bind the five families to repository-native production candidate modules under live `PASS213_LIVE_GOVERNED_SURFACE` admission without promotion.
+4. Begin compound/ablation benchmarks only after those callable bindings and hosted evidence are accepted.
 
 Pass 214 remains draft and unmerged. Pass 215 remains unauthorized.
