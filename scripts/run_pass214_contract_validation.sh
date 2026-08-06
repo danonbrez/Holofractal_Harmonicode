@@ -26,4 +26,10 @@ python -m json.tool evidence/pass214/PASS_214_ITERATION_3_IMPLEMENTATION_RECORD.
 python -m json.tool evidence/pass214/PASS_214_ITERATION_4_IMPLEMENTATION_RECORD.json >/dev/null
 python -m json.tool evidence/pass214/PASS_214_ITERATION_5_IMPLEMENTATION_RECORD.json >/dev/null
 
+if [[ -n "${RUNNER_TEMP:-}" ]]; then
+  mkdir -p "$RUNNER_TEMP/pass214-iteration4"
+  python tools/pass214_iteration5_callable_corpus.py \
+    --output-dir "$RUNNER_TEMP/pass214-iteration4"
+fi
+
 echo PASS214_ITERATIONS_1_2_3_4_5_VALIDATION_OK
