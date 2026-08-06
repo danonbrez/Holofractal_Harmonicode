@@ -238,8 +238,12 @@ class Pass213Iteration10GovernedNativeDispatchTests(unittest.TestCase):
         self.assertTrue(mapping["singleton_vm81_admission"])
         self.assertFalse(mapping["physical_route_exposed"])
         self.assertNotIn("physical_route", mapping)
+        looked_up = self.store.lookup_hash216(self.entry.entry_hash216)
+        looked_up.validate()
+        self.assertEqual(looked_up.entry_hash216, self.entry.entry_hash216)
         self.assertEqual(
-            self.store.lookup_hash216(self.entry.entry_hash216), self.entry
+            canonical_bytes(looked_up.to_mapping()),
+            canonical_bytes(self.entry.to_mapping()),
         )
 
     def test_same_baseline_and_request_replay_bit_exactly(self) -> None:
