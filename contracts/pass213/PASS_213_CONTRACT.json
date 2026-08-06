@@ -1,0 +1,259 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "contract_id": "HHS-P213-TB-AMT-CROM-RMIK-H72-H216-VM5184-G243",
+  "pass_number": 213,
+  "version": "1.0.0-final",
+  "classification": "CONTRACT_IMPLEMENTATION_COMPLETE",
+  "immediate_parent": "HHS-P212-FULL-HYDRATION-SUPERFRAME-COMPRESSION-PHYSICAL-ERASURE-RECOVERY-H72-H216",
+  "final_iteration": 11,
+  "cumulative_inheritance": {
+    "pre_pass_foundation": true,
+    "passes_001_through_212": true,
+    "pass213_iterations_1_through_10": true,
+    "superseded_authorities": []
+  },
+  "implemented_iterations": {
+    "1": [
+      "immutable Hash216 compiled-ROM identities and exact lookup",
+      "integer-nanosecond operation boundaries and noncommutative order chain",
+      "deterministic one-visit closure paths and Hash72 receipts"
+    ],
+    "2": [
+      "Pass 212 physical correction before deserialization interpretation or execution",
+      "reconstructed payload Hash216 validation and keyed recovered-ROM admission"
+    ],
+    "3": [
+      "guarded locked non-executable native arenas",
+      "owner authorization read-only sealing dump and fork exclusion",
+      "explicit zeroization before release"
+    ],
+    "4": [
+      "immutable typed parametric templates",
+      "exact changed-field deltas and dependency-scoped semantic revalidation",
+      "authenticated unaffected-witness reuse and timestamp-bound VM81 admission"
+    ],
+    "5": [
+      "SQLite WAL persistent inventory and append-only ADMIT RECOVER TOMBSTONE roots",
+      "unexplained absence detection authorized deletion retained-carrier and checkpoint recovery"
+    ],
+    "6": [
+      "ML-KEM-768 recovery enclosure",
+      "ML-DSA-65 operational and SLH-DSA SHA2-128s archival checkpoint signatures",
+      "native protected PQC keys verifier-only replay and secret zeroization"
+    ],
+    "7": [
+      "RFC 3161 SHA-256 timestamp requests and X.509-verified timestamp responses",
+      "binding to signed checkpoint verifier bundle prior anchor Hash216 lineage local boundary and TSA identity",
+      "append-only trusted timestamp anchors and token reverification on reopen"
+    ],
+    "8": [
+      "trusted-timestamp-bound exact moving-tensor derivation",
+      "Lo Shu Sudoku and Fibonacci exact constraints",
+      "reversible VM5184×G243 and full-hydration logical-to-physical maps",
+      "affine full-domain closure proofs Hash216 tensor roots Hash72 receipts and keyed replay",
+      "derived-only IEEE-754 projections with exact source and bit commitments"
+    ],
+    "9": [
+      "projection-only governed runtime shared by HTTP and CLI",
+      "short-lived exact-scope HMAC-SHA-256 capabilities",
+      "append-only authenticated SQLite WAL public-projection chain",
+      "strict protected-state and physical-mapping non-exposure",
+      "separate canonical source and public projection receipts",
+      "local-only capability issuance and mutation-route exclusion"
+    ],
+    "10": [
+      "real allocation-free fixed-width C native dispatch ABI compiled with warnings as errors",
+      "protected compiled-ROM lookup by exact entry Hash216 and operation identity",
+      "current kernel policy measurement Hash216 lineage trusted timestamp moving tensor and parent-state admission",
+      "singleton VM81 execution with exact VM81 operation-slot and G243 route validation",
+      "bounded unsigned-64 operands exact read and write sets and compiled constraint enforcement",
+      "native add subtract XOR AND OR modular multiply rotate-left equality and select workloads",
+      "hidden physical tensor routing committed by Hash216 without public route disclosure",
+      "deterministic request result and successor Hash216 commitments",
+      "ordered successor Hash72 receipts and HMAC-authenticated SQLite WAL execution ledger",
+      "shared FastAPI and CLI execution and receipt-read parity"
+    ],
+    "11": [
+      "repository-native production-profile measurement over the complete 50,388,480-bit hydration state",
+      "strict affine 9,720-leaf generator compression and deterministic full-state replay",
+      "two missing physical data shards reconstructed before interpretation or execution",
+      "corrupted physical shard rejected before interpretation",
+      "exact 50,388,480-position moving-tensor closure and reversible route sampling",
+      "measured protected exact compiled-ROM lookup and dependency-scoped parametric admission",
+      "32 native singleton-VM81 dispatches with interrupted recovery-boundary continuation",
+      "bit-exact equality of uninterrupted and resumed receipt chains and final state",
+      "separate deterministic semantic Hash216 and hardware-specific observation Hash216",
+      "terminal Hash72 evidence receipt with no protected material or physical-address disclosure"
+    ]
+  },
+  "required_invariants": {
+    "correction_before_interpretation": true,
+    "correction_before_execution": true,
+    "recovery_admission_required_for_canonical_insert": true,
+    "native_protected_memory_required": true,
+    "zeroization_before_release_required": true,
+    "dependency_scoped_semantic_revalidation": true,
+    "persistent_inventory_and_tombstones_required": true,
+    "unauthorized_deletion_detectable": true,
+    "ml_kem_768_required": true,
+    "ml_dsa_65_required": true,
+    "slh_dsa_sha2_128s_required": true,
+    "rfc3161_external_timestamp_required": true,
+    "timestamp_prior_anchor_and_hash216_lineage_continuity": true,
+    "trusted_timestamp_anchor_required_for_tensor": true,
+    "no_float_canonical_authority": true,
+    "lo_shu_magic_sum_required": 15,
+    "sudoku_row_column_region_uniqueness_required": true,
+    "fibonacci_phase_exact": true,
+    "tensor_coordinate_map_reversible": true,
+    "full_domain_closure_proof_required": true,
+    "moving_tensor_hash72_receipt_required": true,
+    "governed_surface_projection_only": true,
+    "api_cli_shared_dispatcher_required": true,
+    "network_capability_issuance_forbidden": true,
+    "protected_fields_and_bytes_never_public": true,
+    "physical_tensor_mapping_never_public": true,
+    "singleton_vm81_admission": true,
+    "immutable_compiled_rom_entries": true,
+    "native_dispatch_real_c_abi_required": true,
+    "native_dispatch_dynamic_allocation_forbidden": true,
+    "native_dispatch_ambient_state_forbidden": true,
+    "native_dispatch_exact_compiled_identity_required": true,
+    "native_dispatch_current_policy_measurement_lineage_tensor_and_timestamp_required": true,
+    "native_dispatch_exact_access_sets_required": true,
+    "native_dispatch_unsigned_64_operand_bounds_required": true,
+    "native_dispatch_hidden_physical_route_commitment_required": true,
+    "native_dispatch_stale_parent_rejected": true,
+    "native_dispatch_successor_hash216_required": true,
+    "native_dispatch_hash72_receipt_required": true,
+    "native_dispatch_append_only_authenticated_ledger_required": true,
+    "native_dispatch_http_cli_parity_required": true,
+    "full_hydration_measured_evidence_required": true,
+    "two_shard_recovery_evidence_required": true,
+    "corruption_detection_before_interpretation_required": true,
+    "interrupted_resumed_replay_equality_required": true,
+    "semantic_and_observation_roots_separate": true,
+    "performance_timings_noncanonical": true,
+    "terminal_evidence_hash72_receipt_required": true
+  },
+  "domains": {
+    "vm81_cells": 81,
+    "ordered_opcodes": 64,
+    "vm5184": 5184,
+    "g243": 243,
+    "vm5184_g243": 1259712,
+    "hydration_lanes": 40,
+    "full_hydration_bits": 50388480,
+    "full_hydration_bytes": 6298560,
+    "local_hydration_frames": 9720,
+    "affine_seed_bytes": 2430,
+    "tensor_axis_moduli": [9, 9, 4, 4, 4, 3, 3, 3, 3, 3, 40],
+    "native_dispatch_unsigned_width": 64,
+    "native_dispatch_max_operands": 8,
+    "native_dispatch_max_results": 4
+  },
+  "governed_scopes": [
+    "compiled.read",
+    "inventory.verify",
+    "tensor.read",
+    "tensor.verify",
+    "timestamp.read",
+    "integrity.verify",
+    "receipt.read",
+    "dispatch.execute",
+    "dispatch.read"
+  ],
+  "native_dispatch_ids": [
+    "hhs.native.u64.add.v1",
+    "hhs.native.u64.sub.v1",
+    "hhs.native.u64.xor.v1",
+    "hhs.native.u64.and.v1",
+    "hhs.native.u64.or.v1",
+    "hhs.native.u64.mul_mod.v1",
+    "hhs.native.u64.rotl.v1",
+    "hhs.native.u64.eq.v1",
+    "hhs.native.u64.select.v1"
+  ],
+  "terminal_evidence_profile": {
+    "exact_lookup_iterations": 2048,
+    "parametric_iterations": 512,
+    "tensor_route_iterations": 8192,
+    "dispatch_iterations": 32,
+    "recovery_boundary_sequence": 16
+  },
+  "terminal_semantic_evidence": {
+    "full_hydration_bits": 50388480,
+    "full_hydration_bytes": 6298560,
+    "codec": "AFFINE_9720_LEAF_SEEDS_PLUS_SPARSE_XOR",
+    "compressed_payload_bytes": 2473,
+    "compression_ratio": {
+      "numerator": 6298560,
+      "denominator": 2473
+    },
+    "missing_shard_count": 2,
+    "recovery_outcome": "RECOVERED",
+    "corruption_detected_before_interpretation": true,
+    "deterministic_full_state_replay": true,
+    "moving_tensor_domain": 50388480,
+    "moving_tensor_round_trip_valid": true,
+    "moving_tensor_closure_wrap_valid": true,
+    "dependency_scoped_changed_paths": ["operands.x"],
+    "dependency_scoped_affected_constraints": ["sum-bits", "x-range"],
+    "dependency_scoped_reused_constraints": ["mode", "y-range"],
+    "dispatch_final_sequence": 32,
+    "resumed_after_recovery": true,
+    "uninterrupted_and_resumed_receipts_equal": true,
+    "ledger_chains_valid": true,
+    "semantic_root_hash216": "b783eaf39ca3cdff05d31dbe1406dc4ed45943a48b1cf89f3ee451a2c0326c0d",
+    "receipt_hash72": "mO(Wo87dXeN)Ua2hbw96>2mLKi)iBlLT0Qy-qsjl>1icjig(7cc/d)FJd<9(gmvC20YL?twn"
+  },
+  "reference_performance_observation": {
+    "hardware_specific": true,
+    "timings_canonical": false,
+    "environment": "GitHub Actions Ubuntu 24.04 x86_64 CPython 3.12.13 4 logical CPUs",
+    "encode_ns": 76614754,
+    "recovery_decode_ns": 30396138,
+    "corruption_detection_ns": 129224,
+    "exact_lookup_elapsed_ns": 147036530,
+    "parametric_elapsed_ns": 174561123,
+    "tensor_route_elapsed_ns": 155074550,
+    "baseline_dispatch_elapsed_ns": 125982772,
+    "resumed_dispatch_elapsed_ns": 126108221,
+    "observation_root_hash216": "d4bc7fdd97dac1d334711f6ce11e9a2ccdb16dcb1d89d23da8c5a178444d9c53"
+  },
+  "validation": {
+    "script": "scripts/run_pass213_iteration1_validation.sh",
+    "evidence_runner": "scripts/run_pass213_final_evidence.py",
+    "workflow": ".github/workflows/pass213-compiled-rom-integrity.yml",
+    "expected_cumulative_test_count": 124,
+    "native_c_warnings_as_errors": true,
+    "native_secure_arena_build_gate": true,
+    "native_dispatch_abi_build_gate": true,
+    "pqc_preflight": true,
+    "rfc3161_preflight": true,
+    "fastapi_testclient_gate": true,
+    "api_cli_parity_gate": true,
+    "native_execution_gate": true,
+    "full_hydration_evidence_gate": true,
+    "recovery_replay_gate": true,
+    "semantic_tamper_gate": true,
+    "observation_tamper_gate": true,
+    "python_compile_gate": true,
+    "json_parse_gate": true
+  },
+  "reference_validated_runtime_evidence": {
+    "head": "c85e669862079e8346f14404a51a9c152623c062",
+    "workflow_run": 31064998624,
+    "job": 92500772659,
+    "tests_passed": 124,
+    "evidence_json_sha256": "6a79dbf26f7657e4d1726779e93c2edf61685527bbe079e4e8bbaeb980ec78d5"
+  },
+  "closure": {
+    "implementation_complete": true,
+    "terminal_semantic_evidence_complete": true,
+    "terminal_performance_observation_complete": true,
+    "deterministic_replay_complete": true,
+    "merge_authorized_after_green_final_branch_gate": true,
+    "remaining_iterations": []
+  }
+}
