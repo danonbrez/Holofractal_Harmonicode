@@ -2,14 +2,14 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "contract_id": "HHS-P213-TB-AMT-CROM-RMIK-H72-H216-VM5184-G243",
   "pass_number": 213,
-  "version": "1.0.0-iteration10",
-  "classification": "CONTRACT_AUTHORIZED_IMPLEMENTATION_IN_PROGRESS",
+  "version": "1.0.0-final",
+  "classification": "CONTRACT_IMPLEMENTATION_COMPLETE",
   "immediate_parent": "HHS-P212-FULL-HYDRATION-SUPERFRAME-COMPRESSION-PHYSICAL-ERASURE-RECOVERY-H72-H216",
-  "iteration": 10,
+  "final_iteration": 11,
   "cumulative_inheritance": {
     "pre_pass_foundation": true,
     "passes_001_through_212": true,
-    "pass213_iterations_1_through_9": true,
+    "pass213_iterations_1_through_10": true,
     "superseded_authorities": []
   },
   "implemented_iterations": {
@@ -19,7 +19,7 @@
       "deterministic one-visit closure paths and Hash72 receipts"
     ],
     "2": [
-      "Pass 212 physical correction before deserialization or interpretation",
+      "Pass 212 physical correction before deserialization interpretation or execution",
       "reconstructed payload Hash216 validation and keyed recovered-ROM admission"
     ],
     "3": [
@@ -71,28 +71,21 @@
       "hidden physical tensor routing committed by Hash216 without public route disclosure",
       "deterministic request result and successor Hash216 commitments",
       "ordered successor Hash72 receipts and HMAC-authenticated SQLite WAL execution ledger",
-      "stale-parent duplicate replay timestamp rollback policy substitution tensor substitution ledger tamper and anchor substitution rejection",
-      "shared FastAPI and CLI execution and receipt-read parity",
-      "local-only native-dispatch capability issuance with dispatch.execute and dispatch.read scopes"
+      "shared FastAPI and CLI execution and receipt-read parity"
+    ],
+    "11": [
+      "repository-native production-profile measurement over the complete 50,388,480-bit hydration state",
+      "strict affine 9,720-leaf generator compression and deterministic full-state replay",
+      "two missing physical data shards reconstructed before interpretation or execution",
+      "corrupted physical shard rejected before interpretation",
+      "exact 50,388,480-position moving-tensor closure and reversible route sampling",
+      "measured protected exact compiled-ROM lookup and dependency-scoped parametric admission",
+      "32 native singleton-VM81 dispatches with interrupted recovery-boundary continuation",
+      "bit-exact equality of uninterrupted and resumed receipt chains and final state",
+      "separate deterministic semantic Hash216 and hardware-specific observation Hash216",
+      "terminal Hash72 evidence receipt with no protected material or physical-address disclosure"
     ]
   },
-  "iteration_10_order": [
-    "validate a short-lived exact-scope native-dispatch capability",
-    "validate request types unsigned-64 operand bounds sorted read/write sets parent state tensor root hydration lane and timestamp",
-    "load and validate the immutable compiled-ROM entry from protected native storage",
-    "bind entry policy route operation identity and protected inventory root to the current runtime context",
-    "validate current kernel policy measurement Hash216 lineage trusted timestamp and moving-tensor authority",
-    "derive the logical VM5184×G243 or full-hydration address and compute its reversible physical tensor address internally",
-    "commit the hidden logical and physical route into a route Hash216 without exposing the physical address",
-    "validate compiled input/result counts access sets operand maximum and optional modulus",
-    "execute the fixed-width allocation-free C opcode through the versioned ctypes ABI",
-    "commit the native result into a deterministic result Hash216",
-    "derive a successor Hash216 from prior state prior receipt request result route access policy measurement lineage tensor and inventory roots",
-    "emit the ordered canonical Hash72 successor receipt",
-    "append the execution to the authenticated SQLite WAL ledger before advancing singleton VM81 state",
-    "revalidate ledger and runtime alignment after every committed execution",
-    "return only governed result values commitments receipts and sanitized route metadata through HTTP or CLI"
-  ],
   "required_invariants": {
     "correction_before_interpretation": true,
     "correction_before_execution": true,
@@ -134,7 +127,14 @@
     "native_dispatch_successor_hash216_required": true,
     "native_dispatch_hash72_receipt_required": true,
     "native_dispatch_append_only_authenticated_ledger_required": true,
-    "native_dispatch_http_cli_parity_required": true
+    "native_dispatch_http_cli_parity_required": true,
+    "full_hydration_measured_evidence_required": true,
+    "two_shard_recovery_evidence_required": true,
+    "corruption_detection_before_interpretation_required": true,
+    "interrupted_resumed_replay_equality_required": true,
+    "semantic_and_observation_roots_separate": true,
+    "performance_timings_noncanonical": true,
+    "terminal_evidence_hash72_receipt_required": true
   },
   "domains": {
     "vm81_cells": 81,
@@ -143,26 +143,27 @@
     "g243": 243,
     "vm5184_g243": 1259712,
     "hydration_lanes": 40,
-    "full_hydration": 50388480,
+    "full_hydration_bits": 50388480,
+    "full_hydration_bytes": 6298560,
+    "local_hydration_frames": 9720,
+    "affine_seed_bytes": 2430,
     "tensor_axis_moduli": [9, 9, 4, 4, 4, 3, 3, 3, 3, 3, 40],
     "native_dispatch_unsigned_width": 64,
     "native_dispatch_max_operands": 8,
     "native_dispatch_max_results": 4
   },
-  "iteration_9_scopes": [
+  "governed_scopes": [
     "compiled.read",
     "inventory.verify",
     "tensor.read",
     "tensor.verify",
     "timestamp.read",
     "integrity.verify",
-    "receipt.read"
-  ],
-  "iteration_10_scopes": [
+    "receipt.read",
     "dispatch.execute",
     "dispatch.read"
   ],
-  "iteration_10_native_dispatch_ids": [
+  "native_dispatch_ids": [
     "hhs.native.u64.add.v1",
     "hhs.native.u64.sub.v1",
     "hhs.native.u64.xor.v1",
@@ -173,39 +174,58 @@
     "hhs.native.u64.eq.v1",
     "hhs.native.u64.select.v1"
   ],
-  "iteration_10_http_routes": [
-    "GET /api/runtime/native-dispatch/status",
-    "POST /api/runtime/native-dispatch/execute",
-    "GET /api/runtime/native-dispatch/receipts/{sequence}"
-  ],
-  "iteration_10_cli_commands": [
-    "hhs-pass213-dispatch status",
-    "hhs-pass213-dispatch execute",
-    "hhs-pass213-dispatch receipt",
-    "hhs-pass213-dispatch capability issue"
-  ],
-  "iteration_10_tests": [
-    "real C add modular multiply rotate-left and conditional-select workloads",
-    "singleton VM81 state advancement and protected compiled-ROM identity preservation",
-    "bit-exact replay from identical parent request and tensor context",
-    "stale parent and duplicate replay rejection without ledger mutation",
-    "policy tensor timestamp and access-set substitution rejection",
-    "non-integer negative and overflowing operand rejection",
-    "moving-tensor change produces different route and successor commitments",
-    "authenticated ledger reopen continuation and exact receipt chaining",
-    "SQLite event tamper and anchor substitution rejection",
-    "native dispatch capability scope expiry authentication and token-tamper enforcement",
-    "shared service exact-scope execution and receipt reads",
-    "singleton VM81 reentry rejection before native execution",
-    "FastAPI and CLI native execution bit parity",
-    "Bearer and X-HHS-Dispatch-Capability handling and conflict rejection",
-    "OpenAPI execution inclusion and unsafe mutation-route exclusion",
-    "recursive protected and physical field non-exposure"
-  ],
+  "terminal_evidence_profile": {
+    "exact_lookup_iterations": 2048,
+    "parametric_iterations": 512,
+    "tensor_route_iterations": 8192,
+    "dispatch_iterations": 32,
+    "recovery_boundary_sequence": 16
+  },
+  "terminal_semantic_evidence": {
+    "full_hydration_bits": 50388480,
+    "full_hydration_bytes": 6298560,
+    "codec": "AFFINE_9720_LEAF_SEEDS_PLUS_SPARSE_XOR",
+    "compressed_payload_bytes": 2473,
+    "compression_ratio": {
+      "numerator": 6298560,
+      "denominator": 2473
+    },
+    "missing_shard_count": 2,
+    "recovery_outcome": "RECOVERED",
+    "corruption_detected_before_interpretation": true,
+    "deterministic_full_state_replay": true,
+    "moving_tensor_domain": 50388480,
+    "moving_tensor_round_trip_valid": true,
+    "moving_tensor_closure_wrap_valid": true,
+    "dependency_scoped_changed_paths": ["operands.x"],
+    "dependency_scoped_affected_constraints": ["sum-bits", "x-range"],
+    "dependency_scoped_reused_constraints": ["mode", "y-range"],
+    "dispatch_final_sequence": 32,
+    "resumed_after_recovery": true,
+    "uninterrupted_and_resumed_receipts_equal": true,
+    "ledger_chains_valid": true,
+    "semantic_root_hash216": "b783eaf39ca3cdff05d31dbe1406dc4ed45943a48b1cf89f3ee451a2c0326c0d",
+    "receipt_hash72": "mO(Wo87dXeN)Ua2hbw96>2mLKi)iBlLT0Qy-qsjl>1icjig(7cc/d)FJd<9(gmvC20YL?twn"
+  },
+  "reference_performance_observation": {
+    "hardware_specific": true,
+    "timings_canonical": false,
+    "environment": "GitHub Actions Ubuntu 24.04 x86_64 CPython 3.12.13 4 logical CPUs",
+    "encode_ns": 76614754,
+    "recovery_decode_ns": 30396138,
+    "corruption_detection_ns": 129224,
+    "exact_lookup_elapsed_ns": 147036530,
+    "parametric_elapsed_ns": 174561123,
+    "tensor_route_elapsed_ns": 155074550,
+    "baseline_dispatch_elapsed_ns": 125982772,
+    "resumed_dispatch_elapsed_ns": 126108221,
+    "observation_root_hash216": "d4bc7fdd97dac1d334711f6ce11e9a2ccdb16dcb1d89d23da8c5a178444d9c53"
+  },
   "validation": {
     "script": "scripts/run_pass213_iteration1_validation.sh",
+    "evidence_runner": "scripts/run_pass213_final_evidence.py",
     "workflow": ".github/workflows/pass213-compiled-rom-integrity.yml",
-    "expected_cumulative_test_count": 122,
+    "expected_cumulative_test_count": 124,
     "native_c_warnings_as_errors": true,
     "native_secure_arena_build_gate": true,
     "native_dispatch_abi_build_gate": true,
@@ -214,19 +234,26 @@
     "fastapi_testclient_gate": true,
     "api_cli_parity_gate": true,
     "native_execution_gate": true,
+    "full_hydration_evidence_gate": true,
+    "recovery_replay_gate": true,
+    "semantic_tamper_gate": true,
+    "observation_tamper_gate": true,
     "python_compile_gate": true,
     "json_parse_gate": true
   },
-  "validated_runtime_evidence": {
-    "head": "af36575233248d77b606ff63b41ca5e51ca23ff5",
-    "workflow_run": 31062363170,
-    "job": 92492790661,
-    "tests_passed": 122,
-    "artifact": "pass213-iteration10-validation-31062363170",
-    "artifact_digest": "sha256:46689e6e95a99fdb1e241431809aad60d15778ea954567be22fe2de9010c3522"
+  "reference_validated_runtime_evidence": {
+    "head": "c85e669862079e8346f14404a51a9c152623c062",
+    "workflow_run": 31064998624,
+    "job": 92500772659,
+    "tests_passed": 124,
+    "evidence_json_sha256": "6a79dbf26f7657e4d1726779e93c2edf61685527bbe079e4e8bbaeb980ec78d5"
   },
-  "remaining_iterations": [
-    "full-hydration performance and recovery evidence",
-    "final integration merge and verified-main closure"
-  ]
+  "closure": {
+    "implementation_complete": true,
+    "terminal_semantic_evidence_complete": true,
+    "terminal_performance_observation_complete": true,
+    "deterministic_replay_complete": true,
+    "merge_authorized_after_green_final_branch_gate": true,
+    "remaining_iterations": []
+  }
 }
