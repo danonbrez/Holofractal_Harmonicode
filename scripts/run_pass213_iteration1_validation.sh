@@ -78,7 +78,8 @@ python3 -m py_compile \
   hhs_runtime/pass213/cli.py \
   hhs_runtime/pass213/native_dispatch_cli.py \
   scripts/run_pass213_final_evidence.py
-python3 scripts/run_pass213_final_evidence.py \
+PYTHONPATH="$repo_root${PYTHONPATH:+:$PYTHONPATH}" \
+  python3 scripts/run_pass213_final_evidence.py \
   --secure-library "$native_output" \
   --dispatch-library "$native_dispatch_output" \
   --output pass213-final-evidence.json
