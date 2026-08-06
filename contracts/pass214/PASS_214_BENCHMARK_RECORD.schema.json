@@ -1,0 +1,106 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hhs.local/contracts/pass214/PASS_214_BENCHMARK_RECORD.schema.json",
+  "title": "HHS Pass 214 Compound Optimization Benchmark Record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "record_id",
+    "base_commit",
+    "repository_tree_root_hash216",
+    "optimization_registry_root_hash216",
+    "compatibility_graph_root_hash216",
+    "workload_manifest_root_hash216",
+    "benchmark_method_root_hash216",
+    "stage",
+    "workload_family",
+    "workload_mode",
+    "semantic_result",
+    "observational_result",
+    "costs",
+    "receipt_hash72"
+  ],
+  "properties": {
+    "schema": {"const": "HHS_PASS_214_BENCHMARK_RECORD_V1"},
+    "record_id": {"type": "string", "minLength": 1},
+    "base_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "repository_tree_root_hash216": {"$ref": "#/$defs/hash216"},
+    "optimization_registry_root_hash216": {"$ref": "#/$defs/hash216"},
+    "compatibility_graph_root_hash216": {"$ref": "#/$defs/hash216"},
+    "workload_manifest_root_hash216": {"$ref": "#/$defs/hash216"},
+    "benchmark_method_root_hash216": {"$ref": "#/$defs/hash216"},
+    "pass213_foundation_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "pass215_profile_root_hash216": {"anyOf": [{"$ref": "#/$defs/hash216"}, {"type": "null"}]},
+    "stage": {"enum": ["A0", "A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8", "A9"]},
+    "enabled_optimizations": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "disabled_optimizations": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "workload_family": {"type": "string", "minLength": 1},
+    "workload_mode": {"type": "string", "minLength": 1},
+    "hardware_software_profile_root_hash216": {"anyOf": [{"$ref": "#/$defs/hash216"}, {"type": "null"}]},
+    "semantic_result": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "semantic_root_hash216", "oracle_root_hash216", "exact_match"],
+      "properties": {
+        "status": {"enum": ["PASS", "FAIL", "REJECTED", "NOT_APPLICABLE", "UNRESOLVED"]},
+        "semantic_root_hash216": {"$ref": "#/$defs/hash216"},
+        "oracle_root_hash216": {"$ref": "#/$defs/hash216"},
+        "exact_match": {"type": "boolean"},
+        "receipt_chain_root_hash216": {"anyOf": [{"$ref": "#/$defs/hash216"}, {"type": "null"}]},
+        "replay_equal": {"type": ["boolean", "null"]},
+        "incremental_full_equal": {"type": ["boolean", "null"]}
+      }
+    },
+    "observational_result": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["observation_root_hash216", "sample_count", "timings_ns"],
+      "properties": {
+        "observation_root_hash216": {"$ref": "#/$defs/hash216"},
+        "sample_count": {"type": "integer", "minimum": 0},
+        "timings_ns": {"type": "object", "additionalProperties": {"type": "integer", "minimum": 0}},
+        "throughput": {"type": "object", "additionalProperties": {"type": ["integer", "number", "string"]}},
+        "resource_observations": {"type": "object", "additionalProperties": {"type": ["integer", "number", "string", "boolean", "null"]}}
+      }
+    },
+    "costs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["capacity_bytes", "work_counts", "governance_counts"],
+      "properties": {
+        "capacity_bytes": {"type": "object", "additionalProperties": {"type": "integer", "minimum": 0}},
+        "work_counts": {"type": "object", "additionalProperties": {"type": "integer", "minimum": 0}},
+        "governance_counts": {"type": "object", "additionalProperties": {"type": "integer", "minimum": 0}},
+        "multimodal_ml_counts": {"type": "object", "additionalProperties": {"type": "integer", "minimum": 0}},
+        "recovery_counts": {"type": "object", "additionalProperties": {"type": "integer", "minimum": 0}}
+      }
+    },
+    "ablation": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "properties": {
+        "disabled_layer": {"type": "string"},
+        "full_stack_record_id": {"type": "string"},
+        "semantic_equal": {"type": "boolean"},
+        "delta_metrics": {"type": "object", "additionalProperties": {"type": ["integer", "number", "string"]}}
+      }
+    },
+    "faults": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["fault", "expected", "observed"],
+        "properties": {
+          "fault": {"type": "string"},
+          "expected": {"type": "string"},
+          "observed": {"type": "string"}
+        },
+        "additionalProperties": true
+      }
+    },
+    "notes": {"type": "array", "items": {"type": "string"}},
+    "receipt_hash72": {"type": "string", "minLength": 72, "maxLength": 72}
+  },
+  "$defs": {"hash216": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}
+}
