@@ -7,8 +7,8 @@
 - Final validated Iteration 8 branch head: `b4db0de704e4fb43f5f382e3f11d114418af181c`
 - Validated Iteration 9 implementation head: `109aa45e39a33622a645a48fccb15d6101d06c38`
 - Validated Iteration 9 contract/documentation head: `43c16a00b1be009b59cdbdec1202808ea432fbe5`
-- Validated Iteration 9 evidence head: `3f19e457d16d069b4cf44e68ee459f31becd9997`
-- Final validated Iteration 9 branch head: `bdc68a9bf288f4220ae91415362698c1755353e5`
+- Validated Iteration 9 restart evidence head: `bdc68a9bf288f4220ae91415362698c1755353e5`
+- Final validated Iteration 9 branch head: `fb0f07bf207b8814469a69416ad009277579fa48`
 - Merge target: `main`
 - Draft pull request: `#169`
 - Iteration: `9`
@@ -53,26 +53,20 @@ Extended:
 - rejection of keys, tokens, carriers, bytes, physical mappings, tensor seeds, native addresses, RFC 3161 DER, canonical floats, and uncommitted state;
 - compile, execute, repair, deletion, protected-memory reads, physical maps, recovery carriers, DER reads, and network capability issuance remain unexposed.
 
-## Validation
+## Final validation
 
 ```text
-implementation run: 31058743725
-implementation job: 92481849207
-implementation head: 109aa45e39a33622a645a48fccb15d6101d06c38
-result: SUCCESS — 102 tests
-
-contract/documentation run: 31058948244
-contract/documentation job: 92482442366
-contract/documentation head: 43c16a00b1be009b59cdbdec1202808ea432fbe5
-result: SUCCESS — 102 tests
-
-final branch-head run: 31059190117
-final branch-head job: 92483150195
-final branch head: bdc68a9bf288f4220ae91415362698c1755353e5
-result: SUCCESS — 102 tests
-artifact: pass213-iteration9-validation-31059190117
-artifact digest: sha256:3dbc290de908de86ab8f272063f43a9c7bf2e320980e20094301641b8a95dc2b
+workflow: Pass 213 Compiled ROM Integrity
+run: 31059269764
+job: 92483397702
+validated head: fb0f07bf207b8814469a69416ad009277579fa48
+cumulative tests: 102 passed
+result: SUCCESS
+artifact: pass213-iteration9-validation-31059269764
+artifact digest: sha256:c18683cb3fbadeb02bd0a04552e5d6c7f4c288012fecffdf303d37ebc16ed08a
 ```
+
+The complete gate builds the native arena with warnings as errors, verifies real ML-KEM/ML-DSA/SLH-DSA and RFC 3161 dependencies, executes all 102 cumulative tests, compiles every Iteration 1–9 runtime/API/CLI module, parses the Iteration 9 contract, and retains the complete transcript.
 
 ## Workflow state
 
