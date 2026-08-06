@@ -48,7 +48,7 @@ concurrency:
 
 jobs:
   iteration2-conformance:
-    runs-on: ubuntu-24.04
+    runs-on: macos-14
     steps:
       - uses: actions/checkout@v5
         with:
