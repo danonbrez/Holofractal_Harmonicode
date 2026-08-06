@@ -57,3 +57,14 @@ bash scripts/run_pass214_contract_validation.sh
 ```
 
 Contract validation checks the JSON contract, evidence schema, scan plan, formal specification, and required Pass 213/Pass 215 boundary language. It does not claim the repository scan or benchmarks are already implemented.
+
+## Iteration 1 — repository census
+
+Implemented surfaces:
+
+- `hhs_backend/runtime/hhs_pass214_repository_census_v1.py`
+- `tools/pass214_repository_census.py`
+- `tests/test_hhs_pass214_repository_census_v1.py`
+
+The dedicated workflow now validates the contract and runtime, scans the exact checked-out Git tree, verifies all generated roots, and retains the complete census and optimization registry as a workflow artifact. Static discovery is not yet runtime callable conformance; that is the next Pass 214 phase.
+

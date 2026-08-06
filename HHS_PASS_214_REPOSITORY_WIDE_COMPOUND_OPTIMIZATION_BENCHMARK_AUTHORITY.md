@@ -402,3 +402,25 @@ HHS_PASS_214_REPOSITORY_WIDE_COMPOUND_OPTIMIZATION_BENCHMARK_CONTRACT_FROZEN
 ```
 
 The first implementation action is the immutable repository census and optimization-symbol registry. This contract makes no operating-performance or Pass 215 transformer-result claim.
+
+## 18. Iteration 1 implementation — immutable repository census and optimization-symbol registry
+
+Iteration 1 implements a non-executing static census over one exact Git commit and tree. The runtime uses `git ls-tree -r -t -l -z` rather than filesystem discovery, so every tracked file, directory, gitlink, mode, object identity, and byte size is bound to the source tree. Every tracked path receives exactly one Pass 214 disposition.
+
+Supported static symbol discovery covers Python AST functions, methods, classes, and decorators; JavaScript and TypeScript classes, functions, and arrow callables; C/C++ functions and prototypes; Rust and Go functions; shell functions; and SQL tables, views, indexes, triggers, functions, and procedures. The scanner never imports or executes candidate modules.
+
+Exact duplicate Git blobs remain separately addressable. One primary path and every identical member path are committed into an `IDENTICAL` relation record; no implementation is silently deleted or collapsed. Candidate symbols retain path, blob identity, language, entrypoint, source lines, pass or pre-pass origin, optimization families, modalities, exactness classification, mutation-authority classification, and a Hash216 symbol identity.
+
+The generated evidence set is:
+
+```text
+repository_tree_manifest.json
+path_census.json
+optimization_registry.json
+duplicate_relations.json
+static_scan_errors.json
+iteration1_summary.json
+```
+
+The summary binds the Pass 213 foundation, exact source commit and tree, complete classification coverage, family and modality counts, the tree/census/registry/duplicate/error Hash216 roots, the Iteration 1 semantic root, and an ordered Hash72 receipt. Runtime callable conformance, semantic-equivalence reconciliation, the full compatibility graph, compound benchmarks, terminal Pass 214 roots, and Pass 215 authorization remain explicitly incomplete.
+
