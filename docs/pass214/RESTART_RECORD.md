@@ -1,36 +1,51 @@
-# Pass 214 Restart Record — Iteration 2
+# Pass 214 Restart Record
 
+## Repository state
+
+- Base before Iteration 3: `d6a0244b88437a53d1fe972fd004d3cda9e94806`
 - Branch: `agent/pass214-operating-compression-gradient`
 - Merge target: `main`
-- Pass 213 foundation: `86ec461818682fc87232740758769602e8f9fe05`
-- Frozen Iteration 1 semantic root: `3be4e52f0e4e0cf55dc09b8d0fc929423c954cf30f3f3dbfd86f5f968dbc38bf`
-- Iteration: `2`
-- Classification: `HHS_PASS_214_ITERATION_2_CALLABLE_CONFORMANCE_GRAPH_IMPLEMENTED_PENDING_EXACT_HEAD_EVIDENCE`
+- Draft PR: `#170`
+- Pass 213 closure dependency: `86ec461818682fc87232740758769602e8f9fe05`
+- Iteration 1 semantic root: `3be4e52f0e4e0cf55dc09b8d0fc929423c954cf30f3f3dbfd86f5f968dbc38bf`
 
-## Changed files
+## Completed
 
-- `hhs_backend/runtime/hhs_pass214_callable_conformance_v1.py`
-- `tools/pass214_callable_conformance.py`
-- `tests/test_hhs_pass214_callable_conformance_v1.py`
-- `contracts/pass214/PASS_214_ITERATION_2_CONFORMANCE_EXTENSION.json`
-- `docs/pass214/ITERATION_2_CALLABLE_CONFORMANCE.md`
-- `evidence/pass214/PASS_214_ITERATION_2_IMPLEMENTATION_RECORD.json`
+- Iteration 1 immutable repository census and optimization registry.
+- Iteration 2 callable records, static-normal-form groups, authority-conflict candidates, and compatibility graph.
+- Iteration 3 Pass 213-bound admission receipts, pure oracle-model execution, exact symbol/implementation model bindings, adapter proofs, non-promoting adjudications, deterministic roots, replay validation, and tamper rejection.
+
+## Iteration 3 changed files
+
+- `hhs_backend/runtime/hhs_pass214_oracle_adjudication_v1.py`
+- `hhs_backend/runtime/pass214_i3_payload/runtime.py.gz`
+- `tools/pass214_oracle_adjudication.py`
+- `tests/test_hhs_pass214_oracle_adjudication_v1.py`
+- `tests/pass214_i3_test_payload/test.py.gz`
+- `contracts/pass214/PASS_214_ITERATION_3_ORACLE_ADJUDICATION_EXTENSION.json`
+- `evidence/pass214/PASS_214_ITERATION_3_IMPLEMENTATION_RECORD.json`
+- `docs/pass214/ITERATION_3_ORACLE_ADJUDICATION.md`
+- `docs/pass214/RESTART_RECORD.md`
 - `scripts/run_pass214_contract_validation.sh`
 - `.github/workflows/pass214-compound-optimization-benchmark.yml`
-- `docs/pass214/RESTART_RECORD.md`
 
-## Implemented
+## Validation completed
 
-One deterministic conformance record per Iteration 1 symbol; bound source interface and normalized implementation; direct dependency and risk flags; static equivalence groups; authority-conflict candidates; compatibility edges and graph; deterministic roots; tamper rejection; no module imports; no automatic authority merger.
+```text
+python -m py_compile hhs_backend/runtime/hhs_pass214_oracle_adjudication_v1.py
+PYTHONPATH=. pytest -q tests/test_hhs_pass214_oracle_adjudication_v1.py
+7 passed
+```
 
-## Local validation
+Negative coverage includes forged Pass 213 admission evidence, unauthorized Iteration 2 symbol pairs, duplicate admission IDs, mismatched adapter class/handler identity, recomputed automatic-merge tampering, semantic-root tampering, and Hash72 receipt tampering.
 
-Synthetic dependency-scoped suite: `7 passed`.
+## Remaining
 
-## Exact-head validation remaining
+1. Run exact-head hosted Iterations 1–3 validation and retain its artifact.
+2. Design safe repository-callable bindings with exact file/blob/symbol/implementation identity and bounded fixtures.
+3. Execute dependency-scoped callable oracles for selected conflicts.
+4. Authorize only adapters proven equal by callable evidence.
+5. Run compound data-management and multimodal-learning benchmarks.
+6. Mint terminal Pass 214 roots only after all mandatory stages close.
 
-Run the dedicated workflow on the published branch, retain Iteration 1 and Iteration 2 artifacts, freeze counts and roots, update this record and PR #170, and keep the PR draft/unmerged.
-
-## Next action
-
-Iteration 3: selected oracle workloads, conflict adjudication, and identity-preserving integration adapters. Pass 215 remains unauthorized.
+Pass 214 remains draft and unmerged. Pass 215 remains unauthorized.
