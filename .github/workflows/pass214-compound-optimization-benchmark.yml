@@ -32,6 +32,21 @@ on:
       - 'tests/test_hhs_pass214_callable_oracle_v1.py'
       - 'tests/pass214_i4_test_payload/**'
       - '.github/workflows/pass214-compound-optimization-benchmark.yml'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'HHS_PASS_214_REPOSITORY_WIDE_COMPOUND_OPTIMIZATION_BENCHMARK_AUTHORITY.md'
+      - 'contracts/pass214/**'
+      - 'docs/pass214/**'
+      - 'evidence/pass214/**'
+      - 'hhs_backend/runtime/hhs_pass214_*'
+      - 'hhs_backend/runtime/pass214_i*_payload/**'
+      - 'tools/pass214_*'
+      - 'scripts/run_pass214_contract_validation.sh'
+      - 'tests/test_hhs_pass214_*'
+      - 'tests/pass214_i*_test_payload/**'
+      - '.github/workflows/pass214-compound-optimization-benchmark.yml'
 
 permissions:
   contents: read
