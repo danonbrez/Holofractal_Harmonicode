@@ -47,7 +47,7 @@
     "exactness_class": "EXACT_U64_GOVERNED_DISPATCH",
     "persistence": "Pass213 authenticated append-only ledger",
     "replay_recovery": "Inherited from Pass213 parent/tensor/timestamp/ledger admission",
-    "operational_status": "IMPLEMENTED_ADDITIVE_LAYER_PENDING_BRANCH_VALIDATION"
+    "operational_status": "IMPLEMENTED_ADDITIVE_LAYER_BRANCH_VALIDATED"
   },
   "resolved_defects": [
     "scalar values are no longer reinterpreted as VM cell indexes",
@@ -75,6 +75,10 @@
     "append_only_result_integrity": true
   },
   "validation": {
+    "entrypoint": "scripts/run_pass214_vm81_ir_adapter_validation.sh",
+    "workflow": ".github/workflows/pass214-vm81-ir-adapter.yml",
+    "successful_run_id": 31220555453,
+    "targeted_tests_passed": 9,
     "test": "tests/test_hhs_pass214_vm81_ir_adapter_v1.py",
     "frozen_runtime_blob_guard": true,
     "direct_mutation_source_guard": true,
@@ -90,6 +94,7 @@
   "notes": [
     "This adapter does not claim to parse Python source or Python bytecode.",
     "Python/source frontends may lower into this IR only after their own deterministic parsing and validation layer.",
-    "Unsupported legacy operations require exact compiled-ROM/native-dispatch admission before they can become canonical mutations."
+    "Unsupported legacy operations require exact compiled-ROM/native-dispatch admission before they can become canonical mutations.",
+    "The first targeted workflow attempt failed during import because cryptography was absent from the fresh validation environment; no adapter test ran. The workflow dependency was corrected and the next run passed all nine tests."
   ]
 }
