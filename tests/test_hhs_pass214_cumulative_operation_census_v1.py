@@ -7,9 +7,11 @@ from hhs_backend.runtime.hhs_pass214_cumulative_operation_census_v1 import (
     BASE20_HEADER,
     FROZEN_RUNTIME,
     FROZEN_RUNTIME_GIT_BLOB,
-    build_cumulative_operation_census,
-    load_and_validate_census,
-    write_census,
+)
+from hhs_backend.runtime.hhs_pass214_cumulative_operation_census_deep_v1 import (
+    build_deep_cumulative_operation_census,
+    load_and_validate_deep_census,
+    write_deep_census,
 )
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -17,7 +19,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 @lru_cache(maxsize=1)
 def _result():
-    return build_cumulative_operation_census(ROOT, source_ref="HEAD")
+    return build_deep_cumulative_operation_census(ROOT, source_ref="HEAD")
 
 
 def test_known_opcode_families_are_all_recovered() -> None:
@@ -53,8 +55,26 @@ def test_census_is_repository_wide_and_does_not_auto_collapse_semantics() -> Non
     assert summary["coverage"]["pre_pass_or_unnumbered_operations"] > 0
     assert summary["coverage"]["numbered_pass_operations"] > 0
     assert summary["semantic_accounting"]["automatic_semantic_collapse_performed"] is False
+    assert summary["semantic_accounting"]["canonical_unique_semantic_operation_count"] is None
     assert result["policy"]["applications_and_native_projects_are_scanned_for_isolated_capabilities"] is True
     assert result["policy"]["name_similarity_never_proves_semantic_equivalence"] is True
+
+
+def test_deep_language_and_projection_coverage_is_present() -> None:
+    result = _result()
+    summary = result["summary"]
+    manifest = summary["language_coverage_manifest"]
+    assert result["policy"]["public_abi_declarations_counted_as_projection_surfaces"] is True
+    assert result["policy"]["formal_proof_declarations_separated_from_executable_operations"] is True
+    assert result["policy"]["build_tasks_separated_from_runtime_semantics"] is True
+    assert "C_HEADER_DECLARATION" in manifest["extractors_used"]
+    assert "MAKE" in manifest["extractors_used"]
+    assert summary["reuse_accounting"]["abi_declaration_surfaces"] > 0
+    # The repository language endpoint currently reports Rust, Java, Lean and Rocq;
+    # their files must be accounted whenever tracked source contains declarations.
+    for extension in (".rs", ".java", ".lean", ".v"):
+        if manifest["tracked_extension_or_special_file_counts"].get(extension, 0):
+            assert manifest["supplemental_extractor_file_counts"].get(extension, 0) > 0
 
 
 def test_reuse_and_python_exposure_are_accounted() -> None:
@@ -80,7 +100,7 @@ def test_frozen_runtime_blob_is_unchanged() -> None:
 def test_census_receipt_roundtrip(tmp_path: Path) -> None:
     result = _result()
     output = tmp_path / "census.json"
-    write_census(result, output)
-    loaded = load_and_validate_census(output)
+    write_deep_census(result, output)
+    loaded = load_and_validate_deep_census(output)
     assert loaded["census_sha256"] == result["census_sha256"]
     assert loaded["summary"] == result["summary"]
