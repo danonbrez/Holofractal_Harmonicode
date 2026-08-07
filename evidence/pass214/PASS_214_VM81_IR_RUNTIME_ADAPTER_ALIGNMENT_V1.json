@@ -1,0 +1,100 @@
+{
+  "schema": "HHS_PASS_214_VM81_IR_RUNTIME_ADAPTER_ALIGNMENT_V1",
+  "classification": "PASS214_COMPATIBLE_LAYER_RUNTIME_REPAIR",
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "base_main_commit": "a4b7f6cf4da9111b036b6d4d93ea2d7b50e3eb2a",
+  "frozen_runtime": {
+    "path": "hhs_runtime/HARMONICODE_VM_RUNTIME.c",
+    "git_blob_sha1": "362cd6e892ae66024333b111aec83f12023fdce3",
+    "modified": false,
+    "authority": "FROZEN_NATIVE_IMPLEMENTATION"
+  },
+  "binding_authorities": {
+    "pass213_contract": "contracts/pass213/PASS_213_CONTRACT.json",
+    "pass214_contract": "contracts/pass214/PASS_214_CONTRACT.json",
+    "mutation_authority": "hhs_backend.runtime.hhs_pass213_native_dispatch_authority_v1.GovernedNativeDispatchAuthority",
+    "request_type": "hhs_backend.runtime.hhs_pass213_native_dispatch_common_v1.NativeDispatchRequest"
+  },
+  "adapter": {
+    "path": "hhs_backend/runtime/hhs_pass214_vm81_ir_adapter_v1.py",
+    "entrypoint": "Pass214GovernedIRAdapter.run",
+    "language_abi": "Python 3 typed IR -> Pass213 governed native dispatch",
+    "origin_authority": "Pass214 compatibility graph over Pass213 execution foundation",
+    "optimization_family": "compiler_rom_native_execution",
+    "input_objects": [
+      "IRProgram",
+      "IRBlock",
+      "IRNode",
+      "IROperand",
+      "Pass213 protected compiled-ROM entry identity"
+    ],
+    "output_objects": [
+      "IRFrame",
+      "Pass213 NativeDispatchReceipt mappings",
+      "non-mutating receipt observations"
+    ],
+    "identities_consumed": [
+      "compiled entry Hash216",
+      "current parent Hash216",
+      "moving tensor root Hash216",
+      "current Hash72 receipt"
+    ],
+    "identities_emitted": [
+      "Pass213 successor Hash216",
+      "Pass213 ordered Hash72 receipt"
+    ],
+    "mutation_authority": "PASS213_GOVERNED_SINGLETON_VM81_ONLY",
+    "exactness_class": "EXACT_U64_GOVERNED_DISPATCH",
+    "persistence": "Pass213 authenticated append-only ledger",
+    "replay_recovery": "Inherited from Pass213 parent/tensor/timestamp/ledger admission",
+    "operational_status": "IMPLEMENTED_ADDITIVE_LAYER_BRANCH_VALIDATED"
+  },
+  "resolved_defects": [
+    "scalar values are no longer reinterpreted as VM cell indexes",
+    "CELL_REF is explicit and fails closed without an exact compiled read admission",
+    "canonical mutations no longer call apply_instruction directly",
+    "canonical mutations inherit Pass213 Hash216 successor and Hash72 receipt closure",
+    "compiled native-dispatch identity is checked before mutation",
+    "multi-block control transfer no longer continues through a stale block pointer",
+    "call and return preserve an explicit continuation pair",
+    "register, target, operand, lane, timestamp, and access-set bounds are validated",
+    "legacy MUL DIV MOD QGU CONSTRAIN and projected-grid HASH72 operations are not silently promoted to canonical authority",
+    "Hash72 receipt observation is separated from projected grid identity"
+  ],
+  "legacy_bridge_disposition": {
+    "location": "appendix within hhs_runtime/HARMONICODE_VM_RUNTIME.c",
+    "status": "FROZEN_PROTOTYPE_NOT_CANONICAL_BRIDGE_AUTHORITY",
+    "reason": "Direct apply_instruction mutation bypasses the Pass213 governed admission and receipt authority; source is preserved because the frozen blob is an inherited authority."
+  },
+  "pass214_acceptance_alignment": {
+    "adapters_preserve_canonical_identity": true,
+    "no_authority_bypass": true,
+    "pass213_gates_preserved": true,
+    "semantic_observational_separation": true,
+    "negative_controls_fail": true,
+    "append_only_result_integrity": true
+  },
+  "validation": {
+    "entrypoint": "scripts/run_pass214_vm81_ir_adapter_validation.sh",
+    "workflow": ".github/workflows/pass214-vm81-ir-adapter.yml",
+    "successful_run_id": 31220555453,
+    "targeted_tests_passed": 9,
+    "test": "tests/test_hhs_pass214_vm81_ir_adapter_v1.py",
+    "frozen_runtime_blob_guard": true,
+    "direct_mutation_source_guard": true,
+    "typed_scalar_dispatch": true,
+    "cell_reference_negative_control": true,
+    "legacy_operation_negative_controls": true,
+    "pre_mutation_compiled_identity_check": true,
+    "branch_transfer": true,
+    "call_return_continuation": true,
+    "receipt_observation_separation": true
+  },
+  "higher_level_frozen_artifacts_modified": [],
+  "notes": [
+    "This adapter does not claim to parse Python source or Python bytecode.",
+    "Python/source frontends may lower into this IR only after their own deterministic parsing and validation layer.",
+    "Unsupported legacy operations require exact compiled-ROM/native-dispatch admission before they can become canonical mutations.",
+    "The first targeted workflow attempt failed during import because cryptography was absent from the fresh validation environment; no adapter test ran. The workflow dependency was corrected and the next run passed all nine tests."
+  ]
+}
