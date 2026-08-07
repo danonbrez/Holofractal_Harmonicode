@@ -11,7 +11,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from hhs_backend.runtime.hhs_pass214_final_compound_benchmark_v1 import (
+from hhs_backend.runtime.hhs_pass214_final_compound_benchmark_v2 import (
     build_final_benchmark_bundle,
     validate_final_benchmark_bundle,
 )
@@ -26,9 +26,19 @@ def git_value(*args: str) -> str:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Execute the frozen Pass 214 final compound benchmark")
-    parser.add_argument("--workload-corpus", type=Path, default=ROOT / "contracts/pass214/PASS_214_WORKLOAD_CORPUS.json")
-    parser.add_argument("--benchmark-method", type=Path, default=ROOT / "contracts/pass214/PASS_214_FINAL_BENCHMARK_METHOD.json")
+    parser = argparse.ArgumentParser(
+        description="Execute the frozen Pass 214 final compound benchmark"
+    )
+    parser.add_argument(
+        "--workload-corpus",
+        type=Path,
+        default=ROOT / "contracts/pass214/PASS_214_WORKLOAD_CORPUS.json",
+    )
+    parser.add_argument(
+        "--benchmark-method",
+        type=Path,
+        default=ROOT / "contracts/pass214/PASS_214_FINAL_BENCHMARK_METHOD.json",
+    )
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--validate", type=Path)
     args = parser.parse_args()
@@ -36,7 +46,19 @@ def main() -> int:
     if args.validate:
         bundle = load(args.validate)
         validate_final_benchmark_bundle(bundle)
-        print(json.dumps({"valid": True, "compound_evidence_root_hash216": bundle["compound_evidence_root_hash216"], "receipt_hash72": bundle["receipt_hash72"]}, sort_keys=True))
+        print(
+            json.dumps(
+                {
+                    "valid": True,
+                    "status": bundle["status"],
+                    "compound_evidence_root_hash216": bundle[
+                        "compound_evidence_root_hash216"
+                    ],
+                    "receipt_hash72": bundle["receipt_hash72"],
+                },
+                sort_keys=True,
+            )
+        )
         return 0
 
     bundle = build_final_benchmark_bundle(
@@ -47,16 +69,26 @@ def main() -> int:
     )
     validate_final_benchmark_bundle(bundle)
     args.output.parent.mkdir(parents=True, exist_ok=True)
-    args.output.write_text(json.dumps(bundle, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-    print(json.dumps({
-        "status": bundle["status"],
-        "source_commit": bundle["source_commit"],
-        "source_tree": bundle["source_tree"],
-        "workload_family_count": len(bundle["workloads"]),
-        "ablation_count": len(bundle["ablations"]),
-        "compound_evidence_root_hash216": bundle["compound_evidence_root_hash216"],
-        "receipt_hash72": bundle["receipt_hash72"],
-    }, indent=2, sort_keys=True))
+    args.output.write_text(
+        json.dumps(bundle, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+    )
+    print(
+        json.dumps(
+            {
+                "status": bundle["status"],
+                "source_commit": bundle["source_commit"],
+                "source_tree": bundle["source_tree"],
+                "workload_family_count": len(bundle["workloads"]),
+                "ablation_count": len(bundle["ablations"]),
+                "compound_evidence_root_hash216": bundle[
+                    "compound_evidence_root_hash216"
+                ],
+                "receipt_hash72": bundle["receipt_hash72"],
+            },
+            indent=2,
+            sort_keys=True,
+        )
+    )
     print("PASS214_FINAL_COMPOUND_BENCHMARK_OK")
     return 0
 
