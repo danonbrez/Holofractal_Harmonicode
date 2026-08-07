@@ -10,7 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from hhs_backend.runtime.hhs_pass214_iteration8_terminal_freeze_v2 import (
+from hhs_backend.runtime.hhs_pass214_iteration8_terminal_freeze_v3 import (
     create_terminal_freeze,
     inspect_terminal_readiness,
     validate_terminal_freeze,
@@ -58,8 +58,9 @@ def main() -> int:
         write(
             args.output,
             {
-                "schema": "HHS_PASS_214_ITERATION_8_TERMINAL_VALIDATION_V2",
+                "schema": "HHS_PASS_214_ITERATION_8_TERMINAL_VALIDATION_V3",
                 "valid": True,
+                "serialized_root_order_canonicalized": True,
                 "authority_scope": record["authority_scope"],
                 "authority_root_hash216": record["terminal_roots"][
                     "PASS214_AUTHORITY_ROOT_HASH216"
