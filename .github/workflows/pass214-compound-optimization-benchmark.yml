@@ -42,7 +42,7 @@ env:
   PYTHONDONTWRITEBYTECODE: '1'
 
 jobs:
-  iterations-1-through-7-validation:
+  iterations-1-through-8-validation:
     runs-on: ubuntu-24.04
     timeout-minutes: 90
     steps:
@@ -54,7 +54,7 @@ jobs:
           python-version: '3.12'
       - name: Install validation dependency
         run: python -m pip install pytest
-      - name: Validate Pass 214 Iterations 1 through 7
+      - name: Validate Pass 214 Iterations 1 through 8
         run: bash scripts/run_pass214_contract_validation.sh
       - name: Build inherited native C ABI
         run: make c-abi
@@ -112,7 +112,16 @@ jobs:
             --mode inspect \
             --output "$RUNNER_TEMP/pass214-iteration7/PASS_214_ITERATION_7_CI_INSPECTION.json" \
             | tee "$RUNNER_TEMP/pass214-iteration7-inspection.log"
-      - name: Enforce non-promoting gates
+      - name: Generate Iteration 8 terminal readiness inspection
+        run: |
+          mkdir -p "$RUNNER_TEMP/pass214-iteration8"
+          python tools/pass214_iteration8_terminal_freeze.py \
+            --mode inspect \
+            --census-summary "$RUNNER_TEMP/pass214-iteration1/iteration1_summary.json" \
+            --compatibility-summary "$RUNNER_TEMP/pass214-iteration2/iteration2_summary.json" \
+            --output "$RUNNER_TEMP/pass214-iteration8/PASS_214_ITERATION_8_CI_INSPECTION.json" \
+            | tee "$RUNNER_TEMP/pass214-iteration8-inspection.log"
+      - name: Enforce non-promoting CI gates
         run: |
           python - <<'PY'
           import json, os
@@ -121,6 +130,7 @@ jobs:
           i5 = json.loads((root / 'pass214-iteration5' / 'PASS_214_ITERATION_5_CALLABLE_CORPUS_REPORT.json').read_text())
           i6 = json.loads((root / 'pass214-iteration6' / 'PASS_214_ITERATION_6_CANDIDATE_BINDING_REPORT.json').read_text())
           i7 = json.loads((root / 'pass214-iteration7' / 'PASS_214_ITERATION_7_CI_INSPECTION.json').read_text())
+          i8 = json.loads((root / 'pass214-iteration8' / 'PASS_214_ITERATION_8_CI_INSPECTION.json').read_text())
           assert i5['status'] == 'PILOT_READY'
           assert i5['policy']['migration_active'] is False
           assert i5['policy']['authority_promoted'] is False
@@ -133,11 +143,17 @@ jobs:
           assert i7['migration_active'] is False
           assert i7['authority_promoted'] is False
           assert i7['pass215_authorized'] is False
+          assert i8['ready'] is False
+          assert i8['terminal_roots_minted'] is False
+          assert i8['authority_promoted'] is False
+          assert i8['migration_active'] is False
+          assert i8['pass215_authorized'] is False
+          assert i8['blockers']
           PY
-      - name: Retain Pass 214 Iterations 1 through 7 evidence
+      - name: Retain Pass 214 Iterations 1 through 8 evidence
         uses: actions/upload-artifact@v4
         with:
-          name: pass214-iterations-1-through-7-${{ github.run_id }}
+          name: pass214-iterations-1-through-8-${{ github.run_id }}
           path: |
             ${{ runner.temp }}/pass214-iteration1/*.json
             ${{ runner.temp }}/pass214-iteration2/*.json
@@ -145,6 +161,7 @@ jobs:
             ${{ runner.temp }}/pass214-iteration5/*.json
             ${{ runner.temp }}/pass214-iteration6/*.json
             ${{ runner.temp }}/pass214-iteration7/*.json
+            ${{ runner.temp }}/pass214-iteration8/*.json
             ${{ runner.temp }}/pass214-iteration4-manifest.json
             ${{ runner.temp }}/pass214-iteration1-validation.log
             ${{ runner.temp }}/pass214-iteration2-validation.log
@@ -154,9 +171,11 @@ jobs:
             ${{ runner.temp }}/pass214-iteration6-validation.log
             ${{ runner.temp }}/pass214-iteration7-manifest.log
             ${{ runner.temp }}/pass214-iteration7-inspection.log
+            ${{ runner.temp }}/pass214-iteration8-inspection.log
             evidence/pass214/PASS_214_ITERATION_3_IMPLEMENTATION_RECORD.json
             evidence/pass214/PASS_214_ITERATION_4_IMPLEMENTATION_RECORD.json
             evidence/pass214/PASS_214_ITERATION_5_IMPLEMENTATION_RECORD.json
             evidence/pass214/PASS_214_ITERATION_6_IMPLEMENTATION_RECORD.json
             evidence/pass214/PASS_214_ITERATION_7_IMPLEMENTATION_RECORD.json
+            evidence/pass214/PASS_214_ITERATION_8_IMPLEMENTATION_RECORD.json
           if-no-files-found: error
