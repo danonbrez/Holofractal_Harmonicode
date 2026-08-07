@@ -8,6 +8,9 @@
 - Iteration 7 hosted CLI repair: `557d58eeacdfba4f19147d19a38ff2744f06f0d0`
 - Latest diagnostic parent before safe checkpoint: `4dc4fa4050af78b7da027da9b4f2e8a2bdd17cb5`
 - Safe validation evidence commit: `a64027112b393cb2c156dd1e2f12c4ca96f18392`
+- Exact Iteration 4 payload restore: `45c81ac4c7cc9402c02e7901c51b0df4b3cefe43`
+- Exact-repair restart checkpoint: `e8eb4b17c097062e61d911b5d70184401ee2d753`
+- Iteration 5 hosted-runner dependency repair: `cea559c78f947d0ef5e11d8c741993daefea7eac`
 - Branch: `agent/pass214-operating-compression-gradient`
 - Merge target: `main`
 - Draft PR: `#170`
@@ -146,6 +149,66 @@ Pass 215 authorized: false
 
 The repaired payload was committed only after reproducing both frozen hashes and passing the original 11-test Iteration 4 dependency-scoped suite. Failed or incomplete candidates were never promoted to the production payload path.
 
+## Repaired-head cumulative validation — 2026-08-07
+
+The exact payload repair cleared the inherited blocker. A normal user-authored restart-record commit triggered the cumulative authority on the repaired head and every Iterations 1–7 stage passed.
+
+```text
+workflow: Pass 214 Compound Optimization Benchmark Authority
+run: 31181318380
+head: e8eb4b17c097062e61d911b5d70184401ee2d753
+job: iterations-1-through-7-validation
+conclusion: success
+```
+
+Successful cumulative stages:
+
+```text
+validation dependency installation: passed
+Iterations 1–7 contract validation: passed
+inherited native C ABI build: passed
+Iteration 1 immutable census: passed
+Iteration 2 callable conformance graph: passed
+Iteration 4 exact-head workload manifest: passed
+Iteration 4 repository-callable oracle: passed
+Iteration 5 three-run callable corpus: passed
+Iteration 6 candidate binding report: passed
+Iteration 7 manifest + CI inspection: passed
+non-promoting gates: passed
+retained evidence upload: passed
+```
+
+The cumulative run therefore proves the exact Iteration 4 restoration is compatible with all implemented Pass 214 layers through Iteration 7. It does not claim production live admission, migration, authority promotion, terminal closure, or Pass 215 authorization.
+
+## Iteration 5 hosted-runner repair — 2026-08-07
+
+The standalone Iteration 5 workflow compiled successfully but its clean Ubuntu/Python runner did not include pytest. This was runner dependency drift, not a callable-corpus failure. The workflow now installs pytest explicitly before its dependency-scoped tests.
+
+```text
+repair commit: cea559c78f947d0ef5e11d8c741993daefea7eac
+workflow: Pass 214 Iteration 5 Callable Corpus
+run: 31181542256
+conclusion: success
+```
+
+Successful standalone Iteration 5 stages:
+
+```text
+pytest dependency installation: passed
+surface compilation: passed
+dependency-scoped tests: passed
+three-run callable corpus: passed
+non-promoting gate: passed
+artifact retention: passed
+```
+
+Standalone Iterations 6 and 7 already install pytest explicitly. Their last relevant hosted runs were green, and both were re-executed successfully by the repaired-head cumulative authority.
+
+```text
+Iteration 6 standalone run: 31144837918 — success
+Iteration 7 standalone run: 31144838012 — success
+```
+
 ## Iteration 7 changed files
 
 - `hhs_backend/runtime/hhs_pass214_iteration7_live_admission_ablation_v1.py`
@@ -163,10 +226,10 @@ The repaired payload was committed only after reproducing both frozen hashes and
 
 ## Current next exact action
 
-1. Preserve the exact Iteration 4 restored payload and its cryptographic recovery evidence.
-2. Run the cumulative Pass 214 Iterations 1–7 validation on the exact restored payload.
-3. Repair forward only from any newly exposed dependency-scoped failure; do not rerun or rewrite already frozen identities unnecessarily.
-4. Only after cumulative validation passes should production Pass 213 live admission and the five-family baseline/optimized/ablation execution continue.
-5. Preserve `HOLD` on migration, authority promotion, terminal Pass 214 closure, and Pass 215 until every production gate passes.
+1. Preserve the exact Iteration 4 restored payload, frozen hashes, and recovery evidence.
+2. Treat the repaired-head Iterations 1–7 cumulative validation and standalone Iteration 5 hosted validation as passed evidence; rerun only when an impacted dependency changes.
+3. Resolve only production live-admission prerequisites from the Pass 213 operational authority chain; do not replace them with CI fixtures, synthetic anchors, or test doubles.
+4. Once production live admission succeeds, execute the five-family baseline/optimized/ablation benchmark plan under the admitted authority state.
+5. Preserve `HOLD` on migration, authority promotion, terminal Pass 214 closure, and Pass 215 until every production benchmark and closure gate passes.
 
 Pass 214 remains draft and unmerged. Pass 215 remains unauthorized.
