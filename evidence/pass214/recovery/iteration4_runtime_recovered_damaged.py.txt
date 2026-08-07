@@ -1,0 +1,342 @@
+"""Pass 214 Iteration 4: bounded repository-callable oracle execution.
+
+This authority executes only explicitly manifested Python callables from the
+current tracked Git tree.  Every callable is bound to exact file, Git-blob,
+AST, Iteration-2 record, Pass-213 admission, and Iteration-3 lineage evidence.
+Execution occurs in a fresh isolated interpreter with deterministic environment,
+resource ceilings, write/network/process denial, bounded output, and replay.
+No result promotes, replaces, quarantines, or merges repository authority.
+"""
+from __future__ import annotations
+
+import ast
+import hashlib
+import json
+import os
+from pathlib import Path, PurePosixPath
+import re
+import signal
+import subprocess
+import sys
+from typing import Any, Iterable, Mapping, Sequence
+
+from hhs_backend.runtime.pass197_exact_v1 import canonical_json, hash72
+
+CONTRACT = "HHS-P214-RW-CDM-MML-COBA-H72-H216-VM5184-G243"
+ITERATION = 4
+PASS213_CLOSURE = "86ec461818682fc87232740758769602e8f9fe05"
+ITERATION3_IMPLEMENTATION_COMMIT = "3125d170311319f01d204fa6fecde7d3df63a372"
+ITERATION3_CONTRACT_BLOB = "25111f5240fbd9188c188f2d46335c569b3545eb"
+ITERATION3_RUNTIME_LOADER_BLOB = "bc562b3dccfb1e9af90846e8a22cbf621be35658"
+ITERATION3_IMPLEMENTATION_RECORD_BLOB = "b268fdc9d1975a84c510b137c9941a0e9434510d"
+RUNTIME_CLASSIFICATION = "HHS_PASS_214_ITERATION_4_REPOSITORY_CALLABLE_ORACLE_IMPLEMENTED"bHEX40 = re.compile(r"^[0-9a-f]{40}$")bHEX64 = re.compile(r"^[0-9a-f]{64}$")bIDENTIFIER = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*$")bALLOWED_ADAPTERS = {"IDENTITY", "KEY_RENAME", "FIELD_PROJECTION", "CANONICAL_BYTES_ENVELOPE"}
+PASS213_AUTHORITY_PROFILES = {
+    "PASS213_LIVE_GOVERNED_SURFACE",
+    "PASS213_DEPENDENCY_SCOPED_VALIDATION_FIXTURE",
+}
+ORACLE_STATES = {
+    "CALLABLE_EQUIVALENCE_VERIFIED",
+    "CALLABLE_ADAPTER_EQUIVALENCE_VERIFIED",
+    "CALLABLE_DIVERGENCE",
+    "CALLABLE_INADMISSIBLE",
+    "CALLABLE_EXECUTION_ERROR",
+}
+OUTPUT_FILES = {
+    "callable_records": "callable_oracle_records.json",
+    "adjudications": "callable_adjudications.json",
+    "compatibility_edges": "callable_compatibility_edges.json",
+    "iteration4_summary": "iteration4_summary.json",
+}
+
+
+class Pass214CallableOracleError(RuntimeError):
+    pass
+
+
+def hash216(domain: str, value: Any) -> str:
+    name = domain.encode("utf-8")b    payload = canonical_json(value).encode("utf-8")b    return hashlib.sha256(b        b"HHS-P214-HASH216-V1\0"b        + len(name).to_bytes(2, "big")b        + nameb        + len(payload).to_bytes(8, "big")b        + payloadb    ).hexdigest()
+
+
+def git_blob_sha1(data: bytes) -> str:
+    return hashlib.sha1(b"blob " + str(len(data)).encode("ascii") + b"\0" + data).hexdigest()
+
+
+def _git(root: Path, *args: str) -> str:
+    try:b        return subprocess.check_output(b            ["git", "-C", str(root), *args], stderr=subprocess.PIPE, text=Trueb        ).strip()b    except (OSError, subprocess.CalledProcessError) as exc:b        raise Pass214CallableOracleError(b            f"PASS214_ITERATION4_GIT_COMMAND_FAILED:{' '.join(args)}"b        ) from exc
+
+
+def _require_hex(value: Any, pattern: re.Pattern[str], code: str) -> str:
+    if not isinstance(value, str) or pattern.fullmatch(value) is None:b        raise Pass214CallableOracleError(code)b    return value
+
+
+def _safe_path(root: Path, relative: Any) -> tuple[str, Path]:
+    if not isinstance(relative, str) or not relative or "\\" in relative:b        raise Pass214CallableOracleError("PASS214_ITERATION4_INVALID_REPOSITORY_PATH")b    pure = PurePosixPath(relative)
+    if pure.is_absolute() or ".." in pure.parts or pure.suffix != ".py":b        raise Pass214CallableOracleError("PASS214_ITERATION4_UNSAFE_REPOSITORY_PATH")b    normalized = pure.as_posix()b    target = (root / normalized).resolve()b    try:b        target.relative_to(root.resolve())b    except ValueError as exc:b        raise Pass214CallableOracleError("PASS214_ITERATION4_PATH_ESCAPE") from exc
+    if not target.is_file():b        raise Pass214CallableOracleError(f"PASS214_ITERATION4_CALLABLE_FILE_MISSING:{normalized}")b    return normalized, target
+
+
+def _module_for_path(path: str) -> str:
+    pure = PurePosixPath(path)
+    if pure.name == "__init__.py":b        return ".".join(pure.parent.parts)b    return ".".join(pure.with_suffix("").parts)b
+
+def _walk(value: Any) -> Iterable[Mapping[str, Any]]:
+    if isinstance(value, Mapping):b        yield value
+        for item in value.values():b            yield from _walk(item)b    elif isinstance(value, Sequence) and not isinstance(value, (str, bytes, bytearray)):b        for item in value:b            yield from _walk(item)b
+
+def _string_values(record: Mapping[str, Any], keys: set[str]) -> set[str]:b    out: set[str] = set()b    for key, value in record.items():b        if key.lower() in keys and isinstance(value, str):b            out.add(value)b    return out
+
+
+def _record_mentions(record: Mapping[str, Any], path: str, symbol: str) -> bool:b    paths = _string_values(b        record,b        {b            "path",b            "relative_path",b            "source_path",b            "repository_path",b            "file_path",b        },b    )b    symbols = _string_values(b        record,b        {b            "symbol",b            "symbol_name",b            "name",b            "qualified_name",b            "entrypoint",b            "callable",b        },b    )b    path_ok = any(item == path or item.endswith("/" + path) for item in paths)b    symbol_ok = any(item == symbol or item.endswith("." + symbol) for item in symbols)b    return path_ok and symbol_ok
+
+
+def _root_values(record: Mapping[str, Any]) -> set[str]:b    values: set[str] = set()bb    def visit(value: Any, key_hint: str = "") -> None:b        if isinstance(value, Mapping):b            for key, item in value.items():b                visit(item, str(key).lower())b        elif isinstance(value, Sequence) and not isinstance(value, (str, bytes, bytearray)):b            for item in value:b                visit(item, key_hint)b        elif isinstance(value, str) and HEX64.fullmatch(value) and ("root" in key_hint or "identity" in key_hint):b            values.add(value)b
+    visit(record)b    return values
+
+
+def _pair_mentions(
+    record: Mapping[str, Any],b    source_path: str,b    source_symbol: str,b    target_path: str,b    target_symbol: str,b    source_roots: set[str],b    target_roots: set[str],b) -> bool:b    evidence_keys = {b        "edge_state", "state", "relation", "classification", "members",b        "source", "target", "left", "right", "symbols", "symbol_roots",b        "source_symbol_root_hash216", "target_symbol_root_hash216",b        "source_identity_root_hash216", "target_identity_root_hash216",b    }
+    if not any(str(key).lower() in evidence_keys for key in record):b        return False
+    text = canonical_json(record)b    direct = (b        source_path in textb        and target_path in textb        and source_symbol in textb        and target_symbol in textb    )b    roots = _root_values(record)b    rooted = bool(source_roots & roots) and bool(target_roots & roots)b    return direct or rooted
+
+
+def _iteration2_summary(payloads: Mapping[str, Any]) -> Mapping[str, Any]:b    summary = payloads.get("iteration2_summary")
+    if not isinstance(summary, Mapping):b        raise Pass214CallableOracleError("PASS214_ITERATION4_ITERATION2_SUMMARY_MISSING")b    roots = summary.get("roots")
+    if not isinstance(roots, Mapping):b        raise Pass214CallableOracleError("PASS214_ITERATION4_ITERATION2_ROOTS_MISSING")b    _require_hex(b        roots.get("iteration2_semantic_root_hash216"),b        HEX64,b        "PASS214_ITERATION4_ITERATION2_SEMANTIC_ROOT_INVALID",b    )b    _require_hex(summary.get("source_commit"), HEX40, "PASS214_ITERATION4_ITERATION2_COMMIT_INVALID")b    _require_hex(summary.get("source_tree"), HEX40, "PASS214_ITERATION4_ITERATION2_TREE_INVALID")b    return summary
+
+
+def _load_iteration2_outputs(directory: Path) -> Mapping[str, Any]:b    try:b        from hhs_backend.runtime.hhs_pass214_callable_conformance_v1 import (b            load_and_validate_callable_conformance_outputs,b        )b    except Exception as exc:  # pragma: no cover - repository integration pathb        raise Pass214CallableOracleError("PASS214_ITERATION4_ITERATION2_RUNTIME_UNAVAILABLE") from exc
+    try:b        payloads = load_and_validate_callable_conformance_outputs(directory)b    except Exception as exc:b        raise Pass214CallableOracleError("PASS214_ITERATION4_ITERATION2_VALIDATION_FAILED") from exc
+    if not isinstance(payloads, Mapping):b        raise Pass214CallableOracleError("PASS214_ITERATION4_ITERATION2_PAYLOADS_INVALID")b    return payloads
+
+
+def _bind_iteration2(b    payloads: Mapping[str, Any], source_path: str, source_symbol: str, target_path: str, target_symbol: strb) -> dict[str, Any]:b    source_objects = [item for item in _walk(payloads) if _record_mentions(item, source_path, source_symbol)]b    target_objects = [item for item in _walk(payloads) if _record_mentions(item, target_path, target_symbol)]b    source_records = sorted({hash216("iteration2-symbol-record", item) for item in source_objects})b    target_records = sorted({hash216("iteration2-symbol-record", item) for item in target_objects})b    source_roots = {value for item in source_objects for value in _root_values(item)}b    target_roots = {value for item in target_objects for value in _root_values(item)}b    pair_records = sorted(b        {b            hash216("iteration2-pair-record", item)b            for item in _walk(payloads)b            if _pair_mentions(
+                item, source_path, source_symbol, target_path, target_symbol, source_roots, target_roots
+            )b        }b    )b    if not source_records:b        raise Pass214CallableOracleError("PASS214_ITERATION4_SOURCE_NOT_BOUND_BY_ITERATION2")
+    if not target_records:b        raise Pass214CallableOracleError("PASS214_ITERATION4_TARGET_NOT_BOUND_BY_ITERATION2")
+    if not pair_records:b        raise Pass214CallableOracleError("PASS214_ITERATION4_PAIR_NOT_AUTHORIZED_BY_ITERATION2")
+    summary = _iteration2_summary(payloads)
+    binding = {b        "iteration2_semantic_root_hash216": summary["roots"]["iteration2_semantic_root_hash216"],b        "source_record_roots_hash216": source_records,b        "target_record_roots_hash216": target_records,b        "pair_evidence_roots_hash216": pair_records,b    }
+    binding["binding_root_hash216"] = hash216("iteration4-iteration2-binding", binding)b    return binding
+
+
+def _function_node(source: str, symbol: str) -> ast.FunctionDef:b    try:b        tree = ast.parse(source)b    except (SyntaxError, ValueError) as exc:b        raise Pass214CallableOracleError("PASS214_ITERATION4_PYTHON_PARSE_FAILED") from exc
+    matches = [item for item in tree.body if isinstance(item, ast.FunctionDef) and item.name == symbol]
+    if len(matches) != 1:b        raise Pass214CallableOracleError("PASS214_ITERATION4_TOP_LEVEL_FUNCTION_REQUIRED")b    node = matches[0]
+    if node.decorator_list:b        raise Pass214CallableOracleError("PASS214_ITERATION4_DECORATED_FUNCTION_REJECTED")b    if any(isinstance(item, (ast.Yield, ast.YieldFrom, ast.Await)) for item in ast.walk(node)):b        raise Pass214CallableOracleError("PASS214_ITERATION4_ASYNC_OR_GENERATOR_REJECTED")b    return node
+
+
+def _direct_imports(tree: ast.AST) -> list[str]:b    values: set[str] = set()b    for item in ast.walk(tree):b        if isinstance(item, ast.Import):b            values.update(alias.name for alias in item.names)b        elif isinstance(item, ast.ImportFrom):b            prefix = "." * item.level + (item.module or "")b            values.add(prefix)b    return sorted(values)b
+
+def _callable_identity(root: Path, spec: Mapping[str, Any], source_commit: str, source_tree: str) -> dict[str, Any]:b    path, target = _safe_path(root, spec.get("path"))b    module = spec.get("module")b    symbol = spec.get("symbol")b    if module != _module_for_path(path):b        raise Pass214CallableOracleError("PASS214_ITERATION4_MODULE_PATH_MISMATCH")
+    if not isinstance(symbol, str) or IDENTIFIER.fullmatch(symbol) is None:b        raise Pass214CallableOracleError("PASS214_ITERATION4_SYMBOL_INVALID")b    tracked_blob = _git(root, "rev-parse", f"HEAD:{path}")b    expected_blob = _require_hex(spec.get("git_blob_sha1"), HEX40, "PASS214_ITERATION4_EXPECTED_BLOB_INVALID")b    data = target.read_bytes()b    actual_blob = git_blob_sha1(data)
+    if tracked_blob != actual_blob or actual_blob != expected_blob:b        raise Pass214CallableOracleError("PASS214_ITERATION4_GIT_BLOB_IDENTITY_MISMATCH")
+    source = data.decode("utf-8")b    node = _function_node(source, symbol)
+    segment = ast.get_source_segment(source, node)b    if segment is None:b        raise Pass214CallableOracleError("PASS214_ITERATION4_FUNCTION_SOURCE_UNAVAILABLE")b    identity = {b        "source_commit": source_commit,b        "source_tree": source_tree,b        "path": path,b        "module": module,b        "symbol": symbol,b        "git_blob_sha1": actual_blob,b        "file_sha256": hashlib.sha256(data).hexdigest(),b        "function_source_sha256": hashlib.sha256(segment.encode("utf-8")).hexdigest(),b        "normalized_ast_root_hash216": hash216("iteration4-normalized-python-ast", ast.dump(node, include_attributes=False)),b        "line_start": node.lineno,b        "line_end": node.end_lineno,b        "direct_imports": _direct_imports(ast.parse(source)),b    }
+    identity["callable_identity_root_hash216"] = hash216("iteration4-callable-identity", identity)b    return identity
+
+
+def _pass213_admission(manifest: Mapping[str, Any], workload_id: str, input_root: str, prior_root: str) -> dict[str, Any]:b    authority = manifest.get("pass213_authority")
+    if not isinstance(authority, Mapping):b        raise Pass214CallableOracleError("PASS214_ITERATION4_PASS213_AUTHORITY_MISSING")b    closure = authority.get("closure_commit")
+    if closure != PASS213_CLOSURE:b        raise Pass214CallableOracleError("PASS214_ITERATION4_PASS213_CLOSURE_MISMATCH")
+    profile = authority.get("authority_profile")
+    if profile not in PASS213_AUTHORITY_PROFILES:b        raise Pass214CallableOracleError("PASS214_ITERATION4_PASS213_AUTHORITY_PROFILE_INVALID")b    roots: dict[str, str] = {}b    for key in (b        "trusted_timestamp_anchor_root_hash216",b        "moving_tensor_root_hash216",b        "native_dispatch_receipt_root_hash216",b    ):b        roots[key] = _require_hex(authority.get(key), HEX64, f"PASS214_ITERATION4_{key.upper()}_INVALID")b    receipt = {b        "schema": "HHS_PASS_214_ITERATION_4_PASS213_CALLABLE_ADMISSION_V1",b        "pass213_closure_commit": closure,b        **roots,b        "workload_id": workload_id,b        "workload_input_root_hash216": input_root,b        "prior_admission_root_hash216": prior_root,b        "admission_scope": "BOUNDED_REPOSITORY_CALLABLE_ORACLE",b        "authority_profile": profile,b        "live_governed_surface_verified": profile == "PASS213_LIVE_GOVERNED_SURFACE",
+        "production_authority_claimed": False,
+        "repository_authority_change_authorized": False,
+    }b    receipt["admission_root_hash216"] = hash216("iteration4-pass213-admission", receipt)b    return receipt
+
+
+def _iteration3_binding(manifest: Mapping[str, Any]) -> dict[str, Any]:b    value = manifest.get("iteration3_binding")
+    if not isinstance(value, Mapping):b        raise Pass214CallableOracleError("PASS214_ITERATION4_ITERATION3_BINDING_MISSING")b    if value.get("implementation_commit") != ITERATION3_IMPLEMENTATION_COMMIT:b        raise Pass214CallableOracleError("PASS214_ITERATION4_ITERATION3_COMMIT_MISMATCH")
+    contract_blob = _require_hex(value.get("contract_blob_sha1"), HEX40, "PASS214_ITERATION4_ITERATION3_CONTRACT_BLOB_INVALID")b    runtime_blob = _require_hex(value.get("runtime_loader_blob_sha1"), HEX40, "PASS214_ITERATION4_ITERATION3_RUNTIME_BLOB_INVALID")b    record_blob = _require_hex(value.get("implementation_record_blob_sha1"), HEX40, "PASS214_ITERATION4_ITERATION3_RECORD_BLOB_INVALID")b    if contract_blob != ITERATION3_CONTRACT_BLOB or runtime_blob != ITERATION3_RUNTIME_LOADER_BLOB or record_blob != ITERATION3_IMPLEMENTATION_RECORD_BLOB:b        raise Pass214CallableOracleError("PASS214_ITERATION4_ITERATION3_BLOB_IDENTITY_MISMATCH")
+    binding = {b        "implementation_commit": ITERATION3_IMPLEMENTATION_COMMIT,
+        "contract_blob_sha1": contract_blob,
+        "runtime_loader_blob_sha1": runtime_blob,b        "implementation_record_blob_sha1": record_blob,
+        "repository_callable_semantic_fidelity_claimed": False,
+    }
+    binding["binding_root_hash216"] = hash216("iteration4-iteration3-binding", binding)b    return binding
+
+
+_CHILD = r'''
+import builtins, contextlib, importlib, io, json, os, pathlib, resource, sys, traceback
+
+def fail(code, detail=""):
+    print(json.dumps({"ok":False,"error_code":code,"detail":detail[:512]}, sort_keys=True, separators=(",",":")))b    raise SystemExit(0)
+
+req=json.loads(sys.stdin.read())broot=pathlib.Path(req["repository_root"]).resolve()bexpected=(root / req["path"]).resolve()bresource.setrlimit(resource.RLIMIT_CORE,(0,0))bresource.setrlimit(resource.RLIMIT_CPU,(req["cpu_seconds"],req["cpu_seconds"]+1))bresource.setrlimit(resource.RLIMIT_AS,(req["address_space_bytes"],req["address_space_bytes"]))bresource.setrlimit(resource.RLIMIT_NOFILE,(64,64))btry: resource.setrlimit(resource.RLIMIT_NPROC,(1,1))bexcept (AttributeError,ValueError,OSError): pass
+_real_open=builtins.open
+
+def guarded_open(file, mode="r", *args, **kwargs):
+    text=str(mode)b    if any(x in text for x in ("w","a","x","+")):b        raise PermissionError("PASS214_ITERATION4_WRITE_DENIED")b    return _real_open(file, mode, *args, **kwargs)
+builtins.open=guarded_open
+
+def audit(event,args):
+    denied=("socket.","subprocess.","os.system","os.spawn","os.posix_spawn","os.remove","os.unlink","os.rename","os.replace","os.rmdir","os.mkdir","os.symlink","os.link","os.chmod","os.chown","os.truncate","tempfile.mkstemp")b    if event.startswith(denied):b        raise PermissionError("PASS214_ITERATION4_AUDIT_DENIED:"+event)b    if event=="open" and len(args)>=2:b        mode=args[1]b        if isinstance(mode,str) and any(x in mode for x in ("w","a","x","+")):b            raise PermissionError("PASS214_ITERATION4_AUDIT_WRITE_DENIED")b    if event=="ctypes.dlopen" and args and args[0]:b        candidate=pathlib.Path(str(args[0])).resolve()b        allowed=(root/"hhs_runtime"/"builds").resolve()b        try: candidate.relative_to(allowed)b        except ValueError: raise PermissionError("PASS214_ITERATION4_CTYPES_LIBRARY_DENIED")bsys.addaudithook(audit)bsys.path.insert(0,str(root))bsys.dont_write_bytecode=Truebos.environ.clear()bos.environ.update({"LANG":"C.UTF-8","LC_ALL":"C.UTF-8","TZ":"UTC","PYTHONHASHSEED":"0","SOURCE_DATE_EPOCH":"0","HHS_DISABLE_C_AUTOBUILD":"1"})
+
+def normalize(value):b    if value is None or isinstance(value,(bool,int,str)): return value
+    if isinstance(value,float):b        raise TypeError("FLOAT_OUTPUT_FORBIDDEN")b    if isinstance(value,bytes): return {"__bytes_hex__":value.hex()}b    if isinstance(value,(list,tuple)): return [normalize(x) for x in value]b    if isinstance(value,dict):b        if not all(isinstance(k,str) for k in value): raise TypeError("NON_STRING_KEY")b        return {k:normalize(value[k]) for k in sorted(value)}b    if value.__class__.__name__=="Fraction" and hasattr(value,"numerator"):b        return {"__fraction__":{"numerator":int(value.numerator),"denominator":int(value.denominator)}}b    if hasattr(value,"to_dict"): return normalize(value.to_dict())b    raise TypeError("UNSUPPORTED_OUTPUT_TYPE:"+type(value).__name__)btry:b    module=importlib.import_module(req["module"])b    actual=pathlib.Path(module.__file__).resolve()b    if actual!=expected: fail("MODULE_FILE_IDENTITY_MISMATCH",str(actual))b    fn=getattr(module,req["symbol"],None)
+    if not callable(fn): fail("CALLABLE_MISSING")b    stdout=io.StringIO(); stderr=io.StringIO()b    with contextlib.redirect_stdout(stdout), contextlib.redirect_stderr(stderr):b        result=fn(*req["args"],**req["kwargs"])b    out_text=stdout.getvalue(); err_text=stderr.getvalue()
+    if len(out_text.encode())>req["max_captured_bytes"] or len(err_text.encode())>req["max_captured_bytes"]:b        fail("CAPTURE_LIMIT_EXCEEDED")b    payload={"ok":True,"result":normalize(result),"stdout_sha256":__import__("hashlib").sha256(out_text.encode()).hexdigest(),"stderr_sha256":__import__("hashlib").sha256(err_text.encode()).hexdigest(),"stdout_bytes":len(out_text.encode()),"stderr_bytes":len(err_text.encode())}
+    print(json.dumps(payload, sort_keys=True, separators=(",",":"), allow_nan=False))bexcept BaseException as exc:b    fail("CALLABLE_EXECUTION_FAILED",type(exc).__name__+":"+str(exc))
+'''
+
+
+def _policy(manifest: Mapping[str, Any]) -> dict[str, int]:b    raw = manifest.get("execution_policy", {})
+    if not isinstance(raw, Mapping):b        raise Pass214CallableOracleError("PASS214_ITERATION4_EXECUTION_POLICY_INVALID")b    result = {b        "timeout_seconds": int(raw.get("timeout_seconds", 60)),b        "cpu_seconds": int(raw.get("cpu_seconds", 30)),b        "address_space_bytes": int(raw.get("address_space_bytes", 1073741824)),b        "max_stdout_bytes": int(raw.get("max_stdout_bytes", 1048576)),b        "max_captured_bytes": int(raw.get("max_captured_bytes", 65536)),b    }
+    bounds = {b        "timeout_seconds": (1, 120),b        "cpu_seconds": (1, 60),b        "address_space_bytes": (134217728, 2147483648),b        "max_stdout_bytes": (1024, 4194304),b        "max_captured_bytes": (0, 262144),b    }
+    for key, (lower, upper) in bounds.items():b        if not lower <= result[key] <= upper:b            raise Pass214CallableOracleError(f"PASS214_ITERATION4_POLICY_BOUND_INVALID:{key}")b    return result
+
+
+def _execute_once(root: Path, identity: Mapping[str, Any], vector: Mapping[str, Any], policy: Mapping[str, int]) -> dict[str, Any]:b    args = vector.get("args", [])b    kwargs = vector.get("kwargs", {})
+    if not isinstance(args, list) or not isinstance(kwargs, Mapping) or not all(isinstance(k, str) for k in kwargs):
+        raise Pass214CallableOracleError("PASS214_ITERATION4_VECTOR_INVALID")b    request = {b        "repository_root": str(root.resolve()),b        "path": identity["path"],b        "module": identity["module"],b        "symbol": identity["symbol"],b        "args": args,b        "kwargs": dict(kwargs),b        "cpu_seconds": policy["cpu_seconds"],b        "address_space_bytes": policy["address_space_bytes"],b        "max_captured_bytes": policy["max_captured_bytes"],b    }
+    env = {b        "PATH": os.environ.get("PATH", "/usr/bin:/bin"),b        "LANG": "C.UTF-8",b        "LC_ALL": "C.UTF-8",b        "TZ": "UTC",b        "PYTHONHASHSEED": "0",b        "SOURCE_DATE_EPOCH": "0",b        "HHS_DISABLE_C_AUTOBUILD": "1",b        "PYTHONDONTWRITEBYTECODE": "1",b    }
+    process = subprocess.Popen(b        [sys.executable, "-I", "-S", "-c", _CHILD],b        cwd=str(root),b        env=env,b        stdin=subprocess.PIPE,b        stdout=subprocess.PIPE,b        stderr=subprocess.PIPE,b        text=True,b        start_new_session=True,b    )b    try:b        stdout, stderr = process.communicate(canonical_json(request), timeout=policy["timeout_seconds"])b    except subprocess.TimeoutExpired as exc:b        try:b            os.killpg(process.pid, signal.SIGKILL)b        except ProcessLookupError:b            pass
+        process.communicate()
+        raise Pass214CallableOracleError("PASS214_ITERATION4_CALLABLE_TIMEOUT") from exc
+    if len(stdout.encode()) > policy["max_stdout_bytes"] or len(stderr.encode()) > policy["max_stdout_bytes"]:b        raise Pass214CallableOracleError("PASS214_ITERATION4_SUBPROCESS_OUTPUT_LIMIT_EXCEEDED")b    if process.returncode != 0:b        raise Pass214CallableOracleError(f"PASS214_ITERATION4_SUBPROCESS_FAILED:{process.returncode}")b    lines = [line for line in stdout.splitlines() if line.strip()]
+    if len(lines) != 1 or stderr:b        raise Pass214CallableOracleError("PASS214_ITERATION4_SUBPROCESS_PROTOCOL_VIOLATION")
+    try:b        payload = json.loads(lines[0])b    except json.JSONDecodeError as exc:b        raise Pass214CallableOracleError("PASS214_ITERATION4_SUBPROCESS_JSON_INVALID") from exc
+    if not isinstance(payload, Mapping):b        raise Pass214CallableOracleError("PASS214_ITERATION4_SUBPROCESS_PAYLOAD_INVALID")b    return dict(payload)
+
+
+def _execute_replay(root: Path, identity: Mapping[str, Any], vector: Mapping[str, Any], policy: Mapping[str, int]) -> dict[str, Any]:b    first = _execute_once(root, identity, vector, policy)
+    second = _execute_once(root, identity, vector, policy)
+    replay_equal = canonical_json(first) == canonical_json(second)b    record = {b        "vector_root_hash216": hash216("iteration4-vector", vector),b        "first": first,b        "second": second,b        "deterministic_replay_equal": replay_equal,b        "execution_succeeded": bool(first.get("ok")) and bool(second.get("ok")),
+    }b    record["execution_root_hash216"] = hash216("iteration4-callable-execution", record)b    return record
+
+
+def _apply_adapter(value: Any, adapter: Mapping[str, Any]) -> Any:b    kind = adapter.get("class", "IDENTITY")
+    config = adapter.get("config", {})
+    if kind not in ALLOWED_ADAPTERS or not isinstance(config, Mapping):b        raise Pass214CallableOracleError("PASS214_ITERATION4_ADAPTER_INVALID")b    if kind == "IDENTITY":b        return value
+    if kind == "CANONICAL_BYTES_ENVELOPE":b        return {"canonical_utf8_hex": canonical_json(value).encode("utf-8").hex()}b    if not isinstance(value, Mapping):b        raise Pass214CallableOracleError("PASS214_ITERATION4_MAPPING_ADAPTER_REQUIRES_MAPPING")b    if kind == "KEY_RENAME":b        mapping = config.get("mapping")b        if not isinstance(mapping, Mapping) or not all(isinstance(k, str) and isinstance(v, str) for k, v in mapping.items()):b            raise Pass214CallableOracleError("PASS214_ITERATION4_KEY_RENAME_CONFIG_INVALID")b        if len(set(mapping.values())) != len(mapping):b            raise Pass214CallableOracleError("PASS214_ITERATION4_KEY_RENAME_COLLISION")
+        return {mapping.get(k, k): value[k] for k in sorted(value)}b    fields = config.get("fields")
+    if not isinstance(fields, list) or not all(isinstance(item, str) for item in fields) or len(fields) != len(set(fields)):b        raise Pass214CallableOracleError("PASS214_ITERATION4_FIELD_PROJECTION_CONFIG_INVALID")b    if any(item not in value for item in fields):b        raise Pass214CallableOracleError("PASS214_ITERATION4_FIELD_PROJECTION_MISSING_FIELD")b    return {item: value[item] for item in fields}
+
+
+def _evaluate_workload(b    root: Path,b    workload: Mapping[str, Any],b    iteration2_payloads: Mapping[str, Any],b    source_commit: str,b    source_tree: str,b    policy: Mapping[str, int],b    admission: Mapping[str, Any],b    iteration3: Mapping[str, Any],b) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any]]:b    workload_id = workload.get("workload_id")
+    if not isinstance(workload_id, str) or not workload_id or len(workload_id) > 128:b        raise Pass214CallableOracleError("PASS214_ITERATION4_WORKLOAD_ID_INVALID")b    source_spec = workload.get("source")b    target_spec = workload.get("target")b    vectors = workload.get("vectors")b    adapter = workload.get("adapter", {"class": "IDENTITY", "config": {}})
+    if not isinstance(source_spec, Mapping) or not isinstance(target_spec, Mapping):b        raise Pass214CallableOracleError("PASS214_ITERATION4_CALLABLE_SPEC_INVALID")b    if not isinstance(vectors, list) or not 1 <= len(vectors) <= 8 or not all(isinstance(v, Mapping) for v in vectors):
+        raise Pass214CallableOracleError("PASS214_ITERATION4_VECTOR_SET_INVALID")b    source_identity = _callable_identity(root, source_spec, source_commit, source_tree)b    target_identity = _callable_identity(root, target_spec, source_commit, source_tree)b    i2 = _bind_iteration2(b        iteration2_payloads,b        source_identity["path"],b        source_identity["symbol"],b        target_identity["path"],b        target_identity["symbol"],b    )b    source_runs = [_execute_replay(root, source_identity, vector, policy) for vector in vectors]b    target_runs = [_execute_replay(root, target_identity, vector, policy) for vector in vectors]b    all_success = all(item["execution_succeeded"] and item["deterministic_replay_equal"] for item in source_runs + target_runs)b    equivalent = all_successb    adapted = []
+    if all_success:b        for source_run, target_run in zip(source_runs, target_runs, strict=True):b            source_value = source_run["first"]["result"]b            target_value = _apply_adapter(target_run["first"]["result"], adapter)b            adapted.append(
+                {
+                    "source_result_root_hash216": hash216("iteration4-result", source_value),
+                    "adapted_target_result_root_hash216": hash216("iteration4-result", target_value),
+                    "equal": canonical_json(source_value) == canonical_json(target_value),
+                }
+            )b        equivalent = all(item["equal"] for item in adapted)b    if not all_success:b        state = "CALLABLE_EXECUTION_ERROR"b    elif equivalent and adapter.get("class", "IDENTITY") == "IDENTITY":b        state = "CALLABLE_EQUIVALENCE_VERIFIED"b    elif equivalent:b        state = "CALLABLE_ADAPTER_EQUIVALENCE_VERIFIED"b    else:b        state = "CALLABLE_DIVERGENCE"b    record = {b        "schema": "HHS_PASS_214_ITERATION_4_CALLABLE_ORACLE_RECORD_V1",b        "contract": CONTRACT,b        "workload_id": workload_id,b        "source_identity": source_identity,b        "target_identity": target_identity,b        "iteration2_binding": i2,b        "iteration3_binding_root_hash216": iteration3["binding_root_hash216"],b        "pass213_admission_root_hash216": admission["admission_root_hash216"],b        "vectors_root_hash216": hash216("iteration4-vectors", vectors),b        "adapter": adapter,b        "source_executions": source_runs,b        "target_executions": target_runs,b        "comparisons": adapted,b        "oracle_state": state,
+        "repository_callables_executed": True,b        "repository_callable_semantic_fidelity_claimed": True,b        "automatic_authority_merge": False,
+        "repository_authority_change_authorized": False,
+    }b    record["record_root_hash216"] = hash216("iteration4-callable-record", record)b    if state == "CALLABLE_EQUIVALENCE_VERIFIED":b        decision = "DUPLICATE_CALLABLE_BEHAVIOR_CONFIRMED_NON_PROMOTING"b    elif state == "CALLABLE_ADAPTER_EQUIVALENCE_VERIFIED":b        decision = "PAIR_SCOPED_ADAPTER_AUTHORIZED_NON_PROMOTING"b    elif state == "CALLABLE_DIVERGENCE":b        decision = "CONFLICT_RETAINED_FOR_FURTHER_ADJUDICATION"b    else:b        decision = "EXECUTION_FAILURE_RETAINED_NO_AUTHORITY_CHANGE"b    adjudication = {b        "schema": "HHS_PASS_214_ITERATION_4_CALLABLE_ADJUDICATION_V1",b        "workload_id": workload_id,b        "callable_record_root_hash216": record["record_root_hash216"],b        "decision": decision,b        "adapter_authorized_for_exact_pair": state == "CALLABLE_ADAPTER_EQUIVALENCE_VERIFIED",b        "source_promoted": False,
+        "target_promoted": False,
+        "source_quarantined": False,
+        "target_quarantined": False,
+        "authority_merged": False,
+    }b    adjudication["adjudication_root_hash216"] = hash216("iteration4-callable-adjudication", adjudication)b    edge = {b        "schema": "HHS_PASS_214_ITERATION_4_CALLABLE_EDGE_V1",b        "source_callable_identity_root_hash216": source_identity["callable_identity_root_hash216"],
+        "target_callable_identity_root_hash216": target_identity["callable_identity_root_hash216"],
+        "oracle_state": state,
+        "adapter_class": adapter.get("class", "IDENTITY"),
+        "adjudication_root_hash216": adjudication["adjudication_root_hash216"],
+        "runtime_verified": state in {"CALLABLE_EQUIVALENCE_VERIFIED", "CALLABLE_ADAPTER_EQUIVALENCE_VERIFIED", "CALLABLE_DIVERGENCE"},
+        "authority_transfer": False,
+    }b    edge["edge_root_hash216"] = hash216("iteration4-callable-edge", edge)b    return record, adjudication, edge
+
+
+def build_callable_oracle_bundle(
+    repository_root: Path,b    iteration2_directory: Path | None,
+    manifest: Mapping[str, Any],
+    *,b    iteration2_payloads: Mapping[str, Any] | None = None,
+) -> dict[str, Any]:b    root = repository_root.resolve()b    if not (root / ".git").exists():b        raise Pass214CallableOracleError("PASS214_ITERATION4_GIT_METADATA_REQUIRED")b    if manifest.get("schema") != "HHS_PASS_214_ITERATION_4_CALLABLE_ORACLE_MANIFEST_V1":b        raise Pass214CallableOracleError("PASS214_ITERATION4_MANIFEST_SCHEMA_INVALID")b    payloads = iteration2_payloads if iteration2_payloads is not None else _load_iteration2_outputs(Path(iteration2_directory or ""))
+    if not isinstance(payloads, Mapping):b        raise Pass214CallableOracleError("PASS214_ITERATION4_ITERATION2_PAYLOADS_INVALID")b    summary2 = _iteration2_summary(payloads)
+    source_commit = _git(root, "rev-parse", "HEAD")b    source_tree = _git(root, "rev-parse", "HEAD^{tree}")b    if source_commit != summary2["source_commit"] or source_tree != summary2["source_tree"]:b        raise Pass214CallableOracleError("PASS214_ITERATION4_ITERATION2_TREE_BINDING_MISMATCH")
+    iteration3 = _iteration3_binding(manifest)b    policy = _policy(manifest)b    workloads = manifest.get("workloads")
+    if not isinstance(workloads, list) or not 1 <= len(workloads) <= 32 or not all(isinstance(item, Mapping) for item in workloads):b        raise Pass214CallableOracleError("PASS214_ITERATION4_WORKLOADS_INVALID")b    ids = [item.get("workload_id") for item in workloads]
+    if len(ids) != len(set(ids)):b        raise Pass214CallableOracleError("PASS214_ITERATION4_DUPLICATE_WORKLOAD_ID")b    records: list[dict[str, Any]] = []
+    adjudications: list[dict[str, Any]] = []
+    edges: list[dict[str, Any]] = []
+    admissions: list[dict[str, Any]] = []
+    prior = "0" * 64
+    for workload in workloads:b        input_root = hash216("iteration4-workload-input", workload)b        admission = _pass213_admission(manifest, str(workload["workload_id"]), input_root, prior)
+        prior = admission["admission_root_hash216"]b        admissions.append(admission)b        record, adjudication, edge = _evaluate_workload(b            root, workload, payloads, source_commit, source_tree, policy, admission, iteration3
+        )b        records.append(record)b        adjudications.append(adjudication)b        edges.append(edge)b    roots = {b        "pass213_admissions_root_hash216": hash216("iteration4-pass213-admissions", admissions),b        "callable_records_root_hash216": hash216("iteration4-callable-records", records),
+        "adjudications_root_hash216": hash216("iteration4-adjudications", adjudications),b        "compatibility_edges_root_hash216": hash216("iteration4-callable-edges", edges),b        "iteration3_binding_root_hash216": iteration3["binding_root_hash216"],b        "iteration2_semantic_root_hash216": summary2["roots"]["iteration2_semantic_root_hash216"],b    }
+    semantic_input = {b        "contract": CONTRACT,b        "iteration": ITERATION,b        "source_commit": source_commit,b        "source_tree": source_tree,b        "roots": roots,b    }b    roots["iteration4_semantic_root_hash216"] = hash216("iteration4-semantic-root", semantic_input)
+    coverage = {b        "workloads": len(records),
+        "repository_callables_executed": len(records) * 2,b        "execution_attempts_including_replay": sum(len(item["source_executions"]) + len(item["target_executions"]) for item in records) * 2,b        "equivalence_verified": sum(item["oracle_state"] == "CALLABLE_EQUIVALENCE_VERIFIED" for item in records),
+        "adapter_equivalence_verified": sum(item["oracle_state"] == "CALLABLE_ADAPTER_EQUIVALENCE_VERIFIED" for item in records),
+        "divergent": sum(item["oracle_state"] == "CALLABLE_DIVERGENCE" for item in records),
+        "execution_error": sum(item["oracle_state"] == "CALLABLE_EXECUTION_ERROR" for item in records),
+        "automatic_authority_merges": 0,b        "authority_promotions": 0,b        "quarantines": 0,b        "terminal_roots_minted": 0,b        "pass213_live_admissions": sum(item["live_governed_surface_verified"] for item in admissions),b        "pass213_validation_fixture_admissions": sum(not item["live_governed_surface_verified"] for item in admissions),b    }
+    summary = {b        "schema": "HHS_PASS_214_ITERATION_4_SUMMARY_V1",b        "classification": RUNTIME_CLASSIFICATION,b        "contract": CONTRACT,b        "iteration": ITERATION,b        "source_commit": source_commit,b        "source_tree": source_tree,b        "execution_policy": policy,b        "coverage": coverage,b        "roots": roots,b        "repository_callable_semantic_fidelity_claimed": True,b        "repository_authority_change_authorized": False,
+        "pass214_terminal_roots_minted": False,
+        "pass215_authorized": False,
+    }b    summary["receipt_hash72"] = hash72("hhs_pass214_iteration4_callable_oracle_v1", summary)b    result = {b        "callable_records": records,
+        "adjudications": adjudications,b        "compatibility_edges": edges,b        "iteration4_summary": summary,b        "pass213_admissions": admissions,b        "iteration3_binding": iteration3,
+    }b    validate_callable_oracle_bundle(result)b    return result
+
+
+def validate_callable_oracle_bundle(bundle: Mapping[str, Any]) -> None:b    records = bundle.get("callable_records")
+    adjudications = bundle.get("adjudications")b    edges = bundle.get("compatibility_edges")
+    summary = bundle.get("iteration4_summary")
+    admissions = bundle.get("pass213_admissions")
+    iteration3 = bundle.get("iteration3_binding")
+    if not all(isinstance(item, list) for item in (records, adjudications, edges, admissions)) or not isinstance(summary, Mapping) or not isinstance(iteration3, Mapping):b        raise Pass214CallableOracleError("PASS214_ITERATION4_BUNDLE_STRUCTURE_INVALID")b    if not (len(records) == len(adjudications) == len(edges) == len(admissions)):b        raise Pass214CallableOracleError("PASS214_ITERATION4_BUNDLE_LENGTH_MISMATCH")
+    if any(item.get("oracle_state") not in ORACLE_STATES for item in records):b        raise Pass214CallableOracleError("PASS214_ITERATION4_ORACLE_STATE_INVALID")b    workload_ids: set[str] = set()b    for index, record in enumerate(records):b        check = dict(record); claimed = check.pop("record_root_hash216", None)
+        if claimed != hash216("iteration4-callable-record", check):b            raise Pass214CallableOracleError("PASS214_ITERATION4_RECORD_ROOT_MISMATCH")
+        workload_id = record.get("workload_id")
+        if not isinstance(workload_id, str) or workload_id in workload_ids:b            raise Pass214CallableOracleError("PASS214_ITERATION4_RECORD_WORKLOAD_ID_INVALID")b        workload_ids.add(workload_id)
+        if record.get("automatic_authority_merge") or record.get("repository_authority_change_authorized"):b            raise Pass214CallableOracleError("PASS214_ITERATION4_UNAUTHORIZED_AUTHORITY_CHANGE")
+        if record.get("iteration3_binding_root_hash216") != iteration3.get("binding_root_hash216"):b            raise Pass214CallableOracleError("PASS214_ITERATION4_RECORD_ITERATION3_BINDING_MISMATCH")
+        if record.get("pass213_admission_root_hash216") != admissions[index].get("admission_root_hash216"):b            raise Pass214CallableOracleError("PASS214_ITERATION4_RECORD_ADMISSION_BINDING_MISMATCH")
+        i2 = record.get("iteration2_binding")
+        if not isinstance(i2, Mapping) or i2.get("iteration2_semantic_root_hash216") != summary.get("roots", {}).get("iteration2_semantic_root_hash216"):b            raise Pass214CallableOracleError("PASS214_ITERATION4_RECORD_ITERATION2_BINDING_MISMATCH")
+        for side in ("source_executions", "target_executions"):b            runs = record.get(side)b            if not isinstance(runs, list) or not runs:
+                raise Pass214CallableOracleError("PASS214_ITERATION4_EXECUTION_RECORDS_MISSING")b            for run in runs:
+                if not isinstance(run, Mapping):b                    raise Pass214CallableOracleError("PASS214_ITERATION4_EXECUTION_RECORD_INVALID")b                replay = canonical_json(run.get("first")) == canonical_json(run.get("second"))
+                if bool(run.get("deterministic_replay_equal")) != replay:b                    raise Pass214CallableOracleError("PASS214_ITERATION4_REPLAY_FLAG_MISMATCH")
+                run_check = dict(run); run_claimed = run_check.pop("execution_root_hash216", None)
+                if run_claimed != hash216("iteration4-callable-execution", run_check):b                    raise Pass214CallableOracleError("PASS214_ITERATION4_EXECUTION_ROOT_MISMATCH")
+    for index, item in enumerate(adjudications):b        check = dict(item); claimed = check.pop("adjudication_root_hash216", None)
+        if claimed != hash216("iteration4-callable-adjudication", check):b            raise Pass214CallableOracleError("PASS214_ITERATION4_ADJUDICATION_ROOT_MISMATCH")
+        if item.get("workload_id") != records[index].get("workload_id") or item.get("callable_record_root_hash216") != records[index].get("record_root_hash216"):b            raise Pass214CallableOracleError("PASS214_ITERATION4_ADJUDICATION_RECORD_BINDING_MISMATCH")
+        if any(item.get(key) for key in ("source_promoted", "target_promoted", "source_quarantined", "target_quarantined", "authority_merged")):b            raise Pass214CallableOracleError("PASS214_ITERATION4_ADJUDICATION_PROMOTION_FORBIDDEN")b    for index, item in enumerate(edges):b        check = dict(item); claimed = check.pop("edge_root_hash216", None)
+        if claimed != hash216("iteration4-callable-edge", check):b            raise Pass214CallableOracleError("PASS214_ITERATION4_EDGE_ROOT_MISMATCH")
+        source_identity = records[index].get("source_identity", {})
+        target_identity = records[index].get("target_identity", {})
+        if (b            item.get("source_callable_identity_root_hash216") != source_identity.get("callable_identity_root_hash216")b            or item.get("target_callable_identity_root_hash216") != target_identity.get("callable_identity_root_hash216")b            or item.get("adjudication_root_hash216") != adjudications[index].get("adjudication_root_hash216")
+        ):b            raise Pass214CallableOracleError("PASS214_ITERATION4_EDGE_BINDING_MISMATCH")
+        if item.get("authority_transfer"):b            raise Pass214CallableOracleError("PASS214_ITERATION4_EDGE_AUTHORITY_TRANSFER_FORBIDDEN")b    prior = "0" * 64
+    for index, item in enumerate(admissions):
+        if item.get("workload_id") != records[index].get("workload_id"):b            raise Pass214CallableOracleError("PASS214_ITERATION4_ADMISSION_WORKLOAD_BINDING_MISMATCH")
+        if item.get("prior_admission_root_hash216") != prior:b            raise Pass214CallableOracleError("PASS214_ITERATION4_ADMISSION_CHAIN_BROKEN")
+        check = dict(item); claimed = check.pop("admission_root_hash216", None)
+        if claimed != hash216("iteration4-pass213-admission", check):b            raise Pass214CallableOracleError("PASS214_ITERATION4_ADMISSION_ROOT_MISMATCH")
+        prior = claimed
+    i3check = dict(iteration3); i3claimed = i3check.pop("binding_root_hash216", None)
+    if i3claimed != hash216("iteration4-iteration3-binding", i3check):b        raise Pass214CallableOracleError("PASS214_ITERATION4_ITERATION3_BINDING_ROOT_MISMATCH")
+    roots = summary.get("roots")
+    if not isinstance(roots, Mapping):b        raise Pass214CallableOracleError("PASS214_ITERATION4_SUMMARY_ROOTS_INVALID")b    expected = {b        "pass213_admissions_root_hash216": hash216("iteration4-pass213-admissions", admissions),b        "callable_records_root_hash216": hash216("iteration4-callable-records", records),
+        "adjudications_root_hash216": hash216("iteration4-adjudications", adjudications),b        "compatibility_edges_root_hash216": hash216("iteration4-callable-edges", edges),b        "iteration3_binding_root_hash216": iteration3["binding_root_hash216"],b    }
+    for key, value in expected.items():b        if roots.get(key) != value:b            raise Pass214CallableOracleError(f"PASS214_ITERATION4_SUMMARY_ROOT_MISMATCH:{key}")b    semantic_input = {b        "contract": summary.get("contract"),b        "iteration": summary.get("iteration"),b        "source_commit": summary.get("source_commit"),b        "source_tree": summary.get("source_tree"),b        "roots": {key: value for key, value in roots.items() if key != "iteration4_semantic_root_hash216"},b    }
+    if roots.get("iteration4_semantic_root_hash216") != hash216("iteration4-semantic-root", semantic_input):b        raise Pass214CallableOracleError("PASS214_ITERATION4_SEMANTIC_ROOT_MISMATCH")
+    check_summary = dict(summary); receipt = check_summary.pop("receipt_hash72", None)
+    if receipt != hash72("hhs_pass214_iteration4_callable_oracle_v1", check_summary):b        raise Pass214CallableOracleError("PASS214_ITERATION4_HASH72_RECEIPT_MISMATCH")
+    coverage = summary.get("coverage")
+    if not isinstance(coverage, Mapping):b        raise Pass214CallableOracleError("PASS214_ITERATION4_COVERAGE_INVALID")b    expected_coverage = {b        "workloads": len(records),
+        "repository_callables_executed": len(records) * 2,b        "execution_attempts_including_replay": sum(len(item["source_executions"]) + len(item["target_executions"]) for item in records) * 2,b        "equivalence_verified": sum(item["oracle_state"] == "CALLABLE_EQUIVALENCE_VERIFIED" for item in records),
+        "adapter_equivalence_verified": sum(item["oracle_state"] == "CALLABLE_ADAPTER_EQUIVALENCE_VERIFIED" for item in records),
+        "divergent": sum(item["oracle_state"] == "CALLABLE_DIVERGENCE" for item in records),
+        "execution_error": sum(item["oracle_state"] == "CALLABLE_EXECUTION_ERROR" for item in records),
+        "automatic_authority_merges": 0,b        "authority_promotions": 0,b        "quarantines": 0,b        "terminal_roots_minted": 0,b        "pass213_live_admissions": sum(item["live_governed_surface_verified"] for item in admissions),b        "pass213_validation_fixture_admissions": sum(not item["live_governed_surface_verified"] for item in admissions),b    }
+    if dict(coverage) != expected_coverage:b        raise Pass214CallableOracleError("PASS214_ITERATION4_COVERAGE_MISMATCH")
+    if summary.get("repository_authority_change_authorized") or summary.get("pass214_terminal_roots_minted") or summary.get("pass215_authorized"):b        raise Pass214CallableOracleError("PASS214_ITERATION4_TERMINAL_AUTHORITY_FORBIDDEN")b
+
+def write_callable_oracle_outputs(bundle: Mapping[str, Any], directory: Path) -> dict[str, Path]:b    validate_callable_oracle_bundle(bundle)
+    directory.mkdir(parents=True, exist_ok=True)b    paths: dict[str, Path] = {}
+    for key, filename in OUTPUT_FILES.items():b        path = directory / filenameb        path.write_text(canonical_json(bundle[key]) + "\n", encoding="utf-8")b        paths[key] = pathb    extras = {"pass213_admissions": "pass213_callable_admissions.json", "iteration3_binding": "iteration3_callable_binding.json"}
+    for key, filename in extras.items():b        path = directory / filenameb        path.write_text(canonical_json(bundle[key]) + "\n", encoding="utf-8")b        paths[key] = pathb    return pathsb
+
+def load_and_validate_callable_oracle_outputs(directory: Path) -> dict[str, Any]:b    names = {**OUTPUT_FILES, "pass213_admissions": "pass213_callable_admissions.json", "iteration3_binding": "iteration3_callable_binding.json"}
+    payloads: dict[str, Any] = {}
+    for key, filename in names.items():b        path = directory / filenameb        if not path.is_file():b            raise Pass214CallableOracleError(f"PASS214_ITERATION4_OUTPUT_MISSING:{filename}")b        try:b            payloads[key] = json.loads(path.read_text(encoding="utf-8"))b        except (OSError, json.JSONDecodeError) as exc:b            raise Pass214CallableOracleError(f"PASS214_ITERATION4_OUTPUT_INVALID:{filename}") from exc
+    validate_callable_oracle_bundle(payloads)
+    return payloads

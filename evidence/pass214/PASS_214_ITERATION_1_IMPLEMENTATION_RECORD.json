@@ -1,0 +1,101 @@
+{
+  "schema": "HHS_PASS_214_ITERATION_1_IMPLEMENTATION_RECORD_V1",
+  "pass": 214,
+  "iteration": 1,
+  "classification": "HHS_PASS_214_ITERATION_1_REPOSITORY_CENSUS_IMPLEMENTED",
+  "foundation": "PASS_213_AUTHORITATIVE_CLOSURE_86ec461818682fc87232740758769602e8f9fe05",
+  "branch": "agent/pass214-operating-compression-gradient",
+  "validated_implementation_head": "7b43f96a2280fbf4d9def68fb4836baf5ff165d8",
+  "validated_pull_request_merge_commit": "7cc9bdd7041652e9a0b8aa42884d34ad0d16a529",
+  "validated_tree": "c70b0ab14c816c78d8d4707fb8ed956aa8af53ef",
+  "runtime": "hhs_backend/runtime/hhs_pass214_repository_census_v1.py",
+  "runner": "tools/pass214_repository_census.py",
+  "test": "tests/test_hhs_pass214_repository_census_v1.py",
+  "validation": {
+    "workflow": "Pass 214 Compound Optimization Benchmark Authority",
+    "run_id": 31112362923,
+    "job_id": 92653139694,
+    "conclusion": "success",
+    "combined_tests_passed": 16,
+    "artifact": "pass214-iteration1-census-31112362923",
+    "artifact_id": 8972223655,
+    "artifact_size_bytes": 2148203,
+    "artifact_digest": "sha256:f59bb66da86a6aeb8a3c7c6d88802113cb8f83f9a47acf297f15aa144bc1fb77"
+  },
+  "coverage": {
+    "tracked_tree_entries": 5791,
+    "classified_tree_entries": 5791,
+    "unique_paths": 5791,
+    "classification_complete": true,
+    "candidate_symbols": 19445,
+    "exact_duplicate_groups": 90,
+    "exact_duplicate_paths": 204,
+    "static_scan_errors": 0,
+    "pre_pass_or_unnumbered_entries": 1884,
+    "numbered_pass_minimum": 2,
+    "numbered_pass_maximum": 214
+  },
+  "disposition_counts": {
+    "SCANNED_CALLABLE": 1537,
+    "SCANNED_COMPATIBLE_READ_ONLY": 266,
+    "SCANNED_CONTRACT_ONLY": 1123,
+    "SCANNED_DATA_AUTHORITY": 727,
+    "SCANNED_DUPLICATE": 204,
+    "SCANNED_EXPERIMENTAL": 71,
+    "SCANNED_NOT_APPLICABLE": 764,
+    "SCANNED_QUARANTINED": 4,
+    "SCANNED_SUPERSEDED": 2,
+    "SCANNED_TEST_OR_EVIDENCE": 1093
+  },
+  "optimization_family_counts": {
+    "cache_retrieval_reuse": 242,
+    "compiled_rom_native_dispatch": 802,
+    "compiler_artifact_packaging": 1396,
+    "compression_hydration_recovery": 353,
+    "delta_continuation_dependency": 539,
+    "graphics_audio_video_temporal": 253,
+    "integrity_receipt_lineage": 1026,
+    "multimodal_machine_learning": 453,
+    "parallel_accelerator": 124,
+    "source_storage_lifecycle": 556
+  },
+  "modality_counts": {
+    "audio": 51,
+    "binary_object": 652,
+    "game_physics": 124,
+    "image_graphics": 68,
+    "machine_learning": 220,
+    "source_code": 605,
+    "structured_data": 1697,
+    "text": 285,
+    "video_animation": 121
+  },
+  "roots": {
+    "repository_tree_root_hash216": "8c4232815c2b4acc3c903cfd4027d7db63cb0906cef51d3076e0af7e2f078231",
+    "path_census_root_hash216": "57e54806e757aeb21ac898473c84229b719ecedf824ccafa2144a77479c3c34f",
+    "optimization_registry_root_hash216": "fb19c59908624491e8e5fc81caf216c02c61101cadc96c55645732f9155d09e6",
+    "duplicate_relation_root_hash216": "3b39ac81f0c160c7b741bd33ec514c9f2578e4310a374369d3dae81cbbf2c342",
+    "static_scan_error_root_hash216": "87681a2dd93f9ffcb712ca6bfbc0eedd46c16040a2a6011f73cc70e279317235",
+    "iteration1_semantic_root_hash216": "3be4e52f0e4e0cf55dc09b8d0fc929423c954cf30f3f3dbfd86f5f968dbc38bf",
+    "receipt_hash72": "EL3RkWZJphw-HYOF(iKyPRN4xcM*j)uuHmd>WZ!At38Th*p8pyERS3m?1eAWgGUNckxaP8UC"
+  },
+  "outputs": [
+    "repository_tree_manifest.json",
+    "path_census.json",
+    "optimization_registry.json",
+    "duplicate_relations.json",
+    "static_scan_errors.json",
+    "iteration1_summary.json",
+    "pass214-iteration1-validation.log"
+  ],
+  "claim_boundary": {
+    "repository_census_complete_for_bound_git_tree": true,
+    "candidate_symbols_statically_discovered": true,
+    "callable_runtime_conformance_complete": false,
+    "compatibility_graph_complete": false,
+    "compound_benchmarks_complete": false,
+    "pass214_terminal_roots_minted": false,
+    "pass215_benchmark_authorized": false
+  },
+  "next_action": "Pass 214 Iteration 2 callable conformance and compatibility-graph construction."
+}

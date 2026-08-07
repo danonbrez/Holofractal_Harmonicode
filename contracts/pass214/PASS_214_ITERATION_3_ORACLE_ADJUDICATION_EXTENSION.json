@@ -1,0 +1,54 @@
+{
+  "schema": "HHS_PASS_214_ITERATION_3_CONTRACT_EXTENSION_V1",
+  "contract": "HHS-P214-RW-CDM-MML-COBA-H72-H216-VM5184-G243",
+  "pass": 214,
+  "iteration": 3,
+  "classification": "HHS_PASS_214_ITERATION_3_ADMITTED_ORACLE_MODEL_AND_ADAPTER_PROOF_IMPLEMENTED",
+  "inherits": {
+    "complete_pre_pass_foundation": true,
+    "passes": "001-213",
+    "pass213_closure_commit": "86ec461818682fc87232740758769602e8f9fe05",
+    "iteration1_semantic_root_hash216": "3be4e52f0e4e0cf55dc09b8d0fc929423c954cf30f3f3dbfd86f5f968dbc38bf",
+    "iteration2_required": true
+  },
+  "oracle_scope": "MANIFESTED_PASS213_ADMITTED_PURE_HANDLER_MODEL",
+  "requirements": [
+    "consume and validate all Iteration 2 output roots before oracle-model execution",
+    "admit every workload through a receipt bound to Pass 213 closure, trusted timestamp, moving tensor, native dispatch receipt, and prior admission lineage",
+    "execute only an explicit built-in pure-handler registry",
+    "bind each model handler to the exact Iteration 2 symbol and implementation roots without claiming semantic fidelity to the repository callable",
+    "preserve deterministic vector, record, adapter, adjudication, edge, semantic, and Hash72 receipt roots",
+    "forbid candidate-module imports, automatic authority merging, repository authority changes, terminal Pass 214 roots, and Pass 215 authorization"
+  ],
+  "oracle_states": [
+    "ORACLE_EQUIVALENCE_VERIFIED",
+    "ORACLE_DIVERGENCE",
+    "ORACLE_INADMISSIBLE",
+    "ORACLE_HANDLER_UNRESOLVED"
+  ],
+  "model_adjudications": [
+    "REFERENCE_MODEL_BEHAVIOR_RETAINED",
+    "IDENTITY_PRESERVING_ADAPTER_MODEL_VERIFIED",
+    "DIVERGENT_ORACLE_MODEL_RECORDED",
+    "UNRESOLVED"
+  ],
+  "adapter_classes": [
+    "IDENTITY",
+    "POSITIONAL_TO_NAMED",
+    "KEY_RENAME",
+    "FIELD_PROJECTION",
+    "CANONICAL_BYTES_ENVELOPE"
+  ],
+  "claim_boundary": {
+    "manifested_model_adjudication_supported": true,
+    "identity_preserving_adapter_proofs_supported": true,
+    "repository_callable_execution_supported": false,
+    "repository_callable_semantic_fidelity_claimed": false,
+    "repository_authority_change_authorized": false,
+    "repository_wide_oracle_coverage_complete": false,
+    "all_authority_conflicts_resolved": false,
+    "compound_benchmark_complete": false,
+    "pass214_terminal_roots_minted": false,
+    "pass215_authorized": false
+  }
+}

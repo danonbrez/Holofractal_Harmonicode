@@ -1,0 +1,30 @@
+{
+  "authority_promotion": false,
+  "current_payload_sha256": "3169204e65935b44fc7269e66568a5aa0325a4db603947af50209a5d2f59142a",
+  "dependency_scoped_iteration4_test_exit_code": 0,
+  "dependency_scoped_iteration4_tests_passed": true,
+  "exact_payload_recovered": true,
+  "exact_source_evidence_path": "evidence/pass214/recovery/iteration4_runtime_exact_recovered.py.txt",
+  "expected_payload_sha256": "392d655df87628832fbd14d19301bc7dc8c002cf69b571fc6f12ab867961930d",
+  "expected_source_sha256": "a946cde1338bc33eb6873c13125b306a45882dec46fd29ac4820ce38ea5612a9",
+  "frozen_identity_rebound": false,
+  "pass215_authorized": false,
+  "payload_path": "hhs_backend/runtime/pass214_i4_payload/runtime.py.gz",
+  "payload_size": 11111,
+  "pytest_report_path": "evidence/pass214/recovery/iteration4_exact_recovery_pytest.txt",
+  "python_compile": "passed",
+  "recovered_payload_sha256": "392d655df87628832fbd14d19301bc7dc8c002cf69b571fc6f12ab867961930d",
+  "recovered_source_sha256": "a946cde1338bc33eb6873c13125b306a45882dec46fd29ac4820ce38ea5612a9",
+  "recovered_source_size": 48547,
+  "repair_validated": true,
+  "schema": "HHS_PASS_214_ITERATION_4_EXACT_BYTE_RECOVERY_V2",
+  "search_seconds": 2.585319,
+  "search_space": "EXACT_PAYLOAD_SHA256_HAMMING_DISTANCE_ONE_BYTE",
+  "single_bit_match": null,
+  "single_byte_match": {
+    "from": 190,
+    "offset": 973,
+    "to": 222
+  },
+  "terminal_pass214_root_minted": false
+}

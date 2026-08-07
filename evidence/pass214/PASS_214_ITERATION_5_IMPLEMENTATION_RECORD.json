@@ -1,0 +1,74 @@
+{
+  "base_commit": "690ed71ce2fe7233b73b0a0660e7c49a2ba898ae",
+  "branch": "agent/pass214-operating-compression-gradient",
+  "changed_surfaces": [
+    "hhs_backend/runtime/hhs_pass214_iteration5_callable_corpus_v1.py",
+    "hhs_backend/runtime/pass214_i5_payload/runtime.py.gz",
+    "tools/pass214_iteration5_callable_corpus.py",
+    "tools/pass214_iteration5_manifest.py",
+    "tests/test_hhs_pass214_iteration5_callable_corpus_v1.py",
+    ".github/workflows/pass214-iteration5-callable-corpus.yml",
+    ".github/workflows/pass214-compound-optimization-benchmark.yml",
+    "scripts/run_pass214_contract_validation.sh",
+    "docs/pass214/ITERATION_5_FIVE_FAMILY_CALLABLE_CORPUS.md",
+    "docs/pass214/RESTART_RECORD.md"
+  ],
+  "classification": "HHS_PASS_214_ITERATION_5_FIVE_FAMILY_CALLABLE_CORPUS_IMPLEMENTED",
+  "commits": {
+    "artifact_retention_routing": "14908e2ce925a71073c6de60298c0d45fd5d7984",
+    "cumulative_validation_wiring": "119e7fe4ae7e42965526d70f6ec97b03bd35613e",
+    "dispatch_enabled_workflow": "5a0db8ad037af87cb777e0160dd86bdad6631215",
+    "implementation": "a83dcc82846930d598b9873f5df3482e8d440701"
+  },
+  "families": [
+    "vector_cache",
+    "wrapper_duplication",
+    "numeric_lookup",
+    "serialization_import",
+    "coprime_lookup"
+  ],
+  "hosted_validation": {
+    "check_suites_emitted": 0,
+    "exact_head": "14908e2ce925a71073c6de60298c0d45fd5d7984",
+    "retained_artifact": false,
+    "status": "NOT_CLAIMED_CONNECTOR_EVENT_SUPPRESSED",
+    "validation_carrier_merge_ref": "1f6277e9f62f0781c8088c56c538265163400b6f",
+    "validation_carrier_pr": 171,
+    "validation_carrier_state": "closed_unmerged"
+  },
+  "integrity": {
+    "runtime_payload_sha256": "6dc437b852cb79d58288dfd2026a2056f02d0f702a95f065cce9d16c8603487a",
+    "runtime_source_sha256": "947c0deb435dbd2b09535c03513ae6ee9696a8f8469343dd60ea0ee85467ee5a"
+  },
+  "iteration": 5,
+  "local_report": {
+    "completed_consecutive_runs": 3,
+    "corpus_root_hash216": "daed61b048581066e2dd0b0f7986d7c872e979e57079267511516c86f4822767",
+    "exact_pair_evaluations": 15,
+    "family_count": 5,
+    "gain_bytes": 21403,
+    "integer_gain_percent": 87,
+    "receipt_sha256": "f6107632e1f2dd79856e9f01ba6a85c7c5502e9b17e2dd1604a215da69ce80df",
+    "source_bytes": 24530,
+    "status": "PILOT_READY",
+    "target_bytes": 3127
+  },
+  "next_action": "Trigger the registered cumulative Pass 214 workflow through a non-suppressed user-originated event, retain the Iterations 1-5 artifact, then bind production candidate modules under live Pass 213 admission without promotion.",
+  "pass": 214,
+  "policy": {
+    "authority_promoted": false,
+    "live_pass213_surface_required_for_promotion": true,
+    "maximum_status": "PILOT_READY",
+    "migration_active": false,
+    "pass215_authorized": false,
+    "terminal_roots_minted": false
+  },
+  "schema": "HHS_PASS_214_ITERATION_5_IMPLEMENTATION_RECORD_V1",
+  "validation": {
+    "cross_family_mismatch_rejection": "passed",
+    "float_output_rejection": "passed",
+    "local_dependency_scoped_tests": "7 passed",
+    "local_python_compile": "passed",
+    "local_three_run_corpus": "PILOT_READY"
+  }
+}

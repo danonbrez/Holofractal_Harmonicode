@@ -1,0 +1,35 @@
+{
+  "schema": "HHS_PASS_214_ITERATION_3_IMPLEMENTATION_RECORD_V1",
+  "contract": "HHS-P214-RW-CDM-MML-COBA-H72-H216-VM5184-G243",
+  "pass": 214,
+  "iteration": 3,
+  "base_commit": "d6a0244b88437a53d1fe972fd004d3cda9e94806",
+  "branch": "agent/pass214-operating-compression-gradient",
+  "pull_request": 170,
+  "implementation": [
+    "Pass 213-bound workload admission receipts",
+    "explicit pure oracle-model handler registry",
+    "Iteration 2 symbol and implementation model bindings",
+    "deterministic vector comparison records",
+    "identity-preserving adapter proofs",
+    "non-promoting model adjudications",
+    "oracle compatibility edges",
+    "Hash216 semantic roots and Hash72 receipt",
+    "write, reload, validation, and tamper rejection"
+  ],
+  "dependency_scoped_validation": {
+    "python_compile": "passed",
+    "iteration3_tests": "7 passed",
+    "candidate_repository_modules_imported": 0,
+    "repository_authority_changes": 0,
+    "automatic_authority_merges": 0,
+    "terminal_roots_minted": 0
+  },
+  "remaining": [
+    "exact-head hosted validation",
+    "safe repository-callable oracle bindings",
+    "dependency-scoped callable execution workloads",
+    "authority-conflict decisions backed by callable evidence",
+    "compound benchmarks and terminal Pass 214 closure"
+  ]
+}

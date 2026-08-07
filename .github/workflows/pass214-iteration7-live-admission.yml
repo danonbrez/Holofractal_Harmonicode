@@ -1,0 +1,71 @@
+name: Pass 214 Iteration 7 Live Admission Bridge
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - agent/pass214-operating-compression-gradient
+    paths:
+      - 'hhs_backend/runtime/hhs_pass214_iteration7_live_admission_ablation_v1.py'
+      - 'hhs_backend/runtime/pass214_i7_payload/**'
+      - 'tools/pass214_iteration7_live_admission.py'
+      - 'tools/pass214_iteration7_manifest.py'
+      - 'tests/test_hhs_pass214_iteration7_live_admission_ablation_v1.py'
+      - 'docs/pass214/ITERATION_7_LIVE_ADMISSION_ABLATION_BRIDGE.md'
+      - 'evidence/pass214/PASS_214_ITERATION_7_IMPLEMENTATION_RECORD.json'
+      - 'scripts/run_pass214_contract_validation.sh'
+      - '.github/workflows/pass214-iteration7-live-admission.yml'
+
+permissions:
+  contents: read
+
+env:
+  PYTHONHASHSEED: '0'
+  PYTHONDONTWRITEBYTECODE: '1'
+
+jobs:
+  live-admission-bridge:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Install test dependency
+        run: python -m pip install pytest
+      - name: Compile Iteration 7 surfaces
+        run: |
+          python -m py_compile \
+            hhs_backend/runtime/hhs_pass214_iteration7_live_admission_ablation_v1.py \
+            tools/pass214_iteration7_live_admission.py \
+            tools/pass214_iteration7_manifest.py \
+            tests/test_hhs_pass214_iteration7_live_admission_ablation_v1.py
+      - name: Run Iteration 7 tests
+        run: python -m pytest -q tests/test_hhs_pass214_iteration7_live_admission_ablation_v1.py
+      - name: Generate Iteration 7 manifest
+        run: |
+          mkdir -p artifacts/pass214/iteration7
+          python tools/pass214_iteration7_manifest.py \
+            --output artifacts/pass214/iteration7/PASS_214_ITERATION_7_MANIFEST.json
+      - name: Inspect CI runtime without claiming live admission
+        run: |
+          python tools/pass214_iteration7_live_admission.py \
+            --mode inspect \
+            --output artifacts/pass214/iteration7/PASS_214_ITERATION_7_CI_INSPECTION.json
+      - name: Enforce non-promoting CI classification
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          report = json.loads(Path('artifacts/pass214/iteration7/PASS_214_ITERATION_7_CI_INSPECTION.json').read_text())
+          assert report['ready'] is False
+          assert report['migration_active'] is False
+          assert report['authority_promoted'] is False
+          assert report['pass215_authorized'] is False
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pass214-iteration7-live-admission-${{ github.run_id }}
+          path: artifacts/pass214/iteration7
+          if-no-files-found: error
