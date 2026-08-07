@@ -1,0 +1,17 @@
+{
+  "schema": "HHS_PASS_214_PRODUCTION_FINALIZE_TRIGGER_V1",
+  "purpose": "Trigger exact-head validation after enforcing Pass 214 benchmark execution before the Pass 213 terminal authority gate.",
+  "ordering_invariant": [
+    "pass214_contract_validation",
+    "pass214_repository_census_and_conformance",
+    "pass214_final_compound_benchmark",
+    "pass214_preterminal_evidence_freeze",
+    "pass213_terminal_authority_gate",
+    "pass214_terminal_root_minting"
+  ],
+  "pass213_gates_preserved": true,
+  "pass213_gate_may_block_pass214_benchmark": false,
+  "pass213_gate_may_block_terminal_authority_promotion": true,
+  "migration_active": false,
+  "pass215_authorized_before_terminal_closure": false
+}
