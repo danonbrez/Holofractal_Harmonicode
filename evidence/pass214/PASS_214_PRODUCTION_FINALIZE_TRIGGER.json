@@ -1,6 +1,6 @@
 {
-  "schema": "HHS_PASS_214_PRODUCTION_FINALIZE_TRIGGER_V4",
-  "purpose": "Freeze and trigger the final exact-head Pass 214 benchmark-v2 / terminal-v3 closure candidate.",
+  "schema": "HHS_PASS_214_PRODUCTION_FINALIZE_TRIGGER_V5",
+  "purpose": "Freeze and trigger the exact-head Pass 214 benchmark-v2 / terminal-v3 closure after removing stale workflow insertion-order assertions.",
   "benchmark_authority_runtime": "hhs_backend/runtime/hhs_pass214_final_compound_benchmark_v2.py",
   "terminal_contract_runtime": "hhs_backend/runtime/hhs_pass214_iteration8_terminal_freeze_v2.py",
   "terminal_serialization_runtime": "hhs_backend/runtime/hhs_pass214_iteration8_terminal_freeze_v3.py",
@@ -22,6 +22,7 @@
   "migration_active": false,
   "pass215_authorized_only_after_pass214_terminal_closure": true,
   "serialized_terminal_root_set_canonicalized": true,
+  "workflow_root_set_assertion_uses_exact_named_set": true,
   "exact_head_validation_required": [
     "Pass 214 Compound Optimization Benchmark Authority",
     "Pass 214 Iteration 8 Terminal Freeze",
