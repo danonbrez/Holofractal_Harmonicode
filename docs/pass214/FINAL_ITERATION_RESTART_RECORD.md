@@ -7,7 +7,9 @@
 - Draft PR: `#170`
 - Pass 213 authoritative closure: `86ec461818682fc87232740758769602e8f9fe05`
 - Iteration 6 candidate-set root: `f11bdbb9940e90500692cd0a0c505727ad94cafc0ea4fca85b134253f72cab9f`
-- Final implementation layer: Pass 214 Iteration 8 terminal benchmark authority v2
+- Benchmark authority: `hhs_backend/runtime/hhs_pass214_final_compound_benchmark_v2.py`
+- Terminal contract authority: `hhs_backend/runtime/hhs_pass214_iteration8_terminal_freeze_v2.py`
+- Serialized terminal validation authority: `hhs_backend/runtime/hhs_pass214_iteration8_terminal_freeze_v3.py`
 - Pass 214 contract rule: Pass 213 gates are preserved; they do not precede or suppress Pass 214 benchmark execution.
 - Canonical runtime mutation remains downstream behind Pass 213 live admission.
 
@@ -27,13 +29,13 @@ Pass 214 cumulative validation
 → downstream Pass 213 live admission before any canonical mutation
 ```
 
-The v2 benchmark authority preserves every v1 measurement, changes only authority/ordering metadata, and recomputes its Hash216/Hash72 identities under the repaired status:
+Benchmark v2 preserves every v1 measurement, changes only authority/ordering metadata, and recomputes its Hash216/Hash72 identities under:
 
 ```text
 FINAL_BENCHMARK_COMPLETE_READY_FOR_PASS214_TERMINAL_FREEZE
 ```
 
-This does not bypass Pass 213. The Pass 214 authority root binds an explicit `PASS213_GATE_PRESERVATION` record containing the authoritative Pass 213 closure and complete required gate set. The terminal record requires:
+Terminal v2 binds the Pass 213 authoritative closure and complete required gate set into `PASS214_AUTHORITY_ROOT_HASH216`. It requires:
 
 ```text
 pass213_gates_preserved: true
@@ -43,14 +45,36 @@ migration_active: false
 pass213_live_admission_required_before_canonical_mutation: true
 ```
 
+## Serialization repair
+
+Exact-head diagnostic run `31193486383` on commit `0c80feec6d72356808353b55cac233361f03d8af` proved that benchmark v2 and terminal v2 executed through root minting:
+
+- cumulative Pass 214 validation: success;
+- census/conformance/reconciliation: success;
+- final benchmark v2: success;
+- eight terminal roots generated: yes;
+- terminal Hash72 receipt generated: yes;
+- subsequent reload validation: failed with `PASS214_I8_TERMINAL_ROOT_SET_OR_ORDER_INVALID`.
+
+The failure was caused by JSON serialization using `sort_keys=True`: v2 incorrectly treated Python mapping insertion order as an authority invariant after reload. V3 now requires the exact eight named roots as a set, canonicalizes them into contract order, and then delegates all cryptographic/root/receipt/gate validation to v2. A sorted-JSON round-trip regression is included.
+
+Diagnostic v2 receipt from that superseded source head:
+
+```text
+8NM)B1QxahUUav4J/WZLt3wWk*g*ffcv?EpSKPSg)bUoi7(k12BfOwGa<aIGuFXZjf5uDZ(8
+```
+
+It is diagnostic only because the v3 repair changes the final source tree.
+
 ## Authoritative repaired surfaces
 
-- `hhs_backend/runtime/hhs_pass214_iteration8_terminal_freeze_v2.py`
 - `hhs_backend/runtime/hhs_pass214_final_compound_benchmark_v2.py`
-- `tools/pass214_iteration8_terminal_freeze.py`
+- `hhs_backend/runtime/hhs_pass214_iteration8_terminal_freeze_v2.py`
+- `hhs_backend/runtime/hhs_pass214_iteration8_terminal_freeze_v3.py`
 - `tools/pass214_final_compound_benchmark.py`
+- `tools/pass214_iteration8_terminal_freeze.py`
 - `hhs_backend/runtime/hhs_pass214_authority_conflict_reconciliation_v1.py`
-- `tests/test_hhs_pass214_iteration8_terminal_freeze_v1.py` — validates v2
+- `tests/test_hhs_pass214_iteration8_terminal_freeze_v1.py`
 - `tests/test_pass214_terminal_workflow_ordering.py`
 - `scripts/run_pass214_contract_validation.sh`
 - `.github/workflows/pass214-iteration8-terminal-freeze.yml`
@@ -58,11 +82,9 @@ pass213_live_admission_required_before_canonical_mutation: true
 - `evidence/pass214/PASS_214_ITERATION_8_IMPLEMENTATION_RECORD.json`
 - `evidence/pass214/PASS_214_PRODUCTION_FINALIZE_TRIGGER.json`
 
-Historical v1 terminal and benchmark runtimes are retained. The benchmark v1 remains the measurement source used by v2 before authority metadata is rerooted. Iteration 7 remains the downstream operational Pass 213 live-admission mechanism; it no longer defines whether Pass 214 benchmark authority exists.
+Historical v1 and v2 layers are retained. Iteration 7 remains the downstream operational Pass 213 live-admission mechanism; it does not determine whether Pass 214 benchmark authority exists.
 
 ## Benchmark boundary
-
-The final Pass 214 benchmark fixed corpus remains:
 
 ```text
 workload families: 15
@@ -82,22 +104,7 @@ Iteration 6 candidate bindings: 5
 
 The high-entropy control remains raw fallback and does not acquire a false universal compression claim.
 
-## Diagnostic proof of repaired workflow ordering
-
-Workflow run `31191762910` on repair precursor `e3141abdbc4cf86d4939486a99ea8e1edee369f4` proved the two-stage topology:
-
-- `Pass 214 benchmark before terminal authority gate`: **success**
-  - cumulative Pass 214 validation: success
-  - exact-head census/conformance/reconciliation: success
-  - frozen final compound benchmark: success
-  - pre-authority evidence freeze/upload: success
-- `Pass 213 terminal authority gate after Pass 214 benchmark`: reached only after the Pass 214 job succeeded and then failed on absent deployment-local trust input.
-
-That run is diagnostic evidence for ordering only. It is not the final v2 terminal closure because the v2 authority repair changed the source tree afterward.
-
-## Current validation state
-
-The v2 benchmark and terminal implementations plus both terminal workflows are repository-visible. Final exact-head hosted validation remains to be executed after the final trigger freeze. The required Pass 214 terminal result is:
+## Required final state
 
 ```text
 terminal_roots_minted: true
@@ -109,13 +116,13 @@ canonical_mutation_authorized: false
 migration_active: false
 ```
 
-The downstream Pass 213 operational gate may report not-ready when deployment-local RFC 3161/verifier/trust state is absent. That status cannot erase or redefine completed Pass 214 benchmark authority; it only continues to block canonical runtime mutation.
+The downstream Pass 213 operational gate may report not-ready when deployment-local RFC 3161/verifier/trust state is absent. That cannot erase or redefine completed Pass 214 benchmark authority; it only blocks canonical runtime mutation.
 
 ## Next exact action
 
-1. Trigger the exact-head Pass 214 cumulative, standalone Iteration 8, and production-terminal workflows after all repair files are frozen.
-2. Require cumulative validation, census/conformance/reconciliation, final benchmark v2, terminal freeze v2, eight-root enforcement, and terminal evidence upload to pass on one exact commit/tree.
-3. Require the standalone Iteration 8 gate and production first job to mint the same deterministic terminal roots on that exact head.
-4. Treat the downstream Pass 213 runtime-admission result as a separate operational readiness record; do not use it as a Pass 214 benchmark prerequisite.
-5. If exact-head Pass 214 gates are green, update PR #170 metadata with the terminal roots/receipt, merge the exact validated head to `main`, and verify the merge/main tree.
-6. Begin Pass 215 only from the frozen Pass 214 benchmark profile. Pass 215 canonical mutations remain subject to the inherited Pass 213 gates.
+1. Freeze one final source trigger after v3 evidence/documentation is complete.
+2. Require exact-head success from cumulative Pass 214, standalone Iteration 8 terminal freeze, and production terminal finalizer.
+3. Require standalone and production terminal jobs to emit the same deterministic eight terminal roots and Hash72 receipt for one commit/tree.
+4. Treat downstream Pass 213 admission as post-closure runtime readiness only.
+5. Update PR #170 metadata without changing the source head, merge that exact validated head to `main`, and verify the resulting main tree.
+6. Begin Pass 215 from the frozen Pass 214 benchmark profile; canonical Pass 215 mutation remains subject to inherited Pass 213 gates.
