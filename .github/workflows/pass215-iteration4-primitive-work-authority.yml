@@ -8,12 +8,14 @@ on:
     paths:
       - 'contracts/pass215/PASS_215_ITERATION_4_CONTRACT.json'
       - 'contracts/pass215/PASS_215_ITERATION_4_EXECUTED_WORK_ACCOUNTING_ADDENDUM.json'
+      - 'contracts/pass215/PASS_215_ITERATION_4_COMPARISON_MAPPING_ADDENDUM.json'
       - 'hhs_backend/runtime/hhs_pass215_iteration4_exact_linear_execution_v1.py'
       - 'hhs_backend/runtime/hhs_pass215_iteration4_exact_linear_execution_v2.py'
       - 'hhs_backend/runtime/hhs_pass215_iteration4_exact_linear_execution_v3.py'
-      - 'tools/pass215_iteration4_exact_linear_execution_v2.py'
-      - 'tests/test_hhs_pass215_iteration4_primitive_work_accounting_v2.py'
-      - 'scripts/run_pass215_iteration4_primitive_work_validation.sh'
+      - 'hhs_backend/runtime/hhs_pass215_iteration4_exact_linear_execution_v4.py'
+      - 'tools/pass215_iteration4_exact_linear_execution_v3.py'
+      - 'tests/test_hhs_pass215_iteration4_comparison_mapping_v3.py'
+      - 'scripts/run_pass215_iteration4_comparison_authority_validation.sh'
       - 'docs/pass215/**'
       - 'evidence/pass215/**'
       - '.github/workflows/pass215-iteration4-primitive-work-authority.yml'
@@ -23,10 +25,11 @@ on:
     paths:
       - 'contracts/pass215/PASS_215_ITERATION_4_CONTRACT.json'
       - 'contracts/pass215/PASS_215_ITERATION_4_EXECUTED_WORK_ACCOUNTING_ADDENDUM.json'
-      - 'hhs_backend/runtime/hhs_pass215_iteration4_exact_linear_execution_v3.py'
-      - 'tools/pass215_iteration4_exact_linear_execution_v2.py'
-      - 'tests/test_hhs_pass215_iteration4_primitive_work_accounting_v2.py'
-      - 'scripts/run_pass215_iteration4_primitive_work_validation.sh'
+      - 'contracts/pass215/PASS_215_ITERATION_4_COMPARISON_MAPPING_ADDENDUM.json'
+      - 'hhs_backend/runtime/hhs_pass215_iteration4_exact_linear_execution_v4.py'
+      - 'tools/pass215_iteration4_exact_linear_execution_v3.py'
+      - 'tests/test_hhs_pass215_iteration4_comparison_mapping_v3.py'
+      - 'scripts/run_pass215_iteration4_comparison_authority_validation.sh'
       - 'docs/pass215/**'
       - 'evidence/pass215/**'
       - '.github/workflows/pass215-iteration4-primitive-work-authority.yml'
@@ -38,7 +41,10 @@ env:
   PYTHONHASHSEED: '0'
   PYTHONDONTWRITEBYTECODE: '1'
   PASS215_I4_MODEL_SHA256: '6151b1929d7f5aa3385d9ddef3393e55587c0a55de661562322bc51dfda93a04'
+  PASS215_I4_PROFILE_BLOB: 'b458d674a75a4cfc64a32b9203dd693e3603576e'
   PASS215_I4_WORK_ADDENDUM_BLOB: '0a2f1448f565fb3eebfb50845c44404b68e93b8b'
+  PASS215_I4_COMPARISON_ADDENDUM_BLOB: '17fc5927c96f944d89a9e06cc2a684ae47e97c56'
+  PASS215_I4_SUITE_ROOT: '14de39b3b326eb64bbac5d8be829c289c4a5e1f39b842bfdba59b46fea2c9acb'
 
 jobs:
   primitive-work-authority:
@@ -53,126 +59,154 @@ jobs:
           python-version: '3.12'
       - name: Install validation dependency
         run: python -m pip install pytest
-      - name: Validate frozen instrument and work-accounting addendum
+      - name: Validate all frozen Iteration 4 authority bindings
         run: |
-          test "$(git hash-object contracts/pass215/PASS_215_BENCHMARK_PROFILE.json)" = "b458d674a75a4cfc64a32b9203dd693e3603576e"
+          test "$(git hash-object contracts/pass215/PASS_215_BENCHMARK_PROFILE.json)" = "$PASS215_I4_PROFILE_BLOB"
           test "$(git hash-object contracts/pass215/PASS_215_ITERATION_4_EXECUTED_WORK_ACCOUNTING_ADDENDUM.json)" = "$PASS215_I4_WORK_ADDENDUM_BLOB"
+          test "$(git hash-object contracts/pass215/PASS_215_ITERATION_4_COMPARISON_MAPPING_ADDENDUM.json)" = "$PASS215_I4_COMPARISON_ADDENDUM_BLOB"
           python - <<'PY'
           import json
           from pathlib import Path
-          contract = json.loads(Path('contracts/pass215/PASS_215_ITERATION_4_CONTRACT.json').read_text())
-          addendum = json.loads(Path('contracts/pass215/PASS_215_ITERATION_4_EXECUTED_WORK_ACCOUNTING_ADDENDUM.json').read_text())
-          assert contract['inherits']['pass215_benchmark_profile_root_hash216'] == 'a3079f0f0b94d9fb485970662455482d4dab86e01802ca5bfdef6af3fbb6d85e'
-          assert contract['inherits']['iteration3_real_model_evidence_root_hash216'] == '61e301f728e426b46dbdd7c435c06b7c7f0065b177d62313152494467ed7d021'
-          assert contract['constraints']['post_hoc_candidate_redefinition_forbidden'] is True
-          assert addendum['first_green_pre_repair_run'] == 31221256596
-          assert addendum['preserve_pre_repair_evidence'] is True
-          assert addendum['post_hoc_candidate_redefinition'] is False
-          assert 'delta_weight_products' in addendum['excluded_capacity_or_attribution_keys']
-          assert 'logical_weights' in addendum['excluded_capacity_or_attribution_keys']
+          c = json.loads(Path('contracts/pass215/PASS_215_ITERATION_4_CONTRACT.json').read_text())
+          w = json.loads(Path('contracts/pass215/PASS_215_ITERATION_4_EXECUTED_WORK_ACCOUNTING_ADDENDUM.json').read_text())
+          m = json.loads(Path('contracts/pass215/PASS_215_ITERATION_4_COMPARISON_MAPPING_ADDENDUM.json').read_text())
+          assert c['inherits']['iteration2_real_model_evidence_root_hash216'] == '0c18a5055b01bee0401d9ad0b3caba9c5d214d80a6dd809b190e106681b22e70'
+          assert c['inherits']['iteration3_real_model_evidence_root_hash216'] == '61e301f728e426b46dbdd7c435c06b7c7f0065b177d62313152494467ed7d021'
+          assert c['constraints']['post_hoc_candidate_redefinition_forbidden'] is True
+          assert w['first_green_pre_repair_run'] == 31221256596
+          assert w['preserve_pre_repair_evidence'] is True
+          assert w['post_hoc_candidate_redefinition'] is False
+          assert m['first_primitive_work_green_run'] == 31221568421
+          assert m['preserve_prior_evidence'] is True
+          assert m['post_hoc_candidate_redefinition'] is False
+          assert m['required_dense_reference_primitive_work_units'] == 3014112
+          assert m['required_exact_integer_reference_primitive_work_units'] == 2049888
+          assert m['required_dense_to_factored_total_primitive_work_ratio_exact'] == {'numerator': 31397, 'denominator': 21353}
+          assert m['required_suite_output_root_hash216_unchanged'] == '14de39b3b326eb64bbac5d8be829c289c4a5e1f39b842bfdba59b46fea2c9acb'
           PY
-      - name: Run cumulative Iteration 1-4 primitive-work validation
-        run: bash scripts/run_pass215_iteration4_primitive_work_validation.sh
+      - name: Run cumulative Iteration 1-4 comparison-authority validation
+        run: bash scripts/run_pass215_iteration4_comparison_authority_validation.sh
       - name: Download and verify authenticated open transformer
         run: |
-          ROOT="$RUNNER_TEMP/pass215-i4-authority"
+          ROOT="$RUNNER_TEMP/pass215-i4-terminal"
           mkdir -p "$ROOT"
           curl -L --fail --retry 3 --retry-delay 2 \
             -o "$ROOT/stories15M-q4_0.gguf" \
             'https://huggingface.co/ggml-org/tiny-llamas/resolve/main/stories15M-q4_0.gguf?download=true'
           echo "$PASS215_I4_MODEL_SHA256  $ROOT/stories15M-q4_0.gguf" | sha256sum -c -
-      - name: Execute primitive-work evidence process A
+      - name: Execute terminal comparison-authority process A
         run: |
-          ROOT="$RUNNER_TEMP/pass215-i4-authority"
-          python tools/pass215_iteration4_exact_linear_execution_v2.py \
+          ROOT="$RUNNER_TEMP/pass215-i4-terminal"
+          python tools/pass215_iteration4_exact_linear_execution_v3.py \
             --container "$ROOT/stories15M-q4_0.gguf" \
             --source-kind public_open_transformer \
             --repo-id ggml-org/tiny-llamas \
             --revision main \
             --expected-sha256 "$PASS215_I4_MODEL_SHA256" \
-            --output "$ROOT/PASS_215_ITERATION_4_PRIMITIVE_WORK_A.json"
-          python tools/pass215_iteration4_exact_linear_execution_v2.py \
-            --validate "$ROOT/PASS_215_ITERATION_4_PRIMITIVE_WORK_A.json" \
-            --output "$ROOT/PASS_215_ITERATION_4_PRIMITIVE_WORK_A_VALIDATION.json"
-      - name: Execute independent primitive-work replay process B
+            --output "$ROOT/PASS_215_ITERATION_4_TERMINAL_A.json"
+          python tools/pass215_iteration4_exact_linear_execution_v3.py \
+            --validate "$ROOT/PASS_215_ITERATION_4_TERMINAL_A.json" \
+            --output "$ROOT/PASS_215_ITERATION_4_TERMINAL_A_VALIDATION.json"
+      - name: Execute independent terminal process B and cross-process replay
         run: |
-          ROOT="$RUNNER_TEMP/pass215-i4-authority"
-          python tools/pass215_iteration4_exact_linear_execution_v2.py \
+          ROOT="$RUNNER_TEMP/pass215-i4-terminal"
+          python tools/pass215_iteration4_exact_linear_execution_v3.py \
             --container "$ROOT/stories15M-q4_0.gguf" \
             --source-kind public_open_transformer \
             --repo-id ggml-org/tiny-llamas \
             --revision main \
             --expected-sha256 "$PASS215_I4_MODEL_SHA256" \
-            --output "$ROOT/PASS_215_ITERATION_4_PRIMITIVE_WORK_B.json"
-          python tools/pass215_iteration4_exact_linear_execution_v2.py \
-            --validate "$ROOT/PASS_215_ITERATION_4_PRIMITIVE_WORK_B.json" \
-            --output "$ROOT/PASS_215_ITERATION_4_PRIMITIVE_WORK_B_VALIDATION.json"
-          python tools/pass215_iteration4_exact_linear_execution_v2.py \
+            --output "$ROOT/PASS_215_ITERATION_4_TERMINAL_B.json"
+          python tools/pass215_iteration4_exact_linear_execution_v3.py \
+            --validate "$ROOT/PASS_215_ITERATION_4_TERMINAL_B.json" \
+            --output "$ROOT/PASS_215_ITERATION_4_TERMINAL_B_VALIDATION.json"
+          python tools/pass215_iteration4_exact_linear_execution_v3.py \
             --compare-replay \
-              "$ROOT/PASS_215_ITERATION_4_PRIMITIVE_WORK_A.json" \
-              "$ROOT/PASS_215_ITERATION_4_PRIMITIVE_WORK_B.json" \
-            --output "$ROOT/PASS_215_ITERATION_4_PRIMITIVE_WORK_CROSS_PROCESS_VALIDATION.json"
-      - name: Enforce authoritative primitive-work accounting and claim boundaries
+              "$ROOT/PASS_215_ITERATION_4_TERMINAL_A.json" \
+              "$ROOT/PASS_215_ITERATION_4_TERMINAL_B.json" \
+            --output "$ROOT/PASS_215_ITERATION_4_TERMINAL_CROSS_PROCESS_VALIDATION.json"
+      - name: Enforce terminal Iteration 4 comparisons work and boundaries
         run: |
           python - <<'PY'
           import json
           import os
           from pathlib import Path
-          root = Path(os.environ['RUNNER_TEMP']) / 'pass215-i4-authority'
-          evidence = json.loads((root / 'PASS_215_ITERATION_4_PRIMITIVE_WORK_A.json').read_text())
-          accounting = evidence['work_accounting']
-          assert accounting['addendum_git_blob_sha1'] == os.environ['PASS215_I4_WORK_ADDENDUM_BLOB']
-          assert accounting['pre_repair_evidence_preserved'] is True
-          assert accounting['post_hoc_candidate_redefinition'] is False
-          aggregate = evidence['aggregate_execution']
-          assert aggregate['operator_count'] == 7
-          assert aggregate['source_tensor_bytes'] == 559872
-          assert aggregate['quantization_blocks'] == 31104
-          assert aggregate['logical_weights'] == 995328
-          assert aggregate['dense_reference_work']['exact_rational_scale_multiplications'] == 995328
-          assert aggregate['factored_reference_work']['exact_rational_scale_multiplications'] == 31104
-          assert aggregate['rational_scale_multiplications_avoided_by_factoring'] == 964224
-          assert aggregate['dense_to_factored_rational_scale_multiplication_ratio_exact'] == {'numerator': 32, 'denominator': 1}
-          assert aggregate['dense_reference_work']['executed_work_units_total'] == 3014112
-          assert aggregate['factored_reference_work']['executed_work_units_total'] == 2049888
-          assert aggregate['single_region_continuation_work']['executed_work_units_total'] == 11911
-          assert aggregate['single_region_full_recompute_control_work']['executed_work_units_total'] == 2049888
-          assert aggregate['single_region_executed_work_ratio_exact'] == {'numerator': 2049888, 'denominator': 11911}
-          assert aggregate['multi_region_continuation_work']['executed_work_units_total'] == 47644
-          assert aggregate['multi_region_full_recompute_control_work']['executed_work_units_total'] == 2049888
-          assert aggregate['multi_region_executed_work_ratio_exact'] == {'numerator': 512472, 'denominator': 11911}
-          assert aggregate['semantic_exactness'] is True
-          assert evidence['controls']['iteration2']['raw_canonical_incidence_fraction_exact'] == {'numerator': 0, 'denominator': 1}
-          assert evidence['controls']['iteration3']['transformer_layer_dictionary_gain_bytes'] == 0
-          assert evidence['controls']['iteration3']['embedding_output_storage_gain_excluded_from_execution_gain'] is True
-          claims = evidence['claims']
+          root = Path(os.environ['RUNNER_TEMP']) / 'pass215-i4-terminal'
+          e = json.loads((root / 'PASS_215_ITERATION_4_TERMINAL_A.json').read_text())
+          a = e['aggregate_execution']
+          c = e['frozen_profile_comparisons']
+          assert e['suite_output_root_hash216'] == os.environ['PASS215_I4_SUITE_ROOT']
+          assert e['comparison_mapping']['addendum_git_blob_sha1'] == os.environ['PASS215_I4_COMPARISON_ADDENDUM_BLOB']
+          assert e['work_accounting']['addendum_git_blob_sha1'] == os.environ['PASS215_I4_WORK_ADDENDUM_BLOB']
+          assert a['operator_count'] == 7
+          assert a['source_tensor_bytes'] == 559872
+          assert a['quantization_blocks'] == 31104
+          assert a['logical_weights'] == 995328
+          assert a['dense_reference_work']['executed_work_units_total'] == 3014112
+          assert a['factored_reference_work']['executed_work_units_total'] == 2049888
+          assert a['dense_to_factored_total_primitive_work_ratio_exact'] == {'numerator': 31397, 'denominator': 21353}
+          assert a['primitive_work_units_avoided_by_factoring'] == 964224
+          assert a['dense_to_factored_rational_scale_multiplication_ratio_exact'] == {'numerator': 32, 'denominator': 1}
+          assert a['rational_scale_multiplications_avoided_by_factoring'] == 964224
+          assert a['single_region_continuation_work']['executed_work_units_total'] == 11911
+          assert a['single_region_full_recompute_control_work']['executed_work_units_total'] == 2049888
+          assert a['single_region_executed_work_ratio_exact'] == {'numerator': 2049888, 'denominator': 11911}
+          assert a['multi_region_continuation_work']['executed_work_units_total'] == 47644
+          assert a['multi_region_full_recompute_control_work']['executed_work_units_total'] == 2049888
+          assert a['multi_region_executed_work_ratio_exact'] == {'numerator': 512472, 'denominator': 11911}
+          assert a['semantic_exactness'] is True
+          assert c['dense_reference']['source'] == 'aggregate_execution.dense_reference_work'
+          assert c['dense_reference']['executed_work_units_total'] == 3014112
+          assert c['exact_integer_reference']['source'] == 'aggregate_execution.factored_reference_work'
+          assert c['exact_integer_reference']['executed_work_units_total'] == 2049888
+          assert c['pass213_compiled_rom_only']['source'] == 'frozen_workload_modes.warm.work'
+          assert c['pass213_compiled_rom_only']['executed_work_units_total'] == 2049888
+          assert c['compiled_rom_plus_cache_layers']['source'] == 'frozen_workload_modes.exact_repetition.work'
+          assert c['compiled_rom_plus_cache_layers']['executed_work_units_total'] == 7
+          assert c['compiled_rom_plus_continuation_delta']['source'] == 'frozen_workload_modes.single_region_mutation.work'
+          assert c['compiled_rom_plus_continuation_delta']['executed_work_units_total'] == 11911
+          assert e['frozen_workload_modes']['exact_repetition']['work']['executed_work_units_total'] == 7
+          assert e['frozen_workload_modes']['interruption_recovery']['work']['executed_work_units_total'] == 14
+          assert e['interruption_recovery']['checkpoint_bytes'] == 136052
+          assert e['controls']['iteration2']['raw_canonical_incidence_fraction_exact'] == {'numerator': 0, 'denominator': 1}
+          assert e['controls']['iteration3']['transformer_layer_dictionary_gain_bytes'] == 0
+          assert e['controls']['iteration3']['embedding_output_storage_gain_excluded_from_execution_gain'] is True
+          claims = e['claims']
           assert claims['authenticated_real_open_transformer_execution_measured'] is True
+          assert claims['seven_blk0_linear_operators_executed'] is True
           assert claims['dense_factored_semantic_exactness'] is True
           assert claims['linear_continuation_delta_executed'] is True
           assert claims['full_transformer_layer_forward_executed'] is False
+          assert claims['rmsnorm_execution_claimed'] is False
+          assert claims['attention_softmax_execution_claimed'] is False
+          assert claims['silu_execution_claimed'] is False
           assert claims['canonical_float_interpretation_performed'] is False
           assert claims['dense_forward_replaced'] is False
           assert claims['exact_nonlinear_transformer_operators_implemented'] is False
           assert claims['pass213_compiled_rom_runtime_mutation_performed'] is False
-          assert evidence['authority']['runtime_mutation_authority_promoted'] is False
-          assert evidence['authority']['canonical_mutation_authorized'] is False
-          replay = json.loads((root / 'PASS_215_ITERATION_4_PRIMITIVE_WORK_CROSS_PROCESS_VALIDATION.json').read_text())
+          assert claims['fifty_billion_desktop_feasibility_claimed'] is False
+          assert claims['arbitrary_compression_claimed'] is False
+          assert e['authority']['runtime_mutation_authority_promoted'] is False
+          assert e['authority']['canonical_mutation_authorized'] is False
+          assert e['authority']['migration_active'] is False
+          assert len(e['optimization_class_dispositions']) > 0
+          assert set(e['pass214_stage_dispositions']) == {f'A{i}' for i in range(10)}
+          replay = json.loads((root / 'PASS_215_ITERATION_4_TERMINAL_CROSS_PROCESS_VALIDATION.json').read_text())
           assert replay['valid'] is True
           assert replay['separate_process_invocations'] is True
-          assert replay['primitive_work_accounting'] is True
-          print('PASS215_I4_DENSE_PRIMITIVE_WORK=' + str(aggregate['dense_reference_work']['executed_work_units_total']))
-          print('PASS215_I4_FACTORED_PRIMITIVE_WORK=' + str(aggregate['factored_reference_work']['executed_work_units_total']))
-          print('PASS215_I4_SINGLE_DELTA_PRIMITIVE_WORK=' + str(aggregate['single_region_continuation_work']['executed_work_units_total']))
-          print('PASS215_I4_SINGLE_FULL_PRIMITIVE_WORK=' + str(aggregate['single_region_full_recompute_control_work']['executed_work_units_total']))
-          print('PASS215_I4_MULTI_DELTA_PRIMITIVE_WORK=' + str(aggregate['multi_region_continuation_work']['executed_work_units_total']))
-          print('PASS215_I4_MULTI_FULL_PRIMITIVE_WORK=' + str(aggregate['multi_region_full_recompute_control_work']['executed_work_units_total']))
-          print('PASS215_I4_SUITE_ROOT=' + evidence['suite_output_root_hash216'])
-          print('PASS215_I4_AUTHORITY_EVIDENCE_ROOT=' + evidence['evidence_root_hash216'])
+          assert replay['comparison_mapping_authority'] is True
+          print('PASS215_I4_DENSE_PRIMITIVE_WORK=' + str(a['dense_reference_work']['executed_work_units_total']))
+          print('PASS215_I4_FACTORED_PRIMITIVE_WORK=' + str(a['factored_reference_work']['executed_work_units_total']))
+          print('PASS215_I4_SINGLE_DELTA_PRIMITIVE_WORK=' + str(a['single_region_continuation_work']['executed_work_units_total']))
+          print('PASS215_I4_MULTI_DELTA_PRIMITIVE_WORK=' + str(a['multi_region_continuation_work']['executed_work_units_total']))
+          print('PASS215_I4_TERMINAL_EVIDENCE_ROOT=' + e['evidence_root_hash216'])
+          print('PASS215_I4_TERMINAL_RECEIPT=' + e['receipt_hash72'])
+          print('PASS215_I4_TERMINAL_SUITE_ROOT=' + e['suite_output_root_hash216'])
           PY
-      - name: Retain authoritative Iteration 4 primitive-work evidence
+      - name: Retain terminal Iteration 4 comparison-authority evidence
         uses: actions/upload-artifact@v4
         with:
-          name: pass215-iteration4-primitive-work-${{ github.run_id }}
+          name: pass215-iteration4-terminal-${{ github.run_id }}
           path: |
             contracts/pass215/PASS_215_BENCHMARK_PROFILE.json
             contracts/pass215/PASS_215_ITERATION_1_CONTRACT.json
@@ -180,7 +214,8 @@ jobs:
             contracts/pass215/PASS_215_ITERATION_3_CONTRACT.json
             contracts/pass215/PASS_215_ITERATION_4_CONTRACT.json
             contracts/pass215/PASS_215_ITERATION_4_EXECUTED_WORK_ACCOUNTING_ADDENDUM.json
+            contracts/pass215/PASS_215_ITERATION_4_COMPARISON_MAPPING_ADDENDUM.json
             docs/pass215/**
             evidence/pass215/**
-            ${{ runner.temp }}/pass215-i4-authority/*.json
+            ${{ runner.temp }}/pass215-i4-terminal/*.json
           if-no-files-found: error
