@@ -1,0 +1,87 @@
+name: Pass 214 Iteration 8 Terminal Freeze
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - agent/pass214-operating-compression-gradient
+    paths:
+      - 'hhs_backend/runtime/hhs_pass214_iteration8_terminal_freeze_v1.py'
+      - 'tools/pass214_iteration8_terminal_freeze.py'
+      - 'tests/test_hhs_pass214_iteration8_terminal_freeze_v1.py'
+      - 'docs/pass214/**'
+      - 'evidence/pass214/**'
+      - 'scripts/run_pass214_contract_validation.sh'
+      - '.github/workflows/pass214-iteration8-terminal-freeze.yml'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'hhs_backend/runtime/hhs_pass214_iteration8_terminal_freeze_v1.py'
+      - 'tools/pass214_iteration8_terminal_freeze.py'
+      - 'tests/test_hhs_pass214_iteration8_terminal_freeze_v1.py'
+      - 'docs/pass214/**'
+      - 'evidence/pass214/**'
+      - 'scripts/run_pass214_contract_validation.sh'
+      - '.github/workflows/pass214-iteration8-terminal-freeze.yml'
+
+permissions:
+  contents: read
+
+env:
+  PYTHONHASHSEED: '0'
+  PYTHONDONTWRITEBYTECODE: '1'
+
+jobs:
+  terminal-freeze-gate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Install validation dependency
+        run: python -m pip install pytest
+      - name: Validate cumulative Pass 214 through Iteration 8
+        run: bash scripts/run_pass214_contract_validation.sh
+      - name: Generate exact-head census and compatibility summaries
+        run: |
+          mkdir -p "$RUNNER_TEMP/pass214-i8/census" "$RUNNER_TEMP/pass214-i8/compatibility"
+          python tools/pass214_repository_census.py \
+            --repository-root . \
+            --source-ref HEAD \
+            --output-directory "$RUNNER_TEMP/pass214-i8/census"
+          python tools/pass214_callable_conformance.py \
+            --repository-root . \
+            --iteration1-directory "$RUNNER_TEMP/pass214-i8/census" \
+            --source-ref HEAD \
+            --output-directory "$RUNNER_TEMP/pass214-i8/compatibility"
+      - name: Prove terminal gate remains fail-closed without production evidence
+        run: |
+          python tools/pass214_iteration8_terminal_freeze.py \
+            --mode inspect \
+            --census-summary "$RUNNER_TEMP/pass214-i8/census/iteration1_summary.json" \
+            --compatibility-summary "$RUNNER_TEMP/pass214-i8/compatibility/iteration2_summary.json" \
+            --output "$RUNNER_TEMP/pass214-i8/PASS_214_ITERATION_8_CI_INSPECTION.json"
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          report = json.loads((Path(os.environ['RUNNER_TEMP']) / 'pass214-i8' / 'PASS_214_ITERATION_8_CI_INSPECTION.json').read_text())
+          assert report['ready'] is False
+          assert report['terminal_roots_minted'] is False
+          assert report['authority_promoted'] is False
+          assert report['migration_active'] is False
+          assert report['pass215_authorized'] is False
+          assert report['blockers']
+          PY
+      - name: Retain Iteration 8 readiness evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass214-iteration8-terminal-freeze-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/pass214-i8/**/*.json
+            evidence/pass214/PASS_214_ITERATION_8_IMPLEMENTATION_RECORD.json
+          if-no-files-found: error
