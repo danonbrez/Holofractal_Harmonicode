@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from functools import lru_cache
 from pathlib import Path
 
 from hhs_backend.runtime.hhs_pass214_cumulative_operation_census_v1 import (
@@ -14,6 +15,7 @@ from hhs_backend.runtime.hhs_pass214_cumulative_operation_census_v1 import (
 ROOT = Path(__file__).resolve().parents[1]
 
 
+@lru_cache(maxsize=1)
 def _result():
     return build_cumulative_operation_census(ROOT, source_ref="HEAD")
 
@@ -35,10 +37,7 @@ def test_known_opcode_families_are_all_recovered() -> None:
 
 def test_numerical_abi_is_preserved_as_distinct_exact_projection_family() -> None:
     result = _result()
-    numerical = [
-        row for row in result["operations"]
-        if row["family"] == "VM81_BASE20_NUMERICAL_ABI"
-    ]
+    numerical = [row for row in result["operations"] if row["family"] == "VM81_BASE20_NUMERICAL_ABI"]
     assert len(numerical) == 19
     assert {row["codepoint"] for row in numerical} == set(range(19))
     assert all(row["path"] == BASE20_HEADER for row in numerical)
