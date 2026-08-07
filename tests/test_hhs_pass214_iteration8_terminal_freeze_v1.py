@@ -96,6 +96,7 @@ def live() -> dict:
 def test_readiness_is_fail_closed_without_live_or_benchmark_evidence():
     report = i8.inspect_terminal_readiness(
         census_summary=census(), compatibility_summary=compatibility(),
+        authority_reconciliation=None,
         benchmark_bundle=None, pass215_profile=None, live_admission=None,
     )
     assert report["ready"] is False
@@ -129,7 +130,7 @@ def test_benchmark_requires_all_ablations_and_workload_modes():
 def test_terminal_freeze_mints_exact_eight_roots_only_after_gate(monkeypatch):
     monkeypatch.setattr(i8, "_validate_live_admission", lambda admission: admission)
     record = i8.create_terminal_freeze(
-        census_summary=census(), compatibility_summary=compatibility(),
+        census_summary=census(), compatibility_summary=compatibility(), authority_reconciliation=None,
         workload_corpus={"schema": "HHS_PASS214_WORKLOAD_CORPUS_V1", "families": list(i8.REQUIRED_WORKLOAD_FAMILIES)},
         benchmark_method={"schema": "HHS_PASS214_BENCHMARK_METHOD_V1", "stages": list(i8.REQUIRED_STAGES)},
         benchmark_bundle=benchmark(), pass215_profile=profile(), live_admission=live(),
@@ -140,13 +141,14 @@ def test_terminal_freeze_mints_exact_eight_roots_only_after_gate(monkeypatch):
     assert record["authority_promoted"] is True
     assert record["pass215_authorized"] is True
     assert len(record["terminal_receipt_hash72"]) == 72
+    assert len(record["authority_reconciliation_root_hash216"]) == 64
     assert i8.validate_terminal_freeze(record)
 
 
 def test_terminal_record_tamper_is_rejected(monkeypatch):
     monkeypatch.setattr(i8, "_validate_live_admission", lambda admission: admission)
     record = i8.create_terminal_freeze(
-        census_summary=census(), compatibility_summary=compatibility(),
+        census_summary=census(), compatibility_summary=compatibility(), authority_reconciliation=None,
         workload_corpus={"schema": "HHS_PASS214_WORKLOAD_CORPUS_V1"},
         benchmark_method={"schema": "HHS_PASS214_BENCHMARK_METHOD_V1"},
         benchmark_bundle=benchmark(), pass215_profile=profile(), live_admission=live(),
