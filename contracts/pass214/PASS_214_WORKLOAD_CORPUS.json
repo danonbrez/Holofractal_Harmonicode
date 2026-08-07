@@ -1,0 +1,42 @@
+{
+  "schema": "HHS_PASS_214_WORKLOAD_CORPUS_V1",
+  "pass": 214,
+  "status": "FROZEN_EXECUTION_CORPUS",
+  "required_modes": [
+    "cold",
+    "warm",
+    "exact_repetition",
+    "shared_structure",
+    "single_region_mutation",
+    "multi_region_mutation",
+    "novel_content",
+    "contradictory_content",
+    "no_reuse_control",
+    "interruption_recovery",
+    "cross_process_replay"
+  ],
+  "families": {
+    "arithmetic_tensor_primitives": {"executor_surfaces": ["hhs_backend/runtime/hhs_pass198_operation_calibration_registry_v1.py"], "semantic_oracle": "exact_integer_hash216"},
+    "text_documents": {"executor_surfaces": ["hhs_backend/runtime/hhs_pass214_iteration5_callable_corpus_v1.py"], "semantic_oracle": "canonical_bytes_hash216"},
+    "source_code_ast": {"executor_surfaces": ["hhs_backend/runtime/hhs_pass214_callable_oracle_v1.py"], "semantic_oracle": "repository_callable_exact_parity"},
+    "structured_data_tables_graphs": {"executor_surfaces": ["hhs_backend/runtime/hhs_pass214_iteration5_callable_corpus_v1.py"], "semantic_oracle": "canonical_structure_hash216"},
+    "images_spatial_features": {"executor_surfaces": ["hhs_backend/runtime/hhs_multimodal_agent_knowledge_graph_v1.py"], "semantic_oracle": "multimodal_feature_hash216"},
+    "audio_temporal_features": {"executor_surfaces": ["hhs_backend/runtime/hhs_multimodal_agent_knowledge_graph_v1.py"], "semantic_oracle": "multimodal_feature_hash216"},
+    "video_motion_scenes": {"executor_surfaces": ["hhs_backend/runtime/hhs_multimodal_agent_knowledge_graph_v1.py"], "semantic_oracle": "multimodal_feature_hash216"},
+    "graphics_game_physics": {"executor_surfaces": ["hhs_backend/runtime/hhs_pass197_ab_hydration_calibration_v1.py"], "semantic_oracle": "exact_transition_hash216"},
+    "multimodal_file_folder_ingestion": {"executor_surfaces": ["hhs_backend/runtime/hhs_multimodal_agent_knowledge_graph_v1.py"], "semantic_oracle": "multimodal_graph_hash216"},
+    "vector_retrieval_continuation": {"executor_surfaces": ["hhs_backend/runtime/hhs_pass214_iteration6_candidate_binding_v1.py"], "semantic_oracle": "candidate_binding_hash216"},
+    "ml_feature_candidate_updates": {"executor_surfaces": ["hhs_backend/runtime/hhs_multimodal_agent_knowledge_graph_v1.py", "hhs_backend/runtime/hhs_pass214_iteration6_candidate_binding_v1.py"], "semantic_oracle": "bounded_candidate_hash216"},
+    "datasets_evaluations_checkpoints": {"executor_surfaces": ["hhs_backend/runtime/hhs_pass197_ab_hydration_calibration_v1.py"], "semantic_oracle": "calibration_receipt_hash216"},
+    "transformer_shaped_operator_graphs": {"executor_surfaces": ["hhs_backend/runtime/hhs_pass198_operation_calibration_registry_v1.py"], "semantic_oracle": "exact_operator_graph_hash216"},
+    "full_50388480_position_hydration": {"executor_surfaces": ["hhs_backend/runtime/hhs_pass197_ab_hydration_calibration_v1.py"], "semantic_oracle": "hydration_state_hash216", "required_position_count": 50388480},
+    "arbitrary_high_entropy_controls": {"executor_surfaces": ["hhs_backend/runtime/hhs_pass214_iteration5_callable_corpus_v1.py"], "semantic_oracle": "direct_content_hash216"}
+  },
+  "determinism": {
+    "pythonhashseed": 0,
+    "float_canonical_authority": false,
+    "cross_process_replay_required": true,
+    "interruption_recovery_required": true,
+    "negative_controls_required": true
+  }
+}
