@@ -37,6 +37,7 @@ def main() -> int:
     parser.add_argument("--mode", choices=("inspect", "finalize", "validate"), default="inspect")
     parser.add_argument("--census-summary")
     parser.add_argument("--compatibility-summary")
+    parser.add_argument("--authority-reconciliation")
     parser.add_argument("--workload-corpus")
     parser.add_argument("--benchmark-method")
     parser.add_argument("--benchmark-bundle")
@@ -67,6 +68,7 @@ def main() -> int:
 
     census = load(args.census_summary)
     compatibility = load(args.compatibility_summary)
+    reconciliation = load(args.authority_reconciliation)
     benchmark = load(args.benchmark_bundle)
     profile = load(args.pass215_profile)
 
@@ -74,6 +76,7 @@ def main() -> int:
         write(args.output, inspect_terminal_readiness(
             census_summary=census,
             compatibility_summary=compatibility,
+            authority_reconciliation=reconciliation,
             benchmark_bundle=benchmark,
             pass215_profile=profile,
             live_admission=None,
@@ -83,6 +86,7 @@ def main() -> int:
     required = {
         "--census-summary": args.census_summary,
         "--compatibility-summary": args.compatibility_summary,
+        "--authority-reconciliation": args.authority_reconciliation,
         "--workload-corpus": args.workload_corpus,
         "--benchmark-method": args.benchmark_method,
         "--benchmark-bundle": args.benchmark_bundle,
@@ -112,6 +116,7 @@ def main() -> int:
     record = create_terminal_freeze(
         census_summary=census,
         compatibility_summary=compatibility,
+        authority_reconciliation=reconciliation,
         workload_corpus=load(args.workload_corpus),
         benchmark_method=load(args.benchmark_method),
         benchmark_bundle=benchmark,
