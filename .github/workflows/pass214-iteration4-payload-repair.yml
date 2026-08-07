@@ -1,0 +1,110 @@
+name: Pass 214 Iteration 4 Payload Container Repair
+
+on:
+  push:
+    branches:
+      - agent/pass214-operating-compression-gradient
+    paths:
+      - 'evidence/pass214/PASS_214_ITERATION_4_PAYLOAD_REPAIR_REQUEST.json'
+      - '.github/workflows/pass214-iteration4-payload-repair.yml'
+
+permissions:
+  contents: write
+
+env:
+  PYTHONDONTWRITEBYTECODE: '1'
+
+jobs:
+  repair-frozen-source-container:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Recover only the frozen Iteration 4 source
+        run: |
+          python - <<'PY'
+          from hashlib import sha256
+          from pathlib import Path
+          import gzip
+          import json
+          import zlib
+
+          path = Path('hhs_backend/runtime/pass214_i4_payload/runtime.py.gz')
+          expected_source = 'a946cde1338bc33eb6873c13125b306a45882dec46fd29ac4820ce38ea5612a9'
+          raw = path.read_bytes()
+          old_payload_sha = sha256(raw).hexdigest()
+
+          def gzip_deflate_payload(blob: bytes) -> bytes:
+              if len(blob) < 18 or blob[:3] != b'\x1f\x8b\x08':
+                  raise RuntimeError('PASS214_I4_REPAIR_NOT_GZIP_DEFLATE')
+              flags = blob[3]
+              if flags & 0xE0:
+                  raise RuntimeError('PASS214_I4_REPAIR_RESERVED_GZIP_FLAGS')
+              index = 10
+              if flags & 0x04:
+                  xlen = int.from_bytes(blob[index:index + 2], 'little')
+                  index += 2 + xlen
+              for bit in (0x08, 0x10):
+                  if flags & bit:
+                      end = blob.find(b'\x00', index)
+                      if end < 0:
+                          raise RuntimeError('PASS214_I4_REPAIR_GZIP_HEADER_TRUNCATED')
+                      index = end + 1
+              if flags & 0x02:
+                  index += 2
+              if index >= len(blob) - 8:
+                  raise RuntimeError('PASS214_I4_REPAIR_GZIP_BODY_TRUNCATED')
+              return blob[index:-8]
+
+          try:
+              source = gzip.decompress(raw)
+              recovery_mode = 'VALID_GZIP_NO_REPAIR_REQUIRED'
+          except (gzip.BadGzipFile, EOFError, zlib.error):
+              source = zlib.decompress(gzip_deflate_payload(raw), -zlib.MAX_WBITS)
+              recovery_mode = 'RAW_DEFLATE_RECOVERY_FROM_CORRUPT_GZIP_TRAILER'
+
+          source_sha = sha256(source).hexdigest()
+          if source_sha != expected_source:
+              raise RuntimeError(
+                  f'PASS214_I4_FROZEN_SOURCE_MISMATCH expected={expected_source} actual={source_sha}'
+              )
+
+          repaired = gzip.compress(source, compresslevel=9, mtime=0)
+          if gzip.decompress(repaired) != source:
+              raise RuntimeError('PASS214_I4_REPAIRED_GZIP_ROUNDTRIP_MISMATCH')
+          repaired_source_sha = sha256(gzip.decompress(repaired)).hexdigest()
+          if repaired_source_sha != expected_source:
+              raise RuntimeError('PASS214_I4_REPAIRED_SOURCE_HASH_MISMATCH')
+
+          new_payload_sha = sha256(repaired).hexdigest()
+          path.write_bytes(repaired)
+          receipt = {
+              'schema': 'HHS_PASS_214_ITERATION_4_PAYLOAD_CONTAINER_REPAIR_RECEIPT_V1',
+              'recovery_mode': recovery_mode,
+              'source_sha256': source_sha,
+              'frozen_source_sha256': expected_source,
+              'old_payload_sha256': old_payload_sha,
+              'new_payload_sha256': new_payload_sha,
+              'source_identity_changed': False,
+              'container_repaired': old_payload_sha != new_payload_sha,
+          }
+          Path('evidence/pass214/PASS_214_ITERATION_4_PAYLOAD_CONTAINER_REPAIR_RECEIPT.json').write_text(
+              json.dumps(receipt, indent=2, sort_keys=True) + '\n', encoding='utf-8'
+          )
+          print(json.dumps(receipt, sort_keys=True))
+          PY
+      - name: Commit repaired container without changing source identity
+        run: |
+          git config user.name 'hhs-pass214-repair-bot'
+          git config user.email '153354844+danonbrez@users.noreply.github.com'
+          git add \
+            hhs_backend/runtime/pass214_i4_payload/runtime.py.gz \
+            evidence/pass214/PASS_214_ITERATION_4_PAYLOAD_CONTAINER_REPAIR_RECEIPT.json
+          git diff --cached --exit-code && { echo 'No repair diff produced'; exit 1; } || true
+          git commit -m 'Repair Pass 214 Iteration 4 payload container'
+          git push origin HEAD:agent/pass214-operating-compression-gradient
