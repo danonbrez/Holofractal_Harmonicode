@@ -12,6 +12,7 @@ on:
       - 'tools/pass214_*.py'
       - 'tools/generate_pass212_full_hydration_evidence.py'
       - 'tests/test_hhs_pass214_*.py'
+      - 'tests/test_pass214_terminal_workflow_ordering.py'
       - 'docs/pass214/**'
       - 'evidence/pass214/**'
       - 'contracts/pass214/**'
@@ -28,6 +29,7 @@ on:
       - 'tools/pass214_*.py'
       - 'tools/generate_pass212_full_hydration_evidence.py'
       - 'tests/test_hhs_pass214_*.py'
+      - 'tests/test_pass214_terminal_workflow_ordering.py'
       - 'docs/pass214/**'
       - 'evidence/pass214/**'
       - 'contracts/pass214/**'
@@ -45,7 +47,7 @@ env:
 jobs:
   terminal-freeze-gate:
     runs-on: ubuntu-24.04
-    timeout-minutes: 90
+    timeout-minutes: 120
     steps:
       - uses: actions/checkout@v5
         with:
@@ -78,7 +80,10 @@ jobs:
         run: |
           python tools/pass214_final_compound_benchmark.py \
             --output "$RUNNER_TEMP/pass214-i8/PASS_214_FINAL_COMPOUND_BENCHMARK_BUNDLE.json"
-      - name: Prove only production live admission remains blocked
+          python tools/pass214_final_compound_benchmark.py \
+            --output "$RUNNER_TEMP/pass214-i8/unused.json" \
+            --validate "$RUNNER_TEMP/pass214-i8/PASS_214_FINAL_COMPOUND_BENCHMARK_BUNDLE.json"
+      - name: Prove Pass 214 terminal readiness before Pass 213 runtime admission
         run: |
           python tools/pass214_iteration8_terminal_freeze.py \
             --mode inspect \
@@ -99,7 +104,11 @@ jobs:
           assert reconciliation['unresolved_conflict_count'] == 0
           assert reconciliation['automatic_merge_count'] == 0
           assert reconciliation['single_mutation_authority_preserved'] is True
-          assert benchmark['status'] == 'FINAL_BENCHMARK_COMPLETE_AWAITING_LIVE_ADMISSION'
+          assert benchmark['status'] == 'FINAL_BENCHMARK_COMPLETE_READY_FOR_PASS214_TERMINAL_FREEZE'
+          assert benchmark['governance_accounting']['pass214_benchmark_complete'] == 1
+          assert benchmark['governance_accounting']['pass214_terminal_freeze_ready'] == 1
+          assert benchmark['governance_accounting']['production_live_admission_claimed'] == 0
+          assert benchmark['governance_accounting']['canonical_mutation_authorized'] == 0
           assert len(benchmark['workloads']) == 15
           assert len(benchmark['ablations']) == 26
           assert all(benchmark[key] is True for key in (
@@ -108,14 +117,71 @@ jobs:
               'incremental_full_equality', 'recovery_replay_semantic_equality',
               'cross_process_replay_semantic_equality', 'negative_controls_fail_closed',
               'complete_cost_accounting', 'compression_incidence_complete_physical_accounting'))
-          assert report['ready'] is False
+          assert report['ready'] is True
+          assert report['blockers'] == []
+          assert report['pass213_gates_preserved'] is True
+          assert report['pass213_live_admission_required_before_canonical_mutation'] is True
           assert report['terminal_roots_minted'] is False
-          assert report['authority_promoted'] is False
+          assert report['benchmark_authority_promoted'] is False
+          assert report['runtime_mutation_authority_promoted'] is False
+          assert report['canonical_mutation_authorized'] is False
           assert report['migration_active'] is False
           assert report['pass215_authorized'] is False
-          assert report['blockers'] == ['PASS214_I8_LIVE_ADMISSION_MAPPING_REQUIRED']
           PY
-      - name: Retain Iteration 8 readiness evidence
+      - name: Mint exact-head Pass 214 terminal benchmark authority
+        run: |
+          SOURCE_COMMIT="$(git rev-parse HEAD)"
+          SOURCE_TREE="$(git rev-parse 'HEAD^{tree}')"
+          python tools/pass214_iteration8_terminal_freeze.py \
+            --mode finalize \
+            --census-summary "$RUNNER_TEMP/pass214-i8/census/iteration1_summary.json" \
+            --compatibility-summary "$RUNNER_TEMP/pass214-i8/compatibility/iteration2_summary.json" \
+            --authority-reconciliation "$RUNNER_TEMP/pass214-i8/PASS_214_AUTHORITY_CONFLICT_RECONCILIATION.json" \
+            --workload-corpus contracts/pass214/PASS_214_WORKLOAD_CORPUS.json \
+            --benchmark-method contracts/pass214/PASS_214_FINAL_BENCHMARK_METHOD.json \
+            --benchmark-bundle "$RUNNER_TEMP/pass214-i8/PASS_214_FINAL_COMPOUND_BENCHMARK_BUNDLE.json" \
+            --pass215-profile contracts/pass215/PASS_215_BENCHMARK_PROFILE.json \
+            --source-commit "$SOURCE_COMMIT" \
+            --source-tree "$SOURCE_TREE" \
+            --output "$RUNNER_TEMP/pass214-i8/PASS_214_TERMINAL_FREEZE.json"
+          python tools/pass214_iteration8_terminal_freeze.py \
+            --mode validate \
+            --terminal-record "$RUNNER_TEMP/pass214-i8/PASS_214_TERMINAL_FREEZE.json" \
+            --output "$RUNNER_TEMP/pass214-i8/PASS_214_TERMINAL_VALIDATION.json"
+      - name: Enforce repaired terminal authority boundary
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          root = Path(os.environ['RUNNER_TEMP']) / 'pass214-i8'
+          record = json.loads((root / 'PASS_214_TERMINAL_FREEZE.json').read_text())
+          expected = [
+              'PASS214_REPOSITORY_SCAN_ROOT_HASH216',
+              'PASS214_OPTIMIZATION_REGISTRY_ROOT_HASH216',
+              'PASS214_COMPATIBILITY_GRAPH_ROOT_HASH216',
+              'PASS214_WORKLOAD_CORPUS_ROOT_HASH216',
+              'PASS214_BENCHMARK_METHOD_ROOT_HASH216',
+              'PASS214_COMPOUND_EVIDENCE_ROOT_HASH216',
+              'PASS214_AUTHORITY_ROOT_HASH216',
+              'PASS215_BENCHMARK_PROFILE_ROOT_HASH216',
+          ]
+          assert list(record['terminal_roots']) == expected
+          assert record['authority_scope'] == 'PASS214_BENCHMARK_AUTHORITY_ONLY'
+          assert record['acceptance_gates_passed'] is True
+          assert record['terminal_roots_minted'] is True
+          assert record['authority_promoted'] is True
+          assert record['benchmark_authority_promoted'] is True
+          assert record['pass215_authorized'] is True
+          assert record['pass213_gates_preserved'] is True
+          assert record['runtime_mutation_authority_promoted'] is False
+          assert record['canonical_mutation_authorized'] is False
+          assert record['migration_active'] is False
+          assert record['pass213_live_admission_required_before_canonical_mutation'] is True
+          assert all(len(record['terminal_roots'][name]) == 64 for name in expected)
+          assert len(record['terminal_receipt_hash72']) == 72
+          assert len(record['pass213_gate_preservation_root_hash216']) == 64
+          PY
+      - name: Retain Iteration 8 terminal evidence
         uses: actions/upload-artifact@v4
         with:
           name: pass214-iteration8-terminal-freeze-${{ github.run_id }}
