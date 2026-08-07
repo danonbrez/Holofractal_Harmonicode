@@ -18,7 +18,7 @@ env:
 
 jobs:
   pass214-benchmark:
-    name: Pass 214 benchmark before terminal authority gate
+    name: Pass 214 benchmark and terminal authority before Pass 213 runtime gate
     runs-on: ubuntu-24.04
     timeout-minutes: 120
     steps:
@@ -34,7 +34,7 @@ jobs:
         run: bash scripts/run_pass214_contract_validation.sh
       - name: Generate exact-head census and compatibility evidence
         run: |
-          ROOT="$RUNNER_TEMP/pass214-preterminal"
+          ROOT="$RUNNER_TEMP/pass214-terminal"
           mkdir -p "$ROOT/census" "$ROOT/compatibility"
           python tools/pass214_repository_census.py \
             --repository-root . --source-ref HEAD \
@@ -49,10 +49,63 @@ jobs:
             --output "$ROOT/PASS_214_AUTHORITY_CONFLICT_RECONCILIATION.json"
       - name: Execute frozen final Pass 214 compound benchmark
         run: |
-          ROOT="$RUNNER_TEMP/pass214-preterminal"
+          ROOT="$RUNNER_TEMP/pass214-terminal"
           python tools/pass214_final_compound_benchmark.py \
             --output "$ROOT/PASS_214_FINAL_COMPOUND_BENCHMARK_BUNDLE.json"
-      - name: Freeze pre-authority Pass 214 benchmark boundary
+      - name: Mint Pass 214 terminal benchmark authority
+        run: |
+          ROOT="$RUNNER_TEMP/pass214-terminal"
+          SOURCE_COMMIT="$(git rev-parse HEAD)"
+          SOURCE_TREE="$(git rev-parse 'HEAD^{tree}')"
+          python tools/pass214_iteration8_terminal_freeze.py \
+            --mode finalize \
+            --census-summary "$ROOT/census/iteration1_summary.json" \
+            --compatibility-summary "$ROOT/compatibility/iteration2_summary.json" \
+            --authority-reconciliation "$ROOT/PASS_214_AUTHORITY_CONFLICT_RECONCILIATION.json" \
+            --workload-corpus contracts/pass214/PASS_214_WORKLOAD_CORPUS.json \
+            --benchmark-method contracts/pass214/PASS_214_FINAL_BENCHMARK_METHOD.json \
+            --benchmark-bundle "$ROOT/PASS_214_FINAL_COMPOUND_BENCHMARK_BUNDLE.json" \
+            --pass215-profile contracts/pass215/PASS_215_BENCHMARK_PROFILE.json \
+            --source-commit "$SOURCE_COMMIT" \
+            --source-tree "$SOURCE_TREE" \
+            --output "$ROOT/PASS_214_TERMINAL_FREEZE.json"
+          python tools/pass214_iteration8_terminal_freeze.py \
+            --mode validate \
+            --terminal-record "$ROOT/PASS_214_TERMINAL_FREEZE.json" \
+            --output "$ROOT/PASS_214_TERMINAL_VALIDATION.json"
+      - name: Enforce eight-root Pass 214 terminal closure
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          root = Path(os.environ['RUNNER_TEMP']) / 'pass214-terminal'
+          record = json.loads((root / 'PASS_214_TERMINAL_FREEZE.json').read_text())
+          expected = [
+              'PASS214_REPOSITORY_SCAN_ROOT_HASH216',
+              'PASS214_OPTIMIZATION_REGISTRY_ROOT_HASH216',
+              'PASS214_COMPATIBILITY_GRAPH_ROOT_HASH216',
+              'PASS214_WORKLOAD_CORPUS_ROOT_HASH216',
+              'PASS214_BENCHMARK_METHOD_ROOT_HASH216',
+              'PASS214_COMPOUND_EVIDENCE_ROOT_HASH216',
+              'PASS214_AUTHORITY_ROOT_HASH216',
+              'PASS215_BENCHMARK_PROFILE_ROOT_HASH216',
+          ]
+          assert list(record['terminal_roots']) == expected
+          assert record['acceptance_gates_passed'] is True
+          assert record['terminal_roots_minted'] is True
+          assert record['authority_promoted'] is True
+          assert record['benchmark_authority_promoted'] is True
+          assert record['pass215_authorized'] is True
+          assert record['pass213_gates_preserved'] is True
+          assert record['runtime_mutation_authority_promoted'] is False
+          assert record['canonical_mutation_authorized'] is False
+          assert record['migration_active'] is False
+          assert record['pass213_live_admission_required_before_canonical_mutation'] is True
+          assert all(len(record['terminal_roots'][name]) == 64 for name in expected)
+          assert len(record['terminal_receipt_hash72']) == 72
+          assert len(record['pass213_gate_preservation_root_hash216']) == 64
+          PY
+      - name: Freeze exact-head Pass 214 closure boundary
         run: |
           python - <<'PY'
           import hashlib
@@ -61,7 +114,7 @@ jobs:
           import subprocess
           from pathlib import Path
 
-          root = Path(os.environ['RUNNER_TEMP']) / 'pass214-preterminal'
+          root = Path(os.environ['RUNNER_TEMP']) / 'pass214-terminal'
           source_commit = subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip()
           source_tree = subprocess.check_output(['git', 'rev-parse', 'HEAD^{tree}'], text=True).strip()
           files = {
@@ -69,13 +122,16 @@ jobs:
               'compatibility_summary': root / 'compatibility' / 'iteration2_summary.json',
               'authority_reconciliation': root / 'PASS_214_AUTHORITY_CONFLICT_RECONCILIATION.json',
               'benchmark_bundle': root / 'PASS_214_FINAL_COMPOUND_BENCHMARK_BUNDLE.json',
+              'terminal_freeze': root / 'PASS_214_TERMINAL_FREEZE.json',
+              'terminal_validation': root / 'PASS_214_TERMINAL_VALIDATION.json',
           }
           hashes = {
               name: hashlib.sha256(path.read_bytes()).hexdigest()
               for name, path in files.items()
           }
+          terminal = json.loads(files['terminal_freeze'].read_text())
           record = {
-              'schema': 'HHS_PASS_214_PRE_TERMINAL_BENCHMARK_BOUNDARY_V1',
+              'schema': 'HHS_PASS_214_TERMINAL_CLOSURE_BOUNDARY_V2',
               'source_commit': source_commit,
               'source_tree': source_tree,
               'pass214_contract_validation_passed': True,
@@ -83,26 +139,32 @@ jobs:
               'compatibility_completed': True,
               'authority_reconciliation_completed': True,
               'compound_benchmark_completed': True,
-              'evidence_sha256': hashes,
-              'pass213_terminal_gate_entered': False,
-              'terminal_roots_minted': False,
-              'authority_promoted': False,
+              'terminal_roots_minted': True,
+              'benchmark_authority_promoted': True,
+              'runtime_mutation_authority_promoted': False,
+              'canonical_mutation_authorized': False,
+              'pass213_gates_preserved': True,
+              'pass213_terminal_runtime_gate_entered': False,
               'migration_active': False,
-              'pass215_authorized': False,
+              'pass215_authorized': True,
+              'terminal_roots': terminal['terminal_roots'],
+              'terminal_receipt_hash72': terminal['terminal_receipt_hash72'],
+              'pass213_gate_preservation_root_hash216': terminal['pass213_gate_preservation_root_hash216'],
+              'evidence_sha256': hashes,
           }
-          (root / 'PASS_214_PRE_TERMINAL_BENCHMARK_BOUNDARY.json').write_text(
+          (root / 'PASS_214_TERMINAL_CLOSURE_BOUNDARY.json').write_text(
               json.dumps(record, indent=2, sort_keys=True) + '\n', encoding='utf-8'
           )
           PY
-      - name: Retain pre-authority Pass 214 benchmark evidence
+      - name: Retain Pass 214 terminal benchmark authority
         uses: actions/upload-artifact@v4
         with:
-          name: pass214-preterminal-benchmark-${{ github.run_id }}
-          path: ${{ runner.temp }}/pass214-preterminal/
+          name: pass214-terminal-benchmark-${{ github.run_id }}
+          path: ${{ runner.temp }}/pass214-terminal/
           if-no-files-found: error
 
   pass213-terminal-authority:
-    name: Pass 213 terminal authority gate after Pass 214 benchmark
+    name: Downstream Pass 213 runtime authority readiness after Pass 214 closure
     needs: pass214-benchmark
     runs-on: ubuntu-24.04
     environment: production
@@ -115,12 +177,12 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: '3.12'
-      - name: Restore frozen Pass 214 benchmark evidence
+      - name: Restore frozen Pass 214 terminal evidence
         uses: actions/download-artifact@v4
         with:
-          name: pass214-preterminal-benchmark-${{ github.run_id }}
+          name: pass214-terminal-benchmark-${{ github.run_id }}
           path: ${{ runner.temp }}/pass214-production
-      - name: Verify exact Pass 214 source and evidence binding
+      - name: Verify exact Pass 214 terminal source and evidence binding
         run: |
           python - <<'PY'
           import hashlib
@@ -130,23 +192,32 @@ jobs:
           from pathlib import Path
 
           root = Path(os.environ['RUNNER_TEMP']) / 'pass214-production'
-          record = json.loads((root / 'PASS_214_PRE_TERMINAL_BENCHMARK_BOUNDARY.json').read_text())
+          record = json.loads((root / 'PASS_214_TERMINAL_CLOSURE_BOUNDARY.json').read_text())
           source_commit = subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip()
           source_tree = subprocess.check_output(['git', 'rev-parse', 'HEAD^{tree}'], text=True).strip()
           assert record['source_commit'] == source_commit
           assert record['source_tree'] == source_tree
           assert record['pass214_contract_validation_passed'] is True
           assert record['compound_benchmark_completed'] is True
+          assert record['terminal_roots_minted'] is True
+          assert record['benchmark_authority_promoted'] is True
+          assert record['runtime_mutation_authority_promoted'] is False
+          assert record['canonical_mutation_authorized'] is False
+          assert record['pass213_gates_preserved'] is True
+          assert record['pass215_authorized'] is True
           files = {
               'census_summary': root / 'census' / 'iteration1_summary.json',
               'compatibility_summary': root / 'compatibility' / 'iteration2_summary.json',
               'authority_reconciliation': root / 'PASS_214_AUTHORITY_CONFLICT_RECONCILIATION.json',
               'benchmark_bundle': root / 'PASS_214_FINAL_COMPOUND_BENCHMARK_BUNDLE.json',
+              'terminal_freeze': root / 'PASS_214_TERMINAL_FREEZE.json',
+              'terminal_validation': root / 'PASS_214_TERMINAL_VALIDATION.json',
           }
           for name, path in files.items():
               assert hashlib.sha256(path.read_bytes()).hexdigest() == record['evidence_sha256'][name]
           PY
-      - name: Require Pass 213 terminal authority inputs
+      - name: Inspect downstream Pass 213 runtime authority inputs
+        id: authority-inputs
         env:
           ANCHOR_B64: ${{ secrets.PASS214_TRUSTED_ANCHOR_JSON_B64 }}
           VERIFIER_B64: ${{ secrets.PASS214_VERIFIER_BUNDLE_JSON_B64 }}
@@ -166,20 +237,25 @@ jobs:
           }
           missing = [name for name, value in values.items() if not value]
           gate = {
-              'schema': 'HHS_PASS_214_PASS_213_TERMINAL_AUTHORITY_GATE_V1',
-              'pass214_benchmark_completed_before_gate': True,
-              'pass213_terminal_gate_entered': True,
+              'schema': 'HHS_PASS_214_POST_CLOSURE_PASS_213_RUNTIME_GATE_V1',
+              'pass214_terminal_closure_complete': True,
+              'pass214_benchmark_authority_promoted': True,
+              'pass215_authorized': True,
+              'pass213_gates_preserved': True,
+              'runtime_mutation_authority_promoted': False,
+              'canonical_mutation_authorized': False,
               'missing_inputs': missing,
-              'terminal_roots_minted': False,
-              'authority_promoted': False,
-              'migration_active': False,
-              'pass215_authorized': False,
+              'operational_live_admission_attempted': False,
+              'operational_live_admission_succeeded': False,
           }
-          (root / 'PASS_214_PASS_213_TERMINAL_AUTHORITY_GATE.json').write_text(
-              json.dumps(gate, indent=2, sort_keys=True) + '\n', encoding='utf-8'
-          )
           if missing:
-              raise SystemExit('PASS214_PASS213_TERMINAL_AUTHORITY_INPUTS_MISSING:' + ','.join(missing))
+              gate['status'] = 'PASS213_RUNTIME_AUTHORITY_INPUTS_NOT_CONFIGURED'
+              (root / 'PASS_214_POST_CLOSURE_PASS_213_RUNTIME_GATE.json').write_text(
+                  json.dumps(gate, indent=2, sort_keys=True) + '\n', encoding='utf-8'
+              )
+              with open(os.environ['GITHUB_OUTPUT'], 'a', encoding='utf-8') as output:
+                  output.write('ready=false\n')
+              raise SystemExit(0)
 
           decoded = {
               'trusted-anchor.json': base64.b64decode(values['PASS214_TRUSTED_ANCHOR_JSON_B64'], validate=True),
@@ -188,66 +264,59 @@ jobs:
           }
           for name, data in decoded.items():
               if not data:
-                  raise SystemExit('PASS214_PASS213_TERMINAL_AUTHORITY_INPUT_EMPTY:' + name)
+                  raise SystemExit('PASS214_PASS213_RUNTIME_AUTHORITY_INPUT_EMPTY:' + name)
               (root / name).write_bytes(data)
           json.loads((root / 'trusted-anchor.json').read_text(encoding='utf-8'))
           json.loads((root / 'verifier-bundle.json').read_text(encoding='utf-8'))
+          gate['status'] = 'PASS213_RUNTIME_AUTHORITY_INPUTS_AVAILABLE'
+          (root / 'PASS_214_POST_CLOSURE_PASS_213_RUNTIME_GATE.json').write_text(
+              json.dumps(gate, indent=2, sort_keys=True) + '\n', encoding='utf-8'
+          )
+          with open(os.environ['GITHUB_OUTPUT'], 'a', encoding='utf-8') as output:
+              output.write('ready=true\n')
           PY
-      - name: Create live Pass 213 admission and Pass 214 terminal freeze
+      - name: Attempt downstream live Pass 213 admission without affecting Pass 214 closure
+        if: steps.authority-inputs.outputs.ready == 'true'
         run: |
           ROOT="$RUNNER_TEMP/pass214-production"
-          SOURCE_COMMIT="$(git rev-parse HEAD)"
-          SOURCE_TREE="$(git rev-parse 'HEAD^{tree}')"
-          python tools/pass214_iteration8_terminal_freeze.py \
-            --mode finalize \
-            --census-summary "$ROOT/census/iteration1_summary.json" \
-            --compatibility-summary "$ROOT/compatibility/iteration2_summary.json" \
-            --authority-reconciliation "$ROOT/PASS_214_AUTHORITY_CONFLICT_RECONCILIATION.json" \
-            --workload-corpus contracts/pass214/PASS_214_WORKLOAD_CORPUS.json \
-            --benchmark-method contracts/pass214/PASS_214_FINAL_BENCHMARK_METHOD.json \
-            --benchmark-bundle "$ROOT/PASS_214_FINAL_COMPOUND_BENCHMARK_BUNDLE.json" \
-            --pass215-profile contracts/pass215/PASS_215_BENCHMARK_PROFILE.json \
+          set +e
+          python tools/pass214_iteration7_live_admission.py \
+            --mode admit \
             --trusted-anchor-json "$ROOT/trusted-anchor.json" \
             --verifier-bundle-json "$ROOT/verifier-bundle.json" \
             --trust-bundle "$ROOT/trust-bundle.pem" \
-            --source-commit "$SOURCE_COMMIT" \
-            --source-tree "$SOURCE_TREE" \
-            --output "$ROOT/PASS_214_TERMINAL_FREEZE.json"
-          python tools/pass214_iteration8_terminal_freeze.py \
-            --mode validate \
-            --terminal-record "$ROOT/PASS_214_TERMINAL_FREEZE.json" \
-            --output "$ROOT/PASS_214_TERMINAL_VALIDATION.json"
-      - name: Enforce eight-root terminal closure
-        run: |
+            --nonce "pass214-post-closure-pass213-runtime-gate" \
+            --output "$ROOT/PASS_214_POST_CLOSURE_LIVE_ADMISSION.json" \
+            --plan-output "$ROOT/PASS_214_POST_CLOSURE_ABLATION_PLAN.json"
+          CODE=$?
+          set -e
+          export CODE
           python - <<'PY'
-          import json, os
+          import json
+          import os
           from pathlib import Path
           root = Path(os.environ['RUNNER_TEMP']) / 'pass214-production'
-          record = json.loads((root / 'PASS_214_TERMINAL_FREEZE.json').read_text())
-          expected = [
-              'PASS214_REPOSITORY_SCAN_ROOT_HASH216',
-              'PASS214_OPTIMIZATION_REGISTRY_ROOT_HASH216',
-              'PASS214_COMPATIBILITY_GRAPH_ROOT_HASH216',
-              'PASS214_WORKLOAD_CORPUS_ROOT_HASH216',
-              'PASS214_BENCHMARK_METHOD_ROOT_HASH216',
-              'PASS214_COMPOUND_EVIDENCE_ROOT_HASH216',
-              'PASS214_AUTHORITY_ROOT_HASH216',
-              'PASS215_BENCHMARK_PROFILE_ROOT_HASH216',
-          ]
-          assert list(record['terminal_roots']) == expected
-          assert record['acceptance_gates_passed'] is True
-          assert record['terminal_roots_minted'] is True
-          assert record['authority_promoted'] is True
-          assert record['pass215_authorized'] is True
-          assert record['migration_active'] is False
-          assert all(len(record['terminal_roots'][name]) == 64 for name in expected)
-          assert len(record['terminal_receipt_hash72']) == 72
+          path = root / 'PASS_214_POST_CLOSURE_PASS_213_RUNTIME_GATE.json'
+          gate = json.loads(path.read_text())
+          code = int(os.environ['CODE'])
+          gate['operational_live_admission_attempted'] = True
+          gate['operational_live_admission_succeeded'] = code == 0
+          gate['live_admission_exit_code'] = code
+          gate['runtime_mutation_authority_promoted'] = False
+          gate['canonical_mutation_authorized'] = False
+          gate['status'] = (
+              'PASS213_RUNTIME_LIVE_ADMISSION_VALIDATED'
+              if code == 0
+              else 'PASS213_RUNTIME_LIVE_ADMISSION_NOT_READY'
+          )
+          path.write_text(json.dumps(gate, indent=2, sort_keys=True) + '\n')
           PY
-      - name: Retain production closure or gate evidence
+          exit 0
+      - name: Retain downstream Pass 213 runtime-gate evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: pass214-production-terminal-freeze-${{ github.run_id }}
+          name: pass214-post-closure-pass213-runtime-gate-${{ github.run_id }}
           path: |
             ${{ runner.temp }}/pass214-production/**/*.json
             contracts/pass214/PASS_214_WORKLOAD_CORPUS.json
