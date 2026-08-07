@@ -85,9 +85,15 @@ function setInspectorOpen(open) {
 function enforceVisualIdeSurface() {
   if (!body.classList.contains('visual-ide-active')) return;
   if (ideView?.hidden) ideView.hidden = false;
+  const assistantDrawerOpen = body.classList.contains('ide-assistant-open');
   for (const selector of ['#assistant-view', '#workspace-view', '#spatial-view', '#api-view']) {
     const view = document.querySelector(selector);
-    if (view && !view.hidden) view.hidden = true;
+    if (!view) continue;
+    if (selector === '#assistant-view' && assistantDrawerOpen) {
+      if (view.hidden) view.hidden = false;
+      continue;
+    }
+    if (!view.hidden) view.hidden = true;
   }
 }
 
@@ -166,9 +172,10 @@ suppressLegacyMobileTabs();
 enforceVisualIdeSurface();
 
 window.HHSMobileFirstPaintFix = Object.freeze({
-  schema: 'HHS_MOBILE_FIRST_PAINT_AND_OVERLAY_OWNERSHIP_V1',
+  schema: 'HHS_MOBILE_FIRST_PAINT_AND_OVERLAY_OWNERSHIP_V2',
   setExplorerOpen,
   setInspectorOpen,
   enforceVisualIdeSurface,
   suppressLegacyMobileTabs,
+  integrated_assistant_drawer_preserved: true,
 });
