@@ -59,6 +59,7 @@ cat >/etc/systemd/system/"${HHS_SERVICE}".d/30-production-interface.conf <<EOF
 [Service]
 WorkingDirectory=${HHS_APP_ROOT}
 Environment=HHS_COGNITION_AUTO_TICK=0
+Environment=HHS_PASS174_BOOT_TIMEOUT_SECONDS=180
 Environment=HHS_RUNTIME_STATUS_PROBE=1
 Environment=HHS_RUNTIME_STATUS_CACHE=${HHS_STATE_ROOT}/status-cache.json
 ExecStart=
@@ -85,6 +86,8 @@ effective_environment="$(systemctl show "${HHS_SERVICE}" -p Environment --value)
   || fail "effective ExecStart is not production_visual_server"
 [[ "${effective_environment}" == *"HHS_COGNITION_AUTO_TICK=0"* ]] \
   || fail "HHS_COGNITION_AUTO_TICK=0 is not effective"
+[[ "${effective_environment}" == *"HHS_PASS174_BOOT_TIMEOUT_SECONDS=180"* ]] \
+  || fail "HHS_PASS174_BOOT_TIMEOUT_SECONDS=180 is not effective"
 
 base_url="http://${HHS_HOST}:${HHS_PORT}"
 ready=0
@@ -115,6 +118,7 @@ note "Effective service state"
 printf 'Service: %s\n' "${HHS_SERVICE}"
 printf 'Entrypoint: %s\n' "${exec_start}"
 printf 'Cognition auto tick: disabled\n'
+printf 'Pass 174 readiness window: 180s\n'
 printf 'Bootstrap status:\n'
 cat /tmp/hhs-runtime-bootstrap-status.json
 printf '\n\nTop HHS-related CPU consumers after restart:\n'
