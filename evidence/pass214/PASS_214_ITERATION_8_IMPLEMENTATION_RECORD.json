@@ -1,16 +1,35 @@
 {
-  "schema": "HHS_PASS_214_ITERATION_8_IMPLEMENTATION_RECORD_V1",
+  "schema": "HHS_PASS_214_ITERATION_8_IMPLEMENTATION_RECORD_V2",
   "pass": 214,
   "iteration": 8,
-  "classification": "HHS_PASS_214_FINAL_BENCHMARK_IMPLEMENTED_VALIDATED_AWAITING_PRODUCTION_LIVE_ADMISSION",
+  "classification": "HHS_PASS_214_FINAL_BENCHMARK_AUTHORITY_REPAIRED_FOR_CONTRACT_ORDERING",
   "foundation": {
     "pass213_authoritative_closure": "86ec461818682fc87232740758769602e8f9fe05",
     "iteration6_candidate_set_root_hash216": "f11bdbb9940e90500692cd0a0c505727ad94cafc0ea4fca85b134253f72cab9f",
-    "iteration7_live_admission_required": true
+    "pass213_gates_preserved": true,
+    "pass213_live_admission_required_before_pass214_benchmark": false,
+    "pass213_live_admission_required_before_canonical_mutation": true
+  },
+  "repair": {
+    "superseded_premerge_runtime": "hhs_backend/runtime/hhs_pass214_iteration8_terminal_freeze_v1.py",
+    "authoritative_runtime": "hhs_backend/runtime/hhs_pass214_iteration8_terminal_freeze_v2.py",
+    "reason": "The pre-merge v1 implementation added live Pass 213 operational admission as a prerequisite to Pass 214 terminal benchmark authority. The frozen Pass 214 contract requires Pass 213 gates to be preserved, but defines Pass 214 census, benchmark, compound ablation, evidence, terminal roots, and Pass 215 profile freeze as Pass 214 responsibilities. V2 restores that ordering without bypassing Pass 213 canonical mutation gates.",
+    "ordering": [
+      "pass214_contract_validation",
+      "pass214_repository_census_and_conformance",
+      "pass214_compound_and_ablation_benchmark",
+      "pass214_eight_root_terminal_freeze",
+      "pass214_benchmark_authority_promotion",
+      "pass215_benchmark_profile_authorization",
+      "pass213_live_runtime_admission_before_any_canonical_mutation"
+    ],
+    "historical_v1_deleted": false,
+    "iteration7_live_admission_deleted": false
   },
   "surfaces": {
-    "terminal_runtime": "hhs_backend/runtime/hhs_pass214_iteration8_terminal_freeze_v1.py",
+    "terminal_runtime": "hhs_backend/runtime/hhs_pass214_iteration8_terminal_freeze_v2.py",
     "terminal_runner": "tools/pass214_iteration8_terminal_freeze.py",
+    "downstream_pass213_runtime_gate": "tools/pass214_iteration7_live_admission.py",
     "benchmark_runtime": "hhs_backend/runtime/hhs_pass214_final_compound_benchmark_v1.py",
     "benchmark_runner": "tools/pass214_final_compound_benchmark.py",
     "authority_reconciliation_runtime": "hhs_backend/runtime/hhs_pass214_authority_conflict_reconciliation_v1.py",
@@ -19,12 +38,10 @@
     "benchmark_method": "contracts/pass214/PASS_214_FINAL_BENCHMARK_METHOD.json",
     "pass215_profile": "contracts/pass215/PASS_215_BENCHMARK_PROFILE.json",
     "ci_gate": ".github/workflows/pass214-iteration8-terminal-freeze.yml",
-    "production_finalizer": ".github/workflows/pass214-production-terminal-finalize.yml"
+    "production_finalizer": ".github/workflows/pass214-production-terminal-finalize.yml",
+    "ordering_regression": "tests/test_pass214_terminal_workflow_ordering.py"
   },
-  "hosted_validation": {
-    "run_id": 31186779502,
-    "head": "61767f362c9a8bdb2545f65fe36f11375437a662",
-    "conclusion": "success",
+  "benchmark_boundary": {
     "workload_families": 15,
     "workload_modes_per_family": 11,
     "mode_executions": 165,
@@ -38,8 +55,7 @@
     "multimodal_ml_ablation_exercised": true,
     "negative_controls_fail_closed": true,
     "complete_cost_accounting": true,
-    "physical_compression_claim_boundary_preserved": true,
-    "terminal_readiness_blockers": ["PASS214_I8_LIVE_ADMISSION_MAPPING_REQUIRED"]
+    "physical_compression_claim_boundary_preserved": true
   },
   "terminal_roots": [
     "PASS214_REPOSITORY_SCAN_ROOT_HASH216",
@@ -51,18 +67,31 @@
     "PASS214_AUTHORITY_ROOT_HASH216",
     "PASS215_BENCHMARK_PROFILE_ROOT_HASH216"
   ],
+  "authority_scope": {
+    "pass214_benchmark_authority": "PROMOTABLE_AFTER_COMPLETE_PASS214_VALIDATION",
+    "pass213_runtime_mutation_authority": "NOT_PROMOTED_BY_PASS214",
+    "canonical_mutation_authorized_by_pass214": false,
+    "migration_active": false,
+    "pass213_gate_preservation_root_required": true,
+    "pass215_authorization_scope": "FROZEN_BENCHMARK_PROFILE_AND_NEXT_PASS_DEVELOPMENT",
+    "pass215_canonical_mutation_still_subject_to_pass213_gates": true
+  },
+  "validation": {
+    "dependency_scoped_tests_include_terminal_ordering_regression": true,
+    "v1_history_compiles": true,
+    "v2_authoritative_runtime_compiles": true,
+    "exact_head_hosted_validation": "PENDING_FINAL_NON_SUPPRESSED_EVENT"
+  },
   "claim_boundary": {
     "terminal_gate_implemented": true,
     "authority_conflict_reconciliation_implemented": true,
     "final_benchmark_executor_implemented": true,
-    "final_benchmark_hosted_validation_passed": true,
     "pass215_profile_predeclared": true,
-    "recorded_admission_can_authorize": false,
-    "live_pass213_reverification_required": true,
-    "production_live_admission_complete": false,
-    "terminal_roots_minted": false,
-    "authority_promoted": false,
-    "migration_active": false,
-    "pass215_authorized": false
+    "pass213_gates_preserved": true,
+    "live_pass213_reverification_required_for_pass214_benchmark": false,
+    "live_pass213_reverification_required_before_canonical_mutation": true,
+    "runtime_mutation_authority_promoted": false,
+    "canonical_mutation_authorized": false,
+    "migration_active": false
   }
 }
