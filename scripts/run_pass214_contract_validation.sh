@@ -34,9 +34,11 @@ python -m py_compile \
   hhs_backend/runtime/hhs_pass214_iteration6_candidate_binding_v1.py \
   hhs_backend/runtime/hhs_pass214_iteration7_live_admission_ablation_v1.py \
   hhs_backend/runtime/hhs_pass214_authority_conflict_reconciliation_v1.py \
+  hhs_backend/runtime/hhs_pass214_final_compound_benchmark_v1.py \
   hhs_backend/runtime/hhs_pass214_iteration8_terminal_freeze_v1.py \
   tools/pass214_callable_oracle.py \
   tools/pass214_authority_conflict_reconciliation.py \
+  tools/pass214_final_compound_benchmark.py \
   tools/pass214_iteration4_manifest.py \
   tools/pass214_iteration5_callable_corpus.py \
   tools/pass214_iteration5_manifest.py \
@@ -50,6 +52,9 @@ python -m json.tool contracts/pass214/PASS_214_CONTRACT.json >/dev/null
 python -m json.tool contracts/pass214/PASS_214_ITERATION_2_CONFORMANCE_EXTENSION.json >/dev/null
 python -m json.tool contracts/pass214/PASS_214_ITERATION_3_ORACLE_ADJUDICATION_EXTENSION.json >/dev/null
 python -m json.tool contracts/pass214/PASS_214_ITERATION_4_CALLABLE_ORACLE_EXTENSION.json >/dev/null
+python -m json.tool contracts/pass214/PASS_214_WORKLOAD_CORPUS.json >/dev/null
+python -m json.tool contracts/pass214/PASS_214_FINAL_BENCHMARK_METHOD.json >/dev/null
+python -m json.tool contracts/pass215/PASS_215_BENCHMARK_PROFILE.json >/dev/null
 python -m json.tool evidence/pass214/PASS_214_ITERATION_2_IMPLEMENTATION_RECORD.json >/dev/null
 python -m json.tool evidence/pass214/PASS_214_ITERATION_3_IMPLEMENTATION_RECORD.json >/dev/null
 python -m json.tool evidence/pass214/PASS_214_ITERATION_4_IMPLEMENTATION_RECORD.json >/dev/null
@@ -75,6 +80,7 @@ if [[ -n "${RUNNER_TEMP:-}" ]]; then
     --output "$RUNNER_TEMP/pass214-iteration7/PASS_214_ITERATION_7_CI_INSPECTION.json"
   python tools/pass214_iteration8_terminal_freeze.py \
     --mode inspect \
+    --pass215-profile contracts/pass215/PASS_215_BENCHMARK_PROFILE.json \
     --output "$RUNNER_TEMP/pass214-iteration8/PASS_214_ITERATION_8_CI_INSPECTION.json"
 fi
 
