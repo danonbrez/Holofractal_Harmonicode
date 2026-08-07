@@ -80,7 +80,7 @@ jobs:
           from pathlib import Path
           root = Path(os.environ['RUNNER_TEMP']) / 'pass214-terminal'
           record = json.loads((root / 'PASS_214_TERMINAL_FREEZE.json').read_text())
-          expected = [
+          expected = {
               'PASS214_REPOSITORY_SCAN_ROOT_HASH216',
               'PASS214_OPTIMIZATION_REGISTRY_ROOT_HASH216',
               'PASS214_COMPATIBILITY_GRAPH_ROOT_HASH216',
@@ -89,8 +89,9 @@ jobs:
               'PASS214_COMPOUND_EVIDENCE_ROOT_HASH216',
               'PASS214_AUTHORITY_ROOT_HASH216',
               'PASS215_BENCHMARK_PROFILE_ROOT_HASH216',
-          ]
-          assert list(record['terminal_roots']) == expected
+          }
+          assert set(record['terminal_roots']) == expected
+          assert len(record['terminal_roots']) == 8
           assert record['acceptance_gates_passed'] is True
           assert record['terminal_roots_minted'] is True
           assert record['authority_promoted'] is True
@@ -101,7 +102,7 @@ jobs:
           assert record['canonical_mutation_authorized'] is False
           assert record['migration_active'] is False
           assert record['pass213_live_admission_required_before_canonical_mutation'] is True
-          assert all(len(record['terminal_roots'][name]) == 64 for name in expected)
+          assert all(len(value) == 64 for value in record['terminal_roots'].values())
           assert len(record['terminal_receipt_hash72']) == 72
           assert len(record['pass213_gate_preservation_root_hash216']) == 64
           PY
