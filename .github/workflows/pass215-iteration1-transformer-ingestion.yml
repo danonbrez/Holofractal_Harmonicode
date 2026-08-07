@@ -64,7 +64,69 @@ jobs:
           PY
       - name: Run dependency-scoped Iteration 1 validation
         run: bash scripts/run_pass215_iteration1_validation.sh
-      - name: Retain Iteration 1 contract
+      - name: Execute public CLI on deterministic three-tier workload
+        run: |
+          ROOT="$RUNNER_TEMP/pass215-i1"
+          mkdir -p "$ROOT"
+          export ROOT
+          python - <<'PY'
+          from hashlib import sha256, shake_256
+          import json
+          import os
+          from pathlib import Path
+          from hhs_backend.runtime.hhs_pass212_full_hydration_recovery_v1 import (
+              AFFINE_SEED_BYTES,
+              FULL_HYDRATION_BYTES,
+              apply_bit_exceptions,
+              generate_affine_hydration,
+          )
+          root = Path(os.environ['ROOT'])
+          tier1 = generate_affine_hydration(bytes(AFFINE_SEED_BYTES))
+          tier2 = apply_bit_exceptions(tier1, (0, 5184, 100000, 900000))
+          tier3 = shake_256(b'pass215-i1-cli-high-entropy-control').digest(FULL_HYDRATION_BYTES)
+          raw = tier1 + tier2 + tier3
+          (root / 'weights.bin').write_bytes(raw)
+          manifest = {
+              'schema': 'HHS_PASS_215_QUANTIZED_TRANSFORMER_MANIFEST_V1',
+              'model_id': 'pass215-i1-cli-transformer-shaped-fixture',
+              'source': {'kind': 'repository_generated_fixture', 'real_open_transformer': False},
+              'tensors': [{
+                  'name': 'layers.0.attention.qkv.weight',
+                  'dtype': 'uint8',
+                  'shape': [len(raw)],
+                  'path': 'weights.bin',
+                  'offset_bytes': 0,
+                  'length_bytes': len(raw),
+                  'sha256': sha256(raw).hexdigest(),
+              }],
+          }
+          (root / 'manifest.json').write_text(json.dumps(manifest, indent=2, sort_keys=True) + '\n')
+          PY
+          python tools/pass215_iteration1_transformer_ingestion.py \
+            --manifest "$ROOT/manifest.json" \
+            --base-directory "$ROOT" \
+            --output "$ROOT/PASS_215_ITERATION_1_INCIDENCE_EVIDENCE.json"
+          python tools/pass215_iteration1_transformer_ingestion.py \
+            --validate "$ROOT/PASS_215_ITERATION_1_INCIDENCE_EVIDENCE.json" \
+            --output "$ROOT/PASS_215_ITERATION_1_VALIDATION.json"
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          from hhs_backend.runtime.hhs_pass212_full_hydration_recovery_v1 import FULL_HYDRATION_BYTES
+          root = Path(os.environ['ROOT'])
+          evidence = json.loads((root / 'PASS_215_ITERATION_1_INCIDENCE_EVIDENCE.json').read_text())
+          aggregate = evidence['aggregate']
+          assert aggregate['source_bytes'] == 3 * FULL_HYDRATION_BYTES
+          assert aggregate['tier_1_bytes'] == FULL_HYDRATION_BYTES
+          assert aggregate['tier_2_bytes'] == FULL_HYDRATION_BYTES
+          assert aggregate['tier_3_bytes'] == FULL_HYDRATION_BYTES
+          assert aggregate['incidence_fraction_exact'] == {'numerator': 2, 'denominator': 3}
+          assert aggregate['semantic_exactness'] is True
+          assert evidence['authority']['runtime_mutation_authority_promoted'] is False
+          assert evidence['authority']['canonical_mutation_authorized'] is False
+          PY
+      - name: Retain Iteration 1 evidence
         uses: actions/upload-artifact@v4
         with:
           name: pass215-iteration1-${{ github.run_id }}
@@ -72,5 +134,5 @@ jobs:
             contracts/pass215/PASS_215_BENCHMARK_PROFILE.json
             contracts/pass215/PASS_215_ITERATION_1_CONTRACT.json
             docs/pass215/**
-            evidence/pass215/**
-          if-no-files-found: warn
+            ${{ runner.temp }}/pass215-i1/*.json
+          if-no-files-found: error
