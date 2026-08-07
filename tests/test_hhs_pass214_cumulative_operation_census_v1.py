@@ -8,10 +8,10 @@ from hhs_backend.runtime.hhs_pass214_cumulative_operation_census_v1 import (
     FROZEN_RUNTIME,
     FROZEN_RUNTIME_GIT_BLOB,
 )
-from hhs_backend.runtime.hhs_pass214_cumulative_operation_census_deep_v1 import (
-    build_deep_cumulative_operation_census,
-    load_and_validate_deep_census,
-    write_deep_census,
+from hhs_backend.runtime.hhs_pass214_cumulative_operation_census_final_v1 import (
+    build_final_cumulative_operation_census,
+    load_and_validate_final_census,
+    write_final_census,
 )
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -19,7 +19,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 @lru_cache(maxsize=1)
 def _result():
-    return build_deep_cumulative_operation_census(ROOT, source_ref="HEAD")
+    return build_final_cumulative_operation_census(ROOT, source_ref="HEAD")
 
 
 def test_known_opcode_families_are_all_recovered() -> None:
@@ -70,11 +70,20 @@ def test_deep_language_and_projection_coverage_is_present() -> None:
     assert "C_HEADER_DECLARATION" in manifest["extractors_used"]
     assert "MAKE" in manifest["extractors_used"]
     assert summary["reuse_accounting"]["abi_declaration_surfaces"] > 0
-    # The repository language endpoint currently reports Rust, Java, Lean and Rocq;
-    # their files must be accounted whenever tracked source contains declarations.
     for extension in (".rs", ".java", ".lean", ".v"):
         if manifest["tracked_extension_or_special_file_counts"].get(extension, 0):
             assert manifest["supplemental_extractor_file_counts"].get(extension, 0) > 0
+
+
+def test_python_registry_accounting_is_structural_not_string_sweep() -> None:
+    result = _result()
+    quality = result["summary"]["quality_controls"]
+    manifest = result["summary"]["language_coverage_manifest"]["python_operation_registry"]
+    assert quality["broad_python_registry_string_heuristic_removed"] is True
+    assert quality["discarded_broad_registry_string_records"] > 0
+    assert quality["replacement_python_operation_registry_keys"] > 0
+    assert manifest["policy"] == "STRUCTURAL_KEYS_ONLY_STRICT_OPERATION_REGISTRY_NAMES"
+    assert not any(row["kind"] == "PYTHON_REGISTRY_ENTRY" for row in result["operations"])
 
 
 def test_reuse_and_python_exposure_are_accounted() -> None:
@@ -100,7 +109,7 @@ def test_frozen_runtime_blob_is_unchanged() -> None:
 def test_census_receipt_roundtrip(tmp_path: Path) -> None:
     result = _result()
     output = tmp_path / "census.json"
-    write_deep_census(result, output)
-    loaded = load_and_validate_deep_census(output)
+    write_final_census(result, output)
+    loaded = load_and_validate_final_census(output)
     assert loaded["census_sha256"] == result["census_sha256"]
     assert loaded["summary"] == result["summary"]
