@@ -32,7 +32,6 @@ jobs:
           from pathlib import Path
           import gzip
           import json
-          import re
           import zlib
 
           out = Path('evidence/pass214/recovery')
@@ -53,16 +52,8 @@ jobs:
               },
           }
 
-          separator_pattern = re.compile(
-              r'b(?=(?:'
-              r'[A-Z_][A-Z0-9_]*\\s*=|'
-              r'class\\s|def\\s|@|from\\s|import\\s|if\\s+__name__|'
-              r' {4}(?:def\\s|return\\s|if\\s|for\\s|while\\s|try:|except\\s|with\\s|raise\\s|assert\\s)'
-              r'))'
-          )
-
           def gzip_body(blob: bytes) -> bytes:
-              if len(blob) < 18 or blob[:3] != b'\\x1f\\x8b\\x08':
+              if len(blob) < 18 or blob[:3] != bytes((0x1f, 0x8b, 0x08)):
                   raise RuntimeError('PASS214_I4_DIAGNOSTIC_NOT_GZIP_DEFLATE')
               flags = blob[3]
               if flags & 0xE0:
@@ -75,7 +66,7 @@ jobs:
                   i += 2 + xlen
               for bit in (0x08, 0x10):
                   if flags & bit:
-                      end = blob.find(b'\\x00', i)
+                      end = blob.find(bytes((0,)), i)
                       if end < 0:
                           raise RuntimeError('PASS214_I4_DIAGNOSTIC_HEADER_TRUNCATED')
                       i = end + 1
@@ -85,18 +76,17 @@ jobs:
                   raise RuntimeError('PASS214_I4_DIAGNOSTIC_BODY_TRUNCATED')
               return blob[i:-8]
 
-          def candidate_metrics(name: str, source: bytes, expected_sha: str, trailer_crc: int, trailer_size: int):
+          def metrics(source: bytes, expected_sha: str, trailer_crc: int, trailer_size: int):
               compile_ok = True
               compile_error = None
               try:
-                  compile(source, name, 'exec')
+                  compile(source, '<pass214-i4-recovery>', 'exec')
               except Exception as exc:
                   compile_ok = False
                   compile_error = f'{type(exc).__name__}:{exc}'
               digest = sha256(source).hexdigest()
               crc = zlib.crc32(source) & 0xffffffff
               return {
-                  'name': name,
                   'source_size': len(source),
                   'source_sha256': digest,
                   'source_crc32': crc,
@@ -108,8 +98,7 @@ jobs:
               }
 
           def recover(label: str, spec: dict):
-              path = Path(spec['path'])
-              raw = path.read_bytes()
+              raw = Path(spec['path']).read_bytes()
               payload_sha = sha256(raw).hexdigest()
               trailer_crc = int.from_bytes(raw[-8:-4], 'little')
               trailer_size = int.from_bytes(raw[-4:], 'little')
@@ -119,17 +108,9 @@ jobs:
               except (gzip.BadGzipFile, EOFError, zlib.error):
                   source = zlib.decompress(gzip_body(raw), -zlib.MAX_WBITS)
                   mode = 'RAW_DEFLATE_RECOVERY_FROM_INVALID_GZIP_CONTAINER'
-              text = source.decode('utf-8')
-              (out / spec['output']).write_bytes(source)
-              suspects = []
-              for match in separator_pattern.finditer(text):
-                  start = max(0, match.start() - 60)
-                  end = min(len(text), match.start() + 100)
-                  suspects.append({
-                      'offset': match.start(),
-                      'context': repr(text[start:end]),
-                  })
-              replacement = separator_pattern.sub('\\n', text).encode('utf-8')
+              source.decode('utf-8')
+              evidence_path = out / spec['output']
+              evidence_path.write_bytes(source)
               return {
                   'label': label,
                   'path': spec['path'],
@@ -140,20 +121,12 @@ jobs:
                   'expected_source_sha256': spec['expected_source_sha256'],
                   'gzip_trailer_crc32': trailer_crc,
                   'gzip_trailer_isize': trailer_size,
-                  'separator_suspect_count': len(suspects),
-                  'separator_suspects': suspects,
-                  'raw_recovered': candidate_metrics(
-                      f'{label}-raw-recovered', source, spec['expected_source_sha256'], trailer_crc, trailer_size
-                  ),
-                  'replace_all_separator_suspects': candidate_metrics(
-                      f'{label}-replace-all-separator-suspects', replacement,
-                      spec['expected_source_sha256'], trailer_crc, trailer_size
-                  ),
-                  'repository_readable_evidence_path': str(out / spec['output']),
+                  'recovered': metrics(source, spec['expected_source_sha256'], trailer_crc, trailer_size),
+                  'repository_readable_evidence_path': str(evidence_path),
               }
 
           diagnostic = {
-              'schema': 'HHS_PASS_214_ITERATION_4_RAW_DEFLATE_DIAGNOSTIC_V2',
+              'schema': 'HHS_PASS_214_ITERATION_4_RAW_DEFLATE_DIAGNOSTIC_V3',
               'repair_scope': 'READ_ONLY_SOURCE_MATERIALIZATION_FOR_EXACT_RECONSTRUCTION',
               'frozen_identity_unchanged': True,
               'payload_rewrite': False,
@@ -161,22 +134,26 @@ jobs:
               'authority_promotion': False,
               'terminal_pass214_root_minted': False,
               'pass215_authorized': False,
-              'runtime': recover('runtime', frozen['runtime']),
-              'test': recover('test', frozen['test']),
           }
+          failures = {}
+          for label, spec in frozen.items():
+              try:
+                  diagnostic[label] = recover(label, spec)
+              except Exception as exc:
+                  failures[label] = f'{type(exc).__name__}:{exc}'
+          diagnostic['materialization_failures'] = failures
           (out / 'PASS_214_ITERATION_4_RAW_DEFLATE_DIAGNOSTIC.json').write_text(
-              json.dumps(diagnostic, indent=2, sort_keys=True) + '\\n', encoding='utf-8'
+              json.dumps(diagnostic, indent=2, sort_keys=True) + '\n', encoding='utf-8'
           )
+          if 'runtime' not in diagnostic:
+              raise SystemExit('PASS214_I4_RUNTIME_MATERIALIZATION_FAILED')
           print(json.dumps(diagnostic, sort_keys=True))
           PY
       - name: Commit diagnostic evidence only
         run: |
           git config user.name 'hhs-pass214-recovery-bot'
           git config user.email '153354844+danonbrez@users.noreply.github.com'
-          git add \
-            evidence/pass214/recovery/iteration4_runtime_recovered_damaged.py.txt \
-            evidence/pass214/recovery/iteration4_test_recovered_damaged.py.txt \
-            evidence/pass214/recovery/PASS_214_ITERATION_4_RAW_DEFLATE_DIAGNOSTIC.json
+          git add evidence/pass214/recovery/
           if git diff --cached --quiet; then
             echo 'Pass 214 Iteration 4 diagnostic evidence already current'
           else
