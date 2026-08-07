@@ -26,7 +26,8 @@ python -m pytest -q \
   tests/test_hhs_pass214_iteration6_candidate_binding_v1.py \
   tests/test_hhs_pass214_iteration7_live_admission_ablation_v1.py \
   tests/test_hhs_pass214_authority_conflict_reconciliation_v1.py \
-  tests/test_hhs_pass214_iteration8_terminal_freeze_v1.py
+  tests/test_hhs_pass214_iteration8_terminal_freeze_v1.py \
+  tests/test_pass214_terminal_workflow_ordering.py
 
 python -m py_compile \
   hhs_backend/runtime/hhs_pass214_callable_oracle_v1.py \
