@@ -36,3 +36,14 @@ test('mobile repair owns one dock, closes stale panels, and exposes editor first
   assert.match(repair, /\.ide-file-item, \.ide-editor-tab, #ide-new-file/);
   assert.match(repair, /enforceVisualIdeSurface/);
 });
+
+test('mobile first-paint guard preserves the integrated assistant drawer', async () => {
+  const repair = await source('mobile-first-paint-fix.mjs');
+  const guard = repair.match(/function enforceVisualIdeSurface\(\) \{[\s\S]*?\n\}/);
+  assert.ok(guard, 'visual surface guard is present');
+  assert.match(guard[0], /body\.classList\.contains\('ide-assistant-open'\)/);
+  assert.match(guard[0], /selector === '#assistant-view' && assistantDrawerOpen/);
+  assert.match(guard[0], /if \(view\.hidden\) view\.hidden = false/);
+  assert.match(repair, /HHS_MOBILE_FIRST_PAINT_AND_OVERLAY_OWNERSHIP_V2/);
+  assert.match(repair, /integrated_assistant_drawer_preserved:\s*true/);
+});
