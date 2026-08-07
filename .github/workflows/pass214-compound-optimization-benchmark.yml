@@ -75,6 +75,12 @@ jobs:
             --source-ref HEAD \
             --output-directory "$RUNNER_TEMP/pass214-iteration2" \
             | tee "$RUNNER_TEMP/pass214-iteration2-validation.log"
+      - name: Reconcile Iteration 2 authority-conflict candidates
+        run: |
+          python tools/pass214_authority_conflict_reconciliation.py \
+            --compatibility-directory "$RUNNER_TEMP/pass214-iteration2" \
+            --output "$RUNNER_TEMP/pass214-iteration2/PASS_214_AUTHORITY_CONFLICT_RECONCILIATION.json" \
+            | tee "$RUNNER_TEMP/pass214-authority-reconciliation.log"
       - name: Generate exact-head Iteration 4 workload manifest
         run: |
           python tools/pass214_iteration4_manifest.py \
@@ -119,6 +125,7 @@ jobs:
             --mode inspect \
             --census-summary "$RUNNER_TEMP/pass214-iteration1/iteration1_summary.json" \
             --compatibility-summary "$RUNNER_TEMP/pass214-iteration2/iteration2_summary.json" \
+            --authority-reconciliation "$RUNNER_TEMP/pass214-iteration2/PASS_214_AUTHORITY_CONFLICT_RECONCILIATION.json" \
             --output "$RUNNER_TEMP/pass214-iteration8/PASS_214_ITERATION_8_CI_INSPECTION.json" \
             | tee "$RUNNER_TEMP/pass214-iteration8-inspection.log"
       - name: Enforce non-promoting CI gates
@@ -127,10 +134,15 @@ jobs:
           import json, os
           from pathlib import Path
           root = Path(os.environ['RUNNER_TEMP'])
+          reconciliation = json.loads((root / 'pass214-iteration2' / 'PASS_214_AUTHORITY_CONFLICT_RECONCILIATION.json').read_text())
           i5 = json.loads((root / 'pass214-iteration5' / 'PASS_214_ITERATION_5_CALLABLE_CORPUS_REPORT.json').read_text())
           i6 = json.loads((root / 'pass214-iteration6' / 'PASS_214_ITERATION_6_CANDIDATE_BINDING_REPORT.json').read_text())
           i7 = json.loads((root / 'pass214-iteration7' / 'PASS_214_ITERATION_7_CI_INSPECTION.json').read_text())
           i8 = json.loads((root / 'pass214-iteration8' / 'PASS_214_ITERATION_8_CI_INSPECTION.json').read_text())
+          assert reconciliation['all_conflicts_reconciled'] is True
+          assert reconciliation['unresolved_conflict_count'] == 0
+          assert reconciliation['automatic_merge_count'] == 0
+          assert reconciliation['single_mutation_authority_preserved'] is True
           assert i5['status'] == 'PILOT_READY'
           assert i5['policy']['migration_active'] is False
           assert i5['policy']['authority_promoted'] is False
@@ -148,6 +160,7 @@ jobs:
           assert i8['authority_promoted'] is False
           assert i8['migration_active'] is False
           assert i8['pass215_authorized'] is False
+          assert 'PASS214_I8_AUTHORITY_RECONCILIATION_MAPPING_REQUIRED' not in i8['blockers']
           assert i8['blockers']
           PY
       - name: Retain Pass 214 Iterations 1 through 8 evidence
@@ -165,6 +178,7 @@ jobs:
             ${{ runner.temp }}/pass214-iteration4-manifest.json
             ${{ runner.temp }}/pass214-iteration1-validation.log
             ${{ runner.temp }}/pass214-iteration2-validation.log
+            ${{ runner.temp }}/pass214-authority-reconciliation.log
             ${{ runner.temp }}/pass214-iteration4-manifest.log
             ${{ runner.temp }}/pass214-iteration4-validation.log
             ${{ runner.temp }}/pass214-iteration5-validation.log
