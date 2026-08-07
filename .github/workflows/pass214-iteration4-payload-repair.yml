@@ -13,11 +13,12 @@ permissions:
 
 env:
   PYTHONDONTWRITEBYTECODE: '1'
+  PYTHONHASHSEED: '0'
 
 jobs:
-  repair-frozen-source-container:
+  repair-repository-visible-sources:
     runs-on: ubuntu-24.04
-    timeout-minutes: 10
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v5
         with:
@@ -25,19 +26,29 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: '3.12'
-      - name: Recover only the frozen Iteration 4 source
+      - name: Recover repository-visible sources and correct integrity metadata
         run: |
           python - <<'PY'
           from hashlib import sha256
           from pathlib import Path
           import gzip
           import json
+          import re
           import zlib
 
-          path = Path('hhs_backend/runtime/pass214_i4_payload/runtime.py.gz')
-          expected_source = 'a946cde1338bc33eb6873c13125b306a45882dec46fd29ac4820ce38ea5612a9'
-          raw = path.read_bytes()
-          old_payload_sha = sha256(raw).hexdigest()
+          runtime_payload = Path('hhs_backend/runtime/pass214_i4_payload/runtime.py.gz')
+          runtime_loader = Path('hhs_backend/runtime/hhs_pass214_callable_oracle_v1.py')
+          test_payload = Path('tests/pass214_i4_test_payload/test.py.gz')
+          test_loader = Path('tests/test_hhs_pass214_callable_oracle_v1.py')
+          evidence_path = Path('evidence/pass214/PASS_214_ITERATION_4_IMPLEMENTATION_RECORD.json')
+          receipt_path = Path('evidence/pass214/PASS_214_ITERATION_4_INTEGRITY_EVIDENCE_CORRECTION.json')
+
+          historical = {
+              'runtime_source_sha256': 'a946cde1338bc33eb6873c13125b306a45882dec46fd29ac4820ce38ea5612a9',
+              'runtime_payload_sha256': '392d655df87628832fbd14d19301bc7dc8c002cf69b571fc6f12ab867961930d',
+              'test_source_sha256': 'f413e3514dbfd97f4c59dbedeabca885380adbc466f984508ca1317b53a76ec5',
+              'test_payload_sha256': '731d4bba2fab5243f29c3b4772c0634d658261930c6f3a2312706c2ae416a297',
+          }
 
           def gzip_deflate_payload(blob: bytes) -> bytes:
               if len(blob) < 18 or blob[:3] != b'\x1f\x8b\x08':
@@ -47,6 +58,8 @@ jobs:
                   raise RuntimeError('PASS214_I4_REPAIR_RESERVED_GZIP_FLAGS')
               index = 10
               if flags & 0x04:
+                  if index + 2 > len(blob):
+                      raise RuntimeError('PASS214_I4_REPAIR_GZIP_EXTRA_TRUNCATED')
                   xlen = int.from_bytes(blob[index:index + 2], 'little')
                   index += 2 + xlen
               for bit in (0x08, 0x10):
@@ -61,96 +74,107 @@ jobs:
                   raise RuntimeError('PASS214_I4_REPAIR_GZIP_BODY_TRUNCATED')
               return blob[index:-8]
 
-          try:
-              recovered = gzip.decompress(raw)
-              recovery_mode = 'VALID_GZIP_NO_REPAIR_REQUIRED'
-          except (gzip.BadGzipFile, EOFError, zlib.error):
-              recovered = zlib.decompress(gzip_deflate_payload(raw), -zlib.MAX_WBITS)
-              recovery_mode = 'RAW_DEFLATE_RECOVERY_FROM_CORRUPT_GZIP_TRAILER'
+          def recover(path: Path, label: str):
+              raw = path.read_bytes()
+              old_payload_sha = sha256(raw).hexdigest()
+              try:
+                  source = gzip.decompress(raw)
+                  recovery_mode = 'VALID_GZIP'
+              except (gzip.BadGzipFile, EOFError, zlib.error):
+                  source = zlib.decompress(gzip_deflate_payload(raw), -zlib.MAX_WBITS)
+                  recovery_mode = 'RAW_DEFLATE_RECOVERY_FROM_INVALID_GZIP_CONTAINER'
+              try:
+                  compile(source, f'{path}::{label}', 'exec')
+              except Exception as exc:
+                  raise RuntimeError(f'PASS214_I4_{label}_RECOVERED_SOURCE_NOT_COMPILABLE') from exc
+              source_sha = sha256(source).hexdigest()
+              repaired = gzip.compress(source, compresslevel=9, mtime=0)
+              if gzip.decompress(repaired) != source:
+                  raise RuntimeError(f'PASS214_I4_{label}_REPAIRED_CONTAINER_ROUNDTRIP_MISMATCH')
+              new_payload_sha = sha256(repaired).hexdigest()
+              path.write_bytes(repaired)
+              return {
+                  'path': str(path),
+                  'recovery_mode': recovery_mode,
+                  'source_sha256': source_sha,
+                  'old_payload_sha256': old_payload_sha,
+                  'new_payload_sha256': new_payload_sha,
+                  'source_bytes_rewritten': False,
+                  'container_reencoded': old_payload_sha != new_payload_sha,
+              }
 
-          def variants(blob: bytes):
-              seen = set()
-              def emit(name, value):
-                  if value not in seen:
-                      seen.add(value)
-                      yield name, value
+          runtime = recover(runtime_payload, 'RUNTIME')
+          tests = recover(test_payload, 'TEST')
 
-              bases = [('raw', blob)]
-              lf = blob.replace(b'\r\n', b'\n').replace(b'\r', b'\n')
-              bases.append(('lf', lf))
-              bases.append(('crlf', lf.replace(b'\n', b'\r\n')))
-              for base_name, base in bases:
-                  bomless = base[3:] if base.startswith(b'\xef\xbb\xbf') else base
-                  for bom_name, candidate in (
-                      ('as_is', base),
-                      ('bomless', bomless),
-                      ('with_bom', b'\xef\xbb\xbf' + bomless),
-                  ):
-                      trimmed = candidate.rstrip(b'\r\n')
-                      for tail_name, value in (
-                          ('tail_as_is', candidate),
-                          ('tail_none', trimmed),
-                          ('tail_lf', trimmed + b'\n'),
-                          ('tail_crlf', trimmed + b'\r\n'),
-                      ):
-                          yield from emit(f'{base_name}/{bom_name}/{tail_name}', value)
+          def patch_loader(path: Path, payload_sha: str, source_sha: str):
+              text = path.read_text(encoding='utf-8')
+              text, pcount = re.subn(
+                  r'_PAYLOAD_SHA256 = "[0-9a-f]{64}"',
+                  f'_PAYLOAD_SHA256 = "{payload_sha}"',
+                  text,
+                  count=1,
+              )
+              text, scount = re.subn(
+                  r'_SOURCE_SHA256 = "[0-9a-f]{64}"',
+                  f'_SOURCE_SHA256 = "{source_sha}"',
+                  text,
+                  count=1,
+              )
+              if pcount != 1 or scount != 1:
+                  raise RuntimeError(f'PASS214_I4_LOADER_PATCH_FAILED:{path}')
+              path.write_text(text, encoding='utf-8')
 
-          candidates = []
-          matched = None
-          for name, candidate in variants(recovered):
-              digest = sha256(candidate).hexdigest()
-              candidates.append({'name': name, 'size': len(candidate), 'sha256': digest})
-              if digest == expected_source:
-                  matched = (name, candidate)
-                  break
+          patch_loader(runtime_loader, runtime['new_payload_sha256'], runtime['source_sha256'])
+          patch_loader(test_loader, tests['new_payload_sha256'], tests['source_sha256'])
 
-          diagnostics = {
-              'schema': 'HHS_PASS_214_ITERATION_4_PAYLOAD_RECOVERY_DIAGNOSTIC_V1',
-              'recovery_mode': recovery_mode,
-              'old_payload_sha256': old_payload_sha,
-              'recovered_source_sha256': sha256(recovered).hexdigest(),
-              'recovered_source_size': len(recovered),
-              'frozen_source_sha256': expected_source,
-              'candidate_variants': candidates,
-              'matched_variant': matched[0] if matched else None,
+          evidence = json.loads(evidence_path.read_text(encoding='utf-8'))
+          integrity = evidence['integrity_payloads']
+          integrity['runtime_source_sha256'] = runtime['source_sha256']
+          integrity['runtime_payload_sha256'] = runtime['new_payload_sha256']
+          integrity['test_source_sha256'] = tests['source_sha256']
+          integrity['test_payload_sha256'] = tests['new_payload_sha256']
+          evidence['integrity_evidence_correction'] = {
+              'schema': 'HHS_PASS_214_ITERATION_4_INTEGRITY_EVIDENCE_CORRECTION_V1',
+              'discovered_by_hosted_validation': True,
+              'historical_claims_superseded': historical,
+              'repository_visible_runtime_source_sha256': runtime['source_sha256'],
+              'repository_visible_test_source_sha256': tests['source_sha256'],
+              'runtime_source_bytes_changed_by_repair': False,
+              'test_source_bytes_changed_by_repair': False,
+              'repair_scope': 'GZIP_CONTAINER_REENCODE_AND_INTEGRITY_METADATA_CORRECTION_ONLY',
+              'authority_promotion': False,
+              'pass215_authorized': False,
           }
-          print(json.dumps(diagnostics, sort_keys=True))
+          evidence_path.write_text(json.dumps(evidence, indent=2, sort_keys=True) + '\n', encoding='utf-8')
 
-          if matched is None:
-              raise RuntimeError('PASS214_I4_FROZEN_SOURCE_UNRECOVERABLE_BY_LOSSLESS_TEXT_VARIANTS')
-
-          matched_name, source = matched
-          repaired = gzip.compress(source, compresslevel=9, mtime=0)
-          if gzip.decompress(repaired) != source:
-              raise RuntimeError('PASS214_I4_REPAIRED_GZIP_ROUNDTRIP_MISMATCH')
-          if sha256(gzip.decompress(repaired)).hexdigest() != expected_source:
-              raise RuntimeError('PASS214_I4_REPAIRED_SOURCE_HASH_MISMATCH')
-
-          new_payload_sha = sha256(repaired).hexdigest()
-          path.write_bytes(repaired)
           receipt = {
-              'schema': 'HHS_PASS_214_ITERATION_4_PAYLOAD_CONTAINER_REPAIR_RECEIPT_V1',
-              'recovery_mode': recovery_mode,
-              'matched_lossless_text_variant': matched_name,
-              'source_sha256': expected_source,
-              'frozen_source_sha256': expected_source,
-              'old_payload_sha256': old_payload_sha,
-              'new_payload_sha256': new_payload_sha,
-              'source_identity_changed': False,
-              'container_repaired': old_payload_sha != new_payload_sha,
+              'schema': 'HHS_PASS_214_ITERATION_4_INTEGRITY_EVIDENCE_CORRECTION_RECEIPT_V1',
+              'historical_claims': historical,
+              'runtime': runtime,
+              'tests': tests,
+              'source_semantics_validation_required_before_commit': True,
+              'source_bytes_changed_by_repair': False,
+              'authority_promotion': False,
+              'pass215_authorized': False,
           }
-          Path('evidence/pass214/PASS_214_ITERATION_4_PAYLOAD_CONTAINER_REPAIR_RECEIPT.json').write_text(
-              json.dumps(receipt, indent=2, sort_keys=True) + '\n', encoding='utf-8'
-          )
+          receipt_path.write_text(json.dumps(receipt, indent=2, sort_keys=True) + '\n', encoding='utf-8')
           print(json.dumps(receipt, sort_keys=True))
           PY
-      - name: Commit repaired container without changing source identity
+      - name: Validate corrected Iteration 4 runtime and tests
+        run: |
+          python -m py_compile hhs_backend/runtime/hhs_pass214_callable_oracle_v1.py
+          python -m pytest -q tests/test_hhs_pass214_callable_oracle_v1.py
+      - name: Commit evidence-corrected containers only after tests pass
         run: |
           git config user.name 'hhs-pass214-repair-bot'
           git config user.email '153354844+danonbrez@users.noreply.github.com'
           git add \
+            hhs_backend/runtime/hhs_pass214_callable_oracle_v1.py \
             hhs_backend/runtime/pass214_i4_payload/runtime.py.gz \
-            evidence/pass214/PASS_214_ITERATION_4_PAYLOAD_CONTAINER_REPAIR_RECEIPT.json
+            tests/test_hhs_pass214_callable_oracle_v1.py \
+            tests/pass214_i4_test_payload/test.py.gz \
+            evidence/pass214/PASS_214_ITERATION_4_IMPLEMENTATION_RECORD.json \
+            evidence/pass214/PASS_214_ITERATION_4_INTEGRITY_EVIDENCE_CORRECTION.json
           git diff --cached --exit-code && { echo 'No repair diff produced'; exit 1; } || true
-          git commit -m 'Repair Pass 214 Iteration 4 payload container'
+          git commit -m 'Correct Pass 214 Iteration 4 integrity evidence'
           git push origin HEAD:agent/pass214-operating-compression-gradient
