@@ -260,21 +260,24 @@ def _github_commits(page: int, limit: int) -> tuple[list[dict[str, Any]], bool]:
 
 @router.get("/status")
 def repository_history_status() -> dict[str, Any]:
-    catalog = _catalog()
+    """Return constant-time repository-surface liveness without indexing files."""
     return {
         "schema": "HHS_REPOSITORY_HISTORY_STATUS_V1",
         "ok": True,
         "repository": REPOSITORY,
-        "pass_count": catalog["pass_count"],
-        "pass_file_count": catalog["file_count"],
-        "earliest_pass": catalog["earliest_pass"],
-        "latest_pass": catalog["latest_pass"],
+        "catalog_state": "DEFERRED_UNTIL_EXPLICIT_PASS_CATALOG_REQUEST",
+        "pass_count": None,
+        "pass_file_count": None,
+        "earliest_pass": None,
+        "latest_pass": None,
         "deployed_commit": os.environ.get("SOURCE_VERSION") or os.environ.get("HEROKU_SLUG_COMMIT"),
         "pass_catalog_api": "/api/runtime/repository/passes",
         "commit_history_api": "/api/runtime/repository/commits",
         "file_read_api": "/api/runtime/repository/file",
         "ide_default_surface": "FULL_INTEGRATED_DEVELOPMENT_ENVIRONMENT",
         "history_is_supporting_surface": True,
+        "history_hydration": "USER_INITIATED",
+        "status_read_is_bounded": True,
         "frontend_is_authority": False,
     }
 
