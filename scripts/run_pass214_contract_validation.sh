@@ -24,13 +24,15 @@ python -m pytest -q \
   tests/test_hhs_pass214_callable_oracle_v1.py \
   tests/test_hhs_pass214_iteration5_callable_corpus_v1.py \
   tests/test_hhs_pass214_iteration6_candidate_binding_v1.py \
-  tests/test_hhs_pass214_iteration7_live_admission_ablation_v1.py
+  tests/test_hhs_pass214_iteration7_live_admission_ablation_v1.py \
+  tests/test_hhs_pass214_iteration8_terminal_freeze_v1.py
 
 python -m py_compile \
   hhs_backend/runtime/hhs_pass214_callable_oracle_v1.py \
   hhs_backend/runtime/hhs_pass214_iteration5_callable_corpus_v1.py \
   hhs_backend/runtime/hhs_pass214_iteration6_candidate_binding_v1.py \
   hhs_backend/runtime/hhs_pass214_iteration7_live_admission_ablation_v1.py \
+  hhs_backend/runtime/hhs_pass214_iteration8_terminal_freeze_v1.py \
   tools/pass214_callable_oracle.py \
   tools/pass214_iteration4_manifest.py \
   tools/pass214_iteration5_callable_corpus.py \
@@ -38,7 +40,8 @@ python -m py_compile \
   tools/pass214_iteration6_candidate_binding.py \
   tools/pass214_iteration6_manifest.py \
   tools/pass214_iteration7_live_admission.py \
-  tools/pass214_iteration7_manifest.py
+  tools/pass214_iteration7_manifest.py \
+  tools/pass214_iteration8_terminal_freeze.py
 
 python -m json.tool contracts/pass214/PASS_214_CONTRACT.json >/dev/null
 python -m json.tool contracts/pass214/PASS_214_ITERATION_2_CONFORMANCE_EXTENSION.json >/dev/null
@@ -50,9 +53,14 @@ python -m json.tool evidence/pass214/PASS_214_ITERATION_4_IMPLEMENTATION_RECORD.
 python -m json.tool evidence/pass214/PASS_214_ITERATION_5_IMPLEMENTATION_RECORD.json >/dev/null
 python -m json.tool evidence/pass214/PASS_214_ITERATION_6_IMPLEMENTATION_RECORD.json >/dev/null
 python -m json.tool evidence/pass214/PASS_214_ITERATION_7_IMPLEMENTATION_RECORD.json >/dev/null
+python -m json.tool evidence/pass214/PASS_214_ITERATION_8_IMPLEMENTATION_RECORD.json >/dev/null
 
 if [[ -n "${RUNNER_TEMP:-}" ]]; then
-  mkdir -p "$RUNNER_TEMP/pass214-iteration5" "$RUNNER_TEMP/pass214-iteration6" "$RUNNER_TEMP/pass214-iteration7"
+  mkdir -p \
+    "$RUNNER_TEMP/pass214-iteration5" \
+    "$RUNNER_TEMP/pass214-iteration6" \
+    "$RUNNER_TEMP/pass214-iteration7" \
+    "$RUNNER_TEMP/pass214-iteration8"
   python tools/pass214_iteration5_callable_corpus.py \
     --output-dir "$RUNNER_TEMP/pass214-iteration5"
   python tools/pass214_iteration6_candidate_binding.py \
@@ -62,6 +70,9 @@ if [[ -n "${RUNNER_TEMP:-}" ]]; then
   python tools/pass214_iteration7_live_admission.py \
     --mode inspect \
     --output "$RUNNER_TEMP/pass214-iteration7/PASS_214_ITERATION_7_CI_INSPECTION.json"
+  python tools/pass214_iteration8_terminal_freeze.py \
+    --mode inspect \
+    --output "$RUNNER_TEMP/pass214-iteration8/PASS_214_ITERATION_8_CI_INSPECTION.json"
 fi
 
-echo PASS214_ITERATIONS_1_2_3_4_5_6_7_VALIDATION_OK
+echo PASS214_ITERATIONS_1_2_3_4_5_6_7_8_VALIDATION_OK
