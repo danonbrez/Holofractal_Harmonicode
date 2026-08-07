@@ -1,0 +1,42 @@
+{
+  "schema": "HHS_PASS_214_ITERATION_8_IMPLEMENTATION_RECORD_V1",
+  "pass": 214,
+  "iteration": 8,
+  "classification": "HHS_PASS_214_ITERATION_8_TERMINAL_FREEZE_AUTHORITY_IMPLEMENTED_PENDING_PRODUCTION_EVIDENCE",
+  "foundation": {
+    "pass213_authoritative_closure": "86ec461818682fc87232740758769602e8f9fe05",
+    "iteration6_candidate_set_root_hash216": "f11bdbb9940e90500692cd0a0c505727ad94cafc0ea4fca85b134253f72cab9f",
+    "iteration7_live_admission_required": true
+  },
+  "runtime": "hhs_backend/runtime/hhs_pass214_iteration8_terminal_freeze_v1.py",
+  "runner": "tools/pass214_iteration8_terminal_freeze.py",
+  "test": "tests/test_hhs_pass214_iteration8_terminal_freeze_v1.py",
+  "documentation": "docs/pass214/ITERATION_8_TERMINAL_FREEZE.md",
+  "terminal_roots": [
+    "PASS214_REPOSITORY_SCAN_ROOT_HASH216",
+    "PASS214_OPTIMIZATION_REGISTRY_ROOT_HASH216",
+    "PASS214_COMPATIBILITY_GRAPH_ROOT_HASH216",
+    "PASS214_WORKLOAD_CORPUS_ROOT_HASH216",
+    "PASS214_BENCHMARK_METHOD_ROOT_HASH216",
+    "PASS214_COMPOUND_EVIDENCE_ROOT_HASH216",
+    "PASS214_AUTHORITY_ROOT_HASH216",
+    "PASS215_BENCHMARK_PROFILE_ROOT_HASH216"
+  ],
+  "claim_boundary": {
+    "terminal_gate_implemented": true,
+    "recorded_admission_can_authorize": false,
+    "live_pass213_reverification_required": true,
+    "a0_a9_matrix_required": true,
+    "mandatory_ablation_matrix_required": true,
+    "all_required_workload_families_required": true,
+    "multimodal_ml_compound_and_ablation_required": true,
+    "recovery_and_cross_process_replay_required": true,
+    "complete_cost_accounting_required": true,
+    "pass215_profile_freeze_required": true,
+    "production_final_benchmark_complete": false,
+    "terminal_roots_minted": false,
+    "authority_promoted": false,
+    "migration_active": false,
+    "pass215_authorized": false
+  }
+}
