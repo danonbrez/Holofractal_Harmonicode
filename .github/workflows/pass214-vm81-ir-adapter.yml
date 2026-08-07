@@ -1,0 +1,31 @@
+name: Pass 214 VM81 IR Adapter
+
+on:
+  pull_request:
+    paths:
+      - 'hhs_backend/runtime/hhs_pass214_vm81_ir_adapter_v1.py'
+      - 'tests/test_hhs_pass214_vm81_ir_adapter_v1.py'
+      - 'scripts/run_pass214_vm81_ir_adapter_validation.sh'
+      - 'evidence/pass214/PASS_214_VM81_IR_RUNTIME_ADAPTER_ALIGNMENT_V1.json'
+      - '.github/workflows/pass214-vm81-ir-adapter.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  governed-ir-adapter:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    env:
+      PYTHONHASHSEED: '0'
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Install validation dependency
+        run: python -m pip install pytest
+      - name: Validate additive governed IR adapter
+        run: bash scripts/run_pass214_vm81_ir_adapter_validation.sh
