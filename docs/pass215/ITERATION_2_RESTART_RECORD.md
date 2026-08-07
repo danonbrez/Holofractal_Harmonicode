@@ -10,9 +10,10 @@
 - inherited base main: `a4b7f6cf4da9111b036b6d4d93ea2d7b50e3eb2a`
 - Iteration 1 validated head: `b26780c495288a2dcf4a27c89cf1fbddec0ebc4e`
 - Iteration 2 real-model repair head: `a07c958ebf589978a752080f8c317fe9f029894f`
-- repository-visible implementation/evidence parent before this restart record: `11b71a63ae44d1e7d955604644f8ecbf27198a88`
-- parent tree: `356fda12cb85aec6bdbd3d9e37da39fa649fc27d`
-- this restart-record commit becomes the next branch head; resolve it directly from the branch ref rather than relying on chat state.
+- fully repository-visible Iteration 2 candidate: `d33c9625e531687241e534b829082dcaa917eaaf`
+- candidate tree: `d7660d41e82bdef02f223113422f327d54460e00`
+- exact candidate validation run: `31201348012` — success
+- this status-only commit is not required for the empirical result and does not change executable/runtime/contract evidence.
 
 ## Frozen inherited authority
 
@@ -87,7 +88,7 @@ file:     stories15M-q4_0.gguf
 SHA-256:  6151b1929d7f5aa3385d9ddef3393e55587c0a55de661562322bc51dfda93a04
 ```
 
-Successful evidence run:
+Successful evidence runs:
 
 ```text
 run: 31201031243
@@ -98,7 +99,20 @@ public CLI passed
 independent evidence validation passed
 artifact id: 9002815167
 artifact SHA-256: 92e9b495453356b7ed1c033ce2a0a928bf8e9a8a4bf14b0d7829698efbe5875c
+
+run: 31201348012
+head: d33c9625e531687241e534b829082dcaa917eaaf
+result: success
+14 cumulative tests passed
+frozen-profile blob exact
+external digest verified
+public CLI passed
+independent evidence validation passed
+artifact id: 9002931861
+artifact SHA-256: 67016157c7aca62ce5962005b4a026e7cb866009ee16f348c75ca3f2b4190ce5
 ```
+
+Both successful executions produced identical empirical evidence roots and receipts.
 
 ## Real-model result
 
@@ -158,11 +172,9 @@ migration_active: false
 
 Iteration 2 establishes a zero-incidence baseline for the raw stored quantized-weight byte stream under the inherited Pass 212 affine/sparse codec. Do not reinterpret this as successful model compression and do not reinterpret it as a general failure of HHS transformer acceleration. It specifically rules out treating ordinary Q4_0/Q8_0 storage bytes as if quantization alone placed them in the affine generator domain.
 
-Subsequent work must attribute structure without modifying the frozen Pass 214 instrument. The next compatible target is exact block-aware quantized ingestion: separate each GGUF block's scale/metadata and packed codes, preserve a reversible mapping to the original bytes, measure repeated generator structure/residual complexity per tensor/layer, and compare it against this raw-byte fallback baseline. Activation/transition/operator-graph measurements remain separate future experiments.
+Subsequent work must attribute structure without modifying the frozen Pass 214 instrument. The next compatible target is exact block-aware quantized ingestion: separate each GGUF block's scale/metadata and packed codes, preserve a reversible mapping to the original bytes, measure repeated/block-generator structure/residual complexity per tensor/layer, and compare it against this raw-byte fallback baseline. Activation/transition/operator-graph measurements remain separate future experiments.
 
-## Validation done / remaining
-
-Done:
+## Validation completed
 
 - Iteration 1 dependency inheritance;
 - Iteration 2 fixture tests;
@@ -174,15 +186,9 @@ Done:
 - real external GGUF SHA-256 check;
 - real GGUF incidence execution;
 - evidence regeneration validation;
+- deterministic evidence equality across successful hosted executions;
 - implementation/evidence documentation committed.
-
-Remaining at this checkpoint:
-
-1. Run the dedicated Iteration 2 workflow on the final documentation/restart-record branch head.
-2. Confirm exact-head cumulative validation and real-model evidence remain identical.
-3. Update draft PR #172 metadata with the final head, run, evidence root, receipt, and zero-incidence interpretation.
-4. Keep PR #172 draft for the next Pass 215 iteration unless explicitly instructed to close/merge.
 
 ## Next action
 
-Begin Iteration 3 only after the final exact-head Iteration 2 gate is green. Iteration 3 should implement exact reversible quantization-block decomposition and structure attribution against the frozen raw-weight baseline, not alter Pass 214's benchmark profile or claim canonical mutation authority.
+Iteration 3 should implement exact reversible quantization-block decomposition and structure attribution against the frozen raw-weight baseline, not alter Pass 214's benchmark profile or claim canonical mutation authority. Keep PR #172 draft while Pass 215 continues unless explicitly instructed otherwise.
