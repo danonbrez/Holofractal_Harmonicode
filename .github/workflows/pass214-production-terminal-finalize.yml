@@ -1,0 +1,120 @@
+name: Pass 214 Production Terminal Finalize
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  PYTHONHASHSEED: '0'
+  PYTHONDONTWRITEBYTECODE: '1'
+
+jobs:
+  production-terminal-finalize:
+    runs-on: ubuntu-24.04
+    environment: production
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Install validation dependency
+        run: python -m pip install pytest
+      - name: Require production trust inputs
+        env:
+          ANCHOR_B64: ${{ secrets.PASS214_TRUSTED_ANCHOR_JSON_B64 }}
+          VERIFIER_B64: ${{ secrets.PASS214_VERIFIER_BUNDLE_JSON_B64 }}
+          TRUST_B64: ${{ secrets.PASS214_TRUST_BUNDLE_B64 }}
+        run: |
+          test -n "$ANCHOR_B64"
+          test -n "$VERIFIER_B64"
+          test -n "$TRUST_B64"
+          mkdir -p "$RUNNER_TEMP/pass214-production"
+          printf '%s' "$ANCHOR_B64" | base64 -d > "$RUNNER_TEMP/pass214-production/trusted-anchor.json"
+          printf '%s' "$VERIFIER_B64" | base64 -d > "$RUNNER_TEMP/pass214-production/verifier-bundle.json"
+          printf '%s' "$TRUST_B64" | base64 -d > "$RUNNER_TEMP/pass214-production/trust-bundle.pem"
+          python -m json.tool "$RUNNER_TEMP/pass214-production/trusted-anchor.json" >/dev/null
+          python -m json.tool "$RUNNER_TEMP/pass214-production/verifier-bundle.json" >/dev/null
+      - name: Validate cumulative Pass 214
+        run: bash scripts/run_pass214_contract_validation.sh
+      - name: Generate exact-head census and compatibility evidence
+        run: |
+          mkdir -p "$RUNNER_TEMP/pass214-production/census" "$RUNNER_TEMP/pass214-production/compatibility"
+          python tools/pass214_repository_census.py \
+            --repository-root . --source-ref HEAD \
+            --output-directory "$RUNNER_TEMP/pass214-production/census"
+          python tools/pass214_callable_conformance.py \
+            --repository-root . \
+            --iteration1-directory "$RUNNER_TEMP/pass214-production/census" \
+            --source-ref HEAD \
+            --output-directory "$RUNNER_TEMP/pass214-production/compatibility"
+          python tools/pass214_authority_conflict_reconciliation.py \
+            --compatibility-directory "$RUNNER_TEMP/pass214-production/compatibility" \
+            --output "$RUNNER_TEMP/pass214-production/PASS_214_AUTHORITY_CONFLICT_RECONCILIATION.json"
+      - name: Execute frozen final compound benchmark
+        run: |
+          python tools/pass214_final_compound_benchmark.py \
+            --output "$RUNNER_TEMP/pass214-production/PASS_214_FINAL_COMPOUND_BENCHMARK_BUNDLE.json"
+      - name: Create live Pass 213 admission and terminal freeze
+        run: |
+          SOURCE_COMMIT="$(git rev-parse HEAD)"
+          SOURCE_TREE="$(git rev-parse 'HEAD^{tree}')"
+          python tools/pass214_iteration8_terminal_freeze.py \
+            --mode finalize \
+            --census-summary "$RUNNER_TEMP/pass214-production/census/iteration1_summary.json" \
+            --compatibility-summary "$RUNNER_TEMP/pass214-production/compatibility/iteration2_summary.json" \
+            --authority-reconciliation "$RUNNER_TEMP/pass214-production/PASS_214_AUTHORITY_CONFLICT_RECONCILIATION.json" \
+            --workload-corpus contracts/pass214/PASS_214_WORKLOAD_CORPUS.json \
+            --benchmark-method contracts/pass214/PASS_214_FINAL_BENCHMARK_METHOD.json \
+            --benchmark-bundle "$RUNNER_TEMP/pass214-production/PASS_214_FINAL_COMPOUND_BENCHMARK_BUNDLE.json" \
+            --pass215-profile contracts/pass215/PASS_215_BENCHMARK_PROFILE.json \
+            --trusted-anchor-json "$RUNNER_TEMP/pass214-production/trusted-anchor.json" \
+            --verifier-bundle-json "$RUNNER_TEMP/pass214-production/verifier-bundle.json" \
+            --trust-bundle "$RUNNER_TEMP/pass214-production/trust-bundle.pem" \
+            --source-commit "$SOURCE_COMMIT" \
+            --source-tree "$SOURCE_TREE" \
+            --output "$RUNNER_TEMP/pass214-production/PASS_214_TERMINAL_FREEZE.json"
+          python tools/pass214_iteration8_terminal_freeze.py \
+            --mode validate \
+            --terminal-record "$RUNNER_TEMP/pass214-production/PASS_214_TERMINAL_FREEZE.json" \
+            --output "$RUNNER_TEMP/pass214-production/PASS_214_TERMINAL_VALIDATION.json"
+      - name: Enforce eight-root terminal closure
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          root = Path(os.environ['RUNNER_TEMP']) / 'pass214-production'
+          record = json.loads((root / 'PASS_214_TERMINAL_FREEZE.json').read_text())
+          expected = [
+              'PASS214_REPOSITORY_SCAN_ROOT_HASH216',
+              'PASS214_OPTIMIZATION_REGISTRY_ROOT_HASH216',
+              'PASS214_COMPATIBILITY_GRAPH_ROOT_HASH216',
+              'PASS214_WORKLOAD_CORPUS_ROOT_HASH216',
+              'PASS214_BENCHMARK_METHOD_ROOT_HASH216',
+              'PASS214_COMPOUND_EVIDENCE_ROOT_HASH216',
+              'PASS214_AUTHORITY_ROOT_HASH216',
+              'PASS215_BENCHMARK_PROFILE_ROOT_HASH216',
+          ]
+          assert list(record['terminal_roots']) == expected
+          assert record['acceptance_gates_passed'] is True
+          assert record['terminal_roots_minted'] is True
+          assert record['authority_promoted'] is True
+          assert record['pass215_authorized'] is True
+          assert record['migration_active'] is False
+          assert all(len(record['terminal_roots'][name]) == 64 for name in expected)
+          assert len(record['terminal_receipt_hash72']) == 72
+          PY
+      - name: Retain production closure evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass214-production-terminal-freeze-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/pass214-production/**/*.json
+            contracts/pass214/PASS_214_WORKLOAD_CORPUS.json
+            contracts/pass214/PASS_214_FINAL_BENCHMARK_METHOD.json
+            contracts/pass215/PASS_215_BENCHMARK_PROFILE.json
+          if-no-files-found: error
