@@ -74,6 +74,31 @@ jobs:
                   raise RuntimeError('PASS214_I4_REPAIR_GZIP_BODY_TRUNCATED')
               return blob[index:-8]
 
+          def print_separator_diagnostics(path: Path, raw: bytes, source: bytes, label: str):
+              text = source.decode('utf-8', errors='replace')
+              suspects = []
+              pattern = re.compile(r'b(?=(?:[A-Z_][A-Z0-9_]*\s*=|class\s|def\s|@|from\s|import\s|if\s+__name__| {4}(?:def\s|return\s|if\s|for\s|while\s|try:|except\s|with\s|raise\s|assert\s)))')
+              for match in pattern.finditer(text):
+                  start = max(0, match.start() - 60)
+                  end = min(len(text), match.start() + 100)
+                  suspects.append({
+                      'offset': match.start(),
+                      'context': repr(text[start:end]),
+                  })
+              trailer_crc32 = int.from_bytes(raw[-8:-4], 'little') if len(raw) >= 8 else None
+              trailer_isize = int.from_bytes(raw[-4:], 'little') if len(raw) >= 4 else None
+              print(json.dumps({
+                  'schema': 'HHS_PASS_214_ITERATION_4_SEPARATOR_CORRUPTION_DIAGNOSTIC_V1',
+                  'label': label,
+                  'path': str(path),
+                  'source_sha256': sha256(source).hexdigest(),
+                  'source_size': len(source),
+                  'gzip_trailer_crc32': trailer_crc32,
+                  'gzip_trailer_isize': trailer_isize,
+                  'suspect_count': len(suspects),
+                  'suspects': suspects[:200],
+              }, sort_keys=True))
+
           def recover(path: Path, label: str):
               raw = path.read_bytes()
               old_payload_sha = sha256(raw).hexdigest()
@@ -86,6 +111,7 @@ jobs:
               try:
                   compile(source, f'{path}::{label}', 'exec')
               except Exception as exc:
+                  print_separator_diagnostics(path, raw, source, label)
                   raise RuntimeError(f'PASS214_I4_{label}_RECOVERED_SOURCE_NOT_COMPILABLE') from exc
               source_sha = sha256(source).hexdigest()
               repaired = gzip.compress(source, compresslevel=9, mtime=0)
@@ -108,18 +134,8 @@ jobs:
 
           def patch_loader(path: Path, payload_sha: str, source_sha: str):
               text = path.read_text(encoding='utf-8')
-              text, pcount = re.subn(
-                  r'_PAYLOAD_SHA256 = "[0-9a-f]{64}"',
-                  f'_PAYLOAD_SHA256 = "{payload_sha}"',
-                  text,
-                  count=1,
-              )
-              text, scount = re.subn(
-                  r'_SOURCE_SHA256 = "[0-9a-f]{64}"',
-                  f'_SOURCE_SHA256 = "{source_sha}"',
-                  text,
-                  count=1,
-              )
+              text, pcount = re.subn(r'_PAYLOAD_SHA256 = "[0-9a-f]{64}"', f'_PAYLOAD_SHA256 = "{payload_sha}"', text, count=1)
+              text, scount = re.subn(r'_SOURCE_SHA256 = "[0-9a-f]{64}"', f'_SOURCE_SHA256 = "{source_sha}"', text, count=1)
               if pcount != 1 or scount != 1:
                   raise RuntimeError(f'PASS214_I4_LOADER_PATCH_FAILED:{path}')
               path.write_text(text, encoding='utf-8')
