@@ -2,6 +2,12 @@ name: Pass 214 Production Terminal Finalize
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - agent/pass214-operating-compression-gradient
+    paths:
+      - '.github/workflows/pass214-production-terminal-finalize.yml'
+      - 'evidence/pass214/PASS_214_PRODUCTION_FINALIZE_TRIGGER.json'
 
 permissions:
   contents: read
