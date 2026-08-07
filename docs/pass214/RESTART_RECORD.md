@@ -20,7 +20,7 @@
 1. Iteration 1 — immutable repository census and optimization registry.
 2. Iteration 2 — callable conformance records, normalized groups, conflicts, and compatibility graph.
 3. Iteration 3 — Pass 213-bound pure oracle models, adapters, replay, and tamper rejection.
-4. Iteration 4 — exact repository-callable identity and isolated deterministic execution membrane; currently blocked by a discovered historical payload-integrity defect described below.
+4. Iteration 4 — exact repository-callable identity and isolated deterministic execution membrane; historical payload defect has now been exactly repaired as recorded below.
 5. Iteration 5 — five-family three-run exact-parity corpus with positive representation gain.
 6. Iteration 6 — exact repository-native candidate binding and strict live-admission membrane.
 7. Iteration 7 — operational live-admission bridge, RFC 3161 re-verification, cross-authority binding, governed candidate challenge commitment, and gated five-family ablation plan.
@@ -60,7 +60,7 @@ runtime gzip SHA-256: 4b348a07b59ada0ec471e0e28cdd82d654c7e25928144ea3b1aafe881b
 runtime wrapper SHA-256: d6ef1272d28f28ee6762d64e1da70aba28909ccccb33b3fa41397337f60baecd
 ```
 
-## Hosted validation state
+## Hosted validation state before exact Iteration 4 repair
 
 The Iteration 7 hosted workflow succeeded after the CLI repository-root repair:
 
@@ -72,52 +72,79 @@ conclusion: success
 production live admission claimed: false
 ```
 
-The cumulative Pass 214 workflow remains blocked before later benchmark/promotion stages because inherited Iteration 4 integrity loading fails:
+The cumulative Pass 214 workflow had remained blocked before later benchmark/promotion stages because inherited Iteration 4 integrity loading failed:
 
 ```text
 workflow: Pass 214 Compound Optimization Benchmark Authority
-latest observed run: 31145448541
+observed run: 31145448541
 head: 4dc4fa4050af78b7da027da9b4f2e8a2bdd17cb5
 conclusion: failure
 blocking stage: Iteration 4 integrity payload validation
 later benchmark/promotion stages authoritative: false
 ```
 
-## Iteration 4 integrity defect discovered by hosted validation
+## Iteration 4 integrity defect — historical diagnostic
 
-The repository contains a single historical Iteration 4 runtime payload lineage from its implementation commit. Hosted validation proved that its gzip container is invalid and that the raw-deflate-recoverable source does not match the frozen historical source hash.
+The repository contained a single historical Iteration 4 runtime payload lineage from its implementation commit. Hosted validation proved that its gzip container was invalid and that the raw-deflate-recoverable source did not match the frozen historical source hash.
 
-Diagnostic facts:
+Historical diagnostic facts:
 
 ```text
 historical claimed source SHA-256:
 a946cde1338bc33eb6873c13125b306a45882dec46fd29ac4820ce38ea5612a9
 
-recoverable repository source SHA-256:
+recoverable corrupted source SHA-256:
 3bceeed0b19ee20b242db89660706ffcf7e2c4996b5481c9dc547a0b936ce9f4
 
 recoverable source size: 48547 bytes
 gzip trailer ISIZE: 48547 bytes
-clear separator-corruption candidates: 77
 recoverable source compile: failed
 ```
 
-The diagnostic examples show statement separators represented by literal `b` bytes at many source boundaries. The equal source size and gzip ISIZE constrain the defect toward byte substitution rather than arbitrary insertion/deletion, but no source reconstruction has been accepted.
+The diagnostic source showed statement separators represented by literal `b` bytes at many source boundaries. The equal source size and gzip ISIZE constrained the defect toward byte substitution rather than arbitrary insertion/deletion.
 
-Safety result:
+## Iteration 4 exact repair — 2026-08-07
+
+The historical runtime payload was recovered cryptographically without rebinding any frozen identity. Exhaustive search of the one-byte substitution neighborhood of the compressed payload found a unique candidate matching the frozen payload SHA-256. That candidate decompressed to a source matching the frozen source SHA-256 exactly and compiled successfully.
+
+Exact repair identities:
 
 ```text
-runtime payload rewritten: false
-test payload rewritten: false
+corrupted payload SHA-256:
+3169204e65935b44fc7269e66568a5aa0325a4db603947af50209a5d2f59142a
+
+frozen/recovered payload SHA-256:
+392d655df87628832fbd14d19301bc7dc8c002cf69b571fc6f12ab867961930d
+
+frozen/recovered source SHA-256:
+a946cde1338bc33eb6873c13125b306a45882dec46fd29ac4820ce38ea5612a9
+
+source size: 48547 bytes
+compressed byte repair: offset 973, 0xBE -> 0xDE
+python compile: passed
+original Iteration 4 dependency-scoped tests: 11 passed
+```
+
+Repair commits and evidence:
+
+```text
+exact evidence commit: 4f5eda8b4545d7ce72c415ca99aaa34f4fef6122
+validation workflow update: e2b33ccc952769cda27bda92a5985b02b27411e9
+exact payload restore commit: 45c81ac4c7cc9402c02e7901c51b0df4b3cefe43
+recovery workflow run: 31181177757
+recovery conclusion: success
+```
+
+The exact repair gate preserved all non-promotion constraints:
+
+```text
 integrity metadata rebound: false
-unsafe reconstructed source committed: false
-migration active: false
 authority promoted: false
 terminal Pass 214 root minted: false
 Pass 215 authorized: false
 ```
 
-All attempted repair workflows failed closed before committing a reconstructed Iteration 4 runtime or test payload.
+The repaired payload was committed only after reproducing both frozen hashes and passing the original 11-test Iteration 4 dependency-scoped suite. Failed or incomplete candidates were never promoted to the production payload path.
 
 ## Iteration 7 changed files
 
@@ -134,13 +161,12 @@ All attempted repair workflows failed closed before committing a reconstructed I
 - `evidence/pass214/PASS_214_ITERATION_7_SAFE_CHECKPOINT.json`
 - `docs/pass214/RESTART_RECORD.md`
 
-## Next exact action
+## Current next exact action
 
-1. Preserve the validated Iteration 7 implementation and hosted-success evidence.
-2. Resolve Iteration 4 only from an independent trustworthy historical source/payload copy, or from a reconstruction that reproduces the frozen `a946cde1...` SHA-256 exactly and then passes the original 11-test Iteration 4 suite.
-3. Do not rebind integrity metadata to the currently recoverable corrupt source merely to make the loader pass.
-4. After exact Iteration 4 identity is restored, rerun the cumulative Pass 214 validation workflow.
-5. Only after cumulative validation passes should production Pass 213 live admission and the five-family baseline/optimized/ablation execution continue.
-6. Preserve `HOLD` on migration, authority promotion, terminal Pass 214 closure, and Pass 215 until every production gate passes.
+1. Preserve the exact Iteration 4 restored payload and its cryptographic recovery evidence.
+2. Run the cumulative Pass 214 Iterations 1–7 validation on the exact restored payload.
+3. Repair forward only from any newly exposed dependency-scoped failure; do not rerun or rewrite already frozen identities unnecessarily.
+4. Only after cumulative validation passes should production Pass 213 live admission and the five-family baseline/optimized/ablation execution continue.
+5. Preserve `HOLD` on migration, authority promotion, terminal Pass 214 closure, and Pass 215 until every production gate passes.
 
 Pass 214 remains draft and unmerged. Pass 215 remains unauthorized.
