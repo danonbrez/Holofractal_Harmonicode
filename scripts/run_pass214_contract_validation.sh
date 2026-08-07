@@ -36,6 +36,7 @@ python -m py_compile \
   hhs_backend/runtime/hhs_pass214_iteration7_live_admission_ablation_v1.py \
   hhs_backend/runtime/hhs_pass214_authority_conflict_reconciliation_v1.py \
   hhs_backend/runtime/hhs_pass214_final_compound_benchmark_v1.py \
+  hhs_backend/runtime/hhs_pass214_final_compound_benchmark_v2.py \
   hhs_backend/runtime/hhs_pass214_iteration8_terminal_freeze_v1.py \
   hhs_backend/runtime/hhs_pass214_iteration8_terminal_freeze_v2.py \
   tools/pass214_callable_oracle.py \
