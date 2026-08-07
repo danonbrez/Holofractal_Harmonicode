@@ -62,23 +62,68 @@ jobs:
               return blob[index:-8]
 
           try:
-              source = gzip.decompress(raw)
+              recovered = gzip.decompress(raw)
               recovery_mode = 'VALID_GZIP_NO_REPAIR_REQUIRED'
           except (gzip.BadGzipFile, EOFError, zlib.error):
-              source = zlib.decompress(gzip_deflate_payload(raw), -zlib.MAX_WBITS)
+              recovered = zlib.decompress(gzip_deflate_payload(raw), -zlib.MAX_WBITS)
               recovery_mode = 'RAW_DEFLATE_RECOVERY_FROM_CORRUPT_GZIP_TRAILER'
 
-          source_sha = sha256(source).hexdigest()
-          if source_sha != expected_source:
-              raise RuntimeError(
-                  f'PASS214_I4_FROZEN_SOURCE_MISMATCH expected={expected_source} actual={source_sha}'
-              )
+          def variants(blob: bytes):
+              seen = set()
+              def emit(name, value):
+                  if value not in seen:
+                      seen.add(value)
+                      yield name, value
 
+              bases = [('raw', blob)]
+              lf = blob.replace(b'\r\n', b'\n').replace(b'\r', b'\n')
+              bases.append(('lf', lf))
+              bases.append(('crlf', lf.replace(b'\n', b'\r\n')))
+              for base_name, base in bases:
+                  bomless = base[3:] if base.startswith(b'\xef\xbb\xbf') else base
+                  for bom_name, candidate in (
+                      ('as_is', base),
+                      ('bomless', bomless),
+                      ('with_bom', b'\xef\xbb\xbf' + bomless),
+                  ):
+                      trimmed = candidate.rstrip(b'\r\n')
+                      for tail_name, value in (
+                          ('tail_as_is', candidate),
+                          ('tail_none', trimmed),
+                          ('tail_lf', trimmed + b'\n'),
+                          ('tail_crlf', trimmed + b'\r\n'),
+                      ):
+                          yield from emit(f'{base_name}/{bom_name}/{tail_name}', value)
+
+          candidates = []
+          matched = None
+          for name, candidate in variants(recovered):
+              digest = sha256(candidate).hexdigest()
+              candidates.append({'name': name, 'size': len(candidate), 'sha256': digest})
+              if digest == expected_source:
+                  matched = (name, candidate)
+                  break
+
+          diagnostics = {
+              'schema': 'HHS_PASS_214_ITERATION_4_PAYLOAD_RECOVERY_DIAGNOSTIC_V1',
+              'recovery_mode': recovery_mode,
+              'old_payload_sha256': old_payload_sha,
+              'recovered_source_sha256': sha256(recovered).hexdigest(),
+              'recovered_source_size': len(recovered),
+              'frozen_source_sha256': expected_source,
+              'candidate_variants': candidates,
+              'matched_variant': matched[0] if matched else None,
+          }
+          print(json.dumps(diagnostics, sort_keys=True))
+
+          if matched is None:
+              raise RuntimeError('PASS214_I4_FROZEN_SOURCE_UNRECOVERABLE_BY_LOSSLESS_TEXT_VARIANTS')
+
+          matched_name, source = matched
           repaired = gzip.compress(source, compresslevel=9, mtime=0)
           if gzip.decompress(repaired) != source:
               raise RuntimeError('PASS214_I4_REPAIRED_GZIP_ROUNDTRIP_MISMATCH')
-          repaired_source_sha = sha256(gzip.decompress(repaired)).hexdigest()
-          if repaired_source_sha != expected_source:
+          if sha256(gzip.decompress(repaired)).hexdigest() != expected_source:
               raise RuntimeError('PASS214_I4_REPAIRED_SOURCE_HASH_MISMATCH')
 
           new_payload_sha = sha256(repaired).hexdigest()
@@ -86,7 +131,8 @@ jobs:
           receipt = {
               'schema': 'HHS_PASS_214_ITERATION_4_PAYLOAD_CONTAINER_REPAIR_RECEIPT_V1',
               'recovery_mode': recovery_mode,
-              'source_sha256': source_sha,
+              'matched_lossless_text_variant': matched_name,
+              'source_sha256': expected_source,
               'frozen_source_sha256': expected_source,
               'old_payload_sha256': old_payload_sha,
               'new_payload_sha256': new_payload_sha,
