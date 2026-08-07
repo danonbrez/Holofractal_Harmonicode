@@ -6,38 +6,32 @@ on:
     branches:
       - agent/pass214-operating-compression-gradient
     paths:
-      - 'hhs_backend/runtime/hhs_pass214_iteration8_terminal_freeze_v1.py'
-      - 'hhs_backend/runtime/hhs_pass214_authority_conflict_reconciliation_v1.py'
-      - 'hhs_backend/runtime/hhs_pass214_repository_census_v1.py'
-      - 'hhs_backend/runtime/hhs_pass214_callable_conformance_v1.py'
-      - 'tools/pass214_iteration8_terminal_freeze.py'
-      - 'tools/pass214_authority_conflict_reconciliation.py'
-      - 'tools/pass214_repository_census.py'
-      - 'tools/pass214_callable_conformance.py'
-      - 'tests/test_hhs_pass214_iteration8_terminal_freeze_v1.py'
-      - 'tests/test_hhs_pass214_authority_conflict_reconciliation_v1.py'
+      - 'hhs_backend/runtime/hhs_pass214_*.py'
+      - 'hhs_backend/runtime/pass214_i*_payload/**'
+      - 'hhs_runtime/pass165/**'
+      - 'tools/pass214_*.py'
+      - 'tools/generate_pass212_full_hydration_evidence.py'
+      - 'tests/test_hhs_pass214_*.py'
       - 'docs/pass214/**'
       - 'evidence/pass214/**'
       - 'contracts/pass214/**'
+      - 'contracts/pass215/**'
       - 'scripts/run_pass214_contract_validation.sh'
       - '.github/workflows/pass214-iteration8-terminal-freeze.yml'
   pull_request:
     branches:
       - main
     paths:
-      - 'hhs_backend/runtime/hhs_pass214_iteration8_terminal_freeze_v1.py'
-      - 'hhs_backend/runtime/hhs_pass214_authority_conflict_reconciliation_v1.py'
-      - 'hhs_backend/runtime/hhs_pass214_repository_census_v1.py'
-      - 'hhs_backend/runtime/hhs_pass214_callable_conformance_v1.py'
-      - 'tools/pass214_iteration8_terminal_freeze.py'
-      - 'tools/pass214_authority_conflict_reconciliation.py'
-      - 'tools/pass214_repository_census.py'
-      - 'tools/pass214_callable_conformance.py'
-      - 'tests/test_hhs_pass214_iteration8_terminal_freeze_v1.py'
-      - 'tests/test_hhs_pass214_authority_conflict_reconciliation_v1.py'
+      - 'hhs_backend/runtime/hhs_pass214_*.py'
+      - 'hhs_backend/runtime/pass214_i*_payload/**'
+      - 'hhs_runtime/pass165/**'
+      - 'tools/pass214_*.py'
+      - 'tools/generate_pass212_full_hydration_evidence.py'
+      - 'tests/test_hhs_pass214_*.py'
       - 'docs/pass214/**'
       - 'evidence/pass214/**'
       - 'contracts/pass214/**'
+      - 'contracts/pass215/**'
       - 'scripts/run_pass214_contract_validation.sh'
       - '.github/workflows/pass214-iteration8-terminal-freeze.yml'
 
@@ -80,31 +74,46 @@ jobs:
           python tools/pass214_authority_conflict_reconciliation.py \
             --compatibility-directory "$RUNNER_TEMP/pass214-i8/compatibility" \
             --output "$RUNNER_TEMP/pass214-i8/PASS_214_AUTHORITY_CONFLICT_RECONCILIATION.json"
-      - name: Prove terminal gate remains fail-closed only on production evidence
+      - name: Execute frozen final compound benchmark
+        run: |
+          python tools/pass214_final_compound_benchmark.py \
+            --output "$RUNNER_TEMP/pass214-i8/PASS_214_FINAL_COMPOUND_BENCHMARK_BUNDLE.json"
+      - name: Prove only production live admission remains blocked
         run: |
           python tools/pass214_iteration8_terminal_freeze.py \
             --mode inspect \
             --census-summary "$RUNNER_TEMP/pass214-i8/census/iteration1_summary.json" \
             --compatibility-summary "$RUNNER_TEMP/pass214-i8/compatibility/iteration2_summary.json" \
             --authority-reconciliation "$RUNNER_TEMP/pass214-i8/PASS_214_AUTHORITY_CONFLICT_RECONCILIATION.json" \
+            --benchmark-bundle "$RUNNER_TEMP/pass214-i8/PASS_214_FINAL_COMPOUND_BENCHMARK_BUNDLE.json" \
+            --pass215-profile contracts/pass215/PASS_215_BENCHMARK_PROFILE.json \
             --output "$RUNNER_TEMP/pass214-i8/PASS_214_ITERATION_8_CI_INSPECTION.json"
           python - <<'PY'
           import json, os
           from pathlib import Path
           root = Path(os.environ['RUNNER_TEMP']) / 'pass214-i8'
           reconciliation = json.loads((root / 'PASS_214_AUTHORITY_CONFLICT_RECONCILIATION.json').read_text())
+          benchmark = json.loads((root / 'PASS_214_FINAL_COMPOUND_BENCHMARK_BUNDLE.json').read_text())
           report = json.loads((root / 'PASS_214_ITERATION_8_CI_INSPECTION.json').read_text())
           assert reconciliation['all_conflicts_reconciled'] is True
           assert reconciliation['unresolved_conflict_count'] == 0
           assert reconciliation['automatic_merge_count'] == 0
           assert reconciliation['single_mutation_authority_preserved'] is True
+          assert benchmark['status'] == 'FINAL_BENCHMARK_COMPLETE_AWAITING_LIVE_ADMISSION'
+          assert len(benchmark['workloads']) == 15
+          assert len(benchmark['ablations']) == 26
+          assert all(benchmark[key] is True for key in (
+              'semantic_observational_separation', 'append_only_result_integrity',
+              'multimodal_ml_compound_exercised', 'multimodal_ml_ablation_exercised',
+              'incremental_full_equality', 'recovery_replay_semantic_equality',
+              'cross_process_replay_semantic_equality', 'negative_controls_fail_closed',
+              'complete_cost_accounting', 'compression_incidence_complete_physical_accounting'))
           assert report['ready'] is False
           assert report['terminal_roots_minted'] is False
           assert report['authority_promoted'] is False
           assert report['migration_active'] is False
           assert report['pass215_authorized'] is False
-          assert 'PASS214_I8_AUTHORITY_RECONCILIATION_MAPPING_REQUIRED' not in report['blockers']
-          assert report['blockers']
+          assert report['blockers'] == ['PASS214_I8_LIVE_ADMISSION_MAPPING_REQUIRED']
           PY
       - name: Retain Iteration 8 readiness evidence
         uses: actions/upload-artifact@v4
@@ -112,5 +121,8 @@ jobs:
           name: pass214-iteration8-terminal-freeze-${{ github.run_id }}
           path: |
             ${{ runner.temp }}/pass214-i8/**/*.json
+            contracts/pass214/PASS_214_WORKLOAD_CORPUS.json
+            contracts/pass214/PASS_214_FINAL_BENCHMARK_METHOD.json
+            contracts/pass215/PASS_215_BENCHMARK_PROFILE.json
             evidence/pass214/PASS_214_ITERATION_8_IMPLEMENTATION_RECORD.json
           if-no-files-found: error
