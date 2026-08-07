@@ -1,6 +1,21 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+echo "=== PASS214 INHERITED INTEGRITY FINGERPRINTS ==="
+python - <<'PY'
+from hashlib import sha256
+import gzip
+from pathlib import Path
+for raw_path in (
+    "hhs_backend/runtime/pass214_i4_payload/runtime.py.gz",
+    "tests/pass214_i4_test_payload/test.py.gz",
+):
+    path = Path(raw_path)
+    raw = path.read_bytes()
+    source = gzip.decompress(raw)
+    print(f"{raw_path} payload_sha256={sha256(raw).hexdigest()} source_sha256={sha256(source).hexdigest()}")
+PY
+
 python -m pytest -q \
   tests/test_hhs_pass214_contract_v2.py \
   tests/test_hhs_pass214_repository_census_v1.py \
