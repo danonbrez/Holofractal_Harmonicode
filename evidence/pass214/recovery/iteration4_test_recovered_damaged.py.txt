@@ -1,0 +1,236 @@
+from __future__ import annotations
+
+import copy
+import json
+from pathlib import Path
+import subprocess
+
+import pytest
+
+from hhs_backend.runtime.hhs_pass214_callable_oracle_v1 import (
+    ITERATION3_IMPLEMENTATION_COMMIT,
+    ITERATION3_CONTRACT_BLOB,
+    ITERATION3_RUNTIME_LOADER_BLOB,
+    ITERATION3_IMPLEMENTATION_RECORD_BLOB,
+    PASS213_CLOSURE,
+    Pass214CallableOracleError,
+    build_callable_oracle_bundle,
+    git_blob_sha1,
+    load_and_validate_callable_oracle_outputs,
+    validate_callable_oracle_bundle,
+    write_callable_oracle_outputs,
+)
+
+
+def git(root: Path, *args: str) -> str:
+    return subprocess.check_output(["git", "-C", str(root), *args], text=True).strip()
+
+
+def write(root: Path, path: str, content: str) -> None:
+    target = root / path
+    target.parent.mkdir(parents=True, exist_ok=True)
+    target.write_text(content, encoding="utf-8")
+
+
+@pytest.fixture()
+def repository(tmp_path: Path) -> Path:
+    root = tmp_path / "repo"
+    root.mkdir()
+    git(root, "init")
+    git(root, "config", "user.name", "pass214-i4-test")
+    git(root, "config", "user.email", "pass214-i4-test@example.invalid")
+    write(root, "fixturepkg/__init__.py", "")
+    write(root, "fixturepkg/source.py", "def resolve(value=3):\n    return {'value': value, 'ok': True}\n")
+    write(root, "fixturepkg/target.py", "def resolve(value=3):\n    return {'value': value, 'ok': True}\n")
+    write(root, "fixturepkg/divergent.py", "def resolve(value=3):\n    return {'value': value + 1, 'ok': True}\n")
+    write(root, "fixturepkg/writer.py", "def resolve(value=3):\n    open('forbidden.txt', 'w').write(str(value))\n    return value\n")
+    write(root, "fixturepkg/network.py", "def resolve(value=3):\n    import socket\n    socket.create_connection(('127.0.0.1', 9), timeout=0.01)\n    return value\n")
+    write(root, "fixturepkg/process.py", "def resolve(value=3):\n    import subprocess\n    return subprocess.check_output(['echo', str(value)], text=True)\n")
+    write(root, "fixturepkg/floaty.py", "def resolve(value=3):\n    return 1.5\n")
+    git(root, "add", "-A")
+    git(root, "commit", "-m", "fixture")
+    return root
+
+
+def identity(root: Path, path: str) -> dict[str, str]:
+    data = (root / path).read_bytes()
+    return {
+        "path": path,
+        "module": path[:-3].replace("/", "."),
+        "symbol": "resolve",
+        "git_blob_sha1": git_blob_sha1(data),
+    }
+
+
+def payloads(root: Path, pairs: list[tuple[str, str]]) -> dict:
+    records = []
+    for path in sorted({item for pair in pairs for item in pair}):
+        records.append({"path": path, "qualified_name": "resolve", "implementation_root_hash216": "1" * 64})
+    edges = [
+        {
+            "source": {"path": left, "qualified_name": "resolve"},
+            "target": {"path": right, "qualified_name": "resolve"},
+            "edge_state": "SEMANTICALLY_EQUIVALENT_STATIC_NORMAL_FORM",
+        }
+        for left, right in pairs
+    ]
+    return {
+        "callable_conformance_records": records,
+        "compatibility_edges": edges,
+        "iteration2_summary": {
+            "source_commit": git(root, "rev-parse", "HEAD"),
+            "source_tree": git(root, "rev-parse", "HEAD^{tree}"),
+            "roots": {"iteration2_semantic_root_hash216": "2" * 64},
+        },
+    }
+
+
+def manifest(root: Path, target: str = "fixturepkg/target.py") -> dict:
+    return {
+        "schema": "HHS_PASS_214_ITERATION_4_CALLABLE_ORACLE_MANIFEST_V1",
+        "pass213_authority": {
+            "closure_commit": PASS213_CLOSURE,
+            "authority_profile": "PASS213_DEPENDENCY_SCOPED_VALIDATION_FIXTURE",
+            "trusted_timestamp_anchor_root_hash216": "3" * 64,
+            "moving_tensor_root_hash216": "4" * 64,
+            "native_dispatch_receipt_root_hash216": "5" * 64,
+        },
+        "iteration3_binding": {
+            "implementation_commit": ITERATION3_IMPLEMENTATION_COMMIT,
+            "contract_blob_sha1": ITERATION3_CONTRACT_BLOB,
+            "runtime_loader_blob_sha1": ITERATION3_RUNTIME_LOADER_BLOB,
+            "implementation_record_blob_sha1": ITERATION3_IMPLEMENTATION_RECORD_BLOB,
+        },
+        "execution_policy": {
+            "timeout_seconds": 10,
+            "cpu_seconds": 5,
+            "address_space_bytes": 536870912,
+            "max_stdout_bytes": 65536,
+            "max_captured_bytes": 1024,
+        },
+        "workloads": [
+            {
+                "workload_id": "fixture-equivalence",
+                "source": identity(root, "fixturepkg/source.py"),
+                "target": identity(root, target),
+                "vectors": [{"args": [7], "kwargs": {}}, {"args": [], "kwargs": {"value": 11}}],
+                "adapter": {"class": "IDENTITY", "config": {}},
+            }
+        ],
+    }
+
+
+def build(root: Path, target: str = "fixturepkg/target.py") -> dict:
+    pair = [("fixturepkg/source.py", target)]
+    return build_callable_oracle_bundle(root, None, manifest(root, target), iteration2_payloads=payloads(root, pair))
+
+
+def test_exact_repository_callable_equivalence_and_replay(repository: Path) -> None:
+    result = build(repository)
+    record = result["callable_records"][0]
+    assert record["oracle_state"] == "CALLABLE_EQUIVALENCE_VERIFIED"
+    assert record["repository_callables_executed"] is True
+    assert record["repository_callable_semantic_fidelity_claimed"] is True
+    assert all(item["deterministic_replay_equal"] for item in record["source_executions"] + record["target_executions"])
+    assert result["adjudications"][0]["decision"] == "DUPLICATE_CALLABLE_BEHAVIOR_CONFIRMED_NON_PROMOTING"
+    assert result["iteration4_summary"]["coverage"]["automatic_authority_merges"] == 0
+
+
+def test_divergence_is_retained_without_quarantine(repository: Path) -> None:
+    result = build(repository, "fixturepkg/divergent.py")
+    assert result["callable_records"][0]["oracle_state"] == "CALLABLE_DIVERGENCE"
+    adjudication = result["adjudications"][0]
+    assert adjudication["decision"] == "CONFLICT_RETAINED_FOR_FURTHER_ADJUDICATION"
+    assert not any(adjudication[key] for key in ("source_promoted", "target_promoted", "source_quarantined", "target_quarantined", "authority_merged"))
+
+
+def test_write_attempt_is_denied_and_non_promoting(repository: Path) -> None:
+    result = build(repository, "fixturepkg/writer.py")
+    record = result["callable_records"][0]
+    assert record["oracle_state"] == "CALLABLE_EXECUTION_ERROR"
+    assert record["target_executions"][0]["first"]["error_code"] == "CALLABLE_EXECUTION_FAILED"
+    assert not (repository / "forbidden.txt").exists()
+    assert result["adjudications"][0]["authority_merged"] is False
+
+
+def test_git_blob_identity_is_mandatory(repository: Path) -> None:
+    value = manifest(repository)
+    value["workloads"][0]["source"]["git_blob_sha1"] = "0" * 40
+    with pytest.raises(Pass214CallableOracleError, match="GIT_BLOB_IDENTITY_MISMATCH"):
+        build_callable_oracle_bundle(repository, None, value, iteration2_payloads=payloads(repository, [("fixturepkg/source.py", "fixturepkg/target.py")]))
+
+
+def test_iteration2_pair_evidence_is_mandatory(repository: Path) -> None:
+    value = manifest(repository)
+    only_records = payloads(repository, [("fixturepkg/source.py", "fixturepkg/target.py")])
+    only_records["compatibility_edges"] = []
+    with pytest.raises(Pass214CallableOracleError, match="PAIR_NOT_AUTHORIZED_BY_ITERATION2"):
+        build_callable_oracle_bundle(repository, None, value, iteration2_payloads=only_records)
+
+
+def test_pass213_and_iteration3_bindings_reject_forgery(repository: Path) -> None:
+    value = manifest(repository)
+    value["pass213_authority"]["closure_commit"] = "0" * 40
+    with pytest.raises(Pass214CallableOracleError, match="PASS213_CLOSURE_MISMATCH"):
+        build_callable_oracle_bundle(repository, None, value, iteration2_payloads=payloads(repository, [("fixturepkg/source.py", "fixturepkg/target.py")]))
+    value = manifest(repository)
+    value["iteration3_binding"]["implementation_commit"] = "0" * 40
+    with pytest.raises(Pass214CallableOracleError, match="ITERATION3_COMMIT_MISMATCH"):
+        build_callable_oracle_bundle(repository, None, value, iteration2_payloads=payloads(repository, [("fixturepkg/source.py", "fixturepkg/target.py")]))
+
+
+def test_recomputed_tampering_is_rejected(repository: Path) -> None:
+    result = build(repository)
+    tampered = copy.deepcopy(result)
+    tampered["callable_records"][0]["automatic_authority_merge"] = True
+    with pytest.raises(Pass214CallableOracleError, match="RECORD_ROOT_MISMATCH"):
+        validate_callable_oracle_bundle(tampered)
+    tampered = copy.deepcopy(result)
+    tampered["adjudications"][0]["authority_merged"] = True
+    with pytest.raises(Pass214CallableOracleError, match="ADJUDICATION_ROOT_MISMATCH"):
+        validate_callable_oracle_bundle(tampered)
+
+
+
+def test_network_process_and_float_outputs_are_denied(repository: Path) -> None:
+    for target in ("fixturepkg/network.py", "fixturepkg/process.py", "fixturepkg/floaty.py"):
+        result = build(repository, target)
+        record = result["callable_records"][0]
+        assert record["oracle_state"] == "CALLABLE_EXECUTION_ERROR"
+        assert result["adjudications"][0]["authority_merged"] is False
+
+
+def test_iteration2_root_only_pair_binding_is_accepted(repository: Path) -> None:
+    value = manifest(repository)
+    data = payloads(repository, [("fixturepkg/source.py", "fixturepkg/target.py")])
+    source_root = "a" * 64
+    target_root = "b" * 64
+    data["callable_conformance_records"][0]["symbol_identity_root_hash216"] = source_root
+    data["callable_conformance_records"][1]["symbol_identity_root_hash216"] = target_root
+    data["compatibility_edges"] = [{
+        "edge_state": "SEMANTICALLY_EQUIVALENT_STATIC_NORMAL_FORM",
+        "source_symbol_root_hash216": source_root,
+        "target_symbol_root_hash216": target_root,
+    }]
+    result = build_callable_oracle_bundle(repository, None, value, iteration2_payloads=data)
+    assert result["callable_records"][0]["oracle_state"] == "CALLABLE_EQUIVALENCE_VERIFIED"
+
+
+def test_iteration3_blob_identity_is_fixed(repository: Path) -> None:
+    value = manifest(repository)
+    value["iteration3_binding"]["contract_blob_sha1"] = "0" * 40
+    with pytest.raises(Pass214CallableOracleError, match="ITERATION3_BLOB_IDENTITY_MISMATCH"):
+        build_callable_oracle_bundle(repository, None, value, iteration2_payloads=payloads(repository, [("fixturepkg/source.py", "fixturepkg/target.py")]))
+
+def test_write_reload_and_output_tamper_rejection(repository: Path, tmp_path: Path) -> None:
+    result = build(repository)
+    output = tmp_path / "iteration4"
+    write_callable_oracle_outputs(result, output)
+    loaded = load_and_validate_callable_oracle_outputs(output)
+    assert loaded["iteration4_summary"]["roots"] == result["iteration4_summary"]["roots"]
+    path = output / "callable_oracle_records.json"
+    data = json.loads(path.read_text())
+    data[0]["oracle_state"] = "CALLABLE_DIVERGENCE"
+    path.write_text(json.dumps(data))
+    with pytest.raises(Pass214CallableOracleError, match="RECORD_ROOT_MISMATCH"):
+        load_and_validate_callable_oracle_outputs(output)
