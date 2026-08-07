@@ -1,11 +1,11 @@
 """Pass 214 deterministic authority-conflict reconciliation.
 
 Iteration 2 deliberately emits conservative *candidates* whenever distinct
-callables share a normalized entrypoint inside an authority domain.  This
-module resolves those candidates without merging implementations or inventing
-semantic equivalence: module/path namespaces remain distinct and canonical
-mutation ownership remains the inherited Pass 213 governed VM81/native-dispatch
-chain.
+callables share a normalized entrypoint inside an authority domain. This
+module reconciles those candidates without merging implementations or
+inventing semantic equivalence: exact symbol namespaces remain distinct and
+canonical mutation ownership remains the inherited Pass 213 governed
+VM81/native-dispatch chain.
 """
 from __future__ import annotations
 
@@ -65,6 +65,19 @@ def _resolution_class(conflict: Mapping[str, Any]) -> str:
     return "IDENTICAL_IMPLEMENTATION_RETAINED_WITHOUT_AUTHORITY_MERGE"
 
 
+def _symbol_namespace(member: Mapping[str, Any]) -> dict[str, Any]:
+    """Return the exact static namespace bound by the Iteration 2 symbol ID."""
+    namespace = {
+        "symbol_hash216": member.get("symbol_hash216"),
+        "path": member.get("path"),
+        "entrypoint": member.get("entrypoint"),
+        "qualified_name": member.get("qualified_name") or member.get("qualname"),
+        "source_start_line": member.get("source_start_line") or member.get("line_start"),
+        "source_end_line": member.get("source_end_line") or member.get("line_end"),
+    }
+    return namespace
+
+
 def reconcile_authority_conflicts(
     *,
     authority_conflicts: Sequence[Mapping[str, Any]],
@@ -91,14 +104,16 @@ def reconcile_authority_conflicts(
     resolutions: list[dict[str, Any]] = []
     for conflict in authority_conflicts:
         member_ids = tuple(conflict.get("member_symbol_hash216", ()))
-        if len(member_ids) < 2:
+        if len(member_ids) < 2 or len(set(member_ids)) != len(member_ids):
             raise Pass214AuthorityReconciliationError("PASS214_AUTHORITY_RECONCILIATION_MEMBER_SET_INVALID")
         try:
             members = [index[symbol] for symbol in member_ids]
         except KeyError as exc:
             raise Pass214AuthorityReconciliationError("PASS214_AUTHORITY_RECONCILIATION_MEMBER_NOT_FOUND") from exc
-        member_paths = tuple(str(member.get("path")) for member in members)
-        if len(set(member_paths)) != len(member_paths):
+        member_namespaces = tuple(_symbol_namespace(member) for member in members)
+        # Distinct Iteration 2 symbol hashes are the namespace authority. Multiple
+        # methods/functions may correctly inhabit the same source path.
+        if len({namespace["symbol_hash216"] for namespace in member_namespaces}) != len(member_namespaces):
             raise Pass214AuthorityReconciliationError("PASS214_AUTHORITY_RECONCILIATION_MEMBER_NAMESPACE_COLLISION")
         inherited_candidates = tuple(
             sorted(
@@ -113,7 +128,7 @@ def reconcile_authority_conflicts(
             "authority_domain": conflict.get("authority_domain"),
             "normalized_entrypoint": conflict.get("normalized_entrypoint"),
             "member_symbol_hash216": list(member_ids),
-            "member_paths": list(member_paths),
+            "member_namespaces": list(member_namespaces),
             "resolution_class": _resolution_class(conflict),
             "semantic_equivalence_claimed": False,
             "automatic_merger_authorized": False,
@@ -144,6 +159,7 @@ def reconcile_authority_conflicts(
         "semantic_equivalence_inferred_count": 0,
         "all_conflicts_reconciled": len(resolutions) == len(authority_conflicts),
         "single_mutation_authority_preserved": True,
+        "namespace_identity": "ITERATION2_SYMBOL_HASH216",
         "resolutions": resolutions,
     }
     summary["reconciliation_root_hash216"] = hash216(
@@ -165,6 +181,8 @@ def validate_authority_reconciliation(
         raise Pass214AuthorityReconciliationError("PASS214_AUTHORITY_RECONCILIATION_PASS213_CLOSURE_MISMATCH")
     if report.get("canonical_mutation_authority") != CANONICAL_MUTATION_AUTHORITY:
         raise Pass214AuthorityReconciliationError("PASS214_AUTHORITY_RECONCILIATION_MUTATION_AUTHORITY_MISMATCH")
+    if report.get("namespace_identity") != "ITERATION2_SYMBOL_HASH216":
+        raise Pass214AuthorityReconciliationError("PASS214_AUTHORITY_RECONCILIATION_NAMESPACE_IDENTITY_INVALID")
     if report.get("all_conflicts_reconciled") is not True:
         raise Pass214AuthorityReconciliationError("PASS214_AUTHORITY_RECONCILIATION_INCOMPLETE")
     if int(report.get("unresolved_conflict_count", -1)) != 0 or int(report.get("automatic_merge_count", -1)) != 0:
@@ -179,6 +197,12 @@ def validate_authority_reconciliation(
             raise Pass214AuthorityReconciliationError("PASS214_AUTHORITY_RECONCILIATION_RECORD_UNSAFE")
         if record.get("semantic_equivalence_claimed") is not False or record.get("member_namespaces_preserved") is not True:
             raise Pass214AuthorityReconciliationError("PASS214_AUTHORITY_RECONCILIATION_RECORD_SEMANTIC_OVERREACH")
+        member_ids = record.get("member_symbol_hash216")
+        namespaces = record.get("member_namespaces")
+        if not isinstance(member_ids, list) or not isinstance(namespaces, list) or len(member_ids) != len(namespaces):
+            raise Pass214AuthorityReconciliationError("PASS214_AUTHORITY_RECONCILIATION_RECORD_NAMESPACE_SET_INVALID")
+        if [namespace.get("symbol_hash216") for namespace in namespaces] != member_ids:
+            raise Pass214AuthorityReconciliationError("PASS214_AUTHORITY_RECONCILIATION_RECORD_NAMESPACE_BINDING_MISMATCH")
         rooted = {key: value for key, value in record.items() if key != "resolution_root_hash216"}
         if record.get("resolution_root_hash216") != hash216("pass214-authority-conflict-resolution", rooted):
             raise Pass214AuthorityReconciliationError("PASS214_AUTHORITY_RECONCILIATION_RECORD_ROOT_MISMATCH")
