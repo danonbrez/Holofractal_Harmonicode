@@ -25,6 +25,7 @@ python -m pytest -q \
   tests/test_hhs_pass214_iteration5_callable_corpus_v1.py \
   tests/test_hhs_pass214_iteration6_candidate_binding_v1.py \
   tests/test_hhs_pass214_iteration7_live_admission_ablation_v1.py \
+  tests/test_hhs_pass214_authority_conflict_reconciliation_v1.py \
   tests/test_hhs_pass214_iteration8_terminal_freeze_v1.py
 
 python -m py_compile \
@@ -32,8 +33,10 @@ python -m py_compile \
   hhs_backend/runtime/hhs_pass214_iteration5_callable_corpus_v1.py \
   hhs_backend/runtime/hhs_pass214_iteration6_candidate_binding_v1.py \
   hhs_backend/runtime/hhs_pass214_iteration7_live_admission_ablation_v1.py \
+  hhs_backend/runtime/hhs_pass214_authority_conflict_reconciliation_v1.py \
   hhs_backend/runtime/hhs_pass214_iteration8_terminal_freeze_v1.py \
   tools/pass214_callable_oracle.py \
+  tools/pass214_authority_conflict_reconciliation.py \
   tools/pass214_iteration4_manifest.py \
   tools/pass214_iteration5_callable_corpus.py \
   tools/pass214_iteration5_manifest.py \
