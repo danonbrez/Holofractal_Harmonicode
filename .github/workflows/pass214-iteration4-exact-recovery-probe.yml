@@ -25,6 +25,8 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: '3.12'
+      - name: Install dependency-scoped test runner
+        run: python -m pip install --disable-pip-version-check 'pytest>=8,<9'
 
       - name: Reconstruct exact frozen payload at Hamming distance one byte
         id: search
@@ -142,7 +144,6 @@ jobs:
           python - <<'PY'
           from pathlib import Path
           import json
-          import os
 
           path = Path('evidence/pass214/recovery/PASS_214_ITERATION_4_EXACT_BYTE_RECOVERY.json')
           data = json.loads(path.read_text(encoding='utf-8'))
