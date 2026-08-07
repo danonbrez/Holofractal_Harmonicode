@@ -1,0 +1,105 @@
+name: Pass 214 Iteration 4 Exact Recovery Probe
+
+on:
+  push:
+    branches:
+      - agent/pass214-operating-compression-gradient
+    paths:
+      - '.github/workflows/pass214-iteration4-exact-recovery-probe.yml'
+
+permissions:
+  contents: read
+
+env:
+  PYTHONDONTWRITEBYTECODE: '1'
+  PYTHONHASHSEED: '0'
+
+jobs:
+  exact-recovery-probe:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Test exact constrained separator recovery
+        run: |
+          python - <<'PY'
+          from hashlib import sha256
+          from pathlib import Path
+          import json
+          import re
+          import zlib
+
+          path = Path('hhs_backend/runtime/pass214_i4_payload/runtime.py.gz')
+          expected_sha = 'a946cde1338bc33eb6873c13125b306a45882dec46fd29ac4820ce38ea5612a9'
+          raw = path.read_bytes()
+
+          def body(blob: bytes) -> bytes:
+              flags = blob[3]
+              i = 10
+              if flags & 0x04:
+                  xlen = int.from_bytes(blob[i:i+2], 'little')
+                  i += 2 + xlen
+              for bit in (0x08, 0x10):
+                  if flags & bit:
+                      i = blob.index(b'\x00', i) + 1
+              if flags & 0x02:
+                  i += 2
+              return blob[i:-8]
+
+          recovered = zlib.decompress(body(raw), -zlib.MAX_WBITS)
+          expected_crc = int.from_bytes(raw[-8:-4], 'little')
+          expected_size = int.from_bytes(raw[-4:], 'little')
+          text = recovered.decode('utf-8')
+
+          pattern = re.compile(
+              r'b(?=(?:'
+              r'[A-Z_][A-Z0-9_]*\s*=|'
+              r'class\s|def\s|@|from\s|import\s|if\s+__name__|'
+              r' {4}(?:def\s|return\s|if\s|for\s|while\s|try:|except\s|with\s|raise\s|assert\s)'
+              r'))'
+          )
+          positions = [m.start() for m in pattern.finditer(text)]
+
+          def make_candidate(name, source_text):
+              source = source_text.encode('utf-8')
+              compile_ok = True
+              compile_error = None
+              try:
+                  compile(source, name, 'exec')
+              except Exception as exc:
+                  compile_ok = False
+                  compile_error = f'{type(exc).__name__}:{exc}'
+              return {
+                  'name': name,
+                  'size': len(source),
+                  'sha256': sha256(source).hexdigest(),
+                  'crc32': zlib.crc32(source) & 0xffffffff,
+                  'sha_match': sha256(source).hexdigest() == expected_sha,
+                  'crc_match': (zlib.crc32(source) & 0xffffffff) == expected_crc,
+                  'size_match': len(source) == expected_size,
+                  'compile_ok': compile_ok,
+                  'compile_error': compile_error,
+              }
+
+          c1 = pattern.sub('\n', text)
+          results = [
+              make_candidate('raw-deflate', text),
+              make_candidate('replace-identified-77-b-with-newline', c1),
+          ]
+          print(json.dumps({
+              'schema': 'HHS_PASS_214_ITERATION_4_EXACT_RECOVERY_PROBE_V1',
+              'expected_sha256': expected_sha,
+              'expected_crc32': expected_crc,
+              'expected_size': expected_size,
+              'identified_separator_positions': len(positions),
+              'results': results,
+          }, sort_keys=True))
+
+          if results[1]['sha_match'] and results[1]['crc_match'] and results[1]['size_match'] and results[1]['compile_ok']:
+              print('PASS214_I4_EXACT_SEPARATOR_RECOVERY_CONFIRMED')
+          else:
+              raise SystemExit('PASS214_I4_EXACT_SEPARATOR_RECOVERY_NOT_CONFIRMED')
+          PY
