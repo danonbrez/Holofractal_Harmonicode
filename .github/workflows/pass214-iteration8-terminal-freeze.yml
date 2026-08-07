@@ -7,12 +7,15 @@ on:
       - agent/pass214-operating-compression-gradient
     paths:
       - 'hhs_backend/runtime/hhs_pass214_iteration8_terminal_freeze_v1.py'
+      - 'hhs_backend/runtime/hhs_pass214_authority_conflict_reconciliation_v1.py'
       - 'hhs_backend/runtime/hhs_pass214_repository_census_v1.py'
       - 'hhs_backend/runtime/hhs_pass214_callable_conformance_v1.py'
       - 'tools/pass214_iteration8_terminal_freeze.py'
+      - 'tools/pass214_authority_conflict_reconciliation.py'
       - 'tools/pass214_repository_census.py'
       - 'tools/pass214_callable_conformance.py'
       - 'tests/test_hhs_pass214_iteration8_terminal_freeze_v1.py'
+      - 'tests/test_hhs_pass214_authority_conflict_reconciliation_v1.py'
       - 'docs/pass214/**'
       - 'evidence/pass214/**'
       - 'contracts/pass214/**'
@@ -23,12 +26,15 @@ on:
       - main
     paths:
       - 'hhs_backend/runtime/hhs_pass214_iteration8_terminal_freeze_v1.py'
+      - 'hhs_backend/runtime/hhs_pass214_authority_conflict_reconciliation_v1.py'
       - 'hhs_backend/runtime/hhs_pass214_repository_census_v1.py'
       - 'hhs_backend/runtime/hhs_pass214_callable_conformance_v1.py'
       - 'tools/pass214_iteration8_terminal_freeze.py'
+      - 'tools/pass214_authority_conflict_reconciliation.py'
       - 'tools/pass214_repository_census.py'
       - 'tools/pass214_callable_conformance.py'
       - 'tests/test_hhs_pass214_iteration8_terminal_freeze_v1.py'
+      - 'tests/test_hhs_pass214_authority_conflict_reconciliation_v1.py'
       - 'docs/pass214/**'
       - 'evidence/pass214/**'
       - 'contracts/pass214/**'
@@ -69,22 +75,35 @@ jobs:
             --iteration1-directory "$RUNNER_TEMP/pass214-i8/census" \
             --source-ref HEAD \
             --output-directory "$RUNNER_TEMP/pass214-i8/compatibility"
-      - name: Prove terminal gate remains fail-closed without production evidence
+      - name: Reconcile exact-head authority-conflict candidates
+        run: |
+          python tools/pass214_authority_conflict_reconciliation.py \
+            --compatibility-directory "$RUNNER_TEMP/pass214-i8/compatibility" \
+            --output "$RUNNER_TEMP/pass214-i8/PASS_214_AUTHORITY_CONFLICT_RECONCILIATION.json"
+      - name: Prove terminal gate remains fail-closed only on production evidence
         run: |
           python tools/pass214_iteration8_terminal_freeze.py \
             --mode inspect \
             --census-summary "$RUNNER_TEMP/pass214-i8/census/iteration1_summary.json" \
             --compatibility-summary "$RUNNER_TEMP/pass214-i8/compatibility/iteration2_summary.json" \
+            --authority-reconciliation "$RUNNER_TEMP/pass214-i8/PASS_214_AUTHORITY_CONFLICT_RECONCILIATION.json" \
             --output "$RUNNER_TEMP/pass214-i8/PASS_214_ITERATION_8_CI_INSPECTION.json"
           python - <<'PY'
           import json, os
           from pathlib import Path
-          report = json.loads((Path(os.environ['RUNNER_TEMP']) / 'pass214-i8' / 'PASS_214_ITERATION_8_CI_INSPECTION.json').read_text())
+          root = Path(os.environ['RUNNER_TEMP']) / 'pass214-i8'
+          reconciliation = json.loads((root / 'PASS_214_AUTHORITY_CONFLICT_RECONCILIATION.json').read_text())
+          report = json.loads((root / 'PASS_214_ITERATION_8_CI_INSPECTION.json').read_text())
+          assert reconciliation['all_conflicts_reconciled'] is True
+          assert reconciliation['unresolved_conflict_count'] == 0
+          assert reconciliation['automatic_merge_count'] == 0
+          assert reconciliation['single_mutation_authority_preserved'] is True
           assert report['ready'] is False
           assert report['terminal_roots_minted'] is False
           assert report['authority_promoted'] is False
           assert report['migration_active'] is False
           assert report['pass215_authorized'] is False
+          assert 'PASS214_I8_AUTHORITY_RECONCILIATION_MAPPING_REQUIRED' not in report['blockers']
           assert report['blockers']
           PY
       - name: Retain Iteration 8 readiness evidence
