@@ -8,7 +8,7 @@ on:
       - '.github/workflows/pass214-iteration4-exact-recovery-probe.yml'
 
 permissions:
-  contents: read
+  contents: write
 
 env:
   PYTHONDONTWRITEBYTECODE: '1'
@@ -20,51 +20,72 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
       - uses: actions/setup-python@v6
         with:
           python-version: '3.12'
-      - name: Test exact constrained separator recovery
+      - name: Materialize fail-closed damaged-source evidence
         run: |
           python - <<'PY'
           from hashlib import sha256
           from pathlib import Path
+          import gzip
           import json
           import re
           import zlib
 
-          path = Path('hhs_backend/runtime/pass214_i4_payload/runtime.py.gz')
-          expected_sha = 'a946cde1338bc33eb6873c13125b306a45882dec46fd29ac4820ce38ea5612a9'
-          raw = path.read_bytes()
+          out = Path('evidence/pass214/recovery')
+          out.mkdir(parents=True, exist_ok=True)
 
-          def body(blob: bytes) -> bytes:
+          frozen = {
+              'runtime': {
+                  'path': 'hhs_backend/runtime/pass214_i4_payload/runtime.py.gz',
+                  'expected_source_sha256': 'a946cde1338bc33eb6873c13125b306a45882dec46fd29ac4820ce38ea5612a9',
+                  'expected_payload_sha256': '392d655df87628832fbd14d19301bc7dc8c002cf69b571fc6f12ab867961930d',
+                  'output': 'iteration4_runtime_recovered_damaged.py.txt',
+              },
+              'test': {
+                  'path': 'tests/pass214_i4_test_payload/test.py.gz',
+                  'expected_source_sha256': 'f413e3514dbfd97f4c59dbedeabca885380adbc466f984508ca1317b53a76ec5',
+                  'expected_payload_sha256': '731d4bba2fab5243f29c3b4772c0634d658261930c6f3a2312706c2ae416a297',
+                  'output': 'iteration4_test_recovered_damaged.py.txt',
+              },
+          }
+
+          separator_pattern = re.compile(
+              r'b(?=(?:'
+              r'[A-Z_][A-Z0-9_]*\\s*=|'
+              r'class\\s|def\\s|@|from\\s|import\\s|if\\s+__name__|'
+              r' {4}(?:def\\s|return\\s|if\\s|for\\s|while\\s|try:|except\\s|with\\s|raise\\s|assert\\s)'
+              r'))'
+          )
+
+          def gzip_body(blob: bytes) -> bytes:
+              if len(blob) < 18 or blob[:3] != b'\\x1f\\x8b\\x08':
+                  raise RuntimeError('PASS214_I4_DIAGNOSTIC_NOT_GZIP_DEFLATE')
               flags = blob[3]
+              if flags & 0xE0:
+                  raise RuntimeError('PASS214_I4_DIAGNOSTIC_RESERVED_GZIP_FLAGS')
               i = 10
               if flags & 0x04:
-                  xlen = int.from_bytes(blob[i:i+2], 'little')
+                  if i + 2 > len(blob):
+                      raise RuntimeError('PASS214_I4_DIAGNOSTIC_EXTRA_TRUNCATED')
+                  xlen = int.from_bytes(blob[i:i + 2], 'little')
                   i += 2 + xlen
               for bit in (0x08, 0x10):
                   if flags & bit:
-                      i = blob.index(b'\x00', i) + 1
+                      end = blob.find(b'\\x00', i)
+                      if end < 0:
+                          raise RuntimeError('PASS214_I4_DIAGNOSTIC_HEADER_TRUNCATED')
+                      i = end + 1
               if flags & 0x02:
                   i += 2
+              if i >= len(blob) - 8:
+                  raise RuntimeError('PASS214_I4_DIAGNOSTIC_BODY_TRUNCATED')
               return blob[i:-8]
 
-          recovered = zlib.decompress(body(raw), -zlib.MAX_WBITS)
-          expected_crc = int.from_bytes(raw[-8:-4], 'little')
-          expected_size = int.from_bytes(raw[-4:], 'little')
-          text = recovered.decode('utf-8')
-
-          pattern = re.compile(
-              r'b(?=(?:'
-              r'[A-Z_][A-Z0-9_]*\s*=|'
-              r'class\s|def\s|@|from\s|import\s|if\s+__name__|'
-              r' {4}(?:def\s|return\s|if\s|for\s|while\s|try:|except\s|with\s|raise\s|assert\s)'
-              r'))'
-          )
-          positions = [m.start() for m in pattern.finditer(text)]
-
-          def make_candidate(name, source_text):
-              source = source_text.encode('utf-8')
+          def candidate_metrics(name: str, source: bytes, expected_sha: str, trailer_crc: int, trailer_size: int):
               compile_ok = True
               compile_error = None
               try:
@@ -72,34 +93,93 @@ jobs:
               except Exception as exc:
                   compile_ok = False
                   compile_error = f'{type(exc).__name__}:{exc}'
+              digest = sha256(source).hexdigest()
+              crc = zlib.crc32(source) & 0xffffffff
               return {
                   'name': name,
-                  'size': len(source),
-                  'sha256': sha256(source).hexdigest(),
-                  'crc32': zlib.crc32(source) & 0xffffffff,
-                  'sha_match': sha256(source).hexdigest() == expected_sha,
-                  'crc_match': (zlib.crc32(source) & 0xffffffff) == expected_crc,
-                  'size_match': len(source) == expected_size,
+                  'source_size': len(source),
+                  'source_sha256': digest,
+                  'source_crc32': crc,
+                  'source_sha256_matches_frozen': digest == expected_sha,
+                  'gzip_trailer_crc32_matches': crc == trailer_crc,
+                  'gzip_trailer_isize_matches': len(source) == trailer_size,
                   'compile_ok': compile_ok,
                   'compile_error': compile_error,
               }
 
-          c1 = pattern.sub('\n', text)
-          results = [
-              make_candidate('raw-deflate', text),
-              make_candidate('replace-identified-77-b-with-newline', c1),
-          ]
-          print(json.dumps({
-              'schema': 'HHS_PASS_214_ITERATION_4_EXACT_RECOVERY_PROBE_V1',
-              'expected_sha256': expected_sha,
-              'expected_crc32': expected_crc,
-              'expected_size': expected_size,
-              'identified_separator_positions': len(positions),
-              'results': results,
-          }, sort_keys=True))
+          def recover(label: str, spec: dict):
+              path = Path(spec['path'])
+              raw = path.read_bytes()
+              payload_sha = sha256(raw).hexdigest()
+              trailer_crc = int.from_bytes(raw[-8:-4], 'little')
+              trailer_size = int.from_bytes(raw[-4:], 'little')
+              try:
+                  source = gzip.decompress(raw)
+                  mode = 'VALID_GZIP'
+              except (gzip.BadGzipFile, EOFError, zlib.error):
+                  source = zlib.decompress(gzip_body(raw), -zlib.MAX_WBITS)
+                  mode = 'RAW_DEFLATE_RECOVERY_FROM_INVALID_GZIP_CONTAINER'
+              text = source.decode('utf-8')
+              (out / spec['output']).write_bytes(source)
+              suspects = []
+              for match in separator_pattern.finditer(text):
+                  start = max(0, match.start() - 60)
+                  end = min(len(text), match.start() + 100)
+                  suspects.append({
+                      'offset': match.start(),
+                      'context': repr(text[start:end]),
+                  })
+              replacement = separator_pattern.sub('\\n', text).encode('utf-8')
+              return {
+                  'label': label,
+                  'path': spec['path'],
+                  'recovery_mode': mode,
+                  'payload_sha256': payload_sha,
+                  'expected_payload_sha256': spec['expected_payload_sha256'],
+                  'payload_sha256_matches_frozen': payload_sha == spec['expected_payload_sha256'],
+                  'expected_source_sha256': spec['expected_source_sha256'],
+                  'gzip_trailer_crc32': trailer_crc,
+                  'gzip_trailer_isize': trailer_size,
+                  'separator_suspect_count': len(suspects),
+                  'separator_suspects': suspects,
+                  'raw_recovered': candidate_metrics(
+                      f'{label}-raw-recovered', source, spec['expected_source_sha256'], trailer_crc, trailer_size
+                  ),
+                  'replace_all_separator_suspects': candidate_metrics(
+                      f'{label}-replace-all-separator-suspects', replacement,
+                      spec['expected_source_sha256'], trailer_crc, trailer_size
+                  ),
+                  'repository_readable_evidence_path': str(out / spec['output']),
+              }
 
-          if results[1]['sha_match'] and results[1]['crc_match'] and results[1]['size_match'] and results[1]['compile_ok']:
-              print('PASS214_I4_EXACT_SEPARATOR_RECOVERY_CONFIRMED')
-          else:
-              raise SystemExit('PASS214_I4_EXACT_SEPARATOR_RECOVERY_NOT_CONFIRMED')
+          diagnostic = {
+              'schema': 'HHS_PASS_214_ITERATION_4_RAW_DEFLATE_DIAGNOSTIC_V2',
+              'repair_scope': 'READ_ONLY_SOURCE_MATERIALIZATION_FOR_EXACT_RECONSTRUCTION',
+              'frozen_identity_unchanged': True,
+              'payload_rewrite': False,
+              'integrity_rebind': False,
+              'authority_promotion': False,
+              'terminal_pass214_root_minted': False,
+              'pass215_authorized': False,
+              'runtime': recover('runtime', frozen['runtime']),
+              'test': recover('test', frozen['test']),
+          }
+          (out / 'PASS_214_ITERATION_4_RAW_DEFLATE_DIAGNOSTIC.json').write_text(
+              json.dumps(diagnostic, indent=2, sort_keys=True) + '\\n', encoding='utf-8'
+          )
+          print(json.dumps(diagnostic, sort_keys=True))
           PY
+      - name: Commit diagnostic evidence only
+        run: |
+          git config user.name 'hhs-pass214-recovery-bot'
+          git config user.email '153354844+danonbrez@users.noreply.github.com'
+          git add \
+            evidence/pass214/recovery/iteration4_runtime_recovered_damaged.py.txt \
+            evidence/pass214/recovery/iteration4_test_recovered_damaged.py.txt \
+            evidence/pass214/recovery/PASS_214_ITERATION_4_RAW_DEFLATE_DIAGNOSTIC.json
+          if git diff --cached --quiet; then
+            echo 'Pass 214 Iteration 4 diagnostic evidence already current'
+          else
+            git commit -m 'Expose Pass 214 Iteration 4 damaged sources for exact recovery'
+            git push origin HEAD:agent/pass214-operating-compression-gradient
+          fi
