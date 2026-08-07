@@ -64,5 +64,6 @@
     "status": "pending non-suppressed exact-head event",
     "claimed": false
   },
-  "next_action": "Execute the Iteration 7 bridge in the production Pass 213 process with the operational RFC 3161 trust bundle, full trusted anchor record and PQC verifier bundle. If and only if the live cross-authority gate passes, persist the admission and five-family ablation plan, then execute the production callable baseline/ablation stage without migration or authority promotion."
+  "next_action": "Execute the Iteration 7 bridge in the production Pass 213 process with the operational RFC 3161 trust bundle, full trusted anchor record and PQC verifier bundle. If and only if the live cross-authority gate passes, persist the admission and five-family ablation plan, then execute the production callable baseline/ablation stage without migration or authority promotion.",
+  "implementation_commit": "a5c07bfff57880c60a0ba6e24e1eec17d38e3f88"
 }

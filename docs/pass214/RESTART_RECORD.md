@@ -1,9 +1,11 @@
 # Pass 214 Restart Record
 
-## Repository state before Iteration 7 commit
+## Repository state after Iteration 7 implementation commit
 
 - Iteration 7 base commit: `5be251a3df5bd3f949dbae8e34c71cfd5465bcd6`
 - Iteration 7 base tree: `8106623e074c5ec939e64c838f102ead403bc832`
+- Iteration 7 implementation commit: `a5c07bfff57880c60a0ba6e24e1eec17d38e3f88`
+- Iteration 7 implementation tree: `99b7268288ff0016d515470b7b0e4af8da48ce6d`
 - Branch: `agent/pass214-operating-compression-gradient`
 - Merge target: `main`
 - Draft PR: `#170`
@@ -76,7 +78,7 @@ The CI/hosted path is intentionally non-authoritative: it runs structural/unit v
 - `evidence/pass214/PASS_214_ITERATION_7_IMPLEMENTATION_RECORD.json`
 - `docs/pass214/RESTART_RECORD.md`
 
-## Next exact action after Iteration 7 commit
+## Next exact action
 
 1. Run `tools/pass214_iteration7_live_admission.py --mode admit` inside the production Pass 213 process with the operational trusted-anchor JSON, PQC verifier-bundle JSON, and RFC 3161 trust bundle.
 2. If and only if the timestamp, projection, moving-tensor, native-dispatch ledger, tensor, anchor, lineage, and candidate-challenge gates all pass, persist the live admission and five-family ablation plan.
