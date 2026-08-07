@@ -1,9 +1,9 @@
 """Pass 214 Iteration 8 terminal benchmark/profile freeze authority.
 
 Fail-closed terminal gate for the frozen Pass 214 contract. A terminal freeze is
-emitted only when the repository census/conformance evidence, A0-A9 benchmark
-bundle, mandatory ablations, workload corpus, Pass 215 profile, and live
-Iteration 7 Pass 213 admission are simultaneously complete.
+emitted only when repository census/conformance/reconciliation evidence, A0-A9
+benchmark evidence, mandatory ablations, workload corpus, Pass 215 profile, and
+live Iteration 7 Pass 213 admission are simultaneously complete.
 """
 from __future__ import annotations
 
@@ -13,6 +13,10 @@ import json
 from typing import Any, Mapping
 
 from hhs_runtime.core.hash72_digest_v1 import hash72_digest
+from hhs_backend.runtime.hhs_pass214_authority_conflict_reconciliation_v1 import (
+    Pass214AuthorityReconciliationError,
+    validate_authority_reconciliation,
+)
 from hhs_backend.runtime.hhs_pass214_iteration7_live_admission_ablation_v1 import (
     ITERATION6_CANDIDATE_SET_ROOT,
     PASS213_CLOSURE,
@@ -217,7 +221,26 @@ def validate_pass215_profile(profile: Mapping[str, Any]) -> Mapping[str, Any]:
     return profile
 
 
-def readiness_blockers(*, census_summary, compatibility_summary, benchmark_bundle, pass215_profile, live_admission) -> list[str]:
+def _validate_reconciliation_for_compatibility(
+    compatibility_summary: Mapping[str, Any],
+    authority_reconciliation: Mapping[str, Any] | None,
+) -> Mapping[str, Any] | None:
+    coverage = _mapping(compatibility_summary.get("coverage"), "COMPATIBILITY_COVERAGE")
+    candidate_count = int(coverage.get("authority_conflict_candidates", 0))
+    if candidate_count == 0 and authority_reconciliation is None:
+        return None
+    report = _mapping(authority_reconciliation, "AUTHORITY_RECONCILIATION")
+    try:
+        validate_authority_reconciliation(report, compatibility_summary=compatibility_summary)
+    except Pass214AuthorityReconciliationError as exc:
+        raise Pass214Iteration8Error(str(exc)) from exc
+    if int(report.get("candidate_conflict_count", -1)) != candidate_count:
+        raise Pass214Iteration8Error("PASS214_I8_AUTHORITY_RECONCILIATION_COUNT_MISMATCH")
+    return report
+
+
+def readiness_blockers(*, census_summary, compatibility_summary, authority_reconciliation=None,
+                       benchmark_bundle=None, pass215_profile=None, live_admission=None) -> list[str]:
     blockers: list[str] = []
     try:
         census = _mapping(census_summary, "CENSUS_SUMMARY")
@@ -233,8 +256,7 @@ def readiness_blockers(*, census_summary, compatibility_summary, benchmark_bundl
         coverage = _mapping(compat.get("coverage"), "COMPATIBILITY_COVERAGE")
         if int(coverage.get("active_unresolved", 0)) != 0:
             blockers.append("PASS214_I8_ACTIVE_CALLABLES_UNRESOLVED")
-        if int(coverage.get("authority_conflict_candidates", 0)) != 0:
-            blockers.append("PASS214_I8_AUTHORITY_CONFLICTS_UNRESOLVED")
+        _validate_reconciliation_for_compatibility(compat, authority_reconciliation)
     except (Pass214Iteration8Error, TypeError, ValueError) as exc:
         blockers.append(str(exc))
     for validator, value in ((validate_benchmark_bundle, benchmark_bundle), (validate_pass215_profile, pass215_profile)):
@@ -260,11 +282,15 @@ def inspect_terminal_readiness(**kwargs: Any) -> dict[str, Any]:
     }
 
 
-def create_terminal_freeze(*, census_summary, compatibility_summary, workload_corpus, benchmark_method,
-                           benchmark_bundle, pass215_profile, live_admission, source_commit: str, source_tree: str) -> dict[str, Any]:
+def create_terminal_freeze(*, census_summary, compatibility_summary, authority_reconciliation,
+                           workload_corpus, benchmark_method, benchmark_bundle, pass215_profile,
+                           live_admission, source_commit: str, source_tree: str) -> dict[str, Any]:
     blockers = readiness_blockers(
-        census_summary=census_summary, compatibility_summary=compatibility_summary,
-        benchmark_bundle=benchmark_bundle, pass215_profile=pass215_profile,
+        census_summary=census_summary,
+        compatibility_summary=compatibility_summary,
+        authority_reconciliation=authority_reconciliation,
+        benchmark_bundle=benchmark_bundle,
+        pass215_profile=pass215_profile,
         live_admission=live_admission,
     )
     if blockers:
@@ -272,6 +298,7 @@ def create_terminal_freeze(*, census_summary, compatibility_summary, workload_co
     live = _validate_live_admission(live_admission)
     bundle = validate_benchmark_bundle(benchmark_bundle)
     profile = validate_pass215_profile(pass215_profile)
+    reconciliation = _validate_reconciliation_for_compatibility(compatibility_summary, authority_reconciliation)
     if census_summary.get("source_commit") != source_commit or compatibility_summary.get("source_commit") != source_commit:
         raise Pass214Iteration8Error("PASS214_I8_SOURCE_COMMIT_MISMATCH")
     if census_summary.get("source_tree") != source_tree or compatibility_summary.get("source_tree") != source_tree:
@@ -287,11 +314,17 @@ def create_terminal_freeze(*, census_summary, compatibility_summary, workload_co
         TERMINAL_ROOT_NAMES[5]: _root("pass214-compound-evidence", bundle),
         TERMINAL_ROOT_NAMES[7]: _root("pass215-benchmark-profile", profile),
     }
+    reconciliation_root = (
+        _hash(reconciliation.get("reconciliation_root_hash216"), "AUTHORITY_RECONCILIATION")
+        if reconciliation is not None
+        else _root("pass214-authority-reconciliation-empty", {"candidate_conflict_count": 0})
+    )
     bindings = {
         "pass": PASS_NUMBER, "iteration": ITERATION, "pass213_closure": PASS213_CLOSURE,
         "iteration6_candidate_set_root_hash216": ITERATION6_CANDIDATE_SET_ROOT,
         "source_commit": source_commit, "source_tree": source_tree,
         "live_admission_root_hash216": live["admission_root_hash216"],
+        "authority_reconciliation_root_hash216": reconciliation_root,
         "repository_scan_root_hash216": roots[TERMINAL_ROOT_NAMES[0]],
         "optimization_registry_root_hash216": roots[TERMINAL_ROOT_NAMES[1]],
         "compatibility_graph_root_hash216": roots[TERMINAL_ROOT_NAMES[2]],
@@ -312,6 +345,7 @@ def create_terminal_freeze(*, census_summary, compatibility_summary, workload_co
         "pass213_closure": PASS213_CLOSURE,
         "iteration6_candidate_set_root_hash216": ITERATION6_CANDIDATE_SET_ROOT,
         "live_admission_root_hash216": live["admission_root_hash216"],
+        "authority_reconciliation_root_hash216": reconciliation_root,
         "terminal_receipt_hash72": hash72_digest({"domain": "HHS-P214-ITERATION8-TERMINAL-RECEIPT-V1"}, receipt_payload),
         "acceptance_gates_passed": True, "terminal_roots_minted": True,
         "authority_promoted": True, "migration_active": False,
@@ -350,6 +384,9 @@ def validate_terminal_freeze(record: Mapping[str, Any]) -> bool:
     bindings = _mapping(record.get("authority_bindings"), "AUTHORITY_BINDINGS")
     if bindings.get("source_commit") != record.get("source_commit") or bindings.get("source_tree") != record.get("source_tree"):
         raise Pass214Iteration8Error("PASS214_I8_AUTHORITY_BINDING_SOURCE_MISMATCH")
+    if bindings.get("authority_reconciliation_root_hash216") != record.get("authority_reconciliation_root_hash216"):
+        raise Pass214Iteration8Error("PASS214_I8_AUTHORITY_RECONCILIATION_BINDING_MISMATCH")
+    _hash(record.get("authority_reconciliation_root_hash216"), "AUTHORITY_RECONCILIATION")
     for key, terminal in (
         ("repository_scan_root_hash216", TERMINAL_ROOT_NAMES[0]),
         ("optimization_registry_root_hash216", TERMINAL_ROOT_NAMES[1]),
