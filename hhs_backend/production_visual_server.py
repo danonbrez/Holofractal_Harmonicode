@@ -18,6 +18,11 @@ import time
 from collections.abc import Awaitable, Callable
 from typing import Any
 
+# Production must remain quiescent unless an operator explicitly enables the
+# background cognition clock.  setdefault preserves an explicit opt-in while
+# preventing service-file drift from silently recreating sustained CPU load.
+os.environ.setdefault("HHS_COGNITION_AUTO_TICK", "0")
+
 from hhs_backend.cached_visual_server import RuntimeBootstrapGateway
 from hhs_backend.visual_server import app as authoritative_app
 
