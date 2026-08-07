@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from hashlib import sha1
 from pathlib import Path
 import unittest
@@ -36,7 +36,7 @@ class _Tensor:
 class _State:
     current_state_root_hash216: str = H_PARENT
     previous_receipt_hash72: str = R_ANCHOR
-    tensor_state: _Tensor = _Tensor()
+    tensor_state: _Tensor = field(default_factory=_Tensor)
 
 
 class _Entry:
