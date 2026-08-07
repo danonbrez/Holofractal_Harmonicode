@@ -102,13 +102,19 @@ class LiveFastAPIRuntimeWorkflow:
         self,
         instruction: Optional[Mapping[str, Any]] = None,
     ) -> Dict[str, Any]:
+        # Kernel execution, packet projection, and graph ingestion are genuine
+        # synchronous workloads. Keep them off the FastAPI event loop so live
+        # health, authority, UI, and websocket requests remain serviceable while
+        # the next reusable continuation snapshot is computed.
         emission = await self.bridge.emit_tick_event(instruction=instruction)
         self._tick_count += 1
 
-        packet = self.runtime_emulator.controller.export_multimodal_packet()
+        packet = await asyncio.to_thread(
+            self.runtime_emulator.controller.export_multimodal_packet,
+        )
         if self.runtime_graph is not None:
             try:
-                self.runtime_graph.ingest_runtime_state(packet)
+                await asyncio.to_thread(self.runtime_graph.ingest_runtime_state, packet)
             except Exception as exc:
                 self._errors.append(f"graph_ingest:{exc}")
                 self._errors = self._errors[-16:]
@@ -131,6 +137,51 @@ class LiveFastAPIRuntimeWorkflow:
         self._last_emission = record
         return record
 
+    def authority_status(self) -> Dict[str, Any]:
+        """Return the bounded public authority projection for HTTP health reads.
+
+        The full internal status intentionally retains cognition and emission
+        evidence for diagnostics. Public readiness must never serialize those
+        expanding payloads while the next continuation tick is executing.
+        """
+
+        last_emission = dict(self._last_emission or {})
+        receipt_ready = bool(
+            last_emission.get("ok")
+            and last_emission.get("receipt_hash72")
+            and last_emission.get("runtime_state_hash72")
+        )
+        committed_emission = {
+            key: last_emission.get(key)
+            for key in (
+                "ok",
+                "event_hash72",
+                "receipt_hash72",
+                "sequence_id",
+                "kernel_tick",
+                "runtime_state_hash72",
+            )
+            if last_emission.get(key) is not None
+        }
+        return {
+            "schema": "HHS_LIVE_FASTAPI_WORKFLOW_AUTHORITY_STATUS_V1",
+            "version": VERSION,
+            "running": self._running,
+            "authority_ready": bool(self._running and receipt_ready),
+            "background_task_active": self._task is not None and not self._task.done(),
+            "tick_count": self._tick_count,
+            "receipt_ready": receipt_ready,
+            "last_emission": committed_emission,
+            "errors": list(self._errors[-8:]),
+            "bridge": self.bridge.status(),
+            "channels": ["/ws/runtime", "/ws/replay", "/ws/graph", "/ws/transport"],
+            "node_role": "GUI_PROXY_ONLY_NO_RUNTIME_EVENT_AUTHORITY",
+            "event_loop_blocking_kernel_work": False,
+            "payload_bounded": True,
+            "full_cognition_payload_included": False,
+            "full_emission_payload_included": False,
+        }
+
     def status(self) -> Dict[str, Any]:
         cognition_status = None
         if self.cognition_runtime is not None:
@@ -138,27 +189,24 @@ class LiveFastAPIRuntimeWorkflow:
                 cognition_status = self.cognition_runtime.status()
             except Exception as exc:  # pragma: no cover
                 cognition_status = {"ok": False, "error": str(exc)}
-        last_emission = dict(self._last_emission or {})
-        receipt_ready = bool(
-            last_emission.get("ok")
-            and last_emission.get("receipt_hash72")
-            and last_emission.get("runtime_state_hash72")
-        )
+        authority = self.authority_status()
         return {
             "schema": "HHS_LIVE_FASTAPI_WORKFLOW_STATUS_V1",
             "version": VERSION,
-            "running": self._running,
-            "authority_ready": bool(self._running and receipt_ready),
-            "background_task_active": self._task is not None and not self._task.done(),
-            "tick_count": self._tick_count,
+            "running": authority["running"],
+            "authority_ready": authority["authority_ready"],
+            "background_task_active": authority["background_task_active"],
+            "tick_count": authority["tick_count"],
             "last_emission": self._last_emission,
             "last_cognition": self._last_cognition,
-            "receipt_ready": receipt_ready,
-            "errors": list(self._errors[-8:]),
-            "bridge": self.bridge.status(),
+            "receipt_ready": authority["receipt_ready"],
+            "errors": authority["errors"],
+            "bridge": authority["bridge"],
             "cognition": cognition_status,
-            "channels": ["/ws/runtime", "/ws/replay", "/ws/graph", "/ws/transport"],
-            "node_role": "GUI_PROXY_ONLY_NO_RUNTIME_EVENT_AUTHORITY",
+            "channels": authority["channels"],
+            "node_role": authority["node_role"],
+            "event_loop_blocking_kernel_work": False,
+            "public_authority_status_schema": authority["schema"],
         }
 
 
@@ -171,6 +219,7 @@ def live_fastapi_workflow_self_test() -> Dict[str, Any]:
         )
         await workflow.start()
         emission = dict(workflow.status().get("last_emission") or {})
+        authority_status = workflow.authority_status()
         await workflow.stop()
         workflow_status = workflow.status()
         cognition_ok = bool(emission.get("cognition", {}).get("processed"))
@@ -181,9 +230,12 @@ def live_fastapi_workflow_self_test() -> Dict[str, Any]:
                 emission.get("ok")
                 and workflow_status.get("tick_count") == 1
                 and workflow_status.get("receipt_ready")
+                and authority_status.get("payload_bounded")
+                and not authority_status.get("full_cognition_payload_included")
             ),
             "cognition_ok": cognition_ok,
             "emission": emission,
+            "authority_status": authority_status,
             "status": workflow_status,
         }
 
