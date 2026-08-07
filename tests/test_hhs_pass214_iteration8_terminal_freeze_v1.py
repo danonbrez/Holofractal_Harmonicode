@@ -1,9 +1,10 @@
 from __future__ import annotations
 
 from copy import deepcopy
+import json
 import pytest
 
-import hhs_backend.runtime.hhs_pass214_iteration8_terminal_freeze_v2 as i8
+import hhs_backend.runtime.hhs_pass214_iteration8_terminal_freeze_v3 as i8
 
 
 def h(ch: str) -> str:
@@ -187,6 +188,14 @@ def test_terminal_freeze_mints_eight_benchmark_roots_before_pass213_runtime_gate
     assert len(record["authority_reconciliation_root_hash216"]) == 64
     assert len(record["pass213_gate_preservation_root_hash216"]) == 64
     assert i8.validate_terminal_freeze(record)
+
+
+def test_sorted_json_round_trip_preserves_terminal_authority():
+    record = freeze()
+    restored = json.loads(json.dumps(record, sort_keys=True))
+    assert list(restored["terminal_roots"]) != list(i8.TERMINAL_ROOT_NAMES)
+    assert set(restored["terminal_roots"]) == set(i8.TERMINAL_ROOT_NAMES)
+    assert i8.validate_terminal_freeze(restored)
 
 
 def test_live_admission_input_cannot_redefine_pass214_benchmark_authority():
