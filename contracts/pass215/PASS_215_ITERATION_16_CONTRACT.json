@@ -1,0 +1,57 @@
+{
+  "contract": "HHS-P215-I16-MULTISTEP-CERTIFIED-TRUE-GREEDY-CONTINUATION",
+  "pass": 215,
+  "iteration": 16,
+  "status": "SOURCE_EXECUTION_PENDING_EXACT_HEAD_VALIDATION",
+  "inherits": {
+    "iteration15_closure_head": "7d58d29fa9690f4239b8e8f3ad30f34736f47f84",
+    "iteration15_closure_tree": "d556c1bb07e62cefba8f45df9c6cf8978645cdc8",
+    "iteration15_selected_token_id": 450,
+    "iteration15_selected_token": "▁The",
+    "iteration15_interval_suite_root_hash216": "fe97babc80b71deee97250110d2bf6c50f5e51437ae53d16c745d51c5dc9e996",
+    "iteration15_selection_root_hash216": "aac3225975c44b9b761dd131afedfc01123a3c5da187f76bd9de5c9bf2abee94",
+    "iteration15_append_forward_root_hash216": "f1757269ee3ed98a67434c799a89750da26dcaa11be9ce688a093d52febb5a75",
+    "iteration15_evidence_root_hash216": "d04d5153a22883c01f1ac9f879ba46fa8afbebb4214692bf83e492091b5aca12",
+    "iteration15_receipt_hash72": "uzxAvsD/x7Kj*upEF-sxHn-DYcdOuOaWqRHGh!KaarjdEzkg!-kW?J<cw8oik4W!Qf29PoOT",
+    "iteration15_closure_artifact_sha256": "a00c444f8d71d8a1d0fe95d25d42849297487ff711a2829167de8022e697adac"
+  },
+  "contracted_workload": {
+    "model": "ggml-org/tiny-llamas/stories15M-q4_0.gguf",
+    "model_sha256": "6151b1929d7f5aa3385d9ddef3393e55587c0a55de661562322bc51dfda93a04",
+    "prompt": "Hello world!",
+    "prompt_token_ids": [1, 15043, 3186, 29991],
+    "prefix_sequence_length": 4,
+    "vocabulary_size": 32000,
+    "certification_bits": 256,
+    "certified_greedy_step_count": 3,
+    "selection_policy": "STRICT_CERTIFIED_DYADIC_INTERVAL_ARGMAX_THEN_TOKEN_ID",
+    "selection_semantics": "TRUE_LOGIT_MAGNITUDE_ORDER_CERTIFIED_BY_OUTWARD_INTEGER_BOUNDS",
+    "cache_policy": "PERSIST_SYMBOLIC_AND_INTERVAL_KV_CACHES_ACROSS_ALL_STEPS"
+  },
+  "requirements": {
+    "reproduce_iteration15_first_selection_and_append": true,
+    "initialize_prefix_symbolic_state_once": true,
+    "initialize_prefix_interval_state_once": true,
+    "certify_complete_32000_logit_vector_at_each_step": true,
+    "require_strict_argmax_interval_separation_at_each_step": true,
+    "append_each_certified_true_argmax": true,
+    "reuse_symbolic_kv_cache_across_steps": true,
+    "reuse_interval_kv_cache_across_steps": true,
+    "forbid_prefix_replay_after_initialization": true,
+    "cross_process_replay": true,
+    "no_float_canonical_authority": true
+  },
+  "constraints": {
+    "hash_identity_order_used_as_greedy_authority": false,
+    "probabilistic_sampling_executed": false,
+    "unbounded_or_general_generation_claimed": false,
+    "general_arbitrary_sequence_length_transformer_forward_executed": false,
+    "numeric_transcendental_point_evaluation_performed": false,
+    "approximate_transcendental_point_evaluation_performed": false,
+    "canonical_float_interpretation_performed": false,
+    "dense_forward_replaced": false,
+    "runtime_mutation_authority_promoted": false,
+    "canonical_mutation_authorized": false,
+    "migration_active": false
+  }
+}
