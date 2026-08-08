@@ -62,7 +62,7 @@ jobs:
       - name: Install validation dependency
         run: python -m pip install pytest
 
-      - name: Enforce frozen Iteration 9 inheritance and authority boundaries
+      - name: Enforce frozen Iteration 9 inheritance and source-frozen authority boundaries
         run: |
           python - <<'PY'
           import json
@@ -71,10 +71,22 @@ jobs:
           inherits = contract['inherits']
           constraints = contract['constraints']
           tokenizer = contract['text_tokenizer']
+          workload = contract['authenticated_workload']
+          source = contract['validated_source_execution']
           assert inherits['iteration9_closure_head'] == '8a9ca8907edb94d84ce828639145b94a119c2571'
           assert inherits['iteration9_closure_tree'] == 'cc40fca257d1265882cdc3973205a6962117eb40'
           assert inherits['iteration9_suite_root_hash216'] == '5f544e489fb05cf6675e6034a9acf552d53e1dd83801c6941384de868d9e4a94'
           assert inherits['iteration9_evidence_root_hash216'] == '71e36d07d2e5c016cfdae8356eb50abb5d750aefc796a2ad3f413d0391d06261'
+          assert workload['validated_normalized_text'] == '▁Hello▁world!'
+          assert workload['validated_token_ids'] == [1, 15043, 3186, 29991]
+          assert workload['validated_token_pieces'] == ['<s>', '▁Hello', '▁world', '!']
+          assert tokenizer['validated_source_token_ids_pending_exact_head_ci'] is False
+          assert tokenizer['validated_source_token_ids'] == [1, 15043, 3186, 29991]
+          assert source['score_storage_root_hash216'] == 'c7b509f622556cc321a52fd348b2dda41d51ea96e39cc71bc42fef4ec77dbe95'
+          assert source['exact_score_root_hash216'] == 'd85f1debadf2e5fcd53fd4d4465bc99363ea173227a983534624c73e8f3e047c'
+          assert source['tokenization_root_hash216'] == '0f235d84816e54c35d9b4f1425c66a9bb129ac52fc1ce109f3937b4095996837'
+          assert source['suite_root_hash216'] == 'c495f652c6056ee76353c188b70d58641d4934ba6662817978d96862d3e71d31'
+          assert source['evidence_root_hash216'] == '8e7accbeb1433d19e4056cb142c87796f891f99d96d02b0b5d4eecb1687f5658'
           assert constraints['contracted_utf8_text_tokenization_executed'] is True
           assert constraints['authenticated_tokenizer_scores_bound'] is True
           assert constraints['exact_binary32_score_ordering_executed'] is True
@@ -137,7 +149,7 @@ jobs:
             --compare-replay "$ROOT/PASS_215_ITERATION_10_A.json" "$ROOT/PASS_215_ITERATION_10_B.json" \
             --output "$ROOT/PASS_215_ITERATION_10_CROSS_PROCESS_VALIDATION.json"
 
-      - name: Enforce exact text-ingress closure and print terminal roots
+      - name: Enforce frozen exact text-ingress identities and print terminal roots
         run: |
           python - <<'PY'
           import json
@@ -152,17 +164,30 @@ jobs:
           embedding = evidence['authenticated_embedding_ingress']
           execution = evidence['text_derived_coordinate_forward']
           assert text['input_text'] == os.environ['PASS215_I10_PROMPT']
+          assert text['normalized_text'] == '▁Hello▁world!'
+          assert text['token_ids'] == [1, 15043, 3186, 29991]
+          assert text['tokens'] == ['<s>', '▁Hello', '▁world', '!']
           assert text['token_count'] == 4
-          assert len(text['token_ids']) == 4
           assert tokenizer['tokenizer_score_count'] == tokenizer['vocabulary_size']
           assert tokenizer['score_float_interpretation_performed'] is False
-          assert embedding['selected_token_ids'] == text['token_ids']
+          assert tokenizer['score_storage_bits_root_hash216'] == 'c7b509f622556cc321a52fd348b2dda41d51ea96e39cc71bc42fef4ec77dbe95'
+          assert tokenizer['exact_score_root_hash216'] == 'd85f1debadf2e5fcd53fd4d4465bc99363ea173227a983534624c73e8f3e047c'
+          assert text['tokenization_root_hash216'] == '0f235d84816e54c35d9b4f1425c66a9bb129ac52fc1ce109f3937b4095996837'
+          assert embedding['selected_token_ids'] == [1, 15043, 3186, 29991]
+          assert embedding['embedding_suite_root_hash216'] == '4c983072112a06ba41bbb94ca42d79f3e76dd25cf16091ffaa17961860ecc5e3'
           assert embedding['embedding_lookup_work'] == {
               'selected_token_count': 4,
               'q4_0_blocks_decoded': 36,
               'exact_embedding_coordinates_materialized': 1152,
               'source_row_bytes_read': 648,
           }
+          assert execution['executed_stage_suite_root_hash216'] == 'a879c3c00ddaee609ea62768ed6de06eb450fa2331eb05f1c8b30c19bfbbb065'
+          assert execution['causal_attention_root_hash216'] == 'e3746a9aab00dec1fd0c64cde4618fbc3b7e19d549a3107d4a5fce363b470ea2'
+          assert execution['final_output_root_hash216'] == '05390b8c68285aa810bb8a1b37ea9f14dbf022709047a75ae402d50db5ca3a87'
+          assert execution['symbolic_dag']['ordered_node_root_hash216'] == '175d6b80b4e6ba742843cdc4d155f035061f3a02e525543bae540e008bb9eee3'
+          assert evidence['exact_text_token_ingress_suite_root_hash216'] == 'c495f652c6056ee76353c188b70d58641d4934ba6662817978d96862d3e71d31'
+          assert evidence['evidence_root_hash216'] == '8e7accbeb1433d19e4056cb142c87796f891f99d96d02b0b5d4eecb1687f5658'
+          assert evidence['receipt_hash72'] == 'dXWZm)?0Q2Lf6BLg!>hgEzRXB4IAbO922jV?vPCo7WBkOscF6qfS<X<sFZ-1NugyfpiW<QhS'
           assert execution['final_output_token_count'] == 4
           assert execution['final_output_coordinate_count'] == 1152
           assert execution['causal_controls']['future_edges_materialized'] is False
@@ -182,7 +207,7 @@ jobs:
           assert claims['canonical_float_interpretation_performed'] is False
           assert replay['cross_process_replay'] is True
           assert replay['semantic_exactness'] is True
-          assert replay['token_ids'] == text['token_ids']
+          assert replay['token_ids'] == [1, 15043, 3186, 29991]
           print('PASS215_I10_TOKEN_IDS=' + ','.join(str(value) for value in text['token_ids']))
           print('PASS215_I10_TOKEN_PIECES=' + json.dumps(text['tokens'], ensure_ascii=False, separators=(',', ':')))
           print('PASS215_I10_NORMALIZED_TEXT=' + text['normalized_text'])
