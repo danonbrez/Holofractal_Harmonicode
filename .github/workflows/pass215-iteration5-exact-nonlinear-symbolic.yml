@@ -1,0 +1,157 @@
+name: Pass 215 Iteration 5 Exact Nonlinear Symbolic
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - agent/pass215-transformer-ingestion-benchmark
+    paths:
+      - 'contracts/pass215/PASS_215_ITERATION_5_CONTRACT.json'
+      - 'hhs_backend/runtime/hhs_pass215_iteration5_exact_nonlinear_symbolic_v1.py'
+      - 'tools/pass215_iteration5_exact_nonlinear_symbolic.py'
+      - 'tests/test_hhs_pass215_iteration5_exact_nonlinear_symbolic_v1.py'
+      - 'scripts/run_pass215_iteration5_validation.sh'
+      - 'docs/pass215/**'
+      - 'evidence/pass215/PASS_215_ITERATION_5_IMPLEMENTATION_RECORD.json'
+      - '.github/workflows/pass215-iteration5-exact-nonlinear-symbolic.yml'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'contracts/pass215/PASS_215_ITERATION_5_CONTRACT.json'
+      - 'hhs_backend/runtime/hhs_pass215_iteration5_exact_nonlinear_symbolic_v1.py'
+      - 'tools/pass215_iteration5_exact_nonlinear_symbolic.py'
+      - 'tests/test_hhs_pass215_iteration5_exact_nonlinear_symbolic_v1.py'
+      - 'scripts/run_pass215_iteration5_validation.sh'
+      - 'docs/pass215/**'
+      - 'evidence/pass215/PASS_215_ITERATION_5_IMPLEMENTATION_RECORD.json'
+      - '.github/workflows/pass215-iteration5-exact-nonlinear-symbolic.yml'
+
+permissions:
+  contents: read
+
+env:
+  PYTHONHASHSEED: '0'
+  PYTHONDONTWRITEBYTECODE: '1'
+  PASS215_I5_MODEL_SHA256: '6151b1929d7f5aa3385d9ddef3393e55587c0a55de661562322bc51dfda93a04'
+
+jobs:
+  iteration5:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Install validation dependency
+        run: python -m pip install pytest
+      - name: Enforce frozen Iteration 4 inheritance and authority boundaries
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          contract = json.loads(Path('contracts/pass215/PASS_215_ITERATION_5_CONTRACT.json').read_text())
+          inherits = contract['inherits']
+          constraints = contract['constraints']
+          assert inherits['iteration4_validated_head'] == 'ce35117dd1b54574f2fc98e0254dee0ddcf0e518'
+          assert inherits['iteration4_validated_tree'] == 'a1fb44e5c43e4d504a71183ba6eb01405d730293'
+          assert inherits['iteration4_suite_output_root_hash216'] == '14de39b3b326eb64bbac5d8be829c289c4a5e1f39b842bfdba59b46fea2c9acb'
+          assert inherits['iteration4_terminal_evidence_hash216'] == '0462738157042bbd2903ed666a3e05dbc1e27c8a43ea5d2544de9b0c174f87bf'
+          assert inherits['iteration4_receipt_hash72'] == '2SrZvFdR/*41!b++dH9qxM1IrUZMuwuRZmpNw4yl8>QYI(LA9B65A<auqlwyWoi97onfMeMc'
+          assert inherits['iteration3_real_model_evidence_root_hash216'] == '61e301f728e426b46dbdd7c435c06b7c7f0065b177d62313152494467ed7d021'
+          assert inherits['iteration2_real_model_evidence_root_hash216'] == '0c18a5055b01bee0401d9ad0b3caba9c5d214d80a6dd809b190e106681b22e70'
+          assert constraints['canonical_float_interpretation_forbidden'] is True
+          assert constraints['numeric_transcendental_evaluation_performed'] is False
+          assert constraints['approximate_transcendental_evaluation_performed'] is False
+          assert constraints['full_transformer_layer_forward_executed'] is False
+          assert constraints['runtime_mutation_authority_promoted'] is False
+          assert constraints['canonical_mutation_authorized'] is False
+          assert constraints['migration_active'] is False
+          PY
+      - name: Run cumulative Iteration 1-5 dependency-scoped validation
+        run: bash scripts/run_pass215_iteration5_validation.sh
+      - name: Download and verify authenticated open transformer
+        run: |
+          ROOT="$RUNNER_TEMP/pass215-i5"
+          mkdir -p "$ROOT"
+          curl -L --fail --retry 3 --retry-delay 2 \
+            -o "$ROOT/stories15M-q4_0.gguf" \
+            'https://huggingface.co/ggml-org/tiny-llamas/resolve/main/stories15M-q4_0.gguf?download=true'
+          echo "$PASS215_I5_MODEL_SHA256  $ROOT/stories15M-q4_0.gguf" | sha256sum -c -
+      - name: Execute nonlinear symbolic process A
+        run: |
+          ROOT="$RUNNER_TEMP/pass215-i5"
+          python tools/pass215_iteration5_exact_nonlinear_symbolic.py \
+            --container "$ROOT/stories15M-q4_0.gguf" \
+            --source-kind public_open_transformer \
+            --repo-id ggml-org/tiny-llamas \
+            --revision main \
+            --expected-sha256 "$PASS215_I5_MODEL_SHA256" \
+            --output "$ROOT/PASS_215_ITERATION_5_A.json"
+          python tools/pass215_iteration5_exact_nonlinear_symbolic.py \
+            --validate "$ROOT/PASS_215_ITERATION_5_A.json" \
+            --output "$ROOT/PASS_215_ITERATION_5_A_VALIDATION.json"
+      - name: Execute independent nonlinear symbolic process B and replay comparison
+        run: |
+          ROOT="$RUNNER_TEMP/pass215-i5"
+          python tools/pass215_iteration5_exact_nonlinear_symbolic.py \
+            --container "$ROOT/stories15M-q4_0.gguf" \
+            --source-kind public_open_transformer \
+            --repo-id ggml-org/tiny-llamas \
+            --revision main \
+            --expected-sha256 "$PASS215_I5_MODEL_SHA256" \
+            --output "$ROOT/PASS_215_ITERATION_5_B.json"
+          python tools/pass215_iteration5_exact_nonlinear_symbolic.py \
+            --validate "$ROOT/PASS_215_ITERATION_5_B.json" \
+            --output "$ROOT/PASS_215_ITERATION_5_B_VALIDATION.json"
+          python tools/pass215_iteration5_exact_nonlinear_symbolic.py \
+            --compare-replay "$ROOT/PASS_215_ITERATION_5_A.json" "$ROOT/PASS_215_ITERATION_5_B.json" \
+            --output "$ROOT/PASS_215_ITERATION_5_CROSS_PROCESS_VALIDATION.json"
+      - name: Enforce nonlinear exactness claims and print terminal roots
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          root = Path(os.environ['RUNNER_TEMP']) / 'pass215-i5'
+          evidence = json.loads((root / 'PASS_215_ITERATION_5_A.json').read_text())
+          replay = json.loads((root / 'PASS_215_ITERATION_5_CROSS_PROCESS_VALIDATION.json').read_text())
+          assert evidence['source']['file_sha256'] == os.environ['PASS215_I5_MODEL_SHA256']
+          assert evidence['source']['expected_sha256_verified'] is True
+          assert evidence['inherits']['iteration4_suite_output_root_hash216'] == '14de39b3b326eb64bbac5d8be829c289c4a5e1f39b842bfdba59b46fea2c9acb'
+          assert evidence['inherits']['iteration4_terminal_evidence_hash216'] == '0462738157042bbd2903ed666a3e05dbc1e27c8a43ea5d2544de9b0c174f87bf'
+          assert evidence['linear_seed']['operator'] == 'blk.0.attn_q.weight'
+          assert evidence['linear_seed']['linear_output_width'] == 288
+          assert all(record['exact'] is True for record in evidence['exact_controls'].values())
+          claims = evidence['claims']
+          assert claims['exact_rmsnorm_closed_form_symbolic_execution'] is True
+          assert claims['exact_rope_closed_form_symbolic_execution'] is True
+          assert claims['exact_attention_scaling_closed_form_symbolic_execution'] is True
+          assert claims['exact_exponential_softmax_closed_form_symbolic_execution'] is True
+          assert claims['exact_sigmoid_silu_closed_form_symbolic_execution'] is True
+          assert claims['numeric_transcendental_evaluation_performed'] is False
+          assert claims['approximate_transcendental_evaluation_performed'] is False
+          assert claims['full_transformer_layer_forward_executed'] is False
+          assert claims['dense_forward_replaced'] is False
+          assert replay['cross_process_replay'] is True
+          assert replay['semantic_exactness'] is True
+          assert replay['nonlinear_suite_root_hash216'] == evidence['nonlinear_suite_root_hash216']
+          assert replay['evidence_root_hash216'] == evidence['evidence_root_hash216']
+          assert replay['receipt_hash72'] == evidence['receipt_hash72']
+          print('PASS215_I5_NONLINEAR_SUITE_ROOT=' + evidence['nonlinear_suite_root_hash216'])
+          print('PASS215_I5_EVIDENCE_ROOT=' + evidence['evidence_root_hash216'])
+          print('PASS215_I5_RECEIPT_HASH72=' + evidence['receipt_hash72'])
+          PY
+      - name: Retain Iteration 5 evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass215-iteration5-${{ github.run_id }}
+          path: |
+            contracts/pass215/PASS_215_ITERATION_5_CONTRACT.json
+            docs/pass215/**
+            evidence/pass215/PASS_215_ITERATION_5_IMPLEMENTATION_RECORD.json
+            ${{ runner.temp }}/pass215-i5/*.json
+          if-no-files-found: error
