@@ -31,15 +31,20 @@ test('deployment health reconciliation is task-bounded and non-reentrant', async
   assert.match(source, /setText\('#hhs-backend-health-message'/);
 });
 
-test('deployment health uses one bounded startup liveness projection', async () => {
+test('deployment health enables runtime independently of assistant provider latency', async () => {
   const source = await readFile(healthUrl, 'utf8');
   assert.match(source, /const LIVENESS_PATHS = \['\/api\/health'\];/);
   assert.match(source, /const REQUEST_TIMEOUT_MS = 30_000;/);
+  assert.match(source, /const ASSISTANT_TIMEOUT_MS = 5_000;/);
   assert.match(source, /const RUNTIME_AUTHORITY_PATH = '\/api\/runtime\/authority\/status';/);
   assert.match(source, /const ASSISTANT_STATUS_PATH = '\/api\/assistant\/status';/);
-  assert.match(source, /Promise\.allSettled\(\[/);
-  assert.match(source, /withTimeout\(RUNTIME_AUTHORITY_PATH\)/);
-  assert.match(source, /withTimeout\(ASSISTANT_STATUS_PATH\)/);
+  assert.match(source, /runtimeResult = \{ status: 'fulfilled', value: await withTimeout\(RUNTIME_AUTHORITY_PATH\) \}/);
+  assert.match(source, /void refreshAssistantStatus\(\);/);
+  assert.match(source, /withTimeout\(ASSISTANT_STATUS_PATH, \{ timeoutMs: ASSISTANT_TIMEOUT_MS \}\)/);
+  assert.match(source, /assistantProbeBlocksRuntimeControls: false/);
+  assert.match(source, /assistant_probe_blocks_runtime_controls:\s*false/);
+  assert.match(source, /runtime_authority_independent_of_assistant:\s*true/);
+  assert.doesNotMatch(source, /Promise\.allSettled\(\[[\s\S]*RUNTIME_AUTHORITY_PATH[\s\S]*ASSISTANT_STATUS_PATH/);
   assert.doesNotMatch(source, /\/api\/product\/health/);
   assert.doesNotMatch(source, /['"]\/healthz['"]/);
   assert.match(source, /heavyweight_product_health_probe_duplicated:\s*false/);
