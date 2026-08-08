@@ -50,7 +50,7 @@ test('final FastAPI composition installs event-loop-native bounded Pass 175 stat
   assert.doesNotMatch(source, /async def final_pass175_(?:authority|bounded)_status\(\)[\s\S]{0,200}get_runtime\(\)/);
 });
 
-test('final health route is pure process liveness and never traverses runtime objects', async () => {
+test('final health route is bounded and reports only the committed boot authority snapshot', async () => {
   const source = await readFile(serverUrl, 'utf8');
   assert.match(source, /FINAL_HEALTH_PATHS = frozenset\(\{"\/health", "\/api\/health"\}\)/);
   assert.match(source, /if str\(getattr\(route, "path", ""\)\) not in FINAL_HEALTH_PATHS/);
@@ -58,6 +58,10 @@ test('final health route is pure process liveness and never traverses runtime ob
   assert.match(source, /"\/api\/health",\s*application_ide_liveness/);
   assert.match(source, /name="hhs-full-ide-health"/);
   assert.match(source, /name="hhs-full-ide-api-health"/);
+  assert.match(source, /boot_authority_ready = bool\(boot\.get\("ready"\) and boot\.get\("authority_ready"\)\)/);
+  assert.match(source, /"authority_ready": boot_authority_ready/);
+  assert.match(source, /"runtime_ready": boot_authority_ready/);
+  assert.match(source, /"health_authority_source": "PASS174_BOOT_STATE_COMMITTED_SNAPSHOT"/);
   assert.match(source, /"health_routes_deduplicated": True/);
   assert.match(source, /"health_route_owner": "FINAL_APPLICATION_IDE_PROCESS_LIVENESS"/);
   assert.match(source, /"runtime_object_traversal_performed": False/);
