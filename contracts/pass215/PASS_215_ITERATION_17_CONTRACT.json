@@ -1,0 +1,50 @@
+{
+  "contract": "HHS-P215-I17-SCALABLE-ROPE-CERTIFIED-GREEDY-CONTINUATION",
+  "pass": 215,
+  "iteration": 17,
+  "status": "SOURCE_EXECUTION_PENDING_EXACT_HEAD_VALIDATION",
+  "inherits": {
+    "iteration16_closure_head": "9eadb5ebbbad2283b3f19ccb7d2071a1a945e8c7",
+    "iteration16_closure_tree": "2c52b754b62931db1aa50926e8a35dae6ae0b4ac",
+    "iteration16_generated_token_ids": [450, 6575, 471],
+    "iteration16_chain_root_hash216": "28d8741be087bcb0ca6016ea7d88a24522408d965b9ee3198185dd93497f7448",
+    "iteration16_final_interval_suite_root_hash216": "78fe60fdbe4f5d09dfb0c1f39d2478717e08d3a3d5da0cfb50c071235dc13878",
+    "iteration16_final_symbolic_dag_root_hash216": "6591757219694e1f375fa8e115f1e4d87496e93ec12d95e7745dd15033b9ac68",
+    "iteration16_evidence_root_hash216": "8222ea90cb157ccc98049512b7b1a6cdd42bb125e5b90db93bcb614b9f9663fb",
+    "iteration16_receipt_hash72": "pkaOYx48D?hAMtg*!bJ1(qSq-zdV/SP2LkOKB7RlZpj2CpIc06vv)6xC28H<FurVOKmP+ZSB",
+    "iteration16_closure_artifact_sha256": "2ef8d1061beb2cd48719973fefea881e2e64ff304ac3ed09db06d701659524ea"
+  },
+  "contracted_workload": {
+    "model": "ggml-org/tiny-llamas/stories15M-q4_0.gguf",
+    "model_sha256": "6151b1929d7f5aa3385d9ddef3393e55587c0a55de661562322bc51dfda93a04",
+    "prompt": "Hello world!",
+    "prompt_token_ids": [1, 15043, 3186, 29991],
+    "certification_bits": 256,
+    "certified_greedy_step_count": 7,
+    "direct_compatibility_argument_limit_integer": 8,
+    "range_reduction_threshold": {"numerator": 1, "denominator": 8},
+    "range_reduction_method": "INTEGER_DYADIC_HALVING_TAYLOR_LAGRANGE_DOUBLE_ANGLE_RECONSTRUCTION"
+  },
+  "requirements": {
+    "reproduce_iteration16_first_three_transitions_exactly": true,
+    "persist_symbolic_and_interval_kv_caches": true,
+    "forbid_prefix_replay_after_initialization": true,
+    "certify_complete_32000_logit_vector_at_each_step": true,
+    "require_strict_argmax_interval_separation_at_each_step": true,
+    "execute_certified_selection_from_range_reduced_rope_state": true,
+    "cross_process_replay": true,
+    "no_float_canonical_authority": true,
+    "no_pi_approximation_authority": true
+  },
+  "constraints": {
+    "probabilistic_sampling_executed": false,
+    "unbounded_or_general_generation_claimed": false,
+    "general_arbitrary_sequence_length_transformer_forward_executed": false,
+    "adaptive_precision_authority_promoted": false,
+    "canonical_float_interpretation_performed": false,
+    "dense_forward_replaced": false,
+    "runtime_mutation_authority_promoted": false,
+    "canonical_mutation_authorized": false,
+    "migration_active": false
+  }
+}
