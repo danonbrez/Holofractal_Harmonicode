@@ -4,6 +4,7 @@ const LIVENESS_PATHS = ['/api/health'];
 const RUNTIME_AUTHORITY_PATH = '/api/runtime/authority/status';
 const ASSISTANT_STATUS_PATH = '/api/assistant/status';
 const REQUEST_TIMEOUT_MS = 30_000;
+const ASSISTANT_TIMEOUT_MS = 5_000;
 const ONLINE_POLL_MS = 30_000;
 const DEGRADED_POLL_MS = 12_000;
 
@@ -17,9 +18,10 @@ const RUNTIME_SELECTORS = [
 ];
 const ASSISTANT_SELECTORS = ['#send-prompt', '#new-thread'];
 
-let current = Object.freeze({ checked: false, reachable: false, runtimeReady: false, assistantReady: false, mode: 'checking', detail: 'Checking runtime backend…' });
+let current = Object.freeze({ checked: false, reachable: false, runtimeReady: false, assistantReady: false, assistantProbePending: false, mode: 'checking', detail: 'Checking runtime backend…' });
 let pollTimer = null;
 let checking = false;
+let assistantChecking = false;
 let consoleObserver = null;
 let mutationObserver = null;
 let suppressConsoleObserver = false;
@@ -27,9 +29,10 @@ let healthReconcileTimer = null;
 let healthReconcileRunning = false;
 
 function withTimeout(path, options = {}) {
+  const { timeoutMs = REQUEST_TIMEOUT_MS, ...fetchOptions } = options;
   const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort('HHS_BACKEND_HEALTH_TIMEOUT'), REQUEST_TIMEOUT_MS);
-  return fetch(path, { cache: 'no-store', credentials: 'same-origin', ...options, signal: controller.signal, headers: { Accept: 'application/json', ...(options.headers || {}) } })
+  const timeout = setTimeout(() => controller.abort('HHS_BACKEND_HEALTH_TIMEOUT'), timeoutMs);
+  return fetch(path, { cache: 'no-store', credentials: 'same-origin', ...fetchOptions, signal: controller.signal, headers: { Accept: 'application/json', ...(fetchOptions.headers || {}) } })
     .then(async (response) => {
       const raw = await response.text();
       let payload = {};
@@ -59,35 +62,73 @@ function capability(payload, keys, fallback = false) {
   return fallback;
 }
 
+function detailFor({ runtimeReady, assistantReady, assistantProbePending = false } = {}) {
+  if (!runtimeReady) return 'Runtime service is reachable, but VM81 lifecycle authority is not ready.';
+  if (assistantProbePending) return 'VM81 runtime authority is online; assistant provider status is checking independently.';
+  if (!assistantReady) return 'VM81 runtime authority is online; the assistant provider is unavailable.';
+  return 'Runtime backend and assistant provider are reachable.';
+}
+
 async function probeBackend() {
   const liveness = await firstReachable(LIVENESS_PATHS);
-  const [runtimeResult, assistantResult] = await Promise.allSettled([
-    withTimeout(RUNTIME_AUTHORITY_PATH),
-    withTimeout(ASSISTANT_STATUS_PATH),
-  ]);
+  let runtimeResult;
+  try { runtimeResult = { status: 'fulfilled', value: await withTimeout(RUNTIME_AUTHORITY_PATH) }; }
+  catch (reason) { runtimeResult = { status: 'rejected', reason }; }
   const live = liveness.payload || {};
   const runtimePayload = runtimeResult.status === 'fulfilled' ? runtimeResult.value.payload || {} : {};
-  const assistantPayload = assistantResult.status === 'fulfilled' ? assistantResult.value.payload || {} : {};
-  const runtimeReady = capability(runtimePayload, ['ok', 'authority_ready', 'runtime_authority.ok'], capability(live, ['runtime_ready', 'authority_ready', 'runtime_authority.ok', 'ok'], false));
-  const assistantReady = capability(assistantPayload, ['online', 'ok'], capability(live, ['assistant_ready'], false));
-  let detail = 'Runtime backend reachable.';
-  if (!runtimeReady && !assistantReady) detail = 'Runtime service is reachable, but execution authority and the assistant are unavailable.';
-  else if (!runtimeReady) detail = 'Runtime service is reachable, but VM81 lifecycle authority is not ready.';
-  else if (!assistantReady) detail = 'VM81 runtime authority is online; the assistant provider is unavailable.';
+  const runtimeReady = capability(
+    runtimePayload,
+    ['ok', 'authority_ready', 'runtime_authority.ok'],
+    false,
+  );
   return Object.freeze({
     checked: true,
     reachable: true,
     runtimeReady,
-    assistantReady,
-    mode: runtimeReady && assistantReady ? 'online' : 'degraded',
-    detail,
+    assistantReady: current.assistantReady,
+    assistantProbePending: true,
+    mode: runtimeReady && current.assistantReady ? 'online' : 'degraded',
+    detail: detailFor({ runtimeReady, assistantReady: current.assistantReady, assistantProbePending: true }),
     checkedAt: new Date().toISOString(),
     livenessPath: liveness.path,
     liveness: live,
     runtime: runtimePayload,
-    assistant: assistantPayload,
+    assistant: current.assistant || {},
+    runtimeAuthorityError: runtimeResult.status === 'rejected' ? String(runtimeResult.reason?.message || runtimeResult.reason || 'RUNTIME_AUTHORITY_UNAVAILABLE') : null,
     boundedStatusRoutes: Object.freeze([RUNTIME_AUTHORITY_PATH, ASSISTANT_STATUS_PATH]),
+    assistantProbeBlocksRuntimeControls: false,
   });
+}
+
+async function refreshAssistantStatus() {
+  if (assistantChecking) return current;
+  assistantChecking = true;
+  let assistantPayload = {};
+  let assistantReady = false;
+  let assistantError = null;
+  try {
+    const result = await withTimeout(ASSISTANT_STATUS_PATH, { timeoutMs: ASSISTANT_TIMEOUT_MS });
+    assistantPayload = result.payload || {};
+    assistantReady = capability(assistantPayload, ['online', 'ok'], false);
+  } catch (error) {
+    assistantError = String(error?.message || error || 'ASSISTANT_STATUS_UNAVAILABLE');
+  } finally {
+    assistantChecking = false;
+  }
+  current = Object.freeze({
+    ...current,
+    assistantReady,
+    assistantProbePending: false,
+    assistant: assistantPayload,
+    assistantError,
+    mode: current.reachable && current.runtimeReady && assistantReady ? 'online' : current.reachable ? 'degraded' : 'offline',
+    detail: current.reachable
+      ? detailFor({ runtimeReady: current.runtimeReady, assistantReady, assistantProbePending: false })
+      : current.detail,
+    assistantCheckedAt: new Date().toISOString(),
+  });
+  reconcileHealthSurfaces();
+  return current;
 }
 
 function mountBanner() {
@@ -187,7 +228,7 @@ function applyHealthState() {
   let title = 'Runtime backend online';
   let message = 'VM81 lifecycle authority and assistant provider are available.';
   if (current.mode === 'offline') { title = 'Runtime backend unreachable'; message = 'Editing, preview, and source/runnable ZIP export remain available. Lifecycle, receipts, VM81, Pass 175, and assistant actions are disabled.'; }
-  else if (current.mode === 'degraded') { title = 'Runtime backend degraded'; message = `${current.detail} Editing, preview, and export remain available.`; }
+  else if (current.mode === 'degraded') { title = current.runtimeReady ? 'Runtime online · assistant degraded' : 'Runtime backend degraded'; message = `${current.detail} Editing, preview, and export remain available.`; }
   setText('#hhs-backend-health-title', title);
   setText('#hhs-backend-health-message', message);
   setText('#hhs-backend-health-detail', JSON.stringify(current, null, 2));
@@ -249,17 +290,25 @@ function scheduleHealthReconciliation() {
 
 function scheduleNext() {
   clearTimeout(pollTimer);
-  pollTimer = setTimeout(() => void checkBackend(false), current.mode === 'online' ? ONLINE_POLL_MS : DEGRADED_POLL_MS);
+  pollTimer = setTimeout(() => void checkBackend(false), current.runtimeReady ? ONLINE_POLL_MS : DEGRADED_POLL_MS);
 }
 
 export async function checkBackend(userInitiated = false) {
   if (checking) return current;
   checking = true;
-  if (userInitiated) showBackendMessage('Checking runtime backend…', 'Testing liveness, VM81 authority, and assistant provider status.');
-  try { current = await probeBackend(); }
-  catch (error) { current = Object.freeze({ checked: true, reachable: false, runtimeReady: false, assistantReady: false, mode: 'offline', detail: String(error?.message || error || 'BACKEND_UNREACHABLE'), checkedAt: new Date().toISOString() }); }
-  finally { checking = false; reconcileHealthSurfaces(); scheduleNext(); }
-  log(`Deployment backend health: ${current.mode}.`, { reachable: current.reachable, runtime_ready: current.runtimeReady, assistant_ready: current.assistantReady, detail: current.detail });
+  if (userInitiated) showBackendMessage('Checking runtime backend…', 'Testing process liveness and VM81 authority. Assistant status is checked independently.');
+  try {
+    current = await probeBackend();
+    reconcileHealthSurfaces();
+    void refreshAssistantStatus();
+  } catch (error) {
+    current = Object.freeze({ checked: true, reachable: false, runtimeReady: false, assistantReady: current.assistantReady, assistantProbePending: false, mode: 'offline', detail: String(error?.message || error || 'BACKEND_UNREACHABLE'), checkedAt: new Date().toISOString() });
+    reconcileHealthSurfaces();
+  } finally {
+    checking = false;
+    scheduleNext();
+  }
+  log(`Deployment backend health: ${current.mode}.`, { reachable: current.reachable, runtime_ready: current.runtimeReady, assistant_ready: current.assistantReady, assistant_probe_blocks_runtime: false, detail: current.detail });
   return current;
 }
 
@@ -282,6 +331,9 @@ export function initDeploymentHealth() {
     heavyweight_product_health_probe_duplicated: false,
     startup_liveness_paths: Object.freeze([...LIVENESS_PATHS]),
     startup_health_timeout_ms: REQUEST_TIMEOUT_MS,
+    assistant_health_timeout_ms: ASSISTANT_TIMEOUT_MS,
+    assistant_probe_blocks_runtime_controls: false,
+    runtime_authority_independent_of_assistant: true,
     healthz_startup_probe_disabled: true,
   });
   void checkBackend(false);
