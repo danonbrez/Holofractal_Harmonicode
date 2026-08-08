@@ -60,7 +60,7 @@ def test_every_multi_identity_group_gets_a_proof_status() -> None:
     assert all(len(x["member_operation_keys"]) >= 2 for x in groups)
 
 
-def test_base20_exact_projections_are_proven_not_name_inferred() -> None:
+def test_base20_exact_projections_are_proven_and_not_implementation_backlog() -> None:
     result = _result()
     projection_edges = [
         proof
@@ -70,6 +70,29 @@ def test_base20_exact_projections_are_proven_not_name_inferred() -> None:
     ]
     assert len(projection_edges) >= 19
     assert result["summary"]["explicit_projection_proof_edges"] >= 19
+    assert result["summary"]["migration_action_counts"].get("REGISTER_EXACT_PROJECTION", 0) >= 19
+    assert result["summary"]["projection_surfaces_removed_from_implementation_backlog"] >= 19
+
+
+def test_every_coded_operation_has_exactly_one_registry_record() -> None:
+    result = _result()
+    operations = result["operation_registry_entries"]
+    summary = result["summary"]
+    assert len(operations) == summary["raw_operation_identities"]
+    assert summary["operation_registry_entries"] == summary["raw_operation_identities"]
+    keys = [x["operation_key"] for x in operations]
+    assert len(keys) == len(set(keys))
+    assert all(x["registry_id"].startswith("hhs.") for x in operations)
+
+
+def test_shared_registry_identity_requires_proven_cluster() -> None:
+    result = _result()
+    cluster_ids = {x["cluster_id"] for x in result["reusable_operation_registry_entries"]}
+    for operation in result["operation_registry_entries"]:
+        if operation["registry_status"] == "PROVEN_EQUIVALENCE_SHARED_IDENTITY":
+            assert operation["registry_id"] in cluster_ids
+        else:
+            assert operation["registry_id"].startswith("hhs.operation.")
 
 
 def test_reuse_registry_contains_only_proven_multi_member_clusters() -> None:
@@ -89,15 +112,25 @@ def test_preferred_bindings_do_not_promote_projection_or_formal_surfaces() -> No
             assert preferred["family"] not in forbidden
 
 
-def test_registry_is_discovery_only_and_never_execution_authority() -> None:
-    registry = build_registry(_result())
-    assert len(registry.list_bindings()) == _result()["summary"]["reusable_registry_entries"]
+def test_registry_is_complete_discovery_surface_and_not_execution_authority() -> None:
+    result = _result()
+    registry = build_registry(result)
+    assert len(registry.list_bindings()) == result["summary"]["reusable_registry_entries"]
+    assert len(registry.list_operations()) == result["summary"]["raw_operation_identities"]
+    assert len(registry.isolation_backlog()) == result["summary"]["isolated_candidates_remaining_reusable_extraction_backlog"]
+    first = registry.list_operations()[0]
+    assert registry.get_operation(first.operation_key) == first
+    assert first in registry.registry_members(first.registry_id)
     with pytest.raises(ReusableOperationRegistryError, match="DISCOVERY_REGISTRY_IS_NOT_EXECUTION_AUTHORITY"):
         registry.execute("anything")
 
 
-def test_isolated_candidate_coverage_is_bounded_and_actionable() -> None:
+def test_isolated_candidate_backlog_is_exactly_accounted() -> None:
     summary = _result()["summary"]
-    assert 0 <= summary["isolated_candidates_covered_by_proven_clusters"] <= summary["isolated_implementation_candidates_total"]
-    actions = summary["migration_action_counts"]
-    assert sum(actions.values()) == summary["reusable_registry_entries"]
+    assert summary["projection_surfaces_removed_from_implementation_backlog"] >= 19
+    assert 0 <= summary["isolated_candidates_covered_by_proven_reuse_or_promotion"] <= summary["isolated_implementation_backlog_after_projection_filter"]
+    assert summary["isolated_candidates_remaining_reusable_extraction_backlog"] == (
+        summary["isolated_implementation_backlog_after_projection_filter"]
+        - summary["isolated_candidates_covered_by_proven_reuse_or_promotion"]
+    )
+    assert len(_result()["unresolved_isolation_backlog"]) == summary["isolated_candidates_remaining_reusable_extraction_backlog"]
