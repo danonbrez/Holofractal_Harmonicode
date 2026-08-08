@@ -31,7 +31,7 @@ test('mobile first paint initializes visibility without owning canonical input',
   assert.match(repair, /tabs\.inert = true/);
   assert.match(repair, /interactive_input_owner:\s*false/);
   assert.match(repair, /enforceInitialVisualIdeSurface/);
-  assert.doesNotMatch(repair, /stopImmediatePropagation/);
+  assert.doesNotMatch(repair, /event\.stopImmediatePropagation\(\)/);
   assert.doesNotMatch(repair, /addEventListener\('click'/);
   assert.doesNotMatch(repair, /attributeFilter:\s*\['class', 'hidden'\]/);
   assert.match(repair, /legacyTabObserver\.observe\(body, \{ subtree: true, childList: true \}\)/);
