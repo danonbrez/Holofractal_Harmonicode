@@ -1,0 +1,112 @@
+name: Pass 215 Iteration 17 Scalable RoPE Certified Greedy
+
+on:
+  push:
+    branches: [agent/pass215-transformer-ingestion-benchmark]
+  pull_request:
+    branches: [main]
+    paths:
+      - 'hhs_backend/runtime/hhs_pass215_iteration17_scalable_rope_certified_greedy_v1.py'
+      - 'tools/pass215_iteration17_scalable_rope_certified_greedy.py'
+      - 'tests/test_hhs_pass215_iteration17_scalable_rope_certified_greedy_v1.py'
+      - 'scripts/run_pass215_iteration17_validation.sh'
+      - 'contracts/pass215/PASS_215_ITERATION_17_CONTRACT.json'
+      - 'evidence/pass215/PASS_215_ITERATION_17_IMPLEMENTATION_RECORD.json'
+      - 'docs/pass215/ITERATION_17_SCALABLE_ROPE_CERTIFIED_GREEDY.md'
+      - '.github/workflows/pass215-iteration17-scalable-rope-certified-greedy.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  iteration17:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    env:
+      PYTHONHASHSEED: '0'
+      PYTHONDONTWRITEBYTECODE: '1'
+      PASS215_I17_MODEL_SHA256: '6151b1929d7f5aa3385d9ddef3393e55587c0a55de661562322bc51dfda93a04'
+      PASS215_I17_PROMPT: 'Hello world!'
+      PASS215_I17_CERTIFICATION_BITS: '256'
+      PASS215_I17_GREEDY_STEPS: '7'
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - name: Enforce exact branch-head checkout
+        env:
+          EXPECTED_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          test "$(git rev-parse HEAD)" = "$EXPECTED_HEAD_SHA"
+          echo "PASS215_I17_VALIDATED_HEAD=$(git rev-parse HEAD)"
+          echo "PASS215_I17_VALIDATED_TREE=$(git rev-parse HEAD^{tree})"
+      - uses: actions/setup-python@v6
+        with: {python-version: '3.12'}
+      - name: Install validation dependency
+        run: python -m pip install pytest
+      - name: Enforce frozen Iteration 16 inheritance and scalable RoPE authority
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          c=json.loads(Path('contracts/pass215/PASS_215_ITERATION_17_CONTRACT.json').read_text())
+          assert c['inherits']['iteration16_closure_head']=='9eadb5ebbbad2283b3f19ccb7d2071a1a945e8c7'
+          assert c['inherits']['iteration16_closure_tree']=='2c52b754b62931db1aa50926e8a35dae6ae0b4ac'
+          assert c['contracted_workload']['certified_greedy_step_count']==7
+          assert c['requirements']['execute_certified_selection_from_range_reduced_rope_state'] is True
+          assert c['requirements']['no_pi_approximation_authority'] is True
+          assert c['constraints']['unbounded_or_general_generation_claimed'] is False
+          assert c['constraints']['canonical_float_interpretation_performed'] is False
+          PY
+      - name: Run cumulative Iteration 1-17 dependency-scoped validation
+        run: bash scripts/run_pass215_iteration17_validation.sh
+      - name: Download and verify authenticated open transformer
+        run: |
+          ROOT="$RUNNER_TEMP/pass215-i17"; mkdir -p "$ROOT"
+          curl -L --fail --retry 5 --retry-all-errors --retry-delay 4 -o "$ROOT/stories15M-q4_0.gguf" 'https://huggingface.co/ggml-org/tiny-llamas/resolve/main/stories15M-q4_0.gguf?download=true'
+          echo "$PASS215_I17_MODEL_SHA256  $ROOT/stories15M-q4_0.gguf" | sha256sum -c -
+      - name: Execute scalable RoPE certified greedy process A
+        run: |
+          ROOT="$RUNNER_TEMP/pass215-i17"
+          python tools/pass215_iteration17_scalable_rope_certified_greedy.py --container "$ROOT/stories15M-q4_0.gguf" --prompt "$PASS215_I17_PROMPT" --source-kind public_open_transformer --repo-id ggml-org/tiny-llamas --revision main --expected-sha256 "$PASS215_I17_MODEL_SHA256" --certification-bits "$PASS215_I17_CERTIFICATION_BITS" --greedy-steps "$PASS215_I17_GREEDY_STEPS" --output "$ROOT/PASS_215_ITERATION_17_A.json"
+          python tools/pass215_iteration17_scalable_rope_certified_greedy.py --validate "$ROOT/PASS_215_ITERATION_17_A.json" --output "$ROOT/PASS_215_ITERATION_17_A_VALIDATION.json"
+      - name: Execute independent process B and replay comparison
+        run: |
+          ROOT="$RUNNER_TEMP/pass215-i17"
+          python tools/pass215_iteration17_scalable_rope_certified_greedy.py --container "$ROOT/stories15M-q4_0.gguf" --prompt "$PASS215_I17_PROMPT" --source-kind public_open_transformer --repo-id ggml-org/tiny-llamas --revision main --expected-sha256 "$PASS215_I17_MODEL_SHA256" --certification-bits "$PASS215_I17_CERTIFICATION_BITS" --greedy-steps "$PASS215_I17_GREEDY_STEPS" --output "$ROOT/PASS_215_ITERATION_17_B.json"
+          python tools/pass215_iteration17_scalable_rope_certified_greedy.py --validate "$ROOT/PASS_215_ITERATION_17_B.json" --output "$ROOT/PASS_215_ITERATION_17_B_VALIDATION.json"
+          python tools/pass215_iteration17_scalable_rope_certified_greedy.py --compare-replay "$ROOT/PASS_215_ITERATION_17_A.json" "$ROOT/PASS_215_ITERATION_17_B.json" --output "$ROOT/PASS_215_ITERATION_17_CROSS_PROCESS_VALIDATION.json"
+      - name: Enforce scalable RoPE semantics and emit source identities
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          root=Path(os.environ['RUNNER_TEMP'])/'pass215-i17'; e=json.loads((root/'PASS_215_ITERATION_17_A.json').read_text()); r=json.loads((root/'PASS_215_ITERATION_17_CROSS_PROCESS_VALIDATION.json').read_text()); c=e['scalable_rope_certified_greedy']; s=c['steps']; x=e['certified_interval_executor']
+          assert len(s)==7 and c['selected_token_ids'][:3]==[450,6575,471]
+          assert [z['selection_root_hash216'] for z in s[:3]]==['aac3225975c44b9b761dd131afedfc01123a3c5da187f76bd9de5c9bf2abee94','ba04d7c30b6734f7229d13e0684d7d9458803f4a5387c9c5547ef4f2d4e23050','4043e960f6454b4ad0849b3997ddbbe8a5df5e92f827e8d70fcf424999bf7cba']
+          assert all(z['certified_true_argmax'] and z['strict_interval_separation'] for z in s)
+          assert any(z['source_state_used_range_reduced_trig'] for z in s)
+          assert x['range_reduced_rope_pair_calls']>0 and x['fixed_rope_argument_ceiling'] is False and x['pi_approximation_authorized'] is False
+          assert c['prefix_replays_after_initialization']==0 and c['final_cache_sequence_length']==11
+          assert r['cross_process_replay'] and r['semantic_exactness']
+          summary={'selected_token_ids':c['selected_token_ids'],'selected_tokens':c['selected_tokens'],'step_roots':[z['step_root_hash216'] for z in s],'selection_roots':[z['selection_root_hash216'] for z in s],'strict_margins':[z['strict_margin_lower_bound'] for z in s],'range_reduced_source_steps':[z['step_index'] for z in s if z['source_state_used_range_reduced_trig']],'range_reduced_positions':x['range_reduced_positions'],'trig_halving_steps_total':x['trig_halving_steps_total'],'trig_max_halving_depth':x['trig_max_halving_depth'],'chain_root_hash216':c['chain_root_hash216'],'final_interval_suite_root_hash216':s[-1]['produced_interval_suite_root_hash216'],'final_symbolic_dag_root_hash216':c['final_symbolic_dag']['ordered_node_root_hash216'],'suite_root_hash216':e['scalable_rope_certified_greedy_suite_root_hash216'],'evidence_root_hash216':e['evidence_root_hash216'],'receipt_hash72':e['receipt_hash72']}
+          (root/'PASS_215_ITERATION_17_SOURCE_IDENTITIES.json').write_text(json.dumps(summary,indent=2,sort_keys=True)+'\n'); print(json.dumps(summary,indent=2,sort_keys=True))
+          PY
+      - name: Record exact validated head and tree
+        run: |
+          ROOT="$RUNNER_TEMP/pass215-i17"; git rev-parse HEAD > "$ROOT/VALIDATED_HEAD.txt"; git rev-parse HEAD^{tree} > "$ROOT/VALIDATED_TREE.txt"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pass215-iteration17-scalable-rope-certified-greedy
+          path: |
+            ${{ runner.temp }}/pass215-i17/PASS_215_ITERATION_17_A.json
+            ${{ runner.temp }}/pass215-i17/PASS_215_ITERATION_17_A_VALIDATION.json
+            ${{ runner.temp }}/pass215-i17/PASS_215_ITERATION_17_B.json
+            ${{ runner.temp }}/pass215-i17/PASS_215_ITERATION_17_B_VALIDATION.json
+            ${{ runner.temp }}/pass215-i17/PASS_215_ITERATION_17_CROSS_PROCESS_VALIDATION.json
+            ${{ runner.temp }}/pass215-i17/PASS_215_ITERATION_17_SOURCE_IDENTITIES.json
+            ${{ runner.temp }}/pass215-i17/VALIDATED_HEAD.txt
+            ${{ runner.temp }}/pass215-i17/VALIDATED_TREE.txt
+          if-no-files-found: error
