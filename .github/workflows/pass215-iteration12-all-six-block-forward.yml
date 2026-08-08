@@ -1,0 +1,223 @@
+name: Pass 215 Iteration 12 All Six Block Forward
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - agent/pass215-transformer-ingestion-benchmark
+    paths:
+      - 'contracts/pass215/PASS_215_ITERATION_12_CONTRACT.json'
+      - 'hhs_backend/runtime/hhs_pass215_iteration12_all_six_block_forward_v1.py'
+      - 'tools/pass215_iteration12_all_six_block_forward.py'
+      - 'tests/test_hhs_pass215_iteration12_all_six_block_forward_v1.py'
+      - 'scripts/run_pass215_iteration12_validation.sh'
+      - 'docs/pass215/ITERATION_12_ALL_SIX_BLOCK_FORWARD.md'
+      - 'evidence/pass215/PASS_215_ITERATION_12_IMPLEMENTATION_RECORD.json'
+      - '.github/workflows/pass215-iteration12-all-six-block-forward.yml'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'contracts/pass215/PASS_215_ITERATION_12_CONTRACT.json'
+      - 'hhs_backend/runtime/hhs_pass215_iteration12_all_six_block_forward_v1.py'
+      - 'tools/pass215_iteration12_all_six_block_forward.py'
+      - 'tests/test_hhs_pass215_iteration12_all_six_block_forward_v1.py'
+      - 'scripts/run_pass215_iteration12_validation.sh'
+      - 'docs/pass215/ITERATION_12_ALL_SIX_BLOCK_FORWARD.md'
+      - 'evidence/pass215/PASS_215_ITERATION_12_IMPLEMENTATION_RECORD.json'
+      - '.github/workflows/pass215-iteration12-all-six-block-forward.yml'
+
+permissions:
+  contents: read
+
+env:
+  PYTHONHASHSEED: '0'
+  PYTHONDONTWRITEBYTECODE: '1'
+  PASS215_I12_MODEL_SHA256: '6151b1929d7f5aa3385d9ddef3393e55587c0a55de661562322bc51dfda93a04'
+  PASS215_I12_PROMPT: 'Hello world!'
+
+jobs:
+  iteration12:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+
+      - name: Enforce exact branch-head checkout
+        env:
+          EXPECTED_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          ACTUAL_HEAD_SHA="$(git rev-parse HEAD)"
+          test "$ACTUAL_HEAD_SHA" = "$EXPECTED_HEAD_SHA"
+          echo "PASS215_I12_VALIDATED_HEAD=$ACTUAL_HEAD_SHA"
+          echo "PASS215_I12_VALIDATED_TREE=$(git rev-parse HEAD^{tree})"
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+
+      - name: Install validation dependency
+        run: python -m pip install pytest
+
+      - name: Enforce frozen Iteration 11 inheritance and authority boundaries
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          contract = json.loads(Path('contracts/pass215/PASS_215_ITERATION_12_CONTRACT.json').read_text())
+          inherits = contract['inherits']
+          workload = contract['authenticated_workload']
+          prefix = contract['prefix_preservation']
+          sequence = contract['sequential_execution']
+          constraints = contract['constraints']
+          assert inherits['iteration11_closure_head'] == '0c01c900b4d9afa6f741c86a5bcb61d5ddf613e7'
+          assert inherits['iteration11_closure_tree'] == 'bb301228b067a2eab031ad974bc5605c9af003a3'
+          assert inherits['iteration11_architecture_root_hash216'] == '6f2837183d79c1fc751822e05eac06b4d4711c12c89c7a955bf77ecea32fcc52'
+          assert inherits['iteration11_two_block_forward_root_hash216'] == '608e136d9080e8b109b4450b1985f8b456f052a8540ea07461a96b04d010a1ff'
+          assert inherits['iteration11_suite_root_hash216'] == 'cc62c770950310e1331636dd5fff2b2a0c3ca17e4a3499aae4d6dcd2ae147de8'
+          assert inherits['iteration11_evidence_root_hash216'] == '610aa83b8b794d7055400df8bcb63be652d90f1d4659c839bc3d58c3a6402942'
+          assert inherits['iteration11_closure_artifact_sha256'] == '16f5898d8df2f707d85f504f47eb83948fcd0f232a48c81a8e07851c7a291255'
+          assert workload['authenticated_block_count'] == 6
+          assert workload['required_block_order'] == [0, 1, 2, 3, 4, 5]
+          assert workload['required_stage_count'] == 126
+          assert workload['required_block_tensor_count'] == 54
+          assert prefix['iteration11_two_block_prefix_must_reexecute_before_extension'] is True
+          assert sequence['shared_hash_consed_symbolic_dag_required'] is True
+          assert sequence['all_adjacent_block_inputs_must_equal_previous_outputs'] is True
+          assert sequence['required_adjacent_links'] == 5
+          assert sequence['total_causal_qk_edges'] == 360
+          assert constraints['all_model_blocks_executed'] is True
+          assert constraints['full_model_forward_executed'] is False
+          assert constraints['final_output_norm_executed'] is False
+          assert constraints['output_logits_executed'] is False
+          assert constraints['generation_or_sampling_executed'] is False
+          assert constraints['runtime_mutation_authority_promoted'] is False
+          assert constraints['canonical_mutation_authorized'] is False
+          assert constraints['migration_active'] is False
+          PY
+
+      - name: Run cumulative Iteration 1-12 dependency-scoped validation
+        run: bash scripts/run_pass215_iteration12_validation.sh
+
+      - name: Download and verify authenticated open transformer
+        run: |
+          ROOT="$RUNNER_TEMP/pass215-i12"
+          mkdir -p "$ROOT"
+          curl -L --fail --retry 5 --retry-all-errors --retry-delay 4 \
+            -o "$ROOT/stories15M-q4_0.gguf" \
+            'https://huggingface.co/ggml-org/tiny-llamas/resolve/main/stories15M-q4_0.gguf?download=true'
+          echo "$PASS215_I12_MODEL_SHA256  $ROOT/stories15M-q4_0.gguf" | sha256sum -c -
+
+      - name: Execute all-six-block process A
+        run: |
+          ROOT="$RUNNER_TEMP/pass215-i12"
+          python tools/pass215_iteration12_all_six_block_forward.py \
+            --container "$ROOT/stories15M-q4_0.gguf" \
+            --prompt "$PASS215_I12_PROMPT" \
+            --source-kind public_open_transformer \
+            --repo-id ggml-org/tiny-llamas \
+            --revision main \
+            --expected-sha256 "$PASS215_I12_MODEL_SHA256" \
+            --output "$ROOT/PASS_215_ITERATION_12_A.json"
+          python tools/pass215_iteration12_all_six_block_forward.py \
+            --validate "$ROOT/PASS_215_ITERATION_12_A.json" \
+            --output "$ROOT/PASS_215_ITERATION_12_A_VALIDATION.json"
+
+      - name: Execute independent process B and replay comparison
+        run: |
+          ROOT="$RUNNER_TEMP/pass215-i12"
+          python tools/pass215_iteration12_all_six_block_forward.py \
+            --container "$ROOT/stories15M-q4_0.gguf" \
+            --prompt "$PASS215_I12_PROMPT" \
+            --source-kind public_open_transformer \
+            --repo-id ggml-org/tiny-llamas \
+            --revision main \
+            --expected-sha256 "$PASS215_I12_MODEL_SHA256" \
+            --output "$ROOT/PASS_215_ITERATION_12_B.json"
+          python tools/pass215_iteration12_all_six_block_forward.py \
+            --validate "$ROOT/PASS_215_ITERATION_12_B.json" \
+            --output "$ROOT/PASS_215_ITERATION_12_B_VALIDATION.json"
+          python tools/pass215_iteration12_all_six_block_forward.py \
+            --compare-replay "$ROOT/PASS_215_ITERATION_12_A.json" "$ROOT/PASS_215_ITERATION_12_B.json" \
+            --output "$ROOT/PASS_215_ITERATION_12_CROSS_PROCESS_VALIDATION.json"
+
+      - name: Enforce all-six-block source closure and print terminal roots
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          root = Path(os.environ['RUNNER_TEMP']) / 'pass215-i12'
+          evidence = json.loads((root / 'PASS_215_ITERATION_12_A.json').read_text())
+          replay = json.loads((root / 'PASS_215_ITERATION_12_CROSS_PROCESS_VALIDATION.json').read_text())
+          assert evidence['source']['file_sha256'] == os.environ['PASS215_I12_MODEL_SHA256']
+          arch = evidence['authenticated_architecture']
+          bindings = evidence['authenticated_all_block_tensor_bindings']
+          forward = evidence['sequential_all_block_forward']
+          assert arch['architecture'] == 'llama'
+          assert arch['block_count'] == 6
+          assert arch['architecture_root_hash216'] == '6f2837183d79c1fc751822e05eac06b4d4711c12c89c7a955bf77ecea32fcc52'
+          assert bindings['block_count_bound'] == 6
+          assert bindings['required_tensor_count'] == 54
+          assert forward['block_order'] == [0, 1, 2, 3, 4, 5]
+          assert forward['executed_block_count'] == 6
+          assert forward['stage_count'] == 126
+          assert forward['all_adjacent_inputs_equal_previous_outputs'] is True
+          assert len(forward['sequential_links']) == 5
+          assert all(link['exact'] is True for link in forward['sequential_links'])
+          prefix = forward['iteration11_prefix']
+          assert prefix['blk0_binding_root_hash216'] == 'bc225999c88110bd47e1ceceecc96d8ef9e8ec0752ddf659a9a4c35647109bff'
+          assert prefix['blk1_binding_root_hash216'] == '3f55a20a7d34b45f6b73ab4e6f0ff138a8fd1e5de74fe259ae5a3a7ed8ba1087'
+          assert prefix['blk0_to_blk1_sequential_link_root_hash216'] == 'ec7a6b35493f55dc5b7df8099f0ff9aa402d51fea15f67c59c8b3a9fc6294074'
+          assert prefix['blk1_stage_suite_root_hash216'] == 'f3b9c1886d9b37c9b4b1de974c57936f79e1aea8520d403e34495688ef9810d0'
+          assert prefix['blk1_causal_attention_root_hash216'] == 'd780232058b51855ba95a7696b6bee57840602a3f883e2a8a7b3039979aada64'
+          assert prefix['blk1_final_output_root_hash216'] == 'd88fac2044fbca53f8d4a397a39ae4f6e5de4b82fdad39e3eafbee9fde0025bb'
+          assert prefix['two_block_symbolic_dag_root_hash216'] == 'b8f9fdbe81cc718b3c59fcb43dd8ca590d7aaf17802f0a957640c00cf4837cbd'
+          assert prefix['two_block_forward_root_hash216'] == '608e136d9080e8b109b4450b1985f8b456f052a8540ea07461a96b04d010a1ff'
+          assert forward['total_linear_transition_work'] == {
+              'row_transitions': 71424,
+              'logical_weight_products': 23887872,
+              'logical_accumulation_additions': 23816448,
+          }
+          assert forward['total_attention_transition_work']['causal_qk_edges'] == 360
+          claims = evidence['claims']
+          assert claims['contracted_four_token_all_six_blocks_sequential_forward_executed'] is True
+          assert claims['all_model_blocks_executed'] is True
+          assert claims['full_model_forward_executed'] is False
+          assert claims['final_output_norm_executed'] is False
+          assert claims['output_logits_executed'] is False
+          assert claims['generation_or_sampling_executed'] is False
+          assert claims['canonical_float_interpretation_performed'] is False
+          assert replay['cross_process_replay'] is True
+          assert replay['semantic_exactness'] is True
+          print('PASS215_I12_BLOCK_BINDING_ROOTS_JSON=' + json.dumps(bindings['block_binding_roots'], sort_keys=True, separators=(',', ':')))
+          print('PASS215_I12_ALL_BLOCK_BINDING_ROOT=' + bindings['all_block_binding_root_hash216'])
+          print('PASS215_I12_SEQUENTIAL_LINKS_JSON=' + json.dumps(forward['sequential_links'], sort_keys=True, separators=(',', ':')))
+          print('PASS215_I12_SEQUENTIAL_CHAIN_ROOT=' + forward['sequential_chain_root_hash216'])
+          print('PASS215_I12_STAGE_ROOTS_JSON=' + json.dumps(forward['per_block_stage_roots'], sort_keys=True, separators=(',', ':')))
+          print('PASS215_I12_CAUSAL_ROOTS_JSON=' + json.dumps(forward['per_block_causal_attention_roots'], sort_keys=True, separators=(',', ':')))
+          print('PASS215_I12_OUTPUT_ROOTS_JSON=' + json.dumps(forward['per_block_final_output_roots'], sort_keys=True, separators=(',', ':')))
+          print('PASS215_I12_ALL_STAGE_SUITE_ROOT=' + forward['all_stage_suite_root_hash216'])
+          print('PASS215_I12_ALL_CAUSAL_ATTENTION_ROOT=' + forward['all_causal_attention_root_hash216'])
+          print('PASS215_I12_FINAL_BLOCK_OUTPUT_ROOT=' + forward['final_block_output_root_hash216'])
+          print('PASS215_I12_FULL_DAG_ROOT=' + forward['symbolic_dag']['ordered_node_root_hash216'])
+          print('PASS215_I12_ALL_BLOCK_FORWARD_ROOT=' + forward['all_block_forward_root_hash216'])
+          print('PASS215_I12_SUITE_ROOT=' + evidence['all_six_block_suite_root_hash216'])
+          print('PASS215_I12_EVIDENCE_ROOT=' + evidence['evidence_root_hash216'])
+          print('PASS215_I12_RECEIPT_HASH72=' + evidence['receipt_hash72'])
+          PY
+
+      - name: Retain Iteration 12 evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass215-iteration12-all-six-block-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/pass215-i12/PASS_215_ITERATION_12_A.json
+            ${{ runner.temp }}/pass215-i12/PASS_215_ITERATION_12_A_VALIDATION.json
+            ${{ runner.temp }}/pass215-i12/PASS_215_ITERATION_12_B.json
+            ${{ runner.temp }}/pass215-i12/PASS_215_ITERATION_12_B_VALIDATION.json
+            ${{ runner.temp }}/pass215-i12/PASS_215_ITERATION_12_CROSS_PROCESS_VALIDATION.json
+          retention-days: 30
