@@ -12,7 +12,7 @@ binding and exposes the safe open cloud-computer state/recall surface.
 
 * ``/`` serves the complete Holofractal Harmonizer application IDE.
 * ``/runtime-console/`` preserves the prior Pass 174 diagnostic console.
-* ``/health`` and ``/api/health`` provide bounded, dependency-light liveness.
+* ``/health`` and ``/api/health`` provide bounded, dependency-free process liveness.
 * ``/api/public/*`` catalogs every public route, service, and pass module.
 * ``/api/runtime/mainframe/*`` exposes universal executable declarations.
 * ``/api/runtime/open-cloud/*`` exposes sandbox policy, closure, jobs, and recall.
@@ -21,6 +21,7 @@ Static mounts are installed last so they cannot shadow any API or WebSocket.
 """
 from __future__ import annotations
 
+import asyncio
 from typing import Any
 
 from fastapi.staticfiles import StaticFiles
@@ -28,6 +29,7 @@ from fastapi.staticfiles import StaticFiles
 from hhs_backend import pass174_server as pass174
 from hhs_backend import production_server as production
 from hhs_backend.api import pass175_runtime_routes as pass175_runtime_api
+from hhs_backend.api import runtime_routes as runtime_api
 from hhs_backend.api.pass175_ws_routes import router as pass175_ws_router
 from hhs_backend.api.pass175_terminal_routes import router as pass175_terminal_router
 from hhs_backend.api.pass175_terminal_ws_routes import router as pass175_terminal_ws_router
@@ -51,6 +53,7 @@ FULL_IDE_ROOT = production.VISUAL_ROOT
 RUNTIME_CONSOLE_ROOT = pass174._ide_root
 API_FALLBACK_PATH = pass174._API_FALLBACK_PATH
 RUNTIME_AUTHORITY_STATUS_PATH = "/api/runtime/authority/status"
+RUNTIME_SERVICES_PATH = "/api/runtime/services"
 PASS175_AUTHORITY_STATUS_PATH = "/api/v1/pass175/authority"
 PASS175_BOUNDED_STATUS_PATH = "/api/v1/pass175/status"
 PASS175_MATERIALIZED_STATUS_PATH = "/api/v1/pass175/status/materialized"
@@ -160,18 +163,60 @@ app.add_api_route(
 PASS201_PUBLIC_API_REGISTRATION = register_public_api_federation(app)
 
 
+def _runtime_services_projection() -> dict[str, Any]:
+    """Materialize the guarded descriptor list entirely outside the ASGI loop."""
+    ingress = runtime_api.io_gateway.ingress("api.runtime.services", {"method": "GET"})
+    services = runtime_api.runtime_emulator.service_registry.services()
+    response = {
+        "schema": "HHS_RUNTIME_SERVICE_LIST_V1",
+        "services": services,
+    }
+    response["io"] = {
+        "ingress": ingress,
+        "egress": runtime_api.io_gateway.egress(
+            "api.runtime.services",
+            {"service_count": len(services)},
+        ),
+    }
+    return runtime_api._contract_response(RUNTIME_SERVICES_PATH, "GET", response)
+
+
+async def final_runtime_services() -> dict[str, Any]:
+    """Return the complete service registry without monopolizing FastAPI."""
+    return await asyncio.to_thread(_runtime_services_projection)
+
+
+# Service descriptor construction is read-only but can perform Hash72 IO
+# witnessing and serialize the complete registry. The inherited async handler
+# executes that synchronous work directly on the serving loop. Replace every
+# inherited owner after federation with one worker-isolated final route.
+app.router.routes = [
+    route
+    for route in app.router.routes
+    if str(getattr(route, "path", "")) != RUNTIME_SERVICES_PATH
+]
+app.add_api_route(
+    RUNTIME_SERVICES_PATH,
+    final_runtime_services,
+    methods=["GET"],
+    name="hhs-final-runtime-services",
+)
+
+
 async def application_ide_liveness() -> dict[str, Any]:
-    """Return cheap process, route, and committed live-runtime readiness."""
+    """Return dependency-free process liveness without touching runtime objects."""
     boot = dict(pass174.PASS174_BOOT_STATE)
-    runtime = production._runtime_authority_status()
-    authority_ready = bool(runtime.get("ok"))
     return {
-        "schema": "HHS_FULL_APPLICATION_IDE_LIVENESS_V4",
+        "schema": "HHS_FULL_APPLICATION_IDE_LIVENESS_V5",
         "ok": True,
         "status": "HHS_SAFE_OPEN_CLOUD_IDE_SERVICE_REACHABLE",
         "service_available": True,
-        "authority_ready": authority_ready,
-        "runtime_ready": authority_ready,
+        # Runtime authority is intentionally not inferred here. The browser
+        # probes the dedicated bounded authority route independently. This keeps
+        # liveness responsive even while a runtime operation is executing.
+        "authority_ready": False,
+        "runtime_ready": False,
+        "runtime_authority_probe_separate": True,
         "assistant_ready": False,
         "assistant_health_requires_product_probe": True,
         "frontend_runtime_authority": False,
@@ -181,14 +226,16 @@ async def application_ide_liveness() -> dict[str, Any]:
         "mainframe": "/api/runtime/mainframe/status",
         "open_cloud": "/api/runtime/open-cloud/status",
         "open_cloud_closure": "/api/runtime/open-cloud/closure",
+        "runtime_services": RUNTIME_SERVICES_PATH,
         "public_api_registration_closed": PASS201_PUBLIC_API_REGISTRATION.get("closed", False),
         "pass174_boot": boot,
-        "runtime_authority": runtime,
         "runtime_authority_source": RUNTIME_AUTHORITY_STATUS_PATH,
         "runtime_readiness_uses_committed_live_projection": True,
-        "health_route_owner": "FINAL_APPLICATION_IDE_BOUNDED_LIVENESS",
+        "health_route_owner": "FINAL_APPLICATION_IDE_PROCESS_LIVENESS",
         "health_routes_deduplicated": True,
         "status_read_is_bounded": True,
+        "runtime_object_traversal_performed": False,
+        "service_registry_traversal_performed": False,
         "routes": {
             "workspace": _has_route_prefix("/api/runtime/workspace"),
             "development_lifecycle": _has_route_prefix("/api/runtime/development"),
@@ -202,19 +249,16 @@ async def application_ide_liveness() -> dict[str, Any]:
             "open_cloud": _has_route_prefix("/api/runtime/open-cloud/status"),
             "open_cloud_closure": _has_route_prefix("/api/runtime/open-cloud/closure"),
             "runtime_authority": _has_exact_route(RUNTIME_AUTHORITY_STATUS_PATH),
+            "runtime_services": _has_exact_route(RUNTIME_SERVICES_PATH),
         },
-        "remediation": (
-            None
-            if authority_ready
-            else "The web service is reachable, but the committed live runtime authority is not ready. Inspect /api/runtime/live/status and platform logs."
-        ),
+        "remediation": None,
     }
 
 
 # Health has accumulated several inherited owners across production overlays.
 # Merely checking whether a health path exists is unsafe because Starlette uses
 # first-match routing. Remove every inherited owner after federation, then add
-# exactly one event-loop-native bounded liveness owner for both canonical paths.
+# exactly one event-loop-native process-liveness owner for both canonical paths.
 app.router.routes = [
     route
     for route in app.router.routes
@@ -296,7 +340,11 @@ pass174.PASS174_BOOT_STATE.update({
     "lightweight_health_route": "/health",
     "lightweight_api_health_route": "/api/health",
     "health_routes_deduplicated": True,
-    "health_route_owner": "FINAL_APPLICATION_IDE_BOUNDED_LIVENESS",
+    "health_route_owner": "FINAL_APPLICATION_IDE_PROCESS_LIVENESS",
+    "health_runtime_dependency": False,
+    "runtime_services_route": RUNTIME_SERVICES_PATH,
+    "runtime_services_route_deduplicated": True,
+    "runtime_services_worker_isolated": True,
     "runtime_authority_route": RUNTIME_AUTHORITY_STATUS_PATH,
     "runtime_authority_route_deduplicated": True,
     "runtime_readiness_uses_committed_live_projection": True,
