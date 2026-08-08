@@ -37,7 +37,8 @@ note "Validating the production gateway and critical browser modules"
 "${HHS_RUNTIME_PYTHON}" -m py_compile \
   hhs_backend/cached_visual_server.py \
   hhs_backend/production_visual_server.py \
-  hhs_backend/runtime/live_cognition_runtime_v1.py
+  hhs_backend/runtime/live_cognition_runtime_v1.py \
+  hhs_backend/runtime/live_fastapi_workflow_v1.py
 node --check applications/holofractal_harmonizer/src/production-startup-coordinator.mjs
 node --check applications/holofractal_harmonizer/src/pass176-early-bootstrap.mjs
 node --check applications/holofractal_harmonizer/src/gui-reliability.mjs
@@ -58,6 +59,7 @@ note "Installing the canonical production service override"
 cat >/etc/systemd/system/"${HHS_SERVICE}".d/30-production-interface.conf <<EOF
 [Service]
 WorkingDirectory=${HHS_APP_ROOT}
+Environment=HHS_RUNTIME_AUTO_TICK=0
 Environment=HHS_COGNITION_AUTO_TICK=0
 Environment=HHS_PASS174_BOOT_TIMEOUT_SECONDS=180
 Environment=HHS_RUNTIME_STATUS_PROBE=1
@@ -84,6 +86,8 @@ exec_start="$(systemctl show "${HHS_SERVICE}" -p ExecStart --value)"
 effective_environment="$(systemctl show "${HHS_SERVICE}" -p Environment --value)"
 [[ "${exec_start}" == *"hhs_backend.production_visual_server:app"* ]] \
   || fail "effective ExecStart is not production_visual_server"
+[[ "${effective_environment}" == *"HHS_RUNTIME_AUTO_TICK=0"* ]] \
+  || fail "HHS_RUNTIME_AUTO_TICK=0 is not effective"
 [[ "${effective_environment}" == *"HHS_COGNITION_AUTO_TICK=0"* ]] \
   || fail "HHS_COGNITION_AUTO_TICK=0 is not effective"
 [[ "${effective_environment}" == *"HHS_PASS174_BOOT_TIMEOUT_SECONDS=180"* ]] \
@@ -108,19 +112,35 @@ if [[ "${ready}" != "1" ]]; then
   fail "HHS API did not become ready within ${HHS_READY_TIMEOUT_SECONDS}s"
 fi
 
-note "Verifying non-blocking runtime bootstrap"
+note "Verifying non-blocking runtime bootstrap and idle quiescence"
 curl --max-time 5 -fsS "${base_url}/api/runtime/bootstrap/status" >/tmp/hhs-runtime-bootstrap-status.json
+curl --max-time 5 -fsS "${base_url}/api/runtime/live/status" >/tmp/hhs-live-runtime-status.json
 curl --max-time 5 -fsSI "${base_url}/" \
   | grep -qi '^x-hhs-runtime-bootstrap: v1' \
   || fail "root response is missing the runtime-bootstrap gateway header"
 
+"${HHS_RUNTIME_PYTHON}" - <<'PY'
+import json
+from pathlib import Path
+status = json.loads(Path('/tmp/hhs-live-runtime-status.json').read_text())
+if status.get('background_task_active') is not False:
+    raise SystemExit('live runtime background task is still active')
+if status.get('continuous_tick_enabled') is not False:
+    raise SystemExit('continuous live runtime ticking is still enabled')
+if status.get('cognition_auto_tick_enabled') is not False:
+    raise SystemExit('cognition auto tick is still enabled')
+PY
+
 note "Effective service state"
 printf 'Service: %s\n' "${HHS_SERVICE}"
 printf 'Entrypoint: %s\n' "${exec_start}"
+printf 'Runtime auto tick: disabled\n'
 printf 'Cognition auto tick: disabled\n'
 printf 'Pass 174 readiness window: 180s\n'
 printf 'Bootstrap status:\n'
 cat /tmp/hhs-runtime-bootstrap-status.json
+printf '\nLive runtime status:\n'
+cat /tmp/hhs-live-runtime-status.json
 printf '\n\nTop HHS-related CPU consumers after restart:\n'
 ps -eo pid,ppid,pcpu,pmem,etime,cmd --sort=-pcpu \
   | grep -E '[u]vicorn|[h]hs_backend|[p]ython.*hhs' \
