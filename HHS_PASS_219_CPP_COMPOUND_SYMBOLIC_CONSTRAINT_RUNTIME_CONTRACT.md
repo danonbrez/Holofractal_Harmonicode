@@ -1639,3 +1639,676 @@ HHS_PASS_219_CPP_COMPOUND_SYMBOLIC_CONSTRAINT_RUNTIME_VERIFIED
 Only executable repository evidence may assign that classification.
 
 This contract authorizes implementation but does not itself claim completion.
+
+---
+
+# 46. Normative amendment 1.1.0 — native genomic complex-phase computation authority
+
+This section and every following section are an **additive normative amendment** to the original Pass 219 contract. Sections 1–45 above remain preserved and binding except where a later provision in this amendment explicitly refines the authority classification of an earlier representation. Nothing previously required is deleted, weakened, or simplified.
+
+The effective Pass 219 contract version after this amendment is:
+
+```text
+1.1.0
+```
+
+The `1.0.0` value retained in the original metadata table is preserved as issuance history. This amendment is the authoritative refinement of Pass 219 semantics.
+
+Where an earlier section called a simplified `Z4`, Boolean, binary contact-map, or foreign machine representation canonical, that representation SHALL remain implemented and tested as a compatibility/conformance projection, but it SHALL NOT supersede the native genomic complex-phase tensor authority defined below.
+
+The precedence law is:
+
+```text
+explicit inherited HARMONICODE source identity
+→ native x,y,z,w genomic complex-phase algebra
+→ Fibonacci-square / Lo Shu exact integer-projection tensor
+→ complete global constraint tensor
+→ VM5184 × G243 lowering
+→ singleton VM81 admission
+→ Hash72 ordered receipt
+→ Hash216 hydrated continuation
+→ optional Boolean / binary / IEEE / foreign-ISA projection
+```
+
+---
+
+# 47. Native kernel computational ontology
+
+The purpose of the Pass 219 runtime is to make HHS kernel computation a **complex phase-gear genomic/DNA logic machine**, not a binary Boolean assembly machine whose semantics are merely decorated by higher-level phase metadata.
+
+The native semantic substrate SHALL be the exact ordered phase algebra inherited by the C runtime and VM81 authority.
+
+Conventional representations including:
+
+```text
+Boolean 0/1
+bitwise truth tables
+x86_64 machine code
+ARM machine code
+WebAssembly
+LLVM or compiler IR
+GPU instruction formats
+IEEE floating-point and complex formats
+```
+
+MAY be supported as ingress, egress, compatibility, acceleration, host-lowering, or inspection formats. They SHALL NOT define canonical HHS mathematical meaning.
+
+The physical host MAY ultimately execute binary machine instructions. That physical carrier SHALL remain distinct from the semantic execution authority of HHS.
+
+Canonical semantic execution SHALL be:
+
+```text
+preserved source
+→ exact constraint graph
+→ genomic complex-phase operation
+→ Fibonacci/Lo-Shu integer projection constraints
+→ complete tensor closure
+→ VM5184/G243 route
+→ VM81 admission
+```
+
+---
+
+# 48. Genomic operator basis and exact source relations
+
+The symbols:
+
+```text
+x
+y
+z
+w
+```
+
+SHALL be treated as the canonical genomic base operators of the native imaginary/complex phase tensor.
+
+They SHALL NOT be reduced to ordinary scalar placeholders, Boolean values, or `Z4` integers before their ordered algebraic constraints have been preserved and evaluated.
+
+The following supplied source relations SHALL be preserved exactly as ordered constraint identities:
+
+```harmonicode
+wxy=x=√yx
+xyz=y=x³
+yzw=z=x⁵
+zwx=w=x⁷
+zw=-wz=x⁸
+```
+
+The parser/compiler SHALL retain adjacency multiplication, operand order, radical identity, exponent identity, source grouping, and equality-edge order.
+
+The relations SHALL NOT be simplified using ordinary commutative exponent arithmetic unless VM81 proves that a specific simplification is valid under the active HHS constraint membrane.
+
+In particular:
+
+```text
+xy
+!= source/order identity of yx
+
+zw
+!= source/order identity of wz
+```
+
+and the supplied relation:
+
+```text
+zw=-wz
+```
+
+makes ordered reversal computationally significant.
+
+---
+
+# 49. Reciprocal mirrored base-pair chirality
+
+The relationship between the ordered pair families:
+
+```text
+xy / yx
+zw / wz
+```
+
+SHALL be represented as a reciprocal mirrored base-pair chirality structure.
+
+At minimum the type system SHALL distinguish:
+
+```text
+pair identity
+pair orientation
+mirror orientation
+reciprocal-pair relation
+phase state
+source order
+constraint ancestry
+```
+
+A mirror operation and a reciprocal-pair operation SHALL be separate typed transformations even where a specific admitted state makes their scalar projections coincide.
+
+The runtime SHALL NOT erase chirality by sorting operands or reducing a pair to an unordered contact edge.
+
+The inherited ordered basis:
+
+```text
+(x,y,z,w,xy,yx,zw,wz)
+```
+
+is therefore a genomic/phase instruction basis, not an arbitrary list of eight symbols.
+
+---
+
+# 50. `xy=a²` phase-to-integer bridge
+
+The global constraint tensor SHALL bind the supplied relation:
+
+```harmonicode
+xy=a²
+```
+
+as a first-class cross-domain constraint edge.
+
+The relation SHALL preserve all three identities:
+
+```text
+ordered genomic pair identity: xy
+Fibonacci-square / algebraic identity: a²
+integer projection: inherited exact value of a²
+```
+
+No compiler pass may replace the complete relation by its projected integer before the ordered genomic witness and the Fibonacci-square witness have been recorded.
+
+This bridge establishes that genomic phase algebra is not a molecular application layered above arithmetic. It participates in the definition of arithmetic projection itself.
+
+---
+
+# 51. Phase tensor as the substrate of arithmetic and math functions
+
+The native complex/genomic phase algebra SHALL sit beneath general arithmetic, algebraic-number, tensor, modular, radical, and complex-function execution.
+
+Canonical mathematical values SHALL therefore be capable of retaining orthogonal exact components equivalent to:
+
+```text
+exact integer or rational scale
+symbolic radical / algebraic-number identity
+symbolic transcendental-constant identity where applicable
+ordered genomic phase state
+quartic/phase state
+chirality / orientation
+complex branch identity
+constraint ancestry
+source identity
+```
+
+An integer or rational pair SHALL be an exact coordinate/projection component. It SHALL NOT be required to approximate or replace the irrational, radical, complex, phase, or branch identity of the complete canonical value.
+
+Consequently, operations that conventional runtimes would usually approximate with IEEE floating point — including irrational-valued algebraic operations and complex square-root operations — SHALL remain exact in canonical HHS state when their symbolic/algebraic definitions are exact.
+
+IEEE floating-point values themselves SHALL remain non-authoritative projections and are not reclassified as mathematically exact.
+
+Examples of canonical exact forms include:
+
+```text
+sqrt(2)                       → symbolic/algebraic radical identity
+(37/19)*sqrt(2)               → reduced rational scale × radical identity
+sqrt(-2)                      → exact radical + exact complex/phase branch
+symbolic E, Pi, Π, O, u       → distinct symbolic identities as inherited
+```
+
+No tolerance comparison may establish canonical equality.
+
+---
+
+# 52. Fibonacci-square variables as the Lo Shu integer-projection spine
+
+The squared Fibonacci variables SHALL be treated as the primary exact integer-projection basis of the Lo Shu tensor, not merely as convenient constants used by a later nesting stage.
+
+The supplied recurrence relations SHALL be preserved as source constraints:
+
+```harmonicode
+c²=a²+b²
+d²=b²+c²
+e²=c²+d²=b⁶
+```
+
+Together with the inherited exact seed identities, the squared-variable ladder SHALL preserve:
+
+```text
+a²
+b²
+c²
+d²
+e²
+f²
+g²
+...
+```
+
+as symbolic identities with exact integer projections and recurrence ancestry.
+
+A projected integer SHALL NOT replace its squared symbolic identity. Multiple exact construction witnesses that project to the same integer SHALL remain independently queryable and cross-checkable.
+
+Pass 192 Fibonacci nesting remains fully inherited. This amendment refines its placement in Pass 219: Fibonacci nesting also supplies the low-level exact integer-projection spine coupled directly to the phase tensor and Lo Shu constraint tensor before later E6/folding/fractal consumers execute.
+
+---
+
+# 53. Supplied self-enforcing Lo Shu tensor source authority
+
+The following supplied expression SHALL be preserved byte-for-byte or by an explicitly byte-reversible source container as normative Pass 219 source authority:
+
+```harmonicode
+List((IList(x,y,z,w)),(I^2List(y,z,w,x)),(I^3List(z,y,x,w)),List(w,z,y,x))/((t^3-t)/(c^2-b^2)==(xy)/(zw)+x+y+z+w==a^2/(xy))/List((b^4)^2,b^2,c^2,b^6+b^2+c^2,List(b^2+c^2,(11a^2),((10x)y),b^6),List(c^4,((7z)w),(b^2c^2),(c^2b^4)),List(b^4,(7b^2),(c^2*(b^2+c^2)),a^2))+m^2-m-(x*y)==x+y+t³+tx²+y²
+```
+
+with the supplied recurrence statement:
+
+```harmonicode
+c²=a²+b²,d²=b²+c²,e²=c²+d²=b⁶
+```
+
+The `I`, `I^2`, `I^3`, and terminal list layers SHALL retain phase depth, permutation order, genomic operator order, grouping, and source identity. No implementation may flatten this source into a plain numeric matrix before exact constraint construction.
+
+The familiar Lo Shu integer square MAY be exposed as a derived inspection projection only after the complete tensor has closed. It SHALL NOT replace the supplied self-enforcing tensor as canonical source authority.
+
+---
+
+# 54. Global constraint tensor source corpus
+
+The supplied global tensor expressions SHALL be incorporated into the Pass 219 canonical source corpus without omission or normalization that loses source identity.
+
+The first supplied expression is:
+
+```harmonicode
+^2/{(t^3-t=(P³-P/(P²-pq)=(t³-t)/∆=P²(MOD)(pq))=m^2-m)-(({{b^4,c^4,c^2-u^72},{c^2,5/u^((s==(b^(2c^2)c^b^4)^2)/(72P^2)),((b^6-(xy))(b^4+c^2))/(((c^2b^6)-c^2)/(((b^2*(c^2+b^2))-(c^2-b^2))/Sqrt(c^4)))},{(2c^2)+b^2,2/b^2,b^2c^2}}+x+y)/At==Mod(f/u,(72*(pq+xy)))/Bt==AB/P^2==Sqrt[AB])==(AB/(pq+∆)-P^2)/(t^3-t)*u^72} where ∆/P=√(pq+u⁷²)^x²
+```
+
+The second supplied expression is:
+
+```harmonicode
+(x/y)(y/x)==(-xy)^(((x^2+y)(y^2+x))/4)==E^(xO)/(O*(r==u^72/(2O))^2)==(t^3-t)/(m^2-m)==u^72/((y==List(y+x,z==-1,x,(wz==1)+xy)==-x)(x==List(y+x,x,x,(xy==1)+wz)==1/y)==wz==1))/((t^3-t)((((m-m^yx)/(m^2-m))*R_)List(K)^List(QGU))==((fracList(xy+cq^2+dq^4))List(xy+cq^2)))==Mod(((73x)*y),72)
+```
+
+These expressions SHALL be parsed as complete simultaneous constraint membranes, not as independent equations selected for convenient evaluation.
+
+Every token, equality/binding edge, radical, exponent, `List(...)` boundary, matrix/tensor boundary, ordered product, modular operation, named symbol, and parenthetical grouping SHALL remain reversible to the supplied source.
+
+Pass 219 SHALL reuse inherited Pass 169 whole-expression constraint-graph semantics and VM81 exact symbolic proof authority for these expressions rather than introducing a substitute evaluator.
+
+---
+
+# 55. Self-enforcement and cross-witness law
+
+The Lo Shu/global tensor is self-enforcing because the same admitted state is constrained through multiple independently preserved algebraic paths.
+
+The runtime SHALL preserve cross-witness relationships rather than pre-collapsing them to one scalar result.
+
+Examples include, where established by the active source graph:
+
+```text
+Fibonacci-square recurrence witnesses
+ordered genomic-product witnesses
+phase/permutation witnesses
+Lo Shu tensor-position witnesses
+modular witnesses
+P,pq,Δ,A,B,t,m closure witnesses
+Hash72 predecessor/receipt witnesses
+Hash216 hydration lineage
+```
+
+Agreement among independent paths SHALL be an exact closure condition. Disagreement SHALL remain visible as a failed, held, superposed, reciprocal-phase, modular-pivot, nesting-fold, or otherwise inherited typed constraint state; it SHALL NOT be hidden by approximate numeric agreement.
+
+The standard integer Lo Shu projection SHALL therefore be treated as an output/check view of the richer tensor, not its complete computational definition.
+
+---
+
+# 56. VM5184 phase-gear instruction manifold
+
+The inherited Pass 175 ordered phase-decode fabric SHALL be used directly.
+
+The canonical ordered basis is:
+
+```text
+B = (x,y,z,w,xy,yx,zw,wz)
+```
+
+Each VM81 cell SHALL expose the inherited ordered `8 × 8 = 64` operation positions over this basis. Across 81 cells:
+
+```text
+81 × 64 = 5,184
+```
+
+is the native phase-gear instruction-address manifold.
+
+The permanent address remains:
+
+```text
+s = 64*c + o
+```
+
+and the inherited control projection remains:
+
+```text
+q = 243*s + g
+```
+
+with `g` governed by G243.
+
+The 5,184 identities SHALL NOT be redefined as 5,184 Boolean bits or as a canonical binary contact matrix. A `72 × 72` mapping may be used as an exact positional/conformance projection because `72² = 5,184`, but it SHALL preserve and defer to the inherited `81 × 64` phase-operation identity.
+
+---
+
+# 57. High-level / low-level exact translation layers
+
+Pass 219 SHALL implement bidirectional, source-reversible translation between high-level mathematics and low-level VM81 phase-gear computation.
+
+The high-to-low path SHALL be:
+
+```text
+preserved HARMONICODE source
+→ typed CST/AST
+→ ordered simultaneous constraint graph
+→ exact symbolic/algebraic value objects
+→ genomic x,y,z,w phase operations
+→ Fibonacci-square / Lo Shu projection constraints
+→ complete global tensor membrane
+→ reusable C++ constraint program
+→ VM5184/G243 route
+→ C ABI
+→ VM81 candidate/admission
+```
+
+The low-to-high path SHALL reconstruct:
+
+```text
+admitted VM81 state
+→ ordered phase-operation witnesses
+→ exact tensor/constraint state
+→ exact symbolic values
+→ high-level expression identity
+→ reversible source linkage
+```
+
+A low-level computation is conforming only if the reconstructed high-level meaning is exactly equal to the admitted source/constraint meaning, not merely numerically close.
+
+---
+
+# 58. Required C++ exact types and synthesis surface
+
+In addition to every abstraction already required by sections 7–10, the C++ layer SHALL provide or reuse exact types logically equivalent to:
+
+```cpp
+ExactInteger
+ExactRational
+SymbolicRadical
+AlgebraicNumber
+SymbolicConstant
+ExactComplexBranch
+
+GenomicOperator       // x, y, z, w
+OrderedPhaseProduct   // xy, yx, zw, wz, and registered extensions
+Phase72
+QuarticPhase          // I^k / exact quartic phase identity
+Chirality
+ReciprocalPairRelation
+
+FibonacciSquare
+FibonacciDepth
+LoShuCell
+LoShuConstraintTensor
+
+ConstraintNode
+ConstraintEdge
+ConstraintMembrane
+ConstraintWitness
+
+VM5184Address
+G243Control
+VM81Candidate
+```
+
+These names are descriptive, not an authorization to duplicate an already-existing repository type. The Pass 214 census and inherited ABI registry SHALL decide whether each capability is reused, adapted, promoted, or newly implemented.
+
+No such C++ type may independently commit canonical state.
+
+---
+
+# 59. Z4/RNA compatibility reclassification
+
+Sections 11 and 35.1–35.2 remain required compatibility and conformance work; their tests SHALL NOT be deleted.
+
+However, the `A,C,G,U → Z4` representation SHALL no longer be treated as the deepest canonical genomic authority for Pass 219.
+
+The native genomic operator basis is:
+
+```text
+x,y,z,w
+```
+
+A conventional nucleotide alphabet or `Z4` representation MAY map to/from that basis only through an explicit, versioned, reversible adapter whose mapping is grounded in inherited or supplied source authority.
+
+No implementation may silently assume a particular `A,C,G,U ↔ x,y,z,w` assignment if the authoritative source has not frozen that assignment.
+
+Boolean RNA gates remain derived/compatibility projections over the richer constraint state. They SHALL NOT replace ordered genomic phase semantics.
+
+---
+
+# 60. Binary protein contact-plane reclassification
+
+Sections 16, 20, 35.5, T12, T14, and T15 remain required conformance fixtures and interoperability tests.
+
+The binary contact plane:
+
+```text
+C ∈ {0,1}^{72×72}
+```
+
+SHALL NOT be the canonical protein/molecular state representation.
+
+A canonical contact/fold relation SHALL be capable of preserving at minimum:
+
+```text
+source residue/object identity
+target residue/object identity
+ordered genomic pair/product
+chirality/orientation
+exact phase state
+Fibonacci-square/depth ancestry
+E6 witness/reflection ancestry
+fold/topology witness
+constraint closure state
+dependency frontier
+parent/lineage identity
+```
+
+A Boolean contact value is an optional exact projection of that richer relation.
+
+Reversing an ordered relation SHALL NOT erase information by forcing symmetry before the registered folding/contact profile explicitly proves an equivalent symmetric projection.
+
+---
+
+# 61. Hash72 / Hash216 phase hydration law
+
+Hash72 and Hash216 SHALL operate on the complete exact phase/tensor computation, not on a prematurely flattened binary result.
+
+The required authority order remains:
+
+```text
+candidate exact phase/tensor transition
+→ complete compound constraint enforcement
+→ VM81 admission
+→ Hash72 ordered execution receipt
+→ canonical receipt block
+→ Hash216 hydrated object/transition identity
+→ vector indexing / nearest-state continuation / buffer-cache reuse
+```
+
+Hash216 SHALL therefore function as the durable hydrated continuation identity for proven genomic phase-gear computation and its exact tensor ancestry.
+
+Nearest-state lookup, vector indexing, buffer cache, branch prediction, compiled ROM, and dependency-scoped continuation MAY reuse prior validated computation, but SHALL recompute the affected frontier and SHALL NOT bypass current VM81 admission or Hash72 commitment.
+
+---
+
+# 62. Native arithmetic translation policy
+
+Conventional arithmetic operations SHALL be treated as high-level names for exact transformations over the native phase/tensor substrate wherever the inherited runtime provides or Pass 219 proves such a lowering.
+
+This includes, subject to exact registered semantics:
+
+```text
+addition
+subtraction
+multiplication
+division
+modular reduction
+radicals
+algebraic-number operations
+complex square roots
+matrix/tensor operations
+phase rotation
+constraint comparison
+```
+
+Boolean operations and conventional assembly opcodes MAY lower into the same substrate as compatibility operations. They SHALL NOT be assumed more fundamental than the genomic phase operations.
+
+No domain-specific function SHALL become a new primitive if it can be expressed exactly as a composition of already-registered generic phase, tensor, graph, modular, or constraint operators.
+
+---
+
+# 63. Revised compounding hierarchy
+
+The earlier ordered word remains a valid high-level molecular conformance profile, but the lower-level authority beneath every stage is refined to:
+
+```text
+GENOMIC COMPLEX-PHASE ALGEBRA
+x,y,z,w / ordered products / chirality / I^k / u^k
+        ↓
+FIBONACCI-SQUARE INTEGER-PROJECTION ALGEBRA
+a²,b²,c²,d²,e²,...
+        ↓
+SELF-ENFORCING LO SHU / GLOBAL CONSTRAINT TENSOR
+        ↓
+GENERAL EXACT MATH / GRAPH / TENSOR TRANSFORMS
+        ↓
+E6 / PROTEIN / FRACTAL / ML / GRAPHICS / OTHER TYPED CONSUMERS
+        ↓
+VM5184 × G243 LOWERING
+        ↓
+VM81 ADMISSION
+        ↓
+HASH72
+        ↓
+HASH216
+```
+
+Therefore genomic phase algebra, Fibonacci-square projection, E6, folding, and packing SHALL NOT be implemented as parallel lanes. The phase/Fibonacci/Lo-Shu substrate is the shared lower-level algebra consumed by later typed constraints.
+
+---
+
+# 64. Additional mandatory conformance tests
+
+The Pass 219 test suite SHALL add at minimum:
+
+```text
+T39  preserve and parse wxy=x=√yx exactly
+T40  preserve and parse xyz=y=x³ exactly
+T41  preserve and parse yzw=z=x⁵ exactly
+T42  preserve and parse zwx=w=x⁷ exactly
+T43  enforce ordered zw=-wz=x⁸ relation without commutative collapse
+T44  preserve xy=a² as phase/Fibonacci/integer cross-witness identity
+T45  prove ordered xy/yx and zw/wz source identities remain distinct
+T46  prove reciprocal/mirror chirality metadata survives serialize/replay
+T47  prove inherited 8×8 ordered basis yields 64 positions per VM81 cell
+T48  prove all 81×64=5184 phase-operation addresses round-trip
+T49  prove G243 projection preserves phase-operation identity
+T50  preserve Fibonacci-square recurrence c²=a²+b² exactly
+T51  preserve Fibonacci-square recurrence d²=b²+c² exactly
+T52  preserve Fibonacci-square recurrence e²=c²+d²=b⁶ exactly
+T53  exact source round-trip of supplied Lo Shu tensor expression
+T54  exact source round-trip of both supplied global tensor expressions
+T55  prove standard Lo Shu integer view is derived without replacing source tensor
+T56  reject premature scalar collapse of independent Lo Shu cross-witnesses
+T57  exact symbolic sqrt(2) execution with no canonical IEEE value
+T58  exact scaled irrational execution independent of rational projection width
+T59  exact complex-square-root branch/orientation preservation
+T60  high→low→high exact semantic round-trip
+T61  Z4 adapter classified as compatibility rather than native genomic authority
+T62  binary contact map classified as projection rather than canonical fold state
+T63  Boolean/assembly lowering cannot bypass phase/tensor constraints
+T64  foreign x86/ARM/WASM/GPU representation cannot mint canonical state
+T65  Hash216 warm reuse recomputes affected phase/tensor dependency frontier
+T66  complete genomic/Fibonacci/Lo-Shu/global tensor program reaches VM81 only through C ABI
+```
+
+---
+
+# 65. Additional required negative tests
+
+Pass 219 SHALL additionally reject or fail closed on:
+
+```text
+sorting x,y,z,w operands to force commutativity
+collapsing xy and yx without proof
+collapsing zw and wz without proof
+removing the sign/orientation distinction in zw=-wz
+using ordinary exponent arithmetic to rewrite genomic phase identities without VM81 proof
+replacing xy=a² with a bare scalar before witness registration
+replacing Fibonacci-square symbols with anonymous integers before ancestry registration
+replacing the supplied Lo Shu tensor with a hard-coded 3×3 numeric table
+using a binary 72×72 contact map as canonical VM5184 state
+using Z4 as a silent substitute for x,y,z,w native genomic state
+using IEEE approximation to decide radical or complex-root equality
+losing complex branch/chirality identity during serialization
+foreign machine-code result treated as canonical without reverse exact reconstruction
+Hash216 cache hit used to skip affected phase/tensor constraint enforcement
+```
+
+---
+
+# 66. Revised implementation sequencing authority
+
+Section 42 remains preserved as the original planning sequence. The refined dependency order for implementation after this amendment SHALL be:
+
+```text
+Iteration 1  deep census of inherited x,y,z,w phase, VM81, Fibonacci/Lo-Shu, global-tensor, ABI, cache, and translation capabilities
+Iteration 2  source-preserving canonical corpus + exact C++ value/constraint types + stable C ABI bridge
+Iteration 3  native genomic x,y,z,w ordered phase/chirality operations over the inherited C runtime
+Iteration 4  Fibonacci-square integer-projection algebra + supplied self-enforcing Lo Shu/global tensor construction
+Iteration 5  high/low exact arithmetic translation including radicals, algebraic numbers, complex roots, matrices, tensors, and Boolean compatibility
+Iteration 6  exact E6 algebra over the shared phase/Fibonacci/Lo-Shu substrate
+Iteration 7  protein-fold topology and nonbinary ordered contact-state integration
+Iteration 8  fractal packing + VM5184/G243 lowering + Hash72/Hash216 hydration/delta/cache integration
+Iteration 9  foreign ISA, Z4, binary contact, TypeScript/Python, UI, ML, and other compatibility adapters
+Iteration 10 full compound benchmarks, negative tests, deterministic replay/reverse/recovery, and terminal closure evidence
+```
+
+Each iteration SHALL be restartable from repository-visible state and SHALL preserve every previously validated unaffected layer.
+
+---
+
+# 67. Additional completion requirements
+
+Pass 219 SHALL NOT receive terminal classification until executable evidence additionally proves:
+
+```text
+x,y,z,w are implemented as native ordered genomic phase operators
+supplied genomic relations are source-preserved and VM81-enforced
+xy=a² is preserved as a cross-witness bridge rather than a preprocessing substitution
+Fibonacci-square variables drive the exact Lo Shu integer projection
+supplied self-enforcing Lo Shu expression is the canonical source rather than a replacement numeric matrix
+the complete supplied global tensor expressions are parsed and enforced as simultaneous membranes
+irrational/algebraic/radical values remain exact without canonical IEEE approximation
+complex square-root branch and phase/chirality identity are exact and reversible
+81×64 VM5184 phase-gear addressing remains authoritative over binary projections
+G243 control remains inherited and unredefined
+Boolean/binary/foreign machine-code semantics are compatibility projections, not native HHS authority
+high-level math and low-level phase computation round-trip exactly
+C++ remains synthesis/constraint enforcement while C/VM81 remains the single commit authority
+Hash72 receipt ordering and Hash216 hydrated continuation remain intact
+all original T01–T38 tests and added T39–T66 tests pass
+all original and added negative tests pass
+```
+
+The final terminal classification remains unchanged:
+
+```text
+HHS_PASS_219_CPP_COMPOUND_SYMBOLIC_CONSTRAINT_RUNTIME_VERIFIED
+```
+
+No contract text alone assigns that classification.
