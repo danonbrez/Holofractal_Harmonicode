@@ -63,16 +63,5 @@
     "actual_pass163_pass164_integration": true,
     "independent_real_format_pdf": true,
     "independent_real_format_png": true,
-    "independent_real_format_wav": true,
-    "independent_real_format_mp4": true,
-    "source_byte_preservation": true,
-    "exact_source_span_bounds": true,
-    "deterministic_multimodal_replay": true,
-    "durable_crash_interruption": true,
-    "incomplete_tail_quarantine": true,
-    "complete_record_tamper_rejection": true,
-    "main_integration": true,
-    "terminal_verification": true
-  },
-  "integrity_note": "GitHub blob, workflow, artifact and merge identities are authoritative for repository-published evidence. Generated media fixtures are test-time artifacts and are not committed."
+    "independent_real_format_wav": true_5repository-published evidence. Generated media fixtures are test-time artifacts and are not committed."
 }
