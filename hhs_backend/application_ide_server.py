@@ -37,7 +37,7 @@ from hhs_backend.runtime.hhs_pass201_public_api_federation import register_publi
 
 app = pass174.app
 app.title = "HHS Safe Open Cloud Computer IDE"
-app.version = "4.5.3"
+app.version = "4.5.4"
 app.description = (
     "Full integrated development environment and safe open cloud computer for real web applications, "
     "games, calculators, documents, audio, video, multimodal projects, HARMONICODE, multi-target "
@@ -59,6 +59,7 @@ PASS175_FINAL_STATUS_PATHS = frozenset({
     PASS175_BOUNDED_STATUS_PATH,
     PASS175_MATERIALIZED_STATUS_PATH,
 })
+FINAL_HEALTH_PATHS = frozenset({"/health", "/api/health"})
 
 
 def _has_route_prefix(prefix: str) -> bool:
@@ -115,8 +116,6 @@ async def final_pass175_bounded_status() -> dict[str, Any]:
 # materializes all 5,184 permanent instructions. Replace only the three status
 # surfaces with the current bounded authority module. Hydration, execution,
 # terminal, firmware, device, and WebSocket routes retain their inherited owners.
-# The two non-materializing reads are coroutine endpoints, so inherited
-# synchronous probes cannot starve their acceptance path in Starlette's pool.
 app.router.routes = [
     route
     for route in app.router.routes
@@ -167,7 +166,7 @@ async def application_ide_liveness() -> dict[str, Any]:
     runtime = production._runtime_authority_status()
     authority_ready = bool(runtime.get("ok"))
     return {
-        "schema": "HHS_FULL_APPLICATION_IDE_LIVENESS_V3",
+        "schema": "HHS_FULL_APPLICATION_IDE_LIVENESS_V4",
         "ok": True,
         "status": "HHS_SAFE_OPEN_CLOUD_IDE_SERVICE_REACHABLE",
         "service_available": True,
@@ -187,6 +186,9 @@ async def application_ide_liveness() -> dict[str, Any]:
         "runtime_authority": runtime,
         "runtime_authority_source": RUNTIME_AUTHORITY_STATUS_PATH,
         "runtime_readiness_uses_committed_live_projection": True,
+        "health_route_owner": "FINAL_APPLICATION_IDE_BOUNDED_LIVENESS",
+        "health_routes_deduplicated": True,
+        "status_read_is_bounded": True,
         "routes": {
             "workspace": _has_route_prefix("/api/runtime/workspace"),
             "development_lifecycle": _has_route_prefix("/api/runtime/development"),
@@ -209,22 +211,29 @@ async def application_ide_liveness() -> dict[str, Any]:
     }
 
 
-if not _has_exact_route("/health"):
-    app.add_api_route(
-        "/health",
-        application_ide_liveness,
-        methods=["GET", "HEAD"],
-        include_in_schema=False,
-        name="hhs-full-ide-health",
-    )
-if not _has_exact_route("/api/health"):
-    app.add_api_route(
-        "/api/health",
-        application_ide_liveness,
-        methods=["GET", "HEAD"],
-        include_in_schema=False,
-        name="hhs-full-ide-api-health",
-    )
+# Health has accumulated several inherited owners across production overlays.
+# Merely checking whether a health path exists is unsafe because Starlette uses
+# first-match routing. Remove every inherited owner after federation, then add
+# exactly one event-loop-native bounded liveness owner for both canonical paths.
+app.router.routes = [
+    route
+    for route in app.router.routes
+    if str(getattr(route, "path", "")) not in FINAL_HEALTH_PATHS
+]
+app.add_api_route(
+    "/health",
+    application_ide_liveness,
+    methods=["GET", "HEAD"],
+    include_in_schema=False,
+    name="hhs-full-ide-health",
+)
+app.add_api_route(
+    "/api/health",
+    application_ide_liveness,
+    methods=["GET", "HEAD"],
+    include_in_schema=False,
+    name="hhs-full-ide-api-health",
+)
 
 if RUNTIME_CONSOLE_ROOT.is_dir():
     app.mount(
@@ -286,6 +295,8 @@ pass174.PASS174_BOOT_STATE.update({
     "api_fallback_deferred_for_integrated_passes": bool(_deferred_api_fallback_routes),
     "lightweight_health_route": "/health",
     "lightweight_api_health_route": "/api/health",
+    "health_routes_deduplicated": True,
+    "health_route_owner": "FINAL_APPLICATION_IDE_BOUNDED_LIVENESS",
     "runtime_authority_route": RUNTIME_AUTHORITY_STATUS_PATH,
     "runtime_authority_route_deduplicated": True,
     "runtime_readiness_uses_committed_live_projection": True,
