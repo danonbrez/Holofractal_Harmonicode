@@ -2,7 +2,7 @@
   "contract": "HHS-P215-I15-CERTIFIED-EXACT-GREEDY-LOGIT-SELECTION",
   "pass": 215,
   "iteration": 15,
-  "status": "SOURCE_EXECUTION_PENDING_EXACT_HEAD_VALIDATION",
+  "status": "SOURCE_EXECUTION_VALIDATED_CLOSURE_REPLAY_REQUIRED",
   "inherits": {
     "iteration14_closure_head": "9780b711fdcfa6624dc9e787b140920ca3f5f875",
     "iteration14_closure_tree": "9475d1053c08f4ae6195d28407dffc86b97c6113",
@@ -56,6 +56,35 @@
     "sin_cos": "RATIONAL_TAYLOR_WITH_EXPLICIT_LAGRANGE_REMAINDER_BOUND",
     "linear_q4_q8": "EXACT_BINARY16_RATIONAL_SCALE_TIMES_INTEGER_CODES_OVER_INTERVAL_INPUTS",
     "point_transcendental_values_authorized": false
+  },
+  "validated_source_execution": {
+    "validated_source_head": "f97c8d5443de98a95b65d90a0c50fb4774c006ac",
+    "validated_source_tree": "9d3f9b94dc5fe8830e3b1b3a0dbeb42866f039a2",
+    "workflow_run": 31273839543,
+    "workflow_job": 93144120787,
+    "cumulative_test_count": 144,
+    "selected_token_id": 450,
+    "selected_token": "▁The",
+    "selected_symbolic_logit_root_hash216": "06174888c09ddb16bed56f92c0291e0bc1becd5b5baa883fcbc2375268348764",
+    "strongest_competitor_token_id": 319,
+    "strongest_competitor_token": "▁A",
+    "strict_margin_lower_bound": {
+      "numerator": 70720847530373533701037217556150495820946814614155944479330263861023836594083,
+      "denominator": 115792089237316195423570985008687907853269984665640564039457584007913129639936
+    },
+    "complete_logit_interval_suite_root_hash216": "fe97babc80b71deee97250110d2bf6c50f5e51437ae53d16c745d51c5dc9e996",
+    "selection_root_hash216": "aac3225975c44b9b761dd131afedfc01123a3c5da187f76bd9de5c9bf2abee94",
+    "append_forward_root_hash216": "f1757269ee3ed98a67434c799a89750da26dcaa11be9ce688a093d52febb5a75",
+    "final_symbolic_dag_root_hash216": "148a87ea757e33ce2769939e58c09033ccf14b569143828ebb6e875d8af22c9c",
+    "greedy_forward_root_hash216": "36433241bb31e511fc24c60290bf56171cbe6b11d9efc8c3802318c71d0f7c8d",
+    "suite_root_hash216": "40b5abf2ba4ecee376e7e8753ab87fef733ba9868e47a8114949a5010f6e234d",
+    "evidence_root_hash216": "d04d5153a22883c01f1ac9f879ba46fa8afbebb4214692bf83e492091b5aca12",
+    "receipt_hash72": "uzxAvsD/x7Kj*upEF-sxHn-DYcdOuOaWqRHGh!KaarjdEzkg!-kW?J<cw8oik4W!Qf29PoOT",
+    "cross_process_replay": true,
+    "semantic_exactness": true,
+    "artifact_id": 9026475628,
+    "artifact_size_bytes": 21493,
+    "artifact_sha256": "2d6abd1e58b6144619a5ad02217e8e52c7a55331d2900b8b82b90996aecbcd0e"
   },
   "constraints": {
     "hash_identity_order_used_as_greedy_authority": false,
