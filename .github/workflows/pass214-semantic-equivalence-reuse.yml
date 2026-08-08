@@ -6,6 +6,7 @@ on:
     branches: [main]
     paths:
       - 'hhs_backend/runtime/hhs_pass214_semantic_equivalence_v1.py'
+      - 'hhs_backend/runtime/hhs_pass214_semantic_equivalence_v2.py'
       - 'hhs_backend/runtime/hhs_pass214_reusable_operation_registry_v1.py'
       - 'tools/pass214_semantic_equivalence_reconciliation.py'
       - 'tests/test_hhs_pass214_semantic_equivalence_v1.py'
@@ -17,6 +18,7 @@ on:
       - agent/pass214-semantic-equivalence-reuse-v1
     paths:
       - 'hhs_backend/runtime/hhs_pass214_semantic_equivalence_v1.py'
+      - 'hhs_backend/runtime/hhs_pass214_semantic_equivalence_v2.py'
       - 'hhs_backend/runtime/hhs_pass214_reusable_operation_registry_v1.py'
       - 'tools/pass214_semantic_equivalence_reconciliation.py'
       - 'tests/test_hhs_pass214_semantic_equivalence_v1.py'
@@ -46,6 +48,7 @@ jobs:
       - name: Compile reconciliation implementation
         run: |
           python -m py_compile hhs_backend/runtime/hhs_pass214_semantic_equivalence_v1.py
+          python -m py_compile hhs_backend/runtime/hhs_pass214_semantic_equivalence_v2.py
           python -m py_compile hhs_backend/runtime/hhs_pass214_reusable_operation_registry_v1.py
           python -m py_compile tools/pass214_semantic_equivalence_reconciliation.py
       - name: Run targeted reconciliation tests
@@ -76,6 +79,7 @@ jobs:
           print('REUSABLE_REGISTRY_ENTRIES', s['reusable_registry_entries'])
           print('MIGRATION_ACTIONS', json.dumps(s['migration_action_counts'], sort_keys=True))
           print('PROJECTION_SURFACES_FILTERED', s['projection_surfaces_removed_from_implementation_backlog'])
+          print('SEMANTIC_ALIAS_ISOLATED_RETURNED', s['semantic_alias_only_isolated_records_returned_to_backlog'])
           print('ISOLATED_COVERED', s['isolated_candidates_covered_by_proven_reuse_or_promotion'])
           print('ISOLATED_REMAINING', s['isolated_candidates_remaining_reusable_extraction_backlog'])
           print('RECONCILIATION_SHA256', d['reconciliation_sha256'])
