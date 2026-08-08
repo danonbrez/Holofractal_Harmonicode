@@ -16,36 +16,36 @@ def test_frozen_iteration17_chain_has_seven_tokens():
 
 
 def test_policy_is_bounded_and_no_sampling():
-    p=i18._policy(); assert p['max_new_tokens']==7; assert p['max_context_tokens']==11
+    p=i18.v1._policy(); assert p['max_new_tokens']==7; assert p['max_context_tokens']==11
     assert p['stop_token_ids']==[2]; assert p['sampling_authorized'] is False
     assert p['unbounded_generation_authorized'] is False
 
 
 def test_policy_rejects_larger_generation_bound():
     with pytest.raises(i18.Pass215Iteration18ValidationError,match='MAX_NEW_TOKENS_OUTSIDE_CONTRACT'):
-        i18._policy(max_new_tokens=8)
+        i18.v1._policy(max_new_tokens=8)
 
 
 def test_policy_rejects_alternate_stop_tokens():
     with pytest.raises(i18.Pass215Iteration18ValidationError,match='STOP_TOKEN_POLICY_OUTSIDE_CONTRACT'):
-        i18._policy(stop_token_ids=(1,))
+        i18.v1._policy(stop_token_ids=(1,))
 
 
 def test_termination_stop_token_precedes_other_bounds():
-    assert i18.evaluate_termination(2,7,i18._policy()) == i18.TERMINATION_STOP_TOKEN
+    assert i18.evaluate_termination(2,7,i18.v1._policy()) == i18.TERMINATION_STOP_TOKEN
 
 
 def test_termination_max_new_tokens():
-    assert i18.evaluate_termination(278,7,i18._policy()) == i18.TERMINATION_MAX_NEW_TOKENS
+    assert i18.evaluate_termination(278,7,i18.v1._policy()) == i18.TERMINATION_MAX_NEW_TOKENS
 
 
 def test_termination_continues_before_bound():
-    assert i18.evaluate_termination(450,1,i18._policy()) == i18.TERMINATION_CONTINUE
+    assert i18.evaluate_termination(450,1,i18.v1._policy()) == i18.TERMINATION_CONTINUE
 
 
 def test_float_rejected_recursively():
     with pytest.raises(i18.Pass215Iteration18ValidationError,match='FLOAT_FORBIDDEN'):
-        i18._reject_floats({'checkpoint':{'bad':[1,2.0]}})
+        i18.v1._reject_floats({'checkpoint':{'bad':[1,2.0]}})
 
 
 def test_checkpoint_split_is_inside_bound():
