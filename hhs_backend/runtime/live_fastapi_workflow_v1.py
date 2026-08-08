@@ -3,17 +3,23 @@ HHS Live FastAPI Workflow v1
 ============================
 
 Pass 045 lifecycle controller for the authoritative FastAPI runtime. It owns a
-bounded background tick loop that emits real kernel output through the canonical
+bounded live kernel workflow that emits real kernel output through the canonical
 four websocket channels. Node/Vite remains a GUI/proxy surface only.
 
 The live cognition coordinator is downstream of committed kernel execution. It
 may index, replay, predict, and align goals, but it receives no VM81 mutation
 authority.
+
+Production quiescence rule:
+- one real startup tick is required to establish runtime/receipt authority;
+- continuous background kernel ticking is opt-in via HHS_RUNTIME_AUTO_TICK=1;
+- cognition processing is opt-in via HHS_COGNITION_AUTO_TICK=1.
 """
 
 from __future__ import annotations
 
 import asyncio
+import os
 from dataclasses import dataclass, field
 from typing import Any, Dict, Mapping, Optional
 
@@ -28,6 +34,16 @@ from hhs_python.runtime.hhs_runtime_emulator import HHSCEmulator
 
 VERSION = "PASS_045_LIVE_FASTAPI_KERNEL_RUNTIME_V1"
 WORKFLOW_SCHEMA = "HHS_LIVE_FASTAPI_WORKFLOW_V1"
+
+_TRUE_VALUES = frozenset({"1", "true", "yes", "on"})
+
+
+def _env_enabled(name: str, *, default: bool = False) -> bool:
+    value = os.environ.get(name)
+    if value is None:
+        return bool(default)
+    return value.strip().lower() in _TRUE_VALUES
+
 
 register_cognition_routes()
 install_agent_index_hooks(live_cognition_runtime)
@@ -46,12 +62,32 @@ class LiveFastAPIRuntimeWorkflow:
     _last_emission: Optional[Dict[str, Any]] = None
     _last_cognition: Optional[Dict[str, Any]] = None
     _errors: list[str] = field(default_factory=list)
+    _continuous_tick_requested: bool = field(default=False, init=False)
 
     def __post_init__(self):
         self.bridge = LiveKernelEventBridge(self.runtime_emulator)
+
+        # Preserve the caller's request as evidence, but do not permit an old
+        # server composition that passes auto_start=True to silently create an
+        # idle background compute loop. Continuous ticking requires an explicit
+        # deployment/runtime opt-in.
+        self._continuous_tick_requested = bool(self.auto_start)
+        self.auto_start = bool(
+            self._continuous_tick_requested
+            and _env_enabled("HHS_RUNTIME_AUTO_TICK", default=False)
+        )
+
         if self.cognition_runtime is None:
             self.cognition_runtime = live_cognition_runtime
         if self.cognition_runtime is not None:
+            # The coordinator historically defaulted its own flag to enabled.
+            # Enforce the production-safe policy at the workflow authority so
+            # every server composition is quiescent unless explicitly opted in.
+            if hasattr(self.cognition_runtime, "enabled"):
+                self.cognition_runtime.enabled = _env_enabled(
+                    "HHS_COGNITION_AUTO_TICK",
+                    default=False,
+                )
             install_agent_index_hooks(self.cognition_runtime)
 
     async def start(self) -> Dict[str, Any]:
@@ -63,9 +99,10 @@ class LiveFastAPIRuntimeWorkflow:
                 await asyncio.to_thread(self.cognition_runtime.initialize)
 
             # Runtime authority is not ready merely because a task was scheduled.
-            # Complete one real emulator tick, Hash72 receipt, runtime-state hash,
-            # graph ingress, cognition pass, and four-channel propagation before
-            # startup returns or health may classify the workflow as online.
+            # Complete exactly one real startup tick, Hash72 receipt, runtime-state
+            # hash and graph ingress before startup returns. Cognition observes this
+            # tick only when explicitly enabled. Further ticks are user/API driven
+            # unless HHS_RUNTIME_AUTO_TICK=1 is explicitly configured.
             if self._tick_count == 0 or not self._last_emission:
                 await self.tick_once({"source": "live_fastapi_workflow.startup"})
 
@@ -105,7 +142,7 @@ class LiveFastAPIRuntimeWorkflow:
         # Kernel execution, packet projection, and graph ingestion are genuine
         # synchronous workloads. Keep them off the FastAPI event loop so live
         # health, authority, UI, and websocket requests remain serviceable while
-        # the next reusable continuation snapshot is computed.
+        # an explicitly requested transition is computed.
         emission = await self.bridge.emit_tick_event(instruction=instruction)
         self._tick_count += 1
 
@@ -138,12 +175,7 @@ class LiveFastAPIRuntimeWorkflow:
         return record
 
     def authority_status(self) -> Dict[str, Any]:
-        """Return the bounded public authority projection for HTTP health reads.
-
-        The full internal status intentionally retains cognition and emission
-        evidence for diagnostics. Public readiness must never serialize those
-        expanding payloads while the next continuation tick is executing.
-        """
+        """Return the bounded public authority projection for HTTP health reads."""
 
         last_emission = dict(self._last_emission or {})
         receipt_ready = bool(
@@ -163,12 +195,22 @@ class LiveFastAPIRuntimeWorkflow:
             )
             if last_emission.get(key) is not None
         }
+        cognition_enabled = bool(
+            getattr(self.cognition_runtime, "enabled", False)
+            if self.cognition_runtime is not None
+            else False
+        )
         return {
             "schema": "HHS_LIVE_FASTAPI_WORKFLOW_AUTHORITY_STATUS_V1",
             "version": VERSION,
             "running": self._running,
             "authority_ready": bool(self._running and receipt_ready),
             "background_task_active": self._task is not None and not self._task.done(),
+            "continuous_tick_requested": self._continuous_tick_requested,
+            "continuous_tick_enabled": self.auto_start,
+            "continuous_tick_requires_explicit_opt_in": True,
+            "cognition_auto_tick_enabled": cognition_enabled,
+            "cognition_auto_tick_requires_explicit_opt_in": True,
             "tick_count": self._tick_count,
             "receipt_ready": receipt_ready,
             "last_emission": committed_emission,
@@ -196,6 +238,9 @@ class LiveFastAPIRuntimeWorkflow:
             "running": authority["running"],
             "authority_ready": authority["authority_ready"],
             "background_task_active": authority["background_task_active"],
+            "continuous_tick_requested": authority["continuous_tick_requested"],
+            "continuous_tick_enabled": authority["continuous_tick_enabled"],
+            "cognition_auto_tick_enabled": authority["cognition_auto_tick_enabled"],
             "tick_count": authority["tick_count"],
             "last_emission": self._last_emission,
             "last_cognition": self._last_cognition,
@@ -232,6 +277,7 @@ def live_fastapi_workflow_self_test() -> Dict[str, Any]:
                 and workflow_status.get("receipt_ready")
                 and authority_status.get("payload_bounded")
                 and not authority_status.get("full_cognition_payload_included")
+                and not authority_status.get("background_task_active")
             ),
             "cognition_ok": cognition_ok,
             "emission": emission,
