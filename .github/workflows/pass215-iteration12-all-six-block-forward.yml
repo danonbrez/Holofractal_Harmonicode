@@ -62,7 +62,7 @@ jobs:
       - name: Install validation dependency
         run: python -m pip install pytest
 
-      - name: Enforce frozen Iteration 11 inheritance and authority boundaries
+      - name: Enforce frozen Iteration 11 inheritance and source identities
         run: |
           python - <<'PY'
           import json
@@ -70,25 +70,28 @@ jobs:
           contract = json.loads(Path('contracts/pass215/PASS_215_ITERATION_12_CONTRACT.json').read_text())
           inherits = contract['inherits']
           workload = contract['authenticated_workload']
-          prefix = contract['prefix_preservation']
-          sequence = contract['sequential_execution']
+          source = contract['validated_source_execution']
           constraints = contract['constraints']
           assert inherits['iteration11_closure_head'] == '0c01c900b4d9afa6f741c86a5bcb61d5ddf613e7'
           assert inherits['iteration11_closure_tree'] == 'bb301228b067a2eab031ad974bc5605c9af003a3'
-          assert inherits['iteration11_architecture_root_hash216'] == '6f2837183d79c1fc751822e05eac06b4d4711c12c89c7a955bf77ecea32fcc52'
-          assert inherits['iteration11_two_block_forward_root_hash216'] == '608e136d9080e8b109b4450b1985f8b456f052a8540ea07461a96b04d010a1ff'
           assert inherits['iteration11_suite_root_hash216'] == 'cc62c770950310e1331636dd5fff2b2a0c3ca17e4a3499aae4d6dcd2ae147de8'
           assert inherits['iteration11_evidence_root_hash216'] == '610aa83b8b794d7055400df8bcb63be652d90f1d4659c839bc3d58c3a6402942'
-          assert inherits['iteration11_closure_artifact_sha256'] == '16f5898d8df2f707d85f504f47eb83948fcd0f232a48c81a8e07851c7a291255'
           assert workload['authenticated_block_count'] == 6
           assert workload['required_block_order'] == [0, 1, 2, 3, 4, 5]
           assert workload['required_stage_count'] == 126
           assert workload['required_block_tensor_count'] == 54
-          assert prefix['iteration11_two_block_prefix_must_reexecute_before_extension'] is True
-          assert sequence['shared_hash_consed_symbolic_dag_required'] is True
-          assert sequence['all_adjacent_block_inputs_must_equal_previous_outputs'] is True
-          assert sequence['required_adjacent_links'] == 5
-          assert sequence['total_causal_qk_edges'] == 360
+          assert source['all_block_binding_root_hash216'] == '35d820643d7fcb06cb085cd27d220e3485737b770eb6cb015ccd4b229ef95d74'
+          assert source['sequential_chain_root_hash216'] == 'dec707625c00d81a7057b2a36c7f0d2505ac32e17590417a7c96977a804459e7'
+          assert source['all_stage_suite_root_hash216'] == 'a03f033dfba165aebe427199d25925a601101108c5824d59b7c5ea41346010e3'
+          assert source['all_causal_attention_root_hash216'] == '9451874aabe8083676b44fa228642f16c108705af1cbd05cb2cef8dd431842fb'
+          assert source['final_block_output_root_hash216'] == '374646cb52aa186358dab2ee8d2f9a5ee023234603c05fdef2c534fa0f2b9ad4'
+          assert source['full_symbolic_dag_root_hash216'] == 'f024c2a858f25b86ccd4f21adb0dcbc1d51234472565aa83a958bafc6ca6a2dd'
+          assert source['all_block_forward_root_hash216'] == '0b0ca3bb2a28be60de6a5e783ba583bc3cc0ef3be5211be98ea08bf687139c4e'
+          assert source['suite_root_hash216'] == '77e585b4d7604da8222b9d070a6b26e27a3a9bac7a86f5247882cfee6cfcf5a0'
+          assert source['evidence_root_hash216'] == '4eab17d68688073ca47c1fba115ed1fee5f78484538bf4ef8fcf462ae21581f0'
+          assert source['receipt_hash72'] == 'BUDqOLYVgj8Wst5qWsfXL3atMEsax6uhjs-BOQjajv<cWn?hBEUW8wIb-1(drPEMx?VtVdM7'
+          assert source['cross_process_replay'] is True
+          assert source['semantic_exactness'] is True
           assert constraints['all_model_blocks_executed'] is True
           assert constraints['full_model_forward_executed'] is False
           assert constraints['final_output_norm_executed'] is False
@@ -144,7 +147,7 @@ jobs:
             --compare-replay "$ROOT/PASS_215_ITERATION_12_A.json" "$ROOT/PASS_215_ITERATION_12_B.json" \
             --output "$ROOT/PASS_215_ITERATION_12_CROSS_PROCESS_VALIDATION.json"
 
-      - name: Enforce all-six-block source closure and print terminal roots
+      - name: Enforce frozen all-six-block identities and print terminal roots
         run: |
           python - <<'PY'
           import json
@@ -153,47 +156,85 @@ jobs:
           root = Path(os.environ['RUNNER_TEMP']) / 'pass215-i12'
           evidence = json.loads((root / 'PASS_215_ITERATION_12_A.json').read_text())
           replay = json.loads((root / 'PASS_215_ITERATION_12_CROSS_PROCESS_VALIDATION.json').read_text())
-          assert evidence['source']['file_sha256'] == os.environ['PASS215_I12_MODEL_SHA256']
           arch = evidence['authenticated_architecture']
           bindings = evidence['authenticated_all_block_tensor_bindings']
           forward = evidence['sequential_all_block_forward']
-          assert arch['architecture'] == 'llama'
+          expected_bindings = {
+              'blk.0': 'bc225999c88110bd47e1ceceecc96d8ef9e8ec0752ddf659a9a4c35647109bff',
+              'blk.1': '3f55a20a7d34b45f6b73ab4e6f0ff138a8fd1e5de74fe259ae5a3a7ed8ba1087',
+              'blk.2': '0f52148cf5ad261d31edc95376654d02a3bb1d7e9ed68b166ecbb27e545b24f0',
+              'blk.3': '471caffce807f9b0d67432da3f1efefdb1b0e4a62089e63512abab54da3974a5',
+              'blk.4': '471f694fc5b0d1dadd340f655daef6f53dedf104ad796746466d4b7b7b3a8d5d',
+              'blk.5': 'e7d609fed671fbe01add41980700d956a4f5b375c078ea73c214d41ecbc7917e',
+          }
+          expected_links = [
+              'ec7a6b35493f55dc5b7df8099f0ff9aa402d51fea15f67c59c8b3a9fc6294074',
+              '166550c5e660ac71429c97b72728a881b2ead8f937cc68bcbc7a6b6401ed896e',
+              'b599a2a443a49de7ecb10472b6978d081b918aad591967a835373f4205bee3c2',
+              '8d2fac1d4a00c37fc59adf1410f136852ea1e68e8e7bc2717cc202461039d574',
+              '4ae74c23fd083c04f9b9d068602542b3fd71617ca147e1518456c357c2873640',
+          ]
+          expected_stage = {
+              'blk.0': 'a879c3c00ddaee609ea62768ed6de06eb450fa2331eb05f1c8b30c19bfbbb065',
+              'blk.1': 'f3b9c1886d9b37c9b4b1de974c57936f79e1aea8520d403e34495688ef9810d0',
+              'blk.2': '5843b5bb6e80d216f6b1c35a4441a87e2a1a80e19d222951ba98f28193c29920',
+              'blk.3': 'f40e52d8203cb959fa7c40dad7922a0568be22ace3d78ccc2a1ca81e081dd238',
+              'blk.4': '54eeb23326de0a82cff1575b49588d2546df3ac715970f79ee91e70cc1ba2a9d',
+              'blk.5': '9deba28f9389c90f0c1f4f09bc46bde6b3eb552086330d4aa2a0c72f54114102',
+          }
+          expected_causal = {
+              'blk.0': 'e3746a9aab00dec1fd0c64cde4618fbc3b7e19d549a3107d4a5fce363b470ea2',
+              'blk.1': 'd780232058b51855ba95a7696b6bee57840602a3f883e2a8a7b3039979aada64',
+              'blk.2': 'ea382071e00d6399145d1f1e68c74215c4f32eb57ee1e11bb079c8135d42f161',
+              'blk.3': 'd27941706542a66d989e7d983c3f38b5ff66ee2999ffdecb737136fb46b25fc0',
+              'blk.4': '925a786638e1ab62caecb31657c6f4ae45ce0911432819e8de19392ed24377c0',
+              'blk.5': '514a2e63aa812b370a8a67ed86cbb7b8b5e0b001e554e538d28be830bba936da',
+          }
+          expected_output = {
+              'blk.0': '05390b8c68285aa810bb8a1b37ea9f14dbf022709047a75ae402d50db5ca3a87',
+              'blk.1': 'd88fac2044fbca53f8d4a397a39ae4f6e5de4b82fdad39e3eafbee9fde0025bb',
+              'blk.2': '6079e31b6e1944241bc5daef392c1b1f2357a2e66841369450748000ea9b55c2',
+              'blk.3': '57cb933c556a8089a9580e7067cb9d2745752767ba253104f35c4c313b1a74b4',
+              'blk.4': '87a4b8d3d9b0de9f3842c5d00ea4c16c2c4b9c4383f7ee8223a94bd7e4f35d5e',
+              'blk.5': '374646cb52aa186358dab2ee8d2f9a5ee023234603c05fdef2c534fa0f2b9ad4',
+          }
+          assert evidence['source']['file_sha256'] == os.environ['PASS215_I12_MODEL_SHA256']
           assert arch['block_count'] == 6
           assert arch['architecture_root_hash216'] == '6f2837183d79c1fc751822e05eac06b4d4711c12c89c7a955bf77ecea32fcc52'
-          assert bindings['block_count_bound'] == 6
-          assert bindings['required_tensor_count'] == 54
-          assert forward['block_order'] == [0, 1, 2, 3, 4, 5]
-          assert forward['executed_block_count'] == 6
-          assert forward['stage_count'] == 126
-          assert forward['all_adjacent_inputs_equal_previous_outputs'] is True
-          assert len(forward['sequential_links']) == 5
-          assert all(link['exact'] is True for link in forward['sequential_links'])
-          prefix = forward['iteration11_prefix']
-          assert prefix['blk0_binding_root_hash216'] == 'bc225999c88110bd47e1ceceecc96d8ef9e8ec0752ddf659a9a4c35647109bff'
-          assert prefix['blk1_binding_root_hash216'] == '3f55a20a7d34b45f6b73ab4e6f0ff138a8fd1e5de74fe259ae5a3a7ed8ba1087'
-          assert prefix['blk0_to_blk1_sequential_link_root_hash216'] == 'ec7a6b35493f55dc5b7df8099f0ff9aa402d51fea15f67c59c8b3a9fc6294074'
-          assert prefix['blk1_stage_suite_root_hash216'] == 'f3b9c1886d9b37c9b4b1de974c57936f79e1aea8520d403e34495688ef9810d0'
-          assert prefix['blk1_causal_attention_root_hash216'] == 'd780232058b51855ba95a7696b6bee57840602a3f883e2a8a7b3039979aada64'
-          assert prefix['blk1_final_output_root_hash216'] == 'd88fac2044fbca53f8d4a397a39ae4f6e5de4b82fdad39e3eafbee9fde0025bb'
-          assert prefix['two_block_symbolic_dag_root_hash216'] == 'b8f9fdbe81cc718b3c59fcb43dd8ca590d7aaf17802f0a957640c00cf4837cbd'
-          assert prefix['two_block_forward_root_hash216'] == '608e136d9080e8b109b4450b1985f8b456f052a8540ea07461a96b04d010a1ff'
+          assert bindings['block_binding_roots'] == expected_bindings
+          assert bindings['all_block_binding_root_hash216'] == '35d820643d7fcb06cb085cd27d220e3485737b770eb6cb015ccd4b229ef95d74'
+          assert [x['link_root_hash216'] for x in forward['sequential_links']] == expected_links
+          assert forward['sequential_chain_root_hash216'] == 'dec707625c00d81a7057b2a36c7f0d2505ac32e17590417a7c96977a804459e7'
+          assert forward['per_block_stage_roots'] == expected_stage
+          assert forward['per_block_causal_attention_roots'] == expected_causal
+          assert forward['per_block_final_output_roots'] == expected_output
+          assert forward['all_stage_suite_root_hash216'] == 'a03f033dfba165aebe427199d25925a601101108c5824d59b7c5ea41346010e3'
+          assert forward['all_causal_attention_root_hash216'] == '9451874aabe8083676b44fa228642f16c108705af1cbd05cb2cef8dd431842fb'
+          assert forward['final_block_output_root_hash216'] == '374646cb52aa186358dab2ee8d2f9a5ee023234603c05fdef2c534fa0f2b9ad4'
+          assert forward['symbolic_dag']['ordered_node_root_hash216'] == 'f024c2a858f25b86ccd4f21adb0dcbc1d51234472565aa83a958bafc6ca6a2dd'
+          assert forward['all_block_forward_root_hash216'] == '0b0ca3bb2a28be60de6a5e783ba583bc3cc0ef3be5211be98ea08bf687139c4e'
+          assert evidence['all_six_block_suite_root_hash216'] == '77e585b4d7604da8222b9d070a6b26e27a3a9bac7a86f5247882cfee6cfcf5a0'
+          assert evidence['evidence_root_hash216'] == '4eab17d68688073ca47c1fba115ed1fee5f78484538bf4ef8fcf462ae21581f0'
+          assert evidence['receipt_hash72'] == 'BUDqOLYVgj8Wst5qWsfXL3atMEsax6uhjs-BOQjajv<cWn?hBEUW8wIb-1(drPEMx?VtVdM7'
           assert forward['total_linear_transition_work'] == {
               'row_transitions': 71424,
               'logical_weight_products': 23887872,
               'logical_accumulation_additions': 23816448,
           }
           assert forward['total_attention_transition_work']['causal_qk_edges'] == 360
-          claims = evidence['claims']
-          assert claims['contracted_four_token_all_six_blocks_sequential_forward_executed'] is True
-          assert claims['all_model_blocks_executed'] is True
-          assert claims['full_model_forward_executed'] is False
-          assert claims['final_output_norm_executed'] is False
-          assert claims['output_logits_executed'] is False
-          assert claims['generation_or_sampling_executed'] is False
-          assert claims['canonical_float_interpretation_performed'] is False
+          assert evidence['claims']['all_model_blocks_executed'] is True
+          assert evidence['claims']['full_model_forward_executed'] is False
+          assert evidence['claims']['final_output_norm_executed'] is False
+          assert evidence['claims']['output_logits_executed'] is False
+          assert evidence['claims']['generation_or_sampling_executed'] is False
           assert replay['cross_process_replay'] is True
           assert replay['semantic_exactness'] is True
-          print('PASS215_I12_BLOCK_BINDING_ROOTS_JSON=' + json.dumps(bindings['block_binding_roots'], sort_keys=True, separators=(',', ':')))
+          assert replay['final_block_output_root_hash216'] == expected_output['blk.5']
+          assert replay['all_block_forward_root_hash216'] == '0b0ca3bb2a28be60de6a5e783ba583bc3cc0ef3be5211be98ea08bf687139c4e'
+          assert replay['suite_root_hash216'] == '77e585b4d7604da8222b9d070a6b26e27a3a9bac7a86f5247882cfee6cfcf5a0'
+          assert replay['evidence_root_hash216'] == '4eab17d68688073ca47c1fba115ed1fee5f78484538bf4ef8fcf462ae21581f0'
+          assert replay['receipt_hash72'] == 'BUDqOLYVgj8Wst5qWsfXL3atMEsax6uhjs-BOQjajv<cWn?hBEUW8wIb-1(drPEMx?VtVdM7'
+          print('PASS215_I12_BLOCK_BINDING_ROOTS_JSON=' + json.dumps(expected_bindings, sort_keys=True, separators=(',', ':')))
           print('PASS215_I12_ALL_BLOCK_BINDING_ROOT=' + bindings['all_block_binding_root_hash216'])
           print('PASS215_I12_SEQUENTIAL_LINKS_JSON=' + json.dumps(forward['sequential_links'], sort_keys=True, separators=(',', ':')))
           print('PASS215_I12_SEQUENTIAL_CHAIN_ROOT=' + forward['sequential_chain_root_hash216'])
