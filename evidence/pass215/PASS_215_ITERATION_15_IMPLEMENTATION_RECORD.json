@@ -1,7 +1,7 @@
 {
   "schema": "HHS_PASS_215_ITERATION_15_IMPLEMENTATION_RECORD_V1",
   "contract": "HHS-P215-I15-CERTIFIED-EXACT-GREEDY-LOGIT-SELECTION",
-  "status": "SOURCE_EXECUTION_VALIDATED_CLOSURE_REPLAY_REQUIRED",
+  "status": "RESTART_STATE_FROZEN_EXACT_HEAD_REPLAY_PENDING",
   "parent_closure_head": "9780b711fdcfa6624dc9e787b140920ca3f5f875",
   "parent_closure_tree": "9475d1053c08f4ae6195d28407dffc86b97c6113",
   "branch": "agent/pass215-transformer-ingestion-benchmark",
@@ -30,6 +30,7 @@
     "cumulative_test_count": 144,
     "selected_token_id": 450,
     "selected_token": "▁The",
+    "selected_symbolic_logit_root_hash216": "06174888c09ddb16bed56f92c0291e0bc1becd5b5baa883fcbc2375268348764",
     "strongest_competitor_token_id": 319,
     "strongest_competitor_token": "▁A",
     "strict_margin_lower_bound_numerator": 70720847530373533701037217556150495820946814614155944479330263861023836594083,
@@ -43,10 +44,12 @@
     "evidence_root_hash216": "d04d5153a22883c01f1ac9f879ba46fa8afbebb4214692bf83e492091b5aca12",
     "receipt_hash72": "uzxAvsD/x7Kj*upEF-sxHn-DYcdOuOaWqRHGh!KaarjdEzkg!-kW?J<cw8oik4W!Qf29PoOT",
     "cross_process_replay": true,
+    "semantic_exactness": true,
     "artifact_id": 9026475628,
     "artifact_size_bytes": 21493,
     "artifact_sha256": "2d6abd1e58b6144619a5ad02217e8e52c7a55331d2900b8b82b90996aecbcd0e"
   },
   "exact_head_terminal_validation": null,
-  "next_action": "Commit the frozen Iteration 15 restart state and require the Iteration 15 workflow to reproduce every source identity directly against that exact closure commit. Do not add a post-validation commit."
+  "freeze_rule": "This commit is the closure candidate. If its exact-head Iteration 15 workflow reproduces the frozen source identities, do not create another commit because that would invalidate the validated head.",
+  "next_action": "Exact-head replay the frozen restart-state commit through Pass 215 Iteration 15 Certified Greedy Logit and retain its artifact as terminal closure evidence."
 }
