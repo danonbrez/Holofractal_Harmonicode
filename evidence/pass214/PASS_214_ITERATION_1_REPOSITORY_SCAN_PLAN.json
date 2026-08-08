@@ -1,0 +1,59 @@
+{
+  "schema": "HHS_PASS_214_ITERATION_1_REPOSITORY_SCAN_PLAN_V1",
+  "pass": 214,
+  "classification": "PLAN_ONLY_NO_SCAN_COMPLETION_CLAIM",
+  "base_commit": "ff7363ea5e35d659be5866ebb684620bc55ca967",
+  "pass213_foundation": "86ec461818682fc87232740758769602e8f9fe05",
+  "objective": "Freeze the complete repository tree and classify every path and candidate optimization symbol before integration or benchmark claims.",
+  "required_steps": [
+    "fetch_recursive_tree_and_commit_identity",
+    "apply_versioned_exclusion_rules",
+    "classify_every_path",
+    "discover_language_specific_symbols",
+    "map_pre_pass_and_pass_origin",
+    "identify_data_authorities_and_mutation_paths",
+    "detect_duplicates_parallel_implementations_and_supersession",
+    "attach_tests_evidence_and_operational_status",
+    "emit_registry_and_completeness_receipts"
+  ],
+  "priority_families": [
+    "storage_sql_vector_snapshot",
+    "cache_retrieval_reuse",
+    "delta_continuation_dependency",
+    "hydration_compression_recovery",
+    "multimodal_ingestion_representation",
+    "multimodal_machine_learning",
+    "graphics_audio_video_game_physics",
+    "compiler_rom_native_dispatch",
+    "identity_integrity_evidence",
+    "accelerator_parallelism"
+  ],
+  "known_repository_exemplars": [
+    "hhs_runtime/hhs_semantic_composition_cache_v1.py",
+    "hhs_runtime/hhs_conformance_decision_cache_v1.py",
+    "hhs_runtime/hhs_pass111_predictive_continuation_cache_v1.py",
+    "hhs_runtime/hhs_vector_cache.h",
+    "hhs_runtime/hhs_receipt_vector_index_v1.py",
+    "hhs_runtime/hhs_pass129_invariant_delta_rational_projection_algebra_v1.py",
+    "hhs_runtime/hhs_pass130_default_delta_constraint_envelope_v1.py",
+    "hhs_backend/runtime/hhs_pass197_ab_hydration_calibration_v1.py",
+    "hhs_backend/runtime/hhs_pass212_full_hydration_recovery_v1.py",
+    "hhs_backend/runtime/hhs_pass213_parametric_delta_v1.py",
+    "HHS_PASS_165_LIGHTWEIGHT_5184_BIT_MULTIMODAL_VECTOR_STORE_INGESTION_TOKENIZATION_INVARIANT_EXTRACTION_AND_GOVERNED_BACKPROPAGATION.md",
+    "docs/pass194/HHS_PASS_194_USER_MULTIMODAL_FILE_FOLDER_HYDRATION_SNAPSHOT_SQL_CONTEXT_VECTOR_STORE_AGI_TRAINING_AUTHORITY.md",
+    "HHS_PASS_205_DETERMINISTIC_VM5184_G243_MULTIMODAL_CONTINUATION_RUNTIME.md"
+  ],
+  "required_outputs": [
+    "evidence/pass214/repository_tree_manifest.json",
+    "evidence/pass214/repository_scan_dispositions.jsonl",
+    "evidence/pass214/optimization_registry.json",
+    "evidence/pass214/optimization_compatibility_graph.json",
+    "evidence/pass214/repository_scan_completion_receipt.json"
+  ],
+  "nonclaims": [
+    "No complete repository scan is claimed by this plan.",
+    "No optimization is counted as implemented from contract text alone.",
+    "No compound performance result is claimed.",
+    "No Pass 215 transformer result is claimed."
+  ]
+}

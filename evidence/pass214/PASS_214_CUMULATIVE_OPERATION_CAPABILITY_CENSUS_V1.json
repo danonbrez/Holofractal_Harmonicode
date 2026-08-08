@@ -1,0 +1,125 @@
+{
+  "schema": "HHS_PASS_214_CUMULATIVE_OPERATION_CAPABILITY_CENSUS_EVIDENCE_V1",
+  "classification": "PASS214_DEEP_REPOSITORY_OPERATION_ACCOUNTING_VALIDATED",
+  "validated_source_head": "9e5a4e9b3b6afef46a2276a26cd8cba88ab063f7",
+  "base_main_commit": "004b695d685f27dde0a55fdf3a5ad32075bee645",
+  "validation_workflow": {
+    "name": "Pass 214 Cumulative Operation Capability Census",
+    "run_id": 31226993040,
+    "conclusion": "success",
+    "artifact_id": 9012450169,
+    "artifact_digest": "sha256:7f36a0dd5cef7f36779fdbacb0c9c67b131ca665e996d6d152aa6086e6e63f93",
+    "census_sha256": "e6b9a68683deb1b3c443287df37e000be9b423f5fbf859120848425843248259"
+  },
+  "frozen_runtime": {
+    "path": "hhs_runtime/HARMONICODE_VM_RUNTIME.c",
+    "git_blob": "362cd6e892ae66024333b111aec83f12023fdce3",
+    "modified": false
+  },
+  "coverage": {
+    "tracked_reference_files_considered": 4973,
+    "readable_reference_files": 4957,
+    "skipped_large_or_binary_files": 16,
+    "components_with_operations": 190,
+    "raw_operation_identities": 19487,
+    "pre_pass_or_unnumbered_operations": 9672,
+    "numbered_pass_operations": 9815
+  },
+  "known_opcode_family_anchors": {
+    "VM81_SUBSTRATE_OPCODE": 24,
+    "FROZEN_HHS_IR_OPCODE": 20,
+    "PASS079_NATIVE_ABI_OPCODE": 29,
+    "PASS158_LLABI_NFTC_OPCODE": 36,
+    "PASS213_GOVERNED_NATIVE_DISPATCH": 9,
+    "VM81_BASE20_NUMERICAL_ABI": 19,
+    "raw_known_opcode_identity_minimum": 137,
+    "all_satisfied": true
+  },
+  "family_counts": {
+    "CALLABLE_OPERATION": 14364,
+    "DECLARATIVE_CAPABILITY_REGISTRY": 2926,
+    "ABI_DECLARATION_SURFACE": 593,
+    "HTTP_API": 543,
+    "BUILD_AND_INTEGRATION_OPERATION": 372,
+    "CLI": 271,
+    "OTHER_OPCODE_OR_BYTECODE": 154,
+    "FORMAL_SPECIFICATION_SURFACE": 108,
+    "PASS158_LLABI_NFTC_OPCODE": 36,
+    "PASS079_NATIVE_ABI_OPCODE": 29,
+    "VM81_SUBSTRATE_OPCODE": 24,
+    "FROZEN_HHS_IR_OPCODE": 20,
+    "VM81_BASE20_NUMERICAL_ABI": 19,
+    "SUPPLEMENTAL_CALLABLE_OPERATION": 17,
+    "PASS213_GOVERNED_NATIVE_DISPATCH": 9,
+    "NATIVE_ASSEMBLY_OPERATION": 2
+  },
+  "semantic_accounting": {
+    "normalized_semantic_name_groups": 14144,
+    "multi_identity_name_normalized_candidates": 1850,
+    "proven_exact_projection_records": 19,
+    "automatic_semantic_collapse_performed": false,
+    "canonical_unique_semantic_operation_count": null,
+    "canonical_count_status": "REQUIRES_PROVEN_EQUIVALENCE_RECONCILIATION"
+  },
+  "reuse_accounting": {
+    "shared_module_records": 7571,
+    "reused_across_components": 2262,
+    "internal_primitives": 3885,
+    "isolated_implementation_candidates": 1406,
+    "abi_declaration_surfaces": 593,
+    "formal_specification_records": 108,
+    "build_and_integration_tasks": 372
+  },
+  "python_exposure": {
+    "PYTHON_IMPLEMENTATION": 12366,
+    "PYTHON_SURFACE": 753,
+    "CTYPES_DIRECT_ABI": 135,
+    "GOVERNED_NATIVE_DISPATCH": 9,
+    "GOVERNED_SEMANTIC_PROJECTION": 57,
+    "INTENTIONALLY_INTERNAL_OR_UNEXPOSED": 464,
+    "NOT_DEMONSTRATED": 5703
+  },
+  "quality_controls": {
+    "broad_python_registry_string_heuristic_removed": true,
+    "discarded_broad_registry_string_records": 3268,
+    "structural_python_registry_keys_only": true,
+    "python_operation_registries": 84,
+    "replacement_python_operation_registry_keys": 683,
+    "python_registry_parse_errors": 0,
+    "canonical_semantic_count_not_inferred_from_names": true
+  },
+  "language_coverage": {
+    "extractors": [
+      "ASSEMBLY",
+      "CMAKE",
+      "C_HEADER_DECLARATION",
+      "JAVA",
+      "LEAN",
+      "MAKE",
+      "ROCQ",
+      "RUST",
+      "TOML",
+      "YAML"
+    ],
+    "supplemental_record_count": 1094
+  },
+  "isolation_hotspots": [
+    {"component": "applications/holofractal_harmonizer", "candidate_count": 377},
+    {"component": "native_projects/hhs_pass190_operation_fabric", "candidate_count": 176},
+    {"component": "native_projects/hhs_pass189_hqlh_runtime", "candidate_count": 156},
+    {"component": "native_projects/hhs_pass158_llabi_nftc_api", "candidate_count": 131},
+    {"component": "native_projects/hhs_vm81_game_level10", "candidate_count": 91},
+    {"component": "native_projects/hhs_pass160_validated_transition_runtime", "candidate_count": 56},
+    {"component": "native_projects/hhs_bifurcation_calibration", "candidate_count": 47},
+    {"component": "applications/storybook_reel_studio", "candidate_count": 41},
+    {"component": "native_projects/hhs_compiler_artifact_pipeline", "candidate_count": 41},
+    {"component": "native_projects/hhs_pass157_ppf_mptc", "candidate_count": 39}
+  ],
+  "interpretation": {
+    "raw_identity_is_not_unique_semantic_operation": true,
+    "same_name_is_not_equivalence_proof": true,
+    "isolated_candidate_is_not_automatically_duplicate": true,
+    "applications_may_contain_reusable_capabilities": true,
+    "next_required_stage": "PROVEN_SEMANTIC_EQUIVALENCE_AND_REUSABLE_MODULE_PROMOTION_GRAPH"
+  }
+}

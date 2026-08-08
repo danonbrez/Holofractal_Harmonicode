@@ -1,0 +1,6 @@
+liboqs-python==0.16.0
+cryptography>=45.0,<47.0
+fastapi==0.128.2
+starlette==0.50.0
+pydantic>=2.7,<3.0
+httpx>=0.27,<1.0

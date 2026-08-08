@@ -1,0 +1,55 @@
+{
+  "authority_promotion": false,
+  "frozen_identity_unchanged": true,
+  "integrity_rebind": false,
+  "materialization_failures": {},
+  "pass215_authorized": false,
+  "payload_rewrite": false,
+  "repair_scope": "READ_ONLY_SOURCE_MATERIALIZATION_FOR_EXACT_RECONSTRUCTION",
+  "runtime": {
+    "expected_payload_sha256": "392d655df87628832fbd14d19301bc7dc8c002cf69b571fc6f12ab867961930d",
+    "expected_source_sha256": "a946cde1338bc33eb6873c13125b306a45882dec46fd29ac4820ce38ea5612a9",
+    "gzip_trailer_crc32": 2067845291,
+    "gzip_trailer_isize": 48547,
+    "label": "runtime",
+    "path": "hhs_backend/runtime/pass214_i4_payload/runtime.py.gz",
+    "payload_sha256": "3169204e65935b44fc7269e66568a5aa0325a4db603947af50209a5d2f59142a",
+    "payload_sha256_matches_frozen": false,
+    "recovered": {
+      "compile_error": "SyntaxError:invalid syntax (<pass214-i4-recovery>, line 32)",
+      "compile_ok": false,
+      "gzip_trailer_crc32_matches": false,
+      "gzip_trailer_isize_matches": true,
+      "source_crc32": 1841190669,
+      "source_sha256": "3bceeed0b19ee20b242db89660706ffcf7e2c4996b5481c9dc547a0b936ce9f4",
+      "source_sha256_matches_frozen": false,
+      "source_size": 48547
+    },
+    "recovery_mode": "RAW_DEFLATE_RECOVERY_FROM_INVALID_GZIP_CONTAINER",
+    "repository_readable_evidence_path": "evidence/pass214/recovery/iteration4_runtime_recovered_damaged.py.txt"
+  },
+  "schema": "HHS_PASS_214_ITERATION_4_RAW_DEFLATE_DIAGNOSTIC_V3",
+  "terminal_pass214_root_minted": false,
+  "test": {
+    "expected_payload_sha256": "731d4bba2fab5243f29c3b4772c0634d658261930c6f3a2312706c2ae416a297",
+    "expected_source_sha256": "f413e3514dbfd97f4c59dbedeabca885380adbc466f984508ca1317b53a76ec5",
+    "gzip_trailer_crc32": 1656010526,
+    "gzip_trailer_isize": 11161,
+    "label": "test",
+    "path": "tests/pass214_i4_test_payload/test.py.gz",
+    "payload_sha256": "731d4bba2fab5243f29c3b4772c0634d658261930c6f3a2312706c2ae416a297",
+    "payload_sha256_matches_frozen": true,
+    "recovered": {
+      "compile_error": null,
+      "compile_ok": true,
+      "gzip_trailer_crc32_matches": true,
+      "gzip_trailer_isize_matches": true,
+      "source_crc32": 1656010526,
+      "source_sha256": "f413e3514dbfd97f4c59dbedeabca885380adbc466f984508ca1317b53a76ec5",
+      "source_sha256_matches_frozen": true,
+      "source_size": 11161
+    },
+    "recovery_mode": "VALID_GZIP",
+    "repository_readable_evidence_path": "evidence/pass214/recovery/iteration4_test_recovered_damaged.py.txt"
+  }
+}

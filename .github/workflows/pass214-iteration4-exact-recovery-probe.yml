@@ -1,0 +1,182 @@
+name: Pass 214 Iteration 4 Exact Recovery Probe
+
+on:
+  push:
+    branches:
+      - agent/pass214-operating-compression-gradient
+    paths:
+      - '.github/workflows/pass214-iteration4-exact-recovery-probe.yml'
+
+permissions:
+  contents: write
+
+env:
+  PYTHONDONTWRITEBYTECODE: '1'
+  PYTHONHASHSEED: '0'
+
+jobs:
+  exact-recovery-probe:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Install dependency-scoped test runner
+        run: python -m pip install --disable-pip-version-check 'pytest>=8,<9'
+
+      - name: Reconstruct exact frozen payload at Hamming distance one byte
+        id: search
+        run: |
+          python - <<'PY'
+          from hashlib import sha256
+          from pathlib import Path
+          import gzip
+          import json
+          import os
+          import time
+
+          payload_path = Path('hhs_backend/runtime/pass214_i4_payload/runtime.py.gz')
+          evidence_dir = Path('evidence/pass214/recovery')
+          evidence_dir.mkdir(parents=True, exist_ok=True)
+          result_path = evidence_dir / 'PASS_214_ITERATION_4_EXACT_BYTE_RECOVERY.json'
+          source_evidence = evidence_dir / 'iteration4_runtime_exact_recovered.py.txt'
+
+          expected_payload_sha = '392d655df87628832fbd14d19301bc7dc8c002cf69b571fc6f12ab867961930d'
+          expected_source_sha = 'a946cde1338bc33eb6873c13125b306a45882dec46fd29ac4820ce38ea5612a9'
+          original = payload_path.read_bytes()
+          current_sha = sha256(original).hexdigest()
+          started = time.monotonic()
+
+          outcome = {
+              'schema': 'HHS_PASS_214_ITERATION_4_EXACT_BYTE_RECOVERY_V2',
+              'search_space': 'EXACT_PAYLOAD_SHA256_HAMMING_DISTANCE_ONE_BYTE',
+              'payload_path': str(payload_path),
+              'payload_size': len(original),
+              'current_payload_sha256': current_sha,
+              'expected_payload_sha256': expected_payload_sha,
+              'expected_source_sha256': expected_source_sha,
+              'frozen_identity_rebound': False,
+              'authority_promotion': False,
+              'terminal_pass214_root_minted': False,
+              'pass215_authorized': False,
+              'exact_payload_recovered': False,
+              'single_bit_match': None,
+              'single_byte_match': None,
+          }
+
+          found = None
+          if current_sha == expected_payload_sha:
+              found = original
+              outcome['search_space'] = 'ALREADY_EXACT'
+          else:
+              work = bytearray(original)
+              for index, current in enumerate(original):
+                  for bit in range(8):
+                      work[index] = current ^ (1 << bit)
+                      if sha256(work).hexdigest() == expected_payload_sha:
+                          found = bytes(work)
+                          outcome['single_bit_match'] = {
+                              'offset': index, 'bit': bit, 'from': current, 'to': work[index]
+                          }
+                          break
+                  work[index] = current
+                  if found is not None:
+                      break
+
+              if found is None:
+                  for index, current in enumerate(original):
+                      for replacement in range(256):
+                          if replacement == current:
+                              continue
+                          work[index] = replacement
+                          if sha256(work).hexdigest() == expected_payload_sha:
+                              found = bytes(work)
+                              outcome['single_byte_match'] = {
+                                  'offset': index, 'from': current, 'to': replacement
+                              }
+                              break
+                      work[index] = current
+                      if found is not None:
+                          break
+
+          outcome['search_seconds'] = round(time.monotonic() - started, 6)
+          if found is not None:
+              payload_digest = sha256(found).hexdigest()
+              if payload_digest != expected_payload_sha:
+                  raise SystemExit('PASS214_I4_EXACT_PAYLOAD_HASH_INTERNAL_MISMATCH')
+              source = gzip.decompress(found)
+              source_digest = sha256(source).hexdigest()
+              compile(source, '<pass214-i4-exact-recovery>', 'exec')
+              if source_digest != expected_source_sha:
+                  raise SystemExit('PASS214_I4_EXACT_SOURCE_HASH_MISMATCH')
+              source_evidence.write_bytes(source)
+              payload_path.write_bytes(found)
+              outcome['exact_payload_recovered'] = True
+              outcome['recovered_payload_sha256'] = payload_digest
+              outcome['recovered_source_sha256'] = source_digest
+              outcome['recovered_source_size'] = len(source)
+              outcome['python_compile'] = 'passed'
+              outcome['exact_source_evidence_path'] = str(source_evidence)
+
+          result_path.write_text(json.dumps(outcome, indent=2, sort_keys=True) + '\n', encoding='utf-8')
+          print(json.dumps(outcome, sort_keys=True))
+          with open(os.environ['GITHUB_OUTPUT'], 'a', encoding='utf-8') as handle:
+              handle.write(f"recovered={'true' if outcome['exact_payload_recovered'] else 'false'}\n")
+          PY
+
+      - name: Run original Iteration 4 dependency-scoped tests and preserve report
+        id: validate
+        if: steps.search.outputs.recovered == 'true'
+        run: |
+          set +e
+          python -m pytest -q tests/test_hhs_pass214_callable_oracle_v1.py 2>&1 | tee evidence/pass214/recovery/iteration4_exact_recovery_pytest.txt
+          status=${PIPESTATUS[0]}
+          echo "status=${status}" >> "$GITHUB_OUTPUT"
+          exit 0
+
+      - name: Record exact recovery validation result
+        if: steps.search.outputs.recovered == 'true'
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json
+
+          path = Path('evidence/pass214/recovery/PASS_214_ITERATION_4_EXACT_BYTE_RECOVERY.json')
+          data = json.loads(path.read_text(encoding='utf-8'))
+          status = int('${{ steps.validate.outputs.status }}')
+          data['dependency_scoped_iteration4_test_exit_code'] = status
+          data['dependency_scoped_iteration4_tests_passed'] = status == 0
+          data['repair_validated'] = status == 0
+          data['pytest_report_path'] = 'evidence/pass214/recovery/iteration4_exact_recovery_pytest.txt'
+          path.write_text(json.dumps(data, indent=2, sort_keys=True) + '\n', encoding='utf-8')
+          PY
+
+      - name: Commit exact evidence and conditionally restore payload
+        run: |
+          git config user.name 'hhs-pass214-recovery-bot'
+          git config user.email '153354844+danonbrez@users.noreply.github.com'
+          git add \
+            evidence/pass214/recovery/PASS_214_ITERATION_4_EXACT_BYTE_RECOVERY.json \
+            evidence/pass214/recovery/iteration4_runtime_exact_recovered.py.txt \
+            evidence/pass214/recovery/iteration4_exact_recovery_pytest.txt 2>/dev/null || true
+
+          if [ "${{ steps.search.outputs.recovered }}" = "true" ] && [ "${{ steps.validate.outputs.status }}" = "0" ]; then
+            git add -f hhs_backend/runtime/pass214_i4_payload/runtime.py.gz
+          else
+            git restore hhs_backend/runtime/pass214_i4_payload/runtime.py.gz 2>/dev/null || true
+          fi
+
+          if git diff --cached --quiet; then
+            echo 'Pass 214 Iteration 4 exact recovery evidence already current'
+          else
+            if git diff --cached --name-only | grep -q '^hhs_backend/runtime/pass214_i4_payload/runtime.py.gz$'; then
+              git commit -m 'Restore exact Pass 214 Iteration 4 runtime payload'
+            else
+              git commit -m 'Preserve exact Pass 214 Iteration 4 recovery evidence'
+            fi
+            git push origin HEAD:agent/pass214-operating-compression-gradient
+          fi

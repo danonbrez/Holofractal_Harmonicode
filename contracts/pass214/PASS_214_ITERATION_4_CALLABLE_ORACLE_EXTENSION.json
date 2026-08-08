@@ -1,0 +1,57 @@
+{
+  "schema": "HHS_PASS_214_ITERATION_4_CONTRACT_EXTENSION_V1",
+  "contract": "HHS-P214-RW-CDM-MML-COBA-H72-H216-VM5184-G243",
+  "pass": 214,
+  "iteration": 4,
+  "classification": "HHS_PASS_214_ITERATION_4_REPOSITORY_CALLABLE_ORACLE_IMPLEMENTED",
+  "inherits": {
+    "complete_pre_pass_foundation": true,
+    "passes": "001-213",
+    "pass213_closure_commit": "86ec461818682fc87232740758769602e8f9fe05",
+    "iteration3_implementation_commit": "3125d170311319f01d204fa6fecde7d3df63a372",
+    "iterations_1_2_3_required": true
+  },
+  "requirements": [
+    "consume validated Iteration 2 callable-conformance outputs from the same exact Git commit and tree",
+    "bind every source and target to exact repository path, module, top-level symbol, Git blob, file SHA-256, function source SHA-256, normalized AST root, and direct imports",
+    "accept only pairs authorized by Iteration 2 path/symbol or identity-root evidence",
+    "bind every workload to Pass 213 closure, timestamp, moving-tensor, native-dispatch, and prior-admission lineage roots",
+    "bind all callable evidence to the fixed Iteration 3 implementation commit and exact Iteration 3 contract, runtime-loader, and implementation-record blobs",
+    "execute in a fresh isolated interpreter with deterministic environment, CPU, memory, descriptor, timeout, captured-output, and process ceilings",
+    "deny network operations, subprocesses, filesystem writes and mutations, unapproved native libraries, float outputs, dynamic repository paths, decorated functions, async functions, and generators",
+    "execute every callable twice for deterministic replay and compare canonical outputs only",
+    "authorize an adapter only for an exact callable pair whose complete admitted vector set is equal after the adapter",
+    "preserve non-promotion: no automatic merge, authority transfer, quarantine, replacement, terminal root, or Pass 215 authorization"
+  ],
+  "oracle_states": [
+    "CALLABLE_EQUIVALENCE_VERIFIED",
+    "CALLABLE_ADAPTER_EQUIVALENCE_VERIFIED",
+    "CALLABLE_DIVERGENCE",
+    "CALLABLE_INADMISSIBLE",
+    "CALLABLE_EXECUTION_ERROR"
+  ],
+  "pass213_profiles": [
+    "PASS213_LIVE_GOVERNED_SURFACE",
+    "PASS213_DEPENDENCY_SCOPED_VALIDATION_FIXTURE"
+  ],
+  "selected_exact_head_validation": {
+    "source_path": "hhs_backend/runtime/hhs_agent_algorithm_identity_v1.py",
+    "target_path": "hhs_backend/runtime/hhs_agent_contribution_provenance_v1.py",
+    "symbol": "self_test",
+    "expected_shared_git_blob_sha1": "ab698bcb745e0333e79116a71f06c9ebd6cc94c0",
+    "adapter_class": "IDENTITY",
+    "pass213_profile": "PASS213_DEPENDENCY_SCOPED_VALIDATION_FIXTURE",
+    "production_authority_claimed": false
+  },
+  "claim_boundary": {
+    "selected_repository_callables_executed": true,
+    "selected_repository_callable_semantic_fidelity_claimed": true,
+    "repository_wide_callable_oracle_coverage_complete": false,
+    "live_pass213_admission_required_for_production_promotion": true,
+    "repository_authority_change_authorized": false,
+    "all_authority_conflicts_resolved": false,
+    "compound_benchmark_complete": false,
+    "pass214_terminal_roots_minted": false,
+    "pass215_authorized": false
+  }
+}

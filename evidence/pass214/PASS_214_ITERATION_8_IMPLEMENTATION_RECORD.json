@@ -1,0 +1,122 @@
+{
+  "schema": "HHS_PASS_214_ITERATION_8_IMPLEMENTATION_RECORD_V3",
+  "pass": 214,
+  "iteration": 8,
+  "classification": "HHS_PASS_214_FINAL_BENCHMARK_AUTHORITY_REPAIRED_FOR_CONTRACT_ORDERING_AND_SERIALIZATION",
+  "foundation": {
+    "pass213_authoritative_closure": "86ec461818682fc87232740758769602e8f9fe05",
+    "iteration6_candidate_set_root_hash216": "f11bdbb9940e90500692cd0a0c505727ad94cafc0ea4fca85b134253f72cab9f",
+    "pass213_gates_preserved": true,
+    "pass213_live_admission_required_before_pass214_benchmark": false,
+    "pass213_live_admission_required_before_canonical_mutation": true
+  },
+  "repair": {
+    "superseded_premerge_terminal_runtime": "hhs_backend/runtime/hhs_pass214_iteration8_terminal_freeze_v1.py",
+    "contract_ordering_runtime": "hhs_backend/runtime/hhs_pass214_iteration8_terminal_freeze_v2.py",
+    "authoritative_terminal_runtime": "hhs_backend/runtime/hhs_pass214_iteration8_terminal_freeze_v3.py",
+    "superseded_premerge_benchmark_authority": "hhs_backend/runtime/hhs_pass214_final_compound_benchmark_v1.py",
+    "authoritative_benchmark_authority": "hhs_backend/runtime/hhs_pass214_final_compound_benchmark_v2.py",
+    "ordering_reason": "The pre-merge implementation added live Pass 213 operational admission as a prerequisite to Pass 214 terminal benchmark authority and labeled completed benchmark evidence as awaiting live admission. The frozen Pass 214 contract requires Pass 213 gates to be preserved, but defines Pass 214 census, benchmark, compound ablation, evidence, terminal roots, and Pass 215 profile freeze as Pass 214 responsibilities.",
+    "serialization_reason": "V2 minted the correct eight named terminal roots and Hash72 receipt but validation treated Python mapping insertion order as an authority invariant. Repository JSON serialization uses sorted keys. V3 canonicalizes the exact named root set into contract order before applying all V2 cryptographic and authority validation.",
+    "ordering": [
+      "pass214_contract_validation",
+      "pass214_repository_census_and_conformance",
+      "pass214_compound_and_ablation_benchmark",
+      "pass214_eight_root_terminal_freeze",
+      "pass214_benchmark_authority_promotion",
+      "pass215_benchmark_profile_authorization",
+      "pass213_live_runtime_admission_before_any_canonical_mutation"
+    ],
+    "historical_v1_deleted": false,
+    "contract_ordering_v2_deleted": false,
+    "iteration7_live_admission_deleted": false
+  },
+  "surfaces": {
+    "terminal_runtime": "hhs_backend/runtime/hhs_pass214_iteration8_terminal_freeze_v3.py",
+    "terminal_contract_runtime": "hhs_backend/runtime/hhs_pass214_iteration8_terminal_freeze_v2.py",
+    "terminal_runner": "tools/pass214_iteration8_terminal_freeze.py",
+    "downstream_pass213_runtime_gate": "tools/pass214_iteration7_live_admission.py",
+    "benchmark_runtime": "hhs_backend/runtime/hhs_pass214_final_compound_benchmark_v2.py",
+    "benchmark_measurement_source": "hhs_backend/runtime/hhs_pass214_final_compound_benchmark_v1.py",
+    "benchmark_runner": "tools/pass214_final_compound_benchmark.py",
+    "authority_reconciliation_runtime": "hhs_backend/runtime/hhs_pass214_authority_conflict_reconciliation_v1.py",
+    "authority_reconciliation_runner": "tools/pass214_authority_conflict_reconciliation.py",
+    "workload_corpus": "contracts/pass214/PASS_214_WORKLOAD_CORPUS.json",
+    "benchmark_method": "contracts/pass214/PASS_214_FINAL_BENCHMARK_METHOD.json",
+    "pass215_profile": "contracts/pass215/PASS_215_BENCHMARK_PROFILE.json",
+    "ci_gate": ".github/workflows/pass214-iteration8-terminal-freeze.yml",
+    "production_finalizer": ".github/workflows/pass214-production-terminal-finalize.yml",
+    "ordering_regression": "tests/test_pass214_terminal_workflow_ordering.py",
+    "serialization_regression": "tests/test_hhs_pass214_iteration8_terminal_freeze_v1.py::test_sorted_json_round_trip_preserves_terminal_authority"
+  },
+  "benchmark_boundary": {
+    "status": "FINAL_BENCHMARK_COMPLETE_READY_FOR_PASS214_TERMINAL_FREEZE",
+    "workload_families": 15,
+    "workload_modes_per_family": 11,
+    "mode_executions": 165,
+    "mandatory_ablations": 26,
+    "a0_a9_stages": 10,
+    "pass197_address_comparisons": 1658880,
+    "pass212_full_hydration_bits": 50388480,
+    "pass212_full_state_recoveries": 3,
+    "cross_process_replays": 15,
+    "multimodal_ml_compound_exercised": true,
+    "multimodal_ml_ablation_exercised": true,
+    "negative_controls_fail_closed": true,
+    "complete_cost_accounting": true,
+    "physical_compression_claim_boundary_preserved": true,
+    "measurement_values_rewritten_by_v2": false,
+    "authority_metadata_rerooted_by_v2": true
+  },
+  "terminal_roots": [
+    "PASS214_REPOSITORY_SCAN_ROOT_HASH216",
+    "PASS214_OPTIMIZATION_REGISTRY_ROOT_HASH216",
+    "PASS214_COMPATIBILITY_GRAPH_ROOT_HASH216",
+    "PASS214_WORKLOAD_CORPUS_ROOT_HASH216",
+    "PASS214_BENCHMARK_METHOD_ROOT_HASH216",
+    "PASS214_COMPOUND_EVIDENCE_ROOT_HASH216",
+    "PASS214_AUTHORITY_ROOT_HASH216",
+    "PASS215_BENCHMARK_PROFILE_ROOT_HASH216"
+  ],
+  "authority_scope": {
+    "pass214_benchmark_authority": "PROMOTABLE_AFTER_COMPLETE_PASS214_VALIDATION",
+    "pass213_runtime_mutation_authority": "NOT_PROMOTED_BY_PASS214",
+    "canonical_mutation_authorized_by_pass214": false,
+    "migration_active": false,
+    "pass213_gate_preservation_root_required": true,
+    "pass215_authorization_scope": "FROZEN_BENCHMARK_PROFILE_AND_NEXT_PASS_DEVELOPMENT",
+    "pass215_canonical_mutation_still_subject_to_pass213_gates": true
+  },
+  "diagnostic_v2_mint": {
+    "workflow_run": 31193486383,
+    "source_commit": "0c80feec6d72356808353b55cac233361f03d8af",
+    "source_tree": "57147cb1ce1a45ca30e141d6d9196609806c99e2",
+    "benchmark_completed": true,
+    "terminal_roots_minted_before_serialized_validation": true,
+    "terminal_receipt_hash72": "8NM)B1QxahUUav4J/WZLt3wWk*g*ffcv?EpSKPSg)bUoi7(k12BfOwGa<aIGuFXZjf5uDZ(8",
+    "failure": "PASS214_I8_TERMINAL_ROOT_SET_OR_ORDER_INVALID",
+    "failure_class": "SERIALIZED_MAPPING_ORDER_VALIDATION_DEFECT"
+  },
+  "validation": {
+    "dependency_scoped_tests_include_terminal_ordering_regression": true,
+    "dependency_scoped_tests_include_sorted_json_round_trip_regression": true,
+    "v1_history_compiles": true,
+    "v2_benchmark_authority_compiles": true,
+    "v2_terminal_contract_runtime_compiles": true,
+    "v3_terminal_serialization_runtime_compiles": true,
+    "standalone_iteration8_gate_mints_terminal_roots": true,
+    "exact_head_hosted_validation": "PENDING_FINAL_NON_SUPPRESSED_EVENT"
+  },
+  "claim_boundary": {
+    "terminal_gate_implemented": true,
+    "authority_conflict_reconciliation_implemented": true,
+    "final_benchmark_executor_implemented": true,
+    "pass215_profile_predeclared": true,
+    "pass213_gates_preserved": true,
+    "live_pass213_reverification_required_for_pass214_benchmark": false,
+    "live_pass213_reverification_required_before_canonical_mutation": true,
+    "runtime_mutation_authority_promoted": false,
+    "canonical_mutation_authorized": false,
+    "migration_active": false
+  }
+}

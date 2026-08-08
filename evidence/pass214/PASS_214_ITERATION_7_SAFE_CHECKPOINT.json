@@ -1,0 +1,56 @@
+{
+  "schema": "HHS_PASS_214_ITERATION_7_SAFE_CHECKPOINT_V1",
+  "pass": 214,
+  "iteration": 7,
+  "branch": "agent/pass214-operating-compression-gradient",
+  "merge_target": "main",
+  "pull_request": 170,
+  "checkpoint_parent": "4dc4fa4050af78b7da027da9b4f2e8a2bdd17cb5",
+  "pass213_closure_dependency": "86ec461818682fc87232740758769602e8f9fe05",
+  "iteration6_candidate_set_root": "f11bdbb9940e90500692cd0a0c505727ad94cafc0ea4fca85b134253f72cab9f",
+  "iteration7_validation": {
+    "dependency_scoped_tests": "7 passed",
+    "hosted_workflow": "Pass 214 Iteration 7 Live Admission Bridge",
+    "hosted_run_id": 31144838012,
+    "hosted_head": "557d58eeacdfba4f19147d19a38ff2744f06f0d0",
+    "hosted_conclusion": "success",
+    "production_live_admission_claimed": false
+  },
+  "cumulative_validation": {
+    "workflow": "Pass 214 Compound Optimization Benchmark Authority",
+    "latest_observed_run_id": 31145448541,
+    "latest_observed_head": "4dc4fa4050af78b7da027da9b4f2e8a2bdd17cb5",
+    "latest_observed_conclusion": "failure",
+    "blocking_stage": "inherited Iteration 4 integrity payload validation",
+    "later_benchmark_or_promotion_stages_authoritative": false
+  },
+  "iteration4_integrity_diagnostic": {
+    "diagnostic_run_id": 31145448617,
+    "runtime_payload_path": "hhs_backend/runtime/pass214_i4_payload/runtime.py.gz",
+    "historical_claimed_runtime_source_sha256": "a946cde1338bc33eb6873c13125b306a45882dec46fd29ac4820ce38ea5612a9",
+    "repository_recoverable_runtime_source_sha256": "3bceeed0b19ee20b242db89660706ffcf7e2c4996b5481c9dc547a0b936ce9f4",
+    "repository_recoverable_runtime_source_size": 48547,
+    "gzip_trailer_isize": 48547,
+    "suspected_separator_corruptions": 77,
+    "recovered_source_compiles": false,
+    "historical_source_recovered_exactly": false,
+    "runtime_payload_rewritten": false,
+    "test_payload_rewritten": false,
+    "integrity_metadata_rebound": false,
+    "unsafe_reconstruction_committed": false
+  },
+  "safe_authority_boundary": {
+    "migration_active": false,
+    "authority_promoted": false,
+    "terminal_pass214_root_minted": false,
+    "pass215_authorized": false,
+    "live_pass213_governed_surface_required": true,
+    "production_ablation_execution_authorized": false
+  },
+  "next_exact_action": [
+    "Preserve the current Iteration 7 implementation and successful hosted validation evidence.",
+    "Resolve Iteration 4 only from an independent trustworthy historical payload/source copy or a reconstruction that matches the frozen historical SHA-256 exactly and passes the original Iteration 4 test suite.",
+    "Do not rebind Iteration 4 integrity metadata to the corrupt recoverable source and do not promote any candidate while cumulative validation is blocked.",
+    "After Iteration 4 is repaired without changing its intended source identity, rerun the cumulative Pass 214 workflow and only then continue live Pass 213 production admission and five-family ablation execution."
+  ]
+}

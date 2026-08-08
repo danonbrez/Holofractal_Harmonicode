@@ -1,0 +1,78 @@
+{
+  "schema": "HHS_PASS_214_ITERATION_6_IMPLEMENTATION_RECORD_V1",
+  "pass": 214,
+  "iteration": 6,
+  "classification": "HHS_PASS_214_ITERATION_6_REPOSITORY_NATIVE_CANDIDATE_BINDING_IMPLEMENTED",
+  "base_commit": "fc5bd81698078fc40b26f827983cfb04176de928",
+  "source_tree": "f8f4f12fd581f0cf335442687d4f3662f30ebb8d",
+  "branch": "agent/pass214-operating-compression-gradient",
+  "pass213_closure": "86ec461818682fc87232740758769602e8f9fe05",
+  "iteration5_root": "daed61b048581066e2dd0b0f7986d7c872e979e57079267511516c86f4822767",
+  "iteration5_receipt": "f6107632e1f2dd79856e9f01ba6a85c7c5502e9b17e2dd1604a215da69ce80df",
+  "candidate_bindings": [
+    {
+      "family": "vector_cache",
+      "path": "hhs_runtime/hhs_semantic_composition_cache_v1.py",
+      "surface": "SemanticCompositionCache",
+      "git_blob_sha1": "8809e746bb270db89bdd3a5cdcc7fda8a0b6e97e"
+    },
+    {
+      "family": "wrapper_duplication",
+      "path": "hhs_backend/runtime/hhs_agent_algorithm_identity_v1.py",
+      "surface": "self_test",
+      "git_blob_sha1": "ab698bcb745e0333e79116a71f06c9ebd6cc94c0"
+    },
+    {
+      "family": "numeric_lookup",
+      "path": "hhs_backend/runtime/hhs_pass213_tensor_geometry_v1.py",
+      "surface": "lo_shu_grid/fibonacci_phase/permutation",
+      "git_blob_sha1": "9046f6b3b8ecc1c39ce423fd67b98660415490e2"
+    },
+    {
+      "family": "serialization_import",
+      "path": "hhs_backend/runtime/hhs_pass213_compiled_rom_v1.py",
+      "surface": "canonical_bytes/CompiledROMStore",
+      "git_blob_sha1": "daffda13abedcc77bb48fe1936aaef22b7d610b9"
+    },
+    {
+      "family": "coprime_lookup",
+      "path": "hhs_backend/runtime/hhs_pass213_tensor_closure_v1.py",
+      "surface": "_coprime/TensorClosureProof",
+      "git_blob_sha1": "83699bfe237a2d73e47dedf0bfb6eef8beb6919c"
+    }
+  ],
+  "local_report": {
+    "status": "CANDIDATE_SET_BOUND_ADMISSION_BLOCKED",
+    "family_count": 5,
+    "candidate_set_root_hash216": "f11bdbb9940e90500692cd0a0c505727ad94cafc0ea4fca85b134253f72cab9f",
+    "report_root_hash216": "f5712fb2c95c47908bf2fc74251fc3d7296ea68617086b299b3aa17e7f60df8f",
+    "receipt_sha256": "b2080cbe321f34f8e384b47be95c8cbb3f00b5429445207775e0a2b26d527d34"
+  },
+  "integrity": {
+    "runtime_source_sha256": "e4dcf6af237fc113fdbb86acd63cdf59a4eec27181555d9caafb05c2a72a57c2",
+    "runtime_payload_sha256": "1ea12f943c5d32abb28eec8eab18906c90d6d77163371993605c07b1c638b8e7"
+  },
+  "validation": {
+    "python_compile": "passed",
+    "dependency_scoped_tests": "7 passed",
+    "deterministic_replay": "passed",
+    "binding_tamper_rejection": "passed",
+    "fixture_admission_rejection": "passed",
+    "forged_candidate_root_rejection": "passed",
+    "zero_live_receipt_rejection": "passed"
+  },
+  "policy": {
+    "candidate_imported_for_replacement": false,
+    "candidate_executed_for_migration": false,
+    "migration_active": false,
+    "authority_promoted": false,
+    "terminal_roots_minted": false,
+    "pass215_authorized": false,
+    "live_pass213_surface_required_for_promotion": true
+  },
+  "hosted_validation": {
+    "status": "pending non-suppressed exact-head event",
+    "claimed": false
+  },
+  "next_action": "Obtain an authentic PASS213_LIVE_GOVERNED_SURFACE admission bound to the candidate-set root, then execute non-promoting per-family callable baselines and ablations before any migration decision."
+}

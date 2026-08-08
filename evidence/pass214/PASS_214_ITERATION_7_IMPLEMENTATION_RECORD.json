@@ -1,0 +1,69 @@
+{
+  "schema": "HHS_PASS_214_ITERATION_7_IMPLEMENTATION_RECORD_V1",
+  "pass": 214,
+  "iteration": 7,
+  "classification": "HHS_PASS_214_ITERATION_7_LIVE_ADMISSION_ABLATION_BRIDGE_IMPLEMENTED",
+  "base_commit": "5be251a3df5bd3f949dbae8e34c71cfd5465bcd6",
+  "base_tree": "8106623e074c5ec939e64c838f102ead403bc832",
+  "branch": "agent/pass214-operating-compression-gradient",
+  "pass213_closure": "86ec461818682fc87232740758769602e8f9fe05",
+  "iteration6_candidate_set_root_hash216": "f11bdbb9940e90500692cd0a0c505727ad94cafc0ea4fca85b134253f72cab9f",
+  "iteration6_report_root_hash216": "f5712fb2c95c47908bf2fc74251fc3d7296ea68617086b299b3aa17e7f60df8f",
+  "iteration6_receipt_sha256": "b2080cbe321f34f8e384b47be95c8cbb3f00b5429445207775e0a2b26d527d34",
+  "iteration7_manifest_root_hash216": "32a395d717da140d1406367996afb825b10d894b7eb244b940e6acaca351391f",
+  "bridge": {
+    "trusted_timestamp": "TrustedTimestampAnchorRecord.validate + RFC3161TimestampVerifier + explicit trust bundle",
+    "governed_surface": "Pass213 governed projection chain verify + latest TIMESTAMP_ANCHOR/MOVING_TENSOR + candidate challenge RECEIPT projection",
+    "native_dispatch": "configured Iteration 10 service + authenticated ledger verify + latest dispatch receipt",
+    "cross_authority_gate": "trusted timestamp anchor root == moving tensor anchor root == native dispatch trusted anchor root; moving tensor root == native dispatch runtime and latest receipt tensor root; lineage equality required",
+    "recorded_admission_policy": "structural validation only; live in-process recheck required before ablation-plan execution"
+  },
+  "five_family_plan": [
+    "vector_cache",
+    "wrapper_duplication",
+    "numeric_lookup",
+    "serialization_import",
+    "coprime_lookup"
+  ],
+  "integrity": {
+    "runtime_wrapper_sha256": "d6ef1272d28f28ee6762d64e1da70aba28909ccccb33b3fa41397337f60baecd",
+    "runtime_source_sha256": "23702a3420453d95fba1f87fb5675992d97dbaf63ed910dfc5aa5e1b117212e0",
+    "runtime_payload_gzip_sha256": "4b348a07b59ada0ec471e0e28cdd82d654c7e25928144ea3b1aafe881b8b6750",
+    "tool_sha256": "47c6fb899c7cd72c204fdebe0aca074ddd131b25bce3ec84deaa052de5c6ca18",
+    "manifest_tool_sha256": "edfddaa4b1554b865e77e2b611276be998d10619531cc03ddd3b94767780e829",
+    "tests_sha256": "88233eb646b2ad61880487aec4446640fdcab0408066239c5db8a4c2674fc7fb"
+  },
+  "validation": {
+    "python_compile": "passed",
+    "dependency_scoped_tests": "7 passed",
+    "deterministic_challenge_binding": "passed",
+    "missing_operational_rfc3161_inputs_block": "passed",
+    "fixture_or_synthetic_timestamp_rejection": "passed",
+    "tensor_dispatch_mismatch_rejection": "passed",
+    "candidate_challenge_projection_commit": "passed with injected governed-surface test double",
+    "admission_root_tamper_rejection": "passed",
+    "recorded_admission_live_recheck_gate": "passed",
+    "isolated_workspace_inspection": "LIVE_RUNTIME_UNAVAILABLE_EXPECTED; no production claim"
+  },
+  "operational_live_admission": {
+    "attempted_from_isolated_implementation_workspace": false,
+    "claimed": false,
+    "reason": "Production trust bundle, full trusted timestamp record, PQC verifier bundle, governed projection state, and configured native-dispatch service are deployment-local authority inputs and were not available in the isolated implementation workspace."
+  },
+  "policy": {
+    "candidate_imported_for_replacement": false,
+    "candidate_execution_started": false,
+    "candidate_executed_for_migration": false,
+    "migration_active": false,
+    "authority_promoted": false,
+    "terminal_roots_minted": false,
+    "pass215_authorized": false,
+    "live_pass213_recheck_required_before_ablation_execution": true
+  },
+  "hosted_validation": {
+    "status": "pending non-suppressed exact-head event",
+    "claimed": false
+  },
+  "next_action": "Execute the Iteration 7 bridge in the production Pass 213 process with the operational RFC 3161 trust bundle, full trusted anchor record and PQC verifier bundle. If and only if the live cross-authority gate passes, persist the admission and five-family ablation plan, then execute the production callable baseline/ablation stage without migration or authority promotion.",
+  "implementation_commit": "a5c07bfff57880c60a0ba6e24e1eec17d38e3f88"
+}

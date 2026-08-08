@@ -1,0 +1,100 @@
+name: Pass 214 Cumulative Operation Capability Census
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'hhs_backend/runtime/hhs_pass214_cumulative_operation_census_v1.py'
+      - 'hhs_backend/runtime/hhs_pass214_operation_language_extractors_v1.py'
+      - 'hhs_backend/runtime/hhs_pass214_cumulative_operation_census_deep_v1.py'
+      - 'hhs_backend/runtime/hhs_pass214_python_operation_registry_v1.py'
+      - 'hhs_backend/runtime/hhs_pass214_cumulative_operation_census_final_v1.py'
+      - 'tools/pass214_cumulative_operation_census.py'
+      - 'tests/test_hhs_pass214_cumulative_operation_census_v1.py'
+      - 'evidence/pass214/PASS_214_CUMULATIVE_OPERATION_CAPABILITY_CENSUS_V1.json'
+      - '.github/workflows/pass214-cumulative-operation-census.yml'
+  push:
+    branches:
+      - main
+      - agent/pass214-cumulative-operation-census-v1
+    paths:
+      - 'hhs_backend/runtime/hhs_pass214_cumulative_operation_census_v1.py'
+      - 'hhs_backend/runtime/hhs_pass214_operation_language_extractors_v1.py'
+      - 'hhs_backend/runtime/hhs_pass214_cumulative_operation_census_deep_v1.py'
+      - 'hhs_backend/runtime/hhs_pass214_python_operation_registry_v1.py'
+      - 'hhs_backend/runtime/hhs_pass214_cumulative_operation_census_final_v1.py'
+      - 'tools/pass214_cumulative_operation_census.py'
+      - 'tests/test_hhs_pass214_cumulative_operation_census_v1.py'
+      - 'evidence/pass214/PASS_214_CUMULATIVE_OPERATION_CAPABILITY_CENSUS_V1.json'
+      - '.github/workflows/pass214-cumulative-operation-census.yml'
+
+permissions:
+  contents: read
+
+env:
+  PYTHONHASHSEED: '0'
+  PYTHONDONTWRITEBYTECODE: '1'
+
+jobs:
+  deep-operation-census:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Install test dependency
+        run: python -m pip install pytest
+      - name: Compile census implementation
+        run: |
+          python -m py_compile hhs_backend/runtime/hhs_pass214_cumulative_operation_census_v1.py
+          python -m py_compile hhs_backend/runtime/hhs_pass214_operation_language_extractors_v1.py
+          python -m py_compile hhs_backend/runtime/hhs_pass214_cumulative_operation_census_deep_v1.py
+          python -m py_compile hhs_backend/runtime/hhs_pass214_python_operation_registry_v1.py
+          python -m py_compile hhs_backend/runtime/hhs_pass214_cumulative_operation_census_final_v1.py
+          python -m py_compile tools/pass214_cumulative_operation_census.py
+      - name: Run targeted census tests
+        run: python -m pytest -q tests/test_hhs_pass214_cumulative_operation_census_v1.py
+      - name: Generate exact-head deep census
+        run: |
+          mkdir -p "$RUNNER_TEMP/pass214-operation-census"
+          python tools/pass214_cumulative_operation_census.py \
+            --repository-root . \
+            --source-ref HEAD \
+            --output "$RUNNER_TEMP/pass214-operation-census/PASS_214_CUMULATIVE_OPERATION_CAPABILITY_CENSUS_V1.json" \
+            | tee "$RUNNER_TEMP/pass214-operation-census/validation.log"
+      - name: Emit compact accounting summary
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          p = Path(os.environ['RUNNER_TEMP']) / 'pass214-operation-census' / 'PASS_214_CUMULATIVE_OPERATION_CAPABILITY_CENSUS_V1.json'
+          d = json.loads(p.read_text())
+          s = d['summary']
+          print('RAW_OPERATION_IDENTITIES', s['coverage']['raw_operation_identities'])
+          print('SEMANTIC_NAME_GROUPS', s['semantic_accounting']['normalized_semantic_name_groups'])
+          print('CANONICAL_UNIQUE_STATUS', s['semantic_accounting']['canonical_count_status'])
+          print('ISOLATED_IMPLEMENTATION_CANDIDATES', s['reuse_accounting']['isolated_implementation_candidates'])
+          print('REUSED_ACROSS_COMPONENTS', s['reuse_accounting']['reused_across_components'])
+          print('SHARED_MODULE_RECORDS', s['reuse_accounting']['shared_module_records'])
+          print('ABI_DECLARATION_SURFACES', s['reuse_accounting']['abi_declaration_surfaces'])
+          print('FORMAL_SPECIFICATION_RECORDS', s['reuse_accounting']['formal_specification_records'])
+          print('BUILD_AND_INTEGRATION_TASKS', s['reuse_accounting']['build_and_integration_tasks'])
+          print('REGISTRY_QUALITY', json.dumps(s['quality_controls'], sort_keys=True))
+          print('PYTHON_EXPOSURE', json.dumps(s['python_exposure_counts'], sort_keys=True))
+          print('KNOWN_OPCODE_FAMILIES', json.dumps(s['known_opcode_family_anchors']['observed'], sort_keys=True))
+          print('LANGUAGE_EXTRACTORS', json.dumps(s['language_coverage_manifest']['extractors_used']))
+          print('CENSUS_SHA256', d['census_sha256'])
+          PY
+      - name: Retain deep census artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass214-cumulative-operation-census-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/pass214-operation-census/PASS_214_CUMULATIVE_OPERATION_CAPABILITY_CENSUS_V1.json
+            ${{ runner.temp }}/pass214-operation-census/validation.log
+          if-no-files-found: error

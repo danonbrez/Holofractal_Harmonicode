@@ -1,0 +1,137 @@
+name: Pass 213 Compiled ROM Integrity
+
+on:
+  push:
+    branches:
+      - main
+      - agent/pass213-compiled-rom-integrity
+    paths:
+      - 'HHS_PASS_213_TIMESTAMP_BOUND_AUTHENTICATED_MOVING_TENSOR_COMPILED_ROM.md'
+      - 'contracts/pass213/**'
+      - 'docs/pass213/**'
+      - '!docs/pass213/RESTART_RECORD.md'
+      - 'native/pass213/**'
+      - 'requirements/pass213-pqc.txt'
+      - 'hhs_backend/runtime/hhs_pass213_compiled_rom_v1.py'
+      - 'hhs_backend/runtime/hhs_pass213_recovery_admission_v1.py'
+      - 'hhs_backend/runtime/hhs_pass213_secure_memory_v1.py'
+      - 'hhs_backend/runtime/hhs_pass213_native_protected_rom_v1.py'
+      - 'hhs_backend/runtime/hhs_pass213_parametric_delta_v1.py'
+      - 'hhs_backend/runtime/hhs_pass213_persistent_inventory_v1.py'
+      - 'hhs_backend/runtime/hhs_pass213_pqc_enclosure_v1.py'
+      - 'hhs_backend/runtime/hhs_pass213_trusted_timestamp_v1.py'
+      - 'hhs_backend/runtime/hhs_pass213_tensor_geometry_v1.py'
+      - 'hhs_backend/runtime/hhs_pass213_tensor_closure_v1.py'
+      - 'hhs_backend/runtime/hhs_pass213_tensor_boundary_v1.py'
+      - 'hhs_backend/runtime/hhs_pass213_moving_tensor_v1.py'
+      - 'hhs_backend/runtime/hhs_pass213_tensor_store_v1.py'
+      - 'hhs_backend/runtime/hhs_pass213_governed_surface_v1.py'
+      - 'hhs_backend/runtime/hhs_pass213_governed_surface_v2.py'
+      - 'hhs_backend/runtime/hhs_pass213_governed_native_dispatch_v1.py'
+      - 'hhs_backend/runtime/hhs_pass213_native_dispatch_*.py'
+      - 'hhs_backend/runtime/hhs_pass213_final_evidence_v1.py'
+      - 'hhs_backend/api/pass213_compiled_rom_routes.py'
+      - 'hhs_backend/api/pass213_native_dispatch_routes.py'
+      - 'hhs_runtime/pass213/**'
+      - 'tests/test_pass213_compiled_rom_v1.py'
+      - 'tests/test_pass213_recovery_admission_v1.py'
+      - 'tests/test_pass213_secure_memory_v1.py'
+      - 'tests/test_pass213_native_protected_rom_v1.py'
+      - 'tests/test_pass213_parametric_delta_v1.py'
+      - 'tests/test_pass213_persistent_inventory_v1.py'
+      - 'tests/test_pass213_pqc_enclosure_v1.py'
+      - 'tests/test_pass213_trusted_timestamp_v1.py'
+      - 'tests/test_pass213_moving_tensor_v1.py'
+      - 'tests/test_pass213_governed_surface_v1.py'
+      - 'tests/test_pass213_api_cli_v1.py'
+      - 'tests/test_pass213_governed_native_dispatch_v1.py'
+      - 'tests/test_pass213_native_dispatch_api_cli_v1.py'
+      - 'tests/test_pass213_final_evidence_v1.py'
+      - 'scripts/run_pass213_iteration1_validation.sh'
+      - 'scripts/run_pass213_final_evidence.py'
+      - '.github/workflows/pass213-compiled-rom-integrity.yml'
+  pull_request:
+    paths:
+      - 'HHS_PASS_213_TIMESTAMP_BOUND_AUTHENTICATED_MOVING_TENSOR_COMPILED_ROM.md'
+      - 'contracts/pass213/**'
+      - 'docs/pass213/**'
+      - '!docs/pass213/RESTART_RECORD.md'
+      - 'native/pass213/**'
+      - 'requirements/pass213-pqc.txt'
+      - 'hhs_backend/runtime/hhs_pass213_compiled_rom_v1.py'
+      - 'hhs_backend/runtime/hhs_pass213_recovery_admission_v1.py'
+      - 'hhs_backend/runtime/hhs_pass213_secure_memory_v1.py'
+      - 'hhs_backend/runtime/hhs_pass213_native_protected_rom_v1.py'
+      - 'hhs_backend/runtime/hhs_pass213_parametric_delta_v1.py'
+      - 'hhs_backend/runtime/hhs_pass213_persistent_inventory_v1.py'
+      - 'hhs_backend/runtime/hhs_pass213_pqc_enclosure_v1.py'
+      - 'hhs_backend/runtime/hhs_pass213_trusted_timestamp_v1.py'
+      - 'hhs_backend/runtime/hhs_pass213_tensor_geometry_v1.py'
+      - 'hhs_backend/runtime/hhs_pass213_tensor_closure_v1.py'
+      - 'hhs_backend/runtime/hhs_pass213_tensor_boundary_v1.py'
+      - 'hhs_backend/runtime/hhs_pass213_moving_tensor_v1.py'
+      - 'hhs_backend/runtime/hhs_pass213_tensor_store_v1.py'
+      - 'hhs_backend/runtime/hhs_pass213_governed_surface_v1.py'
+      - 'hhs_backend/runtime/hhs_pass213_governed_surface_v2.py'
+      - 'hhs_backend/runtime/hhs_pass213_governed_native_dispatch_v1.py'
+      - 'hhs_backend/runtime/hhs_pass213_native_dispatch_*.py'
+      - 'hhs_backend/runtime/hhs_pass213_final_evidence_v1.py'
+      - 'hhs_backend/api/pass213_compiled_rom_routes.py'
+      - 'hhs_backend/api/pass213_native_dispatch_routes.py'
+      - 'hhs_runtime/pass213/**'
+      - 'tests/test_pass213_compiled_rom_v1.py'
+      - 'tests/test_pass213_recovery_admission_v1.py'
+      - 'tests/test_pass213_secure_memory_v1.py'
+      - 'tests/test_pass213_native_protected_rom_v1.py'
+      - 'tests/test_pass213_parametric_delta_v1.py'
+      - 'tests/test_pass213_persistent_inventory_v1.py'
+      - 'tests/test_pass213_pqc_enclosure_v1.py'
+      - 'tests/test_pass213_trusted_timestamp_v1.py'
+      - 'tests/test_pass213_moving_tensor_v1.py'
+      - 'tests/test_pass213_governed_surface_v1.py'
+      - 'tests/test_pass213_api_cli_v1.py'
+      - 'tests/test_pass213_governed_native_dispatch_v1.py'
+      - 'tests/test_pass213_native_dispatch_api_cli_v1.py'
+      - 'tests/test_pass213_final_evidence_v1.py'
+      - 'scripts/run_pass213_iteration1_validation.sh'
+      - 'scripts/run_pass213_final_evidence.py'
+      - '.github/workflows/pass213-compiled-rom-integrity.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    env:
+      PYOQS_VERSION: '0.16.0'
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+          cache-dependency-path: 'requirements/pass213-pqc.txt'
+      - name: Restore native liboqs cache
+        uses: actions/cache@v4
+        with:
+          path: ~/_oqs
+          key: liboqs-${{ runner.os }}-${{ runner.arch }}-${{ env.PYOQS_VERSION }}
+      - name: Install Pass 213 dependencies
+        run: python -m pip install --disable-pip-version-check -r requirements/pass213-pqc.txt
+      - name: Validate Pass 213 final iteration
+        shell: bash
+        run: |
+          set -o pipefail
+          bash scripts/run_pass213_iteration1_validation.sh 2>&1 \
+            | tee pass213-final-validation.log
+      - name: Retain Pass 213 terminal evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass213-final-closure-${{ github.run_id }}
+          path: |
+            pass213-final-validation.log
+            pass213-final-evidence.json
+          if-no-files-found: error
+          retention-days: 30

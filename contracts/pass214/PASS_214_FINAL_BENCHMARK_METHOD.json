@@ -1,0 +1,58 @@
+{
+  "schema": "HHS_PASS_214_FINAL_BENCHMARK_METHOD_V1",
+  "pass": 214,
+  "status": "FROZEN_BEFORE_TERMINAL_EXECUTION",
+  "stages": {
+    "A0": "dense_direct_correct_reference",
+    "A1": "single_optimization_isolation",
+    "A2": "compatible_optimization_pair",
+    "A3": "complete_subsystem",
+    "A4": "complete_inherited_hhs_stack",
+    "A5": "complete_stack_minus_one_layer",
+    "A6": "adverse_no_reuse_control",
+    "A7": "interruption_recovery_resume",
+    "A8": "cross_process_replay",
+    "A9": "accelerator_with_cpu_semantic_control_or_explicit_not_applicable"
+  },
+  "mandatory_ablations": [
+    "semantic_composition_cache", "conformance_decision_cache", "predictive_continuation_cache",
+    "reusable_pattern_cache", "vector_shortlist", "exact_compatibility_filtering",
+    "exact_delta_cost_reranking", "content_addressed_source_reuse", "incremental_tokenization",
+    "sparse_5184_projection", "dependency_complete_frontier", "residual_only_processing",
+    "parametric_admission", "compiled_rom_reuse", "generator_exception_compression",
+    "physical_recovery", "receipt_vector_indexing", "sql_context_graph", "encrypted_vector_store",
+    "snapshot_reuse", "multimodal_cross_alignment", "bounded_learning_replay",
+    "moving_tensor_routing", "native_dispatch", "accelerator_batching", "interruption_recovery"
+  ],
+  "semantic_layer": {
+    "required": true,
+    "exact_equality_required": true,
+    "hash216_semantic_roots_required": true,
+    "hash72_receipts_required": true,
+    "incremental_full_equality_required": true,
+    "recovery_replay_equality_required": true,
+    "cross_process_replay_equality_required": true,
+    "cpu_accelerator_equality_required_when_a9_measured": true
+  },
+  "observational_layer": {
+    "required": true,
+    "integer_or_fixed_point_only": true,
+    "capacity_accounting_required": true,
+    "work_accounting_required": true,
+    "governance_accounting_required": true,
+    "recovery_accounting_required": true,
+    "physical_compression_accounting_required": true,
+    "semantic_observational_separation_required": true
+  },
+  "execution_policy": {
+    "append_only_results": true,
+    "negative_controls_fail_closed": true,
+    "no_fixture_as_production_authority": true,
+    "no_synthetic_live_admission": true,
+    "no_unexecuted_measurement_may_be_marked_measured": true,
+    "a9_may_be_not_applicable_only_when_no_accelerator_is_configured": true,
+    "multimodal_ml_must_participate_in_compound_and_ablation_runs": true,
+    "all_15_workload_families_required": true,
+    "all_11_workload_modes_required": true
+  }
+}
