@@ -1,0 +1,49 @@
+{
+  "contract": "HHS-P215-I18-BOUNDED-CERTIFIED-GENERATION-CONTROL",
+  "pass": 215,
+  "iteration": 18,
+  "status": "SOURCE_EXECUTION_PENDING_EXACT_HEAD_VALIDATION",
+  "inherits": {
+    "iteration17_closure_head": "3d46b0eb233c6f450fa7d939e8b864a6651d3465",
+    "iteration17_closure_tree": "687db9f718d2b54c3962ecc8bbb62f49090407c9",
+    "iteration17_closure_artifact_sha256": "e8046bf49d280032a1f15f722de973d267b77e7f0d5e64338997e0a84a21a5af",
+    "iteration17_chain_root_hash216": "87fe30aa3beed6c09ce724b1dfdfbf70c051cb636ab417eacea856bf50e6fc8e",
+    "iteration17_suite_root_hash216": "6ec09f1d71858d4483ae2f3fe120a7e0a03bd5946294200bd1d53eab1acef853",
+    "iteration17_evidence_root_hash216": "12a4b0154e4888ceb7cb6f2a5ea190b60b097dcac740fd1fd33e363c18d5eced"
+  },
+  "contracted_workload": {
+    "model": "ggml-org/tiny-llamas/stories15M-q4_0.gguf",
+    "model_sha256": "6151b1929d7f5aa3385d9ddef3393e55587c0a55de661562322bc51dfda93a04",
+    "prompt": "Hello world!",
+    "certification_bits": 256,
+    "max_new_tokens": 7,
+    "max_context_tokens": 11,
+    "stop_token_ids": [2],
+    "resume_after_completed_steps": 4
+  },
+  "requirements": {
+    "reproduce_iteration17_seven_step_chain_exactly": true,
+    "bounded_generation_control_surface": true,
+    "deterministic_stop_token_policy": true,
+    "explicit_max_new_token_and_context_limits": true,
+    "serialize_symbolic_dag_and_kv_cache": true,
+    "serialize_interval_kv_cache_and_complete_logit_state": true,
+    "serialize_scalable_rope_dyadic_context": true,
+    "restore_without_prefix_or_generated_forward_replay": true,
+    "emit_per_token_hash216_proofs": true,
+    "emit_chained_per_token_hash72_receipts": true,
+    "cross_process_replay": true,
+    "no_float_canonical_authority": true
+  },
+  "constraints": {
+    "probabilistic_sampling_executed": false,
+    "unbounded_or_general_generation_claimed": false,
+    "arbitrary_prompt_or_model_generation_claimed": false,
+    "adaptive_precision_authority_promoted": false,
+    "canonical_float_interpretation_performed": false,
+    "dense_forward_replaced": false,
+    "runtime_mutation_authority_promoted": false,
+    "canonical_mutation_authorized": false,
+    "migration_active": false
+  }
+}

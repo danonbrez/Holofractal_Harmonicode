@@ -1,0 +1,27 @@
+{
+  "schema": "HHS_PASS_215_ITERATION_18_IMPLEMENTATION_RECORD_V1",
+  "contract": "HHS-P215-I18-BOUNDED-CERTIFIED-GENERATION-CONTROL",
+  "status": "IMPLEMENTED_SOURCE_EXECUTION_PENDING",
+  "parent_closure_head": "3d46b0eb233c6f450fa7d939e8b864a6651d3465",
+  "parent_closure_tree": "687db9f718d2b54c3962ecc8bbb62f49090407c9",
+  "branch": "agent/pass215-transformer-ingestion-benchmark",
+  "merge_target": "main",
+  "pull_request": 172,
+  "implemented_surfaces": [
+    "hhs_backend/runtime/hhs_pass215_iteration18_bounded_generation_control_v1.py",
+    "tools/pass215_iteration18_bounded_generation_control.py",
+    "tests/test_hhs_pass215_iteration18_bounded_generation_control_v1.py",
+    "scripts/run_pass215_iteration18_validation.sh",
+    "contracts/pass215/PASS_215_ITERATION_18_CONTRACT.json",
+    "evidence/pass215/PASS_215_ITERATION_18_IMPLEMENTATION_RECORD.json",
+    "docs/pass215/ITERATION_18_BOUNDED_GENERATION_CONTROL.md",
+    "docs/pass215/ITERATION_18_RESTART_RECORD.md",
+    ".github/workflows/pass215-iteration18-bounded-generation-control.yml"
+  ],
+  "max_new_tokens": 7,
+  "max_context_tokens": 11,
+  "resume_after_completed_steps": 4,
+  "source_execution": null,
+  "exact_head_terminal_validation": null,
+  "next_action": "Run cumulative Iteration 1-18 validation and authenticated split checkpoint/resume execution. Freeze source identities only after independent replay succeeds."
+}
