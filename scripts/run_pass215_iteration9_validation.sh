@@ -5,6 +5,7 @@ bash scripts/run_pass215_iteration8_validation.sh
 
 python -m py_compile \
   hhs_backend/runtime/hhs_pass215_iteration9_authenticated_token_ingress_v1.py \
+  hhs_backend/runtime/hhs_pass215_iteration9_authenticated_token_ingress_v2.py \
   tools/pass215_iteration9_authenticated_token_ingress.py
 
 python -m json.tool contracts/pass215/PASS_215_ITERATION_9_CONTRACT.json >/dev/null
