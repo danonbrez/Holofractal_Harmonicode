@@ -26,9 +26,14 @@ test('verified workflow-first Harmonizer remains the public presentation authori
 test('public startup gives application controls sole ownership before visual hydration', () => {
   const coordinator = read('src/production-startup-coordinator.mjs');
   const boot = read('src/public-boot.mjs');
-  assert.match(coordinator, /import \{ startPublicBoot \} from '\.\/public-boot\.mjs'/);
+  assert.doesNotMatch(coordinator, /import \{ startPublicBoot \} from '\.\/public-boot\.mjs'/);
+  assert.match(coordinator, /void import\('\.\/public-boot\.mjs'\)/);
+  assert.match(coordinator, /\.then\(\(\{ startPublicBoot \}\) => startPublicBoot\(\)\)/);
   assert.match(coordinator, /window\.HHSProductionStartupCoordinator = Object\.freeze/);
-  assert.ok(coordinator.indexOf('window.HHSProductionStartupCoordinator = Object.freeze') < coordinator.indexOf('startPublicBoot();'));
+  assert.ok(
+    coordinator.indexOf('window.HHSProductionStartupCoordinator = Object.freeze')
+      < coordinator.indexOf("void import('./public-boot.mjs')"),
+  );
   assert.match(boot, /const BOOT_SCHEMA = 'HHS_PUBLIC_MODULE_BOOT_V2'/);
   assert.match(boot, /export function startPublicBoot\(\)/);
   assert.match(boot, /const browser = launch\('browser', '\.\/browser\.mjs'\)/);
