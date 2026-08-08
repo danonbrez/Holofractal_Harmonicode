@@ -3,7 +3,7 @@
   "contract": "HHS-P215-I13-AUTHENTICATED-TERMINAL-MODEL-HEAD",
   "pass": 215,
   "iteration": 13,
-  "status": "IMPLEMENTATION_SOURCE_EXECUTION_PENDING",
+  "status": "SOURCE_EXECUTION_FROZEN_CLOSURE_HEAD_REPLAY_REQUIRED",
   "inherits": {
     "iteration12_closure_head": "7d2bfa13071692db4d9370a29b09711bd1424cd3",
     "iteration12_closure_tree": "2b22da9ec696f91a8e2e56177d05fd07bb0eadc9",
@@ -63,7 +63,7 @@
     "prove_selected_q8_rows_by_independent_flat_and_block_factored_exact_rational_controls",
     "execute_terminal_output_rmsnorm_for_all_four_positions",
     "materialize_all_32000_output_rows_for_each_of_four_positions_as_source_bound_exact_q8_0_transition_generators",
-    "produce_four_complete_logit_vector roots_and_terminal_suite_forward_evidence_receipt_identities",
+    "produce_four_complete_logit_vector_roots_and_terminal_suite_forward_evidence_receipt_identities",
     "independent_cross_process_real_model_replay"
   ],
   "constraints": {
@@ -86,27 +86,32 @@
     "migration_active": false
   },
   "validated_source_execution": {
-    "status": "PENDING_EXACT_HEAD_CI",
-    "validated_source_head": null,
-    "validated_source_tree": null,
-    "workflow_run_id": null,
-    "workflow_job_id": null,
+    "status": "SOURCE_EXECUTION_FROZEN_CLOSURE_HEAD_REPLAY_REQUIRED",
+    "validated_source_head": "576cc0e23907ffa6896f6a885bc15e500d9084bf",
+    "validated_source_tree": "c2e03fbf621344dde688fe276822a806c178c3a0",
+    "workflow_run_id": 31271848560,
+    "workflow_job_id": 93139046788,
     "cumulative_test_count": 126,
-    "terminal_topology_root_hash216": null,
-    "output_norm_value_root_hash216": null,
-    "output_projection_descriptor_root_hash216": null,
-    "q8_semantic_control_root_hash216": null,
-    "terminal_norm_root_hash216": null,
-    "logits_root_hash216": null,
-    "full_symbolic_dag_root_hash216": null,
-    "full_model_forward_root_hash216": null,
-    "suite_root_hash216": null,
-    "evidence_root_hash216": null,
-    "receipt_hash72": null,
-    "artifact_id": null,
-    "artifact_size_bytes": null,
-    "artifact_sha256": null,
-    "cross_process_replay": null,
-    "semantic_exactness": null
+    "terminal_topology_root_hash216": "cc6cdb8d50769ccc6baff3c55732ea4f6cfa1fe2c9a5b3ff8b9cf0e41f9b03b4",
+    "output_norm_value_root_hash216": "5d9db692ebb5b1f2d2ec0507ec4a3d8222620270e67cec8f265a80aeaa4ce063",
+    "output_projection_descriptor_root_hash216": "bd555175efd71d0c58892d14df30769c971b0a83231108eec9735e660b3e4ce8",
+    "q8_semantic_control_root_hash216": "d7a33b0cd2eae98d4cc2172ed6b2e2ff04c67f29151aabca9f2df097fe3b4622",
+    "terminal_norm_root_hash216": "4a6cd80b2eb3d16ab92ae9b58c4cf58a38d7bbda23debff275e743af3bfdc42b",
+    "logits_root_hash216": "32fb61d26431c937050d39809b289dbf65c73ecce40b6bd30378e43ecb977ceb",
+    "full_symbolic_dag_root_hash216": "095aadfa389728fb0fc53df0acd3632bfe09af75b13ca2d64d576c117ac0ccd5",
+    "full_model_forward_root_hash216": "c34e78a37f93597adc703c37ecdd59fefb769447946932e0d5eee496b4373dac",
+    "suite_root_hash216": "046fff2e286f14d71b71aac2e11ddd0cee12c5d1f39255e695e9af4b632a2acc",
+    "evidence_root_hash216": "ac57c26fe9119f56c11641297e6f6be8f71aae2fd59bc655445d5b07ad34c2a5",
+    "receipt_hash72": "6a0VdJ2YaxDx6m2RFaI8UxEyyxSi!gW1<xA4bB0OIKrAg*phhTeHRkYh0tWfWvcO1g/*(A<Z",
+    "artifact_id": 9025862001,
+    "artifact_size_bytes": 14477,
+    "artifact_sha256": "859e6ed92f6f4b5ccbb0cf5aba33b34fc6196b46589190c6979b4b7cc5ef60b2",
+    "cross_process_replay": true,
+    "semantic_exactness": true
+  },
+  "validation": {
+    "source_execution_terminal_roots_frozen": true,
+    "closure_record_committed_after_source_execution": false,
+    "closure_commit_requires_exact_head_replay": true
   }
 }
