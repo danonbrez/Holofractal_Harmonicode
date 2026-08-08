@@ -703,7 +703,7 @@ def validate_block_graph_evidence(evidence: Mapping[str, Any]) -> None:
     if not isinstance(bindings, Mapping):
         raise Pass215Iteration6ValidationError("PASS215_I6_TENSOR_BINDINGS_MISSING")
     roots = bindings.get("tensor_binding_roots_hash216")
-    if not isinstance(roots, Mapping) or tuple(roots) != EXPECTED_BLOCK_TENSORS:
+    if not isinstance(roots, Mapping) or set(roots) != set(EXPECTED_BLOCK_TENSORS):
         raise Pass215Iteration6ValidationError("PASS215_I6_TENSOR_BINDING_SET_INVALID")
     if bindings.get("all_required_tensors_bound") is not True:
         raise Pass215Iteration6ValidationError("PASS215_I6_TENSOR_BINDING_INCOMPLETE")
