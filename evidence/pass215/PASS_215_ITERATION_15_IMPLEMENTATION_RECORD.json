@@ -1,7 +1,7 @@
 {
   "schema": "HHS_PASS_215_ITERATION_15_IMPLEMENTATION_RECORD_V1",
   "contract": "HHS-P215-I15-CERTIFIED-EXACT-GREEDY-LOGIT-SELECTION",
-  "status": "IMPLEMENTED_SOURCE_EXECUTION_PENDING",
+  "status": "SOURCE_EXECUTION_VALIDATED_CLOSURE_REPLAY_REQUIRED",
   "parent_closure_head": "9780b711fdcfa6624dc9e787b140920ca3f5f875",
   "parent_closure_tree": "9475d1053c08f4ae6195d28407dffc86b97c6113",
   "branch": "agent/pass215-transformer-ingestion-benchmark",
@@ -22,7 +22,31 @@
   "greedy_append_count": 1,
   "prefix_recomputation_authorized": false,
   "kv_cache_reuse_required": true,
-  "source_execution": null,
+  "source_execution": {
+    "validated_head": "f97c8d5443de98a95b65d90a0c50fb4774c006ac",
+    "validated_tree": "9d3f9b94dc5fe8830e3b1b3a0dbeb42866f039a2",
+    "workflow_run": 31273839543,
+    "workflow_job": 93144120787,
+    "cumulative_test_count": 144,
+    "selected_token_id": 450,
+    "selected_token": "▁The",
+    "strongest_competitor_token_id": 319,
+    "strongest_competitor_token": "▁A",
+    "strict_margin_lower_bound_numerator": 70720847530373533701037217556150495820946814614155944479330263861023836594083,
+    "strict_margin_lower_bound_denominator": 115792089237316195423570985008687907853269984665640564039457584007913129639936,
+    "complete_logit_interval_suite_root_hash216": "fe97babc80b71deee97250110d2bf6c50f5e51437ae53d16c745d51c5dc9e996",
+    "selection_root_hash216": "aac3225975c44b9b761dd131afedfc01123a3c5da187f76bd9de5c9bf2abee94",
+    "append_forward_root_hash216": "f1757269ee3ed98a67434c799a89750da26dcaa11be9ce688a093d52febb5a75",
+    "final_symbolic_dag_root_hash216": "148a87ea757e33ce2769939e58c09033ccf14b569143828ebb6e875d8af22c9c",
+    "greedy_forward_root_hash216": "36433241bb31e511fc24c60290bf56171cbe6b11d9efc8c3802318c71d0f7c8d",
+    "suite_root_hash216": "40b5abf2ba4ecee376e7e8753ab87fef733ba9868e47a8114949a5010f6e234d",
+    "evidence_root_hash216": "d04d5153a22883c01f1ac9f879ba46fa8afbebb4214692bf83e492091b5aca12",
+    "receipt_hash72": "uzxAvsD/x7Kj*upEF-sxHn-DYcdOuOaWqRHGh!KaarjdEzkg!-kW?J<cw8oik4W!Qf29PoOT",
+    "cross_process_replay": true,
+    "artifact_id": 9026475628,
+    "artifact_size_bytes": 21493,
+    "artifact_sha256": "2d6abd1e58b6144619a5ad02217e8e52c7a55331d2900b8b82b90996aecbcd0e"
+  },
   "exact_head_terminal_validation": null,
-  "next_action": "Run cumulative validation and authenticated 32,000-logit interval certification. If strict separation succeeds, freeze the produced greedy token and semantic identities, commit restart state, and exact-head replay that closure commit."
+  "next_action": "Commit the frozen Iteration 15 restart state and require the Iteration 15 workflow to reproduce every source identity directly against that exact closure commit. Do not add a post-validation commit."
 }
