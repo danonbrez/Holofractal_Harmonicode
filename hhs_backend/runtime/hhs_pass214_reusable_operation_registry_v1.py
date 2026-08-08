@@ -9,7 +9,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any, Mapping
 
-from hhs_backend.runtime.hhs_pass214_semantic_equivalence_v1 import SCHEMA as RECONCILIATION_SCHEMA
+from hhs_backend.runtime.hhs_pass214_semantic_equivalence_v2 import SCHEMA as RECONCILIATION_SCHEMA
 
 REGISTRY_SCHEMA = "HHS_PASS_214_REUSABLE_OPERATION_REGISTRY_V1"
 CLASSIFICATION = "HHS_PASS_214_READ_ONLY_REUSABLE_OPERATION_DISCOVERY_SURFACE"
