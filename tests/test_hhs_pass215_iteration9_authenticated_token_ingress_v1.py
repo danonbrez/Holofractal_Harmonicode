@@ -6,7 +6,8 @@ import pytest
 
 from hhs_backend.runtime import hhs_pass215_iteration2_open_transformer_container_v1 as i2
 from hhs_backend.runtime import hhs_pass215_iteration8_multi_token_causal_attention_v1 as i8
-from hhs_backend.runtime import hhs_pass215_iteration9_authenticated_token_ingress_v1 as i9
+from hhs_backend.runtime import hhs_pass215_iteration9_authenticated_token_ingress_v1 as i9v1
+from hhs_backend.runtime import hhs_pass215_iteration9_authenticated_token_ingress_v2 as i9
 
 
 def _s(value: str) -> bytes:
@@ -29,6 +30,8 @@ def _tokenizer_header() -> bytes:
     entries.append(_metadata_entry("tokenizer.ggml.bos_token_id", i2._GGUF_UINT32, struct.pack("<I", 1)))
     entries.append(_metadata_entry("tokenizer.ggml.eos_token_id", i2._GGUF_UINT32, struct.pack("<I", 2)))
     entries.append(_metadata_entry("tokenizer.ggml.unknown_token_id", i2._GGUF_UINT32, struct.pack("<I", 0)))
+    # The real workload demonstrated this valid GGUF sentinel pattern.
+    entries.append(_metadata_entry("tokenizer.ggml.padding_token_id", i2._GGUF_UINT32, struct.pack("<I", 0xFFFFFFFF)))
     # Unselected float scores are consumed through frozen opaque-bit parsing.
     scores = struct.pack("<IQ", i2._GGUF_FLOAT32, 4) + b"\x00\x00\x80\x3f" * 4
     entries.append(_metadata_entry("tokenizer.ggml.scores", i2._GGUF_ARRAY, scores))
@@ -42,7 +45,7 @@ def test_iteration8_frozen_binding_is_exact() -> None:
     assert bindings["iteration8_closure_tree"] == "4ec05cb3f6555005220098a55cab1dec0e0dfa61"
     assert bindings["iteration8_suite_root_hash216"] == "a21a7aedf633678510a701f93b39f785ce50c599228a6c194473ae6faea35b71"
     assert bindings["iteration8_evidence_root_hash216"] == "8ae3bdfb8768c37dfd4c66a491b985b3089378c655a7292ee406bbaa615c8465"
-    assert bindings["iteration8_receipt_hash72"] == i9.ITERATION8_RECEIPT_HASH72
+    assert bindings["iteration8_receipt_hash72"] == i9v1.ITERATION8_RECEIPT_HASH72
 
 
 def test_selected_tokenizer_reader_materializes_only_safe_fields() -> None:
@@ -58,9 +61,19 @@ def test_selected_tokenizer_reader_materializes_only_safe_fields() -> None:
     assert len(metadata["vocabulary_root_hash216"]) == 64
 
 
-def test_token_selection_prefers_unique_specials_then_lowest_unused() -> None:
+def test_out_of_range_special_token_is_preserved_as_inactive_sentinel() -> None:
+    metadata = i9._read_tokenizer_metadata(_tokenizer_header())
+    assert metadata["raw_special_token_ids"]["tokenizer.ggml.padding_token_id"] == 0xFFFFFFFF
+    assert metadata["inactive_special_token_ids"] == {"tokenizer.ggml.padding_token_id": 0xFFFFFFFF}
+    assert "tokenizer.ggml.padding_token_id" not in metadata["special_token_ids"]
+    assert metadata["inactive_special_ids_are_not_selected"] is True
+    assert len(metadata["special_token_metadata_root_hash216"]) == 64
+
+
+def test_token_selection_prefers_unique_active_specials_then_lowest_unused() -> None:
     metadata = i9._read_tokenizer_metadata(_tokenizer_header())
     assert i9._select_token_ids(metadata) == (1, 2, 0, 3)
+    assert 0xFFFFFFFF not in i9._select_token_ids(metadata)
 
 
 def test_token_selection_rejects_small_vocabulary() -> None:
