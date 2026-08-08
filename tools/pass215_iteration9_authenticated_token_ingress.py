@@ -11,7 +11,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from hhs_backend.runtime.hhs_pass215_iteration9_authenticated_token_ingress_v1 import (
+from hhs_backend.runtime.hhs_pass215_iteration9_authenticated_token_ingress_v2 import (
     REAL_MODEL_SHA256,
     VALIDATION_SCHEMA,
     build_authenticated_token_ingress_evidence_from_path,
